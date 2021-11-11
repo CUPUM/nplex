@@ -11,9 +11,8 @@ This project is scaffolded using [SvelteKit](https://kit.svelte.dev/), a compile
 After cloning the repo, initialize the project and its dependencies locally:
 
 ```bash
-#npm:
 npm install
-#or yarn:
+#or
 yarn
 ```
 
@@ -22,12 +21,12 @@ yarn
 Once you've installed the dependencies, you can start a development server:
 
 ```bash
-#npm:
 npm run dev
-# or yarn:
+#or
 yarn dev
 
-# append the optional "-- --open" flag to either of these commands if you want to automatically open the app in a new browser tab once the server has started
+# append the optional "-- --open" flag to either of these commands if you want
+# to automatically open the app in a new browser tab once the server has started
 ```
 
 ## Preparing a distribution
