@@ -2,7 +2,7 @@
 
 ## General
 
-This project is scaffolded using [SvelteKit](https://kit.svelte.dev/), a compiler oriented Javascript framework. The targeted distribution environement is Nodejs, we are thus here using the ecosystem's [node adapter](https://kit.svelte.dev/docs#adapters).
+Nplex's frontend application is scaffolded using [SvelteKit](https://kit.svelte.dev/), a compiler oriented Javascript framework. The targeted distribution environement is Nodejs, thus we are here using the _Svelte_ ecosystem's [node adapter](https://kit.svelte.dev/docs#adapters).
 
 ## Getting started
 
@@ -31,7 +31,7 @@ yarn dev
 
 ## Preparing a distribution
 
-Since a Nodejs environement is required for SvelteKit's server-side-rendering (SSR), the project's `/dist` will be provided as a dockerized application wrapped with a minimal Nodejs-on-Linux-architecture image, thus reducing risks of discrepency problems between developement and production environments' node versions and other root dependencies.
+In the long run, the project's `/dist` build should be provided as a dockerized application wrapped with a minimal Nodejs-on-Linux-architecture image to reduce risks of discrepency problems between developement and production environments' node versions and other root dependencies. The said docker image will also contain the proper vscode configurations and extensions to facilitate/predefine setup of a dev container.
 
 ### Building
 
