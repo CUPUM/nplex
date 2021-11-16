@@ -43,7 +43,9 @@ npm run build
 yarn build
 ```
 
-You can preview the built app with:
+### Previewing a build
+
+You can preview the built app contained in the `build` directory, regardless of whether you installed an adapter or not:
 
 ```bash
 npm run preview
@@ -51,11 +53,9 @@ npm run preview
 yarn preview
 ```
 
-...regardless of whether you installed an adapter or not.
+:warning: Note that the `preview` command should **not** be used to serve the app in production.
 
-Note that the `preview` command should _not_ be used to serve the app in production.
-
-### Deployment
+## Deploying
 
 Mockups of the project will temporarily be deployed to Heroku until the CalculCanada server is properly set up.
 
