@@ -14,7 +14,7 @@
 				href={route.href}
 				class:current={route.href === $page.path}
 			>
-				{route.title}
+				<span>{route.title}</span>
 			</a>
 		{/each}
 	</nav>
@@ -41,27 +41,33 @@
 	nav {
 		display: flex;
 		flex-direction: row;
-		gap: .5rem;
+		font-size: get(sm);
+		gap: 1em;
 	}
 
 	#pages {
 
 		a {
 			text-decoration: none;
-			color: rgb(var(--contrast500));
-			padding: .7em 1.3em;
+			color: color(contrast500);
+			padding: 10px 16px;
 			border-radius: 1.5em;
 			transition: all .3s;
 
 			&:hover:not(.current) {
-				box-shadow: 0px 20px 16px -8px #94de1333;
+				box-shadow: 0px 20px 16px -8px fade(primary500, .5);
 			}
 
 			&.current {
-				background-color: rgb(var(--primary300));
-				color: rgb(var(--primary900));
-				box-shadow: 0px 20px 16px -8px #94de1333;
+				background-color: color(primary300);
+				color: color(primary900);
+				box-shadow: 0px 20px 16px -8px fade(primary500, .5);
 			}
+		}
+
+		span {
+			position: relative;
+			top: -1px;
 		}
 	}
 

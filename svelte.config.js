@@ -21,7 +21,8 @@ const config = {
 					$utils: path.resolve('src/utils'),
 					$actions: path.resolve('src/actions'),
 					$styles: path.resolve('src/styles'),
-					$stores: path.resolve('src/stores')
+					$stores: path.resolve('src/stores'),
+					$icons: path.resolve('static/icons')
 				}
 			}
 		},

@@ -37,7 +37,10 @@
 			"$styles/*": ["src/styles/*"],
 			/* Stores dir alias */
 			"$stores": ["src/stores"],
-			"$stores/*": ["src/stores/*"]
+			"$stores/*": ["src/stores/*"],
+			/* Stores dir alias */
+			"$icons": ["static/icons"],
+			"$icons/*": ["static/icons/*"]
 		}
 	},
 	"include": [
