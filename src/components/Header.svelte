@@ -55,13 +55,13 @@
 			transition: all .3s;
 
 			&:hover:not(.current) {
-				box-shadow: 0px 20px 16px -8px fade(primary500, .5);
+				box-shadow: 0px 20px 16px -8px color(primary500, .5);
 			}
 
 			&.current {
 				background-color: color(primary300);
 				color: color(primary900);
-				box-shadow: 0px 20px 16px -8px fade(primary500, .5);
+				box-shadow: 0px 20px 16px -8px color(primary500, .5);
 			}
 		}
 
