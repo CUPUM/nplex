@@ -4,6 +4,8 @@
 
 Nplex's frontend application is scaffolded using [SvelteKit](https://kit.svelte.dev/), a compiler oriented Javascript framework. The targeted distribution environement is Nodejs, thus we are here using the _Svelte_ ecosystem's [node adapter](https://kit.svelte.dev/docs#adapters).
 
+The initial mockup versions are using [Supabase](https://supabase.io/)'s backend service for the database, its endpoints, and user authentication.
+
 ## Getting started
 
 ### Setting things up
