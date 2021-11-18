@@ -15,6 +15,8 @@ const config = {
 	kit: {
 		adapter: node(),
 		vite: {
+			// Préfixes des variables .env à exposer ('' n'est pas valide, https://vitejs.dev/config/#envdir)
+			envPrefix: ['EXPOSED'],
 			resolve: {
 				alias: {
 					$components: path.resolve('src/components'),
@@ -22,6 +24,7 @@ const config = {
 					$actions: path.resolve('src/actions'),
 					$styles: path.resolve('src/styles'),
 					$stores: path.resolve('src/stores'),
+					$database: path.resolve('src/database'),
 					$icons: path.resolve('static/icons')
 				}
 			}

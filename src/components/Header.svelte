@@ -22,7 +22,7 @@
 		{#if logged}
 			<button>se déconnecter</button>
 		{:else}
-			<button>se connecter</button>
+			<a href="signup">se connecter</a>
 		{/if}
 	</nav>
 </header>

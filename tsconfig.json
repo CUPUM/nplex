@@ -38,6 +38,9 @@
 			/* Stores dir alias */
 			"$stores": ["src/stores"],
 			"$stores/*": ["src/stores/*"],
+			/* Database dir alias */
+			"$database": ["src/database"],
+			"$database/*": ["src/database/*"],
 			/* Stores dir alias */
 			"$icons": ["static/icons"],
 			"$icons/*": ["static/icons/*"]
