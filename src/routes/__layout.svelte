@@ -6,12 +6,11 @@
 </script>
 
 
-<Header></Header>
-<SearchBar></SearchBar>
+<Header />
 <main>
 	<slot/>
 </main>
-<Footer></Footer>
+<Footer />
 
 
 <style lang="postcss">

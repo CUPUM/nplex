@@ -1,33 +1,37 @@
 <script context="module" lang="ts">
-	export async function load({ fetch }) {
-		const res = await fetch('/api/projects.json');
-		if (res.ok) {
-			return {
-				props: {
-					projects: await res.json()
-				}
-			}
-		}
+	// export async function load({ fetch }) {
+	// 	const res = await fetch('/api/projects.json');
+	// 	if (res.ok) {
+	// 		return {
+	// 			props: {
+	// 				projects: await res.json()
+	// 			}
+	// 		}
+	// 	}
+	// }
+</script>
+
+
+<script lang="ts">
+	import { supabase } from '$utils/database';
+
+	async function getProjects() {
+		const {data, error} = await supabase.from('projects').select('*');
+		if (error) throw new Error(error.message);
+		return data;
 	}
 </script>
 
-<script lang="ts">
-	export let projects;
-	console.log(projects);
-	// const projects = fetch('/api/projects.json').json();
-</script>
 
-
-<h1>Projets</h1>
 <section>
-	#{#await projects}
+	#{#await getProjects()}
 		<p>Loading...</p>
-	{:then projects}
-		{#each projects as project}
+	{:then data}
+		{#each data as project}
 			<p>{project.title}</p>
 		{/each}
 	{:catch error}
-		<!-- projects was rejected -->
+		<p>{error}</p>
 	{/await}
 </section>
 
