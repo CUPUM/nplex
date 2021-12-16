@@ -1,20 +1,21 @@
 <script>
-	import '$styles/app.postcss';
+	import '../app.postcss';
 	import Header from '$components/Header.svelte';
 	import Footer from '$components/Footer.svelte';
-	import SearchBar from '$components/SearchBar.svelte';
+	import MainSearch from '$components/MainSearch.svelte';
 </script>
 
 
 <Header />
+<MainSearch />
 <main>
 	<slot/>
 </main>
-<Footer />
 
 
 <style lang="postcss">
 	main {
+		background-color: color(base700);
 		flex: 1;
 	}
 </style>

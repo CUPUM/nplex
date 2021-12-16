@@ -17,17 +17,6 @@ export const mainRoutes = [
 	}
 ]
 
-export const exploreRoutes = [
-	{
-		href: '/',
-		title: 'Projets'
-	},
-	{
-		href: '/organismes',
-		title: 'Organismes'
-	},
-	{
-		href: '/personnes',
-		title: 'Personnes'
-	}
+export const userRoutes = [
+	
 ]

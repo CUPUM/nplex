@@ -2,9 +2,8 @@ module.exports = {
 	plugins: [
 		// require('postcss-normalize'),
 		require('postcss-functions')({
-			functions: require('./src/styles/functions.cjs')
+			functions: require('./src/utils/postcssFunctions.cjs')
 		}),
-		require('postcss-math'),
 		require('postcss-nested'),
 		require('postcss-each'),
 		require('postcss-for'),
