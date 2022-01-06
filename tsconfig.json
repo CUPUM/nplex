@@ -2,7 +2,8 @@
 	"compilerOptions": {
 		"moduleResolution": "node",
 		"module": "es2020",
-		"lib": ["es2020", "DOM"],
+		"lib": ["es2020", "DOM", "dom.iterable"],
+		"downlevelIteration": true,
 		"target": "es2020",
 		/**
 			svelte-preprocess cannot figure out whether you have a value or a type, so tell TypeScript
@@ -23,24 +24,21 @@
 		"allowJs": true,
 		"checkJs": true,
 		"paths": {
-			/* Components dir alias */
-			"$components": ["src/components"],
-			"$components/*": ["src/components/*"],
-			/* Utilities dir alias */
-			"$utils": ["src/utils"],
-			"$utils/*": ["src/utils/*"],
 			/* Actions dir alias */
 			"$actions": ["src/actions"],
 			"$actions/*": ["src/actions/*"],
-			/* Styles dir alias */
-			"$styles": ["src/styles"],
-			"$styles/*": ["src/styles/*"],
+			/* Components dir alias */
+			"$components": ["src/components"],
+			"$components/*": ["src/components/*"],
 			/* Stores dir alias */
 			"$stores": ["src/stores"],
 			"$stores/*": ["src/stores/*"],
-			/* Database dir alias */
-			"$database": ["src/database"],
-			"$database/*": ["src/database/*"],
+			/* Utilities dir alias */
+			"$transitions": ["src/transitions"],
+			"$transitions/*": ["src/transitions/*"],
+			/* Utilities dir alias */
+			"$utils": ["src/utils"],
+			"$utils/*": ["src/utils/*"],
 			/* Stores dir alias */
 			"$icons": ["static/icons"],
 			"$icons/*": ["static/icons/*"]
@@ -51,5 +49,5 @@
 		"src/**/*.js",
 		"src/**/*.ts",
 		"src/**/*.svelte"
-, "src/styles/functions.ts"	]
+	]
 }

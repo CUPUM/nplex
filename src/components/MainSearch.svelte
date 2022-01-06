@@ -1,42 +1,38 @@
-<script>
-	import { tooltip } from '$actions/tooltip';
-	import Icon from './primitives/Icon.svelte';
-
-	let search = "";
-
-	function submit() {
-		console.log('submit clicked!');
-	}
+<script lang="ts">
+	import { showProjectsFilters } from '$stores/projectsStore';
+	import { search } from '$stores/queryStore';
+	import { exploreRoutes } from '$utils/routes';
 </script>
 
 
-<form action="" on:submit|preventDefault={submit}>
-	<label for="search"></label>
-	<input
-		id="search"
-		type="text"
-		placeholder="Chercher..."
-		bind:value={search}
-	>
-	<button title="test" use:tooltip>Chercher</button>
-</form>
-
-<div>
-	<Icon name="user"></Icon>
-</div>
+<section>
+	<div id="search">
+		<input type="search" bind:value={$search}>
+		<button on:click={() => showProjectsFilters.toggle()}>Filtres</button>
+	</div>
+	<div id="subnav">
+		{#each exploreRoutes as type}
+			&ensp;<a href={type.href}>{type.title}</a>&emsp;
+		{/each}
+	</div>
+	<div id="tokens">
+		(token1), (token2), (...)
+	</div>
+</section>
 
 
 <style lang="postcss">
-	input {
-		outline: 1px solid transparent;
-		outline-offset: 3px;
-		border: none;
-		padding: 1em;
-		border-radius: 2em;
-		transition: outline .2s;
+	section {
+		display: flex;
+		flex-direction: row;
+		padding: 1rem 2rem;
+	}
 
-		&:focus {
-			outline: 1px solid color(primary500);
-		}
+	div {
+		border: 1px solid black;
+	}
+
+	#search, #tokens {
+		flex: 1;
 	}
 </style>

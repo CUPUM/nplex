@@ -1,41 +1,38 @@
-<script context="module" lang="ts">
-	// export async function load({ fetch }) {
-	// 	const res = await fetch('/api/projects.json');
-	// 	if (res.ok) {
-	// 		return {
-	// 			props: {
-	// 				projects: await res.json()
-	// 			}
-	// 		}
-	// 	}
-	// }
-</script>
-
-
 <script lang="ts">
-	import { supabase } from '$utils/database';
+	
 
-	async function getProjects() {
-		const {data, error} = await supabase.from('projects').select('*');
-		if (error) throw new Error(error.message);
-		return data;
-	}
 </script>
+
+
 
 
 <section>
-	#{#await getProjects()}
-		<p>Loading...</p>
-	{:then data}
-		{#each data as project}
-			<p>{project.title}</p>
-		{/each}
-	{:catch error}
-		<p>{error}</p>
-	{/await}
+	<h1>Projets</h1>
+	<ul>
+		[Featured projects here]
+	</ul>
+	<a href="/projets" sveltekit:prefetch>Voir plus...</a>
+</section>
+<section>
+	<h1>Organisations</h1>
+	<ul>
+		[Featured orgs here]
+	</ul>
+	<a href="/organisations" sveltekit:prefetch>Voir plus...</a>
+</section>
+<section>
+	<h1>Acteurs</h1>
+	<ul>
+		[Featured actors here]
+	</ul>
+	<a href="/acteurs" sveltekit:prefetch>Voir plus...</a>
 </section>
 
 
-<style>
 
+
+<style>
+	section {
+		
+	}
 </style>

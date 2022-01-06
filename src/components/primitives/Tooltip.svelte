@@ -1,5 +1,13 @@
+<script context="module" lang="ts">
+	export type TooltipPosition = 'top'|'right'|'bottom'|'left';
+
+	export type TooltipOptions = {
+		message?: string,
+		position: TooltipPosition
+	};
+</script>
+
 <script lang="ts">
-	import type { TooltipOptions } from 'src/types/tooltip';
 	import { fade } from 'svelte/transition';
 
 	export let message: TooltipOptions['message'];

@@ -19,12 +19,11 @@ const config = {
 			envPrefix: ['EXPOSED'],
 			resolve: {
 				alias: {
-					$components: path.resolve('src/components'),
-					$utils: path.resolve('src/utils'),
 					$actions: path.resolve('src/actions'),
-					$styles: path.resolve('src/styles'),
+					$components: path.resolve('src/components'),
 					$stores: path.resolve('src/stores'),
-					$database: path.resolve('src/database'),
+					$transitions: path.resolve('src/transitions'),
+					$utils: path.resolve('src/utils'),
 					$icons: path.resolve('static/icons')
 				}
 			}

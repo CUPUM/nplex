@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { currentRoute } from '$stores/currentRoute';
+	import { currentMainRoute } from '$stores/currentRouteStore';
 	import { mainRoutes } from '$utils/routes';
 </script>
 
@@ -10,7 +10,7 @@
 		{#each mainRoutes as r}
 			<a
 				href={r.href}
-				class:current={$currentRoute === r}
+				class:current={$currentMainRoute === r}
 			>
 				<span>{r.title}</span>
 			</a>
@@ -28,8 +28,9 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		align-items: center;
+		padding: 1rem 2rem;
 		font-size: 14px;
-		padding: 1em 2em;
 	}
 
 	nav {
@@ -37,10 +38,17 @@
 		gap: 4px;
 	}
 
+	#logo {
+		justify-content: flex-start;
+		flex: 1;
+	}
+
 	#main {
 	}
 
 	#user {
+		flex: 1;
+		justify-content: flex-end;
 	}
 
 	a {
