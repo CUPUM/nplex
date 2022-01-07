@@ -1,5 +1,5 @@
 <script>
-	import '../app.postcss';
+	import '$styles/styles.css';
 	import Header from '$components/Header.svelte';
 	import MainSearch from '$components/MainSearch.svelte';
 </script>
@@ -14,6 +14,5 @@
 
 
 
-<style lang="postcss">
-
+<style>
 </style>

@@ -31,19 +31,10 @@
 		"@sveltejs/kit": "next",
 		"@typescript-eslint/eslint-plugin": "^5.9.0",
 		"@typescript-eslint/parser": "^5.9.0",
-		"autoprefixer": "^10.4.1",
 		"browserslist": "^4.19.1",
-		"cssnano": "^5.0.14",
 		"eslint": "^8.6.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.3.0",
-		"postcss": "^8.4.5",
-		"postcss-each": "^1.1.0",
-		"postcss-for": "^2.1.1",
-		"postcss-functions": "^4.0.2",
-		"postcss-load-config": "^3.1.1",
-		"postcss-nested": "^5.0.6",
-		"postcss-normalize": "^10.0.1",
 		"prettier": "^2.5.1",
 		"prettier-plugin-svelte": "^2.5.1",
 		"svelte": "^3.45.0",
@@ -54,6 +45,9 @@
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^1.29.1",
+		"@vanilla-extract/css": "^1.6.8",
+		"@vanilla-extract/css-utils": "^0.1.2",
+		"@vanilla-extract/vite-plugin": "^3.1.2",
 		"maplibre-gl": "^1.15.2"
 	}
 }

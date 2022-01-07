@@ -19,7 +19,7 @@
 </button>
 
 
-<style lang="postcss">
+<style>
 	button {
 		background-color: palegreen;
 	}

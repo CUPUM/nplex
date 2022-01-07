@@ -8,7 +8,7 @@
 </section>
 
 
-<style lang="postcss">
+<style>
 	section {
 		flex: 1;
 		background-color: blue;

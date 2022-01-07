@@ -24,23 +24,12 @@
 		"allowJs": true,
 		"checkJs": true,
 		"paths": {
-			/* Actions dir alias */
-			"$actions": ["src/actions"],
 			"$actions/*": ["src/actions/*"],
-			/* Components dir alias */
-			"$components": ["src/components"],
 			"$components/*": ["src/components/*"],
-			/* Stores dir alias */
-			"$stores": ["src/stores"],
 			"$stores/*": ["src/stores/*"],
-			/* Utilities dir alias */
-			"$transitions": ["src/transitions"],
+			"$styles/*": ["src/styles/*"],
 			"$transitions/*": ["src/transitions/*"],
-			/* Utilities dir alias */
-			"$utils": ["src/utils"],
 			"$utils/*": ["src/utils/*"],
-			/* Stores dir alias */
-			"$icons": ["static/icons"],
 			"$icons/*": ["static/icons/*"]
 		}
 	},

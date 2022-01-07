@@ -22,7 +22,7 @@
 </header>
 
 
-<style lang="postcss">
+<style>
 	header {
 		width: 100%;
 		display: flex;
@@ -69,9 +69,5 @@
 
 	.current {
 		background-color: green;
-
-		& span {
-			color: white;
-		}
 	}
 </style>

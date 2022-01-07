@@ -40,7 +40,7 @@
 
 
 
-<style lang="postcss">
+<style>
 	section {
 		position: relative;
 		flex: 1;

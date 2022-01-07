@@ -1,3 +1,6 @@
+const postcss = require('postcss');
+const colors = require('./colors.cjs');
+
 /**
  * Helper to invoke CSS custom properties without having to prepend double-dash
  * @param varName String corresponding to the CSS custom property's name without the leading double-dash
@@ -8,6 +11,11 @@ exports.get = (varName) => {
 }
 
 
+/**
+ * Helper to access a defined theme font
+ * @param fontLevel fontLevel
+ * @returns CSS custom property of the font-family definition
+ */
 exports.font = (fontLevel) => {
 	return `var(--font-${fontLevel})`;
 }
@@ -17,7 +25,7 @@ exports.font = (fontLevel) => {
  * @param colorString HEX or RGB string defining a color
  * @returns A string of the color decomposed into its R, G, and B components
  */
-exports.decompose = (colorString) => {
+const decompose = (colorString) => {
 	/* rgb */
 	const rgb = colorString.match(/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
 	if (rgb) {
@@ -34,6 +42,24 @@ exports.decompose = (colorString) => {
 	}
 	throw new Error('Provided color string does not match valid formats');
 }
+exports.decompose = decompose;
+
+
+/**
+ * Generating the CSS custom properties of the colors as two versions:
+ * 1: --rgb-[colorname]: decomposed R, G, and B values for alpha manipulation
+ * 2: --[colorname]: rgb string ready for direct use
+ */
+// ??? Utiliser une règle "@" dans :root de app.postcss???
+// const rootRule = postcss.rule({ selector: 'body' });
+// rootRule.append('--test-postcss: red');
+// postcss.append(rootRule);
+
+// Object.entries(colors).forEach(([ck, cv]) => {
+// 	Object.entries(cv).forEach(([lk, lv]) => {
+// 		// console.log(`--rgb-${ck}${lk}: ${decompose(lv)}`);
+// 	});
+// });
 
 
 /**
@@ -43,6 +69,6 @@ exports.decompose = (colorString) => {
  * @param alpha Float (0 to 1) or percentage string (with percent symbol) corresponding to the desired alpha level
  * @returns String of format `rgba(var(--[colorName]), [alpha])`
  */
-exports.color = (colorName, alpha) => {
+exports.color = (colorName, alpha) => {
 	return `rgb(var(--${colorName})${alpha === undefined ? '' : ', ' + alpha})`;
 }

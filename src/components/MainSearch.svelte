@@ -21,7 +21,7 @@
 </section>
 
 
-<style lang="postcss">
+<style>
 	section {
 		display: flex;
 		flex-direction: row;

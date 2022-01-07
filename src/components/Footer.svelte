@@ -8,7 +8,7 @@
 </footer>
 
 
-<style lang="postcss">
+<style>
 	footer {
 		width: 100%;
 	}

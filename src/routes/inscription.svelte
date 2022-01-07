@@ -27,7 +27,7 @@
 
 
 
-<style lang="postcss">
+<style>
 	input[type='text'] {
 		border: none;
 		outline: none;

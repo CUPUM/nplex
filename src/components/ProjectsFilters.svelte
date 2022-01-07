@@ -47,7 +47,7 @@
 
 
 
-<style lang="postcss">
+<style>
 	section {
 		width: 400px;
 		background-color: color(base700);

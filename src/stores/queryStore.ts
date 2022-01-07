@@ -2,7 +2,7 @@ import { goto } from '$app/navigation';
 import { writable } from 'svelte/store';
 
 
-const init = new URLSearchParams(window?.location.search);
+const init = new URLSearchParams(''); // window?.location.search
 
 
 /**
@@ -50,11 +50,11 @@ export const projectsFilters = writable({...initProjectsFilters});
 const query = new URLSearchParams();
 
 function updateURL() {
-	goto(`?${query.toString()}` , {
-		replaceState: true,
-		noscroll: true,
-		keepfocus: true
-	})
+	// goto(`?${query.toString()}` , {
+	// 	replaceState: true,
+	// 	noscroll: true,
+	// 	keepfocus: true
+	// })
 }
 
 search.subscribe(v => {
