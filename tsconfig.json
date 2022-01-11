@@ -28,6 +28,7 @@
 			"$components/*": ["src/components/*"],
 			"$stores/*": ["src/stores/*"],
 			"$styles/*": ["src/styles/*"],
+			"$routes/*": ["src/routes/*"],
 			"$transitions/*": ["src/transitions/*"],
 			"$utils/*": ["src/utils/*"],
 			"$icons/*": ["static/icons/*"]
@@ -37,6 +38,7 @@
 		"src/**/*.d.ts",
 		"src/**/*.js",
 		"src/**/*.ts",
+		"src/**/*.css.ts",
 		"src/**/*.svelte"
 	]
 }

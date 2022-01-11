@@ -1,29 +1,25 @@
 <script lang="ts">
-	import ProjectsMap from '$components/ProjectsMap.svelte';
-	import ProjectsList from '$components/ProjectsList.svelte';
-	import ProjectsFilters from '$components/ProjectsFilters.svelte';
+	import ProjectsMap from '$components/projectsMap/ProjectsMap.svelte';
+	import ProjectsList from '$components/projectsList/ProjectsList.svelte';
+	import ProjectsFilters from '$components/projectsFilters/ProjectsFilters.svelte';
 	import { projectsFilters } from '$stores/queryStore';
-
-	let handleResize;
+	import { projectsPanes, projectContent } from './projets.css';
+	import { slide } from 'svelte/transition';
+	import { page } from '$app/stores';
 </script>
 
 
 
-
-<section>
-	<ProjectsFilters on:resizeend={handleResize} />
-	<ProjectsMap bind:handleResize />
+<section class={projectsPanes}>
+	<ProjectsFilters />
+	<ProjectsMap />
 	<ProjectsList />
 </section>
-<slot />
-
-
-
-
-<style>
-	section {
-		flex: 1;
-		display: flex;
-		flex-direction: row;
-	}
-</style>
+{#key $page.params.projectId}
+	<article
+		class={projectContent}
+		transition:slide={{}}
+	>
+		<slot />
+	</article>
+{/key}

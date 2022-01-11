@@ -11,6 +11,9 @@ export function width(el: Element, {delay = 0, duration = 350, easing = expoInOu
 	const margin_right = parseFloat(style.marginRight);
 	const border_left_width = parseFloat(style.borderLeftWidth);
 	const border_right_width = parseFloat(style.borderRightWidth);
+	const transition = style.transition;
+
+	// const filteredTransition = transition.split(',').filter(tx => !tx.includes('margin'))
 
 	return {
 			delay,
@@ -25,6 +28,7 @@ export function width(el: Element, {delay = 0, duration = 350, easing = expoInOu
 					`margin-left: ${t * margin_left}px;` +
 					`margin-right: ${t * margin_right}px;` +
 					`border-left-width: ${t * border_left_width}px;` +
-					`border-right-width: ${t * border_right_width}px;`
+					`border-right-width: ${t * border_right_width}px;` +
+					`transition: ${t === 1 ? transition : 'all 0s !important'}`
 	};
 }

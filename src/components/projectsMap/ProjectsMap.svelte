@@ -1,14 +1,19 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Map as MLMap } from 'maplibre-gl';
+	import { mapPane } from './ProjectsMap.css';
 
 	let container: HTMLElement;
 	let map: MLMap;
 	let cw;
+	let resizer;
 
-	export function handleResize() {
-		console.log('handling resize');
-		map?.resize()
+	function handleResize() {
+		if (resizer) clearTimeout(resizer);
+		resizer = setTimeout(() => {
+			map?.resize();
+			clearTimeout(resizer);
+		}, 5);
 	}
 
 	onMount(() => {
@@ -20,10 +25,8 @@
 		})
 	})
 
-	// $:	cw, handleResize();
+	$:	cw, handleResize();
 </script>
-
-
 
 
 <svelte:head>
@@ -31,23 +34,10 @@
 </svelte:head>
 
 
-
-
-<section bind:this={container} bind:clientWidth={cw}>
+<section
+	bind:this={container}
+	bind:clientWidth={cw}
+	class="{mapPane}"
+>
 	<!-- <figure bind:this={container}></figure> -->
 </section>
-
-
-
-
-<style>
-	section {
-		position: relative;
-		flex: 1;
-		padding: 0;
-		margin: 0;
-		overflow: visible;
-		overflow: hidden;
-		border-radius: 1rem;
-	}
-</style>

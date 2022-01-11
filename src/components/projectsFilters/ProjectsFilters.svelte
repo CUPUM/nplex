@@ -3,6 +3,7 @@
 	import { projectsFilters } from '$stores/queryStore';
 	import { width } from '$transitions/width';
 	import { createEventDispatcher } from 'svelte';
+	import { filters } from './ProjectsFilters.css';
 
 	const dispatchResize = createEventDispatcher();
 	function resizeend() {
@@ -12,12 +13,12 @@
 
 
 
-
-<!-- {#if $showProjectsFilters} -->
+{#if $showProjectsFilters}
 	<section
-		transition:width|local
+		transition:width|local={{duration: 350}}
 		on:introend={resizeend}
 		on:outroend={resizeend}
+		class={filters}
 	>
 		<form>
 			<label for="search-input">Search</label>
@@ -42,17 +43,4 @@
 			>
 		</form>
 	</section>
-<!-- {/if} -->
-
-
-
-
-<style>
-	section {
-		width: 400px;
-		background-color: color(base700);
-		border-radius: 1rem;
-		margin-right: 1rem;
-		overflow: visible auto;
-	}
-</style>
+{/if}
