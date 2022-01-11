@@ -12,6 +12,7 @@
   - The targeted distribution environement is Nodejs, thus we are here using the _SvelteKit_ ecosystem's [node adapter](https://kit.svelte.dev/docs#adapters)
 - [Vanilla-extract](https://vanilla-extract.style/) for styling using css-in-ts preprocessing
 - [Supabase](https://supabase.io/) for the PostgreSQL database and authentication services
+  - [PostGIS](https://postgis.net/) extension for the GIS related types and functions
 
 ## Getting started
 
