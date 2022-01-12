@@ -33,6 +33,9 @@ const config = {
 			// Préfixes des variables .env à exposer ('' n'est pas valide, https://vitejs.dev/config/#envdir)
 			envPrefix: 'EXPOSED',
 		}
+	},
+	compilerOptions: {
+		cssHash: ({hash, css, name, filename}) => `nplex-${hash(css)}`
 	}
 };
 
