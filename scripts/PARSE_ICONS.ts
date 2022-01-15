@@ -62,13 +62,6 @@ Promise.all(promises).then((arr) => {
 	arr.forEach(({name, ...props}) => {
 		iconsDefinitions[name] = props
 	});
-	// const iconsDefinitions = arr.reduce((accumulated, icon) => {
-	// 	const { name, ...props } = icon;
-	// 	return {
-	// 		...accumulated,
-	// 		[name]: props
-	// 	};
-	// });
 	writeFile(
 		path.resolve(ICONS_DIR, 'icons.ts'),
 		prettier.format(

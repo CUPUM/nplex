@@ -19,9 +19,9 @@
 	"packageManager": "pnpm@6.25.0",
 	"scripts": {
 		"parse-icons": "node --loader ts-node/esm ./scripts/PARSE_ICONS.ts",
-		"parse-icons:watch": "nodemon --watch ./scripts --ext ts --exec \"npm run parse-icons\"",
+		"parse-icons:watch": "nodemon --watch ./scripts --ext ts --exec \"pnpm run parse-icons\"",
 		"dev": "svelte-kit dev",
-		"build": "svelte-kit build",
+		"build": "pnpm run parse-icons && svelte-kit build",
 		"preview": "svelte-kit preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
