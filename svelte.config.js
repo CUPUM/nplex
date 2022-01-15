@@ -1,23 +1,17 @@
-import preprocess from 'svelte-preprocess'
-import path from 'path'
-import node from '@sveltejs/adapter-node'
-import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
+import preprocess from 'svelte-preprocess';
+import path from 'path';
+import node from '@sveltejs/adapter-node';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
 	preprocess: preprocess(),
-	extensions: [
-		'.svelte'
-	],
+	extensions: ['.svelte'],
 	kit: {
 		target: 'body',
 		adapter: node(),
 		vite: {
-			plugins: [
-				vanillaExtractPlugin()
-			],
 			resolve: {
 				alias: {
 					$actions: path.resolve('src/actions'),
@@ -31,11 +25,11 @@ const config = {
 				}
 			},
 			// Préfixes des variables .env à exposer ('' n'est pas valide, https://vitejs.dev/config/#envdir)
-			envPrefix: 'EXPOSED',
+			envPrefix: 'EXPOSED'
 		}
 	},
 	compilerOptions: {
-		cssHash: ({hash, css, name, filename}) => `nplex-${hash(css)}`
+		cssHash: ({ hash, css, name, filename }) => `nplex-${hash(css)}`
 	}
 };
 

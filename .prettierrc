@@ -3,11 +3,14 @@
 	"tabWidth": 4,
 	"semi": true,
 	"bracketSpacing": true,
-	"bracketSameLine": true,
+	"bracketSameLine": false,
 	"singleQuote": true,
 	"trailingComma": "none",
 	"printWidth": 100,
 	"arrowParens": "always",
 	"svelteIndentScriptAndStyle": true,
-	"svelteAllowShorthand": true
+	"svelteAllowShorthand": true,
+	"plugins": ["prettier-plugin-jsdoc"],
+	"jsdocPrintWidth": 100,
+	"quoteProps": "consistent"
 }

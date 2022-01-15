@@ -8,11 +8,10 @@
 
 ### Stack
 
-- [SvelteKit](https://kit.svelte.dev/) as the SSR-capable frontend framework
-  - The targeted distribution environement is Nodejs, thus we are here using the _SvelteKit_ ecosystem's [node adapter](https://kit.svelte.dev/docs#adapters)
-- [Vanilla-extract](https://vanilla-extract.style/) for styling using css-in-ts preprocessing
-- [Supabase](https://supabase.io/) for the PostgreSQL database and authentication services
-  - [PostGIS](https://postgis.net/) extension for the GIS related types and functions
+-   [SvelteKit](https://kit.svelte.dev/) as the SSR-capable frontend framework
+    -   The targeted distribution environement is Nodejs, thus we are here using the _SvelteKit_ ecosystem's [node adapter](https://kit.svelte.dev/docs#adapters)
+-   [Supabase](https://supabase.io/) for the PostgreSQL database and authentication services
+    -   [PostGIS](https://postgis.net/) extension for the GIS related types and functions
 
 ## Getting started
 
@@ -67,7 +66,7 @@ Mockups of the project will temporarily be deployed to Heroku until the CalculCa
 
 ### CI/CD pipeline within GitHub
 
-_**To do**: set GitHub actions and/or necessary webhooks to link with deployement destination and update distribution builds.
+\_**To do**: set GitHub actions and/or necessary webhooks to link with deployement destination and update distribution builds.
 
 ## Additionnal ressources
 

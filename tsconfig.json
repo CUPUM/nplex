@@ -34,11 +34,11 @@
 			"$icons/*": ["static/icons/*"]
 		}
 	},
-	"include": [
-		"src/**/*.d.ts",
-		"src/**/*.js",
-		"src/**/*.ts",
-		"src/**/*.css.ts",
-		"src/**/*.svelte"
-	]
+	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "scripts/*.ts"],
+	"ts-node": {
+		"compilerOptions": {
+			// "module": "ESNext",
+			"isolatedModules": false
+		}
+	}
 }
