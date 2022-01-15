@@ -3,7 +3,6 @@ import type { SvelteComponent } from 'svelte';
 import { check_outros, group_outros, transition_out } from 'svelte/internal';
 import Tooltip from '$components/primitives/Tooltip.svelte';
 
-
 // Workaround for https://github.com/sveltejs/svelte/issues/4056
 function outroAndDestroy(instance: SvelteComponent) {
 	if (instance.$$.fragment && instance.$$.fragment.o) {
@@ -15,8 +14,7 @@ function outroAndDestroy(instance: SvelteComponent) {
 	} else {
 		instance.$destroy();
 	}
-};
-
+}
 
 export function tooltip(element: HTMLElement, opts?: TooltipOptions): { destroy } {
 	let tooltip: SvelteComponent;
@@ -32,7 +30,7 @@ export function tooltip(element: HTMLElement, opts?: TooltipOptions): { destroy 
 			props: {
 				message: opts?.message ?? title ?? null
 			}
-		})
+		});
 	}
 
 	function mouseleave() {
@@ -50,5 +48,5 @@ export function tooltip(element: HTMLElement, opts?: TooltipOptions): { destroy 
 			element.removeEventListener('mouseover', mouseenter);
 			element.removeEventListener('mouseleave', mouseleave);
 		}
-	}
+	};
 }

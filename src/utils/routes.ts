@@ -15,7 +15,7 @@ export const mainRoutes = [
 		href: '/guides',
 		title: 'Guides'
 	}
-]
+];
 
 export const exploreRoutes = [
 	{
@@ -30,4 +30,4 @@ export const exploreRoutes = [
 		href: '/acteurs',
 		title: 'Acteurs'
 	}
-]
+];

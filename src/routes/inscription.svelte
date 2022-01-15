@@ -5,16 +5,15 @@
 		let { user, error } = await supabase.auth.signUp({
 			email: 'someone@email.com',
 			password: 'yWAdsHsaZfsXbZrsXXoF'
-		})
+		});
 	}
 </script>
 
-
 <form on:submit|preventDefault={signup}>
 	<label for="username">Courriel</label>
-	<input name="username" id="username" type="text">
+	<input name="username" id="username" type="text" />
 	<label for="password">Mot de passe</label>
-	<input name="password" id="password" type="text">
+	<input name="password" id="password" type="text" />
 	<button type="submit">Soumettre</button>
 </form>
 
@@ -23,9 +22,6 @@
 <button>Google</button>
 <button>Linkedin</button>
 <button>Facebook</button>
-
-
-
 
 <style>
 	input[type='text'] {

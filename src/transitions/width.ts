@@ -1,7 +1,6 @@
 import { expoInOut } from 'svelte/easing';
 
-
-export function width(el: Element, {delay = 0, duration = 350, easing = expoInOut}) {
+export function width(el: Element, { delay = 0, duration = 350, easing = expoInOut }) {
 	const style = getComputedStyle(el);
 	const opacity = +style.opacity;
 	const width = parseFloat(style.width);
@@ -16,19 +15,19 @@ export function width(el: Element, {delay = 0, duration = 350, easing = expoInOu
 	// const filteredTransition = transition.split(',').filter(tx => !tx.includes('margin'))
 
 	return {
-			delay,
-			duration,
-			easing,
-			css: t =>
-					'overflow: hidden;' +
-					`opacity: ${Math.min(t * 2, 1) * opacity};` +
-					`width: ${t * width}px;` +
-					`padding-left: ${t * padding_left}px;` +
-					`padding-right: ${t * padding_right}px;` +
-					`margin-left: ${t * margin_left}px;` +
-					`margin-right: ${t * margin_right}px;` +
-					`border-left-width: ${t * border_left_width}px;` +
-					`border-right-width: ${t * border_right_width}px;` +
-					`transition: ${t === 1 ? transition : 'all 0s !important'}`
+		delay,
+		duration,
+		easing,
+		css: (t) =>
+			'overflow: hidden;' +
+			`opacity: ${Math.min(t * 2, 1) * opacity};` +
+			`width: ${t * width}px;` +
+			`padding-left: ${t * padding_left}px;` +
+			`padding-right: ${t * padding_right}px;` +
+			`margin-left: ${t * margin_left}px;` +
+			`margin-right: ${t * margin_right}px;` +
+			`border-left-width: ${t * border_left_width}px;` +
+			`border-right-width: ${t * border_right_width}px;` +
+			`transition: ${t === 1 ? transition : 'all 0s !important'}`
 	};
 }

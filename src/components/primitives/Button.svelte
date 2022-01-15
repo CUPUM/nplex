@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
-	export type Type = 'primary'|'secondary'|'misc';
-	export type Size = 'small'|'medium'|'large';
+	export type Type = 'primary' | 'secondary' | 'misc';
+	export type Size = 'small' | 'medium' | 'large';
 </script>
 
 <script lang="ts">
@@ -10,14 +10,12 @@
 	export let round: boolean = false;
 </script>
 
-
 <button class="{type} {size}">
-	<slot></slot>
+	<slot />
 	{#if !$$slots.default || round}
 		<span>button should be round</span>
 	{/if}
 </button>
-
 
 <style>
 	button {

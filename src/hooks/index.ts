@@ -1,6 +1,5 @@
 import type { GetSession, Handle, Request } from '@sveltejs/kit';
 
-
 // export async function handle({ request, resolve }) {
 // 	request.locals.user = await getUserInformation(request.headers.cookie);
 
@@ -14,7 +13,6 @@ import type { GetSession, Handle, Request } from '@sveltejs/kit';
 // 		}
 // 	};
 // }
-
 
 // export function getSession(request: Request): GetSession {
 // 	return request.locals.user

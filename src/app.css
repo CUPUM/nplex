@@ -1,0 +1,34 @@
+:root {
+	--font-main: 'Outfit', sans-serif;
+	--font-misc: 'Urbanist', sans-serif;
+
+	/*
+		Additionnal global CSS custom properties derived from TypeScript constants, such as
+		colors and sizes, are generated in the root route's layout
+	*/
+
+	width: 100%;
+	height: 100%;
+	background-color: var(--color-light-300);
+	padding: 0;
+	margin: 0;
+	font-family: var(--font-main);
+	color: var(--color-dark-500);
+	font-size: var(size-md);
+	font-weight: 400;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	overflow: hidden auto;
+}
+
+* {
+	text-rendering: optimizeLegibility;
+	box-sizing: border-box;
+}

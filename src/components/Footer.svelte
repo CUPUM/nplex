@@ -1,12 +1,7 @@
 <script>
-
 </script>
 
-
-<footer>
-	(Footer section)
-</footer>
-
+<footer>(Footer section)</footer>
 
 <style>
 	footer {

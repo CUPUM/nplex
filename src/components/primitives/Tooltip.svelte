@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
-	export type TooltipPosition = 'top'|'right'|'bottom'|'left';
+	export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
 
 	export type TooltipOptions = {
-		message?: string,
-		position: TooltipPosition
+		message?: string;
+		position: TooltipPosition;
 	};
 </script>
 
@@ -13,15 +13,12 @@
 	export let message: TooltipOptions['message'];
 </script>
 
-
-<div in:fade={{duration: 500}} out:fade={{duration: 500}}>
+<div in:fade={{ duration: 500 }} out:fade={{ duration: 500 }}>
 	{message}
 </div>
-
 
 <style>
 	div {
 		background-color: red;
 	}
 </style>
-
