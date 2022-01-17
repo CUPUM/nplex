@@ -18,8 +18,8 @@
 	"license": "MIT",
 	"packageManager": "pnpm@6.25.0",
 	"scripts": {
-		"parse-icons": "node --loader ts-node/esm ./scripts/PARSE_ICONS.ts",
-		"parse-icons:watch": "nodemon --watch ./scripts --ext ts --exec \"pnpm run parse-icons\"",
+		"icons": "node --loader ts-node/esm ./scripts/PARSE_ICONS.ts",
+		"icons:watch": "nodemon --watch ./scripts --watch ./src/utils/icons --ignore ./src/utils/icons/icons.ts --ext ts,svg --exec \"pnpm run icons\"",
 		"dev": "svelte-kit dev",
 		"build": "pnpm run parse-icons && svelte-kit build",
 		"preview": "svelte-kit preview",
