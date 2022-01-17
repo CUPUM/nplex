@@ -43,7 +43,8 @@ This script runs at build time, but you can also run it manually, on demand, to 
 ```sh
 pnpm icons
 
-# or, if you want to watch the script file and the icons folder's content to automatically re-execute the procedure on change:
+# or, if you want to watch the script file and the icons folder's content
+# to automatically re-execute the procedure on change:
 
 pnpm icons:watch
 ```
