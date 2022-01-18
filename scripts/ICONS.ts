@@ -11,7 +11,7 @@ import path from 'path';
  */
 
 const ICONS_DIR = path.resolve('src/utils/icons/');
-const OUTPUT_COMMENT = `This file was generated from the svg files contained in the ./src/utils/icons folder, and using a script ( ./scripts/PARSE_ICONS.ts) that you can call easily with 'pnpm parse-icons' (or 'pnpm parse-icons:watch' for auto-rexec after modifications during development)`;
+const OUTPUT_COMMENT = `This file was generated from the svg files contained in the ./src/utils/icons folder, and using a script ( ./scripts/PARSE_ICONS.ts) that you can call easily with 'pnpm icons' (or 'pnpm icons:watch' for auto-rexec after modifications during development)`;
 const PRETTIER_CONFIG = JSON.parse(readFileSync(path.resolve('.prettierrc')).toString());
 
 const svgFiles = readdirSync(ICONS_DIR).filter(

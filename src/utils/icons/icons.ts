@@ -2,8 +2,8 @@
  * ⚠️ WARNING ⚠️ // prettier-ignore
  *
  * This file was generated from the svg files contained in the ./src/utils/icons folder, and using a
- * script ( ./scripts/PARSE_ICONS.ts) that you can call easily with 'pnpm parse-icons' (or 'pnpm
- * parse-icons:watch' for auto-rexec after modifications during development)
+ * script ( ./scripts/PARSE_ICONS.ts) that you can call easily with 'pnpm icons' (or 'pnpm
+ * icons:watch' for auto-rexec after modifications during development)
  *
  * ⚠️ WARNING ⚠️ // prettier-ignore
  */

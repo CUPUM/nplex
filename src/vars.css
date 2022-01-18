@@ -1,0 +1,75 @@
+/* ⚠️ WARNING ⚠️ */
+
+/* This file was generated using the script at ./scripts/PARSE_ICONS.ts.
+You can easily call this script with 'pnpm cssvars' (or 'pnpm cssvars:watch' for auto-rexec after modifications during development) */
+
+/* ⚠️ WARNING ⚠️ */
+
+:root {
+	--color-primary-100: hsl(88, 76%, 74%);
+	--rgb-primary-100: 88, 76%, 74%;
+	--color-primary-300: hsl(84, 74%, 68%);
+	--rgb-primary-300: 84, 74%, 68%;
+	--color-primary-500: hsl(82, 72%, 58%);
+	--rgb-primary-500: 82, 72%, 58%;
+	--color-primary-700: hsl(84, 70%, 48%);
+	--rgb-primary-700: 84, 70%, 48%;
+	--color-primary-900: hsl(86, 68%, 40%);
+	--rgb-primary-900: 86, 68%, 40%;
+	--color-secondary-100: hsl(194, 90%, 72%);
+	--rgb-secondary-100: 194, 90%, 72%;
+	--color-secondary-300: hsl(194, 79%, 63%);
+	--rgb-secondary-300: 194, 79%, 63%;
+	--color-secondary-500: hsl(204, 75%, 57%);
+	--rgb-secondary-500: 204, 75%, 57%;
+	--color-secondary-700: hsl(214, 72%, 52%);
+	--rgb-secondary-700: 214, 72%, 52%;
+	--color-secondary-900: hsl(214, 85%, 47%);
+	--rgb-secondary-900: 214, 85%, 47%;
+	--color-light-100: hsl(150, 40%, 97%);
+	--rgb-light-100: 150, 40%, 97%;
+	--color-light-300: hsl(150, 35%, 94%);
+	--rgb-light-300: 150, 35%, 94%;
+	--color-light-500: hsl(150, 30%, 91%);
+	--rgb-light-500: 150, 30%, 91%;
+	--color-light-700: hsl(150, 25%, 88%);
+	--rgb-light-700: 150, 25%, 88%;
+	--color-light-900: hsl(150, 20%, 85%);
+	--rgb-light-900: 150, 20%, 85%;
+	--color-dark-100: hsl(192, 8%, 50%);
+	--rgb-dark-100: 192, 8%, 50%;
+	--color-dark-300: hsl(198, 10%, 40%);
+	--rgb-dark-300: 198, 10%, 40%;
+	--color-dark-500: hsl(204, 12%, 30%);
+	--rgb-dark-500: 204, 12%, 30%;
+	--color-dark-700: hsl(212, 14%, 25%);
+	--rgb-dark-700: 212, 14%, 25%;
+	--color-dark-900: hsl(220, 16%, 20%);
+	--rgb-dark-900: 220, 16%, 20%;
+	--color-success-100: hsl(133, 81%, 51%);
+	--rgb-success-100: 133, 81%, 51%;
+	--color-success-500: hsl(133, 81%, 51%);
+	--rgb-success-500: 133, 81%, 51%;
+	--color-success-900: hsl(133, 81%, 51%);
+	--rgb-success-900: 133, 81%, 51%;
+	--color-error-100: hsl(9, 79%, 56%);
+	--rgb-error-100: 9, 79%, 56%;
+	--color-error-500: hsl(9, 79%, 56%);
+	--rgb-error-500: 9, 79%, 56%;
+	--color-error-900: hsl(9, 79%, 56%);
+	--rgb-error-900: 9, 79%, 56%;
+	--color-warning-100: hsl(46, 86%, 59%);
+	--rgb-warning-100: 46, 86%, 59%;
+	--color-warning-500: hsl(46, 86%, 59%);
+	--rgb-warning-500: 46, 86%, 59%;
+	--color-warning-900: hsl(46, 86%, 59%);
+	--rgb-warning-900: 46, 86%, 59%;
+	--size-xxs: 8px;
+	--size-xs: 10px;
+	--size-sm: 12px;
+	--size-md: 15px;
+	--size-lg: 19px;
+	--size-xl: 23px;
+	--size-xxl: 29px;
+	--size-xxxl: 37px;
+}
