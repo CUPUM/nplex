@@ -13,7 +13,9 @@ import path from 'path';
 
 const OUTPUT_DIR = path.resolve('src');
 const OUTPUT_COMMENT = `This file was generated using the script at ./scripts/PARSE_ICONS.ts.
-You can easily call this script with 'pnpm cssvars' (or 'pnpm cssvars:watch' for auto-rexec after modifications during development)`;
+You can easily call this script with 'pnpm cssvars' (or 'pnpm cssvars:watch'
+during development for automatic rerun after modifications).
+All manual modifications added here will be lost on next execution of the generator script.`;
 const PRETTIER_CONFIG = JSON.parse(readFileSync(path.resolve('.prettierrc')).toString());
 
 writeFile(
