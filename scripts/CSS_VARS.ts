@@ -8,7 +8,7 @@ import path from 'path';
  * This script uses the defined ts theme values to pregenerate (aka translate into) the project's root css custom properties.
  * We work this way rather than using dynamically (runtime) generated css to:
  * 1) benefit from css-variables-autocomplete intellisens and,
- * 2) reduce the server's & client's runtime processing hassle
+ * 2) reduce the server's & client's runtime processing hassle.
  */
 
 const OUTPUT_DIR = path.resolve('src');

@@ -20,9 +20,7 @@
 	"packageManager": "pnpm@6.25.0",
 	"scripts": {
 		"icons": "esmo ./scripts/ICONS.ts",
-		"icons:watch": "nodemon --watch ./scripts/ICONS.ts --watch ./src/utils/icons --ignore ./src/utils/icons/icons.ts --ext ts,svg --exec \"pnpm icons\"",
 		"cssvars": "esmo ./scripts/CSS_VARS.ts",
-		"cssvars:watch": "nodemon --watch ./scripts/CSS_VARS.ts --ext ts --exec \"pnpm cssvars\"",
 		"dev": "svelte-kit dev",
 		"build": "pnpm icons && pnpm cssvars && pnpm svelte-kit build",
 		"preview": "svelte-kit preview",
@@ -43,7 +41,7 @@
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.4.0",
 		"esmo": "^0.14.0",
-		"nodemon": "^2.0.15",
+		"fast-glob": "^3.2.11",
 		"prettier": "^2.5.1",
 		"prettier-plugin-jsdoc": "^0.3.30",
 		"prettier-plugin-svelte": "^2.6.0",
