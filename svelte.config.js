@@ -16,24 +16,37 @@ const config = {
 		vite: {
 			plugins: [
 				{
-					name: 'generator-scripts',
+					name: 'generator-scripts-build',
+					apply: 'build',
 					async buildStart() {
 						try {
 							const scriptFiles = await fg('scripts/*.ts');
-							scriptFiles.forEach(script => {
+							scriptFiles.forEach((script) => {
+								console.log(`Generating asset from ${script}`);
 								execSync(`esmo ${script}`);
 							});
+						} catch (error) {
+							console.error(
+								'Error occured while trying to run generator scripts from vite plugin.',
+								error
+							);
 						}
-						catch (error) {
-							console.error('Error occured while trying to run generator scripts from vite plugin.', error);
-						}
-					},
+					}
+				},
+				{
+					name: 'generator-scripts-dev',
+					apply: 'serve',
 					configureServer(server) {
 						const listener = async (abspath) => {
 							if (abspath.startsWith(path.resolve('scripts'))) {
+								console.log(`Generating asset from ${abspath.replace(path.resolve('.'),'')}...`);
 								execSync(`esmo ${abspath}`);
 							}
-						}
+							if (abspath.startsWith(path.resolve('src','utils','icons')) && path.extname(abspath).toLocaleLowerCase() === '.svg') {
+								console.log(`Generating icons definition from changed svg source...`);
+								execSync(`esmo ${path.resolve('scripts', 'ICONS.ts')}`);
+							}
+						};
 						server.watcher.on('add', listener);
 						server.watcher.on('change', listener);
 					}

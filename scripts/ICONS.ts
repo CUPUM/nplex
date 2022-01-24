@@ -3,6 +3,7 @@ import { parse, INode } from 'svgson';
 import prettier from 'prettier';
 import toPath from 'element-to-path';
 import path from 'path';
+import { stdout } from 'process';
 
 /**
  * This script takes the svg files contained in ICONS_DIR, parses them to convert every non-path svg
@@ -45,8 +46,8 @@ const promises = svgFiles.map(async (file) => {
 	const name = path.parse(file).name.replace(/\s/g, '-');
 	const { width, height, viewBox } = svg.attributes;
 	const paths = await getSvgPaths(svg);
-	const strokes = paths.strokes.join(' ') // paths.strokes.length ? paths.strokes.join(' ') : null as string;
-	const fills = paths.fills.join(' ') // paths.fills.length ? paths.fills.join(' ') : null as string;
+	const strokes = paths.strokes.join(' '); // paths.strokes.length ? paths.strokes.join(' ') : null as string;
+	const fills = paths.fills.join(' '); // paths.fills.length ? paths.fills.join(' ') : null as string;
 	return {
 		name,
 		width,
@@ -59,8 +60,8 @@ const promises = svgFiles.map(async (file) => {
 
 Promise.all(promises).then((arr) => {
 	const iconsDefinitions = {};
-	arr.forEach(({name, ...props}) => {
-		iconsDefinitions[name] = props
+	arr.forEach(({ name, ...props }) => {
+		iconsDefinitions[name] = props;
 	});
 	writeFile(
 		path.resolve(ICONS_DIR, 'icons.ts'),
