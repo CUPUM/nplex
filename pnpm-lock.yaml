@@ -5,6 +5,7 @@ specifiers:
   '@sveltejs/adapter-node': next
   '@sveltejs/kit': next
   '@types/node': ^17.0.10
+  '@types/overlayscrollbars': ^1.12.1
   '@typescript-eslint/eslint-plugin': ^5.10.0
   '@typescript-eslint/parser': ^5.10.0
   browserslist: ^4.19.1
@@ -15,6 +16,7 @@ specifiers:
   esmo: ^0.14.0
   fast-glob: ^3.2.11
   maplibre-gl: ^1.15.2
+  overlayscrollbars: ^1.13.1
   prettier: ^2.5.1
   prettier-plugin-jsdoc: ^0.3.30
   prettier-plugin-svelte: ^2.6.0
@@ -27,10 +29,12 @@ specifiers:
 
 dependencies:
   '@supabase/supabase-js': 1.29.4
+  '@types/overlayscrollbars': 1.12.1
   maplibre-gl: 1.15.2
+  overlayscrollbars: 1.13.1
 
 devDependencies:
-  '@sveltejs/adapter-node': 1.0.0-next.66
+  '@sveltejs/adapter-node': 1.0.0-next.67
   '@sveltejs/kit': 1.0.0-next.241_svelte@3.46.2
   '@types/node': 17.0.10
   '@typescript-eslint/eslint-plugin': 5.10.0_706fb07ce74b1db611f19a02ad2ce784
@@ -203,8 +207,8 @@ packages:
       - encoding
     dev: false
 
-  /@sveltejs/adapter-node/1.0.0-next.66:
-    resolution: {integrity: sha512-CtBRv7TAo0tuPm+noYXMYHz7jeUSZlT3+eAmsBMeM+B0oB5yEyZGycAyLbMykrp1PlWgN3jg1oK6gpwHIbxrJA==}
+  /@sveltejs/adapter-node/1.0.0-next.67:
+    resolution: {integrity: sha512-+LuLn91xARZsRANiQNIIDpMMncUTnP2pJc8tyL+FdpVvs5UtlvkYJpeCBPFqjjseRpIIbi8Slu89GCdrRXBDUg==}
     dependencies:
       tiny-glob: 0.2.9
     dev: true
@@ -262,6 +266,10 @@ packages:
 
   /@types/node/17.0.10:
     resolution: {integrity: sha512-S/3xB4KzyFxYGCppyDt68yzBU9ysL88lSdIah4D6cptdcltc4NCPCAMc0+PCpg/lLIyC7IPvj2Z52OJWeIUkog==}
+
+  /@types/overlayscrollbars/1.12.1:
+    resolution: {integrity: sha512-V25YHbSoKQN35UasHf0EKD9U2vcmexRSp78qa8UglxFH8H3D+adEa9zGZwrqpH4TdvqeMrgMqVqsLB4woAryrQ==}
+    dev: false
 
   /@types/pug/2.0.6:
     resolution: {integrity: sha512-SnHmG9wN1UVmagJOnyo/qkk0Z7gejYxOYYmaAwr5u2yFYfsupN3sg10kyzN8Hep/2zbHxCnsumxOoRIRMBwKCg==}
@@ -1758,6 +1766,10 @@ packages:
       type-check: 0.4.0
       word-wrap: 1.2.3
     dev: true
+
+  /overlayscrollbars/1.13.1:
+    resolution: {integrity: sha512-gIQfzgGgu1wy80EB4/6DaJGHMEGmizq27xHIESrzXq0Y/J0Ay1P3DWk6tuVmEPIZH15zaBlxeEJOqdJKmowHCQ==}
+    dev: false
 
   /parent-module/1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}

@@ -46,6 +46,11 @@ const config = {
 								console.log(`Generating icons definition from changed svg source...`);
 								execSync(`esmo ${path.resolve('scripts', 'ICONS.ts')}`);
 							}
+							const utilsPaths = [path.resolve('src', 'utils', 'colors.ts'), path.resolve('src', 'utils', 'colors.ts')];
+							if (utilsPaths.includes(abspath)) {
+								console.log(`Generating CSS vars definitions from changed ts source...`);
+								execSync(`esmo ${path.resolve('scripts', 'CSS_VARS.ts')}`);
+							}
 						};
 						server.watcher.on('add', listener);
 						server.watcher.on('change', listener);

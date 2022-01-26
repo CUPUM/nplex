@@ -54,6 +54,8 @@
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^1.29.4",
-		"maplibre-gl": "^1.15.2"
+		"@types/overlayscrollbars": "^1.12.1",
+		"maplibre-gl": "^1.15.2",
+		"overlayscrollbars": "^1.13.1"
 	}
 }
