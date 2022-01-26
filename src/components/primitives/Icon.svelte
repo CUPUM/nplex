@@ -1,20 +1,24 @@
+<script context="module" lang="ts">
+	export type IconName = keyof typeof icons;
+</script>
+
 <script lang="ts">
 	import { icons } from '$utils/icons/icons';
 	import { onMount } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { draw, fade } from 'svelte/transition';
 
-	export let name: keyof typeof icons;
-	export let activeName: keyof typeof icons = null;
-	export let active: boolean = false;
-	export let strokeWidth: number = 2;
-	export let color: string = 'var(--color-dark-500)';
-	export let activeColor: string = 'var(--color-dark-300)';
+	export let name: IconName;
+	export let highlightName: keyof typeof icons = null;
+	export let size: string = '1em';
+	export let color: string = 'var(--icon-color-dark-500)';
+	export let strokeWidth: number | string = 2;
+	export let highlight: boolean = false;
 
 	let icon = icons[name];
 	let mounted = false;
 
-	$: icon = active && activeName ? icons[activeName] : icons[name];
+	$: icon = highlight && highlightName ? icons[highlightName] : icons[name];
 
 	onMount(() => {
 		mounted = true;
@@ -23,15 +27,12 @@
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
-	{...$$props}
-	aria-label="icône: {name}"
-	height={icon.height}
-	width={icon.width}
+	aria-label="image-icône: {name}"
 	viewBox={icon.viewBox}
-	style:--color={color}
+	style:--icon-size={size}
+	style:--icon-color={color}
 	style:--strokeWidth={strokeWidth + ''}
-	style:--activeColor={activeColor}
-	class:active
+	class:highlight
 >
 	{#if mounted}
 		{#key icon}
@@ -39,11 +40,20 @@
 				<path
 					transition:draw={{ speed: 0.05, easing: cubicOut }}
 					d={icon.strokes}
+					fill="none"
+					stroke-linejoin="round"
+					stroke-linecap="round"
 					class="strokes"
+					vector-effect="non-scaling-stroke"
 				/>
 			{/if}
 			{#if icon.fills}
-				<path transition:fade={{ duration: 350 }} d={icon.fills} class="fills" />
+				<path
+					transition:fade={{ duration: 350 }}
+					d={icon.fills}
+					stroke="none"
+					class="fills"
+				/>
 			{/if}
 		{/key}
 	{/if}
@@ -52,25 +62,19 @@
 <style>
 	svg {
 		overflow: visible;
+		position: relative;
+		width: var(--icon-size);
+		height: var(--icon-size);
 	}
 
 	path.strokes {
-		fill: none;
-		stroke: var(--color);
+		stroke: var(--icon-color);
 		stroke-width: var(--strokeWidth);
-		stroke-linecap: round;
-	}
-
-	.active > path.strokes {
-		stroke: var(--activeColor);
+		transition: stroke 0.3s ease;
 	}
 
 	path.fills {
-		stroke: none;
-		fill: var(--color);
-	}
-
-	.active > path.fills {
-		fill: var(--activeColor);
+		fill: var(--icon-color);
+		transition: fill 0.3s ease;
 	}
 </style>
