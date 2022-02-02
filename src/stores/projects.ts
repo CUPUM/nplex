@@ -1,6 +1,6 @@
-import { derived, writable } from 'svelte/store';
 import type { Map as MLMap } from 'maplibre-gl';
-import { projectsFilters, search } from './query';
+import { derived, writable } from 'svelte/store';
+import { projectsFilters, term } from './search';
 
 /** Projects UI and general purpose data stores */
 
@@ -24,6 +24,6 @@ export const projectsMap = (function () {
 
 /** Fetched projects from the database */
 
-export const projects = derived([search, projectsFilters], (search, projectsFilters) => {
+export const projects = derived([term, projectsFilters], (search, projectsFilters) => {
 	console.log(search, projectsFilters);
 });

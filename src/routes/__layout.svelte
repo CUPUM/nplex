@@ -1,15 +1,20 @@
 <script lang="ts">
-	import '../app.css';
-	import '../vars.css';
+	import '$styles/app.css';
+	import '$styles/vars.css';
+	import '$styles/scrollbars.css';
 	import Header from '$components/header/Header.svelte';
-	import MainSearch from '$components/MainSearch.svelte';
-	import { cssColors } from '$utils/colors';
-	import { cssSizes } from '$utils/sizes';
+	import Search from '$components/search/Search.svelte';
 	import { currentMainRoute, rootRoute } from '$stores/route';
+	import { mainScroll } from '$stores/scroll';
+
+	mainScroll.init();
 </script>
 
 <Header />
 {#if $currentMainRoute === rootRoute}
-	<MainSearch />
+	<Search />
 {/if}
 <slot />
+
+<style>
+</style>

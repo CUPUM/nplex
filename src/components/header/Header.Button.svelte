@@ -1,11 +1,15 @@
+<script context="module" lang="ts">
+	export type ButtonType = 'primary' | 'secondary';
+	export type ButtonIconPosition = 'left' | 'right';
+</script>
+
 <script lang="ts">
+	import type { IconName } from '$components/primitives/Icon.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 
 	export let href: string = null;
-	export let iconName: string = null;
-	export let hoverIconName: string = null;
-	export let iconPosition: 'left' | 'right' = 'left';
-	export let type: 'primary' | 'secondary' = 'primary';
+	export let iconName: IconName = null;
+	export let highlightIconName: IconName = null;
 	export let text: string = null;
 	export let tooltip: string = null;
 	export let highlight: boolean = false;
@@ -14,7 +18,12 @@
 {#if href}
 	<a {href} class:square={text === null} class:highlight sveltekit:prefetch on:click>
 		{#if iconName}
-			<Icon name={iconName} hoverName={hoverIconName} />
+			<Icon
+				name={iconName}
+				highlightName={highlightIconName}
+				size="1.5em"
+				color="var(--color)"
+			/>
 		{/if}
 		{#if text}
 			<span>{text}</span>
@@ -29,26 +38,27 @@
 <style>
 	a,
 	button {
+		--size: 2.5em;
+		--color: var(--color-dark-300);
 		position: relative;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		font-size: 14px;
+		font-size: var(--size-medium);
 		gap: 0.25em;
-		--size: 2.8em;
 		height: var(--size);
 		padding-inline: 1em;
 		background-color: transparent;
-		border-radius: 1em;
+		border-radius: 0.8em;
 		box-shadow: 0 0 1em -1em rgb(0, 0, 0, 0);
 		text-decoration: none;
-		color: var(--color-dark-500);
+		color: var(--color);
 		font-family: var(--font-misc);
 		font-weight: 600;
 		letter-spacing: 0.02em;
 		overflow: hidden;
-		transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+		transition: all 0.2s cubic-bezier(0.3, 0, 0.2, 1);
 	}
 
 	span {
@@ -63,25 +73,11 @@
 
 	a:hover:not(.highlight),
 	button:hover:not(.highlight) {
-		background-color: rgb(0, 0, 0, 0.05);
+		--color: var(--color-dark-500);
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 
 	.highlight {
-		color: var(--color-primary-900);
-		background-color: var(--color-primary-300);
-		box-shadow: 0 1.3em 1em -0.7em hsl(var(--rgb-primary-700), 0.35);
-	}
-
-	a > :global svg,
-	button > :global svg {
-		position: relative;
-		width: 1.5em;
-		height: 1.5em;
-	}
-
-	a > :global svg *,
-	button > :global svg * {
-		fill: var(--color-dark-500);
-		stroke-width: 2px;
+		--color: var(--color-secondary-700);
 	}
 </style>

@@ -28,6 +28,7 @@ export function tooltip(element: HTMLElement, opts?: TooltipOptions): { destroy 
 			target: document.body,
 			intro: true,
 			props: {
+				// Probablement une utilisation erronnée du nullish coalesc
 				message: opts?.message ?? title ?? null
 			}
 		});

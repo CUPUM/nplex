@@ -1,13 +1,26 @@
+import type { ExploreCategory } from '$utils/routes';
 import { goto } from '$app/navigation';
+import { exploreRoutes } from '$utils/routes';
 import { writable } from 'svelte/store';
 
+// To do
 const init = new URLSearchParams(''); // window?.location.search
 
 /** Main search input */
 
-export const search = writable(init.get('search') || '');
+export const term = writable(init.get('term') || '');
 
-/** Projects filters */
+export const category = (function () {
+	// To do
+	// Init store according to current route...
+	const { subscribe, set } = writable<ExploreCategory>(null);
+	return {
+		subscribe,
+		set
+	};
+})();
+
+/** Projects search & filters */
 
 const defaultProjectsFilters = {
 	test: 2,
@@ -31,7 +44,15 @@ Object.keys(defaultProjectsFilters).forEach((k) => {
 
 export const projectsFilters = writable({ ...initProjectsFilters });
 
-/** Query string construction and handling */
+/** Orgs search & filters */
+
+// ...
+
+/** Actors search & filters */
+
+// ...
+
+/** General query string construction and handling */
 
 const query = new URLSearchParams();
 
@@ -43,11 +64,11 @@ function updateURL() {
 	// })
 }
 
-search.subscribe((v) => {
+term.subscribe((v) => {
 	if (v !== '') {
-		query.set('search', v);
+		query.set('term', v);
 	} else {
-		query.delete('search');
+		query.delete('term');
 	}
 	updateURL();
 });

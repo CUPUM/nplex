@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { projectsFilters } from '$stores/query';
+	import { customScrollbar } from '$actions/customScrollbar';
+	import { projectsFilters } from '$stores/search';
 	import { width } from '$transitions/width';
 	import { createEventDispatcher } from 'svelte';
 
@@ -9,27 +10,60 @@
 	}
 </script>
 
-<section transition:width|local={{ duration: 350 }} on:introend={resizeend} on:outroend={resizeend}>
+<section
+	transition:width|local={{ duration: 350 }}
+	on:introend={resizeend}
+	on:outroend={resizeend}
+	use:customScrollbar={{ overflowBehavior: { x: 'hidden' } }}
+>
 	<form>
-		<label for="search-input">Search</label>
-		<input
-			name="search"
-			placeholder="Search"
-			type="search"
-			autocomplete="off"
-			bind:value={$projectsFilters.text}
-		/>
-		<label>Default false</label>
-		<input name="defaultFalse" type="checkbox" bind:checked={$projectsFilters.check} />
-		<label>Default true</label>
-		<input name="defaultTrue" type="checkbox" bind:checked={$projectsFilters.other} />
+		<h1>Filtres</h1>
+		<fieldset>
+			<legend>Radio buttons</legend>
+		</fieldset>
+		<fieldset>
+			<legend>Checkboxes</legend>
+		</fieldset>
+		<fieldset>
+			<legend>Range</legend>
+		</fieldset>
+		<fieldset>
+			<legend>Dropdown</legend>
+		</fieldset>
 	</form>
 </section>
 
 <style>
-	/* export const filters = style({
-	backgroundColor: colors.light[100],
-	width: '400px',
-	overflow: 'visible auto'
-}) */
+	section {
+		position: relative;
+		background-color: var(--color-light-300);
+		transition: all 0.5s ease;
+		overflow-x: hidden;
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 0;
+	}
+
+	section:hover {
+		position: relative;
+		background-color: var(--color-light-100);
+	}
+
+	form {
+		position: relative;
+		width: 400px;
+		padding: 0;
+		margin: 0;
+	}
+
+	fieldset {
+		border: none;
+		margin: 0;
+		position: relative;
+		width: 100%;
+		height: 500px;
+	}
 </style>

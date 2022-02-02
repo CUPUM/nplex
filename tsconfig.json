@@ -35,11 +35,4 @@
 		}
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "scripts/*.ts"]
-	// Not necessary anymore with esmo...
-	// "ts-node": {
-	// 	"compilerOptions": {
-	// 		// "module": "ESNext",
-	// 		"isolatedModules": false
-	// 	}
-	// }
 }

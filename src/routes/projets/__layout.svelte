@@ -9,7 +9,6 @@
 
 <section>
 	{#if $showProjectsFilters}
-		<!-- Ou plutôt une component Filters qui gère la diff entre les filtres de projet, de personnes, etc. -->
 		<ProjectsFilters />
 	{/if}
 	<ProjectsMap />
@@ -23,8 +22,8 @@
 
 <style>
 	section {
-		padding-block: var(--size-md);
-		padding-inline: var(--size-lg);
+		padding-block: var(--size-medium);
+		padding-inline: var(--size-large);
 		width: 100%;
 		height: 100%;
 		min-height: 600px;
@@ -35,9 +34,8 @@
 	}
 
 	section > :global(section) {
-		transition: margin-inline 0.1s ease-out;
 		box-shadow: 0 30px 75px -50px rgba(0, 0, 0, 0.2);
-		border-radius: var(--size-xxl);
+		border-radius: var(--size-xxlarge);
 	}
 
 	section > :global(section):not(:last-child) {

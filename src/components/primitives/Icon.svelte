@@ -12,7 +12,7 @@
 	export let highlightName: keyof typeof icons = null;
 	export let size: string = '1em';
 	export let color: string = 'var(--icon-color-dark-500)';
-	export let strokeWidth: number | string = 2;
+	export let strokeWidth: number | string = 1.5;
 	export let highlight: boolean = false;
 
 	let icon = icons[name];

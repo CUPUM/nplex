@@ -1,3 +1,7 @@
 {
-	"svelte.plugin.css.globals": "src/*.css"
+	"svelte.plugin.css.globals": "src/styles/*.css",
+	"svelte.plugin.svelte.defaultScriptLanguage": "ts",
+	"files.associations": {
+		"*postcss": "scss" // To shush svelte's language server
+	}
 }

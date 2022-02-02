@@ -12,7 +12,7 @@
 		resizer = setTimeout(() => {
 			map?.resize();
 			clearTimeout(resizer);
-		}, 5);
+		}, 0);
 	}
 
 	onMount(() => {

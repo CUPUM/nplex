@@ -1,15 +1,11 @@
 export const mainRoutes = [
 	{
-		href: '/info',
-		title: 'À propos'
+		href: '/',
+		title: 'Explorer'
 	},
 	{
 		href: '/nouvelles',
 		title: 'Nouvelles'
-	},
-	{
-		href: '/',
-		title: 'Explorer'
 	},
 	{
 		href: '/guides',
@@ -17,17 +13,22 @@ export const mainRoutes = [
 	}
 ];
 
-export const exploreRoutes = [
+export type ExploreCategory = 'projects' | 'organisations' | 'actors';
+
+export const exploreRoutes: { href: string; title: string; category: ExploreCategory }[] = [
 	{
 		href: '/projets',
-		title: 'Projets'
+		title: 'Projets',
+		category: 'projects'
 	},
 	{
 		href: '/organisations',
-		title: 'Organisations'
+		title: 'Organisations',
+		category: 'organisations'
 	},
 	{
 		href: '/acteurs',
-		title: 'Acteurs'
+		title: 'Acteurs',
+		category: 'actors'
 	}
 ];

@@ -1,21 +1,21 @@
 :root {
-	--font-main: 'Outfit', sans-serif;
+	--font-main: 'Be Vietnam Pro', sans-serif;
 	--font-misc: 'Urbanist', sans-serif;
 
 	/*
 		Additionnal global CSS custom properties derived from TypeScript constants, such as
-		colors and sizes, are generated in the root route's layout
+		colors and sizes, are generated at build time and located in ./vars.css
 	*/
 
 	width: 100%;
 	height: 100%;
-	background-color: var(--color-light-300);
+	background-color: var(--color-light-500);
 	padding: 0;
 	margin: 0;
 	font-family: var(--font-main);
 	color: var(--color-dark-500);
 	font-size: var(size-md);
-	font-weight: 400;
+	font-weight: 500;
 }
 
 body {

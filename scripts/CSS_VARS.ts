@@ -12,7 +12,7 @@ import path from 'path';
  * 2. Reduce the server's & client's runtime processing hassle.
  */
 
-const OUTPUT_DIR = path.resolve('src');
+const OUTPUT_DIR = path.resolve('src', 'styles');
 const OUTPUT_COMMENT = `This file was generated using the script at ./scripts/PARSE_ICONS.ts.
 You can easily call this script with 'pnpm cssvars' (or 'pnpm cssvars:watch'
 during development for automatic rerun after modifications).

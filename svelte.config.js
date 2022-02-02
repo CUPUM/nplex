@@ -8,7 +8,9 @@ import { execSync } from 'child_process';
 const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
-	preprocess: preprocess(),
+	preprocess: preprocess({
+		postcss: true
+	}),
 	extensions: ['.svelte'],
 	kit: {
 		target: 'body',
@@ -25,7 +27,8 @@ const config = {
 								console.log(`Generating asset from ${script}`);
 								execSync(`esmo ${script}`);
 							});
-						} catch (error) {
+						}
+						catch (error) {
 							console.error(
 								'Error occured while trying to run generator scripts from vite plugin.',
 								error
@@ -39,15 +42,22 @@ const config = {
 					configureServer(server) {
 						const listener = async (abspath) => {
 							if (abspath.startsWith(path.resolve('scripts'))) {
-								console.log(`Generating asset from ${abspath.replace(path.resolve('.'),'')}...`);
+								console.log(`Generating asset from ${abspath.replace(path.resolve('.'), '')}...`);
 								execSync(`esmo ${abspath}`);
 							}
-							if (abspath.startsWith(path.resolve('src','utils','icons')) && path.extname(abspath).toLocaleLowerCase() === '.svg') {
+							if (
+								abspath.startsWith(path.resolve('src', 'utils', 'icons')) &&
+								path.extname(abspath).toLocaleLowerCase() === '.svg'
+							) {
 								console.log(`Generating icons definition from changed svg source...`);
 								execSync(`esmo ${path.resolve('scripts', 'ICONS.ts')}`);
 							}
-							const utilsPaths = [path.resolve('src', 'utils', 'colors.ts'), path.resolve('src', 'utils', 'colors.ts')];
-							if (utilsPaths.includes(abspath)) {
+							const utils = ['colors.ts', 'sizes.ts'];
+							if (
+								utils
+									.map((filename) => path.resolve('src', 'utils', filename))
+									.includes(abspath)
+							) {
 								console.log(`Generating CSS vars definitions from changed ts source...`);
 								execSync(`esmo ${path.resolve('scripts', 'CSS_VARS.ts')}`);
 							}
@@ -74,7 +84,7 @@ const config = {
 		}
 	},
 	compilerOptions: {
-		cssHash: ({ hash, css, name, filename }) => `nplex-${hash(css)}`
+		cssHash: ({ hash, css, /* name, filename */ }) => `nplex-${hash(css)}`
 	}
 };
 

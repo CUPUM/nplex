@@ -1,26 +1,131 @@
 <script context="module" lang="ts">
-	export type Type = 'primary' | 'secondary' | 'misc';
-	export type Size = 'small' | 'medium' | 'large';
+	export type ButtonTheme = 'primary' | 'secondary';
+	export type ButtonKind = 'normal' | 'misc';
+	export type ButtonSize = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
 </script>
 
 <script lang="ts">
-	export let type: Type = 'primary';
-	export let size: Size = 'medium';
-	export let icon: string = null;
-	export let round: boolean = false;
+	import type { IconName } from './Icon.svelte';
+	import Icon from './Icon.svelte';
+
+	export let theme: ButtonTheme = 'primary';
+	export let kind: ButtonKind = 'normal';
+	export let size: ButtonSize = 'medium';
+	export let icon: IconName = null;
+	export let square: boolean = false;
+	export let href: string = null;
+	export let active: boolean = false;
 </script>
 
-<button class="{type} {size}">
-	<slot />
-	{#if !$$slots.default || round}
-		<span>button should be round</span>
-	{/if}
-</button>
 
-<style>
-	button {
-		background-color: palegreen;
+{#if !href}
+	<button
+		on:click
+		on:focus
+		{...$$restProps}
+		class="{kind} {size} {theme}"
+		class:square={(!$$slots.default && icon) || square}
+	>
+		{#if icon}
+			<Icon name={icon} />
+		{/if}
+		<span>
+			<slot />
+		</span>
+	</button>
+{:else}
+	<a
+		on:click
+		on:focus
+		{...$$restProps}
+		class="{kind} {size} {theme}"
+		class:square={(!$$slots.default && icon) || square}
+		{href}
+	>
+		{#if icon}
+			<Icon name={icon} />
+		{/if}
+		<span>
+			<slot />
+		</span>
+	</a>
+{/if}
+
+
+<style lang="postcss">
+	button,
+	a {
+		--height: 2.5em;
+		height: var(--height);
+		user-select: none;
+		position: relative;
+		display: inline-flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		padding-block: 0;
+		padding-inline: 1em;
+		margin: 0;
+		font-family: var(--font-misc);
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		border: none;
+		border-radius: 0.9em;
+		overflow: hidden;
+
+		&:disabled {
+			color: red;
+		}
 	}
 
-	/* Do postcss stuff to style different sizes and etc. */
+	span {
+		position: relative;
+		top: -1px;
+	}
+
+	.square {
+		width: var(--height);
+		padding: 0;
+	}
+
+	/* Sizes */
+	.xsmall {
+
+	}
+	.small {
+		font-size: var(--size-small);
+	}
+	.medium {
+		font-size: var(--size-medium);
+	}
+	.large {
+		font-weight: 550;
+		font-size: var(--size-large);
+	}
+	.xlarge {
+
+	}
+
+	/* Themes */
+	.primary {
+		--color: var(--color-dark-700);
+		--background: var(--color-light-500);
+	}
+	.secondary {
+		--color: purple;
+		--background: lightblue;
+	}
+
+	/* Types */
+	.normal {
+		color: var(--color);
+		background-color: var(--background);
+	}
+	.misc {
+		border-width: 1px;
+		border-style: solid;
+		border-color: var(--color);
+		background-color: transparent;
+	}
 </style>

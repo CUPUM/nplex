@@ -8,29 +8,26 @@
 	<div id="logo">Logo nplex</div>
 	<nav id="main">
 		{#each mainRoutes as r}
-			<HeaderButton
-				href={r.href}
-				text={r.title}
-				type="primary"
-				iconName="user"
-				highlight={$currentMainRoute === r}
-			/>
+			<HeaderButton href={r.href} text={r.title} highlight={$currentMainRoute === r} />
 		{/each}
 	</nav>
 	<nav id="user">
-		<HeaderButton href="/inscription" type="secondary" iconName="home" />
-		<HeaderButton href="/inscription" type="secondary" iconName="user" />
+		<!-- <HeaderButton type="secondary" iconName="home" /> -->
+		<HeaderButton href="/inscription" iconName="home" />
+		<HeaderButton href="/inscription" iconName="user" />
 	</nav>
 </header>
 
 <style>
 	header {
+		position: relative;
+		top: 0;
 		width: 100%;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		padding: 8px var(--size-md);
+		padding: 8px var(--size-medium);
 		--gap: 6px;
 	}
 

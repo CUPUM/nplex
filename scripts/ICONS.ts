@@ -11,7 +11,8 @@ import path from 'path';
  */
 
 const ICONS_DIR = path.resolve('src/utils/icons/');
-const OUTPUT_COMMENT = 'This file was generated from the svg files found in ./src/utils/icons, using ./scripts/PARSE_ICONS.ts, a script that you can call easily with \'pnpm icons\' (or \'pnpm icons:watch\' for automatic rerun after modifications during development). All changes added manually here will be lost on next execution of the generator script.';
+const OUTPUT_COMMENT =
+	"This file was generated from the svg files found in ./src/utils/icons, using ./scripts/PARSE_ICONS.ts, a script that you can call easily with 'pnpm icons' (or 'pnpm icons:watch' for automatic rerun after modifications during development). All changes added manually here will be lost on next execution of the generator script.";
 const PRETTIER_CONFIG = JSON.parse(readFileSync(path.resolve('.prettierrc')).toString());
 
 const svgFiles = readdirSync(ICONS_DIR).filter(
@@ -22,9 +23,7 @@ async function extractSvgPaths(svg: INode) {
 	const strokes = [];
 	const fills = [];
 
-	if (
-		['path', 'rect', 'line', 'polyline', 'polygon', 'circle', 'ellipse'].includes(svg.name)
-	) {
+	if (['path', 'rect', 'line', 'polyline', 'polygon', 'circle', 'ellipse'].includes(svg.name)) {
 		const d = svg.name === 'path' ? svg.attributes.d : toPath(svg);
 		svg.attributes.stroke && strokes.push(d);
 		svg.attributes.fill && fills.push(d);
