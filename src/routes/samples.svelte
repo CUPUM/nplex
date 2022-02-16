@@ -4,7 +4,8 @@
 <script lang="ts">
 	import type { SampleParams } from '$components/_samples/Sample.svelte';
 	import Sample from '$components/_samples/Sample.svelte';
-	import Button, { buttonKinds, buttonSizes } from '$components/primitives/Button.svelte';
+	import Button, { buttonIconPositions, buttonKinds, buttonSizes } from '$components/primitives/Button.svelte';
+	import Checkbox, { checkboxKinds } from '$components/primitives/Checkbox.svelte';
 
 	const samples: SampleParams[] = [
 		{
@@ -14,7 +15,17 @@
 				kind: buttonKinds,
 				size: buttonSizes,
 				slot: 'text',
-				href: [null, '/']
+				href: 'href',
+				icon: 'icon',
+				iconPosition: buttonIconPositions
+			}
+		},
+		{
+			name: 'Checkbox',
+			comp: Checkbox,
+			props: {
+				kind: checkboxKinds,
+				slot: 'text'
 			}
 		}
 	];

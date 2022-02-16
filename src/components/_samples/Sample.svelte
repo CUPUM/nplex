@@ -3,7 +3,7 @@
 		name: string,
 		comp: { new (...args: any[]): any };
 		props: {
-			[key: string]: 'text' | 'number' | 'boolean' | 'children' | ReadonlyArray<string> | string[]
+			[key: string]: 'text' | 'number' | 'boolean' | 'href' | 'icon' | 'children' | ReadonlyArray<string> | string[]
 		}
 	};
 </script>
@@ -35,9 +35,6 @@
 				<div class="key">
 					<p>{capitalize(propKey)} :</p>
 				</div>
-				<div class="default">
-					<code>Default: </code>
-				</div>
 				<div class="input">
 					{#if Array.isArray(params.props[propKey]) }
 						{#each params.props[propKey] as option}
@@ -49,6 +46,9 @@
 					{:else if params.props[propKey] === 'text'}
 						<input type="text" bind:value={values[propKey]}>
 					{/if}
+				</div>
+				<div class="default">
+					<code>Default: </code>
 				</div>
 			</div>
 		{/each}
@@ -63,6 +63,8 @@
 		background-color: white;
 		margin: 1em 1em 1em 0;
 		border-radius: 1em;
+		padding: 0;
+		overflow: hidden;
 	}
 
 	#component {
@@ -74,6 +76,7 @@
 	}
 
 	#props {
+		position: relative;
 		flex: 1;
 		overflow-y: auto;
 		overflow-x: hidden;
@@ -91,7 +94,7 @@
 	.default {
 		display: flex;
 		align-items: center;
-		width: 200px;
+		min-width: 120px;
 	}
 
 	.key p {

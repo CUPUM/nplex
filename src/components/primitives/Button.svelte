@@ -1,17 +1,11 @@
 <script context="module" lang="ts">
-	/**
-	 * Button's kinds
-	 */
+	/* Kinds */
 	export const buttonKinds = ['normal', 'secondary', 'cta'] as const;
 	export type ButtonKind = typeof buttonKinds[number];
-	/**
-	 * Button's sizes
-	 */
+	/* Sizes */
 	export const buttonSizes = ['xsmall', 'small', 'medium', 'large', 'xlarge'] as const;
 	export type ButtonSize = typeof buttonSizes[number];
-	/**
-	 * Button's icon positions
-	 */
+	/* Icon positions */
 	export const buttonIconPositions = ['left', 'right'] as const;
 	export type ButtonIconPosition = typeof buttonIconPositions[number];
 </script>
@@ -27,6 +21,7 @@
 	export let square: boolean = false;
 	export let href: string = null;
 	export let active: boolean = false;
+	export let tooltip: string = null;
 </script>
 
 {#if !href}
@@ -87,10 +82,6 @@
 		border: none;
 		border-radius: 0.9em;
 		overflow: hidden;
-
-		&:disabled {
-			color: red;
-		}
 	}
 
 	span {
@@ -120,11 +111,15 @@
 	}
 
 	/* Kinds */
-	.primary {
+	.normal {
 		--color: var(--color-dark-700);
 		--background: var(--color-light-500);
 	}
 	.secondary {
+		--color: purple;
+		--background: lightblue;
+	}
+	.cta {
 		--color: purple;
 		--background: lightblue;
 	}
