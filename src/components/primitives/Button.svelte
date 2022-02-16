@@ -1,56 +1,70 @@
 <script context="module" lang="ts">
-	export type ButtonTheme = 'primary' | 'secondary';
-	export type ButtonKind = 'normal' | 'misc';
-	export type ButtonSize = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
+	/**
+	 * Button's kinds
+	 */
+	export const buttonKinds = ['normal', 'secondary', 'cta'] as const;
+	export type ButtonKind = typeof buttonKinds[number];
+	/**
+	 * Button's sizes
+	 */
+	export const buttonSizes = ['xsmall', 'small', 'medium', 'large', 'xlarge'] as const;
+	export type ButtonSize = typeof buttonSizes[number];
+	/**
+	 * Button's icon positions
+	 */
+	export const buttonIconPositions = ['left', 'right'] as const;
+	export type ButtonIconPosition = typeof buttonIconPositions[number];
 </script>
 
 <script lang="ts">
 	import type { IconName } from './Icon.svelte';
 	import Icon from './Icon.svelte';
 
-	export let theme: ButtonTheme = 'primary';
 	export let kind: ButtonKind = 'normal';
 	export let size: ButtonSize = 'medium';
 	export let icon: IconName = null;
+	export let iconPosition: ButtonIconPosition = 'left';
 	export let square: boolean = false;
 	export let href: string = null;
 	export let active: boolean = false;
 </script>
-
 
 {#if !href}
 	<button
 		on:click
 		on:focus
 		{...$$restProps}
-		class="{kind} {size} {theme}"
-		class:square={(!$$slots.default && icon) || square}
+		class="{kind} {size}"
+		class:square={(!$$slots.default) || square}
 	>
 		{#if icon}
 			<Icon name={icon} />
 		{/if}
-		<span>
-			<slot />
-		</span>
+		{#if $$slots.default}
+			<span class="label">
+				<slot />
+			</span>
+		{/if}
 	</button>
 {:else}
 	<a
 		on:click
 		on:focus
 		{...$$restProps}
-		class="{kind} {size} {theme}"
-		class:square={(!$$slots.default && icon) || square}
+		class="{kind} {size}"
+		class:square={(!$$slots.default) || square}
 		{href}
 	>
 		{#if icon}
 			<Icon name={icon} />
 		{/if}
-		<span>
-			<slot />
-		</span>
+		{#if $$slots.default}
+			<span class="label">
+				<slot />
+			</span>
+		{/if}
 	</a>
 {/if}
-
 
 <style lang="postcss">
 	button,
@@ -91,7 +105,6 @@
 
 	/* Sizes */
 	.xsmall {
-
 	}
 	.small {
 		font-size: var(--size-small);
@@ -104,10 +117,9 @@
 		font-size: var(--size-large);
 	}
 	.xlarge {
-
 	}
 
-	/* Themes */
+	/* Kinds */
 	.primary {
 		--color: var(--color-dark-700);
 		--background: var(--color-light-500);
@@ -115,17 +127,5 @@
 	.secondary {
 		--color: purple;
 		--background: lightblue;
-	}
-
-	/* Types */
-	.normal {
-		color: var(--color);
-		background-color: var(--background);
-	}
-	.misc {
-		border-width: 1px;
-		border-style: solid;
-		border-color: var(--color);
-		background-color: transparent;
 	}
 </style>

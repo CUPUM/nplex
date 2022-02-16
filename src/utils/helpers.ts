@@ -39,12 +39,7 @@ export function removeEmptyKeys(obj: Record<string | number, unknown>) {
 	);
 }
 
-/**
- * @param f
- * @param delay
- * @returns
- */
-export function debounce(f: (...args) => unknown, delay = 250) {
+function debounce(f: (...args) => unknown, delay = 250) {
 	let timer = null;
 	return (...args) => {
 		clearTimeout(timer);

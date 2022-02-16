@@ -1,5 +1,5 @@
 :root {
-	--font-main: 'Be Vietnam Pro', sans-serif;
+	--font-main: 'Be Vietnam Pro', sans-serif; /* 'Be Vietnam Pro', sans-serif; */
 	--font-misc: 'Urbanist', sans-serif;
 
 	/*
@@ -28,7 +28,9 @@ body {
 	overflow: hidden auto;
 }
 
-* {
+*,
+*::before,
+*::after {
 	text-rendering: optimizeLegibility;
 	box-sizing: border-box;
 }

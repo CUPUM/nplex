@@ -1,7 +1,0 @@
-@import 'overlayscrollbars/css/OverlayScrollbars.css';
-
-body.os-host > .os-padding > .os-viewport > .os-content,
-body.os-host > .os-padding > .os-viewport > .os-content-arrange {
-	display: flex;
-	flex-direction: column;
-}

@@ -13,7 +13,6 @@ const config = {
 	}),
 	extensions: ['.svelte'],
 	kit: {
-		target: 'body',
 		adapter: node(),
 		vite: {
 			plugins: [
