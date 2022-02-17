@@ -1,4 +1,4 @@
-# Nplex
+# ![nplex logo](static/nplex-logo.svg)
 
 ## General
 
