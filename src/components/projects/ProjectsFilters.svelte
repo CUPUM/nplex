@@ -3,17 +3,11 @@
 	import { projectsFilters } from '$stores/search';
 	import { width } from '$transitions/width';
 	import { createEventDispatcher } from 'svelte';
-
-	const dispatchResize = createEventDispatcher();
-	function resizeend() {
-		dispatchResize('resizeend');
-	}
 </script>
 
+<!-- use:customScrollbar={{ overflowBehavior: { x: 'hidden' } }} -->
 <section
 	transition:width|local={{ duration: 350 }}
-	on:introend={resizeend}
-	on:outroend={resizeend}
 	use:customScrollbar={{ overflowBehavior: { x: 'hidden' } }}
 >
 	<form>

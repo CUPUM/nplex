@@ -1,6 +1,124 @@
-export function (element: HTMLElement, options?) {
+import { mergeObjects } from '$utils/helpers/objects';
+import { getUnits } from '$utils/helpers/strings';
 
-    return {
-        destroy()
-    }
+const RIPPLE_KEYS = {
+	HOST_ATTRIBUTE: 'ripple-host',
+	SHEET_ATTRIBUTE: 'ripple-keyframes',
+	SPREAD_ANIMATION: 'ripple-spread',
+	FADE_ANIMATION: 'ripple-fade',
+	PRESS_ANIMATION: 'ripple-host-press',
+	END_SIZE: '--ripple-end-size',
+	END_COLOR: '--ripple-end-color',
+	SCALE: '--ripple-host-scale'
+}
+
+function createRippleCSS() {
+	const sheet = document.createElement('style');
+	sheet.setAttribute('type', 'text/css')
+	sheet.setAttribute(RIPPLE_KEYS.SHEET_ATTRIBUTE, '');
+	sheet.textContent = `
+		[${RIPPLE_KEYS.HOST_ATTRIBUTE}]:active {
+			transform: scale(var(${RIPPLE_KEYS.SCALE}));
+			transition: transform 120ms ease;
+		}
+
+		@keyframes ${RIPPLE_KEYS.SPREAD_ANIMATION} {
+			to {
+				width: var(${RIPPLE_KEYS.END_SIZE});
+				height: var(${RIPPLE_KEYS.END_SIZE});
+				background-color: var(${RIPPLE_KEYS.END_COLOR});
+			}
+		}
+
+		@keyframes ${RIPPLE_KEYS.FADE_ANIMATION} {
+			to {
+				opacity: 0;
+			}
+		}
+	`;
+	document.head.appendChild(sheet);
+}
+
+interface RippleOptions {
+	spreadDuration?: number;
+	fadeDuration?: number;
+	fadeDelay?: number;
+	opacity?: number;
+	startColor?: string;
+	startSize?: number | string;
+	endColor?: string;
+	endSize?: number | string;
+	scale?: number;
+}
+
+/**
+ * Action to add ripple effect on host element, triggered on click event.
+ */
+export function ripple(element: HTMLElement, {
+	spreadDuration = 650,
+	fadeDuration = 1000,
+	fadeDelay = 350,
+	opacity = .5,
+	startColor = 'white',
+	startSize = 0,
+	scale = .98,
+	endSize = undefined,
+	endColor = undefined
+}: RippleOptions = {}) {
+
+	if (!document.head.querySelector(`[${RIPPLE_KEYS.SHEET_ATTRIBUTE}]`)) {
+		createRippleCSS();
+	}
+
+	const style = getComputedStyle(element);
+
+	element.setAttribute(RIPPLE_KEYS.HOST_ATTRIBUTE, '');
+	element.style.overflow = 'hidden';
+	element.style.setProperty(RIPPLE_KEYS.SCALE, scale + '');
+	if (style.position === 'static') {
+		element.style.position = 'relative';
+	}
+
+	const parsedStartSize = startSize + (getUnits(startSize) ? '' : 'px');
+	const parsedEndSize = endSize ? endSize + (getUnits(endSize) ? '' : 'px') : Math.max(element.clientHeight, element.clientWidth) * 2 + 'px';
+	element.style.setProperty(RIPPLE_KEYS.END_SIZE, parsedEndSize);
+	element.style.setProperty(RIPPLE_KEYS.END_COLOR, endColor ? endColor : startColor);
+
+	function createRipple(e: MouseEvent) {
+		const rect = (e.target as HTMLElement).getBoundingClientRect();
+		const r = document.createElement('div');
+		r.style.userSelect = 'none';
+		r.style.pointerEvents = 'none';
+		r.style.position = 'absolute'
+		r.style.opacity = opacity + '';
+		r.style.backgroundColor = startColor;
+		r.style.width = parsedStartSize;
+		r.style.height = parsedStartSize;
+		r.style.borderRadius = '50%';
+		r.style.transform = 'translate(-50%, -50%)';
+		r.style.top = e.clientY - rect.top + 'px';
+		r.style.left = e.clientX - rect.left + 'px';
+		r.style.animation = `${RIPPLE_KEYS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(0, 0, 0.2, 1) forwards, ${RIPPLE_KEYS.FADE_ANIMATION} ${fadeDuration}ms ease ${fadeDelay}ms forwards`;
+		element.appendChild(r);
+		r.onanimationend = ((e) => {
+			if (e.animationName === RIPPLE_KEYS.FADE_ANIMATION) {
+				r.remove();
+			}
+		});
+	}
+
+	function click(e) {
+		createRipple(e);
+	}
+
+	element.addEventListener('click', click);
+
+	return {
+		update(newParams: RippleOptions) {
+			// update stuff here
+		},
+		destroy() {
+			element.removeEventListener('click', click);
+		}
+	}
 }

@@ -3,37 +3,51 @@
 		name: string,
 		comp: { new (...args: any[]): any };
 		props: {
-			[key: string]: 'text' | 'number' | 'boolean' | 'href' | 'icon' | 'children' | ReadonlyArray<string> | string[]
+			[key: string]: 'text' | 'number' | 'boolean' | 'href' | 'icon' | ReadonlyArray<string> | string[]
 		}
 	};
 </script>
 
 <script lang="ts">
-	import { capitalize } from '$utils/helpers/strings';
+	import { icons } from '$utils/icons/icons';
 
 	export let params: SampleParams;
 
+	const hrefs = [{ desc: 'None', value: null }, { desc: 'Current', value: '/samples' }, { desc: 'Random', value: '/' + Math.random().toString(32)}]
+
 	let values = {
-		slot: 'Slot content'
+		slot: 'Slot content',
+		render: true
 	};
 </script>
 
 <article>
 	<section id="component">
-		<svelte:component
-			this={params.comp}
-			{...values}
-		>
-			{#if params.props.slot}
-				{values.slot}
-			{/if}
-		</svelte:component>
+		{#if values.render}
+			<svelte:component
+				this={params.comp}
+				{...values}
+			>
+				{#if params.props.slot}
+					{values.slot}
+				{/if}
+			</svelte:component>
+		{/if}
 	</section>
 	<section id="props">
+		<div class="prop">
+			<div class="key">Toggle component :</div>
+			<div class="input">
+				<label>
+					<span>render</span>
+					<input type="checkbox" bind:checked={values.render}>
+				</label>
+			</div>
+		</div>
 		{#each Object.keys(params.props) as propKey}
 			<div class="prop">
 				<div class="key">
-					<p>{capitalize(propKey)} :</p>
+					<p>{propKey} :</p>
 				</div>
 				<div class="input">
 					{#if Array.isArray(params.props[propKey]) }
@@ -45,6 +59,24 @@
 						{/each}
 					{:else if params.props[propKey] === 'text'}
 						<input type="text" bind:value={values[propKey]}>
+					{:else if params.props[propKey] === 'href'}
+						{#each hrefs as href}
+							<label>
+								<span>{href.desc}</span>
+								<input type="radio" value={href.value} bind:group={values[propKey]} name={propKey} />
+							</label>
+						{/each}
+					{:else if params.props[propKey] === 'boolean'}
+						<input type="checkbox" bind:value={values[propKey]}>
+					{:else if params.props[propKey] === 'number'}
+						<input type="number" bind:value={values[propKey]}>
+					{:else if params.props[propKey] === 'icon'}
+						<select bind:value={values[propKey]}>
+							<option selected value={null}>None</option>
+							{#each Object.keys(icons) as iconName}
+								<option value={iconName}>{iconName}</option>
+							{/each}
+						</select>
 					{/if}
 				</div>
 				<div class="default">
@@ -69,7 +101,7 @@
 
 	#component {
 		display: flex;
-		min-height: 50%;
+		min-height: 25%;
 		align-items: center;
 		justify-content: center;
 		border-bottom: 1px solid rgba(0,0,0, .1);
@@ -94,7 +126,8 @@
 	.default {
 		display: flex;
 		align-items: center;
-		min-width: 120px;
+		min-width: 140px;
+		text-transform: capitalize;
 	}
 
 	.key p {

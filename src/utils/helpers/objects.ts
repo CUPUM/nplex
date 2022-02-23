@@ -28,5 +28,6 @@ export function mergeObjects(base: Record<any, any>, ...modifications: Record<an
 			}
 		}
 	}
+
 	return base;
 }

@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Map as MLMap } from 'maplibre-gl';
+import Loading from '$components/loading/Loading.svelte';
+import { colors } from '$utils/colors';
 
+	let loaded = false;
 	let container: HTMLElement;
 	let map: MLMap;
 	let cw;
@@ -22,6 +25,13 @@
 			center: [0, 0],
 			zoom: 2 // starting zoom
 		});
+
+		function onInit() {
+			loaded = true;
+			map.off('idle', onInit);
+		}
+
+		map.on('idle', onInit);
 	});
 
 	$: cw, handleResize();
@@ -32,11 +42,15 @@
 </svelte:head>
 
 <section bind:this={container} bind:clientWidth={cw}>
+	{#if !loaded}
+		<Loading style="z-index: 100; background-color: {colors.light['100']};" />
+	{/if}
 	<!-- <figure bind:this={container}></figure> -->
 </section>
 
 <style>
 	section {
+		position: relative;
 		flex: 1;
 	}
 </style>

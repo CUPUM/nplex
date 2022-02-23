@@ -11,6 +11,8 @@
 </script>
 
 <script lang="ts">
+import { ripple } from '$actions/ripple';
+
 	import type { IconName } from './Icon.svelte';
 	import Icon from './Icon.svelte';
 
@@ -26,6 +28,7 @@
 
 {#if !href}
 	<button
+		use:ripple
 		on:click
 		on:focus
 		{...$$restProps}
@@ -61,7 +64,7 @@
 	</a>
 {/if}
 
-<style lang="postcss">
+<!-- <style lang="postcss">
 	button,
 	a {
 		--height: 2.5em;
@@ -123,4 +126,4 @@
 		--color: purple;
 		--background: lightblue;
 	}
-</style>
+</style> -->

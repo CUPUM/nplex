@@ -1,26 +1,47 @@
-import type { ExploreCategory } from '$utils/routes';
 import { goto } from '$app/navigation';
-import { exploreRoutes } from '$utils/routes';
-import { writable } from 'svelte/store';
+import { page } from '$app/stores';
+import { ExploreRoute, exploreRoutes } from '$utils/routes';
+import { get, writable } from 'svelte/store';
+import { route, routeSegments } from './route';
 
 // To do
 const init = new URLSearchParams(''); // window?.location.search
 
-/** Main search input */
+/**
+ * Main search input
+ */
 
 export const term = writable(init.get('term') || '');
 
+/**
+ * Currently browsed category
+ */
+
 export const category = (function () {
-	// To do
-	// Init store according to current route...
-	const { subscribe, set } = writable<ExploreCategory>(null);
+	const { subscribe, set } = writable<ExploreRoute['category']>(null);
+
+	// const book = exploreRoutes.reduce((acc, curr) => {
+	// 	return acc.set(curr.category, curr);
+	// }, new Map<string, ExploreRoute>());
+
+	// function setCategory(newCategory: ExploreRoute['category']) {
+	// 	const newHref = book.get(newCategory).href;
+	// 	if (newHref !== get(page).url.pathname) {
+	// 		goto(newHref);
+	// 		// Do more routing stuff if necessary
+	// 	}
+	// 	set(newCategory);
+	// }
+
 	return {
 		subscribe,
 		set
 	};
 })();
 
-/** Projects search & filters */
+/**
+ * Projects search & filters
+ */
 
 const defaultProjectsFilters = {
 	test: 2,
@@ -44,15 +65,21 @@ Object.keys(defaultProjectsFilters).forEach((k) => {
 
 export const projectsFilters = writable({ ...initProjectsFilters });
 
-/** Orgs search & filters */
+/**
+ * Orgs search & filters
+ */
 
 // ...
 
-/** Actors search & filters */
+/**
+ * Actors search & filters
+ */
 
 // ...
 
-/** General query string construction and handling */
+/**
+ * General query string construction and handling
+ */
 
 const query = new URLSearchParams();
 

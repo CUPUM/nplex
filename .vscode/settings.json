@@ -3,5 +3,9 @@
 	"svelte.plugin.svelte.defaultScriptLanguage": "ts",
 	"files.associations": {
 		"*postcss": "scss" // To shush svelte's language server
-	}
+	},
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"[svelte]": {
+		"editor.defaultFormatter": "svelte.svelte-vscode"
+	},
 }

@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { currentMainRoute } from '$stores/route';
-	import { mainRoutes } from '$utils/routes';
+	import { topRoute } from '$stores/route';
+	import { topRoutes } from '$utils/routes';
 	import HeaderButton from './Header.Button.svelte';
 </script>
 
 <header>
 	<div id="logo">Logo nplex</div>
 	<nav id="main">
-		{#each mainRoutes as r}
-			<HeaderButton href={r.href} text={r.title} highlight={$currentMainRoute === r} />
+		{#each topRoutes as r}
+			<HeaderButton href={r.href} text={r.title} highlight={$topRoute === r} />
 		{/each}
 	</nav>
 	<nav id="user">

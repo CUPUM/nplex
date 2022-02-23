@@ -14,14 +14,15 @@
 	<ProjectsMap />
 	<ProjectsList />
 </section>
-{#key $page.params.projectId}
+<!-- {#key $page.params.projectId}
 	<article transition:slide={{}}>
 		<slot />
 	</article>
-{/key}
+{/key} -->
 
 <style>
 	section {
+		position: relative;
 		padding-block: var(--size-medium);
 		padding-inline: var(--size-large);
 		width: 100%;

@@ -1,30 +1,28 @@
 <script lang="ts">
-	import type { ExploreCategory } from '$utils/routes';
 	import { goto, prefetch } from '$app/navigation';
+	import { page } from '$app/stores';
+	import { route } from '$stores/route';
 	import { category } from '$stores/search';
-	import { exploreRoutes } from '$utils/routes';
-	import { onMount } from 'svelte';
+	import { ExploreRoute, exploreRoutes } from '$utils/routes';
+	import { onDestroy, onMount } from 'svelte';
+
+	if (($route as ExploreRoute)?.category) {
+		category.set(($route as ExploreRoute).category);
+	}
 </script>
 
 <fieldset>
-	<!-- <div
-		id="indicator"
-		style:top="{currentLabel?.offsetTop}px"
-		style:left="{currentLabel?.offsetLeft}px"
-		style:width="{currentLabel?.offsetWidth}px"
-		style:height="{currentLabel?.offsetHeight}px"
-	/> -->
-	{#each exploreRoutes as route}
+	{#each exploreRoutes as r, i}
 		<input
 			type="radio"
-			name="explore-category"
-			id={route.category}
-			value={route.category}
+			id={r.category}
+			value={r.category}
 			bind:group={$category}
-			on:mouseover={() => prefetch(route.href)}
-			on:focus={() => prefetch(route.href)}
+			on:mouseover={() => prefetch(r.href)}
+			on:focus={() => prefetch(r.href)}
+			on:input={() => goto(r.href)}
 		/>
-		<label for={route.category}>{route.title}</label>
+		<label for={r.category}>{r.title}</label>
 	{/each}
 </fieldset>
 

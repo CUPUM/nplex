@@ -1,24 +1,20 @@
 import { base } from '$app/paths';
 import { page } from '$app/stores';
-import { exploreRoutes, mainRoutes } from '$utils/routes';
-import { derived } from 'svelte/store';
+import { ExploreRoute, exploreRoutes, Route, topRoutes } from '$utils/routes';
+import { derived, Readable } from 'svelte/store';
 
-export const rootRoute = mainRoutes.find((r) => r.href === '/');
-
-export const currentSegments = derived(page, (page) => {
-	return page.url.pathname
+export const routeSegments = derived(page, ($page) => {
+	return $page.url.pathname
 		.replace(base, '')
 		.replace(/^\/+/, '')
 		.split('/')
 		.map((segment) => '/' + segment);
 });
 
-export const currentMainRoute = derived(currentSegments, (currentSegments) => {
-	const mainRoute = mainRoutes.find((mainRoute) => mainRoute.href === currentSegments[0]);
-	if (mainRoute) return mainRoute;
-	const exploreRoute = exploreRoutes.find(
-		(exploreRoute) => exploreRoute.href === currentSegments[0]
-	);
-	if (exploreRoute) return rootRoute;
-	return { href: currentSegments[0] };
+export const route = derived(routeSegments, ($routeSegments) => {
+	return <Route | ExploreRoute>[...topRoutes, ...exploreRoutes].find((route) => route.href === $routeSegments[0]);
+});
+
+export const topRoute = derived(route, ($route) => {
+	return $route?.parentRoute || $route;
 });

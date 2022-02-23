@@ -6,6 +6,7 @@
 	import Sample from '$components/_samples/Sample.svelte';
 	import Button, { buttonIconPositions, buttonKinds, buttonSizes } from '$components/primitives/Button.svelte';
 	import Checkbox, { checkboxKinds } from '$components/primitives/Checkbox.svelte';
+	import Loading from '$components/loading/Loading.svelte';
 
 	const samples: SampleParams[] = [
 		{
@@ -26,6 +27,13 @@
 			props: {
 				kind: checkboxKinds,
 				slot: 'text'
+			}
+		},
+		{
+			name: 'Loading',
+			comp: Loading,
+			props: {
+				logo: 'boolean'
 			}
 		}
 	];

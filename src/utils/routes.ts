@@ -1,4 +1,10 @@
-export const mainRoutes = [
+export interface Route {
+	href: string;
+	title: string;
+	parentRoute?: Route;
+}
+
+export const topRoutes: Route[] = [
 	{
 		href: '/',
 		title: 'Explorer'
@@ -13,22 +19,29 @@ export const mainRoutes = [
 	}
 ];
 
-export type ExploreCategory = 'projects' | 'organisations' | 'actors';
+export const rootRoute = topRoutes[0];
 
-export const exploreRoutes: { href: string; title: string; category: ExploreCategory }[] = [
+export interface ExploreRoute extends Route {
+	category: 'projects' | 'organisations' | 'actors';
+}
+
+export const exploreRoutes: ExploreRoute[] = [
 	{
 		href: '/projets',
 		title: 'Projets',
-		category: 'projects'
+		category: 'projects',
+		parentRoute: rootRoute
 	},
 	{
 		href: '/organisations',
 		title: 'Organisations',
-		category: 'organisations'
+		category: 'organisations',
+		parentRoute: rootRoute
 	},
 	{
 		href: '/acteurs',
 		title: 'Acteurs',
-		category: 'actors'
+		category: 'actors',
+		parentRoute: rootRoute
 	}
-];
+]

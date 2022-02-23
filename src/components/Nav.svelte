@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { mainRoutes } from '$utils/routes';
+	import { topRoutes } from '$utils/routes';
 	import Button from './primitives/Button.svelte';
 </script>
 
 <nav>
-	<div id="logo">Logo nplex</div>
+	<a href="/" id="logo">Logo nplex</a>
 	<section id="main">
-		{#each mainRoutes as route}
+		{#each topRoutes as route}
 			<Button
 				size="small"
 				href={route.href}
@@ -15,14 +15,14 @@
 			</Button>
 		{/each}
 	</section>
-	<ul id="user">
+	<section id="user">
 		<Button
 			icon="home"
 		/>
 		<Button
 			icon="user"
 		/>
-	</ul>
+	</section>
 </nav>
 
 <style lang="postcss">

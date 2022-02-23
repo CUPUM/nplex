@@ -21,7 +21,7 @@ export const mainScroll = (function() {
 		set(current);
 	}
 
-	function start(set?: Subscriber<MainScroll>) {
+	function init(host: HTMLElement, set?: Subscriber<MainScroll>) {
 		onMount(() => {
 			if (!instance) {
 				instance = OverlayScrollbars(document.body, {
@@ -49,10 +49,10 @@ export const mainScroll = (function() {
 		});
 	}
 
-	const { subscribe } = readable<MainScroll>(prev, start);
+	const { subscribe } = readable<MainScroll>(prev);
 
 	return {
-		init: () => start(),
+		init,
 		subscribe,
 		getInstance: () => instance
 	}
