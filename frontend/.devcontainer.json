@@ -1,0 +1,8 @@
+{
+	"name": "Frontend",
+	"dockerComposeFile": ["../docker-compose.yaml"],
+	"service": "frontend",
+	// vscode extensions to install
+	"extensions": [],
+	"workspaceFolder": "/nplex/frontend"
+}

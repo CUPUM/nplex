@@ -36,10 +36,20 @@ const config = {
 					}
 				},
 				{
+					/**
+					 * Hook called during dev to configure vite's server (does not apply to build/prod)
+					 */
 					name: 'generator-scripts-dev',
 					apply: 'serve',
 					configureServer(server) {
 						const listener = async (abspath) => {
+							const utils = ['colors.ts', 'sizes.ts'];
+							/**
+							 * Associate additionnal files to the respective script they should trigger when modified
+							 */
+							// const associations = new Map([
+							// 	['colors.ts', 'script to execute...']
+							// ])
 							if (abspath.startsWith(path.resolve('scripts'))) {
 								console.log(`Generating asset from ${abspath.replace(path.resolve('.'), '')}...`);
 								execSync(`esmo ${abspath}`);
@@ -51,7 +61,6 @@ const config = {
 								console.log(`Generating icons definition from changed svg source...`);
 								execSync(`esmo ${path.resolve('scripts', 'ICONS.ts')}`);
 							}
-							const utils = ['colors.ts', 'sizes.ts'];
 							if (
 								utils
 									.map((filename) => path.resolve('src', 'utils', filename))

@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  # nginx:
+  #   ...
+  # backend:
+  #   ...
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - .:/nplex:cached
+    # Customize port forwarding to avoid conflicts with other services...
+    # ports:
+    #   - 3000:3000
+    #   - 24678:24678
+    restart: on-failure

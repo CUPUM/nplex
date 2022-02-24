@@ -1,0 +1,4 @@
+# Prevent OS-specific line-ending characters from causing changes in git.
+* text=auto eol=lf
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
