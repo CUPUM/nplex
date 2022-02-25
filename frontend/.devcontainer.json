@@ -1,8 +1,26 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.134.0/containers/javascript-node
 {
-	"name": "Frontend",
-	"dockerComposeFile": ["../docker-compose.yaml"],
-	"service": "frontend",
-	// vscode extensions to install
+	"name": "nplex frontend",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"target": "dev"
+	},
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": {},
+
+	// Vscode extensions to install.
 	"extensions": [],
-	"workspaceFolder": "/nplex/frontend"
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [3000, 24678],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "pnpm install",
+
+	// For usage with docker-compose...
+	// "dockerComposeFile": ["../docker-compose.yaml"],
+	// "service": "frontend",
+	// "workspaceFolder": "/nplex/frontend"
 }

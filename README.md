@@ -5,7 +5,8 @@
 This project contains the packages for:
 
 - The [/frontend](/frontend) app of nplex
-- The [/backend](/backend) app (...to come)
+- The backend app (...to come)
+- The nginx web-facing server and reverse proxy (...to come)
 
 For the time being, no global scripts are defined. Make sure to `cd` into a package's directory to be able to execute its scripts.
 
