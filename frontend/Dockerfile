@@ -4,6 +4,9 @@ FROM node:current-alpine AS dev
 ENV NODE_ENV development
 # Install pnpm.
 RUN npm install -g pnpm
+# Expose port 3000 for SvelteKit and port 24678 for Vite's HMR needed during dev (default: 24678, configured in svelte.config.kit.vite.server.hmr.port).
+EXPOSE 3000
+EXPOSE 24678
 
 
 ## Build staging.
@@ -34,8 +37,7 @@ WORKDIR /app
 # Take the build from the previous stage.
 COPY --from=build app/build .
 # COPY --from=build app/node_modules ./node_modules
-# Expose port 3000 for SvelteKit and port 24678 for Vite's HMR needed during dev (default: 24678, configured in svelte.config.kit.vite.server.hmr.port).
+# Expose port 3000 for the SvelteKit app.
 EXPOSE 3000
-EXPOSE 24678
 # Start that app!
 CMD ["node", "./build"]
