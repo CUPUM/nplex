@@ -17,7 +17,7 @@
 	"forwardPorts": [3000, 24678],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pnpm install",
+	"postStartCommand": "pnpm install",
 
 	// For usage with docker-compose...
 	// "dockerComposeFile": ["../docker-compose.yaml"],
