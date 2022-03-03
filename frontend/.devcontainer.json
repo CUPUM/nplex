@@ -4,9 +4,12 @@
 	"name": "nplex frontend",
 	"build": {
 		"dockerfile": "Dockerfile",
-		"target": "dev",
-		// "context": ".."
+		"target": "dev"
 	},
+
+	// For usage with docker-compose...
+	// "dockerComposeFile": ["../docker-compose.yaml"],
+	// "service": "frontend",
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
@@ -23,11 +26,12 @@
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postStartCommand": "pnpm install",
 
-	// For usage with docker-compose...
-	// "dockerComposeFile": ["../docker-compose.yaml"],
-	// "service": "frontend",
-
 	// Making git work even if it is rooted in this container's parent directory.
-	"workspaceMount": "..",
-	"workspaceFolder": "/frontend"
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+	"workspaceFolder": "/workspace",
+
+	// Adding git
+	// "features": {
+	// 	"github-cli": "latest"
+	// }
 }

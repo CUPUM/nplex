@@ -8,6 +8,8 @@ This project contains the packages for:
 - The SvelteKit [/frontend](/frontend) app of nplex
 - The Supabase backend services (...to come)
 
+![Basic layout of services](/misc/services-architecture.svg)
+
 ## Getting started
 
 The mono-repo is scaffolded on `pnpm`'s workspace feature. Make sure to work using `pnpm` rather than npm as to allow dependency optimizations and local cache:
