@@ -1,7 +1,10 @@
 ## Dev staging.
-FROM node:current-alpine AS dev
+# FROM node:current-alpine AS dev ...Some extensions are troublesome with alpine containers
+FROM node:current-buster AS dev
 # Set node environment to dev to enforce installation of all dependencies, including devDependencies.
 ENV NODE_ENV development
+# Install git
+RUN apt-get install git
 # Install pnpm.
 RUN npm install -g pnpm
 # Expose port 3000 for SvelteKit and port 24678 for Vite's HMR needed during dev (default: 24678, configured in svelte.config.kit.vite.server.hmr.port).
