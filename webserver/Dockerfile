@@ -1,2 +1,2 @@
 # Dev staging.
-# FROM nginx: AS dev
+FROM nginx:latest AS dev
