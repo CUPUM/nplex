@@ -12,14 +12,16 @@
 	// "service": "frontend",
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": {
-		// auto-format-onsave
-		// use prettier for everything
-	},
+	// See .vscode/settings.json
+	// "settings": {
+	// 	// auto-format-onsave
+	// 	// use prettier for everything
+	// },
 
 	// Install vscode extensions for consistent IDE behavior.
 	"extensions": [
-
+		"esbenp.prettier-vscode",
+		"svelte.svelte-vscode",
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
