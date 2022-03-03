@@ -4,11 +4,15 @@
 	"name": "nplex frontend",
 	"build": {
 		"dockerfile": "Dockerfile",
-		"target": "dev"
+		"target": "dev",
+		// "context": ".."
 	},
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": {},
+	"settings": {
+		// auto-format-onsave
+		// use prettier for everything
+	},
 
 	// Vscode extensions to install.
 	"extensions": [],
@@ -22,5 +26,8 @@
 	// For usage with docker-compose...
 	// "dockerComposeFile": ["../docker-compose.yaml"],
 	// "service": "frontend",
-	// "workspaceFolder": "/nplex/frontend"
+
+	// Making git work even if it is rooted in this container's parent directory.
+	"workspaceMount": "..",
+	"workspaceFolder": "/frontend"
 }

@@ -4,11 +4,30 @@
 
 This project contains the packages for:
 
-- The [/frontend](/frontend) app of nplex
-- The backend app (...to come)
-- The nginx web-facing server and reverse proxy (...to come)
+- The Nginx [/webserver](/webserver) and reverse proxy
+- The SvelteKit [/frontend](/frontend) app of nplex
+- The Supabase backend services (...to come)
 
-For the time being, no global scripts are defined. Make sure to `cd` into a package's directory to be able to execute its scripts.
+## Getting started
+
+The mono-repo is scaffolded on `pnpm`'s workspace feature. Make sure to work using `pnpm` rather than npm as to allow dependency optimizations and local cache:
+
+```sh
+npm install -g pnpm
+```
+
+The packages are outlined in [pnpm-workspace.yaml](pnpm-workspace.yaml).
+
+For the time being, the only global scripts defined are to install the app(s):
+
+```sh
+# install all...
+# install frontend...
+# install backend...
+
+```
+
+For more granular scripts, make sure to `cd` into a package's directory.
 
 ## To do
 
