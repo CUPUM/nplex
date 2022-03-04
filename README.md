@@ -33,7 +33,7 @@ The packages are outlined in [pnpm-workspace.yaml](pnpm-workspace.yaml).
 
 ### Using the prescribed package manager
 
-The mono-repo is scaffolded on `pnpm`'s workspace feature. Make sure to work using `pnpm` rather than npm as to allow dependency optimizations and local cache:
+The mono-repo is scaffolded on `pnpm`'s workspace feature. Make sure to work using `pnpm` rather than `npm`. This is to allow dependency optimizations and globally cached packages on your machine.
 
 ```sh
 npm install -g pnpm
@@ -46,13 +46,18 @@ The `.env` file is not included in commits, and never should be, as it can conta
 
 ### Running scripts
 
-For the time being, the only global (workspace level) scripts defined are to install the app(s):
+For the time being, the only global (workspace level) scripts defined are to install the app(s).
+You can install everything at once:
 
 ```sh
 # install all...
+```
+
+...Or install specific service packages
+
+```sh
 # install frontend...
 # install backend...
-
 ```
 
 For more granular scripts, make sure to `cd` into a package's directory.
