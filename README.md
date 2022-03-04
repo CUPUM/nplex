@@ -1,4 +1,6 @@
-<img width="500" height="auto" src="frontend/static/nplex-logo.svg">
+<p align="center">
+  <img width="300" height="auto" src="frontend/static/nplex-logo.svg">
+</p>
 
 # Welcome to nplex's monorepo
 
