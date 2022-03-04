@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="300" height="auto" src="frontend/static/nplex-logo.svg">
+  <img width="300" height="auto" src="static/nplex-logo.svg">
 </p>
 
 ## Getting started
