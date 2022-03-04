@@ -1,6 +1,6 @@
-<p align="center">
-  <img width="300" height="auto" src="static/nplex-logo.svg">
-</p>
+<h1 align="center">
+  <img width="300" height="auto" src="static/nplex-logo.svg" alt="nplex">
+</h1>
 
 ## Getting started
 
