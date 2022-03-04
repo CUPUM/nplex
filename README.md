@@ -21,6 +21,8 @@ This project's stack is organized throughout packages respective of each service
 - __The [web-facing server and reverse-proxy](/webserver)__
   - Nginx
 
+### Service packages
+
 The packages are outlined in [pnpm-workspace.yaml](pnpm-workspace.yaml).
 
 <p align="center">
@@ -29,16 +31,22 @@ The packages are outlined in [pnpm-workspace.yaml](pnpm-workspace.yaml).
 
 ## Getting started
 
+### Using the prescribed package manager
+
 The mono-repo is scaffolded on `pnpm`'s workspace feature. Make sure to work using `pnpm` rather than npm as to allow dependency optimizations and local cache:
 
 ```sh
 npm install -g pnpm
 ```
 
+### Completing your local setup
+
 Before building or starting any service, make sure to define the required environment variables in a `.env` file at the root of the repo by using [`template.env`](template.env) as a guideline.
 The `.env` file is not included in commits, and never should be, as it can contain sensitive information for service authentications.
 
-For the time being, the only global scripts defined are to install the app(s):
+### Running scripts
+
+For the time being, the only global (workspace level) scripts defined are to install the app(s):
 
 ```sh
 # install all...
