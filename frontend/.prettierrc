@@ -5,12 +5,12 @@
 	"bracketSpacing": true,
 	"bracketSameLine": false,
 	"singleQuote": true,
-	"trailingComma": "none",
-	"printWidth": 100,
+	"trailingComma": "es5",
+	"printWidth": 120,
 	"arrowParens": "always",
 	"svelteIndentScriptAndStyle": true,
 	"svelteAllowShorthand": true,
 	"plugins": ["prettier-plugin-jsdoc"],
-	"jsdocPrintWidth": 100,
+	"jsdocPrintWidth": 120,
 	"quoteProps": "consistent"
 }

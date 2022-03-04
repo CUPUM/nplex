@@ -1,10 +1,14 @@
 {
-	"svelte.plugin.css.globals": "src/styles/*.css, src/styles/*.postcss, src/styles/*/**.css, src/styles/*/**.postcss",
-	"svelte.plugin.svelte.defaultScriptLanguage": "ts",
-	"files.associations": {
-		"*postcss": "scss" // To shush svelte's language server
-	},
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnPaste": false,
+	"editor.formatOnSave": true,
+	// Svelte
+	"svelte.plugin.css.globals": "src/styles/*.css, src/styles/*.postcss, src/styles/*/**.css, src/styles/*/**.postcss",
+	// "svelte.plugin.svelte.defaultScriptLanguage": "ts",
+	"files.associations": {
+		// To shush svelte's language server
+		"*postcss": "scss"
+	},
 	"[svelte]": {
 		"editor.defaultFormatter": "svelte.svelte-vscode"
 	},

@@ -1,18 +1,5 @@
 # ![nplex logo](static/nplex-logo.svg)
 
-## General
-
-### See it live
-
-:pick: Under construction :pick:
-
-### Stack
-
--   [SvelteKit](https://kit.svelte.dev/) as the SSR-capable frontend framework
-    -   The targeted distribution environement is Nodejs, thus we are here using the _SvelteKit_ ecosystem's [node adapter](https://kit.svelte.dev/docs#adapters)
--   [Supabase](https://supabase.io/) for the PostgreSQL database and authentication services
-    -   [PostGIS](https://postgis.net/) extension for the GIS related types and functions
-
 ## Getting started
 
 ### Setting things up

@@ -11,11 +11,9 @@
 </script>
 
 <script lang="ts">
-import { ripple } from '$actions/ripple';
-
+	import { ripple } from '$actions/ripple';
 	import type { IconName } from './Icon.svelte';
 	import Icon from './Icon.svelte';
-
 	export let kind: ButtonKind = 'normal';
 	export let size: ButtonSize = 'medium';
 	export let icon: IconName = null;
@@ -33,7 +31,7 @@ import { ripple } from '$actions/ripple';
 		on:focus
 		{...$$restProps}
 		class="{kind} {size}"
-		class:square={(!$$slots.default) || square}
+		class:square={!$$slots.default || square}
 	>
 		{#if icon}
 			<Icon name={icon} />
@@ -45,14 +43,7 @@ import { ripple } from '$actions/ripple';
 		{/if}
 	</button>
 {:else}
-	<a
-		on:click
-		on:focus
-		{...$$restProps}
-		class="{kind} {size}"
-		class:square={(!$$slots.default) || square}
-		{href}
-	>
+	<a on:click on:focus {...$$restProps} class="{kind} {size}" class:square={!$$slots.default || square} {href}>
 		{#if icon}
 			<Icon name={icon} />
 		{/if}
