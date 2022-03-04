@@ -1,4 +1,4 @@
-# ![nplex logo](static/nplex-logo.svg)
+<img width="500" height="auto" src="static/nplex-logo.svg">
 
 ## Getting started
 

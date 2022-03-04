@@ -1,4 +1,4 @@
-# ![nplex logo](frontend/static/nplex-logo.svg)
+<img width="500" height="auto" src="frontend/static/nplex-logo.svg">
 
 # Welcome to nplex's monorepo
 
@@ -12,19 +12,17 @@
 
 This project's stack is organized throughout packages respective of each service, such as:
 
-__The [frontend](/frontend)__
-- [SvelteKit](https://kit.svelte.dev/) as the SSR-capable frontend framework
-  - The targeted distribution environement is Nodejs, thus we are here using the _SvelteKit_ ecosystem's [node adapter](https://kit.svelte.dev/docs#adapters)
-
-__The [backend](/backend)__
-- [Supabase](https://supabase.io/) for the PostgreSQL database and authentication services
-  - [PostGIS](https://postgis.net/) extension for the GIS related types and functions
-
-__The [web-facing server and reverse-proxy](/webserver)__
-- Nginx
+- __The [frontend](/frontend)__
+  - [SvelteKit](https://kit.svelte.dev/) as the SSR-capable frontend framework
+    - The targeted distribution environement is Nodejs, thus we are here using the _SvelteKit_ ecosystem's [node adapter](https://kit.svelte.dev/docs#adapters)
+- __The [backend](/backend)__
+  - [Supabase](https://supabase.io/) for the PostgreSQL database and authentication services
+    - [PostGIS](https://postgis.net/) extension for the GIS related types and functions
+- __The [web-facing server and reverse-proxy](/webserver)__
+  - Nginx
 
 <p align="center">
-  <img width="500" height="auto" src="/misc/services-architecture.svg">
+  <img width="500" height="auto" src="misc/services-architecture.svg">
 </p>
 
 ## Getting started
