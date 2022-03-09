@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { topRoutes } from '$utils/routes';
-	import Button from './primitives/Button.svelte';
+	import Button from '$components/primitives/Button.svelte';
 </script>
 
 <nav>
@@ -20,11 +20,13 @@
 
 <style lang="postcss">
 	nav {
-		position: sticky;
+		position: relative;
 		top: 0;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		padding: 1rem 2rem;
+		background-color: var(--color-light-500);
 	}
 </style>

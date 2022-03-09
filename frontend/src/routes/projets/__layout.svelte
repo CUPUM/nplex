@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ProjectsMap from '$components/projects/ProjectsMap.svelte';
 	import ProjectsList from '$components/projects/ProjectsList.svelte';
-	import ProjectsFilters from '$components/projects/ProjectsFilters.svelte';
+	import ProjectsFilters from '$components/complexes/ProjectsFilters.svelte';
 	import { slide } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import { showProjectsFilters } from '$stores/projects';
@@ -14,12 +14,12 @@
 	<ProjectsMap />
 	<ProjectsList />
 </section>
+
 <!-- {#key $page.params.projectId}
 	<article transition:slide={{}}>
 		<slot />
 	</article>
 {/key} -->
-
 <style>
 	section {
 		position: relative;

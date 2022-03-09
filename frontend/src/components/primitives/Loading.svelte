@@ -1,16 +1,15 @@
 <script lang="ts">
-import { fade } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
-
-	export let logo: boolean = false;
+	export let type: 'logo' | 'default' = 'default';
 </script>
 
 <div
 	in:fade={{
-		duration: 150
+		duration: 150,
 	}}
 	out:fade={{
-		duration: 100
+		duration: 100,
 	}}
 	{...$$restProps}
 >

@@ -60,12 +60,12 @@ All manual modifications added here will be lost on next execution of the genera
 	--rgb-error-500: 9, 79%, 56%;
 	--color-error-900: hsl(9, 79%, 56%);
 	--rgb-error-900: 9, 79%, 56%;
-	--color-warning-100: hsl(46, 86%, 59%);
-	--rgb-warning-100: 46, 86%, 59%;
-	--color-warning-500: hsl(46, 86%, 59%);
-	--rgb-warning-500: 46, 86%, 59%;
-	--color-warning-900: hsl(46, 86%, 59%);
-	--rgb-warning-900: 46, 86%, 59%;
+	--color-notice-100: hsl(46, 86%, 59%);
+	--rgb-notice-100: 46, 86%, 59%;
+	--color-notice-500: hsl(46, 86%, 59%);
+	--rgb-notice-500: 46, 86%, 59%;
+	--color-notice-900: hsl(46, 86%, 59%);
+	--rgb-notice-900: 46, 86%, 59%;
 	--size-xxxsmall: 8px;
 	--size-xxsmall: 10px;
 	--size-xsmall: 12px;

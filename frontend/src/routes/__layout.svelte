@@ -5,16 +5,13 @@
 	import '$styles/app.postcss';
 	import '$styles/vars.css';
 	import '$styles/scrollbars.postcss';
-	import Nav from '$components/Nav.svelte';
-	import Search from '$components/search/Search.svelte';
+	import Nav from '$components/complexes/Nav.svelte';
+	import Search from '$components/complexes/Search.svelte';
 	import { topRoute } from '$stores/route';
 	import { rootRoute } from '$utils/routes';
-	import { parseCSSValue } from '$utils/helpers/strings';
 
 	let key;
 </script>
-
-<svelte:body class="test" />
 
 <Nav />
 {#if $topRoute == rootRoute}
@@ -26,9 +23,5 @@
 
 <style>
 	main {
-	}
-
-	.test {
-		color: red !important;
 	}
 </style>
