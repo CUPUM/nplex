@@ -3,7 +3,9 @@ export interface Route {
 	title: string;
 	parentRoute?: Route;
 }
-
+/**
+ * Top navigation routes.
+ */
 export const topRoutes: Route[] = [
 	{
 		href: '/',
@@ -24,7 +26,9 @@ export const rootRoute = topRoutes[0];
 export interface ExploreRoute extends Route {
 	category: 'projects' | 'organisations' | 'actors';
 }
-
+/**
+ * Routes for the different categories of "exploration" mode for browsing and searching.
+ */
 export const exploreRoutes: ExploreRoute[] = [
 	{
 		href: '/projets',
@@ -43,5 +47,35 @@ export const exploreRoutes: ExploreRoute[] = [
 		title: 'Acteurs',
 		category: 'actors',
 		parentRoute: rootRoute
+	}
+]
+
+export interface CreationRoute extends Route {
+	category: ExploreRoute['category'];
+}
+const creationBase = '/creer';
+/**
+ * Relative root routes for the submission forms.
+ */
+export const creationRoutes: CreationRoute[] = [
+	{
+		href: creationBase + '/site',
+		title: 'Nouveau site de projet(s)',
+		category: 'projects'
+	},
+	{
+		href: creationBase + '/projet',
+		title: 'Nouveau projet',
+		category: 'projects'
+	},
+	{
+		href: creationBase + '/organisation',
+		title: 'Nouvelle organisation',
+		category: 'organisations'
+	},
+	{
+		href: creationBase + '/acteur',
+		title: 'Nouveau profil d’acteur',
+		category: 'actors'
 	}
 ]

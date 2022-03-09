@@ -1,16 +1,9 @@
-<script context="module" lang="ts">
-	export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
-
-	export type TooltipOptions = {
-		message?: string;
-		position: TooltipPosition;
-	};
-</script>
-
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 
-	export let message: TooltipOptions['message'];
+	export let message: string;
+	export let position: 'top' | 'right' | 'bottom' | 'left' = 'top';
+	export let distance: number = 10;
 </script>
 
 <div in:fade={{ duration: 500 }} out:fade={{ duration: 500 }}>

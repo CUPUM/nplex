@@ -1,41 +1,41 @@
-<script lang="ts" context="module">
+<!-- <script lang="ts" context="module">
 </script>
 
 <script lang="ts">
 	import type { SampleParams } from '$components/_samples/Sample.svelte';
 	import Sample from '$components/_samples/Sample.svelte';
-	import Button, { buttonIconPositions, buttonKinds, buttonSizes } from '$components/primitives/Button.svelte';
+	import Button, { buttonIconPositions, buttonVariants, buttonSizes } from '$components/primitives/Button.svelte';
 	import Checkbox, { checkboxKinds } from '$components/primitives/Checkbox.svelte';
-	import Loading from '$components/loading/Loading.svelte';
+	import Loading from '$components/primitives/Loading.svelte';
 
 	const samples: SampleParams[] = [
 		{
 			name: 'Button',
 			comp: Button,
 			props: {
-				kind: buttonKinds,
+				kind: buttonVariants,
 				size: buttonSizes,
 				slot: 'text',
 				href: 'href',
 				icon: 'icon',
-				iconPosition: buttonIconPositions
-			}
+				iconPosition: buttonIconPositions,
+			},
 		},
 		{
 			name: 'Checkbox',
 			comp: Checkbox,
 			props: {
 				kind: checkboxKinds,
-				slot: 'text'
-			}
+				slot: 'text',
+			},
 		},
 		{
 			name: 'Loading',
 			comp: Loading,
 			props: {
-				logo: 'boolean'
-			}
-		}
+				logo: 'boolean',
+			},
+		},
 	];
 
 	let current = samples[0];
@@ -97,4 +97,4 @@
 		color: var(--color-dark-900);
 		background-color: var(--color-light-900);
 	}
-</style>
+</style> -->

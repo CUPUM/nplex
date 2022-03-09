@@ -11,3 +11,12 @@ body.os-host {
 		}
 	}
 }
+
+/*
+	Approche native
+*/
+.scroll {
+	@supports (overflow: overlay) {
+		overflow: overlay;
+	}
+}

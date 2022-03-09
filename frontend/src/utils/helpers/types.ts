@@ -1,0 +1,1 @@
+export type SvelteProps<T> = T extends Svelte2TsxComponent<infer U> ? U : never;

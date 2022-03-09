@@ -1,6 +1,4 @@
 <script context="module" lang="ts">
-	export type IconName = keyof typeof icons;
-
 	const cue = new Set();
 </script>
 
@@ -10,7 +8,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { draw, fade } from 'svelte/transition';
 
-	export let name: IconName;
+	export let name: keyof typeof icons;
 	export let highlightName: keyof typeof icons = null;
 	export let size: string = '1em';
 	export let color: string = 'var(--color-dark-500)';
@@ -37,7 +35,7 @@
 	onDestroy(() => {
 		clearTimeout(timeout);
 		cue.delete(instance);
-	})
+	});
 </script>
 
 <svg
@@ -64,12 +62,7 @@
 				/>
 			{/if}
 			{#if icon.fills}
-				<path
-					transition:fade={{ duration }}
-					d={icon.fills}
-					stroke="none"
-					class="fills"
-				/>
+				<path transition:fade={{ duration }} d={icon.fills} stroke="none" class="fills" />
 			{/if}
 		{/key}
 	{/if}

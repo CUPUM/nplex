@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Map as MLMap } from 'maplibre-gl';
-import Loading from '$components/loading/Loading.svelte';
-import { colors } from '$utils/colors';
+	import Loading from '$components/primitives/Loading.svelte';
+	import { colors } from '$utils/colors';
 
 	let loaded = false;
 	let container: HTMLElement;
@@ -23,7 +23,7 @@ import { colors } from '$utils/colors';
 			container,
 			style: 'https://demotiles.maplibre.org/style.json',
 			center: [0, 0],
-			zoom: 2 // starting zoom
+			zoom: 2, // starting zoom
 		});
 
 		function onInit() {

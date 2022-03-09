@@ -1,40 +1,41 @@
-<script context="module" lang="ts">
-	/* Kinds */
-	export const buttonKinds = ['normal', 'secondary', 'cta'] as const;
-	export type ButtonKind = typeof buttonKinds[number];
-	/* Sizes */
-	export const buttonSizes = ['xsmall', 'small', 'medium', 'large', 'xlarge'] as const;
-	export type ButtonSize = typeof buttonSizes[number];
-	/* Icon positions */
-	export const buttonIconPositions = ['left', 'right'] as const;
-	export type ButtonIconPosition = typeof buttonIconPositions[number];
-</script>
-
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
-	import type { IconName } from './Icon.svelte';
+	import { tooltip } from '$actions/tooltip';
+	import type { SvelteProps } from '$utils/helpers/types';
 	import Icon from './Icon.svelte';
-	export let kind: ButtonKind = 'normal';
-	export let size: ButtonSize = 'medium';
-	export let icon: IconName = null;
-	export let iconPosition: ButtonIconPosition = 'left';
+
+	export let variant: 'normal' | 'secondary' | 'cta' = 'normal';
+	export let size: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' = 'medium';
+	export let textAlign: 'left' | 'center' | 'right' = 'center';
+	export let display: 'inline' | 'block' = 'inline';
+	export let icon: SvelteProps<Icon>['name'] = undefined;
+	export let iconPosition: 'left' | 'right' = 'left';
+	export let warning: boolean = false;
 	export let square: boolean = false;
-	export let href: string = null;
+	export let href: string = undefined;
 	export let active: boolean = false;
-	export let tooltip: string = null;
+	export let disabled: boolean = false;
+	export let message: string = undefined;
+	export let loading: boolean = false;
 </script>
 
 {#if !href}
 	<button
 		use:ripple
+		use:tooltip={{ enabled: Boolean(message), message }}
 		on:click
 		on:focus
-		{...$$restProps}
-		class="{kind} {size}"
+		class="{variant} {size} {display} {textAlign}"
 		class:square={!$$slots.default || square}
+		class:active
+		class:warning
+		disabled={disabled || loading}
+		{...$$restProps}
 	>
 		{#if icon}
-			<Icon name={icon} />
+			<span class="icon {iconPosition}">
+				<Icon name={icon} />
+			</span>
 		{/if}
 		{#if $$slots.default}
 			<span class="label">
@@ -43,7 +44,7 @@
 		{/if}
 	</button>
 {:else}
-	<a on:click on:focus {...$$restProps} class="{kind} {size}" class:square={!$$slots.default || square} {href}>
+	<a on:click on:focus {...$$restProps} class="{variant} {size}" class:square={!$$slots.default || square} {href}>
 		{#if icon}
 			<Icon name={icon} />
 		{/if}

@@ -1,44 +1,55 @@
-import type { TooltipOptions } from 'src/types/tooltip';
 import type { SvelteComponent } from 'svelte';
-import { check_outros, group_outros, transition_out } from 'svelte/internal';
+import { outroAndDestroy } from '$utils/helpers/components';
+import type { SvelteProps } from '$utils/helpers/types';
 import Tooltip from '$components/primitives/Tooltip.svelte';
 
-// Workaround for https://github.com/sveltejs/svelte/issues/4056
-function outroAndDestroy(instance: SvelteComponent) {
-	if (instance.$$.fragment && instance.$$.fragment.o) {
-		group_outros();
-		transition_out(instance.$$.fragment, 0, 0, () => {
-			instance.$destroy();
-		});
-		check_outros();
-	} else {
-		instance.$destroy();
-	}
+interface TooltipOptions extends SvelteProps<Tooltip> {
+	enabled: boolean;
 }
 
-export function tooltip(element: HTMLElement, opts?: TooltipOptions): { destroy } {
+/**
+ * Action to attach a tooltip to a given element.
+ */
+export function tooltip(element: HTMLElement, {
+	message = undefined,
+	position = undefined,
+	distance = undefined,
+	enabled = true
+}: TooltipOptions) {
+
 	let tooltip: SvelteComponent;
-	const title = element.getAttribute('title');
+	let title = element.getAttribute('title');
+
+	message = message || title || undefined;
+	if (!title && message) {
+		title = message;
+		element.setAttribute('title', title);
+	}
 
 	function mouseenter() {
-		if (title) {
-			element.removeAttribute('title');
-		}
-		tooltip = new Tooltip({
-			target: document.body,
-			intro: true,
-			props: {
-				// Probablement une utilisation erronnée du nullish coalesc
-				message: opts?.message ?? title ?? null
+		if (enabled) {
+			if (title) {
+				element.removeAttribute('title');
 			}
-		});
+			tooltip = new Tooltip({
+				target: element,
+				intro: true,
+				props: {
+					message,
+					position,
+					distance
+				}
+			});
+		}
 	}
 
 	function mouseleave() {
 		if (title) {
 			element.setAttribute('title', title);
 		}
-		outroAndDestroy(tooltip);
+		if (tooltip) {
+			outroAndDestroy(tooltip);
+		}
 	}
 
 	element.addEventListener('mouseenter', mouseenter);

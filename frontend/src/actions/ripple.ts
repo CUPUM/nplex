@@ -1,4 +1,4 @@
-import { getUnits } from '$utils/helpers/strings';
+import { parseCSSValue } from '$utils/helpers/strings';
 
 const RIPPLE_GLOBALS = {
 	HOST_ATTRIBUTE: 'ripple-host',
@@ -51,8 +51,8 @@ export function ripple(element: HTMLElement, {
 		element.style.position = 'relative';
 	}
 
-	const parsedStartSize = startSize + (getUnits(startSize) ? '' : 'px');
-	const parsedEndSize = endSize ? endSize + (getUnits(endSize) ? '' : 'px') : Math.max(element.clientHeight, element.clientWidth) * 2 + 'px';
+	const parsedStartSize = startSize + (parseCSSValue(startSize).unit ? '' : 'px');
+	const parsedEndSize = endSize ? endSize + (parseCSSValue(endSize).unit ? '' : 'px') : Math.max(element.clientHeight, element.clientWidth) * 2 + 'px';
 	element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, parsedEndSize);
 	element.style.setProperty(RIPPLE_GLOBALS.END_COLOR, endColor ? endColor : startColor);
 
