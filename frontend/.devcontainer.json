@@ -22,7 +22,8 @@
 	"extensions": [
 		"esbenp.prettier-vscode",
 		"svelte.svelte-vscode",
-		"naumovs.color-highlight"
+		"naumovs.color-highlight",
+		"MarkosTh09.color-picker"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
