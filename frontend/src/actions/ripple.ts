@@ -33,7 +33,7 @@ export function ripple(element: HTMLElement, {
 	opacity = .5,
 	startColor = 'white',
 	startSize = 0,
-	scale = .98,
+	scale = .96,
 	endSize = undefined,
 	endColor = undefined
 }: RippleOptions = {}) {
@@ -46,6 +46,8 @@ export function ripple(element: HTMLElement, {
 
 	element.setAttribute(RIPPLE_GLOBALS.HOST_ATTRIBUTE, '');
 	element.style.overflow = 'hidden';
+	element.style.transformOrigin = 'center center';
+	element.style.transition = (style.transition ? style.transition + ', ' : '') + 'transform 80ms ease-in-out';
 	element.style.setProperty(RIPPLE_GLOBALS.SCALE, scale + '');
 	if (style.position === 'static') {
 		element.style.position = 'relative';
@@ -57,7 +59,7 @@ export function ripple(element: HTMLElement, {
 	element.style.setProperty(RIPPLE_GLOBALS.END_COLOR, endColor ? endColor : startColor);
 
 	function createRipple(e: MouseEvent) {
-		const rect = (e.target as HTMLElement).getBoundingClientRect();
+		const rect = element.getBoundingClientRect();
 		const r = document.createElement('div');
 		r.style.userSelect = 'none';
 		r.style.pointerEvents = 'none';
@@ -102,7 +104,6 @@ function createRippleStylesheet() {
 	sheet.textContent = `
 		[${RIPPLE_GLOBALS.HOST_ATTRIBUTE}]:active {
 			transform: scale(var(${RIPPLE_GLOBALS.SCALE}));
-			transition: transform 120ms ease;
 		}
 
 		@keyframes ${RIPPLE_GLOBALS.SPREAD_ANIMATION} {

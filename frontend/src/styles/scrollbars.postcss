@@ -15,8 +15,31 @@ body.os-host {
 /*
 	Approche native
 */
+body,
 .scroll {
 	@supports (overflow: overlay) {
 		overflow: overlay;
 	}
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+	border-radius: 4px;
+	box-shadow: none;
+}
+
+::-webkit-scrollbar-thumb {
+	position: relative;
+	background: var(--color-dark-100);
+	border-radius: 4px;
+	transition: background .3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-dark-500);
 }

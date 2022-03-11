@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ProjectsMap from '$components/projects/ProjectsMap.svelte';
-	import ProjectsList from '$components/projects/ProjectsList.svelte';
+	import ProjectsMap from '$components/complexes/ProjectsMap.svelte';
+	import ProjectsList from '$components/complexes/ProjectsList.svelte';
 	import ProjectsFilters from '$components/complexes/ProjectsFilters.svelte';
 	import { slide } from 'svelte/transition';
 	import { page } from '$app/stores';

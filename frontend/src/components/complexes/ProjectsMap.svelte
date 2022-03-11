@@ -22,8 +22,8 @@
 		map = new MLMap({
 			container,
 			style: 'https://demotiles.maplibre.org/style.json',
-			center: [0, 0],
-			zoom: 2, // starting zoom
+			center: [-73.65, 45.55],
+			zoom: 9.5,
 		});
 
 		function onInit() {

@@ -5,7 +5,7 @@
 <script lang="ts">
 	import { icons } from '$utils/icons/icons';
 	import { onDestroy, onMount } from 'svelte';
-	import { cubicOut } from 'svelte/easing';
+	import { cubicOut, linear, sineOut } from 'svelte/easing';
 	import { draw, fade } from 'svelte/transition';
 
 	export let name: keyof typeof icons;
@@ -15,7 +15,7 @@
 	export let strokeWidth: number | string = 1.5;
 	export let highlight: boolean = false;
 
-	const duration = 350;
+	const duration = 700;
 
 	let icon = icons[name];
 	let mounted = false;
@@ -47,12 +47,13 @@
 	style:--icon-color={color}
 	style:--strokeWidth={strokeWidth + ''}
 	class:highlight
+	preserveAspectRatio="xMidYMid"
 >
 	{#if mounted}
 		{#key icon}
 			{#if icon.strokes}
 				<path
-					transition:draw={{ duration, easing: cubicOut }}
+					transition:draw={{ duration, easing: linear }}
 					d={icon.strokes}
 					fill="none"
 					stroke-linejoin="round"

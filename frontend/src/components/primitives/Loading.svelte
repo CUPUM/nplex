@@ -1,10 +1,13 @@
 <script lang="ts">
+	import { colors } from '$utils/colors';
 	import { fade } from 'svelte/transition';
 
 	export let type: 'logo' | 'default' = 'default';
+	export let background: string = colors.light[500];
 </script>
 
 <div
+	style:background-color={background}
 	in:fade={{
 		duration: 150,
 	}}
@@ -20,7 +23,7 @@
 	div {
 		user-select: non;
 		pointer-events: none;
-		position: relative;
+		position: absolute;
 		width: 100%;
 		height: 100%;
 		display: flex;

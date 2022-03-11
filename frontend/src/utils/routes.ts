@@ -2,6 +2,7 @@ export interface Route {
 	href: string;
 	title: string;
 	parentRoute?: Route;
+	searchable?: boolean;
 }
 /**
  * Top navigation routes.
@@ -9,7 +10,8 @@ export interface Route {
 export const topRoutes: Route[] = [
 	{
 		href: '/',
-		title: 'Explorer'
+		title: 'Explorer',
+		searchable: true
 	},
 	{
 		href: '/nouvelles',
@@ -34,19 +36,22 @@ export const exploreRoutes: ExploreRoute[] = [
 		href: '/projets',
 		title: 'Projets',
 		category: 'projects',
-		parentRoute: rootRoute
+		parentRoute: rootRoute,
+		searchable: true
 	},
 	{
 		href: '/organisations',
 		title: 'Organisations',
 		category: 'organisations',
-		parentRoute: rootRoute
+		parentRoute: rootRoute,
+		searchable: true
 	},
 	{
 		href: '/acteurs',
 		title: 'Acteurs',
 		category: 'actors',
-		parentRoute: rootRoute
+		parentRoute: rootRoute,
+		searchable: true
 	}
 ]
 

@@ -1,6 +1,7 @@
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
-import { ExploreRoute, exploreRoutes } from '$utils/routes';
+import type { ExploreRoute } from '$utils/routes';
+import { exploreRoutes } from '$utils/routes';
 import { get, writable } from 'svelte/store';
 import { route, routeSegments } from './route';
 

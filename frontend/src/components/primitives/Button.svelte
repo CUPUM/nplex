@@ -4,8 +4,9 @@
 	import type { SvelteProps } from '$utils/helpers/types';
 	import Icon from './Icon.svelte';
 
-	export let variant: 'normal' | 'secondary' | 'cta' = 'normal';
+	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'normal';
 	export let size: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' = 'medium';
+	export let text: string = undefined;
 	export let textAlign: 'left' | 'center' | 'right' = 'center';
 	export let display: 'inline' | 'block' = 'inline';
 	export let icon: SvelteProps<Icon>['name'] = undefined;
@@ -25,97 +26,185 @@
 		use:tooltip={{ enabled: Boolean(message), message }}
 		on:click
 		on:focus
-		class="{variant} {size} {display} {textAlign}"
-		class:square={!$$slots.default || square}
+		class="{variant} {size} {display} text-{textAlign}"
+		class:square={!text || square}
 		class:active
 		class:warning
 		disabled={disabled || loading}
 		{...$$restProps}
 	>
 		{#if icon}
-			<span class="icon {iconPosition}">
-				<Icon name={icon} />
-			</span>
+			<div class="icon icon-{iconPosition}">
+				<Icon size="100%" name={icon} />
+			</div>
 		{/if}
-		{#if $$slots.default}
-			<span class="label">
-				<slot />
-			</span>
+		{#if text}
+			<div class="text">
+				{text}
+			</div>
 		{/if}
 	</button>
 {:else}
-	<a on:click on:focus {...$$restProps} class="{variant} {size}" class:square={!$$slots.default || square} {href}>
+	<a
+		use:ripple
+		use:tooltip={{ enabled: Boolean(message), message }}
+		on:click
+		on:focus
+		class="{variant} {size} {display} text-{textAlign}"
+		class:square={!text || square}
+		class:active
+		class:warning
+		disabled={disabled || loading}
+		{...$$restProps}
+		{href}
+	>
 		{#if icon}
-			<Icon name={icon} />
+			<div class="icon icon-{iconPosition}">
+				<Icon size="100%" name={icon} />
+			</div>
 		{/if}
-		{#if $$slots.default}
-			<span class="label">
-				<slot />
-			</span>
+		{#if text}
+			<div class="text">
+				{text}
+			</div>
 		{/if}
 	</a>
 {/if}
 
-<!-- <style lang="postcss">
+<style lang="postcss">
 	button,
 	a {
-		--height: 2.5em;
-		height: var(--height);
-		user-select: none;
-		position: relative;
-		display: inline-flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
+		/* Unsetting defaults */
+		all: unset;
+		/* Base */
 		cursor: pointer;
+		box-sizing: border-box;
+		position: relative;
+		white-space: nowrap;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		align-items: center;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		vertical-align: middle;
+		/* Testing */
+		font-size: var(--size-small);
+		--size: 2.8em;
+		height: var(--size);
+		min-height: var(--size);
+		min-width: var(--size);
+		border-radius: 1.2em;
 		padding-block: 0;
-		padding-inline: 1em;
-		margin: 0;
-		font-family: var(--font-misc);
-		font-weight: 600;
-		letter-spacing: 0.02em;
-		border: none;
-		border-radius: 0.9em;
+		padding-inline: 0.8em;
+		margin: 0.25rem;
+		font-family: var(--font-main);
+		font-weight: 500;
+		background-color: var(--color-primary-300);
+		transition: all 0.15s ease-out;
+
+		/* Misc */
+
+		&:hover,
+		&:focus {
+		}
+
+		&.active {
+		}
+
+		&.warning {
+		}
+
+		&:disabled {
+			pointer-events: none;
+			cursor: default;
+		}
+
+		&:active {
+			color: var(--color);
+		}
+	}
+
+	.text {
+		position: relative;
+		display: inline-block;
+		top: -0.05em;
+		vertical-align: middle;
+	}
+
+	.icon {
+		position: relative;
+		display: inline-block;
+		top: -0.15em;
+		vertical-align: middle;
+		width: 1.2em;
+		height: 1.2em;
 		overflow: hidden;
 	}
 
-	span {
-		position: relative;
-		top: -1px;
+	/* Display */
+
+	.block {
+		display: flex;
+		width: 100%;
+	}
+
+	.inline {
+		display: inline-flex;
 	}
 
 	.square {
-		width: var(--height);
+		justify-content: center;
+		width: var(--size);
 		padding: 0;
 	}
 
+	/* Variants */
+
+	.normal {
+	}
+
+	.secondary {
+	}
+
+	.cta {
+	}
+
+	.nav {
+	}
+
 	/* Sizes */
+
 	.xsmall {
 	}
+
 	.small {
-		font-size: var(--size-small);
 	}
+
 	.medium {
-		font-size: var(--size-medium);
 	}
+
 	.large {
-		font-weight: 550;
-		font-size: var(--size-large);
 	}
+
 	.xlarge {
 	}
 
-	/* Kinds */
-	.normal {
-		--color: var(--color-dark-700);
-		--background: var(--color-light-500);
+	/* Text alignment */
+
+	.text-left {
 	}
-	.secondary {
-		--color: purple;
-		--background: lightblue;
+
+	.text-center {
 	}
-	.cta {
-		--color: purple;
-		--background: lightblue;
+
+	.text-right {
 	}
-</style> -->
+
+	/* Icon position */
+
+	.icon-left {
+	}
+
+	.icon-right {
+	}
+</style>

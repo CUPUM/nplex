@@ -1,7 +1,6 @@
 {
 	"editor.formatOnPaste": false,
 	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"svelte.plugin.css.globals": "src/styles/*.css, src/styles/*.postcss, src/styles/*/**.css, src/styles/*/**.postcss",
 	"svelte.enable-ts-plugin": true,
 	"svelte.plugin.svelte.defaultScriptLanguage": "ts",

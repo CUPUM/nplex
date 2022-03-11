@@ -5,8 +5,10 @@
 
 import { base } from '$app/paths';
 import { page } from '$app/stores';
-import { ExploreRoute, exploreRoutes, Route, topRoutes } from '$utils/routes';
-import { derived, Readable } from 'svelte/store';
+import type { ExploreRoute, Route } from '$utils/routes';
+import { exploreRoutes, topRoutes } from '$utils/routes';
+import type { Readable } from 'svelte/store';
+import { derived } from 'svelte/store';
 
 /**
  * Store providing the current route path as an array of segments.

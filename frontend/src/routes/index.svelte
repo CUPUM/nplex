@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
+
+	export let projectsPreview;
+	export let organisationsPreview;
+	export let actorsPreview;
 </script>
 
 <section id="projects">

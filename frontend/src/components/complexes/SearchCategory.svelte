@@ -3,7 +3,8 @@
 	import { page } from '$app/stores';
 	import { route } from '$stores/route';
 	import { category } from '$stores/search';
-	import { ExploreRoute, exploreRoutes } from '$utils/routes';
+	import type { ExploreRoute } from '$utils/routes';
+	import { exploreRoutes } from '$utils/routes';
 	import { onDestroy, onMount } from 'svelte';
 
 	if (($route as ExploreRoute)?.category) {
