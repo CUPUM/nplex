@@ -26,21 +26,23 @@
 		use:tooltip={{ enabled: Boolean(message), message }}
 		on:click
 		on:focus
-		class="{variant} {size} {display} text-{textAlign}"
-		class:square={!text || square}
+		on:mouseenter
+		on:mouseleave
 		class:active
 		class:warning
+		class:square={(!text && !$$slots.default) || square}
+		class="{variant} {size} {display} text-{textAlign}"
 		disabled={disabled || loading}
 		{...$$restProps}
 	>
 		{#if icon}
 			<div class="icon icon-{iconPosition}">
-				<Icon size="100%" name={icon} />
+				<Icon size="100%" name={icon} color="var(--buttoncolor)" />
 			</div>
 		{/if}
-		{#if text}
-			<div class="text">
-				{text}
+		{#if text || $$slots.default}
+			<div class="label">
+				<slot>{text}</slot>
 			</div>
 		{/if}
 	</button>
@@ -50,10 +52,12 @@
 		use:tooltip={{ enabled: Boolean(message), message }}
 		on:click
 		on:focus
-		class="{variant} {size} {display} text-{textAlign}"
-		class:square={!text || square}
+		on:mouseenter
+		on:mouseleave
 		class:active
 		class:warning
+		class:square={(!text && !$$slots.default) || square}
+		class="{variant} {size} {display} text-{textAlign}"
 		disabled={disabled || loading}
 		{...$$restProps}
 		{href}
@@ -63,9 +67,9 @@
 				<Icon size="100%" name={icon} />
 			</div>
 		{/if}
-		{#if text}
-			<div class="text">
-				{text}
+		{#if text || $$slots.default}
+			<div class="label">
+				<slot>{text}</slot>
 			</div>
 		{/if}
 	</a>
@@ -77,6 +81,7 @@
 		/* Unsetting defaults */
 		all: unset;
 		/* Base */
+		--buttoncolor: var(--color-dark-100);
 		cursor: pointer;
 		box-sizing: border-box;
 		position: relative;
@@ -96,7 +101,7 @@
 		border-radius: 1.2em;
 		padding-block: 0;
 		padding-inline: 0.8em;
-		margin: 0.25rem;
+		margin: 0;
 		font-family: var(--font-main);
 		font-weight: 500;
 		background-color: var(--color-primary-300);
@@ -106,6 +111,7 @@
 
 		&:hover,
 		&:focus {
+			--buttoncolor: var(--color-primary-900);
 		}
 
 		&.active {
@@ -124,7 +130,7 @@
 		}
 	}
 
-	.text {
+	.label {
 		position: relative;
 		display: inline-block;
 		top: -0.05em;
@@ -191,13 +197,13 @@
 
 	/* Text alignment */
 
-	.text-left {
+	.label-left {
 	}
 
-	.text-center {
+	.label-center {
 	}
 
-	.text-right {
+	.label-right {
 	}
 
 	/* Icon position */

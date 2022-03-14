@@ -2,7 +2,8 @@
 	import { topRoutes } from '$utils/routes';
 	import Button from '$components/primitives/Button.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
-	import Dropdown from '$components/primitives/Dropdown.svelte';
+	import Popover from '$components/primitives/Popover.svelte';
+	import ButtonGroup from '$components/primitives/ButtonGroup.svelte';
 
 	let userExpand = false;
 </script>
@@ -13,16 +14,20 @@
 	</section>
 	<section id="main">
 		{#each topRoutes as route}
-			<Button size="small" href={route.href} text={route.title} />
+			<Button size="small" href={route.href}>{route.title}</Button>
 		{/each}
 	</section>
 	<section id="user">
 		<Button size="small" icon="home" />
 		<Button icon="info" />
-		<Dropdown bind:active={userExpand}>
-			<Button slot="trigger" size="small" icon="user" on:click={() => (userExpand = !userExpand)} />
-			test
-		</Dropdown>
+		<Popover bind:active={userExpand}>
+			<Button slot="control" size="small" icon="user" on:click={() => (userExpand = true)} />
+			<ButtonGroup direction="vertical">
+				<Button>Test</Button>
+				<Button>Test</Button>
+				<Button>Test</Button>
+			</ButtonGroup>
+		</Popover>
 		<Button size="small" icon="more" />
 		<!-- <Button icon="settings (three dots)" /> -->
 	</section>
@@ -43,6 +48,7 @@
 	section {
 		display: inline-flex;
 		flex-direction: row;
+		gap: 3px;
 	}
 
 	#logo {

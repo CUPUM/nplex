@@ -72,6 +72,8 @@ export function ripple(element: HTMLElement, {
 		r.style.transform = 'translate(-50%, -50%)';
 		r.style.top = e.clientY - rect.top + 'px';
 		r.style.left = e.clientX - rect.left + 'px';
+		// r.style.top = e.offsetY + 'px';
+		// r.style.left = e.offsetX + 'px';
 		r.style.animation = `${RIPPLE_GLOBALS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(0, 0, 0.2, 1) forwards, ${RIPPLE_GLOBALS.FADE_ANIMATION} ${fadeDuration}ms ease ${fadeDelay}ms forwards`;
 		element.appendChild(r);
 		r.onanimationend = ((e) => {

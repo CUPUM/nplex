@@ -11,11 +11,11 @@
 	export let name: keyof typeof icons;
 	export let highlightName: keyof typeof icons = null;
 	export let size: string = '1em';
-	export let color: string = 'var(--color-dark-500)';
-	export let strokeWidth: number | string = 1.5;
+	export let color: string = 'var(--color-dark-100)';
+	export let strokeWidth: number | string = 2;
 	export let highlight: boolean = false;
 
-	const duration = 700;
+	const duration = 500;
 
 	let icon = icons[name];
 	let mounted = false;
@@ -29,7 +29,7 @@
 		timeout = setTimeout(() => {
 			mounted = true;
 			cue.delete(instance);
-		}, [...cue].indexOf(instance) * (duration / 2));
+		}, [...cue].indexOf(instance) * (duration / 3));
 	});
 
 	onDestroy(() => {

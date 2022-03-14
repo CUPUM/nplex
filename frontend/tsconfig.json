@@ -33,7 +33,7 @@
 			"$transitions/*": ["src/transitions/*"],
 			"$utils/*": ["src/utils/*"],
 			"$icons/*": ["static/icons/*"]
-		}
+		},
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "scripts/*.ts"]
 }
