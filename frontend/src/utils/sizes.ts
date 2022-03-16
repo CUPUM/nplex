@@ -1,13 +1,12 @@
 export const sizes = {
-	xxxsmall: 8,
-	xxsmall: 10,
-	xsmall: 12,
-	small: 14,
-	medium: 16,
-	large: 20,
-	xlarge: 28,
-	xxlarge: 40,
-	xxxlarge: 56
+	xxsmall: 8,
+	xsmall: 10,
+	small: 12,
+	medium: 14,
+	large: 16,
+	xlarge: 20,
+	xxlarge: 28,
+	xxxlarge: 40
 };
 
 export const cssSizes =

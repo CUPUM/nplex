@@ -66,13 +66,12 @@ All manual modifications added here will be lost on next execution of the genera
 	--rgb-notice-500: 243, 91%, 69%;
 	--color-notice-900: hsl(245, 66%, 57%);
 	--rgb-notice-900: 245, 66%, 57%;
-	--size-xxxsmall: 8px;
-	--size-xxsmall: 10px;
-	--size-xsmall: 12px;
-	--size-small: 14px;
-	--size-medium: 16px;
-	--size-large: 20px;
-	--size-xlarge: 28px;
-	--size-xxlarge: 40px;
-	--size-xxxlarge: 56px;
+	--size-xxsmall: 8px;
+	--size-xsmall: 10px;
+	--size-small: 12px;
+	--size-medium: 14px;
+	--size-large: 16px;
+	--size-xlarge: 20px;
+	--size-xxlarge: 28px;
+	--size-xxxlarge: 40px;
 }

@@ -4,7 +4,7 @@ import type { SvelteProps } from '$utils/helpers/types';
 import Tooltip from '$components/primitives/Tooltip.svelte';
 
 interface TooltipOptions extends SvelteProps<Tooltip> {
-	enabled: boolean;
+	disabled: boolean;
 }
 
 /**
@@ -14,7 +14,7 @@ export function tooltip(element: HTMLElement, {
 	message = undefined,
 	position = undefined,
 	distance = undefined,
-	enabled = true
+	disabled = false
 }: TooltipOptions) {
 
 	let tooltip: SvelteComponent;
@@ -27,7 +27,7 @@ export function tooltip(element: HTMLElement, {
 	}
 
 	function mouseenter() {
-		if (enabled) {
+		if (!disabled) {
 			if (title) {
 				element.removeAttribute('title');
 			}

@@ -37,12 +37,16 @@ export function ripple(element: HTMLElement, {
 	disabled = false
 }: RippleOptions = {}) {
 
-	/* Create the stylesheet defining the ripple transitions */
+	/**
+	 * Create the stylesheet defining the ripple transitions
+	 */
 	if (!document.head.querySelector(`[${RIPPLE_GLOBALS.SHEET_ATTRIBUTE}]`)) {
 		createRippleStylesheet();
 	}
 	
-	/* Prepare the host element */
+	/**
+	 * Prepare the host element
+	 */
 	const style = getComputedStyle(element);
 	element.setAttribute(RIPPLE_GLOBALS.HOST_ATTRIBUTE, '');
 	element.style.overflow = 'hidden';
@@ -55,7 +59,9 @@ export function ripple(element: HTMLElement, {
 
 	let ripple: HTMLElement;
 
-	/* Create ripple fn */
+	/**
+	 * Create ripple fn
+	 */
 	function createRipple(e: MouseEvent) {
 		const rect = element.getBoundingClientRect();
 		ripple = document.createElement('div');
@@ -74,24 +80,37 @@ export function ripple(element: HTMLElement, {
 		element.appendChild(ripple);
 	}
 
-	/* Clear ripple fn */
+	/**
+	 * Clear ripple fn
+	 */
 	function clearRipple() {
 		const r = ripple;
-		r.style.animation = r.style.animation + `, ${RIPPLE_GLOBALS.FADE_ANIMATION} ${fadeDuration}ms ease-in-out ${fadeDelay}ms forwards`
-		r.onanimationend = ((e) => {
-			if (e.animationName === RIPPLE_GLOBALS.FADE_ANIMATION) {
-				r.remove();
-			}
-		});
+		if (r) {
+			r.style.animation = r.style.animation + `, ${RIPPLE_GLOBALS.FADE_ANIMATION} ${fadeDuration}ms ease-in-out ${fadeDelay}ms forwards`
+			r.onanimationend = ((e) => {
+				if (e.animationName === RIPPLE_GLOBALS.FADE_ANIMATION) {
+					r.remove();
+				}
+			});
+		}
 	}
 
-	element.addEventListener('pointerdown', createRipple);
-	element.addEventListener('pointerleave', clearRipple);
-	element.addEventListener('pointerup', clearRipple);
+	function setListeners() {
+		element.addEventListener('pointerdown', createRipple);
+		element.addEventListener('pointerleave', clearRipple);
+		element.addEventListener('pointerup', clearRipple);
+	}
+
+	if (!disabled) {
+		setListeners();
+	}
 
 	return {
 		update(newParams: RippleOptions) {
-			// update stuff here
+			if (disabled && !newParams.disabled) {
+				disabled = newParams.disabled;
+				setListeners();
+			}
 		},
 		destroy() {
 			element.removeEventListener('pointerdown', createRipple);
