@@ -26,12 +26,12 @@
 		padding-block: var(--size-medium);
 		padding-inline: var(--size-large);
 		width: 100%;
-		height: 100%;
 		min-height: 600px;
 		flex: 1;
 		display: flex;
 		flex-direction: row;
 		--gap: 8px;
+		overflow: hidden;
 	}
 
 	section > :global(section) {
@@ -43,7 +43,7 @@
 		margin-right: var(--gap);
 	}
 
-	article {
+	/* article {
 		position: relative;
-	}
+	} */
 </style>

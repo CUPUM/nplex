@@ -11,17 +11,13 @@
 </script>
 
 <Nav />
-<main>
-	{#if $route.searchable}
-		<Search />
-	{/if}
-	<slot />
-</main>
+{#if $route.searchable}
+	<Search />
+{/if}
+<slot />
 
 <!-- {#if !mounted}
 	<Loading type="logo" />
 {/if} -->
 <style>
-	main {
-	}
 </style>

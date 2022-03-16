@@ -65,4 +65,5 @@ For more granular scripts, make sure to `cd` into a package's directory.
 ## To do
 
 - [ ] Setup nginx
-- [ ] Setup self-hosted supabase package(s)
+- [ ] Setup self-hosted supabase services' package(s)
+- [ ] Setup deployment pipeline

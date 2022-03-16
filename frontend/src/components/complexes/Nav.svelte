@@ -10,7 +10,9 @@
 
 <nav>
 	<section id="logo">
-		<Logo intro={true} />
+		<a href="/">
+			<Logo intro={true} />
+		</a>
 	</section>
 	<section id="main">
 		{#each topRoutes as route}

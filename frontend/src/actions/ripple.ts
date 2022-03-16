@@ -7,8 +7,7 @@ const RIPPLE_GLOBALS = {
 	FADE_ANIMATION: 'ripple-fade',
 	PRESS_ANIMATION: 'ripple-host-press',
 	END_SIZE: '--ripple-end-size',
-	END_COLOR: '--ripple-end-color',
-	SCALE: '--ripple-host-scale'
+	END_COLOR: '--ripple-end-color'
 };
 
 interface RippleOptions {
@@ -20,62 +19,65 @@ interface RippleOptions {
 	startSize?: number | string;
 	endColor?: string;
 	endSize?: number | string;
-	scale?: number;
+	disabled?: boolean;
 }
 
 /**
  * Action to add ripple effect on host element, triggered on click event.
  */
 export function ripple(element: HTMLElement, {
-	spreadDuration = 650,
-	fadeDuration = 1000,
-	fadeDelay = 350,
-	opacity = .5,
+	spreadDuration = 300,
+	fadeDuration = 500,
+	fadeDelay = 250,
+	opacity = .2,
 	startColor = 'white',
 	startSize = 0,
-	scale = .96,
 	endSize = undefined,
-	endColor = undefined
+	endColor = undefined,
+	disabled = false
 }: RippleOptions = {}) {
 
+	/* Create the stylesheet defining the ripple transitions */
 	if (!document.head.querySelector(`[${RIPPLE_GLOBALS.SHEET_ATTRIBUTE}]`)) {
 		createRippleStylesheet();
 	}
-
+	
+	/* Prepare the host element */
 	const style = getComputedStyle(element);
-
 	element.setAttribute(RIPPLE_GLOBALS.HOST_ATTRIBUTE, '');
 	element.style.overflow = 'hidden';
-	element.style.transformOrigin = 'center center';
-	element.style.transition = (style.transition ? style.transition + ', ' : '') + 'transform 80ms ease-in-out';
-	element.style.setProperty(RIPPLE_GLOBALS.SCALE, scale + '');
-	if (style.position === 'static') {
-		element.style.position = 'relative';
-	}
-
+	if (!element.style.transformOrigin) element.style.transformOrigin = 'center center';
+	if (style.position === 'static') element.style.position = 'relative';
 	const parsedStartSize = startSize + (parseCSSValue(startSize).unit ? '' : 'px');
 	const parsedEndSize = endSize ? endSize + (parseCSSValue(endSize).unit ? '' : 'px') : Math.max(element.clientHeight, element.clientWidth) * 2 + 'px';
 	element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, parsedEndSize);
 	element.style.setProperty(RIPPLE_GLOBALS.END_COLOR, endColor ? endColor : startColor);
 
+	let ripple: HTMLElement;
+
+	/* Create ripple fn */
 	function createRipple(e: MouseEvent) {
 		const rect = element.getBoundingClientRect();
-		const r = document.createElement('div');
-		r.style.userSelect = 'none';
-		r.style.pointerEvents = 'none';
-		r.style.position = 'absolute';
-		r.style.opacity = opacity + '';
-		r.style.backgroundColor = startColor;
-		r.style.width = parsedStartSize;
-		r.style.height = parsedStartSize;
-		r.style.borderRadius = '50%';
-		r.style.transform = 'translate(-50%, -50%)';
-		r.style.top = e.clientY - rect.top + 'px';
-		r.style.left = e.clientX - rect.left + 'px';
-		// r.style.top = e.offsetY + 'px';
-		// r.style.left = e.offsetX + 'px';
-		r.style.animation = `${RIPPLE_GLOBALS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(0, 0, 0.2, 1) forwards, ${RIPPLE_GLOBALS.FADE_ANIMATION} ${fadeDuration}ms ease ${fadeDelay}ms forwards`;
-		element.appendChild(r);
+		ripple = document.createElement('div');
+		ripple.style.userSelect = 'none';
+		ripple.style.pointerEvents = 'none';
+		ripple.style.position = 'absolute';
+		ripple.style.opacity = opacity + '';
+		ripple.style.backgroundColor = startColor;
+		ripple.style.width = parsedStartSize;
+		ripple.style.height = parsedStartSize;
+		ripple.style.borderRadius = '50%';
+		ripple.style.transform = 'translate(-50%, -50%)';
+		ripple.style.top = e.clientY - rect.top + 'px';
+		ripple.style.left = e.clientX - rect.left + 'px';
+		ripple.style.animation = `${RIPPLE_GLOBALS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(0, 0, 0, 1) forwards`;
+		element.appendChild(ripple);
+	}
+
+	/* Clear ripple fn */
+	function clearRipple() {
+		const r = ripple;
+		r.style.animation = r.style.animation + `, ${RIPPLE_GLOBALS.FADE_ANIMATION} ${fadeDuration}ms ease-in-out ${fadeDelay}ms forwards`
 		r.onanimationend = ((e) => {
 			if (e.animationName === RIPPLE_GLOBALS.FADE_ANIMATION) {
 				r.remove();
@@ -83,18 +85,18 @@ export function ripple(element: HTMLElement, {
 		});
 	}
 
-	function click(e) {
-		createRipple(e);
-	}
-
-	element.addEventListener('click', click);
+	element.addEventListener('pointerdown', createRipple);
+	element.addEventListener('pointerleave', clearRipple);
+	element.addEventListener('pointerup', clearRipple);
 
 	return {
 		update(newParams: RippleOptions) {
 			// update stuff here
 		},
 		destroy() {
-			element.removeEventListener('click', click);
+			element.removeEventListener('pointerdown', createRipple);
+			element.removeEventListener('pointerleave', clearRipple);
+			element.removeEventListener('pointerup', clearRipple);
 		}
 	};
 }
@@ -104,10 +106,6 @@ function createRippleStylesheet() {
 	sheet.setAttribute('type', 'text/css');
 	sheet.setAttribute(RIPPLE_GLOBALS.SHEET_ATTRIBUTE, '');
 	sheet.textContent = `
-		[${RIPPLE_GLOBALS.HOST_ATTRIBUTE}]:active {
-			transform: scale(var(${RIPPLE_GLOBALS.SCALE}));
-		}
-
 		@keyframes ${RIPPLE_GLOBALS.SPREAD_ANIMATION} {
 			to {
 				width: var(${RIPPLE_GLOBALS.END_SIZE});

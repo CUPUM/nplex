@@ -21,7 +21,7 @@
 	onMount(() => {
 		map = new MLMap({
 			container,
-			style: 'https://demotiles.maplibre.org/style.json',
+			style: 'https://api.maptiler.com/maps/052b0a19-3d8d-4610-9bb1-e4be24d4c355/style.json?key=dtV5LH1SmQB4VOb80qqI',
 			center: [-73.65, 45.55],
 			zoom: 9.5,
 		});

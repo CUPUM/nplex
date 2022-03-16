@@ -1,19 +1,24 @@
 <script lang="ts">
-	import SearchToken from './SearchToken.svelte';
+	import Token from '$components/primitives/Token.svelte';
+
 	let tokens = ['token 1', 'token 2', 'token 3', 'token 4'];
 </script>
 
 <fieldset id="tokens">
 	<ul>
 		{#each tokens as token}
-			<SearchToken>
+			<Token>
 				{token}
-			</SearchToken>
+			</Token>
 		{/each}
 	</ul>
 </fieldset>
 
 <style>
+	fieldset {
+		border: none;
+	}
+
 	ul {
 		display: inline-flex;
 		padding: 0;

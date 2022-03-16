@@ -2,8 +2,9 @@ import type { Map as MLMap } from 'maplibre-gl';
 import { derived, writable } from 'svelte/store';
 import { projectsFilters, term } from './search';
 
-/** Projects UI and general purpose data stores */
-
+/**
+ * Projects UI and general purpose data stores
+ */
 export const showProjectsFilters = (function () {
 	const { subscribe, set, update } = writable(false);
 	return {
@@ -13,8 +14,9 @@ export const showProjectsFilters = (function () {
 	};
 })();
 
-/** Projects' map store for contextless use across the app */
-
+/**
+ * Projects' map store for contextless use across the app
+ */
 export const projectsMap = (function () {
 	const { subscribe, set } = writable<MLMap>(null);
 	return {
@@ -22,8 +24,9 @@ export const projectsMap = (function () {
 	};
 })();
 
-/** Fetched projects from the database */
-
+/**
+ * Fetched projects from the database
+ */
 export const projects = derived([term, projectsFilters], (search, projectsFilters) => {
 	console.log(search, projectsFilters);
 });

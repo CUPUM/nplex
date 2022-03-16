@@ -6,10 +6,7 @@
 </script>
 
 <!-- use:customScrollbar={{ overflowBehavior: { x: 'hidden' } }} -->
-<section
-	transition:width|local={{ duration: 350 }}
-	use:customScrollbar={{ overflowBehavior: { x: 'hidden' } }}
->
+<section transition:width|local={{ duration: 350 }}>
 	<form>
 		<h1>Filtres</h1>
 		<fieldset>
@@ -33,7 +30,7 @@
 		background-color: var(--color-light-300);
 		transition: all 0.5s ease;
 		overflow-x: hidden;
-		overflow-y: auto;
+		overflow-y: scroll;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
