@@ -30,8 +30,8 @@
 		resizeObs = new ResizeObserver(() => {
 			setPosition();
 		});
-		mutationObs.observe(controlRef, {});
-		mutationObs.observe(controlRef.offsetParent, {});
+		mutationObs.observe(controlRef, { attributes: true });
+		mutationObs.observe(controlRef.offsetParent, { attributes: true });
 		resizeObs.observe(controlRef, {});
 		resizeObs.observe(controlRef.offsetParent, {});
 	});
@@ -63,12 +63,11 @@
 		pointer-events: none;
 		user-select: none;
 		position: absolute;
-		width: 2px;
-		height: 2px;
+		width: 0px;
+		height: 0px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: red;
 	}
 
 	.popover {

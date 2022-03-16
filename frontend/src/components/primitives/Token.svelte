@@ -23,6 +23,7 @@
 
 <style lang="postcss">
 	div {
+		user-select: none;
 		position: relative;
 		display: flex;
 		align-items: center;

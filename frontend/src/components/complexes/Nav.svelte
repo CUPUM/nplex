@@ -4,8 +4,11 @@
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
 	import ButtonGroup from '$components/primitives/ButtonGroup.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 
 	let userExpand = false;
+	const size = 'small';
+	const variant = 'nav';
 </script>
 
 <nav>
@@ -16,21 +19,29 @@
 	</section>
 	<section id="main">
 		{#each topRoutes as route}
-			<Button size="small" href={route.href}>{route.title}</Button>
+			<Button {size} {variant} href={route.href}>{route.title}</Button>
 		{/each}
 	</section>
 	<section id="user">
-		<Button size="small" icon="home" />
-		<Button icon="info" />
+		<Button {size} {variant} square={true}>
+			<Icon name="home" />
+		</Button>
+		<Button {size} {variant} square={true}>
+			<Icon name="info" />
+		</Button>
 		<Popover bind:active={userExpand}>
-			<Button slot="control" size="small" icon="user" on:click={() => (userExpand = true)} />
+			<Button {size} {variant} slot="control" square={true} on:click={() => (userExpand = true)}>
+				<Icon name="user" />
+			</Button>
 			<ButtonGroup direction="vertical">
 				<Button>Test</Button>
 				<Button>Test</Button>
 				<Button>Test</Button>
 			</ButtonGroup>
 		</Popover>
-		<Button size="small" icon="more" />
+		<Button {size} {variant} square={true}>
+			<Icon name="more" />
+		</Button>
 		<!-- <Button icon="settings (three dots)" /> -->
 	</section>
 </nav>
@@ -39,18 +50,27 @@
 	nav {
 		position: relative;
 		top: 0;
-		display: flex;
-		flex-direction: row;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
-		justify-content: space-between;
-		padding: 0.5rem 1.5rem;
+		padding: 1rem 1.5rem;
 		background-color: var(--color-light-500);
 	}
 
 	section {
 		display: inline-flex;
+		flex: 1;
 		flex-direction: row;
+		justify-content: center;
 		gap: 3px;
+
+		&:first-child {
+			justify-content: flex-start;
+		}
+
+		&:last-child {
+			justify-content: flex-end;
+		}
 	}
 
 	#logo {

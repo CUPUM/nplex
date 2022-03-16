@@ -16,6 +16,7 @@
 
 <style>
 	fieldset {
+		flex: 1;
 		border: none;
 	}
 

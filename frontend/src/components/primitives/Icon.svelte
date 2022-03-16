@@ -10,9 +10,9 @@
 
 	export let name: keyof typeof icons;
 	export let highlightName: keyof typeof icons = null;
-	export let size: string = '1em';
+	export let size: string = '1.25em';
 	export let color: string = 'var(--color-dark-100)';
-	export let strokeWidth: number | string = 2;
+	export let strokeWidth: number | string = 1.5;
 	export let highlight: boolean = false;
 
 	const duration = 500;

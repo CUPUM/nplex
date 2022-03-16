@@ -14,7 +14,7 @@
 <style>
 	fieldset {
 		position: relative;
-		flex: 1 0;
+		flex: 1;
 		display: flex;
 		flex-direction: row;
 		border: none;

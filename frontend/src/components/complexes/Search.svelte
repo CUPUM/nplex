@@ -25,7 +25,10 @@
 	form {
 		position: relative;
 		width: 100%;
-		display: flex;
-		flex-direction: row;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		align-items: center;
+		padding-block: 0;
+		padding-inline: 1.5rem;
 	}
 </style>
