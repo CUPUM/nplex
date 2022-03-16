@@ -64,11 +64,6 @@ const creationBase = '/creer';
  */
 export const creationRoutes: CreationRoute[] = [
 	{
-		href: creationBase + '/site',
-		title: 'Nouveau site de projet(s)',
-		category: 'projects'
-	},
-	{
 		href: creationBase + '/projet',
 		title: 'Nouveau projet',
 		category: 'projects'
