@@ -50,14 +50,18 @@ For the time being, the only global (workspace level) scripts defined are to ins
 You can install everything at once:
 
 ```sh
-# install all...
+pnpm install
 ```
 
 ...Or install specific service packages
 
 ```sh
-# install frontend...
-# install backend...
+# Frontend
+pnpm install:frontend
+
+# Backend
+
+# Webserver
 ```
 
 For more granular scripts, make sure to `cd` into a package's directory.
