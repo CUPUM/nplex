@@ -1,15 +1,14 @@
 <script lang="ts" context="module">
-	import { writable, type Writable } from 'svelte/store';
+	import type { Writable } from 'svelte/store';
 	export interface SwitchSetContext {
 		name: string;
-		variant: string;
-		size: string;
 		current: Writable<HTMLElement>;
 	}
 </script>
 
 <script lang="ts">
 	import { onDestroy, onMount, setContext } from 'svelte';
+	import { writable } from 'svelte/store';
 
 	export let name: string;
 	export let variant: 'primary' | 'secondary' | 'nav' | 'ghost' = 'primary';
@@ -19,24 +18,24 @@
 	let fieldset: HTMLFieldSetElement;
 	let current: SwitchSetContext['current'] = writable(null);
 	let style: string;
-
-	// function setStyle() {
-	// 	if ($current) {
-	// 		style = `top: ${$current.offsetTop}px; left: ${$current.offsetLeft}px; width: ${$current.offsetWidth}px; height: ${$current.offsetHeight}px;`;
-	// 	}
-	// }
-
-	// $: setStyle(), $current;
-
-	// onMount(() => {
-	// 	setStyle();
-	// });
+	let obs: ResizeObserver;
 
 	setContext<SwitchSetContext>('switchset', {
 		name,
-		variant,
-		size,
 		current,
+	});
+
+	function setStyle() {
+		if ($current) {
+			style = `top: ${$current.offsetTop}px; left: ${$current.offsetLeft}px; width: ${$current.offsetWidth}px; height: ${$current.offsetHeight}px;`;
+		}
+	}
+
+	$: $current, setStyle();
+
+	onMount(() => {
+		obs = new ResizeObserver(setStyle);
+		obs.observe(fieldset);
 	});
 
 	onDestroy(() => {});
@@ -50,19 +49,22 @@
 <style>
 	fieldset {
 		position: relative;
-		padding: 0;
+		border: none;
+		padding: 4px;
 		display: inline-flex;
 		flex-direction: row;
 		align-items: stretch;
 		justify-content: center;
 		gap: 0;
-		height: 3em;
+		height: 2.8em;
+		border-radius: 1em;
+		background-color: var(--color-light-300);
 	}
 
 	#indicator {
 		position: absolute;
-		background-color: white;
+		background-color: var(--color-primary-100);
 		transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
-		border-radius: 1em;
+		border-radius: 0.85em;
 	}
 </style>

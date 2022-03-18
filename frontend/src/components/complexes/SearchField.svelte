@@ -1,15 +1,19 @@
 <script lang="ts">
+	import Field from '$components/primitives/Field.svelte';
+	import FieldButton from '$components/primitives/FieldButton.svelte';
+	import FieldIcon from '$components/primitives/FieldIcon.svelte';
+	import FieldSet from '$components/primitives/FieldSet.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import { showProjectsFilters } from '$stores/projects';
 	import { term } from '$stores/search';
 </script>
 
-<fieldset>
-	<input id="search" type="search" bind:value={$term} />
-	<label for="search"><Icon name="user" size="1em" color="red" /></label>
-	<button type="button" on:click={showProjectsFilters.toggle}>Filtres</button>
-	<button type="submit">Chercher</button>
-</fieldset>
+<FieldSet>
+	<Field id="search" type="search" bind:value={$term} />
+	<FieldIcon />
+	<FieldButton on:click={showProjectsFilters.toggle}>Filtres</FieldButton>
+	<FieldButton type="submit">Chercher</FieldButton>
+</FieldSet>
 
 <style>
 	fieldset {

@@ -5,7 +5,7 @@
 
 import { base } from '$app/paths';
 import { page } from '$app/stores';
-import type { ExploreRoute, Route } from '$utils/routes';
+import { userRoute, type ExploreRoute, type Route } from '$utils/routes';
 import { exploreRoutes, topRoutes } from '$utils/routes';
 import type { Readable } from 'svelte/store';
 import { derived } from 'svelte/store';
@@ -28,7 +28,7 @@ export const routeSegments = derived(page, ($page) => {
  * in /utils/routes.ts that corresponds to the current page.url.pathname.
  */
 export const route = derived(routeSegments, ($routeSegments) => {
-	return <Route | ExploreRoute>[...topRoutes, ...exploreRoutes].find((route) => route.href === $routeSegments[0]);
+	return <Route | ExploreRoute>[...topRoutes, ...exploreRoutes, userRoute, ...exploreRoutes].find((route) => route.href === $routeSegments[0]);
 });
 
 /**

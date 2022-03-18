@@ -19,6 +19,7 @@ interface RippleOptions {
 	startSize?: number | string;
 	endColor?: string;
 	endSize?: number | string;
+	blur?: number;
 	disabled?: boolean;
 }
 
@@ -26,14 +27,15 @@ interface RippleOptions {
  * Action to add ripple effect on host element, triggered on click event.
  */
 export function ripple(element: HTMLElement, {
-	spreadDuration = 300,
+	spreadDuration = 350,
 	fadeDuration = 500,
-	fadeDelay = 250,
+	fadeDelay = 50,
 	opacity = .2,
-	startColor = 'white',
+	startColor = 'currentColor',
 	startSize = 0,
 	endSize = undefined,
 	endColor = undefined,
+	blur = 2,
 	disabled = false
 }: RippleOptions = {}) {
 
@@ -76,6 +78,7 @@ export function ripple(element: HTMLElement, {
 		ripple.style.transform = 'translate(-50%, -50%)';
 		ripple.style.top = e.clientY - rect.top + 'px';
 		ripple.style.left = e.clientX - rect.left + 'px';
+		ripple.style.filter = `blur(${blur}px)`;
 		ripple.style.animation = `${RIPPLE_GLOBALS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(0, 0, 0, 1) forwards`;
 		element.appendChild(ripple);
 	}

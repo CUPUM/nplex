@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { topRoutes } from '$utils/routes';
+	import { topRoutes, userRoute } from '$utils/routes';
 	import Button from '$components/primitives/Button.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
-	import ButtonGroup from '$components/primitives/ButtonGroup.svelte';
+	import ButtonSet from '$components/primitives/ButtonSet.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
+	import { topRoute } from '$stores/route';
 
 	let userExpand = false;
 	const size = 'small';
@@ -19,29 +20,30 @@
 	</section>
 	<section id="main">
 		{#each topRoutes as route}
-			<Button {size} {variant} href={route.href}>{route.title}</Button>
+			<Button {size} {variant} active={route === $topRoute} href={route.href}>{route.title}</Button>
 		{/each}
 	</section>
 	<section id="user">
-		<Button {size} {variant} square={true}>
-			<Icon name="home" />
-		</Button>
-		<Button {size} {variant} square={true}>
-			<Icon name="info" />
-		</Button>
+		<Button {size} {variant} square={true} icon="home" />
+		<Button {size} {variant} square={true} icon="info" />
+		<!-- if !$session, cancelnav and show Auth compoenent, else go to /user -->
+		<Button {size} {variant} href={userRoute.href} icon="user" />
 		<Popover bind:active={userExpand}>
-			<Button {size} {variant} slot="control" square={true} on:click={() => (userExpand = true)}>
-				<Icon name="user" />
-			</Button>
-			<ButtonGroup direction="vertical">
-				<Button>Test</Button>
-				<Button>Test</Button>
-				<Button>Test</Button>
-			</ButtonGroup>
+			<Button
+				{size}
+				{variant}
+				slot="control"
+				square={true}
+				active={userExpand}
+				on:click={() => (userExpand = true)}
+				icon="more"
+			/>
+			<ButtonSet direction="vertical">
+				<Button>Paramètres</Button>
+				<Button icon="user">Information</Button>
+				<Button>Te123123st</Button>
+			</ButtonSet>
 		</Popover>
-		<Button {size} {variant} square={true}>
-			<Icon name="more" />
-		</Button>
 		<!-- <Button icon="settings (three dots)" /> -->
 	</section>
 </nav>

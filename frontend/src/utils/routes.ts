@@ -79,3 +79,8 @@ export const creationRoutes: CreationRoute[] = [
 		category: 'actors'
 	}
 ]
+
+export const userRoute: Route = {
+	href: '/compte',
+	title: 'Mon compte',
+}

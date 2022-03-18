@@ -8,13 +8,25 @@
 	import { rootRoute } from '$utils/routes';
 	import { onMount } from 'svelte';
 	import Loading from '$components/primitives/Loading.svelte';
+	import Auth from '$components/complexes/Auth.svelte';
+	import { db } from '$utils/database';
+	import { session } from '$app/stores';
+	import { browser } from '$app/env';
+
+	if (browser) {
+		$session = db.auth.session();
+		db.auth.onAuthStateChange((e, s) => {
+			$session = s;
+		});
+	}
 </script>
 
 <Nav />
-{#if $route.searchable}
+{#if $route?.searchable}
 	<Search />
 {/if}
 <slot />
+<Auth />
 
 <!-- {#if !mounted}
 	<Loading type="logo" />

@@ -6,7 +6,9 @@
 
 	export let active: boolean = false;
 	/* To do: Preferred position, should be adjusted automatically if doesn't fit in viewport */
-	export let position: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
+	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
+	export let align: 'start' | 'center' | 'end' = 'center';
+	export let distance: number = 10;
 
 	let controlRef: HTMLElement;
 	let popoverRef: HTMLElement;
@@ -14,22 +16,28 @@
 	let resizeObs: ResizeObserver;
 	let y;
 	let x;
+	let w;
+	let h;
 
-	function setPosition() {
-		y = controlRef?.offsetTop + controlRef?.offsetHeight / 2 + 'px';
-		x = controlRef?.offsetLeft + controlRef?.offsetWidth / 2 + 'px';
+	$: if (active) {
+		setPlace();
+	}
+
+	function setPlace() {
+		if (controlRef) {
+			y = controlRef.offsetTop + 'px';
+			x = controlRef.offsetLeft + 'px';
+			w = controlRef.offsetWidth + 'px';
+			h = controlRef.offsetHeight + 'px';
+		}
 	}
 
 	onMount(() => {
 		controlRef = popoverRef.previousElementSibling as HTMLElement;
-		setPosition();
-		controlRef.ontransitionend = setPosition;
-		mutationObs = new MutationObserver(() => {
-			setPosition();
-		});
-		resizeObs = new ResizeObserver(() => {
-			setPosition();
-		});
+		setPlace();
+		controlRef.ontransitionend = setPlace;
+		mutationObs = new MutationObserver(setPlace);
+		resizeObs = new ResizeObserver(setPlace);
 		mutationObs.observe(controlRef, { attributes: true });
 		mutationObs.observe(controlRef.offsetParent, { attributes: true });
 		resizeObs.observe(controlRef, {});
@@ -44,15 +52,18 @@
 
 <slot name="control" />
 <div
-	class="placer"
+	class="placer {placement}"
 	bind:this={popoverRef}
 	use:clickoutside
 	on:clickoutside={() => (active = false)}
-	style:top={y}
-	style:left={x}
+	style:--y={y}
+	style:--x={x}
+	style:--w={w}
+	style:--h={h}
+	style:--distance="{distance}px"
 >
 	{#if active}
-		<div class="popover {position}" {...$$restProps} transition:scale={{ easing: expoInOut, duration: 200 }}>
+		<div class="popover" {...$$restProps} transition:scale={{ start: 0.8, easing: expoInOut, duration: 200 }}>
 			<slot />
 		</div>
 	{/if}
@@ -63,8 +74,9 @@
 		pointer-events: none;
 		user-select: none;
 		position: absolute;
-		width: 0px;
-		height: 0px;
+		height: 0;
+		width: 0;
+		background-color: transparent;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -74,25 +86,50 @@
 		pointer-events: all;
 		user-select: initial;
 		z-index: 100;
-		position: relative;
-		left: 0;
+		position: absolute;
+	}
 
-		/* &.top {
-			bottom: 100%;
-			margin-bottom: var(--distance);
-			transform-origin: bottom center;
+	.top {
+		top: var(--y);
+		left: var(--x);
+		width: var(--w);
+
+		& .popover {
+			transform-origin: center bottom;
+			bottom: var(--distance);
 		}
+	}
 
-		&.bottom {
-			top: 100%;
-			margin-top: var(--distance);
-			transform-origin: top center;
-		} */
+	.bottom {
+		top: calc(var(--y) + var(--h));
+		left: var(--x);
+		width: var(--w);
 
-		&.right {
+		& .popover {
+			transform-origin: center top;
+			top: var(--distance);
 		}
+	}
 
-		&.left {
+	.right {
+		top: var(--y);
+		left: calc(var(--x) + var(--w));
+		height: var(--h);
+
+		& .popover {
+			transform-origin: left center;
+			left: var(--distance);
+		}
+	}
+
+	.left {
+		top: var(--y);
+		left: var(--x);
+		height: var(--h);
+
+		& .popover {
+			transform-origin: right center;
+			right: var(--distance);
 		}
 	}
 </style>

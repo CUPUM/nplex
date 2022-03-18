@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
 	import { tooltip } from '$actions/tooltip';
+	import type { SvelteProps } from '$utils/helpers/types';
+	import Icon from './Icon.svelte';
 
 	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'normal';
 	export let size: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' = 'medium';
 	export let contentAlign: 'left' | 'center' | 'right' = 'center';
 	export let display: 'inline' | 'block' = 'inline';
+	export let icon: SvelteProps<Icon>['name'] = undefined;
+	export let iconPosition: 'left' | 'right' = 'left';
 	export let warning: boolean = false;
 	export let square: boolean = false;
 	export let href: string = undefined;
@@ -13,6 +17,10 @@
 	export let disabled: boolean = false;
 	export let message: string = undefined;
 	export let loading: boolean = false;
+
+	let nopointer = false;
+
+	$: nopointer = variant === 'nav' && active;
 </script>
 
 {#if !href}
@@ -26,14 +34,22 @@
 		class:active
 		class:warning
 		class:square
+		class:nopointer
 		class="{variant} {display} {contentAlign}"
 		style:font-size="var(--size-{size})"
 		disabled={disabled || loading}
 		{...$$restProps}
 	>
-		<div>
-			<slot />
-		</div>
+		{#if icon}
+			<span class:dim={$$slots.default}>
+				<Icon name={icon} />
+			</span>
+		{/if}
+		{#if $$slots.default}
+			<span>
+				<slot />
+			</span>
+		{/if}
 	</button>
 {:else}
 	<a
@@ -46,15 +62,23 @@
 		class:active
 		class:warning
 		class:square
+		class:nopointer
 		class="{variant} {display} {contentAlign}"
 		style:font-size="var(--size-{size})"
 		disabled={disabled || loading}
 		{...$$restProps}
 		{href}
 	>
-		<div>
-			<slot />
-		</div>
+		{#if icon}
+			<span class:dim={$$slots.default}>
+				<Icon name={icon} />
+			</span>
+		{/if}
+		{#if $$slots.default}
+			<span>
+				<slot />
+			</span>
+		{/if}
 	</a>
 {/if}
 
@@ -62,29 +86,30 @@
 	button,
 	a {
 		/* Base */
+		--size: 2.8em;
 		cursor: pointer;
 		box-sizing: border-box;
 		position: relative;
 		border: none;
 		text-decoration: none;
-		height: 3em;
-		min-height: 3em;
-		min-width: 3em;
-		border-radius: 1.2em;
+		height: var(--size);
+		min-height: var(--size);
+		min-width: var(--size);
+		border-radius: 1em;
 		padding-block: 0;
 		padding-inline: 1em;
 		margin: 0;
 		font-family: var(--font-main);
-		font-weight: 400;
+		font-weight: 450;
 		outline-width: 2px;
 		outline-style: solid;
 		outline-color: transparent;
 		transition: all 0.15s ease-out;
 
 		&:hover {
-			backgrond-color: var(--hover-bg-color);
+			background-color: var(--hover-bg-color);
 			color: var(--hover-color);
-			border-radius: 1em;
+			/* border-radius: 0.8em; */
 			/* outline-color: var(--outline-color); */
 		}
 
@@ -94,7 +119,7 @@
 
 		&.active {
 			background-color: var(--active-bg-color);
-			background-color: var(--active-color);
+			color: var(--active-color);
 		}
 
 		&.warning {
@@ -107,9 +132,14 @@
 			pointer-events: none;
 			cursor: default;
 		}
+
+		&.nopointer {
+			pointer-events: none;
+			cursor: default;
+		}
 	}
 
-	div {
+	span {
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -120,6 +150,14 @@
 		text-overflow: ellipsis;
 		height: 100%;
 		padding-bottom: 0.1em;
+
+		&:not(:first-child) {
+			margin-left: 0.5em;
+		}
+	}
+
+	.dim {
+		opacity: 0.5;
 	}
 
 	/* Display */
@@ -135,7 +173,7 @@
 
 	.square {
 		justify-content: center;
-		width: 3em;
+		width: var(--size);
 		padding: 0;
 	}
 
@@ -161,6 +199,13 @@
 	}
 
 	.nav {
+		--hover-color: var(--color-primary-700);
+		--hover-bg-color: rgba(var(--rgb-primary-500), 0.1);
+		--active-color: var(--color-dark-100);
+		--active-bg-color: rgba(var(--rgb-primary-900), 0.1);
+		--outline-color: var(--color-light-900);
+		color: var(--color-primary-500);
+		background-color: transparent;
 	}
 
 	/* Text alignment */

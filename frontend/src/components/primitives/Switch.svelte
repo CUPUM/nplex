@@ -1,47 +1,78 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
+	import { ripple } from '$actions/ripple';
+
+	import { getContext, onMount } from 'svelte';
 	import type { SwitchSetContext } from './SwitchSet.svelte';
 
 	export let group;
 	export let id: string;
 	export let value;
 
-	const ctx = getContext<SwitchSetContext>('switchset');
+	let label: HTMLElement;
 
-	function setCurrent(e) {
-		ctx.current.set(e.target.parentElement);
+	const ctx = getContext<SwitchSetContext>('switchset');
+	const current = ctx.current;
+
+	function setCurrent() {
+		current.set(label);
 	}
+
+	onMount(() => {
+		if ((label.querySelector('input[type=radio]') as HTMLInputElement)?.checked) {
+			setCurrent();
+		}
+	});
 </script>
 
-<label for={id} style={$$restProps.style} on:click on:focus on:mouseover on:mouseleave>
+<label
+	for={id}
+	bind:this={label}
+	class:current={$current === label}
+	style={$$restProps.style}
+	on:click
+	on:focus
+	on:mouseover
+	on:mouseleave
+	use:ripple
+>
 	<input
 		{id}
 		{value}
+		name={ctx.name}
 		type="radio"
+		bind:group
+		on:change
 		on:input
 		on:input={setCurrent}
-		on:change
 		{...$$restProps}
-		bind:group
-		name={ctx.name}
 	/>
 	<slot />
 </label>
 
 <style lang="postcss">
 	label {
+		user-select: none;
 		position: relative;
 		cursor: pointer;
-		font-weight: 400;
+		font-weight: 500;
 		display: inline-flex;
-		padding: 0 1em;
+		padding: 0 0.8em;
 		justify-content: center;
 		align-items: center;
-		border-radius: 1em;
+		border-radius: 0.85em;
 		background-color: transparent;
+		color: var(--color-dark-100);
+		transition: all 0.25s;
+		opacity: 0.7;
 
-		&:not(:checked) {
-			color: red;
+		&:hover:not(.current) {
+			background-color: var(--color-light-100);
+			opacity: 0.9;
+		}
+
+		&.current {
+			cursor: default;
+			opacity: 1;
 		}
 	}
 
@@ -50,5 +81,6 @@
 		position: absolute;
 		width: 0;
 		height: 0;
+		max-width: 0;
 	}
 </style>

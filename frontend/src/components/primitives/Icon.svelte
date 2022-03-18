@@ -10,8 +10,8 @@
 
 	export let name: keyof typeof icons;
 	export let highlightName: keyof typeof icons = null;
-	export let size: string = '1.25em';
-	export let color: string = 'var(--color-dark-100)';
+	export let size: string = '1em';
+	export let color: string = 'currentColor';
 	export let strokeWidth: number | string = 1.5;
 	export let highlight: boolean = false;
 

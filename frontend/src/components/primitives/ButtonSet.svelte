@@ -2,7 +2,7 @@
 	import { Properties } from 'maplibre-gl';
 	import { setContext } from 'svelte';
 
-	export let direction: 'horizontal' | 'vertical' = 'horizontal';
+	export let direction: 'horizontal' | 'vertical' = 'vertical';
 
 	setContext('group', {
 		// set variant
@@ -21,11 +21,13 @@
 
 		&.vertical {
 			flex-direction: column;
+			align-items: stretch;
 
 			& :global {
 				& > button,
 				& > a {
 					display: flex;
+					width: 100%;
 					margin: 0;
 
 					&:first-child {
