@@ -53,7 +53,7 @@ You can install everything at once:
 pnpm install
 ```
 
-...Or install specific service packages
+or install specific service packages
 
 ```sh
 # Frontend
