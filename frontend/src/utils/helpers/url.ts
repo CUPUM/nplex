@@ -1,3 +1,13 @@
+import { base } from '$app/paths';
+
+export function getSegments(url: URL) {
+	return url.pathname
+		.replace(base, '')
+		.replace(/^\/+/, '')
+		.split('/')
+		.map((segment) => '/' + segment);
+}
+
 /**
  * To do
  * @param obj

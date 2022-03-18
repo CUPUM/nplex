@@ -1,9 +1,16 @@
 <script lang="ts">
+	import { clickoutside } from '$actions/clickoutside';
+
 	import { session } from '$app/stores';
 
 	import Field from '$components/primitives/Field.svelte';
 	import FieldSet from '$components/primitives/FieldSet.svelte';
+	import { authModal } from '$stores/auth';
 	import { db } from '$utils/database';
+
+	function close() {
+		$authModal = false;
+	}
 
 	async function signup() {
 		try {
@@ -25,7 +32,7 @@
 </script>
 
 <div>
-	<form method="post">
+	<form method="post" use:clickoutside on:clickoutside={close}>
 		<FieldSet>
 			<Field placeholder="Nom d'utilisateur" name="email" />
 		</FieldSet>
@@ -43,7 +50,7 @@
 	</form>
 </div>
 
-<style>
+<style lang="postcss">
 	div {
 		position: fixed;
 		display: flex;
@@ -56,5 +63,9 @@
 		left: 0;
 		background-color: var(--color-light-900);
 		opacity: 0.9;
+	}
+
+	form {
+		background-color: var(--color-light-100);
 	}
 </style>

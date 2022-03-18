@@ -1,30 +1,22 @@
-import type { GetSession, Handle, Request } from '@sveltejs/kit';
+import type { GetSession, Handle } from '@sveltejs/kit';
 
-// export async function handle({ request, resolve }) {
-// 	request.locals.user = await getUserInformation(request.headers.cookie);
+/**
+ * Hook called when any request is made (routes, api, etc.)
+ */
+// export const handle: Handle = async (req) => {
+// 	return await req.resolve(req.event);
+// }
 
-// 	const response = await resolve(request);
-
+/**
+ * This hook is called by the `/compte`'s route load function.
+ */
+// export const getSession: GetSession = async (req) => {
+// 	console.log('getting session from hooks');
 // 	return {
-// 		...response,
-// 		headers: {
-// 			...response.headers,
-// 			'x-custom-header': 'potato'
+// 		user: {
+// 			id: 'aasd'
 // 		}
-// 	};
+// 	}
 // }
 
-// export function getSession(request: Request): GetSession {
-// 	return request.locals.user
-// 		? {
-// 				user: {
-// 					// only include properties needed client-side —
-// 					// exclude anything else attached to the user
-// 					// like access tokens etc
-// 					name: request.locals.user.name,
-// 					email: request.locals.user.email,
-// 					avatar: request.locals.user.avatar
-// 				}
-// 		  }
-// 		: {};
-// }
+

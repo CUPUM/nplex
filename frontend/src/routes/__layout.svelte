@@ -1,3 +1,13 @@
+<script lang="ts" context="module">
+	import type { Load } from '@sveltejs/kit';
+	import { guard } from '$utils/auth';
+
+	export const load: Load = async ({ url, session }) => {
+		const res = await guard({ url, session });
+		return res;
+	};
+</script>
+
 <script lang="ts">
 	import '$styles/app.postcss';
 	import '$styles/vars.css';
@@ -12,13 +22,20 @@
 	import { db } from '$utils/database';
 	import { session } from '$app/stores';
 	import { browser } from '$app/env';
+	import { authModal } from '$stores/auth';
 
-	if (browser) {
-		$session = db.auth.session();
-		db.auth.onAuthStateChange((e, s) => {
-			$session = s;
-		});
-	}
+	db.auth.onAuthStateChange(async (e, s) => {
+		// show loading
+		if (e !== 'SIGNED_OUT') {
+			console.log('Signin still valid');
+			// await set auth cookie
+		} else {
+			// session.set({});
+			console.log('Signing out');
+			// await unset auth cookie
+		}
+		// hide loading
+	});
 </script>
 
 <Nav />
@@ -26,7 +43,9 @@
 	<Search />
 {/if}
 <slot />
-<Auth />
+{#if $authModal}
+	<Auth />
+{/if}
 
 <!-- {#if !mounted}
 	<Loading type="logo" />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { topRoutes, userRoute } from '$utils/routes';
+	import { topRoutes, userBaseRoute } from '$utils/routes';
 	import Button from '$components/primitives/Button.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
@@ -20,14 +20,13 @@
 	</section>
 	<section id="main">
 		{#each topRoutes as route}
-			<Button {size} {variant} active={route === $topRoute} href={route.href}>{route.title}</Button>
+			<Button {size} {variant} active={route === $topRoute} href={route.pathname}>{route.title}</Button>
 		{/each}
 	</section>
 	<section id="user">
 		<Button {size} {variant} square={true} icon="home" />
 		<Button {size} {variant} square={true} icon="info" />
-		<!-- if !$session, cancelnav and show Auth compoenent, else go to /user -->
-		<Button {size} {variant} href={userRoute.href} icon="user" />
+		<Button {size} {variant} href={userBaseRoute.pathname} icon="user" />
 		<Popover bind:active={userExpand}>
 			<Button
 				{size}

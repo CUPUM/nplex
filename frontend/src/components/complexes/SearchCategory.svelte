@@ -20,9 +20,9 @@
 			id={r.category}
 			value={r.category}
 			bind:group={$category}
-			on:mouseover={() => prefetch(r.href)}
-			on:focus={() => prefetch(r.href)}
-			on:input={() => goto(r.href)}
+			on:mouseover={() => prefetch(r.pathname)}
+			on:focus={() => prefetch(r.pathname)}
+			on:input={() => goto(r.pathname)}
 		>
 			{r.title}
 		</Switch>

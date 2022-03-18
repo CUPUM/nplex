@@ -1,24 +1,27 @@
+import { UserRole } from './user';
+
 export interface Route {
-	href: string;
+	pathname: string;
 	title: string;
-	parentRoute?: Route;
+	parentTopRoute?: Route;
 	searchable?: boolean;
+	guards?: UserRole[]
 }
 /**
  * Top navigation routes.
  */
 export const topRoutes: Route[] = [
 	{
-		href: '/',
+		pathname: '/',
 		title: 'Explorer',
 		searchable: true
 	},
 	{
-		href: '/nouvelles',
+		pathname: '/nouvelles',
 		title: 'Nouvelles'
 	},
 	{
-		href: '/guides',
+		pathname: '/guides',
 		title: 'Guides'
 	}
 ];
@@ -33,24 +36,24 @@ export interface ExploreRoute extends Route {
  */
 export const exploreRoutes: ExploreRoute[] = [
 	{
-		href: '/projets',
+		pathname: '/projets',
 		title: 'Projets',
 		category: 'projects',
-		parentRoute: rootRoute,
+		parentTopRoute: rootRoute,
 		searchable: true
 	},
 	{
-		href: '/organisations',
+		pathname: '/organisations',
 		title: 'Organisations',
 		category: 'organisations',
-		parentRoute: rootRoute,
+		parentTopRoute: rootRoute,
 		searchable: true
 	},
 	{
-		href: '/acteurs',
+		pathname: '/acteurs',
 		title: 'Acteurs',
 		category: 'actors',
-		parentRoute: rootRoute,
+		parentTopRoute: rootRoute,
 		searchable: true
 	}
 ]
@@ -58,29 +61,45 @@ export const exploreRoutes: ExploreRoute[] = [
 export interface CreationRoute extends Route {
 	category: ExploreRoute['category'];
 }
-const creationBase = '/creer';
+export const creationBaseRoute: Route = {
+	pathname: '/creer',
+	title: 'Créer',
+	guards: [UserRole.Editor, UserRole.Admin]
+}
 /**
  * Relative root routes for the submission forms.
  */
 export const creationRoutes: CreationRoute[] = [
 	{
-		href: creationBase + '/projet',
+		pathname: creationBaseRoute.pathname + '/projet',
 		title: 'Nouveau projet',
-		category: 'projects'
+		category: 'projects',
+		parentTopRoute: creationBaseRoute
 	},
 	{
-		href: creationBase + '/organisation',
+		pathname: creationBaseRoute.pathname + '/organisation',
 		title: 'Nouvelle organisation',
-		category: 'organisations'
+		category: 'organisations',
+		parentTopRoute: creationBaseRoute
 	},
 	{
-		href: creationBase + '/acteur',
+		pathname: creationBaseRoute.pathname + '/acteur',
 		title: 'Nouveau profil d’acteur',
-		category: 'actors'
+		category: 'actors',
+		parentTopRoute: creationBaseRoute
 	}
 ]
 
-export const userRoute: Route = {
-	href: '/compte',
+export const userBaseRoute: Route = {
+	pathname: '/compte',
 	title: 'Mon compte',
+	guards: [UserRole.Viewer, UserRole.Editor, UserRole.Admin]
 }
+
+export const allRoutes = [
+	...topRoutes,
+	...exploreRoutes,
+	creationBaseRoute,
+	...creationRoutes,
+	userBaseRoute
+];

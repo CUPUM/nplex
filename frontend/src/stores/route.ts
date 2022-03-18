@@ -5,7 +5,8 @@
 
 import { base } from '$app/paths';
 import { page } from '$app/stores';
-import { userRoute, type ExploreRoute, type Route } from '$utils/routes';
+import { getSegments } from '$utils/helpers/url';
+import { allRoutes, userBaseRoute, type ExploreRoute, type Route } from '$utils/routes';
 import { exploreRoutes, topRoutes } from '$utils/routes';
 import type { Readable } from 'svelte/store';
 import { derived } from 'svelte/store';
@@ -16,19 +17,15 @@ import { derived } from 'svelte/store';
  * i.e., they are prefixed with `/`
  */
 export const routeSegments = derived(page, ($page) => {
-	return $page.url.pathname
-		.replace(base, '')
-		.replace(/^\/+/, '')
-		.split('/')
-		.map((segment) => '/' + segment);
+	return getSegments($page.url);
 });
 
 /**
  * Store providing the current route object obtained by finding the route definition
  * in /utils/routes.ts that corresponds to the current page.url.pathname.
  */
-export const route = derived(routeSegments, ($routeSegments) => {
-	return <Route | ExploreRoute>[...topRoutes, ...exploreRoutes, userRoute, ...exploreRoutes].find((route) => route.href === $routeSegments[0]);
+export const route = derived(page, ($page) => {
+	return allRoutes.find((route) => route.pathname === $page.url.pathname);
 });
 
 /**
@@ -37,5 +34,5 @@ export const route = derived(routeSegments, ($routeSegments) => {
  * Useful for main layout transitions and main navbar states.
  */
 export const topRoute = derived(route, ($route) => {
-	return $route?.parentRoute || $route;
+	return $route?.parentTopRoute || $route;
 });
