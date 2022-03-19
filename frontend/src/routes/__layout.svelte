@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
-	import { guard } from '$utils/auth';
+	import { guard } from '$utils/guard';
 
 	export const load: Load = async ({ url, session }) => {
 		const res = await guard({ url, session });

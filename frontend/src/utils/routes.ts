@@ -5,7 +5,7 @@ export interface Route {
 	title: string;
 	parentTopRoute?: Route;
 	searchable?: boolean;
-	guards?: UserRole[]
+	guards?: UserRole[];
 }
 /**
  * Top navigation routes.

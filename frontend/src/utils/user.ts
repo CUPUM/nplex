@@ -9,3 +9,7 @@ export enum UserRole {
 	Editor = 'EDITOR',
 	Admin = 'ADMIN'
 }
+
+export function getUserRole(roleValue: string) {
+	return Object.entries(UserRole).find(([k, v]) => v === roleValue)?.[1];
+}
