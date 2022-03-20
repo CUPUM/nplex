@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { topRoutes, userBaseRoute } from '$utils/routes';
+	import { rootRoute, topRoutes, userBaseRoute } from '$utils/routes';
 	import Button from '$components/primitives/Button.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
@@ -24,7 +24,7 @@
 		{/each}
 	</section>
 	<section id="user">
-		<Button {size} {variant} square={true} icon="home" />
+		<Button {size} {variant} href="/" square={true} icon="home" />
 		<Button {size} {variant} square={true} icon="info" />
 		<Button {size} {variant} href={userBaseRoute.pathname} icon="user" />
 		<Popover bind:active={userExpand}>

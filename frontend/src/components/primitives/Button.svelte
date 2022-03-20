@@ -33,7 +33,7 @@
 		on:mouseleave
 		class:active
 		class:warning
-		class:square
+		class:square={square || !$$slots.default}
 		class:nopointer
 		class="{variant} {display} {contentAlign}"
 		style:font-size="var(--size-{size})"
@@ -42,7 +42,7 @@
 	>
 		{#if icon}
 			<span class:dim={$$slots.default}>
-				<Icon name={icon} />
+				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
 			</span>
 		{/if}
 		{#if $$slots.default}
@@ -61,7 +61,7 @@
 		on:mouseleave
 		class:active
 		class:warning
-		class:square
+		class:square={square || !$$slots.default}
 		class:nopointer
 		class="{variant} {display} {contentAlign}"
 		style:font-size="var(--size-{size})"
@@ -71,7 +71,7 @@
 	>
 		{#if icon}
 			<span class:dim={$$slots.default}>
-				<Icon name={icon} />
+				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
 			</span>
 		{/if}
 		{#if $$slots.default}
@@ -104,6 +104,7 @@
 		outline-width: 2px;
 		outline-style: solid;
 		outline-color: transparent;
+		overflow: hidden;
 		transition: all 0.15s ease-out;
 
 		&:hover {
@@ -145,7 +146,6 @@
 		flex-direction: row;
 		flex-wrap: nowrap;
 		align-items: center;
-		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		height: 100%;
@@ -208,12 +208,13 @@
 		background-color: transparent;
 	}
 
-	/* Text alignment */
+	/* Content alignment */
 
 	.left {
 	}
 
 	.center {
+		justify-content: center;
 	}
 
 	.right {

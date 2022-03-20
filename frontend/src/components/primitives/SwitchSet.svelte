@@ -50,12 +50,12 @@
 	fieldset {
 		position: relative;
 		border: none;
-		padding: 4px;
+		padding: 0;
 		display: inline-flex;
 		flex-direction: row;
 		align-items: stretch;
 		justify-content: center;
-		gap: 0;
+		gap: 3px;
 		height: 2.8em;
 		border-radius: 1em;
 		background-color: var(--color-light-300);

@@ -35,7 +35,7 @@ export function ripple(element: HTMLElement, {
 	startSize = 0,
 	endSize = undefined,
 	endColor = undefined,
-	blur = 2,
+	blur = 0,
 	disabled = false
 }: RippleOptions = {}) {
 

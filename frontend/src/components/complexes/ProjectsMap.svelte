@@ -1,24 +1,27 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { Map as MLMap } from 'maplibre-gl';
 	import Loading from '$components/primitives/Loading.svelte';
 	import { colors } from '$utils/colors';
 
-	let loaded = false;
+	let loading = true;
 	let container: HTMLElement;
 	let map: MLMap;
-	let cw;
-	let resizer;
+	let resizeObs: ResizeObserver;
+	let resizeDebounce;
 
 	function handleResize() {
-		if (resizer) clearTimeout(resizer);
-		resizer = setTimeout(() => {
+		if (resizeDebounce) clearTimeout(resizeDebounce);
+		resizeDebounce = setTimeout(() => {
 			map?.resize();
-			clearTimeout(resizer);
-		}, 0);
+			clearTimeout(resizeDebounce);
+		}, 10);
 	}
 
 	onMount(() => {
+		resizeObs = new ResizeObserver(handleResize);
+		resizeObs.observe(container);
+
 		map = new MLMap({
 			container,
 			style: 'https://api.maptiler.com/maps/052b0a19-3d8d-4610-9bb1-e4be24d4c355/style.json?key=dtV5LH1SmQB4VOb80qqI',
@@ -26,23 +29,20 @@
 			zoom: 9.5,
 		});
 
-		function onInit() {
-			loaded = true;
-			map.off('idle', onInit);
-		}
-
-		map.on('idle', onInit);
+		map.on('load', () => {
+			loading = false;
+		});
 	});
 
-	$: cw, handleResize();
+	onDestroy(() => {});
 </script>
 
 <svelte:head>
 	<link href="https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css" rel="stylesheet" />
 </svelte:head>
 
-<section bind:this={container} bind:clientWidth={cw}>
-	{#if !loaded}
+<section bind:this={container}>
+	{#if loading}
 		<Loading style="z-index: 100; background-color: {colors.light['100']};" />
 	{/if}
 	<!-- <figure bind:this={container}></figure> -->
