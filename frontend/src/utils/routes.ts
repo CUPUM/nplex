@@ -93,7 +93,7 @@ export const creationRoutes: CreationRoute[] = [
 export const userBaseRoute: Route = {
 	pathname: '/compte',
 	title: 'Mon compte',
-	guards: [UserRole.Viewer, UserRole.Editor, UserRole.Admin]
+	guards: [UserRole.Guest, UserRole.Editor, UserRole.Admin]
 }
 
 export const allRoutes = [

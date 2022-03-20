@@ -5,7 +5,7 @@
  */
 export enum UserRole {
 	Anon = 'ANON',
-	Viewer = 'VIEWER',
+	Guest = 'authenticated',
 	Editor = 'EDITOR',
 	Admin = 'ADMIN'
 }
