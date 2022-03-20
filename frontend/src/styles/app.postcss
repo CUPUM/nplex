@@ -17,6 +17,7 @@
 	color: var(--color-dark-500);
 	font-size: var(--size-md);
 	font-weight: 500;
+	overflow: hidden;
 }
 
 body {
@@ -27,7 +28,11 @@ body {
 	height: 100%;
 	padding: 0;
 	margin: 0;
-	overflow: hidden auto;
+	overflow-x: hidden;
+	overflow-y: auto;
+	@supports (overflow: overlay) {
+		overflow-y: overlay;
+	}
 }
 
 *,
