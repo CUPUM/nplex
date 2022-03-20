@@ -15,6 +15,12 @@ declare namespace svelte.JSX {
  */
 declare namespace App {
 	interface Session {
-		user?: import('@supabase/supabase-js').User
+		user?: import('@supabase/supabase-js').User;
+		prevnav: string;
+	}
+
+	interface Locals {
+		user?: App.Session['user'];
+		authed?: boolean;
 	}
 }
