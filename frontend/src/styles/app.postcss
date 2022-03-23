@@ -1,7 +1,6 @@
 :root {
-	--font-main: 'Lexend', sans-serif; /* 'Be Vietnam Pro', sans-serif; */
-	--font-display: 'Outfit', sans-serif;
-	--font-misc: 'Faustina', serif;
+	--font-main: 'Outfit', sans-serif; /* 'Be Vietnam Pro', sans-serif; */
+	--font-misc: 'DM Mono', serif;
 
 	/*
 		Additionnal global CSS custom properties derived from TypeScript constants, such as
@@ -41,3 +40,12 @@ body {
 	text-rendering: optimizeLegibility;
 	box-sizing: border-box;
 }
+
+/* clears the ‘X’ from Internet Explorer */
+input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
+input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
+/* clears the ‘X’ from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
