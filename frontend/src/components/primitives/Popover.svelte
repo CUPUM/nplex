@@ -8,7 +8,7 @@
 	/* To do: Preferred position, should be adjusted automatically if doesn't fit in viewport */
 	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
 	export let align: 'start' | 'center' | 'end' = 'center';
-	export let distance: number = 10;
+	export let distance: number = 5;
 
 	let controlRef: HTMLElement;
 	let popoverRef: HTMLElement;
@@ -52,7 +52,7 @@
 
 <slot name="control" />
 <div
-	class="placer {placement}"
+	class="placer {placement} {align}"
 	bind:this={popoverRef}
 	use:clickoutside
 	on:clickoutside={() => (active = false)}
@@ -78,6 +78,7 @@
 		width: 0;
 		background-color: transparent;
 		display: flex;
+		flex-direction: row;
 		align-items: center;
 		justify-content: center;
 	}
@@ -87,6 +88,13 @@
 		user-select: initial;
 		z-index: 100;
 		position: absolute;
+		padding: 0.25em;
+		background-color: var(--color-light-100);
+		box-shadow: 0 1em 2em -2em black;
+		border-radius: 1.1em;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25em;
 	}
 
 	.top {
@@ -97,6 +105,22 @@
 		& .popover {
 			transform-origin: center bottom;
 			bottom: var(--distance);
+		}
+
+		&.start {
+			justify-content: flex-start;
+
+			& .popover {
+				transform-origin: left bottom;
+			}
+		}
+
+		&.end {
+			justify-content: flex-end;
+
+			& .popover {
+				transform-origin: right bottom;
+			}
 		}
 	}
 
@@ -109,6 +133,22 @@
 			transform-origin: center top;
 			top: var(--distance);
 		}
+
+		&.start {
+			justify-content: flex-start;
+
+			& .popover {
+				transform-origin: left top;
+			}
+		}
+
+		&.end {
+			justify-content: flex-end;
+
+			& .popover {
+				transform-origin: right top;
+			}
+		}
 	}
 
 	.right {
@@ -120,6 +160,22 @@
 			transform-origin: left center;
 			left: var(--distance);
 		}
+
+		&.start {
+			align-items: flex-start;
+
+			& .popover {
+				transform-origin: left top;
+			}
+		}
+
+		&.end {
+			align-items: flex-end;
+
+			& .popover {
+				transform-origin: left bottom;
+			}
+		}
 	}
 
 	.left {
@@ -130,6 +186,22 @@
 		& .popover {
 			transform-origin: right center;
 			right: var(--distance);
+		}
+
+		&.start {
+			align-items: flex-start;
+
+			& .popover {
+				transform-origin: right top;
+			}
+		}
+
+		&.end {
+			align-items: flex-end;
+
+			& .popover {
+				transform-origin: right bottom;
+			}
 		}
 	}
 </style>

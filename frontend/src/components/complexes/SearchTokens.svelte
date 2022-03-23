@@ -7,7 +7,7 @@
 <fieldset id="tokens">
 	<ul>
 		{#each tokens as token}
-			<Token>
+			<Token size="small">
 				{token}
 			</Token>
 		{/each}
@@ -21,7 +21,8 @@
 	}
 
 	ul {
-		display: inline-flex;
+		display: flex;
+		gap: 5px;
 		padding: 0;
 		margin: 0;
 		text-indent: 0;

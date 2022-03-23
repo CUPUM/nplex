@@ -46,7 +46,7 @@
 	<slot />
 </fieldset>
 
-<style>
+<style lang="postcss">
 	fieldset {
 		position: relative;
 		border: none;
@@ -55,15 +55,20 @@
 		flex-direction: row;
 		align-items: stretch;
 		justify-content: center;
-		gap: 3px;
+		gap: 0;
 		height: 2.8em;
 		border-radius: 1em;
-		background-color: var(--color-light-300);
+		background-color: var(--color-light-500);
+		transition: all 0.3s ease-out;
+
+		&:hover {
+			box-shadow: 0 0.25em 1.5em -1em var(--color-dark-100);
+		}
 	}
 
 	#indicator {
 		position: absolute;
-		background-color: var(--color-primary-100);
+		background-color: var(--color-primary-300);
 		transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
 		border-radius: 0.85em;
 	}

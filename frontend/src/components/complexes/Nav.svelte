@@ -27,7 +27,7 @@
 		<Button {size} {variant} href="/" square={true} icon="home" />
 		<Button {size} {variant} square={true} icon="info" />
 		<Button {size} {variant} href={userBaseRoute.pathname} icon="user" />
-		<Popover bind:active={userExpand}>
+		<Popover bind:active={userExpand} placement="bottom" align="end">
 			<Button
 				{size}
 				{variant}
@@ -37,11 +37,9 @@
 				on:click={() => (userExpand = true)}
 				icon="more"
 			/>
-			<ButtonSet direction="vertical">
-				<Button>Paramètres</Button>
-				<Button icon="user">Information</Button>
-				<Button>Te123123st</Button>
-			</ButtonSet>
+			<Button display="block" contentAlign="left" size="small">Paramètres</Button>
+			<Button display="block" contentAlign="left" size="small">Information</Button>
+			<Button display="block" contentAlign="left" size="small">Te123123st</Button>
 		</Popover>
 		<!-- <Button icon="settings (three dots)" /> -->
 	</section>

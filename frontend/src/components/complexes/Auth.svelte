@@ -2,7 +2,6 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
-	import FieldSet from '$components/primitives/FieldSet.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { authModal } from '$stores/auth';
 	import { signIn, signUp } from '$utils/auth';
@@ -70,13 +69,11 @@
 		transition:scale={{ duration: 150, start: 0.9 }}
 	>
 		<fieldset>
-			<div id="fields">
-				<Field placeholder="Courriel" name="email" type="email" autocomplete="username" />
-				<Field placeholder="Mot de passe" type="password" name="password" autocomplete="current-password" />
-				{#if message}
-					<Tooltip {message} />
-				{/if}
-			</div>
+			<Field placeholder="Courriel" name="email" type="email" autocomplete="username" />
+			<Field placeholder="Mot de passe" type="password" name="password" autocomplete="current-password" />
+			{#if message}
+				<Tooltip {message} />
+			{/if}
 			<div id="submits">
 				<Button
 					type="submit"
@@ -129,6 +126,9 @@
 
 	fieldset {
 		border: none;
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
 	}
 
 	#fields {

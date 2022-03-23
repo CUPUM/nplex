@@ -3,6 +3,7 @@
 	import { tooltip } from '$actions/tooltip';
 	import type { SvelteProps } from '$utils/helpers/types';
 	import Icon from './Icon.svelte';
+	import Loading from './Loading.svelte';
 
 	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'normal';
 	export let size: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' = 'medium';
@@ -41,14 +42,19 @@
 		{...$$restProps}
 	>
 		{#if icon}
-			<span class:dim={$$slots.default}>
+			<span class="icon" class:dim={$$slots.default}>
 				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
 			</span>
 		{/if}
 		{#if $$slots.default}
-			<span>
+			<span class="text">
 				<slot />
 			</span>
+		{/if}
+		{#if loading}
+			<Loading
+				style="position: absolute; width: 1em; height: 1em; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: transparent;"
+			/>
 		{/if}
 	</button>
 {:else}
@@ -70,14 +76,19 @@
 		{href}
 	>
 		{#if icon}
-			<span class:dim={$$slots.default}>
+			<span class="icon" class:dim={$$slots.default}>
 				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
 			</span>
 		{/if}
 		{#if $$slots.default}
-			<span>
+			<span class="text">
 				<slot />
 			</span>
+		{/if}
+		{#if loading}
+			<Loading
+				style="position: absolute; width: 1em; height: 1em; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: transparent;"
+			/>
 		{/if}
 	</a>
 {/if}
@@ -100,8 +111,8 @@
 		padding-inline: 1em;
 		margin: 0;
 		font-family: var(--font-main);
-		font-weight: 450;
-		outline-width: 2px;
+		font-weight: 500;
+		outline-width: 1px;
 		outline-style: solid;
 		outline-color: transparent;
 		overflow: hidden;
@@ -111,11 +122,11 @@
 			background-color: var(--hover-bg-color);
 			color: var(--hover-color);
 			/* border-radius: 0.8em; */
-			/* outline-color: var(--outline-color); */
 		}
 
 		&:focus {
-			outline-color: var(--outline-color);
+			/* border-radius: 0.8em; */
+			outline-color: var(--hover-bg-color);
 		}
 
 		&.active {
@@ -129,7 +140,7 @@
 		}
 
 		&:disabled {
-			opacity: 0.5;
+			opacity: 0.75;
 			pointer-events: none;
 			cursor: default;
 		}
@@ -149,7 +160,10 @@
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		height: 100%;
-		padding-bottom: 0.1em;
+
+		&.text {
+			top: -0.1em;
+		}
 
 		&:not(:first-child) {
 			margin-left: 0.5em;
@@ -184,7 +198,6 @@
 		--hover-bg-color: var(--color-primary-300);
 		--active-color: var(--color-primary-900);
 		--active-bg-color: var(--color-light-900);
-		--outline-color: rgba(0, 0, 20, 0.2);
 		color: var(--color-dark-500);
 		background-color: var(--color-light-100);
 	}
@@ -201,11 +214,13 @@
 	.nav {
 		--hover-color: var(--color-primary-700);
 		--hover-bg-color: rgba(var(--rgb-primary-500), 0.1);
-		--active-color: var(--color-dark-100);
-		--active-bg-color: rgba(var(--rgb-primary-900), 0.1);
-		--outline-color: var(--color-light-900);
+		--active-color: var(--color-primary-900);
+		--active-bg-color: var(--color-primary-300);
 		color: var(--color-primary-500);
 		background-color: transparent;
+		/* font-family: var(--font-misc); */
+		/* font-weight: 600;
+		letter-spacing: 0.25px; */
 	}
 
 	/* Content alignment */

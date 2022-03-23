@@ -1,21 +1,24 @@
 <script lang="ts">
+	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
-	import FieldButton from '$components/primitives/FieldButton.svelte';
-	import FieldIcon from '$components/primitives/FieldIcon.svelte';
-	import FieldSet from '$components/primitives/FieldSet.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import { showProjectsFilters } from '$stores/projects';
 	import { term } from '$stores/search';
 </script>
 
-<FieldSet>
-	<Field id="search" type="search" bind:value={$term} />
-	<FieldIcon />
-	<FieldButton on:click={showProjectsFilters.toggle}>Filtres</FieldButton>
-	<FieldButton type="submit">Chercher</FieldButton>
-</FieldSet>
+<fieldset>
+	<Button on:click={showProjectsFilters.toggle}>Filtres</Button>
+	<Field id="search" type="search" bind:value={$term}>
+		<svelte:fragment slot="left">
+			<Icon name="info" />
+		</svelte:fragment>
+		<svelte:fragment slot="right">
+			<Button type="submit">Chercher</Button>
+		</svelte:fragment>
+	</Field>
+</fieldset>
 
-<style>
+<style lang="postcss">
 	fieldset {
 		position: relative;
 		flex: 1;
@@ -23,6 +26,8 @@
 		flex-direction: row;
 		border: none;
 		padding: 0;
+		margin: 0;
+		border: none;
 		background-color: var(--color-light-100);
 		border-radius: 1em;
 	}

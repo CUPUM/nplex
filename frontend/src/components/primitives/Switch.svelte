@@ -33,7 +33,7 @@
 	on:focus
 	on:mouseover
 	on:mouseleave
-	use:ripple
+	use:ripple={{ startColor: 'var(--color-primary-500)' }}
 >
 	<input
 		{id}
@@ -61,18 +61,17 @@
 		align-items: center;
 		border-radius: 0.85em;
 		background-color: transparent;
-		color: var(--color-dark-100);
-		transition: all 0.25s;
-		opacity: 0.7;
+		color: var(--color-primary-900);
+		transition: all 0.3s;
 
 		&:hover:not(.current) {
 			background-color: var(--color-light-100);
-			opacity: 0.9;
 		}
 
 		&.current {
 			cursor: default;
 			opacity: 1;
+			color: var(--color-dark-900);
 		}
 	}
 

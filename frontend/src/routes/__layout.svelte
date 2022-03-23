@@ -1,7 +1,6 @@
 <script lang="ts" context="module">
 	import type { Load } from '@sveltejs/kit';
 	import { guard } from '$utils/guard';
-	import { session } from '$app/stores';
 
 	export const load: Load = async ({ url, session }) => {
 		const pass = guard({ url, session });
@@ -10,9 +9,6 @@
 			return {
 				status: 303,
 				redirect: session.prevnav || '/',
-				props: {
-					authModalProp: 1,
-				},
 			};
 		}
 		return {
@@ -36,13 +32,12 @@
 	import { authModal } from '$stores/auth';
 	import { onMount } from 'svelte';
 	import Loading from '$components/primitives/Loading.svelte';
-	import { goto } from '$app/navigation';
+	import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
 	import { browser } from '$app/env';
+	import { session } from '$app/stores';
+	import { getSegments } from '$utils/helpers/url';
 
 	export let prevnav: string;
-	export let authModalProp = 0;
-
-	$: console.log(authModalProp);
 
 	$: if (browser && $session.prevnav !== prevnav) {
 		session.update((s) => ({ ...s, prevnav }));
@@ -50,15 +45,27 @@
 
 	let mounted = false;
 	let loading = false;
+	let naving = false;
+
+	beforeNavigate(({ from, to }) => {
+		if (from && to && getSegments(from)[0] !== getSegments(to)[0]) {
+			naving = true;
+		}
+	});
+
+	afterNavigate(() => {
+		naving = false;
+	});
 
 	db.auth.onAuthStateChange(async (e, s) => {
 		// loading = true;
-		// const _s = e === 'SIGNED_OUT' ? null : s;
-		// await updateServerSession(e, _s);
-		session.update((v) => ({ ...v, user: e === 'SIGNED_OUT' ? null : s.user }));
-		if (e === 'SIGNED_OUT') {
-			goto('/');
-		}
+		session.update((v) => {
+			if (e === 'SIGNED_OUT') {
+				return { prevnav: '/', user: null };
+			} else {
+				return { ...v, user: s.user };
+			}
+		});
 		// loading = false;
 	});
 
@@ -71,13 +78,20 @@
 {#if $route?.searchable}
 	<Search />
 {/if}
-<slot />
+<main>
+	<slot />
+	{#if naving}
+		<Loading type="logo" style="font-size: 40px; background-color: var(--color-light-100)" />
+	{/if}
+</main>
 {#if $authModal}
 	<Auth />
 {/if}
 {#if !mounted || loading}
-	<Loading type="logo" />
+	<Loading type="logo" style="font-size: 40px; background-color: var(--color-light-100)" />
 {/if}
 
 <style>
+	main {
+	}
 </style>

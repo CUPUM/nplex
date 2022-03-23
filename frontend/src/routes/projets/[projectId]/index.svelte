@@ -1,17 +1,21 @@
 <script context="module" lang="ts">
-	import type { LoadInput, LoadOutput } from '@sveltejs/kit';
+	import type { Load } from '@sveltejs/kit';
 
-	export async function load({ params }): Promise<LoadOutput> {
+	export const load: Load = async ({ params }) => {
 		return {
 			props: {
-				id: params.projectId
-			}
+				id: params.projectId,
+			},
 		};
-	}
+	};
 </script>
 
 <script lang="ts">
 	export let id;
+
+	export let name;
+
+	// Show UI based on projects store item, if present and update concurrently.
 </script>
 
 <h2>{id}</h2>
