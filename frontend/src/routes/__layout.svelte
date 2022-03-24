@@ -78,12 +78,11 @@
 {#if $route?.searchable}
 	<Search />
 {/if}
-<main>
-	<slot />
-	{#if naving}
-		<Loading type="logo" style="font-size: 40px; background-color: var(--color-light-100)" />
-	{/if}
-</main>
+<!-- To do: add transition between toproutes -->
+<slot />
+{#if naving}
+	<Loading type="logo" style="font-size: 40px; background-color: var(--color-light-100)" />
+{/if}
 {#if $authModal}
 	<Auth />
 {/if}
@@ -91,7 +90,12 @@
 	<Loading type="logo" style="font-size: 40px; background-color: var(--color-light-100)" />
 {/if}
 
-<style>
-	main {
-	}
+<style lang="postcss">
+	/* main {
+		position: relative;
+		width: 100%;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	} */
 </style>

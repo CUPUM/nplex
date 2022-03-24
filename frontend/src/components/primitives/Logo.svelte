@@ -6,6 +6,7 @@
 	import { draw, fade } from 'svelte/transition';
 
 	export let color: string = colors.dark[100];
+	export let hoverColor: string = color;
 	export let intro: boolean = false;
 
 	let show = !intro;
@@ -33,6 +34,7 @@
 	xmlns="http://www.w3.org/2000/svg"
 	preserveAspectRatio="xMidYMid"
 	style:--color={color}
+	style:--hover-color={hoverColor}
 	{...$$restProps}
 	on:click
 	on:focus
@@ -46,16 +48,22 @@
 	{/each}
 </svg>
 
-<style>
+<style lang="postcss">
 	svg {
 		position: relative;
 		width: 100%;
 		height: 100%;
 		overflow: visible;
+		--col: var(--color);
+
+		&:hover {
+			--col: var(--hover-color);
+		}
 	}
 
 	path {
 		stroke: none;
-		fill: var(--color);
+		fill: var(--col);
+		transition: all 0.2s ease-out;
 	}
 </style>

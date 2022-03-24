@@ -2,11 +2,16 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
+	import SocialButton from '$components/primitives/SocialButton.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { authModal } from '$stores/auth';
 	import { signIn, signUp } from '$utils/auth';
+	import { socialProviders } from '$utils/socials';
 	import type { ApiError } from '@supabase/supabase-js';
+	import { expoIn, expoOut, linear } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
+
+	let providerNames = Object.keys(socialProviders) as (keyof typeof socialProviders)[];
 
 	function close() {
 		message = null;
@@ -14,9 +19,9 @@
 	}
 
 	enum Action {
-		SignUp = 'signup',
-		SignIn = 'signin',
-		Provider = 'provider',
+		SIGNUP = 'signup',
+		SIGNIN = 'signin',
+		PROVIDER = 'provider',
 	}
 
 	let disabled = false;
@@ -32,7 +37,7 @@
 		const email = data.get('email') as string;
 		const password = data.get('password') as string;
 		switch (currentAction) {
-			case Action.SignIn:
+			case Action.SIGNIN:
 				{
 					const res = await signIn({ email, password });
 					if (res.error) {
@@ -42,7 +47,7 @@
 					}
 				}
 				break;
-			case Action.SignUp:
+			case Action.SIGNUP:
 				{
 					const res = await signUp({ email, password });
 					if (res.error) {
@@ -53,7 +58,7 @@
 					}
 				}
 				break;
-			case Action.Provider:
+			case Action.PROVIDER:
 				break;
 		}
 		currentAction = null;
@@ -61,12 +66,14 @@
 	}
 </script>
 
-<div id="bg" transition:fade={{ duration: 200 }}>
+<div id="bg" out:fade={{ duration: 300, easing: linear }} />
+<div id="wrap">
 	<form
 		on:submit|preventDefault={submit}
 		use:clickoutside
 		on:clickoutside={close}
-		transition:scale={{ duration: 150, start: 0.9 }}
+		in:scale={{ duration: 200, start: 0.95, easing: expoOut }}
+		out:scale={{ duration: 150, start: 1.05, easing: expoIn }}
 	>
 		<fieldset>
 			<Field placeholder="Courriel" name="email" type="email" autocomplete="username" />
@@ -74,37 +81,48 @@
 			{#if message}
 				<Tooltip {message} />
 			{/if}
-			<div id="submits">
-				<Button
-					type="submit"
-					style="flex: 1;"
-					variant="cta"
-					value={Action.SignIn}
-					{disabled}
-					loading={Action.SignIn === currentAction}>Se connecter</Button
-				>
-				<Button
-					type="submit"
-					style="flex: 1;"
-					variant="ghost"
-					value={Action.SignUp}
-					{disabled}
-					loading={Action.SignUp === currentAction}>Créer un compte</Button
-				>
-			</div>
+			<Button
+				type="submit"
+				variant="cta"
+				value={Action.SIGNIN}
+				{disabled}
+				display="block"
+				loading={Action.SIGNIN === currentAction}>Connecter</Button
+			>
+			<Button
+				type="submit"
+				variant="ghost"
+				value={Action.SIGNUP}
+				{disabled}
+				display="block"
+				loading={Action.SIGNUP === currentAction}>Créer un compte</Button
+			>
 		</fieldset>
 		<p>ou utiliser</p>
 		<fieldset>
-			<button>Linkedin</button>
-			<button>Facebook</button>
-			<button>Google</button>
-			<button>Twitter</button>
+			{#each providerNames as provider}
+				<SocialButton {provider}>
+					Connecter avec {socialProviders[provider].title}
+				</SocialButton>
+			{/each}
 		</fieldset>
 	</form>
 </div>
 
 <style lang="postcss">
 	#bg {
+		z-index: 1000;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		backdrop-filter: blur(5px);
+		background-color: rgba(var(--rgb-light-500), 0.8);
+	}
+
+	#wrap {
+		z-index: 1000;
 		position: fixed;
 		display: flex;
 		flex-direction: column;
@@ -114,14 +132,15 @@
 		height: 100%;
 		top: 0;
 		left: 0;
-		background-color: rgba(var(--rgb-light-500), 0.8);
+		background-color: transparent;
 	}
 
 	form {
 		background-color: var(--color-light-100);
 		padding: 2rem;
 		border-radius: 2rem;
-		border: none;
+		border: 1px solid var(--color-light-900);
+		box-shadow: 0 1rem 5.5rem -4rem var(--color-primary-900);
 	}
 
 	fieldset {
@@ -134,11 +153,6 @@
 	#fields {
 		display: flex;
 		flex-direction: column;
-	}
-
-	#submits {
-		display: flex;
-		flex-direction: row;
 	}
 
 	#providers {

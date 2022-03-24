@@ -2,21 +2,24 @@
 	import { ripple } from '$actions/ripple';
 	import { scale } from 'svelte/transition';
 
+	export let type: 'default' | 'checkbox' | 'radio' = 'default';
 	export let size: 'xsmall' | 'small' | 'medium' | 'large' = 'medium';
 	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' = 'normal';
-	export let interactive: boolean = true;
+	export let deletable: boolean = false;
+	export let ttip: string = undefined;
+	export let disabled: boolean = false;
+	export let warning: boolean = false;
 	export let active: boolean = false;
 </script>
 
 <div
 	class={variant}
-	class:interactive
-	class:active
 	style:font-size="var(--size-{size})"
+	class:active
+	{disabled}
 	on:click
 	on:focus
 	{...$$restProps}
-	use:ripple={{ disabled: !interactive }}
 	transition:scale={{ start: 0.9, duration: 200 }}
 >
 	<slot />

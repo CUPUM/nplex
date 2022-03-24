@@ -24,7 +24,7 @@
 	section {
 		position: relative;
 		padding-block: var(--size-medium);
-		padding-inline: var(--size-large);
+		padding-inline: 1rem;
 		width: 100%;
 		min-height: 600px;
 		flex: 1;
@@ -35,8 +35,8 @@
 	}
 
 	section > :global(section) {
-		box-shadow: 0 30px 75px -50px rgba(0, 0, 0, 0.2);
-		border-radius: var(--size-xxlarge);
+		box-shadow: 0 2rem 8rem -8rem var(--color-dark-100);
+		border-radius: var(--size-xlarge);
 	}
 
 	section > :global(section):not(:last-child) {

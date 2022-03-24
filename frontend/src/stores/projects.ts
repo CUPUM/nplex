@@ -1,8 +1,30 @@
+import { db } from '$utils/database';
 import type { Map as MLMap } from 'maplibre-gl';
-import { derived, writable } from 'svelte/store';
+import { derived, readable, writable } from 'svelte/store';
 import { projectsFilters, term } from './search';
 
 /* Projects UI and general purpose data stores */
+
+/**
+ * Enums used to describe and filter projects.
+ * These include controled and enumerated lists from the database.
+ */
+export const projectsEnums = readable(null, function start(set) {
+
+	// Do db call here.
+	async function setEnums() {
+		const res = await fetch('/api/projects/enums.json');
+		console.log(res);
+		const enums = await res.json();
+		console.log(enums);
+		set(enums);
+	}
+
+	setEnums();
+
+	return function stop() {}
+})
+
 
 /**
  * Store handling the state of the projects' fitlers drawer (open or closed) to

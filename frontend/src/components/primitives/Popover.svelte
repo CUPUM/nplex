@@ -63,7 +63,7 @@
 	style:--distance="{distance}px"
 >
 	{#if active}
-		<div class="popover" {...$$restProps} transition:scale={{ start: 0.8, easing: expoInOut, duration: 200 }}>
+		<div class="popover" {...$$restProps} transition:scale={{ start: 0.9, easing: expoInOut, duration: 200 }}>
 			<slot />
 		</div>
 	{/if}
@@ -88,13 +88,14 @@
 		user-select: initial;
 		z-index: 100;
 		position: absolute;
-		padding: 0.25em;
+		padding: 0.5em;
 		background-color: var(--color-light-100);
-		box-shadow: 0 1em 2em -2em black;
+		box-shadow: 0 0.5em 2em -1.5em var(--color-primary-900);
 		border-radius: 1.1em;
+		border: 1px solid var(--color-light-900);
 		display: flex;
 		flex-direction: column;
-		gap: 0.25em;
+		gap: 0.5em;
 	}
 
 	.top {

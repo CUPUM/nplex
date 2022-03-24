@@ -23,23 +23,23 @@ body.os-host {
 } */
 
 ::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
+	width: 4px;
+	height: 4px;
 }
 
 ::-webkit-scrollbar-track {
 	background: transparent;
-	border-radius: 4px;
+	border-radius: 2px;
 	box-shadow: none;
 }
 
 ::-webkit-scrollbar-thumb {
 	position: relative;
-	background: var(--color-dark-100);
-	border-radius: 4px;
+	background: rgba(var(--rgb-dark-100), .25);
+	border-radius: 2px;
 	transition: background .3s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: var(--color-dark-500);
+	background: rgba(var(--rgb-dark-100), .4);
 }

@@ -46,7 +46,9 @@
 		on:input={setCurrent}
 		{...$$restProps}
 	/>
-	<slot />
+	<span id="content">
+		<slot />
+	</span>
 </label>
 
 <style lang="postcss">
@@ -65,6 +67,7 @@
 		transition: all 0.3s;
 
 		&:hover:not(.current) {
+			transition: all 0s;
 			background-color: var(--color-light-100);
 		}
 
@@ -73,6 +76,11 @@
 			opacity: 1;
 			color: var(--color-dark-900);
 		}
+	}
+
+	#content {
+		position: relative;
+		top: -0.1em;
 	}
 
 	input {

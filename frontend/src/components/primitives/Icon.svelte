@@ -1,5 +1,7 @@
 <script context="module" lang="ts">
 	const cue = new Set();
+	const duration = 500;
+	const delay = 500;
 </script>
 
 <script lang="ts">
@@ -15,8 +17,6 @@
 	export let strokeWidth: number | string = 1.5;
 	export let highlight: boolean = false;
 
-	const duration = 500;
-
 	let icon = icons[name];
 	let mounted = false;
 	let instance;
@@ -29,7 +29,7 @@
 		timeout = setTimeout(() => {
 			mounted = true;
 			cue.delete(instance);
-		}, [...cue].indexOf(instance) * (duration / 3));
+		}, [...cue].indexOf(instance) * (duration / 3) + delay);
 	});
 
 	onDestroy(() => {

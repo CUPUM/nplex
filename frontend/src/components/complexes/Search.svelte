@@ -29,6 +29,6 @@
 		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
 		padding-block: 0;
-		padding-inline: 1.5rem;
+		padding-inline: 1rem;
 	}
 </style>

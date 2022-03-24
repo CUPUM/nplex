@@ -6,6 +6,7 @@
 	import ButtonSet from '$components/primitives/ButtonSet.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import { topRoute } from '$stores/route';
+	import { colors } from '$utils/colors';
 
 	let userExpand = false;
 	const size = 'small';
@@ -15,7 +16,7 @@
 <nav>
 	<section id="logo">
 		<a href="/">
-			<Logo intro={true} />
+			<Logo intro={true} color={colors.primary[500]} hoverColor={colors.primary[700]} />
 		</a>
 	</section>
 	<section id="main">
@@ -26,7 +27,7 @@
 	<section id="user">
 		<Button {size} {variant} href="/" square={true} icon="home" />
 		<Button {size} {variant} square={true} icon="info" />
-		<Button {size} {variant} href={userBaseRoute.pathname} icon="user" />
+		<Button {size} {variant} square={true} href={userBaseRoute.pathname} icon="user" />
 		<Popover bind:active={userExpand} placement="bottom" align="end">
 			<Button
 				{size}
