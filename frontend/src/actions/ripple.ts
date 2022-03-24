@@ -55,7 +55,7 @@ export function ripple(element: HTMLElement, {
 	if (!element.style.transformOrigin) element.style.transformOrigin = 'center center';
 	if (style.position === 'static') element.style.position = 'relative';
 	const parsedStartSize = startSize + (parseCSSValue(startSize).unit ? '' : 'px');
-	const parsedEndSize = endSize ? endSize + (parseCSSValue(endSize).unit ? '' : 'px') : Math.max(element.clientHeight, element.clientWidth) * 2 + 'px';
+	const parsedEndSize = endSize ? endSize + (parseCSSValue(endSize).unit ? '' : 'px') : Math.max(parseInt(style.height), parseInt(style.width)) * 2 + 'px';
 	element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, parsedEndSize);
 	element.style.setProperty(RIPPLE_GLOBALS.END_COLOR, endColor ? endColor : startColor);
 
@@ -66,6 +66,8 @@ export function ripple(element: HTMLElement, {
 	 */
 	function createRipple(e: MouseEvent) {
 		const rect = element.getBoundingClientRect();
+		const upToDateEndSize = endSize ? endSize + (parseCSSValue(endSize).unit ? '' : 'px') : Math.max(rect.height, rect.width) * 2 + 'px';
+		element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, upToDateEndSize);
 		ripple = document.createElement('div');
 		ripple.style.userSelect = 'none';
 		ripple.style.pointerEvents = 'none';

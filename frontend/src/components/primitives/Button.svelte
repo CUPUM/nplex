@@ -16,38 +16,42 @@
 	export let href: string = undefined;
 	export let active: boolean = false;
 	export let disabled: boolean = false;
-	export let message: string = undefined;
+	export let ttip: string = undefined;
 	export let loading: boolean = false;
 
 	let nopointer = false;
+	let composed = false;
 
 	$: nopointer = variant === 'nav' && active;
+
+	$: composed = !!icon && $$slots.default;
 </script>
 
 {#if !href}
 	<button
 		use:ripple={{ startColor: 'currentColor' }}
-		use:tooltip={{ disabled: !Boolean(message), message }}
+		use:tooltip={{ disabled: !Boolean(ttip), message: ttip }}
 		on:click
 		on:focus
 		on:mouseenter
 		on:mouseleave
 		class:active
 		class:warning
-		class:square={square || !$$slots.default}
+		class:square
 		class:nopointer
-		class="{variant} {display} {contentAlign}"
+		class:composed
+		class="{variant} {display} {contentAlign} icon-{iconPosition}"
 		style:font-size="var(--size-{size})"
 		disabled={disabled || loading}
 		{...$$restProps}
 	>
 		{#if icon}
-			<span class="icon" class:dim={$$slots.default}>
+			<span id="icon" class:dim={$$slots.default}>
 				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
 			</span>
 		{/if}
 		{#if $$slots.default}
-			<span class="text">
+			<span id="label">
 				<slot />
 			</span>
 		{/if}
@@ -60,28 +64,29 @@
 {:else}
 	<a
 		use:ripple={{ startColor: 'currentColor' }}
-		use:tooltip={{ disabled: !Boolean(message), message }}
+		use:tooltip={{ disabled: !Boolean(ttip), message: ttip }}
 		on:click
 		on:focus
 		on:mouseenter
 		on:mouseleave
 		class:active
 		class:warning
-		class:square={square || !$$slots.default}
+		class:square
 		class:nopointer
-		class="{variant} {display} {contentAlign}"
+		class:composed
+		class="{variant} {display} {contentAlign} icon-{iconPosition}"
 		style:font-size="var(--size-{size})"
 		disabled={disabled || loading}
 		{...$$restProps}
 		{href}
 	>
 		{#if icon}
-			<span class="icon" class:dim={$$slots.default}>
+			<span id="icon" class:dim={$$slots.default}>
 				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
 			</span>
 		{/if}
 		{#if $$slots.default}
-			<span class="text">
+			<span id="label">
 				<slot />
 			</span>
 		{/if}
@@ -112,20 +117,20 @@
 		margin: 0;
 		font-family: var(--font-main);
 		font-weight: 500;
-		outline-width: 1px;
+		outline-width: 2px;
 		outline-style: solid;
 		outline-color: transparent;
 		overflow: hidden;
-		transition: all 0.15s ease-out;
+		align-items: center;
+		transition: all 0.2s ease-out;
 
 		&:hover {
 			background-color: var(--hover-bg-color);
 			color: var(--hover-color);
-			/* border-radius: 0.8em; */
+			transition: all 0s;
 		}
 
 		&:focus {
-			/* border-radius: 0.8em; */
 			outline-color: var(--hover-bg-color);
 		}
 
@@ -149,46 +154,10 @@
 			pointer-events: none;
 			cursor: default;
 		}
-	}
 
-	span {
-		position: relative;
-		display: flex;
-		flex-direction: row;
-		flex-wrap: nowrap;
-		align-items: center;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		height: 100%;
-
-		&.text {
-			top: -0.1em;
+		&.dim {
+			opacity: 0.5;
 		}
-
-		&:not(:first-child) {
-			margin-left: 0.5em;
-		}
-	}
-
-	.dim {
-		opacity: 0.5;
-	}
-
-	/* Display */
-
-	.block {
-		display: flex;
-		width: 100%;
-	}
-
-	.inline {
-		display: inline-flex;
-	}
-
-	.square {
-		justify-content: center;
-		width: var(--size);
-		padding: 0;
 	}
 
 	/* Variants (should correspond to `typeof variant`) */
@@ -212,26 +181,87 @@
 	}
 
 	.nav {
-		--hover-color: var(--color-primary-700);
-		--hover-bg-color: rgba(var(--rgb-primary-500), 0.1);
-		--active-color: var(--color-primary-900);
-		--active-bg-color: var(--color-primary-300);
-		color: var(--color-primary-500);
+		--hover-color: var(--color-primary-500);
+		--hover-bg-color: rgba(var(--rgb-primary-300), 0.1);
+		--active-color: var(--color-primary-300);
+		--active-bg-color: transparent;
+		color: var(--color-dark-100);
 		background-color: transparent;
 		/* font-family: var(--font-misc); */
-		/* font-weight: 600;
-		letter-spacing: 0.25px; */
+		font-weight: 600;
+		letter-spacing: 0.3px;
+	}
+
+	/* Display */
+
+	.block {
+		display: flex;
+		width: 100%;
+
+		&.composed {
+			display: grid;
+		}
+	}
+
+	.inline {
+		display: inline-flex;
+
+		&.composed {
+			display: inline-grid;
+		}
+	}
+
+	.square {
+		justify-content: center;
+		width: var(--size);
+		padding: 0;
 	}
 
 	/* Content alignment */
 
+	span {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		align-items: center;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+
+		&:not(:first-child) {
+			margin-left: 0.5em;
+		}
+	}
+
+	#label {
+		top: -0.05em;
+	}
+
+	#icon {
+		top: -0.05em;
+	}
+
 	.left {
+		justify-content: flex-start;
 	}
 
 	.center {
 		justify-content: center;
+
+		&.composed {
+			grid-template-columns: auto;
+
+			&.icon-left {
+				grid-template-columns: 1fr auto minmax(0, 1fr);
+			}
+
+			&.icon-right {
+				grid-template-columns: minmax(0, 1fr) auto 1fr;
+			}
+		}
 	}
 
 	.right {
+		justify-content: flex-end;
 	}
 </style>
