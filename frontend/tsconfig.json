@@ -32,7 +32,8 @@
 			"$routes/*": ["src/routes/*"],
 			"$transitions/*": ["src/transitions/*"],
 			"$utils/*": ["src/utils/*"],
-			"$icons/*": ["static/icons/*"]
+			"$icons/*": ["static/icons/*"],
+			"$apitypes/*": [".svelte-kit/types/src/routes/api/*"]
 		},
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "scripts/*.ts"]

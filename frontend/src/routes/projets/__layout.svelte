@@ -20,7 +20,7 @@
 		<slot />
 	</article>
 {/key} -->
-<style>
+<style lang="postcss">
 	section {
 		position: relative;
 		padding-block: var(--size-medium);
@@ -35,15 +35,10 @@
 	}
 
 	section > :global(section) {
-		box-shadow: 0 2rem 8rem -8rem var(--color-dark-100);
 		border-radius: var(--size-xlarge);
 	}
 
 	section > :global(section):not(:last-child) {
 		margin-right: var(--gap);
 	}
-
-	/* article {
-		position: relative;
-	} */
 </style>

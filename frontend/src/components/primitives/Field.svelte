@@ -16,22 +16,28 @@
 	}
 </script>
 
-<input
-	class:warning
-	class="{variant} {display}"
-	style:font-size="var(--size-{size})"
-	{disabled}
-	{type}
-	{value}
-	{placeholder}
-	{...$$restProps}
-	on:input={handleInput}
-	on:change
-	on:click
-	on:focus
-	on:submit
-	data-lpignore="true"
-/>
+<!-- To do: automatically prepend icons depending on input type, ex: password => asterisk, search => eyeglass, etc. -->
+<div id="wrap">
+	<div>
+		<slot name="icons" />
+	</div>
+	<input
+		class:warning
+		class="{variant} {display}"
+		style:font-size="var(--size-{size})"
+		{disabled}
+		{type}
+		{value}
+		{placeholder}
+		{...$$restProps}
+		on:input={handleInput}
+		on:change
+		on:click
+		on:focus
+		on:submit
+		data-lpignore="true"
+	/>
+</div>
 
 <style lang="postcss">
 	input {

@@ -6,8 +6,8 @@
 	import { term } from '$stores/search';
 </script>
 
-<fieldset>
-	<Button on:click={showProjectsFilters.toggle}>Filtres</Button>
+<div>
+	<Button type="normal" on:click={showProjectsFilters.toggle}>Filtres</Button>
 	<Field id="search" type="search" bind:value={$term}>
 		<svelte:fragment slot="left">
 			<Icon name="info" />
@@ -16,10 +16,10 @@
 			<Button type="submit">Chercher</Button>
 		</svelte:fragment>
 	</Field>
-</fieldset>
+</div>
 
 <style lang="postcss">
-	fieldset {
+	div {
 		position: relative;
 		flex: 1;
 		display: flex;
@@ -30,26 +30,5 @@
 		border: none;
 		background-color: var(--color-light-100);
 		border-radius: 1em;
-	}
-
-	input[type='search'] {
-		flex: 1;
-		padding-right: 2em;
-		border: none;
-		border-radius: 0.9em;
-		outline: none;
-	}
-
-	button {
-		border: none;
-	}
-
-	button[type='button'] {
-		margin-right: 1em;
-		background-color: transparent;
-	}
-
-	button[type='submit'] {
-		background-color: transparent;
 	}
 </style>

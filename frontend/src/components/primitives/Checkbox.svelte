@@ -1,23 +1,13 @@
-<script context="module" lang="ts">
-	/* Kinds */
-	export const checkboxKinds = ['normal', 'secondary', 'misc'] as const;
-	export type CheckboxKind = typeof checkboxKinds[number];
-	/* Sizes */
-	export const checkboxSizes = ['xsmall', 'small', 'medium', 'large', 'xlarge'] as const;
-	export type CheckboxSize = typeof checkboxSizes[number];
-	/* Label positions */
-	 export const checkboxLabelPositions = ['before', 'after'] as const;
-	 export type CheckboxLabelPosition = typeof checkboxLabelPositions[number];
-</script>
-
 <script lang="ts">
-	export let kind: CheckboxKind = 'normal';
-	export let size: CheckboxSize = 'medium';
-	export let labelPosition: CheckboxLabelPosition = 'before';
-	export let tooltip: string = null;
+	import { sizes } from '$utils/sizes';
+
+	export let variant: 'normal' | 'secondary' | 'misc' = 'normal';
+	export let size: 'small' | 'medium' | 'large' = 'medium';
+	export let labelPosition: 'left' | 'right' = 'right';
+	export let tooltip: string = undefined;
 </script>
 
-<label class="{kind} {size} {labelPosition}">
+<label class="{variant} {labelPosition}" style:font-size="{sizes[size]}px">
 	{#if $$slots.default}
 		<span>
 			<slot />
@@ -32,11 +22,9 @@
 	}
 
 	input[type='checkbox'] {
-
 	}
 
 	span {
-
 	}
 
 	/* Sizes */

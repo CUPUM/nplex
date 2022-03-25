@@ -48,6 +48,7 @@
 	style:--strokeWidth={strokeWidth + ''}
 	class:highlight
 	preserveAspectRatio="xMidYMid"
+	{...$$restProps}
 >
 	{#if mounted}
 		{#key icon}

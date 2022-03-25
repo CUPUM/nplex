@@ -84,7 +84,8 @@ const config = {
 					$transitions: path.resolve('src/transitions'),
 					$routes: path.resolve('src/routes'),
 					$utils: path.resolve('src/utils'),
-					$icons: path.resolve('static/icons')
+					$icons: path.resolve('static/icons'),
+					$apitypes: path.resolve('.svelte-kit/types/src/routes/api')
 				}
 			},
 			// Préfixes des variables .env à exposer ('' n'est pas valide, https://vitejs.dev/config/#envdir)

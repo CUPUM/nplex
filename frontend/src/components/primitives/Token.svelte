@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { ripple } from '$actions/ripple';
-	import { scale } from 'svelte/transition';
+	import { tooltip } from '$actions/tooltip';
 
-	export let type: 'default' | 'checkbox' | 'radio' = 'default';
 	export let size: 'xsmall' | 'small' | 'medium' | 'large' = 'medium';
 	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' = 'normal';
-	export let deletable: boolean = false;
 	export let ttip: string = undefined;
 	export let disabled: boolean = false;
 	export let warning: boolean = false;
@@ -16,14 +13,21 @@
 	class={variant}
 	style:font-size="var(--size-{size})"
 	class:active
+	class:warning
 	{disabled}
+	use:tooltip={{ disabled: !ttip, message: ttip }}
 	on:click
 	on:focus
 	{...$$restProps}
-	transition:scale={{ start: 0.9, duration: 200 }}
 >
-	<slot />
-	<span />
+	<span id="label">
+		<slot />
+	</span>
+	{#if $$slots.input}
+		<span id="input">
+			<slot name="input" />
+		</span>
+	{/if}
 </div>
 
 <style lang="postcss">
