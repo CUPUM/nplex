@@ -3,6 +3,7 @@
 	export interface SwitchSetContext {
 		name: string;
 		current: Writable<HTMLElement>;
+		variant: 'primary' | 'secondary' | 'nav' | 'ghost';
 	}
 </script>
 
@@ -11,7 +12,7 @@
 	import { writable } from 'svelte/store';
 
 	export let name: string;
-	export let variant: 'primary' | 'secondary' | 'nav' | 'ghost' = 'primary';
+	export let variant: SwitchSetContext['variant'] = 'primary';
 	export let size: 'small' | 'medium' | 'large' = 'medium';
 	export let orientation: 'vertical' | 'horizontal' = 'horizontal';
 
@@ -23,6 +24,7 @@
 	setContext<SwitchSetContext>('switchset', {
 		name,
 		current,
+		variant,
 	});
 
 	function setStyle() {
@@ -41,7 +43,7 @@
 	onDestroy(() => {});
 </script>
 
-<fieldset {...$$restProps} style:font-size="var(--size-{size})" class={variant} bind:this={fieldset}>
+<fieldset {...$$restProps} style:font-size="var(--size-{size})" class="{variant} {orientation}" bind:this={fieldset}>
 	<div id="indicator" {style} />
 	<slot />
 </fieldset>
@@ -72,4 +74,6 @@
 		transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
 		border-radius: 0.85em;
 	}
+
+	/* Variants */
 </style>

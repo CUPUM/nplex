@@ -32,8 +32,8 @@
 	transition:width|local={{ duration: 350, easing: expoOut }}
 >
 	<form>
-		<legend>Filtres de recherche</legend>
-		<ProjectsFilter label="Domaines de projets">
+		<legend id="form-title">Filtres de recherche</legend>
+		<ProjectsFilter label="Vocations de site">
 			{#if $projectsEnums}
 				{#each $projectsEnums.projects_domains as domain}
 					<Checkbox>{domain.title}</Checkbox>
@@ -47,9 +47,9 @@
 				{#each $projectsEnums.projects_sites_types_groups as group}
 					{#if group.types.length}
 						<section class="tokenset">
-							<legend class="sublabel">{group.title}</legend>
+							<legend class="sub-title">{group.title}</legend>
 							{#each group.types as type}
-								<Token variant="ghost" style="margin: 5px;">{type.title}</Token>
+								<Token variant="ghost" style="margin: 3px;">{type.title}</Token>
 							{/each}
 						</section>
 					{/if}
@@ -96,19 +96,20 @@
 		}
 	}
 
-	legend {
+	#form-title {
 		/* position: sticky; */
 		position: relative;
 		font-size: var(--size-small);
 		font-weight: 500;
 		letter-spacing: 0.25px;
 		top: 0;
-		padding: 1em;
-		margin: 0;
+		padding: 0.5em;
+		margin: 0.5rem;
 		display: block;
-		/* background-color: var(--color-light-300); */
+		background-color: var(--color-light-500);
+		border-radius: 0.9rem;
 		z-index: 10;
-		color: rgba(var(--rgb-dark-100), 0.5);
+		color: rgba(var(--rgb-dark-100), 0.75);
 		text-align: center;
 	}
 
@@ -133,7 +134,7 @@
 		}
 	}
 
-	.sublabel {
+	.sub-title {
 		font-weight: 600;
 		font-size: var(--size-small);
 		/* letter-spacing: 0.5px; */

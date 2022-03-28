@@ -1,5 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 
+// Renommer projects_site_vocations lors de transfert vers DB.
 const projects_domains = [
 	{
 		name: 'commercial',

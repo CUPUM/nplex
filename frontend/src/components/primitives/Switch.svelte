@@ -12,6 +12,7 @@
 
 	const ctx = getContext<SwitchSetContext>('switchset');
 	const current = ctx.current;
+	const variant = ctx.variant;
 
 	function setCurrent() {
 		current.set(label);
@@ -29,6 +30,7 @@
 	bind:this={label}
 	class:current={$current === label}
 	style={$$restProps.style}
+	class={variant}
 	on:click
 	on:focus
 	on:mouseover
@@ -90,4 +92,6 @@
 		height: 0;
 		max-width: 0;
 	}
+
+	/* Variants */
 </style>
