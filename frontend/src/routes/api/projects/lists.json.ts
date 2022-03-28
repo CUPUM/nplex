@@ -68,7 +68,7 @@ const projects_sites_types = [
 		group_id: 1
 	},
 	{
-		title: 'Maison jumelée ou semi-détachée',
+		title: 'Maison jumelée / semi-détachée',
 		group_id: 1
 	},
 	{

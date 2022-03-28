@@ -7,7 +7,7 @@
 </script>
 
 <div>
-	<Button type="normal" on:click={showProjectsFilters.toggle}>Filtres</Button>
+	<Button type="normal" on:click={showProjectsFilters.toggle} active={$showProjectsFilters}>Filtres</Button>
 	<Field id="search" type="search" bind:value={$term}>
 		<svelte:fragment slot="left">
 			<Icon name="info" />

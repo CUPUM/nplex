@@ -1,15 +1,25 @@
 <script>
+	import ProjectsListCard from './ProjectsListCard.svelte';
 </script>
 
 <section>
-	<a href="/projets/project_asd3894ah">Projet 1</a>
-	<br />
-	<a href="/projets/project2asda3">Projet 2</a>
+	<ProjectsListCard />
+	<ProjectsListCard />
+	<ProjectsListCard />
+	<ProjectsListCard />
+	<ProjectsListCard />
+	<ProjectsListCard />
 </section>
 
 <style>
 	section {
 		flex: 1;
-		background-color: 'transparent';
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		overflow-x: visible;
+		overflow-y: scroll;
+		padding-block: 0;
+		padding-right: 0.5rem;
 	}
 </style>

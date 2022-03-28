@@ -13,13 +13,14 @@
 
 <style lang="postcss">
 	legend {
-		font-weight: 500;
-		font-size: var(--size-small);
+		font-weight: 400;
+		font-size: var(--size-large);
 		padding: 0.5em;
-		color: var(--color-dark-100);
+		color: var(--color-dark-500);
 	}
 
 	section {
+		display: block;
 	}
 
 	div {

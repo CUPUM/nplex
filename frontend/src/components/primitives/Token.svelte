@@ -34,12 +34,13 @@
 	div {
 		user-select: none;
 		position: relative;
-		display: flex;
+		display: inline-flex;
+		flex-wrap: nowrap;
+		white-space: nowrap;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
 		line-height: 1em;
-		text-overflow: ellipsis;
 		max-width: 200px;
 		height: 2em;
 		border-radius: 1em;
@@ -67,7 +68,18 @@
 	}
 
 	span {
+		display: inline-block;
 		position: relative;
+	}
+
+	#label {
+		top: -0.05em;
+		overflow: hidden;
+		line-height: 2em;
+		text-overflow: ellipsis;
+	}
+
+	#input {
 	}
 
 	.interactive {
@@ -89,6 +101,13 @@
 	}
 
 	.ghost {
+		--hover-color: var(--color-primary-900);
+		--hover-bg-color: var(--color-primary-300);
+		--active-color: var(--color-primary-900);
+		--active-bg-color: var(--color-light-900);
+		color: var(--color-dark-100);
+		background-color: var(--color-light-100);
+		box-shadow: 0 0 0 1px var(--color-light-900);
 	}
 
 	.cta {

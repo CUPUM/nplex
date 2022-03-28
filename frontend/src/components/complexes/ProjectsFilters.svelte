@@ -9,6 +9,7 @@
 	import { projectsFilters } from '$stores/search';
 	import { width } from '$transitions/width';
 	import { onMount } from 'svelte';
+	import { expoOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
 	import ProjectsFilter from './ProjectsFilter.svelte';
 
@@ -24,8 +25,14 @@
 </script>
 
 <!-- use:customScrollbar={{ overflowBehavior: { x: 'hidden' } }} -->
-<section id="pane" on:submit|preventDefault on:input={submit} transition:width|local={{ duration: 350 }}>
+<section
+	id="pane"
+	on:submit|preventDefault
+	on:input={submit}
+	transition:width|local={{ duration: 350, easing: expoOut }}
+>
 	<form>
+		<legend>Filtres de recherche</legend>
 		<ProjectsFilter label="Domaines de projets">
 			{#if $projectsEnums}
 				{#each $projectsEnums.projects_domains as domain}
@@ -39,11 +46,12 @@
 			{#if $projectsEnums}
 				{#each $projectsEnums.projects_sites_types_groups as group}
 					{#if group.types.length}
-						<TokenSet label={group.title}>
+						<section class="tokenset">
+							<legend class="sublabel">{group.title}</legend>
 							{#each group.types as type}
-								<Token>{type.title}</Token>
+								<Token variant="ghost" style="margin: 5px;">{type.title}</Token>
 							{/each}
-						</TokenSet>
+						</section>
 					{/if}
 				{/each}
 			{:else}
@@ -71,7 +79,7 @@
 <style lang="postcss">
 	#pane {
 		position: relative;
-		background-color: var(--color-light-100);
+		background-color: var(--color-light-300);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -80,8 +88,28 @@
 		--pane-width: 400px;
 		width: var(--pane-width);
 		overflow: hidden;
-		box-shadow: 0 1rem 7rem -5rem var(--color-primary-900), 0 0 0 1px var(--color-light-500);
+		box-shadow: 0 2rem 7rem -4rem var(--color-primary-900);
 		transition: all 0.15s ease-out;
+
+		&:hover {
+			background-color: var(--color-light-500);
+		}
+	}
+
+	legend {
+		/* position: sticky; */
+		position: relative;
+		font-size: var(--size-small);
+		font-weight: 500;
+		letter-spacing: 0.25px;
+		top: 0;
+		padding: 1em;
+		margin: 0;
+		display: block;
+		/* background-color: var(--color-light-300); */
+		z-index: 10;
+		color: rgba(var(--rgb-dark-100), 0.5);
+		text-align: center;
 	}
 
 	form {
@@ -98,9 +126,25 @@
 		margin: 0;
 
 		&:hover {
-			& :global > *:not(:hover) {
-				opacity: 0.5;
+			& :global > fieldset:not(:hover) {
+				/* opacity: 0.75; */
+				background-color: transparent;
 			}
 		}
+	}
+
+	.sublabel {
+		font-weight: 600;
+		font-size: var(--size-small);
+		/* letter-spacing: 0.5px; */
+		/* text-transform: uppercase; */
+		padding-block: 0;
+		padding-inline: 0.25em;
+		margin-bottom: 1em;
+		color: var(--color-dark-900);
+	}
+
+	.tokenset:not(:last-child) {
+		margin-bottom: 2em;
 	}
 </style>

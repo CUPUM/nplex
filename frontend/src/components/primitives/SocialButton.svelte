@@ -50,7 +50,7 @@
 		padding-inline: 1em;
 		margin: 0;
 		font-family: var(--font-main);
-		box-shadow: 0 0 0 1px var(--color-light-500);
+		box-shadow: 0 0 0 1px var(--color-light-700);
 		font-weight: 500;
 		outline-width: 2px;
 		outline-style: solid;

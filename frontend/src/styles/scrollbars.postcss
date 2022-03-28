@@ -22,6 +22,12 @@ body.os-host {
 	}
 } */
 
+:root {
+	--scroll-size: 2px;
+	--scroll-color: var(--color-light-900);
+	--scroll-color-hover: var(--color-light-900);
+}
+
 ::-webkit-scrollbar {
 	width: 4px;
 	height: 4px;
@@ -35,11 +41,10 @@ body.os-host {
 
 ::-webkit-scrollbar-thumb {
 	position: relative;
-	background: rgba(var(--rgb-dark-100), .25);
-	border-radius: 2px;
-	transition: background .3s;
+	background: var(--scroll-color);
+	border-radius: calc(2 * var(--scroll-size));
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: rgba(var(--rgb-dark-100), .4);
+	background: var(--scroll-color-hover);
 }

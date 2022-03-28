@@ -131,7 +131,8 @@
 		}
 
 		&:focus {
-			outline-color: var(--hover-bg-color);
+			/* outline-color: var(--hover-bg-color); */
+			outline-color: rgba(var(--rgb-primary-500), 0.2);
 		}
 
 		&.active {
@@ -163,12 +164,18 @@
 	/* Variants (should correspond to `typeof variant`) */
 
 	.normal {
-		--hover-color: var(--color-primary-900);
-		--hover-bg-color: var(--color-primary-300);
+		--hover-color: var(--color-primary-500);
+		--hover-bg-color: white;
 		--active-color: var(--color-primary-900);
 		--active-bg-color: var(--color-light-900);
-		color: var(--color-dark-500);
+		color: var(--color-dark-100);
 		background-color: var(--color-light-100);
+		box-shadow: 0 1px 1px 0 transparent;
+
+		&:hover {
+			box-shadow: 0 0.25em 1em -0.75em var(--color-primary-900);
+			transition: all 0.15s ease-out;
+		}
 	}
 
 	.secondary {
@@ -178,6 +185,16 @@
 	}
 
 	.cta {
+		--hover-color: var(--color-secondary-900);
+		--hover-bg-color: var(--color-secondary-100);
+		--active-color: var(--color-primary-900);
+		--active-bg-color: var(--color-light-900);
+		color: var(--color-dark-900);
+		background-color: var(--color-secondary-300);
+
+		&:hover {
+			transition: all 0.1s;
+		}
 	}
 
 	.nav {

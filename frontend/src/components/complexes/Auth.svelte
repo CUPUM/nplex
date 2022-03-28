@@ -73,7 +73,7 @@
 		use:clickoutside
 		on:clickoutside={close}
 		in:scale={{ duration: 200, start: 0.95, easing: expoOut }}
-		out:scale={{ duration: 150, start: 1.05, easing: expoIn }}
+		out:scale={{ duration: 150, start: 0.9, easing: expoIn }}
 	>
 		<fieldset>
 			<Field placeholder="Courriel" name="email" type="email" autocomplete="username" />
@@ -98,7 +98,7 @@
 				loading={Action.SIGNUP === currentAction}>Créer un compte</Button
 			>
 		</fieldset>
-		<p>ou utiliser</p>
+		<hr />
 		<fieldset>
 			{#each providerNames as provider}
 				<SocialButton {provider}>
@@ -139,7 +139,7 @@
 		background-color: var(--color-light-100);
 		padding: 2rem;
 		border-radius: 2rem;
-		border: 1px solid var(--color-light-900);
+		border: 1px solid var(--color-light-700);
 		box-shadow: 0 1rem 5.5rem -4rem var(--color-primary-900);
 	}
 
@@ -155,6 +155,11 @@
 		flex-direction: column;
 	}
 
-	#providers {
+	hr {
+		width: 100%;
+		height: 1px;
+		border: none;
+		background-color: var(--color-light-700);
+		margin-block: 1em;
 	}
 </style>

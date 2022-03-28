@@ -54,7 +54,7 @@
 		{#key icon}
 			{#if icon.strokes}
 				<path
-					transition:draw={{ duration, easing: linear }}
+					in:draw={{ duration, easing: linear }}
 					d={icon.strokes}
 					fill="none"
 					stroke-linejoin="round"
@@ -64,7 +64,7 @@
 				/>
 			{/if}
 			{#if icon.fills}
-				<path transition:fade={{ duration }} d={icon.fills} stroke="none" class="fills" />
+				<path in:fade={{ duration }} d={icon.fills} stroke="none" class="fills" />
 			{/if}
 		{/key}
 	{/if}
