@@ -1,7 +1,7 @@
 import * as cookie from 'cookie';
 import type { GetSession, Handle } from '@sveltejs/kit';
 import { db } from '$utils/database';
-import { makeSessionCookies, SessionCookieName } from '$utils/auth';
+// import { makeSessionCookies, SessionCookieName } from '$utils/auth';
 import jwt from 'jsonwebtoken';
 
 // const expiry = 1000;
