@@ -11,8 +11,8 @@ on:
 env:
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   HEROKU_APP_NAME: nplex-mtl
-  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-  SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+  # SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  # SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 # We are only concerned with the frontend package.
 defaults:
   run:
@@ -26,13 +26,21 @@ jobs:
     # Copy things over.
     - name: Checkout
       uses: actions/checkout@v3
+    # Let's create the expected .env file.
+    - name: Declare env file
+      run: |
+        touch .env
+        echo EXPOSED_SUPABASE_URL=${{ secrets.SUPABASE_URL }} >> .env
+        echo EXPOSED_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} >> .env
+        cat .env
+  SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
     # Build the docker image.
     - name: Docker build
       run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
     # Send the result to heroku's registry.
     - name: Publish
+      # heroku config:set EXPOSED_SUPABASE_URL=$SUPABASE_URL -a $HEROKU_APP_NAME
+      # heroku config:set EXPOSED_SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY -a $HEROKU_APP_NAME
       run: |
-        heroku config:set EXPOSED_SUPABASE_URL=$SUPABASE_URL -a $HEROKU_APP_NAME
-        heroku config:set EXPOSED_SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY -a $HEROKU_APP_NAME
         heroku container:push web -a $HEROKU_APP_NAME
         heroku container:release web -a $HEROKU_APP_NAME
