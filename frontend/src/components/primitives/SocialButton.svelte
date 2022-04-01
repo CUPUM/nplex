@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
+	import { providers } from '$utils/providers';
 
-	import { socialProviders } from '$utils/socials';
-
-	export let provider: keyof typeof socialProviders;
+	export let provider: keyof typeof providers = undefined;
 	export let size: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' = 'medium';
 	export let display: 'inline' | 'block' = 'inline';
 	export let warning: boolean = false;
@@ -25,8 +24,8 @@
 	use:ripple
 >
 	<span id="logo">
-		{@html socialProviders[provider].svg}
-		<!-- <img src={socialProviders[provider].logoFilepath} alt="logo {provider}" /> -->
+		{@html providers[provider].svg}
+		<!-- <img src={providers[provider].logoFilepath} alt="logo {provider}" /> -->
 	</span>
 	<div id="label">
 		<slot />

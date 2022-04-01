@@ -6,12 +6,12 @@
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { authModal } from '$stores/auth';
 	import { signIn, signUp } from '$utils/auth';
-	import { socialProviders } from '$utils/socials';
+	import { providers } from '$utils/providers';
 	import type { ApiError } from '@supabase/supabase-js';
 	import { expoIn, expoOut, linear } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
 
-	let providerNames = Object.keys(socialProviders) as (keyof typeof socialProviders)[];
+	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
 
 	function close() {
 		message = null;
@@ -102,7 +102,7 @@
 		<fieldset>
 			{#each providerNames as provider}
 				<SocialButton {provider}>
-					Connecter avec {socialProviders[provider].title}
+					Connecter avec {providers[provider].title}
 				</SocialButton>
 			{/each}
 		</fieldset>

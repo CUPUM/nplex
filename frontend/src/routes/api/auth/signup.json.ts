@@ -18,7 +18,7 @@ export const post: RequestHandler = async ({ request, locals }) => {
 	return {
 		status: 200,
 		body: {
-			session
+			session: JSON.stringify(session)
 		}
 	}
 }

@@ -4,6 +4,7 @@ import { goto } from '$app/navigation';
 import { db } from './database';
 import { page, session } from '$app/stores';
 import { get } from 'svelte/store';
+import type { providers } from './providers';
 
 export enum SessionCookieName {
 	REFRESH = 'refresh_token',
@@ -11,13 +12,10 @@ export enum SessionCookieName {
 	EXPIRES = 'expires_at'
 }
 
-const authProviders = ['google', 'linkedin', 'twitter'] as const;
-export type AuthProvider = typeof authProviders[number];
-
 interface AuthInfo {
 	email?: string;
 	password?: string;
-	provider?: AuthProvider;
+	provider?: keyof typeof providers;
 }
 
 /**
