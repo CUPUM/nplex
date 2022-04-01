@@ -1,4 +1,7 @@
-## Dev staging.
+##################
+## Dev staging. ##
+##################
+
 # FROM node:current-alpine AS dev ...Some extensions are troublesome with alpine containers
 FROM node:current-buster AS dev
 # Set node environment to dev to enforce installation of all dependencies, including devDependencies.
@@ -11,9 +14,13 @@ RUN npm install -g pnpm
 EXPOSE 3000
 EXPOSE 24678
 
+####################
+## Build staging. ##
+####################
 
-## Build staging.
 FROM dev AS build
+# Set the proper node env value.
+ENV NODE_ENV production
 # Set the working directory.
 WORKDIR /app
 # Copy package and lock files to the working directory root (./).
@@ -28,8 +35,10 @@ RUN pnpm build && pnpm prune --prod
 # CMD ["pnpm", "dev", "--host", "0.0.0.0"]
 # ENTRYPOINT #to do
 
+###################
+## Dist staging. ##
+###################
 
-## Dist staging.
 FROM node:current-alpine
 # Set node environment to dev to enforce installation of all dependencies, including devDependencies.
 ENV NODE_ENV production

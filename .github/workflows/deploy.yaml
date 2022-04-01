@@ -1,27 +1,33 @@
 name: Deploy to Heroku
-
+# Define the action's triggers.
 on:
   push:
     paths:
     - 'frontend/**'
+    - '.github/**'
     branches:
     - main
-
+# Set the required infos in env vars.
 env:
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-  HEROKU_APP_NAME: 'nplex-mtl'
-
+  HEROKU_APP_NAME: nplex-mtl
+# We are only concerned with the frontend package.
+defaults:
+  run:
+    working-directory: frontend
+# Define the action's jobs in detail.
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
+    # Copy things over.
     - name: Checkout
       uses: actions/checkout@v3
-      with:
-        path: 'frontend'
+    # Build the docker image.
     - name: Docker build
       run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+    # Send the result to heroku's registry.
     - name: Publish
       run: |
         heroku container:push web -a $HEROKU_APP_NAME
