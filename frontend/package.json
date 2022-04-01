@@ -20,7 +20,7 @@
 		"icons": "esmo ./scripts/ICONS.ts",
 		"cssvars": "esmo ./scripts/CSS_VARS.ts",
 		"dev": "svelte-kit dev",
-		"build": "pnpm icons && pnpm cssvars && pnpm svelte-kit build",
+		"build": "pnpm svelte-kit build",
 		"preview": "svelte-kit preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",

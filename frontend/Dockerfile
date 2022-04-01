@@ -2,7 +2,6 @@
 ## Dev staging. ##
 ##################
 
-# FROM node:current-alpine AS dev ...Some extensions are troublesome with alpine containers
 FROM node:current-buster AS dev
 # Set node environment to dev to enforce installation of all dependencies, including devDependencies.
 ENV NODE_ENV development
@@ -19,8 +18,6 @@ EXPOSE 24678
 ####################
 
 FROM dev AS build
-# Set the proper node env value.
-ENV NODE_ENV production
 # Set the working directory.
 WORKDIR /app
 # Copy package and lock files to the working directory root (./).
