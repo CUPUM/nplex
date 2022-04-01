@@ -30,7 +30,8 @@ COPY . .
 RUN pnpm build && pnpm prune --prod
 # Start the dev server when the image is launched and set the host to 0.0.0.0 to make the app accessible from outside.
 # CMD ["pnpm", "dev", "--host", "0.0.0.0"]
-# ENTRYPOINT #to do
+# ENTRYPOINT
+# to do
 
 ###################
 ## Dist staging. ##

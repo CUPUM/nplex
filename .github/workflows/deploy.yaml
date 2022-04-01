@@ -11,6 +11,8 @@ on:
 env:
   HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
   HEROKU_APP_NAME: nplex-mtl
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 # We are only concerned with the frontend package.
 defaults:
   run:
@@ -30,5 +32,7 @@ jobs:
     # Send the result to heroku's registry.
     - name: Publish
       run: |
+        heroku config:set EXPOSED_SUPABASE_URL=$SUPABASE_URL -a $HEROKU_APP_NAME
+        heroku config:set EXPOSED_SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY -a $HEROKU_APP_NAME
         heroku container:push web -a $HEROKU_APP_NAME
         heroku container:release web -a $HEROKU_APP_NAME
