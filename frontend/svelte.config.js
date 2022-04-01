@@ -15,6 +15,10 @@ const config = {
 	kit: {
 		adapter: node(),
 		vite: {
+			server: {
+				// Look for Heroku's attributed port, else use default.
+				port: process.env.PORT || 3000
+			},
 			plugins: [
 				{
 					name: 'generator-scripts-build',

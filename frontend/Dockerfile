@@ -50,4 +50,4 @@ COPY --from=build app/build .
 # Expose port 3000 for the SvelteKit app.
 EXPOSE 3000
 # Start that app!
-CMD ["node", "./build"]
+CMD ["node", "./build", ]
