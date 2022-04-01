@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import { onDestroy, onMount } from 'svelte';
-	import { bounceOut, expoInOut, expoOut } from 'svelte/easing';
+	import { bounceOut, expoInOut, expoOut, elasticOut, backOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
 	export let active: boolean = false;
@@ -63,7 +63,12 @@
 	style:--distance="{distance}px"
 >
 	{#if active}
-		<div class="popover" {...$$restProps} transition:scale={{ start: 0.9, easing: expoInOut, duration: 200 }}>
+		<div
+			class="popover"
+			{...$$restProps}
+			in:scale={{ start: 0.8, easing: backOut, duration: 120 }}
+			out:scale={{ start: 0.9, easing: expoInOut, duration: 200 }}
+		>
 			<slot />
 		</div>
 	{/if}
