@@ -24,7 +24,7 @@ ENV NODE_ENV production
 # Set the working directory.
 WORKDIR /app
 # Copy package and lock files to the working directory root (./).
-COPY ["package.json", "pnpm-lock.yaml", "./"]
+COPY ["package.json", "./"]
 # Install the package's deps.
 RUN pnpm install
 # Copy the rest of local files into the image, after the dependencies were installed. Keeping this step separated helps optimize the image's build process.
