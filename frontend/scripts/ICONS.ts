@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync, writeFile } from 'fs';
-import { parse, INode } from 'svgson';
+import { parse, type INode } from 'svgson';
 import prettier from 'prettier';
 import toPath from 'element-to-path';
 import path from 'path';

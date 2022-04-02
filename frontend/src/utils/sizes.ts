@@ -8,8 +8,3 @@ export const sizes = {
 	xxlarge: 28,
 	xxxlarge: 40
 };
-
-export const cssSizes =
-	Object.entries(sizes)
-		.map(([name, val]) => `--size-${name}: ${val}px`)
-		.join('; ') + '; ';
