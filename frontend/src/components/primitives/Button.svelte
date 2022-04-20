@@ -12,7 +12,7 @@
 	export let icon: SvelteProps<Icon>['name'] = undefined;
 	export let iconPosition: 'left' | 'right' = 'left';
 	export let warning: boolean = false;
-	export let square: boolean = false;
+	export let square: boolean = undefined;
 	export let href: string = undefined;
 	export let active: boolean = false;
 	export let disabled: boolean = false;
@@ -21,86 +21,53 @@
 
 	let nopointer = false;
 	let composed = false;
+	let autoSquare = false;
+
+	$: computedSquare = square || (!$$slots.default && Boolean(icon));
 
 	$: nopointer = variant === 'nav' && active;
 
 	$: composed = !!icon && $$slots.default;
 </script>
 
-{#if !href}
-	<button
-		use:ripple={{ startColor: 'currentColor' }}
-		use:tooltip={{ disabled: !Boolean(ttip), message: ttip }}
-		on:click
-		on:focus
-		on:mouseenter
-		on:mouseleave
-		class:active
-		class:warning
-		class:square
-		class:nopointer
-		class:composed
-		class="{variant} {display} {contentAlign} icon-{iconPosition}"
-		style:font-size="var(--size-{size})"
-		disabled={disabled || loading}
-		{...$$restProps}
-	>
-		{#if icon}
-			<span id="icon" class:dim={$$slots.default}>
-				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
-			</span>
-		{/if}
-		{#if $$slots.default}
-			<span id="label">
-				<slot />
-			</span>
-		{/if}
-		{#if loading}
-			<Loading
-				style="position: absolute; width: 1em; height: 1em; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: transparent;"
-			/>
-		{/if}
-	</button>
-{:else}
-	<a
-		use:ripple={{ startColor: 'currentColor' }}
-		use:tooltip={{ disabled: !Boolean(ttip), message: ttip }}
-		on:click
-		on:focus
-		on:mouseenter
-		on:mouseleave
-		class:active
-		class:warning
-		class:square
-		class:nopointer
-		class:composed
-		class="{variant} {display} {contentAlign} icon-{iconPosition}"
-		style:font-size="var(--size-{size})"
-		disabled={disabled || loading}
-		{...$$restProps}
-		{href}
-	>
-		{#if icon}
-			<span id="icon" class:dim={$$slots.default}>
-				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
-			</span>
-		{/if}
-		{#if $$slots.default}
-			<span id="label">
-				<slot />
-			</span>
-		{/if}
-		{#if loading}
-			<Loading
-				style="position: absolute; width: 1em; height: 1em; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: transparent;"
-			/>
-		{/if}
-	</a>
-{/if}
+<svelte:element
+	this={href ? 'a' : 'button'}
+	use:ripple={{ startColor: 'currentColor' }}
+	use:tooltip={{ disabled: !Boolean(ttip), message: ttip }}
+	on:click
+	on:focus
+	on:mouseenter
+	on:mouseleave
+	class:active
+	class:warning
+	class:square={computedSquare}
+	class:nopointer
+	class:composed
+	class="button {variant} {display} {contentAlign} icon-{iconPosition}"
+	style:font-size="var(--size-{size})"
+	disabled={disabled || loading}
+	{href}
+	{...$$restProps}
+>
+	{#if icon}
+		<span id="icon" class:dim={$$slots.default}>
+			<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
+		</span>
+	{/if}
+	{#if $$slots.default}
+		<span id="label">
+			<slot />
+		</span>
+	{/if}
+	{#if loading}
+		<Loading
+			style="position: absolute; width: 1em; height: 1em; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: transparent;"
+		/>
+	{/if}
+</svelte:element>
 
 <style lang="postcss">
-	button,
-	a {
+	.button {
 		/* Base */
 		--size: 2.8em;
 		cursor: pointer;
@@ -111,7 +78,7 @@
 		height: var(--size);
 		min-height: var(--size);
 		min-width: var(--size);
-		border-radius: 1em;
+		border-radius: 0.8em;
 		padding-block: 0;
 		padding-inline: 1em;
 		margin: 0;
@@ -199,7 +166,7 @@
 
 	.nav {
 		--hover-color: var(--color-primary-500);
-		--hover-bg-color: rgba(var(--rgb-primary-300), 0.1);
+		--hover-bg-color: transparent;
 		--active-color: var(--color-primary-300);
 		--active-bg-color: transparent;
 		color: var(--color-dark-100);
@@ -207,6 +174,27 @@
 		/* font-family: var(--font-misc); */
 		font-weight: 600;
 		letter-spacing: 0.3px;
+
+		&::before {
+			content: '';
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border-radius: 0.8em;
+			background-color: var(--color-primary-300);
+			opacity: 0;
+			transform: scale(0.9);
+			transition: all 0.5s cubic-bezier(0.2, 0, 0.2, 1);
+		}
+
+		&:hover,
+		&:focus {
+			&::before {
+				opacity: 0.2;
+				transform: scale(1);
+				transition: all 0.25s cubic-bezier(0.2, 0, 0.2, 1);
+			}
+		}
 	}
 
 	/* Display */

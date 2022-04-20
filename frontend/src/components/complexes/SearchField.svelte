@@ -3,23 +3,34 @@
 	import Field from '$components/primitives/Field.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import { showProjectsFilters } from '$stores/projects';
-	import { term } from '$stores/search';
+	import { route } from '$stores/route';
+	import { category, term } from '$stores/search';
+	const size = 'large';
 </script>
 
-<div>
-	<Button type="normal" on:click={showProjectsFilters.toggle} active={$showProjectsFilters}>Filtres</Button>
-	<Field id="search" type="search" bind:value={$term}>
-		<svelte:fragment slot="left">
-			<Icon name="info" />
-		</svelte:fragment>
+<fieldset>
+	<Field
+		type="search"
+		{size}
+		placeholder={$route.searchable ? `Chercher parmi les ${$route.title.toLowerCase()}` : ''}
+		placeholderIcon="search"
+		style="flex: 1;"
+		bind:value={$term}
+	>
 		<svelte:fragment slot="right">
-			<Button type="submit">Chercher</Button>
+			{#if $term}
+				<Button type="submit" icon="submit" slot="right" />
+			{/if}
 		</svelte:fragment>
 	</Field>
-</div>
+
+	<Button {size} type="normal" icon="filters" on:click={showProjectsFilters.toggle} active={$showProjectsFilters}
+		>Filtres</Button
+	>
+</fieldset>
 
 <style lang="postcss">
-	div {
+	fieldset {
 		position: relative;
 		flex: 1;
 		display: flex;
@@ -27,8 +38,6 @@
 		border: none;
 		padding: 0;
 		margin: 0;
-		border: none;
-		background-color: var(--color-light-100);
 		border-radius: 1em;
 	}
 </style>

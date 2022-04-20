@@ -14,31 +14,41 @@ const ICONS_DIR = path.resolve('src/utils/icons/');
 const OUTPUT_COMMENT =
 	"This file was generated from the svg files found in ./src/utils/icons, using ./scripts/PARSE_ICONS.ts, a script that you can call easily with 'pnpm icons' (or 'pnpm icons:watch' for automatic rerun after modifications during development). All changes added manually here will be lost on next execution of the generator script.";
 const PRETTIER_CONFIG = JSON.parse(readFileSync(path.resolve('.prettierrc')).toString());
-
-const svgFiles = readdirSync(ICONS_DIR).filter(
+const SVG_FILES = readdirSync(ICONS_DIR).filter(
 	(f) => path.extname(f).toLocaleLowerCase() === '.svg'
 );
+const PATH_TYPES = ['primary', 'secondary'];
 
 async function extractSvgPaths(svg: INode) {
-	const strokes = [];
-	const fills = [];
+	const strokes = [], fills = [];
 
 	if (['path', 'rect', 'line', 'polyline', 'polygon', 'circle', 'ellipse'].includes(svg.name)) {
 		const d = svg.name === 'path' ? svg.attributes.d : toPath(svg);
-		svg.attributes.stroke && strokes.push(d);
-		svg.attributes.fill && fills.push(d);
+		if (svg.attributes.stroke) {
+			strokes.push({d, type: svg.attributes.type || PATH_TYPES[0]})
+		}
+		else if (svg.attributes.fill) {
+			fills.push({d, type: svg.attributes.type || PATH_TYPES[0]})
+		}
+
+		// svg.attributes.stroke && strokes[svg.attributes.type || PATH_TYPES[0]].push(d);
+		// svg.attributes.fill && fills[svg.attributes.secondary ? 'secondary' : 'primary'].push(d);
 	}
 	if (svg.children.length) {
 		for await (const child of svg.children) {
 			const childPaths = await extractSvgPaths(child);
-			strokes.push(childPaths.strokes);
-			fills.push(childPaths.fills);
+			strokes.push(...childPaths.strokes);
+			fills.push(...childPaths.fills);
 		}
 	}
-	return { strokes: strokes.join(' '), fills: fills.join(' ') };
+	// return { strokes: strokes.join(' '), fills: fills.join(' ') };
+	return { strokes, fills };
 }
 
-const promises = svgFiles.map(async (file) => {
+/**
+ * Read files in icons' directory and generate the js const.
+ */
+const promises = SVG_FILES.map(async (file) => {
 	const svg = await parse(readFileSync(path.resolve(ICONS_DIR, file)).toString());
 	const name = path.parse(file).name.replace(/\s/g, '-');
 	const { width, height, viewBox } = svg.attributes;

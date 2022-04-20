@@ -63,7 +63,7 @@ const config = {
 								path.extname(abspath).toLocaleLowerCase() === '.svg'
 							) {
 								console.log(`Generating icons definition from changed svg source...`);
-								execSync(`esmo ${path.resolve('scripts', 'ICONS.ts')}`);
+								execSync(`esmo ${path.resolve('scripts', 'icons.ts')}`);
 							}
 							if (
 								utils
@@ -71,7 +71,7 @@ const config = {
 									.includes(abspath)
 							) {
 								console.log(`Generating CSS vars definitions from changed ts source...`);
-								execSync(`esmo ${path.resolve('scripts', 'CSS_VARS.ts')}`);
+								execSync(`esmo ${path.resolve('scripts', 'css_vars.ts')}`);
 							}
 						};
 						server.watcher.on('add', listener);
@@ -88,12 +88,11 @@ const config = {
 					$transitions: path.resolve('src/transitions'),
 					$routes: path.resolve('src/routes'),
 					$utils: path.resolve('src/utils'),
-					$icons: path.resolve('static/icons'),
 					$apitypes: path.resolve('.svelte-kit/types/src/routes/api')
 				}
 			},
 			// Préfixes des variables .env à exposer ('' n'est pas valide, https://vitejs.dev/config/#envdir)
-			envPrefix: 'EXPOSED'
+			envPrefix: 'PUBLIC'
 		}
 	},
 	compilerOptions: {

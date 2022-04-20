@@ -62,8 +62,8 @@
 	}
 
 	path {
+		transition: all 0.2s ease-out;
 		stroke: none;
 		fill: var(--col);
-		transition: all 0.2s ease-out;
 	}
 </style>

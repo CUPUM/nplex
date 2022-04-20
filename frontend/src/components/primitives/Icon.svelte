@@ -14,6 +14,7 @@
 	export let highlightName: keyof typeof icons = null;
 	export let size: string = '1em';
 	export let color: string = 'currentColor';
+	export let secondaryColor: string = color;
 	export let strokeWidth: number | string = 1.5;
 	export let highlight: boolean = false;
 
@@ -43,49 +44,64 @@
 	xmlns="http://www.w3.org/2000/svg"
 	aria-label="image-icône: {name}"
 	viewBox={icon.viewBox}
-	style:--icon-size={size}
-	style:--icon-color={color}
-	style:--strokeWidth={strokeWidth + ''}
+	style:--size={size}
+	style:--color={color}
+	style:--secondary-color={secondaryColor}
+	style:--thickness={strokeWidth + ''}
 	class:highlight
 	preserveAspectRatio="xMidYMid"
 	{...$$restProps}
 >
 	{#if mounted}
 		{#key icon}
-			{#if icon.strokes}
-				<path
-					in:draw={{ duration, easing: linear }}
-					d={icon.strokes}
-					fill="none"
-					stroke-linejoin="round"
-					stroke-linecap="round"
-					class="strokes"
-					vector-effect="non-scaling-stroke"
-				/>
+			{#if icon.strokes.length}
+				{#each icon.strokes as stroke}
+					<path
+						in:draw={{ duration, easing: linear }}
+						d={stroke.d}
+						class="stroke {stroke.type}"
+						vector-effect="non-scaling-stroke"
+					/>
+				{/each}
 			{/if}
-			{#if icon.fills}
-				<path in:fade={{ duration }} d={icon.fills} stroke="none" class="fills" />
+			{#if icon.fills.length}
+				{#each icon.fills as fill}
+					<path in:fade={{ duration }} d={fill.d} class="fill {fill.type}" />
+				{/each}
 			{/if}
 		{/key}
 	{/if}
 </svg>
 
-<style>
+<style lang="postcss">
 	svg {
 		overflow: visible;
 		position: relative;
-		width: var(--icon-size);
-		height: var(--icon-size);
+		width: var(--size);
+		height: var(--size);
 	}
 
-	path.strokes {
-		stroke: var(--icon-color);
-		stroke-width: var(--strokeWidth);
-		transition: stroke 0.3s ease;
-	}
+	path {
+		&.stroke {
+			fill: none;
+			stroke: var(--color);
+			stroke-width: var(--thickness);
+			stroke-linejoin: round;
+			stroke-linecap: round;
+			transition: stroke 0.3s ease;
 
-	path.fills {
-		fill: var(--icon-color);
-		transition: fill 0.3s ease;
+			&.secondary {
+				stroke: var(--secondary-color);
+			}
+		}
+
+		&.fill {
+			fill: var(--color);
+			transition: fill 0.3s ease;
+
+			&.secondary {
+				fill: var(--secondary-color);
+			}
+		}
 	}
 </style>

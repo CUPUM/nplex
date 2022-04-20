@@ -16,7 +16,7 @@
 <nav>
 	<section id="logo">
 		<a href="/">
-			<Logo intro={true} color={colors.primary[500]} hoverColor={colors.primary[700]} />
+			<Logo intro={true} color={colors.dark[500]} hoverColor={colors.primary[500]} />
 		</a>
 	</section>
 	<section id="main">
@@ -53,8 +53,7 @@
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
-		padding: 1rem 1.5rem;
-		background-color: var(--color-light-500);
+		padding: 0.75rem 1.5rem;
 	}
 
 	section {
@@ -76,5 +75,6 @@
 	#logo {
 		position: relative;
 		height: 1.5rem;
+		padding: 0 0.5rem;
 	}
 </style>

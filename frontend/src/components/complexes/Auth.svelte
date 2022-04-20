@@ -67,7 +67,7 @@
 </script>
 
 <div id="bg" out:fade={{ duration: 300, easing: linear }} />
-<div id="wrap">
+<div id="outer">
 	<form
 		on:submit|preventDefault={submit}
 		use:clickoutside
@@ -77,7 +77,12 @@
 	>
 		<fieldset>
 			<Field placeholder="Courriel" name="email" type="email" autocomplete="username" />
-			<Field placeholder="Mot de passe" type="password" name="password" autocomplete="current-password" />
+			<Field
+				placeholder="Mot de passe"
+				type="password"
+				name="password"
+				autocomplete="current-password"
+			/>
 			{#if message}
 				<Tooltip {message} />
 			{/if}
@@ -117,11 +122,10 @@
 		height: 100%;
 		top: 0;
 		left: 0;
-		backdrop-filter: blur(5px);
-		background-color: rgba(var(--rgb-light-500), 0.8);
+		background-color: rgba(var(--rgb-light-500), 1);
 	}
 
-	#wrap {
+	#outer {
 		z-index: 1000;
 		position: fixed;
 		display: flex;

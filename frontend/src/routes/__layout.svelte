@@ -43,20 +43,6 @@
 		session.update((s) => ({ ...s, prevnav }));
 	}
 
-	let mounted = false;
-	let loading = false;
-	let naving = false;
-
-	beforeNavigate(({ from, to }) => {
-		if (from && to && getSegments(from)[0] !== getSegments(to)[0]) {
-			naving = true;
-		}
-	});
-
-	afterNavigate(() => {
-		naving = false;
-	});
-
 	db.auth.onAuthStateChange(async (e, s) => {
 		// loading = true;
 		session.update((v) => {
@@ -68,10 +54,6 @@
 		});
 		// loading = false;
 	});
-
-	onMount(() => {
-		mounted = true;
-	});
 </script>
 
 <Nav />
@@ -80,14 +62,8 @@
 {/if}
 <!-- To do: add transition between toproutes -->
 <slot />
-{#if naving}
-	<Loading type="logo" style="font-size: 40px; background-color: var(--color-light-100)" />
-{/if}
 {#if $authModal}
 	<Auth />
-{/if}
-{#if !mounted || loading}
-	<Loading type="logo" style="font-size: 40px; background-color: var(--color-light-100)" />
 {/if}
 
 <style lang="postcss">

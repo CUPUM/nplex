@@ -1,0 +1,14 @@
+{
+	"editor.tabSize": 4,
+	"editor.insertSpaces": false,
+	"sqltools.format": {
+		"linesBetweenQueries": "preserve",
+		"reservedWordCase": "lower"
+	},
+	"[sql]": {
+		"editor.formatOnPaste": false,
+		"editor.formatOnSave": true,
+		"editor.formatOnSaveMode": "file",
+		"editor.defaultFormatter": "mtxr.sqltools"
+	}
+}

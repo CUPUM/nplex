@@ -1,7 +1,7 @@
 import { db } from '$utils/database';
 import type { Map as MLMap } from 'maplibre-gl';
 import { derived, readable, writable } from 'svelte/store';
-import { projectsFilters, term } from './search';
+import { term } from './search';
 
 /* Projects UI and general purpose data stores */
 
@@ -36,6 +36,19 @@ export const showProjectsFilters = (function () {
 })();
 
 /**
+ * Store for managing the filters' states
+ */
+interface ProjectsFilter {
+	expanded: boolean;
+	[key: string]: any;
+}
+
+export const projectsFilters = (function() {
+	const { subscribe, update, set } = writable<ProjectsFilter[]>(null);
+
+})();
+
+/**
  * Projects' map store for contextless use across the app
  */
 export const projectsMap = (function () {
@@ -50,6 +63,6 @@ export const projectsMap = (function () {
  * depending on navigations. i.e.: If a user visits the page for a specific project, the queried data should be appended
  * to the corresponding item in this store.
  */
-export const projects = derived([term, projectsFilters], (search, projectsFilters) => {
-	console.log(search, projectsFilters);
-});
+// export const projects = derived([term, projectsFilters], (search, projectsFilters) => {
+// 	console.log(search, projectsFilters);
+// });
