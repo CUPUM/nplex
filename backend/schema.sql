@@ -25,13 +25,30 @@ comment on table public.users_profiles is 'Base data table for user profiles, ex
 
 alter table public.profiles enable row level security;
 
-create policy 'Anyone can see user profiles'
+create policy 'Anyone can see user profiles.'
 	on public.profiles for select
 	using ( true );
 
-create policy 'Users can only update their own profile'
+create policy 'Users can only update their own profile.'
 	on public.profiles for update
 	using ( auth.uid() = id );
+
+
+-- HELPER FUNCTIONS PERTAINING TO USERS
+
+create or replace function public.has_role(variadic roles public.user_role[])
+returns boolean as $$
+begin
+	case
+		when auth.uid() != 'authenticated' then
+		return false;
+	else
+		return
+			select role from public.profiles
+			where auth.uid() = id;
+	end if
+end
+$$ language plpgsql security definer;
 
 
 -- AUTOMATE PROFILE CREATION ON NEW USER SIGNUP
@@ -74,7 +91,7 @@ create policy 'Authed users can create unpublished projects.'
 	on public.projects for insert
 	with check ( auth.role() = 'authenticated' );
 
-create policy 'Only editors and admins can publish projects.'
+create policy 'Only editors and admins can intervene on self-publishable projects.'
 	on public.projects for update
 	using ( 
 		select role from public.profiles
@@ -122,6 +139,8 @@ create policy 'Non-creator editors can do anything on assigned projects.'
 			where public.projects_permissions.project_id = public.projects.id
 			and public.projects_permissions.user_id = auth.uid()
 		)
+		and
+
 	)
 	with check (
 		exists (
