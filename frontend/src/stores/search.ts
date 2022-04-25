@@ -41,32 +41,6 @@ export const category = (function () {
 })();
 
 /**
- * Projects search & filters
- */
-
-const defaultProjectsFilters = {
-	test: 2,
-	other: false,
-	check: true,
-	text: '',
-	array: ['index0', 'index1']
-};
-
-export type ProjectsFilters = typeof defaultProjectsFilters;
-
-const initProjectsFilters = { ...defaultProjectsFilters };
-
-Object.keys(defaultProjectsFilters).forEach((k) => {
-	if (init.getAll(k).length > 1) {
-		initProjectsFilters[k] = init.getAll(k);
-	} else if (init.getAll(k).length === 1) {
-		initProjectsFilters[k] = init.get(k);
-	}
-});
-
-export const projectsFilters = writable({ ...initProjectsFilters });
-
-/**
  * Orgs search & filters
  */
 
@@ -101,13 +75,13 @@ term.subscribe((v) => {
 	updateURL();
 });
 
-projectsFilters.subscribe((v) => {
-	Object.entries(v).forEach(([k, v]) => {
-		if (v != defaultProjectsFilters[k]) {
-			query.set(k, v.toString());
-		} else {
-			query.delete(k);
-		}
-	});
-	updateURL();
-});
+// projectsFilters.subscribe((v) => {
+// 	Object.entries(v).forEach(([k, v]) => {
+// 		if (v != defaultProjectsFilters[k]) {
+// 			query.set(k, v.toString());
+// 		} else {
+// 			query.delete(k);
+// 		}
+// 	});
+// 	updateURL();
+// });

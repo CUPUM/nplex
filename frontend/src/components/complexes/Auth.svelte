@@ -36,6 +36,8 @@
 		const data = new FormData(e.target as HTMLFormElement);
 		const email = data.get('email') as string;
 		const password = data.get('password') as string;
+		console.log(email);
+		console.log(password);
 		switch (currentAction) {
 			case Action.SIGNIN:
 				{
@@ -77,12 +79,7 @@
 	>
 		<fieldset>
 			<Field placeholder="Courriel" name="email" type="email" autocomplete="username" />
-			<Field
-				placeholder="Mot de passe"
-				type="password"
-				name="password"
-				autocomplete="current-password"
-			/>
+			<Field placeholder="Mot de passe" type="password" name="password" autocomplete="current-password" />
 			{#if message}
 				<Tooltip {message} />
 			{/if}
@@ -152,11 +149,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1em;
-	}
-
-	#fields {
-		display: flex;
-		flex-direction: column;
 	}
 
 	hr {

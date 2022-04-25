@@ -1,6 +1,17 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
+		"target": "es2020",
+		"module": "es2020",
+		"moduleResolution": "node",
+		"lib": ["es2020", "DOM", "dom.iterable"],
+		"downlevelIteration": true,
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"allowJs": true,
+		"checkJs": true,
 		"paths": {
 			"$actions/*": ["src/actions/*"],
 			"$components/*": ["src/components/*"],

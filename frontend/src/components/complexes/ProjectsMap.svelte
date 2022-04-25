@@ -15,7 +15,7 @@
 		resizeDebounce = setTimeout(() => {
 			map?.resize();
 			clearTimeout(resizeDebounce);
-		}, 10);
+		}, 2);
 	}
 
 	onMount(() => {
@@ -48,7 +48,7 @@
 	<!-- <figure bind:this={container}></figure> -->
 </section>
 
-<style>
+<style lang="postcss">
 	section {
 		position: relative;
 		flex: 1;

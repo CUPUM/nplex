@@ -1,14 +1,14 @@
 <script>
-	import ProjectsListCard from './ProjectsListCard.svelte';
+	import ProjectsListItem from './ProjectsListItem.svelte';
 </script>
 
 <section>
-	<ProjectsListCard />
-	<ProjectsListCard />
-	<ProjectsListCard />
-	<ProjectsListCard />
-	<ProjectsListCard />
-	<ProjectsListCard />
+	<ProjectsListItem />
+	<ProjectsListItem />
+	<ProjectsListItem />
+	<ProjectsListItem />
+	<ProjectsListItem />
+	<ProjectsListItem />
 </section>
 
 <style>

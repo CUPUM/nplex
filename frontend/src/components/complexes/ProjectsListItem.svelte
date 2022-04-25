@@ -1,5 +1,4 @@
 <script lang="ts">
-	export let projectId: string = undefined;
 </script>
 
 <div>

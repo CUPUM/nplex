@@ -7,7 +7,7 @@
 	import { showProjectsFilters } from '$stores/projects';
 </script>
 
-<section>
+<section id="panes">
 	{#if $showProjectsFilters}
 		<ProjectsFilters />
 	{/if}
@@ -21,10 +21,10 @@
 	</article>
 {/key} -->
 <style lang="postcss">
-	section {
+	#panes {
 		position: relative;
-		padding-block: var(--size-medium);
-		padding-inline: 1rem;
+		margin-top: var(--size-medium);
+		padding: 0;
 		width: 100%;
 		min-height: 600px;
 		flex: 1;
@@ -32,13 +32,9 @@
 		flex-direction: row;
 		--gap: 8px;
 		overflow: hidden;
-	}
 
-	section > :global(section) {
-		border-radius: var(--size-xlarge);
-	}
-
-	section > :global(section):not(:last-child) {
-		margin-right: var(--gap);
+		& > :global(section):not(:last-child) {
+			margin-right: var(--gap);
+		}
 	}
 </style>

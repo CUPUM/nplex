@@ -6,11 +6,11 @@
 	import Icon from './Icon.svelte';
 
 	/**
-	 * Field input type, useful for a11y
+	 * Field input type, useful for a11y.
 	 */
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
 	/**
-	 * Styling options
+	 * Styling options.
 	 */
 	export let size: 'small' | 'medium' | 'large' | 'xlarge' = 'medium';
 	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' = 'normal';
@@ -91,7 +91,8 @@
 		on:blur={blur}
 		on:submit
 		data-lpignore="true"
-		autocomplete="off"
+		name={$$restProps.name}
+		autocomplete={$$restProps.autocomplete || 'off'}
 	/>
 	{#if !value}
 		<div id="right" transition:fly={{ x: sizes[size] }}>

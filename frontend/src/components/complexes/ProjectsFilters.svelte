@@ -6,7 +6,7 @@
 	import Token from '$components/primitives/Token.svelte';
 	import TokenSet from '$components/primitives/TokenSet.svelte';
 	import { projectsEnums } from '$stores/projects';
-	import { projectsFilters } from '$stores/search';
+	// import { projectsFilters } from '$stores/search';
 	import { width } from '$transitions/width';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
