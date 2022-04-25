@@ -5,7 +5,7 @@ alter default privileges in schema public revoke all on functions from anon, aut
 revoke execute on all functions in schema public from anon, authenticated;
 
 
--- DROP TABLES
+-- DROP PREVIOUS TABLES
 drop table if exists public.users_collections_items;
 drop table if exists public.users_collections;
 drop table if exists public.projects_ratings;
@@ -30,6 +30,7 @@ create table public.users (
 	updated_at timestamptz default timezone('utc'::text, now()) not null,
 	is_online boolean not null default false,
 	show_email boolean not null default false,
+	avatar_url text,
 	firstname text not null,
 	middlename text,
 	lastname text,
