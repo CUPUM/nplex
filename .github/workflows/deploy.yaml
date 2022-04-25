@@ -30,8 +30,8 @@ jobs:
     - name: Declare env file
       run: |
         touch .env
-        echo EXPOSED_SUPABASE_URL=${{ secrets.SUPABASE_URL }} >> .env
-        echo EXPOSED_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} >> .env
+        echo PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL }} >> .env
+        echo PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} >> .env
         cat .env
     # Build the docker image.
     - name: Docker build
