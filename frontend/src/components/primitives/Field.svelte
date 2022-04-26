@@ -94,7 +94,7 @@
 		name={$$restProps.name}
 		autocomplete={$$restProps.autocomplete || 'off'}
 	/>
-	{#if !value}
+	{#if value}
 		<div id="right" transition:fly={{ x: sizes[size] }}>
 			<Button {size} icon="cross" on:click={reset} />
 			<slot name="right" />

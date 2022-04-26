@@ -7,9 +7,12 @@
 	import Icon from '$components/primitives/Icon.svelte';
 	import { topRoute } from '$stores/route';
 	import { colors } from '$utils/colors';
+	import { session } from '$app/stores';
+	import AvatarButton from '$components/primitives/AvatarButton.svelte';
+	import { sizes } from '$utils/sizes';
 
 	let userExpand = false;
-	const size = 'small';
+	const size = sizes.small;
 	const variant = 'nav';
 </script>
 
@@ -26,13 +29,16 @@
 	</section>
 	<section id="user">
 		<Button {size} {variant} href="/" square={true} icon="home" />
-		<Button {size} {variant} square={true} icon="info" />
-		<Button {size} {variant} square={true} href={userBaseRoute.pathname} icon="user" />
+		{#if $session.user}
+			<AvatarButton />
+		{:else}
+			<Button {size} {variant} square={true} href={userBaseRoute.pathname} icon="user" />
+		{/if}
 		<Popover bind:active={userExpand} placement="bottom" align="end">
 			<Button
+				slot="control"
 				{size}
 				{variant}
-				slot="control"
 				square={true}
 				active={userExpand}
 				on:click={() => (userExpand = true)}

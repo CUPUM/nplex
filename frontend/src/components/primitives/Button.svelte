@@ -6,9 +6,8 @@
 	import Loading from './Loading.svelte';
 
 	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'normal';
-	export let size: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' = 'medium';
+	export let size: string | number = '1em';
 	export let contentAlign: 'left' | 'center' | 'right' = 'center';
-	export let display: 'inline' | 'block' = 'inline';
 	export let icon: SvelteProps<Icon>['name'] = undefined;
 	export let iconPosition: 'left' | 'right' = 'left';
 	export let warning: boolean = false;
@@ -16,14 +15,13 @@
 	export let href: string = undefined;
 	export let active: boolean = false;
 	export let disabled: boolean = false;
-	export let ttip: string = undefined;
 	export let loading: boolean = false;
 
 	let nopointer = false;
 	let composed = false;
 	let autoSquare = false;
 
-	$: computedSquare = square || (!$$slots.default && Boolean(icon));
+	$: computedSquareness = square || (!$$slots.default && Boolean(icon));
 
 	$: nopointer = variant === 'nav' && active;
 
@@ -33,32 +31,32 @@
 <svelte:element
 	this={href ? 'a' : 'button'}
 	use:ripple={{ startColor: 'currentColor' }}
-	use:tooltip={{ disabled: !Boolean(ttip), message: ttip }}
 	on:click
 	on:focus
 	on:mouseenter
 	on:mouseleave
 	class:active
 	class:warning
-	class:square={computedSquare}
+	class:square={computedSquareness}
 	class:nopointer
-	class:composed
-	class="button {variant} {display} {contentAlign} icon-{iconPosition}"
-	style:font-size="var(--size-{size})"
+	class="button {variant}"
+	style:font-size={typeof size === 'number' ? size + 'px' : size}
 	disabled={disabled || loading}
 	{href}
 	{...$$restProps}
 >
-	{#if icon}
-		<span id="icon" class:dim={$$slots.default}>
-			<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
-		</span>
-	{/if}
-	{#if $$slots.default}
-		<span id="label">
-			<slot />
-		</span>
-	{/if}
+	<div class={contentAlign} class:composed>
+		{#if icon}
+			<span id="icon" class={iconPosition}>
+				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
+			</span>
+		{/if}
+		{#if $$slots.default}
+			<span id="label">
+				<slot />
+			</span>
+		{/if}
+	</div>
 	{#if loading}
 		<Loading
 			style="position: absolute; width: 1em; height: 1em; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: transparent;"
@@ -70,6 +68,7 @@
 	.button {
 		/* Base */
 		--size: 2.8em;
+		display: inline-block;
 		cursor: pointer;
 		box-sizing: border-box;
 		position: relative;
@@ -79,8 +78,6 @@
 		min-height: var(--size);
 		min-width: var(--size);
 		border-radius: 0.8em;
-		padding-block: 0;
-		padding-inline: 1em;
 		margin: 0;
 		font-family: var(--font-main);
 		font-weight: 500;
@@ -88,7 +85,6 @@
 		outline-style: solid;
 		outline-color: transparent;
 		overflow: hidden;
-		align-items: center;
 		transition: all 0.2s ease-out;
 
 		&:hover {
@@ -122,9 +118,36 @@
 			pointer-events: none;
 			cursor: default;
 		}
+	}
 
-		&.dim {
-			opacity: 0.5;
+	div {
+		position: relative;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding-block: 0;
+		padding-inline: 1em;
+		&.left {
+			justify-content: flex-start;
+		}
+		&.center {
+			justify-content: center;
+			&.composed {
+				grid-template-columns: auto;
+				&.icon-left {
+					grid-template-columns: 1fr auto minmax(0, 1fr);
+				}
+				&.icon-right {
+					grid-template-columns: minmax(0, 1fr) auto 1fr;
+				}
+			}
+		}
+		&.right {
+			justify-content: flex-end;
 		}
 	}
 
@@ -175,7 +198,7 @@
 		font-weight: 600;
 		letter-spacing: 0.3px;
 
-		&::before {
+		& div::before {
 			content: '';
 			position: absolute;
 			width: 100%;
@@ -189,7 +212,7 @@
 
 		&:hover,
 		&:focus {
-			&::before {
+			& div::before {
 				opacity: 0.2;
 				transform: scale(1);
 				transition: all 0.25s cubic-bezier(0.2, 0, 0.2, 1);
@@ -197,24 +220,7 @@
 		}
 	}
 
-	/* Display */
-
-	.block {
-		display: flex;
-		width: 100%;
-
-		&.composed {
-			display: grid;
-		}
-	}
-
-	.inline {
-		display: inline-flex;
-
-		&.composed {
-			display: inline-grid;
-		}
-	}
+	/* Squareness */
 
 	.square {
 		justify-content: center;
@@ -244,29 +250,5 @@
 
 	#icon {
 		top: -0.05em;
-	}
-
-	.left {
-		justify-content: flex-start;
-	}
-
-	.center {
-		justify-content: center;
-
-		&.composed {
-			grid-template-columns: auto;
-
-			&.icon-left {
-				grid-template-columns: 1fr auto minmax(0, 1fr);
-			}
-
-			&.icon-right {
-				grid-template-columns: minmax(0, 1fr) auto 1fr;
-			}
-		}
-	}
-
-	.right {
-		justify-content: flex-end;
 	}
 </style>
