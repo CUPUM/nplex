@@ -14,6 +14,8 @@
 	const current = ctx.current;
 	const variant = ctx.variant;
 
+	// To do:
+	// Should temporarily set current on hover too for animation handling.
 	function setCurrent() {
 		current.set(label);
 	}
@@ -70,7 +72,7 @@
 
 		&:hover:not(.current) {
 			transition: all 0s;
-			background-color: var(--color-light-100);
+			/* background-color: var(--color-light-100); */
 		}
 
 		&.current {

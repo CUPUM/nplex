@@ -2,11 +2,12 @@
 	import { ripple } from '$actions/ripple';
 	import { tooltip } from '$actions/tooltip';
 	import type { SvelteProps } from '$utils/helpers/types';
+	import { getContext } from 'svelte';
 	import Icon from './Icon.svelte';
 	import Loading from './Loading.svelte';
 
 	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'normal';
-	export let size: string | number = '1em';
+	export let size: string | number = undefined;
 	export let contentAlign: 'left' | 'center' | 'right' = 'center';
 	export let icon: SvelteProps<Icon>['name'] = undefined;
 	export let iconPosition: 'left' | 'right' = 'left';
@@ -17,15 +18,23 @@
 	export let disabled: boolean = false;
 	export let loading: boolean = false;
 
+	const buttonParent = getContext('button-parent');
+
 	let nopointer = false;
 	let composed = false;
 	let autoSquare = false;
+	let autoSize;
 
-	$: computedSquareness = square || (!$$slots.default && Boolean(icon));
-
+	$: autoSquareness = square || (!$$slots.default && Boolean(icon));
 	$: nopointer = variant === 'nav' && active;
-
 	$: composed = !!icon && $$slots.default;
+	/**
+	 * Soft auto-determination of component size, where:
+	 * - User-defined size has most precedence and is used if present.
+	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter.
+	 * (Useful for field buttons and other nested uses)
+	 */
+	$: autoSize = typeof size === 'number' ? size + 'px' : size || buttonParent ? '0.8em' : '1em';
 </script>
 
 <svelte:element
@@ -37,15 +46,15 @@
 	on:mouseleave
 	class:active
 	class:warning
-	class:square={computedSquareness}
+	class:square={autoSquareness}
 	class:nopointer
 	class="button {variant}"
-	style:font-size={typeof size === 'number' ? size + 'px' : size}
+	style:font-size={autoSize}
 	disabled={disabled || loading}
 	{href}
 	{...$$restProps}
 >
-	<div class={contentAlign} class:composed>
+	<div class="{contentAlign} icon-{iconPosition}" class:composed>
 		{#if icon}
 			<span id="icon" class={iconPosition}>
 				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />

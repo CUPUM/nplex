@@ -64,7 +64,7 @@
 		transition: all 0.3s ease-out;
 
 		&:hover {
-			box-shadow: 0 0.25em 1.5em -1em var(--color-dark-100);
+			/* box-shadow: 0 0.25em 1.5em -1em var(--color-dark-100); */
 		}
 	}
 
