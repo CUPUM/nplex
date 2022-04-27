@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { Properties } from 'maplibre-gl';
 	import { setContext } from 'svelte';
+	import { buttonContextKey } from './Button.svelte';
 
 	export let direction: 'horizontal' | 'vertical' = 'vertical';
+
+	setContext(buttonContextKey, true);
 
 	setContext('group', {
 		// set variant

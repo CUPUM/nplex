@@ -1,5 +1,16 @@
-<script>
+<script lang="ts">
 	export let dbproject;
+
+	interface ProjectData = {
+		ownership: string;
+		usage_category: string;
+		usage: string;
+		secondary_usages: {
+			usage_category: string,
+			usage: string;
+		}[]
+	}
+	export let project = {};
 </script>
 
 {#if dbproject}
@@ -7,10 +18,13 @@
 {:else}
 	<h1>Soumettre un nouveau projet</h1>
 {/if}
-<h2>Site du projet</h2>
-<p>Sélectionner un site existant:</p>
-<select>
-	<!-- alimenter avec db -->
-	<option />
-</select>
-<p>...ou <button href="./site">créer un nouveau site</button></p>
+<h2>Type de propriétaire</h2>
+<h2>Usage principal</h2>
+<h3>Catégorie</h3>
+<h3>Usage</h3>
+{#each  as }
+	
+{/each}
+<h2>Usage secondaire</h2>
+<h3>Catégorie</h3>
+<h3>Usage</h3>
