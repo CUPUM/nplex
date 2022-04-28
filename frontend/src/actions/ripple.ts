@@ -1,4 +1,4 @@
-import { parseCSSValue } from '$utils/helpers/strings';
+import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 
 const RIPPLE_GLOBALS = {
 	HOST_ATTRIBUTE: 'ripple-host',
@@ -16,9 +16,9 @@ interface RippleOptions {
 	fadeDelay?: number;
 	opacity?: number;
 	startColor?: string;
-	startSize?: number | string;
+	startSize?: number | CssSizeValue;
 	endColor?: string;
-	endSize?: number | string;
+	endSize?: number | CssSizeValue;
 	blur?: number;
 	disabled?: boolean;
 }
@@ -45,7 +45,7 @@ export function ripple(element: HTMLElement, {
 	if (!document.head.querySelector(`[${RIPPLE_GLOBALS.SHEET_ATTRIBUTE}]`)) {
 		createRippleStylesheet();
 	}
-	
+
 	/**
 	 * Prepare the host element
 	 */
@@ -54,8 +54,8 @@ export function ripple(element: HTMLElement, {
 	element.style.overflow = 'hidden';
 	if (!element.style.transformOrigin) element.style.transformOrigin = 'center center';
 	if (style.position === 'static') element.style.position = 'relative';
-	const parsedStartSize = startSize + (parseCSSValue(startSize).unit ? '' : 'px');
-	const parsedEndSize = endSize ? endSize + (parseCSSValue(endSize).unit ? '' : 'px') : Math.max(parseInt(style.height), parseInt(style.width)) * 2 + 'px';
+	const parsedStartSize = cssSize(startSize);
+	const parsedEndSize = endSize ? cssSize(endSize) : Math.max(parseInt(style.height), parseInt(style.width)) * 3 + 'px';
 	element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, parsedEndSize);
 	element.style.setProperty(RIPPLE_GLOBALS.END_COLOR, endColor ? endColor : startColor);
 
@@ -66,7 +66,7 @@ export function ripple(element: HTMLElement, {
 	 */
 	function createRipple(e: MouseEvent) {
 		const rect = element.getBoundingClientRect();
-		const upToDateEndSize = endSize ? endSize + (parseCSSValue(endSize).unit ? '' : 'px') : Math.max(rect.height, rect.width) * 2 + 'px';
+		const upToDateEndSize = endSize ? cssSize(endSize) : Math.max(rect.height, rect.width) * 2 + 'px';
 		element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, upToDateEndSize);
 		ripple = document.createElement('div');
 		ripple.style.userSelect = 'none';
@@ -91,7 +91,7 @@ export function ripple(element: HTMLElement, {
 	function clearRipple() {
 		const r = ripple;
 		if (r) {
-			r.style.animation = r.style.animation + `, ${RIPPLE_GLOBALS.FADE_ANIMATION} ${fadeDuration}ms ease-in-out ${fadeDelay}ms forwards`
+			r.style.animation = r.style.animation + `, ${RIPPLE_GLOBALS.FADE_ANIMATION} ${fadeDuration}ms ease-in-out ${fadeDelay}ms forwards`;
 			r.onanimationend = ((e) => {
 				if (e.animationName === RIPPLE_GLOBALS.FADE_ANIMATION) {
 					r.remove();

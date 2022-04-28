@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
+	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import Loading from './Loading.svelte';
 
-	export let size: string | number = '1em';
+	export let size: number | CssSizeValue = '1em';
 	export let warning: boolean = false;
 	export let href: string = undefined;
 	export let active: boolean = false;
@@ -20,7 +21,7 @@
 	id="button"
 	class:active
 	class:warning
-	style:font-size={typeof size === 'number' ? size + 'px' : size}
+	style:font-size={cssSize(size)}
 	disabled={disabled || loading}
 	{href}
 	{...$$restProps}

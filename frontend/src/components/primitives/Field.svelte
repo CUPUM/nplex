@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+
 	import type { SvelteProps } from '$utils/helpers/types';
 	import { sizes } from '$utils/sizes';
 	import { fly } from 'svelte/transition';
@@ -12,7 +14,7 @@
 	/**
 	 * Styling options.
 	 */
-	export let size: 'small' | 'medium' | 'large' | 'xlarge' = 'medium';
+	export let size: number | CssSizeValue = '1em';
 	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' = 'normal';
 	export let warning: boolean = undefined;
 	export let display: 'inline' | 'block' = 'inline';
@@ -63,7 +65,7 @@
 	id="wrap"
 	class:warning
 	class="{variant} {display}"
-	style:font-size="var(--size-{size})"
+	style:font-size={cssSize(size)}
 	{...$$restProps}
 	class:no-placeholder={value || (!placeholder && !placeholderIcon)}
 >

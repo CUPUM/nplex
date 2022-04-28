@@ -1,16 +1,15 @@
 {
 	"editor.formatOnPaste": false,
 	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.defaultFormatter": "svelte.svelte-vscode",
 	/**
 	 * Where svelte-language plugin should look for css globals needed for intellisens.
 	 */
 	"svelte.plugin.css.globals": "src/styles/*.css, src/styles/*.postcss, src/styles/*/**.css, src/styles/*/**.postcss",
-	"svelte.plugin.svelte.defaultScriptLanguage": "ts",
 	"[svelte]": {
 		"editor.defaultFormatter": "svelte.svelte-vscode"
 	},
 	"[typescript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "vscode.typescript-language-features"
 	}
 }

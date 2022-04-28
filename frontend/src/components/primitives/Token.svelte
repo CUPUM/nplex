@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { tooltip } from '$actions/tooltip';
+	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 
-	export let size: 'xsmall' | 'small' | 'medium' | 'large' = 'medium';
+	export let size: number | CssSizeValue = '1em';
 	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' = 'normal';
 	export let ttip: string = undefined;
 	export let disabled: boolean = false;
@@ -11,7 +12,7 @@
 
 <div
 	class={variant}
-	style:font-size="var(--size-{size})"
+	style:font-size={cssSize(size)}
 	class:active
 	class:warning
 	{disabled}

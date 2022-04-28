@@ -1,41 +1,43 @@
 <script context="module" lang="ts">
-	const cue = new Set();
-	const duration = 500;
-	const delay = 500;
+	const queue = new Set();
+	const duration = 350;
+	const delay = 250;
 </script>
 
 <script lang="ts">
+	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+
 	import { icons } from '$utils/icons/icons';
 	import { onDestroy, onMount } from 'svelte';
 	import { cubicOut, linear, sineOut } from 'svelte/easing';
 	import { draw, fade } from 'svelte/transition';
 
 	export let name: keyof typeof icons;
-	export let highlightName: keyof typeof icons = null;
-	export let size: string = '1em';
+	export let size: number | CssSizeValue = '1em';
 	export let color: string = 'currentColor';
 	export let secondaryColor: string = color;
-	export let strokeWidth: number | string = 1.5;
-	export let highlight: boolean = false;
+	export let strokeWidth: number | CssSizeValue = 1.5;
+	export let strokeOpacity: number = 1;
+	export let fillOpacity: number = 1;
 
 	let icon = icons[name];
 	let mounted = false;
 	let instance;
 	let timeout;
 
-	$: icon = highlight && highlightName ? icons[highlightName] : icons[name];
+	$: icon = icons[name];
 
 	onMount(() => {
-		cue.add(instance);
+		queue.add(instance);
 		timeout = setTimeout(() => {
 			mounted = true;
-			cue.delete(instance);
-		}, [...cue].indexOf(instance) * (duration / 3) + delay);
+			queue.delete(instance);
+		}, [...queue].indexOf(instance) * (duration / 3) + delay);
 	});
 
 	onDestroy(() => {
 		clearTimeout(timeout);
-		cue.delete(instance);
+		queue.delete(instance);
 	});
 </script>
 
@@ -44,16 +46,15 @@
 	xmlns="http://www.w3.org/2000/svg"
 	aria-label="image-icône: {name}"
 	viewBox={icon.viewBox}
-	style:--size={size}
-	style:--color={color}
+	style:font-size={cssSize(size)}
+	style:color
 	style:--secondary-color={secondaryColor}
-	style:--thickness={strokeWidth + ''}
-	class:highlight
+	style:--thickness={cssSize(strokeWidth)}
 	preserveAspectRatio="xMidYMid"
 	{...$$restProps}
 >
 	{#if mounted}
-		{#key icon}
+		{#key name}
 			{#if icon.strokes.length}
 				{#each icon.strokes as stroke}
 					<path
@@ -77,14 +78,14 @@
 	svg {
 		overflow: visible;
 		position: relative;
-		width: var(--size);
-		height: var(--size);
+		width: 1em;
+		height: 1em;
 	}
 
 	path {
 		&.stroke {
 			fill: none;
-			stroke: var(--color);
+			stroke: currentColor;
 			stroke-width: var(--thickness);
 			stroke-linejoin: round;
 			stroke-linecap: round;
@@ -96,7 +97,7 @@
 		}
 
 		&.fill {
-			fill: var(--color);
+			fill: currentColor;
 			transition: fill 0.3s ease;
 
 			&.secondary {

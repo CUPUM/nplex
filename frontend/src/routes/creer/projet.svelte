@@ -1,16 +1,17 @@
 <script lang="ts">
 	export let dbproject;
 
-	interface ProjectData = {
+	interface ProjectData {
 		ownership: string;
 		usage_category: string;
 		usage: string;
 		secondary_usages: {
-			usage_category: string,
+			usage_category: string;
 			usage: string;
-		}[]
+		}[];
 	}
-	export let project = {};
+
+	// export let project: ProjectData = {};
 </script>
 
 {#if dbproject}
@@ -22,9 +23,9 @@
 <h2>Usage principal</h2>
 <h3>Catégorie</h3>
 <h3>Usage</h3>
-{#each  as }
+<!-- {#each  as }
 	
-{/each}
+{/each} -->
 <h2>Usage secondaire</h2>
 <h3>Catégorie</h3>
 <h3>Usage</h3>

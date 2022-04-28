@@ -1,13 +1,29 @@
-<script lang="ts">
-	import { sizes } from '$utils/sizes';
-
-	export let variant: 'normal' | 'secondary' | 'misc' = 'normal';
-	export let size: 'small' | 'medium' | 'large' = 'medium';
-	export let labelPosition: 'left' | 'right' = 'right';
-	export let tooltip: string = undefined;
+<script lang="ts" context="module">
+	export const checkboxContextKey = 'input-context';
 </script>
 
-<label class="{variant} {labelPosition}" style:font-size="{sizes[size]}px">
+<script lang="ts">
+	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+	import { sizes } from '$utils/sizes';
+	import { getContext } from 'svelte';
+
+	export let variant: 'normal' | 'secondary' | 'misc' = 'normal';
+	export let size: number | CssSizeValue = undefined;
+	export let labelPosition: 'left' | 'right' = 'right';
+	export let tooltip: string = undefined;
+
+	const checkboxContext = getContext(checkboxContextKey);
+
+	/**
+	 * Soft auto-determination of component size, where:
+	 * - User-defined size has most precedence and is used if present.
+	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter.
+	 * (Useful for field buttons and other nested uses)
+	 */
+	$: autoSize = size ? cssSize(size) : checkboxContext ? '0.8em' : '1em';
+</script>
+
+<label class="{variant} {labelPosition}" style:font-size={autoSize}>
 	{#if $$slots.default}
 		<span>
 			<slot />

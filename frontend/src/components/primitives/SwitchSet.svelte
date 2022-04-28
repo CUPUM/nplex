@@ -10,10 +10,11 @@
 <script lang="ts">
 	import { onDestroy, onMount, setContext } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 
 	export let name: string;
 	export let variant: SwitchSetContext['variant'] = 'primary';
-	export let size: 'small' | 'medium' | 'large' = 'medium';
+	export let size: number | CssSizeValue = '1em';
 	export let orientation: 'vertical' | 'horizontal' = 'horizontal';
 
 	let fieldset: HTMLFieldSetElement;
@@ -43,7 +44,7 @@
 	onDestroy(() => {});
 </script>
 
-<fieldset {...$$restProps} style:font-size="var(--size-{size})" class="{variant} {orientation}" bind:this={fieldset}>
+<fieldset {...$$restProps} style:font-size={cssSize(size)} class="{variant} {orientation}" bind:this={fieldset}>
 	<div id="indicator" {style} />
 	<slot />
 </fieldset>

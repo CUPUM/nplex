@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
+	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import { providers } from '$utils/providers';
 
 	export let provider: keyof typeof providers = undefined;
-	export let size: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' = 'medium';
+	export let size: number | CssSizeValue = '1em';
 	export let display: 'inline' | 'block' = 'inline';
 	export let warning: boolean = false;
 	export let active: boolean = false;
@@ -13,7 +14,7 @@
 </script>
 
 <button
-	style:font-size="var(--size-{size})"
+	style:font-size={cssSize(size)}
 	class={display}
 	class:warning
 	class:active
