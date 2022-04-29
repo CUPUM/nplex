@@ -4,10 +4,10 @@
  * Useful to compare the current $session.user.role to various guards across the app.
  */
 export enum UserRole {
-	Anon = 'ANON',
-	Guest = 'authenticated',
-	Editor = 'EDITOR',
-	Admin = 'ADMIN'
+	Anon = 'anon',
+	Visitor = 'visitor',
+	Editor = 'editor',
+	Admin = 'admin'
 }
 
 export function getUserRole(roleValue: string) {
