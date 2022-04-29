@@ -28,7 +28,7 @@
 	import Search from '$components/complexes/Search.svelte';
 	import { route } from '$stores/route';
 	import Auth from '$components/complexes/Auth.svelte';
-	import { db } from '$utils/database';
+	import { db, getUserProfile } from '$utils/database';
 	import { authModal } from '$stores/auth';
 	import { onMount } from 'svelte';
 	import Loading from '$components/primitives/Loading.svelte';
@@ -45,13 +45,12 @@
 
 	db.auth.onAuthStateChange(async (e, s) => {
 		// loading = true;
-		session.update((v) => {
-			if (e === 'SIGNED_OUT') {
-				return { prevnav: '/', user: null };
-			} else {
-				return { ...v, user: s.user };
-			}
-		});
+		if (e === 'SIGNED_OUT') {
+			session.update(() => ({ prevnav: '/', user: null }));
+		} else {
+			const profile = await getUserProfile();
+			session.update((v) => ({ ...v, user: s.user, profile }));
+		}
 		// loading = false;
 	});
 </script>

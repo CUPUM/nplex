@@ -56,7 +56,7 @@ export const exploreRoutes: ExploreRoute[] = [
 		parentTopRoute: rootRoute,
 		searchable: true
 	}
-]
+];
 
 export interface CreationRoute extends Route {
 	category: ExploreRoute['category'];
@@ -64,8 +64,8 @@ export interface CreationRoute extends Route {
 export const creationBaseRoute: Route = {
 	pathname: '/creer',
 	title: 'Créer',
-	guards: [UserRole.Editor, UserRole.Admin]
-}
+	guards: [UserRole.Visitor, UserRole.Editor, UserRole.Admin]
+};
 /**
  * Relative root routes for the submission forms.
  */
@@ -88,13 +88,13 @@ export const creationRoutes: CreationRoute[] = [
 		category: 'actors',
 		parentTopRoute: creationBaseRoute
 	}
-]
+];
 
 export const userBaseRoute: Route = {
 	pathname: '/compte',
 	title: 'Mon compte',
 	guards: [UserRole.Visitor, UserRole.Editor, UserRole.Admin]
-}
+};
 
 /**
  * Regroups all defined nav-bar route items in a single array for use in store/route.ts $route store

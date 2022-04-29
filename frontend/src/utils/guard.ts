@@ -32,6 +32,10 @@ interface GuardInput {
  */
 export function guard({ url, session }: GuardInput): boolean {
 	const guardSteps: UserRole[][] = [];
+	/**
+	 * Finding the guarded segments within the queried pathname and returning each nested step's
+	 * array of allowed roles.
+	 */
 	for (const guarded of guardedRoutes) {
 		if (url.pathname.indexOf(guarded.pathname) > -1) {
 			guardSteps.push(guarded.guards);
@@ -45,7 +49,7 @@ export function guard({ url, session }: GuardInput): boolean {
 		/**
 		 * Testing if user has one of the required role, for every steps encountered.
 		 */
-		if (!session?.user || session.user && !fulfillGuards(guardSteps, getUserRole(session.user.role))) {
+		if (!session?.user || session.user && !fulfillGuards(guardSteps, getUserRole(session.profile?.role))) {
 			return false;
 		}
 	}
