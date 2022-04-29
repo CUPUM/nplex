@@ -142,22 +142,26 @@
 		pointer-events: none;
 		user-select: none;
 		position: absolute;
-		height: 0;
-		width: 0;
 		background-color: transparent;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
+		flex-wrap: nowrap;
+		overflow: visible;
 	}
 
 	.outer {
+		display: block;
+		flex-shrink: 0;
+		width: auto;
 		pointer-events: all;
 		user-select: initial;
 		z-index: 100;
-		position: absolute;
+		position: relative;
 		padding: 0;
 		margin: 0;
+		overflow: visible;
 	}
 
 	.top {
@@ -273,12 +277,13 @@
 	}
 
 	.inner {
+		position: relative;
 		padding: 0.5em;
 		background-color: var(--color-light-300);
 		box-shadow: 0 1em 2em -1.5em var(--color-primary-900);
 		border-radius: 1.1em;
 		border: 1px solid var(--color-light-700);
-		display: flex;
+		display: inline-flex;
 		flex-direction: column;
 		gap: 0.5em;
 	}

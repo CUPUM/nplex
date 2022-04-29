@@ -47,6 +47,7 @@
 	class:active
 	class:warning
 	style:font-size={autoSize}
+	style:color={userColor}
 	disabled={disabled || loading}
 	{href}
 	{...$$restProps}
@@ -60,10 +61,8 @@
 				x="50%"
 				y="50%"
 				font-size="2em"
-				font-weight="600"
+				font-weight="400"
 				dominant-baseline="middle"
-				fill={userColor}
-				stroke="none"
 			>
 				{$session.user.email.charAt(0)}
 			</text>
@@ -99,7 +98,16 @@
 		left: 0;
 		padding: 0;
 		margin: 0;
-		background-color: var(--color-dark-100);
-		opacity: 0.5;
+		background-color: currentColor;
+		opacity: 1;
+	}
+
+	text {
+		/* fill: var(--color-dark-500); */
+		fill: none;
+		stroke: var(--color-dark-500);
+		stroke-width: 2px;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 </style>

@@ -31,21 +31,21 @@
 		<Button {size} {variant} href="/" square={true} icon="home" />
 		{#if $session.user}
 			<Popover placement="bottom" align="end" useHover={true}>
-				<Button {size} {variant} slot="control">Créer</Button>
+				<Button slot="control" {size} {variant} href={creationBaseRoute.pathname}>
+					{creationBaseRoute.title}
+				</Button>
 				{#each creationRoutes as r}
 					<Button {size} {variant} href={r.pathname}>{r.title}</Button>
 				{/each}
 			</Popover>
-			<AvatarButton {size} />
+			<Popover useHover={true} placement="bottom" align="end">
+				<AvatarButton slot="control" {size} href={userBaseRoute.pathname} />
+				<Button>Autre option</Button>
+				<Button>Se déconnecter</Button>
+			</Popover>
 		{:else}
 			<Button {size} {variant} square={true} href={userBaseRoute.pathname} icon="user" />
 		{/if}
-		<Popover placement="bottom" align="end">
-			<Button {size} {variant} slot="control">Test</Button>
-			{#each creationRoutes as r}
-				<Button {size} {variant} href={r.pathname}>{r.title}</Button>
-			{/each}
-		</Popover>
 	</section>
 </nav>
 

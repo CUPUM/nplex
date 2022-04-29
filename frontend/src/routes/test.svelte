@@ -18,10 +18,10 @@
 
 <div>
 	<input type="checkbox" name="" id="" bind:checked={useHover} />
-	<Popover {useHover}>
-		<Button slot="control">Popver control</Button>
+	<Popover {useHover} align="end" placement="bottom">
+		<Button slot="control">Popover</Button>
 		<Button>Popver item</Button>
-		<Button>Popver item</Button>
+		<Button>Popver item with long text</Button>
 	</Popover>
 </div>
 
