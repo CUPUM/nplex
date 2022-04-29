@@ -1,7 +1,20 @@
 {
 	"editor.formatOnPaste": false,
 	"editor.formatOnSave": true,
-	"editor.defaultFormatter": "svelte.svelte-vscode",
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"typescript.autoClosingTags": true,
+	"typescript.format.enable": true,
+	"typescript.format.insertSpaceAfterCommaDelimiter": true,
+	"typescript.format.insertSpaceAfterKeywordsInControlFlowStatements": true,
+	"typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
+	"typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
+	"typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+	"typescript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
+	"typescript.format.semicolons": "insert",
+	"typescript.format.insertSpaceAfterSemicolonInForStatements": true,
+	"typescript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": false,
+	"typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": true,
+	"typescript.format.insertSpaceAfterTypeAssertion": false,
 	/**
 	 * Where svelte-language plugin should look for css globals needed for intellisens.
 	 */
@@ -10,6 +23,6 @@
 		"editor.defaultFormatter": "svelte.svelte-vscode"
 	},
 	"[typescript]": {
-		"editor.defaultFormatter": "vscode.typescript-language-features"
+		"editor.defaultFormatter": "vscode.typescript-language-features",
 	}
 }
