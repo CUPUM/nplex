@@ -22,6 +22,7 @@
 	"scripts": {
 		"icons": "esmo ./scripts/ICONS.ts",
 		"cssvars": "esmo ./scripts/CSS_VARS.ts",
+		"get-db-types": ". ./.env && npx openapi-typescript \"${PUBLIC_SUPABASE_URL}/rest/v1/?apikey=${PUBLIC_SUPABASE_ANON_KEY}\" --version=2 --output src/types/database.ts",
 		"dev": "svelte-kit dev",
 		"build": "pnpm svelte-kit build",
 		"preview": "svelte-kit preview",
