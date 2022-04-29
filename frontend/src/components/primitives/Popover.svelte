@@ -5,7 +5,7 @@
 	import { scale } from 'svelte/transition';
 
 	export let active: boolean = false;
-	/* To do: Preferred position, should be adjusted automatically if doesn't fit in viewport */
+	export let useHover: boolean = false;
 	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
 	export let align: 'start' | 'center' | 'end' = 'center';
 	export let distance: number = 5;
@@ -18,12 +18,73 @@
 	let x;
 	let w;
 	let h;
+	let autoAlign;
+	let autoPlacement;
+	let timer;
 
-	$: if (active) {
-		setPlace();
+	/* To do: Preferred position, should be adjusted automatically if doesn't fit in viewport */
+	// $: autoAlign = ...
+	// $: autoPlacement = ...
+
+	$: if (controlRef) {
+		console.log('running setup');
+		/**
+		 * Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change).
+		 */
+		controlRef.removeEventListener('click', activate);
+		controlRef.removeEventListener('mouseenter', activate);
+		controlRef.removeEventListener('mouseleave', deactivate);
+		popoverRef.removeEventListener('mouseenter', activate);
+		popoverRef.removeEventListener('mouseleave', deactivate);
+		/**
+		 * Binding the proper events on the control element.
+		 */
+		controlRef.addEventListener(useHover ? 'mouseenter' : 'click', activate);
+		controlRef.addEventListener(useHover ? 'mouseleave' : 'clickoutside', deactivate);
+		if (useHover) {
+			popoverRef.addEventListener('mouseenter', activate);
+			popoverRef.addEventListener('mouseleave', deactivate);
+		}
+		/**
+		 * Listening to disposition changes
+		 */
+		controlRef.ontransitionend = setPosition;
+		mutationObs = new MutationObserver(setPosition);
+		resizeObs = new ResizeObserver(setPosition);
+		mutationObs.observe(controlRef, { attributes: true });
+		mutationObs.observe(controlRef.offsetParent, { attributes: true });
+		resizeObs.observe(controlRef, {});
+		resizeObs.observe(controlRef.offsetParent, {});
 	}
 
-	function setPlace() {
+	$: if (active) {
+		setPosition();
+	}
+
+	function activate() {
+		if (timer) {
+			clearTimeout(timer);
+		}
+		active = true;
+	}
+
+	function deactivate() {
+		if (useHover) {
+			timer = setTimeout(() => {
+				active = false;
+			}, 10);
+		} else {
+			active = false;
+		}
+	}
+
+	function handleClickoutside() {
+		if (!useHover) {
+			active = false;
+		}
+	}
+
+	function setPosition() {
 		if (controlRef) {
 			y = controlRef.offsetTop + 'px';
 			x = controlRef.offsetLeft + 'px';
@@ -33,15 +94,14 @@
 	}
 
 	onMount(() => {
+		/**
+		 * Referencing the element passed in the "control" slot.
+		 */
 		controlRef = popoverRef.previousElementSibling as HTMLElement;
-		setPlace();
-		controlRef.ontransitionend = setPlace;
-		mutationObs = new MutationObserver(setPlace);
-		resizeObs = new ResizeObserver(setPlace);
-		mutationObs.observe(controlRef, { attributes: true });
-		mutationObs.observe(controlRef.offsetParent, { attributes: true });
-		resizeObs.observe(controlRef, {});
-		resizeObs.observe(controlRef.offsetParent, {});
+		/**
+		 * Setting the initial position.
+		 */
+		setPosition();
 	});
 
 	onDestroy(() => {
@@ -50,12 +110,14 @@
 	});
 </script>
 
-<slot name="control" />
+<slot name="control">
+	<button style="padding: 1em; display: inline-block; position: relative;">Popover control</button>
+</slot>
 <div
-	class="placer {placement} {align}"
+	class="hinter {placement} {align}"
 	bind:this={popoverRef}
 	use:clickoutside
-	on:clickoutside={() => (active = false)}
+	on:clickoutside={handleClickoutside}
 	style:--y={y}
 	style:--x={x}
 	style:--w={w}
@@ -64,18 +126,19 @@
 >
 	{#if active}
 		<div
-			class="popover"
-			{...$$restProps}
+			class="outer"
 			in:scale={{ start: 0.8, easing: backOut, duration: 120 }}
 			out:scale={{ start: 0.9, easing: expoInOut, duration: 200 }}
 		>
-			<slot />
+			<div class="inner" {...$$restProps}>
+				<slot />
+			</div>
 		</div>
 	{/if}
 </div>
 
 <style lang="postcss">
-	.placer {
+	.hinter {
 		pointer-events: none;
 		user-select: none;
 		position: absolute;
@@ -88,19 +151,13 @@
 		justify-content: center;
 	}
 
-	.popover {
+	.outer {
 		pointer-events: all;
 		user-select: initial;
 		z-index: 100;
 		position: absolute;
-		padding: 0.5em;
-		background-color: var(--color-light-300);
-		box-shadow: 0 1em 2em -1.5em var(--color-primary-900);
-		border-radius: 1.1em;
-		border: 1px solid var(--color-light-700);
-		display: flex;
-		flex-direction: column;
-		gap: 0.5em;
+		padding: 0;
+		margin: 0;
 	}
 
 	.top {
@@ -108,15 +165,16 @@
 		left: var(--x);
 		width: var(--w);
 
-		& .popover {
+		& .outer {
 			transform-origin: center bottom;
-			bottom: var(--distance);
+			bottom: 0;
+			padding-bottom: var(--distance);
 		}
 
 		&.start {
 			justify-content: flex-start;
 
-			& .popover {
+			& .outer {
 				transform-origin: left bottom;
 			}
 		}
@@ -124,7 +182,7 @@
 		&.end {
 			justify-content: flex-end;
 
-			& .popover {
+			& .outer {
 				transform-origin: right bottom;
 			}
 		}
@@ -135,15 +193,16 @@
 		left: var(--x);
 		width: var(--w);
 
-		& .popover {
+		& .outer {
 			transform-origin: center top;
-			top: var(--distance);
+			top: 0;
+			padding-top: var(--distance);
 		}
 
 		&.start {
 			justify-content: flex-start;
 
-			& .popover {
+			& .outer {
 				transform-origin: left top;
 			}
 		}
@@ -151,7 +210,7 @@
 		&.end {
 			justify-content: flex-end;
 
-			& .popover {
+			& .outer {
 				transform-origin: right top;
 			}
 		}
@@ -162,15 +221,16 @@
 		left: calc(var(--x) + var(--w));
 		height: var(--h);
 
-		& .popover {
+		& .outer {
 			transform-origin: left center;
-			left: var(--distance);
+			left: 0;
+			padding-left: var(--distance);
 		}
 
 		&.start {
 			align-items: flex-start;
 
-			& .popover {
+			& .outer {
 				transform-origin: left top;
 			}
 		}
@@ -178,7 +238,7 @@
 		&.end {
 			align-items: flex-end;
 
-			& .popover {
+			& .outer {
 				transform-origin: left bottom;
 			}
 		}
@@ -189,15 +249,16 @@
 		left: var(--x);
 		height: var(--h);
 
-		& .popover {
+		& .outer {
 			transform-origin: right center;
-			right: var(--distance);
+			right: 0;
+			padding-right: var(--distance);
 		}
 
 		&.start {
 			align-items: flex-start;
 
-			& .popover {
+			& .outer {
 				transform-origin: right top;
 			}
 		}
@@ -205,9 +266,20 @@
 		&.end {
 			align-items: flex-end;
 
-			& .popover {
+			& .outer {
 				transform-origin: right bottom;
 			}
 		}
+	}
+
+	.inner {
+		padding: 0.5em;
+		background-color: var(--color-light-300);
+		box-shadow: 0 1em 2em -1.5em var(--color-primary-900);
+		border-radius: 1.1em;
+		border: 1px solid var(--color-light-700);
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
 	}
 </style>

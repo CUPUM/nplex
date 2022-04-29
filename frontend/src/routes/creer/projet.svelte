@@ -11,6 +11,10 @@
 		}[];
 	}
 
+	// To do for project storage / retention:
+	// Assign temporary local ids (or actual dbproject id if editing an already existing project)
+	// in a map akin to: {[id: string]: [project: ProjectData]}
+
 	// export let project: ProjectData = {};
 </script>
 

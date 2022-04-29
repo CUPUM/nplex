@@ -93,9 +93,13 @@ export const creationRoutes: CreationRoute[] = [
 export const userBaseRoute: Route = {
 	pathname: '/compte',
 	title: 'Mon compte',
-	guards: [UserRole.Guest, UserRole.Editor, UserRole.Admin]
+	guards: [UserRole.Visitor, UserRole.Editor, UserRole.Admin]
 }
 
+/**
+ * Regroups all defined nav-bar route items in a single array for use in store/route.ts $route store
+ * to determine which navbar item(s) to highlight.
+ */
 export const allRoutes = [
 	...topRoutes,
 	...exploreRoutes,

@@ -3,7 +3,9 @@ import type { Map as MLMap } from 'maplibre-gl';
 import { derived, readable, writable } from 'svelte/store';
 import { term } from './search';
 
-/* Projects UI and general purpose data stores */
+/*
+ * Projects UI and general purpose data stores
+ */
 
 /**
  * Enums used to describe and filter projects.
@@ -19,8 +21,7 @@ export const projectsEnums = readable(null, function start(set) {
 	setEnums();
 
 	return function stop() {}
-})
-
+});
 
 /**
  * Store handling the state of the projects' fitlers drawer (open or closed) to
@@ -43,7 +44,7 @@ interface ProjectsFilter {
 	[key: string]: any;
 }
 
-export const projectsFilters = (function() {
+export const projectsFilters = (function () {
 	const { subscribe, update, set } = writable<ProjectsFilter[]>(null);
 
 })();

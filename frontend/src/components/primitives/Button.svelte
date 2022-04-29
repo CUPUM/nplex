@@ -25,11 +25,9 @@
 
 	const buttonContext = getContext(buttonContextKey);
 
-	let nopointer = false;
 	let autoSquare = false;
-	let autoSize;
+	let autoSize: string;
 
-	$: nopointer = variant === 'nav' && active;
 	/**
 	 * Soft auto-determination of squareness, where:
 	 * - User-defined 'square' value has precedence.
@@ -57,7 +55,6 @@
 	class:active
 	class:warning
 	class:square={autoSquare}
-	class:nopointer
 	class="button {variant}"
 	style:font-size={autoSize}
 	disabled={disabled || loading}
@@ -111,10 +108,6 @@
 		}
 		&:disabled {
 			opacity: 0.5;
-			pointer-events: none;
-			cursor: default;
-		}
-		&.nopointer {
 			pointer-events: none;
 			cursor: default;
 		}
@@ -250,6 +243,10 @@
 			opacity: 0;
 			transform: scale(0.8);
 			transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
+		}
+		&.active {
+			pointer-events: none;
+			cursor: default;
 		}
 		&:hover,
 		&:focus {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { rootRoute, topRoutes, userBaseRoute } from '$utils/routes';
+	import { creationBaseRoute, creationRoutes, rootRoute, topRoutes, userBaseRoute } from '$utils/routes';
 	import Button from '$components/primitives/Button.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
@@ -30,25 +30,22 @@
 	<section id="user">
 		<Button {size} {variant} href="/" square={true} icon="home" />
 		{#if $session.user}
-			<AvatarButton />
+			<Popover placement="bottom" align="end" useHover={true}>
+				<Button {size} {variant} slot="control">Créer</Button>
+				{#each creationRoutes as r}
+					<Button {size} {variant} href={r.pathname}>{r.title}</Button>
+				{/each}
+			</Popover>
+			<AvatarButton {size} />
 		{:else}
 			<Button {size} {variant} square={true} href={userBaseRoute.pathname} icon="user" />
 		{/if}
-		<Popover bind:active={userExpand} placement="bottom" align="end">
-			<Button
-				slot="control"
-				{size}
-				{variant}
-				square={true}
-				active={userExpand}
-				on:click={() => (userExpand = true)}
-				icon="more"
-			/>
-			<Button display="block" contentAlign="left" size="small">Paramètres</Button>
-			<Button display="block" contentAlign="left" size="small">Information</Button>
-			<Button display="block" contentAlign="left" size="small">Te123123st</Button>
+		<Popover placement="bottom" align="end">
+			<Button {size} {variant} slot="control">Test</Button>
+			{#each creationRoutes as r}
+				<Button {size} {variant} href={r.pathname}>{r.title}</Button>
+			{/each}
 		</Popover>
-		<!-- <Button icon="settings (three dots)" /> -->
 	</section>
 </nav>
 

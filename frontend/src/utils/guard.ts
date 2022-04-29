@@ -9,6 +9,10 @@ import { getSegments } from './helpers/url';
 
 const guardedRoutes = allRoutes.filter(route => route.guards);
 
+/**
+ * Role requirement check where the given user-role is tested against an array of accepted roles
+ * for each of the nested routes' requirements (namely _steps_).
+ */
 function fulfillGuards(steps: UserRole[][], role: UserRole) {
 	for (const step of steps) {
 		if (!step.includes(role)) {
@@ -34,9 +38,13 @@ export function guard({ url, session }: GuardInput): boolean {
 		}
 	}
 
-	// If the queried route is affected by guards
+	/**
+	 * Checking if the queried route is affected by any guards, including those defined for parent routes.
+	 */
 	if (guardSteps.length) {
-		// Check if user has the required role
+		/**
+		 * Testing if user has one of the required role, for every steps encountered.
+		 */
 		if (!session?.user || session.user && !fulfillGuards(guardSteps, getUserRole(session.user.role))) {
 			return false;
 		}

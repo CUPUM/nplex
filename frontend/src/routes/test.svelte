@@ -2,6 +2,7 @@
 	// your script goes here
 
 	import Button from '$components/primitives/Button.svelte';
+	import Popover from '$components/primitives/Popover.svelte';
 	import type { SvelteProps } from '$utils/helpers/types';
 
 	const icon: SvelteProps<Button>['iconPosition'][] = ['before', 'after'];
@@ -11,9 +12,20 @@
 
 	let iconPosition: SvelteProps<Button>['iconPosition'] = icon[0];
 	let contentAlign: SvelteProps<Button>['contentAlign'] = align[1];
+
+	let useHover;
 </script>
 
-<form>
+<div>
+	<input type="checkbox" name="" id="" bind:checked={useHover} />
+	<Popover {useHover}>
+		<Button slot="control">Popver control</Button>
+		<Button>Popver item</Button>
+		<Button>Popver item</Button>
+	</Popover>
+</div>
+
+<!-- <form>
 	<h2>Icon position</h2>
 	<fieldset>
 		{#each icon as p}
@@ -47,8 +59,7 @@
 	<Button style="display: block" {iconPosition} {contentAlign} variant="cta" icon="home">This is some text</Button>
 	<Button style="display: block" {iconPosition} {contentAlign} variant="cta">This button has no icon</Button>
 	<Button style="display: block" {iconPosition} {contentAlign} variant="cta" icon="search" />
-</div>
-
+</div> -->
 <style>
 	#test {
 		display: flex;

@@ -36,8 +36,6 @@
 		const data = new FormData(e.target as HTMLFormElement);
 		const email = data.get('email') as string;
 		const password = data.get('password') as string;
-		console.log(email);
-		console.log(password);
 		switch (currentAction) {
 			case Action.SIGNIN:
 				{
