@@ -70,6 +70,10 @@ create table public.projects_editors (
 comment on table public.projects_editors is 'Table for managing editing rights on a per-project basis for non-creators.';
 
 
+-- PROJECTS PARAMS LISTS
+-- ...
+
+
 -- PROJECTS RATINGS
 -- Look into aggregate functions for average total ratings and etc.: https://www.postgresql.org/docs/current/tutorial-agg.html
 create table public.projects_ratings (

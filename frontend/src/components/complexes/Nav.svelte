@@ -10,9 +10,9 @@
 	import { session } from '$app/stores';
 	import AvatarButton from '$components/primitives/AvatarButton.svelte';
 	import { sizes } from '$utils/sizes';
+	import { signOut } from '$utils/auth';
 
-	let userExpand = false;
-	const size = sizes.small;
+	const size = sizes.medium;
 	const variant = 'nav';
 </script>
 
@@ -31,9 +31,7 @@
 		<Button {size} {variant} href="/" square={true} icon="home" />
 		{#if $session.user}
 			<Popover placement="bottom" align="end" useHover={true}>
-				<Button slot="control" {size} {variant} href={creationBaseRoute.pathname}>
-					{creationBaseRoute.title}
-				</Button>
+				<Button slot="control" {size} {variant} href={creationBaseRoute.pathname} icon="new-file" />
 				{#each creationRoutes as r}
 					<Button {size} {variant} href={r.pathname}>{r.title}</Button>
 				{/each}
@@ -41,7 +39,7 @@
 			<Popover useHover={true} placement="bottom" align="end">
 				<AvatarButton slot="control" {size} href={userBaseRoute.pathname} />
 				<Button>Autre option</Button>
-				<Button>Se déconnecter</Button>
+				<Button on:click={signOut}>Se déconnecter</Button>
 			</Popover>
 		{:else}
 			<Button {size} {variant} square={true} href={userBaseRoute.pathname} icon="user" />

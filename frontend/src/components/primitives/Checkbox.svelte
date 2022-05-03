@@ -1,18 +1,17 @@
-<script lang="ts" context="module">
-	export const checkboxContextKey = 'input-context';
-</script>
-
 <script lang="ts">
+	import { Ctx } from '$utils/contexts';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import { sizes } from '$utils/sizes';
 	import { getContext } from 'svelte';
 
-	export let variant: 'normal' | 'secondary' | 'misc' = 'normal';
+	export let variant: 'default' | 'secondary' | 'misc' = 'default';
 	export let size: number | CssSizeValue = undefined;
-	export let labelPosition: 'left' | 'right' = 'right';
-	export let tooltip: string = undefined;
+	export let labelPosition: 'before' | 'after' = 'after';
 
-	const checkboxContext = getContext(checkboxContextKey);
+	/**
+	 * Detect affecting contexts in parents.
+	 */
+	const fieldCtx = getContext(Ctx.Field);
 
 	/**
 	 * Soft auto-determination of component size, where:
@@ -20,7 +19,7 @@
 	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter.
 	 * (Useful for field buttons and other nested uses)
 	 */
-	$: autoSize = size ? cssSize(size) : checkboxContext ? '0.8em' : '1em';
+	$: autoSize = size ? cssSize(size) : fieldCtx ? '0.8em' : '1em';
 </script>
 
 <label class="{variant} {labelPosition}" style:font-size={autoSize}>
@@ -60,7 +59,7 @@
 	}
 
 	/* Kinds */
-	.normal {
+	.default {
 		--color: var(--color-dark-700);
 		--background: var(--color-light-500);
 	}

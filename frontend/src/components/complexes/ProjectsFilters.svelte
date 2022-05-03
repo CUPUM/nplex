@@ -79,7 +79,7 @@
 <style lang="postcss">
 	#pane {
 		position: relative;
-		background-color: var(--color-light-300);
+		background-color: var(--color-light-100);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -88,12 +88,8 @@
 		--pane-width: 400px;
 		width: var(--pane-width);
 		overflow: hidden;
-		box-shadow: 0 2rem 7rem -4rem var(--color-primary-900);
-		transition: all 0.15s ease-out;
-
-		&:hover {
-			background-color: var(--color-light-500);
-		}
+		box-shadow: 0 0 0 1px var(--color-light-900);
+		border-radius: 1.5rem;
 	}
 
 	#form-title {

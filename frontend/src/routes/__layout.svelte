@@ -55,10 +55,12 @@
 	});
 </script>
 
-<Nav />
-{#if $route?.searchable}
-	<Search />
-{/if}
+<header>
+	<Nav />
+	{#if $route?.searchable}
+		<Search />
+	{/if}
+</header>
 <!-- To do: add transition between toproutes -->
 <slot />
 {#if $authModal}

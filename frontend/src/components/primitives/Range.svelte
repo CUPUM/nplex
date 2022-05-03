@@ -1,7 +1,11 @@
 <script lang="ts" context="module">
-	export const rangeContextKey = 'range';
+	export interface RangeContext {}
 </script>
 
 <script lang="ts">
-	// your script goes here
+	import { Ctx } from '$utils/contexts';
+	import { setContext } from 'svelte';
+	import { getContext } from 'svelte';
+
+	const rangeCtx = setContext<RangeContext>(Ctx.Range, {});
 </script>

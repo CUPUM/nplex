@@ -3,6 +3,7 @@
 	import SearchCategory from './SearchCategory.svelte';
 	import SearchTokens from './SearchTokens.svelte';
 	import { slide } from 'svelte/transition';
+	import { expoOut } from 'svelte/easing';
 
 	function submit() {
 		console.log('submitted search bar form');
@@ -15,7 +16,11 @@
 
 <!-- Combiner avec "filters" -->
 <!-- https://stackoverflow.com/questions/4052756/how-to-combine-html-forms -->
-<form on:submit|preventDefault={submit} on:reset|preventDefault={reset} transition:slide={{}}>
+<form
+	on:submit|preventDefault={submit}
+	on:reset|preventDefault={reset}
+	transition:slide={{ duration: 450, easing: expoOut }}
+>
 	<SearchField />
 	<SearchCategory />
 	<SearchTokens />
@@ -26,17 +31,8 @@
 		position: relative;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
-		/* display: flex;
-		flex-direction: row; */
 		align-items: center;
 		padding: 0 1.5rem;
-		/* border-color: var(--color-light-900);
-		border-block-width: 1px;
-		border-inline-width: 0;
-		border-style: solid; */
-	}
-
-	fieldset {
-		border: none;
+		overflow-y: visible;
 	}
 </style>

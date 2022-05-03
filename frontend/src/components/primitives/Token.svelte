@@ -3,7 +3,7 @@
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 
 	export let size: number | CssSizeValue = '1em';
-	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' = 'normal';
+	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = 'default';
 	export let ttip: string = undefined;
 	export let disabled: boolean = false;
 	export let warning: boolean = false;
@@ -89,7 +89,7 @@
 
 	/* Variants */
 
-	.normal {
+	.default {
 		--hover-color: var(--color-primary-900);
 		--hover-bg-color: var(--color-primary-300);
 		--active-color: var(--color-primary-900);

@@ -52,5 +52,7 @@
 	section {
 		position: relative;
 		flex: 1;
+		margin-bottom: 2rem;
+		border-radius: 1.5rem;
 	}
 </style>

@@ -5,14 +5,19 @@
 	import { showProjectsFilters } from '$stores/projects';
 	import { route } from '$stores/route';
 	import { category, term } from '$stores/search';
-	const size = 'large';
+	import { sizes } from '$utils/sizes';
+	import { expoIn } from 'svelte/easing';
+	import { expoOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 </script>
 
-<fieldset>
+<fieldset in:fly={{ y: 30, duration: 500, easing: expoOut }}>
 	<Field
 		type="search"
-		{size}
-		placeholder={$route.searchable ? `Chercher parmi les ${$route.title.toLowerCase()}` : ''}
+		size={sizes.large}
+		placeholder={$route.searchable && $route.parentTopRoute
+			? `Chercher parmi les ${$route.title.toLowerCase()}`
+			: 'Chercher'}
 		placeholderIcon="search"
 		style="flex: 1;"
 		bind:value={$term}
@@ -24,8 +29,12 @@
 		</svelte:fragment>
 	</Field>
 
-	<Button {size} type="normal" icon="filters" on:click={showProjectsFilters.toggle} active={$showProjectsFilters}
-		>Filtres</Button
+	<Button
+		size={sizes.large}
+		type="normal"
+		icon="filters"
+		on:click={showProjectsFilters.toggle}
+		active={$showProjectsFilters}>Filtres</Button
 	>
 </fieldset>
 

@@ -4,7 +4,7 @@ import { db } from '$utils/database';
 // import { makeSessionCookies, SessionCookieName } from '$utils/auth';
 import jwt from 'jsonwebtoken';
 
-// const expiry = 1000;
+const expiry = 1000;
 
 // async function refreshAccessToken(cookies) {
 // 	const { data, error } = await db.auth.api.refreshAccessToken(cookies[SessionCookieName.REFRESH]);

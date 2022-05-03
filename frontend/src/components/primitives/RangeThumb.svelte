@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { Ctx } from '$utils/contexts';
 	import { getContext } from 'svelte';
-	import { rangeContextKey } from './Range.svelte';
 
-	const ctx = getContext(rangeContextKey);
+	const rangeCtx = getContext(Ctx.Range);
 
 	export let value: number;
 	export let name: string;

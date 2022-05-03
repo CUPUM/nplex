@@ -1,17 +1,14 @@
-<script lang="ts" context="module">
-	export const buttonContextKey = 'button-context';
-</script>
-
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
 	import { tooltip } from '$actions/tooltip';
+	import { Ctx } from '$utils/contexts';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import type { SvelteProps } from '$utils/helpers/types';
 	import { getContext } from 'svelte';
 	import Icon from './Icon.svelte';
 	import Loading from './Loading.svelte';
 
-	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'normal';
+	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'default';
 	export let size: number | CssSizeValue = undefined;
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
 	export let icon: SvelteProps<Icon>['name'] = undefined;
@@ -23,7 +20,7 @@
 	export let disabled: boolean = false;
 	export let loading: boolean = false;
 
-	const buttonContext = getContext(buttonContextKey);
+	const fieldCtx = getContext(Ctx.Field);
 
 	let autoSquare = false;
 	let autoSize: string;
@@ -40,7 +37,7 @@
 	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter.
 	 * (Useful for field buttons and other nested uses)
 	 */
-	$: autoSize = size ? cssSize(size) : buttonContext ? '0.8em' : '1em';
+	$: autoSize = size ? cssSize(size) : fieldCtx ? '0.8em' : '1em';
 </script>
 
 <svelte:element
@@ -187,17 +184,22 @@
 
 	/* Variants (should correspond to `typeof variant`) */
 	/* Default button theme */
-	.normal {
-		--hover-color: var(--color-primary-500);
-		--hover-bg-color: white;
-		--active-color: var(--color-primary-900);
-		--active-bg-color: var(--color-light-900);
+	.default {
 		color: var(--color-dark-100);
 		background-color: var(--color-light-100);
 		box-shadow: 0 1px 1px 0 transparent;
-		&:hover {
+		&:hover,
+		&:focus,
+		&.hover {
+			color: var(--color-primary-500);
+			background-color: white;
 			box-shadow: 0 0.25em 1em -0.75em var(--color-primary-900);
 			transition: all 0.15s ease-out;
+		}
+		&:active,
+		&.active {
+			color: var(--color-primary-900);
+			background-color: var(--color-light-900);
 		}
 	}
 	/* Secondary button theme */
@@ -211,7 +213,9 @@
 		color: var(--color-dark-900);
 		background-color: var(--color-secondary-300);
 		transition: all 0.1s;
-		&:hover {
+		&:hover,
+		&:focus,
+		&.hover {
 			color: var(--color-secondary-900);
 			background-color: var(--color-secondary-100);
 		}
@@ -223,10 +227,6 @@
 	}
 	/* Navbar button theme */
 	.nav {
-		--hover-color: var(--color-primary-500);
-		--hover-bg-color: transparent;
-		--active-color: var(--color-primary-300);
-		--active-bg-color: transparent;
 		color: var(--color-dark-100);
 		background-color: transparent;
 		font-weight: 600;
@@ -244,17 +244,25 @@
 			transform: scale(0.8);
 			transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
 		}
-		&.active {
-			pointer-events: none;
-			cursor: default;
-		}
 		&:hover,
-		&:focus {
+		&:focus,
+		&.hover {
+			color: var(--color-primary-500);
+			background-color: transparent;
 			&::before {
 				opacity: 0.2;
 				transform: scale(1);
 				transition: all 0.25s cubic-bezier(0, 0, 0.2, 1);
 			}
+		}
+		&:active,
+		&.active {
+			cursor: default;
+			color: var(--color-primary-300);
+			background-color: transparent;
+		}
+		&.active {
+			pointer-events: none;
 		}
 	}
 </style>

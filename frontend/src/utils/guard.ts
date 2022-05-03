@@ -2,7 +2,7 @@ import { browser } from '$app/env';
 import { authModal } from '$stores/auth';
 import { route } from '$stores/route';
 import { allRoutes } from '$utils/routes';
-import { getUserRole, UserRole } from '$utils/user';
+import { getUserRole, type UserRole } from '$utils/user';
 import type { LoadOutput } from '@sveltejs/kit/types/internal';
 import { get } from 'svelte/store';
 import { getSegments } from './helpers/url';

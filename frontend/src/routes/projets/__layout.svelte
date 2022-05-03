@@ -24,17 +24,22 @@
 	#panes {
 		position: relative;
 		margin-top: var(--size-medium);
-		padding: 0;
+		padding: 8px;
 		width: 100%;
 		min-height: 600px;
 		flex: 1;
 		display: flex;
 		flex-direction: row;
-		--gap: 8px;
+		--gap: 16px;
 		overflow: hidden;
 
-		& > :global(section):not(:last-child) {
-			margin-right: var(--gap);
+		& > :global(section) {
+			margin-left: var(--gap);
+			margin-top: 0;
+			margin-bottom: var(--gap);
+		}
+
+		& > :global(section):last-child {
 		}
 	}
 </style>

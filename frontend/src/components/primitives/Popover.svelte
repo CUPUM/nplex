@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import { onDestroy, onMount } from 'svelte';
-	import { bounceOut, expoInOut, expoOut, elasticOut, backOut } from 'svelte/easing';
+	import { bounceOut, expoInOut, expoOut, elasticOut, backOut, expoIn } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
-	export let active: boolean = false;
+	export let open: boolean = false;
 	export let useHover: boolean = false;
 	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
-	export let align: 'start' | 'center' | 'end' = 'center';
+	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
 	export let distance: number = 5;
 
 	let controlRef: HTMLElement;
@@ -22,7 +22,9 @@
 	let autoPlacement;
 	let timer;
 
-	/* To do: Preferred position, should be adjusted automatically if doesn't fit in viewport */
+	/**
+	 * To do: Preferred position, should be adjusted automatically if doesn't fit in viewport
+	 */
 	// $: autoAlign = ...
 	// $: autoPlacement = ...
 
@@ -31,19 +33,19 @@
 		/**
 		 * Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change).
 		 */
-		controlRef.removeEventListener('click', activate);
-		controlRef.removeEventListener('mouseenter', activate);
-		controlRef.removeEventListener('mouseleave', deactivate);
-		popoverRef.removeEventListener('mouseenter', activate);
-		popoverRef.removeEventListener('mouseleave', deactivate);
+		controlRef.removeEventListener('click', show);
+		controlRef.removeEventListener('mouseenter', show);
+		controlRef.removeEventListener('mouseleave', hide);
+		popoverRef.removeEventListener('mouseenter', show);
+		popoverRef.removeEventListener('mouseleave', hide);
 		/**
 		 * Binding the proper events on the control element.
 		 */
-		controlRef.addEventListener(useHover ? 'mouseenter' : 'click', activate);
-		controlRef.addEventListener(useHover ? 'mouseleave' : 'clickoutside', deactivate);
+		controlRef.addEventListener(useHover ? 'mouseenter' : 'click', show);
+		controlRef.addEventListener(useHover ? 'mouseleave' : 'clickoutside', hide);
 		if (useHover) {
-			popoverRef.addEventListener('mouseenter', activate);
-			popoverRef.addEventListener('mouseleave', deactivate);
+			popoverRef.addEventListener('mouseenter', show);
+			popoverRef.addEventListener('mouseleave', hide);
 		}
 		/**
 		 * Listening to disposition changes
@@ -57,30 +59,33 @@
 		resizeObs.observe(controlRef.offsetParent, {});
 	}
 
-	$: if (active) {
+	$: if (open) {
 		setPosition();
+		controlRef?.classList.add('hover');
+	} else {
+		controlRef?.classList.remove('hover');
 	}
 
-	function activate() {
+	function show() {
 		if (timer) {
 			clearTimeout(timer);
 		}
-		active = true;
+		open = true;
 	}
 
-	function deactivate() {
+	function hide() {
 		if (useHover) {
 			timer = setTimeout(() => {
-				active = false;
-			}, 10);
+				open = false;
+			}, 5);
 		} else {
-			active = false;
+			open = false;
 		}
 	}
 
 	function handleClickoutside() {
 		if (!useHover) {
-			active = false;
+			open = false;
 		}
 	}
 
@@ -124,11 +129,11 @@
 	style:--h={h}
 	style:--distance="{distance}px"
 >
-	{#if active}
+	{#if open}
 		<div
 			class="outer"
-			in:scale={{ start: 0.8, easing: backOut, duration: 120 }}
-			out:scale={{ start: 0.9, easing: expoInOut, duration: 200 }}
+			in:scale={{ start: 0.75, easing: expoOut, duration: 120 }}
+			out:scale={{ start: 0.9, easing: expoIn, duration: 150 }}
 		>
 			<div class="inner" {...$$restProps}>
 				<slot />
@@ -279,12 +284,10 @@
 	.inner {
 		position: relative;
 		padding: 0.5em;
-		background-color: var(--color-light-300);
-		box-shadow: 0 1em 2em -1.5em var(--color-primary-900);
-		border-radius: 1.1em;
-		border: 1px solid var(--color-light-700);
+		background-color: var(--color-light-100);
+		box-shadow: 0 0 2px var(--color-light-900);
+		border-radius: 1em;
 		display: inline-flex;
 		flex-direction: column;
-		gap: 0.5em;
 	}
 </style>

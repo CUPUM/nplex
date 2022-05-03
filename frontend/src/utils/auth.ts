@@ -21,7 +21,7 @@ interface AuthInfo {
 /**
  * Sign up a new user.
  */
- export async function signUp(info: AuthInfo) {
+export async function signUp(info: AuthInfo) {
 	const res = await db.auth.signUp(info, {
 		redirectTo: info.provider ? get(page).url.pathname : null
 	});
@@ -34,7 +34,7 @@ interface AuthInfo {
 /**
  * Sign in the user. If valid, should set the auth cookie on the client AND on the server side for SSR.
  */
- export async function signIn(info: AuthInfo) {
+export async function signIn(info: AuthInfo) {
 	const res = await db.auth.signIn(info, {
 		redirectTo: info.provider ? get(page).url.pathname : null
 	});

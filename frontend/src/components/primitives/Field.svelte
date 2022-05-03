@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
-
 	import type { SvelteProps } from '$utils/helpers/types';
 	import { sizes } from '$utils/sizes';
 	import { fly } from 'svelte/transition';
@@ -15,7 +14,7 @@
 	 * Styling options.
 	 */
 	export let size: number | CssSizeValue = '1em';
-	export let variant: 'normal' | 'secondary' | 'ghost' | 'cta' = 'normal';
+	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = 'default';
 	export let warning: boolean = undefined;
 	export let display: 'inline' | 'block' = 'inline';
 	export let disabled: boolean = undefined;
@@ -197,7 +196,7 @@
 	}
 
 	/* Variants */
-	.normal {
+	.default {
 		--field-bg: var(--color-light-500);
 		--field-hover-bg: var(--color-light-700);
 		--field-active-bg: var(--color-light-300);

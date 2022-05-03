@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
 	import { session } from '$app/stores';
+	import { Ctx } from '$utils/contexts';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import { getContext } from 'svelte';
-	import { buttonContextKey } from './Button.svelte';
 	import Loading from './Loading.svelte';
 
 	export let size: number | CssSizeValue = '1em';
@@ -16,7 +16,7 @@
 	/**
 	 * Context detection and handling should reflect that of Button's.
 	 */
-	const buttonContext = getContext(buttonContextKey);
+	const fieldCtx = getContext(Ctx.Field);
 
 	let autoSize: string;
 	let cssAvatarImage: string;
@@ -31,7 +31,7 @@
 	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter.
 	 * (Useful for field buttons and other nested uses)
 	 */
-	$: autoSize = size ? cssSize(size) : buttonContext ? '0.8em' : '1em';
+	$: autoSize = size ? cssSize(size) : fieldCtx ? '0.8em' : '1em';
 
 	$: cssAvatarImage = $session.profile?.avatar_url ? `url(${$session.profile?.avatar_url})` : '';
 </script>
@@ -60,8 +60,8 @@
 				text-anchor="middle"
 				x="50%"
 				y="50%"
-				font-size="2em"
-				font-weight="400"
+				font-size="2.5em"
+				font-weight="500"
 				dominant-baseline="middle"
 			>
 				{$session.user.email.charAt(0)}
@@ -88,6 +88,10 @@
 		text-decoration: none;
 		background: white;
 		padding: 0;
+
+		&:hover svg {
+			opacity: 1;
+		}
 	}
 
 	svg {
@@ -99,15 +103,11 @@
 		padding: 0;
 		margin: 0;
 		background-color: currentColor;
-		opacity: 1;
+		opacity: 0.8;
+		transition: all 0.2s;
 	}
 
 	text {
-		/* fill: var(--color-dark-500); */
-		fill: none;
-		stroke: var(--color-dark-500);
-		stroke-width: 2px;
-		stroke-linecap: round;
-		stroke-linejoin: round;
+		fill: var(--color-dark-500);
 	}
 </style>
