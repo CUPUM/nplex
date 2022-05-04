@@ -46,10 +46,10 @@
 	db.auth.onAuthStateChange(async (e, s) => {
 		// loading = true;
 		if (e === 'SIGNED_OUT') {
-			session.update(() => ({ prevnav: '/', user: null }));
+			session.update((ps) => ({ ...ps, prevnav: '/', user: null, profile: null }));
 		} else {
 			const profile = await getUserProfile();
-			session.update((v) => ({ ...v, user: s.user, profile }));
+			session.update((ps) => ({ ...ps, user: s.user, profile }));
 		}
 		// loading = false;
 	});

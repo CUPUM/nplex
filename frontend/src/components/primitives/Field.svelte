@@ -1,3 +1,9 @@
+<script lang="ts" context="module">
+	export interface FieldContext {
+		// inset: number | CssSizeValue;
+	}
+</script>
+
 <script lang="ts">
 	import { width } from '$transitions/width';
 	import { Ctx } from '$utils/contexts';
@@ -20,6 +26,7 @@
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = 'default';
 	export let display: 'inline' | 'block' = 'inline';
 	export let warning: boolean = undefined;
+	export let success: boolean = undefined;
 	export let disabled: boolean = undefined;
 	export let loading: boolean = undefined;
 	export let invalid: boolean = undefined;
@@ -44,10 +51,19 @@
 	 * Input text value
 	 */
 	export let value = '';
-
+	/**
+	 * Focus state for styling of wrapper element instead of input element.
+	 */
 	let focused = false;
+	/**
+	 * Filtering input type (temp fix for stoopid vendor auto-styling that breaks the UI (┛ಠ_ಠ)┛彡┻━┻)
+	 */
+	let filteredType;
+	$: filteredType = ['email', 'password'].includes(type) ? 'text' : type;
 
-	setContext(Ctx.Field, true);
+	setContext<FieldContext>(Ctx.Field, {
+		// inset,
+	});
 
 	function handleInput(e) {
 		value = e.target.value;
@@ -67,7 +83,9 @@
 </script>
 
 <fieldset
+	id="wrapper"
 	class:warning={warning || invalid}
+	class:success
 	class:disabled={disabled || loading}
 	class:has-icon={!value && placeholderIcon}
 	class:focused
@@ -87,7 +105,7 @@
 	{/if}
 	<input
 		{disabled}
-		{type}
+		type={filteredType}
 		{value}
 		{placeholder}
 		on:input={handleInput}
@@ -100,7 +118,6 @@
 		on:submit
 		data-lpignore="true"
 		name={$$restProps.name}
-		autocomplete={$$restProps.autocomplete || 'off'}
 	/>
 	{#if value}
 		<div id="has-value" transition:width>
@@ -126,15 +143,17 @@
 
 <style lang="postcss">
 	fieldset {
+		--size: 2.8em;
+		--inset: 3px;
 		border: none;
-		padding: 0 3px;
+		padding: 0 var(--inset);
 		margin: 0;
 		position: relative;
 		display: inline-flex;
 		flex-direction: row;
 		border-radius: 1em;
-		--size: 2.8em;
 		height: var(--size);
+		min-height: 0;
 		outline-style: solid;
 		outline-width: 2px;
 		outline-color: transparent;
@@ -162,6 +181,7 @@
 	input {
 		outline: none;
 		display: inline-flex;
+		position: relative;
 		flex: 1;
 		font-size: 1em;
 		padding-inline: 1em;
@@ -189,6 +209,16 @@
 			pointer-events: none;
 			cursor: default;
 		}
+
+		/* &:-webkit-autofill,
+		&:-webkit-autofill:hover,
+		&:-webkit-autofill:focus,
+		&:-webkit-autofill:active {
+			-webkit-box-shadow: 0 0 0 50px var(--color-light-100) inset !important;
+		}
+		&:-webkit-autofill {
+			-webkit-text-fill-color: var(--color-secondary-500) !important;
+		} */
 	}
 
 	/* Default buttons */

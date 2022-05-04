@@ -1,22 +1,13 @@
 <script lang="ts">
-	// your script goes here
-
 	import Button from '$components/primitives/Button.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
+	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import type { SvelteProps } from '$utils/helpers/types';
 
-	const icon: SvelteProps<Button>['iconPosition'][] = ['before', 'after'];
-	const align: SvelteProps<Button>['contentAlign'][] = ['left', 'center', 'right'];
-
-	let w = 300;
-
-	let iconPosition: SvelteProps<Button>['iconPosition'] = icon[0];
-	let contentAlign: SvelteProps<Button>['contentAlign'] = align[1];
-
+	let alt = false;
 	let useHover;
-
 	let switchval = 'test2v';
 
 	$: console.log(switchval);
@@ -29,6 +20,9 @@
 		<Button>Popver item</Button>
 		<Button>Popver item with long text</Button>
 	</Popover>
+</div>
+<div>
+	<Tooltip message="Bonjour, je suis un tooltip!"><Button icon="new-file" /></Tooltip>
 </div>
 <div>
 	<Switch orientation="column" name="test">
@@ -44,41 +38,6 @@
 	</Switch>
 </div>
 
-<!-- <form>
-	<h2>Icon position</h2>
-	<fieldset>
-		{#each icon as p}
-			<div>
-				<label for="icon-{p}">{p}</label>
-				<input type="radio" id="icon-{p}" value={p} bind:group={iconPosition} />
-			</div>
-		{/each}
-	</fieldset>
-	<h2>Content alignment</h2>
-	<fieldset>
-		{#each align as p}
-			<div>
-				<label for="align-{p}">{p}</label>
-				<input type="radio" id="align-{p}" value={p} bind:group={contentAlign} />
-			</div>
-		{/each}
-	</fieldset>
-	<h2>Container width</h2>
-	<input type="range" name="w" min="0" max="500" bind:value={w} id="" />
-</form>
-
-<div id="test" style="width: {w}px">
-	<Button style="display: block; width: 100%" {iconPosition} {contentAlign} variant="cta" icon="home"
-		>This is some text</Button
-	>
-	<Button style="display: block; width: 100%" {iconPosition} {contentAlign} variant="cta"
-		>This button has no icon</Button
-	>
-	<Button style="display: block" {iconPosition} {contentAlign} variant="cta" icon="search" />
-	<Button style="display: block" {iconPosition} {contentAlign} variant="cta" icon="home">This is some text</Button>
-	<Button style="display: block" {iconPosition} {contentAlign} variant="cta">This button has no icon</Button>
-	<Button style="display: block" {iconPosition} {contentAlign} variant="cta" icon="search" />
-</div> -->
 <style>
 	#test {
 		display: flex;
@@ -91,6 +50,7 @@
 
 	div {
 		width: 600px;
+		padding: 4rem;
 		margin: 2rem auto;
 	}
 

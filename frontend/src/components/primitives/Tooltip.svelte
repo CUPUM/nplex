@@ -1,27 +1,58 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
+	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import { onDestroy, onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
 	export let message: string;
-	export let position: 'top' | 'right' | 'bottom' | 'left' = 'top';
-	export let distance: number = 10;
+	export let open: boolean = false;
+	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
+	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
+	export let distance: number | CssSizeValue = 5;
+	export let warning: boolean = undefined;
+	export let success: boolean = undefined;
+	export let variant: 'default' | 'secondary' | 'misc' = 'default';
 
-	// IMPLEMENT SIMILARLY TO POPOVER...
-	// component should wrap target trigger component (but resulting elements will be adjacent).
+	let controlRef: HTMLElement;
+	let tooltipRef: HTMLElement;
+	let mutationObs: MutationObserver;
+	let resizeObs: ResizeObserver;
+	let y;
+	let x;
+	let w;
+	let h;
+	let autoAlign;
+	let autoPlacement;
+	let timer;
 
-	// onMount(() => {
-	// 	// Do stuff to delay intro on first trigger but not during almost-immediately-subsequent triggers
-	// 	// ... introtimer on mount and outro timer on destroy
-	// });
+	$: if (controlRef) {
+		controlRef.addEventListener('mouseenter', () => console.log('entered!'));
+	}
 
-	// onDestroy(() => {});
+	function detach() {}
+
+	onMount(() => {
+		/**
+		 * Referencing the previous sibling (to be passed in slot) as the control element.
+		 */
+		controlRef = tooltipRef.previousElementSibling as HTMLElement;
+		/**
+		 * Initializing the position.
+		 */
+		// to do.
+	});
 </script>
 
-<div in:fade={{ duration: 500 }} out:fade={{ duration: 500 }}>
-	{message}
+<slot name="control" />
+<div
+	bind:this={tooltipRef}
+	class:success
+	class:warning
+	class="{variant} {placement} {align}"
+	style:--distance={cssSize(distance)}
+>
+	{#if open}
+		<slot />
+	{/if}
 </div>
 
 <style>

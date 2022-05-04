@@ -5,12 +5,13 @@
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import type { SvelteProps } from '$utils/helpers/types';
 	import { getContext } from 'svelte';
+	import type { FieldContext } from './Field.svelte';
 	import Icon from './Icon.svelte';
 	import Loading from './Loading.svelte';
 
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'default';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
-	export let size: number | CssSizeValue = undefined;
+	export let size: number | CssSizeValue = '1em';
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
 	export let icon: SvelteProps<Icon>['name'] = undefined;
 	export let iconPosition: 'before' | 'after' = 'before';
@@ -21,10 +22,11 @@
 	export let disabled: boolean = false;
 	export let loading: boolean = false;
 
-	const fieldCtx = getContext(Ctx.Field);
+	const fieldCtx = getContext<FieldContext>(Ctx.Field);
 
 	let autoSquare = false;
-	let autoSize: string;
+	let autoOuterSize: string;
+	let contextInset: string;
 
 	/**
 	 * Soft auto-determination of squareness, where:
@@ -35,10 +37,10 @@
 	/**
 	 * Soft auto-determination of component size, where:
 	 * - User-defined size has most precedence and is used if present.
-	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter.
+	 * - Fallback size is smaller if the button is contextualised inside a button parent context setter.
 	 * (Useful for field buttons and other nested uses)
 	 */
-	$: autoSize = size ? cssSize(size) : fieldCtx ? 'calc(1em - var(--inset, 3px))' : '1em';
+	// $: autoOuterSize = fieldCtx ? `calc(2.8em - 2 * ${cssSize(fieldCtx.inset)})` : '2.8em';
 </script>
 
 <svelte:element
@@ -54,7 +56,7 @@
 	class:warning
 	class:square={autoSquare}
 	class="button {variant}"
-	style:font-size={autoSize}
+	style:font-size={cssSize(size)}
 	disabled={disabled || loading}
 	{href}
 	{type}
@@ -81,17 +83,17 @@
 
 <style lang="postcss">
 	.button {
-		--size: 2.8em;
+		--outer-size: calc(2.8em - 2 * var(--inset, 0px));
 		display: inline-block;
 		cursor: pointer;
 		box-sizing: border-box;
 		position: relative;
 		border: none;
 		text-decoration: none;
-		height: var(--size);
-		min-height: var(--size);
-		min-width: var(--size);
-		border-radius: 1em;
+		height: var(--outer-size);
+		min-height: var(--outer-size);
+		min-width: var(--outer-size);
+		border-radius: calc(1em - var(--inset, 0px));
 		margin: 0;
 		padding: 0 1em;
 		font-family: var(--font-main);
@@ -114,7 +116,7 @@
 
 	/* Squareness */
 	.square {
-		width: var(--size);
+		width: var(--outer-size);
 		padding: 0;
 		& div {
 			justify-content: center;

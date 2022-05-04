@@ -7,6 +7,7 @@
 	import { authModal } from '$stores/auth';
 	import { signIn, signUp } from '$utils/auth';
 	import { providers } from '$utils/providers';
+	import { sizes } from '$utils/sizes';
 	import type { ApiError } from '@supabase/supabase-js';
 	import { expoIn, expoOut, linear } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
@@ -19,9 +20,9 @@
 	}
 
 	enum Action {
-		SIGNUP = 'signup',
-		SIGNIN = 'signin',
-		PROVIDER = 'provider',
+		SignUp = 'signup',
+		SignIn = 'signin',
+		Provider = 'provider',
 	}
 
 	let disabled = false;
@@ -37,7 +38,7 @@
 		const email = data.get('email') as string;
 		const password = data.get('password') as string;
 		switch (currentAction) {
-			case Action.SIGNIN:
+			case Action.SignIn:
 				{
 					const res = await signIn({ email, password });
 					if (res.error) {
@@ -47,7 +48,7 @@
 					}
 				}
 				break;
-			case Action.SIGNUP:
+			case Action.SignUp:
 				{
 					const res = await signUp({ email, password });
 					if (res.error) {
@@ -58,7 +59,7 @@
 					}
 				}
 				break;
-			case Action.PROVIDER:
+			case Action.Provider:
 				break;
 		}
 		currentAction = null;
@@ -78,24 +79,24 @@
 		<fieldset>
 			<Field placeholder="Courriel" name="email" type="email" />
 			<Field placeholder="Mot de passe" type="password" name="password" />
-			{#if message}
+			<!-- {#if message}
 				<Tooltip {message} />
-			{/if}
+			{/if} -->
 			<Button
 				type="submit"
 				variant="cta"
-				value={Action.SIGNIN}
+				value={Action.SignIn}
 				{disabled}
 				display="block"
-				loading={Action.SIGNIN === currentAction}>Connecter</Button
+				loading={Action.SignIn === currentAction}>Connecter</Button
 			>
 			<Button
 				type="submit"
 				variant="ghost"
-				value={Action.SIGNUP}
+				value={Action.SignUp}
 				{disabled}
 				display="block"
-				loading={Action.SIGNUP === currentAction}>Créer un compte</Button
+				loading={Action.SignUp === currentAction}>Créer un compte</Button
 			>
 		</fieldset>
 		<hr />

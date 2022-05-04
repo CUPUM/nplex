@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
+	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import { onDestroy, onMount } from 'svelte';
 	import { bounceOut, expoInOut, expoOut, elasticOut, backOut, expoIn } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -8,7 +9,7 @@
 	export let useHover: boolean = false;
 	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
-	export let distance: number = 5;
+	export let distance: number | CssSizeValue = 5;
 
 	let controlRef: HTMLElement;
 	let popoverRef: HTMLElement;
@@ -127,7 +128,7 @@
 	style:--x={x}
 	style:--w={w}
 	style:--h={h}
-	style:--distance="{distance}px"
+	style:--distance={cssSize(distance)}
 >
 	{#if open}
 		<div
