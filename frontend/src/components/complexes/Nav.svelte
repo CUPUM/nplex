@@ -12,8 +12,8 @@
 	import { sizes } from '$utils/sizes';
 	import { signOut } from '$utils/auth';
 
-	const size = sizes.medium;
 	const variant = 'nav';
+	const userSize = sizes.medium;
 </script>
 
 <nav>
@@ -24,25 +24,27 @@
 	</section>
 	<section id="main">
 		{#each topRoutes as route}
-			<Button {size} {variant} active={route === $topRoute} href={route.pathname}>{route.title}</Button>
+			<Button size={sizes.small} {variant} active={route === $topRoute} href={route.pathname}
+				>{route.title}</Button
+			>
 		{/each}
 	</section>
 	<section id="user">
-		<Button {size} {variant} href="/" square={true} icon="home" />
+		<Button size={userSize} {variant} href="/" square={true} icon="home" />
 		{#if $session.user}
 			<Popover placement="bottom" align="end" useHover={true}>
-				<Button slot="control" {size} {variant} href={creationBaseRoute.pathname} icon="new-file" />
+				<Button slot="control" size={userSize} {variant} href={creationBaseRoute.pathname} icon="new-file" />
 				{#each creationRoutes as r}
-					<Button {size} {variant} href={r.pathname}>{r.title}</Button>
+					<Button size={userSize} {variant} href={r.pathname}>{r.title}</Button>
 				{/each}
 			</Popover>
 			<Popover useHover={true} placement="bottom" align="end">
-				<AvatarButton slot="control" {size} href={userBaseRoute.pathname} />
+				<AvatarButton slot="control" size={userSize} href={userBaseRoute.pathname} />
 				<Button>Autre option</Button>
 				<Button on:click={signOut}>Se déconnecter</Button>
 			</Popover>
 		{:else}
-			<Button {size} {variant} square={true} href={userBaseRoute.pathname} icon="user" />
+			<Button size={userSize} {variant} square={true} href={userBaseRoute.pathname} icon="user" />
 		{/if}
 	</section>
 </nav>
@@ -54,7 +56,7 @@
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
-		padding: 0.75rem 1.5rem;
+		padding: 0.5rem 1.5rem;
 	}
 
 	section {

@@ -24,7 +24,9 @@
 	#panes {
 		position: relative;
 		margin-top: var(--size-medium);
-		padding: 8px;
+		padding-inline: 8px;
+		padding-top: 8px;
+		padding-bottom: 0;
 		width: 100%;
 		min-height: 600px;
 		flex: 1;

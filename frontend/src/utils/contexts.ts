@@ -11,5 +11,6 @@ export enum Ctx {
 	Switch = 'switch-context',
 	ButtonSet = 'button-set-context',
 	Button = 'button-context',
-	Range = 'range-context'
+	Range = 'range-context',
+	ProjectsList = 'projects-list-context',
 }

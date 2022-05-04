@@ -21,6 +21,11 @@ interface RippleOptions {
 	endSize?: number | CssSizeValue;
 	blur?: number;
 	disabled?: boolean;
+	/**
+	 * If the element with listeners should differ from the container of the ripple.
+	 * Useful when we want to keep 'overflow' to another value than 'hidden' on the control element.
+	 */
+	controlElement?: HTMLElement;
 }
 
 /**
@@ -36,8 +41,13 @@ export function ripple(element: HTMLElement, {
 	endSize = undefined,
 	endColor = undefined,
 	blur = 0,
-	disabled = false
+	disabled = false,
+	controlElement = element
 }: RippleOptions = {}) {
+
+	if (controlElement !== element) {
+		console.log(controlElement);
+	}
 
 	/**
 	 * Create the stylesheet defining the ripple transitions
@@ -62,12 +72,17 @@ export function ripple(element: HTMLElement, {
 	let ripple: HTMLElement;
 
 	/**
-	 * Create ripple fn
+	 * Create ripple.
 	 */
 	function createRipple(e: MouseEvent) {
+		console.log('creating ripple!');
 		const rect = element.getBoundingClientRect();
-		const upToDateEndSize = endSize ? cssSize(endSize) : Math.max(rect.height, rect.width) * 2 + 'px';
-		element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, upToDateEndSize);
+		const eRelX = e.clientX - rect.left;
+		const eRelY = e.clientY - rect.top;
+		const dX = Math.max(eRelX, rect.width - eRelX);
+		const dY = Math.max(eRelY, rect.height - eRelY);
+		const updatedEndsize = endSize ? cssSize(endSize) : Math.hypot(dX, dY) * 2 + 'px';
+		element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, updatedEndsize);
 		ripple = document.createElement('div');
 		ripple.style.userSelect = 'none';
 		ripple.style.pointerEvents = 'none';
@@ -78,15 +93,15 @@ export function ripple(element: HTMLElement, {
 		ripple.style.height = parsedStartSize;
 		ripple.style.borderRadius = '50%';
 		ripple.style.transform = 'translate(-50%, -50%)';
-		ripple.style.top = e.clientY - rect.top + 'px';
-		ripple.style.left = e.clientX - rect.left + 'px';
+		ripple.style.top = eRelY + 'px';
+		ripple.style.left = eRelX + 'px';
 		ripple.style.filter = `blur(${blur}px)`;
 		ripple.style.animation = `${RIPPLE_GLOBALS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(0, 0, 0, 1) forwards`;
 		element.appendChild(ripple);
 	}
 
 	/**
-	 * Clear ripple fn
+	 * Clear ripple.
 	 */
 	function clearRipple() {
 		const r = ripple;
@@ -101,9 +116,16 @@ export function ripple(element: HTMLElement, {
 	}
 
 	function setListeners() {
-		element.addEventListener('pointerdown', createRipple);
-		element.addEventListener('pointerleave', clearRipple);
-		element.addEventListener('pointerup', clearRipple);
+		controlElement.addEventListener('pointerdown', createRipple);
+		controlElement.addEventListener('pointerleave', clearRipple);
+		controlElement.addEventListener('pointerup', clearRipple);
+		controlElement.addEventListener('pointercancel', clearRipple);
+	}
+
+	function clearListeners() {
+		controlElement.removeEventListener('pointerdown', createRipple);
+		controlElement.removeEventListener('pointerleave', clearRipple);
+		controlElement.removeEventListener('pointerup', clearRipple);
 	}
 
 	if (!disabled) {
@@ -112,15 +134,24 @@ export function ripple(element: HTMLElement, {
 
 	return {
 		update(newParams: RippleOptions) {
-			if (disabled && !newParams.disabled) {
+			console.log(newParams.controlElement != controlElement);
+			if (disabled !== newParams.disabled) {
 				disabled = newParams.disabled;
+				if (!newParams.disabled) {
+					clearListeners();
+					controlElement = newParams.controlElement;
+
+					setListeners();
+				}
+			}
+			else if (newParams.controlElement != controlElement) {
+				clearListeners();
+				controlElement = newParams.controlElement;
 				setListeners();
 			}
 		},
 		destroy() {
-			element.removeEventListener('pointerdown', createRipple);
-			element.removeEventListener('pointerleave', clearRipple);
-			element.removeEventListener('pointerup', clearRipple);
+			clearListeners();
 		}
 	};
 }

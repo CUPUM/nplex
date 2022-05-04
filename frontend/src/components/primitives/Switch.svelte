@@ -4,7 +4,8 @@
 		name: string;
 		current: Writable<HTMLElement>;
 		temp: Writable<HTMLElement>;
-		variant: 'primary' | 'secondary' | 'nav' | 'ghost';
+		variant: 'default' | 'secondary' | 'nav' | 'ghost' | 'cta';
+		orientation: 'column' | 'row';
 	}
 </script>
 
@@ -13,11 +14,12 @@
 	import { writable } from 'svelte/store';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import { Ctx } from '$utils/contexts';
+	import { fade } from 'svelte/transition';
 
 	export let name: string;
-	export let variant: SwitchContext['variant'] = 'primary';
+	export let variant: SwitchContext['variant'] = 'default';
 	export let size: number | CssSizeValue = '1em';
-	export let orientation: 'column' | 'row' = 'row';
+	export let orientation: SwitchContext['orientation'] = 'row';
 
 	let fieldset: HTMLFieldSetElement;
 	let obs: ResizeObserver;
@@ -30,62 +32,114 @@
 	 * Corresponds to the currently hovered label.
 	 */
 	let temp: SwitchContext['temp'] = writable(null);
-	let tempBox: string;
 
 	setContext<SwitchContext>(Ctx.Switch, {
 		name,
 		current,
 		variant,
 		temp,
+		orientation,
 	});
 
-	function setStyle() {
-		if ($current) {
-			currentBox = `top: ${$current.offsetTop}px; left: ${$current.offsetLeft}px; width: ${$current.offsetWidth}px; height: ${$current.offsetHeight}px;`;
+	function getBox(el: HTMLElement) {
+		if (el) {
+			// const rect = el.getBoundingClientRect();
+			return `
+				top: ${el.offsetTop}px;
+				left: ${el.offsetLeft}px;
+				width: ${el.offsetWidth}px;`;
 		}
+		return null;
 	}
 
-	$: $current, setStyle();
+	$: currentBox = getBox($current);
+	$: if ($temp) {
+		currentBox = getBox($temp);
+	} else {
+		currentBox = getBox($current);
+	}
 
 	onMount(() => {
-		obs = new ResizeObserver(setStyle);
+		obs = new ResizeObserver(() => {
+			currentBox = getBox($current);
+		});
 		obs.observe(fieldset);
 	});
 
-	onDestroy(() => {});
+	onDestroy(() => {
+		obs?.unobserve(fieldset);
+		obs?.disconnect();
+	});
 </script>
 
-<fieldset {...$$restProps} style:font-size={cssSize(size)} class="{variant} {orientation}" bind:this={fieldset}>
-	<div id="indicator" style={currentBox} />
+<fieldset
+	bind:this={fieldset}
+	class="{variant} {orientation}"
+	style:font-size={cssSize(size)}
+	style:flex-direction={orientation}
+>
+	{#if currentBox}
+		<div id="current" transition:fade={{ duration: 150 }} class:temp={!!$temp} style={currentBox} />
+	{/if}
 	<slot />
 </fieldset>
 
 <style lang="postcss">
 	fieldset {
+		--inset: 3px;
+		--size: 2.8em;
+		--itemsize: calc(var(--size) - 2 * var(--inset));
 		position: relative;
 		border: none;
-		padding: 0;
 		display: inline-flex;
-		flex-direction: row;
 		align-items: stretch;
 		justify-content: center;
 		gap: 0;
-		height: 2.8em;
+		padding: var(--inset);
 		border-radius: 1em;
-		background-color: var(--color-light-500);
-		transition: all 0.3s ease-out;
-
-		&:hover {
-			/* box-shadow: 0 0.25em 1.5em -1em var(--color-dark-100); */
-		}
+		transition: all 0.25s ease-out;
 	}
 
-	#indicator {
+	#current {
+		z-index: 1;
 		position: absolute;
-		background-color: var(--color-primary-300);
-		transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
-		border-radius: 0.85em;
+		transition: all 0.2s cubic-bezier(0.7, 0, 0.3, 1.25);
+		height: var(--itemsize);
+		border-radius: calc(1em - var(--inset));
 	}
 
 	/* Variants */
+
+	/* Default theme */
+	.default {
+		background-color: var(--color-light-700);
+		&:hover,
+		&:focus {
+			background-color: var(--color-light-900);
+		}
+		& #current {
+			background-color: var(--color-light-100);
+			box-shadow: 0 0.25em 1em -0.5em rgba(0, 0, 30, 0.2);
+			&.temp {
+				box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+				background-color: var(--color-light-300);
+			}
+		}
+	}
+
+	/* Secondary theme */
+	.secondary {
+	}
+
+	/* Ghost theme */
+	.ghost {
+	}
+
+	/* Nav theme */
+	.nav {
+	}
+
+	/* Cta theme */
+	.cta {
+	}
 </style>

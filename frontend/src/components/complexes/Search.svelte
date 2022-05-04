@@ -31,7 +31,8 @@
 		position: relative;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
-		align-items: center;
+		align-items: flex-start;
+		gap: 5px;
 		padding: 0 1.5rem;
 		overflow-y: visible;
 	}

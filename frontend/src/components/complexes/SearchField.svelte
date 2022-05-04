@@ -22,20 +22,23 @@
 		style="flex: 1;"
 		bind:value={$term}
 	>
-		<svelte:fragment slot="right">
-			{#if $term}
-				<Button type="submit" icon="submit" slot="right" />
+		<svelte:fragment slot="left">
+			{#if $category}
+				<div>
+					<Button
+						icon={$showProjectsFilters ? 'cross' : 'filters'}
+						on:click={showProjectsFilters.toggle}
+						active={$showProjectsFilters}
+					>
+						Filtres
+					</Button>
+				</div>
 			{/if}
 		</svelte:fragment>
+		<svelte:fragment slot="has-value">
+			<Button type="submit" icon="submit" slot="right" />
+		</svelte:fragment>
 	</Field>
-
-	<Button
-		size={sizes.large}
-		type="normal"
-		icon="filters"
-		on:click={showProjectsFilters.toggle}
-		active={$showProjectsFilters}>Filtres</Button
-	>
 </fieldset>
 
 <style lang="postcss">

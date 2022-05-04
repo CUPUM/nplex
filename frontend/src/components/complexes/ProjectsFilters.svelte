@@ -32,7 +32,6 @@
 	transition:width|local={{ duration: 350, easing: expoOut }}
 >
 	<form>
-		<legend id="form-title">Filtres de recherche</legend>
 		<ProjectsFilter label="Vocations de site">
 			{#if $projectsEnums}
 				{#each $projectsEnums.projects_domains as domain}
@@ -89,7 +88,7 @@
 		width: var(--pane-width);
 		overflow: hidden;
 		box-shadow: 0 0 0 1px var(--color-light-900);
-		border-radius: 1.5rem;
+		border-radius: 1rem;
 	}
 
 	#form-title {

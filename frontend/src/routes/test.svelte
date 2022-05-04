@@ -3,6 +3,8 @@
 
 	import Button from '$components/primitives/Button.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
+	import Switch from '$components/primitives/Switch.svelte';
+	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import type { SvelteProps } from '$utils/helpers/types';
 
 	const icon: SvelteProps<Button>['iconPosition'][] = ['before', 'after'];
@@ -14,6 +16,10 @@
 	let contentAlign: SvelteProps<Button>['contentAlign'] = align[1];
 
 	let useHover;
+
+	let switchval = 'test2v';
+
+	$: console.log(switchval);
 </script>
 
 <div>
@@ -23,6 +29,19 @@
 		<Button>Popver item</Button>
 		<Button>Popver item with long text</Button>
 	</Popover>
+</div>
+<div>
+	<Switch orientation="column" name="test">
+		<SwitchItem id="test1" bind:group={switchval} value="test1v">Test 1</SwitchItem>
+		<SwitchItem id="test2" bind:group={switchval} value="test2v">Test 2</SwitchItem>
+		<SwitchItem id="test3" bind:group={switchval} value="test3v">Test 3</SwitchItem>
+	</Switch>
+
+	<Switch orientation="row" name="test">
+		<SwitchItem id="test1" bind:group={switchval} value="test1v">Test 1</SwitchItem>
+		<SwitchItem id="test2" bind:group={switchval} value="test2v">Test 2</SwitchItem>
+		<SwitchItem id="test3" bind:group={switchval} value="test3v">Test 3</SwitchItem>
+	</Switch>
 </div>
 
 <!-- <form>
@@ -68,6 +87,11 @@
 		gap: 6px;
 		margin: 0 auto;
 		resize: both;
+	}
+
+	div {
+		width: 600px;
+		margin: 2rem auto;
 	}
 
 	h2 {

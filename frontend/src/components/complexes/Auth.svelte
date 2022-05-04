@@ -76,8 +76,8 @@
 		out:scale={{ duration: 150, start: 0.9, easing: expoIn }}
 	>
 		<fieldset>
-			<Field placeholder="Courriel" name="email" type="email" autocomplete="username" />
-			<Field placeholder="Mot de passe" type="password" name="password" autocomplete="current-password" />
+			<Field placeholder="Courriel" name="email" type="email" />
+			<Field placeholder="Mot de passe" type="password" name="password" />
 			{#if message}
 				<Tooltip {message} />
 			{/if}

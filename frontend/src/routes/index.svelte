@@ -1,56 +1,62 @@
 <script lang="ts">
+	import ProjectsList from '$components/complexes/ProjectsList.svelte';
+	import ProjectsListItem from '$components/complexes/ProjectsListItem.svelte';
+	import Button from '$components/primitives/Button.svelte';
+	import Link from '$components/primitives/Link.svelte';
+	import { sizes } from '$utils/sizes';
 	import { fade } from 'svelte/transition';
 
 	export let projectsPreview;
 	export let organisationsPreview;
 	export let actorsPreview;
+
+	let projects = [];
 </script>
 
-<section id="projects">
-	<h1>Projets</h1>
-	<ul>
-		<li>Projet 1...</li>
-		<li>Projet 2...</li>
-		<li>Projet 3...</li>
-	</ul>
-	<a href="/projets" sveltekit:prefetch>Voir plus...</a>
-</section>
-<section id="orgs">
-	<h1>Organisations</h1>
-	<ul>
-		<li>Org 1...</li>
-		<li>Org 2...</li>
-	</ul>
-	<a href="/organisations" sveltekit:prefetch>Voir plus...</a>
-</section>
-<section id="actors">
-	<h1>Acteurs</h1>
-	<ul>[Featured actors here]</ul>
-	<a href="/acteurs" sveltekit:prefetch>Voir plus...</a>
-</section>
+<article>
+	<section id="projects">
+		<header>
+			<Link href="/projets" text="Projets" />
+			<Button size={sizes.small} href="/projets" sveltekit:prefetch icon="plus">Voir plus</Button>
+		</header>
+		<ProjectsList {projects} display="row" />
+	</section>
+	<section id="orgs">
+		<header>
+			<h2>Organisations</h2>
+			<Button size={sizes.small} href="/organisations" sveltekit:prefetch icon="plus">Voir plus</Button>
+		</header>
+		<ul>[To do: orgs list and list cards]</ul>
+	</section>
+	<section id="actors">
+		<header>
+			<h2>Acteurs</h2>
+			<Button size={sizes.small} href="/acteurs" sveltekit:prefetch icon="plus">Voir plus</Button>
+		</header>
+		<ul>[To do: actors list and list cards]</ul>
+	</section>
+</article>
 
 <style>
-	section {
+	article {
 		width: 100%;
-		padding: var(--size-xxxlarge);
-	}
-
-	ul {
-		display: block;
-		padding: 0;
 		margin: 0;
-		text-indent: 0;
+		padding: 0;
+		display: block;
 	}
 
-	li {
-		width: 200px;
-		height: 300px;
-		background-color: var(--color-light-100);
-		border-radius: var(--size-xlarge);
-		display: inline-flex;
+	section {
+		display: block;
+		position: relative;
+		width: 100%;
+		padding: 2rem 0;
+		overflow: visible;
 	}
 
-	li:not(:last-child) {
-		margin-right: var(--size-xlarge);
+	header {
+	}
+
+	h2 {
+		display: inline-block;
 	}
 </style>

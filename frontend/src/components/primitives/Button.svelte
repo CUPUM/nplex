@@ -9,6 +9,7 @@
 	import Loading from './Loading.svelte';
 
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'default';
+	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let size: number | CssSizeValue = undefined;
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
 	export let icon: SvelteProps<Icon>['name'] = undefined;
@@ -37,7 +38,7 @@
 	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter.
 	 * (Useful for field buttons and other nested uses)
 	 */
-	$: autoSize = size ? cssSize(size) : fieldCtx ? '0.8em' : '1em';
+	$: autoSize = size ? cssSize(size) : fieldCtx ? 'calc(1em - var(--inset, 3px))' : '1em';
 </script>
 
 <svelte:element
@@ -56,6 +57,7 @@
 	style:font-size={autoSize}
 	disabled={disabled || loading}
 	{href}
+	{type}
 	{...$$restProps}
 >
 	<div class="align-{contentAlign}">
@@ -89,7 +91,7 @@
 		height: var(--size);
 		min-height: var(--size);
 		min-width: var(--size);
-		border-radius: 0.8em;
+		border-radius: 1em;
 		margin: 0;
 		padding: 0 1em;
 		font-family: var(--font-main);
@@ -207,6 +209,15 @@
 	}
 	/* Subtle button theme */
 	.ghost {
+		color: var(--color-dark-100);
+		background-color: transparent;
+		&:hover,
+		&:focus,
+		&.hover {
+			color: var(--color-primary-900);
+			background-color: rgba(255, 255, 255, 0.5);
+			/* outline: 1px solid rgba(var(--rgb-dark-100), 0.1); */
+		}
 	}
 	/* Emphasised call to action */
 	.cta {
