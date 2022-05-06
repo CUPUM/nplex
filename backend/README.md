@@ -7,7 +7,7 @@ specificially tied to Supabase's provided features. The command files contain in
 
 ### 0: clean.sql
 
-:warning: For dev usage only :warning:: returns to a clean slate by dropping all specified objects in the proper order. Data will be lost.
+(:warning: For dev usage only) Returns to a clean slate by dropping all specified objects in the proper order. Data will be lost.
 
 ### 1: schema.sql
 
