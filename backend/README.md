@@ -1,23 +1,27 @@
 # SQL commands
 
 These files establish the database's structure and various data access constraints in a manner
-specificially tied to Supabase's provided features.
+specificially tied to Supabase's provided features. The command files contain interdependent elements and need to be executed in the following prescribed order.
 
-Here's some information about what each command file contains, in prescribed order of execution.
+## Contents
 
-## 0: clean.sql
+### 0: clean.sql
 
-This file is used during dev to return to a clean slate by removing objects in the proper order.
+:warning: For dev usage only :warning:: returns to a clean slate by dropping all specified objects in the proper order. Data will be lost.
 
-## 1: schema.sql
+### 1: schema.sql
 
-The schema file establishes the main elements of the db, namely the tables, their columns, and their initial content where applicable.
+Main schema file establishing the core elements of the db, namely the tables, their columns, and their initial content where applicable.
 
-## 2: misc.sql
+### 2: misc.sql
 
-You will here find functions and triggers used to automate or facilitate various actions.
+Functions and triggers used to automate or facilitate various actions and table data synchronizations.
 
-## 3: policies.sql
+### 3: policies.sql
 
-This file describes the row-level-access policies dictating data handling and access rights based on various criteria,
-including the queries' auth token and the associated user's role.
+Customization of `update` permissions (column/field-level) and definition of row-level-access policies dictating data handling and access rights based on various criteria,
+including the querier's auth token and the associated user's role.
+
+## Migrating
+
+The files can either be be updated by hand or generated using a migration tool like `pgAdmin`to mirror modifications applied through Supabase's GUI.
