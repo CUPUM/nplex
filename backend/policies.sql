@@ -1,4 +1,6 @@
--- CUSTOMIZE ACCESSES (to limit which fields should be updatable, regardless of user's public.user_role)
+-- CUSTOMIZE COLUMN PERMISSIONS (to limit which fields should be updatable, regardless of user's public.user_role)
+-- While the RLS policies enable control over row-level permissions,
+-- revoking default update privileges allows control over field/column-level permissions.
 alter default privileges in schema public revoke update on tables from anon, authenticated;
 revoke update on all tables in schema public from anon, authenticated;
 alter default privileges in schema public revoke all on functions from anon, authenticated;
