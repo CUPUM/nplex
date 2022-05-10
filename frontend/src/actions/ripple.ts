@@ -126,6 +126,7 @@ export function ripple(element: HTMLElement, {
 		controlElement.removeEventListener('pointerdown', createRipple);
 		controlElement.removeEventListener('pointerleave', clearRipple);
 		controlElement.removeEventListener('pointerup', clearRipple);
+		controlElement.removeEventListener('pointercancel', clearRipple);
 	}
 
 	if (!disabled) {
