@@ -52,7 +52,6 @@
 	on:mouseleave
 	on:mouseenter={setTemp}
 	on:mouseleave={clearTemp}
-	use:ripple={{ startColor: 'var(--color-primary-500)' }}
 >
 	<input {id} {value} name={ctx.name} type="radio" bind:group on:change on:input />
 	{#if icon}
@@ -63,7 +62,8 @@
 	</span>
 </label>
 
-<!-- <hr class="{ctx.variant} {ctx.orientation}" /> -->
+<hr class="{ctx.variant} {ctx.orientation}" />
+
 <style lang="postcss">
 	label {
 		z-index: 1;
@@ -132,7 +132,7 @@
 			color: var(--color-primary-500);
 		}
 		&hr {
-			background-color: var(--color-light-500);
+			background-color: rgba(0, 0, 0, 0.05);
 		}
 	}
 

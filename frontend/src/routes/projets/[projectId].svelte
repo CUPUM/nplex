@@ -11,11 +11,22 @@
 </script>
 
 <script lang="ts">
+	import { slide } from 'svelte/transition';
+
 	export let id;
 
-	export let name;
+	console.log(id);
 
 	// Show UI based on projects store item, if present and update concurrently.
 </script>
 
-<h2>{id}</h2>
+<article transition:slide={{}}>
+	<h2>Titre du projet</h2>
+	<section>section 1</section>
+	<section>section 2</section>
+</article>
+
+<style lang="postcss">
+	article {
+	}
+</style>

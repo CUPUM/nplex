@@ -15,6 +15,7 @@
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import { Ctx } from '$utils/contexts';
 	import { fade } from 'svelte/transition';
+	import { ripple } from '$actions/ripple';
 
 	export let name: string;
 	export let variant: SwitchContext['variant'] = 'default';
@@ -77,6 +78,7 @@
 	class="{variant} {orientation}"
 	style:font-size={cssSize(size)}
 	style:flex-direction={orientation}
+	use:ripple={{}}
 >
 	{#if currentBox}
 		<div id="current" transition:fade={{ duration: 150 }} class:temp={!!$temp} style={currentBox} />
@@ -103,7 +105,7 @@
 	#current {
 		z-index: 1;
 		position: absolute;
-		transition: all 0.2s cubic-bezier(0.7, 0, 0.3, 1.25);
+		transition: all 0.2s cubic-bezier(0.75, 0, 0.25, 1.15);
 		height: var(--itemsize);
 		border-radius: calc(1em - var(--inset));
 	}
@@ -115,14 +117,15 @@
 		background-color: var(--color-light-700);
 		&:hover,
 		&:focus {
-			background-color: var(--color-light-900);
+			background-color: var(--color-light-300);
 		}
 		& #current {
 			background-color: var(--color-light-100);
 			box-shadow: 0 0.25em 1em -0.5em rgba(0, 0, 30, 0.2);
 			&.temp {
-				box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
-				background-color: var(--color-light-300);
+				/* box-shadow: inset 0 0 0 1px var(--color-light-100); */
+				box-shadow: 0 0 0 0 transparent;
+				background-color: white;
 			}
 		}
 	}

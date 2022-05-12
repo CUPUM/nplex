@@ -4,22 +4,18 @@
 	import ProjectsFilters from '$components/complexes/ProjectsFilters.svelte';
 	import { slide } from 'svelte/transition';
 	import { page } from '$app/stores';
-	import { showProjectsFilters } from '$stores/projects';
+	import { showFilters } from '$stores/projects';
 </script>
 
 <section id="panes">
-	{#if $showProjectsFilters}
+	{#if $showFilters}
 		<ProjectsFilters />
 	{/if}
 	<ProjectsMap />
 	<ProjectsList />
 </section>
+<slot />
 
-<!-- {#key $page.params.projectId}
-	<article transition:slide={{}}>
-		<slot />
-	</article>
-{/key} -->
 <style lang="postcss">
 	#panes {
 		position: relative;

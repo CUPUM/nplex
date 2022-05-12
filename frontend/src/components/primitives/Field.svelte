@@ -11,7 +11,8 @@
 	import type { SvelteProps } from '$utils/helpers/types';
 	import { sizes } from '$utils/sizes';
 	import { setContext } from 'svelte';
-	import { fly, slide } from 'svelte/transition';
+	import { expoOut } from 'svelte/easing';
+	import { fly, scale, slide } from 'svelte/transition';
 	import Button from './Button.svelte';
 	import Icon from './Icon.svelte';
 
@@ -24,7 +25,6 @@
 	 */
 	export let size: number | CssSizeValue = '1em';
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = 'default';
-	export let display: 'inline' | 'block' = 'inline';
 	export let warning: boolean = undefined;
 	export let success: boolean = undefined;
 	export let disabled: boolean = undefined;
@@ -89,7 +89,7 @@
 	class:disabled={disabled || loading}
 	class:has-icon={!value && placeholderIcon}
 	class:focused
-	class="{variant} {display}"
+	class={variant}
 	style:font-size={cssSize(size)}
 	{...$$restProps}
 >
@@ -99,13 +99,13 @@
 		</div>
 	{/if}
 	{#if placeholderIcon && !value}
-		<div id="icon" transition:fly={{ x: -20 }}>
+		<div id="icon" out:scale={{ start: 0.75, opacity: 0 }}>
 			<Icon name={placeholderIcon} />
 		</div>
 	{/if}
 	<input
 		{disabled}
-		type={filteredType}
+		{type}
 		{value}
 		{placeholder}
 		on:input={handleInput}
@@ -120,7 +120,7 @@
 		name={$$restProps.name}
 	/>
 	{#if value}
-		<div id="has-value" transition:width>
+		<div id="has-value" transition:width={{ easing: expoOut, duration: 750 }}>
 			<Button icon="cross" variant="ghost" on:click={reset} />
 			<slot name="has-value" />
 		</div>
@@ -197,7 +197,7 @@
 		border: none;
 		line-height: 1em;
 		vertical-align: middle;
-		transition: all 0.15s ease-out;
+		transition: all 0.15s ease-out, text-indent 0.25s cubic-bezier(0, 0, 0, 1);
 
 		&::placeholder {
 			font-weight: 400;

@@ -8,6 +8,7 @@
 export enum Ctx {
 	Field = 'input-context',
 	Token = 'token-context',
+	TokenSet = 'token-set-context',
 	Switch = 'switch-context',
 	ButtonSet = 'button-set-context',
 	Button = 'button-context',

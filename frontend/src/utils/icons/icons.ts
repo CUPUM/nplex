@@ -113,6 +113,18 @@ export const icons = {
 		],
 		fills: [],
 	},
+	'parameters': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{ d: 'M21 7 A3 3 0 0 1 18 10 A3 3 0 0 1 15 7 A3 3 0 0 1 21 7 z', type: 'primary' },
+			{ d: 'M9 17 A3 3 0 0 1 6 20 A3 3 0 0 1 3 17 A3 3 0 0 1 9 17 z', type: 'primary' },
+			{ d: 'M11 7H3', type: 'primary' },
+			{ d: 'M13 17H21', type: 'primary' },
+		],
+		fills: [],
+	},
 	'pen': {
 		width: '24',
 		height: '24',

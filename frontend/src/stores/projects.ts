@@ -11,7 +11,7 @@ import { term } from './search';
  * Enums used to describe and filter projects.
  * These include controled and enumerated lists from the database.
  */
-export const projectsEnums = readable(null, function start(set) {
+export const projectsDescriptors = readable(null, function start(set) {
 
 	async function setEnums() {
 		const res = await fetch('/api/projects/lists.json');
@@ -20,14 +20,14 @@ export const projectsEnums = readable(null, function start(set) {
 	}
 	setEnums();
 
-	return function stop() {}
+	return function stop() {};
 });
 
 /**
  * Store handling the state of the projects' fitlers drawer (open or closed) to
  * ensure it is retained upon navigations.
  */
-export const showProjectsFilters = (function () {
+export const showFilters = (function () {
 	const { subscribe, set, update } = writable(false);
 	return {
 		subscribe,

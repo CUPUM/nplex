@@ -45,9 +45,9 @@ export function ripple(element: HTMLElement, {
 	controlElement = element
 }: RippleOptions = {}) {
 
-	if (controlElement !== element) {
-		console.log(controlElement);
-	}
+	// if (controlElement !== element) {
+	// 	console.log(controlElement);
+	// }
 
 	/**
 	 * Create the stylesheet defining the ripple transitions
@@ -75,7 +75,7 @@ export function ripple(element: HTMLElement, {
 	 * Create ripple.
 	 */
 	function createRipple(e: MouseEvent) {
-		console.log('creating ripple!');
+		// console.log('creating ripple!');
 		const rect = element.getBoundingClientRect();
 		const eRelX = e.clientX - rect.left;
 		const eRelY = e.clientY - rect.top;
@@ -135,7 +135,7 @@ export function ripple(element: HTMLElement, {
 
 	return {
 		update(newParams: RippleOptions) {
-			console.log(newParams.controlElement != controlElement);
+			// console.log(newParams.controlElement != controlElement);
 			if (disabled !== newParams.disabled) {
 				disabled = newParams.disabled;
 				if (!newParams.disabled) {

@@ -25,6 +25,10 @@ export const routeSegments = derived(page, ($page) => {
  * in /utils/routes.ts that corresponds to the current page.url.pathname.
  */
 export const route = derived(page, ($page) => {
+	/**
+	 * Finding the closest-defined parent route from current url tree, assuming undefined routes contain dynamic parameters that should be ignored.
+	 */
+	// const unparamedUrl = regex.;
 	return allRoutes.find((route) => route.pathname === $page.url.pathname);
 });
 

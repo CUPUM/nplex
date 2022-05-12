@@ -5,7 +5,7 @@
 	import Toggle from '$components/primitives/Toggle.svelte';
 	import Token from '$components/primitives/Token.svelte';
 	import TokenSet from '$components/primitives/TokenSet.svelte';
-	import { projectsEnums } from '$stores/projects';
+	import { projectsDescriptors } from '$stores/projects';
 	// import { projectsFilters } from '$stores/search';
 	import { width } from '$transitions/width';
 	import { onMount } from 'svelte';
@@ -18,8 +18,8 @@
 	}
 
 	onMount(() => {
-		if (!$projectsEnums) {
-			projectsEnums.subscribe(() => {});
+		if (!$projectsDescriptors) {
+			projectsDescriptors.subscribe(() => {});
 		}
 	});
 </script>
@@ -33,8 +33,8 @@
 >
 	<form>
 		<ProjectsFilter label="Vocations de site">
-			{#if $projectsEnums}
-				{#each $projectsEnums.projects_domains as domain}
+			{#if $projectsDescriptors}
+				{#each $projectsDescriptors.projects_domains as domain}
 					<Checkbox>{domain.title}</Checkbox>
 				{/each}
 			{:else}
@@ -42,8 +42,8 @@
 			{/if}
 		</ProjectsFilter>
 		<ProjectsFilter label="Types de sites">
-			{#if $projectsEnums}
-				{#each $projectsEnums.projects_sites_types_groups as group}
+			{#if $projectsDescriptors}
+				{#each $projectsDescriptors.projects_sites_types_groups as group}
 					{#if group.types.length}
 						<section class="tokenset">
 							<legend class="sub-title">{group.title}</legend>
@@ -89,23 +89,6 @@
 		overflow: hidden;
 		box-shadow: 0 0 0 1px var(--color-light-900);
 		border-radius: 1rem;
-	}
-
-	#form-title {
-		/* position: sticky; */
-		position: relative;
-		font-size: var(--size-small);
-		font-weight: 500;
-		letter-spacing: 0.25px;
-		top: 0;
-		padding: 0.5em;
-		margin: 0.5rem;
-		display: block;
-		background-color: var(--color-light-500);
-		border-radius: 0.9rem;
-		z-index: 10;
-		color: rgba(var(--rgb-dark-100), 0.75);
-		text-align: center;
 	}
 
 	form {

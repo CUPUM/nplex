@@ -7,6 +7,7 @@ export interface Route {
 	searchable?: boolean;
 	guards?: UserRole[];
 }
+
 /**
  * Top navigation routes.
  */
@@ -31,6 +32,7 @@ export const rootRoute = topRoutes[0];
 export interface ExploreRoute extends Route {
 	category: 'projects' | 'organisations' | 'actors';
 }
+
 /**
  * Routes for the different categories of "exploration" mode for browsing and searching.
  */
@@ -55,6 +57,16 @@ export const exploreRoutes: ExploreRoute[] = [
 		category: 'actors',
 		parentTopRoute: rootRoute,
 		searchable: true
+	}
+];
+
+/**
+ * Generic routes for dynamic project/org/actor page. The $route store should refer these
+ * whenever the current url appends a dynamic parameter to an exploreRoute.
+ */
+export const dynamicRoutes = [
+	{
+		pathname: ''
 	}
 ];
 

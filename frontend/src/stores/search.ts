@@ -11,13 +11,11 @@ const init = new URLSearchParams(''); // window?.location.search
 /**
  * Main search input
  */
-
 export const term = writable(init.get('term') || '');
 
 /**
  * Currently browsed category
  */
-
 export const category = (function () {
 	const { subscribe, set } = writable<ExploreRoute['category']>(null);
 
@@ -41,21 +39,12 @@ export const category = (function () {
 })();
 
 /**
- * Orgs search & filters
+ * Filters' states
  */
-
-// ...
-
-/**
- * Actors search & filters
- */
-
-// ...
 
 /**
  * General query string construction and handling
  */
-
 const query = new URLSearchParams();
 
 function updateURL() {

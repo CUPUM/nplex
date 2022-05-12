@@ -1,16 +1,24 @@
 <script lang="ts">
 	import { tooltip } from '$actions/tooltip';
+	import { Ctx } from '$utils/contexts';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+	import { getContext } from 'svelte';
+	import type { TokenSetContext } from './TokenSet.svelte';
 
 	export let size: number | CssSizeValue = '1em';
-	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = 'default';
+	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = undefined;
 	export let ttip: string = undefined;
 	export let disabled: boolean = false;
 	export let warning: boolean = false;
 	export let active: boolean = false;
+
+	const tokenSetCtx = getContext<TokenSetContext>(Ctx.TokenSet);
+	let autoVariant = variant || tokenSetCtx?.vairant || 'default';
 </script>
 
-<div
+<svelte:element
+	this={tokenSetCtx ? 'li' : 'div'}
+	id="token"
 	class={variant}
 	style:font-size={cssSize(size)}
 	class:active
@@ -29,10 +37,10 @@
 			<slot name="input" />
 		</span>
 	{/if}
-</div>
+</svelte:element>
 
 <style lang="postcss">
-	div {
+	#token {
 		user-select: none;
 		position: relative;
 		display: inline-flex;

@@ -24,8 +24,8 @@
 	import '$styles/app.postcss';
 	import '$styles/vars.css';
 	import '$styles/scrollbars.postcss';
-	import Nav from '$components/complexes/Nav.svelte';
-	import Search from '$components/complexes/Search.svelte';
+	import Navbar from '$components/complexes/Navbar.svelte';
+	import Searchbar from '$components/complexes/Searchbar.svelte';
 	import { route } from '$stores/route';
 	import Auth from '$components/complexes/Auth.svelte';
 	import { db, getUserProfile } from '$utils/database';
@@ -56,9 +56,9 @@
 </script>
 
 <header>
-	<Nav />
+	<Navbar />
 	{#if $route?.searchable}
-		<Search />
+		<Searchbar />
 	{/if}
 </header>
 <!-- To do: add transition between toproutes -->

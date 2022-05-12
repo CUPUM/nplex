@@ -26,7 +26,7 @@
 	const imageUrl = `https://picsum.photos/seed/${imageSeed}/800/600`;
 </script>
 
-<div class={ctx.display} class:disabled class:active bind:this={cardElement}>
+<a class={ctx.display} class:disabled class:active bind:this={cardElement} href="/projets/{imageSeed}">
 	<div id="rippler" use:ripple={{ startColor: colors.dark[100], controlElement: cardElement }} />
 	<figure>
 		<div id="img-shadow" style:background-image="url({imageUrl})" />
@@ -35,13 +35,14 @@
 			<h3>Titre de projet</h3>
 		</figcaption>
 	</figure>
-</div>
+</a>
 
 <style lang="postcss">
-	div {
+	a {
 		position: relative;
 		cursor: pointer;
 		display: inline-block;
+		text-decoration: none;
 		width: 100%;
 		border-radius: 1.5rem;
 		padding: 1rem;
@@ -135,8 +136,8 @@
 		transition: all 0.25s ease-in;
 	}
 
-	div:hover:not(.disabled),
-	div.active {
+	a:hover:not(.disabled),
+	a.active {
 		& img {
 			opacity: 1;
 		}

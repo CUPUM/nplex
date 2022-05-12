@@ -96,7 +96,7 @@
 		margin-right: 1em;
 		justify-self: left;
 
-		& img,
+		/* & img, */
 		& :global svg {
 			height: 100%;
 			width: auto;
