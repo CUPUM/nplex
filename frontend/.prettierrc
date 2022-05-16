@@ -10,10 +10,8 @@
 	"arrowParens": "always",
 	"svelteIndentScriptAndStyle": true,
 	"svelteAllowShorthand": true,
-	"plugins": [
-		"prettier-plugin-jsdoc",
-		"prettier-plugin-svelte"
-	],
+	"plugins": ["./node_modules/prettier-plugin-jsdoc", "./node_modules/prettier-plugin-svelte"],
 	"jsdocPrintWidth": 120,
-	"quoteProps": "consistent"
+	"quoteProps": "consistent",
+	"embeddedLanguageFormatting": "auto"
 }
