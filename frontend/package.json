@@ -57,7 +57,7 @@
 		"prettier-plugin-jsdoc": "^0.3.38",
 		"prettier-plugin-svelte": "^2.7.0",
 		"svelte": "^3.48.0",
-		"svelte-check": "^2.7.0",
+		"svelte-check": "^2.7.1",
 		"svelte-preprocess": "^4.10.6",
 		"svgson": "^5.2.1",
 		"tslib": "^2.4.0",

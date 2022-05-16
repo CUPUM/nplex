@@ -6,8 +6,8 @@ import prettier from 'prettier';
 import path from 'path';
 
 /**
- * This script uses the defined ts theme values to pregenerate (aka translate into) the project's
- * root css custom properties. We work this way rather than using dynamically (runtime) generated css to:
+ * This script uses the defined ts theme values to pregenerate (aka translate into) the project's root css custom
+ * properties. We work this way rather than using dynamically (runtime) generated css to:
  *
  * 1. Benefit from css-variables-autocomplete intellisens and,
  * 2. Reduce the server's & client's runtime processing hassle.
@@ -31,15 +31,12 @@ const cssColors =
 			Object.entries(shades).map(
 				([shade, def]) =>
 					`--color-${group}-${shade}: ${def}; ` +
-					`--rgb-${group}-${shade}: ${Object.values(extractColorComponents(def)).join(
-						', '
-					)}`
+					`--rgb-${group}-${shade}: ${Object.values(extractColorComponents(def)).join(', ')}`
 			)
 		)
 		.reduce((accumulated, current) => [...accumulated, ...current])
 		.join('; ') + '; ';
-	
-	
+
 function extractColorComponents(colorString: string) {
 	let matched;
 	/* rgb */
@@ -51,12 +48,12 @@ function extractColorComponents(colorString: string) {
 		return { r: matched[0], g: matched[1], b: matched[2] };
 	}
 	/* hsl */
-	matched = colorString
-		.match(/^hsl\(\s*(\d+)\s*,\s*(\d+(?:\.\d+)?%)\s*,\s*(\d+(?:\.\d+)?%)\s*\)$/i)
-		?.slice(1);
+	matched = colorString.match(/^hsl\(\s*(\d+)\s*,\s*(\d+(?:\.\d+)?%)\s*,\s*(\d+(?:\.\d+)?%)\s*\)$/i)?.slice(1);
 	if (matched) {
 		matched.length = 3;
-		const rgb = convert.hsl.rgb(matched.map((v, i) => i === 0 ? v : v.indexOf('%') > -1 ? parseInt(v) : parseFloat(v) * 100));
+		const rgb = convert.hsl.rgb(
+			matched.map((v, i) => (i === 0 ? v : v.indexOf('%') > -1 ? parseInt(v) : parseFloat(v) * 100))
+		);
 		// return { h: parseInt(matched[0]), s: matched[1], l: matched[2] };
 		return { r: rgb[0], g: rgb[1], b: rgb[2] };
 	}
@@ -93,7 +90,7 @@ writeFile(
 			}`,
 		{
 			parser: 'css',
-			...PRETTIER_CONFIG
+			...PRETTIER_CONFIG,
 		}
 	),
 	(err) => {

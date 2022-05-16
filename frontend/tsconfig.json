@@ -21,12 +21,7 @@
 			"$transitions/*": ["src/transitions/*"],
 			"$utils/*": ["src/utils/*"],
 			"$apitypes/*": [".svelte-kit/types/src/routes/api/*"]
-		},
+		}
 	},
-	"include": [
-		"src/**/*.js",
-		"src/**/*.ts",
-		"src/**/*.svelte",
-		"scripts/*.ts"
-	]
+	"include": ["src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "scripts/*.ts"]
 }
