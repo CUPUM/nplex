@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
-	import { tooltip } from '$actions/tooltip';
 	import { Ctx } from '$utils/contexts';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import type { SvelteProps } from '$utils/helpers/types';
@@ -9,7 +8,7 @@
 	import Icon from './Icon.svelte';
 	import Loading from './Loading.svelte';
 
-	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'default';
+	export let variant: 'default' | 'secondary' | 'cta' | 'nav' = 'default';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let size: number | CssSizeValue = '1em';
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
@@ -177,7 +176,6 @@
 		grid-area: center;
 		display: block;
 		top: -0.05em;
-		overflow: hidden;
 	}
 	#icon {
 		flex-grow: 1;
@@ -203,23 +201,23 @@
 		}
 		&:active,
 		&.active {
-			color: var(--color-primary-900);
-			background-color: var(--color-light-900);
+			color: var(--color-light-300);
+			background-color: var(--color-primary-500);
 		}
 	}
-	/* Secondary button theme */
+	/* Secondary, more subtle button theme */
 	.secondary {
-	}
-	/* Subtle button theme */
-	.ghost {
 		color: var(--color-dark-100);
 		background-color: transparent;
+		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+		transition: all 0.1s;
 		&:hover,
 		&:focus,
 		&.hover {
-			color: var(--color-primary-900);
-			background-color: rgba(255, 255, 255, 0.5);
-			/* outline: 1px solid rgba(var(--rgb-dark-100), 0.1); */
+			color: var(--color-light-900);
+			/* background-color: var(--color-dark-500); */
+			box-shadow: 0 0.25em 1em -0.25em rgba(0, 0, 0, 0.25);
+			/* outline: 2px solid rgba(var(--rgb-dark-500), 0.25) !important; */
 		}
 	}
 	/* Emphasised call to action */

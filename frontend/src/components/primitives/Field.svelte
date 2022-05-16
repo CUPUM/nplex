@@ -5,6 +5,8 @@
 </script>
 
 <script lang="ts">
+	import { ripple } from '$actions/ripple';
+
 	import { width } from '$transitions/width';
 	import { Ctx } from '$utils/contexts';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
@@ -83,7 +85,6 @@
 </script>
 
 <fieldset
-	id="wrapper"
 	class:warning={warning || invalid}
 	class:success
 	class:disabled={disabled || loading}
@@ -99,7 +100,7 @@
 		</div>
 	{/if}
 	{#if placeholderIcon && !value}
-		<div id="icon" out:scale={{ start: 0.75, opacity: 0 }}>
+		<div id="icon" out:width={{ opacity: 0 }}>
 			<Icon name={placeholderIcon} />
 		</div>
 	{/if}
@@ -120,7 +121,7 @@
 		name={$$restProps.name}
 	/>
 	{#if value}
-		<div id="has-value" transition:width={{ easing: expoOut, duration: 750 }}>
+		<div id="has-value" transition:width={{ easing: expoOut, duration: 750, opacity: 0 }}>
 			<Button icon="cross" variant="ghost" on:click={reset} />
 			<slot name="has-value" />
 		</div>
@@ -172,6 +173,7 @@
 		margin-right: calc(-1 * var(--size));
 		transform: translateX(0);
 		transition: all 0.15s ease-out;
+		top: -0.05em;
 	}
 
 	.has-icon input {
@@ -197,7 +199,7 @@
 		border: none;
 		line-height: 1em;
 		vertical-align: middle;
-		transition: all 0.15s ease-out, text-indent 0.25s cubic-bezier(0, 0, 0, 1);
+		transition: all 0.15s ease-out, text-indent 0.35s cubic-bezier(0, 0, 0, 1);
 
 		&::placeholder {
 			font-weight: 400;
@@ -250,14 +252,14 @@
 	/* Variants */
 	/* Default theme */
 	.default {
-		background-color: var(--color-light-700);
+		background-color: var(--color-light-500);
 		color: var(--color-dark-100);
 		&.focused {
-			outline-color: var(--color-light-900);
+			outline-color: var(--color-light-700);
 			background-color: var(--color-light-300);
 		}
 		&:hover:not(.focused) {
-			background-color: var(--color-light-900);
+			background-color: var(--color-light-700);
 			color: var(--color-dark-500);
 		}
 	}

@@ -18,6 +18,7 @@
 
 <style lang="postcss">
 	#panes {
+		--gap: 16px;
 		position: relative;
 		margin-top: var(--size-medium);
 		padding-inline: 8px;
@@ -28,7 +29,6 @@
 		flex: 1;
 		display: flex;
 		flex-direction: row;
-		--gap: 16px;
 		overflow: hidden;
 
 		& > :global(section) {

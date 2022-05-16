@@ -22,6 +22,7 @@
 	let cardElement: HTMLElement;
 
 	const ctx = getContext<ProjectsListContext>(Ctx.ProjectsList);
+
 	const imageSeed = (Math.random() * 1000).toFixed(0);
 	const imageUrl = `https://picsum.photos/seed/${imageSeed}/800/600`;
 </script>

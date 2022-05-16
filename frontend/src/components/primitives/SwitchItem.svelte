@@ -15,6 +15,7 @@
 	export let iconPosition: 'before' | 'after' = 'before';
 
 	const ctx = getContext<SwitchContext>(Ctx.Switch);
+	const temp = ctx.temp;
 	const current = ctx.current;
 	let label: HTMLElement;
 
@@ -46,12 +47,14 @@
 	bind:this={label}
 	class:current={group === value}
 	class={ctx.variant}
+	class:has-temp={$temp}
 	on:click
 	on:focus
 	on:mouseenter
 	on:mouseleave
 	on:mouseenter={setTemp}
 	on:mouseleave={clearTemp}
+	use:ripple={{}}
 >
 	<input {id} {value} name={ctx.name} type="radio" bind:group on:change on:input />
 	{#if icon}
@@ -62,8 +65,7 @@
 	</span>
 </label>
 
-<hr class="{ctx.variant} {ctx.orientation}" />
-
+<!-- <hr class="{ctx.variant} {ctx.orientation}" /> -->
 <style lang="postcss">
 	label {
 		z-index: 1;
@@ -77,10 +79,12 @@
 		justify-content: center;
 		align-items: center;
 		border-radius: calc(1em - var(--inset));
-		transition: all 0.3s ease-out;
+		transition: all 0.15s ease-out;
 
 		&.current {
+			pointer-events: none;
 			cursor: default;
+			/* font-weight: 400; */
 		}
 	}
 
@@ -99,7 +103,7 @@
 	}
 
 	/* Separator */
-	hr {
+	/* hr {
 		position: relative;
 		display: block;
 		padding: 0;
@@ -115,7 +119,7 @@
 		&.column {
 			height: 1px;
 		}
-	}
+	} */
 
 	/* Variants (should reflect options in Switch component) */
 
@@ -128,11 +132,10 @@
 			color: var(--color-dark-900);
 		}
 		&.current {
-			opacity: 1;
-			color: var(--color-primary-500);
-		}
-		&hr {
-			background-color: rgba(0, 0, 0, 0.05);
+			color: var(--color-light-500);
+			&.has-temp {
+				color: var(--color-dark-100);
+			}
 		}
 	}
 

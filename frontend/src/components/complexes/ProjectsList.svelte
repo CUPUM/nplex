@@ -6,7 +6,6 @@
 
 <script lang="ts">
 	import { Ctx } from '$utils/contexts';
-
 	import { setContext } from 'svelte';
 	import ProjectsListItem from './ProjectsListItem.svelte';
 

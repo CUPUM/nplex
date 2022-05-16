@@ -77,8 +77,8 @@
 		out:scale={{ duration: 150, start: 0.9, easing: expoIn }}
 	>
 		<fieldset>
-			<Field placeholder="Courriel" name="email" type="email" />
-			<Field placeholder="Mot de passe" type="password" name="password" />
+			<Field placeholder="Courriel" placeholderIcon="email" name="email" type="email" />
+			<Field placeholder="Mot de passe" placeholderIcon="asterisk" type="password" name="password" />
 			<!-- {#if message}
 				<Tooltip {message} />
 			{/if} -->
@@ -88,6 +88,7 @@
 				value={Action.SignIn}
 				{disabled}
 				display="block"
+				contentAlign="center"
 				loading={Action.SignIn === currentAction}>Connecter</Button
 			>
 			<Button
@@ -96,6 +97,7 @@
 				value={Action.SignUp}
 				{disabled}
 				display="block"
+				contentAlign="center"
 				loading={Action.SignUp === currentAction}>Créer un compte</Button
 			>
 		</fieldset>

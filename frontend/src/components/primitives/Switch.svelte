@@ -14,7 +14,7 @@
 	import { writable } from 'svelte/store';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import { Ctx } from '$utils/contexts';
-	import { fade } from 'svelte/transition';
+	import { fade, scale } from 'svelte/transition';
 	import { ripple } from '$actions/ripple';
 
 	export let name: string;
@@ -48,7 +48,7 @@
 			return `
 				top: ${el.offsetTop}px;
 				left: ${el.offsetLeft}px;
-				width: ${el.offsetWidth}px;`;
+				width: ${el.offsetWidth - 1}px;`;
 		}
 		return null;
 	}
@@ -78,17 +78,21 @@
 	class="{variant} {orientation}"
 	style:font-size={cssSize(size)}
 	style:flex-direction={orientation}
-	use:ripple={{}}
 >
 	{#if currentBox}
-		<div id="current" transition:fade={{ duration: 150 }} class:temp={!!$temp} style={currentBox} />
+		<div
+			id="current"
+			transition:scale={{ duration: 150, start: 0.8, opacity: 0 }}
+			class:temp={Boolean($temp)}
+			style={currentBox}
+		/>
 	{/if}
 	<slot />
 </fieldset>
 
 <style lang="postcss">
 	fieldset {
-		--inset: 3px;
+		--inset: 1px;
 		--size: 2.8em;
 		--itemsize: calc(var(--size) - 2 * var(--inset));
 		position: relative;
@@ -99,33 +103,33 @@
 		gap: 0;
 		padding: var(--inset);
 		border-radius: 1em;
+		overflow: visible;
 		transition: all 0.25s ease-out;
 	}
 
 	#current {
 		z-index: 1;
 		position: absolute;
-		transition: all 0.2s cubic-bezier(0.75, 0, 0.25, 1.15);
 		height: var(--itemsize);
 		border-radius: calc(1em - var(--inset));
+		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.1), box-shadow 0.25s ease-in-out;
 	}
 
 	/* Variants */
 
 	/* Default theme */
 	.default {
-		background-color: var(--color-light-700);
+		background-color: var(--color-light-500);
 		&:hover,
 		&:focus {
 			background-color: var(--color-light-300);
 		}
 		& #current {
-			background-color: var(--color-light-100);
-			box-shadow: 0 0.25em 1em -0.5em rgba(0, 0, 30, 0.2);
+			background-color: var(--color-dark-500);
+			/* box-shadow: 0 0.25em 1em -0.5em rgba(0, 0, 30, 0.2); */
 			&.temp {
-				/* box-shadow: inset 0 0 0 1px var(--color-light-100); */
-				box-shadow: 0 0 0 0 transparent;
-				background-color: white;
+				background-color: var(--color-light-900);
+				/* box-shadow: 0 0 0 1px rgba(0, 0, 30, 0.5); */
 			}
 		}
 	}

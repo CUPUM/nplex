@@ -1,5 +1,5 @@
 
-import { expoInOut } from 'svelte/easing';
+import { expoInOut, expoOut } from 'svelte/easing';
 
 /**
  * Fly, scale, and/or fade transition combined with appropriate slide transition with
@@ -15,7 +15,7 @@ export function insert(el: Element, {
 	opacity = 1,
 	width = false,
 	height = true,
-	easing = expoInOut
+	easing = expoOut
 }) {
 	const _style = getComputedStyle(el);
 	/**
@@ -24,6 +24,8 @@ export function insert(el: Element, {
 	const _opacity = +_style.opacity;
 	const _width = parseFloat(_style.width);
 	const _max_width = parseFloat(_style.maxWidth);
+	const _height = parseFloat(_style.height);
+	const _max_height = parseFloat(_style.maxHeight);
 	const _padding_top = parseFloat(_style.paddingTop);
 	const _padding_right = parseFloat(_style.paddingRight);
 	const _padding_bottom = parseFloat(_style.paddingBottom);
@@ -50,9 +52,11 @@ export function insert(el: Element, {
 		easing,
 		css: (t, u) =>
 			`overflow: ${t < 1 ? 'visible' : _overflow};` +
-			`opacity: ${_opacity - (d_opacity * t)};` +
+			`opacity: ${_opacity - d_opacity * u};` +
 			`width: ${width ? t * _width : _width}px;` +
 			`max-width: ${width ? t * _max_width : _max_width}px;` +
+			`height: ${height ? t * _height : _height}px;` +
+			`max-height: ${height ? t * _max_height : _max_height}px;` +
 			`padding-top: ${height ? t * _padding_top : _padding_top}px;` +
 			`padding-right: ${width ? t * _padding_right : _padding_right}px;` +
 			`padding-bottom: ${height ? t * _padding_bottom : _padding_bottom}px;` +
@@ -64,7 +68,7 @@ export function insert(el: Element, {
 			`border-top-width: ${height ? t * _border_top_width : _border_top_width}px;` +
 			`border-right-width: ${width ? t * _border_right_width : _border_right_width}px;` +
 			`border-bottom-width: ${height ? t * _border_bottom_width : _border_bottom_width}px;` +
-			`border-left-width: ${width ? t * _border_left_width : _border_left_width}px;`
-		// `transform: ${_transform} translate(${(1 - t) * x}px, ${(1 - t) * y}px);`
+			`border-left-width: ${width ? t * _border_left_width : _border_left_width}px;` +
+			`transform: ${_transform} translate(${(1 - t) * x}px, ${(1 - t) * y}px);`
 	};
 }

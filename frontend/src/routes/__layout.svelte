@@ -68,11 +68,13 @@
 {/if}
 
 <style lang="postcss">
-	/* main {
-		position: relative;
-		width: 100%;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-	} */
+	header {
+		position: sticky;
+		top: 0;
+		padding: 0 1.5rem;
+		margin: 0;
+		border-bottom: 1px solid var(--color-light-500);
+		z-index: 1;
+		backdrop-filter: blur(12px);
+	}
 </style>

@@ -1,8 +1,8 @@
-import { expoInOut } from 'svelte/easing';
+import { expoInOut, expoOut } from 'svelte/easing';
 
-export function width(el: Element, { delay = 0, duration = 350, easing = expoInOut }) {
+export function width(el: Element, { delay = 0, duration = 350, opacity = 1, easing = expoOut }) {
 	const style = getComputedStyle(el);
-	const opacity = +style.opacity;
+	const _opacity = +style.opacity;
 	const width = parseFloat(style.width);
 	const max_width = parseFloat(style.maxWidth);
 	const padding_left = parseFloat(style.paddingLeft);
@@ -11,17 +11,18 @@ export function width(el: Element, { delay = 0, duration = 350, easing = expoInO
 	const margin_right = parseFloat(style.marginRight);
 	const border_left_width = parseFloat(style.borderLeftWidth);
 	const border_right_width = parseFloat(style.borderRightWidth);
-	const transition = style.transition;
-
+	const transform = style.transform;
 	// const filteredTransition = transition.split(',').filter(tx => !tx.includes('margin'))
+
+	const d_opacity = _opacity - opacity;
 
 	return {
 		delay,
 		duration,
 		easing,
-		css: (t) =>
+		css: (t, u) =>
 			'overflow: hidden;' +
-			`opacity: ${Math.min(t * 2, 1) * opacity};` +
+			`opacity: ${_opacity - d_opacity * u};` +
 			`width: ${t * width}px;` +
 			`max-width: ${t * width}px;` +
 			`padding-left: ${t * padding_left}px;` +

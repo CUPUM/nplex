@@ -2,6 +2,10 @@
 	"editor.formatOnPaste": false,
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": true,
+		"source.fixAll": true
+	},
 	"typescript.autoClosingTags": true,
 	"typescript.format.enable": true,
 	"typescript.format.insertSpaceAfterCommaDelimiter": true,
