@@ -18,13 +18,9 @@
 	import Button from './Button.svelte';
 	import Icon from './Icon.svelte';
 
-	/**
-	 * Field input type, useful for a11y.
-	 */
+	/** Field input type, useful for a11y. */
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
-	/**
-	 * Styling options.
-	 */
+	/** Styling options. */
 	export let size: number | CssSizeValue = '1em';
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = 'default';
 	export let warning: boolean = undefined;
@@ -32,34 +28,20 @@
 	export let disabled: boolean = undefined;
 	export let loading: boolean = undefined;
 	export let invalid: boolean = undefined;
-	/**
-	 * Regex validator to be used on submit & during user input
-	 */
+	/** Regex validator to be used on submit & during user input */
 	export let validator: RegExp = undefined;
-	/**
-	 * Auto formatting template for the user input
-	 */
+	/** Auto formatting template for the user input */
 	export let formatting = undefined;
-	/**
-	 * Placeholder text and field icon.
-	 */
+	/** Placeholder text and field icon. */
 	export let placeholder: string = '';
 	export let placeholderIcon: SvelteProps<Icon>['name'] = undefined;
-	/**
-	 * Autocomplete choices
-	 */
+	/** Autocomplete choices */
 	export let choices: string[] = undefined;
-	/**
-	 * Input text value
-	 */
+	/** Input text value */
 	export let value = '';
-	/**
-	 * Focus state for styling of wrapper element instead of input element.
-	 */
+	/** Focus state for styling of wrapper element instead of input element. */
 	let focused = false;
-	/**
-	 * Filtering input type (temp fix for stoopid vendor auto-styling that breaks the UI (┛ಠ_ಠ)┛彡┻━┻)
-	 */
+	/** Filtering input type (temp fix for stoopid vendor auto-styling that breaks the UI (┛ಠ_ಠ)┛彡┻━┻) */
 	let filteredType;
 	$: filteredType = ['email', 'password'].includes(type) ? 'text' : type;
 

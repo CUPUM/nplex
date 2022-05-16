@@ -7,7 +7,7 @@ const RIPPLE_GLOBALS = {
 	FADE_ANIMATION: 'ripple-fade',
 	PRESS_ANIMATION: 'ripple-host-press',
 	END_SIZE: '--ripple-end-size',
-	END_COLOR: '--ripple-end-color'
+	END_COLOR: '--ripple-end-color',
 };
 
 interface RippleOptions {
@@ -22,58 +22,54 @@ interface RippleOptions {
 	blur?: number;
 	disabled?: boolean;
 	/**
-	 * If the element with listeners should differ from the container of the ripple.
-	 * Useful when we want to keep 'overflow' to another value than 'hidden' on the control element.
+	 * If the element with listeners should differ from the container of the ripple. Useful when we want to keep
+	 * 'overflow' to another value than 'hidden' on the control element.
 	 */
 	controlElement?: HTMLElement;
 }
 
-/**
- * Action to add ripple effect on host element, triggered on click event.
- */
-export function ripple(element: HTMLElement, {
-	spreadDuration = 350,
-	fadeDuration = 500,
-	fadeDelay = 50,
-	opacity = .2,
-	startColor = 'currentColor',
-	startSize = 0,
-	endSize = undefined,
-	endColor = undefined,
-	blur = 0,
-	disabled = false,
-	controlElement = element
-}: RippleOptions = {}) {
-
+/** Action to add ripple effect on host element, triggered on click event. */
+export function ripple(
+	element: HTMLElement,
+	{
+		spreadDuration = 350,
+		fadeDuration = 500,
+		fadeDelay = 50,
+		opacity = 0.2,
+		startColor = 'currentColor',
+		startSize = 0,
+		endSize = undefined,
+		endColor = undefined,
+		blur = 0,
+		disabled = false,
+		controlElement = element,
+	}: RippleOptions = {}
+) {
 	// if (controlElement !== element) {
 	// 	console.log(controlElement);
 	// }
 
-	/**
-	 * Create the stylesheet defining the ripple transitions
-	 */
+	/** Create the stylesheet defining the ripple transitions */
 	if (!document.head.querySelector(`[${RIPPLE_GLOBALS.SHEET_ATTRIBUTE}]`)) {
 		createRippleStylesheet();
 	}
 
-	/**
-	 * Prepare the host element
-	 */
+	/** Prepare the host element */
 	const style = getComputedStyle(element);
 	element.setAttribute(RIPPLE_GLOBALS.HOST_ATTRIBUTE, '');
 	element.style.overflow = 'hidden';
 	if (!element.style.transformOrigin) element.style.transformOrigin = 'center center';
 	if (style.position === 'static') element.style.position = 'relative';
 	const parsedStartSize = cssSize(startSize);
-	const parsedEndSize = endSize ? cssSize(endSize) : Math.max(parseInt(style.height), parseInt(style.width)) * 3 + 'px';
+	const parsedEndSize = endSize
+		? cssSize(endSize)
+		: Math.max(parseInt(style.height), parseInt(style.width)) * 3 + 'px';
 	element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, parsedEndSize);
 	element.style.setProperty(RIPPLE_GLOBALS.END_COLOR, endColor ? endColor : startColor);
 
 	let ripple: HTMLElement;
 
-	/**
-	 * Create ripple.
-	 */
+	/** Create ripple. */
 	function createRipple(e: MouseEvent) {
 		// console.log('creating ripple!');
 		const rect = element.getBoundingClientRect();
@@ -100,18 +96,18 @@ export function ripple(element: HTMLElement, {
 		element.appendChild(ripple);
 	}
 
-	/**
-	 * Clear ripple.
-	 */
+	/** Clear ripple. */
 	function clearRipple() {
 		const r = ripple;
 		if (r) {
-			r.style.animation = r.style.animation + `, ${RIPPLE_GLOBALS.FADE_ANIMATION} ${fadeDuration}ms ease-in-out ${fadeDelay}ms forwards`;
-			r.onanimationend = ((e) => {
+			r.style.animation =
+				r.style.animation +
+				`, ${RIPPLE_GLOBALS.FADE_ANIMATION} ${fadeDuration}ms ease-in-out ${fadeDelay}ms forwards`;
+			r.onanimationend = (e) => {
 				if (e.animationName === RIPPLE_GLOBALS.FADE_ANIMATION) {
 					r.remove();
 				}
-			});
+			};
 		}
 	}
 
@@ -144,8 +140,7 @@ export function ripple(element: HTMLElement, {
 
 					setListeners();
 				}
-			}
-			else if (newParams.controlElement != controlElement) {
+			} else if (newParams.controlElement != controlElement) {
 				clearListeners();
 				controlElement = newParams.controlElement;
 				setListeners();
@@ -153,7 +148,7 @@ export function ripple(element: HTMLElement, {
 		},
 		destroy() {
 			clearListeners();
-		}
+		},
 	};
 }
 

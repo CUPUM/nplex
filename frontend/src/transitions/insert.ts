@@ -1,26 +1,26 @@
-
 import { expoInOut, expoOut } from 'svelte/easing';
 
 /**
- * Fly, scale, and/or fade transition combined with appropriate slide transition with
- * `overflow: visible` for smooth insertion without clipping content.
+ * Fly, scale, and/or fade transition combined with appropriate slide transition with `overflow: visible` for smooth
+ * insertion without clipping content.
  */
-export function insert(el: Element, {
-	delay = 0,
-	duration = 350,
-	scale = 1,
-	skew = 0,
-	x = 0,
-	y = 0,
-	opacity = 1,
-	width = false,
-	height = true,
-	easing = expoOut
-}) {
+export function insert(
+	el: Element,
+	{
+		delay = 0,
+		duration = 350,
+		scale = 1,
+		skew = 0,
+		x = 0,
+		y = 0,
+		opacity = 1,
+		width = false,
+		height = true,
+		easing = expoOut,
+	}
+) {
 	const _style = getComputedStyle(el);
-	/**
-	 * Detached target styles.
-	 */
+	/** Detached target styles. */
 	const _opacity = +_style.opacity;
 	const _width = parseFloat(_style.width);
 	const _max_width = parseFloat(_style.maxWidth);
@@ -41,9 +41,7 @@ export function insert(el: Element, {
 	const _overflow = _style.overflow;
 	const _transform = _style.transform;
 
-	/**
-	 * Opacity difference
-	 */
+	/** Opacity difference */
 	const d_opacity = _opacity - opacity;
 
 	return {
@@ -69,6 +67,6 @@ export function insert(el: Element, {
 			`border-right-width: ${width ? t * _border_right_width : _border_right_width}px;` +
 			`border-bottom-width: ${height ? t * _border_bottom_width : _border_bottom_width}px;` +
 			`border-left-width: ${width ? t * _border_left_width : _border_left_width}px;` +
-			`transform: ${_transform} translate(${(1 - t) * x}px, ${(1 - t) * y}px);`
+			`transform: ${_transform} translate(${(1 - t) * x}px, ${(1 - t) * y}px);`,
 	};
 }

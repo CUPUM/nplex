@@ -1,30 +1,26 @@
-import { UserRole } from './user';
-
 export interface Route {
 	pathname: string;
 	title: string;
 	parentTopRoute?: Route;
 	searchable?: boolean;
-	guards?: UserRole[];
+	// guards?: UserRole[];
 }
 
-/**
- * Top navigation routes.
- */
+/** Top navigation routes. */
 export const topRoutes: Route[] = [
 	{
 		pathname: '/',
 		title: 'Explorer',
-		searchable: true
+		searchable: true,
 	},
 	{
 		pathname: '/nouvelles',
-		title: 'Nouvelles'
+		title: 'Nouvelles',
 	},
 	{
 		pathname: '/guides',
-		title: 'Guides'
-	}
+		title: 'Guides',
+	},
 ];
 
 export const rootRoute = topRoutes[0];
@@ -33,41 +29,39 @@ export interface ExploreRoute extends Route {
 	category: 'projects' | 'organisations' | 'actors';
 }
 
-/**
- * Routes for the different categories of "exploration" mode for browsing and searching.
- */
+/** Routes for the different categories of "exploration" mode for browsing and searching. */
 export const exploreRoutes: ExploreRoute[] = [
 	{
 		pathname: '/projets',
 		title: 'Projets',
 		category: 'projects',
 		parentTopRoute: rootRoute,
-		searchable: true
+		searchable: true,
 	},
 	{
 		pathname: '/organisations',
 		title: 'Organisations',
 		category: 'organisations',
 		parentTopRoute: rootRoute,
-		searchable: true
+		searchable: true,
 	},
 	{
 		pathname: '/acteurs',
 		title: 'Acteurs',
 		category: 'actors',
 		parentTopRoute: rootRoute,
-		searchable: true
-	}
+		searchable: true,
+	},
 ];
 
 /**
- * Generic routes for dynamic project/org/actor page. The $route store should refer these
- * whenever the current url appends a dynamic parameter to an exploreRoute.
+ * Generic routes for dynamic project/org/actor page. The $route store should refer these whenever the current url
+ * appends a dynamic parameter to an exploreRoute.
  */
 export const dynamicRoutes = [
 	{
-		pathname: ''
-	}
+		pathname: '',
+	},
 ];
 
 export interface CreationRoute extends Route {
@@ -76,46 +70,38 @@ export interface CreationRoute extends Route {
 export const creationBaseRoute: Route = {
 	pathname: '/creer',
 	title: 'Créer',
-	guards: [UserRole.Visitor, UserRole.Editor, UserRole.Admin]
+	// guards: [UserRole.Visitor, UserRole.Editor, UserRole.Admin]
 };
-/**
- * Relative root routes for the submission forms.
- */
+/** Relative root routes for the submission forms. */
 export const creationRoutes: CreationRoute[] = [
 	{
 		pathname: creationBaseRoute.pathname + '/projet',
 		title: 'Nouveau projet',
 		category: 'projects',
-		parentTopRoute: creationBaseRoute
+		parentTopRoute: creationBaseRoute,
 	},
 	{
 		pathname: creationBaseRoute.pathname + '/organisation',
 		title: 'Nouvelle organisation',
 		category: 'organisations',
-		parentTopRoute: creationBaseRoute
+		parentTopRoute: creationBaseRoute,
 	},
 	{
 		pathname: creationBaseRoute.pathname + '/acteur',
 		title: 'Nouveau profil d’acteur',
 		category: 'actors',
-		parentTopRoute: creationBaseRoute
-	}
+		parentTopRoute: creationBaseRoute,
+	},
 ];
 
 export const userBaseRoute: Route = {
 	pathname: '/compte',
 	title: 'Mon compte',
-	guards: [UserRole.Visitor, UserRole.Editor, UserRole.Admin]
+	// guards: [UserRole.Visitor, UserRole.Editor, UserRole.Admin]
 };
 
 /**
- * Regroups all defined nav-bar route items in a single array for use in store/route.ts $route store
- * to determine which navbar item(s) to highlight.
+ * Regroups all defined nav-bar route items in a single array for use in store/route.ts $route store to determine which
+ * navbar item(s) to highlight.
  */
-export const allRoutes = [
-	...topRoutes,
-	...exploreRoutes,
-	creationBaseRoute,
-	...creationRoutes,
-	userBaseRoute
-];
+export const allRoutes = [...topRoutes, ...exploreRoutes, creationBaseRoute, ...creationRoutes, userBaseRoute];

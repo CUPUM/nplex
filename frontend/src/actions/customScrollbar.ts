@@ -12,6 +12,6 @@ export function customScrollbar(element: HTMLElement, options: OverlayScrollbars
 		destroy() {
 			console.log(scroll);
 			scroll?.destroy();
-		}
+		},
 	};
 }

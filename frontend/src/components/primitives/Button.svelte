@@ -29,15 +29,17 @@
 
 	/**
 	 * Soft auto-determination of squareness, where:
+	 *
 	 * - User-defined 'square' value has precedence.
 	 * - Squareness is automatically applied if button has no slot content.
 	 */
 	$: autoSquare = square || (!$$slots.default && Boolean(icon));
 	/**
 	 * Soft auto-determination of component size, where:
+	 *
 	 * - User-defined size has most precedence and is used if present.
-	 * - Fallback size is smaller if the button is contextualised inside a button parent context setter.
-	 * (Useful for field buttons and other nested uses)
+	 * - Fallback size is smaller if the button is contextualised inside a button parent context setter. (Useful for field
+	 *   buttons and other nested uses)
 	 */
 	// $: autoOuterSize = fieldCtx ? `calc(2.8em - 2 * ${cssSize(fieldCtx.inset)})` : '2.8em';
 </script>

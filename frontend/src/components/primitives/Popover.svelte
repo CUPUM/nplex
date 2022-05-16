@@ -23,34 +23,26 @@
 	let autoPlacement;
 	let timer;
 
-	/**
-	 * To do: Preferred position, should be adjusted automatically if doesn't fit in viewport
-	 */
+	/** To do: Preferred position, should be adjusted automatically if doesn't fit in viewport */
 	// $: autoAlign = ...
 	// $: autoPlacement = ...
 
 	$: if (controlRef) {
 		console.log('running setup');
-		/**
-		 * Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change).
-		 */
+		/** Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change). */
 		controlRef.removeEventListener('click', show);
 		controlRef.removeEventListener('mouseenter', show);
 		controlRef.removeEventListener('mouseleave', hide);
 		popoverRef.removeEventListener('mouseenter', show);
 		popoverRef.removeEventListener('mouseleave', hide);
-		/**
-		 * Binding the proper events on the control element.
-		 */
+		/** Binding the proper events on the control element. */
 		controlRef.addEventListener(useHover ? 'mouseenter' : 'click', show);
 		controlRef.addEventListener(useHover ? 'mouseleave' : 'clickoutside', hide);
 		if (useHover) {
 			popoverRef.addEventListener('mouseenter', show);
 			popoverRef.addEventListener('mouseleave', hide);
 		}
-		/**
-		 * Listening to disposition changes
-		 */
+		/** Listening to disposition changes */
 		controlRef.ontransitionend = setPosition;
 		mutationObs = new MutationObserver(setPosition);
 		resizeObs = new ResizeObserver(setPosition);
@@ -100,13 +92,9 @@
 	}
 
 	onMount(() => {
-		/**
-		 * Referencing the element passed in the "control" slot.
-		 */
+		/** Referencing the element passed in the "control" slot. */
 		controlRef = popoverRef.previousElementSibling as HTMLElement;
-		/**
-		 * Setting the initial position.
-		 */
+		/** Setting the initial position. */
 		setPosition();
 	});
 

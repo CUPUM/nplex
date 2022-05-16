@@ -8,14 +8,10 @@ import { route, routeSegments } from './route';
 // To do
 const init = new URLSearchParams(''); // window?.location.search
 
-/**
- * Main search input
- */
+/** Main search input */
 export const term = writable(init.get('term') || '');
 
-/**
- * Currently browsed category
- */
+/** Currently browsed category */
 export const category = (function () {
 	const { subscribe, set } = writable<ExploreRoute['category']>(null);
 
@@ -34,17 +30,13 @@ export const category = (function () {
 
 	return {
 		subscribe,
-		set
+		set,
 	};
 })();
 
-/**
- * Filters' states
- */
+/** Filters' states */
 
-/**
- * General query string construction and handling
- */
+/** General query string construction and handling */
 const query = new URLSearchParams();
 
 function updateURL() {

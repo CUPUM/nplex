@@ -1,6 +1,4 @@
-/**
- * Helper function to debounce passed function's execution
- */
+/** Helper function to debounce passed function's execution */
 export function debounce(f: (...args) => unknown, delay = 250) {
 	let timer = null;
 	return (...args) => {

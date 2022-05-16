@@ -30,6 +30,6 @@ export function width(el: Element, { delay = 0, duration = 350, opacity = 1, eas
 			`margin-left: ${t * margin_left}px;` +
 			`margin-right: ${t * margin_right}px;` +
 			`border-left-width: ${t * border_left_width}px;` +
-			`border-right-width: ${t * border_right_width}px;`
+			`border-right-width: ${t * border_right_width}px;`,
 	};
 }

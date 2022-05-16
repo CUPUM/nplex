@@ -9,13 +9,9 @@
 	import { setContext } from 'svelte';
 	import ProjectsListItem from './ProjectsListItem.svelte';
 
-	/**
-	 * Disposition of projects' cards;
-	 */
+	/** Disposition of projects' cards; */
 	export let display: ProjectsListContext['display'] = 'column';
-	/**
-	 * Array of projects' summary data.
-	 */
+	/** Array of projects' summary data. */
 	export let projects: any[] = [];
 
 	setContext<ProjectsListContext>(Ctx.ProjectsList, {

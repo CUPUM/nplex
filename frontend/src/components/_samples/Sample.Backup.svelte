@@ -14,8 +14,8 @@
 	const nestedParams = {
 		comp: params.comp,
 		props: params.props.slice(1),
-		section: params.section === 'row' ? 'column' : params.section === 'column' ? 'nested' : 'nested'
-	}
+		section: params.section === 'row' ? 'column' : params.section === 'column' ? 'nested' : 'nested',
+	};
 </script>
 
 {#each propValues as val}
@@ -23,23 +23,11 @@
 		<code>{propKey}: {val}</code>
 		<section class="content">
 			{#if nestedParams.props.length}
-				<svelte:self
-					{...{ [propKey]: val }}
-					params={nestedParams}
-					{...$$restProps}
-					on:click
-					on:focus
-				>
+				<svelte:self {...{ [propKey]: val }} params={nestedParams} {...$$restProps} on:click on:focus>
 					<slot />
 				</svelte:self>
 			{:else}
-				<svelte:component
-					this={params.comp}
-					{...{ [propKey]: val }}
-					{...$$restProps}
-					on:click
-					on:focus
-				>
+				<svelte:component this={params.comp} {...{ [propKey]: val }} {...$$restProps} on:click on:focus>
 					<slot />
 				</svelte:component>
 			{/if}
@@ -49,14 +37,14 @@
 
 <style lang="postcss">
 	section:not(.content) {
-		border: 1px solid rgba(0,0,0, 0.1);
+		border: 1px solid rgba(0, 0, 0, 0.1);
 		border-radius: 1em;
-		padding: .5em;
-		margin: .5em;
+		padding: 0.5em;
+		margin: 0.5em;
 
 		&.last {
 			border: none;
-			padding: .5em;
+			padding: 0.5em;
 			display: flex;
 			flex: 1;
 			align-items: flex-start;
@@ -101,14 +89,14 @@
 		opacity: 0;
 		display: inine-block;
 		background-color: var(--color-light-900);
-		border-radius: .5em;
+		border-radius: 0.5em;
 		font-family: var(--font-misc);
 		letter-spacing: 1px;
 		font-weight: 600;
 		color: var(--color-dark-300);
-		padding: .5em;
-		margin: 0 0 .5em 0;
+		padding: 0.5em;
+		margin: 0 0 0.5em 0;
 		font-size: var(--size-small);
-		transition: all .3s ease;
+		transition: all 0.3s ease;
 	}
 </style>

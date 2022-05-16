@@ -3,10 +3,9 @@ import { readable } from 'svelte/store';
 import { onMount } from 'svelte';
 import OverlayScrollbars from 'overlayscrollbars';
 
-type MainScroll = { y: number; delta: number; direction: 'up' | 'down' }
+type MainScroll = { y: number; delta: number; direction: 'up' | 'down' };
 
-export const mainScroll = (function() {
-
+export const mainScroll = (function () {
 	let instance: OverlayScrollbars;
 	let prev: MainScroll = { y: 0, delta: 0, direction: null };
 
@@ -15,8 +14,8 @@ export const mainScroll = (function() {
 		const current: MainScroll = {
 			y: e.target.scrollTop,
 			delta,
-			direction: prev.delta > 0 && delta > 0 ? 'down' : 'up'
-		}
+			direction: prev.delta > 0 && delta > 0 ? 'down' : 'up',
+		};
 		prev = current;
 		set(current);
 	}
@@ -31,20 +30,20 @@ export const mainScroll = (function() {
 						clickScrolling: true,
 					},
 					overflowBehavior: {
-						x: 'hidden'
+						x: 'hidden',
 					},
 					sizeAutoCapable: false,
 					nativeScrollbarsOverlaid: {
-						initialize: false
-					}
+						initialize: false,
+					},
 				});
 			}
 			if (set) {
 				instance.options({
 					callbacks: {
-						onScroll: (e) => update(e, set)
-					}
-				})
+						onScroll: (e) => update(e, set),
+					},
+				});
 			}
 		});
 	}
@@ -54,6 +53,6 @@ export const mainScroll = (function() {
 	return {
 		init,
 		subscribe,
-		getInstance: () => instance
-	}
+		getInstance: () => instance,
+	};
 })();

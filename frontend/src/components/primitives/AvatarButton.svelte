@@ -13,9 +13,7 @@
 	export let disabled: boolean = undefined;
 	export let loading: boolean = undefined;
 
-	/**
-	 * Context detection and handling should reflect that of Button's.
-	 */
+	/** Context detection and handling should reflect that of Button's. */
 	const fieldCtx = getContext(Ctx.Field);
 
 	let autoSize: string;
@@ -25,9 +23,10 @@
 
 	/**
 	 * Soft auto-determination of component size, where:
+	 *
 	 * - User-defined size has most precedence and is used if present.
-	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter.
-	 * (Useful for field buttons and other nested uses)
+	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter. (Useful for
+	 *   field buttons and other nested uses)
 	 */
 	$: autoSize = size ? cssSize(size) : fieldCtx ? '0.8em' : '1em';
 

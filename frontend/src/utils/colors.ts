@@ -5,6 +5,7 @@
 
 /**
  * Color theme of nplex:
+ *
  * - `primary` is the main accent color;
  * - `secondary` is destined for miscellaneous use of secondary importance such as highlights, notification badges, etc.;
  * - `light` provides a light tones palette mostly used for backghrounds and subtle borders;
@@ -18,7 +19,7 @@ export const colors = {
 		300: 'hsl(163, 84%, 64%)',
 		500: 'hsl(163, 83%, 49%)',
 		700: 'hsl(164, 92%, 43%)',
-		900: 'hsl(165, 99%, 37%)'
+		900: 'hsl(165, 99%, 37%)',
 	},
 	secondary: {
 		100: 'hsl(15, 95%, 85%)',
@@ -32,14 +33,14 @@ export const colors = {
 		300: 'hsl(173, 32%, 95%)',
 		500: 'hsl(172, 30%, 91%)',
 		700: 'hsl(171, 28%, 86%)',
-		900: 'hsl(170, 26%, 80%)'
+		900: 'hsl(170, 26%, 80%)',
 	},
 	dark: {
 		100: 'hsl(250, 10%, 46%)',
 		300: 'hsl(251, 14%, 39%)',
 		500: 'hsl(252, 18%, 32%)',
 		700: 'hsl(253, 23%, 23%)',
-		900: 'hsl(254, 26%, 17%)'
+		900: 'hsl(254, 26%, 17%)',
 	},
 	success: {
 		100: 'hsl(113, 70%, 72%)',
@@ -50,5 +51,5 @@ export const colors = {
 		100: 'hsl(2, 76%, 69%)',
 		500: 'hsl(2, 64%, 59%)',
 		900: 'hsl(2, 60%, 49%)',
-	}
+	},
 };

@@ -1,9 +1,7 @@
 // import { makeSessionCookies } from '$utils/auth';
 import type { RequestHandler } from '@sveltejs/kit';
 
-/**
- * API route used to prepare/update cookies server-side and set them on the requesting client.
- */
+/** API route used to prepare/update cookies server-side and set them on the requesting client. */
 // export const post: RequestHandler = async ({ request }) => {
 // 	const body = await request.json();
 

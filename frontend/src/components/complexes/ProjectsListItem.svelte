@@ -6,17 +6,11 @@
 	import { getContext, onMount } from 'svelte';
 	import type { ProjectsListContext } from './ProjectsList.svelte';
 
-	/**
-	 * Project summary data.
-	 */
+	/** Project summary data. */
 	export let project: any = undefined;
-	/**
-	 * For programmatical control of active state. Useful to highlight card from mouse event elsewhere in the ui.
-	 */
+	/** For programmatical control of active state. Useful to highlight card from mouse event elsewhere in the ui. */
 	export let active: boolean = undefined;
-	/**
-	 * Is the card accessible to user's visit?
-	 */
+	/** Is the card accessible to user's visit? */
 	export let disabled: boolean = undefined;
 
 	let cardElement: HTMLElement;

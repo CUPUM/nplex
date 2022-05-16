@@ -8,17 +8,17 @@ export const post: RequestHandler = async ({ request, locals }) => {
 	const password = JSON.stringify(data.get('password')) as UserCredentials['password'];
 	const provider = JSON.stringify(data.get('provider')) as UserCredentials['provider'];
 
-	const { session, error } = await db.auth.signIn({email, password, provider});
+	const { session, error } = await db.auth.signIn({ email, password, provider });
 
 	if (error) {
 		return {
 			status: error.status,
-			body: error.message
-		}
+			body: error.message,
+		};
 	}
 
 	return {
 		status: 200,
-		body: {}
-	}
-}
+		body: {},
+	};
+};

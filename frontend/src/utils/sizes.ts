@@ -6,5 +6,5 @@ export const sizes = {
 	large: 16,
 	xlarge: 20,
 	xxlarge: 28,
-	xxxlarge: 40
+	xxxlarge: 40,
 };

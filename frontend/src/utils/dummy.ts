@@ -1,6 +1,4 @@
-/**
- * These utils allow for creating dummy entities to help implement the ui.
- */
+/** These utils allow for creating dummy entities to help implement the ui. */
 
 class Project {
 	id: string;
@@ -14,4 +12,4 @@ class Project {
 	}
 }
 
-export const projects = new Array(10).fill(null).map(p => new Project());
+export const projects = new Array(10).fill(null).map((p) => new Project());

@@ -9,7 +9,7 @@ import type { providers } from './providers';
 export enum SessionCookieName {
 	REFRESH = 'refresh_token',
 	ACCESS = 'access_token',
-	EXPIRES = 'expires_at'
+	EXPIRES = 'expires_at',
 }
 
 interface AuthInfo {
@@ -18,35 +18,29 @@ interface AuthInfo {
 	provider?: keyof typeof providers;
 }
 
-/**
- * Sign up a new user.
- */
+/** Sign up a new user. */
 export async function signUp(info: AuthInfo) {
 	const res = await db.auth.signUp(info, {
-		redirectTo: info.provider ? get(page).url.pathname : null
+		redirectTo: info.provider ? get(page).url.pathname : null,
 	});
 	// session.update((s) => ({...s, user: res.user}));
 	// // To do: set auth on server-side for SSR
 	// // See: https://github.com/supabase/supabase/discussions/5218
 	return res;
-};
+}
 
-/**
- * Sign in the user. If valid, should set the auth cookie on the client AND on the server side for SSR.
- */
+/** Sign in the user. If valid, should set the auth cookie on the client AND on the server side for SSR. */
 export async function signIn(info: AuthInfo) {
 	const res = await db.auth.signIn(info, {
-		redirectTo: info.provider ? get(page).url.pathname : null
+		redirectTo: info.provider ? get(page).url.pathname : null,
 	});
 	// session.update((s) => ({...s, user: res.user}));
 	// To do: set auth on server-side for SSR
 	// See: https://github.com/supabase/supabase/discussions/5218
 	return res;
-};
+}
 
-/**
- * Sign out the current user. Should unset the auth cookie on the client side AND on the server.
- */
+/** Sign out the current user. Should unset the auth cookie on the client side AND on the server. */
 export async function signOut() {
 	const res = await db.auth.signOut();
 	// await fetch('/api/auth/signout.json', {
@@ -55,8 +49,7 @@ export async function signOut() {
 	// await updateServerSession('SIGNED_OUT', null);
 	// goto('/');
 	return res;
-};
-
+}
 
 // Based on https://github.com/supabase/supabase/discussions/5218
 // /**
@@ -95,4 +88,3 @@ export async function signOut() {
 // 		body: JSON.stringify({ event: e, session: s }),
 // 	});
 // }
-

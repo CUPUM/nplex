@@ -33,9 +33,7 @@ const expiry = 1000;
 // 	return refreshed;
 // }
 
-/**
- * Handle hook
- */
+/** Handle hook */
 // export const handle: Handle = async ({ event, resolve }) => {
 // 	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
 // 	let setCookies = [];

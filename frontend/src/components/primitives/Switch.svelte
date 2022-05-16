@@ -24,14 +24,10 @@
 
 	let fieldset: HTMLFieldSetElement;
 	let obs: ResizeObserver;
-	/**
-	 * Corresponds to the label element of the currently selected input.
-	 */
+	/** Corresponds to the label element of the currently selected input. */
 	let current: SwitchContext['current'] = writable(null);
 	let currentBox: string;
-	/**
-	 * Corresponds to the currently hovered label.
-	 */
+	/** Corresponds to the currently hovered label. */
 	let temp: SwitchContext['temp'] = writable(null);
 
 	setContext<SwitchContext>(Ctx.Switch, {

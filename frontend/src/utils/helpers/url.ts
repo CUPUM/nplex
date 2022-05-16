@@ -10,16 +10,18 @@ export function getSegments(url: URL) {
 
 /**
  * To do
+ *
  * @param obj
  * @returns
  */
- export function objectToURLSearchParams(obj: Record<string, unknown>): URLSearchParams {
+export function objectToURLSearchParams(obj: Record<string, unknown>): URLSearchParams {
 	Object.entries(obj);
 	return;
 }
 
 /**
  * To do
+ *
  * @param params
  * @returns
  */

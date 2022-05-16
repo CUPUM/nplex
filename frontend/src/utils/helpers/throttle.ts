@@ -1,3 +1,1 @@
-/**
- * Helper function to throttle passed function's execution
- */
+/** Helper function to throttle passed function's execution */

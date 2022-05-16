@@ -8,16 +8,15 @@
 	export let size: number | CssSizeValue = undefined;
 	export let labelPosition: 'before' | 'after' = 'after';
 
-	/**
-	 * Detect affecting contexts in parents.
-	 */
+	/** Detect affecting contexts in parents. */
 	const fieldCtx = getContext(Ctx.Field);
 
 	/**
 	 * Soft auto-determination of component size, where:
+	 *
 	 * - User-defined size has most precedence and is used if present.
-	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter.
-	 * (Useful for field buttons and other nested uses)
+	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter. (Useful for
+	 *   field buttons and other nested uses)
 	 */
 	$: autoSize = size ? cssSize(size) : fieldCtx ? '0.8em' : '1em';
 </script>

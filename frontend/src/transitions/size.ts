@@ -1,6 +1,4 @@
-/**
- * Transition to affect both width and height of element
- */
+/** Transition to affect both width and height of element */
 
 interface SizeTransitionOptions {
 	opacity: number;

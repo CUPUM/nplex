@@ -31,13 +31,9 @@
 	function detach() {}
 
 	onMount(() => {
-		/**
-		 * Referencing the previous sibling (to be passed in slot) as the control element.
-		 */
+		/** Referencing the previous sibling (to be passed in slot) as the control element. */
 		controlRef = tooltipRef.previousElementSibling as HTMLElement;
-		/**
-		 * Initializing the position.
-		 */
+		/** Initializing the position. */
 		// to do.
 	});
 </script>
