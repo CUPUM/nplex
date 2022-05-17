@@ -1,42 +1,29 @@
-import { goto } from '$app/navigation';
-import { page } from '$app/stores';
-import type { ExploreRoute } from '$utils/routes';
-import { exploreRoutes } from '$utils/routes';
-import { get, writable } from 'svelte/store';
-import { route, routeSegments } from './route';
+import type { Category } from 'src/types/categories';
+import { writable } from 'svelte/store';
 
-// To do
-const init = new URLSearchParams(''); // window?.location.search
+/**
+ * Searchbar display boolean state, estabished inside layouts and routes and cleared in onDestroy lifecycle.
+ */
+export const showSearchbar = writable<boolean>(false);
 
-/** Main search input */
-export const term = writable(init.get('term') || '');
+/**
+ * To do: initial search params extracted from the user-queried url. This feature is essential for url-sharing to work properly.
+ */
+const initParams = new URLSearchParams(''); // window?.location.search
 
-/** Currently browsed category */
-export const category = (function () {
-	const { subscribe, set } = writable<ExploreRoute['category']>(null);
+/**
+ * Main search text input, typically corresponding to the text inserted in the search bar's input field.
+ */
+export const term = writable(initParams.get('term') || '');
 
-	// const book = exploreRoutes.reduce((acc, curr) => {
-	// 	return acc.set(curr.category, curr);
-	// }, new Map<string, ExploreRoute>());
+/**
+ * Currently browsed category.
+ */
+export const category = writable<Category>(null);
 
-	// function setCategory(newCategory: ExploreRoute['category']) {
-	// 	const newHref = book.get(newCategory).href;
-	// 	if (newHref !== get(page).url.pathname) {
-	// 		goto(newHref);
-	// 		// Do more routing stuff if necessary
-	// 	}
-	// 	set(newCategory);
-	// }
-
-	return {
-		subscribe,
-		set,
-	};
-})();
-
-/** Filters' states */
-
-/** General query string construction and handling */
+/**
+ * General query string construction and handling.
+ */
 const query = new URLSearchParams();
 
 function updateURL() {

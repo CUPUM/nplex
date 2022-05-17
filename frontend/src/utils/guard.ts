@@ -1,12 +1,12 @@
+import { authModal } from '$stores/auth';
 import { getUserRole, UserRole } from '$utils/user';
+import type { LoadInput, LoadOutput } from '@sveltejs/kit';
 
 interface GuardInput {
-	/** Guards defined as an array of required roles for a specific route / layout. */
-	guards: UserRole[];
-	/** Current client's session, containing the user's main data with role. */
-	session: App.Session;
-	/** Where to redirect the client when the guard check fails? The first encountered failing guard */
-	redirectTo?: string;
+	allowedRoles: UserRole[];
+	session: LoadInput['session'];
+	url: LoadInput['url'];
+	stuff: LoadInput['stuff'];
 }
 
 /**
@@ -15,14 +15,23 @@ interface GuardInput {
  * To do: figure out a good way to update the session's `prevnav` prop, without having to pass a prop to the client and
  * calling client-side prop handling each time.
  */
-export function guard({ guards, session, redirectTo = undefined }: GuardInput): boolean {
+export async function guard({ allowedRoles, session, url, stuff }: GuardInput): Promise<LoadOutput> {
+	// If the guard is adequately fulfilled, thn we proceed to the requested route...
 	if (
-		guards.includes(UserRole.Anon) ||
-		(session && session.user && guards.includes(getUserRole(session.user.role)))
+		allowedRoles.includes(UserRole.Anon) ||
+		(session && session.user && allowedRoles.includes(getUserRole(session.user.role)))
 	) {
-		console.log('guard passed');
-		return true;
+		return {
+			status: 200,
+			stuff: {
+				prevnav: url.pathname,
+			},
+		};
 	}
-	console.log('guard not passed');
-	return false;
+	// ...else we redirect to the indicated redirect, usually the previous successfully visited url stored in `prevnav`.
+	authModal.set(true);
+	return {
+		status: 303,
+		redirect: stuff.prevnav || '/',
+	};
 }

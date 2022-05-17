@@ -3,12 +3,9 @@
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
 	import SocialButton from '$components/primitives/SocialButton.svelte';
-	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { authModal } from '$stores/auth';
 	import { signIn, signUp } from '$utils/auth';
 	import { providers } from '$utils/providers';
-	import { sizes } from '$utils/sizes';
-	import type { ApiError } from '@supabase/supabase-js';
 	import { expoIn, expoOut, linear } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
 

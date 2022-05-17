@@ -1,10 +1,17 @@
 <script lang="ts">
-	import ProjectsMap from '$components/complexes/ProjectsMap.svelte';
-	import ProjectsList from '$components/complexes/ProjectsList.svelte';
 	import ProjectsFilters from '$components/complexes/ProjectsFilters.svelte';
-	import { slide } from 'svelte/transition';
-	import { page } from '$app/stores';
+	import ProjectsList from '$components/complexes/ProjectsList.svelte';
+	import ProjectsMap from '$components/complexes/ProjectsMap.svelte';
 	import { showFilters } from '$stores/projects';
+	import { category, showSearchbar } from '$stores/search';
+	import { onDestroy } from 'svelte';
+
+	category.set('projects');
+	showSearchbar.set(true);
+
+	onDestroy(() => {
+		showSearchbar.set(false);
+	});
 </script>
 
 <section id="panes">

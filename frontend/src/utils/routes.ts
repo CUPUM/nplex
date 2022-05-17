@@ -1,17 +1,32 @@
+/**
+ * The following declarations detail various route objects and object arrays to help generate navbars or other UI
+ * elements. The route objects can also serve as a matching reference to keep track of certain layout-specific or
+ * route-specific states.
+ *
+ * ⚠️ These declaration are NOT exhaustive and should not be assumed to cover the full scope of the app's possible routing state.
+ */
+
+import type { Category } from 'src/types/categories';
+
 export interface Route {
+	/**
+	 * Full un-based absolute pathname.
+	 */
 	pathname: string;
+	/**
+	 * Title to be used in navbars or as a label for other elements. Routes not calling for a title should not need to
+	 * be defined here.
+	 */
 	title: string;
-	parentTopRoute?: Route;
-	searchable?: boolean;
-	// guards?: UserRole[];
 }
 
-/** Top navigation routes. */
-export const topRoutes: Route[] = [
+/**
+ * Main navigation routes.
+ */
+export const mainRoutes: Route[] = [
 	{
 		pathname: '/',
 		title: 'Explorer',
-		searchable: true,
 	},
 	{
 		pathname: '/nouvelles',
@@ -23,85 +38,68 @@ export const topRoutes: Route[] = [
 	},
 ];
 
-export const rootRoute = topRoutes[0];
+export const rootRoute = mainRoutes[0];
 
 export interface ExploreRoute extends Route {
-	category: 'projects' | 'organisations' | 'actors';
+	category: Category;
 }
 
-/** Routes for the different categories of "exploration" mode for browsing and searching. */
+/**
+ * Routes for the different categories of "exploration" mode for browsing and searching.
+ */
 export const exploreRoutes: ExploreRoute[] = [
 	{
 		pathname: '/projets',
 		title: 'Projets',
 		category: 'projects',
-		parentTopRoute: rootRoute,
-		searchable: true,
 	},
 	{
 		pathname: '/organisations',
 		title: 'Organisations',
 		category: 'organisations',
-		parentTopRoute: rootRoute,
-		searchable: true,
 	},
 	{
 		pathname: '/acteurs',
 		title: 'Acteurs',
 		category: 'actors',
-		parentTopRoute: rootRoute,
-		searchable: true,
 	},
 ];
 
-/**
- * Generic routes for dynamic project/org/actor page. The $route store should refer these whenever the current url
- * appends a dynamic parameter to an exploreRoute.
- */
-export const dynamicRoutes = [
-	{
-		pathname: '',
-	},
-];
+// /**
+//  * Lookup map to adjust the navbar's "Explore" path according to the already set category, if there is.
+//  */
+// export const categoryRoutes: Record<Category, Route> = {
+// 	projects: exploreRoutes[0],
+// 	organisations: exploreRoutes[1],
+// 	actors: exploreRoutes[2],
+// };
 
-export interface CreationRoute extends Route {
-	category: ExploreRoute['category'];
-}
 export const creationBaseRoute: Route = {
 	pathname: '/creer',
 	title: 'Créer',
-	// guards: [UserRole.Visitor, UserRole.Editor, UserRole.Admin]
 };
-/** Relative root routes for the submission forms. */
-export const creationRoutes: CreationRoute[] = [
+
+/**
+ * Relative root routes for the submission forms.
+ */
+export const creationRoutes: Route[] = [
 	{
 		pathname: creationBaseRoute.pathname + '/projet',
 		title: 'Nouveau projet',
-		category: 'projects',
-		parentTopRoute: creationBaseRoute,
 	},
 	{
 		pathname: creationBaseRoute.pathname + '/organisation',
 		title: 'Nouvelle organisation',
-		category: 'organisations',
-		parentTopRoute: creationBaseRoute,
 	},
 	{
 		pathname: creationBaseRoute.pathname + '/acteur',
 		title: 'Nouveau profil d’acteur',
-		category: 'actors',
-		parentTopRoute: creationBaseRoute,
 	},
 ];
 
 export const userBaseRoute: Route = {
-	pathname: '/compte',
+	pathname: 'compte',
 	title: 'Mon compte',
-	// guards: [UserRole.Visitor, UserRole.Editor, UserRole.Admin]
 };
 
-/**
- * Regroups all defined nav-bar route items in a single array for use in store/route.ts $route store to determine which
- * navbar item(s) to highlight.
- */
-export const allRoutes = [...topRoutes, ...exploreRoutes, creationBaseRoute, ...creationRoutes, userBaseRoute];
+export const userRoutes: Route[] = [];

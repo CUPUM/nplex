@@ -1,7 +1,9 @@
 <script lang="ts">
 	import ProjectsList from '$components/complexes/ProjectsList.svelte';
 	import Button from '$components/primitives/Button.svelte';
+	import { category, showSearchbar } from '$stores/search';
 	import { sizes } from '$utils/sizes';
+	import { onDestroy } from 'svelte';
 
 	export let projectsPreview;
 	export let organisationsPreview;
@@ -11,6 +13,13 @@
 
 	const buttonSize = sizes.small;
 	const buttonVariant = 'secondary';
+
+	category.set(null);
+	showSearchbar.set(true);
+
+	onDestroy(() => {
+		showSearchbar.set(false);
+	});
 </script>
 
 <article>

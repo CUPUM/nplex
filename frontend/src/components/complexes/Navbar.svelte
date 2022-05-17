@@ -1,19 +1,17 @@
 <script lang="ts">
-	import { creationBaseRoute, creationRoutes, rootRoute, topRoutes, userBaseRoute } from '$utils/routes';
+	import { session } from '$app/stores';
+	import AvatarButton from '$components/primitives/AvatarButton.svelte';
 	import Button from '$components/primitives/Button.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
-	import ButtonSet from '$components/primitives/ButtonSet.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
-	import { topRoute } from '$stores/route';
-	import { colors } from '$utils/colors';
-	import { session } from '$app/stores';
-	import AvatarButton from '$components/primitives/AvatarButton.svelte';
-	import { sizes } from '$utils/sizes';
+	import { currentPath } from '$stores/currentPath';
 	import { signOut } from '$utils/auth';
-	import { fly, scale } from 'svelte/transition';
-	import { expoOut } from 'svelte/easing';
+	import { colors } from '$utils/colors';
+	import { creationBaseRoute, creationRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
+	import { sizes } from '$utils/sizes';
 	import { onMount } from 'svelte';
+	import { expoOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 
 	const variant = 'nav';
 	const userSize = sizes.small;
@@ -32,8 +30,8 @@
 			</a>
 		</section>
 		<section id="main" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 500 }}>
-			{#each topRoutes as route}
-				<Button size={sizes.small} {variant} active={route === $topRoute} href={route.pathname}
+			{#each mainRoutes as route}
+				<Button size={sizes.small} {variant} active={route.pathname === $currentPath.main} href={route.pathname}
 					>{route.title}</Button
 				>
 			{/each}

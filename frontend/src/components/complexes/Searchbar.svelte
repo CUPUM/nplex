@@ -1,23 +1,16 @@
 <script lang="ts">
-	import { fly, scale, slide } from 'svelte/transition';
-	import { expoIn, expoOut } from 'svelte/easing';
-	import Switch from '$components/primitives/Switch.svelte';
-	import { exploreRoutes, type ExploreRoute } from '$utils/routes';
-	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import { goto, prefetch } from '$app/navigation';
-	import { category, term } from '$stores/search';
-	import { route } from '$stores/route';
-	import Field from '$components/primitives/Field.svelte';
-	import { sizes } from '$utils/sizes';
 	import Button from '$components/primitives/Button.svelte';
-	import { showFilters } from '$stores/projects';
-	import Token from '$components/primitives/Token.svelte';
+	import Field from '$components/primitives/Field.svelte';
+	import Switch from '$components/primitives/Switch.svelte';
+	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import TokenSet from '$components/primitives/TokenSet.svelte';
-	import { insert } from '$transitions/insert';
-
-	if (($route as ExploreRoute)?.category) {
-		category.set(($route as ExploreRoute).category);
-	}
+	import { showFilters } from '$stores/projects';
+	import { category, term } from '$stores/search';
+	import { exploreRoutes } from '$utils/routes';
+	import { sizes } from '$utils/sizes';
+	import { expoOut } from 'svelte/easing';
+	import { fly, slide } from 'svelte/transition';
 
 	function submit() {
 		console.log('submitted search bar form');
@@ -41,9 +34,7 @@
 		<Field
 			type="search"
 			size={sizes.medium}
-			placeholder={$route.searchable && $route.parentTopRoute
-				? `Chercher parmi les ${$route.title.toLowerCase()}`
-				: 'Chercher'}
+			placeholder="Chercher"
 			placeholderIcon="search"
 			style="width: 100%;"
 			bind:value={$term}

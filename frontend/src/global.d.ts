@@ -12,7 +12,7 @@ declare namespace App {
 	/** _Customization notes:_ Extending the session type to include User typing provided by Supabase's library. */
 	interface Session {
 		/** User typing provided by Supabase and corresponding to the data form the `auth.users` table. */
-		user: import('@supabase/supabase-js').User;
+		user?: import('@supabase/supabase-js').User;
 		/**
 		 * Profile data extending the user data, corresponding to user-specific content of the `public.profiles` table.
 		 *
@@ -26,5 +26,6 @@ declare namespace App {
 	/** _Customization notes:_ Accepting the proper params to reflect the sesssion's stored user in hooks. */
 	interface Locals {
 		user?: App.Session['user'];
+		profile?: App.Session['user'];
 	}
 }
