@@ -8,7 +8,7 @@
 	import Icon from './Icon.svelte';
 	import Loading from './Loading.svelte';
 
-	export let variant: 'default' | 'secondary' | 'cta' | 'nav' = 'default';
+	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'default';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let size: number | CssSizeValue = '1em';
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';

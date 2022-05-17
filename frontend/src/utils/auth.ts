@@ -1,16 +1,54 @@
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
-import * as cookie from 'cookie';
-import { goto } from '$app/navigation';
-import { db } from './database';
-import { page, session } from '$app/stores';
+import { page } from '$app/stores';
+import { signInModal } from '$stores/auth';
+import type { UserRole } from '$utils/user';
+import type { LoadInput, LoadOutput } from '@sveltejs/kit';
 import { get } from 'svelte/store';
+import { db } from './database';
 import type { providers } from './providers';
 
-export enum SessionCookieName {
-	REFRESH = 'refresh_token',
-	ACCESS = 'access_token',
-	EXPIRES = 'expires_at',
+// Route guard
+
+interface GuardInput {
+	/**
+	 * Roles or status required to gain permission for a request.
+	 */
+	criteria: UserRole[];
+	/**
+	 * The requester's session, with the user data if logged in.
+	 */
+	session: LoadInput['session'];
 }
+
+/**
+ * Guard function to evaluate access to a page based on auth/user state.
+ *
+ * To do: figure out a good way to update the session's `prevnav` prop, without having to pass a prop to the client and
+ * calling client-side prop handling each time.
+ */
+export async function guard({ criteria, session }: GuardInput): Promise<LoadOutput> {
+	console.log('before guard complete');
+	/**
+	 * If the guard is adequately fulfilled, then we proceed to the requested route...
+	 */
+	if (!criteria.length || (session.user && criteria.includes(session.user.role as UserRole))) {
+		return {
+			status: 200,
+		};
+	}
+	/**
+	 * ...else we open signup modal if no user signed in, and we redirect to the indicated redirect, usually the
+	 * previous successfully visited url stored in `prevnav`.
+	 */
+	if (!session.user) {
+		signInModal.set(true);
+	}
+	return {
+		status: 303,
+		redirect: session.prevPath || '/',
+	};
+}
+
+// Auth helpers
 
 interface AuthInfo {
 	email?: string;
@@ -18,7 +56,9 @@ interface AuthInfo {
 	provider?: keyof typeof providers;
 }
 
-/** Sign up a new user. */
+/**
+ * Sign up a new user.
+ */
 export async function signUp(info: AuthInfo) {
 	const res = await db.auth.signUp(info, {
 		redirectTo: info.provider ? get(page).url.pathname : null,
@@ -29,7 +69,9 @@ export async function signUp(info: AuthInfo) {
 	return res;
 }
 
-/** Sign in the user. If valid, should set the auth cookie on the client AND on the server side for SSR. */
+/**
+ * Sign in a user. If valid, should set the auth cookie on the client AND on the server side for SSR.
+ */
 export async function signIn(info: AuthInfo) {
 	const res = await db.auth.signIn(info, {
 		redirectTo: info.provider ? get(page).url.pathname : null,
@@ -40,7 +82,9 @@ export async function signIn(info: AuthInfo) {
 	return res;
 }
 
-/** Sign out the current user. Should unset the auth cookie on the client side AND on the server. */
+/**
+ * Sign out the current user. Should unset the auth cookie on the client side AND on the server.
+ */
 export async function signOut() {
 	const res = await db.auth.signOut();
 	// await fetch('/api/auth/signout.json', {

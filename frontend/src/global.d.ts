@@ -1,31 +1,45 @@
 /// <reference types="@sveltejs/kit" />
 
-/** For clickoutside directive See: https://stackoverflow.com/questions/64131176/svelte-custom-event-on-svelte-typescript */
+/**
+ * For global types to work properly, external types have to be imported using the dynamic import syntax: `import(...)`
+ */
+
+/**
+ * For clickoutside directive See: https://stackoverflow.com/questions/64131176/svelte-custom-event-on-svelte-typescript.
+ */
 declare namespace svelte.JSX {
 	interface HTMLAttributes<T> {
 		onclickoutside?: (event?: CustomEvent) => any;
 	}
 }
 
-/** Augment svelte's session interface else ts cries like a lil baby */
+/**
+ * Augment svelte's session interface else TS cries.
+ */
 declare namespace App {
-	/** _Customization notes:_ Extending the session type to include User typing provided by Supabase's library. */
+	/**
+	 * _Customization notes:_ Extending the session type to include User typing provided by Supabase's library.
+	 */
 	interface Session {
-		/** User typing provided by Supabase and corresponding to the data form the `auth.users` table. */
-		user?: import('@supabase/supabase-js').User;
 		/**
-		 * Profile data extending the user data, corresponding to user-specific content of the `public.profiles` table.
-		 *
-		 * **To do: generate types from schema.**
+		 * Customized session user typing, based on User provided by Supabase (corresponding to the data form the
+		 * `auth.users` table) and extended with additional data from public schema. Keep the appended data to a minimum.
 		 */
-		profile?: any;
-		/** Prop to store the session's previous navigation to be used in auth */
-		prevnav: string;
+		user?: import('@supabase/supabase-js').User & {
+			role: import('$utils/user').UserRole;
+		};
+		/**
+		 * Prop to store the client session's previous navigation for various usages and redirect cases.
+		 */
+		prevPath: string;
 	}
 
-	/** _Customization notes:_ Accepting the proper params to reflect the sesssion's stored user in hooks. */
-	interface Locals {
-		user?: App.Session['user'];
-		profile?: App.Session['user'];
-	}
+	/**
+	 * _Customization notes:_ Accepting the proper params to reflect the sesssion's stored user in hooks.
+	 */
+	// interface Locals {
+	// 	user?: App.Session['user'];
+	// 	profile?: App.Session['user'];
+	// 	prevnav: App.Session['prevnav'];
+	// }
 }

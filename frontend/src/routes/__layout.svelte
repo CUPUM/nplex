@@ -3,31 +3,30 @@
 	import Auth from '$components/complexes/Auth.svelte';
 	import Navbar from '$components/complexes/Navbar.svelte';
 	import Searchbar from '$components/complexes/Searchbar.svelte';
-	import { authModal } from '$stores/auth';
+	import { signInModal } from '$stores/auth';
 	import { showSearchbar } from '$stores/search';
 	import '$styles/app.postcss';
 	import '$styles/scrollbars.postcss';
 	import '$styles/vars.css';
-	import { db, getUserProfile } from '$utils/database';
-	import { guard } from '$utils/guard';
-	import { UserRole } from '$utils/user';
+	import { db, getUserRole } from '$utils/database';
+	import { toUserRoleEnum } from '$utils/user';
 	import type { Load } from '@sveltejs/kit';
 
-	const allowedRoles = [UserRole.Anon];
-
-	export const load: Load = async ({ url, session, stuff }) => {
-		console.log(stuff);
-		return await guard({ allowedRoles, session, url, stuff });
+	export const load: Load = async ({ session }) => {
+		// This load function triggers the "getSesion" server hook, allowing us to update the session's prevUrl from within the hook.
+		return {
+			status: 200,
+		};
 	};
 </script>
 
 <script lang="ts">
 	db.auth.onAuthStateChange(async (e, s) => {
 		if (e === 'SIGNED_OUT') {
-			session.update((ps) => ({ ...ps, prevnav: '/', user: null, profile: null }));
+			session.update((prevSession) => ({ ...prevSession, prevnav: '/', user: null, profile: null }));
 		} else {
-			const profile = await getUserProfile();
-			session.update((ps) => ({ ...ps, user: s.user, profile }));
+			const role = toUserRoleEnum(await getUserRole());
+			session.update((prevSession) => ({ ...prevSession, user: { ...s.user, role } }));
 		}
 	});
 </script>
@@ -38,9 +37,8 @@
 		<Searchbar />
 	{/if}
 </header>
-<!-- To do: add transition between toproutes -->
 <slot />
-{#if $authModal}
+{#if $signInModal}
 	<Auth />
 {/if}
 

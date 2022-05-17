@@ -1,3 +1,3 @@
 import { writable } from 'svelte/store';
 
-export const authModal = writable<Boolean>(false);
+export const signInModal = writable<Boolean>(false);
