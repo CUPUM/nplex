@@ -26,7 +26,6 @@ interface GuardInput {
  * calling client-side prop handling each time.
  */
 export async function guard({ criteria, session }: GuardInput): Promise<LoadOutput> {
-	console.log('before guard complete');
 	/**
 	 * If the guard is adequately fulfilled, then we proceed to the requested route...
 	 */
