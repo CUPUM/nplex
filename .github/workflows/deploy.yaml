@@ -35,7 +35,7 @@ jobs:
         cat .env
     # Build the docker image.
     - name: Docker build
-      run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+      run: echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
     # Send the result to heroku's registry.
     - name: Publish
       # heroku config:set EXPOSED_SUPABASE_URL=$SUPABASE_URL -a $HEROKU_APP_NAME
