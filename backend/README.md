@@ -1,7 +1,7 @@
-# SQL commands
+# Database entities descriptions, relations, and constraints
 
-These files establish the database's structure and various data access constraints in a manner
-specificially tied to Supabase's provided features. The command files contain interdependent elements and need to be executed in the following prescribed order.
+These files establish the PostgreSQL database's structure and various data access constraints in a manner
+specificially tied to Supabase's provided features. The command files contain interdependent elements and should be executed in the following prescribed order.
 
 ## Contents
 
@@ -24,4 +24,4 @@ including the querier's auth token and the associated user's role.
 
 ## Migrating
 
-The files can either be be updated by hand or generated using a migration tool like `pgAdmin`to mirror modifications applied through Supabase's GUI.
+The files can either be be updated by hand or generated using a migration tool like `pgAdmin` to mirror modifications applied through Supabase's GUI.
