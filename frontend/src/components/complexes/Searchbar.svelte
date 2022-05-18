@@ -27,10 +27,14 @@
 	on:submit|preventDefault={submit}
 	on:reset|preventDefault={reset}
 	in:slide={{ duration: 450, easing: expoOut }}
-	out:slide={{}}
+	out:slide={{ duration: 700, easing: expoOut }}
 >
 	<!-- Field -->
-	<div id="field" transition:fly={{ y: 30, duration: 500, easing: expoOut, delay: 150 }}>
+	<div
+		id="field"
+		in:fly={{ y: 30, duration: 500, easing: expoOut, delay: 150 }}
+		out:fly={{ y: 30, duration: 500, easing: expoOut, delay: 0 }}
+	>
 		<Field
 			type="search"
 			size={sizes.medium}
@@ -56,7 +60,11 @@
 		</Field>
 	</div>
 	<!-- Category -->
-	<div id="category" transition:fly={{ y: 30, duration: 500, easing: expoOut, delay: 0 }}>
+	<div
+		id="category"
+		in:fly={{ y: 30, duration: 500, easing: expoOut, delay: 0 }}
+		out:fly={{ y: 30, duration: 500, easing: expoOut, delay: 150 }}
+	>
 		<Switch name="category" orientation="row" size={sizes.medium}>
 			{#each exploreRoutes as r, i}
 				<SwitchItem

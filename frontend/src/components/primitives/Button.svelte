@@ -53,11 +53,10 @@
 	on:mouseleave
 	on:mousedown
 	on:mouseup
-	id="button"
+	class="button {variant}"
 	class:active
 	class:warning
 	class:square={autoSquare}
-	class={variant}
 	style:font-size={cssSize(size)}
 	disabled={disabled || loading}
 	{href}
@@ -84,7 +83,7 @@
 </svelte:element>
 
 <style lang="postcss">
-	#button {
+	.button {
 		--outer-size: calc(2.8em - 2 * var(--inset, 0px));
 		display: inline-block;
 		cursor: pointer;

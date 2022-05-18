@@ -5,7 +5,8 @@ import { createClient } from '@supabase/supabase-js';
  */
 export enum TableName {
 	Projects = 'projects',
-	Users = 'users',
+	ProjectsPublicationStatus = 'projects_publication_status',
+	UsersProfiles = 'users_profiles',
 	UsersRoles = 'users_roles',
 }
 
@@ -54,7 +55,7 @@ export async function getUserProfile() {
 	try {
 		const user = db.auth.user();
 		let { data, error, status } = await db
-			.from(TableName.Users)
+			.from(TableName.UsersProfiles)
 			.select(
 				`
 				*,

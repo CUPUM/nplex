@@ -23,7 +23,7 @@
 <script lang="ts">
 	db.auth.onAuthStateChange(async (e, s) => {
 		if (e === 'SIGNED_OUT') {
-			session.update((prevSession) => ({ ...prevSession, prevnav: '/', user: null, profile: null }));
+			session.update((prevSession) => ({ ...prevSession, prevPath: '/', user: null }));
 		} else {
 			const role = toUserRoleEnum(await getUserRole());
 			session.update((prevSession) => ({ ...prevSession, user: { ...s.user, role } }));

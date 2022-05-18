@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
 	import { session } from '$app/stores';
+	import { userProfile } from '$stores/profile';
 	import { Ctx } from '$utils/contexts';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import { getContext } from 'svelte';
@@ -17,9 +18,10 @@
 	const fieldCtx = getContext(Ctx.Field);
 
 	let autoSize: string;
-	let cssAvatarImage: string;
+	let cssAvatarImage: string = '';
 	const userColor =
 		'#' + parseInt($session.user.created_at.match(/\d+/g).map(Number).join('')).toString(16).substring(0, 6);
+	const userLetter = $session.user.email.charAt(0);
 
 	/**
 	 * Soft auto-determination of component size, where:
@@ -30,7 +32,7 @@
 	 */
 	$: autoSize = size ? cssSize(size) : fieldCtx ? '0.8em' : '1em';
 
-	$: cssAvatarImage = $session.profile?.avatar_url ? `url(${$session.profile?.avatar_url})` : '';
+	$: cssAvatarImage = $userProfile && $userProfile.avatar_url ? `url(${$userProfile.avatar_url})` : '';
 </script>
 
 <a
@@ -60,7 +62,7 @@
 					font-weight="500"
 					dominant-baseline="middle"
 				>
-					{$session.user.email.charAt(0)}
+					{userLetter}
 				</text>
 			</svg>
 		{/if}

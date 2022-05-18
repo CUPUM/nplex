@@ -65,15 +65,6 @@ export const exploreRoutes: ExploreRoute[] = [
 	},
 ];
 
-// /**
-//  * Lookup map to adjust the navbar's "Explore" path according to the already set category, if there is.
-//  */
-// export const categoryRoutes: Record<Category, Route> = {
-// 	projects: exploreRoutes[0],
-// 	organisations: exploreRoutes[1],
-// 	actors: exploreRoutes[2],
-// };
-
 export const creationBaseRoute: Route = {
 	pathname: '/creer',
 	title: 'Créer',
@@ -84,21 +75,21 @@ export const creationBaseRoute: Route = {
  */
 export const creationRoutes: Route[] = [
 	{
-		pathname: creationBaseRoute.pathname + '/projet',
+		pathname: '/creer/projet',
 		title: 'Nouveau projet',
 	},
 	{
-		pathname: creationBaseRoute.pathname + '/organisation',
+		pathname: '/creer/organisation',
 		title: 'Nouvelle organisation',
 	},
 	{
-		pathname: creationBaseRoute.pathname + '/acteur',
+		pathname: '/creer/acteur',
 		title: 'Nouveau profil d’acteur',
 	},
 ];
 
 export const userBaseRoute: Route = {
-	pathname: 'compte',
+	pathname: '/compte',
 	title: 'Mon compte',
 };
 
