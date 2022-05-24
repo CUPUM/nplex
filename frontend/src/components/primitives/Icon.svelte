@@ -6,17 +6,16 @@
 
 <script lang="ts">
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
-
 	import { icons } from '$utils/icons/icons';
 	import { onDestroy, onMount } from 'svelte';
-	import { cubicOut, linear, sineOut } from 'svelte/easing';
+	import { linear } from 'svelte/easing';
 	import { draw, fade } from 'svelte/transition';
 
 	export let name: keyof typeof icons;
 	export let size: number | CssSizeValue = '1em';
 	export let color: string = 'currentColor';
 	export let secondaryColor: string = color;
-	export let strokeWidth: number | CssSizeValue = 1.5;
+	export let strokeWidth: number | CssSizeValue = 1.25;
 	export let strokeOpacity: number = 1;
 	export let fillOpacity: number = 1;
 

@@ -66,7 +66,11 @@
 	<div class="align-{contentAlign}">
 		{#if icon}
 			<span id="icon" class="icon-{iconPosition}">
-				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
+				<Icon
+					strokeWidth={variant === 'cta' ? 1.5 : undefined}
+					size={$$slots.default ? '1em' : '1.2em'}
+					name={icon}
+				/>
 			</span>
 		{/if}
 		{#if $$slots.default}
@@ -94,11 +98,11 @@
 		height: var(--outer-size);
 		min-height: var(--outer-size);
 		min-width: var(--outer-size);
-		border-radius: calc(1em - var(--inset, 0px));
+		border-radius: max(calc(1em - var(--inset, 0px)), var(--size-small, 0px));
 		margin: 0;
 		padding: 0 1em;
 		font-family: var(--font-main);
-		font-weight: 500;
+		font-weight: 400;
 		outline-width: 2px;
 		outline-style: solid;
 		outline-color: transparent;
@@ -171,6 +175,7 @@
 		align-items: center;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		letter-spacing: 0px;
 		/* border: 1px solid black; */
 	}
 	#label {
@@ -189,50 +194,63 @@
 	/* Variants (should correspond to `typeof variant`) */
 	/* Default button theme */
 	.default {
-		color: var(--color-dark-100);
-		background-color: var(--color-light-100);
-		box-shadow: 0 1px 1px 0 transparent;
+		color: var(--color-primary-500);
+		background-color: white;
+		transition: all 0.15s ease-out;
 		&:hover,
 		&:focus,
 		&.hover {
-			color: var(--color-primary-500);
-			background-color: white;
-			box-shadow: 0 0.25em 1em -0.75em var(--color-primary-900);
-			transition: all 0.15s ease-out;
+			color: var(--color-dark-900);
+			background-color: var(--color-light-700);
 		}
-		&:active,
+		&:active {
+		}
 		&.active {
 			color: var(--color-light-300);
-			background-color: var(--color-primary-500);
+			background-color: var(--color-dark-500);
+			box-shadow: 0 0.75em 1.5em -0.5em rgba(0, 0, 0, 0.3);
 		}
 	}
 	/* Secondary, more subtle button theme */
 	.secondary {
-		color: var(--color-dark-100);
-		background-color: transparent;
-		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-		transition: all 0.1s;
+		color: var(--color-dark-500);
+		background-color: var(--color-light-100);
+		box-shadow: 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
+		transition: all 0.2s;
 		&:hover,
 		&:focus,
 		&.hover {
-			color: var(--color-light-900);
-			/* background-color: var(--color-dark-500); */
-			box-shadow: 0 0.25em 1em -0.25em rgba(0, 0, 0, 0.25);
-			/* outline: 2px solid rgba(var(--rgb-dark-500), 0.25) !important; */
+			color: var(--color-secondary-500);
+			background-color: var(--color-light-500);
+			box-shadow: 0 0 0 0 transparent;
+		}
+	}
+	/* Ghost, more subtle button theme */
+	.ghost {
+		color: var(--color-dark-500);
+		background-color: transparent;
+		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+		transition: all 0.2s ease-out;
+		&:hover,
+		&:focus,
+		&.hover {
+			color: var(--color-dark-900);
+			box-shadow: 0 0 0 2px rgba(var(--rgb-primary-500), 0.1);
 		}
 	}
 	/* Emphasised call to action */
 	.cta {
-		color: var(--color-dark-900);
-		background-color: var(--color-secondary-300);
-		transition: all 0.1s;
+		color: var(--color-dark-700);
+		background-color: var(--color-primary-300);
+		transition: all 0.2s;
 		&:hover,
 		&:focus,
 		&.hover {
-			color: var(--color-secondary-900);
-			background-color: var(--color-secondary-100);
+			color: var(--color-light-700);
+			background-color: var(--color-dark-700);
 		}
-		&:active,
+		&:active {
+		}
 		&.active {
 			color: var(--color-primary-900);
 			background-color: var(--color-light-900);
@@ -240,10 +258,10 @@
 	}
 	/* Navbar button theme */
 	.nav {
-		color: var(--color-dark-100);
+		color: var(--color-dark-900);
 		background-color: transparent;
-		font-weight: 600;
-		letter-spacing: 0.3px;
+		font-weight: 500;
+		border-radius: 2em;
 		&::before {
 			content: '';
 			position: absolute;
@@ -251,11 +269,11 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
-			border-radius: 0.8em;
 			background-color: var(--color-primary-300);
 			opacity: 0;
 			transform: scale(0.8);
 			transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
+			border-radius: 2em;
 		}
 		&:hover,
 		&:focus,
@@ -271,7 +289,7 @@
 		&:active,
 		&.active {
 			cursor: default;
-			color: var(--color-primary-300);
+			color: var(--color-primary-500);
 			background-color: transparent;
 		}
 		&.active {

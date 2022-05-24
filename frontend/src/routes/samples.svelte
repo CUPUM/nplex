@@ -1,6 +1,9 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
+	import Checkbox from '$components/primitives/Checkbox.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
+	import Select from '$components/primitives/Select.svelte';
+	import SelectOption from '$components/primitives/SelectOption.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
@@ -9,6 +12,11 @@
 	let alt = false;
 	let useHover;
 	let switchval = 'test2v';
+	let active = false;
+
+	let variants = ['default', 'secondary', 'ghost', 'cta', 'nav'];
+	let sizes = ['small', 'medium', 'large'];
+	let size = sizes[0];
 
 	$: console.log(switchval);
 </script>
@@ -27,7 +35,23 @@
 		{/each}
 	</div>
 </section>
-
+<section>
+	<h2>Buttons</h2>
+	<Checkbox bind:checked={active} />
+	<Select id="size-select" bind:value={size}>
+		{#each sizes as size}
+			<SelectOption id={size} value={size}>{size}</SelectOption>
+		{/each}
+	</Select>
+	{#each variants as variant}
+		<h3>{variant.charAt(0).toUpperCase() + variant.slice(1)}</h3>
+		<div id="buttons">
+			<Button {active} {variant}>With text</Button>
+			<Button {active} {variant} icon="email">With text and icon</Button>
+			<Button {active} {variant} icon="settings" />
+		</div>
+	{/each}
+</section>
 <section>
 	<input type="checkbox" name="" id="" bind:checked={useHover} />
 	<Popover {useHover} align="end" placement="bottom">
@@ -57,6 +81,8 @@
 	.palette {
 		display: flex;
 		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
 		width: 100%;
 		gap: 12px;
 	}
@@ -96,16 +122,23 @@
 		}
 	}
 
+	#buttons {
+		margin: 1rem 0;
+		display: flex;
+		flex-direction: row;
+		gap: 0.5rem;
+	}
+
 	section {
 		width: 600px;
-		padding: 4rem;
-		margin: 2rem auto;
+		padding: 2rem;
+		margin: 0 auto;
 	}
 
 	h2 {
 		font-size: 2rem;
 		padding: 0;
-		margin: 0;
+		margin: 1rem 0 2rem 0;
 	}
 
 	form {

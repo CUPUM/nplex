@@ -2,7 +2,7 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
 	import { onDestroy, onMount } from 'svelte';
-	import { bounceOut, expoInOut, expoOut, elasticOut, backOut, expoIn } from 'svelte/easing';
+	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
 	export let open: boolean = false;
@@ -105,7 +105,7 @@
 </script>
 
 <slot name="control">
-	<button style="padding: 1em; display: inline-block; position: relative;">Popover control</button>
+	<button style="padding: 1em; display: inline-block; position: relative;">Fallback popover control</button>
 </slot>
 <div
 	class="hinter {placement} {align}"
@@ -121,8 +121,8 @@
 	{#if open}
 		<div
 			class="outer"
-			in:scale={{ start: 0.75, easing: expoOut, duration: 120 }}
-			out:scale={{ start: 0.9, easing: expoIn, duration: 150 }}
+			in:scale={{ start: 0.7, easing: expoOut, duration: 150 }}
+			out:scale={{ start: 0.8, easing: expoIn, duration: 75 }}
 		>
 			<div class="inner" {...$$restProps}>
 				<slot />

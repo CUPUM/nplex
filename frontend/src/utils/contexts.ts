@@ -1,9 +1,6 @@
 /**
  * Dictionnary of component context keys used for automatically detecting certain compositions or nestings like buttons
- * being nested inside field input compoenents.
- *
- * Parent components present these keys to children using `setContext(*key*, true)`, children detect what's the closest
- * parent context using `getContext(*key*)`.
+ * being nested inside field input compoenents or select options inside select parents.
  */
 export enum Ctx {
 	Field = 'input-context',
@@ -14,4 +11,6 @@ export enum Ctx {
 	Button = 'button-context',
 	Range = 'range-context',
 	ProjectsList = 'projects-list-context',
+	Select = 'select-context',
+	SelectGroup = 'select-group-context',
 }

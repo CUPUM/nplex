@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { Ctx } from '$utils/contexts';
 	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
-	import { sizes } from '$utils/sizes';
 	import { getContext } from 'svelte';
 
 	export let variant: 'default' | 'secondary' | 'misc' = 'default';
 	export let size: number | CssSizeValue = undefined;
 	export let labelPosition: 'before' | 'after' = 'after';
+	export let checked;
 
 	/** Detect affecting contexts in parents. */
 	const fieldCtx = getContext(Ctx.Field);
@@ -21,13 +21,13 @@
 	$: autoSize = size ? cssSize(size) : fieldCtx ? '0.8em' : '1em';
 </script>
 
-<label class="{variant} {labelPosition}" style:font-size={autoSize}>
+<label class="{variant} {labelPosition}" style:font-size={autoSize} {...$$props.rest}>
 	{#if $$slots.default}
 		<span>
 			<slot />
 		</span>
 	{/if}
-	<input type="checkbox" {...$$props.rest} />
+	<input type="checkbox" bind:checked />
 </label>
 
 <style lang="postcss">

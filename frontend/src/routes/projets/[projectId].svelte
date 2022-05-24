@@ -28,5 +28,12 @@
 
 <style lang="postcss">
 	article {
+		display: grid;
+		grid-template-columns:
+			[full-start]
+			auto [main-start]
+			min(90%, 60ch)
+			[main-end] auto
+			[full-end];
 	}
 </style>
