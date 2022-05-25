@@ -1,27 +1,44 @@
-# Database entities descriptions, relations, and constraints
+# Supabase
 
-These files establish the PostgreSQL database's structure and various data access constraints in a manner
-specificially tied to Supabase's provided features. The command files contain interdependent elements and should be executed in the following prescribed order.
+## Using the local CLI
 
-## Contents
+For reference see:
 
-### 0: clean.sql
+- the CLI's [About page](https://supabase.com/docs/reference/cli/about);
+- the [Local Developpement guide](https://supabase.com/docs/guides/local-development).
 
-:warning: For dev usage only: Returns to a clean slate by dropping all specified objects in the proper order. Data will be lost.
+Install the Supabase CLI locally:
 
-### 1: schema.sql
+```sh
+brew install supabase/tap/supabase
+```
 
-Main schema file establishing the core elements of the db, namely the tables, their columns, and their initial content where applicable.
+Upgrade:
 
-### 2: misc.sql
+```sh
+brew upgrade supabase
+```
 
-Functions and triggers used to automate or facilitate various actions and table data synchronizations.
+If you plan on using the CLI to migrate from a cloud project, [login using an access token](https://supabase.com/docs/reference/cli/supabase-login):
 
-### 3: policies.sql
+```sh
+supabase login
+```
 
-Customization of `update` permissions (column/field-level) and definition of row-level-access policies dictating data handling and access rights based on various criteria,
-including the querier's auth token and the associated user's role.
+### Install a Postgres client
+
+It is advised to install a Postgres client to work with the local instance:
+
+```sh
+# To do
+```
 
 ## Migrating
 
-The files can either be be updated by hand or generated using a migration tool like `pgAdmin` to mirror modifications applied through Supabase's GUI.
+For now, the chosen way to develop and save the database's design is through the [migration process](https://supabase.com/docs/guides/local-development#database-migrations). While sql files can be updated by hand, using a migration allows for generating up-to-date instructions that mirror modifications applied through Supabase's GUI.
+
+CD into the `/backend` directory and boot up Supabase's services:
+
+```sh
+supabase start
+```

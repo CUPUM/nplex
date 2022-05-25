@@ -61,7 +61,7 @@
 		"svelte-preprocess": "^4.10.6",
 		"svgson": "^5.2.1",
 		"tslib": "^2.4.0",
-		"typescript": "^4.6.4"
+		"typescript": "^4.7.2"
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^1.35.3",
