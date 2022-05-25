@@ -22,6 +22,7 @@
 	export let loading: boolean = false;
 
 	const fieldCtx = getContext<FieldContext>(Ctx.Field);
+	const popoverCtx = getContext(Ctx.Popover);
 
 	let autoSquare = false;
 	let autoOuterSize: string;

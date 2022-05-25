@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
-	import { Map as MLMap } from 'maplibre-gl';
 	import Loading from '$components/primitives/Loading.svelte';
 	import { colors } from '$utils/colors';
+	import { Map as MLMap } from 'maplibre-gl';
+	import { onDestroy, onMount } from 'svelte';
 
 	let loading = true;
 	let container: HTMLElement;
@@ -41,7 +41,7 @@
 	<link href="https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css" rel="stylesheet" />
 </svelte:head>
 
-<section bind:this={container}>
+<section bind:this={container} class:loading>
 	{#if loading}
 		<Loading style="z-index: 100; background-color: {colors.light['100']};" />
 	{/if}
@@ -54,5 +54,11 @@
 		flex: 1;
 		margin-bottom: 2rem;
 		border-radius: 1rem;
+		transition: all 0.35s cubic-bezier(0.2, 0, 0.2, 1);
+	}
+
+	.loading {
+		transform: scale(0.95);
+		opacity: 0.5;
 	}
 </style>

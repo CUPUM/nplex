@@ -10,6 +10,7 @@ export enum Ctx {
 	ButtonSet = 'button-set-context',
 	Button = 'button-context',
 	Range = 'range-context',
+	Popover = 'popover-context',
 	ProjectsList = 'projects-list-context',
 	Select = 'select-context',
 	SelectGroup = 'select-group-context',

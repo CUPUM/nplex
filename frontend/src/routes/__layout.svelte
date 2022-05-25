@@ -50,7 +50,8 @@
 		margin: 0;
 		border-bottom: 1px solid var(--color-light-500);
 		z-index: 1;
-		backdrop-filter: blur(12px);
-		background-color: rgba(var(--rgb-light-100), 0.8);
+		/* backdrop-filter: blur(12px); */
+		background-color: var(--color-light-100);
+		/* background-color: rgba(var(--rgb-light-100), 0.8); */
 	}
 </style>

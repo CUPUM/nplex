@@ -40,7 +40,7 @@
 	<Checkbox bind:checked={active} />
 	<Select id="size-select" bind:value={size}>
 		{#each sizes as size}
-			<SelectOption id={size} value={size}>{size}</SelectOption>
+			<SelectOption value={size} id="{size}-id">{size}</SelectOption>
 		{/each}
 	</Select>
 	{#each variants as variant}

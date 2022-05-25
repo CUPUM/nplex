@@ -7,11 +7,14 @@
 
 	const selectCtx = getContext(Ctx.Select);
 	const selectGroupCtx = getContext(Ctx.SelectGroup);
+
+	console.log(selectCtx);
 </script>
 
-<option name="option-{id}" {id}>
+<option name="option-{id}" {id} {value}>
 	<slot />
 </option>
+<div class="test" />
 
 <style lang="postcss">
 </style>
