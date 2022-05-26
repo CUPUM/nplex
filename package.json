@@ -4,7 +4,7 @@
   "description": "Monorepo of the nplex project",
   "scripts": {
     "deploy": "echo \"This is just a sample script\" && exit 1",
-	"install:frontend": "cd frontend && pnpm install"
+    "install:frontend": "cd frontend && pnpm install"
   },
   "repository": {
     "type": "git",
