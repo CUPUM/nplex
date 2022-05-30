@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { tooltip } from '$actions/tooltip';
 	import { Ctx } from '$utils/contexts';
-	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
 	import { getContext } from 'svelte';
 	import type { TokenSetContext } from './TokenSet.svelte';
 
-	export let size: number | CssSizeValue = '1em';
+	export let size: number | CSSSizeValue = '1em';
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = undefined;
 	export let ttip: string = undefined;
 	export let disabled: boolean = false;

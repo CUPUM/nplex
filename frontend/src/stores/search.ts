@@ -2,7 +2,13 @@ import type { Category } from 'src/types/categories';
 import { writable } from 'svelte/store';
 
 /**
- * Searchbar display boolean state, estabished inside layouts and routes and cleared in onDestroy lifecycle.
+ * ! DEPRECATED (Find way to handle this state with layout) ! Category nav display state, estabished inside layouts and
+ * routes and cleared in onDestroy lifecycle.
+ */
+export const showCategory = writable<boolean>(false);
+
+/**
+ * ! DEPRECATED ! Searchbar display state, estabished inside layouts and routes and cleared in onDestroy lifecycle.
  */
 export const showSearchbar = writable<boolean>(false);
 

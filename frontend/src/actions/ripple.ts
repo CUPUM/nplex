@@ -1,4 +1,4 @@
-import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
 
 const RIPPLE_GLOBALS = {
 	HOST_ATTRIBUTE: 'ripple-host',
@@ -16,9 +16,9 @@ interface RippleOptions {
 	fadeDelay?: number;
 	opacity?: number;
 	startColor?: string;
-	startSize?: number | CssSizeValue;
+	startSize?: number | CSSSizeValue;
 	endColor?: string;
-	endSize?: number | CssSizeValue;
+	endSize?: number | CSSSizeValue;
 	blur?: number;
 	disabled?: boolean;
 	/**
@@ -28,7 +28,9 @@ interface RippleOptions {
 	controlElement?: HTMLElement;
 }
 
-/** Action to add ripple effect on host element, triggered on click event. */
+/**
+ * Action to add ripple effect on host element, triggered on click event.
+ */
 export function ripple(
 	element: HTMLElement,
 	{
@@ -49,12 +51,16 @@ export function ripple(
 	// 	console.log(controlElement);
 	// }
 
-	/** Create the stylesheet defining the ripple transitions */
+	/**
+	 * Create the stylesheet defining the ripple transitions.
+	 */
 	if (!document.head.querySelector(`[${RIPPLE_GLOBALS.SHEET_ATTRIBUTE}]`)) {
 		createRippleStylesheet();
 	}
 
-	/** Prepare the host element */
+	/**
+	 * Prepare the host element.
+	 */
 	const style = getComputedStyle(element);
 	element.setAttribute(RIPPLE_GLOBALS.HOST_ATTRIBUTE, '');
 	element.style.overflow = 'hidden';
@@ -69,7 +75,9 @@ export function ripple(
 
 	let ripple: HTMLElement;
 
-	/** Create ripple. */
+	/**
+	 * Create ripple.
+	 */
 	function createRipple(e: MouseEvent) {
 		// console.log('creating ripple!');
 		const rect = element.getBoundingClientRect();
@@ -96,7 +104,9 @@ export function ripple(
 		element.appendChild(ripple);
 	}
 
-	/** Clear ripple. */
+	/**
+	 * Clear ripple.
+	 */
 	function clearRipple() {
 		const r = ripple;
 		if (r) {

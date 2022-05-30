@@ -5,23 +5,20 @@
 </script>
 
 <script lang="ts">
-	import { ripple } from '$actions/ripple';
-
 	import { width } from '$transitions/width';
 	import { Ctx } from '$utils/contexts';
-	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
 	import type { SvelteProps } from '$utils/helpers/types';
-	import { sizes } from '$utils/sizes';
 	import { setContext } from 'svelte';
 	import { expoOut } from 'svelte/easing';
-	import { fly, scale, slide } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import Button from './Button.svelte';
 	import Icon from './Icon.svelte';
 
 	/** Field input type, useful for a11y. */
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
 	/** Styling options. */
-	export let size: number | CssSizeValue = '1em';
+	export let size: number | CSSSizeValue = '1em';
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = 'default';
 	export let warning: boolean = undefined;
 	export let success: boolean = undefined;

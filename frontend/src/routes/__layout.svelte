@@ -2,11 +2,8 @@
 	import { session } from '$app/stores';
 	import Auth from '$components/complexes/Auth.svelte';
 	import Navbar from '$components/complexes/Navbar.svelte';
-	import Searchbar from '$components/complexes/Searchbar.svelte';
 	import { signInModal } from '$stores/auth';
-	import { showSearchbar } from '$stores/search';
 	import '$styles/app.postcss';
-	import '$styles/scrollbars.postcss';
 	import '$styles/vars.css';
 	import { db, getUserRole } from '$utils/database';
 	import { toUserRoleEnum } from '$utils/user';
@@ -29,29 +26,25 @@
 			session.update((prevSession) => ({ ...prevSession, user: { ...s.user, role } }));
 		}
 	});
+
+	let navbarHeight: number;
 </script>
 
-<header>
-	<Navbar />
-	{#if $showSearchbar}
-		<Searchbar />
-	{/if}
-</header>
-<slot />
+<Navbar bind:height={navbarHeight} />
+<main style:--navbar-height="{navbarHeight}px">
+	<slot />
+</main>
 {#if $signInModal}
 	<Auth />
 {/if}
 
 <style lang="postcss">
-	header {
-		position: sticky;
-		top: 0;
-		padding: 0 1.5rem;
+	main {
+		position: relative;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		padding: 0;
 		margin: 0;
-		border-bottom: 1px solid var(--color-light-500);
-		z-index: 1;
-		/* backdrop-filter: blur(12px); */
-		background-color: var(--color-light-100);
-		/* background-color: rgba(var(--rgb-light-100), 0.8); */
 	}
 </style>

@@ -1,58 +1,54 @@
-import type { Subscriber } from 'svelte/store';
-import { readable } from 'svelte/store';
-import { onMount } from 'svelte';
-import OverlayScrollbars from 'overlayscrollbars';
+import { browser } from '$app/env';
+import { writable } from 'svelte/store';
 
-type MainScroll = { y: number; delta: number; direction: 'up' | 'down' };
+const threshold = 100;
+
+/**
+ * @param y Current vertical distance.
+ * @param delta Corresponds to the distance scrolled since the last time threshold was reached in either the `up` or
+ *   `down` direction.
+ * @param up Set to true when the scroll delta reaches the threshold in the negative (upwards) direction.
+ * @param down Set to true when the scroll delta reaches the threshold in the positive (downwards) direction.
+ */
+interface ScrollData {
+	y: number;
+	delta: number;
+	up: boolean;
+	down: boolean;
+}
 
 export const mainScroll = (function () {
-	let instance: OverlayScrollbars;
-	let prev: MainScroll = { y: 0, delta: 0, direction: null };
+	const { subscribe, update } = writable<ScrollData>({ y: 0, delta: 0, up: false, down: false });
 
-	function update(e, set: Subscriber<MainScroll>) {
-		const delta = e.target.scrollTop - prev.y;
-		const current: MainScroll = {
-			y: e.target.scrollTop,
-			delta,
-			direction: prev.delta > 0 && delta > 0 ? 'down' : 'up',
-		};
-		prev = current;
-		set(current);
-	}
-
-	function init(host: HTMLElement, set?: Subscriber<MainScroll>) {
-		onMount(() => {
-			if (!instance) {
-				instance = OverlayScrollbars(document.body, {
-					scrollbars: {
-						autoHide: 'move',
-						autoHideDelay: 1000,
-						clickScrolling: true,
-					},
-					overflowBehavior: {
-						x: 'hidden',
-					},
-					sizeAutoCapable: false,
-					nativeScrollbarsOverlaid: {
-						initialize: false,
-					},
-				});
+	function updateStore(e: Event) {
+		const el = e.target as HTMLBodyElement;
+		update((prev) => {
+			let delta = prev.delta + el.scrollTop - prev.y;
+			let up = prev.up;
+			let down = prev.down;
+			if (delta > threshold) {
+				up = false;
+				down = true;
+				delta = 0;
+			} else if (delta < -1 * threshold) {
+				up = true;
+				down = false;
+				delta = 0;
 			}
-			if (set) {
-				instance.options({
-					callbacks: {
-						onScroll: (e) => update(e, set),
-					},
-				});
-			}
+			return {
+				y: el.scrollTop,
+				delta,
+				up,
+				down,
+			};
 		});
 	}
 
-	const { subscribe } = readable<MainScroll>(prev);
+	if (browser) {
+		document.body.addEventListener('scroll', updateStore);
+	}
 
 	return {
-		init,
 		subscribe,
-		getInstance: () => instance,
 	};
 })();

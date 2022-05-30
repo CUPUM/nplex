@@ -1,108 +1,118 @@
 <script lang="ts">
 	import { colors } from '$utils/colors';
-	import { fade } from 'svelte/transition';
+	import { cssSize, type SizeInput } from '$utils/helpers/css';
 
-	export let type: 'logo' | 'default' = 'default';
+	export let color: string = colors.primary[500];
+	export let size: SizeInput = '1em';
+
+	/**
+	 * These shapes must contain the same amounts and types of points for the animation to work.
+	 */
+	const d =
+		// Circle
+		`M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z;` +
+		// Square
+		`M 15,15 C 15,15 85,15 85,15 C 85,15 85,85 85,85 C 85,85 15,85 15,85 C 15,85 15,15 15,15 Z;` +
+		// Triangle
+		`M 50,10 C 50,10 50,10 50,10 C 50,10 90,85 90,85 C 90,85 10,85 10,85 C 10,85 50,10 50,10 Z;` +
+		// Arc
+		`M 15,50 C 15,28.5 28.5,10 50,10 C 71,10 85,29 85,50 C 85,85 85,85 85,85 C 85,85 15,85 15,85 Z;` +
+		// Circle, to loop
+		`M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z;`;
+
+	const nshapes = 5;
+
+	const keySplines = Array(nshapes - 1)
+		.fill('.8 0 0.2 1')
+		.join(';');
+
+	const keyTimes = Array(nshapes)
+		.fill(null)
+		.map((_, i) => i / (nshapes - 1))
+		.join(';');
 </script>
 
-<div
-	in:fade={{
-		duration: 150,
-	}}
-	out:fade={{
-		duration: 100,
-	}}
-	{...$$restProps}
->
-	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
-		<!-- <rect y="200" x="200" width="600" height="600" vector-effect="non-scaling-stroke" /> -->
-		<path
-			d="M 50,50
-				m -50,0
-				a 50,50 0 1,0 100,0
-				l 0,-50 -100,0 0,100 100,0 0,-50
-				a 50,50 0 1,0 -100,0"
-			vector-effect="non-scaling-stroke"
-		/>
+<div {...$$restProps} style:font-size={cssSize(size)} style:color>
+	<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+		<!-- <rect width="80" height="80" x="10" y="10" /> -->
+		<path>
+			<animate
+				{keySplines}
+				{keyTimes}
+				from="M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z"
+				to="M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z"
+				calcMode="spline"
+				attributeName="d"
+				dur="4s"
+				begin="0s"
+				repeatCount="indefinite"
+				values={d}
+			/>
+		</path>
 	</svg>
 </div>
 
 <style lang="postcss">
 	div {
-		z-index: 100;
-		user-select: non;
+		user-select: none;
 		pointer-events: none;
-		position: absolute;
 		width: 100%;
 		height: 100%;
 		display: flex;
-		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		color: var(--color-primary-500);
 	}
 
 	svg {
-		user-select: none;
-		pointer-events: none;
 		width: 1em;
 		height: 1em;
-		max-width: 100%;
-		max-height: 100%;
-		overflow: visible;
 		background: transparent;
 		background-color: transparent;
+		overflow: visible;
+		animation-name: spin;
+		animation-duration: 4s;
+		animation-fill-mode: none;
+		animation-iteration-count: infinite;
+		animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
 	}
 
-	@keyframes spin {
+	path {
+		fill: currentColor;
+		stroke: currentColor;
+		stroke-width: 20px;
+		stroke-linejoin: round;
+		stroke-linecap: round;
+		transform-origin: center;
+		animation-name: slowspin;
+		animation-duration: 9s;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+	}
+
+	@keyframes slowspin {
 		0% {
 			transform: rotate(0deg);
-		}
-		50% {
-			transform: rotate(180deg);
 		}
 		100% {
 			transform: rotate(360deg);
 		}
 	}
 
-	@keyframes morph {
+	@keyframes spin {
 		0% {
-			rx: 0%;
+			transform: rotate(-90deg);
+		}
+		25% {
+			transform: rotate(180deg);
+		}
+		50% {
+			transform: rotate(450deg);
+		}
+		75% {
+			transform: rotate(720deg);
 		}
 		100% {
-			rx: 50%;
+			transform: rotate(990deg);
 		}
 	}
-
-	@keyframes trace {
-		0% {
-			stroke-dashoffset: 0%;
-		}
-		100% {
-			stroke-dashoffset: 100%;
-		}
-	}
-
-	path {
-		fill: none;
-		stroke: currentColor;
-		stroke-linecap: round;
-		stroke-width: 2px;
-		stroke-dasharray: 25% 75%;
-		transform-origin: 50% 50%;
-		animation: trace 4s linear infinite, spin 2s cubic-bezier(0.6, 0, 0.4, 1) infinite;
-	}
-
-	/* rect {
-		stroke: currentColor;
-		stroke-width: 2px;
-		fill: none;
-		stroke-linejoin: round;
-		stroke-linecap: round;
-		transform-origin: 50% 50%;
-		stroke-dasharray: 10% 5%;
-		animation: spin 2s cubic-bezier(0.7, 0, 0.3, 1) infinite, morph 1s linear infinite alternate,
-			trace 25s linear infinite;
-	} */
 </style>

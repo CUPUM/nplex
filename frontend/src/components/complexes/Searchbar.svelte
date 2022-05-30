@@ -1,13 +1,9 @@
 <script lang="ts">
-	import { goto, prefetch } from '$app/navigation';
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
-	import Switch from '$components/primitives/Switch.svelte';
-	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import TokenSet from '$components/primitives/TokenSet.svelte';
-	import { showFilters } from '$stores/projects';
+	import { showExploreFilters } from '$stores/explore';
 	import { category, term } from '$stores/search';
-	import { exploreRoutes } from '$utils/routes';
 	import { sizes } from '$utils/sizes';
 	import { expoOut } from 'svelte/easing';
 	import { fly, slide } from 'svelte/transition';
@@ -47,9 +43,9 @@
 				{#if $category}
 					<div>
 						<Button
-							icon={$showFilters ? 'cross' : 'parameters'}
-							on:click={showFilters.toggle}
-							active={$showFilters}
+							icon={$showExploreFilters ? 'cross' : 'parameters'}
+							on:click={showExploreFilters.toggle}
+							active={$showExploreFilters}
 						/>
 					</div>
 				{/if}
@@ -59,27 +55,7 @@
 			</svelte:fragment>
 		</Field>
 	</div>
-	<!-- Category -->
-	<div
-		id="category"
-		in:fly={{ y: 30, duration: 500, easing: expoOut, delay: 0 }}
-		out:fly={{ y: 30, duration: 500, easing: expoOut, delay: 150 }}
-	>
-		<Switch name="category" orientation="row" size={sizes.medium}>
-			{#each exploreRoutes as r, i}
-				<SwitchItem
-					id={r.category}
-					value={r.category}
-					bind:group={$category}
-					on:mouseover={() => prefetch(r.pathname)}
-					on:focus={() => prefetch(r.pathname)}
-					on:input={() => goto(r.pathname)}
-				>
-					{r.title}
-				</SwitchItem>
-			{/each}
-		</Switch>
-	</div>
+
 	<!-- Tokens -->
 	<div id="tokens">
 		<TokenSet style="margin: 0, padding: 0">
@@ -95,6 +71,9 @@
 <style lang="postcss">
 	form {
 		position: relative;
+		margin-top: 0;
+		margin-inline: 1rem;
+		z-index: 1;
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
 		grid-template-areas: 'field category tokens';
@@ -106,13 +85,10 @@
 		padding-bottom: 0.5rem;
 	}
 
-	#category {
-		grid-area: category;
-	}
-
 	#field {
 		grid-area: field;
 		flex: 1;
+		width: calc(var(--search-width) - 2rem);
 	}
 
 	#tokens {

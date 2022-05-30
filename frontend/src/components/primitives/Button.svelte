@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
+	import { colors } from '$utils/colors';
 	import { Ctx } from '$utils/contexts';
-	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
 	import type { SvelteProps } from '$utils/helpers/types';
 	import { getContext } from 'svelte';
 	import type { FieldContext } from './Field.svelte';
@@ -10,7 +11,7 @@
 
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'default';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
-	export let size: number | CssSizeValue = '1em';
+	export let size: number | CSSSizeValue = '1em';
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
 	export let icon: SvelteProps<Icon>['name'] = undefined;
 	export let iconPosition: 'before' | 'after' = 'before';
@@ -47,7 +48,7 @@
 
 <svelte:element
 	this={href ? 'a' : 'button'}
-	use:ripple={{ startColor: 'currentColor' }}
+	use:ripple={{ startColor: colors.primary[100] }}
 	on:click
 	on:focus
 	on:mouseenter
@@ -67,11 +68,7 @@
 	<div class="align-{contentAlign}">
 		{#if icon}
 			<span id="icon" class="icon-{iconPosition}">
-				<Icon
-					strokeWidth={variant === 'cta' ? 1.5 : undefined}
-					size={$$slots.default ? '1em' : '1.2em'}
-					name={icon}
-				/>
+				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
 			</span>
 		{/if}
 		{#if $$slots.default}
@@ -103,7 +100,7 @@
 		margin: 0;
 		padding: 0 1em;
 		font-family: var(--font-main);
-		font-weight: 400;
+		font-weight: 500;
 		outline-width: 2px;
 		outline-style: solid;
 		outline-color: transparent;
@@ -259,41 +256,22 @@
 	}
 	/* Navbar button theme */
 	.nav {
-		color: var(--color-dark-900);
+		color: var(--color-dark-100);
 		background-color: transparent;
-		font-weight: 500;
 		border-radius: 2em;
-		&::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: var(--color-primary-300);
-			opacity: 0;
-			transform: scale(0.8);
-			transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
-			border-radius: 2em;
-		}
 		&:hover,
 		&:focus,
 		&.hover {
 			color: var(--color-primary-500);
 			background-color: transparent;
-			&::before {
-				opacity: 0.2;
-				transform: scale(1);
-				transition: all 0.25s cubic-bezier(0, 0, 0.2, 1);
-			}
 		}
-		&:active,
+		&:active {
+		}
 		&.active {
+			font-weight: 550;
 			cursor: default;
-			color: var(--color-primary-500);
-			background-color: transparent;
-		}
-		&.active {
+			color: var(--color-light-300);
+			background-color: var(--color-dark-900);
 			pointer-events: none;
 		}
 	}

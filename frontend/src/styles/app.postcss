@@ -1,22 +1,18 @@
 :root {
 	--font-main: 'Outfit', sans-serif;
-	/* --font-main: 'Plus Jakarta Sans', sans-serif; */
-	/* --font-main: 'DM Sans', sans-serif; */
-	/* --font-main: 'Be Vietnam Pro', sans-serif; */
 	--font-misc: 'DM Mono', serif;
-
 	/*
 		Additionnal global CSS custom properties derived from TypeScript constants, such as
 		colors and sizes, are generated at build time and located in ./vars.css
 	*/
 
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 	background-color: var(--color-light-100);
 	padding: 0;
 	margin: 0;
 	font-family: var(--font-main);
-	color: var(--color-dark-500);
+	color: var(--color-dark-900);
 	font-size: var(--size-md);
 	font-weight: 400;
 	overflow: hidden;
@@ -40,11 +36,27 @@ body {
 *,
 *::before,
 *::after {
-	text-rendering: optimizeLegibility;
+	/* -webkit-font-smoothing: antialiased; */
 	box-sizing: border-box;
 }
 
-/* clears the ‘X’ from Internet Explorer */
+.base-grid {
+	display: grid;
+	grid-template-columns:
+		[full-start]
+		auto
+		[main-start col1-start]
+		min(50%, 30ch)
+		[col1-end col2-start]
+		min(50%, 30ch)
+		[col2-end main-end]
+		auto
+		[full-end];
+}
+
+/*
+	Vendor stylings reset
+*/
 input[type='search']::-ms-clear {
 	display: none;
 	width: 0;
@@ -55,10 +67,41 @@ input[type='search']::-ms-reveal {
 	width: 0;
 	height: 0;
 }
-/* clears the ‘X’ from Chrome */
 input[type='search']::-webkit-search-decoration,
 input[type='search']::-webkit-search-cancel-button,
 input[type='search']::-webkit-search-results-button,
 input[type='search']::-webkit-search-results-decoration {
 	display: none;
+}
+
+/*
+	Scrollbar styling
+*/
+
+:root {
+	--scroll-size: 6px;
+}
+
+* {
+	--scroll-color: rgba(5, 0, 20, 0);
+}
+
+*:hover {
+	--scroll-color: rgba(5, 0, 20, 0.5);
+}
+
+::-webkit-scrollbar {
+	width: var(--scroll-size);
+	height: var(--scroll-size);
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+	box-shadow: none;
+}
+
+::-webkit-scrollbar-thumb {
+	position: relative;
+	background: var(--scroll-color);
+	border-radius: var(--scroll-size);
 }

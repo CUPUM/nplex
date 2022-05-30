@@ -3,11 +3,11 @@
 	import { session } from '$app/stores';
 	import { userProfile } from '$stores/profile';
 	import { Ctx } from '$utils/contexts';
-	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
 	import { getContext } from 'svelte';
 	import Loading from './Loading.svelte';
 
-	export let size: number | CssSizeValue = '1em';
+	export let size: number | CSSSizeValue = '1em';
 	export let warning: boolean = false;
 	export let href: string = undefined;
 	export let active: boolean = undefined;

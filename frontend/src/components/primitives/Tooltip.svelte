@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
-	import { onDestroy, onMount } from 'svelte';
-	import { fade } from 'svelte/transition';
+	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
+	import { onMount } from 'svelte';
 
 	export let message: string;
 	export let open: boolean = false;
 	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
-	export let distance: number | CssSizeValue = 5;
+	export let distance: number | CSSSizeValue = 5;
 	export let warning: boolean = undefined;
 	export let success: boolean = undefined;
 	export let variant: 'default' | 'secondary' | 'misc' = 'default';

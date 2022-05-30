@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Icon from '$components/primitives/Icon.svelte';
-	import Loading from '$components/primitives/Loading.svelte';
 	import { expoOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
 
@@ -33,12 +32,13 @@
 	fieldset {
 		display: block;
 		flex: none;
+		justify-content: flex-start;
+		align-items: flex-start;
 		position: relative;
 		width: 100%;
 		padding: 0;
 		margin: 0;
 		border: none;
-		/* border-radius: 1.2em; */
 		overflow: hidden;
 		transition: all 0.1s ease-out;
 

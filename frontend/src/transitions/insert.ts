@@ -1,4 +1,4 @@
-import { expoInOut, expoOut } from 'svelte/easing';
+import { expoOut } from 'svelte/easing';
 
 /**
  * Fly, scale, and/or fade transition combined with appropriate slide transition with `overflow: visible` for smooth
@@ -20,7 +20,9 @@ export function insert(
 	}
 ) {
 	const _style = getComputedStyle(el);
-	/** Detached target styles. */
+	/**
+	 * Detached target styles.
+	 */
 	const _opacity = +_style.opacity;
 	const _width = parseFloat(_style.width);
 	const _max_width = parseFloat(_style.maxWidth);
@@ -41,7 +43,9 @@ export function insert(
 	const _overflow = _style.overflow;
 	const _transform = _style.transform;
 
-	/** Opacity difference */
+	/**
+	 * Opacity difference.
+	 */
 	const d_opacity = _opacity - opacity;
 
 	return {

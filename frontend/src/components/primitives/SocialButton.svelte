@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
-	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
 	import { providers } from '$utils/providers';
 
 	export let provider: keyof typeof providers = undefined;
-	export let size: number | CssSizeValue = '1em';
+	export let size: number | CSSSizeValue = '1em';
 	export let display: 'inline' | 'block' = 'inline';
 	export let warning: boolean = false;
 	export let active: boolean = false;

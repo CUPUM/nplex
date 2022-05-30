@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
+	import Loading from '$components/primitives/Loading.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
 	import Select from '$components/primitives/Select.svelte';
 	import SelectOption from '$components/primitives/SelectOption.svelte';
@@ -13,6 +14,7 @@
 	let useHover;
 	let switchval = 'test2v';
 	let active = false;
+	let showLoading = true;
 
 	let variants = ['default', 'secondary', 'ghost', 'cta', 'nav'];
 	let sizes = ['small', 'medium', 'large'];
@@ -21,6 +23,15 @@
 	$: console.log(switchval);
 </script>
 
+<section />
+<section>
+	<Checkbox bind:checked={showLoading}>Show loading</Checkbox>
+	<div>
+		{#if showLoading}
+			<Loading />
+		{/if}
+	</div>
+</section>
 <section>
 	<h2>Colors</h2>
 	<div class="palette">

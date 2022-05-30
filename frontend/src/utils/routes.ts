@@ -25,16 +25,16 @@ export interface Route {
  */
 export const mainRoutes: Route[] = [
 	{
-		pathname: '/',
-		title: 'Explorer',
-	},
-	{
 		pathname: '/nouvelles',
 		title: 'Nouvelles',
 	},
 	{
 		pathname: '/guides',
 		title: 'Guides',
+	},
+	{
+		pathname: '/',
+		title: 'Explorer',
 	},
 ];
 

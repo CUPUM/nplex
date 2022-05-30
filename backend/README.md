@@ -37,7 +37,17 @@ supabase login
 It is advised to use a Postgres client to work with the local instance as this can enable new key functionalities such as schema diffing:
 
 ```sh
-# To do
+sudo apt update
+
+# One of the following:
+# Install for both desktop and web modes:
+sudo apt install pgadmin4
+# Install for desktop mode only:
+sudo apt install pgadmin4-desktop
+# Install for web mode only: 
+sudo apt install pgadmin4-web 
+# Configure the webserver, if you installed pgadmin4-web:
+sudo /usr/pgadmin4/bin/setup-web.sh
 ```
 
 ### Migrating

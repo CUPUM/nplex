@@ -1,18 +1,17 @@
 <script lang="ts" context="module">
 	export interface TokenSetContext {
 		vairant: 'default' | 'secondary' | 'ghost' | 'cta';
-		inset: CssSizeValue;
+		inset: CSSSizeValue;
 	}
 </script>
 
 <script lang="ts">
 	import { Ctx } from '$utils/contexts';
-
-	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
 	import { setContext } from 'svelte';
 
 	export let variant: TokenSetContext['vairant'] = 'default';
-	export let size: number | CssSizeValue = '1em';
+	export let size: number | CSSSizeValue = '1em';
 	export let legend: string = undefined;
 
 	setContext(Ctx.TokenSet, {

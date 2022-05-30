@@ -50,7 +50,7 @@ dependencies:
 
 devDependencies:
   '@sveltejs/adapter-node': 1.0.0-next.76
-  '@sveltejs/kit': 1.0.0-next.344_svelte@3.48.0
+  '@sveltejs/kit': 1.0.0-next.345_svelte@3.48.0
   '@types/node': 17.0.35
   '@types/overlayscrollbars': 1.12.1
   '@typescript-eslint/eslint-plugin': 5.26.0_hzuh7e2up357pvq3mkokjvu2lq
@@ -274,8 +274,8 @@ packages:
       tiny-glob: 0.2.9
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.344_svelte@3.48.0:
-    resolution: {integrity: sha512-IKFyB/ErD1E6/Gl/AKA2EvOPmu6jdHDIoDYStL0PP12ZASOKTPNfSgusPHMNOTV+qyJKwo8JdOTWwLuFmZLq8A==}
+  /@sveltejs/kit/1.0.0-next.345_svelte@3.48.0:
+    resolution: {integrity: sha512-2nLZoXZ02uXMSxqRAMRCr/J4aCphqgKLxEhRRyh3c3aWLAjWiDWLDcvSB770eHt3y0MkYrTvp7JrDF7RhfyuBA==}
     engines: {node: '>=16.7'}
     hasBin: true
     peerDependencies:
@@ -588,7 +588,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.20.3
-      caniuse-lite: 1.0.30001342
+      caniuse-lite: 1.0.30001343
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -652,8 +652,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001342
-      electron-to-chromium: 1.4.137
+      caniuse-lite: 1.0.30001343
+      electron-to-chromium: 1.4.139
       escalade: 3.1.1
       node-releases: 2.0.5
       picocolors: 1.0.0
@@ -690,13 +690,13 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.20.3
-      caniuse-lite: 1.0.30001342
+      caniuse-lite: 1.0.30001343
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
 
-  /caniuse-lite/1.0.30001342:
-    resolution: {integrity: sha512-bn6sOCu7L7jcbBbyNhLg0qzXdJ/PMbybZTH/BA6Roet9wxYRm6Tr9D0s0uhLkOZ6MSG+QU6txUgdpr3MXIVqjA==}
+  /caniuse-lite/1.0.30001343:
+    resolution: {integrity: sha512-8KeCrAtPMabo/XW14B+R9sZYoClx1n0b+WYgwDKZPtWR3TcdvWzdSy7mPyFEmR5WU1St9v1PW6sdO5dkFOEzfA==}
     dev: true
 
   /chalk/4.1.2:
@@ -1015,8 +1015,8 @@ packages:
       safe-buffer: 5.2.1
     dev: false
 
-  /electron-to-chromium/1.4.137:
-    resolution: {integrity: sha512-0Rcpald12O11BUogJagX3HsCN3FE83DSqWjgXoHo5a72KUKMSfI39XBgJpgNNxS9fuGzytaFjE06kZkiVFy2qA==}
+  /electron-to-chromium/1.4.139:
+    resolution: {integrity: sha512-lYxzcUCjWxxVug+A7UxBCUiVr13TCjfZFYJS9Lq1VpU/ErwV4a6zUQo9dfojuGpw/L/x9REGuBl6ICQPGgbs3g==}
     dev: true
 
   /element-to-path/1.2.1:
@@ -1985,7 +1985,7 @@ packages:
       micromark-util-character: 1.1.0
       micromark-util-chunked: 1.0.0
       micromark-util-classify-character: 1.0.0
-      micromark-util-html-tag-name: 1.0.0
+      micromark-util-html-tag-name: 1.1.0
       micromark-util-normalize-identifier: 1.0.0
       micromark-util-resolve-all: 1.0.0
       micromark-util-subtokenize: 1.0.2
@@ -2084,8 +2084,8 @@ packages:
     resolution: {integrity: sha512-U2s5YdnAYexjKDel31SVMPbfi+eF8y1U4pfiRW/Y8EFVCy/vgxk/2wWTxzcqE71LHtCuCzlBDRU2a5CQ5j+mQA==}
     dev: true
 
-  /micromark-util-html-tag-name/1.0.0:
-    resolution: {integrity: sha512-NenEKIshW2ZI/ERv9HtFNsrn3llSPZtY337LID/24WeLqMzeZhBEE6BQ0vS2ZBjshm5n40chKtJ3qjAbVV8S0g==}
+  /micromark-util-html-tag-name/1.1.0:
+    resolution: {integrity: sha512-BKlClMmYROy9UiV03SwNmckkjn8QHVaWkqoAqzivabvdGcwNGMMMH/5szAnywmsTBUzDsU57/mFi0sp4BQO6dA==}
     dev: true
 
   /micromark-util-normalize-identifier/1.0.0:

@@ -4,94 +4,158 @@
 	import Button from '$components/primitives/Button.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
-	import { currentPath } from '$stores/currentPath';
+	import { mainScroll } from '$stores/scroll';
+	import { showCategory } from '$stores/search';
 	import { signOut } from '$utils/auth';
 	import { colors } from '$utils/colors';
-	import { creationBaseRoute, creationRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
+	import { cssSize } from '$utils/helpers/css';
+	import { creationBaseRoute, creationRoutes, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
 	import { sizes } from '$utils/sizes';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
-	const variant = 'nav';
-	const userSize = sizes.small;
+	export let height: number = 0;
+
 	let mounted = false;
+	let navbarRef: HTMLElement;
+	let resizeObserver: ResizeObserver;
+	let hidden;
+	let overlay;
+	const hiddenThreshold = 100;
+
+	$: hidden = $mainScroll.down && $mainScroll.y > hiddenThreshold;
+	$: overlay = $mainScroll.y > hiddenThreshold + 100;
+
+	function updateHeight() {
+		height = navbarRef.offsetHeight;
+	}
 
 	onMount(() => {
 		mounted = true;
+		resizeObserver = new ResizeObserver(updateHeight);
+		resizeObserver.observe(navbarRef);
 	});
 </script>
 
-<nav>
-	{#if mounted}
-		<section id="logo" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut }}>
-			<a href="/">
-				<Logo intro={true} color={colors.dark[500]} hoverColor={colors.primary[500]} />
-			</a>
-		</section>
-		<section id="main" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 500 }}>
-			{#each mainRoutes as route}
-				<Button size={sizes.small} {variant} active={route.pathname === $currentPath.main} href={route.pathname}
-					>{route.title}</Button
+<header style:font-size={cssSize(sizes.small)} bind:this={navbarRef}>
+	<div id="nav-wrapper" class:hidden class:overlay>
+		{#if mounted}
+			<nav id="main" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 500 }}>
+				<a id="logo" href="/">
+					<Logo intro={true} color={colors.dark[900]} hoverColor={colors.primary[500]} />
+				</a>
+				{#each mainRoutes as route}
+					<a href={route.pathname}>
+						{route.title}
+					</a>
+				{/each}
+			</nav>
+			{#if $showCategory}
+				<nav
+					id="category"
+					in:fly={{ y: 30, duration: 500, easing: expoOut, delay: 0 }}
+					out:fly={{ y: 30, duration: 500, easing: expoOut, delay: 150 }}
 				>
-			{/each}
-		</section>
-		<section id="user" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 1000 }}>
-			<Button size={userSize} {variant} href="/" square={true} icon="home" />
-			{#if $session.user}
-				<Popover placement="bottom" align="end" useHover={true}>
-					<Button
-						slot="control"
-						size={userSize}
-						{variant}
-						href={creationBaseRoute.pathname}
-						icon="new-file"
-					/>
-					{#each creationRoutes as r}
-						<Button size={userSize} {variant} href={r.pathname}>{r.title}</Button>
+					{#each exploreRoutes as r, i}
+						<a href={r.pathname}>
+							{r.title}
+						</a>
 					{/each}
-				</Popover>
-				<Popover useHover={true} placement="bottom" align="end">
-					<AvatarButton slot="control" size={userSize} href={userBaseRoute.pathname} />
-					<Button>Autre option</Button>
-					<Button on:click={signOut}>Se déconnecter</Button>
-				</Popover>
-			{:else}
-				<Button size={userSize} {variant} square={true} href={userBaseRoute.pathname} icon="user" />
+				</nav>
 			{/if}
-		</section>
-	{/if}
-</nav>
+			<nav id="user" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 1000 }}>
+				<Button href="/" square={true} icon="home" />
+				{#if $session.user}
+					<Popover placement="bottom" align="end" useHover={true}>
+						<Button slot="control" href={creationBaseRoute.pathname} icon="new-file" />
+						{#each creationRoutes as r}
+							<Button href={r.pathname}>{r.title}</Button>
+						{/each}
+					</Popover>
+					<Popover useHover={true} placement="bottom" align="end">
+						<AvatarButton slot="control" href={userBaseRoute.pathname} />
+						<Button>Autre option</Button>
+						<Button on:click={signOut}>Se déconnecter</Button>
+					</Popover>
+				{:else}
+					<Button variant="nav" href={userBaseRoute.pathname} icon="user" />
+					<Button variant="cta" href={userBaseRoute.pathname}>S'inscrire</Button>
+				{/if}
+			</nav>
+		{/if}
+	</div>
+</header>
 
 <style lang="postcss">
-	nav {
-		position: relative;
+	header {
+		position: fixed;
+		z-index: 1;
+		width: 100%;
 		top: 0;
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		align-items: center;
-		padding: 0.5rem 0;
+		margin: 0;
+		padding: 1rem;
+		padding-bottom: 0.5rem;
 	}
 
-	section {
-		display: inline-flex;
-		flex: 1;
-		flex-direction: row;
-		justify-content: center;
-		gap: 3px;
+	#nav-wrapper {
+		display: grid;
+		grid-template-columns:
+			[main-start]
+			1fr
+			[main-end category-start]
+			auto
+			[category-end user-start]
+			1fr
+			[user-end];
+		align-items: center;
+		padding: 0px;
+		margin: 0;
+		border-radius: 2em;
+		gap: 0;
+		transition: all 0.25s;
 
-		&:first-child {
-			justify-content: flex-start;
+		&.overlay {
+			backdrop-filter: blur(12px);
+			background-color: rgba(var(--rgb-light-100), 0.8);
 		}
 
-		&:last-child {
-			justify-content: flex-end;
+		&.hidden {
+			transform: translateY(-100%);
+			pointer-events: none;
+			opacity: 0;
 		}
 	}
 
 	#logo {
-		position: relative;
-		height: 1.5rem;
-		padding: 0 0.5rem;
+		height: 1.5em;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 0;
+		padding-inline: 1em;
+	}
+
+	nav {
+		display: inline-flex;
+		flex: 1;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		gap: 3px;
+	}
+
+	#main {
+		grid-area: main;
+		justify-content: flex-start;
+	}
+
+	#category {
+		grid-area: category;
+	}
+
+	#user {
+		grid-area: user;
+		justify-content: flex-end;
 	}
 </style>

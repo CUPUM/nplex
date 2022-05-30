@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
-	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
+	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
 	import { onDestroy, onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -9,7 +9,7 @@
 	export let useHover: boolean = false;
 	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
-	export let distance: number | CssSizeValue = 5;
+	export let distance: number | CSSSizeValue = 5;
 
 	let controlRef: HTMLElement;
 	let popoverRef: HTMLElement;

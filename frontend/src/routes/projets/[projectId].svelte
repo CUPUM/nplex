@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
-	import ProjectHeader from '$components/complexes/ProjectHeader.svelte';
-	import ProjectOverview from '$components/complexes/ProjectOverview.svelte';
+	import { isExploreArticle } from '$stores/explore';
+	import { onDestroy } from 'svelte';
 	import { scale } from 'svelte/transition';
 </script>
 
@@ -8,35 +8,95 @@
 	export let id;
 	export let description;
 	export let image_url = `https://picsum.photos/seed/${(Math.random() * 1000).toFixed(0)}/800/600`;
-	// Fill UI progressively, starting from the project overview, if present in the global projects' store.
+
+	isExploreArticle.set(true);
+
+	onDestroy(() => {
+		isExploreArticle.set(false);
+	});
 </script>
 
 <article transition:scale={{ start: 0.9 }}>
-	<ProjectHeader />
-	<ProjectOverview />
-	<section id="gallery">
-		<h3>project main gallery here</h3>
-	</section>
-	<section id="archives">
-		<h3>project historical archives here</h3>
-	</section>
-	<section id="description">
-		<h3>project description here</h3>
-		{#each description as para}
-			<p>{para}</p>
-		{/each}
-	</section>
-	<section id="timeline">
-		<h3>project timeline here</h3>
-	</section>
+	<ul>
+		<li>Titre du projet</li>
+		<li>
+			Descripteurs du projet
+			<ul>
+				<li>Type de projet</li>
+				<li>Sous-type de projet</li>
+			</ul>
+		</li>
+		<li>
+			LIEU & CONTEXTE
+			<ul>
+				<li>Propriété du lieu</li>
+				<li>
+					Usage principal
+					<ul>
+						<li>Catégorie</li>
+						<li>Typologie</li>
+					</ul>
+				</li>
+				<li>
+					Usage(s) complémentaire(s)
+					<ul>
+						<li>Catégorie</li>
+						<li>Typologie</li>
+					</ul>
+				</li>
+				<li>
+					Emplacement
+					<ul>
+						<li>Arrondissement</li>
+						<li>Quartier</li>
+						<li>Localisation (Geojson + carte)</li>
+					</ul>
+				</li>
+				<li>Année de construction (approx. avec "~" ou précise)</li>
+				<li>Type de construction (combustible, incombustible)</li>
+				<li>Mode d'implantation</li>
+				<li>Murs partagés</li>
+				<li>Rues adjacentes</li>
+				<li>
+					Secteurs & règlements particuliers
+					<ul>PIIA</ul>
+					<ul>Secteur d'intérêt patrimonial</ul>
+					<ul>PPU</ul>
+					<ul>autres...</ul>
+				</li>
+			</ul>
+		</li>
+		<li>
+			Contexte / cadre bâti
+			<ul>
+				<li>Type de projet</li>
+				<li>Sous-type de projet</li>
+			</ul>
+		</li>
+		<li>
+			Superficies (schema?)
+			<ul>
+				<li>Superficie du terrain</li>
+				<li>Superficie du bâtiment</li>
+				<li>Superficie du projet</li>
+			</ul>
+		</li>
+		<li>
+			Hauteur de bâtiment
+			<ul>
+				<li>Mètres</li>
+				<li>Nombre d'étages</li>
+			</ul>
+		</li>
+	</ul>
 </article>
 
 <style lang="postcss">
 	article {
+		flex: none;
 		width: 100%;
 		margin: 0;
-		/* flex: 1; */
-		min-height: 100%;
+		min-height: 100vh;
 		display: grid;
 		gap: 2rem;
 		grid-template-columns:
@@ -51,7 +111,8 @@
 			[full-end];
 	}
 
-	section {
+	section,
+	ul {
 		grid-column: main;
 	}
 </style>

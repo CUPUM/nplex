@@ -1,5 +1,10 @@
 <script lang="ts" context="module">
+	import { Ctx } from '$utils/contexts';
+	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
+	import { onDestroy, onMount, setContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
+	import { writable } from 'svelte/store';
+	import { scale } from 'svelte/transition';
 	export interface SwitchContext {
 		name: string;
 		current: Writable<HTMLElement>;
@@ -10,16 +15,9 @@
 </script>
 
 <script lang="ts">
-	import { onDestroy, onMount, setContext } from 'svelte';
-	import { writable } from 'svelte/store';
-	import { cssSize, type CssSizeValue } from '$utils/helpers/css';
-	import { Ctx } from '$utils/contexts';
-	import { fade, scale } from 'svelte/transition';
-	import { ripple } from '$actions/ripple';
-
 	export let name: string;
 	export let variant: SwitchContext['variant'] = 'default';
-	export let size: number | CssSizeValue = '1em';
+	export let size: number | CSSSizeValue = '1em';
 	export let orientation: SwitchContext['orientation'] = 'row';
 
 	let fieldset: HTMLFieldSetElement;

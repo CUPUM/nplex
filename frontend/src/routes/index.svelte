@@ -1,7 +1,6 @@
 <script lang="ts">
-	import ProjectsList from '$components/complexes/ProjectsList.svelte';
 	import Button from '$components/primitives/Button.svelte';
-	import { category, showSearchbar } from '$stores/search';
+	import { category, showCategory } from '$stores/search';
 	import { sizes } from '$utils/sizes';
 	import { onDestroy } from 'svelte';
 
@@ -15,10 +14,10 @@
 	const buttonVariant = 'secondary';
 
 	category.set(null);
-	showSearchbar.set(true);
+	showCategory.set(true);
 
 	onDestroy(() => {
-		showSearchbar.set(false);
+		showCategory.set(false);
 	});
 </script>
 
@@ -32,7 +31,7 @@
 				>
 			</a>
 		</header>
-		<ProjectsList {projects} display="row" />
+		<ul>[To do: projects list and list cards]</ul>
 	</section>
 	<section id="orgs">
 		<header>
@@ -62,6 +61,7 @@
 	article {
 		width: 100%;
 		margin: 0;
+		margin-top: var(--navbar-height);
 		padding: 0;
 		display: block;
 	}
