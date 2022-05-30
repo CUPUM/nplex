@@ -9,6 +9,8 @@
 	import { width } from '$transitions/width';
 	import { Ctx } from '$utils/contexts';
 	import { setContext } from 'svelte';
+	import ActorsList from './ActorsList.svelte';
+	import OrganisationsList from './OrganisationsList.svelte';
 	import ProjectsList from './ProjectsList.svelte';
 
 	/** Disposition of projects' cards; */
@@ -25,42 +27,25 @@
 	{#if $category === 'projects'}
 		<ProjectsList />
 	{:else if $category === 'organisations'}
-		<ul>
-			<li>org card</li>
-			<li>org card</li>
-			<li>org card</li>
-			<li>org card</li>
-			<li>org card</li>
-			<li>org card</li>
-			<li>org card</li>
-			<li>org card</li>
-		</ul>
+		<OrganisationsList />
 	{:else if $category === 'actors'}
-		<ul>
-			<li>actor card</li>
-			<li>actor card</li>
-			<li>actor card</li>
-			<li>actor card</li>
-			<li>actor card</li>
-			<li>actor card</li>
-			<li>actor card</li>
-			<li>actor card</li>
-		</ul>
+		<ActorsList />
 	{/if}
 </section>
 
-<style>
+<style lang="postcss">
 	section {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 		overflow: visible;
-		padding-block: 2rem;
+		padding-top: 4.5rem;
+		padding-bottom: 2rem;
 		padding-inline: 1rem;
 		margin-bottom: 0 !important;
-		/* overflow-y: visible;
-		overflow-x: scroll; */
+		border-radius: 2rem;
+		overflow-y: overlay;
 	}
 
 	.row {

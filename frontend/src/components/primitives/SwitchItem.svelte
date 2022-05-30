@@ -47,7 +47,7 @@
 	bind:this={label}
 	class:current={group === value}
 	class={ctx.variant}
-	class:has-temp={$temp}
+	class:some-temp={$temp}
 	on:click
 	on:focus
 	on:mouseenter
@@ -72,19 +72,18 @@
 		user-select: none;
 		position: relative;
 		cursor: pointer;
-		font-weight: 500;
+		font-weight: 400;
 		display: inline-flex;
 		padding: 0 1em;
 		height: var(--itemsize);
 		justify-content: center;
 		align-items: center;
-		border-radius: calc(1em - var(--inset));
+		border-radius: calc(var(--radius) - var(--inset));
 		transition: all 0.15s ease-out;
 
 		&.current {
 			pointer-events: none;
 			cursor: default;
-			/* font-weight: 400; */
 		}
 	}
 
@@ -102,25 +101,6 @@
 		max-width: 0;
 	}
 
-	/* Separator */
-	/* hr {
-		position: relative;
-		display: block;
-		padding: 0;
-		margin: 0;
-		border: none;
-		z-index: 0;
-		&:last-of-type {
-			display: none;
-		}
-		&.row {
-			width: 1px;
-		}
-		&.column {
-			height: 1px;
-		}
-	} */
-
 	/* Variants (should reflect options in Switch component) */
 
 	/* Default theme */
@@ -133,7 +113,7 @@
 		}
 		&.current {
 			color: var(--color-light-500);
-			&.has-temp {
+			&.some-temp {
 				color: var(--color-dark-100);
 			}
 		}
@@ -148,15 +128,19 @@
 	}
 
 	/* Nav theme */
-	.nav {
+	.navbar {
 		background-color: transparent;
-		color: var(--color-dark-300);
+		color: var(--color-dark-500);
 		&:hover,
 		&:focus {
+			color: var(--color-dark-900);
 		}
 		&.current {
 			opacity: 1;
-			color: var(--color-primary-500);
+			color: var(--color-light-500);
+			&.some-temp {
+				color: var(--color-primary-300);
+			}
 		}
 	}
 

@@ -9,7 +9,7 @@
 	import Icon from './Icon.svelte';
 	import Loading from './Loading.svelte';
 
-	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'nav' = 'default';
+	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'navbar' = 'default';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let size: number | CSSSizeValue = '1em';
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
@@ -100,7 +100,7 @@
 		margin: 0;
 		padding: 0 1em;
 		font-family: var(--font-main);
-		font-weight: 500;
+		font-weight: 400;
 		outline-width: 2px;
 		outline-style: solid;
 		outline-color: transparent;
@@ -255,23 +255,23 @@
 		}
 	}
 	/* Navbar button theme */
-	.nav {
+	.navbar {
 		color: var(--color-dark-100);
 		background-color: transparent;
 		border-radius: 2em;
 		&:hover,
 		&:focus,
 		&.hover {
-			color: var(--color-primary-500);
-			background-color: transparent;
+			color: var(--color-dark-900);
+			background-color: white;
 		}
 		&:active {
 		}
 		&.active {
-			font-weight: 550;
+			/* font-weight: 500; */
 			cursor: default;
-			color: var(--color-light-300);
-			background-color: var(--color-dark-900);
+			color: var(--color-primary-500);
+			/* background-color: var(--color-light-100); */
 			pointer-events: none;
 		}
 	}

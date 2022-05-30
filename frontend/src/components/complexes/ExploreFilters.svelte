@@ -68,6 +68,7 @@
 		width: var(--search-width);
 		overflow: hidden;
 		border-radius: 2rem;
+		margin-left: 1rem;
 		margin-right: 1rem;
 		margin-bottom: 1rem;
 		background-color: white;

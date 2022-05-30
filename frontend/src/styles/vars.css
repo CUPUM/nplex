@@ -28,12 +28,12 @@ All manual modifications added here will be lost on next execution of the genera
 	--rgb-secondary-700: 232, 181, 104;
 	--color-secondary-900: hsl(35, 66%, 58%);
 	--rgb-secondary-900: 219, 160, 77;
-	--color-light-100: hsl(44, 22%, 97%);
-	--rgb-light-100: 249, 248, 246;
-	--color-light-300: hsl(43, 20%, 94%);
-	--rgb-light-300: 243, 241, 237;
-	--color-light-500: hsl(42, 18%, 90%);
-	--rgb-light-500: 234, 231, 225;
+	--color-light-100: hsl(44, 22%, 98%);
+	--rgb-light-100: 251, 250, 249;
+	--color-light-300: hsl(43, 20%, 95%);
+	--rgb-light-300: 245, 243, 240;
+	--color-light-500: hsl(42, 18%, 91%);
+	--rgb-light-500: 236, 234, 228;
 	--color-light-700: hsl(41, 16%, 86%);
 	--rgb-light-700: 225, 221, 214;
 	--color-light-900: hsl(40, 12%, 81%);

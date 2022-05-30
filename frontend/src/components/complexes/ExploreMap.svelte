@@ -17,7 +17,7 @@
 		resizeDebounce = setTimeout(() => {
 			map?.resize();
 			clearTimeout(resizeDebounce);
-		}, 2);
+		}, 1);
 	}
 
 	onMount(() => {
@@ -56,7 +56,7 @@
 		position: relative;
 		flex: 1;
 		margin-bottom: 1rem;
-		margin-right: 1rem;
+		margin-left: 1rem;
 		padding: 0;
 		border-radius: 2rem;
 		transition: all 0.4s cubic-bezier(0.25, 0, 0.25, 1);
@@ -69,12 +69,44 @@
 		}
 
 		&:last-child:not(.is-article) {
+			margin-right: 1rem;
 		}
 
 		&.is-article {
 			margin: 0;
+			/* border-radius: 0 0 2rem 2rem; */
 			padding: 0;
 			pointer-events: none;
+		}
+
+		& :global(.maplibregl-ctrl-bottom-right) {
+			border-radius: 1em;
+			overflow: hidden;
+			bottom: 16px;
+			right: 16px;
+			opacity: 0.35;
+			background-color: rgba(0, 0, 0, 0.2);
+			transition: opacity 0.25s;
+
+			&:hover {
+				opacity: 1;
+			}
+
+			& :global(*) {
+				background-color: transparent;
+				color: var(--color-light-500);
+				font-family: var(--font-main);
+				transition: all 0.15s;
+
+				& :global(summary) {
+					filter: invert();
+				}
+
+				& :global(a:hover) {
+					text-decoration: none;
+					color: var(--color-secondary-500);
+				}
+			}
 		}
 	}
 

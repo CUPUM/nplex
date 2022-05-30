@@ -1,21 +1,23 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { session } from '$app/stores';
 	import AvatarButton from '$components/primitives/AvatarButton.svelte';
 	import Button from '$components/primitives/Button.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
+	import Switch from '$components/primitives/Switch.svelte';
+	import SwitchItem from '$components/primitives/SwitchItem.svelte';
+	import { currentPath } from '$stores/currentPath';
 	import { mainScroll } from '$stores/scroll';
-	import { showCategory } from '$stores/search';
+	import { category, showCategory } from '$stores/search';
 	import { signOut } from '$utils/auth';
 	import { colors } from '$utils/colors';
-	import { cssSize } from '$utils/helpers/css';
 	import { creationBaseRoute, creationRoutes, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
-	import { sizes } from '$utils/sizes';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
-	export let height: number = 0;
+	export let navbarHeight: number = 0;
 
 	let mounted = false;
 	let navbarRef: HTMLElement;
@@ -28,7 +30,7 @@
 	$: overlay = $mainScroll.y > hiddenThreshold + 100;
 
 	function updateHeight() {
-		height = navbarRef.offsetHeight;
+		navbarHeight = navbarRef.offsetHeight;
 	}
 
 	onMount(() => {
@@ -38,34 +40,41 @@
 	});
 </script>
 
-<header style:font-size={cssSize(sizes.small)} bind:this={navbarRef}>
-	<div id="nav-wrapper" class:hidden class:overlay>
+<header bind:this={navbarRef} class:hidden class:overlay>
+	<div id="wrapper">
 		{#if mounted}
 			<nav id="main" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 500 }}>
 				<a id="logo" href="/">
 					<Logo intro={true} color={colors.dark[900]} hoverColor={colors.primary[500]} />
 				</a>
 				{#each mainRoutes as route}
-					<a href={route.pathname}>
+					<Button variant="navbar" href={route.pathname} active={$currentPath.main === route.pathname}>
 						{route.title}
-					</a>
+					</Button>
 				{/each}
 			</nav>
 			{#if $showCategory}
 				<nav
 					id="category"
 					in:fly={{ y: 30, duration: 500, easing: expoOut, delay: 0 }}
-					out:fly={{ y: 30, duration: 500, easing: expoOut, delay: 150 }}
+					out:fly={{ y: 30, duration: 500, easing: expoOut, delay: 750 }}
 				>
-					{#each exploreRoutes as r, i}
-						<a href={r.pathname}>
-							{r.title}
-						</a>
-					{/each}
+					<Switch name="category" variant="navbar">
+						{#each exploreRoutes as r, i}
+							<SwitchItem
+								id={r.category}
+								value={r.category}
+								group={$category}
+								on:input={() => goto(r.pathname)}
+							>
+								{r.title}
+							</SwitchItem>
+						{/each}
+					</Switch>
 				</nav>
 			{/if}
 			<nav id="user" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 1000 }}>
-				<Button href="/" square={true} icon="home" />
+				<Button href="/" variant="navbar" square={true} icon="home" />
 				{#if $session.user}
 					<Popover placement="bottom" align="end" useHover={true}>
 						<Button slot="control" href={creationBaseRoute.pathname} icon="new-file" />
@@ -79,7 +88,7 @@
 						<Button on:click={signOut}>Se déconnecter</Button>
 					</Popover>
 				{:else}
-					<Button variant="nav" href={userBaseRoute.pathname} icon="user" />
+					<Button variant="navbar" href={userBaseRoute.pathname} icon="user" />
 					<Button variant="cta" href={userBaseRoute.pathname}>S'inscrire</Button>
 				{/if}
 			</nav>
@@ -96,9 +105,11 @@
 		margin: 0;
 		padding: 1rem;
 		padding-bottom: 0.5rem;
+		font-size: var(--size-small);
+		transition: all 0.25s;
 	}
 
-	#nav-wrapper {
+	#wrapper {
 		display: grid;
 		grid-template-columns:
 			[main-start]
@@ -113,18 +124,11 @@
 		margin: 0;
 		border-radius: 2em;
 		gap: 0;
-		transition: all 0.25s;
+	}
 
-		&.overlay {
-			backdrop-filter: blur(12px);
-			background-color: rgba(var(--rgb-light-100), 0.8);
-		}
-
-		&.hidden {
-			transform: translateY(-100%);
-			pointer-events: none;
-			opacity: 0;
-		}
+	.hidden {
+		transform: translateY(-100%);
+		pointer-events: none;
 	}
 
 	#logo {
@@ -137,17 +141,20 @@
 	}
 
 	nav {
-		display: inline-flex;
-		flex: 1;
+		display: flex;
+		flex: 0;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		gap: 3px;
+		gap: 0px;
 	}
 
 	#main {
 		grid-area: main;
-		justify-content: flex-start;
+		justify-self: flex-start;
+		border-radius: 3em;
+		background-color: rgba(var(--rgb-light-100), 0.05);
+		backdrop-filter: blur(24px);
 	}
 
 	#category {

@@ -19,7 +19,7 @@
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
 	/** Styling options. */
 	export let size: number | CSSSizeValue = '1em';
-	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = 'default';
+	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'searchbar' = 'default';
 	export let warning: boolean = undefined;
 	export let success: boolean = undefined;
 	export let disabled: boolean = undefined;
@@ -248,4 +248,21 @@
 	/* Ghost theme */
 
 	/* Cta theme */
+
+	/* Searchbar theme */
+	.searchbar {
+		background-color: rgba(var(--rgb-light-500), 0.9);
+		color: var(--color-dark-100);
+		width: 100%;
+		backdrop-filter: blur(12px);
+		&.focused {
+			outline-color: white;
+			background-color: white;
+			box-shadow: 0 1em 2em -1em rgba(0, 0, 20, 0.2);
+		}
+		&:hover:not(.focused) {
+			background-color: var(--color-light-300);
+			color: var(--color-dark-900);
+		}
+	}
 </style>

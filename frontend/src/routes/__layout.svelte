@@ -30,7 +30,7 @@
 	let navbarHeight: number;
 </script>
 
-<Navbar bind:height={navbarHeight} />
+<Navbar bind:navbarHeight />
 <main style:--navbar-height="{navbarHeight}px">
 	<slot />
 </main>
@@ -42,6 +42,9 @@
 	main {
 		position: relative;
 		width: 100%;
+		flex: none;
+		overflow-x: hidden;
+		overflow-y: hidden;
 		display: flex;
 		flex-direction: column;
 		padding: 0;

@@ -19,7 +19,7 @@
 <svelte:element
 	this={tokenSetCtx ? 'li' : 'div'}
 	id="token"
-	class={variant}
+	class={autoVariant}
 	style:font-size={cssSize(size)}
 	class:active
 	class:warning
@@ -58,17 +58,6 @@
 		overflow: hidden;
 		transition: all 0.15s ease-out;
 
-		&:hover.interactive,
-		&:focus.interactive {
-			background-color: var(--hover-bg-color);
-			color: var(--hover-color);
-		}
-
-		&.active {
-			background-color: var(--active-bg-color);
-			color: var(--active-color);
-		}
-
 		&:disabled {
 			opacity: 0.75;
 			pointer-events: none;
@@ -98,12 +87,9 @@
 	/* Variants */
 
 	.default {
-		--hover-color: var(--color-primary-900);
-		--hover-bg-color: var(--color-primary-300);
-		--active-color: var(--color-primary-900);
-		--active-bg-color: var(--color-light-900);
-		color: var(--color-primary-500);
-		background-color: var(--color-light-100);
+		color: var(--color-dark-500);
+		background-color: rgba(var(--rgb-light-100), 0.8);
+		/* backdrop-filter: blur(12px); */
 	}
 
 	.secondary {
