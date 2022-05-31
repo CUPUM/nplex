@@ -12,6 +12,7 @@ export enum Ctx {
 	Range = 'range-context',
 	Popover = 'popover-context',
 	ExploreList = 'projects-list-context',
+	ExploreMap = 'explore-map-context',
 	Select = 'select-context',
 	SelectGroup = 'select-group-context',
 }

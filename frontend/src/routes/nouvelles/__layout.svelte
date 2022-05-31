@@ -3,7 +3,8 @@
 
 <div>
 	<header>
-		<h2>Nouvelles</h2>
+		<span class="heading-label">Plus récente nouvelle</span>
+		<h2>Titre de la nouvelle</h2>
 	</header>
 	<section>
 		<aside>
@@ -19,4 +20,20 @@
 </div>
 
 <style lang="postcss">
+	div {
+		margin-top: var(--navbar-height);
+	}
+
+	.heading-label,
+	h2 {
+		font-size: var(--size-xxlarge);
+		font-weight: 500;
+		padding: 0;
+		margin: 0;
+	}
+
+	.heading-label {
+		font-weight: 400;
+		color: var(--color-primary-500);
+	}
 </style>

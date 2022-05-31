@@ -26,7 +26,7 @@
 <section />
 <section>
 	<Checkbox bind:checked={showLoading}>Show loading</Checkbox>
-	<div>
+	<div style="position: relative;">
 		{#if showLoading}
 			<Loading />
 		{/if}

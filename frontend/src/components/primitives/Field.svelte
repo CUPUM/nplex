@@ -79,7 +79,7 @@
 		</div>
 	{/if}
 	{#if placeholderIcon && !value}
-		<div id="icon" out:width={{ opacity: 0 }}>
+		<div id="icon" transition:width={{ opacity: 0 }}>
 			<Icon name={placeholderIcon} />
 		</div>
 	{/if}
@@ -101,7 +101,9 @@
 	/>
 	{#if value}
 		<div id="has-value" transition:width={{ easing: expoOut, duration: 750, opacity: 0 }}>
-			<Button icon="cross" variant="ghost" on:click={reset} />
+			<Button variant="ghost" on:click={reset}>
+				<Icon name="cross" slot="icon" />
+			</Button>
 			<slot name="has-value" />
 		</div>
 	{/if}
@@ -123,7 +125,7 @@
 
 <style lang="postcss">
 	fieldset {
-		--size: 2.8em;
+		--size: 3em;
 		--inset: 3px;
 		border: none;
 		padding: 0 var(--inset);
@@ -131,7 +133,7 @@
 		position: relative;
 		display: inline-flex;
 		flex-direction: row;
-		border-radius: 1em;
+		border-radius: 1.1em;
 		height: var(--size);
 		min-height: 0;
 		outline-style: solid;
@@ -143,20 +145,16 @@
 	#icon {
 		position: relative;
 		height: 100%;
-		width: var(--size);
-		display: flex;
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0;
+		padding-block: 0;
+		padding-inline: 0.5em 0em;
 		margin: 0;
-		margin-right: calc(-1 * var(--size));
+		margin-right: -0.5em;
 		transform: translateX(0);
 		transition: all 0.15s ease-out;
 		top: -0.05em;
-	}
-
-	.has-icon input {
-		text-indent: 1.5em;
 	}
 
 	input {
@@ -165,7 +163,7 @@
 		position: relative;
 		flex: 1;
 		font-size: 1em;
-		padding-inline: 1em;
+		padding-inline: 0.8em 1em;
 		padding-block: 0.9em 1.1em;
 		height: 100%;
 		min-height: 100%;
@@ -181,8 +179,8 @@
 		transition: all 0.15s ease-out, text-indent 0.35s cubic-bezier(0, 0, 0, 1);
 
 		&::placeholder {
-			font-weight: 400;
-			opacity: 0.75;
+			font-weight: 300;
+			opacity: 0.5;
 		}
 
 		&:disabled {
@@ -210,6 +208,7 @@
 		justify-content: flex-end;
 		gap: 3px;
 		height: 100%;
+		border-radius: 1em;
 	}
 
 	/* Slots */
@@ -221,7 +220,8 @@
 		gap: 3px;
 		flex-direction: row;
 		align-items: center;
-		justify-content: flex-start;
+		justify-content: center;
+		padding: var(--inset) 0;
 	}
 
 	#right {

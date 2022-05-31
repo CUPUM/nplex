@@ -1,16 +1,30 @@
+<script lang="ts" context="module">
+	export interface ExploreMapContext {
+		inited: Writable<boolean>;
+		getMap: () => MLMap;
+	}
+</script>
+
 <script lang="ts">
 	import Loading from '$components/primitives/Loading.svelte';
 	import { isExploreArticle } from '$stores/explore';
 	import { width } from '$transitions/width';
-	import { colors } from '$utils/colors';
+	import { Ctx } from '$utils/contexts';
 	import { Map as MLMap } from 'maplibre-gl';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, setContext } from 'svelte';
+	import { writable, type Writable } from 'svelte/store';
 
 	let loading = true;
+	let inited = writable(false);
 	let container: HTMLElement;
 	let map: MLMap;
 	let resizeObs: ResizeObserver;
 	let resizeDebounce;
+
+	setContext<ExploreMapContext>(Ctx.ExploreMap, {
+		inited,
+		getMap: () => map,
+	});
 
 	function handleResize() {
 		if (resizeDebounce) clearTimeout(resizeDebounce);
@@ -33,7 +47,18 @@
 		});
 
 		map.on('load', () => {
+			inited.set(true);
 			loading = false;
+		});
+
+		map.on('dataloading', (e) => {
+			// if (!e.hasOwnProperty('tile')) {
+			// 	loading = true;
+			// }
+		});
+
+		map.on('data', () => {
+			// loading = false;
 		});
 	});
 
@@ -44,9 +69,9 @@
 	<link href="https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css" rel="stylesheet" />
 </svelte:head>
 
-<section class:loading class:is-article={$isExploreArticle} transition:width={{}}>
+<section class:loading class:inited class:is-article={$isExploreArticle} transition:width={{}}>
 	{#if loading}
-		<Loading style="z-index: 100; background-color: {colors.light['100']};" />
+		<Loading style="z-index: 100" />
 	{/if}
 	<figure bind:this={container} />
 </section>
@@ -59,7 +84,8 @@
 		margin-left: 1rem;
 		padding: 0;
 		border-radius: 2rem;
-		transition: all 0.4s cubic-bezier(0.25, 0, 0.25, 1);
+		background-color: var(--color-light-300);
+		transition: all 0.35s cubic-bezier(0.25, 0, 0.25, 1);
 		overflow: hidden;
 
 		&:first-child:not(.is-article) {
@@ -111,12 +137,14 @@
 	}
 
 	.loading {
-		pointer-events: none;
-		transform: scale(0.95);
-		opacity: 0.5;
+		/* pointer-events: none; */
+		/* transform: scale(0.97); */
+		/* opacity: 0.8; */
+	}
 
+	.inited {
 		& figure {
-			clip-path: circle(0% at center);
+			clip-path: circle(100% at center);
 		}
 	}
 
@@ -126,10 +154,10 @@
 		top: 0;
 		left: 0;
 		margin: 0;
-		padding: 0;
+		padding: 0px;
 		width: 100%;
 		height: 100%;
-		clip-path: circle(100% at center);
+		clip-path: circle(0% at center);
 		transition: clip-path 0.5s cubic-bezier(0.25, 0, 0.25, 1);
 	}
 </style>

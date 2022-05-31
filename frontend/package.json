@@ -65,6 +65,10 @@
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^1.35.3",
+		"@turf/bbox": "^6.5.0",
+		"@turf/circle": "^6.5.0",
+		"@turf/helpers": "^6.5.0",
+		"@turf/random": "^6.5.0",
 		"@types/cookie": "^0.4.1",
 		"@types/jsonwebtoken": "^8.5.8",
 		"cookie": "^0.4.2",

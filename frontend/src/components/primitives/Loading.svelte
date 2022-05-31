@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { colors } from '$utils/colors';
 	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { elasticOut, expoIn } from 'svelte/easing';
+	import { scale } from 'svelte/transition';
 
 	export let color: string = colors.primary[500];
 	export let size: SizeInput = '1em';
@@ -32,7 +34,13 @@
 		.join(';');
 </script>
 
-<div {...$$restProps} style:font-size={cssSize(size)} style:color>
+<div
+	in:scale={{ duration: 500, easing: elasticOut }}
+	out:scale={{ duration: 200, easing: expoIn }}
+	{...$$restProps}
+	style:font-size={cssSize(size)}
+	style:color
+>
 	<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
 		<!-- <rect width="80" height="80" x="10" y="10" /> -->
 		<path>
@@ -56,11 +64,14 @@
 	div {
 		user-select: none;
 		pointer-events: none;
+		position: absolute;
 		width: 100%;
 		height: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		background: transparent;
+		background-color: transparent;
 	}
 
 	svg {

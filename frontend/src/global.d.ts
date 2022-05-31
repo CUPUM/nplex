@@ -9,7 +9,9 @@
  */
 declare namespace svelte.JSX {
 	interface HTMLAttributes<T> {
-		onclickoutside?: (event?: CustomEvent) => any;
+		onclickoutside?: (event?: CustomEvent) => unknown;
+		onenter?: (event?: CustomEvent) => unknown;
+		onleave?: (event?: CustomEvent) => unknown;
 	}
 }
 

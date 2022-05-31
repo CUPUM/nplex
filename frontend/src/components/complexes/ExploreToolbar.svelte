@@ -1,11 +1,14 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 </script>
 
 <div>
 	<Button>Test</Button>
 	<Button>Test</Button>
-	<Button icon="more" />
+	<Button>
+		<Icon name="more" slot="icon" />
+	</Button>
 </div>
 
 <style>

@@ -74,11 +74,11 @@
 		cursor: pointer;
 		font-weight: 400;
 		display: inline-flex;
-		padding: 0 1em;
+		padding: 0 1.2em;
 		height: var(--itemsize);
 		justify-content: center;
 		align-items: center;
-		border-radius: calc(var(--radius) - var(--inset));
+		border-radius: var(--inner-radius);
 		transition: all 0.15s ease-out;
 
 		&.current {
@@ -131,6 +131,20 @@
 	.navbar {
 		background-color: transparent;
 		color: var(--color-dark-500);
+		font-weight: 600;
+		&::after {
+			content: '';
+			position: absolute;
+			width: 5px;
+			height: 5px;
+			border-radius: 100%;
+			background-color: var(--color-dark-900);
+			bottom: 4px;
+			left: 50%;
+			opacity: 1;
+			transform: translateX(-50%) scale(0);
+			transition: all 0.3s 0.25s cubic-bezier(0, 0, 0, 1);
+		}
 		&:hover,
 		&:focus {
 			color: var(--color-dark-900);
@@ -138,8 +152,17 @@
 		&.current {
 			opacity: 1;
 			color: var(--color-light-500);
+			&::after {
+				opacity: 1;
+				transform: translateX(-50%) scale(1);
+			}
 			&.some-temp {
-				color: var(--color-primary-300);
+				color: var(--color-dark-900);
+				/* background-color: var(--color-dark-900); */
+
+				&::after {
+					/* background-color: var(--color-primary-500); */
+				}
 			}
 		}
 	}

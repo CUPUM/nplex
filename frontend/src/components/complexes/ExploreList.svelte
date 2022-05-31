@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
-	export interface ExploreList {
+	export interface ExploreListContext {
 		display: 'row' | 'column' | 'mosaic';
+		elementRef: HTMLElement;
 	}
 </script>
 
@@ -13,17 +14,22 @@
 	import OrganisationsList from './OrganisationsList.svelte';
 	import ProjectsList from './ProjectsList.svelte';
 
-	/** Disposition of projects' cards; */
-	export let display: ExploreList['display'] = 'column';
-	/** Array of projects' summary data. */
-	export let projects: any[] = [];
+	/**
+	 * Pane's outer element ref used notably for intersection observers.
+	 */
+	let elementRef: HTMLElement;
+	/**
+	 * Disposition of projects' cards.
+	 */
+	export let display: ExploreListContext['display'] = 'column';
 
-	setContext<ExploreList>(Ctx.ExploreList, {
+	setContext<ExploreListContext>(Ctx.ExploreList, {
 		display,
+		elementRef,
 	});
 </script>
 
-<section class={display} transition:width={{}}>
+<section class={display} transition:width={{}} bind:this={elementRef}>
 	{#if $category === 'projects'}
 		<ProjectsList />
 	{:else if $category === 'organisations'}
@@ -40,7 +46,7 @@
 		flex-direction: column;
 		gap: 1rem;
 		overflow: visible;
-		padding-top: 4.5rem;
+		padding-top: 0;
 		padding-bottom: 2rem;
 		padding-inline: 1rem;
 		margin-bottom: 0 !important;

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import { category, showCategory } from '$stores/search';
 	import { sizes } from '$utils/sizes';
 	import { onDestroy } from 'svelte';
@@ -26,9 +27,10 @@
 		<header>
 			<a href="/projets">
 				<h2>Projets</h2>
-				<Button size={buttonSize} variant={buttonVariant} href="/projets" sveltekit:prefetch icon="plus"
-					>Voir plus</Button
-				>
+				<Button size={buttonSize} variant={buttonVariant} href="/projets" sveltekit:prefetch>
+					<Icon name="plus" slot="icon" />
+					Voir plus
+				</Button>
 			</a>
 		</header>
 		<ul>[To do: projects list and list cards]</ul>
@@ -37,9 +39,10 @@
 		<header>
 			<a href="/organisations">
 				<h2>Organisations</h2>
-				<Button size={buttonSize} variant={buttonVariant} href="/organisations" sveltekit:prefetch icon="plus"
-					>Voir plus</Button
-				>
+				<Button size={buttonSize} variant={buttonVariant} href="/organisations" sveltekit:prefetch>
+					<Icon name="plus" slot="icon" />
+					Voir plus
+				</Button>
 			</a>
 		</header>
 		<ul>[To do: orgs list and list cards]</ul>
@@ -48,9 +51,10 @@
 		<header>
 			<a href="/acteurs">
 				<h2>Acteurs</h2>
-				<Button size={buttonSize} variant={buttonVariant} href="/acteurs" sveltekit:prefetch icon="plus"
-					>Voir plus</Button
-				>
+				<Button size={buttonSize} variant={buttonVariant} href="/acteurs" sveltekit:prefetch>
+					<Icon name="plus" slot="icon" />
+					Voir plus
+				</Button>
 			</a>
 		</header>
 		<ul>[To do: actors list and list cards]</ul>
@@ -98,7 +102,7 @@
 
 	h2 {
 		display: block;
-		font-weight: 400;
+		font-weight: 500;
 		font-size: var(--size-xxlarge);
 		display: inline-block;
 		transition: all 0.2s ease-out;

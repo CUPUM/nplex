@@ -5,9 +5,15 @@
 	import ExploreFilters from '$components/complexes/ExploreFilters.svelte';
 	import ExploreList from '$components/complexes/ExploreList.svelte';
 	import ExploreMap from '$components/complexes/ExploreMap.svelte';
-	import ExploreMenu from '$components/complexes/ExploreMenu.svelte';
-	import { isExploreArticle, showExploreFilters, showExploreList, showExploreMap } from '$stores/explore';
-	import { category, showCategory, showSearchbar } from '$stores/search';
+	import ExploreSearchbar from '$components/complexes/ExploreSearchbar.svelte';
+	import {
+		isExploreArticle,
+		showArticleMap,
+		showExploreFilters,
+		showExploreList,
+		showExploreMap,
+	} from '$stores/explore';
+	import { showCategory, showSearchbar } from '$stores/search';
 	import { onDestroy, onMount } from 'svelte';
 
 	showSearchbar.set(true);
@@ -25,13 +31,13 @@
 
 <section id="explore" class:is-article={$isExploreArticle}>
 	{#if !$isExploreArticle}
-		<ExploreMenu bind:menuHeight />
+		<ExploreSearchbar />
 	{/if}
 	<div id="explore-panes" style:--menu-height="{menuHeight}px">
 		{#if $showExploreFilters && !$isExploreArticle}
 			<ExploreFilters />
 		{/if}
-		{#if ($showExploreMap || $isExploreArticle) && $category === 'projects'}
+		{#if $showExploreMap || $showArticleMap}
 			<ExploreMap />
 		{/if}
 		{#if $showExploreList && !$isExploreArticle}

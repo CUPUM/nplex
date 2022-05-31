@@ -2,7 +2,9 @@
 	import { goto } from '$app/navigation';
 	import { session } from '$app/stores';
 	import AvatarButton from '$components/primitives/AvatarButton.svelte';
+	import Badge from '$components/primitives/Badge.svelte';
 	import Button from '$components/primitives/Button.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
@@ -56,8 +58,8 @@
 			{#if $showCategory}
 				<nav
 					id="category"
-					in:fly={{ y: 30, duration: 500, easing: expoOut, delay: 0 }}
-					out:fly={{ y: 30, duration: 500, easing: expoOut, delay: 750 }}
+					in:fly={{ y: -30, duration: 500, easing: expoOut, delay: 0 }}
+					out:fly={{ y: -30, duration: 500, easing: expoOut, delay: 0 }}
 				>
 					<Switch name="category" variant="navbar">
 						{#each exploreRoutes as r, i}
@@ -74,10 +76,14 @@
 				</nav>
 			{/if}
 			<nav id="user" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 1000 }}>
-				<Button href="/" variant="navbar" square={true} icon="home" />
+				<Button href="/" variant="navbar" square={true}>
+					<Icon name="home" slot="icon" />
+				</Button>
 				{#if $session.user}
 					<Popover placement="bottom" align="end" useHover={true}>
-						<Button slot="control" href={creationBaseRoute.pathname} icon="new-file" />
+						<Button slot="control" variant="navbar" href={creationBaseRoute.pathname}>
+							<Icon name="new-file" slot="icon" />
+						</Button>
 						{#each creationRoutes as r}
 							<Button href={r.pathname}>{r.title}</Button>
 						{/each}
@@ -88,8 +94,13 @@
 						<Button on:click={signOut}>Se déconnecter</Button>
 					</Popover>
 				{:else}
-					<Button variant="navbar" href={userBaseRoute.pathname} icon="user" />
-					<Button variant="cta" href={userBaseRoute.pathname}>S'inscrire</Button>
+					<Button variant="navbar" href={userBaseRoute.pathname} icon="user">
+						<Icon name="user" slot="icon" />
+						<Badge slot="badge" />
+					</Button>
+					<Button style="border-radius: 2em" variant="cta" href={userBaseRoute.pathname}
+						>Créer un comtpe</Button
+					>
 				{/if}
 			</nav>
 		{/if}
@@ -99,7 +110,7 @@
 <style lang="postcss">
 	header {
 		position: fixed;
-		z-index: 1;
+		z-index: 10;
 		width: 100%;
 		top: 0;
 		margin: 0;
@@ -153,7 +164,7 @@
 		grid-area: main;
 		justify-self: flex-start;
 		border-radius: 3em;
-		background-color: rgba(var(--rgb-light-100), 0.05);
+		background-color: rgba(var(--rgb-light-100), 0);
 		backdrop-filter: blur(24px);
 	}
 

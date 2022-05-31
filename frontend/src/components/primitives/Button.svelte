@@ -3,17 +3,14 @@
 	import { colors } from '$utils/colors';
 	import { Ctx } from '$utils/contexts';
 	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
-	import type { SvelteProps } from '$utils/helpers/types';
 	import { getContext } from 'svelte';
 	import type { FieldContext } from './Field.svelte';
-	import Icon from './Icon.svelte';
 	import Loading from './Loading.svelte';
 
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'navbar' = 'default';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let size: number | CSSSizeValue = '1em';
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
-	export let icon: SvelteProps<Icon>['name'] = undefined;
 	export let iconPosition: 'before' | 'after' = 'before';
 	export let warning: boolean = false;
 	export let square: boolean = undefined;
@@ -35,7 +32,7 @@
 	 * - User-defined 'square' value has precedence.
 	 * - Squareness is automatically applied if button has no slot content.
 	 */
-	$: autoSquare = square || (!$$slots.default && Boolean(icon));
+	$: autoSquare = square || (!$$slots.default && $$slots.icon);
 	/**
 	 * Soft auto-determination of component size, where:
 	 *
@@ -66,9 +63,9 @@
 	{...$$restProps}
 >
 	<div class="align-{contentAlign}">
-		{#if icon}
-			<span id="icon" class="icon-{iconPosition}">
-				<Icon size={$$slots.default ? '1em' : '1.2em'} name={icon} />
+		{#if $$slots.icon}
+			<span id="icon" class="icon-{iconPosition}" style:font-size={$$slots.default ? '1em' : '1.2em'}>
+				<slot name="icon" />
 			</span>
 		{/if}
 		{#if $$slots.default}
@@ -77,6 +74,9 @@
 			</span>
 		{/if}
 	</div>
+	{#if $$slots.badge}
+		<slot name="badge" />
+	{/if}
 	{#if loading}
 		<Loading
 			style="position: absolute; width: 1em; height: 1em; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: transparent;"
@@ -86,7 +86,7 @@
 
 <style lang="postcss">
 	.button {
-		--outer-size: calc(2.8em - 2 * var(--inset, 0px));
+		--outer-size: calc(3em - 2 * var(--inset, 0px));
 		display: inline-block;
 		cursor: pointer;
 		box-sizing: border-box;
@@ -96,9 +96,9 @@
 		height: var(--outer-size);
 		min-height: var(--outer-size);
 		min-width: var(--outer-size);
-		border-radius: max(calc(1em - var(--inset, 0px)), var(--size-small, 0px));
+		border-radius: max(calc(1.1em - var(--inset, 0px)), var(--size-xsmall, 0px));
 		margin: 0;
-		padding: 0 1em;
+		padding: 0 1.2em;
 		font-family: var(--font-main);
 		font-weight: 400;
 		outline-width: 2px;
@@ -192,21 +192,20 @@
 	/* Variants (should correspond to `typeof variant`) */
 	/* Default button theme */
 	.default {
-		color: var(--color-primary-500);
-		background-color: white;
+		color: var(--color-dark-500);
+		background-color: rgba(0, 0, 20, 0.05);
 		transition: all 0.15s ease-out;
 		&:hover,
 		&:focus,
 		&.hover {
 			color: var(--color-dark-900);
-			background-color: var(--color-light-700);
+			background-color: rgba(0, 0, 20, 0.1);
 		}
 		&:active {
 		}
 		&.active {
-			color: var(--color-light-300);
-			background-color: var(--color-dark-500);
-			box-shadow: 0 0.75em 1.5em -0.5em rgba(0, 0, 0, 0.3);
+			color: var(--color-primary-500);
+			background-color: white;
 		}
 	}
 	/* Secondary, more subtle button theme */
@@ -238,32 +237,37 @@
 	}
 	/* Emphasised call to action */
 	.cta {
-		color: var(--color-dark-700);
-		background-color: var(--color-primary-300);
+		font-weight: 500;
+		color: white;
+		background-color: var(--color-primary-500);
 		transition: all 0.2s;
+		& span {
+			letter-spacing: 0.02em;
+		}
 		&:hover,
 		&:focus,
 		&.hover {
-			color: var(--color-light-700);
-			background-color: var(--color-dark-700);
+			color: white;
+			background-color: var(--color-primary-700);
 		}
 		&:active {
 		}
 		&.active {
 			color: var(--color-primary-900);
-			background-color: var(--color-light-900);
+			background-color: var(--color-primary-300);
 		}
 	}
 	/* Navbar button theme */
 	.navbar {
-		color: var(--color-dark-100);
+		color: var(--color-dark-300);
 		background-color: transparent;
 		border-radius: 2em;
+		font-weight: 450;
 		&:hover,
 		&:focus,
 		&.hover {
 			color: var(--color-dark-900);
-			background-color: white;
+			background-color: rgba(var(--rgb-light-500), 1);
 		}
 		&:active {
 		}

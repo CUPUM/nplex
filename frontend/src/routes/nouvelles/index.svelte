@@ -1,6 +1,7 @@
 <script lang="ts">
 </script>
 
+<section id="latest-news" />
 <ul>
 	<li>nouvelle 1</li>
 	<li>nouvelle 2</li>
@@ -9,4 +10,6 @@
 </ul>
 
 <style lang="postcss">
+	#latest-news {
+	}
 </style>

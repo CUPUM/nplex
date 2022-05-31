@@ -87,9 +87,10 @@
 <style lang="postcss">
 	fieldset {
 		--inset: 1px;
-		--size: 2.8em;
+		--size: 3em;
 		--itemsize: calc(var(--size) - 2 * var(--inset));
-		--radius: 1em;
+		--radius: max(0.8em, var(--size-xsmall, 0px));
+		--inner-radius: calc(var(--radius) - var(--inset));
 		position: relative;
 		border: none;
 		display: inline-flex;
@@ -97,7 +98,7 @@
 		justify-content: center;
 		gap: 0;
 		padding: var(--inset);
-		border-radius: 1em;
+		border-radius: var(--radius);
 		overflow: visible;
 		transition: all 0.25s ease-out;
 	}
@@ -106,8 +107,9 @@
 		z-index: 1;
 		position: absolute;
 		height: var(--itemsize);
-		border-radius: calc(var(--radius) - var(--inset));
-		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.1), box-shadow 0.25s ease-in-out;
+		border-radius: var(--inner-radius);
+		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.2), box-shadow 0.25s ease-in-out;
+		transform: scale(1.01);
 	}
 
 	/* Variants */
@@ -138,12 +140,11 @@
 
 	/* Nav theme */
 	.navbar {
-		--inset: 1px;
-		--radius: 2em;
-		background-color: rgba(var(--rgb-light-100), 0.9);
-		backdrop-filter: blur(24px);
-		border-radius: 3em;
-		box-shadow: 0 0 0 2px rgba(0, 0, 20, 0.05);
+		--inset: 0px;
+		--radius: 1.5em;
+		background-color: var(--color-light-100);
+		box-shadow: 0 0 0 1px rgba(0, 0, 20, 0.05);
+		/* backdrop-filter: blur(24px); */
 		&:hover {
 		}
 		& #current {

@@ -20,7 +20,7 @@ const initParams = new URLSearchParams(''); // window?.location.search
 /**
  * Main search text input, typically corresponding to the text inserted in the search bar's input field.
  */
-export const term = writable(initParams.get('term') || '');
+export const exploreSearchterm = writable(initParams.get('term') || '');
 
 /**
  * Currently browsed category.
@@ -40,7 +40,7 @@ function updateURL() {
 	// })
 }
 
-term.subscribe((v) => {
+exploreSearchterm.subscribe((v) => {
 	if (v !== '') {
 		query.set('term', v);
 	} else {

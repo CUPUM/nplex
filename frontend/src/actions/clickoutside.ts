@@ -1,16 +1,18 @@
-/** Simple directive to add a custom event emission when the user clicks outside the host element. */
-export function clickoutside(element: HTMLElement) {
-	function click(e) {
-		if (!element.contains(e.target)) {
-			element.dispatchEvent(new CustomEvent('clickoutside'));
+/**
+ * Directive pour gérer les clics en dehors d'un élément.
+ */
+export function clickoutside(node: Node) {
+	const handleClick = (click) => {
+		if (node && !node.contains(click.target) && !click.defaultPrevented) {
+			node.dispatchEvent(new CustomEvent('clickoutside'));
 		}
-	}
+	};
 
-	document.addEventListener('click', click, true);
+	document.addEventListener('click', handleClick, true);
 
 	return {
 		destroy() {
-			document.removeEventListener('click', click);
+			document.removeEventListener('click', handleClick, true);
 		},
 	};
 }

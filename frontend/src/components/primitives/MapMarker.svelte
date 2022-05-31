@@ -1,0 +1,13 @@
+<script lang="ts" context="module">
+</script>
+
+<script lang="ts">
+	import { Ctx } from '$utils/contexts';
+	import type { LngLat, LngLatLike } from 'maplibre-gl';
+	import { getContext } from 'svelte';
+
+	export let lnglat: LngLat | LngLatLike;
+	export let radius: number;
+
+	const ctx = getContext(Ctx.ExploreMap);
+</script>
