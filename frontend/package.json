@@ -34,7 +34,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-node": "next",
 		"@sveltejs/kit": "next",
-		"@types/node": "^17.0.36",
+		"@types/node": "^17.0.38",
 		"@types/overlayscrollbars": "^1.12.1",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
 		"@typescript-eslint/parser": "^5.27.0",
@@ -74,6 +74,6 @@
 		"cookie": "^0.4.2",
 		"jsonwebtoken": "^8.5.1",
 		"maplibre-gl": "^2.1.9",
-		"overlayscrollbars": "^1.13.1"
+		"overlayscrollbars": "^1.13.2"
 	}
 }
