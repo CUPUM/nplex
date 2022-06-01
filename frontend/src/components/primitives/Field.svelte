@@ -261,7 +261,7 @@
 			box-shadow: 0 1em 2em -1em rgba(0, 0, 20, 0.2);
 		}
 		&:hover:not(.focused) {
-			background-color: var(--color-light-300);
+			/* background-color: var(--color-light-300); */
 			color: var(--color-dark-900);
 		}
 	}

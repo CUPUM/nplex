@@ -6,9 +6,10 @@
 	import Token from '$components/primitives/Token.svelte';
 	import { showExploreFilters } from '$stores/explore';
 	import { category, exploreSearchterm } from '$stores/search';
+	import { insert } from '$transitions/insert';
 	import { onDestroy, onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
-	import { slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 
 	function submit() {
 		console.log('submitted search bar form');
@@ -25,13 +26,12 @@
 
 <!-- Combiner avec "filters" -->
 <!-- https://stackoverflow.com/questions/4052756/how-to-combine-html-forms -->
-<form
-	on:submit|preventDefault={submit}
-	on:reset|preventDefault={reset}
-	in:slide={{ duration: 450, easing: expoOut }}
-	out:slide={{ duration: 700, easing: expoOut }}
->
-	<section id="search-field">
+<form on:submit|preventDefault={submit} on:reset|preventDefault={reset}>
+	<section
+		in:insert={{ y: 40, opacity: 0, height: true, width: false, duration: 450, easing: expoOut }}
+		out:insert={{ duration: 700, easing: expoOut }}
+		id="search-field"
+	>
 		<Field
 			type="search"
 			placeholder="Chercher"
@@ -53,7 +53,7 @@
 			</svelte:fragment>
 		</Field>
 	</section>
-	<section id="search-tokens" use:horizontalScroll>
+	<section id="search-tokens" use:horizontalScroll transition:fade={{}}>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
@@ -83,6 +83,7 @@
 		position: relative;
 		z-index: 1;
 		width: var(--search-width);
+		flex: none;
 		display: block;
 		padding: 0rem;
 	}

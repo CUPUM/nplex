@@ -193,13 +193,14 @@
 	/* Default button theme */
 	.default {
 		color: var(--color-dark-500);
-		background-color: rgba(0, 0, 20, 0.05);
+		background-color: rgba(var(--rgb-dark-500), 0.1);
 		transition: all 0.15s ease-out;
 		&:hover,
 		&:focus,
 		&.hover {
 			color: var(--color-dark-900);
-			background-color: rgba(0, 0, 20, 0.1);
+			background-color: rgba(var(--rgb-dark-500), 0.05);
+			/* box-shadow: inset 0 0 0 1px white; */
 		}
 		&:active {
 		}
@@ -226,13 +227,14 @@
 	.ghost {
 		color: var(--color-dark-500);
 		background-color: transparent;
-		box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+		/* box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); */
 		transition: all 0.2s ease-out;
 		&:hover,
 		&:focus,
 		&.hover {
 			color: var(--color-dark-900);
-			box-shadow: 0 0 0 2px rgba(var(--rgb-primary-500), 0.1);
+			background-color: rgba(var(--rgb-dark-500), 0.1);
+			/* box-shadow: 0 0 0 2px rgba(var(--rgb-primary-500), 0.1); */
 		}
 	}
 	/* Emphasised call to action */
