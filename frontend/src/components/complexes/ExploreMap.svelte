@@ -74,6 +74,7 @@
 		<Loading style="z-index: 100" />
 	{/if}
 	<figure bind:this={container} />
+	<slot />
 </section>
 
 <style lang="postcss">

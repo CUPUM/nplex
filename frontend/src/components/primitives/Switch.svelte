@@ -19,6 +19,7 @@
 	export let variant: SwitchContext['variant'] = 'default';
 	export let size: number | CSSSizeValue = '1em';
 	export let orientation: SwitchContext['orientation'] = 'row';
+	export let disableCurrent: boolean = true;
 
 	let fieldset: HTMLFieldSetElement;
 	let obs: ResizeObserver;
@@ -38,7 +39,6 @@
 
 	function getBox(el: HTMLElement) {
 		if (el) {
-			// const rect = el.getBoundingClientRect();
 			return `
 				top: ${el.offsetTop}px;
 				left: ${el.offsetLeft}px;
@@ -72,6 +72,7 @@
 	class="{variant} {orientation}"
 	style:font-size={cssSize(size)}
 	style:flex-direction={orientation}
+	data-disable-current={disableCurrent}
 >
 	{#if currentBox}
 		<div
@@ -144,14 +145,18 @@
 		--radius: 1.5em;
 		background-color: var(--color-light-100);
 		box-shadow: 0 0 0 1px rgba(0, 0, 20, 0.05);
-		/* backdrop-filter: blur(24px); */
-		&:hover {
-		}
 		& #current {
-			background-color: var(--color-dark-900);
+			background-color: var(--color-primary-500);
 			&.temp {
 				background-color: rgba(0, 0, 20, 0.1);
-				/* box-shadow: 0 0 0 1px rgba(0, 0, 30, 0.5); */
+			}
+		}
+		&[data-disable-current='true'] {
+			& #current {
+				background-color: var(--color-dark-900);
+				&.temp {
+					background-color: rgba(0, 0, 20, 0.1);
+				}
 			}
 		}
 	}

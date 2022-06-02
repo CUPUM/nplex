@@ -10,11 +10,21 @@
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import { currentPath } from '$stores/currentPath';
+	import { isExploreArticle } from '$stores/explore';
 	import { mainScroll } from '$stores/scroll';
 	import { category, showCategory } from '$stores/search';
+	import { insert } from '$transitions/insert';
 	import { signOut } from '$utils/auth';
 	import { colors } from '$utils/colors';
-	import { creationBaseRoute, creationRoutes, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
+	import {
+		creationBaseRoute,
+		creationRoutes,
+		exploreRoutes,
+		mainRoutes,
+		userBaseRoute,
+		type ExploreRoute,
+	} from '$utils/routes';
+	import type { Category } from 'src/types/categories';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
@@ -26,6 +36,7 @@
 	let resizeObserver: ResizeObserver;
 	let hidden;
 	let overlay;
+	let categoryLoading: Category = null;
 	const hiddenThreshold = 100;
 
 	$: hidden = $mainScroll.down && $mainScroll.y > hiddenThreshold;
@@ -33,6 +44,12 @@
 
 	function updateHeight() {
 		navbarHeight = navbarRef.offsetHeight;
+	}
+
+	async function navigateCategory(route: ExploreRoute) {
+		categoryLoading = route.category;
+		await goto(route.pathname);
+		categoryLoading = null;
 	}
 
 	onMount(() => {
@@ -61,15 +78,29 @@
 					in:fly={{ y: -30, duration: 500, easing: expoOut, delay: 0 }}
 					out:fly={{ y: -30, duration: 500, easing: expoOut, delay: 0 }}
 				>
-					<Switch name="category" variant="navbar">
+					<Switch name="category" variant="navbar" disableCurrent={!$isExploreArticle}>
 						{#each exploreRoutes as r, i}
 							<SwitchItem
 								id={r.category}
 								value={r.category}
 								group={$category}
-								on:input={() => goto(r.pathname)}
+								on:click={() => navigateCategory(r)}
+								loading={categoryLoading === r.category}
 							>
 								{r.title}
+								{#if $isExploreArticle && r.category === $category}
+									<span
+										style="position: relative; display: inline-block; top: .15em"
+										transition:insert={{
+											width: true,
+											height: false,
+											duration: 250,
+											easing: expoOut,
+										}}
+									>
+										<Icon strokeWidth={2} name="undo" />
+									</span>
+								{/if}
 							</SwitchItem>
 						{/each}
 					</Switch>

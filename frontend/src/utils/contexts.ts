@@ -15,4 +15,6 @@ export enum Ctx {
 	ExploreMap = 'explore-map-context',
 	Select = 'select-context',
 	SelectGroup = 'select-group-context',
+	Map = 'map-context',
+	MapSource = 'map-source-context',
 }

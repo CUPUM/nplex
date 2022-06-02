@@ -23,6 +23,7 @@
 		`M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z;`;
 
 	const nshapes = 5;
+	const offset = Math.round(Math.random() * nshapes);
 
 	const keySplines = Array(nshapes - 1)
 		.fill('.8 0 0.2 1')
@@ -42,7 +43,6 @@
 	style:color
 >
 	<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-		<!-- <rect width="80" height="80" x="10" y="10" /> -->
 		<path>
 			<animate
 				{keySplines}
@@ -53,6 +53,8 @@
 				attributeName="d"
 				dur="4s"
 				begin="0s"
+				min="{offset}s"
+				max="{4 + offset}s"
 				repeatCount="indefinite"
 				values={d}
 			/>

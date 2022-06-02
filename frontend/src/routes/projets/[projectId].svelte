@@ -1,14 +1,11 @@
 <script context="module" lang="ts">
+	import ProjectTimeline from '$components/complexes/ProjectTimeline.svelte';
 	import { isExploreArticle } from '$stores/explore';
 	import { onDestroy } from 'svelte';
 	import { scale } from 'svelte/transition';
 </script>
 
 <script lang="ts">
-	export let id;
-	export let description;
-	export let image_url = `https://picsum.photos/seed/${(Math.random() * 1000).toFixed(0)}/800/600`;
-
 	isExploreArticle.set(true);
 
 	onDestroy(() => {
@@ -89,6 +86,7 @@
 			</ul>
 		</li>
 	</ul>
+	<ProjectTimeline />
 </article>
 
 <style lang="postcss">

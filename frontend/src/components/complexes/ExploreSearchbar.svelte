@@ -53,7 +53,7 @@
 			</svelte:fragment>
 		</Field>
 	</section>
-	<section id="search-tokens" use:horizontalScroll transition:fade={{}}>
+	<section id="search-tokens" use:horizontalScroll={{}} transition:fade={{}}>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>

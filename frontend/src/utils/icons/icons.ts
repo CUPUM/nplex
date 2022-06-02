@@ -1,11 +1,11 @@
 /**
- * ⚠️ WARNING ⚠️ // prettier-ignore
+ * ⚠️ WARNING ⚠️ // prettier-ignore.
  *
  * This file was generated from the svg files found in ./src/utils/icons, using ./scripts/PARSE_ICONS.ts, a script that
  * you can call easily with 'pnpm icons' (or 'pnpm icons:watch' for automatic rerun after modifications during
  * development). All changes added manually here will be lost on next execution of the generator script.
  *
- * ⚠️ WARNING ⚠️ // prettier-ignore
+ * ⚠️ WARNING ⚠️ // prettier-ignore.
  */
 
 export const icons = {
@@ -188,6 +188,19 @@ export const icons = {
 		strokes: [{ d: 'M12 4V20M4 12H20', type: 'primary' }],
 		fills: [],
 	},
+	'redo': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{
+				d: 'M18 13C18 16.3137 15.3137 19 12 19C8.68629 19 6 16.3137 6 13C6 9.68629 8.68629 7 12 7H15',
+				type: 'primary',
+			},
+			{ d: 'M12 3L15.2929 6.29289C15.6834 6.68342 15.6834 7.31658 15.2929 7.70711L12 11', type: 'primary' },
+		],
+		fills: [],
+	},
 	'search': {
 		width: '24',
 		height: '24',
@@ -219,6 +232,19 @@ export const icons = {
 		strokes: [
 			{ d: 'M13 4L20.2929 11.2929C20.6834 11.6834 20.6834 12.3166 20.2929 12.7071L13 20', type: 'primary' },
 			{ d: 'M3 12L20 12', type: 'primary' },
+		],
+		fills: [],
+	},
+	'undo': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{
+				d: 'M6 13C6 16.3137 8.68629 19 12 19C15.3137 19 18 16.3137 18 13C18 9.68629 15.3137 7 12 7H9',
+				type: 'primary',
+			},
+			{ d: 'M12 3L8.70711 6.29289C8.31658 6.68342 8.31658 7.31658 8.70711 7.70711L12 11', type: 'primary' },
 		],
 		fills: [],
 	},

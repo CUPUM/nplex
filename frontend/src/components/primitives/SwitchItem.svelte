@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
 	import { Ctx } from '$utils/contexts';
-	import type { SvelteProps } from '$utils/helpers/types';
 	import { getContext, onMount } from 'svelte';
-	import Icon from './Icon.svelte';
+	import Loading from './Loading.svelte';
 	import type { SwitchContext } from './Switch.svelte';
 
 	export let id: string;
@@ -11,8 +10,6 @@
 	export let group: any;
 	export let disabled: boolean = false;
 	export let loading: boolean = false;
-	export let icon: SvelteProps<Icon>['name'] = undefined;
-	export let iconPosition: 'before' | 'after' = 'before';
 
 	const ctx = getContext<SwitchContext>(Ctx.Switch);
 	const temp = ctx.temp;
@@ -57,12 +54,12 @@
 	use:ripple={{}}
 >
 	<input {id} {value} name={ctx.name} type="radio" bind:group on:change on:input />
-	{#if icon}
-		<Icon id="icon" name={icon} />
-	{/if}
 	<span id="inner">
 		<slot />
 	</span>
+	{#if loading}
+		<Loading color="currentColor" />
+	{/if}
 </label>
 
 <!-- <hr class="{ctx.variant} {ctx.orientation}" /> -->
@@ -81,6 +78,16 @@
 		border-radius: var(--inner-radius);
 		transition: all 0.15s ease-out;
 
+		&.current {
+		}
+
+		&.loading {
+			opacity: 0.5;
+			transform: scale(0.9);
+		}
+	}
+
+	:global([data-disable-current='true']) label {
 		&.current {
 			pointer-events: none;
 			cursor: default;
@@ -138,31 +145,34 @@
 			width: 5px;
 			height: 5px;
 			border-radius: 100%;
-			background-color: var(--color-dark-900);
+			background-color: currentColor;
 			bottom: 4px;
 			left: 50%;
-			opacity: 1;
 			transform: translateX(-50%) scale(0);
-			transition: all 0.3s 0.25s cubic-bezier(0, 0, 0, 1);
+			transition: transform 0.3s 0.25s cubic-bezier(0, 0, 0, 1);
 		}
 		&:hover,
 		&:focus {
 			color: var(--color-dark-900);
 		}
 		&.current {
-			opacity: 1;
 			color: var(--color-light-500);
 			&::after {
-				opacity: 1;
 				transform: translateX(-50%) scale(1);
 			}
 			&.some-temp {
 				color: var(--color-dark-900);
-				/* background-color: var(--color-dark-900); */
-
-				&::after {
-					/* background-color: var(--color-primary-500); */
-				}
+			}
+		}
+	}
+	:global([data-disable-current='false']) .navbar {
+		&.current {
+			color: var(--color-light-300);
+			&::after {
+				transform: translateX(-50%) scale(1);
+			}
+			&.some-temp {
+				color: var(--color-dark-900);
 			}
 		}
 	}
