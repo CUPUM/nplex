@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { colors } from '$utils/colors';
 	import { cssSize, type SizeInput } from '$utils/helpers/css';
-	import { elasticOut, expoIn } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
+	import { circInOut, elasticOut, expoIn } from 'svelte/easing';
+	import { scale, slide } from 'svelte/transition';
 
 	export let color: string = colors.primary[500];
+	export let backgroundColor: string = 'transparent';
 	export let size: SizeInput = '1em';
 
 	/**
@@ -35,14 +36,14 @@
 		.join(';');
 </script>
 
-<div
-	in:scale={{ duration: 500, easing: elasticOut }}
-	out:scale={{ duration: 200, easing: expoIn }}
-	{...$$restProps}
-	style:font-size={cssSize(size)}
-	style:color
->
-	<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+<div id="container" style:font-size={cssSize(size)} style:color>
+	<div id="bg" style:background-color={backgroundColor} transition:slide={{ duration: 350, easing: circInOut }} />
+	<svg
+		viewBox="0 0 100 100"
+		preserveAspectRatio="xMidYMid"
+		in:scale={{ duration: 500, easing: elasticOut }}
+		out:scale={{ duration: 350, easing: expoIn }}
+	>
 		<path>
 			<animate
 				{keySplines}
@@ -63,7 +64,7 @@
 </div>
 
 <style lang="postcss">
-	div {
+	#container {
 		user-select: none;
 		pointer-events: none;
 		position: absolute;
@@ -74,6 +75,17 @@
 		align-items: center;
 		background: transparent;
 		background-color: transparent;
+		z-index: 100;
+	}
+
+	#bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+		height: 100%;
 	}
 
 	svg {
