@@ -45,6 +45,7 @@
 	class:current={group === value}
 	class={ctx.variant}
 	class:some-temp={$temp}
+	class:loading
 	on:click
 	on:focus
 	on:mouseenter
@@ -82,8 +83,10 @@
 		}
 
 		&.loading {
-			opacity: 0.5;
-			transform: scale(0.9);
+			& #inner {
+				opacity: 0.5;
+				transform: scale(0.9);
+			}
 		}
 	}
 
@@ -98,6 +101,7 @@
 		display: block;
 		position: relative;
 		top: -0.1em;
+		transition: all 0.25s ease-in-out;
 	}
 
 	input {
