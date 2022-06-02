@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 specifiers:
   '@supabase/supabase-js': ^1.35.3
@@ -61,8 +61,8 @@ devDependencies:
   '@sveltejs/kit': 1.0.0-next.347_svelte@3.48.0
   '@types/node': 17.0.38
   '@types/overlayscrollbars': 1.12.1
-  '@typescript-eslint/eslint-plugin': 5.27.0_1cb21ecc3f04eca4a509631d5e40e8fa
-  '@typescript-eslint/parser': 5.27.0_eslint@8.16.0+typescript@4.7.2
+  '@typescript-eslint/eslint-plugin': 5.27.0_dszb5tb7atwkjjijmmov4qhi7i
+  '@typescript-eslint/parser': 5.27.0_xztl6dhthcahlo6akmb2bmjmle
   autoprefixer: 10.4.7_postcss@8.4.14
   browserslist: 4.20.3
   color-convert: 2.0.1
@@ -70,20 +70,20 @@ devDependencies:
   element-to-path: 1.2.1
   eslint: 8.16.0
   eslint-config-prettier: 8.5.0_eslint@8.16.0
-  eslint-plugin-svelte3: 3.4.1_eslint@8.16.0+svelte@3.48.0
+  eslint-plugin-svelte3: 3.4.1_vypdqzeyqutkgs6qzc7qod4c64
   esmo: 0.14.1
   fast-glob: 3.2.11
   postcss: 8.4.14
   postcss-font-magician: 3.0.0_postcss@8.4.14
   postcss-load-config: 3.1.4_postcss@8.4.14
   postcss-nesting: 10.1.7_postcss@8.4.14
-  postcss-normalize: 10.0.1_e75cc2f88047350d88863901d59c799b
+  postcss-normalize: 10.0.1_45omf6eai42q3ceghea5lhdztm
   prettier: 2.6.2
   prettier-plugin-jsdoc: 0.3.38_prettier@2.6.2
-  prettier-plugin-svelte: 2.7.0_prettier@2.6.2+svelte@3.48.0
+  prettier-plugin-svelte: 2.7.0_kkjbqzpydplecjtkxrgomroeru
   svelte: 3.48.0
-  svelte-check: 2.7.1_0d8b80d879b3164ac8135cc9abf0d616
-  svelte-preprocess: 4.10.6_6c54e50e2322b376d55fd779bd3e30d4
+  svelte-check: 2.7.1_bwfybwdzwmlevsatlte2x4gwcy
+  svelte-preprocess: 4.10.6_nrkokdrdekzxnvk725432prq2q
   svgson: 5.2.1
   tslib: 2.4.0
   typescript: 4.7.2
@@ -94,7 +94,7 @@ packages:
     resolution: {integrity: sha512-M0qqxAcwCsIVfpFQSlGN5XjXWu8l5JDZN+fPt1LeW5SZexQTgnaEvgXAY+CeygRw0EeppWHi12JxESWiWrB0Sg==}
     dev: true
 
-  /@csstools/selector-specificity/1.0.0_e73911252e8c76a7ba13ab9c39479e7d:
+  /@csstools/selector-specificity/1.0.0_444rcjjorr3kpoqtvoodsr46pu:
     resolution: {integrity: sha512-RkYG5KiGNX0fJ5YoI0f4Wfq2Yo74D25Hru4fxTOioYdQvHBxcrrtTTyT5Ozzh2ejcNrhFy7IEts2WyEY7yi5yw==}
     engines: {node: ^12 || ^14 || >=16}
     peerDependencies:
@@ -251,6 +251,8 @@ packages:
     dependencies:
       '@types/phoenix': 1.5.4
       websocket: 1.0.34
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /@supabase/storage-js/1.7.0:
@@ -271,6 +273,7 @@ packages:
       '@supabase/storage-js': 1.7.0
     transitivePeerDependencies:
       - encoding
+      - supports-color
     dev: false
 
   /@sveltejs/adapter-node/1.0.0-next.78:
@@ -445,7 +448,7 @@ packages:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: true
 
-  /@typescript-eslint/eslint-plugin/5.27.0_1cb21ecc3f04eca4a509631d5e40e8fa:
+  /@typescript-eslint/eslint-plugin/5.27.0_dszb5tb7atwkjjijmmov4qhi7i:
     resolution: {integrity: sha512-DDrIA7GXtmHXr1VCcx9HivA39eprYBIFxbQEHI6NyraRDxCGpxAFiYQAT/1Y0vh1C+o2vfBiy4IuPoXxtTZCAQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -456,10 +459,10 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 5.27.0_eslint@8.16.0+typescript@4.7.2
+      '@typescript-eslint/parser': 5.27.0_xztl6dhthcahlo6akmb2bmjmle
       '@typescript-eslint/scope-manager': 5.27.0
-      '@typescript-eslint/type-utils': 5.27.0_eslint@8.16.0+typescript@4.7.2
-      '@typescript-eslint/utils': 5.27.0_eslint@8.16.0+typescript@4.7.2
+      '@typescript-eslint/type-utils': 5.27.0_xztl6dhthcahlo6akmb2bmjmle
+      '@typescript-eslint/utils': 5.27.0_xztl6dhthcahlo6akmb2bmjmle
       debug: 4.3.4
       eslint: 8.16.0
       functional-red-black-tree: 1.0.1
@@ -472,7 +475,7 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/parser/5.27.0_eslint@8.16.0+typescript@4.7.2:
+  /@typescript-eslint/parser/5.27.0_xztl6dhthcahlo6akmb2bmjmle:
     resolution: {integrity: sha512-8oGjQF46c52l7fMiPPvX4It3u3V3JipssqDfHQ2hcR0AeR8Zge+OYyKUCm5b70X72N1qXt0qgHenwN6Gc2SXZA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -500,7 +503,7 @@ packages:
       '@typescript-eslint/visitor-keys': 5.27.0
     dev: true
 
-  /@typescript-eslint/type-utils/5.27.0_eslint@8.16.0+typescript@4.7.2:
+  /@typescript-eslint/type-utils/5.27.0_xztl6dhthcahlo6akmb2bmjmle:
     resolution: {integrity: sha512-vpTvRRchaf628Hb/Xzfek+85o//zEUotr1SmexKvTfs7czXfYjXVT/a5yDbpzLBX1rhbqxjDdr1Gyo0x1Fc64g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -510,7 +513,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@typescript-eslint/utils': 5.27.0_eslint@8.16.0+typescript@4.7.2
+      '@typescript-eslint/utils': 5.27.0_xztl6dhthcahlo6akmb2bmjmle
       debug: 4.3.4
       eslint: 8.16.0
       tsutils: 3.21.0_typescript@4.7.2
@@ -545,7 +548,7 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/utils/5.27.0_eslint@8.16.0+typescript@4.7.2:
+  /@typescript-eslint/utils/5.27.0_xztl6dhthcahlo6akmb2bmjmle:
     resolution: {integrity: sha512-nZvCrkIJppym7cIbP3pOwIkAefXOmfGPnCM0LQfzNaKxJHI6VjI8NC662uoiPlaf5f6ymkTy9C3NQXev2mdXmA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -636,7 +639,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.20.3
-      caniuse-lite: 1.0.30001344
+      caniuse-lite: 1.0.30001346
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -645,7 +648,7 @@ packages:
     dev: true
 
   /b3b/0.0.1:
-    resolution: {integrity: sha512-wWUK79hNEsHN1PTHwHsGYpTNupgaovM39g6374uoIL1gfVSwK2q9flM1DFyvSEYkELRWf5aMGSf7bkGGNSl0Jw==}
+    resolution: {integrity: sha1-/2n4pY2JGscysgF15HVGeZdU75s=}
     dev: true
 
   /balanced-match/1.0.2:
@@ -700,8 +703,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001344
-      electron-to-chromium: 1.4.143
+      caniuse-lite: 1.0.30001346
+      electron-to-chromium: 1.4.144
       escalade: 3.1.1
       node-releases: 2.0.5
       picocolors: 1.0.0
@@ -712,7 +715,7 @@ packages:
     dev: true
 
   /buffer-equal-constant-time/1.0.1:
-    resolution: {integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==}
+    resolution: {integrity: sha1-+OcRMvf/5uAaXJaXpMbz5I1cyBk=}
     dev: false
 
   /bufferutil/4.0.6:
@@ -738,13 +741,13 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.20.3
-      caniuse-lite: 1.0.30001344
+      caniuse-lite: 1.0.30001346
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
 
-  /caniuse-lite/1.0.30001344:
-    resolution: {integrity: sha512-0ZFjnlCaXNOAYcV7i+TtdKBp0L/3XEU2MF/x6Du1lrh+SRX4IfzIVL4HNJg5pB2PmFb8rszIGyOvsZnqqRoc2g==}
+  /caniuse-lite/1.0.30001346:
+    resolution: {integrity: sha512-q6ibZUO2t88QCIPayP/euuDREq+aMAxFE5S70PkrLh0iTDj/zEhgvJRKC2+CvXY6EWc6oQwUR48lL5vCW6jiXQ==}
     dev: true
 
   /chalk/4.1.2:
@@ -942,6 +945,11 @@ packages:
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
     dependencies:
       ms: 2.0.0
     dev: false
@@ -958,8 +966,8 @@ packages:
       ms: 2.1.2
     dev: true
 
-  /decode-named-character-reference/1.0.1:
-    resolution: {integrity: sha512-YV/0HQHreRwKb7uBopyIkLG17jG6Sv2qUchk9qSoVJ2f+flwRsPNBO0hAnjt6mTNYUT+vw9Gy2ihXg4sUWPi2w==}
+  /decode-named-character-reference/1.0.2:
+    resolution: {integrity: sha512-O8x12RzrUF8xyVcY0KJowWsmaJxQbmy0/EtnNtHRpsOcT7dFk5W598coHqBVpmWo1oQQfsCqfCmkZN5DJrZVdg==}
     dependencies:
       character-entities: 2.0.1
     dev: true
@@ -1058,8 +1066,8 @@ packages:
       safe-buffer: 5.2.1
     dev: false
 
-  /electron-to-chromium/1.4.143:
-    resolution: {integrity: sha512-2hIgvu0+pDfXIqmVmV5X6iwMjQ2KxDsWKwM+oI1fABEOy/Dqmll0QJRmIQ3rm+XaoUa/qKrmy5h7LSTFQ6Ldzg==}
+  /electron-to-chromium/1.4.144:
+    resolution: {integrity: sha512-R3RV3rU1xWwFJlSClVWDvARaOk6VUO/FubHLodIASDB3Mc2dzuWvNdfOgH9bwHUTqT79u92qw60NWfwUdzAqdg==}
     dev: true
 
   /element-to-path/1.2.1:
@@ -1344,7 +1352,7 @@ packages:
       eslint: 8.16.0
     dev: true
 
-  /eslint-plugin-svelte3/3.4.1_eslint@8.16.0+svelte@3.48.0:
+  /eslint-plugin-svelte3/3.4.1_vypdqzeyqutkgs6qzc7qod4c64:
     resolution: {integrity: sha512-7p59WG8qV8L6wLdl4d/c3mdjkgVglQCdv5XOTk/iNPBKXuuV+Q0eFP5Wa6iJd/G2M1qR3BkLPEzaANOqKAZczw==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -1989,7 +1997,7 @@ packages:
     dependencies:
       '@types/mdast': 3.0.10
       '@types/unist': 2.0.6
-      decode-named-character-reference: 1.0.1
+      decode-named-character-reference: 1.0.2
       mdast-util-to-string: 3.1.0
       micromark: 3.0.10
       micromark-util-decode-numeric-character-reference: 1.0.0
@@ -2019,7 +2027,7 @@ packages:
   /micromark-core-commonmark/1.0.6:
     resolution: {integrity: sha512-K+PkJTxqjFfSNkfAhp4GB+cZPfQd6dxtTXnf+RjZOV7T4EEXnvgzOcnp+eSTmpGk9d1S9sL6/lqrgSNn/s0HZA==}
     dependencies:
-      decode-named-character-reference: 1.0.1
+      decode-named-character-reference: 1.0.2
       micromark-factory-destination: 1.0.0
       micromark-factory-label: 1.0.2
       micromark-factory-space: 1.0.0
@@ -2117,7 +2125,7 @@ packages:
   /micromark-util-decode-string/1.0.2:
     resolution: {integrity: sha512-DLT5Ho02qr6QWVNYbRZ3RYOSSWWFuH3tJexd3dgN1odEuPNxCngTCXJum7+ViRAd9BbdxCvMToPOD/IvVhzG6Q==}
     dependencies:
-      decode-named-character-reference: 1.0.1
+      decode-named-character-reference: 1.0.2
       micromark-util-character: 1.1.0
       micromark-util-decode-numeric-character-reference: 1.0.0
       micromark-util-symbol: 1.0.1
@@ -2173,7 +2181,7 @@ packages:
     dependencies:
       '@types/debug': 4.1.7
       debug: 4.3.4
-      decode-named-character-reference: 1.0.1
+      decode-named-character-reference: 1.0.2
       micromark-core-commonmark: 1.0.6
       micromark-factory-space: 1.0.0
       micromark-util-character: 1.1.0
@@ -2375,7 +2383,7 @@ packages:
     engines: {node: '>=8.6'}
     dev: true
 
-  /postcss-browser-comments/4.0.0_e75cc2f88047350d88863901d59c799b:
+  /postcss-browser-comments/4.0.0_45omf6eai42q3ceghea5lhdztm:
     resolution: {integrity: sha512-X9X9/WN3KIvY9+hNERUqX9gncsgBA25XaeR+jshHz2j8+sYyHktHw1JdKuMjeLpGktXidqDhA7b/qm1mrBDmgg==}
     engines: {node: '>=8'}
     peerDependencies:
@@ -2559,7 +2567,7 @@ packages:
     peerDependencies:
       postcss: ^8.4
     dependencies:
-      '@csstools/selector-specificity': 1.0.0_e73911252e8c76a7ba13ab9c39479e7d
+      '@csstools/selector-specificity': 1.0.0_444rcjjorr3kpoqtvoodsr46pu
       postcss: 8.4.14
       postcss-selector-parser: 6.0.10
     dev: true
@@ -2655,7 +2663,7 @@ packages:
       postcss-value-parser: 4.2.0
     dev: true
 
-  /postcss-normalize/10.0.1_e75cc2f88047350d88863901d59c799b:
+  /postcss-normalize/10.0.1_45omf6eai42q3ceghea5lhdztm:
     resolution: {integrity: sha512-+5w18/rDev5mqERcG3W5GZNMJa1eoYYNGo8gB7tEwaos0ajk3ZXAI4mHGcNT47NE+ZnZD1pEpUOFLvltIwmeJA==}
     engines: {node: '>= 12'}
     peerDependencies:
@@ -2665,7 +2673,7 @@ packages:
       '@csstools/normalize.css': 12.0.0
       browserslist: 4.20.3
       postcss: 8.4.14
-      postcss-browser-comments: 4.0.0_e75cc2f88047350d88863901d59c799b
+      postcss-browser-comments: 4.0.0_45omf6eai42q3ceghea5lhdztm
       sanitize.css: 13.0.0
     dev: true
 
@@ -2735,7 +2743,7 @@ packages:
     dev: true
 
   /postcss/4.1.16:
-    resolution: {integrity: sha1-TESbTIr53zyvbTf44eV10DYXWNw=}
+    resolution: {integrity: sha512-aAutxE8MvL1bHylFMYb2c2nniFax8XDztHzZ+x5DVsNJnoW6VHvGSNSqdW3+ip255HCWfPjayVVFzMmyiL7opA==}
     dependencies:
       es6-promise: 2.3.0
       js-base64: 2.1.9
@@ -2782,7 +2790,7 @@ packages:
       - supports-color
     dev: true
 
-  /prettier-plugin-svelte/2.7.0_prettier@2.6.2+svelte@3.48.0:
+  /prettier-plugin-svelte/2.7.0_kkjbqzpydplecjtkxrgomroeru:
     resolution: {integrity: sha512-fQhhZICprZot2IqEyoiUYLTRdumULGRvw0o4dzl5jt0jfzVWdGqeYW27QTWAeXhoupEZJULmNoH3ueJwUWFLIA==}
     peerDependencies:
       prettier: ^1.16.4 || ^2.0.0
@@ -3022,7 +3030,7 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check/2.7.1_0d8b80d879b3164ac8135cc9abf0d616:
+  /svelte-check/2.7.1_bwfybwdzwmlevsatlte2x4gwcy:
     resolution: {integrity: sha512-vHVu2+SQ6ibt77iTQaq2oiOjBgGL48qqcg0ZdEOsP5pPOjgeyR9QbnaEdzdBs9nsVYBc/42haKtzb2uFqS8GVw==}
     hasBin: true
     peerDependencies:
@@ -3035,7 +3043,7 @@ packages:
       picocolors: 1.0.0
       sade: 1.8.1
       svelte: 3.48.0
-      svelte-preprocess: 4.10.6_6c54e50e2322b376d55fd779bd3e30d4
+      svelte-preprocess: 4.10.6_nrkokdrdekzxnvk725432prq2q
       typescript: 4.7.2
     transitivePeerDependencies:
       - '@babel/core'
@@ -3059,7 +3067,7 @@ packages:
       svelte: 3.48.0
     dev: true
 
-  /svelte-preprocess/4.10.6_6c54e50e2322b376d55fd779bd3e30d4:
+  /svelte-preprocess/4.10.6_nrkokdrdekzxnvk725432prq2q:
     resolution: {integrity: sha512-I2SV1w/AveMvgIQlUF/ZOO3PYVnhxfcpNyGt8pxpUVhPfyfL/CZBkkw/KPfuFix5FJ9TnnNYMhACK3DtSaYVVQ==}
     engines: {node: '>= 9.11.2'}
     requiresBuild: true
@@ -3308,6 +3316,8 @@ packages:
       typedarray-to-buffer: 3.1.5
       utf-8-validate: 5.0.9
       yaeti: 0.0.6
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /whatwg-url/5.0.0:
