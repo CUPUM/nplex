@@ -5,6 +5,7 @@
 	import { scale, slide } from 'svelte/transition';
 
 	export let color: string = colors.primary[500];
+	export let opacity: number = 1;
 	export let backgroundColor: string = 'transparent';
 	export let size: SizeInput = '1em';
 
@@ -36,8 +37,8 @@
 		.join(';');
 </script>
 
-<div id="container" style:font-size={cssSize(size)} style:color>
-	<div id="bg" style:background-color={backgroundColor} transition:slide={{ duration: 350, easing: circInOut }} />
+<div id="container" style:opacity style:font-size={cssSize(size)} style:color>
+	<div id="bg" style:background-color={backgroundColor} transition:slide={{ duration: 450, easing: circInOut }} />
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
@@ -54,8 +55,6 @@
 				attributeName="d"
 				dur="4s"
 				begin="0s"
-				min="{offset}s"
-				max="{4 + offset}s"
 				repeatCount="indefinite"
 				values={d}
 			/>

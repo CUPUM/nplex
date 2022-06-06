@@ -10,8 +10,7 @@
 	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
 	import type { SvelteProps } from '$utils/helpers/types';
 	import { setContext } from 'svelte';
-	import { expoOut } from 'svelte/easing';
-	import { fly } from 'svelte/transition';
+	import { expoInOut, expoOut } from 'svelte/easing';
 	import Button from './Button.svelte';
 	import Icon from './Icon.svelte';
 
@@ -74,12 +73,12 @@
 	{...$$restProps}
 >
 	{#if $$slots.left}
-		<div id="left" transition:width={{}}>
+		<div id="left">
 			<slot name="left" />
 		</div>
 	{/if}
 	{#if placeholderIcon && !value}
-		<div id="icon" transition:width={{ opacity: 0 }}>
+		<div id="icon" transition:width={{ opacity: 0, duration: 400, easing: expoInOut }}>
 			<Icon name={placeholderIcon} />
 		</div>
 	{/if}
@@ -109,9 +108,7 @@
 	{/if}
 	{#if $$slots.right}
 		<div id="right">
-			<div id="right-inner" transition:fly={{ x: 20 }}>
-				<slot name="right" />
-			</div>
+			<slot name="right" />
 		</div>
 	{/if}
 	{#if choices}
@@ -135,23 +132,24 @@
 		flex-direction: row;
 		border-radius: 1.1em;
 		height: var(--size);
-		min-height: 0;
+		/* min-height: var(--size);
+		max-height: var(--size); */
 		outline-style: solid;
 		outline-width: 2px;
 		outline-color: transparent;
 		transition: all 0.15s ease-out;
+		overflow: visible;
 	}
 
 	#icon {
 		position: relative;
 		height: 100%;
-		display: inline-flex;
+		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding-block: 0;
-		padding-inline: 0.5em 0em;
+		padding: 0;
+		padding-left: 0.8em;
 		margin: 0;
-		margin-right: -0.5em;
 		transform: translateX(0);
 		transition: all 0.15s ease-out;
 		top: -0.05em;
@@ -159,7 +157,7 @@
 
 	input {
 		outline: none;
-		display: inline-flex;
+		display: flex;
 		position: relative;
 		flex: 1;
 		font-size: 1em;
@@ -215,13 +213,17 @@
 	#left,
 	#right {
 		position: relative;
-		display: inline-flex;
+		display: flex;
 		flex-wrap: nowrap;
-		gap: 3px;
+		white-space: nowrap;
 		flex-direction: row;
-		align-items: center;
-		justify-content: center;
+		align-self: stretch;
+		justify-content: flex-start;
 		padding: var(--inset) 0;
+		min-height: 100%;
+		height: 100%;
+		max-height: 100%;
+		margin: 0;
 	}
 
 	#right {
@@ -254,11 +256,14 @@
 		background-color: rgba(var(--rgb-light-500), 0.9);
 		color: var(--color-dark-100);
 		width: 100%;
-		backdrop-filter: blur(12px);
 		&.focused {
 			outline-color: white;
 			background-color: white;
 			box-shadow: 0 1em 2em -1em rgba(0, 0, 20, 0.2);
+
+			& #icon {
+				color: var(--color-primary-500);
+			}
 		}
 		&:hover:not(.focused) {
 			/* background-color: var(--color-light-300); */

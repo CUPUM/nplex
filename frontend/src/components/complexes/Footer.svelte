@@ -1,7 +1,11 @@
 <script>
 </script>
 
-<footer>(Footer section)</footer>
+<footer>
+	<section>sitemap</section>
+	<section>partenaires</section>
+	<section>crédits</section>
+</footer>
 
 <style>
 	footer {

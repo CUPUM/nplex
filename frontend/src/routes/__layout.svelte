@@ -1,13 +1,16 @@
 <script lang="ts" context="module">
 	import { session } from '$app/stores';
 	import Auth from '$components/complexes/Auth.svelte';
+	import Footer from '$components/complexes/Footer.svelte';
 	import Navbar from '$components/complexes/Navbar.svelte';
+	import Loading from '$components/primitives/Loading.svelte';
 	import { signInModal } from '$stores/auth';
 	import '$styles/app.postcss';
 	import '$styles/vars.css';
 	import { db, getUserRole } from '$utils/database';
 	import { toUserRoleEnum } from '$utils/user';
 	import type { Load } from '@sveltejs/kit';
+	import { onMount } from 'svelte';
 
 	export const load: Load = async ({ session }) => {
 		// This load function triggers the "getSesion" server hook, allowing us to update the session's prevUrl from within the hook.
@@ -27,15 +30,26 @@
 		}
 	});
 
+	let loaded = false;
 	let navbarHeight: number;
+
+	onMount(() => {
+		setTimeout(() => {
+			loaded = true;
+		}, 500);
+	});
 </script>
 
 <Navbar bind:navbarHeight />
 <main style:--navbar-height="{navbarHeight}px">
 	<slot />
 </main>
+<Footer />
 {#if $signInModal}
 	<Auth />
+{/if}
+{#if !loaded}
+	<Loading size="2em" />
 {/if}
 
 <style lang="postcss">

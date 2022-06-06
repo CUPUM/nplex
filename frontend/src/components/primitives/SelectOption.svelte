@@ -7,8 +7,6 @@
 
 	const selectCtx = getContext(Ctx.Select);
 	const selectGroupCtx = getContext(Ctx.SelectGroup);
-
-	console.log(selectCtx);
 </script>
 
 <option name="option-{id}" {id} {value}>

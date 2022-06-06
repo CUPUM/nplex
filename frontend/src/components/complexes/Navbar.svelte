@@ -13,7 +13,6 @@
 	import { isExploreArticle } from '$stores/explore';
 	import { mainScroll } from '$stores/scroll';
 	import { category, showCategory } from '$stores/search';
-	import { insert } from '$transitions/insert';
 	import { signOut } from '$utils/auth';
 	import { colors } from '$utils/colors';
 	import {
@@ -27,7 +26,7 @@
 	import type { Category } from 'src/types/categories';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
-	import { fly } from 'svelte/transition';
+	import { fly, scale } from 'svelte/transition';
 
 	export let navbarHeight: number = 0;
 
@@ -36,20 +35,27 @@
 	let resizeObserver: ResizeObserver;
 	let hidden;
 	let overlay;
-	let categoryLoading: Category = null;
+	let loadingCategory: Category = null;
+	let resetableCategory: Category = null;
 	const hiddenThreshold = 100;
 
 	$: hidden = $mainScroll.down && $mainScroll.y > hiddenThreshold;
 	$: overlay = $mainScroll.y > hiddenThreshold + 100;
+	$: resetableCategory = $isExploreArticle && !loadingCategory ? $category : null;
+
+	function hasCategoryResetIcon(category: Category, current) {
+		return $isExploreArticle && category === current && !loadingCategory;
+	}
 
 	function updateHeight() {
 		navbarHeight = navbarRef.offsetHeight;
 	}
 
 	async function navigateCategory(route: ExploreRoute) {
-		categoryLoading = route.category;
+		$isExploreArticle = false;
+		loadingCategory = route.category;
 		await goto(route.pathname);
-		categoryLoading = null;
+		loadingCategory = null;
 	}
 
 	onMount(() => {
@@ -62,7 +68,7 @@
 <header bind:this={navbarRef} class:hidden class:overlay>
 	<div id="wrapper">
 		{#if mounted}
-			<nav id="main" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 500 }}>
+			<nav id="main" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 0 }}>
 				<a id="logo" href="/">
 					<Logo intro={true} color={colors.dark[900]} hoverColor={colors.primary[500]} />
 				</a>
@@ -75,7 +81,7 @@
 			{#if $showCategory}
 				<nav
 					id="category"
-					in:fly={{ y: -30, duration: 500, easing: expoOut, delay: 0 }}
+					in:fly={{ y: -30, duration: 500, easing: expoOut, delay: 500 }}
 					out:fly={{ y: -30, duration: 500, easing: expoOut, delay: 0 }}
 				>
 					<Switch name="category" variant="navbar" disableCurrent={!$isExploreArticle}>
@@ -85,20 +91,25 @@
 								value={r.category}
 								group={$category}
 								on:click={() => navigateCategory(r)}
-								loading={categoryLoading === r.category}
+								loading={loadingCategory === r.category}
 							>
-								{r.title}
-								{#if $isExploreArticle && r.category === $category}
+								<span
+									class="category-name"
+									style:left={resetableCategory === r.category ? '-.5em' : '0px'}
+								>
+									{r.title}
+								</span>
+								{#if resetableCategory === r.category}
 									<span
-										style="position: relative; display: inline-block; top: .15em"
-										transition:insert={{
-											width: true,
-											height: false,
-											duration: 250,
+										class="category-reset"
+										transition:scale={{
+											start: 0,
+											delay: 0,
+											duration: 500,
 											easing: expoOut,
 										}}
 									>
-										<Icon strokeWidth={2} name="undo" />
+										<Icon strokeWidth={1.7} name="undo" />
 									</span>
 								{/if}
 							</SwitchItem>
@@ -145,8 +156,8 @@
 		width: 100%;
 		top: 0;
 		margin: 0;
-		padding: 1rem;
-		padding-bottom: 0.5rem;
+		padding-inline: 1rem;
+		padding-block: 0.5rem;
 		font-size: var(--size-small);
 		transition: all 0.25s;
 	}
@@ -201,6 +212,20 @@
 
 	#category {
 		grid-area: category;
+	}
+
+	.category-name {
+		position: relative;
+		transition: left 0.35s 0.25s cubic-bezier(0.8, 0, 0.2, 1);
+	}
+
+	.category-reset {
+		position: absolute;
+		display: inline-block;
+		top: 0.15em;
+		padding: 0;
+		margin: 0;
+		transform: translateX(-40%);
 	}
 
 	#user {

@@ -146,19 +146,19 @@
 		background-color: var(--color-light-100);
 		box-shadow: 0 0 0 1px rgba(0, 0, 20, 0.05);
 		& #current {
-			background-color: var(--color-primary-500);
+			background-color: var(--color-dark-900);
 			&.temp {
 				background-color: rgba(0, 0, 20, 0.1);
 			}
 		}
-		&[data-disable-current='true'] {
+		/* &[data-disable-current='true'] {
 			& #current {
 				background-color: var(--color-dark-900);
 				&.temp {
 					background-color: rgba(0, 0, 20, 0.1);
 				}
 			}
-		}
+		} */
 	}
 
 	/* Cta theme */

@@ -2,6 +2,7 @@
 	This layout inherits from the adjacent unnamed layout
 -->
 <script lang="ts">
+	import ExploreArticleNav from '$components/complexes/ExploreArticleNav.svelte';
 	import ExploreFilters from '$components/complexes/ExploreFilters.svelte';
 	import ExploreList from '$components/complexes/ExploreList.svelte';
 	import ExploreMap from '$components/complexes/ExploreMap.svelte';
@@ -34,6 +35,9 @@
 		<ExploreSearchbar />
 	{/if}
 	<div id="explore-panes" style:--menu-height="{menuHeight}px">
+		{#if $isExploreArticle}
+			<ExploreArticleNav />
+		{/if}
 		{#if $showExploreFilters && !$isExploreArticle}
 			<ExploreFilters />
 		{/if}
@@ -75,5 +79,6 @@
 		flex: 1;
 		min-height: 0px;
 		flex-direction: row;
+		justify-content: center;
 	}
 </style>

@@ -1,15 +1,24 @@
 <script lang="ts">
+	import Button from '$components/primitives/Button.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
 	import Token from '$components/primitives/Token.svelte';
+	import { showExploreFilters } from '$stores/explore';
 	import { projectsEnums } from '$stores/projects';
-	// import { projectsFilters } from '$stores/search';
+	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
 	import { width } from '$transitions/width';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import ProjectsFilter from './ProjectsFilter.svelte';
 
+	const [send, receive] = crossfadeExploreFiltersButton;
+
+	function close() {
+		showExploreFilters.set(false);
+	}
+
 	function submit(e) {
-		console.log(e);
+		// Do stuff
 	}
 
 	onMount(() => {
@@ -20,6 +29,11 @@
 </script>
 
 <section on:submit|preventDefault on:input={submit} transition:width|local={{ duration: 350, easing: expoOut }}>
+	<div id="filters-close" in:receive={{ key: '' }} out:send={{ key: '' }}>
+		<Button on:click={close}>
+			<Icon slot="icon" name="cross" />
+		</Button>
+	</div>
 	<form>
 		<ProjectsFilter label="Types de sites">
 			{#if $projectsEnums}
@@ -61,17 +75,14 @@
 		flex: none;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: flex-start;
 		padding: 0;
-		padding-top: var(--menu-height);
 		width: var(--search-width);
-		overflow: hidden;
-		border-radius: 2rem;
+		overflow-x: visible;
 		margin-left: 1rem;
-		margin-right: 1rem;
+		margin-right: 0;
 		margin-bottom: 1rem;
-		background-color: white;
 	}
 
 	form {
@@ -81,16 +92,16 @@
 		gap: 0;
 		width: var(--search-width);
 		overflow-x: hidden;
-		overflow-y: overlay;
+		overflow-y: visible;
 		padding: 0;
 		margin: 0;
+		border-radius: 2rem;
+		background-color: white;
 	}
 
 	.sub-title {
 		font-weight: 600;
 		font-size: var(--size-small);
-		/* letter-spacing: 0.5px; */
-		/* text-transform: uppercase; */
 		padding-block: 0;
 		padding-inline: 0.25em;
 		margin-bottom: 1em;
@@ -99,5 +110,16 @@
 
 	.tokenset:not(:last-child) {
 		margin-bottom: 2em;
+	}
+
+	#filters-close {
+		font-size: var(--size-small);
+		padding: 0;
+		margin: 0;
+		z-index: 2;
+		flex: none;
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
 	}
 </style>

@@ -59,7 +59,7 @@
 		<slot />
 	</span>
 	{#if loading}
-		<Loading color="currentColor" />
+		<Loading />
 	{/if}
 </label>
 
@@ -83,9 +83,11 @@
 		}
 
 		&.loading {
+			pointer-events: none;
+
 			& #inner {
-				opacity: 0.5;
-				transform: scale(0.9);
+				opacity: 0.25;
+				transform: scale(0.95);
 			}
 		}
 	}
@@ -101,7 +103,9 @@
 		display: block;
 		position: relative;
 		top: -0.1em;
-		transition: all 0.25s ease-in-out;
+		transition-property: transform, opacity;
+		transition-timing-function: ease-in-out;
+		transition-duration: 0.2s;
 	}
 
 	input {
@@ -169,7 +173,7 @@
 			}
 		}
 	}
-	:global([data-disable-current='false']) .navbar {
+	/* :global([data-disable-current='false']) .navbar {
 		&.current {
 			color: var(--color-light-300);
 			&::after {
@@ -179,7 +183,7 @@
 				color: var(--color-dark-900);
 			}
 		}
-	}
+	} */
 
 	/* Cta theme */
 	.cta {

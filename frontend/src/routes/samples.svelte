@@ -8,15 +8,18 @@
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
+	import { slip } from '$transitions/slip';
 	import { colors } from '$utils/colors';
+	import type { SvelteProps } from '$utils/helpers/types';
 
 	let alt = false;
 	let useHover;
 	let switchval = 'test2v';
 	let active = false;
 	let showLoading = true;
+	let showTransitionBlock = false;
 
-	let variants = ['default', 'secondary', 'ghost', 'cta', 'nav'];
+	let variants: SvelteProps<Button>['variant'][] = ['default', 'secondary', 'ghost', 'cta', 'navbar'];
 	let sizes = ['small', 'medium', 'large'];
 	let size = sizes[0];
 
@@ -25,6 +28,24 @@
 
 <section />
 <section>
+	<h2>Transition Test</h2>
+	<Checkbox bind:checked={showTransitionBlock}>Show transition block</Checkbox>
+	<div>
+		{#if showTransitionBlock}
+			<Button>Test for component transition prop</Button>
+			<div
+				id="test-block"
+				style="width: 200px; height: 200px; background-color: blue; position: relative;"
+				in:slip={{ height: true, x: 200, duration: 450, scale: 0.1, overflow: 'visible', opacity: 0 }}
+				out:slip={{ height: true, x: 200, scale: 0.1, overflow: 'visible', opacity: 0 }}
+			>
+				<p>Content of transition!</p>
+			</div>
+		{/if}
+	</div>
+</section>
+<section>
+	<h2>Loading</h2>
 	<Checkbox bind:checked={showLoading}>Show loading</Checkbox>
 	<div style="position: relative;">
 		{#if showLoading}

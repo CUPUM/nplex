@@ -1,5 +1,8 @@
-import { expoInOut, expoOut } from 'svelte/easing';
+import { expoOut } from 'svelte/easing';
 
+/**
+ * Transition an element's width on insert / remove, akin to svelte's `slide` transition for width instead of height.
+ */
 export function width(el: Element, { delay = 0, duration = 350, opacity = 1, easing = expoOut }) {
 	const style = getComputedStyle(el);
 	const _opacity = +style.opacity;

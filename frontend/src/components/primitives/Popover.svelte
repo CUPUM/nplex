@@ -29,7 +29,8 @@
 
 	$: if (controlRef) {
 		console.log('running setup');
-		/** Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change). */
+		/**
+		 * Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change). */
 		controlRef.removeEventListener('click', show);
 		controlRef.removeEventListener('mouseenter', show);
 		controlRef.removeEventListener('mouseleave', hide);

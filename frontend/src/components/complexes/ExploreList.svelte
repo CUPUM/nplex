@@ -48,10 +48,12 @@
 		overflow: visible;
 		padding-top: 0;
 		padding-bottom: 2rem;
-		padding-inline: 1rem;
+		padding-inline: 1rem calc(1rem - var(--scroll-size));
 		margin-bottom: 0 !important;
 		border-radius: 2rem;
-		overflow-y: overlay;
+		overflow-y: scroll;
+		scroll-snap-type: y mandatory;
+		scroll-padding: 0;
 	}
 
 	.row {

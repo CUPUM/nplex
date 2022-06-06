@@ -1,6 +1,6 @@
 interface HorizontalScrollParams {
 	/**
-	 * Multiplier to be applied to the caught wheel event's `deltaY` when transposing to `scrollLeft`
+	 * Multiplier to be applied to the caught wheel event's `deltaY` when transposing to `scrollLeft`.
 	 */
 	multiplier?: number;
 	/**
@@ -21,7 +21,6 @@ export function horizontalScroll(element: HTMLElement, options?: HorizontalScrol
 	const { multiplier, precedeVertical } = { ...defaultParams, ...options };
 
 	function handleScroll(e: WheelEvent) {
-		console.log(element.scrollHeight);
 		// e.preventDefault();
 		if (precedeVertical) {
 			element.scrollLeft += e.deltaY * multiplier;

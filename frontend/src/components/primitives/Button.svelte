@@ -2,14 +2,14 @@
 	import { ripple } from '$actions/ripple';
 	import { colors } from '$utils/colors';
 	import { Ctx } from '$utils/contexts';
-	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/helpers/css';
 	import { getContext } from 'svelte';
 	import type { FieldContext } from './Field.svelte';
 	import Loading from './Loading.svelte';
 
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'navbar' = 'default';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
-	export let size: number | CSSSizeValue = '1em';
+	export let size: SizeInput = '1em';
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
 	export let iconPosition: 'before' | 'after' = 'before';
 	export let warning: boolean = false;
@@ -22,25 +22,14 @@
 	const fieldCtx = getContext<FieldContext>(Ctx.Field);
 	const popoverCtx = getContext(Ctx.Popover);
 
-	let autoSquare = false;
-	let autoOuterSize: string;
-	let contextInset: string;
-
 	/**
 	 * Soft auto-determination of squareness, where:
 	 *
 	 * - User-defined 'square' value has precedence.
 	 * - Squareness is automatically applied if button has no slot content.
 	 */
+	let autoSquare = false;
 	$: autoSquare = square || (!$$slots.default && $$slots.icon);
-	/**
-	 * Soft auto-determination of component size, where:
-	 *
-	 * - User-defined size has most precedence and is used if present.
-	 * - Fallback size is smaller if the button is contextualised inside a button parent context setter. (Useful for field
-	 *   buttons and other nested uses)
-	 */
-	// $: autoOuterSize = fieldCtx ? `calc(2.8em - 2 * ${cssSize(fieldCtx.inset)})` : '2.8em';
 </script>
 
 <svelte:element
@@ -78,9 +67,7 @@
 		<slot name="badge" />
 	{/if}
 	{#if loading}
-		<Loading
-			style="position: absolute; width: 1em; height: 1em; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: transparent;"
-		/>
+		<Loading />
 	{/if}
 </svelte:element>
 
@@ -208,6 +195,10 @@
 			color: var(--color-primary-500);
 			background-color: white;
 		}
+	}
+	:global(.button-parent:hover) .default:not(:hover) {
+		color: var(--color-dark-900);
+		background-color: white;
 	}
 	/* Secondary, more subtle button theme */
 	.secondary {

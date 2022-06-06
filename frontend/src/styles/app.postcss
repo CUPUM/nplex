@@ -41,6 +41,13 @@ body {
 	box-sizing: border-box;
 }
 
+/*
+	Global styles
+*/
+
+.button-parent {
+}
+
 .base-grid {
 	display: grid;
 	grid-template-columns:
@@ -58,6 +65,7 @@ body {
 /*
 	Vendor stylings reset
 */
+
 input[type='search']::-ms-clear {
 	display: none;
 	width: 0;
@@ -80,15 +88,15 @@ input[type='search']::-webkit-search-results-decoration {
 */
 
 :root {
-	--scroll-size: 6px;
+	--scroll-size: 5px;
 }
 
 * {
-	--scroll-color: rgba(5, 0, 20, 0);
+	--scroll-color: rgba(var(--rgb-dark-500), 0);
 }
 
 *:hover {
-	--scroll-color: rgba(5, 0, 20, 0.5);
+	--scroll-color: rgba(var(--rgb-dark-500), 0.25);
 }
 
 ::-webkit-scrollbar {

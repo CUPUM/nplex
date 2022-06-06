@@ -6,17 +6,19 @@
 	import Token from '$components/primitives/Token.svelte';
 	import { showExploreFilters } from '$stores/explore';
 	import { category, exploreSearchterm } from '$stores/search';
-	import { insert } from '$transitions/insert';
+	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
+	import { slip } from '$transitions/slip';
 	import { onDestroy, onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
-	import { fade } from 'svelte/transition';
+
+	const [send, receive] = crossfadeExploreFiltersButton;
 
 	function submit() {
-		console.log('submitted search bar form');
+		// console.log('submitted search bar form');
 	}
 
 	function reset() {
-		console.log('reset form');
+		// console.log('reset form');
 	}
 
 	onMount(() => {});
@@ -26,12 +28,30 @@
 
 <!-- Combiner avec "filters" -->
 <!-- https://stackoverflow.com/questions/4052756/how-to-combine-html-forms -->
-<form on:submit|preventDefault={submit} on:reset|preventDefault={reset}>
-	<section
-		in:insert={{ y: 40, opacity: 0, height: true, width: false, duration: 450, easing: expoOut }}
-		out:insert={{ duration: 700, easing: expoOut }}
-		id="search-field"
-	>
+<form
+	on:submit|preventDefault={submit}
+	on:reset|preventDefault={reset}
+	in:slip={{
+		height: true,
+		duration: 350,
+		delay: 0,
+		easing: expoOut,
+		overflow: 'visible',
+		scale: 0.9,
+		opacity: 0,
+	}}
+	out:slip={{
+		height: true,
+		duration: 500,
+		delay: 0,
+		easing: expoOut,
+		overflow: 'visible',
+		y: 40,
+		opacity: 0,
+		scale: 1.1,
+	}}
+>
+	<section id="search-field">
 		<Field
 			type="search"
 			placeholder="Chercher"
@@ -40,10 +60,14 @@
 			bind:value={$exploreSearchterm}
 		>
 			<svelte:fragment slot="left">
-				{#if $category}
-					<Button on:click={showExploreFilters.toggle} active={$showExploreFilters}>
-						<Icon slot="icon" name={$showExploreFilters ? 'cross' : 'parameters'} />
-					</Button>
+				{#if $category && !$showExploreFilters}
+					<div transition:slip={{ width: true, overflow: 'visible' }}>
+						<div in:receive={{ key: '' }} out:send={{ key: '' }}>
+							<Button on:click={showExploreFilters.toggle} active={$showExploreFilters}>
+								<Icon slot="icon" name={$showExploreFilters ? 'cross' : 'parameters'} />
+							</Button>
+						</div>
+					</div>
 				{/if}
 			</svelte:fragment>
 			<svelte:fragment slot="has-value">
@@ -53,7 +77,7 @@
 			</svelte:fragment>
 		</Field>
 	</section>
-	<section id="search-tokens" use:horizontalScroll={{}} transition:fade={{}}>
+	<section id="search-tokens" use:horizontalScroll={{}}>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
@@ -69,35 +93,36 @@
 
 <style lang="postcss">
 	form {
-		z-index: 1;
+		width: 100%;
+		z-index: 10;
 		position: sticky;
-		margin: 1rem;
-		margin-top: 0.5rem;
-		padding: 0;
+		padding: 1rem;
+		padding-top: 0.5rem;
+		margin: 0;
 		display: flex;
 		flex-direction: row;
+		overflow: visible;
 	}
 
 	#search-field {
-		grid-area: search;
 		position: relative;
 		z-index: 1;
 		width: var(--search-width);
 		flex: none;
-		display: block;
+		display: flex;
 		padding: 0rem;
+		margin: 0;
 	}
 
 	#search-tokens {
 		position: relative;
 		z-index: 10;
-		grid-area: tokens;
 		display: block;
-		overflow-x: overlay;
+		overflow-x: scroll;
+		overflow-y: visible;
 		white-space: nowrap;
 		margin-left: 0.5rem;
 		margin-right: 1rem;
-		border-radius: 1em;
 		/* mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%); */
 		transition: all 0.25s ease-out;
 
