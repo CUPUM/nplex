@@ -142,13 +142,13 @@
 	/* Nav theme */
 	.navbar {
 		--inset: 0px;
-		--radius: 1.5em;
-		background-color: var(--color-light-100);
-		box-shadow: 0 0 0 1px rgba(0, 0, 20, 0.05);
+		--radius: 1.1em;
+		background-color: var(--color-light-500);
+		/* box-shadow: 0 0 0 1px rgba(var(--rgb-dark-500), 0.1); */
 		& #current {
 			background-color: var(--color-dark-900);
 			&.temp {
-				background-color: rgba(0, 0, 20, 0.1);
+				background-color: rgba(var(--rgb-dark-500), 0.1);
 			}
 		}
 		/* &[data-disable-current='true'] {

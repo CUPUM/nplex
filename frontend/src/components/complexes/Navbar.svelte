@@ -140,9 +140,7 @@
 						<Icon name="user" slot="icon" />
 						<Badge slot="badge" />
 					</Button>
-					<Button style="border-radius: 2em" variant="cta" href={userBaseRoute.pathname}
-						>Créer un comtpe</Button
-					>
+					<Button variant="cta" href={userBaseRoute.pathname}>Créer un comtpe</Button>
 				{/if}
 			</nav>
 		{/if}
@@ -199,7 +197,7 @@
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		gap: 0px;
+		gap: 3px;
 	}
 
 	#main {

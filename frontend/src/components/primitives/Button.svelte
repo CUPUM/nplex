@@ -254,7 +254,6 @@
 	.navbar {
 		color: var(--color-dark-300);
 		background-color: transparent;
-		border-radius: 2em;
 		font-weight: 450;
 		&:hover,
 		&:focus,

@@ -1,7 +1,6 @@
 <script lang="ts" context="module">
 	import { session } from '$app/stores';
 	import Auth from '$components/complexes/Auth.svelte';
-	import Footer from '$components/complexes/Footer.svelte';
 	import Navbar from '$components/complexes/Navbar.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
 	import { signInModal } from '$stores/auth';
@@ -44,7 +43,7 @@
 <main style:--navbar-height="{navbarHeight}px">
 	<slot />
 </main>
-<Footer />
+<!-- <Footer /> -->
 {#if $signInModal}
 	<Auth />
 {/if}
