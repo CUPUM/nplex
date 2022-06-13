@@ -1,13 +1,13 @@
 /**
- * ⚠️ WARNING ⚠️ // prettier-ignore.
+ * ⚠️ WARNING ⚠️
  *
- * This file was generated from the svg files found in ./src/utils/icons, using ./scripts/PARSE_ICONS.ts, a script that
- * you can call easily with 'pnpm icons' (or 'pnpm icons:watch' for automatic rerun after modifications during
- * development). All changes added manually here will be lost on next execution of the generator script.
+ * This file was generated from the svg assets found at ./src/utils/icons. All changes added manually here will be lost
+ * on next execution of the generator script.
  *
- * ⚠️ WARNING ⚠️ // prettier-ignore.
+ * Last generated on: Mon Jun 13 2022 01:39:33 GMT-0400 (Eastern Daylight Time)
+ *
+ * ⚠️ WARNING ⚠️
  */
-
 export const icons = {
 	'asterisk-underline': {
 		width: '24',

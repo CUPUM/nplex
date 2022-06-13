@@ -71,7 +71,7 @@ export async function getUserProfile() {
 
 		if (data) {
 			data.role = data.role[0].role;
-			console.log(data);
+			// console.log(data);
 			return data;
 		}
 	} catch (error) {

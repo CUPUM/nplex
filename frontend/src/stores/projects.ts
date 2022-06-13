@@ -52,7 +52,7 @@ projects.set(
 				bbox: [-73.5452, 45.4687, -73.6811, 45.5486],
 			}).features[0];
 			point.properties.radius = Math.round(Math.random() * 500 + 120);
-			console.log(point);
+			// console.log(point);
 			return {
 				id,
 				title: 'Nom du projet ' + id,

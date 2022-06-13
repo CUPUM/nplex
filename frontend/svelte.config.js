@@ -1,90 +1,46 @@
 import node from '@sveltejs/adapter-node';
-import { execSync } from 'child_process';
-import fg from 'fast-glob';
-import path from 'path';
 import preprocess from 'svelte-preprocess';
+import generateCssVarsPlugin from './plugins/dist/generateCssVars.js';
+import generateIconsPlugin from './plugins/dist/generateIcons.js';
 
-/** @type {import('@sveltejs/kit').Config} */
+/**
+ * @type {import('@sveltejs/kit').Config}
+ */
 const config = {
-	// Consult https://github.com/sveltejs/svelte-preprocess
-	// for more information about preprocessors
 	preprocess: preprocess({
 		postcss: true,
 	}),
 	extensions: ['.svelte'],
 	kit: {
 		adapter: node(),
+		alias: {
+			$actions: 'src/actions',
+			$components: 'src/components',
+			$stores: 'src/stores',
+			$styles: 'src/styles',
+			$transitions: 'src/transitions',
+			$routes: 'src/routes',
+			$utils: 'src/utils',
+			$apitypes: '.svelte-kit/types/src/routes/api',
+		},
 		vite: {
 			server: {
-				// Look for env-defined port (most-likely Heroku's auto-attributed port),
-				// else use default.
+				/**
+				 * Look for env-defined port (most-likely Heroku's auto-attributed port), else use default.
+				 */
 				port: process.env.PORT || 3000,
 			},
-			plugins: [
-				{
-					name: 'generator-scripts-build',
-					apply: 'build',
-					async buildStart() {
-						try {
-							const scriptFiles = await fg('scripts/*.ts');
-							scriptFiles.forEach((script) => {
-								console.log(`Generating asset from ${script}`);
-								execSync(`esmo ${script}`);
-							});
-						} catch (error) {
-							console.error(
-								'Error occured while trying to run generator scripts from vite plugin.',
-								error
-							);
-						}
-					},
-				},
-				{
-					/** Hook called during dev to configure vite's server (does not apply to build/prod) */
-					name: 'generator-scripts-dev',
-					apply: 'serve',
-					configureServer(server) {
-						const listener = async (abspath) => {
-							const utils = ['colors.ts', 'sizes.ts'];
-							/** Associate additionnal files to the respective script they should trigger when modified */
-							if (abspath.startsWith(path.resolve('scripts'))) {
-								console.log(`Generating asset from ${abspath.replace(path.resolve('.'), '')}...`);
-								execSync(`esmo ${abspath}`);
-							}
-							if (
-								abspath.startsWith(path.resolve('src', 'utils', 'icons')) &&
-								path.extname(abspath).toLocaleLowerCase() === '.svg'
-							) {
-								console.log(`Generating icons definition from changed svg source...`);
-								execSync(`esmo ${path.resolve('scripts', 'icons.ts')}`);
-							}
-							if (utils.map((filename) => path.resolve('src', 'utils', filename)).includes(abspath)) {
-								console.log(`Generating CSS vars definitions from changed ts source...`);
-								execSync(`esmo ${path.resolve('scripts', 'css_vars.ts')}`);
-							}
-						};
-						server.watcher.on('add', listener);
-						server.watcher.on('change', listener);
-					},
-				},
-			],
-			resolve: {
-				alias: {
-					$actions: path.resolve('src/actions'),
-					$components: path.resolve('src/components'),
-					$stores: path.resolve('src/stores'),
-					$styles: path.resolve('src/styles'),
-					$transitions: path.resolve('src/transitions'),
-					$routes: path.resolve('src/routes'),
-					$utils: path.resolve('src/utils'),
-					$apitypes: path.resolve('.svelte-kit/types/src/routes/api'),
-				},
-			},
-			// Préfixes des variables .env à exposer ('' n'est pas valide, https://vitejs.dev/config/#envdir)
+			plugins: [generateIconsPlugin(), generateCssVarsPlugin()],
+			/**
+			 * Prefix required for ENV vars to be exposed (https://vitejs.dev/config/#envdir).
+			 */
 			envPrefix: 'PUBLIC',
 		},
 	},
 	compilerOptions: {
+		/**
+		 * Only applied in prod.
+		 */
 		cssHash: ({ hash, css /* name, filename */ }) => `nplex-${hash(css)}`,
 	},
 };
