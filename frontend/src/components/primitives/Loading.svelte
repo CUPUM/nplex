@@ -9,6 +9,12 @@
 	export let backgroundColor: string = 'transparent';
 	export let size: SizeInput = '1em';
 
+	let outroing = false;
+
+	function outro() {
+		outroing = true;
+	}
+
 	/**
 	 * These shapes must contain the same amounts and types of points for the animation to work.
 	 */
@@ -38,7 +44,13 @@
 </script>
 
 <div id="container" style:opacity style:font-size={cssSize(size)} style:color>
-	<div id="bg" style:background-color={backgroundColor} transition:slide={{ duration: 450, easing: circInOut }} />
+	<div
+		id="bg"
+		style:background-color={backgroundColor}
+		on:outrostart={outro}
+		transition:slide={{ duration: 450, easing: circInOut }}
+		class:outroing
+	/>
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
@@ -79,12 +91,17 @@
 
 	#bg {
 		position: absolute;
-		top: 0;
+		bottom: 0;
 		left: 0;
 		padding: 0;
 		margin: 0;
 		width: 100%;
 		height: 100%;
+
+		&.outroing {
+			top: 0;
+			bottom: unset;
+		}
 	}
 
 	svg {

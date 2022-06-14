@@ -20,24 +20,24 @@
 	});
 </script>
 
-<ul id="set" {...$$restProps} style:font-size={cssSize(size)}>
+<dl id="set" {...$$restProps} style:font-size={cssSize(size)}>
 	{#if legend}
-		<legend>{legend}</legend>
+		<dt>{legend}</dt>
 	{/if}
 	<div>
 		<slot />
 	</div>
-</ul>
+</dl>
 
 <style lang="postcss">
-	ul {
+	dl {
 		padding: 0;
 		margin: 0;
 		text-indent: 0;
-		display: block;
+		display: inline-block;
 	}
 
-	legend {
+	dt {
 		font-weight: 400;
 		font-size: var(--size-large);
 		padding: 0.5em;

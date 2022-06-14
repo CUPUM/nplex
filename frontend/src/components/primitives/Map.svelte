@@ -4,16 +4,16 @@
 		loading: Writable<boolean>;
 		inited: Writable<boolean>;
 	}
-
-	// let stylesheet = false;
 </script>
 
 <script lang="ts">
+	import { colors } from '$utils/colors';
 	import { Ctx } from '$utils/contexts';
 	import { mapStyles } from '$utils/map';
+	import { sizes } from '$utils/sizes';
 	import { LngLat, Map, type LngLatLike, type StyleSpecification } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
-	import { createEventDispatcher, onDestroy, onMount, setContext } from 'svelte';
+	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import Loading from './Loading.svelte';
 	export let mapStyle: string | StyleSpecification = mapStyles.light;
@@ -46,11 +46,23 @@
 		}, 1);
 	}
 
-	setContext<MapContext>(Ctx.Map, {
-		getMap: () => map,
-		loading,
-		inited,
-	});
+	/**
+	 * Let's first check if there's already a map context that the developper manually set in the parent tree, and use this one if available rather than creating a new context.
+	 */
+	const parentMapContext: MapContext = getContext(Ctx.Map);
+	if (parentMapContext) {
+		console.log('parent context detected');
+		parentMapContext.getMap = () => map;
+		parentMapContext.loading = loading;
+		parentMapContext.inited = inited;
+		console.log(parentMapContext);
+	} else {
+		setContext<MapContext>(Ctx.Map, {
+			getMap: () => map,
+			loading,
+			inited,
+		});
+	}
 
 	onMount(() => {
 		resizeObs = new ResizeObserver(handleResize);
@@ -67,28 +79,30 @@
 		});
 
 		map.on('load', (e) => {
-			dispatch('load');
+			dispatch('load', e);
 			inited.set(true);
 			loading.set(false);
 		});
 
 		map.on('dataloading', (e) => {
-			dispatch('dataloading');
+			dispatch('dataloading', e);
 			// if (!e.hasOwnProperty('tile')) {
 			// 	loading = true;
 			// }
 		});
 
 		map.on('data', (e) => {
-			dispatch('data');
+			dispatch('data', e);
 			// loading = false;
 		});
 
 		map.on('pitch', (e) => {
+			dispatch('pitch', e);
 			pitch = map.getPitch();
 		});
 
 		map.on('rotate', (e) => {
+			dispatch('rotate', e);
 			bearing = map.getBearing();
 		});
 	});
@@ -96,9 +110,9 @@
 	onDestroy(() => {});
 </script>
 
-<figure bind:this={containerRef} class:loading class:not-inited={!inited} {...$$restProps}>
+<figure bind:this={containerRef} class:loading class:not-inited={!inited}>
 	{#if $loading}
-		<Loading />
+		<Loading size={sizes.large} color={colors.dark[500]} />
 	{/if}
 	<slot />
 </figure>

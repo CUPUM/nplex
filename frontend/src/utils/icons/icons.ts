@@ -4,11 +4,87 @@
  * This file was generated from the svg assets found at ./src/utils/icons. All changes added manually here will be lost
  * on next execution of the generator script.
  *
- * Last generated on: Mon Jun 13 2022 01:39:33 GMT-0400 (Eastern Daylight Time)
+ * Last generated on: Mon Jun 13 2022 17:00:13 GMT-0400 (GMT-04:00)
  *
  * ⚠️ WARNING ⚠️
  */
 export const icons = {
+	'arrow-down-left': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [{ d: 'M19 5L6 18M18 19L8 19C6.34315 19 5 17.6569 5 16L5 6', type: 'primary' }],
+		fills: [{ d: 'M0 0H24V24H0V0Z', type: 'primary' }],
+	},
+	'arrow-down-right': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [{ d: 'M5 5L18 18M19 6L19 16C19 17.6569 17.6569 19 16 19L6 19', type: 'primary' }],
+		fills: [{ d: 'M0 0H24V24H0V0Z', type: 'primary' }],
+	},
+	'arrow-down': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{
+				d: 'M3 13L9.87868 19.8787C11.0503 21.0503 12.9497 21.0502 14.1213 19.8787L21 13M12 20L12 2',
+				type: 'primary',
+			},
+		],
+		fills: [{ d: 'M0 0H24V24H0V0Z', type: 'primary' }],
+	},
+	'arrow-left': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{
+				d: 'M11 3L4.12132 9.87868C2.94975 11.0503 2.94975 12.9497 4.12132 14.1213L11 21M4 12L22 12',
+				type: 'primary',
+			},
+		],
+		fills: [],
+	},
+	'arrow-right': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{
+				d: 'M13 21L19.8787 14.1213C21.0502 12.9497 21.0502 11.0503 19.8787 9.87868L13 3M20 12L2 12',
+				type: 'primary',
+			},
+		],
+		fills: [{ d: 'M0 0H24V24H0V0Z', type: 'primary' }],
+	},
+	'arrow-up-left': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [{ d: 'M19 19L6 6M5 18L5 8C5 6.34315 6.34315 5 8 5L18 5', type: 'primary' }],
+		fills: [{ d: 'M0 0H24V24H0V0Z', type: 'primary' }],
+	},
+	'arrow-up-right': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [{ d: 'M5 19L18 6M6 5H16C17.6569 5 19 6.34315 19 8V18', type: 'primary' }],
+		fills: [],
+	},
+	'arrow-up': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{
+				d: 'M21 11L14.1213 4.12132C12.9497 2.94975 11.0503 2.94975 9.87868 4.12132L3 11M12 4L12 22',
+				type: 'primary',
+			},
+		],
+		fills: [{ d: 'M0 0H24V24H0V0Z', type: 'primary' }],
+	},
 	'asterisk-underline': {
 		width: '24',
 		height: '24',
@@ -206,9 +282,8 @@ export const icons = {
 		height: '24',
 		viewBox: '0 0 24 24',
 		strokes: [
-			{ d: 'M16 9.5 A6.5 6.5 0 0 1 9.5 16 A6.5 6.5 0 0 1 3 9.5 A6.5 6.5 0 0 1 16 9.5 z', type: 'primary' },
-			{ d: 'M17 17L20 20', type: 'primary' },
-			{ d: 'M12 9.5C12 8.11929 10.8807 7 9.5 7', type: 'secondary' },
+			{ d: 'M17 10 A7 7 0 0 1 10 17 A7 7 0 0 1 3 10 A7 7 0 0 1 17 10 z', type: 'primary' },
+			{ d: 'M18 18L20 20', type: 'primary' },
 		],
 		fills: [],
 	},
@@ -255,7 +330,7 @@ export const icons = {
 		strokes: [
 			{ d: 'M16 7 A4 4 0 0 1 12 11 A4 4 0 0 1 8 7 A4 4 0 0 1 16 7 z', type: 'primary' },
 			{
-				d: 'M4.51096 16.8368C5.83699 15.4853 8.1717 14 12.0288 14C15.9239 14 18.2489 15.5146 19.5523 16.8766C20.6402 18.0134 20.2014 19.6651 18.703 20.1455C17.3088 20.5926 15.1751 21 12.0288 21C8.91123 21 6.77633 20.6 5.3687 20.1578C3.83398 19.6756 3.38434 17.9851 4.51096 16.8368Z',
+				d: 'M20 18C20 21 15.9706 21 12 21C8 21 4 21 4 18C4 15.7909 7.02944 15 12 15C16.9706 15 20 15.7909 20 18Z',
 				type: 'primary',
 			},
 		],

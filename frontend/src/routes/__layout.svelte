@@ -6,6 +6,7 @@
 	import { signInModal } from '$stores/auth';
 	import '$styles/app.postcss';
 	import '$styles/vars.css';
+	import { colors } from '$utils/colors';
 	import { db, getUserRole } from '$utils/database';
 	import { toUserRoleEnum } from '$utils/user';
 	import type { Load } from '@sveltejs/kit';
@@ -48,7 +49,7 @@
 	<Auth />
 {/if}
 {#if !loaded}
-	<Loading size="2em" />
+	<Loading size="2rem" backgroundColor={colors.light[100]} />
 {/if}
 
 <style lang="postcss">

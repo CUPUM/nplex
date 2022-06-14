@@ -4,6 +4,7 @@
 	import Field from '$components/primitives/Field.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import Token from '$components/primitives/Token.svelte';
+	import TokenSet from '$components/primitives/TokenSet.svelte';
 	import { showExploreFilters } from '$stores/explore';
 	import { category, exploreSearchterm } from '$stores/search';
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
@@ -72,18 +73,20 @@
 			</svelte:fragment>
 			<svelte:fragment slot="has-value">
 				<Button type="submit" variant="cta" slot="right">
-					<Icon slot="icon" name="submit" />
+					<Icon slot="icon" name="arrow-right" />
 				</Button>
 			</svelte:fragment>
 		</Field>
 	</section>
 	<section id="search-tokens" use:horizontalScroll={{}}>
-		<Token>Jeton de recherche</Token>
-		<Token>Jeton de recherche</Token>
-		<Token>Jeton de recherche</Token>
-		<Token>Jeton de recherche</Token>
-		<Token>Jeton de recherche</Token>
-		<Token>Jeton de recherche</Token>
+		<TokenSet>
+			<Token>Jeton de recherche</Token>
+			<Token>Jeton de recherche</Token>
+			<Token>Jeton de recherche</Token>
+			<Token>Jeton de recherche</Token>
+			<Token>Jeton de recherche</Token>
+			<Token>Jeton de recherche</Token>
+		</TokenSet>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>

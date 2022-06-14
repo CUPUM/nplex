@@ -17,7 +17,7 @@
 </script>
 
 <svelte:element
-	this={tokenSetCtx ? 'li' : 'div'}
+	this={tokenSetCtx ? 'dd' : 'div'}
 	id="token"
 	class={autoVariant}
 	style:font-size={cssSize(size)}

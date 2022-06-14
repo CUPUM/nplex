@@ -67,9 +67,7 @@
 			</svg>
 		{/if}
 		{#if loading}
-			<Loading
-				style="position: absolute; width: 1em; height: 1em; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: transparent;"
-			/>
+			<Loading />
 		{/if}
 	</div>
 </a>

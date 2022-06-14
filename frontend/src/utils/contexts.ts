@@ -25,4 +25,5 @@ export enum Ctx {
 	MapFeature = 'map-feature-context',
 	MapLayer = 'map-layer-context',
 	MapTooltip = 'map-tooltip-context',
+	MapToolbar = 'map-toolbar-context',
 }
