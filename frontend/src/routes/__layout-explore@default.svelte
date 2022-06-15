@@ -30,11 +30,11 @@
 	});
 </script>
 
-<section id="explore" class:is-article={$isExploreArticle}>
+<div id="explore" class:is-article={$isExploreArticle}>
 	{#if !$isExploreArticle}
 		<ExploreSearchbar />
 	{/if}
-	<div id="explore-panes" style:--menu-height="{menuHeight}px">
+	<section id="explore-panes" style:--menu-height="{menuHeight}px">
 		{#if $isExploreArticle}
 			<ExploreArticleNav />
 		{/if}
@@ -47,8 +47,8 @@
 		{#if $showExploreList && !$isExploreArticle}
 			<ExploreList />
 		{/if}
-	</div>
-</section>
+	</section>
+</div>
 <slot />
 
 <style lang="postcss">

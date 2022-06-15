@@ -1,0 +1,27 @@
+/*
+	Button component should listen to hover on parent elements with this class to trigger hover/focus style.
+	Event handling should be done manually.
+*/
+.button-parent {
+	cursor: pointer;
+}
+
+/*
+	Grid template for full-width elements.
+*/
+.core-grid {
+	width: 100%;
+	display: grid;
+	grid-template-columns:
+		[full-start]
+		minmax(1rem, auto)
+		[main-start col1-start]
+		minmax(auto, 40ch)
+		[col1-end col2-start]
+		minmax(auto, 40ch)
+		[col2-end col3-start]
+		minmax(auto, 40ch)
+		[col3-end main-end]
+		minmax(1rem, auto)
+		[full-end];
+}

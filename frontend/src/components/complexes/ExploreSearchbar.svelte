@@ -4,7 +4,6 @@
 	import Field from '$components/primitives/Field.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import Token from '$components/primitives/Token.svelte';
-	import TokenSet from '$components/primitives/TokenSet.svelte';
 	import { showExploreFilters } from '$stores/explore';
 	import { category, exploreSearchterm } from '$stores/search';
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
@@ -79,14 +78,12 @@
 		</Field>
 	</section>
 	<section id="search-tokens" use:horizontalScroll={{}}>
-		<TokenSet>
-			<Token>Jeton de recherche</Token>
-			<Token>Jeton de recherche</Token>
-			<Token>Jeton de recherche</Token>
-			<Token>Jeton de recherche</Token>
-			<Token>Jeton de recherche</Token>
-			<Token>Jeton de recherche</Token>
-		</TokenSet>
+		<Token>Jeton de recherche</Token>
+		<Token>Jeton de recherche</Token>
+		<Token>Jeton de recherche</Token>
+		<Token>Jeton de recherche</Token>
+		<Token>Jeton de recherche</Token>
+		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
@@ -96,9 +93,8 @@
 
 <style lang="postcss">
 	form {
-		width: 100%;
 		z-index: 10;
-		position: sticky;
+		position: relative;
 		padding: 1rem;
 		padding-top: 0.5rem;
 		margin: 0;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
-	import { category, showCategory } from '$stores/search';
+	import { showCategory } from '$stores/search';
 	import { sizes } from '$utils/sizes';
 	import { onDestroy } from 'svelte';
 
@@ -14,7 +14,6 @@
 	const buttonSize = sizes.small;
 	const buttonVariant = 'secondary';
 
-	category.set(null);
 	showCategory.set(true);
 
 	onDestroy(() => {

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
-	import { colors } from '$utils/colors';
 	import { Ctx } from '$utils/contexts';
 	import { cssSize, type SizeInput } from '$utils/helpers/css';
 	import { getContext } from 'svelte';
@@ -19,6 +18,7 @@
 	export let disabled: boolean = false;
 	export let loading: boolean = false;
 
+	let elementRef: HTMLElement;
 	const fieldCtx = getContext<FieldContext>(Ctx.Field);
 	const popoverCtx = getContext(Ctx.Popover);
 
@@ -34,7 +34,6 @@
 
 <svelte:element
 	this={href ? 'a' : 'button'}
-	use:ripple={{ startColor: colors.primary[100] }}
 	on:click
 	on:focus
 	on:mouseenter
@@ -50,7 +49,9 @@
 	{href}
 	{type}
 	{...$$restProps}
+	bind:this={elementRef}
 >
+	<div class="ripple-host" use:ripple={{ startColor: 'currentColor', controlElement: elementRef }} />
 	<div class="align-{contentAlign}">
 		{#if $$slots.icon}
 			<span id="icon" class="icon-{iconPosition}" style:font-size={$$slots.default ? '1em' : '1.2em'}>
@@ -73,17 +74,17 @@
 
 <style lang="postcss">
 	.button {
-		--outer-size: calc(3em - 2 * var(--inset, 0px));
+		--size: calc(3em - 2 * var(--inset, 0px));
 		display: inline-block;
 		cursor: pointer;
 		box-sizing: border-box;
 		position: relative;
 		border: none;
 		text-decoration: none;
-		height: var(--outer-size);
-		min-height: var(--outer-size);
-		min-width: var(--outer-size);
-		border-radius: max(calc(1.1em - var(--inset, 0px)), var(--size-xsmall, 0px));
+		height: var(--size);
+		min-height: var(--size);
+		min-width: var(--size);
+		border-radius: calc(1.2em - var(--inset, 0px));
 		margin: 0;
 		padding: 0 1.2em;
 		font-family: var(--font-main);
@@ -91,7 +92,6 @@
 		outline-width: 2px;
 		outline-style: solid;
 		outline-color: transparent;
-		overflow: hidden;
 		transition: all 0.2s ease-out;
 		&.warning {
 			background-color: var(--color-error-100);
@@ -104,9 +104,18 @@
 		}
 	}
 
+	.ripple-host {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		border-radius: inherit;
+		top: 0;
+		left: 0;
+	}
+
 	/* Squareness */
 	.square {
-		width: var(--outer-size);
+		width: var(--size);
 		padding: 0;
 		& div {
 			justify-content: center;
@@ -160,8 +169,7 @@
 		align-items: center;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-		letter-spacing: 0px;
-		/* border: 1px solid black; */
+		letter-spacing: 0.02em;
 	}
 	#label {
 		grid-area: center;
@@ -230,18 +238,15 @@
 	}
 	/* Emphasised call to action */
 	.cta {
-		font-weight: 500;
 		color: white;
 		background-color: var(--color-primary-500);
 		transition: all 0.2s;
-		& span {
-			letter-spacing: 0.02em;
-		}
 		&:hover,
 		&:focus,
 		&.hover {
 			color: white;
 			background-color: var(--color-primary-700);
+			box-shadow: 0 0.5em 2em -1em var(--color-primary-500);
 		}
 		&:active {
 		}
@@ -252,23 +257,38 @@
 	}
 	/* Navbar button theme */
 	.navbar {
-		color: var(--color-dark-300);
+		color: rgba(var(--rgb-dark-900), 0.5);
 		background-color: transparent;
-		font-weight: 450;
+		font-weight: 550;
+		&::after {
+			content: '';
+			opacity: 0;
+			position: absolute;
+			bottom: 0.25em;
+			left: 50%;
+			width: 5px;
+			height: 5px;
+			background-color: currentColor;
+			border-radius: 5px;
+			transform: translate(-50%, -200%) scale(0.5);
+			transition: opacity 0.35s, transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
+		}
 		&:hover,
 		&:focus,
 		&.hover {
 			color: var(--color-dark-900);
-			background-color: rgba(var(--rgb-light-500), 1);
+			background-color: rgba(var(--rgb-light-500), 0.5);
 		}
 		&:active {
 		}
 		&.active {
-			/* font-weight: 500; */
 			cursor: default;
 			color: var(--color-primary-500);
-			/* background-color: var(--color-light-100); */
 			pointer-events: none;
+			&::after {
+				opacity: 1;
+				transform: translate(-50%, -50%) scale(1);
+			}
 		}
 	}
 </style>

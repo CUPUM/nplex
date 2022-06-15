@@ -8,6 +8,7 @@
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
+	import { backgroundColor } from '$stores/backgroundColor';
 	import { slip } from '$transitions/slip';
 	import { colors } from '$utils/colors';
 	import type { SvelteProps } from '$utils/helpers/types';
@@ -27,6 +28,13 @@
 </script>
 
 <section />
+<section>
+	<h2>BgColor</h2>
+	<div>
+		<p>Color: {$backgroundColor}</p>
+		<input type="color" bind:value={$backgroundColor} />
+	</div>
+</section>
 <section>
 	<h2>Transition Test</h2>
 	<Checkbox bind:checked={showTransitionBlock}>Show transition block</Checkbox>

@@ -7,6 +7,8 @@
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import type { MapContext } from './Map.svelte';
 
+	// export let map: Map;
+
 	onMount(() => {});
 
 	let mapCtx = getContext<MapContext>(Ctx.Map);
@@ -23,17 +25,18 @@
 	<slot />
 </menu>
 
-<style>
+<style lang="postcss">
 	menu {
-		--inset: 3px;
+		font-size: var(--size-small);
+		--outset: 5px;
 		z-index: 1000;
 		position: absolute;
 		display: flex;
 		top: 1rem;
 		left: 1rem;
 		margin: 0;
-		/* background-color: var(--color-light-100); */
-		background-color: red;
+		background-color: white;
+		box-shadow: 0 0 0 var(--outset) white;
 		padding: var(--inset);
 		border-radius: 1.1em;
 	}

@@ -3,22 +3,22 @@
  *
  * This file was generated from the utils found at ./src/utils.
  * All changes added manually here will be lost on next execution of the generator script.
- * Last generated on: Mon Jun 13 2022 01:38:21 GMT-0400 (Eastern Daylight Time)
- * 
+ * Last generated on: Tue Jun 14 2022 22:02:26 GMT-0400 (Eastern Daylight Time)
+ *
  * ⚠️ WARNING ⚠️
  */
 
 :root {
-	--color-primary-100: hsl(155, 62%, 68%);
-	--rgb-primary-100: 123, 224, 182;
-	--color-primary-300: hsl(154, 60%, 55%);
-	--rgb-primary-300: 71, 209, 149;
-	--color-primary-500: hsl(153, 60%, 46%);
-	--rgb-primary-500: 47, 188, 124;
-	--color-primary-700: hsl(152, 62%, 40%);
-	--rgb-primary-700: 39, 165, 106;
-	--color-primary-900: hsl(151, 64%, 33%);
-	--rgb-primary-900: 30, 138, 86;
+	--color-primary-100: hsl(150, 56%, 76%);
+	--rgb-primary-100: 160, 228, 194;
+	--color-primary-300: hsl(154, 60%, 64%);
+	--rgb-primary-300: 108, 218, 171;
+	--color-primary-500: hsl(158, 64%, 50%);
+	--rgb-primary-500: 46, 209, 149;
+	--color-primary-700: hsl(160, 68%, 42%);
+	--rgb-primary-700: 34, 180, 131;
+	--color-primary-900: hsl(162, 72%, 34%);
+	--rgb-primary-900: 24, 149, 112;
 	--color-secondary-100: hsl(19, 86%, 81%);
 	--rgb-secondary-100: 248, 191, 165;
 	--color-secondary-300: hsl(18, 83%, 77%);
@@ -29,26 +29,26 @@
 	--rgb-secondary-700: 232, 138, 104;
 	--color-secondary-900: hsl(15, 66%, 58%);
 	--rgb-secondary-900: 219, 113, 77;
-	--color-light-100: hsl(42, 9%, 97%);
-	--rgb-light-100: 248, 248, 247;
-	--color-light-300: hsl(42, 9%, 94%);
-	--rgb-light-300: 241, 240, 238;
-	--color-light-500: hsl(42, 9%, 91%);
-	--rgb-light-500: 234, 233, 230;
-	--color-light-700: hsl(42, 9%, 87%);
-	--rgb-light-700: 225, 223, 219;
-	--color-light-900: hsl(42, 9%, 82%);
-	--rgb-light-900: 213, 211, 205;
-	--color-dark-100: hsl(230, 10%, 40%);
-	--rgb-dark-100: 92, 95, 112;
-	--color-dark-300: hsl(231, 11%, 34%);
-	--rgb-dark-300: 77, 80, 96;
-	--color-dark-500: hsl(232, 12%, 26%);
-	--rgb-dark-500: 58, 60, 74;
-	--color-dark-700: hsl(233, 13%, 19%);
-	--rgb-dark-700: 42, 44, 55;
-	--color-dark-900: hsl(234, 14%, 12%);
-	--rgb-dark-900: 26, 27, 35;
+	--color-light-100: hsl(62, 10%, 98%);
+	--rgb-light-100: 250, 250, 249;
+	--color-light-300: hsl(62, 10%, 95%);
+	--rgb-light-300: 243, 244, 241;
+	--color-light-500: hsl(62, 10%, 89%);
+	--rgb-light-500: 230, 230, 224;
+	--color-light-700: hsl(62, 10%, 82%);
+	--rgb-light-700: 213, 214, 205;
+	--color-light-900: hsl(62, 10%, 72%);
+	--rgb-light-900: 190, 191, 176;
+	--color-dark-100: hsl(180, 10%, 50%);
+	--rgb-dark-100: 115, 140, 140;
+	--color-dark-300: hsl(181, 11%, 38%);
+	--rgb-dark-300: 86, 107, 108;
+	--color-dark-500: hsl(182, 12%, 29%);
+	--rgb-dark-500: 65, 82, 83;
+	--color-dark-700: hsl(183, 13%, 21%);
+	--rgb-dark-700: 47, 60, 61;
+	--color-dark-900: hsl(184, 14%, 14%);
+	--rgb-dark-900: 31, 40, 41;
 	--color-success-100: hsl(113, 70%, 72%);
 	--rgb-success-100: 145, 234, 134;
 	--color-success-500: hsl(113, 63%, 61%);

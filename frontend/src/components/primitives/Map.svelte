@@ -13,7 +13,7 @@
 	import { sizes } from '$utils/sizes';
 	import { LngLat, Map, type LngLatLike, type StyleSpecification } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
-	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import Loading from './Loading.svelte';
 	export let mapStyle: string | StyleSpecification = mapStyles.light;
@@ -46,23 +46,11 @@
 		}, 1);
 	}
 
-	/**
-	 * Let's first check if there's already a map context that the developper manually set in the parent tree, and use this one if available rather than creating a new context.
-	 */
-	const parentMapContext: MapContext = getContext(Ctx.Map);
-	if (parentMapContext) {
-		console.log('parent context detected');
-		parentMapContext.getMap = () => map;
-		parentMapContext.loading = loading;
-		parentMapContext.inited = inited;
-		console.log(parentMapContext);
-	} else {
-		setContext<MapContext>(Ctx.Map, {
-			getMap: () => map,
-			loading,
-			inited,
-		});
-	}
+	setContext<MapContext>(Ctx.Map, {
+		getMap: () => map,
+		loading,
+		inited,
+	});
 
 	onMount(() => {
 		resizeObs = new ResizeObserver(handleResize);
@@ -80,7 +68,10 @@
 
 		map.on('load', (e) => {
 			dispatch('load', e);
-			inited.set(true);
+			if (!$inited) {
+				dispatch('init');
+				inited.set(true);
+			}
 			loading.set(false);
 		});
 

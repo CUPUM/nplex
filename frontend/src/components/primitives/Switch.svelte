@@ -1,14 +1,15 @@
 <script lang="ts" context="module">
 	import { Ctx } from '$utils/contexts';
-	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/helpers/css';
 	import { onDestroy, onMount, setContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import { writable } from 'svelte/store';
 	import { scale } from 'svelte/transition';
+
 	export interface SwitchContext {
 		name: string;
-		current: Writable<HTMLElement>;
-		temp: Writable<HTMLElement>;
+		currentRef: Writable<HTMLElement>;
+		tempRef: Writable<HTMLElement>;
 		variant: 'default' | 'secondary' | 'navbar' | 'ghost' | 'cta';
 		orientation: 'column' | 'row';
 	}
@@ -16,24 +17,23 @@
 
 <script lang="ts">
 	export let name: string;
+	export let size: SizeInput = '1em';
 	export let variant: SwitchContext['variant'] = 'default';
-	export let size: number | CSSSizeValue = '1em';
 	export let orientation: SwitchContext['orientation'] = 'row';
-	export let disableCurrent: boolean = true;
 
 	let fieldset: HTMLFieldSetElement;
 	let obs: ResizeObserver;
 	/** Corresponds to the label element of the currently selected input. */
-	let current: SwitchContext['current'] = writable(null);
+	let current: SwitchContext['currentRef'] = writable(null);
 	let currentBox: string;
 	/** Corresponds to the currently hovered label. */
-	let temp: SwitchContext['temp'] = writable(null);
+	let temp: SwitchContext['tempRef'] = writable(null);
 
 	setContext<SwitchContext>(Ctx.Switch, {
 		name,
-		current,
+		currentRef: current,
 		variant,
-		temp,
+		tempRef: temp,
 		orientation,
 	});
 
@@ -42,7 +42,7 @@
 			return `
 				top: ${el.offsetTop}px;
 				left: ${el.offsetLeft}px;
-				width: ${el.offsetWidth - 1}px;`;
+				width: ${el.offsetWidth}px;`;
 		}
 		return null;
 	}
@@ -72,7 +72,6 @@
 	class="{variant} {orientation}"
 	style:font-size={cssSize(size)}
 	style:flex-direction={orientation}
-	data-disable-current={disableCurrent}
 >
 	{#if currentBox}
 		<div
@@ -87,18 +86,16 @@
 
 <style lang="postcss">
 	fieldset {
-		--inset: 1px;
 		--size: 3em;
-		--itemsize: calc(var(--size) - 2 * var(--inset));
-		--radius: max(0.8em, var(--size-xsmall, 0px));
-		--inner-radius: calc(var(--radius) - var(--inset));
+		--radius: 1.2em;
+		--outset: 3px;
 		position: relative;
 		border: none;
 		display: inline-flex;
 		align-items: stretch;
 		justify-content: center;
 		gap: 0;
-		padding: var(--inset);
+		padding: 0;
 		border-radius: var(--radius);
 		overflow: visible;
 		transition: all 0.25s ease-out;
@@ -107,10 +104,9 @@
 	#current {
 		z-index: 1;
 		position: absolute;
-		height: var(--itemsize);
-		border-radius: var(--inner-radius);
+		height: var(--size);
+		border-radius: inherit;
 		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.2), box-shadow 0.25s ease-in-out;
-		transform: scale(1.01);
 	}
 
 	/* Variants */
@@ -141,24 +137,22 @@
 
 	/* Nav theme */
 	.navbar {
-		--inset: 0px;
-		--radius: 1.1em;
-		background-color: var(--color-light-500);
-		/* box-shadow: 0 0 0 1px rgba(var(--rgb-dark-500), 0.1); */
+		--outset: 0px;
+		--bg: var(--color-light-300);
+		background-color: var(--bg);
+		box-shadow: 0 0 0 var(--outset) var(--bg);
+		&:hover,
+		&:focus {
+			/* --bg: white; */
+			/* box-shadow: 0 0 0 var(--outset) var(--bg), 0 0.5em 1.5em -0.5em rgba(var(--rgb-dark-900), 0.2); */
+		}
 		& #current {
-			background-color: var(--color-dark-900);
+			background-color: var(--color-dark-700);
+
 			&.temp {
-				background-color: rgba(var(--rgb-dark-500), 0.1);
+				opacity: 0.1;
 			}
 		}
-		/* &[data-disable-current='true'] {
-			& #current {
-				background-color: var(--color-dark-900);
-				&.temp {
-					background-color: rgba(0, 0, 20, 0.1);
-				}
-			}
-		} */
 	}
 
 	/* Cta theme */

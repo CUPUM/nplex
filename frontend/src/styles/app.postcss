@@ -5,11 +5,8 @@
 		Additionnal global CSS custom properties derived from TypeScript constants, such as
 		colors and sizes, are generated at build time and located in ./vars.css
 	*/
-
 	width: 100vw;
 	height: 100vh;
-	background-color: var(--color-light-100);
-	/* background-color: white; */
 	padding: 0;
 	margin: 0;
 	font-family: var(--font-main);
@@ -17,6 +14,7 @@
 	font-size: var(--size-md);
 	font-weight: 400;
 	overflow: hidden;
+	transition: background-color 1.5s ease-in-out;
 }
 
 body {
@@ -39,27 +37,6 @@ body {
 *::after {
 	/* -webkit-font-smoothing: antialiased; */
 	box-sizing: border-box;
-}
-
-/*
-	Global styles
-*/
-
-.button-parent {
-}
-
-.base-grid {
-	display: grid;
-	grid-template-columns:
-		[full-start]
-		auto
-		[main-start col1-start]
-		min(50%, 30ch)
-		[col1-end col2-start]
-		min(50%, 30ch)
-		[col2-end main-end]
-		auto
-		[full-end];
 }
 
 /*
@@ -96,7 +73,7 @@ input[type='search']::-webkit-search-results-decoration {
 }
 
 *:hover {
-	--scroll-color: rgba(var(--rgb-dark-500), 0.25);
+	--scroll-color: rgba(var(--rgb-dark-500), 0.5);
 }
 
 ::-webkit-scrollbar {

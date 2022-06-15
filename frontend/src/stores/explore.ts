@@ -2,6 +2,7 @@
  * Global states for the explore pages.
  */
 
+import type { Map } from 'maplibre-gl';
 import { writable } from 'svelte/store';
 
 /**
@@ -31,6 +32,11 @@ export const exploreFiltersStates = (function () {
 			}),
 	};
 })();
+
+/**
+ * Explore map.
+ */
+export const exploreMap = writable<Map>(null);
 
 /**
  * Global state of projects' map pane.

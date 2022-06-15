@@ -12,20 +12,20 @@
 	export let loading: boolean = false;
 
 	const ctx = getContext<SwitchContext>(Ctx.Switch);
-	const temp = ctx.temp;
-	const current = ctx.current;
+	const temp = ctx.tempRef;
+	const current = ctx.currentRef;
 	let label: HTMLElement;
 
 	function setTemp() {
-		ctx.temp.set(label);
+		ctx.tempRef.set(label);
 	}
 
 	function clearTemp() {
-		ctx.temp.set(null);
+		ctx.tempRef.set(null);
 	}
 
 	function setCurrent() {
-		ctx.current.set(label);
+		ctx.currentRef.set(label);
 	}
 
 	$: if (group === value) {
@@ -46,6 +46,7 @@
 	class={ctx.variant}
 	class:some-temp={$temp}
 	class:loading
+	class:disabled
 	on:click
 	on:focus
 	on:mouseenter
@@ -70,32 +71,27 @@
 		user-select: none;
 		position: relative;
 		cursor: pointer;
-		font-weight: 400;
+		font-weight: 500;
 		display: inline-flex;
 		padding: 0 1.2em;
-		height: var(--itemsize);
+		height: var(--size);
 		justify-content: center;
 		align-items: center;
-		border-radius: var(--inner-radius);
+		border-radius: inherit;
 		transition: all 0.15s ease-out;
+		letter-spacing: 0.01em;
 
-		&.current {
+		&.disabled {
+			pointer-events: none;
 		}
 
 		&.loading {
 			pointer-events: none;
 
 			& #inner {
-				opacity: 0.25;
-				transform: scale(0.95);
+				opacity: 0.2;
+				transform: scale(0.94);
 			}
-		}
-	}
-
-	:global([data-disable-current='true']) label {
-		&.current {
-			pointer-events: none;
-			cursor: default;
 		}
 	}
 
@@ -146,44 +142,17 @@
 	.navbar {
 		background-color: transparent;
 		color: var(--color-dark-500);
-		font-weight: 600;
-		&::after {
-			content: '';
-			position: absolute;
-			width: 5px;
-			height: 5px;
-			border-radius: 100%;
-			background-color: currentColor;
-			bottom: 4px;
-			left: 50%;
-			transform: translateX(-50%) scale(0);
-			transition: transform 0.3s 0.25s cubic-bezier(0, 0, 0, 1);
-		}
 		&:hover,
 		&:focus {
 			color: var(--color-dark-900);
 		}
 		&.current {
 			color: var(--color-light-500);
-			&::after {
-				transform: translateX(-50%) scale(1);
-			}
 			&.some-temp {
-				color: var(--color-dark-900);
+				color: var(--color-primary-500);
 			}
 		}
 	}
-	/* :global([data-disable-current='false']) .navbar {
-		&.current {
-			color: var(--color-light-300);
-			&::after {
-				transform: translateX(-50%) scale(1);
-			}
-			&.some-temp {
-				color: var(--color-dark-900);
-			}
-		}
-	} */
 
 	/* Cta theme */
 	.cta {

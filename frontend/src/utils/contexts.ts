@@ -1,12 +1,13 @@
 /**
- * Dictionnary of component context keys used for automatically detecting certain compositions or nestings like buttons
- * being nested inside field input compoenents or select options inside select parents.
+ * Dictionnary of context keys used for automatically detecting certain compositions or nestings like buttons being
+ * nested inside field input compoenents or select options inside select parents.
  *
- * Every key specified here should directly refer the host component's name. The key's associated values follow a
- * `[kebab-case-key]-context` format for consistency and simplicity, but developpers shouldn't interact with these
- * directly, but rather always refer to them using `Ctx.[key]`
+ * Every key specified here should directly refer the host component's name or the targeted styling property. The key's
+ * associated values follow a `[kebab-case-key]-context` format for consistency and simplicity. Developpers shouldn't
+ * interact with these directly, but rather always refer to them through the enum.
  */
 export enum Ctx {
+	// Component context keys
 	Field = 'input-context',
 	Token = 'token-context',
 	TokenSet = 'token-set-context',
@@ -26,4 +27,8 @@ export enum Ctx {
 	MapLayer = 'map-layer-context',
 	MapTooltip = 'map-tooltip-context',
 	MapToolbar = 'map-toolbar-context',
+	// Styling context keys
+	Inset = 'inset-context',
+	BorderRadius = 'border-radius-context',
+	Size = 'size-context',
 }

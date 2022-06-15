@@ -4,13 +4,20 @@
 -->
 <script lang="ts">
 	import { colors } from '$utils/colors';
-	import { elasticIn } from 'svelte/easing';
+	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { elasticOut, expoIn } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
-	export let color: string = colors.secondary[500];
+	export let color: string = colors.primary[500];
+	export let size: SizeInput = '6px';
 </script>
 
-<div style:--color={color} in:scale={{ easing: elasticIn }}>
+<div
+	style:font-size={cssSize(size)}
+	style:--color={color}
+	in:scale={{ easing: elasticOut, duration: 750 }}
+	out:scale={{ easing: expoIn, duration: 1000 }}
+>
 	<slot />
 </div>
 
@@ -18,16 +25,16 @@
 	div {
 		position: absolute;
 		flex: none;
-		top: 6px;
-		right: 6px;
+		top: 8px;
+		right: 8px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 10px;
-		height: 10px;
+		width: 2em;
+		height: 2em;
 		border-radius: 50%;
 		overflow: hidden;
 		background-color: var(--color);
-		box-shadow: 1px 3px 6px -2px var(--color);
+		transform: translate(50%, -50%);
 	}
 </style>

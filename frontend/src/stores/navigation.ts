@@ -1,7 +1,8 @@
 import { page } from '$app/stores';
 import { getSegments } from '$utils/helpers/url';
 import { mainRoutes } from '$utils/routes';
-import { derived } from 'svelte/store';
+import type { Category } from 'src/types/categories';
+import { derived, writable, type Writable } from 'svelte/store';
 
 /**
  * App-wide store containing information about the current route state of the client. Useful for navbar highlights,
@@ -37,3 +38,8 @@ export const currentPath = derived(page, ($page) => {
 		main,
 	};
 });
+
+/**
+ * Which category is currently loading, if navigating, Default to null;
+ */
+export const loadingCategory: Writable<Category> = writable(null);

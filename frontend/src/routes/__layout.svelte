@@ -5,8 +5,8 @@
 	import Loading from '$components/primitives/Loading.svelte';
 	import { signInModal } from '$stores/auth';
 	import '$styles/app.postcss';
+	import '$styles/helpers.postcss';
 	import '$styles/vars.css';
-	import { colors } from '$utils/colors';
 	import { db, getUserRole } from '$utils/database';
 	import { toUserRoleEnum } from '$utils/user';
 	import type { Load } from '@sveltejs/kit';
@@ -45,11 +45,12 @@
 	<slot />
 </main>
 <!-- <Footer /> -->
+<!-- Add general modal / message outlet -->
 {#if $signInModal}
 	<Auth />
 {/if}
 {#if !loaded}
-	<Loading size="2rem" backgroundColor={colors.light[100]} />
+	<Loading size="2rem" />
 {/if}
 
 <style lang="postcss">
