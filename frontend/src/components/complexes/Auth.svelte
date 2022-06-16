@@ -3,7 +3,7 @@
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
 	import SocialButton from '$components/primitives/SocialButton.svelte';
-	import { signInModal } from '$stores/auth';
+	import { authMessage, authModal } from '$stores/auth';
 	import { signIn, signUp } from '$utils/auth';
 	import { providers } from '$utils/providers';
 	import { expoIn, expoOut, linear } from 'svelte/easing';
@@ -12,8 +12,8 @@
 	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
 
 	function close() {
-		message = null;
-		$signInModal = false;
+		authMessage.set(null);
+		authModal.close();
 	}
 
 	enum Action {
@@ -26,7 +26,6 @@
 	let currentAction = null;
 	let signInError = false;
 	let signUpError = false;
-	let message = null;
 
 	async function submit(e: SubmitEvent) {
 		disabled = true;

@@ -3,6 +3,8 @@
 	import Checkbox from '$components/primitives/Checkbox.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
+	import Range from '$components/primitives/Range.svelte';
+	import RangeThumb from '$components/primitives/RangeThumb.svelte';
 	import Select from '$components/primitives/Select.svelte';
 	import SelectOption from '$components/primitives/SelectOption.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
@@ -11,18 +13,21 @@
 	import { backgroundColor } from '$stores/backgroundColor';
 	import { slip } from '$transitions/slip';
 	import { colors } from '$utils/colors';
+	import { cssSize } from '$utils/helpers/css';
 	import type { SvelteProps } from '$utils/helpers/types';
+	import { sizes } from '$utils/sizes';
 
 	let alt = false;
 	let useHover;
 	let switchval = 'test2v';
 	let active = false;
 	let showLoading = true;
+	let loadingSize = sizes.medium;
 	let showTransitionBlock = false;
 
 	let variants: SvelteProps<Button>['variant'][] = ['default', 'secondary', 'ghost', 'cta', 'navbar'];
-	let sizes = ['small', 'medium', 'large'];
-	let size = sizes[0];
+	let sizeKeys = Object.keys(sizes);
+	let currentSize = sizes.medium;
 
 	$: console.log(switchval);
 </script>
@@ -55,9 +60,12 @@
 <section>
 	<h2>Loading</h2>
 	<Checkbox bind:checked={showLoading}>Show loading</Checkbox>
-	<div style="position: relative;">
+	<Range min={10} max={100} bind:value={loadingSize}>
+		<RangeThumb value={loadingSize} name="loading-size" />
+	</Range>
+	<div style="position: relative; height: {cssSize(loadingSize)}; margin-top: 2rem;">
 		{#if showLoading}
-			<Loading />
+			<Loading size={loadingSize} />
 		{/if}
 	</div>
 </section>
@@ -78,17 +86,17 @@
 <section>
 	<h2>Buttons</h2>
 	<Checkbox bind:checked={active} />
-	<Select id="size-select" bind:value={size}>
-		{#each sizes as size}
-			<SelectOption value={size} id="{size}-id">{size}</SelectOption>
+	<Select id="size-select" bind:value={currentSize}>
+		{#each sizeKeys as k}
+			<SelectOption value={sizes[k]} id="{k}-id">{k}</SelectOption>
 		{/each}
 	</Select>
 	{#each variants as variant}
 		<h3>{variant.charAt(0).toUpperCase() + variant.slice(1)}</h3>
 		<div id="buttons">
-			<Button {active} {variant}>With text</Button>
-			<Button {active} {variant} icon="email">With text and icon</Button>
-			<Button {active} {variant} icon="settings" />
+			<Button {active} {variant} size={currentSize}>With text</Button>
+			<Button {active} {variant} size={currentSize} icon="email">With text and icon</Button>
+			<Button {active} {variant} size={currentSize} icon="settings" />
 		</div>
 	{/each}
 </section>

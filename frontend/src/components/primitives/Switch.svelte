@@ -2,6 +2,7 @@
 	import { Ctx } from '$utils/contexts';
 	import { cssSize, type SizeInput } from '$utils/helpers/css';
 	import { onDestroy, onMount, setContext } from 'svelte';
+	import { expoOut } from 'svelte/easing';
 	import type { Writable } from 'svelte/store';
 	import { writable } from 'svelte/store';
 	import { scale } from 'svelte/transition';
@@ -76,7 +77,7 @@
 	{#if currentBox}
 		<div
 			id="current"
-			transition:scale={{ duration: 150, start: 0.8, opacity: 0 }}
+			transition:scale={{ duration: 150, start: 0.8, opacity: 0, easing: expoOut }}
 			class:temp={Boolean($temp)}
 			style={currentBox}
 		/>
@@ -86,14 +87,14 @@
 
 <style lang="postcss">
 	fieldset {
-		--outset: 3px;
+		--inset: 0px;
 		position: relative;
 		border: none;
 		display: inline-flex;
 		align-items: stretch;
 		justify-content: center;
 		gap: 0;
-		padding: 0;
+		padding: var(--inset);
 		border-radius: var(--base-radius);
 		overflow: visible;
 		transition: all 0.25s ease-out;
@@ -102,9 +103,9 @@
 	#current {
 		z-index: 1;
 		position: absolute;
-		height: var(--base-size);
-		border-radius: inherit;
-		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.2), box-shadow 0.25s ease-in-out;
+		height: calc(var(--base-size) - 2 * var(--inset));
+		border-radius: calc(var(--base-radius) - var(--inset));
+		transition: all 0.15s cubic-bezier(0.8, 0, 0.2, 1.2);
 	}
 
 	/* Variants */

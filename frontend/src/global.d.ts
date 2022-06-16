@@ -33,7 +33,7 @@ declare namespace App {
 		/**
 		 * Prop to store the client session's previous navigation for various usages and redirect cases.
 		 */
-		prevPath: string;
+		prevUrl: string;
 	}
 
 	/**

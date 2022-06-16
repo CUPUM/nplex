@@ -74,10 +74,10 @@
 		font-weight: 500;
 		display: inline-flex;
 		padding: 0 1.2em;
-		height: var(--size);
+		height: calc(var(--base-size) - 2 * var(--inset));
 		justify-content: center;
 		align-items: center;
-		border-radius: inherit;
+		border-radius: calc(var(--base-radius) - var(--inset));
 		transition: all 0.15s ease-out;
 		letter-spacing: 0.01em;
 

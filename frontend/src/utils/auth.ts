@@ -1,10 +1,11 @@
 import { page } from '$app/stores';
-import { signInModal } from '$stores/auth';
+import { authMessage } from '$stores/auth';
 import type { UserRole } from '$utils/user';
-import type { LoadInput, LoadOutput } from '@sveltejs/kit';
+import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 import { db } from './database';
 import type { providers } from './providers';
+import { SearchParamsKeys } from './url';
 
 interface GuardInput {
 	/**
@@ -14,7 +15,15 @@ interface GuardInput {
 	/**
 	 * The requester's session, with the user data if logged in.
 	 */
-	session: LoadInput['session'];
+	session: LoadEvent['session'];
+	/**
+	 * Custom message, overwrites the default message composition logic.
+	 */
+	message?: string;
+	/**
+	 * Url.
+	 */
+	url: URL;
 }
 
 /**
@@ -23,7 +32,7 @@ interface GuardInput {
  * To do: figure out a good way to update the session's `prevnav` prop, without having to pass a prop to the client and
  * calling client-side prop handling each time.
  */
-export async function guard({ criteria, session }: GuardInput): Promise<LoadOutput> {
+export async function guard({ criteria, session, message, url }: GuardInput): Promise<LoadOutput> {
 	/**
 	 * If the guard is adequately fulfilled, then we proceed to the requested route...
 	 */
@@ -32,16 +41,32 @@ export async function guard({ criteria, session }: GuardInput): Promise<LoadOutp
 			status: 200,
 		};
 	}
+
 	/**
-	 * ...else we open signup modal if no user signed in, and we redirect to the indicated redirect, usually the
-	 * previous successfully visited url stored in `prevnav`.
+	 * ...else, if no user, we redirect to the indicated location, usually the previous successfully visited url stored
+	 * in `prevUrl`, and append the required param to open the signup modal.
 	 */
-	if (!session.user) {
-		signInModal.set(true);
+	let redirectUrl = new URL(session.prevUrl);
+	let defaultMessage =
+		'Désolé, il semble que votre compte ne détient pas les permissions requises pour accéder à cette section de Nplex.';
+
+	if (redirectUrl.pathname === url.pathname) {
+		/**
+		 * If inaccessible prevUrl is equal to the request origin, reset to root.
+		 */
+		redirectUrl.pathname = '';
 	}
+
+	if (!session.user) {
+		redirectUrl.searchParams.set(SearchParamsKeys.AuthModal, '');
+		defaultMessage = 'Désolé, un compte est nécessaire pour accéder à cette section de Nplex.';
+	}
+
+	authMessage.set(message || defaultMessage);
+
 	return {
 		status: 303,
-		redirect: session.prevPath || '/',
+		redirect: redirectUrl.toString(),
 	};
 }
 

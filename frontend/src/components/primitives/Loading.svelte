@@ -9,6 +9,7 @@
 	export let backgroundColor: string = 'transparent';
 	export let size: SizeInput = '1em';
 
+	const duration = 6;
 	let outroing = false;
 
 	function outro() {
@@ -18,20 +19,25 @@
 	/**
 	 * These shapes must contain the same amounts and types of points for the animation to work.
 	 */
-	const d =
+	const shapes = [
 		// Circle
-		`M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z;` +
+		'M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z',
 		// Square
-		`M 15,15 C 15,15 85,15 85,15 C 85,15 85,85 85,85 C 85,85 15,85 15,85 C 15,85 15,15 15,15 Z;` +
+		'M 15,15 C 15,15 85,15 85,15 C 85,15 85,85 85,85 C 85,85 15,85 15,85 C 15,85 15,15 15,15 Z',
 		// Triangle
-		`M 50,10 C 50,10 50,10 50,10 C 50,10 90,85 90,85 C 90,85 10,85 10,85 C 10,85 50,10 50,10 Z;` +
+		'M 50,10 C 50,10 50,10 50,10 C 50,10 90,85 90,85 C 90,85 10,85 10,85 C 10,85 50,10 50,10 Z',
 		// Arc
-		`M 15,50 C 15,28.5 28.5,10 50,10 C 71,10 85,29 85,50 C 85,85 85,85 85,85 C 85,85 15,85 15,85 Z;` +
-		// Circle, to loop
-		`M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z;`;
+		// 'M 15,50 C 17,-3 83,-3 85,50 C 85,50 85,85 85,85 C 85,85 15,85 15,85 C 15,85 15,50 15,50 Z',
+		'M 15,15 C 15,15 85,15 85,15 C 85,15 85,50 85,50 C 83,103 17,103 15,50 C 15,50 15,15 15,15 Z',
+		// Square
+		'M 15,15 C 15,15 85,15 85,15 C 85,15 85,85 85,85 C 85,85 15,85 15,85 C 15,85 15,15 15,15 Z',
+		// Triangle
+		'M 50,10 C 50,10 50,10 50,10 C 50,10 90,85 90,85 C 90,85 10,85 10,85 C 10,85 50,10 50,10 Z',
+	];
+	const d = [...shapes, shapes[0]].join(';') + ';';
 
-	const nshapes = 5;
-	const offset = Math.round(Math.random() * nshapes);
+	const nshapes = shapes.length + 1;
+	// const offset = Math.round(Math.random() * nshapes);
 
 	const keySplines = Array(nshapes - 1)
 		.fill('.8 0 0.2 1')
@@ -56,6 +62,7 @@
 		preserveAspectRatio="xMidYMid"
 		in:scale={{ duration: 500, easing: elasticOut }}
 		out:scale={{ duration: 350, easing: expoIn }}
+		style:animation-duration="{duration}s"
 	>
 		<path>
 			<animate
@@ -65,7 +72,7 @@
 				to="M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z"
 				calcMode="spline"
 				attributeName="d"
-				dur="4s"
+				dur={duration}
 				begin="0s"
 				repeatCount="indefinite"
 				values={d}
@@ -111,21 +118,21 @@
 		background-color: transparent;
 		overflow: visible;
 		animation-name: spin;
-		animation-duration: 4s;
 		animation-fill-mode: none;
 		animation-iteration-count: infinite;
-		animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
+		animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	path {
 		fill: currentColor;
+		/* fill: none; */
 		stroke: currentColor;
 		stroke-width: 20px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		transform-origin: center;
 		animation-name: slowspin;
-		animation-duration: 9s;
+		animation-duration: 7s;
 		animation-iteration-count: infinite;
 		animation-timing-function: linear;
 	}
@@ -140,20 +147,64 @@
 	}
 
 	@keyframes spin {
-		0% {
-			transform: rotate(-90deg);
+		/* For 4 (+1) shapes */
+		/* 0% {
+			transform: rotate(0deg);
 		}
 		25% {
-			transform: rotate(180deg);
+			transform: rotate(270deg);
 		}
 		50% {
-			transform: rotate(450deg);
+			transform: rotate(540deg);
 		}
 		75% {
-			transform: rotate(720deg);
+			transform: rotate(810deg);
 		}
 		100% {
-			transform: rotate(990deg);
+			transform: rotate(1080deg);
+		} */
+
+		/* For 5 (+1) shapes */
+		/* 0% {
+			transform: rotate(0deg);
+		}
+		20% {
+			transform: rotate(270deg);
+		}
+		40% {
+			transform: rotate(540deg);
+		}
+		60% {
+			transform: rotate(810deg);
+		}
+		80% {
+			transform: rotate(1080deg);
+		}
+		100% {
+			transform: rotate(1350deg);
+		} */
+
+		/* For 6 (+1) shapes */
+		0% {
+			transform: rotate(0deg);
+		}
+		16.66% {
+			transform: rotate(270deg);
+		}
+		33.33% {
+			transform: rotate(540deg);
+		}
+		50% {
+			transform: rotate(810deg);
+		}
+		66.66% {
+			transform: rotate(1080deg);
+		}
+		83.33% {
+			transform: rotate(1350deg);
+		}
+		100% {
+			transform: rotate(1620deg);
 		}
 	}
 </style>

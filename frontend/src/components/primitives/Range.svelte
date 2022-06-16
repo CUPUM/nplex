@@ -5,7 +5,12 @@
 <script lang="ts">
 	import { Ctx } from '$utils/contexts';
 	import { setContext } from 'svelte';
-	import { getContext } from 'svelte';
+
+	export let min: number;
+	export let max: number;
+	export let value;
 
 	const rangeCtx = setContext<RangeContext>(Ctx.Range, {});
 </script>
+
+<input type="range" {min} {max} bind:value />

@@ -7,6 +7,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 export const getSession: GetSession = (e) => {
 	return {
-		prevPath: e.url.pathname,
+		prevUrl: e.url.toString(),
 	};
 };

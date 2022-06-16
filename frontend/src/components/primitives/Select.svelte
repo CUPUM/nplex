@@ -3,12 +3,12 @@
 	import { setContext } from 'svelte';
 
 	export let id: string;
-	export let value = undefined;
+	export let value;
 
 	setContext(Ctx.Select, {});
 </script>
 
-<select name="select-{id}">
+<select name="select-{id}" bind:value>
 	<slot />
 </select>
 

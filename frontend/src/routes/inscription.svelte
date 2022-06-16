@@ -7,7 +7,7 @@
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
 	import SocialButton from '$components/primitives/SocialButton.svelte';
-	import { signInModal } from '$stores/auth';
+	import { authModal } from '$stores/auth';
 	import { signIn, signUp } from '$utils/auth';
 	import { providers } from '$utils/providers';
 	import { expoIn, expoOut, linear } from 'svelte/easing';
@@ -17,7 +17,7 @@
 
 	function close() {
 		message = null;
-		$signInModal = false;
+		$authModal = false;
 	}
 
 	enum Action {

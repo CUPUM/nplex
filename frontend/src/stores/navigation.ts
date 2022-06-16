@@ -12,7 +12,7 @@ import { derived, writable, type Writable } from 'svelte/store';
  * When matchings are not applicable for the current location, concerned property values should be equal to undefined.
  */
 export const currentPath = derived(page, ($page) => {
-	const segments = getSegments($page.url);
+	const segments = getSegments($page.routeId);
 	// Finding the best-matching main path. Try as much as possible to always have this defined
 	let main: string = undefined;
 	const mainRoute = mainRoutes.find((r) => r.pathname === segments[0]);

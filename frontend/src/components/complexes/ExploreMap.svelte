@@ -3,6 +3,7 @@
 
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import Map from '$components/primitives/Map.svelte';
 	import MapToolbar from '$components/primitives/MapToolbar.svelte';
 </script>
@@ -26,7 +27,7 @@
 <section>
 	<Map let:map>
 		<MapToolbar slot="top-left">
-			<Button on:click={() => map.zoomIn()}>+</Button>
+			<Button on:click={() => map.zoomIn()}><Icon slot="icon" name="plus" /></Button>
 			<Button on:click={() => map.zoomOut()}>-</Button>
 		</MapToolbar>
 		<MapToolbar slot="top-right">

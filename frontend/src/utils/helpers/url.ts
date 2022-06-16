@@ -1,7 +1,7 @@
 import { base } from '$app/paths';
 
-export function getSegments(url: URL) {
-	return url.pathname
+export function getSegments(routePath: string) {
+	return routePath
 		.replace(base, '')
 		.replace(/^\/+/, '')
 		.split('/')
@@ -9,7 +9,7 @@ export function getSegments(url: URL) {
 }
 
 /**
- * To do
+ * To do.
  *
  * @param obj
  * @returns
@@ -20,7 +20,7 @@ export function objectToURLSearchParams(obj: Record<string, unknown>): URLSearch
 }
 
 /**
- * To do
+ * To do.
  *
  * @param params
  * @returns

@@ -3,8 +3,8 @@
 	import { allRoles } from '$utils/user';
 	import type { Load } from '@sveltejs/kit';
 
-	export const load: Load = async ({ session }) => {
-		const res = await guard({ criteria: allRoles, session });
+	export const load: Load = async ({ session, url }) => {
+		const res = await guard({ criteria: allRoles, session, url });
 		return res;
 	};
 </script>

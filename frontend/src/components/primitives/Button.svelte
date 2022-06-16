@@ -92,7 +92,7 @@
 		outline-width: 2px;
 		outline-style: solid;
 		outline-color: transparent;
-		transition: all 0.2s ease-out;
+		transition: all 0.1s ease-out;
 		&.warning {
 			background-color: var(--color-error-100);
 			color: var(--color-error-700);
