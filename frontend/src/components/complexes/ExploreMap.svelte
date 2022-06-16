@@ -5,20 +5,38 @@
 	import Button from '$components/primitives/Button.svelte';
 	import Map from '$components/primitives/Map.svelte';
 	import MapToolbar from '$components/primitives/MapToolbar.svelte';
-	import { exploreMap, isExploreArticle } from '$stores/explore';
-	import { slip } from '$transitions/slip';
 </script>
 
-<section class:is-article={$isExploreArticle} transition:slip={{ height: true, width: true }}>
+<!-- <section class:is-article={$isExploreArticle} transition:slip={{ height: false, width: true }}>
 	<div id="wrapper">
 		<Map bind:map={$exploreMap} />
 	</div>
 	<MapToolbar>
-		<Button variant="ghost">Test</Button>
-		<Button variant="ghost">Test</Button>
-		<Button variant="ghost">Test</Button>
-		<Button variant="ghost">Test</Button>
+		<Button>+</Button>
+		<Button>-</Button>
 	</MapToolbar>
+	<MapToolbar>
+		<Button variant="ghost">Localize</Button>
+		<Button variant="ghost">Layers</Button>
+		<Button variant="ghost">Minimize</Button>
+		<Button variant="ghost">Maximize</Button>
+	</MapToolbar>
+</section> -->
+
+<section>
+	<Map let:map>
+		<MapToolbar slot="top-left">
+			<Button on:click={() => map.zoomIn()}>+</Button>
+			<Button on:click={() => map.zoomOut()}>-</Button>
+		</MapToolbar>
+		<MapToolbar slot="top-right">
+			<Button on:click={() => console.log(map)}>Localize</Button>
+			<Button on:click={() => console.log(map)}>Layers</Button>
+			<Button on:click={() => console.log(map)}>Full</Button>
+			<Button on:click={() => console.log(map)}>Min</Button>
+			<Button on:click={() => console.log(map)}>Close</Button>
+		</MapToolbar>
+	</Map>
 </section>
 
 <style lang="postcss">
@@ -49,14 +67,5 @@
 			padding: 0;
 			pointer-events: none;
 		}
-	}
-
-	#wrapper {
-		position: absolute;
-		width: 100vw;
-		height: calc(100vh - var(--navbar-height));
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
 	}
 </style>

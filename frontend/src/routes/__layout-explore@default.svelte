@@ -7,6 +7,7 @@
 	import ExploreList from '$components/complexes/ExploreList.svelte';
 	import ExploreMap from '$components/complexes/ExploreMap.svelte';
 	import ExploreSearchbar from '$components/complexes/ExploreSearchbar.svelte';
+	import { backgroundColor } from '$stores/backgroundColor';
 	import {
 		isExploreArticle,
 		showArticleMap,
@@ -22,7 +23,9 @@
 
 	let menuHeight;
 
-	onMount(() => {});
+	onMount(() => {
+		backgroundColor.reset();
+	});
 
 	onDestroy(() => {
 		showSearchbar.set(false);

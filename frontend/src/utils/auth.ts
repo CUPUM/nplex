@@ -6,8 +6,6 @@ import { get } from 'svelte/store';
 import { db } from './database';
 import type { providers } from './providers';
 
-// Route guard
-
 interface GuardInput {
 	/**
 	 * Roles or status required to gain permission for a request.

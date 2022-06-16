@@ -41,12 +41,18 @@
 	let filteredType;
 	$: filteredType = ['email', 'password'].includes(type) ? 'text' : type;
 
+	let showPassword = false;
+
 	setContext<FieldContext>(Ctx.Field, {
 		// inset,
 	});
 
 	function handleInput(e) {
 		value = e.target.value;
+	}
+
+	function togglePassword() {
+		showPassword = !showPassword;
 	}
 
 	function focus() {
@@ -62,7 +68,8 @@
 	}
 </script>
 
-<fieldset
+<div
+	id="wrapper"
 	class:warning={warning || invalid}
 	class:success
 	class:disabled={disabled || loading}
@@ -84,7 +91,7 @@
 	{/if}
 	<input
 		{disabled}
-		{type}
+		type="text"
 		{value}
 		{placeholder}
 		on:input={handleInput}
@@ -95,14 +102,17 @@
 		on:blur
 		on:blur={blur}
 		on:submit
-		data-lpignore="true"
+		autocomplete="new-{type}"
 		name={$$restProps.name}
 	/>
 	{#if value}
 		<div id="has-value" transition:width={{ easing: expoOut, duration: 750, opacity: 0 }}>
-			<Button variant="ghost" on:click={reset}>
+			<Button variant="ghost" on:click={reset} square={true}>
 				<Icon name="cross" slot="icon" />
 			</Button>
+			{#if type === 'password'}
+				<Button variant="ghost" on:click={togglePassword} square={true}>(eye-icon)</Button>
+			{/if}
 			<slot name="has-value" />
 		</div>
 	{/if}
@@ -118,10 +128,10 @@
 			{/each}
 		</ul>
 	{/if}
-</fieldset>
+</div>
 
 <style lang="postcss">
-	fieldset {
+	#wrapper {
 		--size: 3em;
 		--inset: 3px;
 		border: none;
@@ -132,12 +142,10 @@
 		flex-direction: row;
 		border-radius: 1.1em;
 		height: var(--size);
-		/* min-height: var(--size);
-		max-height: var(--size); */
 		outline-style: solid;
 		outline-width: 2px;
 		outline-color: transparent;
-		transition: all 0.15s ease-out;
+		transition: all 0.1s ease-out;
 		overflow: visible;
 	}
 
@@ -233,15 +241,21 @@
 	/* Variants */
 	/* Default theme */
 	.default {
-		background-color: var(--color-light-500);
+		background-color: rgba(var(--rgb-light-500), 0.9);
 		color: var(--color-dark-100);
+		width: 100%;
 		&.focused {
-			outline-color: var(--color-light-700);
-			background-color: var(--color-light-300);
+			outline-color: white;
+			background-color: white;
+			box-shadow: 0 1em 2em -1em rgba(0, 0, 20, 0.2);
+
+			& #icon {
+				color: var(--color-primary-500);
+			}
 		}
 		&:hover:not(.focused) {
-			background-color: var(--color-light-700);
-			color: var(--color-dark-500);
+			/* background-color: var(--color-light-300); */
+			color: var(--color-dark-900);
 		}
 	}
 

@@ -10,6 +10,7 @@
 	 * Where svelte-language plugin should look for css globals needed for intellisens.
 	 */
 	"svelte.plugin.css.globals": "src/styles/*.css, src/styles/*.postcss",
+	"svelte.plugin.css.colorPresentations.enable": true,
 	"[svelte]": {
 		"editor.defaultFormatter": "svelte.svelte-vscode"
 	}

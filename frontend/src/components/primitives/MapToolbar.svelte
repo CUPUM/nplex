@@ -7,13 +7,11 @@
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import type { MapContext } from './Map.svelte';
 
-	// export let map: Map;
-
 	onMount(() => {});
 
 	let mapCtx = getContext<MapContext>(Ctx.Map);
 	$: if (mapCtx && mapCtx.inited) {
-		console.log(mapCtx.getMap());
+		// console.log(mapCtx.getMap());
 	}
 
 	setContext<MapToolbarContext>(Ctx.MapToolbar, {});
@@ -27,13 +25,11 @@
 
 <style lang="postcss">
 	menu {
-		font-size: var(--size-small);
+		font-size: var(--size-xsmall);
 		--outset: 5px;
 		z-index: 1000;
-		position: absolute;
-		display: flex;
-		top: 1rem;
-		left: 1rem;
+		position: relative;
+		display: inline-flex;
 		margin: 0;
 		background-color: white;
 		box-shadow: 0 0 0 var(--outset) white;

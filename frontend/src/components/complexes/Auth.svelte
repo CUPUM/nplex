@@ -67,6 +67,7 @@
 <div id="bg" out:fade={{ duration: 300, easing: linear }} />
 <div id="outer">
 	<form
+		autocomplete="off"
 		on:submit|preventDefault={submit}
 		use:clickoutside
 		on:clickoutside={close}
@@ -117,7 +118,8 @@
 		height: 100%;
 		top: 0;
 		left: 0;
-		background-color: rgba(var(--rgb-light-500), 1);
+		background-color: rgba(var(--rgb-primary-100), 0.85);
+		backdrop-filter: blur(24px);
 	}
 
 	#outer {

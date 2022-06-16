@@ -34,7 +34,7 @@
 
 	$: hidden = $mainScroll.down && $mainScroll.y > hiddenThreshold;
 	$: overlay = $mainScroll.y > hiddenThreshold + 100;
-	$: resetableCategory = $isExploreArticle && !loadingCategory ? $category : null;
+	$: resetableCategory = $isExploreArticle && !$loadingCategory ? $category : null;
 
 	function hasCategoryResetIcon(category: Category, current) {
 		return $isExploreArticle && category === current && !$loadingCategory;
@@ -48,8 +48,10 @@
 	 * React to category change, and take into account previously set category when
 	 * returning to an explore route that triggers redisplaying the switch.
 	 */
-	$: if ($category && $showCategory && browser) {
-		gotoCategory(exploreRoutes.find((r) => r.category === $category));
+	$: if ($showCategory && browser) {
+		if ($category) {
+			gotoCategory(exploreRoutes.find((r) => r.category === $category));
+		}
 	}
 
 	onMount(() => {
@@ -83,6 +85,7 @@
 							id={r.category}
 							value={r.category}
 							bind:group={$category}
+							on:click={() => gotoCategory(r)}
 							loading={$loadingCategory === r.category}
 							disabled={r.category === $category && !$isExploreArticle}
 						>
@@ -155,6 +158,7 @@
 		width: 100%;
 		align-items: center;
 		padding: 1rem;
+		padding-bottom: 0.5rem;
 		margin: 0;
 		gap: 0;
 		font-size: var(--size-small);

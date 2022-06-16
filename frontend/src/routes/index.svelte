@@ -1,9 +1,11 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
+	import { backgroundColor } from '$stores/backgroundColor';
 	import { showCategory } from '$stores/search';
+	import { colors } from '$utils/colors';
 	import { sizes } from '$utils/sizes';
-	import { onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	export let projectsPreview;
 	export let organisationsPreview;
@@ -16,12 +18,17 @@
 
 	showCategory.set(true);
 
+	onMount(() => {
+		backgroundColor.set(colors.primary[900]);
+	});
+
 	onDestroy(() => {
 		showCategory.set(false);
+		backgroundColor.reset();
 	});
 </script>
 
-<article>
+<article class="core-grid">
 	<section id="projects">
 		<header>
 			<a href="/projets">
@@ -75,7 +82,6 @@
 		width: 100%;
 		padding: 2rem;
 		overflow: visible;
-		border-bottom: 1px solid var(--color-light-500);
 	}
 
 	header {

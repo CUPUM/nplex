@@ -2,35 +2,20 @@
 	import { ripple } from '$actions/ripple';
 	import { session } from '$app/stores';
 	import { userProfile } from '$stores/profile';
-	import { Ctx } from '$utils/contexts';
-	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
-	import { getContext } from 'svelte';
+	import type { SizeInput } from '$utils/helpers/css';
 	import Loading from './Loading.svelte';
 
-	export let size: number | CSSSizeValue = '1em';
+	export let size: SizeInput = '1em';
 	export let warning: boolean = false;
 	export let href: string = undefined;
 	export let active: boolean = undefined;
 	export let disabled: boolean = undefined;
 	export let loading: boolean = undefined;
 
-	/** Context detection and handling should reflect that of Button's. */
-	const fieldCtx = getContext(Ctx.Field);
-
-	let autoSize: string;
 	let cssAvatarImage: string = '';
 	const userColor =
 		'#' + parseInt($session.user.created_at.match(/\d+/g).map(Number).join('')).toString(16).substring(0, 6);
 	const userLetter = $session.user.email.charAt(0);
-
-	/**
-	 * Soft auto-determination of component size, where:
-	 *
-	 * - User-defined size has most precedence and is used if present.
-	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter. (Useful for
-	 *   field buttons and other nested uses)
-	 */
-	$: autoSize = size ? cssSize(size) : fieldCtx ? '0.8em' : '1em';
 
 	$: cssAvatarImage = $userProfile && $userProfile.avatar_url ? `url(${$userProfile.avatar_url})` : '';
 </script>
@@ -44,7 +29,7 @@
 	class="avatar"
 	class:active
 	class:warning
-	style:font-size={autoSize}
+	style:font-size={size}
 	style:color={userColor}
 	disabled={disabled || loading}
 	{href}
@@ -74,15 +59,15 @@
 
 <style lang="postcss">
 	.avatar {
-		--size: 2.8em;
+		--inset: 4px;
 		display: inline-block;
 		position: relative;
-		height: var(--size);
-		min-height: var(--size);
-		width: var(--size);
-		border-radius: 50%;
+		height: var(--base-size);
+		min-height: var(--base-size);
+		width: var(--base-size);
+		border-radius: var(--base-radius);
 		border: none;
-		padding: 5px;
+		padding: var(--inset);
 		text-decoration: none;
 		background: transparent;
 
@@ -102,7 +87,7 @@
 		left: 0;
 		background: white;
 		transition: all 0.2s;
-		border-radius: 50%;
+		border-radius: calc(var(--base-radius) - var(--inset));
 		overflow: hidden;
 	}
 

@@ -86,8 +86,6 @@
 
 <style lang="postcss">
 	fieldset {
-		--size: 3em;
-		--radius: 1.2em;
 		--outset: 3px;
 		position: relative;
 		border: none;
@@ -96,7 +94,7 @@
 		justify-content: center;
 		gap: 0;
 		padding: 0;
-		border-radius: var(--radius);
+		border-radius: var(--base-radius);
 		overflow: visible;
 		transition: all 0.25s ease-out;
 	}
@@ -104,7 +102,7 @@
 	#current {
 		z-index: 1;
 		position: absolute;
-		height: var(--size);
+		height: var(--base-size);
 		border-radius: inherit;
 		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.2), box-shadow 0.25s ease-in-out;
 	}

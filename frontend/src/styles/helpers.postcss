@@ -1,3 +1,20 @@
+:root {
+	/*
+		Font variables
+	*/
+	--font-main: 'Outfit', sans-serif;
+	--font-misc: 'DM Mono', serif;
+	/* 
+		Global style helpers for consistent appearence across components
+	*/
+	--base-radius: 1.2em; /* Border radius for buttons and other interactive elements */
+	--base-size: 3em; /* Size/height height for interactive elements */
+	/*
+		Additionnal global CSS custom properties derived from TypeScript constants, such as
+		colors and sizes, are generated at build time and located in ./vars.css
+	*/
+}
+
 /*
 	Button component should listen to hover on parent elements with this class to trigger hover/focus style.
 	Event handling should be done manually.
@@ -10,7 +27,6 @@
 	Grid template for full-width elements.
 */
 .core-grid {
-	width: 100%;
 	display: grid;
 	grid-template-columns:
 		[full-start]

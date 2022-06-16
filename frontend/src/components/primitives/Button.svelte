@@ -74,7 +74,7 @@
 
 <style lang="postcss">
 	.button {
-		--size: calc(3em - 2 * var(--inset, 0px));
+		--size: calc(var(--base-size) - 2 * var(--inset, 0px));
 		display: inline-block;
 		cursor: pointer;
 		box-sizing: border-box;
@@ -84,7 +84,7 @@
 		height: var(--size);
 		min-height: var(--size);
 		min-width: var(--size);
-		border-radius: calc(1.2em - var(--inset, 0px));
+		border-radius: calc(var(--base-radius) - var(--inset, 0px));
 		margin: 0;
 		padding: 0 1.2em;
 		font-family: var(--font-main);
@@ -191,7 +191,7 @@
 		background-color: rgba(var(--rgb-dark-500), 0.1);
 		transition: all 0.15s ease-out;
 		&:hover,
-		&:focus,
+		/* &:focus, */
 		&.hover {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-dark-500), 0.05);
@@ -215,7 +215,7 @@
 		box-shadow: 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
 		transition: all 0.2s;
 		&:hover,
-		&:focus,
+		/* &:focus, */
 		&.hover {
 			color: var(--color-secondary-500);
 			background-color: var(--color-light-500);
@@ -229,7 +229,7 @@
 		/* box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); */
 		transition: all 0.2s ease-out;
 		&:hover,
-		&:focus,
+		/* &:focus, */
 		&.hover {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-dark-500), 0.1);
@@ -242,7 +242,7 @@
 		background-color: var(--color-primary-500);
 		transition: all 0.2s;
 		&:hover,
-		&:focus,
+		/* &:focus, */
 		&.hover {
 			color: white;
 			background-color: var(--color-primary-700);
@@ -274,7 +274,7 @@
 			transition: opacity 0.35s, transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 		}
 		&:hover,
-		&:focus,
+		/* &:focus, */
 		&.hover {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-light-500), 0.5);
