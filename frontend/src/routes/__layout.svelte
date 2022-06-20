@@ -1,30 +1,40 @@
 <script lang="ts" context="module">
+	import { afterNavigate } from '$app/navigation';
 	import { session } from '$app/stores';
 	import Auth from '$components/complexes/Auth.svelte';
+	import MessageOutlet from '$components/complexes/MessageOutlet.svelte';
 	import Navbar from '$components/complexes/Navbar.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
 	import { authModal } from '$stores/auth';
-	import '$styles/app.css';
+	import '$styles/app.postcss';
 	import '$styles/helpers.postcss';
 	import '$styles/vars.css';
 	import { db, getUserRole } from '$utils/database';
+	import { SearchParamsKeys } from '$utils/url';
 	import { toUserRoleEnum } from '$utils/user';
-	import type { Load } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 
-	/**
-	 * Must keep `url` as a param to trigger on each navigation.
-	 */
-	export const load: Load = async ({ session, url }) => {
-		// console.log(session.prevUrl);
-		// This load function triggers the "getSesion" server hook, allowing us to update the session's prevUrl from within the hook.
-		return {
-			status: 200,
-		};
-	};
+	// export const load: Load = async ({}) => {
+	// 	return {
+	// 		status: 200,
+	// 	};
+	// };
 </script>
 
 <script lang="ts">
+	/**
+	 * Updating the client session's prevUrl used for redirects on guard fail.
+	 */
+	afterNavigate(({ from, to }) => {
+		const newPrevUrl = to;
+		newPrevUrl.searchParams.delete(SearchParamsKeys.AuthModal);
+		session.update((prev) => ({ ...prev, prevUrl: newPrevUrl.toString() }));
+		console.log('After navigate session:', $session);
+	});
+
+	/**
+	 * Listening to and handling client-side Supabase auth state change.
+	 */
 	db.auth.onAuthStateChange(async (e, s) => {
 		if (e === 'SIGNED_OUT') {
 			session.update((prevSession) => {
@@ -59,6 +69,7 @@
 {#if !loaded}
 	<Loading size="2rem" />
 {/if}
+<MessageOutlet />
 
 <style lang="postcss">
 	main {

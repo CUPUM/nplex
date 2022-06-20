@@ -1,4 +1,4 @@
-import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
+import { cssSize, type SizeInput } from '$utils/helpers/css';
 
 const RIPPLE_GLOBALS = {
 	HOST_ATTRIBUTE: 'ripple-host',
@@ -16,9 +16,9 @@ interface RippleOptions {
 	fadeDelay?: number;
 	opacity?: number;
 	startColor?: string;
-	startSize?: number | CSSSizeValue;
+	startSize?: SizeInput;
 	endColor?: string;
-	endSize?: number | CSSSizeValue;
+	endSize?: SizeInput;
 	blur?: number;
 	disabled?: boolean;
 	/**
@@ -34,9 +34,9 @@ interface RippleOptions {
 export function ripple(
 	element: HTMLElement,
 	{
-		spreadDuration = 350,
-		fadeDuration = 500,
-		fadeDelay = 50,
+		spreadDuration = 1000,
+		fadeDuration = 750,
+		fadeDelay = 150,
 		opacity = 0.2,
 		startColor = 'currentColor',
 		startSize = 0,
@@ -100,7 +100,7 @@ export function ripple(
 		ripple.style.top = eRelY + 'px';
 		ripple.style.left = eRelX + 'px';
 		ripple.style.filter = `blur(${blur}px)`;
-		ripple.style.animation = `${RIPPLE_GLOBALS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(0, 0, 0, 1) forwards`;
+		ripple.style.animation = `${RIPPLE_GLOBALS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(0, .2, 0, 1) forwards`;
 		element.appendChild(ripple);
 	}
 

@@ -20,7 +20,7 @@
 	});
 </script>
 
-<dl id="set" {...$$restProps} style:font-size={cssSize(size)}>
+<dl {...$$restProps} style:font-size={cssSize(size)}>
 	{#if legend}
 		<dt>{legend}</dt>
 	{/if}

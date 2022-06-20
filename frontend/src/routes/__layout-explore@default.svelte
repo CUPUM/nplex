@@ -15,8 +15,10 @@
 		showExploreList,
 		showExploreMap,
 	} from '$stores/explore';
-	import { showCategory, showSearchbar } from '$stores/search';
+	import { category, showCategory, showSearchbar } from '$stores/search';
 	import { onDestroy, onMount } from 'svelte';
+	import { circOut } from 'svelte/easing';
+	import { scale } from 'svelte/transition';
 
 	showSearchbar.set(true);
 	showCategory.set(true);
@@ -30,10 +32,15 @@
 	onDestroy(() => {
 		showSearchbar.set(false);
 		showCategory.set(false);
+		category.set(null);
 	});
 </script>
 
-<div id="explore" class:is-article={$isExploreArticle}>
+<div
+	id="explore"
+	class:is-article={$isExploreArticle}
+	transition:scale={{ start: 0.95, opacity: 0, duration: 350, easing: circOut }}
+>
 	{#if !$isExploreArticle}
 		<ExploreSearchbar />
 	{/if}
@@ -68,7 +75,7 @@
 		flex-direction: column;
 		flex-wrap: nowrap;
 		min-height: 0px;
-		transition: height 0.25s cubic-bezier(0.2, 0, 0, 1);
+		transition: height 0.75s cubic-bezier(0.6, 0, 0, 1);
 
 		&.is-article {
 			height: 600px;

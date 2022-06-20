@@ -1,38 +1,66 @@
 <script lang="ts" context="module">
 	export interface MapContext {
 		getMap: () => Map;
+		viewportBox: Readable<LngLatBounds | LngLatBoundsLike>;
 		loading: Writable<boolean>;
 		inited: Writable<boolean>;
 	}
 </script>
 
 <script lang="ts">
-	import { colors } from '$utils/colors';
 	import { Ctx } from '$utils/contexts';
 	import { mapStyles } from '$utils/map';
 	import { sizes } from '$utils/sizes';
-	import { LngLat, Map, type LngLatLike, type StyleSpecification } from 'maplibre-gl';
+	import {
+		LngLat,
+		LngLatBounds,
+		Map,
+		type LngLatBoundsLike,
+		type LngLatLike,
+		type StyleSpecification,
+	} from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, onDestroy, onMount, setContext } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
+	import { writable, type Readable, type Writable } from 'svelte/store';
 	import Loading from './Loading.svelte';
 
-	export let mapStyle: string | StyleSpecification = mapStyles.light;
 	export let map: Map = undefined;
+	/**
+	 * Reference for the base layer style.json specification.
+	 */
+	export let styleSpecification: string | StyleSpecification = mapStyles.light;
 	export let pitch: number = 0;
 	export let bearing: number = 0;
 	export let zoom: number = 9.5;
 	export let center: LngLat | LngLatLike = [-73.65, 45.55];
+	/**
+	 * Describes the map's inner boundingBox as framed by the parent container.
+	 * Useful for flyTo / map transitions in cases where the inner map canvas is set to overflow the container.
+	 * Overflowing maps are used to ensure smoother transitions by limiting map.resize() calls. This feature is helpful even with the resizeDebounce.
+	 */
+	export let viewportBox: MapContext['viewportBox'] = undefined;
+	/**
+	 * CSS inline style for the figure (outer container) element. Default style includes display flex to allow for easy centering of map when bigger than container.
+	 */
+	export let outerStyle: string = undefined;
+	/**
+	 * CSS inline style for the map element, useful to implement overflow. The map container is display flex to allow for easy centering.
+	 */
+	export let innerStyle: string = undefined;
 
 	const dispatch = createEventDispatcher();
-	let mapRef: HTMLElement;
+	let containerRef: HTMLElement;
+	let outerRef: HTMLElement;
 	let inited = writable(false);
 	let loading = writable(false);
 	let resizeObs: ResizeObserver;
 	let resizeDebounce;
-	let hasOverSlot = false;
+	let hasOverlaySlot = false;
 
-	$: hasOverSlot =
+	/**
+	 * Checking if any overlay slot content is passed.
+	 */
+	$: hasOverlaySlot =
 		$$slots['top-left'] ||
 		$$slots['top-center'] ||
 		$$slots['top-right'] ||
@@ -43,9 +71,9 @@
 	/**
 	 * Update the map's base style on `style` prop change.
 	 */
-	$: if (map) {
+	$: if (map && styleSpecification) {
 		loading.set(true);
-		map.setStyle(mapStyle);
+		map.setStyle(styleSpecification);
 	}
 
 	function handleResize() {
@@ -53,27 +81,36 @@
 		resizeDebounce = setTimeout(() => {
 			map?.resize();
 			clearTimeout(resizeDebounce);
-		}, 1);
+		}, 50);
+	}
+
+	function updateBoundingBox() {
+		map.getBounds();
 	}
 
 	setContext<MapContext>(Ctx.Map, {
 		getMap: () => map,
+		viewportBox,
 		loading,
 		inited,
 	});
 
 	onMount(() => {
 		resizeObs = new ResizeObserver(handleResize);
-		resizeObs.observe(mapRef);
+		resizeObs.observe(containerRef);
 
 		map = new Map({
-			container: mapRef,
-			style: mapStyle,
+			container: containerRef,
+			style: styleSpecification,
 			center,
 			zoom,
 			pitch,
 			bearing,
 			attributionControl: false,
+		});
+
+		map.on('zoom', (e) => {
+			zoom = map.getZoom();
 		});
 
 		map.on('load', (e) => {
@@ -111,13 +148,14 @@
 	onDestroy(() => {});
 </script>
 
-<figure bind:this={mapRef} class:loading class:not-inited={!inited}>
+<figure bind:this={outerRef} class:loading class:not-inited={!inited} style={outerStyle}>
+	<div class="map" bind:this={containerRef} style={innerStyle} />
 	{#if $loading}
-		<Loading size={sizes.large} color={colors.dark[500]} />
+		<Loading size={sizes.large} />
 	{/if}
 	<slot {map} />
-	{#if hasOverSlot}
-		<div class="over">
+	{#if hasOverlaySlot}
+		<div class="overlay">
 			{#if $$slots['top-left']}
 				<div class="top left">
 					<slot name="top-left" />
@@ -154,13 +192,24 @@
 
 <style lang="postcss">
 	figure {
+		opacity: 1;
 		padding: 0;
 		margin: 0;
 		width: 100%;
 		height: 100%;
 		transform: scale(1);
-		opacity: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		overflow: hidden;
 		transition: all 0.35s cubic-bezier(0.2, 0, 0.2, 1);
+	}
+
+	.map {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
 	}
 
 	.loading {
@@ -175,7 +224,7 @@
 		/* clip-path: circle(100% at center); */
 	}
 
-	.over {
+	.overlay {
 		width: 100%;
 		height: 100%;
 		position: absolute;
@@ -207,7 +256,7 @@
 	}
 
 	/*
-		Over slots grid placements.
+		Overlay slots grid placements.
 	*/
 	.top {
 		grid-row: top;

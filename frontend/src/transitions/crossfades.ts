@@ -9,4 +9,4 @@ export const crossfadeExploreArticleBackButton = crossfade({ duration: 550, easi
 /**
  * Crossfade ref for filters pane toggle button.
  */
-export const crossfadeExploreFiltersButton = crossfade({ duration: 550, easing: expoOut, fallback: scale });
+export const crossfadeExploreFiltersButton = crossfade({ duration: 750, easing: expoOut, fallback: scale });

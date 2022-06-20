@@ -132,20 +132,20 @@
 
 <style lang="postcss">
 	#wrapper {
-		--size: 3em;
-		--inset: 3px;
+		--size: var(--default-size);
+		--inset: var(--default-inset);
 		border: none;
 		padding: 0 var(--inset);
 		margin: 0;
 		position: relative;
 		display: inline-flex;
 		flex-direction: row;
-		border-radius: 1.1em;
+		border-radius: var(--default-radius);
 		height: var(--size);
 		outline-style: solid;
 		outline-width: 2px;
 		outline-color: transparent;
-		transition: all 0.1s ease-out;
+		transition: all 0.15s ease-out;
 		overflow: visible;
 	}
 
@@ -185,8 +185,14 @@
 		transition: all 0.15s ease-out, text-indent 0.35s cubic-bezier(0, 0, 0, 1);
 
 		&::placeholder {
+			color: currentColor;
 			font-weight: 300;
 			opacity: 0.5;
+			transition: all 0.75s;
+		}
+
+		&:hover:not(:focus)::placeholder {
+			opacity: 1;
 		}
 
 		&:disabled {
@@ -267,20 +273,21 @@
 
 	/* Searchbar theme */
 	.searchbar {
-		background-color: rgba(var(--rgb-light-500), 0.9);
+		background-color: rgba(var(--rgb-light-300), 0.85);
 		color: var(--color-dark-100);
 		width: 100%;
 		&.focused {
 			outline-color: white;
 			background-color: white;
-			box-shadow: 0 1em 2em -1em rgba(0, 0, 20, 0.2);
+			box-shadow: 0 1em 2em -0.5em rgba(var(--rgb-dark-900), 0.25);
 
 			& #icon {
 				color: var(--color-primary-500);
 			}
 		}
 		&:hover:not(.focused) {
-			/* background-color: var(--color-light-300); */
+			background-color: white;
+			box-shadow: 0 0.5em 2em -1em rgba(var(--rgb-dark-900), 0.25);
 			color: var(--color-dark-900);
 		}
 	}

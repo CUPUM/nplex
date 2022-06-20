@@ -14,10 +14,10 @@
 <fieldset transition:slide|local={{ duration: 350, easing: expoOut }}>
 	<div>
 		<legend on:click={toggle}>
-			<span id="label">{label}</span>
-			<div id="line" />
-			<span id="chevron" style:transform="rotateX({expand ? 0 : 180}deg)"
-				><Icon name="chevron-up" size=".5em" strokeWidth="2" /></span
+			<span class="label">{label}</span>
+			<div class="line" />
+			<span class="chevron" style:transform="rotateX({expand ? 0 : 180}deg)"
+				><Icon name="chevron-up" size=".5em" strokeWidth={2} /></span
 			>
 		</legend>
 	</div>
@@ -41,14 +41,6 @@
 		border: none;
 		overflow: hidden;
 		transition: all 0.1s ease-out;
-
-		&:hover {
-			background-color: var(--color-light-300);
-		}
-
-		&:not(:first-of-type) {
-			border-top: 1px solid var(--color-light-700);
-		}
 	}
 
 	legend {
@@ -72,11 +64,11 @@
 			color: var(--color-primary-500);
 			/* background-color: var(--color-light-100); */
 
-			& #line::after {
+			& .line::after {
 				width: 100%;
 			}
 
-			& #chevron {
+			& .chevron {
 				/* background-color: var(--color-light-100); */
 				box-shadow: 0 0 0 1px var(--color-light-700);
 			}
@@ -92,14 +84,14 @@
 		width: 100%;
 	}
 
-	#label {
+	.label {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: flex-start;
 	}
 
-	#line {
+	.line {
 		position: relative;
 		height: 100%;
 		flex: 1;
@@ -117,7 +109,7 @@
 		}
 	}
 
-	#chevron {
+	.chevron {
 		display: flex;
 		justify-content: center;
 		align-items: center;

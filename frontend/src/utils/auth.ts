@@ -46,6 +46,7 @@ export async function guard({ criteria, session, message, url }: GuardInput): Pr
 	 * ...else, if no user, we redirect to the indicated location, usually the previous successfully visited url stored
 	 * in `prevUrl`, and append the required param to open the signup modal.
 	 */
+	console.log('Inside guard, redirectUrl:', session.prevUrl);
 	let redirectUrl = new URL(session.prevUrl);
 	let defaultMessage =
 		'Désolé, il semble que votre compte ne détient pas les permissions requises pour accéder à cette section de Nplex.';

@@ -28,7 +28,12 @@
 	});
 </script>
 
-<section on:submit|preventDefault on:input={submit} transition:width|local={{ duration: 350, easing: expoOut }}>
+<section
+	class="filters"
+	on:submit|preventDefault
+	on:input={submit}
+	transition:width|local={{ duration: 350, easing: expoOut }}
+>
 	<div id="filters-close" in:receive={{ key: '' }} out:send={{ key: '' }}>
 		<Button on:click={close}>
 			<Icon slot="icon" name="cross" />
@@ -70,7 +75,7 @@
 </section>
 
 <style lang="postcss">
-	section {
+	.filters {
 		position: relative;
 		flex: none;
 		display: flex;
@@ -79,10 +84,16 @@
 		justify-content: flex-start;
 		padding: 0;
 		width: var(--search-width);
-		overflow-x: visible;
 		margin-left: 1rem;
 		margin-right: 0;
 		margin-bottom: 1rem;
+		overflow-x: hidden;
+		border-radius: 2rem;
+		transition: all 0.25s ease-out;
+
+		&:hover {
+			box-shadow: 2rem 1rem 5rem -3rem rgba(var(--rgb-dark-900), 0.5);
+		}
 	}
 
 	form {
@@ -95,7 +106,6 @@
 		overflow-y: visible;
 		padding: 0;
 		margin: 0;
-		border-radius: 2rem;
 		background-color: white;
 	}
 

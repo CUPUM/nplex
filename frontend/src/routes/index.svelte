@@ -1,9 +1,7 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
-	import { backgroundColor } from '$stores/backgroundColor';
 	import { showCategory } from '$stores/search';
-	import { colors } from '$utils/colors';
 	import { sizes } from '$utils/sizes';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -19,12 +17,12 @@
 	showCategory.set(true);
 
 	onMount(() => {
-		backgroundColor.set(colors.primary[900]);
+		// backgroundColor.set(colors.light[500]);
 	});
 
 	onDestroy(() => {
 		showCategory.set(false);
-		backgroundColor.reset();
+		// backgroundColor.reset();
 	});
 </script>
 

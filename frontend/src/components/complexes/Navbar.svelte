@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/env';
 	import { session } from '$app/stores';
 	import AvatarButton from '$components/primitives/AvatarButton.svelte';
 	import Badge from '$components/primitives/Badge.svelte';
@@ -19,8 +18,8 @@
 	import { creationBaseRoute, creationRoutes, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
 	import type { Category } from 'src/types/categories';
 	import { onMount } from 'svelte';
-	import { expoOut } from 'svelte/easing';
-	import { fly, scale } from 'svelte/transition';
+	import { expoIn, expoOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 
 	export let navbarHeight: number = 0;
 
@@ -44,16 +43,6 @@
 		navbarHeight = navbarRef.offsetHeight;
 	}
 
-	/**
-	 * React to category change, and take into account previously set category when
-	 * returning to an explore route that triggers redisplaying the switch.
-	 */
-	$: if ($showCategory && browser) {
-		if ($category) {
-			gotoCategory(exploreRoutes.find((r) => r.category === $category));
-		}
-	}
-
 	onMount(() => {
 		mounted = true;
 		resizeObserver = new ResizeObserver(updateHeight);
@@ -63,7 +52,11 @@
 
 <header bind:this={navbarRef} class:hidden class:overlay>
 	{#if mounted}
-		<nav id="main" in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 0 }}>
+		<nav
+			id="main"
+			in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 0 }}
+			out:fly={{ y: -20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
+		>
 			<a id="logo" href="/">
 				<Logo intro={true} color={colors.dark[900]} hoverColor={colors.primary[500]} />
 			</a>
@@ -76,8 +69,8 @@
 		{#if $showCategory}
 			<nav
 				id="category"
-				in:fly={{ y: 30, duration: 750, easing: expoOut, delay: 500 }}
-				out:fly={{ y: 30, duration: 750, easing: expoOut, delay: 0 }}
+				in:fly={{ y: 20, duration: 500, easing: expoOut, delay: 150 }}
+				out:fly={{ y: 20, duration: 500, easing: expoIn, delay: 0 }}
 			>
 				<Switch name="category" variant="navbar">
 					{#each exploreRoutes as r, i}
@@ -89,28 +82,17 @@
 							loading={$loadingCategory === r.category}
 							disabled={r.category === $category && !$isExploreArticle}
 						>
-							<span class="category-name" style:left={resetableCategory === r.category ? '-.5em' : '0px'}>
-								{r.title}
-							</span>
-							{#if resetableCategory === r.category}
-								<span
-									class="category-reset"
-									transition:scale={{
-										start: 0,
-										delay: 0,
-										duration: 500,
-										easing: expoOut,
-									}}
-								>
-									<Icon strokeWidth={1.7} name="undo" />
-								</span>
-							{/if}
+							{r.title}
 						</SwitchItem>
 					{/each}
 				</Switch>
 			</nav>
 		{/if}
-		<nav id="user" in:fly={{ y: 30, opacity: 0, duration: 750, easing: expoOut, delay: 250 }}>
+		<nav
+			id="user"
+			in:fly={{ y: 20, opacity: 0, duration: 500, easing: expoOut, delay: 300 }}
+			out:fly={{ y: 20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
+		>
 			<Button href="/" variant="navbar" square={true}>
 				<Icon name="home" slot="icon" />
 			</Button>

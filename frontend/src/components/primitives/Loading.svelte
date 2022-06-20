@@ -4,12 +4,12 @@
 	import { circInOut, elasticOut, expoIn } from 'svelte/easing';
 	import { scale, slide } from 'svelte/transition';
 
-	export let color: string = colors.primary[500];
+	export let color: string = colors.dark[500];
 	export let opacity: number = 1;
 	export let backgroundColor: string = 'transparent';
 	export let size: SizeInput = '1em';
 
-	const duration = 6;
+	const duration: string = '3s';
 	let outroing = false;
 
 	function outro() {
@@ -49,10 +49,10 @@
 		.join(';');
 </script>
 
-<div id="container" style:opacity style:font-size={cssSize(size)} style:color>
+<div class="container" style:opacity style:font-size={cssSize(size)} style:color style:--duration={duration}>
 	<div
-		id="bg"
-		style:background-color={backgroundColor}
+		class="bg"
+		style:backgroundColor
 		on:outrostart={outro}
 		transition:slide={{ duration: 450, easing: circInOut }}
 		class:outroing
@@ -62,7 +62,6 @@
 		preserveAspectRatio="xMidYMid"
 		in:scale={{ duration: 500, easing: elasticOut }}
 		out:scale={{ duration: 350, easing: expoIn }}
-		style:animation-duration="{duration}s"
 	>
 		<path>
 			<animate
@@ -82,7 +81,7 @@
 </div>
 
 <style lang="postcss">
-	#container {
+	.container {
 		user-select: none;
 		pointer-events: none;
 		position: absolute;
@@ -96,7 +95,7 @@
 		z-index: 100;
 	}
 
-	#bg {
+	.bg {
 		position: absolute;
 		bottom: 0;
 		left: 0;
@@ -118,6 +117,7 @@
 		background-color: transparent;
 		overflow: visible;
 		animation-name: spin;
+		animation-duration: var(--duration);
 		animation-fill-mode: none;
 		animation-iteration-count: infinite;
 		animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -132,9 +132,9 @@
 		stroke-linecap: round;
 		transform-origin: center;
 		animation-name: slowspin;
-		animation-duration: 7s;
+		animation-duration: calc(4 * var(--duration, 0s));
 		animation-iteration-count: infinite;
-		animation-timing-function: linear;
+		animation-timing-function: steps(4, start);
 	}
 
 	@keyframes slowspin {
@@ -185,7 +185,7 @@
 		} */
 
 		/* For 6 (+1) shapes */
-		0% {
+		/* 0% {
 			transform: rotate(0deg);
 		}
 		16.66% {
@@ -205,6 +205,28 @@
 		}
 		100% {
 			transform: rotate(1620deg);
+		} */
+		/* For 6 (+1) shapes */
+		0% {
+			transform: rotate(-90deg);
+		}
+		16.66% {
+			transform: rotate(0deg);
+		}
+		33.33% {
+			transform: rotate(90deg);
+		}
+		50% {
+			transform: rotate(180deg);
+		}
+		66.66% {
+			transform: rotate(270deg);
+		}
+		83.33% {
+			transform: rotate(360deg);
+		}
+		100% {
+			transform: rotate(450deg);
 		}
 	}
 </style>

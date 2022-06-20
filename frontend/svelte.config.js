@@ -14,6 +14,7 @@ const config = {
 	kit: {
 		adapter: node(),
 		alias: {
+			$types: 'src/types',
 			$actions: 'src/actions',
 			$components: 'src/components',
 			$stores: 'src/stores',
@@ -21,7 +22,6 @@ const config = {
 			$transitions: 'src/transitions',
 			$routes: 'src/routes',
 			$utils: 'src/utils',
-			$apitypes: '.svelte-kit/types/src/routes/api',
 		},
 		vite: {
 			server: {

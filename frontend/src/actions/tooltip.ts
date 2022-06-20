@@ -1,19 +1,25 @@
-import type { SvelteComponent } from 'svelte';
-import { outroAndDestroy } from '$utils/helpers/components';
-import type { SvelteProps } from '$utils/helpers/types';
 import Tooltip from '$components/primitives/Tooltip.svelte';
+import type { SvelteProps } from '$types/types';
+import { outroAndDestroy } from '$utils/helpers/components';
+import type { SvelteComponent } from 'svelte';
 
-/** Interface extending the Tooltip component's props */
+/**
+ * Interface extending the Tooltip component's props.
+ */
 interface TooltipOptions extends SvelteProps<Tooltip> {
 	disabled?: boolean;
 }
 
-/** Action to attach a tooltip to a given element. */
+/**
+ * Action to attach a tooltip to a given element.
+ */
 export function tooltip(element: HTMLElement, options: TooltipOptions) {
 	let tooltip: SvelteComponent;
 	let title = element.getAttribute('title');
 	let message = options.message || title || '';
-	/** Making sure the host element is not statically positionned. */
+	/**
+	 * Making sure the host element is not statically positionned.
+	 */
 	const hostStyle = getComputedStyle(element);
 	if (hostStyle.position === 'static') {
 		element.style.position = 'relative';
@@ -30,7 +36,9 @@ export function tooltip(element: HTMLElement, options: TooltipOptions) {
 	function show() {
 		if (options.disabled !== true) {
 			if (title) {
-				/** Temporarily unset the title attribute to avoid conflicting native tooltip while hover. */
+				/**
+				 * Temporarily unset the title attribute to avoid conflicting native tooltip while hover.
+				 */
 				element.removeAttribute('title');
 			}
 			tooltip = new Tooltip({
@@ -45,7 +53,9 @@ export function tooltip(element: HTMLElement, options: TooltipOptions) {
 
 	function hide() {
 		if (title) {
-			/** Re-instate the title attribute. */
+			/**
+			 * Re-instate the title attribute.
+			 */
 			element.setAttribute('title', title);
 		}
 		if (tooltip) {

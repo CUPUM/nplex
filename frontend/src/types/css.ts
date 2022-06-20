@@ -12,7 +12,7 @@ export declare namespace CSS {
 	/**
 	 * Type to validate whole strings composed of a value and an unit.
 	 */
-	export type SizeValue = `${number}${SizeUnit}`;
+	export type SizeValue = `${number}${SizeUnit}`; // | `calc(${string})` | `var(--${string})`;
 
 	/**
 	 * Typing specific properties.

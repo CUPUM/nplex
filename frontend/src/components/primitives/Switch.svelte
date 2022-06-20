@@ -76,10 +76,10 @@
 >
 	{#if currentBox}
 		<div
-			id="current"
 			transition:scale={{ duration: 150, start: 0.8, opacity: 0, easing: expoOut }}
 			class:temp={Boolean($temp)}
 			style={currentBox}
+			class="selector"
 		/>
 	{/if}
 	<slot />
@@ -87,6 +87,8 @@
 
 <style lang="postcss">
 	fieldset {
+		--size: var(--default-size);
+		--radius: var(--default-radius);
 		--inset: 0px;
 		position: relative;
 		border: none;
@@ -95,16 +97,16 @@
 		justify-content: center;
 		gap: 0;
 		padding: var(--inset);
-		border-radius: var(--base-radius);
+		border-radius: var(--radius);
 		overflow: visible;
 		transition: all 0.25s ease-out;
 	}
 
-	#current {
+	.selector {
 		z-index: 1;
 		position: absolute;
-		height: calc(var(--base-size) - 2 * var(--inset));
-		border-radius: calc(var(--base-radius) - var(--inset));
+		height: calc(var(--size) - 2 * var(--inset));
+		border-radius: calc(var(--radius) - var(--inset));
 		transition: all 0.15s cubic-bezier(0.8, 0, 0.2, 1.2);
 	}
 
@@ -116,12 +118,10 @@
 		&:hover {
 			background-color: var(--color-light-300);
 		}
-		& #current {
+		& .selector {
 			background-color: var(--color-dark-500);
-			/* box-shadow: 0 0.25em 1em -0.5em rgba(0, 0, 30, 0.2); */
 			&.temp {
 				background-color: var(--color-light-900);
-				/* box-shadow: 0 0 0 1px rgba(0, 0, 30, 0.5); */
 			}
 		}
 	}
@@ -136,20 +136,17 @@
 
 	/* Nav theme */
 	.navbar {
-		--outset: 0px;
-		--bg: var(--color-light-300);
-		background-color: var(--bg);
-		box-shadow: 0 0 0 var(--outset) var(--bg);
+		background-color: var(--color-light-300);
+		box-shadow: 0 0 0 0 var(--color-light-300);
 		&:hover,
 		&:focus {
-			/* --bg: white; */
-			/* box-shadow: 0 0 0 var(--outset) var(--bg), 0 0.5em 1.5em -0.5em rgba(var(--rgb-dark-900), 0.2); */
+			box-shadow: 0 0 0 3px var(--color-light-300);
 		}
-		& #current {
-			background-color: var(--color-dark-700);
+		& .selector {
+			background-color: var(--color-dark-900);
 
 			&.temp {
-				opacity: 0.1;
+				background-color: var(--color-light-500);
 			}
 		}
 	}

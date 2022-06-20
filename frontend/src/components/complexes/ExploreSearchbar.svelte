@@ -31,7 +31,7 @@
 <form
 	on:submit|preventDefault={submit}
 	on:reset|preventDefault={reset}
-	in:slip={{
+	in:slip|local={{
 		height: true,
 		duration: 350,
 		delay: 0,
@@ -40,7 +40,7 @@
 		scale: 0.9,
 		opacity: 0,
 	}}
-	out:slip={{
+	out:slip|local={{
 		height: true,
 		duration: 500,
 		delay: 0,

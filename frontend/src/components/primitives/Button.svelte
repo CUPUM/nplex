@@ -54,12 +54,12 @@
 	<div class="ripple-host" use:ripple={{ startColor: 'currentColor', controlElement: elementRef }} />
 	<div class="align-{contentAlign}">
 		{#if $$slots.icon}
-			<span id="icon" class="icon-{iconPosition}" style:font-size={$$slots.default ? '1em' : '1.2em'}>
+			<span class="icon icon-{iconPosition}" style:font-size={$$slots.default ? '1em' : '1.2em'}>
 				<slot name="icon" />
 			</span>
 		{/if}
 		{#if $$slots.default}
-			<span id="label" style:text-align={contentAlign}>
+			<span class="label" style:text-align={contentAlign}>
 				<slot />
 			</span>
 		{/if}
@@ -74,7 +74,7 @@
 
 <style lang="postcss">
 	.button {
-		--size: calc(var(--base-size) - 2 * var(--inset, 0px));
+		--size: calc(var(--default-size) - 2 * var(--inset, 0px));
 		display: inline-block;
 		cursor: pointer;
 		box-sizing: border-box;
@@ -84,15 +84,21 @@
 		height: var(--size);
 		min-height: var(--size);
 		min-width: var(--size);
-		border-radius: calc(var(--base-radius) - var(--inset, 0px));
+		border-radius: calc(var(--default-radius) - var(--inset, 0px));
 		margin: 0;
-		padding: 0 1.2em;
+		padding: 0 1.5em;
 		font-family: var(--font-main);
-		font-weight: 400;
-		outline-width: 2px;
+		font-weight: 500;
+		outline-width: 1px;
 		outline-style: solid;
 		outline-color: transparent;
+		outline-offset: 3px;
 		transition: all 0.1s ease-out;
+
+		&:focus {
+			outline-color: rgba(var(--rgb-dark-900), 0.5);
+		}
+
 		&.warning {
 			background-color: var(--color-error-100);
 			color: var(--color-error-700);
@@ -171,12 +177,12 @@
 		text-overflow: ellipsis;
 		letter-spacing: 0.02em;
 	}
-	#label {
+	.label {
 		grid-area: center;
 		display: block;
 		top: -0.05em;
 	}
-	#icon {
+	.icon {
 		flex-grow: 1;
 		top: -0.05em;
 		&:only-child {
@@ -184,55 +190,53 @@
 		}
 	}
 
-	/* Variants (should correspond to `typeof variant`) */
+	/* 
+		Variants (should correspond to `typeof variant`)
+	*/
 	/* Default button theme */
 	.default {
-		color: var(--color-dark-500);
-		background-color: rgba(var(--rgb-dark-500), 0.1);
-		transition: all 0.15s ease-out;
-		&:hover,
-		/* &:focus, */
-		&.hover {
-			color: var(--color-dark-900);
-			background-color: rgba(var(--rgb-dark-500), 0.05);
-			/* box-shadow: inset 0 0 0 1px white; */
+		color: var(--color-dark-900);
+		background-color: var(--color-light-300);
+		transition: all 0.1s ease-out, box-shadow 0.2s ease-in-out;
+		&:hover {
+			color: black;
+			background-color: var(--color-light-500);
 		}
 		&:active {
+			/* background-color: white; */
 		}
 		&.active {
 			color: var(--color-primary-500);
 			background-color: white;
 		}
 	}
-	:global(.button-parent:hover) .default:not(:hover) {
+	:global(.button-parent:hover) .default {
 		color: var(--color-dark-900);
-		background-color: white;
+		background-color: var(--color-light-500);
 	}
 	/* Secondary, more subtle button theme */
 	.secondary {
-		color: var(--color-dark-500);
-		background-color: var(--color-light-100);
-		box-shadow: 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
-		transition: all 0.2s;
-		&:hover,
-		/* &:focus, */
-		&.hover {
-			color: var(--color-secondary-500);
-			background-color: var(--color-light-500);
-			box-shadow: 0 0 0 0 transparent;
+		color: var(--color-dark-300);
+		background-color: transparent;
+		box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
+		&:hover {
+			color: black;
+			background-color: rgba(var(--rgb-dark-500), 0.1);
+			box-shadow: inset 0 0 0 5px rgba(var(--rgb-dark-500), 0);
+			/* box-shadow: 0 0 0 2px rgba(var(--rgb-primary-500), 0.1); */
 		}
+	}
+	:global(.button-parent:hover) .default {
+		color: var(--color-dark-900);
+		background-color: var(--color-light-500);
 	}
 	/* Ghost, more subtle button theme */
 	.ghost {
-		color: var(--color-dark-500);
+		color: var(--color-dark-300);
 		background-color: transparent;
-		/* box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); */
-		transition: all 0.2s ease-out;
-		&:hover,
-		/* &:focus, */
-		&.hover {
-			color: var(--color-dark-900);
-			background-color: rgba(var(--rgb-dark-500), 0.1);
+		&:hover {
+			color: var(--color-primary-700);
+			background-color: rgba(var(--rgb-light-900), 0.1);
 			/* box-shadow: 0 0 0 2px rgba(var(--rgb-primary-500), 0.1); */
 		}
 	}
@@ -240,13 +244,12 @@
 	.cta {
 		color: white;
 		background-color: var(--color-primary-500);
-		transition: all 0.2s;
-		&:hover,
-		/* &:focus, */
-		&.hover {
+		box-shadow: 0 0em 1em -1em rgba(var(--rgb-dark-900), 0.25);
+		transition: all 0.25s ease-out;
+		&:hover {
 			color: white;
-			background-color: var(--color-primary-700);
-			box-shadow: 0 0.5em 2em -1em var(--color-primary-500);
+			background-color: var(--color-primary-900);
+			box-shadow: 0 1em 2em -1em var(--color-primary-500);
 		}
 		&:active {
 		}
@@ -259,25 +262,30 @@
 	.navbar {
 		color: rgba(var(--rgb-dark-900), 0.5);
 		background-color: transparent;
-		font-weight: 550;
+		font-weight: 600;
+		padding-inline: 1.2em;
 		&::after {
 			content: '';
 			opacity: 0;
 			position: absolute;
-			bottom: 0.25em;
+			bottom: 0.5em;
 			left: 50%;
-			width: 5px;
-			height: 5px;
+			width: 3px;
+			height: 3px;
 			background-color: currentColor;
 			border-radius: 5px;
-			transform: translate(-50%, -200%) scale(0.5);
-			transition: opacity 0.35s, transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
+			transform: translate(-50%, -100%);
+			transition: opacity 0.35s, width 0.15s cubic-bezier(0, 0, 0, 1),
+				transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 		}
-		&:hover,
-		/* &:focus, */
-		&.hover {
+		&:hover {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-light-500), 0.5);
+			&::after {
+				opacity: 1;
+				width: 8px;
+				transform: translate(-50%, 50%);
+			}
 		}
 		&:active {
 		}
@@ -287,7 +295,8 @@
 			pointer-events: none;
 			&::after {
 				opacity: 1;
-				transform: translate(-50%, -50%) scale(1);
+				width: 12px;
+				transform: translate(-50%, 0%);
 			}
 		}
 	}

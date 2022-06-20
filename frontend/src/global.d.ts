@@ -34,6 +34,10 @@ declare namespace App {
 		 * Prop to store the client session's previous navigation for various usages and redirect cases.
 		 */
 		prevUrl: string;
+		/**
+		 * Client's user-agent / device detected server-side.
+		 */
+		device: import('$types/device').Device;
 	}
 
 	/**

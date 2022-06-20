@@ -56,11 +56,11 @@
 	use:ripple={{}}
 >
 	<input {id} {value} name={ctx.name} type="radio" bind:group on:change on:input />
-	<span id="inner">
+	<span class="inner">
 		<slot />
 	</span>
 	{#if loading}
-		<Loading />
+		<Loading color="currentColor" />
 	{/if}
 </label>
 
@@ -74,10 +74,10 @@
 		font-weight: 500;
 		display: inline-flex;
 		padding: 0 1.2em;
-		height: calc(var(--base-size) - 2 * var(--inset));
+		height: calc(var(--size) - 2 * var(--inset));
 		justify-content: center;
 		align-items: center;
-		border-radius: calc(var(--base-radius) - var(--inset));
+		border-radius: calc(var(--radius) - var(--inset));
 		transition: all 0.15s ease-out;
 		letter-spacing: 0.01em;
 
@@ -88,14 +88,14 @@
 		&.loading {
 			pointer-events: none;
 
-			& #inner {
+			& .inner {
 				opacity: 0.2;
 				transform: scale(0.94);
 			}
 		}
 	}
 
-	#inner {
+	.inner {
 		display: block;
 		position: relative;
 		top: -0.1em;
@@ -141,7 +141,7 @@
 	/* Nav theme */
 	.navbar {
 		background-color: transparent;
-		color: var(--color-dark-500);
+		color: var(--color-dark-100);
 		&:hover,
 		&:focus {
 			color: var(--color-dark-900);
@@ -149,7 +149,7 @@
 		&.current {
 			color: var(--color-light-500);
 			&.some-temp {
-				color: var(--color-primary-500);
+				color: var(--color-primary-700);
 			}
 		}
 	}

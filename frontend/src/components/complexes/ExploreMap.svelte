@@ -8,24 +8,8 @@
 	import MapToolbar from '$components/primitives/MapToolbar.svelte';
 </script>
 
-<!-- <section class:is-article={$isExploreArticle} transition:slip={{ height: false, width: true }}>
-	<div id="wrapper">
-		<Map bind:map={$exploreMap} />
-	</div>
-	<MapToolbar>
-		<Button>+</Button>
-		<Button>-</Button>
-	</MapToolbar>
-	<MapToolbar>
-		<Button variant="ghost">Localize</Button>
-		<Button variant="ghost">Layers</Button>
-		<Button variant="ghost">Minimize</Button>
-		<Button variant="ghost">Maximize</Button>
-	</MapToolbar>
-</section> -->
-
 <section>
-	<Map let:map>
+	<Map let:map innerStyle="width: 100vw; height: 100vh;">
 		<MapToolbar slot="top-left">
 			<Button on:click={() => map.zoomIn()}><Icon slot="icon" name="plus" /></Button>
 			<Button on:click={() => map.zoomOut()}>-</Button>

@@ -48,8 +48,8 @@
 				<img src={project.image_url} alt="" on:load={handleImageLoad} />
 			{/if}
 		</figure>
-		<h3 id="title">{project.title}</h3>
-		<div id="button" in:receive={{ key: project.id }} out:send={{ key: project.id }}>
+		<h3>{project.title}</h3>
+		<div in:receive={{ key: project.id }} out:send={{ key: project.id }}>
 			<Button style="grid-area: button;" iconPosition="after">
 				<span>Consulter</span>
 				<Icon name="submit" slot="icon" />
@@ -82,15 +82,17 @@
 		height: 100%;
 		padding: 1rem;
 		border-radius: 2rem;
-		background-color: transparent;
-		box-shadow: inset 0 0 0 2px rgba(var(--rgb-dark-500), 0.05), 0 0 0 0 transparent;
+		/* background-color: white; */
+		box-shadow: inset 0 0 0 2px rgba(var(--rgb-dark-900), 0.05), 0 0 0 0 transparent;
 		color: var(--color-dark-500);
+		transform: scale(0.98);
 		transition: all 0.15s ease-out;
 
 		&:hover {
 			color: var(--color-dark-900);
 			background-color: white;
 			box-shadow: inset 0 0 0 0px white, 0 2rem 6rem -2rem rgba(var(--rgb-dark-900), 0.25);
+			transform: scale(1);
 
 			& img {
 				transform: scale(1);
@@ -125,7 +127,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: all 0.35s;
+		transition: all 0.15s;
 		transform: scale(1.1);
 	}
 

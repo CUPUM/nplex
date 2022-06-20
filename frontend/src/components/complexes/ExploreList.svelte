@@ -29,7 +29,7 @@
 	});
 </script>
 
-<section class={display} transition:width={{}} bind:this={elementRef}>
+<section class={display} transition:width|local={{}} bind:this={elementRef}>
 	{#if $category === 'projects'}
 		<ProjectsList />
 	{:else if $category === 'organisations'}

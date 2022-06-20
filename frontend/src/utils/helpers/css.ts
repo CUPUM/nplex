@@ -34,3 +34,8 @@ export function cssSize(input: SizeInput, fallbackUnit: CSS.SizeUnit = 'px') {
 	const decomposed = decomposeCssSize(input);
 	return (decomposed.value + (decomposed.unit || fallbackUnit)) as CSS.SizeValue;
 }
+
+/**
+ * Default component size taking parent's inset into account.
+ */
+// export const defaultSize;

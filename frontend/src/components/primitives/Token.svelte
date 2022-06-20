@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { tooltip } from '$actions/tooltip';
 	import { Ctx } from '$utils/contexts';
-	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/helpers/css';
 	import { getContext } from 'svelte';
 	import type { TokenSetContext } from './TokenSet.svelte';
 
-	export let size: number | CSSSizeValue = '1em';
+	export let size: SizeInput = '1em';
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = undefined;
 	export let ttip: string = undefined;
 	export let disabled: boolean = false;
@@ -18,8 +18,7 @@
 
 <svelte:element
 	this={tokenSetCtx ? 'dd' : 'div'}
-	id="token"
-	class={autoVariant}
+	class="token {autoVariant}"
 	style:font-size={cssSize(size)}
 	class:active
 	class:warning
@@ -29,18 +28,18 @@
 	on:focus
 	{...$$restProps}
 >
-	<span id="label">
+	<div class="label">
 		<slot />
-	</span>
+	</div>
 	{#if $$slots.input}
-		<span id="input">
+		<div class="input">
 			<slot name="input" />
-		</span>
+		</div>
 	{/if}
 </svelte:element>
 
 <style lang="postcss">
-	#token {
+	.token {
 		user-select: none;
 		position: relative;
 		display: inline-flex;
@@ -65,19 +64,20 @@
 		}
 	}
 
-	span {
+	.label,
+	.input {
 		display: inline-block;
 		position: relative;
 	}
 
-	#label {
+	.label {
 		top: -0.05em;
 		overflow: hidden;
 		line-height: 2em;
 		text-overflow: ellipsis;
 	}
 
-	#input {
+	.input {
 	}
 
 	.interactive {

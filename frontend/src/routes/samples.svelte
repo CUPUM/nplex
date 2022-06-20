@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
 	import Range from '$components/primitives/Range.svelte';
@@ -12,9 +13,9 @@
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { backgroundColor } from '$stores/backgroundColor';
 	import { slip } from '$transitions/slip';
+	import type { SvelteProps } from '$types/helpers';
 	import { colors } from '$utils/colors';
 	import { cssSize } from '$utils/helpers/css';
-	import type { SvelteProps } from '$utils/helpers/types';
 	import { sizes } from '$utils/sizes';
 
 	let alt = false;
@@ -95,8 +96,11 @@
 		<h3>{variant.charAt(0).toUpperCase() + variant.slice(1)}</h3>
 		<div id="buttons">
 			<Button {active} {variant} size={currentSize}>With text</Button>
-			<Button {active} {variant} size={currentSize} icon="email">With text and icon</Button>
-			<Button {active} {variant} size={currentSize} icon="settings" />
+			<Tooltip message="Testy test">
+				<Button {active} {variant} size={currentSize}><Icon slot="icon" name="user" />With text and icon</Button
+				>
+			</Tooltip>
+			<Button {active} {variant} size={currentSize}><Icon slot="icon" name="settings" /></Button>
 		</div>
 	{/each}
 </section>

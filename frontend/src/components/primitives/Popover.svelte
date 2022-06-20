@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
-	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/helpers/css';
 	import { onDestroy, onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -9,7 +9,7 @@
 	export let useHover: boolean = false;
 	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
-	export let distance: number | CSSSizeValue = 5;
+	export let distance: SizeInput = 5;
 
 	let controlRef: HTMLElement;
 	let popoverRef: HTMLElement;
@@ -122,8 +122,8 @@
 	{#if open}
 		<div
 			class="outer"
-			in:scale={{ start: 0.7, easing: expoOut, duration: 150 }}
-			out:scale={{ start: 0.8, easing: expoIn, duration: 75 }}
+			in:scale={{ start: 0.5, easing: expoOut, duration: 150, opacity: 0 }}
+			out:scale={{ start: 0.9, easing: expoIn, duration: 50, opacity: 0 }}
 		>
 			<div class="inner" {...$$restProps}>
 				<slot />
@@ -273,10 +273,10 @@
 
 	.inner {
 		position: relative;
-		padding: 0.5em;
-		background-color: var(--color-light-100);
-		box-shadow: 0 0 2px var(--color-light-900);
-		border-radius: 1em;
+		padding: 1rem;
+		background-color: white;
+		box-shadow: 0 1rem 3rem -2rem rgba(var(--rgb-dark-900), 0.25);
+		border-radius: 2rem;
 		display: inline-flex;
 		flex-direction: column;
 	}
