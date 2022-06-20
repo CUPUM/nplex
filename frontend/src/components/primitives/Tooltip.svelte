@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
-	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { cssSize } from '$utils/helpers/css';
 	import { onDestroy, onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -8,9 +8,9 @@
 	export let message: string;
 	export let open: boolean = false;
 	export let useHover: boolean = true;
-	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
+	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'top';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
-	export let distance: SizeInput = 10;
+	const distance = 10;
 
 	let controlRef: HTMLElement;
 	let hinterRef: HTMLElement;
@@ -22,25 +22,20 @@
 	let h;
 
 	$: if (controlRef) {
-		console.log('running setup');
-		/**
-		 * Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change).
-		 */
+		// Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change).
 		controlRef.removeEventListener('click', show);
 		controlRef.removeEventListener('mouseenter', show);
 		controlRef.removeEventListener('mouseleave', hide);
 		hinterRef.removeEventListener('mouseenter', show);
 		hinterRef.removeEventListener('mouseleave', hide);
-		/** Binding the proper events on the control element. */
+		// Binding the proper events on the control element.
 		controlRef.addEventListener(useHover ? 'mouseenter' : 'click', show);
 		controlRef.addEventListener(useHover ? 'mouseleave' : 'clickoutside', hide);
 		if (useHover) {
 			hinterRef.addEventListener('mouseenter', show);
 			hinterRef.addEventListener('mouseleave', hide);
 		}
-		/**
-		 * Listening to disposition changes
-		 */
+		// Listening to disposition changes.
 		controlRef.ontransitionend = setPosition;
 		mutationObs = new MutationObserver(setPosition);
 		resizeObs = new ResizeObserver(setPosition);
@@ -78,13 +73,9 @@
 	}
 
 	onMount(() => {
-		/**
-		 * Referencing the element passed in the "control" slot.
-		 */
+		// Referencing the element passed in the "control" slot.
 		controlRef = hinterRef.previousElementSibling as HTMLElement;
-		/**
-		 * Setting the initial position.
-		 */
+		// Setting the initial position.
 		setPosition();
 	});
 
@@ -111,16 +102,20 @@
 	{#if open}
 		<span
 			class="tooltip"
-			in:scale={{ start: 0.5, easing: expoOut, duration: 150 }}
-			out:scale={{ start: 1.1, easing: expoIn, duration: 50 }}
+			in:scale={{ start: 0.5, easing: expoOut, duration: 100 }}
+			out:scale={{ start: 0.8, easing: expoIn, duration: 50 }}
 		>
 			{message}
+			<svg viewBox="0 0 100 100" preserveAspectRatio="midXMidY">
+				<path d="M 0,0 C 30,0 30,60 50,60 C 70,60 70,0 100,0 Z" />
+			</svg>
 		</span>
 	{/if}
 </div>
 
 <style lang="postcss">
 	.hinter {
+		z-index: 1000;
 		pointer-events: none;
 		user-select: none;
 		position: absolute;
@@ -133,21 +128,55 @@
 		overflow: visible;
 	}
 
+	span {
+		display: block;
+		flex: none;
+		position: absolute;
+		white-space: nowrap;
+		font-size: var(--size-small);
+		font-weight: 400;
+		padding: 0.5em 1.2em 0.7em 1.2em;
+		margin: 0;
+		background-color: var(--color-dark-900);
+		color: var(--color-light-300);
+		box-shadow: 0 0.5em 1.5em -1em rgba(var(--rgb-dark-900), 1);
+		border-radius: 1em;
+		opacity: 0.75;
+	}
+
+	svg {
+		position: absolute;
+		height: 0.8em;
+		width: 0.8em;
+		padding: 0;
+		margin: 0;
+		background-color: transparent;
+	}
+
+	path {
+		fill: var(--color-dark-900);
+	}
+
 	.top {
 		top: var(--y);
 		left: var(--x);
 		width: var(--w);
 
-		& .outer {
+		& span {
 			transform-origin: center bottom;
+			bottom: var(--distance);
+		}
+
+		& svg {
 			bottom: 0;
-			padding-bottom: var(--distance);
+			left: 50%;
+			transform: translate(-50%, 100%);
 		}
 
 		&.start {
 			justify-content: flex-start;
 
-			& .outer {
+			& span {
 				transform-origin: left bottom;
 			}
 		}
@@ -155,7 +184,7 @@
 		&.end {
 			justify-content: flex-end;
 
-			& .outer {
+			& span {
 				transform-origin: right bottom;
 			}
 		}
@@ -166,16 +195,21 @@
 		left: var(--x);
 		width: var(--w);
 
-		& .outer {
+		& span {
 			transform-origin: center top;
+			top: var(--distance);
+		}
+
+		& svg {
 			top: 0;
-			padding-top: var(--distance);
+			left: 50%;
+			transform: translate(-50%, -100%) rotate(180deg);
 		}
 
 		&.start {
 			justify-content: flex-start;
 
-			& .outer {
+			& span {
 				transform-origin: left top;
 			}
 		}
@@ -183,7 +217,7 @@
 		&.end {
 			justify-content: flex-end;
 
-			& .outer {
+			& span {
 				transform-origin: right top;
 			}
 		}
@@ -194,16 +228,21 @@
 		left: calc(var(--x) + var(--w));
 		height: var(--h);
 
-		& .outer {
+		& span {
 			transform-origin: left center;
+			left: var(--distance);
+		}
+
+		& svg {
 			left: 0;
-			padding-left: var(--distance);
+			top: 50%;
+			transform: translate(-100%, -50%) rotate(90deg);
 		}
 
 		&.start {
 			align-items: flex-start;
 
-			& .outer {
+			& span {
 				transform-origin: left top;
 			}
 		}
@@ -211,7 +250,7 @@
 		&.end {
 			align-items: flex-end;
 
-			& .outer {
+			& span {
 				transform-origin: left bottom;
 			}
 		}
@@ -222,16 +261,21 @@
 		left: var(--x);
 		height: var(--h);
 
-		& .outer {
+		& span {
 			transform-origin: right center;
+			right: var(--distance);
+		}
+
+		& svg {
 			right: 0;
-			padding-right: var(--distance);
+			top: 50%;
+			transform: translate(100%, -50%) rotate(-90deg);
 		}
 
 		&.start {
 			align-items: flex-start;
 
-			& .outer {
+			& span {
 				transform-origin: right top;
 			}
 		}
@@ -239,22 +283,9 @@
 		&.end {
 			align-items: flex-end;
 
-			& .outer {
+			& span {
 				transform-origin: right bottom;
 			}
 		}
-	}
-
-	.tooltip {
-		font-size: var(--size-small);
-		font-weight: 300;
-		position: relative;
-		padding: 0.4em 1em 0.6em 1em;
-		background-color: rgba(var(--rgb-dark-500), 0.9);
-		backdrop-filter: blur(12px);
-		color: var(--color-light-100);
-		box-shadow: 0 1em 2em -1em rgba(var(--rgb-dark-900), 0.25);
-		border-radius: 1.2em;
-		display: block;
 	}
 </style>

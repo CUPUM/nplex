@@ -8,6 +8,7 @@
 	import Popover from '$components/primitives/Popover.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
+	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { isExploreArticle } from '$stores/explore';
 	import { currentPath, loadingCategory } from '$stores/navigation';
 	import { mainScroll } from '$stores/scroll';
@@ -53,11 +54,11 @@
 <header bind:this={navbarRef} class:hidden class:overlay>
 	{#if mounted}
 		<nav
-			id="main"
+			class="main"
 			in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 0 }}
 			out:fly={{ y: -20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
-			<a id="logo" href="/">
+			<a class="logo" href="/">
 				<Logo intro={true} color={colors.dark[900]} hoverColor={colors.primary[500]} />
 			</a>
 			{#each mainRoutes as route}
@@ -68,7 +69,7 @@
 		</nav>
 		{#if $showCategory}
 			<nav
-				id="category"
+				class="category"
 				in:fly={{ y: 20, duration: 500, easing: expoOut, delay: 150 }}
 				out:fly={{ y: 20, duration: 500, easing: expoIn, delay: 0 }}
 			>
@@ -89,33 +90,45 @@
 			</nav>
 		{/if}
 		<nav
-			id="user"
+			class="user"
 			in:fly={{ y: 20, opacity: 0, duration: 500, easing: expoOut, delay: 300 }}
 			out:fly={{ y: 20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
-			<Button href="/" variant="navbar" square={true}>
-				<Icon name="home" slot="icon" />
-			</Button>
-			{#if $session.user}
-				<Popover placement="bottom" align="end" useHover={true}>
-					<Button slot="control" variant="navbar" href={creationBaseRoute.pathname}>
-						<Icon name="new-file" slot="icon" />
-					</Button>
-					{#each creationRoutes as r}
-						<Button href={r.pathname}>{r.title}</Button>
-					{/each}
-				</Popover>
-				<Popover useHover={true} placement="bottom" align="end">
-					<AvatarButton slot="control" href={userBaseRoute.pathname} />
-					<Button>Autre option</Button>
-					<Button on:click={signOut}>Se déconnecter</Button>
-				</Popover>
-			{:else}
-				<Button variant="navbar" href={userBaseRoute.pathname} icon="user">
-					<Icon name="user" slot="icon" />
-					<Badge slot="badge" />
+			<Tooltip message="Accueil" placement="bottom">
+				<Button href="/" variant="navbar" square={true}>
+					<Icon name="home" slot="icon" />
 				</Button>
-				<Button variant="cta" href={userBaseRoute.pathname}>Créer un comtpe</Button>
+			</Tooltip>
+			{#if $session.user}
+				<div
+					in:fly={{ y: 20, duration: 350, easing: expoOut, delay: 350 }}
+					out:fly={{ y: -20, duration: 350, easing: expoOut }}
+				>
+					<Popover placement="bottom" align="end" useHover={true}>
+						<Button slot="control" variant="navbar" href={creationBaseRoute.pathname}>
+							<Icon name="new-file" slot="icon" />
+						</Button>
+						{#each creationRoutes as r}
+							<Button href={r.pathname}>{r.title}</Button>
+						{/each}
+					</Popover>
+					<Popover useHover={true} placement="bottom" align="end">
+						<AvatarButton slot="control" href={userBaseRoute.pathname} />
+						<Button>Autre option</Button>
+						<Button on:click={signOut}>Se déconnecter</Button>
+					</Popover>
+				</div>
+			{:else}
+				<div
+					in:fly={{ y: 20, duration: 350, easing: expoOut, delay: 350 }}
+					out:fly={{ y: -20, duration: 350, easing: expoOut }}
+				>
+					<Button variant="navbar" href={userBaseRoute.pathname} icon="user">
+						<Icon name="user" slot="icon" />
+						<Badge slot="badge" />
+					</Button>
+					<Button variant="cta" href={userBaseRoute.pathname}>Créer un comtpe</Button>
+				</div>
 			{/if}
 		</nav>
 	{/if}
@@ -153,7 +166,7 @@
 		pointer-events: none;
 	}
 
-	#logo {
+	.logo {
 		height: 1.5em;
 		display: flex;
 		justify-content: center;
@@ -162,7 +175,8 @@
 		padding-inline: 1em;
 	}
 
-	nav {
+	nav,
+	.user > div {
 		display: flex;
 		flex: 0;
 		flex-direction: row;
@@ -171,7 +185,7 @@
 		gap: 3px;
 	}
 
-	#main {
+	.main {
 		grid-area: main;
 		justify-self: flex-start;
 		border-radius: 3em;
@@ -179,25 +193,11 @@
 		backdrop-filter: blur(24px);
 	}
 
-	#category {
+	.category {
 		grid-area: category;
 	}
 
-	.category-name {
-		position: relative;
-		transition: left 0.35s 0.25s cubic-bezier(0.8, 0, 0.2, 1);
-	}
-
-	.category-reset {
-		position: absolute;
-		display: inline-block;
-		top: 0.15em;
-		padding: 0;
-		margin: 0;
-		transform: translateX(-40%);
-	}
-
-	#user {
+	.user {
 		grid-area: user;
 		justify-content: flex-end;
 	}

@@ -1,3 +1,11 @@
+<script lang="ts" context="module">
+	/**
+	 * Html attribute appended to the popover's control, indicating if the popover is either `open` or `closed`.
+	 * Useful for stylings and other logic.
+	 */
+	export const POPOVER_ATTRIBUTE = 'popover';
+</script>
+
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import { cssSize, type SizeInput } from '$utils/helpers/css';
@@ -55,9 +63,9 @@
 
 	$: if (open) {
 		setPosition();
-		controlRef?.classList.add('hover');
+		controlRef?.setAttribute(POPOVER_ATTRIBUTE, 'open');
 	} else {
-		controlRef?.classList.remove('hover');
+		controlRef?.setAttribute(POPOVER_ATTRIBUTE, 'closed');
 	}
 
 	function show() {

@@ -92,7 +92,7 @@
 		outline-width: 1px;
 		outline-style: solid;
 		outline-color: transparent;
-		outline-offset: 3px;
+		outline-offset: 2px;
 		transition: all 0.1s ease-out;
 
 		&:focus {
@@ -198,9 +198,10 @@
 		color: var(--color-dark-900);
 		background-color: var(--color-light-300);
 		transition: all 0.1s ease-out, box-shadow 0.2s ease-in-out;
-		&:hover {
-			color: black;
-			background-color: var(--color-light-500);
+		&:hover,
+		&[popover='open'] {
+			color: var(--color-light-300);
+			background-color: var(--color-dark-900);
 		}
 		&:active {
 			/* background-color: white; */
@@ -216,10 +217,11 @@
 	}
 	/* Secondary, more subtle button theme */
 	.secondary {
-		color: var(--color-dark-300);
+		color: var(--color-dark-700);
 		background-color: transparent;
 		box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
-		&:hover {
+		&:hover,
+		&[popover='open'] {
 			color: black;
 			background-color: rgba(var(--rgb-dark-500), 0.1);
 			box-shadow: inset 0 0 0 5px rgba(var(--rgb-dark-500), 0);
@@ -232,12 +234,12 @@
 	}
 	/* Ghost, more subtle button theme */
 	.ghost {
-		color: var(--color-dark-300);
+		color: var(--color-dark-500);
 		background-color: transparent;
-		&:hover {
+		&:hover,
+		&[popover='open'] {
 			color: var(--color-primary-700);
 			background-color: rgba(var(--rgb-light-900), 0.1);
-			/* box-shadow: 0 0 0 2px rgba(var(--rgb-primary-500), 0.1); */
 		}
 	}
 	/* Emphasised call to action */
@@ -246,7 +248,8 @@
 		background-color: var(--color-primary-500);
 		box-shadow: 0 0em 1em -1em rgba(var(--rgb-dark-900), 0.25);
 		transition: all 0.25s ease-out;
-		&:hover {
+		&:hover,
+		&[popover='open'] {
 			color: white;
 			background-color: var(--color-primary-900);
 			box-shadow: 0 1em 2em -1em var(--color-primary-500);
@@ -278,7 +281,8 @@
 			transition: opacity 0.35s, width 0.15s cubic-bezier(0, 0, 0, 1),
 				transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 		}
-		&:hover {
+		&:hover,
+		&[popover='open'] {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-light-500), 0.5);
 			&::after {
@@ -295,7 +299,8 @@
 			pointer-events: none;
 			&::after {
 				opacity: 1;
-				width: 12px;
+				height: 5px;
+				width: 5px;
 				transform: translate(-50%, 0%);
 			}
 		}
