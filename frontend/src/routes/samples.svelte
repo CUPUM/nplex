@@ -35,7 +35,7 @@
 
 	function handleKeypress(e) {
 		if (e.keyCode === KeyCode.Enter) {
-			messages.dispatch({ text: e.target.value, timer: 5000 });
+			messages.dispatch({ text: e.target.value, timer: 10000 });
 		}
 	}
 </script>
