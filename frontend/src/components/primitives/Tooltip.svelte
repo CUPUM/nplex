@@ -106,8 +106,8 @@
 			out:scale={{ start: 0.8, easing: expoIn, duration: 50 }}
 		>
 			{message}
-			<svg viewBox="0 0 100 100" preserveAspectRatio="midXMidY">
-				<path d="M 0,0 C 30,0 30,60 50,60 C 70,60 70,0 100,0 Z" />
+			<svg viewBox="0 0 100 100" preserveAspectRatio="xmidYMid">
+				<path d="M 0,-1 C 25,0 35,60 50,60 C 75,60 75,0 100,-1 Z" />
 			</svg>
 		</span>
 	{/if}
@@ -151,6 +151,7 @@
 		padding: 0;
 		margin: 0;
 		background-color: transparent;
+		overflow: visible;
 	}
 
 	path {

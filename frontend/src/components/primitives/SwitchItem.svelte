@@ -141,7 +141,7 @@
 	/* Nav theme */
 	.navbar {
 		background-color: transparent;
-		color: var(--color-dark-100);
+		color: var(--color-dark-300);
 		&:hover,
 		&:focus {
 			color: var(--color-dark-900);

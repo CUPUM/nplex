@@ -2,7 +2,7 @@
 	import { ripple } from '$actions/ripple';
 	import { session } from '$app/stores';
 	import { userProfile } from '$stores/profile';
-	import type { SizeInput } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/helpers/css';
 	import Loading from './Loading.svelte';
 
 	export let size: SizeInput = '1em';
@@ -29,7 +29,7 @@
 	class="avatar"
 	class:active
 	class:warning
-	style:font-size={size}
+	style:font-size={cssSize(size)}
 	style:color={userColor}
 	disabled={disabled || loading}
 	{href}
@@ -43,8 +43,9 @@
 					text-anchor="middle"
 					x="50%"
 					y="50%"
-					font-size="2em"
-					font-weight="500"
+					font-size="1.5em"
+					font-weight="400"
+					stroke="none"
 					dominant-baseline="middle"
 				>
 					{userLetter}
@@ -59,21 +60,22 @@
 
 <style lang="postcss">
 	.avatar {
-		--inset: 4px;
+		--size: calc(var(--default-size) - 2 * var(--inset, 0px));
+		--pad: 5px;
 		display: inline-block;
 		position: relative;
-		height: var(--base-size);
-		min-height: var(--base-size);
-		width: var(--base-size);
-		border-radius: var(--base-radius);
+		height: var(--size);
+		min-height: var(--size);
+		width: var(--size);
+		border-radius: 50%;
 		border: none;
-		padding: var(--inset);
+		padding: var(--pad);
 		text-decoration: none;
 		background: transparent;
 
 		&:hover #inner {
 			opacity: 1;
-			box-shadow: 0 0 0 5px rgba(var(--rgb-primary-300), 0.2);
+			box-shadow: 0 0 0 5px rgba(var(--rgb-light-500), 0.5);
 		}
 	}
 
@@ -87,12 +89,14 @@
 		left: 0;
 		background: white;
 		transition: all 0.2s;
-		border-radius: calc(var(--base-radius) - var(--inset));
+		border-radius: 50%;
 		overflow: hidden;
+		padding: 0;
+		margin: 0;
 	}
 
 	svg {
-		position: asolute;
+		position: absolute;
 		width: 100%;
 		height: 100%;
 		top: 0;
@@ -103,6 +107,6 @@
 	}
 
 	text {
-		fill: var(--color-dark-500);
+		fill: var(--color-light-500);
 	}
 </style>

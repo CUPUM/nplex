@@ -76,7 +76,7 @@
 >
 	{#if currentBox}
 		<div
-			transition:scale={{ duration: 150, start: 0.8, opacity: 0, easing: expoOut }}
+			transition:scale|local={{ duration: 250, start: 0.75, opacity: 0, easing: expoOut }}
 			class:temp={Boolean($temp)}
 			style={currentBox}
 			class="selector"
@@ -99,7 +99,7 @@
 		padding: var(--inset);
 		border-radius: var(--radius);
 		overflow: visible;
-		transition: all 0.25s ease-out;
+		transition: all 0.1s ease-out;
 	}
 
 	.selector {
@@ -107,7 +107,7 @@
 		position: absolute;
 		height: calc(var(--size) - 2 * var(--inset));
 		border-radius: calc(var(--radius) - var(--inset));
-		transition: all 0.15s cubic-bezier(0.8, 0, 0.2, 1.2);
+		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.2);
 	}
 
 	/* Variants */
@@ -136,17 +136,18 @@
 
 	/* Nav theme */
 	.navbar {
-		background-color: var(--color-light-300);
-		box-shadow: 0 0 0 0 var(--color-light-300);
+		--bg: var(--color-light-300);
+		background-color: var(--bg);
+		box-shadow: 0 0 0 0 var(--bg);
 		&:hover,
 		&:focus {
-			box-shadow: 0 0 0 3px var(--color-light-300);
+			box-shadow: 0 0 0 3px var(--bg);
 		}
 		& .selector {
 			background-color: var(--color-dark-900);
 
 			&.temp {
-				background-color: var(--color-light-500);
+				background-color: rgba(var(--rgb-dark-900), 0.1);
 			}
 		}
 	}

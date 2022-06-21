@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
+	import Field from '$components/primitives/Field.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
@@ -12,10 +13,12 @@
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { backgroundColor } from '$stores/backgroundColor';
+	import { messages } from '$stores/message';
 	import { slip } from '$transitions/slip';
 	import type { SvelteProps } from '$types/helpers';
 	import { colors } from '$utils/colors';
 	import { cssSize } from '$utils/helpers/css';
+	import { KeyCode } from '$utils/helpers/keycodes';
 	import { sizes } from '$utils/sizes';
 
 	let alt = false;
@@ -30,10 +33,29 @@
 	let sizeKeys = Object.keys(sizes);
 	let currentSize = sizes.medium;
 
-	$: console.log(switchval);
+	function handleKeypress(e) {
+		if (e.keyCode === KeyCode.Enter) {
+			messages.dispatch({ text: e.target.value, timer: 5000 });
+		}
+	}
 </script>
 
 <section />
+<section>
+	<p>Default stylings</p>
+	<h1>Heading 1</h1>
+	<h2>Heading 2</h2>
+	<h3>Heading 3</h3>
+	<h4>Heading 4</h4>
+	<h5>Heading 5</h5>
+</section>
+<section>
+	<Field let:value on:keypress={handleKeypress}>
+		<Button type="submit" slot="has-value" on:click={() => messages.dispatch({ text: value, timer: 2500 })}
+			>Dispatch app message</Button
+		>
+	</Field>
+</section>
 <section>
 	<h2>BgColor</h2>
 	<div>
@@ -185,12 +207,6 @@
 		width: 600px;
 		padding: 2rem;
 		margin: 0 auto;
-	}
-
-	h2 {
-		font-size: 2rem;
-		padding: 0;
-		margin: 1rem 0 2rem 0;
 	}
 
 	form {

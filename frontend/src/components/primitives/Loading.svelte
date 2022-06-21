@@ -8,6 +8,7 @@
 	export let opacity: number = 1;
 	export let backgroundColor: string = 'transparent';
 	export let size: SizeInput = '1em';
+	export let style: string = undefined;
 
 	const duration: string = '3s';
 	let outroing = false;
@@ -49,7 +50,7 @@
 		.join(';');
 </script>
 
-<div class="container" style:opacity style:font-size={cssSize(size)} style:color style:--duration={duration}>
+<div class="container" style:font-size={cssSize(size)} style:--duration={duration} style:opacity style:color {style}>
 	<div
 		class="bg"
 		style:backgroundColor

@@ -47,12 +47,12 @@
 	h2 {
 		margin: 0;
 		padding: 0;
-		font-size: var(--size-xxxlarge);
+		font-size: var(--size-x3large);
 		line-height: 1em;
 	}
 
 	p {
-		font-size: var(--size-xxlarge);
+		font-size: var(--size-x2large);
 		line-height: 1.5em;
 		padding: 0;
 		margin: 0;

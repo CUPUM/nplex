@@ -31,14 +31,18 @@
 	display: grid;
 	grid-template-columns:
 		[full-start]
-		minmax(1rem, auto)
+		1rem
+		[fullpad-start]
+		1fr
 		[main-start col1-start]
-		minmax(auto, 40ch)
+		minmax(20ch, 40ch)
 		[col1-end col2-start]
-		minmax(auto, 40ch)
+		minmax(20ch, 40ch)
 		[col2-end col3-start]
-		minmax(auto, 40ch)
+		minmax(20ch, 40ch)
 		[col3-end main-end]
-		minmax(1rem, auto)
+		1fr
+		[fullpad-end]
+		1rem
 		[full-end];
 }

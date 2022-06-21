@@ -2,7 +2,8 @@
 	import { afterNavigate } from '$app/navigation';
 	import { session } from '$app/stores';
 	import Auth from '$components/complexes/Auth.svelte';
-	import MessageOutlet from '$components/complexes/MessageOutlet.svelte';
+	import Footer from '$components/complexes/Footer.svelte';
+	import MessagesOutlet from '$components/complexes/MessagesOutlet.svelte';
 	import Navbar from '$components/complexes/Navbar.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
 	import { authModal } from '$stores/auth';
@@ -13,12 +14,6 @@
 	import { SearchParamsKeys } from '$utils/url';
 	import { toUserRoleEnum } from '$utils/user';
 	import { onMount } from 'svelte';
-
-	// export const load: Load = async ({}) => {
-	// 	return {
-	// 		status: 200,
-	// 	};
-	// };
 </script>
 
 <script lang="ts">
@@ -61,21 +56,21 @@
 <main style:--navbar-height="{navbarHeight}px">
 	<slot />
 </main>
-<!-- <Footer /> -->
+<!-- To do: figure out how to properly place footer for fullscreen / explore views(s) -->
+<Footer />
 <!-- Add general modal / message outlet -->
 {#if $authModal}
 	<Auth />
 {/if}
 {#if !loaded}
-	<Loading size="2rem" />
+	<Loading style="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" size="2rem" />
 {/if}
-<MessageOutlet />
+<MessagesOutlet />
 
 <style lang="postcss">
 	main {
 		position: relative;
 		width: 100%;
-		flex: none;
 		overflow-x: hidden;
 		overflow-y: hidden;
 		display: flex;

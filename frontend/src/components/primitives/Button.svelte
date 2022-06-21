@@ -92,7 +92,7 @@
 		outline-width: 1px;
 		outline-style: solid;
 		outline-color: transparent;
-		outline-offset: 2px;
+		outline-offset: 1px;
 		transition: all 0.1s ease-out;
 
 		&:focus {
@@ -301,7 +301,7 @@
 				opacity: 1;
 				height: 5px;
 				width: 5px;
-				transform: translate(-50%, 0%);
+				transform: translate(-50%, 50%);
 			}
 		}
 	}

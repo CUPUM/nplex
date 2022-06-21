@@ -1,52 +1,46 @@
 <script lang="ts">
-	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
+	import { backgroundColor } from '$stores/backgroundColor';
 	import { showCategory } from '$stores/search';
-	import { sizes } from '$utils/sizes';
 	import { onDestroy, onMount } from 'svelte';
 
 	export let projectsPreview;
 	export let organisationsPreview;
 	export let actorsPreview;
 
-	let projects = [];
-
-	const buttonSize = sizes.small;
-	const buttonVariant = 'secondary';
-
 	showCategory.set(true);
 
-	onMount(() => {
-		// backgroundColor.set(colors.light[500]);
-	});
+	onMount(() => {});
 
 	onDestroy(() => {
 		showCategory.set(false);
-		// backgroundColor.reset();
+		backgroundColor.reset();
 	});
 </script>
 
-<article class="core-grid">
+<article class="core-grid" id="intro">
+	<header id="intro-header">
+		<h1>
+			Bienvenue sur Nplex <br />
+			<span class="subheading">
+				la plateforme de valorisation des petits projets exemplaires en aménagement à Montréal
+			</span>
+		</h1>
+	</header>
+	<p id="intro-text">Cette application web lorem ipsum...</p>
+</article>
+<article class="core-grid" id="explore">
 	<section id="projects">
 		<header>
 			<a href="/projets">
 				<h2>Projets</h2>
-				<Button size={buttonSize} variant={buttonVariant} href="/projets" sveltekit:prefetch>
-					<Icon name="plus" slot="icon" />
-					Voir plus
-				</Button>
 			</a>
 		</header>
 		<ul>[To do: projects list and list cards]</ul>
 	</section>
-	<section id="orgs">
+	<section id="organisations">
 		<header>
 			<a href="/organisations">
 				<h2>Organisations</h2>
-				<Button size={buttonSize} variant={buttonVariant} href="/organisations" sveltekit:prefetch>
-					<Icon name="plus" slot="icon" />
-					Voir plus
-				</Button>
 			</a>
 		</header>
 		<ul>[To do: orgs list and list cards]</ul>
@@ -55,10 +49,6 @@
 		<header>
 			<a href="/acteurs">
 				<h2>Acteurs</h2>
-				<Button size={buttonSize} variant={buttonVariant} href="/acteurs" sveltekit:prefetch>
-					<Icon name="plus" slot="icon" />
-					Voir plus
-				</Button>
 			</a>
 		</header>
 		<ul>[To do: actors list and list cards]</ul>
@@ -66,48 +56,58 @@
 </article>
 
 <style lang="postcss">
-	article {
-		width: 100%;
-		margin: 0;
-		margin-top: var(--navbar-height);
-		padding: 0;
-		display: block;
+	#intro {
+		padding-bottom: 8rem;
 	}
 
-	section {
-		display: block;
-		position: relative;
-		width: 100%;
-		padding: 2rem;
-		overflow: visible;
-	}
-
-	header {
-		width: 100%;
-		max-width: 900px;
-		margin: 0 auto;
-	}
-
-	a {
-		display: flex;
+	#intro-header {
+		grid-column: full;
+		display: grid;
+		grid-template-columns: inherit;
 		flex-direction: column;
-		align-items: flex-start;
-		justify-content: flex-start;
-		gap: 0;
-		line-height: 0.5em;
-		text-decoration: none;
+		min-height: 100vh;
+		justify-content: center;
+		align-items: center;
 		color: var(--color-dark-900);
+		padding-block: var(--navbar-height);
 
-		&:hover {
-			color: var(--color-primary-300);
+		& h1 {
+			grid-column: main;
 		}
 	}
 
-	h2 {
-		display: block;
-		font-weight: 500;
-		font-size: var(--size-xxlarge);
-		display: inline-block;
-		transition: all 0.2s ease-out;
+	.subheading {
+		color: transparent;
+		-webkit-text-stroke: 1px var(--color-dark-900);
+	}
+
+	#intro-text {
+		grid-column: main;
+	}
+
+	#explore {
+		grid-column: full;
+	}
+
+	#projects,
+	#organisations,
+	#actors {
+		padding-block: 8rem;
+		display: grid;
+		grid-column: full;
+		grid-template-columns: inherit;
+		border-top: 1px solid rgba(var(--rgb-dark-900), 0.1);
+
+		& header {
+			display: flex;
+			grid-column: main;
+			padding: 0;
+			margin: 0;
+		}
+
+		& ul {
+			grid-column: full;
+			height: 50vh;
+		}
 	}
 </style>

@@ -14,6 +14,7 @@
 </script>
 
 <article transition:scale={{ start: 0.9 }}>
+	<header>En-tête du projet</header>
 	<ul>
 		<li>Titre du projet</li>
 		<li>

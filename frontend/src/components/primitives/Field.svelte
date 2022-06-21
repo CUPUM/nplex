@@ -6,11 +6,11 @@
 
 <script lang="ts">
 	import { width } from '$transitions/width';
+	import type { SvelteProps } from '$types/helpers';
 	import { Ctx } from '$utils/contexts';
 	import { cssSize, type SizeInput } from '$utils/helpers/css';
-	import type { SvelteProps } from '$utils/helpers/types';
 	import { setContext } from 'svelte';
-	import { expoInOut, expoOut } from 'svelte/easing';
+	import { expoIn, expoInOut, expoOut } from 'svelte/easing';
 	import Button from './Button.svelte';
 	import Icon from './Icon.svelte';
 
@@ -81,7 +81,7 @@
 >
 	{#if $$slots.left}
 		<div id="left">
-			<slot name="left" />
+			<slot name="left" {value} />
 		</div>
 	{/if}
 	{#if placeholderIcon && !value}
@@ -102,23 +102,28 @@
 		on:blur
 		on:blur={blur}
 		on:submit
+		on:keypress
 		autocomplete="new-{type}"
 		name={$$restProps.name}
 	/>
 	{#if value}
-		<div id="has-value" transition:width={{ easing: expoOut, duration: 750, opacity: 0 }}>
-			<Button variant="ghost" on:click={reset} square={true}>
+		<div
+			id="has-value"
+			in:width={{ easing: expoOut, duration: 500, opacity: 0 }}
+			out:width={{ easing: expoIn, duration: 350, opacity: 0 }}
+		>
+			<Button type="reset" variant="ghost" on:click={reset} square={true} tabIndex="-1">
 				<Icon name="cross" slot="icon" />
 			</Button>
 			{#if type === 'password'}
 				<Button variant="ghost" on:click={togglePassword} square={true}>(eye-icon)</Button>
 			{/if}
-			<slot name="has-value" />
+			<slot name="has-value" {value} />
 		</div>
 	{/if}
 	{#if $$slots.right}
 		<div id="right">
-			<slot name="right" />
+			<slot name="right" {value} />
 		</div>
 	{/if}
 	{#if choices}

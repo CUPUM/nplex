@@ -7,6 +7,7 @@
 	import { crossfadeExploreArticleBackButton } from '$transitions/crossfades';
 	import { colors } from '$utils/colors';
 	import { Ctx } from '$utils/contexts';
+	import { sizes } from '$utils/sizes';
 	import { getContext } from 'svelte';
 	import type { ExploreListContext } from './ExploreList.svelte';
 
@@ -50,7 +51,7 @@
 		</figure>
 		<h3>{project.title}</h3>
 		<div in:receive={{ key: project.id }} out:send={{ key: project.id }}>
-			<Button style="grid-area: button;" iconPosition="after">
+			<Button size={sizes.small} style="grid-area: button;" iconPosition="after">
 				<span>Consulter</span>
 				<Icon name="submit" slot="icon" />
 			</Button>
@@ -82,8 +83,8 @@
 		height: 100%;
 		padding: 1rem;
 		border-radius: 2rem;
-		/* background-color: white; */
-		box-shadow: inset 0 0 0 2px rgba(var(--rgb-dark-900), 0.05), 0 0 0 0 transparent;
+		background-color: var(--color-light-100);
+		box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-900), 0.05), 0 0 0 0 transparent;
 		color: var(--color-dark-500);
 		transform: scale(0.98);
 		transition: all 0.15s ease-out;

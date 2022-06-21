@@ -3,7 +3,7 @@
  *
  * This file was generated from the utils found at ./src/utils.
  * All changes added manually here will be lost on next execution of the generator script.
- * Last generated on: Fri Jun 17 2022 17:51:49 GMT-0400 (Eastern Daylight Time)
+ * Last generated on: Mon Jun 20 2022 18:08:57 GMT-0400 (GMT-04:00)
  *
  * ⚠️ WARNING ⚠️
  */
@@ -39,16 +39,16 @@
 	--rgb-light-700: 212, 207, 201;
 	--color-light-900: hsl(34, 10%, 72%);
 	--rgb-light-900: 191, 185, 176;
-	--color-dark-100: hsl(180, 10%, 39%);
-	--rgb-dark-100: 90, 109, 109;
-	--color-dark-300: hsl(181, 13%, 32%);
-	--rgb-dark-300: 71, 92, 92;
-	--color-dark-500: hsl(182, 17%, 25%);
-	--rgb-dark-500: 53, 74, 75;
-	--color-dark-700: hsl(183, 25%, 18%);
-	--rgb-dark-700: 34, 56, 57;
-	--color-dark-900: hsl(184, 30%, 12%);
-	--rgb-dark-900: 21, 39, 40;
+	--color-dark-100: hsl(178, 10%, 38%);
+	--rgb-dark-100: 87, 107, 106;
+	--color-dark-300: hsl(180, 14%, 32%);
+	--rgb-dark-300: 70, 93, 93;
+	--color-dark-500: hsl(182, 18%, 26%);
+	--rgb-dark-500: 54, 77, 78;
+	--color-dark-700: hsl(184, 26%, 18%);
+	--rgb-dark-700: 34, 56, 58;
+	--color-dark-900: hsl(186, 35%, 12%);
+	--rgb-dark-900: 20, 39, 41;
 	--color-success-100: hsl(113, 70%, 72%);
 	--rgb-success-100: 145, 234, 134;
 	--color-success-500: hsl(113, 63%, 61%);
@@ -61,13 +61,14 @@
 	--rgb-error-500: 217, 88, 84;
 	--color-error-900: hsl(2, 60%, 49%);
 	--rgb-error-900: 200, 55, 50;
-	--size-xxxsmall: 8px;
-	--size-xxsmall: 10px;
+	--size-x3small: 8px;
+	--size-x2small: 10px;
 	--size-xsmall: 12px;
 	--size-small: 14px;
 	--size-medium: 16px;
 	--size-large: 20px;
 	--size-xlarge: 28px;
-	--size-xxlarge: 40px;
-	--size-xxxlarge: 56px;
+	--size-x2large: 40px;
+	--size-x3large: 56px;
+	--size-x4large: 80px;
 }

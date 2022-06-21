@@ -1,20 +1,15 @@
 <!--
-	This layout inherits from the adjacent unnamed layout
+	This layout inherits from the adjacent unnamed (default) layout.
 -->
 <script lang="ts">
+	import { intersection } from '$actions/intersection';
 	import ExploreArticleNav from '$components/complexes/ExploreArticleNav.svelte';
 	import ExploreFilters from '$components/complexes/ExploreFilters.svelte';
 	import ExploreList from '$components/complexes/ExploreList.svelte';
 	import ExploreMap from '$components/complexes/ExploreMap.svelte';
 	import ExploreSearchbar from '$components/complexes/ExploreSearchbar.svelte';
 	import { backgroundColor } from '$stores/backgroundColor';
-	import {
-		isExploreArticle,
-		showArticleMap,
-		showExploreFilters,
-		showExploreList,
-		showExploreMap,
-	} from '$stores/explore';
+	import { isExploreArticle, showExploreFilters, showExploreList, showExploreMap } from '$stores/explore';
 	import { category, showCategory, showSearchbar } from '$stores/search';
 	import { onDestroy, onMount } from 'svelte';
 	import { circOut } from 'svelte/easing';
@@ -23,7 +18,13 @@
 	showSearchbar.set(true);
 	showCategory.set(true);
 
-	let menuHeight;
+	function panesEnter() {
+		showSearchbar.set(true);
+	}
+
+	function panesLeave() {
+		showSearchbar.set(false);
+	}
 
 	onMount(() => {
 		backgroundColor.reset();
@@ -44,17 +45,17 @@
 	{#if !$isExploreArticle}
 		<ExploreSearchbar />
 	{/if}
-	<section id="explore-panes" style:--menu-height="{menuHeight}px">
+	<section id="explore-panes" use:intersection on:enter={panesEnter} on:leave={panesLeave}>
 		{#if $isExploreArticle}
 			<ExploreArticleNav />
 		{/if}
-		{#if $showExploreFilters && !$isExploreArticle}
+		{#if $showExploreFilters}
 			<ExploreFilters />
 		{/if}
-		{#if $showExploreMap || $showArticleMap}
+		{#if $showExploreMap}
 			<ExploreMap />
 		{/if}
-		{#if $showExploreList && !$isExploreArticle}
+		{#if $showExploreList}
 			<ExploreList />
 		{/if}
 	</section>
@@ -75,10 +76,12 @@
 		flex-direction: column;
 		flex-wrap: nowrap;
 		min-height: 0px;
-		transition: height 0.75s cubic-bezier(0.6, 0, 0, 1);
+		transition: height 0.5s cubic-bezier(0.5, 0, 0, 1);
 
 		&.is-article {
-			height: 600px;
+			height: 0;
+			/* margin-top: 0; */
+			/* height: 600px; */
 		}
 	}
 
