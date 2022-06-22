@@ -55,7 +55,7 @@
 	</section>
 </article>
 
-<style lang="postcss">
+<style lang="scss">
 	#intro {
 		padding-bottom: 8rem;
 	}

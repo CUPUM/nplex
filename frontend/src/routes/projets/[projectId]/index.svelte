@@ -90,7 +90,7 @@
 	<ProjectTimeline />
 </article>
 
-<style lang="postcss">
+<style lang="scss">
 	article {
 		flex: none;
 		width: 100%;

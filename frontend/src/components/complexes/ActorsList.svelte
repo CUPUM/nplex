@@ -9,5 +9,5 @@
 	<li>List item</li>
 </ul>
 
-<style lang="postcss">
+<style lang="scss">
 </style>

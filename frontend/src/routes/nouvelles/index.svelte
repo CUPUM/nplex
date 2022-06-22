@@ -9,7 +9,7 @@
 	<li>nouvelle 4</li>
 </ul>
 
-<style lang="postcss">
+<style lang="scss">
 	#latest-news {
 	}
 </style>

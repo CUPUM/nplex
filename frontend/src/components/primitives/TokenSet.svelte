@@ -29,7 +29,7 @@
 	</div>
 </dl>
 
-<style lang="postcss">
+<style lang="scss">
 	dl {
 		padding: 0;
 		margin: 0;

@@ -3,22 +3,22 @@
  *
  * This file was generated from the utils found at ./src/utils.
  * All changes added manually here will be lost on next execution of the generator script.
- * Last generated on: Mon Jun 20 2022 18:08:57 GMT-0400 (GMT-04:00)
+ * Last generated on: Wed Jun 22 2022 01:07:31 GMT-0400 (Eastern Daylight Time)
  *
  * ⚠️ WARNING ⚠️
  */
 
 :root {
-	--color-primary-100: hsl(150, 46%, 75%);
-	--rgb-primary-100: 162, 221, 191;
-	--color-primary-300: hsl(154, 50%, 64%);
-	--rgb-primary-300: 117, 209, 169;
-	--color-primary-500: hsl(159, 54%, 51%);
-	--rgb-primary-500: 63, 198, 150;
-	--color-primary-700: hsl(160, 58%, 43%);
-	--rgb-primary-700: 46, 173, 131;
-	--color-primary-900: hsl(162, 63%, 35%);
-	--rgb-primary-900: 33, 145, 112;
+	--color-primary-100: hsl(150, 48%, 76%);
+	--rgb-primary-100: 164, 223, 194;
+	--color-primary-300: hsl(154, 50%, 65%);
+	--rgb-primary-300: 121, 210, 172;
+	--color-primary-500: hsl(159, 54%, 52%);
+	--rgb-primary-500: 67, 199, 152;
+	--color-primary-700: hsl(161, 60%, 43%);
+	--rgb-primary-700: 44, 175, 134;
+	--color-primary-900: hsl(162, 69%, 35%);
+	--rgb-primary-900: 28, 151, 114;
 	--color-secondary-100: hsl(19, 86%, 81%);
 	--rgb-secondary-100: 248, 191, 165;
 	--color-secondary-300: hsl(18, 83%, 77%);

@@ -6,16 +6,16 @@
 	import Icon from '$components/primitives/Icon.svelte';
 	import { messages } from '$stores/message';
 	import { flip } from 'svelte/animate';
-	import { expoIn, expoOut } from 'svelte/easing';
+	import { expoIn, expoInOut, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 </script>
 
 <div class="outlet">
 	{#each $messages as message (message)}
 		<dialog
-			in:scale={{ start: 0.8, opacity: 0, duration: 500, easing: expoOut }}
-			out:scale={{ start: 0.8, opacity: 0, duration: 350, easing: expoIn }}
-			animate:flip={{ duration: 350, easing: expoOut }}
+			in:scale|local={{ start: 0.75, opacity: 0, duration: 500, easing: expoOut }}
+			out:scale|local={{ start: 0.9, opacity: 0, duration: 350, easing: expoIn }}
+			animate:flip={{ duration: 500, easing: expoInOut }}
 		>
 			<div class="progress-container">
 				<div class="progress" style:--timer="{message.timer}ms" />
@@ -23,14 +23,14 @@
 			<div class="content">
 				{message.text}
 			</div>
-			<Button style="align-self: flex-start" on:click={() => messages.clear(message)}
+			<Button style="position: absolute; left: calc(100% + .5em);" on:click={() => messages.clear(message)}
 				><Icon slot="icon" name="cross" /></Button
 			>
 		</dialog>
 	{/each}
 </div>
 
-<style lang="postcss">
+<style lang="scss">
 	.outlet {
 		pointer-events: none;
 		position: fixed;

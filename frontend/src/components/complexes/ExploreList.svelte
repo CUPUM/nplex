@@ -39,7 +39,7 @@
 	{/if}
 </section>
 
-<style lang="postcss">
+<style lang="scss">
 	section {
 		flex: 1;
 		display: flex;

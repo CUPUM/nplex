@@ -1,3 +1,7 @@
+<!--
+	@component
+	Hello world.
+ -->
 <script lang="ts">
 	import { tooltip } from '$actions/tooltip';
 	import { Ctx } from '$utils/contexts';
@@ -38,8 +42,9 @@
 	{/if}
 </svelte:element>
 
-<style lang="postcss">
+<style lang="scss">
 	.token {
+		flex: none;
 		user-select: none;
 		position: relative;
 		display: inline-flex;

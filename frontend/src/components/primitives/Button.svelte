@@ -1,3 +1,7 @@
+<!--
+	@component
+	Hello world.
+ -->
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
 	import { Ctx } from '$utils/contexts';
@@ -72,7 +76,7 @@
 	{/if}
 </svelte:element>
 
-<style lang="postcss">
+<style lang="scss">
 	.button {
 		--size: calc(var(--default-size) - 2 * var(--inset, 0px));
 		display: inline-block;
@@ -92,11 +96,11 @@
 		outline-width: 1px;
 		outline-style: solid;
 		outline-color: transparent;
-		outline-offset: 1px;
+		outline-offset: 2px;
 		transition: all 0.1s ease-out;
 
 		&:focus {
-			outline-color: rgba(var(--rgb-dark-900), 0.5);
+			// outline-color: rgba(var(--rgb-primary-500), 0.25);
 		}
 
 		&.warning {
@@ -234,25 +238,30 @@
 	}
 	/* Ghost, more subtle button theme */
 	.ghost {
-		color: var(--color-dark-500);
+		color: var(--color-dark-300);
 		background-color: transparent;
 		&:hover,
 		&[popover='open'] {
-			color: var(--color-primary-700);
-			background-color: rgba(var(--rgb-light-900), 0.1);
+			color: var(--color-primary-500);
+			background-color: rgba(var(--rgb-primary-100), 0.15);
 		}
 	}
+	:global(.button-parent:hover) .ghost {
+		color: var(--color-dark-900);
+		background-color: var(--color-light-500);
+	}
+
 	/* Emphasised call to action */
 	.cta {
 		color: white;
 		background-color: var(--color-primary-500);
-		box-shadow: 0 0em 1em -1em rgba(var(--rgb-dark-900), 0.25);
-		transition: all 0.25s ease-out;
+		box-shadow: 0 0.5em 2em -1em rgba(var(--rgb-primary-900), 0.5);
+		transition: all 0.2s ease-out, box-shadow 0.5s ease-out;
 		&:hover,
 		&[popover='open'] {
-			color: white;
-			background-color: var(--color-primary-900);
-			box-shadow: 0 1em 2em -1em var(--color-primary-500);
+			color: var(--color-light-100);
+			background-color: var(--color-primary-300);
+			box-shadow: 0 1em 2em -1em var(--color-primary-700);
 		}
 		&:active {
 		}

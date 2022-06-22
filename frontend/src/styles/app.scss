@@ -4,11 +4,13 @@
 	padding: 0;
 	margin: 0;
 	font-family: var(--font-main);
-	color: var(--color-dark-900);
-	font-size: var(--size-md);
+	color: var(--color-dark-700);
+	font-size: var(--size-medium);
 	font-weight: 400;
 	overflow: hidden;
 	transition: background-color 1s ease-in-out;
+	font-feature-settings: 'kern';
+	letter-spacing: 0.01em;
 }
 
 body {
@@ -41,6 +43,9 @@ h1 {
 	padding: 0;
 	margin: 1rem 0 2rem 0;
 	color: var(--color-dark-900);
+	margin-block: 1em 1.5rem;
+	letter-spacing: -0.8px;
+	line-height: 1.25em;
 }
 
 h2 {
@@ -49,6 +54,9 @@ h2 {
 	padding: 0;
 	margin: 1rem 0 2rem 0;
 	color: var(--color-dark-900);
+	margin-block: 1em 1.5rem;
+	letter-spacing: -0.4px;
+	line-height: 1.25em;
 }
 
 h3 {
@@ -57,6 +65,9 @@ h3 {
 	padding: 0;
 	margin: 1rem 0 2rem 0;
 	color: var(--color-dark-900);
+	margin-block: 1em 1.5rem;
+	letter-spacing: -0.2px;
+	line-height: 1.25em;
 }
 
 h4 {
@@ -65,6 +76,8 @@ h4 {
 	padding: 0;
 	margin: 1rem 0 2rem 0;
 	color: var(--color-dark-900);
+	margin-block: 1em 1.5rem;
+	line-height: 1.25em;
 }
 
 h5 {
@@ -73,6 +86,19 @@ h5 {
 	padding: 0;
 	margin: 1rem 0 2rem 0;
 	color: var(--color-dark-900);
+	margin-block: 1em 1.5rem;
+	line-height: 1.25em;
+}
+
+p {
+	line-height: 1.4em;
+	margin-block: 1em 2em;
+}
+
+em {
+	font-style: normal;
+	font-weight: 700;
+	color: inherit;
 }
 
 /*

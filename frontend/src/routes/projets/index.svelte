@@ -2,28 +2,37 @@
 </script>
 
 <script lang="ts">
-	import ExploreSearchbar from '$components/complexes/ExploreSearchbar.svelte';
-	import { expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
+	import ExploreFilters from '$components/complexes/ExploreFilters.svelte';
+	import ExploreList from '$components/complexes/ExploreList.svelte';
+	import ExploreMap from '$components/complexes/ExploreMap.svelte';
+	import { showExploreFilters, showExploreList, showExploreMap } from '$stores/explore';
 </script>
 
-<div id="explore" transition:scale={{ start: 0.95, opacity: 0, duration: 350, easing: expoOut }}>
-	<ExploreSearchbar />
-	<section id="explore-panes">
-		{#if $isExploreArticle}
-			<ExploreArticleNav />
-		{/if}
-		{#if $showExploreFilters}
-			<ExploreFilters />
-		{/if}
-		{#if $showExploreMap}
-			<ExploreMap />
-		{/if}
-		{#if $showExploreList}
-			<ExploreList />
-		{/if}
-	</section>
+<div id="panes">
+	{#if $showExploreFilters}
+		<ExploreFilters />
+	{/if}
+	{#if $showExploreMap}
+		<ExploreMap />
+	{/if}
+	{#if $showExploreList}
+		<ExploreList />
+	{/if}
 </div>
 
-<style lang="postcss">
+<style lang="scss">
+	#panes {
+		position: relative;
+		top: 0;
+		left: 0;
+		margin: 0;
+		margin-top: var(--navbar-height);
+		padding: 0;
+		width: 100%;
+		height: calc(100vh - var(--navbar-height));
+		display: flex;
+		flex-direction: row;
+		min-height: 0;
+		justify-content: center;
+	}
 </style>

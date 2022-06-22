@@ -1,3 +1,7 @@
+<!--
+	@component
+	Hello world.
+ -->
 <script lang="ts" context="module">
 	export interface FieldContext {
 		// inset: number | CssSizeValue;
@@ -69,23 +73,21 @@
 </script>
 
 <div
-	id="wrapper"
 	class:warning={warning || invalid}
 	class:success
+	class:focused
 	class:disabled={disabled || loading}
 	class:has-icon={!value && placeholderIcon}
-	class:focused
-	class={variant}
+	class="{variant} container"
 	style:font-size={cssSize(size)}
-	{...$$restProps}
 >
 	{#if $$slots.left}
-		<div id="left">
+		<div class="left">
 			<slot name="left" {value} />
 		</div>
 	{/if}
 	{#if placeholderIcon && !value}
-		<div id="icon" transition:width={{ opacity: 0, duration: 400, easing: expoInOut }}>
+		<div class="icon" transition:width={{ opacity: 0, duration: 400, easing: expoInOut }}>
 			<Icon name={placeholderIcon} />
 		</div>
 	{/if}
@@ -108,7 +110,7 @@
 	/>
 	{#if value}
 		<div
-			id="has-value"
+			class="has-value"
 			in:width={{ easing: expoOut, duration: 500, opacity: 0 }}
 			out:width={{ easing: expoIn, duration: 350, opacity: 0 }}
 		>
@@ -122,7 +124,7 @@
 		</div>
 	{/if}
 	{#if $$slots.right}
-		<div id="right">
+		<div class="right">
 			<slot name="right" {value} />
 		</div>
 	{/if}
@@ -135,8 +137,8 @@
 	{/if}
 </div>
 
-<style lang="postcss">
-	#wrapper {
+<style lang="scss">
+	.container {
 		--size: var(--default-size);
 		--inset: var(--default-inset);
 		border: none;
@@ -154,7 +156,7 @@
 		overflow: visible;
 	}
 
-	#icon {
+	.icon {
 		position: relative;
 		height: 100%;
 		display: flex;
@@ -218,7 +220,7 @@
 	}
 
 	/* Default buttons */
-	#has-value {
+	.has-value {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -229,8 +231,8 @@
 	}
 
 	/* Slots */
-	#left,
-	#right {
+	.left,
+	.right {
 		position: relative;
 		display: flex;
 		flex-wrap: nowrap;
@@ -245,7 +247,7 @@
 		margin: 0;
 	}
 
-	#right {
+	.right {
 		justify-content: flex-end;
 	}
 
@@ -260,7 +262,7 @@
 			background-color: white;
 			box-shadow: 0 1em 2em -1em rgba(0, 0, 20, 0.2);
 
-			& #icon {
+			& .icon {
 				color: var(--color-primary-500);
 			}
 		}
@@ -286,7 +288,7 @@
 			background-color: white;
 			box-shadow: 0 1em 2em -0.5em rgba(var(--rgb-dark-900), 0.25);
 
-			& #icon {
+			& .icon {
 				color: var(--color-primary-500);
 			}
 		}

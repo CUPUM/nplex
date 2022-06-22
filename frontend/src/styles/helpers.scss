@@ -3,7 +3,8 @@
 		Font variables
 	*/
 	--font-main: 'Outfit', sans-serif;
-	--font-misc: 'DM Mono', serif;
+	--font-misc: 'Spline Sans Mono', monospace;
+	--font-misc-ratio: 0.925;
 	/* 
 		Global style helpers for consistent appearence across components
 	*/
@@ -25,6 +26,26 @@
 }
 
 /*
+	Classes for text body stylings.
+*/
+.text-misc {
+	font-family: var(--font-misc);
+	font-size: calc(1rem * var(--font-misc-ratio));
+	letter-spacing: -0.02em;
+	font-weight: 450;
+}
+
+// This produces helper classes following the pattern .text-[size] and .text-[size].text-misc
+@each $s in (x3small, x2small, xsmall, small, medium, large, xlarge, x2large, x3large) {
+	.text-#{$s} {
+		font-size: var(--size-#{s});
+		&.text-misc {
+			font-size: calc(var(--font-misc-ratio) * var(--size-x3small));
+		}
+	}
+}
+
+/*
 	Grid template for full-width elements.
 */
 .core-grid {
@@ -35,14 +56,33 @@
 		[fullpad-start]
 		1fr
 		[main-start col1-start]
-		minmax(20ch, 40ch)
+		minmax(20ch, 24ch)
 		[col1-end col2-start]
-		minmax(20ch, 40ch)
+		minmax(20ch, 24ch)
 		[col2-end col3-start]
-		minmax(20ch, 40ch)
+		minmax(20ch, 24ch)
 		[col3-end main-end]
 		1fr
 		[fullpad-end]
 		1rem
 		[full-end];
+}
+
+.core-grid-full {
+	grid-column: full;
+}
+.core-grid-fullpad {
+	grid-column: fullpad;
+}
+.core-grid-main {
+	grid-column: main;
+}
+.core-grid-col1 {
+	grid-column: col1;
+}
+.core-grid-col2 {
+	grid-column: col2;
+}
+.core-grid-col3 {
+	grid-column: col3;
 }

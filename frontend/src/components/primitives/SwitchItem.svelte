@@ -65,7 +65,7 @@
 </label>
 
 <!-- <hr class="{ctx.variant} {ctx.orientation}" /> -->
-<style lang="postcss">
+<style lang="scss">
 	label {
 		z-index: 1;
 		user-select: none;
@@ -117,7 +117,7 @@
 	/* Default theme */
 	.default {
 		background-color: transparent;
-		color: var(--color-dark-100);
+		color: var(--color-dark-300);
 		&:hover,
 		&:focus {
 			color: var(--color-dark-900);
@@ -125,7 +125,7 @@
 		&.current {
 			color: var(--color-light-500);
 			&.some-temp {
-				color: var(--color-dark-100);
+				color: var(--color-primary-700);
 			}
 		}
 	}
@@ -141,15 +141,15 @@
 	/* Nav theme */
 	.navbar {
 		background-color: transparent;
-		color: var(--color-dark-300);
+		color: var(--color-dark-900);
 		&:hover,
 		&:focus {
-			color: var(--color-dark-900);
+			color: var(--color-primary-500);
 		}
 		&.current {
-			color: var(--color-light-500);
+			color: var(--color-primary-500);
 			&.some-temp {
-				color: var(--color-primary-700);
+				color: var(--color-primary-900);
 			}
 		}
 	}

@@ -2,15 +2,15 @@
 	import { afterNavigate } from '$app/navigation';
 	import { session } from '$app/stores';
 	import Auth from '$components/complexes/Auth.svelte';
-	import Footer from '$components/complexes/Footer.svelte';
 	import MessagesOutlet from '$components/complexes/MessagesOutlet.svelte';
 	import Navbar from '$components/complexes/Navbar.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
 	import { authModal } from '$stores/auth';
-	import '$styles/app.postcss';
-	import '$styles/helpers.postcss';
+	import '$styles/app.scss';
+	import '$styles/helpers.scss';
 	import '$styles/vars.css';
 	import { db, getUserRole } from '$utils/database';
+	import { sizes } from '$utils/sizes';
 	import { SearchParamsKeys } from '$utils/url';
 	import { toUserRoleEnum } from '$utils/user';
 	import { onMount } from 'svelte';
@@ -57,17 +57,17 @@
 	<slot />
 </main>
 <!-- To do: figure out how to properly place footer for fullscreen / explore views(s) -->
-<Footer />
+<!-- <Footer /> -->
 <!-- Add general modal / message outlet -->
 {#if $authModal}
 	<Auth />
 {/if}
 {#if !loaded}
-	<Loading style="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" size="2rem" />
+	<Loading containerStyle="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" size={sizes.xlarge} />
 {/if}
 <MessagesOutlet />
 
-<style lang="postcss">
+<style lang="scss">
 	main {
 		position: relative;
 		width: 100%;

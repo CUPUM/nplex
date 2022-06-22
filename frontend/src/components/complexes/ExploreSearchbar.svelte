@@ -9,8 +9,9 @@
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
 	import { slip } from '$transitions/slip';
 	import { onDestroy, onMount } from 'svelte';
-	import { expoOut } from 'svelte/easing';
 
+	let fadestart = false;
+	let fadeend = true;
 	const [send, receive] = crossfadeExploreFiltersButton;
 
 	function submit() {
@@ -21,6 +22,13 @@
 		// console.log('reset form');
 	}
 
+	function handleTokenScroll(e: Event) {
+		const el = e.target as HTMLElement;
+		const threshold = 24;
+		fadestart = el.scrollLeft > threshold;
+		fadeend = el.scrollLeft + el.offsetWidth < el.scrollWidth - threshold;
+	}
+
 	onMount(() => {});
 
 	onDestroy(() => {});
@@ -28,30 +36,8 @@
 
 <!-- Combiner avec "filters" -->
 <!-- https://stackoverflow.com/questions/4052756/how-to-combine-html-forms -->
-<form
-	on:submit|preventDefault={submit}
-	on:reset|preventDefault={reset}
-	in:slip|local={{
-		height: true,
-		duration: 350,
-		delay: 0,
-		easing: expoOut,
-		overflow: 'visible',
-		scale: 0.9,
-		opacity: 0,
-	}}
-	out:slip|local={{
-		height: true,
-		duration: 500,
-		delay: 0,
-		easing: expoOut,
-		overflow: 'visible',
-		y: 40,
-		opacity: 0,
-		scale: 1.1,
-	}}
->
-	<section id="search-field">
+<form on:submit|preventDefault={submit} on:reset|preventDefault={reset}>
+	<section class="search-field">
 		<Field
 			type="search"
 			placeholder="Chercher"
@@ -77,7 +63,13 @@
 			</svelte:fragment>
 		</Field>
 	</section>
-	<section id="search-tokens" use:horizontalScroll={{}}>
+	<section
+		class="search-tokens"
+		use:horizontalScroll={{}}
+		on:scroll={handleTokenScroll}
+		class:fadestart
+		class:fadeend
+	>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
@@ -91,7 +83,7 @@
 	</section>
 </form>
 
-<style lang="postcss">
+<style lang="scss">
 	form {
 		z-index: 10;
 		position: relative;
@@ -103,31 +95,48 @@
 		overflow: visible;
 	}
 
-	#search-field {
+	.search-field {
 		position: relative;
 		z-index: 1;
 		width: var(--search-width);
 		flex: none;
 		display: flex;
-		padding: 0rem;
+		padding: 0;
 		margin: 0;
 	}
 
-	#search-tokens {
+	.search-tokens {
 		position: relative;
 		z-index: 10;
-		display: block;
+		display: flex;
+		flex-direction: row;
+		// justify-content: center;
+		align-items: center;
 		overflow-x: scroll;
 		overflow-y: visible;
 		white-space: nowrap;
 		margin-left: 0.5rem;
 		margin-right: 1rem;
-		/* mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%); */
 		transition: all 0.25s ease-out;
 
-		&:hover {
-			/* mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 100%, rgba(0, 0, 0, 0) 100%); */
-			/* mask-image: unset; */
+		&:not(:hover) {
+			&.fadestart {
+				mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 25%);
+			}
+
+			&.fadeend {
+				mask-image: linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 25%);
+			}
+
+			&.fadestart.fadeend {
+				mask-image: linear-gradient(
+					to right,
+					rgba(0, 0, 0, 0) 0%,
+					rgba(0, 0, 0, 1) 25%,
+					rgba(0, 0, 0, 1) 75%,
+					rgba(0, 0, 0, 0) 100%
+				);
+			}
 		}
 	}
 </style>

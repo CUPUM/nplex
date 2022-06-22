@@ -12,7 +12,7 @@
 	</hgroup>
 </header>
 
-<style lang="postcss">
+<style lang="scss">
 	header {
 		display: grid;
 		grid-template-columns: inherit;

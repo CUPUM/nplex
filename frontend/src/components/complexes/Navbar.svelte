@@ -134,7 +134,7 @@
 	{/if}
 </header>
 
-<style lang="postcss">
+<style lang="scss">
 	header {
 		position: fixed;
 		display: grid;

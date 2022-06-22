@@ -1,14 +1,19 @@
+<!-- 
+	@component
+	Use this component to add loading spinner overlay to any element/container.
+ -->
 <script lang="ts">
 	import { colors } from '$utils/colors';
 	import { cssSize, type SizeInput } from '$utils/helpers/css';
-	import { circInOut, elasticOut, expoIn } from 'svelte/easing';
+	import { circInOut, elasticOut, expoInOut } from 'svelte/easing';
 	import { scale, slide } from 'svelte/transition';
 
-	export let color: string = colors.dark[500];
+	export let color: string = colors.dark[300];
 	export let opacity: number = 1;
 	export let backgroundColor: string = 'transparent';
+	export let backgroundOpacity: number = 1;
 	export let size: SizeInput = '1em';
-	export let style: string = undefined;
+	export let containerStyle: string = undefined;
 
 	const duration: string = '3s';
 	let outroing = false;
@@ -50,10 +55,11 @@
 		.join(';');
 </script>
 
-<div class="container" style:font-size={cssSize(size)} style:--duration={duration} style:opacity style:color {style}>
+<div class="container" style={containerStyle}>
 	<div
 		class="bg"
 		style:backgroundColor
+		style:opacity={backgroundOpacity}
 		on:outrostart={outro}
 		transition:slide={{ duration: 450, easing: circInOut }}
 		class:outroing
@@ -61,8 +67,14 @@
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
+		style:font-size={cssSize(size)}
+		style:--duration={duration}
+		style:opacity
+		style:color
 		in:scale={{ duration: 500, easing: elasticOut }}
-		out:scale={{ duration: 350, easing: expoIn }}
+		out:scale={{ duration: 250, easing: expoInOut }}
+		width="1em"
+		height="1em"
 	>
 		<path>
 			<animate
@@ -77,11 +89,15 @@
 				repeatCount="indefinite"
 				values={d}
 			/>
+			<!-- Implement svg animation for rotation steps -->
+			<!-- <animate /> -->
+			<!-- Implement svg animation for offset 90 deg long cycle -->
+			<!-- <animate /> -->
 		</path>
 	</svg>
 </div>
 
-<style lang="postcss">
+<style lang="scss">
 	.container {
 		user-select: none;
 		pointer-events: none;
@@ -112,8 +128,6 @@
 	}
 
 	svg {
-		width: 1em;
-		height: 1em;
 		background: transparent;
 		background-color: transparent;
 		overflow: visible;

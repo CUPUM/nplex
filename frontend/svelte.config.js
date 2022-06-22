@@ -8,6 +8,7 @@ import generateIconsPlugin from './plugins/dist/generateIcons.js';
  */
 const config = {
 	preprocess: preprocess({
+		scss: true,
 		postcss: true,
 	}),
 	extensions: ['.svelte'],

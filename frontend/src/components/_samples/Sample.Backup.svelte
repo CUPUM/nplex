@@ -35,7 +35,7 @@
 	</section>
 {/each}
 
-<style lang="postcss">
+<style lang="scss">
 	section:not(.content) {
 		border: 1px solid rgba(0, 0, 0, 0.1);
 		border-radius: 1em;

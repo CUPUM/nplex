@@ -19,7 +19,7 @@
 	</section>
 </div>
 
-<style lang="postcss">
+<style lang="scss">
 	div {
 		margin-top: var(--navbar-height);
 	}

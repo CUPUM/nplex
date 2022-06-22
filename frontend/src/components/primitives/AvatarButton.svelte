@@ -58,7 +58,7 @@
 	</div>
 </a>
 
-<style lang="postcss">
+<style lang="scss">
 	.avatar {
 		--size: calc(var(--default-size) - 2 * var(--inset, 0px));
 		--pad: 5px;

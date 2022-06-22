@@ -10,5 +10,5 @@
 	<slot />
 </optgroup>
 
-<style lang="postcss">
+<style lang="scss">
 </style>

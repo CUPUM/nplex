@@ -30,7 +30,7 @@
 	<input type="checkbox" bind:checked />
 </label>
 
-<style lang="postcss">
+<style lang="scss">
 	label {
 		position: relative;
 	}

@@ -14,5 +14,5 @@
 </option>
 <div class="test" />
 
-<style lang="postcss">
+<style lang="scss">
 </style>

@@ -23,7 +23,7 @@
 	<slot />
 </menu>
 
-<style lang="postcss">
+<style lang="scss">
 	menu {
 		font-size: var(--size-xsmall);
 		--outset: 5px;

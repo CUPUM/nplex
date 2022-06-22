@@ -1,6 +1,9 @@
+<!--
+	@component
+	Hello world.
+ -->
 <script lang="ts">
 	import { Ctx } from '$utils/contexts';
-	import { Properties } from 'maplibre-gl';
 	import { setContext } from 'svelte';
 
 	export let direction: 'horizontal' | 'vertical' = 'vertical';
@@ -13,7 +16,7 @@
 </div>
 
 <!-- Group buttons visually (remove spacing and round outer corners only) -->
-<style lang="postcss">
+<style lang="scss">
 	div {
 		gap: 0;
 

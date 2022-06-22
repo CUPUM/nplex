@@ -59,7 +59,7 @@
 	</a>
 </li>
 
-<style lang="postcss">
+<style lang="scss">
 	li {
 		position: relative;
 		display: block;

@@ -25,7 +25,7 @@
 	<div class="right">test 8 d</div>
 </section>
 
-<style lang="postcss">
+<style lang="scss">
 	section {
 		grid-column: main;
 		width: 100%;

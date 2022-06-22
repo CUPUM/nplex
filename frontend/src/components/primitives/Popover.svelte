@@ -140,7 +140,7 @@
 	{/if}
 </div>
 
-<style lang="postcss">
+<style lang="scss">
 	.hinter {
 		pointer-events: none;
 		user-select: none;

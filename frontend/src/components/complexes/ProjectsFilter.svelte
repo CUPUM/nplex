@@ -28,7 +28,7 @@
 	{/if}
 </fieldset>
 
-<style lang="postcss">
+<style lang="scss">
 	fieldset {
 		display: block;
 		flex: none;

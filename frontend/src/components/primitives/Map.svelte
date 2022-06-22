@@ -190,7 +190,7 @@
 	{/if}
 </figure>
 
-<style lang="postcss">
+<style lang="scss">
 	figure {
 		opacity: 1;
 		padding: 0;

@@ -88,7 +88,7 @@
 	</section>
 </article>
 
-<style lang="postcss">
+<style lang="scss">
 	article {
 		flex: 1;
 		display: flex;

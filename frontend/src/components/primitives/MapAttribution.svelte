@@ -7,7 +7,7 @@
 
 <!-- <details></details>
 <summary></summary> -->
-<style lang="postcss">
+<style lang="scss">
 	/* & :global(.maplibregl-ctrl-bottom-right) {
 		border-radius: 1em;
 		overflow: hidden;

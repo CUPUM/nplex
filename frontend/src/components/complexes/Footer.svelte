@@ -7,7 +7,7 @@
 	<section class="col3">crédits</section>
 </footer>
 
-<style lang="postcss">
+<style lang="scss">
 	footer {
 		grid-column: full;
 		border-top: 1px solid rgba(var(--rgb-dark-900), 0.1);

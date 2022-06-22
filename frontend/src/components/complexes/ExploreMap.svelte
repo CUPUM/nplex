@@ -11,20 +11,20 @@
 <section>
 	<Map let:map innerStyle="width: 100vw; height: 100vh;">
 		<MapToolbar slot="top-left">
-			<Button on:click={() => map.zoomIn()}><Icon slot="icon" name="plus" /></Button>
-			<Button on:click={() => map.zoomOut()}>-</Button>
+			<Button variant="ghost" on:click={() => map.zoomIn()}><Icon slot="icon" name="plus" /></Button>
+			<Button variant="ghost" on:click={() => map.zoomOut()}>-</Button>
 		</MapToolbar>
 		<MapToolbar slot="top-right">
-			<Button on:click={() => console.log(map)}>Localize</Button>
-			<Button on:click={() => console.log(map)}>Layers</Button>
-			<Button on:click={() => console.log(map)}>Full</Button>
-			<Button on:click={() => console.log(map)}>Min</Button>
-			<Button on:click={() => console.log(map)}>Close</Button>
+			<Button variant="ghost" on:click={() => console.log(map)}>Localize</Button>
+			<Button variant="ghost" on:click={() => console.log(map)}>Layers</Button>
+			<Button variant="ghost" on:click={() => console.log(map)}>Full</Button>
+			<Button variant="ghost" on:click={() => console.log(map)}>Min</Button>
+			<Button variant="ghost" on:click={() => console.log(map)}>Close</Button>
 		</MapToolbar>
 	</Map>
 </section>
 
-<style lang="postcss">
+<style lang="scss">
 	section {
 		z-index: 0;
 		position: relative;

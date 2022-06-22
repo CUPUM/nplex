@@ -12,9 +12,7 @@
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
-	import { backgroundColor } from '$stores/backgroundColor';
 	import { messages } from '$stores/message';
-	import { slip } from '$transitions/slip';
 	import type { SvelteProps } from '$types/helpers';
 	import { colors } from '$utils/colors';
 	import { cssSize } from '$utils/helpers/css';
@@ -40,183 +38,159 @@
 	}
 </script>
 
-<section />
-<section>
-	<p>Default stylings</p>
-	<h1>Heading 1</h1>
-	<h2>Heading 2</h2>
-	<h3>Heading 3</h3>
-	<h4>Heading 4</h4>
-	<h5>Heading 5</h5>
-</section>
-<section>
-	<Field let:value on:keypress={handleKeypress}>
-		<Button type="submit" slot="has-value" on:click={() => messages.dispatch({ text: value, timer: 2500 })}
-			>Dispatch app message</Button
-		>
-	</Field>
-</section>
-<section>
-	<h2>BgColor</h2>
-	<div>
-		<p>Color: {$backgroundColor}</p>
-		<input type="color" bind:value={$backgroundColor} />
-	</div>
-</section>
-<section>
-	<h2>Transition Test</h2>
-	<Checkbox bind:checked={showTransitionBlock}>Show transition block</Checkbox>
-	<div>
-		{#if showTransitionBlock}
-			<Button>Test for component transition prop</Button>
-			<div
-				id="test-block"
-				style="width: 200px; height: 200px; background-color: blue; position: relative;"
-				in:slip={{ height: true, x: 200, duration: 450, scale: 0.1, overflow: 'visible', opacity: 0 }}
-				out:slip={{ height: true, x: 200, scale: 0.1, overflow: 'visible', opacity: 0 }}
+<article class="core-grid">
+	<section>
+		<h2>Text styles</h2>
+		<h1>Heading 1</h1>
+		<p>
+			Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic, labore aliquam odit laborum, fugiat in optio
+			iure et temporibus libero quo. Voluptatibus provident, soluta repudiandae sequi explicabo temporibus quidem
+			dolorem?
+		</p>
+		<h2>Heading 2 <br /> with multiple lines too</h2>
+		<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates, reprehenderit! Aliquid voluptates
+			incidunt voluptate ipsum, nihil, ipsa eum magnam eius quo, atque aliquam harum tempore dicta nam quisquam
+			dolores fugiat alias cum eos corporis! Cumque corrupti fugiat ipsam omnis nobis quam quis veritatis, nam
+			doloremque optio obcaecati ut pariatur at ad, rem magni dolor quos est? Temporibus libero optio vitae
+			tempora minus. Veniam fugiat maxime unde, libero laudantium animi quae molestias distinctio cupiditate vero
+			ex iste?
+		</p>
+		<h3>Heading 3</h3>
+		<p>
+			Alias delectus corrupti rerum eius dolores dignissimos, commodi nam, totam error adipisci optio,
+			exercitationem debitis enim magni asperiores? Itaque, rem nisi nesciunt a officia sed exercitationem nulla
+			voluptatibus, dolore atque quibusdam tempore? Excepturi nam tempora, quos quasi doloribus adipisci explicabo
+			id reiciendis consequatur aliquam. Sit corrupti velit, dolorum ipsa laboriosam suscipit magni eaque
+			accusantium unde itaque maxime ipsum perspiciatis quia non odit, nihil voluptates eveniet excepturi ad?
+		</p>
+		<h4>Heading 4</h4>
+		<p>
+			Doloribus nostrum repudiandae, harum nulla qui nisi illo! Laudantium quasi, dicta ullam magni vitae
+			accusamus iure dolor nostrum inventore possimus ipsum, labore quo aspernatur reprehenderit sequi voluptates
+			praesentium, fugiat officia repellat. Natus, doloremque?
+		</p>
+		<h5>Heading 5 &<br />paragraph/body text styles</h5>
+		<p>
+			Sapiente rem at, doloremque blanditiis perferendis ab optio assumenda expedita nihil autem sed ea atque
+			obcaecati numquam eaque explicabo hic possimus iste labore consequuntur. <em
+				>This text is emphasized (bolded).</em
 			>
-				<p>Content of transition!</p>
-			</div>
-		{/if}
-	</div>
-</section>
-<section>
-	<h2>Loading</h2>
-	<Checkbox bind:checked={showLoading}>Show loading</Checkbox>
-	<Range min={10} max={100} bind:value={loadingSize}>
-		<RangeThumb value={loadingSize} name="loading-size" />
-	</Range>
-	<div style="position: relative; height: {cssSize(loadingSize)}; margin-top: 2rem;">
-		{#if showLoading}
-			<Loading size={loadingSize} />
-		{/if}
-	</div>
-</section>
-<section>
-	<h2>Colors</h2>
-	<div class="palette">
-		{#each Object.entries(colors) as [col, palette]}
-			<div class="palette-row">
-				{#each Object.entries(palette) as [level, val], i}
-					<div class="palette-swatch" style:background-color={val}>
-						<label style:transition-delay="{i * 50}ms">{col}<br />{level}</label>
-					</div>
-				{/each}
-			</div>
-		{/each}
-	</div>
-</section>
-<section>
-	<h2>Buttons</h2>
-	<Checkbox bind:checked={active} />
-	<Select id="size-select" bind:value={currentSize}>
-		{#each sizeKeys as k}
-			<SelectOption value={sizes[k]} id="{k}-id">{k}</SelectOption>
-		{/each}
-	</Select>
-	{#each variants as variant}
-		<h3>{variant.charAt(0).toUpperCase() + variant.slice(1)}</h3>
-		<div id="buttons">
-			<Button {active} {variant} size={currentSize}>With text</Button>
-			<Tooltip message="Testy test">
-				<Button {active} {variant} size={currentSize}><Icon slot="icon" name="user" />With text and icon</Button
-				>
-			</Tooltip>
-			<Button {active} {variant} size={currentSize}><Icon slot="icon" name="settings" /></Button>
+		</p>
+		<p class="text">
+			Misc text: Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero nostrum, dolores ut reprehenderit
+			quidem ducimus totam exercitationem quam eius et, expedita delectus obcaecati voluptatum! Sint fugiat iure
+			quis hic atque. <em>This text is emphasized (bolded).</em> Fugiat incidunt veritatis molestias et odio temporibus?
+			Deleniti accusantium rerum ex, at, nisi voluptatibus nesciunt obcaecati nam mollitia perspiciatis consequuntur!
+		</p>
+		<p>
+			Alias delectus corrupti rerum eius dolores dignissimos, commodi nam, totam error adipisci optio,
+			exercitationem debitis enim magni asperiores? Itaque, rem nisi nesciunt a officia sed exercitationem nulla
+			voluptatibus, dolore atque quibusdam tempore? <span class="text-misc"
+				>Excepturi nam tempora, quos quasi doloribus adipisci explicabo id reiciendis consequatur aliquam. Sit
+				corrupti velit, dolorum ipsa laboriosam suscipit magni eaque accusantium unde itaque maxime ipsum
+				perspiciatis quia non odit, nihil voluptates eveniet excepturi ad?</span
+			>
+		</p>
+	</section>
+	<section>
+		<h2>Field</h2>
+		<Field let:value on:keypress={handleKeypress} placeholder="Ceci est un placeholder">
+			<Button type="submit" slot="has-value" on:click={() => messages.dispatch({ text: value, timer: 2500 })}
+				>Dispatch app message</Button
+			>
+		</Field>
+		<Field let:value on:keypress={handleKeypress} placeholder="Ceci est un placeholder">
+			<Button type="submit" slot="has-value" on:click={() => messages.dispatch({ text: value, timer: 2500 })}
+				>Dispatch app message</Button
+			>
+		</Field>
+	</section>
+	<section>
+		<h2>Loading spinner</h2>
+		<p>
+			<Checkbox bind:checked={showLoading}>Show loading</Checkbox>
+		</p>
+		<p>
+			Size:
+			<Range min={10} max={100} bind:value={loadingSize}>
+				<RangeThumb value={loadingSize} name="loading-size" />
+			</Range>
+		</p>
+		<div style="position: relative; height: {cssSize(loadingSize)}; margin-top: 2rem;">
+			{#if showLoading}
+				<Loading size={loadingSize} />
+			{/if}
 		</div>
-	{/each}
-</section>
-<section>
-	<input type="checkbox" name="" id="" bind:checked={useHover} />
-	<Popover {useHover} align="end" placement="bottom">
-		<Button slot="control">Popover</Button>
-		<Button>Popver item</Button>
-		<Button>Popver item with long text</Button>
-	</Popover>
-</section>
-<section>
-	<Tooltip message="Bonjour, je suis un tooltip!"><Button icon="new-file" /></Tooltip>
-</section>
-<section>
-	<Switch orientation="column" name="test">
-		<SwitchItem id="test1" bind:group={switchval} value="test1v">Test 1</SwitchItem>
-		<SwitchItem id="test2" bind:group={switchval} value="test2v">Test 2</SwitchItem>
-		<SwitchItem id="test3" bind:group={switchval} value="test3v">Test 3</SwitchItem>
-	</Switch>
+	</section>
+	<section>
+		<h2>Colors</h2>
+		<div class="palette">
+			{#each Object.entries(colors) as [col, palette]}
+				<div class="palette-row">
+					{#each Object.entries(palette) as [level, val], i}
+						<div class="palette-swatch" style:background-color={val}>
+							<label style:transition-delay="{i * 50}ms">{col}<br />{level}</label>
+						</div>
+					{/each}
+				</div>
+			{/each}
+		</div>
+	</section>
+	<section>
+		<h2>Buttons</h2>
+		<Checkbox bind:checked={active} />
+		<Select id="size-select" bind:value={currentSize}>
+			{#each sizeKeys as k}
+				<SelectOption value={sizes[k]} id="{k}-id">{k}</SelectOption>
+			{/each}
+		</Select>
+		{#each variants as variant}
+			<h3>{variant.charAt(0).toUpperCase() + variant.slice(1)}</h3>
+			<div id="buttons">
+				<Button {active} {variant} size={currentSize}>With text</Button>
+				<Tooltip message="Testy test">
+					<Button {active} {variant} size={currentSize}
+						><Icon slot="icon" name="user" />With text and icon</Button
+					>
+				</Tooltip>
+				<Button {active} {variant} size={currentSize}><Icon slot="icon" name="settings" /></Button>
+			</div>
+		{/each}
+	</section>
+	<section>
+		<input type="checkbox" name="" id="" bind:checked={useHover} />
+		<Popover {useHover} align="end" placement="bottom">
+			<Button slot="control">Popover</Button>
+			<Button>Popver item</Button>
+			<Button>Popver item with long text</Button>
+		</Popover>
+	</section>
+	<section>
+		<Tooltip message="Bonjour, je suis un tooltip!"><Button icon="new-file" /></Tooltip>
+	</section>
+	<section class="">
+		<Switch orientation="column" name="test">
+			<SwitchItem id="test1" bind:group={switchval} value="test1v">Test 1</SwitchItem>
+			<SwitchItem id="test2" bind:group={switchval} value="test2v">Test 2</SwitchItem>
+			<SwitchItem id="test3" bind:group={switchval} value="test3v">Test 3</SwitchItem>
+		</Switch>
 
-	<Switch orientation="row" name="test">
-		<SwitchItem id="test1" bind:group={switchval} value="test1v">Test 1</SwitchItem>
-		<SwitchItem id="test2" bind:group={switchval} value="test2v">Test 2</SwitchItem>
-		<SwitchItem id="test3" bind:group={switchval} value="test3v">Test 3</SwitchItem>
-	</Switch>
-</section>
+		<Switch orientation="row" name="test">
+			<SwitchItem id="test1" bind:group={switchval} value="test1v">Test 1</SwitchItem>
+			<SwitchItem id="test2" bind:group={switchval} value="test2v">Test 2</SwitchItem>
+			<SwitchItem id="test3" bind:group={switchval} value="test3v">Test 3</SwitchItem>
+		</Switch>
+	</section>
+</article>
 
-<style lang="postcss">
-	.palette {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		align-items: flex-start;
-		width: 100%;
-		gap: 12px;
+<style lang="scss">
+	article {
+		padding-top: var(--navbar-height);
 	}
-	.palette-row {
-		--size: 80px;
-		display: grid;
-		grid-template-columns: repeat(5, var(--size));
-		gap: 12px;
-		justify-content: center;
-		align-items: center;
-
-		&:hover {
-			& label {
-				opacity: 1;
-				transform: translateY(0px);
-			}
-		}
-	}
-	.palette-swatch {
-		position: relative;
-		width: 100%;
-		height: var(--size);
-		border-radius: 24px;
-
-		& label {
-			transform: translateY(5px);
-			opacity: 0;
-			position: absolute;
-			display: block;
-			font-size: 11px;
-			font-weight: 400;
-			top: 0;
-			left: 0;
-			padding: 1.5em;
-			transition: all 0.2s ease-out;
-			color: black;
-		}
-	}
-
-	#buttons {
-		margin: 1rem 0;
-		display: flex;
-		flex-direction: row;
-		gap: 0.5rem;
-	}
-
 	section {
-		width: 600px;
-		padding: 2rem;
-		margin: 0 auto;
-	}
-
-	form {
-		width: 500px;
-		margin: 0 auto;
-		padding: 1rem;
-	}
-
-	fieldset {
-		display: flex;
-		flex-direction: column;
+		grid-column: main;
+		padding: 4rem 0;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	}
 </style>

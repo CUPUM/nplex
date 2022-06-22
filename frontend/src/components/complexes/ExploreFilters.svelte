@@ -74,7 +74,7 @@
 	</form>
 </section>
 
-<style lang="postcss">
+<style lang="scss">
 	.filters {
 		position: relative;
 		flex: none;
@@ -88,12 +88,8 @@
 		margin-right: 0;
 		margin-bottom: 1rem;
 		overflow-x: hidden;
-		border-radius: 2rem;
+		// border-radius: 2rem;
 		transition: all 0.25s ease-out;
-
-		&:hover {
-			box-shadow: 2rem 1rem 5rem -3rem rgba(var(--rgb-dark-900), 0.5);
-		}
 	}
 
 	form {
@@ -106,7 +102,7 @@
 		overflow-y: visible;
 		padding: 0;
 		margin: 0;
-		background-color: white;
+		// background-color: white;
 	}
 
 	.sub-title {

@@ -10,7 +10,7 @@
 	<li>Add project</li>
 </ul>
 
-<style lang="postcss">
+<style lang="scss">
 	ul {
 		position: relative;
 		padding: 0;

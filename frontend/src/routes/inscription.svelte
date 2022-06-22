@@ -113,7 +113,7 @@
 	</form>
 </div>
 
-<style lang="postcss">
+<style lang="scss">
 	#bg {
 		z-index: 1000;
 		position: fixed;

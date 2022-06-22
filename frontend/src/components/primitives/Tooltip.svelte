@@ -113,7 +113,7 @@
 	{/if}
 </div>
 
-<style lang="postcss">
+<style lang="scss">
 	.hinter {
 		z-index: 1000;
 		pointer-events: none;

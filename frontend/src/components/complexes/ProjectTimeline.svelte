@@ -6,7 +6,7 @@
 	<h3>test</h3>
 </section>
 
-<style lang="postcss">
+<style lang="scss">
 	section {
 		grid-area: full;
 		width: 100%;

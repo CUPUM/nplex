@@ -85,7 +85,7 @@
 	<slot />
 </fieldset>
 
-<style lang="postcss">
+<style lang="scss">
 	fieldset {
 		--size: var(--default-size);
 		--radius: var(--default-radius);
@@ -108,20 +108,28 @@
 		height: calc(var(--size) - 2 * var(--inset));
 		border-radius: calc(var(--radius) - var(--inset));
 		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.2);
+
+		&.temp {
+			transform: scale(0.94);
+		}
 	}
 
 	/* Variants */
 
 	/* Default theme */
 	.default {
-		background-color: var(--color-light-500);
-		&:hover {
-			background-color: var(--color-light-300);
+		--bg: var(--color-light-300);
+		background-color: var(--bg);
+		box-shadow: 0 0 0 0 var(--bg);
+		&:hover,
+		&:focus {
+			box-shadow: 0 0 0 3px var(--bg);
 		}
 		& .selector {
-			background-color: var(--color-dark-500);
+			background-color: var(--color-dark-900);
+
 			&.temp {
-				background-color: var(--color-light-900);
+				background-color: rgba(var(--rgb-dark-900), 0.1);
 			}
 		}
 	}
@@ -136,18 +144,16 @@
 
 	/* Nav theme */
 	.navbar {
-		--bg: var(--color-light-300);
-		background-color: var(--bg);
-		box-shadow: 0 0 0 0 var(--bg);
+		background-color: rgba(var(--rgb-light-100), 0.25);
 		&:hover,
 		&:focus {
-			box-shadow: 0 0 0 3px var(--bg);
+			background-color: rgba(var(--rgb-light-500), 0.25);
 		}
 		& .selector {
-			background-color: var(--color-dark-900);
+			background-color: rgba(var(--rgb-primary-100), 0.35);
 
 			&.temp {
-				background-color: rgba(var(--rgb-dark-900), 0.1);
+				background-color: rgba(var(--rgb-primary-100), 0.25);
 			}
 		}
 	}

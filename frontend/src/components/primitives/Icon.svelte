@@ -73,7 +73,7 @@
 	{/if}
 </svg>
 
-<style lang="postcss">
+<style lang="scss">
 	svg {
 		display: inline-block;
 		overflow: visible;

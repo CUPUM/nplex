@@ -12,5 +12,5 @@
 	<slot />
 </select>
 
-<style lang="postcss">
+<style lang="scss">
 </style>

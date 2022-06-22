@@ -33,7 +33,7 @@
 	</div>
 </button>
 
-<style lang="postcss">
+<style lang="scss">
 	button {
 		/* Base */
 		--size: 2.8em;
