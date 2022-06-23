@@ -6,7 +6,7 @@
 	import Icon from '$components/primitives/Icon.svelte';
 	import { messages } from '$stores/message';
 	import { flip } from 'svelte/animate';
-	import { expoIn, expoInOut, expoOut } from 'svelte/easing';
+	import { expoInOut, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 </script>
 
@@ -14,7 +14,7 @@
 	{#each $messages as message (message)}
 		<dialog
 			in:scale|local={{ start: 0.75, opacity: 0, duration: 500, easing: expoOut }}
-			out:scale|local={{ start: 0.9, opacity: 0, duration: 350, easing: expoIn }}
+			out:scale|local={{ start: 0.9, opacity: 0, duration: 350, easing: expoOut }}
 			animate:flip={{ duration: 500, easing: expoInOut }}
 		>
 			<div class="progress-container">
