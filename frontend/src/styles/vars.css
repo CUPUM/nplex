@@ -3,7 +3,7 @@
  *
  * This file was generated from the utils found at ./src/utils.
  * All changes added manually here will be lost on next execution of the generator script.
- * Last generated on: Wed Jun 22 2022 01:07:31 GMT-0400 (Eastern Daylight Time)
+ * Last generated on: Thu Jun 23 2022 11:07:03 GMT-0400 (Eastern Daylight Time)
  *
  * ⚠️ WARNING ⚠️
  */
@@ -29,16 +29,16 @@
 	--rgb-secondary-700: 232, 138, 104;
 	--color-secondary-900: hsl(15, 66%, 58%);
 	--rgb-secondary-900: 219, 113, 77;
-	--color-light-100: hsl(34, 14%, 98%);
+	--color-light-100: hsl(34, 19%, 98%);
 	--rgb-light-100: 251, 250, 249;
-	--color-light-300: hsl(34, 13%, 93%);
-	--rgb-light-300: 239, 237, 235;
-	--color-light-500: hsl(34, 12%, 88%);
-	--rgb-light-500: 228, 225, 221;
-	--color-light-700: hsl(34, 11%, 81%);
-	--rgb-light-700: 212, 207, 201;
-	--color-light-900: hsl(34, 10%, 72%);
-	--rgb-light-900: 191, 185, 176;
+	--color-light-300: hsl(34, 17%, 94%);
+	--rgb-light-300: 242, 240, 237;
+	--color-light-500: hsl(34, 15%, 89%);
+	--rgb-light-500: 231, 228, 223;
+	--color-light-700: hsl(34, 12%, 83%);
+	--rgb-light-700: 217, 212, 206;
+	--color-light-900: hsl(34, 10%, 77%);
+	--rgb-light-900: 202, 197, 190;
 	--color-dark-100: hsl(178, 10%, 38%);
 	--rgb-dark-100: 87, 107, 106;
 	--color-dark-300: hsl(180, 14%, 32%);

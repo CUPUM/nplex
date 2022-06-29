@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
-	import { Ctx } from '$utils/contexts';
+	import { Ctx } from '$utils/keys';
 	import { getContext, onMount } from 'svelte';
 	import Loading from './Loading.svelte';
 	import type { SwitchContext } from './Switch.svelte';
@@ -17,15 +17,15 @@
 	let label: HTMLElement;
 
 	function setTemp() {
-		ctx.tempRef.set(label);
+		if (label !== $current) temp.set(label);
 	}
 
 	function clearTemp() {
-		ctx.tempRef.set(null);
+		temp.set(null);
 	}
 
 	function setCurrent() {
-		ctx.currentRef.set(label);
+		current.set(label);
 	}
 
 	$: if (group === value) {
@@ -140,16 +140,17 @@
 
 	/* Nav theme */
 	.navbar {
+		font-weight: 600;
 		background-color: transparent;
-		color: var(--color-dark-900);
+		color: rgba(var(--rgb-dark-900), 0.5);
 		&:hover,
 		&:focus {
-			color: var(--color-primary-500);
+			color: var(--color-dark-900);
 		}
 		&.current {
 			color: var(--color-primary-500);
 			&.some-temp {
-				color: var(--color-primary-900);
+				// color: var(--color-primary-100);
 			}
 		}
 	}

@@ -1,35 +1,45 @@
 <script lang="ts" context="module">
+	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
+
+	export async function load({ stuff }: LoadEvent): Promise<LoadOutput> {
+		return {
+			stuff: {
+				showFooter: false,
+			},
+		};
+	}
 </script>
 
 <script lang="ts">
-	import ExploreFilters from '$components/complexes/ExploreFilters.svelte';
-	import ExploreList from '$components/complexes/ExploreList.svelte';
-	import ExploreMap from '$components/complexes/ExploreMap.svelte';
-	import { showExploreFilters, showExploreList, showExploreMap } from '$stores/explore';
+	import ProjectsFilters from '$components/complexes/ProjectsFilters.svelte';
+	import ProjectsList from '$components/complexes/ProjectsList.svelte';
+	import ProjectsMap from '$components/complexes/ProjectsMap.svelte';
+	import { showProjectsFilters, showProjectsList, showProjectsMap } from '$stores/projects';
 </script>
 
 <div id="panes">
-	{#if $showExploreFilters}
-		<ExploreFilters />
+	{#if $showProjectsFilters}
+		<ProjectsFilters />
 	{/if}
-	{#if $showExploreMap}
-		<ExploreMap />
+	{#if $showProjectsMap}
+		<ProjectsMap />
 	{/if}
-	{#if $showExploreList}
-		<ExploreList />
+	{#if $showProjectsList}
+		<ProjectsList />
 	{/if}
 </div>
 
 <style lang="scss">
 	#panes {
+		--offset-top: calc(var(--navbar-height) + var(--searchbar-height));
 		position: relative;
 		top: 0;
 		left: 0;
 		margin: 0;
-		margin-top: var(--navbar-height);
+		margin-top: var(--offset-top);
 		padding: 0;
 		width: 100%;
-		height: calc(100vh - var(--navbar-height));
+		height: calc(100vh - var(--offset-top));
 		display: flex;
 		flex-direction: row;
 		min-height: 0;

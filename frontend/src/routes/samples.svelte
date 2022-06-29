@@ -15,8 +15,8 @@
 	import { messages } from '$stores/message';
 	import type { SvelteProps } from '$types/helpers';
 	import { colors } from '$utils/colors';
-	import { cssSize } from '$utils/helpers/css';
-	import { KeyCode } from '$utils/helpers/keycodes';
+	import { cssSize } from '$utils/css';
+	import { KeyCode } from '$utils/keys';
 	import { sizes } from '$utils/sizes';
 
 	let alt = false;

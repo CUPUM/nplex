@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
-	import { Ctx } from '$utils/contexts';
-	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/css';
+	import { Ctx } from '$utils/keys';
 	import { onDestroy, onMount, setContext } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import type { Writable } from 'svelte/store';
@@ -18,6 +18,7 @@
 
 <script lang="ts">
 	export let name: string;
+	export let value: any;
 	export let size: SizeInput = '1em';
 	export let variant: SwitchContext['variant'] = 'default';
 	export let orientation: SwitchContext['orientation'] = 'row';
@@ -110,7 +111,7 @@
 		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.2);
 
 		&.temp {
-			transform: scale(0.94);
+			transform: scale(0.95, 0.9);
 		}
 	}
 
@@ -144,16 +145,20 @@
 
 	/* Nav theme */
 	.navbar {
-		background-color: rgba(var(--rgb-light-100), 0.25);
+		background-color: transparent;
+		// box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-900), 0);
+		// transition: all 0.15s ease-in-out, box-shadow 0.25s ease-in;
 		&:hover,
 		&:focus {
-			background-color: rgba(var(--rgb-light-500), 0.25);
+			background-color: var(--color-light-100);
 		}
 		& .selector {
-			background-color: rgba(var(--rgb-primary-100), 0.35);
+			opacity: 0.25;
+			background-color: var(--color-primary-100);
 
 			&.temp {
-				background-color: rgba(var(--rgb-primary-100), 0.25);
+				background-color: var(--color-light-700);
+				opacity: 0.5;
 			}
 		}
 	}

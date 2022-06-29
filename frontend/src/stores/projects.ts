@@ -1,63 +1,106 @@
-import { randomPoint } from '@turf/random';
-import { readable, writable } from 'svelte/store';
-
-/*
- * Projects UI and general purpose data stores
- */
+import { browser } from '$app/env';
+import type { Project } from '$utils/dummy';
+import { Ls, SearchParams } from '$utils/keys';
+import { writable } from 'svelte/store';
 
 /**
- * Enums used to describe and filter projects. These include controled and enumerated lists from the database.
+ * Global state of the projects' fitlers drawer.
  */
-export const projectsEnums = readable(null, function start(set) {
-	async function setEnums() {
-		const res = await fetch('/api/projects/lists.json');
-		const lists = await res.json();
-		set(lists);
-	}
-	setEnums();
+export const showProjectsFilters = (function () {
+	const { subscribe, set, update } = writable<boolean>(false);
+	return {
+		subscribe,
+		set,
+		toggle: () => update((v) => !v),
+	};
+})();
 
-	return function stop() {};
-});
+/**
+ * Global state of the projects' map pane.
+ */
+export const showProjectsMap = (function () {
+	const { subscribe, set, update } = writable<boolean>(true);
+	return {
+		subscribe,
+		set,
+		toggle: () => update((v) => !v),
+	};
+})();
+
+/**
+ * Global state of the projects' card list pane.
+ */
+export const showProjectsList = (function () {
+	const { subscribe, set, update } = writable<boolean>(true);
+	return {
+		subscribe,
+		set,
+		toggle: () => update((v) => !v),
+	};
+})();
+
+/**
+ * Store of filtered projects selected from the database.
+ */
+export const projects = (function () {
+	const stored = browser ? localStorage.getItem(Ls.Projects) : null;
+	const { subscribe, update, set } = writable<Project[]>(JSON.parse(stored) || []);
+
+	return {
+		subscribe,
+		update,
+		set,
+	};
+})();
+if (browser) {
+	projects.subscribe((value) => {
+		localStorage.setItem(Ls.Projects, JSON.stringify(value));
+	});
+}
 
 /**
  * Store for managing the filters' states.
  */
+export const projectsFilters = (function () {
+	const init: Partial<Record<SearchParams, ProjectsFilter>> = {};
+
+	const { subscribe, update, set } = writable<Partial<Record<SearchParams, ProjectsFilter>>>(init);
+
+	function toggleExpand(filterId: SearchParams) {
+		update((curr) => {
+			const updated = curr;
+			updated[filterId].expanded = !updated[filterId].expanded;
+			return updated;
+		});
+	}
+
+	return {
+		subscribe,
+		update,
+		set,
+		toggleExpand,
+	};
+})();
 interface ProjectsFilter {
 	expanded: boolean;
-	[key: string]: any;
+	value: any;
 }
+projectsFilters.subscribe((value) => {
+	console.log('filters store updated...');
+});
 
-export const projectsFilters = (function () {
-	const { subscribe, update, set } = writable<ProjectsFilter[]>(null);
-})();
+// projectsFilters.subscribe((v) => {
+// 	Object.entries(v).forEach(([k, v]) => {
+// 		if (v != defaultProjectsFilters[k]) {
+// 			query.set(k, v.toString());
+// 		} else {
+// 			query.delete(k);
+// 		}
+// 	});
+// 	updateURL();
+// });
 
 /**
- * Array of projects fetched from the database.
+ * Store of saved / cached latest single project edits.
  */
-export interface Project {
-	id: string;
-	title: string;
-	image_url: string;
-	geometry?: any;
-}
-
-export const projects = writable<Project[]>();
-
-projects.set(
-	Array(12)
-		.fill(null)
-		.map((_) => {
-			const id = Math.round(Math.random() * 10000).toString(16);
-			const point = randomPoint(1, {
-				bbox: [-73.5452, 45.4687, -73.6811, 45.5486],
-			}).features[0];
-			point.properties.radius = Math.round(Math.random() * 500 + 120);
-			// console.log(point);
-			return {
-				id,
-				title: 'Nom du projet ' + id,
-				image_url: `https://picsum.photos/seed/${id}/600/800`,
-				geometry: point,
-			};
-		})
-);
+// export const projectsEdits = ...

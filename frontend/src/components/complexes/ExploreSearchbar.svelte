@@ -1,17 +1,19 @@
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
+	import { page } from '$app/stores';
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import Token from '$components/primitives/Token.svelte';
-	import { showExploreFilters } from '$stores/explore';
-	import { category, exploreSearchterm } from '$stores/search';
+	import { showProjectsFilters } from '$stores/projects';
+	import { exploreSearchterm } from '$stores/search';
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
 	import { slip } from '$transitions/slip';
 	import { onDestroy, onMount } from 'svelte';
 
 	let fadestart = false;
 	let fadeend = true;
+	let showCurrentFilters = false;
 	const [send, receive] = crossfadeExploreFiltersButton;
 
 	function submit() {
@@ -21,6 +23,20 @@
 	function reset() {
 		// console.log('reset form');
 	}
+
+	function toggleFilters() {
+		switch ($page.stuff.category) {
+			case 'projects':
+				showProjectsFilters.toggle();
+				break;
+			case 'organisations':
+				break;
+			case 'actors':
+				break;
+		}
+	}
+
+	$: showCurrentFilters = $page.stuff.category === 'projects' ? $showProjectsFilters : false;
 
 	function handleTokenScroll(e: Event) {
 		const el = e.target as HTMLElement;
@@ -46,11 +62,11 @@
 			bind:value={$exploreSearchterm}
 		>
 			<svelte:fragment slot="left">
-				{#if $category && !$showExploreFilters}
+				{#if $page.stuff.category && !showCurrentFilters}
 					<div transition:slip={{ width: true, overflow: 'visible' }}>
 						<div in:receive={{ key: '' }} out:send={{ key: '' }}>
-							<Button on:click={showExploreFilters.toggle} active={$showExploreFilters}>
-								<Icon slot="icon" name={$showExploreFilters ? 'cross' : 'parameters'} />
+							<Button on:click={toggleFilters}>
+								<Icon slot="icon" name="parameters" />
 							</Button>
 						</div>
 					</div>

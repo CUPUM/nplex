@@ -14,7 +14,7 @@ const unitsRegex = `/${cssSizeUnits.join('|')}/`;
  * Helper to parse CSS values and return an object with the number and unit extracted. Returned unit will be undefined
  * if input has none or if it doesn't match any of the accepted units.
  */
-export function decomposeCssSize(input: number | CSS.SizeValue): {
+export function decomposeCssSize(input: SizeInput): {
 	value: number;
 	unit: CSS.SizeUnit | undefined;
 } {
@@ -25,7 +25,7 @@ export function decomposeCssSize(input: number | CSS.SizeValue): {
 	};
 }
 
-export type SizeInput = number | CSS.SizeValue;
+export type SizeInput = number | CSS.SizeValue | `${number}`;
 
 /**
  * Helper to quickly test an input value and format it properly for usage in css.

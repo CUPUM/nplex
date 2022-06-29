@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/contexts';
+	import { Ctx } from '$utils/keys';
 	import { mapStyles } from '$utils/map';
 	import { sizes } from '$utils/sizes';
 	import {

@@ -1,17 +1,27 @@
 <script lang="ts">
-	import { horizontalScroll } from '$actions/horizontalScroll';
 </script>
 
-<section use:horizontalScroll>
-	<h3>test</h3>
+<section>
+	<div>Timeline goes here</div>
 </section>
 
 <style lang="scss">
 	section {
-		grid-area: full;
+		position: relative;
+		margin: 0;
+		padding: 2rem;
+		height: 100vh;
+	}
+
+	div {
 		width: 100%;
-		background-color: grey;
-		height: 50vh;
-		overflow: overlay;
+		height: 100%;
+		background-color: var(--color-light-300);
+		border-radius: 2rem;
+		transition: all 0.2s ease-in-out;
+
+		&:hover {
+			background-color: var(--color-light-500);
+		}
 	}
 </style>

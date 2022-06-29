@@ -11,8 +11,8 @@
 <script lang="ts">
 	import { width } from '$transitions/width';
 	import type { SvelteProps } from '$types/helpers';
-	import { Ctx } from '$utils/contexts';
-	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/css';
+	import { Ctx } from '$utils/keys';
 	import { setContext } from 'svelte';
 	import { expoIn, expoInOut, expoOut } from 'svelte/easing';
 	import Button from './Button.svelte';
@@ -46,6 +46,7 @@
 	$: filteredType = ['email', 'password'].includes(type) ? 'text' : type;
 
 	let showPassword = false;
+	let inputRef: HTMLInputElement;
 
 	setContext<FieldContext>(Ctx.Field, {
 		// inset,
@@ -70,6 +71,10 @@
 	function reset() {
 		value = '';
 	}
+
+	function selectInput() {
+		inputRef.select();
+	}
 </script>
 
 <div
@@ -87,13 +92,14 @@
 		</div>
 	{/if}
 	{#if placeholderIcon && !value}
-		<div class="icon" transition:width={{ opacity: 0, duration: 400, easing: expoInOut }}>
+		<div class="icon" transition:width={{ opacity: 0, duration: 400, easing: expoInOut }} on:click={selectInput}>
 			<Icon name={placeholderIcon} />
 		</div>
 	{/if}
 	<input
+		bind:this={inputRef}
 		{disabled}
-		type="text"
+		{type}
 		{value}
 		{placeholder}
 		on:input={handleInput}
@@ -105,7 +111,7 @@
 		on:blur={blur}
 		on:submit
 		on:keypress
-		autocomplete="new-{type}"
+		autocomplete="off"
 		name={$$restProps.name}
 	/>
 	{#if value}
@@ -157,6 +163,7 @@
 	}
 
 	.icon {
+		cursor: pointer;
 		position: relative;
 		height: 100%;
 		display: flex;
@@ -176,7 +183,7 @@
 		position: relative;
 		flex: 1;
 		font-size: 1em;
-		padding-inline: 0.8em 1em;
+		padding-inline: 1em 1em;
 		padding-block: 0.9em 1.1em;
 		height: 100%;
 		min-height: 100%;
@@ -189,23 +196,27 @@
 		border: none;
 		line-height: 1em;
 		vertical-align: middle;
-		transition: all 0.15s ease-out, text-indent 0.35s cubic-bezier(0, 0, 0, 1);
+		transition: all 0.15s cubic-bezier(0, 0, 0, 1);
 
 		&::placeholder {
 			color: currentColor;
-			font-weight: 300;
-			opacity: 0.5;
-			transition: all 0.75s;
+			opacity: 0.2;
+			transition: all 0.5s;
 		}
 
-		&:hover:not(:focus)::placeholder {
-			opacity: 1;
+		@at-root .icon:hover + &:not(:focus)::placeholder,
+			&:hover:not(:focus)::placeholder {
+			opacity: 0.5;
 		}
 
 		&:disabled {
 			opacity: 0.75;
 			pointer-events: none;
 			cursor: default;
+		}
+
+		&:invalid:not(:placeholder-shown) {
+			color: red;
 		}
 
 		/* &:-webkit-autofill,

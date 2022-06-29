@@ -1,12 +1,10 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
-	import Loading from '$components/primitives/Loading.svelte';
-	import Token from '$components/primitives/Token.svelte';
-	import { showExploreFilters } from '$stores/explore';
-	import { projectsEnums } from '$stores/projects';
+	import { projectsFilters, showProjectsFilters } from '$stores/projects';
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
 	import { width } from '$transitions/width';
+	import { SearchParams } from '$utils/keys';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import ProjectsFilter from './ProjectsFilter.svelte';
@@ -14,18 +12,14 @@
 	const [send, receive] = crossfadeExploreFiltersButton;
 
 	function close() {
-		showExploreFilters.set(false);
+		showProjectsFilters.set(false);
 	}
 
 	function submit(e) {
 		// Do stuff
 	}
 
-	onMount(() => {
-		if (!$projectsEnums) {
-			projectsEnums.subscribe(() => {});
-		}
-	});
+	onMount(() => {});
 </script>
 
 <section
@@ -40,36 +34,20 @@
 		</Button>
 	</div>
 	<form>
-		<ProjectsFilter label="Types de sites">
-			{#if $projectsEnums}
-				{#each $projectsEnums.projects_sites_types_groups as group}
-					{#if group.types.length}
-						<section class="tokenset">
-							<legend class="sub-title">{group.title}</legend>
-							{#each group.types as type}
-								<Token variant="ghost" style="margin: 3px;">{type.title}</Token>
-							{/each}
-						</section>
-					{/if}
-				{/each}
-			{:else}
-				<Loading />
-			{/if}
-		</ProjectsFilter>
-		<ProjectsFilter label="Fourchettes de valeur">
-			<p>test1</p>
-			<p>test2</p>
-			<p>test3</p>
-		</ProjectsFilter>
-		<ProjectsFilter label="Fourchettes de valeur">
-			<p>test1</p>
-			<p>test2</p>
-			<p>test3</p>
-		</ProjectsFilter>
-		<ProjectsFilter label="Fourchettes de valeur">
-			<p>test1</p>
-			<p>test2</p>
-			<p>test3</p>
+		<ProjectsFilter
+			label="Fourchettes de coût"
+			id={SearchParams.ProjectsCostFork}
+			defaultValue={{ min: 1200, max: 2500 }}
+			let:id
+		>
+			<label for="">
+				<p>Min:</p>
+				<input type="number" name="" id="" bind:value={$projectsFilters[id].value.min} />
+			</label>
+			<label for="">
+				<p>Max:</p>
+				<input type="number" name="" id="" bind:value={$projectsFilters[id].value.max} />
+			</label>
 		</ProjectsFilter>
 	</form>
 </section>

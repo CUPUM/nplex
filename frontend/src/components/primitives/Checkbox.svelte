@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { Ctx } from '$utils/contexts';
-	import { cssSize, type CSSSizeValue } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/css';
+	import { Ctx } from '$utils/keys';
 	import { getContext } from 'svelte';
 
 	export let variant: 'default' | 'secondary' | 'misc' = 'default';
-	export let size: number | CSSSizeValue = undefined;
+	export let size: SizeInput = undefined;
 	export let labelPosition: 'before' | 'after' = 'after';
 	export let checked;
 

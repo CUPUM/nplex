@@ -1,23 +1,18 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
+	import { page, session } from '$app/stores';
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
-	import type { Project } from '$stores/projects';
-	import { crossfadeExploreArticleBackButton } from '$transitions/crossfades';
+	import { getAuthRedirectUrl } from '$utils/auth';
 	import { colors } from '$utils/colors';
-	import { Ctx } from '$utils/contexts';
+	import type { Project } from '$utils/dummy';
 	import { sizes } from '$utils/sizes';
-	import { getContext } from 'svelte';
-	import type { ExploreListContext } from './ExploreList.svelte';
 
-	export let project: Project;
+	export let project: Project = undefined;
 	export let imageLoading = true;
 
-	const ctx = getContext<ExploreListContext>(Ctx.ExploreList);
-
-	const [send, receive] = crossfadeExploreArticleBackButton;
-
+	let authHref;
 	let entered = false;
 
 	function handleEnter() {
@@ -32,31 +27,44 @@
 	function handleEnterCurrent() {
 		// console.log(project.id);
 	}
+
+	$: authHref = getAuthRedirectUrl($page.url);
 </script>
 
 <li use:intersection={{ rootMargin: '0% 0% 0%' }} on:enter on:leave on:enter|once={handleEnter}>
-	<a
-		href="/projets/{project.id}"
-		use:intersection={{ rootMargin: '-50% 0% -50%' }}
-		on:enter={handleEnterCurrent}
-		class="button-parent"
-	>
-		<figure class:loading={imageLoading}>
-			{#if imageLoading}
-				<Loading color={colors.dark[100]} />
-			{/if}
-			{#if entered}
-				<img src={project.image_url} alt="" on:load={handleImageLoad} />
-			{/if}
-		</figure>
-		<h3>{project.title}</h3>
-		<div in:receive={{ key: project.id }} out:send={{ key: project.id }}>
+	{#if project}
+		<a
+			href="/projets/{project.id}"
+			use:intersection={{ rootMargin: '-50% 0% -50%' }}
+			on:enter={handleEnterCurrent}
+			class="button-parent project-card"
+		>
+			<figure class:loading={imageLoading}>
+				{#if imageLoading}
+					<Loading color={colors.primary[100]} />
+				{/if}
+				{#if entered}
+					<img src={project.showcase_image.url} alt="" on:load={handleImageLoad} />
+				{/if}
+			</figure>
+			<h3>{project.name}</h3>
 			<Button size={sizes.small} style="grid-area: button;" iconPosition="after">
 				<span>Consulter</span>
 				<Icon name="submit" slot="icon" />
 			</Button>
-		</div>
-	</a>
+		</a>
+	{:else if $session.user}
+		<!-- Placeholder project card -->
+		<a href="">Soumettre un nouveau projet</a>
+	{:else}
+		<a href={authHref} class="button-parent login-card">
+			<Button>
+				<span>Connectez-vous ou créez un compte</span>
+				<Icon name="submit" slot="icon" />
+			</Button>
+			<p>pour soumettre un nouveau projet.</p>
+		</a>
+	{/if}
 </li>
 
 <style lang="scss">
@@ -69,7 +77,18 @@
 		/* scroll-snap-align: center; */
 	}
 
-	a {
+	.login-card {
+		text-decoration: none;
+		display: flex;
+		margin: 2rem;
+		padding: 2rem;
+		flex-direction: column;
+		border-radius: 2rem;
+		gap: 1rem;
+		border: 1px solid rgba(var(--rgb-dark-900), 0.05);
+	}
+
+	.project-card {
 		text-decoration: none;
 		display: grid;
 		gap: 12px;

@@ -37,7 +37,26 @@ declare namespace App {
 		/**
 		 * Client's user-agent / device detected server-side.
 		 */
-		device: import('$types/device').Device;
+		// device: import('$types/device').Device;
+	}
+
+	interface Stuff {
+		/**
+		 * Category currently being explored.
+		 */
+		category: import('$types/categories').Category;
+		/**
+		 * Display state of the category nav.
+		 */
+		showCategoryNav: boolean;
+		/**
+		 * Display state of the explore searchbar.
+		 */
+		showExploreSearchbar: boolean;
+		/**
+		 * Display state of the app's footer.
+		 */
+		showFooter: boolean;
 	}
 
 	/**

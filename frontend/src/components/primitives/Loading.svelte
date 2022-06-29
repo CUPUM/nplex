@@ -4,7 +4,7 @@
  -->
 <script lang="ts">
 	import { colors } from '$utils/colors';
-	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/css';
 	import { circInOut, elasticOut, expoInOut } from 'svelte/easing';
 	import { scale, slide } from 'svelte/transition';
 
@@ -15,7 +15,7 @@
 	export let size: SizeInput = '1em';
 	export let containerStyle: string = undefined;
 
-	const duration: string = '3s';
+	const duration = 3;
 	let outroing = false;
 
 	function outro() {
@@ -42,16 +42,31 @@
 	];
 	const d = [...shapes, shapes[0]].join(';') + ';';
 
-	const nshapes = shapes.length + 1;
-	// const offset = Math.round(Math.random() * nshapes);
+	const nsteps = shapes.length + 1;
+	// const offset = Math.round(Math.random() * nsteps);
 
-	const keySplines = Array(nshapes - 1)
+	const keySplines = Array(nsteps - 1)
 		.fill('.8 0 0.2 1')
 		.join(';');
 
-	const keyTimes = Array(nshapes)
+	const keyTimes = Array(nsteps)
 		.fill(null)
-		.map((_, i) => i / (nshapes - 1))
+		.map((_, i) => i / (nsteps - 1))
+		.join(';');
+
+	const pulseValues = Array(nsteps)
+		.fill(0)
+		.map((_, i) => (i - 1) * 90 + ' 50 50')
+		.join(';');
+
+	const offsetKeytimes = Array(4)
+		.fill(null)
+		.map((_, i) => (i + 1) / 4)
+		.join(';');
+
+	const offsetValues = Array(4)
+		.fill(null)
+		.map((_, i) => i * 90 + ' 50 50')
 		.join(';');
 </script>
 
@@ -68,7 +83,7 @@
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
 		style:font-size={cssSize(size)}
-		style:--duration={duration}
+		style:--duration="{duration}s"
 		style:opacity
 		style:color
 		in:scale={{ duration: 500, easing: elasticOut }}
@@ -78,21 +93,43 @@
 	>
 		<path>
 			<animate
+				attributeType="XML"
 				{keySplines}
 				{keyTimes}
 				from="M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z"
 				to="M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z"
 				calcMode="spline"
 				attributeName="d"
-				dur={duration}
+				dur="{duration}s"
 				begin="0s"
 				repeatCount="indefinite"
 				values={d}
 			/>
 			<!-- Implement svg animation for rotation steps -->
-			<!-- <animate /> -->
-			<!-- Implement svg animation for offset 90 deg long cycle -->
-			<!-- <animate /> -->
+			<animateTransform
+				attributeType="XML"
+				{keySplines}
+				{keyTimes}
+				attributeName="transform"
+				type="rotate"
+				calcMode="spline"
+				dur="{duration}s"
+				begin="0s"
+				repeatCount="indefinite"
+				values={pulseValues}
+			/>
+			<!-- <animateTransform
+				attributeType="XML"
+				attributeName="transform"
+				type="rotate"
+				calcMode="discrete"
+				keyTimes={offsetKeytimes}
+				dur="{4 * duration}s"
+				begin="0s"
+				repeatCount="indefinite"
+				additive="sum"
+				values={offsetValues}
+			/> -->
 		</path>
 	</svg>
 </div>
@@ -131,11 +168,11 @@
 		background: transparent;
 		background-color: transparent;
 		overflow: visible;
-		animation-name: spin;
-		animation-duration: var(--duration);
-		animation-fill-mode: none;
-		animation-iteration-count: infinite;
-		animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+		// animation-name: spin;
+		// animation-duration: var(--duration);
+		// animation-fill-mode: none;
+		// animation-iteration-count: infinite;
+		// animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	path {
@@ -145,11 +182,11 @@
 		stroke-width: 20px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
-		transform-origin: center;
-		animation-name: slowspin;
-		animation-duration: calc(4 * var(--duration, 0s));
-		animation-iteration-count: infinite;
-		animation-timing-function: steps(4, start);
+		// transform-origin: center;
+		// animation-name: slowspin;
+		// animation-duration: calc(4 * var(--duration, 0s));
+		// animation-iteration-count: infinite;
+		// animation-timing-function: steps(4, start);
 	}
 
 	@keyframes slowspin {

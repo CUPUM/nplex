@@ -1,6 +1,31 @@
+import { base } from '$app/paths';
+
 /**
- * Global dictionnary of keys to help set and get a URL's search params consistently and avoid naming conflicts.
+ * To do.
  */
-export enum SearchParamsKeys {
-	AuthModal = 'nouveau-compte',
+export function getSegments(routePath: string) {
+	return routePath
+		.replace(base, '')
+		.replace(/^\/+/, '')
+		.split('/')
+		.map((segment) => '/' + segment);
+}
+
+/**
+ * To do.
+ */
+export function objectToURLSearchParams(obj: Record<string, unknown>): URLSearchParams {
+	Object.entries(obj);
+	return;
+}
+
+/**
+ * To do.
+ */
+export function URLSearchParamsToObject(params: URLSearchParams) {
+	const obj = {};
+	params.forEach((v: string, k: string) => {
+		obj[k] = v;
+	});
+	return obj;
 }

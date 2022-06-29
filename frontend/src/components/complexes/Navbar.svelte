@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { session } from '$app/stores';
+	import { page, session } from '$app/stores';
 	import AvatarButton from '$components/primitives/AvatarButton.svelte';
-	import Badge from '$components/primitives/Badge.svelte';
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
@@ -9,15 +8,14 @@
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
-	import { isExploreArticle } from '$stores/explore';
+	import { categoryIsResetable } from '$stores/explore';
 	import { currentPath, loadingCategory } from '$stores/navigation';
 	import { mainScroll } from '$stores/scroll';
-	import { category, showCategory } from '$stores/search';
+	import type { Category } from '$types/categories';
 	import { signOut } from '$utils/auth';
 	import { colors } from '$utils/colors';
 	import { gotoCategory } from '$utils/navigation';
 	import { creationBaseRoute, creationRoutes, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
-	import type { Category } from 'src/types/categories';
 	import { onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
@@ -29,16 +27,12 @@
 	let resizeObserver: ResizeObserver;
 	let hidden;
 	let overlay;
-	let resetableCategory: Category = null;
+	let navbarCategory: Category = null;
 	const hiddenThreshold = 100;
 
 	$: hidden = $mainScroll.down && $mainScroll.y > hiddenThreshold;
 	$: overlay = $mainScroll.y > hiddenThreshold + 100;
-	$: resetableCategory = $isExploreArticle && !$loadingCategory ? $category : null;
-
-	function hasCategoryResetIcon(category: Category, current) {
-		return $isExploreArticle && category === current && !$loadingCategory;
-	}
+	$: navbarCategory = $page.stuff.category;
 
 	function updateHeight() {
 		navbarHeight = navbarRef.offsetHeight;
@@ -54,7 +48,7 @@
 <header bind:this={navbarRef} class:hidden class:overlay>
 	{#if mounted}
 		<nav
-			class="main"
+			class="section"
 			in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 0 }}
 			out:fly={{ y: -20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
@@ -67,7 +61,7 @@
 				</Button>
 			{/each}
 		</nav>
-		{#if $showCategory}
+		{#if $page.stuff.showCategoryNav}
 			<nav
 				class="category"
 				in:fly={{ y: 20, duration: 500, easing: expoOut, delay: 150 }}
@@ -78,10 +72,10 @@
 						<SwitchItem
 							id={r.category}
 							value={r.category}
-							bind:group={$category}
+							bind:group={navbarCategory}
 							on:click={() => gotoCategory(r)}
 							loading={$loadingCategory === r.category}
-							disabled={r.category === $category && !$isExploreArticle}
+							disabled={r.category === $page.stuff.category && !$categoryIsResetable}
 						>
 							{r.title}
 						</SwitchItem>
@@ -123,11 +117,9 @@
 					in:fly={{ y: 20, duration: 350, easing: expoOut, delay: 350 }}
 					out:fly={{ y: -20, duration: 350, easing: expoOut }}
 				>
-					<Button variant="navbar" href={userBaseRoute.pathname} icon="user">
-						<Icon name="user" slot="icon" />
-						<Badge slot="badge" />
-					</Button>
-					<Button variant="cta" href={userBaseRoute.pathname}>Créer un comtpe</Button>
+					<Button variant="cta" href={userBaseRoute.pathname}
+						><Icon name="user" slot="icon" strokeWidth="1" />Créer un comtpe</Button
+					>
 				</div>
 			{/if}
 		</nav>
@@ -141,9 +133,9 @@
 		grid-template-columns:
 			[full-start gutter-left-start]
 			auto
-			[gutter-left-end main-start]
+			[gutter-left-end section-start]
 			1fr
-			[main-end category-start]
+			[section-end category-start]
 			auto
 			[category-end user-start]
 			1fr
@@ -185,12 +177,9 @@
 		gap: 3px;
 	}
 
-	.main {
-		grid-area: main;
+	.section {
+		grid-area: section;
 		justify-self: flex-start;
-		border-radius: 3em;
-		background-color: rgba(var(--rgb-light-100), 0);
-		backdrop-filter: blur(24px);
 	}
 
 	.category {

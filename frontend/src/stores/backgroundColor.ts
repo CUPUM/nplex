@@ -1,12 +1,14 @@
 import { browser } from '$app/env';
-import { colors } from '$utils/colors';
 import { writable } from 'svelte/store';
 
 /**
  * Global store to allow bg-color transitions on the site's body.
  */
 export const backgroundColor = (function () {
-	const defaultColor = colors.light[100];
+	const defaultColor = browser
+		? window.getComputedStyle(document.querySelector(':root') as HTMLElement).backgroundColor
+		: '';
+
 	const { subscribe, set, update } = writable(defaultColor);
 
 	let root: HTMLElement = undefined;

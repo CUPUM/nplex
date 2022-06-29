@@ -2,7 +2,7 @@
 	import { ripple } from '$actions/ripple';
 	import { session } from '$app/stores';
 	import { userProfile } from '$stores/profile';
-	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/css';
 	import Loading from './Loading.svelte';
 
 	export let size: SizeInput = '1em';

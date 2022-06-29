@@ -11,6 +11,13 @@
 	transition: background-color 1s ease-in-out;
 	font-feature-settings: 'kern';
 	letter-spacing: 0.01em;
+	background-color: var(--color-light-100);
+	accent-color: var(--color-primary-500);
+}
+
+::selection {
+	background: var(--color-primary-500);
+	color: currentColor;
 }
 
 body {
@@ -28,8 +35,8 @@ body {
 }
 
 *,
-*::before,
-*::after {
+::before,
+::after {
 	/* -webkit-font-smoothing: antialiased; */
 	box-sizing: border-box;
 }
@@ -43,7 +50,7 @@ h1 {
 	padding: 0;
 	margin: 1rem 0 2rem 0;
 	color: var(--color-dark-900);
-	margin-block: 1em 1.5rem;
+	margin-block: 1em 1em;
 	letter-spacing: -0.8px;
 	line-height: 1.25em;
 }
@@ -54,7 +61,7 @@ h2 {
 	padding: 0;
 	margin: 1rem 0 2rem 0;
 	color: var(--color-dark-900);
-	margin-block: 1em 1.5rem;
+	margin-block: 1.25em 1em;
 	letter-spacing: -0.4px;
 	line-height: 1.25em;
 }
@@ -65,7 +72,7 @@ h3 {
 	padding: 0;
 	margin: 1rem 0 2rem 0;
 	color: var(--color-dark-900);
-	margin-block: 1em 1.5rem;
+	margin-block: 1.5em 1em;
 	letter-spacing: -0.2px;
 	line-height: 1.25em;
 }
@@ -76,7 +83,7 @@ h4 {
 	padding: 0;
 	margin: 1rem 0 2rem 0;
 	color: var(--color-dark-900);
-	margin-block: 1em 1.5rem;
+	margin-block: 1.75em 1em;
 	line-height: 1.25em;
 }
 
@@ -86,13 +93,13 @@ h5 {
 	padding: 0;
 	margin: 1rem 0 2rem 0;
 	color: var(--color-dark-900);
-	margin-block: 1em 1.5rem;
+	margin-block: 2em 1em;
 	line-height: 1.25em;
 }
 
 p {
 	line-height: 1.4em;
-	margin-block: 1em 2em;
+	margin-block: 2em;
 }
 
 em {

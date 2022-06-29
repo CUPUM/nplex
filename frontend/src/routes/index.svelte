@@ -1,20 +1,27 @@
+<script lang="ts" context="module">
+	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
+
+	export async function load({ stuff }: LoadEvent): Promise<LoadOutput> {
+		return {
+			stuff: {
+				showCategoryNav: true,
+				category: null,
+				showExploreSearchbar: false,
+			},
+		};
+	}
+</script>
+
 <script lang="ts">
-	import { backgroundColor } from '$stores/backgroundColor';
-	import { showCategory } from '$stores/search';
 	import { onDestroy, onMount } from 'svelte';
 
 	export let projectsPreview;
 	export let organisationsPreview;
 	export let actorsPreview;
 
-	showCategory.set(true);
+	onMount(async () => {});
 
-	onMount(() => {});
-
-	onDestroy(() => {
-		showCategory.set(false);
-		backgroundColor.reset();
-	});
+	onDestroy(() => {});
 </script>
 
 <article class="core-grid" id="intro">

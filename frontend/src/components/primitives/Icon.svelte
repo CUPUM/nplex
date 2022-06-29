@@ -5,7 +5,7 @@
 </script>
 
 <script lang="ts">
-	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/css';
 	import { icons } from '$utils/icons/icons';
 	import { onDestroy, onMount } from 'svelte';
 	import { linear } from 'svelte/easing';

@@ -1,6 +1,6 @@
 import { page } from '$app/stores';
-import { getSegments } from '$utils/helpers/url';
 import { mainRoutes } from '$utils/routes';
+import { getSegments } from '$utils/url';
 import type { Category } from 'src/types/categories';
 import { derived, writable, type Writable } from 'svelte/store';
 

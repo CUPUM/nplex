@@ -1,6 +1,10 @@
+<!-- 
+	@component
+	Attaches a tooltip element to the last HTML element passed through the component's default slot.
+ -->
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
-	import { cssSize } from '$utils/helpers/css';
+	import { cssSize } from '$utils/css';
 	import { onDestroy, onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -10,7 +14,8 @@
 	export let useHover: boolean = true;
 	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'top';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
-	const distance = 10;
+	const distance = 5;
+	const roundness = 25;
 
 	let controlRef: HTMLElement;
 	let hinterRef: HTMLElement;
@@ -97,7 +102,7 @@
 	style:--x={x}
 	style:--w={w}
 	style:--h={h}
-	style:--distance={cssSize(distance)}
+	style:--distance="calc({cssSize(distance)} + 0.5em)"
 >
 	{#if open}
 		<span
@@ -106,8 +111,11 @@
 			out:scale={{ start: 0.8, easing: expoIn, duration: 50 }}
 		>
 			{message}
-			<svg viewBox="0 0 100 100" preserveAspectRatio="xmidYMid">
-				<path d="M 0,-1 C 25,0 35,60 50,60 C 75,60 75,0 100,-1 Z" />
+			<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+				<path
+					d="M 0,-1 C {roundness},0 {50 - roundness},50 50,50 C {50 + roundness},50 {100 -
+						roundness},0 100,-1 Z"
+				/>
 			</svg>
 		</span>
 	{/if}
@@ -126,22 +134,22 @@
 		justify-content: center;
 		flex-wrap: nowrap;
 		overflow: visible;
+		font-size: var(--size-small);
 	}
 
 	span {
+		pointer-events: none;
 		display: block;
 		flex: none;
 		position: absolute;
 		white-space: nowrap;
-		font-size: var(--size-small);
 		font-weight: 400;
 		padding: 0.5em 1.2em 0.7em 1.2em;
 		margin: 0;
 		background-color: var(--color-dark-900);
-		color: var(--color-light-300);
-		box-shadow: 0 0.5em 1.5em -1em rgba(var(--rgb-dark-900), 1);
+		color: var(--color-light-700);
+		box-shadow: 0 0.5em 1.5em -0.75em rgba(0, 0, 0, 0.5);
 		border-radius: 1em;
-		opacity: 0.75;
 	}
 
 	svg {

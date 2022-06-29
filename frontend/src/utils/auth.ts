@@ -4,8 +4,8 @@ import type { UserRole } from '$utils/user';
 import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 import { db } from './database';
+import { SearchParams } from './keys';
 import type { providers } from './providers';
-import { SearchParamsKeys } from './url';
 
 interface GuardInput {
 	/**
@@ -46,7 +46,6 @@ export async function guard({ criteria, session, message, url }: GuardInput): Pr
 	 * ...else, if no user, we redirect to the indicated location, usually the previous successfully visited url stored
 	 * in `prevUrl`, and append the required param to open the signup modal.
 	 */
-	console.log('Inside guard, redirectUrl:', session.prevUrl);
 	let redirectUrl = new URL(session.prevUrl);
 	let defaultMessage =
 		'Désolé, il semble que votre compte ne détient pas les permissions requises pour accéder à cette section de Nplex.';
@@ -59,7 +58,7 @@ export async function guard({ criteria, session, message, url }: GuardInput): Pr
 	}
 
 	if (!session.user) {
-		redirectUrl.searchParams.set(SearchParamsKeys.AuthModal, '');
+		redirectUrl = getAuthRedirectUrl(redirectUrl);
 		defaultMessage = 'Désolé, un compte est nécessaire pour accéder à cette section de Nplex.';
 	}
 
@@ -69,6 +68,12 @@ export async function guard({ criteria, session, message, url }: GuardInput): Pr
 		status: 303,
 		redirect: redirectUrl.toString(),
 	};
+}
+
+export function getAuthRedirectUrl(targetUrl: URL) {
+	const redirectUrl = new URL(targetUrl);
+	redirectUrl.searchParams.set(SearchParams.AuthModal, 'true');
+	return redirectUrl;
 }
 
 // Auth helpers

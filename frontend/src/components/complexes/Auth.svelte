@@ -2,7 +2,7 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
-	import SocialButton from '$components/primitives/SocialButton.svelte';
+	import ProviderLogo from '$components/primitives/ProviderLogo.svelte';
 	import { authMessage, authModal } from '$stores/auth';
 	import { signIn, signUp } from '$utils/auth';
 	import { providers } from '$utils/providers';
@@ -99,10 +99,11 @@
 	</fieldset>
 	<hr />
 	<fieldset>
-		{#each providerNames as provider}
-			<SocialButton {provider}>
-				Connecter avec {providers[provider].title}
-			</SocialButton>
+		{#each providerNames as name}
+			<Button contentAlign="center">
+				<ProviderLogo {name} slot="icon" size="1.5em" />
+				Connecter avec {providers[name].title}
+			</Button>
 		{/each}
 	</fieldset>
 </form>

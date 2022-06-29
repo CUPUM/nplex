@@ -4,7 +4,7 @@
 -->
 <script lang="ts">
 	import { colors } from '$utils/colors';
-	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/css';
 	import { elasticOut, expoIn } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 

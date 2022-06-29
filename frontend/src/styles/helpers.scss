@@ -86,3 +86,12 @@
 .core-grid-col3 {
 	grid-column: col3;
 }
+
+/*
+	Border classes to add visual separation between sections
+*/
+@each $position in (top, right, bottom, left) {
+	.border-#{$position} {
+		border-#{$position}: 1px solid rgba(var(--rgb-dark-900), 0.1);
+	}
+}

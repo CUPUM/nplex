@@ -1,7 +1,8 @@
 <script lang="ts" context="module">
 	import { afterNavigate } from '$app/navigation';
-	import { session } from '$app/stores';
+	import { page, session } from '$app/stores';
 	import Auth from '$components/complexes/Auth.svelte';
+	import Footer from '$components/complexes/Footer.svelte';
 	import MessagesOutlet from '$components/complexes/MessagesOutlet.svelte';
 	import Navbar from '$components/complexes/Navbar.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
@@ -10,10 +11,22 @@
 	import '$styles/helpers.scss';
 	import '$styles/vars.css';
 	import { db, getUserRole } from '$utils/database';
+	import { SearchParams } from '$utils/keys';
 	import { sizes } from '$utils/sizes';
-	import { SearchParamsKeys } from '$utils/url';
 	import { toUserRoleEnum } from '$utils/user';
+	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
+
+	export async function load({ stuff }: LoadEvent): Promise<LoadOutput> {
+		return {
+			stuff: {
+				category: null,
+				showCategoryNav: false,
+				showExploreSearchbar: false,
+				showFooter: true,
+			},
+		};
+	}
 </script>
 
 <script lang="ts">
@@ -22,9 +35,8 @@
 	 */
 	afterNavigate(({ from, to }) => {
 		const newPrevUrl = to;
-		newPrevUrl.searchParams.delete(SearchParamsKeys.AuthModal);
+		newPrevUrl.searchParams.delete(SearchParams.AuthModal);
 		session.update((prev) => ({ ...prev, prevUrl: newPrevUrl.toString() }));
-		console.log('After navigate session:', $session);
 	});
 
 	/**
@@ -56,8 +68,9 @@
 <main style:--navbar-height="{navbarHeight}px">
 	<slot />
 </main>
-<!-- To do: figure out how to properly place footer for fullscreen / explore views(s) -->
-<!-- <Footer /> -->
+{#if $page.stuff.showFooter}
+	<Footer />
+{/if}
 <!-- Add general modal / message outlet -->
 {#if $authModal}
 	<Auth />

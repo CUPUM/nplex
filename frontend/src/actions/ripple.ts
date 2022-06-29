@@ -1,4 +1,4 @@
-import { cssSize, type SizeInput } from '$utils/helpers/css';
+import { cssSize, type SizeInput } from '$utils/css';
 
 const RIPPLE_GLOBALS = {
 	HOST_ATTRIBUTE: 'ripple-host',
@@ -47,10 +47,6 @@ export function ripple(
 		controlElement = element,
 	}: RippleOptions = {}
 ) {
-	// if (controlElement !== element) {
-	// 	console.log(controlElement);
-	// }
-
 	/**
 	 * Create the stylesheet defining the ripple transitions.
 	 */

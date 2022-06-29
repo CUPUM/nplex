@@ -3,9 +3,8 @@
 	Hello world.
  -->
 <script lang="ts">
-	import { tooltip } from '$actions/tooltip';
-	import { Ctx } from '$utils/contexts';
-	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/css';
+	import { Ctx } from '$utils/keys';
 	import { getContext } from 'svelte';
 	import type { TokenSetContext } from './TokenSet.svelte';
 
@@ -27,7 +26,6 @@
 	class:active
 	class:warning
 	{disabled}
-	use:tooltip={{ disabled: !ttip, message: ttip }}
 	on:click
 	on:focus
 	{...$$restProps}

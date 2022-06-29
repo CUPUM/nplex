@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { CSSSizeValue } from '$utils/helpers/css';
+	import type { SizeInput } from '$utils/css';
 
 	export let href: string;
 	export let text: string;
-	export let size: number | CSSSizeValue = '1em';
+	export let size: SizeInput = '1em';
 </script>
 
 <a {href} {...$$restProps} style:text-size={size}>

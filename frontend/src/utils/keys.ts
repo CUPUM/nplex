@@ -32,3 +32,38 @@ export enum Ctx {
 	BorderRadius = 'border-radius-context',
 	Size = 'size-context',
 }
+
+/**
+ * Human-readable keycodes for key-related event handling.
+ */
+export enum KeyCode {
+	Enter = 13,
+}
+
+/**
+ * Global dictionnary of keys to help set and get a URL's search params consistently and avoid naming conflicts. Should
+ * include an exhaustive list of keys associated to exploration filters.
+ */
+export enum SearchParams {
+	ProjectsCostFork = 'cout-projet',
+	ProjectsType = 'type-projet',
+	/**
+	 * Params indicating if the auth modal should be open or not.
+	 */
+	AuthModal = 'nouveau-compte',
+}
+
+/**
+ * Global enum of local storage keys. Use wherever local storage is used to ensure no naming collision emerges.
+ */
+export enum Ls {
+	/**
+	 * Holds an array of project objects.
+	 */
+	Projects = 'projects',
+	/**
+	 * Stringified query params corresponding to the filters used for the saved projects array. Properties' key and
+	 * value within this object are translated in the client's URL and should thus abide to the above SearchParams enum.
+	 */
+	ProjectsFilters = 'projects-filters',
+}

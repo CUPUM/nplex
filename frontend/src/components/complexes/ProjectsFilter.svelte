@@ -1,29 +1,28 @@
 <script lang="ts">
-	import Icon from '$components/primitives/Icon.svelte';
+	import { projectsFilters } from '$stores/projects';
+	import type { SearchParams } from '$utils/keys';
 	import { expoOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
 
 	export let label: string;
-	export let expand = true;
+	export let id: SearchParams;
+	export let defaultValue: any;
 
-	function toggle() {
-		expand = !expand;
+	if (!$projectsFilters[id]) {
+		$projectsFilters[id] = {
+			expanded: true,
+			value: defaultValue,
+		};
 	}
 </script>
 
-<fieldset transition:slide|local={{ duration: 350, easing: expoOut }}>
-	<div>
-		<legend on:click={toggle}>
-			<span class="label">{label}</span>
-			<div class="line" />
-			<span class="chevron" style:transform="rotateX({expand ? 0 : 180}deg)"
-				><Icon name="chevron-up" size=".5em" strokeWidth={2} /></span
-			>
-		</legend>
-	</div>
-	{#if expand}
+<fieldset>
+	<legend on:click={() => projectsFilters.toggleExpand(id)}>
+		<span class="label">{label}</span>
+	</legend>
+	{#if $projectsFilters[id].expanded}
 		<section transition:slide|local={{ duration: 250, easing: expoOut }}>
-			<slot />
+			<slot {id} />
 		</section>
 	{/if}
 </fieldset>
@@ -89,33 +88,5 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: flex-start;
-	}
-
-	.line {
-		position: relative;
-		height: 100%;
-		flex: 1;
-		text-align: left;
-		margin-inline: 1em;
-
-		&::after {
-			content: '';
-			position: absolute;
-			height: 2px;
-			border-radius: 1px;
-			width: 0;
-			background-color: var(--color-primary-300);
-			transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
-		}
-	}
-
-	.chevron {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		transition: all 0.5s cubic-bezier(0.1, 0, 0.1, 1);
-		height: 1.5em;
-		width: 1.5em;
-		border-radius: 50%;
 	}
 </style>

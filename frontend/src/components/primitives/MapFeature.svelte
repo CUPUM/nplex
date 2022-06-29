@@ -2,7 +2,7 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/contexts';
+	import { Ctx } from '$utils/keys';
 	import { getContext } from 'svelte';
 	import type { MapContext } from './Map.svelte';
 

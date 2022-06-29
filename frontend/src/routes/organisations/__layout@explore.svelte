@@ -4,7 +4,7 @@
 	export async function load({ stuff }: LoadEvent): Promise<LoadOutput> {
 		return {
 			stuff: {
-				category: 'projects',
+				category: 'organisations',
 			},
 		};
 	}

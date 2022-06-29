@@ -4,8 +4,8 @@
  -->
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
-	import { Ctx } from '$utils/contexts';
-	import { cssSize, type SizeInput } from '$utils/helpers/css';
+	import { cssSize, type SizeInput } from '$utils/css';
+	import { Ctx } from '$utils/keys';
 	import { getContext } from 'svelte';
 	import type { FieldContext } from './Field.svelte';
 	import Loading from './Loading.svelte';
@@ -84,13 +84,13 @@
 		box-sizing: border-box;
 		position: relative;
 		border: none;
-		text-decoration: none;
 		height: var(--size);
 		min-height: var(--size);
 		min-width: var(--size);
 		border-radius: calc(var(--default-radius) - var(--inset, 0px));
 		margin: 0;
-		padding: 0 1.5em;
+		padding: 0 1.25em;
+		text-decoration: none;
 		font-family: var(--font-main);
 		font-weight: 500;
 		outline-width: 1px;
@@ -140,13 +140,27 @@
 		width: 100%;
 		height: 100%;
 		display: grid;
-		grid-template-areas: 'left center right';
-		grid-template-columns: auto auto auto;
+		grid-auto-flow: dense;
+		grid-template-columns:
+			[left-start]
+			auto
+			[left-end center-start]
+			auto
+			[center-end right-start]
+			auto
+			[right-end];
 		flex-direction: row;
 		align-items: center;
 	}
 	.align-center {
-		grid-template-columns: 1fr auto 1fr;
+		grid-template-columns:
+			[left-start]
+			1fr
+			[left-end center-start]
+			auto
+			[center-end right-start]
+			1fr
+			[right-end];
 		justify-content: center;
 	}
 	.align-left {
@@ -156,14 +170,14 @@
 		justify-content: flex-end;
 	}
 	.icon-before {
-		grid-area: left;
+		grid-column: left;
 		justify-content: left;
 		&:not(:only-child) {
 			padding-right: 0.5em;
 		}
 	}
 	.icon-after {
-		grid-area: right;
+		grid-column: right;
 		justify-content: right;
 		&:not(:only-child) {
 			padding-left: 0.5em;
@@ -182,7 +196,7 @@
 		letter-spacing: 0.02em;
 	}
 	.label {
-		grid-area: center;
+		grid-column: center;
 		display: block;
 		top: -0.05em;
 	}
@@ -190,7 +204,7 @@
 		flex-grow: 1;
 		top: -0.05em;
 		&:only-child {
-			grid-area: center;
+			grid-column: center;
 		}
 	}
 
@@ -201,54 +215,54 @@
 	.default {
 		color: var(--color-dark-900);
 		background-color: var(--color-light-300);
-		transition: all 0.1s ease-out, box-shadow 0.2s ease-in-out;
-		&:hover,
-		&[popover='open'] {
+		box-shadow: inset 0 0 0 0 transparent, 0 0.5em 2em -1em transparent;
+		transition: all 0.08s ease-out, box-shadow 0.2s ease-out;
+		// prettier-ignore
+		@at-root :global(.button-parent:hover) &,
+		&:hover{
 			color: var(--color-light-300);
 			background-color: var(--color-dark-900);
+			box-shadow: inset 0 0 0 3px var(--color-dark-900), 0 0.5em 2em -1em transparent;
 		}
 		&:active {
-			/* background-color: white; */
+			background-color: black;
 		}
-		&.active {
-			color: var(--color-primary-500);
-			background-color: white;
+		&.active,
+		&[popover='open'] {
+			color: white;
+			background-color: var(--color-primary-300);
+			box-shadow: inset 0 0 0 2px var(--color-primary-300), 0 1em 2em -1em var(--color-primary-700);
 		}
 	}
-	:global(.button-parent:hover) .default {
-		color: var(--color-dark-900);
-		background-color: var(--color-light-500);
-	}
+
 	/* Secondary, more subtle button theme */
 	.secondary {
 		color: var(--color-dark-700);
 		background-color: transparent;
 		box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
-		&:hover,
-		&[popover='open'] {
+		// prettier-ignore
+		@at-root :global(.button-parent:hover) &,
+		&:hover {
 			color: black;
 			background-color: rgba(var(--rgb-dark-500), 0.1);
 			box-shadow: inset 0 0 0 5px rgba(var(--rgb-dark-500), 0);
-			/* box-shadow: 0 0 0 2px rgba(var(--rgb-primary-500), 0.1); */
+		}
+		&.active,
+		&[popover='open'] {
 		}
 	}
-	:global(.button-parent:hover) .default {
-		color: var(--color-dark-900);
-		background-color: var(--color-light-500);
-	}
+
 	/* Ghost, more subtle button theme */
 	.ghost {
 		color: var(--color-dark-300);
 		background-color: transparent;
+		// prettier-ignore
+		@at-root :global(.button-parent:hover) &,
 		&:hover,
 		&[popover='open'] {
 			color: var(--color-primary-500);
 			background-color: rgba(var(--rgb-primary-100), 0.15);
 		}
-	}
-	:global(.button-parent:hover) .ghost {
-		color: var(--color-dark-900);
-		background-color: var(--color-light-500);
 	}
 
 	/* Emphasised call to action */
@@ -257,6 +271,8 @@
 		background-color: var(--color-primary-500);
 		box-shadow: 0 0.5em 2em -1em rgba(var(--rgb-primary-900), 0.5);
 		transition: all 0.2s ease-out, box-shadow 0.5s ease-out;
+		// prettier-ignore
+		@at-root :global(.button-parent:hover) &,
 		&:hover,
 		&[popover='open'] {
 			color: var(--color-light-100);
@@ -270,6 +286,7 @@
 			background-color: var(--color-primary-300);
 		}
 	}
+
 	/* Navbar button theme */
 	.navbar {
 		color: rgba(var(--rgb-dark-900), 0.5);
@@ -293,7 +310,7 @@
 		&:hover,
 		&[popover='open'] {
 			color: var(--color-dark-900);
-			background-color: rgba(var(--rgb-light-500), 0.5);
+			background-color: rgba(var(--rgb-light-700), 0.5);
 			&::after {
 				opacity: 1;
 				width: 8px;

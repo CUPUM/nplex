@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/contexts';
+	import { Ctx } from '$utils/keys';
 	import { setContext } from 'svelte';
 
 	export let min: number;
