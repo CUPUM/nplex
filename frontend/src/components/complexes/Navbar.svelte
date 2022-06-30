@@ -8,10 +8,8 @@
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
-	import { categoryIsResetable } from '$stores/explore';
 	import { currentPath, loadingCategory } from '$stores/navigation';
 	import { mainScroll } from '$stores/scroll';
-	import type { Category } from '$types/categories';
 	import { signOut } from '$utils/auth';
 	import { colors } from '$utils/colors';
 	import { gotoCategory } from '$utils/navigation';
@@ -27,7 +25,6 @@
 	let resizeObserver: ResizeObserver;
 	let hidden;
 	let overlay;
-	let navbarCategory: Category = null;
 	const hiddenThreshold = 100;
 
 	$: hidden = $mainScroll.down && $mainScroll.y > hiddenThreshold;
@@ -67,15 +64,14 @@
 				in:fly={{ y: 20, duration: 500, easing: expoOut, delay: 150 }}
 				out:fly={{ y: 20, duration: 500, easing: expoIn, delay: 0 }}
 			>
-				<Switch name="category" variant="navbar">
+				<Switch name="category" variant="navbar" value={$page.stuff.category}>
 					{#each exploreRoutes as r, i}
 						<SwitchItem
 							id={r.category}
 							value={r.category}
-							bind:group={navbarCategory}
 							on:click={() => gotoCategory(r)}
 							loading={$loadingCategory === r.category}
-							disabled={r.category === $page.stuff.category && !$categoryIsResetable}
+							disabled={r.category === $page.stuff.category && !$page.stuff.categoryIsResetable}
 						>
 							{r.title}
 						</SwitchItem>
@@ -118,7 +114,7 @@
 					out:fly={{ y: -20, duration: 350, easing: expoOut }}
 				>
 					<Button variant="cta" href={userBaseRoute.pathname}
-						><Icon name="user" slot="icon" strokeWidth="1" />Créer un comtpe</Button
+						><Icon name="user" slot="icon" />Créer un compte</Button
 					>
 				</div>
 			{/if}

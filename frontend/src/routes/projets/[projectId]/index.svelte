@@ -1,22 +1,26 @@
+<script lang="ts" context="module">
+	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
+
+	export async function load({ stuff }: LoadEvent): Promise<LoadOutput> {
+		return {
+			stuff: {
+				categoryIsResetable: true,
+			},
+		};
+	}
+</script>
+
 <script lang="ts">
 	import ProjectGallery from '$components/complexes/ProjectGallery.svelte';
 	import ProjectHeader from '$components/complexes/ProjectHeader.svelte';
 	import ProjectTimeline from '$components/complexes/ProjectTimeline.svelte';
-	import { categoryIsResetable } from '$stores/explore';
 	import type { Project } from '$utils/dummy';
-	import { onDestroy } from 'svelte';
 	import { scale } from 'svelte/transition';
 
 	/**
 	 * To do: use proper types exported from supabase.
 	 */
 	export let project: Project;
-
-	categoryIsResetable.set(true);
-
-	onDestroy(() => {
-		categoryIsResetable.set(false);
-	});
 </script>
 
 <article in:scale={{ start: 0.9 }}>

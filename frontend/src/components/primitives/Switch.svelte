@@ -9,10 +9,10 @@
 
 	export interface SwitchContext {
 		name: string;
+		variant: 'default' | 'secondary' | 'navbar' | 'ghost' | 'cta';
 		currentRef: Writable<HTMLElement>;
 		tempRef: Writable<HTMLElement>;
-		variant: 'default' | 'secondary' | 'navbar' | 'ghost' | 'cta';
-		orientation: 'column' | 'row';
+		group: Writable<any>;
 	}
 </script>
 
@@ -21,25 +21,24 @@
 	export let value: any;
 	export let size: SizeInput = '1em';
 	export let variant: SwitchContext['variant'] = 'default';
-	export let orientation: SwitchContext['orientation'] = 'row';
+	export let orientation: 'column' | 'row' = 'row';
 
 	let fieldset: HTMLFieldSetElement;
 	let obs: ResizeObserver;
-	/** Corresponds to the label element of the currently selected input. */
-	let current: SwitchContext['currentRef'] = writable(null);
-	let currentBox: string;
-	/** Corresponds to the currently hovered label. */
-	let temp: SwitchContext['tempRef'] = writable(null);
+	let cursorBox: string;
+	const currentRef: SwitchContext['currentRef'] = writable(null);
+	const tempRef: SwitchContext['tempRef'] = writable(null);
+	const group: SwitchContext['group'] = writable(value);
 
 	setContext<SwitchContext>(Ctx.Switch, {
 		name,
-		currentRef: current,
 		variant,
-		tempRef: temp,
-		orientation,
+		currentRef,
+		tempRef,
+		group,
 	});
 
-	function getBox(el: HTMLElement) {
+	function updateBox(el: HTMLElement) {
 		if (el) {
 			return `
 				top: ${el.offsetTop}px;
@@ -49,16 +48,19 @@
 		return null;
 	}
 
-	$: currentBox = getBox($current);
-	$: if ($temp) {
-		currentBox = getBox($temp);
-	} else {
-		currentBox = getBox($current);
+	$: cursorBox = updateBox($tempRef || $currentRef);
+
+	// Doing some manual two-way binding between value prop and context group store...
+	$: {
+		group.set(value);
+	}
+	$: {
+		value = $group;
 	}
 
 	onMount(() => {
 		obs = new ResizeObserver(() => {
-			currentBox = getBox($current);
+			cursorBox = updateBox($tempRef || $currentRef);
 		});
 		obs.observe(fieldset);
 	});
@@ -75,11 +77,11 @@
 	style:font-size={cssSize(size)}
 	style:flex-direction={orientation}
 >
-	{#if currentBox}
+	{#if cursorBox}
 		<div
 			transition:scale|local={{ duration: 250, start: 0.75, opacity: 0, easing: expoOut }}
-			class:temp={Boolean($temp)}
-			style={currentBox}
+			class:temp={Boolean($tempRef)}
+			style={cursorBox}
 			class="selector"
 		/>
 	{/if}
@@ -111,7 +113,7 @@
 		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.2);
 
 		&.temp {
-			transform: scale(0.95, 0.9);
+			// transform: scale(0.95, 0.9);
 		}
 	}
 

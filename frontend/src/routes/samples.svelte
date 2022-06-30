@@ -11,6 +11,8 @@
 	import SelectOption from '$components/primitives/SelectOption.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
+	import TestRadio from '$components/primitives/TestRadio.svelte';
+	import TestRadioSet from '$components/primitives/TestRadioSet.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { messages } from '$stores/message';
 	import type { SvelteProps } from '$types/helpers';
@@ -26,6 +28,8 @@
 	let showLoading = true;
 	let loadingSize = sizes.medium;
 	let showTransitionBlock = false;
+
+	let radioValue = null;
 
 	let variants: SvelteProps<Button>['variant'][] = ['default', 'secondary', 'ghost', 'cta', 'navbar'];
 	let sizeKeys = Object.keys(sizes);
@@ -170,17 +174,26 @@
 		<Tooltip message="Bonjour, je suis un tooltip!"><Button icon="new-file" /></Tooltip>
 	</section>
 	<section class="">
-		<Switch orientation="column" name="test">
-			<SwitchItem id="test1" bind:group={switchval} value="test1v">Test 1</SwitchItem>
-			<SwitchItem id="test2" bind:group={switchval} value="test2v">Test 2</SwitchItem>
-			<SwitchItem id="test3" bind:group={switchval} value="test3v">Test 3</SwitchItem>
+		<Switch orientation="column" bind:value={switchval} name="test1">
+			<SwitchItem id="test1" value="test1v">Test 1</SwitchItem>
+			<SwitchItem id="test2" value="test2v">Test 2</SwitchItem>
+			<SwitchItem id="test3" value="test3v">Test 3</SwitchItem>
 		</Switch>
 
-		<Switch orientation="row" name="test">
-			<SwitchItem id="test1" bind:group={switchval} value="test1v">Test 1</SwitchItem>
-			<SwitchItem id="test2" bind:group={switchval} value="test2v">Test 2</SwitchItem>
-			<SwitchItem id="test3" bind:group={switchval} value="test3v">Test 3</SwitchItem>
+		<Switch orientation="row" name="test" bind:value={switchval}>
+			<SwitchItem id="test1" value="test1v">Test 1</SwitchItem>
+			<SwitchItem id="test2" value="test2v">Test 2</SwitchItem>
+			<SwitchItem id="test3" value="test3v">Test 3</SwitchItem>
 		</Switch>
+	</section>
+	<section>
+		<h2>Testing custom radio / checkbox inputs</h2>
+		<Button on:click={() => (radioValue = 'test-1')}>Reset that radioset value ({radioValue})</Button>
+		<TestRadioSet value={radioValue}>
+			<TestRadio value="test-1">Bonjour je suis un test</TestRadio>
+			<TestRadio value="test-2">Test 2 :D</TestRadio>
+			<TestRadio value="test-3">Test le 3e, de nom</TestRadio>
+		</TestRadioSet>
 	</section>
 </article>
 

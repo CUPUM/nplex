@@ -1,6 +1,7 @@
 {
 	"editor.formatOnPaste": false,
 	"editor.formatOnSave": true,
+	"editor.detectIndentation": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.codeActionsOnSave": {
 		"source.organizeImports": true,

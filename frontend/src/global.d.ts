@@ -50,6 +50,10 @@ declare namespace App {
 		 */
 		showCategoryNav: boolean;
 		/**
+		 * Is the current category resetable, i.e, can the user reclick its switchItem to return to the category's index?
+		 */
+		categoryIsResetable: boolean;
+		/**
 		 * Display state of the explore searchbar.
 		 */
 		showExploreSearchbar: boolean;

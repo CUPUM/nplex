@@ -11,7 +11,7 @@
 	import '$styles/helpers.scss';
 	import '$styles/vars.css';
 	import { db, getUserRole } from '$utils/database';
-	import { SearchParams } from '$utils/keys';
+	import { SearchParam } from '$utils/keys';
 	import { sizes } from '$utils/sizes';
 	import { toUserRoleEnum } from '$utils/user';
 	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
@@ -35,7 +35,7 @@
 	 */
 	afterNavigate(({ from, to }) => {
 		const newPrevUrl = to;
-		newPrevUrl.searchParams.delete(SearchParams.AuthModal);
+		newPrevUrl.searchParams.delete(SearchParam.AuthModal);
 		session.update((prev) => ({ ...prev, prevUrl: newPrevUrl.toString() }));
 	});
 

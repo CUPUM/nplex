@@ -1,6 +1,6 @@
 import { browser } from '$app/env';
 import type { Project } from '$utils/dummy';
-import { Ls, SearchParams } from '$utils/keys';
+import { LocalStorage, SearchParam } from '$utils/keys';
 import { writable } from 'svelte/store';
 
 /**
@@ -43,7 +43,7 @@ export const showProjectsList = (function () {
  * Store of filtered projects selected from the database.
  */
 export const projects = (function () {
-	const stored = browser ? localStorage.getItem(Ls.Projects) : null;
+	const stored = browser ? localStorage.getItem(LocalStorage.Projects) : null;
 	const { subscribe, update, set } = writable<Project[]>(JSON.parse(stored) || []);
 
 	return {
@@ -52,9 +52,12 @@ export const projects = (function () {
 		set,
 	};
 })();
+/**
+ * Mirror the store's updates to the client's local storage.
+ */
 if (browser) {
 	projects.subscribe((value) => {
-		localStorage.setItem(Ls.Projects, JSON.stringify(value));
+		localStorage.setItem(LocalStorage.Projects, JSON.stringify(value));
 	});
 }
 
@@ -62,11 +65,11 @@ if (browser) {
  * Store for managing the filters' states.
  */
 export const projectsFilters = (function () {
-	const init: Partial<Record<SearchParams, ProjectsFilter>> = {};
+	const init: Partial<Record<SearchParam, ProjectsFilter>> = {};
 
-	const { subscribe, update, set } = writable<Partial<Record<SearchParams, ProjectsFilter>>>(init);
+	const { subscribe, update, set } = writable<Partial<Record<SearchParam, ProjectsFilter>>>(init);
 
-	function toggleExpand(filterId: SearchParams) {
+	function toggleExpand(filterId: SearchParam) {
 		update((curr) => {
 			const updated = curr;
 			updated[filterId].expanded = !updated[filterId].expanded;
@@ -85,9 +88,16 @@ interface ProjectsFilter {
 	expanded: boolean;
 	value: any;
 }
-projectsFilters.subscribe((value) => {
-	console.log('filters store updated...');
-});
+/**
+ * Mirror the filters store's changes into the client's URL search params and re-query the database. Keep these
+ * behaviors throttled or debounced to avoid api flooding.
+ */
+if (browser) {
+	projectsFilters.subscribe((value) => {
+		// Update url
+		// Query the db
+	});
+}
 
 // projectsFilters.subscribe((v) => {
 // 	Object.entries(v).forEach(([k, v]) => {

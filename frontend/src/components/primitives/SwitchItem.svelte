@@ -7,44 +7,43 @@
 
 	export let id: string;
 	export let value: any;
-	export let group: any;
 	export let disabled: boolean = false;
 	export let loading: boolean = false;
 
 	const ctx = getContext<SwitchContext>(Ctx.Switch);
-	const temp = ctx.tempRef;
-	const current = ctx.currentRef;
-	let label: HTMLElement;
+	const { name, variant, currentRef, tempRef, group } = ctx;
+
+	let labelRef: HTMLLabelElement;
 
 	function setTemp() {
-		if (label !== $current) temp.set(label);
+		tempRef.set(labelRef);
 	}
 
 	function clearTemp() {
-		temp.set(null);
+		tempRef.set(null);
 	}
 
 	function setCurrent() {
-		current.set(label);
+		currentRef.set(labelRef);
 	}
 
-	$: if (group === value) {
+	$: if ($group === value) {
 		setCurrent();
 	}
 
 	onMount(() => {
-		if (group === value) {
+		if ($group === value) {
 			setCurrent();
 		}
 	});
 </script>
 
 <label
+	bind:this={labelRef}
 	for={id}
-	bind:this={label}
-	class:current={group === value}
-	class={ctx.variant}
-	class:some-temp={$temp}
+	class:current={$group === value}
+	class:some-temp={$tempRef}
+	class={variant}
 	class:loading
 	class:disabled
 	on:click
@@ -55,7 +54,7 @@
 	on:mouseleave={clearTemp}
 	use:ripple={{}}
 >
-	<input {id} {value} name={ctx.name} type="radio" bind:group on:change on:input />
+	<input {id} {value} {name} type="radio" bind:group={$group} on:change on:input />
 	<span class="inner">
 		<slot />
 	</span>

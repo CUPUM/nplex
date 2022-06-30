@@ -1,13 +1,13 @@
 import { browser } from '$app/env';
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
-import { SearchParams } from '$utils/keys';
+import { SearchParam } from '$utils/keys';
 import { derived, writable } from 'svelte/store';
 
 export const authModal = (function () {
 	const { subscribe } = derived(page, ($page) => {
 		if (browser) {
-			return $page.url.searchParams.has(SearchParams.AuthModal);
+			return $page.url.searchParams.has(SearchParam.AuthModal);
 		}
 		return false;
 	});
@@ -17,7 +17,7 @@ export const authModal = (function () {
 		close: async () => {
 			if (browser) {
 				const params = new URLSearchParams(location.search);
-				params.delete(SearchParams.AuthModal);
+				params.delete(SearchParam.AuthModal);
 				return await goto(`?${params.toString()}`, { replaceState: true });
 			}
 		},

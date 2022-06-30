@@ -44,7 +44,7 @@ export enum KeyCode {
  * Global dictionnary of keys to help set and get a URL's search params consistently and avoid naming conflicts. Should
  * include an exhaustive list of keys associated to exploration filters.
  */
-export enum SearchParams {
+export enum SearchParam {
 	ProjectsCostFork = 'cout-projet',
 	ProjectsType = 'type-projet',
 	/**
@@ -53,10 +53,12 @@ export enum SearchParams {
 	AuthModal = 'nouveau-compte',
 }
 
+export enum ProjectFilterParam {}
+
 /**
  * Global enum of local storage keys. Use wherever local storage is used to ensure no naming collision emerges.
  */
-export enum Ls {
+export enum LocalStorage {
 	/**
 	 * Holds an array of project objects.
 	 */

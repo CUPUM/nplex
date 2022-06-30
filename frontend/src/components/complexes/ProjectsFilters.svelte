@@ -4,7 +4,7 @@
 	import { projectsFilters, showProjectsFilters } from '$stores/projects';
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
 	import { width } from '$transitions/width';
-	import { SearchParams } from '$utils/keys';
+	import { SearchParam } from '$utils/keys';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import ProjectsFilter from './ProjectsFilter.svelte';
@@ -36,7 +36,7 @@
 	<form>
 		<ProjectsFilter
 			label="Fourchettes de coût"
-			id={SearchParams.ProjectsCostFork}
+			id={SearchParam.ProjectsCostFork}
 			defaultValue={{ min: 1200, max: 2500 }}
 			let:id
 		>

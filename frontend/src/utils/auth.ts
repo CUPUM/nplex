@@ -4,7 +4,7 @@ import type { UserRole } from '$utils/user';
 import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 import { db } from './database';
-import { SearchParams } from './keys';
+import { SearchParam } from './keys';
 import type { providers } from './providers';
 
 interface GuardInput {
@@ -72,7 +72,7 @@ export async function guard({ criteria, session, message, url }: GuardInput): Pr
 
 export function getAuthRedirectUrl(targetUrl: URL) {
 	const redirectUrl = new URL(targetUrl);
-	redirectUrl.searchParams.set(SearchParams.AuthModal, 'true');
+	redirectUrl.searchParams.set(SearchParam.AuthModal, 'true');
 	return redirectUrl;
 }
 

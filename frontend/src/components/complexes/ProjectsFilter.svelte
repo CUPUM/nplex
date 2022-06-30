@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { projectsFilters } from '$stores/projects';
-	import type { SearchParams } from '$utils/keys';
+	import type { SearchParam } from '$utils/keys';
 	import { expoOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
 
 	export let label: string;
-	export let id: SearchParams;
+	export let id: SearchParam;
 	export let defaultValue: any;
 
 	if (!$projectsFilters[id]) {

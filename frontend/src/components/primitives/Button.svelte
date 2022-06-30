@@ -56,9 +56,9 @@
 	bind:this={elementRef}
 >
 	<div class="ripple-host" use:ripple={{ startColor: 'currentColor', controlElement: elementRef }} />
-	<div class="align-{contentAlign}">
+	<div class="content align-{contentAlign}">
 		{#if $$slots.icon}
-			<span class="icon icon-{iconPosition}" style:font-size={$$slots.default ? '1em' : '1.2em'}>
+			<span class="icon icon-{iconPosition}">
 				<slot name="icon" />
 			</span>
 		{/if}
@@ -133,7 +133,7 @@
 	}
 
 	/* Inner div layout */
-	div {
+	.content {
 		position: relative;
 		top: 0;
 		left: 0;
@@ -151,6 +151,11 @@
 			[right-end];
 		flex-direction: row;
 		align-items: center;
+		transition: all 0.25s cubic-bezier(0.25, 0, 0.5, 1), transform 0.25s cubic-bezier(0.25, 2.25, 0.75, 0.5);
+
+		// &:hover .icon:not(:only-child) {
+		// 	transform: translateY(-0.2em);
+		// }
 	}
 	.align-center {
 		grid-template-columns:
@@ -185,7 +190,8 @@
 	}
 
 	/* Content fine-tuning */
-	span {
+	.icon,
+	.label {
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -203,7 +209,9 @@
 	.icon {
 		flex-grow: 1;
 		top: -0.05em;
+		// transition: transform 0.25s cubic-bezier(0.8, 0, 0.2, 1);
 		&:only-child {
+			font-size: 1.2em;
 			grid-column: center;
 		}
 	}
@@ -304,7 +312,7 @@
 			background-color: currentColor;
 			border-radius: 5px;
 			transform: translate(-50%, -100%);
-			transition: opacity 0.35s, width 0.15s cubic-bezier(0, 0, 0, 1),
+			transition: opacity 0.2s, width 0.15s cubic-bezier(0, 0, 0, 1),
 				transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 		}
 		&:hover,
@@ -315,6 +323,9 @@
 				opacity: 1;
 				width: 8px;
 				transform: translate(-50%, 50%);
+			}
+			& .content {
+				transform: translateY(-0.15em);
 			}
 		}
 		&:active {
