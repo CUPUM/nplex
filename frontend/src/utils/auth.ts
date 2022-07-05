@@ -1,5 +1,5 @@
 import { page } from '$app/stores';
-import { authMessage } from '$stores/auth';
+import { messages } from '$stores/messages';
 import type { UserRole } from '$utils/user';
 import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 import { get } from 'svelte/store';
@@ -62,7 +62,9 @@ export async function guard({ criteria, session, message, url }: GuardInput): Pr
 		defaultMessage = 'Désolé, un compte est nécessaire pour accéder à cette section de Nplex.';
 	}
 
-	authMessage.set(message || defaultMessage);
+	messages.dispatch({
+		text: message || defaultMessage,
+	});
 
 	return {
 		status: 303,

@@ -4,7 +4,7 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
-	import { messages } from '$stores/message';
+	import { messages } from '$stores/messages';
 	import { flip } from 'svelte/animate';
 	import { expoInOut, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';

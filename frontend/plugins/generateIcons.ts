@@ -5,8 +5,8 @@ import prettier from 'prettier';
 import { parse, type INode } from 'svgson';
 import type { Plugin } from 'vite';
 
-const ICONS_DIR = path.resolve('src', 'utils', 'icons');
-const OUTPUT_DIR = ICONS_DIR;
+const ICONS_DIR = path.resolve('src', 'utils', 'icons', 'svgs');
+const OUTPUT_DIR = path.resolve('src', 'utils', 'icons');
 const PRETTIER_CONFIG = JSON.parse(readFileSync(path.resolve('.prettierrc')).toString());
 const PATH_TYPES = ['primary', 'secondary'];
 

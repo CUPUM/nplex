@@ -1,4 +1,5 @@
 import node from '@sveltejs/adapter-node';
+import { mdsvex } from 'mdsvex';
 import preprocess from 'svelte-preprocess';
 import generateCssVarsPlugin from './plugins/dist/generateCssVars.js';
 import generateIconsPlugin from './plugins/dist/generateIcons.js';
@@ -7,11 +8,16 @@ import generateIconsPlugin from './plugins/dist/generateIcons.js';
  * @type {import('@sveltejs/kit').Config}
  */
 const config = {
-	preprocess: preprocess({
-		scss: true,
-		postcss: true,
-	}),
-	extensions: ['.svelte'],
+	extensions: ['.svelte', '.svx'],
+	preprocess: [
+		mdsvex({
+			extensions: ['.md', '.svx', '.mdx'],
+		}),
+		preprocess({
+			scss: true,
+			postcss: true,
+		}),
+	],
 	kit: {
 		adapter: node(),
 		alias: {

@@ -50,7 +50,7 @@ export enum SearchParam {
 	/**
 	 * Params indicating if the auth modal should be open or not.
 	 */
-	AuthModal = 'nouveau-compte',
+	AuthModal = 'auth',
 }
 
 export enum ProjectFilterParam {}

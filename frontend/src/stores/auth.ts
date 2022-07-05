@@ -2,7 +2,7 @@ import { browser } from '$app/env';
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import { SearchParam } from '$utils/keys';
-import { derived, writable } from 'svelte/store';
+import { derived } from 'svelte/store';
 
 export const authModal = (function () {
 	const { subscribe } = derived(page, ($page) => {
@@ -23,5 +23,3 @@ export const authModal = (function () {
 		},
 	};
 })();
-
-export const authMessage = writable<string>(null);

@@ -15,7 +15,6 @@
 	import { Ctx } from '$utils/keys';
 	import { setContext } from 'svelte';
 	import { expoIn, expoInOut, expoOut } from 'svelte/easing';
-	import Button from './Button.svelte';
 	import Icon from './Icon.svelte';
 
 	/** Field input type, useful for a11y. */
@@ -35,15 +34,10 @@
 	/** Placeholder text and field icon. */
 	export let placeholder: string = '';
 	export let placeholderIcon: SvelteProps<Icon>['name'] = undefined;
-	/** Autocomplete choices */
-	export let choices: string[] = undefined;
 	/** Input text value */
 	export let value = '';
 	/** Focus state for styling of wrapper element instead of input element. */
 	let focused = false;
-	/** Filtering input type (temp fix for stoopid vendor auto-styling that breaks the UI (┛ಠ_ಠ)┛彡┻━┻) */
-	let filteredType;
-	$: filteredType = ['email', 'password'].includes(type) ? 'text' : type;
 
 	let showPassword = false;
 	let inputRef: HTMLInputElement;
@@ -82,73 +76,68 @@
 	class:success
 	class:focused
 	class:disabled={disabled || loading}
-	class:has-icon={!value && placeholderIcon}
-	class="{variant} container"
+	class="{variant} outer"
 	style:font-size={cssSize(size)}
 >
-	{#if $$slots.left}
-		<div class="left">
-			<slot name="left" {value} />
-		</div>
-	{/if}
-	{#if placeholderIcon && !value}
-		<div class="icon" transition:width={{ opacity: 0, duration: 400, easing: expoInOut }} on:click={selectInput}>
-			<Icon name={placeholderIcon} />
-		</div>
-	{/if}
-	<input
-		bind:this={inputRef}
-		{disabled}
-		{type}
-		{value}
-		{placeholder}
-		on:input={handleInput}
-		on:change
-		on:click
-		on:focus
-		on:focus={focus}
-		on:blur
-		on:blur={blur}
-		on:submit
-		on:keypress
-		autocomplete="off"
-		name={$$restProps.name}
-	/>
-	{#if value}
-		<div
-			class="has-value"
-			in:width={{ easing: expoOut, duration: 500, opacity: 0 }}
-			out:width={{ easing: expoIn, duration: 350, opacity: 0 }}
-		>
-			<Button type="reset" variant="ghost" on:click={reset} square={true} tabIndex="-1">
-				<Icon name="cross" slot="icon" />
-			</Button>
-			{#if type === 'password'}
-				<Button variant="ghost" on:click={togglePassword} square={true}>(eye-icon)</Button>
-			{/if}
-			<slot name="has-value" {value} />
-		</div>
-	{/if}
-	{#if $$slots.right}
-		<div class="right">
-			<slot name="right" {value} />
-		</div>
-	{/if}
-	{#if choices}
-		<ul>
-			{#each choices as choice}
-				<li>{choice}</li>
-			{/each}
-		</ul>
-	{/if}
+	<div class="inner">
+		{#if $$slots.left}
+			<div class="left">
+				<slot name="left" {value} />
+			</div>
+		{/if}
+		{#if placeholderIcon && !value}
+			<div
+				class="icon"
+				transition:width={{ opacity: 0, duration: 400, easing: expoInOut }}
+				on:click={selectInput}
+			>
+				<Icon name={placeholderIcon} />
+			</div>
+		{/if}
+		<input
+			bind:this={inputRef}
+			{disabled}
+			{type}
+			{value}
+			{placeholder}
+			on:input={handleInput}
+			on:change
+			on:click
+			on:focus
+			on:focus={focus}
+			on:blur
+			on:blur={blur}
+			on:submit
+			on:keypress
+			autocomplete="new-{type}"
+			name={$$restProps.name}
+		/>
+		{#if value}
+			<div
+				class="has-value"
+				in:width={{ easing: expoOut, duration: 500, opacity: 0 }}
+				out:width={{ easing: expoIn, duration: 350, opacity: 0 }}
+			>
+				<slot name="has-value" {value} />
+			</div>
+		{/if}
+		{#if $$slots.right}
+			<div class="right">
+				<slot name="right" {value} />
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style lang="scss">
-	.container {
+	.outer {
+	}
+
+	.inner {
 		--size: var(--default-size);
 		--inset: var(--default-inset);
 		border: none;
-		padding: 0 var(--inset);
+		padding: var(--inset);
 		margin: 0;
 		position: relative;
 		display: inline-flex;
@@ -196,7 +185,10 @@
 		border: none;
 		line-height: 1em;
 		vertical-align: middle;
-		transition: all 0.15s cubic-bezier(0, 0, 0, 1);
+		border-radius: calc(var(--default-radius) - var(--inset));
+		appearance: none;
+		// background-clip: text !important;
+		transition: all 0.1s cubic-bezier(0, 0, 0, 1);
 
 		&::placeholder {
 			color: currentColor;
@@ -219,26 +211,13 @@
 			color: red;
 		}
 
-		/* &:-webkit-autofill,
+		&:-webkit-autofill,
 		&:-webkit-autofill:hover,
 		&:-webkit-autofill:focus,
 		&:-webkit-autofill:active {
-			-webkit-box-shadow: 0 0 0 50px var(--color-light-100) inset !important;
+			font-family: inherit !important;
+			font-size: inherit !important;
 		}
-		&:-webkit-autofill {
-			-webkit-text-fill-color: var(--color-secondary-500) !important;
-		} */
-	}
-
-	/* Default buttons */
-	.has-value {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: flex-end;
-		gap: 3px;
-		height: 100%;
-		border-radius: 1em;
 	}
 
 	/* Slots */
@@ -262,24 +241,40 @@
 		justify-content: flex-end;
 	}
 
+	.has-value {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 3px;
+		height: 100%;
+		border-radius: 1em;
+	}
+
 	/* Variants */
 	/* Default theme */
 	.default {
-		background-color: rgba(var(--rgb-light-500), 0.9);
-		color: var(--color-dark-100);
-		width: 100%;
+		& .inner {
+			color: var(--color-dark-100);
+			background-color: rgba(var(--rgb-dark-100), 0.1);
+			width: 100%;
+		}
 		&.focused {
-			outline-color: white;
-			background-color: white;
-			box-shadow: 0 1em 2em -1em rgba(0, 0, 20, 0.2);
+			& .inner {
+				outline-color: rgba(var(--rgb-light-900), 0.25);
+				background-color: rgba(var(--rgb-light-100), 0.25);
+			}
 
 			& .icon {
 				color: var(--color-primary-500);
 			}
 		}
+
 		&:hover:not(.focused) {
-			/* background-color: var(--color-light-300); */
-			color: var(--color-dark-900);
+			& .inner {
+				color: var(--color-dark-900);
+				background-color: rgba(var(--rgb-dark-900), 0.2);
+			}
 		}
 	}
 
@@ -291,22 +286,30 @@
 
 	/* Searchbar theme */
 	.searchbar {
-		background-color: rgba(var(--rgb-light-300), 0.85);
-		color: var(--color-dark-100);
-		width: 100%;
+		& .inner {
+			background-color: rgba(var(--rgb-light-300), 0.85);
+			color: var(--color-dark-100);
+			width: 100%;
+		}
+
 		&.focused {
-			outline-color: white;
-			background-color: white;
-			box-shadow: 0 1em 2em -0.5em rgba(var(--rgb-dark-900), 0.25);
+			& .inner {
+				outline-color: white;
+				background-color: white;
+				box-shadow: 0 1em 2em -0.5em rgba(var(--rgb-dark-900), 0.25);
+			}
 
 			& .icon {
 				color: var(--color-primary-500);
 			}
 		}
+
 		&:hover:not(.focused) {
-			background-color: white;
-			box-shadow: 0 0.5em 2em -1em rgba(var(--rgb-dark-900), 0.25);
-			color: var(--color-dark-900);
+			& .inner {
+				background-color: white;
+				box-shadow: 0 0.5em 2em -1em rgba(var(--rgb-dark-900), 0.25);
+				color: var(--color-dark-900);
+			}
 		}
 	}
 </style>

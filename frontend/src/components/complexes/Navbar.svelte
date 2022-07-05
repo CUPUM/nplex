@@ -10,7 +10,7 @@
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { currentPath, loadingCategory } from '$stores/navigation';
 	import { mainScroll } from '$stores/scroll';
-	import { signOut } from '$utils/auth';
+	import { getAuthRedirectUrl, signOut } from '$utils/auth';
 	import { colors } from '$utils/colors';
 	import { gotoCategory } from '$utils/navigation';
 	import { creationBaseRoute, creationRoutes, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
@@ -113,9 +113,9 @@
 					in:fly={{ y: 20, duration: 350, easing: expoOut, delay: 350 }}
 					out:fly={{ y: -20, duration: 350, easing: expoOut }}
 				>
-					<Button variant="cta" href={userBaseRoute.pathname}
-						><Icon name="user" slot="icon" />Créer un compte</Button
-					>
+					<Button variant="cta" href={getAuthRedirectUrl($page.url).toString()}>
+						<Icon name="user" slot="icon" />Se connecter
+					</Button>
 				</div>
 			{/if}
 		</nav>
