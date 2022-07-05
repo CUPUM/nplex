@@ -1,28 +1,19 @@
 <script lang="ts">
-	import { projectsFilters } from '$stores/projects';
-	import type { SearchParam } from '$utils/keys';
 	import { expoOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
 
-	export let label: string;
-	export let id: SearchParam;
-	export let defaultValue: any;
-
-	if (!$projectsFilters[id]) {
-		$projectsFilters[id] = {
-			expanded: true,
-			value: defaultValue,
-		};
-	}
+	export let legend: string;
+	export let key: string;
+	export let expand: boolean = undefined;
 </script>
 
 <fieldset>
-	<legend on:click={() => projectsFilters.toggleExpand(id)}>
-		<span class="label">{label}</span>
+	<legend on:click={() => (expand = !expand)}>
+		<span class="label">{legend}</span>
 	</legend>
-	{#if $projectsFilters[id].expanded}
+	{#if expand}
 		<section transition:slide|local={{ duration: 250, easing: expoOut }}>
-			<slot {id} />
+			<slot />
 		</section>
 	{/if}
 </fieldset>

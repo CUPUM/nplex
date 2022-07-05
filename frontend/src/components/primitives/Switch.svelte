@@ -148,8 +148,9 @@
 	/* Nav theme */
 	.navbar {
 		background-color: transparent;
+		backdrop-filter: blur(12px);
 		// box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-900), 0);
-		// transition: all 0.15s ease-in-out, box-shadow 0.25s ease-in;
+		transition: background-color 0.5s ease-out;
 		&:hover,
 		&:focus {
 			background-color: var(--color-light-100);

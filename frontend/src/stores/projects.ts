@@ -52,63 +52,78 @@ export const projects = (function () {
 		set,
 	};
 })();
-/**
- * Mirror the store's updates to the client's local storage.
- */
+
 if (browser) {
+	// Mirror the store's updates to the client's local storage.
 	projects.subscribe((value) => {
 		localStorage.setItem(LocalStorage.Projects, JSON.stringify(value));
 	});
 }
 
 /**
+ * Global store for state retention of filters panes (expanded vs collapsed)
+ */
+export const projectsFiltersPanes = writable<Record<string, boolean>>({});
+
+interface ProjectsFilter {
+	/**
+	 * Current stored value of the filter used for formulating db queries and url search params.
+	 */
+	value: any;
+	/**
+	 * Referential value used to signal to the store to ignore this filter in queries and remove it from the client
+	 * url's search params.
+	 */
+	ignoreValue: any;
+	/**
+	 * Boolean state reflecting the comparison result between `value` and `ignoreValue`
+	 */
+	ignore?: boolean;
+}
+/**
  * Store for managing the filters' states.
  */
 export const projectsFilters = (function () {
-	const init: Partial<Record<SearchParam, ProjectsFilter>> = {};
+	/**
+	 * Default values for filters. This index of filters MUST be exhaustive.
+	 */
+	const filtersDefault: Partial<Record<SearchParam, ProjectsFilter>> = {};
+	/**
+	 * Init values detected in the client's navbar url.
+	 */
+	// To do: get the url search params, parse, and change filtersDefault accordingly.
 
 	const { subscribe, update, set } = writable<Partial<Record<SearchParam, ProjectsFilter>>>(init);
 
-	function toggleExpand(filterId: SearchParam) {
-		update((curr) => {
-			const updated = curr;
-			updated[filterId].expanded = !updated[filterId].expanded;
-			return updated;
+	// function toggleExpand(filterId: SearchParam) {
+	// 	update((curr) => {
+	// 		const updated = curr;
+	// 		updated[filterId].expanded = !updated[filterId].expanded;
+	// 		return updated;
+	// 	});
+	// }
+
+	function isIgnoreValue(filter: ProjectsFilter) {
+		// To do: potentially do a more thorough check for different-ordered object keys and deep nestings?
+		return JSON.stringify(filter.value) === JSON.stringify(filter.ignoreValue);
+	}
+
+	function setFilterWithCheck(newValue) {
+		Object.keys(newValue).map((k) => {
+			if (newValue[k].ignoreValue !== undefined) {
+				newValue[k].ignore = isIgnoreValue(newValue[k]);
+			}
 		});
+		console.log('Setting with check', newValue);
+		set(newValue);
 	}
 
 	return {
 		subscribe,
-		update,
-		set,
-		toggleExpand,
+		set: setFilterWithCheck,
+		// Implement method so filters set to default values are removed from the store.
 	};
 })();
-interface ProjectsFilter {
-	expanded: boolean;
-	value: any;
-}
-/**
- * Mirror the filters store's changes into the client's URL search params and re-query the database. Keep these
- * behaviors throttled or debounced to avoid api flooding.
- */
-if (browser) {
-	projectsFilters.subscribe((value) => {
-		// Update url
-		// Query the db
-	});
-}
-
-// projectsFilters.subscribe((v) => {
-// 	Object.entries(v).forEach(([k, v]) => {
-// 		if (v != defaultProjectsFilters[k]) {
-// 			query.set(k, v.toString());
-// 		} else {
-// 			query.delete(k);
-// 		}
-// 	});
-// 	updateURL();
-// });
 
 /**
  * Store of saved / cached latest single project edits.

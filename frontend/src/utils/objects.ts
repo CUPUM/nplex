@@ -1,4 +1,6 @@
-/** Check if passed value is an object */
+/**
+ * Check if passed value is an object.
+ */
 export function isObject(value) {
 	return value && typeof value === 'object' && !Array.isArray(value);
 }
@@ -7,7 +9,7 @@ export function isObject(value) {
  * Helper to deep merge objects and overcome `Object.assign` or `{...a, ...b}` ignoring nested objects. **To avoid
  * affecting the original `base` object, simply pass it as a destructured assignment: `{...base}`**
  *
- * @param base Reference object used for the base values
+ * @param base Reference object used for the base values.
  * @param modifications Modification objects to apply on top of the base. Modifications applied from left to right.
  * @returns Merged object of the base with the applied modifications.
  */
@@ -35,8 +37,8 @@ export function mergeObjects(base: Record<any, any>, ...modifications: Record<an
 /**
  * Remove keys with values equal to null, '', or undefined.
  *
- * @param obj Object to be cleaned
- * @returns Object stripped of keys with empty values
+ * @param obj Object to be cleaned.
+ * @returns Object stripped of keys with empty values.
  */
 export function removeEmptyKeys(obj: Record<string | number, unknown>) {
 	return Object.fromEntries(

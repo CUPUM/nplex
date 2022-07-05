@@ -11,6 +11,10 @@
 </script>
 
 <script lang="ts">
+	import { projectsFilters } from '$stores/projects';
+	import { updateURLFromProjectsFilters } from '$utils/url';
+
+	$: updateURLFromProjectsFilters($projectsFilters);
 </script>
 
 <slot />
