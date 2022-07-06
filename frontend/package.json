@@ -21,9 +21,8 @@
 	"packageManager": "pnpm@6.25.0",
 	"scripts": {
 		"get-db-types": ". ./.env && npx openapi-typescript \"${PUBLIC_SUPABASE_URL}/rest/v1/?apikey=${PUBLIC_SUPABASE_ANON_KEY}\" --version=2 --output src/types/database.ts",
-		"plugins": "esbuild plugins/*.ts --outdir=plugins/dist",
-		"dev": "npm run plugins && vite dev",
-		"build": "npm run plugins && vite build",
+		"dev": "vite dev",
+		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",

@@ -120,8 +120,12 @@ export default function generateCssVarsPlugin(): Plugin[] {
 			}
 		);
 
-		if (Boolean(process.stdout.isTTY)) process.stdout.clearLine(0);
-		process.stdout.cursorTo(0);
+		if (Boolean(process.stdout.isTTY)) {
+			process.stdout.clearLine(0);
+			process.stdout.cursorTo(0);
+		} else {
+			process.stdout.write('\n');
+		}
 		process.stdout.write('Successfuly generated new css variables :)');
 		process.stdout.write('\n');
 	}

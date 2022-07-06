@@ -1,6 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import generateCssVarsPlugin from './plugins/dist/generateCssVars.js';
-import generateIconsPlugin from './plugins/dist/generateIcons.js';
+import generateCssVarsPlugin from './plugins/generateCssVars';
+import generateIconsPlugin from './plugins/generateIcons';
 
 /**
  * @type {import('vite').UserConfig}
