@@ -12,7 +12,6 @@ EXPOSE 24678
 
 ## Build staging.
 FROM dev AS build
-ENV NODE_ENV production
 # Set the working directory.
 WORKDIR /app
 # Copy package and lock files to the working directory root (./).

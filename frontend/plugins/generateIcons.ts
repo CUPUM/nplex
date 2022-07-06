@@ -88,7 +88,7 @@ export default function generateIconsPlugin(): Plugin[] {
 			);
 		});
 
-		process.stdout.clearLine(0);
+		if (Boolean(process.stdout.isTTY)) process.stdout.clearLine(0);
 		process.stdout.cursorTo(0);
 		process.stdout.write("Successfuly generated new icons' definition :)");
 		process.stdout.write('\n');
