@@ -25,10 +25,10 @@
 	let resizeObserver: ResizeObserver;
 	let hidden;
 	let overlay;
-	const hiddenThreshold = 100;
+	const yThreshold = 100;
 
-	$: hidden = $mainScroll.down && $mainScroll.y > hiddenThreshold;
-	$: overlay = $mainScroll.y > hiddenThreshold + 100;
+	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
+	$: overlay = $mainScroll.y > yThreshold + 100;
 	$: navbarCategory = $page.stuff.category;
 
 	function updateHeight() {
@@ -147,7 +147,10 @@
 		font-size: var(--size-small);
 		transition: all 0.25s;
 		z-index: 100;
-		border-bottom: 1px solid rgba(var(--rgb-dark-100), 0.1);
+	}
+
+	.overlay {
+		box-shadow: 0 1px 0 0 rgba(var(--rgb-dark-900), 0.1);
 	}
 
 	.hidden {

@@ -49,11 +49,15 @@
 	 * Input text value
 	 */
 	export let value = '';
+
+	let inputRef: HTMLInputElement;
 	/**
 	 * Focus state for styling of wrapper element instead of input element.
 	 */
 	let focused = false;
-
+	/**
+	 * If type is password, this determines if the input content is rendered as bullets or chars.
+	 */
 	let showPassword = false;
 
 	setContext<FieldContext>(Ctx.Field, {});
@@ -79,8 +83,7 @@
 	}
 </script>
 
-<!-- svelte-ignore a11y-label-has-associated-control -->
-<label
+<div
 	class:warning={warning || invalid}
 	class:success
 	class:focused
@@ -90,9 +93,10 @@
 	style:width
 >
 	{#if $$slots.default}
-		<span class="label">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<label on:click={() => inputRef.focus()}>
 			<slot {value} />
-		</span>
+		</label>
 	{/if}
 	<div class="inner">
 		{#if $$slots.left}
@@ -101,11 +105,16 @@
 			</div>
 		{/if}
 		{#if placeholderIcon && !value}
-			<div class="icon" transition:slip={{ width: true, opacity: 0, duration: 400, easing: expoInOut }}>
+			<div
+				class="icon"
+				on:click={() => inputRef.focus()}
+				transition:slip={{ width: true, opacity: 0, duration: 400, easing: expoInOut }}
+			>
 				<Icon name={placeholderIcon} />
 			</div>
 		{/if}
 		<input
+			bind:this={inputRef}
 			{disabled}
 			{type}
 			{value}
@@ -133,7 +142,7 @@
 			</div>
 		{/if}
 	</div>
-</label>
+</div>
 
 <style lang="scss">
 	.outer {
@@ -141,9 +150,14 @@
 		--inset: var(--default-inset);
 		display: flex;
 		flex-direction: column;
+		pointer-events: none;
 	}
 
-	.label {
+	.outer > * {
+		pointer-events: initial;
+	}
+
+	label {
 		position: relative;
 		display: block;
 		padding: 0.5em 1em;

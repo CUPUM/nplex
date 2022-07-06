@@ -104,8 +104,8 @@
 		}
 
 		&.warning {
-			background-color: var(--color-error-100);
-			color: var(--color-error-700);
+			background-color: var(--color-error-500);
+			color: var(--color-light-300);
 		}
 		&:disabled {
 			opacity: 0.5;

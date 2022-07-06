@@ -1,0 +1,7 @@
+<script lang="ts">
+	const test = Date.now();
+</script>
+
+# Test {test}
+
+## Test

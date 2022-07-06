@@ -75,7 +75,7 @@
 			</svelte:fragment>
 			<svelte:fragment slot="has-value">
 				<Button type="submit" variant="cta">
-					<Icon slot="icon" name="search-submit" />
+					<Icon slot="icon" name="arrow-right" />
 				</Button>
 			</svelte:fragment>
 		</Field>

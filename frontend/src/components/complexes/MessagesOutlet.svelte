@@ -24,8 +24,10 @@
 			<div class="content">
 				{message.text}
 			</div>
-			<Button style="position: absolute; left: calc(100% + .5em);" on:click={() => messages.clear(message)}
-				><Icon slot="icon" name="cross" /></Button
+			<Button
+				style="position: absolute; left: calc(100% + .5em);"
+				warning={message.type === 'error'}
+				on:click={() => messages.clear(message)}><Icon slot="icon" name="cross" /></Button
 			>
 		</dialog>
 	{/each}
@@ -98,8 +100,8 @@
 	}
 
 	.error {
-		background-color: var(--color-error-100);
-		color: var(--color-light-300);
+		background-color: var(--color-error-300);
+		color: var(--color-light-100);
 
 		& .progress {
 			background-color: var(--color-error-900);
