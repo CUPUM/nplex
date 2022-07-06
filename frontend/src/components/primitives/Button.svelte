@@ -224,13 +224,13 @@
 		color: var(--color-dark-900);
 		background-color: var(--color-light-300);
 		box-shadow: inset 0 0 0 0 transparent, 0 0.5em 2em -1em transparent;
-		transition: all 0.08s ease-out, box-shadow 0.2s ease-out;
+		transition: all 0.12s ease-out, box-shadow 0.2s ease-out;
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover{
 			color: var(--color-light-300);
-			background-color: var(--color-dark-900);
-			box-shadow: inset 0 0 0 3px var(--color-dark-900), 0 0.5em 2em -1em transparent;
+			background-color: var(--color-dark-700);
+			box-shadow: inset 0 0 0 2px var(--color-dark-700), 0 0.5em 2em -1em transparent;
 		}
 		&:active {
 			color: var(--color-light-900);
@@ -252,8 +252,11 @@
 		@at-root :global(.button-parent:hover) &,
 		&:hover {
 			color: black;
-			background-color: rgba(var(--rgb-dark-500), 0.1);
+			background-color: rgba(var(--rgb-dark-500), 0.15);
 			box-shadow: inset 0 0 0 5px rgba(var(--rgb-dark-500), 0);
+			// color: var(--color-primary-700);
+			// background-color: rgba(var(--rgb-primary-100), 0.15);
+			// box-shadow: inset 0 0 0 5px rgba(var(--rgb-primary-100), 0);
 		}
 		&.active,
 		&[popover='open'] {
