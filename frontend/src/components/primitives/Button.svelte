@@ -97,7 +97,7 @@
 		outline-style: solid;
 		outline-color: transparent;
 		outline-offset: 2px;
-		transition: all 0.1s ease-out;
+		transition: all 0.15s cubic-bezier(0.25, 0, 0.5, 1);
 
 		&:focus {
 			// outline-color: rgba(var(--rgb-primary-500), 0.25);
@@ -151,7 +151,7 @@
 			[right-end];
 		flex-direction: row;
 		align-items: center;
-		transition: all 0.25s cubic-bezier(0.25, 0, 0.5, 1), transform 0.25s cubic-bezier(0.25, 2.25, 0.75, 0.5);
+		transition: transform 0.25s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 
 		// &:hover .icon:not(:only-child) {
 		// 	transform: translateY(-0.2em);
@@ -209,7 +209,6 @@
 	.icon {
 		flex-grow: 1;
 		top: -0.05em;
-		// transition: transform 0.25s cubic-bezier(0.8, 0, 0.2, 1);
 		&:only-child {
 			font-size: 1.2em;
 			grid-column: center;
@@ -220,6 +219,7 @@
 		Variants (should correspond to `typeof variant`)
 	*/
 	/* Default button theme */
+	// prettier-ignore
 	.default {
 		color: var(--color-dark-900);
 		background-color: var(--color-light-300);
@@ -233,7 +233,7 @@
 			box-shadow: inset 0 0 0 3px var(--color-dark-900), 0 0.5em 2em -1em transparent;
 		}
 		&:active {
-			background-color: black;
+			color: var(--color-light-900);
 		}
 		&.active,
 		&[popover='open'] {
@@ -277,15 +277,15 @@
 	.cta {
 		color: white;
 		background-color: var(--color-primary-500);
-		box-shadow: 0 0.5em 2em -1em rgba(var(--rgb-primary-900), 0.5);
-		transition: all 0.2s ease-out, box-shadow 0.5s ease-out;
+		box-shadow: 0 0.5em 1em -0.5em rgba(var(--rgb-primary-900), 0.5);
+		transition: all 0.2s ease-out, box-shadow 0.35s ease-out;
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
 		&[popover='open'] {
 			color: var(--color-light-100);
 			background-color: var(--color-primary-300);
-			box-shadow: 0 1em 2em -1em var(--color-primary-700);
+			box-shadow: 0 0.8em 2.5em -0.5em var(--color-primary-700);
 		}
 		&:active {
 		}
@@ -317,8 +317,9 @@
 		}
 		&:hover,
 		&[popover='open'] {
+			backdrop-filter: blur(8px);
 			color: var(--color-dark-900);
-			background-color: rgba(var(--rgb-light-700), 0.5);
+			background-color: rgba(var(--rgb-light-500), 0.5);
 			&::after {
 				opacity: 1;
 				width: 8px;

@@ -60,6 +60,7 @@
 			placeholderIcon="search"
 			variant="searchbar"
 			bind:value={$exploreSearchterm}
+			width="100%"
 		>
 			<svelte:fragment slot="left">
 				{#if $page.stuff.category && !showCurrentFilters}
@@ -73,8 +74,8 @@
 				{/if}
 			</svelte:fragment>
 			<svelte:fragment slot="has-value">
-				<Button type="submit" variant="cta" slot="right">
-					<Icon slot="icon" name="arrow-right" />
+				<Button type="submit" variant="cta">
+					<Icon slot="icon" name="search-submit" />
 				</Button>
 			</svelte:fragment>
 		</Field>

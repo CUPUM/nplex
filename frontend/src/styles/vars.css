@@ -3,7 +3,7 @@
  *
  * This file was generated from the utils found at ./src/utils.
  * All changes added manually here will be lost on next execution of the generator script.
- * Last generated on: Thu Jun 23 2022 11:07:03 GMT-0400 (Eastern Daylight Time)
+ * Last generated on: Tue Jul 05 2022 22:32:45 GMT-0400 (Eastern Daylight Time)
  *
  * ⚠️ WARNING ⚠️
  */
@@ -29,16 +29,16 @@
 	--rgb-secondary-700: 232, 138, 104;
 	--color-secondary-900: hsl(15, 66%, 58%);
 	--rgb-secondary-900: 219, 113, 77;
-	--color-light-100: hsl(34, 19%, 98%);
-	--rgb-light-100: 251, 250, 249;
-	--color-light-300: hsl(34, 17%, 94%);
-	--rgb-light-300: 242, 240, 237;
-	--color-light-500: hsl(34, 15%, 89%);
-	--rgb-light-500: 231, 228, 223;
-	--color-light-700: hsl(34, 12%, 83%);
-	--rgb-light-700: 217, 212, 206;
-	--color-light-900: hsl(34, 10%, 77%);
-	--rgb-light-900: 202, 197, 190;
+	--color-light-100: hsl(90, 18%, 98%);
+	--rgb-light-100: 250, 251, 249;
+	--color-light-300: hsl(90, 16%, 94%);
+	--rgb-light-300: 240, 242, 237;
+	--color-light-500: hsl(90, 14%, 89%);
+	--rgb-light-500: 227, 231, 223;
+	--color-light-700: hsl(90, 12%, 83%);
+	--rgb-light-700: 212, 217, 206;
+	--color-light-900: hsl(90, 10%, 76%);
+	--rgb-light-900: 194, 200, 188;
 	--color-dark-100: hsl(178, 10%, 38%);
 	--rgb-dark-100: 87, 107, 106;
 	--color-dark-300: hsl(180, 14%, 32%);
@@ -51,16 +51,24 @@
 	--rgb-dark-900: 20, 39, 41;
 	--color-success-100: hsl(113, 70%, 72%);
 	--rgb-success-100: 145, 234, 134;
+	--color-success-300: hsl(113, 70%, 72%);
+	--rgb-success-300: 145, 234, 134;
 	--color-success-500: hsl(113, 63%, 61%);
 	--rgb-success-500: 108, 218, 93;
+	--color-success-700: hsl(113, 63%, 61%);
+	--rgb-success-700: 108, 218, 93;
 	--color-success-900: hsl(113, 55%, 48%);
 	--rgb-success-900: 71, 190, 55;
-	--color-error-100: hsl(2, 76%, 69%);
-	--rgb-error-100: 236, 120, 116;
-	--color-error-500: hsl(2, 64%, 59%);
-	--rgb-error-500: 217, 88, 84;
-	--color-error-900: hsl(2, 60%, 49%);
-	--rgb-error-900: 200, 55, 50;
+	--color-error-100: hsl(3, 90%, 75%);
+	--rgb-error-100: 249, 140, 134;
+	--color-error-300: hsl(3, 86%, 69%);
+	--rgb-error-300: 244, 115, 108;
+	--color-error-500: hsl(3, 80%, 62%);
+	--rgb-error-500: 236, 88, 81;
+	--color-error-700: hsl(3, 72%, 54%);
+	--rgb-error-700: 222, 62, 53;
+	--color-error-900: hsl(3, 64%, 45%);
+	--rgb-error-900: 188, 49, 41;
 	--size-x3small: 8px;
 	--size-x2small: 10px;
 	--size-xsmall: 12px;

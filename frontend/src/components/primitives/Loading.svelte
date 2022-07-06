@@ -73,7 +73,7 @@
 <div class="container" style={containerStyle}>
 	<div
 		class="bg"
-		style:backgroundColor
+		style:background-color={backgroundColor}
 		style:opacity={backgroundOpacity}
 		on:outrostart={outro}
 		transition:slide={{ duration: 450, easing: circInOut }}
@@ -151,7 +151,7 @@
 
 	.bg {
 		position: absolute;
-		bottom: 0;
+		top: 0;
 		left: 0;
 		padding: 0;
 		margin: 0;
@@ -159,8 +159,8 @@
 		height: 100%;
 
 		&.outroing {
-			top: 0;
-			bottom: unset;
+			top: unset;
+			bottom: 0;
 		}
 	}
 

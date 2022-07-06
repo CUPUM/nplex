@@ -12,11 +12,11 @@
 	<Map let:map innerStyle="width: 100vw; height: 100vh;">
 		<MapToolbar slot="top-left">
 			<Button variant="ghost" on:click={() => map.zoomIn()}><Icon slot="icon" name="plus" /></Button>
-			<Button variant="ghost" on:click={() => map.zoomOut()}>-</Button>
+			<Button variant="ghost" on:click={() => map.zoomOut()}><Icon slot="icon" name="minus" /></Button>
 		</MapToolbar>
 		<MapToolbar slot="top-right">
-			<Button variant="ghost" on:click={() => console.log(map)}>Localize</Button>
-			<Button variant="ghost" on:click={() => console.log(map)}>Layers</Button>
+			<Button variant="ghost" on:click={() => console.log(map)}><Icon slot="icon" name="localize" /></Button>
+			<Button variant="ghost" on:click={() => console.log(map)}><Icon slot="icon" name="layers" /></Button>
 			<Button variant="ghost" on:click={() => console.log(map)}>Full</Button>
 			<Button variant="ghost" on:click={() => console.log(map)}>Min</Button>
 			<Button variant="ghost" on:click={() => console.log(map)}>Close</Button>

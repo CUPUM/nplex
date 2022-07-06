@@ -10,7 +10,7 @@
 	*/
 	--default-inset: 3px; /* Default inset for nested elements */
 	--default-size: 3em; /* Size/height height for interactive elements */
-	--default-radius: 1.2em; /* Border radius for buttons and other interactive elements */
+	--default-radius: 1em; /* Border radius for buttons and other interactive elements */
 	/*
 		Additionnal global CSS custom properties derived from TypeScript constants, such as
 		colors and sizes, are generated at build time and located in ./vars.css

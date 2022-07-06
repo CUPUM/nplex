@@ -84,24 +84,14 @@ interface ProjectsFilter {
  * Store for managing the filters' states.
  */
 export const projectsFilters = (function () {
-	/**
-	 * Default values for filters. This index of filters MUST be exhaustive.
-	 */
+	// This index of default filters' values MUST be exhaustive.
 	const filtersDefault: Partial<Record<SearchParam, ProjectsFilter>> = {};
-	/**
-	 * Init values detected in the client's navbar url.
-	 */
-	// To do: get the url search params, parse, and change filtersDefault accordingly.
+
+	// Getting initial values for first load by parsing client's url. (Useful for sharing and page reloads).
+	// (get the url search params, parse, and change filtersDefault accordingly)
+	const init = { ...filtersDefault };
 
 	const { subscribe, update, set } = writable<Partial<Record<SearchParam, ProjectsFilter>>>(init);
-
-	// function toggleExpand(filterId: SearchParam) {
-	// 	update((curr) => {
-	// 		const updated = curr;
-	// 		updated[filterId].expanded = !updated[filterId].expanded;
-	// 		return updated;
-	// 	});
-	// }
 
 	function isIgnoreValue(filter: ProjectsFilter) {
 		// To do: potentially do a more thorough check for different-ordered object keys and deep nestings?

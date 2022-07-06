@@ -147,6 +147,7 @@
 		font-size: var(--size-small);
 		transition: all 0.25s;
 		z-index: 100;
+		border-bottom: 1px solid rgba(var(--rgb-dark-100), 0.1);
 	}
 
 	.hidden {

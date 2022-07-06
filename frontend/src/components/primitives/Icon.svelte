@@ -8,8 +8,8 @@
 	import { cssSize, type SizeInput } from '$utils/css';
 	import { icons } from '$utils/icons/icons';
 	import { onDestroy, onMount } from 'svelte';
-	import { linear } from 'svelte/easing';
-	import { draw, fade } from 'svelte/transition';
+	import { expoOut } from 'svelte/easing';
+	import { draw, fade, scale } from 'svelte/transition';
 
 	export let name: keyof typeof icons;
 	export let size: SizeInput = '1em';
@@ -43,32 +43,34 @@
 <svg
 	bind:this={instance}
 	xmlns="http://www.w3.org/2000/svg"
-	aria-label="image-icône: {name}"
+	aria-label="icon-image-{name}"
 	viewBox={icon.viewBox}
 	style:font-size={cssSize(size)}
 	style:color
 	style:--secondary-color={secondaryColor}
 	style:--thickness={cssSize(strokeWidth)}
 	preserveAspectRatio="xMidYMid"
-	{...$$restProps}
 >
 	{#if mounted}
 		{#key name}
-			{#if icon.strokes.length}
-				{#each icon.strokes as stroke}
-					<path
-						in:draw={{ duration, easing: linear }}
-						d={stroke.d}
-						class="stroke {stroke.type}"
-						vector-effect="non-scaling-stroke"
-					/>
-				{/each}
-			{/if}
-			{#if icon.fills.length}
-				{#each icon.fills as fill}
-					<path in:fade={{ duration }} d={fill.d} class="fill {fill.type}" />
-				{/each}
-			{/if}
+			<g transition:scale|local={{ start: 0.5, easing: expoOut, duration: 550 }}>
+				{#if icon.strokes.length}
+					{#each icon.strokes as stroke, i}
+						<path
+							in:draw={{ duration, delay: i * 150 }}
+							d={stroke.d}
+							class="stroke {stroke.type}"
+							vector-effect="non-scaling-stroke"
+						/>
+					{/each}
+				{/if}
+				{#if icon.fills.length}
+					{@const i_offset = icon.strokes.length}
+					{#each icon.fills as fill, i}
+						<path in:fade={{ duration, delay: (i + i_offset) * 150 }} d={fill.d} class="fill {fill.type}" />
+					{/each}
+				{/if}
+			</g>
 		{/key}
 	{/if}
 </svg>
@@ -82,6 +84,10 @@
 		height: 1em;
 		padding: 0;
 		margin: 0;
+	}
+
+	g {
+		transform-origin: center;
 	}
 
 	path {

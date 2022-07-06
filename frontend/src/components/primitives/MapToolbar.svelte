@@ -26,7 +26,7 @@
 <style lang="scss">
 	menu {
 		font-size: var(--size-xsmall);
-		--outset: 5px;
+		--outset: var(--default-inset);
 		z-index: 1000;
 		position: relative;
 		display: inline-flex;

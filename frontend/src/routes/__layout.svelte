@@ -10,6 +10,7 @@
 	import '$styles/app.scss';
 	import '$styles/helpers.scss';
 	import '$styles/vars.css';
+	import { colors } from '$utils/colors';
 	import { db, getUserRole } from '$utils/database';
 	import { SearchParam } from '$utils/keys';
 	import { sizes } from '$utils/sizes';
@@ -54,12 +55,12 @@
 		}
 	});
 
-	let loaded = false;
+	let loading = true;
 	let navbarHeight: number;
 
 	onMount(() => {
 		setTimeout(() => {
-			loaded = true;
+			loading = false;
 		}, 500);
 	});
 </script>
@@ -75,8 +76,12 @@
 {#if $authModal}
 	<Auth />
 {/if}
-{#if !loaded}
-	<Loading containerStyle="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" size={sizes.xlarge} />
+{#if loading}
+	<Loading
+		backgroundColor={colors.light[100]}
+		containerStyle="position: fixed; top:0; left: 0; width: 100vw; height: 100vh"
+		size={sizes.xlarge}
+	/>
 {/if}
 <MessagesOutlet />
 

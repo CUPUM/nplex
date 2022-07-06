@@ -6,7 +6,7 @@
 	import Icon from '$components/primitives/Icon.svelte';
 	import { messages } from '$stores/messages';
 	import { flip } from 'svelte/animate';
-	import { expoInOut, expoOut } from 'svelte/easing';
+	import { expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 </script>
 
@@ -15,7 +15,8 @@
 		<dialog
 			in:scale|local={{ start: 0.75, opacity: 0, duration: 500, easing: expoOut }}
 			out:scale|local={{ start: 0.9, opacity: 0, duration: 350, easing: expoOut }}
-			animate:flip={{ duration: 500, easing: expoInOut }}
+			animate:flip={{ duration: 350, easing: expoOut }}
+			class={message.type}
 		>
 			<div class="progress-container">
 				<div class="progress" style:--timer="{message.timer}ms" />
@@ -61,7 +62,6 @@
 		padding: var(--inset);
 		border: none;
 		border-radius: var(--default-radius);
-		background-color: white;
 		box-shadow: 0 1.5em 4em -1em rgba(var(--rgb-dark-900), 0.25);
 	}
 
@@ -77,7 +77,7 @@
 		flex-direction: row;
 		justify-content: flex-end;
 		left: 0;
-		bottom: 100%;
+		top: 0;
 		width: 100%;
 		padding: 0 1.5em;
 	}
@@ -85,9 +85,25 @@
 	.progress {
 		width: 100%;
 		height: 3px;
-		border-radius: 3px;
-		background-color: var(--color-primary-300);
+		border-radius: 0 0 3px 3px;
 		animation: timer forwards var(--timer) linear;
+	}
+
+	.default {
+		background-color: white;
+
+		& .progress {
+			background-color: var(--color-primary-300);
+		}
+	}
+
+	.error {
+		background-color: var(--color-error-100);
+		color: var(--color-light-300);
+
+		& .progress {
+			background-color: var(--color-error-900);
+		}
 	}
 
 	@keyframes timer {

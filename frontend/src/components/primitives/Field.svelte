@@ -1,25 +1,29 @@
 <!--
 	@component
-	Hello world.
+	This component provides a primitive single-line text-input field.
  -->
 <script lang="ts" context="module">
-	export interface FieldContext {
-		// inset: number | CssSizeValue;
-	}
+	export interface FieldContext {}
 </script>
 
 <script lang="ts">
-	import { width } from '$transitions/width';
+	import { slip } from '$transitions/slip';
+
 	import type { SvelteProps } from '$types/helpers';
 	import { cssSize, type SizeInput } from '$utils/css';
 	import { Ctx } from '$utils/keys';
 	import { setContext } from 'svelte';
-	import { expoIn, expoInOut, expoOut } from 'svelte/easing';
+	import { expoInOut } from 'svelte/easing';
 	import Icon from './Icon.svelte';
 
-	/** Field input type, useful for a11y. */
+	export let name: string = undefined;
+	/**
+	 * Field input type, useful for a11y.
+	 */
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
-	/** Styling options. */
+	/**
+	 * Styling options.
+	 */
 	export let size: SizeInput = '1em';
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'searchbar' = 'default';
 	export let warning: boolean = undefined;
@@ -27,24 +31,32 @@
 	export let disabled: boolean = undefined;
 	export let loading: boolean = undefined;
 	export let invalid: boolean = undefined;
-	/** Regex validator to be used on submit & during user input */
+	export let width: string = undefined;
+	/**
+	 * Regex validator to be used on submit & during user input
+	 */
 	export let validator: RegExp = undefined;
-	/** Auto formatting template for the user input */
-	export let formatting = undefined;
-	/** Placeholder text and field icon. */
+	/**
+	 * Auto formatting template for the user input
+	 */
+	export let format = undefined;
+	/**
+	 * Placeholder text and field icon.
+	 */
 	export let placeholder: string = '';
 	export let placeholderIcon: SvelteProps<Icon>['name'] = undefined;
-	/** Input text value */
+	/**
+	 * Input text value
+	 */
 	export let value = '';
-	/** Focus state for styling of wrapper element instead of input element. */
+	/**
+	 * Focus state for styling of wrapper element instead of input element.
+	 */
 	let focused = false;
 
 	let showPassword = false;
-	let inputRef: HTMLInputElement;
 
-	setContext<FieldContext>(Ctx.Field, {
-		// inset,
-	});
+	setContext<FieldContext>(Ctx.Field, {});
 
 	function handleInput(e) {
 		value = e.target.value;
@@ -65,20 +77,23 @@
 	function reset() {
 		value = '';
 	}
-
-	function selectInput() {
-		inputRef.select();
-	}
 </script>
 
-<div
+<!-- svelte-ignore a11y-label-has-associated-control -->
+<label
 	class:warning={warning || invalid}
 	class:success
 	class:focused
 	class:disabled={disabled || loading}
 	class="{variant} outer"
 	style:font-size={cssSize(size)}
+	style:width
 >
+	{#if $$slots.default}
+		<span class="label">
+			<slot {value} />
+		</span>
+	{/if}
 	<div class="inner">
 		{#if $$slots.left}
 			<div class="left">
@@ -86,20 +101,16 @@
 			</div>
 		{/if}
 		{#if placeholderIcon && !value}
-			<div
-				class="icon"
-				transition:width={{ opacity: 0, duration: 400, easing: expoInOut }}
-				on:click={selectInput}
-			>
+			<div class="icon" transition:slip={{ width: true, opacity: 0, duration: 400, easing: expoInOut }}>
 				<Icon name={placeholderIcon} />
 			</div>
 		{/if}
 		<input
-			bind:this={inputRef}
 			{disabled}
 			{type}
 			{value}
 			{placeholder}
+			{name}
 			on:input={handleInput}
 			on:change
 			on:click
@@ -110,14 +121,9 @@
 			on:submit
 			on:keypress
 			autocomplete="new-{type}"
-			name={$$restProps.name}
 		/>
 		{#if value}
-			<div
-				class="has-value"
-				in:width={{ easing: expoOut, duration: 500, opacity: 0 }}
-				out:width={{ easing: expoIn, duration: 350, opacity: 0 }}
-			>
+			<div class="has-value" transition:slip={{ width: true, opacity: 0, overflow: 'hidden' }}>
 				<slot name="has-value" {value} />
 			</div>
 		{/if}
@@ -127,15 +133,26 @@
 			</div>
 		{/if}
 	</div>
-</div>
+</label>
 
 <style lang="scss">
 	.outer {
+		--size: var(--default-size);
+		--inset: var(--default-inset);
+		display: flex;
+		flex-direction: column;
+	}
+
+	.label {
+		position: relative;
+		display: block;
+		padding: 0.5em 1em;
+		font-size: max(0.8em, 12px);
+		font-weight: 500;
+		color: var(--color-dark-100);
 	}
 
 	.inner {
-		--size: var(--default-size);
-		--inset: var(--default-inset);
 		border: none;
 		padding: var(--inset);
 		margin: 0;
@@ -149,6 +166,7 @@
 		outline-color: transparent;
 		transition: all 0.15s ease-out;
 		overflow: visible;
+		width: 100%;
 	}
 
 	.icon {
@@ -187,8 +205,8 @@
 		vertical-align: middle;
 		border-radius: calc(var(--default-radius) - var(--inset));
 		appearance: none;
-		// background-clip: text !important;
-		transition: all 0.1s cubic-bezier(0, 0, 0, 1);
+		background-clip: text !important;
+		transition: all 0.12s ease-out;
 
 		&::placeholder {
 			color: currentColor;
@@ -230,7 +248,7 @@
 		flex-direction: row;
 		align-self: stretch;
 		justify-content: flex-start;
-		padding: var(--inset) 0;
+		padding: 0;
 		min-height: 100%;
 		height: 100%;
 		max-height: 100%;
@@ -248,7 +266,7 @@
 		justify-content: flex-end;
 		gap: 3px;
 		height: 100%;
-		border-radius: 1em;
+		border-radius: calc(var(--default-radius) - var(--inset));
 	}
 
 	/* Variants */
@@ -261,8 +279,8 @@
 		}
 		&.focused {
 			& .inner {
-				outline-color: rgba(var(--rgb-light-900), 0.25);
-				background-color: rgba(var(--rgb-light-100), 0.25);
+				outline-color: var(--color-light-500);
+				background-color: var(--color-light-500);
 			}
 
 			& .icon {
@@ -273,7 +291,7 @@
 		&:hover:not(.focused) {
 			& .inner {
 				color: var(--color-dark-900);
-				background-color: rgba(var(--rgb-dark-900), 0.2);
+				background-color: rgba(var(--rgb-light-500), 0.8);
 			}
 		}
 	}

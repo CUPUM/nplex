@@ -113,7 +113,7 @@
 		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.2);
 
 		&.temp {
-			// transform: scale(0.95, 0.9);
+			transform: scale(0.95, 0.92);
 		}
 	}
 
@@ -160,7 +160,7 @@
 			background-color: var(--color-primary-100);
 
 			&.temp {
-				background-color: var(--color-light-700);
+				background-color: rgba(var(--rgb-dark-100), 0.2);
 				opacity: 0.5;
 			}
 		}

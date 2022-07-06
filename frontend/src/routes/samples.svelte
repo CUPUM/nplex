@@ -102,7 +102,10 @@
 	<section>
 		<h2>Field</h2>
 		<Field let:value on:keypress={handleKeypress} placeholder="Ceci est un placeholder">
-			<Button type="submit" slot="has-value" on:click={() => messages.dispatch({ text: value, timer: 2500 })}
+			<Button
+				type="submit"
+				slot="has-value"
+				on:click={() => messages.dispatch({ text: value, timer: 2500, type: 'error' })}
 				>Dispatch app message</Button
 			>
 		</Field>
@@ -198,7 +201,8 @@
 	</section>
 	<section>
 		<h2>Icons</h2>
-		<Icon name={currentIconName} />
+		<Icon size={sizes.xlarge} name={currentIconName} />
+		<br />
 		<select name="" id="" bind:value={currentIconName}>
 			{#each Object.keys(icons) as iconName}
 				<option value={iconName}>{iconName}</option>

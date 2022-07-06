@@ -7,7 +7,6 @@
 	import ProviderLogo from '$components/primitives/ProviderLogo.svelte';
 	import { authModal } from '$stores/auth';
 	import { messages } from '$stores/messages';
-	import { slip } from '$transitions/slip';
 	import { signIn, signUp } from '$utils/auth';
 	import { providers } from '$utils/providers';
 	import { expoIn, expoOut } from 'svelte/easing';
@@ -83,16 +82,7 @@
 	</a>
 	<form autocomplete="off" on:submit|preventDefault={submit}>
 		<fieldset in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 250 }}>
-			<label for="">
-				Courriel
-				<Field
-					bind:value={email}
-					placeholder="Courriel"
-					placeholderIcon="email"
-					name="new-email"
-					type="email"
-				/>
-			</label>
+			<Field bind:value={email} placeholder="Courriel" placeholderIcon="email" name="new-email" type="email" />
 			<Field
 				bind:value={password}
 				placeholder="Mot de passe"
@@ -132,9 +122,7 @@
 					Vous avez déjà un compte? Connectez-vous
 					<svelte:fragment slot="icon">
 						{#if Boolean(email) && Boolean(password)}
-							<div transition:slip={{ width: true, overflow: 'hidden' }}>
-								<Icon slot="icon" name="arrow-right" />
-							</div>
+							<Icon slot="icon" name="arrow-right" />
 						{/if}
 					</svelte:fragment>
 				</Button>
@@ -192,7 +180,7 @@
 		transition: all 0.15s ease-out;
 
 		&:hover {
-			transform: scale(0.96);
+			transform: scale(0.98);
 			color: var(--color-primary-900);
 		}
 	}

@@ -22,7 +22,7 @@
 	"scripts": {
 		"get-db-types": ". ./.env && npx openapi-typescript \"${PUBLIC_SUPABASE_URL}/rest/v1/?apikey=${PUBLIC_SUPABASE_ANON_KEY}\" --version=2 --output src/types/database.ts",
 		"plugins": "esbuild plugins/*.ts --outdir=plugins/dist",
-		"dev": "npm run plugins && svelte-kit dev",
+		"dev": "npm run plugins && vite dev",
 		"build": "npm run plugins && svelte-kit build",
 		"preview": "svelte-kit preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",

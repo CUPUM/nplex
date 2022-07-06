@@ -4,7 +4,7 @@
 
 	export let legend: string;
 	export let key: string;
-	export let expand: boolean = undefined;
+	export let expand: boolean = false;
 </script>
 
 <fieldset>
