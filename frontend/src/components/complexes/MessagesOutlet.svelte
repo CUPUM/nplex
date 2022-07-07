@@ -22,7 +22,7 @@
 				<div class="progress" style:--timer="{message.timer}ms" />
 			</div>
 			<div class="content">
-				{message.text}
+				{@html message.text}
 			</div>
 			<Button
 				style="position: absolute; left: calc(100% + .5em);"

@@ -63,7 +63,7 @@
 		margin-right: 0;
 		margin-bottom: 1rem;
 		overflow-x: hidden;
-		// border-radius: 2rem;
+		border-radius: 1.5rem;
 		transition: all 0.25s ease-out;
 	}
 
@@ -77,7 +77,8 @@
 		overflow-y: visible;
 		padding: 0;
 		margin: 0;
-		// background-color: white;
+		background-color: white;
+		min-height: 100%;
 	}
 
 	.sub-title {

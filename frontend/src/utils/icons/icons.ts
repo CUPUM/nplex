@@ -4,7 +4,7 @@
  * This file was generated from the svg assets found at ./src/utils/icons. All changes added manually here will be lost
  * on next execution of the generator script.
  *
- * Last generated on: Wed Jul 06 2022 15:05:21 GMT-0400 (GMT-04:00)
+ * Last generated on: Wed Jul 06 2022 18:30:57 GMT-0400 (GMT-04:00)
  *
  * ⚠️ WARNING ⚠️
  */
@@ -293,6 +293,50 @@ export const icons = {
 				d: 'M4 15V18C4 19.1046 4.89543 20 6 20H9M20 15V18C20 19.1046 19.1046 20 18 20H15M9 4H6C4.89543 4 4 4.89543 4 6V9M15 4H18C19.1046 4 20 4.89543 20 6V9',
 				type: 'primary',
 			},
+		],
+		fills: [],
+	},
+	'eye-close': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{ d: 'M21 8C21 10 16.9706 15 12 15C7.02944 15 3 10 3 8', type: 'primary' },
+			{ d: 'M5 12L3 14M19 12L21 14M12 15V18M16 14L17 17M7 17L8 14', type: 'primary' },
+		],
+		fills: [],
+	},
+	'eye-cross': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{ d: 'M4 20L20 4', type: 'primary' },
+			{
+				d: 'M20.2544 10C20.734 10.7742 21 11.4861 21 12C21 14 16.9706 19 12 19C11.662 19 11.3283 18.9769 11 18.9332',
+				type: 'primary',
+			},
+			{
+				d: 'M17.1972 6.80284C15.7292 5.75851 13.936 5 12 5C7.02944 5 3 10 3 12C3 13.221 4.50186 15.5602 6.80284 17.1972',
+				type: 'primary',
+			},
+			{
+				d: 'M9.87868 14.1213C8.70711 12.9497 8.70711 11.0502 9.87868 9.87868C11.0503 8.7071 12.9497 8.7071 14.1213 9.87868',
+				type: 'primary',
+			},
+		],
+		fills: [],
+	},
+	'eye-open': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{
+				d: 'M21 12C21 14 16.9706 19 12 19C7.02944 19 3 14 3 12C3 10 7.02944 5 12 5C16.9706 5 21 10 21 12Z',
+				type: 'primary',
+			},
+			{ d: 'M15 12 A3 3 0 0 1 12 15 A3 3 0 0 1 9 12 A3 3 0 0 1 15 12 z', type: 'primary' },
 		],
 		fills: [],
 	},

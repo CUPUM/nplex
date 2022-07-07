@@ -79,7 +79,7 @@
 >
 	{#if cursorBox}
 		<div
-			transition:scale|local={{ duration: 250, start: 0.75, opacity: 0, easing: expoOut }}
+			transition:scale|local={{ duration: 150, start: 0.5, opacity: 0, easing: expoOut }}
 			class:temp={Boolean($tempRef)}
 			style={cursorBox}
 			class="selector"
@@ -110,7 +110,7 @@
 		position: absolute;
 		height: calc(var(--size) - 2 * var(--inset));
 		border-radius: calc(var(--radius) - var(--inset));
-		transition: all 0.2s cubic-bezier(0.8, 0, 0.2, 1.2);
+		transition: all 0.18s cubic-bezier(0.8, 0, 0.2, 1.2);
 
 		&.temp {
 			transform: scale(0.95, 0.92);

@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 export interface Message {
 	text: string;
 	timer?: number;
-	type?: 'error' | 'sucess' | 'default';
+	type?: 'error' | 'success' | 'default';
 }
 
 /**

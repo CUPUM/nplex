@@ -17,9 +17,8 @@
 		<MapToolbar slot="top-right">
 			<Button variant="ghost" on:click={() => console.log(map)}><Icon slot="icon" name="localize" /></Button>
 			<Button variant="ghost" on:click={() => console.log(map)}><Icon slot="icon" name="layers" /></Button>
-			<Button variant="ghost" on:click={() => console.log(map)}>Full</Button>
-			<Button variant="ghost" on:click={() => console.log(map)}>Min</Button>
-			<Button variant="ghost" on:click={() => console.log(map)}>Close</Button>
+			<Button variant="ghost" on:click={() => console.log(map)}><Icon slot="icon" name="expand" /></Button>
+			<Button variant="ghost" on:click={() => console.log(map)}><Icon slot="icon" name="cross" /></Button>
 		</MapToolbar>
 	</Map>
 </section>
@@ -34,7 +33,7 @@
 		margin-bottom: 1rem;
 		margin-left: 1rem;
 		padding: 0;
-		border-radius: 2rem;
+		border-radius: 1.5rem;
 		background-color: var(--color-light-300);
 		transition: all 0.35s cubic-bezier(0.25, 0, 0.25, 1);
 		/* overflow: visible; */

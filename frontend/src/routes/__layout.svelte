@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
 	import { page, session } from '$app/stores';
 	import Auth from '$components/complexes/Auth.svelte';
 	import Footer from '$components/complexes/Footer.svelte';
@@ -17,6 +17,7 @@
 	import { toUserRoleEnum } from '$utils/user';
 	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 
 	export async function load({ stuff }: LoadEvent): Promise<LoadOutput> {
 		return {
@@ -46,13 +47,13 @@
 	db.auth.onAuthStateChange(async (e, s) => {
 		if (e === 'SIGNED_OUT') {
 			session.update((prevSession) => {
-				const rootPath = new URL(prevSession.prevUrl).hostname;
+				const rootPath = get(page).url.hostname;
 				return { ...prevSession, prevUrl: rootPath, user: null };
 			});
-		} else {
-			const role = toUserRoleEnum(await getUserRole());
-			session.update((prevSession) => ({ ...prevSession, user: { ...s.user, role } }));
+			return goto(get(page).url);
 		}
+		const role = toUserRoleEnum(await getUserRole());
+		session.update((prevSession) => ({ ...prevSession, user: { ...s.user, role } }));
 	});
 
 	let loading = true;

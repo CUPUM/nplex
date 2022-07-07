@@ -90,33 +90,23 @@
 				</Button>
 			</Tooltip>
 			{#if $session.user}
-				<div
-					in:fly={{ y: 20, duration: 350, easing: expoOut, delay: 350 }}
-					out:fly={{ y: -20, duration: 350, easing: expoOut }}
-				>
-					<Popover placement="bottom" align="end" useHover={true}>
-						<Button slot="control" variant="navbar" href={creationBaseRoute.pathname}>
-							<Icon name="new-file" slot="icon" />
-						</Button>
-						{#each creationRoutes as r}
-							<Button href={r.pathname}>{r.title}</Button>
-						{/each}
-					</Popover>
-					<Popover useHover={true} placement="bottom" align="end">
-						<AvatarButton slot="control" href={userBaseRoute.pathname} />
-						<Button>Autre option</Button>
-						<Button on:click={signOut}>Se déconnecter</Button>
-					</Popover>
-				</div>
-			{:else}
-				<div
-					in:fly={{ y: 20, duration: 350, easing: expoOut, delay: 350 }}
-					out:fly={{ y: -20, duration: 350, easing: expoOut }}
-				>
-					<Button variant="cta" href={getAuthRedirectUrl($page.url).toString()}>
-						<Icon name="user" slot="icon" />Se connecter
+				<Popover placement="bottom" align="end" useHover={true}>
+					<Button slot="control" variant="navbar" href={creationBaseRoute.pathname}>
+						<Icon name="new-file" slot="icon" />
 					</Button>
-				</div>
+					{#each creationRoutes as r}
+						<Button href={r.pathname}>{r.title}</Button>
+					{/each}
+				</Popover>
+				<Popover useHover={true} placement="bottom" align="end">
+					<AvatarButton slot="control" href={userBaseRoute.pathname} />
+					<Button>Autre option</Button>
+					<Button on:click={signOut}>Se déconnecter</Button>
+				</Popover>
+			{:else}
+				<Button variant="cta" href={getAuthRedirectUrl($page.url).toString()}>
+					<Icon name="user" slot="icon" />Se connecter
+				</Button>
 			{/if}
 		</nav>
 	{/if}

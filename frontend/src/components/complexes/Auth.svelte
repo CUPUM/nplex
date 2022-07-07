@@ -7,10 +7,12 @@
 	import ProviderLogo from '$components/primitives/ProviderLogo.svelte';
 	import { authModal } from '$stores/auth';
 	import { messages } from '$stores/messages';
+	import { slip } from '$transitions/slip';
 	import { signIn, signUp } from '$utils/auth';
 	import { providers } from '$utils/providers';
-	import { expoIn, expoOut } from 'svelte/easing';
-	import { fly, scale, slide } from 'svelte/transition';
+	import { sizes } from '$utils/sizes';
+	import { expoOut } from 'svelte/easing';
+	import { fade, fly, scale } from 'svelte/transition';
 
 	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
 	let signupForm = false;
@@ -19,9 +21,10 @@
 	let firstname: string;
 	let middlename: string;
 	let lastname: string;
-	let currentAction = null;
 	let signInError = false;
 	let signUpError = false;
+	let currentAction = null;
+	let revealPassword = false;
 
 	function close() {
 		authModal.close();
@@ -42,23 +45,39 @@
 			case Action.SignIn:
 				{
 					const res = await signIn({ email, password });
-					if (res.error) {
-						signInError = true;
-						messages.dispatch({ text: res.error.message, type: 'error' });
-					} else {
+					if (!res.error) {
 						close();
+						break;
 					}
+					signInError = true;
+					messages.dispatch({ text: res.error.message, type: 'error' });
 				}
 				break;
 			case Action.SignUp:
 				{
-					const res = await signUp({ email, password });
-					if (res.error) {
+					// Let's first attemp to sign in using the provided credentials.
+					const signinRes = await signIn({ email, password });
+					// If successful, complete the process.
+					if (!signinRes.error && signinRes.user) {
+						close();
+						break;
+					}
+					// If not working, expand signup form.
+					if (!signupForm) {
+						signupForm = true;
+						break;
+					}
+					const signupRes = await signUp({ email, password, firstname, middlename, lastname });
+					if (signupRes.error) {
 						signUpError = true;
-						messages.dispatch({ text: res.error.message, type: 'error' });
-					} else {
-						// message = `Vérifiez votre adresse courriel (${res.user.email}) afin de confirmer la création de votre compte.`;
-						// setTimeout(() => (message = null), 5000);
+						messages.dispatch({ text: signupRes.error.message, type: 'error' });
+					} else if ((signupRes as any)?.user) {
+						messages.dispatch({
+							text: `Vérifiez votre adresse courriel (<i>${
+								(signupRes as any)?.user?.email
+							}</i>) afin de compléter la création de votre compte.`,
+							type: 'success',
+						});
 					}
 				}
 				break;
@@ -69,74 +88,93 @@
 	}
 </script>
 
-<div class="bg" transition:slide={{ duration: 250, easing: expoOut }} />
+<div class="bg" transition:fade={{ duration: 350, easing: expoOut }} />
 <div
 	class="wrapper"
 	use:clickoutside
 	on:clickoutside={close}
-	in:fly={{ duration: 350, x: 100, easing: expoOut }}
-	out:fly={{ duration: 250, x: 100, easing: expoIn }}
+	in:scale={{ duration: 350, start: 0.8, easing: expoOut }}
+	out:fly={{ duration: 250, x: 50, easing: expoOut }}
 >
 	<a class="logo" href="/">
 		<Logo color="currentColor" />
 	</a>
-	<form autocomplete="off" on:submit|preventDefault={submit}>
-		<fieldset in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 250 }}>
-			<Field bind:value={email} placeholder="Courriel" placeholderIcon="email" name="new-email" type="email" />
-			<Field
-				bind:value={password}
-				placeholder="Mot de passe"
-				placeholderIcon="asterisk"
-				name="new-password"
-				type="password"
-			/>
-			{#if signupForm}
-				<div class="signup-fields" transition:slide={{}}>
-					<Field />
+	<form autocomplete="off" on:submit|preventDefault={submit} in:scale={{ start: 0.95, delay: 150 }}>
+		<Field
+			bind:value={email}
+			placeholder="Courriel"
+			placeholderIcon="letter"
+			placeholderIconWhileValue={true}
+			name="new-email"
+			type="email"
+			required
+		/>
+		<Field
+			bind:value={password}
+			placeholder="Mot de passe"
+			placeholderIcon="asterisk"
+			placeholderIconWhileValue={true}
+			name="new-password"
+			type={revealPassword ? 'text' : 'password'}
+		>
+			<Button slot="right" variant="ghost" on:click={() => (revealPassword = !revealPassword)}>
+				<Icon slot="icon" name={revealPassword ? 'eye-cross' : 'eye-open'} />
+			</Button>
+		</Field>
+		{#if signupForm}
+			<div class="signup-fields" transition:scale={{ start: 0.95 }}>
+				<div>
+					<Field size={sizes.small} bind:value={firstname} placeholder="Prénom" />
 				</div>
-			{/if}
-			<div class="submit-buttons">
-				<Button
-					type={signupForm ? 'submit' : 'button'}
-					variant="cta"
-					value={Action.SignUp}
-					disabled={!Boolean(email)}
-					display="block"
-					contentAlign="center"
-					loading={Action.SignIn === currentAction}
-					on:click={() => (signupForm = true)}
-				>
-					<Icon name="plus" slot="icon" />
-					Créer un compte
-				</Button>
-				<Button
-					type="submit"
-					variant="ghost"
-					value={Action.SignIn}
-					disabled={!Boolean(email) || !Boolean(password)}
-					display="block"
-					contentAlign="center"
-					iconPosition="after"
-					loading={Action.SignUp === currentAction}
-				>
-					Vous avez déjà un compte? Connectez-vous
-					<svelte:fragment slot="icon">
-						{#if Boolean(email) && Boolean(password)}
-							<Icon slot="icon" name="arrow-right" />
-						{/if}
-					</svelte:fragment>
-				</Button>
+				<div>
+					<Field size={sizes.small} bind:value={middlename} placeholder="Surnom" />
+				</div>
+				<div class="full-cols">
+					<Field size={sizes.small} bind:value={lastname} placeholder="Nom de famille" />
+				</div>
 			</div>
-		</fieldset>
-		<hr />
-		<fieldset in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 350 }} class="provider-buttons">
-			{#each providerNames as name, i}
-				<Button contentAlign="center" variant="secondary">
-					<ProviderLogo {name} slot="icon" size="1.5em" />
-					Se connecter avec {providers[name].title}
-				</Button>
-			{/each}
-		</fieldset>
+		{/if}
+		<div class="submit-buttons" transition:scale={{ start: 0.95, delay: 300 }}>
+			<Button
+				type="submit"
+				variant="cta"
+				value={Action.SignUp}
+				disabled={!Boolean(email)}
+				display="block"
+				contentAlign="center"
+				loading={currentAction === Action.SignUp}
+			>
+				Créer un compte
+			</Button>
+			<Button
+				type="submit"
+				variant="ghost"
+				value={Action.SignIn}
+				disabled={!Boolean(email) || !Boolean(password)}
+				display="block"
+				contentAlign="center"
+				iconPosition="after"
+				loading={currentAction === Action.SignIn}
+			>
+				Vous avez déjà un compte? Connectez-vous
+				<svelte:fragment slot="icon">
+					{#if Boolean(email) && Boolean(password)}
+						<div class="icon-wrap" transition:slip={{ width: true, x: -10 }}>
+							<Icon slot="icon" name="arrow-right" />
+						</div>
+					{/if}
+				</svelte:fragment>
+			</Button>
+		</div>
+	</form>
+	<hr />
+	<form in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 450 }} class="provider-buttons">
+		{#each providerNames as name, i}
+			<Button size={sizes.small} contentAlign="center" variant="secondary">
+				<ProviderLogo {name} slot="icon" size="1.5em" />
+				Se connecter avec {providers[name].title}
+			</Button>
+		{/each}
 	</form>
 </div>
 
@@ -148,25 +186,27 @@
 		height: 100%;
 		top: 0;
 		left: 0;
-		background-color: rgba(var(--rgb-light-100), 0.95);
-		// backdrop-filter: blur(8px);
+		background-color: rgba(var(--rgb-primary-500), 0.9);
+		// backdrop-filter: blur(4px);
 	}
 
 	.wrapper {
 		z-index: 1000;
 		position: fixed;
-		right: 0;
-		top: 0;
-		bottom: 0;
+		right: 0.5rem;
+		top: 0.5rem;
+		bottom: 0.5rem;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		width: 100%;
 		max-width: 600px;
-		background-color: white;
+		background-color: rgba(255, 255, 255, 0.95);
+		// backdrop-filter: blur(12px);
 		padding: 2rem 4rem;
-		border-radius: 3rem 0 0 3rem;
+		border-radius: 2rem;
+		transform-origin: top right;
 	}
 
 	.logo {
@@ -186,26 +226,50 @@
 	}
 
 	form {
+		position: relative;
 		width: 100%;
 		max-width: 400px;
 		display: flex;
 		flex-direction: column;
-	}
-
-	fieldset {
-		width: 100%;
-		border: none;
-		display: flex;
-		flex-direction: column;
 		gap: 1em;
+		border: none;
 		padding-inline: 0;
 	}
 
+	.signup-fields {
+		width: 100%;
+		position: relative;
+		border: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 1em;
+		grid-template-columns: 2fr 1fr;
+		justify-content: flex-start;
+		align-items: flex-start;
+
+		& > div {
+			position: relative;
+			display: flex;
+			flex-direction: row;
+		}
+
+		& > .full-cols {
+			grid-column: 1 / -1;
+		}
+	}
+
 	.submit-buttons {
-		// width: 50%;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		padding-top: 1rem;
+	}
+
+	.icon-wrap {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	hr {
@@ -213,6 +277,6 @@
 		height: 1px;
 		background-color: var(--rgb-dark-100);
 		opacity: 0.1;
-		margin-block: 3rem 4rem;
+		margin-block: 2rem 3rem;
 	}
 </style>

@@ -1,5 +1,6 @@
 import { page } from '$app/stores';
 import { messages } from '$stores/messages';
+import type { definitions } from '$types/database';
 import type { UserRole } from '$utils/user';
 import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 import { get } from 'svelte/store';
@@ -83,20 +84,38 @@ export function getAuthRedirectUrl(targetUrl: URL) {
 interface AuthInfo {
 	email?: string;
 	password?: string;
+	firstname?: string;
+	middlename?: string;
+	lastname?: string;
 	provider?: keyof typeof providers;
 }
+
+// To do: make auth work from server-side for client-specific SSR
+// See: https://github.com/supabase/supabase/discussions/5218
 
 /**
  * Sign up a new user.
  */
 export async function signUp(info: AuthInfo) {
-	const res = await db.auth.signUp(info, {
-		redirectTo: info.provider ? get(page).url.pathname : null,
+	const signup = await db.auth.signUp(info, {
+		redirectTo: info.provider ? get(page).url.toString() : null,
 	});
-	// session.update((s) => ({...s, user: res.user}));
-	// // To do: set auth on server-side for SSR
-	// // See: https://github.com/supabase/supabase/discussions/5218
-	return res;
+
+	if (!signup.error) {
+		const profile = await db
+			.from<definitions['profiles']>('profiles')
+			.update({
+				firstname: info.firstname || '',
+				middlename: info.middlename || '',
+				lastname: info.lastname || '',
+			})
+			.match({ user_id: signup.user.id })
+			.limit(1)
+			.single();
+		if (profile.error) return profile;
+	}
+
+	return signup;
 }
 
 /**
@@ -106,9 +125,7 @@ export async function signIn(info: AuthInfo) {
 	const res = await db.auth.signIn(info, {
 		redirectTo: info.provider ? get(page).url.pathname : null,
 	});
-	// session.update((s) => ({...s, user: res.user}));
-	// To do: set auth on server-side for SSR
-	// See: https://github.com/supabase/supabase/discussions/5218
+
 	return res;
 }
 
@@ -117,48 +134,6 @@ export async function signIn(info: AuthInfo) {
  */
 export async function signOut() {
 	const res = await db.auth.signOut();
-	// await fetch('/api/auth/signout.json', {
-	// 	method: 'post'
-	// });
-	// await updateServerSession('SIGNED_OUT', null);
-	// goto('/');
+
 	return res;
 }
-
-// Based on https://github.com/supabase/supabase/discussions/5218
-// /**
-//  * Prepare serialized cookies from the server-side for the session's future request handling.
-//  * @param names Set by default to all values of SessionCookieName enum.
-//  * @param session If null, returns blank cookies for the given names.
-//  * @param extra Additional options.
-//  * @returns Array of serialized cookies to be passed in headers.
-//  */
-// export function makeSessionCookies({
-// 	names = Object.values(SessionCookieName),
-// 	session = null as App.Session | Session,
-// 	extra = null as cookie.CookieSerializeOptions
-// } = {}) {
-// 	const blank = { path: '/', expires: new Date(0) };
-// 	const defaults: cookie.CookieSerializeOptions = {
-// 		path: '/',
-// 		httpOnly: true,
-// 		secure: true,
-// 		sameSite: 'strict',
-// 		maxAge: 60 * 60 * 24 * 50, // default Max-Age, can be overwritten via extra
-// 	};
-// 	let options = { ...defaults, ...extra };
-// 	const cookies = names.map(name => cookie.serialize(name, session ? session[name] : null, session ? options : blank));
-// 	return cookies;
-// };
-
-// /**
-//  * Updating user session on Sveltekit's server for user-specific SSR
-//  */
-// export async function updateServerSession(e: AuthChangeEvent, s: Session) {
-// 	await fetch('/api/auth.json', {
-// 		method: 'POST',
-// 		headers: new Headers({ 'Content-Type': 'application/json' }),
-// 		credentials: 'same-origin',
-// 		body: JSON.stringify({ event: e, session: s }),
-// 	});
-// }

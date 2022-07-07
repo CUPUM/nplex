@@ -66,8 +66,8 @@ export const exploreRoutes: ExploreRoute[] = [
 ];
 
 export const creationBaseRoute: Route = {
-	pathname: '/creer',
-	title: 'Créer',
+	pathname: '/editer',
+	title: 'Éditer',
 };
 
 /**
@@ -75,15 +75,15 @@ export const creationBaseRoute: Route = {
  */
 export const creationRoutes: Route[] = [
 	{
-		pathname: '/creer/projet',
+		pathname: creationBaseRoute + '/projet',
 		title: 'Nouveau projet',
 	},
 	{
-		pathname: '/creer/organisation',
+		pathname: creationBaseRoute + '/organisation',
 		title: 'Nouvelle organisation',
 	},
 	{
-		pathname: '/creer/acteur',
+		pathname: creationBaseRoute + '/acteur',
 		title: 'Nouveau profil d’acteur',
 	},
 ];

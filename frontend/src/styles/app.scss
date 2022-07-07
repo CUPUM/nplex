@@ -29,9 +29,9 @@ body {
 	margin: 0;
 	overflow-x: hidden;
 	overflow-y: auto;
-	@supports (overflow: overlay) {
-		overflow-y: overlay;
-	}
+	// @supports (overflow: overlay) {
+	// 	overflow-y: overlay;
+	// }
 }
 
 *,

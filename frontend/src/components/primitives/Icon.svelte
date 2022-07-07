@@ -53,11 +53,11 @@
 >
 	{#if mounted}
 		{#key name}
-			<g transition:scale|local={{ start: 0.5, easing: expoOut, duration: 550 }}>
+			<g transition:scale|local={{ start: 0.5, easing: expoOut, duration: 750 }}>
 				{#if icon.strokes.length}
 					{#each icon.strokes as stroke, i}
 						<path
-							in:draw={{ duration, delay: i * 150 }}
+							in:draw={{ duration, delay: i * (delay / 2) }}
 							d={stroke.d}
 							class="stroke {stroke.type}"
 							vector-effect="non-scaling-stroke"
@@ -67,7 +67,11 @@
 				{#if icon.fills.length}
 					{@const i_offset = icon.strokes.length}
 					{#each icon.fills as fill, i}
-						<path in:fade={{ duration, delay: (i + i_offset) * 150 }} d={fill.d} class="fill {fill.type}" />
+						<path
+							in:fade={{ duration, delay: (i + i_offset) * (delay / 2) }}
+							d={fill.d}
+							class="fill {fill.type}"
+						/>
 					{/each}
 				{/if}
 			</g>

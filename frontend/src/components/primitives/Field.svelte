@@ -31,6 +31,7 @@
 	export let disabled: boolean = undefined;
 	export let loading: boolean = undefined;
 	export let invalid: boolean = undefined;
+	export let required: boolean = undefined;
 	export let width: string = undefined;
 	/**
 	 * Regex validator to be used on submit & during user input
@@ -45,6 +46,7 @@
 	 */
 	export let placeholder: string = '';
 	export let placeholderIcon: SvelteProps<Icon>['name'] = undefined;
+	export let placeholderIconWhileValue: boolean = false;
 	/**
 	 * Input text value
 	 */
@@ -104,7 +106,7 @@
 				<slot name="left" {value} />
 			</div>
 		{/if}
-		{#if placeholderIcon && !value}
+		{#if placeholderIcon && (!value || placeholderIconWhileValue)}
 			<div
 				class="icon"
 				on:click={() => inputRef.focus()}
@@ -130,6 +132,7 @@
 			on:submit
 			on:keypress
 			autocomplete="new-{type}"
+			{required}
 		/>
 		{#if value}
 			<div class="has-value" transition:slip={{ width: true, opacity: 0, overflow: 'hidden' }}>
@@ -149,18 +152,14 @@
 		--size: var(--default-size);
 		--inset: var(--default-inset);
 		display: flex;
+		flex: 1;
 		flex-direction: column;
-		pointer-events: none;
-	}
-
-	.outer > * {
-		pointer-events: initial;
 	}
 
 	label {
 		position: relative;
 		display: block;
-		padding: 0.5em 1em;
+		padding: 0em 1em 0.5em 1em;
 		font-size: max(0.8em, 12px);
 		font-weight: 500;
 		color: var(--color-dark-100);
@@ -209,6 +208,7 @@
 		height: 100%;
 		min-height: 100%;
 		max-height: 100%;
+		width: 100%;
 		min-width: var(--size);
 		font-family: var(--font-main);
 		background-color: transparent;
@@ -293,19 +293,20 @@
 		}
 		&.focused {
 			& .inner {
-				outline-color: var(--color-light-500);
-				background-color: var(--color-light-500);
+				color: var(--color-dark-500);
+				outline-color: var(--color-dark-500);
+				background-color: var(--color-light-100);
 			}
 
 			& .icon {
-				color: var(--color-primary-500);
+				color: var(--color-dark-100);
 			}
 		}
 
 		&:hover:not(.focused) {
 			& .inner {
 				color: var(--color-dark-900);
-				background-color: rgba(var(--rgb-light-500), 0.8);
+				background-color: rgba(var(--rgb-light-500), 1);
 			}
 		}
 	}
