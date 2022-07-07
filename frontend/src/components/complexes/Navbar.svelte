@@ -135,12 +135,29 @@
 		margin: 0;
 		gap: 0;
 		font-size: var(--size-small);
-		transition: all 0.25s;
 		z-index: 100;
+		transition: all 0.25s, background-color 1s ease-in-out;
+
+		&::before {
+			content: '';
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+			opacity: 0;
+			top: 0;
+			left: 0;
+			background-color: var(--bg-color);
+			transition: all 1s ease-in-out;
+		}
 	}
 
 	.overlay {
 		box-shadow: 0 1px 0 0 rgba(var(--rgb-dark-900), 0.1);
+		&::before {
+			opacity: 0.95;
+		}
 	}
 
 	.hidden {

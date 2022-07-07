@@ -12,7 +12,7 @@
 	import { providers } from '$utils/providers';
 	import { sizes } from '$utils/sizes';
 	import { expoOut } from 'svelte/easing';
-	import { fade, fly, scale } from 'svelte/transition';
+	import { fade, fly, scale, slide } from 'svelte/transition';
 
 	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
 	let signupForm = false;
@@ -122,7 +122,7 @@
 			</Button>
 		</Field>
 		{#if signupForm}
-			<div class="signup-fields" transition:scale={{ start: 0.95 }}>
+			<div class="signup-fields" transition:slide={{}}>
 				<div>
 					<Field size={sizes.small} bind:value={firstname} placeholder="Prénom" />
 				</div>
@@ -193,18 +193,19 @@
 	.wrapper {
 		z-index: 1000;
 		position: fixed;
-		right: 0.5rem;
-		top: 0.5rem;
-		bottom: 0.5rem;
+		right: 1rem;
+		top: 1rem;
+		bottom: 1rem;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
 		width: 100%;
-		max-width: 600px;
+		max-width: 500px;
 		background-color: rgba(255, 255, 255, 0.95);
 		// backdrop-filter: blur(12px);
-		padding: 2rem 4rem;
+		padding: 3rem;
+		overflow-y: auto;
 		border-radius: 2rem;
 		transform-origin: top right;
 	}

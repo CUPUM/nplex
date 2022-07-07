@@ -100,7 +100,7 @@
 		top: -0.1em;
 		transition-property: transform, opacity;
 		transition-timing-function: ease-in-out;
-		transition-duration: 0.2s;
+		transition-duration: 0.15s;
 	}
 
 	input {
@@ -141,10 +141,12 @@
 	.navbar {
 		font-weight: 600;
 		background-color: transparent;
-		color: rgba(var(--rgb-dark-900), 0.5);
+		// color: rgba(var(--rgb-dark-900), 0.5);
+		color: var(--color-dark-900);
 		&:hover,
 		&:focus {
 			color: var(--color-dark-900);
+			transform: scale(0.96);
 		}
 		&.current {
 			color: var(--color-primary-500);

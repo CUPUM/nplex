@@ -34,15 +34,15 @@ export const backgroundColor = (function () {
 				root.addEventListener('transitionend', resetTransition);
 				root.addEventListener('transitioncancel', resetTransition);
 			}
-			root.style.backgroundColor = color;
+			// root.style.backgroundColor = color;
+			root.style.setProperty('--bg-color', color);
 		}
 	}
-
-	setBackgroundColor(defaultColor);
 
 	return {
 		subscribe,
 		reset: (duration?: number) => setBackgroundColor(defaultColor, duration),
 		set: (color: string, duration?: number) => setBackgroundColor(color, duration),
+		init: () => setBackgroundColor(defaultColor),
 	};
 })();

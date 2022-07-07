@@ -7,6 +7,7 @@
 	import Navbar from '$components/complexes/Navbar.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
 	import { authModal } from '$stores/auth';
+	import { backgroundColor } from '$stores/backgroundColor';
 	import '$styles/app.scss';
 	import '$styles/helpers.scss';
 	import '$styles/vars.css';
@@ -58,6 +59,8 @@
 
 	let loading = true;
 	let navbarHeight: number;
+
+	backgroundColor.init();
 
 	onMount(() => {
 		setTimeout(() => {

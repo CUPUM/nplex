@@ -288,7 +288,7 @@
 		&[popover='open'] {
 			color: var(--color-light-100);
 			background-color: var(--color-primary-300);
-			box-shadow: 0 0.8em 2.5em -0.5em var(--color-primary-700);
+			box-shadow: 0 1em 2.25em -0.5em var(--color-primary-700);
 		}
 		&:active {
 		}
@@ -300,7 +300,8 @@
 
 	/* Navbar button theme */
 	.navbar {
-		color: rgba(var(--rgb-dark-900), 0.5);
+		// color: rgba(var(--rgb-dark-900), 0.5);
+		color: var(--color-dark-900);
 		background-color: transparent;
 		font-weight: 600;
 		padding-inline: 1.2em;

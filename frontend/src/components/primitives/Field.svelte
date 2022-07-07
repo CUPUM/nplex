@@ -222,6 +222,10 @@
 		background-clip: text !important;
 		transition: all 0.12s ease-out;
 
+		&[type='password'] {
+			letter-spacing: 0.2em;
+		}
+
 		&::placeholder {
 			color: currentColor;
 			opacity: 0.2;

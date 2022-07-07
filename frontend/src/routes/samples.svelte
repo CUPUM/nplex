@@ -14,6 +14,7 @@
 	import TestRadio from '$components/primitives/TestRadio.svelte';
 	import TestRadioSet from '$components/primitives/TestRadioSet.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
+	import { backgroundColor } from '$stores/backgroundColor';
 	import { messages } from '$stores/messages';
 	import type { SvelteProps } from '$types/helpers';
 	import { colors } from '$utils/colors';
@@ -100,6 +101,13 @@
 		</p>
 	</section>
 	<section>
+		<h2>Background color store</h2>
+		<label for="">
+			Color: {$backgroundColor}<br />
+			<input type="color" name="" bind:value={$backgroundColor} id="" />
+		</label>
+	</section>
+	<section>
 		<h2>Field</h2>
 		<Field let:value on:keypress={handleKeypress} placeholder="Ceci est un placeholder">
 			<Button
@@ -138,7 +146,7 @@
 				<div class="palette-row">
 					{#each Object.entries(palette) as [level, val], i}
 						<div class="palette-swatch" style:background-color={val}>
-							<label style:transition-delay="{i * 50}ms">{col}<br />{level}</label>
+							<legend style:transition-delay="{i * 50}ms">{col}<br />{level}</legend>
 						</div>
 					{/each}
 				</div>
@@ -219,5 +227,45 @@
 		grid-column: main;
 		padding: 4rem 0;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
+
+	.palette {
+		max-width: 600px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		gap: 2rem 1rem;
+	}
+
+	.palette-row {
+		position: relative;
+		grid-column: 1 / -1;
+		gap: inherit;
+		display: grid;
+		grid-template-columns: inherit;
+
+		& legend {
+			font-size: var(--size-small);
+			position: relative;
+			width: 100%;
+			height: 100%;
+			padding: 1rem;
+			opacity: 0;
+			transform: translateY(8px);
+			transition: all 0.25s ease-out;
+		}
+
+		&:hover {
+			& legend {
+				transform: translateY(0px);
+				opacity: 1;
+			}
+		}
+	}
+
+	.palette-swatch {
+		border-radius: 1.5rem;
+		aspect-ratio: 1;
+		width: 100%;
 	}
 </style>
