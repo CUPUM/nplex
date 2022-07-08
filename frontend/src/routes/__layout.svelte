@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import { afterNavigate, goto } from '$app/navigation';
-	import { page, session } from '$app/stores';
+	import { getStores, session } from '$app/stores';
 	import Auth from '$components/complexes/Auth.svelte';
 	import Footer from '$components/complexes/Footer.svelte';
 	import MessagesOutlet from '$components/complexes/MessagesOutlet.svelte';
@@ -33,6 +33,8 @@
 </script>
 
 <script lang="ts">
+	import { browser } from '$app/env';
+
 	/**
 	 * Updating the client session's prevUrl used for redirects on guard fail.
 	 */
@@ -42,11 +44,13 @@
 		session.update((prev) => ({ ...prev, prevUrl: newPrevUrl.toString() }));
 	});
 
+	const { page } = getStores(); // Getting the page store this way since we are getting its value outside component initialization, in the below callback
+
 	/**
 	 * Listening to and handling client-side Supabase auth state change.
 	 */
 	db.auth.onAuthStateChange(async (e, s) => {
-		if (e === 'SIGNED_OUT') {
+		if (browser && e === 'SIGNED_OUT') {
 			session.update((prevSession) => {
 				const rootPath = get(page).url.hostname;
 				return { ...prevSession, prevUrl: rootPath, user: null };
@@ -56,6 +60,10 @@
 		const role = toUserRoleEnum(await getUserRole());
 		session.update((prevSession) => ({ ...prevSession, user: { ...s.user, role } }));
 	});
+	/**
+	 * On initializing the website client-side, let's attempt to login with previously set cookie-token (if any).
+	 */
+	db.auth.refreshSession();
 
 	let loading = true;
 	let navbarHeight: number;

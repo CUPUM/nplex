@@ -124,6 +124,7 @@ export async function signUp(info: AuthInfo) {
 export async function signIn(info: AuthInfo) {
 	const res = await db.auth.signIn(info, {
 		redirectTo: info.provider ? get(page).url.pathname : null,
+		shouldCreateUser: false,
 	});
 
 	return res;

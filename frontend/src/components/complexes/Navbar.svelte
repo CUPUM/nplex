@@ -92,7 +92,7 @@
 			{#if $session.user}
 				<Popover placement="bottom" align="end" useHover={true}>
 					<Button slot="control" variant="navbar" href={creationBaseRoute.pathname}>
-						<Icon name="new-file" slot="icon" />
+						<Icon name="pen" slot="icon" />
 					</Button>
 					{#each creationRoutes as r}
 						<Button href={r.pathname}>{r.title}</Button>
