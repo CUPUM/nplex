@@ -223,14 +223,15 @@
 	.default {
 		color: var(--color-dark-900);
 		background-color: var(--color-light-300);
-		box-shadow: inset 0 0 0 0 transparent, 0 0.5em 2em -1em transparent;
-		transition: all 0.12s ease-out, box-shadow 0.2s ease-out;
+		box-shadow: inset 0 0 0 0 var(--color-dark-700), 0 0.5em 2em -1em transparent;
+		transition: all 0.15s ease-out, box-shadow 0.2s ease-out;
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover{
 			color: var(--color-light-300);
 			background-color: var(--color-dark-700);
-			box-shadow: inset 0 0 0 2px var(--color-dark-700), 0 0.5em 2em -1em transparent;
+			box-shadow: inset 0 0 0 5px transparent, 0 0.5em 2em -1em transparent;
+			transition: all 0.08s ease-out, box-shadow 0.1s ease-out;
 		}
 		&:active {
 			color: var(--color-light-900);
