@@ -227,6 +227,7 @@
 		}
 
 		&::placeholder {
+			letter-spacing: initial;
 			color: currentColor;
 			opacity: 0.2;
 			transition: all 0.5s;

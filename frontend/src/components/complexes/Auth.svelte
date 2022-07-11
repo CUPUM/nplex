@@ -217,7 +217,7 @@
 		width: 50%;
 		max-width: 275px;
 		margin: 0 auto;
-		padding: 4rem 2rem;
+		padding: 2rem;
 		transition: all 0.15s ease-out;
 
 		&:hover {
