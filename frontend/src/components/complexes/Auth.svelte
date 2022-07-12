@@ -105,7 +105,7 @@
 			placeholder="Courriel"
 			placeholderIcon="letter"
 			placeholderIconWhileValue={true}
-			name="new-email"
+			name="email"
 			type="email"
 			required
 		/>
@@ -114,7 +114,7 @@
 			placeholder="Mot de passe"
 			placeholderIcon="asterisk"
 			placeholderIconWhileValue={true}
-			name="new-password"
+			name="password"
 			type={revealPassword ? 'text' : 'password'}
 		>
 			<Button slot="right" variant="ghost" on:click={() => (revealPassword = !revealPassword)}>
@@ -124,13 +124,13 @@
 		{#if signupForm}
 			<div class="signup-fields" transition:slide={{}}>
 				<div>
-					<Field size={sizes.small} bind:value={firstname} placeholder="Prénom" />
+					<Field size={sizes.small} bind:value={firstname} name="firstname" placeholder="Prénom" />
 				</div>
 				<div>
-					<Field size={sizes.small} bind:value={middlename} placeholder="Surnom" />
+					<Field size={sizes.small} bind:value={middlename} name="middlename" placeholder="Surnom" />
 				</div>
 				<div class="full-cols">
-					<Field size={sizes.small} bind:value={lastname} placeholder="Nom de famille" />
+					<Field size={sizes.small} bind:value={lastname} name="lastname" placeholder="Nom de famille" />
 				</div>
 			</div>
 		{/if}

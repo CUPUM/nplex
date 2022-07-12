@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
 	const queue = new Set();
-	const duration = 350;
-	const delay = 250;
+	const duration = 250;
+	const delay = 150;
 </script>
 
 <script lang="ts">
@@ -31,7 +31,7 @@
 		timeout = setTimeout(() => {
 			mounted = true;
 			queue.delete(instance);
-		}, [...queue].indexOf(instance) * (duration / 3) + delay);
+		}, [...queue].length * (duration / 3) + delay);
 	});
 
 	onDestroy(() => {
@@ -53,7 +53,10 @@
 >
 	{#if mounted}
 		{#key name}
-			<g transition:scale|local={{ start: 0.5, easing: expoOut, duration: 750 }}>
+			<g
+				in:scale={{ start: 0.5, easing: expoOut, duration: 750 }}
+				out:scale|local={{ start: 0.75, easing: expoOut, duration: 500 }}
+			>
 				{#if icon.strokes.length}
 					{#each icon.strokes as stroke, i}
 						<path

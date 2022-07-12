@@ -61,6 +61,10 @@ declare namespace App {
 		 * Display state of the app's footer.
 		 */
 		showFooter: boolean;
+		/**
+		 * Display state for the editor routes' aside panel.
+		 */
+		showEditorAside: boolean;
 	}
 
 	/**

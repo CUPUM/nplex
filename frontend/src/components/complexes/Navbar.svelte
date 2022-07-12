@@ -13,10 +13,11 @@
 	import { getAuthRedirectUrl, signOut } from '$utils/auth';
 	import { colors } from '$utils/colors';
 	import { gotoCategory } from '$utils/navigation';
-	import { creationBaseRoute, creationRoutes, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
+	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
 	import { onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
+	import NavbarCreationMenu from './NavbarCreationMenu.svelte';
 
 	export let navbarHeight: number = 0;
 
@@ -94,9 +95,7 @@
 					<Button slot="control" variant="navbar" href={creationBaseRoute.pathname}>
 						<Icon name="pen" slot="icon" />
 					</Button>
-					{#each creationRoutes as r}
-						<Button href={r.pathname}>{r.title}</Button>
-					{/each}
+					<NavbarCreationMenu />
 				</Popover>
 				<Popover useHover={true} placement="bottom" align="end">
 					<AvatarButton slot="control" href={userBaseRoute.pathname} />
@@ -131,7 +130,7 @@
 		width: 100%;
 		align-items: center;
 		padding: 1rem;
-		padding-bottom: 0.5rem;
+		padding-block: 0.75rem;
 		margin: 0;
 		gap: 0;
 		font-size: var(--size-small);

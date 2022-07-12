@@ -148,7 +148,7 @@
 	/* Nav theme */
 	.navbar {
 		background-color: transparent;
-		backdrop-filter: blur(12px);
+		// backdrop-filter: blur(18px);
 		// box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-900), 0);
 		transition: background-color 0.5s ease-out;
 		&:hover,

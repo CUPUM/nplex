@@ -8,7 +8,7 @@
 
 import type { Category } from 'src/types/categories';
 
-export interface Route {
+interface Route {
 	/**
 	 * Full un-based absolute pathname.
 	 */
@@ -38,9 +38,7 @@ export const mainRoutes: Route[] = [
 	},
 ];
 
-export const rootRoute = mainRoutes[0];
-
-export interface ExploreRoute extends Route {
+interface ExploreRoute extends Route {
 	category: Category;
 }
 
@@ -70,21 +68,29 @@ export const creationBaseRoute: Route = {
 	title: 'Éditer',
 };
 
+interface CreationRoute extends Route {
+	category: Category;
+	// subtitle: string;
+}
+
 /**
- * Relative root routes for the submission forms.
+ * Relative creation-root routes for the submission forms.
  */
-export const creationRoutes: Route[] = [
+export const creationRoutes: CreationRoute[] = [
 	{
-		pathname: creationBaseRoute + '/projet',
-		title: 'Nouveau projet',
+		pathname: creationBaseRoute.pathname + '/projet',
+		title: 'Créer ou éditer un projet',
+		category: 'projects',
 	},
 	{
-		pathname: creationBaseRoute + '/organisation',
-		title: 'Nouvelle organisation',
+		pathname: creationBaseRoute.pathname + '/organisation',
+		title: 'Créer ou éditer une organisation',
+		category: 'organisations',
 	},
 	{
-		pathname: creationBaseRoute + '/acteur',
-		title: 'Nouveau profil d’acteur',
+		pathname: creationBaseRoute.pathname + '/acteur',
+		title: 'Créer ou éditer un profil d’acteur',
+		category: 'actors',
 	},
 ];
 
@@ -93,4 +99,4 @@ export const userBaseRoute: Route = {
 	title: 'Mon compte',
 };
 
-export const userRoutes: Route[] = [];
+// export const userRoutes: Route[] = [];

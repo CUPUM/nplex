@@ -131,7 +131,7 @@
 			on:blur={blur}
 			on:submit
 			on:keypress
-			autocomplete="new-{type}"
+			autocomplete={type}
 			{required}
 		/>
 		{#if value}

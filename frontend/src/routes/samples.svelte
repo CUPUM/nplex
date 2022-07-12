@@ -113,7 +113,7 @@
 			<Button
 				type="submit"
 				slot="has-value"
-				on:click={() => messages.dispatch({ text: value, timer: 2500, type: 'error' })}
+				on:click={() => messages.dispatch({ text: value, timer: 0, type: 'error' })}
 				>Dispatch app message</Button
 			>
 		</Field>

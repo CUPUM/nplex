@@ -7,25 +7,48 @@ interface HorizontalScrollOptions {
 	 * Should the horizontal scroll be applied even if the element has vertical scroll overflow?
 	 */
 	precedeVertical?: boolean;
+	/**
+	 * In addition to the transposed deltaY scroll, should the event's deltaX be applied or not?
+	 */
+	applyDeltaX: boolean;
 }
 
 const defaultOptions: HorizontalScrollOptions = {
 	multiplier: 1,
 	precedeVertical: true,
+	applyDeltaX: true,
 };
 
 /**
  * Directive to catch and transpose mousewheel events into horizontal scroll.
  */
 export function horizontalScroll(element: HTMLElement, options?: HorizontalScrollOptions) {
-	const { multiplier, precedeVertical } = { ...defaultOptions, ...options };
+	const { multiplier, precedeVertical, applyDeltaX } = { ...defaultOptions, ...options };
 
 	function handleScroll(e: WheelEvent) {
-		e.preventDefault();
-		if (precedeVertical) {
-			element.scrollLeft += e.deltaY * multiplier;
-		} else {
-			// Do other stuff
+		if (applyDeltaX) {
+			element.scrollLeft += e.deltaX;
+		}
+
+		// Let's first check that there actually is available scrollable space inside the host element.
+		const horizontalScrollSpace = element.scrollWidth - element.clientWidth;
+
+		if (horizontalScrollSpace) {
+			const transposedDelta = e.deltaY * multiplier;
+			// Let's now check that the scrolled delta is applicable, i.e. that the client hasn't already reached the scrollable space's end (or start).
+			const canScrollHorizontal =
+				(transposedDelta < 0 && element.scrollLeft) ||
+				(transposedDelta > 0 && element.scrollLeft < horizontalScrollSpace);
+
+			if (canScrollHorizontal) {
+				const canScrollVertical =
+					(e.deltaY < 0 && element.scrollTop) ||
+					(e.deltaY > 0 && element.scrollTop < element.scrollHeight - element.clientHeight);
+				if (precedeVertical || !canScrollVertical) {
+					e.preventDefault();
+					element.scrollLeft += transposedDelta;
+				}
+			}
 		}
 	}
 

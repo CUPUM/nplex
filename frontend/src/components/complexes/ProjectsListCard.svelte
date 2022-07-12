@@ -50,7 +50,7 @@
 			<h3>{project.name}</h3>
 			<Button size={sizes.small} style="grid-area: button;" iconPosition="after">
 				<span>Consulter</span>
-				<Icon name="submit" slot="icon" />
+				<Icon name="arrow-right" slot="icon" />
 			</Button>
 		</a>
 	{:else if $session.user}
@@ -60,7 +60,7 @@
 		<a href={authHref} class="button-parent login-card">
 			<Button>
 				<span>Connectez-vous ou créez un compte</span>
-				<Icon name="submit" slot="icon" />
+				<Icon name="arrow-right" slot="icon" />
 			</Button>
 			<p>pour soumettre un nouveau projet.</p>
 		</a>

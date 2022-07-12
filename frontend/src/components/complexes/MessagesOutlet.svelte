@@ -18,9 +18,11 @@
 			animate:flip={{ duration: 350, easing: expoOut }}
 			class={message.type}
 		>
-			<div class="progress-container">
-				<div class="progress" style:--timer="{message.timer}ms" />
-			</div>
+			{#if message.timer}
+				<div class="progress-container">
+					<div class="progress" style:--timer="{message.timer}ms" />
+				</div>
+			{/if}
 			<div class="content">
 				{@html message.text}
 			</div>
