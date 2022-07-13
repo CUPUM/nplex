@@ -14,6 +14,7 @@
 	import { Ctx } from '$utils/keys';
 	import { setContext } from 'svelte';
 	import { expoInOut } from 'svelte/easing';
+	import { slide } from 'svelte/transition';
 	import Icon from './Icon.svelte';
 
 	export let name: string = undefined;
@@ -112,7 +113,8 @@
 				on:click={() => inputRef.focus()}
 				transition:slip={{ width: true, opacity: 0, duration: 400, easing: expoInOut }}
 			>
-				<Icon name={placeholderIcon} />
+				<Icon name={placeholderIcon} size="1.25em" />
+				<hr transition:slide={{}} />
 			</div>
 		{/if}
 		<input
@@ -195,6 +197,20 @@
 		transform: translateX(0);
 		transition: all 0.15s ease-out;
 		top: -0.05em;
+	}
+
+	hr {
+		display: inline-block;
+		position: absolute;
+		border: none;
+		width: 2px;
+		height: 60%;
+		background-color: currentColor;
+		top: 20%;
+		right: -0.5em;
+		margin: 0;
+		padding: 0;
+		opacity: 0.1;
 	}
 
 	input {

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
 	import { crossfadeExploreArticleBackButton } from '$transitions/crossfades';
 	import { exploreRoutes } from '$utils/routes';
 
@@ -16,7 +15,6 @@
 <nav>
 	<div in:receive={{ key: projectId }} out:send={{ key: projectId }}>
 		<Button href={exploreRoutes.find((r) => r.category === $page.stuff.category).pathname} variant="secondary">
-			<Icon name="undo" slot="icon" />
 			Go back :)
 		</Button>
 	</div>

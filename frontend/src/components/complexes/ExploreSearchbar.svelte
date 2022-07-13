@@ -3,7 +3,6 @@
 	import { page } from '$app/stores';
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
 	import Token from '$components/primitives/Token.svelte';
 	import { showProjectsFilters } from '$stores/projects';
 	import { exploreSearchterm } from '$stores/search';
@@ -66,27 +65,17 @@
 				{#if $page.stuff.category && !showCurrentFilters}
 					<div transition:slip={{ width: true, overflow: 'visible' }}>
 						<div in:receive={{ key: '' }} out:send={{ key: '' }}>
-							<Button on:click={toggleFilters}>
-								<Icon slot="icon" name="parameters" />
-							</Button>
+							<Button on:click={toggleFilters} icon="parameters" />
 						</div>
 					</div>
 				{/if}
 			</svelte:fragment>
 			<svelte:fragment slot="has-value">
-				<Button type="submit" variant="cta">
-					<Icon slot="icon" name="arrow-right" />
-				</Button>
+				<Button type="submit" variant="cta" icon="arrow-right" />
 			</svelte:fragment>
 		</Field>
 	</section>
-	<section
-		class="search-tokens"
-		use:horizontalScroll={{}}
-		on:scroll={handleTokenScroll}
-		class:fadestart
-		class:fadeend
-	>
+	<section class="search-tokens" use:horizontalScroll on:scroll={handleTokenScroll} class:fadestart class:fadeend>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>
 		<Token>Jeton de recherche</Token>

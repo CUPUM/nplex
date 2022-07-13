@@ -3,7 +3,6 @@
 
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
 	import { messages } from '$stores/messages';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
@@ -29,8 +28,9 @@
 			<Button
 				style="position: absolute; left: calc(100% + .5em);"
 				warning={message.type === 'error'}
-				on:click={() => messages.clear(message)}><Icon slot="icon" name="cross" /></Button
-			>
+				on:click={() => messages.clear(message)}
+				icon="cross"
+			/>
 		</dialog>
 	{/each}
 </div>

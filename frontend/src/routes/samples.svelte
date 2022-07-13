@@ -1,12 +1,8 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
-	import Field from '$components/primitives/Field.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
-	import Loading from '$components/primitives/Loading.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
-	import Range from '$components/primitives/Range.svelte';
-	import RangeThumb from '$components/primitives/RangeThumb.svelte';
 	import Select from '$components/primitives/Select.svelte';
 	import SelectOption from '$components/primitives/SelectOption.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
@@ -14,11 +10,8 @@
 	import TestRadio from '$components/primitives/TestRadio.svelte';
 	import TestRadioSet from '$components/primitives/TestRadioSet.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
-	import { backgroundColor } from '$stores/backgroundColor';
 	import { messages } from '$stores/messages';
 	import type { SvelteProps } from '$types/helpers';
-	import { colors } from '$utils/colors';
-	import { cssSize } from '$utils/css';
 	import { icons } from '$utils/icons/icons';
 	import { KeyCode } from '$utils/keys';
 	import { sizes } from '$utils/sizes';
@@ -30,7 +23,8 @@
 	let showLoading = true;
 	let loadingSize = sizes.medium;
 	let showTransitionBlock = false;
-	let currentIconName = Object.keys(icons)[0];
+	let buttonIcon = true;
+	let currentIconName: keyof typeof icons = Object.keys(icons)[0] as keyof typeof icons;
 
 	let radioValue = null;
 
@@ -46,7 +40,7 @@
 </script>
 
 <article class="core-grid">
-	<section>
+	<!-- <section>
 		<h2>Text styles</h2>
 		<h1>Heading 1</h1>
 		<p>
@@ -109,7 +103,8 @@
 	</section>
 	<section>
 		<h2>Field</h2>
-		<Field let:value on:keypress={handleKeypress} placeholder="Ceci est un placeholder">
+		<Field let:value on:keypress={handleKeypress} placeholder="Ceci est un placeholder" placeholderIcon="comment">
+			<button slot="left">test</button>
 			<Button
 				type="submit"
 				slot="has-value"
@@ -152,26 +147,45 @@
 				</div>
 			{/each}
 		</div>
+	</section> -->
+	<section>
+		<h2>Icons</h2>
+		<p>
+			<Icon size={sizes.xlarge} name={currentIconName} />
+		</p>
+		<p>
+			<select name="" id="" bind:value={currentIconName}>
+				{#each Object.keys(icons) as iconName}
+					<option value={iconName}>{iconName}</option>
+				{/each}
+			</select>
+		</p>
 	</section>
 	<section>
-		<h2>Buttons</h2>
-		<Checkbox bind:checked={active} />
-		<Select id="size-select" bind:value={currentSize}>
-			{#each sizeKeys as k}
-				<SelectOption value={sizes[k]} id="{k}-id">{k}</SelectOption>
-			{/each}
-		</Select>
+		<h2>Main inputs</h2>
+		<h3>Button component</h3>
+		<p>
+			<Checkbox bind:checked={active}>Active or not?</Checkbox>
+		</p>
+		<p>
+			<Checkbox bind:checked={buttonIcon}>Button icon</Checkbox>
+		</p>
+		<p>
+			<span>Size: </span><Select id="size-select" bind:value={currentSize}>
+				{#each sizeKeys as k}
+					<SelectOption value={sizes[k]} id="{k}-id">{k}</SelectOption>
+				{/each}
+			</Select>
+		</p>
 		{#each variants as variant}
-			<h3>{variant.charAt(0).toUpperCase() + variant.slice(1)}</h3>
-			<div id="buttons">
-				<Button {active} {variant} size={currentSize}>With text</Button>
-				<Tooltip message="Testy test">
-					<Button {active} {variant} size={currentSize}
-						><Icon slot="icon" name="user" />With text and icon</Button
-					>
-				</Tooltip>
-				<Button {active} {variant} size={currentSize}><Icon slot="icon" name="settings" /></Button>
-			</div>
+			<h4>{variant.charAt(0).toUpperCase() + variant.slice(1)}</h4>
+			<Button {active} {variant} size={currentSize}>With text</Button>
+			<Tooltip message="Testy test">
+				<Button {active} {variant} size={currentSize} icon={buttonIcon ? currentIconName : null}
+					>With text and icon</Button
+				>
+			</Tooltip>
+			<Button {active} {variant} size={currentSize} icon={buttonIcon ? currentIconName : null} />
 		{/each}
 	</section>
 	<section>
@@ -183,7 +197,7 @@
 		</Popover>
 	</section>
 	<section>
-		<Tooltip message="Bonjour, je suis un tooltip!"><Button icon="new-file" /></Tooltip>
+		<Tooltip message="Bonjour, je suis un tooltip!"><Button icon="file-add" /></Tooltip>
 	</section>
 	<section class="">
 		<Switch orientation="column" bind:value={switchval} name="test1">
@@ -206,16 +220,6 @@
 			<TestRadio value="test-2">Test 2 :D</TestRadio>
 			<TestRadio value="test-3">Test le 3e, de nom</TestRadio>
 		</TestRadioSet>
-	</section>
-	<section>
-		<h2>Icons</h2>
-		<Icon size={sizes.xlarge} name={currentIconName} />
-		<br />
-		<select name="" id="" bind:value={currentIconName}>
-			{#each Object.keys(icons) as iconName}
-				<option value={iconName}>{iconName}</option>
-			{/each}
-		</select>
 	</section>
 </article>
 

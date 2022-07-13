@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
 	import { showProjectsFilters } from '$stores/projects';
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
 	import { width } from '$transitions/width';
@@ -28,9 +27,7 @@
 	transition:width|local={{ duration: 350, easing: expoOut }}
 >
 	<div id="filters-close" in:receive={{ key: '' }} out:send={{ key: '' }}>
-		<Button on:click={close}>
-			<Icon slot="icon" name="cross" />
-		</Button>
+		<Button on:click={close} icon="cross" />
 	</div>
 	<form>
 		<ProjectsFilter legend="Fourchettes de coût" key="cost">

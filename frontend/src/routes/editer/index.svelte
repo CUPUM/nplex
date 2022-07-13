@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
 	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
 
 	let editableProjects = Array(5)
 		.fill(null)
@@ -17,10 +16,7 @@
 <ul use:horizontalScroll>
 	<li>
 		<a href="/editer/projet" class="button-parent">
-			<Button href="/editer/projet" iconPosition="after">
-				Créer une nouvelle fiche
-				<Icon name="arrow-right" slot="icon" />
-			</Button>
+			<Button href="/editer/projet" icon="arrow-right" iconPosition="trailing">Créer une nouvelle fiche</Button>
 		</a>
 	</li>
 	{#each editableProjects as p}

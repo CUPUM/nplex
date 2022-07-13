@@ -2,7 +2,6 @@
 	import { page, session } from '$app/stores';
 	import AvatarButton from '$components/primitives/AvatarButton.svelte';
 	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
@@ -22,28 +21,19 @@
 	export let navbarHeight: number = 0;
 
 	let mounted = false;
-	let navbarRef: HTMLElement;
-	let resizeObserver: ResizeObserver;
 	let hidden;
 	let overlay;
 	const yThreshold = 100;
 
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
 	$: overlay = $mainScroll.y > yThreshold + 100;
-	$: navbarCategory = $page.stuff.category;
-
-	function updateHeight() {
-		navbarHeight = navbarRef.offsetHeight;
-	}
 
 	onMount(() => {
 		mounted = true;
-		resizeObserver = new ResizeObserver(updateHeight);
-		resizeObserver.observe(navbarRef);
 	});
 </script>
 
-<header bind:this={navbarRef} class:hidden class:overlay>
+<header class:hidden class:overlay bind:clientHeight={navbarHeight}>
 	{#if mounted}
 		<nav
 			class="section"
@@ -86,15 +76,11 @@
 			out:fly={{ y: 20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
 			<Tooltip message="Accueil" placement="bottom">
-				<Button href="/" variant="navbar" square={true}>
-					<Icon name="home" slot="icon" />
-				</Button>
+				<Button href="/" variant="navbar" square={true} icon="home" />
 			</Tooltip>
 			{#if $session.user}
 				<Popover placement="bottom" align="end" useHover={true}>
-					<Button slot="control" variant="navbar" href={creationBaseRoute.pathname}>
-						<Icon name="pen" slot="icon" />
-					</Button>
+					<Button slot="control" variant="navbar" href={creationBaseRoute.pathname} icon="pen" />
 					<NavbarCreationMenu />
 				</Popover>
 				<Popover useHover={true} placement="bottom" align="end">
@@ -103,9 +89,7 @@
 					<Button on:click={signOut}>Se déconnecter</Button>
 				</Popover>
 			{:else}
-				<Button variant="cta" href={getAuthRedirectUrl($page.url).toString()}>
-					<Icon name="user" slot="icon" />Se connecter
-				</Button>
+				<Button variant="cta" href={getAuthRedirectUrl($page.url).toString()} icon="user">Se connecter</Button>
 			{/if}
 		</nav>
 	{/if}

@@ -2,12 +2,9 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
-	import ProviderLogo from '$components/primitives/ProviderLogo.svelte';
 	import { authModal } from '$stores/auth';
 	import { messages } from '$stores/messages';
-	import { slip } from '$transitions/slip';
 	import { signIn, signUp } from '$utils/auth';
 	import { providers } from '$utils/providers';
 	import { sizes } from '$utils/sizes';
@@ -117,9 +114,12 @@
 			name="password"
 			type={revealPassword ? 'text' : 'password'}
 		>
-			<Button slot="right" variant="ghost" on:click={() => (revealPassword = !revealPassword)}>
-				<Icon slot="icon" name={revealPassword ? 'eye-cross' : 'eye-open'} />
-			</Button>
+			<Button
+				slot="right"
+				variant="ghost"
+				on:click={() => (revealPassword = !revealPassword)}
+				icon={revealPassword ? 'eye-cross' : 'eye-open'}
+			/>
 		</Field>
 		{#if signupForm}
 			<div class="signup-fields" transition:slide={{}}>
@@ -153,17 +153,11 @@
 				disabled={!Boolean(email) || !Boolean(password)}
 				display="block"
 				contentAlign="center"
-				iconPosition="after"
+				icon={Boolean(email) && Boolean(password) ? 'arrow-right' : undefined}
+				iconPosition="trailing"
 				loading={currentAction === Action.SignIn}
 			>
 				Vous avez déjà un compte? Connectez-vous
-				<svelte:fragment slot="icon">
-					{#if Boolean(email) && Boolean(password)}
-						<div class="icon-wrap" transition:slip={{ width: true, x: -10 }}>
-							<Icon slot="icon" name="arrow-right" />
-						</div>
-					{/if}
-				</svelte:fragment>
 			</Button>
 		</div>
 	</form>
@@ -171,7 +165,7 @@
 	<form in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 450 }} class="provider-buttons">
 		{#each providerNames as name, i}
 			<Button size={sizes.small} contentAlign="center" variant="secondary">
-				<ProviderLogo {name} slot="icon" size="1.5em" />
+				<!-- <ProviderLogo {name} slot="icon" size="1.5em" /> -->
 				Se connecter avec {providers[name].title}
 			</Button>
 		{/each}

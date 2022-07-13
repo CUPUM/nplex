@@ -2,7 +2,6 @@
 	import { intersection } from '$actions/intersection';
 	import { page, session } from '$app/stores';
 	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
 	import { getAuthRedirectUrl } from '$utils/auth';
 	import { colors } from '$utils/colors';
@@ -48,9 +47,8 @@
 				{/if}
 			</figure>
 			<h3>{project.name}</h3>
-			<Button size={sizes.small} style="grid-area: button;" iconPosition="after">
-				<span>Consulter</span>
-				<Icon name="arrow-right" slot="icon" />
+			<Button size={sizes.small} style="grid-area: button;" icon="arrow-right" iconPosition="trailing">
+				Consulter
 			</Button>
 		</a>
 	{:else if $session.user}
@@ -58,10 +56,7 @@
 		<a href="">Soumettre un nouveau projet</a>
 	{:else}
 		<a href={authHref} class="button-parent login-card">
-			<Button>
-				<span>Connectez-vous ou créez un compte</span>
-				<Icon name="arrow-right" slot="icon" />
-			</Button>
+			<Button icon="arrow-right">Connectez-vous ou créez un compte</Button>
 			<p>pour soumettre un nouveau projet.</p>
 		</a>
 	{/if}

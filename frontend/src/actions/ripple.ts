@@ -34,7 +34,7 @@ interface RippleOptions {
 export function ripple(
 	element: HTMLElement,
 	{
-		spreadDuration = 750,
+		spreadDuration = 1000,
 		fadeDuration = 1000,
 		fadeDelay = 150,
 		opacity = 0.25,
@@ -96,7 +96,7 @@ export function ripple(
 		ripple.style.top = eRelY + 'px';
 		ripple.style.left = eRelX + 'px';
 		ripple.style.filter = `blur(${blur}px)`;
-		ripple.style.animation = `${RIPPLE_GLOBALS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(0, 0, 0, 1) forwards`;
+		ripple.style.animation = `${RIPPLE_GLOBALS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(.1, .5, 0, 1) forwards`;
 		element.appendChild(ripple);
 	}
 

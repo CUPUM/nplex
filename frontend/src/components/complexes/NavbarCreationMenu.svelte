@@ -3,7 +3,6 @@
 
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
 
 	import { creationRoutes } from '$utils/routes';
 </script>
@@ -13,10 +12,7 @@
 		<a class="card button-parent" href={r.pathname}>
 			<h4>{r.title}</h4>
 			<div>
-				<Button href={r.pathname} iconPosition="after">
-					Lancer ou reprendre
-					<Icon name="arrow-right" slot="icon" />
-				</Button>
+				<Button href={r.pathname} iconPosition="trailing" icon="arrow-right">Lancer ou reprendre</Button>
 			</div>
 		</a>
 	{/each}

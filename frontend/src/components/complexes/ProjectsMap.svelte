@@ -3,7 +3,6 @@
 
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
 	import Map from '$components/primitives/Map.svelte';
 	import MapToolbar from '$components/primitives/MapToolbar.svelte';
 </script>
@@ -11,14 +10,14 @@
 <section>
 	<Map let:map innerStyle="width: 100vw; height: 100vh;">
 		<MapToolbar slot="top-left">
-			<Button variant="ghost" on:click={() => map.zoomIn()}><Icon slot="icon" name="plus" /></Button>
-			<Button variant="ghost" on:click={() => map.zoomOut()}><Icon slot="icon" name="minus" /></Button>
+			<Button variant="ghost" on:click={() => map.zoomIn()} icon="plus" />
+			<Button variant="ghost" on:click={() => map.zoomOut()} icon="minus" />
 		</MapToolbar>
 		<MapToolbar slot="top-right">
-			<Button variant="ghost" on:click={() => console.log(map)}><Icon slot="icon" name="localize" /></Button>
-			<Button variant="ghost" on:click={() => console.log(map)}><Icon slot="icon" name="layers" /></Button>
-			<Button variant="ghost" on:click={() => console.log(map)}><Icon slot="icon" name="expand" /></Button>
-			<Button variant="ghost" on:click={() => console.log(map)}><Icon slot="icon" name="cross" /></Button>
+			<Button variant="ghost" on:click={() => console.log(map)} icon="localize" />
+			<Button variant="ghost" on:click={() => console.log(map)} icon="layers" />
+			<Button variant="ghost" on:click={() => console.log(map)} icon="expand" />
+			<Button variant="ghost" on:click={() => console.log(map)} icon="cross" />
 		</MapToolbar>
 	</Map>
 </section>

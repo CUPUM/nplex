@@ -1,30 +1,45 @@
 <!--
 	@component
-	Hello world.
+	This button component is the primary interactive element.
  -->
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
+	import { slip } from '$transitions/slip';
 	import { cssSize, type SizeInput } from '$utils/css';
+	import type { icons } from '$utils/icons/icons';
 	import { Ctx } from '$utils/keys';
 	import { getContext } from 'svelte';
 	import type { FieldContext } from './Field.svelte';
+	import Icon from './Icon.svelte';
 	import Loading from './Loading.svelte';
 
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'navbar' = 'default';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let size: SizeInput = '1em';
+	/**
+	 * Alignment of the button's default slot content. This rule does not affect icon positioning.
+	 */
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
-	export let iconPosition: 'before' | 'after' = 'before';
-	export let warning: boolean = false;
+	export let icon: keyof typeof icons = undefined;
+	export let iconPosition: 'leading' | 'trailing' = 'leading';
+	/**
+	 * Should the button be rendered with an aspect ratio of 1:1 ?
+	 */
 	export let square: boolean = undefined;
+	/**
+	 * Passing an `href` value causes the button component to render an anchor tag rather than a button.
+	 */
 	export let href: string = undefined;
 	export let active: boolean = false;
 	export let disabled: boolean = false;
 	export let loading: boolean = false;
+	export let warning: boolean = false;
 
 	let elementRef: HTMLElement;
+
 	const fieldCtx = getContext<FieldContext>(Ctx.Field);
 	const popoverCtx = getContext(Ctx.Popover);
+	const buttonSetCtx = getContext(Ctx.ButtonSet);
 
 	/**
 	 * Soft auto-determination of squareness, where:
@@ -33,7 +48,7 @@
 	 * - Squareness is automatically applied if button has no slot content.
 	 */
 	let autoSquare = false;
-	$: autoSquare = square || (!$$slots.default && $$slots.icon);
+	$: autoSquare = square || (!$$slots.default && !!icon);
 </script>
 
 <svelte:element
@@ -57,14 +72,21 @@
 >
 	<div class="ripple-host" use:ripple={{ startColor: 'currentColor', controlElement: elementRef }} />
 	<div class="content align-{contentAlign}">
-		{#if $$slots.icon}
-			<span class="icon icon-{iconPosition}">
-				<slot name="icon" />
-			</span>
+		{#if icon}
+			<div class="icon {iconPosition}" transition:slip={{ overflow: 'visible', width: true, opacity: 0 }}>
+				<Icon name={icon} strokeWidth={variant === 'cta' ? 2 : 1.5} />
+			</div>
 		{/if}
 		{#if $$slots.default}
 			<span class="label" style:text-align={contentAlign}>
-				<slot />
+				<div class="label-default">
+					<slot />
+				</div>
+				{#if variant === 'cta'}
+					<div class="label-hover" style:text-align={contentAlign}>
+						<slot />
+					</div>
+				{/if}
 			</span>
 		{/if}
 	</div>
@@ -125,7 +147,8 @@
 
 	/* Squareness */
 	.square {
-		width: var(--size);
+		// width: var(--size);
+		aspect-ratio: 1 / 1;
 		padding: 0;
 		& div {
 			justify-content: center;
@@ -174,14 +197,14 @@
 	.align-right {
 		justify-content: flex-end;
 	}
-	.icon-before {
+	.leading {
 		grid-column: left;
 		justify-content: left;
 		&:not(:only-child) {
 			padding-right: 0.5em;
 		}
 	}
-	.icon-after {
+	.trailing {
 		grid-column: right;
 		justify-content: right;
 		&:not(:only-child) {
@@ -199,7 +222,7 @@
 		align-items: center;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-		letter-spacing: 0.02em;
+		// letter-spacing: 0.02em;
 	}
 	.label {
 		grid-column: center;
@@ -210,7 +233,7 @@
 		flex-grow: 1;
 		top: -0.05em;
 		&:only-child {
-			font-size: 1.2em;
+			font-size: 1.25em;
 			grid-column: center;
 		}
 	}
@@ -222,7 +245,7 @@
 	// prettier-ignore
 	.default {
 		color: var(--color-dark-900);
-		background-color: var(--color-light-300);
+		background-color: var(--color-light-500);
 		box-shadow: inset 0 0 0 0 var(--color-dark-700), 0 0.5em 2em -1em transparent;
 		transition: all 0.15s ease-out, box-shadow 0.2s ease-out;
 		// prettier-ignore
@@ -281,15 +304,42 @@
 	.cta {
 		color: white;
 		background-color: var(--color-primary-500);
-		box-shadow: 0 0.5em 1em -0.5em rgba(var(--rgb-primary-900), 0.5);
+		box-shadow: 0 0.5em 1em -0.8em rgba(var(--rgb-primary-700), 0.5);
 		transition: all 0.2s ease-out, box-shadow 0.35s ease-out;
+
+		& .label {
+			perspective: 75px;
+		}
+		& .label-default {
+			transform: translateY(0) skewY(0deg) rotateX(0deg);
+			transition: all 0.5s cubic-bezier(0, 0, 0, 1);
+		}
+		& .label-hover {
+			opacity: 0;
+			position: absolute;
+			top: 0;
+			left: 0;
+			transform: translateY(0.8em) skewY(5deg) rotateX(-60deg);
+			transition: all 0.3s cubic-bezier(0, 0, 0, 1);
+		}
+
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
 		&[popover='open'] {
 			color: var(--color-light-100);
-			background-color: var(--color-primary-300);
-			box-shadow: 0 1em 2.25em -0.5em var(--color-primary-700);
+			background-color: var(--color-primary-700);
+			box-shadow: 0 1em 2.5em -0.5em rgba(var(--rgb-primary-700), 0.8);
+			& .label-default {
+				opacity: 0;
+				transform: translateY(-.8em) skewY(5deg) rotateX(60deg);
+				transition: all 0.3s cubic-bezier(0, 0, 0, 1);
+			}
+			& .label-hover {
+				opacity: 1;
+				transform: translateY(0) skewY(0deg) rotateX(0deg);
+				transition: all 0.5s cubic-bezier(0, 0, 0, 1);
+			}
 		}
 		&:active {
 		}
