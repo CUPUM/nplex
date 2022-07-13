@@ -11,10 +11,10 @@
 	import TestRadioSet from '$components/primitives/TestRadioSet.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { messages } from '$stores/messages';
-	import type { SvelteProps } from '$types/helpers';
 	import { icons } from '$utils/icons/icons';
 	import { KeyCode } from '$utils/keys';
 	import { sizes } from '$utils/sizes';
+	import type { ComponentProps } from 'svelte/internal';
 
 	let alt = false;
 	let useHover;
@@ -28,7 +28,7 @@
 
 	let radioValue = null;
 
-	let variants: SvelteProps<Button>['variant'][] = ['default', 'secondary', 'ghost', 'cta', 'navbar'];
+	let variants: ComponentProps<Button>['variant'][] = ['default', 'secondary', 'ghost', 'cta', 'navbar'];
 	let sizeKeys = Object.keys(sizes);
 	let currentSize = sizes.medium;
 

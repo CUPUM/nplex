@@ -9,11 +9,11 @@
 <script lang="ts">
 	import { slip } from '$transitions/slip';
 
-	import type { SvelteProps } from '$types/helpers';
 	import { cssSize, type SizeInput } from '$utils/css';
 	import { Ctx } from '$utils/keys';
 	import { setContext } from 'svelte';
 	import { expoInOut } from 'svelte/easing';
+	import type { ComponentProps } from 'svelte/internal';
 	import { slide } from 'svelte/transition';
 	import Icon from './Icon.svelte';
 
@@ -46,7 +46,7 @@
 	 * Placeholder text and field icon.
 	 */
 	export let placeholder: string = '';
-	export let placeholderIcon: SvelteProps<Icon>['name'] = undefined;
+	export let placeholderIcon: ComponentProps<Icon>['name'] = undefined;
 	export let placeholderIconWhileValue: boolean = false;
 	/**
 	 * Input text value

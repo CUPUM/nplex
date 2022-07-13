@@ -6,9 +6,9 @@
 	import { ripple } from '$actions/ripple';
 	import { slip } from '$transitions/slip';
 	import { cssSize, type SizeInput } from '$utils/css';
-	import type { icons } from '$utils/icons/icons';
 	import { Ctx } from '$utils/keys';
 	import { getContext } from 'svelte';
+	import type { ComponentProps } from 'svelte/internal';
 	import type { FieldContext } from './Field.svelte';
 	import Icon from './Icon.svelte';
 	import Loading from './Loading.svelte';
@@ -20,7 +20,7 @@
 	 * Alignment of the button's default slot content. This rule does not affect icon positioning.
 	 */
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
-	export let icon: keyof typeof icons = undefined;
+	export let icon: ComponentProps<Icon>['name'] = undefined;
 	export let iconPosition: 'leading' | 'trailing' = 'leading';
 	/**
 	 * Should the button be rendered with an aspect ratio of 1:1 ?
