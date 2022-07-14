@@ -11,12 +11,14 @@ import { get } from 'svelte/store';
  */
 const DEBOUNCE_RATE = 500;
 
+const BASE_REGEX = RegExp('^' + base);
+
 /**
  * To do.
  */
 export function getSegments(routePath: string) {
 	return routePath
-		.replace(base, '')
+		.replace(BASE_REGEX, '')
 		.replace(/^\/+/, '')
 		.split('/')
 		.map((segment) => '/' + segment);

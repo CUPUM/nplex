@@ -4,7 +4,7 @@
  * This file was generated from the svg assets found at ./src/utils/icons. All changes added manually here will be lost
  * on next execution of the generator script.
  *
- * Last generated on: Wed Jul 13 2022 11:11:16 GMT-0400 (GMT-04:00)
+ * Last generated on: Thu Jul 14 2022 11:48:56 GMT-0400 (GMT-04:00)
  *
  * ⚠️ WARNING ⚠️
  */
