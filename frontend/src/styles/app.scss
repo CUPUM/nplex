@@ -8,11 +8,13 @@
 	font-size: var(--size-medium);
 	font-weight: 400;
 	overflow: hidden;
-	transition: background-color 1s ease-in-out;
 	font-feature-settings: 'kern';
 	letter-spacing: 0.01em;
 	background-color: var(--bg-color, var(--color-light-100));
 	accent-color: var(--color-primary-500);
+	overflow-y: auto;
+	overflow-x: hidden;
+	transition: background-color 1s ease-in-out;
 }
 
 ::selection {
@@ -24,20 +26,15 @@ body {
 	position: relative;
 	display: block;
 	width: 100%;
-	height: 100%;
+	min-height: 100%;
 	padding: 0;
 	margin: 0;
-	overflow-x: hidden;
-	overflow-y: auto;
-	// @supports (overflow: overlay) {
-	// 	overflow-y: overlay;
-	// }
 }
 
 *,
 ::before,
 ::after {
-	/* -webkit-font-smoothing: antialiased; */
+	// -webkit-font-smoothing: antialiased;
 	box-sizing: border-box;
 }
 

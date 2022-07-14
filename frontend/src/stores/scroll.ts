@@ -21,9 +21,8 @@ export const mainScroll = (function () {
 	const { subscribe, update } = writable<ScrollData>({ y: 0, delta: 0, up: false, down: false });
 
 	function updateStore(e: Event) {
-		const el = e.target as HTMLBodyElement;
 		update((prev) => {
-			let delta = prev.delta + el.scrollTop - prev.y;
+			let delta = prev.delta + window.scrollY - prev.y;
 			let up = prev.up;
 			let down = prev.down;
 			if (delta > threshold) {
@@ -36,7 +35,7 @@ export const mainScroll = (function () {
 				delta = 0;
 			}
 			return {
-				y: el.scrollTop,
+				y: window.scrollY,
 				delta,
 				up,
 				down,
@@ -45,7 +44,7 @@ export const mainScroll = (function () {
 	}
 
 	if (browser) {
-		document.body.addEventListener('scroll', updateStore);
+		window.addEventListener('scroll', updateStore);
 	}
 
 	return {
