@@ -103,7 +103,7 @@
 	</section>
 	<section>
 		<h2>Field</h2>
-		<Field let:value on:keypress={handleKeypress} placeholder="Ceci est un placeholder" placeholderIcon="comment">
+		<Field let:value on:keypress={handleKeypress} placeholder="Ceci est un placeholder" icon="comment">
 			<button slot="left">test</button>
 			<Button
 				type="submit"

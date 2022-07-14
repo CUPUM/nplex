@@ -100,17 +100,17 @@
 		<Field
 			bind:value={email}
 			placeholder="Courriel"
-			placeholderIcon="letter"
-			placeholderIconWhileValue={true}
+			icon="letter"
+			showIcon="always"
 			name="email"
 			type="email"
-			required
-		/>
+			required>Test</Field
+		>
 		<Field
 			bind:value={password}
 			placeholder="Mot de passe"
-			placeholderIcon="asterisk"
-			placeholderIconWhileValue={true}
+			icon="asterisk"
+			showIcon="always"
 			name="password"
 			type={revealPassword ? 'text' : 'password'}
 		>
@@ -164,8 +164,7 @@
 	<hr />
 	<form in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 450 }} class="provider-buttons">
 		{#each providerNames as name, i}
-			<Button size={sizes.small} contentAlign="center" variant="secondary">
-				<!-- <ProviderLogo {name} slot="icon" size="1.5em" /> -->
+			<Button size={sizes.small} contentAlign="center" variant="secondary" provider={name}>
 				Se connecter avec {providers[name].title}
 			</Button>
 		{/each}

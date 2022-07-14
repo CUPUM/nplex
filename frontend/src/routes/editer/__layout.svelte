@@ -35,6 +35,7 @@
 		width: 100%;
 		gap: 0;
 		padding-top: var(--navbar-height);
+		overflow: hidden;
 	}
 
 	section {

@@ -65,6 +65,7 @@ export async function guard({ criteria, session, message, url }: GuardInput): Pr
 
 	messages.dispatch({
 		text: message || defaultMessage,
+		type: 'error',
 	});
 
 	return {

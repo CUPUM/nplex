@@ -12,6 +12,7 @@
 	import type { FieldContext } from './Field.svelte';
 	import Icon from './Icon.svelte';
 	import Loading from './Loading.svelte';
+	import ProviderLogo from './ProviderLogo.svelte';
 
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'navbar' = 'default';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
@@ -21,6 +22,7 @@
 	 */
 	export let contentAlign: 'left' | 'center' | 'right' = 'left';
 	export let icon: ComponentProps<Icon>['name'] = undefined;
+	export let provider: ComponentProps<ProviderLogo>['name'] = undefined;
 	export let iconPosition: 'leading' | 'trailing' = 'leading';
 	/**
 	 * Should the button be rendered with an aspect ratio of 1:1 ?
@@ -72,9 +74,13 @@
 >
 	<div class="ripple-host" use:ripple={{ startColor: 'currentColor', controlElement: elementRef }} />
 	<div class="content align-{contentAlign}">
-		{#if icon}
+		{#if icon || provider}
 			<div class="icon {iconPosition}" transition:slip={{ overflow: 'visible', width: true, opacity: 0 }}>
-				<Icon name={icon} strokeWidth={variant === 'cta' ? 2 : 1.5} />
+				{#if icon}
+					<Icon name={icon} strokeWidth={variant === 'cta' ? 1.8 : 1.5} />
+				{:else}
+					<ProviderLogo name={provider} size="1.5em" />
+				{/if}
 			</div>
 		{/if}
 		{#if $$slots.default}

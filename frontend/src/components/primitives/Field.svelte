@@ -8,7 +8,6 @@
 
 <script lang="ts">
 	import { slip } from '$transitions/slip';
-
 	import { cssSize, type SizeInput } from '$utils/css';
 	import { Ctx } from '$utils/keys';
 	import { setContext } from 'svelte';
@@ -39,15 +38,21 @@
 	 */
 	export let validator: RegExp = undefined;
 	/**
-	 * Auto formatting template for the user input
+	 * Auto formatting template for the user input.
 	 */
 	export let format = undefined;
 	/**
 	 * Placeholder text and field icon.
 	 */
-	export let placeholder: string = '';
-	export let placeholderIcon: ComponentProps<Icon>['name'] = undefined;
-	export let placeholderIconWhileValue: boolean = false;
+	export let placeholder: string = undefined;
+	/**
+	 * Icon added to the field's container as a placeholder.
+	 */
+	export let icon: ComponentProps<Icon>['name'] = undefined;
+	/**
+	 * Should the specified icon always be displayed or only when the field has no value?
+	 */
+	export let showIcon: 'always' | 'placeholder' = 'placeholder';
 	/**
 	 * Input text value
 	 */
@@ -86,7 +91,8 @@
 	}
 </script>
 
-<div
+<!-- svelte-ignore a11y-label-has-associated-control -->
+<fieldset
 	class:warning={warning || invalid}
 	class:success
 	class:focused
@@ -96,10 +102,9 @@
 	style:width
 >
 	{#if $$slots.default}
-		<!-- svelte-ignore a11y-label-has-associated-control -->
-		<label on:click={() => inputRef.focus()}>
+		<legend on:click={() => inputRef.focus()}>
 			<slot {value} />
-		</label>
+		</legend>
 	{/if}
 	<div class="inner">
 		{#if $$slots.left}
@@ -107,14 +112,16 @@
 				<slot name="left" {value} />
 			</div>
 		{/if}
-		{#if placeholderIcon && (!value || placeholderIconWhileValue)}
+		{#if icon && (!value || showIcon === 'always')}
 			<div
 				class="icon"
 				on:click={() => inputRef.focus()}
 				transition:slip={{ width: true, opacity: 0, duration: 400, easing: expoInOut }}
 			>
-				<Icon name={placeholderIcon} size="1.25em" />
-				<hr transition:slide={{}} />
+				<Icon name={icon} size="1.25em" />
+				{#if showIcon === 'always'}
+					<hr transition:slide={{}} />
+				{/if}
 			</div>
 		{/if}
 		<input
@@ -147,18 +154,21 @@
 			</div>
 		{/if}
 	</div>
-</div>
+</fieldset>
 
 <style lang="scss">
-	.outer {
+	fieldset {
 		--size: var(--default-size);
 		--inset: var(--default-inset);
 		display: flex;
 		flex: 1;
 		flex-direction: column;
+		margin: 0;
+		padding: 0;
+		border: none;
 	}
 
-	label {
+	legend {
 		position: relative;
 		display: block;
 		padding: 0em 1em 0.5em 1em;

@@ -27,6 +27,7 @@
 				showCategoryNav: false,
 				showExploreSearchbar: false,
 				showFooter: true,
+				showEditorAside: false,
 			},
 		};
 	}
@@ -35,20 +36,18 @@
 <script lang="ts">
 	import { browser } from '$app/env';
 
-	/**
-	 * Updating the client session's prevUrl used for redirects on guard fail.
-	 */
+	// Updating the client session's prevUrl used for redirects on guard fail.
 	afterNavigate(({ from, to }) => {
 		const newPrevUrl = to;
 		newPrevUrl.searchParams.delete(SearchParam.AuthModal);
 		session.update((prev) => ({ ...prev, prevUrl: newPrevUrl.toString() }));
 	});
 
-	const { page } = getStores(); // Getting the page store this way since we are getting its value outside component initialization, in the below callback
+	// Getting the page store this way since we are getting its value
+	// outside component initialization, in the below callback.
+	const { page } = getStores();
 
-	/**
-	 * Listening to and handling client-side Supabase auth state change.
-	 */
+	// Listening to and handling client-side Supabase auth state change.
 	db.auth.onAuthStateChange(async (e, s) => {
 		if (browser && e === 'SIGNED_OUT') {
 			session.update((prevSession) => {
@@ -60,9 +59,9 @@
 		const role = toUserRoleEnum(await getUserRole());
 		session.update((prevSession) => ({ ...prevSession, user: { ...s.user, role } }));
 	});
-	/**
-	 * On initializing the website client-side, let's attempt to login with previously set cookie-token (if any).
-	 */
+
+	// On initializing the website client-side, let's attempt to login
+	// with previously set cookie-token (if any).
 	db.auth.refreshSession();
 
 	let loading = true;
@@ -84,7 +83,6 @@
 {#if $page.stuff.showFooter}
 	<Footer />
 {/if}
-<!-- Add general modal / message outlet -->
 {#if $authModal}
 	<Auth />
 {/if}
