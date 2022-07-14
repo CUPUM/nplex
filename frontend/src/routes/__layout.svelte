@@ -23,11 +23,11 @@
 	export async function load({ stuff }: LoadEvent): Promise<LoadOutput> {
 		return {
 			stuff: {
-				category: null,
-				showCategoryNav: false,
-				showExploreSearchbar: false,
-				showFooter: true,
-				showEditorAside: false,
+				// category: null,
+				// showCategoryNav: false,
+				// showExploreSearchbar: false,
+				// showFooter: true,
+				// showEditorAside: false,
 			},
 		};
 	}
@@ -36,11 +36,11 @@
 <script lang="ts">
 	import { browser } from '$app/env';
 
-	// Updating the client session's prevUrl used for redirects on guard fail.
+	// Updating the client session's previous url used for redirects on guard fail.
 	afterNavigate(({ from, to }) => {
-		const newPrevUrl = to;
-		newPrevUrl.searchParams.delete(SearchParam.AuthModal);
-		session.update((prev) => ({ ...prev, prevUrl: newPrevUrl.toString() }));
+		const newPreviousUrl = to;
+		newPreviousUrl.searchParams.delete(SearchParam.AuthModal);
+		session.update((prev) => ({ ...prev, previousUrl: newPreviousUrl.toString() }));
 	});
 
 	// Getting the page store this way since we are getting its value
@@ -52,7 +52,7 @@
 		if (browser && e === 'SIGNED_OUT') {
 			session.update((prevSession) => {
 				const rootPath = get(page).url.hostname;
-				return { ...prevSession, prevUrl: rootPath, user: null };
+				return { ...prevSession, previousUrl: rootPath, user: null };
 			});
 			return goto(get(page).url);
 		}
@@ -60,8 +60,7 @@
 		session.update((prevSession) => ({ ...prevSession, user: { ...s.user, role } }));
 	});
 
-	// On initializing the website client-side, let's attempt to login
-	// with previously set cookie-token (if any).
+	// On initializing the website client-side, let's attempt to login with previously set token (if any).
 	db.auth.refreshSession();
 
 	let loading = true;
