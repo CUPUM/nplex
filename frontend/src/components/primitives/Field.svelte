@@ -187,7 +187,7 @@
 		border-radius: var(--default-radius);
 		height: var(--size);
 		outline-style: solid;
-		outline-width: 2px;
+		outline-width: 1.5px;
 		outline-color: transparent;
 		transition: all 0.15s ease-out;
 		overflow: visible;
@@ -325,7 +325,7 @@
 		&.focused {
 			& .inner {
 				color: var(--color-dark-500);
-				outline-color: var(--color-dark-500);
+				outline-color: var(--color-primary-500);
 				background-color: var(--color-light-100);
 			}
 

@@ -2,9 +2,9 @@
 	import { allRoles } from '$utils/user';
 	import type { Load, LoadOutput } from '@sveltejs/kit';
 
-	export const load: Load = async ({ session, url }): Promise<LoadOutput> => {
-		// Make sure the client is at least an authed user
-		const res = await guard({ criteria: allRoles, session, url });
+	export const load: Load = async ({ session, url, fetch }): Promise<LoadOutput> => {
+		// Make sure the client is at least an authed user (hence checking against 'allRoles').
+		const res = await guard({ criteria: allRoles, session, fetch, url });
 		return res;
 	};
 </script>
@@ -48,8 +48,9 @@
 
 	article {
 		display: block;
-		flex: 0;
+		flex: 1;
 		margin: 0;
 		padding: 2rem;
+		min-width: 0;
 	}
 </style>

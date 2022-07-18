@@ -69,3 +69,7 @@ export enum LocalStorage {
 	 */
 	ProjectsFilters = 'projects-filters',
 }
+
+export enum Cookie {
+	User = 'nplex-user-cookie',
+}

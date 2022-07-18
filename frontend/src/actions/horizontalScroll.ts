@@ -1,3 +1,5 @@
+import { isTouchpad } from '$utils/device';
+
 interface HorizontalScrollOptions {
 	/**
 	 * Multiplier to be applied to the caught wheel event's `deltaY` when transposing to `scrollLeft`.
@@ -7,28 +9,21 @@ interface HorizontalScrollOptions {
 	 * Should the horizontal scroll be applied even if the element has vertical scroll overflow?
 	 */
 	precedeVertical?: boolean;
-	/**
-	 * In addition to the transposed deltaY scroll, should the event's deltaX be applied or not?
-	 */
-	applyDeltaX: boolean;
 }
 
 const defaultOptions: HorizontalScrollOptions = {
 	multiplier: 1,
 	precedeVertical: true,
-	applyDeltaX: true,
 };
 
 /**
  * Directive to catch and transpose mousewheel events into horizontal scroll.
  */
 export function horizontalScroll(element: HTMLElement, options?: HorizontalScrollOptions) {
-	const { multiplier, precedeVertical, applyDeltaX } = { ...defaultOptions, ...options };
+	const { multiplier, precedeVertical } = { ...defaultOptions, ...options };
 
 	function handleScroll(e: WheelEvent) {
-		if (applyDeltaX) {
-			element.scrollLeft += e.deltaX;
-		}
+		if (isTouchpad(e) || e.deltaX) return;
 
 		// Let's first check that there actually is available scrollable space inside the host element.
 		const horizontalScrollSpace = element.scrollWidth - element.clientWidth;

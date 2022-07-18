@@ -8,11 +8,9 @@
 
 	$: {
 		group.set(value);
-		console.log('value', value);
 	}
 	$: {
 		value = $group;
-		console.log('group', $group);
 	}
 
 	setContext('test', {

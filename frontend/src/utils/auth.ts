@@ -8,23 +8,15 @@ import { db } from './database';
 import { SearchParam } from './keys';
 import type { providers } from './providers';
 
-interface GuardInput {
+interface GuardInput extends Pick<LoadEvent, 'session' | 'url' | 'fetch'> {
 	/**
 	 * Roles or status required to gain permission for a request.
 	 */
 	criteria: UserRole[];
 	/**
-	 * The requester's session, with the user data if logged in.
-	 */
-	session: LoadEvent['session'];
-	/**
 	 * Custom message, overwrites the default message composition logic.
 	 */
 	message?: string;
-	/**
-	 * Url.
-	 */
-	url: URL;
 }
 
 /**
@@ -33,28 +25,22 @@ interface GuardInput {
  * To do: figure out a good way to update the session's `prevnav` prop, without having to pass a prop to the client and
  * calling client-side prop handling each time.
  */
-export async function guard({ criteria, session, message, url }: GuardInput): Promise<LoadOutput> {
-	/**
-	 * If the guard is adequately fulfilled, then we proceed to the requested route...
-	 */
+export async function guard({ criteria, session, message, url, fetch }: GuardInput): Promise<LoadOutput> {
+	// If the guard is adequately fulfilled, then we proceed to the requested route...
 	if (!criteria.length || (session.user && criteria.includes(session.user.role as UserRole))) {
 		return {
 			status: 200,
 		};
 	}
 
-	/**
-	 * ...else, if no user, we redirect to the indicated location, usually the previous successfully visited url stored
-	 * in `prevUrl`, and append the required param to open the signup modal.
-	 */
-	let redirectUrl = new URL(session.prevUrl);
+	// ..else, if no user, we redirect to the indicated location, usually the previous successfully visited url stored
+	// in `previousUrl`, and append the required param to open the signup modal.
+	let redirectUrl = new URL(session.previousUrl);
 	let defaultMessage =
 		'Désolé, il semble que votre compte ne détient pas les permissions requises pour accéder à cette section de Nplex.';
 
 	if (redirectUrl.pathname === url.pathname) {
-		/**
-		 * If inaccessible prevUrl is equal to the request origin, reset to root.
-		 */
+		// If inaccessible previousUrl is equal to the request origin, reset to root.
 		redirectUrl.pathname = '';
 	}
 
@@ -91,20 +77,23 @@ interface AuthInfo {
 	provider?: keyof typeof providers;
 }
 
-// To do: make auth work from server-side for client-specific SSR
-// See: https://github.com/supabase/supabase/discussions/5218
-
 /**
  * Sign up a new user.
  */
 export async function signUp(info: AuthInfo) {
-	const signup = await db.auth.signUp(info, {
-		redirectTo: info.provider ? get(page).url.toString() : null,
-	});
-
-	if (!signup.error) {
+	try {
+		// Create the user account.
+		const signup = await db.auth.signUp(info, {
+			redirectTo: info.provider ? get(page).url.toString() : null,
+		});
+		if (signup.error) throw signup.error;
+		messages.dispatch({
+			type: 'success',
+			text: 'Votre compte a été créé avec succès, confirmez...',
+		});
+		// Updated the trigger-created public.user row.
 		const profile = await db
-			.from<definitions['profiles']>('profiles')
+			.from<definitions['users']>('users')
 			.update({
 				firstname: info.firstname || '',
 				middlename: info.middlename || '',
@@ -113,26 +102,47 @@ export async function signUp(info: AuthInfo) {
 			.match({ user_id: signup.user.id })
 			.limit(1)
 			.single();
-		if (profile.error) return profile;
+		if (profile.error) throw profile.error;
+		messages.dispatch({
+			type: 'success',
+			text: 'Votre profil a été initié avec succès.',
+		});
+		return signup;
+	} catch (error) {
+		messages.dispatch({
+			type: 'error',
+			text: error.message,
+		});
+	} finally {
 	}
-
-	return signup;
 }
 
 /**
- * Sign in a user. If valid, should set the auth cookie on the client AND on the server side for SSR.
+ * Sign in a user.
  */
 export async function signIn(info: AuthInfo) {
-	const res = await db.auth.signIn(info, {
-		redirectTo: info.provider ? get(page).url.pathname : null,
-		shouldCreateUser: false,
-	});
-
-	return res;
+	try {
+		const res = await db.auth.signIn(info, {
+			redirectTo: info.provider ? get(page).url.pathname : null,
+			shouldCreateUser: false,
+		});
+		if (res.error) throw res.error;
+		messages.dispatch({
+			type: 'success',
+			text: 'Connecté avec succès.',
+		});
+		return res;
+	} catch (error) {
+		messages.dispatch({
+			type: 'error',
+			text: error.message,
+		});
+	} finally {
+	}
 }
 
 /**
- * Sign out the current user. Should unset the auth cookie on the client side AND on the server.
+ * Sign out the current user.
  */
 export async function signOut() {
 	const res = await db.auth.signOut();

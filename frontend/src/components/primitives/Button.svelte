@@ -77,7 +77,7 @@
 		{#if icon || provider}
 			<div class="icon {iconPosition}" transition:slip={{ overflow: 'visible', width: true, opacity: 0 }}>
 				{#if icon}
-					<Icon name={icon} strokeWidth={variant === 'cta' ? 1.8 : 1.5} />
+					<Icon name={icon} strokeWidth="1.5" />
 				{:else}
 					<ProviderLogo name={provider} size="1.5em" />
 				{/if}
@@ -120,16 +120,12 @@
 		padding: 0 1.25em;
 		text-decoration: none;
 		font-family: var(--font-main);
-		font-weight: 500;
+		font-weight: 400;
 		outline-width: 1px;
 		outline-style: solid;
 		outline-color: transparent;
 		outline-offset: 2px;
 		transition: all 0.15s cubic-bezier(0.25, 0, 0.5, 1);
-
-		&:focus {
-			// outline-color: rgba(var(--rgb-primary-500), 0.25);
-		}
 
 		&.warning {
 			background-color: var(--color-error-500);
@@ -153,7 +149,6 @@
 
 	/* Squareness */
 	.square {
-		// width: var(--size);
 		aspect-ratio: 1 / 1;
 		padding: 0;
 		& div {
@@ -181,10 +176,6 @@
 		flex-direction: row;
 		align-items: center;
 		transition: transform 0.25s cubic-bezier(0.25, 2.25, 0.75, 0.5);
-
-		// &:hover .icon:not(:only-child) {
-		// 	transform: translateY(-0.2em);
-		// }
 	}
 	.align-center {
 		grid-template-columns:
@@ -207,14 +198,14 @@
 		grid-column: left;
 		justify-content: left;
 		&:not(:only-child) {
-			padding-right: 0.5em;
+			padding-right: 0.75em;
 		}
 	}
 	.trailing {
 		grid-column: right;
 		justify-content: right;
 		&:not(:only-child) {
-			padding-left: 0.5em;
+			padding-left: 0.75em;
 		}
 	}
 
@@ -228,7 +219,6 @@
 		align-items: center;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-		// letter-spacing: 0.02em;
 	}
 	.label {
 		grid-column: center;
@@ -236,8 +226,7 @@
 		top: -0.05em;
 	}
 	.icon {
-		flex-grow: 1;
-		top: -0.05em;
+		// top: -0.05em;
 		&:only-child {
 			font-size: 1.25em;
 			grid-column: center;
@@ -248,19 +237,18 @@
 		Variants (should correspond to `typeof variant`)
 	*/
 	/* Default button theme */
-	// prettier-ignore
 	.default {
 		color: var(--color-dark-900);
-		background-color: var(--color-light-500);
-		box-shadow: inset 0 0 0 0 var(--color-dark-700), 0 0.5em 2em -1em transparent;
-		transition: all 0.15s ease-out, box-shadow 0.2s ease-out;
+		background-color: var(--color-light-300);
+		box-shadow: 0 0.5em 2em -1em transparent;
+		transition: all 0.2s ease-out, box-shadow 0.35s ease-out;
+
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover{
-			color: var(--color-light-300);
-			background-color: var(--color-dark-700);
-			box-shadow: inset 0 0 0 5px transparent, 0 0.5em 2em -1em transparent;
-			transition: all 0.08s ease-out, box-shadow 0.1s ease-out;
+			color: var(--color-light-100);
+			background-color: var(--color-dark-900);
+			box-shadow: 0 1em 2em -1.2em var(--color-dark-900);
 		}
 		&:active {
 			color: var(--color-light-900);
@@ -269,24 +257,21 @@
 		&[popover='open'] {
 			color: white;
 			background-color: var(--color-primary-300);
-			box-shadow: inset 0 0 0 2px var(--color-primary-300), 0 1em 2em -1em var(--color-primary-700);
+			box-shadow: 0 1em 2em -1em var(--color-primary-700);
 		}
 	}
 
 	/* Secondary, more subtle button theme */
 	.secondary {
-		color: var(--color-dark-700);
+		color: var(--color-dark-900);
 		background-color: transparent;
-		box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
+		box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-500), 0.25);
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover {
-			color: black;
-			background-color: rgba(var(--rgb-dark-500), 0.15);
-			box-shadow: inset 0 0 0 5px rgba(var(--rgb-dark-500), 0);
-			// color: var(--color-primary-700);
-			// background-color: rgba(var(--rgb-primary-100), 0.15);
-			// box-shadow: inset 0 0 0 5px rgba(var(--rgb-primary-100), 0);
+			color: var(--color-dark-900);
+			background-color: rgba(var(--rgb-dark-100), 0.1);
+			box-shadow: inset 0 0 0 3px rgba(var(--rgb-dark-500), 0);
 		}
 		&.active,
 		&[popover='open'] {
@@ -295,14 +280,14 @@
 
 	/* Ghost, more subtle button theme */
 	.ghost {
-		color: var(--color-dark-300);
+		color: var(--color-dark-500);
 		background-color: transparent;
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
 		&[popover='open'] {
-			color: var(--color-primary-500);
-			background-color: rgba(var(--rgb-primary-100), 0.15);
+			color: var(--color-dark-900);
+			background-color: rgba(var(--rgb-dark-100), 0.1);
 		}
 	}
 
@@ -347,8 +332,6 @@
 				transition: all 0.5s cubic-bezier(0, 0, 0, 1);
 			}
 		}
-		&:active {
-		}
 		&.active {
 			color: var(--color-primary-900);
 			background-color: var(--color-primary-300);
@@ -357,7 +340,6 @@
 
 	/* Navbar button theme */
 	.navbar {
-		// color: rgba(var(--rgb-dark-900), 0.5);
 		color: var(--color-dark-900);
 		background-color: transparent;
 		font-weight: 600;
@@ -389,8 +371,6 @@
 			& .content {
 				transform: translateY(-0.15em);
 			}
-		}
-		&:active {
 		}
 		&.active {
 			cursor: default;

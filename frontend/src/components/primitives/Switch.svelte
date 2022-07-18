@@ -53,6 +53,7 @@
 	// Doing some manual two-way binding between value prop and context group store...
 	$: {
 		group.set(value);
+		if (typeof value !== 'number' && !value) cursorBox = null;
 	}
 	$: {
 		value = $group;
@@ -113,7 +114,7 @@
 		transition: all 0.18s cubic-bezier(0.8, 0, 0.2, 1.2);
 
 		&.temp {
-			transform: scale(0.95, 0.92);
+			// transform: scale(0.95, 0.92);
 		}
 	}
 
@@ -149,19 +150,20 @@
 	.navbar {
 		background-color: transparent;
 		// backdrop-filter: blur(18px);
-		// box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-900), 0);
-		transition: background-color 0.5s ease-out;
+		// box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-500), 0);
+		transition: all 0.25s ease-out;
 		&:hover,
 		&:focus {
-			background-color: var(--color-light-100);
+			background-color: rgba(var(--rgb-light-100), 1);
+			// box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
 		}
 		& .selector {
-			opacity: 0.25;
+			opacity: 0.2;
 			background-color: var(--color-primary-100);
 
 			&.temp {
-				background-color: rgba(var(--rgb-dark-100), 0.2);
-				opacity: 0.5;
+				background-color: var(--color-dark-500);
+				opacity: 0.05;
 			}
 		}
 	}

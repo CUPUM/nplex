@@ -18,7 +18,7 @@
 <h2>Créer une nouvelle fiche de projet</h2>
 <form on:submit|preventDefault={createProject}>
 	<Field bind:value={newProjectName} required>Nom du projet</Field>
-	<Button type="submit" disabled={!newProjectName}>Démarrer le projet</Button>
+	<Button type="submit" disabled={!newProjectName}>Initialiser la fiche du projet</Button>
 </form>
 <hr />
 <span>ou</span>
@@ -41,6 +41,9 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		margin: 1rem;
+		padding: 2rem;
+		border: 1px solid black;
 	}
 
 	.projects-list {

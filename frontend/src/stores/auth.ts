@@ -3,11 +3,15 @@ import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import { SearchParam } from '$utils/keys';
 import { derived } from 'svelte/store';
+import { mainScroll } from './scroll';
 
 export const authModal = (function () {
 	const { subscribe } = derived(page, ($page) => {
 		if (browser) {
-			return $page.url.searchParams.has(SearchParam.AuthModal);
+			const isModal = $page.url.searchParams.has(SearchParam.AuthModal);
+			if (isModal) mainScroll.lock();
+			else mainScroll.unlock();
+			return isModal;
 		}
 		return false;
 	});

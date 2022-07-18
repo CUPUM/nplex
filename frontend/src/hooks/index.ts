@@ -1,7 +1,9 @@
+import { Cookie } from '$utils/keys';
 import type { GetSession, Handle } from '@sveltejs/kit';
+import cookie from 'cookie';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// console.log('Handle hook: ', event.locals);
+	console.log('Handle hook');
 	const res = await resolve(event);
 	return res;
 };
@@ -10,10 +12,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 // 	// Customize error handling here.
 // };
 
-export const getSession: GetSession = (event) => {
-	// console.log('Get session triggered', event.url.toString());
+export const getSession: GetSession = async (event) => {
 	return {
-		prevUrl: event.url.toString(),
-		// initialUrl:
+		previousUrl: event.url.toString(),
+		// Defaulting the session's user to the one found in the client's cookies.
+		user: JSON.parse(cookie.parse(event.request.headers.get('cookie'))[Cookie.User]),
 	};
 };

@@ -7,7 +7,7 @@
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
-	import { currentPath, loadingCategory } from '$stores/navigation';
+	import { loadingCategory } from '$stores/navigation';
 	import { mainScroll } from '$stores/scroll';
 	import { getAuthRedirectUrl, signOut } from '$utils/auth';
 	import { colors } from '$utils/colors';
@@ -23,10 +23,12 @@
 	let mounted = false;
 	let hidden;
 	let overlay;
+	let mainPathname: string;
 	const yThreshold = 100;
 
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
 	$: overlay = $mainScroll.y > yThreshold + 100;
+	$: mainPathname = $page.stuff.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
 
 	onMount(() => {
 		mounted = true;
@@ -44,7 +46,7 @@
 				<Logo intro={true} color={colors.dark[900]} hoverColor={colors.primary[500]} />
 			</a>
 			{#each mainRoutes as route}
-				<Button variant="navbar" href={route.pathname} active={$currentPath.main === route.pathname}>
+				<Button variant="navbar" href={route.pathname} active={route.pathname === mainPathname}>
 					{route.title}
 				</Button>
 			{/each}
@@ -53,7 +55,7 @@
 			<nav
 				class="category"
 				in:fly={{ y: 20, duration: 500, easing: expoOut, delay: 150 }}
-				out:fly={{ y: 20, duration: 500, easing: expoIn, delay: 0 }}
+				out:fly={{ y: 20, duration: 500, easing: expoOut, delay: 0 }}
 			>
 				<Switch name="category" variant="navbar" value={$page.stuff.category}>
 					{#each exploreRoutes as r, i}
@@ -123,7 +125,7 @@
 			[user-end gutter-right-start]
 			auto
 			[gutter-right-end full-end];
-		width: 100%;
+		width: 100vw;
 		align-items: center;
 		padding: 1rem;
 		padding-block: 0.75rem;
@@ -131,7 +133,8 @@
 		gap: 0;
 		font-size: var(--size-small);
 		z-index: 100;
-		transition: all 0.25s, background-color 1s ease-in-out;
+		// backdrop-filter: blur(10px);
+		transition: all 0.35s, background-color 1s ease-in-out;
 
 		&::before {
 			content: '';
@@ -149,9 +152,10 @@
 	}
 
 	.overlay {
+		backdrop-filter: blur(8px);
 		box-shadow: 0 1px 0 0 rgba(var(--rgb-dark-900), 0.1);
 		&::before {
-			opacity: 0.95;
+			opacity: 0.96;
 		}
 	}
 

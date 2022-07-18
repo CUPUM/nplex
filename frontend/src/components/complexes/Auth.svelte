@@ -175,7 +175,7 @@
 	.bg {
 		z-index: 1000;
 		position: fixed;
-		width: 100%;
+		width: 100vw;
 		height: 100%;
 		top: 0;
 		left: 0;

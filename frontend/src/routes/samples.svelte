@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
+	import Field from '$components/primitives/Field.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
 	import Select from '$components/primitives/Select.svelte';
@@ -100,7 +101,7 @@
 			Color: {$backgroundColor}<br />
 			<input type="color" name="" bind:value={$backgroundColor} id="" />
 		</label>
-	</section>
+	</section> -->
 	<section>
 		<h2>Field</h2>
 		<Field let:value on:keypress={handleKeypress} placeholder="Ceci est un placeholder" icon="comment">
@@ -117,6 +118,7 @@
 			<svelte:fragment slot="label">Test</svelte:fragment>
 		</Field>
 	</section>
+	<!--
 	<section>
 		<h2>Loading spinner</h2>
 		<p>

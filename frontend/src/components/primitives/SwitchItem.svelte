@@ -98,9 +98,7 @@
 		display: block;
 		position: relative;
 		top: -0.1em;
-		transition-property: transform, opacity;
-		transition-timing-function: ease-in-out;
-		transition-duration: 0.15s;
+		transition: transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5), opacity 0.15s ease-in-out;
 	}
 
 	input {
@@ -141,17 +139,23 @@
 	.navbar {
 		font-weight: 600;
 		background-color: transparent;
-		// color: rgba(var(--rgb-dark-900), 0.5);
 		color: var(--color-dark-900);
+		opacity: 0.8;
+		& .inner {
+			transform: translateY(0);
+		}
 		&:hover,
 		&:focus {
+			opacity: 1;
 			color: var(--color-dark-900);
-			transform: scale(0.96);
+			& .inner {
+				transform: translateY(-0.1em);
+			}
 		}
 		&.current {
-			color: var(--color-primary-500);
+			color: var(--color-primary-700);
 			&.some-temp {
-				// color: var(--color-primary-100);
+				color: var(--color-primary-500);
 			}
 		}
 	}

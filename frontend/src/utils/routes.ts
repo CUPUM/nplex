@@ -38,7 +38,7 @@ export const mainRoutes: Route[] = [
 	},
 ];
 
-interface ExploreRoute extends Route {
+export interface ExploreRoute extends Route {
 	category: Category;
 }
 

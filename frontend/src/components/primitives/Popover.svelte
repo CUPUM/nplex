@@ -1,11 +1,3 @@
-<script lang="ts" context="module">
-	/**
-	 * Html attribute appended to the popover's control, indicating if the popover is either `open` or `closed`.
-	 * Useful for stylings and other logic.
-	 */
-	export const POPOVER_ATTRIBUTE = 'popover';
-</script>
-
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import { cssSize, type SizeInput } from '$utils/css';
@@ -36,22 +28,20 @@
 	// $: autoPlacement = ...
 
 	$: if (controlRef) {
-		console.log('running setup');
-		/**
-		 * Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change). */
+		// Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change).
 		controlRef.removeEventListener('click', show);
 		controlRef.removeEventListener('mouseenter', show);
 		controlRef.removeEventListener('mouseleave', hide);
 		popoverRef.removeEventListener('mouseenter', show);
 		popoverRef.removeEventListener('mouseleave', hide);
-		/** Binding the proper events on the control element. */
+		// Binding the proper events on the control element.
 		controlRef.addEventListener(useHover ? 'mouseenter' : 'click', show);
 		controlRef.addEventListener(useHover ? 'mouseleave' : 'clickoutside', hide);
 		if (useHover) {
 			popoverRef.addEventListener('mouseenter', show);
 			popoverRef.addEventListener('mouseleave', hide);
 		}
-		/** Listening to disposition changes */
+		// Listening to disposition changes
 		controlRef.ontransitionend = setPosition;
 		mutationObs = new MutationObserver(setPosition);
 		resizeObs = new ResizeObserver(setPosition);
@@ -63,9 +53,9 @@
 
 	$: if (open) {
 		setPosition();
-		controlRef?.setAttribute(POPOVER_ATTRIBUTE, 'open');
+		controlRef?.setAttribute('popover', 'open');
 	} else {
-		controlRef?.setAttribute(POPOVER_ATTRIBUTE, 'closed');
+		controlRef?.setAttribute('popover', 'closed');
 	}
 
 	function show() {
@@ -101,9 +91,9 @@
 	}
 
 	onMount(() => {
-		/** Referencing the element passed in the "control" slot. */
+		// Referencing the element passed in the "control" slot.
 		controlRef = popoverRef.previousElementSibling as HTMLElement;
-		/** Setting the initial position. */
+		// Setting the initial position.
 		setPosition();
 	});
 

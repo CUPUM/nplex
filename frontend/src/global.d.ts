@@ -33,12 +33,12 @@ declare namespace App {
 		/**
 		 * Storing the client session's previous navigation for various usages and redirect cases.
 		 */
-		prevUrl: string;
-		/**
-		 * Initial client url (first-load), to be used for re-redirecting if client has successful automatic signin.
-		 * Useful for properly returning to auth-guarded pages after a client refreshes.
-		 */
-		initialUrl?: string;
+		previousUrl?: string;
+		// /**
+		//  * Initial client url (first-load), to be used for re-redirecting if client has successful automatic signin.
+		//  * Useful for properly returning to auth-guarded pages after a client refreshes.
+		//  */
+		// initialUrl?: string;
 		/**
 		 * Client's user-agent / device detected server-side.
 		 */

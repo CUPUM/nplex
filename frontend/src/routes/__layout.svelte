@@ -11,7 +11,6 @@
 	import '$styles/app.scss';
 	import '$styles/helpers.scss';
 	import '$styles/vars.css';
-	import { colors } from '$utils/colors';
 	import { db, getUserRole } from '$utils/database';
 	import { SearchParam } from '$utils/keys';
 	import { sizes } from '$utils/sizes';
@@ -19,23 +18,16 @@
 	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
+	import type { UserCookieRequestBody } from './api/auth/user-cookie/update';
 
-	export async function load({ stuff }: LoadEvent): Promise<LoadOutput> {
+	export async function load({ stuff, session }: LoadEvent): Promise<LoadOutput> {
 		return {
-			stuff: {
-				// category: null,
-				// showCategoryNav: false,
-				// showExploreSearchbar: false,
-				// showFooter: true,
-				// showEditorAside: false,
-			},
+			stuff: {},
 		};
 	}
 </script>
 
 <script lang="ts">
-	import { browser } from '$app/env';
-
 	// Updating the client session's previous url used for redirects on guard fail.
 	afterNavigate(({ from, to }) => {
 		const newPreviousUrl = to;
@@ -49,15 +41,29 @@
 
 	// Listening to and handling client-side Supabase auth state change.
 	db.auth.onAuthStateChange(async (e, s) => {
-		if (browser && e === 'SIGNED_OUT') {
-			session.update((prevSession) => {
-				const rootPath = get(page).url.hostname;
-				return { ...prevSession, previousUrl: rootPath, user: null };
+		// Preparing the cookie request body.
+		const body: UserCookieRequestBody = {
+			user: null,
+		};
+		// Update client-side store accordingly.
+		if (e === 'SIGNED_OUT') {
+			// Resetting the cookie's user to null.
+			await fetch('/api/auth/user-cookie/update', {
+				method: 'POST',
+				body: JSON.stringify(body),
 			});
+			session.update((prevSession) => ({ ...prevSession, previousUrl: get(page).url.hostname, user: body.user }));
 			return goto(get(page).url);
 		}
+		// Updating cookie's user info.
 		const role = toUserRoleEnum(await getUserRole());
-		session.update((prevSession) => ({ ...prevSession, user: { ...s.user, role } }));
+		body.user = { ...s.user, role };
+		await fetch('/api/auth/user-cookie/update', {
+			method: 'POST',
+			body: JSON.stringify(body),
+		});
+		session.update((prevSession) => ({ ...prevSession, user: body.user }));
+		if (authModal) authModal.close();
 	});
 
 	// On initializing the website client-side, let's attempt to login with previously set token (if any).
@@ -76,7 +82,7 @@
 </script>
 
 <Navbar bind:navbarHeight />
-<main style:--navbar-height="{navbarHeight}px">
+<main style:--navbar-height="{navbarHeight}px" class:loading>
 	<slot />
 </main>
 {#if $page.stuff.showFooter}
@@ -86,11 +92,7 @@
 	<Auth />
 {/if}
 {#if loading}
-	<Loading
-		backgroundColor={colors.light[100]}
-		containerStyle="position: fixed; top:0; left: 0; width: 100vw; height: 100vh"
-		size={sizes.xlarge}
-	/>
+	<Loading containerStyle="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" size={sizes.xlarge} />
 {/if}
 <MessagesOutlet />
 
@@ -98,11 +100,16 @@
 	main {
 		position: relative;
 		width: 100%;
-		overflow-x: hidden;
-		overflow-y: hidden;
 		display: flex;
+		flex-wrap: nowrap;
 		flex-direction: column;
 		padding: 0;
 		margin: 0;
+		transition: all 0.3s cubic-bezier(0, 0, 0, 1);
+	}
+
+	.loading {
+		opacity: 0.5;
+		transform: translateY(20px);
 	}
 </style>
