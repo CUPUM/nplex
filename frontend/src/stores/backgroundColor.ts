@@ -5,9 +5,7 @@ import { writable } from 'svelte/store';
  * Global store to allow bg-color transitions on the site's body.
  */
 export const backgroundColor = (function () {
-	const defaultColor = browser
-		? window.getComputedStyle(document.querySelector(':root') as HTMLElement).backgroundColor
-		: '';
+	const defaultColor = 'var(--color-light-100)';
 
 	const { subscribe, set, update } = writable(defaultColor);
 
