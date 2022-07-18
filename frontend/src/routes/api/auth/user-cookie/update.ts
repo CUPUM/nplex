@@ -11,14 +11,14 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	const body = await request.json();
 	const res = new Response();
 
-	const sessionCookie = cookie.serialize(Cookie.User, JSON.stringify(body.user), {
+	const userCookie = cookie.serialize(Cookie.User, JSON.stringify(body.user), {
 		maxAge: 86400,
 		httpOnly: true,
 		path: '/',
 		sameSite: true,
 	});
 
-	res.headers.set('Set-Cookie', sessionCookie);
+	res.headers.set('Set-Cookie', userCookie);
 
 	return res;
 };
