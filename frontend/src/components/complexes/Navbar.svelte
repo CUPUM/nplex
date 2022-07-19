@@ -155,7 +155,7 @@
 		backdrop-filter: blur(8px);
 		box-shadow: 0 1px 0 0 rgba(var(--rgb-dark-900), 0.1);
 		&::before {
-			opacity: 0.96;
+			opacity: 0.92;
 		}
 	}
 

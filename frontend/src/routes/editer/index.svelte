@@ -1,3 +1,6 @@
+<script lang="ts" context="module">
+</script>
+
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
 	import Button from '$components/primitives/Button.svelte';

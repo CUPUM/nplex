@@ -97,14 +97,8 @@
 		<Logo color="currentColor" />
 	</a>
 	<form autocomplete="off" on:submit|preventDefault={submit} in:scale={{ start: 0.95, delay: 150 }}>
-		<Field
-			bind:value={email}
-			placeholder="Courriel"
-			icon="letter"
-			showIcon="always"
-			name="email"
-			type="email"
-			required>Test</Field
+		<Field bind:value={email} placeholder="Courriel" icon="letter" showIcon="always" name="email" type="email"
+			>Test</Field
 		>
 		<Field
 			bind:value={password}
@@ -139,7 +133,6 @@
 				type="submit"
 				variant="cta"
 				value={Action.SignUp}
-				disabled={!Boolean(email)}
 				display="block"
 				contentAlign="center"
 				loading={currentAction === Action.SignUp}
