@@ -42,7 +42,7 @@
 	/**
 	 * CSS inline style for the figure (outer container) element. Default style includes display flex to allow for easy centering of map when bigger than container.
 	 */
-	export let outerStyle: string = undefined;
+	export let style: string = undefined;
 	/**
 	 * CSS inline style for the map element, useful to implement overflow. The map container is display flex to allow for easy centering.
 	 */
@@ -148,7 +148,7 @@
 	onDestroy(() => {});
 </script>
 
-<figure bind:this={outerRef} class:loading class:not-inited={!inited} style={outerStyle}>
+<figure bind:this={outerRef} class:loading class:not-inited={!inited} {style}>
 	<div class="map" bind:this={containerRef} style={innerStyle} />
 	{#if $loading}
 		<Loading size={sizes.large} />

@@ -22,7 +22,9 @@
 
 	export async function load({ stuff, session }: LoadEvent): Promise<LoadOutput> {
 		return {
-			stuff: {},
+			stuff: {
+				showFooter: true,
+			},
 		};
 	}
 </script>

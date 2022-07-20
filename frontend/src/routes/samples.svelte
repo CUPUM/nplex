@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { reveal } from '$actions/reveal';
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
 	import Field from '$components/primitives/Field.svelte';
@@ -16,6 +17,7 @@
 	import { KeyCode } from '$utils/keys';
 	import { sizes } from '$utils/sizes';
 	import type { ComponentProps } from 'svelte/internal';
+	import { slide } from 'svelte/transition';
 
 	let alt = false;
 	let useHover;
@@ -26,8 +28,8 @@
 	let showTransitionBlock = false;
 	let buttonIcon = true;
 	let currentIconName: keyof typeof icons = Object.keys(icons)[0] as keyof typeof icons;
-
 	let radioValue = null;
+	let inserted = true;
 
 	let variants: ComponentProps<Button>['variant'][] = ['default', 'secondary', 'ghost', 'cta', 'navbar'];
 	let sizeKeys = Object.keys(sizes);
@@ -38,9 +40,33 @@
 			messages.dispatch({ text: e.target.value, timer: 10000 });
 		}
 	}
+
+	function test(el?) {
+		console.log(el);
+	}
 </script>
 
 <article class="core-grid">
+	<section>
+		<h2>Transition / action testground</h2>
+		<input type="checkbox" name="" id="" bind:checked={inserted} />
+		<h3>Transition</h3>
+		{#if inserted}
+			<p transition:slide={{}}>
+				Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint, natus ipsam dolor corporis consequuntur
+				reprehenderit debitis culpa odio libero magnam.
+			</p>
+		{/if}
+		<h3>Action</h3>
+		<p use:reveal>
+			Lorem, ipsum dolor sit amet <em>consectetur</em> adipisicing elit.
+			<span>Sint, natus <b>ipsam dolor</b></span> corporis consequuntur reprehenderit debitis culpa odio libero magnam.
+		</p>
+		<p>
+			Lorem, ipsum dolor sit amet <em>consectetur</em> adipisicing elit.
+			<span>Sint, natus <b>ipsam dolor</b></span> corporis consequuntur reprehenderit debitis culpa odio libero magnam.
+		</p>
+	</section>
 	<!-- <section>
 		<h2>Text styles</h2>
 		<h1>Heading 1</h1>
