@@ -6,7 +6,35 @@
 		}));
 </script>
 
-<section>gallery</section>
+<section>
+	<ul>
+		<li><img src="" alt="" /></li>
+		<li><img src="" alt="" /></li>
+		<li><img src="" alt="" /></li>
+		<li><img src="" alt="" /></li>
+	</ul>
+	<nav>
+		<ul><li /></ul>
+	</nav>
+</section>
 
 <style lang="scss">
+	section {
+		ul {
+		}
+
+		li {
+		}
+
+		img {
+		}
+	}
+
+	nav {
+		ul {
+		}
+
+		li {
+		}
+	}
 </style>

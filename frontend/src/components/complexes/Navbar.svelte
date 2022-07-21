@@ -81,29 +81,17 @@
 				<Button href="/" variant="navbar" square={true} icon="home" />
 			</Tooltip>
 			{#if $session.user}
-				<div
-					in:fly|local={{ x: 20, opacity: 0, duration: 350, easing: expoOut, delay: 500 }}
-					out:fly|local={{ x: 20, opacity: 0, duration: 350, easing: expoIn, delay: 0 }}
-				>
-					<Popover placement="bottom" align="end" useHover={true}>
-						<Button slot="control" variant="navbar" href={creationBaseRoute.pathname} icon="pen" />
-						<NavbarCreationMenu />
-					</Popover>
-					<Popover useHover={true} placement="bottom" align="end">
-						<AvatarButton slot="control" href={userBaseRoute.pathname} />
-						<Button>Autre option</Button>
-						<Button on:click={signOut}>Se déconnecter</Button>
-					</Popover>
-				</div>
+				<Popover placement="bottom" align="end" useHover={true}>
+					<Button slot="control" variant="navbar" href={creationBaseRoute.pathname} icon="pen" />
+					<NavbarCreationMenu />
+				</Popover>
+				<Popover useHover={true} placement="bottom" align="end">
+					<AvatarButton slot="control" href={userBaseRoute.pathname} />
+					<Button>Autre option</Button>
+					<Button on:click={signOut}>Se déconnecter</Button>
+				</Popover>
 			{:else}
-				<div
-					in:fly|local={{ x: 20, opacity: 0, duration: 350, easing: expoOut, delay: 500 }}
-					out:fly|local={{ x: 20, opacity: 0, duration: 350, easing: expoIn, delay: 0 }}
-				>
-					<Button variant="cta" href={getAuthRedirectUrl($page.url).toString()} icon="user"
-						>Se connecter</Button
-					>
-				</div>
+				<Button variant="cta" href={getAuthRedirectUrl($page.url).toString()} icon="user">Se connecter</Button>
 			{/if}
 		</nav>
 	{/if}

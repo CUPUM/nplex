@@ -18,7 +18,6 @@
 	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
-	import type { UserCookieRequestBody } from './api/auth/user-cookie/update';
 
 	export async function load({ stuff, session }: LoadEvent): Promise<LoadOutput> {
 		return {
@@ -43,28 +42,24 @@
 
 	// Listening to and handling client-side Supabase auth state change.
 	db.auth.onAuthStateChange(async (e, s) => {
-		// Preparing the cookie request body.
-		const body: UserCookieRequestBody = {
-			user: null,
-		};
 		// Update client-side store accordingly.
 		if (e === 'SIGNED_OUT') {
 			// Resetting the cookie's user to null.
 			await fetch('/api/auth/user-cookie/update', {
 				method: 'POST',
-				body: JSON.stringify(body),
+				body: JSON.stringify(null),
 			});
-			session.update((prevSession) => ({ ...prevSession, previousUrl: get(page).url.hostname, user: body.user }));
+			session.update((prevSession) => ({ ...prevSession, previousUrl: get(page).url.hostname, user: null }));
 			return goto(get(page).url);
 		}
 		// Updating cookie's user info.
 		const role = toUserRoleEnum(await getUserRole());
-		body.user = { ...s.user, role };
+		const appUser: App.Session['user'] = { ...s.user, role };
 		await fetch('/api/auth/user-cookie/update', {
 			method: 'POST',
-			body: JSON.stringify(body),
+			body: JSON.stringify(appUser),
 		});
-		session.update((prevSession) => ({ ...prevSession, user: body.user }));
+		session.update((prevSession) => ({ ...prevSession, user: appUser }));
 		if (authModal) authModal.close();
 	});
 

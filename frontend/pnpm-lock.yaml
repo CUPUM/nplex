@@ -2,8 +2,8 @@ lockfileVersion: 5.4
 
 specifiers:
   '@supabase/supabase-js': ^1.35.4
-  '@sveltejs/adapter-node': 1.0.0-next.81
-  '@sveltejs/kit': 1.0.0-next.379
+  '@sveltejs/adapter-node': 1.0.0-next.82
+  '@sveltejs/kit': 1.0.0-next.384
   '@turf/bbox': ^6.5.0
   '@turf/circle': ^6.5.0
   '@turf/helpers': ^6.5.0
@@ -52,8 +52,8 @@ dependencies:
   maplibre-gl: 2.1.9
 
 devDependencies:
-  '@sveltejs/adapter-node': 1.0.0-next.81
-  '@sveltejs/kit': 1.0.0-next.379_svelte@3.49.0+vite@3.0.2
+  '@sveltejs/adapter-node': 1.0.0-next.82
+  '@sveltejs/kit': 1.0.0-next.384_svelte@3.49.0+vite@3.0.2
   '@types/cookie': 0.5.1
   '@types/node': 18.0.6
   '@typescript-eslint/eslint-plugin': 5.30.7_6wltbjakwuqm7awqswigmiuhd4
@@ -274,14 +274,14 @@ packages:
       - supports-color
     dev: false
 
-  /@sveltejs/adapter-node/1.0.0-next.81:
-    resolution: {integrity: sha512-OCYteMK4iNRR+sHMtpMBkNvJoo7lpfMiGF1TsvtE8wv7IjBA5pHwTETrvwZL9nGoQzhpDiDuUWYt7w0cLKCukw==}
+  /@sveltejs/adapter-node/1.0.0-next.82:
+    resolution: {integrity: sha512-lWPH5jYu8SfiV+1/6oFG8Ow232Ty3L7ihH17xT5U2J66LvzyW6DzSN1jp9uw3fT3ATim4kVXOxX2e7QyK2JGzQ==}
     dependencies:
       tiny-glob: 0.2.9
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.379_svelte@3.49.0+vite@3.0.2:
-    resolution: {integrity: sha512-mhy0GW4KUJ3tq6mDMF0fs/B6Nh2oJM6ZAA2fwilTOdqzhKD3f2WJLH9RXx1Z5/8eodFeQsURTPRn5a0r3QAZew==}
+  /@sveltejs/kit/1.0.0-next.384_svelte@3.49.0+vite@3.0.2:
+    resolution: {integrity: sha512-m1i9dhma1JAuDYp8nrPyqsN6VWv/ye90h6mWQvAC3lCNmKlb4F8cxhMYIhGYgzaZYSqToNiTaK2QRVPuB4i2/g==}
     engines: {node: '>=16.9'}
     hasBin: true
     peerDependencies:
@@ -691,7 +691,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001367
-      electron-to-chromium: 1.4.194
+      electron-to-chromium: 1.4.195
       node-releases: 2.0.6
       update-browserslist-db: 1.0.5_browserslist@4.21.2
     dev: true
@@ -1036,8 +1036,8 @@ packages:
     resolution: {integrity: sha512-/pjZsA1b4RPHbeWZQn66SWS8nZZWLQQ23oE3Eam7aroEFGEvwKAsJfZ9ytiEMycfzXWpca4FA9QIOehf7PocBQ==}
     dev: false
 
-  /electron-to-chromium/1.4.194:
-    resolution: {integrity: sha512-ola5UH0xAP1oYY0FFUsPvwtucEzCQHucXnT7PQ1zjHJMccZhCDktEugI++JUR3YuIs7Ff7afz+OVEhVAIMhLAQ==}
+  /electron-to-chromium/1.4.195:
+    resolution: {integrity: sha512-vefjEh0sk871xNmR5whJf9TEngX+KTKS3hOHpjoMpauKkwlGwtMz1H8IaIjAT/GNnX0TbGwAdmVoXCAzXf+PPg==}
     dev: true
 
   /element-to-path/1.2.1:

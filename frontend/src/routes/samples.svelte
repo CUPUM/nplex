@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { reveal } from '$actions/reveal';
+	import { reveal } from '$actions/reveal/reveal';
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
 	import Field from '$components/primitives/Field.svelte';
@@ -58,13 +58,8 @@
 			</p>
 		{/if}
 		<h3>Action</h3>
-		<p use:reveal>
+		<p use:reveal={{ once: false }}>
 			Lorem, ipsum dolor sit amet <em>consectetur</em> adipisicing elit.
-			<span>Sint, natus <b>ipsam dolor</b></span> corporis consequuntur reprehenderit debitis culpa odio libero magnam.
-		</p>
-		<p>
-			Lorem, ipsum dolor sit amet <em>consectetur</em> adipisicing elit.
-			<span>Sint, natus <b>ipsam dolor</b></span> corporis consequuntur reprehenderit debitis culpa odio libero magnam.
 		</p>
 	</section>
 	<!-- <section>
