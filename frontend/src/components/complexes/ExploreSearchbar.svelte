@@ -87,6 +87,7 @@
 		z-index: 10;
 		position: relative;
 		padding: 1rem;
+		padding-right: 0;
 		padding-top: 0.5rem;
 		margin: 0;
 		display: flex;
@@ -115,7 +116,7 @@
 		overflow-y: visible;
 		white-space: nowrap;
 		margin-left: 0.5rem;
-		margin-right: 1rem;
+		padding-right: 1rem;
 		transition: all 0.25s ease-out;
 
 		&:not(:hover) {

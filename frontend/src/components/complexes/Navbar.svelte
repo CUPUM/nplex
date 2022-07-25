@@ -122,7 +122,7 @@
 		font-size: var(--size-small);
 		z-index: 100;
 		// backdrop-filter: blur(10px);
-		transition: all 0.35s, background-color 1s ease-in-out;
+		transition: all 0.35s, background-color 1s ease-in-out, width 0s;
 
 		&::before {
 			content: '';

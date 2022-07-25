@@ -302,16 +302,16 @@
 			perspective: 75px;
 		}
 		& .label-default {
-			transform: translateY(0) skewY(0deg) rotateX(0deg);
-			transition: all 0.5s cubic-bezier(0, 0, 0, 1);
+			transform: translateY(0) translateZ(0px) skewY(0deg) rotateX(0deg);
+			transition: all 0.5s cubic-bezier(0.2, 0, 0, 1);
 		}
 		& .label-hover {
 			opacity: 0;
 			position: absolute;
 			top: 0;
 			left: 0;
-			transform: translateY(0.8em) skewY(5deg) rotateX(-60deg);
-			transition: all 0.3s cubic-bezier(0, 0, 0, 1);
+			transform: translateY(-0.5em) translateZ(6px) skewY(-3deg) rotateX(15deg);
+			transition: all 0.35s cubic-bezier(0.2, 0, 0, 1);
 		}
 
 		// prettier-ignore
@@ -323,13 +323,13 @@
 			box-shadow: 0 1em 2.5em -0.5em rgba(var(--rgb-primary-700), 0.8);
 			& .label-default {
 				opacity: 0;
-				transform: translateY(-.8em) skewY(5deg) rotateX(60deg);
-				transition: all 0.3s cubic-bezier(0, 0, 0, 1);
+				transform: translateY(.75em) translateZ(-12px) skewY(3deg) rotateX(-15deg);
+				transition: all 0.35s cubic-bezier(0.2, 0, 0, 1);
 			}
 			& .label-hover {
 				opacity: 1;
-				transform: translateY(0) skewY(0deg) rotateX(0deg);
-				transition: all 0.5s cubic-bezier(0, 0, 0, 1);
+				transform: translateY(0) translateZ(0px) skewY(0deg) rotateX(0deg);
+				transition: all 0.5s cubic-bezier(0.2, 0, 0, 1);
 			}
 		}
 		&.active {

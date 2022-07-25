@@ -1,3 +1,7 @@
+<!--
+	@component
+	A common map marker, needs to be nested within a MapLayer? (to determine).
+-->
 <script lang="ts" context="module">
 </script>
 

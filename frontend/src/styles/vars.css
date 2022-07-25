@@ -3,7 +3,7 @@
  *
  * This file was generated from the utils found at ./src/utils.
  * All changes added manually here will be lost on next execution of the generator script.
- * Last generated on: Mon Jul 18 2022 17:39:10 GMT-0400 (GMT-04:00)
+ * Last generated on: Mon Jul 25 2022 00:11:36 GMT-0400 (Eastern Daylight Time)
  *
  * ⚠️ WARNING ⚠️
  */
@@ -31,14 +31,14 @@
 	--rgb-secondary-900: 219, 113, 77;
 	--color-light-100: hsl(80, 18%, 98%);
 	--rgb-light-100: 250, 251, 249;
-	--color-light-300: hsl(80, 16%, 94%);
-	--rgb-light-300: 241, 242, 237;
-	--color-light-500: hsl(80, 14%, 89%);
-	--rgb-light-500: 228, 231, 223;
-	--color-light-700: hsl(80, 12%, 83%);
-	--rgb-light-700: 213, 217, 206;
-	--color-light-900: hsl(80, 10%, 77%);
-	--rgb-light-900: 198, 202, 190;
+	--color-light-300: hsl(80, 16%, 95%);
+	--rgb-light-300: 243, 244, 240;
+	--color-light-500: hsl(80, 14%, 92%);
+	--rgb-light-500: 236, 237, 232;
+	--color-light-700: hsl(80, 12%, 89%);
+	--rgb-light-700: 228, 230, 224;
+	--color-light-900: hsl(80, 10%, 85%);
+	--rgb-light-900: 218, 221, 213;
 	--color-dark-100: hsl(178, 10%, 38%);
 	--rgb-dark-100: 87, 107, 106;
 	--color-dark-300: hsl(180, 14%, 32%);

@@ -1,29 +1,23 @@
 <script lang="ts" context="module">
 	export interface MapContext {
 		getMap: () => Map;
-		viewportBox: Readable<LngLatBounds | LngLatBoundsLike>;
 		loading: Writable<boolean>;
-		inited: Writable<boolean>;
 	}
 </script>
 
 <script lang="ts">
 	import { Ctx } from '$utils/keys';
-	import { mapStyles } from '$utils/map';
+	import { mapStyles, montrealLocation } from '$utils/map';
 	import { sizes } from '$utils/sizes';
-	import {
-		LngLat,
-		LngLatBounds,
-		Map,
-		type LngLatBoundsLike,
-		type LngLatLike,
-		type StyleSpecification,
-	} from 'maplibre-gl';
+	import { LngLat, Map, type LngLatLike, type StyleSpecification } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, onDestroy, onMount, setContext } from 'svelte';
-	import { writable, type Readable, type Writable } from 'svelte/store';
+	import { writable, type Writable } from 'svelte/store';
 	import Loading from './Loading.svelte';
 
+	/**
+	 * Maplibre map instance.
+	 */
 	export let map: Map = undefined;
 	/**
 	 * Reference for the base layer style.json specification.
@@ -32,13 +26,7 @@
 	export let pitch: number = 0;
 	export let bearing: number = 0;
 	export let zoom: number = 9.5;
-	export let center: LngLat | LngLatLike = [-73.65, 45.55];
-	/**
-	 * Describes the map's inner boundingBox as framed by the parent container.
-	 * Useful for flyTo / map transitions in cases where the inner map canvas is set to overflow the container.
-	 * Overflowing maps are used to ensure smoother transitions by limiting map.resize() calls. This feature is helpful even with the resizeDebounce.
-	 */
-	export let viewportBox: MapContext['viewportBox'] = undefined;
+	export let center: LngLat | LngLatLike = montrealLocation.center;
 	/**
 	 * CSS inline style for the figure (outer container) element. Default style includes display flex to allow for easy centering of map when bigger than container.
 	 */
@@ -49,12 +37,13 @@
 	export let innerStyle: string = undefined;
 
 	const dispatch = createEventDispatcher();
-	let containerRef: HTMLElement;
+	let innerRef: HTMLElement;
 	let outerRef: HTMLElement;
-	let inited = writable(false);
 	let loading = writable(false);
-	let resizeObs: ResizeObserver;
-	let resizeDebounce;
+	let innerResizeObs: ResizeObserver;
+	let outerResizeObs: ResizeObserver;
+	let innerResizeDebounce;
+	let outerResizeDebounce;
 	let hasOverlaySlot = false;
 
 	/**
@@ -76,12 +65,30 @@
 		map.setStyle(styleSpecification);
 	}
 
-	function handleResize() {
-		if (resizeDebounce) clearTimeout(resizeDebounce);
-		resizeDebounce = setTimeout(() => {
+	function handleOuterResize() {
+		if (innerStyle) {
+			if (outerResizeDebounce) clearTimeout(outerResizeDebounce);
+			outerResizeDebounce = setTimeout(() => {
+				if (map && innerRef && outerRef) {
+					map.setPadding({
+						top: -1 * innerRef.offsetTop,
+						right: -1 * (outerRef.offsetWidth - (innerRef.offsetLeft + innerRef.offsetWidth)),
+						bottom: -1 * (outerRef.offsetHeight - (innerRef.offsetTop + innerRef.offsetHeight)),
+						left: -1 * innerRef.offsetLeft,
+					});
+					clearTimeout(outerResizeDebounce);
+				}
+			}, 50);
+		}
+	}
+
+	function handleInnerResize() {
+		// if (innerResizeDebounce) clearTimeout(innerResizeDebounce);
+		// innerResizeDebounce =
+		requestAnimationFrame(() => {
 			map?.resize();
-			clearTimeout(resizeDebounce);
-		}, 50);
+			clearTimeout(innerResizeDebounce);
+		});
 	}
 
 	function updateBoundingBox() {
@@ -90,17 +97,17 @@
 
 	setContext<MapContext>(Ctx.Map, {
 		getMap: () => map,
-		viewportBox,
 		loading,
-		inited,
 	});
 
 	onMount(() => {
-		resizeObs = new ResizeObserver(handleResize);
-		resizeObs.observe(containerRef);
+		outerResizeObs = new ResizeObserver(handleOuterResize);
+		outerResizeObs.observe(outerRef);
+		innerResizeObs = new ResizeObserver(handleInnerResize);
+		innerResizeObs.observe(innerRef);
 
 		map = new Map({
-			container: containerRef,
+			container: innerRef,
 			style: styleSpecification,
 			center,
 			zoom,
@@ -109,16 +116,14 @@
 			attributionControl: false,
 		});
 
+		// map.showPadding = true;
+
 		map.on('zoom', (e) => {
 			zoom = map.getZoom();
 		});
 
 		map.on('load', (e) => {
 			dispatch('load', e);
-			if (!$inited) {
-				dispatch('init');
-				inited.set(true);
-			}
 			loading.set(false);
 		});
 
@@ -148,45 +153,48 @@
 	onDestroy(() => {});
 </script>
 
-<figure bind:this={outerRef} class:loading class:not-inited={!inited} {style}>
-	<div class="map" bind:this={containerRef} style={innerStyle} />
+<figure bind:this={outerRef} class:loading class:not-inited={!map} {style}>
+	<div class="map" bind:this={innerRef} style={innerStyle} />
 	{#if $loading}
 		<Loading size={sizes.large} />
 	{/if}
-	<slot {map} />
-	{#if hasOverlaySlot}
-		<div class="overlay">
-			{#if $$slots['top-left']}
-				<div class="top left">
-					<slot name="top-left" />
-				</div>
-			{/if}
-			{#if $$slots['top-center']}
-				<div class="top center">
-					<slot name="top-center" />
-				</div>
-			{/if}
-			{#if $$slots['top-right']}
-				<div class="top right">
-					<slot name="top-right" />
-				</div>
-			{/if}
-			{#if $$slots['bottom-left']}
-				<div class="bottom left">
-					<slot name="bottom-left" />
-				</div>
-			{/if}
-			{#if $$slots['bottom-center']}
-				<div class="bottom center">
-					<slot name="bottom-center" />
-				</div>
-			{/if}
-			{#if $$slots['bottom-right']}
-				<div class="bottom right">
-					<slot name="bottom-right" />
-				</div>
-			{/if}
-		</div>
+	{#if map}
+		<slot {map} />
+		{#if hasOverlaySlot}
+			<!-- TO DO: Move this and all overlay / toolbar display logic to MapToolbar compoennt. Do the same for any other overlay items. -->
+			<div class="overlay">
+				{#if $$slots['top-left']}
+					<div class="top left">
+						<slot name="top-left" />
+					</div>
+				{/if}
+				{#if $$slots['top-center']}
+					<div class="top center">
+						<slot name="top-center" />
+					</div>
+				{/if}
+				{#if $$slots['top-right']}
+					<div class="top right">
+						<slot name="top-right" />
+					</div>
+				{/if}
+				{#if $$slots['bottom-left']}
+					<div class="bottom left">
+						<slot name="bottom-left" />
+					</div>
+				{/if}
+				{#if $$slots['bottom-center']}
+					<div class="bottom center">
+						<slot name="bottom-center" />
+					</div>
+				{/if}
+				{#if $$slots['bottom-right']}
+					<div class="bottom right">
+						<slot name="bottom-right" />
+					</div>
+				{/if}
+			</div>
+		{/if}
 	{/if}
 </figure>
 
@@ -202,6 +210,7 @@
 		justify-content: center;
 		align-items: center;
 		overflow: hidden;
+		border-radius: 1.5rem;
 		transition: all 0.35s cubic-bezier(0.2, 0, 0.2, 1);
 	}
 
@@ -260,9 +269,33 @@
 	*/
 	.top {
 		grid-row: top;
+
+		@media (hover: hover) {
+			opacity: 0;
+			transform: translateY(-0.5em);
+			transition: all 0.2s cubic-bezier(0.75, 0, 0.75, 1) 0.5s;
+
+			@at-root figure:hover & {
+				opacity: 1;
+				transform: translateY(0px);
+				transition: all 0.2s cubic-bezier(0.25, 0, 0.25, 1);
+			}
+		}
 	}
 	.bottom {
 		grid-row: bottom;
+
+		@media (hover: hover) {
+			opacity: 0;
+			transform: translateY(0.5em);
+			transition: all 0.2s cubic-bezier(0.75, 0, 0.75, 1) 0.5s;
+
+			@at-root figure:hover & {
+				opacity: 1;
+				transform: translateY(0px);
+				transition: all 0.2s cubic-bezier(0.25, 0, 0.25, 1);
+			}
+		}
 	}
 	.left {
 		grid-column: left;

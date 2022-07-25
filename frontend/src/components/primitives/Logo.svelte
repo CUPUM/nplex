@@ -7,15 +7,11 @@
 
 	export let color: string = colors.dark[100];
 	export let hoverColor: string = color;
-	export let intro: boolean = false;
+	export let intro: boolean = true;
 
 	let show = !intro;
 	onMount(() => {
-		if (!show) {
-			setTimeout(() => {
-				show = true;
-			}, 350);
-		}
+		show = true;
 	});
 </script>
 

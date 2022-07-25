@@ -1,4 +1,5 @@
 <script lang="ts" context="module">
+	import { guard } from '$utils/auth';
 	import { allRoles } from '$utils/user';
 	import type { Load, LoadOutput } from '@sveltejs/kit';
 
@@ -13,14 +14,13 @@
 	import { page } from '$app/stores';
 	import EditorAside from '$components/complexes/EditorAside.svelte';
 	import { width } from '$transitions/width';
-	import { guard } from '$utils/auth';
 </script>
 
 <div>
 	{#if $page.stuff.showEditorAside}
-		<section class="aside-container" transition:width|local>
+		<aside transition:width|local>
 			<EditorAside />
-		</section>
+		</aside>
 	{/if}
 	<article>
 		<slot />
@@ -31,26 +31,24 @@
 	div {
 		display: flex;
 		flex-direction: row;
-		position: relative;
 		width: 100%;
 		gap: 0;
 		padding-top: var(--navbar-height);
 		overflow: hidden;
 	}
 
-	section {
+	aside {
 		flex: none;
 		display: block;
-		position: relative;
-		height: 100%;
-		background-color: red;
+		// background-color: var(--color-light-300);
+		border-right: 1px solid rgba(var(--rgb-dark-500), 0.1);
+		padding: 0 2rem;
 	}
 
 	article {
 		display: block;
 		flex: 1;
 		margin: 0;
-		padding: 2rem;
 		min-width: 0;
 	}
 </style>

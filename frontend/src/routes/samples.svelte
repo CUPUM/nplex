@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { reveal } from '$actions/reveal/reveal';
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
 	import Field from '$components/primitives/Field.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
+	import Map from '$components/primitives/Map.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
 	import Select from '$components/primitives/Select.svelte';
 	import SelectOption from '$components/primitives/SelectOption.svelte';
@@ -17,7 +17,6 @@
 	import { KeyCode } from '$utils/keys';
 	import { sizes } from '$utils/sizes';
 	import type { ComponentProps } from 'svelte/internal';
-	import { slide } from 'svelte/transition';
 
 	let alt = false;
 	let useHover;
@@ -29,7 +28,21 @@
 	let buttonIcon = true;
 	let currentIconName: keyof typeof icons = Object.keys(icons)[0] as keyof typeof icons;
 	let radioValue = null;
-	let inserted = true;
+	let inserted = false;
+
+	const data = {
+		type: 'FeatureCollection',
+		features: [
+			{
+				type: 'Feature',
+				properties: {},
+				geometry: {
+					type: 'Point',
+					coordinates: [-76.53063297271729, 39.18174077994108],
+				},
+			},
+		],
+	};
 
 	let variants: ComponentProps<Button>['variant'][] = ['default', 'secondary', 'ghost', 'cta', 'navbar'];
 	let sizeKeys = Object.keys(sizes);
@@ -40,28 +53,30 @@
 			messages.dispatch({ text: e.target.value, timer: 10000 });
 		}
 	}
-
-	function test(el?) {
-		console.log(el);
-	}
 </script>
 
 <article class="core-grid">
 	<section>
+		<h2>Map</h2>
+		<section>
+			<Map style="width: 500px; height: 300px">
+				<!-- <MapGeoJSONSource id="test" {data} /> -->
+			</Map>
+			<br />
+			<Map style="width: 500px; height: 300px" />
+		</section>
+	</section>
+	<!-- <section>
 		<h2>Transition / action testground</h2>
 		<input type="checkbox" name="" id="" bind:checked={inserted} />
-		<h3>Transition</h3>
-		{#if inserted}
-			<p transition:slide={{}}>
-				Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint, natus ipsam dolor corporis consequuntur
-				reprehenderit debitis culpa odio libero magnam.
-			</p>
-		{/if}
 		<h3>Action</h3>
-		<p use:reveal={{ once: false }}>
+		<p use:reveal>
 			Lorem, ipsum dolor sit amet <em>consectetur</em> adipisicing elit.
 		</p>
-	</section>
+		<h2 use:reveal={{ show: inserted, css: unfold, duration: 1000 }}>
+			Lorem, ipsum dolor sit amet <em>consectetur</em> adipisicing elit.
+		</h2>
+	</section> -->
 	<!-- <section>
 		<h2>Text styles</h2>
 		<h1>Heading 1</h1>

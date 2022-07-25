@@ -187,7 +187,7 @@
 		border-radius: var(--default-radius);
 		height: var(--size);
 		outline-style: solid;
-		outline-width: 1.5px;
+		outline-width: 2px;
 		outline-color: transparent;
 		transition: all 0.15s ease-out;
 		overflow: visible;

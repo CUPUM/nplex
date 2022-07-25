@@ -1,3 +1,7 @@
+<!--
+	@component
+	Maplibre map instance toolbar, to be used when grouping various buttons for map controls.
+ -->
 <script lang="ts" context="module">
 	export interface MapToolbarContext {}
 </script>
@@ -7,19 +11,29 @@
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import type { MapContext } from './Map.svelte';
 
-	onMount(() => {});
+	export let direction: 'row' | 'column' = 'row';
+	export let position:
+		| 'top-left'
+		| 'top-center'
+		| 'top-right'
+		| 'center-left'
+		| 'center-right'
+		| 'bottom-left'
+		| 'bottom-center'
+		| 'bottom-right';
 
-	let mapCtx = getContext<MapContext>(Ctx.Map);
-	$: if (mapCtx && mapCtx.inited) {
-		// console.log(mapCtx.getMap());
-	}
+	const mapCtx = getContext<MapContext>(Ctx.Map);
+
+	const map = mapCtx.getMap();
 
 	setContext<MapToolbarContext>(Ctx.MapToolbar, {});
+
+	onMount(() => {});
 
 	onDestroy(() => {});
 </script>
 
-<menu>
+<menu class="{direction} {position}">
 	<slot />
 </menu>
 

@@ -5,16 +5,17 @@
 	import Button from '$components/primitives/Button.svelte';
 	import Map from '$components/primitives/Map.svelte';
 	import MapToolbar from '$components/primitives/MapToolbar.svelte';
+	import { centerMapOnClientLocation } from '$utils/map';
 </script>
 
 <section>
 	<Map let:map innerStyle="width: 100vw; height: 100vh;">
-		<MapToolbar slot="top-left">
+		<MapToolbar slot="top-left" position="top-left">
 			<Button variant="ghost" on:click={() => map.zoomIn()} icon="plus" />
 			<Button variant="ghost" on:click={() => map.zoomOut()} icon="minus" />
 		</MapToolbar>
-		<MapToolbar slot="top-right">
-			<Button variant="ghost" on:click={() => console.log(map)} icon="localize" />
+		<MapToolbar slot="top-right" position="top-right">
+			<Button variant="ghost" on:click={() => centerMapOnClientLocation(map)} icon="localize" />
 			<Button variant="ghost" on:click={() => console.log(map)} icon="layers" />
 			<Button variant="ghost" on:click={() => console.log(map)} icon="expand" />
 			<Button variant="ghost" on:click={() => console.log(map)} icon="cross" />
@@ -36,7 +37,7 @@
 		background-color: var(--color-light-300);
 		transition: all 0.35s cubic-bezier(0.25, 0, 0.25, 1);
 		/* overflow: visible; */
-		overflow: hidden;
+		// overflow: hidden;
 
 		&:first-child:not(.is-article) {
 		}

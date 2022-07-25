@@ -111,7 +111,7 @@
 		position: absolute;
 		height: calc(var(--size) - 2 * var(--inset));
 		border-radius: calc(var(--radius) - var(--inset));
-		transition: all 0.18s cubic-bezier(0.8, 0, 0.2, 1.2);
+		transition: all 0.15s cubic-bezier(0.8, 0, 0.2, 1.2);
 
 		&.temp {
 			// transform: scale(0.95, 0.92);

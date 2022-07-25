@@ -141,16 +141,10 @@
 		background-color: transparent;
 		color: var(--color-dark-900);
 		opacity: 0.8;
-		& .inner {
-			transform: translateY(0);
-		}
 		&:hover,
 		&:focus {
 			opacity: 1;
 			color: var(--color-dark-900);
-			& .inner {
-				transform: translateY(-0.1em);
-			}
 		}
 		&.current {
 			color: var(--color-primary-700);

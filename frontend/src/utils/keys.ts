@@ -22,7 +22,7 @@ export enum Ctx {
 	SelectGroup = 'select-group-context',
 	Map = 'map-context',
 	MapMarker = 'map-marker-context',
-	MapSource = 'map-source-context',
+	MapGeoJSONSource = 'map-geojson-source-context',
 	MapFeature = 'map-feature-context',
 	MapLayer = 'map-layer-context',
 	MapTooltip = 'map-tooltip-context',
