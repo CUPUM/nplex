@@ -125,7 +125,7 @@
 		outline-style: solid;
 		outline-color: transparent;
 		outline-offset: 2px;
-		transition: all 0.12s cubic-bezier(0.25, 0, 0.5, 1);
+		transition: all 0.1s cubic-bezier(0.25, 0, 0.5, 1);
 
 		&.warning {
 			background-color: var(--color-error-500);
@@ -241,7 +241,7 @@
 		color: var(--color-dark-900);
 		background-color: var(--color-light-300);
 		box-shadow: 0 0.5em 2em -1em transparent;
-		transition: all 0.2s ease-out, box-shadow 0.35s ease-out;
+		transition: all 0.1s ease-out, box-shadow 0.35s ease-out;
 
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,

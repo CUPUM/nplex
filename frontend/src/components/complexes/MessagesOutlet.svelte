@@ -3,10 +3,15 @@
 
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
-	import { messages } from '$stores/messages';
+	import { messages, type Message } from '$stores/messages';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
+
+	function closeMessage(e: MouseEvent, message: Message) {
+		e.stopPropagation();
+		messages.clear(message);
+	}
 </script>
 
 <div class="outlet">
@@ -28,7 +33,7 @@
 			<Button
 				style="position: absolute; left: calc(100% + .5em);"
 				warning={message.type === 'error'}
-				on:click={() => messages.clear(message)}
+				on:click={(e) => closeMessage(e, message)}
 				icon="cross"
 			/>
 		</dialog>

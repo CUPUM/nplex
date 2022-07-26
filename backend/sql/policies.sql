@@ -22,20 +22,52 @@ from anon,
 -- ESTABLISH UPDATE ACCESSES
 -- Only fields specified below should be updatable by authed clients.
 grant update (
-		show_email,
+		published_email,
 		firstname,
 		middlename,
 		lastname,
-		about
+		about,
+		avatar_url
 	) on public.users_profiles to authenticated;
 
 grant update (role) on public.users_roles to authenticated;
 
-grant update (title, description) on public.projects to authenticated;
+grant update (
+		title,
+		description,
+		site_ownership_id,
+		main_site_usage_category_id,
+		main_site_usage_id,
+		site_area,
+		project_area,
+		adjacent_streets,
+		location_geometry
+	) on public.projects to authenticated;
 
 grant update (status) on public.projects_publication_status to authenticated;
 
 grant update (status) on public.projects_publication_status to authenticated;
+
+-- LIST TABLES RLS
+alter table public.project_type_list enable row level security;
+
+create policy "Anyone can select project type" on public.project_type_list for
+select using (true);
+
+alter table public.project_site_ownership_list enable row level security;
+
+create policy "Anyone can select project site ownership" on public.project_site_ownership_list for
+select using (true);
+
+alter table public.project_site_usage_category_list enable row level security;
+
+create policy "Anyone can select project site usage category" on public.project_site_usage_category_list for
+select using (true);
+
+alter table public.project_site_usage_list enable row level security;
+
+create policy "Anyone can select project site usage" on public.project_site_usage_list for
+select using (true);
 
 -- USERS RLS
 alter table public.users_profiles enable row level security;

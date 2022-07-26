@@ -50,6 +50,7 @@ body {
 	Main styles
 */
 h1 {
+	white-space: normal;
 	font-weight: 450;
 	font-size: var(--size-x4large);
 	padding: 0;
@@ -61,6 +62,7 @@ h1 {
 }
 
 h2 {
+	white-space: normal;
 	font-weight: 500;
 	font-size: var(--size-x3large);
 	padding: 0;
@@ -72,6 +74,7 @@ h2 {
 }
 
 h3 {
+	white-space: normal;
 	font-weight: 550;
 	font-size: var(--size-x2large);
 	padding: 0;
@@ -83,6 +86,7 @@ h3 {
 }
 
 h4 {
+	white-space: normal;
 	font-weight: 600;
 	font-size: var(--size-xlarge);
 	padding: 0;
@@ -93,6 +97,7 @@ h4 {
 }
 
 h5 {
+	white-space: normal;
 	font-weight: 600;
 	font-size: var(--size-large);
 	padding: 0;

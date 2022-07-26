@@ -11,15 +11,16 @@
 	import '$styles/app.scss';
 	import '$styles/helpers.scss';
 	import '$styles/vars.css';
-	import { db, getUserRole } from '$utils/database';
+	import { db, DB_COOKIE_LIFETIME, getUserRole } from '$utils/database';
 	import { SearchParam } from '$utils/keys';
 	import { sizes } from '$utils/sizes';
 	import { toUserRoleEnum } from '$utils/user';
 	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
+	import type { UpdateUserCookieRequestBody } from './api/auth/update-user-cookies';
 
-	export async function load({ stuff, session }: LoadEvent): Promise<LoadOutput> {
+	export async function load({ stuff }: LoadEvent): Promise<LoadOutput> {
 		return {
 			stuff: {
 				showFooter: true,
@@ -44,22 +45,29 @@
 	db.auth.onAuthStateChange(async (e, s) => {
 		// Update client-side store accordingly.
 		if (e === 'SIGNED_OUT') {
-			// Resetting the cookie's user to null.
-			await fetch('/api/auth/user-cookie/update', {
+			// Resetting the auth-related and user-related cookies to null.
+			await fetch('/api/auth/update-user-cookies', {
 				method: 'POST',
-				body: JSON.stringify(null),
+				body: JSON.stringify({}),
 			});
 			session.update((prevSession) => ({ ...prevSession, previousUrl: get(page).url.hostname, user: null }));
 			return goto(get(page).url);
 		}
-		// Updating cookie's user info.
+		// Handling successful user updates.
 		const role = toUserRoleEnum(await getUserRole());
-		const appUser: App.Session['user'] = { ...s.user, role };
-		await fetch('/api/auth/user-cookie/update', {
+		const user: App.Session['user'] = { ...s.user, role };
+		const body: UpdateUserCookieRequestBody = {
+			user,
+			access_token: s.access_token,
+			refresh_token: s.refresh_token,
+			expires_at: s.expires_at || Date.now() + DB_COOKIE_LIFETIME,
+		};
+		// Updating cookies' info.
+		await fetch('/api/auth/update-user-cookies', {
 			method: 'POST',
-			body: JSON.stringify(appUser),
+			body: JSON.stringify(body),
 		});
-		session.update((prevSession) => ({ ...prevSession, user: appUser }));
+		session.update((prevSession) => ({ ...prevSession, user }));
 		if (authModal) authModal.close();
 	});
 
@@ -72,9 +80,7 @@
 	backgroundColor.init();
 
 	onMount(() => {
-		setTimeout(() => {
-			loading = false;
-		}, 500);
+		loading = false;
 	});
 </script>
 

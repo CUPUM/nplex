@@ -8,11 +8,11 @@ export function clickoutside(node: Node) {
 		}
 	};
 
-	document.addEventListener('click', handleClick, true);
+	document.addEventListener('click', handleClick);
 
 	return {
 		destroy() {
-			document.removeEventListener('click', handleClick, true);
+			document.removeEventListener('click', handleClick);
 		},
 	};
 }

@@ -24,6 +24,13 @@ export interface paths {
           is_published?: parameters["rowFilter.projects.is_published"];
           title?: parameters["rowFilter.projects.title"];
           description?: parameters["rowFilter.projects.description"];
+          site_ownership_id?: parameters["rowFilter.projects.site_ownership_id"];
+          main_site_usage_category_id?: parameters["rowFilter.projects.main_site_usage_category_id"];
+          main_site_usage_id?: parameters["rowFilter.projects.main_site_usage_id"];
+          site_area?: parameters["rowFilter.projects.site_area"];
+          project_area?: parameters["rowFilter.projects.project_area"];
+          adjacent_streets?: parameters["rowFilter.projects.adjacent_streets"];
+          location_geometry?: parameters["rowFilter.projects.location_geometry"];
           ratings_n?: parameters["rowFilter.projects.ratings_n"];
           ratings_average?: parameters["rowFilter.projects.ratings_average"];
           /** Filtering Columns */
@@ -84,6 +91,13 @@ export interface paths {
           is_published?: parameters["rowFilter.projects.is_published"];
           title?: parameters["rowFilter.projects.title"];
           description?: parameters["rowFilter.projects.description"];
+          site_ownership_id?: parameters["rowFilter.projects.site_ownership_id"];
+          main_site_usage_category_id?: parameters["rowFilter.projects.main_site_usage_category_id"];
+          main_site_usage_id?: parameters["rowFilter.projects.main_site_usage_id"];
+          site_area?: parameters["rowFilter.projects.site_area"];
+          project_area?: parameters["rowFilter.projects.project_area"];
+          adjacent_streets?: parameters["rowFilter.projects.adjacent_streets"];
+          location_geometry?: parameters["rowFilter.projects.location_geometry"];
           ratings_n?: parameters["rowFilter.projects.ratings_n"];
           ratings_average?: parameters["rowFilter.projects.ratings_average"];
         };
@@ -108,12 +122,205 @@ export interface paths {
           is_published?: parameters["rowFilter.projects.is_published"];
           title?: parameters["rowFilter.projects.title"];
           description?: parameters["rowFilter.projects.description"];
+          site_ownership_id?: parameters["rowFilter.projects.site_ownership_id"];
+          main_site_usage_category_id?: parameters["rowFilter.projects.main_site_usage_category_id"];
+          main_site_usage_id?: parameters["rowFilter.projects.main_site_usage_id"];
+          site_area?: parameters["rowFilter.projects.site_area"];
+          project_area?: parameters["rowFilter.projects.project_area"];
+          adjacent_streets?: parameters["rowFilter.projects.adjacent_streets"];
+          location_geometry?: parameters["rowFilter.projects.location_geometry"];
           ratings_n?: parameters["rowFilter.projects.ratings_n"];
           ratings_average?: parameters["rowFilter.projects.ratings_average"];
         };
         body: {
           /** projects */
           projects?: definitions["projects"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/project_site_usage_list": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usage_list.id"];
+          title?: parameters["rowFilter.project_site_usage_list.title"];
+          description?: parameters["rowFilter.project_site_usage_list.description"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["project_site_usage_list"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** project_site_usage_list */
+          project_site_usage_list?: definitions["project_site_usage_list"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usage_list.id"];
+          title?: parameters["rowFilter.project_site_usage_list.title"];
+          description?: parameters["rowFilter.project_site_usage_list.description"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usage_list.id"];
+          title?: parameters["rowFilter.project_site_usage_list.title"];
+          description?: parameters["rowFilter.project_site_usage_list.description"];
+        };
+        body: {
+          /** project_site_usage_list */
+          project_site_usage_list?: definitions["project_site_usage_list"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/project_site_usage_category_list": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usage_category_list.id"];
+          title?: parameters["rowFilter.project_site_usage_category_list.title"];
+          description?: parameters["rowFilter.project_site_usage_category_list.description"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["project_site_usage_category_list"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** project_site_usage_category_list */
+          project_site_usage_category_list?: definitions["project_site_usage_category_list"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usage_category_list.id"];
+          title?: parameters["rowFilter.project_site_usage_category_list.title"];
+          description?: parameters["rowFilter.project_site_usage_category_list.description"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usage_category_list.id"];
+          title?: parameters["rowFilter.project_site_usage_category_list.title"];
+          description?: parameters["rowFilter.project_site_usage_category_list.description"];
+        };
+        body: {
+          /** project_site_usage_category_list */
+          project_site_usage_category_list?: definitions["project_site_usage_category_list"];
         };
         header: {
           /** Preference */
@@ -219,14 +426,13 @@ export interface paths {
       };
     };
   };
-  "/projects_publication_status": {
+  "/project_site_ownership_list": {
     get: {
       parameters: {
         query: {
-          project_id?: parameters["rowFilter.projects_publication_status.project_id"];
-          updated_at?: parameters["rowFilter.projects_publication_status.updated_at"];
-          updated_by_id?: parameters["rowFilter.projects_publication_status.updated_by_id"];
-          status?: parameters["rowFilter.projects_publication_status.status"];
+          id?: parameters["rowFilter.project_site_ownership_list.id"];
+          title?: parameters["rowFilter.project_site_ownership_list.title"];
+          description?: parameters["rowFilter.project_site_ownership_list.description"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -248,7 +454,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["projects_publication_status"][];
+          schema: definitions["project_site_ownership_list"][];
         };
         /** Partial Content */
         206: unknown;
@@ -257,8 +463,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** projects_publication_status */
-          projects_publication_status?: definitions["projects_publication_status"];
+          /** project_site_ownership_list */
+          project_site_ownership_list?: definitions["project_site_ownership_list"];
         };
         query: {
           /** Filtering Columns */
@@ -277,10 +483,9 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          project_id?: parameters["rowFilter.projects_publication_status.project_id"];
-          updated_at?: parameters["rowFilter.projects_publication_status.updated_at"];
-          updated_by_id?: parameters["rowFilter.projects_publication_status.updated_by_id"];
-          status?: parameters["rowFilter.projects_publication_status.status"];
+          id?: parameters["rowFilter.project_site_ownership_list.id"];
+          title?: parameters["rowFilter.project_site_ownership_list.title"];
+          description?: parameters["rowFilter.project_site_ownership_list.description"];
         };
         header: {
           /** Preference */
@@ -295,14 +500,13 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          project_id?: parameters["rowFilter.projects_publication_status.project_id"];
-          updated_at?: parameters["rowFilter.projects_publication_status.updated_at"];
-          updated_by_id?: parameters["rowFilter.projects_publication_status.updated_by_id"];
-          status?: parameters["rowFilter.projects_publication_status.status"];
+          id?: parameters["rowFilter.project_site_ownership_list.id"];
+          title?: parameters["rowFilter.project_site_ownership_list.title"];
+          description?: parameters["rowFilter.project_site_ownership_list.description"];
         };
         body: {
-          /** projects_publication_status */
-          projects_publication_status?: definitions["projects_publication_status"];
+          /** project_site_ownership_list */
+          project_site_ownership_list?: definitions["project_site_ownership_list"];
         };
         header: {
           /** Preference */
@@ -399,225 +603,6 @@ export interface paths {
         body: {
           /** projects_ratings */
           projects_ratings?: definitions["projects_ratings"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
-  "/users": {
-    get: {
-      parameters: {
-        query: {
-          user_id?: parameters["rowFilter.users.user_id"];
-          created_at?: parameters["rowFilter.users.created_at"];
-          updated_at?: parameters["rowFilter.users.updated_at"];
-          is_online?: parameters["rowFilter.users.is_online"];
-          show_email?: parameters["rowFilter.users.show_email"];
-          avatar_url?: parameters["rowFilter.users.avatar_url"];
-          firstname?: parameters["rowFilter.users.firstname"];
-          middlename?: parameters["rowFilter.users.middlename"];
-          lastname?: parameters["rowFilter.users.lastname"];
-          about?: parameters["rowFilter.users.about"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["users"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** users */
-          users?: definitions["users"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          user_id?: parameters["rowFilter.users.user_id"];
-          created_at?: parameters["rowFilter.users.created_at"];
-          updated_at?: parameters["rowFilter.users.updated_at"];
-          is_online?: parameters["rowFilter.users.is_online"];
-          show_email?: parameters["rowFilter.users.show_email"];
-          avatar_url?: parameters["rowFilter.users.avatar_url"];
-          firstname?: parameters["rowFilter.users.firstname"];
-          middlename?: parameters["rowFilter.users.middlename"];
-          lastname?: parameters["rowFilter.users.lastname"];
-          about?: parameters["rowFilter.users.about"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          user_id?: parameters["rowFilter.users.user_id"];
-          created_at?: parameters["rowFilter.users.created_at"];
-          updated_at?: parameters["rowFilter.users.updated_at"];
-          is_online?: parameters["rowFilter.users.is_online"];
-          show_email?: parameters["rowFilter.users.show_email"];
-          avatar_url?: parameters["rowFilter.users.avatar_url"];
-          firstname?: parameters["rowFilter.users.firstname"];
-          middlename?: parameters["rowFilter.users.middlename"];
-          lastname?: parameters["rowFilter.users.lastname"];
-          about?: parameters["rowFilter.users.about"];
-        };
-        body: {
-          /** users */
-          users?: definitions["users"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
-  "/users_projects_collections": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.users_projects_collections.id"];
-          created_at?: parameters["rowFilter.users_projects_collections.created_at"];
-          updated_at?: parameters["rowFilter.users_projects_collections.updated_at"];
-          user_id?: parameters["rowFilter.users_projects_collections.user_id"];
-          is_published?: parameters["rowFilter.users_projects_collections.is_published"];
-          title?: parameters["rowFilter.users_projects_collections.title"];
-          description?: parameters["rowFilter.users_projects_collections.description"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["users_projects_collections"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** users_projects_collections */
-          users_projects_collections?: definitions["users_projects_collections"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.users_projects_collections.id"];
-          created_at?: parameters["rowFilter.users_projects_collections.created_at"];
-          updated_at?: parameters["rowFilter.users_projects_collections.updated_at"];
-          user_id?: parameters["rowFilter.users_projects_collections.user_id"];
-          is_published?: parameters["rowFilter.users_projects_collections.is_published"];
-          title?: parameters["rowFilter.users_projects_collections.title"];
-          description?: parameters["rowFilter.users_projects_collections.description"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.users_projects_collections.id"];
-          created_at?: parameters["rowFilter.users_projects_collections.created_at"];
-          updated_at?: parameters["rowFilter.users_projects_collections.updated_at"];
-          user_id?: parameters["rowFilter.users_projects_collections.user_id"];
-          is_published?: parameters["rowFilter.users_projects_collections.is_published"];
-          title?: parameters["rowFilter.users_projects_collections.title"];
-          description?: parameters["rowFilter.users_projects_collections.description"];
-        };
-        body: {
-          /** users_projects_collections */
-          users_projects_collections?: definitions["users_projects_collections"];
         };
         header: {
           /** Preference */
@@ -822,6 +807,414 @@ export interface paths {
       };
     };
   };
+  "/project_type_list": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_type_list.id"];
+          title?: parameters["rowFilter.project_type_list.title"];
+          description?: parameters["rowFilter.project_type_list.description"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["project_type_list"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** project_type_list */
+          project_type_list?: definitions["project_type_list"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_type_list.id"];
+          title?: parameters["rowFilter.project_type_list.title"];
+          description?: parameters["rowFilter.project_type_list.description"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_type_list.id"];
+          title?: parameters["rowFilter.project_type_list.title"];
+          description?: parameters["rowFilter.project_type_list.description"];
+        };
+        body: {
+          /** project_type_list */
+          project_type_list?: definitions["project_type_list"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/projects_publication_status": {
+    get: {
+      parameters: {
+        query: {
+          project_id?: parameters["rowFilter.projects_publication_status.project_id"];
+          updated_at?: parameters["rowFilter.projects_publication_status.updated_at"];
+          updated_by_id?: parameters["rowFilter.projects_publication_status.updated_by_id"];
+          status?: parameters["rowFilter.projects_publication_status.status"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["projects_publication_status"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** projects_publication_status */
+          projects_publication_status?: definitions["projects_publication_status"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          project_id?: parameters["rowFilter.projects_publication_status.project_id"];
+          updated_at?: parameters["rowFilter.projects_publication_status.updated_at"];
+          updated_by_id?: parameters["rowFilter.projects_publication_status.updated_by_id"];
+          status?: parameters["rowFilter.projects_publication_status.status"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          project_id?: parameters["rowFilter.projects_publication_status.project_id"];
+          updated_at?: parameters["rowFilter.projects_publication_status.updated_at"];
+          updated_by_id?: parameters["rowFilter.projects_publication_status.updated_by_id"];
+          status?: parameters["rowFilter.projects_publication_status.status"];
+        };
+        body: {
+          /** projects_publication_status */
+          projects_publication_status?: definitions["projects_publication_status"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/users_profiles": {
+    get: {
+      parameters: {
+        query: {
+          user_id?: parameters["rowFilter.users_profiles.user_id"];
+          created_at?: parameters["rowFilter.users_profiles.created_at"];
+          updated_at?: parameters["rowFilter.users_profiles.updated_at"];
+          is_online?: parameters["rowFilter.users_profiles.is_online"];
+          published_email?: parameters["rowFilter.users_profiles.published_email"];
+          avatar_url?: parameters["rowFilter.users_profiles.avatar_url"];
+          firstname?: parameters["rowFilter.users_profiles.firstname"];
+          middlename?: parameters["rowFilter.users_profiles.middlename"];
+          lastname?: parameters["rowFilter.users_profiles.lastname"];
+          about?: parameters["rowFilter.users_profiles.about"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["users_profiles"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** users_profiles */
+          users_profiles?: definitions["users_profiles"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          user_id?: parameters["rowFilter.users_profiles.user_id"];
+          created_at?: parameters["rowFilter.users_profiles.created_at"];
+          updated_at?: parameters["rowFilter.users_profiles.updated_at"];
+          is_online?: parameters["rowFilter.users_profiles.is_online"];
+          published_email?: parameters["rowFilter.users_profiles.published_email"];
+          avatar_url?: parameters["rowFilter.users_profiles.avatar_url"];
+          firstname?: parameters["rowFilter.users_profiles.firstname"];
+          middlename?: parameters["rowFilter.users_profiles.middlename"];
+          lastname?: parameters["rowFilter.users_profiles.lastname"];
+          about?: parameters["rowFilter.users_profiles.about"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          user_id?: parameters["rowFilter.users_profiles.user_id"];
+          created_at?: parameters["rowFilter.users_profiles.created_at"];
+          updated_at?: parameters["rowFilter.users_profiles.updated_at"];
+          is_online?: parameters["rowFilter.users_profiles.is_online"];
+          published_email?: parameters["rowFilter.users_profiles.published_email"];
+          avatar_url?: parameters["rowFilter.users_profiles.avatar_url"];
+          firstname?: parameters["rowFilter.users_profiles.firstname"];
+          middlename?: parameters["rowFilter.users_profiles.middlename"];
+          lastname?: parameters["rowFilter.users_profiles.lastname"];
+          about?: parameters["rowFilter.users_profiles.about"];
+        };
+        body: {
+          /** users_profiles */
+          users_profiles?: definitions["users_profiles"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/users_projects_collections": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.users_projects_collections.id"];
+          created_at?: parameters["rowFilter.users_projects_collections.created_at"];
+          updated_at?: parameters["rowFilter.users_projects_collections.updated_at"];
+          user_id?: parameters["rowFilter.users_projects_collections.user_id"];
+          is_published?: parameters["rowFilter.users_projects_collections.is_published"];
+          title?: parameters["rowFilter.users_projects_collections.title"];
+          description?: parameters["rowFilter.users_projects_collections.description"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["users_projects_collections"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** users_projects_collections */
+          users_projects_collections?: definitions["users_projects_collections"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.users_projects_collections.id"];
+          created_at?: parameters["rowFilter.users_projects_collections.created_at"];
+          updated_at?: parameters["rowFilter.users_projects_collections.updated_at"];
+          user_id?: parameters["rowFilter.users_projects_collections.user_id"];
+          is_published?: parameters["rowFilter.users_projects_collections.is_published"];
+          title?: parameters["rowFilter.users_projects_collections.title"];
+          description?: parameters["rowFilter.users_projects_collections.description"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.users_projects_collections.id"];
+          created_at?: parameters["rowFilter.users_projects_collections.created_at"];
+          updated_at?: parameters["rowFilter.users_projects_collections.updated_at"];
+          user_id?: parameters["rowFilter.users_projects_collections.user_id"];
+          is_published?: parameters["rowFilter.users_projects_collections.is_published"];
+          title?: parameters["rowFilter.users_projects_collections.title"];
+          description?: parameters["rowFilter.users_projects_collections.description"];
+        };
+        body: {
+          /** users_projects_collections */
+          users_projects_collections?: definitions["users_projects_collections"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/rpc/user_has_role": {
     post: {
       parameters: {
@@ -867,14 +1260,14 @@ export interface definitions {
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `users.user_id`.<fk table='users' column='user_id'/>
+     * This is a Foreign Key to `users_profiles.user_id`.<fk table='users_profiles' column='user_id'/>
      * @default auth.uid()
      */
     created_by_id: string;
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `users.user_id`.<fk table='users' column='user_id'/>
+     * This is a Foreign Key to `users_profiles.user_id`.<fk table='users_profiles' column='user_id'/>
      * @default auth.uid()
      */
     updated_by_id: string;
@@ -882,11 +1275,37 @@ export interface definitions {
      * Format: boolean
      * @default false
      */
-    is_published?: boolean;
+    is_published: boolean;
     /** Format: text */
     title: string;
     /** Format: text */
     description?: string;
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Foreign Key to `project_site_ownership_list.id`.<fk table='project_site_ownership_list' column='id'/>
+     */
+    site_ownership_id?: number;
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Foreign Key to `project_site_usage_category_list.id`.<fk table='project_site_usage_category_list' column='id'/>
+     */
+    main_site_usage_category_id?: number;
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Foreign Key to `project_site_usage_list.id`.<fk table='project_site_usage_list' column='id'/>
+     */
+    main_site_usage_id?: number;
+    /** Format: numeric */
+    site_area?: number;
+    /** Format: numeric */
+    project_area?: number;
+    /** Format: smallint */
+    adjacent_streets?: number;
+    /** Format: extensions.geometry */
+    location_geometry?: string;
     /**
      * Format: integer
      * @default 0
@@ -894,6 +1313,30 @@ export interface definitions {
     ratings_n: number;
     /** Format: double precision */
     ratings_average?: number;
+  };
+  project_site_usage_list: {
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /** Format: text */
+    title: string;
+    /** Format: text */
+    description?: string;
+  };
+  project_site_usage_category_list: {
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /** Format: text */
+    title: string;
+    /** Format: text */
+    description?: string;
   };
   /** @description Table for managing editing rights on a per-project basis for non-creators. */
   projects_editors: {
@@ -912,11 +1355,109 @@ export interface definitions {
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `users.user_id`.<fk table='users' column='user_id'/>
+     * This is a Foreign Key to `users_profiles.user_id`.<fk table='users_profiles' column='user_id'/>
      */
     user_id: string;
   };
-  /** @description Table for managing projects publication status. */
+  project_site_ownership_list: {
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /** Format: text */
+    title: string;
+    /** Format: text */
+    description?: string;
+  };
+  projects_ratings: {
+    /**
+     * Format: integer
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `users_profiles.user_id`.<fk table='users_profiles' column='user_id'/>
+     */
+    user_id: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `projects.id`.<fk table='projects' column='id'/>
+     */
+    project_id: string;
+    /** Format: numeric */
+    rating?: number;
+  };
+  users_projects_collections_items: {
+    /**
+     * Format: integer
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `users_profiles.user_id`.<fk table='users_profiles' column='user_id'/>
+     */
+    user_id: string;
+    /**
+     * Format: timestamp with time zone
+     * @default timezone('utc'::text, now())
+     */
+    created_at: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `users_projects_collections.id`.<fk table='users_projects_collections' column='id'/>
+     */
+    collection_id: string;
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Foreign Key to `projects.id`.<fk table='projects' column='id'/>
+     */
+    project_id: string;
+  };
+  /** @description Table for controlled access to users roles. */
+  users_roles: {
+    /**
+     * Format: uuid
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     * This is a Foreign Key to `users_profiles.user_id`.<fk table='users_profiles' column='user_id'/>
+     */
+    user_id: string;
+    /**
+     * Format: timestamp with time zone
+     * @default timezone('utc'::text, now())
+     */
+    updated_at: string;
+    /**
+     * Format: public.user_role
+     * @default visitor
+     * @enum {string}
+     */
+    role: "admin" | "editor" | "visitor";
+  };
+  project_type_list: {
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /** Format: text */
+    title: string;
+    /** Format: text */
+    description?: string;
+  };
+  /** @description Table for managing projects publication status through limited access. */
   projects_publication_status: {
     /**
      * Format: uuid
@@ -933,7 +1474,7 @@ export interface definitions {
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `users.user_id`.<fk table='users' column='user_id'/>
+     * This is a Foreign Key to `users_profiles.user_id`.<fk table='users_profiles' column='user_id'/>
      */
     updated_by_id: string;
     /**
@@ -947,30 +1488,8 @@ export interface definitions {
       | "revoked_approval"
       | "published";
   };
-  projects_ratings: {
-    /**
-     * Format: integer
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id: number;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `users.user_id`.<fk table='users' column='user_id'/>
-     */
-    user_id: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `projects.id`.<fk table='projects' column='id'/>
-     */
-    project_id: string;
-    /** Format: numeric */
-    rating?: number;
-  };
   /** @description Base data table for user profiles, extending the default supabase auth.users table. */
-  users: {
+  users_profiles: {
     /**
      * Format: uuid
      * @description Note:
@@ -992,11 +1511,8 @@ export interface definitions {
      * @default false
      */
     is_online: boolean;
-    /**
-     * Format: boolean
-     * @default false
-     */
-    show_email: boolean;
+    /** Format: text */
+    published_email?: string;
     /** Format: text */
     avatar_url?: string;
     /** Format: text */
@@ -1029,7 +1545,7 @@ export interface definitions {
     /**
      * Format: uuid
      * @description Note:
-     * This is a Foreign Key to `users.user_id`.<fk table='users' column='user_id'/>
+     * This is a Foreign Key to `users_profiles.user_id`.<fk table='users_profiles' column='user_id'/>
      */
     user_id: string;
     /**
@@ -1041,58 +1557,6 @@ export interface definitions {
     title: string;
     /** Format: text */
     description?: string;
-  };
-  users_projects_collections_items: {
-    /**
-     * Format: integer
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id: number;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `users.user_id`.<fk table='users' column='user_id'/>
-     */
-    user_id: string;
-    /**
-     * Format: timestamp with time zone
-     * @default timezone('utc'::text, now())
-     */
-    created_at: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `users_projects_collections.id`.<fk table='users_projects_collections' column='id'/>
-     */
-    collection_id: string;
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Foreign Key to `projects.id`.<fk table='projects' column='id'/>
-     */
-    project_id: string;
-  };
-  /** @description Table for controlled access to users roles. */
-  users_roles: {
-    /**
-     * Format: uuid
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     * This is a Foreign Key to `users.user_id`.<fk table='users' column='user_id'/>
-     */
-    user_id: string;
-    /**
-     * Format: timestamp with time zone
-     * @default timezone('utc'::text, now())
-     */
-    updated_at: string;
-    /**
-     * Format: public.user_role
-     * @default visitor
-     * @enum {string}
-     */
-    role: "admin" | "editor" | "visitor";
   };
 }
 
@@ -1147,10 +1611,40 @@ export interface parameters {
   "rowFilter.projects.title": string;
   /** Format: text */
   "rowFilter.projects.description": string;
+  /** Format: smallint */
+  "rowFilter.projects.site_ownership_id": string;
+  /** Format: smallint */
+  "rowFilter.projects.main_site_usage_category_id": string;
+  /** Format: smallint */
+  "rowFilter.projects.main_site_usage_id": string;
+  /** Format: numeric */
+  "rowFilter.projects.site_area": string;
+  /** Format: numeric */
+  "rowFilter.projects.project_area": string;
+  /** Format: smallint */
+  "rowFilter.projects.adjacent_streets": string;
+  /** Format: extensions.geometry */
+  "rowFilter.projects.location_geometry": string;
   /** Format: integer */
   "rowFilter.projects.ratings_n": string;
   /** Format: double precision */
   "rowFilter.projects.ratings_average": string;
+  /** @description project_site_usage_list */
+  "body.project_site_usage_list": definitions["project_site_usage_list"];
+  /** Format: smallint */
+  "rowFilter.project_site_usage_list.id": string;
+  /** Format: text */
+  "rowFilter.project_site_usage_list.title": string;
+  /** Format: text */
+  "rowFilter.project_site_usage_list.description": string;
+  /** @description project_site_usage_category_list */
+  "body.project_site_usage_category_list": definitions["project_site_usage_category_list"];
+  /** Format: smallint */
+  "rowFilter.project_site_usage_category_list.id": string;
+  /** Format: text */
+  "rowFilter.project_site_usage_category_list.title": string;
+  /** Format: text */
+  "rowFilter.project_site_usage_category_list.description": string;
   /** @description projects_editors */
   "body.projects_editors": definitions["projects_editors"];
   /** Format: integer */
@@ -1159,16 +1653,14 @@ export interface parameters {
   "rowFilter.projects_editors.project_id": string;
   /** Format: uuid */
   "rowFilter.projects_editors.user_id": string;
-  /** @description projects_publication_status */
-  "body.projects_publication_status": definitions["projects_publication_status"];
-  /** Format: uuid */
-  "rowFilter.projects_publication_status.project_id": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.projects_publication_status.updated_at": string;
-  /** Format: uuid */
-  "rowFilter.projects_publication_status.updated_by_id": string;
-  /** Format: public.publication_status */
-  "rowFilter.projects_publication_status.status": string;
+  /** @description project_site_ownership_list */
+  "body.project_site_ownership_list": definitions["project_site_ownership_list"];
+  /** Format: smallint */
+  "rowFilter.project_site_ownership_list.id": string;
+  /** Format: text */
+  "rowFilter.project_site_ownership_list.title": string;
+  /** Format: text */
+  "rowFilter.project_site_ownership_list.description": string;
   /** @description projects_ratings */
   "body.projects_ratings": definitions["projects_ratings"];
   /** Format: integer */
@@ -1179,44 +1671,6 @@ export interface parameters {
   "rowFilter.projects_ratings.project_id": string;
   /** Format: numeric */
   "rowFilter.projects_ratings.rating": string;
-  /** @description users */
-  "body.users": definitions["users"];
-  /** Format: uuid */
-  "rowFilter.users.user_id": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.users.created_at": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.users.updated_at": string;
-  /** Format: boolean */
-  "rowFilter.users.is_online": string;
-  /** Format: boolean */
-  "rowFilter.users.show_email": string;
-  /** Format: text */
-  "rowFilter.users.avatar_url": string;
-  /** Format: text */
-  "rowFilter.users.firstname": string;
-  /** Format: text */
-  "rowFilter.users.middlename": string;
-  /** Format: text */
-  "rowFilter.users.lastname": string;
-  /** Format: text */
-  "rowFilter.users.about": string;
-  /** @description users_projects_collections */
-  "body.users_projects_collections": definitions["users_projects_collections"];
-  /** Format: uuid */
-  "rowFilter.users_projects_collections.id": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.users_projects_collections.created_at": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.users_projects_collections.updated_at": string;
-  /** Format: uuid */
-  "rowFilter.users_projects_collections.user_id": string;
-  /** Format: boolean */
-  "rowFilter.users_projects_collections.is_published": string;
-  /** Format: text */
-  "rowFilter.users_projects_collections.title": string;
-  /** Format: text */
-  "rowFilter.users_projects_collections.description": string;
   /** @description users_projects_collections_items */
   "body.users_projects_collections_items": definitions["users_projects_collections_items"];
   /** Format: integer */
@@ -1237,6 +1691,62 @@ export interface parameters {
   "rowFilter.users_roles.updated_at": string;
   /** Format: public.user_role */
   "rowFilter.users_roles.role": string;
+  /** @description project_type_list */
+  "body.project_type_list": definitions["project_type_list"];
+  /** Format: smallint */
+  "rowFilter.project_type_list.id": string;
+  /** Format: text */
+  "rowFilter.project_type_list.title": string;
+  /** Format: text */
+  "rowFilter.project_type_list.description": string;
+  /** @description projects_publication_status */
+  "body.projects_publication_status": definitions["projects_publication_status"];
+  /** Format: uuid */
+  "rowFilter.projects_publication_status.project_id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.projects_publication_status.updated_at": string;
+  /** Format: uuid */
+  "rowFilter.projects_publication_status.updated_by_id": string;
+  /** Format: public.publication_status */
+  "rowFilter.projects_publication_status.status": string;
+  /** @description users_profiles */
+  "body.users_profiles": definitions["users_profiles"];
+  /** Format: uuid */
+  "rowFilter.users_profiles.user_id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.users_profiles.created_at": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.users_profiles.updated_at": string;
+  /** Format: boolean */
+  "rowFilter.users_profiles.is_online": string;
+  /** Format: text */
+  "rowFilter.users_profiles.published_email": string;
+  /** Format: text */
+  "rowFilter.users_profiles.avatar_url": string;
+  /** Format: text */
+  "rowFilter.users_profiles.firstname": string;
+  /** Format: text */
+  "rowFilter.users_profiles.middlename": string;
+  /** Format: text */
+  "rowFilter.users_profiles.lastname": string;
+  /** Format: text */
+  "rowFilter.users_profiles.about": string;
+  /** @description users_projects_collections */
+  "body.users_projects_collections": definitions["users_projects_collections"];
+  /** Format: uuid */
+  "rowFilter.users_projects_collections.id": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.users_projects_collections.created_at": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.users_projects_collections.updated_at": string;
+  /** Format: uuid */
+  "rowFilter.users_projects_collections.user_id": string;
+  /** Format: boolean */
+  "rowFilter.users_projects_collections.is_published": string;
+  /** Format: text */
+  "rowFilter.users_projects_collections.title": string;
+  /** Format: text */
+  "rowFilter.users_projects_collections.description": string;
 }
 
 export interface operations {}

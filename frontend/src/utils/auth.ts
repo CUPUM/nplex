@@ -1,12 +1,10 @@
-import { page } from '$app/stores';
 import { messages } from '$stores/messages';
 import type { definitions } from '$types/database';
 import type { UserRole } from '$utils/user';
+import type { UserCredentials } from '@supabase/supabase-js';
 import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
-import { get } from 'svelte/store';
 import { db } from './database';
 import { SearchParam } from './keys';
-import type { providers } from './providers';
 
 interface GuardInput extends Pick<LoadEvent, 'session' | 'url' | 'fetch'> {
 	/**
@@ -16,49 +14,61 @@ interface GuardInput extends Pick<LoadEvent, 'session' | 'url' | 'fetch'> {
 	/**
 	 * Custom message, overwrites the default message composition logic.
 	 */
-	message?: string;
+	errorMessage?: string;
 }
 
 /**
  * Guard function to evaluate access to a page based on auth/user state.
- *
- * To do: figure out a good way to update the session's `prevnav` prop, without having to pass a prop to the client and
- * calling client-side prop handling each time.
  */
-export async function guard({ criteria, session, message, url, fetch }: GuardInput): Promise<LoadOutput> {
-	// If the guard is adequately fulfilled, then we proceed to the requested route...
-	if (!criteria.length || (session.user && criteria.includes(session.user.role as UserRole))) {
+export async function guard({ criteria, session, errorMessage, url, fetch }: GuardInput): Promise<LoadOutput> {
+	try {
+		// Lets first see if the client can fullfil the guard's requirements.
+		if (criteria.length) {
+			// If no logged-in user
+			if (!session.user) {
+				throw Error('Désolé, un compte est nécessaire pour accéder à cette section de Nplex.');
+			}
+			// If user isn't one of the accepted roles.
+			else if (!criteria.includes(session.user.role)) {
+				throw Error(
+					'Désolé, il semble que votre compte ne détient pas les permissions requises pour accéder à cette section de Nplex.'
+				);
+			}
+		}
 		return {
 			status: 200,
 		};
+	} catch (err) {
+		messages.dispatch({
+			text: errorMessage || err.message,
+			type: 'error',
+		});
+
+		let redirectUrl = new URL(session.previousUrl);
+		if (redirectUrl.pathname === url.pathname) {
+			// If fallback url is equal to the inaccessible request origin, reset to root.
+			redirectUrl.pathname = '';
+		}
+		if (!session.user) {
+			redirectUrl = getAuthRedirectUrl(redirectUrl);
+		}
+
+		return {
+			status: 303,
+			redirect: redirectUrl.toString(),
+		};
 	}
-
-	// ..else, if no user, we redirect to the indicated location, usually the previous successfully visited url stored
-	// in `previousUrl`, and append the required param to open the signup modal.
-	let redirectUrl = new URL(session.previousUrl);
-	let defaultMessage =
-		'Désolé, il semble que votre compte ne détient pas les permissions requises pour accéder à cette section de Nplex.';
-
-	if (redirectUrl.pathname === url.pathname) {
-		// If inaccessible previousUrl is equal to the request origin, reset to root.
-		redirectUrl.pathname = '';
-	}
-
-	if (!session.user) {
-		redirectUrl = getAuthRedirectUrl(redirectUrl);
-		defaultMessage = 'Désolé, un compte est nécessaire pour accéder à cette section de Nplex.';
-	}
-
-	messages.dispatch({
-		text: message || defaultMessage,
-		type: 'error',
-	});
-
-	return {
-		status: 303,
-		redirect: redirectUrl.toString(),
-	};
 }
+
+/**
+ * Guard to limit client-side access to project and related data by project.id and client's user cookie.
+ *
+ * This is purely for UX help, critical policies are defined in the database's RLS and govern the access to data
+ * regardless of client-side navigation.
+ */
+// export async function projectGuard() {
+// 	const token = cookie.parse();
+// }
 
 export function getAuthRedirectUrl(targetUrl: URL) {
 	const redirectUrl = new URL(targetUrl);
@@ -66,86 +76,80 @@ export function getAuthRedirectUrl(targetUrl: URL) {
 	return redirectUrl;
 }
 
-// Auth helpers
-
-interface AuthInfo {
-	email?: string;
-	password?: string;
+/**
+ * Simple helper function to signup a new email user and handle errors.
+ */
+interface EmailSignUpInfo extends Omit<UserCredentials, 'provider' | 'oidc' | 'phone'> {
 	firstname?: string;
 	middlename?: string;
 	lastname?: string;
-	provider?: keyof typeof providers;
 }
-
-/**
- * Sign up a new user.
- */
-export async function signUp(info: AuthInfo) {
+export async function signUpWithEmail(info: EmailSignUpInfo) {
 	try {
-		// Create the user account.
-		const signup = await db.auth.signUp(info, {
-			redirectTo: info.provider ? get(page).url.toString() : null,
-		});
-		if (signup.error) throw signup.error;
-		messages.dispatch({
-			type: 'success',
-			text: 'Votre compte a été créé avec succès, confirmez...',
-		});
-		// Updated the trigger-created public.user row.
-		const profile = await db
-			.from<definitions['users']>('users')
+		const { user, error: signupError } = await db.auth.signUp({ email: info.email, password: info.password });
+		if (signupError) throw signupError;
+		const { body, error: profileError } = await db
+			.from<definitions['users_profiles']>('users_profiles')
 			.update({
 				firstname: info.firstname || '',
 				middlename: info.middlename || '',
 				lastname: info.lastname || '',
 			})
-			.match({ user_id: signup.user.id })
-			.limit(1)
-			.single();
-		if (profile.error) throw profile.error;
-		messages.dispatch({
-			type: 'success',
-			text: 'Votre profil a été initié avec succès.',
-		});
-		return signup;
-	} catch (error) {
+			.eq('user_id', user.id);
+		if (profileError) throw profileError;
+	} catch (err) {
 		messages.dispatch({
 			type: 'error',
-			text: error.message,
+			text: err.message,
 		});
-	} finally {
 	}
 }
 
 /**
- * Sign in a user.
+ * Simple helper function to attempt signin an existing email user and handle errors.
  */
-export async function signIn(info: AuthInfo) {
+interface EmailSignInInfo {
+	email: string;
+	password: string;
+}
+export async function signInWithEmail({ email, password }: EmailSignInInfo) {
 	try {
-		const res = await db.auth.signIn(info, {
-			redirectTo: info.provider ? get(page).url.pathname : null,
-			shouldCreateUser: false,
-		});
-		if (res.error) throw res.error;
+		const { user, error } = await db.auth.signIn(
+			{ email, password },
+			{
+				redirectTo: null,
+				shouldCreateUser: false,
+			}
+		);
+		if (error) throw error;
 		messages.dispatch({
 			type: 'success',
 			text: 'Connecté avec succès.',
 		});
-		return res;
 	} catch (error) {
 		messages.dispatch({
 			type: 'error',
 			text: error.message,
 		});
-	} finally {
 	}
 }
 
 /**
- * Sign out the current user.
+ * Attempt signout current user and handle errors.
  */
 export async function signOut() {
-	const res = await db.auth.signOut();
-
-	return res;
+	try {
+		if (db.auth.user()) {
+			const { error } = await db.auth.signOut();
+			if (error) throw error;
+			messages.dispatch({
+				text: `Vous avez été déconnecté avec succès.`,
+			});
+		}
+	} catch (err) {
+		messages.dispatch({
+			text: `Un problème est survenu lors de la tentative de déconnexion. (${err.message})`,
+			type: 'error',
+		});
+	}
 }

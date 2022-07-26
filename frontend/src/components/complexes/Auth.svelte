@@ -2,83 +2,46 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
+	import FieldPasswordToggleControl from '$components/primitives/FieldPasswordToggleControl.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import { authModal } from '$stores/auth';
-	import { messages } from '$stores/messages';
-	import { signIn, signUp } from '$utils/auth';
+	import { signInWithEmail, signUpWithEmail } from '$utils/auth';
 	import { providers } from '$utils/providers';
 	import { sizes } from '$utils/sizes';
 	import { expoOut } from 'svelte/easing';
 	import { fade, fly, scale, slide } from 'svelte/transition';
 
-	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
-	let signupForm = false;
 	let email: string;
 	let password: string;
 	let firstname: string;
 	let middlename: string;
 	let lastname: string;
-	let signInError = false;
-	let signUpError = false;
-	let currentAction = null;
-	let revealPassword = false;
 
-	function close() {
-		authModal.close();
-	}
+	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
+	let signupForm = false;
+	let currentAction = null;
 
 	enum Action {
-		SignUp = 'signup',
-		SignIn = 'signin',
-		Provider = 'provider',
+		EmailSignUp = 'emailsignup',
+		EmailSignIn = 'emailsignin',
+		UseProvider = 'useprovider',
 	}
 
 	async function submit(e: SubmitEvent) {
 		currentAction = (e.submitter as HTMLButtonElement).value;
-		// const data = new FormData(e.target as HTMLFormElement);
-		// const email = data.get('email') as string;
-		// const password = data.get('password') as string;
 		switch (currentAction) {
-			case Action.SignIn:
-				{
-					const res = await signIn({ email, password });
-					if (!res.error) {
-						close();
-						break;
-					}
-					signInError = true;
-					messages.dispatch({ text: res.error.message, type: 'error' });
-				}
+			case Action.EmailSignIn: {
+				signInWithEmail({ email, password });
 				break;
-			case Action.SignUp:
-				{
-					// Let's first attemp to sign in using the provided credentials.
-					const signinRes = await signIn({ email, password });
-					// If successful, complete the process.
-					if (!signinRes.error && signinRes.user) {
-						close();
-						break;
-					}
-					// If not working, expand signup form.
-					if (!signupForm) {
-						signupForm = true;
-						break;
-					}
-					const signupRes = await signUp({ email, password, firstname, middlename, lastname });
-					if (signupRes.error) {
-						signUpError = true;
-						messages.dispatch({ text: signupRes.error.message, type: 'error' });
-					} else if ((signupRes as any)?.user) {
-						messages.dispatch({
-							text: `Vérifiez votre adresse courriel (<i>${
-								(signupRes as any)?.user?.email
-							}</i>) afin de compléter la création de votre compte.`,
-							type: 'success',
-						});
-					}
+			}
+			case Action.EmailSignUp:
+				if (!signupForm) {
+					signupForm = true;
+					break;
 				}
+				await signUpWithEmail({ email, password, firstname, middlename, lastname });
 				break;
-			case Action.Provider:
+			case Action.UseProvider:
 				break;
 		}
 		currentAction = null;
@@ -89,7 +52,7 @@
 <div
 	class="wrapper"
 	use:clickoutside
-	on:clickoutside={close}
+	on:clickoutside={() => authModal.close()}
 	in:scale={{ duration: 350, start: 0.8, easing: expoOut }}
 	out:fly={{ duration: 250, x: 50, easing: expoOut }}
 >
@@ -97,23 +60,24 @@
 		<Logo color="currentColor" />
 	</a>
 	<form autocomplete="off" on:submit|preventDefault={submit} in:scale={{ start: 0.95, delay: 150 }}>
-		<Field bind:value={email} placeholder="Courriel" icon="letter" showIcon="always" name="email" type="email"
-			>Test</Field
-		>
+		<Field
+			bind:value={email}
+			maxlength={32}
+			placeholder="Courriel"
+			icon="letter"
+			showIcon="always"
+			name="email"
+			type="email"
+		/>
 		<Field
 			bind:value={password}
 			placeholder="Mot de passe"
 			icon="asterisk"
 			showIcon="always"
 			name="password"
-			type={revealPassword ? 'text' : 'password'}
+			type="password"
 		>
-			<Button
-				slot="right"
-				variant="ghost"
-				on:click={() => (revealPassword = !revealPassword)}
-				icon={revealPassword ? 'eye-cross' : 'eye-open'}
-			/>
+			<FieldPasswordToggleControl slot="right" />
 		</Field>
 		{#if signupForm}
 			<div class="signup-fields" transition:slide={{}}>
@@ -132,32 +96,32 @@
 			<Button
 				type="submit"
 				variant="cta"
-				value={Action.SignUp}
+				value={Action.EmailSignIn}
+				disabled={!Boolean(email) || !Boolean(password)}
 				display="block"
 				contentAlign="center"
-				loading={currentAction === Action.SignUp}
+				loading={currentAction === Action.EmailSignIn}
 			>
-				Créer un compte
+				Se connecter
 			</Button>
 			<Button
 				type="submit"
 				variant="ghost"
-				value={Action.SignIn}
-				disabled={!Boolean(email) || !Boolean(password)}
+				value={Action.EmailSignUp}
 				display="block"
 				contentAlign="center"
+				loading={currentAction === Action.EmailSignUp}
 				icon={Boolean(email) && Boolean(password) ? 'arrow-right' : undefined}
 				iconPosition="trailing"
-				loading={currentAction === Action.SignIn}
 			>
-				Vous avez déjà un compte? Connectez-vous
+				Vous n'avez pas de compte? Inscrivez-vous
 			</Button>
 		</div>
 	</form>
 	<hr />
 	<form in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 450 }} class="provider-buttons">
 		{#each providerNames as name, i}
-			<Button size={sizes.small} contentAlign="center" variant="secondary" provider={name}>
+			<Button disabled size={sizes.small} contentAlign="center" variant="secondary" provider={name}>
 				Se connecter avec {providers[name].title}
 			</Button>
 		{/each}

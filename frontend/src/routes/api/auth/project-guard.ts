@@ -3,9 +3,9 @@ import type { RequestHandler } from '@sveltejs/kit';
 import cookie from 'cookie';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
-	// console.log('Update cookie api tapped!');
 	const body = await request.json();
 	const res = new Response();
+	console.log('Update cookie api tapped!', body);
 
 	const userCookie = cookie.serialize(Cookie.User, JSON.stringify(body), {
 		maxAge: 86400,
@@ -14,7 +14,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		sameSite: true,
 	});
 
-	res.headers.set('Set-Cookie', userCookie);
+	res.headers.set('set-cookie', userCookie);
 
 	return res;
 };

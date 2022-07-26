@@ -72,4 +72,6 @@ export enum LocalStorage {
 
 export enum Cookie {
 	User = 'nplex-user-cookie',
+	AccessToken = 'sb-access_token',
+	RefreshToken = 'sb-refresh_token',
 }

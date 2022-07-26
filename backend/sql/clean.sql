@@ -51,6 +51,8 @@ drop trigger if exists on_project_publication_status_update on public.projects_p
 -- DROP FUNCTION
 drop function if exists public.handle_new_user;
 
+drop function if exists public.handle_new_project;
+
 drop function if exists public.user_has_role;
 
 drop function if exists public.handle_project_publication_status_update;

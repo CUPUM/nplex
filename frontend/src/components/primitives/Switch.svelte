@@ -17,7 +17,7 @@
 </script>
 
 <script lang="ts">
-	export let name: string;
+	export let name: string = undefined;
 	export let value: any;
 	export let size: SizeInput = '1em';
 	export let variant: SwitchContext['variant'] = 'default';
@@ -38,6 +38,15 @@
 		group,
 	});
 
+	// Doing some manual two-way binding between value prop and context group store.
+	$: {
+		group.set(value);
+	}
+	$: {
+		value = $group;
+	}
+
+	// Updating the cursor / indicator box.
 	function updateBox(el: HTMLElement) {
 		if (el) {
 			return `
@@ -47,17 +56,7 @@
 		}
 		return null;
 	}
-
-	$: cursorBox = updateBox($tempRef || $currentRef);
-
-	// Doing some manual two-way binding between value prop and context group store...
-	$: {
-		group.set(value);
-		if (typeof value !== 'number' && !value) cursorBox = null;
-	}
-	$: {
-		value = $group;
-	}
+	$: cursorBox = updateBox(value || value === 0 ? $tempRef || $currentRef : null);
 
 	onMount(() => {
 		obs = new ResizeObserver(() => {
@@ -72,12 +71,7 @@
 	});
 </script>
 
-<fieldset
-	bind:this={fieldset}
-	class="{variant} {orientation}"
-	style:font-size={cssSize(size)}
-	style:flex-direction={orientation}
->
+<fieldset bind:this={fieldset} class="{variant} {orientation}" style:font-size={cssSize(size)}>
 	{#if cursorBox}
 		<div
 			transition:scale|local={{ duration: 150, start: 0.5, opacity: 0, easing: expoOut }}
@@ -104,6 +98,14 @@
 		border-radius: var(--radius);
 		overflow: visible;
 		transition: all 0.1s ease-out;
+
+		& > .row {
+			flex-direction: row;
+		}
+
+		& > .column {
+			flex-direction: column;
+		}
 	}
 
 	.selector {

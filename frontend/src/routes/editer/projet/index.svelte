@@ -8,18 +8,18 @@
 	import type { definitions } from '$types/database';
 	import { db } from '$utils/database';
 
+	let titleInput: HTMLInputElement;
 	let newProjectName: string = '';
 
 	async function createProject(e: SubmitEvent) {
 		const data = new FormData(e.target as HTMLFormElement);
-		// console.log(Object.fromEntries(data));
 		try {
-			const res = await db.from<definitions['projects']>('projects').insert({
+			const { body, error } = await db.from<definitions['projects']>('projects').insert({
 				title: data.get('project-title').toString(),
 				// type: data.get('type'),
 			});
-			if (res.error) throw res.error;
-			await goto('/editer/' + res.body.id);
+			if (error) throw error;
+			await goto('/editer/' + body['id']);
 		} catch (err) {
 			messages.dispatch({
 				text: `Il y a eu une erreur lors de la création de la nouvelle fiche. (${err.message})`,
@@ -36,7 +36,7 @@
 	<form on:submit|preventDefault={createProject}>
 		<label>
 			<span>Titre du projet: </span>
-			<input name="project-title" type="text" required />
+			<input bind:this={titleInput} name="project-title" type="text" required />
 		</label>
 		<fieldset>
 			<legend>Type de projet: </legend>
@@ -56,7 +56,7 @@
 </section>
 <hr />
 <section class="pad">
-	<h2>Éditer une fiche existante</h2>
+	<h2>Éditer une fiche-projet existante</h2>
 	<form action="">
 		<label>
 			<span>Chercher dans mes fiches: </span>
@@ -66,14 +66,36 @@
 </section>
 <section>
 	<ul class="projects-list" use:horizontalScroll>
-		<li>(liste des fiches existantes accessibles à l'utilisateur)</li>
-		<li>(liste des fiches existantes accessibles à l'utilisateur)</li>
-		<li>(liste des fiches existantes accessibles à l'utilisateur)</li>
-		<li>(liste des fiches existantes accessibles à l'utilisateur)</li>
-		<li>(liste des fiches existantes accessibles à l'utilisateur)</li>
-		<li>(liste des fiches existantes accessibles à l'utilisateur)</li>
-		<li>(liste des fiches existantes accessibles à l'utilisateur)</li>
-		<li>(liste des fiches existantes accessibles à l'utilisateur)</li>
+		{#each Array(5).fill(null) as item, i}
+			<li class="project-card">
+				<a href="">
+					Projet {i}
+				</a>
+			</li>
+		{/each}
+		<li class="submit-card">
+			<h3>+ Créer un nouveau projet</h3>
+			<form on:submit|preventDefault={createProject}>
+				<label>
+					<span>Titre du projet: </span>
+					<input bind:this={titleInput} name="project-title" type="text" required />
+				</label>
+				<fieldset>
+					<legend>Type de projet: </legend>
+					<ul>
+						{#each projectTypes as t}
+							<li>
+								<label>
+									<span>{t}</span>
+									<input type="radio" name="project-type" value={t} id="project-type-{t}" required />
+								</label>
+							</li>
+						{/each}
+					</ul>
+				</fieldset>
+				<button type="submit">Créer la fiche</button>
+			</form>
+		</li>
 	</ul>
 </section>
 
@@ -111,22 +133,34 @@
 	}
 
 	.projects-list {
+		position: relative;
 		display: flex;
 		flex-direction: row;
-		gap: 1rem;
+		gap: 2rem;
 		white-space: nowrap;
 		overflow-x: scroll;
 		overflow-y: visible;
 		padding-block: 3rem;
 		padding-inline: 2rem;
 
-		li {
+		.project-card,
+		.submit-card {
+			flex: none;
+			position: relative;
 			border-radius: 1.5rem;
 			padding: 2rem;
 			background-color: white;
-			box-shadow: 0 1.5rem 5rem -4rem black;
-			aspect-ratio: 1;
+			box-shadow: 0 1rem 3rem -2rem rgba(var(--rgb-dark-900), 0.25);
+			aspect-ratio: 2 / 3;
 			display: inline-block;
+			width: 33%;
+			min-width: 300px;
+			max-width: 500px;
+		}
+
+		.submit-card {
+			background-color: transparent;
+			box-shadow: 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
 		}
 	}
 </style>

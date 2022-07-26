@@ -3,7 +3,9 @@
 	This component provides a primitive single-line text-input field.
  -->
 <script lang="ts" context="module">
-	export interface FieldContext {}
+	export interface FieldContext {
+		showPassword: Writable<boolean>;
+	}
 </script>
 
 <script lang="ts">
@@ -13,6 +15,7 @@
 	import { setContext } from 'svelte';
 	import { expoInOut } from 'svelte/easing';
 	import type { ComponentProps } from 'svelte/internal';
+	import { writable, type Writable } from 'svelte/store';
 	import { slide } from 'svelte/transition';
 	import Icon from './Icon.svelte';
 
@@ -28,11 +31,14 @@
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'searchbar' = 'default';
 	export let warning: boolean = undefined;
 	export let success: boolean = undefined;
-	export let disabled: boolean = undefined;
 	export let loading: boolean = undefined;
+	export let width: string = undefined;
+	export let disabled: boolean = undefined;
 	export let invalid: boolean = undefined;
 	export let required: boolean = undefined;
-	export let width: string = undefined;
+	export let maxlength: number = undefined;
+	export let minlength: number = undefined;
+	export let readonly: boolean = false;
 	/**
 	 * Regex validator to be used on submit & during user input
 	 */
@@ -66,16 +72,14 @@
 	/**
 	 * If type is password, this determines if the input content is rendered as bullets or chars.
 	 */
-	let showPassword = false;
+	let showPassword = writable(false);
 
-	setContext<FieldContext>(Ctx.Field, {});
+	setContext<FieldContext>(Ctx.Field, {
+		showPassword,
+	});
 
 	function handleInput(e) {
 		value = e.target.value;
-	}
-
-	function togglePassword() {
-		showPassword = !showPassword;
 	}
 
 	function focus() {
@@ -127,7 +131,8 @@
 		<input
 			bind:this={inputRef}
 			{disabled}
-			{type}
+			type={type === 'password' && $showPassword ? 'text' : type}
+			is-password={type === 'password'}
 			{value}
 			{placeholder}
 			{name}
@@ -142,6 +147,9 @@
 			on:keypress
 			autocomplete={type}
 			{required}
+			{maxlength}
+			{minlength}
+			{readonly}
 		/>
 		{#if value}
 			<div class="has-value" transition:slip={{ width: true, opacity: 0, overflow: 'hidden' }}>
@@ -248,8 +256,11 @@
 		background-clip: text !important;
 		transition: all 0.12s ease-out;
 
-		&[type='password'] {
-			letter-spacing: 0.2em;
+		&[type='password'],
+		&[is-password='true'] {
+			font-size: 0.95em;
+			font-weight: 400;
+			font-family: var(--font-misc);
 		}
 
 		&::placeholder {
@@ -274,13 +285,13 @@
 			color: red;
 		}
 
-		&:-webkit-autofill,
-		&:-webkit-autofill:hover,
-		&:-webkit-autofill:focus,
-		&:-webkit-autofill:active {
-			font-family: inherit !important;
-			font-size: inherit !important;
-		}
+		// &:-webkit-autofill,
+		// &:-webkit-autofill:hover,
+		// &:-webkit-autofill:focus,
+		// &:-webkit-autofill:active {
+		// 	font-family: inherit;
+		// 	font-size: inherit;
+		// }
 	}
 
 	/* Slots */
