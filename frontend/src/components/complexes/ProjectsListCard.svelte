@@ -3,9 +3,9 @@
 	import { page, session } from '$app/stores';
 	import Button from '$components/primitives/Button.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
-	import { getAuthRedirectUrl } from '$utils/auth';
 	import { colors } from '$utils/colors';
 	import type { Project } from '$utils/dummy';
+	import { getAuthRedirectUrl } from '$utils/guard';
 	import { sizes } from '$utils/sizes';
 
 	export let project: Project = undefined;

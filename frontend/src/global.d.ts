@@ -1,12 +1,9 @@
 /// <reference types="@sveltejs/kit" />
 
-/**
- * For global types to work properly, external types have to be imported using the dynamic import syntax: `import(...)`
- */
+// IMPORTANT:
+// For global types to work properly, external types have to be imported using the dynamic import syntax: `import(...)`
 
-/**
- * For clickoutside directive See: https://stackoverflow.com/questions/64131176/svelte-custom-event-on-svelte-typescript.
- */
+// For custom attributes added using use-directives (actions).
 declare namespace svelte.JSX {
 	interface HTMLAttributes<T> {
 		onclickoutside?: (event?: CustomEvent) => unknown;
@@ -15,10 +12,8 @@ declare namespace svelte.JSX {
 	}
 }
 
-/**
- * Augment svelte's session interface else TS cries.
- */
 declare namespace App {
+	interface Locals extends Partial<Record<import('$utils/keys').Cookie, string>> {}
 	/**
 	 * _Customization notes:_ Extending the session type to include User typing provided by Supabase's library.
 	 */
@@ -28,7 +23,7 @@ declare namespace App {
 		 * `auth.users` table) and extended with additional data from public schema. Keep the appended data to a minimum.
 		 */
 		user?: import('@supabase/supabase-js').User & {
-			role: import('$utils/user').UserRole;
+			role: import('$types/database').definitions['users_roles']['role'];
 		};
 		/**
 		 * Storing the client session's previous navigation for various usages and redirect cases.
@@ -62,13 +57,4 @@ declare namespace App {
 		 */
 		showEditorAside: boolean;
 	}
-
-	/**
-	 * _Customization notes:_ Accepting the proper params to reflect the sesssion's stored user in hooks.
-	 */
-	// interface Locals {
-	// 	user?: App.Session['user'];
-	// 	profile?: App.Session['user'];
-	// 	prevnav: App.Session['prevnav'];
-	// }
 }

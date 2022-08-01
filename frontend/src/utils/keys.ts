@@ -70,8 +70,13 @@ export enum LocalStorage {
 	ProjectsFilters = 'projects-filters',
 }
 
+/**
+ * App cookie names.
+ */
 export enum Cookie {
-	User = 'nplex-user-cookie',
-	AccessToken = 'sb-access_token',
-	RefreshToken = 'sb-refresh_token',
+	DbAccessToken = 'access-token',
+	DbRefreshToken = 'refresh-token',
+	DbProviderToken = 'provider-token',
+	DbAccessTokenExpiry = 'access-token-expiry',
+	User = 'user',
 }

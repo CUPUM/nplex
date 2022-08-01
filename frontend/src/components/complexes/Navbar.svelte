@@ -7,10 +7,11 @@
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
+	import { logout } from '$routes/api/auth/logout';
 	import { loadingCategory } from '$stores/navigation';
 	import { mainScroll } from '$stores/scroll';
-	import { getAuthRedirectUrl, signOut } from '$utils/auth';
 	import { colors } from '$utils/colors';
+	import { getAuthRedirectUrl } from '$utils/guard';
 	import { gotoCategory } from '$utils/navigation';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
 	import { onMount } from 'svelte';
@@ -24,11 +25,13 @@
 	let hidden;
 	let overlay;
 	let mainPathname: string;
+	let categoryGroup;
 	const yThreshold = 100;
 
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
 	$: overlay = $mainScroll.y > yThreshold + 100;
 	$: mainPathname = $page.stuff.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
+	$: categoryGroup = $page.stuff.category;
 
 	onMount(() => {
 		mounted = true;
@@ -57,11 +60,12 @@
 				in:fly={{ y: 20, duration: 500, easing: expoOut, delay: 150 }}
 				out:fly={{ y: 20, duration: 500, easing: expoOut, delay: 0 }}
 			>
-				<Switch name="category" variant="navbar" value={$page.stuff.category}>
+				<Switch name="category" variant="navbar">
 					{#each exploreRoutes as r, i}
 						<SwitchItem
 							id={r.category}
 							value={r.category}
+							bind:group={categoryGroup}
 							on:click={() => gotoCategory(r)}
 							loading={$loadingCategory === r.category}
 							disabled={r.category === $page.stuff.category && !$page.stuff.categoryIsResetable}
@@ -88,7 +92,7 @@
 				<Popover useHover={true} placement="bottom" align="end">
 					<AvatarButton slot="control" href={userBaseRoute.pathname} />
 					<Button>Autre option</Button>
-					<Button on:click={signOut}>Se déconnecter</Button>
+					<Button on:click={logout}>Se déconnecter</Button>
 				</Popover>
 			{:else}
 				<Button variant="cta" href={getAuthRedirectUrl($page.url).toString()} icon="user">Se connecter</Button>
@@ -121,7 +125,7 @@
 		gap: 0;
 		font-size: var(--size-small);
 		z-index: 100;
-		// backdrop-filter: blur(10px);
+		backdrop-filter: blur(8px);
 		transition: all 0.35s, background-color 1s ease-in-out, width 0s;
 
 		&::before {
@@ -140,7 +144,6 @@
 	}
 
 	.overlay {
-		backdrop-filter: blur(8px);
 		box-shadow: 0 1px 0 0 rgba(var(--rgb-dark-900), 0.1);
 		&::before {
 			opacity: 0.92;

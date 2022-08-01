@@ -1,47 +1,45 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
 	import { Ctx } from '$utils/keys';
-	import { getContext, onMount } from 'svelte';
+	import { getContext } from 'svelte';
 	import Loading from './Loading.svelte';
 	import type { SwitchContext } from './Switch.svelte';
 
 	export let id: string;
 	export let value: any;
+	export let group: any;
 	export let disabled: boolean = false;
 	export let loading: boolean = false;
 
-	const ctx = getContext<SwitchContext>(Ctx.Switch);
-	const { name, variant, currentRef, tempRef, group } = ctx;
+	const { name, variant, currentRef, tempRef } = getContext<SwitchContext>(Ctx.Switch);
 
-	let labelRef: HTMLLabelElement;
+	let itemRef: HTMLLabelElement;
 
 	function setTemp() {
-		tempRef.set(labelRef);
+		tempRef.set(itemRef);
 	}
 
 	function clearTemp() {
-		tempRef.set(null);
+		if ($tempRef === itemRef) {
+			tempRef.set(null);
+		}
 	}
 
 	function setCurrent() {
-		currentRef.set(labelRef);
+		currentRef.set(itemRef);
 	}
 
-	$: if ($group === value) {
-		setCurrent();
-	}
-
-	onMount(() => {
-		if ($group === value) {
+	function handleChange(e) {
+		if (e.target.checked) {
 			setCurrent();
 		}
-	});
+	}
 </script>
 
 <label
-	bind:this={labelRef}
+	bind:this={itemRef}
 	for={id}
-	class:current={$group === value}
+	class:current={group === value}
 	class:some-temp={$tempRef}
 	class={variant}
 	class:loading
@@ -54,7 +52,7 @@
 	on:mouseleave={clearTemp}
 	use:ripple={{}}
 >
-	<input {id} {value} {name} type="radio" bind:group={$group} on:change on:input />
+	<input {id} {value} {name} type="radio" bind:group on:change={handleChange} on:change on:input />
 	<span class="inner">
 		<slot />
 	</span>

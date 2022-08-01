@@ -1,10 +1,9 @@
 <script lang="ts" context="module">
-	import { guard } from '$utils/auth';
-	import { allRoles } from '$utils/user';
+	import { guard } from '$utils/guard';
 	import type { Load } from '@sveltejs/kit';
 
 	export const load: Load = async ({ session, url, fetch }) => {
-		const res = await guard({ criteria: allRoles, session, fetch, url });
+		const res = await guard({ criteria: ['admin', 'editor', 'visitor'], session, fetch, url });
 		return res;
 	};
 </script>

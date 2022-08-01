@@ -12,7 +12,6 @@
 		"forceConsistentCasingInFileNames": true,
 		"allowJs": true,
 		"checkJs": true
-		// "paths": {} // Aliases hereafter set in svelte.config.kit
 	},
 	"include": ["src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "src/**/*.svx", "plugins/*.ts", "src/**/*.d.ts"]
 }

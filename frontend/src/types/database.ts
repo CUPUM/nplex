@@ -1003,7 +1003,6 @@ export interface paths {
           user_id?: parameters["rowFilter.users_profiles.user_id"];
           created_at?: parameters["rowFilter.users_profiles.created_at"];
           updated_at?: parameters["rowFilter.users_profiles.updated_at"];
-          is_online?: parameters["rowFilter.users_profiles.is_online"];
           published_email?: parameters["rowFilter.users_profiles.published_email"];
           avatar_url?: parameters["rowFilter.users_profiles.avatar_url"];
           firstname?: parameters["rowFilter.users_profiles.firstname"];
@@ -1063,7 +1062,6 @@ export interface paths {
           user_id?: parameters["rowFilter.users_profiles.user_id"];
           created_at?: parameters["rowFilter.users_profiles.created_at"];
           updated_at?: parameters["rowFilter.users_profiles.updated_at"];
-          is_online?: parameters["rowFilter.users_profiles.is_online"];
           published_email?: parameters["rowFilter.users_profiles.published_email"];
           avatar_url?: parameters["rowFilter.users_profiles.avatar_url"];
           firstname?: parameters["rowFilter.users_profiles.firstname"];
@@ -1087,7 +1085,6 @@ export interface paths {
           user_id?: parameters["rowFilter.users_profiles.user_id"];
           created_at?: parameters["rowFilter.users_profiles.created_at"];
           updated_at?: parameters["rowFilter.users_profiles.updated_at"];
-          is_online?: parameters["rowFilter.users_profiles.is_online"];
           published_email?: parameters["rowFilter.users_profiles.published_email"];
           avatar_url?: parameters["rowFilter.users_profiles.avatar_url"];
           firstname?: parameters["rowFilter.users_profiles.firstname"];
@@ -1223,6 +1220,23 @@ export interface paths {
             /** Format: public.user_role[] */
             roles: string;
           };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
+  "/rpc/get_projects_params_lists": {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
         };
         header: {
           /** Preference */
@@ -1435,7 +1449,7 @@ export interface definitions {
     user_id: string;
     /**
      * Format: timestamp with time zone
-     * @default timezone('utc'::text, now())
+     * @default now()
      */
     updated_at: string;
     /**
@@ -1498,19 +1512,14 @@ export interface definitions {
     user_id: string;
     /**
      * Format: timestamp with time zone
-     * @default timezone('utc'::text, now())
+     * @default now()
      */
     created_at: string;
     /**
      * Format: timestamp with time zone
-     * @default timezone('utc'::text, now())
+     * @default now()
      */
     updated_at: string;
-    /**
-     * Format: boolean
-     * @default false
-     */
-    is_online: boolean;
     /** Format: text */
     published_email?: string;
     /** Format: text */
@@ -1717,8 +1726,6 @@ export interface parameters {
   "rowFilter.users_profiles.created_at": string;
   /** Format: timestamp with time zone */
   "rowFilter.users_profiles.updated_at": string;
-  /** Format: boolean */
-  "rowFilter.users_profiles.is_online": string;
   /** Format: text */
   "rowFilter.users_profiles.published_email": string;
   /** Format: text */
