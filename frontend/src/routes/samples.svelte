@@ -1,3 +1,13 @@
+<!-- <script lang="ts" context="module">
+	export const load: Load = async ({ session, stuff, fetch }) => {
+		const res = await fetch('/api/projects/params-lists.json', {
+			method: 'GET',
+		});
+		console.log(res.body);
+		console.log(await res.json());
+		return {};
+	};
+</script> -->
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
@@ -7,8 +17,6 @@
 	import Popover from '$components/primitives/Popover.svelte';
 	import Select from '$components/primitives/Select.svelte';
 	import SelectOption from '$components/primitives/SelectOption.svelte';
-	import Switch from '$components/primitives/Switch.svelte';
-	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import TestRadio from '$components/primitives/TestRadio.svelte';
 	import TestRadioSet from '$components/primitives/TestRadioSet.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
@@ -53,9 +61,21 @@
 			messages.dispatch({ text: e.target.value, timer: 10000 });
 		}
 	}
+
+	async function testFetch() {
+		const res = await fetch('/api/projects/params-lists.json', {
+			method: 'GET',
+		});
+		console.log(res.body);
+		console.log(await res.json());
+	}
 </script>
 
 <article class="core-grid">
+	<section>
+		<h2>Go fetch, boi!</h2>
+		<button on:click={testFetch}>Fetch</button>
+	</section>
 	<section>
 		<h2>Map</h2>
 		<section>
@@ -237,7 +257,7 @@
 	<section>
 		<Tooltip message="Bonjour, je suis un tooltip!"><Button icon="file-add" /></Tooltip>
 	</section>
-	<section class="">
+	<!-- <section class="">
 		<Switch orientation="column" bind:value={switchval} name="test1">
 			<SwitchItem id="test1" value="test1v">Test 1</SwitchItem>
 			<SwitchItem id="test2" value="test2v">Test 2</SwitchItem>
@@ -249,7 +269,7 @@
 			<SwitchItem id="test2" value="test2v">Test 2</SwitchItem>
 			<SwitchItem id="test3" value="test3v">Test 3</SwitchItem>
 		</Switch>
-	</section>
+	</section> -->
 	<section>
 		<h2>Testing custom radio / checkbox inputs</h2>
 		<Button on:click={() => (radioValue = 'test-1')}>Reset that radioset value ({radioValue})</Button>

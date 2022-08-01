@@ -1,11 +1,5 @@
-import type { definitions } from '$types/database';
-import {
-	applySetCookieHeaders,
-	clearTokens,
-	createServerDbClient,
-	refreshTokens,
-	type SetCookieDetails,
-} from '$utils/database';
+import { applySetCookieHeaders, type SetCookieDetails } from '$utils/cookies';
+import { createDisposableDbClient, getExtendedUser } from '$utils/database';
 import { Cookie } from '$utils/keys';
 import type { GetSession, Handle } from '@sveltejs/kit';
 import cookie from 'cookie';
@@ -22,33 +16,13 @@ const TOKEN_EXPIRY_MARGIN = 600000;
 export const handle: Handle = async ({ event, resolve }) => {
 	let cookies = cookie.parse(event.request.headers.get('cookie') || '');
 	let setCookies: SetCookieDetails = {};
-	let error: Error;
-
-	// Check if client has tokens.
-	if (cookies[Cookie.DbAccessToken] || cookies[Cookie.DbRefreshToken]) {
-		try {
-			// Check if the access token is about to expire, and refresh it if needed.
-			if ((parseInt(cookies[Cookie.DbAccessTokenExpiry]) || 0) < Date.now() + TOKEN_EXPIRY_MARGIN) {
-				setCookies = await refreshTokens(cookies[Cookie.DbRefreshToken]);
-			}
-		} catch (err) {
-			// Set clear cookies to send to client if tokens invalid or outdated.
-			setCookies = clearTokens;
-		} finally {
-			cookies = {
-				...cookies,
-				...Object.entries(setCookies).reduce((newCookies, [tokenName, tokenInfo]) => {
-					newCookies[tokenName] = tokenInfo.value;
-					return newCookies;
-				}, {}),
-			};
-		}
-	}
 
 	// Set the relevant and up-to-date token values inside event locals for the rest of request resolving.
-	[Cookie.DbAccessToken, Cookie.DbProviderToken].forEach((tokenName) => {
-		event.locals[tokenName] = cookies[tokenName] || null;
-	});
+	[Cookie.DbAccessToken, Cookie.DbProviderToken, Cookie.DbAccessTokenExpiry, Cookie.DbRefreshToken].forEach(
+		(tokenName) => {
+			event.locals[tokenName] = cookies[tokenName] || null;
+		}
+	);
 
 	// Resolve called api or hook.
 	const res = await resolve(event);
@@ -60,29 +34,23 @@ export const handle: Handle = async ({ event, resolve }) => {
 };
 
 /**
- * Get session hook used on SSR, notably first-loads.
+ * Get session hook used on SSR, notably first-loads. On refresh or on first page load, this hook should run before the
+ * load functions.
  */
-export const getSession: GetSession = async (event) => {
+export const getSession: GetSession = async ({ request, locals, url }) => {
 	let appUser: App.Session['user'] = null;
 
 	try {
-		if (event.locals[Cookie.DbAccessToken]) {
-			const db = createServerDbClient();
-			const { user, error: userError } = await db.auth.api.getUser(event.locals[Cookie.DbAccessToken]);
+		if (locals[Cookie.DbAccessToken]) {
+			const db = createDisposableDbClient();
+			const { user, error: userError } = await db.auth.api.getUser(locals[Cookie.DbAccessToken]);
 			if (userError) throw userError;
-			db.auth.setAuth(event.locals[Cookie.DbAccessToken]);
-			const { data, error: roleError } = await db
-				.from<definitions['users_roles']>('users_roles')
-				.select('role')
-				.eq('user_id', user.id)
-				.single();
-			if (roleError) throw roleError;
-			appUser = { ...user, role: data.role };
+			appUser = await getExtendedUser({ access_token: locals[Cookie.DbAccessToken], user });
 		}
 	} catch (err) {}
 
 	return {
-		previousUrl: event.url.toString(),
+		previousUrl: url.toString(),
 		user: appUser,
 	};
 };

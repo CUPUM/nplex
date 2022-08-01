@@ -1,7 +1,8 @@
 import { session } from '$app/stores';
-import { createClient, type AuthChangeEvent, type Session } from '@supabase/supabase-js';
-import cookie from 'cookie';
-import setCookieParser from 'set-cookie-parser';
+import { authModal } from '$stores/auth';
+import type { definitions } from '$types/database';
+import { createClient, type AuthChangeEvent, type Session, type UserCredentials } from '@supabase/supabase-js';
+import type { SetCookieDetails } from './cookies';
 import { Cookie } from './keys';
 
 // 1 day
@@ -10,7 +11,7 @@ const COOKIE_LIFETIME = 3600000 * 24;
 /**
  * Instanciate a disposable single-request-lived db client. Useful for authed server side requests.
  */
-export function createServerDbClient(accessToken?: string) {
+export function createDisposableDbClient(accessToken?: string) {
 	const client = createClient(
 		import.meta.env.PUBLIC_SUPABASE_URL as string,
 		import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string,
@@ -48,9 +49,10 @@ export const browserDbClient = createClient(
  * store and server-managed cookies accordingly.
  */
 export async function handleAuthStateChange(e: AuthChangeEvent, s: Session) {
+	let res: Response;
+	const body: BodyInit = JSON.stringify(s);
+	const url = new URL(location.href);
 	try {
-		let res: Response;
-		const body: BodyInit = JSON.stringify({ session: s });
 		switch (e) {
 			case 'SIGNED_OUT':
 			case 'USER_DELETED':
@@ -77,6 +79,7 @@ export async function handleAuthStateChange(e: AuthChangeEvent, s: Session) {
 				session.update((prev) => {
 					return { ...prev, user: appUser };
 				});
+				authModal.close();
 				break;
 			case 'TOKEN_REFRESHED':
 				res = await fetch('/api/auth/refresh', {
@@ -89,7 +92,63 @@ export async function handleAuthStateChange(e: AuthChangeEvent, s: Session) {
 	} catch (error) {}
 }
 
-export type SetCookieDetails = Record<string, { value: string; options: cookie.CookieSerializeOptions }>;
+type SignupDetails = Pick<UserCredentials, 'email' | 'password'> | Pick<UserCredentials, 'provider'>;
+/**
+ * Client-side only signup helper. Server-side logic handled by handleAuthStateChange and endpoints.
+ */
+export async function signup(details: SignupDetails) {
+	try {
+		const { user, error } = await browserDbClient.auth.signUp(details);
+		if (error) throw error;
+	} catch (error) {}
+}
+
+type LoginDetails = Pick<UserCredentials, 'email' | 'password'> | Pick<UserCredentials, 'provider'>;
+/**
+ * Client-side only login helper.
+ */
+export async function login(details: LoginDetails) {
+	try {
+		const { user, error } = await browserDbClient.auth.signIn(details);
+		if (error) throw error;
+	} catch (error) {}
+}
+
+/**
+ * Client-side only logout helper.
+ */
+export async function logout() {
+	try {
+		const { error } = await browserDbClient.auth.signOut();
+		if (error) throw error;
+	} catch (error) {}
+}
+
+/**
+ * Get user's extended details from the the database. For use both client-side and server-side.
+ *
+ * @returns Passed session user with extended info.
+ */
+export async function getExtendedUser(
+	sessionDetail: Required<Pick<Session, 'access_token' | 'user'>> & Partial<Session>
+) {
+	try {
+		const db = createDisposableDbClient(sessionDetail.access_token);
+		/**
+		 * To do: If ever evolves into querying multiple table, move the required logic to a database function and call
+		 * it with supabase's rpc().
+		 */
+		const { data, error } = await db
+			.from<definitions['users_roles']>('users_roles')
+			.select('role')
+			.eq('user_id', sessionDetail.user.id)
+			.single();
+		if (error) throw error;
+		return { ...sessionDetail.user, role: data.role };
+	} catch (error) {
+		return null;
+	}
+}
 
 /**
  * Set of clear auth cookies with set-cookie headers detail to be sent back to clients logging out or attempting to
@@ -112,84 +171,3 @@ export const clearTokens: SetCookieDetails = [
 	};
 	return acc;
 }, {});
-
-/**
- * Apply set-cookie headers to the passed response with check. By default, this will overwrite any priorly applied
- * set-cookie header with cookie of corresponding name.
- *
- * @param overwrite Defaults to true. Set to false if you want to keep original headers.
- */
-export function applySetCookieHeaders(res: Response, cookieDetails: SetCookieDetails, overwrite: boolean = true) {
-	// Parsing previously set headers, formatting in preparation of cookie.serialize, and merging with new cookieDetails.
-	const setCookies = {
-		...(!overwrite ? cookieDetails : null),
-		...setCookieParser.parse(res.headers.get('set-cookie')).reduce((acc, curr) => {
-			acc[curr.name] = {
-				value: curr.value,
-				options: {
-					secure: curr.secure,
-					expires: curr.expires,
-					maxAge: curr.maxAge,
-					httpOnly: curr.httpOnly,
-					path: curr.path,
-					sameSite:
-						curr.sameSite === 'true' || curr.sameSite === 'false'
-							? Boolean(curr.sameSite)
-							: (curr.sameSite as cookie.CookieSerializeOptions['sameSite']),
-				},
-			};
-			return acc;
-		}, {} as SetCookieDetails),
-		...(overwrite ? cookieDetails : null),
-	};
-	// Deleting previously applied headers to start anew.
-	res.headers.delete('set-cookie');
-	// Appending combined headers.
-	Object.keys(setCookies).forEach((cookieName) => {
-		res.headers.append(
-			'set-cookie',
-			cookie.serialize(cookieName, setCookies[cookieName].value, setCookies[cookieName].options)
-		);
-	});
-	return res;
-}
-
-/**
- * Refresh db auth tokens from current set of tokens.
- */
-export async function refreshTokens(refreshToken: string) {
-	const refreshed: SetCookieDetails = {};
-	const db = createServerDbClient();
-
-	try {
-		const { data, error } = await db.auth.api.refreshAccessToken(refreshToken);
-		if (error) throw error;
-
-		const cookieOptions: cookie.CookieSerializeOptions = {
-			expires: new Date(data.expires_at),
-			httpOnly: true,
-			path: '/',
-			sameSite: true,
-		};
-
-		// New token expiry cookie setter info.
-		refreshed[Cookie.DbAccessTokenExpiry] = {
-			value: data.expires_at.toString(),
-			options: cookieOptions,
-		};
-		// Refreshed access-token cookie setter info.
-		refreshed[Cookie.DbAccessToken] = {
-			value: data.access_token,
-			options: cookieOptions,
-		};
-		// New refresh-token cookie setter info.
-		refreshed[Cookie.DbRefreshToken] = {
-			value: data.refresh_token,
-			options: cookieOptions,
-		};
-	} catch (error) {
-		throw error;
-	}
-
-	return refreshed;
-}

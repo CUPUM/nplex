@@ -78,5 +78,4 @@ export enum Cookie {
 	DbRefreshToken = 'refresh-token',
 	DbProviderToken = 'provider-token',
 	DbAccessTokenExpiry = 'access-token-expiry',
-	User = 'user',
 }

@@ -1,4 +1,4 @@
-import { applySetCookieHeaders, type SetCookieDetails } from '$utils/database';
+import { applySetCookieHeaders, type SetCookieDetails } from '$utils/cookies';
 import { Cookie } from '$utils/keys';
 import type { Session } from '@supabase/supabase-js';
 import type { RequestHandler } from '@sveltejs/kit';
@@ -14,16 +14,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	const setCookies: SetCookieDetails = {};
 
 	const cookieOptions: cookie.CookieSerializeOptions = {
-		expires: new Date(s.expires_at),
+		maxAge: s.expires_in,
 		httpOnly: true,
 		path: '/',
 		sameSite: true,
 	};
 
-	setCookies[Cookie.DbAccessTokenExpiry] = {
-		value: s.expires_at.toString(),
-		options: cookieOptions,
-	};
 	setCookies[Cookie.DbAccessToken] = {
 		value: s.access_token,
 		options: cookieOptions,

@@ -1,6 +1,7 @@
-import { applySetCookieHeaders, type SetCookieDetails } from '$utils/database';
+import { applySetCookieHeaders, type SetCookieDetails } from '$utils/cookies';
+import { getExtendedUser } from '$utils/database';
 import { Cookie } from '$utils/keys';
-import type { Session as SupabaseSession } from '@supabase/supabase-js';
+import type { Session, Session as SupabaseSession } from '@supabase/supabase-js';
 import type { RequestHandler } from '@sveltejs/kit';
 import type cookie from 'cookie';
 
@@ -11,34 +12,35 @@ type UpdateSessionDetails = SupabaseSession;
  *
  * @returns Extended App.Session['user'], containing additional info queried from database.
  */
-export const POST: RequestHandler = async ({ request }) => {
-	const sessionDetails: UpdateSessionDetails = await request.json();
-	const res = new Response();
+export const POST: RequestHandler = async ({ request, locals }) => {
+	const s: Session = await request.json();
+	let res = new Response();
 	const setCookies: SetCookieDetails = {};
 
 	const cookieOptions: cookie.CookieSerializeOptions = {
-		expires: new Date(sessionDetails.expires_at),
+		maxAge: s.expires_in,
 		httpOnly: true,
 		path: '/',
 		sameSite: true,
 	};
 
-	setCookies[Cookie.DbAccessTokenExpiry] = {
-		value: sessionDetails.expires_at.toString(),
-		options: cookieOptions,
-	};
 	setCookies[Cookie.DbAccessToken] = {
-		value: sessionDetails.access_token,
+		value: s.access_token,
 		options: cookieOptions,
 	};
 	setCookies[Cookie.DbRefreshToken] = {
-		value: sessionDetails.refresh_token,
+		value: s.refresh_token,
 		options: cookieOptions,
 	};
 	setCookies[Cookie.DbProviderToken] = {
-		value: sessionDetails.provider_token,
+		value: s.provider_token,
 		options: cookieOptions,
 	};
+
+	try {
+		const appUser = await getExtendedUser(s);
+		res = new Response(JSON.stringify(appUser));
+	} catch (error) {}
 
 	applySetCookieHeaders(res, setCookies);
 

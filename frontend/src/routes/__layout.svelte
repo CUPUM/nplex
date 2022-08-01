@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { page } from '$app/stores';
+	import { page, session } from '$app/stores';
 	import AuthModal from '$components/complexes/AuthModal.svelte';
 	import Footer from '$components/complexes/Footer.svelte';
 	import MessagesOutlet from '$components/complexes/MessagesOutlet.svelte';
@@ -15,8 +15,7 @@
 	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 
-	export async function load({ stuff, session }: LoadEvent): Promise<LoadOutput> {
-		console.log('Running: root layout load function.', stuff, session);
+	export async function load({ stuff }: LoadEvent): Promise<LoadOutput> {
 		return {
 			stuff: {
 				showFooter: true,
@@ -26,8 +25,17 @@
 </script>
 
 <script lang="ts">
+	import { afterNavigate } from '$app/navigation';
+	import { SearchParam } from '$utils/keys';
+
 	let loading = true;
 	let navbarHeight: number = 0;
+
+	afterNavigate(({ from, to }) => {
+		const newPreviousUrl = to;
+		newPreviousUrl.searchParams.delete(SearchParam.AuthModal);
+		session.update((prev) => ({ ...prev, previousUrl: newPreviousUrl.toString() }));
+	});
 
 	// Listening to and handling client-side Supabase auth state change.
 	browserDbClient.auth.onAuthStateChange(async (e, s) => {

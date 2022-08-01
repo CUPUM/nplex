@@ -4,8 +4,8 @@
 	import Field from '$components/primitives/Field.svelte';
 	import FieldPasswordToggleControl from '$components/primitives/FieldPasswordToggleControl.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
-	import login from '$routes/api/auth/login';
 	import { authModal } from '$stores/auth';
+	import { login, signup } from '$utils/database';
 	import { providers } from '$utils/providers';
 	import { sizes } from '$utils/sizes';
 	import { expoOut } from 'svelte/easing';
@@ -30,16 +30,15 @@
 		currentAction = (e.submitter as HTMLButtonElement).value;
 		switch (currentAction) {
 			case Action.EmailSignIn: {
-				login({ email, password });
+				await login({ email, password });
 				break;
 			}
 			case Action.EmailSignUp:
-				// if (!signupForm) {
-				// 	signupForm = true;
-				// 	break;
-				// }
-				// await signUpWithEmail({ email, password, firstname, middlename, lastname });
-
+				if (!signupForm) {
+					signupForm = true;
+					break;
+				}
+				await signup({ email, password });
 				break;
 			case Action.UseProvider:
 				break;

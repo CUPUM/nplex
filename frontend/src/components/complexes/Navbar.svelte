@@ -7,10 +7,10 @@
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
-	import { logout } from '$routes/api/auth/logout';
 	import { loadingCategory } from '$stores/navigation';
 	import { mainScroll } from '$stores/scroll';
 	import { colors } from '$utils/colors';
+	import { logout } from '$utils/database';
 	import { getAuthRedirectUrl } from '$utils/guard';
 	import { gotoCategory } from '$utils/navigation';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
