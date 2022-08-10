@@ -11,10 +11,8 @@
 </script>
 
 <script lang="ts">
-	import { projectsFilters } from '$stores/projects';
-	import { updateURLFromProjectsFilters } from '$utils/url';
-
-	$: updateURLFromProjectsFilters($projectsFilters);
+	// To do: move into store logic, with start-stop notifier clearing url.
+	// $: updateURLFromProjectsFilters($projectsFilters);
 </script>
 
 <slot />

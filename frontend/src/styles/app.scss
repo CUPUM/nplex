@@ -1,4 +1,5 @@
 :root {
+	--bg-color: var(--color-light-100);
 	width: 100vw;
 	height: 100%;
 	padding: 0;
@@ -7,9 +8,7 @@
 	color: var(--color-dark-700);
 	font-size: var(--size-medium);
 	font-weight: 400;
-	// font-feature-settings: 'kern';
-	// letter-spacing: 0.01em;
-	background-color: var(--bg-color, var(--color-light-100));
+	background-color: var(--bg-color);
 	accent-color: var(--color-primary-500);
 	overflow-x: hidden;
 	overflow-y: scroll;
@@ -36,7 +35,6 @@ body {
 	min-height: 100%;
 	padding: 0;
 	margin: 0;
-	overflow: hidden;
 }
 
 *,

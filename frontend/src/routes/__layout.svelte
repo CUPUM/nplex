@@ -10,7 +10,6 @@
 	import '$styles/app.scss';
 	import '$styles/helpers.scss';
 	import '$styles/vars.css';
-	import { browserDbClient, handleAuthStateChange } from '$utils/database';
 	import { sizes } from '$utils/sizes';
 	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
@@ -26,6 +25,7 @@
 
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
+	import { browserDbClient, handleAuthStateChange } from '$utils/database';
 	import { SearchParam } from '$utils/keys';
 
 	let loading = true;
@@ -37,13 +37,12 @@
 		session.update((prev) => ({ ...prev, previousUrl: newPreviousUrl.toString() }));
 	});
 
+	// To do: instanciate a poller to auto-refresh tokens by hitting api.
+
 	// Listening to and handling client-side Supabase auth state change.
 	browserDbClient.auth.onAuthStateChange(async (e, s) => {
 		await handleAuthStateChange(e, s);
 	});
-
-	// To figure out: On initializing the website client-side, attempt to login with previously set token / session.
-	// browserDbClient.auth.refreshSession();
 
 	onMount(() => {
 		backgroundColor.init();
@@ -52,7 +51,7 @@
 </script>
 
 <Navbar bind:navbarHeight />
-<main style:--navbar-height="{navbarHeight}px" class:loading>
+<main style:--navbar-height="{navbarHeight || 0}px" class:loading>
 	<slot />
 </main>
 {#if $page.stuff.showFooter}

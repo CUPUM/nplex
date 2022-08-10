@@ -181,7 +181,7 @@
 		fill: currentColor;
 		/* fill: none; */
 		stroke: currentColor;
-		stroke-width: 20px;
+		stroke-width: 10px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		// transform-origin: center;

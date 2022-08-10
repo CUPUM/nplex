@@ -4,6 +4,10 @@
 		variant: 'default' | 'secondary' | 'navbar' | 'ghost' | 'cta';
 		currentRef: Writable<HTMLElement>;
 		tempRef: Writable<HTMLElement>;
+		group: Writable<any>;
+		setCurrent: (element: HTMLElement, value: any) => void;
+		setTemp: (element: HTMLElement) => void;
+		clearTemp: (element: HTMLElement) => void;
 	}
 </script>
 
@@ -20,45 +24,68 @@
 	export let size: SizeInput = '1em';
 	export let variant: SwitchContext['variant'] = 'default';
 	export let orientation: 'column' | 'row' = 'row';
+	export let value: any = undefined;
 
-	let fieldset: HTMLFieldSetElement;
-	let observer: ResizeObserver;
 	const currentRef: SwitchContext['currentRef'] = writable(null);
 	const tempRef: SwitchContext['tempRef'] = writable(null);
-
-	type IndicatorBox = {
-		top: number;
-		right: number;
-		bottom: number;
-		left: number;
-	};
+	let fieldset: HTMLFieldSetElement;
+	let observer: ResizeObserver;
 	let indicatorBox = '';
 
+	/**
+	 * Group should only be used to let context aware of value.
+	 */
+	const group: Writable<typeof value> = writable(value);
+	$: $group = value;
+	$: if ($group === null || $group === undefined) {
+		setCurrent($group, $group);
+	}
+
 	function getElementBox(element: HTMLElement) {
-		return `top: ${element.offsetTop}px; right: ${element.offsetLeft + element.offsetWidth}px; bottom: ${
-			element.offsetTop + element.offsetHeight
-		}px; left: ${element.offsetLeft}px;`;
+		if (!element) return '';
+		return (
+			`top: ${element.offsetTop}px;` +
+			`left: ${element.offsetLeft}px;` +
+			`width: ${element.offsetWidth}px;` +
+			`height: ${element.offsetHeight}px;`
+		);
 	}
 
-	function updateIndicatorBox(element: HTMLElement) {
-		if (!element) return (indicatorBox = '');
-		indicatorBox = getElementBox(element);
+	function setCurrent(element: HTMLElement, itemValue: any) {
+		$currentRef = element;
+		indicatorBox = getElementBox($currentRef);
+		value = itemValue;
+		// console.log('Setting current', element);
 	}
 
-	$: if ($tempRef) updateIndicatorBox($tempRef);
-	$: if ($currentRef) updateIndicatorBox($currentRef);
-	$: if (!$tempRef && !$currentRef) updateIndicatorBox(null);
+	function setTemp(element: HTMLElement) {
+		$tempRef = element;
+		indicatorBox = getElementBox($tempRef);
+		// console.log('Setting temp', element);
+	}
+
+	function clearTemp(element: HTMLElement) {
+		if ($tempRef === element) {
+			$tempRef = null;
+		}
+		indicatorBox = getElementBox($currentRef);
+		// console.log('Clearing temp', element);
+	}
 
 	setContext<SwitchContext>(Ctx.Switch, {
 		name,
 		variant,
 		currentRef,
 		tempRef,
+		group,
+		setCurrent,
+		setTemp,
+		clearTemp,
 	});
 
 	onMount(() => {
 		observer = new ResizeObserver(() => {
-			updateIndicatorBox($tempRef || $currentRef || null);
+			indicatorBox = getElementBox($tempRef || $currentRef || null);
 		});
 		observer.observe(fieldset);
 	});
@@ -74,8 +101,8 @@
 		<div
 			transition:scale|local={{ duration: 150, start: 0.5, opacity: 0, easing: expoOut }}
 			class="indicator"
+			class:temp={!!$tempRef}
 			style={indicatorBox}
-			class:temp={Boolean($tempRef)}
 		/>
 	{/if}
 	<slot />
@@ -85,7 +112,7 @@
 	fieldset {
 		--size: var(--default-size);
 		--radius: var(--default-radius);
-		--inset: 0px;
+		--inset: 3px;
 		position: relative;
 		border: none;
 		display: inline-flex;
@@ -96,78 +123,60 @@
 		border-radius: var(--radius);
 		overflow: visible;
 		transition: all 0.1s ease-out;
-
-		& > .row {
+		&.row {
 			flex-direction: row;
 		}
-
-		& > .column {
+		&.column {
 			flex-direction: column;
 		}
 	}
 
 	.indicator {
+		flex: none;
 		z-index: 1;
 		position: absolute;
 		border-radius: calc(var(--radius) - var(--inset));
-		transition: all 0.15s cubic-bezier(0.8, 0, 0.2, 1.2);
-
-		&.temp {
-			// transform: scale(0.95, 0.92);
-		}
+		transition: all 0.15s cubic-bezier(0.5, 0, 0.2, 1.2);
+		// &.temp {
+		// 	transform: scale(0.95, 0.92);
+		// }
 	}
 
 	/* Variants */
 
 	/* Default theme */
 	.default {
-		--bg: var(--color-light-300);
-		background-color: var(--bg);
-		box-shadow: 0 0 0 0 var(--bg);
+		background-color: var(--color-light-500);
 		&:hover,
 		&:focus {
-			box-shadow: 0 0 0 3px var(--bg);
+			background-color: var(--color-light-300);
 		}
 		& .indicator {
 			background-color: var(--color-dark-900);
-
 			&.temp {
 				background-color: rgba(var(--rgb-dark-900), 0.1);
 			}
 		}
 	}
 
-	/* Secondary theme */
-	.secondary {
-	}
-
-	/* Ghost theme */
-	.ghost {
-	}
-
 	/* Nav theme */
 	.navbar {
-		background-color: transparent;
-		// backdrop-filter: blur(18px);
-		// box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-500), 0);
+		--inset: 0px;
+		background-color: rgba(255, 255, 255, 0.1);
 		transition: all 0.25s ease-out;
 		&:hover,
 		&:focus {
-			background-color: rgba(var(--rgb-light-100), 1);
-			// box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
+			background-color: rgba(255, 255, 255, 0.2);
 		}
 		& .indicator {
 			opacity: 0.2;
+			box-shadow: 0 0 0 1px var(--color-primary-300);
 			background-color: var(--color-primary-100);
-
 			&.temp {
-				background-color: var(--color-dark-500);
-				opacity: 0.05;
+				// box-shadow: 0 0 0 0 var(--color-primary-300);
+				// background-color: var(--color-primary-100);
+				opacity: 0.1;
 			}
 		}
-	}
-
-	/* Cta theme */
-	.cta {
 	}
 </style>

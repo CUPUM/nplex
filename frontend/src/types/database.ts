@@ -147,13 +147,13 @@ export interface paths {
       };
     };
   };
-  "/project_site_usage_list": {
+  "/project_site_usages": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.project_site_usage_list.id"];
-          title?: parameters["rowFilter.project_site_usage_list.title"];
-          description?: parameters["rowFilter.project_site_usage_list.description"];
+          id?: parameters["rowFilter.project_site_usages.id"];
+          title?: parameters["rowFilter.project_site_usages.title"];
+          description?: parameters["rowFilter.project_site_usages.description"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -175,7 +175,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["project_site_usage_list"][];
+          schema: definitions["project_site_usages"][];
         };
         /** Partial Content */
         206: unknown;
@@ -184,8 +184,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** project_site_usage_list */
-          project_site_usage_list?: definitions["project_site_usage_list"];
+          /** project_site_usages */
+          project_site_usages?: definitions["project_site_usages"];
         };
         query: {
           /** Filtering Columns */
@@ -204,9 +204,9 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.project_site_usage_list.id"];
-          title?: parameters["rowFilter.project_site_usage_list.title"];
-          description?: parameters["rowFilter.project_site_usage_list.description"];
+          id?: parameters["rowFilter.project_site_usages.id"];
+          title?: parameters["rowFilter.project_site_usages.title"];
+          description?: parameters["rowFilter.project_site_usages.description"];
         };
         header: {
           /** Preference */
@@ -221,13 +221,13 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.project_site_usage_list.id"];
-          title?: parameters["rowFilter.project_site_usage_list.title"];
-          description?: parameters["rowFilter.project_site_usage_list.description"];
+          id?: parameters["rowFilter.project_site_usages.id"];
+          title?: parameters["rowFilter.project_site_usages.title"];
+          description?: parameters["rowFilter.project_site_usages.description"];
         };
         body: {
-          /** project_site_usage_list */
-          project_site_usage_list?: definitions["project_site_usage_list"];
+          /** project_site_usages */
+          project_site_usages?: definitions["project_site_usages"];
         };
         header: {
           /** Preference */
@@ -240,13 +240,13 @@ export interface paths {
       };
     };
   };
-  "/project_site_usage_category_list": {
+  "/project_site_ownerships": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.project_site_usage_category_list.id"];
-          title?: parameters["rowFilter.project_site_usage_category_list.title"];
-          description?: parameters["rowFilter.project_site_usage_category_list.description"];
+          id?: parameters["rowFilter.project_site_ownerships.id"];
+          title?: parameters["rowFilter.project_site_ownerships.title"];
+          description?: parameters["rowFilter.project_site_ownerships.description"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -268,7 +268,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["project_site_usage_category_list"][];
+          schema: definitions["project_site_ownerships"][];
         };
         /** Partial Content */
         206: unknown;
@@ -277,8 +277,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** project_site_usage_category_list */
-          project_site_usage_category_list?: definitions["project_site_usage_category_list"];
+          /** project_site_ownerships */
+          project_site_ownerships?: definitions["project_site_ownerships"];
         };
         query: {
           /** Filtering Columns */
@@ -297,9 +297,9 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.project_site_usage_category_list.id"];
-          title?: parameters["rowFilter.project_site_usage_category_list.title"];
-          description?: parameters["rowFilter.project_site_usage_category_list.description"];
+          id?: parameters["rowFilter.project_site_ownerships.id"];
+          title?: parameters["rowFilter.project_site_ownerships.title"];
+          description?: parameters["rowFilter.project_site_ownerships.description"];
         };
         header: {
           /** Preference */
@@ -314,13 +314,106 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.project_site_usage_category_list.id"];
-          title?: parameters["rowFilter.project_site_usage_category_list.title"];
-          description?: parameters["rowFilter.project_site_usage_category_list.description"];
+          id?: parameters["rowFilter.project_site_ownerships.id"];
+          title?: parameters["rowFilter.project_site_ownerships.title"];
+          description?: parameters["rowFilter.project_site_ownerships.description"];
         };
         body: {
-          /** project_site_usage_category_list */
-          project_site_usage_category_list?: definitions["project_site_usage_category_list"];
+          /** project_site_ownerships */
+          project_site_ownerships?: definitions["project_site_ownerships"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/project_site_usages_categories": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usages_categories.id"];
+          title?: parameters["rowFilter.project_site_usages_categories.title"];
+          description?: parameters["rowFilter.project_site_usages_categories.description"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["project_site_usages_categories"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** project_site_usages_categories */
+          project_site_usages_categories?: definitions["project_site_usages_categories"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usages_categories.id"];
+          title?: parameters["rowFilter.project_site_usages_categories.title"];
+          description?: parameters["rowFilter.project_site_usages_categories.description"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usages_categories.id"];
+          title?: parameters["rowFilter.project_site_usages_categories.title"];
+          description?: parameters["rowFilter.project_site_usages_categories.description"];
+        };
+        body: {
+          /** project_site_usages_categories */
+          project_site_usages_categories?: definitions["project_site_usages_categories"];
         };
         header: {
           /** Preference */
@@ -414,99 +507,6 @@ export interface paths {
         body: {
           /** projects_editors */
           projects_editors?: definitions["projects_editors"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
-  "/project_site_ownership_list": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.project_site_ownership_list.id"];
-          title?: parameters["rowFilter.project_site_ownership_list.title"];
-          description?: parameters["rowFilter.project_site_ownership_list.description"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["project_site_ownership_list"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** project_site_ownership_list */
-          project_site_ownership_list?: definitions["project_site_ownership_list"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.project_site_ownership_list.id"];
-          title?: parameters["rowFilter.project_site_ownership_list.title"];
-          description?: parameters["rowFilter.project_site_ownership_list.description"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.project_site_ownership_list.id"];
-          title?: parameters["rowFilter.project_site_ownership_list.title"];
-          description?: parameters["rowFilter.project_site_ownership_list.description"];
-        };
-        body: {
-          /** project_site_ownership_list */
-          project_site_ownership_list?: definitions["project_site_ownership_list"];
         };
         header: {
           /** Preference */
@@ -807,13 +807,13 @@ export interface paths {
       };
     };
   };
-  "/project_type_list": {
+  "/project_types": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.project_type_list.id"];
-          title?: parameters["rowFilter.project_type_list.title"];
-          description?: parameters["rowFilter.project_type_list.description"];
+          id?: parameters["rowFilter.project_types.id"];
+          title?: parameters["rowFilter.project_types.title"];
+          description?: parameters["rowFilter.project_types.description"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -835,7 +835,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["project_type_list"][];
+          schema: definitions["project_types"][];
         };
         /** Partial Content */
         206: unknown;
@@ -844,8 +844,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** project_type_list */
-          project_type_list?: definitions["project_type_list"];
+          /** project_types */
+          project_types?: definitions["project_types"];
         };
         query: {
           /** Filtering Columns */
@@ -864,9 +864,9 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.project_type_list.id"];
-          title?: parameters["rowFilter.project_type_list.title"];
-          description?: parameters["rowFilter.project_type_list.description"];
+          id?: parameters["rowFilter.project_types.id"];
+          title?: parameters["rowFilter.project_types.title"];
+          description?: parameters["rowFilter.project_types.description"];
         };
         header: {
           /** Preference */
@@ -881,13 +881,13 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.project_type_list.id"];
-          title?: parameters["rowFilter.project_type_list.title"];
-          description?: parameters["rowFilter.project_type_list.description"];
+          id?: parameters["rowFilter.project_types.id"];
+          title?: parameters["rowFilter.project_types.title"];
+          description?: parameters["rowFilter.project_types.description"];
         };
         body: {
-          /** project_type_list */
-          project_type_list?: definitions["project_type_list"];
+          /** project_types */
+          project_types?: definitions["project_types"];
         };
         header: {
           /** Preference */
@@ -1212,6 +1212,23 @@ export interface paths {
       };
     };
   };
+  "/rpc/get_project_descriptors": {
+    post: {
+      parameters: {
+        body: {
+          args: { [key: string]: unknown };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/user_has_role": {
     post: {
       parameters: {
@@ -1232,11 +1249,14 @@ export interface paths {
       };
     };
   };
-  "/rpc/get_projects_params_lists": {
+  "/rpc/user_can_edit_project": {
     post: {
       parameters: {
         body: {
-          args: { [key: string]: unknown };
+          args: {
+            /** Format: uuid */
+            project_id: string;
+          };
         };
         header: {
           /** Preference */
@@ -1297,19 +1317,19 @@ export interface definitions {
     /**
      * Format: smallint
      * @description Note:
-     * This is a Foreign Key to `project_site_ownership_list.id`.<fk table='project_site_ownership_list' column='id'/>
+     * This is a Foreign Key to `project_site_ownerships.id`.<fk table='project_site_ownerships' column='id'/>
      */
     site_ownership_id?: number;
     /**
      * Format: smallint
      * @description Note:
-     * This is a Foreign Key to `project_site_usage_category_list.id`.<fk table='project_site_usage_category_list' column='id'/>
+     * This is a Foreign Key to `project_site_usages_categories.id`.<fk table='project_site_usages_categories' column='id'/>
      */
     main_site_usage_category_id?: number;
     /**
      * Format: smallint
      * @description Note:
-     * This is a Foreign Key to `project_site_usage_list.id`.<fk table='project_site_usage_list' column='id'/>
+     * This is a Foreign Key to `project_site_usages.id`.<fk table='project_site_usages' column='id'/>
      */
     main_site_usage_id?: number;
     /** Format: numeric */
@@ -1328,7 +1348,7 @@ export interface definitions {
     /** Format: double precision */
     ratings_average?: number;
   };
-  project_site_usage_list: {
+  project_site_usages: {
     /**
      * Format: smallint
      * @description Note:
@@ -1340,7 +1360,21 @@ export interface definitions {
     /** Format: text */
     description?: string;
   };
-  project_site_usage_category_list: {
+  /** @description List of possible site ownership. */
+  project_site_ownerships: {
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /** Format: text */
+    title: string;
+    /** Format: text */
+    description?: string;
+  };
+  /** @description List of categories of site usages. */
+  project_site_usages_categories: {
     /**
      * Format: smallint
      * @description Note:
@@ -1372,18 +1406,6 @@ export interface definitions {
      * This is a Foreign Key to `users_profiles.user_id`.<fk table='users_profiles' column='user_id'/>
      */
     user_id: string;
-  };
-  project_site_ownership_list: {
-    /**
-     * Format: smallint
-     * @description Note:
-     * This is a Primary Key.<pk/>
-     */
-    id: number;
-    /** Format: text */
-    title: string;
-    /** Format: text */
-    description?: string;
   };
   projects_ratings: {
     /**
@@ -1459,7 +1481,7 @@ export interface definitions {
      */
     role: "admin" | "editor" | "visitor";
   };
-  project_type_list: {
+  project_types: {
     /**
      * Format: smallint
      * @description Note:
@@ -1638,22 +1660,30 @@ export interface parameters {
   "rowFilter.projects.ratings_n": string;
   /** Format: double precision */
   "rowFilter.projects.ratings_average": string;
-  /** @description project_site_usage_list */
-  "body.project_site_usage_list": definitions["project_site_usage_list"];
+  /** @description project_site_usages */
+  "body.project_site_usages": definitions["project_site_usages"];
   /** Format: smallint */
-  "rowFilter.project_site_usage_list.id": string;
+  "rowFilter.project_site_usages.id": string;
   /** Format: text */
-  "rowFilter.project_site_usage_list.title": string;
+  "rowFilter.project_site_usages.title": string;
   /** Format: text */
-  "rowFilter.project_site_usage_list.description": string;
-  /** @description project_site_usage_category_list */
-  "body.project_site_usage_category_list": definitions["project_site_usage_category_list"];
+  "rowFilter.project_site_usages.description": string;
+  /** @description project_site_ownerships */
+  "body.project_site_ownerships": definitions["project_site_ownerships"];
   /** Format: smallint */
-  "rowFilter.project_site_usage_category_list.id": string;
+  "rowFilter.project_site_ownerships.id": string;
   /** Format: text */
-  "rowFilter.project_site_usage_category_list.title": string;
+  "rowFilter.project_site_ownerships.title": string;
   /** Format: text */
-  "rowFilter.project_site_usage_category_list.description": string;
+  "rowFilter.project_site_ownerships.description": string;
+  /** @description project_site_usages_categories */
+  "body.project_site_usages_categories": definitions["project_site_usages_categories"];
+  /** Format: smallint */
+  "rowFilter.project_site_usages_categories.id": string;
+  /** Format: text */
+  "rowFilter.project_site_usages_categories.title": string;
+  /** Format: text */
+  "rowFilter.project_site_usages_categories.description": string;
   /** @description projects_editors */
   "body.projects_editors": definitions["projects_editors"];
   /** Format: integer */
@@ -1662,14 +1692,6 @@ export interface parameters {
   "rowFilter.projects_editors.project_id": string;
   /** Format: uuid */
   "rowFilter.projects_editors.user_id": string;
-  /** @description project_site_ownership_list */
-  "body.project_site_ownership_list": definitions["project_site_ownership_list"];
-  /** Format: smallint */
-  "rowFilter.project_site_ownership_list.id": string;
-  /** Format: text */
-  "rowFilter.project_site_ownership_list.title": string;
-  /** Format: text */
-  "rowFilter.project_site_ownership_list.description": string;
   /** @description projects_ratings */
   "body.projects_ratings": definitions["projects_ratings"];
   /** Format: integer */
@@ -1700,14 +1722,14 @@ export interface parameters {
   "rowFilter.users_roles.updated_at": string;
   /** Format: public.user_role */
   "rowFilter.users_roles.role": string;
-  /** @description project_type_list */
-  "body.project_type_list": definitions["project_type_list"];
+  /** @description project_types */
+  "body.project_types": definitions["project_types"];
   /** Format: smallint */
-  "rowFilter.project_type_list.id": string;
+  "rowFilter.project_types.id": string;
   /** Format: text */
-  "rowFilter.project_type_list.title": string;
+  "rowFilter.project_types.title": string;
   /** Format: text */
-  "rowFilter.project_type_list.description": string;
+  "rowFilter.project_types.description": string;
   /** @description projects_publication_status */
   "body.projects_publication_status": definitions["projects_publication_status"];
   /** Format: uuid */

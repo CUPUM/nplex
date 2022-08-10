@@ -9,7 +9,7 @@
 	import { providers } from '$utils/providers';
 	import { sizes } from '$utils/sizes';
 	import { expoOut } from 'svelte/easing';
-	import { fade, fly, scale, slide } from 'svelte/transition';
+	import { fade, scale, slide } from 'svelte/transition';
 
 	let email: string;
 	let password: string;
@@ -47,13 +47,12 @@
 	}
 </script>
 
-<div class="bg" transition:fade={{ duration: 350, easing: expoOut }} />
+<div class="bg" in:fade={{ duration: 250, easing: expoOut }} />
 <div
 	class="wrapper"
+	in:scale={{ start: 0.9, duration: 200 }}
 	use:clickoutside
 	on:clickoutside={() => authModal.close()}
-	in:scale={{ duration: 350, start: 0.8, easing: expoOut }}
-	out:fly={{ duration: 250, x: 50, easing: expoOut }}
 >
 	<a class="logo" href="/">
 		<Logo color="currentColor" />
@@ -71,7 +70,7 @@
 		<Field
 			bind:value={password}
 			placeholder="Mot de passe"
-			icon="asterisk"
+			icon="lock-close"
 			showIcon="always"
 			name="password"
 			type="password"
@@ -79,7 +78,7 @@
 			<FieldPasswordToggleControl slot="right" />
 		</Field>
 		{#if signupForm}
-			<div class="signup-fields" transition:slide={{}}>
+			<div class="signup-fields" transition:slide|local={{}}>
 				<div>
 					<Field size={sizes.small} bind:value={firstname} name="firstname" placeholder="Prénom" />
 				</div>
@@ -91,7 +90,7 @@
 				</div>
 			</div>
 		{/if}
-		<div class="submit-buttons" transition:scale={{ start: 0.95, delay: 300 }}>
+		<div class="submit-buttons">
 			<Button
 				type="submit"
 				variant="cta"

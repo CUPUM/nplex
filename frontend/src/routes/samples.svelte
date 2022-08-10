@@ -9,6 +9,9 @@
 	};
 </script> -->
 <script lang="ts">
+	import { reveal } from '$actions/reveal';
+	import { flyup } from '$actions/reveal/presets';
+
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
 	import Field from '$components/primitives/Field.svelte';
@@ -17,6 +20,8 @@
 	import Popover from '$components/primitives/Popover.svelte';
 	import Select from '$components/primitives/Select.svelte';
 	import SelectOption from '$components/primitives/SelectOption.svelte';
+	import Switch from '$components/primitives/Switch.svelte';
+	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import TestRadio from '$components/primitives/TestRadio.svelte';
 	import TestRadioSet from '$components/primitives/TestRadioSet.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
@@ -58,7 +63,7 @@
 
 	function handleKeypress(e) {
 		if (e.keyCode === KeyCode.Enter) {
-			messages.dispatch({ text: e.target.value, timer: 10000 });
+			messages.dispatch({ content: e.target.value, timer: 10000 });
 		}
 	}
 
@@ -86,17 +91,31 @@
 			<Map style="width: 500px; height: 300px" />
 		</section>
 	</section>
-	<!-- <section>
+
+	<section class="">
+		<Switch orientation="column" bind:value={switchval} name="test1">
+			<SwitchItem id="test1" value="test1v">Test 1</SwitchItem>
+			<SwitchItem id="test2" value="test2v">Test 2</SwitchItem>
+			<SwitchItem id="test3" value="test3v">Test 3</SwitchItem>
+		</Switch>
+
+		<Switch orientation="row" name="test" bind:value={switchval}>
+			<SwitchItem id="test1" value="test1v">Test 1</SwitchItem>
+			<SwitchItem id="test2" value="test2v">Test 2</SwitchItem>
+			<SwitchItem id="test3" value="test3v">Test 3</SwitchItem>
+		</Switch>
+	</section>
+	<section>
 		<h2>Transition / action testground</h2>
 		<input type="checkbox" name="" id="" bind:checked={inserted} />
 		<h3>Action</h3>
 		<p use:reveal>
 			Lorem, ipsum dolor sit amet <em>consectetur</em> adipisicing elit.
 		</p>
-		<h2 use:reveal={{ show: inserted, css: unfold, duration: 1000 }}>
+		<h2 use:reveal={{ ...flyup, show: inserted }}>
 			Lorem, ipsum dolor sit amet <em>consectetur</em> adipisicing elit.
 		</h2>
-	</section> -->
+	</section>
 	<!-- <section>
 		<h2>Text styles</h2>
 		<h1>Heading 1</h1>
@@ -165,7 +184,7 @@
 			<Button
 				type="submit"
 				slot="has-value"
-				on:click={() => messages.dispatch({ text: value, timer: 0, type: 'error' })}
+				on:click={() => messages.dispatch({ content: value, timer: 0, type: 'error' })}
 				>Dispatch app message</Button
 			>
 		</Field>
@@ -257,19 +276,6 @@
 	<section>
 		<Tooltip message="Bonjour, je suis un tooltip!"><Button icon="file-add" /></Tooltip>
 	</section>
-	<!-- <section class="">
-		<Switch orientation="column" bind:value={switchval} name="test1">
-			<SwitchItem id="test1" value="test1v">Test 1</SwitchItem>
-			<SwitchItem id="test2" value="test2v">Test 2</SwitchItem>
-			<SwitchItem id="test3" value="test3v">Test 3</SwitchItem>
-		</Switch>
-
-		<Switch orientation="row" name="test" bind:value={switchval}>
-			<SwitchItem id="test1" value="test1v">Test 1</SwitchItem>
-			<SwitchItem id="test2" value="test2v">Test 2</SwitchItem>
-			<SwitchItem id="test3" value="test3v">Test 3</SwitchItem>
-		</Switch>
-	</section> -->
 	<section>
 		<h2>Testing custom radio / checkbox inputs</h2>
 		<Button on:click={() => (radioValue = 'test-1')}>Reset that radioset value ({radioValue})</Button>

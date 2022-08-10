@@ -13,9 +13,16 @@
 	export let loading: boolean = undefined;
 
 	let cssAvatarImage: string = '';
-	const userColor =
-		'#' + parseInt($session.user.created_at.match(/\d+/g).map(Number).join('')).toString(16).substring(0, 6);
-	const userLetter = $session.user.email.charAt(0);
+	const userColors = [
+		`#${parseInt($session.user.created_at.match(/\d+/g).map(Number).join('')).toString(16).substring(0, 6)}`,
+		`#${$session.user.email
+			.split('')
+			.map((c) => c.charCodeAt(0).toString(16))
+			.join('')
+			.slice(0, 6)}`,
+		`#${$session.user.id.slice(0, 6)}`,
+	];
+	const userLetter = $session.user.email.charAt(0).toUpperCase();
 
 	$: cssAvatarImage = $userProfile && $userProfile.avatar_url ? `url(${$userProfile.avatar_url})` : '';
 </script>
@@ -30,7 +37,9 @@
 	class:active
 	class:warning
 	style:font-size={cssSize(size)}
-	style:color={userColor}
+	style:--color1={userColors[0]}
+	style:--color2={userColors[1]}
+	style:--color3={userColors[2]}
 	disabled={disabled || loading}
 	{href}
 	{...$$restProps}
@@ -42,9 +51,9 @@
 					vector-effect="non-scaling-stroke"
 					text-anchor="middle"
 					x="50%"
-					y="50%"
-					font-size="1.5em"
-					font-weight="400"
+					y="55%"
+					font-size="1.2em"
+					font-weight="500"
 					stroke="none"
 					dominant-baseline="middle"
 				>
@@ -103,7 +112,8 @@
 		left: 0;
 		padding: 0;
 		margin: 0;
-		background-color: currentColor;
+		background: conic-gradient(from 90deg at -10% -10%, var(--color1), var(--color2), var(--color3) 90deg);
+		// background: conic-gradient(from 0deg at 0% 25%, blue, green, yellow 180deg);
 	}
 
 	text {

@@ -1,11 +1,8 @@
-// import { projects } from '$utils/dummy';
-// import type { RequestHandler } from '@sveltejs/kit';
+import type { RequestHandler } from './__types/index.json';
 
-// /**
-//  * Page endpoint for single-project page.
-//  */
-// export const get: RequestHandler = async ({ params }) => {
-// 	return {
-// 		body: // Find project in store || get from db by id and append to store
-// 	};
-// };
+/**
+ * Get a single project by its id.
+ */
+export const GET: RequestHandler = ({ locals, params, request }) => {
+	return {};
+};

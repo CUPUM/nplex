@@ -140,16 +140,10 @@ export function ripple(
 			// console.log(newParams.controlElement != controlElement);
 			if (disabled !== newParams.disabled) {
 				disabled = newParams.disabled;
-				if (!newParams.disabled) {
-					clearListeners();
-					controlElement = newParams.controlElement;
-
+				clearListeners();
+				if (!disabled) {
 					setListeners();
 				}
-			} else if (newParams.controlElement != controlElement) {
-				clearListeners();
-				controlElement = newParams.controlElement;
-				setListeners();
 			}
 		},
 		destroy() {

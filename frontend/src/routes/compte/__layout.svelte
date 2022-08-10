@@ -1,9 +1,9 @@
 <script lang="ts" context="module">
-	import { guard } from '$utils/guard';
+	import { guard } from '$utils/routeGuards';
 	import type { Load } from '@sveltejs/kit';
 
 	export const load: Load = async ({ session, url, fetch }) => {
-		const res = await guard({ criteria: ['admin', 'editor', 'visitor'], session, fetch, url });
+		const res = await guard.role({ roles: ['admin', 'editor', 'visitor'], session, url });
 		return res;
 	};
 </script>

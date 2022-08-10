@@ -15,15 +15,12 @@
 
 <script lang="ts">
 	import { page } from '$app/stores';
-
 	import ExploreSearchbar from '$components/complexes/ExploreSearchbar.svelte';
 	import { backgroundColor } from '$stores/backgroundColor';
-	import { cssSize } from '$utils/css';
 	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 	import { onDestroy, onMount } from 'svelte';
 
-	const searchWidth = cssSize(400);
-	let searchbarHeight = 0;
+	let searchbarHeight;
 
 	backgroundColor.reset();
 
@@ -31,7 +28,7 @@
 	onDestroy(() => {});
 </script>
 
-<div id="explore" style:--search-width={searchWidth} style:--searchbar-height={cssSize(searchbarHeight)}>
+<div id="explore" style:--searchbar-height="{searchbarHeight || 0}px">
 	{#if $page.stuff.showExploreSearchbar}
 		<div id="searchbar-container" bind:offsetHeight={searchbarHeight}>
 			<ExploreSearchbar />
@@ -41,10 +38,14 @@
 </div>
 
 <style lang="scss">
+	#explore {
+		--search-width: 400px;
+		flex: 1;
+	}
+
 	#searchbar-container {
 		position: absolute;
 		display: block;
-		top: var(--navbar-height);
 		width: 100%;
 	}
 </style>

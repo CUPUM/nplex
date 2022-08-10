@@ -5,7 +5,7 @@
 	import Loading from '$components/primitives/Loading.svelte';
 	import { colors } from '$utils/colors';
 	import type { Project } from '$utils/dummy';
-	import { getAuthRedirectUrl } from '$utils/guard';
+	import { getAuthRedirectUrl } from '$utils/routeGuards';
 	import { sizes } from '$utils/sizes';
 
 	export let project: Project = undefined;

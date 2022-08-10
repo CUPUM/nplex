@@ -3,22 +3,22 @@
  *
  * This file was generated from the utils found at ./src/utils.
  * All changes added manually here will be lost on next execution of the generator script.
- * Last generated on: Tue Jul 26 2022 18:49:53 GMT-0400 (GMT-04:00)
+ * Last generated on: Tue Aug 09 2022 14:29:33 GMT-0400 (GMT-04:00)
  *
  * ⚠️ WARNING ⚠️
  */
 
 :root {
-	--color-primary-100: hsl(164, 48%, 73%);
-	--rgb-primary-100: 153, 219, 202;
-	--color-primary-300: hsl(162, 50%, 64%);
-	--rgb-primary-300: 117, 209, 182;
-	--color-primary-500: hsl(160, 54%, 50%);
-	--rgb-primary-500: 59, 196, 150;
-	--color-primary-700: hsl(162, 60%, 42%);
-	--rgb-primary-700: 43, 171, 133;
-	--color-primary-900: hsl(164, 70%, 34%);
-	--rgb-primary-900: 26, 147, 115;
+	--color-primary-100: hsl(157, 48%, 72%);
+	--rgb-primary-100: 149, 218, 192;
+	--color-primary-300: hsl(156, 50%, 63%);
+	--rgb-primary-300: 113, 208, 170;
+	--color-primary-500: hsl(155, 54%, 50%);
+	--rgb-primary-500: 59, 196, 139;
+	--color-primary-700: hsl(156, 60%, 43%);
+	--rgb-primary-700: 44, 175, 123;
+	--color-primary-900: hsl(157, 70%, 34%);
+	--rgb-primary-900: 26, 147, 101;
 	--color-secondary-100: hsl(19, 86%, 81%);
 	--rgb-secondary-100: 248, 191, 165;
 	--color-secondary-300: hsl(18, 83%, 77%);
@@ -29,16 +29,16 @@
 	--rgb-secondary-700: 232, 138, 104;
 	--color-secondary-900: hsl(15, 66%, 58%);
 	--rgb-secondary-900: 219, 113, 77;
-	--color-light-100: hsl(80, 18%, 98%);
-	--rgb-light-100: 250, 251, 249;
-	--color-light-300: hsl(80, 16%, 95%);
-	--rgb-light-300: 243, 244, 240;
-	--color-light-500: hsl(80, 14%, 92%);
-	--rgb-light-500: 236, 237, 232;
-	--color-light-700: hsl(80, 12%, 89%);
-	--rgb-light-700: 228, 230, 224;
-	--color-light-900: hsl(80, 10%, 85%);
-	--rgb-light-900: 218, 221, 213;
+	--color-light-100: hsl(70, 18%, 98%);
+	--rgb-light-100: 251, 251, 249;
+	--color-light-300: hsl(70, 16%, 95%);
+	--rgb-light-300: 244, 244, 240;
+	--color-light-500: hsl(70, 14%, 92%);
+	--rgb-light-500: 237, 237, 232;
+	--color-light-700: hsl(70, 12%, 89%);
+	--rgb-light-700: 229, 230, 224;
+	--color-light-900: hsl(70, 10%, 85%);
+	--rgb-light-900: 219, 221, 213;
 	--color-dark-100: hsl(178, 10%, 38%);
 	--rgb-dark-100: 87, 107, 106;
 	--color-dark-300: hsl(180, 14%, 32%);

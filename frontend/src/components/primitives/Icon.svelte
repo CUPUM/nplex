@@ -8,7 +8,7 @@
 	import { cssSize, type SizeInput } from '$utils/css';
 	import { icons } from '$utils/icons/icons';
 	import { onDestroy, onMount } from 'svelte';
-	import { expoOut } from 'svelte/easing';
+	import { quadOut } from 'svelte/easing';
 	import { draw, fade, scale } from 'svelte/transition';
 
 	export let name: keyof typeof icons;
@@ -18,20 +18,23 @@
 	export let strokeWidth: SizeInput = 1.5;
 	export let strokeOpacity: number = 1;
 	export let fillOpacity: number = 1;
+	export let intro: boolean = false;
 
 	let icon = icons[name];
-	let mounted = false;
+	let mounted = !intro;
 	let instance;
 	let timeout;
 
 	$: icon = icons[name];
 
 	onMount(() => {
-		queue.add(instance);
-		timeout = setTimeout(() => {
-			mounted = true;
-			queue.delete(instance);
-		}, [...queue].length * (duration / 3) + delay);
+		if (!mounted) {
+			queue.add(instance);
+			timeout = setTimeout(() => {
+				mounted = true;
+				queue.delete(instance);
+			}, [...queue].length * (duration / 3) + delay);
+		}
 	});
 
 	onDestroy(() => {
@@ -54,13 +57,13 @@
 	{#if mounted}
 		{#key name}
 			<g
-				in:scale={{ start: 0.5, easing: expoOut, duration: 750 }}
-				out:scale|local={{ start: 0.75, easing: expoOut, duration: 500 }}
+				in:scale|local={{ start: 0.5, easing: quadOut, duration: 200, delay: 50 }}
+				out:scale|local={{ start: 0.75, easing: quadOut, duration: 150 }}
 			>
 				{#if icon.strokes.length}
 					{#each icon.strokes as stroke, i}
 						<path
-							in:draw={{ duration, delay: i * (delay / 2) }}
+							in:draw|local={{ duration, delay: i * (delay / 2) }}
 							d={stroke.d}
 							class="stroke {stroke.type}"
 							vector-effect="non-scaling-stroke"
@@ -71,7 +74,7 @@
 					{@const i_offset = icon.strokes.length}
 					{#each icon.fills as fill, i}
 						<path
-							in:fade={{ duration, delay: (i + i_offset) * (delay / 2) }}
+							in:fade|local={{ duration, delay: (i + i_offset) * (delay / 2) }}
 							d={fill.d}
 							class="fill {fill.type}"
 						/>

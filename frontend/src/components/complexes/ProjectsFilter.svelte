@@ -3,7 +3,6 @@
 	import { slide } from 'svelte/transition';
 
 	export let legend: string;
-	export let key: string;
 	export let expand: boolean = false;
 </script>
 

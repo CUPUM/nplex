@@ -4,7 +4,7 @@ export enum SplitTextAttributes {
 	Unit = 'split-text-unit',
 }
 
-interface SplitTextOptions {
+export interface SplitTextOptions {
 	delimiter?: string | RegExp;
 }
 
@@ -20,6 +20,7 @@ function parseNode(n: Node, delimiter: SplitTextOptions['delimiter']) {
 	const nodes: HTMLElement[] = [];
 	[...n.childNodes].forEach((cn) => {
 		if (cn instanceof HTMLElement) {
+			cn.style.cssText += 'transform-style: preserve-3d; display: inline-block;';
 			nodes.push(...parseNode(cn, delimiter));
 		} else if (cn.nodeType === Node.TEXT_NODE) {
 			const newNodes: Node[] = [];

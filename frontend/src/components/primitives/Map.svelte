@@ -67,7 +67,9 @@
 
 	function handleOuterResize() {
 		if (innerStyle) {
-			if (outerResizeDebounce) clearTimeout(outerResizeDebounce);
+			if (outerResizeDebounce) {
+				clearTimeout(outerResizeDebounce);
+			}
 			outerResizeDebounce = setTimeout(() => {
 				if (map && innerRef && outerRef) {
 					map.setPadding({
@@ -77,6 +79,7 @@
 						left: -1 * innerRef.offsetLeft,
 					});
 					clearTimeout(outerResizeDebounce);
+					outerResizeDebounce = null;
 				}
 			}, 50);
 		}
@@ -88,11 +91,8 @@
 		requestAnimationFrame(() => {
 			map?.resize();
 			clearTimeout(innerResizeDebounce);
+			innerResizeDebounce = null;
 		});
-	}
-
-	function updateBoundingBox() {
-		map.getBounds();
 	}
 
 	setContext<MapContext>(Ctx.Map, {
@@ -161,7 +161,7 @@
 	{#if map}
 		<slot {map} />
 		{#if hasOverlaySlot}
-			<!-- TO DO: Move this and all overlay / toolbar display logic to MapToolbar compoennt. Do the same for any other overlay items. -->
+			<!-- TO DO: Move this and all overlay / toolbar display logic to MapToolbar component. Do the same for any other overlay items. -->
 			<div class="overlay">
 				{#if $$slots['top-left']}
 					<div class="top left">

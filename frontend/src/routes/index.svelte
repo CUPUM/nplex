@@ -13,20 +13,17 @@
 </script>
 
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
+	import { reveal } from '$actions/reveal';
+	import { flyup } from '$actions/reveal/presets';
 
 	export let projectsPreview;
 	export let organisationsPreview;
 	export let actorsPreview;
-
-	onMount(async () => {});
-
-	onDestroy(() => {});
 </script>
 
-<article class="core-grid" id="intro">
+<article id="intro">
 	<header id="intro-header">
-		<h1>
+		<h1 use:reveal={{ ...flyup }}>
 			Bienvenue sur Nplex <br />
 			<span class="subheading">
 				la plateforme de valorisation des petits projets exemplaires en aménagement à Montréal
@@ -65,27 +62,28 @@
 <style lang="scss">
 	#intro {
 		padding-bottom: 8rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		padding: 0 2rem;
+		margin-top: calc(var(--navbar-height, 0px) * -1);
 	}
 
 	#intro-header {
-		grid-column: full;
-		display: grid;
-		grid-template-columns: inherit;
+		max-width: 1200px;
+		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
 		justify-content: center;
 		align-items: center;
 		color: var(--color-dark-900);
-		padding-block: var(--navbar-height);
-
-		& h1 {
-			grid-column: main;
-		}
 	}
 
 	.subheading {
-		color: transparent;
-		-webkit-text-stroke: 1px var(--color-dark-900);
+		font-weight: 100;
+		// color: transparent;
+		// -webkit-text-stroke: 1px var(--color-primary-500);
 	}
 
 	#intro-text {

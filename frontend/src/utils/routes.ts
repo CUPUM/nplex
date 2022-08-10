@@ -25,8 +25,8 @@ interface Route {
  */
 export const mainRoutes: Route[] = [
 	{
-		pathname: '/nouvelles',
-		title: 'Nouvelles',
+		pathname: '/a-propos',
+		title: 'À propos',
 	},
 	{
 		pathname: '/guides',

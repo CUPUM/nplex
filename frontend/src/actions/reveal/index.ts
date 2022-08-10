@@ -1,16 +1,31 @@
-import { splitText } from '$utils/splitText';
+import { splitText, type SplitTextOptions } from '$utils/splitText';
+import { camelCaseToKebabCase } from '$utils/strings';
 import { intersection } from '../intersection';
 
 type IntersectionOptions = Parameters<typeof intersection>[1];
 
-export type RevealCssFn = (i: number) => string;
+type RevealCSS = Partial<
+	Pick<
+		CSSStyleDeclaration,
+		| 'opacity'
+		| 'color'
+		| 'backgroundColor'
+		| 'background'
+		| 'clipPath'
+		| 'perspective'
+		| 'perspectiveOrigin'
+		| 'transform'
+	>
+>;
 
-interface RevealOptions extends IntersectionOptions {
-	/**
-	 * Stagger delay in ms, i.e. css transition delay applied cumulatively to units, starting at 0. Set to 0 to disable
-	 * and skip splitText().
-	 */
-	stagger?: number;
+type RevealWrapCSS = Partial<Pick<RevealCSS, 'clipPath' | 'perspective' | 'perspectiveOrigin' | 'transform'>>;
+
+// type RevealCSSTransition = Pick<
+// 	CSSStyleDeclaration,
+// 	'transitionDelay' | 'transitionDuration' | 'transitionProperty' | 'transitionTimingFunction'
+// >;
+
+export interface RevealOptions extends IntersectionOptions {
 	/**
 	 * Use the intersection observer or listen to options state update.
 	 */
@@ -25,30 +40,57 @@ interface RevealOptions extends IntersectionOptions {
 	 */
 	show?: boolean;
 	/**
-	 * Transition duration.
+	 * Node splitter delimiter string or regex.
 	 */
-	duration?: number;
+	splitDelimiter?: SplitTextOptions['delimiter'];
 	/**
 	 * Global transition delay in ms, i.e. constant offset applied to stagger's value.
 	 */
 	delay?: number;
 	/**
-	 * Style applied to unit nodes when not entered.
+	 * Global transition delay in ms, i.e. constant offset applied to stagger's value.
 	 */
-	css?: string | RevealCssFn;
+	delayOut?: RevealOptions['delay'];
 	/**
-	 * Css transition easing.
+	 * Transition duration.
 	 */
-	easing?: string;
-	easingOut?: string;
+	duration?: number | ((index: number) => number);
 	/**
-	 * Should masking nodes clip their content node?
+	 * Transition out duration.
 	 */
-	clip?: string;
+	durationOut?: RevealOptions['duration'];
 	/**
-	 * Clip value for when transition complete, i.e.: when content is shown.
+	 * Stagger delay in ms, i.e. css transition delay applied cumulatively to units, starting at 0. Set to 0 to disable
+	 * and skip splitText().
 	 */
-	clipEnd?: string;
+	stagger?: number | ((index: number) => number);
+	/**
+	 * Stagger delay in ms, i.e. css transition delay applied cumulatively to units, starting at 0. Set to 0 to disable
+	 * and skip splitText().
+	 */
+	staggerOut?: RevealOptions['stagger'];
+	/**
+	 * Css transition easing for content nodes.
+	 */
+	easing?: string | ((index: number) => string);
+	/**
+	 * Css out transition easing for content nodes.
+	 */
+	easingOut?: RevealOptions['easing'];
+	/**
+	 * Styles applied to unit nodes when unentered. Will be animated towards the default (empty) styles.
+	 */
+	start?: RevealCSS | ((index: number) => RevealCSS);
+	wrapDelay?: RevealOptions['delay'];
+	wrapDelayOut?: RevealOptions['delay'];
+	wrapDuration?: RevealOptions['duration'];
+	wrapDurationOut?: RevealOptions['duration'];
+	wrapEasing?: RevealOptions['easing'];
+	wrapEasingOut?: RevealOptions['easing'];
+	wrapStagger?: RevealOptions['stagger'];
+	wrapStaggerOut?: RevealOptions['stagger'];
+	wrapStart?: RevealWrapCSS | ((index: number) => RevealWrapCSS);
+	wrapEnd?: RevealOptions['wrapStart'];
 }
 
 /**
@@ -60,64 +102,75 @@ export function reveal(
 		root,
 		rootMargin,
 		threshold,
-		stagger = 10,
 		useIntersection = true,
 		once = true,
 		show = undefined,
-		duration = 300,
+		splitDelimiter = undefined,
 		delay = 0,
-		css = 'opacity: 0;',
-		easing = 'cubic-bezier(0.5, 0, 0.5, 1)',
+		delayOut = delay,
+		duration = 300,
+		durationOut = duration,
+		stagger = 10,
+		staggerOut = stagger,
+		easing = 'cubic-bezier(0.2, 0, 0.2, 1)',
 		easingOut = easing,
-		clip = undefined,
-		clipEnd = clip,
+		start = { opacity: '0' },
+		wrapDelay = delay,
+		wrapDelayOut = delayOut,
+		wrapDuration = duration,
+		wrapDurationOut = durationOut,
+		wrapEasing = easing,
+		wrapEasingOut = easingOut,
+		wrapStagger = stagger,
+		wrapStaggerOut = staggerOut,
+		wrapStart = undefined,
+		wrapEnd = wrapStart,
 	}: RevealOptions = {}
 ): SvelteActionReturnType {
 	const _style = getComputedStyle(element);
+	element.setAttribute('reveal-host', '');
 	element.style.position = _style.position === 'static' || '' ? 'relative' : _style.position;
-	// element.style.perspective = '200px';
+	element.style.display = _style.position === 'inline' || '' ? 'inline-block' : _style.position;
+	element.style.perspective = _style.perspective === 'none' ? '800px' : _style.perspective;
 
 	let nodes: HTMLElement[];
 	let intersector: ReturnType<typeof intersection>;
-	let styles: string[] = [];
-	let transitions_in: string[] = [];
-	let transitions_out: string[] = [];
 
-	if (stagger) {
-		nodes = splitText(element);
+	// Split and wrap segments only if staggering.
+	if (stagger || staggerOut) {
+		nodes = splitText(element, { delimiter: splitDelimiter });
 	} else {
 		nodes = [element];
 	}
 
 	// Pre-processing the css transition strings for each unitNode.
-	for (let i = 0; i < nodes.length; i++) {
-		const o_style = nodes[i].style.cssText;
-		const composed = composeCSS(i, duration, delay, stagger, easing, easingOut, css);
-		styles.push(composed.style);
-		transitions_in.push(o_style + composed.transition_in);
-		transitions_out.push(o_style + composed.transition_out);
-		// Initializing node styles, without transitions.
-		if (!show) {
-			nodes[i].style.cssText += composed.style;
-			if (clipEnd) {
-				(stagger ? nodes[i].parentElement : nodes[i]).style.clipPath = `inset(${clipEnd})`;
-			}
-		} else {
-			if (clip) (stagger ? nodes[i].parentElement : nodes[i]).style.clipPath = `inset(${clip})`;
-		}
-	}
+	const { transitions, wrapTransitions } = composeStyles(nodes, show, {
+		delay,
+		delayOut,
+		duration,
+		durationOut,
+		stagger,
+		staggerOut,
+		easing,
+		easingOut,
+		start,
+		wrapEasing,
+		wrapEasingOut,
+		wrapDelay,
+		wrapDelayOut,
+		wrapDuration,
+		wrapDurationOut,
+		wrapStagger,
+		wrapStaggerOut,
+		wrapStart,
+		wrapEnd,
+	});
 
 	function handleEnter() {
 		for (let i = 0; i < nodes.length; i++) {
 			requestAnimationFrame(() => {
-				nodes[i].style.cssText = transitions_in[i];
-				if (clipEnd) {
-					if (stagger) {
-						nodes[i].parentElement.style.cssText = transitions_in[i] + `clip-path: inset(${clipEnd})`;
-					} else {
-						nodes[i].style.clipPath = `inset(${clipEnd})`;
-					}
-				}
+				Object.assign(nodes[i].style, transitions[i].in);
+				Object.assign(wrapTransitions[i].node.style, wrapTransitions[i].in);
 			});
 		}
 	}
@@ -125,14 +178,8 @@ export function reveal(
 	function handleLeave() {
 		for (let i = 0; i < nodes.length; i++) {
 			requestAnimationFrame(() => {
-				nodes[i].style.cssText = transitions_out[i] + styles[i];
-				if (clip) {
-					if (stagger) {
-						nodes[i].parentElement.style.cssText = transitions_out[i] + `clip-path: inset(${clip})`;
-					} else {
-						nodes[i].style.clipPath = `inset(${clip})`;
-					}
-				}
+				Object.assign(nodes[i].style, transitions[i].out);
+				Object.assign(wrapTransitions[i].node.style, wrapTransitions[i].out);
 			});
 		}
 	}
@@ -140,7 +187,7 @@ export function reveal(
 	// Initialize intersection observer.
 	if (useIntersection && show === undefined) {
 		intersector = intersection(element, { root, rootMargin, threshold });
-		element.addEventListener('enter', handleEnter);
+		element.addEventListener('enter', handleEnter, { once });
 		if (!once) element.addEventListener('leave', handleLeave);
 	}
 
@@ -163,19 +210,152 @@ export function reveal(
 }
 
 /**
- * Function to pre-compose css strings.
+ * Function to pre-compose css strings for segment nodes.
  */
-function composeCSS(
-	i: number,
-	duration: number,
-	delay: number,
-	stagger: number,
-	easing: string,
-	easingOut: string,
-	css: RevealOptions['css']
+function composeStyles(
+	nodes: HTMLElement[],
+	initialState: boolean,
+	opts: Pick<
+		RevealOptions,
+		| 'delay'
+		| 'delayOut'
+		| 'duration'
+		| 'durationOut'
+		| 'stagger'
+		| 'staggerOut'
+		| 'easing'
+		| 'easingOut'
+		| 'start'
+		| 'wrapEasing'
+		| 'wrapEasingOut'
+		| 'wrapDelay'
+		| 'wrapDelayOut'
+		| 'wrapDuration'
+		| 'wrapDurationOut'
+		| 'wrapStagger'
+		| 'wrapStaggerOut'
+		| 'wrapStart'
+		| 'wrapEnd'
+	>
 ) {
-	const style = typeof css === 'function' ? css(i) : css;
-	const transition_in = `transition: all ${duration}ms ${delay + i * stagger}ms ${easing};`;
-	const transition_out = `transition: all ${duration}ms ${delay + i * stagger}ms ${easingOut};`;
-	return { style, transition_in, transition_out };
+	const transitions: {
+		in: Record<string, string>;
+		out: Record<string, string>;
+	}[] = [];
+	const wrapTransitions: {
+		node: HTMLElement;
+		in: Record<string, string>;
+		out: Record<string, string>;
+	}[] = [];
+
+	const _transitionKeys = Object.keys(typeof opts.start === 'function' ? opts.start(0) : opts.start);
+	const _transitionProperties = _transitionKeys.map((k) => camelCaseToKebabCase(k)).join(',');
+	const _styleReset = _transitionKeys.reduce((reset, k) => ({ ...reset, [k]: 'initial' }), {});
+	const _wrapTransitionKeys = Object.keys(
+		(typeof opts.wrapStart === 'function' ? opts.wrapStart(0) : opts.wrapStart) || {}
+	);
+	const _wrapTransitionProperties = _wrapTransitionKeys.map((k) => camelCaseToKebabCase(k)).join(',');
+	const _wrapStyleReset = _wrapTransitionKeys.reduce((reset, k) => ({ ...reset, [k]: 'initial' }), {});
+
+	for (let i = 0; i < nodes.length; i++) {
+		// Composing and setting style strings for content nodes.
+		const _base = { transformStyle: 'preserve-3d', display: 'inline-block' };
+		const _styleStart = typeof opts.start === 'function' ? opts.start(i) : opts.start;
+		const _in = composeTransition(i, _transitionProperties, {
+			delay: opts.delay,
+			duration: opts.duration,
+			easing: opts.easing,
+			stagger: opts.stagger,
+		});
+		const _out = composeTransition(i, _transitionProperties, {
+			delay: opts.delayOut,
+			duration: opts.durationOut,
+			easing: opts.easingOut,
+			stagger: opts.staggerOut,
+		});
+
+		// Composing clip style strings for wrap nodes if the nodes are result of a split, or for the node itself if not split.
+		const _wrapNode = nodes.length > 1 ? (nodes[i].parentNode as HTMLElement) : nodes[i];
+		let _wrapStyleStart = {};
+		let _wrapStyleEnd = {};
+		let _wrapIn = {};
+		let _wrapOut = {};
+		if (opts.wrapStart || opts.wrapEnd) {
+			_wrapStyleStart = typeof opts.wrapStart === 'function' ? opts.wrapStart(i) : opts.wrapStart;
+			_wrapStyleEnd = typeof opts.wrapEnd === 'function' ? opts.wrapEnd(i) : opts.wrapEnd;
+			_wrapIn = composeTransition(i, _wrapTransitionProperties, {
+				delay: opts.wrapDelay,
+				duration: opts.wrapDuration,
+				easing: opts.wrapEasing,
+				stagger: opts.wrapStagger,
+			});
+			_wrapOut = composeTransition(i, _wrapTransitionProperties, {
+				delay: opts.wrapDelayOut,
+				duration: opts.wrapDurationOut,
+				easing: opts.wrapEasingOut,
+				stagger: opts.wrapStaggerOut,
+			});
+		}
+
+		// Pushing to respective transitions arrays
+		transitions.push({
+			in: { ..._base, ..._styleReset, ..._in },
+			out: { ..._base, ..._styleStart, ..._out },
+		});
+		wrapTransitions.push({
+			node: _wrapNode,
+			in: { ..._base, ..._wrapStyleReset, ..._wrapStyleEnd, ..._wrapIn },
+			out: { ..._base, ..._wrapStyleStart, ..._wrapOut },
+		});
+
+		// Initialize node stylings without transitions
+		if (!initialState) {
+			Object.assign(nodes[i].style, { ..._base, ..._styleStart });
+			if (opts.wrapStart) {
+				Object.assign(_wrapNode.style, { ..._base, ..._wrapStyleStart });
+			}
+		} else {
+			if (opts.wrapEnd) {
+				Object.assign(_wrapNode.style, { ..._base, ..._wrapStyleEnd });
+			}
+		}
+	}
+
+	return { transitions, wrapTransitions };
+}
+
+function composeTransition(
+	index: number,
+	transitionProperties: string,
+	transitionOptions: Pick<RevealOptions, 'delay' | 'duration' | 'easing' | 'stagger'>
+) {
+	return {
+		transitionProperty: transitionProperties,
+		transitionDuration: `${
+			typeof transitionOptions.duration === 'function'
+				? transitionOptions.duration(index)
+				: transitionOptions.duration
+		}ms`,
+		transitionDelay: `${
+			transitionOptions.delay +
+			index *
+				(typeof transitionOptions.stagger === 'function'
+					? transitionOptions.stagger(index)
+					: transitionOptions.stagger)
+		}ms`,
+		transitionTimingFunction:
+			typeof transitionOptions.easing === 'function' ? transitionOptions.easing(index) : transitionOptions.easing,
+	};
+}
+
+/**
+ * Because the CSSStyleDeclaration interface doesnt allow us to create new style declarations using new...(), we must
+ * handle regular objects ourselves and their conversion to a "style.cssText"-alike string.
+ */
+function objectToCSSText(styleObject: Record<string, string>) {
+	return (
+		Object.entries(styleObject)
+			.map(([k, v]) => `${camelCaseToKebabCase(k)}: ${v}`)
+			.join('; ') + '; '
+	);
 }

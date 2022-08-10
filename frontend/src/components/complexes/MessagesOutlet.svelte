@@ -1,8 +1,6 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import { messages, type Message } from '$stores/messages';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
@@ -28,7 +26,18 @@
 				</div>
 			{/if}
 			<div class="content">
-				{@html message.text}
+				{#if typeof message.content === 'string'}
+					{#if message.type === 'error'}
+						<div class="icon">
+							<Icon name="warn" />
+						</div>
+					{/if}
+					<span class="text">
+						{@html message.content}
+					</span>
+				{:else}
+					<svelte:component this={message.content.component} {...message.content.props || {}} />
+				{/if}
 			</div>
 			<Button
 				style="position: absolute; left: calc(100% + .5em);"
@@ -71,12 +80,25 @@
 		padding: var(--inset);
 		border: none;
 		border-radius: var(--default-radius);
-		box-shadow: 0 1.5em 4em -1em rgba(var(--rgb-dark-900), 0.25);
+		box-shadow: 0 1.5em 2.5em -0.75em rgba(var(--rgb-dark-900), 0.25);
 	}
 
 	.content {
 		position: relative;
-		padding: 1.25em 1.5em;
+		padding: 1em;
+	}
+
+	.icon {
+		position: relative;
+		display: inline-flex;
+		margin-right: 0.25em;
+		top: 0.1em;
+	}
+
+	.text {
+		position: relative;
+		top: -0.1em;
+		padding-inline: 0.25em;
 	}
 
 	.progress-container {

@@ -6,32 +6,28 @@
 	import Popover from '$components/primitives/Popover.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
-	import Tooltip from '$components/primitives/Tooltip.svelte';
-	import { loadingCategory } from '$stores/navigation';
 	import { mainScroll } from '$stores/scroll';
 	import { colors } from '$utils/colors';
 	import { logout } from '$utils/database';
-	import { getAuthRedirectUrl } from '$utils/guard';
 	import { gotoCategory } from '$utils/navigation';
+	import { getAuthRedirectUrl } from '$utils/routeGuards';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
 	import { onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import NavbarCreationMenu from './NavbarCreationMenu.svelte';
 
-	export let navbarHeight: number = 0;
+	export let navbarHeight;
 
 	let mounted = false;
 	let hidden;
 	let overlay;
 	let mainPathname: string;
-	let categoryGroup;
-	const yThreshold = 100;
+	let yThreshold = navbarHeight || 50;
 
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
 	$: overlay = $mainScroll.y > yThreshold + 100;
 	$: mainPathname = $page.stuff.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
-	$: categoryGroup = $page.stuff.category;
 
 	onMount(() => {
 		mounted = true;
@@ -60,14 +56,12 @@
 				in:fly={{ y: 20, duration: 500, easing: expoOut, delay: 150 }}
 				out:fly={{ y: 20, duration: 500, easing: expoOut, delay: 0 }}
 			>
-				<Switch name="category" variant="navbar">
+				<Switch name="category" variant="navbar" value={$page.stuff.category}>
 					{#each exploreRoutes as r, i}
 						<SwitchItem
 							id={r.category}
 							value={r.category}
-							bind:group={categoryGroup}
 							on:click={() => gotoCategory(r)}
-							loading={$loadingCategory === r.category}
 							disabled={r.category === $page.stuff.category && !$page.stuff.categoryIsResetable}
 						>
 							{r.title}
@@ -81,9 +75,7 @@
 			in:fly={{ y: 20, opacity: 0, duration: 500, easing: expoOut, delay: 300 }}
 			out:fly={{ y: 20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
-			<Tooltip message="Accueil" placement="bottom">
-				<Button href="/" variant="navbar" square={true} icon="home" />
-			</Tooltip>
+			<Button href="/" variant="navbar" square={true} icon="home" disabled={$page.url.pathname === '/'} />
 			{#if $session.user}
 				<Popover placement="bottom" align="end" useHover={true}>
 					<Button slot="control" variant="navbar" href={creationBaseRoute.pathname} icon="pen" />
@@ -95,7 +87,12 @@
 					<Button on:click={logout}>Se déconnecter</Button>
 				</Popover>
 			{:else}
-				<Button variant="cta" href={getAuthRedirectUrl($page.url).toString()} icon="user">Se connecter</Button>
+				<Button
+					variant="cta"
+					href={getAuthRedirectUrl($page.url).toString()}
+					icon="user"
+					iconPosition="trailing"
+				/>
 			{/if}
 		</nav>
 	{/if}
@@ -103,7 +100,8 @@
 
 <style lang="scss">
 	header {
-		position: fixed;
+		position: sticky;
+		top: 0;
 		display: grid;
 		grid-template-columns:
 			[full-start gutter-left-start]
@@ -120,7 +118,7 @@
 		width: 100vw;
 		align-items: center;
 		padding: 1rem;
-		padding-block: 0.75rem;
+		padding-block: 0.5rem;
 		margin: 0;
 		gap: 0;
 		font-size: var(--size-small);
@@ -135,7 +133,7 @@
 			height: 100%;
 			padding: 0;
 			margin: 0;
-			opacity: 0;
+			opacity: 0.5;
 			top: 0;
 			left: 0;
 			background-color: var(--bg-color);
@@ -151,6 +149,7 @@
 	}
 
 	.hidden {
+		box-shadow: 0 0px 0 0 transparent;
 		transform: translateY(-100%);
 		pointer-events: none;
 	}
@@ -164,8 +163,7 @@
 		padding-inline: 1em;
 	}
 
-	nav,
-	.user > div {
+	nav {
 		display: flex;
 		flex: 0;
 		flex-direction: row;

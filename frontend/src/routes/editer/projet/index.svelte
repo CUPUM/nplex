@@ -1,92 +1,73 @@
 <script lang="ts" context="module">
+	import type { Load } from './__types';
+
+	export const load: Load = async ({ fetch }) => {
+		const descriptors = await (await fetch('/api/projects/descriptors.json', { method: 'GET' })).json();
+
+		return {
+			props: {
+				descriptors,
+			},
+		};
+	};
 </script>
 
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import EditorProjectsList from '$components/complexes/EditorProjectsList.svelte';
-	import { messages } from '$stores/messages';
-	import type { definitions } from '$types/database';
-	import { db } from '$utils/database';
+	import { LocalStorage } from '$utils/keys';
+	import { persistWritable } from '$utils/persistStore';
 
-	let titleInput: HTMLInputElement;
-	let newProjectName: string = '';
+	export let descriptors: DatabaseRpc.ProjectDescriptors;
+	const newProject = persistWritable(LocalStorage.NewProject, {
+		title: undefined,
+		type: undefined,
+	});
 
-	async function createProject(e: SubmitEvent) {
-		const data = new FormData(e.target as HTMLFormElement);
-		try {
-			const { body, error } = await db.from<definitions['projects']>('projects').insert({
-				title: data.get('project-title').toString(),
-				// type: data.get('type'),
-			});
-			if (error) throw error;
-			await goto('/editer/' + body['id']);
-		} catch (err) {
-			messages.dispatch({
-				text: `Il y a eu une erreur lors de la création de la nouvelle fiche. (${err.message})`,
-				type: 'error',
-			});
-		}
+	async function createProject() {
+		const res = await fetch('/api/projects/new.json', {
+			method: 'POST',
+			body: JSON.stringify($newProject as any),
+		});
 	}
-
-	const projectTypes = ['Nouvelle construction', 'Transformation'];
 </script>
 
-<section class="pad">
-	<h2 class="col">Créer une nouvelle fiche de projet</h2>
+<div class="core-grid">
 	<form on:submit|preventDefault={createProject}>
+		<h2 class="col">Créez une nouvelle fiche de projet</h2>
 		<label>
 			<span>Titre du projet: </span>
-			<input bind:this={titleInput} name="project-title" type="text" required />
+			<input bind:value={$newProject.title} name="project-title" type="text" required />
 		</label>
 		<fieldset>
 			<legend>Type de projet: </legend>
-			<ul>
-				{#each projectTypes as t}
-					<li>
-						<label>
-							<span>{t}</span>
-							<input type="radio" name="project-type" value={t} id="project-type-{t}" required />
-						</label>
-					</li>
-				{/each}
-			</ul>
+			{#each descriptors.types as t}
+				<label>
+					{t.title}
+					<input type="radio" bind:group={$newProject.type} name="type" value={t.id} required />
+				</label>
+			{/each}
 		</fieldset>
 		<button type="submit">Créer la fiche</button>
 	</form>
-</section>
-<hr />
-<EditorProjectsList />
+	<hr />
+	<section>
+		<EditorProjectsList />
+	</section>
+</div>
 
 <style lang="scss">
-	.pad {
-		padding-inline: 2rem;
-	}
-
 	form {
+		grid-column: main;
 		display: flex;
 		flex-direction: column;
-		justify-content: flex-start;
-		align-items: flex-start;
 		gap: 2rem;
 	}
 
-	fieldset {
-		appearance: none;
-		display: inline-flex;
-		flex-direction: column;
-		gap: 1rem;
-		padding: 1rem;
-		border: none;
-		background-color: var(--color-light-300);
-		border-radius: 1.5rem;
-		margin: 0;
+	hr {
+		grid-column: full;
 	}
 
-	legend {
-		float: left;
-		position: relative;
-		border: none;
-		padding: 0;
-		margin: 0;
+	section {
+		grid-column: full;
 	}
 </style>

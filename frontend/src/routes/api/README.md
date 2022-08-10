@@ -1,7 +1,16 @@
-## Sveltekit API endpoints
+## API
 
-The API endpoints provided here should govern all requests to Supabase to allow for user-specific (and sometimes user-agnostic) SSR and general database request handling.
+### App endpoints & database (Supabase) queries
 
-Since certain endpoints' request handling depend on database user credentials for role-checking or access to RLS-governed data, we need to make sure our hooks set and uppdate the proper cookies on the client's side. These updates should be in part triggered through endpoints in [`./auth`](auth).
+Database queries in Nplex are twofaced, whereas they can interface with supabase either from:
 
-For the time being, Sveltekit doesn't automatically type endpoint responses. To simplify overcoming this caveat, we here work by defining a typed fetch helper for each endpoint. Fetch wrappers should be exported as default to enforce having a single one per endpoint.
+-   The SvelteKit server, e.g. when a client hits an app endpoint, during SSR (user-specific if request's auth cookies are set), etc.
+-   Straight from the client (browser), when doing client-side fetches to get up-to-date, such as when actively searching or filtering projects.
+
+By default, the first approach (endpoint handling) should be favored. When more data dynamism is required past page loads, we will opt for the second approach to avoid uselessly flooding the app's server with query forwarding through endpoints (i.e. repetitively fetching app endpoints that then themselves fetch the database).
+
+Critically, this raises a challenge where we need to ensure data and behavior consistency across both approaches to avoid asymetric results.
+To answer this concern, we define endpoints atomically, into reusable helpers:
+
+-   The main and obligatory part of an endpoint is its verbed export function, used by SvelteKit to resolve fetches.
+-   When client side access to the same query is required, we should extract a function form the endpoint's verbed export to provide a typed fetch wrapper that itself directly calls the database.

@@ -3,12 +3,9 @@
 
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
-	import { projectsParamsLists } from '$stores/projects';
 
 	let newProjectTitle: string = '';
 	let newProjectType: string = '';
-
-	$projectsParamsLists.then((lists) => console.log(lists));
 
 	function createProject() {
 		// Do submission here

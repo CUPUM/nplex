@@ -47,27 +47,19 @@ export enum KeyCode {
 export enum SearchParam {
 	ProjectsCostFork = 'cout-projet',
 	ProjectsType = 'type-projet',
-	/**
-	 * Params indicating if the auth modal should be open or not.
-	 */
 	AuthModal = 'auth',
 }
-
-export enum ProjectFilterParam {}
 
 /**
  * Global enum of local storage keys. Use wherever local storage is used to ensure no naming collision emerges.
  */
 export enum LocalStorage {
-	/**
-	 * Holds an array of project objects.
-	 */
+	FirstVisit = 'first-visit',
+	NewProject = 'new-project',
 	Projects = 'projects',
-	/**
-	 * Stringified query params corresponding to the filters used for the saved projects array. Properties' key and
-	 * value within this object are translated in the client's URL and should thus abide to the above SearchParams enum.
-	 */
 	ProjectsFilters = 'projects-filters',
+	ProjectsFiltersExplorePane = 'projects-filters-explore-pane',
+	ProjectDescriptors = 'project-descriptors',
 }
 
 /**

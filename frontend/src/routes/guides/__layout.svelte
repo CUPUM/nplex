@@ -2,33 +2,23 @@
 </script>
 
 <script lang="ts">
-	import Field from '$components/primitives/Field.svelte';
+	import GuidesAside from '$components/complexes/GuidesAside.svelte';
 </script>
 
-<div class="layout">
-	<aside>
-		<Field type="search" placeholder="Rechercher un article" />
-		<h4>Articles</h4>
-		<ul>
-			<li>Article 1</li>
-			<li>Article 2</li>
-			<li>Article 3</li>
-			<li>Article 4</li>
-		</ul>
-	</aside>
-	<article>
+<div class="guides">
+	<GuidesAside />
+	<article class="core-grid">
 		<slot />
 	</article>
 </div>
 
 <style lang="scss">
-	.layout {
+	.guides {
 		display: flex;
-		padding-top: var(--navbar-height);
+		flex-direction: row;
 	}
 
-	aside {
-		display: flex;
-		flex-direction: column;
+	article {
+		flex: 1;
 	}
 </style>

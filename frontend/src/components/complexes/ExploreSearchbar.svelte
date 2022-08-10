@@ -4,7 +4,7 @@
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
 	import Token from '$components/primitives/Token.svelte';
-	import { showProjectsFilters } from '$stores/projects';
+	import { projectsShowFiltersPane } from '$stores/projectsShowFiltersPane';
 	import { exploreSearchterm } from '$stores/search';
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
 	import { slip } from '$transitions/slip';
@@ -26,7 +26,7 @@
 	function toggleFilters() {
 		switch ($page.stuff.category) {
 			case 'projects':
-				showProjectsFilters.toggle();
+				projectsShowFiltersPane.toggle();
 				break;
 			case 'organisations':
 				break;
@@ -35,7 +35,7 @@
 		}
 	}
 
-	$: showCurrentFilters = $page.stuff.category === 'projects' ? $showProjectsFilters : false;
+	$: showCurrentFilters = $page.stuff.category === 'projects' ? $projectsShowFiltersPane : false;
 
 	function handleTokenScroll(e: Event) {
 		const el = e.target as HTMLElement;

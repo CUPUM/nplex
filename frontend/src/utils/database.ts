@@ -1,5 +1,7 @@
+import { browser } from '$app/env';
 import { session } from '$app/stores';
 import { authModal } from '$stores/auth';
+import { messages } from '$stores/messages';
 import type { definitions } from '$types/database';
 import { createClient, type AuthChangeEvent, type Session, type UserCredentials } from '@supabase/supabase-js';
 import type { SetCookieDetails } from './cookies';
@@ -21,6 +23,7 @@ export function createDisposableDbClient(accessToken?: string) {
 			cookieOptions: {
 				lifetime: COOKIE_LIFETIME,
 			},
+			// fetch: // Custom fetch function, if needed
 		}
 	);
 	if (accessToken) {
@@ -43,6 +46,13 @@ export const browserDbClient = createClient(
 		},
 	}
 );
+
+/**
+ * Helper to get the proper Supabase client instance depending on the detected context of execution.
+ */
+export function getContextualDbClient(accessToken?: string) {
+	return browser ? browserDbClient : createDisposableDbClient(accessToken);
+}
 
 /**
  * Handler function to manage client-side auth state changes detected on the client side and update both local session
@@ -109,9 +119,14 @@ type LoginDetails = Pick<UserCredentials, 'email' | 'password'> | Pick<UserCrede
  */
 export async function login(details: LoginDetails) {
 	try {
-		const { user, error } = await browserDbClient.auth.signIn(details);
+		const { user, error } = await browserDbClient.auth.signIn(details, { shouldCreateUser: false });
 		if (error) throw error;
-	} catch (error) {}
+	} catch (error) {
+		messages.dispatch({
+			type: 'error',
+			content: error.message,
+		});
+	}
 }
 
 /**
@@ -154,13 +169,14 @@ export async function getExtendedUser(
  * Set of clear auth cookies with set-cookie headers detail to be sent back to clients logging out or attempting to
  * refresh invalid tokens.
  */
-export const clearTokens: SetCookieDetails = [
+export const clearTokens: SetCookieDetails[] = [
 	Cookie.DbAccessToken,
 	Cookie.DbRefreshToken,
 	Cookie.DbProviderToken,
 	Cookie.DbAccessTokenExpiry,
-].reduce((acc, tokenName) => {
-	acc[tokenName] = {
+].map((tokenName) => {
+	return {
+		name: tokenName,
 		value: '',
 		options: {
 			maxAge: -1,
@@ -169,5 +185,4 @@ export const clearTokens: SetCookieDetails = [
 			sameSite: true,
 		},
 	};
-	return acc;
-}, {});
+});

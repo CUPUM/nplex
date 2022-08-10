@@ -1,21 +1,7 @@
 import { browser } from '$app/env';
-import type { definitions } from '$types/database';
-import { db } from '$utils/database';
 import type { Project } from '$utils/dummy';
 import { LocalStorage, SearchParam } from '$utils/keys';
-import { readable, writable } from 'svelte/store';
-
-/**
- * Global state of the projects' fitlers drawer.
- */
-export const showProjectsFilters = (function () {
-	const { subscribe, set, update } = writable<boolean>(false);
-	return {
-		subscribe,
-		set,
-		toggle: () => update((v) => !v),
-	};
-})();
+import { writable } from 'svelte/store';
 
 /**
  * Global state of the projects' map pane.
@@ -121,25 +107,3 @@ export const projectsFilters = (function () {
  * Store of saved / cached latest single project edits.
  */
 // export const projectsEdits = ...
-
-/**
- * App-wide store of project params lists.
- */
-async function getProjectsParamsLists() {
-	const lists = {
-		type: (await db.from<definitions['project_type_list']>('project_type_list').select('*')).data,
-		siteOwnership: (
-			await db.from<definitions['project_site_ownership_list']>('project_site_ownership_list').select('*')
-		).data,
-	};
-	await Promise.all(Object.values(lists));
-	return lists;
-}
-export const projectsParamsLists = readable(getProjectsParamsLists(), function start(set) {
-	// on navigation or whatever, trigger value update with something like:
-	// getProjectsParamsLists().then(lists => set(lists)).catch();
-
-	function stop() {}
-
-	return stop;
-});

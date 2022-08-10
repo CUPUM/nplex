@@ -16,7 +16,6 @@
 	import { expoInOut } from 'svelte/easing';
 	import type { ComponentProps } from 'svelte/internal';
 	import { writable, type Writable } from 'svelte/store';
-	import { slide } from 'svelte/transition';
 	import Icon from './Icon.svelte';
 
 	export let name: string = undefined;
@@ -42,11 +41,11 @@
 	/**
 	 * Regex validator to be used on submit & during user input
 	 */
-	export let validator: RegExp = undefined;
+	// export let validator: RegExp = undefined;
 	/**
 	 * Auto formatting template for the user input.
 	 */
-	export let format = undefined;
+	// export let format = undefined;
 	/**
 	 * Placeholder text and field icon.
 	 */
@@ -120,11 +119,11 @@
 			<div
 				class="icon"
 				on:click={() => inputRef.focus()}
-				transition:slip={{ width: true, opacity: 0, duration: 400, easing: expoInOut }}
+				transition:slip|local={{ width: true, opacity: 0, duration: 400, easing: expoInOut }}
 			>
 				<Icon name={icon} size="1.25em" />
 				{#if showIcon === 'always'}
-					<hr transition:slide={{}} />
+					<hr />
 				{/if}
 			</div>
 		{/if}
@@ -152,7 +151,7 @@
 			{readonly}
 		/>
 		{#if value}
-			<div class="has-value" transition:slip={{ width: true, opacity: 0, overflow: 'hidden' }}>
+			<div class="has-value" transition:slip|local={{ width: true, opacity: 0, overflow: 'hidden' }}>
 				<slot name="has-value" {value} />
 			</div>
 		{/if}
@@ -258,7 +257,7 @@
 
 		&[type='password'],
 		&[is-password='true'] {
-			font-size: 0.95em;
+			font-size: 0.92em;
 			font-weight: 400;
 			font-family: var(--font-misc);
 		}
