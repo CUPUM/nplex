@@ -29,9 +29,6 @@ declare namespace App {
 		 * Storing the client session's previous navigation for various usages and redirect cases.
 		 */
 		previousUrl?: string;
-	}
-
-	interface Stuff {
 		/**
 		 * Category currently being explored.
 		 */

@@ -27,7 +27,7 @@
 
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
 	$: overlay = $mainScroll.y > yThreshold + 50;
-	$: mainPathname = $page.stuff.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
+	$: mainPathname = $page.data.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
 
 	onMount(() => {
 		mounted = true;
@@ -51,15 +51,15 @@
 			{/each}
 		</nav>
 		<nav class="second">
-			{#if $page.stuff.showCategoryNav}
+			{#if $page.data.showCategoryNav}
 				<div>
-					<Switch name="category" variant="navbar" value={$page.stuff.category}>
+					<Switch name="category" variant="navbar" value={$page.data.category}>
 						{#each exploreRoutes as r, i}
 							<SwitchItem
 								id={r.category}
 								value={r.category}
 								on:click={() => gotoCategory(r)}
-								disabled={r.category === $page.stuff.category && !$page.stuff.categoryIsResetable}
+								disabled={r.category === $page.data.category && !$page.data.categoryIsResetable}
 							>
 								{r.title}
 							</SwitchItem>

@@ -1,22 +1,25 @@
+// @ts-ignore
 import { sveltekit } from '@sveltejs/kit/vite';
+import type { UserConfig } from 'vite';
 import generateCssVarsPlugin from './plugins/generateCssVars';
 import generateIconsPlugin from './plugins/generateIcons';
 
-/**
- * @type {import('vite').UserConfig}
- */
-const config = {
+const config: UserConfig = {
 	server: {
 		/**
 		 * Look for env-defined port (most-likely Heroku's auto-attributed port), else use default.
 		 */
-		port: process.env.PORT || 3000,
+		port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
 	},
 	plugins: [generateIconsPlugin(), generateCssVarsPlugin(), sveltekit()],
 	/**
 	 * Prefix required for ENV vars to be exposed (https://vitejs.dev/config/#envdir).
 	 */
 	envPrefix: 'PUBLIC',
+	/**
+	 * Getting env vars from the monorepo root.
+	 */
+	envDir: '..',
 };
 
 export default config;

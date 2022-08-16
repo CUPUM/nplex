@@ -37,6 +37,5 @@ export const backgroundColor = (function () {
 		subscribe,
 		reset: (duration?: number) => setBackgroundColor(defaultBackgroundColor, duration),
 		set: (color: string, duration?: number) => setBackgroundColor(color, duration),
-		init: () => setBackgroundColor(defaultBackgroundColor),
 	};
 })();

@@ -6,7 +6,6 @@
 	import { page } from '$app/stores';
 	import ExploreSearchbar from '$components/complexes/ExploreSearchbar.svelte';
 	import { backgroundColor } from '$stores/backgroundColor';
-	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 	import { onDestroy, onMount } from 'svelte';
 
 	let searchbarHeight;
@@ -18,7 +17,7 @@
 </script>
 
 <div id="explore" style:--searchbar-height="{searchbarHeight || 0}px">
-	{#if $page.stuff.showExploreSearchbar}
+	{#if $page.data.showExploreSearchbar}
 		<div id="searchbar-container" bind:offsetHeight={searchbarHeight}>
 			<ExploreSearchbar />
 		</div>

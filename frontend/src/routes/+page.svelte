@@ -1,12 +1,9 @@
 <script lang="ts">
-	throw new Error("@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)");
-
 	import { flyRotate } from '$actions/reveal/presets';
 	import { reveal } from '$actions/reveal/reveal';
+	import type { PageData } from './$types';
 
-	export let projectsPreview;
-	export let organisationsPreview;
-	export let actorsPreview;
+	export let data: PageData;
 </script>
 
 <article id="intro">

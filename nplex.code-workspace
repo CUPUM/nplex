@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "frontend"
+		},
+		{
+			"path": "backend"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.svx": "markdown"
+		},
+		"svelte.plugin.css.globals": "src/styles/*.css,src/styles/*.scss"
+	}
+}

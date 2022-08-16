@@ -20,7 +20,7 @@
 	"license": "MIT",
 	"packageManager": "pnpm@6.25.0",
 	"scripts": {
-		"get-db-types": ". ./.env && npx openapi-typescript \"${PUBLIC_SUPABASE_URL}/rest/v1/?apikey=${PUBLIC_SUPABASE_ANON_KEY}\" --version=2 --output src/types/database.ts",
+		"gen-db-types": ". ../.env && cd ${workspaceFolder:backend} && supabase gen types typescript --db-url '${SUPABASE_DB_URL}'",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -31,9 +31,9 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "1.0.0-next.86",
-		"@sveltejs/kit": "1.0.0-next.408",
+		"@sveltejs/kit": "1.0.0-next.411",
 		"@types/cookie": "^0.5.1",
-		"@types/node": "^18.7.5",
+		"@types/node": "^18.7.6",
 		"@types/set-cookie-parser": "^2.4.2",
 		"@typescript-eslint/eslint-plugin": "^5.33.1",
 		"@typescript-eslint/parser": "^5.33.1",
@@ -42,7 +42,7 @@
 		"color-convert": "^2.0.1",
 		"cssnano": "^5.1.13",
 		"element-to-path": "^1.2.1",
-		"esbuild": "^0.15.3",
+		"esbuild": "^0.15.4",
 		"eslint": "^8.22.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
@@ -63,10 +63,10 @@
 		"svgson": "^5.2.1",
 		"tslib": "^2.4.0",
 		"typescript": "^4.7.4",
-		"vite": "^3.0.7"
+		"vite": "^3.0.8"
 	},
 	"dependencies": {
-		"@supabase/supabase-js": "^1.35.6",
+		"@supabase/supabase-js": "2.0.0-rc.1",
 		"@turf/bbox": "^6.5.0",
 		"@turf/circle": "^6.5.0",
 		"@turf/helpers": "^6.5.0",
