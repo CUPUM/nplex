@@ -1,5 +1,6 @@
-import { createDisposableDbClient, getExtendedUser } from '$utils/database';
-import { Cookie } from '$utils/keys';
+import { getAppUser } from '$utils/database/auth';
+import { createDisposableDbClient } from '$utils/database/database';
+import { Cookie } from '$utils/values/keys';
 import type { GetSession, Handle } from '@sveltejs/kit';
 import cookie from 'cookie';
 
@@ -36,7 +37,7 @@ export const getSession: GetSession = async ({ request, locals, url }) => {
 			const db = createDisposableDbClient();
 			const { user, error: userError } = await db.auth.api.getUser(locals[Cookie.DbAccessToken]);
 			if (userError) throw userError;
-			appUser = await getExtendedUser({ access_token: locals[Cookie.DbAccessToken], user });
+			appUser = await getAppUser({ access_token: locals[Cookie.DbAccessToken], user });
 		}
 	} catch (err) {}
 

@@ -3,8 +3,8 @@
 	Use this component to add loading spinner overlay to any element/container.
  -->
 <script lang="ts">
-	import { colors } from '$utils/colors';
 	import { cssSize, type SizeInput } from '$utils/css';
+	import { colors } from '$utils/values/colors';
 	import { circInOut, elasticOut, expoInOut } from 'svelte/easing';
 	import { scale, slide } from 'svelte/transition';
 

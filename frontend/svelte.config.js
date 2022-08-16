@@ -8,6 +8,11 @@ import preprocess from 'svelte-preprocess';
 const config = {
 	extensions: ['.svelte', '.svx'],
 	preprocess: [
+		preprocess({
+			scss: {
+				prependData: `@use './src/styles/mixins.scss';`,
+			},
+		}),
 		mdsvex({
 			extensions: ['.md', '.svx', '.mdx'],
 		}),

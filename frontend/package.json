@@ -31,19 +31,19 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "1.0.0-next.86",
-		"@sveltejs/kit": "1.0.0-next.405",
+		"@sveltejs/kit": "1.0.0-next.408",
 		"@types/cookie": "^0.5.1",
-		"@types/node": "^18.6.5",
+		"@types/node": "^18.7.5",
 		"@types/set-cookie-parser": "^2.4.2",
-		"@typescript-eslint/eslint-plugin": "^5.33.0",
-		"@typescript-eslint/parser": "^5.33.0",
+		"@typescript-eslint/eslint-plugin": "^5.33.1",
+		"@typescript-eslint/parser": "^5.33.1",
 		"autoprefixer": "^10.4.8",
 		"browserslist": "^4.21.3",
 		"color-convert": "^2.0.1",
-		"cssnano": "^5.1.12",
+		"cssnano": "^5.1.13",
 		"element-to-path": "^1.2.1",
-		"esbuild": "^0.14.54",
-		"eslint": "^8.21.0",
+		"esbuild": "^0.15.3",
+		"eslint": "^8.22.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"mdsvex": "^0.10.6",
@@ -56,14 +56,14 @@
 		"prettier": "^2.7.1",
 		"prettier-plugin-jsdoc": "^0.3.38",
 		"prettier-plugin-svelte": "^2.7.0",
-		"sass": "^1.54.3",
+		"sass": "^1.54.4",
 		"svelte": "^3.49.0",
 		"svelte-check": "^2.8.0",
 		"svelte-preprocess": "^4.10.7",
 		"svgson": "^5.2.1",
 		"tslib": "^2.4.0",
 		"typescript": "^4.7.4",
-		"vite": "^3.0.5"
+		"vite": "^3.0.7"
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^1.35.6",
@@ -74,7 +74,7 @@
 		"@types/geojson": "^7946.0.10",
 		"combine-promises": "^1.1.0",
 		"cookie": "^0.5.0",
-		"maplibre-gl": "^2.1.9",
+		"maplibre-gl": "^2.3.0",
 		"set-cookie-parser": "^2.5.1"
 	}
 }

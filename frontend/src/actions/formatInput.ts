@@ -1,13 +1,22 @@
 interface FormatInputOptions {
 	pattern?: RegExp;
-	delimiters?: string | string[];
 }
 
-export function formatInput(element: HTMLInputElement, options: FormatInputOptions) {}
+export function formatInput(element: HTMLInputElement, options: FormatInputOptions) {
+	const patternAttribute = element.getAttribute('pattern');
+	if (!options.pattern && patternAttribute) options.pattern = RegExp(patternAttribute);
 
-/* Presets */
+	function format(event: InputEvent) {
+		const value = (event.target as HTMLInputElement).value;
 
-export const emailFormatOptions = {
-	pattern: '',
-	delimiters: '',
-};
+		return;
+	}
+
+	element.addEventListener('input', format);
+	element.addEventListener('input', format);
+
+	return {
+		update() {},
+		destroy() {},
+	};
+}

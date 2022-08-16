@@ -13,7 +13,7 @@ declare namespace svelte.JSX {
 }
 
 declare namespace App {
-	interface Locals extends Partial<Record<import('$utils/keys').Cookie, string>> {}
+	interface Locals extends Partial<Record<import('$utils/values/keys').Cookie, string>> {}
 	/**
 	 * _Customization notes:_ Extending the session type to include User typing provided by Supabase's library.
 	 */

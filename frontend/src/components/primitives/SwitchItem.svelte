@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/values/keys';
 	import { getContext } from 'svelte';
 	import type { SwitchContext } from './Switch.svelte';
 
@@ -130,7 +130,7 @@
 
 	/* Nav theme */
 	.navbar {
-		font-weight: 600;
+		font-weight: 500;
 		background-color: transparent;
 		color: var(--color-dark-900);
 		opacity: 1;

@@ -4,7 +4,7 @@
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
 
-	import { creationRoutes } from '$utils/routes';
+	import { creationRoutes } from '$utils/routing/routes';
 </script>
 
 <div class="creation-cards">

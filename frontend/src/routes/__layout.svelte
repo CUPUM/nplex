@@ -8,9 +8,8 @@
 	import { authModal } from '$stores/auth';
 	import { backgroundColor } from '$stores/backgroundColor';
 	import '$styles/app.scss';
-	import '$styles/helpers.scss';
 	import '$styles/vars.css';
-	import { sizes } from '$utils/sizes';
+	import { sizes } from '$utils/values/sizes';
 	import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 
@@ -25,8 +24,9 @@
 
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
-	import { browserDbClient, handleAuthStateChange } from '$utils/database';
-	import { SearchParam } from '$utils/keys';
+	import { handleAuthStateChange } from '$utils/database/auth';
+	import { browserDbClient } from '$utils/database/database';
+	import { SearchParam } from '$utils/values/keys';
 
 	let loading = true;
 	let navbarHeight: number = 0;
@@ -78,7 +78,7 @@
 	}
 
 	.loading {
-		opacity: 0.5;
-		transform: translateY(20px);
+		opacity: 0;
+		// transform: translateY(20px);
 	}
 </style>

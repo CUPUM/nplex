@@ -1,5 +1,5 @@
 <!-- <script lang="ts" context="module">
-	export const load: Load = async ({ session, stuff, fetch }) => {
+	eflyRotate const load: Load = async ({ session, stuff, fetch }) => {
 		const res = await fetch('/api/projects/params-lists.json', {
 			method: 'GET',
 		});
@@ -9,8 +9,8 @@
 	};
 </script> -->
 <script lang="ts">
-	import { reveal } from '$actions/reveal';
 	import { flyup } from '$actions/reveal/presets';
+	import { reveal } from '$actions/reveal/reveal';
 
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
@@ -26,9 +26,11 @@
 	import TestRadioSet from '$components/primitives/TestRadioSet.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { messages } from '$stores/messages';
+	import type { definitions } from '$types/database';
+	import { getContextualDbClient } from '$utils/database/database';
 	import { icons } from '$utils/icons/icons';
-	import { KeyCode } from '$utils/keys';
-	import { sizes } from '$utils/sizes';
+	import { KeyCode } from '$utils/values/keys';
+	import { sizes } from '$utils/values/sizes';
 	import type { ComponentProps } from 'svelte/internal';
 
 	let alt = false;
@@ -67,19 +69,24 @@
 		}
 	}
 
-	async function testFetch() {
-		const res = await fetch('/api/projects/params-lists.json', {
-			method: 'GET',
-		});
-		console.log(res.body);
-		console.log(await res.json());
+	async function query() {
+		try {
+			const db = getContextualDbClient();
+			const { data, error } = await db
+				.from<definitions['project_site_usages_categories']>('project_site_usages_categories')
+				.select('*, usages:project_site_usages (*)');
+			if (error) throw error;
+			console.log(data);
+		} catch (error) {
+			console.error(error);
+		}
 	}
 </script>
 
 <article class="core-grid">
 	<section>
 		<h2>Go fetch, boi!</h2>
-		<button on:click={testFetch}>Fetch</button>
+		<button on:click={query}>Fetch</button>
 	</section>
 	<section>
 		<h2>Map</h2>
@@ -138,7 +145,7 @@
 			Alias delectus corrupti rerum eius dolores dignissimos, commodi nam, totam error adipisci optio,
 			exercitationem debitis enim magni asperiores? Itaque, rem nisi nesciunt a officia sed exercitationem nulla
 			voluptatibus, dolore atque quibusdam tempore? Excepturi nam tempora, quos quasi doloribus adipisci explicabo
-			id reiciendis consequatur aliquam. Sit corrupti velit, dolorum ipsa laboriosam suscipit magni eaque
+			id reiciendiflyRotatesequatur aliquam. Sit corrupti velit, dolorum ipsa laboriosam suscipit magni eaque
 			accusantium unde itaque maxime ipsum perspiciatis quia non odit, nihil voluptates eveniet excepturi ad?
 		</p>
 		<h4>Heading 4</h4>

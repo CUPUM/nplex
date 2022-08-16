@@ -2,20 +2,37 @@
 </script>
 
 <script lang="ts">
-	import GuidesAside from '$components/complexes/GuidesAside.svelte';
 </script>
 
-<div class="guides">
-	<GuidesAside />
-	<article class="core-grid">
+<div>
+	<aside>
+		<ul>
+			<li>
+				<a href="">Article</a>
+			</li>
+		</ul>
+	</aside>
+	<article>
 		<slot />
 	</article>
 </div>
 
 <style lang="scss">
-	.guides {
+	div {
 		display: flex;
 		flex-direction: row;
+		width: 100%;
+		min-height: 100vh;
+		margin: 0;
+		margin-top: calc(-1 * var(--navbar-height));
+	}
+
+	aside {
+		height: 100%;
+		position: sticky;
+		top: 0;
+		padding-top: var(--navbar-height);
+		margin: 0;
 	}
 
 	article {

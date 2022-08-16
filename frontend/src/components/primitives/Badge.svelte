@@ -3,8 +3,8 @@
     Useful to add warnings or notifications to buttons and tokens.
 -->
 <script lang="ts">
-	import { colors } from '$utils/colors';
 	import { cssSize, type SizeInput } from '$utils/css';
+	import { colors } from '$utils/values/colors';
 	import { elasticOut, expoIn } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 

@@ -1,4 +1,27 @@
+@use './mixins.scss';
+
 :root {
+	/*
+	Font variables
+	*/
+	--font-main: 'Outfit', sans-serif;
+	--font-misc: 'Spline Sans Mono', monospace;
+	--font-misc-ratio: 0.925;
+	/* 
+	Global style helpers for consistent appearence across components
+	*/
+	--default-inset: 3px; // Default inset for nested elements
+	--default-size: 3.25em; // Size/height height for interactive elements
+	--default-radius: 1em; // Border radius for buttons and other interactive elements
+	/*
+	Scrollbar customization
+	*/
+	--scroll-size: 4px;
+	--scroll-color: rgba(var(--rgb-dark-500), 0.25);
+	/*
+	Additionnal global CSS custom properties derived from TypeScript constants,
+	such as colors and sizes, are generated at build time and located in ./vars.css
+	*/
 	--bg-color: var(--color-light-100);
 	width: 100vw;
 	height: 100%;
@@ -13,19 +36,10 @@
 	overflow-x: hidden;
 	overflow-y: scroll;
 	transition: background-color 1s ease-in-out;
-
-	--scroll-size: 4px;
-	--scroll-color: rgba(var(--rgb-dark-500), 0.25);
-
 	&[lock-scroll] {
 		overflow-y: hidden;
 		// padding-right: var(--scroll-size);
 	}
-}
-
-::selection {
-	background: var(--color-primary-500);
-	color: currentColor;
 }
 
 body {
@@ -40,76 +54,18 @@ body {
 *,
 ::before,
 ::after {
-	// -webkit-font-smoothing: antialiased;
 	box-sizing: border-box;
 }
 
-/*
-	Main styles
-*/
-h1 {
-	white-space: normal;
-	font-weight: 450;
-	font-size: var(--size-x4large);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	color: var(--color-dark-900);
-	margin-block: 1em 1em;
-	letter-spacing: -0.8px;
-	line-height: 1.25em;
-}
-
-h2 {
-	white-space: normal;
-	font-weight: 500;
-	font-size: var(--size-x3large);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	color: var(--color-dark-900);
-	margin-block: 1.25em 1em;
-	letter-spacing: -0.4px;
-	line-height: 1.25em;
-}
-
-h3 {
-	white-space: normal;
-	font-weight: 550;
-	font-size: var(--size-x2large);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	color: var(--color-dark-900);
-	margin-block: 1.5em 1em;
-	letter-spacing: -0.2px;
-	line-height: 1.25em;
-}
-
-h4 {
-	white-space: normal;
-	font-weight: 600;
-	font-size: var(--size-xlarge);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	color: var(--color-dark-900);
-	margin-block: 1.75em 1em;
-	line-height: 1.25em;
-}
-
-h5 {
-	white-space: normal;
-	font-weight: 600;
-	font-size: var(--size-large);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	color: var(--color-dark-900);
-	margin-block: 2em 1em;
-	line-height: 1.25em;
+::selection {
+	background: var(--color-primary-500);
+	color: currentColor;
 }
 
 p {
 	line-height: 1.4em;
 	margin-block: 2em;
 }
-
 em {
 	font-style: normal;
 	font-weight: 700;
@@ -117,9 +73,63 @@ em {
 }
 
 /*
-	Vendor stylings reset
+Button component should listen to hover on parent elements with this class to trigger hover/focus style.
+Event handling should be done manually.
 */
+.button-parent {
+	cursor: pointer;
+}
 
+/*
+Heading styles based on mixins
+*/
+h1 {
+	@include mixins.heading(x4large);
+	padding: 0;
+	margin: 1rem 0 2rem 0;
+	margin-block: 1em 1em;
+}
+h2 {
+	@include mixins.heading(x3large);
+	padding: 0;
+	margin: 1rem 0 2rem 0;
+	margin-block: 1.25em 1em;
+}
+h3 {
+	@include mixins.heading(x2large);
+	padding: 0;
+	margin: 1rem 0 2rem 0;
+	margin-block: 1.5em 1em;
+}
+h4 {
+	@include mixins.heading(xlarge);
+	padding: 0;
+	margin: 1rem 0 2rem 0;
+	margin-block: 1.75em 1em;
+}
+h5 {
+	@include mixins.heading(large);
+	padding: 0;
+	margin: 1rem 0 2rem 0;
+	margin-block: 2em 1em;
+}
+h6 {
+	@include mixins.heading(medium);
+	padding: 0;
+	margin: 1rem 0 2rem 0;
+	margin-block: 2.25em 1em;
+}
+
+/*
+Global vendor stylings reset and scrollbar customization.
+*/
+a,
+a:visited,
+a:active,
+a:hover {
+	text-decoration: unset;
+	color: unset;
+}
 input[type='search']::-ms-clear {
 	display: none;
 	width: 0;
@@ -136,21 +146,14 @@ input[type='search']::-webkit-search-results-button,
 input[type='search']::-webkit-search-results-decoration {
 	display: none;
 }
-
-/*
-	Scrollbar styling
-*/
-
 ::-webkit-scrollbar {
 	width: var(--scroll-size);
 	height: var(--scroll-size);
 }
-
 ::-webkit-scrollbar-track {
 	background: transparent;
 	box-shadow: none;
 }
-
 ::-webkit-scrollbar-thumb {
 	position: relative;
 	background: var(--scroll-color);

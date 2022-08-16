@@ -7,11 +7,11 @@
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
 	import { mainScroll } from '$stores/scroll';
-	import { colors } from '$utils/colors';
-	import { logout } from '$utils/database';
-	import { gotoCategory } from '$utils/navigation';
-	import { getAuthRedirectUrl } from '$utils/routeGuards';
-	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
+	import { logout } from '$utils/database/auth';
+	import { getAuthRedirectUrl } from '$utils/routing/guards';
+	import { gotoCategory } from '$utils/routing/navigation';
+	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routing/routes';
+	import { colors } from '$utils/values/colors';
 	import { onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
@@ -23,10 +23,10 @@
 	let hidden;
 	let overlay;
 	let mainPathname: string;
-	let yThreshold = navbarHeight || 50;
+	let yThreshold = navbarHeight || 40;
 
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
-	$: overlay = $mainScroll.y > yThreshold + 100;
+	$: overlay = $mainScroll.y > yThreshold + 50;
 	$: mainPathname = $page.stuff.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
 
 	onMount(() => {
@@ -37,7 +37,7 @@
 <header class:hidden class:overlay bind:clientHeight={navbarHeight}>
 	{#if mounted}
 		<nav
-			class="section"
+			class="main"
 			in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 0 }}
 			out:fly={{ y: -20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
@@ -50,26 +50,24 @@
 				</Button>
 			{/each}
 		</nav>
-		{#if $page.stuff.showCategoryNav}
-			<nav
-				class="category"
-				in:fly={{ y: 20, duration: 500, easing: expoOut, delay: 150 }}
-				out:fly={{ y: 20, duration: 500, easing: expoOut, delay: 0 }}
-			>
-				<Switch name="category" variant="navbar" value={$page.stuff.category}>
-					{#each exploreRoutes as r, i}
-						<SwitchItem
-							id={r.category}
-							value={r.category}
-							on:click={() => gotoCategory(r)}
-							disabled={r.category === $page.stuff.category && !$page.stuff.categoryIsResetable}
-						>
-							{r.title}
-						</SwitchItem>
-					{/each}
-				</Switch>
-			</nav>
-		{/if}
+		<nav class="second">
+			{#if $page.stuff.showCategoryNav}
+				<div>
+					<Switch name="category" variant="navbar" value={$page.stuff.category}>
+						{#each exploreRoutes as r, i}
+							<SwitchItem
+								id={r.category}
+								value={r.category}
+								on:click={() => gotoCategory(r)}
+								disabled={r.category === $page.stuff.category && !$page.stuff.categoryIsResetable}
+							>
+								{r.title}
+							</SwitchItem>
+						{/each}
+					</Switch>
+				</div>
+			{/if}
+		</nav>
 		<nav
 			class="user"
 			in:fly={{ y: 20, opacity: 0, duration: 500, easing: expoOut, delay: 300 }}
@@ -102,19 +100,9 @@
 	header {
 		position: sticky;
 		top: 0;
-		display: grid;
-		grid-template-columns:
-			[full-start gutter-left-start]
-			auto
-			[gutter-left-end section-start]
-			1fr
-			[section-end category-start]
-			auto
-			[category-end user-start]
-			1fr
-			[user-end gutter-right-start]
-			auto
-			[gutter-right-end full-end];
+		display: flex;
+		flex-direction: row;
+		justify-content: stretch;
 		width: 100vw;
 		align-items: center;
 		padding: 1rem;
@@ -122,9 +110,9 @@
 		margin: 0;
 		gap: 0;
 		font-size: var(--size-small);
-		z-index: 100;
 		backdrop-filter: blur(8px);
-		transition: all 0.35s, background-color 1s ease-in-out, width 0s;
+		z-index: 100;
+		transition: all 0.3s cubic-bezier(0, 0, 0, 1);
 
 		&::before {
 			content: '';
@@ -133,7 +121,7 @@
 			height: 100%;
 			padding: 0;
 			margin: 0;
-			opacity: 0.5;
+			opacity: 0;
 			top: 0;
 			left: 0;
 			background-color: var(--bg-color);
@@ -142,16 +130,19 @@
 	}
 
 	.overlay {
-		box-shadow: 0 1px 0 0 rgba(var(--rgb-dark-900), 0.1);
+		backdrop-filter: blur(8px);
+		box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.25);
 		&::before {
-			opacity: 0.92;
+			opacity: 0.75;
 		}
 	}
 
 	.hidden {
 		box-shadow: 0 0px 0 0 transparent;
-		transform: translateY(-100%);
+		transform: translateY(-101%);
+		transform-origin: top center;
 		pointer-events: none;
+		transition: all 0.3s cubic-bezier(1, 0, 1, 1);
 	}
 
 	.logo {
@@ -165,19 +156,19 @@
 
 	nav {
 		display: flex;
-		flex: 0;
+		flex: 1;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
 		gap: 3px;
 	}
 
-	.section {
+	.main {
 		grid-area: section;
-		justify-self: flex-start;
+		justify-content: flex-start;
 	}
 
-	.category {
+	.second {
 		grid-area: category;
 	}
 

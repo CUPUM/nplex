@@ -3,7 +3,7 @@
 	Hello world.
  -->
 <script lang="ts">
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/values/keys';
 	import { setContext } from 'svelte';
 
 	export let direction: 'horizontal' | 'vertical' = 'vertical';

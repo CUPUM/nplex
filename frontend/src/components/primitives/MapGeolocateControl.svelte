@@ -6,19 +6,24 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/keys';
+	import type { icons } from '$utils/icons/icons';
+
+	import { Ctx } from '$utils/values/keys';
 	import { getContext } from 'svelte';
 	import Button from './Button.svelte';
 	import type { MapContext } from './Map.svelte';
 
-	const mapCtx = getContext<MapContext>(Ctx.Map);
+	export let icon: keyof typeof icons = 'localize';
 
+	const mapCtx = getContext<MapContext>(Ctx.Map);
 	const map = mapCtx.getMap();
 
 	// Add default handlers here for simplified reusability.
 </script>
 
-<Button><slot /></Button>
+<Button {icon} square={!$$slots.default}>
+	<!-- <slot /> -->
+</Button>
 
 <style lang="scss">
 </style>

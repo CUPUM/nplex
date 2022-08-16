@@ -16,6 +16,7 @@
 	export let color: string = 'currentColor';
 	export let secondaryColor: string = color;
 	export let strokeWidth: SizeInput = 1.5;
+	export let scaleStroke: boolean = true;
 	export let strokeOpacity: number = 1;
 	export let fillOpacity: number = 1;
 	export let intro: boolean = false;
@@ -53,6 +54,7 @@
 	style:--secondary-color={secondaryColor}
 	style:--thickness={cssSize(strokeWidth)}
 	preserveAspectRatio="xMidYMid"
+	class="icon"
 >
 	{#if mounted}
 		{#key name}
@@ -66,7 +68,7 @@
 							in:draw|local={{ duration, delay: i * (delay / 2) }}
 							d={stroke.d}
 							class="stroke {stroke.type}"
-							vector-effect="non-scaling-stroke"
+							vector-effect={scaleStroke ? '' : 'non-scaling-stroke'}
 						/>
 					{/each}
 				{/if}
@@ -87,11 +89,13 @@
 
 <style lang="scss">
 	svg {
-		display: inline-block;
+		display: inline-flex;
+		vertical-align: -0.2em;
 		overflow: visible;
 		position: relative;
 		width: 1em;
 		height: 1em;
+		line-height: 0.8em;
 		padding: 0;
 		margin: 0;
 	}

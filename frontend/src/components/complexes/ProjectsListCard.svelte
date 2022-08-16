@@ -3,10 +3,10 @@
 	import { page, session } from '$app/stores';
 	import Button from '$components/primitives/Button.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
-	import { colors } from '$utils/colors';
 	import type { Project } from '$utils/dummy';
-	import { getAuthRedirectUrl } from '$utils/routeGuards';
-	import { sizes } from '$utils/sizes';
+	import { getAuthRedirectUrl } from '$utils/routing/guards';
+	import { colors } from '$utils/values/colors';
+	import { sizes } from '$utils/values/sizes';
 
 	export let project: Project = undefined;
 	export let imageLoading = true;

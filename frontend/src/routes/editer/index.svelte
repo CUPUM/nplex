@@ -2,8 +2,6 @@
 </script>
 
 <script lang="ts">
-	import EditorProjectsList from '$components/complexes/EditorProjectsList.svelte';
-
 	let editableProjects = Array(5)
 		.fill(null)
 		.map((_, i) => ({
@@ -14,7 +12,6 @@
 
 <h2>Éditer une fiche</h2>
 <p>Vous trouverez ci-dessous les fiches qui vous sont accessibles pour éditer.</p>
-<EditorProjectsList />
 
 <style lang="scss">
 	li {

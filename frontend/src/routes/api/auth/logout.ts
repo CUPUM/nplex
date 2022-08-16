@@ -1,5 +1,5 @@
 import { applySetCookieHeaders } from '$utils/cookies';
-import { clearTokens } from '$utils/database';
+import { clearTokens } from '$utils/database/auth';
 import type { RequestHandler } from './__types/logout';
 
 /**

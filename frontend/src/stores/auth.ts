@@ -1,7 +1,7 @@
 import { browser } from '$app/env';
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
-import { SearchParam } from '$utils/keys';
+import { SearchParam } from '$utils/values/keys';
 import { derived } from 'svelte/store';
 import { mainScroll } from './scroll';
 

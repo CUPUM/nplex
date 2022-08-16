@@ -1,7 +1,7 @@
 import { browser } from '$app/env';
 import { writable } from 'svelte/store';
 
-const THRESHOLD = 100;
+const DIRECTION_THRESHOLD = 20;
 const LOCK_ATTRIBUTE = 'lock-scroll';
 
 /**
@@ -32,11 +32,11 @@ export const mainScroll = (function () {
 			let delta = prev.delta + window.scrollY - prev.y;
 			let up = prev.up;
 			let down = prev.down;
-			if (delta > THRESHOLD) {
+			if (delta > DIRECTION_THRESHOLD) {
 				up = false;
 				down = true;
 				delta = 0;
-			} else if (delta < -1 * THRESHOLD) {
+			} else if (delta < -1 * DIRECTION_THRESHOLD) {
 				up = true;
 				down = false;
 				delta = 0;

@@ -7,8 +7,8 @@ import type { Plugin } from 'vite';
 
 const OUTPUT_DIR = path.resolve('src', 'styles');
 const UTILS_FILES = {
-	colors: path.resolve('src', 'utils', 'colors.ts'),
-	sizes: path.resolve('src', 'utils', 'sizes.ts'),
+	colors: path.resolve('src', 'utils', 'values', 'colors.ts'),
+	sizes: path.resolve('src', 'utils', 'values', 'sizes.ts'),
 };
 const PRETTIER_CONFIG = JSON.parse(readFileSync(path.resolve('.prettierrc')).toString());
 

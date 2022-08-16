@@ -5,9 +5,9 @@
 Database queries in Nplex are twofaced, whereas they can interface with supabase either from:
 
 -   The SvelteKit server, e.g. when a client hits an app endpoint, during SSR (user-specific if request's auth cookies are set), etc.
--   Straight from the client (browser), when doing client-side fetches to get up-to-date, such as when actively searching or filtering projects.
+-   Straight from the client (browser), when doing client-side fetches for non-sensitive queries such as enum selects.
 
-By default, the first approach (endpoint handling) should be favored. When more data dynamism is required past page loads, we will opt for the second approach to avoid uselessly flooding the app's server with query forwarding through endpoints (i.e. repetitively fetching app endpoints that then themselves fetch the database).
+By default, the first approach (endpoint handling) should be favored. But we will prioritise direct-to-supabase client-side queries for (mostly) selects where the data is not sensitive.
 
 Critically, this raises a challenge where we need to ensure data and behavior consistency across both approaches to avoid asymetric results.
 To answer this concern, we define endpoints atomically, into reusable helpers:

@@ -1,6 +1,6 @@
 import { messages } from '$stores/messages';
 import type { LoadEvent, LoadOutput } from '@sveltejs/kit';
-import { SearchParam } from './keys';
+import { SearchParam } from '../values/keys';
 
 export function getAuthRedirectUrl(targetUrl: URL) {
 	const redirectUrl = new URL(targetUrl);
@@ -49,6 +49,7 @@ async function role({ roles, session, errorMessage, url }: RoleGuardInput): Prom
 			redirectUrl.pathname = '';
 		}
 		if (!session.user) {
+			// To do: do not open authModal if user just signed out.
 			redirectUrl = getAuthRedirectUrl(redirectUrl);
 		}
 
@@ -69,61 +70,3 @@ async function project({ projectId, session, url, errorMessage }) {
 export const guard = {
 	role,
 };
-
-// /**
-//  * Simple helper function to signup a new email user and handle errors.
-//  */
-// interface EmailSignUpInfo extends Omit<UserCredentials, 'provider' | 'oidc' | 'phone'> {
-// 	firstname?: string;
-// 	middlename?: string;
-// 	lastname?: string;
-// }
-// export async function signUpWithEmail(info: EmailSignUpInfo) {
-// 	try {
-// 		const { user, error: signupError } = await db.auth.signUp({ email: info.email, password: info.password });
-// 		if (signupError) throw signupError;
-// 		const { body, error: profileError } = await db
-// 			.from<definitions['users_profiles']>('users_profiles')
-// 			.update({
-// 				firstname: info.firstname || '',
-// 				middlename: info.middlename || '',
-// 				lastname: info.lastname || '',
-// 			})
-// 			.eq('user_id', user.id);
-// 		if (profileError) throw profileError;
-// 	} catch (err) {
-// 		messages.dispatch({
-// 			type: 'error',
-// 			text: err.message,
-// 		});
-// 	}
-// }
-
-// /**
-//  * Simple helper function to attempt signin an existing email user and handle errors.
-//  */
-// interface EmailSignInInfo {
-// 	email: string;
-// 	password: string;
-// }
-// export async function signInWithEmail({ email, password }: EmailSignInInfo) {
-// 	try {
-// 		const { user, error } = await db.auth.signIn(
-// 			{ email, password },
-// 			{
-// 				redirectTo: null,
-// 				shouldCreateUser: false,
-// 			}
-// 		);
-// 		if (error) throw error;
-// 		messages.dispatch({
-// 			type: 'success',
-// 			text: 'Connecté avec succès.',
-// 		});
-// 	} catch (error) {
-// 		messages.dispatch({
-// 			type: 'error',
-// 			text: error.message,
-// 		});
-// 	}
-// }

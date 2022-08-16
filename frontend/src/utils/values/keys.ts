@@ -8,7 +8,8 @@
  */
 export enum Ctx {
 	// Component context keys
-	Field = 'input-context',
+	Field = 'field-context',
+	FieldMultiline = 'field-multiline-context',
 	Token = 'token-context',
 	TokenSet = 'token-set-context',
 	Switch = 'switch-context',
@@ -27,10 +28,6 @@ export enum Ctx {
 	MapLayer = 'map-layer-context',
 	MapTooltip = 'map-tooltip-context',
 	MapToolbar = 'map-toolbar-context',
-	// Styling context keys
-	Inset = 'inset-context',
-	BorderRadius = 'border-radius-context',
-	Size = 'size-context',
 }
 
 /**
@@ -71,3 +68,13 @@ export enum Cookie {
 	DbProviderToken = 'provider-token',
 	DbAccessTokenExpiry = 'access-token-expiry',
 }
+
+/**
+ * Dictionnary of error codes and their translated message.
+ *
+ * Provided as object since enums do not support number members.
+ */
+const errorCodesMessages = {
+	400: 'Impossible!',
+	500: '',
+} as const;

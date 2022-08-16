@@ -1,0 +1,86 @@
+@use 'sass:map';
+
+/*
+Heading styling mixin, useful for consistent styling independent of h tag.
+*/
+@mixin heading($size) {
+	$headings: (
+		small: (
+			weight: 600,
+			spacing: 0.4px,
+			line: 1.25em,
+		),
+		medium: (
+			weight: 600,
+			spacing: 0.2px,
+			line: 1.25em,
+		),
+		large: (
+			weight: 600,
+			spacing: 0px,
+			line: 1.25em,
+		),
+		xlarge: (
+			weight: 600,
+			spacing: 0px,
+			line: 1.25em,
+		),
+		x2large: (
+			weight: 550,
+			spacing: -0.2px,
+			line: 1.25em,
+		),
+		x3large: (
+			weight: 500,
+			spacing: -0.4px,
+			line: 1.25em,
+		),
+		x4large: (
+			weight: 450,
+			spacing: -0.8px,
+			line: 1.25em,
+		),
+	);
+
+	font-weight: map.get($headings, $size, weight);
+	font-size: var(--size-#{$size});
+	letter-spacing: map.get($headings, $size, spacing);
+	line-height: map.get($headings, $size, line);
+}
+
+/*
+Core grid template with 3 main columns, full-pad col and full width col (without padding).
+*/
+@mixin core-grid {
+	display: grid;
+	grid-template-columns:
+		[full-start]
+		1rem
+		[fullpad-start]
+		1fr
+		[main-start col1-start]
+		minmax(20ch, 28ch)
+		[col1-end col2-start]
+		minmax(20ch, 28ch)
+		[col2-end col3-start]
+		minmax(20ch, 28ch)
+		[col3-end main-end]
+		1fr
+		[fullpad-end]
+		1rem
+		[full-end];
+}
+
+/*
+Core grid column helper mixin.
+*/
+@mixin core-grid-col($col) {
+	grid-column: $col;
+}
+
+/*
+Border classes to add visual separation between sections
+*/
+@mixin border($position) {
+	border-#{$position}: 1px solid rgba(var(--rgb-dark-900), 0.1);
+}

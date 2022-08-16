@@ -5,11 +5,11 @@
 	import FieldPasswordToggleControl from '$components/primitives/FieldPasswordToggleControl.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import { authModal } from '$stores/auth';
-	import { login, signup } from '$utils/database';
-	import { providers } from '$utils/providers';
-	import { sizes } from '$utils/sizes';
-	import { expoOut } from 'svelte/easing';
-	import { fade, scale, slide } from 'svelte/transition';
+	import { login, signup } from '$utils/database/auth';
+	import { providers } from '$utils/values/providers';
+	import { sizes } from '$utils/values/sizes';
+	import { expoOut, linear } from 'svelte/easing';
+	import { fade, fly, scale, slide } from 'svelte/transition';
 
 	let email: string;
 	let password: string;
@@ -47,17 +47,22 @@
 	}
 </script>
 
-<div class="bg" in:fade={{ duration: 250, easing: expoOut }} />
+<div class="bg" transition:fade={{ duration: 200, easing: linear }} />
 <div
 	class="wrapper"
-	in:scale={{ start: 0.9, duration: 200 }}
+	in:scale={{ start: 0.9, duration: 150, opacity: 0 }}
+	out:fly={{ x: 20, duration: 150, opacity: 0 }}
 	use:clickoutside
 	on:clickoutside={() => authModal.close()}
 >
 	<a class="logo" href="/">
 		<Logo color="currentColor" />
 	</a>
-	<form autocomplete="off" on:submit|preventDefault={submit} in:scale={{ start: 0.95, delay: 150 }}>
+	<form
+		autocomplete="off"
+		on:submit|preventDefault={submit}
+		in:scale={{ start: 0.95, opacity: 0, delay: 100, duration: 150 }}
+	>
 		<Field
 			bind:value={email}
 			maxlength={32}
@@ -134,27 +139,25 @@
 		height: 100%;
 		top: 0;
 		left: 0;
-		background-color: rgba(var(--rgb-primary-500), 0.9);
-		// backdrop-filter: blur(4px);
+		background-color: rgba(var(--rgb-light-900), 0.98);
 	}
 
 	.wrapper {
 		z-index: 1000;
 		position: fixed;
-		right: 1rem;
-		top: 1rem;
-		bottom: 1rem;
+		right: 0rem;
+		top: 0rem;
+		bottom: 0rem;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: center;
 		width: 100%;
 		max-width: 500px;
-		background-color: rgba(255, 255, 255, 0.95);
-		// backdrop-filter: blur(12px);
+		background-color: var(--color-light-100);
 		padding: 3rem;
 		overflow-y: auto;
-		border-radius: 2rem;
+		border-radius: 2rem 0 0 2rem;
 		transform-origin: top right;
 	}
 

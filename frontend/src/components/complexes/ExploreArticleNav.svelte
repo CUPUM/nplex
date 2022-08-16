@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import Button from '$components/primitives/Button.svelte';
 	import { crossfadeExploreArticleBackButton } from '$transitions/crossfades';
-	import { exploreRoutes } from '$utils/routes';
+	import { exploreRoutes } from '$utils/routing/routes';
 
 	const [send, receive] = crossfadeExploreArticleBackButton;
 

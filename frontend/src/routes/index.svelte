@@ -13,8 +13,8 @@
 </script>
 
 <script lang="ts">
-	import { reveal } from '$actions/reveal';
-	import { flyup } from '$actions/reveal/presets';
+	import { flyRotate } from '$actions/reveal/presets';
+	import { reveal } from '$actions/reveal/reveal';
 
 	export let projectsPreview;
 	export let organisationsPreview;
@@ -23,11 +23,10 @@
 
 <article id="intro">
 	<header id="intro-header">
-		<h1 use:reveal={{ ...flyup }}>
-			Bienvenue sur Nplex <br />
-			<span class="subheading">
-				la plateforme de valorisation des petits projets exemplaires en aménagement à Montréal
-			</span>
+		<h1 use:reveal={flyRotate}>
+			Bienvenue sur Nplex<br /><span class="subheading"
+				>la plateforme de valorisation des petits projets exemplaires en aménagement à</span
+			> Montréal
 		</h1>
 	</header>
 	<p id="intro-text">Cette application web lorem ipsum...</p>
@@ -39,7 +38,7 @@
 				<h2>Projets</h2>
 			</a>
 		</header>
-		<ul>[To do: projects list and list cards]</ul>
+		<ul>[To do: proflyRotate list and list cards]</ul>
 	</section>
 	<section id="organisations">
 		<header>

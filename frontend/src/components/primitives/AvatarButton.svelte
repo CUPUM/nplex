@@ -14,7 +14,7 @@
 
 	let cssAvatarImage: string = '';
 	const userColors = [
-		`#${parseInt($session.user.created_at.match(/\d+/g).map(Number).join('')).toString(16).substring(0, 6)}`,
+		`#${parseInt($session.user.created_at.match(/\d+/g).map(Number).join('')).toString(16).slice(-6)}`,
 		`#${$session.user.email
 			.split('')
 			.map((c) => c.charCodeAt(0).toString(16))

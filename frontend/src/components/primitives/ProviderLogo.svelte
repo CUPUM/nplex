@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cssSize, type SizeInput } from '$utils/css';
-	import { providers } from '$utils/providers';
+	import { providers } from '$utils/values/providers';
 
 	export let name: keyof typeof providers;
 	export let size: SizeInput = '1em';

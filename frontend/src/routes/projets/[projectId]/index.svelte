@@ -14,13 +14,7 @@
 	import ProjectGallery from '$components/complexes/ProjectGallery.svelte';
 	import ProjectHeader from '$components/complexes/ProjectHeader.svelte';
 	import ProjectTimeline from '$components/complexes/ProjectTimeline.svelte';
-	import type { Project } from '$utils/dummy';
 	import { scale } from 'svelte/transition';
-
-	/**
-	 * To do: use proper types exported from supabase.
-	 */
-	export let project: Project;
 </script>
 
 <article in:scale={{ start: 0.9 }}>

@@ -1,4 +1,4 @@
-import { createDisposableDbClient } from '$utils/database';
+import { createDisposableDbClient } from '$utils/database/database';
 import type { RequestHandler } from '@sveltejs/kit';
 
 /**

@@ -49,8 +49,6 @@
 	onDestroy(() => {});
 </script>
 
-<!-- Combiner avec "filters" -->
-<!-- https://stackoverflow.com/questions/4052756/how-to-combine-html-forms -->
 <form on:submit|preventDefault={submit} on:reset|preventDefault={reset}>
 	<section class="search-field">
 		<Field type="search" placeholder="Chercher" icon="search" bind:value={$exploreSearchterm} width="100%">

@@ -1,5 +1,5 @@
 import { applySetCookieHeaders, type SetCookieDetails } from '$utils/cookies';
-import { Cookie } from '$utils/keys';
+import { Cookie } from '$utils/values/keys';
 import type { Session } from '@supabase/supabase-js';
 import type { RequestHandler } from '@sveltejs/kit';
 import type cookie from 'cookie';

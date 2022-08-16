@@ -1,58 +1,12 @@
-import { browser } from '$app/env';
+import { goto } from '$app/navigation';
 import { session } from '$app/stores';
 import { authModal } from '$stores/auth';
 import { messages } from '$stores/messages';
 import type { definitions } from '$types/database';
-import { createClient, type AuthChangeEvent, type Session, type UserCredentials } from '@supabase/supabase-js';
-import type { SetCookieDetails } from './cookies';
-import { Cookie } from './keys';
-
-// 1 day
-const COOKIE_LIFETIME = 3600000 * 24;
-
-/**
- * Instanciate a disposable single-request-lived db client. Useful for authed server side requests.
- */
-export function createDisposableDbClient(accessToken?: string) {
-	const client = createClient(
-		import.meta.env.PUBLIC_SUPABASE_URL as string,
-		import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string,
-		{
-			persistSession: false,
-			autoRefreshToken: false,
-			cookieOptions: {
-				lifetime: COOKIE_LIFETIME,
-			},
-			// fetch: // Custom fetch function, if needed
-		}
-	);
-	if (accessToken) {
-		client.auth.setAuth(accessToken);
-	}
-	return client;
-}
-
-/**
- * Init a client-side supabase client instance to listen to auth state changes and more.
- */
-export const browserDbClient = createClient(
-	import.meta.env.PUBLIC_SUPABASE_URL as string,
-	import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string,
-	{
-		persistSession: false,
-		autoRefreshToken: true,
-		cookieOptions: {
-			lifetime: COOKIE_LIFETIME,
-		},
-	}
-);
-
-/**
- * Helper to get the proper Supabase client instance depending on the detected context of execution.
- */
-export function getContextualDbClient(accessToken?: string) {
-	return browser ? browserDbClient : createDisposableDbClient(accessToken);
-}
+import type { SetCookieDetails } from '$utils/cookies';
+import { Cookie } from '$utils/values/keys';
+import type { AuthChangeEvent, Session, UserCredentials } from '@supabase/supabase-js';
+import { browserDbClient, createDisposableDbClient } from './database';
 
 /**
  * Handler function to manage client-side auth state changes detected on the client side and update both local session
@@ -79,17 +33,24 @@ export async function handleAuthStateChange(e: AuthChangeEvent, s: Session) {
 			case 'USER_UPDATED':
 			case 'SIGNED_IN':
 				// Pass local client update to server to retrieve updated cookies.
-				res = await fetch('/api/auth/update', {
+				res = await fetch('/api/auth/use', {
 					method: 'POST',
 					body,
 				});
 				if (!res.ok) throw res;
 				// Update client-side session store
 				const appUser = await res.json();
+				let redirect = false;
 				session.update((prev) => {
+					if (!prev.user && location.pathname === '/') {
+						redirect = true;
+					}
 					return { ...prev, user: appUser };
 				});
-				authModal.close();
+				await authModal.close();
+				if (redirect) {
+					goto('/compte');
+				}
 				break;
 			case 'TOKEN_REFRESHED':
 				res = await fetch('/api/auth/refresh', {
@@ -102,7 +63,6 @@ export async function handleAuthStateChange(e: AuthChangeEvent, s: Session) {
 	} catch (error) {}
 }
 
-type SignupDetails = Pick<UserCredentials, 'email' | 'password'> | Pick<UserCredentials, 'provider'>;
 /**
  * Client-side only signup helper. Server-side logic handled by handleAuthStateChange and endpoints.
  */
@@ -112,8 +72,8 @@ export async function signup(details: SignupDetails) {
 		if (error) throw error;
 	} catch (error) {}
 }
+type SignupDetails = Pick<UserCredentials, 'email' | 'password'> | Pick<UserCredentials, 'provider'>;
 
-type LoginDetails = Pick<UserCredentials, 'email' | 'password'> | Pick<UserCredentials, 'provider'>;
 /**
  * Client-side only login helper.
  */
@@ -128,6 +88,7 @@ export async function login(details: LoginDetails) {
 		});
 	}
 }
+type LoginDetails = Pick<UserCredentials, 'email' | 'password'> | Pick<UserCredentials, 'provider'>;
 
 /**
  * Client-side only logout helper.
@@ -144,15 +105,9 @@ export async function logout() {
  *
  * @returns Passed session user with extended info.
  */
-export async function getExtendedUser(
-	sessionDetail: Required<Pick<Session, 'access_token' | 'user'>> & Partial<Session>
-) {
+export async function getAppUser(sessionDetail: Required<Pick<Session, 'access_token' | 'user'>> & Partial<Session>) {
 	try {
 		const db = createDisposableDbClient(sessionDetail.access_token);
-		/**
-		 * To do: If ever evolves into querying multiple table, move the required logic to a database function and call
-		 * it with supabase's rpc().
-		 */
 		const { data, error } = await db
 			.from<definitions['users_roles']>('users_roles')
 			.select('role')
@@ -161,7 +116,7 @@ export async function getExtendedUser(
 		if (error) throw error;
 		return { ...sessionDetail.user, role: data.role };
 	} catch (error) {
-		return null;
+		throw error;
 	}
 }
 

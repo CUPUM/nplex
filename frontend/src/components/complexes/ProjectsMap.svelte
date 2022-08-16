@@ -5,7 +5,7 @@
 	import Button from '$components/primitives/Button.svelte';
 	import Map from '$components/primitives/Map.svelte';
 	import MapToolbar from '$components/primitives/MapToolbar.svelte';
-	import { centerMapOnClientLocation } from '$utils/map';
+	import { centerMapOnClientLocation } from '$utils/maps/map';
 </script>
 
 <section>

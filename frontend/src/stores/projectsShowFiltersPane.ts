@@ -1,5 +1,5 @@
-import { LocalStorage } from '$utils/keys';
 import { persistWritable } from '$utils/persistStore';
+import { LocalStorage } from '$utils/values/keys';
 
 /**
  * Global state of the projects' fitlers drawer.

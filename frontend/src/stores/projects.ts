@@ -1,6 +1,6 @@
 import { browser } from '$app/env';
 import type { Project } from '$utils/dummy';
-import { LocalStorage, SearchParam } from '$utils/keys';
+import { LocalStorage, SearchParam } from '$utils/values/keys';
 import { writable } from 'svelte/store';
 
 /**

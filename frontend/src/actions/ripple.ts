@@ -157,19 +157,19 @@ function createRippleStylesheet() {
 	sheet.setAttribute('type', 'text/css');
 	sheet.setAttribute(RIPPLE_GLOBALS.SHEET_ATTRIBUTE, '');
 	sheet.textContent = `
-		@keyframes ${RIPPLE_GLOBALS.SPREAD_ANIMATION} {
-			to {
-				width: var(${RIPPLE_GLOBALS.END_SIZE});
-				height: var(${RIPPLE_GLOBALS.END_SIZE});
-				background-color: var(${RIPPLE_GLOBALS.END_COLOR});
-			}
+	@keyframes ${RIPPLE_GLOBALS.SPREAD_ANIMATION} {
+		to {
+			width: var(${RIPPLE_GLOBALS.END_SIZE});
+			height: var(${RIPPLE_GLOBALS.END_SIZE});
+			background-color: var(${RIPPLE_GLOBALS.END_COLOR});
 		}
-
-		@keyframes ${RIPPLE_GLOBALS.FADE_ANIMATION} {
-			to {
-				opacity: 0;
-			}
+	}
+	
+	@keyframes ${RIPPLE_GLOBALS.FADE_ANIMATION} {
+		to {
+			opacity: 0;
 		}
+	}
 	`;
 	document.head.appendChild(sheet);
 }

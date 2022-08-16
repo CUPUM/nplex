@@ -1,6 +1,6 @@
 import { applySetCookieHeaders, type SetCookieDetails } from '$utils/cookies';
-import { getExtendedUser } from '$utils/database';
-import { Cookie } from '$utils/keys';
+import { getAppUser } from '$utils/database/auth';
+import { Cookie } from '$utils/values/keys';
 import type { Session, Session as SupabaseSession } from '@supabase/supabase-js';
 import type { RequestHandler } from '@sveltejs/kit';
 import type cookie from 'cookie';
@@ -12,7 +12,7 @@ type UpdateSessionDetails = SupabaseSession;
  *
  * @returns Extended App.Session['user'], containing additional info queried from database.
  */
-export const POST: RequestHandler = async ({ request, locals }) => {
+export const POST: RequestHandler = async ({ request, locals, url }) => {
 	const s: Session = await request.json();
 	let res = new Response();
 
@@ -42,7 +42,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	];
 
 	try {
-		const appUser = await getExtendedUser(s);
+		const appUser = await getAppUser(s);
 		res = new Response(JSON.stringify(appUser));
 	} catch (error) {}
 

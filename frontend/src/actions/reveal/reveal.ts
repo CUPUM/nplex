@@ -1,5 +1,4 @@
-import { splitText, type SplitTextOptions } from '$utils/splitText';
-import { camelCaseToKebabCase } from '$utils/strings';
+import { camelCaseToKebabCase } from '$utils/string';
 import { intersection } from '../intersection';
 
 type IntersectionOptions = Parameters<typeof intersection>[1];
@@ -358,4 +357,47 @@ function objectToCSSText(styleObject: Record<string, string>) {
 			.map(([k, v]) => `${camelCaseToKebabCase(k)}: ${v}`)
 			.join('; ') + '; '
 	);
+}
+
+interface SplitTextOptions {
+	delimiter?: string | RegExp;
+}
+/**
+ * Parsing node tree recursively, splitting and wrapping content.
+ */
+function splitText(element: HTMLElement, { delimiter = '' }: SplitTextOptions = {}) {
+	const nodes: HTMLElement[] = [];
+	[...element.childNodes].forEach((cn) => {
+		if (cn instanceof HTMLElement) {
+			cn.style.cssText += 'transform-style: preserve-3d;';
+			nodes.push(...splitText(cn, { delimiter }));
+		} else if (cn.nodeType === Node.TEXT_NODE) {
+			const newNodes: Node[] = [];
+			cn.textContent.split(/(\s)/).forEach((segment, i) => {
+				if (!segment) return;
+				if (segment === ' ') return newNodes.push(document.createTextNode(' '));
+				const segmentNode = document.createElement('span');
+				// // segmentNode.setAttribute(SplitTextAttributes.Segment, '');
+				segmentNode.style.cssText =
+					'position: relative; display: inline-block; white-space: nowrap; transform-style: preserve-3d;';
+				newNodes.push(segmentNode);
+				segment.split(delimiter).forEach((unit) => {
+					const maskNode = document.createElement('span');
+					maskNode.style.cssText = 'position: relative; display: inline-block; transform-style: preserve-3d;';
+					segmentNode.appendChild(maskNode);
+					const contentNode = document.createElement('span');
+					maskNode.appendChild(contentNode);
+					// 	// unitNode.setAttribute(SplitTextAttributes.Unit, '');
+					contentNode.textContent = unit;
+					contentNode.style.cssText =
+						'position: relative; display: inline-block; transform-style: preserve-3d;';
+					// 	// unitNode.style.setProperty(SplitTextAttributes.CSSIndex, nUnits++ + '');
+					nodes.push(contentNode);
+				});
+			});
+			cn.textContent = '';
+			cn.after(...newNodes);
+		}
+	});
+	return nodes;
 }

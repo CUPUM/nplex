@@ -40,10 +40,10 @@ export function mergeObjects(base: Record<any, any>, ...modifications: Record<an
  * @param obj Object to be cleaned.
  * @returns Object stripped of keys with empty values.
  */
-export function removeEmptyKeys(obj: Record<string | number, unknown>) {
+export function removeEmptyProps(obj: Record<string | number, unknown>) {
 	return Object.fromEntries(
 		Object.entries(obj)
 			.filter(([k, v]) => v !== null || v !== '' || v !== undefined)
-			.map(([k, v]) => [k, typeof v === 'object' ? removeEmptyKeys(v as Record<string | number, unknown>) : v])
+			.map(([k, v]) => [k, typeof v === 'object' ? removeEmptyProps(v as Record<string | number, unknown>) : v])
 	);
 }

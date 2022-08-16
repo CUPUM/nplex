@@ -2,11 +2,9 @@
 </script>
 
 <script lang="ts">
-	import { colors } from '$utils/colors';
 	import { onMount } from 'svelte';
 
-	export let color: string = colors.dark[100];
-	export let hoverColor: string = color;
+	export let color: string = 'currentColor';
 	export let intro: boolean = true;
 
 	let show = !intro;
@@ -22,8 +20,7 @@
 	fill="none"
 	xmlns="http://www.w3.org/2000/svg"
 	preserveAspectRatio="xMidYMid"
-	style:--color={color}
-	style:--hover-color={hoverColor}
+	style:color
 	{...$$restProps}
 	on:click
 	on:focus
@@ -46,16 +43,9 @@
 		width: 100%;
 		height: 100%;
 		overflow: visible;
-		--col: var(--color);
-
-		&:hover {
-			--col: var(--hover-color);
-		}
 	}
 
 	path {
-		fill: var(--col);
-		transition: all 0.1s;
-		// transition: all 0.35s ease-out;
+		fill: currentColor;
 	}
 </style>

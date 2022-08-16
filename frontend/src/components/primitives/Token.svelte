@@ -4,7 +4,7 @@
  -->
 <script lang="ts">
 	import { cssSize, type SizeInput } from '$utils/css';
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/values/keys';
 	import { getContext } from 'svelte';
 	import type { TokenSetContext } from './TokenSet.svelte';
 

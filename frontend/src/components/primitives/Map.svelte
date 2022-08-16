@@ -6,9 +6,9 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/keys';
-	import { mapStyles, montrealLocation } from '$utils/map';
-	import { sizes } from '$utils/sizes';
+	import { mapStyles, montrealLocation } from '$utils/maps/map';
+	import { Ctx } from '$utils/values/keys';
+	import { sizes } from '$utils/values/sizes';
 	import { LngLat, Map, type LngLatLike, type StyleSpecification } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, onDestroy, onMount, setContext } from 'svelte';

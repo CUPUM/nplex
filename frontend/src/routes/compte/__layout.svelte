@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { guard } from '$utils/routeGuards';
+	import { guard } from '$utils/routing/guards';
 	import type { Load } from '@sveltejs/kit';
 
 	export const load: Load = async ({ session, url, fetch }) => {

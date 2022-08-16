@@ -33,6 +33,7 @@ export interface paths {
           location_geometry?: parameters["rowFilter.projects.location_geometry"];
           ratings_n?: parameters["rowFilter.projects.ratings_n"];
           ratings_average?: parameters["rowFilter.projects.ratings_average"];
+          type_id?: parameters["rowFilter.projects.type_id"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -100,6 +101,7 @@ export interface paths {
           location_geometry?: parameters["rowFilter.projects.location_geometry"];
           ratings_n?: parameters["rowFilter.projects.ratings_n"];
           ratings_average?: parameters["rowFilter.projects.ratings_average"];
+          type_id?: parameters["rowFilter.projects.type_id"];
         };
         header: {
           /** Preference */
@@ -131,6 +133,7 @@ export interface paths {
           location_geometry?: parameters["rowFilter.projects.location_geometry"];
           ratings_n?: parameters["rowFilter.projects.ratings_n"];
           ratings_average?: parameters["rowFilter.projects.ratings_average"];
+          type_id?: parameters["rowFilter.projects.type_id"];
         };
         body: {
           /** projects */
@@ -900,6 +903,99 @@ export interface paths {
       };
     };
   };
+  "/project_site_usages_by_categories": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usages_by_categories.id"];
+          project_site_usage_id?: parameters["rowFilter.project_site_usages_by_categories.project_site_usage_id"];
+          project_site_usage_category_id?: parameters["rowFilter.project_site_usages_by_categories.project_site_usage_category_id"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["project_site_usages_by_categories"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** project_site_usages_by_categories */
+          project_site_usages_by_categories?: definitions["project_site_usages_by_categories"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usages_by_categories.id"];
+          project_site_usage_id?: parameters["rowFilter.project_site_usages_by_categories.project_site_usage_id"];
+          project_site_usage_category_id?: parameters["rowFilter.project_site_usages_by_categories.project_site_usage_category_id"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.project_site_usages_by_categories.id"];
+          project_site_usage_id?: parameters["rowFilter.project_site_usages_by_categories.project_site_usage_id"];
+          project_site_usage_category_id?: parameters["rowFilter.project_site_usages_by_categories.project_site_usage_category_id"];
+        };
+        body: {
+          /** project_site_usages_by_categories */
+          project_site_usages_by_categories?: definitions["project_site_usages_by_categories"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/projects_publication_status": {
     get: {
       parameters: {
@@ -1347,6 +1443,12 @@ export interface definitions {
     ratings_n: number;
     /** Format: double precision */
     ratings_average?: number;
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Foreign Key to `project_types.id`.<fk table='project_types' column='id'/>
+     */
+    type_id: number;
   };
   project_site_usages: {
     /**
@@ -1492,6 +1594,26 @@ export interface definitions {
     title: string;
     /** Format: text */
     description?: string;
+  };
+  project_site_usages_by_categories: {
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Foreign Key to `project_site_usages.id`.<fk table='project_site_usages' column='id'/>
+     */
+    project_site_usage_id: number;
+    /**
+     * Format: smallint
+     * @description Note:
+     * This is a Foreign Key to `project_site_usages_categories.id`.<fk table='project_site_usages_categories' column='id'/>
+     */
+    project_site_usage_category_id: number;
   };
   /** @description Table for managing projects publication status through limited access. */
   projects_publication_status: {
@@ -1660,6 +1782,8 @@ export interface parameters {
   "rowFilter.projects.ratings_n": string;
   /** Format: double precision */
   "rowFilter.projects.ratings_average": string;
+  /** Format: smallint */
+  "rowFilter.projects.type_id": string;
   /** @description project_site_usages */
   "body.project_site_usages": definitions["project_site_usages"];
   /** Format: smallint */
@@ -1730,6 +1854,14 @@ export interface parameters {
   "rowFilter.project_types.title": string;
   /** Format: text */
   "rowFilter.project_types.description": string;
+  /** @description project_site_usages_by_categories */
+  "body.project_site_usages_by_categories": definitions["project_site_usages_by_categories"];
+  /** Format: smallint */
+  "rowFilter.project_site_usages_by_categories.id": string;
+  /** Format: smallint */
+  "rowFilter.project_site_usages_by_categories.project_site_usage_id": string;
+  /** Format: smallint */
+  "rowFilter.project_site_usages_by_categories.project_site_usage_category_id": string;
   /** @description projects_publication_status */
   "body.projects_publication_status": definitions["projects_publication_status"];
   /** Format: uuid */

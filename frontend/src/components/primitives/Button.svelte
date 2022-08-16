@@ -5,8 +5,8 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
 	import { slip } from '$transitions/slip';
-	import { cssSize, type SizeInput } from '$utils/css';
-	import { Ctx } from '$utils/keys';
+	import { cssSize } from '$utils/css';
+	import { Ctx } from '$utils/values/keys';
 	import { getContext } from 'svelte';
 	import type { ComponentProps } from 'svelte/internal';
 	import type { FieldContext } from './Field.svelte';
@@ -16,7 +16,7 @@
 
 	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' | 'navbar' = 'default';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
-	export let size: SizeInput = '1em';
+	export let size: string | number = '1em';
 	/**
 	 * Alignment of the button's default slot content. This rule does not affect icon positioning.
 	 */
@@ -65,7 +65,7 @@
 	class:active
 	class:warning
 	class:square={autoSquare}
-	style:font-size={cssSize(size)}
+	style:--size={cssSize(size)}
 	disabled={disabled || loading}
 	{href}
 	{type}
@@ -93,31 +93,33 @@
 		<slot name="badge" />
 	{/if}
 	{#if loading}
-		<Loading />
+		<Loading color="currentColor" />
 	{/if}
 </svelte:element>
 
 <style lang="scss">
 	.button {
-		--size: calc(var(--default-size) - 2 * var(--inset, 0px));
-		display: inline-block;
-		cursor: pointer;
-		box-sizing: border-box;
+		--base: calc(var(--default-size) - 2 * var(--inset, 0px));
+		--baseline: calc(var(--base) - 0.2em);
+		--border-radius: calc(var(--default-radius) - var(--inset, 0px));
+		font-size: var(--size);
 		position: relative;
+		display: inline-flex;
+		cursor: pointer;
 		border: none;
-		height: var(--size);
-		min-height: var(--size);
-		min-width: var(--size);
-		border-radius: calc(var(--default-radius) - var(--inset, 0px));
+		height: var(--base);
+		min-width: var(--base);
+		line-height: var(--baseline);
+		border-radius: var(--border-radius);
 		margin: 0;
 		padding: 0 1.5em;
 		text-decoration: none;
-		font-family: var(--font-main);
+		font-family: inherit;
 		font-weight: 400;
 		outline-width: 1px;
 		outline-style: solid;
 		outline-color: transparent;
-		outline-offset: 2px;
+		outline-offset: 0px;
 		transition: all 0.1s cubic-bezier(0.25, 0, 0.5, 1);
 
 		&.warning {
@@ -147,6 +149,7 @@
 		padding: 0;
 		& div {
 			justify-content: center;
+			align-items: center;
 		}
 	}
 
@@ -168,7 +171,7 @@
 			auto
 			[right-end];
 		flex-direction: row;
-		align-items: center;
+		align-items: baseline;
 		transition: transform 0.25s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 	}
 	.align-center {
@@ -210,27 +213,26 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
-		align-items: center;
+		align-items: baseline;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
 	.label {
 		grid-column: center;
 		display: block;
-		top: -0.05em;
+		// top: -0.05em;
 	}
 	.icon {
-		// top: -0.05em;
 		&:only-child {
 			font-size: 1.25em;
 			grid-column: center;
 		}
 	}
 
-	/* 
-		Variants (should correspond to `typeof variant`)
+	/**
+	* Variants (should correspond to `typeof variant`)
 	*/
-	/* Default button theme */
+
 	.default {
 		color: var(--color-dark-900);
 		background-color: var(--color-light-300);
@@ -312,8 +314,7 @@
 	.navbar {
 		color: var(--color-dark-900);
 		background-color: transparent;
-		font-weight: 600;
-		padding-inline: 1.2em;
+		font-weight: 500;
 		&::after {
 			content: '';
 			opacity: 0;
@@ -330,9 +331,8 @@
 		}
 		&:hover,
 		&[popover='open'] {
-			backdrop-filter: blur(8px);
 			color: var(--color-dark-900);
-			background-color: rgba(var(--rgb-light-500), 0.5);
+			background-color: rgba(var(--rgb-dark-100), 0.1);
 			&::after {
 				opacity: 1;
 				width: 8px;

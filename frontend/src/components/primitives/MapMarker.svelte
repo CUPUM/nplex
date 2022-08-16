@@ -6,7 +6,7 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/values/keys';
 	import type { LngLat, LngLatLike } from 'maplibre-gl';
 	import { getContext } from 'svelte';
 
