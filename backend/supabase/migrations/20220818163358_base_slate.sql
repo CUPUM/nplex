@@ -345,9 +345,13 @@ CREATE UNIQUE INDEX project_site_usage_by_category_usage_id_category_id_key ON p
 
 CREATE UNIQUE INDEX project_site_usage_category_pkey ON public.project_site_usage_category USING btree (id);
 
+CREATE UNIQUE INDEX project_site_usage_parent_category_usage_id_category_id_key ON public.project_site_usage_parent_category USING btree (usage_id, category_id);
+
 CREATE UNIQUE INDEX project_site_usage_pkey ON public.project_site_usage USING btree (id);
 
 CREATE UNIQUE INDEX project_sub_type_parent_type_pkey ON public.project_sub_type_parent_type USING btree (type_id, sub_type_id);
+
+CREATE UNIQUE INDEX project_sub_type_parent_type_type_id_sub_type_id_key ON public.project_sub_type_parent_type USING btree (type_id, sub_type_id);
 
 CREATE UNIQUE INDEX project_sub_type_pkey ON public.project_sub_type USING btree (id);
 
@@ -363,6 +367,8 @@ CREATE UNIQUE INDEX projects_events_pkey ON public.projects_events USING btree (
 
 CREATE UNIQUE INDEX projects_events_ressources_pkey ON public.projects_events_ressources USING btree (id);
 
+CREATE UNIQUE INDEX projects_exemplarity_indicato_exemplarity_indicator_id_proj_key ON public.projects_exemplarity_indicators USING btree (exemplarity_indicator_id, project_id);
+
 CREATE UNIQUE INDEX projects_exemplarity_indicators_pkey ON public.projects_exemplarity_indicators USING btree (id);
 
 CREATE UNIQUE INDEX projects_materials_pkey ON public.projects_materials USING btree (id);
@@ -373,21 +379,33 @@ CREATE UNIQUE INDEX projects_pkey ON public.projects USING btree (id);
 
 CREATE UNIQUE INDEX projects_publication_status_pkey ON public.projects_publication_status USING btree (project_id);
 
+CREATE UNIQUE INDEX projects_publication_status_project_id_key ON public.projects_publication_status USING btree (project_id);
+
 CREATE UNIQUE INDEX projects_ratings_pkey ON public.projects_ratings USING btree (id, user_id, project_id);
 
 CREATE UNIQUE INDEX projects_ratings_project_id_user_id_key ON public.projects_ratings USING btree (project_id, user_id);
+
+CREATE UNIQUE INDEX projects_ratings_user_id_project_id_key ON public.projects_ratings USING btree (user_id, project_id);
 
 CREATE UNIQUE INDEX projects_title_key ON public.projects USING btree (title);
 
 CREATE UNIQUE INDEX projects_users_pkey ON public.projects_users USING btree (id, project_id, user_id);
 
+CREATE UNIQUE INDEX projects_users_user_id_project_id_key ON public.projects_users USING btree (user_id, project_id);
+
 CREATE UNIQUE INDEX users_profiles_pkey ON public.users_profiles USING btree (user_id);
+
+CREATE UNIQUE INDEX users_profiles_user_id_key ON public.users_profiles USING btree (user_id);
+
+CREATE UNIQUE INDEX users_projects_collections_items_collection_id_project_id_key ON public.users_projects_collections_items USING btree (collection_id, project_id);
 
 CREATE UNIQUE INDEX users_projects_collections_items_pkey ON public.users_projects_collections_items USING btree (id);
 
 CREATE UNIQUE INDEX users_projects_collections_pkey ON public.users_projects_collections USING btree (id);
 
 CREATE UNIQUE INDEX users_roles_pkey ON public.users_roles USING btree (user_id);
+
+CREATE UNIQUE INDEX users_roles_user_id_key ON public.users_roles USING btree (user_id);
 
 alter table "public"."project_event_child_type" add constraint "project_event_child_type_pkey" PRIMARY KEY using index "project_event_child_type_pkey";
 
@@ -469,6 +487,8 @@ alter table "public"."project_site_usage_parent_category" add constraint "projec
 
 alter table "public"."project_site_usage_parent_category" validate constraint "project_site_usage_parent_category_category_id_fkey";
 
+alter table "public"."project_site_usage_parent_category" add constraint "project_site_usage_parent_category_usage_id_category_id_key" UNIQUE using index "project_site_usage_parent_category_usage_id_category_id_key";
+
 alter table "public"."project_site_usage_parent_category" add constraint "project_site_usage_parent_category_usage_id_fkey" FOREIGN KEY (usage_id) REFERENCES project_site_usage(id) not valid;
 
 alter table "public"."project_site_usage_parent_category" validate constraint "project_site_usage_parent_category_usage_id_fkey";
@@ -482,6 +502,8 @@ alter table "public"."project_sub_type_parent_type" validate constraint "project
 alter table "public"."project_sub_type_parent_type" add constraint "project_sub_type_parent_type_type_id_fkey" FOREIGN KEY (type_id) REFERENCES project_type(id) not valid;
 
 alter table "public"."project_sub_type_parent_type" validate constraint "project_sub_type_parent_type_type_id_fkey";
+
+alter table "public"."project_sub_type_parent_type" add constraint "project_sub_type_parent_type_type_id_sub_type_id_key" UNIQUE using index "project_sub_type_parent_type_type_id_sub_type_id_key";
 
 alter table "public"."project_sub_type_parent_type" add constraint "project_types_sub_types_type_id_sub_type_id_key" UNIQUE using index "project_types_sub_types_type_id_sub_type_id_key";
 
@@ -535,6 +557,8 @@ alter table "public"."projects_events_ressources" add constraint "projects_event
 
 alter table "public"."projects_events_ressources" validate constraint "projects_events_ressources_project_id_fkey";
 
+alter table "public"."projects_exemplarity_indicators" add constraint "projects_exemplarity_indicato_exemplarity_indicator_id_proj_key" UNIQUE using index "projects_exemplarity_indicato_exemplarity_indicator_id_proj_key";
+
 alter table "public"."projects_exemplarity_indicators" add constraint "projects_exemplarity_indicators_exemplarity_indicator_id_fkey" FOREIGN KEY (exemplarity_indicator_id) REFERENCES project_exemplarity_indicator(id) not valid;
 
 alter table "public"."projects_exemplarity_indicators" validate constraint "projects_exemplarity_indicators_exemplarity_indicator_id_fkey";
@@ -571,6 +595,8 @@ alter table "public"."projects_publication_status" add constraint "projects_publ
 
 alter table "public"."projects_publication_status" validate constraint "projects_publication_status_project_id_fkey";
 
+alter table "public"."projects_publication_status" add constraint "projects_publication_status_project_id_key" UNIQUE using index "projects_publication_status_project_id_key";
+
 alter table "public"."projects_publication_status" add constraint "projects_publication_status_updated_by_id_fkey" FOREIGN KEY (updated_by_id) REFERENCES users_profiles(user_id) not valid;
 
 alter table "public"."projects_publication_status" validate constraint "projects_publication_status_updated_by_id_fkey";
@@ -585,6 +611,8 @@ alter table "public"."projects_ratings" add constraint "projects_ratings_user_id
 
 alter table "public"."projects_ratings" validate constraint "projects_ratings_user_id_fkey";
 
+alter table "public"."projects_ratings" add constraint "projects_ratings_user_id_project_id_key" UNIQUE using index "projects_ratings_user_id_project_id_key";
+
 alter table "public"."projects_users" add constraint "projects_editors_project_id_editor_id_key" UNIQUE using index "projects_editors_project_id_editor_id_key";
 
 alter table "public"."projects_users" add constraint "projects_users_project_id_fkey" FOREIGN KEY (project_id) REFERENCES projects(id) not valid;
@@ -595,9 +623,13 @@ alter table "public"."projects_users" add constraint "projects_users_user_id_fke
 
 alter table "public"."projects_users" validate constraint "projects_users_user_id_fkey";
 
+alter table "public"."projects_users" add constraint "projects_users_user_id_project_id_key" UNIQUE using index "projects_users_user_id_project_id_key";
+
 alter table "public"."users_profiles" add constraint "users_profiles_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE not valid;
 
 alter table "public"."users_profiles" validate constraint "users_profiles_user_id_fkey";
+
+alter table "public"."users_profiles" add constraint "users_profiles_user_id_key" UNIQUE using index "users_profiles_user_id_key";
 
 alter table "public"."users_projects_collections" add constraint "users_projects_collections_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users_profiles(user_id) ON DELETE CASCADE not valid;
 
@@ -606,6 +638,8 @@ alter table "public"."users_projects_collections" validate constraint "users_pro
 alter table "public"."users_projects_collections_items" add constraint "users_projects_collections_items_collection_id_fkey" FOREIGN KEY (collection_id) REFERENCES users_projects_collections(id) ON DELETE CASCADE not valid;
 
 alter table "public"."users_projects_collections_items" validate constraint "users_projects_collections_items_collection_id_fkey";
+
+alter table "public"."users_projects_collections_items" add constraint "users_projects_collections_items_collection_id_project_id_key" UNIQUE using index "users_projects_collections_items_collection_id_project_id_key";
 
 alter table "public"."users_projects_collections_items" add constraint "users_projects_collections_items_project_id_fkey" FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE not valid;
 
@@ -618,6 +652,8 @@ alter table "public"."users_projects_collections_items" validate constraint "use
 alter table "public"."users_roles" add constraint "users_roles_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users_profiles(user_id) ON DELETE CASCADE not valid;
 
 alter table "public"."users_roles" validate constraint "users_roles_user_id_fkey";
+
+alter table "public"."users_roles" add constraint "users_roles_user_id_key" UNIQUE using index "users_roles_user_id_key";
 
 set check_function_bodies = off;
 
