@@ -20,7 +20,7 @@
 	"license": "MIT",
 	"packageManager": "pnpm@6.25.0",
 	"scripts": {
-		"gen-db-types": "cd ../backend && . ../.env && supabase gen types typescript --db-url ${SUPABASE_DB_URL} > src/types/database.ts",
+		"gen-db-types": ". .env && cd ../backend && supabase gen types typescript --db-url ${SUPABASE_DB_URL} > ../frontend/src/types/database.ts",
 		"gen-openapi-types": ". ../.env && npx openapi-typescript \"${PUBLIC_SUPABASE_URL}/rest/v1/?apikey=${PUBLIC_SUPABASE_ANON_KEY}\" --output src/types/database.ts",
 		"dev": "vite dev",
 		"build": "vite build",
