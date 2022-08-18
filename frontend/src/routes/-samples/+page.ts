@@ -1,4 +1,6 @@
-eflyRotate const load: Load = async ({ session, stuff, fetch }) => {
+import type { PageLoad } from './$types';
+
+export const load: PageLoad = async ({ fetch }) => {
 	const res = await fetch('/api/projects/params-lists.json', {
 		method: 'GET',
 	});

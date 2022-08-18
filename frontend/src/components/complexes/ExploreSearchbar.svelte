@@ -24,7 +24,7 @@
 	}
 
 	function toggleFilters() {
-		switch ($page.stuff.category) {
+		switch ($page.data.category) {
 			case 'projects':
 				projectsShowFiltersPane.toggle();
 				break;
@@ -35,7 +35,7 @@
 		}
 	}
 
-	$: showCurrentFilters = $page.stuff.category === 'projects' ? $projectsShowFiltersPane : false;
+	$: showCurrentFilters = $page.data.category === 'projects' ? $projectsShowFiltersPane : false;
 
 	function handleTokenScroll(e: Event) {
 		const el = e.target as HTMLElement;
@@ -53,7 +53,7 @@
 	<section class="search-field">
 		<Field type="search" placeholder="Chercher" icon="search" bind:value={$exploreSearchterm} width="100%">
 			<svelte:fragment slot="left">
-				{#if $page.stuff.category && !showCurrentFilters}
+				{#if $page.data.category && !showCurrentFilters}
 					<div transition:slip={{ width: true, overflow: 'visible' }}>
 						<div in:receive={{ key: '' }} out:send={{ key: '' }}>
 							<Button on:click={toggleFilters} icon="parameters" />

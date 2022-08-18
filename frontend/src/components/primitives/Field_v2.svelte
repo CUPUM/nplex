@@ -14,6 +14,7 @@
 	export let name: string = undefined;
 	export let size: string | number = '1em';
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
+	export let variant: 'default' | 'secondary' | 'cta' | 'ghost' = 'default';
 	export let required: boolean = undefined;
 	export let disabled: boolean = undefined;
 	export let warning: boolean = undefined;
@@ -51,11 +52,12 @@
 </script>
 
 <div
-	class="field"
+	class="field {variant}"
 	style:--size={cssSize(size)}
 	style:--leading-width="{leadingWidth}px"
 	style:--trailing-width="{trailingWidth}px"
 	class:focused
+	class:has-value={value !== ''}
 	class:has-placeholder={hasPlaceholder}
 >
 	{#if $$slots.leading}
@@ -92,9 +94,11 @@
 		<div class="trailing" bind:clientWidth={trailingWidth}><slot name="trailing" /></div>
 	{/if}
 	<fieldset>
+		<!-- {#if $$slots.label} -->
 		<legend>
 			<slot name="label" />
 		</legend>
+		<!-- {/if} -->
 	</fieldset>
 </div>
 
@@ -118,24 +122,23 @@
 			auto
 			[trailing-end];
 		gap: 0;
-		min-height: var(--base);
+		max-height: var(--base);
+		height: var(--base);
 		line-height: var(--baseline);
 		border-radius: var(--border-radius);
 		padding: 0;
 		margin: 0;
-		outline: rgba(0, 250, 200, 0.2) solid 1px;
 	}
 
 	.leading,
 	.trailing {
 		position: relative;
-		display: flex;
+		display: inline-flex;
 		top: 0;
 		flex-direction: row;
 		padding: var(--inset);
+		line-height: calc(var(--baseline) - 2 * var(--inset));
 		margin: 0;
-		opacity: 0.25;
-		outline: red solid 1px;
 	}
 	.leading {
 		grid-column: leading;
@@ -160,8 +163,19 @@
 		vertical-align: baseline;
 		position: relative;
 		display: inline-flex;
-		opacity: 0.25;
-		outline: blue solid 1px;
+		opacity: 0;
+		transform: translateY(0.25em);
+		transition: opacity 0.2s ease-in-out, transform 0.25s cubic-bezier(0.8, 0, 0.8, 1);
+	}
+	.focused,
+	.has-placeholder,
+	.has-value {
+		.before-value,
+		.after-value {
+			transform: translateY(0);
+			opacity: 0.5;
+			transition: opacity 0.2s 0.1s ease-in-out, transform 0.25s 0.1s cubic-bezier(0.2, 0, 0.2, 1);
+		}
 	}
 
 	input {
@@ -172,7 +186,7 @@
 		border-radius: inherit;
 		border: none;
 		outline: none;
-		background-color: rgba(0, 0, 0, 0.1);
+		background-color: transparent;
 		line-height: var(--baseline);
 		align-self: baseline;
 		text-overflow: ellipsis;
@@ -219,10 +233,9 @@
 		transition: all 0.15s cubic-bezier(0, 0, 0, 1);
 	}
 
-	.focused fieldset {
-		--border-width: 1.5px;
-		color: red;
-
+	.focused,
+	.has-value,
+	.has-placeholder {
 		legend:not(:empty) {
 			max-width: 100%;
 			font-size: clamp(10px, 0.7em, 24px);
@@ -233,7 +246,23 @@
 		}
 	}
 
+	// .has-value:not(.focused),
+	// .has-placeholder:not(.focused) {
+	// 	legend:not(:empty) {
+	// 		font-size: clamp(10px, 0.7em, 24px);
+	// 		top: -1.5em;
+	// 		line-height: 1em;
+	// 	}
+	// }
+
 	/**
 	* Vaiants
 	*/
+
+	.default {
+		&.focused {
+			--border-width: 1.5px;
+			color: var(--color-primary-500);
+		}
+	}
 </style>

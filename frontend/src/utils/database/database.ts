@@ -1,49 +1,56 @@
-import { browser } from '$app/env';
-import { createClient } from '@supabase/supabase-js';
-
-// 1 day
-const COOKIE_LIFETIME = 3600000 * 24;
-
 /**
- * Instanciate a disposable single-request-lived db client. Useful for authed server side requests.
+ * Init a client-side supabase client instance to listen to auth state changes and more. //
  */
-export function createDisposableDbClient(accessToken?: string) {
-	const client = createClient(
-		import.meta.env.PUBLIC_SUPABASE_URL as string,
-		import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string,
-		{
-			persistSession: false,
-			autoRefreshToken: false,
-			cookieOptions: {
-				lifetime: COOKIE_LIFETIME,
-			},
-			// fetch: // Custom fetch function, if needed
-		}
-	);
-	if (accessToken) {
-		client.auth.setAuth(accessToken);
-	}
-	return client;
-}
+// export const browserDbClient = createClient(
+// 	import.meta.env.PUBLIC_SUPABASE_URL,
+// 	import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
+// 	{
+// 		db: {
+// 			schema: 'public',
+// 		},
+// 		auth: {
+// 			persistSession: true,
+// 			autoRefreshToken: true,
+// 		},
+// 	}
+// );
 
-/**
- * Init a client-side supabase client instance to listen to auth state changes and more.
- */
-export const browserDbClient = createClient(
-	import.meta.env.PUBLIC_SUPABASE_URL as string,
-	import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string,
-	{
-		persistSession: false,
-		autoRefreshToken: true,
-		cookieOptions: {
-			lifetime: COOKIE_LIFETIME,
-		},
-	}
-);
+// /**
+//  * Server side admin db client to use only when truly necessary.
+//  */
+// export const adminDbClient = browser
+// 	? null
+// 	: createClient(PUBLIC_SUPABASE_URL, import.meta.env.SUPABASE_SERVICE_KEY, {
+// 			db: {
+// 				schema: 'public',
+// 			},
+// 			auth: {
+// 				persistSession: false,
+// 				autoRefreshToken: false,
+// 			},
+// 			// global: {
+// 			// 	// fetch:,
+// 			// 	// headers:,
+// 			// },
+// 	  });
 
-/**
- * Helper to get the proper Supabase client instance depending on the detected context of execution.
- */
-export function getContextualDbClient(accessToken?: string) {
-	return browser ? browserDbClient : createDisposableDbClient(accessToken);
-}
+// /**
+//  * Db client instanciator to use on a per-request basis for server-side authed requests without unnecessary admin privileges.
+//  */
+// export function createServerDbClient(accessToken?: string) {
+// 	return createClient(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_ANON_KEY, {
+// 		db: {
+// 			schema: 'public',
+// 		},
+// 		auth: {
+// 			persistSession: false,
+// 			autoRefreshToken: false,
+// 		},
+// 		global: {
+// 			// fetch:,
+// 			headers: {
+// 				Authotization: `Bearer ${accessToken}`,
+// 			},
+// 		},
+// 	});
+// }

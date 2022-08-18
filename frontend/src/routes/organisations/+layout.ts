@@ -2,7 +2,6 @@ import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = ({ data }) => {
 	return {
-		category: 'projects',
-		showExploreSearchbar: true,
+		category: 'organisation',
 	};
 };

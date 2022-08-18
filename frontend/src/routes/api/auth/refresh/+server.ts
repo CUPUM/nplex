@@ -1,8 +1,8 @@
 import { applySetCookieHeaders, type SetCookieDetails } from '$utils/cookies';
 import { Cookie } from '$utils/values/keys';
 import type { Session } from '@supabase/supabase-js';
-import type { RequestHandler } from '@sveltejs/kit';
 import type cookie from 'cookie';
+import type { RequestHandler } from './$types';
 
 /**
  * Update client's cookies with newly refreshed tokens obtained after client-side AuthChangeEvent, triggered by
@@ -39,6 +39,5 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	applySetCookieHeaders(res, setCookies);
 
-	throw new Error("@migration task: Migrate this return statement (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
 	return res;
 };

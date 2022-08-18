@@ -1,35 +1,31 @@
 <script lang="ts">
-	import { afterNavigate } from '$app/navigation';
-	import { page, session } from '$app/stores';
-	import AuthModal from '$components/complexes/AuthModal.svelte';
-	import Footer from '$components/complexes/Footer.svelte';
-	import MessagesOutlet from '$components/complexes/MessagesOutlet.svelte';
-	import Navbar from '$components/complexes/Navbar.svelte';
+	import { page } from '$app/stores';
 	import Loading from '$components/primitives/Loading.svelte';
 	import { authModal } from '$stores/auth';
 	import '$styles/app.scss';
 	import '$styles/vars.css';
-	import { handleAuthStateChange } from '$utils/database/auth';
-	import { browserDbClient } from '$utils/database/database';
-	import { SearchParam } from '$utils/values/keys';
 	import { sizes } from '$utils/values/sizes';
 	import { onMount } from 'svelte';
+	import AuthModal from './AuthModal.svelte';
+	import Footer from './Footer.svelte';
+	import MessagesOutlet from './MessagesOutlet.svelte';
+	import Navbar from './Navbar.svelte';
 
 	let loading = true;
 	let navbarHeight: number = 0;
 
-	afterNavigate(({ from, to }) => {
-		const newPreviousUrl = to;
-		newPreviousUrl.searchParams.delete(SearchParam.AuthModal);
-		session.update((prev) => ({ ...prev, previousUrl: newPreviousUrl.toString() }));
-	});
+	// afterNavigate(({ from, to }) => {
+	// 	const newPreviousUrl = to;
+	// 	newPreviousUrl.searchParams.delete(SearchParam.AuthModal);
+	// 	session.update((prev) => ({ ...prev, previousUrl: newPreviousUrl.toString() }));
+	// });
 
 	// To do: instanciate a poller to auto-refresh tokens by hitting api.
 
 	// Listening to and handling client-side Supabase auth state change.
-	browserDbClient.auth.onAuthStateChange(async (e, s) => {
-		await handleAuthStateChange(e, s);
-	});
+	// browserDbClient.auth.onAuthStateChange(async (e, s) => {
+	// 	await handleAuthStateChange(e, s);
+	// });
 
 	onMount(() => {
 		loading = false;
@@ -65,6 +61,5 @@
 
 	.loading {
 		opacity: 0;
-		// transform: translateY(20px);
 	}
 </style>

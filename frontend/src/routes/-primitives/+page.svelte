@@ -14,7 +14,7 @@
 	<input type="range" name="" id="" min="10" max="72" step="1" bind:value={fieldSize} />
 	<FieldV2 placeholder="Placeholder" beforeValue="before" afterValue="after" bind:size={fieldSize}>
 		<!-- <svelte:fragment slot="leading">Leading</svelte:fragment> -->
-		<!-- <svelte:fragment slot="label"><span>Placeholder label</span> <Icon name="trash" /></svelte:fragment> -->
+		<svelte:fragment slot="label"><span>Placeholder label</span> <Icon name="trash" /></svelte:fragment>
 		<svelte:fragment slot="trailing"><Button icon="home">Do this do that</Button></svelte:fragment>
 	</FieldV2>
 	<FieldV2 beforeValue="before" afterValue="after" bind:size={fieldSize}>
@@ -24,7 +24,7 @@
 	</FieldV2>
 	<FieldV2 bind:value={textValue} beforeValue="before" afterValue="after">
 		<!-- <svelte:fragment slot="leading">Leading</svelte:fragment> -->
-		<!-- <svelte:fragment slot="label">Label without placeholder prop <Icon name="trash" /></svelte:fragment> -->
+		<svelte:fragment slot="label">Label without placeholder prop <Icon name="trash" /></svelte:fragment>
 		<!-- <svelte:fragment slot="trailing">trailing!</svelte:fragment> -->
 	</FieldV2>
 	<FieldMultiline>

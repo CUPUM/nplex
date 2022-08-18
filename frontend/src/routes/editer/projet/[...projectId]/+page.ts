@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from '../$types';
+import type { PageLoad } from './$types';
 
 const newSiteUsage = {
 	category_id: null,
@@ -31,8 +31,8 @@ export const load: PageLoad = async ({ params, fetch }) => {
 		return {
 			descriptors,
 		};
-	} catch (error) {
-		console.error(error);
-		throw error(404);
+	} catch (err) {
+		console.error(err);
+		return error(err.status, err.message);
 	}
 };

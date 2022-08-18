@@ -77,7 +77,7 @@
 		{#if icon || provider}
 			<div class="icon {iconPosition}" transition:slip|local={{ overflow: 'visible', width: true, opacity: 0 }}>
 				{#if icon}
-					<Icon name={icon} strokeWidth="1.5" />
+					<Icon name={icon} strokeWidth="2" />
 				{:else}
 					<ProviderLogo name={provider} size="1.5em" />
 				{/if}
@@ -172,7 +172,7 @@
 			[right-end];
 		flex-direction: row;
 		align-items: baseline;
-		transition: transform 0.25s cubic-bezier(0.25, 2.25, 0.75, 0.5);
+		transition: transform 0.15s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 	}
 	.align-center {
 		grid-template-columns:
@@ -292,7 +292,7 @@
 		color: var(--color-light-100);
 		background-color: var(--color-primary-500);
 		box-shadow: 0 0.5em 1em -0.8em rgba(var(--rgb-primary-700), 0.5);
-		transition: all 0.2s ease-out, box-shadow 0.3s ease-out;
+		transition: all 0.15s ease-out, box-shadow 0.3s ease-out;
 		& .label {
 			perspective: 75px;
 		}

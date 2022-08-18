@@ -1,19 +1,11 @@
-<!--
-	@component
-	This layout inherits from the adjacent unnamed (default) layout.
--->
 <script lang="ts">
 	import { page } from '$app/stores';
 	import ExploreSearchbar from '$components/complexes/ExploreSearchbar.svelte';
 	import { backgroundColor } from '$stores/backgroundColor';
-	import { onDestroy, onMount } from 'svelte';
 
 	let searchbarHeight;
 
 	backgroundColor.reset();
-
-	onMount(() => {});
-	onDestroy(() => {});
 </script>
 
 <div id="explore" style:--searchbar-height="{searchbarHeight || 0}px">

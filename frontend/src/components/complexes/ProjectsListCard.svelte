@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
-	import { page, session } from '$app/stores';
+	import { page } from '$app/stores';
 	import Button from '$components/primitives/Button.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
-	import type { Project } from '$utils/dummy';
 	import { getAuthRedirectUrl } from '$utils/routing/guards';
 	import { colors } from '$utils/values/colors';
 	import { sizes } from '$utils/values/sizes';
 
-	export let project: Project = undefined;
+	export let project;
 	export let imageLoading = true;
 
 	let authHref;
@@ -51,7 +50,7 @@
 				Consulter
 			</Button>
 		</a>
-	{:else if $session.user}
+	{:else if $page.data.user}
 		<!-- Placeholder project card -->
 		<a href="">Soumettre un nouveau projet</a>
 	{:else}

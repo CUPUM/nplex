@@ -1,11 +1,6 @@
-import { getAppUser } from '$utils/database/auth';
-import { createDisposableDbClient } from '$utils/database/database';
 import { Cookie } from '$utils/values/keys';
-import type { GetSession, Handle } from '@sveltejs/kit';
+import type { Handle } from '@sveltejs/kit';
 import cookie from 'cookie';
-
-// 10 minutes
-const TOKEN_EXPIRY_MARGIN = 600000;
 
 /**
  * Parse client cookies and pass relevant ones to endpoints using event.locals, for server-side auth-dependent behaviors.
@@ -20,29 +15,26 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	);
 
-	// Resolve called api or hook.
-	const res = await resolve(event);
-
-	return res;
+	return await resolve(event);
 };
 
 /**
  * Get session hook used on SSR. On refresh or on first page load, this hook should run before the load functions.
  */
-export const getSession: GetSession = async ({ request, locals, url }) => {
-	let appUser: App.Session['user'] = null;
+// export const getSession: GetSession = async ({ request, locals, url }) => {
+// 	let appUser: App.Session['user'] = null;
 
-	try {
-		if (locals[Cookie.DbAccessToken]) {
-			const db = createDisposableDbClient();
-			const { user, error: userError } = await db.auth.api.getUser(locals[Cookie.DbAccessToken]);
-			if (userError) throw userError;
-			appUser = await getAppUser({ access_token: locals[Cookie.DbAccessToken], user });
-		}
-	} catch (err) {}
+// 	try {
+// 		if (locals[Cookie.DbAccessToken]) {
+//			const db = createDisposableDbClient();
+// 			const { user, error: userError } = await db.auth.api.getUser(locals[Cookie.DbAccessToken]);
+// 			if (userError) throw userError;
+// 			appUser = await getAppUser({ access_token: locals[Cookie.DbAccessToken], user });
+// 		}
+// 	} catch (err) {}
 
-	return {
-		previousUrl: url.toString(),
-		user: appUser,
-	};
-};
+// 	return {
+// 		previousUrl: url.toString(),
+// 		user: appUser,
+// 	};
+// };

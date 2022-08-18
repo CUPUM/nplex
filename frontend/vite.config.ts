@@ -12,14 +12,10 @@ const config: UserConfig = {
 		port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
 	},
 	plugins: [generateIconsPlugin(), generateCssVarsPlugin(), sveltekit()],
-	/**
-	 * Prefix required for ENV vars to be exposed (https://vitejs.dev/config/#envdir).
-	 */
-	envPrefix: 'PUBLIC',
-	/**
-	 * Getting env vars from the monorepo root.
-	 */
-	envDir: '..',
+	// /**
+	//  * Getting env vars from the monorepo root.
+	//  */
+	// envDir: '..',
 };
 
 export default config;

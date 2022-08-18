@@ -1,28 +1,30 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
-	import { session } from '$app/stores';
+	import { page } from '$app/stores';
 	import { userProfile } from '$stores/profile';
-	import { cssSize, type SizeInput } from '$utils/css';
+	import { cssSize } from '$utils/css';
 	import Loading from './Loading.svelte';
 
-	export let size: SizeInput = '1em';
+	export let size: string | number = '1em';
 	export let warning: boolean = false;
 	export let href: string = undefined;
 	export let active: boolean = undefined;
 	export let disabled: boolean = undefined;
 	export let loading: boolean = undefined;
+	export let userid: string = undefined;
 
+	const user = userid ? $page.data.user : $page.data.user; // To do:  get user from db if user id is passed.
 	let cssAvatarImage: string = '';
 	const userColors = [
-		`#${parseInt($session.user.created_at.match(/\d+/g).map(Number).join('')).toString(16).slice(-6)}`,
-		`#${$session.user.email
+		`#${parseInt(user.created_at.match(/\d+/g).map(Number).join('')).toString(16).slice(-6)}`,
+		`#${user.email
 			.split('')
 			.map((c) => c.charCodeAt(0).toString(16))
 			.join('')
 			.slice(0, 6)}`,
-		`#${$session.user.id.slice(0, 6)}`,
+		`#${user.id.slice(0, 6)}`,
 	];
-	const userLetter = $session.user.email.charAt(0).toUpperCase();
+	const userLetter = user.email.charAt(0).toUpperCase();
 
 	$: cssAvatarImage = $userProfile && $userProfile.avatar_url ? `url(${$userProfile.avatar_url})` : '';
 </script>

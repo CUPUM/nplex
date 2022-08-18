@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page, session } from '$app/stores';
+	import { page } from '$app/stores';
 	import AvatarButton from '$components/primitives/AvatarButton.svelte';
 	import Button from '$components/primitives/Button.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
@@ -74,7 +74,7 @@
 			out:fly={{ y: 20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
 			<Button href="/" variant="navbar" square={true} icon="home" disabled={$page.url.pathname === '/'} />
-			{#if $session.user}
+			{#if $page.data.user}
 				<Popover placement="bottom" align="end" useHover={true}>
 					<Button slot="control" variant="navbar" href={creationBaseRoute.pathname} icon="pen" />
 					<NavbarCreationMenu />

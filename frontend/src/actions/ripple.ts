@@ -84,6 +84,7 @@ export function ripple(
 		const updatedEndsize = endSize ? cssSize(endSize) : Math.hypot(dX, dY) * 2 + 'px';
 		element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, updatedEndsize);
 		ripple = document.createElement('div');
+		ripple.setAttribute('touch-action', 'none');
 		ripple.style.userSelect = 'none';
 		ripple.style.pointerEvents = 'none';
 		ripple.style.position = 'absolute';

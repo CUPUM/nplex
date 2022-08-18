@@ -14,7 +14,7 @@
 
 <nav>
 	<div in:receive={{ key: projectId }} out:send={{ key: projectId }}>
-		<Button href={exploreRoutes.find((r) => r.category === $page.stuff.category).pathname} variant="secondary">
+		<Button href={exploreRoutes.find((r) => r.category === $page.data.category).pathname} variant="secondary">
 			Go back :)
 		</Button>
 	</div>

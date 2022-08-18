@@ -23,6 +23,9 @@ const config = {
 	],
 	kit: {
 		adapter: node(),
+		env: {
+			publicPrefix: 'PUBLIC',
+		},
 		alias: {
 			$types: 'src/types',
 			$actions: 'src/actions',

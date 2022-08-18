@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { flyRotate } from '$actions/reveal/presets';
-
-	import { reveal } from '$actions/reveal/reveal';
+	import { reveal } from '$actions/reveal';
+	import { flyRotate } from '$utils/presets/reveal';
 </script>
 
 <h2 use:reveal={flyRotate}>Index - guides</h2>

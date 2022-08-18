@@ -49,24 +49,24 @@ grant update (status) on public.projects_publication_status to authenticated;
 grant update (status) on public.projects_publication_status to authenticated;
 
 -- LIST TABLES RLS
-alter table public.project_type_list enable row level security;
+alter table public.project_type enable row level security;
 
-create policy "Anyone can select project type" on public.project_type_list for
+create policy "Anyone can select project type" on public.project_type for
 select using (true);
 
-alter table public.project_site_ownership_list enable row level security;
+alter table public.project_site_ownership enable row level security;
 
-create policy "Anyone can select project site ownership" on public.project_site_ownership_list for
+create policy "Anyone can select project site ownership" on public.project_site_ownership for
 select using (true);
 
-alter table public.project_site_usage_category_list enable row level security;
+alter table public.project_site_usage_category enable row level security;
 
-create policy "Anyone can select project site usage category" on public.project_site_usage_category_list for
+create policy "Anyone can select project site usage category" on public.project_site_usage_category for
 select using (true);
 
-alter table public.project_site_usage_list enable row level security;
+alter table public.project_site_usage enable row level security;
 
-create policy "Anyone can select project site usage" on public.project_site_usage_list for
+create policy "Anyone can select project site usage" on public.project_site_usage for
 select using (true);
 
 -- USERS RLS
@@ -90,15 +90,19 @@ update using (public.user_has_role('admin')) with check (public.user_has_role('a
 -- PROJECTS RLS
 alter table public.projects enable row level security;
 
-create policy "Anyone can select published projects, projects they own, or projects they are editors of." on public.projects for
+create policy "Select published projects, owned projects, or granted projects." on public.projects for
 select using (
-		is_published
+		exists (
+			select 1
+			from public.projects_publication_status
+			where public.projects_publication_status.project_id = public.projects.id
+		)
 		or auth.uid() = created_by_id
 		or exists (
 			select 1
-			from public.projects_editors
-			where public.projects_editors.project_id = public.projects.id
-				and public.projects_editors.user_id = auth.uid()
+			from public.projects_users
+			where public.projects_users.project_id = public.projects.id
+				and public.projects_users.user_id = auth.uid()
 		)
 	);
 
@@ -108,24 +112,26 @@ insert with check (
 		and auth.uid() = created_by_id
 	);
 
-create policy "Only admins, projects creators and assigned editors can update projects." on public.projects for
+create policy "Only admins, projects creators and adequately granted users can update projects." on public.projects for
 update using (
 		public.user_has_role('admin')
 		or auth.uid() = created_by_id
 		or exists (
 			select 1
-			from public.projects_editors
-			where public.projects_editors.project_id = public.projects.id
-				and public.projects_editors.user_id = auth.uid()
+			from public.projects_users
+			where public.projects_users.project_id = public.projects.id
+				and public.projects_users.user_id = auth.uid()
+				and public.projects_users.granted_role in ('admin', 'editor')
 		)
 	) with check (
 		public.user_has_role('admin')
 		or auth.uid() = created_by_id
 		or exists (
 			select 1
-			from public.projects_editors
-			where public.projects_editors.project_id = public.projects.id
-				and public.projects_editors.user_id = auth.uid()
+			from public.projects_users
+			where public.projects_users.project_id = public.projects.id
+				and public.projects_users.user_id = auth.uid()
+				and public.projects_users.granted_role in ('admin', 'editor')
 		)
 	);
 
@@ -135,23 +141,17 @@ create policy "Only admins and project creators can delete a project." on public
 );
 
 -- PROJECTS EDITORS RLS
-alter table public.projects_editors enable row level security;
+alter table public.projects_users enable row level security;
 
-create policy "Anyone can select project editors for projects they can normally select." on public.projects_editors for
-select using (
-		exists (
-			select 1
-			from public.projects
-			where public.projects.id = public.projects_editors.project_id
-		)
-	);
+create policy "Anyone can select project users." on public.projects_users for
+select using (true);
 
-create policy "Only project creators and admins can insert, update, and delete project editors." on public.projects_editors for all using (
+create policy "Only project creators, admins can insert, update, and delete project users." on public.projects_userss for all using (
 	public.user_has_role('admin')
 	or exists (
 		select 1
 		from public.projects
-		where public.projects.id = public.projects_editors.project_id
+		where public.projects.id = public.projects_users.project_id
 			and public.projects.created_by_id = auth.uid()
 	)
 );
@@ -159,16 +159,10 @@ create policy "Only project creators and admins can insert, update, and delete p
 -- PROJECTS STATUS RLS
 alter table public.projects_publication_status enable row level security;
 
-create policy "Anyone can select publication status for projects they can normally select." on public.projects_publication_status for
-select using (
-		exists (
-			select 1
-			from public.projects
-			where public.projects.id = public.projects_publication_status.project_id
-		)
-	);
+create policy "Anyone can select publication status." on public.projects_publication_status for
+select using (true);
 
-create policy "Only editors and admin can update publication status for projects they created or are editors of." on public.projects_publication_status for
+create policy "Only admins, creating editors or granted editors can update publication status." on public.projects_publication_status for
 update using (
 		public.user_has_role('admin')
 		or (
@@ -177,14 +171,15 @@ update using (
 				exists (
 					select 1
 					from public.projects
-					where public.projects.id = public.projects_publication_status.project_id
+					where public.projects.id = project_id
 						and public.projects.created_by_id = auth.uid()
 				)
 				or exists (
 					select 1
-					from public.projects_editors
-					where public.projects_editors.project_id = public.projects_publication_status.project_id
-						and public.projects_editors.user_id = auth.uid()
+					from public.projects_users
+					where public.projects_users.project_id = project_id
+						and public.projects_users.user_id = auth.uid()
+						and public.projects_users.granted_role in ('admin', 'editor')
 				)
 			)
 		)
@@ -227,13 +222,14 @@ select using (
 		or auth.uid() = user_id
 	);
 
-create policy "Authed users can only create collections under their uid." on public.users_projects_collections for
-insert with check (auth.uid() = user_id);
-
-create policy "Authed users can only update collections they own." on public.users_projects_collections for
-update using (auth.uid() = user_id) with check (auth.uid() = user_id);
-
-create policy "Authed users can only delete collections they own." on public.users_projects_collections for delete using (auth.uid() = user_id);
+create policy "Authed users can only manage collections under their uid" on public.users_projects_collections for
+all using (
+	auth.role() = 'authenticated'
+	and auth.uid() = user_id
+) with check (
+	auth.role() = 'authenticated'
+	and auth.uid() = user_id
+);
 
 -- USERS PROJECTS COLLECTIONS ITEMS RLS
 alter table public.users_projects_collections_items enable row level security;
@@ -252,8 +248,16 @@ select using (
 		)
 	);
 
-create policy "Authed users can only insert items to existing collections they can select." on public.users_projects_collections_items for
-insert with check (
+create policy "Authed users can only manage items of collections they own." on public.users_projects_collections_items for
+all using (
+auth.uid() = user_id
+		and exists (
+			select 1
+			from public.users_projects_collections
+			where public.users_projects_collections.id = public.users_projects_collections_items.collection_id
+				and public.users_projects_collections.user_id = auth.uid()
+		)
+) with check (
 		auth.uid() = user_id
 		and exists (
 			select 1
@@ -262,8 +266,3 @@ insert with check (
 				and public.users_projects_collections.user_id = auth.uid()
 		)
 	);
-
-create policy "Users can only update items they own." on public.users_projects_collections_items for
-update using (auth.uid() = user_id) with check (auth.uid() = user_id);
-
-create policy "Authed users can only delete items they own." on public.users_projects_collections_items for delete using (auth.uid() = user_id);

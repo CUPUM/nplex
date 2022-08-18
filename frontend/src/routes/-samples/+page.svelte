@@ -1,8 +1,5 @@
-<!--  -->
 <script lang="ts">
-	import { flyup } from '$actions/reveal/presets';
-	import { reveal } from '$actions/reveal/reveal';
-
+	import { reveal } from '$actions/reveal';
 	import Button from '$components/primitives/Button.svelte';
 	import Checkbox from '$components/primitives/Checkbox.svelte';
 	import Field from '$components/primitives/Field.svelte';
@@ -17,9 +14,8 @@
 	import TestRadioSet from '$components/primitives/TestRadioSet.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import { messages } from '$stores/messages';
-	import type { definitions } from '$types/database';
-	import { getContextualDbClient } from '$utils/database/database';
 	import { icons } from '$utils/icons/icons';
+	import { flyRotate } from '$utils/presets/reveal';
 	import { KeyCode } from '$utils/values/keys';
 	import { sizes } from '$utils/values/sizes';
 	import type { ComponentProps } from 'svelte/internal';
@@ -59,26 +55,9 @@
 			messages.dispatch({ content: e.target.value, timer: 10000 });
 		}
 	}
-
-	async function query() {
-		try {
-			const db = getContextualDbClient();
-			const { data, error } = await db
-				.from<definitions['project_site_usages_categories']>('project_site_usages_categories')
-				.select('*, usages:project_site_usages (*)');
-			if (error) throw error;
-			console.log(data);
-		} catch (error) {
-			console.error(error);
-		}
-	}
 </script>
 
 <article class="core-grid">
-	<section>
-		<h2>Go fetch, boi!</h2>
-		<button on:click={query}>Fetch</button>
-	</section>
 	<section>
 		<h2>Map</h2>
 		<section>
@@ -110,7 +89,7 @@
 		<p use:reveal>
 			Lorem, ipsum dolor sit amet <em>consectetur</em> adipisicing elit.
 		</p>
-		<h2 use:reveal={{ ...flyup, show: inserted }}>
+		<h2 use:reveal={{ ...flyRotate, show: inserted }}>
 			Lorem, ipsum dolor sit amet <em>consectetur</em> adipisicing elit.
 		</h2>
 	</section>

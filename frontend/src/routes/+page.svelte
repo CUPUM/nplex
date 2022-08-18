@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { flyRotate } from '$actions/reveal/presets';
-	import { reveal } from '$actions/reveal/reveal';
+	import { reveal } from '$actions/reveal';
+	import { flyRotate } from '$utils/presets/reveal';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -23,7 +23,7 @@
 				<h2>Projets</h2>
 			</a>
 		</header>
-		<ul>[To do: proflyRotate list and list cards]</ul>
+		{JSON.stringify(data.projectsPreview)}
 	</section>
 	<section id="organisations">
 		<header>
@@ -31,7 +31,7 @@
 				<h2>Organisations</h2>
 			</a>
 		</header>
-		<ul>[To do: orgs list and list cards]</ul>
+		{JSON.stringify(data.organisationsPreview)}
 	</section>
 	<section id="actors">
 		<header>
@@ -39,7 +39,7 @@
 				<h2>Acteurs</h2>
 			</a>
 		</header>
-		<ul>[To do: actors list and list cards]</ul>
+		{JSON.stringify(data.actorsPreview)}
 	</section>
 </article>
 
@@ -92,11 +92,6 @@
 			grid-column: main;
 			padding: 0;
 			margin: 0;
-		}
-
-		& ul {
-			grid-column: full;
-			height: 50vh;
 		}
 	}
 </style>
