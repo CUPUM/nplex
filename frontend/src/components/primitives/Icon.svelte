@@ -5,11 +5,13 @@
 </script>
 
 <script lang="ts">
+	import { transform } from '$transitions/transform';
+
 	import { cssSize, type SizeInput } from '$utils/css';
 	import { icons } from '$utils/icons/icons';
 	import { onDestroy, onMount } from 'svelte';
-	import { quadOut } from 'svelte/easing';
-	import { draw, fade, scale } from 'svelte/transition';
+	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { draw, fade } from 'svelte/transition';
 
 	export let name: keyof typeof icons;
 	export let size: SizeInput = '1em';
@@ -49,8 +51,8 @@
 	xmlns="http://www.w3.org/2000/svg"
 	aria-label="icon-image-{name}"
 	viewBox={icon.viewBox}
-	style:font-size={cssSize(size)}
 	style:color
+	style:--size={cssSize(size)}
 	style:--secondary-color={secondaryColor}
 	style:--thickness={cssSize(strokeWidth)}
 	preserveAspectRatio="xMidYMid"
@@ -59,8 +61,14 @@
 	{#if mounted}
 		{#key name}
 			<g
-				in:scale|local={{ start: 0.5, easing: quadOut, duration: 200, delay: 50 }}
-				out:scale|local={{ start: 0.75, easing: quadOut, duration: 150 }}
+				in:transform|local={{
+					scale: 0.5,
+					rotateZ: 20,
+					duration: 200,
+					delay: 50,
+					easing: cubicOut,
+				}}
+				out:transform|local={{ scale: 0.75, rotateZ: -20, duration: 150, easing: cubicIn }}
 			>
 				{#if icon.strokes.length}
 					{#each icon.strokes as stroke, i}
@@ -90,17 +98,18 @@
 <style lang="scss">
 	svg {
 		display: inline-flex;
-		vertical-align: -0.2em;
 		overflow: visible;
 		position: relative;
-		width: 1em;
-		height: 1em;
-		line-height: 0.8em;
+		width: var(--size);
+		height: var(--size);
 		padding: 0;
 		margin: 0;
+		perspective: 100px;
+		top: 0.1em;
 	}
 
 	g {
+		transform-style: preserve-3d;
 		transform-origin: center;
 	}
 

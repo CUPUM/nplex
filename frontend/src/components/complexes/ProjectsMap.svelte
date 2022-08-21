@@ -2,7 +2,7 @@
 </script>
 
 <script lang="ts">
-	import Button from '$components/primitives/Button.svelte';
+	import Button from '$components/primitives/Button_old.svelte';
 	import Map from '$components/primitives/Map.svelte';
 	import MapToolbar from '$components/primitives/MapToolbar.svelte';
 	import { centerMapOnClientLocation } from '$utils/maps/map';

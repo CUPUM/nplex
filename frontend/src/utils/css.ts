@@ -31,7 +31,6 @@ export type SizeInput = number | CSS.SizeValue | `${number}`;
  * Helper to quickly test an input value and format it properly for usage in css.
  */
 export function cssSize(input: number | string, fallbackUnit: string = 'px') {
-	console.log(input);
 	if (typeof input === 'string' && parseFloat(input) + '' !== input) return input;
 	return input + fallbackUnit;
 	// const decomposed = decomposeCssSize(input);

@@ -1,14 +1,12 @@
 <script lang="ts">
-	throw new Error("@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)");
-
-	export let profile;
+	export let data;
 </script>
 
-<h1>Bonjour {profile.firstname}!</h1>
+<h1>Bonjour {data.profile.firstname}!</h1>
 <section>
 	<h2>Mon profil</h2>
 	<code>
-		<pre>{JSON.stringify(profile, undefined, 4)}</pre>
+		<pre>{JSON.stringify(data.profile, undefined, 4)}</pre>
 	</code>
 </section>
 <section>

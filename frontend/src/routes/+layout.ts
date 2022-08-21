@@ -1,15 +1,15 @@
-import type { Category } from '$types/categories';
 import type { LayoutLoad } from './$types';
+import type { AppUserSession } from './api/auth/update.json/+server';
 
-export const load: LayoutLoad = async () => {
-	let user = null; // await fetch(); // Throughout app, invalidate(enpoint) to refresh.
-	let category: Category = null;
-	let previousUrl: string;
+export const load: LayoutLoad = async ({ fetch }) => {
+	let session: AppUserSession = null;
+
+	const sessionRes = await fetch('/api/auth/update.json', { method: 'GET' });
+	session = await sessionRes.json();
 
 	return {
-		user,
-		category,
-		previousUrl,
+		session,
+		category: null,
 		showFooter: true,
 		showCategoryNav: false,
 		showExploreSearchbar: false,

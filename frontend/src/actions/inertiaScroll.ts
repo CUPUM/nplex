@@ -18,7 +18,6 @@ export function inertiaScroll(element: HTMLElement, options?: InertiaScrollOptio
 	let accelerating: boolean = false;
 
 	function handleScroll(e: WheelEvent) {
-		console.log('handle scroll');
 		e.preventDefault();
 
 		if (accelerating) {
@@ -27,7 +26,6 @@ export function inertiaScroll(element: HTMLElement, options?: InertiaScrollOptio
 	}
 
 	function scroll() {
-		console.log('scroll');
 		requestAnimationFrame(scroll);
 	}
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
 	import { page } from '$app/stores';
-	import Button from '$components/primitives/Button.svelte';
+	import Button from '$components/primitives/Button_old.svelte';
 	import Field from '$components/primitives/Field.svelte';
 	import Token from '$components/primitives/Token.svelte';
 	import { projectsShowFiltersPane } from '$stores/projectsShowFiltersPane';
@@ -15,13 +15,9 @@
 	let showCurrentFilters = false;
 	const [send, receive] = crossfadeExploreFiltersButton;
 
-	function submit() {
-		// console.log('submitted search bar form');
-	}
+	function submit() {}
 
-	function reset() {
-		// console.log('reset form');
-	}
+	function reset() {}
 
 	function toggleFilters() {
 		switch ($page.data.category) {

@@ -92,7 +92,6 @@ export const projectsFilters = (function () {
 				newValue[k].ignore = isIgnoreValue(newValue[k]);
 			}
 		});
-		console.log('Setting with check', newValue);
 		set(newValue);
 	}
 

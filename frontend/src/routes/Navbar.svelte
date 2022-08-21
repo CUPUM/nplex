@@ -1,20 +1,22 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import AvatarButton from '$components/primitives/AvatarButton.svelte';
-	import Button from '$components/primitives/Button.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import Popover from '$components/primitives/Popover.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
+	import { messages } from '$stores/messages';
 	import { mainScroll } from '$stores/scroll';
-	import { logout } from '$utils/database/auth';
-	import { getAuthRedirectUrl } from '$utils/routing/guards';
+	import { browserDbClient } from '$utils/database/database';
+	import { getAuthRedirectUrl } from '$utils/routing/guard';
 	import { gotoCategory } from '$utils/routing/navigation';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routing/routes';
 	import { colors } from '$utils/values/colors';
 	import { onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
+	import Button from '../components/primitives/Button.svelte';
 	import NavbarCreationMenu from './NavbarCreationMenu.svelte';
 
 	export let navbarHeight;
@@ -28,6 +30,18 @@
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
 	$: overlay = $mainScroll.y > yThreshold + 50;
 	$: mainPathname = $page.data.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
+
+	async function logout() {
+		try {
+			const { error } = await browserDbClient.auth.signOut();
+			if (error) throw error;
+		} catch (error) {
+			messages.dispatch({
+				type: 'error',
+				content: error,
+			});
+		}
+	}
 
 	onMount(() => {
 		mounted = true;
@@ -45,7 +59,7 @@
 				<Logo intro={true} color={colors.dark[900]} hoverColor={colors.primary[500]} />
 			</a>
 			{#each mainRoutes as route}
-				<Button variant="navbar" href={route.pathname} active={route.pathname === mainPathname}>
+				<Button variant="nav" href={route.pathname} active={route.pathname === mainPathname}>
 					{route.title}
 				</Button>
 			{/each}
@@ -53,7 +67,7 @@
 		<nav class="second">
 			{#if $page.data.showCategoryNav}
 				<div>
-					<Switch name="category" variant="navbar" value={$page.data.category}>
+					<Switch name="category" variant="nav" value={$page.data.category}>
 						{#each exploreRoutes as r, i}
 							<SwitchItem
 								id={r.category}
@@ -73,10 +87,14 @@
 			in:fly={{ y: 20, opacity: 0, duration: 500, easing: expoOut, delay: 300 }}
 			out:fly={{ y: 20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
-			<Button href="/" variant="navbar" square={true} icon="home" disabled={$page.url.pathname === '/'} />
-			{#if $page.data.user}
+			<Button href="/" variant="nav" square disabled={$page.url.pathname === '/'}>
+				<Icon name="home" size="1.25em" strokeWidth="2" />
+			</Button>
+			{#if $page.data.session}
 				<Popover placement="bottom" align="end" useHover={true}>
-					<Button slot="control" variant="navbar" href={creationBaseRoute.pathname} icon="pen" />
+					<Button slot="control" variant="nav" href={creationBaseRoute.pathname}>
+						<Icon name="pen" size="1.25em" strokeWidth="2" />
+					</Button>
 					<NavbarCreationMenu />
 				</Popover>
 				<Popover useHover={true} placement="bottom" align="end">
@@ -85,12 +103,9 @@
 					<Button on:click={logout}>Se déconnecter</Button>
 				</Popover>
 			{:else}
-				<Button
-					variant="cta"
-					href={getAuthRedirectUrl($page.url).toString()}
-					icon="user"
-					iconPosition="trailing"
-				/>
+				<Button variant="nav-cta" href={getAuthRedirectUrl($page.url).toString()} square>
+					<Icon name="user" size="1.25em" strokeWidth="2" />
+				</Button>
 			{/if}
 		</nav>
 	{/if}

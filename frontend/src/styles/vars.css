@@ -3,7 +3,7 @@
  *
  * This file was generated from the utils found at ./src/utils.
  * All changes added manually here will be lost on next execution of the generator script.
- * Last generated on: Sun Aug 14 2022 15:47:38 GMT-0400 (GMT-04:00)
+ * Last generated on: Sat Aug 20 2022 01:31:59 GMT-0400 (GMT-04:00)
  *
  * ⚠️ WARNING ⚠️
  */
@@ -59,16 +59,16 @@
 	--rgb-success-700: 108, 218, 93;
 	--color-success-900: hsl(113, 55%, 48%);
 	--rgb-success-900: 71, 190, 55;
-	--color-error-100: hsl(3, 90%, 78%);
-	--rgb-error-100: 249, 153, 148;
-	--color-error-300: hsl(3, 86%, 71%);
-	--rgb-error-300: 245, 124, 117;
-	--color-error-500: hsl(3, 82%, 63%);
-	--rgb-error-500: 238, 91, 83;
-	--color-error-700: hsl(3, 72%, 54%);
-	--rgb-error-700: 222, 62, 53;
-	--color-error-900: hsl(3, 68%, 44%);
-	--rgb-error-900: 188, 44, 36;
+	--color-error-100: hsl(2, 90%, 78%);
+	--rgb-error-100: 249, 152, 148;
+	--color-error-300: hsl(3, 88%, 72%);
+	--rgb-error-300: 246, 127, 121;
+	--color-error-500: hsl(3, 84%, 66%);
+	--rgb-error-500: 241, 103, 95;
+	--color-error-700: hsl(4, 76%, 59%);
+	--rgb-error-700: 230, 82, 71;
+	--color-error-900: hsl(5, 66%, 50%);
+	--rgb-error-900: 212, 57, 43;
 	--size-x3small: 8px;
 	--size-x2small: 10px;
 	--size-xsmall: 12px;

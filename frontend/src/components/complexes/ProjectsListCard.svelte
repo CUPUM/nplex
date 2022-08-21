@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
 	import { page } from '$app/stores';
-	import Button from '$components/primitives/Button.svelte';
+	import Button from '$components/primitives/Button_old.svelte';
 	import Loading from '$components/primitives/Loading.svelte';
-	import { getAuthRedirectUrl } from '$utils/routing/guards';
+	import { getAuthRedirectUrl } from '$utils/routing/guard';
 	import { colors } from '$utils/values/colors';
 	import { sizes } from '$utils/values/sizes';
 
@@ -14,7 +14,6 @@
 	let entered = false;
 
 	function handleEnter() {
-		// console.log('entered');
 		entered = true;
 	}
 
@@ -22,9 +21,7 @@
 		imageLoading = false;
 	}
 
-	function handleEnterCurrent() {
-		// console.log(project.id);
-	}
+	function handleEnterCurrent() {}
 
 	$: authHref = getAuthRedirectUrl($page.url);
 </script>

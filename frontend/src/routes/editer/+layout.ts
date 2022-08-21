@@ -1,8 +1,8 @@
-import { guard } from '$utils/routing/guards';
+import { roleGuard } from '$utils/routing/guard';
 import type { LayoutLoad } from './$types';
 
-export const load: LayoutLoad = async ({ session, url, fetch }) => {
-	// Make sure the client is at least an authed user (hence checking against 'allRoles').
-	const res = await guard.role({ roles: ['admin', 'editor', 'visitor'], session, url });
-	return res;
+export const load: LayoutLoad = async ({ url, fetch, parent }) => {
+	const { session } = await parent();
+	await roleGuard({ roles: ['admin', 'editor', 'visitor'], session });
+	return {};
 };

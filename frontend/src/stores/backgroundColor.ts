@@ -8,7 +8,6 @@ export const backgroundColor = (function () {
 	const root: HTMLElement = browser ? document.querySelector(':root') : undefined;
 	const rootStyle = root ? getComputedStyle(root) : null;
 	const defaultBackgroundColor = rootStyle?.backgroundColor || '';
-	console.log(defaultBackgroundColor);
 
 	const { subscribe, set, update } = writable(defaultBackgroundColor);
 

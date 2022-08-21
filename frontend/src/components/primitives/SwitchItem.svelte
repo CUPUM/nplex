@@ -45,7 +45,7 @@
 		<div class="slot">
 			<slot />
 		</div>
-		{#if variant === 'navbar'}
+		{#if variant === 'nav'}
 			<div class="slot-fx">
 				<slot />
 			</div>
@@ -60,12 +60,12 @@
 		position: relative;
 		cursor: pointer;
 		font-weight: 400;
-		display: inline-flex;
+		display: flex;
 		padding: 0 1.2em;
-		height: calc(var(--size) - 2 * var(--inset));
+		height: var(--computed-height);
 		justify-content: center;
 		align-items: center;
-		border-radius: calc(var(--radius) - var(--inset));
+		border-radius: var(--computed-radius);
 		transition: all 0.15s ease-out;
 
 		&.disabled {
@@ -110,9 +110,10 @@
 		max-width: 0;
 	}
 
-	/* Variants (should reflect options in Switch component) */
+	//
+	// Variants
+	//
 
-	/* Default theme */
 	.default {
 		background-color: transparent;
 		color: var(--color-dark-300);
@@ -128,8 +129,7 @@
 		}
 	}
 
-	/* Nav theme */
-	.navbar {
+	.nav {
 		font-weight: 500;
 		background-color: transparent;
 		color: var(--color-dark-900);

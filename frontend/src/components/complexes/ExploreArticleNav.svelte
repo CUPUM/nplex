@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Button from '$components/primitives/Button.svelte';
+	import Button from '$components/primitives/Button_old.svelte';
 	import { crossfadeExploreArticleBackButton } from '$transitions/crossfades';
 	import { exploreRoutes } from '$utils/routing/routes';
 

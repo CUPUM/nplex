@@ -1,7 +1,9 @@
 <script lang="ts" context="module">
-	throw new Error("@migration task: Check code was safely removed (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292722)");
+	throw new Error(
+		'@migration task: Check code was safely removed (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292722)'
+	);
 
-	// import { guard } from '$utils/routing/guards';
+	// import { guard } from '$utils/routing/guard';
 	// import type { Load } from '@sveltejs/kit';
 
 	// export const load: Load = async ({ session, url, fetch }) => {
@@ -13,7 +15,7 @@
 
 <script lang="ts">
 	import EditorProjectsList from '$components/complexes/EditorProjectsList.svelte';
-	import Button from '$components/primitives/Button.svelte';
+	import Button from '$components/primitives/Button_old.svelte';
 	import { slide } from 'svelte/transition';
 
 	const targetForm = 'edit-form';

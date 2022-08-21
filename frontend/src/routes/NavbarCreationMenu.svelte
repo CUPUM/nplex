@@ -2,7 +2,7 @@
 </script>
 
 <script lang="ts">
-	import Button from '$components/primitives/Button.svelte';
+	import Button from '$components/primitives/Button_old.svelte';
 
 	import { creationRoutes } from '$utils/routing/routes';
 </script>

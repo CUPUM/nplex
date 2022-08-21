@@ -63,10 +63,11 @@ export enum LocalStorage {
  * App cookie names.
  */
 export enum Cookie {
-	DbAccessToken = 'access-token',
-	DbRefreshToken = 'refresh-token',
-	DbProviderToken = 'provider-token',
-	DbAccessTokenExpiry = 'access-token-expiry',
+	DbAccessToken = 'sb-at',
+	DbRefreshToken = 'sb-rt',
+	DbProviderToken = 'sb-pt',
+	DbAccessTokenExpiry = 'sb-ate',
+	AuthChange = 'sb-s',
 }
 
 /**

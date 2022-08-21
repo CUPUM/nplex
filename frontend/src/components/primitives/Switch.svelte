@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	export interface SwitchContext {
 		name: string;
-		variant: 'default' | 'secondary' | 'navbar' | 'ghost' | 'cta';
+		variant: 'default' | 'secondary' | 'nav' | 'ghost' | 'cta';
 		currentRef: Writable<HTMLElement>;
 		tempRef: Writable<HTMLElement>;
 		group: Writable<any>;
@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-	import { cssSize, type SizeInput } from '$utils/css';
+	import { cssSize } from '$utils/css';
 	import { Ctx } from '$utils/values/keys';
 	import { onDestroy, onMount, setContext } from 'svelte';
 	import { expoOut } from 'svelte/easing';
@@ -21,10 +21,11 @@
 	import { scale } from 'svelte/transition';
 
 	export let name: string = undefined;
-	export let size: SizeInput = '1em';
+	export let size: string | number = '1em';
 	export let variant: SwitchContext['variant'] = 'default';
 	export let orientation: 'column' | 'row' = 'row';
 	export let value: any = undefined;
+	export let display: 'inline' | 'block' = 'block';
 
 	const currentRef: SwitchContext['currentRef'] = writable(null);
 	const tempRef: SwitchContext['tempRef'] = writable(null);
@@ -55,13 +56,11 @@
 		$currentRef = element;
 		indicatorBox = getElementBox($currentRef);
 		value = itemValue;
-		// console.log('Setting current', element);
 	}
 
 	function setTemp(element: HTMLElement) {
 		$tempRef = element;
 		indicatorBox = getElementBox($tempRef);
-		// console.log('Setting temp', element);
 	}
 
 	function clearTemp(element: HTMLElement) {
@@ -69,7 +68,6 @@
 			$tempRef = null;
 		}
 		indicatorBox = getElementBox($currentRef);
-		// console.log('Clearing temp', element);
 	}
 
 	setContext<SwitchContext>(Ctx.Switch, {
@@ -96,7 +94,7 @@
 	});
 </script>
 
-<fieldset bind:this={fieldset} class="{variant} {orientation}" style:font-size={cssSize(size)}>
+<fieldset bind:this={fieldset} class="{variant} {orientation}" style:--size={cssSize(size)}>
 	{#if indicatorBox}
 		<div
 			transition:scale|local={{ duration: 150, start: 0.5, opacity: 0, easing: expoOut }}
@@ -110,71 +108,81 @@
 
 <style lang="scss">
 	fieldset {
-		--size: var(--default-size);
-		--radius: var(--default-radius);
+		--radius-ratio: 1;
+		--height-ratio: 3;
 		--inset: 3px;
+		--computed-size: calc(var(--size) - 2 * var(--inset));
+		--computed-radius: calc(var(--radius-ratio) * var(--size) - var(--inset));
+		--computed-height: calc(var(--height-ratio) * var(--size) - 2 * var(--inset));
+		font-size: var(--computed-size);
 		position: relative;
 		border: none;
-		display: inline-flex;
+		display: flex;
 		align-items: stretch;
 		justify-content: center;
 		gap: 0;
 		padding: var(--inset);
-		border-radius: var(--radius);
+		border-radius: calc(var(--radius-ratio) * var(--size));
 		overflow: visible;
 		transition: all 0.1s ease-out;
+
 		&.row {
 			flex-direction: row;
 		}
+
 		&.column {
 			flex-direction: column;
+		}
+
+		&.inline {
+			display: inline-flex;
 		}
 	}
 
 	.indicator {
-		flex: none;
 		z-index: 1;
 		position: absolute;
-		border-radius: calc(var(--radius) - var(--inset));
+		border-radius: calc(var(--computed-radius) - var(--inset));
 		transition: all 0.15s cubic-bezier(0.5, 0, 0.2, 1.2);
-		// &.temp {
-		// 	transform: scale(0.95, 0.92);
-		// }
 	}
 
-	/* Variants */
+	//
+	// Variants
+	//
 
-	/* Default theme */
 	.default {
 		background-color: var(--color-light-500);
+
 		&:hover,
 		&:focus {
 			background-color: var(--color-light-300);
 		}
+
 		& .indicator {
 			background-color: var(--color-dark-900);
+
 			&.temp {
 				background-color: rgba(var(--rgb-dark-900), 0.1);
 			}
 		}
 	}
 
-	/* Nav theme */
-	.navbar {
+	.nav {
 		--inset: 0px;
 		background-color: rgba(255, 255, 255, 0.1);
 		transition: all 0.25s ease-out;
+
 		&:hover,
 		&:focus {
 			background-color: rgba(255, 255, 255, 0.2);
 		}
+
 		& .indicator {
 			opacity: 0.2;
 			box-shadow: 0 0 0 1px var(--color-primary-300);
 			background-color: var(--color-primary-100);
+
 			&.temp {
-				// box-shadow: 0 0 0 0 var(--color-primary-300);
-				// background-color: var(--color-primary-100);
 				opacity: 0.1;
 			}
 		}

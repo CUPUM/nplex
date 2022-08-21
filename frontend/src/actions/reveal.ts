@@ -122,6 +122,7 @@ export function reveal(
 	}: RevealOptions = {}
 ): SvelteActionReturnType {
 	const _ID = 'reveal-' + crypto.getRandomValues(new Uint32Array(1));
+	console.log(_ID);
 	const ATTRIBUTES = {
 		CLASS: _ID,
 		CLASS_INIT: _ID + '-init',
@@ -137,8 +138,8 @@ export function reveal(
 		UNIT_VAR_DURATION_OUT: '--reveal-u-dur-o',
 		UNIT_VAR_EASING_IN: '--reveal-u-eas-i',
 		UNIT_VAR_EASING_OUT: '--reveal-u-eas-o',
-		WRAP_KEYFRAMES_IN: '--w-keyframes-i',
-		WRAP_KEYFRAMES_OUT: '--w-keyframes-o',
+		WRAP_KEYFRAMES_IN: _ID + '-w-keyframes-i',
+		WRAP_KEYFRAMES_OUT: _ID + '-w-keyframes-o',
 		WRAP_VAR_DELAY_IN: '--reveal-w-del-i',
 		WRAP_VAR_DELAY_OUT: '--reveal-w-del-o',
 		WRAP_VAR_DURATION_IN: '--reveal-w-dur-i',
@@ -186,10 +187,10 @@ export function reveal(
 		.${ATTRIBUTES.CLASS}.${ATTRIBUTES.CLASS_INIT} [${ATTRIBUTES.ATTR_UNIT_NODE}] {
 			${objectToCSSText(start)}
 		}
-		.${ATTRIBUTES.CLASS} [${ATTRIBUTES.ATTR_UNIT_NODE}] {
+		.${ATTRIBUTES.CLASS} [${ATTRIBUTES.ATTR_WRAP_NODE}] {
 			${objectToCSSText(wrapEnd)}
 		}
-		.${ATTRIBUTES.CLASS}.${ATTRIBUTES.CLASS_INIT} [${ATTRIBUTES.ATTR_UNIT_NODE}] {
+		.${ATTRIBUTES.CLASS}.${ATTRIBUTES.CLASS_INIT} [${ATTRIBUTES.ATTR_WRAP_NODE}] {
 			${objectToCSSText(wrapStart)}
 		}
 		.${ATTRIBUTES.CLASS}.${ATTRIBUTES.CLASS_IN} [${ATTRIBUTES.ATTR_UNIT_NODE}] {
@@ -205,6 +206,22 @@ export function reveal(
 			animation-duration: var(${ATTRIBUTES.UNIT_VAR_DURATION_OUT});
 			animation-delay: calc(${delayOut}ms + var(${ATTRIBUTES.UNIT_VAR_DELAY_OUT}));
 			animation-timing-function: var(${ATTRIBUTES.UNIT_VAR_EASING_OUT});
+			animation-fill-mode: both;
+			animation-direction: normal;
+		}
+		.${ATTRIBUTES.CLASS}.${ATTRIBUTES.CLASS_OUT} [${ATTRIBUTES.ATTR_WRAP_NODE}] {
+			animation-name: ${ATTRIBUTES.WRAP_KEYFRAMES_OUT};
+			animation-duration: var(${ATTRIBUTES.WRAP_VAR_DURATION_OUT});
+			animation-delay: calc(${delayOut}ms + var(${ATTRIBUTES.WRAP_VAR_DELAY_OUT}));
+			animation-timing-function: var(${ATTRIBUTES.WRAP_VAR_EASING_OUT});
+			animation-fill-mode: both;
+			animation-direction: normal;
+		}
+		.${ATTRIBUTES.CLASS}.${ATTRIBUTES.CLASS_IN} [${ATTRIBUTES.ATTR_WRAP_NODE}] {
+			animation-name: ${ATTRIBUTES.WRAP_KEYFRAMES_IN};
+			animation-duration: var(${ATTRIBUTES.WRAP_VAR_DURATION_IN});
+			animation-delay: calc(${delayOut}ms + var(${ATTRIBUTES.WRAP_VAR_DELAY_IN}));
+			animation-timing-function: var(${ATTRIBUTES.WRAP_VAR_EASING_IN});
 			animation-fill-mode: both;
 			animation-direction: normal;
 		}

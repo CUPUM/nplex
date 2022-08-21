@@ -4,37 +4,29 @@ import cookie from 'cookie';
 
 /**
  * Parse client cookies and pass relevant ones to endpoints using event.locals, for server-side auth-dependent behaviors.
+ *
+ * For consistency, name event.locals property in accordance with cookie names.
  */
 export const handle: Handle = async ({ event, resolve }) => {
 	let cookies = cookie.parse(event.request.headers.get('cookie') || '');
 
-	// Set the relevant and up-to-date token values inside event locals for the rest of request resolving.
-	[Cookie.DbAccessToken, Cookie.DbProviderToken, Cookie.DbAccessTokenExpiry, Cookie.DbRefreshToken].forEach(
-		(tokenName) => {
-			event.locals[tokenName] = cookies[tokenName] || null;
-		}
-	);
+	const authChangeSession: App.Locals[Cookie.AuthChange]['session'] =
+		JSON.parse(cookies[Cookie.AuthChange] || '{}').session || null;
 
+	event.locals[Cookie.DbAccessToken] = authChangeSession
+		? authChangeSession.access_token
+		: cookies[Cookie.DbAccessToken] || null;
+	event.locals[Cookie.DbProviderToken] = authChangeSession
+		? authChangeSession.provider_token
+		: cookies[Cookie.DbProviderToken] || null;
+	event.locals[Cookie.DbAccessTokenExpiry] = authChangeSession
+		? authChangeSession.expires_in + ''
+		: cookies[Cookie.DbAccessTokenExpiry] || null;
+	event.locals[Cookie.DbRefreshToken] = authChangeSession
+		? authChangeSession.refresh_token
+		: cookies[Cookie.DbRefreshToken] || null;
+	event.locals[Cookie.AuthChange] = JSON.parse(cookies[Cookie.AuthChange] || 'null');
+
+	// Proceed with resolution.
 	return await resolve(event);
 };
-
-/**
- * Get session hook used on SSR. On refresh or on first page load, this hook should run before the load functions.
- */
-// export const getSession: GetSession = async ({ request, locals, url }) => {
-// 	let appUser: App.Session['user'] = null;
-
-// 	try {
-// 		if (locals[Cookie.DbAccessToken]) {
-//			const db = createDisposableDbClient();
-// 			const { user, error: userError } = await db.auth.api.getUser(locals[Cookie.DbAccessToken]);
-// 			if (userError) throw userError;
-// 			appUser = await getAppUser({ access_token: locals[Cookie.DbAccessToken], user });
-// 		}
-// 	} catch (err) {}
-
-// 	return {
-// 		previousUrl: url.toString(),
-// 		user: appUser,
-// 	};
-// };

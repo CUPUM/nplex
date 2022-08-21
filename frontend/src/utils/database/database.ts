@@ -1,56 +1,62 @@
+import { browser } from '$app/env';
+import { SUPABASE_SERVICE_KEY } from '$env/static/private';
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
+import type { Database } from '$types/database';
+import { createClient } from '@supabase/supabase-js';
+
+/**
+ * Server side admin db client to use only when truly necessary.
+ */
+export const adminDbClient = browser
+	? null
+	: createClient<Database>(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+			db: {
+				schema: 'public',
+			},
+			auth: {
+				persistSession: false,
+				autoRefreshToken: false,
+			},
+	  });
+
 /**
  * Init a client-side supabase client instance to listen to auth state changes and more. //
  */
-// export const browserDbClient = createClient(
-// 	import.meta.env.PUBLIC_SUPABASE_URL,
-// 	import.meta.env.PUBLIC_SUPABASE_ANON_KEY,
-// 	{
-// 		db: {
-// 			schema: 'public',
-// 		},
-// 		auth: {
-// 			persistSession: true,
-// 			autoRefreshToken: true,
-// 		},
-// 	}
-// );
+export const browserDbClient = createClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+	db: {
+		schema: 'public',
+	},
+	auth: {
+		persistSession: true,
+		autoRefreshToken: true,
+	},
+});
 
-// /**
-//  * Server side admin db client to use only when truly necessary.
-//  */
-// export const adminDbClient = browser
-// 	? null
-// 	: createClient(PUBLIC_SUPABASE_URL, import.meta.env.SUPABASE_SERVICE_KEY, {
-// 			db: {
-// 				schema: 'public',
-// 			},
-// 			auth: {
-// 				persistSession: false,
-// 				autoRefreshToken: false,
-// 			},
-// 			// global: {
-// 			// 	// fetch:,
-// 			// 	// headers:,
-// 			// },
-// 	  });
+/**
+ * Db client instanciator to use on a per-request basis for server-side authed requests without unnecessary admin privileges.
+ */
+export function createServerDbClient(accessToken?: string) {
+	return createClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+		db: {
+			schema: 'public',
+		},
+		auth: {
+			persistSession: false,
+			autoRefreshToken: false,
+			detectSessionInUrl: false,
+		},
+		global: {
+			headers: {
+				Authotization: accessToken ? `Bearer ${accessToken}` : null,
+			},
+		},
+	});
+}
 
-// /**
-//  * Db client instanciator to use on a per-request basis for server-side authed requests without unnecessary admin privileges.
-//  */
-// export function createServerDbClient(accessToken?: string) {
-// 	return createClient(import.meta.env.PUBLIC_SUPABASE_URL, import.meta.env.PUBLIC_SUPABASE_ANON_KEY, {
-// 		db: {
-// 			schema: 'public',
-// 		},
-// 		auth: {
-// 			persistSession: false,
-// 			autoRefreshToken: false,
-// 		},
-// 		global: {
-// 			// fetch:,
-// 			headers: {
-// 				Authotization: `Bearer ${accessToken}`,
-// 			},
-// 		},
-// 	});
-// }
+/**
+ * Helper to get the contextual database client in isomorphic scenarios (server/browser load functions) depending on if
+ * the query runs from server or browser.
+ */
+export function getContextualDbClient(accessToken?: string) {
+	return browser ? browserDbClient : createServerDbClient(accessToken);
+}

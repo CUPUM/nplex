@@ -75,7 +75,6 @@ export function ripple(
 	 * Create ripple.
 	 */
 	function createRipple(e: MouseEvent) {
-		// console.log('creating ripple!');
 		const rect = element.getBoundingClientRect();
 		const eRelX = e.clientX - rect.left;
 		const eRelY = e.clientY - rect.top;
@@ -138,7 +137,11 @@ export function ripple(
 
 	return {
 		update(newParams: RippleOptions) {
-			// console.log(newParams.controlElement != controlElement);
+			if (newParams.controlElement !== controlElement) {
+				clearListeners();
+				controlElement = newParams.controlElement;
+				setListeners();
+			}
 			if (disabled !== newParams.disabled) {
 				disabled = newParams.disabled;
 				clearListeners();

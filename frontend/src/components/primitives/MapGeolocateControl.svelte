@@ -10,7 +10,7 @@
 
 	import { Ctx } from '$utils/values/keys';
 	import { getContext } from 'svelte';
-	import Button from './Button.svelte';
+	import Button from './Button_old.svelte';
 	import type { MapContext } from './Map.svelte';
 
 	export let icon: keyof typeof icons = 'localize';

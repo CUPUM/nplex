@@ -51,7 +51,7 @@
 	throw new Error("@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)");
 
 	import { inputOnReset } from '$actions/inputOnReset';
-	import Button from '$components/primitives/Button.svelte';
+	import Button from '$components/primitives/Button_old.svelte';
 	import FieldV2 from '$components/primitives/Field_v2.svelte';
 	import Map from '$components/primitives/Map.svelte';
 	import MapGeolocateControl from '$components/primitives/MapGeolocateControl.svelte';
@@ -59,6 +59,8 @@
 	import type { definitions } from '$types/database';
 	import { getPersistedValue, persistValue } from '$utils/persistValue';
 	import { LocalStorage } from '$utils/values/keys';
+
+	export let data;
 
 	export let descriptors: DatabaseRpc.ProjectDescriptors;
 	export let isNew = true;
@@ -72,7 +74,6 @@
 	}
 
 	function addSecondaryUsage() {
-		console.log(project.site_secondary_usages);
 		const hasNone = !(project.site_secondary_usages as []).length;
 		const hasNoEmpty = (project.site_secondary_usages as []).every((u) => {
 			return Object.entries(u).every(([k, v]) => {
@@ -129,7 +130,7 @@
 		{/each}
 	</fieldset>
 	<fieldset class="map-container">
-		<legend>Localisez votre projet</legend>
+		<legend>Localisez {$votre projet}</legend>
 		<Map>
 			<MapToolbar position="top-left" slot="top-left">
 				<MapGeolocateControl />

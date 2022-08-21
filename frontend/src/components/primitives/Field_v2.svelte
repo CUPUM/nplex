@@ -9,8 +9,8 @@
 	import { setContext } from 'svelte';
 
 	export let value: string = '';
-	export let beforeValue: string = '';
-	export let afterValue: string = '';
+	export let prefix: string = '';
+	export let suffix: string = '';
 	export let name: string = undefined;
 	export let size: string | number = '1em';
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
@@ -28,12 +28,10 @@
 	export let trailingSeparator: boolean = false;
 	export let format: (value: string) => string = undefined;
 	export let validator = undefined;
+	export let display: 'inline' | 'block' = 'block';
 
 	let focused = false;
 	let hasPlaceholder = false;
-	let leadingWidth = 0;
-	let trailingWidth = 0;
-
 	$: hasPlaceholder = placeholder !== '';
 
 	function setValue(e) {
@@ -52,20 +50,23 @@
 </script>
 
 <div
-	class="field {variant}"
+	class="field {variant} {display}"
 	style:--size={cssSize(size)}
-	style:--leading-width="{leadingWidth}px"
-	style:--trailing-width="{trailingWidth}px"
 	class:focused
+	class:warning
+	class:success
+	class:disabled
 	class:has-value={value !== ''}
 	class:has-placeholder={hasPlaceholder}
 >
 	{#if $$slots.leading}
-		<div class="leading" bind:clientWidth={leadingWidth}><slot name="leading" /></div>
+		<div class="leading">
+			<slot name="leading" />
+		</div>
 	{/if}
 	<label class="main">
-		{#if beforeValue}
-			<span class="before-value">{beforeValue}</span>
+		{#if prefix}
+			<span class="before-value">{prefix}</span>
 		{/if}
 		<input
 			class="input"
@@ -86,65 +87,105 @@
 			on:focus={handleFocus}
 			on:blur={handleBlur}
 		/>
-		{#if afterValue}
-			<span class="after-value">{afterValue}</span>
+		{#if suffix}
+			<span class="after-value">{suffix}</span>
 		{/if}
 	</label>
 	{#if $$slots.trailing}
-		<div class="trailing" bind:clientWidth={trailingWidth}><slot name="trailing" /></div>
+		<div class="trailing">
+			<slot name="trailing" />
+		</div>
 	{/if}
-	<fieldset>
-		<!-- {#if $$slots.label} -->
+	<!-- <fieldset>
+		{#if $$slots.label}
 		<legend>
 			<slot name="label" />
 		</legend>
-		<!-- {/if} -->
-	</fieldset>
+		{/if}
+	</fieldset> -->
 </div>
 
 <style lang="scss">
 	.field {
-		--base: var(--default-size);
-		--baseline: calc(var(--base) - 0.1em);
-		--border-radius: var(--default-radius);
-		--border-width: 1px;
-		--padding-inline: 1.5em;
-		--inset: var(--default-inset);
+		--inset: 5px;
+		--radius-ratio: 1;
+		--height-ratio: 3;
+		--computed-radius: calc(var(--size) * var(--radius-ratio));
+		--computed-height: calc(var(--size) * var(--height-ratio));
 		font-size: var(--size);
 		position: relative;
-		display: inline-grid;
+		display: grid;
 		grid-template-columns:
 			[leading-start]
 			auto
 			[leading-end main-start]
-			auto
+			1fr
 			[main-end trailing-start]
 			auto
 			[trailing-end];
 		gap: 0;
-		max-height: var(--base);
-		height: var(--base);
-		line-height: var(--baseline);
-		border-radius: var(--border-radius);
+		flex-direction: row;
+		align-items: center;
+		line-height: 1em;
+		flex-wrap: nowrap;
+		white-space: nowrap;
+		height: var(--computed-height);
+		border-radius: var(--computed-radius);
 		padding: 0;
 		margin: 0;
+
+		&.inline {
+			display: inline-grid;
+		}
+
+		&.disabled {
+			opacity: 0.5;
+			pointer-events: none;
+		}
+
+		&.warning {
+			outline-width: 2px;
+			outline-color: var(--color-error-300);
+			background-color: var(--color-error-100);
+		}
+
+		.focused,
+		.has-placeholder,
+		.has-value {
+			.before-value,
+			.after-value {
+				transform: translateY(0);
+				opacity: 0.5;
+				transition: opacity 0.2s 0.1s ease-in-out, transform 0.25s 0.1s cubic-bezier(0.2, 0, 0.2, 1);
+			}
+		}
 	}
 
 	.leading,
 	.trailing {
+		max-height: 100%;
 		position: relative;
-		display: inline-flex;
-		top: 0;
-		flex-direction: row;
-		padding: var(--inset);
-		line-height: calc(var(--baseline) - 2 * var(--inset));
+		top: -0.1em;
+		padding: 0;
 		margin: 0;
+		display: block;
+		transition: padding 0.25s ease-in-out;
 	}
+
 	.leading {
 		grid-column: leading;
+
+		&:not(:empty) {
+			padding-right: 0.5em;
+		}
 	}
+
 	.trailing {
 		grid-column: trailing;
+
+		&:not(:empty) {
+			padding-left: 0.5em;
+		}
 	}
 
 	.main {
@@ -153,13 +194,12 @@
 		position: relative;
 		display: inline-flex;
 		height: 100%;
-		line-height: var(--baseline);
 		padding: 0 var(--padding-inline);
-		vertical-align: baseline;
+		align-items: center;
 	}
 
-	.before-value,
-	.after-value {
+	.prefix,
+	.suffix {
 		vertical-align: baseline;
 		position: relative;
 		display: inline-flex;
@@ -167,28 +207,18 @@
 		transform: translateY(0.25em);
 		transition: opacity 0.2s ease-in-out, transform 0.25s cubic-bezier(0.8, 0, 0.8, 1);
 	}
-	.focused,
-	.has-placeholder,
-	.has-value {
-		.before-value,
-		.after-value {
-			transform: translateY(0);
-			opacity: 0.5;
-			transition: opacity 0.2s 0.1s ease-in-out, transform 0.25s 0.1s cubic-bezier(0.2, 0, 0.2, 1);
-		}
-	}
 
 	input {
 		grid-column: input;
 		display: inline-flex;
+		flex: 1;
 		font-family: inherit;
 		font-size: inherit;
 		border-radius: inherit;
 		border: none;
 		outline: none;
 		background-color: transparent;
-		line-height: var(--baseline);
-		align-self: baseline;
+		line-height: 1em;
 		text-overflow: ellipsis;
 		padding: 0;
 		margin: 0;
@@ -246,15 +276,6 @@
 		}
 	}
 
-	// .has-value:not(.focused),
-	// .has-placeholder:not(.focused) {
-	// 	legend:not(:empty) {
-	// 		font-size: clamp(10px, 0.7em, 24px);
-	// 		top: -1.5em;
-	// 		line-height: 1em;
-	// 	}
-	// }
-
 	/**
 	* Vaiants
 	*/
@@ -264,5 +285,14 @@
 			--border-width: 1.5px;
 			color: var(--color-primary-500);
 		}
+	}
+
+	.secondary {
+	}
+
+	.ghost {
+	}
+
+	.cta {
 	}
 </style>

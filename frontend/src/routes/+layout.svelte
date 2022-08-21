@@ -1,31 +1,40 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { goto, invalidate } from '$app/navigation';
+	import { getStores } from '$app/stores';
 	import Loading from '$components/primitives/Loading.svelte';
-	import { authModal } from '$stores/auth';
+	import { authModal } from '$stores/authModal';
 	import '$styles/app.scss';
 	import '$styles/vars.css';
+	import { browserDbClient } from '$utils/database/database';
+	import { Cookie } from '$utils/values/keys';
 	import { sizes } from '$utils/values/sizes';
+	import jscookie from 'js-cookie';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
+	import type { LayoutData } from './$types';
 	import AuthModal from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
 	import MessagesOutlet from './MessagesOutlet.svelte';
 	import Navbar from './Navbar.svelte';
 
+	export let data: LayoutData;
+
 	let loading = true;
 	let navbarHeight: number = 0;
 
-	// afterNavigate(({ from, to }) => {
-	// 	const newPreviousUrl = to;
-	// 	newPreviousUrl.searchParams.delete(SearchParam.AuthModal);
-	// 	session.update((prev) => ({ ...prev, previousUrl: newPreviousUrl.toString() }));
-	// });
-
-	// To do: instanciate a poller to auto-refresh tokens by hitting api.
+	const { page } = getStores();
 
 	// Listening to and handling client-side Supabase auth state change.
-	// browserDbClient.auth.onAuthStateChange(async (e, s) => {
-	// 	await handleAuthStateChange(e, s);
-	// });
+	browserDbClient.auth.onAuthStateChange(async (event, session) => {
+		// Set a temporary auth change cookie to be used by the server.
+		const body: App.Locals[Cookie.AuthChange] = { session, event };
+		jscookie.set(Cookie.AuthChange, JSON.stringify(body));
+		await invalidate('/api/auth/update.json');
+		if (get(authModal)) await authModal.close();
+		if (event === 'SIGNED_IN' && get(page).url.pathname === '/' && data.session) {
+			goto('/compte');
+		}
+	});
 
 	onMount(() => {
 		loading = false;

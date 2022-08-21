@@ -7,14 +7,16 @@
 </script>
 
 <article id="intro">
-	<header id="intro-header">
+	<header>
 		<h1 use:reveal={flyRotate}>
-			Bienvenue sur Nplex<br /><span class="subheading"
-				>la plateforme de valorisation des petits projets exemplaires en aménagement à</span
-			> Montréal
+			Bienvenue sur Nplex <span
+				>la plateforme de valorisation des petits projets exemplaires en aménagement à Montréal</span
+			>
 		</h1>
 	</header>
-	<p id="intro-text">Cette application web lorem ipsum...</p>
+	<section id="presentation">
+		<p>Cette application web lorem ipsum...</p>
+	</section>
 </article>
 <article class="core-grid" id="explore">
 	<section id="projects">
@@ -45,29 +47,32 @@
 
 <style lang="scss">
 	#intro {
-		padding-bottom: 8rem;
 		display: flex;
+		flex: none;
 		flex-direction: column;
 		align-items: center;
-		width: 100%;
-		padding: 0 2rem;
 		margin-top: calc(var(--navbar-height, 0px) * -1);
-	}
+		width: 100%;
 
-	#intro-header {
-		max-width: 1200px;
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-		justify-content: center;
-		align-items: center;
-		color: var(--color-dark-900);
-	}
+		header {
+			min-height: 100vh;
+			padding: 4rem;
+			margin-bottom: 8rem;
+			max-width: 1200px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: left;
+			color: var(--color-dark-900);
+		}
 
-	.subheading {
-		font-weight: 100;
-		// color: transparent;
-		// -webkit-text-stroke: 1px var(--color-primary-500);
+		h1 {
+			margin: 0;
+		}
+
+		span {
+			font-weight: 200;
+		}
 	}
 
 	#intro-text {

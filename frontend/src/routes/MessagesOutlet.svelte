@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import { messages, type Message } from '$stores/messages';
 	import { flip } from 'svelte/animate';
@@ -39,12 +38,9 @@
 					<svelte:component this={message.content.component} {...message.content.props || {}} />
 				{/if}
 			</div>
-			<Button
-				style="position: absolute; left: calc(100% + .5em);"
-				warning={message.type === 'error'}
-				on:click={(e) => closeMessage(e, message)}
-				icon="cross"
-			/>
+			<button on:click={(e) => closeMessage(e, message)}>
+				<Icon name="cross" size="1.25em" />
+			</button>
 		</dialog>
 	{/each}
 </div>
@@ -71,8 +67,7 @@
 		font-size: var(--size-medium);
 		pointer-events: all;
 		position: relative;
-		max-width: 60ch;
-		height: auto;
+		max-width: 50ch;
 		flex: none;
 		display: flex;
 		flex-direction: row;
@@ -80,7 +75,28 @@
 		padding: var(--inset);
 		border: none;
 		border-radius: var(--default-radius);
-		box-shadow: 0 1.5em 2.5em -0.75em rgba(var(--rgb-dark-900), 0.25);
+		box-shadow: 0 1.5em 2em -0.5em rgba(0, 0, 40, 0.15);
+	}
+
+	button {
+		cursor: pointer;
+		width: 3em;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-radius: 50%;
+		border: none;
+		aspect-ratio: 1 / 1;
+		position: absolute;
+		left: calc(100% + 0.5em);
+		background-color: var(--color-light-300);
+		transition: all 0.1s;
+
+		&:hover {
+			background-color: var(--color-light-900);
+		}
 	}
 
 	.content {
@@ -129,7 +145,7 @@
 	}
 
 	.error {
-		background-color: var(--color-error-300);
+		background-color: var(--color-error-500);
 		color: var(--color-light-100);
 
 		& .progress {

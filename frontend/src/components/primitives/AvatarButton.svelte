@@ -13,7 +13,7 @@
 	export let loading: boolean = undefined;
 	export let userid: string = undefined;
 
-	const user = userid ? $page.data.user : $page.data.user; // To do:  get user from db if user id is passed.
+	const user = $page.data?.session.user; // To do:  get user from db if someone else's user id is passed.
 	let cssAvatarImage: string = '';
 	const userColors = [
 		`#${parseInt(user.created_at.match(/\d+/g).map(Number).join('')).toString(16).slice(-6)}`,

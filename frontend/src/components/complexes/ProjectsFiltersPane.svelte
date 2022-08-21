@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$components/primitives/Button.svelte';
+	import Button from '$components/primitives/Button_old.svelte';
 	import { projectsShowFiltersPane } from '$stores/projectsShowFiltersPane';
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
 	import { width } from '$transitions/width';

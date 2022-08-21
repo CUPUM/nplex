@@ -12,6 +12,30 @@ declare namespace svelte.JSX {
 	}
 }
 
+type Cookie = import('$utils/values/keys').Cookie.DbAccessToken;
+
+type TokenCookies = Partial<
+	Record<
+		| import('$utils/values/keys').Cookie.DbAccessToken
+		| import('$utils/values/keys').Cookie.DbRefreshToken
+		| import('$utils/values/keys').Cookie.DbProviderToken
+		| import('$utils/values/keys').Cookie.DbAccessTokenExpiry,
+		string
+	>
+>;
+
+type AuthCookie = Partial<
+	Record<
+		import('$utils/values/keys').Cookie.AuthChange,
+		{
+			session: import('@supabase/supabase-js').Session;
+			event: import('@supabase/supabase-js').AuthChangeEvent;
+		} | null
+	>
+>;
+
 declare namespace App {
-	interface Locals extends Partial<Record<import('$utils/values/keys').Cookie, string>> {}
+	interface Locals extends TokenCookies, AuthCookie {
+		test: string;
+	}
 }
