@@ -2,7 +2,7 @@
 	import { horizontalScroll } from '$actions/horizontalScroll';
 	import { page } from '$app/stores';
 	import Button from '$components/primitives/Button_old.svelte';
-	import Field from '$components/primitives/Field.svelte';
+	import Field from '$components/primitives/Field_old.svelte';
 	import Token from '$components/primitives/Token.svelte';
 	import { projectsShowFiltersPane } from '$stores/projectsShowFiltersPane';
 	import { exploreSearchterm } from '$stores/search';

@@ -52,7 +52,7 @@
 
 	import { inputOnReset } from '$actions/inputOnReset';
 	import Button from '$components/primitives/Button_old.svelte';
-	import FieldV2 from '$components/primitives/Field_v2.svelte';
+	import FieldV2 from '$components/primitives/Field.svelte';
 	import Map from '$components/primitives/Map.svelte';
 	import MapGeolocateControl from '$components/primitives/MapGeolocateControl.svelte';
 	import MapToolbar from '$components/primitives/MapToolbar.svelte';

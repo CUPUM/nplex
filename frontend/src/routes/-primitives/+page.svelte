@@ -1,9 +1,8 @@
 <script lang="ts">
-	import Button from '$components/primitives/Button_old.svelte';
-	import FieldMultiline from '$components/primitives/FieldMultiline.svelte';
+	import FieldMultiline from '$components/primitives/TextArea.svelte';
 
-	import NavbarButton from '$components/primitives/Button.svelte';
-	import FieldV2 from '$components/primitives/Field_v2.svelte';
+	import Button from '$components/primitives/Button.svelte';
+	import FieldV2 from '$components/primitives/Field.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 
 	let textValue = 'Text value!';
@@ -14,10 +13,10 @@
 <section>
 	<h2>Field</h2>
 	<input type="range" name="" id="" min="10" max="72" step="1" bind:value={fieldSize} />
-	<FieldV2 placeholder="Placeholder" prefix="before" suffix=" spaced" bind:size={fieldSize}>
+	<FieldV2 placeholder="Placeholder" prefix="before  " suffix="spaced" bind:size={fieldSize}>
 		<!-- <svelte:fragment slot="leading">Leading</svelte:fragment> -->
 		<svelte:fragment slot="label"><span>Placeholder label</span> <Icon name="trash" /></svelte:fragment>
-		<svelte:fragment slot="trailing"><Button icon="home">Do this do that</Button></svelte:fragment>
+		<svelte:fragment slot="trailing"><Button>Do this do that</Button></svelte:fragment>
 	</FieldV2>
 	<FieldV2 prefix="prefix" suffix="after" bind:size={fieldSize}>
 		<svelte:fragment slot="leading">Leading</svelte:fragment>
@@ -38,10 +37,10 @@
 <section>
 	<h2>Buttons and icon alignement</h2>
 	<input type="range" name="" id="" bind:value={iconsize} min=".5" max="3" step="0.01" />
-	<NavbarButton>
+	<Button>
 		<svelte:fragment slot="leading"><Icon name="users" size="{iconsize}em" /></svelte:fragment>
 		Test label content
-	</NavbarButton>
+	</Button>
 	<Button>Test</Button>
 </section>
 

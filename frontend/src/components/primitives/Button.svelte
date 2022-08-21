@@ -69,9 +69,11 @@
 	.button {
 		--radius-ratio: 1;
 		--height-ratio: 3;
-		--computed-size: calc(var(--size) - 2 * var(--inset, 0px));
-		--computed-radius: calc(var(--radius-ratio) * var(--size) - var(--inset, 0px));
-		--computed-height: calc(var(--height-ratio) * var(--size) - 2 * var(--inset, 0px));
+		--computed-height: calc((var(--height-ratio) * var(--size)) - (2 * var(--inset, 0px)));
+		--computed-size: calc(var(--computed-height) / var(--height-ratio));
+		--computed-radius: calc(var(--radius-ratio) * var(--computed-size));
+		// Use font-size: --computed-size in nested elements only else this messes with calcs when --size has "em" unit...
+		font-size: var(--size);
 		position: relative;
 		display: grid;
 		grid-template-columns:
@@ -84,7 +86,6 @@
 			[trailing-end];
 		flex-direction: row;
 		align-items: center;
-		font-size: var(--computed-size);
 		font-weight: 400;
 		line-height: 1em;
 		padding: 0 1.5em;
@@ -136,6 +137,7 @@
 	}
 
 	.content {
+		font-size: var(--computed-size);
 		max-height: 100%;
 		position: relative;
 		top: -0.1em;
@@ -147,6 +149,7 @@
 
 	.leading,
 	.trailing {
+		font-size: var(--computed-size);
 		max-height: 100%;
 		position: relative;
 		top: -0.1em;
@@ -177,6 +180,55 @@
 	//
 
 	.default {
+		color: var(--color-dark-900);
+		background-color: rgba(var(--rgb-dark-100), 0.1);
+		box-shadow: 0 0.5em 2em -1em transparent;
+		transition: all 0.1s ease-out, box-shadow 0.25s ease-out;
+
+		// prettier-ignore
+		@at-root :global(.button-parent:hover) &,
+		&:hover{
+			color: var(--color-light-100);
+			background-color: var(--color-dark-500);
+			box-shadow: 0 1em 2em -1.2em var(--color-dark-900);
+		}
+
+		&:active {
+			color: var(--color-light-900);
+		}
+
+		&.active,
+		&[popover='open'] {
+			color: white;
+			background-color: var(--color-primary-300);
+			box-shadow: 0 1em 2em -1em var(--color-primary-700);
+		}
+	}
+
+	.secondary {
+		color: var(--color-dark-900);
+		background-color: transparent;
+		box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-500), 0.2);
+
+		// prettier-ignore
+		@at-root :global(.button-parent:hover) &,
+		&:hover {
+			color: var(--color-dark-900);
+			background-color: rgba(var(--rgb-dark-100), 0.1);
+			box-shadow: inset 0 0 0 3px rgba(var(--rgb-dark-500), 0);
+		}
+	}
+
+	.ghost {
+		color: var(--color-dark-500);
+		background-color: transparent;
+
+		// prettier-ignore
+		@at-root :global(.button-parent:hover) &,
+		&:hover {
+			color: var(--color-dark-900);
+			background-color: rgba(var(--rgb-dark-100), 0.1);
+		}
 	}
 
 	.nav {
@@ -199,20 +251,21 @@
 			width: 3px;
 			height: 3px;
 			background-color: currentColor;
-			border-radius: 5px;
+			border-radius: 3px;
 			transform: translate(-50%, -100%);
 			transition: opacity 0.2s, width 0.15s cubic-bezier(0, 0, 0, 1),
 				transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 		}
 
-		&:hover,
-		&[popover='open'] {
+		// prettier-ignore
+		@at-root [popover='open'] &,
+		&:hover {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-dark-100), 0.1);
 
 			&::after {
 				opacity: 1;
-				width: 6px;
+				width: 10px;
 				transform: translate(-50%, 50%);
 			}
 

@@ -86,7 +86,7 @@
 
 		&:hover #inner {
 			opacity: 1;
-			box-shadow: 0 0 0 5px rgba(var(--rgb-light-500), 0.5);
+			box-shadow: 0 0 0 5px rgba(var(--rgb-dark-100), 0.1);
 		}
 	}
 
@@ -99,11 +99,11 @@
 		top: 0;
 		left: 0;
 		background: white;
-		transition: all 0.2s;
 		border-radius: 50%;
 		overflow: hidden;
 		padding: 0;
 		margin: 0;
+		transition: all 0.2s;
 	}
 
 	svg {

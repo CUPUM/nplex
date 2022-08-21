@@ -16,7 +16,7 @@
 <svg
 	width="1001"
 	height="380"
-	viewBox="0 0 1001 380"
+	viewBox="0 10 1001 380"
 	fill="none"
 	xmlns="http://www.w3.org/2000/svg"
 	preserveAspectRatio="xMidYMid"

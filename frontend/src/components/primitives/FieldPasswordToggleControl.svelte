@@ -9,7 +9,7 @@
 	import { Ctx } from '$utils/values/keys';
 	import { getContext } from 'svelte';
 	import Button from './Button_old.svelte';
-	import type { FieldContext } from './Field.svelte';
+	import type { FieldContext } from './Field_old.svelte';
 
 	const { showPassword } = getContext<FieldContext>(Ctx.Field);
 

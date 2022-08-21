@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import Button from '$components/primitives/Button_old.svelte';
-	import Field from '$components/primitives/Field.svelte';
+	import FieldV2 from '$components/primitives/Field.svelte';
+	import FieldIcon from '$components/primitives/FieldIcon.svelte';
 	import FieldPasswordToggleControl from '$components/primitives/FieldPasswordToggleControl.svelte';
-	import FieldV2 from '$components/primitives/Field_v2.svelte';
+	import Field from '$components/primitives/Field_old.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
 	import { authModal } from '$stores/authModal';
 	import { messages } from '$stores/messages';
@@ -66,8 +67,25 @@
 <div class="bg" transition:fade={{ duration: 200, easing: linear }} />
 <div class="wrap">
 	<dialog
-		in:transform={{ rotateX: 10, translateY: -200, translateZ: -100, duration: 200, easing: expoOut, opacity: 0 }}
-		out:transform={{ rotateX: -20, translateY: 200, translateZ: -200, duration: 150, easing: expoIn, opacity: 0 }}
+		in:transform={{
+			rotateX: 20,
+			rotateY: 30,
+			translateZ: -100,
+			translateX: 100,
+			translateY: -100,
+			duration: 200,
+			easing: expoOut,
+			opacity: 0,
+		}}
+		out:transform={{
+			rotateX: -20,
+			rotateY: -20,
+			translateY: 200,
+			translateZ: -200,
+			duration: 150,
+			easing: expoIn,
+			opacity: 0,
+		}}
 		use:clickoutside
 		on:clickoutside={() => authModal.close()}
 	>
@@ -80,6 +98,7 @@
 			in:scale={{ start: 0.95, opacity: 0, delay: 100, duration: 150 }}
 		>
 			<FieldV2 bind:value={email} maxlength={32} name="email" type="email">
+				<svelte:fragment slot="leading"><FieldIcon name="letter" /></svelte:fragment>
 				<svelte:fragment slot="label">Courriel</svelte:fragment>
 			</FieldV2>
 			<Field

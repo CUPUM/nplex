@@ -12,7 +12,6 @@
 	import { getAuthRedirectUrl } from '$utils/routing/guard';
 	import { gotoCategory } from '$utils/routing/navigation';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routing/routes';
-	import { colors } from '$utils/values/colors';
 	import { onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
@@ -56,7 +55,7 @@
 			out:fly={{ y: -20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
 			<a class="logo" href="/">
-				<Logo intro={true} color={colors.dark[900]} hoverColor={colors.primary[500]} />
+				<Logo intro />
 			</a>
 			{#each mainRoutes as route}
 				<Button variant="nav" href={route.pathname} active={route.pathname === mainPathname}>
@@ -91,8 +90,8 @@
 				<Icon name="home" size="1.25em" strokeWidth="2" />
 			</Button>
 			{#if $page.data.session}
-				<Popover placement="bottom" align="end" useHover={true}>
-					<Button slot="control" variant="nav" href={creationBaseRoute.pathname}>
+				<Popover placement="bottom" align="end" useHover>
+					<Button slot="control" variant="nav" square href={creationBaseRoute.pathname}>
 						<Icon name="pen" size="1.25em" strokeWidth="2" />
 					</Button>
 					<NavbarCreationMenu />
@@ -161,12 +160,19 @@
 	}
 
 	.logo {
-		height: 1.5em;
+		height: 1.8em;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		margin: 0;
-		padding-inline: 1em;
+		padding-inline: 0.5em 1em;
+		opacity: 0.75;
+		transition: all 0.1s ease-out;
+
+		&:hover {
+			opacity: 1;
+			color: var(--color-primary-500);
+		}
 	}
 
 	nav {
