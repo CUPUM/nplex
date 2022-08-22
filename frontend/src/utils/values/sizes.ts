@@ -9,4 +9,4 @@ export const sizes = {
 	x2large: 40,
 	x3large: 56,
 	x4large: 80,
-};
+} as const;

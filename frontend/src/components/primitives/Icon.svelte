@@ -52,7 +52,7 @@
 	aria-label="icon-image-{name}"
 	viewBox={icon.viewBox}
 	style:color
-	style:--size={cssSize(size)}
+	style:font-size={cssSize(size)}
 	style:--secondary-color={secondaryColor}
 	style:--thickness={cssSize(strokeWidth)}
 	preserveAspectRatio="xMidYMid"
@@ -100,8 +100,8 @@
 		display: inline-flex;
 		overflow: visible;
 		position: relative;
-		width: var(--size);
-		height: var(--size);
+		width: 1em;
+		height: 1em;
 		padding: 0;
 		margin: 0;
 		perspective: 100px;

@@ -12,24 +12,8 @@
 	}
 </script>
 
-<section class="pad">
-	<h2>Trouvez une fiche existante à laquelle vous avez accès ou soumettez un nouveau projet:</h2>
-	<form action="">
-		<label>
-			<span>Chercher dans mes fiches: </span>
-			<input type="search" />
-		</label>
-	</form>
-</section>
 <section>
-	<ul class="projects-list" use:horizontalScroll={{}}>
-		{#each Array(5).fill(null) as item, i}
-			<li class="project-card">
-				<a href="">
-					Projet {i}
-				</a>
-			</li>
-		{/each}
+	<ul class="projects" use:horizontalScroll={{}}>
 		<li class="submit-card">
 			<h3>+ Créer un nouveau projet</h3>
 			<form on:submit|preventDefault={createProject}>
@@ -59,30 +43,38 @@
 				<button type="submit">Créer la fiche</button>
 			</form>
 		</li>
+		{#each Array(5).fill(null) as item, i}
+			<li class="project-card">
+				<a href="">
+					Projet {i}
+				</a>
+			</li>
+		{/each}
 	</ul>
 </section>
 
 <style lang="scss">
-	ul {
+	.projects {
 		position: relative;
 		display: flex;
 		flex-direction: row;
-		gap: 2rem;
+		justify-content: center;
+		gap: 3rem;
 		white-space: nowrap;
 		overflow-x: scroll;
 		overflow-y: visible;
 		padding-block: 3rem;
-		padding-inline: 2rem;
+		padding-inline: 4rem;
 
 		li {
-			flex: none;
+			flex: 0;
 			position: relative;
 			border-radius: 1.5rem;
 			padding: 2rem;
 			background-color: white;
 			box-shadow: 0 1rem 3rem -2rem rgba(var(--rgb-dark-900), 0.25);
 			aspect-ratio: 2 / 3;
-			display: inline-block;
+			display: block;
 			width: 33%;
 			min-width: 300px;
 			max-width: 500px;

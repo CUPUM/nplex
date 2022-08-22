@@ -29,5 +29,11 @@
 		padding-bottom: 0.2em;
 		height: 100%;
 		opacity: 0.5;
+		top: -0.1em;
+		transition: all 0.25s;
+	}
+
+	:global(.field.focused) div {
+		opacity: 1;
 	}
 </style>

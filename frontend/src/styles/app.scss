@@ -5,7 +5,7 @@
 	Font variables
 	*/
 	--font-main: 'Outfit', sans-serif;
-	--font-misc: 'Spline Sans Mono', monospace;
+	--font-misc: 'IBM Plex Mono', monospace;
 	--font-misc-ratio: 0.925;
 	/* 
 	Global style helpers for consistent appearence across components
@@ -78,6 +78,19 @@ Event handling should be done manually.
 */
 .button-parent {
 	cursor: pointer;
+}
+
+/*
+Grid layout helper classes
+*/
+.core-grid {
+	@include mixins.core-grid;
+}
+
+@each $col in (full, fullpad, main, col1, col2, col3) {
+	.core-grid-#{$col} {
+		@include mixins.core-grid-col($col);
+	}
 }
 
 /*

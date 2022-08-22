@@ -18,6 +18,8 @@
 	export let display: 'inline' | 'block' = 'block';
 	export let contentAlign: 'left' | 'center' | 'right' = 'center';
 	export let width: string = undefined;
+	export let value: string = undefined;
+	export let form: string = undefined;
 
 	let buttonRef;
 </script>
@@ -27,13 +29,17 @@
 	bind:this={buttonRef}
 	style:--size={cssSize(size)}
 	style:width
-	class="button {variant} {display}"
+	class="button {variant} {display} {contentAlign}"
 	class:warning
 	class:square
 	class:active
+	class:has-leading={$$slots.leading}
+	class:has-trailing={$$slots.trailing}
 	{disabled}
 	{href}
 	{type}
+	{value}
+	{form}
 	on:click
 	on:focus
 	on:mouseenter
@@ -47,7 +53,7 @@
 			<slot name="leading" />
 		</div>
 	{/if}
-	<div class="content" style:text-align={contentAlign}>
+	<div class="content">
 		<slot />
 	</div>
 	{#if $$slots.trailing}
@@ -67,7 +73,7 @@
 	//
 
 	.button {
-		--radius-ratio: 1;
+		--radius-ratio: var(--ctx-radius-ratio, 1);
 		--height-ratio: 3;
 		--computed-height: calc((var(--height-ratio) * var(--size)) - (2 * var(--inset, 0px)));
 		--computed-size: calc(var(--computed-height) / var(--height-ratio));
@@ -91,6 +97,7 @@
 		padding: 0 1.5em;
 		margin: 0;
 		gap: 0;
+		flex-grow: 1;
 		cursor: pointer;
 		border-radius: var(--computed-radius);
 		height: var(--computed-height);
@@ -100,11 +107,41 @@
 		border: none;
 		font-family: inherit;
 
+		&.center {
+			.content {
+				text-align: center;
+			}
+
+			&.has-leading,
+			&.has-trailing {
+				grid-template-columns:
+					[leading-start]
+					1fr
+					[leading-end content-start]
+					auto
+					[content-end trailing-start]
+					1fr
+					[trailing-end];
+			}
+		}
+		&.left {
+			.content {
+				text-align: left;
+			}
+		}
+		&.right {
+			.content {
+				text-align: right;
+			}
+		}
+
 		&.inline {
 			display: inline-grid;
+			flex-grow: 0;
 		}
 
 		&.square {
+			flex: none;
 			width: var(--computed-height);
 			padding: 0;
 			justify-content: center;
@@ -145,6 +182,8 @@
 		margin: 0;
 		display: block;
 		grid-column: content;
+		text-overflow: ellipsis;
+		overflow: hidden;
 	}
 
 	.leading,
@@ -160,18 +199,20 @@
 	}
 
 	.leading {
+		text-align: left;
 		grid-column: leading;
 
 		&:not(:empty) {
-			padding-right: 0.5em;
+			padding-right: 1em;
 		}
 	}
 
 	.trailing {
+		text-align: right;
 		grid-column: trailing;
 
 		&:not(:empty) {
-			padding-left: 0.5em;
+			padding-left: 1em;
 		}
 	}
 
@@ -266,7 +307,7 @@
 			&::after {
 				opacity: 1;
 				width: 10px;
-				transform: translate(-50%, 50%);
+				transform: translate(-50%, 0%);
 			}
 
 			& .content {

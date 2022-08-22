@@ -62,10 +62,10 @@
 		font-weight: 400;
 		display: flex;
 		padding: 0 1.2em;
-		height: var(--computed-height);
+		height: var(--ctx-computed-height);
 		justify-content: center;
 		align-items: center;
-		border-radius: var(--computed-radius);
+		border-radius: var(--ctx-computed-radius);
 		transition: all 0.15s ease-out;
 
 		&.disabled {
@@ -142,7 +142,7 @@
 		}
 		& .slot-fx {
 			opacity: 0;
-			transform: translateY(1em) rotateX(-30deg);
+			transform: translateY(1em) rotateX(-30deg) scale(1.2);
 			transition: all 0.5s cubic-bezier(0.2, 0, 0, 1), color 0s;
 		}
 		&:hover,
@@ -154,7 +154,7 @@
 			color: var(--color-primary-500);
 			& .slot {
 				opacity: 0;
-				transform: translateY(-1em) rotateX(30deg) scale(0.75);
+				transform: translateY(-1em) rotateX(30deg) scale(0.8);
 			}
 			& .slot-fx {
 				opacity: 1;

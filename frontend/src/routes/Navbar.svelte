@@ -6,9 +6,7 @@
 	import Popover from '$components/primitives/Popover.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
-	import { messages } from '$stores/messages';
 	import { mainScroll } from '$stores/scroll';
-	import { browserDbClient } from '$utils/database/database';
 	import { getAuthRedirectUrl } from '$utils/routing/guard';
 	import { gotoCategory } from '$utils/routing/navigation';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routing/routes';
@@ -17,6 +15,7 @@
 	import { fly } from 'svelte/transition';
 	import Button from '../components/primitives/Button.svelte';
 	import NavbarCreationMenu from './NavbarCreationMenu.svelte';
+	import NavbarUserMenu from './NavbarUserMenu.svelte';
 
 	export let navbarHeight;
 
@@ -27,20 +26,8 @@
 	let yThreshold = navbarHeight || 40;
 
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
-	$: overlay = $mainScroll.y > yThreshold + 50;
+	$: overlay = $mainScroll.y > yThreshold + 20;
 	$: mainPathname = $page.data.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
-
-	async function logout() {
-		try {
-			const { error } = await browserDbClient.auth.signOut();
-			if (error) throw error;
-		} catch (error) {
-			messages.dispatch({
-				type: 'error',
-				content: error,
-			});
-		}
-	}
 
 	onMount(() => {
 		mounted = true;
@@ -58,14 +45,14 @@
 				<Logo intro />
 			</a>
 			{#each mainRoutes as route}
-				<Button variant="nav" href={route.pathname} active={route.pathname === mainPathname}>
+				<Button display="inline" variant="nav" href={route.pathname} active={route.pathname === mainPathname}>
 					{route.title}
 				</Button>
 			{/each}
 		</nav>
 		<nav class="second">
 			{#if $page.data.showCategoryNav}
-				<div>
+				<div transition:fly={{ y: 10 }}>
 					<Switch name="category" variant="nav" value={$page.data.category}>
 						{#each exploreRoutes as r, i}
 							<SwitchItem
@@ -96,10 +83,9 @@
 					</Button>
 					<NavbarCreationMenu />
 				</Popover>
-				<Popover useHover={true} placement="bottom" align="end">
+				<Popover useHover placement="bottom" align="end">
 					<AvatarButton slot="control" href={userBaseRoute.pathname} />
-					<Button>Autre option</Button>
-					<Button on:click={logout}>Se déconnecter</Button>
+					<NavbarUserMenu />
 				</Popover>
 			{:else}
 				<Button variant="nav-cta" href={getAuthRedirectUrl($page.url).toString()} square>
@@ -124,7 +110,7 @@
 		margin: 0;
 		gap: 0;
 		font-size: var(--size-small);
-		backdrop-filter: blur(8px);
+		backdrop-filter: blur(10px);
 		z-index: 100;
 		transition: all 0.3s cubic-bezier(0, 0, 0, 1);
 
@@ -144,7 +130,6 @@
 	}
 
 	.overlay {
-		backdrop-filter: blur(8px);
 		box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.25);
 		&::before {
 			opacity: 0.75;

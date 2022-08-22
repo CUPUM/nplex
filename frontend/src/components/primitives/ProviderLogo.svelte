@@ -6,19 +6,20 @@
 	export let size: SizeInput = '1em';
 </script>
 
-<svg style:font-size={cssSize(size)} preserveAspectRatio="xMidYMid">
+<svg style:--size={cssSize(size)} preserveAspectRatio="xMidYMid">
 	{@html providers[name].svg}
 </svg>
 
 <style lang="scss">
 	svg {
 		position: relative;
-		width: 1em;
-		height: 1em;
+		width: var(--size);
+		height: var(--size);
 		background-color: transparent;
 		margin: 0;
 		padding: 0;
 		display: inline-block;
+		top: 0.1em;
 
 		& :global(svg) {
 			width: 100%;

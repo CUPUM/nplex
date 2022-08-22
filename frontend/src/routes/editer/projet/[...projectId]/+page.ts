@@ -1,4 +1,3 @@
-import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 const newSiteUsage = {
@@ -15,24 +14,7 @@ const newProject = {
 };
 
 export const load: PageLoad = async ({ params, fetch }) => {
-	try {
-		const descriptorsRes = await fetch('/api/projects/descriptors.json');
-		const descriptors = await descriptorsRes.json();
-		// If there is a projectId param, i.e. the client is looking to modify an existing project rather than on index page trying to create a new one.
-		if (params.projectId) {
-			const projectRes = await fetch(`/api/projects/${params.projectId}`);
-			const project = await projectRes.json();
-			return {
-				descriptors,
-				project,
-				isNew: false,
-			};
-		}
-		return {
-			descriptors,
-		};
-	} catch (err) {
-		console.error(err);
-		return error(err.status, err.message);
-	}
+	return {
+		isNew: !params.projectId,
+	};
 };

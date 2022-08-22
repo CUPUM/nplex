@@ -108,12 +108,14 @@
 
 <style lang="scss">
 	fieldset {
+		--inset: 3px;
 		--radius-ratio: 1;
 		--height-ratio: 3;
-		--inset: 3px;
-		--computed-size: calc(var(--size) - 2 * var(--inset));
-		--computed-radius: calc(var(--radius-ratio) * var(--size) - var(--inset));
-		--computed-height: calc(var(--height-ratio) * var(--size) - 2 * var(--inset));
+		--computed-height: calc(var(--size) * var(--height-ratio));
+		--computed-radius: calc(var(--size) * var(--radius-ratio));
+		--ctx-computed-height: calc((var(--height-ratio) * var(--size)) - (2 * var(--inset, 0px)));
+		--ctx-computed-size: calc(var(--ctx-computed-height) / var(--height-ratio));
+		--ctx-computed-radius: calc(var(--radius-ratio) * var(--ctx-computed-size));
 		font-size: var(--computed-size);
 		position: relative;
 		border: none;
@@ -122,7 +124,7 @@
 		justify-content: center;
 		gap: 0;
 		padding: var(--inset);
-		border-radius: calc(var(--radius-ratio) * var(--size));
+		border-radius: var(--computed-radius);
 		overflow: visible;
 		transition: all 0.1s ease-out;
 
@@ -142,7 +144,7 @@
 	.indicator {
 		z-index: 1;
 		position: absolute;
-		border-radius: calc(var(--computed-radius) - var(--inset));
+		border-radius: var(--ctx-computed-radius);
 		transition: all 0.15s cubic-bezier(0.5, 0, 0.2, 1.2);
 	}
 
@@ -168,13 +170,14 @@
 	}
 
 	.nav {
-		--inset: 0px;
-		background-color: rgba(255, 255, 255, 0.1);
+		--inset: 3px;
+		--radius-ratio: 1.5;
+		background-color: rgba(255, 255, 255, 1);
 		transition: all 0.25s ease-out;
 
 		&:hover,
 		&:focus {
-			background-color: rgba(255, 255, 255, 0.2);
+			// background-color: rgba(255, 255, 255, 0.2);
 		}
 
 		& .indicator {

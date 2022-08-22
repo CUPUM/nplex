@@ -5,6 +5,7 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import { cssSize } from '$utils/css';
+	import { sizes } from '$utils/values/sizes';
 	import { onDestroy, onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -12,8 +13,10 @@
 	export let message: string;
 	export let open: boolean = false;
 	export let useHover: boolean = true;
-	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'top';
+	export let place: 'top' | 'right' | 'bottom' | 'left' = 'top';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
+	export let size: string | number = sizes.small;
+
 	const distance = 5;
 	const roundness = 25;
 
@@ -94,10 +97,11 @@
 	<span>Fallback tooltip host</span>
 </slot>
 <div
-	class="hinter {placement} {align}"
+	class="hinter {place} {align}"
 	bind:this={hinterRef}
 	use:clickoutside
 	on:clickoutside={handleClickoutside}
+	style:--size={cssSize(size)}
 	style:--y={y}
 	style:--x={x}
 	style:--w={w}
@@ -134,7 +138,7 @@
 		justify-content: center;
 		flex-wrap: nowrap;
 		overflow: visible;
-		font-size: var(--size-small);
+		font-size: var(--size);
 	}
 
 	span {
@@ -149,7 +153,7 @@
 		background-color: var(--color-dark-900);
 		color: var(--color-light-700);
 		box-shadow: 0 0.5em 1.5em -0.75em rgba(0, 0, 0, 0.5);
-		border-radius: 1em;
+		border-radius: 0.5em;
 	}
 
 	svg {

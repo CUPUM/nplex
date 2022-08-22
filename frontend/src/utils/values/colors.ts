@@ -63,4 +63,4 @@ export const colors = {
 		700: 'hsl(4, 76%, 59%)',
 		900: 'hsl(5, 66%, 50%)',
 	},
-};
+} as const;

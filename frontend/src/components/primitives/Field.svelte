@@ -1,5 +1,10 @@
 <script lang="ts" context="module">
-	export interface FieldContext {}
+	export interface FieldContext {
+		showPassword: Writable<boolean>;
+		reset: () => void;
+		getInputRef: () => HTMLInputElement;
+		initialValue: any;
+	}
 </script>
 
 <script lang="ts">
@@ -7,6 +12,7 @@
 	import { cssSize } from '$utils/css';
 	import { Ctx } from '$utils/values/keys';
 	import { setContext } from 'svelte';
+	import { writable, type Writable } from 'svelte/store';
 
 	export let value: string = '';
 	export let prefix: string = '';
@@ -26,28 +32,57 @@
 	export let placeholder: string = '';
 	export let leadingSeparator: boolean = false;
 	export let trailingSeparator: boolean = false;
+	export let pattern: RegExp = undefined;
 	export let format: (value: string) => string = undefined;
-	export let validator = undefined;
 	export let display: 'inline' | 'block' = 'block';
 
+	const initialValue = value;
+
+	let inputRef: HTMLInputElement;
 	let focused = false;
 	let hasPlaceholder = false;
 	$: hasPlaceholder = placeholder !== '';
 	let leadingWidth = 0;
+	let showPassword = writable(false);
 
-	function setValue(e) {
+	function checkValidity() {
+		invalid = pattern
+			? !inputRef.checkValidity()
+			: minlength
+			? !(inputRef.value.length >= minlength)
+			: maxlength
+			? !(inputRef.value.length <= maxlength)
+			: undefined;
+		success = pattern || minlength || maxlength ? !invalid : undefined;
+	}
+
+	function reset() {
+		value = initialValue;
+		invalid = undefined;
+		success = undefined;
+	}
+
+	function handleInput(e) {
 		value = format ? format(e.target.value) : e.target.value;
+		invalid = undefined;
+		success = undefined;
 	}
 
 	function handleFocus() {
 		focused = true;
 	}
 
-	function handleBlur() {
+	function handleBlur(e) {
 		focused = false;
+		checkValidity();
 	}
 
-	setContext<FieldContext>(Ctx.Field, {});
+	setContext<FieldContext>(Ctx.Field, {
+		showPassword,
+		reset,
+		getInputRef: () => inputRef,
+		initialValue,
+	});
 </script>
 
 <div
@@ -57,6 +92,7 @@
 	class:warning
 	class:success
 	class:disabled
+	class:invalid
 	class:has-value={value !== ''}
 	class:has-placeholder={hasPlaceholder}
 	class:has-label={$$slots.label}
@@ -71,21 +107,24 @@
 			<span class="prefix">{prefix}</span>
 		{/if}
 		<input
+			bind:this={inputRef}
 			class="input"
-			{type}
+			type={type === 'password' && $showPassword ? 'text' : type}
 			{placeholder}
 			{value}
 			{readonly}
 			{maxlength}
 			{minlength}
 			{disabled}
+			{required}
+			pattern={pattern ? pattern.source : undefined}
 			use:inputOnReset
 			on:change
 			on:reset
 			on:input
 			on:focus
 			on:blur
-			on:input={setValue}
+			on:input={handleInput}
 			on:focus={handleFocus}
 			on:blur={handleBlur}
 		/>
@@ -101,7 +140,9 @@
 	<fieldset style:--leading-width="{leadingWidth}px">
 		{#if $$slots.label}
 			<legend>
-				<slot name="label" />
+				<div>
+					<slot name="label" />
+				</div>
 			</legend>
 		{/if}
 	</fieldset>
@@ -111,6 +152,7 @@
 	.field {
 		--inset: 5px;
 		--radius-ratio: 1;
+		--ctx-radius-ratio: var(--radius-ratio);
 		--height-ratio: 3;
 		--computed-height: calc(var(--size) * var(--height-ratio));
 		--computed-radius: calc(var(--size) * var(--radius-ratio));
@@ -145,10 +187,17 @@
 			pointer-events: none;
 		}
 
-		&.warning {
-			outline-width: 2px;
-			outline-color: var(--color-error-300);
-			background-color: var(--color-error-100);
+		&.warning,
+		&.invalid {
+			fieldset {
+				border: 2px solid var(--color-error-300);
+			}
+		}
+
+		&.success {
+			fieldset {
+				border: 2px solid var(--color-success-300);
+			}
 		}
 
 		&.focused,
@@ -160,17 +209,6 @@
 				transition: opacity 0.2s 0.1s ease-in-out, transform 0.25s 0.1s cubic-bezier(0.2, 0, 0.2, 1);
 			}
 		}
-	}
-
-	.main {
-		grid-column: main;
-		cursor: text;
-		position: relative;
-		display: inline-flex;
-		height: 100%;
-		align-items: center;
-		padding: 0 1.5em;
-		margin: 0;
 	}
 
 	.leading,
@@ -198,12 +236,24 @@
 		grid-column: trailing;
 	}
 
+	.main {
+		grid-column: main;
+		cursor: text;
+		position: relative;
+		display: inline-flex;
+		height: 100%;
+		align-items: center;
+		padding: 0 1.5em;
+		margin: 0;
+		top: -0.1em;
+		transition: top 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+	}
+
 	.prefix,
 	.suffix {
 		white-space: pre;
 		line-height: 1em;
 		position: relative;
-		top: -0.1em;
 		display: inline-block;
 		opacity: 0;
 		transform: translateY(0.25em);
@@ -219,12 +269,13 @@
 		border-radius: inherit;
 		border: none;
 		outline: none;
+		background: none;
 		background-color: transparent;
 		line-height: 1em;
 		text-overflow: ellipsis;
 		padding: 0;
 		margin: 0;
-		top: -0.1em;
+		color: currentColor;
 
 		&::placeholder {
 			color: currentColor;
@@ -234,6 +285,11 @@
 			@at-root .has-label:not(.focused) & {
 				opacity: 0;
 			}
+		}
+
+		&:-webkit-autofill,
+		&:-webkit-autofill:focus {
+			transition: background-color 600000s 0s, color 600000s 0s;
 		}
 	}
 
@@ -261,27 +317,36 @@
 	}
 
 	legend {
+		opacity: 0.5;
 		white-space: nowrap;
 		position: relative;
 		font-size: 1em;
-		line-height: calc(var(--computed-height) - 0.2em);
 		height: 0;
-		padding: 0;
+		padding: 0 0.5em;
 		top: 0;
-		margin-left: 1.5em;
+		margin-left: 1em;
 		max-width: 0;
-		transition: all 0.35s cubic-bezier(0, 0, 0, 1);
+		transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+
+		div {
+			font-size: 1em;
+			padding: 0;
+			margin: 0;
+			line-height: calc(var(--computed-height) - 0.2em);
+			transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+		}
 	}
 
 	.focused,
 	.has-value {
 		legend:not(:empty) {
 			max-width: 100%;
-			line-height: 1em;
-			font-size: max(12px, 0.5em);
-			top: -0.8em;
-			padding-inline: calc(0.5 * var(--size));
-			margin-left: var(--size);
+			top: -0.5em;
+
+			div {
+				line-height: 1em;
+				font-size: max(12px, 0.5em);
+			}
 		}
 	}
 
@@ -290,9 +355,35 @@
 	//
 
 	.default {
-		background-color: rgba(var(--rgb-dark-100), 0.1);
+		color: var(--color-dark-500);
+		background-color: rgba(var(--rgb-light-900), 0.25);
+		transition: all 0.15s ease-out;
 
 		&:hover {
+			color: var(--color-dark-900);
+			background-color: rgba(var(--rgb-light-900), 0.5);
+		}
+
+		&.has-value:not(.focused) {
+			// background-color: transparent;
+
+			legend {
+				opacity: 0.25;
+				top: 0.25em;
+			}
+
+			.main {
+				top: 0.25em;
+			}
+		}
+
+		&.focused {
+			background-color: white;
+			box-shadow: 0 0.5em 1.5em -1em rgba(var(--rgb-dark-900), 0.2);
+
+			legend {
+				top: -1em;
+			}
 		}
 	}
 

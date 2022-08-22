@@ -1,4 +1,5 @@
 import { getContextualDbClient } from '$utils/database/database';
+import { getPagination } from '$utils/database/pagination';
 import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
@@ -16,17 +17,25 @@ export const load: PageLoad = async ({ parent }) => {
 		.from('users_profiles')
 		.select(
 			`
-				*,
-				users_roles (
-					role
-				)
+				*
 			`
 		)
 		.eq('user_id', session.user.id)
 		.single();
 
+	const { data: projectsPreview, error: projcetsError } = await db
+		.from('projects')
+		.select(
+			`
+					*
+				`
+		)
+		.order('updated_at', { ascending: false })
+		.range(...getPagination(0, 5));
+
 	if (profileError) throw error(404, profileError.message);
 	return {
 		profile,
+		projectsPreview,
 	};
 };

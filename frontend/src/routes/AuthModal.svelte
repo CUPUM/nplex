@@ -1,15 +1,18 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
-	import Button from '$components/primitives/Button_old.svelte';
-	import FieldV2 from '$components/primitives/Field.svelte';
+	import Button from '$components/primitives/Button.svelte';
+	import Field from '$components/primitives/Field.svelte';
+	import FieldControlReset from '$components/primitives/FieldControlReset.svelte';
+	import FieldControlTogglePassword from '$components/primitives/FieldControlTogglePassword.svelte';
 	import FieldIcon from '$components/primitives/FieldIcon.svelte';
-	import FieldPasswordToggleControl from '$components/primitives/FieldPasswordToggleControl.svelte';
-	import Field from '$components/primitives/Field_old.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import Logo from '$components/primitives/Logo.svelte';
+	import ProviderLogo from '$components/primitives/ProviderLogo.svelte';
 	import { authModal } from '$stores/authModal';
 	import { messages } from '$stores/messages';
 	import { transform } from '$transitions/transform';
 	import { browserDbClient } from '$utils/database/database';
+	import { patterns } from '$utils/input/patterns';
 	import { providers } from '$utils/values/providers';
 	import { sizes } from '$utils/values/sizes';
 	import { expoIn, expoOut, linear } from 'svelte/easing';
@@ -97,28 +100,26 @@
 			on:submit|preventDefault={submit}
 			in:scale={{ start: 0.95, opacity: 0, delay: 100, duration: 150 }}
 		>
-			<FieldV2 bind:value={email} maxlength={32} name="email" type="email">
-				<svelte:fragment slot="leading"><FieldIcon name="letter" /></svelte:fragment>
-				<svelte:fragment slot="label">Courriel</svelte:fragment>
-			</FieldV2>
 			<Field
 				bind:value={email}
-				maxlength={32}
-				placeholder="Courriel"
-				icon="letter"
-				showIcon="always"
+				maxlength={48}
+				placeholder="courriel@domaine.com"
+				pattern={patterns.email}
 				name="email"
 				type="email"
-			/>
-			<Field
-				bind:value={password}
-				placeholder="Mot de passe"
-				icon="lock-close"
-				showIcon="always"
-				name="password"
-				type="password"
+				required
 			>
-				<FieldPasswordToggleControl slot="right" />
+				<FieldIcon name="letter" slot="leading" />
+				<svelte:fragment slot="label">Courriel</svelte:fragment>
+				<FieldControlReset slot="trailing" />
+			</Field>
+			<Field bind:value={password} name="password" type="password" minlength={6} required>
+				<FieldIcon slot="leading" name="lock-close" />
+				<svelte:fragment slot="label">Mot de passe</svelte:fragment>
+				<svelte:fragment slot="trailing">
+					<FieldControlReset />
+					<FieldControlTogglePassword />
+				</svelte:fragment>
 			</Field>
 			{#if signupForm}
 				<div class="signup-fields" transition:slide|local={{}}>
@@ -133,46 +134,47 @@
 					</div>
 				</div>
 			{/if}
-			<div class="submit-buttons">
-				<Button
-					type="submit"
-					variant="cta"
-					value={Action.EmailSignIn}
-					disabled={!Boolean(email) || !Boolean(password)}
-					display="block"
-					contentAlign="center"
-					loading={currentAction === Action.EmailSignIn}
-				>
-					Me connecter
-				</Button>
+			<Button
+				type="submit"
+				variant="cta"
+				value={Action.EmailSignIn}
+				disabled={!Boolean(email) || !Boolean(password)}
+				contentAlign="center"
+				loading={currentAction === Action.EmailSignIn}
+			>
+				<svelte:fragment slot="trailing">
+					<Icon name="arrow-right" size="1.5em" />
+				</svelte:fragment>
+				Me connecter
+			</Button>
+			<div
+				style="display: flex; flex-direction: row; justify-content: space-between; width: 100; font-size: .85em;"
+			>
 				<Button
 					type="submit"
 					variant="ghost"
 					value={Action.EmailSignUp}
-					display="block"
 					contentAlign="left"
 					loading={currentAction === Action.EmailSignUp}
 				>
-					Mot de passe oublié
+					Créer un compte
 				</Button>
 				<Button
 					type="submit"
 					variant="ghost"
 					value={Action.EmailSignUp}
-					display="block"
 					contentAlign="right"
 					loading={currentAction === Action.EmailSignUp}
-					icon={Boolean(email) && Boolean(password) ? 'arrow-right' : undefined}
-					iconPosition="trailing"
 				>
-					Créer un compte
+					Mot de passe oublié?
 				</Button>
 			</div>
 		</form>
 		<hr />
 		<form in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 450 }} class="provider-buttons">
 			{#each providerNames as name, i}
-				<Button disabled size={sizes.small} contentAlign="center" variant="secondary" provider={name}>
+				<Button disabled size={sizes.small} contentAlign="center" variant="secondary">
+					<ProviderLogo size="1.5em" {name} slot="leading" />
 					Se connecter avec {providers[name].title}
 				</Button>
 			{/each}
@@ -215,7 +217,7 @@
 		max-width: 450px;
 		max-height: 100%;
 		background-color: var(--color-light-100);
-		padding: 2rem;
+		padding: 3rem 2rem;
 		overflow-y: auto;
 		border-radius: 1.5rem;
 		border: none;
@@ -229,6 +231,7 @@
 		max-width: 275px;
 		margin: 0 auto;
 		padding: 2rem;
+		padding-top: 0;
 		transition: all 0.15s ease-out;
 
 		&:hover {
@@ -272,11 +275,10 @@
 	}
 
 	.submit-buttons {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		padding-top: 1rem;
-		font-size: 0.8rem;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0;
+		font-size: 0.8em;
 	}
 
 	.icon-wrap {

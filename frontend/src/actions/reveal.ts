@@ -94,7 +94,7 @@ export function reveal(
 	element: HTMLElement,
 	{
 		root,
-		rootMargin,
+		rootMargin = '-25% -25% -25% -25%',
 		threshold,
 		useIntersection = true,
 		once = true,
@@ -122,7 +122,7 @@ export function reveal(
 	}: RevealOptions = {}
 ): SvelteActionReturnType {
 	const _ID = 'reveal-' + crypto.getRandomValues(new Uint32Array(1));
-	console.log(_ID);
+
 	const ATTRIBUTES = {
 		CLASS: _ID,
 		CLASS_INIT: _ID + '-init',

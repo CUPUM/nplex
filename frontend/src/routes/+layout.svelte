@@ -64,6 +64,7 @@
 		flex-wrap: nowrap;
 		flex-direction: column;
 		padding: 0;
+		padding-bottom: 4rem;
 		margin: 0;
 		transition: all 0.3s cubic-bezier(0, 0, 0, 1);
 	}

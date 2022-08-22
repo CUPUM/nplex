@@ -1,96 +1,103 @@
-<script lang="ts" context="module">
-	throw new Error(
-		'@migration task: Check code was safely removed (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292722)'
-	);
-
-	// import { guard } from '$utils/routing/guard';
-	// import type { Load } from '@sveltejs/kit';
-
-	// export const load: Load = async ({ session, url, fetch }) => {
-	// 	// Make sure the client is at least an authed user (hence checking against 'allRoles').
-	// 	const res = await guard.role({ roles: ['admin', 'editor', 'visitor'], session, url });
-	// 	return res;
-	// };
-</script>
-
 <script lang="ts">
 	import EditorProjectsList from '$components/complexes/EditorProjectsList.svelte';
-	import Button from '$components/primitives/Button_old.svelte';
-	import { slide } from 'svelte/transition';
+	import Button from '$components/primitives/Button.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
+	import Tooltip from '$components/primitives/Tooltip.svelte';
+	import type { LayoutData } from './$types';
+	import EditorSearch from './EditorSearch.svelte';
 
 	const targetForm = 'edit-form';
+
+	export let data: LayoutData;
 </script>
 
 <div>
-	<aside>
-		<menu class="general">
-			<Button form="sheet" icon="info-circle">Aide</Button>
-		</menu>
-		<menu class="form-controls" transition:slide>
-			<Button form={targetForm} type="submit" icon="pen-plus" variant="ghost">Enregistrer</Button>
-			<Button form={targetForm} type="reset" icon="trash" variant="ghost">Tout effacer</Button>
-			<!-- If editing existing sheet, aka routeId = /editer/[someId], if admin or editor, etc... -->
-			<Button form={targetForm} type="submit" icon="pen-plus" variant="ghost">Publier</Button>
-			<!-- Add category-specific controls -->
-		</menu>
-		<h6>Projets</h6>
-		<ul>
-			<li>Projet 1...</li>
-			<li>Projet 2...</li>
-		</ul>
-		<h6>Organisations</h6>
-		<ul>
-			<li>Fiche</li>
-			<li>Fiche</li>
-			<li>Fiche</li>
-		</ul>
-		<h6>Acteurs</h6>
-		<ul>
-			<li>Fiche</li>
-			<li>Fiche</li>
-			<li>Fiche</li>
-		</ul>
-	</aside>
 	<article>
+		<div class="aside-wrapper">
+			<aside>
+				<menu class="general">
+					<Tooltip message="Aide" place="right">
+						<Button square variant="ghost">
+							<Icon size="1.25em" name="info-circle" />
+						</Button>
+					</Tooltip>
+				</menu>
+				<menu class="form-controls">
+					<Tooltip message="Enregistrer" place="right">
+						<Button square form={targetForm} type="submit" variant="ghost">
+							<Icon size="1.25em" name="pen-plus" />
+						</Button>
+					</Tooltip>
+					<Tooltip message="Effacer tout" place="right">
+						<Button square form={targetForm} type="reset" variant="ghost">
+							<Icon size="1.25em" name="trash" />
+						</Button>
+					</Tooltip>
+					<!-- If editing existing sheet, aka routeId = /editer/[someId], if admin or editor, etc... -->
+					<Tooltip message="Publier la fiche" place="right">
+						<Button form={targetForm} square type="submit" variant="ghost">
+							<Icon size="1.25em" name="upload" />
+						</Button>
+					</Tooltip>
+					<!-- Add category-specific controls -->
+				</menu>
+			</aside>
+		</div>
 		<section>
 			<slot />
 		</section>
-		<section>
-			<EditorProjectsList />
-			<!-- Other lists here -->
-		</section>
 	</article>
+	<EditorSearch />
+	<EditorProjectsList />
+	<!-- Other lists here -->
 </div>
 
 <style lang="scss">
 	div {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		width: 100%;
 		gap: 0;
-		// overflow: hidden;
-	}
-
-	aside {
-		position: sticky;
-		top: var(--navbar-height);
-		flex: none;
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-		border-right: 1px solid rgba(var(--rgb-dark-500), 0.1);
-		padding: 0 2rem;
 	}
 
 	article {
-		display: inline-block;
-		flex: 1;
-		margin: 0;
-		min-width: 0;
+		position: relative;
+		display: flex;
+		flex-direction: row;
+	}
+
+	section {
+		width: 100%;
+	}
+
+	.aside-wrapper {
+		z-index: 1;
+		position: sticky;
+		bottom: 0px;
+		align-self: flex-end;
+		width: 0px;
+	}
+
+	aside {
+		position: relative;
+		pointer-events: all;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: 0.5rem;
+		margin: 0.5rem;
+		width: fit-content;
+		padding: 6px;
+		border-radius: 1.5em;
+		background-color: rgba(255, 255, 255, 0.9);
+		backdrop-filter: blur(8px);
 	}
 
 	menu {
+		padding: 0;
+		margin: 0;
 		display: flex;
 		flex-direction: column;
+		font-size: 1.2em;
 	}
 </style>
