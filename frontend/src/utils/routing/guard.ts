@@ -1,5 +1,6 @@
 import { browser } from '$app/env';
 import { goto } from '$app/navigation';
+import type { navigating } from '$app/stores';
 import type { AppUserSession } from '$routes/api/auth/update.json/+server';
 import { messages } from '$stores/messages';
 import type { Database } from '$types/database';
@@ -29,12 +30,22 @@ interface RoleGuardInput {
 	 * Where to redirect the client in case of unfulfilled guard?
 	 */
 	redirect?: string;
+	/**
+	 * Navigating store for guard runs on client side loads.
+	 */
+	navigating?: typeof navigating;
 }
 
 /**
  * Guard function to evaluate access to a route based on auth/user state.
  */
-export async function roleGuard({ session, roles, errorMessage, redirect: fallback = '/' }: RoleGuardInput) {
+export async function roleGuard({
+	session,
+	roles,
+	errorMessage,
+	redirect: fallback = '/',
+	navigating,
+}: RoleGuardInput) {
 	if (!roles.length) return;
 	try {
 		if (!session) {

@@ -3,45 +3,13 @@
 
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
-
-	let newProjectTitle: string = '';
-	let newProjectType: string = '';
-
-	function createProject() {
-		// Do submission here
-	}
+	import ProjectsListNewCard from './ProjectsListNewCard.svelte';
 </script>
 
 <section>
 	<ul class="projects" use:horizontalScroll={{}}>
 		<li class="submit-card">
-			<h3>+ Créer un nouveau projet</h3>
-			<form on:submit|preventDefault={createProject}>
-				<label>
-					<span>Titre du projet: </span>
-					<input bind:value={newProjectTitle} name="new-project-title" type="text" required />
-				</label>
-				<fieldset>
-					<legend>Type de projet: </legend>
-					<ul>
-						<!-- {#each projectTypes as t}
-							<li>
-								<label>
-									<span>{t}</span>
-									<input
-										type="radio"
-										name="new-project-type"
-										value={t}
-										id="project-type-{t}"
-										required
-									/>
-								</label>
-							</li>
-						{/each} -->
-					</ul>
-				</fieldset>
-				<button type="submit">Créer la fiche</button>
-			</form>
+			<ProjectsListNewCard />
 		</li>
 		{#each Array(5).fill(null) as item, i}
 			<li class="project-card">
@@ -58,7 +26,7 @@
 		position: relative;
 		display: flex;
 		flex-direction: row;
-		justify-content: center;
+		// justify-content: center;
 		gap: 3rem;
 		white-space: nowrap;
 		overflow-x: scroll;
@@ -82,7 +50,8 @@
 
 		.submit-card {
 			background-color: transparent;
-			box-shadow: 0 0 0 1px rgba(var(--rgb-dark-500), 0.1);
+			border: 1.5px dashed rgba(var(--rgb-dark-500), 0.25);
+			box-shadow: none;
 		}
 	}
 </style>

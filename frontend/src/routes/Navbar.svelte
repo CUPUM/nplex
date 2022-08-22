@@ -78,7 +78,13 @@
 			</Button>
 			{#if $page.data.session}
 				<Popover placement="bottom" align="end" useHover>
-					<Button slot="control" variant="nav" square href={creationBaseRoute.pathname}>
+					<Button
+						slot="control"
+						variant="nav"
+						square
+						href={creationBaseRoute.pathname}
+						active={$page.url.pathname.startsWith(creationBaseRoute.pathname)}
+					>
 						<Icon name="pen" size="1.25em" strokeWidth="2" />
 					</Button>
 					<NavbarCreationMenu />

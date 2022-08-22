@@ -41,7 +41,7 @@
 	</section>
 	<section id="links">
 		<section id="sitemap-links">
-			<div class="heading">Le site</div>
+			<div class="heading">Carte du site</div>
 			<ul>
 				{#each mainLinks as link}
 					<li>
@@ -109,6 +109,7 @@
 	}
 
 	#links {
+		font-size: 0.9em;
 		display: flex;
 		flex-direction: row;
 		padding: 1rem;
@@ -142,7 +143,7 @@
 			border-radius: 2em;
 			align-items: center;
 			transition: all 0.2s ease-out;
-			font-weight: 500;
+			font-weight: 540;
 		}
 
 		a:hover {
@@ -153,7 +154,7 @@
 		.heading {
 			padding-bottom: 1rem;
 			margin-bottom: 0;
-			margin-inline: 1rem;
+			margin-inline: 0.8rem;
 			font-weight: 600;
 			font-size: var(--size-xsmall);
 			text-transform: uppercase;

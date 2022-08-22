@@ -1,10 +1,10 @@
 <script lang="ts">
-	import EditorProjectsList from '$components/complexes/EditorProjectsList.svelte';
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
+	import ProjectsList from '$routes/editer/ProjectsList.svelte';
 	import type { LayoutData } from './$types';
-	import EditorSearch from './EditorSearch.svelte';
+	import Search from './Search.svelte';
 
 	const targetForm = 'edit-form';
 
@@ -47,8 +47,8 @@
 			<slot />
 		</section>
 	</article>
-	<EditorSearch />
-	<EditorProjectsList />
+	<Search />
+	<ProjectsList />
 	<!-- Other lists here -->
 </div>
 
@@ -73,8 +73,11 @@
 	.aside-wrapper {
 		z-index: 1;
 		position: sticky;
-		bottom: 0px;
-		align-self: flex-end;
+		top: 50%;
+		transform: translateY(-50%);
+		// bottom: 0px;
+		// align-self: flex-end;
+		align-self: center;
 		width: 0px;
 	}
 
@@ -85,10 +88,10 @@
 		flex-direction: column;
 		height: 100%;
 		padding: 0.5rem;
-		margin: 0.5rem;
+		margin-left: 1rem;
 		width: fit-content;
-		padding: 6px;
-		border-radius: 1.5em;
+		padding: 3px;
+		border-radius: 1em;
 		background-color: rgba(255, 255, 255, 0.9);
 		backdrop-filter: blur(8px);
 	}

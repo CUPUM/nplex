@@ -1,27 +1,28 @@
 <script lang="ts">
 	import { reveal } from '$actions/reveal';
-
 	import Field from '$components/primitives/Field.svelte';
-
 	import Map from '$components/primitives/Map.svelte';
 	import MapGeolocateControl from '$components/primitives/MapGeolocateControl.svelte';
 	import MapToolbar from '$components/primitives/MapToolbar.svelte';
+	import { getPersistedValue, persistValue } from '$utils/persistValue';
 	import { slipMask } from '$utils/presets/reveal';
+	import { LocalStorage } from '$utils/values/keys';
 	import { sizes } from '$utils/values/sizes';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	console.log(data.isNew);
+	console.log(data.project.created_at, data.project.updated_at);
 
-	// export let project: definitions['projects'] & any = isNew
-	// 	? getPersistedValue(LocalStorage.NewProject, newProject)
-	// 	: null;
-
-	// $: if (isNew) {
-	// 	project.updated_at = Date.now() + '';
-	// 	persistValue(LocalStorage.NewProject, project);
-	// }
+	// If it is a new project, check local storage for persisted version...
+	if (data.isNew) {
+		data.project = getPersistedValue(LocalStorage.NewProject, data.project);
+	}
+	// ...and reactively persist changes locally, until the user saves the project in the database.
+	$: if (data.isNew) {
+		data.project.updated_at = Date.now().toString();
+		persistValue(LocalStorage.NewProject, data.project);
+	}
 
 	// function addSecondaryUsage() {
 	// 	const hasNone = !(project.site_secondary_usages as []).length;
@@ -50,21 +51,33 @@
 	// 	}
 	// }
 
-	function createProject() {}
+	function createProject() {
+		// Insert in supabase
+		// Goto projectId route
+	}
 </script>
 
 <form id="edit-form" on:submit|preventDefault={createProject}>
-	{#if data.isNew}
-		<h2 use:reveal={{ ...slipMask, splitDelimiter: /(.{3})/, rootMargin: '0px 0px' }}>Nouvelle fiche de projet</h2>
-	{:else}
-		<h2 use:reveal={{ ...slipMask, rootMargin: '0px 0px' }}>Fiche du projet: [nom du projet existant]</h2>
-	{/if}
-	<!-- <p>Dernière date de modiciation: {new Date(project.updated_at)}</p> -->
+	<header>
+		<section>
+			{#if data.isNew}
+				<h2 use:reveal={{ ...slipMask, splitDelimiter: /(.{3})/, rootMargin: '0px 0px' }}>
+					Nouvelle fiche de projet
+				</h2>
+			{:else}
+				<h2 use:reveal={{ ...slipMask, rootMargin: '0px 0px' }}>Fiche du projet: {data.project.title}</h2>
+			{/if}
+		</section>
+		<section class="dates">
+			<div>Créée le {new Date(+data.project.created_at).toLocaleString()}</div>
+			<div>Modifiée le {new Date(+data.project.updated_at).toLocaleString()}</div>
+		</section>
+	</header>
 	<!-- <FieldV2 bind:value={project.title} placeholder="Ceci est le placeholder">
 		<svelte:fragment slot="legend">Titre du projet</svelte:fragment>
 	</FieldV2> -->
 	<section>
-		<Field size={sizes.large}>
+		<Field size={sizes.large} variant="outlined" bind:value={data.project.title}>
 			<svelte:fragment slot="label">Titre du projet</svelte:fragment>
 		</Field>
 	</section>
@@ -120,11 +133,11 @@
 		grid-column: col1 / col2;
 	}
 
-	section {
+	form > section {
 		display: block;
 		position: relative;
 		counter-increment: (section);
-		padding: 0;
+		padding: 2rem 0;
 		grid-column: main;
 		margin: 0;
 		border: none;
@@ -133,6 +146,53 @@
 			font-size: 2rem;
 			padding: 2rem 0;
 			margin: 0;
+		}
+	}
+
+	header {
+		color: var(--color-dark-700);
+		grid-column: full;
+		background-color: var(--color-primary-300);
+		margin-bottom: 2rem;
+		margin-right: var(--scroll-size);
+		margin-top: calc(-1 * var(--navbar-height));
+		border-radius: 0 0 2rem 2rem;
+		min-height: 50vh;
+		padding: 4rem 0;
+		@include mixins.core-grid;
+		flex-direction: row;
+		gap: 4rem;
+		justify-content: space-between;
+		align-items: stretch;
+
+		h2 {
+			padding: 0;
+			margin: 0;
+			font-weight: 600;
+		}
+
+		section {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+
+			&:first-child {
+				grid-column: col1 / col2;
+				align-items: flex-start;
+			}
+
+			&.dates {
+				grid-column: col3;
+				gap: 1em;
+				margin-bottom: 0.8em;
+				font-size: 0.8em;
+				// text-transform: uppercase;
+				font-weight: 400;
+				letter-spacing: 1px;
+				align-items: flex-end;
+				text-align: right;
+				// font-family: var(--font-misc);
+			}
 		}
 	}
 </style>

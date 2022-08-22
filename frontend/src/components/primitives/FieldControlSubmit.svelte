@@ -10,12 +10,12 @@
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
 
-	let canReset = false;
+	let canSubmit = false;
 
 	const { reset, getInputRef, initialValue } = getContext<FieldContext>(Ctx.Field);
 
 	function updateState(e) {
-		canReset = e.target.value !== initialValue;
+		canSubmit = e.target.value !== initialValue;
 	}
 
 	onMount(() => {
@@ -27,8 +27,8 @@
 	});
 </script>
 
-<Button {variant} square on:click={reset} disabled={!canReset}>
-	<Icon name="cross" size="1.5em" />
+<Button {variant} square on:click={reset} disabled={!canSubmit}>
+	<Icon name="arrow-right" size="1.5em" />
 </Button>
 
 <style lang="scss">

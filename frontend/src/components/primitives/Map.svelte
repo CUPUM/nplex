@@ -6,6 +6,8 @@
 </script>
 
 <script lang="ts">
+	import { intersection } from '$actions/intersection';
+
 	import { mapStyles, montrealLocation } from '$utils/maps/map';
 	import { Ctx } from '$utils/values/keys';
 	import { sizes } from '$utils/values/sizes';
@@ -100,12 +102,7 @@
 		loading,
 	});
 
-	onMount(() => {
-		outerResizeObs = new ResizeObserver(handleOuterResize);
-		outerResizeObs.observe(outerRef);
-		innerResizeObs = new ResizeObserver(handleInnerResize);
-		innerResizeObs.observe(innerRef);
-
+	function init() {
 		map = new Map({
 			container: innerRef,
 			style: styleSpecification,
@@ -148,12 +145,28 @@
 			dispatch('rotate', e);
 			bearing = map.getBearing();
 		});
+	}
+
+	onMount(() => {
+		outerResizeObs = new ResizeObserver(handleOuterResize);
+		outerResizeObs.observe(outerRef);
+		innerResizeObs = new ResizeObserver(handleInnerResize);
+		innerResizeObs.observe(innerRef);
 	});
 
-	onDestroy(() => {});
+	onDestroy(() => {
+		map?.remove();
+	});
 </script>
 
-<figure bind:this={outerRef} class:loading class:not-inited={!map} {style}>
+<figure
+	bind:this={outerRef}
+	class:loading
+	class:not-inited={!map}
+	{style}
+	use:intersection={{ rootMargin: '100px 100px' }}
+	on:enter={init}
+>
 	<div class="map" bind:this={innerRef} style={innerStyle} />
 	{#if $loading}
 		<Loading size={sizes.large} />

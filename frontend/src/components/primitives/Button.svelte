@@ -9,7 +9,7 @@
 	export let href: string = null;
 	export let size: string | number = '1em';
 	export let variant: 'default' | 'nav' | 'nav-cta' | 'cta' | 'secondary' | 'ghost' = 'default';
-	export let disabled: boolean = false;
+	export let disabled: boolean = undefined;
 	export let loading: boolean = false;
 	export let warning: boolean = false;
 	export let square: boolean = undefined;
@@ -73,7 +73,7 @@
 	//
 
 	.button {
-		--radius-ratio: var(--ctx-radius-ratio, 1);
+		--radius-ratio: var(--ctx-radius-ratio, 0.8);
 		--height-ratio: 3;
 		--computed-height: calc((var(--height-ratio) * var(--size)) - (2 * var(--inset, 0px)));
 		--computed-size: calc(var(--computed-height) / var(--height-ratio));
@@ -92,7 +92,7 @@
 			[trailing-end];
 		flex-direction: row;
 		align-items: center;
-		font-weight: 400;
+		font-weight: 350;
 		line-height: 1em;
 		padding: 0 1.5em;
 		margin: 0;
@@ -151,7 +151,10 @@
 			}
 		}
 
-		&:disabled {
+		// Include attribute selector to also take account for anchor tags
+		&:disabled,
+		&[disabled='true'] {
+			transform: scale(0.9);
 			opacity: 0.5;
 			pointer-events: none;
 		}
@@ -222,15 +225,15 @@
 
 	.default {
 		color: var(--color-dark-900);
-		background-color: rgba(var(--rgb-dark-100), 0.1);
+		background-color: white;
 		box-shadow: 0 0.5em 2em -1em transparent;
 		transition: all 0.1s ease-out, box-shadow 0.25s ease-out;
 
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover{
-			color: var(--color-light-100);
-			background-color: var(--color-dark-500);
+			color: var(--color-light-300);
+			background-color: var(--color-dark-700);
 			box-shadow: 0 1em 2em -1.2em var(--color-dark-900);
 		}
 
@@ -260,15 +263,36 @@
 		}
 	}
 
+	.cta {
+		font-weight: 500;
+		color: var(--color-light-100);
+		background-color: var(--color-primary-500);
+		box-shadow: 0 0.5em 1em -0.8em rgba(var(--rgb-primary-700), 0.5);
+		transition: all 0.15s ease-out, box-shadow 0.3s ease-out;
+		// prettier-ignore
+		@at-root :global(.button-parent:hover) &,
+		&:hover,
+		&[popover='open'] {
+			color: white;
+			background-color: var(--color-primary-700);
+			box-shadow: 0 1em 2em -1em rgba(var(--rgb-primary-700), 0.8);
+		}
+		&.active {
+			color: var(--color-primary-900);
+			background-color: var(--color-primary-300);
+		}
+	}
+
 	.ghost {
-		color: var(--color-dark-500);
+		color: var(--color-dark-300);
 		background-color: transparent;
+		transition: all 0.1s ease-out;
 
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover {
-			color: var(--color-dark-900);
-			background-color: rgba(var(--rgb-dark-100), 0.1);
+			color: var(--color-primary-700);
+			background-color: rgba(var(--rgb-primary-300), 0.1);
 		}
 	}
 

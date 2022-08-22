@@ -20,7 +20,7 @@
 	export let name: string = undefined;
 	export let size: string | number = '1em';
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
-	export let variant: 'default' | 'secondary' | 'cta' | 'ghost' = 'default';
+	export let variant: 'default' | 'outlined' | 'ghost' = 'default';
 	export let required: boolean = undefined;
 	export let disabled: boolean = undefined;
 	export let warning: boolean = undefined;
@@ -151,7 +151,7 @@
 <style lang="scss">
 	.field {
 		--inset: 5px;
-		--radius-ratio: 1;
+		--radius-ratio: 0.8;
 		--ctx-radius-ratio: var(--radius-ratio);
 		--height-ratio: 3;
 		--computed-height: calc(var(--size) * var(--height-ratio));
@@ -312,7 +312,9 @@
 		align-items: center;
 		line-height: 1em;
 		border-radius: inherit;
-		border: 1px solid transparent;
+		border-width: 0px;
+		border-style: solid;
+		border-color: currentColor;
 		transition: all 0.15s ease-in-out;
 	}
 
@@ -322,25 +324,24 @@
 		position: relative;
 		font-size: 1em;
 		height: 0;
-		padding: 0 0.5em;
+		padding: 0;
 		top: 0;
-		margin-left: 1em;
+		margin-left: 1.5em;
 		max-width: 0;
-		transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+		transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1), color 0s;
 
 		div {
 			font-size: 1em;
 			padding: 0;
 			margin: 0;
 			line-height: calc(var(--computed-height) - 0.2em);
-			transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+			transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1), color 0s;
 		}
 	}
 
 	.focused,
 	.has-value {
 		legend:not(:empty) {
-			max-width: 100%;
 			top: -0.5em;
 
 			div {
@@ -372,14 +373,14 @@
 				top: 0.25em;
 			}
 
-			.main {
+			&.has-label .main {
 				top: 0.25em;
 			}
 		}
 
 		&.focused {
 			background-color: white;
-			box-shadow: 0 0.5em 1.5em -1em rgba(var(--rgb-dark-900), 0.2);
+			box-shadow: 0 0.5em 1.5em -0.5em rgba(var(--rgb-dark-900), 0.25);
 
 			legend {
 				top: -1em;
@@ -387,12 +388,56 @@
 		}
 	}
 
-	.secondary {
+	.outlined {
+		color: var(--color-dark-500);
+		background-color: transparent;
+		transition: all 0.15s ease-out;
+
+		fieldset {
+			color: rgba(var(--rgb-dark-500), 0.2);
+			border-width: 1px;
+		}
+
+		&:hover {
+			color: var(--color-dark-900);
+
+			&:not(.focused) {
+				background-color: rgba(var(--rgb-light-900), 0.1);
+			}
+
+			fieldset {
+				color: rgba(var(--rgb-dark-500), 0.5);
+			}
+		}
+
+		&.has-value:not(.focused) {
+			legend {
+				opacity: 1;
+				top: -0.3em;
+			}
+		}
+
+		&.focused,
+		&.has-value {
+			legend {
+				max-width: 100%;
+				margin-left: 1em;
+				padding-inline: 0.5em;
+			}
+		}
+
+		&.focused {
+			fieldset {
+				border: 1.5px solid currentColor;
+			}
+
+			legend {
+				opacity: 1;
+				top: -0.45em;
+			}
+		}
 	}
 
 	.ghost {
-	}
-
-	.cta {
 	}
 </style>

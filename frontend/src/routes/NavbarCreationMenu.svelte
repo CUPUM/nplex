@@ -2,9 +2,9 @@
 </script>
 
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
-
 	import { creationRoutes } from '$utils/routing/routes';
 </script>
 
@@ -13,7 +13,7 @@
 		<a class="card button-parent" href={r.pathname}>
 			<h4>{r.title}</h4>
 			<div>
-				<Button href={r.pathname}>
+				<Button href={r.pathname} active={$page.routeId.startsWith(r.pathname)}>
 					Lancer ou reprendre
 					<Icon name="arrow-right" slot="trailing" />
 				</Button>
