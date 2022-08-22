@@ -23,5 +23,5 @@ supabase start
 ### Persist local modifications into diff migration files
 
 ```sh
-supabse db diff -f [output file]
+supabse db diff -f [output file] --use-migra
 ```
