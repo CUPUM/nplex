@@ -84,7 +84,8 @@
 		text-decoration: none;
 		background: transparent;
 
-		&:hover #inner {
+		&:hover #inner,
+		&[popover] #inner {
 			opacity: 1;
 			box-shadow: 0 0 0 5px rgba(var(--rgb-dark-100), 0.1);
 		}

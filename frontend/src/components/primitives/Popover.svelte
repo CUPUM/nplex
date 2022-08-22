@@ -53,9 +53,9 @@
 
 	$: if (open) {
 		setPosition();
-		controlRef?.setAttribute('popover', 'open');
+		controlRef?.setAttribute('popover', '');
 	} else {
-		controlRef?.setAttribute('popover', 'closed');
+		controlRef?.removeAttribute('popover');
 	}
 
 	function show() {

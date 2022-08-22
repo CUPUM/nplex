@@ -136,9 +136,9 @@
 	}
 
 	.overlay {
-		box-shadow: inset 0 -1px 0 0 rgba(255, 255, 255, 0.25);
+		// box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.05);
 		&::before {
-			opacity: 0.75;
+			opacity: 0.8;
 		}
 	}
 
@@ -157,11 +157,11 @@
 		align-items: center;
 		margin: 0;
 		padding-inline: 0.5em 1em;
-		opacity: 0.75;
+		// opacity: 1;
 		transition: all 0.1s ease-out;
 
 		&:hover {
-			opacity: 1;
+			// opacity: 1;
 			color: var(--color-primary-500);
 		}
 	}

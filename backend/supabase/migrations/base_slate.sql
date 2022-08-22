@@ -1,5 +1,11 @@
 create extension if not exists "moddatetime" with schema "public" version '1.0';
 
+create schema if not exists "postgis";
+
+grant usage on schema "postgis" to "postgres";
+
+create extension if not exists "postgis" with schema "postgis";
+
 create type "public"."publication_status" as enum ('unpublished', 'pending_approval', 'refused_approval', 'published');
 
 create type "public"."user_role" as enum ('admin', 'editor', 'visitor');
@@ -148,7 +154,7 @@ create table "public"."projects" (
     "type_id" smallint not null,
     "area" numeric,
     "adjacent_streets" smallint,
-    "location_geometry" text,
+    "location_geometry" postgis.geometry not null,
     "building_area" numeric,
     "implantation_mode_id" smallint,
     "building_construction_year" smallint,

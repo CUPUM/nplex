@@ -56,7 +56,6 @@ export enum LocalStorage {
 	Projects = 'projects',
 	ProjectsFilters = 'projects-filters',
 	ProjectsFiltersExplorePane = 'projects-filters-explore-pane',
-	ProjectDescriptors = 'project-descriptors',
 }
 
 /**
@@ -70,12 +69,28 @@ export enum Cookie {
 	AuthChange = 'sb-s',
 }
 
+// /**
+//  * HTML element attributes and related values used for consistent app-wide "dumb" cross-compoenent state sharing, for
+//  * styling (ex.: popover open state).
+//  *
+//  * To do: define as json instead and use Sass json for callability inside style blocks?
+//  */
+// export const Attribute = {
+// 	PopoverState: {
+// 		Key: 'popover',
+// 		Values: {
+// 			Opened: 'opened',
+// 			Closed: 'closed',
+// 		},
+// 	},
+// } as const;
+
 /**
  * Dictionnary of error codes and their translated message.
  *
  * Provided as object since enums do not support number members.
  */
-const errorCodesMessages = {
+export const ErrorCodeMessage = {
 	400: 'Impossible!',
 	500: '',
 } as const;

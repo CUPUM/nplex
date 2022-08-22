@@ -186,7 +186,8 @@
 		display: block;
 		grid-column: content;
 		text-overflow: ellipsis;
-		overflow: hidden;
+		// overflow-x: hidden;
+		// overflow-y: visible;
 	}
 
 	.leading,
@@ -231,18 +232,14 @@
 
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
-		&:hover{
+		&:hover,
+		&[popover] {
 			color: var(--color-light-300);
 			background-color: var(--color-dark-700);
 			box-shadow: 0 1em 2em -1.2em var(--color-dark-900);
 		}
 
 		&:active {
-			color: var(--color-light-900);
-		}
-
-		&.active,
-		&[popover='open'] {
 			color: white;
 			background-color: var(--color-primary-300);
 			box-shadow: 0 1em 2em -1em var(--color-primary-700);
@@ -256,7 +253,8 @@
 
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
-		&:hover {
+		&:hover,
+		&[popover] {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-dark-100), 0.1);
 			box-shadow: inset 0 0 0 3px rgba(var(--rgb-dark-500), 0);
@@ -272,7 +270,7 @@
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
-		&[popover='open'] {
+		&[popover] {
 			color: white;
 			background-color: var(--color-primary-700);
 			box-shadow: 0 1em 2em -1em rgba(var(--rgb-primary-700), 0.8);
@@ -290,7 +288,8 @@
 
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
-		&:hover {
+		&:hover,
+		&[popover] {
 			color: var(--color-primary-700);
 			background-color: rgba(var(--rgb-primary-300), 0.1);
 		}
@@ -323,10 +322,11 @@
 		}
 
 		// prettier-ignore
-		@at-root [popover='open'] &,
-		&:hover {
+		@at-root :global(.button-parent:hover) &,
+		&:hover,
+		&[popover] {
 			color: var(--color-dark-900);
-			background-color: rgba(var(--rgb-dark-100), 0.1);
+			background-color: rgba(var(--rgb-dark-100), 0.1) !important;
 
 			&::after {
 				opacity: 1;
@@ -360,7 +360,10 @@
 		box-shadow: 0 0 0 0 rgba(var(--rgb-primary-500), 0);
 		transition: all 0.25s cubic-bezier(0, 0, 0.25, 1);
 
-		&:hover {
+		// prettier-ignore
+		@at-root :global(.button-parent:hover) &,
+		&:hover,
+		&[popover] {
 			box-shadow: 0 0 0 3px rgba(var(--rgb-primary-500), 0.25);
 			background-color: var(--color-primary-700);
 			color: white;

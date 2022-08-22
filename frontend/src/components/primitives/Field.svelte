@@ -399,7 +399,7 @@
 		}
 
 		&:hover {
-			color: var(--color-dark-900);
+			color: var(--color-dark-700);
 
 			&:not(.focused) {
 				background-color: rgba(var(--rgb-light-900), 0.1);
@@ -410,10 +410,12 @@
 			}
 		}
 
-		&.has-value:not(.focused) {
-			legend {
-				opacity: 1;
-				top: -0.3em;
+		&.has-value {
+			&:not(.focused) {
+				legend {
+					opacity: 1;
+					top: -0.3em;
+				}
 			}
 		}
 
@@ -428,12 +430,12 @@
 
 		&.focused {
 			fieldset {
+				color: rgba(var(--rgb-dark-500), 0.5);
 				border: 1.5px solid currentColor;
 			}
 
 			legend {
 				opacity: 1;
-				top: -0.45em;
 			}
 		}
 	}
