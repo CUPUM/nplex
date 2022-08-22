@@ -1,11 +1,5 @@
 create extension if not exists "moddatetime" with schema "public" version '1.0';
 
-create schema if not exists "postgis";
-
-grant usage on schema "postgis" to "postgres";
-
-create extension if not exists "postgis" with schema "postgis";
-
 create type "public"."publication_status" as enum ('unpublished', 'pending_approval', 'refused_approval', 'published');
 
 create type "public"."user_role" as enum ('admin', 'editor', 'visitor');
@@ -504,11 +498,11 @@ alter table "public"."project_type" add constraint "project_sub_type_title_key" 
 
 alter table "public"."project_type_parent_category" add constraint "project_sub_type_parent_type_type_id_sub_type_id_key" UNIQUE using index "project_sub_type_parent_type_type_id_sub_type_id_key";
 
-alter table "public"."project_type_parent_category" add constraint "project_type_parent_category_category_id_fkey" FOREIGN KEY (category_id) REFERENCES project_category(id) not valid;
+alter table "public"."project_type_parent_category" add constraint "project_type_parent_category_category_id_fkey" FOREIGN KEY (category_id) REFERENCES project_category(id) ON DELETE CASCADE not valid;
 
 alter table "public"."project_type_parent_category" validate constraint "project_type_parent_category_category_id_fkey";
 
-alter table "public"."project_type_parent_category" add constraint "project_type_parent_category_type_id_fkey" FOREIGN KEY (type_id) REFERENCES project_type(id) not valid;
+alter table "public"."project_type_parent_category" add constraint "project_type_parent_category_type_id_fkey" FOREIGN KEY (type_id) REFERENCES project_type(id) ON DELETE CASCADE not valid;
 
 alter table "public"."project_type_parent_category" validate constraint "project_type_parent_category_type_id_fkey";
 
@@ -754,6 +748,14 @@ using (true);
 
 
 create policy "Enable read access for all users"
+on "public"."project_implantation_mode"
+as permissive
+for select
+to public
+using (true);
+
+
+create policy "Enable read access for all users"
 on "public"."project_material_origin"
 as permissive
 for select
@@ -803,6 +805,22 @@ using (true);
 
 create policy "Anyone can select links between usages and categories"
 on "public"."project_site_usage_parent_category"
+as permissive
+for select
+to public
+using (true);
+
+
+create policy "Enable read access for all users"
+on "public"."project_type"
+as permissive
+for select
+to public
+using (true);
+
+
+create policy "Enable read access for all users"
+on "public"."project_type_parent_category"
 as permissive
 for select
 to public
