@@ -42,7 +42,7 @@
 </script>
 
 <Navbar bind:navbarHeight />
-<main style:--navbar-height="{navbarHeight || 0}px" class:loading>
+<main style:--navbar-height="{navbarHeight || 0}px" class:loading class:authing={$authModal}>
 	<slot />
 </main>
 {#if $page.data.showFooter}
@@ -67,6 +67,10 @@
 		padding-bottom: 4rem;
 		margin: 0;
 		transition: all 0.3s cubic-bezier(0, 0, 0, 1);
+	}
+
+	.authing {
+		transform: scale(0.9);
 	}
 
 	.loading {

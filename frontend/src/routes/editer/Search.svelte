@@ -3,7 +3,6 @@
 
 <script lang="ts">
 	import { reveal } from '$actions/reveal';
-
 	import Field from '$components/primitives/Field.svelte';
 	import FieldIcon from '$components/primitives/FieldIcon.svelte';
 	import { slipMask } from '$utils/presets/reveal';

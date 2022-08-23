@@ -1,21 +1,18 @@
-<!--
-	@component
-	Hello world.
--->
 <script lang="ts">
-	import { projects } from '$stores/projects';
 	import { width } from '$transitions/width';
 	import ProjectsListCard from './ProjectsListCard.svelte';
+
+	export let projectsPreviews; // Define typing (in +page.ts load ?) from generated db types.
 </script>
 
 <section transition:width|local={{}}>
-	{#each $projects as project}
+	{#each projectsPreviews as project}
 		<ProjectsListCard {project} />
 	{/each}
-	{#if !$projects.length}
+	{#if !projectsPreviews.length}
 		<p>Il ne semble pas y avoir de projets :(</p>
 	{/if}
-	<ProjectsListCard />
+	<!-- <ProjectsListCard /> -->
 </section>
 
 <style lang="scss">

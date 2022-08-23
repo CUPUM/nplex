@@ -1,4 +1,5 @@
 // import { LocalStorage, SearchParam } from '$utils/values/keys';
+import type { SearchParam } from '$utils/values/keys';
 import { writable } from 'svelte/store';
 
 /**
@@ -24,27 +25,6 @@ export const showProjectsList = (function () {
 		toggle: () => update((v) => !v),
 	};
 })();
-
-/**
- * Store of filtered projects selected from the database.
- */
-// export const projects = (function () {
-// 	const stored = browser ? localStorage.getItem(LocalStorage.Projects) : null;
-// 	const { subscribe, update, set } = writable<Project[]>(JSON.parse(stored) || []);
-
-// 	return {
-// 		subscribe,
-// 		update,
-// 		set,
-// 	};
-// })();
-
-// if (browser) {
-// 	// Mirror the store's updates to the client's local storage.
-// 	projects.subscribe((value) => {
-// 		localStorage.setItem(LocalStorage.Projects, JSON.stringify(value));
-// 	});
-// }
 
 /**
  * Global store for state retention of filters panes (expanded vs collapsed)
