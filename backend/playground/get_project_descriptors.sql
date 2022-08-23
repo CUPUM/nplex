@@ -1,18 +1,18 @@
 select
   json_build_object(
+    'categories',
+    (
+      select
+        json_agg(row_to_json(t))
+      FROM
+        public.project_category t
+    ),
     'types',
     (
       select
         json_agg(row_to_json(t))
       FROM
         public.project_type t
-    ),
-    'sub_types',
-    (
-      select
-        json_agg(row_to_json(t))
-      FROM
-        public.project_sub_type t
     ),
     'site_usages_categories',
     (
