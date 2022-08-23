@@ -154,7 +154,7 @@
 		// Include attribute selector to also take account for anchor tags
 		&:disabled,
 		&[disabled='true'] {
-			transform: scale(0.9);
+			transform: scale(0.99);
 			opacity: 0.5;
 			pointer-events: none;
 		}
@@ -324,6 +324,7 @@
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
+		// Weird bug, popover does not work for some reason (but works as expected with AvatarButton)
 		&[popover] {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-dark-100), 0.1) !important;
@@ -341,7 +342,7 @@
 
 		&.active {
 			color: var(--color-primary-500);
-			pointer-events: none;
+			// pointer-events: none;
 
 			&::after {
 				opacity: 1;

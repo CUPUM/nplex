@@ -342,7 +342,7 @@
 	.focused,
 	.has-value {
 		legend:not(:empty) {
-			top: -0.5em;
+			// top: -0.5em;
 
 			div {
 				line-height: 1em;
@@ -402,7 +402,7 @@
 			color: var(--color-dark-700);
 
 			&:not(.focused) {
-				background-color: rgba(var(--rgb-light-900), 0.1);
+				// background-color: rgba(var(--rgb-light-900), 0.1);
 			}
 
 			fieldset {
@@ -414,7 +414,7 @@
 			&:not(.focused) {
 				legend {
 					opacity: 1;
-					top: -0.3em;
+					top: -0.22em;
 				}
 			}
 		}
@@ -423,8 +423,9 @@
 		&.has-value {
 			legend {
 				max-width: 100%;
-				margin-left: 1em;
-				padding-inline: 0.5em;
+				margin-left: 1.25em;
+				padding-inline: 0.25em;
+				top: -0.32em;
 			}
 		}
 

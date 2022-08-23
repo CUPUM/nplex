@@ -22,7 +22,7 @@
 </script>
 
 <Button {variant} on:click={toggle} square>
-	<Icon name={$showPassword ? 'eye-open' : 'eye-cross'} size="1.5em" />
+	<Icon name={$showPassword ? 'eye-cross' : 'eye-open'} size="1.5em" />
 </Button>
 
 <style lang="scss">

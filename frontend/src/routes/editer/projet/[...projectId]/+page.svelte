@@ -57,22 +57,22 @@
 	}
 </script>
 
+<header>
+	<section>
+		{#if data.isNew}
+			<h2 use:reveal={{ ...slipMask, splitDelimiter: /(.{3})/, rootMargin: '0px 0px' }}>
+				Nouvelle fiche de projet
+			</h2>
+		{:else}
+			<h2 use:reveal={{ ...slipMask, rootMargin: '0px 0px' }}>Fiche du projet: {data.project.title}</h2>
+		{/if}
+	</section>
+	<section class="dates">
+		<div>Créée le {new Date(+data.project.created_at).toLocaleString()}</div>
+		<div>Modifiée le {new Date(+data.project.updated_at).toLocaleString()}</div>
+	</section>
+</header>
 <form id="edit-form" on:submit|preventDefault={createProject}>
-	<header>
-		<section>
-			{#if data.isNew}
-				<h2 use:reveal={{ ...slipMask, splitDelimiter: /(.{3})/, rootMargin: '0px 0px' }}>
-					Nouvelle fiche de projet
-				</h2>
-			{:else}
-				<h2 use:reveal={{ ...slipMask, rootMargin: '0px 0px' }}>Fiche du projet: {data.project.title}</h2>
-			{/if}
-		</section>
-		<section class="dates">
-			<div>Créée le {new Date(+data.project.created_at).toLocaleString()}</div>
-			<div>Modifiée le {new Date(+data.project.updated_at).toLocaleString()}</div>
-		</section>
-	</header>
 	<!-- <FieldV2 bind:value={project.title} placeholder="Ceci est le placeholder">
 		<svelte:fragment slot="legend">Titre du projet</svelte:fragment>
 	</FieldV2> -->
@@ -127,6 +127,8 @@
 	form {
 		@include mixins.core-grid;
 		position: relative;
+		border-radius: 2rem 2rem 0 0;
+		background-color: var(--bg-color);
 	}
 
 	h2 {
@@ -150,20 +152,20 @@
 	}
 
 	header {
+		position: relative;
 		color: var(--color-dark-700);
 		grid-column: full;
-		background-color: var(--color-primary-300);
-		margin-bottom: 2rem;
+		background-color: var(--color-light-900);
+		margin-bottom: -2rem;
 		margin-right: var(--scroll-size);
 		margin-top: calc(-1 * var(--navbar-height));
-		border-radius: 0 0 2rem 2rem;
 		min-height: 50vh;
-		padding: 4rem 0;
+		padding: 6rem 0;
 		@include mixins.core-grid;
 		flex-direction: row;
-		gap: 4rem;
 		justify-content: space-between;
 		align-items: stretch;
+		z-index: -20;
 
 		h2 {
 			padding: 0;
@@ -179,6 +181,7 @@
 			&:first-child {
 				grid-column: col1 / col2;
 				align-items: flex-start;
+				padding-right: 4rem;
 			}
 
 			&.dates {
@@ -189,8 +192,8 @@
 				// text-transform: uppercase;
 				font-weight: 400;
 				letter-spacing: 1px;
-				align-items: flex-end;
-				text-align: right;
+				// align-items: flex-end;
+				// text-align: right;
 				// font-family: var(--font-misc);
 			}
 		}

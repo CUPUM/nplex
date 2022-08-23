@@ -271,10 +271,10 @@
 
 	.inner {
 		position: relative;
-		padding: 1rem;
+		padding: 0.5rem;
 		background-color: white;
 		box-shadow: 0 1rem 3rem -2rem rgba(var(--rgb-dark-900), 0.25);
-		border-radius: 1.5rem;
+		border-radius: 1rem;
 		display: inline-flex;
 		flex-direction: column;
 	}

@@ -1,5 +1,6 @@
 <script>
 	import { intersection } from '$actions/intersection';
+	import Link from '$components/primitives/Link.svelte';
 
 	import Logo from '$components/primitives/Logo.svelte';
 
@@ -34,18 +35,13 @@
 	on:leave={() => (out = true)}
 	class:out
 >
-	<section id="copyright">
-		<a href="http://unesco-paysage.umontreal.ca/" rel="external">
-			&copy; Chaire UNESCO en paysage urbain de l'Université de Montréal
-		</a>
-	</section>
 	<section id="links">
 		<section id="sitemap-links">
 			<div class="heading">Carte du site</div>
 			<ul>
 				{#each mainLinks as link}
 					<li>
-						<a href={link.pathname}>{link.title}</a>
+						<Link href={link.pathname}>{link.title}</Link>
 					</li>
 				{/each}
 			</ul>
@@ -55,7 +51,7 @@
 			<ul>
 				{#each exploreLinks as link}
 					<li>
-						<a href={link.pathname}>{link.title}</a>
+						<Link href={link.pathname}>{link.title}</Link>
 					</li>
 				{/each}
 			</ul>
@@ -65,7 +61,7 @@
 			<ul>
 				{#each partnersLinks as link}
 					<li>
-						<a href={link.pathname}>{link.title}</a>
+						<Link href={link.pathname}>{link.title}</Link>
 					</li>
 				{/each}
 			</ul>
@@ -75,6 +71,11 @@
 		<a href="/" class="logo">
 			<Logo />
 		</a>
+	</section>
+	<section id="copyright">
+		<Link href="http://unesco-paysage.umontreal.ca/" rel="external">
+			&copy; Chaire UNESCO en paysage urbain de l'Université de Montréal
+		</Link>
 	</section>
 </footer>
 
@@ -104,8 +105,9 @@
 		display: flex;
 		padding: 0.5rem;
 		justify-content: center;
-		color: var(--color-light-900);
-		letter-spacing: 1px;
+		color: var(--color-dark-100);
+		font-weight: 300;
+		letter-spacing: 0.5px;
 	}
 
 	#links {
@@ -134,21 +136,6 @@
 		li {
 			padding: 0;
 			margin: 0;
-		}
-
-		a {
-			font-family: var(--font-misc);
-			display: inline-flex;
-			padding: 0.4em 1em 0.6em 1em;
-			border-radius: 2em;
-			align-items: center;
-			transition: all 0.2s ease-out;
-			font-weight: 540;
-		}
-
-		a:hover {
-			color: var(--color-primary-500);
-			background-color: rgba(var(--rgb-primary-500), 0.15);
 		}
 
 		.heading {

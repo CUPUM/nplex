@@ -52,6 +52,12 @@
 					}
 					const signup = await browserDbClient.auth.signUp({ email, password });
 					if (signup.error) throw signup.error;
+					const updateProfile = await browserDbClient
+						.from('users_profiles')
+						.update({ firstname, middlename, lastname })
+						.eq('user_id', signup.data.user.id)
+						.single();
+					if (updateProfile.error) throw updateProfile.error;
 					break;
 				case Action.UseProvider:
 					// To do: get app approbation from desired providers.
@@ -75,15 +81,14 @@
 			rotateY: 30,
 			translateZ: -100,
 			translateX: 100,
-			translateY: -100,
+			translateY: -150,
 			duration: 200,
 			easing: expoOut,
 			opacity: 0,
 		}}
 		out:transform={{
 			rotateX: -20,
-			rotateY: -20,
-			translateY: 200,
+			rotateY: -30,
 			translateZ: -200,
 			duration: 150,
 			easing: expoIn,
@@ -154,20 +159,11 @@
 					type="submit"
 					variant="ghost"
 					value={Action.EmailSignUp}
-					contentAlign="left"
 					loading={currentAction === Action.EmailSignUp}
 				>
 					Créer un compte
 				</Button>
-				<Button
-					type="submit"
-					variant="ghost"
-					value={Action.EmailSignUp}
-					contentAlign="right"
-					loading={currentAction === Action.EmailSignUp}
-				>
-					Mot de passe oublié?
-				</Button>
+				<Button type="submit" variant="ghost" value={Action.EmailSignUp}>Mot de passe oublié?</Button>
 			</div>
 		</form>
 		<hr />
