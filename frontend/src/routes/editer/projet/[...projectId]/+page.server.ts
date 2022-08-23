@@ -1,6 +1,6 @@
 import { createServerDbClient } from '$utils/database/database';
 import { Cookie } from '$utils/values/keys';
-import { type Action } from '@sveltejs/kit';
+import type { Action } from '@sveltejs/kit';
 
 export const POST: Action = async ({ locals, request, url, params }) => {
 	const update = await request.json();

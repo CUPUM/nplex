@@ -2,7 +2,7 @@
 	import { width } from '$transitions/width';
 	import ProjectsListCard from './ProjectsListCard.svelte';
 
-	export let projectsPreviews; // Define typing (in +page.ts load ?) from generated db types.
+	export let projectsPreviews = []; // Define typing (in +page.ts load ?) from generated db types.
 </script>
 
 <section transition:width|local={{}}>
