@@ -20,8 +20,8 @@
 	"license": "MIT",
 	"packageManager": "pnpm@6.25.0",
 	"scripts": {
-		"gen-db-types": ". .env && cd ../backend && supabase gen types typescript --db-url ${SUPABASE_DB_URL} > ../frontend/src/types/database.ts",
-		"gen-openapi-types": ". ../.env && npx openapi-typescript \"${PUBLIC_SUPABASE_URL}/rest/v1/?apikey=${PUBLIC_SUPABASE_ANON_KEY}\" --output src/types/database.ts",
+		"gen-db-remote-types": ". ../.env && cd ../backend && supabase gen types typescript --db-url ${SUPABASE_DB_URL} > ../frontend/src/types/database.ts",
+		"gen-db-local-types": "cd ../backend && supabase gen types typescript --local > ../frontend/src/types/database.ts",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -32,9 +32,9 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "1.0.0-next.86",
-		"@sveltejs/kit": "1.0.0-next.429",
+		"@sveltejs/kit": "1.0.0-next.430",
 		"@types/cookie": "^0.5.1",
-		"@types/node": "^18.7.10",
+		"@types/node": "^18.7.11",
 		"@types/set-cookie-parser": "^2.4.2",
 		"@typescript-eslint/eslint-plugin": "^5.34.0",
 		"@typescript-eslint/parser": "^5.34.0",
@@ -67,7 +67,7 @@
 		"vite": "^3.0.9"
 	},
 	"dependencies": {
-		"@supabase/supabase-js": "2.0.0-rc.5",
+		"@supabase/supabase-js": "2.0.0-rc.6",
 		"@turf/bbox": "^6.5.0",
 		"@turf/circle": "^6.5.0",
 		"@turf/helpers": "^6.5.0",

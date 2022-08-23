@@ -2,10 +2,10 @@
 	import { ripple } from '$actions/ripple';
 	import { page } from '$app/stores';
 	import { userProfile } from '$stores/profile';
-	import { cssSize } from '$utils/css';
+	import { cssSize, type SizeInput } from '$utils/css';
 	import Loading from './Loading.svelte';
 
-	export let size: string | number = '1em';
+	export let size: SizeInput = '1em';
 	export let warning: boolean = false;
 	export let href: string = undefined;
 	export let active: boolean = undefined;
@@ -29,7 +29,9 @@
 	$: cssAvatarImage = $userProfile && $userProfile.avatar_url ? `url(${$userProfile.avatar_url})` : '';
 </script>
 
-<a
+<svelte:element
+	this={href ? 'a' : 'figure'}
+	{href}
 	use:ripple={{ startColor: 'currentColor' }}
 	on:click
 	on:focus
@@ -38,73 +40,55 @@
 	class="avatar"
 	class:active
 	class:warning
-	style:font-size={cssSize(size)}
+	class:disabled={disabled || loading}
+	style:--size={cssSize(size)}
 	style:--color1={userColors[0]}
 	style:--color2={userColors[1]}
 	style:--color3={userColors[2]}
-	disabled={disabled || loading}
-	{href}
+	style:background-image={cssAvatarImage}
 	{...$$restProps}
 >
-	<div id="inner" style:background-image={cssAvatarImage}>
-		{#if !cssAvatarImage}
-			<svg width="100" height="100" preserveAspectRatio="xMidYMid">
-				<text
-					vector-effect="non-scaling-stroke"
-					text-anchor="middle"
-					x="50%"
-					y="55%"
-					font-size="1.2em"
-					font-weight="500"
-					stroke="none"
-					dominant-baseline="middle"
-				>
-					{userLetter}
-				</text>
-			</svg>
-		{/if}
-		{#if loading}
-			<Loading />
-		{/if}
-	</div>
-</a>
+	{#if !cssAvatarImage}
+		<svg width="100" height="100" preserveAspectRatio="xMidYMid">
+			<text
+				vector-effect="non-scaling-stroke"
+				text-anchor="middle"
+				x="50%"
+				y="55%"
+				font-size="1.2em"
+				font-weight="500"
+				stroke="none"
+				dominant-baseline="middle"
+			>
+				{userLetter}
+			</text>
+		</svg>
+	{/if}
+	{#if loading}
+		<Loading />
+	{/if}
+</svelte:element>
 
 <style lang="scss">
 	.avatar {
-		--size: calc(var(--default-size) - 2 * var(--inset, 0px));
-		--pad: 5px;
+		--height-ratio: 3;
+		--computed-height: calc((var(--height-ratio) * var(--size)) - (2 * var(--inset, 0px)));
+		--computed-size: calc(var(--computed-height) / var(--height-ratio));
 		display: inline-block;
 		position: relative;
-		height: var(--size);
-		min-height: var(--size);
-		width: var(--size);
+		height: var(--computed-height);
+		width: var(--computed-height);
 		border-radius: 50%;
 		border: none;
-		padding: var(--pad);
 		text-decoration: none;
 		background: transparent;
-
-		&:hover #inner,
-		&[popover] #inner {
-			opacity: 1;
-			box-shadow: 0 0 0 5px rgba(var(--rgb-dark-100), 0.1);
-		}
-	}
-
-	#inner {
-		opacity: 0.8;
-		position: relative;
-		display: block;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		background: white;
-		border-radius: 50%;
-		overflow: hidden;
-		padding: 0;
-		margin: 0;
 		transition: all 0.2s;
+
+		&:hover,
+		&[popover] {
+			opacity: 1;
+			box-shadow: 0 0 0 2px rgba(var(--rgb-dark-900), 0.2);
+		}
 	}
 
 	svg {

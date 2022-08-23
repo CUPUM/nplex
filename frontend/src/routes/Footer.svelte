@@ -169,12 +169,13 @@
 	#nplex-footer-logo {
 		flex: none;
 		width: 120px;
-		color: var(--color-dark-900);
 		margin: 0 auto;
 		padding: 1rem;
-		transition: all 0.2s ease-out;
 
 		.logo {
+			transition: all 0.2s ease-out;
+			color: var(--color-dark-900);
+
 			&:hover {
 				color: var(--color-primary-500);
 			}

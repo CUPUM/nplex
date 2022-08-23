@@ -164,6 +164,10 @@
 			outline-color: var(--color-error-300);
 			background-color: var(--color-error-100);
 		}
+
+		&.active:not(:global([popover])) {
+			pointer-events: none;
+		}
 	}
 
 	.ripple {
@@ -186,8 +190,6 @@
 		display: block;
 		grid-column: content;
 		text-overflow: ellipsis;
-		// overflow-x: hidden;
-		// overflow-y: visible;
 	}
 
 	.leading,
@@ -233,7 +235,7 @@
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
-		&[popover] {
+		&:global([popover]) {
 			color: var(--color-light-300);
 			background-color: var(--color-dark-700);
 			box-shadow: 0 1em 2em -1.2em var(--color-dark-900);
@@ -254,7 +256,7 @@
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
-		&[popover] {
+		&:global([popover]) {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-dark-100), 0.1);
 			box-shadow: inset 0 0 0 3px rgba(var(--rgb-dark-500), 0);
@@ -270,7 +272,7 @@
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
-		&[popover] {
+		&:global([popover]) {
 			color: white;
 			background-color: var(--color-primary-700);
 			box-shadow: 0 1em 2em -1em rgba(var(--rgb-primary-700), 0.8);
@@ -289,7 +291,7 @@
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
-		&[popover] {
+		&:global([popover]) {
 			color: var(--color-primary-700);
 			background-color: rgba(var(--rgb-primary-300), 0.1);
 		}
@@ -320,12 +322,14 @@
 			transition: opacity 0.2s, width 0.15s cubic-bezier(0, 0, 0, 1),
 				transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 		}
+		&.square::after {
+			display: none;
+		}
 
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
-		// Weird bug, popover does not work for some reason (but works as expected with AvatarButton)
-		&[popover] {
+		&:global([popover]) {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-dark-100), 0.1) !important;
 
@@ -342,7 +346,7 @@
 
 		&.active {
 			color: var(--color-primary-500);
-			// pointer-events: none;
+			background-color: rgba(var(--rgb-light-100), 0.8);
 
 			&::after {
 				opacity: 1;
@@ -364,7 +368,7 @@
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
-		&[popover] {
+		&:global([popover]) {
 			box-shadow: 0 0 0 3px rgba(var(--rgb-primary-500), 0.25);
 			background-color: var(--color-primary-700);
 			color: white;

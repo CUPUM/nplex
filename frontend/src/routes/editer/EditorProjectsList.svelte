@@ -3,13 +3,13 @@
 
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
-	import ProjectsListNewCard from './ProjectsListNewCard.svelte';
+	import EditorProjectCard from './EditorProjectCard.svelte';
 </script>
 
 <section>
 	<ul class="projects" use:horizontalScroll={{}}>
 		<li class="submit-card">
-			<ProjectsListNewCard />
+			<EditorProjectCard />
 		</li>
 		{#each Array(5).fill(null) as item, i}
 			<li class="project-card">

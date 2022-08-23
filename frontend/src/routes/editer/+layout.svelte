@@ -1,6 +1,8 @@
 <script lang="ts">
-	import ProjectsList from '$routes/editer/ProjectsList.svelte';
+	import EditorProjectsList from '$routes/editer/EditorProjectsList.svelte';
 	import type { LayoutData } from './$types';
+	import EditorActorsList from './EditorActorsList.svelte';
+	import EditorOrganisationsList from './EditorOrganisationsList.svelte';
 	import Search from './Search.svelte';
 
 	const targetForm = 'edit-form';
@@ -13,8 +15,9 @@
 		<slot />
 	</article>
 	<Search />
-	<ProjectsList />
-	<!-- Other lists here -->
+	<EditorProjectsList />
+	<EditorOrganisationsList />
+	<EditorActorsList />
 </div>
 
 <style lang="scss">
@@ -27,7 +30,5 @@
 
 	article {
 		position: relative;
-		display: flex;
-		flex-direction: row;
 	}
 </style>

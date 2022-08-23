@@ -3,6 +3,7 @@
 	import { getStores } from '$app/stores';
 	import Loading from '$components/primitives/Loading.svelte';
 	import { authModal } from '$stores/authModal';
+	import { mainScroll } from '$stores/scroll';
 	import '$styles/app.scss';
 	import '$styles/vars.css';
 	import { browserDbClient } from '$utils/database/database';
@@ -42,7 +43,12 @@
 </script>
 
 <Navbar bind:navbarHeight />
-<main style:--navbar-height="{navbarHeight || 0}px" class:loading class:authing={$authModal}>
+<main
+	style:--navbar-height="{navbarHeight || 0}px"
+	style:--scroll="{$mainScroll.y}px"
+	class:loading
+	class:authing={$authModal}
+>
 	<slot />
 </main>
 {#if $page.data.showFooter}

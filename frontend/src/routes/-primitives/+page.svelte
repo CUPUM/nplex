@@ -4,6 +4,7 @@
 	import Button from '$components/primitives/Button.svelte';
 	import FieldV2 from '$components/primitives/Field.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
+	import Popover from '$components/primitives/Popover.svelte';
 
 	let textValue = 'Text value!';
 	let fieldSize = 16;
@@ -12,6 +13,10 @@
 
 <section>
 	<h2>Field</h2>
+	<Popover useHover>
+		<Button slot="control">Test</Button>
+		<p>Test content of popover!</p>
+	</Popover>
 	<input type="range" name="" id="" min="10" max="72" step="1" bind:value={fieldSize} />
 	<FieldV2 placeholder="Placeholder" prefix="before  " suffix="spaced" bind:size={fieldSize}>
 		<!-- <svelte:fragment slot="leading">Leading</svelte:fragment> -->

@@ -25,6 +25,7 @@ const config = {
 		adapter: node(),
 		env: {
 			publicPrefix: 'PUBLIC',
+			dir: '..',
 		},
 		alias: {
 			$types: 'src/types',

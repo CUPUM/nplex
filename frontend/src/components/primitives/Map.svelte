@@ -165,7 +165,7 @@
 	class:not-inited={!map}
 	{style}
 	use:intersection={{ rootMargin: '100px 100px' }}
-	on:enter={init}
+	on:enter|once={init}
 >
 	<div class="map" bind:this={innerRef} style={innerStyle} />
 	{#if $loading}
