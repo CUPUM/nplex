@@ -9,6 +9,41 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      projects_materials_uses: {
+        Row: {
+          id: number;
+          created_at: string;
+          updated_at: string;
+          created_by_id: string;
+          updated_by_id: string;
+          project_id: string;
+          project_material_id: string;
+          material_use_id: number;
+          description: string | null;
+        };
+        Insert: {
+          id?: number;
+          created_at?: string;
+          updated_at?: string;
+          created_by_id?: string;
+          updated_by_id?: string;
+          project_id: string;
+          project_material_id: string;
+          material_use_id: number;
+          description?: string | null;
+        };
+        Update: {
+          id?: number;
+          created_at?: string;
+          updated_at?: string;
+          created_by_id?: string;
+          updated_by_id?: string;
+          project_id?: string;
+          project_material_id?: string;
+          material_use_id?: number;
+          description?: string | null;
+        };
+      };
       project_event_type: {
         Row: {
           id: number;
@@ -151,36 +186,36 @@ export interface Database {
       users_profiles: {
         Row: {
           user_id: string;
+          created_at: string;
+          updated_at: string;
           published_email: string | null;
           avatar_url: string | null;
           firstname: string | null;
           middlename: string | null;
           lastname: string | null;
           about: string | null;
-          created_at: string;
-          updated_at: string;
         };
         Insert: {
           user_id: string;
+          created_at?: string;
+          updated_at?: string;
           published_email?: string | null;
           avatar_url?: string | null;
           firstname?: string | null;
           middlename?: string | null;
           lastname?: string | null;
           about?: string | null;
-          created_at?: string;
-          updated_at?: string;
         };
         Update: {
           user_id?: string;
+          created_at?: string;
+          updated_at?: string;
           published_email?: string | null;
           avatar_url?: string | null;
           firstname?: string | null;
           middlename?: string | null;
           lastname?: string | null;
           about?: string | null;
-          created_at?: string;
-          updated_at?: string;
         };
       };
       project_implantation_mode: {
@@ -219,6 +254,11 @@ export interface Database {
       };
       projects_events: {
         Row: {
+          id: string;
+          created_at: string;
+          updated_at: string;
+          created_by_id: string;
+          updated_by_id: string;
           project_id: string;
           type_id: number;
           parent_id: string | null;
@@ -226,13 +266,13 @@ export interface Database {
           description: string | null;
           start_date: string;
           end_date: string | null;
-          id: string;
-          created_at: string;
-          updated_at: string;
-          created_by_id: string;
-          updated_by_id: string;
         };
         Insert: {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+          created_by_id?: string;
+          updated_by_id?: string;
           project_id: string;
           type_id: number;
           parent_id?: string | null;
@@ -240,13 +280,13 @@ export interface Database {
           description?: string | null;
           start_date: string;
           end_date?: string | null;
+        };
+        Update: {
           id?: string;
           created_at?: string;
           updated_at?: string;
           created_by_id?: string;
           updated_by_id?: string;
-        };
-        Update: {
           project_id?: string;
           type_id?: number;
           parent_id?: string | null;
@@ -254,46 +294,41 @@ export interface Database {
           description?: string | null;
           start_date?: string;
           end_date?: string | null;
-          id?: string;
-          created_at?: string;
-          updated_at?: string;
-          created_by_id?: string;
-          updated_by_id?: string;
         };
       };
       projects_events_ressources: {
         Row: {
+          id: string;
           event_id: string;
           project_id: string;
-          title: string;
-          description: string | null;
-          id: string;
           created_at: string;
           updated_at: string;
           created_by_id: string;
           updated_by_id: string;
+          title: string;
+          description: string | null;
         };
         Insert: {
+          id?: string;
           event_id: string;
           project_id: string;
+          created_at?: string;
+          updated_at?: string;
+          created_by_id?: string;
+          updated_by_id?: string;
           title: string;
           description?: string | null;
-          id?: string;
-          created_at?: string;
-          updated_at?: string;
-          created_by_id?: string;
-          updated_by_id?: string;
         };
         Update: {
+          id?: string;
           event_id?: string;
           project_id?: string;
-          title?: string;
-          description?: string | null;
-          id?: string;
           created_at?: string;
           updated_at?: string;
           created_by_id?: string;
           updated_by_id?: string;
+          title?: string;
+          description?: string | null;
         };
       };
       project_material_type: {
@@ -317,44 +352,6 @@ export interface Database {
           label?: string | null;
           description?: string | null;
           combustible?: boolean | null;
-        };
-      };
-      projects_materials: {
-        Row: {
-          project_id: string;
-          material_type_id: number;
-          origin_id: number | null;
-          sustainability: number | null;
-          description: string | null;
-          id: string;
-          created_at: string;
-          updated_at: string;
-          created_by_id: string;
-          updated_by_id: string;
-        };
-        Insert: {
-          project_id: string;
-          material_type_id: number;
-          origin_id?: number | null;
-          sustainability?: number | null;
-          description?: string | null;
-          id?: string;
-          created_at?: string;
-          updated_at?: string;
-          created_by_id?: string;
-          updated_by_id?: string;
-        };
-        Update: {
-          project_id?: string;
-          material_type_id?: number;
-          origin_id?: number | null;
-          sustainability?: number | null;
-          description?: string | null;
-          id?: string;
-          created_at?: string;
-          updated_at?: string;
-          created_by_id?: string;
-          updated_by_id?: string;
         };
       };
       project_material_origin: {
@@ -394,46 +391,11 @@ export interface Database {
           description?: string | null;
         };
       };
-      projects_materials_uses: {
-        Row: {
-          id: number;
-          project_id: string;
-          project_material_id: string;
-          material_use_id: number;
-          description: string | null;
-          created_at: string;
-          updated_at: string;
-          created_by_id: string;
-          updated_by_id: string;
-        };
-        Insert: {
-          id?: number;
-          project_id: string;
-          project_material_id: string;
-          material_use_id: number;
-          description?: string | null;
-          created_at?: string;
-          updated_at?: string;
-          created_by_id?: string;
-          updated_by_id?: string;
-        };
-        Update: {
-          id?: number;
-          project_id?: string;
-          project_material_id?: string;
-          material_use_id?: number;
-          description?: string | null;
-          created_at?: string;
-          updated_at?: string;
-          created_by_id?: string;
-          updated_by_id?: string;
-        };
-      };
       projects_publication_status: {
         Row: {
           project_id: string;
-          updated_by_id: string;
           updated_at: string;
+          updated_by_id: string;
           status:
             | "unpublished"
             | "pending_approval"
@@ -442,8 +404,8 @@ export interface Database {
         };
         Insert: {
           project_id: string;
-          updated_by_id: string;
           updated_at?: string;
+          updated_by_id: string;
           status?:
             | "unpublished"
             | "pending_approval"
@@ -452,8 +414,8 @@ export interface Database {
         };
         Update: {
           project_id?: string;
-          updated_by_id?: string;
           updated_at?: string;
+          updated_by_id?: string;
           status?:
             | "unpublished"
             | "pending_approval"
@@ -513,62 +475,100 @@ export interface Database {
           modified_at?: string;
         };
       };
+      projects_materials: {
+        Row: {
+          id: string;
+          created_at: string;
+          updated_at: string;
+          created_by_id: string;
+          updated_by_id: string;
+          project_id: string;
+          material_type_id: number;
+          origin_id: number | null;
+          sustainability: number | null;
+          description: string | null;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+          created_by_id?: string;
+          updated_by_id?: string;
+          project_id: string;
+          material_type_id: number;
+          origin_id?: number | null;
+          sustainability?: number | null;
+          description?: string | null;
+        };
+        Update: {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+          created_by_id?: string;
+          updated_by_id?: string;
+          project_id?: string;
+          material_type_id?: number;
+          origin_id?: number | null;
+          sustainability?: number | null;
+          description?: string | null;
+        };
+      };
       users_projects_collections: {
         Row: {
-          title: string;
-          description: string | null;
           id: string;
           created_at: string;
           updated_at: string;
           user_id: string;
           is_published: boolean;
+          title: string;
+          description: string | null;
         };
         Insert: {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+          user_id?: string;
+          is_published?: boolean;
           title: string;
           description?: string | null;
-          id?: string;
-          created_at?: string;
-          updated_at?: string;
-          user_id?: string;
-          is_published?: boolean;
         };
         Update: {
-          title?: string;
-          description?: string | null;
           id?: string;
           created_at?: string;
           updated_at?: string;
           user_id?: string;
           is_published?: boolean;
+          title?: string;
+          description?: string | null;
         };
       };
       users_projects_collections_items: {
         Row: {
           id: number;
           user_id: string;
+          created_at: string;
+          updated_at: string;
           collection_id: string;
           project_id: string;
           comment: string | null;
-          created_at: string;
-          updated_at: string;
         };
         Insert: {
           id?: number;
           user_id: string;
+          created_at?: string;
+          updated_at?: string;
           collection_id: string;
           project_id: string;
           comment?: string | null;
-          created_at?: string;
-          updated_at?: string;
         };
         Update: {
           id?: number;
           user_id?: string;
+          created_at?: string;
+          updated_at?: string;
           collection_id?: string;
           project_id?: string;
           comment?: string | null;
-          created_at?: string;
-          updated_at?: string;
         };
       };
       users_roles: {
@@ -586,6 +586,73 @@ export interface Database {
           user_id?: string;
           updated_at?: string;
           role?: "admin" | "editor" | "visitor";
+        };
+      };
+      projects_exemplarity_indicators: {
+        Row: {
+          id: string;
+          created_at: string;
+          updated_at: string;
+          created_by_id: string;
+          updated_by_id: string;
+          project_id: string;
+          exemplarity_indicator_id: number;
+          description: string | null;
+          rating: number;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+          created_by_id?: string;
+          updated_by_id?: string;
+          project_id: string;
+          exemplarity_indicator_id: number;
+          description?: string | null;
+          rating: number;
+        };
+        Update: {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+          created_by_id?: string;
+          updated_by_id?: string;
+          project_id?: string;
+          exemplarity_indicator_id?: number;
+          description?: string | null;
+          rating?: number;
+        };
+      };
+      projects_programs: {
+        Row: {
+          id: number;
+          created_at: string;
+          created_by_id: string;
+          updated_at: string;
+          updated_by_id: string;
+          project_id: string;
+          title: string;
+          description: string;
+        };
+        Insert: {
+          id?: number;
+          created_at?: string;
+          created_by_id?: string;
+          updated_at?: string;
+          updated_by_id?: string;
+          project_id: string;
+          title: string;
+          description: string;
+        };
+        Update: {
+          id?: number;
+          created_at?: string;
+          created_by_id?: string;
+          updated_at?: string;
+          updated_by_id?: string;
+          project_id?: string;
+          title?: string;
+          description?: string;
         };
       };
       project_exemplarity_indicator: {
@@ -616,6 +683,11 @@ export interface Database {
       };
       projects: {
         Row: {
+          id: string;
+          created_at: string;
+          updated_at: string;
+          created_by_id: string;
+          updated_by_id: string;
           title: string;
           description: string | null;
           site_ownership_id: number | null;
@@ -632,14 +704,14 @@ export interface Database {
           cost_min: number;
           cost_max: number;
           type_id: number;
-          id: string;
-          created_at: string;
-          updated_at: string;
-          created_by_id: string;
-          updated_by_id: string;
           combustible: boolean;
         };
         Insert: {
+          id?: string;
+          created_at?: string;
+          updated_at?: string;
+          created_by_id?: string;
+          updated_by_id?: string;
           title: string;
           description?: string | null;
           site_ownership_id?: number | null;
@@ -656,14 +728,14 @@ export interface Database {
           cost_min: number;
           cost_max: number;
           type_id: number;
+          combustible: boolean;
+        };
+        Update: {
           id?: string;
           created_at?: string;
           updated_at?: string;
           created_by_id?: string;
           updated_by_id?: string;
-          combustible: boolean;
-        };
-        Update: {
           title?: string;
           description?: string | null;
           site_ownership_id?: number | null;
@@ -680,102 +752,30 @@ export interface Database {
           cost_min?: number;
           cost_max?: number;
           type_id?: number;
-          id?: string;
-          created_at?: string;
-          updated_at?: string;
-          created_by_id?: string;
-          updated_by_id?: string;
           combustible?: boolean;
-        };
-      };
-      projects_exemplarity_indicators: {
-        Row: {
-          project_id: string;
-          exemplarity_indicator_id: number;
-          description: string | null;
-          id: string;
-          created_at: string;
-          updated_at: string;
-          created_by_id: string;
-          updated_by_id: string;
-          rating: number;
-        };
-        Insert: {
-          project_id: string;
-          exemplarity_indicator_id: number;
-          description?: string | null;
-          id?: string;
-          created_at?: string;
-          updated_at?: string;
-          created_by_id?: string;
-          updated_by_id?: string;
-          rating: number;
-        };
-        Update: {
-          project_id?: string;
-          exemplarity_indicator_id?: number;
-          description?: string | null;
-          id?: string;
-          created_at?: string;
-          updated_at?: string;
-          created_by_id?: string;
-          updated_by_id?: string;
-          rating?: number;
         };
       };
       project_exemplarity_indicator_category: {
         Row: {
           id: number;
+          created_at: string;
+          updated_at: string;
           title: string;
           description: string | null;
-          created_at: string;
-          updated_at: string;
         };
         Insert: {
           id?: number;
-          title: string;
-          description?: string | null;
           created_at?: string;
           updated_at?: string;
+          title: string;
+          description?: string | null;
         };
         Update: {
           id?: number;
+          created_at?: string;
+          updated_at?: string;
           title?: string;
           description?: string | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-      };
-      projects_programs: {
-        Row: {
-          id: number;
-          project_id: string;
-          title: string;
-          description: string;
-          created_at: string;
-          created_by_id: string;
-          updated_at: string;
-          updated_by_id: string;
-        };
-        Insert: {
-          id?: number;
-          project_id: string;
-          title: string;
-          description: string;
-          created_at?: string;
-          created_by_id?: string;
-          updated_at?: string;
-          updated_by_id?: string;
-        };
-        Update: {
-          id?: number;
-          project_id?: string;
-          title?: string;
-          description?: string;
-          created_at?: string;
-          created_by_id?: string;
-          updated_at?: string;
-          updated_by_id?: string;
         };
       };
     };

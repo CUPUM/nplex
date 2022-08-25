@@ -92,7 +92,7 @@
 			[trailing-end];
 		flex-direction: row;
 		align-items: center;
-		font-weight: 350;
+		font-weight: 450;
 		line-height: 1em;
 		padding: 0 1.5em;
 		margin: 0;
@@ -241,7 +241,7 @@
 			box-shadow: 0 1em 2em -1.2em var(--color-dark-900);
 		}
 
-		&:active {
+		&:active:not([popover]) {
 			color: white;
 			background-color: var(--color-primary-300);
 			box-shadow: 0 1em 2em -1em var(--color-primary-700);
@@ -277,7 +277,7 @@
 			background-color: var(--color-primary-700);
 			box-shadow: 0 1em 2em -1em rgba(var(--rgb-primary-700), 0.8);
 		}
-		&.active {
+		&.active:not([popover]) {
 			color: var(--color-primary-900);
 			background-color: var(--color-primary-300);
 		}
@@ -344,9 +344,9 @@
 			}
 		}
 
-		&.active {
+		&.active:not([popover]) {
 			color: var(--color-primary-500);
-			background-color: rgba(var(--rgb-light-100), 0.8);
+			background-color: rgba(var(--rgb-light-100), 0.5);
 
 			&::after {
 				opacity: 1;

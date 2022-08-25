@@ -183,7 +183,7 @@
 		z-index: 1000;
 		position: fixed;
 		width: 100vw;
-		height: 100%;
+		height: 100vh;
 		top: 0;
 		left: 0;
 		background-color: rgba(var(--rgb-primary-700), 0.96);

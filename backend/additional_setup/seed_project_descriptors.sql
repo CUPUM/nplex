@@ -16,11 +16,11 @@ values
 	('Agrandissement en aire de bâtiment', '');
 
 
-insert into public.project_type_parent_category
-	(type_id, category_id)
-values
-	(1, 2),
-	(2, 2);
+-- insert into public.project_type_parent_category
+-- 	(type_id, category_id)
+-- values
+-- 	(1, 2),
+-- 	(2, 2);
 
 
 insert into public.project_site_ownership
@@ -66,11 +66,11 @@ values
 	('Local événementiel', '', true);
 
 
--- insert into public.project_site_usage_parent_category
--- 	(title, description)
--- values
--- 	('Nouvelle construction', ''),
--- 	('Transformation', '');
+insert into public.project_site_usage_parent_category
+	(title, description)
+values
+	('Nouvelle construction', ''),
+	('Transformation', '');
 
 
 insert into public.project_implantation_mode
@@ -106,17 +106,9 @@ values
 	('Fin des travaux', '', false);
 
 
-insert into public.project_event_child_type
-	(type_id, child_type_id)
-values
-	(1, 2),
-	(1, 3),
-	(1, 4);
-
-
-insert into public.project_implantation_mode
-	(title, description)
-values
-	('Isolé', ''),
-	('Jumelé', ''),
-	('Contigüe', '');
+-- insert into public.project_event_child_type
+-- 	(type_id, child_type_id)
+-- values
+-- 	(1, 2),
+-- 	(1, 3),
+-- 	(1, 4);

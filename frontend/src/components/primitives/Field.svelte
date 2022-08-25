@@ -187,16 +187,28 @@
 			pointer-events: none;
 		}
 
-		&.warning,
-		&.invalid {
+		&.warning:not(:hover):not(.focused),
+		&.invalid:not(:hover):not(.focused) {
+			background-color: rgba(var(--rgb-error-100), 0.1);
+
 			fieldset {
-				border: 2px solid var(--color-error-300);
+				color: var(--color-error-700);
+
+				legend {
+					opacity: 0.5;
+				}
 			}
 		}
 
-		&.success {
+		&.success:not(:hover):not(.focused) {
+			background-color: rgba(var(--rgb-success-100), 0.1);
+
 			fieldset {
-				border: 2px solid var(--color-success-300);
+				color: var(--color-success-700);
+
+				legend {
+					opacity: 1;
+				}
 			}
 		}
 
@@ -315,7 +327,7 @@
 		border-width: 0px;
 		border-style: solid;
 		border-color: currentColor;
-		transition: all 0.15s ease-in-out;
+		transition: all 0.1s ease-in-out, color 0s;
 	}
 
 	legend {
@@ -328,7 +340,7 @@
 		top: 0;
 		margin-left: 1.5em;
 		max-width: 0;
-		transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1), color 0s;
+		transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1), color 0.1s;
 
 		div {
 			font-size: 1em;

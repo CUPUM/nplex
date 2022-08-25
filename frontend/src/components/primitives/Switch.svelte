@@ -175,18 +175,18 @@
 		background-color: rgba(255, 255, 255, 1);
 		transition: all 0.25s ease-out;
 
-		&:hover,
-		&:focus {
-			// background-color: rgba(255, 255, 255, 0.2);
-		}
+		// &:hover,
+		// &:focus {
+		// 	background-color: rgba(255, 255, 255, 0.2);
+		// }
 
 		& .indicator {
-			opacity: 0.2;
+			opacity: 0.25;
 			box-shadow: 0 0 0 1px var(--color-primary-300);
-			background-color: var(--color-primary-100);
+			background-color: var(--color-primary-300);
 
 			&.temp {
-				opacity: 0.1;
+				opacity: 0.15;
 			}
 		}
 	}

@@ -19,11 +19,11 @@
 <header class:mounted>
 	<hgroup>
 		{#if data.isNew}
-			<h2 use:reveal={{ ...slipMask, splitDelimiter: /(.{3})/, rootMargin: '0px 0px' }}>
+			<h1 use:reveal={{ ...slipMask, splitDelimiter: /(.{3})/, rootMargin: '0px 0px' }}>
 				Nouvelle fiche de projet
-			</h2>
+			</h1>
 		{:else}
-			<h2 use:reveal={{ ...slipMask, rootMargin: '0px 0px' }}>Fiche du projet: {data.project.title}</h2>
+			<h1 use:reveal={{ ...slipMask, rootMargin: '0px 0px' }}>Fiche du projet: {data.project.title}</h1>
 		{/if}
 	</hgroup>
 	<section>
@@ -73,7 +73,6 @@
 	h2 {
 		padding: 0;
 		margin: 0;
-		font-weight: 600;
 		grid-column: col1 / col2;
 	}
 
@@ -85,8 +84,9 @@
 		grid-row: 2;
 		gap: 1em;
 		font-size: 0.8em;
-		font-weight: 400;
-		letter-spacing: 1px;
+		font-weight: 300;
+		letter-spacing: 0.5px;
+		line-height: 1.5;
 	}
 
 	div {

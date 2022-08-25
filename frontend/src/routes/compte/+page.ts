@@ -7,7 +7,6 @@ export const load: PageLoad = async ({ parent }) => {
 	const { session } = await parent();
 
 	if (!session?.jwt) throw redirect(303, '/');
-	console.log('This shouldnt run');
 
 	// Get user's id form access token to avoid unecessary db query.
 	const db = getContextualDbClient(session.jwt);

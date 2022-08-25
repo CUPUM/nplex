@@ -84,10 +84,22 @@
 		background: transparent;
 		transition: all 0.2s;
 
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border-radius: inherit;
+			transition: all 0.2s;
+		}
+
 		&:hover,
 		&[popover] {
-			opacity: 1;
-			box-shadow: 0 0 0 2px rgba(var(--rgb-dark-900), 0.2);
+			&::after {
+				box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.1);
+			}
 		}
 	}
 

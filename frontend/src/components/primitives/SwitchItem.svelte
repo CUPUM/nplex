@@ -132,7 +132,7 @@
 	.nav {
 		font-weight: 500;
 		background-color: transparent;
-		color: var(--color-dark-900);
+		color: var(--color-dark-300);
 		opacity: 1;
 		perspective: 600px;
 		& .slot {
@@ -161,7 +161,7 @@
 				transform: translateY(0) rotateX(0deg);
 			}
 			&.some-temp {
-				color: var(--color-primary-500);
+				color: var(--color-primary-100);
 			}
 		}
 	}
