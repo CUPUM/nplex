@@ -72,13 +72,6 @@ Core grid template with 3 main columns, full-pad col and full width col (without
 }
 
 /*
-Core grid column helper mixin.
-*/
-@mixin core-grid-col($col) {
-	grid-column: $col;
-}
-
-/*
 Border classes to add visual separation between sections
 */
 @mixin border($position) {

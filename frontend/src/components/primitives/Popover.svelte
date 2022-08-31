@@ -7,7 +7,7 @@
 
 	export let open: boolean = false;
 	export let useHover: boolean = false;
-	export let placement: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
+	export let place: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
 	export let distance: SizeInput = 5;
 
@@ -107,7 +107,7 @@
 	<button style="padding: 1em; display: inline-block; position: relative;">Fallback popover control</button>
 </slot>
 <div
-	class="hinter {placement} {align}"
+	class="hinter {place} {align}"
 	bind:this={popoverRef}
 	use:clickoutside
 	on:clickoutside={handleClickoutside}

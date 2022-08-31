@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
 	import { page } from '$app/stores';
-	import { userProfile } from '$stores/profile';
 	import { cssSize, type SizeInput } from '$utils/css';
-	import Loading from './Loading.svelte';
+	import type { ComponentProps } from 'svelte';
+	import Avatar from './Avatar.svelte';
 
 	export let size: SizeInput = '1em';
 	export let warning: boolean = false;
@@ -11,69 +11,31 @@
 	export let active: boolean = undefined;
 	export let disabled: boolean = undefined;
 	export let loading: boolean = undefined;
-	export let userid: string = undefined;
-
-	const user = $page.data?.session.user; // To do:  get user from db if someone else's user id is passed.
-	let cssAvatarImage: string = '';
-	const userColors = [
-		`#${parseInt(user.created_at.match(/\d+/g).map(Number).join('')).toString(16).slice(-6)}`,
-		`#${user.email
-			.split('')
-			.map((c) => c.charCodeAt(0).toString(16))
-			.join('')
-			.slice(0, 6)}`,
-		`#${user.id.slice(0, 6)}`,
-	];
-	const userLetter = user.email.charAt(0).toUpperCase();
-
-	$: cssAvatarImage = $userProfile && $userProfile.avatar_url ? `url(${$userProfile.avatar_url})` : '';
+	export let data: ComponentProps<Avatar>['data'] = $page.data?.session.user;
 </script>
 
 <svelte:element
-	this={href ? 'a' : 'figure'}
+	this={href ? 'a' : 'button'}
 	{href}
-	use:ripple={{ startColor: 'currentColor' }}
+	use:ripple={{ startColor: 'currentColor', insertChild: true }}
 	on:click
 	on:focus
-	on:mouseenter
-	on:mouseleave
-	class="avatar"
+	class="avatar-button"
 	class:active
 	class:warning
 	class:disabled={disabled || loading}
 	style:--size={cssSize(size)}
-	style:--color1={userColors[0]}
-	style:--color2={userColors[1]}
-	style:--color3={userColors[2]}
-	style:background-image={cssAvatarImage}
-	{...$$restProps}
 >
-	{#if !cssAvatarImage}
-		<svg width="100" height="100" preserveAspectRatio="xMidYMid">
-			<text
-				vector-effect="non-scaling-stroke"
-				text-anchor="middle"
-				x="50%"
-				y="55%"
-				font-size="1.2em"
-				font-weight="500"
-				stroke="none"
-				dominant-baseline="middle"
-			>
-				{userLetter}
-			</text>
-		</svg>
-	{/if}
-	{#if loading}
-		<Loading />
-	{/if}
+	<div class="inner">
+		<Avatar {data} {loading} />
+	</div>
+	<slot name="badge" />
 </svelte:element>
 
 <style lang="scss">
-	.avatar {
+	.avatar-button {
 		--height-ratio: 3;
 		--computed-height: calc((var(--height-ratio) * var(--size)) - (2 * var(--inset, 0px)));
-		--computed-size: calc(var(--computed-height) / var(--height-ratio));
 		display: inline-block;
 		position: relative;
 		height: var(--computed-height);
@@ -82,7 +44,35 @@
 		border: none;
 		text-decoration: none;
 		background: transparent;
-		transition: all 0.2s;
+		padding: 0;
+		margin: 0;
+		cursor: pointer;
+		transition: all 0.12s;
+
+		&:hover,
+		&:global([popover]) {
+			.inner {
+				transform: scale(1);
+
+				&::after {
+					box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.1);
+				}
+			}
+		}
+	}
+
+	.inner {
+		position: relative;
+		font-size: var(--computed-height);
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		margin: 0;
+		top: 0;
+		left: 0;
+		border-radius: 50%;
+		transform: scale(0.92);
+		transition: transform 0.12s ease-out;
 
 		&::after {
 			content: '';
@@ -92,30 +82,7 @@
 			width: 100%;
 			height: 100%;
 			border-radius: inherit;
-			transition: all 0.2s;
+			transition: all 0.2s ease-out;
 		}
-
-		&:hover,
-		&[popover] {
-			&::after {
-				box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.1);
-			}
-		}
-	}
-
-	svg {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		padding: 0;
-		margin: 0;
-		background: conic-gradient(from 90deg at -10% -10%, var(--color1), var(--color2), var(--color3) 90deg);
-		// background: conic-gradient(from 0deg at 0% 25%, blue, green, yellow 180deg);
-	}
-
-	text {
-		fill: var(--color-light-500);
 	}
 </style>

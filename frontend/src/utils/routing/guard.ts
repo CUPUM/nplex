@@ -1,4 +1,4 @@
-import { browser } from '$app/env';
+import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 import type { navigating } from '$app/stores';
 import type { AppUserSession } from '$routes/api/auth/update.json/+server';

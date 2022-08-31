@@ -51,12 +51,14 @@
 						break;
 					}
 					const signup = await browserDbClient.auth.signUp({ email, password });
+					console.log(signup);
 					if (signup.error) throw signup.error;
 					const updateProfile = await browserDbClient
 						.from('users_profiles')
 						.update({ firstname, middlename, lastname })
 						.eq('user_id', signup.data.user.id)
 						.single();
+					console.log(updateProfile);
 					if (updateProfile.error) throw updateProfile.error;
 					break;
 				case Action.UseProvider:
@@ -101,6 +103,7 @@
 			<Logo color="currentColor" />
 		</a>
 		<form
+			id="auth-form"
 			autocomplete="off"
 			on:submit|preventDefault={submit}
 			in:scale={{ start: 0.95, opacity: 0, delay: 100, duration: 150 }}
@@ -122,12 +125,12 @@
 				<FieldIcon slot="leading" name="lock-close" />
 				<svelte:fragment slot="label">Mot de passe</svelte:fragment>
 				<svelte:fragment slot="trailing">
-					<FieldControlReset />
 					<FieldControlTogglePassword />
+					<FieldControlReset />
 				</svelte:fragment>
 			</Field>
 			{#if signupForm}
-				<div class="signup-fields" transition:slide|local={{}}>
+				<div id="auth-signup-fields" transition:slide|local={{}}>
 					<div>
 						<Field size={sizes.small} bind:value={firstname} name="firstname" placeholder="Prénom" />
 					</div>
@@ -139,41 +142,48 @@
 					</div>
 				</div>
 			{/if}
-			<Button
-				type="submit"
-				variant="cta"
-				value={Action.EmailSignIn}
-				disabled={!Boolean(email) || !Boolean(password)}
-				contentAlign="center"
-				loading={currentAction === Action.EmailSignIn}
-			>
-				<svelte:fragment slot="trailing">
-					<Icon name="arrow-right" size="1.5em" />
-				</svelte:fragment>
-				Me connecter
-			</Button>
-			<div
-				style="display: flex; flex-direction: row; justify-content: space-between; width: 100; font-size: .85em;"
-			>
+			<div id="auth-form-buttons">
 				<Button
+					type="submit"
+					variant="cta"
+					value={Action.EmailSignIn}
+					disabled={!Boolean(email) || !Boolean(password)}
+					contentAlign="center"
+					loading={currentAction === Action.EmailSignIn}
+				>
+					<svelte:fragment slot="trailing">
+						<Icon name="login" size="1.5em" />
+					</svelte:fragment>
+					Me connecter
+				</Button>
+				<Button
+					size=".85em"
 					type="submit"
 					variant="ghost"
 					value={Action.EmailSignUp}
 					loading={currentAction === Action.EmailSignUp}
 				>
 					Créer un compte
+					<svelte:fragment slot="leading">
+						<Icon name="user-add" size="1em" />
+					</svelte:fragment>
 				</Button>
-				<Button type="submit" variant="ghost" value={Action.EmailSignUp}>Mot de passe oublié?</Button>
+				<Button size=".85em" type="submit" variant="ghost" value={Action.EmailSignUp}
+					>Mot de passe oublié?</Button
+				>
 			</div>
 		</form>
 		<hr />
-		<form in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 450 }} class="provider-buttons">
-			{#each providerNames as name, i}
-				<Button disabled size={sizes.small} contentAlign="center" variant="secondary">
-					<ProviderLogo size="1.5em" {name} slot="leading" />
-					Se connecter avec {providers[name].title}
-				</Button>
-			{/each}
+		<form in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 450 }} id="auth-provider-form">
+			<span>Ou se connecter via une autre plateforme&nbsp;:</span>
+			<fieldset id="auth-provider-buttons" disabled>
+				{#each providerNames as name, i}
+					<Button size={sizes.small} contentAlign="center" variant="secondary">
+						<ProviderLogo size="1.5em" {name} slot="leading" />
+						{providers[name].title}
+					</Button>
+				{/each}
+			</fieldset>
 		</form>
 	</dialog>
 </div>
@@ -186,7 +196,9 @@
 		height: 100vh;
 		top: 0;
 		left: 0;
-		background-color: rgba(var(--rgb-primary-700), 0.96);
+		opacity: 0.97;
+		background: radial-gradient(circle, var(--color-primary-900) 0%, var(--color-primary-700) 120%);
+		// background-color: rgba(var(--rgb-primary-700), 0.96);
 	}
 
 	.wrap {
@@ -212,10 +224,11 @@
 		width: 100%;
 		max-width: 450px;
 		max-height: 100%;
-		background-color: var(--color-light-100);
-		padding: 3rem 2rem;
+		background-color: white;
+		box-shadow: 0 3rem 8rem -5rem black;
+		padding: 0;
 		overflow-y: auto;
-		border-radius: 1.5rem;
+		border-radius: 2rem;
 		border: none;
 	}
 
@@ -227,7 +240,7 @@
 		max-width: 275px;
 		margin: 0 auto;
 		padding: 2rem;
-		padding-top: 0;
+		padding-top: 3rem;
 		transition: all 0.15s ease-out;
 
 		&:hover {
@@ -236,18 +249,24 @@
 		}
 	}
 
-	form {
+	#auth-form {
 		position: relative;
 		width: 100%;
-		max-width: 400px;
 		display: flex;
 		flex-direction: column;
-		gap: 1em;
+		gap: 1.5em;
 		border: none;
-		padding-inline: 0;
+		padding: 0 2.5rem;
 	}
 
-	.signup-fields {
+	#auth-form-buttons {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+		gap: 0.5em;
+	}
+
+	#auth-signup-fields {
 		width: 100%;
 		position: relative;
 		border: none;
@@ -270,24 +289,37 @@
 		}
 	}
 
-	.submit-buttons {
+	#auth-provider-form {
+		width: 100%;
+		text-align: center;
+		padding: 2rem 2.5rem 3rem 2.5rem;
+		margin: 0;
+		border-radius: 1.5rem 1.5rem 0 0;
+		background-color: var(--color-light-100);
+
+		span {
+			display: inline-block;
+			padding: 0;
+			margin: 0;
+			font-size: 0.9rem;
+			color: var(--color-dark-100);
+			opacity: 0.5;
+		}
+	}
+
+	#auth-provider-buttons {
+		padding: 0;
+		margin: 0;
+		margin-top: 2rem;
+		border: none;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: 0;
-		font-size: 0.8em;
-	}
+		gap: 1rem;
 
-	.icon-wrap {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	hr {
-		width: 100%;
-		height: 1px;
-		background-color: var(--rgb-dark-100);
-		opacity: 0.1;
-		margin-block: 2rem 3rem;
+		&:disabled {
+			pointer-events: none;
+			opacity: 0.5;
+			color: red !important;
+		}
 	}
 </style>

@@ -26,6 +26,10 @@ interface RippleOptions {
 	 * 'overflow' to another value than 'hidden' on the control element.
 	 */
 	controlElement?: HTMLElement;
+	/**
+	 * Helper param to insert a child ripple host and avoid having to hide overflow on host element.
+	 */
+	insertChild?: boolean;
 }
 
 /**
@@ -45,6 +49,7 @@ export function ripple(
 		blur = 0,
 		disabled = false,
 		controlElement = element,
+		insertChild = false,
 	}: RippleOptions = {}
 ) {
 	/**
@@ -54,20 +59,36 @@ export function ripple(
 		createRippleStylesheet();
 	}
 
+	let host = element;
+	if (insertChild) {
+		const insertedHost = document.createElement('div');
+		insertedHost.style.cssText = `
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 100%;
+			flex: none;
+			border-radius: inherit;
+		`;
+		element.appendChild(insertedHost);
+		host = insertedHost;
+	}
+
 	/**
 	 * Prepare the host element.
 	 */
 	const style = getComputedStyle(element);
-	element.setAttribute(RIPPLE_GLOBALS.HOST_ATTRIBUTE, '');
-	element.style.overflow = 'hidden';
-	if (!element.style.transformOrigin) element.style.transformOrigin = 'center center';
-	if (style.position === 'static') element.style.position = 'relative';
+	host.setAttribute(RIPPLE_GLOBALS.HOST_ATTRIBUTE, '');
+	host.style.overflow = 'hidden';
+	if (!element.style.transformOrigin) host.style.transformOrigin = 'center center';
+	if (style.position === 'static') host.style.position = 'relative';
 	const parsedStartSize = cssSize(startSize);
 	const parsedEndSize = endSize
 		? cssSize(endSize)
 		: Math.max(parseInt(style.height), parseInt(style.width)) * 3 + 'px';
-	element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, parsedEndSize);
-	element.style.setProperty(RIPPLE_GLOBALS.END_COLOR, endColor ? endColor : startColor);
+	host.style.setProperty(RIPPLE_GLOBALS.END_SIZE, parsedEndSize);
+	host.style.setProperty(RIPPLE_GLOBALS.END_COLOR, endColor ? endColor : startColor);
 
 	let ripple: HTMLElement;
 
@@ -81,7 +102,7 @@ export function ripple(
 		const dX = Math.max(eRelX, rect.width - eRelX);
 		const dY = Math.max(eRelY, rect.height - eRelY);
 		const updatedEndsize = endSize ? cssSize(endSize) : Math.hypot(dX, dY) * 2 + 'px';
-		element.style.setProperty(RIPPLE_GLOBALS.END_SIZE, updatedEndsize);
+		host.style.setProperty(RIPPLE_GLOBALS.END_SIZE, updatedEndsize);
 		ripple = document.createElement('div');
 		ripple.setAttribute('touch-action', 'none');
 		ripple.style.userSelect = 'none';
@@ -97,7 +118,7 @@ export function ripple(
 		ripple.style.left = eRelX + 'px';
 		ripple.style.filter = `blur(${blur}px)`;
 		ripple.style.animation = `${RIPPLE_GLOBALS.SPREAD_ANIMATION} ${spreadDuration}ms cubic-bezier(.1, .5, 0, 1) forwards`;
-		element.appendChild(ripple);
+		host.appendChild(ripple);
 	}
 
 	/**

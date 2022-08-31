@@ -87,12 +87,6 @@ Grid layout helper classes
 	@include mixins.core-grid;
 }
 
-@each $col in (full, fullpad, main, col1, col2, col3) {
-	.core-grid-#{$col} {
-		@include mixins.core-grid-col($col);
-	}
-}
-
 /*
 Heading styles based on mixins
 */

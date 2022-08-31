@@ -1,4 +1,4 @@
-import { browser } from '$app/env';
+import { browser } from '$app/environment';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 import type { Database } from '$types/database';
 import { createClient } from '@supabase/supabase-js';
@@ -17,7 +17,8 @@ export const browserDbClient = createClient<Database>(PUBLIC_SUPABASE_URL, PUBLI
 });
 
 /**
- * Db client instanciator to use on a per-request basis for server-side authed requests without unnecessary admin privileges.
+ * Db client instanciator to use on a per-request basis for server-side authed requests without unnecessary admin
+ * privileges.
  */
 export function createServerDbClient(accessToken?: string) {
 	return createClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {

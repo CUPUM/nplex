@@ -372,7 +372,7 @@
 			box-shadow: 0 0 0 3px rgba(var(--rgb-primary-500), 0.25);
 			background-color: var(--color-primary-700);
 			color: white;
-			--radius-ratio: 1.2;
+			--radius-ratio: 1.4;
 		}
 	}
 </style>

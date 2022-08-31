@@ -38,4 +38,11 @@ declare namespace App {
 	interface Locals extends TokenCookies, AuthCookie {
 		test: string;
 	}
+
+	interface PageData {
+		session: import('$routes/api/auth/update.json/+server').AppUserSession;
+		category: import('$types/categories').Category;
+		showFooter: boolean;
+		showCategoryNav: boolean;
+	}
 }

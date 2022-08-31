@@ -136,13 +136,17 @@
 		opacity: 1;
 		perspective: 600px;
 		& .slot {
+			transform-origin: center 15em;
 			opacity: 1;
-			transform: translateY(0) rotateX(0deg) scale(1);
+			// transform: translateY(0) rotateX(0deg) scale(1);
+			transform: rotateZ(0deg);
 			transition: all 0.5s cubic-bezier(0.2, 0, 0, 1), color 0s;
 		}
 		& .slot-fx {
+			transform-origin: center 15em;
 			opacity: 0;
-			transform: translateY(1em) rotateX(-30deg) scale(1.2);
+			// transform: translateY(1em) rotateX(-30deg) scale(1.2);
+			transform: rotateZ(-30deg);
 			transition: all 0.5s cubic-bezier(0.2, 0, 0, 1), color 0s;
 		}
 		&:hover,
@@ -154,11 +158,13 @@
 			color: var(--color-primary-500);
 			& .slot {
 				opacity: 0;
-				transform: translateY(-1em) rotateX(30deg) scale(0.8);
+				transform: rotateZ(30deg);
+				// transform: translateY(-1em) rotateX(30deg) scale(0.8);
 			}
 			& .slot-fx {
 				opacity: 1;
-				transform: translateY(0) rotateX(0deg);
+				transform: rotateZ(0deg);
+				// transform: translateY(0) rotateX(0deg);
 			}
 			&.some-temp {
 				color: var(--color-primary-100);

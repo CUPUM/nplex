@@ -7,10 +7,10 @@
 
 <script lang="ts">
 	import type { icons } from '$utils/icons/icons';
-
 	import { Ctx } from '$utils/values/keys';
 	import { getContext } from 'svelte';
-	import Button from './Button_old.svelte';
+	import Button from './Button.svelte';
+	import Icon from './Icon.svelte';
 	import type { MapContext } from './Map.svelte';
 
 	export let icon: keyof typeof icons = 'localize';
@@ -21,8 +21,8 @@
 	// Add default handlers here for simplified reusability.
 </script>
 
-<Button {icon} square={!$$slots.default}>
-	<!-- <slot /> -->
+<Button square>
+	<Icon size="1.25em" name={icon} />
 </Button>
 
 <style lang="scss">

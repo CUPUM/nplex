@@ -1,4 +1,8 @@
-create extension if not exists "moddatetime" with schema "public" version '1.0';
+-- 
+-- Moddatetime is left out in favor of our own function that allows custom uid tracking and column names.
+-- 
+
+-- create extension if not exists "moddatetime" with schema "public" version '1.0';
 
 -- 
 -- The postgis schema can be troublesome when using the CLI and umst be added manually to the migration for things to work properly.

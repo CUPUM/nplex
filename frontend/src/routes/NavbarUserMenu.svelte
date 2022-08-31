@@ -3,6 +3,7 @@
 
 <script lang="ts">
 	import Button from '$components/primitives/Button.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import { messages } from '$stores/messages';
 	import { browserDbClient } from '$utils/database/database';
 
@@ -20,8 +21,18 @@
 </script>
 
 <div>
-	<Button variant="ghost">Autre option</Button>
-	<Button variant="ghost" on:click={logout}>Se déconnecter</Button>
+	<Button variant="ghost" contentAlign="left">
+		<svelte:fragment slot="leading">
+			<Icon name="settings" size="1.25em" />
+		</svelte:fragment>
+		Autre option
+	</Button>
+	<Button variant="ghost" contentAlign="left" on:click={logout}>
+		<svelte:fragment slot="leading">
+			<Icon name="logout" size="1.25em" />
+		</svelte:fragment>
+		Se déconnecter
+	</Button>
 </div>
 
 <style lang="scss">

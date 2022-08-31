@@ -9,6 +9,11 @@
 		e.stopPropagation();
 		messages.clear(message);
 	}
+
+	function cancelTimer(e: MouseEvent, message: Message) {
+		e.stopPropagation();
+		messages.cancelTimer(message);
+	}
 </script>
 
 <div class="outlet">
@@ -18,6 +23,7 @@
 			out:scale|local={{ start: 0.9, opacity: 0, duration: 350, easing: expoOut }}
 			animate:flip={{ duration: 350, easing: expoOut }}
 			class={message.type}
+			on:click|once={(e) => cancelTimer(e, message)}
 		>
 			{#if message.timer}
 				<div class="progress-container">
@@ -82,6 +88,7 @@
 		cursor: pointer;
 		width: 3em;
 		padding: 0;
+		padding-bottom: 0.2em;
 		margin: 0;
 		display: flex;
 		justify-content: center;
@@ -107,8 +114,7 @@
 	.icon {
 		position: relative;
 		display: inline-flex;
-		margin-right: 0.25em;
-		top: 0.1em;
+		// margin-right: 0.25em;
 	}
 
 	.text {

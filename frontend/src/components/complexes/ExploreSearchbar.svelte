@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
 	import { page } from '$app/stores';
-	import Button from '$components/primitives/Button_old.svelte';
-	import Field from '$components/primitives/Field_old.svelte';
+	import Button from '$components/primitives/Button.svelte';
+	import Field from '$components/primitives/Field.svelte';
+	import FieldIcon from '$components/primitives/FieldIcon.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import Token from '$components/primitives/Token.svelte';
 	import { projectsShowFiltersPane } from '$stores/projectsShowFiltersPane';
 	import { exploreSearchterm } from '$stores/search';
@@ -47,18 +49,23 @@
 
 <form on:submit|preventDefault={submit} on:reset|preventDefault={reset}>
 	<section class="search-field">
-		<Field type="search" placeholder="Chercher" icon="search" bind:value={$exploreSearchterm} width="100%">
-			<svelte:fragment slot="left">
+		<Field type="search" placeholder="Chercher" bind:value={$exploreSearchterm}>
+			<svelte:fragment slot="leading">
 				{#if $page.data.category && !showCurrentFilters}
 					<div transition:slip={{ width: true, overflow: 'visible' }}>
 						<div in:receive={{ key: '' }} out:send={{ key: '' }}>
-							<Button on:click={toggleFilters} icon="parameters" />
+							<Button on:click={toggleFilters} square>
+								<Icon name="parameters" size="1.25em" />
+							</Button>
 						</div>
 					</div>
+					<FieldIcon name="search" />
 				{/if}
 			</svelte:fragment>
 			<svelte:fragment slot="has-value">
-				<Button type="submit" variant="cta" icon="arrow-right" />
+				<Button type="submit" variant="cta" square>
+					<Icon name="arrow-right" size="1.25em" />
+				</Button>
 			</svelte:fragment>
 		</Field>
 	</section>

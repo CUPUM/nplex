@@ -1,5 +1,6 @@
 <script lang="ts">
-	import Button from '$components/primitives/Button_old.svelte';
+	import Button from '$components/primitives/Button.svelte';
+	import Icon from '$components/primitives/Icon.svelte';
 	import { projectsShowFiltersPane } from '$stores/projectsShowFiltersPane';
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
 	import { width } from '$transitions/width';
@@ -30,7 +31,9 @@
 		<div class="inner">
 			<header>
 				<div class="filters-close" in:receive={{ key: '' }} out:send|local={{ key: '' }}>
-					<Button on:click={close} icon="cross" />
+					<Button on:click={close} square>
+						<Icon name="cross" />
+					</Button>
 				</div>
 				<span>Filtres de projets</span>
 			</header>

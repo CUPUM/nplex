@@ -74,10 +74,10 @@
 			out:fly={{ y: 20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
 			<Button href="/" variant="nav" square disabled={$page.url.pathname === '/'}>
-				<Icon name="home" size="1.25em" strokeWidth="2" />
+				<Icon name="home" size="1.25em" />
 			</Button>
 			{#if $page.data.session}
-				<Popover placement="bottom" align="end" useHover>
+				<Popover place="bottom" align="end" useHover>
 					<Button
 						slot="control"
 						variant="nav"
@@ -85,17 +85,17 @@
 						href={creationBaseRoute.pathname}
 						active={$page.url.pathname.startsWith(creationBaseRoute.pathname)}
 					>
-						<Icon name="pen" size="1.25em" strokeWidth="2" />
+						<Icon name="pen" size="1.25em" />
 					</Button>
 					<NavbarCreationMenu />
 				</Popover>
-				<Popover useHover placement="bottom" align="end">
+				<Popover useHover place="bottom" align="end">
 					<AvatarButton slot="control" href={userBaseRoute.pathname} />
 					<NavbarUserMenu />
 				</Popover>
 			{:else}
 				<Button variant="nav-cta" href={getAuthRedirectUrl($page.url).toString()} square>
-					<Icon name="user" size="1.25em" strokeWidth="2" />
+					<Icon name="user" size="1.25em" />
 				</Button>
 			{/if}
 		</nav>

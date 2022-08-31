@@ -1,7 +1,8 @@
-import { browser } from '$app/env';
+import { browser } from '$app/environment';
 
 /**
- * Helper function to persist a value on client's local storage using svelte's reactive statement syntax ($: persistValue());
+ * Helper function to persist a value on client's local storage using svelte's reactive statement syntax ($:
+ * persistValue());
  *
  * @param key Locals storage key to persist the value to.
  */

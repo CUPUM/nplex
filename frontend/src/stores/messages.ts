@@ -65,10 +65,26 @@ export const messages = (function () {
 		update((curr) => [...curr, message]);
 	}
 
+	function cancelTimer(message: Message) {
+		if (message.timer) {
+			update((curr) => {
+				if (timeouts.has(message)) {
+					clearTimeout(timeouts.get(message));
+					const index = curr.indexOf(message);
+					if (index > -1) {
+						curr[index].timer = 0;
+					}
+				}
+				return curr;
+			});
+		}
+	}
+
 	return {
 		subscribe,
 		dispatch,
 		clear,
 		clearAll,
+		cancelTimer,
 	};
 })();

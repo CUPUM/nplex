@@ -42,18 +42,15 @@
 	});
 </script>
 
-<Navbar bind:navbarHeight />
-<main
-	style:--navbar-height="{navbarHeight || 0}px"
-	style:--scroll="{$mainScroll.y}px"
-	class:loading
-	class:authing={$authModal}
->
-	<slot />
-</main>
-{#if $page.data.showFooter}
-	<Footer />
-{/if}
+<div class:authing={$authModal} style:--ty="{$mainScroll.y}px">
+	<Navbar bind:navbarHeight />
+	<main style:--navbar-height="{navbarHeight || 0}px" style:--scroll="{$mainScroll.y}px" class:loading>
+		<slot />
+	</main>
+	{#if $page.data.showFooter}
+		<Footer />
+	{/if}
+</div>
 {#if $authModal}
 	<AuthModal />
 {/if}
@@ -72,11 +69,15 @@
 		padding: 0;
 		padding-bottom: 4rem;
 		margin: 0;
+	}
+
+	div {
+		transform-origin: 50vw calc(var(--ty) + 50vh);
 		transition: all 0.3s cubic-bezier(0, 0, 0, 1);
 	}
 
 	.authing {
-		transform: scale(0.99);
+		transform: scale(0.98);
 	}
 
 	.loading {

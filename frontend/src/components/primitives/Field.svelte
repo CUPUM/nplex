@@ -407,27 +407,18 @@
 
 		fieldset {
 			color: rgba(var(--rgb-dark-500), 0.2);
-			border-width: 1px;
+			border-width: 1.5px;
+		}
+
+		legend {
+			opacity: 1;
 		}
 
 		&:hover {
 			color: var(--color-dark-700);
 
-			&:not(.focused) {
-				// background-color: rgba(var(--rgb-light-900), 0.1);
-			}
-
 			fieldset {
-				color: rgba(var(--rgb-dark-500), 0.5);
-			}
-		}
-
-		&.has-value {
-			&:not(.focused) {
-				legend {
-					opacity: 1;
-					top: -0.22em;
-				}
+				color: rgba(var(--rgb-dark-900), 0.5);
 			}
 		}
 
@@ -437,18 +428,14 @@
 				max-width: 100%;
 				margin-left: 1.25em;
 				padding-inline: 0.25em;
-				top: -0.32em;
+				top: -0.4em;
 			}
 		}
 
 		&.focused {
 			fieldset {
-				color: rgba(var(--rgb-dark-500), 0.5);
+				color: rgba(var(--rgb-primary-900), 0.5);
 				border: 1.5px solid currentColor;
-			}
-
-			legend {
-				opacity: 1;
 			}
 		}
 	}

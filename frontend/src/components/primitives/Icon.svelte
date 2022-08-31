@@ -18,7 +18,7 @@
 	export let color: string = 'currentColor';
 	export let secondaryColor: string = color;
 	export let strokeWidth: SizeInput = 1.5;
-	export let scaleStroke: boolean = true;
+	export let scaleStroke: boolean = false;
 	export let strokeOpacity: number = 1;
 	export let fillOpacity: number = 1;
 	export let intro: boolean = false;

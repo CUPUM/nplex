@@ -1,40 +1,127 @@
 <!-- 
-    Component to add small notification indicators or other badges to parent.
+    @component
+	Adds small notification indicator or other customized badge to parent.
     Useful to add warnings or notifications to buttons and tokens.
+	Note that hidden overflow on parent elements will affect this component's visibility.
 -->
 <script lang="ts">
 	import { cssSize, type SizeInput } from '$utils/css';
-	import { colors } from '$utils/values/colors';
 	import { elasticOut, expoIn } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
-	export let color: string = colors.primary[500];
-	export let size: SizeInput = '6px';
+	export let state: 'default' | 'success' | 'notification' | 'warning' = 'default';
+	export let place: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
+	export let align: 'start' | 'center' | 'end' = 'end';
+	export let square: boolean = false;
+	export let size: SizeInput = '.75em';
+	export let dx: SizeInput = '.5em';
+	export let dy: SizeInput = '.5em';
 </script>
 
 <div
 	style:font-size={cssSize(size)}
-	style:--color={color}
-	in:scale={{ easing: elasticOut, duration: 750 }}
-	out:scale={{ easing: expoIn, duration: 1000 }}
+	style:--dx={cssSize(dx)}
+	style:--dy={cssSize(dy)}
+	class:square
+	class="{state} {place} {align}"
+	in:scale={{ easing: elasticOut, duration: 250 }}
+	out:scale={{ easing: expoIn, duration: 200 }}
 >
 	<slot />
 </div>
 
-<style>
+<style lang="scss">
 	div {
 		position: absolute;
+		margin: 0;
 		flex: none;
-		top: 8px;
-		right: 8px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 2em;
-		height: 2em;
-		border-radius: 50%;
+		padding: 0.5em 1em;
+		border-radius: 2em;
 		overflow: hidden;
-		background-color: var(--color);
-		transform: translate(50%, -50%);
+		text-overflow: ellipsis;
+		box-shadow: 0 0.5em 1.5em -0.75em rgba(0, 0, 0, 0.25);
+		letter-spacing: 0.25px;
+		background-color: white;
+	}
+
+	.success {
+	}
+
+	.notification {
+	}
+
+	.warning {
+	}
+
+	.top {
+		top: var(--dy);
+		transform: translate(-50%, -50%);
+
+		&.start {
+			left: var(--dx);
+		}
+
+		&.center {
+			left: 50%;
+		}
+
+		&.end {
+			right: var(--dx);
+			transform: translate(50%, -50%);
+		}
+	}
+
+	.bottom {
+		bottom: var(--dy);
+		transform: translate(-50%, 50%);
+
+		&.start {
+			left: var(--dx);
+		}
+
+		&.center {
+			left: 50%;
+		}
+
+		&.end {
+			right: var(--dx);
+			transform: translate(50%, 50%);
+		}
+	}
+
+	.right {
+		top: 50%;
+		transform: translate(-50%, -50%);
+
+		&.start {
+			left: var(--dx);
+		}
+
+		&.center {
+			left: 50%;
+		}
+
+		&.end {
+			right: var(--dx);
+			transform: translate(50%, -50%);
+		}
+	}
+
+	.left {
+		top: 50%;
+		transform: translate(-50%, -50%);
+
+		&.start {
+			left: var(--dx);
+		}
+
+		&.center {
+			left: 50%;
+		}
+
+		&.end {
+			right: var(--dx);
+			transform: translate(50%, -50%);
+		}
 	}
 </style>
