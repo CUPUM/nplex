@@ -26,6 +26,7 @@
 	export let orientation: 'column' | 'row' = 'row';
 	export let value: any = undefined;
 	export let display: 'inline' | 'block' = 'block';
+	export let required: boolean = undefined;
 
 	const currentRef: SwitchContext['currentRef'] = writable(null);
 	const tempRef: SwitchContext['tempRef'] = writable(null);
@@ -94,7 +95,7 @@
 	});
 </script>
 
-<fieldset bind:this={fieldset} class="{variant} {orientation}" style:--size={cssSize(size)}>
+<fieldset bind:this={fieldset} class="{variant} {orientation} {display}" style:--size={cssSize(size)} {required}>
 	{#if indicatorBox}
 		<div
 			transition:scale|local={{ duration: 150, start: 0.5, opacity: 0, easing: expoOut }}
@@ -138,6 +139,7 @@
 
 		&.inline {
 			display: inline-flex;
+			flex: none;
 		}
 	}
 

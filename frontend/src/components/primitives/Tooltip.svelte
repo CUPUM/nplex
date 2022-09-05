@@ -34,15 +34,9 @@
 		controlRef.removeEventListener('click', show);
 		controlRef.removeEventListener('mouseenter', show);
 		controlRef.removeEventListener('mouseleave', hide);
-		hinterRef.removeEventListener('mouseenter', show);
-		hinterRef.removeEventListener('mouseleave', hide);
 		// Binding the proper events on the control element.
 		controlRef.addEventListener(useHover ? 'mouseenter' : 'click', show);
 		controlRef.addEventListener(useHover ? 'mouseleave' : 'clickoutside', hide);
-		if (useHover) {
-			hinterRef.addEventListener('mouseenter', show);
-			hinterRef.addEventListener('mouseleave', hide);
-		}
 		// Listening to disposition changes.
 		controlRef.ontransitionend = setPosition;
 		mutationObs = new MutationObserver(setPosition);
@@ -93,9 +87,7 @@
 	});
 </script>
 
-<slot>
-	<span>Fallback tooltip host</span>
-</slot>
+<slot />
 <div
 	class="hinter {place} {align}"
 	bind:this={hinterRef}
@@ -112,7 +104,7 @@
 		<span
 			class="tooltip"
 			in:scale={{ start: 0.5, easing: expoOut, duration: 100 }}
-			out:scale={{ start: 0.8, easing: expoIn, duration: 50 }}
+			out:scale={{ start: 0.75, easing: expoIn, duration: 75 }}
 		>
 			{message}
 			<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -127,7 +119,6 @@
 
 <style lang="scss">
 	.hinter {
-		z-index: 1000;
 		pointer-events: none;
 		user-select: none;
 		position: absolute;
@@ -153,7 +144,7 @@
 		background-color: var(--color-dark-900);
 		color: var(--color-light-700);
 		box-shadow: 0 0.5em 1.5em -0.75em rgba(0, 0, 0, 0.5);
-		border-radius: 0.5em;
+		border-radius: 0.75em;
 	}
 
 	svg {

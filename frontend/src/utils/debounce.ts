@@ -1,13 +1,12 @@
 /**
  * Helper function to debounce passed function's execution.
  */
-export function debounce(f: (...args) => unknown, delay = 250) {
-	let timer = null;
-	return (...args) => {
+export function debounce<Args extends any[], F extends (...args: Args) => any>(f: F, timeout = 250) {
+	let timer;
+	return (...args: Parameters<F>) => {
 		clearTimeout(timer);
 		timer = setTimeout(() => {
-			timer = null;
 			f(...args);
-		}, delay);
+		}, timeout);
 	};
 }

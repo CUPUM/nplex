@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import AvatarButton from '$components/primitives/AvatarButton.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
@@ -14,7 +15,7 @@
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import Button from '../components/primitives/Button.svelte';
-	import NavbarCreationMenu from './NavbarCreationMenu.svelte';
+	import NavbarEditMenu from './NavbarEditMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
 
 	export let navbarHeight;
@@ -24,6 +25,17 @@
 	let overlay;
 	let mainPathname: string;
 	let yThreshold = navbarHeight || 40;
+	let loadingExplore = null;
+
+	beforeNavigate(({ to }) => {
+		if (exploreRoutes.map((r) => r.pathname).includes(to.url.pathname)) {
+			loadingExplore = to.url.pathname;
+		}
+	});
+
+	afterNavigate(() => {
+		loadingExplore = null;
+	});
 
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
 	$: overlay = $mainScroll.y > yThreshold + 20;
@@ -50,9 +62,9 @@
 				</Button>
 			{/each}
 		</nav>
-		<nav class="second">
+		<nav class="explore">
 			{#if $page.data.showCategoryNav}
-				<div transition:fly={{ y: 10 }}>
+				<div transition:fly={{ y: 10, duration: 500 }}>
 					<Switch name="category" variant="nav" value={$page.data.category}>
 						{#each exploreRoutes as r, i}
 							<SwitchItem
@@ -60,6 +72,7 @@
 								value={r.category}
 								on:click={() => gotoCategory(r)}
 								disabled={r.category === $page.data.category && !$page.data.categoryIsResetable}
+								loading={loadingExplore === r.pathname}
 							>
 								{r.title}
 							</SwitchItem>
@@ -87,7 +100,7 @@
 					>
 						<Icon name="pen" size="1.25em" />
 					</Button>
-					<NavbarCreationMenu />
+					<NavbarEditMenu />
 				</Popover>
 				<Popover useHover place="bottom" align="end">
 					<AvatarButton slot="control" href={userBaseRoute.pathname} />
@@ -108,9 +121,9 @@
 		top: 0;
 		display: flex;
 		flex-direction: row;
-		justify-content: stretch;
+		justify-content: center;
 		width: 100vw;
-		align-items: center;
+		align-items: stretch;
 		padding: 1rem;
 		padding-block: 0.5rem;
 		margin: 0;
@@ -167,25 +180,24 @@
 	}
 
 	nav {
+		position: relative;
 		display: flex;
 		flex: 1;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		gap: 3px;
+		gap: 0px;
 	}
 
 	.main {
-		grid-area: section;
 		justify-content: flex-start;
 	}
 
-	.second {
-		grid-area: category;
+	.explore {
+		justify-content: center;
 	}
 
 	.user {
-		grid-area: user;
 		justify-content: flex-end;
 	}
 </style>

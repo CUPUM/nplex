@@ -73,7 +73,7 @@
 
 	div {
 		transform-origin: 50vw calc(var(--ty) + 50vh);
-		transition: all 0.3s cubic-bezier(0, 0, 0, 1);
+		transition: transform 0.75s cubic-bezier(0.25, 0, 0, 1);
 	}
 
 	.authing {

@@ -396,7 +396,6 @@ function splitText(element: HTMLElement, { delimiter = '' }: SplitTextOptions = 
 				if (segment === ' ') return newNodes.push(document.createTextNode(' '));
 				const segmentNode = document.createElement('span');
 				// segmentNode.setAttribute(SplitTextAttributes.Segment, '');
-				segmentNode.style.cssText = 'white-space: nowrap;';
 				newNodes.push(segmentNode);
 				segment.split(delimiter).forEach((unit) => {
 					const maskNode = document.createElement('span');

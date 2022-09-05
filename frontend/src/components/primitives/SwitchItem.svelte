@@ -2,11 +2,13 @@
 	import { ripple } from '$actions/ripple';
 	import { Ctx } from '$utils/values/keys';
 	import { getContext } from 'svelte';
+	import Loading from './Loading.svelte';
 	import type { SwitchContext } from './Switch.svelte';
 
-	export let id: string;
+	export let id: string = undefined;
 	export let value: any;
 	export let disabled: boolean = false;
+	export let loading: boolean = undefined;
 
 	const { name, variant, group, currentRef, tempRef, setCurrent, setTemp, clearTemp } = getContext<SwitchContext>(
 		Ctx.Switch
@@ -32,6 +34,7 @@
 	class:some-temp={!!$tempRef}
 	class={variant}
 	class:disabled
+	class:loading
 	on:click
 	on:focus
 	on:mouseenter
@@ -51,6 +54,9 @@
 			</div>
 		{/if}
 	</div>
+	{#if loading}
+		<Loading />
+	{/if}
 </label>
 
 <style lang="scss">
@@ -98,7 +104,6 @@
 
 	.slot-fx {
 		position: absolute;
-		left: 0;
 		top: 0;
 	}
 
@@ -108,6 +113,8 @@
 		width: 0;
 		height: 0;
 		max-width: 0;
+		margin: 0;
+		padding: 0;
 	}
 
 	//

@@ -1,27 +1,36 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	// import { messages } from '$stores/messages';
+
+	// messages.dispatch({
+	// 	type: 'error',
+	// 	content: $page.error.message,
+	// });
 </script>
 
-<article>
+<dialog>
 	<div>
 		<h1>Oopelaye!</h1>
 		<h2>{$page.status}</h2>
 		<p>{$page.error.message}</p>
 	</div>
-</article>
+</dialog>
 
-<style>
-	article {
+<!-- <slot /> -->
+<style lang="scss">
+	dialog {
+		position: relative;
 		width: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		min-height: 100%;
 		padding: 6rem 2rem;
+		border: none;
 	}
 
 	div {
-		max-width: 800px;
+		width: 100%;
 		background-color: var(--color-error-500);
 		color: var(--color-dark-900);
 		padding: 3rem;

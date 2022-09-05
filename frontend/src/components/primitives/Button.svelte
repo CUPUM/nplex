@@ -33,6 +33,7 @@
 	class:warning
 	class:square
 	class:active
+	class:loading
 	class:has-leading={$$slots.leading}
 	class:has-trailing={$$slots.trailing}
 	{disabled}
@@ -98,6 +99,7 @@
 		margin: 0;
 		gap: 0;
 		flex-grow: 1;
+		width: 100%;
 		cursor: pointer;
 		border-radius: var(--computed-radius);
 		height: var(--computed-height);
@@ -124,20 +126,28 @@
 					[trailing-end];
 			}
 		}
+
 		&.left {
 			.content {
 				text-align: left;
 			}
 		}
+
 		&.right {
 			.content {
 				text-align: right;
 			}
 		}
 
+		&.has-leading,
+		&.has-trailing {
+			padding: 0 1em;
+		}
+
 		&.inline {
 			display: inline-grid;
-			flex-grow: 0;
+			flex: none;
+			width: auto;
 		}
 
 		&.square {
@@ -167,6 +177,16 @@
 
 		&.active:not(:global([popover])) {
 			pointer-events: none;
+		}
+
+		&.loading {
+			transform: scale(0.98);
+
+			.content,
+			.leading,
+			.trailing {
+				opacity: 0.25;
+			}
 		}
 	}
 
@@ -209,7 +229,7 @@
 		grid-column: leading;
 
 		&:not(:empty) {
-			padding-right: 1em;
+			padding-right: 0.75em;
 		}
 	}
 
@@ -218,7 +238,7 @@
 		grid-column: trailing;
 
 		&:not(:empty) {
-			padding-left: 1em;
+			padding-left: 0.75em;
 		}
 	}
 
@@ -295,6 +315,11 @@
 			color: var(--color-primary-700);
 			background-color: rgba(var(--rgb-primary-300), 0.1);
 		}
+
+		&.active {
+			color: var(--color-primary-300);
+			background-color: rgba(var(--rgb-primary-100), 0.1);
+		}
 	}
 
 	.nav {
@@ -315,7 +340,7 @@
 			bottom: 0.5em;
 			left: 50%;
 			width: 3px;
-			height: 3px;
+			height: 2px;
 			background-color: currentColor;
 			border-radius: 3px;
 			transform: translate(-50%, -100%);
@@ -328,14 +353,14 @@
 
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
-		&:hover,
+		&:hover:not(.active),
 		&:global([popover]) {
 			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-dark-100), 0.1) !important;
 
 			&::after {
 				opacity: 1;
-				width: 10px;
+				width: 8px;
 				transform: translate(-50%, 0%);
 			}
 
@@ -346,7 +371,7 @@
 
 		&.active:not([popover]) {
 			color: var(--color-primary-500);
-			background-color: rgba(var(--rgb-light-100), 0.5);
+			// background-color: rgba(var(--rgb-light-100), 0.5);
 
 			&::after {
 				opacity: 1;

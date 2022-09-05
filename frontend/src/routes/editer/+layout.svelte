@@ -5,8 +5,6 @@
 	import EditorOrganisationsList from './EditorOrganisationsList.svelte';
 	import Search from './Search.svelte';
 
-	const targetForm = 'edit-form';
-
 	export let data: LayoutData;
 </script>
 

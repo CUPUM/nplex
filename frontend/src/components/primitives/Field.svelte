@@ -327,7 +327,7 @@
 		border-width: 0px;
 		border-style: solid;
 		border-color: currentColor;
-		transition: all 0.1s ease-in-out, color 0s;
+		transition: all 0.12s ease-in-out;
 	}
 
 	legend {
@@ -340,14 +340,14 @@
 		top: 0;
 		margin-left: 1.5em;
 		max-width: 0;
-		transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1), color 0.1s;
+		transition: all 0.15s cubic-bezier(0.25, 0, 0.25, 1), color 0s;
 
 		div {
 			font-size: 1em;
 			padding: 0;
 			margin: 0;
 			line-height: calc(var(--computed-height) - 0.2em);
-			transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1), color 0s;
+			transition: all 0.15s cubic-bezier(0.25, 0, 0.25, 1), color 0s;
 		}
 	}
 
@@ -428,13 +428,13 @@
 				max-width: 100%;
 				margin-left: 1.25em;
 				padding-inline: 0.25em;
-				top: -0.4em;
+				top: -0.3em;
 			}
 		}
 
 		&.focused {
 			fieldset {
-				color: rgba(var(--rgb-primary-900), 0.5);
+				color: rgba(var(--rgb-dark-900), 1);
 				border: 1.5px solid currentColor;
 			}
 		}

@@ -4,20 +4,15 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export type EditorProject = Database['public']['Tables']['projects']['Row'] & {
-	// Extend here with expected join data.
-	site_usage: Database['public']['Tables']['project_site_usage']['Row'];
-	site_usage_category: Database['public']['Tables']['project_site_usage_category']['Row'];
-	site_secondary_usages: {
-		usage: EditorProject['site_usage'];
-		category: EditorProject['site_usage_category'];
-	}[];
+	// site_secondary_usages: Database['public']['Tables']['projects']['Row'];
 };
 
 const newProject: EditorProject = {
-	created_at: Date.now().toString(),
+	created_at: null,
 	created_by_id: null,
-	updated_at: Date.now().toString(),
+	updated_at: null,
 	updated_by_id: null,
+	banner_url: null,
 	id: null,
 	title: null,
 	description: null,
@@ -35,36 +30,39 @@ const newProject: EditorProject = {
 	cost_max: null,
 	cost_min: null,
 	site_usage_id: null,
-	site_usage: null,
 	site_usage_category_id: null,
-	site_usage_category: null,
-	site_secondary_usages: null,
 };
 
 export const load: PageLoad = async ({ params, fetch, parent }) => {
-	// If the client is querying the new project route (aka, no projectId specified)
-	if (!params.projectId) {
-		return {
-			isNew: true,
-			project: newProject,
-		};
-	}
-
-	// If there is a projectId specified
 	const { session } = await parent();
 	const db = getContextualDbClient(session.jwt);
-	const { data, error: e } = await db
-		.from('projects')
-		.select(
-			`
-				*
-				`
-		)
-		.eq('id', params.projectId)
-		.single();
-	if (e) throw error(+e.code, e.message);
-	return {
-		isNew: false,
-		project: data,
+
+	const descriptors = await db.rpc('get_projects_descriptors').single();
+	if (descriptors.error) {
+		throw error(descriptors.status, descriptors.statusText + '(' + descriptors.error.details + ')');
+	}
+
+	const res = {
+		isNew: true,
+		descriptors: descriptors.data,
+		project: newProject,
 	};
+
+	// If there is a projectId specified
+	if (params.projectId) {
+		const project = await db
+			.from('projects')
+			.select(
+				`
+					*
+				`
+			)
+			.eq('id', params.projectId)
+			.single();
+		if (project.error) throw error(project.status, project.statusText + '(' + project.error.details + ')');
+		res.isNew = false;
+		res.project = project.data;
+	}
+
+	return res;
 };

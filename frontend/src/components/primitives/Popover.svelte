@@ -1,7 +1,12 @@
+<script lang="ts" context="module">
+	let latestOpen = null;
+</script>
+
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
+	import { afterNavigate } from '$app/navigation';
 	import { cssSize, type SizeInput } from '$utils/css';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, tick } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
@@ -10,6 +15,7 @@
 	export let place: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
 	export let distance: SizeInput = 5;
+	export let closeOnNav: boolean = true;
 
 	let controlRef: HTMLElement;
 	let popoverRef: HTMLElement;
@@ -19,9 +25,9 @@
 	let x;
 	let w;
 	let h;
-	let autoAlign;
-	let autoPlacement;
 	let timer;
+	// let autoAlign;
+	// let autoPlacement;
 
 	/** To do: Preferred position, should be adjusted automatically if doesn't fit in viewport */
 	// $: autoAlign = ...
@@ -32,15 +38,9 @@
 		controlRef.removeEventListener('click', show);
 		controlRef.removeEventListener('mouseenter', show);
 		controlRef.removeEventListener('mouseleave', hide);
-		popoverRef.removeEventListener('mouseenter', show);
-		popoverRef.removeEventListener('mouseleave', hide);
 		// Binding the proper events on the control element.
 		controlRef.addEventListener(useHover ? 'mouseenter' : 'click', show);
 		controlRef.addEventListener(useHover ? 'mouseleave' : 'clickoutside', hide);
-		if (useHover) {
-			popoverRef.addEventListener('mouseenter', show);
-			popoverRef.addEventListener('mouseleave', hide);
-		}
 		// Listening to disposition changes
 		controlRef.ontransitionend = setPosition;
 		mutationObs = new MutationObserver(setPosition);
@@ -58,20 +58,20 @@
 		controlRef?.removeAttribute('popover');
 	}
 
-	function show() {
-		if (timer) {
+	function show(e?: MouseEvent) {
+		if (!e || (e.type === 'mouseenter' && useHover)) {
+			latestOpen = popoverRef;
 			clearTimeout(timer);
+			open = true;
 		}
-		open = true;
 	}
 
-	function hide() {
-		if (useHover) {
+	function hide(e?: MouseEvent) {
+		if (!e) open = false;
+		else if (e.type === 'mouseleave' && useHover) {
 			timer = setTimeout(() => {
 				open = false;
-			}, 5);
-		} else {
-			open = false;
+			}, 25);
 		}
 	}
 
@@ -90,6 +90,14 @@
 		}
 	}
 
+	afterNavigate(async () => {
+		if (closeOnNav) {
+			// Awaiting a tick avoids conflict with other navigation-related logic (ex.: button loading state check).
+			await tick();
+			hide();
+		}
+	});
+
 	onMount(() => {
 		// Referencing the element passed in the "control" slot.
 		controlRef = popoverRef.previousElementSibling as HTMLElement;
@@ -103,14 +111,14 @@
 	});
 </script>
 
-<slot name="control">
-	<button style="padding: 1em; display: inline-block; position: relative;">Fallback popover control</button>
-</slot>
+<slot name="control" />
 <div
 	class="hinter {place} {align}"
 	bind:this={popoverRef}
 	use:clickoutside
 	on:clickoutside={handleClickoutside}
+	on:mouseenter={show}
+	on:mouseleave={hide}
 	style:--y={y}
 	style:--x={x}
 	style:--w={w}
@@ -121,11 +129,14 @@
 		<div
 			class="outer"
 			in:scale={{ start: 0.5, easing: expoOut, duration: 150, opacity: 0 }}
-			out:scale={{ start: 0.9, easing: expoIn, duration: 50, opacity: 0 }}
+			out:scale={{ start: 0.75, easing: expoIn, duration: latestOpen === popoverRef ? 100 : 0, opacity: 0 }}
 		>
-			<div class="inner" {...$$restProps}>
-				<slot />
-			</div>
+			{#if $$slots.default}
+				<div class="inner" {...$$restProps}>
+					<slot />
+				</div>
+			{/if}
+			<slot name="inner" />
 		</div>
 	{/if}
 </div>
@@ -274,7 +285,7 @@
 		padding: 0.5rem;
 		background-color: white;
 		box-shadow: 0 1rem 3rem -2rem rgba(var(--rgb-dark-900), 0.25);
-		border-radius: 1rem;
+		border-radius: 1.1rem;
 		display: inline-flex;
 		flex-direction: column;
 	}

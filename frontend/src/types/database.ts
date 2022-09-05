@@ -41,11 +41,11 @@ export interface Database {
           updated_by_id?: string;
         };
       };
-      project_event_child_type: {
+      project_event_type_subevent_type: {
         Row: {
           id: number;
           type_id: number;
-          child_type_id: number;
+          subtype_id: number;
           created_at: string;
           created_by_id: string;
           updated_at: string;
@@ -54,7 +54,7 @@ export interface Database {
         Insert: {
           id?: number;
           type_id: number;
-          child_type_id: number;
+          subtype_id: number;
           created_at?: string;
           created_by_id?: string;
           updated_at?: string;
@@ -63,7 +63,7 @@ export interface Database {
         Update: {
           id?: number;
           type_id?: number;
-          child_type_id?: number;
+          subtype_id?: number;
           created_at?: string;
           created_by_id?: string;
           updated_at?: string;
@@ -279,7 +279,7 @@ export interface Database {
           description?: string | null;
         };
       };
-      project_site_usage_parent_category: {
+      project_site_usage_site_usage_category: {
         Row: {
           id: number;
           usage_id: number;
@@ -354,7 +354,7 @@ export interface Database {
           description?: string | null;
         };
       };
-      project_type_parent_category: {
+      project_type_category: {
         Row: {
           category_id: number;
           type_id: number;
@@ -922,6 +922,9 @@ export interface Database {
         };
       };
     };
+    Views: {
+      [_ in never]: never;
+    };
     Functions: {
       get_relegate_uid: {
         Args: Record<PropertyKey, never>;
@@ -934,6 +937,10 @@ export interface Database {
       user_has_role: {
         Args: { VARIADIC: unknown };
         Returns: boolean;
+      };
+      get_projects_descriptors: {
+        Args: Record<PropertyKey, never>;
+        Returns: Json;
       };
     };
   };

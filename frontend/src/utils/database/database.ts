@@ -1,12 +1,13 @@
 import { browser } from '$app/environment';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 import type { Database } from '$types/database';
+import type { DatabaseRpc } from '$types/databaseRpc';
 import { createClient } from '@supabase/supabase-js';
 
 /**
  * Init a client-side supabase client instance to listen to auth state changes and more. //
  */
-export const browserDbClient = createClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+export const browserDbClient = createClient<Database & DatabaseRpc>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 	db: {
 		schema: 'public',
 	},
@@ -21,7 +22,7 @@ export const browserDbClient = createClient<Database>(PUBLIC_SUPABASE_URL, PUBLI
  * privileges.
  */
 export function createServerDbClient(accessToken?: string) {
-	return createClient<Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+	return createClient<Database & DatabaseRpc>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		db: {
 			schema: 'public',
 		},

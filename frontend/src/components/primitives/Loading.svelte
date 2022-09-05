@@ -179,7 +179,7 @@
 
 	path {
 		fill: currentColor;
-		/* fill: none; */
+		// fill: none;
 		stroke: currentColor;
 		stroke-width: 10px;
 		stroke-linejoin: round;

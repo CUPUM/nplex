@@ -1,21 +1,16 @@
-import type { ComponentProps, ComponentType } from 'svelte';
+import type { ComponentProps } from 'svelte';
 import { writable } from 'svelte/store';
 
-/**
- * Incomplete, maybe not possible: infering props from passed component.
- */
-type MessageContentComponent = ComponentType extends infer T
-	? {
-			component: T;
-			props?: ComponentProps<any>;
-	  }
-	: never;
+type ContentComponent = {
+	comp: any;
+	props: ComponentProps<any>;
+};
 
 export interface Message {
 	/**
 	 * Text content or component (for more complex composition) to be included within the message box.
 	 */
-	content: string | MessageContentComponent;
+	content: string | ContentComponent;
 	/**
 	 * Message's lifespan, set to 0 for indefinite, i.e. would only close on user's command.
 	 */

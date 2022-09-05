@@ -10,12 +10,11 @@
 	import ProviderLogo from '$components/primitives/ProviderLogo.svelte';
 	import { authModal } from '$stores/authModal';
 	import { messages } from '$stores/messages';
-	import { transform } from '$transitions/transform';
 	import { browserDbClient } from '$utils/database/database';
 	import { patterns } from '$utils/input/patterns';
 	import { providers } from '$utils/values/providers';
 	import { sizes } from '$utils/values/sizes';
-	import { expoIn, expoOut, linear } from 'svelte/easing';
+	import { expoIn, expoOut } from 'svelte/easing';
 	import { fade, scale, slide } from 'svelte/transition';
 
 	let email: string;
@@ -26,6 +25,7 @@
 	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
 	let signupForm = false;
 	let currentAction = null;
+	let mounted = false;
 
 	enum Action {
 		EmailSignUp = 'emailsignup',
@@ -75,27 +75,11 @@
 	}
 </script>
 
-<div class="bg" transition:fade={{ duration: 200, easing: linear }} />
+<div class="bg" transition:fade={{ duration: 200 }} />
 <div class="wrap">
 	<dialog
-		in:transform={{
-			rotateX: 20,
-			rotateY: 30,
-			translateZ: -100,
-			translateX: 100,
-			translateY: -150,
-			duration: 200,
-			easing: expoOut,
-			opacity: 0,
-		}}
-		out:transform={{
-			rotateX: -20,
-			rotateY: -30,
-			translateZ: -200,
-			duration: 150,
-			easing: expoIn,
-			opacity: 0,
-		}}
+		in:scale={{ start: 0.9, opacity: 0, duration: 250, easing: expoOut }}
+		out:scale={{ start: 0.95, opacity: 0, duration: 200, easing: expoIn }}
 		use:clickoutside
 		on:clickoutside={() => authModal.close()}
 	>
@@ -143,19 +127,22 @@
 				</div>
 			{/if}
 			<div id="auth-form-buttons">
-				<Button
-					type="submit"
-					variant="cta"
-					value={Action.EmailSignIn}
-					disabled={!Boolean(email) || !Boolean(password)}
-					contentAlign="center"
-					loading={currentAction === Action.EmailSignIn}
-				>
-					<svelte:fragment slot="trailing">
-						<Icon name="login" size="1.5em" />
-					</svelte:fragment>
-					Me connecter
-				</Button>
+				<div style="width: 100%">
+					<Button
+						type="submit"
+						variant="cta"
+						value={Action.EmailSignIn}
+						disabled={!Boolean(email) || !Boolean(password)}
+						contentAlign="center"
+						loading={currentAction === Action.EmailSignIn}
+						display="block"
+					>
+						<svelte:fragment slot="trailing">
+							<Icon name="login" size="1.5em" />
+						</svelte:fragment>
+						Me connecter
+					</Button>
+				</div>
 				<Button
 					size=".85em"
 					type="submit"
@@ -163,10 +150,7 @@
 					value={Action.EmailSignUp}
 					loading={currentAction === Action.EmailSignUp}
 				>
-					Créer un compte
-					<svelte:fragment slot="leading">
-						<Icon name="user-add" size="1em" />
-					</svelte:fragment>
+					<Icon name="user-add" size="1em" />&nbsp; Créer un compte
 				</Button>
 				<Button size=".85em" type="submit" variant="ghost" value={Action.EmailSignUp}
 					>Mot de passe oublié?</Button
@@ -196,8 +180,8 @@
 		height: 100vh;
 		top: 0;
 		left: 0;
-		opacity: 0.97;
-		background: radial-gradient(circle, var(--color-primary-900) 0%, var(--color-primary-700) 120%);
+		opacity: 0.98;
+		background: linear-gradient(-30deg, var(--color-primary-900) -25%, var(--color-primary-300) 150%);
 		// background-color: rgba(var(--rgb-primary-700), 0.96);
 	}
 
