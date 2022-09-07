@@ -61,7 +61,7 @@
 
 <style lang="scss">
 	label {
-		z-index: 1;
+		// z-index: 1;
 		user-select: none;
 		position: relative;
 		cursor: pointer;

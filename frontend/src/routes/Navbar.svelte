@@ -144,7 +144,7 @@
 			top: 0;
 			left: 0;
 			background-color: var(--bg-color);
-			transition: all 1s ease-in-out;
+			transition: all 0.5s ease-in-out;
 		}
 	}
 

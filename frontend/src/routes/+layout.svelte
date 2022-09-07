@@ -44,7 +44,12 @@
 
 <div class:authing={$authModal} style:--ty="{$mainScroll.y}px">
 	<Navbar bind:navbarHeight />
-	<main style:--navbar-height="{navbarHeight || 0}px" style:--scroll="{$mainScroll.y}px" class:loading>
+	<main
+		style:--navbar-height="{navbarHeight || 0}px"
+		style:--scroll={$mainScroll.y}
+		style:--scrollpx="{$mainScroll.y}px"
+		class:loading
+	>
 		<slot />
 	</main>
 	{#if $page.data.showFooter}

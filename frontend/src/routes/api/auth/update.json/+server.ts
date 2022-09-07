@@ -3,7 +3,6 @@ import { createServerDbClient } from '$utils/database/database';
 import { Cookie } from '$utils/values/keys';
 import type { Session } from '@supabase/supabase-js';
 import { json } from '@sveltejs/kit';
-import cookie from 'cookie';
 import type { RequestHandler } from './$types';
 
 export type AppUserSession = {
@@ -16,7 +15,7 @@ export type AppUserSession = {
 /**
  * Get an extended user (app user, including public.users_profiles.role) from the request's access-token cookie.
  */
-export const GET: RequestHandler = async ({ locals, setHeaders }) => {
+export const GET: RequestHandler = async ({ locals, cookies }) => {
 	/**
 	 * Helper function to reset client cookies on logout or on login error.
 	 */
@@ -28,13 +27,11 @@ export const GET: RequestHandler = async ({ locals, setHeaders }) => {
 			Cookie.DbProviderToken,
 			Cookie.DbRefreshToken,
 		].forEach((cookieName) => {
-			setHeaders({
-				'set-cookie': cookie.serialize(cookieName, '', {
-					maxAge: -1,
-					httpOnly: true,
-					path: '/',
-					sameSite: 'strict',
-				}),
+			cookies.set(cookieName, '', {
+				maxAge: -1,
+				httpOnly: true,
+				path: '/',
+				sameSite: 'strict',
 			});
 		});
 		return json(null);
@@ -70,24 +67,20 @@ export const GET: RequestHandler = async ({ locals, setHeaders }) => {
 	(
 		[Cookie.DbAccessToken, Cookie.DbAccessTokenExpiry, Cookie.DbProviderToken, Cookie.DbRefreshToken] as const
 	).forEach((cookieName) => {
-		setHeaders({
-			'set-cookie': cookie.serialize(cookieName, locals[cookieName] || '', {
-				maxAge: parseInt(locals[Cookie.DbAccessTokenExpiry]) || -1,
-				httpOnly: true,
-				path: '/',
-				sameSite: 'strict',
-			}),
+		cookies.set(cookieName, locals[cookieName] || '', {
+			maxAge: parseInt(locals[Cookie.DbAccessTokenExpiry]) || -1,
+			httpOnly: true,
+			path: '/',
+			sameSite: 'strict',
 		});
 	});
 
 	// Clear auth change cookie
-	setHeaders({
-		'set-cookie': cookie.serialize(Cookie.AuthChange, '', {
-			maxAge: -1,
-			path: '/',
-			httpOnly: true,
-			sameSite: 'strict',
-		}),
+	cookies.set(Cookie.AuthChange, '', {
+		maxAge: -1,
+		path: '/',
+		httpOnly: true,
+		sameSite: 'strict',
 	});
 
 	// Return app user data

@@ -4,7 +4,7 @@
  * This file was generated from the svg assets found at ./src/utils/icons. All changes added manually here will be lost
  * on next execution of the generator script.
  *
- * Last generated on: Tue Aug 30 2022 22:56:55 GMT-0400 (GMT-04:00)
+ * Last generated on: Wed Sep 07 2022 13:56:28 GMT-0400 (GMT-04:00)
  *
  * ⚠️ WARNING ⚠️
  */
@@ -17,6 +17,23 @@ export const icons = {
 			{ d: 'M20 13 A8 8 0 0 1 12 21 A8 8 0 0 1 4 13 A8 8 0 0 1 20 13 z', type: 'primary' },
 			{ d: 'M6 3L3 6M18 3L21 6', type: 'primary' },
 			{ d: 'M12 9V13L15 16', type: 'primary' },
+		],
+		fills: [],
+	},
+	'announcement': {
+		width: '24',
+		height: '24',
+		viewBox: '0 0 24 24',
+		strokes: [
+			{
+				d: 'M7.87354 4.81614L3.73468 15.1633C3.28898 16.2775 3.5502 17.5502 4.39879 18.3988L4.60121 18.6012C5.4498 19.4498 6.72245 19.711 7.8367 19.2653L18.1839 15.1265C19.517 14.5932 19.8706 12.8706 18.8553 11.8553L11.1447 4.14471C10.1294 3.12942 8.4068 3.48301 7.87354 4.81614Z',
+				type: 'primary',
+			},
+			{
+				d: 'M9 19L9.17082 19.3416C9.679 20.358 10.7178 21 11.8541 21H12.1577C14.1094 21 15.5415 19.1658 15.0681 17.2724L15 17',
+				type: 'primary',
+			},
+			{ d: 'M16 3C18 4 20 6 21 8', type: 'primary' },
 		],
 		fills: [],
 	},

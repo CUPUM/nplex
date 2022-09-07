@@ -3,13 +3,15 @@
 
 <script lang="ts">
 	import { page } from '$app/stores';
-
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import Tooltip from '$components/primitives/Tooltip.svelte';
 	import type { ComponentProps } from 'svelte';
 
+	export let hasDirty: boolean;
+
 	const ttipPlacement: ComponentProps<Tooltip>['place'] = 'top';
+	$: canPublish = ['admin', 'editor'].includes($page.data.session.user.role);
 </script>
 
 <aside>
@@ -29,9 +31,9 @@
 				<Icon size="1.25em" name={$page.data.isNew ? 'pen-plus' : 'save'} />
 			</Button>
 		</Tooltip>
-		<Tooltip message="Revenir à l'état initial" place={ttipPlacement}>
-			<Button square type="reset" variant="ghost">
-				<Icon size="1.25em" name="trash" />
+		<Tooltip message="Annuler les modifications (revenir à l'état initial)" place={ttipPlacement}>
+			<Button square type="reset" variant="ghost" disabled={!hasDirty}>
+				<Icon size="1.25em" name="undo" />
 			</Button>
 		</Tooltip>
 		<Tooltip message="Supprimer tout" place={ttipPlacement}>
@@ -40,9 +42,12 @@
 			</Button>
 		</Tooltip>
 		<!-- If editing existing sheet, aka routeId = /editer/[someId], if admin or editor, etc... -->
-		<Tooltip message="Publier" place={ttipPlacement}>
+		<Tooltip
+			message={canPublish ? 'Publier' : 'Soumettez votre fiche pour publication par un gestionnaire de contenu'}
+			place={ttipPlacement}
+		>
 			<Button square type="submit" variant="ghost">
-				<Icon size="1.25em" name="upload" />
+				<Icon size="1.25em" name="announcement" />
 			</Button>
 		</Tooltip>
 	</menu>
@@ -77,6 +82,6 @@
 		margin: 0;
 		display: flex;
 		flex-direction: row;
-		font-size: 1em;
+		font-size: 1.1rem;
 	}
 </style>

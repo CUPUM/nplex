@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@supabase/supabase-js': 2.0.0-rc.8
   '@sveltejs/adapter-node': 1.0.0-next.88
-  '@sveltejs/kit': 1.0.0-next.470
+  '@sveltejs/kit': 1.0.0-next.476
   '@turf/bbox': ^6.5.0
   '@turf/circle': ^6.5.0
   '@turf/helpers': ^6.5.0
@@ -68,7 +68,7 @@ dependencies:
 
 devDependencies:
   '@sveltejs/adapter-node': 1.0.0-next.88
-  '@sveltejs/kit': 1.0.0-next.470_svelte@3.50.0+vite@3.1.0
+  '@sveltejs/kit': 1.0.0-next.476_svelte@3.50.0+vite@3.1.0
   '@types/cookie': 0.5.1
   '@types/node': 18.7.15
   '@types/set-cookie-parser': 2.4.2
@@ -283,8 +283,8 @@ packages:
       - encoding
     dev: false
 
-  /@supabase/postgrest-js/1.0.0-rc.4:
-    resolution: {integrity: sha512-/0E73jHi7mOX0OJlbxdQMk4n3wUJq9WICtHPzWzNHlYdHTfB2GpBsgSLbptRrerQVZ9fI/OZZbEeRNcxw24sgQ==}
+  /@supabase/postgrest-js/1.0.0-rc.5:
+    resolution: {integrity: sha512-rBOyhK+qLd2fdX6WbCW3e9gY9qbwC5Zeso6QWM+00RlRz3k156lxnreVpe4KKGXNT3JMqJwAHXjQ2lbxmtBJqg==}
     dependencies:
       cross-fetch: 3.1.5
     transitivePeerDependencies:
@@ -313,7 +313,7 @@ packages:
     dependencies:
       '@supabase/functions-js': 2.0.0-rc.1
       '@supabase/gotrue-js': 2.0.0-rc.4
-      '@supabase/postgrest-js': 1.0.0-rc.4
+      '@supabase/postgrest-js': 1.0.0-rc.5
       '@supabase/realtime-js': 2.0.0-rc.5
       '@supabase/storage-js': 2.0.0-rc.1
       cross-fetch: 3.1.5
@@ -328,8 +328,8 @@ packages:
       esbuild: 0.14.54
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.470_svelte@3.50.0+vite@3.1.0:
-    resolution: {integrity: sha512-gXe+x4pQSxjI1oNo74WOcMXc6sIFJuUAhwAaZ2jcDw+9vpjKJnH/hZFzER97YQA5Oz+iRdv6Mzw1+pprSJoT9Q==}
+  /@sveltejs/kit/1.0.0-next.476_svelte@3.50.0+vite@3.1.0:
+    resolution: {integrity: sha512-sCd51gwU5eva/bFEQCQDgRc2buNCHC3bk5tLz7uoF7PUkNFFuqJSfkLYd3hs1T3VQWrkH8oU9HK3mJsUKAWe1A==}
     engines: {node: '>=16.14'}
     hasBin: true
     requiresBuild: true
@@ -765,7 +765,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001390
-      electron-to-chromium: 1.4.241
+      electron-to-chromium: 1.4.243
       node-releases: 2.0.6
       update-browserslist-db: 1.0.7_browserslist@4.21.3
     dev: true
@@ -1133,8 +1133,8 @@ packages:
       safe-buffer: 5.2.1
     dev: false
 
-  /electron-to-chromium/1.4.241:
-    resolution: {integrity: sha512-e7Wsh4ilaioBZ5bMm6+F4V5c11dh56/5Jwz7Hl5Tu1J7cnB+Pqx5qIF2iC7HPpfyQMqGSvvLP5bBAIDd2gAtGw==}
+  /electron-to-chromium/1.4.243:
+    resolution: {integrity: sha512-BgLD2gBX43OSXwlT01oYRRD5NIB4n3okTRxkzEAC6G0SZG4TTlyrWMjbOo0fajCwqwpRtMHXQNMjtRN6qpNtfw==}
     dev: true
 
   /element-to-path/1.2.1:

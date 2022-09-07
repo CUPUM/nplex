@@ -110,6 +110,7 @@
 			bind:this={inputRef}
 			class="input"
 			type={type === 'password' && $showPassword ? 'text' : type}
+			{name}
 			{placeholder}
 			{value}
 			{readonly}

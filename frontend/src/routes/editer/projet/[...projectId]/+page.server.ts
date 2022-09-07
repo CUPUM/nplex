@@ -1,17 +1,15 @@
 import { createServerDbClient } from '$utils/database/database';
 import { Cookie } from '$utils/values/keys';
-import type { Action } from '@sveltejs/kit';
+import type { Actions } from '@sveltejs/kit';
 
-export const POST: Action = async ({ locals, request, url, params }) => {
-	const update = await request.json();
+export const actions: Actions = {
+	update: async (event) => {
+		const formData = await event.request.formData();
+		console.log(...formData);
+		const db = createServerDbClient(event.locals[Cookie.DbAccessToken]);
 
-	console.log(update);
-
-	const db = createServerDbClient(locals[Cookie.DbAccessToken]);
-
-	// const {data: newProject, error} = await db
-	// 	.from('projects')
-	// 	.upsert()
-
-	// redirect(302, )
+		// const { data, error } = await db.from('projects').upsert({
+		// 	id: event.request.formData,
+		// });
+	},
 };

@@ -145,6 +145,7 @@
 		color: var(--color-light-700);
 		box-shadow: 0 0.5em 1.5em -0.75em rgba(0, 0, 0, 0.5);
 		border-radius: 0.75em;
+		letter-spacing: 0.25px;
 	}
 
 	svg {

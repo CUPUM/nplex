@@ -13,6 +13,7 @@
 	export let loading: boolean = false;
 	export let warning: boolean = false;
 	export let square: boolean = undefined;
+	export let fullwidth: boolean = undefined;
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let active: boolean = false;
 	export let display: 'inline' | 'block' = 'block';
@@ -34,6 +35,7 @@
 	class:square
 	class:active
 	class:loading
+	class:fullwidth
 	class:has-leading={$$slots.leading}
 	class:has-trailing={$$slots.trailing}
 	{disabled}
@@ -99,7 +101,6 @@
 		margin: 0;
 		gap: 0;
 		flex-grow: 1;
-		width: 100%;
 		cursor: pointer;
 		border-radius: var(--computed-radius);
 		height: var(--computed-height);
@@ -108,6 +109,10 @@
 		white-space: nowrap;
 		border: none;
 		font-family: inherit;
+
+		&.fullwidth {
+			width: 100%;
+		}
 
 		&.center {
 			.content {
@@ -397,7 +402,7 @@
 			box-shadow: 0 0 0 3px rgba(var(--rgb-primary-500), 0.25);
 			background-color: var(--color-primary-700);
 			color: white;
-			--radius-ratio: 1.4;
+			--radius-ratio: 1.1;
 		}
 	}
 </style>

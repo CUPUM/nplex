@@ -16,7 +16,7 @@
 		renderTitle = project.title;
 	}, 500);
 
-	$: updateTitle(project.title);
+	$: if (project.title !== renderTitle) updateTitle(project.title);
 
 	let mounted = false;
 
@@ -84,8 +84,10 @@
 	}
 
 	hgroup {
+		transform-origin: center bottom;
 		width: 100%;
 		@include mixins.core-grid;
+		transform: scale(max(0.95, calc(1 - 0.0001 * var(--scroll, 0px))));
 	}
 
 	.title {

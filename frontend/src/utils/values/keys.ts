@@ -28,6 +28,7 @@ export enum Ctx {
 	MapLayer = 'map-layer-context',
 	MapTooltip = 'map-tooltip-context',
 	MapToolbar = 'map-toolbar-context',
+	ProjectEditor = 'project-editor-context',
 }
 
 /**

@@ -135,7 +135,7 @@
 						disabled={!Boolean(email) || !Boolean(password)}
 						contentAlign="center"
 						loading={currentAction === Action.EmailSignIn}
-						display="block"
+						fullwidth
 					>
 						<svelte:fragment slot="trailing">
 							<Icon name="login" size="1.5em" />
