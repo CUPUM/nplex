@@ -14,7 +14,7 @@
 	style:font-size={cssSize(size)}
 	style:font-weight={fontWeight}
 	{...$$restProps}
-	class={variant}
+	class="link {variant}"
 	class:disabled
 >
 	<div class="content reg">
@@ -26,7 +26,7 @@
 </a>
 
 <style lang="scss">
-	a {
+	.link {
 		position: relative;
 		display: inline-block;
 		font-family: inherit;
@@ -62,12 +62,12 @@
 	.content {
 		padding: 0.4em 1em 0.6em 1em;
 		transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1), opacity 0.5s cubic-bezier(0.2, 0, 0, 1);
-		transform-origin: -5em center;
 	}
 
 	.reg {
 		opacity: 1;
 		transform: rotate(0deg);
+		transform-origin: -5em center;
 	}
 
 	.fx {
@@ -77,6 +77,7 @@
 		top: 0;
 		left: 0;
 		opacity: 0;
-		transform: rotate(15deg);
+		transform: rotate(-15deg);
+		transform-origin: calc(100% + 5em) center;
 	}
 </style>

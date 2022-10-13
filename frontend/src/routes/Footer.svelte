@@ -1,8 +1,10 @@
-<script>
+<script lang="ts">
 	import { intersection } from '$actions/intersection';
+	import Icon from '$components/primitives/Icon.svelte';
 	import Link from '$components/primitives/Link.svelte';
 
 	import Logo from '$components/primitives/Logo.svelte';
+	import type { ComponentProps } from 'svelte';
 
 	const mainLinks = [
 		{ pathname: '/', title: 'Accueil' },
@@ -26,10 +28,17 @@
 		},
 	];
 
+	const iconOptions: Partial<ComponentProps<Icon>> = {
+		top: '.25em',
+		strokeWidth: 1.75,
+		size: '1.25em',
+	};
+
 	let out = true;
 </script>
 
 <footer
+	id="footer"
 	use:intersection={{ rootMargin: '0px 0px -50px 0px' }}
 	on:enter={() => (out = false)}
 	on:leave={() => (out = true)}
@@ -37,7 +46,7 @@
 >
 	<section id="links">
 		<section id="sitemap-links">
-			<div class="heading">Carte du site</div>
+			<div class="heading"><Icon name="map" {...iconOptions} />&ensp;Carte du site</div>
 			<ul>
 				{#each mainLinks as link}
 					<li>
@@ -47,7 +56,7 @@
 			</ul>
 		</section>
 		<section id="explore-links">
-			<div class="heading">Explorer</div>
+			<div class="heading"><Icon name="search" {...iconOptions} />&ensp;Explorer</div>
 			<ul>
 				{#each exploreLinks as link}
 					<li>
@@ -57,7 +66,7 @@
 			</ul>
 		</section>
 		<section id="partners-links">
-			<div class="heading">Partenaires</div>
+			<div class="heading"><Icon name="bookmark" {...iconOptions} />&ensp;Partenaires</div>
 			<ul>
 				{#each partnersLinks as link}
 					<li>
@@ -80,7 +89,7 @@
 </footer>
 
 <style lang="scss">
-	footer {
+	#footer {
 		display: flex;
 		flex-direction: column;
 		justify-content: stretch;
@@ -112,18 +121,29 @@
 
 	#links {
 		font-size: 0.9em;
-		display: flex;
 		flex-direction: row;
-		padding: 1rem;
+		padding-top: 1rem;
 		padding-bottom: 2rem;
 		@include mixins.core-grid;
-		gap: 1rem;
+		width: 100%;
 
 		section {
 			display: flex;
 			flex: 1;
 			flex-direction: column;
 			padding: 1rem 0;
+
+			&:first-of-type {
+				margin-left: -0.5rem;
+			}
+
+			&:nth-of-type(2) {
+				padding-inline: 2rem;
+			}
+
+			&:last-of-type {
+				margin-right: -0.5rem;
+			}
 		}
 
 		ul {
@@ -141,8 +161,8 @@
 		.heading {
 			padding-bottom: 1rem;
 			margin-bottom: 0;
-			margin-inline: 0.8rem;
-			font-weight: 600;
+			margin-inline: 0.5rem;
+			font-weight: 550;
 			font-size: var(--size-xsmall);
 			text-transform: uppercase;
 			letter-spacing: 2px;

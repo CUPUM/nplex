@@ -4,45 +4,50 @@ import type { Database } from '$types/database';
 import type { DatabaseRpc } from '$types/databaseRpc';
 import { createClient } from '@supabase/supabase-js';
 
-/**
- * Init a client-side supabase client instance to listen to auth state changes and more. //
- */
-export const browserDbClient = createClient<Database & DatabaseRpc>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-	db: {
-		schema: 'public',
-	},
-	auth: {
-		persistSession: true,
-		autoRefreshToken: true,
-	},
-});
+type DatabaseSchema = Database & DatabaseRpc;
 
 /**
- * Db client instanciator to use on a per-request basis for server-side authed requests without unnecessary admin
- * privileges.
+ * Database client instance utils.
  */
-export function createServerDbClient(accessToken?: string) {
-	return createClient<Database & DatabaseRpc>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+export const dbClient = {
+	/**
+	 * Init a client-side supabase client instance to listen to auth state changes and more. //
+	 */
+	forBrowser: createClient<DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		db: {
 			schema: 'public',
 		},
 		auth: {
-			persistSession: false,
-			autoRefreshToken: false,
-			detectSessionInUrl: false,
+			persistSession: true,
+			autoRefreshToken: true,
 		},
-		global: {
-			headers: {
-				Authotization: accessToken ? `Bearer ${accessToken}` : null,
+	}),
+	/**
+	 * Db client instanciator to use on a per-request basis for server-side authed requests without unnecessary admin
+	 * privileges.
+	 */
+	createForServer: (accessToken?: string) => {
+		return createClient<DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+			db: {
+				schema: 'public',
 			},
-		},
-	});
-}
-
-/**
- * Helper to get the contextual database client in isomorphic scenarios (server/browser load functions) depending on if
- * the query runs from server or browser.
- */
-export function getContextualDbClient(accessToken?: string) {
-	return browser ? browserDbClient : createServerDbClient(accessToken);
-}
+			auth: {
+				persistSession: false,
+				autoRefreshToken: false,
+				detectSessionInUrl: false,
+			},
+			global: {
+				headers: {
+					Authorization: accessToken ? `Bearer ${accessToken}` : null,
+				},
+			},
+		});
+	},
+	/**
+	 * Helper to get the contextual database client in isomorphic scenarios (server/browser load functions) depending on
+	 * if the query runs from server or browser.
+	 */
+	getForContext: (accessToken?: string) => {
+		return browser ? dbClient.forBrowser : dbClient.createForServer(accessToken);
+	},
+};

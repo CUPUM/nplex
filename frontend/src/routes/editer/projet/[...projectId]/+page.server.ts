@@ -1,15 +1,27 @@
-import { createServerDbClient } from '$utils/database/database';
-import { Cookie } from '$utils/values/keys';
-import type { Actions } from '@sveltejs/kit';
+import { dbClient } from '$utils/database/database';
+import { error, redirect, type Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {
-	update: async (event) => {
+	default: async (event) => {
 		const formData = await event.request.formData();
-		console.log(...formData);
-		const db = createServerDbClient(event.locals[Cookie.DbAccessToken]);
+		const db = dbClient.createForServer(event.locals.session.access_token);
 
-		// const { data, error } = await db.from('projects').upsert({
-		// 	id: event.request.formData,
-		// });
+		const project = await db
+			.from('projects')
+			.upsert({
+				id: event.params.projectId || undefined,
+				title: formData.get('title') as string,
+				category_id: formData.has('category_id') ? +formData.get('category_id') : undefined,
+				type_id: formData.has('type_id') ? +formData.get('type_id') : undefined,
+			})
+			.select()
+			.single();
+
+		if (project.error) {
+			console.log(project.error);
+			throw error(project.status, project.error.message);
+		}
+
+		throw redirect(302, '/editer/projet/' + project.data.id);
 	},
 };

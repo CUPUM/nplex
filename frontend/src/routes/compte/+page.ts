@@ -1,28 +1,29 @@
-import { getContextualDbClient } from '$utils/database/database';
-import { error, redirect } from '@sveltejs/kit';
+import { dbClient } from '$utils/database/database';
+import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ parent }) => {
 	const { session } = await parent();
 
-	if (!session?.jwt) throw redirect(303, '/');
+	if (!session?.access_token) throw error(303, '/');
 
-	// Get user's id form access token to avoid unecessary db query.
-	const db = getContextualDbClient(session.jwt);
+	const db = dbClient.getForContext(session.access_token);
 
 	// Get extended user profile with collections and their contents.
 	const { data: profile, error: profileError } = await db
-		.from('users_profiles')
+		.from('users')
 		.select(
 			`
 				*,
-				role:users_roles!users_roles_user_id_fkey(*)
+				role:users_roles!users_roles_user_id_fkey(
+					role
+				)
 			`
 		)
-		.eq('user_id', session.user.id)
+		.eq('id', session.user.id)
 		.single();
 
-	if (profileError) throw error(404, profileError.message);
+	if (profileError) throw error(404, JSON.stringify(profileError));
 
 	// const { data: projectsPreview, error: projcetsError } = await db
 	// 	.from('projects')

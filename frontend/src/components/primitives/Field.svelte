@@ -1,19 +1,23 @@
 <script lang="ts" context="module">
+	const CTX_KEY = 'field-context-key';
+
 	export interface FieldContext {
-		showPassword: Writable<boolean>;
-		reset: () => void;
-		getInputRef: () => HTMLInputElement;
-		initialValue: any;
+		value: Writable<string>;
+		inputRef: Writable<HTMLInputElement>;
+	}
+
+	export function getFieldContext() {
+		return getContext<FieldContext>(CTX_KEY);
 	}
 </script>
 
 <script lang="ts">
 	import { inputOnReset } from '$actions/inputOnReset';
 	import { cssSize } from '$utils/css';
-	import { Ctx } from '$utils/values/keys';
-	import { setContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 
+	export let id: string = undefined;
 	export let value: string = '';
 	export let prefix: string = '';
 	export let suffix: string = '';
@@ -28,65 +32,64 @@
 	export let invalid: boolean = undefined;
 	export let maxlength: number = undefined;
 	export let minlength: number = undefined;
-	export let readonly: boolean = undefined;
 	export let placeholder: string = '';
 	export let leadingSeparator: boolean = false;
 	export let trailingSeparator: boolean = false;
 	export let pattern: RegExp = undefined;
 	export let format: (value: string) => string = undefined;
-	export let display: 'inline' | 'block' = 'block';
+	let className: string = undefined;
+	export { className as class };
 
-	const initialValue = value;
+	const _value = writable(value);
+	$: value = $_value;
+	$: _value.set(value);
 
-	let inputRef: HTMLInputElement;
-	let focused = false;
-	let hasPlaceholder = false;
-	$: hasPlaceholder = placeholder !== '';
+	let inputRef = writable<HTMLInputElement>(null);
 	let leadingWidth = 0;
-	let showPassword = writable(false);
+	let labelWidth = 0;
+	let focused = false;
+	let focusedOnce = false;
 
 	function checkValidity() {
-		invalid = pattern
-			? !inputRef.checkValidity()
+		invalid = !value
+			? false
+			: pattern
+			? !$inputRef.checkValidity()
 			: minlength
-			? !(inputRef.value.length >= minlength)
+			? !($inputRef.value.length >= minlength)
 			: maxlength
-			? !(inputRef.value.length <= maxlength)
+			? !($inputRef.value.length <= maxlength)
 			: undefined;
-		success = pattern || minlength || maxlength ? !invalid : undefined;
-	}
-
-	function reset() {
-		value = initialValue;
-		invalid = undefined;
-		success = undefined;
+		// success = pattern || minlength || maxlength ? !invalid : undefined;
 	}
 
 	function handleInput(e) {
 		value = format ? format(e.target.value) : e.target.value;
-		invalid = undefined;
-		success = undefined;
+	}
+
+	function focus() {
+		$inputRef?.focus();
 	}
 
 	function handleFocus() {
 		focused = true;
+		invalid = undefined;
+		success = undefined;
 	}
 
-	function handleBlur(e) {
+	function handleBlur(e: FocusEvent) {
 		focused = false;
 		checkValidity();
 	}
 
-	setContext<FieldContext>(Ctx.Field, {
-		showPassword,
-		reset,
-		getInputRef: () => inputRef,
-		initialValue,
+	setContext<FieldContext>(CTX_KEY, {
+		value: _value,
+		inputRef,
 	});
 </script>
 
 <div
-	class="field {variant} {display}"
+	class="outer {variant} {className}"
 	style:--size={cssSize(size)}
 	class:focused
 	class:warning
@@ -94,134 +97,125 @@
 	class:disabled
 	class:invalid
 	class:has-value={value !== ''}
-	class:has-placeholder={hasPlaceholder}
+	class:has-placeholder={placeholder !== ''}
 	class:has-label={$$slots.label}
+	style:--leading-width="{leadingWidth}px"
+	style:--label-width="{labelWidth}px"
+	on:click={focus}
 >
-	{#if $$slots.leading}
-		<div class="leading" bind:clientWidth={leadingWidth}>
-			<slot name="leading" />
-		</div>
-	{/if}
-	<label class="main">
-		{#if prefix}
-			<span class="prefix">{prefix}</span>
+	<div class="inner">
+		{#if $$slots.leading && $inputRef}
+			<div class="leading" bind:clientWidth={leadingWidth}>
+				<slot name="leading" />
+			</div>
 		{/if}
-		<input
-			bind:this={inputRef}
-			class="input"
-			type={type === 'password' && $showPassword ? 'text' : type}
-			{name}
-			{placeholder}
-			{value}
-			{readonly}
-			{maxlength}
-			{minlength}
-			{disabled}
-			{required}
-			pattern={pattern ? pattern.source : undefined}
-			use:inputOnReset
-			on:change
-			on:reset
-			on:input
-			on:focus
-			on:blur
-			on:input={handleInput}
-			on:focus={handleFocus}
-			on:blur={handleBlur}
-		/>
-		{#if suffix}
-			<span class="suffix">{suffix}</span>
-		{/if}
-	</label>
-	{#if $$slots.trailing}
-		<div class="trailing">
-			<slot name="trailing" />
-		</div>
-	{/if}
-	<fieldset style:--leading-width="{leadingWidth}px">
-		{#if $$slots.label}
-			<legend>
-				<div>
+		<div class="main">
+			{#if $$slots.label}
+				<label for={id} bind:clientWidth={labelWidth}>
 					<slot name="label" />
-				</div>
-			</legend>
+				</label>
+			{/if}
+			{#if prefix}
+				<span class="prefix">{prefix}</span>
+			{/if}
+			<input
+				bind:this={$inputRef}
+				class="input"
+				{type}
+				{name}
+				{placeholder}
+				{value}
+				{maxlength}
+				{minlength}
+				{disabled}
+				{required}
+				readonly={!focusedOnce}
+				pattern={pattern ? pattern.source : undefined}
+				use:inputOnReset
+				on:change
+				on:reset
+				on:input
+				on:focus
+				on:blur
+				on:input={handleInput}
+				on:focus={handleFocus}
+				on:focus|once={() => (focusedOnce = true)}
+				on:blur={handleBlur}
+			/>
+			{#if suffix}
+				<span class="suffix">{suffix}</span>
+			{/if}
+		</div>
+		{#if $$slots.trailing && $inputRef}
+			<div class="trailing">
+				<slot name="trailing" />
+			</div>
 		{/if}
-	</fieldset>
+		<div class="outline">
+			<div class="tl" />
+			<div class="tr" />
+			<div class="t" />
+			<div class="b" />
+		</div>
+	</div>
 </div>
 
 <style lang="scss">
-	.field {
-		--inset: 5px;
-		--radius-ratio: 0.8;
+	// Outer element extendable by class prop.
+	.outer {
+		--inset: 3px;
+		--radius-ratio: 1;
 		--ctx-radius-ratio: var(--radius-ratio);
 		--height-ratio: 3;
 		--computed-height: calc(var(--size) * var(--height-ratio));
 		--computed-radius: calc(var(--size) * var(--radius-ratio));
 		font-size: var(--size);
 		position: relative;
-		display: grid;
-		grid-template-columns:
-			[leading-start]
-			auto
-			[leading-end main-start]
-			1fr
-			[main-end trailing-start]
-			auto
-			[trailing-end];
-		gap: 0;
-		flex-direction: row;
-		align-items: center;
-		line-height: 1em;
-		flex-wrap: nowrap;
-		white-space: nowrap;
 		height: var(--computed-height);
 		border-radius: var(--computed-radius);
 		padding: 0;
 		margin: 0;
-
-		&.inline {
-			display: inline-grid;
-		}
 
 		&.disabled {
 			opacity: 0.5;
 			pointer-events: none;
 		}
 
-		&.warning:not(:hover):not(.focused),
-		&.invalid:not(:hover):not(.focused) {
-			background-color: rgba(var(--rgb-error-100), 0.1);
-
-			fieldset {
-				color: var(--color-error-700);
-
-				legend {
-					opacity: 0.5;
-				}
-			}
+		&.warning {
+			// color: red !important;
+			// background-color: rgba(var(--rgb-error-100), 0.1);
 		}
 
-		&.success:not(:hover):not(.focused) {
-			background-color: rgba(var(--rgb-success-100), 0.1);
-
-			fieldset {
-				color: var(--color-success-700);
-
-				legend {
-					opacity: 1;
-				}
-			}
+		&.invalid {
+			color: var(--color-error-700) !important;
+			background-color: rgba(var(--rgb-error-100), 0.1) !important;
 		}
 
-		&.focused,
-		&:not(.focused):not(.has-label) {
-			.prefix,
-			.suffix {
-				transform: translateY(0);
-				opacity: 0.5;
-				transition: opacity 0.2s 0.1s ease-in-out, transform 0.25s 0.1s cubic-bezier(0.2, 0, 0.2, 1);
-			}
+		&.success {
+			color: var(--color-success-700) !important;
+			background-color: rgba(var(--rgb-success-100), 0.1) !important;
 		}
+	}
+
+	.inner {
+		position: relative;
+		height: 100%;
+		width: 100%;
+		display: grid;
+		grid-template-columns:
+			[leading-start]
+			auto
+			[leading-end main-start]
+			minmax(0, 1fr)
+			[main-end trailing-start]
+			auto
+			[trailing-end];
+		padding: 0;
+		margin: 0;
+		gap: 0;
+		border-radius: inherit;
+		flex-direction: row;
+		align-items: center;
 	}
 
 	.leading,
@@ -232,6 +226,7 @@
 		margin: 0;
 		gap: 0;
 		display: flex;
+		flex: 0 1 auto;
 		align-items: center;
 		transition: padding 0.25s ease-in-out;
 
@@ -250,41 +245,46 @@
 	}
 
 	.main {
-		grid-column: main;
-		cursor: text;
+		flex: 0 1 auto;
 		position: relative;
-		display: inline-flex;
-		height: 100%;
+		grid-column: main;
+		display: flex;
+		flex-direction: row;
 		align-items: center;
-		padding: 0 1.5em;
+		cursor: text;
+		height: 100%;
+		padding: 0 1.25em;
 		margin: 0;
 		top: -0.1em;
-		transition: top 0.2s cubic-bezier(0.2, 0, 0.2, 1);
+		transition: all 0.25s cubic-bezier(0.25, 0, 0, 1);
 	}
 
 	.prefix,
 	.suffix {
+		flex: 0;
 		white-space: pre;
-		line-height: 1em;
-		position: relative;
 		display: inline-block;
 		opacity: 0;
 		transform: translateY(0.25em);
-		transition: opacity 0.2s ease-in-out, transform 0.25s cubic-bezier(0.8, 0, 0.8, 1);
+		transition: all 0.25s cubic-bezier(0.25, 0, 0, 1);
+
+		.focused &,
+		:not(.focused):not(.has-label) & {
+			transform: translateY(0);
+			opacity: 0.5;
+		}
 	}
 
 	input {
-		position: relative;
-		grid-column: input;
 		flex: 1;
 		font-family: inherit;
 		font-size: inherit;
 		border-radius: inherit;
 		border: none;
 		outline: none;
-		background: none;
-		background-color: transparent;
-		line-height: 1em;
+		background: transparent;
+		height: 2em;
+		overflow: hidden;
 		text-overflow: ellipsis;
 		padding: 0;
 		margin: 0;
@@ -293,74 +293,92 @@
 		&::placeholder {
 			color: currentColor;
 			opacity: 0.35;
-			transition: all 0.2s;
-
-			@at-root .has-label:not(.focused) & {
-				opacity: 0;
-			}
 		}
 
 		&:-webkit-autofill,
-		&:-webkit-autofill:focus {
-			transition: background-color 600000s 0s, color 600000s 0s;
+		&:-webkit-autofill:hover,
+		&:-webkit-autofill:focus,
+		&:-webkit-autofill:active {
+			transition: background-color 5000s ease-in 0s;
 		}
 	}
 
-	//
-	// Notched outline styling
-	//
+	label {
+		user-select: none;
+		cursor: text;
+		position: absolute;
+		grid-column: main;
+		line-height: 1em;
+		top: 1em;
+		white-space: nowrap;
+		overflow: hidden;
+		max-width: calc(100% - 2.4 * var(--size));
+		text-overflow: ellipsis;
+		transition: all 0.25s cubic-bezier(0.25, 0, 0, 1);
+	}
 
-	fieldset {
+	.outline {
+		--label-padding: 0em;
+		--thickness: 1px;
+		.has-label & {
+			--label-padding: 0.5em;
+		}
 		pointer-events: none;
 		position: absolute;
+		border-radius: inherit;
 		width: 100%;
 		height: 100%;
-		top: 0;
-		left: 0;
-		margin: 0;
-		padding: 0;
-		padding-left: var(--leading-width, 0px);
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		line-height: 1em;
-		border-radius: inherit;
-		border-width: 0px;
-		border-style: solid;
-		border-color: currentColor;
-		transition: all 0.12s ease-in-out;
-	}
+		display: grid;
+		grid-template-columns:
+			[full-start left-start]
+			calc(1.25em + var(--leading-width) - var(--label-padding))
+			// Keep leftmost value in sync with .main inline-padding.
+			[left-end top-start]
+			calc(var(--label-width) + 2 * var(--label-padding))
+			[top-end right-start]
+			auto
+			[right-end full-end];
+		transition: all 0.15s ease-out;
 
-	legend {
-		opacity: 0.5;
-		white-space: nowrap;
-		position: relative;
-		font-size: 1em;
-		height: 0;
-		padding: 0;
-		top: 0;
-		margin-left: 1.5em;
-		max-width: 0;
-		transition: all 0.15s cubic-bezier(0.25, 0, 0.25, 1), color 0s;
-
-		div {
-			font-size: 1em;
-			padding: 0;
-			margin: 0;
-			line-height: calc(var(--computed-height) - 0.2em);
-			transition: all 0.15s cubic-bezier(0.25, 0, 0.25, 1), color 0s;
+		.tl,
+		.tr,
+		.t,
+		.b {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			top: 0;
+			border-width: var(--thickness);
+			border-style: solid;
+			transition: border-width 0.25s ease-in-out;
 		}
-	}
 
-	.focused,
-	.has-value {
-		legend:not(:empty) {
-			// top: -0.5em;
+		.tl {
+			grid-column: left;
+			border-top-left-radius: inherit;
+			border-right-width: 0;
+			border-color: currentColor transparent transparent transparent;
+		}
 
-			div {
-				line-height: 1em;
-				font-size: max(12px, 0.5em);
-			}
+		.tr {
+			grid-column: right;
+			border-left-width: 0;
+			border-top-right-radius: inherit;
+			border-color: currentColor transparent transparent transparent;
+		}
+
+		.t {
+			justify-self: right;
+			grid-column: top;
+			border-inline-width: 0;
+			border-color: currentColor transparent transparent transparent;
+			transition: width 0.15s ease-out;
+		}
+
+		.b {
+			grid-column: full;
+			border-radius: inherit;
+			border-color: transparent currentColor currentColor currentColor;
 		}
 	}
 
@@ -369,78 +387,126 @@
 	//
 
 	.default {
-		color: var(--color-dark-500);
-		background-color: rgba(var(--rgb-light-900), 0.25);
-		transition: all 0.15s ease-out;
-
+		color: var(--color-dark-300);
+		background-color: rgba(var(--rgb-light-900), 0.35);
+		backdrop-filter: blur(10px);
+		transition: background-color 0.1s ease-out;
+		.outline {
+			opacity: 0;
+			color: var(--color-primary-500);
+			& > *:not(.base) {
+				display: none;
+			}
+			.base {
+				border-color: currentColor;
+			}
+		}
+		label {
+			opacity: 0;
+			top: 0.5em;
+			font-size: clamp(10px, 0.5em, 24px);
+		}
+		&:not(.has-placeholder):not(:hover):not(.focused):not(.has-value) {
+			label {
+				opacity: 0.35;
+				top: 1em;
+				font-size: var(--size);
+			}
+			.prefix,
+			.suffix {
+				opacity: 0;
+			}
+		}
 		&:hover {
-			color: var(--color-dark-900);
 			background-color: rgba(var(--rgb-light-900), 0.5);
-		}
-
-		&.has-value:not(.focused) {
-			// background-color: transparent;
-
-			legend {
-				opacity: 0.25;
-				top: 0.25em;
+			.outline {
+				// opacity: 0.5;
 			}
-
-			&.has-label .main {
-				top: 0.25em;
+			&.has-label {
+				.main {
+					top: 0.15em;
+				}
+				label {
+					opacity: 0.35;
+					top: 0.35em;
+				}
 			}
 		}
-
 		&.focused {
-			background-color: white;
-			box-shadow: 0 0.5em 1.5em -0.5em rgba(var(--rgb-dark-900), 0.25);
-
-			legend {
-				top: -1em;
+			color: var(--color-dark-900);
+			background-color: rgba(255, 255, 255, 0.9);
+			.outline {
+				opacity: 0.75;
+			}
+			&.has-label {
+				.main {
+					top: 0.15em;
+				}
+			}
+			label {
+				opacity: 0.35;
+				top: 0.35em;
 			}
 		}
 	}
 
 	.outlined {
-		color: var(--color-dark-500);
+		color: var(--color-dark-300);
 		background-color: transparent;
-		transition: all 0.15s ease-out;
-
-		fieldset {
-			color: rgba(var(--rgb-dark-500), 0.2);
-			border-width: 1.5px;
+		.outline {
+			opacity: 0.25;
 		}
-
-		legend {
-			opacity: 1;
+		label {
+			opacity: 0.5;
 		}
-
-		&:hover {
-			color: var(--color-dark-700);
-
-			fieldset {
-				color: rgba(var(--rgb-dark-900), 0.5);
+		&.has-placeholder,
+		&.has-value:hover {
+			label {
+				top: -0.3em;
+				font-size: clamp(10px, 0.5em, 24px);
+			}
+			.outline {
+				.t {
+					width: 0;
+				}
 			}
 		}
-
-		&.focused,
 		&.has-value {
-			legend {
-				max-width: 100%;
-				margin-left: 1.25em;
-				padding-inline: 0.25em;
+			label {
+				top: 0em;
+				font-size: clamp(10px, 0.5em, 24px);
+				opacity: 0;
+			}
+		}
+		&.has-placeholder,
+		&.has-label {
+			&:not(.has-value):not(.focused) {
+				.prefix,
+				.suffix {
+					opacity: 0;
+				}
+			}
+		}
+		&:hover {
+			.outline {
+				opacity: 0.5;
+			}
+			label {
+				opacity: 0.75;
+			}
+		}
+		&.focused {
+			.outline {
+				opacity: 1;
+				.t {
+					width: 0;
+				}
+			}
+			label {
+				font-size: clamp(10px, 0.5em, 24px);
+				opacity: 1;
 				top: -0.3em;
 			}
 		}
-
-		&.focused {
-			fieldset {
-				color: rgba(var(--rgb-dark-900), 1);
-				border: 1.5px solid currentColor;
-			}
-		}
-	}
-
-	.ghost {
 	}
 </style>

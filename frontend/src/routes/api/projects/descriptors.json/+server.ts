@@ -1,5 +1,5 @@
 import type { Database } from '$types/database';
-import { createServerDbClient } from '$utils/database/database';
+import { dbClient } from '$utils/database/database';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 type DatabaseTable<TableName extends keyof Database['public']['Tables']> =
@@ -30,7 +30,7 @@ let time = 0;
  */
 export const GET: RequestHandler = async ({ request }) => {
 	// if (!time || !cache || time < Date.now() - 10000) {
-	const db = createServerDbClient();
+	const db = dbClient.createForServer();
 
 	try {
 		const queries = {

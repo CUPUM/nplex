@@ -10,22 +10,13 @@
 	import ProviderLogo from '$components/primitives/ProviderLogo.svelte';
 	import { authModal } from '$stores/authModal';
 	import { messages } from '$stores/messages';
-	import { browserDbClient } from '$utils/database/database';
+	import { transform } from '$transitions/transform';
+	import { dbClient } from '$utils/database/database';
 	import { patterns } from '$utils/input/patterns';
 	import { providers } from '$utils/values/providers';
 	import { sizes } from '$utils/values/sizes';
-	import { expoIn, expoOut } from 'svelte/easing';
-	import { fade, scale, slide } from 'svelte/transition';
-
-	let email: string;
-	let password: string;
-	let firstname: string;
-	let middlename: string;
-	let lastname: string;
-	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
-	let signupForm = false;
-	let currentAction = null;
-	let mounted = false;
+	import { cubicOut } from 'svelte/easing';
+	import { fade, scale } from 'svelte/transition';
 
 	enum Action {
 		EmailSignUp = 'emailsignup',
@@ -33,34 +24,32 @@
 		UseProvider = 'useprovider',
 	}
 
+	let email: string;
+	let password: string;
+	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
+	let currentAction: Action = null;
+
 	async function submit(e: SubmitEvent) {
-		currentAction = (e.submitter as HTMLButtonElement).value;
+		e.preventDefault();
+		currentAction = (e.submitter as HTMLButtonElement).value as Action;
 		try {
 			switch (currentAction) {
-				case Action.EmailSignIn: {
-					const signin = await browserDbClient.auth.signInWithPassword({ email, password });
+				case Action.EmailSignIn:
+					const signin = await dbClient.forBrowser.auth.signInWithPassword({ email, password });
 					if (signin.error) {
-						signupForm = true;
 						throw signin.error;
 					}
 					break;
-				}
 				case Action.EmailSignUp:
-					if (!signupForm) {
-						signupForm = true;
-						break;
-					}
-					const signup = await browserDbClient.auth.signUp({ email, password });
-					console.log(signup);
+					const signup = await dbClient.forBrowser.auth.signUp({ email, password });
 					if (signup.error) throw signup.error;
-					const updateProfile = await browserDbClient
-						.from('users_profiles')
-						.update({ firstname, middlename, lastname })
-						.eq('user_id', signup.data.user.id)
-						.single();
-					console.log(updateProfile);
-					if (updateProfile.error) throw updateProfile.error;
-					break;
+				// const updateProfile = await browserDbClient
+				// 	.from('profiles')
+				// 	.update({ firstname, middlename, lastname })
+				// 	.eq('user_id', signup.data.user.id)
+				// 	.single();
+				// if (updateProfile.error) throw updateProfile.error;
+				// break;
 				case Action.UseProvider:
 					// To do: get app approbation from desired providers.
 					break;
@@ -75,27 +64,26 @@
 	}
 </script>
 
-<div class="bg" transition:fade={{ duration: 200 }} />
-<div class="wrap">
-	<dialog
-		in:scale={{ start: 0.9, opacity: 0, duration: 250, easing: expoOut }}
-		out:scale={{ start: 0.95, opacity: 0, duration: 200, easing: expoIn }}
-		use:clickoutside
+<div id="auth-bg" transition:fade={{ duration: 200 }} />
+<dialog>
+	<form
+		on:submit|preventDefault={submit}
+		in:transform={{ scale: 1.08, translateY: 25, opacity: 0, duration: 350, easing: cubicOut }}
+		out:scale={{ start: 0.95 }}
+		use:clickoutside={true}
 		on:clickoutside={() => authModal.close()}
 	>
-		<a class="logo" href="/">
+		<a id="auth-logo" href="/">
 			<Logo color="currentColor" />
 		</a>
-		<form
-			id="auth-form"
-			autocomplete="off"
-			on:submit|preventDefault={submit}
-			in:scale={{ start: 0.95, opacity: 0, delay: 100, duration: 150 }}
-		>
+		<Button class="close" size=".85em" type="submit" variant="ghost" on:click={() => authModal.close()} square>
+			<Icon name="cross" size="1.5em" />
+		</Button>
+		<fieldset id="auth-fields">
 			<Field
+				variant="outlined"
 				bind:value={email}
-				maxlength={48}
-				placeholder="courriel@domaine.com"
+				maxlength={100}
 				pattern={patterns.email}
 				name="email"
 				type="email"
@@ -105,7 +93,7 @@
 				<svelte:fragment slot="label">Courriel</svelte:fragment>
 				<FieldControlReset slot="trailing" />
 			</Field>
-			<Field bind:value={password} name="password" type="password" minlength={6} required>
+			<Field variant="outlined" bind:value={password} name="password" type="password" minlength={6} required>
 				<FieldIcon slot="leading" name="lock-close" />
 				<svelte:fragment slot="label">Mot de passe</svelte:fragment>
 				<svelte:fragment slot="trailing">
@@ -113,41 +101,27 @@
 					<FieldControlReset />
 				</svelte:fragment>
 			</Field>
-			{#if signupForm}
-				<div id="auth-signup-fields" transition:slide|local={{}}>
-					<div>
-						<Field size={sizes.small} bind:value={firstname} name="firstname" placeholder="Prénom" />
-					</div>
-					<div>
-						<Field size={sizes.small} bind:value={middlename} name="middlename" placeholder="Surnom" />
-					</div>
-					<div class="full-cols">
-						<Field size={sizes.small} bind:value={lastname} name="lastname" placeholder="Nom de famille" />
-					</div>
-				</div>
-			{/if}
-			<div id="auth-form-buttons">
-				<div style="width: 100%">
-					<Button
-						type="submit"
-						variant="cta"
-						value={Action.EmailSignIn}
-						disabled={!Boolean(email) || !Boolean(password)}
-						contentAlign="center"
-						loading={currentAction === Action.EmailSignIn}
-						fullwidth
-					>
-						<svelte:fragment slot="trailing">
-							<Icon name="login" size="1.5em" />
-						</svelte:fragment>
-						Me connecter
-					</Button>
-				</div>
+			<div id="auth-buttons">
+				<Button
+					class="login-button"
+					type="submit"
+					variant="cta"
+					value={Action.EmailSignIn}
+					disabled={!Boolean(email) || !Boolean(password)}
+					contentAlign="center"
+					loading={currentAction === Action.EmailSignIn}
+				>
+					<svelte:fragment slot="trailing">
+						<Icon name="login" size="1.5em" />
+					</svelte:fragment>
+					Me connecter
+				</Button>
 				<Button
 					size=".85em"
 					type="submit"
 					variant="ghost"
 					value={Action.EmailSignUp}
+					disabled={!Boolean(email) || !Boolean(password)}
 					loading={currentAction === Action.EmailSignUp}
 				>
 					<Icon name="user-add" size="1em" />&nbsp; Créer un compte
@@ -156,11 +130,11 @@
 					>Mot de passe oublié?</Button
 				>
 			</div>
-		</form>
+		</fieldset>
 		<hr />
-		<form in:scale={{ start: 0.94, opacity: 0, easing: expoOut, delay: 450 }} id="auth-provider-form">
+		<fieldset id="auth-providers">
 			<span>Ou se connecter via une autre plateforme&nbsp;:</span>
-			<fieldset id="auth-provider-buttons" disabled>
+			<fieldset id="auth-providers-buttons" disabled>
 				{#each providerNames as name, i}
 					<Button size={sizes.small} contentAlign="center" variant="secondary">
 						<ProviderLogo size="1.5em" {name} slot="leading" />
@@ -168,12 +142,12 @@
 					</Button>
 				{/each}
 			</fieldset>
-		</form>
-	</dialog>
-</div>
+		</fieldset>
+	</form>
+</dialog>
 
-<style lang="scss">
-	.bg {
+<style lang="scss" module>
+	#auth-bg {
 		z-index: 1000;
 		position: fixed;
 		width: 100vw;
@@ -181,11 +155,11 @@
 		top: 0;
 		left: 0;
 		opacity: 0.98;
-		background: linear-gradient(-30deg, var(--color-primary-900) -25%, var(--color-primary-300) 150%);
-		// background-color: rgba(var(--rgb-primary-700), 0.96);
+		// background: linear-gradient(-30deg, var(--color-primary-900) -25%, var(--color-primary-300) 150%);
+		background-color: rgba(var(--rgb-primary-900), 0.95);
 	}
 
-	.wrap {
+	dialog {
 		position: fixed;
 		z-index: 1000;
 		display: flex;
@@ -197,10 +171,18 @@
 		margin: 0;
 		top: 0;
 		left: 0;
-		perspective: 900px;
+		background-color: transparent;
+		border: none;
 	}
 
-	dialog {
+	.close {
+		position: absolute !important;
+		top: 1rem;
+		right: 1rem;
+	}
+
+	form {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
@@ -208,15 +190,15 @@
 		width: 100%;
 		max-width: 450px;
 		max-height: 100%;
-		background-color: white;
+		background-color: var(--color-light-300);
 		box-shadow: 0 3rem 8rem -5rem black;
 		padding: 0;
 		overflow-y: auto;
-		border-radius: 2rem;
+		border-radius: 1.5rem;
 		border: none;
 	}
 
-	.logo {
+	#auth-logo {
 		cursor: pointer;
 		text-decoration: none;
 		color: var(--color-primary-500);
@@ -233,7 +215,7 @@
 		}
 	}
 
-	#auth-form {
+	#auth-fields {
 		position: relative;
 		width: 100%;
 		display: flex;
@@ -241,13 +223,19 @@
 		gap: 1.5em;
 		border: none;
 		padding: 0 2.5rem;
+		margin: 0;
 	}
 
-	#auth-form-buttons {
+	#auth-buttons {
 		display: flex;
 		flex-wrap: wrap;
 		width: 100%;
 		gap: 0.5em;
+	}
+
+	.login-button {
+		width: 100%;
+		flex-grow: 1;
 	}
 
 	#auth-signup-fields {
@@ -258,7 +246,7 @@
 		margin: 0;
 		display: grid;
 		gap: 1em;
-		grid-template-columns: 2fr 1fr;
+		grid-template-columns: auto auto;
 		justify-content: flex-start;
 		align-items: flex-start;
 
@@ -273,7 +261,8 @@
 		}
 	}
 
-	#auth-provider-form {
+	#auth-providers {
+		border: none;
 		width: 100%;
 		text-align: center;
 		padding: 2rem 2.5rem 3rem 2.5rem;
@@ -291,7 +280,7 @@
 		}
 	}
 
-	#auth-provider-buttons {
+	#auth-providers-buttons {
 		padding: 0;
 		margin: 0;
 		margin-top: 2rem;

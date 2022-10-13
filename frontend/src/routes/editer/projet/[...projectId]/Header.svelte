@@ -2,21 +2,22 @@
 	import { reveal } from '$actions/reveal';
 	import { debounce } from '$utils/debounce';
 	import { slipMask } from '$utils/presets/reveal';
-	import { onMount } from 'svelte';
+	import { Ctx } from '$utils/values/keys';
+	import { getContext, onMount } from 'svelte';
 	import { expoInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
-	import type { LocalProject } from './+page.svelte';
+	import type { ProjectEditorContext } from './+page.svelte';
 
-	export let project: LocalProject;
 	export let isNew: boolean;
 
-	let renderTitle = project.title;
+	const { formProject } = getContext<ProjectEditorContext>(Ctx.ProjectEditor);
+
+	let renderTitle = $formProject.title;
 	const updateTitle = debounce((newTitle: string) => {
-		console.log('debounced!');
-		renderTitle = project.title;
+		renderTitle = newTitle;
 	}, 500);
 
-	$: if (project.title !== renderTitle) updateTitle(project.title);
+	$: if ($formProject.title !== renderTitle) updateTitle($formProject.title);
 
 	let mounted = false;
 
@@ -39,15 +40,15 @@
 				<div transition:fly={{ y: 15, easing: expoInOut, duration: 250 }}>
 					Fiche créée le&nbsp;:
 					<span class="digits">
-						{new Date(+project.created_at).toLocaleString()}
+						{new Date(+$formProject.created_at).toLocaleString()}
 					</span>
 				</div>
 			{/if}
-			{#if project.formUpdated}
-				<div transition:fly={{ y: 15, easing: expoInOut, duration: 250, delay: 150 }}>
+			{#if $formProject._updated_at}
+				<div transition:fly={{ y: 10, easing: expoInOut, duration: 250, delay: 150 }}>
 					{isNew ? 'Brouillon modifié' : 'Fiche modifiée'} le&nbsp;:
 					<span class="digits">
-						{new Date(+project.formUpdated).toLocaleString()}
+						{new Date(+$formProject._updated_at).toLocaleString()}
 					</span>
 				</div>
 			{/if}

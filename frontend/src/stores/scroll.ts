@@ -21,13 +21,13 @@ interface ScrollData {
 
 export const mainScroll = (function () {
 	const { subscribe, update } = writable<ScrollData>({ y: 0, delta: 0, up: false, down: false, locked: false });
-	let locks = 0;
+	let locks = new Set();
 
 	function updateStore(e: Event) {
 		update((prev) => {
-			if (locks || prev.locked) {
+			if (locks.size || prev.locked) {
 				window.scrollTo(0, prev.y);
-				return { ...prev, locked: !!locks };
+				return { ...prev, locked: locks.size > 0 };
 			}
 			let delta = prev.delta + window.scrollY - prev.y;
 			let up = prev.up;
@@ -51,14 +51,15 @@ export const mainScroll = (function () {
 		});
 	}
 
-	function lock() {
-		locks++;
+	function lock(key: any) {
+		locks.add(key);
 		document.documentElement.setAttribute(LOCK_ATTRIBUTE, '');
 	}
 
-	function unlock() {
-		if (!locks) return;
-		if (!--locks) {
+	function unlock(key: any) {
+		if (!locks.size) return;
+		locks.delete(key);
+		if (!locks.size) {
 			document.documentElement.removeAttribute(LOCK_ATTRIBUTE);
 		}
 	}

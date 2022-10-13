@@ -1,5 +1,5 @@
 import type { Database } from '$types/database';
-import { getContextualDbClient } from '$utils/database/database';
+import { dbClient } from '$utils/database/database';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
@@ -35,7 +35,7 @@ const newProject: EditorProject = {
 
 export const load: PageLoad = async ({ params, fetch, parent }) => {
 	const { session } = await parent();
-	const db = getContextualDbClient(session.jwt);
+	const db = dbClient.getForContext(session.access_token);
 
 	const descriptors = await db.rpc('get_projects_descriptors').single();
 	if (descriptors.error) {

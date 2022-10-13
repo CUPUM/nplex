@@ -60,14 +60,12 @@ export enum LocalStorage {
 }
 
 /**
- * App cookie names.
+ * App cookies names.
  */
 export enum Cookie {
-	DbAccessToken = 'sb-at',
-	DbRefreshToken = 'sb-rt',
-	DbProviderToken = 'sb-pt',
-	DbAccessTokenExpiry = 'sb-ate',
-	AuthChange = 'sb-s',
+	Session = 'nplex_session',
+	AuthChange = 'nplex_auth_change',
+	AppVersion = 'app_version',
 }
 
 // /**

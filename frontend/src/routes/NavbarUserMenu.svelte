@@ -7,11 +7,11 @@
 	import Button from '$components/primitives/Button.svelte';
 	import Icon from '$components/primitives/Icon.svelte';
 	import { messages } from '$stores/messages';
-	import { browserDbClient } from '$utils/database/database';
+	import { dbClient } from '$utils/database/database';
 
 	async function logout() {
 		try {
-			const { error } = await browserDbClient.auth.signOut();
+			const { error } = await dbClient.forBrowser.auth.signOut();
 			if (error) throw error;
 		} catch (error) {
 			messages.dispatch({
@@ -20,20 +20,28 @@
 			});
 		}
 	}
+
+	$: publicUserHref = `/u/${$page.data.session.user.id}`;
 </script>
 
 <div>
 	<Button variant="ghost" contentAlign="left" href="/compte" active={$page.url.pathname.startsWith('/compte')}>
 		<svelte:fragment slot="leading">
-			<Icon name="user" size="1.25em" />
-		</svelte:fragment>
-		Mon profil
-	</Button>
-	<Button variant="ghost" contentAlign="left" disabled>
-		<svelte:fragment slot="leading">
 			<Icon name="settings" size="1.25em" />
 		</svelte:fragment>
-		Paramètres
+		Mon compte
+	</Button>
+	<Button
+		variant="ghost"
+		contentAlign="left"
+		href={publicUserHref}
+		active={$page.url.pathname.startsWith(publicUserHref)}
+		disabled
+	>
+		<svelte:fragment slot="leading">
+			<Icon name="user" size="1.25em" />
+		</svelte:fragment>
+		Profil
 	</Button>
 	<Button variant="ghost" contentAlign="left" on:click={logout}>
 		<svelte:fragment slot="leading">

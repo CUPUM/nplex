@@ -57,15 +57,15 @@ Core grid template with 3 main columns, full-pad col and full width col (without
 		[full-start]
 		1rem
 		[fullpad-start]
-		1fr
+		minmax(0, 1fr)
 		[main-start col1-start]
-		minmax(20ch, 28ch)
+		minmax(20%, 26ch)
 		[col1-end col2-start]
-		minmax(20ch, 28ch)
+		minmax(20%, 26ch)
 		[col2-end col3-start]
-		minmax(20ch, 28ch)
+		minmax(20%, 26ch)
 		[col3-end main-end]
-		1fr
+		minmax(0, 1fr)
 		[fullpad-end]
 		1rem
 		[full-end];

@@ -57,7 +57,7 @@ begin
 end;
 $function$;
 
--- For default uid assignment and to allow creation rights relegation to 'nplex' user ON CASCADE SET DEFAULT when users_profiles are deleted.
+-- For default uid assignment and to allow creation rights relegation to 'nplex' user ON CASCADE SET DEFAULT when users are deleted.
 -- Note that cases where ON CASCADE DELETE is used with user ids should instead use the provided auth.uid() helper for clarity in distinguishing
 -- rows that are truly life-framed by user's profile vs those that should be relegated to the default 'nplex' user.
 
@@ -109,15 +109,15 @@ begin
         select 1 from public.users_roles as ur
         where ur.role = 'nplex'::public.user_role
     ) then
-        -- Percolate auth signup to users_profiles and users_roles, while making sure the first user registered is 'Nplex'
+        -- Percolate auth signup to users and users_roles, while making sure the first user registered is 'Nplex'
         -- with role 'nplex' to handle author right relegation on further user profile deletions.
-        insert into public.users_profiles (user_id, firstname, updated_by_id)
+        insert into public.users (id, first_name, updated_by_id)
         values (new.id, 'Nplex'::text, new.id);
         insert into public.users_roles (user_id, role, updated_by_id)
         values (new.id, 'nplex'::public.user_role, new.id);
         -- raise notice 'The created user with id % was attributed the "nplex" lead role to fullfill required profile', new.id;
     else
-        insert into public.users_profiles (user_id, updated_by_id)
+        insert into public.users (id, updated_by_id)
         values (new.id, new.id);
         insert into public.users_roles (user_id, updated_by_id)
         values (new.id, new.id);
@@ -128,22 +128,6 @@ begin
 end;
 $function$;
 
--- Percolate new auth.users, making sure the first ever user is assigned the 'nplex' role.
-
-create or replace function public.handle_delete_user()
-    returns trigger
-    language plpgsql
-    security definer
-as $function$
-begin
-
-    delete from public.users_profiles as up
-    where up.user_id = old.id;
-
-    return old;
-
-end;
-$function$;
 
 -- Customized modification tracking function to be used in AFTER UPDATE triggers on tables with the target columns.
 
@@ -167,7 +151,7 @@ $function$;
 
 -- Check if the current auth.uid() user has one of allowed roles.
 
-create or replace function public.user_has_role(VARIADIC roles user_role[])
+create or replace function public.user_has_role(variadic roles public.user_role[])
     returns boolean
     language plpgsql
     security definer

@@ -9,6 +9,9 @@ const config: UserConfig = {
 		port: process.env.PORT ? +process.env.PORT : 3000,
 	},
 	plugins: [generateIconsPlugin(), generateCssVarsPlugin(), sveltekit()],
+	define: {
+		__VITE_DEV_APP_VERSION__: JSON.stringify(Date.now().toString()),
+	},
 };
 
 export default config;

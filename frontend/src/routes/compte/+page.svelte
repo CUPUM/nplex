@@ -1,32 +1,34 @@
 <script lang="ts">
-	import { reveal } from '$actions/reveal';
-	import Avatar from '$components/primitives/Avatar.svelte';
-	import { flyRotate } from '$utils/presets/reveal';
-	import type { PageData } from './$types';
+	import { enhance } from '$app/forms';
+	import Button from '$components/primitives/Button.svelte';
+	import Field from '$components/primitives/Field.svelte';
+	import { messages } from '$stores/messages';
+	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
+	export let form: ActionData;
 
-	let heading = `Bonjour${data.profile.firstname ? ' ' + data.profile.firstname : ''}!`;
+	$: if (form?.error) {
+		messages.dispatch({
+			content: form.error.message,
+			type: 'error',
+		});
+	}
 </script>
 
-<header class="core-grid">
-	{#key heading}
-		<h1 use:reveal={{ ...flyRotate, rootMargin: '0px 0px' }}>{heading}</h1>
-	{/key}
-</header>
-<article id="profile">
-	<section class="card">
-		<Avatar data={data.session.user} size="150px" />
-		<section class="name">
-			<div class="firstname">{data.profile.firstname}</div>
-			<div class="middlename">{data.profile.middlename}</div>
-			<div class="lastname">{data.profile.lastname}</div>
-		</section>
-	</section>
-	<section class="bio">
-		<div>À propos de moi</div>
-	</section>
-</article>
+<form id="profile" use:enhance method="post" action="?/update">
+	<h2>Mes informations</h2>
+	<input name="id" type="hidden" value={data.profile.id} readonly />
+	<Field name="first_name" value={form?.first_name ?? data.profile.first_name ?? ''} class="field">
+		<svelte:fragment slot="label">Prénom</svelte:fragment>
+		<Button slot="trailing" type="submit">Effacer</Button>
+	</Field>
+	<Field name="last_name" class="field">
+		<svelte:fragment slot="label">Nom de famille</svelte:fragment>
+	</Field>
+	<Button type="submit">Mettre mon profil à jour</Button>
+	<Button type="submit" warning formaction="?/delete">Supprimer mon profil</Button>
+</form>
 <article id="entries">
 	<h2>Fiches éditables</h2>
 	<section>
@@ -55,19 +57,7 @@
 	<h2>Mes votes</h2>
 </article>
 
-<style lang="scss">
-	header {
-		grid-column: full;
-		min-height: 50vh;
-		padding: 4rem 0;
-		flex-direction: column;
-		align-items: center;
-
-		h1 {
-			grid-column: col1 / col2;
-		}
-	}
-
+<style lang="scss" module>
 	h2 {
 		padding: 0;
 		margin: 0;
@@ -77,27 +67,16 @@
 
 	#profile {
 		position: relative;
-		grid-column: fullpad;
-		gap: 1px;
 		display: flex;
-		padding-bottom: 4rem;
-		flex-direction: row;
-		flex-wrap: wrap;
-		@include mixins.border(bottom);
+		flex-direction: column;
+		width: 100%;
+		max-width: 800px;
+		margin: 2rem auto;
+		gap: 1em;
+		align-items: flex-start;
 	}
 
-	.card {
-		position: relative;
-		min-width: 500px;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		z-index: 1;
-		grid-column: col1;
-		border-radius: 2rem;
-		background-color: var(--color-light-100);
-	}
-
-	.bio {
+	.field {
+		width: 100%;
 	}
 </style>

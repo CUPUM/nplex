@@ -1,9 +1,10 @@
 <script lang="ts">
-	import EditorProjectsList from '$routes/editer/EditorProjectsList.svelte';
 	import type { LayoutData } from './$types';
-	import EditorActorsList from './EditorActorsList.svelte';
-	import EditorOrganisationsList from './EditorOrganisationsList.svelte';
-	import Search from './Search.svelte';
+	import EditorActorCard from './EditorActorCard.svelte';
+	import EditorList from './EditorList.svelte';
+	import EditorOrganisationCard from './EditorOrganisationCard.svelte';
+	import EditorProjectCard from './EditorProjectCard.svelte';
+	import EditorSearch from './EditorSearch.svelte';
 
 	export let data: LayoutData;
 </script>
@@ -12,10 +13,27 @@
 	<article>
 		<slot />
 	</article>
-	<Search />
-	<EditorProjectsList />
-	<EditorOrganisationsList />
-	<EditorActorsList />
+	<article>
+		<EditorSearch />
+		<EditorList title="Projets" data={data.projects}>
+			<EditorProjectCard />
+			<svelte:fragment slot="list" let:datum>
+				<EditorProjectCard {datum} />
+			</svelte:fragment>
+		</EditorList>
+		<EditorList title="Organisations" data={data.organisations}>
+			<EditorOrganisationCard />
+			<svelte:fragment slot="list" let:datum>
+				<li>{datum.title}</li>
+			</svelte:fragment>
+		</EditorList>
+		<EditorList title="Acteurs" data={data.actors}>
+			<EditorActorCard />
+			<svelte:fragment slot="list" let:datum>
+				<li>{datum.title}</li>
+			</svelte:fragment>
+		</EditorList>
+	</article>
 </div>
 
 <style lang="scss">

@@ -2,34 +2,28 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/values/keys';
-	import { getContext, onDestroy, onMount, type ComponentProps } from 'svelte';
+	import type { ComponentProps } from 'svelte';
 	import Button from './Button.svelte';
-	import type { FieldContext } from './Field.svelte';
+	import { getFieldContext } from './Field.svelte';
 	import Icon from './Icon.svelte';
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
+	export let defaultValue: string = undefined;
+	export let target: HTMLInputElement = undefined;
 
-	let canReset = false;
+	const { value, inputRef } = getFieldContext();
 
-	const { reset, getInputRef, initialValue } = getContext<FieldContext>(Ctx.Field);
+	$: computedDefaultValue = defaultValue ?? $inputRef.defaultValue;
 
-	function updateState(e) {
-		canReset = e.target.value !== initialValue;
+	$: show = $value !== computedDefaultValue;
+
+	function reset() {
+		value.set(computedDefaultValue);
 	}
-
-	onMount(() => {
-		getInputRef()?.addEventListener('input', updateState);
-	});
-
-	onDestroy(() => {
-		getInputRef()?.removeEventListener('input', updateState);
-	});
 </script>
 
-<Button {variant} square on:click={reset} disabled={!canReset}>
-	<Icon name="cross" size="1.5em" />
-</Button>
-
-<style lang="scss">
-</style>
+{#if show}
+	<Button {variant} square on:click on:click={reset} tabindex={-1}>
+		<Icon name="cross" size="1.5em" />
+	</Button>
+{/if}

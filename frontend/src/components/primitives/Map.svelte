@@ -7,11 +7,12 @@
 
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
-
+	import { debounce } from '$utils/debounce';
+	import { frenchLocale } from '$utils/maps/locale';
 	import { mapStyles, montrealLocation } from '$utils/maps/map';
 	import { Ctx } from '$utils/values/keys';
 	import { sizes } from '$utils/values/sizes';
-	import { LngLat, Map, type LngLatLike, type StyleSpecification } from 'maplibre-gl';
+	import { Map, type MapOptions, type StyleSpecification } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, onDestroy, onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
@@ -26,9 +27,17 @@
 	 */
 	export let styleSpecification: string | StyleSpecification = mapStyles.light;
 	export let pitch: number = 0;
-	export let bearing: number = 0;
-	export let zoom: number = 9.5;
-	export let center: LngLat | LngLatLike = montrealLocation.center;
+	export let bearing: MapOptions['bearing'] = 0;
+	export let bearingSnap: MapOptions['bearingSnap'] = undefined;
+	export let zoom: MapOptions['zoom'] = 9.5;
+	export let maxZoom: MapOptions['maxZoom'] = undefined;
+	export let minZoom: MapOptions['minZoom'] = undefined;
+	export let center: MapOptions['center'] = montrealLocation.center;
+	export let dragPan: MapOptions['dragPan'] = undefined;
+	export let dragRotate: MapOptions['dragRotate'] = undefined;
+	export let pitchWithRotate: MapOptions['pitchWithRotate'] = undefined;
+	export let cooperativeGestures: MapOptions['cooperativeGestures'] = undefined;
+	// To do: export rest of MapOptions as props.
 	/**
 	 * CSS inline style for the figure (outer container) element. Default style includes display flex to allow for easy centering of map when bigger than container.
 	 */
@@ -44,20 +53,6 @@
 	let loading = writable(false);
 	let innerResizeObs: ResizeObserver;
 	let outerResizeObs: ResizeObserver;
-	let innerResizeDebounce;
-	let outerResizeDebounce;
-	let hasOverlaySlot = false;
-
-	/**
-	 * Checking if any overlay slot content is passed.
-	 */
-	$: hasOverlaySlot =
-		$$slots['top-left'] ||
-		$$slots['top-center'] ||
-		$$slots['top-right'] ||
-		$$slots['bottom-left'] ||
-		$$slots['bottom-center'] ||
-		$$slots['bottom-right'];
 
 	/**
 	 * Update the map's base style on `style` prop change.
@@ -67,35 +62,24 @@
 		map.setStyle(styleSpecification);
 	}
 
-	function handleOuterResize() {
+	const handleOuterResize = debounce(() => {
 		if (innerStyle) {
-			if (outerResizeDebounce) {
-				clearTimeout(outerResizeDebounce);
+			if (map && innerRef && outerRef) {
+				map.setPadding({
+					top: -1 * innerRef.offsetTop,
+					right: -1 * (outerRef.offsetWidth - (innerRef.offsetLeft + innerRef.offsetWidth)),
+					bottom: -1 * (outerRef.offsetHeight - (innerRef.offsetTop + innerRef.offsetHeight)),
+					left: -1 * innerRef.offsetLeft,
+				});
 			}
-			outerResizeDebounce = setTimeout(() => {
-				if (map && innerRef && outerRef) {
-					map.setPadding({
-						top: -1 * innerRef.offsetTop,
-						right: -1 * (outerRef.offsetWidth - (innerRef.offsetLeft + innerRef.offsetWidth)),
-						bottom: -1 * (outerRef.offsetHeight - (innerRef.offsetTop + innerRef.offsetHeight)),
-						left: -1 * innerRef.offsetLeft,
-					});
-					clearTimeout(outerResizeDebounce);
-					outerResizeDebounce = null;
-				}
-			}, 50);
 		}
-	}
+	}, 50);
 
-	function handleInnerResize() {
-		// if (innerResizeDebounce) clearTimeout(innerResizeDebounce);
-		// innerResizeDebounce =
+	const handleInnerResize = debounce(() => {
 		requestAnimationFrame(() => {
 			map?.resize();
-			clearTimeout(innerResizeDebounce);
-			innerResizeDebounce = null;
 		});
-	}
+	}, 0);
 
 	setContext<MapContext>(Ctx.Map, {
 		getMap: () => map,
@@ -108,9 +92,17 @@
 			style: styleSpecification,
 			center,
 			zoom,
+			maxZoom,
+			minZoom,
 			pitch,
 			bearing,
+			bearingSnap,
 			attributionControl: false,
+			dragPan,
+			dragRotate,
+			cooperativeGestures,
+			locale: frenchLocale,
+			pitchWithRotate,
 		});
 
 		// map.showPadding = true;
@@ -126,7 +118,7 @@
 
 		map.on('dataloading', (e) => {
 			dispatch('dataloading', e);
-			// if (!e.hasOwnProperty('tile')) {
+			// if (!e.hasOwn('tile')) {
 			// 	loading = true;
 			// }
 		});
@@ -173,41 +165,6 @@
 	{/if}
 	{#if map}
 		<slot {map} />
-		{#if hasOverlaySlot}
-			<!-- TO DO: Move this and all overlay / toolbar display logic to MapToolbar component. Do the same for any other overlay items. -->
-			<div class="overlay">
-				{#if $$slots['top-left']}
-					<div class="top left">
-						<slot name="top-left" />
-					</div>
-				{/if}
-				{#if $$slots['top-center']}
-					<div class="top center">
-						<slot name="top-center" />
-					</div>
-				{/if}
-				{#if $$slots['top-right']}
-					<div class="top right">
-						<slot name="top-right" />
-					</div>
-				{/if}
-				{#if $$slots['bottom-left']}
-					<div class="bottom left">
-						<slot name="bottom-left" />
-					</div>
-				{/if}
-				{#if $$slots['bottom-center']}
-					<div class="bottom center">
-						<slot name="bottom-center" />
-					</div>
-				{/if}
-				{#if $$slots['bottom-right']}
-					<div class="bottom right">
-						<slot name="bottom-right" />
-					</div>
-				{/if}
-			</div>
-		{/if}
 	{/if}
 </figure>
 
@@ -241,82 +198,8 @@
 	}
 
 	.not-inited {
-		transform: scale(0.95);
-		opacity: 0.9;
+		transform: scale(0.96);
+		opacity: 0.5;
 		/* clip-path: circle(100% at center); */
-	}
-
-	.overlay {
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		top: 0;
-		left: 0;
-		padding: 1.5rem;
-		pointer-events: none;
-		display: grid;
-		grid-template-columns:
-			[left-start]
-			auto
-			[left-end center-start]
-			1fr
-			[center-end right-start]
-			auto
-			[right-end];
-		grid-template-rows:
-			[top-start]
-			auto
-			[top-end center-start]
-			1fr
-			[center-end bottom-start]
-			auto
-			[bottom-end];
-
-		& > div {
-			pointer-events: all;
-		}
-	}
-
-	/*
-		Overlay slots grid placements.
-	*/
-	.top {
-		grid-row: top;
-
-		@media (hover: hover) {
-			opacity: 0;
-			transform: translateY(-0.5em);
-			transition: all 0.2s cubic-bezier(0.75, 0, 0.75, 1) 0.5s;
-
-			@at-root figure:hover & {
-				opacity: 1;
-				transform: translateY(0px);
-				transition: all 0.2s cubic-bezier(0.25, 0, 0.25, 1);
-			}
-		}
-	}
-	.bottom {
-		grid-row: bottom;
-
-		@media (hover: hover) {
-			opacity: 0;
-			transform: translateY(0.5em);
-			transition: all 0.2s cubic-bezier(0.75, 0, 0.75, 1) 0.5s;
-
-			@at-root figure:hover & {
-				opacity: 1;
-				transform: translateY(0px);
-				transition: all 0.2s cubic-bezier(0.25, 0, 0.25, 1);
-			}
-		}
-	}
-	.left {
-		grid-column: left;
-	}
-	.center {
-		grid-column: center;
-	}
-	.right {
-		grid-column: right;
 	}
 </style>

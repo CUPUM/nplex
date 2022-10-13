@@ -1,14 +1,14 @@
-import { getContextualDbClient } from '$utils/database/database';
+import { dbClient } from '$utils/database/database';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async ({ data }) => {
-	const db = getContextualDbClient();
+	const db = dbClient.getForContext();
 
-	const { data: projectDescriptors, error } = await db.rpc('');
+	// const { data: projectDescriptors, error } = await db.rpc('');
 
 	return {
 		category: 'projects',
 		showExploreSearchbar: true,
-		projectDescriptors,
+		// projectDescriptors,
 	};
 };

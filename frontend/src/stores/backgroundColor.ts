@@ -12,6 +12,7 @@ export const backgroundColor = (function () {
 	const { subscribe, set, update } = writable(defaultBackgroundColor);
 
 	function setBackgroundColor(color: string, duration?: number) {
+		set(color);
 		if (root) {
 			if (!isNaN(duration)) {
 				/**

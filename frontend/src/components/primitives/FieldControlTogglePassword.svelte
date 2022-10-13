@@ -6,23 +6,22 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/values/keys';
-	import { getContext, type ComponentProps } from 'svelte';
+	import type { ComponentProps } from 'svelte';
 	import Button from './Button.svelte';
-	import type { FieldContext } from './Field.svelte';
+	import { getFieldContext } from './Field.svelte';
 	import Icon from './Icon.svelte';
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
 
-	const { showPassword } = getContext<FieldContext>(Ctx.Field);
+	const { inputRef } = getFieldContext();
 
 	function toggle() {
-		$showPassword = !$showPassword;
+		$inputRef.type = $inputRef.type === 'password' ? 'text' : 'password';
 	}
 </script>
 
 <Button {variant} on:click={toggle} square>
-	<Icon name={$showPassword ? 'eye-cross' : 'eye-open'} size="1.5em" />
+	<Icon name={$inputRef.type === 'password' ? 'eye-open' : 'eye-cross'} size="1.5em" />
 </Button>
 
 <style lang="scss">

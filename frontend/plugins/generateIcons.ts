@@ -107,10 +107,7 @@ export default function generateIconsPlugin(): Plugin[] {
 			apply: 'serve',
 			configureServer(server) {
 				async function listener(abspath) {
-					if (
-						abspath.startsWith(path.resolve('src', 'utils', 'icons')) &&
-						path.extname(abspath).toLocaleLowerCase() === '.svg'
-					) {
+					if (abspath.startsWith(ICONS_DIR) && path.extname(abspath).toLocaleLowerCase() === '.svg') {
 						generateIcons();
 					}
 				}

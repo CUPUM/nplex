@@ -2,16 +2,14 @@
 </script>
 
 <div>
-	<aside>
+	<!-- <aside>
 		<ul>
 			<li>
 				<a href="">Article</a>
 			</li>
 		</ul>
-	</aside>
-	<article>
-		<slot />
-	</article>
+	</aside> -->
+	<slot />
 </div>
 
 <style lang="scss">
@@ -21,7 +19,6 @@
 		width: 100%;
 		min-height: 100vh;
 		margin: 0;
-		margin-top: calc(-1 * var(--navbar-height));
 	}
 
 	aside {
@@ -34,5 +31,6 @@
 
 	article {
 		flex: 1;
+		padding-top: var(--navbar-height);
 	}
 </style>

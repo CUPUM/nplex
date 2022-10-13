@@ -1,115 +1,82 @@
 <script lang="ts" context="module">
-	export type LocalProject = PageData['project'] & {
-		formDirty: Set<keyof PageData['project']>;
-		formUpdated: string;
+	export type FormProject = PageData['project'] & {
+		/**
+		 * Form update dirty values tracking.
+		 */
+		_dirty: Set<keyof PageData['project']>;
+		/**
+		 * Form update time tracking.
+		 */
+		_updated_at: string;
 	};
 
 	export type ProjectEditorContext = {
-		localProject: Writable<LocalProject>;
+		freshProject: FormProject;
+		formProject: Writable<FormProject>;
+		descriptors: PageData['descriptors'];
+		trackDirty: (dirty: boolean, key: KeyOfSet<FormProject['_dirty']>) => void;
 	};
 </script>
 
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Field from '$components/primitives/Field.svelte';
-	import Map from '$components/primitives/Map.svelte';
-	import MapGeolocateControl from '$components/primitives/MapGeolocateControl.svelte';
-	import MapToolbar from '$components/primitives/MapToolbar.svelte';
-	import { persistWritable } from '$utils/persistStore';
+
+	import type { KeyOfSet } from '$types/helpers';
+	import { persistWritable } from '$utils/persist';
 	import { Ctx, LocalStorage } from '$utils/values/keys';
-	import { sizes } from '$utils/values/sizes';
 	import { setContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
-	import { crossfade, slide } from 'svelte/transition';
-	import type { ActionData, PageData } from './$types';
-	import FormGroup from './FormGroup.svelte';
+	import type { PageData } from './$types';
+	import FormGroupCategory from './FormGroupCategory.svelte';
+	import FormGroupCost from './FormGroupCost.svelte';
+	import FormGroupLocation from './FormGroupLocation.svelte';
+	import FormGroupTitle from './FormGroupTitle.svelte';
+	import FormGroupType from './FormGroupType.svelte';
+	import FormToolbar from './FormToolbar.svelte';
 	import Header from './Header.svelte';
-	import Toolbar from './Toolbar.svelte';
 
 	export let data: PageData;
-	export let form: ActionData;
 
 	// Check local storage for persisted version, if not new, verify if based on up-to-date data.
 	const key = data.isNew ? LocalStorage.NewProject : data.project.id;
-	const fresh: LocalProject = { ...data.project, formDirty: new Set(), formUpdated: null };
-	const localProject = persistWritable<LocalProject>(key, fresh);
-	if (!data.isNew && $localProject.updated_at !== data.project.updated_at) {
-		$localProject = fresh;
+	const freshProject: FormProject = { ...data.project, _dirty: new Set(), _updated_at: null };
+	const formProject = persistWritable<FormProject>(key, freshProject);
+	if (!data.isNew && $formProject._updated_at !== data.project.updated_at) {
+		$formProject = freshProject;
+	}
+
+	function reset() {
+		$formProject = { ...freshProject };
+	}
+
+	function submit() {}
+
+	function trackDirty(input: any, key: KeyOfSet<FormProject['_dirty']>) {
+		if (input !== freshProject[key]) {
+			$formProject._dirty.add(key);
+		} else {
+			$formProject._dirty.delete(key);
+		}
+		// Keeping track of the form update time accordingly.
+		$formProject._updated_at = $formProject._dirty.size ? Date.now().toString() : null;
 	}
 
 	setContext<ProjectEditorContext>(Ctx.ProjectEditor, {
-		localProject,
+		freshProject,
+		formProject,
+		descriptors: data.descriptors,
+		trackDirty,
 	});
-
-	function trackDirtiness(key: keyof PageData['project']) {
-		const dirty = data.project[key] !== localProject[key];
-		if (dirty) {
-			$localProject.formDirty = $localProject.formDirty.add(key);
-			$localProject.formUpdated = Date.now().toString();
-		} else {
-			$localProject.formDirty.delete(key);
-			$localProject.formDirty = $localProject.formDirty;
-			if (!$localProject.formDirty.size) {
-				$localProject.formUpdated = null;
-			}
-		}
-	}
-
-	const [send, receive] = crossfade({ fallback: slide });
 </script>
 
-<Header project={$localProject} isNew={data.isNew} />
-<form action="?/update" on:submit={(e) => console.log(e)} use:enhance>
-	<FormGroup key="title">
-		<Field
-			name="title"
-			size={sizes.large}
-			variant="outlined"
-			bind:value={$localProject.title}
-			on:change={() => trackDirtiness('title')}
-		>
-			<svelte:fragment slot="label">Nom du projet</svelte:fragment>
-		</Field>
-	</FormGroup>
-	<FormGroup legend="Catégorie" key="category_id">
-		<ul>
-			{#each data.descriptors.categories as c}
-				<li>
-					<label>
-						<input
-							type="radio"
-							bind:group={$localProject.category_id}
-							name="category"
-							value={c.id}
-							required
-						/>
-						{c.title}
-					</label>
-				</li>
-			{/each}
-		</ul>
-	</FormGroup>
-	<FormGroup legend="Type" key="type_id">
-		<ul>
-			{#each data.descriptors.types.filter((t) => t.categories_ids.includes($localProject.category_id)) as t}
-				<li out:send={{ key: t.id }} in:receive={{ key: t.id }}>
-					<label>
-						<input type="radio" bind:group={$localProject.type_id} name="type" value={t.id} required />
-						{t.title}
-					</label>
-				</li>
-			{/each}
-		</ul>
-	</FormGroup>
-	<section class="map-container">
-		<legend>Localisez</legend>
-		<Map>
-			<MapToolbar position="top-left" slot="top-left">
-				<MapGeolocateControl />
-			</MapToolbar>
-		</Map>
-	</section>
-	<Toolbar />
+<Header isNew={data.isNew} />
+<form on:reset|preventDefault={reset} use:enhance>
+	<FormGroupTitle />
+	<FormGroupCategory />
+	<FormGroupType />
+	<FormGroupCost />
+	<FormGroupLocation />
+	<FormToolbar />
 </form>
 
 <style lang="scss">
@@ -118,6 +85,7 @@
 		position: relative;
 		border-radius: calc(3rem - 0.05 * var(--scrollpx));
 		padding: 4rem 0;
+		row-gap: 2rem;
 		background-color: var(--bg-color);
 
 		&::before {

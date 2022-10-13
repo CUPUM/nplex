@@ -6,7 +6,9 @@
 </script>
 
 <script lang="ts">
+	import type { SizeInput } from '$utils/css';
 	import type { icons } from '$utils/icons/icons';
+	import { centerMapOnClientLocation } from '$utils/maps/map';
 	import { Ctx } from '$utils/values/keys';
 	import { getContext } from 'svelte';
 	import Button from './Button.svelte';
@@ -14,15 +16,16 @@
 	import type { MapContext } from './Map.svelte';
 
 	export let icon: keyof typeof icons = 'localize';
+	export let iconSize: SizeInput = '1.25em';
 
 	const mapCtx = getContext<MapContext>(Ctx.Map);
 	const map = mapCtx.getMap();
 
-	// Add default handlers here for simplified reusability.
+	function locate() {}
 </script>
 
-<Button square>
-	<Icon size="1.25em" name={icon} />
+<Button square variant="ghost" on:click={() => centerMapOnClientLocation(map)}>
+	<Icon size={iconSize} name={icon} />
 </Button>
 
 <style lang="scss">

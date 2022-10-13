@@ -23,7 +23,7 @@ insert into auth.users (
         email_change
     )
 values (
-        uuid_generate_v4(),
+        extensions.uuid_generate_v4(),
         '00000000-0000-0000-0000-000000000000',
         'authenticated',
         'authenticated',
@@ -53,7 +53,7 @@ values
     (1, 'Nouvelle construction', 'Cette catégorie de projet fait référence aux nouveaux projets qui ne s’appuient pas ou s’appuient modestement sur une installation existante.'),
     (2, 'Transformation', 'Un projet de transformation consiste en une intervention sur une construction ou un aménagement existant. Cela implique des travaux de rénovation, de valorisation de restauration, etc.');
 
-select setval(pg_get_serial_sequence('project_category', 'id'), max(id)) from public.project_category;
+select setval(pg_get_serial_sequence('public.project_category', 'id'), max(id)) from public.project_category;
 
 
 insert into public.project_type
@@ -86,7 +86,7 @@ values
     (25, 'Fusion de logements', ''),
     (26, 'Division de logements', '');
 
-select setval(pg_get_serial_sequence('project_type', 'id'), max(id)) from public.project_type;
+select setval(pg_get_serial_sequence('public.project_type', 'id'), max(id)) from public.project_type;
 
 
 insert into public.project_type_category
@@ -148,7 +148,7 @@ values
     (2, 'Public & communautaire', ''),
     (3, 'Commercial & industriel', '');
 
-select setval(pg_get_serial_sequence('project_site_usage_category', 'id'), max(id)) from public.project_site_usage_category;
+select setval(pg_get_serial_sequence('public.project_site_usage_category', 'id'), max(id)) from public.project_site_usage_category;
 
 
 insert into public.project_site_usage
@@ -184,7 +184,7 @@ values
     (28, 'Établissement religieux', '', true),
     (29, 'Établissement événementiel', '', true);
 
-select setval(pg_get_serial_sequence('project_site_usage', 'id'), max(id)) from public.project_site_usage;
+select setval(pg_get_serial_sequence('public.project_site_usage', 'id'), max(id)) from public.project_site_usage;
 
 
 insert into public.project_site_usage_site_usage_category
@@ -291,29 +291,15 @@ values
     (13, 'Début des travaux', '', false),
     (14, 'Fin des travaux', '', false);
 
-select setval(pg_get_serial_sequence('project_event_type', 'id'), max(id)) from public.project_event_type;
+select setval(pg_get_serial_sequence('public.project_event_type', 'id'), max(id)) from public.project_event_type;
 
 
 insert into public.project_event_type_subevent_type
-    (type_id, subtype_id)
+    (event_type_id, subevent_type_id)
 values
     (1, 2),
     (1, 3),
     (1, 4);
-
-
--- insert into public.project_event_resource_type
--- 	(id, title, description)
--- values
--- 	(1, '', '');
-
--- select setval(pg_get_serial_sequence('project_event_resource_type', 'id'), max(id)) from public.project_event_resource_type;
-
-
--- insert into public.project_event_resource_parent_type
--- 	(event_type_id, resource_type_id)
--- values
--- 	(1, 2);
 
 
 insert into public.project_exemplarity_indicator_category
@@ -325,11 +311,11 @@ values
     (4, 'Impact social', ''),
     (5, 'Environnement', '');
 
-select setval(pg_get_serial_sequence('project_exemplarity_indicator_category', 'id'), max(id)) from public.project_exemplarity_indicator_category;
+select setval(pg_get_serial_sequence('public.project_exemplarity_indicator_category', 'id'), max(id)) from public.project_exemplarity_indicator_category;
 
 
 insert into public.project_exemplarity_indicator
-    (category_id, title, description)
+    (indicator_category_id, title, description)
 values
     (1, 'Matériaux écologiques', ''),
     (1, 'Construction durable', ''),

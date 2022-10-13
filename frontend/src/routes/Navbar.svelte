@@ -1,3 +1,24 @@
+<script lang="ts" context="module">
+	export const backgroundOpacity = (function () {
+		const init = 0.75;
+		const { subscribe, set } = writable(init);
+		return {
+			subscribe,
+			set,
+			reset: () => set(init),
+		};
+	})();
+
+	export const backgroundColor = (function () {
+		const { subscribe, set } = writable(null);
+		return {
+			subscribe,
+			set,
+			reset: () => set(null),
+		};
+	})();
+</script>
+
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -7,12 +28,15 @@
 	import Popover from '$components/primitives/Popover.svelte';
 	import Switch from '$components/primitives/Switch.svelte';
 	import SwitchItem from '$components/primitives/SwitchItem.svelte';
+	import { backgroundColor as appBackgroundColor } from '$stores/backgroundColor';
 	import { mainScroll } from '$stores/scroll';
+	import { transform } from '$transitions/transform';
 	import { getAuthRedirectUrl } from '$utils/routing/guard';
 	import { gotoCategory } from '$utils/routing/navigation';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routing/routes';
 	import { onMount } from 'svelte';
-	import { expoIn, expoOut } from 'svelte/easing';
+	import { expoIn, expoInOut, expoOut } from 'svelte/easing';
+	import { writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import Button from '../components/primitives/Button.svelte';
 	import NavbarEditMenu from './NavbarEditMenu.svelte';
@@ -22,10 +46,10 @@
 
 	let mounted = false;
 	let hidden;
-	let overlay;
 	let mainPathname: string;
 	let yThreshold = navbarHeight || 40;
 	let loadingExplore = null;
+	let headerWidth = 0;
 
 	beforeNavigate(({ to }) => {
 		if (exploreRoutes.map((r) => r.pathname).includes(to.url.pathname)) {
@@ -38,7 +62,6 @@
 	});
 
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
-	$: overlay = $mainScroll.y > yThreshold + 20;
 	$: mainPathname = $page.data.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
 
 	onMount(() => {
@@ -46,7 +69,13 @@
 	});
 </script>
 
-<header class:hidden class:overlay bind:clientHeight={navbarHeight}>
+<header
+	class:hidden
+	bind:clientHeight={navbarHeight}
+	style:--bg-opacity={$backgroundOpacity}
+	style:--bg-color={$backgroundColor ?? $appBackgroundColor}
+	bind:clientWidth={headerWidth}
+>
 	{#if mounted}
 		<nav
 			class="main"
@@ -54,8 +83,9 @@
 			out:fly={{ y: -20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
 			<a class="logo" href="/">
-				<Logo intro />
+				<Logo intro short={headerWidth < 1200} />
 			</a>
+			<hr />
 			{#each mainRoutes as route}
 				<Button display="inline" variant="nav" href={route.pathname} active={route.pathname === mainPathname}>
 					{route.title}
@@ -64,7 +94,7 @@
 		</nav>
 		<nav class="explore">
 			{#if $page.data.showCategoryNav}
-				<div transition:fly={{ y: 10, duration: 500 }}>
+				<div transition:transform={{ translateY: -20, rotateX: -45, duration: 750, easing: expoInOut }}>
 					<Switch name="category" variant="nav" value={$page.data.category}>
 						{#each exploreRoutes as r, i}
 							<SwitchItem
@@ -82,13 +112,14 @@
 			{/if}
 		</nav>
 		<nav
-			class="user"
+			class="session"
 			in:fly={{ y: 20, opacity: 0, duration: 500, easing: expoOut, delay: 300 }}
 			out:fly={{ y: 20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
 			<Button href="/" variant="nav" square disabled={$page.url.pathname === '/'}>
 				<Icon name="home" size="1.25em" />
 			</Button>
+			<hr />
 			{#if $page.data.session}
 				<Popover place="bottom" align="end" useHover>
 					<Button
@@ -140,18 +171,11 @@
 			height: 100%;
 			padding: 0;
 			margin: 0;
-			opacity: 0;
+			opacity: var(--bg-opacity);
 			top: 0;
 			left: 0;
 			background-color: var(--bg-color);
-			transition: all 0.5s ease-in-out;
-		}
-	}
-
-	.overlay {
-		// box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.05);
-		&::before {
-			opacity: 0.8;
+			transition: all 0.1s;
 		}
 	}
 
@@ -165,16 +189,15 @@
 
 	.logo {
 		height: 1.8em;
+		min-width: 40px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		margin: 0;
-		padding-inline: 0.5em 1em;
-		// opacity: 1;
+		padding-inline: 0.5em 1rem;
 		transition: all 0.1s ease-out;
 
 		&:hover {
-			// opacity: 1;
 			color: var(--color-primary-500);
 		}
 	}
@@ -194,10 +217,20 @@
 	}
 
 	.explore {
+		perspective: 300px;
 		justify-content: center;
 	}
 
-	.user {
+	.session {
 		justify-content: flex-end;
+	}
+
+	hr {
+		margin: 0 0.5rem;
+		height: 50%;
+		width: 1px;
+		background-color: var(--color-dark-100);
+		border: none;
+		opacity: 0.1;
 	}
 </style>

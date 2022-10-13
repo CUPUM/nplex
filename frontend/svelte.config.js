@@ -1,26 +1,30 @@
 import node from '@sveltejs/adapter-node';
 import { mdsvex } from 'mdsvex';
-import preprocess from 'svelte-preprocess';
+import sveltePreprocess from 'svelte-preprocess';
+// import { scss, typescript } from 'svelte-preprocess';
+import { cssModules, linearPreprocess } from 'svelte-preprocess-cssmodules';
 
 /**
  * @type {import('@sveltejs/kit').Config}
  */
 const config = {
 	extensions: ['.svelte', '.svx'],
-	preprocess: [
-		preprocess({
-			scss: {
-				prependData: `@use './src/styles/mixins.scss';`,
-			},
-		}),
+	preprocess: linearPreprocess([
 		mdsvex({
 			extensions: ['.md', '.svx', '.mdx'],
+			layout: {
+				guides: 'src/components/mdsvex/guide-articles/layout.svelte',
+			},
 		}),
-		preprocess({
-			scss: true,
-			postcss: true,
+		sveltePreprocess.typescript(),
+		sveltePreprocess.scss({
+			prependData: `@use './src/styles/mixins.scss';`,
 		}),
-	],
+		sveltePreprocess.postcss(),
+		cssModules({
+			mode: 'mixed',
+		}),
+	]),
 	kit: {
 		adapter: node(),
 		env: {
@@ -36,6 +40,12 @@ const config = {
 			$transitions: 'src/transitions',
 			$routes: 'src/routes',
 			$utils: 'src/utils',
+		},
+		files: {
+			hooks: {
+				server: 'src/hooks/index.server',
+				client: 'src/hooks/index.client',
+			},
 		},
 	},
 	compilerOptions: {

@@ -22,6 +22,7 @@
 	export let strokeOpacity: number = 1;
 	export let fillOpacity: number = 1;
 	export let intro: boolean = false;
+	export let top: SizeInput = '.1em';
 
 	let icon = icons[name];
 	let mounted = !intro;
@@ -52,6 +53,7 @@
 	aria-label="icon-image-{name}"
 	viewBox={icon.viewBox}
 	style:color
+	style:top={cssSize(top)}
 	style:font-size={cssSize(size)}
 	style:--secondary-color={secondaryColor}
 	style:--thickness={cssSize(strokeWidth)}
@@ -105,7 +107,7 @@
 		padding: 0;
 		margin: 0;
 		perspective: 100px;
-		top: 0.1em;
+		// top: 0.1em;
 	}
 
 	g {

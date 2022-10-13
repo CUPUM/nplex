@@ -2,6 +2,7 @@
 	import { reveal, type RevealOptions } from '$actions/reveal';
 	import { flyRotate, slipMask } from '$utils/presets/reveal';
 	import type { PageData } from './$types';
+	import PreviewList from './PreviewList.svelte';
 
 	export let data: PageData;
 
@@ -12,38 +13,23 @@
 	<header>
 		<h1 use:reveal={flyRotate}>
 			Bienvenue sur Nplex
-			<span>la plateforme de valorisation des petits projets exemplaires en aménagement à Montréal</span>
+			<span>La plateforme de valorisation des petits projets exemplaires en aménagement à Montréal</span>
 		</h1>
 	</header>
 	<section id="presentation">
 		<p>Cette application web lorem ipsum...</p>
 	</section>
 </article>
-<article class="core-grid" id="explore">
-	<section id="projects">
-		<header>
-			<a href="/projets">
-				<h2 use:reveal={revealH2}>Projets</h2>
-			</a>
-		</header>
-		{JSON.stringify(data.projectsPreview)}
-	</section>
-	<section id="organisations">
-		<header>
-			<a href="/organisations">
-				<h2 use:reveal={revealH2}>Organisations</h2>
-			</a>
-		</header>
-		{JSON.stringify(data.organisationsPreview)}
-	</section>
-	<section id="actors">
-		<header>
-			<a href="/acteurs">
-				<h2 use:reveal={revealH2}>Acteurs</h2>
-			</a>
-		</header>
-		{JSON.stringify(data.actorsPreview)}
-	</section>
+<article id="previews">
+	<PreviewList id="projects" header="Projets" href="/projets" data={data.projectsPreview}>
+		<li>test</li>
+	</PreviewList>
+	<PreviewList id="organisations" header="Organisations" href="/organisations" data={data.organisationsPreview}>
+		<li>test</li>
+	</PreviewList>
+	<PreviewList id="actors" header="Acteurs" href="/actors" data={data.actorsPreview}>
+		<li>test</li>
+	</PreviewList>
 </article>
 
 <style lang="scss">
@@ -78,24 +64,8 @@
 		grid-column: main;
 	}
 
-	#explore {
-		grid-column: full;
-	}
-
-	#projects,
-	#organisations,
-	#actors {
-		padding-block: 8rem;
-		display: grid;
-		grid-column: full;
-		grid-template-columns: inherit;
-		border-top: 1px solid rgba(var(--rgb-dark-900), 0.1);
-
-		& header {
-			display: flex;
-			grid-column: main;
-			padding: 0;
-			margin: 0;
-		}
+	#previews {
+		display: flex;
+		flex-direction: column;
 	}
 </style>

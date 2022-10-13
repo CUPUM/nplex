@@ -1,18 +1,20 @@
 <script lang="ts">
-	import { goto, invalidate } from '$app/navigation';
+	import { afterNavigate, beforeNavigate, goto, invalidate } from '$app/navigation';
 	import { getStores } from '$app/stores';
 	import Loading from '$components/primitives/Loading.svelte';
+	import LoadingProgress from '$components/primitives/LoadingProgress.svelte';
 	import { authModal } from '$stores/authModal';
 	import { mainScroll } from '$stores/scroll';
 	import '$styles/app.scss';
 	import '$styles/vars.css';
-	import { browserDbClient } from '$utils/database/database';
+	import { dbClient } from '$utils/database/database';
 	import { Cookie } from '$utils/values/keys';
 	import { sizes } from '$utils/values/sizes';
+	import { version } from '$utils/version';
 	import jscookie from 'js-cookie';
-	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
 	import type { LayoutData } from './$types';
+	import type { AuthUpdateBody } from './api/auth/session.json/+server';
 	import AuthModal from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
 	import MessagesOutlet from './MessagesOutlet.svelte';
@@ -20,36 +22,49 @@
 
 	export let data: LayoutData;
 
+	let progress: LoadingProgress;
 	let loading = true;
 	let navbarHeight: number = 0;
 
 	const { page } = getStores();
 
 	// Listening to and handling client-side Supabase auth state change.
-	browserDbClient.auth.onAuthStateChange(async (event, session) => {
-		// Set a temporary auth change cookie to be used by the server.
-		const body: App.Locals[Cookie.AuthChange] = { session, event };
-		jscookie.set(Cookie.AuthChange, JSON.stringify(body));
-		await invalidate('/api/auth/update.json');
+	dbClient.forBrowser.auth.onAuthStateChange(async (event, session) => {
+		let restoredTab = false;
+		if (event === 'SIGNED_IN' && session.access_token === data.session?.access_token) {
+			// With `client.options.multiTab: true`, Supabase retriggers a `SIGNED_IN` event on each tab restoration.
+			// We thus have to handle this ourselves to avoid inadequate redirects after invalidation of the auth update api endpoint.
+			restoredTab = true;
+		}
+		// Set temporary client cookies to communicate auth change data to the server.
+		const newAuth: AuthUpdateBody = { session, event };
+		jscookie.set(Cookie.AuthChange, JSON.stringify(newAuth), { path: '/', sameSite: 'strict' });
+		await invalidate('/api/auth/session.json');
 		if (get(authModal)) await authModal.close();
-		if (event === 'SIGNED_IN' && get(page).url.pathname === '/' && data.session) {
+		if (event === 'SIGNED_IN' && !restoredTab && get(page).url.pathname === '/' && data.session) {
 			goto('/compte');
 		}
 	});
 
-	onMount(() => {
+	beforeNavigate(() => {
+		progress.start();
+	});
+
+	afterNavigate(() => {
+		console.log(version);
 		loading = false;
+		progress.complete();
 	});
 </script>
 
-<div class:authing={$authModal} style:--ty="{$mainScroll.y}px">
+<div
+	class:authing={$authModal}
+	style:--navbar-height="{navbarHeight || 0}px"
+	style:--scroll={$mainScroll.y}
+	style:--scrollpx="{$mainScroll.y}px"
+>
 	<Navbar bind:navbarHeight />
-	<main
-		style:--navbar-height="{navbarHeight || 0}px"
-		style:--scroll={$mainScroll.y}
-		style:--scrollpx="{$mainScroll.y}px"
-		class:loading
-	>
+	<main class:loading>
 		<slot />
 	</main>
 	{#if $page.data.showFooter}
@@ -63,6 +78,7 @@
 	<Loading containerStyle="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" size={sizes.xlarge} />
 {/if}
 <MessagesOutlet />
+<LoadingProgress bind:this={progress} />
 
 <style lang="scss">
 	main {
@@ -77,12 +93,13 @@
 	}
 
 	div {
-		transform-origin: 50vw calc(var(--ty) + 50vh);
-		transition: transform 0.75s cubic-bezier(0.25, 0, 0, 1);
+		transform-origin: 50vw calc(var(--scrollpx) + 50vh);
+		transition: transform 0.8s cubic-bezier(0.2, 0, 0, 1), border-radius 0.8s ease-out;
 	}
 
 	.authing {
-		transform: scale(0.98);
+		transform: scale(0.96);
+		border-radius: 3em;
 	}
 
 	.loading {

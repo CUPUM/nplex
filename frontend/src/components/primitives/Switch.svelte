@@ -147,7 +147,7 @@
 		// z-index: 1;
 		position: absolute;
 		border-radius: var(--ctx-computed-radius);
-		transition: all 0.15s cubic-bezier(0.5, 0, 0.2, 1.2);
+		transition: all 0.2s cubic-bezier(0.5, 0, 0.2, 1.2);
 	}
 
 	//
@@ -172,23 +172,16 @@
 	}
 
 	.nav {
-		--inset: 3px;
+		--inset: 1px;
 		--radius-ratio: 1.5;
-		background-color: rgba(255, 255, 255, 1);
+		background-color: white;
 		transition: all 0.25s ease-out;
 
-		// &:hover,
-		// &:focus {
-		// 	background-color: rgba(255, 255, 255, 0.2);
-		// }
-
 		& .indicator {
-			opacity: 0.25;
-			box-shadow: 0 0 0 1px var(--color-primary-300);
-			background-color: var(--color-primary-300);
+			background-color: var(--color-dark-700);
 
 			&.temp {
-				opacity: 0.15;
+				background-color: rgba(var(--rgb-primary-500), 0.15);
 			}
 		}
 	}

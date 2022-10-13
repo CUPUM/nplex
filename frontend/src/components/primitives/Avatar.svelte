@@ -4,10 +4,10 @@
 	import type { User } from '@supabase/supabase-js';
 	import Loading from './Loading.svelte';
 
-	type UserProfile = Database['public']['Tables']['users_profiles']['Row'];
+	type UserProfile = Database['public']['Tables']['users']['Row'];
 
 	export let data: Partial<
-		Pick<UserProfile, 'avatar_url' | 'firstname' | 'user_id' | 'public_email' | 'created_at'> &
+		Pick<UserProfile, 'avatar_url' | 'first_name' | 'id' | 'public_email' | 'created_at'> &
 			Pick<User, 'id' | 'email'>
 	>;
 	export let loading: boolean = false;
@@ -15,18 +15,18 @@
 
 	const color1 = `#${parseInt(data.created_at.match(/\d+/g).map(Number).join('')).toString(16).slice(-6)}`;
 	const color2 = `#${(
-		data.firstname ||
+		data.first_name ||
 		data.email ||
 		data.public_email ||
-		(data.user_id || data.id).replace('-', '').slice(12, 18)
+		(data.id || data.id).replace('-', '').slice(12, 18)
 	)
 		.split('')
 		.map((c) => c.charCodeAt(0).toString(16))
 		.join('')
 		.slice(0, 6)}`;
-	const color3 = `#${(data.user_id || data.id).slice(0, 6)}`;
+	const color3 = `#${(data.id || data.id).slice(0, 6)}`;
 
-	const userLetter = (data.firstname || data.email || data.public_email || '?').charAt(0).toUpperCase();
+	const userLetter = (data.first_name || data.email || data.public_email || '?').charAt(0).toUpperCase();
 </script>
 
 <figure style:font-size={cssSize(size)}>

@@ -1,4 +1,4 @@
-import { persistWritable } from '$utils/persistStore';
+import { persistWritable } from '$utils/persist';
 import { LocalStorage } from '$utils/values/keys';
 
 /**

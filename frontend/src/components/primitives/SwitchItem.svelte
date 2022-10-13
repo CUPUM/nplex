@@ -49,7 +49,7 @@
 			<slot />
 		</div>
 		{#if variant === 'nav'}
-			<div class="slot-fx">
+			<div class="slot-current">
 				<slot />
 			</div>
 		{/if}
@@ -102,7 +102,7 @@
 		position: relative;
 	}
 
-	.slot-fx {
+	.slot-current {
 		position: absolute;
 		top: 0;
 	}
@@ -143,18 +143,17 @@
 		opacity: 1;
 		perspective: 600px;
 		& .slot {
-			transform-origin: center 15em;
+			transform-origin: center 12em;
 			opacity: 1;
-			// transform: translateY(0) rotateX(0deg) scale(1);
 			transform: rotateZ(0deg);
-			transition: all 0.5s cubic-bezier(0.2, 0, 0, 1), color 0s;
+			transition: all 0.35s cubic-bezier(0.5, 0, 0, 1), color 0s;
 		}
-		& .slot-fx {
-			transform-origin: center 15em;
+		& .slot-current {
+			color: var(--color-light-500);
+			transform-origin: center 12em;
 			opacity: 0;
-			// transform: translateY(1em) rotateX(-30deg) scale(1.2);
 			transform: rotateZ(-30deg);
-			transition: all 0.5s cubic-bezier(0.2, 0, 0, 1), color 0s;
+			transition: all 0.35s cubic-bezier(0.5, 0, 0, 1);
 		}
 		&:hover,
 		&:focus {
@@ -162,19 +161,18 @@
 			color: var(--color-primary-500);
 		}
 		&.current {
-			color: var(--color-primary-500);
 			& .slot {
 				opacity: 0;
 				transform: rotateZ(30deg);
-				// transform: translateY(-1em) rotateX(30deg) scale(0.8);
 			}
-			& .slot-fx {
+			& .slot-current {
 				opacity: 1;
 				transform: rotateZ(0deg);
-				// transform: translateY(0) rotateX(0deg);
 			}
 			&.some-temp {
-				color: var(--color-primary-100);
+				& .slot-current {
+					color: var(--color-primary-100);
+				}
 			}
 		}
 	}

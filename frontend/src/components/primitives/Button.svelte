@@ -6,45 +6,56 @@
 	import Loading from '$components/primitives/Loading.svelte';
 	import { cssSize } from '$utils/css';
 
-	export let href: string = null;
+	export let href: string = undefined;
+	export let id: string = undefined;
 	export let size: string | number = '1em';
+	export let compact: boolean = undefined;
 	export let variant: 'default' | 'nav' | 'nav-cta' | 'cta' | 'secondary' | 'ghost' = 'default';
 	export let disabled: boolean = undefined;
 	export let loading: boolean = false;
 	export let warning: boolean = false;
 	export let square: boolean = undefined;
-	export let fullwidth: boolean = undefined;
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let active: boolean = false;
 	export let display: 'inline' | 'block' = 'block';
 	export let contentAlign: 'left' | 'center' | 'right' = 'center';
-	export let width: string = undefined;
 	export let value: string = undefined;
 	export let form: string = undefined;
+	export let title: string = undefined;
+	export let formaction: string = undefined;
+	export let tabindex: number = undefined;
+	let className: string = undefined;
+	export { className as class };
+	export let style: string = undefined;
 
 	let buttonRef;
 </script>
 
 <svelte:element
-	this={href ? 'a' : 'button'}
+	this={href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
 	style:--size={cssSize(size)}
-	style:width
-	class="button {variant} {display} {contentAlign}"
+	{style}
+	class="outer {variant} {display} {contentAlign} {className}"
 	class:warning
 	class:square
 	class:active
 	class:loading
-	class:fullwidth
+	class:compact
 	class:has-leading={$$slots.leading}
 	class:has-trailing={$$slots.trailing}
-	{disabled}
+	disabled={disabled || loading}
 	{href}
+	{id}
 	{type}
 	{value}
 	{form}
+	{title}
+	{tabindex}
+	{formaction}
 	on:click
 	on:focus
+	on:blur
 	on:mouseenter
 	on:mouseleave
 	on:mousedown
@@ -71,12 +82,8 @@
 </svelte:element>
 
 <style lang="scss">
-	//
-	// Base styling (variant agnostic)
-	//
-
-	.button {
-		--radius-ratio: var(--ctx-radius-ratio, 0.8);
+	.outer {
+		--radius-ratio: var(--ctx-radius-ratio, 1);
 		--height-ratio: 3;
 		--computed-height: calc((var(--height-ratio) * var(--size)) - (2 * var(--inset, 0px)));
 		--computed-size: calc(var(--computed-height) / var(--height-ratio));
@@ -95,16 +102,14 @@
 			[trailing-end];
 		flex-direction: row;
 		align-items: center;
-		font-weight: 450;
+		font-weight: 400;
 		line-height: 1em;
 		padding: 0 1.5em;
 		margin: 0;
 		gap: 0;
-		flex-grow: 1;
 		cursor: pointer;
 		border-radius: var(--computed-radius);
 		height: var(--computed-height);
-		min-width: var(--computed-height);
 		flex-wrap: nowrap;
 		white-space: nowrap;
 		border: none;
@@ -114,13 +119,16 @@
 			width: 100%;
 		}
 
-		&.center {
-			.content {
-				text-align: center;
-			}
+		&.compact {
+			--height-ratio: 2;
+			padding: 0.75em;
+		}
 
-			&.has-leading,
-			&.has-trailing {
+		&.has-leading,
+		&.has-trailing {
+			padding: 0 1em;
+
+			&.center {
 				grid-template-columns:
 					[leading-start]
 					1fr
@@ -132,32 +140,9 @@
 			}
 		}
 
-		&.left {
-			.content {
-				text-align: left;
-			}
-		}
-
-		&.right {
-			.content {
-				text-align: right;
-			}
-		}
-
-		&.has-leading,
-		&.has-trailing {
-			padding: 0 1em;
-		}
-
-		&.inline {
-			display: inline-grid;
-			flex: none;
-			width: auto;
-		}
-
 		&.square {
 			flex: none;
-			width: var(--computed-height);
+			aspect-ratio: 1 / 1;
 			padding: 0;
 			justify-content: center;
 
@@ -166,12 +151,12 @@
 			}
 		}
 
-		// Include attribute selector to also take account for anchor tags
-		&:disabled,
-		&[disabled='true'] {
+		&:disabled {
 			transform: scale(0.99);
-			opacity: 0.5;
 			pointer-events: none;
+			&:not(.loading) {
+				opacity: 0.5;
+			}
 		}
 
 		&.warning {
@@ -184,9 +169,12 @@
 			pointer-events: none;
 		}
 
+		&:active {
+			transform: scale(0.96);
+		}
+
 		&.loading {
 			transform: scale(0.98);
-
 			.content,
 			.leading,
 			.trailing {
@@ -215,6 +203,15 @@
 		display: block;
 		grid-column: content;
 		text-overflow: ellipsis;
+		.center & {
+			text-align: center;
+		}
+		.left & {
+			text-align: left;
+		}
+		.right & {
+			text-align: right;
+		}
 	}
 
 	.leading,
@@ -226,22 +223,17 @@
 		padding: 0;
 		margin: 0;
 		display: block;
-		transition: padding 0.25s ease-in-out;
 	}
-
 	.leading {
 		text-align: left;
 		grid-column: leading;
-
 		&:not(:empty) {
 			padding-right: 0.75em;
 		}
 	}
-
 	.trailing {
 		text-align: right;
 		grid-column: trailing;
-
 		&:not(:empty) {
 			padding-left: 0.75em;
 		}
@@ -255,7 +247,7 @@
 		color: var(--color-dark-900);
 		background-color: white;
 		box-shadow: 0 0.5em 2em -1em transparent;
-		transition: all 0.1s ease-out, box-shadow 0.25s ease-out;
+		transition: box-shadow 0.25s ease-out;
 
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
@@ -289,18 +281,18 @@
 	}
 
 	.cta {
-		font-weight: 500;
 		color: var(--color-light-100);
 		background-color: var(--color-primary-500);
-		box-shadow: 0 0.5em 1em -0.8em rgba(var(--rgb-primary-700), 0.5);
-		transition: all 0.15s ease-out, box-shadow 0.3s ease-out;
+		box-shadow: 0 0.5em 1em -0.5em rgba(var(--rgb-dark-700), 0);
+		transition: all 0.35s ease-out;
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
 		&:hover,
 		&:global([popover]) {
 			color: white;
-			background-color: var(--color-primary-700);
-			box-shadow: 0 1em 2em -1em rgba(var(--rgb-primary-700), 0.8);
+			background-color: var(--color-primary-900);
+			box-shadow: 0 1em 1.25em -.75em rgba(var(--rgb-primary-700), 0.5);
+			transition: background-color .1s, box-shadow 0.2s ease-out;
 		}
 		&.active:not([popover]) {
 			color: var(--color-primary-900);
@@ -311,7 +303,6 @@
 	.ghost {
 		color: var(--color-dark-300);
 		background-color: transparent;
-		transition: all 0.1s ease-out;
 
 		// prettier-ignore
 		@at-root :global(.button-parent:hover) &,
@@ -332,7 +323,7 @@
 		padding: 0 1.25em;
 		font-weight: 500;
 		color: var(--color-dark-900);
-		transition: all 0.2s cubic-bezier(0, 0, 0.25, 1);
+		background-color: transparent;
 
 		.content {
 			transition: transform 0.2s cubic-bezier(0.25, 2.25, 0.75, 0.5);
@@ -342,13 +333,13 @@
 			content: '';
 			opacity: 0;
 			position: absolute;
-			bottom: 0.5em;
+			bottom: 0em;
 			left: 50%;
-			width: 3px;
+			width: 8px;
 			height: 2px;
 			background-color: currentColor;
 			border-radius: 3px;
-			transform: translate(-50%, -100%);
+			transform: translate(-50%, -0.1em);
 			transition: opacity 0.2s, width 0.15s cubic-bezier(0, 0, 0, 1),
 				transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 		}
@@ -365,24 +356,22 @@
 
 			&::after {
 				opacity: 1;
-				width: 8px;
-				transform: translate(-50%, 0%);
+				transform: translate(-50%, -.5em);
 			}
 
 			& .content {
-				transform: translateY(-0.1em);
+				transform: translateY(-0.07em);
 			}
 		}
 
 		&.active:not([popover]) {
 			color: var(--color-primary-500);
-			// background-color: rgba(var(--rgb-light-100), 0.5);
 
 			&::after {
 				opacity: 1;
 				height: 5px;
 				width: 5px;
-				transform: translate(-50%, 50%);
+				transform: translate(-50%, -0.25em);
 			}
 		}
 	}
@@ -392,17 +381,16 @@
 		background-color: var(--color-primary-500);
 		color: var(--color-light-100);
 		font-weight: 500;
-		box-shadow: 0 0 0 0 rgba(var(--rgb-primary-500), 0);
-		transition: all 0.25s cubic-bezier(0, 0, 0.25, 1);
+		box-shadow: 0 0.5em 1em -0.5em rgba(0, 0, 0, 0);
+		transition: background-color 0.15s, border-radius 0.2s cubic-bezier(0.25, 0, 0, 1), box-shadow 0.2s ease-out;
 
-		// prettier-ignore
-		@at-root :global(.button-parent:hover) &,
+		:global(.button-parent:hover) &,
 		&:hover,
 		&:global([popover]) {
-			box-shadow: 0 0 0 3px rgba(var(--rgb-primary-500), 0.25);
-			background-color: var(--color-primary-700);
+			box-shadow: 0 0.5em 1em -0.5em var(--color-primary-700);
+			background-color: var(--color-primary-900);
 			color: white;
-			--radius-ratio: 1.1;
+			--radius-ratio: 1.2;
 		}
 	}
 </style>

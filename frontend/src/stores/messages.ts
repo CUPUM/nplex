@@ -6,7 +6,7 @@ type ContentComponent = {
 	props: ComponentProps<any>;
 };
 
-export interface Message {
+export type Message = {
 	/**
 	 * Text content or component (for more complex composition) to be included within the message box.
 	 */
@@ -19,7 +19,7 @@ export interface Message {
 	 * Style of message.
 	 */
 	type?: 'error' | 'success' | 'default';
-}
+};
 
 const messageDefault: Message = {
 	content: null,
