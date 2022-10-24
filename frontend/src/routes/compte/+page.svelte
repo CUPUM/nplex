@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
 	import Button from '$components/primitives/Button.svelte';
 	import Field from '$components/primitives/Field.svelte';
 	import { messages } from '$stores/messages';
@@ -16,15 +16,34 @@
 	}
 </script>
 
-<form id="profile" use:enhance method="post" action="?/update">
+<form
+	id="profile"
+	method="POST"
+	action="?/update"
+	use:enhance={({}) => {
+		return async ({ result, update }) => {
+			update();
+			await applyAction(result);
+			// invalidateAll();
+			// // if (result.type === 'success') {
+			// // 	invalidate(CustomLoadDependencies.DbUserProfile);
+			// // }
+		};
+	}}
+>
 	<h2>Mes informations</h2>
-	<input name="id" type="hidden" value={data.profile.id} readonly />
-	<Field name="first_name" value={form?.first_name ?? data.profile.first_name ?? ''} class="field">
+	<input name="id" type="hidden" value={data.id} readonly />
+	<Field name="first_name" variant="outlined" value={data.first_name ?? ''} class="field">
 		<svelte:fragment slot="label">Prénom</svelte:fragment>
-		<Button slot="trailing" type="submit">Effacer</Button>
 	</Field>
-	<Field name="last_name" class="field">
+	<Field name="last_name" variant="outlined" value={data.last_name ?? ''} class="field">
 		<svelte:fragment slot="label">Nom de famille</svelte:fragment>
+	</Field>
+	<Field name="public_email" variant="outlined" value={data.public_email ?? ''} class="field">
+		<svelte:fragment slot="label">Courriel public</svelte:fragment>
+	</Field>
+	<Field variant="outlined" value={data.role[0].role ?? ''} disabled class="field">
+		<svelte:fragment slot="label">Rôle</svelte:fragment>
 	</Field>
 	<Button type="submit">Mettre mon profil à jour</Button>
 	<Button type="submit" warning formaction="?/delete">Supprimer mon profil</Button>
@@ -77,6 +96,6 @@
 	}
 
 	.field {
-		width: 100%;
+		// width: 100%;
 	}
 </style>

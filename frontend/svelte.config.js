@@ -13,14 +13,16 @@ const config = {
 		mdsvex({
 			extensions: ['.md', '.svx', '.mdx'],
 			layout: {
-				guides: 'src/components/mdsvex/guide-articles/layout.svelte',
+				guides: 'src/lib/components/mdsvex/guide-articles/layout.svelte',
 			},
 		}),
-		sveltePreprocess.typescript(),
-		sveltePreprocess.scss({
-			prependData: `@use './src/styles/mixins.scss';`,
+		sveltePreprocess({
+			typescript: true,
+			scss: {
+				prependData: `@use './src/lib/styles/mixins.scss';`,
+			},
+			postcss: true,
 		}),
-		sveltePreprocess.postcss(),
 		cssModules({
 			mode: 'mixed',
 		}),
@@ -32,14 +34,14 @@ const config = {
 			dir: '..',
 		},
 		alias: {
-			$types: 'src/types',
-			$actions: 'src/actions',
-			$components: 'src/components',
-			$stores: 'src/stores',
-			$styles: 'src/styles',
-			$transitions: 'src/transitions',
+			$types: 'src/lib/types',
+			$actions: 'src/lib/actions',
+			$components: 'src/lib/components',
+			$stores: 'src/lib/stores',
+			$styles: 'src/lib/styles',
+			$transitions: 'src/lib/transitions',
 			$routes: 'src/routes',
-			$utils: 'src/utils',
+			$utils: 'src/lib/utils',
 		},
 		files: {
 			hooks: {

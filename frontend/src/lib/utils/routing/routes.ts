@@ -3,10 +3,11 @@
  * elements. The route objects can also serve as a matching reference to keep track of certain layout-specific or
  * route-specific states.
  *
- * ⚠️ These declaration are NOT exhaustive and should not be assumed to cover the full scope of the app's possible routing state.
+ * ⚠️ These declaration are NOT exhaustive and should not be assumed to cover the full scope of the app's possible
+ * routing state.
  */
 
-import type { Category } from 'src/types/categories';
+import type { Category } from '$types/categories';
 
 interface Route {
 	/**

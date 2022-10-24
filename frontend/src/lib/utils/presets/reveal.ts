@@ -1,4 +1,4 @@
-import type { RevealOptions } from 'src/lib/actions/reveal';
+import type { RevealOptions } from '$actions/reveal';
 
 /**
  * Stagger preset for fly and rotateX effect.

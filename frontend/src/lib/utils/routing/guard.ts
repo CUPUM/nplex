@@ -1,9 +1,7 @@
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 import type { navigating } from '$app/stores';
-import type { AppUserSession } from '$routes/api/auth/update.json/+server';
 import { messages } from '$stores/messages';
-import type { Database } from '$types/database';
 import { redirect } from '@sveltejs/kit';
 import { SearchParam } from '../values/keys';
 
@@ -17,15 +15,19 @@ interface RoleGuardInput {
 	/**
 	 * App user session.
 	 */
-	session: AppUserSession;
+	session: App.Locals['session'];
 	/**
 	 * Roles allowed to gain permission for a request.
 	 */
-	roles: Database['public']['Tables']['users_roles']['Row']['role'][];
+	roles: App.Locals['session']['user']['role'][];
 	/**
 	 * Custom message, overwrites the default message composition logic.
 	 */
-	errorMessage?: string;
+	message?: Parameters<typeof messages.dispatch>[0]['content'];
+	/**
+	 * Should a notification be displayed on the client's ui?
+	 */
+	notify?: boolean;
 	/**
 	 * Where to redirect the client in case of unfulfilled guard?
 	 */
@@ -42,7 +44,8 @@ interface RoleGuardInput {
 export async function roleGuard({
 	session,
 	roles,
-	errorMessage,
+	message,
+	notify,
 	redirect: fallback = '/',
 	navigating,
 }: RoleGuardInput) {
@@ -61,9 +64,9 @@ export async function roleGuard({
 		 * Distinguish between browser and server runs. Necessary until client-side redirect() is fixed:
 		 * https://github.com/sveltejs/kit/issues/5952#issuecomment-1217387320.
 		 */
-		if (browser) {
-			messages.dispatch({ content: errorMessage || error.message, type: 'error' });
-			return await goto(fallback);
+		if (browser && notify) {
+			messages.dispatch({ content: message || error.message, type: 'error' });
+			return goto(fallback);
 		} else {
 			throw redirect(303, fallback);
 		}

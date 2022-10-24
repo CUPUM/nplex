@@ -68,21 +68,16 @@ export enum Cookie {
 	AppVersion = 'app_version',
 }
 
-// /**
-//  * HTML element attributes and related values used for consistent app-wide "dumb" cross-compoenent state sharing, for
-//  * styling (ex.: popover open state).
-//  *
-//  * To do: define as json instead and use Sass json for callability inside style blocks?
-//  */
-// export const Attribute = {
-// 	PopoverState: {
-// 		Key: 'popover',
-// 		Values: {
-// 			Opened: 'opened',
-// 			Closed: 'closed',
-// 		},
-// 	},
-// } as const;
+/**
+ * Common keys used to invalidate non-app-route dependencies allowing granular invalidation/re-run of load functions.
+ * Such custom keys are useful to fine-tune re-execution of load functions after enhanced form submissions and handling
+ * using applyAction().
+ *
+ * See https://kit.svelte.dev/docs/load#input-methods-depends for more info.
+ */
+export enum CustomLoadDependencies {
+	DbUserProfile = 'db:user-profile',
+}
 
 /**
  * Dictionnary of error codes and their translated message.

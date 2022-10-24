@@ -21,6 +21,7 @@
 	enum Action {
 		EmailSignUp = 'emailsignup',
 		EmailSignIn = 'emailsignin',
+		ResetPassword = 'resetpassword',
 		UseProvider = 'useprovider',
 	}
 
@@ -30,7 +31,6 @@
 	let currentAction: Action = null;
 
 	async function submit(e: SubmitEvent) {
-		e.preventDefault();
 		currentAction = (e.submitter as HTMLButtonElement).value as Action;
 		try {
 			switch (currentAction) {
@@ -42,14 +42,12 @@
 					break;
 				case Action.EmailSignUp:
 					const signup = await dbClient.forBrowser.auth.signUp({ email, password });
-					if (signup.error) throw signup.error;
-				// const updateProfile = await browserDbClient
-				// 	.from('profiles')
-				// 	.update({ firstname, middlename, lastname })
-				// 	.eq('user_id', signup.data.user.id)
-				// 	.single();
-				// if (updateProfile.error) throw updateProfile.error;
-				// break;
+					if (signup.error) {
+						throw signup.error;
+					}
+				case Action.ResetPassword:
+					const res = await dbClient.forBrowser.auth.resetPasswordForEmail(email, {});
+					console.log(res);
 				case Action.UseProvider:
 					// To do: get app approbation from desired providers.
 					break;
@@ -65,9 +63,10 @@
 </script>
 
 <div id="auth-bg" transition:fade={{ duration: 200 }} />
-<dialog>
+<dialog class="container">
 	<form
 		on:submit|preventDefault={submit}
+		action="login"
 		in:transform={{ scale: 1.08, translateY: 25, opacity: 0, duration: 350, easing: cubicOut }}
 		out:scale={{ start: 0.95 }}
 		use:clickoutside={true}
@@ -76,9 +75,6 @@
 		<a id="auth-logo" href="/">
 			<Logo color="currentColor" />
 		</a>
-		<Button class="close" size=".85em" type="submit" variant="ghost" on:click={() => authModal.close()} square>
-			<Icon name="cross" size="1.5em" />
-		</Button>
 		<fieldset id="auth-fields">
 			<Field
 				variant="outlined"
@@ -126,7 +122,7 @@
 				>
 					<Icon name="user-add" size="1em" />&nbsp; Créer un compte
 				</Button>
-				<Button size=".85em" type="submit" variant="ghost" value={Action.EmailSignUp}
+				<Button size=".85em" type="submit" variant="ghost" value={Action.ResetPassword}
 					>Mot de passe oublié?</Button
 				>
 			</div>
@@ -143,6 +139,9 @@
 				{/each}
 			</fieldset>
 		</fieldset>
+		<Button class="close" size=".85em" type="submit" variant="ghost" on:click={() => authModal.close()} square>
+			<Icon name="cross" size="1.5em" />
+		</Button>
 	</form>
 </dialog>
 
@@ -159,7 +158,7 @@
 		background-color: rgba(var(--rgb-primary-900), 0.95);
 	}
 
-	dialog {
+	.container {
 		position: fixed;
 		z-index: 1000;
 		display: flex;

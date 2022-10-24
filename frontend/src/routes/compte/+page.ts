@@ -1,8 +1,12 @@
 import { dbClient } from '$utils/database/database';
+import { CustomLoadDependencies } from '$utils/values/keys';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ parent }) => {
+export const load: PageLoad = async ({ parent, depends }) => {
+	// Setting a custom dep for limited refresh after form submission.
+	depends(CustomLoadDependencies.DbUserProfile);
+
 	const { session } = await parent();
 
 	if (!session?.access_token) throw error(303, '/');
@@ -38,7 +42,7 @@ export const load: PageLoad = async ({ parent }) => {
 	// if (projcetsError) throw error(404, projcetsError.message);
 
 	return {
-		profile,
+		...profile,
 		projectsPreview: [],
 	};
 };

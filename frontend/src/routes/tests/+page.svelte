@@ -2,6 +2,7 @@
 </script>
 
 <script lang="ts">
+	import Field from '$components/primitives/Field.svelte';
 	import Toggle from '$components/primitives/Toggle.svelte';
 
 	let toggled = false;
@@ -15,9 +16,17 @@
 		Test
 		<input id="tesa" type="checkbox" />
 	</label>
+	<hr />
+	<Field variant="outlined">
+		<svelte:fragment slot="label">Test</svelte:fragment>
+	</Field>
 </article>
 
 <style lang="scss" module>
+	article {
+		padding: 4rem;
+	}
+
 	.label {
 		display: flex;
 		flex-direction: row;

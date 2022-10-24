@@ -3,32 +3,32 @@
  *
  * This file was generated from the utils found at ./src/utils.
  * All changes added manually here will be lost on next execution of the generator script.
- * Last generated on: Tue Oct 11 2022 10:05:14 GMT-0400 (GMT-04:00)
+ * Last generated on: Thu Oct 13 2022 12:21:06 GMT-0400 (GMT-04:00)
  *
  * ⚠️ WARNING ⚠️
  */
 
 :root {
-	--color-primary-100: hsl(121, 58%, 72%);
-	--rgb-primary-100: 142, 225, 144;
-	--color-primary-300: hsl(122, 53%, 62%);
-	--rgb-primary-300: 107, 209, 110;
-	--color-primary-500: hsl(123, 50%, 50%);
-	--rgb-primary-500: 64, 191, 70;
-	--color-primary-700: hsl(124, 48%, 44%);
-	--rgb-primary-700: 58, 166, 66;
-	--color-primary-900: hsl(125, 45%, 36%);
-	--rgb-primary-900: 50, 133, 57;
-	--color-secondary-100: hsl(19, 86%, 81%);
-	--rgb-secondary-100: 248, 191, 165;
-	--color-secondary-300: hsl(18, 83%, 77%);
-	--rgb-secondary-300: 245, 177, 148;
-	--color-secondary-500: hsl(17, 77%, 72%);
-	--rgb-secondary-500: 239, 160, 129;
-	--color-secondary-700: hsl(16, 74%, 66%);
-	--rgb-secondary-700: 232, 138, 104;
-	--color-secondary-900: hsl(15, 66%, 58%);
-	--rgb-secondary-900: 219, 113, 77;
+	--color-primary-100: hsl(157, 48%, 72%);
+	--rgb-primary-100: 149, 218, 192;
+	--color-primary-300: hsl(156, 50%, 63%);
+	--rgb-primary-300: 113, 208, 170;
+	--color-primary-500: hsl(155, 54%, 50%);
+	--rgb-primary-500: 59, 196, 139;
+	--color-primary-700: hsl(157, 66%, 42%);
+	--rgb-primary-700: 36, 178, 124;
+	--color-primary-900: hsl(158, 79%, 33%);
+	--rgb-primary-900: 18, 151, 102;
+	--color-secondary-100: hsl(23, 86%, 81%);
+	--rgb-secondary-100: 248, 197, 165;
+	--color-secondary-300: hsl(22, 83%, 77%);
+	--rgb-secondary-300: 245, 183, 148;
+	--color-secondary-500: hsl(21, 77%, 72%);
+	--rgb-secondary-500: 239, 167, 129;
+	--color-secondary-700: hsl(20, 74%, 66%);
+	--rgb-secondary-700: 232, 147, 104;
+	--color-secondary-900: hsl(19, 66%, 58%);
+	--rgb-secondary-900: 219, 122, 77;
 	--color-light-100: hsl(80, 20%, 98%);
 	--rgb-light-100: 250, 251, 249;
 	--color-light-300: hsl(95, 18%, 95%);

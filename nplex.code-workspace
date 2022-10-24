@@ -14,6 +14,6 @@
 		"files.associations": {
 			"*.svx": "markdown"
 		},
-		"svelte.plugin.css.globals": "src/styles/*.css,src/styles/*.scss"
+		"svelte.plugin.css.globals": "src/lib/styles/*.css,src/lib/styles/*.scss"
 	}
 }

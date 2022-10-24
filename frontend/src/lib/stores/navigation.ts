@@ -1,4 +1,4 @@
-import type { Category } from 'src/types/categories';
+import type { Category } from '$types/categories';
 import { writable, type Writable } from 'svelte/store';
 
 /**

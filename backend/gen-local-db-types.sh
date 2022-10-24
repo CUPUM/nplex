@@ -1,1 +1,1 @@
-supabase gen types typescript --local > ../frontend/src/types/database.ts
+supabase gen types typescript --local > ../frontend/src/lib/types/database.ts

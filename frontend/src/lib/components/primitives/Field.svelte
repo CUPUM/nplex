@@ -26,6 +26,7 @@
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
 	export let variant: 'default' | 'outlined' | 'ghost' = 'default';
 	export let required: boolean = undefined;
+	export let readonly: boolean = undefined;
 	export let disabled: boolean = undefined;
 	export let warning: boolean = undefined;
 	export let success: boolean = undefined;
@@ -39,6 +40,8 @@
 	export let format: (value: string) => string = undefined;
 	let className: string = undefined;
 	export { className as class };
+	export let style: string = undefined;
+	export let dirty: boolean = undefined;
 
 	const _value = writable(value);
 	$: value = $_value;
@@ -94,14 +97,15 @@
 	class:focused
 	class:warning
 	class:success
-	class:disabled
+	class:disabled={disabled ?? readonly}
 	class:invalid
+	class:dirty
 	class:has-value={value !== ''}
 	class:has-placeholder={placeholder !== ''}
 	class:has-label={$$slots.label}
 	style:--leading-width="{leadingWidth}px"
 	style:--label-width="{labelWidth}px"
-	on:click={focus}
+	on:pointerup={focus}
 >
 	<div class="inner">
 		{#if $$slots.leading && $inputRef}
@@ -129,7 +133,7 @@
 				{minlength}
 				{disabled}
 				{required}
-				readonly={!focusedOnce}
+				readonly={!focusedOnce ?? readonly}
 				pattern={pattern ? pattern.source : undefined}
 				use:inputOnReset
 				on:change
@@ -169,6 +173,8 @@
 		--height-ratio: 3;
 		--computed-height: calc(var(--size) * var(--height-ratio));
 		--computed-radius: calc(var(--size) * var(--radius-ratio));
+		--padding-inline: 1.25em;
+		--label-padding: 0em;
 		font-size: var(--size);
 		position: relative;
 		height: var(--computed-height);
@@ -194,6 +200,14 @@
 		&.success {
 			color: var(--color-success-700) !important;
 			background-color: rgba(var(--rgb-success-100), 0.1) !important;
+		}
+
+		&.dirty:not(.warning):not(.invalid):not(.success) {
+			.outline {
+				--thickness: 1px;
+				opacity: 1 !important;
+				color: var(--color-secondary-700) !important;
+			}
 		}
 	}
 
@@ -253,8 +267,8 @@
 		align-items: center;
 		cursor: text;
 		height: 100%;
-		padding: 0 1.25em;
-		margin: 0;
+		padding: 0;
+		margin: 0 var(--padding-inline);
 		top: -0.1em;
 		transition: all 0.25s cubic-bezier(0.25, 0, 0, 1);
 	}
@@ -307,34 +321,33 @@
 		user-select: none;
 		cursor: text;
 		position: absolute;
+		padding-inline: var(--label-padding);
 		grid-column: main;
 		line-height: 1em;
 		top: 1em;
 		white-space: nowrap;
 		overflow: hidden;
-		max-width: calc(100% - 2.4 * var(--size));
+		max-width: 100%;
 		text-overflow: ellipsis;
 		transition: all 0.25s cubic-bezier(0.25, 0, 0, 1);
 	}
 
 	.outline {
-		--label-padding: 0em;
 		--thickness: 1px;
-		.has-label & {
-			--label-padding: 0.5em;
-		}
 		pointer-events: none;
 		position: absolute;
 		border-radius: inherit;
 		width: 100%;
 		height: 100%;
+		top: 0;
+		left: 0;
 		display: grid;
 		grid-template-columns:
 			[full-start left-start]
-			calc(1.25em + var(--leading-width) - var(--label-padding))
+			calc(var(--padding-inline) + var(--leading-width))
 			// Keep leftmost value in sync with .main inline-padding.
 			[left-end top-start]
-			calc(var(--label-width) + 2 * var(--label-padding))
+			var(--label-width)
 			[top-end right-start]
 			auto
 			[right-end full-end];
@@ -394,10 +407,10 @@
 		.outline {
 			opacity: 0;
 			color: var(--color-primary-500);
-			& > *:not(.base) {
+			& > *:not(.b) {
 				display: none;
 			}
-			.base {
+			.b {
 				border-color: currentColor;
 			}
 		}
@@ -461,6 +474,7 @@
 		}
 		&.has-placeholder,
 		&.has-value:hover {
+			--label-padding: 0.5em;
 			label {
 				top: -0.3em;
 				font-size: clamp(10px, 0.5em, 24px);
@@ -472,6 +486,7 @@
 			}
 		}
 		&.has-value {
+			--label-padding: 0.5em;
 			label {
 				top: 0em;
 				font-size: clamp(10px, 0.5em, 24px);
@@ -496,6 +511,7 @@
 			}
 		}
 		&.focused {
+			--label-padding: 0.5em;
 			.outline {
 				opacity: 1;
 				.t {

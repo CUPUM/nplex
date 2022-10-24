@@ -1,4 +1,4 @@
-import type { CSS } from 'src/types/css';
+import type { CSS } from '$types/css';
 
 /**
  * List of possible CSS units for sizes.

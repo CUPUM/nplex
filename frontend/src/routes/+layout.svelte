@@ -10,7 +10,6 @@
 	import { dbClient } from '$utils/database/database';
 	import { Cookie } from '$utils/values/keys';
 	import { sizes } from '$utils/values/sizes';
-	import { version } from '$utils/version';
 	import jscookie from 'js-cookie';
 	import { get } from 'svelte/store';
 	import type { LayoutData } from './$types';
@@ -51,7 +50,6 @@
 	});
 
 	afterNavigate(() => {
-		console.log(version);
 		loading = false;
 		progress.complete();
 	});

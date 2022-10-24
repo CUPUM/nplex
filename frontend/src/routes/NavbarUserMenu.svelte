@@ -21,7 +21,7 @@
 		}
 	}
 
-	$: publicUserHref = `/u/${$page.data.session.user.id}`;
+	$: publicUserHref = $page.data.session ? `/u/${$page.data.session.user.id}` : null;
 </script>
 
 <div>

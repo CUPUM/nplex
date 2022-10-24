@@ -1,6 +1,6 @@
 import { adminDbClient } from '$utils/database/admin';
 import { dbClient } from '$utils/database/database';
-import { error, invalid } from '@sveltejs/kit';
+import { error, invalid, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 type ProfileFormData = {
@@ -15,6 +15,7 @@ export const actions: Actions = {
 	 */
 	update: async ({ request, locals }) => {
 		const formData = Object.fromEntries(await request.formData()) as ProfileFormData;
+		console.log(formData);
 
 		if (formData.first_name === 'test') {
 			return invalid(400, {
@@ -26,7 +27,11 @@ export const actions: Actions = {
 		}
 
 		const db = dbClient.createForServer(locals.session.access_token);
-		const update = await db.from('users').update(formData).eq('id', locals.session.user.id).single();
+		const update = await db
+			.from('users')
+			.update({ ...formData, id: undefined })
+			.eq('id', locals.session.user.id)
+			.single();
 
 		if (update.error) {
 			throw error(500, { ...update.error, notify: true });
@@ -46,10 +51,8 @@ export const actions: Actions = {
 				...formData,
 			});
 		}
-		console.log(formData.id);
 		const res = await adminDbClient.auth.admin.deleteUser(formData.id);
-		console.log(res);
 		if (res.error) throw error(500);
-		return;
+		throw redirect(302, '/');
 	},
 };

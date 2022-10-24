@@ -12,8 +12,7 @@
 	/**
 	 * Where svelte-language plugin should look for css globals needed for intellisens.
 	 */
-	"svelte.plugin.css.globals": "src/styles/*.css,src/styles/*.scss",
-	"svelte.plugin.svelte.useNewTransformation": true,
+	"svelte.plugin.css.globals": "src/lib/styles/*.css,src/lib/styles/*.scss",
 	"[svelte]": {
 		"editor.defaultFormatter": "svelte.svelte-vscode"
 	}
