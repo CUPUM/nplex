@@ -11,7 +11,8 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"allowJs": true,
-		"checkJs": true
+		"checkJs": true,
+		"strict": true
 	},
 	"include": ["src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "src/**/*.svx", "plugins/*.ts", "src/**/*.d.ts"]
 }

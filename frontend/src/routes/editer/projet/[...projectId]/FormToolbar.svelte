@@ -3,10 +3,10 @@
 
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
-	import Tooltip from '$components/primitives/Tooltip.svelte';
-	import { Ctx } from '$utils/values/keys';
+	import Button from '$components/Button/Button.svelte';
+	import Icon from '$components/Icon/Icon.svelte';
+	import Tooltip from '$components/Tooltip.svelte';
+	import { Ctx } from '$utils/keys';
 	import { getContext, type ComponentProps } from 'svelte';
 	import type { ProjectEditorContext } from './+page.svelte';
 
@@ -15,7 +15,7 @@
 	$: dirty = $formProject != freshProject;
 
 	const ttipPlacement: ComponentProps<Tooltip>['place'] = 'top';
-	$: canPublish = ['admin', 'editor'].includes($page.data.session.user.role);
+	$: canPublish = ['admin', 'editor'].includes($page.data.session?.user?.role ?? null);
 </script>
 
 <aside>

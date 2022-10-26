@@ -1,14 +1,15 @@
 // @ts-ignore
 import { sveltekit } from '@sveltejs/kit/vite';
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import type { UserConfig } from 'vite';
-import generateCssVarsPlugin from './plugins/generateCssVars';
-import generateIconsPlugin from './plugins/generateIcons';
+import icons from './plugins/icons';
+// import styles from './plugins/styles';
 
 const config: UserConfig = {
 	server: {
 		port: process.env.PORT ? +process.env.PORT : 3000,
 	},
-	plugins: [generateIconsPlugin(), generateCssVarsPlugin(), sveltekit()],
+	plugins: [icons(), vanillaExtractPlugin(), sveltekit()],
 	define: {
 		__VITE_DEV_APP_VERSION__: JSON.stringify(Date.now().toString()),
 	},

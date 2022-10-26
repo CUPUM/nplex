@@ -1,5 +1,5 @@
-// import { LocalStorage, SearchParam } from '$utils/values/keys';
-import type { SearchParam } from '$utils/values/keys';
+// import { LocalStorage, SearchParam } from '$utils/keys';
+import type { SearchParam } from '$utils/keys';
 import { writable } from 'svelte/store';
 
 /**

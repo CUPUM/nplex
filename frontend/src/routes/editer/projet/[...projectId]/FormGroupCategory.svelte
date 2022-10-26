@@ -2,7 +2,7 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/values/keys';
+	import { Ctx } from '$utils/keys';
 	import { getContext } from 'svelte';
 	import type { ProjectEditorContext } from './+page.svelte';
 	import FormGroup from './FormGroup.svelte';

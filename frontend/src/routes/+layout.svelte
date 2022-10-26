@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { afterNavigate, beforeNavigate, goto, invalidate } from '$app/navigation';
 	import { getStores } from '$app/stores';
-	import Loading from '$components/primitives/Loading.svelte';
-	import LoadingProgress from '$components/primitives/LoadingProgress.svelte';
+	import Loading from '$components/Loading.svelte';
+	import LoadingProgress from '$components/LoadingProgress.svelte';
 	import { authModal } from '$stores/authModal';
 	import { mainScroll } from '$stores/scroll';
+	import { vars } from '$styles/app.css';
 	import '$styles/app.scss';
 	import '$styles/vars.css';
 	import { dbClient } from '$utils/database/database';
-	import { Cookie } from '$utils/values/keys';
-	import { sizes } from '$utils/values/sizes';
+	import { Cookie } from '$utils/keys';
 	import jscookie from 'js-cookie';
+	import { get_current_component } from 'svelte/internal';
 	import { get } from 'svelte/store';
 	import type { LayoutData } from './$types';
 	import type { AuthUpdateBody } from './api/auth/session.json/+server';
@@ -21,6 +22,8 @@
 
 	export let data: LayoutData;
 
+	console.log(get_current_component().$$);
+
 	let progress: LoadingProgress;
 	let loading = true;
 	let navbarHeight: number = 0;
@@ -30,7 +33,7 @@
 	// Listening to and handling client-side Supabase auth state change.
 	dbClient.forBrowser.auth.onAuthStateChange(async (event, session) => {
 		let restoredTab = false;
-		if (event === 'SIGNED_IN' && session.access_token === data.session?.access_token) {
+		if (event === 'SIGNED_IN' && session?.access_token === data.session?.access_token) {
 			// With `client.options.multiTab: true`, Supabase retriggers a `SIGNED_IN` event on each tab restoration.
 			// We thus have to handle this ourselves to avoid inadequate redirects after invalidation of the auth update api endpoint.
 			restoredTab = true;
@@ -73,7 +76,7 @@
 	<AuthModal />
 {/if}
 {#if loading}
-	<Loading containerStyle="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" size={sizes.xlarge} />
+	<Loading style="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" size={vars.sizes.large} />
 {/if}
 <MessagesOutlet />
 <LoadingProgress bind:this={progress} />

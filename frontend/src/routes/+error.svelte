@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { backgroundColor } from '$stores/backgroundColor';
-	import { colors } from '$utils/values/colors';
+	import { colors } from '$utils/colors';
 	import { onDestroy, onMount } from 'svelte/internal';
 
 	onMount(() => {
-		backgroundColor.set(colors.error[700], 150);
+		backgroundColor.set(colors.light.error[700], 150);
 	});
 
 	onDestroy(() => {

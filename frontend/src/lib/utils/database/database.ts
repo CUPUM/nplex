@@ -14,9 +14,9 @@ export const dbClient = {
 	 * Init a client-side supabase client instance to listen to auth state changes and more. //
 	 */
 	forBrowser: createClient<DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-		db: {
-			schema: 'public',
-		},
+		// db: {
+		// 	schema: 'public',
+		// },
 		auth: {
 			persistSession: true,
 			autoRefreshToken: true,
@@ -28,9 +28,9 @@ export const dbClient = {
 	 */
 	createForServer: (accessToken?: string) => {
 		return createClient<DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-			db: {
-				schema: 'public',
-			},
+			// db: {
+			// 	schema: 'public',
+			// },
 			auth: {
 				persistSession: false,
 				autoRefreshToken: false,
@@ -38,7 +38,7 @@ export const dbClient = {
 			},
 			global: {
 				headers: {
-					Authorization: accessToken ? `Bearer ${accessToken}` : null,
+					Authorization: accessToken ? `Bearer ${accessToken}` : '',
 				},
 			},
 		});

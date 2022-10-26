@@ -1,8 +1,8 @@
 /**
  * ⚠️ WARNING ⚠️
  *
- * This file was generated from the svg assets found at ./src/utils/icons. All changes added manually here will be lost
- * on next execution of the generator script.
+ * This file was generated from the svg assets found at ./src/lib/utils/icons. All changes added manually here will be
+ * lost on next execution of the generator script.
  *
  * Last generated on: Tue Oct 11 2022 10:05:14 GMT-0400 (GMT-04:00)
  *

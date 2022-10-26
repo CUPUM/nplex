@@ -1,4 +1,4 @@
-import { cssSize, type SizeInput } from '$utils/css';
+import { cssSize } from '$utils/styles';
 
 const RIPPLE_GLOBALS = {
 	HOST_ATTRIBUTE: 'ripple-host',
@@ -16,9 +16,9 @@ interface RippleOptions {
 	fadeDelay?: number;
 	opacity?: number;
 	startColor?: string;
-	startSize?: SizeInput;
+	startSize?: string | number;
 	endColor?: string;
-	endSize?: SizeInput;
+	endSize?: string | number;
 	blur?: number;
 	disabled?: boolean;
 	/**

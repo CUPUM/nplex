@@ -22,8 +22,8 @@
 	import { enhance } from '$app/forms';
 
 	import type { KeyOfSet } from '$types/helpers';
+	import { Ctx, LocalStorage } from '$utils/keys';
 	import { persistWritable } from '$utils/persist';
-	import { Ctx, LocalStorage } from '$utils/values/keys';
 	import { setContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
 	import type { PageData } from './$types';
@@ -80,25 +80,25 @@
 </form>
 
 <style lang="scss">
-	form {
-		@include mixins.core-grid;
-		position: relative;
-		border-radius: calc(3rem - 0.05 * var(--scrollpx));
-		padding: 4rem 0;
-		row-gap: 2rem;
-		background-color: var(--bg-color);
+	// form {
+	// 	@include mixins.core-grid;
+	// 	position: relative;
+	// 	border-radius: calc(3rem - 0.05 * var(--scrollpx));
+	// 	padding: 4rem 0;
+	// 	row-gap: 2rem;
+	// 	background-color: var(--bg-color);
 
-		&::before {
-			content: '';
-			position: absolute;
-			width: calc(100% - var(--scroll-size));
-			height: 100vh;
-			left: 0;
-			top: 0;
-			border-radius: inherit;
-			background-color: var(--bg-color);
-			margin-top: -2rem;
-			transform: translateY(calc(-0.2 * var(--scrollpx)));
-		}
-	}
+	// 	&::before {
+	// 		content: '';
+	// 		position: absolute;
+	// 		width: calc(100% - var(--scroll-size));
+	// 		height: 100vh;
+	// 		left: 0;
+	// 		top: 0;
+	// 		border-radius: inherit;
+	// 		background-color: var(--bg-color);
+	// 		margin-top: -2rem;
+	// 		transform: translateY(calc(-0.2 * var(--scrollpx)));
+	// 	}
+	// }
 </style>

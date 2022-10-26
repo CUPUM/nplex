@@ -4,8 +4,8 @@
 <script lang="ts">
 	import { reveal, type RevealOptions } from '$actions/reveal';
 
-	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Icon from '$components/Icon/Icon.svelte';
 	import { slipMask } from '$utils/presets/reveal';
 
 	export let id: string;

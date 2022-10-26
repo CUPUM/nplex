@@ -22,12 +22,13 @@
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import AvatarButton from '$components/primitives/AvatarButton.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
-	import Logo from '$components/primitives/Logo.svelte';
-	import Popover from '$components/primitives/Popover.svelte';
-	import Switch from '$components/primitives/Switch.svelte';
-	import SwitchItem from '$components/primitives/SwitchItem.svelte';
+	import AvatarButton from '$components/AvatarButton.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Icon from '$components/Icon/Icon.svelte';
+	import Logo from '$components/Logo.svelte';
+	import Popover from '$components/Popover.svelte';
+	import Switch from '$components/Switch.svelte';
+	import SwitchItem from '$components/SwitchItem.svelte';
 	import { backgroundColor as appBackgroundColor } from '$stores/backgroundColor';
 	import { mainScroll } from '$stores/scroll';
 	import { transform } from '$transitions/transform';
@@ -38,27 +39,26 @@
 	import { expoIn, expoInOut, expoOut } from 'svelte/easing';
 	import { writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
-	import Button from '../components/primitives/Button.svelte';
 	import NavbarEditMenu from './NavbarEditMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
 
 	export let navbarHeight;
 
 	let mounted = false;
-	let hidden;
+	let hidden: boolean;
 	let mainPathname: string;
 	let yThreshold = navbarHeight || 40;
-	let loadingExplore = null;
+	let loadingCategoryPath: string | null = '';
 	let headerWidth = 0;
 
 	beforeNavigate(({ to }) => {
-		if (exploreRoutes.map((r) => r.pathname).includes(to.url.pathname)) {
-			loadingExplore = to.url.pathname;
+		if (to && exploreRoutes.map((r) => r.pathname).includes(to.url.pathname)) {
+			loadingCategoryPath = to.url.pathname;
 		}
 	});
 
 	afterNavigate(() => {
-		loadingExplore = null;
+		loadingCategoryPath = null;
 	});
 
 	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
@@ -102,7 +102,7 @@
 								value={r.category}
 								on:click={() => gotoCategory(r)}
 								disabled={r.category === $page.data.category && !$page.data.categoryIsResetable}
-								loading={loadingExplore === r.pathname}
+								loading={loadingCategoryPath === r.pathname}
 							>
 								{r.title}
 							</SwitchItem>

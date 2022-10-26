@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
-	import Icon from '$components/primitives/Icon.svelte';
-	import Link from '$components/primitives/Link.svelte';
-
-	import Logo from '$components/primitives/Logo.svelte';
+	import Icon from '$components/Icon/Icon.svelte';
+	import Link from '$components/Link.svelte';
+	import Logo from '$components/Logo.svelte';
 	import type { ComponentProps } from 'svelte';
 
 	const mainLinks = [
@@ -89,116 +88,116 @@
 </footer>
 
 <style lang="scss">
-	#footer {
-		display: flex;
-		flex-direction: column;
-		justify-content: stretch;
-		width: 100%;
-		padding: 1rem 0;
-		margin: 0;
-		font-size: var(--size-small);
-		color: var(--color-dark-100);
-		@include mixins.border(top);
-		font-weight: 400;
-		letter-spacing: 0.1px;
-		transition: all 1s cubic-bezier(0.5, 0, 0, 1);
-		&.out {
-			transform-origin: bottom;
-			perspective: 100px;
-			opacity: 0;
-		}
-	}
+	// #footer {
+	// 	display: flex;
+	// 	flex-direction: column;
+	// 	justify-content: stretch;
+	// 	width: 100%;
+	// 	padding: 1rem 0;
+	// 	margin: 0;
+	// 	font-size: var(--size-small);
+	// 	color: var(--color-dark-100);
+	// 	@include mixins.border(top);
+	// 	font-weight: 400;
+	// 	letter-spacing: 0.1px;
+	// 	transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+	// 	&.out {
+	// 		transform-origin: bottom;
+	// 		perspective: 100px;
+	// 		opacity: 0;
+	// 	}
+	// }
 
-	#copyright {
-		width: 100%;
-		display: flex;
-		padding: 0.5rem;
-		justify-content: center;
-		color: var(--color-dark-100);
-		font-weight: 300;
-		letter-spacing: 0.5px;
-	}
+	// #copyright {
+	// 	width: 100%;
+	// 	display: flex;
+	// 	padding: 0.5rem;
+	// 	justify-content: center;
+	// 	color: var(--color-dark-100);
+	// 	font-weight: 300;
+	// 	letter-spacing: 0.5px;
+	// }
 
-	#links {
-		font-size: 0.9em;
-		flex-direction: row;
-		padding-top: 1rem;
-		padding-bottom: 2rem;
-		@include mixins.core-grid;
-		width: 100%;
+	// #links {
+	// 	font-size: 0.9em;
+	// 	flex-direction: row;
+	// 	padding-top: 1rem;
+	// 	padding-bottom: 2rem;
+	// 	@include mixins.core-grid;
+	// 	width: 100%;
 
-		section {
-			display: flex;
-			flex: 1;
-			flex-direction: column;
-			padding: 1rem 0;
+	// 	section {
+	// 		display: flex;
+	// 		flex: 1;
+	// 		flex-direction: column;
+	// 		padding: 1rem 0;
 
-			&:first-of-type {
-				margin-left: -0.5rem;
-			}
+	// 		&:first-of-type {
+	// 			margin-left: -0.5rem;
+	// 		}
 
-			&:nth-of-type(2) {
-				padding-inline: 2rem;
-			}
+	// 		&:nth-of-type(2) {
+	// 			padding-inline: 2rem;
+	// 		}
 
-			&:last-of-type {
-				margin-right: -0.5rem;
-			}
-		}
+	// 		&:last-of-type {
+	// 			margin-right: -0.5rem;
+	// 		}
+	// 	}
 
-		ul {
-			padding: 0;
-			margin: 0;
-			text-indent: 0;
-			list-style: none;
-		}
+	// 	ul {
+	// 		padding: 0;
+	// 		margin: 0;
+	// 		text-indent: 0;
+	// 		list-style: none;
+	// 	}
 
-		li {
-			padding: 0;
-			margin: 0;
-		}
+	// 	li {
+	// 		padding: 0;
+	// 		margin: 0;
+	// 	}
 
-		.heading {
-			padding-bottom: 1rem;
-			margin-bottom: 0;
-			margin-inline: 0.5rem;
-			font-weight: 550;
-			font-size: var(--size-xsmall);
-			text-transform: uppercase;
-			letter-spacing: 2px;
-			color: var(--color-light-900);
-		}
-	}
+	// 	.heading {
+	// 		padding-bottom: 1rem;
+	// 		margin-bottom: 0;
+	// 		margin-inline: 0.5rem;
+	// 		font-weight: 550;
+	// 		font-size: var(--size-xsmall);
+	// 		text-transform: uppercase;
+	// 		letter-spacing: 2px;
+	// 		color: var(--color-light-900);
+	// 	}
+	// }
 
-	#sitemap-links {
-		grid-column: col1;
-	}
+	// #sitemap-links {
+	// 	grid-column: col1;
+	// }
 
-	#explore-links {
-		grid-column: col2;
-		align-items: center;
-		text-align: center;
-	}
+	// #explore-links {
+	// 	grid-column: col2;
+	// 	align-items: center;
+	// 	text-align: center;
+	// }
 
-	#partners-links {
-		grid-column: col3;
-		align-items: right;
-		text-align: right;
-	}
+	// #partners-links {
+	// 	grid-column: col3;
+	// 	align-items: right;
+	// 	text-align: right;
+	// }
 
-	#nplex-footer-logo {
-		flex: none;
-		width: 120px;
-		margin: 0 auto;
-		padding: 1rem;
+	// #nplex-footer-logo {
+	// 	flex: none;
+	// 	width: 120px;
+	// 	margin: 0 auto;
+	// 	padding: 1rem;
 
-		.logo {
-			transition: all 0.2s ease-out;
-			color: var(--color-dark-900);
+	// 	.logo {
+	// 		transition: all 0.2s ease-out;
+	// 		color: var(--color-dark-900);
 
-			&:hover {
-				color: var(--color-primary-500);
-			}
-		}
-	}
+	// 		&:hover {
+	// 			color: var(--color-primary-500);
+	// 		}
+	// 	}
+	// }
 </style>

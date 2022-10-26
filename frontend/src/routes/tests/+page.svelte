@@ -2,13 +2,29 @@
 </script>
 
 <script lang="ts">
-	import Field from '$components/primitives/Field.svelte';
-	import Toggle from '$components/primitives/Toggle.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Field from '$components/Field.svelte';
+	import Icon from '$components/Icon/Icon.svelte';
+	import { icons } from '$components/Icon/icons';
+	import Toggle from '$components/Toggle.svelte';
+	import type { ComponentProps } from 'svelte';
 
 	let toggled = false;
+	let name: ComponentProps<Icon>['name'] = 'search';
+	let size = 16;
 </script>
 
 <article>
+	<span>This is a test</span>
+	<Button>Test</Button>
+	<Icon bind:name style="font-size: {size}px" />
+	<input type="range" name="" bind:value={size} min="8" max="48" id="" />
+	<select name="" id="" bind:value={name}>
+		{#each Object.keys(icons) as iconname}
+			<option value={iconname}>{iconname}</option>
+		{/each}
+	</select>
+	<hr />
 	<Toggle bind:toggled />
 	{toggled}
 	<hr />
@@ -25,6 +41,7 @@
 <style lang="scss" module>
 	article {
 		padding: 4rem;
+		line-height: 5em;
 	}
 
 	.label {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import Button from '$components/primitives/Button.svelte';
-	import Field from '$components/primitives/Field.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Field from '$components/Field.svelte';
 	import { messages } from '$stores/messages';
 	import type { ActionData, PageData } from './$types';
 

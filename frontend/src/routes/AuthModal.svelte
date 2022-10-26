@@ -1,20 +1,24 @@
+<script lang="ts" context="module">
+	// Move singleton authModal store here.
+</script>
+
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
-	import Button from '$components/primitives/Button.svelte';
-	import Field from '$components/primitives/Field.svelte';
-	import FieldControlReset from '$components/primitives/FieldControlReset.svelte';
-	import FieldControlTogglePassword from '$components/primitives/FieldControlTogglePassword.svelte';
-	import FieldIcon from '$components/primitives/FieldIcon.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
-	import Logo from '$components/primitives/Logo.svelte';
-	import ProviderLogo from '$components/primitives/ProviderLogo.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Field from '$components/Field.svelte';
+	import FieldControlReset from '$components/FieldControlReset.svelte';
+	import FieldControlTogglePassword from '$components/FieldControlTogglePassword.svelte';
+	import FieldIcon from '$components/FieldIcon.svelte';
+	import Icon from '$components/Icon/Icon.svelte';
+	import Logo from '$components/Logo.svelte';
+	import { providers } from '$components/ProviderLogo/logos';
+	import ProviderLogo from '$components/ProviderLogo/ProviderLogo.svelte';
 	import { authModal } from '$stores/authModal';
 	import { messages } from '$stores/messages';
+	import { vars } from '$styles/app.css';
 	import { transform } from '$transitions/transform';
 	import { dbClient } from '$utils/database/database';
 	import { patterns } from '$utils/input/patterns';
-	import { providers } from '$utils/values/providers';
-	import { sizes } from '$utils/values/sizes';
 	import { cubicOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
 
@@ -28,7 +32,7 @@
 	let email: string;
 	let password: string;
 	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
-	let currentAction: Action = null;
+	let currentAction: Action | null = null;
 
 	async function submit(e: SubmitEvent) {
 		currentAction = (e.submitter as HTMLButtonElement).value as Action;
@@ -132,9 +136,9 @@
 			<span>Ou se connecter via une autre plateforme&nbsp;:</span>
 			<fieldset id="auth-providers-buttons" disabled>
 				{#each providerNames as name, i}
-					<Button size={sizes.small} contentAlign="center" variant="secondary">
+					<Button size={vars.sizes.small} contentAlign="center" variant="secondary">
 						<ProviderLogo size="1.5em" {name} slot="leading" />
-						{providers[name].title}
+						{providers[name]?.title}
 					</Button>
 				{/each}
 			</fieldset>
@@ -145,7 +149,7 @@
 	</form>
 </dialog>
 
-<style lang="scss" module>
+<style lang="scss">
 	#auth-bg {
 		z-index: 1000;
 		position: fixed;

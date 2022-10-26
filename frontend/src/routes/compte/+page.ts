@@ -1,5 +1,5 @@
 import { dbClient } from '$utils/database/database';
-import { CustomLoadDependencies } from '$utils/values/keys';
+import { CustomLoadDependencies } from '$utils/keys';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 

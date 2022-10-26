@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Icon from '$components/Icon/Icon.svelte';
 	import { creationRoutes } from '$utils/routing/routes';
 
 	let loadingEditor = null;

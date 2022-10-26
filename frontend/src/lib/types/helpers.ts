@@ -27,3 +27,10 @@ export type TransitionProp = Parameters<typeof create_in_transition>[1];
  * Access the value-type of a store. Useful for typing function arguments.
  */
 export type StoreValue<T> = T extends Writable<infer V> | Readable<infer V> ? V : never;
+
+/**
+ * Infer nested object's type.
+ */
+export type NestedObject<T> = {
+	[K in keyof T]: T[K] extends object ? NestedObject<T[K]> : NestedObject<T[K]>;
+};

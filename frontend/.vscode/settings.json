@@ -4,7 +4,7 @@
 	"editor.formatOnSave": true,
 	"editor.detectIndentation": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"files.associations": { "*.svx": "markdown" },
+	"files.associations": { "*.svx": "markdown", "*.json": "jsonc" },
 	"editor.codeActionsOnSave": {
 		"source.organizeImports": true,
 		"source.fixAll": true

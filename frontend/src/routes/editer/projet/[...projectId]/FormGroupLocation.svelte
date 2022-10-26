@@ -2,13 +2,13 @@
 </script>
 
 <script lang="ts">
-	import Button from '$components/primitives/Button.svelte';
-	import Icon from '$components/primitives/Icon.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Icon from '$components/Icon/Icon.svelte';
 
-	import Map from '$components/primitives/Map.svelte';
-	import MapGeolocateControl from '$components/primitives/MapGeolocateControl.svelte';
-	import MapToolbar from '$components/primitives/MapToolbar.svelte';
-	import Tooltip from '$components/primitives/Tooltip.svelte';
+	import Map from '$components/Map.svelte';
+	import MapGeolocateControl from '$components/MapGeolocateControl.svelte';
+	import MapToolbar from '$components/MapToolbar.svelte';
+	import Tooltip from '$components/Tooltip.svelte';
 	import FormGroup from './FormGroup.svelte';
 </script>
 

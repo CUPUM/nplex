@@ -1,32 +1,16 @@
 import node from '@sveltejs/adapter-node';
-import { mdsvex } from 'mdsvex';
 import sveltePreprocess from 'svelte-preprocess';
-// import { scss, typescript } from 'svelte-preprocess';
-import { cssModules, linearPreprocess } from 'svelte-preprocess-cssmodules';
 
 /**
  * @type {import('@sveltejs/kit').Config}
  */
 const config = {
 	extensions: ['.svelte', '.svx'],
-	preprocess: linearPreprocess([
-		mdsvex({
-			extensions: ['.md', '.svx', '.mdx'],
-			layout: {
-				guides: 'src/lib/components/mdsvex/guide-articles/layout.svelte',
-			},
-		}),
-		sveltePreprocess({
-			typescript: true,
-			scss: {
-				prependData: `@use './src/lib/styles/mixins.scss';`,
-			},
-			postcss: true,
-		}),
-		cssModules({
-			mode: 'mixed',
-		}),
-	]),
+	preprocess: sveltePreprocess({
+		typescript: true,
+		scss: true,
+		postcss: true,
+	}),
 	kit: {
 		adapter: node(),
 		env: {
@@ -34,19 +18,20 @@ const config = {
 			dir: '..',
 		},
 		alias: {
-			$types: 'src/lib/types',
 			$actions: 'src/lib/actions',
 			$components: 'src/lib/components',
+			$routes: 'src/routes',
+			$static: 'static',
 			$stores: 'src/lib/stores',
 			$styles: 'src/lib/styles',
 			$transitions: 'src/lib/transitions',
-			$routes: 'src/routes',
+			$types: 'src/lib/types',
 			$utils: 'src/lib/utils',
 		},
 		files: {
 			hooks: {
-				server: 'src/hooks/index.server',
-				client: 'src/hooks/index.client',
+				server: 'src/hooks/server',
+				client: 'src/hooks/client',
 			},
 		},
 	},

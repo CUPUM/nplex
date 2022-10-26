@@ -2,8 +2,8 @@
 </script>
 
 <script lang="ts">
-	import Field from '$components/primitives/Field.svelte';
-	import FieldIcon from '$components/primitives/FieldIcon.svelte';
+	import Field from '$components/Field.svelte';
+	import FieldIcon from '$components/FieldIcon.svelte';
 </script>
 
 <form class="search-sheets">
@@ -16,26 +16,26 @@
 </form>
 
 <style lang="scss">
-	form {
-		position: sticky;
-		top: 0;
-		margin: 0;
-		padding: 0;
-		padding-top: calc(var(--navbar-height) + 1rem);
-		// padding-bottom: 1rem;
-		@include mixins.core-grid;
-		z-index: 10;
-		// background-color: rgba(var(--rgb-light-100), 0.9);
-		// backdrop-filter: blur(12px);
-	}
+	// form {
+	// 	position: sticky;
+	// 	top: 0;
+	// 	margin: 0;
+	// 	padding: 0;
+	// 	padding-top: calc(var(--navbar-height) + 1rem);
+	// 	// padding-bottom: 1rem;
+	// 	@include mixins.core-grid;
+	// 	z-index: 10;
+	// 	// background-color: rgba(var(--rgb-light-100), 0.9);
+	// 	// backdrop-filter: blur(12px);
+	// }
 
-	h3 {
-		margin: 0;
-		margin-bottom: 2rem;
-		grid-column: main;
-	}
+	// h3 {
+	// 	margin: 0;
+	// 	margin-bottom: 2rem;
+	// 	grid-column: main;
+	// }
 
-	div {
-		grid-column: main;
-	}
+	// div {
+	// 	grid-column: main;
+	// }
 </style>

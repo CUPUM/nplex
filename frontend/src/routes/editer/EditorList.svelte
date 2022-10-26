@@ -21,27 +21,27 @@
 </section>
 
 <style lang="scss">
-	section {
-		width: 100%;
-		display: grid;
-		@include mixins.core-grid;
-	}
+	// section {
+	// 	width: 100%;
+	// 	display: grid;
+	// 	@include mixins.core-grid;
+	// }
 
-	h4 {
-		grid-column: main;
-	}
+	// h4 {
+	// 	grid-column: main;
+	// }
 
-	ul {
-		position: relative;
-		grid-column: full;
-		display: flex;
-		flex-direction: row;
-		gap: 3rem;
-		flex-wrap: nowrap;
-		overflow-x: scroll;
-		overflow-y: visible;
-		padding: 0rem 6rem;
-		padding-bottom: 2rem;
-		--scroll-color: rgba(0, 0, 0, 0.05);
-	}
+	// ul {
+	// 	position: relative;
+	// 	grid-column: full;
+	// 	display: flex;
+	// 	flex-direction: row;
+	// 	gap: 3rem;
+	// 	flex-wrap: nowrap;
+	// 	overflow-x: scroll;
+	// 	overflow-y: visible;
+	// 	padding: 0rem 6rem;
+	// 	padding-bottom: 2rem;
+	// 	--scroll-color: rgba(0, 0, 0, 0.05);
+	// }
 </style>

@@ -15,11 +15,13 @@ declare global {
 	// Customize svelte's globals.
 	namespace App {
 		interface PageData {
-			session: Session & {
-				user: Session['user'] & {
-					role: Database['public']['Tables']['users_roles']['Row']['role'];
-				};
-			};
+			session?:
+				| (Session & {
+						user: Omit<Session['user'], 'role'> & {
+							role: Database['public']['Tables']['users_roles']['Row']['role'];
+						};
+				  })
+				| null;
 			category: Category;
 			showCategoryNav: boolean;
 			showFooter: boolean;
