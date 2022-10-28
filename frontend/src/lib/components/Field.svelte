@@ -1,7 +1,12 @@
+<!--
+	@component
+	## Field
+	Primitive single-line input field component.
+-->
 <script lang="ts" context="module">
-	const CTX_KEY = 'field-context-key';
+	const CTX_KEY = 'field-context';
 
-	export interface FieldContext {
+	interface FieldContext {
 		value: Writable<string>;
 		inputRef: Writable<HTMLInputElement>;
 	}
@@ -13,41 +18,49 @@
 
 <script lang="ts">
 	import { inputOnReset } from '$actions/inputOnReset';
-	import { cssSize } from '$utils/styles';
+	import { forwardEvents } from '$utils/forwardEvents';
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
+	import Ripple from './Ripple.svelte';
 
-	export let id: string = undefined;
+	export let id: string | undefined = undefined;
 	export let value: string = '';
 	export let prefix: string = '';
 	export let suffix: string = '';
-	export let name: string = undefined;
-	export let size: string | number = '1em';
+	export let name: string | undefined = undefined;
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
-	export let variant: 'default' | 'outlined' | 'ghost' = 'default';
-	export let required: boolean = undefined;
-	export let readonly: boolean = undefined;
-	export let disabled: boolean = undefined;
-	export let warning: boolean = undefined;
-	export let success: boolean = undefined;
-	export let invalid: boolean = undefined;
-	export let maxlength: number = undefined;
-	export let minlength: number = undefined;
-	export let placeholder: string = '';
+	export let variant: 'default' | 'outlined' | 'ghost' | 'cta' = 'default';
+	export let compact: boolean | undefined = undefined;
 	export let leadingSeparator: boolean = false;
 	export let trailingSeparator: boolean = false;
-	export let pattern: RegExp = undefined;
-	export let format: (value: string) => string = undefined;
-	let className: string = undefined;
+	export let required: boolean | undefined = undefined;
+	export let readonly: boolean | undefined = undefined;
+	export let disabled: boolean | undefined = undefined;
+	export let warning: boolean | undefined = undefined;
+	export let success: boolean | undefined = undefined;
+	export let invalid: boolean | undefined = undefined;
+	export let maxlength: number | undefined = undefined;
+	export let minlength: number | undefined = undefined;
+	export let loading: boolean | undefined = undefined;
+	export let placeholder: string = '';
+	export let pattern: RegExp | undefined = undefined;
+	export let format: ((value: string) => string) | undefined = undefined;
+	export let dirty: boolean = false;
+	let className: string = '';
 	export { className as class };
-	export let style: string = undefined;
-	export let dirty: boolean = undefined;
+	export let style: string | undefined = undefined;
+	export function focus() {
+		inputRef.focus();
+	}
 
 	const _value = writable(value);
 	$: value = $_value;
 	$: _value.set(value);
 
-	let inputRef = writable<HTMLInputElement>(null);
+	let inputRef: HTMLInputElement;
+	const _inputRef = writable<typeof inputRef>();
+	$: _inputRef.set(inputRef);
+
 	let leadingWidth = 0;
 	let labelWidth = 0;
 	let focused = false;
@@ -57,21 +70,18 @@
 		invalid = !value
 			? false
 			: pattern
-			? !$inputRef.checkValidity()
+			? !inputRef?.checkValidity()
 			: minlength
-			? !($inputRef.value.length >= minlength)
+			? !(inputRef.value.length >= minlength)
 			: maxlength
-			? !($inputRef.value.length <= maxlength)
+			? !(inputRef.value.length <= maxlength)
 			: undefined;
 		// success = pattern || minlength || maxlength ? !invalid : undefined;
 	}
 
-	function handleInput(e) {
-		value = format ? format(e.target.value) : e.target.value;
-	}
-
-	function focus() {
-		$inputRef?.focus();
+	function handleInput(e: Event) {
+		const ev = (e.target as HTMLInputElement).value;
+		value = format ? format(ev) : ev;
 	}
 
 	function handleFocus() {
@@ -85,19 +95,24 @@
 		checkValidity();
 	}
 
+	forwardEvents(() => inputRef);
+
 	setContext<FieldContext>(CTX_KEY, {
 		value: _value,
-		inputRef,
+		inputRef: _inputRef,
 	});
 </script>
 
 <div
-	class="outer {variant} {className}"
-	style:--size={cssSize(size)}
-	class:focused
+	class="field {variant} {className}"
+	{style}
+	class:compact
 	class:warning
+	class:focused
+	class:disabled
+	class:readonly
+	class:loading
 	class:success
-	class:disabled={disabled ?? readonly}
 	class:invalid
 	class:dirty
 	class:has-value={value !== ''}
@@ -107,129 +122,114 @@
 	style:--label-width="{labelWidth}px"
 	on:pointerup={focus}
 >
-	<div class="inner">
-		{#if $$slots.leading && $inputRef}
-			<div class="leading" bind:clientWidth={leadingWidth}>
-				<slot name="leading" />
-			</div>
-		{/if}
-		<div class="main">
-			{#if $$slots.label}
-				<label for={id} bind:clientWidth={labelWidth}>
-					<slot name="label" />
-				</label>
-			{/if}
-			{#if prefix}
-				<span class="prefix">{prefix}</span>
-			{/if}
-			<input
-				bind:this={$inputRef}
-				class="input"
-				{type}
-				{name}
-				{placeholder}
-				{value}
-				{maxlength}
-				{minlength}
-				{disabled}
-				{required}
-				readonly={!focusedOnce ?? readonly}
-				pattern={pattern ? pattern.source : undefined}
-				use:inputOnReset
-				on:change
-				on:reset
-				on:input
-				on:focus
-				on:blur
-				on:input={handleInput}
-				on:focus={handleFocus}
-				on:focus|once={() => (focusedOnce = true)}
-				on:blur={handleBlur}
-			/>
-			{#if suffix}
-				<span class="suffix">{suffix}</span>
-			{/if}
+	<Ripple />
+	{#if $$slots.leading}
+		<div class="leading" bind:clientWidth={leadingWidth}>
+			<slot name="leading" />
 		</div>
-		{#if $$slots.trailing && $inputRef}
-			<div class="trailing">
-				<slot name="trailing" />
-			</div>
-		{/if}
-		<div class="outline">
-			<div class="tl" />
-			<div class="tr" />
-			<div class="t" />
-			<div class="b" />
+	{/if}
+	{#if $$slots.label}
+		<label for={id} bind:clientWidth={labelWidth}>
+			<slot name="label" />
+		</label>
+	{/if}
+	{#if prefix}
+		<span class="prefix">{prefix}</span>
+	{/if}
+	<input
+		bind:this={inputRef}
+		class="input"
+		autocomplete="current-{type}"
+		{type}
+		{name}
+		{placeholder}
+		{value}
+		{maxlength}
+		{minlength}
+		{disabled}
+		{required}
+		readonly={!focusedOnce ?? readonly}
+		pattern={pattern ? pattern.source : undefined}
+		use:inputOnReset
+		on:input={handleInput}
+		on:focus={handleFocus}
+		on:focus|once={() => (focusedOnce = true)}
+		on:blur={handleBlur}
+	/>
+	{#if suffix}
+		<span class="suffix">{suffix}</span>
+	{/if}
+	{#if $$slots.trailing}
+		<div class="trailing">
+			<slot name="trailing" />
 		</div>
+	{/if}
+	<div class="outline">
+		<div class="left" />
+		<div class="center" />
+		<div class="right" />
 	</div>
 </div>
 
 <style lang="scss">
-	// Outer element extendable by class prop.
-	.outer {
-		--inset: 3px;
-		--radius-ratio: 1;
-		--ctx-radius-ratio: var(--radius-ratio);
-		--height-ratio: 3;
-		--computed-height: calc(var(--size) * var(--height-ratio));
-		--computed-radius: calc(var(--size) * var(--radius-ratio));
-		--padding-inline: 1.25em;
-		--label-padding: 0em;
-		font-size: var(--size);
+	.field {
+		--radius: var(--default-radius);
+		--inset: var(--default-inset);
+		--size: var(--default-size);
 		position: relative;
-		height: var(--computed-height);
-		border-radius: var(--computed-radius);
+		cursor: text;
+		display: grid;
+		grid-template-columns:
+			[full-start leading-start]
+			auto
+			[leading-end leading-gutter-start]
+			var(--default-padding-inline)
+			[leading-gutter-end prefix-start]
+			auto
+			[prefix-end main-start]
+			minmax(0, 1fr)
+			[main-end suffix-start]
+			auto
+			[suffix-end trailing-gutter-start]
+			var(--default-padding-inline)
+			[trailing-gutter-end trailing-start]
+			auto
+			[trailing-end full-end];
+		gap: 0;
+		font-size: 1em;
+		line-height: 1em;
+		align-items: center;
+		height: var(--size);
+		border-radius: var(--radius);
 		padding: 0;
 		margin: 0;
-
+		outline: 0px solid transparent;
+		transition: transform 0.15s ease-out;
 		&.disabled {
 			opacity: 0.5;
 			pointer-events: none;
 		}
-
 		&.warning {
-			// color: red !important;
-			// background-color: rgba(var(--rgb-error-100), 0.1);
+			color: red !important;
+			background-color: rgba(var(--rgb-error-100), 0.1);
 		}
-
 		&.invalid {
 			color: var(--color-error-700) !important;
 			background-color: rgba(var(--rgb-error-100), 0.1) !important;
 		}
-
 		&.success {
 			color: var(--color-success-700) !important;
 			background-color: rgba(var(--rgb-success-100), 0.1) !important;
 		}
-
 		&.dirty:not(.warning):not(.invalid):not(.success) {
 			.outline {
-				--thickness: 1px;
 				opacity: 1 !important;
 				color: var(--color-secondary-700) !important;
 			}
 		}
-	}
-
-	.inner {
-		position: relative;
-		height: 100%;
-		width: 100%;
-		display: grid;
-		grid-template-columns:
-			[leading-start]
-			auto
-			[leading-end main-start]
-			minmax(0, 1fr)
-			[main-end trailing-start]
-			auto
-			[trailing-end];
-		padding: 0;
-		margin: 0;
-		gap: 0;
-		border-radius: inherit;
-		flex-direction: row;
-		align-items: center;
+		&.focused {
+			outline: var(--default-focus-outline);
+		}
 	}
 
 	.leading,
@@ -240,100 +240,78 @@
 		margin: 0;
 		gap: 0;
 		display: flex;
+		flex-direction: row;
 		flex: 0 1 auto;
 		align-items: center;
-		transition: padding 0.25s ease-in-out;
-
+		transition: padding 0.15s ease-out;
 		&:not(:empty) {
 			gap: 3px;
-			padding: 0 var(--inset);
+			padding: var(--inset);
 		}
 	}
-
 	.leading {
 		grid-column: leading;
 	}
-
 	.trailing {
 		grid-column: trailing;
 	}
-
-	.main {
-		flex: 0 1 auto;
-		position: relative;
-		grid-column: main;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		cursor: text;
-		height: 100%;
-		padding: 0;
-		margin: 0 var(--padding-inline);
-		top: -0.1em;
-		transition: all 0.25s cubic-bezier(0.25, 0, 0, 1);
-	}
-
 	.prefix,
 	.suffix {
+		position: relative;
 		flex: 0;
+		top: -0.1em;
 		white-space: pre;
 		display: inline-block;
-		opacity: 0;
-		transform: translateY(0.25em);
-		transition: all 0.25s cubic-bezier(0.25, 0, 0, 1);
-
+		opacity: 0.25;
+		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
 		.focused &,
 		:not(.focused):not(.has-label) & {
 			transform: translateY(0);
 			opacity: 0.5;
 		}
 	}
-
+	.prefix {
+		grid-column: prefix;
+	}
+	.suffix {
+		grid-column: suffix;
+	}
 	input {
+		position: relative;
+		grid-column: main;
+		top: -0.1em;
 		flex: 1;
 		font-family: inherit;
 		font-size: inherit;
-		border-radius: inherit;
 		border: none;
 		outline: none;
 		background: transparent;
-		height: 2em;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		padding: 0;
 		margin: 0;
 		color: currentColor;
-
+		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
 		&::placeholder {
 			color: currentColor;
 			opacity: 0.35;
 		}
-
-		&:-webkit-autofill,
-		&:-webkit-autofill:hover,
-		&:-webkit-autofill:focus,
-		&:-webkit-autofill:active {
-			transition: background-color 5000s ease-in 0s;
-		}
 	}
-
 	label {
-		user-select: none;
-		cursor: text;
+		pointer-events: none;
 		position: absolute;
 		padding-inline: var(--label-padding);
-		grid-column: main;
-		line-height: 1em;
-		top: 1em;
+		grid-column: prefix-start / suffix-end;
 		white-space: nowrap;
-		overflow: hidden;
 		max-width: 100%;
 		text-overflow: ellipsis;
-		transition: all 0.25s cubic-bezier(0.25, 0, 0, 1);
+		height: 1em;
+		top: calc((var(--size) - 1em) / 2 - 0.1em);
+		transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
 	}
-
 	.outline {
 		--thickness: 1px;
+		--notch-padding: 0.5em;
 		pointer-events: none;
 		position: absolute;
 		border-radius: inherit;
@@ -342,102 +320,78 @@
 		top: 0;
 		left: 0;
 		display: grid;
+		border-width: 0px;
+		border-style: solid;
+		border-color: transparent;
 		grid-template-columns:
 			[full-start left-start]
-			calc(var(--padding-inline) + var(--leading-width))
-			// Keep leftmost value in sync with .main inline-padding.
-			[left-end top-start]
-			var(--label-width)
-			[top-end right-start]
-			auto
+			calc(var(--leading-width) + var(--default-padding-inline) - var(--notch-padding))
+			[left-end center-start]
+			min-content
+			[center-end right-start]
+			1fr
 			[right-end full-end];
 		transition: all 0.15s ease-out;
-
-		.tl,
-		.tr,
-		.t,
-		.b {
-			position: absolute;
-			height: 100%;
-			width: 100%;
+		.left,
+		.center,
+		.right {
 			top: 0;
 			border-width: var(--thickness);
 			border-style: solid;
-			transition: border-width 0.25s ease-in-out;
+			border-color: currentColor;
 		}
-
-		.tl {
+		.left {
 			grid-column: left;
 			border-top-left-radius: inherit;
+			border-bottom-left-radius: inherit;
 			border-right-width: 0;
-			border-color: currentColor transparent transparent transparent;
 		}
-
-		.tr {
-			grid-column: right;
-			border-left-width: 0;
-			border-top-right-radius: inherit;
-			border-color: currentColor transparent transparent transparent;
-		}
-
-		.t {
-			justify-self: right;
-			grid-column: top;
-			border-inline-width: 0;
-			border-color: currentColor transparent transparent transparent;
+		.center {
+			width: 0px;
+			grid-column: center;
+			border-width: 0;
+			border-bottom-width: var(--thickness);
 			transition: width 0.15s ease-out;
 		}
-
-		.b {
-			grid-column: full;
-			border-radius: inherit;
-			border-color: transparent currentColor currentColor currentColor;
+		.right {
+			grid-column: right;
+			border-top-right-radius: inherit;
+			border-bottom-right-radius: inherit;
+			border-left-width: 0;
 		}
 	}
 
-	//
-	// Variants
-	//
-
+	// Default variant
 	.default {
-		color: var(--color-dark-300);
-		background-color: rgba(var(--rgb-light-900), 0.35);
-		backdrop-filter: blur(10px);
-		transition: background-color 0.1s ease-out;
+		color: var(--color-dark-500);
+		background-color: var(--color-base-500);
+		transition: all 0.1s ease-out;
 		.outline {
-			opacity: 0;
-			color: var(--color-primary-500);
-			& > *:not(.b) {
-				display: none;
-			}
-			.b {
-				border-color: currentColor;
-			}
+			display: none;
 		}
 		label {
 			opacity: 0;
-			top: 0.5em;
 			font-size: clamp(10px, 0.5em, 24px);
 		}
 		&:not(.has-placeholder):not(:hover):not(.focused):not(.has-value) {
 			label {
 				opacity: 0.35;
-				top: 1em;
-				font-size: var(--size);
+				font-size: 1em;
 			}
 			.prefix,
 			.suffix {
 				opacity: 0;
 			}
 		}
+		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			background-color: rgba(var(--rgb-light-900), 0.5);
-			.outline {
-				// opacity: 0.5;
-			}
+			color: var(--color-contrast-700);
+			background-color: var(--color-base-900);
 			&.has-label {
-				.main {
-					top: 0.15em;
+				.prefix,
+				.suffix,
+				input {
+					top: 0.35em;
 				}
 				label {
 					opacity: 0.35;
@@ -446,83 +400,76 @@
 			}
 		}
 		&.focused {
-			color: var(--color-dark-900);
-			background-color: rgba(255, 255, 255, 0.9);
-			.outline {
-				opacity: 0.75;
-			}
+			color: var(--color-contrast-900);
+			background-color: var(--color-base-900);
 			&.has-label {
-				.main {
-					top: 0.15em;
+				.prefix,
+				.suffix,
+				input {
+					top: 0.35em;
 				}
 			}
 			label {
-				opacity: 0.35;
+				opacity: 0.25;
 				top: 0.35em;
 			}
 		}
 	}
 
+	// Outlined variant
 	.outlined {
-		color: var(--color-dark-300);
-		background-color: transparent;
+		color: var(--color-contrast-300);
+		background-color: rgba(var(--rgb-base-900), 0.1);
+		transition: all 0.1s ease-out;
 		.outline {
-			opacity: 0.25;
+			color: var(--color-contrast-100);
+			opacity: 0.2;
 		}
 		label {
-			opacity: 0.5;
+			top: -0.5em;
+			opacity: 0;
+			font-size: clamp(10px, 0.5em, 24px);
 		}
-		&.has-placeholder,
-		&.has-value:hover {
-			--label-padding: 0.5em;
+		&:not(.has-placeholder):not(:hover):not(.focused):not(.has-value) {
 			label {
-				top: -0.3em;
-				font-size: clamp(10px, 0.5em, 24px);
+				top: calc((var(--size) - 1em) / 2 - 0.1em);
+				opacity: 0.35;
+				font-size: 1em;
 			}
-			.outline {
-				.t {
-					width: 0;
-				}
-			}
-		}
-		&.has-value {
-			--label-padding: 0.5em;
-			label {
-				top: 0em;
-				font-size: clamp(10px, 0.5em, 24px);
+			.prefix,
+			.suffix {
 				opacity: 0;
 			}
 		}
-		&.has-placeholder,
-		&.has-label {
-			&:not(.has-value):not(.focused) {
-				.prefix,
-				.suffix {
-					opacity: 0;
-				}
+		:global(.hover-source:hover) &:global(.hover-target),
+		&:hover,
+		&.focused {
+			color: var(--color-contrast-700);
+			background-color: transparent;
+			label {
+				opacity: 0.5;
+				top: -0.8em;
 			}
-		}
-		&:hover {
 			.outline {
 				opacity: 0.5;
 			}
-			label {
-				opacity: 0.75;
+			&.has-label {
+				.center {
+					width: calc(var(--label-width) + 2 * var(--notch-padding));
+				}
 			}
 		}
 		&.focused {
-			--label-padding: 0.5em;
+			outline: none;
+			color: var(--color-contrast-900);
 			.outline {
-				opacity: 1;
-				.t {
-					width: 0;
-				}
-			}
-			label {
-				font-size: clamp(10px, 0.5em, 24px);
-				opacity: 1;
-				top: -0.3em;
+				--thickness: 1.5px;
+				opacity: 0.75;
 			}
 		}
 	}
+
+	// Ghost variant
+
+	// Call-to-action variant
 </style>

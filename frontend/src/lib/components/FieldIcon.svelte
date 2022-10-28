@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { ComponentProps } from 'svelte';
-	import Icon from './Icon/Icon.svelte';
+	import Icon from './Icon.svelte';
 
 	type IconProps = ComponentProps<Icon>;
 

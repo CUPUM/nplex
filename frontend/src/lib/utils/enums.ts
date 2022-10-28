@@ -75,7 +75,7 @@ export enum Cookie {
  *
  * See https://kit.svelte.dev/docs/load#input-methods-depends for more info.
  */
-export enum CustomLoadDependencies {
+export enum LoadDependency {
 	DbUserProfile = 'db:user-profile',
 }
 

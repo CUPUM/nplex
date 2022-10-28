@@ -2,11 +2,11 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/enums';
 	import { getContext, type ComponentProps } from 'svelte';
-	import Button from './Button/Button.svelte';
+	import Button from './Button.svelte';
 	import type { FieldContext } from './Field.svelte';
-	import Icon from './Icon/Icon.svelte';
+	import Icon from './Icon.svelte';
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
 

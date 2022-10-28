@@ -7,9 +7,9 @@
 
 <script lang="ts">
 	import type { ComponentProps } from 'svelte';
-	import Button from './Button/Button.svelte';
+	import Button from './Button.svelte';
 	import { getFieldContext } from './Field.svelte';
-	import Icon from './Icon/Icon.svelte';
+	import Icon from './Icon.svelte';
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
 
@@ -21,7 +21,7 @@
 </script>
 
 <Button {variant} on:click={toggle} square>
-	<Icon name={$inputRef.type === 'password' ? 'eye-open' : 'eye-cross'} size="1.5em" />
+	<Icon name={$inputRef.type === 'password' ? 'eye-open' : 'eye-cross'} />
 </Button>
 
 <style lang="scss">

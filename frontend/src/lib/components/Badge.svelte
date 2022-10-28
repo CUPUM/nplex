@@ -5,7 +5,7 @@
 	Note that hidden overflow on parent elements will affect this component's visibility.
 -->
 <script lang="ts">
-	import { cssSize } from '$utils/styles';
+	import { cssSize } from '$utils/css';
 	import { elasticOut, expoIn } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 

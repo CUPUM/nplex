@@ -19,7 +19,10 @@ interface ScrollData {
 	locked: boolean;
 }
 
-export const mainScroll = (function () {
+/**
+ * Document's root element scroll information.
+ */
+export const rootScroll = (function () {
 	const { subscribe, update } = writable<ScrollData>({ y: 0, delta: 0, up: false, down: false, locked: false });
 	let locks = new Set();
 

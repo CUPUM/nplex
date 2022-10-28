@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/enums';
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import type { MapContext } from './Map.svelte';
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cssSize } from '$utils/styles';
+	import { cssSize } from '$utils/css';
 
 	export let href: string;
 	export let size: string | number = '1em';

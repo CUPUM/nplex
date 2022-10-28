@@ -2,8 +2,8 @@
 </script>
 
 <script lang="ts">
-	import Button from '$components/Button/Button.svelte';
-	import Icon from '$components/Icon/Icon.svelte';
+	import Button from '$components/Button.svelte';
+	import Icon from '$components/Icon.svelte';
 </script>
 
 <li class="create">

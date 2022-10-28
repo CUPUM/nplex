@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { backgroundColor } from '$stores/backgroundColor';
-	import { colors } from '$utils/colors';
+	import { colors } from '$utils/vars';
 	import { onDestroy, onMount } from 'svelte/internal';
 
 	onMount(() => {

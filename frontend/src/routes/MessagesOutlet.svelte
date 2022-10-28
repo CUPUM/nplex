@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from '$components/Icon/Icon.svelte';
+	import Icon from '$components/Icon.svelte';
 	import { messages, type Message } from '$stores/messages';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';

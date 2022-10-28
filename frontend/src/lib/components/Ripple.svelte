@@ -1,19 +1,17 @@
 <!--
 	@component
 	# Ripple
-	Add a visual ripple effect on interactive elements.
+	Adds a visual ripple effect on interactive elements.
 -->
 <script lang="ts" context="module">
-	export const rippleEvent = 'ripple';
 </script>
 
 <script lang="ts">
-	import * as styles from './Ripple.css';
 	export let host: HTMLElement | undefined = undefined;
 	export let easing: string = 'cubic-bezier(0,0,0,1)';
 	export let duration = 1200;
 	export let delay = 0;
-	export let opacityStart = 1;
+	export let opacityStart = 0.5;
 	export let opacityEnd = 0;
 	export let opacityEasing = easing;
 	export let opacityDuration = duration;
@@ -23,7 +21,7 @@
 	export let spreadEasing = easing;
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
-	export let color: string = 'currentColor';
+	export let color: string = 'var(--color-contrast-100)';
 	export let colorStart: string = color;
 	export let colorEnd: string = colorStart;
 	export let colorEasing = easing;
@@ -78,8 +76,8 @@
 </script>
 
 <div
-	class={styles.container}
 	bind:this={ref}
+	class="container"
 	style:--opacity-start={opacityStart}
 	style:--opacity-end={opacityEnd}
 	style:--opacity-easing={opacityEasing}
@@ -99,7 +97,7 @@
 >
 	{#each ripples as r (r)}
 		<div
-			class={styles.ripple}
+			class="ripple"
 			style:--x="{r.x}px"
 			style:--y="{r.y}px"
 			style:--d="{r.d}px"
@@ -108,3 +106,50 @@
 		/>
 	{/each}
 </div>
+
+<style lang="scss">
+	.container {
+		pointer-events: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		border-radius: inherit;
+		overflow: hidden;
+	}
+
+	.ripple {
+		position: absolute;
+		left: var(--x);
+		top: var(--y);
+		opacity: var(--opacity-start);
+		width: calc(var(--d) * var(--spread-start));
+		background-color: var(--color-start);
+		aspect-ratio: 1 / 1;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		filter: blur(var(--blur));
+		animation: var(--opacity-duration) var(--opacity-easing) var(--opacity-delay) 1 forwards fade,
+			var(--spread-duration) var(--spread-easing) var(--spread-delay) 1 forwards spread,
+			var(--color-duration) var(--color-easing) var(--color-delay) 1 forwards color;
+	}
+
+	@keyframes fade {
+		to {
+			opacity: var(--opacity-end);
+		}
+	}
+
+	@keyframes spread {
+		to {
+			width: calc(var(--d) * var(--spread-end));
+		}
+	}
+
+	@keyframes color {
+		to {
+			background-color: var(--color-end);
+		}
+	}
+</style>

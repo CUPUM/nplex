@@ -1,4 +1,4 @@
-import type { cssSizeUnits } from 'src/lib/utils/styles';
+import type { cssSizeUnits } from '$utils/css';
 
 /**
  * Namespacing CSS types for clarity.

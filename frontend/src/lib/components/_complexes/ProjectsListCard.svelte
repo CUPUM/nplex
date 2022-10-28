@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
 	import { page } from '$app/stores';
-	import Button from '$components/Button/Button.svelte';
-	import Icon from '$components/Icon/Icon.svelte';
+	import Button from '$components/Button.svelte';
+	import Icon from '$components/Icon.svelte';
 	import Loading from '$components/Loading.svelte';
 	import { getAuthRedirectUrl } from '$utils/routing/guard';
 	import { colors } from '$utils/values/colors';

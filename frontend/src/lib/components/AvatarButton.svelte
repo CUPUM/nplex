@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
 	import { page } from '$app/stores';
-	import { cssSize } from '$utils/styles';
+	import { cssSize } from '$utils/css';
 	import type { ComponentProps } from 'svelte';
 	import Avatar from './Avatar.svelte';
 

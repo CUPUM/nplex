@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Database } from '$types/database';
-	import { cssSize } from '$utils/styles';
+	import { cssSize } from '$utils/css';
 	import type { User } from '@supabase/supabase-js';
 	import Loading from './Loading.svelte';
 

@@ -7,7 +7,7 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/enums';
 	import type { GeoJSON } from 'geojson';
 	import type { GeoJSONSource, GeoJSONSourceSpecification } from 'maplibre-gl';
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';

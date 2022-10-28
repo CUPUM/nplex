@@ -3,10 +3,10 @@
 
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Button from '$components/Button/Button.svelte';
-	import Icon from '$components/Icon/Icon.svelte';
+	import Button from '$components/Button.svelte';
+	import Icon from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/enums';
 	import { getContext, type ComponentProps } from 'svelte';
 	import type { ProjectEditorContext } from './+page.svelte';
 

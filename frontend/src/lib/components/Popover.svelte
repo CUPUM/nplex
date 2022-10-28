@@ -5,7 +5,7 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import { afterNavigate } from '$app/navigation';
-	import { cssSize } from '$utils/styles';
+	import { cssSize } from '$utils/css';
 	import { onDestroy, onMount, tick } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';

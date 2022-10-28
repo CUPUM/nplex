@@ -1,11 +1,11 @@
 import { dbClient } from '$utils/database/database';
-import { CustomLoadDependencies } from '$utils/keys';
+import { LoadDependency } from '$utils/enums';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ parent, depends }) => {
 	// Setting a custom dep for limited refresh after form submission.
-	depends(CustomLoadDependencies.DbUserProfile);
+	depends(LoadDependency.DbUserProfile);
 
 	const { session } = await parent();
 

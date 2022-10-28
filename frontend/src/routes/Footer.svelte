@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
-	import Icon from '$components/Icon/Icon.svelte';
+	import Icon from '$components/Icon.svelte';
 	import Link from '$components/Link.svelte';
 	import Logo from '$components/Logo.svelte';
 	import type { ComponentProps } from 'svelte';

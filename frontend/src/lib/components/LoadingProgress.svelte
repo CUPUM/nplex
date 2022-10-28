@@ -9,7 +9,7 @@
 		easing: cubicOut,
 	});
 
-	let timeout = null;
+	let timeout: ReturnType<typeof setTimeout> | undefined;
 
 	export function start() {
 		if ($n) {

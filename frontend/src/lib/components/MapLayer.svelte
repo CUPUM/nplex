@@ -7,7 +7,7 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/enums';
 	import type { LayerSpecification } from 'maplibre-gl';
 	import { onDestroy, onMount, setContext } from 'svelte';
 	import { getContext } from 'svelte/types/runtime/internal/lifecycle';

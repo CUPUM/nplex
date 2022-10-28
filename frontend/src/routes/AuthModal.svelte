@@ -1,21 +1,48 @@
 <script lang="ts" context="module">
-	// Move singleton authModal store here.
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import { rootScroll } from '$stores/scroll';
+	import { SearchParam } from '$utils/enums';
+	import { derived } from 'svelte/store';
+
+	const LOCK_KEY = 'auth';
+
+	export const authModalState = (function () {
+		const { subscribe } = derived(page, ($page) => {
+			if (browser) {
+				const isModal = $page.url.searchParams.has(SearchParam.AuthModal);
+				if (isModal) rootScroll.lock(LOCK_KEY);
+				else rootScroll.unlock(LOCK_KEY);
+				return isModal;
+			}
+			return false;
+		});
+
+		return {
+			subscribe,
+			close: async () => {
+				if (browser) {
+					const params = new URLSearchParams(location.search);
+					params.delete(SearchParam.AuthModal);
+					return goto(`?${params.toString()}`, { replaceState: true });
+				}
+			},
+		};
+	})();
 </script>
 
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
-	import Button from '$components/Button/Button.svelte';
+	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
-	import FieldControlReset from '$components/FieldControlReset.svelte';
-	import FieldControlTogglePassword from '$components/FieldControlTogglePassword.svelte';
 	import FieldIcon from '$components/FieldIcon.svelte';
-	import Icon from '$components/Icon/Icon.svelte';
+	import FieldReset from '$components/FieldReset.svelte';
+	import FieldTogglePassword from '$components/FieldTogglePassword.svelte';
+	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
-	import { providers } from '$components/ProviderLogo/logos';
-	import ProviderLogo from '$components/ProviderLogo/ProviderLogo.svelte';
-	import { authModal } from '$stores/authModal';
+	import ProviderLogo, { providers } from '$components/ProviderLogo.svelte';
 	import { messages } from '$stores/messages';
-	import { vars } from '$styles/app.css';
 	import { transform } from '$transitions/transform';
 	import { dbClient } from '$utils/database/database';
 	import { patterns } from '$utils/input/patterns';
@@ -56,98 +83,97 @@
 					// To do: get app approbation from desired providers.
 					break;
 			}
-		} catch (error) {
+		} catch (err: any) {
 			messages.dispatch({
 				type: 'error',
-				content: error.message,
+				content: err.message,
 			});
 		}
 		currentAction = null;
 	}
 </script>
 
-<div id="auth-bg" transition:fade={{ duration: 200 }} />
-<dialog class="container">
-	<form
-		on:submit|preventDefault={submit}
-		action="login"
-		in:transform={{ scale: 1.08, translateY: 25, opacity: 0, duration: 350, easing: cubicOut }}
-		out:scale={{ start: 0.95 }}
-		use:clickoutside={true}
-		on:clickoutside={() => authModal.close()}
-	>
-		<a id="auth-logo" href="/">
-			<Logo color="currentColor" />
-		</a>
-		<fieldset id="auth-fields">
-			<Field
-				variant="outlined"
-				bind:value={email}
-				maxlength={100}
-				pattern={patterns.email}
-				name="email"
-				type="email"
-				required
-			>
-				<FieldIcon name="letter" slot="leading" />
-				<svelte:fragment slot="label">Courriel</svelte:fragment>
-				<FieldControlReset slot="trailing" />
-			</Field>
-			<Field variant="outlined" bind:value={password} name="password" type="password" minlength={6} required>
-				<FieldIcon slot="leading" name="lock-close" />
-				<svelte:fragment slot="label">Mot de passe</svelte:fragment>
-				<svelte:fragment slot="trailing">
-					<FieldControlTogglePassword />
-					<FieldControlReset />
-				</svelte:fragment>
-			</Field>
-			<div id="auth-buttons">
-				<Button
-					class="login-button"
-					type="submit"
-					variant="cta"
-					value={Action.EmailSignIn}
-					disabled={!Boolean(email) || !Boolean(password)}
-					contentAlign="center"
-					loading={currentAction === Action.EmailSignIn}
+{#if $authModalState}
+	<div id="auth-bg" transition:fade={{ duration: 200 }} />
+	<dialog class="container">
+		<form
+			on:submit|preventDefault={submit}
+			action="login"
+			in:transform={{ scale: 1.08, translateY: 25, opacity: 0, duration: 350, easing: cubicOut }}
+			out:scale={{ start: 0.95 }}
+			use:clickoutside={true}
+			on:clickoutside={() => authModalState.close()}
+		>
+			<a id="auth-logo" href="/">
+				<Logo color="currentColor" />
+			</a>
+			<fieldset id="auth-fields">
+				<Field
+					variant="outlined"
+					bind:value={email}
+					maxlength={100}
+					pattern={patterns.email}
+					name="email"
+					type="email"
+					required
 				>
+					<FieldIcon name="letter" slot="leading" />
+					<svelte:fragment slot="label">Courriel</svelte:fragment>
+					<FieldReset slot="trailing" />
+				</Field>
+				<Field variant="outlined" bind:value={password} name="password" type="password" minlength={6} required>
+					<FieldIcon slot="leading" name="lock-close" />
+					<svelte:fragment slot="label">Mot de passe</svelte:fragment>
 					<svelte:fragment slot="trailing">
-						<Icon name="login" size="1.5em" />
+						<FieldTogglePassword />
+						<FieldReset />
 					</svelte:fragment>
-					Me connecter
-				</Button>
-				<Button
-					size=".85em"
-					type="submit"
-					variant="ghost"
-					value={Action.EmailSignUp}
-					disabled={!Boolean(email) || !Boolean(password)}
-					loading={currentAction === Action.EmailSignUp}
-				>
-					<Icon name="user-add" size="1em" />&nbsp; Créer un compte
-				</Button>
-				<Button size=".85em" type="submit" variant="ghost" value={Action.ResetPassword}
-					>Mot de passe oublié?</Button
-				>
-			</div>
-		</fieldset>
-		<hr />
-		<fieldset id="auth-providers">
-			<span>Ou se connecter via une autre plateforme&nbsp;:</span>
-			<fieldset id="auth-providers-buttons" disabled>
-				{#each providerNames as name, i}
-					<Button size={vars.sizes.small} contentAlign="center" variant="secondary">
-						<ProviderLogo size="1.5em" {name} slot="leading" />
-						{providers[name]?.title}
+				</Field>
+				<div id="auth-buttons">
+					<Button
+						class="login-button"
+						type="submit"
+						variant="cta"
+						value={Action.EmailSignIn}
+						disabled={!Boolean(email) || !Boolean(password)}
+						contentAlign="center"
+						loading={currentAction === Action.EmailSignIn}
+					>
+						<svelte:fragment slot="trailing">
+							<Icon name="login" />
+						</svelte:fragment>
+						Me connecter
 					</Button>
-				{/each}
+					<Button
+						type="submit"
+						variant="ghost"
+						value={Action.EmailSignUp}
+						disabled={!Boolean(email) || !Boolean(password)}
+						loading={currentAction === Action.EmailSignUp}
+					>
+						<Icon name="user-add" />&nbsp; Créer un compte
+					</Button>
+					<Button type="submit" variant="ghost" value={Action.ResetPassword}>Mot de passe oublié?</Button>
+				</div>
 			</fieldset>
-		</fieldset>
-		<Button class="close" size=".85em" type="submit" variant="ghost" on:click={() => authModal.close()} square>
-			<Icon name="cross" size="1.5em" />
-		</Button>
-	</form>
-</dialog>
+			<hr />
+			<fieldset id="auth-providers">
+				<span>Ou se connecter via une autre plateforme&nbsp;:</span>
+				<fieldset id="auth-providers-buttons" disabled>
+					{#each providerNames as name, i}
+						<Button contentAlign="center" variant="secondary">
+							<ProviderLogo {name} slot="leading" />
+							{providers[name]?.title}
+						</Button>
+					{/each}
+				</fieldset>
+			</fieldset>
+			<Button class="close" type="submit" variant="ghost" on:click={() => authModalState.close()} square>
+				<Icon name="cross" />
+			</Button>
+		</form>
+	</dialog>
+{/if}
 
 <style lang="scss">
 	#auth-bg {

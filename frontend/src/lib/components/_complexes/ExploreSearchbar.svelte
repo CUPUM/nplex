@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
 	import { page } from '$app/stores';
-	import Button from '$components/Button/Button.svelte';
+	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
 	import FieldIcon from '$components/FieldIcon.svelte';
-	import Icon from '$components/Icon/Icon.svelte';
+	import Icon from '$components/Icon.svelte';
 	import Token from '$components/Token.svelte';
 	import { projectsShowFiltersPane } from '$stores/projectsShowFiltersPane';
 	import { exploreSearchterm } from '$stores/search';

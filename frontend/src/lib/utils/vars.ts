@@ -1,9 +1,6 @@
-/**
- * Keeping colors in a standalone module for usability out of `css`(`css.ts`) scopes, in plain script.
- */
-
 const light = {
 	base: {
+		'000': 'hsl(80, 20%, 100%)',
 		100: 'hsl(80, 20%, 98%)',
 		300: 'hsl(95, 18%, 95%)',
 		500: 'hsl(110, 15%, 93%)',
@@ -11,11 +8,12 @@ const light = {
 		900: 'hsl(140, 11%, 86%)',
 	},
 	contrast: {
-		100: 'hsl(49, 5%, 35%)',
-		300: 'hsl(50, 6%, 29%)',
-		500: 'hsl(51,7%, 21%)',
-		700: 'hsl(52,8%, 15%)',
-		900: 'hsl(53, 9%, 10%)',
+		100: 'hsl(95, 23%, 29%)',
+		300: 'hsl(96, 21%, 24%)',
+		500: 'hsl(97,19%, 19%)',
+		700: 'hsl(98,16%, 14%)',
+		900: 'hsl(99, 14%, 9%)',
+		1000: 'hsl(90, 0%, 0%)',
 	},
 	primary: {
 		100: 'hsl(157, 48%, 72%)',
@@ -49,18 +47,20 @@ const light = {
 
 const dark: typeof light = {
 	base: {
-		100: 'hsl(49, 5%, 35%)',
-		300: 'hsl(50, 6%, 29%)',
-		500: 'hsl(51,7%, 21%)',
-		700: 'hsl(52,8%, 15%)',
-		900: 'hsl(53, 9%, 10%)',
+		'000': 'hsl(204, 10%, 0%)',
+		100: 'hsl(203, 10%, 10%)',
+		300: 'hsl(202,11%, 13%)',
+		500: 'hsl(201,12%, 16%)',
+		700: 'hsl(200, 13%, 19%)',
+		900: 'hsl(199, 14%, 23%)',
 	},
 	contrast: {
-		100: 'hsl(80, 20%, 98%)',
-		300: 'hsl(95, 16%, 95%)',
+		100: 'hsl(140, 9%, 86%)',
+		300: 'hsl(125, 10%, 90%)',
 		500: 'hsl(110, 12%, 93%)',
-		700: 'hsl(125, 10%, 90%)',
-		900: 'hsl(140, 9%, 86%)',
+		700: 'hsl(95, 16%, 95%)',
+		900: 'hsl(80, 20%, 98%)',
+		1000: 'hsl(0, 0%, 100%)',
 	},
 	primary: {
 		100: 'hsl(23, 86%, 81%)',
@@ -106,3 +106,27 @@ export const colors = {
 	light,
 	dark,
 } as const;
+
+const grid = 2;
+
+/**
+ * App sizing chart. Unitless values, converted to pixels for css vars.
+ */
+export const sizes = {
+	x4small: 3 * grid,
+	x3small: 4 * grid,
+	x2small: 5 * grid,
+	xsmall: 6 * grid,
+	small: 7 * grid,
+	medium: 8 * grid,
+	large: 10 * grid,
+	xlarge: 14 * grid,
+	x2large: 20 * grid,
+	x3large: 28 * grid,
+	x4large: 38 * grid,
+};
+
+export const ratios = {
+	radius: 1,
+	height: 3,
+};

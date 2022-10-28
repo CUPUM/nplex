@@ -89,39 +89,3 @@ export function anim(...details: (string | number)[] | (string | number)[][]): s
 	}
 	return details.join(' ');
 }
-
-// type CSSAnimationParams = [
-// 	duration?: CSS.Properties['animationDuration'],
-// 	easing?: CSS.Properties['animationTimingFunction'],
-// 	delay?: CSS.Properties['animationDelay'],
-// 	iterationCount?: CSS.Properties['animationIterationCount'],
-// 	direction?: CSS.Properties['animationDirection'],
-// 	fillMode?: CSS.Properties['animationFillMode'],
-// 	playState?: CSS.Properties['animationPlayState'],
-// 	name?: CSS.Properties['animationName']
-// ];
-
-/**
- * **Attention:**
- *
- * Selectors ultimately must target the current element, i.e. `&`. Selectors targeting other elements, for example
- * childrens of the current `&` element, will not be valid.
- *
- * To do: implement a more versatile and chainable/nestable composition system. For example, it should be possible to
- * use something like sel.childOf('some-class').withClass('some-other-class').$
- */
-export const sel = {
-	childOf: function (className: string) {
-		return `${className} &`;
-	},
-	directChildOf: function (className: string) {
-		return `${className} > &`;
-	},
-	withClass: function (className: string) {
-		return `${className}&`;
-	},
-	nthChild: function (n: string | number) {
-		return `&:nth-child(${n})`;
-	},
-	toString: function () {},
-};

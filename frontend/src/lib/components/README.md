@@ -18,9 +18,9 @@ common features of such components should be setup:
 
 ```html
 <!--
-	@component
-	## Name
-	Description
+  @component
+  ## Name
+  Description
 -->
 <script lang="ts" context="module">
   const CTX_KEY = 'component-name-context';

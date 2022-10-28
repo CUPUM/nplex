@@ -1,23 +1,27 @@
 /**
  * Check if value is an object.
  */
-export function isObject<T>(value: T): value is Record<keyof T, any> {
+export function isObject<T>(value: T): value is Record<any, any> {
 	return !!value && typeof value === 'object' && !Array.isArray(value);
 }
 
 /**
- * Utility function expecting an object and returning a recursively formatted version of the object.
+ * Utility function expecting an object and returning an array of flattened keys and their path-end value.
  */
-export function walk<O extends object>(source: O, format: Walker<O>): any {
-	const formatted = Object.entries(source).map(([k, v]) => {
+export function flatten(source: Record<string | number, any>): Flattened {
+	return Object.entries(source).reduce<Flattened>((acc, [k, v]) => {
 		if (isObject(v)) {
-			return [k, walk({ ...v }, format)];
+			return [
+				...acc,
+				...flatten(v).map(([k1, v1]) => {
+					return [[k, ...k1], v1] as Flattened[number];
+				}),
+			];
 		}
-		return format(k, v);
-	});
-	return Object.fromEntries(formatted);
+		return [...acc, [[k], v]];
+	}, []);
 }
-type Walker<O extends object> = (k: unknown, v: unknown) => [unknown, unknown];
+type Flattened = [keys: string[], value: string | number][];
 
 // /**
 //  * Helper to deep merge objects and overcome `Object.assign` or `{...a, ...b}` ignoring nested objects. **To avoid

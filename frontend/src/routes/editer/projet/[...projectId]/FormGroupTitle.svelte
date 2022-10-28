@@ -2,10 +2,10 @@
 </script>
 
 <script lang="ts">
-	import Button from '$components/Button/Button.svelte';
+	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
-	import Icon from '$components/Icon/Icon.svelte';
-	import { Ctx } from '$utils/keys';
+	import Icon from '$components/Icon.svelte';
+	import { Ctx } from '$utils/enums';
 	import { sizes } from '$utils/values/sizes';
 	import { getContext } from 'svelte';
 	import type { ProjectEditorContext } from './+page.svelte';

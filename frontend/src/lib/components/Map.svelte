@@ -8,7 +8,7 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
 	import { debounce } from '$utils/debounce';
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/enums';
 	import { frenchLocale } from '$utils/maps/locale';
 	import { mapStyles, montrealLocation } from '$utils/maps/map';
 	import { Map, type MapOptions, type StyleSpecification } from 'maplibre-gl';

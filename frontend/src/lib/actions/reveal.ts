@@ -1,7 +1,5 @@
-import { camelCaseToKebabCase } from '$utils/string';
+import { paramCase } from 'change-case';
 import { intersection } from './intersection';
-
-type IntersectionOptions = Parameters<typeof intersection>[1];
 
 type RevealCSS = Partial<
 	Pick<
@@ -19,7 +17,7 @@ type RevealCSS = Partial<
 
 type RevealWrapCSS = Partial<Pick<RevealCSS, 'clipPath' | 'perspective' | 'perspectiveOrigin' | 'transform'>>;
 
-export interface RevealOptions extends IntersectionOptions {
+export interface RevealOptions extends IntersectionObserverInit {
 	/**
 	 * Use the intersection observer or listen to options state update.
 	 */
@@ -117,7 +115,7 @@ export function reveal(
 		wrapEasingOut = easingOut,
 		wrapStagger = stagger,
 		wrapStaggerOut = staggerOut,
-		wrapStart = undefined,
+		wrapStart = {},
 		wrapEnd = wrapStart,
 	}: RevealOptions = {}
 ): SvelteActionReturnType {
@@ -257,26 +255,28 @@ export function reveal(
 				delayOut: ATTRIBUTES.UNIT_VAR_DELAY_OUT,
 			}
 		);
-		node.parentElement.setAttribute(ATTRIBUTES.ATTR_WRAP_NODE, '');
-		node.parentElement.style.cssText += composeRevealCssVars(
-			i,
-			{
-				duration: wrapDuration,
-				durationOut: wrapDurationOut,
-				easing: wrapEasing,
-				easingOut: wrapEasingOut,
-				stagger: wrapStagger,
-				staggerOut: wrapStaggerOut,
-			},
-			{
-				duration: ATTRIBUTES.WRAP_VAR_DURATION_IN,
-				durationOut: ATTRIBUTES.WRAP_VAR_DURATION_OUT,
-				easing: ATTRIBUTES.WRAP_VAR_EASING_IN,
-				easingOut: ATTRIBUTES.WRAP_VAR_EASING_OUT,
-				delay: ATTRIBUTES.WRAP_VAR_DELAY_IN,
-				delayOut: ATTRIBUTES.WRAP_VAR_DELAY_OUT,
-			}
-		);
+		if (node.parentElement) {
+			node.parentElement.setAttribute(ATTRIBUTES.ATTR_WRAP_NODE, '');
+			node.parentElement.style.cssText += composeRevealCssVars(
+				i,
+				{
+					duration: wrapDuration,
+					durationOut: wrapDurationOut,
+					easing: wrapEasing,
+					easingOut: wrapEasingOut,
+					stagger: wrapStagger,
+					staggerOut: wrapStaggerOut,
+				},
+				{
+					duration: ATTRIBUTES.WRAP_VAR_DURATION_IN,
+					durationOut: ATTRIBUTES.WRAP_VAR_DURATION_OUT,
+					easing: ATTRIBUTES.WRAP_VAR_EASING_IN,
+					easingOut: ATTRIBUTES.WRAP_VAR_EASING_OUT,
+					delay: ATTRIBUTES.WRAP_VAR_DELAY_IN,
+					delayOut: ATTRIBUTES.WRAP_VAR_DELAY_OUT,
+				}
+			);
+		}
 	});
 
 	// Set initial styling
@@ -371,7 +371,7 @@ function objectToCSSText(styleObject: Record<string, string>) {
 	if (!styleObject) return '';
 	return (
 		Object.entries(styleObject)
-			.map(([k, v]) => `${camelCaseToKebabCase(k)}: ${v}`)
+			.map(([k, v]) => `${paramCase(k)}: ${v}`)
 			.join('; ') + '; '
 	);
 }
@@ -391,7 +391,7 @@ function splitText(element: HTMLElement, { delimiter = '' }: SplitTextOptions = 
 			nodes.push(...splitText(cn, { delimiter }));
 		} else if (cn.nodeType === Node.TEXT_NODE) {
 			const newNodes: Node[] = [];
-			cn.textContent.split(/(\s)/).forEach((segment, i) => {
+			cn?.textContent?.split(/(\s)/).forEach((segment, i) => {
 				if (!segment) return;
 				if (segment === ' ') return newNodes.push(document.createTextNode(' '));
 				const segmentNode = document.createElement('span');

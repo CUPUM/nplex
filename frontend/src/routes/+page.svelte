@@ -9,7 +9,7 @@
 	const revealH2: RevealOptions = { ...slipMask, splitDelimiter: '' };
 </script>
 
-<article id="intro">
+<article id="intro" class="">
 	<header>
 		<h1 use:reveal={flyRotate}>
 			Bienvenue sur Nplex
@@ -33,39 +33,38 @@
 </article>
 
 <style lang="scss">
-	// #intro {
-	// 	display: flex;
-	// 	flex: none;
-	// 	flex-direction: column;
-	// 	align-items: center;
-	// 	margin-top: calc(var(--navbar-height, 0px) * -1);
-	// 	width: 100%;
+	#intro {
+		display: flex;
+		flex: none;
+		flex-direction: column;
+		align-items: center;
+		margin-top: calc(var(--navbar-height, 0px) * -1);
+		width: 100%;
 
-	// 	header {
-	// 		@include mixins.core-grid;
-	// 		align-items: center;
-	// 		min-height: 100vh;
-	// 		padding: 4rem;
-	// 		margin-bottom: 8rem;
-	// 		color: var(--color-dark-900);
-	// 	}
+		header {
+			align-items: center;
+			min-height: 100vh;
+			padding: 4rem;
+			margin-bottom: 8rem;
+			color: var(--color-dark-900);
+		}
 
-	// 	h1 {
-	// 		grid-column: main;
-	// 		margin: 0;
-	// 	}
+		h1 {
+			grid-column: main;
+			margin: 0;
+		}
 
-	// 	span {
-	// 		font-weight: 200;
-	// 	}
-	// }
+		span {
+			font-weight: 200;
+		}
+	}
 
-	// #intro-text {
-	// 	grid-column: main;
-	// }
+	#intro-text {
+		grid-column: main;
+	}
 
-	// #previews {
-	// 	display: flex;
-	// 	flex-direction: column;
-	// }
+	#previews {
+		display: flex;
+		flex-direction: column;
+	}
 </style>

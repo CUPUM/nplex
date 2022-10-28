@@ -1,4 +1,4 @@
-import { Cookie } from '$utils/keys';
+import { Cookie } from '$utils/enums';
 import type { Handle } from '@sveltejs/kit';
 
 /**

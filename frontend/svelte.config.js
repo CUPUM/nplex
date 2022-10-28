@@ -19,6 +19,7 @@ const config = {
 		},
 		alias: {
 			$actions: 'src/lib/actions',
+			$api: 'src/routes/api',
 			$components: 'src/lib/components',
 			$routes: 'src/routes',
 			$static: 'static',

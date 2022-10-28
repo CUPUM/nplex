@@ -1,34 +1,38 @@
-@use './mixins.scss';
-
 :root {
-	/*
-	Font variables
-	*/
+	// Font variables
 	--font-main: 'Outfit', sans-serif;
 	--font-misc: 'Space Mono', monospace;
-	--font-misc-ratio: 0.925;
-	/* 
-	Global style helpers for consistent appearence across components
-	*/
+	// Global style helpers for consistent appearence across components
 	--default-inset: 3px; // Default inset for nested elements
-	--default-size: 3.25em; // Size/height height for interactive elements
-	--default-radius: 1em; // Border radius for buttons and other interactive elements
-	/*
-	Scrollbar customization
-	*/
+	--default-size: 3.2em; // Size/height height for interactive elements
+	--default-radius: 0.9em; // Border radius for buttons and other interactive elements
+	--default-padding-inline: 1.25em;
+	--default-focus-outline: 1px solid rgba(var(--rgb-primary-500), 0.25);
+	// Scrollbar customization
 	--scroll-size: 4px;
-	--scroll-color: rgba(var(--rgb-dark-500), 0.25);
-	/*
-	Additionnal global CSS custom properties derived from TypeScript constants,
-	such as colors and sizes, are generated at build time and located in ./vars.css
-	*/
-	--bg-color: var(--color-light-100);
+	--scroll-color: rgba(var(--rgb-contrast-500), 0.25);
+	// Additionnal global CSS custom properties derived from TypeScript constants, such as colors and sizes, are generated at build time and located in ./vars.css
+	--bg-color: var(--color-base-100);
+}
+
+.compact {
+	--default-inset: 0px; // Default inset for nested elements
+	--default-size: 2em; // Size/height height for interactive elements
+	--default-radius: 1em; // Border radius for buttons and other interactive elements
+	--default-padding-inline: 0.75em;
+}
+
+.hover-source {
+	cursor: pointer;
+}
+
+:root {
 	width: 100vw;
 	height: 100%;
 	padding: 0;
 	margin: 0;
 	font-family: var(--font-main);
-	color: var(--color-dark-700);
+	color: var(--color-contrast-300);
 	font-size: var(--size-medium);
 	font-weight: 400;
 	background-color: var(--bg-color);
@@ -62,74 +66,6 @@ body {
 	color: currentColor;
 }
 
-p {
-	line-height: 1.4em;
-	margin-block: 2em;
-}
-em {
-	font-style: normal;
-	font-weight: 700;
-	color: inherit;
-}
-
-/*
-Button component should listen to hover on parent elements with this class to trigger hover/focus style.
-Event handling should be done manually.
-*/
-.button-parent {
-	cursor: pointer;
-}
-
-/*
-Grid layout helper classes
-*/
-.core-grid {
-	@include mixins.core-grid;
-}
-
-/*
-Heading styles based on mixins
-*/
-h1 {
-	@include mixins.heading(x4large);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	margin-block: 1em 1em;
-}
-h2 {
-	@include mixins.heading(x3large);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	margin-block: 1.25em 1em;
-}
-h3 {
-	@include mixins.heading(x2large);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	margin-block: 1.5em 1em;
-}
-h4 {
-	@include mixins.heading(xlarge);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	margin-block: 1.75em 1em;
-}
-h5 {
-	@include mixins.heading(large);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	margin-block: 2em 1em;
-}
-h6 {
-	@include mixins.heading(medium);
-	padding: 0;
-	margin: 1rem 0 2rem 0;
-	margin-block: 2.25em 1em;
-}
-
-/*
-Global vendor stylings reset and scrollbar customization.
-*/
 a,
 a:visited,
 a:active,
@@ -137,32 +73,40 @@ a:hover {
 	text-decoration: unset;
 	color: unset;
 }
-input[type='search']::-ms-clear {
-	display: none;
-	width: 0;
-	height: 0;
-}
+
+input[type='search']::-ms-clear,
 input[type='search']::-ms-reveal {
 	display: none;
 	width: 0;
 	height: 0;
 }
+
 input[type='search']::-webkit-search-decoration,
 input[type='search']::-webkit-search-cancel-button,
 input[type='search']::-webkit-search-results-button,
 input[type='search']::-webkit-search-results-decoration {
 	display: none;
 }
+
 ::-webkit-scrollbar {
 	width: var(--scroll-size);
 	height: var(--scroll-size);
 }
+
 ::-webkit-scrollbar-track {
 	background: transparent;
 	box-shadow: none;
 }
+
 ::-webkit-scrollbar-thumb {
 	position: relative;
 	background: var(--scroll-color);
 	border-radius: var(--scroll-size);
+}
+
+:-webkit-autofill,
+:-webkit-autofill:hover,
+:-webkit-autofill:focus,
+:-webkit-autofill:active {
+	transition: background-color 5000s ease-in 0s;
 }

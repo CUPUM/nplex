@@ -10,7 +10,7 @@ export const ES6JSON = {
 	/**
 	 * Use this function to customize JSON.stringify behavior and ensure persistance of ES6 Maps and Sets.
 	 */
-	replacer: (key, value) => {
+	replacer: (key: any, value: any) => {
 		let _type = null;
 		if (value instanceof Map) _type = 'Map';
 		if (value instanceof Set) _type = 'Set';
@@ -27,7 +27,7 @@ export const ES6JSON = {
 	/**
 	 * Use this function to customize JSON.parse behavior and ensure proper revival of stringified ES6 Maps and Sets.
 	 */
-	reviver: (key, value) => {
+	reviver: (key: any, value: any) => {
 		if (value instanceof Object && value._flag === ES6JSON._flag) {
 			if (value._type === 'Map') return new Map(value._value);
 			if (value._type === 'Set') return new Set(value._value);

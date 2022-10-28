@@ -6,12 +6,12 @@
 </script>
 
 <script lang="ts">
+	import { Ctx } from '$utils/enums';
 	import type { icons } from '$utils/icons/icons';
-	import { Ctx } from '$utils/keys';
 	import { centerMapOnClientLocation } from '$utils/maps/map';
 	import { getContext } from 'svelte';
-	import Button from './Button/Button.svelte';
-	import Icon from './Icon/Icon.svelte';
+	import Button from './Button.svelte';
+	import Icon from './Icon.svelte';
 	import type { MapContext } from './Map.svelte';
 
 	export let icon: keyof typeof icons = 'localize';

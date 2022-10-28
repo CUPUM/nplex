@@ -6,8 +6,8 @@
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/keys';
-	import { cssSize } from '$utils/styles';
+	import { cssSize } from '$utils/css';
+	import { Ctx } from '$utils/enums';
 	import { setContext } from 'svelte';
 
 	export let variant: TokenSetContext['vairant'] = 'default';

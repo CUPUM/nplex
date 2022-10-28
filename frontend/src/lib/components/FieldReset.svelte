@@ -3,9 +3,9 @@
 
 <script lang="ts">
 	import type { ComponentProps } from 'svelte';
-	import Button from './Button/Button.svelte';
+	import Button from './Button.svelte';
 	import { getFieldContext } from './Field.svelte';
-	import Icon from './Icon/Icon.svelte';
+	import Icon from './Icon.svelte';
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
 	export let defaultValue: string = undefined;

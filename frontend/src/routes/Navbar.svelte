@@ -23,20 +23,15 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import AvatarButton from '$components/AvatarButton.svelte';
-	import Button from '$components/Button/Button.svelte';
-	import Icon from '$components/Icon/Icon.svelte';
+	import Button from '$components/Button.svelte';
+	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
-	import Switch from '$components/Switch.svelte';
-	import SwitchItem from '$components/SwitchItem.svelte';
-	import { backgroundColor as appBackgroundColor } from '$stores/backgroundColor';
-	import { mainScroll } from '$stores/scroll';
-	import { transform } from '$transitions/transform';
+	import { rootScroll } from '$stores/scroll';
 	import { getAuthRedirectUrl } from '$utils/routing/guard';
-	import { gotoCategory } from '$utils/routing/navigation';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routing/routes';
 	import { onMount } from 'svelte';
-	import { expoIn, expoInOut, expoOut } from 'svelte/easing';
+	import { expoIn, expoOut } from 'svelte/easing';
 	import { writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import NavbarEditMenu from './NavbarEditMenu.svelte';
@@ -61,7 +56,7 @@
 		loadingCategoryPath = null;
 	});
 
-	$: hidden = $mainScroll.down && $mainScroll.y > yThreshold;
+	$: hidden = $rootScroll.down && $rootScroll.y > yThreshold;
 	$: mainPathname = $page.data.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
 
 	onMount(() => {
@@ -73,7 +68,7 @@
 	class:hidden
 	bind:clientHeight={navbarHeight}
 	style:--bg-opacity={$backgroundOpacity}
-	style:--bg-color={$backgroundColor ?? $appBackgroundColor}
+	style:--bg-color={$backgroundColor}
 	bind:clientWidth={headerWidth}
 >
 	{#if mounted}
@@ -92,7 +87,7 @@
 				</Button>
 			{/each}
 		</nav>
-		<nav class="explore">
+		<!-- <nav class="explore">
 			{#if $page.data.showCategoryNav}
 				<div transition:transform={{ translateY: -20, rotateX: -45, duration: 750, easing: expoInOut }}>
 					<Switch name="category" variant="nav" value={$page.data.category}>
@@ -110,14 +105,14 @@
 					</Switch>
 				</div>
 			{/if}
-		</nav>
+		</nav> -->
 		<nav
 			class="session"
 			in:fly={{ y: 20, opacity: 0, duration: 500, easing: expoOut, delay: 300 }}
 			out:fly={{ y: 20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
 		>
 			<Button href="/" variant="nav" square disabled={$page.url.pathname === '/'}>
-				<Icon name="home" size="1.25em" />
+				<Icon name="home" style="font-size: 1.25em" />
 			</Button>
 			<hr />
 			{#if $page.data.session}
@@ -129,7 +124,7 @@
 						href={creationBaseRoute.pathname}
 						active={$page.url.pathname.startsWith(creationBaseRoute.pathname)}
 					>
-						<Icon name="pen" size="1.25em" />
+						<Icon name="pen" style="font-size: 1.25em" />
 					</Button>
 					<NavbarEditMenu />
 				</Popover>
@@ -139,7 +134,7 @@
 				</Popover>
 			{:else}
 				<Button variant="nav-cta" href={getAuthRedirectUrl($page.url).toString()} square>
-					<Icon name="user" size="1.25em" />
+					<Icon name="user" style="font-size: 1.25em" />
 				</Button>
 			{/if}
 		</nav>
@@ -174,7 +169,7 @@
 			opacity: var(--bg-opacity);
 			top: 0;
 			left: 0;
-			background-color: var(--bg-color);
+			background-color: var(--bg-color, var(--color-base-300));
 			transition: all 0.1s;
 		}
 	}

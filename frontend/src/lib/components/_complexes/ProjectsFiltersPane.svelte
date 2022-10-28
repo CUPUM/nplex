@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Button from '$components/Button/Button.svelte';
-	import Icon from '$components/Icon/Icon.svelte';
+	import Button from '$components/Button.svelte';
+	import Icon from '$components/Icon.svelte';
 	import { projectsShowFiltersPane } from '$stores/projectsShowFiltersPane';
 	import { crossfadeExploreFiltersButton } from '$transitions/crossfades';
 	import { width } from '$transitions/width';

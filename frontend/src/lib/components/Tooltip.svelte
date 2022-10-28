@@ -4,7 +4,7 @@
  -->
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
-	import { cssSize } from '$utils/styles';
+	import { cssSize } from '$utils/css';
 	import { sizes } from '$utils/values/sizes';
 	import { onDestroy, onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';

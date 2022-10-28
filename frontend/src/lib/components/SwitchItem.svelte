@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$actions/ripple';
-	import { Ctx } from '$utils/keys';
+	import { Ctx } from '$utils/enums';
 	import { getContext } from 'svelte';
 	import Loading from './Loading.svelte';
 	import type { SwitchContext } from './Switch.svelte';

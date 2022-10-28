@@ -1,6 +1,6 @@
-import { setClearCookies } from '$utils/cookies';
+import { setClearCookies } from '$utils/cookie';
 import { dbClient } from '$utils/database/database';
-import { Cookie } from '$utils/keys';
+import { Cookie } from '$utils/enums';
 import type { AuthChangeEvent, AuthSession } from '@supabase/supabase-js';
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
@@ -41,7 +41,7 @@ export const GET: RequestHandler = async ({ request, locals, cookies }) => {
 		session.user.role = roleData.role;
 		// Update httpOnly session cookie.
 		cookies.set(Cookie.Session, JSON.stringify(session), {
-			maxAge: parseInt(session.expires_in + '') || -1,
+			maxAge: parseInt(session.expires_in + '') ?? -1,
 			httpOnly: true,
 			path: '/',
 			sameSite: 'strict',

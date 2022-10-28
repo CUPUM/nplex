@@ -1,4 +1,4 @@
-import { cssSize } from '$utils/styles';
+import { cssSize } from '$utils/css';
 
 const RIPPLE_GLOBALS = {
 	HOST_ATTRIBUTE: 'ripple-host',

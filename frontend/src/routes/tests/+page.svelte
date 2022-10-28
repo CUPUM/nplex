@@ -2,46 +2,98 @@
 </script>
 
 <script lang="ts">
-	import Button from '$components/Button/Button.svelte';
+	import { browser } from '$app/environment';
+
+	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
-	import Icon from '$components/Icon/Icon.svelte';
-	import { icons } from '$components/Icon/icons';
-	import Toggle from '$components/Toggle.svelte';
+	import Icon from '$components/Icon.svelte';
+	import TextArea from '$components/TextArea.svelte';
 	import type { ComponentProps } from 'svelte';
 
-	let toggled = false;
 	let name: ComponentProps<Icon>['name'] = 'search';
-	let size = 16;
+	let variant: ComponentProps<Button>['variant'] = 'default';
+	let size = 26;
+
+	let contentAlign = 'center';
+
+	let dark = false;
+
+	function switchTheme(theme: 'light' | 'dark') {
+		if (browser) {
+			document.documentElement.classList.remove('theme-light');
+			document.documentElement.classList.remove('theme-dark');
+			document.documentElement.classList.add('theme-' + theme);
+		}
+	}
+
+	$: switchTheme(dark ? 'dark' : 'light');
 </script>
 
 <article>
-	<span>This is a test</span>
-	<Button>Test</Button>
-	<Icon bind:name style="font-size: {size}px" />
-	<input type="range" name="" bind:value={size} min="8" max="48" id="" />
-	<select name="" id="" bind:value={name}>
-		{#each Object.keys(icons) as iconname}
-			<option value={iconname}>{iconname}</option>
-		{/each}
-	</select>
-	<hr />
-	<Toggle bind:toggled />
-	{toggled}
-	<hr />
-	<label for="tesa">
-		Test
-		<input id="tesa" type="checkbox" />
+	<section>
+		<Field prefix="test" suffix="some suffix" {variant}>
+			<svelte:fragment slot="label">Some label</svelte:fragment>
+			<Button slot="leading">Test yezzir</Button>
+		</Field>
+		<Field prefix="test" {variant} placeholder="Placeholder!">
+			<svelte:fragment slot="label">Test label</svelte:fragment>
+			<Button slot="trailing">Test yezzir</Button>
+			<Button slot="leading">Test yezzir</Button>
+		</Field>
+		<Field prefix="test" {variant} placeholder="Placeholder without label!">
+			<Button slot="leading">Test yezzir</Button>
+		</Field>
+		<TextArea />
+	</section>
+	<label>
+		{dark ? 'Light theme' : 'Dark theme'}
+		<input type="checkbox" name="" id="" bind:checked={dark} />
 	</label>
 	<hr />
-	<Field variant="outlined">
-		<svelte:fragment slot="label">Test</svelte:fragment>
-	</Field>
+	<select name="" bind:value={variant} id="">
+		{#each ['default', 'outlined', 'ghost', 'cta'] as v}
+			<option value={v}>{v}</option>
+		{/each}
+	</select>
+	<select name="" bind:value={contentAlign} id="">
+		{#each ['left', 'center', 'right'] as a}
+			<option value={a}>{a}</option>
+		{/each}
+	</select>
+	<section class="bg">
+		<Button {variant} {contentAlign}>Test</Button>
+		<Button {variant} {contentAlign}><Icon name="user" slot="leading" />Test</Button>
+		<Button {variant} {contentAlign}><Icon style="font-size: {size}px" name="user" slot="leading" />Test</Button>
+		<Button {variant} {contentAlign} style="width: 100%">Test</Button>
+	</section>
+	<section>
+		<Button {variant} {contentAlign}>Test</Button>
+		<Button {variant} {contentAlign}><Icon name="user" slot="leading" />Test</Button>
+		<Button {variant} {contentAlign}><Icon style="font-size: {size}px" name="user" slot="leading" />Test</Button>
+		<Button {variant} {contentAlign} style="width: 100%">Test</Button>
+	</section>
+
+	<Icon bind:name style="font-size: {size}px" />
+	<hr />
+	<input type="range" name="" min="12" max="56" bind:value={size} id="" />
 </article>
 
 <style lang="scss" module>
 	article {
 		padding: 4rem;
 		line-height: 5em;
+	}
+	section {
+		padding: 4rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1em;
+	}
+
+	section.bg {
+		background-image: url(https://images.unsplash.com/photo-1564851375740-1052e619dcbc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Z29vc2V8ZW58MHx8MHx8&w=1000&q=80);
+		background-size: contain;
 	}
 
 	.label {

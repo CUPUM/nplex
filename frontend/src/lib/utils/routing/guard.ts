@@ -3,7 +3,7 @@ import { goto } from '$app/navigation';
 import type { navigating } from '$app/stores';
 import { messages } from '$stores/messages';
 import { redirect } from '@sveltejs/kit';
-import { SearchParam } from '../keys';
+import { SearchParam } from '../enums';
 
 export function getAuthRedirectUrl(targetUrl: URL) {
 	const redirectUrl = new URL(targetUrl);

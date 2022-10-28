@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Ctx } from '$utils/keys';
-	import { cssSize } from '$utils/styles';
+	import { cssSize } from '$utils/css';
+	import { Ctx } from '$utils/enums';
 	import { getContext } from 'svelte';
 
 	export let variant: 'default' | 'secondary' | 'misc' = 'default';

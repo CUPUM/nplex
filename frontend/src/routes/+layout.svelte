@@ -1,28 +1,23 @@
 <script lang="ts">
+	import type { AuthUpdateBody } from '$api/auth/session.json/+server';
 	import { afterNavigate, beforeNavigate, goto, invalidate } from '$app/navigation';
 	import { getStores } from '$app/stores';
 	import Loading from '$components/Loading.svelte';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
-	import { authModal } from '$stores/authModal';
-	import { mainScroll } from '$stores/scroll';
-	import { vars } from '$styles/app.css';
+	import { rootScroll } from '$stores/scroll';
 	import '$styles/app.scss';
-	import '$styles/vars.css';
+	import '$styles/vars.scss';
 	import { dbClient } from '$utils/database/database';
-	import { Cookie } from '$utils/keys';
+	import { Cookie } from '$utils/enums';
 	import jscookie from 'js-cookie';
-	import { get_current_component } from 'svelte/internal';
 	import { get } from 'svelte/store';
 	import type { LayoutData } from './$types';
-	import type { AuthUpdateBody } from './api/auth/session.json/+server';
-	import AuthModal from './AuthModal.svelte';
+	import AuthModal, { authModalState } from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
 	import MessagesOutlet from './MessagesOutlet.svelte';
 	import Navbar from './Navbar.svelte';
 
 	export let data: LayoutData;
-
-	console.log(get_current_component().$$);
 
 	let progress: LoadingProgress;
 	let loading = true;
@@ -42,7 +37,7 @@
 		const newAuth: AuthUpdateBody = { session, event };
 		jscookie.set(Cookie.AuthChange, JSON.stringify(newAuth), { path: '/', sameSite: 'strict' });
 		await invalidate('/api/auth/session.json');
-		if (get(authModal)) await authModal.close();
+		if (get(authModalState)) await authModalState.close();
 		if (event === 'SIGNED_IN' && !restoredTab && get(page).url.pathname === '/' && data.session) {
 			goto('/compte');
 		}
@@ -59,10 +54,10 @@
 </script>
 
 <div
-	class:authing={$authModal}
-	style:--navbar-height="{navbarHeight || 0}px"
-	style:--scroll={$mainScroll.y}
-	style:--scrollpx="{$mainScroll.y}px"
+	class:authing={$authModalState}
+	style:--scroll={$rootScroll.y}
+	style:--scroll-px="{$rootScroll.y}px"
+	style:--navbar-height-px="{navbarHeight}px"
 >
 	<Navbar bind:navbarHeight />
 	<main class:loading>
@@ -72,11 +67,9 @@
 		<Footer />
 	{/if}
 </div>
-{#if $authModal}
-	<AuthModal />
-{/if}
+<AuthModal />
 {#if loading}
-	<Loading style="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" size={vars.sizes.large} />
+	<Loading style="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" />
 {/if}
 <MessagesOutlet />
 <LoadingProgress bind:this={progress} />
