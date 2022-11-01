@@ -1,3 +1,8 @@
+<!--
+	@component
+	## Auth Modal
+	Singleton component for supabase client (browser) authentication.
+-->
 <script lang="ts" context="module">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
@@ -104,12 +109,10 @@
 			use:clickoutside={true}
 			on:clickoutside={() => authModalState.close()}
 		>
-			<a id="auth-logo" href="/">
-				<Logo color="currentColor" />
-			</a>
+			<Logo id="auth-logo" />
 			<fieldset id="auth-fields">
 				<Field
-					variant="outlined"
+					variant="default"
 					bind:value={email}
 					maxlength={100}
 					pattern={patterns.email}
@@ -121,7 +124,7 @@
 					<svelte:fragment slot="label">Courriel</svelte:fragment>
 					<FieldReset slot="trailing" />
 				</Field>
-				<Field variant="outlined" bind:value={password} name="password" type="password" minlength={6} required>
+				<Field variant="default" bind:value={password} name="password" type="password" minlength={6} required>
 					<FieldIcon slot="leading" name="lock-close" />
 					<svelte:fragment slot="label">Mot de passe</svelte:fragment>
 					<svelte:fragment slot="trailing">
@@ -129,46 +132,57 @@
 						<FieldReset />
 					</svelte:fragment>
 				</Field>
+				<Button
+					class="login-button"
+					type="submit"
+					variant="cta"
+					value={Action.EmailSignIn}
+					disabled={!Boolean(email) || !Boolean(password)}
+					contentAlign="center"
+					loading={currentAction === Action.EmailSignIn}
+				>
+					<svelte:fragment slot="trailing">
+						<Icon name="login" />
+					</svelte:fragment>
+					Me connecter
+				</Button>
 				<div id="auth-buttons">
 					<Button
-						class="login-button"
 						type="submit"
-						variant="cta"
-						value={Action.EmailSignIn}
+						value={Action.EmailSignUp}
 						disabled={!Boolean(email) || !Boolean(password)}
+						loading={currentAction === Action.EmailSignUp}
 						contentAlign="center"
-						loading={currentAction === Action.EmailSignIn}
+						style="flex: 1 0"
 					>
-						<svelte:fragment slot="trailing">
-							<Icon name="login" />
-						</svelte:fragment>
-						Me connecter
+						<Icon name="user-add" />&nbsp; Créer un compte
 					</Button>
 					<Button
 						type="submit"
 						variant="ghost"
-						value={Action.EmailSignUp}
-						disabled={!Boolean(email) || !Boolean(password)}
-						loading={currentAction === Action.EmailSignUp}
+						value={Action.ResetPassword}
+						contentAlign="center"
+						style="flex: 1 0">Mot de passe oublié</Button
 					>
-						<Icon name="user-add" />&nbsp; Créer un compte
-					</Button>
-					<Button type="submit" variant="ghost" value={Action.ResetPassword}>Mot de passe oublié?</Button>
 				</div>
 			</fieldset>
-			<hr />
-			<fieldset id="auth-providers">
-				<span>Ou se connecter via une autre plateforme&nbsp;:</span>
-				<fieldset id="auth-providers-buttons" disabled>
+			<fieldset id="auth-providers" disabled>
+				<span>Me connecter via une autre plateforme :</span>
+				<div class="scroll">
 					{#each providerNames as name, i}
-						<Button contentAlign="center" variant="secondary">
+						<Button variant="outlined" style="flex: none;">
 							<ProviderLogo {name} slot="leading" />
 							{providers[name]?.title}
 						</Button>
 					{/each}
-				</fieldset>
+				</div>
 			</fieldset>
-			<Button class="close" type="submit" variant="ghost" on:click={() => authModalState.close()} square>
+			<Button
+				style="position: absolute; top: 1rem; right: 1rem;"
+				variant="ghost"
+				on:click={() => authModalState.close()}
+				square
+			>
 				<Icon name="cross" />
 			</Button>
 		</form>
@@ -196,7 +210,7 @@
 		align-items: center;
 		height: 100vh;
 		width: 100vw;
-		padding: 4rem;
+		padding: 4rem 1rem;
 		margin: 0;
 		top: 0;
 		left: 0;
@@ -204,124 +218,79 @@
 		border: none;
 	}
 
-	.close {
-		position: absolute !important;
-		top: 1rem;
-		right: 1rem;
-	}
-
 	form {
 		position: relative;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
-		align-items: center;
+		flex-wrap: nowrap;
 		width: 100%;
 		max-width: 450px;
 		max-height: 100%;
-		background-color: var(--color-light-300);
+		background-color: var(--color-base-100);
 		box-shadow: 0 3rem 8rem -5rem black;
 		padding: 0;
 		overflow-y: auto;
-		border-radius: 1.5rem;
+		overflow-x: hidden;
+		border-radius: 2rem;
 		border: none;
 	}
 
-	#auth-logo {
-		cursor: pointer;
-		text-decoration: none;
+	:global(#auth-logo) {
 		color: var(--color-primary-500);
-		width: 50%;
-		max-width: 275px;
-		margin: 0 auto;
-		padding: 2rem;
-		padding-top: 3rem;
-		transition: all 0.15s ease-out;
-
-		&:hover {
-			transform: scale(0.98);
-			color: var(--color-primary-900);
-		}
+		font-size: 4rem;
+		padding: 1rem 2rem;
+		margin: 2rem;
 	}
 
 	#auth-fields {
 		position: relative;
 		width: 100%;
 		display: flex;
+		align-items: stretch;
 		flex-direction: column;
-		gap: 1.5em;
+		gap: 1rem;
 		border: none;
 		padding: 0 2.5rem;
+		padding-bottom: 2.5rem;
 		margin: 0;
 	}
 
 	#auth-buttons {
 		display: flex;
+		flex-direction: row;
 		flex-wrap: wrap;
-		width: 100%;
-		gap: 0.5em;
-	}
-
-	.login-button {
-		width: 100%;
-		flex-grow: 1;
-	}
-
-	#auth-signup-fields {
-		width: 100%;
-		position: relative;
-		border: none;
-		padding: 0;
-		margin: 0;
-		display: grid;
-		gap: 1em;
-		grid-template-columns: auto auto;
-		justify-content: flex-start;
-		align-items: flex-start;
-
-		& > div {
-			position: relative;
-			display: flex;
-			flex-direction: row;
-		}
-
-		& > .full-cols {
-			grid-column: 1 / -1;
-		}
+		font-size: var(--size-xsmall);
+		gap: 1.5em;
 	}
 
 	#auth-providers {
+		position: relative;
+		display: block;
 		border: none;
-		width: 100%;
-		text-align: center;
-		padding: 2rem 2.5rem 3rem 2.5rem;
 		margin: 0;
-		border-radius: 1.5rem 1.5rem 0 0;
-		background-color: var(--color-light-100);
-
-		span {
-			display: inline-block;
-			padding: 0;
-			margin: 0;
-			font-size: 0.9rem;
-			color: var(--color-dark-100);
-			opacity: 0.5;
-		}
-	}
-
-	#auth-providers-buttons {
 		padding: 0;
-		margin: 0;
-		margin-top: 2rem;
-		border: none;
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 1rem;
-
-		&:disabled {
-			pointer-events: none;
+		background-color: var(--color-base-300);
+		border-radius: inherit;
+		span {
+			display: block;
+			padding-block: 1rem;
+			margin: 0;
+			margin-inline: 2.5rem;
+			text-align: center;
 			opacity: 0.5;
-			color: red !important;
+			font-size: var(--size-xsmall);
+		}
+		.scroll {
+			display: flex;
+			align-items: unset;
+			justify-content: unset;
+			flex-direction: row;
+			gap: 1rem;
+			padding-inline: 2.5rem;
+			padding-bottom: 1.5rem;
+			padding-top: 0.5rem;
+			overflow: scroll;
 		}
 	}
 </style>

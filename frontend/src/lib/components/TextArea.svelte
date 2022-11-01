@@ -39,7 +39,7 @@
 
 <div class="text-area">
 	<textarea name="" id="" bind:this={textAreaRef} bind:value />
-	<div class="rendered" />
+	<div class="rendered" contenteditable="true" bind:textContent={value} />
 </div>
 
 <style lang="scss">

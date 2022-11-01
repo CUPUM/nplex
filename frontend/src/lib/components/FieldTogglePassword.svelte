@@ -21,7 +21,7 @@
 </script>
 
 <Button {variant} on:click={toggle} square>
-	<Icon name={$inputRef.type === 'password' ? 'eye-open' : 'eye-cross'} />
+	<Icon name={$inputRef?.type === 'password' ? 'eye-open' : 'eye-cross'} />
 </Button>
 
 <style lang="scss">

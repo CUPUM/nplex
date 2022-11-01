@@ -7,7 +7,7 @@
 	--default-size: 3.2em; // Size/height height for interactive elements
 	--default-radius: 0.9em; // Border radius for buttons and other interactive elements
 	--default-padding-inline: 1.25em;
-	--default-focus-outline: 1px solid rgba(var(--rgb-primary-500), 0.25);
+	--default-focus-outline: 2px solid rgba(var(--rgb-primary-500), 0.5);
 	// Scrollbar customization
 	--scroll-size: 4px;
 	--scroll-color: rgba(var(--rgb-contrast-500), 0.25);
@@ -33,7 +33,7 @@
 	margin: 0;
 	font-family: var(--font-main);
 	color: var(--color-contrast-300);
-	font-size: var(--size-medium);
+	font-size: medium;
 	font-weight: 400;
 	background-color: var(--bg-color);
 	accent-color: var(--color-primary-500);
@@ -53,6 +53,12 @@ body {
 	min-height: 100%;
 	padding: 0;
 	margin: 0;
+}
+
+form,
+fieldset,
+legend {
+	min-width: 0;
 }
 
 *,

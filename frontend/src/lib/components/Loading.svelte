@@ -133,41 +133,45 @@
 	.path {
 		fill: currentColor;
 		stroke: currentColor;
-		stroke-width: 10px;
+		stroke-width: 25px;
+		// vector-effect: non-scaling-stroke;
+		// fill: transparent;
+		// stroke-dasharray: 3;
+		// stroke-width: 1.25px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 	}
 
-	// @keyframes slowspin {
-	// 	0% {
-	// 		transform: rotate(0deg);
-	// 	}
-	// 	100% {
-	// 		transform: rotate(360deg);
-	// 	}
-	// }
+	@keyframes slowspin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
 
-	// @keyframes spin {
-	// 	0% {
-	// 		transform: rotate(-90deg);
-	// 	}
-	// 	16.66% {
-	// 		transform: rotate(0deg);
-	// 	}
-	// 	33.33% {
-	// 		transform: rotate(90deg);
-	// 	}
-	// 	50% {
-	// 		transform: rotate(180deg);
-	// 	}
-	// 	66.66% {
-	// 		transform: rotate(270deg);
-	// 	}
-	// 	83.33% {
-	// 		transform: rotate(360deg);
-	// 	}
-	// 	100% {
-	// 		transform: rotate(450deg);
-	// 	}
-	// }
+	@keyframes spin {
+		0% {
+			transform: rotate(-90deg);
+		}
+		16.66% {
+			transform: rotate(0deg);
+		}
+		33.33% {
+			transform: rotate(90deg);
+		}
+		50% {
+			transform: rotate(180deg);
+		}
+		66.66% {
+			transform: rotate(270deg);
+		}
+		83.33% {
+			transform: rotate(360deg);
+		}
+		100% {
+			transform: rotate(450deg);
+		}
+	}
 </style>

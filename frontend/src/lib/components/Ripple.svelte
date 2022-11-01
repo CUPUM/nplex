@@ -4,18 +4,19 @@
 	Adds a visual ripple effect on interactive elements.
 -->
 <script lang="ts" context="module">
+	export const RIPPLE_ATTRIBUTE = 'data-ripple';
 </script>
 
 <script lang="ts">
 	export let host: HTMLElement | undefined = undefined;
-	export let easing: string = 'cubic-bezier(0,0,0,1)';
-	export let duration = 1200;
+	export let easing: string = 'cubic-bezier(0.1, 0, 0.2, 1)';
+	export let duration = 550;
 	export let delay = 0;
-	export let opacityStart = 0.5;
+	export let opacityStart = 0.25;
 	export let opacityEnd = 0;
 	export let opacityEasing = easing;
-	export let opacityDuration = duration;
-	export let opacityDelay = delay;
+	export let opacityDuration = 750;
+	export let opacityDelay = 350;
 	export let spreadStart = 0;
 	export let spreadEnd = 1;
 	export let spreadEasing = easing;
@@ -29,13 +30,14 @@
 	export let colorDelay = delay;
 	export let blur: number = 0;
 
-	let ref: HTMLDivElement;
 	let destructor: () => void;
 	let ripples: { x: number; y: number; d: number; animations: number }[] = [];
+	let containerRef: HTMLDivElement;
+	$: listenerRef = host ?? containerRef?.parentElement;
 
 	function add(e: MouseEvent) {
-		if (ref) {
-			const rect = ref.getBoundingClientRect();
+		if (containerRef && (e.target as Element)?.closest(`[${RIPPLE_ATTRIBUTE}]`) === listenerRef) {
+			const rect = containerRef.getBoundingClientRect();
 			const x = e.clientX - rect.left;
 			const y = e.clientY - rect.top;
 			const d = 2 * Math.max(Math.hypot(x, y), Math.hypot(rect.width - x, rect.height - y));
@@ -66,17 +68,19 @@
 		if (destructor) destructor();
 		if (element) {
 			element.addEventListener('pointerdown', add);
+			element.setAttribute(RIPPLE_ATTRIBUTE, '');
 			destructor = () => {
 				element.removeEventListener('pointerdown', add);
+				element.removeAttribute(RIPPLE_ATTRIBUTE);
 			};
 		}
 	}
 
-	$: listen(host ?? ref?.parentElement);
+	$: listen(listenerRef);
 </script>
 
 <div
-	bind:this={ref}
+	bind:this={containerRef}
 	class="container"
 	style:--opacity-start={opacityStart}
 	style:--opacity-end={opacityEnd}

@@ -5,7 +5,6 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import { cssSize } from '$utils/css';
-	import { sizes } from '$utils/values/sizes';
 	import { onDestroy, onMount } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -15,7 +14,6 @@
 	export let useHover: boolean = true;
 	export let place: 'top' | 'right' | 'bottom' | 'left' = 'top';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'center';
-	export let size: string | number = sizes.small;
 
 	const distance = 5;
 	const roundness = 25;
@@ -24,10 +22,10 @@
 	let hinterRef: HTMLElement;
 	let mutationObs: MutationObserver;
 	let resizeObs: ResizeObserver;
-	let y;
-	let x;
-	let w;
-	let h;
+	let y: string;
+	let x: string;
+	let w: string;
+	let h: string;
 
 	$: if (controlRef) {
 		// Clearing any potential previously set listeners (useful for when this setup is re-run due to useHover state change).
@@ -41,10 +39,12 @@
 		controlRef.ontransitionend = setPosition;
 		mutationObs = new MutationObserver(setPosition);
 		resizeObs = new ResizeObserver(setPosition);
-		mutationObs.observe(controlRef, { attributes: true });
-		mutationObs.observe(controlRef.offsetParent, { attributes: true });
-		resizeObs.observe(controlRef, {});
-		resizeObs.observe(controlRef.offsetParent, {});
+		if (controlRef.offsetParent) {
+			mutationObs.observe(controlRef, { attributes: true });
+			mutationObs.observe(controlRef.offsetParent, { attributes: true });
+			resizeObs.observe(controlRef, {});
+			resizeObs.observe(controlRef.offsetParent, {});
+		}
 	}
 
 	$: if (open) {
@@ -93,7 +93,6 @@
 	bind:this={hinterRef}
 	use:clickoutside
 	on:clickoutside={handleClickoutside}
-	style:--size={cssSize(size)}
 	style:--y={y}
 	style:--x={x}
 	style:--w={w}
@@ -129,7 +128,7 @@
 		justify-content: center;
 		flex-wrap: nowrap;
 		overflow: visible;
-		font-size: var(--size);
+		font-size: var(--size-small);
 	}
 
 	span {
@@ -141,8 +140,8 @@
 		font-weight: 400;
 		padding: 0.5em 1.2em 0.7em 1.2em;
 		margin: 0;
-		background-color: var(--color-dark-900);
-		color: var(--color-light-700);
+		background-color: var(--color-contrast-900);
+		color: var(--color-base-700);
 		box-shadow: 0 0.5em 1.5em -0.75em rgba(0, 0, 0, 0.5);
 		border-radius: 0.75em;
 		letter-spacing: 0.25px;
@@ -159,7 +158,7 @@
 	}
 
 	path {
-		fill: var(--color-dark-900);
+		fill: var(--color-contrast-900);
 	}
 
 	.top {

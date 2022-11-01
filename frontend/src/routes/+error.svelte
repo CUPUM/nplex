@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { backgroundColor } from '$stores/backgroundColor';
-	import { colors } from '$utils/vars';
 	import { onDestroy, onMount } from 'svelte/internal';
 
 	onMount(() => {
-		backgroundColor.set(colors.light.error[700], 150);
+		backgroundColor.set('var(--color-base-900)', 150);
 	});
 
 	onDestroy(() => {
@@ -26,7 +25,7 @@
 		max-width: 820px;
 		padding: 2rem;
 		margin: 2rem auto;
-		color: var(--color-light-100);
+		color: var(--color-error-700);
 	}
 
 	h1 {

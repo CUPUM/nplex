@@ -46,6 +46,7 @@
 	export let pattern: RegExp | undefined = undefined;
 	export let format: ((value: string) => string) | undefined = undefined;
 	export let dirty: boolean = false;
+	export let tabindex: number = 0;
 	let className: string = '';
 	export { className as class };
 	export let style: string | undefined = undefined;
@@ -61,7 +62,6 @@
 	const _inputRef = writable<typeof inputRef>();
 	$: _inputRef.set(inputRef);
 
-	let leadingWidth = 0;
 	let labelWidth = 0;
 	let focused = false;
 	let focusedOnce = false;
@@ -118,13 +118,15 @@
 	class:has-value={value !== ''}
 	class:has-placeholder={placeholder !== ''}
 	class:has-label={$$slots.label}
-	style:--leading-width="{leadingWidth}px"
 	style:--label-width="{labelWidth}px"
 	on:pointerup={focus}
 >
 	<Ripple />
+	<div class="outline left" />
+	<div class="outline right" />
+	<div class="outline bottom" />
 	{#if $$slots.leading}
-		<div class="leading" bind:clientWidth={leadingWidth}>
+		<div class="leading">
 			<slot name="leading" />
 		</div>
 	{/if}
@@ -148,6 +150,7 @@
 		{minlength}
 		{disabled}
 		{required}
+		{tabindex}
 		readonly={!focusedOnce ?? readonly}
 		pattern={pattern ? pattern.source : undefined}
 		use:inputOnReset
@@ -164,11 +167,6 @@
 			<slot name="trailing" />
 		</div>
 	{/if}
-	<div class="outline">
-		<div class="left" />
-		<div class="center" />
-		<div class="right" />
-	</div>
 </div>
 
 <style lang="scss">
@@ -176,14 +174,17 @@
 		--radius: var(--default-radius);
 		--inset: var(--default-inset);
 		--size: var(--default-size);
+		--gutter: calc(var(--default-padding-inline) / 3);
+		--padding-inline: calc(2 * var(--default-padding-inline) / 3);
+		--notch-padding: 0.5em;
+		--outline-thickness: 1px;
 		position: relative;
-		cursor: text;
-		display: grid;
+		display: inline-grid;
 		grid-template-columns:
 			[full-start leading-start]
-			auto
+			minmax(var(--padding-inline), auto)
 			[leading-end leading-gutter-start]
-			var(--default-padding-inline)
+			var(--gutter)
 			[leading-gutter-end prefix-start]
 			auto
 			[prefix-end main-start]
@@ -191,18 +192,19 @@
 			[main-end suffix-start]
 			auto
 			[suffix-end trailing-gutter-start]
-			var(--default-padding-inline)
+			var(--gutter)
 			[trailing-gutter-end trailing-start]
-			auto
+			minmax(var(--padding-inline), auto)
 			[trailing-end full-end];
 		gap: 0;
+		font-weight: 400;
 		font-size: 1em;
-		line-height: 1em;
-		align-items: center;
-		height: var(--size);
+		min-height: var(--size);
 		border-radius: var(--radius);
 		padding: 0;
 		margin: 0;
+		cursor: text;
+		align-items: center;
 		outline: 0px solid transparent;
 		transition: transform 0.15s ease-out;
 		&.disabled {
@@ -227,21 +229,16 @@
 				color: var(--color-secondary-700) !important;
 			}
 		}
-		&.focused {
-			outline: var(--default-focus-outline);
-		}
 	}
-
 	.leading,
 	.trailing {
-		height: 100%;
+		min-height: var(--size);
 		position: relative;
 		padding: 0;
 		margin: 0;
 		gap: 0;
 		display: flex;
 		flex-direction: row;
-		flex: 0 1 auto;
 		align-items: center;
 		transition: padding 0.15s ease-out;
 		&:not(:empty) {
@@ -258,10 +255,12 @@
 	.prefix,
 	.suffix {
 		position: relative;
-		flex: 0;
-		top: -0.1em;
-		white-space: pre;
 		display: inline-block;
+		padding-bottom: 0.25em;
+		top: 0;
+		flex: 0;
+		white-space: pre;
+		vertical-align: middle;
 		opacity: 0.25;
 		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
 		.focused &,
@@ -277,9 +276,16 @@
 		grid-column: suffix;
 	}
 	input {
+		padding: 0;
+		margin: 0;
+		padding-bottom: 0.25em;
 		position: relative;
+		display: flex;
+		align-items: center;
 		grid-column: main;
-		top: -0.1em;
+		top: 0;
+		vertical-align: middle;
+		white-space: nowrap;
 		flex: 1;
 		font-family: inherit;
 		font-size: inherit;
@@ -288,77 +294,67 @@
 		background: transparent;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		padding: 0;
-		margin: 0;
 		color: currentColor;
 		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
 		&::placeholder {
 			color: currentColor;
 			opacity: 0.35;
 		}
+		// &:focus-visible {
+		// 	outline: var(--default-focus-outline);
+		// }
 	}
 	label {
 		pointer-events: none;
 		position: absolute;
 		padding-inline: var(--label-padding);
 		grid-column: prefix-start / suffix-end;
-		white-space: nowrap;
+		white-space: pre;
 		max-width: 100%;
 		text-overflow: ellipsis;
-		height: 1em;
-		top: calc((var(--size) - 1em) / 2 - 0.1em);
-		transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+		min-height: var(--size);
+		line-height: var(--size);
+		padding-block: inherit;
+		vertical-align: middle;
+		white-space: nowrap;
+		top: 0;
+		transition: all 0.2s cubic-bezier(0, 0, 0, 1);
 	}
-	.outline {
-		--thickness: 1px;
-		--notch-padding: 0.5em;
+	.left,
+	.right,
+	.bottom {
 		pointer-events: none;
 		position: absolute;
-		border-radius: inherit;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		display: grid;
-		border-width: 0px;
-		border-style: solid;
-		border-color: transparent;
-		grid-template-columns:
-			[full-start left-start]
-			calc(var(--leading-width) + var(--default-padding-inline) - var(--notch-padding))
-			[left-end center-start]
-			min-content
-			[center-end right-start]
-			1fr
-			[right-end full-end];
+		height: 50%;
 		transition: all 0.15s ease-out;
-		.left,
-		.center,
-		.right {
-			top: 0;
-			border-width: var(--thickness);
-			border-style: solid;
-			border-color: currentColor;
-		}
-		.left {
-			grid-column: left;
-			border-top-left-radius: inherit;
-			border-bottom-left-radius: inherit;
-			border-right-width: 0;
-		}
-		.center {
-			width: 0px;
-			grid-column: center;
-			border-width: 0;
-			border-bottom-width: var(--thickness);
-			transition: width 0.15s ease-out;
-		}
-		.right {
-			grid-column: right;
-			border-top-right-radius: inherit;
-			border-bottom-right-radius: inherit;
-			border-left-width: 0;
-		}
+		border-width: var(--outline-thickness);
+		border-style: solid;
+	}
+	.left {
+		grid-column-end: leading-gutter-end;
+		left: 0;
+		right: 0;
+		top: 0;
+		border-top-left-radius: inherit;
+		border-right-width: 0;
+		border-bottom-width: 0;
+	}
+	.right {
+		grid-column-start: leading-gutter-end;
+		left: 0;
+		right: 0;
+		top: 0;
+		border-left-width: 0;
+		border-bottom-width: 0;
+		border-top-right-radius: inherit;
+	}
+	.bottom {
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border-top-width: 0;
+		border-bottom-right-radius: inherit;
+		border-bottom-left-radius: inherit;
 	}
 
 	// Default variant
@@ -370,49 +366,44 @@
 			display: none;
 		}
 		label {
-			opacity: 0;
-			font-size: clamp(10px, 0.5em, 24px);
+			opacity: 0.35;
 		}
-		&:not(.has-placeholder):not(:hover):not(.focused):not(.has-value) {
-			label {
-				opacity: 0.35;
-				font-size: 1em;
-			}
+		&.has-label {
 			.prefix,
 			.suffix {
 				opacity: 0;
 			}
 		}
-		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover {
-			color: var(--color-contrast-700);
-			background-color: var(--color-base-900);
+		&.has-placeholder,
+		&.has-value,
+		&.focused {
+			label {
+				top: -0.35em;
+				font-size: clamp(10px, 0.5em, 24px);
+			}
+			.prefix,
+			.suffix {
+				opacity: 0.5;
+			}
 			&.has-label {
 				.prefix,
 				.suffix,
 				input {
-					top: 0.35em;
-				}
-				label {
-					opacity: 0.35;
 					top: 0.35em;
 				}
 			}
 		}
+		:global(.hover-source:hover) &:global(.hover-target),
+		&:hover,
+		&.focused {
+			color: var(--color-contrast-700);
+			background-color: var(--color-base-900);
+			label {
+				opacity: 0.5;
+			}
+		}
 		&.focused {
 			color: var(--color-contrast-900);
-			background-color: var(--color-base-900);
-			&.has-label {
-				.prefix,
-				.suffix,
-				input {
-					top: 0.35em;
-				}
-			}
-			label {
-				opacity: 0.25;
-				top: 0.35em;
-			}
 		}
 	}
 
@@ -422,17 +413,15 @@
 		background-color: rgba(var(--rgb-base-900), 0.1);
 		transition: all 0.1s ease-out;
 		.outline {
-			color: var(--color-contrast-100);
+			border-color: var(--color-contrast-100);
 			opacity: 0.2;
 		}
 		label {
-			top: -0.5em;
 			opacity: 0;
 			font-size: clamp(10px, 0.5em, 24px);
 		}
 		&:not(.has-placeholder):not(:hover):not(.focused):not(.has-value) {
 			label {
-				top: calc((var(--size) - 1em) / 2 - 0.1em);
 				opacity: 0.35;
 				font-size: 1em;
 			}
@@ -448,14 +437,18 @@
 			background-color: transparent;
 			label {
 				opacity: 0.5;
-				top: -0.8em;
+				top: -1.65em;
+				padding-block: 0;
 			}
 			.outline {
 				opacity: 0.5;
 			}
 			&.has-label {
-				.center {
-					width: calc(var(--label-width) + 2 * var(--notch-padding));
+				.left {
+					right: var(--notch-padding);
+				}
+				.right {
+					left: calc(var(--label-width) + var(--notch-padding));
 				}
 			}
 		}
@@ -463,8 +456,8 @@
 			outline: none;
 			color: var(--color-contrast-900);
 			.outline {
-				--thickness: 1.5px;
-				opacity: 0.75;
+				--outline-thickness: 1.5px;
+				opacity: 0.5;
 			}
 		}
 	}

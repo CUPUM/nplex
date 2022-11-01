@@ -16,12 +16,12 @@
 <script lang="ts">
 	import Loading from '$components/Loading.svelte';
 	import Ripple from '$components/Ripple.svelte';
-	import { forwardEvents } from '$utils/forwardEvents';
 	import { getContext, setContext } from 'svelte';
+	import { getButtonGroupContext } from './ButtonGroup.svelte';
 
 	export let href: string | undefined = undefined;
 	export let id: string | undefined = undefined;
-	export let variant: 'default' | 'outlined' | 'ghost' | 'cta' = 'default';
+	export let variant: 'default' | 'outlined' | 'ghost' | 'cta' | 'danger' | undefined = undefined;
 	export let compact: boolean | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
 	export let loading: boolean | undefined = undefined;
@@ -29,7 +29,7 @@
 	export let square: boolean | undefined = undefined;
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let active: boolean | undefined = false;
-	export let contentAlign: 'start' | 'center' | 'end' = 'center';
+	export let contentAlign: 'start' | 'center' | 'end' = 'start';
 	export let value: string | undefined = undefined;
 	export let form: string | undefined = undefined;
 	export let title: string | undefined = undefined;
@@ -41,7 +41,13 @@
 
 	let buttonRef: HTMLButtonElement | HTMLAnchorElement;
 
-	forwardEvents(() => buttonRef);
+	// forwardEvents(() => buttonRef);
+
+	const buttonGroupContext = getButtonGroupContext();
+	const parentVariant = buttonGroupContext?.variant;
+
+	$: computedVariant =
+		variant ?? (buttonGroupContext && parentVariant && $parentVariant ? $parentVariant : 'default');
 
 	setContext<ButtonContext>(CTX_KEY, {});
 </script>
@@ -50,15 +56,15 @@
 <svelte:element
 	this={href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
-	class="button {variant} {contentAlign} {className}"
+	class="button {computedVariant} {contentAlign} {className}"
 	class:compact
 	class:warning
 	class:square
 	class:active
 	class:disabled
 	class:loading
+	aria-disabled={disabled}
 	{style}
-	{disabled}
 	{href}
 	{id}
 	{type}
@@ -67,17 +73,31 @@
 	{title}
 	{tabindex}
 	{formaction}
+	on:click
+	on:pointerdown
+	on:pointercancel
+	on:pointerenter
+	on:mousedown
+	on:mouseover
+	on:mouseup
+	on:keydown
+	on:mouseout
+	on:mousemove
+	on:mouseleave
+	on:mouseenter
+	on:focus
+	on:blur
 >
 	{#if $$slots.leading}
-		<div class="inner leading">
+		<div class="leading">
 			<slot name="leading" />
 		</div>
 	{/if}
-	<div class="inner main">
+	<div class="main">
 		<slot />
 	</div>
 	{#if $$slots.trailing}
-		<div class="inner trailing">
+		<div class="trailing">
 			<slot name="trailing" />
 		</div>
 	{/if}
@@ -99,19 +119,34 @@
 		--computed-radius: calc(var(--radius) - var(--inset, 0px));
 		position: relative;
 		display: grid;
-		grid-template-columns: [full-start leading-start] auto [leading-end main-start] 1fr [main-end trailing-start] auto [trailing-end full-end];
+		grid-template-columns:
+			[full-start leading-padding-start]
+			calc(2 * var(--default-padding-inline) / 3)
+			[leading-padding-end leading-start]
+			auto
+			[leading-end leading-gutter-start]
+			calc(var(--default-padding-inline) / 3)
+			[leading-gutter-end main-start]
+			1fr
+			[main-end trailing-gutter-start]
+			calc(var(--default-padding-inline) / 3)
+			[trailing-gutter-end trailing-start]
+			auto
+			[trailing-end trailing-padding-start]
+			calc(2 * var(--default-padding-inline) / 3)
+			[trailing-padding-end full-end];
 		gap: 0;
 		font-weight: 400;
 		font-size: 1em;
-		line-height: 1em;
-		padding: 0 var(--default-padding-inline);
+		min-height: var(--computed-size);
 		border-radius: var(--computed-radius);
+		padding: 0;
 		margin: 0;
 		cursor: pointer;
-		height: var(--computed-size);
+		flex-direction: row;
+		align-items: center;
 		border: none;
 		font-family: inherit;
-		align-items: center;
 		outline: 0px solid transparent;
 		transition: transform 0.15s ease-out;
 		// Box-shadow and border host to allow additional customization from outer class.
@@ -126,20 +161,54 @@
 			border-radius: inherit;
 		}
 		&.center {
-			grid-template-columns: [full-start leading-start] 1fr [leading-end main-start] auto [main-end trailing-start] 1fr [trailing-end full-end];
+			// grid-template-columns: [full-start leading-start] 1fr [leading-end main-start] auto [main-end trailing-start] 1fr [trailing-end full-end];
+			grid-template-columns:
+				[full-start leading-padding-start]
+				calc(2 * var(--default-padding-inline) / 3)
+				[leading-padding-end leading-start]
+				1fr
+				[leading-end leading-gutter-start]
+				calc(var(--default-padding-inline) / 3)
+				[leading-gutter-end main-start]
+				auto
+				[main-end trailing-gutter-start]
+				calc(var(--default-padding-inline) / 3)
+				[trailing-gutter-end trailing-start]
+				1fr
+				[trailing-end trailing-padding-start]
+				calc(2 * var(--default-padding-inline) / 3)
+				[trailing-padding-end full-end];
 		}
 		&.square {
 			flex: none;
 			aspect-ratio: 1 / 1;
-			padding: 0;
 			justify-content: center;
+			grid-template-columns:
+				[full-start leading-padding-start]
+				0
+				[leading-padding-end leading-start]
+				0
+				[leading-end leading-gutter-start]
+				0
+				[leading-gutter-end main-start]
+				var(--computed-size)
+				[main-end trailing-gutter-start]
+				0
+				[trailing-gutter-end trailing-start]
+				0
+				[trailing-end trailing-padding-start]
+				0
+				[trailing-padding-end full-end];
 		}
-		&:disabled,
-		&.disabled {
+		&.disabled,
+		&:disabled {
+			cursor: not-allowed;
 			transform: scale(0.98);
-			pointer-events: none;
 			&:not(.loading) {
 				opacity: 0.5;
+			}
+			&:active {
+				pointer-events: none;
 			}
 		}
 		&.warning {
@@ -150,11 +219,8 @@
 		&:active {
 			transform: scale(0.98);
 		}
-		&:focus {
+		&:focus-visible {
 			outline: var(--default-focus-outline);
-			// outline-color: rgba(var(--rgb-primary-500), 0.25);
-			// outline-width: 3px;
-			// outline-offset: var(--default-outline-offset);
 		}
 		&.loading {
 			transform: scale(0.98);
@@ -165,47 +231,43 @@
 			}
 		}
 	}
-
-	.inner {
-		display: block;
-		max-height: 100%;
-		top: -0.1em;
-		position: relative;
-		padding: 0;
-		margin: 0;
-	}
-
-	.main {
-		grid-column: main;
-		text-overflow: ellipsis;
-		.center & {
-			text-align: center;
-		}
-		.left & {
-			text-align: left;
-		}
-		.right & {
-			text-align: right;
-		}
-	}
-
+	.main,
 	.leading,
 	.trailing {
-		overflow: hidden;
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding-bottom: 0.25em;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.main {
+		grid-column: main;
+		:where(.center) &,
+		.square & {
+			justify-content: center;
+		}
+		:where(.start) & {
+			justify-content: left;
+		}
+		:where(.end) {
+			justify-content: right;
+		}
 	}
 	.leading {
 		text-align: left;
 		grid-column: leading;
-		&:not(:empty) {
-			padding-right: calc(2 * var(--default-padding-inline) / 3);
-		}
+		// &:not(:empty) {
+		// 	padding-right: 0.5em;
+		// }
 	}
 	.trailing {
 		text-align: right;
 		grid-column: trailing;
-		&:not(:empty) {
-			padding-left: calc(2 * var(--default-padding-inline) / 3);
-		}
+		// &:not(:empty) {
+		// 	padding-left: 0.5em;
+		// }
 	}
 
 	// Default variant
@@ -214,12 +276,12 @@
 		background-color: var(--color-base-500);
 		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover {
+		&:global(:not(.active)):hover {
 			color: var(--color-contrast-700);
 			background-color: var(--color-base-900);
 		}
 		&:active,
-		&.active {
+		&:global(.active) {
 			color: var(--color-contrast-900);
 			background-color: var(--color-base-900);
 		}
@@ -238,20 +300,24 @@
 			transition: all 0.1s ease-in-out;
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover {
-			color: var(--color-contrast-900);
-			background-color: rgba(var(--rgb-base-900), 0.35);
-			&::after {
-				opacity: 0.5;
+		&:global(:not(.active)):hover {
+			&:not(.disabled) {
+				color: var(--color-contrast-900);
+				background-color: rgba(var(--rgb-base-900), 0.35);
+				&::after {
+					opacity: 0.5;
+				}
 			}
 		}
 		&:active,
-		&.active {
-			color: var(--color-contrast-900);
-			background-color: rgba(var(--rgb-base-900), 1);
-			&::after {
-				border-width: 1.5px;
-				opacity: 0.5;
+		&:global(.active) {
+			&:not(.disabled) {
+				color: var(--color-contrast-900);
+				background-color: rgba(var(--rgb-base-900), 1);
+				&::after {
+					border-width: 1.5px;
+					opacity: 0.5;
+				}
 			}
 		}
 	}
@@ -262,14 +328,18 @@
 		background-color: transparent;
 		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover {
-			color: var(--color-contrast-900);
-			background-color: rgba(var(--rgb-base-900), 0.35);
+		&:global(:not(.active)):hover {
+			&:not(.disabled) {
+				color: var(--color-contrast-900);
+				background-color: rgba(var(--rgb-base-900), 0.35);
+			}
 		}
 		&:active,
-		&.active {
-			color: var(--color-contrast-900);
-			background-color: rgba(var(--rgb-base-900), 0.5);
+		&:global(.active) {
+			&:not(.disabled) {
+				color: var(--color-contrast-900);
+				background-color: rgba(var(--rgb-base-900), 0.5);
+			}
 		}
 	}
 
@@ -283,96 +353,23 @@
 		}
 		transition: all 0.15s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover {
-			color: var(--color-base-100);
-			background-color: var(--color-primary-700);
-			&::after {
-				box-shadow: 0 0.8em 1.5em -1em rgba(0, 0, 0, 0.5);
+		&:global(:not(.active)):hover {
+			&:not(.disabled) {
+				color: var(--color-base-100);
+				background-color: var(--color-primary-700);
+				&::after {
+					box-shadow: 0 0.8em 1.5em -1em rgba(0, 0, 0, 0.5);
+				}
 			}
 		}
 		&:active,
-		&.active {
-			background-color: var(--color-primary-900);
-			&::after {
-				box-shadow: 0 0.5em 1em -0.5em rgba(0, 0, 0, 0.25);
+		&:global(.active) {
+			&:not(.disabled) {
+				background-color: var(--color-primary-900);
+				&::after {
+					box-shadow: 0 0.5em 1em -0.5em rgba(0, 0, 0, 0.25);
+				}
 			}
 		}
 	}
-
-	// // Move into separate NavbarButton component
-	// .nav {
-	// 	--radius-ratio: 1.5;
-	// 	padding: 0 1.25em;
-	// 	font-weight: 500;
-	// 	color: var(--color-dark-900);
-	// 	background-color: transparent;
-
-	// 	.content {
-	// 		transition: transform 0.2s cubic-bezier(0.25, 2.25, 0.75, 0.5);
-	// 	}
-
-	// 	&::after {
-	// 		content: '';
-	// 		opacity: 0;
-	// 		position: absolute;
-	// 		bottom: 0em;
-	// 		left: 50%;
-	// 		width: 8px;
-	// 		height: 2px;
-	// 		background-color: currentColor;
-	// 		border-radius: 3px;
-	// 		transform: translate(-50%, -0.1em);
-	// 		transition: opacity 0.2s, width 0.15s cubic-bezier(0, 0, 0, 1),
-	// 			transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
-	// 	}
-	// 	&.square::after {
-	// 		display: none;
-	// 	}
-
-	// 	// prettier-ignore
-	// 	@at-root :global(.button-parent:hover) &,
-	// 	&:hover:not(.active),
-	// 	&:global([popover]) {
-	// 		color: var(--color-dark-900);
-	// 		background-color: rgba(var(--rgb-dark-100), 0.1) !important;
-
-	// 		&::after {
-	// 			opacity: 1;
-	// 			transform: translate(-50%, -.5em);
-	// 		}
-
-	// 		& .content {
-	// 			transform: translateY(-0.07em);
-	// 		}
-	// 	}
-
-	// 	&.active:not([popover]) {
-	// 		color: var(--color-primary-500);
-
-	// 		&::after {
-	// 			opacity: 1;
-	// 			height: 5px;
-	// 			width: 5px;
-	// 			transform: translate(-50%, -0.25em);
-	// 		}
-	// 	}
-	// }
-
-	// .nav-cta {
-	// 	--radius-ratio: 1.5;
-	// 	background-color: var(--color-primary-500);
-	// 	color: var(--color-light-100);
-	// 	font-weight: 500;
-	// 	box-shadow: 0 0.5em 1em -0.5em rgba(0, 0, 0, 0);
-	// 	transition: background-color 0.15s, border-radius 0.2s cubic-bezier(0.25, 0, 0, 1), box-shadow 0.2s ease-out;
-
-	// 	:global(.button-parent:hover) &,
-	// 	&:hover,
-	// 	&:global([popover]) {
-	// 		box-shadow: 0 0.5em 1em -0.5em var(--color-primary-700);
-	// 		background-color: var(--color-primary-900);
-	// 		color: white;
-	// 		--radius-ratio: 1.2;
-	// 	}
-	// }
 </style>

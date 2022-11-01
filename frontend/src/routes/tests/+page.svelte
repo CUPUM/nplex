@@ -5,7 +5,9 @@
 	import { browser } from '$app/environment';
 
 	import Button from '$components/Button.svelte';
+	import ButtonGroup from '$components/ButtonGroup.svelte';
 	import Field from '$components/Field.svelte';
+	import FieldIcon from '$components/FieldIcon.svelte';
 	import Icon from '$components/Icon.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import type { ComponentProps } from 'svelte';
@@ -31,17 +33,20 @@
 
 <article>
 	<section>
-		<Field prefix="test" suffix="some suffix" {variant}>
+		<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. <Icon name="users" />Adipisci vel maiores, sunt
+			odio voluptates consequuntur illo assumenda omnis esse voluptate!
+		</p>
+		<Field prefix="test" suffix="some suffix" placeholder="test" {variant}>
+			<FieldIcon name="cross" slot="leading" />
+			<!-- <svelte:fragment slot="label">Some label</svelte:fragment> -->
+			<svelte:fragment slot="trailing">
+				<Button>Test yezzir <Icon name="cross" slot="trailing" /></Button>
+				<FieldIcon name="cross" />
+			</svelte:fragment>
+		</Field>
+		<Field prefix="test" {variant}>
 			<svelte:fragment slot="label">Some label</svelte:fragment>
-			<Button slot="leading">Test yezzir</Button>
-		</Field>
-		<Field prefix="test" {variant} placeholder="Placeholder!">
-			<svelte:fragment slot="label">Test label</svelte:fragment>
-			<Button slot="trailing">Test yezzir</Button>
-			<Button slot="leading">Test yezzir</Button>
-		</Field>
-		<Field prefix="test" {variant} placeholder="Placeholder without label!">
-			<Button slot="leading">Test yezzir</Button>
 		</Field>
 		<TextArea />
 	</section>
@@ -61,9 +66,11 @@
 		{/each}
 	</select>
 	<section class="bg">
-		<Button {variant} {contentAlign}>Test</Button>
-		<Button {variant} {contentAlign}><Icon name="user" slot="leading" />Test</Button>
-		<Button {variant} {contentAlign}><Icon style="font-size: {size}px" name="user" slot="leading" />Test</Button>
+		<ButtonGroup {variant}>
+			<Button {contentAlign}>Test</Button>
+			<Button {contentAlign}><Icon name="user" slot="leading" />Test</Button>
+			<Button {contentAlign}><Icon style="font-size: {size}px" name="user" slot="leading" />Test</Button>
+		</ButtonGroup>
 		<Button {variant} {contentAlign} style="width: 100%">Test</Button>
 	</section>
 	<section>
@@ -81,7 +88,7 @@
 <style lang="scss" module>
 	article {
 		padding: 4rem;
-		line-height: 5em;
+		// line-height: 5em;
 	}
 	section {
 		padding: 4rem;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { AuthUpdateBody } from '$api/auth/session.json/+server';
+	import type { AuthChangeCookie } from '$api/auth/session.json/+server';
 	import { afterNavigate, beforeNavigate, goto, invalidate } from '$app/navigation';
 	import { getStores } from '$app/stores';
 	import Loading from '$components/Loading.svelte';
@@ -34,11 +34,11 @@
 			restoredTab = true;
 		}
 		// Set temporary client cookies to communicate auth change data to the server.
-		const newAuth: AuthUpdateBody = { session, event };
+		const newAuth: AuthChangeCookie = { session, event };
 		jscookie.set(Cookie.AuthChange, JSON.stringify(newAuth), { path: '/', sameSite: 'strict' });
 		await invalidate('/api/auth/session.json');
-		if (get(authModalState)) await authModalState.close();
 		if (event === 'SIGNED_IN' && !restoredTab && get(page).url.pathname === '/' && data.session) {
+			if (get(authModalState)) await authModalState.close();
 			goto('/compte');
 		}
 	});
@@ -69,7 +69,7 @@
 </div>
 <AuthModal />
 {#if loading}
-	<Loading style="position: fixed; top:0; left: 0; width: 100vw; height: 100vh" />
+	<Loading style="position: fixed; top:0; left: 0; width: 100vw; height: 100vh; color: var(--color-primary-700);" />
 {/if}
 <MessagesOutlet />
 <LoadingProgress bind:this={progress} />
@@ -87,7 +87,7 @@
 	}
 
 	div {
-		transform-origin: 50vw calc(var(--scrollpx) + 50vh);
+		transform-origin: 50vw calc(var(--scroll-px) + 50vh);
 		transition: transform 0.8s cubic-bezier(0.2, 0, 0, 1), border-radius 0.8s ease-out;
 	}
 

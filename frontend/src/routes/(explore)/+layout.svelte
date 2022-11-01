@@ -1,26 +1,24 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import ExploreSearchbar from '$components/complexes/ExploreSearchbar.svelte';
-	import { backgroundColor } from '$stores/backgroundColor';
-
-	let searchbarHeight;
-
-	backgroundColor.reset();
+	import ExploreSearchbar from './ExploreSearchbar.svelte';
 </script>
 
-<div id="explore" style:--searchbar-height="{searchbarHeight || 0}px">
-	{#if $page.data.showExploreSearchbar}
-		<div id="searchbar-container" bind:offsetHeight={searchbarHeight}>
-			<ExploreSearchbar />
-		</div>
-	{/if}
+<div id="explore">
+	<ExploreSearchbar />
 	<slot />
 </div>
 
 <style lang="scss">
 	#explore {
-		--search-width: 400px;
-		flex: 1;
+		position: relative;
+		width: 100%;
+	}
+
+	nav {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		background-color: pink;
+		width: 100px;
 	}
 
 	#searchbar-container {

@@ -15,36 +15,36 @@
 		} catch (error) {
 			messages.dispatch({
 				type: 'error',
-				content: error,
+				content: JSON.stringify(error),
 			});
 		}
 	}
 
-	$: publicUserHref = $page.data.session ? `/u/${$page.data.session.user.id}` : null;
+	$: publicUserHref = $page.data.session ? `/u/${$page.data.session.user.id}` : undefined;
 </script>
 
 <div>
-	<Button variant="ghost" contentAlign="left" href="/compte" active={$page.url.pathname.startsWith('/compte')}>
+	<Button variant="ghost" contentAlign="start" href="/compte" active={$page.url.pathname.startsWith('/compte')}>
 		<svelte:fragment slot="leading">
-			<Icon name="settings" size="1.25em" />
+			<Icon name="settings" />
 		</svelte:fragment>
 		Mon compte
 	</Button>
 	<Button
 		variant="ghost"
-		contentAlign="left"
+		contentAlign="start"
 		href={publicUserHref}
-		active={$page.url.pathname.startsWith(publicUserHref)}
+		active={$page.url.pathname.startsWith(publicUserHref ?? '')}
 		disabled
 	>
 		<svelte:fragment slot="leading">
-			<Icon name="user" size="1.25em" />
+			<Icon name="user" />
 		</svelte:fragment>
 		Profil
 	</Button>
-	<Button variant="ghost" contentAlign="left" on:click={logout}>
+	<Button variant="ghost" contentAlign="start" on:click={logout}>
 		<svelte:fragment slot="leading">
-			<Icon name="logout" size="1.25em" />
+			<Icon name="logout" />
 		</svelte:fragment>
 		Se déconnecter
 	</Button>

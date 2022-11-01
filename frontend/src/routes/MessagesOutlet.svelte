@@ -18,6 +18,7 @@
 
 <div class="outlet">
 	{#each $messages as message (message)}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<dialog
 			in:scale|local={{ start: 0.75, opacity: 0, duration: 500, easing: expoOut }}
 			out:scale|local={{ start: 0.9, opacity: 0, duration: 350, easing: expoOut }}
@@ -98,11 +99,11 @@
 		aspect-ratio: 1 / 1;
 		position: absolute;
 		left: calc(100% + 0.5em);
-		background-color: var(--color-light-300);
+		background-color: var(--color-base-300);
 		transition: all 0.1s;
 
 		&:hover {
-			background-color: var(--color-light-900);
+			background-color: var(--color-base-900);
 		}
 	}
 
@@ -152,7 +153,7 @@
 
 	.error {
 		background-color: var(--color-error-500);
-		color: var(--color-light-100);
+		color: var(--color-base-100);
 
 		& .progress {
 			background-color: var(--color-error-900);

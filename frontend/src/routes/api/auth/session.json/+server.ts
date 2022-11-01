@@ -5,7 +5,7 @@ import type { AuthChangeEvent, AuthSession } from '@supabase/supabase-js';
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
-export type AuthUpdateBody = {
+export type AuthChangeCookie = {
 	session: AuthSession | null;
 	event: AuthChangeEvent;
 };
@@ -15,19 +15,19 @@ export type AuthUpdateBody = {
  */
 export const GET: RequestHandler = async ({ request, locals, cookies }) => {
 	try {
-		const newAuth: AuthUpdateBody = JSON.parse(cookies.get(Cookie.AuthChange) ?? null!);
-		// Clear client's auth change cookie with response;
+		const newAuth: AuthChangeCookie = JSON.parse(cookies.get(Cookie.AuthChange) ?? null!);
+		// Clear client's auth change cookie with response.
 		if (newAuth) setClearCookies(cookies, Cookie.AuthChange);
+		// Coalescing potential locals session and potential newAuth session.
+		// Also temporarily defaulting role to 'visitor' for type compliancy and least privilege.
+		const session: App.Locals['session'] = newAuth?.session
+			? { ...newAuth.session, user: { ...newAuth.session.user, role: locals.session?.user.role ?? 'visitor' } }
+			: locals.session;
 		// If the user logged out or if there is no auth token in cookie, reset client's auth.
-		if (!locals.session?.access_token || newAuth?.event === 'SIGNED_OUT') {
+		if (!session || newAuth?.event === 'SIGNED_OUT') {
 			setClearCookies(cookies, Cookie.Session);
 			return json(null);
 		}
-		// Else, proceed using either the auth change data, if present, or using the previously available cookies.
-		// Also temporarily set default 'visitor' role for object shape compliancy.
-		const session: App.Locals['session'] = newAuth?.session
-			? { ...newAuth.session, user: { ...newAuth.session.user, role: 'visitor' } }
-			: locals.session;
 		const db = dbClient.createForServer(session.access_token);
 		const { data: roleData, error: roleError } = await db
 			.from('users_roles')

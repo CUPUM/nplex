@@ -1,13 +1,10 @@
 <script lang="ts">
-	import ProjectsFiltersPane from '$components/complexes/ProjectsFiltersPane.svelte';
-	import ProjectsList from '$components/complexes/ProjectsList.svelte';
-	import ProjectsMap from '$components/complexes/ProjectsMap.svelte';
 </script>
 
 <div id="panes">
-	<ProjectsFiltersPane />
+	<!-- <ProjectsFiltersPane />
 	<ProjectsMap />
-	<ProjectsList />
+	<ProjectsList /> -->
 </div>
 
 <style lang="scss">

@@ -8,12 +8,11 @@
 	import Icon from './Icon.svelte';
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
-	export let defaultValue: string = undefined;
-	export let target: HTMLInputElement = undefined;
+	export let defaultValue: string | undefined = undefined;
 
 	const { value, inputRef } = getFieldContext();
 
-	$: computedDefaultValue = defaultValue ?? $inputRef.defaultValue;
+	$: computedDefaultValue = defaultValue ?? $inputRef?.defaultValue;
 
 	$: show = $value !== computedDefaultValue;
 
@@ -24,6 +23,6 @@
 
 {#if show}
 	<Button {variant} square on:click on:click={reset} tabindex={-1}>
-		<Icon name="cross" size="1.5em" />
+		<Icon name="cross" />
 	</Button>
 {/if}

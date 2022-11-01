@@ -55,18 +55,18 @@
 					<div transition:slip={{ width: true, overflow: 'visible' }}>
 						<div in:receive={{ key: '' }} out:send={{ key: '' }}>
 							<Button on:click={toggleFilters} square>
-								<Icon name="parameters" size="1.25em" />
+								<Icon name="parameters" />
 							</Button>
 						</div>
 					</div>
 					<FieldIcon name="search" />
 				{/if}
 			</svelte:fragment>
-			<svelte:fragment slot="has-value">
+			<!-- <svelte:fragment slot="has-value">
 				<Button type="submit" variant="cta" square>
-					<Icon name="arrow-right" size="1.25em" />
+					<Icon name="arrow-right" />
 				</Button>
-			</svelte:fragment>
+			</svelte:fragment> -->
 		</Field>
 	</section>
 	<section class="search-tokens" use:horizontalScroll on:scroll={handleTokenScroll} class:fadestart class:fadeend>

@@ -2,38 +2,33 @@
 	import type { ComponentProps } from 'svelte';
 	import Icon from './Icon.svelte';
 
-	type IconProps = ComponentProps<Icon>;
+	type $$Props = ComponentProps<Icon>;
 
-	export let name: IconProps['name'];
-	export let size: IconProps['size'] = '1.5em';
-	export let color: IconProps['color'] = 'currentColor';
-	export let secondaryColor: IconProps['color'] = color;
-	export let strokeWidth: IconProps['strokeWidth'] = 1.5;
-	export let scaleStroke: IconProps['scaleStroke'] = true;
-	export let strokeOpacity: IconProps['strokeOpacity'] = 1;
-	export let fillOpacity: IconProps['fillOpacity'] = 1;
-	export let intro: IconProps['intro'] = false;
+	$: typedProps = $$props as $$Props;
 </script>
 
-<div>
-	<Icon {name} {size} {color} {secondaryColor} {strokeWidth} {scaleStroke} {strokeOpacity} {fillOpacity} {intro} />
+<div class="field-icon">
+	<Icon scaleStroke={false} thickness="1.5" {...typedProps} />
 </div>
 
 <style lang="scss">
-	div {
+	.field-icon {
 		position: relative;
 		display: flex;
-		align-items: center;
 		justify-content: center;
-		aspect-ratio: 1 / 1;
-		padding-bottom: 0.2em;
-		height: 100%;
+		align-items: center;
 		opacity: 0.5;
-		top: -0.1em;
+		min-height: 1em;
+		padding-inline: var(--padding-inline); // See Field component for ref.
 		transition: all 0.25s;
-	}
-
-	:global(.field.focused) div {
-		opacity: 1;
+		:global(.leading) > &:last-child {
+			padding-right: 0;
+		}
+		:global(.trailing) > &:first-child {
+			padding-left: 0;
+		}
+		:global(.focused) & {
+			opacity: 1;
+		}
 	}
 </style>

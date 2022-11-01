@@ -1,45 +1,45 @@
+<!--
+	@component
+	## Navbar
+	Main navigation bar singleton located in the app's root layout.	
+-->
 <script lang="ts" context="module">
-	export const backgroundOpacity = (function () {
-		const init = 0.75;
-		const { subscribe, set } = writable(init);
-		return {
-			subscribe,
-			set,
-			reset: () => set(init),
-		};
-	})();
+	// export const backgroundOpacity = (function () {
+	// 	const init = 0.75;
+	// 	const { subscribe, set } = writable(init);
+	// 	return {
+	// 		subscribe,
+	// 		set,
+	// 		reset: () => set(init),
+	// 	};
+	// })();
 
-	export const backgroundColor = (function () {
-		const { subscribe, set } = writable(null);
-		return {
-			subscribe,
-			set,
-			reset: () => set(null),
-		};
-	})();
+	// export const backgroundColor = (function () {
+	// 	const { subscribe, set } = writable(null);
+	// 	return {
+	// 		subscribe,
+	// 		set,
+	// 		reset: () => set(null),
+	// 	};
+	// })();
 </script>
 
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import AvatarButton from '$components/AvatarButton.svelte';
-	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
 	import { rootScroll } from '$stores/scroll';
 	import { getAuthRedirectUrl } from '$utils/routing/guard';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routing/routes';
-	import { onMount } from 'svelte';
-	import { expoIn, expoOut } from 'svelte/easing';
-	import { writable } from 'svelte/store';
-	import { fly } from 'svelte/transition';
+	import NavbarButton from './NavbarButton.svelte';
 	import NavbarEditMenu from './NavbarEditMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
 
-	export let navbarHeight;
+	export let navbarHeight = 0;
 
-	let mounted = false;
 	let hidden: boolean;
 	let mainPathname: string;
 	let yThreshold = navbarHeight || 40;
@@ -57,108 +57,87 @@
 	});
 
 	$: hidden = $rootScroll.down && $rootScroll.y > yThreshold;
-	$: mainPathname = $page.data.category ? '/' : $page.routeId ? '/' + $page.routeId.split('/')[0] : '/';
-
-	onMount(() => {
-		mounted = true;
-	});
+	$: mainPathname = $page.data.category ? '/' : ($page.url.pathname ?? '/').split('/', 2)[1];
 </script>
 
-<header
-	class:hidden
-	bind:clientHeight={navbarHeight}
-	style:--bg-opacity={$backgroundOpacity}
-	style:--bg-color={$backgroundColor}
-	bind:clientWidth={headerWidth}
->
-	{#if mounted}
-		<nav
-			class="main"
-			in:fly={{ y: -20, opacity: 0, duration: 500, easing: expoOut, delay: 0 }}
-			out:fly={{ y: -20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
-		>
-			<a class="logo" href="/">
-				<Logo intro short={headerWidth < 1200} />
-			</a>
-			<hr />
-			{#each mainRoutes as route}
-				<Button display="inline" variant="nav" href={route.pathname} active={route.pathname === mainPathname}>
-					{route.title}
-				</Button>
-			{/each}
-		</nav>
-		<!-- <nav class="explore">
-			{#if $page.data.showCategoryNav}
-				<div transition:transform={{ translateY: -20, rotateX: -45, duration: 750, easing: expoInOut }}>
-					<Switch name="category" variant="nav" value={$page.data.category}>
-						{#each exploreRoutes as r, i}
-							<SwitchItem
-								id={r.category}
-								value={r.category}
-								on:click={() => gotoCategory(r)}
-								disabled={r.category === $page.data.category && !$page.data.categoryIsResetable}
-								loading={loadingCategoryPath === r.pathname}
-							>
-								{r.title}
-							</SwitchItem>
-						{/each}
-					</Switch>
-				</div>
-			{/if}
-		</nav> -->
-		<nav
-			class="session"
-			in:fly={{ y: 20, opacity: 0, duration: 500, easing: expoOut, delay: 300 }}
-			out:fly={{ y: 20, opacity: 0, duration: 500, easing: expoIn, delay: 0 }}
-		>
-			<Button href="/" variant="nav" square disabled={$page.url.pathname === '/'}>
-				<Icon name="home" style="font-size: 1.25em" />
-			</Button>
-			<hr />
-			{#if $page.data.session}
-				<Popover place="bottom" align="end" useHover>
-					<Button
-						slot="control"
-						variant="nav"
-						square
-						href={creationBaseRoute.pathname}
-						active={$page.url.pathname.startsWith(creationBaseRoute.pathname)}
-					>
-						<Icon name="pen" style="font-size: 1.25em" />
-					</Button>
-					<NavbarEditMenu />
-				</Popover>
-				<Popover useHover place="bottom" align="end">
-					<AvatarButton slot="control" href={userBaseRoute.pathname} />
-					<NavbarUserMenu />
-				</Popover>
-			{:else}
-				<Button variant="nav-cta" href={getAuthRedirectUrl($page.url).toString()} square>
-					<Icon name="user" style="font-size: 1.25em" />
-				</Button>
-			{/if}
-		</nav>
-	{/if}
+<header class:hidden bind:clientHeight={navbarHeight} bind:clientWidth={headerWidth}>
+	<nav class="main">
+		<NavbarButton square href="/">
+			<Logo short style="font-size: larger" />
+		</NavbarButton>
+		{#each mainRoutes as route}
+			<NavbarButton href={route.pathname} current={route.pathname === mainPathname}>
+				{route.title}
+			</NavbarButton>
+		{/each}
+	</nav>
+	<nav class="category">
+		{#each exploreRoutes as r}
+			<NavbarButton href={r.pathname} current={$page.url.pathname.startsWith(r.pathname)}>
+				{r.title}
+			</NavbarButton>
+		{/each}
+	</nav>
+	<nav class="session">
+		{#if $page.data.session}
+			<Popover place="bottom" align="end" useHover>
+				<NavbarButton
+					slot="control"
+					square
+					href={creationBaseRoute.pathname}
+					current={$page.url.pathname.startsWith(creationBaseRoute.pathname)}
+				>
+					<Icon name="pen" style="font-size: 1.25em" />
+				</NavbarButton>
+				<NavbarEditMenu />
+			</Popover>
+			<Popover useHover place="bottom" align="end">
+				<AvatarButton slot="control" href={userBaseRoute.pathname} />
+				<NavbarUserMenu />
+			</Popover>
+		{:else}
+			<NavbarButton square cta href={getAuthRedirectUrl($page.url).toString()}>
+				<Icon name="user" thickness="1.5" style="font-size: 1.25em" />
+			</NavbarButton>
+		{/if}
+	</nav>
 </header>
 
 <style lang="scss">
+	@use 'mixins.scss';
+
 	header {
 		position: sticky;
 		top: 0;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		width: 100vw;
-		align-items: stretch;
-		padding: 1rem;
-		padding-block: 0.5rem;
+		display: grid;
+		grid-template-columns:
+			[full-start main-start]
+			1fr
+			[main-end category-start]
+			auto
+			[category-end session-start]
+			1fr
+			[session-end full-end];
+		grid-auto-flow: dense;
+		padding: 0.5rem 1rem;
 		margin: 0;
-		gap: 0;
-		font-size: var(--size-small);
-		backdrop-filter: blur(10px);
-		z-index: 100;
-		transition: all 0.3s cubic-bezier(0, 0, 0, 1);
-
+		flex-direction: row;
+		align-items: stretch;
+		gap: 3rem;
+		font-size: small;
+		z-index: 1000;
+		backdrop-filter: blur(8px);
+		transition: transform 0.5s cubic-bezier(0.75, 0, 0, 1);
+		@include mixins.mobile {
+			grid-template-columns:
+				[full-start main-start]
+				1fr
+				[main-end category-start]
+				auto
+				[category-end session-start]
+				1fr
+				[session-end full-end];
+		}
 		&::before {
 			content: '';
 			position: absolute;
@@ -166,66 +145,37 @@
 			height: 100%;
 			padding: 0;
 			margin: 0;
-			opacity: var(--bg-opacity);
+			opacity: 0.85;
 			top: 0;
 			left: 0;
 			background-color: var(--bg-color, var(--color-base-300));
-			transition: all 0.1s;
+			transition: all 0.15s;
 		}
 	}
 
 	.hidden {
-		box-shadow: 0 0px 0 0 transparent;
 		transform: translateY(-101%);
-		transform-origin: top center;
 		pointer-events: none;
-		transition: all 0.3s cubic-bezier(1, 0, 1, 1);
 	}
 
-	.logo {
-		height: 1.8em;
-		min-width: 40px;
+	.main,
+	.category,
+	.session {
 		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin: 0;
-		padding-inline: 0.5em 1rem;
-		transition: all 0.1s ease-out;
-
-		&:hover {
-			color: var(--color-primary-500);
-		}
-	}
-
-	nav {
-		position: relative;
-		display: flex;
-		flex: 1;
 		flex-direction: row;
-		justify-content: center;
 		align-items: center;
 		gap: 0px;
 	}
-
 	.main {
+		grid-column: main;
 		justify-content: flex-start;
 	}
-
-	.explore {
-		perspective: 300px;
+	.category {
+		grid-column: category;
 		justify-content: center;
 	}
-
 	.session {
+		grid-column: session;
 		justify-content: flex-end;
-	}
-
-	hr {
-		margin: 0 0.5rem;
-		height: 50%;
-		width: 1px;
-		background-color: var(--color-dark-100);
-		border: none;
-		opacity: 0.1;
 	}
 </style>
