@@ -141,7 +141,7 @@
 	<input
 		bind:this={inputRef}
 		class="input"
-		autocomplete="current-{type}"
+		autocomplete="new-{type}"
 		{type}
 		{name}
 		{placeholder}
@@ -151,7 +151,7 @@
 		{disabled}
 		{required}
 		{tabindex}
-		readonly={!focusedOnce ?? readonly}
+		{readonly}
 		pattern={pattern ? pattern.source : undefined}
 		use:inputOnReset
 		on:input={handleInput}

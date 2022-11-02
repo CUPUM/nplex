@@ -1,11 +1,10 @@
 import { dbClient } from '$utils/database/database';
-import { LoadDependency } from '$utils/enums';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ parent, depends }) => {
 	// Setting a custom dep for limited refresh after form submission.
-	depends(LoadDependency.DbUserProfile);
+	// depends(LoadDependency.DbUserProfile);
 
 	const { session } = await parent();
 
@@ -16,18 +15,25 @@ export const load: PageLoad = async ({ parent, depends }) => {
 	// Get extended user profile with collections and their contents.
 	const { data: profile, error: profileError } = await db
 		.from('users')
-		.select(
-			`
-				*,
-				role:users_roles!users_roles_user_id_fkey(
-					role
-				)
-			`
-		)
+		.select('*')
+		// .select(
+		// 	`
+		// 		*,
+		// 		role:users_roles!users_roles_user_id_fkey(
+		// 			role
+		// 		)
+		// 	`
+		// )
 		.eq('id', session.user.id)
 		.single();
 
 	if (profileError) throw error(404, JSON.stringify(profileError));
+
+	const { data: role, error: roleError } = await db
+		.from('users_roles')
+		.select('*')
+		.eq('user_id', session.user.id)
+		.single();
 
 	// const { data: projectsPreview, error: projcetsError } = await db
 	// 	.from('projects')
@@ -42,7 +48,9 @@ export const load: PageLoad = async ({ parent, depends }) => {
 	// if (projcetsError) throw error(404, projcetsError.message);
 
 	return {
-		...profile,
-		projectsPreview: [],
+		profile: {
+			...profile,
+			role: role?.role,
+		},
 	};
 };

@@ -1,6 +1,100 @@
+<!--
+	@component
+	Singleton component acting as a toast-like messages outlet.
+	Also holds the ongoing messages stack store.
+
+-->
+<script lang="ts" context="module">
+	import { writable } from 'svelte/store';
+	import type { Newable } from 'ts-essentials';
+
+	type Message<T extends string | SvelteComponentTyped> = {
+		content: T extends string
+			? T
+			: T extends SvelteComponentTyped
+			? {
+					component: Newable<T>;
+					props?: ComponentProps<T>;
+			  }
+			: unknown;
+		timer?: number;
+		type?: 'error' | 'success' | 'default';
+	};
+
+	const defaultMessage: Message<string> = {
+		content: '',
+		timer: 4000,
+		type: 'default',
+	};
+
+	/**
+	 * Singleton store containing stack of messages dispatched from anywhere in the app. This store's contents are
+	 * displayed in the app's root layout.
+	 */
+	export const messages = (function () {
+		const { subscribe, set, update } = writable<Message<string | SvelteComponentTyped>[]>([]);
+		const timeouts: Map<Message<string | SvelteComponentTyped>, ReturnType<typeof setTimeout>> = new Map();
+
+		function clear<T>(message: Message<T extends string | SvelteComponentTyped ? T : never>) {
+			update((curr) => {
+				timeouts.delete(message);
+				return curr.filter((m) => m !== message);
+			});
+		}
+
+		function clearLast() {
+			update((curr) => {
+				const last = curr.pop();
+				if (last) timeouts.delete(last);
+				return curr;
+			});
+		}
+
+		function clearAll() {
+			timeouts.clear();
+			set([]);
+		}
+
+		function dispatch<T>(message: Message<T extends string | SvelteComponentTyped ? T : never>) {
+			message = { ...defaultMessage, ...message };
+			if (message.timer) {
+				timeouts.set(
+					message,
+					setTimeout(() => clear(message), message.timer)
+				);
+			}
+			update((curr) => [...curr, message]);
+		}
+
+		function cancelTimer<T>(message: Message<T extends string | SvelteComponentTyped ? T : never>) {
+			if (message.timer) {
+				update((curr) => {
+					if (timeouts.has(message)) {
+						clearTimeout(timeouts.get(message));
+						const index = curr.indexOf(message);
+						if (index > -1) {
+							curr[index].timer = 0;
+						}
+					}
+					return curr;
+				});
+			}
+		}
+
+		return {
+			subscribe,
+			dispatch,
+			clear,
+			clearAll,
+			cancelTimer,
+			clearLast,
+		};
+	})();
+</script>
+
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
-	import { messages, type Message } from '$stores/messages';
+	import type { ComponentProps, SvelteComponentTyped } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -46,7 +140,7 @@
 				{/if}
 			</div>
 			<button on:click={(e) => closeMessage(e, message)}>
-				<Icon name="cross" size="1.25em" />
+				<Icon name="cross" style="font-size: 1.25em" />
 			</button>
 		</dialog>
 	{/each}

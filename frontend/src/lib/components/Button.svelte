@@ -2,6 +2,7 @@
 	@component
 	## Button
 	Primitive button component.
+
 -->
 <script lang="ts" context="module">
 	const CTX_KEY = 'button-context';
@@ -256,14 +257,14 @@
 		}
 	}
 	.leading {
-		text-align: left;
+		justify-content: flex-start;
 		grid-column: leading;
 		// &:not(:empty) {
 		// 	padding-right: 0.5em;
 		// }
 	}
 	.trailing {
-		text-align: right;
+		justify-content: flex-end;
 		grid-column: trailing;
 		// &:not(:empty) {
 		// 	padding-left: 0.5em;
@@ -371,5 +372,12 @@
 				}
 			}
 		}
+	}
+
+	// Danger variant
+	.danger {
+		border: 2px solid rgba(0, 0, 0, 0.2);
+		background-color: red;
+		box-shadow: 0 0 2em black;
 	}
 </style>

@@ -21,7 +21,7 @@
 	aria-disabled={disabled}
 	{href}
 >
-	<Ripple color="var(--color-primary-300)" opacityStart={1} />
+	<Ripple color="var(--color-primary-500)" blur={8} />
 	<div class="inner">
 		<slot />
 	</div>
@@ -50,21 +50,21 @@
 			position: absolute;
 			bottom: 0em;
 			left: 50%;
-			width: 6px;
+			width: 8px;
 			height: 2px;
 			background-color: currentColor;
-			border-radius: 3px;
+			border-radius: 2px;
 			transform: translate(-50%, -0.1em);
 			transition: opacity 0.2s, width 0.15s cubic-bezier(0, 0, 0, 1),
 				transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5);
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:global(:not(.current)):hover {
-			color: var(--color-contrast-900);
-			background-color: rgba(var(--rgb-contrast-100), 0.1);
+			color: var(--color-primary-500);
+			background-color: rgba(var(--rgb-primary-100), 0.1);
 			&::after {
 				opacity: 1;
-				transform: translate(-50%, -0.5em);
+				transform: translate(-50%, -0.25em);
 			}
 			.inner {
 				transform: translateY(-0.07em);
@@ -95,6 +95,10 @@
 	.square {
 		aspect-ratio: 1;
 		padding: 0;
+		border-radius: 50%;
+		&::after {
+			display: none;
+		}
 	}
 
 	// Call-to-action variant

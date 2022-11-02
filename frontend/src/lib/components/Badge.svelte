@@ -1,8 +1,9 @@
 <!-- 
-    @component
+	@component
 	Adds small notification indicator or other customized badge to parent.
-    Useful to add warnings or notifications to buttons and tokens.
+	Useful to add warnings or notifications to buttons and tokens.
 	Note that hidden overflow on parent elements will affect this component's visibility.
+	
 -->
 <script lang="ts">
 	import { cssSize } from '$utils/css';

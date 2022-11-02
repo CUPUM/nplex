@@ -3,28 +3,18 @@ import { dbClient } from '$utils/database/database';
 import { error, invalid, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
-type ProfileFormData = {
-	id: string;
-	first_name: string;
-	last_name: string;
-};
-
 export const actions: Actions = {
 	/**
 	 * Update user profile info.
 	 */
 	update: async ({ request, locals }) => {
-		const formData = Object.fromEntries(await request.formData()) as ProfileFormData;
-		console.log(formData);
-
-		if (formData.first_name === 'test') {
-			return invalid(400, {
-				error: {
-					message: 'Erreur du nom!',
-				},
-				...formData,
-			});
+		if (!locals.session) {
+			return invalid(401);
 		}
+		const formData = Object.fromEntries(await request.formData());
+
+		// Do some zod validation here...
+		console.log(formData);
 
 		const db = dbClient.createForServer(locals.session.access_token);
 		const update = await db
@@ -41,10 +31,13 @@ export const actions: Actions = {
 	/**
 	 * Delete current user.
 	 */
-	delete: async ({ request, cookies, locals }) => {
-		const formData = Object.fromEntries(await request.formData()) as ProfileFormData;
+	delete: async ({ request, locals }) => {
+		if (!locals.session) {
+			return invalid(401);
+		}
+		const formData = Object.fromEntries(await request.formData());
 		if (formData.id !== locals.session.user.id) {
-			return invalid(500, {
+			return invalid(401, {
 				error: {
 					message: 'Votre identificateur ne correspond pas au compte que vous tentez de supprimer',
 				},

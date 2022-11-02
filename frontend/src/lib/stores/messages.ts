@@ -1,3 +1,15 @@
+/**
+ * !
+ *
+ * !
+ *
+ * ! DEPRECATE, REPLACE WITH MESSAGE COMPONENT SINGLETON STORE. !
+ *
+ * !
+ *
+ * !
+ */
+
 import type { ComponentProps } from 'svelte';
 import { writable } from 'svelte/store';
 

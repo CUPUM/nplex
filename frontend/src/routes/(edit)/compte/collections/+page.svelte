@@ -2,10 +2,12 @@
 </script>
 
 <script lang="ts">
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 </script>
 
-<h2>Editing!</h2>
-<slot />
+<h1>Collections</h1>
 
 <style lang="scss">
 </style>

@@ -155,7 +155,8 @@
 						contentAlign="center"
 						style="flex: 1 0"
 					>
-						<Icon name="user-add" />&nbsp; Créer un compte
+						<Icon name="user-add" slot="leading" />
+						Créer un compte
 					</Button>
 					<Button
 						type="submit"

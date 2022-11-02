@@ -28,9 +28,8 @@
 	];
 
 	const iconOptions: Partial<ComponentProps<Icon>> = {
-		top: '.25em',
-		strokeWidth: 1.75,
-		size: '1.25em',
+		thickness: 1.75,
+		style: 'font-size: 1.25em;',
 	};
 
 	let out = true;
@@ -43,161 +42,141 @@
 	on:leave={() => (out = true)}
 	class:out
 >
-	<section id="links">
-		<section id="sitemap-links">
-			<div class="heading"><Icon name="map" {...iconOptions} />&ensp;Carte du site</div>
-			<ul>
-				{#each mainLinks as link}
-					<li>
-						<Link href={link.pathname}>{link.title}</Link>
-					</li>
-				{/each}
-			</ul>
+	<div class="wrapper">
+		<section id="links">
+			<section id="sitemap-links">
+				<div class="heading" style="--i: 0"><Icon name="map" {...iconOptions} />&ensp;Carte du site</div>
+				<ul>
+					{#each mainLinks as link, i}
+						<li style="--i: {i}">
+							<Link href={link.pathname}>{link.title}</Link>
+						</li>
+					{/each}
+				</ul>
+			</section>
+			<section id="explore-links">
+				<div class="heading" style="--i: 1"><Icon name="search" {...iconOptions} />&ensp;Explorer</div>
+				<ul>
+					{#each exploreLinks as link, i}
+						<li style="--i: {i}">
+							<Link href={link.pathname}>{link.title}</Link>
+						</li>
+					{/each}
+				</ul>
+			</section>
+			<section id="partners-links">
+				<div class="heading" style="--i: 2"><Icon name="bookmark" {...iconOptions} />&ensp;Partenaires</div>
+				<ul>
+					{#each partnersLinks as link, i}
+						<li style="--i: {i}">
+							<Link href={link.pathname}>{link.title}</Link>
+						</li>
+					{/each}
+				</ul>
+			</section>
 		</section>
-		<section id="explore-links">
-			<div class="heading"><Icon name="search" {...iconOptions} />&ensp;Explorer</div>
-			<ul>
-				{#each exploreLinks as link}
-					<li>
-						<Link href={link.pathname}>{link.title}</Link>
-					</li>
-				{/each}
-			</ul>
-		</section>
-		<section id="partners-links">
-			<div class="heading"><Icon name="bookmark" {...iconOptions} />&ensp;Partenaires</div>
-			<ul>
-				{#each partnersLinks as link}
-					<li>
-						<Link href={link.pathname}>{link.title}</Link>
-					</li>
-				{/each}
-			</ul>
-		</section>
-	</section>
-	<section id="nplex-footer-logo">
-		<a href="/" class="logo">
+		<Link href="/">
 			<Logo />
-		</a>
-	</section>
-	<section id="copyright">
+		</Link>
 		<Link href="http://unesco-paysage.umontreal.ca/" rel="external">
 			&copy; Chaire UNESCO en paysage urbain de l'Université de Montréal
 		</Link>
-	</section>
+	</div>
 </footer>
 
 <style lang="scss">
-	// #footer {
-	// 	display: flex;
-	// 	flex-direction: column;
-	// 	justify-content: stretch;
-	// 	width: 100%;
-	// 	padding: 1rem 0;
-	// 	margin: 0;
-	// 	font-size: var(--size-small);
-	// 	color: var(--color-dark-100);
-	// 	@include mixins.border(top);
-	// 	font-weight: 400;
-	// 	letter-spacing: 0.1px;
-	// 	transition: all 1s cubic-bezier(0.5, 0, 0, 1);
-	// 	&.out {
-	// 		transform-origin: bottom;
-	// 		perspective: 100px;
-	// 		opacity: 0;
-	// 	}
-	// }
+	@use 'mixins.scss';
 
-	// #copyright {
-	// 	width: 100%;
-	// 	display: flex;
-	// 	padding: 0.5rem;
-	// 	justify-content: center;
-	// 	color: var(--color-dark-100);
-	// 	font-weight: 300;
-	// 	letter-spacing: 0.5px;
-	// }
+	#footer {
+		padding: 2rem 1.5rem;
+		margin: 0;
+		font-size: var(--size-small);
+		color: var(--color-contrast-100);
+		background-color: var(--color-base-300);
+		font-weight: 400;
+		letter-spacing: 0.1px;
+		transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+	}
 
-	// #links {
-	// 	font-size: 0.9em;
-	// 	flex-direction: row;
-	// 	padding-top: 1rem;
-	// 	padding-bottom: 2rem;
-	// 	@include mixins.core-grid;
-	// 	width: 100%;
+	.out {
+		opacity: 0;
 
-	// 	section {
-	// 		display: flex;
-	// 		flex: 1;
-	// 		flex-direction: column;
-	// 		padding: 1rem 0;
+		.heading {
+			opacity: 0;
+			transform: translateY(0.5rem);
+			transition: all 0.25s;
+		}
 
-	// 		&:first-of-type {
-	// 			margin-left: -0.5rem;
-	// 		}
+		li {
+			opacity: 0;
+			transform: translateY(1.5rem);
+			transition: all 0.25s;
+		}
+	}
 
-	// 		&:nth-of-type(2) {
-	// 			padding-inline: 2rem;
-	// 		}
+	.wrapper {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
 
-	// 		&:last-of-type {
-	// 			margin-right: -0.5rem;
-	// 		}
-	// 	}
+	#links {
+		font-size: small;
+		font-weight: 500;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		margin-bottom: 2rem;
+		width: 100%;
 
-	// 	ul {
-	// 		padding: 0;
-	// 		margin: 0;
-	// 		text-indent: 0;
-	// 		list-style: none;
-	// 	}
+		section {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: center;
+			&:first-of-type {
+				align-items: flex-start;
+				ul {
+					align-items: flex-start;
+				}
+			}
+			&:last-of-type {
+				align-items: flex-end;
+				ul {
+					align-items: flex-end;
+				}
+			}
+		}
+	}
 
-	// 	li {
-	// 		padding: 0;
-	// 		margin: 0;
-	// 	}
+	.heading {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		padding-bottom: 1rem;
+		margin-bottom: 0;
+		margin-inline: 0.75rem;
+		font-weight: 550;
+		font-size: var(--size-xsmall);
+		letter-spacing: 0.05em;
+		opacity: 0.5;
+		transition: all 1s cubic-bezier(0, 0, 0, 1) calc(var(--i, 0) * 0.25s);
+	}
 
-	// 	.heading {
-	// 		padding-bottom: 1rem;
-	// 		margin-bottom: 0;
-	// 		margin-inline: 0.5rem;
-	// 		font-weight: 550;
-	// 		font-size: var(--size-xsmall);
-	// 		text-transform: uppercase;
-	// 		letter-spacing: 2px;
-	// 		color: var(--color-light-900);
-	// 	}
-	// }
+	ul {
+		all: unset;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 
-	// #sitemap-links {
-	// 	grid-column: col1;
-	// }
-
-	// #explore-links {
-	// 	grid-column: col2;
-	// 	align-items: center;
-	// 	text-align: center;
-	// }
-
-	// #partners-links {
-	// 	grid-column: col3;
-	// 	align-items: right;
-	// 	text-align: right;
-	// }
-
-	// #nplex-footer-logo {
-	// 	flex: none;
-	// 	width: 120px;
-	// 	margin: 0 auto;
-	// 	padding: 1rem;
-
-	// 	.logo {
-	// 		transition: all 0.2s ease-out;
-	// 		color: var(--color-dark-900);
-
-	// 		&:hover {
-	// 			color: var(--color-primary-500);
-	// 		}
-	// 	}
-	// }
+	li {
+		all: unset;
+		opacity: 1;
+		transform: translateY(0);
+		transition: all 1s cubic-bezier(0, 0, 0, 1) calc(var(--i) * 0.1s + 0.2s);
+	}
 </style>
