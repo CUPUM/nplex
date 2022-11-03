@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { AuthChangeCookie } from '$api/auth/session.json/+server';
 	import { afterNavigate, beforeNavigate, goto, invalidate } from '$app/navigation';
-	import { getStores } from '$app/stores';
+	import { page } from '$app/stores';
 	import Loading from '$components/Loading.svelte';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
 	import { rootScroll } from '$stores/scroll';
@@ -10,7 +10,6 @@
 	import { dbClient } from '$utils/database/database';
 	import { Cookie } from '$utils/enums';
 	import jscookie from 'js-cookie';
-	import { get } from 'svelte/store';
 	import type { LayoutData } from './$types';
 	import AuthModal, { authModalState } from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
@@ -23,26 +22,20 @@
 	let loading = true;
 	let navbarHeight: number = 0;
 
-	const { page } = getStores();
-
 	// Listening to and handling client-side Supabase auth state change.
 	dbClient.forBrowser.auth.onAuthStateChange(async (event, session) => {
-		let restoredTab = false;
-		if (event === 'SIGNED_IN' && session?.access_token === data.session?.access_token) {
-			// With `client.options.multiTab: true`, Supabase retriggers a `SIGNED_IN` event on each tab restoration.
-			// We thus have to handle this ourselves to avoid inadequate redirects after invalidation of the auth update api endpoint.
-			restoredTab = true;
-		}
 		// Set temporary client cookies to communicate auth change data to the server.
 		const newAuth: AuthChangeCookie = { session, event };
 		jscookie.set(Cookie.AuthChange, JSON.stringify(newAuth), { path: '/', sameSite: 'strict' });
-		await invalidate('/api/auth/session.json');
-		if (event === 'SIGNED_IN' && !restoredTab && get(page).url.pathname === '/' && data.session) {
-			if (get(authModalState)) await authModalState.close();
-			console.log('Should be closing');
-			goto('/compte');
-		}
+		invalidate('/api/auth/session.json');
 	});
+
+	// Client-side redirect to user's account page if logged into new session.
+	$: if (data.session && data.session.user.id !== data.previousSessionId && $authModalState) {
+		authModalState.close().then(() => {
+			goto('/compte');
+		});
+	}
 
 	beforeNavigate(() => {
 		progress.start();

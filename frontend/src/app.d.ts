@@ -15,13 +15,20 @@ declare global {
 	// Customize svelte's globals.
 	namespace App {
 		interface PageData {
-			session?:
+			/**
+			 * Nplex-specific session derived from Supabase session.
+			 */
+			session:
 				| (Session & {
 						user: Omit<Session['user'], 'role'> & {
 							role: Database['public']['Tables']['users_roles']['Row']['role'];
 						};
 				  })
 				| null;
+			/**
+			 * User id of the previous auth attempt returned by invalidating /api/auth/session.json.
+			 */
+			previousSessionId: string | null;
 			category: Category;
 			showCategoryNav: boolean;
 			showFooter: boolean;

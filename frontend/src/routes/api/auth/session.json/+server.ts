@@ -10,6 +10,8 @@ export type AuthChangeCookie = {
 	event: AuthChangeEvent;
 };
 
+export type AuthSessionResponse = Pick<App.PageData, 'session' | 'previousSessionId'>;
+
 /**
  * Set the changed auth's session as a cookie.
  */
@@ -23,10 +25,15 @@ export const GET: RequestHandler = async ({ request, locals, cookies }) => {
 		const session: App.Locals['session'] = newAuth?.session
 			? { ...newAuth.session, user: { ...newAuth.session.user, role: locals.session?.user.role ?? 'visitor' } }
 			: locals.session;
+		const previousSessionId = locals.session?.user.id ?? null;
+		const res: AuthSessionResponse = {
+			previousSessionId,
+			session: null,
+		};
 		// If the user logged out or if there is no auth token in cookie, reset client's auth.
 		if (!session || newAuth?.event === 'SIGNED_OUT') {
 			setClearCookies(cookies, Cookie.Session);
-			return json(null);
+			return json(res);
 		}
 		const db = dbClient.createForServer(session.access_token);
 		const { data: roleData, error: roleError } = await db
@@ -36,20 +43,17 @@ export const GET: RequestHandler = async ({ request, locals, cookies }) => {
 			.single();
 		if (roleError) {
 			setClearCookies(cookies, Cookie.AuthChange, Cookie.Session);
-			return json(null);
+			return json(res);
 		}
 		session.user.role = roleData.role;
-		// Update httpOnly session cookie.
 		cookies.set(Cookie.Session, JSON.stringify(session), {
 			maxAge: parseInt(session.expires_in + '') ?? -1,
 			httpOnly: true,
 			path: '/',
 			sameSite: 'strict',
 		});
-
-		// Return app user data
-		// To do: pass a redirect if logged in from homepage, pointing client to /compte route.
-		return json(session);
+		res.session = session;
+		return json(res);
 	} catch (err) {
 		throw error(500, JSON.stringify(err));
 	}
