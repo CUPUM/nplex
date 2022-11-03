@@ -2,6 +2,7 @@
 	@component
 	## Auth Modal
 	Singleton component for supabase client (browser) authentication.
+
 -->
 <script lang="ts" context="module">
 	import { browser } from '$app/environment';
@@ -9,10 +10,31 @@
 	import { page } from '$app/stores';
 	import { rootScroll } from '$stores/scroll';
 	import { SearchParam } from '$utils/enums';
-	import { derived } from 'svelte/store';
+	import { derived, get } from 'svelte/store';
 
 	const LOCK_KEY = 'auth';
 
+	/**
+	 * Utility to get the auth-modal url relative to the passed url, i.e. appending or deleting the modal's search param
+	 * trigger.
+	 *
+	 * @param url: A relative or based string or URL object.
+	 * @param state: The target modal state, where `true`= open and `false` = close. Defaults to `true`
+	 */
+	export function getAuthModalUrl(url: string | URL, state: boolean = true) {
+		const targetUrl = new RelativeURL(url);
+		if (state) {
+			targetUrl.searchParams.set(SearchParam.AuthModal, 'true');
+		} else {
+			targetUrl.searchParams.delete(SearchParam.AuthModal);
+		}
+		return targetUrl;
+	}
+
+	/**
+	 * Singleton store to open/close the auth modal and consequently update the client's URL search params and
+	 * vice-versa.
+	 */
 	export const authModalState = (function () {
 		const { subscribe } = derived(page, ($page) => {
 			if (browser) {
@@ -23,14 +45,16 @@
 			}
 			return false;
 		});
-
 		return {
 			subscribe,
+			open: async () => {
+				if (browser) {
+					return goto(getAuthModalUrl(get(page).url).search, { replaceState: true });
+				}
+			},
 			close: async () => {
 				if (browser) {
-					const params = new URLSearchParams(location.search);
-					params.delete(SearchParam.AuthModal);
-					return goto(`?${params.toString()}`, { replaceState: true });
+					return goto(getAuthModalUrl(get(page).url, false).search || '?', { replaceState: true });
 				}
 			},
 		};
@@ -47,10 +71,11 @@
 	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import ProviderLogo, { providers } from '$components/ProviderLogo.svelte';
-	import { messages } from '$stores/messages';
+	import { messages } from '$routes/MessagesOutlet.svelte';
 	import { transform } from '$transitions/transform';
 	import { dbClient } from '$utils/database/database';
 	import { patterns } from '$utils/input/patterns';
+	import { RelativeURL } from '$utils/url';
 	import { cubicOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
 

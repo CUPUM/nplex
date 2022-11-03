@@ -8,7 +8,7 @@
 	import { writable } from 'svelte/store';
 	import type { Newable } from 'ts-essentials';
 
-	type Message<T extends string | SvelteComponentTyped> = {
+	type Message<T = string | SvelteComponentTyped> = {
 		content: T extends string
 			? T
 			: T extends SvelteComponentTyped
@@ -21,6 +21,12 @@
 		type?: 'error' | 'success' | 'default';
 	};
 
+	export function isUrlMessage(arg: any): arg is Message<string> {
+		return (
+			typeof arg === 'object' && typeof arg.content === 'string' && (!arg.timer || typeof arg.timer === 'number')
+		);
+	}
+
 	const defaultMessage: Message<string> = {
 		content: '',
 		timer: 4000,
@@ -32,16 +38,14 @@
 	 * displayed in the app's root layout.
 	 */
 	export const messages = (function () {
-		const { subscribe, set, update } = writable<Message<string | SvelteComponentTyped>[]>([]);
-		const timeouts: Map<Message<string | SvelteComponentTyped>, ReturnType<typeof setTimeout>> = new Map();
-
-		function clear<T>(message: Message<T extends string | SvelteComponentTyped ? T : never>) {
+		const { subscribe, set, update } = writable<Message[]>([]);
+		const timeouts: Map<Message, ReturnType<typeof setTimeout>> = new Map();
+		function clear(message: Message) {
 			update((curr) => {
 				timeouts.delete(message);
 				return curr.filter((m) => m !== message);
 			});
 		}
-
 		function clearLast() {
 			update((curr) => {
 				const last = curr.pop();
@@ -49,24 +53,24 @@
 				return curr;
 			});
 		}
-
 		function clearAll() {
 			timeouts.clear();
 			set([]);
 		}
-
-		function dispatch<T>(message: Message<T extends string | SvelteComponentTyped ? T : never>) {
-			message = { ...defaultMessage, ...message };
-			if (message.timer) {
-				timeouts.set(
-					message,
-					setTimeout(() => clear(message), message.timer)
-				);
-			}
-			update((curr) => [...curr, message]);
+		function dispatch(...messages: Message[]) {
+			messages.map((m) => {
+				m = { ...defaultMessage, ...m };
+				if (m.timer) {
+					timeouts.set(
+						m,
+						setTimeout(() => clear(m), m.timer)
+					);
+				}
+				return m;
+			});
+			update((curr) => [...curr, ...messages]);
 		}
-
-		function cancelTimer<T>(message: Message<T extends string | SvelteComponentTyped ? T : never>) {
+		function cancelTimer(message: Message) {
 			if (message.timer) {
 				update((curr) => {
 					if (timeouts.has(message)) {
@@ -80,7 +84,6 @@
 				});
 			}
 		}
-
 		return {
 			subscribe,
 			dispatch,
@@ -90,10 +93,29 @@
 			clearLast,
 		};
 	})();
+
+	export function appendMessageParam(url: string, ...messages: Message[]): string;
+	export function appendMessageParam(url: URL, ...messages: Message[]): URL;
+	export function appendMessageParam(url: RelativeURL, ...messages: Message[]): RelativeURL;
+	export function appendMessageParam(
+		url: string | URL | RelativeURL,
+		...messages: Message[]
+	): string | URL | RelativeURL {
+		const newURL = url instanceof URL && !(url instanceof RelativeURL) ? new URL(url) : new RelativeURL(url);
+		messages.forEach((m) => {
+			newURL.searchParams.append(SearchParam.Message, JSON.stringify(m));
+		});
+		return typeof url === 'string' ? newURL.toString() : url;
+	}
 </script>
 
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Icon from '$components/Icon.svelte';
+	import { SearchParam } from '$utils/enums';
+	import { RelativeURL } from '$utils/url';
 	import type { ComponentProps, SvelteComponentTyped } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
@@ -107,6 +129,18 @@
 	function cancelTimer(e: MouseEvent, message: Message) {
 		e.stopPropagation();
 		messages.cancelTimer(message);
+	}
+
+	$: urlMessages = $page.url.searchParams.getAll(SearchParam.Message).reduce((acc, m) => {
+		const parsed = JSON.parse(m);
+		return isUrlMessage(parsed) ? [...acc, parsed] : acc;
+	}, [] as Message[]);
+
+	$: if (urlMessages.length && browser) {
+		messages.dispatch(...urlMessages);
+		const clearedUrl = new RelativeURL($page.url);
+		clearedUrl.searchParams.delete(SearchParam.Message);
+		goto(clearedUrl.toString(), { replaceState: true });
 	}
 </script>
 
@@ -177,6 +211,7 @@
 		border: none;
 		border-radius: var(--default-radius);
 		box-shadow: 0 1.5em 2em -0.5em rgba(0, 0, 40, 0.15);
+		background-color: white;
 	}
 
 	button {
@@ -235,14 +270,7 @@
 		height: 3px;
 		border-radius: 0 0 3px 3px;
 		animation: timer forwards var(--timer) linear;
-	}
-
-	.default {
-		background-color: white;
-
-		& .progress {
-			background-color: var(--color-primary-300);
-		}
+		background-color: var(--color-primary-300);
 	}
 
 	.error {

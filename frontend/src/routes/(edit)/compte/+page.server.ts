@@ -12,22 +12,19 @@ export const actions: Actions = {
 			return invalid(401);
 		}
 		const formData = Object.fromEntries(await request.formData());
-
 		// Do some zod validation here...
-		console.log(formData);
-
 		const db = dbClient.createForServer(locals.session.access_token);
 		const update = await db
 			.from('users')
 			.update({ ...formData, id: undefined })
 			.eq('id', locals.session.user.id)
 			.single();
-
 		if (update.error) {
 			throw error(500, { ...update.error, notify: true });
 		}
 		return formData;
 	},
+
 	/**
 	 * Delete current user.
 	 */

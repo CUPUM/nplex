@@ -46,6 +46,7 @@ export enum SearchParam {
 	ProjectsCostFork = 'cout-projet',
 	ProjectsType = 'type-projet',
 	AuthModal = 'auth',
+	Message = 'message',
 }
 
 /**

@@ -1,27 +1,20 @@
 import { dbClient } from '$utils/database/database';
-import { error, redirect, type Actions } from '@sveltejs/kit';
+import { error, invalid, redirect, type Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {
-	default: async (event) => {
-		const formData = await event.request.formData();
+	upsert: async (event) => {
+		if (!event.locals.session) return invalid(401);
+		const formData = Object.fromEntries(await event.request.formData()) as any;
+		if (event.params.projectId) formData.id = event.params.projectId;
+		// Do some validation with zod.
 		const db = dbClient.createForServer(event.locals.session.access_token);
-
-		const project = await db
-			.from('projects')
-			.upsert({
-				id: event.params.projectId || undefined,
-				title: formData.get('title') as string,
-				category_id: formData.has('category_id') ? +formData.get('category_id') : undefined,
-				type_id: formData.has('type_id') ? +formData.get('type_id') : undefined,
-			})
-			.select()
-			.single();
-
+		const project = await db.from('projects').upsert(formData).select('id').single();
 		if (project.error) {
-			console.log(project.error);
 			throw error(project.status, project.error.message);
 		}
-
-		throw redirect(302, '/editer/projet/' + project.data.id);
+		// If newly added project, redirect to proper url param.
+		if (!event.params.projectId) {
+			throw redirect(302, '/editer/projet/' + project.data.id);
+		}
 	},
 };

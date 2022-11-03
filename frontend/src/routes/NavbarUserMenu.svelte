@@ -5,7 +5,7 @@
 	import { page } from '$app/stores';
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { messages } from '$stores/messages';
+	import { messages } from '$routes/MessagesOutlet.svelte';
 	import { dbClient } from '$utils/database/database';
 
 	async function logout() {

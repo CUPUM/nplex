@@ -4,14 +4,11 @@
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Loading from '$components/Loading.svelte';
-	import { getAuthRedirectUrl } from '$utils/routing/guard';
-	import { colors } from '$utils/values/colors';
-	import { sizes } from '$utils/values/sizes';
+	import { colors, sizes } from '$utils/vars';
 
 	export let project;
 	export let imageLoading = true;
 
-	let authHref;
 	let entered = false;
 
 	function handleEnter() {
@@ -23,8 +20,6 @@
 	}
 
 	function handleEnterCurrent() {}
-
-	$: authHref = getAuthRedirectUrl($page.url);
 </script>
 
 <li use:intersection={{ rootMargin: '0% 0% 0%' }} on:enter on:leave on:enter|once={handleEnter}>
@@ -55,7 +50,7 @@
 		<!-- Placeholder project card -->
 		<a href="">Soumettre un nouveau projet</a>
 	{:else}
-		<a href={authHref} class="button-parent login-card">
+		<a href={''} class="button-parent login-card">
 			<Button>
 				<svelte:fragment slot="leading">
 					<Icon name="arrow-right" />

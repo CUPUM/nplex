@@ -5,15 +5,11 @@ import type { PageLoad } from './$types';
 export const load: PageLoad = async ({ parent, depends }) => {
 	// Setting a custom dep for limited refresh after form submission.
 	// depends(LoadDependency.DbUserProfile);
-
 	const { session } = await parent();
-
-	if (!session?.access_token) throw error(303, '/');
-
+	if (!session?.access_token) return {};
 	const db = dbClient.getForContext(session.access_token);
-
 	// Get extended user profile with collections and their contents.
-	const { data: profile, error: profileError } = await db
+	const profile = await db
 		.from('users')
 		.select('*')
 		// .select(
@@ -26,31 +22,18 @@ export const load: PageLoad = async ({ parent, depends }) => {
 		// )
 		.eq('id', session.user.id)
 		.single();
-
-	if (profileError) throw error(404, JSON.stringify(profileError));
-
-	const { data: role, error: roleError } = await db
-		.from('users_roles')
-		.select('*')
-		.eq('user_id', session.user.id)
-		.single();
-
-	// const { data: projectsPreview, error: projcetsError } = await db
-	// 	.from('projects')
-	// 	.select(
-	// 		`
-	// 				*
-	// 			`
-	// 	)
-	// 	.order('updated_at', { ascending: false })
-	// 	.range(...getPagination(0, 5));
-
-	// if (projcetsError) throw error(404, projcetsError.message);
+	if (profile.error) {
+		throw error(+profile.error.code, JSON.stringify(profile.error));
+	}
+	const role = await db.from('users_roles').select('*').eq('user_id', session.user.id).single();
+	if (role.error) {
+		throw error(+role.error.code, JSON.stringify(role.error));
+	}
 
 	return {
 		profile: {
-			...profile,
-			role: role?.role,
+			...profile.data,
+			role: role.data.role,
 		},
 	};
 };

@@ -39,6 +39,7 @@
 		await invalidate('/api/auth/session.json');
 		if (event === 'SIGNED_IN' && !restoredTab && get(page).url.pathname === '/' && data.session) {
 			if (get(authModalState)) await authModalState.close();
+			console.log('Should be closing');
 			goto('/compte');
 		}
 	});
@@ -58,6 +59,7 @@
 	style:--scroll={$rootScroll.y}
 	style:--scroll-px="{$rootScroll.y}px"
 	style:--navbar-height-px="{navbarHeight}px"
+	style:--n-navbar-height-px="-{navbarHeight}px"
 >
 	<Navbar bind:navbarHeight />
 	<main class:loading>

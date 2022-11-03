@@ -32,8 +32,8 @@
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
 	import { rootScroll } from '$stores/scroll';
-	import { getAuthRedirectUrl } from '$utils/routing/guard';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routing/routes';
+	import { getAuthModalUrl } from './AuthModal.svelte';
 	import NavbarButton from './NavbarButton.svelte';
 	import NavbarEditMenu from './NavbarEditMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
@@ -58,7 +58,6 @@
 
 	$: hidden = $rootScroll.down && $rootScroll.y > yThreshold;
 	$: rootPathname = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
-	$: console.log(rootPathname);
 </script>
 
 <header class:hidden bind:clientHeight={navbarHeight} bind:clientWidth={headerWidth}>
@@ -98,7 +97,7 @@
 					<NavbarUserMenu />
 				</Popover>
 			{:else}
-				<NavbarButton square cta href={getAuthRedirectUrl($page.url).toString()}>
+				<NavbarButton square cta href={getAuthModalUrl($page.url).search}>
 					<Icon name="user" thickness="1.5" style="font-size: 1.25em" />
 				</NavbarButton>
 			{/if}

@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+// @ts-ignore:next-line
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 import type { Database } from '$types/database';
 import type { DatabaseRpc } from '$types/databaseRpc';

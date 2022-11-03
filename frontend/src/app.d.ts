@@ -31,6 +31,7 @@ declare global {
 		}
 		interface Error {
 			notify?: boolean;
+			message?: string;
 		}
 		interface Platform {}
 	}
