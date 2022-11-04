@@ -61,9 +61,9 @@ common features of such components should be setup:
    * privately kept stores. For consistency, the indicated approach is as follows:
    */
 
-  const _value = writable(value);
-  $: value = $_value;
-  $: _value.set(value);
+  const ctx_value = writable(value);
+  $: value = $ctx_value;
+  $: ctx_value.set(value);
 
   function handleInput(e: InputEvent) {
     // Apply any formatting function here or in an on:change handler.

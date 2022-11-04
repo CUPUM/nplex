@@ -105,8 +105,8 @@
 			style:--x="{r.x}px"
 			style:--y="{r.y}px"
 			style:--d="{r.d}px"
-			on:animationstart={(e) => start(e, r)}
-			on:animationend={(e) => end(e, r)}
+			on:animationstart|self={(e) => start(e, r)}
+			on:animationend|self={(e) => end(e, r)}
 		/>
 	{/each}
 </div>

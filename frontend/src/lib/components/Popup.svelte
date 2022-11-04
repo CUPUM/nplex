@@ -4,7 +4,12 @@
 <script lang="ts">
 </script>
 
-<dialog>Test</dialog>
+<slot name="trigger">
+	<button>Popup trigger placeholder</button>
+</slot>
+<dialog>
+	<slot>Popup content placeholder</slot>
+</dialog>
 
 <style lang="scss">
 	dialog {

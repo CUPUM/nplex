@@ -3,7 +3,6 @@
 
 <script lang="ts">
 	import type { LayoutData } from './$types';
-
 	export let data: LayoutData;
 </script>
 
@@ -26,6 +25,16 @@
 				<input type="radio" name="projects-filter" id="" />
 			</label>
 		</form>
+		<ul>
+			{#each data.projects as project}
+				<li class="project-card">
+					<a href="/editer/projet/{project.id}">
+						{project.title}
+					</a>
+					(créé: {project.created_at}, modifié: {project.updated_at})
+				</li>
+			{/each}
+		</ul>
 	</section>
 	<section>
 		<h3>Mes fiches d'organisation</h3>
@@ -77,5 +86,21 @@
 		width: 100%;
 		max-width: 800px;
 		margin: 0 auto;
+	}
+
+	ul {
+		display: flex;
+		flex-direction: row;
+		gap: 2rem;
+	}
+
+	.project-card {
+		flex: 0;
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+		gap: 1rem;
+		border-radius: 1.5rem;
+		border: 1px solid var(--color-base-700);
 	}
 </style>

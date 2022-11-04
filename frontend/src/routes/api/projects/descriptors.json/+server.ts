@@ -1,5 +1,5 @@
 import type { Database } from '$types/database';
-import { dbClient } from '$utils/database/database';
+import { dbClient } from '$utils/database';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
 type DatabaseTable<TableName extends keyof Database['public']['Tables']> =

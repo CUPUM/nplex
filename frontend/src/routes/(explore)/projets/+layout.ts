@@ -1,4 +1,4 @@
-import { dbClient } from '$utils/database/database';
+import { dbClient } from '$utils/database';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async ({ data }) => {

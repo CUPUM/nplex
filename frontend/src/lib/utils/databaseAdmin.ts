@@ -1,4 +1,6 @@
+// @ts-ignore:next-line
 import { SUPABASE_SERVICE_KEY } from '$env/static/private';
+// @ts-ignore:next-line
 import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 import type { Database } from '$types/database';
 import type { DatabaseRpc } from '$types/databaseRpc';

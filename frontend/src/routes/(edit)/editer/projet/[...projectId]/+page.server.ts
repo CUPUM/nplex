@@ -1,4 +1,4 @@
-import { dbClient } from '$utils/database/database';
+import { dbClient } from '$utils/database';
 import { error, invalid, redirect, type Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {

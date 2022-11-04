@@ -1,5 +1,5 @@
-import { adminDbClient } from '$utils/database/admin';
-import { dbClient } from '$utils/database/database';
+import { dbClient } from '$utils/database';
+import { adminDbClient } from '$utils/databaseAdmin';
 import { error, invalid, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 

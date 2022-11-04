@@ -66,7 +66,6 @@
 						setTimeout(() => clear(m), m.timer)
 					);
 				}
-				console.log(m);
 				return m;
 			});
 			update((curr) => [...curr, ...defaulted]);
@@ -111,12 +110,13 @@
 </script>
 
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Icon from '$components/Icon.svelte';
 	import { SearchParam } from '$utils/enums';
 	import { RelativeURL } from '$utils/url';
-	import { onMount, type ComponentProps, type SvelteComponentTyped } from 'svelte';
+	import type { ComponentProps, SvelteComponentTyped } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -136,14 +136,12 @@
 		return isUrlMessage(parsed) ? [...acc, parsed] : acc;
 	}, [] as Message[]);
 
-	onMount(() => {
-		if (urlMessages.length) {
-			messages.dispatch(...urlMessages);
-			const clearedUrl = new RelativeURL($page.url);
-			clearedUrl.searchParams.delete(SearchParam.Message);
-			goto(clearedUrl.toString(), { replaceState: true });
-		}
-	});
+	$: if (urlMessages.length && browser) {
+		messages.dispatch(...urlMessages);
+		const clearedUrl = new RelativeURL($page.url);
+		clearedUrl.searchParams.delete(SearchParam.Message);
+		goto(clearedUrl.toString(), { replaceState: true });
+	}
 </script>
 
 <div class="outlet">

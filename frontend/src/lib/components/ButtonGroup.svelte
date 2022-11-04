@@ -1,14 +1,16 @@
 <!-- 
 	@component
-	## Button group
+	## Button Group
 	Groups multiple buttons into a single, visually segmented, button.
 	Useful for dropdown arrows, "More options" buttons, or functionally/semantically neighboring butons.
+	
  -->
 <script lang="ts" context="module">
 	const CTX_KEY = 'button-group-context';
 
 	interface ButtonGroupContext {
-		variant: Writable<ComponentProps<Button>['variant']>;
+		variant: ComponentProps<Button>['variant'];
+		direction: 'row' | 'column';
 	}
 
 	export function getButtonGroupContext() {
@@ -18,17 +20,14 @@
 
 <script lang="ts">
 	import { getContext, setContext, type ComponentProps } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
 	import type Button from './Button.svelte';
 
-	export let direction: 'row' | 'column' = 'row';
+	export let direction: ButtonGroupContext['direction'] = 'row';
 	export let variant: ComponentProps<Button>['variant'] = undefined;
 
-	const _variant = writable<typeof variant>();
-	$: _variant.set(variant);
-
 	setContext<ButtonGroupContext>(CTX_KEY, {
-		variant: _variant,
+		variant,
+		direction,
 	});
 </script>
 

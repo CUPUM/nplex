@@ -3,7 +3,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-
+	import Badge from '$components/Badge.svelte';
 	import Button from '$components/Button.svelte';
 	import ButtonGroup from '$components/ButtonGroup.svelte';
 	import Field from '$components/Field.svelte';
@@ -45,7 +45,7 @@
 				<FieldIcon name="cross" />
 			</svelte:fragment>
 		</Field>
-		<Field prefix="test" {variant}>
+		<Field prefix="test" {variant} placeholder="Test">
 			<svelte:fragment slot="label">Some label</svelte:fragment>
 		</Field>
 		<TextArea />
@@ -74,10 +74,12 @@
 		<Button {variant} {contentAlign} style="width: 100%">Test</Button>
 	</section>
 	<section>
-		<Button {variant} {contentAlign}>Test</Button>
+		<Button {variant} {contentAlign}><span>TEST</span><Badge>Test</Badge></Button>
 		<Button {variant} {contentAlign}><Icon name="user" slot="leading" />Test</Button>
-		<Button {variant} {contentAlign}><Icon style="font-size: {size}px" name="user" slot="leading" />Test</Button>
-		<Button {variant} {contentAlign} style="width: 100%">Test</Button>
+		<Button {variant} {contentAlign}
+			><Icon style="font-size: {size}px" name="user" slot="leading" />SOME CONTENT</Button
+		>
+		<Button {variant} {contentAlign} style="width: 100%">Test<Badge>Test</Badge></Button>
 	</section>
 
 	<Icon bind:name style="font-size: {size}px" />

@@ -6,7 +6,7 @@
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { messages } from '$routes/MessagesOutlet.svelte';
-	import { dbClient } from '$utils/database/database';
+	import { dbClient } from '$utils/database';
 
 	async function logout() {
 		try {

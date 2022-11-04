@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	let latestOpen = null;
+	let latestOpen: HTMLElement | null = null;
 </script>
 
 <script lang="ts">
@@ -21,11 +21,11 @@
 	let popoverRef: HTMLElement;
 	let mutationObs: MutationObserver;
 	let resizeObs: ResizeObserver;
-	let y;
-	let x;
-	let w;
-	let h;
-	let timer;
+	let y: number;
+	let x: number;
+	let w: number;
+	let h: number;
+	let timer: any;
 	// let autoAlign;
 	// let autoPlacement;
 
@@ -48,16 +48,18 @@
 		mutationObs = new MutationObserver(setPosition);
 		resizeObs = new ResizeObserver(setPosition);
 		mutationObs.observe(controlRef, { attributes: true });
-		mutationObs.observe(controlRef.offsetParent, { attributes: true });
 		resizeObs.observe(controlRef, {});
-		resizeObs.observe(controlRef.offsetParent, {});
+		if (controlRef.offsetParent) {
+			mutationObs.observe(controlRef.offsetParent, { attributes: true });
+			resizeObs.observe(controlRef.offsetParent, {});
+		}
 	}
 
 	$: if (open) {
 		setPosition();
-		controlRef?.setAttribute('popover', '');
+		controlRef?.classList.add('active');
 	} else {
-		controlRef?.removeAttribute('popover');
+		controlRef?.classList.remove('active');
 	}
 
 	function show(e?: MouseEvent) {
@@ -68,7 +70,7 @@
 		}
 	}
 
-	function hide(e?: MouseEvent) {
+	function hide(e?: Event) {
 		if (!e) open = false;
 		else if (e.type === 'mouseleave' && useHover) {
 			timer = setTimeout(() => {
@@ -85,10 +87,10 @@
 
 	function setPosition() {
 		if (controlRef) {
-			y = controlRef.offsetTop + 'px';
-			x = controlRef.offsetLeft + 'px';
-			w = controlRef.offsetWidth + 'px';
-			h = controlRef.offsetHeight + 'px';
+			y = controlRef.offsetTop;
+			x = controlRef.offsetLeft;
+			w = controlRef.offsetWidth;
+			h = controlRef.offsetHeight;
 		}
 	}
 
@@ -121,10 +123,10 @@
 	on:clickoutside={handleClickoutside}
 	on:mouseenter={show}
 	on:mouseleave={hide}
-	style:--y={y}
-	style:--x={x}
-	style:--w={w}
-	style:--h={h}
+	style:--y="{y}px"
+	style:--x="{x}px"
+	style:--w="{w}px"
+	style:--h="{h}px"
 	style:--distance={cssSize(distance)}
 >
 	{#if open}

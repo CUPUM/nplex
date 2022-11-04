@@ -4,8 +4,8 @@
 	--font-misc: 'Space Mono', monospace;
 	// Global style helpers for consistent appearence across components
 	--default-inset: 3px; // Default inset for nested elements
-	--default-size: 3.2em; // Size/height height for interactive elements
 	--default-radius: 0.9em; // Border radius for buttons and other interactive elements
+	--default-height: 3.2em; // Default height for interactive elements, derived from font-size
 	--default-padding-inline: 1.25em;
 	--default-focus-outline: 2px solid rgba(var(--rgb-primary-500), 0.5);
 	// Scrollbar customization
@@ -17,8 +17,8 @@
 
 .compact {
 	--default-inset: 0px; // Default inset for nested elements
-	--default-size: 2em; // Size/height height for interactive elements
 	--default-radius: 1em; // Border radius for buttons and other interactive elements
+	--default-size: 2em; // Size/height height for interactive elements
 	--default-padding-inline: 0.75em;
 }
 
@@ -110,9 +110,9 @@ input[type='search']::-webkit-search-results-decoration {
 	border-radius: var(--scroll-size);
 }
 
-:-webkit-autofill,
-:-webkit-autofill:hover,
-:-webkit-autofill:focus,
-:-webkit-autofill:active {
-	transition: background-color 5000s ease-in 0s;
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	transition: all 0s 50000s;
 }

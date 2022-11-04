@@ -7,7 +7,7 @@
 	import { rootScroll } from '$stores/scroll';
 	import '$styles/app.scss';
 	import '$styles/vars.scss';
-	import { dbClient } from '$utils/database/database';
+	import { dbClient } from '$utils/database';
 	import { Cookie } from '$utils/enums';
 	import jscookie from 'js-cookie';
 	import type { LayoutData } from './$types';

@@ -170,19 +170,24 @@
 </div>
 
 <style lang="scss">
+	// Vendor style soft resets
+	:where(input) {
+		all: unset;
+	}
+
 	.field {
 		--radius: var(--default-radius);
+		--height: var(--default-height);
 		--inset: var(--default-inset);
-		--size: var(--default-size);
-		--gutter: calc(var(--default-padding-inline) / 3);
-		--padding-inline: calc(2 * var(--default-padding-inline) / 3);
-		--notch-padding: 0.5em;
+		--notch-padding: 0.25em;
 		--outline-thickness: 1px;
+		--gutter: calc(var(--default-padding-inline) / 3);
+		--computed-padding-inline: calc(2 * var(--default-padding-inline) / 3);
 		position: relative;
 		display: inline-grid;
 		grid-template-columns:
 			[full-start leading-start]
-			minmax(var(--padding-inline), auto)
+			minmax(var(--computed-padding-inline), auto)
 			[leading-end leading-gutter-start]
 			var(--gutter)
 			[leading-gutter-end prefix-start]
@@ -194,17 +199,16 @@
 			[suffix-end trailing-gutter-start]
 			var(--gutter)
 			[trailing-gutter-end trailing-start]
-			minmax(var(--padding-inline), auto)
+			minmax(var(--computed-padding-inline), auto)
 			[trailing-end full-end];
+		grid-template-rows: minmax(var(--height), auto);
 		gap: 0;
+		flex-direction: row;
+		align-items: center;
 		font-weight: 400;
 		font-size: 1em;
-		min-height: var(--size);
 		border-radius: var(--radius);
-		padding: 0;
-		margin: 0;
 		cursor: text;
-		align-items: center;
 		outline: 0px solid transparent;
 		transition: transform 0.15s ease-out;
 		&.disabled {
@@ -232,15 +236,12 @@
 	}
 	.leading,
 	.trailing {
-		min-height: var(--size);
-		position: relative;
-		padding: 0;
+		padding: var(--inset) 0;
 		margin: 0;
 		gap: 0;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		transition: padding 0.15s ease-out;
 		&:not(:empty) {
 			gap: 3px;
 			padding: var(--inset);
@@ -256,11 +257,10 @@
 	.suffix {
 		position: relative;
 		display: inline-block;
-		padding-bottom: 0.25em;
+		padding-bottom: calc(0.5em - 0.5ex);
 		top: 0;
 		flex: 0;
 		white-space: pre;
-		vertical-align: middle;
 		opacity: 0.25;
 		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
 		.focused &,
@@ -276,48 +276,41 @@
 		grid-column: suffix;
 	}
 	input {
-		padding: 0;
-		margin: 0;
-		padding-bottom: 0.25em;
 		position: relative;
-		display: flex;
-		align-items: center;
+		padding-bottom: calc(0.5em - 0.5ex);
 		grid-column: main;
+		display: block;
 		top: 0;
-		vertical-align: middle;
-		white-space: nowrap;
 		flex: 1;
-		font-family: inherit;
-		font-size: inherit;
+		white-space: nowrap;
 		border: none;
 		outline: none;
 		background: transparent;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		color: currentColor;
 		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
 		&::placeholder {
 			color: currentColor;
 			opacity: 0.35;
 		}
-		// &:focus-visible {
-		// 	outline: var(--default-focus-outline);
-		// }
+		&:-webkit-autofill,
+		&:-webkit-autofill:hover,
+		&:-webkit-autofill:focus,
+		&:-webkit-autofill:active {
+			transition: background-color 0s 50000s;
+		}
 	}
 	label {
-		pointer-events: none;
 		position: absolute;
+		pointer-events: none;
 		padding-inline: var(--label-padding);
+		padding-bottom: calc(0.5em - 0.5ex);
 		grid-column: prefix-start / suffix-end;
-		white-space: pre;
 		max-width: 100%;
 		text-overflow: ellipsis;
-		min-height: var(--size);
-		line-height: var(--size);
-		padding-block: inherit;
-		vertical-align: middle;
 		white-space: nowrap;
-		top: 0;
+		top: 50%;
+		transform: translateY(-50%);
 		transition: all 0.2s cubic-bezier(0, 0, 0, 1);
 	}
 	.left,
@@ -361,7 +354,7 @@
 	.default {
 		color: var(--color-dark-500);
 		background-color: var(--color-base-500);
-		transition: all 0.1s ease-out;
+		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		.outline {
 			display: none;
 		}
@@ -374,11 +367,18 @@
 				opacity: 0;
 			}
 		}
+		// &.has-value {
+		// 	label {
+		// 		top: 1.5em;
+		// 		font-size: clamp(10px, 0.5em, 24px);
+		// 		opacity: 0;
+		// 	}
+		// }
 		&.has-placeholder,
 		&.has-value,
 		&.focused {
 			label {
-				top: -0.35em;
+				top: 1.25em;
 				font-size: clamp(10px, 0.5em, 24px);
 			}
 			.prefix,
@@ -410,24 +410,38 @@
 	// Outlined variant
 	.outlined {
 		color: var(--color-contrast-300);
-		background-color: rgba(var(--rgb-base-900), 0.1);
-		transition: all 0.1s ease-out;
+		background-color: transparent;
+		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		.outline {
 			border-color: var(--color-contrast-100);
 			opacity: 0.2;
 		}
-		label {
-			opacity: 0;
-			font-size: clamp(10px, 0.5em, 24px);
-		}
-		&:not(.has-placeholder):not(:hover):not(.focused):not(.has-value) {
-			label {
-				opacity: 0.35;
-				font-size: 1em;
-			}
+		&.has-label {
 			.prefix,
 			.suffix {
 				opacity: 0;
+			}
+		}
+		&.has-placeholder,
+		&.has-value,
+		&.focused {
+			label {
+				opacity: 0.5;
+				top: 0em;
+				padding-block: 0;
+				font-size: clamp(10px, 0.5em, 24px);
+			}
+			.prefix,
+			.suffix {
+				opacity: 0.5;
+			}
+			&.has-label {
+				.outline.left {
+					right: var(--notch-padding);
+				}
+				.outline.right {
+					left: calc(var(--label-width) + var(--notch-padding));
+				}
 			}
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
@@ -435,21 +449,8 @@
 		&.focused {
 			color: var(--color-contrast-700);
 			background-color: transparent;
-			label {
-				opacity: 0.5;
-				top: -1.65em;
-				padding-block: 0;
-			}
 			.outline {
 				opacity: 0.5;
-			}
-			&.has-label {
-				.left {
-					right: var(--notch-padding);
-				}
-				.right {
-					left: calc(var(--label-width) + var(--notch-padding));
-				}
 			}
 		}
 		&.focused {

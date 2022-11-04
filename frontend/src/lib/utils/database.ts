@@ -15,9 +15,6 @@ export const dbClient = {
 	 * Init a client-side supabase client instance to listen to auth state changes and more. //
 	 */
 	forBrowser: createClient<DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-		// db: {
-		// 	schema: 'public',
-		// },
 		auth: {
 			persistSession: true,
 			autoRefreshToken: true,
@@ -29,9 +26,6 @@ export const dbClient = {
 	 */
 	createForServer: (accessToken?: string) => {
 		return createClient<DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-			// db: {
-			// 	schema: 'public',
-			// },
 			auth: {
 				persistSession: false,
 				autoRefreshToken: false,
@@ -49,6 +43,18 @@ export const dbClient = {
 	 * if the query runs from server or browser.
 	 */
 	getForContext: (accessToken?: string) => {
-		return browser ? dbClient.forBrowser : dbClient.createForServer(accessToken);
+		if (browser) return dbClient.forBrowser;
+		return dbClient.createForServer(accessToken);
 	},
 };
+
+/**
+ * Takes desired page range, page size, and returns tuple of start and end to be used with range selector of db client.
+ *
+ * @param page Zero-based desired page, i.e. pagination start at index 0.
+ */
+export function getPagination(page: number, size: number): [start: number, end: number] {
+	const start = page * size;
+	const end = start + size;
+	return [start, end];
+}

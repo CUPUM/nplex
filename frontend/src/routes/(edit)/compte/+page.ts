@@ -1,4 +1,4 @@
-import { dbClient } from '$utils/database/database';
+import { dbClient } from '$utils/database';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 

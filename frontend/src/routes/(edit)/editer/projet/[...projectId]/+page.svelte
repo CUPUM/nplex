@@ -4,6 +4,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Button from '$components/Button.svelte';
+	import Popup from '$components/Popup.svelte';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
@@ -20,9 +21,22 @@
 		};
 	}}
 >
-	<h2>Projet:</h2>
-	<input type="text" name="title" id="" placeholder="Titre du projet" />
+	<h2>Général</h2>
+	<input type="text" name="title" id="" placeholder="Titre du projet" value={data.project?.title ?? ''} />
+
 	<Button type="submit">{data.project ? 'Mettre à jour' : 'Créer'}</Button>
+</form>
+<form action="">
+	<h2>Visibilité</h2>
+	<h3>Partager les droits d'édition</h3>
+	<input type="search" />
+	<h3>Publier</h3>
+	<Popup>
+		<input type="checkbox" name="" on:input id="" slot="trigger" />
+		Some stuff
+	</Popup>
+	<h3>Supprimer</h3>
+	<Button variant="danger">Supprimer le projet</Button>
 </form>
 
 <style lang="scss">

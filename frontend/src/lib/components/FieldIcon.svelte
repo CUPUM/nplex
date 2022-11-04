@@ -7,19 +7,22 @@
 	$: typedProps = $$props as $$Props;
 </script>
 
-<div class="field-icon">
+<i class="field-icon">
 	<Icon scaleStroke={false} thickness="1.5" {...typedProps} />
-</div>
+</i>
 
 <style lang="scss">
+	:where(i) {
+		all: unset;
+	}
+
 	.field-icon {
 		position: relative;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		display: inline-block;
+		line-height: 1;
+		padding-bottom: calc(0.5em - 0.5ex);
 		opacity: 0.5;
-		min-height: 1em;
-		padding-inline: var(--padding-inline); // See Field component for ref.
+		padding-inline: var(--default-padding-inline);
 		transition: all 0.25s;
 		:global(.leading) > &:last-child {
 			padding-right: 0;

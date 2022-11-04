@@ -1,28 +1,25 @@
-import { redirect } from '@sveltejs/kit';
+import { appendMessageParam } from '$routes/MessagesOutlet.svelte';
+import { dbClient, getPagination } from '$utils/database';
+import { error, redirect } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async ({ parent }) => {
 	const { session } = await parent();
+	if (!session?.access_token)
+		throw redirect(
+			302,
+			appendMessageParam('/', { content: 'Désolé, un compte est requis pour accéder à cette section de Nplex.' })
+		);
 
-	// const { data: projectsPreview, error: projcetsError } = await db
-	// 	.from('projects')
-	// 	.select(
-	// 		`
-	// 				*
-	// 			`
-	// 	)
-	// 	.order('updated_at', { ascending: false })
-	// 	.range(...getPagination(0, 5));
-	// if (projcetsError) throw error(404, projcetsError.message);
+	const db = dbClient.getForContext(session.access_token);
+	const projectsRes = await db
+		.from('projects')
+		.select('*')
+		.order('updated_at', { ascending: false })
+		.range(...getPagination(0, 10));
+	if (projectsRes.error) throw error(404, projectsRes.error);
 
-	if (!session) {
-		// messages.dispatch({
-		// 	content: 'Désolé, un compte est nécessaire pour accéder à cette section de Nplex.',
-		// 	type: 'default',
-		// });
-		// return goto('/')
-		throw redirect(302, '/');
-	}
-
-	return {};
+	return {
+		projects: projectsRes.data,
+	};
 };

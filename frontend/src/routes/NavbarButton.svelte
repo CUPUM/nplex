@@ -21,13 +21,19 @@
 	aria-disabled={disabled}
 	{href}
 >
-	<Ripple color="var(--color-primary-500)" blur={8} />
+	<Ripple color="var(--color-primary-500)" blur={6} />
 	<div class="inner">
 		<slot />
 	</div>
 </svelte:element>
 
 <style lang="scss">
+	// Soft vendor style reset
+	:where(button),
+	:where(a) {
+		all: unset;
+	}
+
 	.navbar-button {
 		position: relative;
 		display: flex;
@@ -36,13 +42,13 @@
 		justify-content: center;
 		cursor: pointer;
 		font-weight: 500;
-		margin: 0;
 		padding: 0 1.25em;
-		min-height: 3em;
+		height: 3em;
 		border-radius: 1em;
 		letter-spacing: 0.02em;
 		color: var(--color-contrast-100);
-		border: none;
+		outline: 0px dashed transparent;
+		outline-offset: 0px;
 		transition: all 0.15s cubic-bezier(0, 0, 0, 1), box-shadow 0.25s ease-out;
 		&::after {
 			content: '';
@@ -61,7 +67,7 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:global(:not(.current)):hover {
 			color: var(--color-primary-500);
-			background-color: rgba(var(--rgb-primary-100), 0.1);
+			background-color: rgba(var(--rgb-primary-100), 0.2);
 			&::after {
 				opacity: 1;
 				transform: translate(-50%, -0.25em);
@@ -71,8 +77,14 @@
 			}
 		}
 		&:active,
-		&:global(.current) {
-			color: var(--color-primary-500);
+		&:global(.active) {
+			color: var(--color-primary-900);
+			background-color: rgba(var(--rgb-primary-100), 0.1);
+			outline: 1px dashed rgba(var(--rgb-primary-700), 0.25);
+			outline-offset: -3px;
+		}
+		&.current {
+			color: var(--color-primary-700);
 			&::after {
 				opacity: 1;
 				height: 4px;

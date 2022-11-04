@@ -1,5 +1,5 @@
 import { appendMessageParam } from '$routes/MessagesOutlet.svelte';
-import { dbClient } from '$utils/database/database';
+import { dbClient } from '$utils/database';
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
@@ -9,18 +9,17 @@ export const load: PageLoad = async ({ params, fetch, parent, url }) => {
 	const { session } = await parent();
 	if (!session?.access_token) return {};
 	const db = dbClient.getForContext(session.access_token);
-	const project = await db.from('projects').select('*').eq('id', params.projectId).maybeSingle();
-	if (project.error) {
+	const projectRes = await db.from('projects').select('*').eq('id', params.projectId).single();
+	if (projectRes.error) {
 		throw redirect(
 			302,
-			// '/editer/projet'
 			appendMessageParam('/editer/projet', {
-				content: `Erreur lors du chargement du projet (${JSON.stringify(project.error)})`,
+				content: `Erreur lors du chargement du projet (${JSON.stringify(projectRes.error)})`,
 				type: 'error',
 			})
 		);
 	}
 	return {
-		project: project.data,
+		project: projectRes.data,
 	};
 };

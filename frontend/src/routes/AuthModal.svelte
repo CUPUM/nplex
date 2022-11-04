@@ -73,7 +73,7 @@
 	import ProviderLogo, { providers } from '$components/ProviderLogo.svelte';
 	import { messages } from '$routes/MessagesOutlet.svelte';
 	import { transform } from '$transitions/transform';
-	import { dbClient } from '$utils/database/database';
+	import { dbClient } from '$utils/database';
 	import { patterns } from '$utils/input/patterns';
 	import { RelativeURL } from '$utils/url';
 	import { cubicOut } from 'svelte/easing';

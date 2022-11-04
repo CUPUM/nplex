@@ -1,5 +1,5 @@
 import { setClearCookies } from '$utils/cookie';
-import { dbClient } from '$utils/database/database';
+import { dbClient } from '$utils/database';
 import { Cookie } from '$utils/enums';
 import type { AuthChangeEvent, AuthSession } from '@supabase/supabase-js';
 import { error, json } from '@sveltejs/kit';

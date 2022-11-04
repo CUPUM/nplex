@@ -1,7 +1,7 @@
 /// <reference types="@sveltejs/kit" />
 
 import type { Database } from '$types/database';
-import type { Session } from '@supabase/supabase-js';
+import type { PostgrestError, Session } from '@supabase/supabase-js';
 
 declare global {
 	// Extend elements typing to allow custom attributes added using `use` directives (actions).
@@ -36,9 +36,8 @@ declare global {
 		interface Locals {
 			session: App.PageData['session'];
 		}
-		interface Error {
-			notify?: boolean;
-			message?: string;
+		interface Error extends Partial<PostgrestError> {
+			// Add additional custom error props here.
 		}
 		interface Platform {}
 	}

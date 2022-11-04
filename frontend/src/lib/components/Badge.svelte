@@ -33,6 +33,7 @@
 
 <style lang="scss">
 	div {
+		z-index: 100;
 		position: absolute;
 		margin: 0;
 		flex: none;
