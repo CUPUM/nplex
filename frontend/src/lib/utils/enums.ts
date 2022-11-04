@@ -1,3 +1,5 @@
+import { colors } from './vars';
+
 /**
  * Dictionnary of context keys used for automatically detecting certain compositions or nestings like buttons being
  * nested inside field input compoenents or select options inside select parents.
@@ -89,3 +91,16 @@ export const ErrorCodeMessage = {
 	400: 'Impossible!',
 	500: '',
 } as const;
+
+export function themeClassName<T extends string>(name: T): `theme-${T}` {
+	return `theme-${name}`;
+}
+
+/**
+ * Themes and their associated classnames.
+ *
+ * { [K in keyof typeof colors]: `theme-${K}` }
+ */
+export const Theme = Object.fromEntries(Object.keys(colors).map((k) => [k, themeClassName(k)])) as {
+	[K in keyof typeof colors]: `theme-${K}`;
+};

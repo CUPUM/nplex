@@ -39,7 +39,7 @@
 	accent-color: var(--color-primary-500);
 	overflow-x: hidden;
 	overflow-y: scroll;
-	transition: background-color 1s ease-in-out;
+	transition: background-color 0.25s ease-in-out;
 	&[lock-scroll] {
 		overflow-y: hidden;
 		// padding-right: var(--scroll-size);

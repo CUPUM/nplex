@@ -4,6 +4,7 @@ import { resolve } from 'path';
 import prettier from 'prettier';
 import type { Plugin } from 'vite';
 import { px } from '../src/lib/utils/css';
+import { themeClassName } from '../src/lib/utils/enums';
 import { flatten } from '../src/lib/utils/object';
 import { colors, sizes } from '../src/lib/utils/vars';
 import { PRETTIER_CONFIG } from './common';
@@ -34,7 +35,7 @@ export default function stylesPlugin(): Plugin {
 					${toVars(sizes, (k, v) => ['size-' + k, px(v)])}
 				}`,
 				...Object.entries(colors).map(([t, c]) => {
-					return `.theme-${t} {
+					return `.${themeClassName(t)} {
 						${toVars(c, (k, v) => ['color-' + k, v])};
 						${toVars(c, (k, v) => ['rgb-' + k, fade(v + '')])};
 					}`;

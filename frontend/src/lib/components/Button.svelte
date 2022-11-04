@@ -221,10 +221,7 @@
 		}
 	}
 	.content {
-		// position: relative; // Do not set position relative so that certain children (ex.: Badge) can be positioned relative to button.
-		// display: flex;
-		// flex-direction: row;
-		// align-items: center;
+		position: relative; // NVM, breaks due to transform on :active... Do not set position relative so that certain children (ex.: Badge) can be positioned relative to button.
 		display: inline-block;
 		line-height: 1em;
 		padding-bottom: calc(0.5em - 0.5ex);
@@ -269,7 +266,6 @@
 	.default {
 		color: var(--color-contrast-300);
 		background-color: rgba(var(--rgb-base-700), 0.75);
-		backdrop-filter: blur(12px);
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
@@ -286,7 +282,7 @@
 	// Outlined variant
 	.outlined {
 		color: var(--color-contrast-300);
-		background-color: rgba(var(--rgb-base-900), 0.1);
+		background-color: transparent;
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		&::after {
 			opacity: 0.2;

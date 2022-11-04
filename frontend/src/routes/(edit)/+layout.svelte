@@ -29,9 +29,10 @@
 			{#each data.projects as project}
 				<li class="project-card">
 					<a href="/editer/projet/{project.id}">
-						{project.title}
+						<p>{project.title}</p>
+						<p>créé par {project.created_by.first_name} le {project.created_at}</p>
+						<p>modifié: {project.updated_at}</p>
 					</a>
-					(créé: {project.created_at}, modifié: {project.updated_at})
 				</li>
 			{/each}
 		</ul>

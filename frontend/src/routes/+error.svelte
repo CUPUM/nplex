@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { backgroundColor } from '$stores/backgroundColor';
+	import { documentTheme } from '$stores/documentTheme';
+	import { Theme } from '$utils/enums';
 	import { onDestroy, onMount } from 'svelte/internal';
 
 	onMount(() => {
-		backgroundColor.set('var(--color-contrast-900)', 250);
+		documentTheme.set(Theme.dark);
 	});
 
 	onDestroy(() => {
-		backgroundColor.reset();
+		documentTheme.reset();
 	});
 </script>
 

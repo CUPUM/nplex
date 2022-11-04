@@ -14,7 +14,7 @@ export const load: LayoutLoad = async ({ parent }) => {
 	const db = dbClient.getForContext(session.access_token);
 	const projectsRes = await db
 		.from('projects')
-		.select('*')
+		.select('*, created_by:created_by_id (*)')
 		.order('updated_at', { ascending: false })
 		.range(...getPagination(0, 10));
 	if (projectsRes.error) throw error(404, projectsRes.error);

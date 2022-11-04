@@ -5,16 +5,16 @@
 	import Icon from '$components/Icon.svelte';
 	import { creationRoutes } from '$utils/routing/routes';
 
-	let loadingEditor = null;
+	let loading: string | null = null;
 
 	beforeNavigate(({ to }) => {
-		if (creationRoutes.map((r) => r.pathname).includes(to.url.pathname)) {
-			loadingEditor = to.url.pathname;
+		if (to && creationRoutes.map((r) => r.pathname).includes(to.url.pathname)) {
+			loading = to.url.pathname;
 		}
 	});
 
 	afterNavigate(() => {
-		loadingEditor = null;
+		loading = null;
 	});
 </script>
 
@@ -25,8 +25,8 @@
 			<div>
 				<Button
 					href={r.pathname}
-					active={$page.routeId.startsWith(r.pathname)}
-					loading={loadingEditor === r.pathname}
+					active={$page.url.pathname.startsWith(r.pathname)}
+					loading={!!loading && loading.startsWith(r.pathname)}
 				>
 					Lancer ou reprendre
 					<Icon name="arrow-right" slot="trailing" />
@@ -41,7 +41,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0rem;
-		color: var(--color-dark-500);
+		color: var(--color-contrast-500);
 
 		span {
 			font-weight: 500;
@@ -65,8 +65,8 @@
 
 			&:hover {
 				transform: scale(1);
-				color: var(--color-dark-900);
-				background-color: var(--color-light-500);
+				color: var(--color-contrast-900);
+				background-color: var(--color-base-500);
 				// box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
 			}
 		}

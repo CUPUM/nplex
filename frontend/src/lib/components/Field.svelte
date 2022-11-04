@@ -433,7 +433,7 @@
 			}
 			.prefix,
 			.suffix {
-				opacity: 0.5;
+				opacity: 0.35;
 			}
 			&.has-label {
 				.outline.left {
@@ -458,7 +458,10 @@
 			color: var(--color-contrast-900);
 			.outline {
 				--outline-thickness: 1.5px;
-				opacity: 0.5;
+				opacity: 1;
+			}
+			label {
+				opacity: 1;
 			}
 		}
 	}
