@@ -491,7 +491,7 @@ export interface Database {
           created_at: string
           updated_at: string
           created_by_id: string
-          updated_by_id: string | null
+          updated_by_id: string
           title: string
           description: string | null
           site_ownership_id: number | null
@@ -516,7 +516,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
           created_by_id?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           title: string
           description?: string | null
           site_ownership_id?: number | null
@@ -541,7 +541,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
           created_by_id?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           title?: string
           description?: string | null
           site_ownership_id?: number | null
@@ -857,7 +857,7 @@ export interface Database {
           avatar_url: string | null
           about: string | null
           public_email: string | null
-          updated_by_id: string | null
+          updated_by_id: string
           first_name: string | null
           last_name: string | null
           created_at: string
@@ -868,7 +868,7 @@ export interface Database {
           avatar_url?: string | null
           about?: string | null
           public_email?: string | null
-          updated_by_id?: string | null
+          updated_by_id: string
           first_name?: string | null
           last_name?: string | null
           created_at?: string
@@ -879,7 +879,7 @@ export interface Database {
           avatar_url?: string | null
           about?: string | null
           public_email?: string | null
-          updated_by_id?: string | null
+          updated_by_id?: string
           first_name?: string | null
           last_name?: string | null
           created_at?: string
@@ -991,24 +991,100 @@ export interface Database {
           user_id: string
           updated_at: string
           role: Database["public"]["Enums"]["user_role"]
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           user_id: string
           updated_at?: string
           role?: Database["public"]["Enums"]["user_role"]
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Update: {
           user_id?: string
           updated_at?: string
           role?: Database["public"]["Enums"]["user_role"]
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
       }
     }
     Views: {
-      [_ in never]: never
+      editable_projects: {
+        Row: {
+          id: string | null
+          created_at: string | null
+          updated_at: string | null
+          created_by_id: string | null
+          updated_by_id: string | null
+          title: string | null
+          description: string | null
+          site_ownership_id: number | null
+          site_usage_category_id: number | null
+          site_usage_id: number | null
+          site_area: number | null
+          category_id: number | null
+          area: number | null
+          adjacent_streets: number | null
+          location_geometry: unknown | null
+          building_area: number | null
+          implantation_mode_id: number | null
+          building_construction_year: number | null
+          cost_min: number | null
+          cost_max: number | null
+          type_id: number | null
+          combustible: boolean | null
+          banner_url: string | null
+        }
+        Insert: {
+          id?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+          created_by_id?: string | null
+          updated_by_id?: string | null
+          title?: string | null
+          description?: string | null
+          site_ownership_id?: number | null
+          site_usage_category_id?: number | null
+          site_usage_id?: number | null
+          site_area?: number | null
+          category_id?: number | null
+          area?: number | null
+          adjacent_streets?: number | null
+          location_geometry?: unknown | null
+          building_area?: number | null
+          implantation_mode_id?: number | null
+          building_construction_year?: number | null
+          cost_min?: number | null
+          cost_max?: number | null
+          type_id?: number | null
+          combustible?: boolean | null
+          banner_url?: string | null
+        }
+        Update: {
+          id?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+          created_by_id?: string | null
+          updated_by_id?: string | null
+          title?: string | null
+          description?: string | null
+          site_ownership_id?: number | null
+          site_usage_category_id?: number | null
+          site_usage_id?: number | null
+          site_area?: number | null
+          category_id?: number | null
+          area?: number | null
+          adjacent_streets?: number | null
+          location_geometry?: unknown | null
+          building_area?: number | null
+          implantation_mode_id?: number | null
+          building_construction_year?: number | null
+          cost_min?: number | null
+          cost_max?: number | null
+          type_id?: number | null
+          combustible?: boolean | null
+          banner_url?: string | null
+        }
+      }
     }
     Functions: {
       default_uid: {
@@ -1023,6 +1099,15 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      user_can_edit_project:
+        | {
+            Args: { p_row: unknown }
+            Returns: boolean
+          }
+        | {
+            Args: Record<PropertyKey, never>
+            Returns: boolean
+          }
       user_has_role: {
         Args: Record<PropertyKey, never>
         Returns: boolean

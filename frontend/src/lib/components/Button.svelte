@@ -262,7 +262,6 @@
 		}
 	}
 
-	// Default variant
 	.default {
 		color: var(--color-contrast-300);
 		background-color: rgba(var(--rgb-base-700), 0.75);
@@ -279,7 +278,6 @@
 		}
 	}
 
-	// Outlined variant
 	.outlined {
 		color: var(--color-contrast-300);
 		background-color: transparent;
@@ -315,7 +313,6 @@
 		}
 	}
 
-	// Ghost variant
 	.ghost {
 		color: var(--color-contrast-300);
 		background-color: transparent;
@@ -336,7 +333,6 @@
 		}
 	}
 
-	// Call-to-action variant
 	.cta {
 		color: var(--color-base-000);
 		background-color: var(--color-primary-500);
@@ -367,11 +363,30 @@
 		}
 	}
 
-	// Danger variant
 	.danger {
-		border: 2px solid rgba(0, 0, 0, 0.2);
-		background-color: red;
-		box-shadow: 0 0 2em black;
+		color: var(--color-base-300);
+		background-color: var(--color-error-500);
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
+		&::after {
+			border: 1px solid var(--color-error-700);
+			transition: all 0.1s ease-in-out;
+		}
+		:global(.hover-source:hover) &:global(.hover-target),
+		&:hover {
+			&:not(.disabled) {
+				color: var(--color-base-500);
+				background-color: var(--color-error-700);
+			}
+		}
+		&:active,
+		&:global(.active) {
+			&:not(.disabled) {
+				color: var(--color-error-300);
+				background-color: var(--color-error-900);
+				&::after {
+					border: 3px solid rgba(var(--rgb-error-700), 0.5);
+				}
+			}
+		}
 	}
 </style>

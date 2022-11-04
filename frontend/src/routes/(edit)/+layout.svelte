@@ -30,7 +30,7 @@
 				<li class="project-card">
 					<a href="/editer/projet/{project.id}">
 						<p>{project.title}</p>
-						<p>créé par {project.created_by.first_name} le {project.created_at}</p>
+						<p>créé par {project.created_by?.first_name} le {project.created_at}</p>
 						<p>modifié: {project.updated_at}</p>
 					</a>
 				</li>
