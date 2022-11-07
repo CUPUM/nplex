@@ -9,5 +9,10 @@
 	// }
 	"files.associations": {
 		"*.env*": "dotenv"
-	}
+	},
+	"[markdown]": {
+		"editor.detectIndentation": false,
+		"editor.tabSize": 2,
+		"editor.insertSpaces": true
+	 }
 }

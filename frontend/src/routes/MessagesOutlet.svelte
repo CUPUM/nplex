@@ -110,8 +110,7 @@
 </script>
 
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Icon from '$components/Icon.svelte';
 	import { SearchParam } from '$utils/enums';
@@ -131,25 +130,27 @@
 		messages.cancelTimer(message);
 	}
 
-	$: urlMessages = $page.url.searchParams.getAll(SearchParam.Message).reduce((acc, m) => {
-		const parsed = JSON.parse(m);
-		return isUrlMessage(parsed) ? [...acc, parsed] : acc;
-	}, [] as Message[]);
-
-	$: if (urlMessages.length && browser) {
-		messages.dispatch(...urlMessages);
-		const clearedUrl = new RelativeURL($page.url);
-		clearedUrl.searchParams.delete(SearchParam.Message);
-		goto(clearedUrl.toString(), { replaceState: true });
-	}
+	afterNavigate(({ from, to }) => {
+		if (!to || !to.url.searchParams.has(SearchParam.Message)) return;
+		const urlMessages = to?.url.searchParams.getAll(SearchParam.Message).reduce((acc, m) => {
+			const parsed = JSON.parse(m);
+			return isUrlMessage(parsed) ? [...acc, parsed] : acc;
+		}, [] as Message[]);
+		if (urlMessages.length) {
+			messages.dispatch(...urlMessages);
+			const clearedUrl = new RelativeURL($page.url);
+			clearedUrl.searchParams.delete(SearchParam.Message);
+			goto(clearedUrl.toString(), { replaceState: true });
+		}
+	});
 </script>
 
 <div class="outlet">
 	{#each $messages as message (message)}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<dialog
-			in:scale|local={{ start: 0.75, opacity: 0, duration: 500, easing: expoOut }}
-			out:scale|local={{ start: 0.9, opacity: 0, duration: 350, easing: expoOut }}
+			in:scale|local={{ start: 0.8, opacity: 0, duration: 350, easing: expoOut }}
+			out:scale|local={{ start: 0.9, opacity: 0, duration: 250, easing: expoOut }}
 			animate:flip={{ duration: 350, easing: expoOut }}
 			class={message.type}
 			on:click|once={(e) => cancelTimer(e, message)}

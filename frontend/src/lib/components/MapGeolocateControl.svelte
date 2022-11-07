@@ -1,31 +1,20 @@
 <!--@component
 	Simple button-wrapper component to add geolocation control to the parent map.
 	For implementation inspo, see maplibre/mapbox control workflow: https://maplibre.org/maplibre-gl-js-docs/api/markers/
+
 -->
 <script lang="ts" context="module">
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/enums';
-	import type { icons } from '$utils/icons/icons';
-	import { centerMapOnClientLocation } from '$utils/maps/map';
-	import { getContext } from 'svelte';
-	import Button from './Button.svelte';
-	import Icon from './Icon.svelte';
-	import type { MapContext } from './Map.svelte';
+	import { GeolocateControl } from 'maplibre-gl';
+	import { getMapContext } from './Map.svelte';
 
-	export let icon: keyof typeof icons = 'localize';
-	export let iconSize: string | number = '1.25em';
+	const mapContext = getMapContext();
+	const control = new GeolocateControl();
 
-	const mapCtx = getContext<MapContext>(Ctx.Map);
-	const map = mapCtx.getMap();
-
-	function locate() {}
+	mapContext.getMap()?.addControl(control);
 </script>
-
-<Button square variant="ghost" on:click={() => centerMapOnClientLocation(map)}>
-	<Icon name={icon} />
-</Button>
 
 <style lang="scss">
 </style>

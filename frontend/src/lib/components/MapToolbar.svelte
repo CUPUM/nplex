@@ -1,11 +1,22 @@
+<!--
+	@component
+	## Map Toolbar
+	Adds a toolbar inside a map pane.
+
+ -->
 <script lang="ts" context="module">
-	export interface MapToolbarContext {}
+	const CTX_KEY = 'map-toolbar-context';
+
+	interface MapToolbarContext {}
+
+	export function getMapToolbarContext() {
+		return getContext<MapToolbarContext>(CTX_KEY);
+	}
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/enums';
 	import { getContext, onDestroy, onMount, setContext } from 'svelte';
-	import type { MapContext } from './Map.svelte';
+	import { getMapContext } from './Map.svelte';
 
 	export let direction: 'row' | 'column' = 'row';
 	export let position:
@@ -16,39 +27,41 @@
 		| 'right'
 		| 'bottom left'
 		| 'bottom'
-		| 'bottom right';
+		| 'bottom right' = 'top';
 
-	const mapCtx = getContext<MapContext>(Ctx.Map);
+	const mapContext = getMapContext();
 
-	const map = mapCtx.getMap();
+	const map = mapContext.getMap();
 
-	setContext<MapToolbarContext>(Ctx.MapToolbar, {});
+	setContext<MapToolbarContext>(CTX_KEY, {});
 
 	onMount(() => {});
 
 	onDestroy(() => {});
 </script>
 
-<menu class="{direction} {position}">
+<menu class="toolbar {direction} {position}">
 	<slot />
 </menu>
 
 <style lang="scss">
-	menu {
-		font-size: var(--size-small);
-		--outset: var(--default-inset);
-		z-index: 1000;
+	.toolbar {
+		--margin: 1em;
+		--padding: 5px;
+		--x: 0;
+		--y: 0;
+		font-size: var(--size-xsmall);
 		position: absolute;
 		display: flex;
 		flex-direction: row;
-		margin: 0;
-		background-color: var(--color-light-100);
-		padding: var(--outset);
-		border-radius: 1.2em;
-		max-width: 100%;
+		margin: var(--margin);
+		padding: var(--padding);
+		background-color: var(--color-base-100);
+		border-radius: calc(var(--default-radius) + var(--padding));
+		max-width: calc(100% - 2 * var(--margin));
 		opacity: 0;
+		transform: translate(var(--x), var(--y));
 		transition: all 0.25s cubic-bezier(0.25, 0, 0.5, 1);
-
 		:global(hr) {
 			width: 75%;
 			margin-inline: 0.5em;
@@ -61,8 +74,7 @@
 
 	.column {
 		flex-direction: column;
-		max-height: 100%;
-
+		max-height: calc(100% - 2 * var(--margin));
 		:global(hr) {
 			margin-block: 0.5em;
 			margin-inline: auto;
@@ -70,28 +82,28 @@
 		}
 	}
 
-	:global(figure):hover > menu {
+	:global(figure):hover > :global(*) > .toolbar {
 		opacity: 1;
 		transform: translate(0);
 	}
 
 	.top {
-		top: 1em;
-		transform: translate(0, -0.5em);
+		--y: -0.25em;
+		top: 0;
 	}
 
 	.bottom {
-		bottom: 1em;
-		transform: translate(0, 0.5em);
+		--y: 0.25em;
+		bottom: 0;
 	}
 
 	.left {
-		left: 1em;
-		transform: translate(-0.5em, 0);
+		--x: -0.25em;
+		left: 0;
 	}
 
 	.right {
-		right: 1em;
-		transform: translate(0.5em), 0;
+		--x: 0.25em;
+		right: 0;
 	}
 </style>

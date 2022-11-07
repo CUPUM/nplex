@@ -70,10 +70,10 @@
 			background-color: rgba(var(--rgb-primary-100), 0.2);
 			&::after {
 				opacity: 1;
-				transform: translate(-50%, -0.25em);
+				transform: translate(-50%, -0.4em);
 			}
 			.inner {
-				transform: translateY(-0.07em);
+				transform: translateY(-0.08em);
 			}
 		}
 		&:active,
@@ -97,6 +97,7 @@
 		position: relative;
 		display: flex;
 		align-items: center;
+		padding-bottom: calc(0.5em - 0.5ex);
 		transition: all 0.15s ease-out;
 	}
 	.disabled {

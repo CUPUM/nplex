@@ -3,105 +3,37 @@
 
 <script lang="ts">
 	import type { LayoutData } from './$types';
+	import EditableEntries from './EditableEntries.svelte';
 	export let data: LayoutData;
 </script>
 
 <slot />
 <article id="entries">
 	<h2>Fiches éditables</h2>
-	<section>
-		<h3>Mes fiches de projet</h3>
-		<form action="">
-			<label
-				>Toutes
-				<input type="radio" name="projects-filter" id="" />
-			</label>
-			<label
-				>Créées par moi
-				<input type="radio" name="projects-filter" id="" />
-			</label>
-			<label
-				>Partagées avec moi
-				<input type="radio" name="projects-filter" id="" />
-			</label>
-		</form>
-		<ul>
-			{#each data.projects as project}
-				<li class="project-card">
-					<a href="/editer/projet/{project.id}">
-						<p>{project.title}</p>
-						<p>créé par {project.created_by?.first_name} le {project.created_at}</p>
-						<p>modifié: {project.updated_at}</p>
-					</a>
-				</li>
-			{/each}
-		</ul>
-	</section>
-	<section>
-		<h3>Mes fiches d'organisation</h3>
-		<form action="">
-			<label
-				>Toutes
-				<input type="radio" name="projects-filter" id="" />
-			</label>
-			<label
-				>Créées par moi
-				<input type="radio" name="projects-filter" id="" />
-			</label>
-			<label
-				>Partagées avec moi
-				<input type="radio" name="projects-filter" id="" />
-			</label>
-		</form>
-	</section>
-	<section>
-		<h3>Mes fiches d'acteur</h3>
-		<form action="">
-			<label
-				>Toutes
-				<input type="radio" name="projects-filter" id="" />
-			</label>
-			<label
-				>Créées par moi
-				<input type="radio" name="projects-filter" id="" />
-			</label>
-			<label
-				>Partagées avec moi
-				<input type="radio" name="projects-filter" id="" />
-			</label>
-		</form>
-	</section>
+	<EditableEntries title="Mes fiches de projet" data={data.projects} let:datum>
+		<a class="project" href="/editer/projet/{datum.id}">
+			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
+			{datum.title}
+		</a>
+		<a class="project" href="/editer/projet" slot="placeholder"> New :D </a>
+	</EditableEntries>
 </article>
 
 <style lang="scss">
 	article {
 		width: 100%;
+		padding: 0;
 	}
 
-	section {
-		padding: 4rem 0;
-	}
-
-	h2,
-	h3 {
-		width: 100%;
-		max-width: 800px;
-		margin: 0 auto;
-	}
-
-	ul {
-		display: flex;
-		flex-direction: row;
-		gap: 2rem;
-	}
-
-	.project-card {
-		flex: 0;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		gap: 1rem;
-		border-radius: 1.5rem;
-		border: 1px solid var(--color-base-700);
+	.project {
+		padding: 0;
+		margin: 0;
+		display: block;
+		position: relative;
+		height: 400px;
+		aspect-ratio: 3 / 4;
+		background-color: white;
+		border-radius: 2rem;
+		box-shadow: 0 1em 2em -1em rgba(0, 0, 0, 0.1);
 	}
 </style>

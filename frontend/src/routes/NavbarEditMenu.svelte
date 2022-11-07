@@ -20,7 +20,16 @@
 
 <div class="creation-cards">
 	{#each creationRoutes as r}
-		<a class="card button-parent" href={r.pathname}>
+		<Button
+			variant="ghost"
+			href={r.pathname}
+			active={$page.url.pathname.startsWith(r.pathname)}
+			loading={!!loading && loading.startsWith(r.pathname)}
+		>
+			<Icon name="pen" slot="leading" />
+			{r.title}
+		</Button>
+		<!-- <a class="card button-parent" href={r.pathname}>
 			<span>{r.title}</span>
 			<div>
 				<Button
@@ -32,7 +41,7 @@
 					<Icon name="arrow-right" slot="trailing" />
 				</Button>
 			</div>
-		</a>
+		</a> -->
 	{/each}
 </div>
 

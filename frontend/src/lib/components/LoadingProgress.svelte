@@ -1,4 +1,9 @@
-<!-- <svelte:options accessors={true} /> -->
+<!--
+	@component
+	## Loading Progress
+	A simple loading indicator singleton styled as a progress bar at the top of the viewport.
+
+ -->
 <script lang="ts">
 	import { cubicOut } from 'svelte/easing';
 	import { tweened, type Tweened } from 'svelte/motion';

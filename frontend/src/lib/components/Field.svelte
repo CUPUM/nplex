@@ -156,8 +156,10 @@
 		use:inputOnReset
 		on:input={handleInput}
 		on:focus={handleFocus}
-		on:focus|once={() => (focusedOnce = true)}
 		on:blur={handleBlur}
+		on:focus
+		on:blur
+		on:input
 	/>
 	{#if suffix}
 		<span class="suffix">{suffix}</span>
@@ -214,6 +216,9 @@
 		&.disabled {
 			opacity: 0.5;
 			pointer-events: none;
+		}
+		&.readonly {
+			cursor: not-allowed;
 		}
 		&.warning {
 			color: red !important;

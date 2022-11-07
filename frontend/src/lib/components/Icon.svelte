@@ -1,8 +1,13 @@
 <!--
 	@component
 	## Icon
-	Primitive component to facilitate adding icons in a consistent manner across the ui.	
+	Primitive component to facilitate adding icons in a consistent manner across the ui.
+
 -->
+<script lang="ts" context="module">
+	let queue = 0;
+</script>
+
 <script lang="ts">
 	import { transform } from '$transitions/transform';
 	import { cssSize } from '$utils/css';
@@ -18,10 +23,13 @@
 	let className: string | undefined = undefined;
 	export { className as class };
 
+	let iconRef: SVGElement;
+
 	$: icon = icons[name];
 </script>
 
 <svg
+	bind:this={iconRef}
 	xmlns="http://www.w3.org/2000/svg"
 	aria-roledescription="icon-{name}"
 	preserveAspectRatio="xMidYMid"

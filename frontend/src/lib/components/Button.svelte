@@ -29,6 +29,8 @@
 	export let warning: boolean | undefined = undefined;
 	export let square: boolean | undefined = undefined;
 	export let type: 'button' | 'submit' | 'reset' = 'button';
+	let _for: string | undefined = undefined;
+	export { _for as for };
 	export let active: boolean | undefined = false;
 	export let contentAlign: 'start' | 'center' | 'end' = 'start';
 	export let value: string | undefined = undefined;
@@ -39,6 +41,7 @@
 	let className: string | undefined = '';
 	export { className as class };
 	export let style: string | undefined = undefined;
+	export let as: HTMLElement['tagName'] | undefined = undefined;
 
 	let buttonRef: HTMLButtonElement | HTMLAnchorElement;
 	const buttonGroupContext = getButtonGroupContext();
@@ -51,7 +54,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <svelte:element
-	this={href && !disabled ? 'a' : 'button'}
+	this={as ? as : href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
 	class="button {computedVariant} {contentAlign} {className}"
 	class:compact
@@ -71,6 +74,7 @@
 	{title}
 	{tabindex}
 	{formaction}
+	for={_for}
 	on:click
 	on:pointerdown
 	on:pointercancel
@@ -111,8 +115,7 @@
 
 <style lang="scss">
 	// Vendor style soft resets
-	:where(button),
-	:where(a) {
+	:where(.button) {
 		all: unset;
 	}
 
@@ -143,6 +146,8 @@
 		font-size: 1em;
 		border-radius: var(--computed-radius);
 		cursor: pointer;
+		letter-spacing: 0em;
+		font-weight: 500;
 		outline: 0px solid transparent;
 		// Box-shadow and border host to allow additional customization from outer class.
 		&::after {
@@ -314,21 +319,31 @@
 	}
 
 	.ghost {
-		color: var(--color-contrast-300);
+		color: currentColor;
 		background-color: transparent;
-		transition: color 0.1s ease-out, background-color 0.1s ease-out;
+		&::after {
+			background-color: currentColor;
+			opacity: 0;
+			transition: opacity 0.25s ease-out;
+		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			&:not(.disabled) {
-				color: var(--color-contrast-900);
-				background-color: rgba(var(--rgb-contrast-900), 0.1);
+				// color: var(--color-contrast-900);
+				// background-color: rgba(var(--rgb-contrast-900), 0.1);
+				&::after {
+					opacity: 0.1;
+				}
 			}
 		}
 		&:active,
 		&:global(.active) {
 			&:not(.disabled) {
-				color: var(--color-primary-900);
-				background-color: rgba(var(--rgb-primary-900), 0.1);
+				// color: var(--color-primary-900);
+				// background-color: rgba(var(--rgb-primary-900), 0.1);
+				&::after {
+					opacity: 0.15;
+				}
 			}
 		}
 	}

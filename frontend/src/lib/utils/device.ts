@@ -1,5 +1,5 @@
 /**
- * Determine if a scroll event pertains to a mouse input or a touchpad.
+ * Determine if a scroll event pertains to a mouse input or a touchpad/trackpad.
  *
  * Credits: Lauri, https://stackoverflow.com/questions/10744645/detect-touchpad-vs-mouse-in-javascript.
  */

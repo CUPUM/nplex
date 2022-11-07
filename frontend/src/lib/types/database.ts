@@ -501,7 +501,7 @@ export interface Database {
           category_id: number | null
           area: number | null
           adjacent_streets: number | null
-          location_geometry: unknown | null
+          location: unknown | null
           building_area: number | null
           implantation_mode_id: number | null
           building_construction_year: number | null
@@ -526,7 +526,7 @@ export interface Database {
           category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
-          location_geometry?: unknown | null
+          location?: unknown | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
@@ -551,7 +551,7 @@ export interface Database {
           category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
-          location_geometry?: unknown | null
+          location?: unknown | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
@@ -805,19 +805,19 @@ export interface Database {
         Row: {
           project_id: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
           status: Database["public"]["Enums"]["publication_status"]
         }
         Insert: {
           project_id: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           status?: Database["public"]["Enums"]["publication_status"]
         }
         Update: {
           project_id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
           status?: Database["public"]["Enums"]["publication_status"]
         }
       }
@@ -1099,19 +1099,19 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: string
       }
-      user_can_edit_project:
-        | {
-            Args: { p_row: unknown }
-            Returns: boolean
-          }
+      user_can_edit_project: {
+        Args: { p_row: unknown }
+        Returns: boolean
+      }
+      user_has_role:
         | {
             Args: Record<PropertyKey, never>
             Returns: boolean
           }
-      user_has_role: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+        | {
+            Args: { role: Database["public"]["Enums"]["user_role"] }
+            Returns: boolean
+          }
     }
     Enums: {
       publication_status:

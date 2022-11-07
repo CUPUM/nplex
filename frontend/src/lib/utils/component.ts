@@ -1,3 +1,7 @@
+/**
+ * Utilities for handling specific behaviors or functionalities specific to svelte components.
+ */
+
 import type { SvelteComponent } from 'svelte';
 import { check_outros, group_outros, transition_out } from 'svelte/internal';
 
@@ -6,7 +10,7 @@ import { check_outros, group_outros, transition_out } from 'svelte/internal';
  * destroyed. Workaround for https://github.com/sveltejs/svelte/issues/4056.
  */
 export function outroAndDestroy(instance: SvelteComponent) {
-	if (instance.$$.fragment && instance.$$.fragment.o) {
+	if (instance.$$.fragment && !!instance.$$.fragment.o) {
 		group_outros();
 		transition_out(instance.$$.fragment, 0, 0, () => {
 			instance.$destroy();

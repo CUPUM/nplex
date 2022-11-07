@@ -26,7 +26,7 @@
 	dbClient.forBrowser.auth.onAuthStateChange(async (event, session) => {
 		// Set temporary client cookies to communicate auth change data to the server.
 		const newAuth: AuthChangeCookie = { session, event };
-		jscookie.set(Cookie.AuthChange, JSON.stringify(newAuth), { path: '/', sameSite: 'strict' });
+		jscookie.set(Cookie.AuthChange, JSON.stringify(newAuth), { path: '/', sameSite: 'strict', secure: true });
 		invalidate('/api/auth/session.json');
 	});
 
@@ -77,7 +77,6 @@
 		flex-wrap: nowrap;
 		flex-direction: column;
 		padding: 0;
-		padding-bottom: 4rem;
 		margin: 0;
 	}
 

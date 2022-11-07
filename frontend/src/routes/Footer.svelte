@@ -95,6 +95,7 @@
 		background-color: var(--color-base-300);
 		font-weight: 400;
 		letter-spacing: 0.1px;
+		border-top: 1px solid rgb(var(--rgb-contrast-100), 0.1);
 		transition: all 1s cubic-bezier(0.5, 0, 0, 1);
 	}
 
@@ -120,7 +121,7 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 1rem;
-		max-width: 1200px;
+		max-width: 800px;
 		margin: 0 auto;
 	}
 
@@ -162,7 +163,7 @@
 		font-weight: 550;
 		font-size: var(--size-xsmall);
 		letter-spacing: 0.05em;
-		opacity: 0.5;
+		opacity: 0.25;
 		transition: all 1s cubic-bezier(0, 0, 0, 1) calc(var(--i, 0) * 0.25s);
 	}
 

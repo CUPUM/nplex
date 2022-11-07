@@ -42,9 +42,8 @@
 
 	let hidden: boolean;
 	let rootPathname: string;
-	let yThreshold = navbarHeight || 40;
+	let thres = navbarHeight || 40;
 	let loadingCategoryPath: string | null = '';
-	let headerWidth = 0;
 
 	beforeNavigate(({ to }) => {
 		if (to && exploreRoutes.map((r) => r.pathname).includes(to.url.pathname)) {
@@ -56,11 +55,12 @@
 		loadingCategoryPath = null;
 	});
 
-	$: hidden = $rootScroll.down && $rootScroll.y > yThreshold;
+	$: overlay = $rootScroll.y > thres * 2;
+	$: hidden = $rootScroll.down && $rootScroll.y > thres;
 	$: rootPathname = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
 </script>
 
-<header class:hidden bind:clientHeight={navbarHeight} bind:clientWidth={headerWidth}>
+<header class:hidden class:overlay bind:clientHeight={navbarHeight}>
 	<div class="wrapper">
 		<nav class="main">
 			<NavbarButton square href="/">
@@ -116,7 +116,8 @@
 		margin: 0;
 		font-size: small;
 		backdrop-filter: blur(8px);
-		transition: transform 0.5s cubic-bezier(0.75, 0, 0, 1);
+		border-bottom: 0px solid transparent;
+		transition: transform 0.5s cubic-bezier(0.75, 0, 0, 1), border 1s ease-in-out;
 
 		&::before {
 			content: '';
@@ -163,6 +164,10 @@
 		}
 	}
 
+	.overlay {
+		border-bottom: 1px solid rgb(var(--rgb-contrast-100), 0.1);
+	}
+
 	.hidden {
 		transform: translateY(-101%);
 		pointer-events: none;
@@ -186,6 +191,9 @@
 	.category {
 		grid-column: category;
 		justify-content: center;
+		background-color: rgb(var(--rgb-base-900), 0.25);
+		border-radius: 1em;
+		--inset: 3px;
 	}
 	.session {
 		grid-column: session;

@@ -1,7 +1,9 @@
 :root {
 	// Font variables
+	// --font-main: 'Metropolis', sans-serif;
+	// --font-main: 'Figtree', sans-serif;
 	--font-main: 'Outfit', sans-serif;
-	--font-misc: 'Space Mono', monospace;
+	--font-misc: 'DM Mono', monospace;
 	// Global style helpers for consistent appearence across components
 	--default-inset: 3px; // Default inset for nested elements
 	--default-radius: 0.9em; // Border radius for buttons and other interactive elements

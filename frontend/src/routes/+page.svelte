@@ -14,28 +14,31 @@
 			<span>La plateforme de valorisation des petits projets exemplaires en aménagement à Montréal</span>
 		</h1>
 	</hgroup>
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit, quasi? Veniam dolor adipisci asperiores
-		fugit illum aspernatur, commodi impedit quibusdam placeat ab dignissimos sed. Veniam, ad inventore alias illo
-		quis unde. Provident sed, dicta aut veritatis assumenda voluptas suscipit ipsa autem! Adipisci perferendis,
-		error, aliquam vel repellat quod cumque reprehenderit dignissimos nostrum natus odio facilis laboriosam
-		voluptates explicabo ipsum tempore fugiat qui, officiis alias dolor enim nihil architecto nam? Ab aliquam sunt
-		consectetur voluptate quos incidunt earum, hic deserunt autem. Iure perferendis, praesentium minima at nobis
-		perspiciatis nostrum officia aut a, eaque debitis nihil repudiandae quaerat quos exercitationem necessitatibus
-		harum.
-	</p>
 </header>
-<article id="previews">
-	<PreviewList id="projects" header="Projets" href="/projets" data={data.projectsPreview}>
-		<li>test</li>
-	</PreviewList>
-	<PreviewList id="organisations" header="Organisations" href="/organisations" data={data.organisationsPreview}>
-		<li>test</li>
-	</PreviewList>
-	<PreviewList id="actors" header="Acteurs" href="/actors" data={data.actorsPreview}>
-		<li>test</li>
-	</PreviewList>
-</article>
+<PreviewList header="Projets" href="/projets" data={data.projects} let:datum>
+	<a class="project" href="/projets/{datum.id}">
+		<figure>
+			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
+		</figure>
+		{datum.title}
+	</a>
+</PreviewList>
+<PreviewList header="Organisations et bureaux" href="/projets" data={data.projects} let:datum>
+	<a class="project" href="/projets/{datum.id}">
+		<figure>
+			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
+		</figure>
+		{datum.title}
+	</a>
+</PreviewList>
+<PreviewList header="Acteurs de projet" href="/projets" data={data.projects} let:datum>
+	<a class="project" href="/projets/{datum.id}">
+		<figure>
+			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
+		</figure>
+		{datum.title}
+	</a>
+</PreviewList>
 
 <style lang="scss">
 	@use 'mixins.scss';
@@ -73,15 +76,15 @@
 				font-weight: 300;
 			}
 		}
-		p {
-			font-size: large;
-			line-height: 1.5em;
-			max-width: 640px;
-		}
 	}
 
-	#previews {
+	.project {
+		all: unset;
+		cursor: pointer;
 		display: flex;
 		flex-direction: column;
+		position: relative;
+		background-color: rgb(var(--rgb-base-900), 0.25);
+		border-radius: 2rem;
 	}
 </style>

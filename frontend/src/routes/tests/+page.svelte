@@ -11,6 +11,7 @@
 	import Icon from '$components/Icon.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import type { ComponentProps } from 'svelte';
+	import { flip } from 'svelte/animate';
 
 	let name: ComponentProps<Icon>['name'] = 'search';
 	let variant: ComponentProps<Button>['variant'] = 'default';
@@ -29,9 +30,27 @@
 	}
 
 	$: switchTheme(dark ? 'dark' : 'light');
+
+	let items = [1, 2, 3, 4, 5, 6];
+	function shuffle() {
+		// let shuffled = [...items];
+		for (let i = items.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[items[i], items[j]] = [items[j], items[i]];
+		}
+		// items = shuffled;
+	}
 </script>
 
 <article>
+	<section>
+		<button on:click={shuffle}>Shuffle</button>
+		<ul>
+			{#each items as i (i)}
+				<li animate:flip>{i}</li>
+			{/each}
+		</ul>
+	</section>
 	<section>
 		<p>
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. <Icon name="users" />Adipisci vel maiores, sunt

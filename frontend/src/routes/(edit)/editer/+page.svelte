@@ -4,8 +4,14 @@
 <script lang="ts">
 </script>
 
-<h2>Editing!</h2>
-<slot />
+<article>
+	<h2>Zone d'édition</h2>
+	<ul>
+		<li>Créer un nouveau projet</li>
+		<li>Créer une nouvelle organisation</li>
+		<li>Créer un nouveau profil d'acteur</li>
+	</ul>
+</article>
 
 <style lang="scss">
 </style>

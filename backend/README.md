@@ -36,12 +36,12 @@ Since these changes ultimately percolate to frontend effects, the script are est
 
 ```json
 {
-	...,
-	scripts: {
-		...,
-		"gen-remote-db-types": ". ../.env && cd ../backend && supabase gen types typescript --db-url ${SUPABASE_DB_URL} > ../frontend/src/lib/types/database.ts",
-		"gen-local-db-types": "cd ../backend && supabase gen types typescript --local > ../frontend/src/lib/types/database.ts",
-	}
+  ...,
+  scripts: {
+    ...,
+    "gen-remote-db-types": ". ../.env && cd ../backend && supabase gen types typescript --db-url ${SUPABASE_DB_URL} > ../frontend/src/lib/types/database.ts",
+    "gen-local-db-types": "cd ../backend && supabase gen types typescript --local > ../frontend/src/lib/types/database.ts",
+  }
 }
 ```
 
