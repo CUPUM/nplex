@@ -72,15 +72,15 @@
 		margin: 0 auto;
 		padding: 3px;
 		border-radius: 1.25em;
-		// background-color: rgba(var(--rgb-light-500), 0.5);
-		background-color: rgba(255, 255, 255, 0.75);
+		// background: rgba(var(--rgb-light-500), 0.5);
+		background: rgba(255, 255, 255, 0.75);
 
 		backdrop-filter: blur(8px);
 		box-shadow: 0 0 0.5em 0 rgba(0, 0, 0, 0);
 		transition: all 0.25s ease-in-out;
 
 		&:hover {
-			background-color: rgba(255, 255, 255, 0.9);
+			background: rgba(255, 255, 255, 0.9);
 			box-shadow: 0 0.5em 2em -1.5em rgba(0, 0, 0, 0.5);
 		}
 	}

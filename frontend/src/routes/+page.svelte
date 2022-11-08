@@ -83,7 +83,7 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		background-color: rgb(var(--rgb-base-900), 0.25);
+		background: rgb(var(--rgb-base-900), 0.25);
 		border-radius: 2rem;
 	}
 </style>

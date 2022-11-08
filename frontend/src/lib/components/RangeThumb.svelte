@@ -44,6 +44,6 @@
 		width: var(--size);
 		height: var(--size);
 		border-radius: 50%;
-		background-color: royalblue;
+		background: royalblue;
 	}
 </style>

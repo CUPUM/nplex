@@ -150,7 +150,7 @@
 		pointer-events: none;
 		user-select: none;
 		position: absolute;
-		background-color: transparent;
+		background: transparent;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -287,7 +287,7 @@
 	.inner {
 		position: relative;
 		padding: 0.5rem;
-		background-color: var(--color-base-000);
+		background: var(--color-base-000);
 		box-shadow: 0 1rem 3rem -2rem rgba(0, 0, 0, 0.2);
 		border-radius: 1.1rem;
 		display: inline-flex;

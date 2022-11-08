@@ -9,7 +9,7 @@
 
 <style lang="scss">
 	header {
-		background-color: var(--color-light-300);
+		background: var(--color-light-300);
 		padding: 4rem;
 		padding-top: calc(4rem + var(--navbar-height));
 		margin: 0;

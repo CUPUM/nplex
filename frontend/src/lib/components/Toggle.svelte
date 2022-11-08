@@ -36,7 +36,7 @@
 <style lang="scss">
 	.toggle {
 		display: inline-block;
-		background-color: rgba(var(--rgb-light-700), 0.9);
+		background: rgba(var(--rgb-light-700), 0.9);
 		border-radius: 2em;
 		margin: 0;
 		cursor: pointer;
@@ -44,14 +44,14 @@
 		padding: 5px;
 		transition: all 0.15s ease-in-out;
 		&:hover {
-			background-color: rgba(var(--rgb-light-900), 1);
+			background: rgba(var(--rgb-light-900), 1);
 		}
 
 		&.toggled {
-			background-color: rgba(var(--rgb-primary-500), 0.9);
+			background: rgba(var(--rgb-primary-500), 0.9);
 			border: 1px solid var(--color-primary-500);
 			&:hover {
-				background-color: rgba(var(--rgb-primary-300), 1);
+				background: rgba(var(--rgb-primary-300), 1);
 			}
 		}
 
@@ -107,7 +107,7 @@
 		position: absolute;
 		height: 100%;
 		aspect-ratio: 1 / 1;
-		background-color: var(--color-light-100);
+		background: var(--color-light-100);
 		border-radius: 50%;
 		left: 0;
 		transition: all 0.15s cubic-bezier(0.25, 0, 0.7, 1.5);

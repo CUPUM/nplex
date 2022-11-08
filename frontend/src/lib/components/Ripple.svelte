@@ -129,7 +129,7 @@
 		top: var(--y);
 		opacity: var(--opacity-start);
 		width: calc(var(--d) * var(--spread-start));
-		background-color: var(--color-start);
+		background: var(--color-start);
 		aspect-ratio: 1 / 1;
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
@@ -153,7 +153,7 @@
 
 	@keyframes color {
 		to {
-			background-color: var(--color-end);
+			background: var(--color-end);
 		}
 	}
 </style>

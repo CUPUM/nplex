@@ -60,7 +60,7 @@
 	// 	position: relative;
 	// 	color: var(--color-dark-700);
 	// 	grid-column: full;
-	// 	background-color: var(--color-light-500);
+	// 	background: var(--color-light-500);
 	// 	margin-top: calc(-1 * var(--navbar-height));
 	// 	min-height: 95vh;
 	// 	padding: 6rem 0;

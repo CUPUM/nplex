@@ -212,7 +212,7 @@
 		border: none;
 		border-radius: var(--default-radius);
 		box-shadow: 0 1.5em 2em -0.5em rgba(0, 0, 40, 0.15);
-		background-color: white;
+		background: white;
 	}
 
 	button {
@@ -229,11 +229,11 @@
 		aspect-ratio: 1 / 1;
 		position: absolute;
 		left: calc(100% + 0.5em);
-		background-color: var(--color-base-300);
+		background: var(--color-base-300);
 		transition: all 0.1s;
 
 		&:hover {
-			background-color: var(--color-base-900);
+			background: var(--color-base-900);
 		}
 	}
 
@@ -271,15 +271,15 @@
 		height: 3px;
 		border-radius: 0 0 3px 3px;
 		animation: timer forwards var(--timer) linear;
-		background-color: var(--color-primary-300);
+		background: var(--color-primary-300);
 	}
 
 	.error {
-		background-color: var(--color-error-500);
+		background: var(--color-error-500);
 		color: var(--color-base-100);
 
 		& .progress {
-			background-color: var(--color-error-900);
+			background: var(--color-error-900);
 		}
 	}
 

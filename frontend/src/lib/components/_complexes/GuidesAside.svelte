@@ -35,6 +35,6 @@
 		width: 400px;
 		top: 0;
 		position: sticky;
-		background-color: var(--color-light-500);
+		background: var(--color-light-500);
 	}
 </style>

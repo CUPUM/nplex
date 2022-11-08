@@ -60,7 +60,7 @@
 		position: relative;
 		width: var(--size);
 		height: var(--size);
-		background-color: transparent;
+		background: transparent;
 		margin: 0;
 		padding: 0;
 		display: inline-block;

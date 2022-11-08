@@ -1,5 +1,6 @@
 /// <reference types="@sveltejs/kit" />
 
+import type { Category } from '$types/categories';
 import type { Database } from '$types/database';
 import type { PostgrestError, Session } from '@supabase/supabase-js';
 

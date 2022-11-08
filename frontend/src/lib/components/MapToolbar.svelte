@@ -56,7 +56,7 @@
 		flex-direction: row;
 		margin: var(--margin);
 		padding: var(--padding);
-		background-color: var(--color-base-100);
+		background: var(--color-base-100);
 		border-radius: calc(var(--default-radius) + var(--padding));
 		max-width: calc(100% - 2 * var(--margin));
 		opacity: 0;
@@ -65,7 +65,7 @@
 		:global(hr) {
 			width: 75%;
 			margin-inline: 0.5em;
-			background-color: var(--color-dark-100);
+			background: var(--color-dark-100);
 			padding: 0.5px;
 			border: none;
 			opacity: 0.1;

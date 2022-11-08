@@ -91,7 +91,7 @@
 
 	.default {
 		color: var(--color-dark-500);
-		background-color: rgba(var(--rgb-light-100), 0.8);
+		background: rgba(var(--rgb-light-100), 0.8);
 		/* backdrop-filter: blur(12px); */
 	}
 
@@ -104,7 +104,7 @@
 		--active-color: var(--color-primary-900);
 		--active-bg-color: var(--color-light-900);
 		color: var(--color-dark-100);
-		background-color: var(--color-light-100);
+		background: var(--color-light-100);
 		box-shadow: 0 0 0 1px var(--color-light-900);
 	}
 
@@ -117,6 +117,6 @@
 		--active-color: var(--color-primary-900);
 		--active-bg-color: var(--color-primary-300);
 		color: var(--color-primary-500);
-		background-color: transparent;
+		background: transparent;
 	}
 </style>

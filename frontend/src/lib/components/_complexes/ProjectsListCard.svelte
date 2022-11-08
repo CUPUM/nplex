@@ -97,7 +97,7 @@
 		height: 100%;
 		padding: 1rem;
 		border-radius: 2rem;
-		background-color: var(--color-light-100);
+		background: var(--color-light-100);
 		box-shadow: inset 0 0 0 1px rgba(var(--rgb-dark-900), 0.05), 0 0 0 0 transparent;
 		color: var(--color-dark-500);
 		transform: scale(0.98);
@@ -105,7 +105,7 @@
 
 		&:hover {
 			color: var(--color-dark-900);
-			background-color: white;
+			background: white;
 			box-shadow: inset 0 0 0 0px white, 0 2rem 6rem -2rem rgba(var(--rgb-dark-900), 0.25);
 			transform: scale(1);
 

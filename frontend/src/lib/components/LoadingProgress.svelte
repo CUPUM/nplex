@@ -54,7 +54,7 @@
 		left: 0px;
 		right: 0px;
 		height: 2px;
-		background-color: var(--background-color);
+		background: var(--background-color);
 		z-index: 9000;
 	}
 
@@ -64,7 +64,7 @@
 		top: 0;
 		left: 0;
 		height: 100%;
-		background-color: var(--color-primary-500);
+		background: var(--color-primary-500);
 
 		&::before {
 			position: absolute;

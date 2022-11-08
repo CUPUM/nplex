@@ -1,180 +1,100 @@
+<!--
+	@component
+	## Switch Item
+	Atomic component for options slotable into the Switch component.
+
+ -->
+<script lang="ts" context="module">
+</script>
+
 <script lang="ts">
-	import { Ctx } from '$utils/enums';
-	import { getContext } from 'svelte';
+	import { onMount } from 'svelte';
+
 	import Loading from './Loading.svelte';
 	import Ripple from './Ripple.svelte';
-	import type { SwitchContext } from './Switch.svelte';
+	import { getSwitchContext } from './Switch.svelte';
 
 	export let id: string | undefined = undefined;
 	export let value: any;
-	export let disabled: boolean = false;
 	export let loading: boolean | undefined = undefined;
+	export let disabled: boolean | undefined = undefined;
+	export let readonly: boolean | undefined = undefined;
+	export let style: string | undefined = undefined;
+	let className: string = '';
+	export { className as class };
 
-	const { name, variant, group, currentRef, tempRef, setCurrent, setTemp, clearTemp } = getContext<SwitchContext>(
-		Ctx.Switch
-	);
+	let switchItemRef: HTMLLabelElement;
 
-	let itemRef: HTMLLabelElement;
+	const { name, group, setMark, setTempMark } = getSwitchContext();
 
-	$: if ($group === value && itemRef !== $currentRef) {
-		setCurrent(itemRef, value);
+	$: if ($group === value) {
+		setMark(switchItemRef);
 	}
 
-	function handle(e: InputEvent) {
-		if ((e.target as any).checked) {
-			setCurrent(itemRef, value);
+	onMount(() => {
+		if ($group === value) {
+			setMark(switchItemRef);
 		}
-	}
+	});
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <label
-	bind:this={itemRef}
-	for={id}
-	class:current={itemRef === $currentRef}
-	class:some-temp={!!$tempRef}
-	class={variant}
-	class:disabled
-	class:loading
+	bind:this={switchItemRef}
+	class="switch-item {className}"
+	class:current={$group === value}
+	{style}
 	on:click
 	on:focus
+	on:mouseenter={() => setTempMark(switchItemRef)}
+	on:mouseleave={() => setTempMark(switchItemRef, true)}
 	on:mouseenter
 	on:mouseleave
-	on:mouseenter={() => setTemp(itemRef)}
-	on:mouseleave={() => clearTemp(itemRef)}
 >
+	<input {id} {value} {name} type="radio" hidden bind:group={$group} />
 	<Ripple />
-	<input {id} {value} {name} type="radio" on:input={handle} on:change on:input />
-	<div class="inner">
-		<div class="slot">
-			<slot />
-		</div>
-		{#if variant === 'nav'}
-			<div class="slot-current">
-				<slot />
-			</div>
-		{/if}
+	<div class="slot">
+		<slot />
 	</div>
 	{#if loading}
-		<Loading />
+		<slot name="loading">
+			<Loading />
+		</slot>
 	{/if}
 </label>
 
 <style lang="scss">
-	label {
-		// z-index: 1;
-		user-select: none;
+	.switch-item {
 		position: relative;
-		cursor: pointer;
-		font-weight: 400;
-		display: flex;
-		padding: 0 1.2em;
-		height: var(--ctx-computed-height);
-		justify-content: center;
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: minmax(var(--computed-height), auto);
 		align-items: center;
-		border-radius: var(--ctx-computed-radius);
-		transition: all 0.15s ease-out;
-
-		&.disabled {
-			pointer-events: none;
-		}
-
-		&.loading {
-			pointer-events: none;
-
-			& .inner {
-				opacity: 0.2;
-				transform: scale(0.94);
-			}
-		}
-	}
-
-	.inner {
-		display: block;
-		position: relative;
-		top: -0.1em;
-		transition: transform 0.35s cubic-bezier(0.25, 2.25, 0.75, 0.5), opacity 0.15s ease-in-out;
+		justify-content: center;
+		border-radius: var(--computed-radius);
 		padding: 0;
 		margin: 0;
-		transform-style: preserve-3d;
+		gap: 0;
+		cursor: pointer;
+		transition: all 0.15s ease-out;
 	}
 
 	.slot {
-		position: relative;
-	}
-
-	.slot-current {
-		position: absolute;
-		top: 0;
-	}
-
-	input {
-		opacity: 0;
-		position: absolute;
-		width: 0;
-		height: 0;
-		max-width: 0;
-		margin: 0;
-		padding: 0;
-	}
-
-	//
-	// Variants
-	//
-
-	.default {
-		background-color: transparent;
-		color: var(--color-dark-300);
-		&:hover,
-		&:focus {
-			color: var(--color-dark-900);
-		}
-		&.current {
-			color: var(--color-light-500);
-			&.some-temp {
-				color: var(--color-primary-700);
-			}
-		}
-	}
-
-	.nav {
+		padding: 0 var(--default-padding-inline);
+		padding-bottom: calc(0.5em - 0.5ex);
 		font-weight: 500;
-		background-color: transparent;
-		color: var(--color-dark-300);
-		opacity: 1;
-		perspective: 600px;
-		& .slot {
-			transform-origin: center 12em;
-			opacity: 1;
-			transform: rotateZ(0deg);
-			transition: all 0.35s cubic-bezier(0.5, 0, 0, 1), color 0s;
-		}
-		& .slot-current {
-			color: var(--color-light-500);
-			transform-origin: center 12em;
-			opacity: 0;
-			transform: rotateZ(-30deg);
-			transition: all 0.35s cubic-bezier(0.5, 0, 0, 1);
-		}
-		&:hover,
-		&:focus {
-			opacity: 1;
-			color: var(--color-primary-500);
-		}
+	}
+
+	:global(.default) > .switch-item {
+		color: --color-contrast-500;
 		&.current {
-			& .slot {
-				opacity: 0;
-				transform: rotateZ(30deg);
-			}
-			& .slot-current {
-				opacity: 1;
-				transform: rotateZ(0deg);
-			}
-			&.some-temp {
-				& .slot-current {
-					color: var(--color-primary-100);
-				}
-			}
+			color: var(--color-base-000);
+		}
+	}
+	:global(.default.temp) > .switch-item {
+		color: red;
+		&.current {
+			color: var(--color-contrast-900);
 		}
 	}
 </style>

@@ -21,6 +21,8 @@
 
 	let contentAlign = 'center';
 
+	let group = 1;
+
 	let dark = false;
 
 	function switchTheme(theme: 'light' | 'dark') {
@@ -54,7 +56,10 @@
 		</ul>
 	</section>
 	<section>
-		<Switch>
+		<code>
+			Group value: {group}
+		</code>
+		<Switch bind:group>
 			<SwitchItem value="1">1</SwitchItem>
 			<SwitchItem value="2">Dos</SwitchItem>
 		</Switch>
@@ -136,12 +141,12 @@
 		display: flex;
 		flex-direction: row;
 		width: 100%;
-		background-color: black;
+		background: black;
 	}
 
 	.field-class {
 		color: red;
-		background-color: black;
+		background: black;
 		box-shadow: 0 0 1em black;
 		display: inline-block;
 

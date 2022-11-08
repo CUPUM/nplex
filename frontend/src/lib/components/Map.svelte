@@ -165,12 +165,13 @@
 
 		&.is-loading {
 			transform: scale(0.99);
-			opacity: 0.5;
-			filter: saturate(0.5);
+			opacity: 0.25;
+			filter: saturate(0.25);
 		}
 
 		:global(canvas) {
 			outline: none;
+			background: transparent;
 		}
 
 		:global(.maplibregl-cooperative-gesture-screen) {
@@ -178,7 +179,7 @@
 			font-weight: 300;
 			backdrop-filter: blur(2px);
 			color: var(--color-contrast-100);
-			background-color: rgb(var(--rgb-base-500), 0.75);
+			background: transparent;
 		}
 	}
 

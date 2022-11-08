@@ -121,7 +121,7 @@
 		pointer-events: none;
 		user-select: none;
 		position: absolute;
-		background-color: transparent;
+		background: transparent;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -140,7 +140,7 @@
 		font-weight: 400;
 		padding: 0.5em 1.2em 0.7em 1.2em;
 		margin: 0;
-		background-color: var(--color-contrast-900);
+		background: var(--color-contrast-900);
 		color: var(--color-base-700);
 		box-shadow: 0 0.5em 1.5em -0.75em rgba(0, 0, 0, 0.5);
 		border-radius: 0.75em;
@@ -153,7 +153,7 @@
 		width: 0.8em;
 		padding: 0;
 		margin: 0;
-		background-color: transparent;
+		background: transparent;
 		overflow: visible;
 	}
 

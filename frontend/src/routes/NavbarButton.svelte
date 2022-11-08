@@ -43,8 +43,8 @@
 		cursor: pointer;
 		font-weight: 500;
 		padding: 0 1.25em;
-		height: 3em;
-		border-radius: 1em;
+		height: calc(3.5em - 2 * var(--inset, 0px));
+		border-radius: calc(var(--default-radius) - var(--inset, 0px));
 		letter-spacing: 0.02em;
 		color: var(--color-contrast-100);
 		outline: 0px dashed transparent;
@@ -58,7 +58,7 @@
 			left: 50%;
 			width: 8px;
 			height: 2px;
-			background-color: currentColor;
+			background: currentColor;
 			border-radius: 2px;
 			transform: translate(-50%, -0.1em);
 			transition: opacity 0.2s, width 0.15s cubic-bezier(0, 0, 0, 1),
@@ -67,7 +67,7 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:global(:not(.current)):hover {
 			color: var(--color-primary-500);
-			background-color: rgba(var(--rgb-primary-100), 0.2);
+			background: rgba(var(--rgb-primary-100), 0.2);
 			&::after {
 				opacity: 1;
 				transform: translate(-50%, -0.4em);
@@ -79,7 +79,7 @@
 		&:active,
 		&:global(.active) {
 			color: var(--color-primary-900);
-			background-color: rgba(var(--rgb-primary-100), 0.1);
+			background: rgba(var(--rgb-primary-100), 0.1);
 			outline: 1px dashed rgba(var(--rgb-primary-700), 0.25);
 			outline-offset: -3px;
 		}
@@ -89,7 +89,7 @@
 				opacity: 1;
 				height: 4px;
 				width: 4px;
-				transform: translate(-50%, -0.25em);
+				transform: translate(-50%, -0.5em);
 			}
 		}
 	}
@@ -117,11 +117,11 @@
 	// Call-to-action variant
 	.cta {
 		color: var(--color-base-500);
-		background-color: var(--color-primary-500);
+		background: var(--color-primary-500);
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:global(:not(.active)):hover {
 			color: var(--color-base-000);
-			background-color: var(--color-primary-700);
+			background: var(--color-primary-700);
 			box-shadow: 0 0.5em 1em -0.5em var(--color-primary-300);
 		}
 	}

@@ -7,7 +7,7 @@
 	// Global style helpers for consistent appearence across components
 	--default-inset: 3px; // Default inset for nested elements
 	--default-radius: 0.9em; // Border radius for buttons and other interactive elements
-	--default-height: 3.2em; // Default height for interactive elements, derived from font-size
+	--default-height: 3em; // Default height for interactive elements, derived from font-size
 	--default-padding-inline: 1.25em;
 	--default-focus-outline: 2px solid rgba(var(--rgb-primary-500), 0.5);
 	// Scrollbar customization
@@ -37,7 +37,7 @@
 	color: var(--color-contrast-300);
 	font-size: medium;
 	font-weight: 400;
-	background-color: var(--bg-color);
+	background: var(--bg-color);
 	accent-color: var(--color-primary-500);
 	overflow-x: hidden;
 	overflow-y: scroll;

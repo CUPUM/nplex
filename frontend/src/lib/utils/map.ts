@@ -35,6 +35,10 @@ export function forwardEvents(
 	};
 }
 
+export function metersToPx(meters: number, latitude: number) {
+	// return meters;...
+}
+
 /**
  * Helper function to get the client's long lat location. Defaults to city's center.
  */

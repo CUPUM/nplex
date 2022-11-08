@@ -16,12 +16,12 @@
 		display: flex;
 		gap: 0;
 		padding: var(--outset);
-		background-color: rgba(255, 255, 255, 9);
+		background: rgba(255, 255, 255, 9);
 		backdrop-filter: blur(8px);
 		transition: all 0.2s ease-out;
 
 		&:hover {
-			background-color: rgba(255, 255, 255, 1);
+			background: rgba(255, 255, 255, 1);
 			box-shadow: 0 1em 3em -2em rgba(var(--rgb-dark-900), 0.2);
 		}
 	}

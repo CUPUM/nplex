@@ -216,7 +216,7 @@
 		left: 0;
 		opacity: 0.98;
 		// background: linear-gradient(-30deg, var(--color-primary-900) -25%, var(--color-primary-300) 150%);
-		background-color: rgba(var(--rgb-primary-900), 0.95);
+		background: rgba(var(--rgb-primary-900), 0.95);
 	}
 
 	.container {
@@ -231,7 +231,7 @@
 		margin: 0;
 		top: 0;
 		left: 0;
-		background-color: transparent;
+		background: transparent;
 		border: none;
 	}
 
@@ -244,7 +244,7 @@
 		width: 100%;
 		max-width: 450px;
 		max-height: 100%;
-		background-color: var(--color-base-100);
+		background: var(--color-base-100);
 		box-shadow: 0 3rem 8rem -5rem black;
 		padding: 0;
 		overflow-y: auto;
@@ -287,7 +287,7 @@
 		border: none;
 		margin: 0;
 		padding: 0;
-		background-color: var(--color-base-300);
+		background: var(--color-base-300);
 		border-radius: inherit;
 		span {
 			display: block;

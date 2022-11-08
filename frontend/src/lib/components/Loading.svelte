@@ -118,7 +118,7 @@
 		justify-content: center;
 		align-items: center;
 		background: transparent;
-		background-color: transparent;
+		background: transparent;
 		z-index: 100;
 		font-size: 1.25em;
 		color: currentColor;
@@ -126,7 +126,7 @@
 
 	.svg {
 		background: transparent;
-		background-color: transparent;
+		background: transparent;
 		overflow: visible;
 	}
 

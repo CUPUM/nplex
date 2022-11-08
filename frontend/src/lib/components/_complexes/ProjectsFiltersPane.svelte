@@ -83,7 +83,7 @@
 		margin-right: 0;
 		margin-bottom: 1rem;
 		overflow: hidden;
-		background-color: white;
+		background: white;
 		border-radius: 1.5rem;
 		transition: all 0.2s cubic-bezier(0.7, 0, 0, 1);
 
@@ -96,7 +96,7 @@
 			height: 100%;
 			pointer-events: none;
 			opacity: 0;
-			background-color: var(--color-light-900);
+			background: var(--color-light-900);
 			transition: all 0.2s cubic-bezier(0, 0, 0.5, 1);
 		}
 
@@ -111,7 +111,7 @@
 
 			&:hover {
 				&::after {
-					background-color: white;
+					background: white;
 				}
 			}
 		}
@@ -149,7 +149,7 @@
 		z-index: 2;
 		gap: 1rem;
 		backdrop-filter: blur(8px);
-		background-color: rgba(255, 255, 255, 0.8);
+		background: rgba(255, 255, 255, 0.8);
 
 		& span {
 			font-weight: 500;

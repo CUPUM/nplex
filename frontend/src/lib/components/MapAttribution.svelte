@@ -14,7 +14,7 @@
 		bottom: 16px;
 		right: 16px;
 		opacity: 0.35;
-		background-color: rgba(0, 0, 0, 0.2);
+		background: rgba(0, 0, 0, 0.2);
 		transition: opacity 0.25s;
 
 		&:hover {
@@ -22,7 +22,7 @@
 		}
 
 		& :global(*) {
-			background-color: transparent;
+			background: transparent;
 			color: var(--color-light-500);
 			font-family: var(--font-main);
 			transition: all 0.15s;

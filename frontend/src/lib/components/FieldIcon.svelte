@@ -17,6 +17,7 @@
 	}
 
 	.field-icon {
+		--gap: 0.2em;
 		position: relative;
 		display: inline-block;
 		line-height: 1;
@@ -27,8 +28,14 @@
 		:global(.leading) > &:last-child {
 			padding-right: 0;
 		}
+		:global(.leading) > &:not(:first-child) {
+			padding-left: var(--gap);
+		}
 		:global(.trailing) > &:first-child {
 			padding-left: 0;
+		}
+		:global(.trailing) > &:not(:last-child) {
+			padding-right: var(--gap);
 		}
 		:global(.focused) & {
 			opacity: 1;

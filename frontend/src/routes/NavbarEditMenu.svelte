@@ -68,14 +68,14 @@
 			width: 250px;
 			padding: 1rem;
 			border-radius: 0.9rem;
-			background-color: transparent;
+			background: transparent;
 			transform: scale(0.98);
 			transition: all 0.15s ease-out;
 
 			&:hover {
 				transform: scale(1);
 				color: var(--color-contrast-900);
-				background-color: var(--color-base-500);
+				background: var(--color-base-500);
 				// box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
 			}
 		}

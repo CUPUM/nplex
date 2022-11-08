@@ -1,6 +1,10 @@
 <script lang="ts">
-	// To do: move into store logic, with start-stop notifier clearing url.
-	// $: updateURLFromProjectsFilters($projectsFilters);
+	import type { LayoutData } from './$types';
+
+	export let data: LayoutData;
 </script>
 
 <slot />
+
+<style lang="scss">
+</style>

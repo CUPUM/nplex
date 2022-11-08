@@ -23,6 +23,16 @@
 	article {
 		width: 100%;
 		padding: 0;
+		border-top: 1px solid rgb(var(--rgb-contrast-100), 0.1);
+	}
+
+	h2 {
+		position: relative;
+		font-weight: 500;
+		font-size: 3rem;
+		max-width: 1200px;
+		padding: 2rem;
+		margin: 0 auto;
 	}
 
 	.project {
@@ -32,7 +42,7 @@
 		position: relative;
 		height: 400px;
 		aspect-ratio: 3 / 4;
-		background-color: white;
+		background: white;
 		border-radius: 2rem;
 		box-shadow: 0 1em 2em -1em rgba(0, 0, 0, 0.1);
 	}

@@ -43,7 +43,7 @@
 		text-overflow: ellipsis;
 		box-shadow: 0 0.5em 1.5em -0.75em rgba(0, 0, 0, 0.25);
 		letter-spacing: 0.25px;
-		background-color: white;
+		background: white;
 	}
 
 	.success {

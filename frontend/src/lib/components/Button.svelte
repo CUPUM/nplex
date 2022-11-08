@@ -208,7 +208,7 @@
 		&.warning {
 			outline-width: 2px;
 			outline-color: var(--color-error-300);
-			background-color: var(--color-error-100);
+			background: var(--color-error-100);
 		}
 		&:active {
 			.content {
@@ -269,23 +269,23 @@
 
 	.default {
 		color: var(--color-contrast-300);
-		background-color: rgba(var(--rgb-base-700), 0.75);
+		background: rgba(var(--rgb-base-700), 0.75);
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: var(--color-contrast-900);
-			background-color: rgba(var(--rgb-base-900), 0.8);
+			background: rgba(var(--rgb-base-900), 0.8);
 		}
 		&:active,
 		&:global(.active) {
 			color: var(--color-contrast-900);
-			background-color: var(--color-base-900);
+			background: var(--color-base-900);
 		}
 	}
 
 	.outlined {
 		color: var(--color-contrast-300);
-		background-color: transparent;
+		background: transparent;
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		&::after {
 			opacity: 0.2;
@@ -298,7 +298,7 @@
 		&:hover {
 			&:not(.disabled) {
 				color: var(--color-contrast-900);
-				background-color: rgba(var(--rgb-base-900), 0.5);
+				background: rgba(var(--rgb-base-900), 0.5);
 				&::after {
 					opacity: 0;
 					border-width: 3px;
@@ -309,7 +309,7 @@
 		&:global(.active) {
 			&:not(.disabled) {
 				color: var(--color-contrast-900);
-				background-color: rgba(var(--rgb-base-900), 1);
+				background: rgba(var(--rgb-base-900), 1);
 				&::after {
 					border-width: 1.5px;
 					opacity: 0.5;
@@ -320,9 +320,9 @@
 
 	.ghost {
 		color: currentColor;
-		background-color: transparent;
+		background: transparent;
 		&::after {
-			background-color: currentColor;
+			background: currentColor;
 			opacity: 0;
 			transition: opacity 0.25s ease-out;
 		}
@@ -330,7 +330,7 @@
 		&:hover {
 			&:not(.disabled) {
 				// color: var(--color-contrast-900);
-				// background-color: rgba(var(--rgb-contrast-900), 0.1);
+				// background: rgba(var(--rgb-contrast-900), 0.1);
 				&::after {
 					opacity: 0.1;
 				}
@@ -340,7 +340,7 @@
 		&:global(.active) {
 			&:not(.disabled) {
 				// color: var(--color-primary-900);
-				// background-color: rgba(var(--rgb-primary-900), 0.1);
+				// background: rgba(var(--rgb-primary-900), 0.1);
 				&::after {
 					opacity: 0.15;
 				}
@@ -350,7 +350,7 @@
 
 	.cta {
 		color: var(--color-base-000);
-		background-color: var(--color-primary-500);
+		background: var(--color-primary-500);
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		&::after {
 			box-shadow: 0 0.2em 1em -0.5em rgba(0, 0, 0, 0);
@@ -361,7 +361,7 @@
 		&:hover {
 			&:not(.disabled) {
 				color: var(--color-base-100);
-				background-color: var(--color-primary-700);
+				background: var(--color-primary-700);
 				&::after {
 					box-shadow: 0 0.8em 1.5em -1em rgba(0, 0, 0, 0.5);
 				}
@@ -370,7 +370,7 @@
 		&:active,
 		&:global(.active) {
 			&:not(.disabled) {
-				background-color: var(--color-primary-900);
+				background: var(--color-primary-900);
 				&::after {
 					box-shadow: 0 0.5em 1em -0.5em rgba(0, 0, 0, 0.25);
 				}
@@ -380,7 +380,7 @@
 
 	.danger {
 		color: var(--color-base-300);
-		background-color: var(--color-error-500);
+		background: var(--color-error-500);
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		&::after {
 			border: 1px solid var(--color-error-700);
@@ -390,14 +390,14 @@
 		&:hover {
 			&:not(.disabled) {
 				color: var(--color-base-500);
-				background-color: var(--color-error-700);
+				background: var(--color-error-700);
 			}
 		}
 		&:active,
 		&:global(.active) {
 			&:not(.disabled) {
 				color: var(--color-error-300);
-				background-color: var(--color-error-900);
+				background: var(--color-error-900);
 				&::after {
 					border: 3px solid rgba(var(--rgb-error-700), 0.5);
 				}

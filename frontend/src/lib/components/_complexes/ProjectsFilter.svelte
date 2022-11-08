@@ -51,14 +51,14 @@
 
 		&:hover {
 			color: var(--color-primary-500);
-			/* background-color: var(--color-light-100); */
+			/* background: var(--color-light-100); */
 
 			& .line::after {
 				width: 100%;
 			}
 
 			& .chevron {
-				/* background-color: var(--color-light-100); */
+				/* background: var(--color-light-100); */
 				box-shadow: 0 0 0 1px var(--color-light-700);
 			}
 		}

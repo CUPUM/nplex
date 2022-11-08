@@ -1,7 +1,8 @@
 <!--
 	@component
 	## Navbar
-	Main navigation bar singleton located in the app's root layout.	
+	Main navigation bar singleton located in the app's root layout.
+
 -->
 <script lang="ts" context="module">
 	// export const backgroundOpacity = (function () {
@@ -129,7 +130,7 @@
 			opacity: 0.85;
 			top: 0;
 			left: 0;
-			background-color: var(--bg-color, var(--color-base-300));
+			background: var(--bg-color, var(--color-base-300));
 			transition: all 0.15s;
 		}
 	}
@@ -189,11 +190,12 @@
 		justify-content: flex-start;
 	}
 	.category {
+		--inset: 3px;
 		grid-column: category;
 		justify-content: center;
-		background-color: rgb(var(--rgb-base-900), 0.25);
-		border-radius: 1em;
-		--inset: 3px;
+		background: rgb(var(--rgb-base-900), 0.25);
+		border-radius: var(--default-radius);
+		padding-inline: var(--inset);
 	}
 	.session {
 		grid-column: session;

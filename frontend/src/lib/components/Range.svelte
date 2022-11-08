@@ -53,7 +53,7 @@
 		position: relative;
 		height: 3px;
 		width: 100%;
-		background-color: red;
+		background: red;
 	}
 
 	.ticks {

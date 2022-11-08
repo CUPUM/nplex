@@ -7,10 +7,8 @@ import { writable, type Readable, type Writable } from 'svelte/store';
  * To allow finetuning of where we expose the write methods of our store, this helper returns 2 methods, a subscribe and
  * a set (akin to react's way)
  */
-export function writeReadable<T>(...args: Parameters<typeof writable<T>>): [store: Writable<T>, readable: Readable<T>] {
+export function writeReadable<T>(...args: Parameters<typeof writable<T>>): [readable: Readable<T>, store: Writable<T>] {
 	const store = writable(...args);
 
-	return [store, store.subscribe as unknown as Readable<T>];
+	return [{ subscribe: store.subscribe }, store];
 }
-
-const [s, r] = writeReadable('ADAS');

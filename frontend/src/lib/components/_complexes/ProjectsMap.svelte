@@ -32,7 +32,7 @@
 		margin-left: 1rem;
 		padding: 0;
 		border-radius: 1.5rem;
-		background-color: var(--color-light-300);
+		background: var(--color-light-300);
 		transition: all 0.35s cubic-bezier(0.25, 0, 0.25, 1);
 		/* overflow: visible; */
 		// overflow: hidden;

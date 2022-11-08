@@ -221,15 +221,15 @@
 		}
 		&.warning {
 			color: red !important;
-			background-color: rgba(var(--rgb-error-100), 0.1);
+			background: rgba(var(--rgb-error-100), 0.1);
 		}
 		&.invalid {
 			color: var(--color-error-700) !important;
-			background-color: rgba(var(--rgb-error-100), 0.1) !important;
+			background: rgba(var(--rgb-error-100), 0.1) !important;
 		}
 		&.success {
 			color: var(--color-success-700) !important;
-			background-color: rgba(var(--rgb-success-100), 0.1) !important;
+			background: rgba(var(--rgb-success-100), 0.1) !important;
 		}
 		&.dirty:not(.warning):not(.invalid):not(.success) {
 			.outline {
@@ -357,7 +357,7 @@
 	// Default variant
 	.default {
 		color: var(--color-dark-500);
-		background-color: var(--color-base-500);
+		background: var(--color-base-500);
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		.outline {
 			display: none;
@@ -401,7 +401,7 @@
 		&:hover,
 		&.focused {
 			color: var(--color-contrast-700);
-			background-color: var(--color-base-900);
+			background: var(--color-base-900);
 			label {
 				opacity: 0.5;
 			}
@@ -414,7 +414,7 @@
 	// Outlined variant
 	.outlined {
 		color: var(--color-contrast-300);
-		background-color: transparent;
+		background: transparent;
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		.outline {
 			border-color: var(--color-contrast-100);
@@ -452,7 +452,7 @@
 		&:hover,
 		&.focused {
 			color: var(--color-contrast-700);
-			background-color: transparent;
+			background: transparent;
 			.outline {
 				opacity: 0.5;
 			}

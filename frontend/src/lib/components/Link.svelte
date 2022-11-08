@@ -39,7 +39,7 @@
 
 		&:hover {
 			color: var(--color-primary-500);
-			background-color: rgba(var(--rgb-primary-500), 0.15);
+			background: rgba(var(--rgb-primary-500), 0.15);
 
 			.reg {
 				opacity: 0;
