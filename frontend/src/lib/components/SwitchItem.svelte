@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { ripple } from '$actions/ripple';
 	import { Ctx } from '$utils/enums';
 	import { getContext } from 'svelte';
 	import Loading from './Loading.svelte';
+	import Ripple from './Ripple.svelte';
 	import type { SwitchContext } from './Switch.svelte';
 
-	export let id: string = undefined;
+	export let id: string | undefined = undefined;
 	export let value: any;
 	export let disabled: boolean = false;
-	export let loading: boolean = undefined;
+	export let loading: boolean | undefined = undefined;
 
 	const { name, variant, group, currentRef, tempRef, setCurrent, setTemp, clearTemp } = getContext<SwitchContext>(
 		Ctx.Switch
@@ -20,13 +20,14 @@
 		setCurrent(itemRef, value);
 	}
 
-	function handle(e) {
-		if (e.target.checked) {
+	function handle(e: InputEvent) {
+		if ((e.target as any).checked) {
 			setCurrent(itemRef, value);
 		}
 	}
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <label
 	bind:this={itemRef}
 	for={id}
@@ -41,8 +42,8 @@
 	on:mouseleave
 	on:mouseenter={() => setTemp(itemRef)}
 	on:mouseleave={() => clearTemp(itemRef)}
-	use:ripple={{}}
 >
+	<Ripple />
 	<input {id} {value} {name} type="radio" on:input={handle} on:change on:input />
 	<div class="inner">
 		<div class="slot">

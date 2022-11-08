@@ -2,8 +2,7 @@
 </script>
 
 <script lang="ts">
-	import { reveal } from '$actions/reveal';
-	import { slipMask } from '$utils/presets/reveal';
+	import { reveal, slipMask } from '$actions/reveal';
 </script>
 
 <h1 use:reveal={slipMask}><slot /></h1>

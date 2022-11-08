@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { reveal } from '$actions/reveal';
-	import { flyRotate } from '$utils/presets/reveal';
+	import { flyRotate, reveal } from '$actions/reveal';
 	import type { PageData } from './$types';
 	import PreviewList from './PreviewList.svelte';
 

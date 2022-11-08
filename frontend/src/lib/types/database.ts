@@ -501,7 +501,7 @@ export interface Database {
           category_id: number | null
           area: number | null
           adjacent_streets: number | null
-          location: unknown | null
+          location_geometry: unknown | null
           building_area: number | null
           implantation_mode_id: number | null
           building_construction_year: number | null
@@ -510,6 +510,7 @@ export interface Database {
           type_id: number | null
           combustible: boolean | null
           banner_url: string | null
+          location_radius: number | null
         }
         Insert: {
           id?: string
@@ -526,7 +527,7 @@ export interface Database {
           category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
-          location?: unknown | null
+          location_geometry?: unknown | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
@@ -535,6 +536,7 @@ export interface Database {
           type_id?: number | null
           combustible?: boolean | null
           banner_url?: string | null
+          location_radius?: number | null
         }
         Update: {
           id?: string
@@ -551,7 +553,7 @@ export interface Database {
           category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
-          location?: unknown | null
+          location_geometry?: unknown | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
@@ -560,6 +562,7 @@ export interface Database {
           type_id?: number | null
           combustible?: boolean | null
           banner_url?: string | null
+          location_radius?: number | null
         }
       }
       projects_events: {
@@ -1033,6 +1036,7 @@ export interface Database {
           type_id: number | null
           combustible: boolean | null
           banner_url: string | null
+          location_radius: number | null
         }
         Insert: {
           id?: string | null
@@ -1058,6 +1062,7 @@ export interface Database {
           type_id?: number | null
           combustible?: boolean | null
           banner_url?: string | null
+          location_radius?: number | null
         }
         Update: {
           id?: string | null
@@ -1083,6 +1088,7 @@ export interface Database {
           type_id?: number | null
           combustible?: boolean | null
           banner_url?: string | null
+          location_radius?: number | null
         }
       }
     }

@@ -74,7 +74,6 @@
 	import { messages } from '$routes/MessagesOutlet.svelte';
 	import { transform } from '$transitions/transform';
 	import { dbClient } from '$utils/database';
-	import { patterns } from '$utils/input/patterns';
 	import { RelativeURL } from '$utils/url';
 	import { cubicOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
@@ -136,15 +135,7 @@
 		>
 			<Logo id="auth-logo" />
 			<fieldset id="auth-fields">
-				<Field
-					variant="default"
-					bind:value={email}
-					maxlength={100}
-					pattern={patterns.email}
-					name="email"
-					type="email"
-					required
-				>
+				<Field variant="default" bind:value={email} maxlength={100} name="email" type="email" required>
 					<FieldIcon name="letter" slot="leading" />
 					<svelte:fragment slot="label">Courriel</svelte:fragment>
 					<FieldReset slot="trailing" />

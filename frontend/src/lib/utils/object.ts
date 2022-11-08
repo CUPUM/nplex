@@ -6,6 +6,15 @@ export function isObject<T>(value: T): value is Record<any, any> {
 }
 
 /**
+ * Translates a form data into an object with JSON.parse'd properties.
+ */
+export function objectFromFormData<T extends {} = any>(formData: FormData) {
+	return Object.fromEntries(
+		[...formData.entries()].map(([k, v]) => [k, typeof v === 'string' ? JSON.parse(v) : v])
+	) as T;
+}
+
+/**
  * Utility function expecting an object and returning an array of flattened keys and their path-end value.
  */
 export function flatten(source: Record<string | number, any>): Flattened {

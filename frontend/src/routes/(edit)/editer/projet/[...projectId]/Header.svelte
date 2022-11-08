@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { reveal } from '$actions/reveal';
+	import { reveal, slipMask } from '$actions/reveal';
 	import { debounce } from '$utils/debounce';
 	import { Ctx } from '$utils/enums';
-	import { slipMask } from '$utils/presets/reveal';
 	import { getContext, onMount } from 'svelte';
 	import { expoInOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';

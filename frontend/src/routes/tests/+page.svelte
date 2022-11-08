@@ -9,6 +9,8 @@
 	import Field from '$components/Field.svelte';
 	import FieldIcon from '$components/FieldIcon.svelte';
 	import Icon from '$components/Icon.svelte';
+	import Switch from '$components/Switch.svelte';
+	import SwitchItem from '$components/SwitchItem.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import type { ComponentProps } from 'svelte';
 	import { flip } from 'svelte/animate';
@@ -50,6 +52,12 @@
 				<li animate:flip>{i}</li>
 			{/each}
 		</ul>
+	</section>
+	<section>
+		<Switch>
+			<SwitchItem value="1">1</SwitchItem>
+			<SwitchItem value="2">Dos</SwitchItem>
+		</Switch>
 	</section>
 	<section>
 		<p>

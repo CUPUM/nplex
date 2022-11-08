@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { ripple } from '$actions/ripple';
 	import { page } from '$app/stores';
 	import { cssSize } from '$utils/css';
 	import type { ComponentProps } from 'svelte';
 	import Avatar from './Avatar.svelte';
+	import Ripple from './Ripple.svelte';
 
 	export let size: string | number = '1em';
 	export let warning: boolean | undefined = undefined;
@@ -14,10 +14,10 @@
 	export let data: ComponentProps<Avatar>['data'] | null = $page.data?.session?.user ?? null;
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <svelte:element
 	this={href ? 'a' : 'button'}
 	{href}
-	use:ripple={{ startColor: 'currentColor', insertChild: true }}
 	on:click
 	on:focus
 	class="avatar-button"
@@ -26,6 +26,7 @@
 	class:disabled={disabled || loading}
 	style:--size={cssSize(size)}
 >
+	<Ripple />
 	<div class="inner">
 		<Avatar {data} {loading} />
 	</div>

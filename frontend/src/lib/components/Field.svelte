@@ -43,8 +43,7 @@
 	export let minlength: number | undefined = undefined;
 	export let loading: boolean | undefined = undefined;
 	export let placeholder: string = '';
-	export let pattern: RegExp | undefined = undefined;
-	export let format: ((value: string) => string) | undefined = undefined;
+	export let pattern: RegExp | undefined = undefined; // Figure out how to make work with ozd validators...
 	export let dirty: boolean = false;
 	export let tabindex: number = 0;
 	let className: string = '';
@@ -64,7 +63,6 @@
 
 	let labelWidth = 0;
 	let focused = false;
-	let focusedOnce = false;
 
 	function checkValidity() {
 		invalid = !value
@@ -81,7 +79,8 @@
 
 	function handleInput(e: Event) {
 		const ev = (e.target as HTMLInputElement).value;
-		value = format ? format(ev) : ev;
+		// if (format) ev = format(ev);
+		value = ev;
 	}
 
 	function handleFocus() {

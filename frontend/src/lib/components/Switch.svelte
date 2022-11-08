@@ -1,7 +1,15 @@
+<!--
+	@component
+	## Switch
+	Generic switch set component used to contextualize a group of switch items.
+	
+-->
 <script lang="ts" context="module">
-	export interface SwitchContext {
-		name: string;
-		variant: 'default' | 'secondary' | 'nav' | 'ghost' | 'cta';
+	const CTX_KEY = 'switch-context';
+
+	interface SwitchContext {
+		name: Writable<string>;
+		variant: Writable('default' | 'secondary' | 'nav' | 'ghost' | 'cta';
 		currentRef: Writable<HTMLElement>;
 		tempRef: Writable<HTMLElement>;
 		group: Writable<any>;
@@ -9,103 +17,52 @@
 		setTemp: (element: HTMLElement) => void;
 		clearTemp: (element: HTMLElement) => void;
 	}
+
+	export function getSwitchContext() {
+		return getContext<SwitchContext>(CTX_KEY);
+	}
 </script>
 
 <script lang="ts">
-	import { cssSize } from '$utils/css';
-	import { Ctx } from '$utils/enums';
-	import { onDestroy, onMount, setContext } from 'svelte';
-	import { expoOut } from 'svelte/easing';
-	import type { Writable } from 'svelte/store';
-	import { writable } from 'svelte/store';
-	import { scale } from 'svelte/transition';
+	import { getContext, setContext } from 'svelte';
+	import { writable, type Writable } from 'svelte/store';
 
-	export let name: string = undefined;
-	export let size: string | number = '1em';
+	export let name: string | undefined = undefined;
 	export let variant: SwitchContext['variant'] = 'default';
 	export let orientation: 'column' | 'row' = 'row';
 	export let value: any = undefined;
-	export let display: 'inline' | 'block' = 'block';
-	export let required: boolean = undefined;
+	export let required: boolean | undefined = undefined;
+	export let readonly: boolean | undefined = undefined;
+	export let disabled: boolean | undefined = undefined;
+	export let as: string | undefined = undefined;
 
-	const currentRef: SwitchContext['currentRef'] = writable(null);
-	const tempRef: SwitchContext['tempRef'] = writable(null);
-	let fieldset: HTMLFieldSetElement;
-	let observer: ResizeObserver;
-	let indicatorBox = '';
+	let switchRef: HTMLElement;
 
-	/**
-	 * Group should only be used to let context aware of value.
-	 */
-	const group: Writable<typeof value> = writable(value);
-	$: $group = value;
-	$: if ($group === null || $group === undefined) {
-		setCurrent($group, $group);
-	}
+	const _value = writable(value);
+	$: value = $_value;
+	$: _value.set(value);
 
-	function getElementBox(element: HTMLElement) {
-		if (!element) return '';
-		return (
-			`top: ${element.offsetTop}px;` +
-			`left: ${element.offsetLeft}px;` +
-			`width: ${element.offsetWidth}px;` +
-			`height: ${element.offsetHeight}px;`
-		);
-	}
-
-	function setCurrent(element: HTMLElement, itemValue: any) {
-		$currentRef = element;
-		indicatorBox = getElementBox($currentRef);
-		value = itemValue;
-	}
-
-	function setTemp(element: HTMLElement) {
-		$tempRef = element;
-		indicatorBox = getElementBox($tempRef);
-	}
-
-	function clearTemp(element: HTMLElement) {
-		if ($tempRef === element) {
-			$tempRef = null;
-		}
-		indicatorBox = getElementBox($currentRef);
-	}
-
-	setContext<SwitchContext>(Ctx.Switch, {
-		name,
-		variant,
-		currentRef,
-		tempRef,
-		group,
-		setCurrent,
-		setTemp,
-		clearTemp,
-	});
-
-	onMount(() => {
-		observer = new ResizeObserver(() => {
-			indicatorBox = getElementBox($tempRef || $currentRef || null);
-		});
-		observer.observe(fieldset);
-	});
-
-	onDestroy(() => {
-		observer?.unobserve(fieldset);
-		observer?.disconnect();
-	});
+	setContext<SwitchContext>({});
 </script>
 
-<fieldset bind:this={fieldset} class="{variant} {orientation} {display}" style:--size={cssSize(size)} {required}>
-	{#if indicatorBox}
+<svelte:element
+	this={as ? as : name ? 'fieldset' : 'form'}
+	bind:this={switchRef}
+	class="switch {variant} {orientation}"
+	{required}
+	{readonly}
+	{disabled}
+>
+	<!-- {#if indicatorBox}
 		<div
 			transition:scale|local={{ duration: 150, start: 0.5, opacity: 0, easing: expoOut }}
 			class="indicator"
 			class:temp={!!$tempRef}
 			style={indicatorBox}
 		/>
-	{/if}
+	{/if} -->
 	<slot />
-</fieldset>
+</svelte:element>
 
 <style lang="scss">
 	fieldset {

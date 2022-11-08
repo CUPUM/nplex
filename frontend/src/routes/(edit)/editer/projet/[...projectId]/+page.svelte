@@ -12,11 +12,18 @@
 	import MapGeolocateControl from '$components/MapGeolocateControl.svelte';
 	import Popup from '$components/Popup.svelte';
 	import type { DrawCreateEvent, DrawUpdateEvent } from '@mapbox/mapbox-gl-draw';
+	import { createCircle } from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import type { ComponentProps } from 'svelte';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
 	export let form: ActionData;
+
+	$: if (draw && data.project?.location_geometry && data.project.location_radius) {
+		const c = data.project.location_geometry.coordinates.reverse();
+		draw.deleteAll();
+		draw.add(createCircle(c, data.project.location_radius / 1000));
+	}
 
 	let location: string;
 	let draw: ComponentProps<MapDraw>['draw'];
@@ -40,7 +47,6 @@
 	action="?/upsert"
 	use:enhance={({ form, data, action, cancel }) => {
 		return async ({ update, result }) => {
-			console.log(form);
 			update({ reset: false });
 		};
 	}}

@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { creationRoutes } from '$utils/routing/routes';
+	import { creationRoutes } from '$utils/routes';
 
 	let loading: string | null = null;
 
