@@ -1,0 +1,92 @@
+/**
+ * Breakpoints. Conceived with max-width as app is designed desktop-first. (rather than mobile-first)
+ */
+$bp-mobile: 480px;
+$bp-tablet: 768px;
+@mixin mobile {
+	@media (max-width: #{$bp-mobile}) {
+		@content;
+	}
+}
+@mixin tablet {
+	@media (max-width: #{$bp-tablet}) {
+		@content;
+	}
+}
+
+/**
+ * Helper to get and set color with a less verbose syntax than css var functions.
+ * Coalesces to the correct variable reference, rgb components vs color, depending on presence of alpha arg.
+ * ! Keep the returned format in sync with theme variable's naming system. !
+ */
+@function col($color, $shade, $alpha: false) {
+	$s: $shade;
+	@if $shade == 0 {
+		$s: '000';
+	}
+	@if ($alpha) {
+		@return rgb(var(--rgb-#{$color}-#{$s}), #{$alpha});
+	} @else {
+		@return var(--color-#{$color}-#{$s});
+	}
+}
+
+/**
+ * Generates classes for nesting-cumulative variables. Useful for keeping track of nested insets and adjusting border-radius values accordingly.
+ * Source package currently leads leads to an error: https://github.com/propjockey/css-inherit-fn/pull/1.
+ * Use the present mixin until PR is merged.
+ */
+@mixin buildDepthSelector($evenOdd, $sel, $maxDepth) {
+	$full: '';
+	$selX: $sel;
+	$i: 1;
+	@if $evenOdd == 'even' {
+		$selX: $selX + ' ' + $sel;
+		$i: 2;
+	}
+	@while $i <= $maxDepth {
+		$tail: ')';
+		@if $i < $maxDepth - 1 {
+			$tail: '), ';
+		}
+		$full: $full + $selX + ':not(';
+		$selX: $selX + ' ' + $sel;
+		$full: $full + $selX + $tail;
+		$selX: $selX + ' ' + $sel;
+		$i: $i + 2;
+	}
+	:where(#{$full}) {
+		@content;
+	}
+}
+@mixin __inheritchainswap($ioA, $ioB, $assignments) {
+	$arglen: length($assignments);
+	$i: 1;
+	@while $i <= $arglen {
+		$assignment: nth($assignments, $i);
+		$index: str-index($assignment, ':');
+		$var: str-slice($assignment, 1, $index - 1);
+		$val: str-slice($assignment, $index + 1, -1);
+		@if str-slice($val, 1, 1) == ' ' {
+			$val: str-slice($val, 2, -1);
+		}
+		$index: str-index($val, 'inherit(--');
+		@while $index {
+			$before: str-slice($val, 1, $index - 1);
+			$after: str-slice($val, $index + 10, -1);
+			$val: $before + 'var(--' + $ioA + $after;
+			$index: str-index($val, 'inherit(--');
+		}
+		#{$var}: unquote($val);
+		#{str-insert($var, $ioB, 3)}: var(unquote($var));
+		$i: $i + 1;
+	}
+}
+@mixin buildInherit($sel, $maxDepth, $assignments...) {
+	@include buildDepthSelector('odd', $sel, $maxDepth) {
+		@include __inheritchainswap('io1_', 'io2_', $assignments);
+	}
+	@include buildDepthSelector('even', $sel, $maxDepth) {
+		@include __inheritchainswap('io2_', 'io1_', $assignments);
+	}
+}

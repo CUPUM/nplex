@@ -107,8 +107,6 @@
 </header>
 
 <style lang="scss">
-	@use 'mixins.scss';
-
 	header {
 		position: sticky;
 		z-index: 1000;
@@ -130,7 +128,7 @@
 			opacity: 0.85;
 			top: 0;
 			left: 0;
-			background: var(--bg-color, var(--color-base-300));
+			background: var(--bg, var(--color-base-300));
 			transition: all 0.15s;
 		}
 	}
@@ -153,7 +151,7 @@
 		flex-direction: row;
 		align-items: stretch;
 		gap: 3rem;
-		@include mixins.mobile {
+		@include mobile {
 			grid-template-columns:
 				[full-start main-start]
 				1fr
@@ -181,7 +179,7 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 0px;
-		@include mixins.mobile {
+		@include mobile {
 			flex-direction: column;
 		}
 	}
@@ -194,7 +192,7 @@
 		grid-column: category;
 		justify-content: center;
 		background: rgb(var(--rgb-base-900), 0.25);
-		border-radius: var(--default-radius);
+		border-radius: var(--ui-radius);
 		padding-inline: var(--inset);
 	}
 	.session {

@@ -1,44 +1,17 @@
-:root {
-	// Font variables
-	// --font-main: 'Metropolis', sans-serif;
-	// --font-main: 'Figtree', sans-serif;
-	--font-main: 'Outfit', sans-serif;
-	--font-misc: 'DM Mono', monospace;
-	// Global style helpers for consistent appearence across components
-	--default-inset: 3px; // Default inset for nested elements
-	--default-radius: 0.9em; // Border radius for buttons and other interactive elements
-	--default-height: 3em; // Default height for interactive elements, derived from font-size
-	--default-padding-inline: 1.25em;
-	--default-focus-outline: 2px solid rgba(var(--rgb-primary-500), 0.5);
-	// Scrollbar customization
-	--scroll-size: 4px;
-	--scroll-color: rgba(var(--rgb-contrast-500), 0.25);
-	// Additionnal global CSS custom properties derived from TypeScript constants, such as colors and sizes, are generated at build time and located in ./vars.css
-	--bg-color: var(--color-base-100);
-}
-
-.compact {
-	--default-inset: 0px; // Default inset for nested elements
-	--default-radius: 1em; // Border radius for buttons and other interactive elements
-	--default-size: 2em; // Size/height height for interactive elements
-	--default-padding-inline: 0.75em;
-}
-
-.hover-source {
-	cursor: pointer;
-}
+@import './utils.scss';
 
 :root {
+	--bg: var(--color-bg-300);
+	background: var(--bg);
 	width: 100vw;
 	height: 100%;
 	padding: 0;
 	margin: 0;
 	font-family: var(--font-main);
-	color: var(--color-contrast-300);
+	color: col(fg, 300);
 	font-size: medium;
 	font-weight: 400;
-	background: var(--bg-color);
-	accent-color: var(--color-primary-500);
+	accent-color: col(primary, 500);
 	overflow-x: hidden;
 	overflow-y: scroll;
 	transition: background-color 0.25s ease-in-out;
@@ -57,12 +30,6 @@ body {
 	margin: 0;
 }
 
-form,
-fieldset,
-legend {
-	min-width: 0;
-}
-
 *,
 ::before,
 ::after {
@@ -70,7 +37,7 @@ legend {
 }
 
 ::selection {
-	background: var(--color-primary-500);
+	background: col(primary, 500);
 	color: currentColor;
 }
 

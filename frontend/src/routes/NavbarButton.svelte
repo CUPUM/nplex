@@ -44,7 +44,7 @@
 		font-weight: 500;
 		padding: 0 1.25em;
 		height: calc(3.5em - 2 * var(--inset, 0px));
-		border-radius: calc(var(--default-radius) - var(--inset, 0px));
+		border-radius: calc(var(--ui-radius) - var(--inset, 0px));
 		letter-spacing: 0.02em;
 		color: var(--color-contrast-100);
 		outline: 0px dashed transparent;

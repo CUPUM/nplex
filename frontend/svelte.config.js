@@ -21,6 +21,7 @@ const config = {
 			scss: {
 				renderSync: true,
 				includePaths: ['src/lib/styles'],
+				prependData: "@import 'utils.scss';",
 			},
 			postcss: true,
 		}),

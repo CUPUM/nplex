@@ -40,8 +40,6 @@
 </PreviewList>
 
 <style lang="scss">
-	@use 'mixins.scss';
-
 	header {
 		width: 100%;
 		display: flex;
@@ -62,17 +60,21 @@
 			color: var(--color-contrast-900);
 			line-height: 1;
 			width: 100%;
-			font-size: xxx-large;
-			max-width: 960px;
-			@include mixins.mobile {
+			font-size: 3rem;
+			max-width: 1200px;
+			@include mobile {
 				font-size: xx-large;
 			}
 			h1 {
-				font-weight: 600;
+				font-weight: 500;
+
+				// font-weight: 300;
 				margin: 0;
 			}
 			span {
-				font-weight: 300;
+				font-weight: 500;
+				color: var(--color-primary-300);
+				// font-weight: 500;
 			}
 		}
 	}
@@ -83,7 +85,16 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		background: rgb(var(--rgb-base-900), 0.25);
-		border-radius: 2rem;
+		background: rgb(var(--rgb-base-700), 0.2);
+		border-radius: 1.5rem;
+		height: 500px;
+		max-height: 75vh;
+		min-height: 50vh;
+		aspect-ratio: 3/4;
+		transition: all 0.25s ease-out;
+		&:hover {
+			background: rgb(var(--rgb-base-100), 0.5);
+			box-shadow: 0 2em 5em -3em rgba(0, 20, 40, 0.5);
+		}
 	}
 </style>

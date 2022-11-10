@@ -20,7 +20,7 @@
 	}
 </script>
 
-<Button {variant} on:click={toggle} square>
+<Button {variant} on:click={toggle} equi>
 	<Icon name={$inputRef?.type === 'password' ? 'eye-open' : 'eye-cross'} />
 </Button>
 

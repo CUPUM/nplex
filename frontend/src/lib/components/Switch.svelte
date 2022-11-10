@@ -7,7 +7,7 @@
 <script lang="ts" context="module">
 	const CTX_KEY = 'switch-context';
 
-	type Variant = 'default' | 'secondary' | 'nav' | 'ghost' | 'cta';
+	type Variant = 'default' | 'outlined';
 
 	interface SwitchContext {
 		group: Writable<any>;
@@ -49,9 +49,6 @@
 	$: group = $_group;
 	$: _group.set(group);
 
-	// const [_getVariant, _variant] = writeReadable(variant);
-	// $: _variant.set(variant);
-
 	function updateMarkBox() {
 		const element = tempMark ?? mark;
 		if (!element) {
@@ -65,27 +62,19 @@
 			`height: ${element.offsetHeight}px;`;
 	}
 
-	function setMark(label: HTMLLabelElement, clear: boolean = false) {
-		if (!clear) {
-			mark = label;
-			if (tempMark === label) {
-				tempMark = undefined;
-			}
-			return;
-		}
-		if (clear && mark === label) {
-			mark = undefined;
+	function setMark(label?: HTMLLabelElement) {
+		mark = label;
+		if (label && tempMark === label) {
+			tempMark = undefined;
 		}
 	}
 
-	function setTempMark(label: HTMLLabelElement, clear: boolean = false) {
-		if (!clear && mark !== label) {
+	function setTempMark(label?: HTMLLabelElement) {
+		if (label !== mark) {
 			tempMark = label;
 			return;
 		}
-		if (clear && tempMark === label) {
-			tempMark = undefined;
-		}
+		tempMark = undefined;
 	}
 
 	onMount(() => {
@@ -109,20 +98,21 @@
 </script>
 
 <svelte:element
-	this={as ? as : name ? 'fieldset' : 'form'}
+	this={as ? as : 'fieldset'}
 	bind:this={switchRef}
-	class="switch {variant} {orientation} {className}"
+	class="switch nest {variant} {orientation} {className}"
 	class:temp={tempMark}
 	{style}
 	{required}
 	{readonly}
 	{disabled}
+	on:mouseleave={() => setTempMark()}
 >
 	{#if mark || tempMark}
 		<div
 			transition:scale|local={{ duration: 150, start: 0.5, opacity: 0, easing: expoOut }}
 			class="mark"
-			class:temp={!!tempMark}
+			class:temp={tempMark}
 			style={markBox}
 		/>
 	{/if}
@@ -130,46 +120,78 @@
 </svelte:element>
 
 <style lang="scss">
-	.switch {
-		--inset: 3px;
-		--radius: var(--default-radius);
-		--height: var(--default-height);
-		--computed-height: calc(var(--height) - 2 * var(--inset, 0px));
-		--computed-radius: calc(var(--radius) - var(--inset, 0px));
+	:where(.switch) {
+		--height: calc(var(--ui-height) - 2 * var(--ui-inset-sum));
+		--inset: var(--ui-inset);
 		position: relative;
 		font-size: 1em;
 		position: relative;
 		border: none;
-		display: flex;
+		display: inline-flex;
 		flex-direction: row;
-		align-items: stretch;
-		justify-content: center;
+		margin: 0;
 		gap: min(3px, var(--inset));
+		flex: none;
 		padding: var(--inset);
-		border-radius: var(--radius);
+		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
 		transition: all 0.15s ease-out;
 		&.column {
 			flex-direction: column;
 		}
 	}
-
 	.mark {
 		position: absolute;
-		border-radius: var(--computed-radius);
+		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum) - var(--inset));
 		transition: all 0.2s cubic-bezier(0.5, 0, 0.2, 1.2);
 	}
 
-	.default {
-		background: rgba(var(--rgb-base-700), 0.75);
-		transition: background-color 0.1s ease-out;
+	// Variants
+
+	:where(.default) {
+		color: col(fg, 700);
+		background: col(fg, 100, 0.15);
+		backdrop-filter: blur(8px);
+		transition: all 0.1s ease-out;
 		.mark {
-			background: rgb(var(--rgb-contrast-900), 1);
+			background: col(fg, 500);
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			background: rgba(var(--rgb-base-900), 0.8);
+			background: col(fg, 100, 0.2);
+		}
+		&.temp {
+			color: col(fg, 100);
 			.mark {
-				background: rgb(var(--rgb-contrast-900), 1);
+				background: col(fg, 700);
+			}
+		}
+	}
+
+	:where(.outlined) {
+		color: col(fg, 700);
+		background: transparent;
+		transition: all 0.1s ease-out;
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border-radius: inherit;
+			border: 1px solid currentColor;
+			transition: all 0.1s ease-out;
+			opacity: 0.25;
+		}
+		.mark {
+			background: col(fg, 500);
+		}
+		&.temp {
+			color: col(fg, 100);
+			.mark {
+				opacity: 0.5;
+				background: transparent;
+				border: 1px solid currentColor;
 			}
 		}
 	}

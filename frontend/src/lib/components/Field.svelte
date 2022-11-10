@@ -29,7 +29,7 @@
 	export let suffix: string = '';
 	export let name: string | undefined = undefined;
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
-	export let variant: 'default' | 'outlined' | 'ghost' | 'cta' = 'default';
+	export let variant: 'default' | 'outlined' | 'cta' = 'default';
 	export let compact: boolean | undefined = undefined;
 	export let leadingSeparator: boolean = false;
 	export let trailingSeparator: boolean = false;
@@ -53,16 +53,16 @@
 		inputRef.focus();
 	}
 
-	const _value = writable(value);
-	$: value = $_value;
-	$: _value.set(value);
-
+	let labelWidth = 0;
+	let focused = false;
+	let fieldRef: HTMLElement;
 	let inputRef: HTMLInputElement;
 	const _inputRef = writable<typeof inputRef>();
 	$: _inputRef.set(inputRef);
 
-	let labelWidth = 0;
-	let focused = false;
+	const _value = writable(value);
+	$: value = $_value;
+	$: _value.set(value);
 
 	function checkValidity() {
 		invalid = !value
@@ -89,6 +89,12 @@
 		success = undefined;
 	}
 
+	function handleClick(e: MouseEvent) {
+		if (e.target instanceof Element && (e.target === fieldRef || e.target.parentElement === fieldRef)) {
+			focus();
+		}
+	}
+
 	function handleBlur(e: FocusEvent) {
 		focused = false;
 		checkValidity();
@@ -103,7 +109,8 @@
 </script>
 
 <div
-	class="field {variant} {className}"
+	bind:this={fieldRef}
+	class="field nest {variant} {className}"
 	{style}
 	class:compact
 	class:warning
@@ -118,7 +125,7 @@
 	class:has-placeholder={placeholder !== ''}
 	class:has-label={$$slots.label}
 	style:--label-width="{labelWidth}px"
-	on:pointerup={focus}
+	on:pointerup={handleClick}
 >
 	<Ripple />
 	<div class="outline left" />
@@ -171,24 +178,17 @@
 </div>
 
 <style lang="scss">
-	// Vendor style soft resets
-	:where(input) {
-		all: unset;
-	}
-
-	.field {
-		--radius: var(--default-radius);
-		--height: var(--default-height);
-		--inset: var(--default-inset);
+	:where(.field) {
+		--height: calc(var(--ui-height) - 2 * var(--ui-inset-sum));
+		--inset: var(--ui-inset);
 		--notch-padding: 0.25em;
-		--outline-thickness: 1px;
-		--gutter: calc(var(--default-padding-inline) / 3);
-		--computed-padding-inline: calc(2 * var(--default-padding-inline) / 3);
+		--gutter: calc(var(--ui-pad-x) / 3);
+		--pad-x: calc(2 * var(--ui-pad-x) / 3);
 		position: relative;
 		display: inline-grid;
 		grid-template-columns:
 			[full-start leading-start]
-			minmax(var(--computed-padding-inline), auto)
+			minmax(var(--pad-x), auto)
 			[leading-end leading-gutter-start]
 			var(--gutter)
 			[leading-gutter-end prefix-start]
@@ -200,15 +200,15 @@
 			[suffix-end trailing-gutter-start]
 			var(--gutter)
 			[trailing-gutter-end trailing-start]
-			minmax(var(--computed-padding-inline), auto)
+			minmax(var(--pad-x), auto)
 			[trailing-end full-end];
 		grid-template-rows: minmax(var(--height), auto);
 		gap: 0;
 		flex-direction: row;
 		align-items: center;
-		font-weight: 400;
+		font-weight: 350;
 		font-size: 1em;
-		border-radius: var(--radius);
+		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
 		cursor: text;
 		outline: 0px solid transparent;
 		transition: transform 0.15s ease-out;
@@ -221,21 +221,15 @@
 		}
 		&.warning {
 			color: red !important;
-			background: rgba(var(--rgb-error-100), 0.1);
+			background: col(error, 100, 0.1);
 		}
 		&.invalid {
-			color: var(--color-error-700) !important;
-			background: rgba(var(--rgb-error-100), 0.1) !important;
+			color: col(error, 700) !important;
+			background: col(error, 100, 0.1) !important;
 		}
 		&.success {
-			color: var(--color-success-700) !important;
-			background: rgba(var(--rgb-success-100), 0.1) !important;
-		}
-		&.dirty:not(.warning):not(.invalid):not(.success) {
-			.outline {
-				opacity: 1 !important;
-				color: var(--color-secondary-700) !important;
-			}
+			color: col(success, 700) !important;
+			background: col(success, 100, 0.1) !important;
 		}
 	}
 	.leading,
@@ -280,7 +274,13 @@
 		grid-column: suffix;
 	}
 	input {
+		font-family: inherit;
+		font-weight: inherit;
+		font-size: inherit;
 		position: relative;
+		color: currentColor;
+		margin: 0;
+		padding: 0;
 		padding-bottom: calc(0.5em - 0.5ex);
 		grid-column: main;
 		display: block;
@@ -324,7 +324,7 @@
 		position: absolute;
 		height: 50%;
 		transition: all 0.15s ease-out;
-		border-width: var(--outline-thickness);
+		border-width: var(--outline-thickness, 1px);
 		border-style: solid;
 	}
 	.left {
@@ -354,16 +354,18 @@
 		border-bottom-left-radius: inherit;
 	}
 
-	// Default variant
-	.default {
-		color: var(--color-dark-500);
-		background: var(--color-base-500);
-		transition: color 0.1s ease-out, background-color 0.1s ease-out;
+	// Variants
+
+	:where(.default) {
+		color: col(fg, 500);
+		background: col(fg, 100, 0.1);
+		backdrop-filter: blur(8px);
+		transition: all 0.1s ease-out;
 		.outline {
 			display: none;
 		}
 		label {
-			opacity: 0.35;
+			opacity: 0.5;
 		}
 		&.has-label {
 			.prefix,
@@ -371,13 +373,6 @@
 				opacity: 0;
 			}
 		}
-		// &.has-value {
-		// 	label {
-		// 		top: 1.5em;
-		// 		font-size: clamp(10px, 0.5em, 24px);
-		// 		opacity: 0;
-		// 	}
-		// }
 		&.has-placeholder,
 		&.has-value,
 		&.focused {
@@ -398,26 +393,23 @@
 			}
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover,
-		&.focused {
-			color: var(--color-contrast-700);
-			background: var(--color-base-900);
-			label {
-				opacity: 0.5;
-			}
+		&:hover {
+			color: col(fg, 700);
+			background: col(fg, 100, 0.15);
 		}
 		&.focused {
-			color: var(--color-contrast-900);
+			color: col(fg, 900);
+			background: col(bg, 000);
 		}
 	}
 
-	// Outlined variant
-	.outlined {
-		color: var(--color-contrast-300);
+	:where(.outlined) {
+		--outline-thickness: 1px;
+		color: col(fg, 300);
 		background: transparent;
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		.outline {
-			border-color: var(--color-contrast-100);
+			border-color: col(fg, 100);
 			opacity: 0.2;
 		}
 		&.has-label {
@@ -451,7 +443,7 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover,
 		&.focused {
-			color: var(--color-contrast-700);
+			color: col(fg, 700);
 			background: transparent;
 			.outline {
 				opacity: 0.5;
@@ -459,9 +451,8 @@
 		}
 		&.focused {
 			outline: none;
-			color: var(--color-contrast-900);
+			color: col(fg, 900);
 			.outline {
-				--outline-thickness: 1.5px;
 				opacity: 1;
 			}
 			label {
@@ -470,7 +461,55 @@
 		}
 	}
 
-	// Ghost variant
-
-	// Call-to-action variant
+	:where(.cta) {
+		color: col(bg, 300);
+		background: col(primary, 500);
+		box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
+		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
+		.outline {
+			display: none;
+		}
+		label {
+			opacity: 0.35;
+		}
+		&.has-label {
+			.prefix,
+			.suffix {
+				opacity: 0;
+			}
+		}
+		&.has-placeholder,
+		&.has-value,
+		&.focused {
+			label {
+				top: 1.25em;
+				font-size: clamp(10px, 0.5em, 24px);
+			}
+			.prefix,
+			.suffix {
+				opacity: 0.5;
+			}
+			&.has-label {
+				.prefix,
+				.suffix,
+				input {
+					top: 0.35em;
+				}
+			}
+		}
+		:global(.hover-source:hover) &:global(.hover-target),
+		&:hover,
+		&.focused {
+			box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.5);
+			color: col(bg, 100);
+			background: col(primary, 700);
+			label {
+				opacity: 0.5;
+			}
+		}
+		&.focused {
+			box-shadow: 0 0.5em 1em -0.5em col(primary, 900, 0.5);
+			color: col(bg, 100);
+		}
+	}
 </style>

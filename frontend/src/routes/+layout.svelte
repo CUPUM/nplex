@@ -5,8 +5,9 @@
 	import Loading from '$components/Loading.svelte';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
 	import { rootScroll } from '$stores/scroll';
-	import '$styles/app.scss';
+	import '$styles/themes.scss';
 	import '$styles/vars.scss';
+	import '$styles/app.scss';
 	import { dbClient } from '$utils/database';
 	import { Cookie } from '$utils/enums';
 	import jscookie from 'js-cookie';

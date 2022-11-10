@@ -57,7 +57,7 @@
 		margin: var(--margin);
 		padding: var(--padding);
 		background: var(--color-base-100);
-		border-radius: calc(var(--default-radius) + var(--padding));
+		border-radius: calc(var(--ui-radius) + var(--padding));
 		max-width: calc(100% - 2 * var(--margin));
 		opacity: 0;
 		transform: translate(var(--x), var(--y));

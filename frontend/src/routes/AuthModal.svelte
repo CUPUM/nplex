@@ -133,7 +133,7 @@
 			use:clickoutside={true}
 			on:clickoutside={() => authModalState.close()}
 		>
-			<Logo id="auth-logo" />
+			<Logo class="auth-logo" />
 			<fieldset id="auth-fields">
 				<Field variant="default" bind:value={email} maxlength={100} name="email" type="email" required>
 					<FieldIcon name="letter" slot="leading" />
@@ -183,6 +183,7 @@
 					>
 				</div>
 			</fieldset>
+			<hr />
 			<fieldset id="auth-providers" disabled>
 				<span>Me connecter via une autre plateforme :</span>
 				<div class="scroll">
@@ -194,19 +195,14 @@
 					{/each}
 				</div>
 			</fieldset>
-			<Button
-				style="position: absolute; top: 1rem; right: 1rem;"
-				variant="ghost"
-				on:click={() => authModalState.close()}
-				square
-			>
+			<Button class="close" variant="ghost" on:click={() => authModalState.close()} equi>
 				<Icon name="cross" />
 			</Button>
 		</form>
 	</dialog>
 {/if}
 
-<style lang="scss">
+<style lang="scss" module>
 	#auth-bg {
 		z-index: 1000;
 		position: fixed;
@@ -214,9 +210,7 @@
 		height: 100vh;
 		top: 0;
 		left: 0;
-		opacity: 0.98;
-		// background: linear-gradient(-30deg, var(--color-primary-900) -25%, var(--color-primary-300) 150%);
-		background: rgba(var(--rgb-primary-900), 0.95);
+		background: col(fg, 700, 0.9);
 	}
 
 	.container {
@@ -235,6 +229,13 @@
 		border: none;
 	}
 
+	.container .close {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		color: col(primary, 500);
+	}
+
 	form {
 		position: relative;
 		display: flex;
@@ -244,17 +245,17 @@
 		width: 100%;
 		max-width: 450px;
 		max-height: 100%;
-		background: var(--color-base-100);
-		box-shadow: 0 3rem 8rem -5rem black;
+		background: col(bg, 500);
+		box-shadow: 0 3rem 8rem -4rem black, 0 3rem 3rem 2rem rgba(0, 0, 0, 0.1);
 		padding: 0;
 		overflow-y: auto;
 		overflow-x: hidden;
-		border-radius: 2rem;
+		border-radius: 1.5rem;
 		border: none;
 	}
 
-	:global(#auth-logo) {
-		color: var(--color-primary-500);
+	.container .auth-logo {
+		color: col(primary, 500);
 		font-size: 4rem;
 		padding: 1rem 2rem;
 		margin: 2rem;
@@ -269,8 +270,8 @@
 		gap: 1rem;
 		border: none;
 		padding: 0 2.5rem;
-		padding-bottom: 2.5rem;
 		margin: 0;
+		min-width: 0;
 	}
 
 	#auth-buttons {
@@ -281,32 +282,39 @@
 		gap: 1.5em;
 	}
 
+	hr {
+		height: 1px;
+		margin: 2rem 3rem;
+		border: none;
+		color: col(bg, 900);
+		background-image: linear-gradient(to right, currentColor 0 30%, transparent 30%);
+		background-position: bottom;
+		background-size: 12px 1px;
+		background-repeat: repeat-x;
+	}
+
 	#auth-providers {
 		position: relative;
-		display: block;
+		display: flex;
+		flex-direction: column;
 		border: none;
 		margin: 0;
+		gap: 2rem;
 		padding: 0;
-		background: var(--color-base-300);
-		border-radius: inherit;
+		min-width: 0;
 		span {
 			display: block;
-			padding-block: 1rem;
-			margin: 0;
-			margin-inline: 2.5rem;
+			margin: 0 2.5rem;
 			text-align: center;
 			opacity: 0.5;
 			font-size: var(--size-xsmall);
 		}
 		.scroll {
 			display: flex;
-			align-items: unset;
-			justify-content: unset;
 			flex-direction: row;
 			gap: 1rem;
-			padding-inline: 2.5rem;
-			padding-bottom: 1.5rem;
-			padding-top: 0.5rem;
+			padding: 3rem;
+			padding-top: 0;
 			overflow: scroll;
 		}
 	}

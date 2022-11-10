@@ -2,6 +2,7 @@
 </script>
 
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import Switch from '$components/Switch.svelte';
 	import SwitchItem from '$components/SwitchItem.svelte';
@@ -43,11 +44,8 @@
 <section>
 	<header>
 		<h3>{title}</h3>
-		<form>
-			{#each Object.entries(filters) as [k, v]}
-				<label>{v}<input type="radio" bind:group={filter} value={k} /> </label>
-			{/each}
-			<Switch bind:value={filter}>
+		<form action="" use:enhance>
+			<Switch bind:group={filter} name="filter">
 				{#each Object.entries(filters) as [k, v]}
 					<SwitchItem value={k}>
 						{v}
@@ -80,10 +78,18 @@
 	}
 
 	header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		padding: 1rem;
 	}
 
 	h3 {
 		all: unset;
+		padding: 1rem;
+		font-size: 2rem;
+		font-weight: 500;
+		color: var(--color-contrast-900);
 	}
 
 	form {

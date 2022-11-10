@@ -22,7 +22,7 @@
 	export let spreadEasing = easing;
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
-	export let color: string = 'var(--color-contrast-100)';
+	export let color: string = 'white';
 	export let colorStart: string = color;
 	export let colorEnd: string = colorStart;
 	export let colorEasing = easing;
@@ -36,7 +36,7 @@
 	$: listenerRef = host ?? containerRef?.parentElement;
 
 	function add(e: MouseEvent) {
-		if (containerRef && (e.target as Element)?.closest(`[${RIPPLE_ATTRIBUTE}]`) === listenerRef) {
+		if (containerRef && e.target instanceof Element && e.target.closest(`[${RIPPLE_ATTRIBUTE}]`) === listenerRef) {
 			const rect = containerRef.getBoundingClientRect();
 			const x = e.clientX - rect.left;
 			const y = e.clientY - rect.top;

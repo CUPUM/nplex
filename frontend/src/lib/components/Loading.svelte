@@ -134,10 +134,10 @@
 		fill: currentColor;
 		stroke: currentColor;
 		stroke-width: 25px;
-		// vector-effect: non-scaling-stroke;
-		// fill: transparent;
-		// stroke-dasharray: 3;
-		// stroke-width: 1.25px;
+		vector-effect: non-scaling-stroke;
+		fill: transparent;
+		stroke-dasharray: 3 4;
+		stroke-width: 2px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 	}

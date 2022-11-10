@@ -85,8 +85,6 @@
 </footer>
 
 <style lang="scss">
-	@use 'mixins.scss';
-
 	#footer {
 		padding: 2rem 1.5rem;
 		margin: 0;

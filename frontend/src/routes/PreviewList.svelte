@@ -2,6 +2,7 @@
 </script>
 
 <script lang="ts">
+	import { reveal, slipMask } from '$actions/reveal';
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 
@@ -14,7 +15,7 @@
 
 <section>
 	<a {href} class="hover-source">
-		<h2>{header}</h2>
+		<h2 use:reveal={{ ...slipMask, stagger: 25, splitDelimiter: '' }}>{header}</h2>
 		<div class="button-wrapper">
 			<Button class="hover-target" variant="ghost">
 				Explorer plus
@@ -32,8 +33,6 @@
 </section>
 
 <style lang="scss">
-	@use 'mixins.scss';
-
 	section {
 		width: 100%;
 		display: flex;
@@ -49,21 +48,23 @@
 		width: 100%;
 		max-width: 1200px;
 		margin: 0 auto;
+		color: var(--color-contrast-900);
 		transition: all 0.15s ease-in-out;
-		@include mixins.tablet {
+		@include tablet {
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
 		}
 		&:hover {
 			color: var(--color-primary-500);
+			// background: rgb(var(--rgb-primary-100), 0.1);
 		}
 	}
 
 	h2 {
 		all: unset;
 		grid-column: 2;
-		font-size: xxx-large;
+		font-size: 4rem;
 		font-weight: 500;
 		padding-bottom: 0.25em;
 	}

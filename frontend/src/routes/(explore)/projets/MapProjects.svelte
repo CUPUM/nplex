@@ -6,7 +6,7 @@
 	import { goto } from '$app/navigation';
 
 	import { getMapContext } from '$components/Map.svelte';
-	import { colors } from '$utils/vars';
+	import { colors } from '$utils/themes';
 	import type { PageData } from '.svelte-kit/types/src/routes/$types';
 	import type { MapLayerMouseEvent } from 'maplibre-gl';
 	import { onDestroy } from 'svelte';

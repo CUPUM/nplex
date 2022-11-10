@@ -13,7 +13,7 @@
 	<EditableEntries title="Mes fiches de projet" data={data.projects} let:datum>
 		<a class="project" href="/editer/projet/{datum.id}">
 			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
-			{datum.title}
+			<!-- {datum.title} -->
 		</a>
 		<a class="project" href="/editer/projet" slot="placeholder"> New :D </a>
 	</EditableEntries>

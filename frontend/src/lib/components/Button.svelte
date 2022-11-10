@@ -23,14 +23,15 @@
 	export let href: string | undefined = undefined;
 	export let id: string | undefined = undefined;
 	export let variant: 'default' | 'outlined' | 'ghost' | 'cta' | 'danger' | undefined = undefined;
-	export let compact: boolean | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
-	export let loading: boolean | undefined = undefined;
-	export let warning: boolean | undefined = undefined;
-	export let square: boolean | undefined = undefined;
-	export let type: 'button' | 'submit' | 'reset' = 'button';
-	let _for: string | undefined = undefined;
-	export { _for as for };
+	export let loading: boolean = false;
+	export let warning: boolean = false;
+	export let compact: boolean = false;
+	export let equi: boolean = false;
+	export let round: boolean = false;
+	export let type: 'button' | 'submit' | 'reset' | 'file' = 'button';
+	let for_: string | undefined = undefined;
+	export { for_ as for };
 	export let active: boolean | undefined = false;
 	export let contentAlign: 'start' | 'center' | 'end' = 'start';
 	export let value: string | undefined = undefined;
@@ -38,12 +39,12 @@
 	export let title: string | undefined = undefined;
 	export let formaction: string | undefined = undefined;
 	export let tabindex: number | undefined = undefined;
-	let className: string | undefined = '';
-	export { className as class };
+	let class_: string | undefined = '';
+	export { class_ as class };
 	export let style: string | undefined = undefined;
-	export let as: HTMLElement['tagName'] | undefined = undefined;
+	export let as: string | undefined = undefined;
 
-	let buttonRef: HTMLButtonElement | HTMLAnchorElement;
+	let buttonRef: HTMLElement;
 	const buttonGroupContext = getButtonGroupContext();
 	const buttonGroupVariant = buttonGroupContext?.variant;
 
@@ -56,10 +57,11 @@
 <svelte:element
 	this={as ? as : href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
-	class="button {computedVariant} {contentAlign} {className}"
+	class="button nest {computedVariant} {contentAlign} {class_}"
 	class:compact
 	class:warning
-	class:square
+	class:equi
+	class:round
 	class:active
 	class:disabled
 	class:loading
@@ -74,7 +76,7 @@
 	{title}
 	{tabindex}
 	{formaction}
-	for={_for}
+	for={for_}
 	on:click
 	on:pointerdown
 	on:pointercancel
@@ -114,21 +116,14 @@
 </svelte:element>
 
 <style lang="scss">
-	// Vendor style soft resets
 	:where(.button) {
-		all: unset;
-	}
-
-	.button {
-		--radius: var(--default-radius);
-		--height: var(--default-height);
-		--computed-height: calc(var(--height) - 2 * var(--inset, 0px));
-		--computed-radius: calc(var(--radius) - var(--inset, 0px));
+		--height: calc(var(--ui-height) - 2 * var(--ui-inset-sum));
+		--inset: var(--ui-inset);
 		position: relative;
-		display: grid;
+		display: inline-grid;
 		grid-template-columns:
 			[full-start leading-padding-start]
-			var(--default-padding-inline)
+			var(--ui-pad-x)
 			[leading-padding-end leading-start]
 			auto
 			[leading-end main-start]
@@ -136,116 +131,106 @@
 			[main-end trailing-start]
 			auto
 			[trailing-end trailing-padding-start]
-			var(--default-padding-inline)
+			var(--ui-pad-x)
 			[trailing-padding-end full-end];
-		grid-template-rows: minmax(var(--computed-height), auto);
+		grid-template-rows: minmax(var(--height), auto);
+		border: none;
+		padding: 0;
+		font-family: inherit;
 		gap: 0;
 		flex-direction: row;
 		align-items: center;
-		font-weight: 400;
+		font-weight: 350;
 		font-size: 1em;
-		border-radius: var(--computed-radius);
+		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
+		// border-radius: var(--ui-radius);
 		cursor: pointer;
 		letter-spacing: 0em;
-		font-weight: 500;
 		outline: 0px solid transparent;
-		// Box-shadow and border host to allow additional customization from outer class.
-		&::after {
-			pointer-events: none;
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			border-radius: inherit;
+	}
+	.center {
+		grid-template-columns:
+			[full-start leading-padding-start]
+			var(--ui-pad-x)
+			[leading-padding-end leading-start]
+			1fr
+			[leading-end main-start]
+			auto
+			[main-end trailing-start]
+			1fr
+			[trailing-end trailing-padding-start]
+			var(--ui-pad-x)
+			[trailing-padding-end full-end];
+	}
+	.equi {
+		flex: none;
+		aspect-ratio: 1 / 1;
+		justify-content: center;
+		padding: 0;
+		grid-template-columns:
+			[full-start leading-padding-start]
+			0
+			[leading-padding-end leading-start]
+			0
+			[leading-end main-start]
+			var(--height)
+			[main-end trailing-start]
+			0
+			[trailing-end trailing-padding-start]
+			0
+			[trailing-padding-end full-end];
+	}
+	.round {
+		border-radius: 999px;
+	}
+	.disabled,
+	.button:disabled {
+		opacity: 0.5;
+		pointer-events: none;
+		.content {
+			transform: scale(0.95);
 		}
-		&.center {
-			// grid-template-columns: [full-start leading-start] 1fr [leading-end main-start] auto [main-end trailing-start] 1fr [trailing-end full-end];
-			grid-template-columns:
-				[full-start leading-padding-start]
-				var(--default-padding-inline)
-				[leading-padding-end leading-start]
-				1fr
-				[leading-end main-start]
-				auto
-				[main-end trailing-start]
-				1fr
-				[trailing-end trailing-padding-start]
-				var(--default-padding-inline)
-				[trailing-padding-end full-end];
+	}
+	.warning {
+		outline-width: 2px;
+		outline-color: col(error, 500);
+		background: col(error, 100);
+	}
+	.button:active {
+		.content {
+			transform: scale(0.95);
 		}
-		&.square {
-			flex: none;
-			aspect-ratio: 1 / 1;
-			justify-content: center;
-			grid-template-columns:
-				[full-start leading-padding-start]
-				0
-				[leading-padding-end leading-start]
-				0
-				[leading-end main-start]
-				var(--computed-height)
-				[main-end trailing-start]
-				0
-				[trailing-end trailing-padding-start]
-				0
-				[trailing-padding-end full-end];
-		}
-		&.disabled,
-		&:disabled {
-			cursor: not-allowed;
-			&:not(.loading) {
-				opacity: 0.5;
-			}
-			&:active {
-				pointer-events: none;
-			}
-			.content {
-				transform: scale(0.95);
-			}
-		}
-		&.warning {
-			outline-width: 2px;
-			outline-color: var(--color-error-300);
-			background: var(--color-error-100);
-		}
-		&:active {
-			.content {
-				transform: scale(0.95);
-			}
-		}
-		&:focus-visible {
-			outline: var(--default-focus-outline);
-		}
-		&.loading {
-			.content {
-				transform: scale(0.98);
-				opacity: 0.25;
-			}
+	}
+	.button:focus-visible {
+		outline: var(--ui-outline);
+	}
+	.loading {
+		.content {
+			transform: scale(0.98);
+			opacity: 0.25;
 		}
 	}
 	.content {
-		position: relative; // NVM, breaks due to transform on :active... Do not set position relative so that certain children (ex.: Badge) can be positioned relative to button.
+		position: relative;
 		display: inline-block;
 		line-height: 1em;
 		padding-bottom: calc(0.5em - 0.5ex);
 		white-space: nowrap;
 		text-overflow: ellipsis;
-		transition: transform 0.15s ease-out;
+		transition: transform 0.1s ease-out;
 	}
 	.main {
 		grid-column: main;
 		.center &,
-		.square & {
+		.equi & {
 			justify-content: center;
 			text-align: center;
 		}
-		.start:not(.square) & {
+		.start:not(.equi) & {
 			justify-content: left;
 			text-align: left;
 		}
-		.end:not(.square) {
+		.end:not(.equi) {
 			justify-content: right;
 			text-align: right;
 		}
@@ -267,140 +252,115 @@
 		}
 	}
 
-	.default {
-		color: var(--color-contrast-300);
-		background: rgba(var(--rgb-base-700), 0.75);
-		transition: color 0.1s ease-out, background-color 0.1s ease-out;
+	// Variants
+
+	:where(.default) {
+		color: col(fg, 700);
+		background: col(fg, 100, 0.1);
+		backdrop-filter: blur(8px);
+		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: var(--color-contrast-900);
-			background: rgba(var(--rgb-base-900), 0.8);
+			color: col(bg, 700);
+			background: col(fg, 700);
 		}
-		&:active,
 		&:global(.active) {
-			color: var(--color-contrast-900);
-			background: var(--color-base-900);
+			color: col(bg, 900);
+			background: col(fg, 100);
 		}
 	}
 
-	.outlined {
-		color: var(--color-contrast-300);
+	:where(.outlined) {
+		color: col(fg, 700);
 		background: transparent;
-		transition: color 0.1s ease-out, background-color 0.1s ease-out;
-		&::after {
-			opacity: 0.2;
-			border-color: var(--color-contrast-100);
-			border-style: solid;
-			border-width: 1px;
-			transition: all 0.1s ease-in-out;
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border-radius: inherit;
+			border: 1px solid currentColor;
+			transition: all 0.1s ease-out;
+			opacity: 0.25;
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			&:not(.disabled) {
-				color: var(--color-contrast-900);
-				background: rgba(var(--rgb-base-900), 0.5);
-				&::after {
-					opacity: 0;
-					border-width: 3px;
-				}
+			color: col(bg, 700);
+			background: col(fg, 700);
+			&::before {
+				border: 5px solid transparent;
 			}
 		}
-		&:active,
 		&:global(.active) {
-			&:not(.disabled) {
-				color: var(--color-contrast-900);
-				background: rgba(var(--rgb-base-900), 1);
-				&::after {
-					border-width: 1.5px;
-					opacity: 0.5;
-				}
+			color: col(bg, 900);
+			background: col(fg, 100);
+			&::before {
+				border: 5px solid transparent;
 			}
 		}
 	}
 
-	.ghost {
-		color: currentColor;
+	:where(.ghost) {
+		color: col(fg, 500);
 		background: transparent;
-		&::after {
-			background: currentColor;
-			opacity: 0;
-			transition: opacity 0.25s ease-out;
-		}
+		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			&:not(.disabled) {
-				// color: var(--color-contrast-900);
-				// background: rgba(var(--rgb-contrast-900), 0.1);
-				&::after {
-					opacity: 0.1;
-				}
-			}
+			color: col(fg, 900);
+			background: col(fg, 700, 0.1);
 		}
-		&:active,
 		&:global(.active) {
-			&:not(.disabled) {
-				// color: var(--color-primary-900);
-				// background: rgba(var(--rgb-primary-900), 0.1);
-				&::after {
-					opacity: 0.15;
-				}
-			}
+			color: col(fg, 700);
+			background: col(fg, 500, 0.1);
 		}
 	}
 
-	.cta {
-		color: var(--color-base-000);
-		background: var(--color-primary-500);
-		transition: color 0.1s ease-out, background-color 0.1s ease-out;
-		&::after {
-			box-shadow: 0 0.2em 1em -0.5em rgba(0, 0, 0, 0);
-			transition: all 0.1s ease-in-out;
-		}
-		transition: all 0.15s ease-out;
+	:where(.cta) {
+		color: col(bg, 300);
+		background: col(primary, 500);
+		box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
+		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			&:not(.disabled) {
-				color: var(--color-base-100);
-				background: var(--color-primary-700);
-				&::after {
-					box-shadow: 0 0.8em 1.5em -1em rgba(0, 0, 0, 0.5);
-				}
-			}
+			color: col(bg, 100);
+			background: col(primary, 700);
+			box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.5);
 		}
-		&:active,
 		&:global(.active) {
-			&:not(.disabled) {
-				background: var(--color-primary-900);
-				&::after {
-					box-shadow: 0 0.5em 1em -0.5em rgba(0, 0, 0, 0.25);
-				}
-			}
+			filter: brightness(0.9);
+			box-shadow: 0 0.5em 1em -0.5em col(primary, 900, 0.5);
 		}
 	}
 
-	.danger {
-		color: var(--color-base-300);
-		background: var(--color-error-500);
-		transition: color 0.1s ease-out, background-color 0.1s ease-out;
-		&::after {
-			border: 1px solid var(--color-error-700);
+	:where(.danger) {
+		color: col(bg, 300);
+		background: col(error, 500);
+		box-shadow: 0 0.2em 1em -0.5em col(error, 500, 0);
+		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border-radius: inherit;
+			border: 1px solid col(error, 700);
 			transition: all 0.1s ease-in-out;
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			&:not(.disabled) {
-				color: var(--color-base-500);
-				background: var(--color-error-700);
-			}
+			color: col(bg, 100);
+			background: col(error, 700);
+			box-shadow: 0 0.8em 1.5em -1em col(error, 900, 0.5);
 		}
-		&:active,
 		&:global(.active) {
 			&:not(.disabled) {
 				color: var(--color-error-300);
 				background: var(--color-error-900);
-				&::after {
-					border: 3px solid rgba(var(--rgb-error-700), 0.5);
-				}
+				box-shadow: 0 0.5em 1em -0.5em col(error, 900, 0.5);
 			}
 		}
 	}

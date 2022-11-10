@@ -22,7 +22,7 @@
 </script>
 
 {#if show}
-	<Button {variant} square on:click on:click={reset} tabindex={-1}>
+	<Button {variant} equi on:click on:click={reset} tabindex={-1}>
 		<Icon name="cross" />
 	</Button>
 {/if}

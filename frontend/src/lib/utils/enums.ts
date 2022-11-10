@@ -1,4 +1,4 @@
-import { colors } from './vars';
+import { themes } from './themes';
 
 /**
  * Dictionnary of context keys used for automatically detecting certain compositions or nestings like buttons being
@@ -77,30 +77,32 @@ export enum Cookie {
  * using applyAction().
  *
  * See https://kit.svelte.dev/docs/load#input-methods-depends for more info.
+ *
+ * ! To deprecate: load-dependencies should be defined and exported from the layouts / pages using them.
  */
 export enum LoadDependency {
 	DbUserProfile = 'db:user-profile',
 }
 
 /**
- * Dictionnary of error codes and their translated message.
- *
- * Provided as object since enums do not support number members.
+ * Dictionnary of error codes and their translated message. (Provided as object since enums do not support number
+ * members.)
  */
 export const ErrorCodeMessage = {
 	400: 'Impossible!',
 	500: '',
 } as const;
 
-export function themeClassName<T extends string>(name: T): `theme-${T}` {
+/**
+ * Standardize the naming of css classes containing theme variables.
+ */
+export function themeClass<T extends string>(name: T): `theme-${T}` {
 	return `theme-${name}`;
 }
 
 /**
  * Themes and their associated classnames.
- *
- * { [K in keyof typeof colors]: `theme-${K}` }
  */
-export const Theme = Object.fromEntries(Object.keys(colors).map((k) => [k, themeClassName(k)])) as {
-	[K in keyof typeof colors]: `theme-${K}`;
+export const Theme = Object.fromEntries(Object.keys(themes).map((k) => [k, themeClass(k)])) as {
+	[K in keyof typeof themes]: `theme-${K}`;
 };

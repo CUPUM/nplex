@@ -12,146 +12,54 @@
 	import Switch from '$components/Switch.svelte';
 	import SwitchItem from '$components/SwitchItem.svelte';
 	import TextArea from '$components/TextArea.svelte';
+	import { documentTheme } from '$stores/documentTheme';
 	import type { ComponentProps } from 'svelte';
 	import { flip } from 'svelte/animate';
 
-	let name: ComponentProps<Icon>['name'] = 'search';
-	let variant: ComponentProps<Button>['variant'] = 'default';
-	let size = 26;
-
-	let contentAlign = 'center';
-
-	let group = 1;
-
-	let dark = false;
-
-	function switchTheme(theme: 'light' | 'dark') {
-		if (browser) {
-			document.documentElement.classList.remove('theme-light');
-			document.documentElement.classList.remove('theme-dark');
-			document.documentElement.classList.add('theme-' + theme);
-		}
-	}
-
-	$: switchTheme(dark ? 'dark' : 'light');
-
-	let items = [1, 2, 3, 4, 5, 6];
-	function shuffle() {
-		// let shuffled = [...items];
-		for (let i = items.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[items[i], items[j]] = [items[j], items[i]];
-		}
-		// items = shuffled;
-	}
+	let group = '1';
 </script>
 
 <article>
 	<section>
-		<button on:click={shuffle}>Shuffle</button>
-		<ul>
-			{#each items as i (i)}
-				<li animate:flip>{i}</li>
-			{/each}
-		</ul>
+		{$documentTheme}
+		<input type="radio" name="" value="theme-light" bind:group={$documentTheme} id="" />
+		<input type="radio" name="" value="theme-dark" bind:group={$documentTheme} id="" />
 	</section>
+	<br /><br />
 	<section>
-		<code>
-			Group value: {group}
-		</code>
-		<Switch bind:group>
-			<SwitchItem value="1">1</SwitchItem>
-			<SwitchItem value="2">Dos</SwitchItem>
-		</Switch>
-	</section>
-	<section>
-		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. <Icon name="users" />Adipisci vel maiores, sunt
-			odio voluptates consequuntur illo assumenda omnis esse voluptate!
-		</p>
-		<Field prefix="test" suffix="some suffix" placeholder="test" {variant}>
-			<FieldIcon name="cross" slot="leading" />
-			<!-- <svelte:fragment slot="label">Some label</svelte:fragment> -->
-			<svelte:fragment slot="trailing">
-				<Button>Test yezzir <Icon name="cross" slot="trailing" /></Button>
-				<FieldIcon name="cross" />
-			</svelte:fragment>
-		</Field>
-		<Field prefix="test" {variant} placeholder="Test">
-			<svelte:fragment slot="label">Some label</svelte:fragment>
-		</Field>
-		<TextArea />
-	</section>
-	<label>
-		{dark ? 'Light theme' : 'Dark theme'}
-		<input type="checkbox" name="" id="" bind:checked={dark} />
-	</label>
-	<hr />
-	<select name="" bind:value={variant} id="">
-		{#each ['default', 'outlined', 'ghost', 'cta'] as v}
-			<option value={v}>{v}</option>
+		{#each ['default', 'outlined', 'cta', 'ghost', 'danger'] as variant}
+			<h2>{variant}:</h2>
+			<Button {variant}>
+				<Icon name="search" />
+				Some text
+			</Button>
+			<Field placeholder="A test" {variant}>
+				<svelte:fragment slot="label">Field label yay :D</svelte:fragment>
+				<Switch slot="leading" variant="outlined" bind:group>
+					<SwitchItem value="1">Test</SwitchItem>
+					<SwitchItem value="2">Test 2</SwitchItem>
+					<SwitchItem value="3">Test 3</SwitchItem>
+				</Switch>
+				<svelte:fragment slot="trailing">
+					<Button>Default</Button>
+					<Button variant="ghost">Ghost</Button>
+					<Button equi variant="cta"><Icon name="settings" /></Button>
+					<Button variant="outlined">Outlined</Button>
+				</svelte:fragment>
+			</Field>
 		{/each}
-	</select>
-	<select name="" bind:value={contentAlign} id="">
-		{#each ['left', 'center', 'right'] as a}
-			<option value={a}>{a}</option>
-		{/each}
-	</select>
-	<section class="bg">
-		<ButtonGroup {variant}>
-			<Button {contentAlign}>Test</Button>
-			<Button {contentAlign}><Icon name="user" slot="leading" />Test</Button>
-			<Button {contentAlign}><Icon style="font-size: {size}px" name="user" slot="leading" />Test</Button>
-		</ButtonGroup>
-		<Button {variant} {contentAlign} style="width: 100%">Test</Button>
 	</section>
-	<section>
-		<Button {variant} {contentAlign}><span>TEST</span><Badge>Test</Badge></Button>
-		<Button {variant} {contentAlign}><Icon name="user" slot="leading" />Test</Button>
-		<Button {variant} {contentAlign}
-			><Icon style="font-size: {size}px" name="user" slot="leading" />SOME CONTENT</Button
-		>
-		<Button {variant} {contentAlign} style="width: 100%">Test<Badge>Test</Badge></Button>
-	</section>
-
-	<Icon bind:name style="font-size: {size}px" />
-	<hr />
-	<input type="range" name="" min="12" max="56" bind:value={size} id="" />
 </article>
 
 <style lang="scss" module>
 	article {
 		padding: 4rem;
-		// line-height: 5em;
-	}
-	section {
-		padding: 4rem;
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 1em;
 	}
 
-	section.bg {
-		background-image: url(https://images.unsplash.com/photo-1564851375740-1052e619dcbc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Z29vc2V8ZW58MHx8MHx8&w=1000&q=80);
-		background-size: contain;
-	}
-
-	.label {
-		display: flex;
-		flex-direction: row;
-		width: 100%;
-		background: black;
-	}
-
-	.field-class {
-		color: red;
-		background: black;
-		box-shadow: 0 0 1em black;
-		display: inline-block;
-
-		&:hover {
-			box-shadow: 0 0 2em black;
-		}
+	div {
+		--inset: 10px;
+		padding: var(--inset);
+		border-radius: calc(3rem - var(--ui-nest-inset));
+		border: 1px solid black;
 	}
 </style>
