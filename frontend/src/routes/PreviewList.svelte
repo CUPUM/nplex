@@ -15,7 +15,7 @@
 
 <section>
 	<a {href} class="hover-source">
-		<h2 use:reveal={{ ...slipMask, stagger: 25, splitDelimiter: '' }}>{header}</h2>
+		<h2 use:reveal={{ ...slipMask, stagger: 25, delimiter: '' }}>{header}</h2>
 		<div class="button-wrapper">
 			<Button class="hover-target" variant="ghost">
 				Explorer plus

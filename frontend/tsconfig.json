@@ -14,5 +14,5 @@
 		"checkJs": true,
 		"strict": true
 	},
-	"include": ["src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "src/**/*.svx", "plugins/*.ts", "src/**/*.d.ts"]
+	"include": ["src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "src/**/*.svx", "src/**/*.d.ts"]
 }

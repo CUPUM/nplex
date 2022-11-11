@@ -49,7 +49,7 @@
 	.creation-cards {
 		display: flex;
 		flex-direction: column;
-		gap: 0rem;
+		gap: var(--ui-inset);
 		color: var(--color-contrast-500);
 
 		span {

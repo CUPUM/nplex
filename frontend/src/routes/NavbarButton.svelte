@@ -46,7 +46,7 @@
 		height: calc(3.5em - 2 * var(--inset, 0px));
 		border-radius: calc(var(--ui-radius) - var(--inset, 0px));
 		letter-spacing: 0.02em;
-		color: var(--color-contrast-100);
+		color: col(fg, 100);
 		outline: 0px dashed transparent;
 		outline-offset: 0px;
 		transition: all 0.15s cubic-bezier(0, 0, 0, 1), box-shadow 0.25s ease-out;
@@ -66,8 +66,8 @@
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:global(:not(.current)):hover {
-			color: var(--color-primary-500);
-			background: rgba(var(--rgb-primary-100), 0.2);
+			color: col(primary, 500);
+			background: col(primary, 100, 0.2);
 			&::after {
 				opacity: 1;
 				transform: translate(-50%, -0.4em);
@@ -78,13 +78,11 @@
 		}
 		&:active,
 		&:global(.active) {
-			color: var(--color-primary-900);
-			background: rgba(var(--rgb-primary-100), 0.1);
-			outline: 1px dashed rgba(var(--rgb-primary-700), 0.25);
-			outline-offset: -3px;
+			color: col(primary, 900);
+			background: col(primary, 100, 0.25);
 		}
 		&.current {
-			color: var(--color-primary-700);
+			color: col(primary, 700);
 			&::after {
 				opacity: 1;
 				height: 4px;
@@ -116,13 +114,13 @@
 
 	// Call-to-action variant
 	.cta {
-		color: var(--color-base-500);
-		background: var(--color-primary-500);
+		color: col(bg, 500);
+		background: col(primary, 500);
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:global(:not(.active)):hover {
-			color: var(--color-base-000);
-			background: var(--color-primary-700);
-			box-shadow: 0 0.5em 1em -0.5em var(--color-primary-300);
+			color: col(bg, 000);
+			background: col(primary, 700);
+			box-shadow: 0 0.5em 1em -0.5em col(primary, 300);
 		}
 	}
 </style>

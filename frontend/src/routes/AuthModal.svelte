@@ -210,7 +210,7 @@
 		height: 100vh;
 		top: 0;
 		left: 0;
-		background: col(fg, 700, 0.9);
+		background: col(fg, 100, 0.9);
 	}
 
 	.container {

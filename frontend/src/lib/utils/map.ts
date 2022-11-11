@@ -10,6 +10,7 @@ import type { createEventDispatcher } from 'svelte';
  */
 export const styles = {
 	light: 'https://api.maptiler.com/maps/basic/style.json?key=dtV5LH1SmQB4VOb80qqI',
+	toner: 'https://api.maptiler.com/maps/toner/style.json?key=dtV5LH1SmQB4VOb80qqI',
 };
 
 /**
@@ -98,8 +99,8 @@ export type MapLocale = Partial<{
 }>;
 
 const frenchLocale: MapLocale = {
-	'ScrollZoomBlocker.CtrlMessage': 'Utilisez ctrl + défiler pour zoomer',
-	'ScrollZoomBlocker.CmdMessage': 'Utilisez ⌘ + défiler pour zoomer',
+	'ScrollZoomBlocker.CtrlMessage': 'Utilisez ctrl + ↕ pour zoomer',
+	'ScrollZoomBlocker.CmdMessage': 'Utilisez ⌘ + ↕ pour zoomer',
 };
 
 export const locales = {
@@ -111,8 +112,8 @@ export const locales = {
  */
 
 const frenchGestures: GestureOptions = {
-	windowsHelpText: 'Utilisez Ctrl + défiler pour zoomer la carte',
-	macHelpText: 'Utilisez ⌘ + défiler pour zoomer la carte',
+	windowsHelpText: 'Utilisez Ctrl + ⭥ pour zoomer la carte',
+	macHelpText: 'Utilisez&ensp;⌘ + ⭥&ensp;pour zoomer la carte',
 	mobileHelpText: 'Utilisez deux doigts pour déplacer la carte',
 };
 export const gesturesText = {

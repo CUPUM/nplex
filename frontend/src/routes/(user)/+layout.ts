@@ -1,4 +1,4 @@
-import { appendMessageParam } from '$routes/MessagesOutlet.svelte';
+import { queryMessage } from '$routes/MessagesOutlet.svelte';
 import { dbClient, getPagination } from '$utils/database';
 import { error, redirect } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
@@ -8,7 +8,7 @@ export const load: LayoutLoad = async ({ parent }) => {
 	if (!session?.access_token)
 		throw redirect(
 			302,
-			appendMessageParam('/', { content: 'Désolé, un compte est requis pour accéder à cette section de Nplex.' })
+			queryMessage('/', { content: 'Désolé, un compte est requis pour accéder à cette section de Nplex.' })
 		);
 
 	const db = dbClient.getForContext(session.access_token);

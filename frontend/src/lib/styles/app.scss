@@ -1,20 +1,19 @@
 @import './utils.scss';
 
 :root {
-	--bg: var(--color-bg-300);
-	background: var(--bg);
+	background: var(--bg, var(--color-bg-300));
 	width: 100vw;
 	height: 100%;
 	padding: 0;
 	margin: 0;
 	font-family: var(--font-main);
-	color: col(fg, 300);
+	color: col(fg, 100);
 	font-size: medium;
 	font-weight: 400;
 	accent-color: col(primary, 500);
 	overflow-x: hidden;
 	overflow-y: scroll;
-	transition: background-color 0.25s ease-in-out;
+	transition: background 0.25s ease-in-out;
 	&[lock-scroll] {
 		overflow-y: hidden;
 		// padding-right: var(--scroll-size);
@@ -76,7 +75,7 @@ input[type='search']::-webkit-search-results-decoration {
 ::-webkit-scrollbar-thumb {
 	position: relative;
 	background: var(--scroll-color);
-	border-radius: var(--scroll-size);
+	border-radius: 1px;
 }
 
 input:-webkit-autofill,

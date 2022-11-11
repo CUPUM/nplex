@@ -117,7 +117,7 @@
 
 <slot name="control" />
 <div
-	class="hinter {place} {align}"
+	class="hinter {place} {align} theme-dark"
 	bind:this={popoverRef}
 	use:clickoutside
 	on:clickoutside={handleClickoutside}
@@ -132,8 +132,8 @@
 	{#if open}
 		<div
 			class="outer"
-			in:scale={{ start: 0.5, easing: expoOut, duration: 150, opacity: 0 }}
-			out:scale={{ start: 0.75, easing: expoIn, duration: latestOpen === popoverRef ? 100 : 0, opacity: 0 }}
+			in:scale={{ start: 0.9, easing: expoOut, duration: 150, opacity: 0 }}
+			out:scale={{ start: 0.8, easing: expoIn, duration: latestOpen === popoverRef ? 100 : 0, opacity: 0 }}
 		>
 			{#if $$slots.default}
 				<div class="inner" {...$$restProps}>
@@ -170,6 +170,17 @@
 		padding: 0;
 		margin: 0;
 		overflow: visible;
+	}
+
+	.inner {
+		--outset: var(--ui-inset);
+		position: relative;
+		padding: var(--outset);
+		background: col(bg, 500);
+		box-shadow: 0 1rem 3.5rem -2rem rgba(0, 10, 20, 0.25);
+		border-radius: calc(var(--ui-radius) + var(--outset));
+		display: inline-flex;
+		flex-direction: column;
 	}
 
 	.top {
@@ -282,15 +293,5 @@
 				transform-origin: right bottom;
 			}
 		}
-	}
-
-	.inner {
-		position: relative;
-		padding: 0.5rem;
-		background: var(--color-base-000);
-		box-shadow: 0 1rem 3rem -2rem rgba(0, 0, 0, 0.2);
-		border-radius: 1.1rem;
-		display: inline-flex;
-		flex-direction: column;
 	}
 </style>

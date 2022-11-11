@@ -54,5 +54,6 @@
 	div {
 		display: flex;
 		flex-direction: column;
+		gap: var(--ui-inset);
 	}
 </style>

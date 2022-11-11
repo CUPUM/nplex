@@ -9,8 +9,9 @@
 
 	interface MapContext {
 		getMap: () => Map | undefined;
+		getContainer: () => HTMLElement;
 		loading: Writable<boolean>;
-		dispatch: ReturnType<typeof createEventDispatcher<any>>;
+		setCursor: (cursor: Cursor | undefined) => void;
 	}
 
 	export function getMapContext() {
@@ -21,6 +22,7 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
 	import { debounce } from '$utils/debounce';
+	import type { Cursor } from '$utils/enums';
 	import { forwardEvents, gesturesText, locales, locations, styles, type MapLocale } from '$utils/map';
 	import { Map, type MapOptions, type StyleSpecification } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
@@ -92,6 +94,13 @@
 		});
 	}
 
+	function setCursor(cursor: Cursor | undefined) {
+		if (map && map.getCanvas()) {
+			if (!cursor) return map.getCanvas().style.removeProperty('cursor');
+			map.getCanvas().style.cursor = cursor;
+		}
+	}
+
 	const handleResize = debounce(() => {
 		requestAnimationFrame(() => {
 			map?.resize();
@@ -101,7 +110,8 @@
 	setContext<MapContext>(CTX_KEY, {
 		getMap: () => map,
 		loading,
-		dispatch,
+		getContainer: () => containerRef,
+		setCursor,
 	});
 
 	onMount(() => {
@@ -110,7 +120,6 @@
 	});
 
 	onDestroy(() => {
-		// if (unForward) unForward();
 		map?.remove();
 		resizeObserver?.disconnect();
 	});
@@ -161,12 +170,13 @@
 		border-radius: inherit;
 		width: 100%;
 		height: 100%;
+		overflow: hidden;
+		border-radius: inherit;
 		transition: all 0.25s ease-out;
 
 		&.is-loading {
 			transform: scale(0.99);
 			opacity: 0.25;
-			filter: saturate(0.25);
 		}
 
 		:global(canvas) {
@@ -177,9 +187,15 @@
 		:global(.maplibregl-cooperative-gesture-screen) {
 			font-family: var(--font-main);
 			font-weight: 300;
-			backdrop-filter: blur(2px);
-			color: var(--color-contrast-100);
+			font-size: var(--size-small);
+			color: col(bg, 900);
 			background: transparent;
+			& > :global(*) {
+				padding: 1em 1.5em 1.25em;
+				border-radius: var(--ui-radius);
+				box-shadow: 0 1em 3em -1em black;
+				background: col(fg, 300, 1);
+			}
 		}
 	}
 
@@ -194,6 +210,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		border-radius: inherit;
 		& > :global(*) {
 			pointer-events: initial;
 		}

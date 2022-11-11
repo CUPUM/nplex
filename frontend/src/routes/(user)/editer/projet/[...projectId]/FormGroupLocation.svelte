@@ -6,7 +6,7 @@
 	import Icon from '$components/Icon.svelte';
 
 	import Map from '$components/Map.svelte';
-	import MapGeolocateControl from '$components/MapGeolocateControl.svelte';
+	import MapGeolocateControl from '$components/MapControlGeolocate.svelte';
 	import MapToolbar from '$components/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import FormGroup from './FormGroup.svelte';

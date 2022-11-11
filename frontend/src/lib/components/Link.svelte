@@ -1,21 +1,25 @@
 <script lang="ts">
-	import { cssSize } from '$utils/css';
-
 	export let href: string;
-	export let size: string | number = '1em';
-	export let variant: 'default' | 'cta' | 'footer' | 'secondary' | 'ghost' = 'default';
-	export let disabled: boolean = undefined;
-	export let fontWeight: number = undefined;
+	export let variant: 'default' | 'cta' | 'footer' | 'ghost' = 'default';
+	export let disabled: boolean | undefined = undefined;
+	export let style: string | undefined = undefined;
+	let class_: string = '';
+	export { class_ as class };
+	export let rel: 'external' | undefined = undefined;
 </script>
 
 <a
 	{href}
-	{...$$restProps}
-	style:font-size={cssSize(size)}
-	style:font-weight={fontWeight}
-	{...$$restProps}
-	class="link {variant}"
+	{rel}
+	class="link {variant} {class_}"
 	class:disabled
+	{disabled}
+	{style}
+	on:click
+	on:focus
+	on:blur
+	on:mouseover
+	on:mousemove
 >
 	<div class="content reg">
 		<slot />
@@ -38,8 +42,8 @@
 		font-weight: inherit;
 
 		&:hover {
-			color: var(--color-primary-500);
-			background: rgba(var(--rgb-primary-500), 0.15);
+			color: col(primary, 500);
+			background: col(primary, 500, 0.2);
 
 			.reg {
 				opacity: 0;

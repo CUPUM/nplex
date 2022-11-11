@@ -8,19 +8,23 @@
 </script>
 
 <script lang="ts">
+	import type { ComponentProps } from 'svelte';
+
 	import Button from './Button.svelte';
+	import Icon from './Icon.svelte';
 	import { getMapContext } from './Map.svelte';
 
-	export let name: string | undefined = undefined;
+	type $$Props = ComponentProps<Button>;
+
+	$: typedProps = $$props as $$Props;
 
 	const mapContext = getMapContext();
 </script>
 
-<Button as="label">
-	Upload your file
+<Button as="label" variant="ghost" {...typedProps}>
+	<Icon name="upload" />
 	<input hidden type="file" name="" />
 </Button>
 
-<!-- Template here -->
 <style lang="scss">
 </style>

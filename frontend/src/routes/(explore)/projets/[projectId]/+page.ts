@@ -1,4 +1,4 @@
-import { appendMessageParam } from '$routes/MessagesOutlet.svelte';
+import { queryMessage } from '$routes/MessagesOutlet.svelte';
 import { dbClient } from '$utils/database';
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
@@ -10,7 +10,7 @@ export const load: PageLoad = async ({ parent, params }) => {
 	if (projectRes.error)
 		throw redirect(
 			302,
-			appendMessageParam('/projets', {
+			queryMessage('/projets', {
 				content: `Un problème est survenu lors de la requête du projet (id: ${params.projectId}).`,
 				type: 'error',
 			})

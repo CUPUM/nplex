@@ -93,7 +93,7 @@
 	on:blur
 >
 	<Ripple />
-	{#if $$slots.leading}
+	{#if $$slots.leading && !equi}
 		<div class="content leading">
 			<slot name="leading" />
 		</div>
@@ -101,7 +101,7 @@
 	<div class="content main">
 		<slot />
 	</div>
-	{#if $$slots.trailing}
+	{#if $$slots.trailing && !equi}
 		<div class="content trailing">
 			<slot name="trailing" />
 		</div>
@@ -143,10 +143,10 @@
 		font-weight: 350;
 		font-size: 1em;
 		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
-		// border-radius: var(--ui-radius);
 		cursor: pointer;
 		letter-spacing: 0em;
 		outline: 0px solid transparent;
+		transform-origin: center;
 	}
 	.center {
 		grid-template-columns:
@@ -196,9 +196,9 @@
 		outline-color: col(error, 500);
 		background: col(error, 100);
 	}
-	.button:active {
+	.button:focus {
 		.content {
-			transform: scale(0.95);
+			animation: press 0.25s ease-in-out;
 		}
 	}
 	.button:focus-visible {
@@ -255,24 +255,24 @@
 	// Variants
 
 	:where(.default) {
-		color: col(fg, 700);
-		background: col(fg, 100, 0.1);
-		backdrop-filter: blur(8px);
+		color: col(fg, 300);
+		background: col(fg, 900, 0.1);
 		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(bg, 700);
-			background: col(fg, 700);
+			background: col(fg, 300);
 		}
 		&:global(.active) {
 			color: col(bg, 900);
-			background: col(fg, 100);
+			background: col(fg, 900);
 		}
 	}
 
 	:where(.outlined) {
-		color: col(fg, 700);
+		color: col(fg, 300);
 		background: transparent;
+		transition: all 0.1s ease-out;
 		&::before {
 			content: '';
 			position: absolute;
@@ -288,14 +288,14 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(bg, 700);
-			background: col(fg, 700);
+			background: col(fg, 300);
 			&::before {
 				border: 5px solid transparent;
 			}
 		}
 		&:global(.active) {
 			color: col(bg, 900);
-			background: col(fg, 100);
+			background: col(fg, 900);
 			&::before {
 				border: 5px solid transparent;
 			}
@@ -308,12 +308,12 @@
 		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(fg, 900);
-			background: col(fg, 700, 0.1);
+			color: col(fg, 100);
+			background: col(fg, 300, 0.1);
 		}
 		&:global(.active) {
-			color: col(fg, 700);
-			background: col(fg, 500, 0.1);
+			color: col(primary, 700);
+			background: col(primary, 500, 0.25);
 		}
 	}
 

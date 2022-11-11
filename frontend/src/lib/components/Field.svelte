@@ -185,7 +185,7 @@
 		--gutter: calc(var(--ui-pad-x) / 3);
 		--pad-x: calc(2 * var(--ui-pad-x) / 3);
 		position: relative;
-		display: inline-grid;
+		display: grid;
 		grid-template-columns:
 			[full-start leading-start]
 			minmax(var(--pad-x), auto)
@@ -207,7 +207,7 @@
 		flex-direction: row;
 		align-items: center;
 		font-weight: 350;
-		font-size: 1em;
+		font-size: inherit;
 		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
 		cursor: text;
 		outline: 0px solid transparent;
@@ -358,8 +358,7 @@
 
 	:where(.default) {
 		color: col(fg, 500);
-		background: col(fg, 100, 0.1);
-		backdrop-filter: blur(8px);
+		background: col(fg, 900, 0.1);
 		transition: all 0.1s ease-out;
 		.outline {
 			display: none;
@@ -378,7 +377,7 @@
 		&.focused {
 			label {
 				top: 1.25em;
-				font-size: clamp(10px, 0.5em, 24px);
+				font-size: clamp(12px, 0.5em, 24px);
 			}
 			.prefix,
 			.suffix {
@@ -392,24 +391,30 @@
 				}
 			}
 		}
+		&.has-value {
+			color: col(fg, 100);
+			input {
+				opacity: 1;
+			}
+		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(fg, 700);
-			background: col(fg, 100, 0.15);
+			color: col(fg, 300);
+			background: col(fg, 900, 0.15);
 		}
 		&.focused {
-			color: col(fg, 900);
+			color: col(fg, 100);
 			background: col(bg, 000);
 		}
 	}
 
 	:where(.outlined) {
 		--outline-thickness: 1px;
-		color: col(fg, 300);
+		color: col(fg, 700);
 		background: transparent;
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		.outline {
-			border-color: col(fg, 100);
+			border-color: col(fg, 900);
 			opacity: 0.2;
 		}
 		&.has-label {
@@ -425,7 +430,7 @@
 				opacity: 0.5;
 				top: 0em;
 				padding-block: 0;
-				font-size: clamp(10px, 0.5em, 24px);
+				font-size: clamp(12px, 0.5em, 24px);
 			}
 			.prefix,
 			.suffix {
@@ -443,7 +448,7 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover,
 		&.focused {
-			color: col(fg, 700);
+			color: col(fg, 300);
 			background: transparent;
 			.outline {
 				opacity: 0.5;
@@ -451,7 +456,7 @@
 		}
 		&.focused {
 			outline: none;
-			color: col(fg, 900);
+			color: col(fg, 100);
 			.outline {
 				opacity: 1;
 			}

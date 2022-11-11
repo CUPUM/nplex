@@ -9,7 +9,18 @@
 
  -->
 <script lang="ts" context="module">
-	import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+	const CTX_KEY = 'map-draw-context';
+
+	type MapDrawModeKey = keyof MapboxDraw.Modes | 'draw_circle';
+
+	interface MapDrawContext {
+		getMapDraw: () => MapboxDraw;
+		currentMode: Readable<MapDrawModeKey>;
+	}
+
+	export function getMapDrawContext() {
+		return getContext<MapDrawContext>(CTX_KEY);
+	}
 </script>
 
 <script lang="ts">
@@ -26,17 +37,16 @@
 	} from '@mapbox/mapbox-gl-draw';
 	import MapboxDraw from '@mapbox/mapbox-gl-draw';
 	import * as MapboxDrawGeodesic from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
-	import { createEventDispatcher, onDestroy } from 'svelte';
+	import { createEventDispatcher, getContext, onDestroy, setContext } from 'svelte';
+	import { writable, type Readable } from 'svelte/store';
 	import { getMapContext } from './Map.svelte';
 
-	export let position: 'top-left' | 'top-right' | undefined = undefined;
+	export let modes: typeof MapboxDraw.modes = MapboxDraw.modes;
 
 	export const draw: MapboxDraw = new MapboxDraw({
-		controls: {
-			trash: false,
-		},
-		modes: MapboxDrawGeodesic.enable(MapboxDraw.modes),
-		defaultMode: 'draw_circle',
+		displayControlsDefault: false,
+		modes: MapboxDrawGeodesic.enable(modes),
+		// styles: [],
 	});
 
 	const mapContext = getMapContext();
@@ -52,10 +62,19 @@
 		render: DrawRenderEvent;
 		actionable: DrawActionableEvent;
 	}>();
+	const currentMode = writable<MapDrawModeKey>();
 
-	map?.addControl(draw as any, position);
+	if (map) {
+		map.addControl(draw as any);
+		map.on('draw.modechange', (e) => {
+			currentMode.set(e.mode);
+		});
+	}
 
-	console.log(map?.getContainer());
+	setContext<MapDrawContext>(CTX_KEY, {
+		getMapDraw: () => draw,
+		currentMode: { subscribe: currentMode.subscribe },
+	});
 
 	// To do: add reactive check to see if keybindings are enabled or not on the map.
 	map?.getContainer().addEventListener('keydown', (e) => {
@@ -81,6 +100,4 @@
 	});
 </script>
 
-<!-- {#if name}
-	<input type="hidden" {name} {id} />
-{/if} -->
+<slot><!-- optional fallback --></slot>

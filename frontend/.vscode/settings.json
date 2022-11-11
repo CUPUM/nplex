@@ -6,7 +6,7 @@
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"files.associations": { "*.svx": "markdown", "*.json": "jsonc" },
 	"editor.codeActionsOnSave": {
-		"source.organizeImports": false,
+		"source.organizeImports": true,
 		"source.fixAll": true
 	},
 	/**

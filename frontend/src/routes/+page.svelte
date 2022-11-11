@@ -1,18 +1,41 @@
 <script lang="ts">
-	import { flyRotate, reveal } from '$actions/reveal';
+	import { intersection } from '$actions/intersection';
+	import { reveal, slipMask } from '$actions/reveal';
+	import { Theme } from '$utils/enums';
 	import type { PageData } from './$types';
+	import { navbarTheme } from './Navbar.svelte';
 	import PreviewList from './PreviewList.svelte';
 
 	export let data: PageData;
 </script>
 
-<header>
+<header
+	class="theme-dark"
+	use:intersection={{ rootMargin: '0px 0px 20px 0px' }}
+	on:enter={() => navbarTheme.set(Theme.dark)}
+	on:leave={() => navbarTheme.reset()}
+>
+	<span class="subtitle">Bienvenue sur</span>
 	<hgroup>
-		<h1 use:reveal={{ ...flyRotate, rootMargin: '0px 0px 0px' }}>
-			Bienvenue sur Nplex
-			<span>La plateforme de valorisation des petits projets exemplaires en aménagement à Montréal</span>
+		<h1
+			use:reveal={{
+				...slipMask,
+				start: {
+					opacity: '1',
+					transform: 'translateY(1em)',
+				},
+				delimiter: '',
+				stagger: (i) => 50 + i * 10,
+				easing: 'cubic-bezier(0, .5, 0, 1)',
+				duration: 2000,
+			}}
+		>
+			Nplex
 		</h1>
+		<h1 aria-hidden="true">Nplex</h1>
+		<h1 aria-hidden="true">Nplex</h1>
 	</hgroup>
+	<span class="subtitle">La plateforme de valorisation des petits projets exemplaires en aménagement à Montréal</span>
 </header>
 <PreviewList header="Projets" href="/projets" data={data.projects} let:datum>
 	<a class="project" href="/projets/{datum.id}">
@@ -42,41 +65,57 @@
 <style lang="scss">
 	header {
 		width: 100%;
+		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: 0 2rem;
-		margin-top: calc(-1 * var(--navbar-height-px, 0px));
+		padding: var(--navbar-height-px) 0 4rem 0;
+		margin: 0;
+		margin-top: var(--n-navbar-height-px);
+		background-color: col(bg, 700);
+	}
+	hgroup {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		overflow: visible;
+		padding: 0;
+		margin: 0;
+		line-height: 1;
+		align-self: flex-start;
+		transform: translateX(calc(-0.5 * var(--scroll-px))) skewX(calc(-0.01deg * var(--scroll)));
+		// font-weight: min(calc(0.75 * var(--scroll) + 500), 900);
+		letter-spacing: -1em;
+		transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
+	}
+	h1 {
+		position: relative;
+		padding: 0;
+		line-height: 1em;
+		display: block;
+		width: 100vw;
+		text-align: center;
+		flex: none;
+		margin: 0;
+		font-size: calc(36vw - 4rem);
+		font-weight: inherit;
+		color: col(fg, 300);
+		text-transform: uppercase;
+	}
 
-		hgroup {
-			display: flex;
-			align-items: center;
-			min-height: 100vh;
-			padding: 0;
-			margin: 0;
-			padding-block: 8rem;
-			margin-bottom: 8rem;
-			color: var(--color-contrast-900);
-			line-height: 1;
-			width: 100%;
-			font-size: 3rem;
-			max-width: 1200px;
-			@include mobile {
-				font-size: xx-large;
-			}
-			h1 {
-				font-weight: 500;
-
-				// font-weight: 300;
-				margin: 0;
-			}
-			span {
-				font-weight: 500;
-				color: var(--color-primary-300);
-				// font-weight: 500;
-			}
-		}
+	.subtitle {
+		// text-transform: uppercase;
+		letter-spacing: 0.5px;
+		color: col(fg, 300);
+		padding: 4rem 2rem;
+		line-height: 1.5em;
+		max-width: var(--ui-large);
+		margin: 0;
+		font-size: var(--size-medium);
+		text-align: center;
+		font-weight: 300;
+		width: 100%;
 	}
 
 	.project {

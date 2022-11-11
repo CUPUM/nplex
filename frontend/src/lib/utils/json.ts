@@ -35,3 +35,15 @@ export const ES6JSON = {
 		return value;
 	},
 };
+
+/**
+ * Some input strings represent JSON objects, but parsing them may lead to node errors if they are empty or
+ * malformatted.
+ */
+export function safeJsonParse(input: any) {
+	try {
+		return JSON.parse(input);
+	} catch (error) {
+		return null;
+	}
+}

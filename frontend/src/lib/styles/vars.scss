@@ -10,10 +10,10 @@
 );
 
 :root {
-	--ui-inset: 3px;
+	--ui-inset: 5px;
 	--ui-nest: 0;
 	--ui-nest-inset: 0px;
-	--ui-radius: 0.7em;
+	--ui-radius: 0.8em;
 	--ui-height: 3.5em;
 	--ui-pad-x: 1.25em;
 	--ui-outline: 2px solid rgba(var(--rgb-primary-500), 0.5);
@@ -23,7 +23,8 @@
 	--font-main: 'Outfit', sans-serif;
 	--font-misc: 'DM Mono', monospace;
 	--scroll-size: 4px;
-	--scroll-color: rgba(var(--rgb-bg-100), 0.2);
+	--scroll-color: var(--color-fg-900);
+	--size-x5small: 6px;
 	--size-x4small: 8px;
 	--size-x3small: 10px;
 	--size-x2small: 12px;
@@ -35,11 +36,12 @@
 	--size-x2large: 56px;
 	--size-x3large: 76px;
 	--size-x4large: 100px;
+	--size-x5large: 128px;
 }
 
 .compact {
 	--ui-inset: 0px;
-	--ui-radius: 1em;
-	--ui-height: 2em;
+	// --ui-radius: 0.8em;
+	--ui-height: 2.5em;
 	--ui-pad-x: 0.75em;
 }

@@ -15,14 +15,23 @@
 	// 	};
 	// })();
 
-	// export const backgroundColor = (function () {
-	// 	const { subscribe, set } = writable(null);
-	// 	return {
-	// 		subscribe,
-	// 		set,
-	// 		reset: () => set(null),
-	// 	};
-	// })();
+	export const navbarTheme = (function () {
+		const { subscribe, set } = writable<ValueOf<typeof Theme> | null>(null);
+		return {
+			subscribe,
+			set,
+			reset: () => set(null),
+		};
+	})();
+
+	export const navbarBackground = (function () {
+		const { subscribe, set } = writable<string | null>(null);
+		return {
+			subscribe,
+			set,
+			reset: () => set(null),
+		};
+	})();
 </script>
 
 <script lang="ts">
@@ -33,7 +42,10 @@
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
 	import { rootScroll } from '$stores/scroll';
+	import type { Theme } from '$utils/enums';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
+	import { writable } from 'svelte/store';
+	import type { ValueOf } from 'ts-essentials';
 	import { getAuthModalUrl } from './AuthModal.svelte';
 	import NavbarButton from './NavbarButton.svelte';
 	import NavbarEditMenu from './NavbarEditMenu.svelte';
@@ -61,7 +73,13 @@
 	$: rootPathname = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
 </script>
 
-<header class:hidden class:overlay bind:clientHeight={navbarHeight}>
+<header
+	class={$navbarTheme ?? ''}
+	class:hidden
+	class:overlay
+	bind:clientHeight={navbarHeight}
+	style:--navbar-bg={$navbarBackground ?? 'var(--bg)'}
+>
 	<div class="wrapper">
 		<nav class="main">
 			<NavbarButton square href="/">
@@ -114,7 +132,7 @@
 		padding: 0 1rem;
 		margin: 0;
 		font-size: small;
-		backdrop-filter: blur(8px);
+		backdrop-filter: blur(16px);
 		border-bottom: 0px solid transparent;
 		transition: transform 0.5s cubic-bezier(0.75, 0, 0, 1), border 1s ease-in-out;
 
@@ -125,11 +143,11 @@
 			height: 100%;
 			padding: 0;
 			margin: 0;
-			opacity: 0.85;
+			opacity: 0;
 			top: 0;
 			left: 0;
-			background: var(--bg, var(--color-base-300));
-			transition: all 0.15s;
+			background: var(--navbar-bg);
+			transition: all 1s ease-in-out;
 		}
 	}
 
@@ -164,7 +182,9 @@
 	}
 
 	.overlay {
-		border-bottom: 1px solid rgb(var(--rgb-contrast-100), 0.1);
+		&::before {
+			// opacity: 0.9;
+		}
 	}
 
 	.hidden {

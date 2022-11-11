@@ -7,19 +7,10 @@ import { cssModules, linearPreprocess } from 'svelte-preprocess-cssmodules';
  */
 const config = {
 	extensions: ['.svelte', '.svx'],
-	// preprocess: sveltePreprocess({
-	// 	typescript: true,
-	// 	scss: {
-	// 		renderSync: true,
-	// 		includePaths: ['src/lib/styles'],
-	// 	},
-	// 	postcss: true,
-	// }),
 	preprocess: linearPreprocess([
 		sveltePreprocess({
 			typescript: true,
 			scss: {
-				renderSync: true,
 				includePaths: ['src/lib/styles'],
 				prependData: "@import 'utils.scss';",
 			},

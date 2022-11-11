@@ -106,3 +106,47 @@ export function themeClass<T extends string>(name: T): `theme-${T}` {
 export const Theme = Object.fromEntries(Object.keys(themes).map((k) => [k, themeClass(k)])) as {
 	[K in keyof typeof themes]: `theme-${K}`;
 };
+
+/**
+ * List of CSS cursor values.
+ */
+export enum Cursor {
+	Alias = 'alias',
+	Auto = 'auto',
+	Cell = 'cell',
+	Copy = 'copy',
+	Crosshair = 'crosshair',
+	Default = 'default',
+	Grab = 'grab',
+	Grabbing = 'grabbing',
+	Help = 'help',
+	Move = 'move',
+	None = 'none',
+	Progress = 'progress',
+	Pointer = 'pointer',
+	Text = 'text',
+	URL = 'URL',
+	Wait = 'wait',
+	Initial = 'initial',
+	Inherit = 'inherit',
+	ColResize = 'col-resize',
+	ContextMenu = 'context-menu',
+	EResize = 'e-resize',
+	EWResize = 'ew-resize',
+	NResize = 'n-resize',
+	NEResize = 'ne-resize',
+	NESWResize = 'nesw-resize',
+	NSResize = 'ns-resize',
+	NWResize = 'nw-resize',
+	NWSEResize = 'nwse-resize',
+	NoDrop = 'no-drop',
+	NotAllowed = 'not-allowed',
+	RowResize = 'row-resize',
+	SResize = 's-resize',
+	SEResize = 'se-resize',
+	SWResize = 'sw-resize',
+	VerticalText = 'vertical-text',
+	WResize = 'w-resize',
+	ZoomIn = 'zoom-in',
+	ZoomOut = 'zoom-out',
+}

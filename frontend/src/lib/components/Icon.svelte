@@ -19,9 +19,9 @@
 	export let secondaryColor: string = 'currentColor';
 	export let thickness: number | string = 1.5;
 	export let scaleStroke: boolean = false;
-	export let style: string = '';
-	let className: string | undefined = undefined;
-	export { className as class };
+	export let style: string | undefined = undefined;
+	let class_: string = '';
+	export { class_ as class };
 
 	let iconRef: SVGElement;
 
@@ -34,7 +34,7 @@
 	aria-roledescription="icon-{name}"
 	preserveAspectRatio="xMidYMid"
 	viewBox={icon.viewBox}
-	class="icon {className}"
+	class="icon {class_}"
 	{style}
 	style:--secondary-color={secondaryColor}
 	style:--thickness={cssSize(thickness)}
@@ -83,22 +83,18 @@
 		width: 1em;
 		height: 1em;
 		overflow: visible;
-
 		& path {
 			fill: none;
 			stroke: none;
-
 			&.fill {
 				fill: currentColor;
 			}
-
 			&.stroke {
 				stroke: currentColor;
 				stroke-width: var(--thickness);
 				stroke-linejoin: round;
 				stroke-linecap: round;
 			}
-
 			&.secondary {
 				color: var(--secondary-color);
 			}

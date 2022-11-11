@@ -6,12 +6,10 @@ import { writable } from 'svelte/store';
  */
 export const backgroundColor = (function () {
 	const root: HTMLElement | undefined = browser ? document.documentElement ?? undefined : undefined;
-	const rootStyle = root ? getComputedStyle(root) : null;
-	const defaultBackgroundColor = rootStyle?.backgroundColor || '';
 
-	const { subscribe, set, update } = writable(defaultBackgroundColor);
+	const { subscribe, set, update } = writable<string | null>(null);
 
-	function setBackgroundColor(color: string, duration?: number) {
+	function setBg(color: string | null, duration?: number) {
 		set(color);
 		if (root) {
 			if (duration && !isNaN(duration)) {
@@ -37,7 +35,7 @@ export const backgroundColor = (function () {
 
 	return {
 		subscribe,
-		reset: (duration?: number) => setBackgroundColor(defaultBackgroundColor, duration),
-		set: (color: string, duration?: number) => setBackgroundColor(color, duration),
+		reset: (duration?: number) => setBg(null, duration),
+		set: (color: string, duration?: number) => setBg(color, duration),
 	};
 })();

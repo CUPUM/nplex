@@ -134,6 +134,7 @@
 		flex: none;
 		padding: var(--inset);
 		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
+		font-weight: 350;
 		transition: all 0.15s ease-out;
 		&.column {
 			flex-direction: column;
@@ -148,27 +149,25 @@
 	// Variants
 
 	:where(.default) {
-		color: col(fg, 700);
-		background: col(fg, 100, 0.15);
-		backdrop-filter: blur(8px);
+		color: col(fg, 300);
+		background: col(fg, 900, 0.15);
 		transition: all 0.1s ease-out;
 		.mark {
-			background: col(fg, 500);
+			background: col(fg, 100);
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			background: col(fg, 100, 0.2);
+			// background: col(fg, 900, 0.2);
 		}
 		&.temp {
-			color: col(fg, 100);
 			.mark {
-				background: col(fg, 700);
+				background: col(fg, 300);
 			}
 		}
 	}
 
 	:where(.outlined) {
-		color: col(fg, 700);
+		color: col(fg, 300);
 		background: transparent;
 		transition: all 0.1s ease-out;
 		&::before {
@@ -187,7 +186,7 @@
 			background: col(fg, 500);
 		}
 		&.temp {
-			color: col(fg, 100);
+			color: col(fg, 900);
 			.mark {
 				opacity: 0.5;
 				background: transparent;

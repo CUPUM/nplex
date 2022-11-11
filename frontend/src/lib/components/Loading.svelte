@@ -10,7 +10,7 @@
 	let className: string | undefined = undefined;
 	export { className as class };
 
-	const duration = 3;
+	const duration = 4;
 	// These shapes must contain the same amounts and types of points for the animation to work.
 	const shapes = [
 		// Circle
@@ -31,7 +31,7 @@
 	const nsteps = shapes.length + 1;
 	// const offset = Math.round(Math.random() * nsteps);
 	const keySplines = Array(nsteps - 1)
-		.fill('.8 0 0.2 1')
+		.fill('.7 0 .3 1')
 		.join(';');
 	const keyTimes = Array(nsteps)
 		.fill(null)
@@ -57,8 +57,8 @@
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
 		style:--duration="{duration}s"
-		in:scale={{ duration: 500, easing: elasticOut }}
-		out:scale={{ duration: 250, easing: expoIn }}
+		in:scale={{ duration: 500, start: 0, opacity: 1, easing: elasticOut }}
+		out:scale={{ duration: 250, start: 0, opacity: 0, easing: expoIn }}
 		width="1em"
 		height="1em"
 	>
@@ -75,6 +75,14 @@
 				begin="0s"
 				repeatCount="indefinite"
 				values={d}
+			/>
+			<animate
+				attributeType="XML"
+				calcMode="linear"
+				attributeName="stroke-dashoffset"
+				dur="1s"
+				repeatCount="indefinite"
+				values="0 100"
 			/>
 			<!-- Implement svg animation for rotation steps -->
 			<animateTransform
@@ -134,12 +142,23 @@
 		fill: currentColor;
 		stroke: currentColor;
 		stroke-width: 25px;
-		vector-effect: non-scaling-stroke;
+		// vector-effect: non-scaling-stroke;
 		fill: transparent;
-		stroke-dasharray: 3 4;
-		stroke-width: 2px;
+		stroke-dasharray: 15px 20px;
+		stroke-width: 12px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
+		transform-origin: center;
+		animation: dashoffset 4s linear infinite, slowspin 3.5s linear infinite;
+	}
+
+	@keyframes dashoffset {
+		0% {
+			stroke-dashoffset: 0;
+		}
+		100% {
+			stroke-dashoffset: -100;
+		}
 	}
 
 	@keyframes slowspin {
@@ -148,30 +167,6 @@
 		}
 		100% {
 			transform: rotate(360deg);
-		}
-	}
-
-	@keyframes spin {
-		0% {
-			transform: rotate(-90deg);
-		}
-		16.66% {
-			transform: rotate(0deg);
-		}
-		33.33% {
-			transform: rotate(90deg);
-		}
-		50% {
-			transform: rotate(180deg);
-		}
-		66.66% {
-			transform: rotate(270deg);
-		}
-		83.33% {
-			transform: rotate(360deg);
-		}
-		100% {
-			transform: rotate(450deg);
 		}
 	}
 </style>

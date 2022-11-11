@@ -34,7 +34,7 @@ export interface RevealOptions extends IntersectionObserverInit {
 	/**
 	 * Node splitter delimiter string or regex.
 	 */
-	splitDelimiter?: SplitTextOptions['delimiter'];
+	delimiter?: SplitTextOptions['delimiter'];
 	/**
 	 * Global transition delay in ms, i.e. constant offset applied to stagger's value.
 	 */
@@ -97,7 +97,7 @@ export function reveal(
 		useIntersection = true,
 		once = true,
 		show = undefined,
-		splitDelimiter = undefined,
+		delimiter = undefined,
 		delay = 0,
 		delayOut = delay,
 		duration = 300,
@@ -230,7 +230,7 @@ export function reveal(
 
 	// Split and wrap segments only if staggering.
 	if (stagger || staggerOut) {
-		nodes = splitText(element, { delimiter: splitDelimiter });
+		nodes = splitText(element, { delimiter });
 	} else {
 		nodes = [element];
 	}
@@ -397,19 +397,21 @@ function splitText(element: HTMLElement, { delimiter = '' }: SplitTextOptions = 
 				const segmentNode = document.createElement('span');
 				// segmentNode.setAttribute(SplitTextAttributes.Segment, '');
 				newNodes.push(segmentNode);
-				segment.split(delimiter).forEach((unit) => {
-					const maskNode = document.createElement('span');
-					// maskNode.style.cssText = 'position: relative; display: inline-block; transform-style: preserve-3d;';
-					segmentNode.appendChild(maskNode);
-					const contentNode = document.createElement('span');
-					maskNode.appendChild(contentNode);
-					// unitNode.setAttribute(SplitTextAttributes.Unit, '');
-					contentNode.textContent = unit;
-					// contentNode.style.cssText =
-					// 	'position: relative; display: inline-block; transform-style: preserve-3d;';
-					// unitNode.style.setProperty(SplitTextAttributes.CSSIndex, nUnits++ + '');
-					nodes.push(contentNode);
-				});
+				(delimiter instanceof RegExp ? segment.match(delimiter) ?? [] : segment.split(delimiter)).forEach(
+					(unit) => {
+						const maskNode = document.createElement('span');
+						// maskNode.style.cssText = 'position: relative; display: inline-block; transform-style: preserve-3d;';
+						segmentNode.appendChild(maskNode);
+						const contentNode = document.createElement('span');
+						maskNode.appendChild(contentNode);
+						// unitNode.setAttribute(SplitTextAttributes.Unit, '');
+						contentNode.textContent = unit;
+						// contentNode.style.cssText =
+						// 	'position: relative; display: inline-block; transform-style: preserve-3d;';
+						// unitNode.style.setProperty(SplitTextAttributes.CSSIndex, nUnits++ + '');
+						nodes.push(contentNode);
+					}
+				);
 			});
 			cn.textContent = '';
 			cn.after(...newNodes);
@@ -436,7 +438,7 @@ export const slipMask: RevealOptions = {
 	wrapEnd: {
 		clipPath: 'inset(-0.25em -0.25em 0em -0.25em)',
 	},
-	splitDelimiter: ' ',
+	delimiter: ' ',
 };
 
 /**
@@ -459,5 +461,5 @@ export const flyRotate: RevealOptions = {
 		// perspective: '100px',
 		// clipPath: 'inset(-0.25em -0.25em 0em -0.25em)',
 	},
-	splitDelimiter: ' ',
+	delimiter: ' ',
 };

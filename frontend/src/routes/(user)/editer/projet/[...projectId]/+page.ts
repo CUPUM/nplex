@@ -1,4 +1,4 @@
-import { appendMessageParam } from '$routes/MessagesOutlet.svelte';
+import { queryMessage } from '$routes/MessagesOutlet.svelte';
 import { dbClient } from '$utils/database';
 import { error, redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
@@ -18,7 +18,7 @@ export const load: PageLoad = async ({ params, fetch, parent, url }) => {
 	if (projectRes.error) {
 		throw redirect(
 			302,
-			appendMessageParam('/editer/projet', {
+			queryMessage('/editer/projet', {
 				content: `Erreur lors du chargement du projet (${JSON.stringify(projectRes.error)})`,
 				type: 'error',
 			})

@@ -1,19 +1,38 @@
+import {
+	createCircle,
+	getCircleCenter,
+	getCircleRadius,
+	isCircle,
+} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
+import { z } from 'zod';
+import { isObject } from './object';
+
 /**
  * Regroup here various methods, schema, and runtime-accessible data shapes relevant to VALIDATE and/or FORMAT/TRANSFORM
  * user inputs.
  *
  * The favored library to base validation off of is Zod: https://zod.dev/
+ *
+ * Since the data is validated bidirectionally, i.e --> DB and DB --> CLIENT, schemas should be prefixed with 'db' when
+ * they target data ORIGINATING from the db, aka data returned by a db query.
  */
 
-import { z } from 'zod';
-import { isObject } from './object';
+/**
+ * Since we are often checking against types generated from the PG DB's schemas, we need a helper to guard the creation
+ * of runtime zod schemas.
+ *
+ * Read: https://github.com/colinhacks/zod/issues/372#issuecomment-826380330.
+ */
+const schemaForType =
+	<T>() =>
+	<S extends z.ZodType<T, any, any>>(arg: S) => {
+		return arg;
+	};
 
 /**
  * Utility to validate a given point's coords in [lng, lat]
  */
 export const pointCoordsSchema = z.tuple([z.number(), z.number()]);
-
-export const lnglatToLatlng = pointCoordsSchema.transform(([lng, lat]) => [lat, lng]);
 
 /**
  * Generic Geojson geometry validation.
@@ -90,3 +109,50 @@ export const postgisGeometrySchema = geometrySchema.transform((geom) => {
 			return ``;
 	}
 });
+
+/**
+ * User-input project location schema.
+ *
+ * Z.ZodType< Pick<Database['public']['Tables']['projects']['Row'], 'location_geometry' | 'location_radius'>>
+ */
+export const projectLocationSchema = z
+	.object({
+		properties: z
+			.object({
+				circleRadius: z.number(),
+			})
+			.passthrough(),
+		geometry: z
+			.object({
+				coordinates: z.array(z.array(pointCoordsSchema)),
+				type: z.literal('Polygon'),
+			})
+			.passthrough(),
+	})
+	.transform((d) => {
+		if (isCircle(d)) {
+			const c = getCircleCenter(d);
+			const r = getCircleRadius(d) * 1000;
+			return {
+				location_geometry: `POINT(${c[1]} ${c[0]})`,
+				location_radius: r,
+			};
+		}
+		return { location_geometry: null, location_radius: null };
+	});
+
+/**
+ * DB-compliant schema of project locations.
+ */
+export const dbProjectLocationSchema = z
+	.object({
+		location_geometry: geometrySchema,
+		location_radius: z.number(),
+	})
+	.transform((d) => {
+		if (d.location_geometry.type === 'point') {
+			const c = d.location_geometry.coordinates.reverse();
+			return createCircle(c, d.location_radius / 1000);
+		}
+		return null;
+	});

@@ -5,18 +5,10 @@
 
  -->
 <script lang="ts" context="module">
-	const CTX_KEY = 'map-toolbar-context';
-
-	interface MapToolbarContext {}
-
-	export function getMapToolbarContext() {
-		return getContext<MapToolbarContext>(CTX_KEY);
-	}
 </script>
 
 <script lang="ts">
-	import { getContext, onDestroy, onMount, setContext } from 'svelte';
-	import { getMapContext } from './Map.svelte';
+	import { onDestroy, onMount } from 'svelte';
 
 	export let direction: 'row' | 'column' = 'row';
 	export let position:
@@ -29,46 +21,42 @@
 		| 'bottom'
 		| 'bottom right' = 'top';
 
-	const mapContext = getMapContext();
-
-	const map = mapContext.getMap();
-
-	setContext<MapToolbarContext>(CTX_KEY, {});
-
 	onMount(() => {});
 
 	onDestroy(() => {});
 </script>
 
-<menu class="toolbar {direction} {position}">
+<menu class="toolbar compact {direction} {position}">
 	<slot />
 </menu>
 
 <style lang="scss">
 	.toolbar {
 		--margin: 1em;
-		--padding: 5px;
+		--pad: 3px;
 		--x: 0;
 		--y: 0;
-		font-size: var(--size-xsmall);
+		font-size: var(--size-small);
 		position: absolute;
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 		margin: var(--margin);
-		padding: var(--padding);
-		background: var(--color-base-100);
-		border-radius: calc(var(--ui-radius) + var(--padding));
+		padding: var(--pad);
+		background: col(bg, 100);
+		border-radius: calc(var(--ui-radius) + var(--pad));
 		max-width: calc(100% - 2 * var(--margin));
 		opacity: 0;
+		gap: var(--pad);
 		transform: translate(var(--x), var(--y));
 		transition: all 0.25s cubic-bezier(0.25, 0, 0.5, 1);
 		:global(hr) {
-			width: 75%;
-			margin-inline: 0.5em;
-			background: var(--color-dark-100);
-			padding: 0.5px;
 			border: none;
-			opacity: 0.1;
+			margin-inline: var(--pad);
+			width: 50%;
+			padding: 0.5px;
+			background: col(fg, 100, 0.05);
+			align-self: stretch;
 		}
 	}
 
@@ -88,22 +76,22 @@
 	}
 
 	.top {
-		--y: -0.25em;
+		--y: -4px;
 		top: 0;
 	}
 
 	.bottom {
-		--y: 0.25em;
+		--y: 4px;
 		bottom: 0;
 	}
 
 	.left {
-		--x: -0.25em;
+		--x: -4px;
 		left: 0;
 	}
 
 	.right {
-		--x: 0.25em;
+		--x: 4px;
 		right: 0;
 	}
 </style>

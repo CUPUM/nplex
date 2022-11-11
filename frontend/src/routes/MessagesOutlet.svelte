@@ -7,6 +7,7 @@
 <script lang="ts" context="module">
 	import { writable } from 'svelte/store';
 	import type { Newable } from 'ts-essentials';
+	import { z } from 'zod';
 
 	type Message<T = string | SvelteComponentTyped> = {
 		content: T extends string
@@ -21,11 +22,11 @@
 		type?: 'error' | 'success' | 'default';
 	};
 
-	export function isUrlMessage(arg: any): arg is Message<string> {
-		return (
-			typeof arg === 'object' && typeof arg.content === 'string' && (!arg.timer || typeof arg.timer === 'number')
-		);
-	}
+	const queryMessageSchema: z.ZodType<Message<string>> = z.object({
+		content: z.string(),
+		timer: z.number().optional(),
+		type: z.union([z.literal('error'), z.literal('success'), z.literal('default')]).optional(),
+	});
 
 	const defaultMessage: Message<string> = {
 		content: '',
@@ -94,13 +95,10 @@
 		};
 	})();
 
-	export function appendMessageParam(url: string, ...messages: Message[]): string;
-	export function appendMessageParam(url: URL, ...messages: Message[]): URL;
-	export function appendMessageParam(url: RelativeURL, ...messages: Message[]): RelativeURL;
-	export function appendMessageParam(
-		url: string | URL | RelativeURL,
-		...messages: Message[]
-	): string | URL | RelativeURL {
+	export function queryMessage(url: string, ...messages: Message[]): string;
+	export function queryMessage(url: URL, ...messages: Message[]): URL;
+	export function queryMessage(url: RelativeURL, ...messages: Message[]): RelativeURL;
+	export function queryMessage(url: string | URL | RelativeURL, ...messages: Message[]): string | URL | RelativeURL {
 		const newURL = url instanceof URL && !(url instanceof RelativeURL) ? new URL(url) : new RelativeURL(url);
 		messages.forEach((m) => {
 			newURL.searchParams.append(SearchParam.Message, JSON.stringify(m));
@@ -113,11 +111,12 @@
 	import { afterNavigate, goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Icon from '$components/Icon.svelte';
+	import { transform } from '$transitions/transform';
 	import { SearchParam } from '$utils/enums';
 	import { RelativeURL } from '$utils/url';
 	import type { ComponentProps, SvelteComponentTyped } from 'svelte';
 	import { flip } from 'svelte/animate';
-	import { expoOut } from 'svelte/easing';
+	import { expoInOut, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
 	function closeMessage(e: MouseEvent, message: Message) {
@@ -132,15 +131,17 @@
 
 	afterNavigate(({ from, to }) => {
 		if (!to || !to.url.searchParams.has(SearchParam.Message)) return;
-		const urlMessages = to?.url.searchParams.getAll(SearchParam.Message).reduce((acc, m) => {
-			const parsed = JSON.parse(m);
-			return isUrlMessage(parsed) ? [...acc, parsed] : acc;
+		const q = to.url.searchParams.getAll(SearchParam.Message).reduce((acc, m) => {
+			const json = JSON.parse(m);
+			const parsed = queryMessageSchema.safeParse(json);
+			if (parsed.success) acc.push(parsed.data);
+			return acc;
 		}, [] as Message[]);
-		if (urlMessages.length) {
-			messages.dispatch(...urlMessages);
-			const clearedUrl = new RelativeURL($page.url);
-			clearedUrl.searchParams.delete(SearchParam.Message);
-			goto(clearedUrl.toString(), { replaceState: true });
+		if (q.length) {
+			messages.dispatch(...q);
+			const o = $page.url.searchParams;
+			o.delete(SearchParam.Message);
+			goto('?' + o.toString(), { replaceState: true });
 		}
 	});
 </script>
@@ -149,8 +150,8 @@
 	{#each $messages as message (message)}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<dialog
-			in:scale|local={{ start: 0.8, opacity: 0, duration: 350, easing: expoOut }}
-			out:scale|local={{ start: 0.9, opacity: 0, duration: 250, easing: expoOut }}
+			in:transform|local={{ translateY: 8, scale: 0.95, opacity: 0, duration: 350, easing: expoOut }}
+			out:scale|local={{ start: 0.9, opacity: 0, duration: 150, easing: expoInOut }}
 			animate:flip={{ duration: 350, easing: expoOut }}
 			class={message.type}
 			on:click|once={(e) => cancelTimer(e, message)}
@@ -200,7 +201,7 @@
 
 	dialog {
 		--inset: var(--ui-inset);
-		font-size: var(--size-medium);
+		font-size: var(--size-small);
 		pointer-events: all;
 		position: relative;
 		max-width: 50ch;
@@ -211,7 +212,7 @@
 		padding: var(--inset);
 		border: none;
 		border-radius: var(--ui-radius);
-		box-shadow: 0 1.5em 2em -0.5em rgba(0, 0, 40, 0.15);
+		box-shadow: 0 1em 2em -0.75em rgba(0, 20, 40, 0.25);
 		background: white;
 	}
 
@@ -229,11 +230,12 @@
 		aspect-ratio: 1 / 1;
 		position: absolute;
 		left: calc(100% + 0.5em);
-		background: var(--color-base-300);
+		color: col(fg, 100);
+		background: col(bg, 300);
 		transition: all 0.1s;
 
 		&:hover {
-			background: var(--color-base-900);
+			background: col(bg, 000);
 		}
 	}
 
@@ -275,11 +277,11 @@
 	}
 
 	.error {
-		background: var(--color-error-500);
-		color: var(--color-base-100);
+		background: col(error, 700);
+		color: col(bg, 700);
 
 		& .progress {
-			background: var(--color-error-900);
+			background: col(error, 900);
 		}
 	}
 

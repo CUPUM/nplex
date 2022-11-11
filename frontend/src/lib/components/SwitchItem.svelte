@@ -82,10 +82,12 @@
 	.disabled {
 		pointer-events: none;
 	}
-
 	.slot {
 		padding: 0 var(--ui-pad-x);
 		padding-bottom: calc(0.5em - 0.5ex);
+	}
+	.current .slot {
+		animation: press 0.25s ease-in-out;
 	}
 
 	// Variants
@@ -93,24 +95,24 @@
 	:global(.default) > :where(.switch-item) {
 		color: currentColor;
 		&:hover {
-			color: col(bg, 700);
+			color: col(bg, 500);
 		}
 		&.current {
 			cursor: default;
-			color: col(bg, 500);
+			color: col(bg, 700);
 		}
 	}
 	:global(.default.temp) > :where(.switch-item) {
 		&.current {
-			color: col(fg, 900);
-			background: col(fg, 100, 0.15);
+			color: col(fg, 100);
+			background: col(fg, 500, 0.25);
 		}
 	}
 
 	:global(.outlined) > :where(.switch-item) {
 		color: currentColor;
 		&:hover {
-			color: col(fg, 900);
+			color: col(fg, 100);
 		}
 		&.current {
 			cursor: default;
@@ -119,8 +121,8 @@
 	}
 	:global(.outlined.temp) > :where(.switch-item) {
 		&.current {
-			color: col(fg, 900);
-			background: col(fg, 100, 0.15);
+			color: col(fg, 100);
+			background: col(fg, 900, 0.15);
 		}
 	}
 </style>

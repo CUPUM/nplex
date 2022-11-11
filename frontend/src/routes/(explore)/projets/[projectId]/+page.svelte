@@ -11,7 +11,7 @@
 <article>
 	<header>
 		<img src="https://picsum.photos/seed/{data.project.id}/800/1000" alt="" />
-		<h1 use:reveal={{ ...slipMask, splitDelimiter: '', stagger: (i) => 50 + 2 * i }}>{data.project.title}</h1>
+		<h1 use:reveal={{ ...slipMask, delimiter: '', stagger: (i) => 50 + 2 * i }}>{data.project.title}</h1>
 	</header>
 </article>
 <aside class="border-top">

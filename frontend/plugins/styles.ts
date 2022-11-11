@@ -1,6 +1,5 @@
 import { colord } from 'colord';
 import { writeFile } from 'fs';
-import { resolve } from 'path';
 import prettier from 'prettier';
 import type { Plugin } from 'vite';
 import { themeClass } from '../src/lib/utils/enums';
@@ -16,7 +15,7 @@ export type Themes = {
 			[shade in '000' | '100' | '300' | '500' | '700' | '900']: string;
 		};
 	} & {
-		[color in 'primary' | 'secondary' | 'tertiary' | 'success' | 'error']: {
+		[color in 'primary' | 'secondary' | 'success' | 'error']: {
 			[shade in '100' | '300' | '500' | '700' | '900']: string;
 		};
 	};

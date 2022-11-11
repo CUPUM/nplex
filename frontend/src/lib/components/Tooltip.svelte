@@ -1,6 +1,7 @@
 <!-- 
 	@component
 	Attaches a tooltip element to the last HTML element passed through the component's default slot.
+
  -->
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
@@ -137,14 +138,14 @@
 		flex: none;
 		position: absolute;
 		white-space: nowrap;
-		font-weight: 400;
-		padding: 0.5em 1.2em 0.7em 1.2em;
+		font-weight: 300;
+		padding: 0.8em 1.2em 1em 1.2em;
 		margin: 0;
-		background: var(--color-contrast-900);
-		color: var(--color-base-700);
-		box-shadow: 0 0.5em 1.5em -0.75em rgba(0, 0, 0, 0.5);
-		border-radius: 0.75em;
-		letter-spacing: 0.25px;
+		background: col(fg, 100);
+		color: col(bg, 700);
+		box-shadow: 0 0.5em 1.5em -0.5em rgba(0, 10, 20, 0.5);
+		border-radius: 0.5em;
+		letter-spacing: 0.2px;
 	}
 
 	svg {
@@ -158,36 +159,30 @@
 	}
 
 	path {
-		fill: var(--color-contrast-900);
+		fill: col(fg, 100);
 	}
 
 	.top {
 		top: var(--y);
 		left: var(--x);
 		width: var(--w);
-
 		& span {
 			transform-origin: center bottom;
 			bottom: var(--distance);
 		}
-
 		& svg {
 			bottom: 0;
 			left: 50%;
 			transform: translate(-50%, 100%);
 		}
-
 		&.start {
 			justify-content: flex-start;
-
 			& span {
 				transform-origin: left bottom;
 			}
 		}
-
 		&.end {
 			justify-content: flex-end;
-
 			& span {
 				transform-origin: right bottom;
 			}
@@ -198,31 +193,40 @@
 		top: calc(var(--y) + var(--h));
 		left: var(--x);
 		width: var(--w);
-
 		& span {
 			transform-origin: center top;
 			top: var(--distance);
 		}
-
 		& svg {
 			top: 0;
 			left: 50%;
 			transform: translate(-50%, -100%) rotate(180deg);
 		}
-
 		&.start {
 			justify-content: flex-start;
-
 			& span {
 				transform-origin: left top;
 			}
 		}
-
 		&.end {
 			justify-content: flex-end;
-
 			& span {
 				transform-origin: right top;
+			}
+		}
+	}
+
+	.top,
+	.bottom {
+		--tip-pad: calc(0.5 * var(--w));
+		&.start {
+			& svg {
+				left: var(--tip-pad);
+			}
+		}
+		&.end {
+			& svg {
+				left: calc(100% - var(--tip-pad));
 			}
 		}
 	}
@@ -231,26 +235,21 @@
 		top: var(--y);
 		left: calc(var(--x) + var(--w));
 		height: var(--h);
-
 		& span {
 			transform-origin: left center;
 			left: var(--distance);
 		}
-
 		& svg {
 			left: 0;
 			top: 50%;
 			transform: translate(-100%, -50%) rotate(90deg);
 		}
-
 		&.start {
 			align-items: flex-start;
-
 			& span {
 				transform-origin: left top;
 			}
 		}
-
 		&.end {
 			align-items: flex-end;
 
@@ -264,31 +263,40 @@
 		top: var(--y);
 		left: var(--x);
 		height: var(--h);
-
 		& span {
 			transform-origin: right center;
 			right: var(--distance);
 		}
-
 		& svg {
 			right: 0;
 			top: 50%;
 			transform: translate(100%, -50%) rotate(-90deg);
 		}
-
 		&.start {
 			align-items: flex-start;
-
 			& span {
 				transform-origin: right top;
 			}
 		}
-
 		&.end {
 			align-items: flex-end;
-
 			& span {
 				transform-origin: right bottom;
+			}
+		}
+	}
+
+	.left,
+	.right {
+		--tip-pad: calc(0.5 * var(--w));
+		&.start {
+			& svg {
+				top: var(--tip-pad);
+			}
+		}
+		&.end {
+			& svg {
+				top: calc(100% - var(--tip-pad));
 			}
 		}
 	}
