@@ -18,7 +18,7 @@
 		<h2 use:reveal={{ ...slipMask, stagger: 25, delimiter: '' }}>{header}</h2>
 		<div class="button-wrapper">
 			<Button class="hover-target" variant="ghost">
-				Explorer plus
+				Explorer
 				<Icon name="arrow-right" slot="trailing" />
 			</Button>
 		</div>
@@ -48,15 +48,15 @@
 		width: 100%;
 		max-width: 1200px;
 		margin: 0 auto;
-		color: var(--color-contrast-900);
-		transition: all 0.15s ease-in-out;
+		color: col(fg, 300);
+		// transition: all 0.1s ease-out;
 		@include tablet {
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
 		}
 		&:hover {
-			color: var(--color-primary-500);
+			color: col(fg, 500);
 			// background: rgb(var(--rgb-primary-100), 0.1);
 		}
 	}

@@ -46,8 +46,8 @@
 	export let pattern: RegExp | undefined = undefined; // Figure out how to make work with ozd validators...
 	export let dirty: boolean = false;
 	export let tabindex: number = 0;
-	let className: string = '';
-	export { className as class };
+	let class_: string = '';
+	export { class_ as class };
 	export let style: string | undefined = undefined;
 	export function focus() {
 		inputRef.focus();
@@ -110,7 +110,7 @@
 
 <div
 	bind:this={fieldRef}
-	class="field nest {variant} {className}"
+	class="field nest {variant} {class_}"
 	{style}
 	class:compact
 	class:warning

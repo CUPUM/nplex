@@ -114,7 +114,7 @@
 </div>
 
 <style lang="scss">
-	.loading {
+	:where(.loading) {
 		user-select: none;
 		pointer-events: none;
 		position: absolute;
@@ -141,15 +141,14 @@
 	.path {
 		fill: currentColor;
 		stroke: currentColor;
-		stroke-width: 25px;
 		// vector-effect: non-scaling-stroke;
 		fill: transparent;
-		stroke-dasharray: 15px 20px;
-		stroke-width: 12px;
+		stroke-dasharray: 16px 14px;
+		stroke-width: 9px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		transform-origin: center;
-		animation: dashoffset 4s linear infinite, slowspin 3.5s linear infinite;
+		animation: dashoffset 1s linear infinite, slowspin 3.5s linear infinite;
 	}
 
 	@keyframes dashoffset {

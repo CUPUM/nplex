@@ -95,18 +95,18 @@
 		try {
 			switch (currentAction) {
 				case Action.EmailSignIn:
-					const signin = await dbClient.forBrowser.auth.signInWithPassword({ email, password });
+					const signin = await dbClient.browser.auth.signInWithPassword({ email, password });
 					if (signin.error) {
 						throw signin.error;
 					}
 					break;
 				case Action.EmailSignUp:
-					const signup = await dbClient.forBrowser.auth.signUp({ email, password });
+					const signup = await dbClient.browser.auth.signUp({ email, password });
 					if (signup.error) {
 						throw signup.error;
 					}
 				case Action.ResetPassword:
-					const res = await dbClient.forBrowser.auth.resetPasswordForEmail(email, {});
+					const res = await dbClient.browser.auth.resetPasswordForEmail(email, {});
 					console.log(res);
 				case Action.UseProvider:
 					// To do: get app approbation from desired providers.

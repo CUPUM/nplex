@@ -8,7 +8,8 @@
 	export let current: boolean | undefined = undefined;
 	export let cta: boolean | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
-	export let square: boolean | undefined = undefined;
+	export let equi: boolean | undefined = undefined;
+	export let active: boolean | undefined = undefined;
 </script>
 
 <svelte:element
@@ -16,8 +17,9 @@
 	class="navbar-button"
 	class:cta
 	class:current
+	class:active
 	class:disabled
-	class:square
+	class:equi
 	aria-disabled={disabled}
 	{href}
 >
@@ -66,7 +68,7 @@
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:global(:not(.current)):hover {
-			color: col(primary, 500);
+			color: col(primary, 700);
 			background: col(primary, 100, 0.2);
 			&::after {
 				opacity: 1;
@@ -77,12 +79,12 @@
 			}
 		}
 		&:active,
-		&:global(.active) {
+		&.active {
 			color: col(primary, 900);
 			background: col(primary, 100, 0.25);
 		}
 		&.current {
-			color: col(primary, 700);
+			color: col(primary, 700, 0.8);
 			&::after {
 				opacity: 1;
 				height: 4px;
@@ -103,7 +105,7 @@
 		opacity: 0.25;
 		transform: scale(0.98);
 	}
-	.square {
+	.equi {
 		aspect-ratio: 1;
 		padding: 0;
 		border-radius: 50%;
@@ -114,11 +116,13 @@
 
 	// Call-to-action variant
 	.cta {
+		// color: rgb(220, 225, 230);
 		color: col(bg, 500);
 		background: col(primary, 500);
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:global(:not(.active)):hover {
-			color: col(bg, 000);
+			// color: white;
+			color: col(bg, 100);
 			background: col(primary, 700);
 			box-shadow: 0 0.5em 1em -0.5em col(primary, 300);
 		}

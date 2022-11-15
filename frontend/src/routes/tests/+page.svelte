@@ -2,25 +2,24 @@
 </script>
 
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import Badge from '$components/Badge.svelte';
 	import Button from '$components/Button.svelte';
-	import ButtonGroup from '$components/ButtonGroup.svelte';
 	import Field from '$components/Field.svelte';
-	import FieldIcon from '$components/FieldIcon.svelte';
-	import Icon from '$components/Icon.svelte';
-	import Switch from '$components/Switch.svelte';
-	import SwitchItem from '$components/SwitchItem.svelte';
-	import TextArea from '$components/TextArea.svelte';
-	import { documentTheme } from '$stores/documentTheme';
-	import type { ComponentProps } from 'svelte';
-	import { flip } from 'svelte/animate';
+	import Tooltip from '$components/Tooltip.svelte';
 
 	let group = '1';
 </script>
 
 <article>
-	<section>
+	<Field>
+		<Button slot="leading">Test</Button>
+		<Tooltip message="some tooltip!" slot="trailing">
+			<Button>With tooltip!</Button>
+		</Tooltip>
+	</Field>
+	<Tooltip message="some tooltip!" place="right">
+		<Button>With tooltip!</Button>
+	</Tooltip>
+	<!-- <section>
 		{$documentTheme}
 		<input type="radio" name="" value="theme-light" bind:group={$documentTheme} id="" />
 		<input type="radio" name="" value="theme-dark" bind:group={$documentTheme} id="" />
@@ -48,7 +47,7 @@
 				</svelte:fragment>
 			</Field>
 		{/each}
-	</section>
+	</section> -->
 </article>
 
 <style lang="scss" module>

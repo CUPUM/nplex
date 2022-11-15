@@ -37,8 +37,10 @@
 	}
 </script>
 
-<Button equi variant="ghost" {...typedProps} {active} on:click={setMode}>
-	<Icon name="path-circle" />
+<Button equi={!$$slots.default || typedProps.equi} variant="ghost" {...typedProps} {active} on:click={setMode}>
+	<slot>
+		<Icon name="pin" />
+	</slot>
 </Button>
 
 <style lang="scss">

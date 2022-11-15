@@ -8,6 +8,7 @@
 </script>
 
 <slot />
+<hr class="dashed" />
 <article id="entries">
 	<h2>Fiches éditables</h2>
 	<EditablesList title="Mes fiches de projet" data={data.projects} let:datum>

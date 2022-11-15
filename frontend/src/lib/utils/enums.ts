@@ -150,3 +150,43 @@ export enum Cursor {
 	ZoomIn = 'zoom-in',
 	ZoomOut = 'zoom-out',
 }
+
+/**
+ * Layer ids used internally by Mapbox-gl-draw.
+ */
+export const MapDrawLayerId = {
+	Hot: {
+		PolygonFillActive: 'gl-draw-polygon-fill-active.hot',
+		PolygonFillInactive: 'gl-draw-polygon-fill-inactive.hot',
+		PolygonMidpoint: 'gl-draw-polygon-midpoint.hot',
+		PolygonStrokeActive: 'gl-draw-polygon-stroke-active.hot',
+		PolygonStrokeInactive: 'gl-draw-polygon-stroke-inactive.hot',
+		LineActive: 'gl-draw-line-active.hot',
+		LineInactive: 'gl-draw-line-inactive.hot',
+		VertexInactive: 'gl-draw-polygon-and-line-vertex-inactive.hot',
+		VertexStrokeInactive: 'gl-draw-polygon-and-line-vertex-stroke-inactive.hot',
+		PointActive: 'gl-draw-point-active.hot',
+		PointInactive: 'gl-draw-point-inactive.hot',
+		PointStrokeActive: 'gl-draw-point-stroke-active.hot',
+		PointStrokeInactive: 'gl-draw-point-point-stroke-inactive.hot',
+	},
+	Cold: {
+		PolygonFillActive: 'gl-draw-polygon-fill-active.cold',
+		PolygonFillInactive: 'gl-draw-polygon-fill-inactive.cold',
+		PolygonMidpoint: 'gl-draw-polygon-midpoint.cold',
+		PolygonStrokeActive: 'gl-draw-polygon-stroke-active.cold',
+		PolygonStrokeInactive: 'gl-draw-polygon-stroke-inactive.cold',
+		LineActive: 'gl-draw-line-active.cold',
+		LineInactive: 'gl-draw-line-inactive.cold',
+		VertexInactive: 'gl-draw-polygon-and-line-vertex-inactive.cold',
+		VertexStrokeInactive: 'gl-draw-polygon-and-line-vertex-stroke-inactive.cold',
+		PointActive: 'gl-draw-point-active.cold',
+		PointInactive: 'gl-draw-point-inactive.cold',
+		PointStrokeActive: 'gl-draw-point-stroke-active.cold',
+		PointStrokeInactive: 'gl-draw-point-point-stroke-inactive.cold',
+		// PolygonFillStatic: 'gl-draw-polygon-fill-static.hot',
+		// PolygonStrokeStatic: 'gl-draw-polygon-stroke-static.hot',
+		// LineStatic: 'gl-draw-line-static.hot',
+		// PointStatic: 'gl-draw-point-static.hot',
+	},
+} as const;

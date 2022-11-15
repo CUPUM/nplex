@@ -26,14 +26,14 @@
 	onDestroy(() => {});
 </script>
 
-<menu class="toolbar compact {direction} {position}">
+<menu class="toolbar nest compact {direction} {position}">
 	<slot />
 </menu>
 
 <style lang="scss">
 	.toolbar {
 		--margin: 1em;
-		--pad: 3px;
+		--inset: 3px;
 		--x: 0;
 		--y: 0;
 		font-size: var(--size-small);
@@ -42,17 +42,17 @@
 		flex-direction: row;
 		align-items: center;
 		margin: var(--margin);
-		padding: var(--pad);
+		padding: var(--inset);
 		background: col(bg, 100);
-		border-radius: calc(var(--ui-radius) + var(--pad));
+		border-radius: var(--ui-radius);
 		max-width: calc(100% - 2 * var(--margin));
 		opacity: 0;
-		gap: var(--pad);
+		gap: 1px;
 		transform: translate(var(--x), var(--y));
-		transition: all 0.25s cubic-bezier(0.25, 0, 0.5, 1);
+		transition: all 0.5s 0.3s cubic-bezier(0.25, 0, 0.5, 1);
 		:global(hr) {
 			border: none;
-			margin-inline: var(--pad);
+			margin-inline: var(--inset);
 			width: 50%;
 			padding: 0.5px;
 			background: col(fg, 100, 0.05);
@@ -64,7 +64,7 @@
 		flex-direction: column;
 		max-height: calc(100% - 2 * var(--margin));
 		:global(hr) {
-			margin-block: 0.5em;
+			margin-block: var(--inset);
 			margin-inline: auto;
 			height: 1px;
 		}
@@ -73,25 +73,26 @@
 	:global(figure):hover > :global(*) > .toolbar {
 		opacity: 1;
 		transform: translate(0);
+		transition: all 0.15s cubic-bezier(0.25, 0, 0.5, 1);
 	}
 
 	.top {
-		--y: -4px;
+		--y: -3px;
 		top: 0;
 	}
 
 	.bottom {
-		--y: 4px;
+		--y: 3px;
 		bottom: 0;
 	}
 
 	.left {
-		--x: -4px;
+		--x: -3px;
 		left: 0;
 	}
 
 	.right {
-		--x: 4px;
+		--x: 3px;
 		right: 0;
 	}
 </style>

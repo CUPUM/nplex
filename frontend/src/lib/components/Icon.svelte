@@ -19,11 +19,13 @@
 	export let secondaryColor: string = 'currentColor';
 	export let thickness: number | string = 1.5;
 	export let scaleStroke: boolean = false;
+	export let delay: number = 0;
 	export let style: string | undefined = undefined;
 	let class_: string = '';
 	export { class_ as class };
 
 	let iconRef: SVGElement;
+	let initDelay = delay;
 
 	$: icon = icons[name];
 </script>
@@ -49,11 +51,12 @@
 				easing: cubicOut,
 			}}
 			out:transform|local={{ scale: 0.75, rotateZ: -30, translateY: 20, duration: 150, easing: cubicIn }}
+			on:introstart={() => (initDelay = 0)}
 		>
 			{#each icon.paths as path, i}
 				{#if path.fill}
 					<path
-						in:fade={{ delay: i * 50, duration: 400 }}
+						in:fade={{ delay: initDelay + i * 50, duration: 400 }}
 						class="fill"
 						class:secondary={path.type === 'secondary'}
 						d={path.d}
@@ -61,7 +64,7 @@
 				{/if}
 				{#if path.stroke}
 					<path
-						in:draw={{ delay: i * 50, duration: 400 }}
+						in:draw={{ delay: initDelay + i * 50, duration: 400 }}
 						class="stroke"
 						class:secondary={path.type === 'secondary'}
 						vector-effect={scaleStroke ? '' : 'non-scaling-stroke'}

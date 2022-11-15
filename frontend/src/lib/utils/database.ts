@@ -14,7 +14,7 @@ export const dbClient = {
 	/**
 	 * Init a client-side supabase client instance to listen to auth state changes and more. //
 	 */
-	forBrowser: createClient<DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+	browser: createClient<DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		auth: {
 			persistSession: true,
 			autoRefreshToken: true,
@@ -24,7 +24,7 @@ export const dbClient = {
 	 * Db client instanciator to use on a per-request basis for server-side authed requests without unnecessary admin
 	 * privileges.
 	 */
-	createForServer: (accessToken?: string) => {
+	server: (accessToken?: string) => {
 		return createClient<DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 			auth: {
 				persistSession: false,
@@ -43,8 +43,8 @@ export const dbClient = {
 	 * if the query runs from server or browser.
 	 */
 	getForContext: (accessToken?: string) => {
-		if (browser) return dbClient.forBrowser;
-		return dbClient.createForServer(accessToken);
+		if (browser) return dbClient.browser;
+		return dbClient.server(accessToken);
 	},
 };
 

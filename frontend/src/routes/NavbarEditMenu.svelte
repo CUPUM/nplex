@@ -19,14 +19,15 @@
 </script>
 
 <div class="creation-cards">
-	{#each creationRoutes as r}
+	{#each creationRoutes as r, i}
 		<Button
 			variant="ghost"
 			href={r.pathname}
 			active={$page.url.pathname.startsWith(r.pathname)}
 			loading={!!loading && loading.startsWith(r.pathname)}
+			disabled={r.disabled}
 		>
-			<Icon name="pen" slot="leading" />
+			<Icon name="pen" slot="leading" delay={i * 50} />
 			{r.title}
 		</Button>
 		<!-- <a class="card button-parent" href={r.pathname}>

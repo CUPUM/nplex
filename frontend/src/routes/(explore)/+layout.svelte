@@ -16,11 +16,11 @@
 			<section>
 				<Field type="search" placeholder="Chercher">
 					<svelte:fragment slot="leading">
-						<Button square variant="ghost"><Icon name="parameters" /></Button>
+						<Button equi variant="ghost"><Icon name="parameters" /></Button>
 						<FieldIcon name="search" />
 					</svelte:fragment>
 					<svelte:fragment slot="trailing">
-						<Button square><Icon name="arrow-right" /></Button>
+						<Button equi><Icon name="arrow-right" /></Button>
 					</svelte:fragment>
 				</Field>
 			</section>

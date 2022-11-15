@@ -7,7 +7,7 @@
 	padding: 0;
 	margin: 0;
 	font-family: var(--font-main);
-	color: col(fg, 100);
+	color: col(fg, 300);
 	font-size: medium;
 	font-weight: 400;
 	accent-color: col(primary, 500);
@@ -46,6 +46,35 @@ a:active,
 a:hover {
 	text-decoration: unset;
 	color: unset;
+}
+
+form,
+fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+	min-width: 0;
+	margin-inline-start: 0;
+	margin-inline-end: 0;
+	padding-block-start: 0;
+	padding-inline-start: 0;
+	padding-inline-end: 0;
+	padding-block-end: 0;
+	min-inline-size: 0;
+}
+
+hr.dashed {
+	height: 1px;
+	margin: 2rem 4rem;
+	background-image: linear-gradient(
+		90deg,
+		col(fg, 100, 0.25),
+		col(fg, 100, 0.25) 25%,
+		transparent 25%,
+		transparent 100%
+	);
+	background-size: 16px 1.5px;
+	border: none;
 }
 
 input[type='search']::-ms-clear,

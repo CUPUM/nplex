@@ -23,7 +23,7 @@
 
 <script lang="ts">
 	import { getContext, onMount, setContext } from 'svelte';
-	import { expoOut } from 'svelte/easing';
+	import { cubicInOut } from 'svelte/easing';
 	import { writable, type Writable } from 'svelte/store';
 	import { scale } from 'svelte/transition';
 
@@ -110,7 +110,7 @@
 >
 	{#if mark || tempMark}
 		<div
-			transition:scale|local={{ duration: 150, start: 0.5, opacity: 0, easing: expoOut }}
+			transition:scale|local={{ duration: 150, start: 0.9, opacity: 0, easing: cubicInOut }}
 			class="mark"
 			class:temp={tempMark}
 			style={markBox}

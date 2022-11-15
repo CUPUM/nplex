@@ -4,9 +4,8 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
-
 	import { getMapContext } from '$components/Map.svelte';
-	import { colors } from '$utils/themes';
+	import { themes } from '$utils/themes';
 	import type { PageData } from '.svelte-kit/types/src/routes/$types';
 	import type { MapLayerMouseEvent } from 'maplibre-gl';
 	import { onDestroy } from 'svelte';
@@ -53,11 +52,11 @@
 			paint: {
 				'circle-pitch-alignment': 'map',
 				'circle-pitch-scale': 'map',
-				'circle-color': colors.light.primary[500],
+				'circle-color': themes.light.primary[500],
 				'circle-opacity': 0.8,
 				// 'circle-blur': 0.2,
 				'circle-stroke-width': 5,
-				'circle-stroke-color': colors.light.primary[700],
+				'circle-stroke-color': themes.light.primary[700],
 				'circle-stroke-opacity': 0.25,
 				'circle-radius': [
 					'interpolate',
@@ -76,12 +75,13 @@
 		});
 	});
 
-	map?.on('click', 'projects', (e: MapLayerMouseEvent) => {
-		console.log(e);
-		if (e.features.length && e.features[0].properties.id) {
+	map?.on('click', 'projects', goToProject);
+
+	function goToProject(e: MapLayerMouseEvent) {
+		if (e.features && e.features.length && e.features[0]?.properties?.id) {
 			goto(`/projets/${e.features[0].properties.id}`);
 		}
-	});
+	}
 
 	onDestroy(() => {
 		// if (map && map.getLayer('projects')) {

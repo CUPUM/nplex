@@ -10,7 +10,7 @@
 
 	async function logout() {
 		try {
-			const { error } = await dbClient.forBrowser.auth.signOut();
+			const { error } = await dbClient.browser.auth.signOut();
 			if (error) throw error;
 		} catch (error) {
 			messages.dispatch({

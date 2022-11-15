@@ -13,7 +13,7 @@ export const actions: Actions = {
 		}
 		const formData = Object.fromEntries(await request.formData());
 		// Do some zod validation here...
-		const db = dbClient.createForServer(locals.session.access_token);
+		const db = dbClient.server(locals.session.access_token);
 		const update = await db
 			.from('users')
 			.update({ ...formData, id: undefined })

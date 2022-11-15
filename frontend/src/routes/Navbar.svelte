@@ -38,6 +38,7 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import AvatarButton from '$components/AvatarButton.svelte';
+	import DropdownArrow from '$components/DropdownArrow.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
@@ -78,11 +79,11 @@
 	class:hidden
 	class:overlay
 	bind:clientHeight={navbarHeight}
-	style:--navbar-bg={$navbarBackground ?? 'var(--bg)'}
+	style:--navbar-bg={$navbarBackground}
 >
 	<div class="wrapper">
 		<nav class="main">
-			<NavbarButton square href="/">
+			<NavbarButton equi href="/">
 				<Logo short style="font-size: larger" />
 			</NavbarButton>
 			{#each mainRoutes as route}
@@ -100,23 +101,25 @@
 		</nav>
 		<nav class="session">
 			{#if $page.data.session}
-				<Popover place="bottom" align="end" useHover>
+				<Popover place="bottom" align="end" hover let:open>
 					<NavbarButton
 						slot="control"
-						square
 						href={creationBaseRoute.pathname}
 						current={$page.url.pathname.startsWith(creationBaseRoute.pathname)}
+						active={open}
 					>
 						<Icon name="pen" style="font-size: 1.25em" />
+						&emsp;Zone d'édition&emsp;
+						<DropdownArrow style="font-size: 1.25em" active={open} />
 					</NavbarButton>
 					<NavbarEditMenu />
 				</Popover>
-				<Popover useHover place="bottom" align="end">
+				<Popover hover place="bottom" align="end">
 					<AvatarButton slot="control" href={userBaseRoute.pathname} />
 					<NavbarUserMenu />
 				</Popover>
 			{:else}
-				<NavbarButton square cta href={getAuthModalUrl($page.url).search}>
+				<NavbarButton equi cta href={getAuthModalUrl($page.url).search}>
 					<Icon name="user" thickness="1.5" style="font-size: 1.25em" />
 				</NavbarButton>
 			{/if}
@@ -132,7 +135,7 @@
 		padding: 0 1rem;
 		margin: 0;
 		font-size: small;
-		backdrop-filter: blur(16px);
+		backdrop-filter: blur(12px);
 		border-bottom: 0px solid transparent;
 		transition: transform 0.5s cubic-bezier(0.75, 0, 0, 1), border 1s ease-in-out;
 
@@ -146,14 +149,14 @@
 			opacity: 0;
 			top: 0;
 			left: 0;
-			background: var(--navbar-bg);
-			transition: all 1s ease-in-out;
+			background: col(bg, 300);
+			transition: all 0.25s linear;
 		}
 	}
 
 	.wrapper {
 		position: relative;
-		max-width: 1200px;
+		max-width: var(--ui-large);
 		display: grid;
 		grid-template-columns:
 			[full-start main-start]
@@ -183,7 +186,7 @@
 
 	.overlay {
 		&::before {
-			// opacity: 0.9;
+			opacity: 0.9;
 		}
 	}
 
@@ -211,7 +214,7 @@
 		--inset: 3px;
 		grid-column: category;
 		justify-content: center;
-		background: rgb(var(--rgb-base-900), 0.25);
+		background: col(bg, 900, 0.25);
 		border-radius: var(--ui-radius);
 		padding-inline: var(--inset);
 	}

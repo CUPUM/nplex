@@ -11,7 +11,7 @@
 	import { Cookie } from '$utils/enums';
 	import jscookie from 'js-cookie';
 	import type { LayoutData } from './$types';
-	import AuthModal, { authModalState } from './AuthModal.svelte';
+	import AuthModal, { authModalState, getAuthModalUrl } from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
 	import MessagesOutlet from './MessagesOutlet.svelte';
 	import Navbar from './Navbar.svelte';
@@ -24,7 +24,7 @@
 	let scrollY = 0;
 
 	// Listening to and handling client-side Supabase auth state change.
-	dbClient.forBrowser.auth.onAuthStateChange(async (event, session) => {
+	dbClient.browser.auth.onAuthStateChange(async (event, session) => {
 		// Set temporary client cookies to communicate auth change data to the server.
 		const newAuth: AuthChangeCookie = { session, event };
 		jscookie.set(Cookie.AuthChange, JSON.stringify(newAuth), { path: '/', sameSite: 'strict', secure: true });
@@ -34,7 +34,7 @@
 	// Client-side redirect to user's account page if logged into new session.
 	$: if (data.session && data.session.user.id !== data.previousSessionId && $authModalState) {
 		authModalState.close().then(() => {
-			goto('/compte');
+			goto($page.url.pathname === '/' ? '/compte' : getAuthModalUrl($page.url, false));
 		});
 	}
 
@@ -74,6 +74,7 @@
 
 <style lang="scss">
 	main {
+		--scroll-color: rgb(var(--rgb-fg-100), 0.1);
 		position: relative;
 		width: 100%;
 		display: flex;
@@ -85,12 +86,11 @@
 
 	div {
 		transform-origin: 50vw calc(var(--scroll-px) + 50vh);
-		transition: transform 0.8s cubic-bezier(0.2, 0, 0, 1), border-radius 0.8s ease-out;
+		transition: transform 0.8s cubic-bezier(0.2, 0, 0, 1);
 	}
 
 	.authing {
 		transform: scale(0.96);
-		border-radius: 3em;
 	}
 
 	.loading {

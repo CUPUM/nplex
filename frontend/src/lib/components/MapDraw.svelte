@@ -9,6 +9,11 @@
 
  -->
 <script lang="ts" context="module">
+	export enum MapDrawSourceId {
+		Hot = 'mapbox-gl-draw-hot',
+		Cold = 'mapbox-gl-draw-cold',
+	}
+
 	const CTX_KEY = 'map-draw-context';
 
 	type MapDrawModeKey = keyof MapboxDraw.Modes | 'draw_circle';
@@ -24,6 +29,9 @@
 </script>
 
 <script lang="ts">
+	import type { MapDrawStyles } from '$types/map';
+	import { drawStyles } from '$utils/map';
+
 	import type {
 		DrawActionableEvent,
 		DrawCombineEvent,
@@ -42,11 +50,12 @@
 	import { getMapContext } from './Map.svelte';
 
 	export let modes: typeof MapboxDraw.modes = MapboxDraw.modes;
+	export let styles: MapDrawStyles = drawStyles;
 
 	export const draw: MapboxDraw = new MapboxDraw({
 		displayControlsDefault: false,
 		modes: MapboxDrawGeodesic.enable(modes),
-		// styles: [],
+		styles,
 	});
 
 	const mapContext = getMapContext();

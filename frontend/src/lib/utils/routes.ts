@@ -71,7 +71,7 @@ export const creationBaseRoute: Route = {
 
 interface CreationRoute extends Route {
 	category: Category;
-	// subtitle: string;
+	disabled?: boolean;
 }
 
 /**
@@ -87,11 +87,13 @@ export const creationRoutes: CreationRoute[] = [
 		pathname: creationBaseRoute.pathname + '/organisation',
 		title: 'Créer ou éditer une organisation',
 		category: 'organisations',
+		disabled: true,
 	},
 	{
 		pathname: creationBaseRoute.pathname + '/acteur',
 		title: 'Créer ou éditer un profil d’acteur',
 		category: 'actors',
+		disabled: true,
 	},
 ];
 

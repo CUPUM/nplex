@@ -2,20 +2,35 @@
 	import { intersection } from '$actions/intersection';
 	import { reveal, slipMask } from '$actions/reveal';
 	import { Theme } from '$utils/enums';
+	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
 	import { navbarTheme } from './Navbar.svelte';
 	import PreviewList from './PreviewList.svelte';
 
 	export let data: PageData;
+
+	function headerEnter() {
+		navbarTheme.set(Theme.dark);
+	}
+
+	function headerLeave() {
+		navbarTheme.reset();
+	}
+
+	onDestroy(() => {
+		headerLeave();
+	});
 </script>
 
 <header
 	class="theme-dark"
-	use:intersection={{ rootMargin: '0px 0px 20px 0px' }}
-	on:enter={() => navbarTheme.set(Theme.dark)}
-	on:leave={() => navbarTheme.reset()}
+	use:intersection={{ rootMargin: '0px 0px 0px 0px' }}
+	on:enter={headerEnter}
+	on:leave={headerLeave}
 >
-	<span class="subtitle">Bienvenue sur</span>
+	<!-- <div class="subtitle">
+		<span>Bienvenue sur</span>
+	</div> -->
 	<hgroup>
 		<h1
 			use:reveal={{
@@ -25,8 +40,8 @@
 					transform: 'translateY(1em)',
 				},
 				delimiter: '',
-				stagger: (i) => 50 + i * 10,
-				easing: 'cubic-bezier(0, .5, 0, 1)',
+				stagger: (i) => 75 + i * 10,
+				easing: 'cubic-bezier(0, .75, 0, 1)',
 				duration: 2000,
 			}}
 		>
@@ -35,7 +50,9 @@
 		<h1 aria-hidden="true">Nplex</h1>
 		<h1 aria-hidden="true">Nplex</h1>
 	</hgroup>
-	<span class="subtitle">La plateforme de valorisation des petits projets exemplaires en aménagement à Montréal</span>
+	<!-- <div class="subtitle">
+		<span>La plateforme de valorisation des petits projets exemplaires en aménagement à Montréal</span>
+	</div> -->
 </header>
 <PreviewList header="Projets" href="/projets" data={data.projects} let:datum>
 	<a class="project" href="/projets/{datum.id}">
@@ -45,6 +62,7 @@
 		{datum.title}
 	</a>
 </PreviewList>
+<hr class="dashed" />
 <PreviewList header="Organisations et bureaux" href="/projets" data={data.projects} let:datum>
 	<a class="project" href="/projets/{datum.id}">
 		<figure>
@@ -53,6 +71,7 @@
 		{datum.title}
 	</a>
 </PreviewList>
+<hr class="dashed" />
 <PreviewList header="Acteurs de projet" href="/projets" data={data.projects} let:datum>
 	<a class="project" href="/projets/{datum.id}">
 		<figure>
@@ -62,18 +81,25 @@
 	</a>
 </PreviewList>
 
-<style lang="scss">
+<style lang="scss" module>
 	header {
+		position: relative;
 		width: 100%;
-		min-height: 100vh;
+		height: calc(100vh + 2rem);
+		padding: 0;
+		padding-bottom: 5rem;
+		padding-top: calc(var(--navbar-height-px) + 6rem);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
-		padding: var(--navbar-height-px) 0 4rem 0;
+		justify-content: flex-end;
 		margin: 0;
 		margin-top: var(--n-navbar-height-px);
-		background-color: col(bg, 700);
+		background: col(bg, 100);
+		border-radius: 0 0 min(2rem, calc(0.2 * var(--scroll-px))) min(2rem, calc(0.2 * var(--scroll-px)));
+		transform: scale(max(0.96, calc(1 - 0.0002 * var(--scroll))));
+		transform-origin: top center;
+		transition: transform 0.3s ease-out, border-radius 0.3s ease-out;
 	}
 	hgroup {
 		display: flex;
@@ -84,38 +110,50 @@
 		margin: 0;
 		line-height: 1;
 		align-self: flex-start;
-		transform: translateX(calc(-0.5 * var(--scroll-px))) skewX(calc(-0.01deg * var(--scroll)));
-		// font-weight: min(calc(0.75 * var(--scroll) + 500), 900);
-		letter-spacing: -1em;
+		transform: translateX(calc(-0.5 * var(--scroll-px))); // skewX(calc(-0.01deg * var(--scroll)));
+		font-weight: min(calc(0.75 * var(--scroll) + 400), 900);
 		transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
 	}
 	h1 {
 		position: relative;
-		padding: 0;
+		padding: 0 2rem;
 		line-height: 1em;
-		display: block;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		flex-wrap: nowrap;
+		white-space: nowrap;
 		width: 100vw;
-		text-align: center;
-		flex: none;
 		margin: 0;
-		font-size: calc(36vw - 4rem);
+		font-size: calc(34vw - 1rem);
+		letter-spacing: -0.05em;
+		left: -0.035em;
+		top: 0.135em;
 		font-weight: inherit;
 		color: col(fg, 300);
 		text-transform: uppercase;
+
+		& > :global(span) {
+			text-align: center;
+		}
 	}
 
 	.subtitle {
-		// text-transform: uppercase;
-		letter-spacing: 0.5px;
-		color: col(fg, 300);
-		padding: 4rem 2rem;
-		line-height: 1.5em;
+		letter-spacing: 0.02em;
+		padding: 0;
+		line-height: 1.2em;
 		max-width: var(--ui-large);
 		margin: 0;
-		font-size: var(--size-medium);
+		font-size: var(--size-xlarge);
 		text-align: center;
-		font-weight: 300;
+		font-weight: 500;
 		width: 100%;
+		text-align: left;
+		color: col(primary, 500);
+		span {
+			display: block;
+			max-width: var(--ui-small);
+		}
 	}
 
 	.project {

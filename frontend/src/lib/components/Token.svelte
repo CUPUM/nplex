@@ -1,34 +1,36 @@
 <!--
 	@component
-	Hello world.
+	## Token
+	Token
+
  -->
 <script lang="ts">
-	import { cssSize } from '$utils/css';
-	import { Ctx } from '$utils/enums';
-	import { getContext } from 'svelte';
-	import type { TokenSetContext } from './TokenSet.svelte';
-
-	export let size: string | number = '1em';
-	export let variant: 'default' | 'secondary' | 'ghost' | 'cta' = undefined;
-	export let ttip: string = undefined;
-	export let disabled: boolean = false;
+	export let variant: 'default' | 'outlined' | 'ghost' | 'cta' | 'danger' = 'default';
+	export let disabled: boolean | undefined = undefined;
+	export let required: boolean | undefined = undefined;
 	export let warning: boolean = false;
 	export let active: boolean = false;
-
-	const tokenSetCtx = getContext<TokenSetContext>(Ctx.TokenSet);
-	let autoVariant = variant || tokenSetCtx?.vairant || 'default';
+	export let value: any = undefined;
+	export let name: string | undefined = undefined;
+	export let as: string | undefined = undefined;
+	export let style: string | undefined = undefined;
+	let class_: string = '';
+	export { class_ as class };
 </script>
 
 <svelte:element
-	this={tokenSetCtx ? 'dd' : 'div'}
-	class="token {autoVariant}"
-	style:font-size={cssSize(size)}
+	this={as ? as : value ? 'label' : 'div'}
+	class="token nest {variant}"
 	class:active
 	class:warning
 	{disabled}
 	on:click
 	on:focus
-	{...$$restProps}
+	on:blur
+	on:keypress
+	on:mouseover
+	on:mouseenter
+	on:mouseleave
 >
 	<div class="label">
 		<slot />
@@ -41,82 +43,18 @@
 </svelte:element>
 
 <style lang="scss">
-	.token {
+	:where(.token) {
+		--height: var(--ui-height);
+		display: flex;
 		flex: none;
-		user-select: none;
-		position: relative;
-		display: inline-flex;
-		flex-wrap: nowrap;
-		white-space: nowrap;
 		flex-direction: row;
 		align-items: center;
-		justify-content: center;
-		line-height: 1em;
-		max-width: 200px;
-		height: 2em;
-		border-radius: 1em;
-		padding: 0 1em;
-		font-weight: 400;
-		overflow: hidden;
-		transition: all 0.15s ease-out;
-
-		&:disabled {
-			opacity: 0.75;
-			pointer-events: none;
-			cursor: default;
-		}
+		justify-content: space-between;
+		border: none;
+		padding: 0;
+		margin: 0;
 	}
-
-	.label,
-	.input {
-		display: inline-block;
-		position: relative;
-	}
-
-	.label {
-		top: -0.05em;
-		overflow: hidden;
-		line-height: 2em;
-		text-overflow: ellipsis;
-	}
-
-	.input {
-	}
-
-	.interactive {
-		cursor: pointer;
-	}
-
-	/* Variants */
 
 	.default {
-		color: var(--color-dark-500);
-		background: rgba(var(--rgb-light-100), 0.8);
-		/* backdrop-filter: blur(12px); */
-	}
-
-	.secondary {
-	}
-
-	.ghost {
-		--hover-color: var(--color-primary-900);
-		--hover-bg-color: var(--color-primary-300);
-		--active-color: var(--color-primary-900);
-		--active-bg-color: var(--color-light-900);
-		color: var(--color-dark-100);
-		background: var(--color-light-100);
-		box-shadow: 0 0 0 1px var(--color-light-900);
-	}
-
-	.cta {
-	}
-
-	.nav {
-		--hover-color: var(--color-primary-700);
-		--hover-bg-color: rgba(var(--rgb-primary-500), 0.1);
-		--active-color: var(--color-primary-900);
-		--active-bg-color: var(--color-primary-300);
-		color: var(--color-primary-500);
-		background: transparent;
 	}
 </style>

@@ -8,14 +8,14 @@
 </script>
 
 <script lang="ts">
-	import { GeolocateControl } from 'maplibre-gl';
-	import type { ComponentProps } from 'svelte';
-	import { onDestroy } from 'svelte';
+	import { GeolocateControl, type MapEvent } from 'maplibre-gl';
+	import { createEventDispatcher, onDestroy, type ComponentProps } from 'svelte';
 	import Button from './Button.svelte';
 	import Icon from './Icon.svelte';
 	import { getMapContext } from './Map.svelte';
 
-	type $$Props = ComponentProps<Button>;
+	type $$Props = Omit<ComponentProps<Button>, 'active'>;
+	type GeolocateEvent = 'trackuserlocationstart' | 'geolocate' | 'trackuserlocationend';
 
 	let loading = false;
 	let tracking = false;
@@ -29,18 +29,22 @@
 			enableHighAccuracy: true,
 		},
 	});
+	const dispatch = createEventDispatcher<Record<GeolocateEvent, MapEvent>>();
 
 	geolocate.on('trackuserlocationstart', (e) => {
 		loading = true;
-		geolocate.once('geolocate', () => {
+		dispatch('trackuserlocationstart', e);
+		geolocate.once('geolocate', (e) => {
 			tracking = true;
 			loading = false;
+			dispatch('geolocate');
 		});
 	});
 
 	geolocate.on('trackuserlocationend', (e) => {
 		loading = false;
 		tracking = false;
+		dispatch('trackuserlocationend');
 	});
 
 	if (map) {
@@ -56,9 +60,11 @@
 	});
 </script>
 
-<Button equi variant="ghost" active={tracking} {...typedProps} on:click={update}>
-	<div />
-	<Icon name="localize" class={loading ? 'spin' : ''} />
+<Button equi={!$$slots.default || typedProps.equi} variant="ghost" active={tracking} {...typedProps} on:click={update}>
+	<slot>
+		<div />
+		<Icon name="localize" class={loading ? 'spin' : ''} />
+	</slot>
 </Button>
 
 <style lang="scss">

@@ -5,16 +5,18 @@
 	import MapProjects from './MapProjects.svelte';
 
 	export let data: PageData;
+
+	console.log(data.projects);
 </script>
 
-<div id="panes">
+<div class="explore">
+	<Map>
+		<MapProjects projects={data.projects} />
+	</Map>
 	<form action="" use:enhance>
 		Filtres
 		<fieldset>Filtre 1</fieldset>
 	</form>
-	<Map class="map">
-		<MapProjects projects={data.projects} />
-	</Map>
 	<ul>
 		{#each data.projects as p}
 			<li>{p}</li>
@@ -22,8 +24,8 @@
 	</ul>
 </div>
 
-<style lang="scss" module>
-	#panes {
+<style lang="scss">
+	.explore {
 		position: relative;
 		flex: 1 0 auto;
 		display: flex;
@@ -31,7 +33,9 @@
 		align-items: stretch;
 		padding: 1rem;
 		padding-top: 0;
-		height: calc(100vh - var(--navbar-height-px));
+		height: 100vh;
+		padding-top: var(--navbar-height-px);
+		margin-top: var(--n-navbar-height-px);
 	}
 
 	form {
@@ -39,16 +43,20 @@
 		padding: 1rem;
 		border-radius: 1rem;
 		background: white;
+		z-index: 100;
 	}
 
 	fieldset {
 		all: unset;
 	}
 
-	.map {
-		flex: 1;
+	.explore :global(.map) {
+		z-index: 0;
+		// position: absolute;
+		flex: none;
+		width: 100%;
 		height: 100%;
-		min-height: 0px;
-		border-radius: 1.5rem;
+		top: 0;
+		left: 0;
 	}
 </style>

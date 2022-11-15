@@ -5,12 +5,46 @@ import { error, invalid, redirect, type Actions } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 
+export const actions: Actions = {
+	upsert: async (event) => {
+		if (!event.locals.session) return invalid(401);
+		const validated = upsertSchema.safeParse(await event.request.formData());
+		if (!validated.success) {
+			throw error(500, validated.error);
+		}
+		if (event.params.projectId) validated.data.id = event.params.projectId;
+		const db = dbClient.server(event.locals.session.access_token);
+		const projectRes = await db.from('projects').upsert(validated.data).select('id').single();
+		if (projectRes.error) {
+			throw invalid(500, projectRes.error);
+		}
+		// If newly added project, redirect to proper url param.
+		if (!event.params.projectId) {
+			throw redirect(302, '/editer/projet/' + projectRes.data.id);
+		}
+	},
+	publish: async (event) => {},
+	delete: async (event) => {
+		if (!event.locals.session) return invalid(401);
+		const formData = Object.fromEntries(await event.request.formData());
+		if (!formData.id) return invalid(401);
+		const db = dbClient.server(event.locals.session.access_token);
+		const deleteRes = await db.from('projects').delete().eq('id', formData.id);
+		if (deleteRes.error) throw error(500, deleteRes.error);
+		throw redirect(301, '/editer');
+	},
+};
+
 const upsertSchema = zfd
-	.formData({
-		id: zfd.text(z.string().optional()),
-		title: zfd.text(),
-		location: zfd.text(z.string().optional()),
-	})
+	.formData(
+		z
+			.object({
+				id: zfd.text(z.string().optional()),
+				title: zfd.text(),
+				location: zfd.text(z.string().optional()),
+			})
+			.passthrough()
+	)
 	.transform((u) => {
 		const { location, ...r } = u;
 		const l = projectLocationSchema.safeParse(safeJsonParse(location));
@@ -20,24 +54,4 @@ const upsertSchema = zfd
 		return { location_geometry: null, location_radius: null, ...r };
 	});
 
-export const actions: Actions = {
-	upsert: async (event) => {
-		if (!event.locals.session) return invalid(401);
-		const validated = upsertSchema.safeParse(await event.request.formData());
-		if (!validated.success) {
-			throw error(500, validated.error);
-		}
-		if (event.params.projectId) validated.data.id = event.params.projectId;
-		const db = dbClient.createForServer(event.locals.session.access_token);
-		const project = await db.from('projects').upsert(validated.data).select('id').single();
-		if (project.error) {
-			throw invalid(500, project.error);
-		}
-		// If newly added project, redirect to proper url param.
-		if (!event.params.projectId) {
-			throw redirect(302, '/editer/projet/' + project.data.id);
-		}
-	},
-	publish: async (event) => {},
-	delete: async (event) => {},
-};
+// const shareSchema = ...

@@ -2,13 +2,15 @@
 </script>
 
 <script lang="ts">
+	import TextArea from '$components/TextArea.svelte';
+
 	import type { PageData } from './$types';
 
 	export let project: PageData['project'];
 </script>
 
 <section>
-	<textarea
+	<TextArea
 		name="description"
 		id="project-description"
 		placeholder="Description générale"
@@ -17,4 +19,7 @@
 </section>
 
 <style lang="scss">
+	section {
+		width: 100%;
+	}
 </style>

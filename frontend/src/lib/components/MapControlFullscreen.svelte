@@ -51,8 +51,16 @@
 </script>
 
 <svelte:window on:fullscreenchange={update} />
-<Button class="button" variant="ghost" on:click={handleClick} {...typedProps}>
-	<Icon name={expanded ? 'shrink-arrows' : 'expand-arrows'} />
+<Button
+	class="button"
+	variant="ghost"
+	on:click={handleClick}
+	equi={!$$slots.default || typedProps.equi}
+	{...typedProps}
+>
+	<slot>
+		<Icon name={expanded ? 'shrink-arrows' : 'expand-arrows'} />
+	</slot>
 </Button>
 
 <style lang="scss" module>

@@ -35,7 +35,7 @@ export const GET: RequestHandler = async ({ request, locals, cookies }) => {
 			setClearCookies(cookies, Cookie.Session);
 			return json(res);
 		}
-		const db = dbClient.createForServer(session.access_token);
+		const db = dbClient.server(session.access_token);
 		const { data: roleData, error: roleError } = await db
 			.from('users_roles')
 			.select('role')

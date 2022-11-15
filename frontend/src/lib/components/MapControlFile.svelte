@@ -21,8 +21,10 @@
 	const mapContext = getMapContext();
 </script>
 
-<Button as="label" variant="ghost" {...typedProps}>
-	<Icon name="upload" />
+<Button as="label" equi={!$$slots.default || typedProps.equi} variant="ghost" {...typedProps}>
+	<slot>
+		<Icon name="upload" />
+	</slot>
 	<input hidden type="file" name="" />
 </Button>
 

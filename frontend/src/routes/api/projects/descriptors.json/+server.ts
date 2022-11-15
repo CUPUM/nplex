@@ -30,7 +30,7 @@ let time = 0;
  */
 export const GET: RequestHandler = async ({ request }) => {
 	// if (!time || !cache || time < Date.now() - 10000) {
-	const db = dbClient.createForServer();
+	const db = dbClient.server();
 
 	try {
 		const queries = {

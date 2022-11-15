@@ -326,7 +326,7 @@
 		&:hover {
 			color: col(bg, 100);
 			background: col(primary, 700);
-			box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.5);
+			box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.25);
 		}
 		&:global(.active) {
 			filter: brightness(0.9);
