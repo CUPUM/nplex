@@ -51,6 +51,7 @@ export enum SearchParam {
 	ProjectsType = 'type-projet',
 	AuthModal = 'auth',
 	Message = 'message',
+	Redirect = 'redirect',
 }
 
 /**

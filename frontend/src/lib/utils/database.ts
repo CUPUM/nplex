@@ -30,27 +30,22 @@ function sessionStorageProvider(): SupportedStorage {
 	};
 }
 
+function createServerClient() {
+	return createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+		auth: {
+			persistSession: true,
+			autoRefreshToken: false,
+			detectSessionInUrl: false,
+			storage: sessionStorageProvider(),
+		},
+	});
+}
+
 /**
  * Takes an event or a minimal session object (access token + refresh token) and returns the
  * contextually appropriate database client instance with auth session.
  */
 export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) {
-	// Client-side instance
-	if (browser) {
-		return browserDb;
-	}
-
-	function createServerClient() {
-		return createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-			auth: {
-				persistSession: true,
-				autoRefreshToken: false,
-				detectSessionInUrl: false,
-				storage: sessionStorageProvider(),
-			},
-		});
-	}
-
 	// Server-only context
 	if (event && 'locals' in event) {
 		event.locals.db = event.locals.db ?? createServerClient();
@@ -60,8 +55,8 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 		return event.locals.db;
 	}
 
-	// Mixed context (load fns)
-	const db = createServerClient();
+	// Mixed-context instance
+	const db = browser ? browserDb : createServerClient();
 	if (event) {
 		let session: App.PageData['session'];
 		if (event.data?.session) {

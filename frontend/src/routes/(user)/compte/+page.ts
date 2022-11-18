@@ -24,8 +24,6 @@ export const load: PageLoad = async (event) => {
 		throw error(500, profileRes.error);
 	}
 
-	console.log(profileRes.data);
-
 	return {
 		profile: profileRes.data,
 	};

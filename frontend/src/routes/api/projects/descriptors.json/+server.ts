@@ -25,8 +25,8 @@ let cache: ProjectsDescriptors = null;
 let time = 0;
 
 /**
- * This endpoint gets the various project-related params lists used for filtering functionalities, submission forms, and
- * more.
+ * This endpoint gets the various project-related params lists used for filtering functionalities,
+ * submission forms, and more.
  */
 export const GET: RequestHandler = async ({ request }) => {
 	// if (!time || !cache || time < Date.now() - 10000) {
@@ -37,13 +37,17 @@ export const GET: RequestHandler = async ({ request }) => {
 			categories: db.from('project_category').select('*'),
 			types: db.from('project_type').select('*'),
 			siteOwnerships: db.from('project_site_ownership').select('*'),
-			siteUsagesCategories: db.from('project_site_usage_category').select('*, usages:project_site_usage(*)'),
+			siteUsagesCategories: db
+				.from('project_site_usage_category')
+				.select('*, usages:project_site_usage(*)'),
 			siteUsages: db.from('project_site_usage').select('*'),
 			implantationModes: db.from('project_implantation_mode').select('*'),
 			materialOrigins: db.from('project_material_origin').select('*'),
 			materialTypes: db.from('project_material_type').select('*'),
 			materialUses: db.from('project_material_use').select('*'),
-			eventTypes: db.from('project_event_type').select('*, childTypes:project_event_type!child_type_id(*)'),
+			eventTypes: db
+				.from('project_event_type')
+				.select('*, childTypes:project_event_type!child_type_id(*)'),
 			exemplarityIndicatorsCategories: db
 				.from('project_exemplarity_indicator_category')
 				.select('*, indicators:project_exemplarity_indicator(*)'),
@@ -59,7 +63,7 @@ export const GET: RequestHandler = async ({ request }) => {
 		// Caching response
 		time = Date.now();
 	} catch (e) {
-		console.log('UNE ERREUR CALISSE', e);
+		console.log('ah ben tiens, une erreur', e);
 		time = 0;
 		throw error(e.status, e.message);
 	}

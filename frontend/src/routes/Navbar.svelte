@@ -114,7 +114,7 @@
 					<NavbarUserMenu />
 				</Popover>
 			{:else}
-				<NavbarButton equi cta href={authModalState.getUrl().toString()}>
+				<NavbarButton equi cta href={authModalState.getUrl({ url: $page.url }).toString()}>
 					<Icon name="user" thickness="1.5" style="font-size: 1.25em" />
 				</NavbarButton>
 			{/if}
@@ -125,7 +125,7 @@
 <style lang="scss">
 	header {
 		position: sticky;
-		z-index: 1000;
+		z-index: 10;
 		top: 0;
 		padding: 0 1rem;
 		margin: 0;

@@ -21,6 +21,11 @@
 		const { subscribe } = derived(page, ($page) => {
 			if (browser) {
 				const open = $page.url.searchParams.has(SearchParam.AuthModal);
+				if (open && $page.data?.session) {
+					// For when a user navigates back after a redirect (ex.: on successful signin).
+					// This prevents from showing the AuthModal again, which would be irrelevant as the session is persisted.
+					return goto(getUrl({ url: $page.url, open: false }), { replaceState: true });
+				}
 				if (open) rootScroll.lock(SCROLL_LOCK);
 				else rootScroll.unlock(SCROLL_LOCK);
 				return open;
@@ -28,11 +33,8 @@
 			return false;
 		});
 
-		function getUrl({
-			url = get(page).url,
-			open = true,
-		}: { url?: string | URL; open?: boolean } = {}) {
-			const re = new URL(url);
+		function getUrl({ url, open = true }: { url: string | URL; open?: boolean }) {
+			const re = new URL(url, get(page).url);
 			if (open) {
 				re.searchParams.set(SearchParam.AuthModal, 'true');
 			} else {
@@ -42,22 +44,22 @@
 		}
 
 		async function open({
-			url = get(page).url,
+			url,
 			replaceState = true,
 			...opts
 		}: { url?: string | URL } & Parameters<typeof goto>[1] = {}) {
 			if (!browser) return;
-			const re = getUrl({ url, open: true });
+			const re = getUrl({ url: url ?? get(page).url, open: true });
 			return goto(re, { replaceState, ...opts });
 		}
 
 		async function close({
-			url = get(page).url,
+			url,
 			replaceState = true,
 			...opts
 		}: { url?: string | URL } & Parameters<typeof goto>[1] = {}) {
 			if (!browser) return;
-			const re = getUrl({ url, open: false });
+			const re = getUrl({ url: url ?? get(page).url, open: false });
 			return goto(re, { replaceState, ...opts });
 		}
 
@@ -86,15 +88,15 @@
 	import { cubicIn, cubicOut, linear } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
 
-	enum Action {
-		SignIn = '/api/auth?/signin',
-		SignUp = '/api/auth?/signup',
-		ForgotPassword = '/api/auth?/forgot',
-	}
+	const ACTION = {
+		SIGNIN: `/api/auth?/signin&${SearchParam.Redirect}=${$page.url.toString()}`,
+		SIGNUP: '/api/auth?/signup',
+		FORGOT: '/api/auth?/forgot',
+	};
 
 	let email: string;
 	let password: string;
-	let currentAction: Action | null = null;
+	let currentAction: string | null = null;
 	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
 </script>
 
@@ -115,7 +117,8 @@
 			on:clickoutside={() => authModalState.close()}
 			method="POST"
 			use:enhance={({ form, data, action, cancel }) => {
-				currentAction = action.search;
+				currentAction = action.pathname + action.search;
+				const re = new URL($page.url);
 				return async ({ update, result }) => {
 					update({ reset: false });
 					currentAction = null;
@@ -155,8 +158,8 @@
 					variant="cta"
 					disabled={!Boolean(email) || !Boolean(password)}
 					contentAlign="center"
-					formaction={Action.SignIn}
-					loading={currentAction === Action.SignIn}
+					formaction={ACTION.SIGNIN}
+					loading={currentAction === ACTION.SIGNIN}
 				>
 					<Icon name="login" slot="trailing" />
 					Me connecter
@@ -165,7 +168,7 @@
 					class="small-button"
 					type="submit"
 					disabled={!Boolean(email) || !Boolean(password)}
-					loading={currentAction === Action.SignUp}
+					loading={currentAction === ACTION.SIGNUP}
 					contentAlign="center"
 				>
 					<Icon name="user-add" slot="leading" style="font-size: 1.25em" />
