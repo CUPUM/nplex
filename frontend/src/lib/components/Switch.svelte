@@ -30,11 +30,12 @@
 	export let name: string | undefined = undefined;
 	export let variant: Variant = 'default';
 	export let orientation: 'column' | 'row' = 'row';
+	export let compact: boolean | undefined = undefined;
 	export let group: any = undefined;
 	export let required: boolean | undefined = undefined;
 	export let readonly: boolean | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
-	export let as: string | undefined = undefined;
+	export let as: keyof HTMLElementTagNameMap | undefined = undefined;
 	export let style: string | undefined = undefined;
 	let className: string = '';
 	export { className as class };
@@ -102,6 +103,7 @@
 	bind:this={switchRef}
 	class="switch nest {variant} {orientation} {className}"
 	class:temp={tempMark}
+	class:compact
 	{style}
 	{required}
 	{readonly}

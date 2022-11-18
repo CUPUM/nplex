@@ -9,6 +9,11 @@ import type { Actions } from './$types';
 export const actions: Actions = {
 	signup: async (event) => {
 		// Handle signup info validation...
+		const d = await event.request.formData();
+		// const v = ...validate
+
+		// const db = await getDb(event);
+		// const userRes = await db.auth.signUp({});
 	},
 	/**
 	 * Validate inputs permissively (with few constraints), then against database login.

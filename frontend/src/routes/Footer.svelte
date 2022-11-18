@@ -35,17 +35,20 @@
 	let out = true;
 </script>
 
+<hr />
 <footer
 	id="footer"
+	class:out
 	use:intersection={{ rootMargin: '0px 0px -50px 0px' }}
 	on:enter={() => (out = false)}
 	on:leave={() => (out = true)}
-	class:out
 >
 	<div class="wrapper">
 		<section id="links">
 			<section id="sitemap-links">
-				<div class="heading" style="--i: 0"><Icon name="map" {...iconOptions} />&ensp;Carte du site</div>
+				<div class="heading" style="--i: 0">
+					<Icon name="map" {...iconOptions} />&ensp;Carte du site
+				</div>
 				<ul>
 					{#each mainLinks as link, i}
 						<li style="--i: {i}">
@@ -55,7 +58,9 @@
 				</ul>
 			</section>
 			<section id="explore-links">
-				<div class="heading" style="--i: 1"><Icon name="search" {...iconOptions} />&ensp;Explorer</div>
+				<div class="heading" style="--i: 1">
+					<Icon name="search" {...iconOptions} />&ensp;Explorer
+				</div>
 				<ul>
 					{#each exploreLinks as link, i}
 						<li style="--i: {i}">
@@ -65,7 +70,9 @@
 				</ul>
 			</section>
 			<section id="partners-links">
-				<div class="heading" style="--i: 2"><Icon name="bookmark" {...iconOptions} />&ensp;Partenaires</div>
+				<div class="heading" style="--i: 2">
+					<Icon name="bookmark" {...iconOptions} />&ensp;Partenaires
+				</div>
 				<ul>
 					{#each partnersLinks as link, i}
 						<li style="--i: {i}">
@@ -85,15 +92,20 @@
 </footer>
 
 <style lang="scss">
+	hr {
+		width: 100%;
+		border: none;
+		background: col(fg, 100, 0.05);
+		height: 1px;
+	}
+
 	#footer {
 		padding: 2rem 1.5rem;
 		margin: 0;
 		font-size: var(--size-small);
 		color: var(--color-contrast-100);
-		// background: var(--color-base-300);
 		font-weight: 400;
 		letter-spacing: 0.1px;
-		// border-top: 1px solid rgb(var(--rgb-contrast-100), 0.1);
 		transition: all 1s cubic-bezier(0.5, 0, 0, 1);
 	}
 

@@ -39,10 +39,10 @@
 	export let title: string | undefined = undefined;
 	export let formaction: string | undefined = undefined;
 	export let tabindex: number | undefined = undefined;
-	let class_: string | undefined = '';
-	export { class_ as class };
+	let className: string | undefined = '';
+	export { className as class };
 	export let style: string | undefined = undefined;
-	export let as: string | undefined = undefined;
+	export let as: keyof HTMLElementTagNameMap | undefined = undefined;
 
 	let buttonRef: HTMLElement;
 	const buttonGroupContext = getButtonGroupContext();
@@ -57,7 +57,7 @@
 <svelte:element
 	this={as ? as : href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
-	class="button nest {computedVariant} {contentAlign} {class_}"
+	class="button nest {computedVariant} {contentAlign} {className}"
 	class:compact
 	class:warning
 	class:equi

@@ -1,32 +1,50 @@
 <script lang="ts">
 	import type { Database } from '$types/database';
-	import { cssSize } from '$utils/css';
-	import type { PageData } from '.svelte-kit/types/src/routes/$types';
 	import Loading from './Loading.svelte';
+	import Ripple from './Ripple.svelte';
 
-	type UserProfile = Database['public']['Tables']['users']['Row'];
+	type AvatarData = Pick<
+		Database['public']['Tables']['users']['Row'],
+		'avatar_url' | 'first_name' | 'id' | 'public_email'
+	>;
 
-	export let data: PageData['session'];
+	export let data: AvatarData;
 	export let loading: boolean = false;
-	export let size: string | number = '1em';
+	export let warning: boolean | undefined = undefined;
+	export let href: string | undefined = undefined;
+	export let active: boolean | undefined = undefined;
+	export let disabled: boolean | undefined = undefined;
+	export let as: keyof HTMLElementTagNameMap | undefined = undefined;
+	export let style: string | undefined = undefined;
+	let className: string = '';
+	export { className as class };
 
-	const color1 = `#${Date.now().toString(16).slice(-6)}`;
-	const color2 = `#${(
-		data.first_name ||
-		data.email ||
-		data.public_email ||
-		(data.session.id || data.id).replace('-', '').slice(12, 18)
-	)
-		.split('')
-		.map((c) => c.charCodeAt(0).toString(16))
-		.join('')
-		.slice(0, 6)}`;
-	const color3 = `#${(data.id || data.id).slice(0, 6)}`;
+	function color(str: string) {
+		return `#${str}`;
+		// return `#${str
+		// 	.split('')
+		// 	.map((c) => c.charCodeAt(0).toString(16))
+		// 	.join('')
+		// 	.slice(0, 6)}`;
+	}
 
-	const userLetter = (data.first_name || data.email || data.public_email || '?').charAt(0).toUpperCase();
+	$: seed = data.id.replace('-', '');
+	$: color1 = color(seed.slice(-6));
+	$: color2 = color(seed.slice(0, 6));
+	$: color3 = color(seed.slice(-12, -6));
+	$: initial = (data.first_name ?? data.public_email ?? '?').charAt(0).toUpperCase();
 </script>
 
-<figure style:font-size={cssSize(size)}>
+<svelte:element
+	this={as ? as : href ? 'a' : 'figure'}
+	class="avatar {className}"
+	{style}
+	{disabled}
+	{href}
+	class:active
+	class:warning
+	class:loading
+>
 	{#if data.avatar_url}
 		<img src={data.avatar_url} alt="user-avatar-{data.avatar_url}" loading="lazy" />
 	{:else}
@@ -42,30 +60,61 @@
 				vector-effect="non-scaling-stroke"
 				text-anchor="middle"
 				x="50%"
-				y="55%"
-				font-size=".5em"
+				y="53%"
+				font-size="1.2em"
 				font-weight="500"
 				stroke="none"
 				dominant-baseline="middle"
 			>
-				{userLetter}
+				{initial}
 			</text>
 		</svg>
 	{/if}
+	<Ripple />
 	<slot name="badge" />
 	{#if loading}
-		<Loading />
+		<slot name="loading">
+			<Loading />
+		</slot>
 	{/if}
-</figure>
+</svelte:element>
 
 <style lang="scss">
-	figure {
+	.avatar {
+		display: inline-block;
 		position: relative;
-		width: 1em;
-		height: 1em;
-		border-radius: 50%;
+		height: var(--ui-height);
+		width: var(--ui-height);
+		border-radius: 99px; //var(--ui-radius);
+		border: none;
+		text-decoration: none;
+		background: transparent;
 		padding: 0;
 		margin: 0;
+		cursor: pointer;
+		opacity: 0.9;
+		transform: scale(0.95);
+		transition: all 0.15s ease-out;
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			color: col(bg, 900);
+			opacity: 0.75;
+			border-radius: inherit;
+			border: 0px solid currentColor;
+			transition: all 0.15s ease-out;
+		}
+		&:hover {
+			opacity: 1;
+			transform: scale(1);
+			&::after {
+				border: 2px solid currentColor;
+			}
+		}
 	}
 
 	img {
@@ -84,10 +133,15 @@
 		padding: 0;
 		margin: 0;
 		border-radius: inherit;
-		background: conic-gradient(from 90deg at -10% -10%, var(--color1), var(--color2), var(--color3) 90deg);
+		background: conic-gradient(
+			from 90deg at -10% -10%,
+			var(--color1),
+			var(--color2),
+			var(--color3) 90deg
+		);
 	}
 
 	text {
-		fill: var(--color-light-500);
+		fill: #eeeeee;
 	}
 </style>

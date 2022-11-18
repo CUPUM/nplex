@@ -21,8 +21,8 @@
 	export let scaleStroke: boolean = false;
 	export let delay: number = 0;
 	export let style: string | undefined = undefined;
-	let class_: string = '';
-	export { class_ as class };
+	let className: string = '';
+	export { className as class };
 
 	let iconRef: SVGElement;
 	let initDelay = delay;
@@ -36,7 +36,7 @@
 	aria-roledescription="icon-{name}"
 	preserveAspectRatio="xMidYMid"
 	viewBox={icon.viewBox}
-	class="icon {class_}"
+	class="icon {className}"
 	{style}
 	style:--secondary-color={secondaryColor}
 	style:--thickness={cssSize(thickness)}
@@ -50,7 +50,13 @@
 				duration: 350,
 				easing: cubicOut,
 			}}
-			out:transform|local={{ scale: 0.75, rotateZ: -30, translateY: 20, duration: 150, easing: cubicIn }}
+			out:transform|local={{
+				scale: 0.75,
+				rotateZ: -30,
+				translateY: 20,
+				duration: 150,
+				easing: cubicIn,
+			}}
 			on:introstart={() => (initDelay = 0)}
 		>
 			{#each icon.paths as path, i}
@@ -80,9 +86,11 @@
 	:where(.icon) {
 		display: inline-block;
 		vertical-align: middle;
+		// vertical-align: calc(-0.5em + 0.5ex);
 		position: relative;
 		padding: 0;
 		margin: 0;
+		// margin-bottom: calc(-0.25em + 0.25ex);
 		width: 1em;
 		height: 1em;
 		overflow: visible;

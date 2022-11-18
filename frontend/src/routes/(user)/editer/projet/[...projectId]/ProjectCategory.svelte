@@ -9,8 +9,6 @@
 
 	export let project: PageData['project'];
 	export let descriptors: PageData['descriptors'];
-
-	$: console.log(project.category_id);
 </script>
 
 <fieldset>

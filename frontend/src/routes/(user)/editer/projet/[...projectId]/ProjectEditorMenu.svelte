@@ -34,11 +34,11 @@
 				</Button>
 			</Tooltip>
 		{/if}
-		<Tooltip message="Supprimer">
+		<!-- <Tooltip message="Supprimer">
 			<Button type="submit" formaction="?/delete" variant="ghost" warning equi>
 				<Icon name="trash" />
 			</Button>
-		</Tooltip>
+		</Tooltip> -->
 	</menu>
 {/if}
 

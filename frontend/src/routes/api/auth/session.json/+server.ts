@@ -32,19 +32,31 @@ export const POST: RequestHandler = async (event) => {
 		return clearSession(event);
 	}
 
-	const roleRes = await db
-		.from('users_roles')
-		.select('role')
-		.eq('user_id', authSession.user.id)
+	const profileRes = await db
+		.from('users')
+		.select(
+			`
+				public_email,
+				first_name,
+				avatar_url,
+				role:users_roles!users_roles_user_id_fkey(
+					role
+				)
+			`
+		)
+		.eq('id', authSession.user.id)
 		.single();
 
-	if (roleRes.error || !roleRes.data.role) return clearSession(event);
+	if (profileRes.error || !profileRes.data.role) return clearSession(event);
 
 	const pageDataSession: App.PageData['session'] = {
 		...authSession,
 		user: {
 			...authSession.user,
-			role: roleRes.data.role,
+			...profileRes.data,
+			role: Array.isArray(profileRes.data.role)
+				? profileRes.data.role[0].role
+				: profileRes.data.role.role,
 		},
 	};
 	const cookieSession: App.Locals['session'] = {

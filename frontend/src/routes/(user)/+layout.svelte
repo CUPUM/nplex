@@ -24,7 +24,7 @@
 	article {
 		width: 100%;
 		padding: 0;
-		background: col(bg, 500);
+		// background: col(bg, 500);
 	}
 
 	h2 {
@@ -41,7 +41,7 @@
 		margin: 0;
 		display: block;
 		position: relative;
-		height: 500px;
+		height: 350px;
 		aspect-ratio: 3 / 4;
 		background: col(bg, 000);
 		border-radius: 1.5rem;

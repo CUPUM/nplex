@@ -11,7 +11,13 @@
 </script>
 
 <script lang="ts">
-	import { Marker, type LngLat, type LngLatLike, type PointLike, type PositionAnchor } from 'maplibre-gl';
+	import {
+		Marker,
+		type LngLat,
+		type LngLatLike,
+		type PointLike,
+		type PositionAnchor,
+	} from 'maplibre-gl';
 	import { onMount } from 'svelte';
 	import { scale } from 'svelte/transition';
 	import { getMapContext } from './Map.svelte';
@@ -28,8 +34,8 @@
 	export let rotationAlignment: string | undefined = undefined;
 	export let pitchAlignment: string | undefined = undefined;
 	export let style: string | undefined = undefined;
-	let class_: string = '';
-	export { class_ as class };
+	let className: string = '';
+	export { className as class };
 
 	let tooltipRef: HTMLElement;
 	let tooltipMarker: Marker;
@@ -70,7 +76,7 @@
 	<div
 		in:scale={{ start: 0.85, duration: 250 }}
 		out:scale={{ start: 0.9, duration: 150, delay: 500 }}
-		class="map-tooltip {anchor} {class_}"
+		class="map-tooltip {anchor} {className}"
 		{style}
 		on:click
 		on:mouseover

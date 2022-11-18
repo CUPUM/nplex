@@ -3,15 +3,15 @@
 	export let variant: 'default' | 'cta' | 'footer' | 'ghost' = 'default';
 	export let disabled: boolean | undefined = undefined;
 	export let style: string | undefined = undefined;
-	let class_: string = '';
-	export { class_ as class };
+	let className: string = '';
+	export { className as class };
 	export let rel: 'external' | undefined = undefined;
 </script>
 
 <a
 	{href}
 	{rel}
-	class="link {variant} {class_}"
+	class="link {variant} {className}"
 	class:disabled
 	{disabled}
 	{style}
@@ -65,7 +65,8 @@
 
 	.content {
 		padding: 0.4em 1em 0.6em 1em;
-		transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1), opacity 0.5s cubic-bezier(0.2, 0, 0, 1);
+		transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1),
+			opacity 0.5s cubic-bezier(0.2, 0, 0, 1);
 	}
 
 	.reg {

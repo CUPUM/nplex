@@ -29,9 +29,9 @@
 		...data.filter((d) => {
 			switch (filter) {
 				case 'creator':
-					return d.created_by_id === $page.data.session?.id;
+					return d.created_by_id === $page.data.session?.user.id;
 				case 'collaborator':
-					return d.created_by_id !== $page.data.session?.id;
+					return d.created_by_id !== $page.data.session?.user.id;
 				case 'all':
 				default:
 					return true;
@@ -45,7 +45,7 @@
 	<header>
 		<h3>{title}</h3>
 		<form action="" use:enhance>
-			<Switch bind:group={filter} name="filter">
+			<Switch compact bind:group={filter} name="filter">
 				{#each Object.entries(filters) as [k, v]}
 					<SwitchItem value={k}>
 						{v}
@@ -79,17 +79,17 @@
 
 	header {
 		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		padding: 1rem;
+		flex-direction: column;
+		gap: 0;
+		padding: 2rem;
+		font-size: var(--size-xsmall);
 	}
 
 	h3 {
-		all: unset;
-		padding: 1rem;
+		padding: 1rem 0;
+		margin-bottom: 0;
 		font-size: 2rem;
 		font-weight: 500;
-		color: var(--color-contrast-900);
 	}
 
 	form {
@@ -98,6 +98,7 @@
 
 	ul {
 		all: unset;
+		--scroll-color: transparent;
 		position: relative;
 		display: flex;
 		flex-direction: row;

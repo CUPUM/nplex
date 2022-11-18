@@ -46,8 +46,8 @@
 	export let pattern: RegExp | undefined = undefined; // Figure out how to make work with ozd validators...
 	export let dirty: boolean = false;
 	export let tabindex: number = 0;
-	let class_: string = '';
-	export { class_ as class };
+	let className: string = '';
+	export { className as class };
 	export let style: string | undefined = undefined;
 	export function focus() {
 		inputRef.focus();
@@ -90,7 +90,10 @@
 	}
 
 	function handleClick(e: MouseEvent) {
-		if (e.target instanceof Element && (e.target === fieldRef || e.target.parentElement === fieldRef)) {
+		if (
+			e.target instanceof Element &&
+			(e.target === fieldRef || e.target.parentElement === fieldRef)
+		) {
 			focus();
 		}
 	}
@@ -110,7 +113,7 @@
 
 <div
 	bind:this={fieldRef}
-	class="field nest {variant} {class_}"
+	class="field nest {variant} {className}"
 	{style}
 	class:compact
 	class:warning

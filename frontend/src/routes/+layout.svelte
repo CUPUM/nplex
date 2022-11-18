@@ -2,7 +2,6 @@
 	import { browser } from '$app/environment';
 	import { afterNavigate, beforeNavigate, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import Loading from '$components/Loading.svelte';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
 	import '$styles/app.scss';
 	import '$styles/themes.scss';
@@ -65,9 +64,9 @@
 	{/if}
 </div>
 <div class="border" class:authing={$authModalState} />
-{#if loading}
+<!-- {#if loading}
 	<Loading class="loader" />
-{/if}
+{/if} -->
 <AuthModal />
 <MessagesOutlet />
 <LoadingProgress bind:this={progress} />

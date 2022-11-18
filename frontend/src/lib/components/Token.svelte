@@ -17,11 +17,11 @@
 	export let value: any = undefined;
 	export let type: 'checkbox' | 'radio' | undefined = undefined;
 	export let name: string | undefined = undefined;
-	export let as: string | undefined = undefined;
+	export let as: keyof HTMLElementTagNameMap | undefined = undefined;
 	export let compact: boolean | undefined = undefined;
 	export let style: string | undefined = undefined;
-	let class_: string = '';
-	export { class_ as class };
+	let className: string = '';
+	export { className as class };
 	export let checked: any = undefined;
 	export let group: any = undefined;
 

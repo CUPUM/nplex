@@ -1,4 +1,4 @@
-import { dbClient } from '$utils/database';
+import { getDb } from '$utils/database';
 import { safeJsonParse } from '$utils/json';
 import { projectLocationSchema } from '$utils/validation';
 import { error, invalid, redirect, type Actions } from '@sveltejs/kit';
@@ -13,7 +13,7 @@ export const actions: Actions = {
 			throw error(500, validated.error);
 		}
 		if (event.params.projectId) validated.data.id = event.params.projectId;
-		const db = dbClient.server(event.locals.session.access_token);
+		const db = await getDb(event);
 		const projectRes = await db.from('projects').upsert(validated.data).select('id').single();
 		if (projectRes.error) {
 			throw invalid(500, projectRes.error);
@@ -33,7 +33,7 @@ export const actions: Actions = {
 		if (!event.locals.session) return invalid(401);
 		const formData = Object.fromEntries(await event.request.formData());
 		if (!formData.id) return invalid(401);
-		const db = dbClient.server(event.locals.session.access_token);
+		const db = await getDb(event);
 		const deleteRes = await db.from('projects').delete().eq('id', formData.id);
 		if (deleteRes.error) throw error(500, deleteRes.error);
 		throw redirect(301, '/editer');

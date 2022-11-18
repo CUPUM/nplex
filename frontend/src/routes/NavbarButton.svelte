@@ -23,7 +23,7 @@
 	aria-disabled={disabled}
 	{href}
 >
-	<Ripple color="var(--color-primary-500)" blur={6} />
+	<Ripple color="var(--color-primary-500)" blur={2} />
 	<div class="inner">
 		<slot />
 	</div>
@@ -124,7 +124,6 @@
 			// color: white;
 			color: col(bg, 100);
 			background: col(primary, 700);
-			box-shadow: 0 0.5em 1em -0.5em col(primary, 300);
 		}
 	}
 </style>

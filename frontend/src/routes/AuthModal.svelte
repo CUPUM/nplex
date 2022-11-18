@@ -164,6 +164,9 @@
 					<Icon name="login" slot="trailing" />
 					Me connecter
 				</Button>
+				<Button class="small-button" type="submit" variant="ghost" contentAlign="center"
+					>Mot de passe oublié&thinsp;?</Button
+				>
 				<Button
 					class="small-button"
 					type="submit"
@@ -171,12 +174,9 @@
 					loading={currentAction === ACTION.SIGNUP}
 					contentAlign="center"
 				>
-					<Icon name="user-add" slot="leading" style="font-size: 1.25em" />
-					Créer un compte
+					<span>Créer un compte</span>
+					<Icon name="user-add" />
 				</Button>
-				<Button class="small-button" type="submit" variant="ghost" contentAlign="center"
-					>Mot de passe oublié</Button
-				>
 			</fieldset>
 			<hr />
 			<fieldset class="providers" disabled>
@@ -277,7 +277,7 @@
 		}
 
 		.small-button {
-			font-size: var(--size-x2small);
+			font-size: var(--size-xsmall);
 		}
 
 		hr {

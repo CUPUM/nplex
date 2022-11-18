@@ -5,16 +5,6 @@
 
 -->
 <script lang="ts" context="module">
-	// export const backgroundOpacity = (function () {
-	// 	const init = 0.75;
-	// 	const { subscribe, set } = writable(init);
-	// 	return {
-	// 		subscribe,
-	// 		set,
-	// 		reset: () => set(init),
-	// 	};
-	// })();
-
 	export const navbarTheme = (function () {
 		const { subscribe, set } = writable<ValueOf<typeof Theme> | null>(null);
 		return {
@@ -37,14 +27,14 @@
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import Button from '$components/Button.svelte';
+	import Avatar from '$components/Avatar.svelte';
 	import DropdownArrow from '$components/DropdownArrow.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
 	import { rootScroll } from '$stores/scroll';
 	import type { Theme } from '$utils/enums';
-	import { creationBaseRoute, exploreRoutes, mainRoutes } from '$utils/routes';
+	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
 	import { writable } from 'svelte/store';
 	import type { ValueOf } from 'ts-essentials';
 	import { authModalState } from './AuthModal.svelte';
@@ -108,9 +98,13 @@
 					</NavbarButton>
 					<NavbarEditMenu />
 				</Popover>
-				<Popover hover place="bottom" align="end">
-					<Button slot="control">Hoy !</Button>
-					<!-- <AvatarButton slot="control" href={userBaseRoute.pathname} /> -->
+				<Popover hover place="bottom" align="end" let:open>
+					<Avatar
+						active={open}
+						slot="control"
+						data={$page.data.session.user}
+						href={userBaseRoute.pathname}
+					/>
 					<NavbarUserMenu />
 				</Popover>
 			{:else}

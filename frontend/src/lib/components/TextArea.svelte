@@ -39,8 +39,8 @@
 	export let pattern: RegExp | undefined = undefined; // Figure out how to make work with ozd validators...
 	export let dirty: boolean = false;
 	export let tabindex: number = 0;
-	let class_: string = '';
-	export { class_ as class };
+	let className: string = '';
+	export { className as class };
 	export let style: string | undefined = undefined;
 	export function focus() {
 		textAreaRef.focus();
@@ -62,7 +62,7 @@
 </script>
 
 <div
-	class="text-area nest {variant} {class_}"
+	class="text-area nest {variant} {className}"
 	{style}
 	class:compact
 	class:warning

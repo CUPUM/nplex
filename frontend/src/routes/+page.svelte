@@ -64,7 +64,7 @@
 		</h4>
 	</a>
 </PreviewList>
-<hr class="dashed" />
+<hr />
 <PreviewList header="Organisations et bureaux" href="/projets" data={data.projects} let:datum>
 	<a class="project" href="/projets/{datum.id}">
 		<figure>
@@ -75,7 +75,7 @@
 		</h4>
 	</a>
 </PreviewList>
-<hr class="dashed" />
+<hr />
 <PreviewList header="Acteurs de projet" href="/projets" data={data.projects} let:datum>
 	<a class="project" href="/projets/{datum.id}">
 		<figure>
@@ -101,7 +101,8 @@
 		margin: 0;
 		margin-top: var(--n-navbar-height-px);
 		background: col(bg, 100);
-		border-radius: 0 0 min(3rem, calc(0.2 * var(--scroll-px))) min(2rem, calc(0.2 * var(--scroll-px)));
+		border-radius: 0 0 min(3rem, calc(0.2 * var(--scroll-px)))
+			min(2rem, calc(0.2 * var(--scroll-px)));
 		// transform: scale(max(0.96, calc(1 - 0.0002 * var(--scroll))));
 		// transform-origin: top center;
 		transition: transform 0.2s ease-out, border-radius 0.2s ease-out;
@@ -115,7 +116,9 @@
 		margin: 0;
 		line-height: 1;
 		align-self: flex-start;
-		transform: translateX(calc(-0.5 * var(--scroll-px))); // skewX(calc(-0.01deg * var(--scroll)));
+		transform: translateX(
+			calc(-0.5 * var(--scroll-px))
+		); // skewX(calc(-0.01deg * var(--scroll)));
 		font-weight: min(calc(0.5 * var(--scroll) + 400), 800);
 		transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
 	}
@@ -143,22 +146,11 @@
 		}
 	}
 
-	.subtitle {
-		letter-spacing: 0.02em;
-		padding: 0;
-		line-height: 1.2em;
-		max-width: var(--ui-large);
-		margin: 0;
-		font-size: var(--size-xlarge);
-		text-align: center;
-		font-weight: 500;
+	hr {
 		width: 100%;
-		text-align: left;
-		color: col(primary, 500);
-		span {
-			display: block;
-			max-width: var(--ui-small);
-		}
+		border: none;
+		background: col(fg, 100, 0.05);
+		height: 1px;
 	}
 
 	.project {

@@ -5,8 +5,6 @@
 	import MapProjects from './MapProjects.svelte';
 
 	export let data: PageData;
-
-	console.log(data.projects);
 </script>
 
 <div class="explore">
