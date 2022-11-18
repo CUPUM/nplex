@@ -1,12 +1,14 @@
 import { themes } from './themes';
 
 /**
- * Dictionnary of context keys used for automatically detecting certain compositions or nestings like buttons being
- * nested inside field input compoenents or select options inside select parents.
+ * Dictionnary of context keys used for automatically detecting certain compositions or nestings
+ * like buttons being nested inside field input compoenents or select options inside select
+ * parents.
  *
- * Every key specified here should directly refer the host component's name or the targeted styling property. The key's
- * associated values follow a `[kebab-case-key]-context` format for consistency and simplicity. Developpers shouldn't
- * interact with these directly, but rather always refer to them through the enum.
+ * Every key specified here should directly refer the host component's name or the targeted styling
+ * property. The key's associated values follow a `[kebab-case-key]-context` format for consistency
+ * and simplicity. Developpers shouldn't interact with these directly, but rather always refer to
+ * them through the enum.
  */
 export enum Ctx {
 	// Component context keys
@@ -41,8 +43,8 @@ export enum KeyCode {
 }
 
 /**
- * Global dictionnary of keys to help set and get a URL's search params consistently and avoid naming conflicts. Should
- * include an exhaustive list of keys associated to exploration filters.
+ * Global dictionnary of keys to help set and get a URL's search params consistently and avoid
+ * naming conflicts. Should include an exhaustive list of keys associated to exploration filters.
  */
 export enum SearchParam {
 	ProjectsCostFork = 'cout-projet',
@@ -52,7 +54,8 @@ export enum SearchParam {
 }
 
 /**
- * Global enum of local storage keys. Use wherever local storage is used to ensure no naming collision emerges.
+ * Global enum of local storage keys. Use wherever local storage is used to ensure no naming
+ * collision emerges.
  */
 export enum LocalStorage {
 	FirstVisit = 'first-visit',
@@ -67,26 +70,27 @@ export enum LocalStorage {
  */
 export enum Cookie {
 	Session = 'nplex_session',
-	AuthChange = 'nplex_auth_change',
+	Auth = 'nplex_auth_session',
 	AppVersion = 'app_version',
 }
 
 /**
- * Common keys used to invalidate non-app-route dependencies allowing granular invalidation/re-run of load functions.
- * Such custom keys are useful to fine-tune re-execution of load functions after enhanced form submissions and handling
- * using applyAction().
+ * Common keys used to invalidate non-app-route dependencies allowing granular invalidation/re-run
+ * of load functions. Such custom keys are useful to fine-tune re-execution of load functions after
+ * enhanced form submissions and handling using applyAction().
  *
  * See https://kit.svelte.dev/docs/load#input-methods-depends for more info.
  *
- * ! To deprecate: load-dependencies should be defined and exported from the layouts / pages using them.
+ * ! To deprecate: load-dependencies should be defined and exported from the layouts / pages using
+ * them.
  */
 export enum LoadDependency {
 	DbUserProfile = 'db:user-profile',
 }
 
 /**
- * Dictionnary of error codes and their translated message. (Provided as object since enums do not support number
- * members.)
+ * Dictionnary of error codes and their translated message. (Provided as object since enums do not
+ * support number members.)
  */
 export const ErrorCodeMessage = {
 	400: 'Impossible!',

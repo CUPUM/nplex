@@ -7,6 +7,7 @@ import { zfd } from 'zod-form-data';
 
 export const actions: Actions = {
 	upsert: async (event) => {
+		console.log('upsertinnn');
 		if (!event.locals.session) return invalid(401);
 		const validated = upsertSchema.safeParse(await event.request.formData());
 		if (!validated.success) {
@@ -22,6 +23,12 @@ export const actions: Actions = {
 		if (!event.params.projectId) {
 			throw redirect(302, '/editer/projet/' + projectRes.data.id);
 		}
+	},
+	refresh: async (event) => {
+		console.log('Refreshinnnn');
+		if (!event.locals.session) return invalid(401);
+		if (!event.params.projectId) return invalid(401);
+		return {};
 	},
 	publish: async (event) => {},
 	delete: async (event) => {

@@ -1,60 +1,69 @@
-import { setClearCookies } from '$utils/cookie';
-import { dbClient } from '$utils/database';
+import { dev } from '$app/environment';
+import { getDb } from '$utils/database';
 import { Cookie } from '$utils/enums';
-import type { AuthChangeEvent, AuthSession } from '@supabase/supabase-js';
-import { error, json } from '@sveltejs/kit';
-import type { RequestHandler } from './$types';
+import { safeJsonParse } from '$utils/json';
+import type { AuthSession } from '@supabase/supabase-js';
+import { json } from '@sveltejs/kit';
+import type { RequestEvent, RequestHandler } from './$types';
 
-export type AuthChangeCookie = {
-	session: AuthSession | null;
-	event: AuthChangeEvent;
-};
-
-export type AuthSessionResponse = Pick<App.PageData, 'session' | 'previousSessionId'>;
+function clearSession(event: RequestEvent) {
+	event.cookies.delete(Cookie.Session, { path: '/' });
+	return json(null);
+}
 
 /**
- * Set the changed auth's session as a cookie.
+ * Use this endpoint to initialize or update a session cookie, EXCLUDING signouts. It verifies the
+ * previous cookies or the posted data sets an updated cookie accordingly, while also returning the
+ * extended user data to populate PageData. It is thus imperative that this endpoint always resolve
+ * with returned data to set, update, or erase the session in both the client's data props and
+ * cookies. The data in question should abide by the shape of App.PageData['session'] or null.
  */
-export const GET: RequestHandler = async ({ request, locals, cookies }) => {
-	try {
-		const newAuth: AuthChangeCookie = JSON.parse(cookies.get(Cookie.AuthChange) ?? null!);
-		// Clear client's auth change cookie with response.
-		if (newAuth) setClearCookies(cookies, Cookie.AuthChange);
-		// Coalescing potential locals session and potential newAuth session.
-		// Also temporarily defaulting role to 'visitor' for type compliancy and least privilege.
-		const session: App.Locals['session'] = newAuth?.session
-			? { ...newAuth.session, user: { ...newAuth.session.user, role: locals.session?.user.role ?? 'visitor' } }
-			: locals.session;
-		const previousSessionId = locals.session?.user.id ?? null;
-		const res: AuthSessionResponse = {
-			previousSessionId,
-			session: null,
-		};
-		// If the user logged out or if there is no auth token in cookie, reset client's auth.
-		if (!session || newAuth?.event === 'SIGNED_OUT') {
-			setClearCookies(cookies, Cookie.Session);
-			return json(res);
-		}
-		const db = dbClient.server(session.access_token);
-		const { data: roleData, error: roleError } = await db
-			.from('users_roles')
-			.select('role')
-			.eq('user_id', session.user.id)
-			.single();
-		if (roleError) {
-			setClearCookies(cookies, Cookie.AuthChange, Cookie.Session);
-			return json(res);
-		}
-		session.user.role = roleData.role;
-		cookies.set(Cookie.Session, JSON.stringify(session), {
-			maxAge: parseInt(session.expires_in + '') ?? -1,
-			httpOnly: true,
-			path: '/',
-			sameSite: 'strict',
-		});
-		res.session = session;
-		return json(res);
-	} catch (err) {
-		throw error(500, JSON.stringify(err));
+export const POST: RequestHandler = async (event) => {
+	let authSession: AuthSession | null = safeJsonParse(event.cookies.get(Cookie.Auth));
+	const db = await getDb(event);
+	if (authSession) {
+		event.cookies.delete(Cookie.Auth, { path: '/' });
+		await db.auth.setSession(authSession);
+	} else {
+		authSession = (await db.auth.getSession()).data.session;
 	}
+
+	if (!authSession) {
+		return clearSession(event);
+	}
+
+	const roleRes = await db
+		.from('users_roles')
+		.select('role')
+		.eq('user_id', authSession.user.id)
+		.single();
+
+	if (roleRes.error || !roleRes.data.role) return clearSession(event);
+
+	const pageDataSession: App.PageData['session'] = {
+		...authSession,
+		user: {
+			...authSession.user,
+			role: roleRes.data.role,
+		},
+	};
+	const cookieSession: App.Locals['session'] = {
+		access_token: pageDataSession.access_token,
+		refresh_token: pageDataSession.refresh_token,
+		provider_refresh_token: pageDataSession.provider_refresh_token,
+		expires_at: pageDataSession.expires_at ?? Date.now() + pageDataSession.expires_in * 1000,
+		expires_in: pageDataSession.expires_in,
+		user: {
+			id: pageDataSession.user.id,
+			role: pageDataSession.user.role,
+		},
+	};
+	event.cookies.set(Cookie.Session, JSON.stringify(cookieSession), {
+		path: '/',
+		httpOnly: true,
+		sameSite: 'strict',
+		secure: !dev,
+		maxAge: authSession.expires_in,
+	});
+	return json(pageDataSession);
 };

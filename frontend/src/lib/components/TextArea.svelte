@@ -139,7 +139,7 @@
 		font-family: inherit;
 		font-size: inherit;
 		line-height: 1.2em;
-		padding: var(--ui-pad-x);
+		padding: var(--ui-pad-inline);
 		background: transparent;
 		border: none;
 		outline: none;

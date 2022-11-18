@@ -10,7 +10,7 @@ import { createClient } from '@supabase/supabase-js';
  * Server side admin db client to use only where truly necessary. This db client can overrule RLS policies and has
  * extended permissions.
  */
-export const adminDbClient = createClient<Database & DatabaseRpc>(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+export const dbAdmin = createClient<Database & DatabaseRpc>(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_KEY, {
 	db: {
 		schema: 'public',
 	},

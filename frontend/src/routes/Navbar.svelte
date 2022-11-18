@@ -37,17 +37,17 @@
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import AvatarButton from '$components/AvatarButton.svelte';
+	import Button from '$components/Button.svelte';
 	import DropdownArrow from '$components/DropdownArrow.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
 	import { rootScroll } from '$stores/scroll';
 	import type { Theme } from '$utils/enums';
-	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
+	import { creationBaseRoute, exploreRoutes, mainRoutes } from '$utils/routes';
 	import { writable } from 'svelte/store';
 	import type { ValueOf } from 'ts-essentials';
-	import { getAuthModalUrl } from './AuthModal.svelte';
+	import { authModalState } from './AuthModal.svelte';
 	import NavbarButton from './NavbarButton.svelte';
 	import NavbarEditMenu from './NavbarEditMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
@@ -74,13 +74,7 @@
 	$: rootPathname = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
 </script>
 
-<header
-	class={$navbarTheme ?? ''}
-	class:hidden
-	class:overlay
-	bind:clientHeight={navbarHeight}
-	style:--navbar-bg={$navbarBackground}
->
+<header class={$navbarTheme ?? ''} class:hidden class:overlay bind:clientHeight={navbarHeight}>
 	<div class="wrapper">
 		<nav class="main">
 			<NavbarButton equi href="/">
@@ -115,11 +109,12 @@
 					<NavbarEditMenu />
 				</Popover>
 				<Popover hover place="bottom" align="end">
-					<AvatarButton slot="control" href={userBaseRoute.pathname} />
+					<Button slot="control">Hoy !</Button>
+					<!-- <AvatarButton slot="control" href={userBaseRoute.pathname} /> -->
 					<NavbarUserMenu />
 				</Popover>
 			{:else}
-				<NavbarButton equi cta href={getAuthModalUrl($page.url).search}>
+				<NavbarButton equi cta href={authModalState.getUrl().toString()}>
 					<Icon name="user" thickness="1.5" style="font-size: 1.25em" />
 				</NavbarButton>
 			{/if}
@@ -137,7 +132,8 @@
 		font-size: small;
 		backdrop-filter: blur(12px);
 		border-bottom: 0px solid transparent;
-		transition: transform 0.5s cubic-bezier(0.75, 0, 0, 1), border 1s ease-in-out;
+		transform-origin: top center;
+		transition: transform 0.5s cubic-bezier(0.5, 0, 0, 1), opacity 0.5s ease-in-out;
 
 		&::before {
 			content: '';
@@ -146,11 +142,11 @@
 			height: 100%;
 			padding: 0;
 			margin: 0;
-			opacity: 0;
 			top: 0;
 			left: 0;
+			opacity: min(calc(0.002 * var(--scroll)), 0.9);
 			background: col(bg, 300);
-			transition: all 0.25s linear;
+			transition: all 0.2s ease-in-out;
 		}
 	}
 
@@ -184,14 +180,9 @@
 		}
 	}
 
-	.overlay {
-		&::before {
-			opacity: 0.9;
-		}
-	}
-
 	.hidden {
 		transform: translateY(-101%);
+		// opacity: 0;
 		pointer-events: none;
 	}
 

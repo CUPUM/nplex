@@ -6,63 +6,74 @@
 -->
 <script lang="ts" context="module">
 	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { rootScroll } from '$stores/scroll';
 	import { SearchParam } from '$utils/enums';
 	import { derived, get } from 'svelte/store';
 
-	const LOCK_KEY = 'auth';
+	const SCROLL_LOCK = Symbol('auth');
 
 	/**
-	 * Utility to get the auth-modal url relative to the passed url, i.e. appending or deleting the modal's search param
-	 * trigger.
-	 *
-	 * @param url: A relative or based string or URL object.
-	 * @param state: The target modal state, where `true`= open and `false` = close. Defaults to `true`
-	 */
-	export function getAuthModalUrl(url: string | URL, state: boolean = true) {
-		const targetUrl = new RelativeURL(url);
-		if (state) {
-			targetUrl.searchParams.set(SearchParam.AuthModal, 'true');
-		} else {
-			targetUrl.searchParams.delete(SearchParam.AuthModal);
-		}
-		return targetUrl;
-	}
-
-	/**
-	 * Singleton store to open/close the auth modal and consequently update the client's URL search params and
-	 * vice-versa.
+	 * Singleton store to open/close the auth modal and consequently update the client's URL search
+	 * params and vice-versa.
 	 */
 	export const authModalState = (function () {
 		const { subscribe } = derived(page, ($page) => {
 			if (browser) {
-				const isModal = $page.url.searchParams.has(SearchParam.AuthModal);
-				if (isModal) rootScroll.lock(LOCK_KEY);
-				else rootScroll.unlock(LOCK_KEY);
-				return isModal;
+				const open = $page.url.searchParams.has(SearchParam.AuthModal);
+				if (open) rootScroll.lock(SCROLL_LOCK);
+				else rootScroll.unlock(SCROLL_LOCK);
+				return open;
 			}
 			return false;
 		});
+
+		function getUrl({
+			url = get(page).url,
+			open = true,
+		}: { url?: string | URL; open?: boolean } = {}) {
+			const re = new URL(url);
+			if (open) {
+				re.searchParams.set(SearchParam.AuthModal, 'true');
+			} else {
+				re.searchParams.delete(SearchParam.AuthModal);
+			}
+			return re;
+		}
+
+		async function open({
+			url = get(page).url,
+			replaceState = true,
+			...opts
+		}: { url?: string | URL } & Parameters<typeof goto>[1] = {}) {
+			if (!browser) return;
+			const re = getUrl({ url, open: true });
+			return goto(re, { replaceState, ...opts });
+		}
+
+		async function close({
+			url = get(page).url,
+			replaceState = true,
+			...opts
+		}: { url?: string | URL } & Parameters<typeof goto>[1] = {}) {
+			if (!browser) return;
+			const re = getUrl({ url, open: false });
+			return goto(re, { replaceState, ...opts });
+		}
+
 		return {
 			subscribe,
-			open: async () => {
-				if (browser) {
-					return goto(getAuthModalUrl(get(page).url).search, { replaceState: true });
-				}
-			},
-			close: async () => {
-				if (browser) {
-					return goto(getAuthModalUrl(get(page).url, false).search || '?', { replaceState: true });
-				}
-			},
+			open,
+			close,
+			getUrl,
 		};
 	})();
 </script>
 
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
+	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
 	import FieldIcon from '$components/FieldIcon.svelte';
@@ -71,76 +82,66 @@
 	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import ProviderLogo, { providers } from '$components/ProviderLogo.svelte';
-	import { messages } from '$routes/MessagesOutlet.svelte';
 	import { transform } from '$transitions/transform';
-	import { dbClient } from '$utils/database';
-	import { RelativeURL } from '$utils/url';
-	import { cubicOut } from 'svelte/easing';
-	import { fade, scale } from 'svelte/transition';
+	import { cubicIn, cubicOut, linear } from 'svelte/easing';
+	import { fade } from 'svelte/transition';
 
 	enum Action {
-		EmailSignUp = 'emailsignup',
-		EmailSignIn = 'emailsignin',
-		ResetPassword = 'resetpassword',
-		UseProvider = 'useprovider',
+		SignIn = '/api/auth?/signin',
+		SignUp = '/api/auth?/signup',
+		ForgotPassword = '/api/auth?/forgot',
 	}
 
 	let email: string;
 	let password: string;
-	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
 	let currentAction: Action | null = null;
-
-	async function submit(e: SubmitEvent) {
-		currentAction = (e.submitter as HTMLButtonElement).value as Action;
-		try {
-			switch (currentAction) {
-				case Action.EmailSignIn:
-					const signin = await dbClient.browser.auth.signInWithPassword({ email, password });
-					if (signin.error) {
-						throw signin.error;
-					}
-					break;
-				case Action.EmailSignUp:
-					const signup = await dbClient.browser.auth.signUp({ email, password });
-					if (signup.error) {
-						throw signup.error;
-					}
-				case Action.ResetPassword:
-					const res = await dbClient.browser.auth.resetPasswordForEmail(email, {});
-					console.log(res);
-				case Action.UseProvider:
-					// To do: get app approbation from desired providers.
-					break;
-			}
-		} catch (err: any) {
-			messages.dispatch({
-				type: 'error',
-				content: err.message,
-			});
-		}
-		currentAction = null;
-	}
+	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
 </script>
 
 {#if $authModalState}
-	<div id="auth-bg" transition:fade={{ duration: 200 }} />
+	<div class="bg" aria-hidden="true" transition:fade={{ duration: 250, easing: linear }} />
 	<dialog class="container">
 		<form
-			on:submit|preventDefault={submit}
-			action="login"
-			in:transform={{ scale: 1.08, translateY: 25, opacity: 0, duration: 350, easing: cubicOut }}
-			out:scale={{ start: 0.95 }}
+			in:transform={{
+				scale: 1.08,
+				translateY: 25,
+				rotateX: -10,
+				opacity: 0,
+				duration: 350,
+				easing: cubicOut,
+			}}
+			out:transform={{ scale: 0.96, rotateX: 10, opacity: 0, duration: 250, easing: cubicIn }}
 			use:clickoutside={true}
 			on:clickoutside={() => authModalState.close()}
+			method="POST"
+			use:enhance={({ form, data, action, cancel }) => {
+				currentAction = action.search;
+				return async ({ update, result }) => {
+					update({ reset: false });
+					currentAction = null;
+				};
+			}}
 		>
-			<Logo class="auth-logo" />
-			<fieldset id="auth-fields">
-				<Field variant="default" bind:value={email} maxlength={100} name="email" type="email" required>
+			<Logo class="logo" />
+			<fieldset class="fields">
+				<Field
+					class="fill-row"
+					variant="default"
+					bind:value={email}
+					name="email"
+					type="email"
+				>
 					<FieldIcon name="letter" slot="leading" />
 					<svelte:fragment slot="label">Courriel</svelte:fragment>
 					<FieldReset slot="trailing" />
 				</Field>
-				<Field variant="default" bind:value={password} name="password" type="password" minlength={6} required>
+				<Field
+					class="fill-row"
+					variant="default"
+					bind:value={password}
+					name="password"
+					type="password"
+				>
 					<FieldIcon slot="leading" name="lock-close" />
 					<svelte:fragment slot="label">Mot de passe</svelte:fragment>
 					<svelte:fragment slot="trailing">
@@ -149,51 +150,44 @@
 					</svelte:fragment>
 				</Field>
 				<Button
-					class="login-button"
+					class="fill-row"
 					type="submit"
 					variant="cta"
-					value={Action.EmailSignIn}
 					disabled={!Boolean(email) || !Boolean(password)}
 					contentAlign="center"
-					loading={currentAction === Action.EmailSignIn}
+					formaction={Action.SignIn}
+					loading={currentAction === Action.SignIn}
 				>
-					<svelte:fragment slot="trailing">
-						<Icon name="login" />
-					</svelte:fragment>
+					<Icon name="login" slot="trailing" />
 					Me connecter
 				</Button>
-				<div id="auth-buttons">
-					<Button
-						type="submit"
-						value={Action.EmailSignUp}
-						disabled={!Boolean(email) || !Boolean(password)}
-						loading={currentAction === Action.EmailSignUp}
-						contentAlign="center"
-						style="flex: 1 0"
-					>
-						<Icon name="user-add" slot="leading" />
-						Créer un compte
-					</Button>
-					<Button
-						type="submit"
-						variant="ghost"
-						value={Action.ResetPassword}
-						contentAlign="center"
-						style="flex: 1 0">Mot de passe oublié</Button
-					>
-				</div>
+				<Button
+					class="small-button"
+					type="submit"
+					disabled={!Boolean(email) || !Boolean(password)}
+					loading={currentAction === Action.SignUp}
+					contentAlign="center"
+				>
+					<Icon name="user-add" slot="leading" style="font-size: 1.25em" />
+					Créer un compte
+				</Button>
+				<Button class="small-button" type="submit" variant="ghost" contentAlign="center"
+					>Mot de passe oublié</Button
+				>
 			</fieldset>
 			<hr />
-			<fieldset id="auth-providers" disabled>
+			<fieldset class="providers" disabled>
 				<span>Me connecter via une autre plateforme :</span>
-				<div class="scroll">
+				<ul class="scroll">
 					{#each providerNames as name, i}
-						<Button variant="outlined" style="flex: none;">
-							<ProviderLogo {name} slot="leading" />
-							{providers[name]?.title}
-						</Button>
+						<li>
+							<Button variant="outlined" style="flex: none;">
+								<ProviderLogo {name} slot="leading" />
+								{providers[name]?.title}
+							</Button>
+						</li>
 					{/each}
-				</div>
+				</ul>
 			</fieldset>
 			<Button class="close" variant="ghost" on:click={() => authModalState.close()} equi>
 				<Icon name="cross" />
@@ -203,7 +197,7 @@
 {/if}
 
 <style lang="scss" module>
-	#auth-bg {
+	.bg {
 		z-index: 1000;
 		position: fixed;
 		width: 100vw;
@@ -221,101 +215,104 @@
 		align-items: center;
 		height: 100vh;
 		width: 100vw;
-		padding: 4rem 1rem;
+		padding: var(--size-x2large) var(--size-medium);
 		margin: 0;
 		top: 0;
 		left: 0;
 		background: transparent;
 		border: none;
-	}
+		perspective: 1000px;
 
-	.container .close {
-		position: absolute;
-		top: 1rem;
-		right: 1rem;
-		color: col(primary, 500);
-	}
-
-	form {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		flex-wrap: nowrap;
-		width: 100%;
-		max-width: 450px;
-		max-height: 100%;
-		background: col(bg, 500);
-		box-shadow: 0 3rem 8rem -4rem black, 0 3rem 3rem 2rem rgba(0, 0, 0, 0.1);
-		padding: 0;
-		overflow-y: auto;
-		overflow-x: hidden;
-		border-radius: 1.5rem;
-		border: none;
-	}
-
-	.container .auth-logo {
-		color: col(primary, 500);
-		font-size: 4rem;
-		padding: 1rem 2rem;
-		margin: 2rem;
-	}
-
-	#auth-fields {
-		position: relative;
-		width: 100%;
-		display: flex;
-		align-items: stretch;
-		flex-direction: column;
-		gap: 1rem;
-		border: none;
-		padding: 0 2.5rem;
-		margin: 0;
-		min-width: 0;
-	}
-
-	#auth-buttons {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		font-size: var(--size-xsmall);
-		gap: 1.5em;
-	}
-
-	hr {
-		height: 1px;
-		margin: 2rem 3rem;
-		border: none;
-		color: col(bg, 900);
-		background-image: linear-gradient(to right, currentColor 0 30%, transparent 30%);
-		background-position: bottom;
-		background-size: 12px 1px;
-		background-repeat: repeat-x;
-	}
-
-	#auth-providers {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		border: none;
-		margin: 0;
-		gap: 2rem;
-		padding: 0;
-		min-width: 0;
-		span {
-			display: block;
-			margin: 0 2.5rem;
-			text-align: center;
-			opacity: 0.5;
-			font-size: var(--size-xsmall);
+		.close {
+			position: absolute;
+			top: 1rem;
+			right: 1rem;
+			color: col(primary, 500);
 		}
-		.scroll {
+
+		.logo {
+			color: col(primary, 500);
+			font-size: 4rem;
+			padding: 1rem 2rem;
+			margin: 2rem;
+		}
+
+		form {
+			position: relative;
 			display: flex;
-			flex-direction: row;
+			flex-direction: column;
+			justify-content: flex-start;
+			flex-wrap: nowrap;
+			width: 100%;
+			max-width: 450px;
+			max-height: 100%;
+			background: col(bg, 500);
+			box-shadow: 0 3rem 8rem -4rem black, 0 3rem 3rem 2rem rgba(0, 0, 0, 0.1);
+			padding: 0;
+			overflow-y: auto;
+			overflow-x: hidden;
+			border-radius: 1.5rem;
+			border: none;
+		}
+
+		.fields {
+			position: relative;
+			width: 100%;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			flex-direction: column;
+			align-items: stretch;
 			gap: 1rem;
-			padding: 3rem;
-			padding-top: 0;
-			overflow: scroll;
+			border: none;
+			padding: 0 2.5rem;
+			margin: 0;
+			min-width: 0;
+		}
+
+		.fill-row {
+			grid-column: 1 / -1;
+		}
+
+		.small-button {
+			font-size: var(--size-x2small);
+		}
+
+		hr {
+			height: 1px;
+			margin: 2rem 0;
+			border: none;
+			background: col(fg, 100, 0.05);
+		}
+
+		.providers {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			border: none;
+			margin: 0;
+			gap: 2rem;
+			padding: 0;
+			min-width: 0;
+			span {
+				display: block;
+				margin: 0 2.5rem;
+				text-align: center;
+				opacity: 0.5;
+				font-size: var(--size-xsmall);
+			}
+			ul {
+				list-style-type: none;
+				margin: 0;
+				display: flex;
+				flex-direction: row;
+				gap: 1rem;
+				padding: 3rem;
+				padding-top: 0;
+				overflow: scroll;
+			}
+			li {
+				all: unset;
+			}
 		}
 	}
 </style>

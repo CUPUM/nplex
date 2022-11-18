@@ -143,7 +143,7 @@
 	.mark {
 		position: absolute;
 		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum) - var(--inset));
-		transition: all 0.2s cubic-bezier(0.5, 0, 0.2, 1.2);
+		transition: all 0.15s cubic-bezier(0, 0, 0, 1); // cubic-bezier(0.5, 0, 0.2, 1.2);
 	}
 
 	// Variants

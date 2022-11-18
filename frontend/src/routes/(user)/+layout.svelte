@@ -8,7 +8,7 @@
 </script>
 
 <slot />
-<hr class="dashed" />
+<!-- <hr class="dashed" /> -->
 <article id="entries">
 	<h2>Fiches éditables</h2>
 	<EditablesList title="Mes fiches de projet" data={data.projects} let:datum>
@@ -24,7 +24,7 @@
 	article {
 		width: 100%;
 		padding: 0;
-		border-top: 1px solid rgb(var(--rgb-contrast-100), 0.1);
+		background: col(bg, 500);
 	}
 
 	h2 {

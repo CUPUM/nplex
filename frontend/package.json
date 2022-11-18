@@ -36,7 +36,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "1.0.0-next.100",
-		"@sveltejs/kit": "1.0.0-next.546",
+		"@sveltejs/kit": "1.0.0-next.551",
 		"@types/cookie": "^0.5.1",
 		"@types/js-cookie": "^3.0.2",
 		"@types/mapbox__mapbox-gl-draw": "^1.3.3",
@@ -68,8 +68,8 @@
 		"svgson": "^5.2.1",
 		"ts-essentials": "^9.3.0",
 		"tslib": "^2.4.1",
-		"typescript": "^4.8.4",
-		"vite": "^3.2.3"
+		"typescript": "^4.9.3",
+		"vite": "^3.2.4"
 	},
 	"dependencies": {
 		"@mapbox/mapbox-gl-draw": "^1.3.0",

@@ -20,9 +20,9 @@
 	let destructors: () => void;
 	const tipRoundness = 20;
 	const tip =
-		`M 0,-2 C ${tipRoundness},0 ` +
+		`M 0,-0 C ${tipRoundness},0 ` +
 		`${50 - tipRoundness},50 50,50 C ${50 + tipRoundness},50 ` +
-		`${100 - tipRoundness},0 100,-2 Z`;
+		`${100 - tipRoundness},0 100,-0 Z`;
 
 	function show() {
 		open = true;
@@ -53,7 +53,7 @@
 	<slot slot="control" {open} />
 	{#if open}
 		<div
-			class="tooltip {place} {align}"
+			class="tooltip theme-dark {place} {align}"
 			in:scale={{ start: 0.5, easing: expoOut, duration: 100 }}
 			out:scale={{ start: 0.75, easing: expoIn, duration: 75 }}
 		>
@@ -70,7 +70,7 @@
 <style lang="scss">
 	.tooltip {
 		--tip-pad: calc(0.5 * var(--w));
-		--tip-size: 0.8em;
+		--tip-size: 1em;
 		--d-sum: calc(var(--d) + 0.5 * var(--tip-size));
 		position: absolute;
 		pointer-events: none;
@@ -78,10 +78,11 @@
 		flex: none;
 		white-space: nowrap;
 		font-weight: 300;
+		font-size: var(--size-xsmall);
 		padding: 0.5em 1em 0.6em 1em;
 		margin: 0;
-		background: col(fg, 100);
-		color: col(bg, 700);
+		background: col(bg, 100, 0.8);
+		color: col(fg, 500);
 		border-radius: 0.5em;
 		letter-spacing: 0.02em;
 		transform-origin: inherit;
@@ -98,7 +99,7 @@
 		background: transparent;
 		overflow: visible;
 		path {
-			fill: col(fg, 100);
+			fill: col(bg, 100, 0.8);
 		}
 	}
 

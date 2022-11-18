@@ -1,6 +1,5 @@
 <script lang="ts">
-	import type { AuthChangeCookie } from '$api/auth/session.json/+server';
-	import { afterNavigate, beforeNavigate, goto, invalidate } from '$app/navigation';
+	import { afterNavigate, beforeNavigate, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Loading from '$components/Loading.svelte';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
@@ -8,10 +7,9 @@
 	import '$styles/themes.scss';
 	import '$styles/vars.scss';
 	import { dbClient } from '$utils/database';
-	import { Cookie } from '$utils/enums';
-	import jscookie from 'js-cookie';
+	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
-	import AuthModal, { authModalState, getAuthModalUrl } from './AuthModal.svelte';
+	import AuthModal, { authModalState } from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
 	import MessagesOutlet from './MessagesOutlet.svelte';
 	import Navbar from './Navbar.svelte';
@@ -23,20 +21,19 @@
 	let navbarHeight: number = 0;
 	let scrollY = 0;
 
-	// Listening to and handling client-side Supabase auth state change.
-	dbClient.browser.auth.onAuthStateChange(async (event, session) => {
-		// Set temporary client cookies to communicate auth change data to the server.
-		const newAuth: AuthChangeCookie = { session, event };
-		jscookie.set(Cookie.AuthChange, JSON.stringify(newAuth), { path: '/', sameSite: 'strict', secure: true });
-		invalidate('/api/auth/session.json');
+	onMount(() => {
+		const db = dbClient.browser.auth.onAuthStateChange(() => {
+			invalidate('/api/auth/session.json');
+		});
+		return () => {
+			db.data.subscription.unsubscribe();
+		};
 	});
 
 	// Client-side redirect to user's account page if logged into new session.
-	$: if (data.session && data.session.user.id !== data.previousSessionId && $authModalState) {
-		authModalState.close().then(() => {
-			goto($page.url.pathname === '/' ? '/compte' : getAuthModalUrl($page.url, false));
-		});
-	}
+	// $: if (data.session && data.session.id !== data.previousSessionId && $authModalState) {
+	// 	authModalState.close({ url: $page.url.pathname === '/' ? '/compte' : $page.url });
+	// }
 
 	beforeNavigate(() => {
 		progress.start();
@@ -51,6 +48,7 @@
 <svelte:window bind:scrollY />
 
 <div
+	class="container"
 	class:authing={$authModalState}
 	style:--scroll={scrollY}
 	style:--scroll-px="{scrollY}px"
@@ -65,14 +63,19 @@
 		<Footer />
 	{/if}
 </div>
-<AuthModal />
 {#if loading}
-	<Loading style="position: fixed; top:0; left: 0; width: 100vw; height: 100vh; color: var(--color-primary-700);" />
+	<Loading class="loader" />
 {/if}
+<AuthModal />
 <MessagesOutlet />
 <LoadingProgress bind:this={progress} />
 
-<style lang="scss">
+<style lang="scss" module>
+	.container {
+		transform-origin: 50vw calc(var(--scroll-px) + 50vh);
+		transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
+	}
+
 	main {
 		--scroll-color: rgb(var(--rgb-fg-100), 0.1);
 		position: relative;
@@ -84,13 +87,19 @@
 		margin: 0;
 	}
 
-	div {
-		transform-origin: 50vw calc(var(--scroll-px) + 50vh);
-		transition: transform 0.8s cubic-bezier(0.2, 0, 0, 1);
-	}
-
 	.authing {
 		transform: scale(0.96);
+		// filter: blur(2px);
+		// border-radius: 1rem;
+	}
+
+	.loader {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		color: var(--color-primary-700);
 	}
 
 	.loading {

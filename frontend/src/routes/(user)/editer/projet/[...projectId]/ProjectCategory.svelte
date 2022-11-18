@@ -14,6 +14,7 @@
 </script>
 
 <fieldset>
+	<h3>Catégorie</h3>
 	<Switch bind:group={project.category_id} name="type_id" required>
 		{#each descriptors.categories as c}
 			<SwitchItem value={c.id}>
@@ -24,4 +25,8 @@
 </fieldset>
 
 <style lang="scss">
+	fieldset {
+		width: 100%;
+		max-width: var(--ui-medium);
+	}
 </style>

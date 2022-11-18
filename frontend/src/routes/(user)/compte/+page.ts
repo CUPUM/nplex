@@ -1,39 +1,32 @@
-import { dbClient } from '$utils/database';
+import { getDb } from '$utils/database';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ parent, depends }) => {
-	// Setting a custom dep for limited refresh after form submission.
-	// depends(LoadDependency.DbUserProfile);
-	const { session } = await parent();
-	if (!session?.access_token) return {};
-	const db = dbClient.getForContext(session.access_token);
+export const load: PageLoad = async (event) => {
+	const { session } = await event.parent();
+	if (!session) return {};
+	const db = await getDb(event);
 	// Get extended user profile with collections and their contents.
-	const profile = await db
+	const profileRes = await db
 		.from('users')
-		.select('*')
-		// .select(
-		// 	`
-		// 		*,
-		// 		role:users_roles!users_roles_user_id_fkey(
-		// 			role
-		// 		)
-		// 	`
-		// )
+		// .select('*')
+		.select(
+			`
+				*,
+				role:users_roles!users_roles_user_id_fkey(
+					role
+				)
+			`
+		)
 		.eq('id', session.user.id)
 		.single();
-	if (profile.error) {
-		throw error(+profile.error.code, JSON.stringify(profile.error));
-	}
-	const role = await db.from('users_roles').select('*').eq('user_id', session.user.id).single();
-	if (role.error) {
-		throw error(+role.error.code, JSON.stringify(role.error));
+	if (profileRes.error || !profileRes.data) {
+		throw error(500, profileRes.error);
 	}
 
+	console.log(profileRes.data);
+
 	return {
-		profile: {
-			...profile.data,
-			role: role.data.role,
-		},
+		profile: profileRes.data,
 	};
 };

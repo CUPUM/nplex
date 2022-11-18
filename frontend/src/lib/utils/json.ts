@@ -40,10 +40,10 @@ export const ES6JSON = {
  * Some input strings represent JSON objects, but parsing them may lead to node errors if they are empty or
  * malformatted.
  */
-export function safeJsonParse(input: any) {
+export function safeJsonParse(input: any, fallback: any = null) {
 	try {
 		return JSON.parse(input);
 	} catch (error) {
-		return null;
+		return fallback;
 	}
 }

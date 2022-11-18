@@ -1,13 +1,14 @@
-import type { AuthSessionResponse } from '$api/auth/session.json/+server';
 import type { LayoutLoad } from './$types';
 
-export const load: LayoutLoad = async ({ fetch }) => {
-	const authRes = await fetch('/api/auth/session.json', { method: 'GET' });
-	const { session, previousSessionId }: AuthSessionResponse = await authRes.json();
+export const load: LayoutLoad = async (event) => {
+	let session: App.PageData['session'] = null;
+	try {
+		const sessionRes = await event.fetch('/api/auth/session.json', { method: 'POST' });
+		session = (await sessionRes.json()) ?? null;
+	} catch (err) {}
 
 	return {
 		session,
-		previousSessionId,
 		category: null,
 		showFooter: true,
 		showCategoryNav: false,

@@ -1,17 +1,19 @@
 import { queryMessage } from '$routes/MessagesOutlet.svelte';
-import { dbClient, getPagination } from '$utils/database';
+import { getDb, getPagination } from '$utils/database';
 import { error, redirect } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
-export const load: LayoutLoad = async ({ parent }) => {
-	const { session } = await parent();
-	if (!session?.access_token)
+export const load: LayoutLoad = async (event) => {
+	const { session } = await event.parent();
+	if (!session)
 		throw redirect(
 			302,
-			queryMessage('/', { content: 'Désolé, un compte est requis pour accéder à cette section de Nplex.' })
+			queryMessage('/', {
+				content: 'Désolé, un compte est requis pour accéder à cette section de Nplex.',
+			})
 		);
 
-	const db = dbClient.getForContext(session.access_token);
+	const db = await getDb(event);
 	const projectsRes = await db
 		.from('editable_projects')
 		.select('*')

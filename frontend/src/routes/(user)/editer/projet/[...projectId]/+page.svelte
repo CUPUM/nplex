@@ -14,19 +14,15 @@
 
 	let { project, descriptors } = data;
 
-	$: h = data.project ? 'Éditer le projet' : 'Créer un nouveau projet';
+	$: h = data.project.id ? 'Éditer le projet' : 'Créer un nouveau projet';
 </script>
 
-<header>
-	<hgroup>
-		<span class="sub">
-			{h}
-		</span>
-		<h2>Information générale</h2>
-	</hgroup>
-</header>
+<hgroup>
+	<span class="sub">{h}</span>
+	<h2>Information générale</h2>
+</hgroup>
 <form
-	id="edit-project"
+	id="edit"
 	method="POST"
 	action="?/upsert"
 	use:enhance={({ form, data, action, cancel }) => {
@@ -35,22 +31,21 @@
 		};
 	}}
 >
+	<ProjectTitle bind:project />
 	<ProjectCategory bind:project {descriptors} />
 	<ProjectType bind:project {descriptors} />
-	<ProjectTitle bind:project />
 	<ProjectDescription bind:project />
 	<ProjectLocation bind:project />
 	<EditorMenu bind:project />
 </form>
-<hr class="dashed" />
 <header>
 	<hgroup>
-		<span class="sub"> Gérer la visibilité de la fiche </span>
+		<span class="sub">Gérer la visibilité du projet</span>
 		<h2>Publier & partager</h2>
 	</hgroup>
 </header>
 <form
-	id="share-project"
+	id="share"
 	method="POST"
 	action="?/share"
 	use:enhance={({ form, data, action, cancel }) => {
@@ -63,7 +58,7 @@
 	<input type="search" />
 </form>
 <form
-	id="publish-project"
+	id="publish"
 	method="POST"
 	action="?/publish"
 	use:enhance={({ form, data, action, cancel }) => {
@@ -77,7 +72,7 @@
 </form>
 {#if data.project?.id}
 	<form
-		id="delete-project"
+		id="delete"
 		method="POST"
 		action="?/delete"
 		use:enhance={({ form, data, action, cancel }) => {
@@ -99,44 +94,40 @@
 		align-items: center;
 		flex-direction: column;
 		padding: 2rem;
+		gap: 2rem;
 	}
 
-	header {
-		padding: var(--size-x5large) 0;
+	hgroup {
+		padding: var(--size-x5large) 2rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		hgroup {
-			display: flex;
-			flex-direction: column;
-			width: 100%;
-			max-width: var(--ui-medium);
-			align-items: stretch;
-			justify-content: center;
-		}
-		h2 {
-			font-size: var(--size-x4large);
-			width: 100%;
-			font-weight: 600;
-			max-width: var(--ui-medium);
-			margin: 0 auto;
-			text-align: center;
-			padding: 1rem;
-			line-height: 1em;
-		}
-		.sub {
-			// font-family: var(--font-misc);
-			text-transform: uppercase;
-			font-size: var(--size-xsmall);
-			letter-spacing: 0.1em;
-			font-weight: 400;
-			align-self: center;
-			// opacity: 0.5;
-		}
+		width: 100%;
+		gap: 0.5rem;
+	}
+	h2 {
+		font-size: var(--size-x4large);
+		width: 100%;
+		font-weight: 500;
+		max-width: var(--ui-medium);
+		margin: 0 auto;
+		text-align: center;
+		padding: 0 1rem;
+		line-height: 0.9em;
+	}
+	.sub {
+		// font-family: var(--font-misc);
+		// text-transform: uppercase;
+		font-size: var(--size-xsmall);
+		letter-spacing: 0.05em;
+		font-weight: 500;
+		align-self: center;
+		// opacity: 0.5;
 	}
 
-	section {
-		width: 100%;
+	form :global(h3) {
+		font-size: var(--size-large);
+		font-weight: 500;
 	}
 </style>

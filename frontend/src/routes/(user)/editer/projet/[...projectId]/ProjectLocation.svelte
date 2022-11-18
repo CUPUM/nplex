@@ -113,7 +113,7 @@
 			on:delete={updateLocationGeometry}
 			on:render={onRender}
 		>
-			<MapToolbar position="left" direction="column">
+			<MapToolbar position="top left" direction="column">
 				<Tooltip
 					message={tracking
 						? 'Cesser de suivre votre position'

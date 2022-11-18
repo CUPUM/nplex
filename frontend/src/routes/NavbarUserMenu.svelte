@@ -2,29 +2,24 @@
 </script>
 
 <script lang="ts">
+	import { enhance } from '$app/forms';
+
 	import { page } from '$app/stores';
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { messages } from '$routes/MessagesOutlet.svelte';
-	import { dbClient } from '$utils/database';
 
-	async function logout() {
-		try {
-			const { error } = await dbClient.browser.auth.signOut();
-			if (error) throw error;
-		} catch (error) {
-			messages.dispatch({
-				type: 'error',
-				content: JSON.stringify(error),
-			});
-		}
-	}
+	let signout = false;
 
 	$: publicUserHref = $page.data.session ? `/u/${$page.data.session.user.id}` : undefined;
 </script>
 
 <div>
-	<Button variant="ghost" contentAlign="start" href="/compte" active={$page.url.pathname.startsWith('/compte')}>
+	<Button
+		variant="ghost"
+		contentAlign="start"
+		href="/compte"
+		active={$page.url.pathname.startsWith('/compte')}
+	>
 		<svelte:fragment slot="leading">
 			<Icon name="settings" />
 		</svelte:fragment>
@@ -42,12 +37,24 @@
 		</svelte:fragment>
 		Profil
 	</Button>
-	<Button variant="ghost" contentAlign="start" on:click={logout}>
-		<svelte:fragment slot="leading">
-			<Icon name="logout" />
-		</svelte:fragment>
-		Se déconnecter
-	</Button>
+	<form
+		action="/api/auth?/signout"
+		use:enhance={({ form, data, action, cancel }) => {
+			signout = true;
+			return async ({ update, result }) => {
+				update({ reset: false });
+				signout = false;
+				// invalidateAll();
+			};
+		}}
+	>
+		<Button variant="ghost" type="submit" contentAlign="start" loading={signout}>
+			<svelte:fragment slot="leading">
+				<Icon name="logout" />
+			</svelte:fragment>
+			Se déconnecter
+		</Button>
+	</form>
 </div>
 
 <style lang="scss">

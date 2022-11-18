@@ -59,7 +59,9 @@
 		<figure>
 			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
 		</figure>
-		{datum.title}
+		<h4>
+			{datum.title}
+		</h4>
 	</a>
 </PreviewList>
 <hr class="dashed" />
@@ -68,7 +70,9 @@
 		<figure>
 			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
 		</figure>
-		{datum.title}
+		<h4>
+			{datum.title}
+		</h4>
 	</a>
 </PreviewList>
 <hr class="dashed" />
@@ -77,14 +81,15 @@
 		<figure>
 			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
 		</figure>
-		{datum.title}
+		<h4>
+			{datum.title}
+		</h4>
 	</a>
 </PreviewList>
 
 <style lang="scss" module>
 	header {
 		position: relative;
-		width: 100%;
 		height: calc(100vh + 2rem);
 		padding: 0;
 		padding-bottom: 5rem;
@@ -96,10 +101,10 @@
 		margin: 0;
 		margin-top: var(--n-navbar-height-px);
 		background: col(bg, 100);
-		border-radius: 0 0 min(2rem, calc(0.2 * var(--scroll-px))) min(2rem, calc(0.2 * var(--scroll-px)));
-		transform: scale(max(0.96, calc(1 - 0.0002 * var(--scroll))));
-		transform-origin: top center;
-		transition: transform 0.3s ease-out, border-radius 0.3s ease-out;
+		border-radius: 0 0 min(3rem, calc(0.2 * var(--scroll-px))) min(2rem, calc(0.2 * var(--scroll-px)));
+		// transform: scale(max(0.96, calc(1 - 0.0002 * var(--scroll))));
+		// transform-origin: top center;
+		transition: transform 0.2s ease-out, border-radius 0.2s ease-out;
 	}
 	hgroup {
 		display: flex;
@@ -111,7 +116,7 @@
 		line-height: 1;
 		align-self: flex-start;
 		transform: translateX(calc(-0.5 * var(--scroll-px))); // skewX(calc(-0.01deg * var(--scroll)));
-		font-weight: min(calc(0.75 * var(--scroll) + 400), 900);
+		font-weight: min(calc(0.5 * var(--scroll) + 400), 800);
 		transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
 	}
 	h1 {
@@ -130,7 +135,7 @@
 		left: -0.035em;
 		top: 0.135em;
 		font-weight: inherit;
-		color: col(fg, 300);
+		color: col(fg, 100);
 		text-transform: uppercase;
 
 		& > :global(span) {
@@ -162,7 +167,7 @@
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		background: rgb(var(--rgb-base-700), 0.2);
+		background: col(bg, 100);
 		border-radius: 1.5rem;
 		height: 500px;
 		max-height: 75vh;
@@ -170,8 +175,25 @@
 		aspect-ratio: 3/4;
 		transition: all 0.25s ease-out;
 		&:hover {
-			background: rgb(var(--rgb-base-100), 0.5);
-			box-shadow: 0 2em 5em -3em rgba(0, 20, 40, 0.5);
+			background: col(bg, 000);
+			box-shadow: 0 3em 4em -2.5em rgba(0, 10, 20, 0.5);
+		}
+		figure {
+			position: relative;
+			padding: 0;
+			margin: 1px;
+			border-radius: inherit;
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		img {
+			object-fit: fill;
+			width: 100%;
+		}
+		h4 {
+			z-index: 1;
 		}
 	}
 </style>

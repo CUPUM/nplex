@@ -83,7 +83,7 @@
 		pointer-events: none;
 	}
 	.slot {
-		padding: 0 var(--ui-pad-x);
+		padding: 0 var(--ui-pad-inline);
 		padding-bottom: calc(0.5em - 0.5ex);
 	}
 	.current .slot {
@@ -100,12 +100,13 @@
 		&.current {
 			cursor: default;
 			color: col(bg, 700);
+			background: col(fg, 900, 0);
 		}
 	}
 	:global(.default.temp) > :where(.switch-item) {
 		&.current {
 			color: col(fg, 100);
-			background: col(fg, 500, 0.25);
+			background: col(fg, 100, 0.2);
 		}
 	}
 

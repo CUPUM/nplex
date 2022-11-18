@@ -33,10 +33,15 @@
 	<Field name="last_name" variant="outlined" value={data.profile.last_name ?? ''} class="field">
 		<svelte:fragment slot="label">Nom de famille</svelte:fragment>
 	</Field>
-	<Field name="public_email" variant="outlined" value={data.profile.public_email ?? ''} class="field">
+	<Field
+		name="public_email"
+		variant="outlined"
+		value={data.profile.public_email ?? ''}
+		class="field"
+	>
 		<svelte:fragment slot="label">Courriel public</svelte:fragment>
 	</Field>
-	<Field variant="outlined" readonly value={data.profile.role ?? ''}>
+	<Field variant="outlined" readonly value={data.profile.role[0].role ?? ''}>
 		<svelte:fragment slot="label">Rôle</svelte:fragment>
 	</Field>
 	<textarea name="about" value={data.profile.about} placeholder="À propos de moi" />

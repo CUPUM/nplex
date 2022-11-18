@@ -8,23 +8,21 @@
 	export let project: PageData['project'];
 </script>
 
-<section>
+<fieldset>
 	<Field class="field" variant="outlined" type="text" name="title" id="project-title" value={project?.title ?? ''}>
 		<svelte:fragment slot="label">Titre du projet</svelte:fragment>
 	</Field>
-</section>
+</fieldset>
 
 <style lang="scss">
-	section {
+	fieldset {
 		position: relative;
 		width: 100%;
 	}
 
-	section > :global(.field) {
-		display: grid;
-		font-size: var(--size-medium);
+	fieldset > :global(.field) {
 		width: 100%;
-		max-width: var(--ui-large);
+		max-width: var(--ui-medium);
 		margin: 0 auto;
 	}
 </style>

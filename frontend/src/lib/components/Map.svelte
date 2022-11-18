@@ -287,14 +287,14 @@
 		:global(.maplibregl-cooperative-gesture-screen) {
 			font-family: var(--font-main);
 			font-weight: 300;
-			font-size: var(--size-small);
-			color: col(bg, 900);
+			font-size: var(--size-xsmall);
+			color: col(bg, 500);
 			background: transparent;
 			& > :global(*) {
-				padding: 1em 1.5em 1.25em;
+				padding: 1.25em 1.5em;
+				padding-bottom: 1.5em;
 				border-radius: var(--ui-radius);
-				box-shadow: 0 1em 3em -1em black;
-				background: col(fg, 300, 1);
+				background: col(fg, 300, 0.8);
 			}
 		}
 		:global(.maplibregl-ctrl-attrib) {

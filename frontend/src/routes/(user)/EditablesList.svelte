@@ -29,9 +29,9 @@
 		...data.filter((d) => {
 			switch (filter) {
 				case 'creator':
-					return d.created_by_id === $page.data.session?.user.id;
+					return d.created_by_id === $page.data.session?.id;
 				case 'collaborator':
-					return d.created_by_id !== $page.data.session?.user.id;
+					return d.created_by_id !== $page.data.session?.id;
 				case 'all':
 				default:
 					return true;

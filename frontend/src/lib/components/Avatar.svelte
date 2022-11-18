@@ -1,24 +1,21 @@
 <script lang="ts">
 	import type { Database } from '$types/database';
 	import { cssSize } from '$utils/css';
-	import type { User } from '@supabase/supabase-js';
+	import type { PageData } from '.svelte-kit/types/src/routes/$types';
 	import Loading from './Loading.svelte';
 
 	type UserProfile = Database['public']['Tables']['users']['Row'];
 
-	export let data: Partial<
-		Pick<UserProfile, 'avatar_url' | 'first_name' | 'id' | 'public_email' | 'created_at'> &
-			Pick<User, 'id' | 'email'>
-	>;
+	export let data: PageData['session'];
 	export let loading: boolean = false;
 	export let size: string | number = '1em';
 
-	const color1 = `#${parseInt(data.created_at.match(/\d+/g).map(Number).join('')).toString(16).slice(-6)}`;
+	const color1 = `#${Date.now().toString(16).slice(-6)}`;
 	const color2 = `#${(
 		data.first_name ||
 		data.email ||
 		data.public_email ||
-		(data.id || data.id).replace('-', '').slice(12, 18)
+		(data.session.id || data.id).replace('-', '').slice(12, 18)
 	)
 		.split('')
 		.map((c) => c.charCodeAt(0).toString(16))

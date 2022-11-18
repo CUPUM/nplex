@@ -123,7 +123,7 @@
 		display: inline-grid;
 		grid-template-columns:
 			[full-start leading-padding-start]
-			var(--ui-pad-x)
+			var(--ui-pad-inline)
 			[leading-padding-end leading-start]
 			auto
 			[leading-end main-start]
@@ -131,7 +131,7 @@
 			[main-end trailing-start]
 			auto
 			[trailing-end trailing-padding-start]
-			var(--ui-pad-x)
+			var(--ui-pad-inline)
 			[trailing-padding-end full-end];
 		grid-template-rows: minmax(var(--height), auto);
 		border: none;
@@ -151,7 +151,7 @@
 	.center {
 		grid-template-columns:
 			[full-start leading-padding-start]
-			var(--ui-pad-x)
+			var(--ui-pad-inline)
 			[leading-padding-end leading-start]
 			1fr
 			[leading-end main-start]
@@ -159,7 +159,7 @@
 			[main-end trailing-start]
 			1fr
 			[trailing-end trailing-padding-start]
-			var(--ui-pad-x)
+			var(--ui-pad-inline)
 			[trailing-padding-end full-end];
 	}
 	.equi {
@@ -192,9 +192,10 @@
 		}
 	}
 	.warning {
-		outline-width: 2px;
-		outline-color: col(error, 500);
-		background: col(error, 100);
+		// outline-width: 2px;
+		// outline-color: col(error, 500);
+		// background: col(error, 100);
+		color: col(error, 500);
 	}
 	.button:focus {
 		.content {
@@ -320,17 +321,17 @@
 	:where(.cta) {
 		color: col(bg, 300);
 		background: col(primary, 500);
-		box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
+		// box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
 		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(bg, 100);
 			background: col(primary, 700);
-			box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.25);
+			// box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.25);
 		}
 		&:global(.active) {
 			filter: brightness(0.9);
-			box-shadow: 0 0.5em 1em -0.5em col(primary, 900, 0.5);
+			// box-shadow: 0 0.5em 1em -0.5em col(primary, 900, 0.5);
 		}
 	}
 

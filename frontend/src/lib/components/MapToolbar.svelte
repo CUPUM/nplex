@@ -49,7 +49,7 @@
 		opacity: 0;
 		gap: 1px;
 		transform: translate(var(--x), var(--y));
-		transition: all 0.5s 0.3s cubic-bezier(0.25, 0, 0.5, 1);
+		transition: all 0.25s 0.5s cubic-bezier(0.25, 0, 0.5, 1);
 		:global(hr) {
 			border: none;
 			margin-inline: var(--inset);
