@@ -12,9 +12,9 @@ export interface DatabaseRpc {
 		Functions: {
 			get_project_descriptors: {
 				Returns: {
-					categories: Database['public']['Tables']['project_category']['Row'][];
-					types: (Database['public']['Tables']['project_type']['Row'] & {
-						category_ids: Database['public']['Tables']['project_category']['Row']['id'][];
+					types: Database['public']['Tables']['project_type']['Row'][];
+					works: (Database['public']['Tables']['project_work']['Row'] & {
+						type_ids: Database['public']['Tables']['project_type']['Row']['id'][];
 					})[];
 					siteOwnerships: Database['public']['Tables']['project_site_ownership']['Row'][];
 					siteUsagesCategories: Database['public']['Tables']['project_site_usage_category']['Row'][];

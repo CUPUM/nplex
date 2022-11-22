@@ -108,35 +108,6 @@ export interface Database {
           about?: string | null
         }
       }
-      project_category: {
-        Row: {
-          id: number
-          title: string
-          description: string | null
-          created_at: string
-          created_by_id: string
-          updated_at: string
-          updated_by_id: string | null
-        }
-        Insert: {
-          id?: number
-          title: string
-          description?: string | null
-          created_at?: string
-          created_by_id?: string
-          updated_at?: string
-          updated_by_id?: string | null
-        }
-        Update: {
-          id?: number
-          title?: string
-          description?: string | null
-          created_at?: string
-          created_by_id?: string
-          updated_at?: string
-          updated_by_id?: string | null
-        }
-      }
       project_event_type: {
         Row: {
           id: number
@@ -505,7 +476,7 @@ export interface Database {
           created_at: string
           created_by_id: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
           id?: number
@@ -514,7 +485,7 @@ export interface Database {
           created_at?: string
           created_by_id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Update: {
           id?: number
@@ -523,33 +494,62 @@ export interface Database {
           created_at?: string
           created_by_id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
       }
-      project_type_category: {
+      project_type_work: {
         Row: {
-          category_id: number
           type_id: number
+          work_id: number
           created_at: string
           created_by_id: string
           updated_at: string
-          updated_by_id: string | null
+          updated_by_id: string
         }
         Insert: {
-          category_id: number
           type_id: number
+          work_id: number
           created_at?: string
           created_by_id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
         }
         Update: {
-          category_id?: number
           type_id?: number
+          work_id?: number
           created_at?: string
           created_by_id?: string
           updated_at?: string
-          updated_by_id?: string | null
+          updated_by_id?: string
+        }
+      }
+      project_work: {
+        Row: {
+          id: number
+          title: string
+          description: string | null
+          created_at: string
+          created_by_id: string
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          id?: number
+          title: string
+          description?: string | null
+          created_at?: string
+          created_by_id?: string
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Update: {
+          id?: number
+          title?: string
+          description?: string | null
+          created_at?: string
+          created_by_id?: string
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       projects: {
@@ -571,13 +571,12 @@ export interface Database {
           building_area: number | null
           implantation_mode_id: number | null
           building_construction_year: number | null
-          cost_min: number | null
-          cost_max: number | null
           type_id: number | null
           combustible: boolean | null
           banner_url: string | null
           location_geometry: unknown | null
           location_radius: number | null
+          cost_range: unknown | null
         }
         Insert: {
           id?: string
@@ -597,13 +596,12 @@ export interface Database {
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
-          cost_min?: number | null
-          cost_max?: number | null
           type_id?: number | null
           combustible?: boolean | null
           banner_url?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
+          cost_range?: unknown | null
         }
         Update: {
           id?: string
@@ -623,13 +621,12 @@ export interface Database {
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
-          cost_min?: number | null
-          cost_max?: number | null
           type_id?: number | null
           combustible?: boolean | null
           banner_url?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
+          cost_range?: unknown | null
         }
       }
       projects_events: {
@@ -920,6 +917,35 @@ export interface Database {
           updated_by_id?: string
         }
       }
+      projects_works: {
+        Row: {
+          id: string
+          created_at: string
+          updated_at: string
+          project_id: string
+          project_work_id: number
+          created_by_id: string
+          updated_by_id: string
+        }
+        Insert: {
+          id: string
+          created_at?: string
+          updated_at?: string
+          project_id: string
+          project_work_id: number
+          created_by_id?: string
+          updated_by_id?: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          updated_at?: string
+          project_id?: string
+          project_work_id?: number
+          created_by_id?: string
+          updated_by_id?: string
+        }
+      }
       users: {
         Row: {
           id: string
@@ -1094,16 +1120,15 @@ export interface Database {
           category_id: number | null
           area: number | null
           adjacent_streets: number | null
-          location_geometry: unknown | null
           building_area: number | null
           implantation_mode_id: number | null
           building_construction_year: number | null
-          cost_min: number | null
-          cost_max: number | null
           type_id: number | null
           combustible: boolean | null
           banner_url: string | null
+          location_geometry: unknown | null
           location_radius: number | null
+          cost_range: unknown | null
         }
         Insert: {
           id?: string | null
@@ -1120,16 +1145,15 @@ export interface Database {
           category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
-          location_geometry?: unknown | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
-          cost_min?: number | null
-          cost_max?: number | null
           type_id?: number | null
           combustible?: boolean | null
           banner_url?: string | null
+          location_geometry?: unknown | null
           location_radius?: number | null
+          cost_range?: unknown | null
         }
         Update: {
           id?: string | null
@@ -1146,16 +1170,15 @@ export interface Database {
           category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
-          location_geometry?: unknown | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
-          cost_min?: number | null
-          cost_max?: number | null
           type_id?: number | null
           combustible?: boolean | null
           banner_url?: string | null
+          location_geometry?: unknown | null
           location_radius?: number | null
+          cost_range?: unknown | null
         }
       }
     }

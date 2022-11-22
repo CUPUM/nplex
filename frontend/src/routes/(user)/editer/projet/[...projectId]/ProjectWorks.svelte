@@ -29,11 +29,11 @@
 	// 	}
 	// }, 200);
 
-	$: v = descriptors.types.filter(
+	$: v = descriptors.works.filter(
 		(t) =>
-			'category_id' in project &&
-			typeof project.category_id === 'number' &&
-			t.category_ids.includes(project.category_id)
+			'type_id' in project &&
+			typeof project.type_id === 'number' &&
+			t.type_ids.includes(project.type_id)
 	);
 
 	$: c = descriptors.types.find((t) => t.id === project.type_id);

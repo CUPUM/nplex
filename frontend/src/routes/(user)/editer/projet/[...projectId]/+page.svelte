@@ -12,6 +12,8 @@
 
 	export let data: PageData;
 	export let form: ActionData;
+
+	console.log(data.descriptors);
 </script>
 
 <form

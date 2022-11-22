@@ -14,7 +14,7 @@
 <fieldset>
 	<h3 class="e-h3">Catégorie</h3>
 	<Switch bind:group={project.category_id} name="category_id" required>
-		{#each descriptors.categories as c}
+		{#each descriptors.types as c}
 			<SwitchItem value={c.id}>
 				{c.title}
 			</SwitchItem>

@@ -47,16 +47,16 @@ values (
 -- Insert initial lists values.
 -- 
 
-insert into public.project_category
+insert into public.project_type
     (id, title, description)
 values
     (1, 'Nouvelle construction', 'Cette catégorie de projet fait référence aux nouveaux projets qui ne s’appuient pas ou s’appuient modestement sur une installation existante.'),
     (2, 'Transformation', 'Un projet de transformation consiste en une intervention sur une construction ou un aménagement existant. Cela implique des travaux de rénovation, de valorisation de restauration, etc.');
 
-select setval(pg_get_serial_sequence('public.project_category', 'id'), max(id)) from public.project_category;
+select setval(pg_get_serial_sequence('public.project_type', 'id'), max(id)) from public.project_type;
 
 
-insert into public.project_type
+insert into public.project_work
     (id, title, description)
 values
     (1, 'Construction de nouveau bâtiment', ''),
@@ -86,11 +86,11 @@ values
     (25, 'Fusion de logements', ''),
     (26, 'Division de logements', '');
 
-select setval(pg_get_serial_sequence('public.project_type', 'id'), max(id)) from public.project_type;
+select setval(pg_get_serial_sequence('public.project_work', 'id'), max(id)) from public.project_work;
 
 
-insert into public.project_type_category
-    (category_id, type_id)
+insert into public.project_type_work
+    (type_id, work_id)
 values
     (1, 1),
     (1, 2),
@@ -325,7 +325,6 @@ values
     (2, 'Recherche historique', ''),
     (3, 'Innovation', ''),
     (3, 'Intégration contextuelle', ''),
-    (4, 'Intégration contextuelle', ''),
     (4, 'Réduction du bruit', ''),
     (4, 'Amélioration de la sécurité', ''),
     (4, 'Saines habitudes de vie', ''),

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import HomeHero from './HomeHero.svelte';
-	import PreviewList from './HomePreviewList.svelte';
+	import HomePreviewList from './HomePreviewList.svelte';
 
 	export let data: PageData;
 </script>
 
 <HomeHero />
-<PreviewList header="Projets" href="/projets" data={data.projects} let:datum>
+<HomePreviewList header="Projets" href="/projets" data={data.projects} let:datum>
 	<a class="project" href="/projets/{datum.id}">
 		<figure>
 			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
@@ -16,9 +16,9 @@
 			{datum.title}
 		</h4>
 	</a>
-</PreviewList>
+</HomePreviewList>
 <hr />
-<PreviewList header="Organisations et bureaux" href="/projets" data={data.projects} let:datum>
+<HomePreviewList header="Organisations et bureaux" href="/projets" data={data.projects} let:datum>
 	<a class="project" href="/projets/{datum.id}">
 		<figure>
 			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
@@ -27,9 +27,9 @@
 			{datum.title}
 		</h4>
 	</a>
-</PreviewList>
+</HomePreviewList>
 <hr />
-<PreviewList header="Acteurs de projet" href="/projets" data={data.projects} let:datum>
+<HomePreviewList header="Acteurs de projet" href="/projets" data={data.projects} let:datum>
 	<a class="project" href="/projets/{datum.id}">
 		<figure>
 			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
@@ -38,7 +38,7 @@
 			{datum.title}
 		</h4>
 	</a>
-</PreviewList>
+</HomePreviewList>
 
 <style lang="scss" module>
 	hr {
