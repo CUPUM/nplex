@@ -132,11 +132,11 @@
 		display: inline-flex;
 		flex-direction: row;
 		margin: 0;
-		gap: min(3px, var(--inset));
+		gap: 0;
 		flex: none;
 		padding: var(--inset);
 		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
-		font-weight: 350;
+		font-weight: 400;
 		transition: all 0.15s ease-out;
 		&.column {
 			flex-direction: column;
@@ -151,11 +151,11 @@
 	// Variants
 
 	:where(.default) {
-		color: col(fg, 300);
-		background: col(fg, 900, 0.15);
+		color: col(fg, 500);
+		background: col(fg, 100, 0.05);
 		transition: all 0.1s ease-out;
 		.mark {
-			background: col(fg, 100);
+			background: col(fg, 300);
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
@@ -163,7 +163,7 @@
 		}
 		&.temp {
 			.mark {
-				background: col(fg, 300);
+				background: col(fg, 500);
 			}
 		}
 	}

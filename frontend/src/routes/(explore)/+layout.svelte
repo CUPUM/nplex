@@ -10,7 +10,7 @@
 	export let data: LayoutData;
 </script>
 
-<div id="explore">
+<div class="explore">
 	<nav>
 		<form action="" id="search" use:enhance>
 			<section>
@@ -32,8 +32,8 @@
 	<slot />
 </div>
 
-<style lang="scss">
-	#explore {
+<style lang="scss" module>
+	.explore {
 		position: relative;
 		display: flex;
 		flex-direction: column;
@@ -48,7 +48,6 @@
 		margin: 0;
 		position: absolute;
 		width: 100%;
-		z-index: 100;
 	}
 
 	form {
@@ -59,7 +58,7 @@
 		margin: 0 auto;
 		padding: 0;
 		width: 100%;
-		max-width: 1200px;
+		max-width: var(--ui-display-large);
 	}
 
 	fieldset {

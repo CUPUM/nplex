@@ -123,7 +123,7 @@
 		display: inline-grid;
 		grid-template-columns:
 			[full-start leading-padding-start]
-			var(--ui-pad-inline)
+			var(--ui-padding-inline)
 			[leading-padding-end leading-start]
 			auto
 			[leading-end main-start]
@@ -131,7 +131,7 @@
 			[main-end trailing-start]
 			auto
 			[trailing-end trailing-padding-start]
-			var(--ui-pad-inline)
+			var(--ui-padding-inline)
 			[trailing-padding-end full-end];
 		grid-template-rows: minmax(var(--height), auto);
 		border: none;
@@ -151,7 +151,7 @@
 	.center {
 		grid-template-columns:
 			[full-start leading-padding-start]
-			var(--ui-pad-inline)
+			var(--ui-padding-inline)
 			[leading-padding-end leading-start]
 			1fr
 			[leading-end main-start]
@@ -159,7 +159,7 @@
 			[main-end trailing-start]
 			1fr
 			[trailing-end trailing-padding-start]
-			var(--ui-pad-inline)
+			var(--ui-padding-inline)
 			[trailing-padding-end full-end];
 	}
 	.equi {
@@ -309,12 +309,12 @@
 		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(fg, 100);
-			background: col(fg, 300, 0.1);
+			color: col(bg, 700);
+			background: col(fg, 300);
 		}
 		&:global(.active) {
 			color: col(primary, 700);
-			background: col(primary, 500, 0.25);
+			background: col(primary, 100, 0.3);
 		}
 	}
 

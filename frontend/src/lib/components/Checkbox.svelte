@@ -17,8 +17,8 @@
 	 * Soft auto-determination of component size, where:
 	 *
 	 * - User-defined size has most precedence and is used if present.
-	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context setter. (Useful for
-	 *   field buttons and other nested uses)
+	 * - Fallback size is smaller if the button is contextualised inside a 'button-parent' context
+	 *   setter. (Useful for field buttons and other nested uses)
 	 */
 	$: autoSize = size ? cssSize(size) : fieldCtx ? '0.8em' : '1em';
 </script>
@@ -47,14 +47,14 @@
 	.xsmall {
 	}
 	.small {
-		font-size: var(--size-small);
+		font-size: var(--ui-size-small);
 	}
 	.medium {
-		font-size: var(--size-medium);
+		font-size: var(--ui-size-medium);
 	}
 	.large {
 		font-weight: 550;
-		font-size: var(--size-large);
+		font-size: var(--ui-size-large);
 	}
 	.xlarge {
 	}

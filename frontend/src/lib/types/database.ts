@@ -9,6 +9,41 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      actors: {
+        Row: {
+          id: string
+          created_at: string
+          updated_at: string
+          created_by_id: string
+          updated_by_id: string
+          first_name: string
+          last_name: string | null
+          middle_name: string | null
+          about: string | null
+        }
+        Insert: {
+          id: string
+          created_at?: string
+          updated_at?: string
+          created_by_id?: string
+          updated_by_id?: string
+          first_name: string
+          last_name?: string | null
+          middle_name?: string | null
+          about?: string | null
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          updated_at?: string
+          created_by_id?: string
+          updated_by_id?: string
+          first_name?: string
+          last_name?: string | null
+          middle_name?: string | null
+          about?: string | null
+        }
+      }
       notifications: {
         Row: {
           id: string
@@ -39,6 +74,38 @@ export interface Database {
           title?: string | null
           body?: string
           expiry?: string | null
+        }
+      }
+      organizations: {
+        Row: {
+          id: string
+          created_at: string
+          created_by_id: string
+          updated_at: string
+          updated_by_id: string
+          name: string
+          short_name: string | null
+          about: string | null
+        }
+        Insert: {
+          id: string
+          created_at?: string
+          created_by_id?: string
+          updated_at?: string
+          updated_by_id?: string
+          name: string
+          short_name?: string | null
+          about?: string | null
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          created_by_id?: string
+          updated_at?: string
+          updated_by_id?: string
+          name?: string
+          short_name?: string | null
+          about?: string | null
         }
       }
       project_category: {
@@ -501,7 +568,6 @@ export interface Database {
           category_id: number | null
           area: number | null
           adjacent_streets: number | null
-          location_geometry: unknown | null
           building_area: number | null
           implantation_mode_id: number | null
           building_construction_year: number | null
@@ -510,6 +576,7 @@ export interface Database {
           type_id: number | null
           combustible: boolean | null
           banner_url: string | null
+          location_geometry: unknown | null
           location_radius: number | null
         }
         Insert: {
@@ -527,7 +594,6 @@ export interface Database {
           category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
-          location_geometry?: unknown | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
@@ -536,6 +602,7 @@ export interface Database {
           type_id?: number | null
           combustible?: boolean | null
           banner_url?: string | null
+          location_geometry?: unknown | null
           location_radius?: number | null
         }
         Update: {
@@ -553,7 +620,6 @@ export interface Database {
           category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
-          location_geometry?: unknown | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
@@ -562,6 +628,7 @@ export interface Database {
           type_id?: number | null
           combustible?: boolean | null
           banner_url?: string | null
+          location_geometry?: unknown | null
           location_radius?: number | null
         }
       }
@@ -1097,7 +1164,7 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: string
       }
-      get_projects_descriptors: {
+      get_project_descriptors: {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
@@ -1111,11 +1178,11 @@ export interface Database {
       }
       user_has_role:
         | {
-            Args: Record<PropertyKey, never>
+            Args: { role: Database["public"]["Enums"]["user_role"] }
             Returns: boolean
           }
         | {
-            Args: { role: Database["public"]["Enums"]["user_role"] }
+            Args: Record<PropertyKey, never>
             Returns: boolean
           }
     }

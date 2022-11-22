@@ -185,8 +185,8 @@
 		--height: calc(var(--ui-height) - 2 * var(--ui-inset-sum));
 		--inset: var(--ui-inset);
 		--notch-padding: 0.25em;
-		--gutter: calc(var(--ui-pad-inline) / 3);
-		--pad-x: calc(2 * var(--ui-pad-inline) / 3);
+		--gutter: calc(var(--ui-padding-inline) / 3);
+		--pad-x: calc(2 * var(--ui-padding-inline) / 3);
 		position: relative;
 		display: grid;
 		grid-template-columns:
@@ -318,7 +318,7 @@
 		white-space: nowrap;
 		top: 50%;
 		transform: translateY(-50%);
-		transition: all 0.2s cubic-bezier(0, 0, 0, 1);
+		transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
 	}
 	.left,
 	.right,
@@ -361,7 +361,7 @@
 
 	:where(.default) {
 		color: col(fg, 500);
-		background: col(fg, 900, 0.1);
+		background: col(fg, 100, 0.1);
 		transition: all 0.1s ease-out;
 		.outline {
 			display: none;
@@ -379,7 +379,7 @@
 		&.has-value,
 		&.focused {
 			label {
-				top: 1.25em;
+				top: 1.5em;
 				font-size: clamp(12px, 0.5em, 24px);
 			}
 			.prefix,
@@ -402,12 +402,12 @@
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(fg, 300);
-			background: col(fg, 900, 0.15);
+			color: col(fg, 100);
+			// background: col(bg, 900);
 		}
 		&.focused {
-			color: col(fg, 100);
-			background: col(bg, 000);
+			color: col(bg, 500);
+			background: col(fg, 300);
 		}
 	}
 

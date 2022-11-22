@@ -37,10 +37,10 @@
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
 	import { writable } from 'svelte/store';
 	import type { ValueOf } from 'ts-essentials';
-	import { authModalState } from './AuthModal.svelte';
-	import NavbarButton from './NavbarButton.svelte';
-	import NavbarEditMenu from './NavbarEditMenu.svelte';
-	import NavbarUserMenu from './NavbarUserMenu.svelte';
+	import { authModalState } from './AppAuthModal.svelte';
+	import AppNavbarButton from './AppNavbarButton.svelte';
+	import AppNavbarEditMenu from './AppNavbarEditMenu.svelte';
+	import AppNavbarUserMenu from './AppNavbarUserMenu.svelte';
 
 	export let navbarHeight = 0;
 
@@ -67,36 +67,39 @@
 <header class={$navbarTheme ?? ''} class:hidden class:overlay bind:clientHeight={navbarHeight}>
 	<div class="wrapper">
 		<nav class="main">
-			<NavbarButton equi href="/">
+			<AppNavbarButton equi href="/">
 				<Logo short style="font-size: larger" />
-			</NavbarButton>
+			</AppNavbarButton>
 			{#each mainRoutes as route}
-				<NavbarButton href={route.pathname} current={route.pathname === rootPathname}>
+				<AppNavbarButton href={route.pathname} current={route.pathname === rootPathname}>
 					{route.title}
-				</NavbarButton>
+				</AppNavbarButton>
 			{/each}
 		</nav>
 		<nav class="category">
 			{#each exploreRoutes as r}
-				<NavbarButton href={r.pathname} current={$page.url.pathname.startsWith(r.pathname)}>
+				<AppNavbarButton
+					href={r.pathname}
+					current={$page.url.pathname.startsWith(r.pathname)}
+				>
 					{r.title}
-				</NavbarButton>
+				</AppNavbarButton>
 			{/each}
 		</nav>
 		<nav class="session">
 			{#if $page.data.session}
 				<Popover place="bottom" align="end" hover let:open>
-					<NavbarButton
+					<AppNavbarButton
 						slot="control"
 						href={creationBaseRoute.pathname}
 						current={$page.url.pathname.startsWith(creationBaseRoute.pathname)}
 						active={open}
 					>
 						<Icon name="pen" style="font-size: 1.25em" />
-						&emsp;Zone d'édition&emsp;
+						&emsp;Éditer&emsp;
 						<DropdownArrow style="font-size: 1.25em" active={open} />
-					</NavbarButton>
-					<NavbarEditMenu />
+					</AppNavbarButton>
+					<AppNavbarEditMenu />
 				</Popover>
 				<Popover hover place="bottom" align="end" let:open>
 					<Avatar
@@ -105,12 +108,16 @@
 						data={$page.data.session.user}
 						href={userBaseRoute.pathname}
 					/>
-					<NavbarUserMenu />
+					<AppNavbarUserMenu />
 				</Popover>
 			{:else}
-				<NavbarButton equi cta href={authModalState.getUrl({ url: $page.url }).toString()}>
+				<AppNavbarButton
+					equi
+					cta
+					href={authModalState.getUrl({ url: $page.url }).toString()}
+				>
 					<Icon name="user" thickness="1.5" style="font-size: 1.25em" />
-				</NavbarButton>
+				</AppNavbarButton>
 			{/if}
 		</nav>
 	</div>
@@ -125,28 +132,31 @@
 		margin: 0;
 		font-size: small;
 		backdrop-filter: blur(12px);
-		border-bottom: 0px solid transparent;
+		border-bottom: 1px solid col(fg, 100, min(0.05, calc(var(--scroll) * 0.0002)));
+		// border-radius: var(--ui-radius-large);
+		// border-top-left-radius: 0;
+		// border-top-right-radius: 0;
 		transform-origin: top center;
-		transition: transform 0.5s cubic-bezier(0.5, 0, 0, 1), opacity 0.5s ease-in-out;
+		transition: transform 0.35s cubic-bezier(0.5, 0, 0.2, 1), border 0.25s;
 
 		&::before {
 			content: '';
 			position: absolute;
 			width: 100%;
 			height: 100%;
+			border-radius: inherit;
 			padding: 0;
 			margin: 0;
 			top: 0;
 			left: 0;
-			opacity: min(calc(0.002 * var(--scroll)), 0.9);
+			opacity: min(calc(0.005 * var(--scroll)), 0.85);
 			background: col(bg, 300);
-			transition: all 0.2s ease-in-out;
 		}
 	}
 
 	.wrapper {
 		position: relative;
-		max-width: var(--ui-large);
+		max-width: var(--ui-display-large);
 		display: grid;
 		grid-template-columns:
 			[full-start main-start]
@@ -175,8 +185,7 @@
 	}
 
 	.hidden {
-		transform: translateY(-101%);
-		// opacity: 0;
+		transform: translateY(calc(-100% - 1px));
 		pointer-events: none;
 	}
 
@@ -199,7 +208,7 @@
 		--inset: 3px;
 		grid-column: category;
 		justify-content: center;
-		background: col(bg, 900, 0.25);
+		background: col(bg, 000, 0.5);
 		border-radius: var(--ui-radius);
 		padding-inline: var(--inset);
 	}

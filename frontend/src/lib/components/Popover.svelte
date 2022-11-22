@@ -71,6 +71,9 @@
 	});
 </script>
 
+<!-- {#if open}
+	<div class="bg" transition:fade />
+{/if} -->
 <Tether bind:controlRef {place} {align} distance="0">
 	<slot name="control" slot="control" {open} />
 	{#if open}
@@ -100,6 +103,18 @@
 </Tether>
 
 <style lang="scss">
+	.bg {
+		pointer-events: none;
+		// z-index: 00;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: rgb(20, 30, 40);
+		opacity: 0.5;
+	}
+
 	.popover {
 		display: block;
 		flex-shrink: 0;
@@ -115,14 +130,13 @@
 	}
 
 	.inner {
-		--outset: var(--ui-inset);
 		position: relative;
-		padding: var(--outset);
 		background: col(bg, 000);
 		box-shadow: 0 1rem 3.5rem -2rem rgba(0, 10, 20, 0.25);
-		border-radius: calc(var(--ui-radius) + var(--outset));
+		border-radius: var(--ui-radius);
 		display: inline-flex;
 		flex-direction: column;
+		// border: 1px solid col(bg, 000);
 	}
 
 	.top {

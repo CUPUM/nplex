@@ -8,21 +8,40 @@
 	export let project: PageData['project'];
 </script>
 
-<fieldset>
-	<Field class="field" variant="outlined" type="text" name="title" id="project-title" value={project?.title ?? ''}>
+<section>
+	<h2 class="e-h2">
+		{#if project.id}
+			<span>Modifiez votre projet</span>
+		{:else}
+			<span>Nouveau projet</span>
+		{/if}
+	</h2>
+	<Field class="field" type="text" name="title" id="project-title" value={project?.title ?? ''}>
 		<svelte:fragment slot="label">Titre du projet</svelte:fragment>
 	</Field>
-</fieldset>
+</section>
 
-<style lang="scss">
-	fieldset {
+<style lang="scss" module>
+	section {
+		// position: sticky;
+		// top: 0;
 		position: relative;
 		width: 100%;
+		display: flex;
+		padding: var(--ui-space-large) var(--ui-space-small);
+		font-size: var(--ui-size-medium);
+		background: col(bg, 100);
+		border-radius: 1.5rem;
+		margin-top: var(--n-navbar-height-px);
+		min-height: 100vh;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 	}
 
-	fieldset > :global(.field) {
+	section .field {
 		width: 100%;
-		max-width: var(--ui-medium);
+		max-width: var(--ui-display-medium);
 		margin: 0 auto;
 	}
 </style>

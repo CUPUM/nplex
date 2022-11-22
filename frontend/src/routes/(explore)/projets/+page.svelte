@@ -7,7 +7,7 @@
 	export let data: PageData;
 </script>
 
-<div class="explore">
+<div class="projects">
 	<Map>
 		<MapProjects projects={data.projects} />
 	</Map>
@@ -23,7 +23,7 @@
 </div>
 
 <style lang="scss">
-	.explore {
+	.projects {
 		position: relative;
 		flex: 1 0 auto;
 		display: flex;
@@ -41,15 +41,13 @@
 		padding: 1rem;
 		border-radius: 1rem;
 		background: white;
-		z-index: 100;
 	}
 
 	fieldset {
 		all: unset;
 	}
 
-	.explore :global(.map) {
-		z-index: 0;
+	.projects :global(.map) {
 		// position: absolute;
 		flex: none;
 		width: 100%;

@@ -40,7 +40,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		font-size: var(--size-large);
+		font-size: var(--ui-size-large);
 		width: 100%;
 		cursor: pointer;
 		padding: 1em 1em;

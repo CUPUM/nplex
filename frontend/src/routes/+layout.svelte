@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import { afterNavigate, beforeNavigate, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
+	import Loading from '$components/Loading.svelte';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
 	import '$styles/app.scss';
 	import '$styles/themes.scss';
@@ -9,10 +10,10 @@
 	import { dbClient } from '$utils/database';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
-	import AuthModal, { authModalState } from './AuthModal.svelte';
-	import Footer from './Footer.svelte';
-	import MessagesOutlet from './MessagesOutlet.svelte';
-	import Navbar from './Navbar.svelte';
+	import AppAuthModal, { authModalState } from './AppAuthModal.svelte';
+	import AppFooter from './AppFooter.svelte';
+	import AppMessagesOutlet from './AppMessagesOutlet.svelte';
+	import AppNavbar from './AppNavbar.svelte';
 
 	export let data: LayoutData;
 
@@ -55,20 +56,20 @@
 	style:--navbar-height-px="{navbarHeight}px"
 	style:--n-navbar-height-px="-{navbarHeight}px"
 >
-	<Navbar bind:navbarHeight />
+	<AppNavbar bind:navbarHeight />
 	<main>
 		<slot />
 	</main>
 	{#if $page.data.showFooter}
-		<Footer />
+		<AppFooter />
 	{/if}
 </div>
 <div class="border" class:authing={$authModalState} />
-<!-- {#if loading}
+{#if loading}
 	<Loading class="loader" />
-{/if} -->
-<AuthModal />
-<MessagesOutlet />
+{/if}
+<AppAuthModal />
+<AppMessagesOutlet />
 <LoadingProgress bind:this={progress} />
 
 <style lang="scss" module>
@@ -77,7 +78,7 @@
 		transform-origin: 50vw calc(var(--scroll-px) + 50vh);
 		transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1), opacity 0.5s ease-out;
 		&.hidden {
-			transform: scale(1.06);
+			transform: scale(1.04);
 			opacity: 0;
 		}
 		&.authing {
@@ -100,13 +101,14 @@
 		transition: all 0.5s cubic-bezier(0.2, 0, 0, 1);
 		&.authing {
 			transform: scale(0.96);
-			width: calc(100vw - var(--scroll-size));
-			border-radius: 2rem;
+			width: calc(100vw - var(--ui-scroll-size));
+			border-radius: 1.5rem;
 		}
 	}
 
 	main {
-		--scroll-color: rgb(var(--rgb-fg-100), 0.1);
+		--ui-scroll-color: col(fg, 100, 0.1);
+		--ui-scroll-size: 3px;
 		position: relative;
 		width: 100%;
 		display: flex;
@@ -122,6 +124,6 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		color: var(--color-primary-700);
+		color: col(primary, 700);
 	}
 </style>

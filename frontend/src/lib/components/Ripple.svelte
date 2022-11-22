@@ -12,7 +12,7 @@
 	export let easing: string = 'cubic-bezier(0.1, 0, 0.2, 1)';
 	export let duration = 550;
 	export let delay = 0;
-	export let opacityStart = 0.25;
+	export let opacityStart = 0.2;
 	export let opacityEnd = 0;
 	export let opacityEasing = easing;
 	export let opacityDuration = 750;
@@ -22,7 +22,7 @@
 	export let spreadEasing = easing;
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
-	export let color: string = 'var(--color-bg-000)';
+	export let color: string = 'rgb(120, 130, 140)';
 	export let colorStart: string = color;
 	export let colorEnd: string = colorStart;
 	export let colorEasing = easing;
@@ -36,7 +36,11 @@
 	$: listenerRef = host ?? containerRef?.parentElement;
 
 	function add(e: MouseEvent) {
-		if (containerRef && e.target instanceof Element && e.target.closest(`[${RIPPLE_ATTRIBUTE}]`) === listenerRef) {
+		if (
+			containerRef &&
+			e.target instanceof Element &&
+			e.target.closest(`[${RIPPLE_ATTRIBUTE}]`) === listenerRef
+		) {
 			const rect = containerRef.getBoundingClientRect();
 			const x = e.clientX - rect.left;
 			const y = e.clientY - rect.top;
@@ -134,7 +138,8 @@
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
 		filter: blur(var(--blur));
-		animation: var(--opacity-duration) var(--opacity-easing) var(--opacity-delay) 1 forwards fade,
+		animation: var(--opacity-duration) var(--opacity-easing) var(--opacity-delay) 1 forwards
+				fade,
 			var(--spread-duration) var(--spread-easing) var(--spread-delay) 1 forwards spread,
 			var(--color-duration) var(--color-easing) var(--color-delay) 1 forwards color;
 	}

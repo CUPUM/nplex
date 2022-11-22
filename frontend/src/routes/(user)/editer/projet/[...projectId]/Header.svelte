@@ -29,8 +29,12 @@
 	<hgroup>
 		<section class="title">
 			{#key renderTitle}
-				<h1 use:reveal={{ ...slipMask, delimiter: ' ', stagger: 75, rootMargin: '0px 0px' }}>
-					{isNew && !renderTitle ? 'Nouvelle fiche de projet' : 'Fiche de projet : ' + renderTitle}
+				<h1
+					use:reveal={{ ...slipMask, delimiter: ' ', stagger: 75, rootMargin: '0px 0px' }}
+				>
+					{isNew && !renderTitle
+						? 'Nouvelle fiche de projet'
+						: 'Fiche de projet : ' + renderTitle}
 				</h1>
 			{/key}
 		</section>
@@ -120,7 +124,7 @@
 
 	// .digits {
 	// 	display: block;
-	// 	font-family: var(--font-misc);
+	// 	font-family: var(--ui-font-misc);
 	// }
 
 	// div {

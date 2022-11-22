@@ -147,7 +147,7 @@
 	}
 
 	h3 {
-		font-size: var(--size-large);
+		font-size: var(--ui-size-large);
 		font-weight: 500;
 	}
 </style>

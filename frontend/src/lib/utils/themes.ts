@@ -1,14 +1,13 @@
 import type { Themes } from 'plugins/styles';
 
 /**
- * JS function replicating the behavior of the custom sass col() util to compose the theme-agnostic variable name with
- * intellisense.
+ * JS function replicating the behavior of the custom sass col() util to compose the theme-agnostic
+ * variable name with intellisense.
  */
-export function col<C extends string & keyof Themes[string], S extends string & keyof Themes[string][C]>(
-	color: C,
-	shade: S,
-	alpha?: number
-) {
+export function col<
+	C extends string & keyof Themes[string],
+	S extends string & keyof Themes[string][C]
+>(color: C, shade: S, alpha?: number) {
 	if (alpha) {
 		return `rgb(var(--rgb-${color}-${shade}), ${alpha})`;
 	}
@@ -21,12 +20,12 @@ export function col<C extends string & keyof Themes[string], S extends string & 
 export const themes: Themes = {
 	light: {
 		bg: {
-			'000': 'hsl(50, 20%, 100%)',
-			100: 'hsl(52, 20%, 98%)',
-			300: 'hsl(54, 18%, 94%)',
-			500: 'hsl(56, 15%, 90%)',
-			700: 'hsl(58, 12%, 86%)',
-			900: 'hsl(60, 11%, 80%)',
+			'000': 'hsl(54, 20%, 100%)',
+			100: 'hsl(55, 20%, 98%)',
+			300: 'hsl(56, 18%, 94%)',
+			500: 'hsl(57, 15%, 90%)',
+			700: 'hsl(59, 12%, 86%)',
+			900: 'hsl(60, 11%, 82%)',
 		},
 		fg: {
 			'000': 'hsl(95, 20%, 0%)',
@@ -37,11 +36,11 @@ export const themes: Themes = {
 			900: 'hsl(72, 12%, 25%)',
 		},
 		primary: {
-			100: 'hsl(157, 45%, 72%)',
-			300: 'hsl(156, 45%, 62%)',
-			500: 'hsl(156, 43%, 50%)',
-			700: 'hsl(157, 54%, 39%)',
-			900: 'hsl(158, 61%, 30%)',
+			100: 'hsl(87, 45%, 72%)',
+			300: 'hsl(86, 44%, 62%)',
+			500: 'hsl(86, 43%, 50%)',
+			700: 'hsl(87, 54%, 39%)',
+			900: 'hsl(88, 65%, 30%)',
 		},
 		secondary: {
 			100: 'hsl(243, 86%, 81%)',
@@ -66,13 +65,21 @@ export const themes: Themes = {
 		},
 	},
 	dark: {
+		// bg: {
+		// 	900: 'hsl(204, 20%, 0%)',
+		// 	700: 'hsl(203, 19%, 9%)',
+		// 	500: 'hsl(202,18%, 11%)',
+		// 	300: 'hsl(201,17%, 13%)',
+		// 	100: 'hsl(200, 16%, 15%)',
+		// 	'000': 'hsl(199, 14%, 17%)',
+		// },
 		bg: {
 			'000': 'hsl(204, 20%, 0%)',
-			100: 'hsl(203, 18%, 9%)',
-			300: 'hsl(202,17%, 12%)',
-			500: 'hsl(201,16%, 16%)',
-			700: 'hsl(200, 15%, 18%)',
-			900: 'hsl(199, 14%, 21%)',
+			100: 'hsl(203, 19%, 9%)',
+			300: 'hsl(202,18%, 11%)',
+			500: 'hsl(201,17%, 13%)',
+			700: 'hsl(200, 16%, 15%)',
+			900: 'hsl(199, 14%, 17%)',
 		},
 		fg: {
 			'000': 'hsl(140, 9%, 86%)',
@@ -83,18 +90,18 @@ export const themes: Themes = {
 			900: 'hsl(0, 0%, 100%)',
 		},
 		primary: {
-			100: 'hsl(158, 76%, 24%)',
-			300: 'hsl(157, 68%, 33%)',
-			500: 'hsl(155, 55%, 45%)',
-			700: 'hsl(156, 55%, 55%)',
-			900: 'hsl(157, 55%, 64%)',
+			100: 'hsl(88, 65%, 30%)',
+			300: 'hsl(87, 54%, 39%)',
+			500: 'hsl(86, 43%, 50%)',
+			700: 'hsl(86, 44%, 62%)',
+			900: 'hsl(87, 45%, 72%)',
 		},
 		secondary: {
-			100: 'hsl(243, 86%, 81%)',
-			300: 'hsl(244, 83%, 77%)',
+			100: 'hsl(247, 66%, 58%)',
+			300: 'hsl(246, 74%, 66%)',
 			500: 'hsl(245, 77%, 72%)',
-			700: 'hsl(246, 74%, 66%)',
-			900: 'hsl(247, 66%, 58%)',
+			700: 'hsl(244, 83%, 77%)',
+			900: 'hsl(243, 86%, 81%)',
 		},
 		success: {
 			100: 'hsl(83, 71%, 74%)',

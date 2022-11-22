@@ -108,7 +108,8 @@
 			border: 0px solid currentColor;
 			transition: all 0.15s ease-out;
 		}
-		&:hover {
+		&:hover,
+		&.active {
 			opacity: 1;
 			transform: scale(1);
 			&::after {

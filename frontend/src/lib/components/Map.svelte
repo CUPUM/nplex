@@ -285,9 +285,9 @@
 			background: transparent;
 		}
 		:global(.maplibregl-cooperative-gesture-screen) {
-			font-family: var(--font-main);
+			font-family: var(--ui-font-main);
 			font-weight: 300;
-			font-size: var(--size-xsmall);
+			font-size: var(--ui-size-xsmall);
 			color: col(bg, 500);
 			background: transparent;
 			& > :global(*) {
@@ -298,9 +298,9 @@
 			}
 		}
 		:global(.maplibregl-ctrl-attrib) {
-			font-family: var(--font-main);
+			font-family: var(--ui-font-main);
 			font-weight: 300;
-			font-size: var(--size-xxsmall);
+			font-size: var(--ui-size-xxsmall);
 			background: col(bg, 100, 0.5);
 			margin: 1rem;
 			padding: 0.5em 1em;

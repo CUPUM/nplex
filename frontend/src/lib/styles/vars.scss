@@ -10,38 +10,53 @@
 );
 
 :root {
-	--ui-inset: 5px;
-	--ui-nest: 0;
-	--ui-nest-inset: 0px;
+	// Default misc values
+	--ui-inset: 3px;
+	--ui-inset-sum: 0px;
+	--ui-inset-parent: 0px;
 	--ui-radius: 0.8em;
 	--ui-height: 3.5em;
-	--ui-pad-inline: 1.25em;
-	--ui-outline: 2px solid rgb(var(--rgb-primary-500), 0.5);
-	--ui-small: 640px;
-	--ui-medium: 960px;
-	--ui-large: 1280px;
-	--font-main: 'Outfit', sans-serif;
-	--font-misc: 'Space Mono', monospace;
-	--scroll-size: 4px;
-	--scroll-color: rgb(var(--rgb-fg-100), 0.4);
-	--size-x5small: 6px;
-	--size-x4small: 8px;
-	--size-x3small: 10px;
-	--size-x2small: 12px;
-	--size-xsmall: 14px;
-	--size-small: 16px;
-	--size-medium: 20px;
-	--size-large: 28px;
-	--size-xlarge: 40px;
-	--size-x2large: 56px;
-	--size-x3large: 76px;
-	--size-x4large: 100px;
-	--size-x5large: 128px;
+	--ui-padding-inline: 1.25em;
+	// Fonts
+	--ui-font-main: 'Outfit', sans-serif;
+	--ui-font-misc: 'Space Mono', monospace;
+	// Scrollbar
+	--ui-scroll-size: 5px;
+	--ui-scroll-color: rgb(var(--rgb-fg-100), 0.5);
+	// Text/content sizing
+	--ui-size-x5small: 6px;
+	--ui-size-x4small: 8px;
+	--ui-size-x3small: 10px;
+	--ui-size-x2small: 12px;
+	--ui-size-xsmall: 14px;
+	--ui-size-small: 16px;
+	--ui-size-medium: 20px;
+	--ui-size-large: 28px;
+	--ui-size-xlarge: 40px;
+	--ui-size-x2large: 56px;
+	--ui-size-x3large: 76px;
+	--ui-size-x4large: 100px;
+	--ui-size-x5large: 128px;
+	// Spacing
+	--ui-space-x3small: 8px;
+	--ui-space-x2small: 18px;
+	--ui-space-xsmall: 24px;
+	--ui-space-small: 32px;
+	--ui-space-medium: 48px;
+	--ui-space-large: 72px;
+	--ui-space-xlarge: 96px;
+	// Block sizing
+	--ui-display-x3small: 240px;
+	--ui-display-x2small: 320px;
+	--ui-display-xsmall: 480px;
+	--ui-display-small: 640px;
+	--ui-display-medium: 960px;
+	--ui-display-large: 1280px;
 }
 
 .compact {
-	--ui-inset: 0px;
+	--ui-inset: 1px;
 	--ui-radius: 0.7em;
-	--ui-height: 2.5em;
-	--ui-pad-inline: 1em;
+	--ui-height: 2.8em;
+	--ui-padding-inline: 1em;
 }

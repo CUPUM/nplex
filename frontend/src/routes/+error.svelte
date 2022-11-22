@@ -42,7 +42,7 @@
 
 	pre {
 		font-size: medium;
-		font-family: var(--font-misc);
+		font-family: var(--ui-font-misc);
 		white-space: pre-wrap;
 		word-wrap: break-word;
 	}

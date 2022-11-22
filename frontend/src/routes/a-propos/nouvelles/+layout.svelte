@@ -26,7 +26,7 @@
 
 	.heading-label,
 	h2 {
-		font-size: var(--size-x2large);
+		font-size: var(--ui-size-x2large);
 		font-weight: 500;
 		padding: 0;
 		margin: 0;

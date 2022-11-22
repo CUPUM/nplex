@@ -25,6 +25,8 @@
 	export let checked: any = undefined;
 	export let group: any = undefined;
 
+	$: checked = checked ?? group === value;
+
 	const _group = writable(group);
 	$: group = $_group;
 	$: _group.set(group);
@@ -36,6 +38,7 @@
 	class:active
 	class:warning
 	class:compact
+	class:checked
 	{disabled}
 	on:click
 	on:focus
@@ -72,8 +75,8 @@
 	:where(.token) {
 		--height: calc(var(--ui-height) - 2 * var(--ui-inset-sum));
 		--inset: var(--ui-inset);
-		--pad-inline: calc(var(--ui-pad-inline) / 3);
-		--gutter-inline: calc(2 * var(--ui-pad-inline) / 3);
+		--pad-inline: calc(var(--ui-padding-inline) / 3);
+		--gutter-inline: calc(2 * var(--ui-padding-inline) / 3);
 		position: relative;
 		cursor: pointer;
 		display: grid;
@@ -118,5 +121,9 @@
 		&:hover {
 			background: col(fg, 100, 0.1);
 		}
+	}
+
+	.checked {
+		color: red;
 	}
 </style>

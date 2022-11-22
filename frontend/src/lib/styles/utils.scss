@@ -90,19 +90,3 @@ $bp-tablet: 768px;
 		@include __inheritchainswap('io2_', 'io1_', $assignments);
 	}
 }
-
-/**
- * Basic press animation to apply on focus:
- * animation: press .25s ease-in-out;
- */
-@keyframes press {
-	0% {
-		transform: scale(1);
-	}
-	25% {
-		transform: scale(0.96);
-	}
-	100% {
-		transform: scale(1);
-	}
-}

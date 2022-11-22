@@ -45,22 +45,20 @@
 
 		async function open({
 			url,
-			replaceState = true,
 			...opts
 		}: { url?: string | URL } & Parameters<typeof goto>[1] = {}) {
 			if (!browser) return;
 			const re = getUrl({ url: url ?? get(page).url, open: true });
-			return goto(re, { replaceState, ...opts });
+			return goto(re, { replaceState: true, noScroll: true, ...opts });
 		}
 
 		async function close({
 			url,
-			replaceState = true,
 			...opts
 		}: { url?: string | URL } & Parameters<typeof goto>[1] = {}) {
 			if (!browser) return;
 			const re = getUrl({ url: url ?? get(page).url, open: false });
-			return goto(re, { replaceState, ...opts });
+			return goto(re, { replaceState: true, noScroll: true, ...opts });
 		}
 
 		return {
@@ -164,23 +162,28 @@
 					<Icon name="login" slot="trailing" />
 					Me connecter
 				</Button>
-				<Button class="small-button" type="submit" variant="ghost" contentAlign="center"
-					>Mot de passe oublié&thinsp;?</Button
-				>
+				<Button class="small-button" type="submit" variant="ghost" contentAlign="center">
+					Mot de passe oublié&thinsp;?
+				</Button>
 				<Button
 					class="small-button"
 					type="submit"
 					disabled={!Boolean(email) || !Boolean(password)}
-					loading={currentAction === ACTION.SIGNUP}
 					contentAlign="center"
+					formaction={ACTION.SIGNUP}
+					loading={currentAction === ACTION.SIGNUP}
 				>
-					<span>Créer un compte</span>
-					<Icon name="user-add" />
+					Créer un compte
+					<!-- <Icon name="user-add" thickness="1.3" slot="trailing" /> -->
 				</Button>
 			</fieldset>
 			<hr />
 			<fieldset class="providers" disabled>
-				<span>Me connecter via une autre plateforme :</span>
+				<span>
+					Me connecter via une autre plateforme
+					<br />
+					<em>(Présentement non-disponible)</em>
+				</span>
 				<ul class="scroll">
 					{#each providerNames as name, i}
 						<li>
@@ -218,7 +221,7 @@
 		align-items: center;
 		height: 100vh;
 		width: 100vw;
-		padding: var(--size-x2large) var(--size-medium);
+		padding: var(--ui-size-x2large) var(--ui-size-medium);
 		margin: 0;
 		top: 0;
 		left: 0;
@@ -277,7 +280,7 @@
 		}
 
 		.small-button {
-			font-size: var(--size-xsmall);
+			font-size: var(--ui-size-x2small);
 		}
 
 		hr {
@@ -301,7 +304,7 @@
 				margin: 0 2.5rem;
 				text-align: center;
 				opacity: 0.5;
-				font-size: var(--size-xsmall);
+				font-size: var(--ui-size-xsmall);
 			}
 			ul {
 				list-style-type: none;
@@ -309,7 +312,7 @@
 				display: flex;
 				flex-direction: row;
 				gap: 1rem;
-				padding: 3rem;
+				padding: 2rem 3rem;
 				padding-top: 0;
 				overflow: scroll;
 			}
@@ -317,5 +320,9 @@
 				all: unset;
 			}
 		}
+	}
+
+	em {
+		opacity: 0.5;
 	}
 </style>

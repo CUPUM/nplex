@@ -4,51 +4,47 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
 	import EditablesList from './EditablesList.svelte';
+	import EditablesProjectCard from './EditablesProjectCard.svelte';
 	export let data: LayoutData;
 </script>
 
 <slot />
-<!-- <hr class="dashed" /> -->
-<article id="entries">
-	<h2>Fiches éditables</h2>
-	<EditablesList title="Mes fiches de projet" data={data.projects} let:datum>
-		<a class="project" href="/editer/projet/{datum.id}">
-			<img src="https://picsum.photos/seed/{datum.id}/200/300" alt="" />
-			<!-- {datum.title} -->
-		</a>
-		<a class="project" href="/editer/projet" slot="placeholder"> New :D </a>
-	</EditablesList>
-</article>
+<h2 class="e-h2">Fiches éditables</h2>
+<EditablesList title="Projets" data={data.projects} let:datum>
+	{#if datum.id === 'placeholder'}
+		<a href="/editer/projet">Démarrer un nouveau projet</a>
+	{:else}
+		<EditablesProjectCard {datum} />
+	{/if}
+</EditablesList>
 
 <style lang="scss">
-	article {
-		width: 100%;
-		padding: 0;
-		// background: col(bg, 500);
-	}
-
-	h2 {
-		position: relative;
-		font-weight: 500;
-		font-size: 3rem;
-		max-width: 1200px;
-		padding: 2rem;
-		margin: 0 auto;
-	}
-
-	.project {
-		padding: 0;
-		margin: 0;
+	// Editor heading
+	:global(.e-h2) {
 		display: block;
-		position: relative;
-		height: 350px;
-		aspect-ratio: 3 / 4;
-		background: col(bg, 000);
-		border-radius: 1.5rem;
-		transition: all 0.25s ease-in-out;
-		&:hover {
-			// background: col(bg, 100);
-			box-shadow: 0 2em 3em -1.5em rgba(0, 10, 20, 0.25);
-		}
+		padding: var(--ui-space-medium) 0;
+		text-align: center;
+		font-size: var(--ui-size-x4large);
+		max-width: var(--ui-display-medium);
+		// text-transform: uppercase;
+		line-height: 1;
+		// letter-spacing: -0.01em;
+		width: 100%;
+		margin: 0 auto;
+		color: col(fg, 500);
+		font-weight: 500;
+	}
+
+	// Editor subheading
+	:global(.e-h3) {
+		display: block;
+		padding: var(--ui-space-small) 0;
+		text-align: left;
+		max-width: var(--ui-display-large);
+		color: col(fg, 500);
+		font-size: var(--ui-size-x2large);
+		font-weight: 550;
+		width: 100%;
+		margin: 0 auto;
 	}
 </style>

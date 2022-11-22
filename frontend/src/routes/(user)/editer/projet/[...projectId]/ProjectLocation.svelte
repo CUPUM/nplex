@@ -11,10 +11,15 @@
 	import MapPopup from '$components/MapPopup.svelte';
 	import MapToolbar from '$components/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
-	import { messages } from '$routes/MessagesOutlet.svelte';
+	import { messages } from '$routes/AppMessagesOutlet.svelte';
 	import { throttle } from '$utils/function';
 	import { dbProjectLocationSchema } from '$utils/validation';
-	import type { DrawCreateEvent, DrawDeleteEvent, DrawRenderEvent, DrawUpdateEvent } from '@mapbox/mapbox-gl-draw';
+	import type {
+		DrawCreateEvent,
+		DrawDeleteEvent,
+		DrawRenderEvent,
+		DrawUpdateEvent,
+	} from '@mapbox/mapbox-gl-draw';
 	import distance from '@turf/distance';
 	import type { LngLat, MapMouseEvent } from 'maplibre-gl';
 	import type { ComponentProps } from 'svelte';
@@ -59,7 +64,9 @@
 		mousedown = true;
 	}
 
-	function updateLocationGeometry(e: CustomEvent<DrawCreateEvent | DrawUpdateEvent | DrawDeleteEvent>) {
+	function updateLocationGeometry(
+		e: CustomEvent<DrawCreateEvent | DrawUpdateEvent | DrawDeleteEvent>
+	) {
 		const feature = e.detail.features[0];
 		if (draw) {
 			switch (e.detail.type) {
@@ -85,7 +92,9 @@
 			(f) => f.properties && f.properties.meta === 'vertex' && f.geometry.type === 'Point'
 		) as GeoJSON.Feature<GeoJSON.Point>[];
 		if (!(pts.length > 1)) return;
-		r = +distance(pts[0].geometry.coordinates, pts[1].geometry.coordinates, { units: 'meters' });
+		r = +distance(pts[0].geometry.coordinates, pts[1].geometry.coordinates, {
+			units: 'meters',
+		});
 		if (mousedown) info = true;
 		else info = false;
 	}, 10);
@@ -156,9 +165,9 @@
 
 	h3 {
 		width: 100%;
-		max-width: var(--ui-large);
+		max-width: var(--ui-display-large);
 		margin: 1em auto;
-		font-size: var(--size-large);
+		font-size: var(--ui-size-large);
 		font-weight: 500;
 	}
 
@@ -168,7 +177,7 @@
 		aspect-ratio: 3 / 2;
 		height: unset;
 		max-height: 80vh;
-		max-width: var(--ui-large);
+		max-width: var(--ui-display-large);
 		margin: 0 auto;
 	}
 

@@ -10,21 +10,28 @@
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
+	interface $$Slots {
+		default: {
+			datum: D;
+		};
+		placeholder: {};
+	}
+
 	type D = $$Generic<{ id: string | null; created_by_id: string | null }>;
 
 	export let title: string;
 	export let data: D[];
 
+	const filters = {
+		all: 'Tous',
+		creator: 'Créés par moi',
+		collaborator: 'Partagés avec moi',
+	};
 	const placeholder = {
 		id: 'placeholder',
 	};
-	const filters = {
-		all: 'Toutes',
-		creator: 'Créées par moi',
-		collaborator: 'Partagées avec moi',
-	};
+
 	let filter: keyof typeof filters = 'all';
-	// let filtered: [...D[], typeof placeholder];
 	$: filtered = [
 		...data.filter((d) => {
 			switch (filter) {
@@ -43,9 +50,9 @@
 
 <section>
 	<header>
-		<h3>{title}</h3>
+		<h3 class="e-h3">{title}</h3>
 		<form action="" use:enhance>
-			<Switch compact bind:group={filter} name="filter">
+			<Switch bind:group={filter} name="filter">
 				{#each Object.entries(filters) as [k, v]}
 					<SwitchItem value={k}>
 						{v}
@@ -54,17 +61,17 @@
 			</Switch>
 		</form>
 	</header>
-	<ul class:empty={filtered.length === 1}>
+	<ul class:none={filtered.length === 1}>
 		{#each filtered as datum, i (datum.id)}
 			<li
 				animate:flip={{ duration: (d) => d * 0.5, easing: expoOut, delay: i * 50 }}
 				in:scale={{ start: 0.9, duration: 300, easing: cubicOut, delay: i * 50 }}
 				out:scale|local={{ start: 0.8, duration: 200, delay: (filtered.length - i) * 50 }}
 			>
-				{#if 'created_by_id' in datum}
-					<slot {datum} />
+				{#if !('created_by_id' in datum)}
+					<slot name="placeholder" />
 				{:else}
-					<slot name="placeholder">Créer une nouvelle fiche (placeholder)</slot>
+					<slot {datum} />
 				{/if}
 			</li>
 		{/each}
@@ -74,6 +81,7 @@
 <style lang="scss">
 	section {
 		display: flex;
+		align-items: center;
 		flex-direction: column;
 	}
 
@@ -81,19 +89,19 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0;
-		padding: 2rem;
-		font-size: var(--size-xsmall);
+		padding: 2rem 0;
+		padding-bottom: 0;
+		max-width: var(--ui-display-large);
+		width: 100%;
+		margin: 0 auto;
 	}
 
 	h3 {
-		padding: 1rem 0;
-		margin-bottom: 0;
-		font-size: 2rem;
-		font-weight: 500;
+		padding: var(--ui-size-x2small) 0;
 	}
 
 	form {
-		all: unset;
+		font-size: var(--ui-size-xsmall);
 	}
 
 	ul {
@@ -105,7 +113,7 @@
 		gap: 3rem;
 		padding: 4rem 2rem;
 		overflow-x: scroll;
-		&.empty {
+		&.none {
 		}
 	}
 

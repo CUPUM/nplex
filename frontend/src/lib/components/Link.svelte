@@ -42,8 +42,8 @@
 		font-weight: inherit;
 
 		&:hover {
-			color: col(primary, 500);
-			background: col(primary, 500, 0.2);
+			color: col(primary, 700);
+			background: col(primary, 300, 0.2);
 
 			.reg {
 				opacity: 0;

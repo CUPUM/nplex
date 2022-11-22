@@ -158,7 +158,7 @@
 	}
 
 	.filters-close {
-		font-size: var(--size-xsmall);
+		font-size: var(--ui-size-xsmall);
 		padding: 0;
 		margin: 0;
 		top: 1rem;

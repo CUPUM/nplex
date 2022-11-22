@@ -28,9 +28,8 @@ const config = {
 		},
 		alias: {
 			$actions: 'src/lib/actions',
-			$api: 'src/routes/api',
-			$components: 'src/lib/components',
 			$routes: 'src/routes',
+			$components: 'src/lib/components',
 			$static: 'static',
 			$stores: 'src/lib/stores',
 			$styles: 'src/lib/styles',

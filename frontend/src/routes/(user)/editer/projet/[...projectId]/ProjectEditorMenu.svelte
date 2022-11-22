@@ -45,10 +45,10 @@
 <style lang="scss">
 	menu {
 		--inset: var(--ui-inset);
-		font-size: var(--size-medium);
+		font-size: var(--ui-size-medium);
 		z-index: 1000;
 		width: auto;
-		margin: 2rem 0;
+		margin: 2rem auto;
 		display: flex;
 		flex: none;
 		background-color: col(bg, 000, 0.8);

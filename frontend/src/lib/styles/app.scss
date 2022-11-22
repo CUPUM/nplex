@@ -6,7 +6,7 @@
 	height: 100%;
 	padding: 0;
 	margin: 0;
-	font-family: var(--font-main);
+	font-family: var(--ui-font-main);
 	color: col(fg, 500);
 	font-size: medium;
 	font-weight: 400;
@@ -16,7 +16,7 @@
 	transition: background 0.25s ease-in-out;
 	&[lock-scroll] {
 		overflow-y: hidden;
-		padding-right: var(--scroll-size);
+		padding-right: var(--ui-scroll-size);
 	}
 }
 
@@ -40,14 +40,69 @@ body {
 	color: currentColor;
 }
 
-a,
-a:visited,
-a:active,
-a:hover {
-	text-decoration: unset;
-	color: unset;
+// Uniform focus outline style.
+.focus-outline {
+	&:focus,
+	&.focus {
+		outline: 3px solid col(fg, 900, 0.5);
+	}
 }
 
+// Fill size thematic break (hr)
+.break {
+	padding: 0.5px;
+	border: none;
+	margin: 0;
+	background: col(fg, 100, 0.1);
+}
+
+// Basic press animation to apply on focus: animation: press .25s ease-in-out;
+@keyframes press {
+	0% {
+		transform: scale(1);
+	}
+	25% {
+		transform: scale(0.96);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+// Defautl scrollbar
+::-webkit-scrollbar {
+	width: var(--ui-scroll-size);
+	height: var(--ui-scroll-size);
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+	box-shadow: none;
+}
+::-webkit-scrollbar-thumb {
+	position: relative;
+	background: var(--ui-scroll-color);
+	border-radius: 1px;
+}
+
+// Resets
+input[type='search']::-ms-clear,
+input[type='search']::-ms-reveal {
+	display: none;
+	width: 0;
+	height: 0;
+}
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+	display: none;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	transition: all 0s 50000s;
+}
 form,
 fieldset {
 	margin: 0;
@@ -62,54 +117,10 @@ fieldset {
 	padding-block-end: 0;
 	min-inline-size: 0;
 }
-
-hr.dashed {
-	height: 1px;
-	margin: 0 3rem;
-	background-image: linear-gradient(
-		90deg,
-		col(fg, 100, 0.5),
-		col(fg, 100, 0.5) 20%,
-		transparent 20%,
-		transparent 100%
-	);
-	background-size: 15px 2px;
-	border: none;
-}
-
-input[type='search']::-ms-clear,
-input[type='search']::-ms-reveal {
-	display: none;
-	width: 0;
-	height: 0;
-}
-
-input[type='search']::-webkit-search-decoration,
-input[type='search']::-webkit-search-cancel-button,
-input[type='search']::-webkit-search-results-button,
-input[type='search']::-webkit-search-results-decoration {
-	display: none;
-}
-
-::-webkit-scrollbar {
-	width: var(--scroll-size);
-	height: var(--scroll-size);
-}
-
-::-webkit-scrollbar-track {
-	background: transparent;
-	box-shadow: none;
-}
-
-::-webkit-scrollbar-thumb {
-	position: relative;
-	background: var(--scroll-color);
-	border-radius: 1px;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-	transition: all 0s 50000s;
+a,
+a:visited,
+a:active,
+a:hover {
+	text-decoration: inherit;
+	color: inherit;
 }

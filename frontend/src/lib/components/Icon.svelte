@@ -104,7 +104,7 @@
 				stroke: currentColor;
 				stroke-width: var(--thickness);
 				stroke-linejoin: round;
-				stroke-linecap: round;
+				stroke-linecap: square;
 			}
 			&.secondary {
 				color: var(--secondary-color);

@@ -83,7 +83,7 @@
 		pointer-events: none;
 	}
 	.slot {
-		padding: 0 var(--ui-pad-inline);
+		padding: 0 var(--ui-padding-inline);
 		padding-bottom: calc(0.5em - 0.5ex);
 	}
 	.current .slot {

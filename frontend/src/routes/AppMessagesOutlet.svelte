@@ -35,8 +35,8 @@
 	};
 
 	/**
-	 * Singleton store containing stack of messages dispatched from anywhere in the app. This store's contents are
-	 * displayed in the app's root layout.
+	 * Singleton store containing stack of messages dispatched from anywhere in the app. This
+	 * store's contents are displayed in the app's root layout.
 	 */
 	export const messages = (function () {
 		const { subscribe, set, update } = writable<Message[]>([]);
@@ -98,8 +98,14 @@
 	export function queryMessage(url: string, ...messages: Message[]): string;
 	export function queryMessage(url: URL, ...messages: Message[]): URL;
 	export function queryMessage(url: RelativeURL, ...messages: Message[]): RelativeURL;
-	export function queryMessage(url: string | URL | RelativeURL, ...messages: Message[]): string | URL | RelativeURL {
-		const newURL = url instanceof URL && !(url instanceof RelativeURL) ? new URL(url) : new RelativeURL(url);
+	export function queryMessage(
+		url: string | URL | RelativeURL,
+		...messages: Message[]
+	): string | URL | RelativeURL {
+		const newURL =
+			url instanceof URL && !(url instanceof RelativeURL)
+				? new URL(url)
+				: new RelativeURL(url);
 		messages.forEach((m) => {
 			newURL.searchParams.append(SearchParam.Message, JSON.stringify(m));
 		});
@@ -150,7 +156,13 @@
 	{#each $messages as message (message)}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<dialog
-			in:transform|local={{ translateY: 8, scale: 0.95, opacity: 0, duration: 350, easing: expoOut }}
+			in:transform|local={{
+				translateY: 8,
+				scale: 0.95,
+				opacity: 0,
+				duration: 350,
+				easing: expoOut,
+			}}
 			out:scale|local={{ start: 0.9, opacity: 0, duration: 150, easing: expoInOut }}
 			animate:flip={{ duration: 350, easing: expoOut }}
 			class={message.type}
@@ -172,7 +184,10 @@
 						{@html message.content}
 					</span>
 				{:else}
-					<svelte:component this={message.content.component} {...message.content.props || {}} />
+					<svelte:component
+						this={message.content.component}
+						{...message.content.props || {}}
+					/>
 				{/if}
 			</div>
 			<button on:click={(e) => closeMessage(e, message)}>
@@ -201,7 +216,7 @@
 
 	dialog {
 		--inset: var(--ui-inset);
-		font-size: var(--size-small);
+		font-size: var(--ui-size-small);
 		pointer-events: all;
 		position: relative;
 		max-width: 50ch;

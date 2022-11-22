@@ -2,15 +2,8 @@
 	@component
 	Use this component to add loading spinner overlay to any element/container.
  -->
-<script lang="ts">
-	import { elasticOut, expoIn } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
-
-	export let style: string | undefined = undefined;
-	let className: string | undefined = undefined;
-	export { className as class };
-
-	const duration = 4;
+<script lang="ts" context="module">
+	const duration = 3;
 	// These shapes must contain the same amounts and types of points for the animation to work.
 	const shapes = [
 		// Circle
@@ -31,7 +24,7 @@
 	const nsteps = shapes.length + 1;
 	// const offset = Math.round(Math.random() * nsteps);
 	const keySplines = Array(nsteps - 1)
-		.fill('.7 0 .3 1')
+		.fill('.8 0 .2 1')
 		.join(';');
 	const keyTimes = Array(nsteps)
 		.fill(null)
@@ -49,6 +42,15 @@
 		.fill(null)
 		.map((_, i) => i * 90 + ' 50 50')
 		.join(';');
+</script>
+
+<script lang="ts">
+	import { elasticOut, expoIn } from 'svelte/easing';
+	import { scale } from 'svelte/transition';
+
+	export let style: string | undefined = undefined;
+	let className: string | undefined = undefined;
+	export { className as class };
 </script>
 
 <div class="loading {className}" {style}>
@@ -142,13 +144,14 @@
 		fill: currentColor;
 		stroke: currentColor;
 		// vector-effect: non-scaling-stroke;
-		fill: transparent;
-		stroke-dasharray: 16px 14px;
-		stroke-width: 9px;
+		// fill: transparent;
+		// stroke-dasharray: 16px 14px;
+		// stroke-width: 9px;
+		stroke-width: 16px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
-		transform-origin: center;
-		animation: dashoffset 1s linear infinite, slowspin 3.5s linear infinite;
+		// transform-origin: center;
+		// animation: slowspin 2.5s linear infinite; // stepspin 1.5s cubic-bezier(0.7, 0, 0.2, 1) infinite; //dashoffset 1s linear infinite;
 	}
 
 	@keyframes dashoffset {
@@ -157,6 +160,24 @@
 		}
 		100% {
 			stroke-dashoffset: -100;
+		}
+	}
+
+	@keyframes stepspin {
+		0% {
+			transform: rotate(0deg);
+		}
+		25% {
+			transform: rotate(90deg);
+		}
+		50% {
+			transform: rotate(180deg);
+		}
+		75% {
+			transform: rotate(270deg);
+		}
+		100% {
+			transform: rotate(360deg);
 		}
 	}
 
