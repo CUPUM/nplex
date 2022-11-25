@@ -81,7 +81,6 @@
 <style lang="scss">
 	section {
 		display: flex;
-		align-items: center;
 		flex-direction: column;
 	}
 
@@ -94,6 +93,7 @@
 		max-width: var(--ui-display-large);
 		width: 100%;
 		margin: 0 auto;
+		padding: 0 2rem;
 	}
 
 	h3 {
@@ -105,21 +105,15 @@
 	}
 
 	ul {
-		all: unset;
 		--scroll-color: transparent;
-		position: relative;
 		display: flex;
 		flex-direction: row;
-		gap: 3rem;
-		padding: 4rem 2rem;
+		gap: 0;
 		overflow-x: scroll;
-		&.none {
-		}
+		padding: 0 2rem;
 	}
 
 	li {
-		all: unset;
-		position: relative;
 		flex: 0;
 	}
 </style>

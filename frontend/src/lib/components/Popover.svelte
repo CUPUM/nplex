@@ -85,7 +85,7 @@
 			class="popover {align} {place}"
 			style:--d={cssSize(distance)}
 			in:scale={{ start: 0.9, easing: expoOut, duration: 100, opacity: 0 }}
-			out:scale={{
+			out:scale|local={{
 				start: 0.8,
 				easing: expoIn,
 				duration: latest === controlRef ? 100 : 0,

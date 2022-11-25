@@ -1,3 +1,4 @@
+import { ThemeClass } from '$routes/AppThemes.svelte';
 import { Cookie } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
 import type { Handle } from '@sveltejs/kit';
@@ -15,7 +16,14 @@ const TOKEN_EXPIRY_MARGIN = 10000;
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.session = safeJsonParse(event.cookies.get(Cookie.Session));
 
-	const res = await resolve(event);
+	const themeInit = event.cookies.get(Cookie.Theme) ?? 'light';
+	const themeClass = (ThemeClass as any)[themeInit] ?? ThemeClass.light;
+	const themeName = (ThemeClass as any)[themeInit] ? themeInit : 'light';
+	event.locals.theme = themeName as keyof typeof ThemeClass;
+
+	const res = await resolve(event, {
+		transformPageChunk: ({ html }) => html.replace('%theme%', themeClass),
+	});
 
 	return res;
 };

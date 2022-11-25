@@ -565,18 +565,17 @@ export interface Database {
           site_usage_category_id: number | null
           site_usage_id: number | null
           site_area: number | null
-          category_id: number | null
           area: number | null
           adjacent_streets: number | null
           building_area: number | null
           implantation_mode_id: number | null
           building_construction_year: number | null
           type_id: number | null
-          combustible: boolean | null
           banner_url: string | null
           location_geometry: unknown | null
           location_radius: number | null
           cost_range: unknown | null
+          likes_sum: number
         }
         Insert: {
           id?: string
@@ -590,18 +589,17 @@ export interface Database {
           site_usage_category_id?: number | null
           site_usage_id?: number | null
           site_area?: number | null
-          category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
           type_id?: number | null
-          combustible?: boolean | null
           banner_url?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
           cost_range?: unknown | null
+          likes_sum?: number
         }
         Update: {
           id?: string
@@ -615,18 +613,17 @@ export interface Database {
           site_usage_category_id?: number | null
           site_usage_id?: number | null
           site_area?: number | null
-          category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
           type_id?: number | null
-          combustible?: boolean | null
           banner_url?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
           cost_range?: unknown | null
+          likes_sum?: number
         }
       }
       projects_events: {
@@ -741,26 +738,6 @@ export interface Database {
           project_id?: string
           exemplarity_indicator_id?: number
           description?: string | null
-        }
-      }
-      projects_likes_sums: {
-        Row: {
-          project_id: string
-          created_at: string
-          updated_at: string
-          sum: number
-        }
-        Insert: {
-          project_id: string
-          created_at?: string
-          updated_at?: string
-          sum?: number
-        }
-        Update: {
-          project_id?: string
-          created_at?: string
-          updated_at?: string
-          sum?: number
         }
       }
       projects_materials: {
@@ -1117,18 +1094,17 @@ export interface Database {
           site_usage_category_id: number | null
           site_usage_id: number | null
           site_area: number | null
-          category_id: number | null
           area: number | null
           adjacent_streets: number | null
           building_area: number | null
           implantation_mode_id: number | null
           building_construction_year: number | null
           type_id: number | null
-          combustible: boolean | null
           banner_url: string | null
           location_geometry: unknown | null
           location_radius: number | null
           cost_range: unknown | null
+          likes_sum: number | null
         }
         Insert: {
           id?: string | null
@@ -1142,18 +1118,17 @@ export interface Database {
           site_usage_category_id?: number | null
           site_usage_id?: number | null
           site_area?: number | null
-          category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
           type_id?: number | null
-          combustible?: boolean | null
           banner_url?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
           cost_range?: unknown | null
+          likes_sum?: number | null
         }
         Update: {
           id?: string | null
@@ -1167,18 +1142,17 @@ export interface Database {
           site_usage_category_id?: number | null
           site_usage_id?: number | null
           site_area?: number | null
-          category_id?: number | null
           area?: number | null
           adjacent_streets?: number | null
           building_area?: number | null
           implantation_mode_id?: number | null
           building_construction_year?: number | null
           type_id?: number | null
-          combustible?: boolean | null
           banner_url?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
           cost_range?: unknown | null
+          likes_sum?: number | null
         }
       }
     }

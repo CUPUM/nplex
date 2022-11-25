@@ -13,6 +13,7 @@
 	 * Where svelte-language plugin should look for css globals needed for intellisens.
 	 */
 	"svelte.plugin.css.globals": "src/lib/styles/vars.scss",
+	"svelte.enable-ts-plugin": true,
 	"[svelte]": {
 		"editor.defaultFormatter": "svelte.svelte-vscode"
 	}

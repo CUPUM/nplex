@@ -1,62 +1,49 @@
 @import './utils.scss';
 
-// Generates a class named 'nest' that allows keeping track of cumulative and parent inset values.
-@include buildInherit(
-	'.nest',
-	6,
-	'--inset: 0px',
-	'--ui-inset-parent: inherit(--inset, 0px)',
-	'--ui-inset-sum: calc(inherit(--ui-inset-sum, 0px) + inherit(--inset, 0px))'
-);
-
 :root {
-	// Default misc values
+	// Default inset or nest pad
 	--ui-inset: 3px;
-	--ui-inset-sum: 0px;
-	--ui-inset-parent: 0px;
-	--ui-radius: 0.8em;
+	// Nestable props from inherit function (see utils.scss). Repeated here for IDE autocompletion.
+	--inset: 0px;
+	--inset-parent: 0px;
+	--inset-sum: 0px;
+	--radius: 0px;
+	--radius-parent: 0px;
+	// Corner roundings
+	--ui-radius-sm: 8px;
+	--ui-radius-md: 14px;
+	--ui-radius-lg: 20px;
+	--ui-radius: 0.8em; // Deprecate
+	// Spacing / sizing
 	--ui-height: 3.5em;
-	--ui-padding-inline: 1.25em;
+	--ui-pad-x: 1.25em;
+	// Text/content sizing
+	--ui-text-2xs: 12px;
+	--ui-text-xs: 14px;
+	--ui-text-sm: 16px;
+	--ui-text-md: 18px;
+	--ui-text-lg: 24px;
+	--ui-text-xl: 30px;
+	--ui-text-2xl: 40px;
+	--ui-text-3xl: 56px;
+	--ui-text-4xl: 80px;
+	// Block sizing
+	--ui-size-2xs: 240px;
+	--ui-size-xs: 320px;
+	--ui-size-sm: 480px;
+	--ui-size-md: 620px;
+	--ui-size-lg: 960px;
+	--ui-size-xl: 1280px;
 	// Fonts
 	--ui-font-main: 'Outfit', sans-serif;
 	--ui-font-misc: 'Space Mono', monospace;
 	// Scrollbar
-	--ui-scroll-size: 5px;
+	--ui-scroll-size: 8px;
 	--ui-scroll-color: rgb(var(--rgb-fg-100), 0.5);
-	// Text/content sizing
-	--ui-size-x5small: 6px;
-	--ui-size-x4small: 8px;
-	--ui-size-x3small: 10px;
-	--ui-size-x2small: 12px;
-	--ui-size-xsmall: 14px;
-	--ui-size-small: 16px;
-	--ui-size-medium: 20px;
-	--ui-size-large: 28px;
-	--ui-size-xlarge: 40px;
-	--ui-size-x2large: 56px;
-	--ui-size-x3large: 76px;
-	--ui-size-x4large: 100px;
-	--ui-size-x5large: 128px;
-	// Spacing
-	--ui-space-x3small: 8px;
-	--ui-space-x2small: 18px;
-	--ui-space-xsmall: 24px;
-	--ui-space-small: 32px;
-	--ui-space-medium: 48px;
-	--ui-space-large: 72px;
-	--ui-space-xlarge: 96px;
-	// Block sizing
-	--ui-display-x3small: 240px;
-	--ui-display-x2small: 320px;
-	--ui-display-xsmall: 480px;
-	--ui-display-small: 640px;
-	--ui-display-medium: 960px;
-	--ui-display-large: 1280px;
 }
 
 .compact {
-	--ui-inset: 1px;
-	--ui-radius: 0.7em;
+	--ui-inset: 0px;
 	--ui-height: 2.8em;
-	--ui-padding-inline: 1em;
+	--ui-pad-x: 1em;
 }

@@ -1,10 +1,9 @@
 // @ts-ignore
 import { sveltekit } from '@sveltejs/kit/vite';
-import { resolve } from 'path';
 import type { UserConfig } from 'vite';
-import icons from './plugins/icons';
-import styles from './plugins/styles';
-import { themes } from './src/lib/utils/themes';
+// import { themes } from './src/lib/utils/themes';
+import icons from './src/plugins/icons';
+// import styles from './src/plugins/styles';
 
 const config: UserConfig = {
 	server: {
@@ -12,10 +11,10 @@ const config: UserConfig = {
 	},
 	plugins: [
 		icons(),
-		styles({
-			themes,
-			file: resolve('src', 'lib', 'styles', 'themes.scss'),
-		}),
+		// styles({
+		// 	themes,
+		// 	file: resolve('src', 'lib', 'styles', 'themes.scss'),
+		// }),
 		sveltekit(),
 	],
 	define: {

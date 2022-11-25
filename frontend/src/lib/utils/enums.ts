@@ -1,5 +1,3 @@
-import { themes } from './themes';
-
 /**
  * Dictionnary of context keys used for automatically detecting certain compositions or nestings
  * like buttons being nested inside field input compoenents or select options inside select
@@ -51,7 +49,6 @@ export enum SearchParam {
 	ProjectsType = 'type-projet',
 	AuthModal = 'auth',
 	Message = 'message',
-	Redirect = 'redirect',
 }
 
 /**
@@ -73,6 +70,7 @@ export enum Cookie {
 	Session = 'nplex_session',
 	Auth = 'nplex_auth_session',
 	AppVersion = 'app_version',
+	Theme = 'app_theme',
 }
 
 /**
@@ -86,7 +84,7 @@ export enum Cookie {
  * them.
  */
 export enum LoadDependency {
-	DbUserProfile = 'db:user-profile',
+	Session = 'auth:session',
 }
 
 /**
@@ -97,20 +95,6 @@ export const ErrorCodeMessage = {
 	400: 'Impossible!',
 	500: '',
 } as const;
-
-/**
- * Standardize the naming of css classes containing theme variables.
- */
-export function themeClass<T extends string>(name: T): `theme-${T}` {
-	return `theme-${name}`;
-}
-
-/**
- * Themes and their associated classnames.
- */
-export const Theme = Object.fromEntries(Object.keys(themes).map((k) => [k, themeClass(k)])) as {
-	[K in keyof typeof themes]: `theme-${K}`;
-};
 
 /**
  * List of CSS cursor values.

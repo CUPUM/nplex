@@ -1,15 +1,14 @@
+import { LoadDependency } from '$utils/enums';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event) => {
-	let session: App.PageData['session'];
+	const sessionRes = await event.fetch('/api/auth/session.json', { method: 'POST' });
 
-	try {
-		const sessionRes = await event.fetch('/api/auth/session.json', { method: 'POST' });
-		session = (await sessionRes.json()) ?? undefined;
-	} catch (err) {}
+	event.depends(LoadDependency.Session);
 
 	return {
-		session,
+		theme: event.data.theme,
+		session: (await sessionRes.json()) ?? undefined,
 		category: undefined,
 		showFooter: true,
 		showCategoryNav: false,

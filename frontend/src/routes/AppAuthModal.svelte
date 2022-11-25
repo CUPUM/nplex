@@ -87,7 +87,7 @@
 	import { fade } from 'svelte/transition';
 
 	const ACTION = {
-		SIGNIN: `/api/auth?/signin&${SearchParam.Redirect}=${$page.url.toString()}`,
+		SIGNIN: '/api/auth?/signin',
 		SIGNUP: '/api/auth?/signup',
 		FORGOT: '/api/auth?/forgot',
 	};

@@ -1,14 +1,11 @@
 /// <reference types="@sveltejs/kit" />
 
+import type { ThemeClass } from '$routes/AppThemes.svelte';
 import type { Category } from '$types/categories';
 import type { Database } from '$types/database';
 import type { DatabaseRpc } from '$types/databaseRpc';
 import type { PostgrestError, Session, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
-
-// type NplexSession = Omit<Session, 'user'> & { user: Omit<Session['user'], 'role'> } & {
-// 	user: { role: Database['public']['Enums']['user_role'] };
-// };
 
 type NplexSession = DeepOmit<Session, { user: { role: never } }> & {
 	user: { role: Database['public']['Enums']['user_role'] } & Pick<
@@ -37,6 +34,7 @@ declare global {
 			category?: Category;
 			showCategoryNav: boolean;
 			showFooter: boolean;
+			theme: keyof typeof ThemeClass;
 		}
 		interface Locals {
 			/**
@@ -60,6 +58,7 @@ declare global {
 			 * Database client instance confined to individual request event lifecycle.
 			 */
 			db?: SupabaseClient<App.DatabaseSchema>;
+			theme: App.PageData['theme'];
 		}
 		interface Error extends Partial<PostgrestError> {
 			// Add additional custom error props here.

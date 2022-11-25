@@ -4,13 +4,17 @@ import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/publi
 import { createClient, type SupportedStorage } from '@supabase/supabase-js';
 import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 
-const browserDb = createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-	auth: {
-		persistSession: true,
-		autoRefreshToken: true,
-		detectSessionInUrl: false,
-	},
-});
+export const browserDb = createClient<App.DatabaseSchema>(
+	PUBLIC_SUPABASE_URL,
+	PUBLIC_SUPABASE_ANON_KEY,
+	{
+		auth: {
+			persistSession: true,
+			autoRefreshToken: true,
+			detectSessionInUrl: false,
+		},
+	}
+);
 
 /**
  * Fill-in replacement for lack of local storage on server context.
@@ -34,7 +38,7 @@ function createServerClient() {
 	return createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		auth: {
 			persistSession: true,
-			autoRefreshToken: false,
+			autoRefreshToken: true,
 			detectSessionInUrl: false,
 			storage: sessionStorageProvider(),
 		},
@@ -50,7 +54,10 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 	if (event && 'locals' in event) {
 		event.locals.db = event.locals.db ?? createServerClient();
 		if (event.locals.session) {
-			await event.locals.db.auth.setSession(event.locals.session);
+			const dbSession = (await event.locals.db.auth.getSession()).data;
+			if (!dbSession || dbSession.session?.user.id !== event.locals.session.user.id) {
+				await event.locals.db.auth.setSession(event.locals.session);
+			}
 		}
 		return event.locals.db;
 	}
@@ -66,54 +73,14 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 			session = parentData?.session;
 		}
 		if (session) {
-			await db.auth.setSession(session);
+			const dbSession = (await db.auth.getSession()).data;
+			if (!dbSession || dbSession.session?.user.id !== session.user.id) {
+				await db.auth.setSession(session);
+			}
 		}
 	}
 	return db;
 }
-
-/**
- * !!! DEPRECATE !!! REPLACE WITH getDb(eventOrSession)
- *
- * Database client instance utils.
- */
-export const dbClient = {
-	/**
-	 * Init a client-side supabase client instance to listen to auth state changes and more. //
-	 */
-	browser: createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-		auth: {
-			persistSession: true,
-			autoRefreshToken: true,
-		},
-	}),
-	/**
-	 * Db client instanciator to use on a per-request basis for server-side authed requests without
-	 * unnecessary admin privileges.
-	 */
-	server: (accessToken?: string) => {
-		return createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-			auth: {
-				persistSession: false,
-				autoRefreshToken: false,
-				detectSessionInUrl: false,
-			},
-			global: {
-				headers: {
-					Authorization: accessToken ? `Bearer ${accessToken}` : '',
-				},
-			},
-		});
-	},
-	/**
-	 * Helper to get the contextual database client in isomorphic scenarios (server/browser load
-	 * functions) depending on if the query runs from server or browser.
-	 */
-	getForContext: (accessToken?: string) => {
-		if (browser) return dbClient.browser;
-		return dbClient.server(accessToken);
-	},
-};
 
 /**
  * Takes desired page range, page size, and returns tuple of start and end to be used with range

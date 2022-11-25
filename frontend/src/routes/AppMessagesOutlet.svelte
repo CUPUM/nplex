@@ -278,7 +278,7 @@
 		flex-direction: row;
 		justify-content: flex-start;
 		left: 0;
-		top: 0;
+		bottom: 0;
 		width: 100%;
 		padding: 0 1.5em;
 	}
@@ -288,7 +288,7 @@
 		height: 3px;
 		border-radius: 0 0 3px 3px;
 		animation: timer forwards var(--timer) linear;
-		background: var(--color-primary-300);
+		background: col(fg, 100, 0.2);
 	}
 
 	.error {

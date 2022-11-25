@@ -36,6 +36,7 @@ const config = {
 			$transitions: 'src/lib/transitions',
 			$types: 'src/lib/types',
 			$utils: 'src/lib/utils',
+			$plugins: 'src/plugins',
 		},
 		files: {
 			hooks: {

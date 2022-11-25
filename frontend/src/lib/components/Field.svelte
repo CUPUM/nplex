@@ -18,7 +18,6 @@
 
 <script lang="ts">
 	import { inputOnReset } from '$actions/inputOnReset';
-	import { forwardEvents } from '$utils/forwardEvents';
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import Ripple from './Ripple.svelte';
@@ -103,8 +102,6 @@
 		checkValidity();
 	}
 
-	forwardEvents(() => inputRef);
-
 	setContext<FieldContext>(CTX_KEY, {
 		value: _value,
 		inputRef: _inputRef,
@@ -169,6 +166,10 @@
 		on:focus
 		on:blur
 		on:input
+		on:keypress
+		on:keydown
+		on:keyup
+		on:click
 	/>
 	{#if suffix}
 		<span class="suffix">{suffix}</span>
@@ -182,16 +183,17 @@
 
 <style lang="scss">
 	:where(.field) {
-		--height: calc(var(--ui-height) - 2 * var(--ui-inset-sum));
+		--radius: var(--ui-radius-md);
+		--height: calc(var(--ui-height) - 2 * var(--inset-sum));
 		--inset: var(--ui-inset);
 		--notch-padding: 0.25em;
-		--gutter: calc(var(--ui-padding-inline) / 3);
-		--pad-x: calc(2 * var(--ui-padding-inline) / 3);
+		--gutter: calc(var(--ui-pad-x) / 3);
+		--gutter-out: calc(2 * var(--ui-pad-x) / 3);
 		position: relative;
 		display: grid;
 		grid-template-columns:
 			[full-start leading-start]
-			minmax(var(--pad-x), auto)
+			minmax(var(--gutter-out), auto)
 			[leading-end leading-gutter-start]
 			var(--gutter)
 			[leading-gutter-end prefix-start]
@@ -203,7 +205,7 @@
 			[suffix-end trailing-gutter-start]
 			var(--gutter)
 			[trailing-gutter-end trailing-start]
-			minmax(var(--pad-x), auto)
+			minmax(var(--gutter-out), auto)
 			[trailing-end full-end];
 		grid-template-rows: minmax(var(--height), auto);
 		gap: 0;
@@ -211,7 +213,7 @@
 		align-items: center;
 		font-weight: 350;
 		font-size: inherit;
-		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
+		border-radius: calc(var(--radius) - var(--inset-sum));
 		cursor: text;
 		outline: 0px solid transparent;
 		transition: transform 0.15s ease-out;

@@ -1,0 +1,106 @@
+@import './utils.scss';
+
+/**
+ * Base style resets to remove or normalize certain user-agent styles.
+ * Partially taken from https://tailwindcss.com/ 's preflight.
+ * Soft-scoping the selectors with the forgiving :where() pseudo allows to let app.scss styles pass through.
+ */
+
+:where(blockquote),
+:where(dl),
+:where(dd),
+:where(h1),
+:where(h2),
+:where(h3),
+:where(h4),
+:where(h5),
+:where(h6),
+:where(hr),
+:where(figure),
+:where(p),
+:where(pre),
+:where(form),
+:where(fieldset),
+:where(article),
+:where(section),
+:where(nav),
+:where(menu) {
+	margin: 0;
+	padding: 0;
+}
+
+:where(input),
+:where(form),
+:where(fieldset) {
+	min-width: unset;
+}
+
+:where(h1),
+:where(h2),
+:where(h3),
+:where(h4),
+:where(h5),
+:where(h6) {
+	font-size: inherit;
+	font-weight: inherit;
+}
+
+:where(ol),
+:where(ul) {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+:where(img),
+:where(svg),
+:where(video),
+:where(canvas),
+:where(audio),
+:where(iframe),
+:where(embed),
+:where(object) {
+	display: block;
+	vertical-align: middle;
+}
+
+:where(img),
+:where(video) {
+	max-width: 100%;
+	height: auto;
+}
+
+::selection {
+	background: col(primary, 500);
+	color: col(fg, 100);
+}
+
+*,
+::before,
+::after {
+	border-width: 0;
+	border-style: solid;
+	border-color: currentColor;
+}
+
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
+::-ms-clear,
+::-ms-reveal,
+::-webkit-search-decoration,
+::-webkit-search-cancel-button,
+::-webkit-search-results-button,
+::-webkit-search-results-decoration {
+	display: none;
+}
+
+:-webkit-autofill,
+:-webkit-autofill:hover,
+:-webkit-autofill:focus,
+:-webkit-autofill:active {
+	transition: all 0s 50000s;
+}

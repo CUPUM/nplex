@@ -4,9 +4,10 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async (event) => {
 	const { session } = await event.parent();
-	if (!session) return {};
+	if (!session) {
+		throw error(400);
+	}
 	const db = await getDb(event);
-	// Get extended user profile with collections and their contents.
 	const profileRes = await db
 		.from('users')
 		// .select('*')
@@ -14,7 +15,7 @@ export const load: PageLoad = async (event) => {
 			`
 				*,
 				role:users_roles!users_roles_user_id_fkey(
-					role
+					*
 				)
 			`
 		)

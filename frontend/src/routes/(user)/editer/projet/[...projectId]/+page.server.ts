@@ -17,7 +17,7 @@ export const actions: Actions = {
 			.formData(
 				z
 					.object({
-						id: zfd.text(z.string().optional()),
+						id: zfd.text(),
 						title: zfd.text(),
 						location: zfd.text(z.string().optional()),
 					})

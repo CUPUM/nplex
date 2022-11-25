@@ -2,18 +2,20 @@
 	import { browser } from '$app/environment';
 	import { afterNavigate, beforeNavigate, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import Loading from '$components/Loading.svelte';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
+	import AppMessagesOutlet from '$routes/AppMessagesOutlet.svelte';
 	import '$styles/app.scss';
-	import '$styles/themes.scss';
+	import '$styles/resets.scss';
 	import '$styles/vars.scss';
-	import { dbClient } from '$utils/database';
+	import { browserDb } from '$utils/database';
+	import { LoadDependency } from '$utils/enums';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import AppAuthModal, { authModalState } from './AppAuthModal.svelte';
 	import AppFooter from './AppFooter.svelte';
-	import AppMessagesOutlet from './AppMessagesOutlet.svelte';
 	import AppNavbar from './AppNavbar.svelte';
+	import AppRootTheme from './AppRootTheme.svelte';
+	import AppThemes from './AppThemes.svelte';
 
 	export let data: LayoutData;
 
@@ -24,9 +26,8 @@
 	let mounted = false;
 
 	if (browser) {
-		dbClient.browser.auth.onAuthStateChange(() => {
-			// See if this can safely be omitted since technically the browser client is not logged in.
-			invalidate('/api/auth/session.json');
+		browserDb.auth.onAuthStateChange((event, session) => {
+			invalidate(LoadDependency.Session);
 		});
 	}
 
@@ -47,6 +48,8 @@
 
 <svelte:window bind:scrollY />
 
+<AppThemes />
+<AppRootTheme />
 <div
 	class="container"
 	class:hidden={!mounted}
@@ -65,9 +68,6 @@
 	{/if}
 </div>
 <div class="border" class:authing={$authModalState} />
-{#if loading}
-	<Loading class="loader" />
-{/if}
 <AppAuthModal />
 <AppMessagesOutlet />
 <LoadingProgress bind:this={progress} />
@@ -92,13 +92,14 @@
 		z-index: 20;
 		top: 0;
 		left: 0;
-		width: 100vw;
+		width: 100%;
 		height: 100vh;
 		pointer-events: none;
 		user-select: none;
 		color: col(bg, 300);
 		box-shadow: 0 0 0 2rem currentColor;
-		transition: all 0.5s cubic-bezier(0.2, 0, 0, 1);
+		transition: border-radius 0.5s cubic-bezier(0.2, 0, 0, 1),
+			transform 0.5s cubic-bezier(0.2, 0, 0, 1);
 		&.authing {
 			transform: scale(0.96);
 			width: calc(100vw - var(--ui-scroll-size));
@@ -124,6 +125,7 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		color: col(primary, 700);
+		font-size: var(--ui-text-xl);
+		opacity: 0.2;
 	}
 </style>

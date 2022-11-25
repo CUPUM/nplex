@@ -4,6 +4,7 @@
 
  -->
 <script lang="ts">
+	import { ThemeClass } from '$utils/enums';
 	import type { ComponentProps } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -53,7 +54,7 @@
 	<slot slot="control" {open} />
 	{#if open}
 		<div
-			class="tooltip theme-dark {place} {align}"
+			class="tooltip {ThemeClass.dark} {place} {align}"
 			in:scale={{ start: 0.5, easing: expoOut, duration: 100 }}
 			out:scale={{ start: 0.75, easing: expoIn, duration: 75 }}
 		>

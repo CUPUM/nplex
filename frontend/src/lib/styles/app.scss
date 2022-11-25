@@ -1,19 +1,18 @@
 @import './utils.scss';
 
 :root {
-	background: var(--bg, var(--color-bg-300));
-	width: 100%;
-	height: 100%;
-	padding: 0;
-	margin: 0;
+	background: col(bg, 300);
 	font-family: var(--ui-font-main);
 	color: col(fg, 500);
+	padding: 0;
+	margin: 0;
 	font-size: medium;
 	font-weight: 400;
 	accent-color: col(primary, 500);
 	overflow-x: hidden;
 	overflow-y: scroll;
 	transition: background 0.25s ease-in-out;
+
 	&[lock-scroll] {
 		overflow-y: hidden;
 		padding-right: var(--ui-scroll-size);
@@ -22,25 +21,75 @@
 
 body {
 	position: relative;
-	display: block;
 	width: 100%;
-	min-height: 100%;
+	min-height: 100vh;
 	padding: 0;
 	margin: 0;
 }
 
-*,
-::before,
-::after {
-	box-sizing: border-box;
+h1 {
+	font-size: var(--ui-text-4xl);
+	line-height: 0.96;
+	font-weight: 600;
 }
 
-::selection {
-	background: col(primary, 500);
-	color: currentColor;
+h2 {
+	font-size: var(--ui-text-3xl);
+	line-height: 1;
+	font-weight: 600;
 }
 
-// Uniform focus outline style.
+h3 {
+	font-size: var(--ui-text-2xl);
+	line-height: 1.2;
+	font-weight: 600;
+}
+
+h4 {
+}
+
+h5 {
+}
+
+h6 {
+}
+
+/**
+ * Scrollbar
+ */
+
+// Webkit.
+::-webkit-scrollbar {
+	width: var(--scroll-size, var(--ui-scroll-size));
+	height: var(--scroll-size, var(--ui-scroll-size));
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+::-webkit-scrollbar-thumb {
+	border-radius: 99px;
+	background: col(fg, 500, 0.25);
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--scroll-color, var(--ui-scroll-color));
+}
+
+// Firefox.
+:root {
+	scrollbar-width: thin;
+	scrollbar-color: var(--scroll-color, var(--ui-scroll-color)) transparent;
+}
+
+/**
+ * Helper classes and animations.
+ */
+
+.no-scrollbar {
+	--scroll-size: 0px;
+	--scroll-color: transparent;
+	scrollbar-width: none;
+}
+
 .focus-outline {
 	&:focus,
 	&.focus {
@@ -48,7 +97,6 @@ body {
 	}
 }
 
-// Fill size thematic break (hr)
 .break {
 	padding: 0.5px;
 	border: none;
@@ -56,7 +104,6 @@ body {
 	background: col(fg, 100, 0.1);
 }
 
-// Basic press animation to apply on focus: animation: press .25s ease-in-out;
 @keyframes press {
 	0% {
 		transform: scale(1);
@@ -67,60 +114,4 @@ body {
 	100% {
 		transform: scale(1);
 	}
-}
-
-// Defautl scrollbar
-::-webkit-scrollbar {
-	width: var(--ui-scroll-size);
-	height: var(--ui-scroll-size);
-}
-::-webkit-scrollbar-track {
-	background: transparent;
-	box-shadow: none;
-}
-::-webkit-scrollbar-thumb {
-	position: relative;
-	background: var(--ui-scroll-color);
-	border-radius: 1px;
-}
-
-// Resets
-input[type='search']::-ms-clear,
-input[type='search']::-ms-reveal {
-	display: none;
-	width: 0;
-	height: 0;
-}
-input[type='search']::-webkit-search-decoration,
-input[type='search']::-webkit-search-cancel-button,
-input[type='search']::-webkit-search-results-button,
-input[type='search']::-webkit-search-results-decoration {
-	display: none;
-}
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-	transition: all 0s 50000s;
-}
-form,
-fieldset {
-	margin: 0;
-	padding: 0;
-	border: none;
-	min-width: 0;
-	margin-inline-start: 0;
-	margin-inline-end: 0;
-	padding-block-start: 0;
-	padding-inline-start: 0;
-	padding-inline-end: 0;
-	padding-block-end: 0;
-	min-inline-size: 0;
-}
-a,
-a:visited,
-a:active,
-a:hover {
-	text-decoration: inherit;
-	color: inherit;
 }

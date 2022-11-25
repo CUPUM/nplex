@@ -1,5 +1,6 @@
 /**
- * Breakpoints. Conceived with max-width as app is designed desktop-first. (rather than mobile-first)
+ * Helpers to scope styles with breakpoints.
+ * Defined with max-width as the app is designed desktop-first.
  */
 $bp-mobile: 480px;
 $bp-tablet: 768px;
@@ -90,3 +91,12 @@ $bp-tablet: 768px;
 		@include __inheritchainswap('io2_', 'io1_', $assignments);
 	}
 }
+@include buildInherit(
+	'.nest',
+	6,
+	'--inset: 0px',
+	'--inset-parent: inherit(--inset, 0px)',
+	'--inset-sum: calc(inherit(--inset-sum, 0px) + inherit(--inset, 0px))',
+	'--radius: calc(inherit(--radius, 0px) - inherit(--inset, 0px))',
+	'--radius-parent: inherit(--radius, 0px)'
+);

@@ -117,13 +117,14 @@
 
 <style lang="scss">
 	:where(.button) {
-		--height: calc(var(--ui-height) - 2 * var(--ui-inset-sum));
+		--height: calc(var(--ui-height) - 2 * var(--inset-sum));
 		--inset: var(--ui-inset);
+		--radius: var(--ui-radius-md);
 		position: relative;
 		display: inline-grid;
 		grid-template-columns:
 			[full-start leading-padding-start]
-			var(--ui-padding-inline)
+			var(--ui-pad-x)
 			[leading-padding-end leading-start]
 			auto
 			[leading-end main-start]
@@ -131,7 +132,7 @@
 			[main-end trailing-start]
 			auto
 			[trailing-end trailing-padding-start]
-			var(--ui-padding-inline)
+			var(--ui-pad-x)
 			[trailing-padding-end full-end];
 		grid-template-rows: minmax(var(--height), auto);
 		border: none;
@@ -142,7 +143,7 @@
 		align-items: center;
 		font-weight: 350;
 		font-size: 1em;
-		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
+		border-radius: calc(var(--radius) - var(--inset-sum));
 		cursor: pointer;
 		letter-spacing: 0em;
 		outline: 0px solid transparent;
@@ -151,7 +152,7 @@
 	.center {
 		grid-template-columns:
 			[full-start leading-padding-start]
-			var(--ui-padding-inline)
+			var(--ui-pad-x)
 			[leading-padding-end leading-start]
 			1fr
 			[leading-end main-start]
@@ -159,7 +160,7 @@
 			[main-end trailing-start]
 			1fr
 			[trailing-end trailing-padding-start]
-			var(--ui-padding-inline)
+			var(--ui-pad-x)
 			[trailing-padding-end full-end];
 	}
 	.equi {

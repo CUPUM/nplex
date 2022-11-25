@@ -5,13 +5,12 @@
 	import { intersection } from '$actions/intersection';
 	import { reveal, slipMask } from '$actions/reveal';
 	import Button from '$components/Button.svelte';
-
-	import { Theme } from '$utils/enums';
 	import { onDestroy } from 'svelte';
 	import { navbarTheme } from './AppNavbar.svelte';
+	import { ThemeClass } from './AppThemes.svelte';
 
 	function headerEnter() {
-		navbarTheme.set(Theme.dark);
+		navbarTheme.set(ThemeClass.dark);
 	}
 
 	function headerLeave() {
@@ -24,7 +23,7 @@
 </script>
 
 <header
-	class="theme-dark"
+	class={ThemeClass.dark}
 	use:intersection={{ rootMargin: '0px 0px 0px 0px' }}
 	on:enter={headerEnter}
 	on:leave={headerLeave}
@@ -113,12 +112,8 @@
 		top: 0.135em;
 		font-weight: inherit;
 		color: col(fg, 100);
-		// color: transparent;
-		// -webkit-text-stroke: 1.5px col(fg, 100);
 		text-transform: uppercase;
 		font-weight: 500;
-		// font-weight: max(calc(-0.5 * var(--scroll) + 500), 200);
-		transition: all 0.2s ease-out;
 
 		@for $i from 0 through 4 {
 			& :global(span > :nth-child(#{5 - $i})) {

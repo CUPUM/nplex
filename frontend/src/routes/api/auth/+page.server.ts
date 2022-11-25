@@ -1,8 +1,9 @@
 import { dev } from '$app/environment';
+import { queryMessage } from '$routes/AppMessagesOutlet.svelte';
 import { getDb } from '$utils/database';
 import { Cookie, SearchParam } from '$utils/enums';
 import type { AuthSession } from '@supabase/supabase-js';
-import { invalid, redirect } from '@sveltejs/kit';
+import { error, invalid, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { Actions, RequestEvent } from './$types';
@@ -19,7 +20,7 @@ function setAuth(event: RequestEvent, session: AuthSession) {
 		httpOnly: true,
 		secure: !dev,
 	});
-	const re = event.url.searchParams.get(SearchParam.Redirect);
+	const re = event.request.headers.get('referer');
 	if (re) {
 		let reurl = new URL(re);
 		reurl.searchParams.delete(SearchParam.AuthModal);
@@ -33,7 +34,6 @@ export const actions: Actions = {
 	 * Sign up a new user.
 	 */
 	signup: async (event) => {
-		console.log('Signup request');
 		const d = await event.request.formData();
 		const v = zfd
 			.formData(
@@ -49,7 +49,7 @@ export const actions: Actions = {
 		const db = await getDb(event);
 		const signupRes = await db.auth.signUp(v.data);
 		if (signupRes.error || !signupRes.data.session) {
-			return invalid(400, { ...signupRes.error });
+			throw error(500, { message: "Erreur d'authentification", ...signupRes.error });
 		}
 		// Modify below if email confirmation required.
 		setAuth(event, signupRes.data.session);
@@ -74,7 +74,18 @@ export const actions: Actions = {
 		const db = await getDb(event);
 		const signinRes = await db.auth.signInWithPassword({ ...v.data });
 		if (signinRes.error || !signinRes.data.session) {
-			return invalid(400, { ...signinRes.error });
+			const re = event.request.headers.get('referer');
+			if (!re) {
+				throw error(500, {
+					message: "Impossible de récupérer l'adresse du référant.",
+					...signinRes.error,
+				});
+			}
+			const to = queryMessage(re, {
+				content: JSON.stringify(signinRes.error),
+				type: 'error',
+			}).toString();
+			throw redirect(300, to);
 		}
 		setAuth(event, signinRes.data.session);
 	},
@@ -86,7 +97,15 @@ export const actions: Actions = {
 		const db = await getDb(event);
 		const signoutRes = await db.auth.signOut();
 		if (signoutRes.error) {
-			return invalid(400);
+			const re = event.request.headers.get('referer');
+			if (!re) {
+				throw error(500, { ...signoutRes.error });
+			}
+			const to = queryMessage(re, {
+				content: JSON.stringify(signoutRes.error),
+				type: 'error',
+			}).toString();
+			throw redirect(300, to);
 		}
 		event.cookies.delete(Cookie.Session, { path: '/' });
 	},
