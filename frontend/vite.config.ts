@@ -2,7 +2,7 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import type { UserConfig } from 'vite';
 // import { themes } from './src/lib/utils/themes';
-import icons from './src/plugins/icons';
+import icons from './plugins/icons';
 // import styles from './src/plugins/styles';
 
 const config: UserConfig = {
