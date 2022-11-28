@@ -1,7 +1,6 @@
-import { browser } from '$app/environment';
+import { browser, version } from '$app/environment';
 import { readable, writable } from 'svelte/store';
 import { ES6JSON } from './json';
-import { version } from './version';
 
 interface Persisted<T> {
 	/**
@@ -9,26 +8,31 @@ interface Persisted<T> {
 	 */
 	value: T;
 	/**
-	 * App version at the moment of saving into local storage. Saving the version ensures we can easily reset stored
-	 * values to avoid conflicts between persisted value structures and the shipped app's expectation.
+	 * App version at the moment of saving into local storage. Saving the version ensures we can
+	 * easily reset stored values to avoid conflicts between persisted value structures and the
+	 * shipped app's expectation.
 	 */
 	_v: string;
 }
 
 /**
- * Helper function to persist a value on client's local storage using svelte's reactive statement syntax ($:
- * persistValue());
+ * Helper function to persist a value on client's local storage using svelte's reactive statement
+ * syntax ($: persistValue());
  *
  * @param key Locals storage key to persist the value to.
  */
 export function persistValue<T>(key: string, value: T) {
 	if (!browser) return;
 	// To do: check version to clear if persisted is not up to date.
-	localStorage.setItem(key, JSON.stringify(<Persisted<T>>{ value, _v: version }, ES6JSON.replacer));
+	localStorage.setItem(
+		key,
+		JSON.stringify(<Persisted<T>>{ value, _v: version }, ES6JSON.replacer)
+	);
 }
 
 /**
- * Get a value potentially stored in the client's local storage, and return fallback value if not found.
+ * Get a value potentially stored in the client's local storage, and return fallback value if not
+ * found.
  */
 export function getPersistedValue<T>(key: string, fallback: T) {
 	if (!browser) return fallback;

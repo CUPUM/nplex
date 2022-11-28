@@ -7,7 +7,6 @@ export const load: LayoutLoad = async (event) => {
 	event.depends(LoadDependency.Session);
 
 	return {
-		theme: event.data.theme,
 		session: (await sessionRes.json()) ?? undefined,
 		category: undefined,
 		showFooter: true,

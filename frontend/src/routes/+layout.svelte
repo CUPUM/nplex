@@ -6,18 +6,15 @@
 	import AppMessagesOutlet from '$routes/AppMessagesOutlet.svelte';
 	import '$styles/app.scss';
 	import '$styles/resets.scss';
+	import '$styles/themes.css';
 	import '$styles/vars.scss';
 	import { browserDb } from '$utils/database';
 	import { LoadDependency } from '$utils/enums';
 	import { onMount } from 'svelte';
-	import type { LayoutData } from './$types';
 	import AppAuthModal, { authModalState } from './AppAuthModal.svelte';
 	import AppFooter from './AppFooter.svelte';
 	import AppNavbar from './AppNavbar.svelte';
 	import AppRootTheme from './AppRootTheme.svelte';
-	import AppThemes from './AppThemes.svelte';
-
-	export let data: LayoutData;
 
 	let progress: LoadingProgress;
 	let loading = true;
@@ -48,7 +45,6 @@
 
 <svelte:window bind:scrollY />
 
-<AppThemes />
 <AppRootTheme />
 <div
 	class="container"
@@ -57,7 +53,6 @@
 	style:--scroll={scrollY}
 	style:--scroll-px="{scrollY}px"
 	style:--navbar-height-px="{navbarHeight}px"
-	style:--n-navbar-height-px="-{navbarHeight}px"
 >
 	<AppNavbar bind:navbarHeight />
 	<main>

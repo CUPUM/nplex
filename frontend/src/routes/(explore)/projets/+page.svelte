@@ -33,7 +33,7 @@
 		padding-top: 0;
 		height: 100vh;
 		padding-top: var(--navbar-height-px);
-		margin-top: var(--n-navbar-height-px);
+		margin-top: calc(-1 * var(--navbar-height-px));
 	}
 
 	form {

@@ -4,7 +4,7 @@
 
  -->
 <script lang="ts">
-	import { ThemeClass } from '$utils/enums';
+	import { ThemeClass } from '$routes/AppThemes.svelte';
 	import type { ComponentProps } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';

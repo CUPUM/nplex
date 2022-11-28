@@ -1,14 +1,15 @@
 /**
- * By default, stringification and parsing of JSON doesn't take into account ES6 objects of type Map and Set, and simply
- * stringifies them to empty objects "{}"
+ * By default, stringification and parsing of JSON doesn't take into account ES6 objects of type Map
+ * and Set, and simply stringifies them to empty objects "{}"
  *
- * We here provide both a replacer and a matching reviver function to account for these objects and ensure compatibility
- * with localStorage.
+ * We here provide both a replacer and a matching reviver function to account for these objects and
+ * ensure compatibility with localStorage.
  */
 export const ES6JSON = {
 	_flag: 'es6-json-reviver',
 	/**
-	 * Use this function to customize JSON.stringify behavior and ensure persistance of ES6 Maps and Sets.
+	 * Use this function to customize JSON.stringify behavior and ensure persistance of ES6 Maps and
+	 * Sets.
 	 */
 	replacer: (key: any, value: any) => {
 		let _type = null;
@@ -25,7 +26,8 @@ export const ES6JSON = {
 		return value;
 	},
 	/**
-	 * Use this function to customize JSON.parse behavior and ensure proper revival of stringified ES6 Maps and Sets.
+	 * Use this function to customize JSON.parse behavior and ensure proper revival of stringified
+	 * ES6 Maps and Sets.
 	 */
 	reviver: (key: any, value: any) => {
 		if (value instanceof Object && value._flag === ES6JSON._flag) {
@@ -37,10 +39,12 @@ export const ES6JSON = {
 };
 
 /**
- * Some input strings represent JSON objects, but parsing them may lead to node errors if they are empty or
- * malformatted.
+ * Some input strings represent JSON objects, but parsing them may lead to node errors if they are
+ * empty or malformatted.
+ *
+ * Default fallback value is `undefined`
  */
-export function safeJsonParse(input: any, fallback: any = null) {
+export function safeJsonParse<T = any>(input: any, fallback?: any): T {
 	try {
 		return JSON.parse(input);
 	} catch (error) {

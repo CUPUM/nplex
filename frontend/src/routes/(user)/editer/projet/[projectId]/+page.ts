@@ -1,14 +1,15 @@
 import { getDb } from '$utils/database';
+import { safeJsonParse } from '$utils/json';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async (event) => {
 	const db = await getDb(event);
-	const descriptorsRes = await db.rpc('get_project_descriptors').single();
-	if (descriptorsRes.error) {
-		throw error(500, descriptorsRes.error);
+	const dRes = await db.rpc('get_project_descriptors').single();
+	if (dRes.error) {
+		throw error(500, dRes.error);
 	}
-	const projectRes = await db
+	const pRes = await db
 		.from('projects')
 		.select(
 			`
@@ -30,11 +31,16 @@ export const load: PageLoad = async (event) => {
 		)
 		.eq('id', event.params.projectId)
 		.single();
-	if (projectRes.error) {
-		throw error(500, projectRes.error);
+	if (pRes.error) {
+		throw error(500, pRes.error);
 	}
+	// Doing some transformations to format data for the client.
+	const pTransform = {
+		...pRes.data,
+		cost_range: safeJsonParse<[number, number]>(pRes.data.cost_range, [0, 0]),
+	};
 	return {
-		project: projectRes.data,
-		descriptors: descriptorsRes.data,
+		project: pTransform,
+		descriptors: dRes.data,
 	};
 };

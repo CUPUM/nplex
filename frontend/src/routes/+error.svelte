@@ -31,7 +31,7 @@
 		min-height: 100vh;
 		padding: 4rem;
 		margin: 0 auto;
-		margin-top: var(--n-navbar-height-px);
+		margin-top: calc(-1 * var(--navbar-height-px));
 		color: var(--color-error-300);
 	}
 

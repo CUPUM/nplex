@@ -1,18 +1,30 @@
 import type { Database } from './database';
 
 /**
- * Since the open-api type generation does not include RPC (Postgres functions) return types, we
- * here define the relevant ones manually with more precision.
+ * Since the type generation does not include RPC (Postgres functions) return types and doesn't
+ * properly resolve certain data types (such as ranges), we here define the relevant ones manually
+ * with more precision.
  *
  * The underlying interface should be extended with the generated types when instanciating the
  * supabase client.
  */
-export interface DatabaseRpc {
+export interface DatabaseBuff {
 	public: {
+		Tables: {
+			projects: {
+				Row: {
+					cost_range: `[${number},${number}]`;
+				};
+			};
+		};
 		Functions: {
 			get_project_descriptors: {
 				Returns: {
-					types: Database['public']['Tables']['project_type']['Row'][];
+					types: (Database['public']['Tables']['project_type']['Row'] & {
+						works: ({
+							type_id: Database['public']['Tables']['project_type']['Row']['id'];
+						} & Database['public']['Tables']['project_work']['Row'])[];
+					})[];
 					works: (Database['public']['Tables']['project_work']['Row'] & {
 						type_ids: Database['public']['Tables']['project_type']['Row']['id'][];
 					})[];

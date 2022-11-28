@@ -1,9 +1,6 @@
 /// <reference types="@sveltejs/kit" />
-
-import type { ThemeClass } from '$routes/AppThemes.svelte';
-import type { Category } from '$types/categories';
 import type { Database } from '$types/database';
-import type { DatabaseRpc } from '$types/databaseRpc';
+import type { DatabaseBuff } from '$types/databaseBuff';
 import type { PostgrestError, Session, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
 
@@ -14,18 +11,19 @@ type NplexSession = DeepOmit<Session, { user: { role: never } }> & {
 	>;
 };
 
+type Category = 'projects' | 'organisations' | 'actors';
+
 declare global {
-	// Extend elements typing to allow custom attributes added using `use` directives (actions).
 	namespace svelte.JSX {
+		// Extend elements typing to allow custom attributes added using `use` directives (actions).
 		interface HTMLAttributes<T> {
 			onclickoutside?: (event?: CustomEvent) => unknown;
 			onenter?: (event?: CustomEvent) => unknown;
 			onleave?: (event?: CustomEvent) => unknown;
 		}
 	}
-	// Customize svelte's globals.
 	namespace App {
-		type DatabaseSchema = Database & DatabaseRpc;
+		type DatabaseSchema = Database & DatabaseBuff;
 		interface PageData {
 			/**
 			 * Nplex-specific session derived from Supabase session.
@@ -34,12 +32,11 @@ declare global {
 			category?: Category;
 			showCategoryNav: boolean;
 			showFooter: boolean;
-			theme: keyof typeof ThemeClass;
 		}
 		interface Locals {
 			/**
-			 * 1-to-1 correspondance with the nplex_session cookie since locals are populated with
-			 * it. Keep content to a minimum (essential data only) while adhering to a partial
+			 * 1-to-1 correspondance with the nplex_session cookie, used as source to populate
+			 * locals. Keep content to a minimum (essential data only) while adhering to a partial
 			 * App.PageData shape.
 			 */
 			session?: DeepPick<
@@ -55,10 +52,9 @@ declare global {
 				}
 			>;
 			/**
-			 * Database client instance confined to individual request event lifecycle.
+			 * Database client instance confined to lifecycle of individual request event.
 			 */
 			db?: SupabaseClient<App.DatabaseSchema>;
-			theme: App.PageData['theme'];
 		}
 		interface Error extends Partial<PostgrestError> {
 			// Add additional custom error props here.

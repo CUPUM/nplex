@@ -4,7 +4,8 @@ import type { createEventDispatcher } from 'svelte';
 import { themes } from './themes';
 
 /**
- * Various utility and helpers related to Map Libre, the Map primitive component and its slotable children.
+ * Various utility and helpers related to Map Libre, the Map primitive component and its slotable
+ * children.
  */
 
 /**
@@ -16,13 +17,19 @@ export const styles = {
 };
 
 /**
- * Default Draw styles, taken from: https://github.com/mapbox/mapbox-gl-draw/blob/main/src/lib/theme.js.
+ * Default Draw styles, taken from:
+ * https://github.com/mapbox/mapbox-gl-draw/blob/main/src/lib/theme.js.
  */
 export const drawStyles: MapDrawStyles = [
 	{
 		id: 'gl-draw-polygon-fill-inactive',
 		type: 'fill',
-		filter: ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+		filter: [
+			'all',
+			['==', 'active', 'false'],
+			['==', '$type', 'Polygon'],
+			['!=', 'mode', 'static'],
+		],
 		paint: {
 			'fill-color': themes.light.primary[700],
 			'fill-outline-color': themes.light.primary[700],
@@ -61,7 +68,12 @@ export const drawStyles: MapDrawStyles = [
 	{
 		id: 'gl-draw-polygon-stroke-inactive',
 		type: 'line',
-		filter: ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+		filter: [
+			'all',
+			['==', 'active', 'false'],
+			['==', '$type', 'Polygon'],
+			['!=', 'mode', 'static'],
+		],
 		layout: {
 			'line-cap': 'round',
 			'line-join': 'round',
@@ -88,7 +100,12 @@ export const drawStyles: MapDrawStyles = [
 	{
 		id: 'gl-draw-line-inactive',
 		type: 'line',
-		filter: ['all', ['==', 'active', 'false'], ['==', '$type', 'LineString'], ['!=', 'mode', 'static']],
+		filter: [
+			'all',
+			['==', 'active', 'false'],
+			['==', '$type', 'LineString'],
+			['!=', 'mode', 'static'],
+		],
 		layout: {
 			'line-cap': 'round',
 			'line-join': 'round',
@@ -115,7 +132,12 @@ export const drawStyles: MapDrawStyles = [
 	{
 		id: 'gl-draw-polygon-and-line-vertex-stroke-inactive',
 		type: 'circle',
-		filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+		filter: [
+			'all',
+			['==', 'meta', 'vertex'],
+			['==', '$type', 'Point'],
+			['!=', 'mode', 'static'],
+		],
 		paint: {
 			'circle-radius': 5,
 			'circle-color': '#fff',
@@ -124,7 +146,12 @@ export const drawStyles: MapDrawStyles = [
 	{
 		id: 'gl-draw-polygon-and-line-vertex-inactive',
 		type: 'circle',
-		filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+		filter: [
+			'all',
+			['==', 'meta', 'vertex'],
+			['==', '$type', 'Point'],
+			['!=', 'mode', 'static'],
+		],
 		paint: {
 			'circle-radius': 3,
 			'circle-color': themes.light.primary[500],
@@ -164,7 +191,12 @@ export const drawStyles: MapDrawStyles = [
 	{
 		id: 'gl-draw-point-stroke-active',
 		type: 'circle',
-		filter: ['all', ['==', '$type', 'Point'], ['==', 'active', 'true'], ['!=', 'meta', 'midpoint']],
+		filter: [
+			'all',
+			['==', '$type', 'Point'],
+			['==', 'active', 'true'],
+			['!=', 'meta', 'midpoint'],
+		],
 		paint: {
 			'circle-radius': 7,
 			'circle-color': '#fff',
@@ -173,7 +205,12 @@ export const drawStyles: MapDrawStyles = [
 	{
 		id: 'gl-draw-point-active',
 		type: 'circle',
-		filter: ['all', ['==', '$type', 'Point'], ['!=', 'meta', 'midpoint'], ['==', 'active', 'true']],
+		filter: [
+			'all',
+			['==', '$type', 'Point'],
+			['!=', 'meta', 'midpoint'],
+			['==', 'active', 'true'],
+		],
 		paint: {
 			'circle-radius': 5,
 			'circle-color': themes.light.primary[500],
@@ -238,7 +275,8 @@ export function extendDefaultDrawStyles(styles: MapDrawStyles) {
 }
 
 /**
- * Creates styles definition without requiring specification of constant props (filters, layer type).
+ * Creates styles definition without requiring specification of constant props (filters, layer
+ * type).
  */
 export function createDrawStyles(
 	styles: Pick<MapDrawStyles[number], 'id' | 'layout' | 'paint'>[],
@@ -309,7 +347,11 @@ export async function centerMapOnClientLocation(
 	fallback: LngLatBoundsLike | LngLatLike = locations.montreal.bounds
 ) {
 	try {
-		const center = await getClientLocation({ enableHighAccuracy: true, maximumAge: 30000, timeout: 5000 });
+		const center = await getClientLocation({
+			enableHighAccuracy: true,
+			maximumAge: 30000,
+			timeout: 5000,
+		});
 		map.easeTo({ center, zoom: 15 });
 	} catch {
 		if ('lat' in fallback || (Array.isArray(fallback) && fallback.flat().length === 2)) {

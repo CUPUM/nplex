@@ -75,7 +75,7 @@
 		align-items: center;
 		justify-content: flex-end;
 		margin: 0;
-		margin-top: var(--n-navbar-height-px);
+		margin-top: calc(-1 * var(--navbar-height-px));
 		background: col(bg, 100);
 		border-radius: min(2rem, calc(0.2 * var(--scroll-px)));
 		border-top-left-radius: 0;

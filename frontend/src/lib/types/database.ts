@@ -574,7 +574,7 @@ export interface Database {
           banner_url: string | null
           location_geometry: unknown | null
           location_radius: number | null
-          cost_range: unknown | null
+          cost_range: unknown
           likes_sum: number
         }
         Insert: {
@@ -598,7 +598,7 @@ export interface Database {
           banner_url?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
-          cost_range?: unknown | null
+          cost_range?: unknown
           likes_sum?: number
         }
         Update: {
@@ -622,7 +622,7 @@ export interface Database {
           banner_url?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
-          cost_range?: unknown | null
+          cost_range?: unknown
           likes_sum?: number
         }
       }
@@ -896,29 +896,26 @@ export interface Database {
       }
       projects_works: {
         Row: {
-          id: string
           created_at: string
           updated_at: string
           project_id: string
-          project_work_id: number
+          work_id: number
           created_by_id: string
           updated_by_id: string
         }
         Insert: {
-          id: string
           created_at?: string
           updated_at?: string
           project_id: string
-          project_work_id: number
+          work_id: number
           created_by_id?: string
           updated_by_id?: string
         }
         Update: {
-          id?: string
           created_at?: string
           updated_at?: string
           project_id?: string
-          project_work_id?: number
+          work_id?: number
           created_by_id?: string
           updated_by_id?: string
         }
@@ -1057,6 +1054,38 @@ export interface Database {
           user_id?: string
           project_id?: string
           created_at?: string
+        }
+      }
+      users_projects_queries: {
+        Row: {
+          id: number
+          created_at: string
+          created_by_id: string
+          updated_at: string
+          updated_by_id: string
+          query: Json
+          title: string
+          description: string | null
+        }
+        Insert: {
+          id?: number
+          created_at?: string
+          created_by_id?: string
+          updated_at?: string
+          updated_by_id?: string
+          query: Json
+          title: string
+          description?: string | null
+        }
+        Update: {
+          id?: number
+          created_at?: string
+          created_by_id?: string
+          updated_at?: string
+          updated_by_id?: string
+          query?: Json
+          title?: string
+          description?: string | null
         }
       }
       users_roles: {

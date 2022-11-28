@@ -11,7 +11,9 @@
 <article>
 	<header>
 		<img src="https://picsum.photos/seed/{data.project.id}/800/1000" alt="" />
-		<h1 use:reveal={{ ...slipMask, delimiter: '', stagger: (i) => 50 + 2 * i }}>{data.project.title}</h1>
+		<h1 use:reveal={{ ...slipMask, delimiter: '', stagger: (i) => 50 + 2 * i }}>
+			{data.project.title}
+		</h1>
 	</header>
 </article>
 <aside class="border-top">
@@ -40,7 +42,7 @@
 		margin: 1rem;
 		margin-top: 0;
 		height: 100vh;
-		// margin-top: var(--n-navbar-height-px);
+		// margin-top: calc(-1 * var(--navbar-height-px));
 	}
 
 	h1 {

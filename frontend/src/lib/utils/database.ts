@@ -10,7 +10,7 @@ export const browserDb = createClient<App.DatabaseSchema>(
 	{
 		auth: {
 			persistSession: true,
-			autoRefreshToken: true,
+			autoRefreshToken: false,
 			detectSessionInUrl: false,
 		},
 	}
@@ -38,7 +38,7 @@ function createServerClient() {
 	return createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		auth: {
 			persistSession: true,
-			autoRefreshToken: true,
+			autoRefreshToken: false,
 			detectSessionInUrl: false,
 			storage: sessionStorageProvider(),
 		},

@@ -32,7 +32,7 @@
 		font-size: var(--ui-size-medium);
 		background: col(bg, 100);
 		border-radius: 1.5rem;
-		margin-top: var(--n-navbar-height-px);
+		margin-top: calc(-1 * var(--navbar-height-px));
 		min-height: 100vh;
 		flex-direction: column;
 		align-items: center;

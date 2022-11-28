@@ -6,7 +6,7 @@
 -->
 <script lang="ts" context="module">
 	export const navbarTheme = (function () {
-		const { subscribe, set } = writable<ValueOf<typeof Theme> | null>(null);
+		const { subscribe, set } = writable<ValueOf<typeof ThemeClass> | null>(null);
 		return {
 			subscribe,
 			set,
@@ -33,7 +33,6 @@
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
 	import { rootScroll } from '$stores/scroll';
-	import type { Theme } from '$utils/enums';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
 	import { writable } from 'svelte/store';
 	import type { ValueOf } from 'ts-essentials';
@@ -41,6 +40,7 @@
 	import AppNavbarButton from './AppNavbarButton.svelte';
 	import AppNavbarEditMenu from './AppNavbarEditMenu.svelte';
 	import AppNavbarUserMenu from './AppNavbarUserMenu.svelte';
+	import type { ThemeClass } from './AppThemes.svelte';
 
 	export let navbarHeight = 0;
 

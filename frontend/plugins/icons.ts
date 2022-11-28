@@ -46,7 +46,7 @@ function extractSvgPaths(svg: INode) {
 /**
  * Plugin to handle and automate generation of icons' ts definition from svg assets.
  */
-export default function iconsPlugin(): Plugin {
+export default function plugin(): Plugin {
 	async function writeIcons() {
 		try {
 			const promises = readdirSync(SOURCE_DIR)

@@ -38,6 +38,7 @@
 	form {
 		width: 100%;
 		max-width: var(--ui-size-xl);
+		min-height: calc(100vh - var(--navbar-height-px));
 		margin: 0 auto;
 		padding: 4rem 2rem;
 		gap: 2rem;
@@ -47,6 +48,5 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		min-height: 600px;
 	}
 </style>

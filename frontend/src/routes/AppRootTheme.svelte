@@ -13,9 +13,9 @@
 	import { ThemeClass, themeClassPattern } from './AppThemes.svelte';
 
 	const COOKIE_LIFETIME = 60 * 60 * 24 * 365;
-	const DEFAULT_THEME: keyof typeof ThemeClass = 'light';
+	export const DEFAULT_THEME: keyof typeof ThemeClass = 'light';
 
-	function updateThemeCookie(name: App.PageData['theme']) {
+	function updateThemeCookie(name: keyof typeof ThemeClass) {
 		if (browser) {
 			if (name) {
 				jscookie.set(Cookie.Theme, name, {
@@ -42,7 +42,7 @@
 
 	export const rootTheme = (function () {
 		const { subscribe, set: _set } = writable(init);
-		function set(name: App.PageData['theme'], cookie: boolean = false) {
+		function set(name: keyof typeof ThemeClass, cookie: boolean = false) {
 			if (root) {
 				root.className = root.className.replace(themeClassPattern, '');
 				if (name) {
@@ -65,17 +65,11 @@
 	})();
 </script>
 
-<section>
+<!-- <section>
 	{#each Object.keys(ThemeClass) as t}
 		<label>
 			{t}
 			<input type="radio" bind:group={$rootTheme} value={t} id="" />
 		</label>
 	{/each}
-</section>
-
-<style lang="scss">
-	section {
-		padding: 2rem;
-	}
-</style>
+</section> -->
