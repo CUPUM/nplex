@@ -90,7 +90,7 @@
 		SIGNIN: '/api/auth?/signin',
 		SIGNUP: '/api/auth?/signup',
 		FORGOT: '/api/auth?/forgot',
-	};
+	} as const;
 
 	let email: string;
 	let password: string;

@@ -52,6 +52,11 @@
 	padding: 0;
 }
 
+:where(a) {
+	color: inherit;
+	text-decoration: none;
+}
+
 :where(img),
 :where(svg),
 :where(video),

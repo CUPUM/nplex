@@ -899,25 +899,25 @@ export interface Database {
           created_at: string
           updated_at: string
           project_id: string
-          work_id: number
           created_by_id: string
           updated_by_id: string
+          work_id: number
         }
         Insert: {
           created_at?: string
           updated_at?: string
           project_id: string
-          work_id: number
           created_by_id?: string
           updated_by_id?: string
+          work_id: number
         }
         Update: {
           created_at?: string
           updated_at?: string
           project_id?: string
-          work_id?: number
           created_by_id?: string
           updated_by_id?: string
+          work_id?: number
         }
       }
       users: {
@@ -1198,10 +1198,19 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: string
       }
-      user_can_edit_project: {
-        Args: { p_row: unknown }
+      project_is_public: {
+        Args: { pid: string }
         Returns: boolean
       }
+      user_can_edit_project:
+        | {
+            Args: { pid: string }
+            Returns: boolean
+          }
+        | {
+            Args: { prow: unknown }
+            Returns: boolean
+          }
       user_has_role:
         | {
             Args: { role: Database["public"]["Enums"]["user_role"] }

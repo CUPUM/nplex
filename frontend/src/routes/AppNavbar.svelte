@@ -32,7 +32,6 @@
 	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
-	import { rootScroll } from '$stores/scroll';
 	import { creationBaseRoute, exploreRoutes, mainRoutes, userBaseRoute } from '$utils/routes';
 	import { writable } from 'svelte/store';
 	import type { ValueOf } from 'ts-essentials';
@@ -45,6 +44,7 @@
 	export let navbarHeight = 0;
 
 	let hidden: boolean;
+	let overlay: boolean;
 	let rootPathname: string;
 	let thres = navbarHeight || 40;
 	let loadingCategoryPath: string | null = '';
@@ -59,8 +59,8 @@
 		loadingCategoryPath = null;
 	});
 
-	$: overlay = $rootScroll.y > thres * 2;
-	$: hidden = $rootScroll.down && $rootScroll.y > thres;
+	// $: overlay = $rootScroll.y > thres * 2;
+	// $: hidden = $rootScroll.down && $rootScroll.y > thres;
 	$: rootPathname = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
 </script>
 
@@ -125,13 +125,14 @@
 
 <style lang="scss">
 	header {
-		position: sticky;
+		// position: sticky;
+		position: relative;
 		z-index: 10;
 		top: 0;
 		padding: 0 1rem;
 		margin: 0;
 		font-size: small;
-		backdrop-filter: blur(12px);
+		// backdrop-filter: blur(12px);
 		border-bottom: 1px solid col(fg, 100, min(0.05, calc(var(--scroll) * 0.0002)));
 		// border-radius: var(--ui-radius-large);
 		// border-top-left-radius: 0;

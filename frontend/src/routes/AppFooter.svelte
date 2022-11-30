@@ -92,9 +92,9 @@
 
 <style lang="scss">
 	.footer {
-		padding: var(--ui-space-medium) var(--ui-space-small);
+		padding: 3rem 2rem;
 		margin: 0;
-		font-size: var(--ui-size-small);
+		font-size: var(--ui-text-xs);
 		color: var(--color-contrast-100);
 		font-weight: 400;
 		letter-spacing: 0.1px;
@@ -132,7 +132,7 @@
 		margin-inline: 0.75rem;
 		font-weight: 500;
 		text-transform: uppercase;
-		font-size: var(--ui-size-x3small);
+		font-size: var(--ui-text-2xs);
 		letter-spacing: 0.1em;
 		opacity: 0.3;
 		transition: all 1s cubic-bezier(0, 0, 0, 1) calc(var(--i, 0) * 0.25s);

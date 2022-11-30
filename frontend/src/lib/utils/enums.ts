@@ -49,6 +49,7 @@ export enum SearchParam {
 	ProjectsType = 'type-projet',
 	AuthModal = 'auth',
 	Message = 'message',
+	Redirect = 'redirect',
 }
 
 /**
@@ -85,6 +86,22 @@ export enum Cookie {
  */
 export enum LoadDependency {
 	Session = 'auth:session',
+}
+
+/**
+ * Supabase-js's storage api isnt typed by default. This facilitates consistent use of bucket names
+ * throughout the app.
+ */
+export enum StorageBucket {
+	Projects = 'projects',
+}
+
+/**
+ * Supabase-js's storage api isnt typed by default. This facilitates consistent use of folder names
+ * throughout the app.
+ */
+export enum StorageFolder {
+	Gallery = 'gallery',
 }
 
 /**

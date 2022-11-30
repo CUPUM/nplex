@@ -10,7 +10,6 @@ export const load: PageLoad = async (event) => {
 	const db = await getDb(event);
 	const profileRes = await db
 		.from('users')
-		// .select('*')
 		.select(
 			`
 				*,
@@ -21,6 +20,8 @@ export const load: PageLoad = async (event) => {
 		)
 		.eq('id', session.user.id)
 		.single();
+
+	console.log(profileRes);
 	if (profileRes.error || !profileRes.data) {
 		throw error(500, profileRes.error);
 	}

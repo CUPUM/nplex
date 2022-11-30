@@ -98,10 +98,10 @@ export default function plugin(): Plugin {
 
 			writeFile(OUTPUT_FILE, formatted, (error) => {
 				if (error) throw error;
-				else console.info('Style globals generated successfully');
+				else console.info('Style themes globals generated successfully.');
 			});
 		} catch (error) {
-			console.error('Error generating theme', error);
+			console.error('Error generating theme.', error);
 		}
 	}
 

@@ -23,7 +23,7 @@
 		line-height: 1;
 		padding-bottom: calc(0.5em - 0.5ex);
 		opacity: 0.5;
-		padding-inline: var(--ui-padding-inline);
+		padding-inline: var(--ui-pad-x);
 		transition: all 0.25s;
 		:global(.leading) > &:last-child {
 			padding-right: 0;

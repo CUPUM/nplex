@@ -2,19 +2,14 @@
 	import { enhance } from '$app/forms';
 	import Field from '$components/Field.svelte';
 	import type { ActionData, PageData } from './$types';
-	import ProjectEditorMenu from './ProjectEditorMenu.svelte';
+	import { formid } from './common';
 
 	export let data: PageData;
 	export let form: ActionData;
-
-	console.log(data.project);
 </script>
 
-<header>
-	<h1>Éditer</h1>
-</header>
 <form
-	id="edit"
+	id={formid}
 	method="POST"
 	action="?/update"
 	use:enhance={({ form, data, action, cancel }) => {
@@ -69,10 +64,6 @@
 		</ul>
 	</fieldset>
 	<fieldset>
-		<h3>Description</h3>
-		<textarea name="description" rows="10" placeholder="Décrivez votre projet" />
-	</fieldset>
-	<fieldset>
 		<h3>Fourchette de coûts</h3>
 		<label>
 			Min
@@ -100,68 +91,10 @@
 		</label>
 		<input type="hidden" name="cost_range" value={JSON.stringify(data.project.cost_range)} />
 	</fieldset>
-	<h2>Détails du site</h2>
 	<fieldset>
-		<h3>Propriété du lieu</h3>
+		<h3>Description</h3>
+		<textarea name="description" rows="10" placeholder="Décrivez votre projet" />
 	</fieldset>
-	<fieldset>
-		<h3>Localisation</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Superficie du terrain</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Usage principal</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Usage(s) secondaire(s)</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Rues adjacentes</h3>
-	</fieldset>
-	<h2>Détail du bâtiment</h2>
-	<fieldset>
-		<h3>Mode d'implantation</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Nombre d'étages</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Année de construction</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Emprise au sol</h3>
-	</fieldset>
-	<h2>Processus et déroulement du projet</h2>
-	<fieldset>
-		<h3>Événements</h3>
-	</fieldset>
-	<h2>Exemplarité du projet et indicateurs</h2>
-	<fieldset>
-		<h3>Indicateurs d'exemplarité</h3>
-		<ul>
-			{#each data.descriptors.exemplarityIndicators as i}
-				<li>
-					<label>
-						{i.title}
-					</label>
-				</li>
-			{/each}
-		</ul>
-	</fieldset>
-	<!-- <fieldset>
-		<h3>Subventions</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Matérialité</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Concept</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Adaptation aux changements climatiques</h3>
-	</fieldset> -->
-	<ProjectEditorMenu project={data.project} />
 </form>
 
 <style lang="scss" module>

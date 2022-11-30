@@ -216,7 +216,7 @@
 
 	dialog {
 		--inset: var(--ui-inset);
-		font-size: var(--ui-size-small);
+		font-size: var(--ui-text-sm);
 		pointer-events: all;
 		position: relative;
 		max-width: 50ch;
@@ -226,7 +226,7 @@
 		align-items: center;
 		padding: var(--inset);
 		border: none;
-		border-radius: var(--ui-radius);
+		border-radius: var(--ui-radius-md);
 		box-shadow: 0 1em 2em -0.75em rgba(0, 20, 40, 0.25);
 		background: white;
 	}

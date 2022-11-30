@@ -64,6 +64,12 @@
 		width="1em"
 		height="1em"
 	>
+		<defs>
+			<linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+				<stop offset="0%" stop-color="#05a" />
+				<stop offset="100%" stop-color="#0a5" />
+			</linearGradient>
+		</defs>
 		<path class="path">
 			<animate
 				attributeType="XML"
@@ -143,11 +149,10 @@
 	.path {
 		fill: currentColor;
 		stroke: currentColor;
-		// vector-effect: non-scaling-stroke;
-		// fill: transparent;
-		// stroke-dasharray: 16px 14px;
-		// stroke-width: 9px;
-		stroke-width: 16px;
+		vector-effect: non-scaling-stroke;
+		fill: transparent;
+		stroke-width: 2px;
+		// stroke-width: 16px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		// transform-origin: center;

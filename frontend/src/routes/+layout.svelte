@@ -11,10 +11,13 @@
 	import { browserDb } from '$utils/database';
 	import { LoadDependency } from '$utils/enums';
 	import { onMount } from 'svelte';
+	import type { LayoutData } from './$types';
 	import AppAuthModal, { authModalState } from './AppAuthModal.svelte';
 	import AppFooter from './AppFooter.svelte';
 	import AppNavbar from './AppNavbar.svelte';
 	import AppRootTheme from './AppRootTheme.svelte';
+
+	export let data: LayoutData;
 
 	let progress: LoadingProgress;
 	let loading = true;
@@ -24,6 +27,13 @@
 
 	if (browser) {
 		browserDb.auth.onAuthStateChange((event, session) => {
+			if (
+				session?.access_token === data.session?.access_token &&
+				session?.refresh_token === data.session?.refresh_token
+			) {
+				// Because tab switch fires a SIGNED_IN event and causes unwarranted page invalidation.
+				return;
+			}
 			invalidate(LoadDependency.Session);
 		});
 	}

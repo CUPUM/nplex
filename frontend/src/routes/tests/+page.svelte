@@ -4,6 +4,7 @@
 <script lang="ts">
 	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
+	import Loading from '$components/Loading.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 
 	let group = '1';
@@ -19,6 +20,9 @@
 	<Tooltip message="some tooltip!" place="right">
 		<Button>With tooltip!</Button>
 	</Tooltip>
+</article>
+<article>
+	<Loading />
 </article>
 
 <style lang="scss" module>

@@ -4,28 +4,6 @@ import { error, invalid, redirect, type Actions } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 
-// const v = zfd
-// 	.formData(
-// 		z
-// 			.object({
-// 				title: zfd.text(),
-// 				location: zfd.text(z.string().optional()),
-// 			})
-// 			.passthrough()
-// 	)
-// 	.transform((u) => {
-// 		const { location, ...r } = u;
-// 		const l = projectLocationSchema.safeParse(safeJsonParse(location));
-// 		if (l.success) {
-// 			return { ...l.data, ...r };
-// 		}
-// 		return { location_geometry: null, location_radius: null, ...r };
-// 	})
-// 	.safeParse(await event.request.formData());
-// if (!v.success) {
-// 	throw error(500, v.error);
-// }
-
 export const actions: Actions = {
 	update: async (event) => {
 		if (!event.params.projectId) {
@@ -33,29 +11,29 @@ export const actions: Actions = {
 		}
 		const data = await event.request.formData();
 		const db = await getDb(event);
-		// Updating the main project table;
-		const p = zfd
+		// General project data;
+		const g = zfd
 			.formData(
 				z.object({
 					title: zfd.text(),
 					type_id: zfd.numeric(z.number().optional()),
-					description: zfd.text(z.string().optional()),
 					cost_range: zfd.json(
 						z.tuple([z.number().nonnegative(), z.number().nonnegative()])
 					),
+					description: zfd.text(z.string().optional()),
 				})
 			)
 			.safeParse(data);
-		if (p.success) {
+		if (g.success) {
 			const pUp = await db
 				.from('projects')
 				.update({
-					...p.data,
+					...g.data,
 					id: event.params.projectId,
 				})
 				.single();
 		}
-		// Update project works
+		// Project works
 		const w = zfd
 			.formData(
 				z.object({
@@ -64,27 +42,31 @@ export const actions: Actions = {
 			)
 			.safeParse(data);
 		if (w.success) {
+			// Remove any absent
 			const wDel = await db
 				.from('projects_works')
 				.delete()
 				.eq('project_id', event.params.projectId)
 				.not('work_id', 'in', pgarr(w.data.work_id));
+			if (wDel.error) {
+				console.log(wDel.error);
+			}
+			// Append new ones
+			const project_id = event.params.projectId;
 			const wUp = await db.from('projects_works').upsert(
 				w.data.work_id.map((wid) => {
 					return {
-						project_id: event.params.projectId!,
+						project_id,
 						work_id: wid,
 					};
 				})
 			);
+			if (wUp.error) {
+				console.log(wUp.error);
+			}
+			console.log(wUp);
 		}
 	},
-	refresh: async (event) => {
-		if (!event.locals.session) return invalid(401);
-		if (!event.params.projectId) return invalid(401);
-		return {};
-	},
-	publish: async (event) => {},
 	delete: async (event) => {
 		if (!event.locals.session) return invalid(401);
 		const formData = Object.fromEntries(await event.request.formData());
