@@ -76,7 +76,7 @@
 				</AppNavbarButton>
 			{/each}
 		</nav>
-		<nav class="category">
+		<nav class="category nest">
 			{#each exploreRoutes as r}
 				<AppNavbarButton
 					href={r.pathname}
@@ -133,26 +133,26 @@
 		margin: 0;
 		font-size: small;
 		// backdrop-filter: blur(12px);
-		border-bottom: 1px solid col(fg, 100, min(0.05, calc(var(--scroll) * 0.0002)));
+		// border-bottom: 1px solid col(fg, 100, min(0.05, calc(var(--scroll) * 0.0002)));
 		// border-radius: var(--ui-radius-large);
 		// border-top-left-radius: 0;
 		// border-top-right-radius: 0;
-		transform-origin: top center;
-		transition: transform 0.35s cubic-bezier(0.5, 0, 0.2, 1), border 0.25s;
+		// transform-origin: top center;
+		// transition: transform 0.35s cubic-bezier(0.5, 0, 0.2, 1), border 0.25s;
 
-		&::before {
-			content: '';
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			border-radius: inherit;
-			padding: 0;
-			margin: 0;
-			top: 0;
-			left: 0;
-			opacity: min(calc(0.005 * var(--scroll)), 0.85);
-			background: col(bg, 300);
-		}
+		// &::before {
+		// 	content: '';
+		// 	position: absolute;
+		// 	width: 100%;
+		// 	height: 100%;
+		// 	border-radius: inherit;
+		// 	padding: 0;
+		// 	margin: 0;
+		// 	top: 0;
+		// 	left: 0;
+		// 	opacity: min(calc(0.005 * var(--scroll)), 0.85);
+		// 	background: col(bg, 300);
+		// }
 	}
 
 	.wrapper {
@@ -207,10 +207,11 @@
 	}
 	.category {
 		--inset: 3px;
+		--radius: var(--ui-radius-md);
 		grid-column: category;
 		justify-content: center;
 		background: col(bg, 000, 0.5);
-		border-radius: var(--ui-radius);
+		border-radius: var(--radius);
 		padding-inline: var(--inset);
 	}
 	.session {

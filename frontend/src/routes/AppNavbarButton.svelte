@@ -30,13 +30,8 @@
 </svelte:element>
 
 <style lang="scss">
-	// Soft vendor style reset
-	:where(button),
-	:where(a) {
-		all: unset;
-	}
-
 	.navbar-button {
+		--radius: var(--radius-parent, var(--ui-radius-md));
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -46,7 +41,8 @@
 		font-weight: 500;
 		padding: 0 1.25em;
 		height: calc(3.5em - 2 * var(--inset, 0px));
-		border-radius: calc(var(--ui-radius) - var(--inset, 0px));
+		// border-radius: calc(var(--radius-parent, var(--ui-radius-md)) - var(--inset, 0px));
+		border-radius: calc(var(--radius) - var(--inset-sum));
 		letter-spacing: 0.02em;
 		color: col(fg, 900);
 		outline: 0px dashed transparent;

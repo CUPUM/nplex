@@ -28,6 +28,9 @@ export const load: LayoutLoad = async (event) => {
 				role:users_roles!users_roles_user_id_fkey (
 					*
 				)
+			),
+			gallery:projects_gallery_images!project_id (
+				*
 			)
 		`
 		)
@@ -39,10 +42,15 @@ export const load: LayoutLoad = async (event) => {
 	// Doing some transformations to format data for the client.
 	const pTransform = {
 		...pRes.data,
-		cost_range: safeJsonParse<[number, number]>(pRes.data.cost_range, [0, 0]),
+		cost_range: safeJsonParse<[number, number]>(pRes.data.cost_range) ?? [0, 0],
 		work_ids: Array.isArray(pRes.data.work_ids)
 			? pRes.data.work_ids.map((w) => w.work_id)
 			: [pRes.data?.work_ids?.work_id],
+		gallery: Array.isArray(pRes.data.gallery)
+			? pRes.data.gallery
+			: pRes.data.gallery
+			? [pRes.data.gallery]
+			: [],
 	};
 	return {
 		project: pTransform,

@@ -14,6 +14,11 @@
 
 	let dirty: boolean = true;
 	let mount = false;
+	let canPublish = false;
+
+	$: canPublish = data.session?.user
+		? ['admin', 'editor', 'nplex'].includes(data.session.user.role)
+		: false;
 
 	onMount(() => {
 		mount = true;
@@ -25,9 +30,9 @@
 </header>
 <slot />
 {#if mount}
-	<div class="sticker">
+	<div class="bar">
 		<nav>
-			<Button equi>Menu</Button>
+			<Button equi><Icon name="view-list" /></Button>
 			<ol>
 				{#each routes as r}
 					<li><a href={route($page.params.projectId, r.subpath)}>{r.title}</a></li>
@@ -35,11 +40,9 @@
 			</ol>
 		</nav>
 		<menu class="nest" in:fly={{ y: 30, easing: expoOut, delay: 500, duration: 750 }}>
-			<Tooltip message="sauvegarder">
-				<Button type="submit" variant="ghost" form={formid} equi>
-					<Icon name="pen" />
-				</Button>
-			</Tooltip>
+			<Button href="" equi variant="ghost">
+				<Icon name="chevron-left" />
+			</Button>
 			<Tooltip message="Supprimer">
 				<Button
 					type="submit"
@@ -52,6 +55,23 @@
 					<Icon name="trash" />
 				</Button>
 			</Tooltip>
+			<Tooltip message="Sauvegarder">
+				<Button type="submit" variant="ghost" form={formid} equi>
+					<Icon name="save" />
+				</Button>
+			</Tooltip>
+			<Tooltip
+				message={canPublish ? 'Publier' : 'Votre rôle ne permet pas de publier des fiches'}
+			>
+				<div>
+					<Button type="submit" variant="ghost" form={formid} disabled={!canPublish} equi>
+						<Icon name="announcement" />
+					</Button>
+				</div>
+			</Tooltip>
+			<Button href="" equi variant="ghost">
+				<Icon name="chevron-right" />
+			</Button>
 		</menu>
 	</div>
 {/if}
@@ -61,12 +81,13 @@
 		padding: 4rem 2rem;
 	}
 
-	.sticker {
+	.bar {
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
 		position: sticky;
 		bottom: 2rem;
 		margin: 0 2rem;
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
+		margin-top: 5rem;
 	}
 
 	nav {
@@ -74,6 +95,8 @@
 	}
 
 	ol {
+		display: flex;
+		flex-direction: row;
 		position: absolute;
 		bottom: 100%;
 		padding: var(--ui-inset);
@@ -85,8 +108,10 @@
 	}
 
 	menu {
+		margin: 0 auto;
 		background: col(bg, 100, 0.8);
 		display: flex;
+		align-items: center;
 		padding: var(--ui-inset);
 		border-radius: calc(var(--ui-inset) + var(--ui-radius-md));
 	}

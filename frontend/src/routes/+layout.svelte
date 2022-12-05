@@ -27,10 +27,7 @@
 
 	if (browser) {
 		browserDb.auth.onAuthStateChange((event, session) => {
-			if (
-				session?.access_token === data.session?.access_token &&
-				session?.refresh_token === data.session?.refresh_token
-			) {
+			if (event === 'SIGNED_IN' && session?.user.id === data.session?.user.id) {
 				// Because tab switch fires a SIGNED_IN event and causes unwarranted page invalidation.
 				return;
 			}
@@ -44,12 +41,12 @@
 
 	beforeNavigate(() => {
 		loading = true;
-		progress.start();
+		progress?.start?.();
 	});
 
 	afterNavigate(() => {
 		loading = false;
-		progress.complete();
+		progress?.complete?.();
 	});
 </script>
 
@@ -81,14 +78,13 @@
 	.container {
 		position: relative;
 		transform-origin: 50vw calc(var(--scroll-px) + 50vh);
-		transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1), opacity 0.5s ease-out;
+		transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1), opacity 0.5s ease-out;
 		&.hidden {
 			transform: scale(1.04);
 			opacity: 0;
 		}
 		&.authing {
 			transform: scale(0.96);
-			// border-radius: 1rem;
 		}
 	}
 
@@ -103,12 +99,13 @@
 		user-select: none;
 		color: col(bg, 300);
 		box-shadow: 0 0 0 2rem currentColor;
-		transition: border-radius 0.5s cubic-bezier(0.2, 0, 0, 1),
-			transform 0.5s cubic-bezier(0.2, 0, 0, 1);
+		transition: border-radius 0.35s cubic-bezier(0.2, 0, 0, 1),
+			transform 0.35s cubic-bezier(0.2, 0, 0, 1);
 		&.authing {
 			transform: scale(0.96);
 			width: calc(100vw - var(--ui-scroll-size));
 			border-radius: 1.5rem;
+			color: col(bg, 900);
 		}
 	}
 

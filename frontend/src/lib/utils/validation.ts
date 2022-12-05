@@ -8,18 +8,19 @@ import { z } from 'zod';
 import { isObject } from './object';
 
 /**
- * Regroup here various methods, schema, and runtime-accessible data shapes relevant to VALIDATE and/or FORMAT/TRANSFORM
- * user inputs.
+ * Regroup here various methods, schema, and runtime-accessible data shapes relevant to VALIDATE
+ * and/or FORMAT/TRANSFORM user inputs.
  *
  * The favored library to base validation off of is Zod: https://zod.dev/
  *
- * Since the data is validated bidirectionally, i.e --> DB and DB --> CLIENT, schemas should be prefixed with 'db' when
- * they target data ORIGINATING from the db, aka data returned by a db query.
+ * Since the data is validated bidirectionally, i.e --> DB and DB --> CLIENT, schemas should be
+ * prefixed with 'db' when they target data ORIGINATING from the db, aka data returned by a db
+ * query.
  */
 
 /**
- * Since we are often checking against types generated from the PG DB's schemas, we need a helper to guard the creation
- * of runtime zod schemas.
+ * Since we are often checking against types generated from the PG DB's schemas, we need a helper to
+ * guard the creation of runtime zod schemas.
  *
  * Read: https://github.com/colinhacks/zod/issues/372#issuecomment-826380330.
  */
@@ -89,7 +90,8 @@ export const geometrySchema = z.preprocess(
 );
 
 /**
- * POSTGIS-specific geometry validation and formatting. (https://postgis.net/workshops/postgis-intro/geometries.html)
+ * POSTGIS-specific geometry validation and formatting.
+ * (https://postgis.net/workshops/postgis-intro/geometries.html)
  *
  * Native shapes expected by POSTGIS and returned by this validator are:
  *
@@ -113,7 +115,8 @@ export const postgisGeometrySchema = geometrySchema.transform((geom) => {
 /**
  * User-input project location schema.
  *
- * Z.ZodType< Pick<Database['public']['Tables']['projects']['Row'], 'location_geometry' | 'location_radius'>>
+ * Z.ZodType< Pick<Database['public']['Tables']['projects']['Row'], 'location_geometry' |
+ * 'location_radius'>>
  */
 export const projectLocationSchema = z
 	.object({

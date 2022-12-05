@@ -40,14 +40,12 @@ export const ES6JSON = {
 
 /**
  * Some input strings represent JSON objects, but parsing them may lead to node errors if they are
- * empty or malformatted.
- *
- * Default fallback value is `undefined`
+ * empty or malformatted. Fallbacks to `null`
  */
-export function safeJsonParse<T = any>(input: any, fallback?: any): T {
+export function safeJsonParse<T = any>(input: any): T | null {
 	try {
 		return JSON.parse(input);
 	} catch (error) {
-		return fallback;
+		return null;
 	}
 }

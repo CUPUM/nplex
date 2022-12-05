@@ -27,7 +27,6 @@ export const POST: RequestHandler = async (event) => {
 	} else {
 		authSession = (await db.auth.getSession()).data.session;
 	}
-
 	if (!authSession) {
 		return clearSession(event);
 	}

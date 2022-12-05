@@ -10,7 +10,7 @@ export const browserDb = createClient<App.DatabaseSchema>(
 	{
 		auth: {
 			persistSession: true,
-			autoRefreshToken: false,
+			autoRefreshToken: true,
 			detectSessionInUrl: false,
 		},
 	}
@@ -19,17 +19,17 @@ export const browserDb = createClient<App.DatabaseSchema>(
 /**
  * Fill-in replacement for lack of local storage on server context.
  */
-function sessionStorageProvider(): SupportedStorage {
-	const storage = new Map();
+function sessionStorage(): SupportedStorage {
+	const store = new Map<string, string>();
 	return {
 		getItem: (key: string) => {
-			return storage.get(key);
+			return store.get(key) ?? null;
 		},
 		setItem: (key: string, value: string) => {
-			storage.set(key, value);
+			store.set(key, value);
 		},
 		removeItem: (key: string) => {
-			storage.delete(key);
+			store.delete(key);
 		},
 	};
 }
@@ -38,9 +38,9 @@ function createServerClient() {
 	return createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		auth: {
 			persistSession: true,
-			autoRefreshToken: false,
+			autoRefreshToken: true,
 			detectSessionInUrl: false,
-			storage: sessionStorageProvider(),
+			storage: sessionStorage(),
 		},
 	});
 }
@@ -52,17 +52,18 @@ function createServerClient() {
 export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) {
 	// Server-only context
 	if (event && 'locals' in event) {
-		event.locals.db = event.locals.db ?? createServerClient();
+		if (!event.locals.db) {
+			event.locals.db = createServerClient();
+		}
 		if (event.locals.session) {
-			const dbSession = (await event.locals.db.auth.getSession()).data;
-			if (!dbSession || dbSession.session?.user.id !== event.locals.session.user.id) {
+			const dbSession = (await event.locals.db.auth.getSession()).data.session;
+			if (!dbSession || dbSession.user.id !== event.locals.session.user.id) {
 				await event.locals.db.auth.setSession(event.locals.session);
 			}
 		}
 		return event.locals.db;
 	}
-
-	// Mixed-context instance
+	// Mixed context
 	const db = browser ? browserDb : createServerClient();
 	if (event) {
 		let session: App.PageData['session'];
@@ -73,8 +74,8 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 			session = parentData?.session;
 		}
 		if (session) {
-			const dbSession = (await db.auth.getSession()).data;
-			if (!dbSession || dbSession.session?.user.id !== session.user.id) {
+			const dbSession = (await db.auth.getSession()).data.session;
+			if (!dbSession || dbSession.user.id !== session.user.id) {
 				await db.auth.setSession(session);
 			}
 		}

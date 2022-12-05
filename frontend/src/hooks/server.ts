@@ -4,14 +4,12 @@ import { Cookie } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
 import type { Handle } from '@sveltejs/kit';
 
-const TOKEN_EXPIRY_MARGIN = 10000;
-
 /**
  * To do: validate app version correspondance between client and server and clear cookies
  * accordingly.
  */
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.session = safeJsonParse(event.cookies.get(Cookie.Session));
+	event.locals.session = safeJsonParse(event.cookies.get(Cookie.Session)) ?? undefined;
 
 	const themeInit = event.cookies.get(Cookie.Theme) ?? DEFAULT_THEME;
 	const themeClass = (ThemeClass as any)[themeInit] ?? ThemeClass[DEFAULT_THEME];

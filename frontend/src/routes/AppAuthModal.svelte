@@ -253,7 +253,7 @@
 			max-width: 450px;
 			max-height: 100%;
 			background: col(bg, 500);
-			box-shadow: 0 3rem 8rem -4rem black, 0 3rem 3rem 2rem rgba(0, 0, 0, 0.1);
+			// box-shadow: 0 3rem 8rem -4rem black, 0 3rem 3rem 2rem rgba(0, 0, 0, 0.1);
 			padding: 0;
 			overflow-y: auto;
 			overflow-x: hidden;

@@ -1,5 +1,7 @@
 <script lang="ts" context="module">
 	let latest: HTMLElement | null = null;
+
+	const OPEN_CLASS = 'popover-control-open';
 </script>
 
 <script lang="ts">
@@ -9,12 +11,13 @@
 	import { cssSize } from '$utils/css';
 	import { tick, type ComponentProps } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
+	import { fade, scale } from 'svelte/transition';
 	import Tether from './Tether.svelte';
 
 	export let open: boolean = false;
 	export let hover: boolean = false;
 	export let closeOnNav: boolean = true;
+	export let bg: boolean = false;
 	export let place: ComponentProps<Tether>['place'] = 'bottom';
 	export let align: ComponentProps<Tether>['align'] = 'center';
 	export let distance: ComponentProps<Tether>['distance'] = 5;
@@ -25,9 +28,13 @@
 	let timer: any;
 
 	$: if (open) {
-		controlRef?.classList.add('active');
+		const cl = ['active'];
+		if (bg) {
+			cl.push(OPEN_CLASS);
+		}
+		controlRef?.classList.add(...cl);
 	} else {
-		controlRef?.classList.remove('active');
+		controlRef?.classList.remove('active', OPEN_CLASS);
 	}
 
 	function show(e?: Event) {
@@ -71,9 +78,9 @@
 	});
 </script>
 
-<!-- {#if open}
-	<div class="bg" transition:fade />
-{/if} -->
+{#if open && bg}
+	<div class="bg" transition:fade|local={{ duration: 350 }} />
+{/if}
 <Tether bind:controlRef {place} {align} distance="0">
 	<slot name="control" slot="control" {open} />
 	{#if open}
@@ -105,14 +112,18 @@
 <style lang="scss">
 	.bg {
 		pointer-events: none;
-		// z-index: 00;
+		z-index: 99;
 		position: fixed;
 		top: 0;
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		background: rgb(20, 30, 40);
-		opacity: 0.5;
+		background: rgb(10, 20, 30);
+		opacity: 0.1;
+	}
+
+	:global(.popover-control-open) {
+		z-index: 999 !important;
 	}
 
 	.popover {
@@ -127,13 +138,14 @@
 		margin: 0;
 		overflow: visible;
 		transform-origin: inherit;
+		z-index: 1000;
 	}
 
 	.inner {
 		position: relative;
 		background: col(bg, 000);
 		box-shadow: 0 1rem 3.5rem -2rem rgba(0, 10, 20, 0.25);
-		border-radius: var(--ui-radius);
+		border-radius: var(--ui-radius-md);
 		display: inline-flex;
 		flex-direction: column;
 		// border: 1px solid col(bg, 000);

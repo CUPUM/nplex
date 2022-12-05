@@ -740,6 +740,41 @@ export interface Database {
           description?: string | null
         }
       }
+      projects_gallery_images: {
+        Row: {
+          id: string
+          created_at: string
+          updated_at: string
+          created_by_id: string
+          updated_by_id: string
+          title: string | null
+          description: string | null
+          index: number
+          project_id: string
+        }
+        Insert: {
+          id: string
+          created_at?: string
+          updated_at?: string
+          created_by_id?: string
+          updated_by_id?: string
+          title?: string | null
+          description?: string | null
+          index: number
+          project_id: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          updated_at?: string
+          created_by_id?: string
+          updated_by_id?: string
+          title?: string | null
+          description?: string | null
+          index?: number
+          project_id?: string
+        }
+      }
       projects_materials: {
         Row: {
           id: string
@@ -1199,16 +1234,16 @@ export interface Database {
         Returns: string
       }
       project_is_public: {
-        Args: { pid: string }
+        Args: { p_id: string }
         Returns: boolean
       }
       user_can_edit_project:
         | {
-            Args: { pid: string }
+            Args: { p_row: unknown }
             Returns: boolean
           }
         | {
-            Args: { prow: unknown }
+            Args: { p_id: string }
             Returns: boolean
           }
       user_has_role:

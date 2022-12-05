@@ -69,9 +69,9 @@ export enum LocalStorage {
  */
 export enum Cookie {
 	Session = 'nplex_session',
-	Auth = 'nplex_auth_session',
-	AppVersion = 'app_version',
-	Theme = 'app_theme',
+	Auth = 'nplex_auth',
+	AppVersion = 'nplex_version',
+	Theme = 'nplex_theme',
 }
 
 /**

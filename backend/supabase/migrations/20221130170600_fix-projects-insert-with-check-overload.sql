@@ -8,29 +8,27 @@ drop policy "Only authed users can create projects" on "public"."projects";
 
 drop view if exists "public"."editable_projects";
 
-drop function if exists "public"."user_can_edit_project"(p_row projects);
-
 alter table "public"."projects_events" enable row level security;
 
 alter table "public"."projects_exemplarity_indicators" enable row level security;
 
 set check_function_bodies = off;
 
-CREATE OR REPLACE FUNCTION public.project_is_public(pid uuid)
+CREATE OR REPLACE FUNCTION public.project_is_public(p_id uuid)
  RETURNS boolean
  LANGUAGE plpgsql
 AS $function$
 	begin
 		return exists (
 			select 1 from projects_publication_status as pps
-  			where pps.project_id = projects.id
+  			where pps.project_id = p_id
   			and pps.status = 'published'::publication_status
   		);
 	end;
 $function$
 ;
 
-CREATE OR REPLACE FUNCTION public.user_can_edit_project(pid uuid)
+CREATE OR REPLACE FUNCTION public.user_can_edit_project(p_id uuid)
  RETURNS boolean
  LANGUAGE plpgsql
  SECURITY DEFINER
@@ -39,12 +37,12 @@ AS $function$
 		if public.user_has_role('admin') then return true;
 		elseif exists (
 			select 1 from public.projects as p
-			where p.id  = pid
+			where p.id = p_id
 			and p.created_by_id = auth.uid()
 		) then return true;
 		else return exists (
 			select 1 from public.projects_users as pu
-			where pu.project_id = pid
+			where pu.project_id = p_id
 			and pu.user_id = auth.uid()
 		);
 		end if;
@@ -52,17 +50,17 @@ AS $function$
 $function$
 ;
 
-CREATE OR REPLACE FUNCTION public.user_can_edit_project(prow projects)
+CREATE OR REPLACE FUNCTION public.user_can_edit_project(p_row projects)
  RETURNS boolean
  LANGUAGE plpgsql
  SECURITY DEFINER
 AS $function$
 	begin
 		if public.user_has_role('admin') then return true;
-		elseif prow.created_by_id = auth.uid() then return true;
+		elseif p_row.created_by_id = auth.uid() then return true;
 		else return exists (
 			select 1 from public.projects_users as pu
-			where pu.project_id = prow.id
+			where pu.project_id = p_row.id
 			and pu.user_id = auth.uid()
 		);
 		end if;

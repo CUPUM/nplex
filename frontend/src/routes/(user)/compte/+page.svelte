@@ -41,12 +41,7 @@
 	>
 		<svelte:fragment slot="label">Courriel public</svelte:fragment>
 	</Field>
-	<Field
-		variant="outlined"
-		readonly
-		value={(Array.isArray(data.profile.role) ? data.profile.role[0] : data.profile.role)
-			?.role ?? ''}
-	>
+	<Field variant="outlined" readonly value={data.profile.role?.role}>
 		<svelte:fragment slot="label">Rôle</svelte:fragment>
 	</Field>
 	<textarea name="about" value={data.profile.about} placeholder="À propos de moi" />

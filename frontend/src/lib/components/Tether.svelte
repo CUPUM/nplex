@@ -41,7 +41,9 @@
 			!controlRef ||
 			(e &&
 				e.some((m) =>
-					controlRef instanceof Element ? Array.from(m.removedNodes).includes(controlRef) : false
+					controlRef instanceof Element
+						? Array.from(m.removedNodes).includes(controlRef)
+						: false
 				))
 		) {
 			if (tetherRef.previousElementSibling instanceof HTMLElement) {
