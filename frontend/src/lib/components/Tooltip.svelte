@@ -79,11 +79,11 @@
 		flex: none;
 		white-space: nowrap;
 		font-weight: 300;
-		font-size: var(--ui-size-xsmall);
+		font-size: var(--ui-text-2xs);
 		padding: 0.5em 1em 0.6em 1em;
 		margin: 0;
-		background: col(bg, 100, 0.8);
-		color: col(fg, 500);
+		background: col(bg, 900, 0.95);
+		color: col(fg, 100);
 		border-radius: 0.5em;
 		letter-spacing: 0.02em;
 		transform-origin: inherit;

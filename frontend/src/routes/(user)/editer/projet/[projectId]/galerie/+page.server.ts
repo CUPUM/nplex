@@ -1,71 +1,59 @@
 import { getDb } from '$utils/database';
+import { StorageBucket } from '$utils/enums';
+import { error } from '@sveltejs/kit';
+import sharp from 'sharp';
 import { z } from 'zod';
 import type { Actions } from './$types';
-import { FILES_INPUT_NAME, MIME_TYPES } from './common';
-
-// const v = await zfd
-// 	.formData({
-// 		files: zfd.repeatableOfType(
-// 			z
-// 				.any()
-// 				// .refine(
-// 				// 	(f) => f.size <= MAX_SIZE,
-// 				// 	(f) => ({ message: `L'image ${f.name} est trop volumineuse.` })
-// 				// )
-// 				.refine(
-// 					(f) => MIME_TYPES.includes(f.type),
-// 					(f) => ({
-// 						message: `Le format ou l'extension de l'image ${f.name} n'est pas convenable.`,
-// 					})
-// 				)
-// 				.transform(async (f: File) => {
-// 					// Create webp
-// 					const webp = await sharp(Buffer.from(await f.arrayBuffer()))
-// 						.resize({ width: 1024, withoutEnlargement: true })
-// 						.webp()
-// 						.toBuffer()
-// 						.catch((e) => {
-// 							throw error(500, e);
-// 						});
-// 					return {
-// 						name: filename(f),
-// 						type: 'image/webp',
-// 						extension: 'webp',
-// 						buffer: webp,
-// 					};
-// 				})
-// 		),
-// 	})
-// 	.safeParseAsync(d);
-// if (!v.success) {
-// 	return invalid(400, v.error.formErrors.fieldErrors);
-// }
-
-function filename(f: File) {
-	const date = new Date().toLocaleDateString('fr-CA');
-	const rand = crypto.randomUUID();
-	return `${date}-${rand}`;
-}
+import { GALLERY_FOLDER, GALLERY_IMAGE_TYPES, GALLERY_INPUT_NAME } from './common';
 
 export const actions: Actions = {
 	upload: async (event) => {
 		const d = await event.request.formData();
-		const files = d.getAll(FILES_INPUT_NAME);
+		const files = d.getAll(GALLERY_INPUT_NAME);
 		const db = await getDb(event);
+		let errs = [];
 		for await (const file of files) {
-			const v = z.any().refine(
-				(f) => MIME_TYPES.includes(f.type),
-				(f) => ({
-					message: `Le format ou l'extension de l'image ${f.name} n'est pas convenable.`,
+			const v = await z
+				.any()
+				.refine(
+					(f) => GALLERY_IMAGE_TYPES.includes(f.type),
+					(f) => ({
+						message: `Le format ou l'extension de l'image ${f.name} n'est pas convenable.`,
+					})
+				)
+				.transform(async (f) => {
+					const buffer = await sharp(Buffer.from(await f.arrayBuffer()))
+						.resize({ width: 1200, withoutEnlargement: true })
+						.webp()
+						.toBuffer();
+					const date = new Date().toLocaleDateString('fr-CA');
+					const rand = crypto.randomUUID();
+					return {
+						name: `${date}-${rand}.webp`,
+						type: 'image/webp',
+						buffer,
+					};
 				})
-			);
+				.safeParseAsync(file);
+			if (!v.success) {
+				errs.push(v.error);
+				return;
+			}
+			const sRes = await db.storage
+				.from(StorageBucket.Projects)
+				.upload(
+					[event.params.projectId, GALLERY_FOLDER, v.data.name].join('/'),
+					v.data.buffer,
+					{ contentType: v.data.type }
+				);
+			if (sRes.error) {
+				errs.push(sRes.error);
+			}
 		}
-		// const iRes = await db.storage
-		// 	.from(StorageBucket.Projects)
-		// 	.upload(`${event.params.projectId}/${StorageFolder.Gallery}/`, d, {
-		// 		contentType: d.type,
-		// 	});
-		// // console.log(iRes);
+		if (errs.length) {
+			throw error(500, { message: JSON.stringify(errs) });
+			// return invalid(400, { errors: errs });
+		}
 	},
 	update: async (event) => {
 		if (!event.params.projectId) {

@@ -64,7 +64,6 @@ export const actions: Actions = {
 			if (wUp.error) {
 				console.log(wUp.error);
 			}
-			console.log(wUp);
 		}
 	},
 	delete: async (event) => {

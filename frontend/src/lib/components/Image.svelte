@@ -6,13 +6,21 @@
 
 -->
 <script lang="ts" context="module">
-	// export function getLocalImageDataUrl() {}
+	interface SourceSpecification {
+		srcset: string;
+		media: string;
+		type?: string;
+	}
 </script>
 
 <script lang="ts">
-	export let src: string;
-	export let srcset;
+	import type { Properties } from 'csstype';
+
+	export let src: string = undefined;
+	export let sources: SourceSpecification[];
 	export let alt: string;
+	export let objectFit: Properties['objectFit'] = 'cover';
+	export let layout: Properties[''];
 	export let style: string | undefined = undefined;
 	let className: string = '';
 	export { className as class };
@@ -30,10 +38,13 @@
 	on:blur
 	on:keypress
 >
-	<img />
+	{#each srcset as s}
+		<source />
+	{/each}
+	<img on:loadstart on:loadeddata on:load />
 </picture>
 
 <style>
-	:where(.image) {
+	.image {
 	}
 </style>

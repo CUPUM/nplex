@@ -1,4 +1,6 @@
 /**
+ * ! ! ! Deprecate in favor of per-component CTX_KEY const and typed getter. ! ! !
+ *
  * Dictionnary of context keys used for automatically detecting certain compositions or nestings
  * like buttons being nested inside field input compoenents or select options inside select
  * parents.
@@ -94,14 +96,10 @@ export enum LoadDependency {
  */
 export enum StorageBucket {
 	Projects = 'projects',
-}
-
-/**
- * Supabase-js's storage api isnt typed by default. This facilitates consistent use of folder names
- * throughout the app.
- */
-export enum StorageFolder {
-	Gallery = 'gallery',
+	Users = 'users',
+	Organisations = 'organisations',
+	Actors = 'actors',
+	General = 'app',
 }
 
 /**

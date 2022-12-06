@@ -742,37 +742,40 @@ export interface Database {
       }
       projects_gallery_images: {
         Row: {
-          id: string
           created_at: string
           updated_at: string
           created_by_id: string
           updated_by_id: string
           title: string | null
           description: string | null
-          index: number
+          order: number | null
           project_id: string
+          file_names: string[]
+          name: string
         }
         Insert: {
-          id: string
           created_at?: string
           updated_at?: string
           created_by_id?: string
           updated_by_id?: string
           title?: string | null
           description?: string | null
-          index: number
+          order?: number | null
           project_id: string
+          file_names: string[]
+          name: string
         }
         Update: {
-          id?: string
           created_at?: string
           updated_at?: string
           created_by_id?: string
           updated_by_id?: string
           title?: string | null
           description?: string | null
-          index?: number
+          order?: number | null
           project_id?: string
+          file_names?: string[]
+          name?: string
         }
       }
       projects_materials: {

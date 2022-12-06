@@ -125,8 +125,8 @@
 
 <style lang="scss">
 	header {
-		// position: sticky;
-		position: relative;
+		position: sticky;
+		// position: relative;
 		z-index: 10;
 		top: 0;
 		padding: 0 1rem;
@@ -140,19 +140,19 @@
 		// transform-origin: top center;
 		// transition: transform 0.35s cubic-bezier(0.5, 0, 0.2, 1), border 0.25s;
 
-		// &::before {
-		// 	content: '';
-		// 	position: absolute;
-		// 	width: 100%;
-		// 	height: 100%;
-		// 	border-radius: inherit;
-		// 	padding: 0;
-		// 	margin: 0;
-		// 	top: 0;
-		// 	left: 0;
-		// 	opacity: min(calc(0.005 * var(--scroll)), 0.85);
-		// 	background: col(bg, 300);
-		// }
+		&::before {
+			content: '';
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			border-radius: inherit;
+			padding: 0;
+			margin: 0;
+			top: 0;
+			left: 0;
+			opacity: min(calc(0.005 * var(--scroll)), 1);
+			background: col(bg, 300);
+		}
 	}
 
 	.wrapper {

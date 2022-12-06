@@ -26,7 +26,8 @@
 </script>
 
 <header>
-	<h1>Éditer</h1>
+	<h1>Éditeur de projet</h1>
+	<h2>{data.project.title}</h2>
 </header>
 <slot />
 {#if mount}
@@ -109,7 +110,7 @@
 
 	menu {
 		margin: 0 auto;
-		background: col(bg, 100, 0.8);
+		background: col(bg, 100);
 		display: flex;
 		align-items: center;
 		padding: var(--ui-inset);

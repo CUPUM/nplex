@@ -4,9 +4,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Loading from '$components/Loading.svelte';
+	import { img } from '$routes/api/image/[bucket]/[...path]/utils';
+	import { StorageBucket } from '$utils/enums';
 	import { formid } from '../common';
 	import type { PageData } from './$types';
-	import { FILES_INPUT_NAME, MIME_TYPES } from './common';
+	import { GALLERY_IMAGE_TYPES, GALLERY_INPUT_NAME } from './common';
 
 	export let data: PageData;
 
@@ -22,7 +24,6 @@
 	}
 </script>
 
-<h2>Ajouter des photos</h2>
 <form
 	method="POST"
 	action="?/upload"
@@ -35,13 +36,14 @@
 	}}
 	class="upload"
 >
+	<h2>Ajouter des photos</h2>
 	<label class:uploading>
 		Ajouter des photos pour présenter votre projet...
 		<input
 			hidden
 			type="file"
-			name={FILES_INPUT_NAME}
-			accept={MIME_TYPES.join(',')}
+			name={GALLERY_INPUT_NAME}
+			accept={GALLERY_IMAGE_TYPES.join(',')}
 			multiple
 			on:change={preview}
 		/>
@@ -52,6 +54,11 @@
 </form>
 <h2>Galerie</h2>
 <form action="?/update" method="POST" use:enhance id={formid}>
+	{#each data.project.gallery as image}
+		<img
+			src={img(StorageBucket.Projects, image.name, { width: 800, withoutEnlargement: true })}
+		/>
+	{/each}
 	<code>
 		{JSON.stringify(data.project.gallery)}
 	</code>
