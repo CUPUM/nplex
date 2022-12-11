@@ -12,7 +12,7 @@
 	import { LoadDependency } from '$utils/enums';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
-	import AppAuthModal, { authModalState } from './AppAuthModal.svelte';
+	import AppAuthModal, { authModal } from './AppAuthModal.svelte';
 	import AppFooter from './AppFooter.svelte';
 	import AppNavbar from './AppNavbar.svelte';
 	import AppRootTheme from './AppRootTheme.svelte';
@@ -56,7 +56,7 @@
 <div
 	class="container"
 	class:hidden={!mounted}
-	class:authing={$authModalState}
+	class:authing={$authModal}
 	style:--scroll={scrollY}
 	style:--scroll-px="{scrollY}px"
 	style:--navbar-height-px="{navbarHeight}px"
@@ -69,7 +69,7 @@
 		<AppFooter />
 	{/if}
 </div>
-<div class="border" class:authing={$authModalState} />
+<div class="border" class:authing={$authModal} />
 <AppAuthModal />
 <AppMessagesOutlet />
 <LoadingProgress bind:this={progress} />
@@ -84,7 +84,7 @@
 			opacity: 0;
 		}
 		&.authing {
-			transform: scale(0.96);
+			transform: scale(0.94);
 		}
 	}
 
@@ -98,11 +98,11 @@
 		pointer-events: none;
 		user-select: none;
 		color: col(bg, 300);
-		box-shadow: 0 0 0 2rem currentColor;
+		box-shadow: 0 0 0 10rem currentColor;
 		transition: border-radius 0.35s cubic-bezier(0.2, 0, 0, 1),
 			transform 0.35s cubic-bezier(0.2, 0, 0, 1);
 		&.authing {
-			transform: scale(0.96);
+			transform: scale(0.94);
 			width: calc(100vw - var(--ui-scroll-size));
 			border-radius: 1.5rem;
 			color: col(bg, 900);

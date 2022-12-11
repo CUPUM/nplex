@@ -1,13 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { backgroundColor } from '$stores/backgroundColor';
 	import { onDestroy, onMount } from 'svelte/internal';
 	import { rootTheme } from './AppRootTheme.svelte';
 
 	onMount(() => {
 		rootTheme.set('dark');
-		backgroundColor.reset();
-		// navbarBackground.reset();
 	});
 
 	onDestroy(() => {

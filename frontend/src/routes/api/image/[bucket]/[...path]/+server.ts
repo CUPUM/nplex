@@ -1,7 +1,7 @@
 import { getDb } from '$utils/database';
 import sharp from 'sharp';
 import type { RequestHandler } from './$types';
-import { options } from './utils';
+import { options } from './common';
 
 const MAX_AGE = 600;
 const DEFAULT_FORMAT = 'webp';
@@ -21,7 +21,6 @@ export const GET: RequestHandler = async (event) => {
 			height: q.getOption('height'),
 			fit: q.getOption('fit'),
 			position: q.getOption('position'),
-			background: q.getOption('background'),
 			kernel: q.getOption('kernel'),
 			withoutEnlargement: q.getOption('withoutEnlargement'),
 			fastShrinkOnLoad: q.getOption('fastShrinkOnLoad'),

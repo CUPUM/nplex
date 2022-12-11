@@ -750,8 +750,11 @@ export interface Database {
           description: string | null
           order: number | null
           project_id: string
-          file_names: string[]
           name: string
+          id: string
+          color_1: unknown | null
+          color_2: unknown | null
+          color_3: unknown | null
         }
         Insert: {
           created_at?: string
@@ -762,8 +765,11 @@ export interface Database {
           description?: string | null
           order?: number | null
           project_id: string
-          file_names: string[]
           name: string
+          id: string
+          color_1?: unknown | null
+          color_2?: unknown | null
+          color_3?: unknown | null
         }
         Update: {
           created_at?: string
@@ -774,8 +780,11 @@ export interface Database {
           description?: string | null
           order?: number | null
           project_id?: string
-          file_names?: string[]
           name?: string
+          id?: string
+          color_1?: unknown | null
+          color_2?: unknown | null
+          color_3?: unknown | null
         }
       }
       projects_materials: {
@@ -1224,6 +1233,43 @@ export interface Database {
       }
     }
     Functions: {
+      cube:
+        | {
+            Args: { "": number[] }
+            Returns: unknown
+          }
+        | {
+            Args: { "": number }
+            Returns: unknown
+          }
+      cube_dim: {
+        Args: { "": unknown }
+        Returns: number
+      }
+      cube_in: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      cube_is_point: {
+        Args: { "": unknown }
+        Returns: boolean
+      }
+      cube_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      cube_recv: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      cube_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      cube_size: {
+        Args: { "": unknown }
+        Returns: number
+      }
       default_uid: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -1242,20 +1288,20 @@ export interface Database {
       }
       user_can_edit_project:
         | {
-            Args: { p_row: unknown }
+            Args: { p_id: string }
             Returns: boolean
           }
         | {
-            Args: { p_id: string }
+            Args: { p_row: unknown }
             Returns: boolean
           }
       user_has_role:
         | {
-            Args: { role: Database["public"]["Enums"]["user_role"] }
+            Args: Record<PropertyKey, never>
             Returns: boolean
           }
         | {
-            Args: Record<PropertyKey, never>
+            Args: { role: Database["public"]["Enums"]["user_role"] }
             Returns: boolean
           }
     }

@@ -1,5 +1,6 @@
-export function route(projectId: string, subpath: `/${string}` | '') {
-	return `/editer/projet/${projectId}${subpath}`;
+interface ProjectEditorRoute {
+	title: string;
+	subpath: '' | `/${string}`;
 }
 
 /**
@@ -27,12 +28,16 @@ export const routes = [
 		subpath: '/processus',
 	},
 	{
-		title: 'Exemplarité & indicateurs',
+		title: 'Exemplarité',
 		subpath: '/exemplarite',
 	},
-] as const;
+	{
+		title: 'Visibilité',
+		subpath: '/parametres',
+	},
+] satisfies ProjectEditorRoute[];
 
 /**
  * Explicit constant form naming (id) required for the menu's buttons' "form" attribute.
  */
-export const formid = 'project-editor';
+export const EDITOR_FORM_ID = 'project-editor';

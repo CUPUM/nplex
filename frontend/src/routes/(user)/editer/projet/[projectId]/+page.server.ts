@@ -1,6 +1,6 @@
 import { getDb } from '$utils/database';
 import { pgarr } from '$utils/format';
-import { error, invalid, redirect, type Actions } from '@sveltejs/kit';
+import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 
@@ -67,9 +67,9 @@ export const actions: Actions = {
 		}
 	},
 	delete: async (event) => {
-		if (!event.locals.session) return invalid(401);
+		if (!event.locals.session) return fail(401);
 		const formData = Object.fromEntries(await event.request.formData());
-		if (!formData.id) return invalid(401);
+		if (!formData.id) return fail(401);
 		const db = await getDb(event);
 		const deleteRes = await db.from('projects').delete().eq('id', formData.id);
 		if (deleteRes.error) throw error(500, deleteRes.error);

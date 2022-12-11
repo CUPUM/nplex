@@ -3,22 +3,35 @@
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
+	import { editorBase } from '$utils/routes';
+	import type { Page } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
-	import { fly } from 'svelte/transition';
+	import { fly, scale } from 'svelte/transition';
 	import type { ActionData, PageData } from './$types';
-	import { formid, route, routes } from './common';
+	import { EDITOR_FORM_ID, routes } from './common';
 
 	export let data: PageData;
 	export let form: ActionData;
 
-	let dirty: boolean = true;
 	let mount = false;
-	let canPublish = false;
+	let sections = false;
 
-	$: canPublish = data.session?.user
-		? ['admin', 'editor', 'nplex'].includes(data.session.user.role)
-		: false;
+	function href(page: Page, subpath: `/${string}` | '') {
+		return `${editorBase.pathname}/projet/${page.params.projectId}${subpath}`;
+	}
+
+	function current(page: Page) {
+		const seg = page.url.pathname.replace(
+			editorBase.pathname + '/projet/' + page.params.projectId,
+			''
+		);
+		return routes.findIndex((r) => r.subpath === seg);
+	}
+
+	$: cindex = current($page);
+	$: next = cindex >= routes.length - 1 ? null : routes[cindex + 1];
+	$: prev = cindex === 0 ? null : routes[cindex - 1];
 
 	onMount(() => {
 		mount = true;
@@ -31,48 +44,55 @@
 </header>
 <slot />
 {#if mount}
-	<div class="bar">
-		<nav>
-			<Button equi><Icon name="view-list" /></Button>
-			<ol>
+	<div class="toolbar">
+		{#if sections}
+			<nav
+				class="nest"
+				in:fly={{ y: 20, opacity: 0, duration: 200, easing: expoOut }}
+				out:scale|local={{ duration: 150, start: 0.96 }}
+			>
 				{#each routes as r}
-					<li><a href={route($page.params.projectId, r.subpath)}>{r.title}</a></li>
+					<Button variant="ghost" href={href($page, r.subpath)}>
+						{r.title}
+					</Button>
 				{/each}
-			</ol>
-		</nav>
+			</nav>
+		{/if}
 		<menu class="nest" in:fly={{ y: 30, easing: expoOut, delay: 500, duration: 750 }}>
-			<Button href="" equi variant="ghost">
-				<Icon name="chevron-left" />
-			</Button>
-			<Tooltip message="Supprimer">
+			<Tooltip message={prev?.title}>
 				<Button
-					type="submit"
-					formaction="?/delete"
-					form={formid}
-					variant="ghost"
-					warning
+					href={href($page, prev?.subpath ?? '')}
+					disabled={!prev}
 					equi
+					variant="ghost"
 				>
-					<Icon name="trash" />
+					<Icon name="chevron-left" />
 				</Button>
 			</Tooltip>
 			<Tooltip message="Sauvegarder">
-				<Button type="submit" variant="ghost" form={formid} equi>
+				<Button type="submit" variant="ghost" form={EDITOR_FORM_ID} equi>
 					<Icon name="save" />
 				</Button>
 			</Tooltip>
-			<Tooltip
-				message={canPublish ? 'Publier' : 'Votre rôle ne permet pas de publier des fiches'}
-			>
-				<div>
-					<Button type="submit" variant="ghost" form={formid} disabled={!canPublish} equi>
-						<Icon name="announcement" />
-					</Button>
-				</div>
+			<Tooltip message="Voir les sections">
+				<Button equi as="label"
+					><Icon name={sections ? 'cross' : 'dots-horizontal'} /><input
+						type="checkbox"
+						hidden
+						bind:checked={sections}
+					/></Button
+				>
 			</Tooltip>
-			<Button href="" equi variant="ghost">
-				<Icon name="chevron-right" />
-			</Button>
+			<Tooltip message={next?.title}>
+				<Button
+					href={href($page, next?.subpath ?? '')}
+					disabled={!next}
+					equi
+					variant="ghost"
+				>
+					<Icon name="chevron-right" />
+				</Button>
+			</Tooltip>
 		</menu>
 	</div>
 {/if}
@@ -82,38 +102,44 @@
 		padding: 4rem 2rem;
 	}
 
-	.bar {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
+	.toolbar {
+		padding: 0 2rem;
+		width: 100%;
 		position: sticky;
 		bottom: 2rem;
-		margin: 0 2rem;
-		margin-top: 5rem;
-	}
-
-	nav {
-		padding: var(--ui-inset);
-	}
-
-	ol {
 		display: flex;
-		flex-direction: row;
-		position: absolute;
-		bottom: 100%;
-		padding: var(--ui-inset);
-		background: col(bg, 000);
-	}
-
-	li {
-		padding: 1rem;
+		flex-direction: column;
+		align-items: center;
 	}
 
 	menu {
+		--radius: var(--ui-radius-md);
+		--inset: var(--ui-inset);
+		display: inline-flex;
+		flex-direction: row;
+		gap: 0;
 		margin: 0 auto;
-		background: col(bg, 100);
-		display: flex;
-		align-items: center;
-		padding: var(--ui-inset);
-		border-radius: calc(var(--ui-inset) + var(--ui-radius-md));
+		background: col(bg, 000, 0.9);
+		border-radius: var(--radius);
+		padding: var(--inset);
+		backdrop-filter: blur(8px);
+	}
+
+	nav {
+		--radius: var(--ui-radius-md);
+		--inset: var(--ui-inset);
+		position: absolute;
+		bottom: 100%;
+		margin-bottom: 0.5rem;
+		display: inline-flex;
+		flex-direction: row;
+		justify-content: center;
+		left: 50%;
+		transform: translateX(-50%);
+		background: col(bg, 000, 0.9);
+		backdrop-filter: blur(8px);
+		border-radius: var(--radius);
+		padding: var(--inset);
+		transform-origin: bottom center;
 	}
 </style>

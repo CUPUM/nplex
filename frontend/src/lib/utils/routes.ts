@@ -1,22 +1,22 @@
-/**
- * The following declarations detail various route objects and object arrays to help generate navbars or other UI
- * elements. The route objects can also serve as a matching reference to keep track of certain layout-specific or
- * route-specific states.
- *
- * ⚠️ These declaration are NOT exhaustive and should not be assumed to cover the full scope of the app's possible
- * routing state.
- */
+import type { Category } from 'src/app';
 
-import type { Category } from '$types/categories';
+/**
+ * The following declarations detail various route objects and object arrays to help generate
+ * navbars or other UI elements. The route objects can also serve as a matching reference to keep
+ * track of certain layout-specific or route-specific states.
+ *
+ * ⚠️ These declaration are NOT exhaustive and should not be assumed to cover the full scope of the
+ * app's possible routing state.
+ */
 
 interface Route {
 	/**
-	 * Full un-based absolute pathname.
+	 * Non-based full absolute pathname, with leading slash.
 	 */
 	pathname: string;
 	/**
-	 * Title to be used in navbars or as a label for other elements. Routes not calling for a title should not need to
-	 * be defined here.
+	 * Title to be used in navbars or as a label for other elements. Routes not calling for a title
+	 * should not need to be defined here.
 	 */
 	title: string;
 }
@@ -64,7 +64,7 @@ export const exploreRoutes: ExploreRoute[] = [
 	},
 ];
 
-export const creationBaseRoute: Route = {
+export const editorBase: Route = {
 	pathname: '/editer',
 	title: 'Éditer',
 };
@@ -77,29 +77,55 @@ interface CreationRoute extends Route {
 /**
  * Relative creation-root routes for the submission forms.
  */
-export const creationRoutes: CreationRoute[] = [
+export const createRoutes: CreationRoute[] = [
 	{
-		pathname: creationBaseRoute.pathname + '/projet',
-		title: 'Créer ou éditer un projet',
+		pathname: editorBase.pathname + '/projet',
+		title: 'Créer un projet',
 		category: 'projects',
 	},
 	{
-		pathname: creationBaseRoute.pathname + '/organisation',
-		title: 'Créer ou éditer une organisation',
+		pathname: editorBase.pathname + '/organisation',
+		title: 'Créer une organisation',
 		category: 'organisations',
 		disabled: true,
 	},
 	{
-		pathname: creationBaseRoute.pathname + '/acteur',
-		title: 'Créer ou éditer un profil d’acteur',
+		pathname: editorBase.pathname + '/acteur',
+		title: 'Créer un profil d’acteur',
 		category: 'actors',
 		disabled: true,
 	},
 ];
 
-export const userBaseRoute: Route = {
+interface EditRoute extends Route {
+	category: Category;
+	disabled?: boolean;
+}
+
+/**
+ * Relative creation-root routes for the submission forms.
+ */
+export const editRoutes: CreationRoute[] = [
+	{
+		pathname: editorBase.pathname + '/projet',
+		title: 'Éditer un projet',
+		category: 'projects',
+	},
+	{
+		pathname: editorBase.pathname + '/organisation',
+		title: 'Éditer une organisation',
+		category: 'organisations',
+		disabled: true,
+	},
+	{
+		pathname: editorBase.pathname + '/acteur',
+		title: 'Éditer un profil d’acteur',
+		category: 'actors',
+		disabled: true,
+	},
+];
+
+export const userBase: Route = {
 	pathname: '/compte',
 	title: 'Mon compte',
 };
-
-// export const userRoutes: Route[] = [];

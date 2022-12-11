@@ -39,6 +39,7 @@
 	</Button>
 	<form
 		action="/api/auth?/signout"
+		method="POST"
 		use:enhance={({ form, data, action, cancel }) => {
 			signout = true;
 			return async ({ update, result }) => {

@@ -44,7 +44,7 @@
 		margin: var(--margin);
 		padding: var(--inset);
 		background: col(bg, 100);
-		border-radius: var(--ui-radius);
+		border-radius: var(--ui-radius-md);
 		max-width: calc(100% - 2 * var(--margin));
 		opacity: 0;
 		gap: 1px;

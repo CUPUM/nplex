@@ -30,8 +30,6 @@
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
 	export let variant: 'default' | 'outlined' | 'cta' = 'default';
 	export let compact: boolean | undefined = undefined;
-	export let leadingSeparator: boolean = false;
-	export let trailingSeparator: boolean = false;
 	export let required: boolean | undefined = undefined;
 	export let readonly: boolean | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
@@ -138,7 +136,7 @@
 	{/if}
 	{#if $$slots.label}
 		<label for={id} bind:clientWidth={labelWidth}>
-			<slot name="label" />
+			{#if required}<span class="star">*</span>{/if}<slot name="label" />
 		</label>
 	{/if}
 	{#if prefix}
@@ -357,6 +355,10 @@
 		border-top-width: 0;
 		border-bottom-right-radius: inherit;
 		border-bottom-left-radius: inherit;
+	}
+	.star {
+		color: col(primary, 900);
+		padding-right: 0.2em;
 	}
 
 	// Variants

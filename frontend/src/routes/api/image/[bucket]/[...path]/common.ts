@@ -7,14 +7,18 @@ const ENDPOINT_BASE = '/api/image';
 type ImageOptions = {
 	format?: keyof sharp.FormatEnum;
 	// withMetadata?: sharp.Metadata;
-} & sharp.ResizeOptions;
+} & Pick<
+	sharp.ResizeOptions,
+	'fastShrinkOnLoad' | 'fit' | 'height' | 'width' | 'withoutEnlargement' | 'position' | 'kernel'
+>;
 
 /**
  * Compose the proper api query url to get an image with properly formatted specifications.
  */
 export function img(bucket: StorageBucket, path: string, options?: ImageOptions) {
-	const q = options ? new URLSearchParams(Object.entries(options)).toString() : '';
-	console.log(q);
+	const q = options
+		? new URLSearchParams(Object.entries(options).map(([k, v]) => [k, v + ''])).toString()
+		: '';
 	return `${ENDPOINT_BASE}/${bucket}/${path}?${q}`;
 }
 

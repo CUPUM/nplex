@@ -1,6 +1,6 @@
 import { getDb } from '$utils/database';
 import { dbAdmin } from '$utils/databaseAdmin';
-import { error, invalid, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
@@ -9,20 +9,18 @@ export const actions: Actions = {
 	 */
 	update: async (event) => {
 		if (!event.locals.session) {
-			return invalid(401);
+			return fail(401);
 		}
-		const formData = Object.fromEntries(await event.request.formData());
-		// Do some zod validation here...
+		const d = Object.fromEntries(await event.request.formData());
 		const db = await getDb(event);
 		const update = await db
 			.from('users')
-			.update({ ...formData, id: undefined })
+			.update(d)
 			.eq('id', event.locals.session.user.id)
 			.single();
 		if (update.error) {
-			throw error(500, { ...update.error });
+			return fail(400, { ...update.error });
 		}
-		return formData;
 	},
 
 	/**
@@ -30,20 +28,17 @@ export const actions: Actions = {
 	 */
 	delete: async ({ request, locals }) => {
 		if (!locals.session) {
-			return invalid(401);
+			return fail(401);
 		}
-		const formData = Object.fromEntries(await request.formData());
-		if (formData.id !== locals.session.id) {
-			return invalid(401, {
-				error: {
-					message:
-						'Votre identificateur ne correspond pas au compte que vous tentez de supprimer',
-				},
-				...formData,
-			});
+		const d = await request.formData();
+		const id = d.get('id');
+		if (!id || id !== locals.session.user.id) {
+			return fail(400);
 		}
-		const res = await dbAdmin.auth.admin.deleteUser(formData.id);
-		if (res.error) throw error(500);
+		const res = await dbAdmin.auth.admin.deleteUser(id);
+		if (res.error) {
+			throw error(500);
+		}
 		throw redirect(302, '/');
 	},
 };

@@ -42,8 +42,8 @@
 	on:enter={() => (out = false)}
 	on:leave={() => (out = true)}
 >
-	<div class="wrapper">
-		<section class="self">
+	<div class="inner">
+		<section class="chair">
 			<a href="/">
 				<Logo />
 			</a>
@@ -64,10 +64,10 @@
 			</ul>
 		</section>
 		<section>
-			<hgroup class="sub" style="--i: 1">
+			<hgroup class="sub c" style="--i: 1">
 				<Icon name="search" {...iconOptions} />&ensp;Explorer
 			</hgroup>
-			<ul>
+			<ul class="c">
 				{#each exploreLinks as link, i}
 					<li style="--i: {i}">
 						<Link href={link.pathname}>{link.title}</Link>
@@ -76,10 +76,10 @@
 			</ul>
 		</section>
 		<section>
-			<hgroup class="sub" style="--i: 2">
+			<hgroup class="sub r" style="--i: 2">
 				<Icon name="bookmark" {...iconOptions} />&ensp;Partenaires
 			</hgroup>
-			<ul>
+			<ul class="r">
 				{#each partnersLinks as link, i}
 					<li style="--i: {i}">
 						<Link href={link.pathname}>{link.title}</Link>
@@ -94,33 +94,17 @@
 	.footer {
 		padding: 3rem 2rem;
 		margin: 0;
-		font-size: var(--ui-text-xs);
-		color: var(--color-contrast-100);
-		font-weight: 400;
-		letter-spacing: 0.1px;
-		background: col(fg, 100, 0.02);
-		// border-radius: 1rem 1rem 0 0;
-		transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+		font-size: var(--ui-text-sm);
 	}
 
-	.out {
-		opacity: 0;
-	}
-
-	.wrapper {
+	.inner {
 		width: 100%;
-		max-width: var(--ui-display-large);
-		display: flex;
-		flex-wrap: wrap;
-		flex-direction: row;
+		max-width: var(--ui-size-xl);
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
 		align-items: stretch;
-		justify-content: space-between;
-		gap: var(--ui-size-large);
+		gap: 2rem;
 		margin: 0 auto;
-	}
-
-	section {
-		flex: 1;
 	}
 
 	.sub {
@@ -130,16 +114,21 @@
 		padding-bottom: 1.2em;
 		margin-bottom: 0;
 		margin-inline: 0.75rem;
-		font-weight: 500;
-		text-transform: uppercase;
-		font-size: var(--ui-text-2xs);
-		letter-spacing: 0.1em;
+		font-weight: 400;
+		font-size: var(--ui-text-xs);
+		letter-spacing: 0.02em;
 		opacity: 0.3;
 		transition: all 1s cubic-bezier(0, 0, 0, 1) calc(var(--i, 0) * 0.25s);
 		.out & {
 			opacity: 0;
-			transform: translateY(0.5rem);
+			transform: translateY(-0.5rem);
 			transition: all 0.25s;
+		}
+		&.c {
+			justify-content: center;
+		}
+		&.r {
+			justify-content: flex-end;
 		}
 	}
 
@@ -151,13 +140,21 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
+		&.c {
+			align-items: center;
+		}
+		&.r {
+			align-items: flex-end;
+		}
 	}
 
 	li {
 		all: unset;
 		display: flex;
 		opacity: 1;
+		font-weight: 500;
 		transform: translateY(0);
+		color: col(fg, 900);
 		transition: all 1s cubic-bezier(0, 0, 0, 1) calc(var(--i) * 0.1s + 0.2s);
 		.out & {
 			opacity: 0;
@@ -166,11 +163,14 @@
 		}
 	}
 
-	.self {
-		font-size: var(--ui-size-large);
+	.chair {
+		font-size: var(--ui-text-xl);
 		display: flex;
 		flex-direction: column;
+		gap: 1rem;
 		justify-content: space-between;
+		align-items: center;
+		grid-column: 1 / -1;
 	}
 
 	.cc {

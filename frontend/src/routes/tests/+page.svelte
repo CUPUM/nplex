@@ -21,13 +21,17 @@
 		<Button>With tooltip!</Button>
 	</Tooltip>
 </article>
-<article>
+<article class="test">
 	<Loading />
 </article>
 
 <style lang="scss" module>
 	article {
 		padding: 4rem;
+	}
+
+	.test {
+		font-size: 4rem;
 	}
 
 	div {

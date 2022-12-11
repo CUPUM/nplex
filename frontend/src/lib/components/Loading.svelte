@@ -2,48 +2,6 @@
 	@component
 	Use this component to add loading spinner overlay to any element/container.
  -->
-<script lang="ts" context="module">
-	const duration = 3;
-	// These shapes must contain the same amounts and types of points for the animation to work.
-	const shapes = [
-		// Circle
-		'M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z',
-		// Square
-		'M 15,15 C 15,15 85,15 85,15 C 85,15 85,85 85,85 C 85,85 15,85 15,85 C 15,85 15,15 15,15 Z',
-		// Triangle
-		'M 50,10 C 50,10 50,10 50,10 C 50,10 90,85 90,85 C 90,85 10,85 10,85 C 10,85 50,10 50,10 Z',
-		// Arc
-		// 'M 15,50 C 17,-3 83,-3 85,50 C 85,50 85,85 85,85 C 85,85 15,85 15,85 C 15,85 15,50 15,50 Z',
-		'M 15,15 C 15,15 85,15 85,15 C 85,15 85,50 85,50 C 83,103 17,103 15,50 C 15,50 15,15 15,15 Z',
-		// Square
-		'M 15,15 C 15,15 85,15 85,15 C 85,15 85,85 85,85 C 85,85 15,85 15,85 C 15,85 15,15 15,15 Z',
-		// Triangle
-		'M 50,10 C 50,10 50,10 50,10 C 50,10 90,85 90,85 C 90,85 10,85 10,85 C 10,85 50,10 50,10 Z',
-	];
-	const d = [...shapes, shapes[0]].join(';') + ';';
-	const nsteps = shapes.length + 1;
-	// const offset = Math.round(Math.random() * nsteps);
-	const keySplines = Array(nsteps - 1)
-		.fill('.8 0 .2 1')
-		.join(';');
-	const keyTimes = Array(nsteps)
-		.fill(null)
-		.map((_, i) => i / (nsteps - 1))
-		.join(';');
-	const pulseValues = Array(nsteps)
-		.fill(0)
-		.map((_, i) => (i - 1) * 90 + ' 50 50')
-		.join(';');
-	const offsetKeytimes = Array(4)
-		.fill(null)
-		.map((_, i) => (i + 1) / 4)
-		.join(';');
-	const offsetValues = Array(4)
-		.fill(null)
-		.map((_, i) => i * 90 + ' 50 50')
-		.join(';');
-</script>
-
 <script lang="ts">
 	import { elasticOut, expoIn } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -55,74 +13,29 @@
 
 <div class="loading {className}" {style}>
 	<svg
-		class="svg"
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
-		style:--duration="{duration}s"
 		in:scale={{ duration: 500, start: 0, opacity: 1, easing: elasticOut }}
 		out:scale={{ duration: 250, start: 0, opacity: 0, easing: expoIn }}
 		width="1em"
 		height="1em"
 	>
-		<defs>
-			<linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-				<stop offset="0%" stop-color="#05a" />
-				<stop offset="100%" stop-color="#0a5" />
-			</linearGradient>
-		</defs>
-		<path class="path">
-			<animate
-				attributeType="XML"
-				{keySplines}
-				{keyTimes}
-				from="M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z"
-				to="M 10,50 C 10,28 28,10 50,10 C 72,10 90,29 90,50 C 90,72 72,90 50,90 C 28,90 10,72 10,50 Z"
-				calcMode="spline"
-				attributeName="d"
-				dur="{duration}s"
-				begin="0s"
-				repeatCount="indefinite"
-				values={d}
-			/>
-			<animate
-				attributeType="XML"
-				calcMode="linear"
-				attributeName="stroke-dashoffset"
-				dur="1s"
-				repeatCount="indefinite"
-				values="0 100"
-			/>
-			<!-- Implement svg animation for rotation steps -->
-			<animateTransform
-				attributeType="XML"
-				{keySplines}
-				{keyTimes}
-				attributeName="transform"
-				type="rotate"
-				calcMode="spline"
-				dur="{duration}s"
-				begin="0s"
-				repeatCount="indefinite"
-				values={pulseValues}
-			/>
-			<!-- <animateTransform
-				attributeType="XML"
-				attributeName="transform"
-				type="rotate"
-				calcMode="discrete"
-				keyTimes={offsetKeytimes}
-				dur="{4 * duration}s"
-				begin="0s"
-				repeatCount="indefinite"
-				additive="sum"
-				values={offsetValues}
-			/> -->
-		</path>
+		<circle class="v" cx="50" cy="50" r="45" style="--i: 0; --l: 283" />
+		<path class="v" d="M 50,5 L 95,95 5,95 50,5 Z" style="--i: 1; --l: 292" />
+		<rect class="v" x="10" y="10" width="80" height="80" style="--i: 2; --l: 320" />
+		<circle class="v" cx="50" cy="50" r="45" style="--i: 3; --l: 283" />
+		<!-- d="M 90,90 C 90,90 10,90 10,90 C 10,90 10,50 10,50 C 12,-5 88,-5 90,50 Z" -->
+		<path
+			rotate="180"
+			class="v"
+			d="M 10,10 C 10,10 90,10 90,10 C 90,10 90,50 90,50 C 88,105 12,105 10,50 Z"
+			style="--i: 4; --l: 283"
+		/>
 	</svg>
 </div>
 
 <style lang="scss">
-	:where(.loading) {
+	.loading {
 		user-select: none;
 		pointer-events: none;
 		position: absolute;
@@ -135,63 +48,70 @@
 		align-items: center;
 		background: transparent;
 		background: transparent;
-		z-index: 100;
+		z-index: 10;
 		font-size: 1.25em;
-		color: currentColor;
 	}
 
-	.svg {
-		background: transparent;
+	svg {
 		background: transparent;
 		overflow: visible;
+		animation-duration: 2s;
+		animation-name: clock;
+		animation-timing-function: cubic-bezier(0.8, 0, 0.2, 1);
+		animation-fill-mode: forwards;
+		animation-iteration-count: infinite;
 	}
 
-	.path {
-		fill: currentColor;
-		stroke: currentColor;
-		vector-effect: non-scaling-stroke;
-		fill: transparent;
-		stroke-width: 2px;
-		// stroke-width: 16px;
-		stroke-linejoin: round;
-		stroke-linecap: round;
-		// transform-origin: center;
-		// animation: slowspin 2.5s linear infinite; // stepspin 1.5s cubic-bezier(0.7, 0, 0.2, 1) infinite; //dashoffset 1s linear infinite;
-	}
-
-	@keyframes dashoffset {
+	@keyframes clock {
 		0% {
-			stroke-dashoffset: 0;
-		}
-		100% {
-			stroke-dashoffset: -100;
-		}
-	}
-
-	@keyframes stepspin {
-		0% {
-			transform: rotate(0deg);
-		}
-		25% {
 			transform: rotate(90deg);
 		}
-		50% {
+		25% {
 			transform: rotate(180deg);
 		}
-		75% {
+		50% {
 			transform: rotate(270deg);
 		}
-		100% {
+		75% {
 			transform: rotate(360deg);
+		}
+		100% {
+			transform: rotate(450deg);
 		}
 	}
 
-	@keyframes slowspin {
+	.v {
+		opacity: 0;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 16px;
+		stroke-linejoin: round;
+		stroke-linecap: round;
+		animation-duration: 5s;
+		stroke-dashoffset: -8;
+		animation-delay: calc(var(--i) * 1s);
+		animation-name: draw;
+		animation-timing-function: cubic-bezier(0.6, 0, 0.4, 1);
+		animation-fill-mode: forwards;
+		animation-iteration-count: infinite;
+	}
+
+	@keyframes draw {
 		0% {
-			transform: rotate(0deg);
+			opacity: 1;
+			stroke-dasharray: 0 0 0 var(--l);
+			stroke-dashoffset: -8;
 		}
-		100% {
-			transform: rotate(360deg);
+		10% {
+			stroke-dasharray: 0 0 var(--l) 0;
+			stroke-dashoffset: 0;
+		}
+		20% {
+			opacity: 1;
+			stroke-dasharray: 0 var(--l) var(--l) 0;
+		}
+		21% {
+			opacity: 0;
 		}
 	}
 </style>

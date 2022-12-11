@@ -15,7 +15,7 @@
 	--inset: 0px;
 	--inset-parent: 0px;
 	--inset-sum: 0px;
-	--radius: 0px;
+	// --radius: 0px;
 	// --radius-parent: 0px;
 	// Default inset or nest pad
 	--ui-inset: 3px;
@@ -23,19 +23,19 @@
 	--ui-height: 3.5em;
 	--ui-pad-x: 1.25em;
 	// Corner roundings
-	--ui-radius-sm: 9px;
-	--ui-radius-md: 14px;
-	--ui-radius-lg: 20px;
+	--ui-radius-sm: 8px;
+	--ui-radius-md: 16px;
+	--ui-radius-lg: 24px;
 	// Text/content sizing
-	--ui-text-2xs: 12px;
-	--ui-text-xs: 14px;
-	--ui-text-sm: 16px;
-	--ui-text-md: 18px;
-	--ui-text-lg: 24px;
-	--ui-text-xl: 30px;
-	--ui-text-2xl: 40px;
+	--ui-text-2xs: 9px;
+	--ui-text-xs: 12px;
+	--ui-text-sm: 14px;
+	--ui-text-md: 16px;
+	--ui-text-lg: 18px;
+	--ui-text-xl: 24px;
+	--ui-text-2xl: 32px;
 	--ui-text-3xl: 56px;
-	--ui-text-4xl: 80px;
+	--ui-text-4xl: 92px;
 	// Block sizing
 	--ui-size-2xs: 240px;
 	--ui-size-xs: 320px;

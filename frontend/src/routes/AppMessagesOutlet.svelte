@@ -71,6 +71,22 @@
 			});
 			update((curr) => [...curr, ...defaulted]);
 		}
+		function error(...messages: Omit<Message, 'type'>[]) {
+			dispatch(
+				...messages.map((m) => {
+					(m as Message).type = 'error';
+					return m;
+				})
+			);
+		}
+		function success(...messages: Omit<Message, 'type'>[]) {
+			dispatch(
+				...messages.map((m) => {
+					(m as Message).type = 'success';
+					return m;
+				})
+			);
+		}
 		function cancelTimer(message: Message) {
 			if (message.timer) {
 				update((curr) => {
@@ -88,6 +104,8 @@
 		return {
 			subscribe,
 			dispatch,
+			success,
+			error,
 			clear,
 			clearAll,
 			cancelTimer,
@@ -163,7 +181,7 @@
 				duration: 350,
 				easing: expoOut,
 			}}
-			out:scale|local={{ start: 0.9, opacity: 0, duration: 150, easing: expoInOut }}
+			out:scale|local={{ start: 0.95, opacity: 0, duration: 150, easing: expoInOut }}
 			animate:flip={{ duration: 350, easing: expoOut }}
 			class={message.type}
 			on:click|once={(e) => cancelTimer(e, message)}

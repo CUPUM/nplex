@@ -125,6 +125,7 @@
 	:where(.switch) {
 		--height: calc(var(--ui-height) - 2 * var(--ui-inset-sum));
 		--inset: var(--ui-inset);
+		--radius: var(--ui-radius-md);
 		position: relative;
 		font-size: 1em;
 		position: relative;
@@ -135,7 +136,7 @@
 		gap: 0;
 		flex: none;
 		padding: var(--inset);
-		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
+		border-radius: calc(var(--radius) - var(--ui-inset-sum));
 		font-weight: 400;
 		transition: all 0.15s ease-out;
 		&.column {
@@ -144,7 +145,7 @@
 	}
 	.mark {
 		position: absolute;
-		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum) - var(--inset));
+		border-radius: calc(var(--radius) - var(--ui-inset-sum) - var(--inset));
 		transition: all 0.15s cubic-bezier(0, 0, 0, 1); // cubic-bezier(0.5, 0, 0.2, 1.2);
 	}
 

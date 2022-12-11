@@ -4,6 +4,8 @@ import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/publi
 import { createClient, type SupportedStorage } from '@supabase/supabase-js';
 import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 
+const EXPIRY_MARGIN = 1000;
+
 export const browserDb = createClient<App.DatabaseSchema>(
 	PUBLIC_SUPABASE_URL,
 	PUBLIC_SUPABASE_ANON_KEY,
@@ -56,10 +58,10 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 			event.locals.db = createServerClient();
 		}
 		if (event.locals.session) {
-			const dbSession = (await event.locals.db.auth.getSession()).data.session;
-			if (!dbSession || dbSession.user.id !== event.locals.session.user.id) {
-				await event.locals.db.auth.setSession(event.locals.session);
-			}
+			// const dbSession = (await event.locals.db.auth.getSession()).data.session;
+			// if (!dbSession || dbSession.user.id !== event.locals.session.user.id) {
+			await event.locals.db.auth.setSession(event.locals.session);
+			// }
 		}
 		return event.locals.db;
 	}

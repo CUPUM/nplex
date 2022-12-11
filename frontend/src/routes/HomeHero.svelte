@@ -24,7 +24,7 @@
 
 <header
 	class={ThemeClass.dark}
-	use:intersection={{ rootMargin: '0px 0px 0px 0px' }}
+	use:intersection={{ rootMargin: '-40px 0px 0px 0px' }}
 	on:enter={headerEnter}
 	on:leave={headerLeave}
 >

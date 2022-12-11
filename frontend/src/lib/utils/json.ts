@@ -40,7 +40,7 @@ export const ES6JSON = {
 
 /**
  * Some input strings represent JSON objects, but parsing them may lead to node errors if they are
- * empty or malformatted. Fallbacks to `null`
+ * empty or malformatted. Fallbacks to `null`.
  */
 export function safeJsonParse<T = any>(input: any): T | null {
 	try {

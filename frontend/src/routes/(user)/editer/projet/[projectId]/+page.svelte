@@ -2,14 +2,14 @@
 	import { enhance } from '$app/forms';
 	import Field from '$components/Field.svelte';
 	import type { ActionData, PageData } from './$types';
-	import { formid } from './common';
+	import { EDITOR_FORM_ID } from './common';
 
 	export let data: PageData;
 	export let form: ActionData;
 </script>
 
 <form
-	id={formid}
+	id={EDITOR_FORM_ID}
 	method="POST"
 	action="?/update"
 	use:enhance={({ form, data, action, cancel }) => {

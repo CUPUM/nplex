@@ -2,12 +2,12 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Button from '$components/Button.svelte';
-	import { editRoutes } from '$utils/routes';
+	import { createRoutes } from '$utils/routes';
 
 	let loading: string | null = null;
 
 	beforeNavigate(({ to }) => {
-		if (to && editRoutes.map((r) => r.pathname).includes(to.url.pathname)) {
+		if (to && createRoutes.map((r) => r.pathname).includes(to.url.pathname)) {
 			loading = to.url.pathname;
 		}
 	});
@@ -18,7 +18,7 @@
 </script>
 
 <ul class="nest">
-	{#each editRoutes as r, i}
+	{#each createRoutes as r, i}
 		<li>
 			<Button
 				style="width: 100%;"

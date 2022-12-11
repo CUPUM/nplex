@@ -51,7 +51,7 @@
 <section>
 	<header>
 		<h3 class="e-h3">{title}</h3>
-		<form action="" use:enhance>
+		<form action="" use:enhance method="POST">
 			<Switch bind:group={filter} name="filter">
 				{#each Object.entries(filters) as [k, v]}
 					<SwitchItem value={k}>

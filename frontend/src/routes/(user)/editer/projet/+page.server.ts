@@ -1,5 +1,6 @@
 import { getDb } from '$utils/database';
-import { error, invalid, redirect, type Actions } from '@sveltejs/kit';
+import { StatusCode } from '$utils/enums';
+import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 
@@ -12,7 +13,7 @@ export const actions: Actions = {
 			})
 			.safeParse(d);
 		if (!v.success) {
-			return invalid(400, v.error.formErrors.fieldErrors);
+			return fail(StatusCode.BadRequest, v.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
 		const createRes = await db.from('projects').insert(v.data).select('id').single();

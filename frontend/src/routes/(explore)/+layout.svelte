@@ -12,7 +12,7 @@
 
 <div class="explore">
 	<nav>
-		<form action="" id="search" use:enhance>
+		<form action="" id="search" use:enhance method="POST">
 			<section>
 				<Field type="search" placeholder="Chercher">
 					<svelte:fragment slot="leading">

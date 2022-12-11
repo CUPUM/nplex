@@ -11,7 +11,7 @@
 	<Map>
 		<MapProjects projects={data.projects} />
 	</Map>
-	<form action="" use:enhance>
+	<form action="" use:enhance method="POST">
 		Filtres
 		<fieldset>Filtre 1</fieldset>
 	</form>

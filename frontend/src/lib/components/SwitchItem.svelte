@@ -72,7 +72,7 @@
 		grid-template-rows: minmax(var(--height), auto);
 		align-items: center;
 		justify-content: center;
-		border-radius: calc(var(--ui-radius) - var(--ui-inset-sum));
+		border-radius: calc(var(--ui-radius-md) - var(--ui-inset-sum));
 		padding: 0;
 		margin: 0;
 		gap: 0;
@@ -83,7 +83,7 @@
 		pointer-events: none;
 	}
 	.slot {
-		padding: 0 var(--ui-padding-inline);
+		padding: 0 var(--ui-pad-x);
 		padding-bottom: calc(0.5em - 0.5ex);
 	}
 	.current .slot {

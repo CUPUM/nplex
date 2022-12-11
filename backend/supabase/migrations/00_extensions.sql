@@ -14,3 +14,5 @@ create schema if not exists "postgis";
 grant usage on schema "postgis" to "postgres";
 
 create extension if not exists "postgis" with schema "postgis";
+
+create extension if not exists "cube";

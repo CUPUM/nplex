@@ -127,6 +127,7 @@
 	}
 
 	.popover {
+		--radius: var(--ui-radius-md);
 		display: block;
 		flex-shrink: 0;
 		width: auto;
@@ -145,7 +146,7 @@
 		position: relative;
 		background: col(bg, 000);
 		box-shadow: 0 1rem 3.5rem -2rem rgba(0, 10, 20, 0.25);
-		border-radius: var(--ui-radius-md);
+		border-radius: var(--radius);
 		display: inline-flex;
 		flex-direction: column;
 		// border: 1px solid col(bg, 000);

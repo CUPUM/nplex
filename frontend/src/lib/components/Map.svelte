@@ -287,20 +287,20 @@
 		:global(.maplibregl-cooperative-gesture-screen) {
 			font-family: var(--ui-font-main);
 			font-weight: 300;
-			font-size: var(--ui-size-xsmall);
+			font-size: var(--ui-text-xs);
 			color: col(bg, 500);
 			background: transparent;
 			& > :global(*) {
 				padding: 1.25em 1.5em;
 				padding-bottom: 1.5em;
-				border-radius: var(--ui-radius);
+				border-radius: var(--ui-radius-md);
 				background: col(fg, 300, 0.8);
 			}
 		}
 		:global(.maplibregl-ctrl-attrib) {
 			font-family: var(--ui-font-main);
 			font-weight: 300;
-			font-size: var(--ui-size-xxsmall);
+			font-size: var(--ui-text-2xs);
 			background: col(bg, 100, 0.5);
 			margin: 1rem;
 			padding: 0.5em 1em;

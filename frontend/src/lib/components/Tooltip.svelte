@@ -33,6 +33,10 @@
 		open = false;
 	}
 
+	$: if (!message) {
+		hide();
+	}
+
 	function setTriggers(ref: HTMLElement) {
 		if (destructors) destructors();
 		const start = hover ? 'mouseenter' : 'click';
@@ -73,13 +77,14 @@
 		--tip-pad: calc(0.5 * var(--w));
 		--tip-size: 1em;
 		--d-sum: calc(var(--d) + 0.5 * var(--tip-size));
+		user-select: none;
 		position: absolute;
 		pointer-events: none;
 		display: block;
 		flex: none;
 		white-space: nowrap;
 		font-weight: 300;
-		font-size: var(--ui-text-2xs);
+		font-size: var(--ui-text-xs);
 		padding: 0.5em 1em 0.6em 1em;
 		margin: 0;
 		background: col(bg, 900, 0.95);

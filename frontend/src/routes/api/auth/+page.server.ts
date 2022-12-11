@@ -3,14 +3,11 @@ import { queryMessage } from '$routes/AppMessagesOutlet.svelte';
 import { getDb } from '$utils/database';
 import { Cookie, SearchParam } from '$utils/enums';
 import type { AuthSession } from '@supabase/supabase-js';
-import { error, invalid, redirect } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { Actions, RequestEvent } from './$types';
-
-export const PASSWORD_CRITERIA = {
-	minlength: 8,
-};
+import { PASSWORD_MIN } from './common';
 
 function setAuth(event: RequestEvent, session: AuthSession) {
 	event.cookies.set(Cookie.Auth, JSON.stringify(session), {
@@ -36,20 +33,29 @@ export const actions: Actions = {
 	signup: async (event) => {
 		const d = await event.request.formData();
 		const v = zfd
-			.formData(
-				z.object({
-					email: zfd.text(z.string().email()),
-					password: zfd.text(z.string().min(PASSWORD_CRITERIA.minlength)),
-				})
-			)
+			.formData({
+				email: zfd.text(z.string().email()),
+				password: zfd.text(z.string().min(PASSWORD_MIN)),
+				first_name: zfd.text(z.string().optional()),
+				last_name: zfd.text(z.string().optional()),
+			})
 			.safeParse(d);
 		if (!v.success) {
-			return invalid(400, v.error.flatten().fieldErrors);
+			return fail(400, v.error.flatten().fieldErrors);
 		}
 		const db = await getDb(event);
-		const signupRes = await db.auth.signUp(v.data);
+		const signupRes = await db.auth.signUp({
+			email: v.data.email,
+			password: v.data.password,
+			options: {
+				data: {
+					first_name: v.data.first_name,
+					last_name: v.data.last_name,
+				},
+			},
+		});
 		if (signupRes.error || !signupRes.data.session) {
-			throw error(500, { message: "Erreur d'authentification", ...signupRes.error });
+			return fail(500, { message: "Erreur d'authentification", ...signupRes.error });
 		}
 		// Modify below if email confirmation required.
 		setAuth(event, signupRes.data.session);
@@ -69,7 +75,7 @@ export const actions: Actions = {
 			)
 			.safeParse(d);
 		if (!v.success) {
-			return invalid(400, v.error.flatten().fieldErrors);
+			return fail(400, v.error.flatten().fieldErrors);
 		}
 		const db = await getDb(event);
 		const signinRes = await db.auth.signInWithPassword({ ...v.data });
