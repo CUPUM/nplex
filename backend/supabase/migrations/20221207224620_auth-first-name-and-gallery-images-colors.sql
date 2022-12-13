@@ -1,6 +1,6 @@
-alter table "public"."projects_gallery_images" add column "dominant_color" cube;
+alter table "public"."projects_gallery_images" add column "color_dominant" cube;
 
-alter table "public"."projects_gallery_images" add column "median_color" cube;
+alter table "public"."projects_gallery_images" add column "color_mean" cube;
 
 alter table "public"."users" add constraint "user_name_check" CHECK ((char_length(first_name) >= 1)) not valid;
 

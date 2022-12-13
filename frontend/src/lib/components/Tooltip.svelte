@@ -105,7 +105,7 @@
 		background: transparent;
 		overflow: visible;
 		path {
-			fill: col(bg, 100, 0.8);
+			fill: col(bg, 900, 0.95);
 		}
 	}
 

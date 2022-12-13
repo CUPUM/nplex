@@ -25,6 +25,7 @@
 	export let value: string = '';
 	export let name: string | undefined = undefined;
 	export let variant: 'default' | 'outlined' | 'cta' = 'default';
+	export let resize: boolean | undefined = undefined;
 	export let compact: boolean | undefined = undefined;
 	export let required: boolean | undefined = undefined;
 	export let readonly: boolean | undefined = undefined;
@@ -124,10 +125,8 @@
 			[trailing-end full-end];
 		padding: 0;
 		margin: 0;
-		border-radius: var(--ui-radius);
+		border-radius: var(--ui-radius-md);
 		background: col(fg, 100, 0.1);
-		height: 400px;
-		width: 100%;
 	}
 
 	.label {
@@ -142,6 +141,7 @@
 		padding: var(--ui-padding-inline);
 		background: transparent;
 		border: none;
+		resize: none;
 		outline: none;
 	}
 </style>

@@ -1,0 +1,83 @@
+<script lang="ts">
+	import Icon from '$components/Icon.svelte';
+	import Loading from '$components/Loading.svelte';
+	import Ripple from '$components/Ripple.svelte';
+	import { GALLERY_IMAGE_TYPES, GALLERY_INPUT_NAME } from './common';
+
+	export let uploading: boolean;
+
+	function upload(e: Event) {
+		if (e.target instanceof HTMLInputElement && e.target.form) {
+			e.target.form.requestSubmit();
+		}
+	}
+</script>
+
+<label class:uploading>
+	<Ripple />
+	<div class="icon">
+		<Icon name="image-add" strokeWidth="2" />
+	</div>
+	<legend>Cliquez pour importer vos photos ou déposez des fichiers ici.</legend>
+	<input
+		hidden
+		type="file"
+		name={GALLERY_INPUT_NAME}
+		accept={GALLERY_IMAGE_TYPES.join(',')}
+		multiple
+		on:change
+		on:change={upload}
+	/>
+	{#if uploading}
+		<Loading />
+	{/if}
+</label>
+
+<style lang="scss">
+	label {
+		position: relative;
+		border-radius: var(--ui-radius-lg);
+		color: col(fg, 900);
+		font-weight: 400;
+		line-height: 1.5;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		padding: 1rem;
+		text-align: center;
+		background: col(fg, 900, 0.1);
+		opacity: 0.5;
+		min-height: var(--ui-size-xs);
+		transition: all 0.2s ease-out;
+
+		&:hover {
+			opacity: 1;
+			transform: scale(1.01);
+			border-radius: var(--ui-radius-xl);
+		}
+	}
+
+	.uploading {
+		pointer-events: none;
+		background: col(fg, 900, 0.2);
+
+		legend,
+		.icon {
+			opacity: 0.2;
+		}
+	}
+
+	.icon {
+		font-size: var(--ui-text-3xl);
+		transition: all 0.1s ease-in-out;
+	}
+
+	legend {
+		text-align: center;
+		padding-bottom: 1.5rem;
+		max-width: var(--ui-size-xs);
+	}
+</style>

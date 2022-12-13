@@ -23,17 +23,17 @@
 			<a href="{base}/organisation" in:scale={{ start: 0.9, delay: 150 }}>
 				<div class="sub">Créer une nouvelle</div>
 				<em>organisation</em>
-				<Icon name="pen-plus" class="icon" thickness="2" />
+				<Icon name="pen-plus" class="icon" strokeWidth="2" />
 			</a>
 			<a href="{base}/projet" class="project" in:scale={{ start: 0.9, delay: 300 }}>
 				<div class="sub">Créer un nouveau</div>
 				<em>projet</em>
-				<Icon name="pen-plus" class="icon" thickness="2" />
+				<Icon name="pen-plus" class="icon" strokeWidth="2" />
 			</a>
 			<a href="{base}/acteur" in:scale={{ start: 0.9, delay: 450 }}>
 				<div class="sub">Créer un nouveau</div>
 				<em>profil d'acteur</em>
-				<Icon name="pen-plus" class="icon" thickness="2" />
+				<Icon name="pen-plus" class="icon" strokeWidth="2" />
 			</a>
 		{/if}
 	</nav>

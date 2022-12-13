@@ -107,11 +107,11 @@
 	import { fade, scale, slide } from 'svelte/transition';
 	import { ThemeClass } from './AppThemes.svelte';
 
-	const ACTION = {
-		SIGNIN: '/api/auth?/signin',
-		SIGNUP: '/api/auth?/signup',
-		FORGOT: '/api/auth?/forgot',
-		PROVIDER: '/api/auth?/provider',
+	const Action = {
+		SignIn: '/api/auth?/signin',
+		SignUp: '/api/auth?/signup',
+		ForgotPassword: '/api/auth?/forgot',
+		UseProvider: '/api/auth?/provider',
 	} as const;
 	let currentAction: string | null = null;
 	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
@@ -129,7 +129,7 @@
 			transition:scale={{ start: 0.95 }}
 			use:clickoutside={true}
 			on:clickoutside={() => authModal.close()}
-			action={$authModal === AuthMode.SignUp ? ACTION.SIGNUP : ACTION.SIGNIN}
+			action={$authModal === AuthMode.SignUp ? Action.SignUp : Action.SignIn}
 			method="POST"
 			use:enhance={({ form, data, action, cancel }) => {
 				currentAction = action.pathname + action.search;
@@ -169,14 +169,16 @@
 							</svelte:fragment>
 						</Field>
 					</div>
+					<!-- Prepending a signup submit button to intercept default "enter" handling -->
+					<button type="submit" hidden formaction={Action.SignUp} />
 				{/if}
 				<Button
 					class="fill-row"
 					type="submit"
 					variant={$authModal === AuthMode.SignIn ? 'cta' : 'default'}
 					contentAlign="center"
-					formaction={ACTION.SIGNIN}
-					loading={currentAction === ACTION.SIGNIN}
+					formaction={Action.SignIn}
+					loading={currentAction === Action.SignIn}
 				>
 					<Icon name="login" slot="trailing" />
 					Me connecter
@@ -187,15 +189,15 @@
 				<Button
 					class="small-button"
 					variant={$authModal === AuthMode.SignUp ? 'cta' : 'default'}
-					type={$authModal === AuthMode.SignUp ? 'submit' : undefined}
+					type={$authModal === AuthMode.SignUp ? 'submit' : 'button'}
 					href={$authModal === AuthMode.SignIn
 						? authModal
 								.getUrl({ url: $page.url, open: true, mode: AuthMode.SignUp })
 								.toString()
 						: undefined}
 					contentAlign="center"
-					formaction={ACTION.SIGNUP}
-					loading={currentAction === ACTION.SIGNUP}
+					formaction={Action.SignUp}
+					loading={currentAction === Action.SignUp}
 				>
 					Créer un compte
 				</Button>

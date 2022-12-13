@@ -6,9 +6,7 @@
 -->
 <script lang="ts" context="module">
 	const CTX_KEY = 'button-context';
-
 	interface ButtonContext {}
-
 	export function getButtonContext() {
 		return getContext<ButtonContext>(CTX_KEY);
 	}

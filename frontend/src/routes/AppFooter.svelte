@@ -28,7 +28,7 @@
 	];
 
 	const iconOptions: Partial<ComponentProps<Icon>> = {
-		thickness: 1.5,
+		strokeWidth: 1.5,
 		style: 'font-size: 1.25em;',
 	};
 

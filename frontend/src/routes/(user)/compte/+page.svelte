@@ -1,18 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { invalidate } from '$app/navigation';
 	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
+	import { LoadDependency } from '$utils/enums';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
 	export let form: ActionData;
-
-	$: if (form?.error) {
-		// messages.dispatch({
-		// 	content: form.error.message,
-		// 	type: 'error',
-		// });
-	}
 </script>
 
 <form
@@ -22,6 +17,9 @@
 	use:enhance={({ form, data, action, cancel }) => {
 		return async ({ update, result }) => {
 			update({ reset: false });
+			if (result.type === 'failure') {
+				invalidate(LoadDependency.UserProfile);
+			}
 		};
 	}}
 >
@@ -47,19 +45,6 @@
 	<textarea name="about" value={data.profile.about} placeholder="À propos de moi" />
 	<Button type="submit">Mettre mon profil à jour</Button>
 	<Button type="submit" variant="danger" formaction="?/delete">Supprimer mon profil</Button>
-</form>
-<form
-	id="admin-profile"
-	method="POST"
-	action="?/update"
-	use:enhance={() => {
-		return async ({ update }) => {
-			update({ reset: false });
-		};
-	}}
->
-	<span>Zone admin</span>
-	<Button type="submit">Test</Button>
 </form>
 <article>
 	<h2>Mes collections</h2>

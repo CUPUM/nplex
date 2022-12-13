@@ -8,8 +8,11 @@
 <script lang="ts" context="module">
 	interface SourceSpecification {
 		src: string;
-		media: string;
-		type?: string;
+		width: number;
+		media: {
+			condition: 'max-width' | 'min-width';
+			width: number;
+		};
 	}
 </script>
 
@@ -19,8 +22,6 @@
 	export let src: string | undefined = undefined;
 	export let srcset: SourceSpecification[] | undefined = undefined;
 	export let alt: string;
-	export let width: number | undefined = undefined;
-	export let height: number | undefined = undefined;
 	/**
 	 * Useful to set a placeholder background color.
 	 */
@@ -29,12 +30,38 @@
 	export let style: string | undefined = undefined;
 	let className: string = '';
 	export { className as class };
+
+	function formatSrcset(input: typeof srcset) {
+		if (!input) {
+			return undefined;
+		}
+		return input.map((s) => `${s.src} ${s.width}w`).join(', ');
+	}
+
+	function formatSizes(input: typeof srcset) {
+		if (!input) {
+			return undefined;
+		}
+		return input
+			.map((s) => `(${s.media.condition}: ${s.media.width}px) ${s.width}px`)
+			.join(', ');
+	}
+
+	$: formattedSrcset = formatSrcset(srcset);
+	$: formattedSizes = formatSizes(srcset);
 </script>
 
-<picture
+<img
 	class="image {className}"
 	{style}
+	style:background
+	style:object-fit={objectFit}
 	{alt}
+	{src}
+	srcset={formattedSrcset}
+	sizes={formattedSizes}
+	loading="lazy"
+	decoding="async"
 	on:click
 	on:load
 	on:mouseover
@@ -42,35 +69,10 @@
 	on:focus
 	on:blur
 	on:keypress
->
-	{#if srcset && srcset.length}
-		{#each srcset as source}
-			<source {...source} />
-		{/each}
-	{/if}
-	<img
-		{src}
-		{alt}
-		{width}
-		{height}
-		loading="lazy"
-		decoding="async"
-		on:loadstart
-		on:loadeddata
-		on:load
-		style:background
-		style:objectFit
-	/>
-</picture>
+	on:loadstart
+	on:loadeddata
+	on:load
+/>
 
 <style lang="scss">
-	:where(.image) {
-		position: relative;
-		display: inline-block;
-	}
-
-	img {
-		height: 100%;
-		width: 100%;
-	}
 </style>

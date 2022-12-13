@@ -16,6 +16,12 @@ export interface DatabaseBuff {
 					cost_range: `[${number},${number}]`;
 				};
 			};
+			projects_gallery_images: {
+				Row: {
+					color_dominant: `(${number}, ${number}, ${number})`;
+					color_mean: `(${number}, ${number}, ${number})`;
+				};
+			};
 		};
 		Functions: {
 			get_project_descriptors: {

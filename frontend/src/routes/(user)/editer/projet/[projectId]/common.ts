@@ -1,7 +1,10 @@
 interface ProjectEditorRoute {
 	title: string;
 	subpath: '' | `/${string}`;
+	tag?: string;
 }
+
+export const GALLERY_UPLOAD_FORM_ID = 'gallery-upload';
 
 /**
  * Sub-forms of the project editor.
@@ -14,6 +17,7 @@ export const routes = [
 	{
 		title: 'Galerie',
 		subpath: '/galerie',
+		tag: GALLERY_UPLOAD_FORM_ID,
 	},
 	{
 		title: 'Site',

@@ -1,15 +1,17 @@
 import { getDb } from '$utils/database';
+import { LoadDependency, StorageBucket } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event) => {
+	event.depends(LoadDependency.EditorProject);
 	const db = await getDb(event);
-	const dRes = await db.rpc('get_project_descriptors').single();
-	if (dRes.error) {
-		throw error(500, dRes.error);
+	const descriptorsRes = await db.rpc('get_project_descriptors').single();
+	if (descriptorsRes.error) {
+		throw error(500, descriptorsRes.error);
 	}
-	const pRes = await db
+	const projectRes = await db
 		.from('projects')
 		.select(
 			`
@@ -35,25 +37,31 @@ export const load: LayoutLoad = async (event) => {
 		`
 		)
 		.eq('id', event.params.projectId)
+		.order('order', { foreignTable: 'projects_gallery_images', ascending: true })
 		.single();
-	if (pRes.error) {
-		throw error(500, pRes.error);
+	if (projectRes.error) {
+		throw error(500, projectRes.error);
 	}
 	// Doing some transformations to format data for the client.
-	const pTransform = {
-		...pRes.data,
-		cost_range: safeJsonParse<[number, number]>(pRes.data.cost_range) ?? [0, 0],
-		work_ids: Array.isArray(pRes.data.work_ids)
-			? pRes.data.work_ids.map((w) => w.work_id)
-			: [pRes.data?.work_ids?.work_id],
-		gallery: Array.isArray(pRes.data.gallery)
-			? pRes.data.gallery
-			: pRes.data.gallery
-			? [pRes.data.gallery]
-			: [],
+	const projectTransform = {
+		...projectRes.data,
+		cost_range: safeJsonParse<[number, number]>(projectRes.data.cost_range) ?? [0, 0],
+		work_ids: Array.isArray(projectRes.data.work_ids)
+			? projectRes.data.work_ids.map((w) => w.work_id)
+			: [projectRes.data?.work_ids?.work_id],
+		gallery: (Array.isArray(projectRes.data.gallery)
+			? projectRes.data.gallery
+			: projectRes.data.gallery
+			? [projectRes.data.gallery]
+			: []
+		).map((img) => ({
+			...img,
+			publicUrl: db.storage.from(StorageBucket.Projects).getPublicUrl(img.name).data
+				.publicUrl,
+		})),
 	};
 	return {
-		project: pTransform,
-		descriptors: dRes.data,
+		project: projectTransform,
+		descriptors: descriptorsRes.data,
 	};
 };

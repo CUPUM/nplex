@@ -27,6 +27,7 @@
 
 	if (browser) {
 		browserDb.auth.onAuthStateChange((event, session) => {
+			console.log(event);
 			if (event === 'SIGNED_IN' && session?.user.id === data.session?.user.id) {
 				// Because tab switch fires a SIGNED_IN event and causes unwarranted page invalidation.
 				return;
@@ -80,7 +81,7 @@
 		transform-origin: 50vw calc(var(--scroll-px) + 50vh);
 		transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1), opacity 0.5s ease-out;
 		&.hidden {
-			transform: scale(1.04);
+			transform: scale(0.98);
 			opacity: 0;
 		}
 		&.authing {
@@ -115,6 +116,7 @@
 		position: relative;
 		width: 100%;
 		display: flex;
+		align-items: center;
 		flex-wrap: nowrap;
 		flex-direction: column;
 		padding: 0;

@@ -1,3 +1,7 @@
+<script lang="ts" context="module">
+	export const BUTTON_GROUP_CLASS = 'button-group';
+</script>
+
 <script lang="ts">
 	import Ripple from '$components/Ripple.svelte';
 
@@ -8,6 +12,7 @@
 	export let equi: boolean | undefined = undefined;
 	export let round: boolean | undefined = undefined;
 	export let active: boolean | undefined = undefined;
+	export let group: string | undefined = undefined;
 </script>
 
 <svelte:element
@@ -47,17 +52,17 @@
 		outline-offset: 0px;
 		transition: all 0.15s cubic-bezier(0, 0, 0, 1), box-shadow 0.25s ease-out;
 		backdrop-filter: blur(10px);
-		background: col(bg, 500, 0.8);
+		background: col(bg, 700, 0.5);
 		&:hover,
 		&.active,
 		&:active {
-			color: col(primary, 700);
+			color: col(primary, 900);
 			background: col(primary, 100, 0.5);
 		}
 		&.current:not(.active) {
 			cursor: default;
 			color: col(primary, 500);
-			background: col(bg, 100, 0.8);
+			background: col(bg, 100, 0.7);
 		}
 	}
 	.inner {
@@ -80,15 +85,26 @@
 		border-radius: 50%;
 	}
 
+	// :global(.button-group) .navbar-button {
+	// 	&:not(:first-of-type) {
+	// 		border-top-left-radius: 0; // calc(var(--bradius) * 0.25);
+	// 		border-bottom-left-radius: 0; // calc(var(--bradius) * 0.25);
+	// 	}
+	// 	&:not(:last-of-type) {
+	// 		border-top-right-radius: 0; // calc(var(--bradius) * 0.25);
+	// 		border-bottom-right-radius: 0; // calc(var(--bradius) * 0.25);
+	// 	}
+	// }
+
 	// Call-to-action variant
 	.cta {
 		color: col(bg, 100);
-		background: col(fg, 500);
+		background: col(fg, 500, 0.9);
 		&:hover,
 		&.active,
 		&:active {
-			color: col(bg, 000);
-			background: col(primary, 500);
+			color: col(primary, 700);
+			background: col(primary, 100, 0.5);
 		}
 	}
 </style>

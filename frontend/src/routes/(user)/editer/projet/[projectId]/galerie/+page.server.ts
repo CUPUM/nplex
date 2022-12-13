@@ -1,14 +1,16 @@
 import { getDb } from '$utils/database';
-import { StorageBucket } from '$utils/enums';
+import { StatusCode, StorageBucket } from '$utils/enums';
+import { pgarr } from '$utils/format';
 import { error, fail } from '@sveltejs/kit';
 import sharp from 'sharp';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { Actions } from './$types';
-import { GALLERY_FOLDER, GALLERY_IMAGE_TYPES, GALLERY_INPUT_NAME } from './common';
+import { GALLERY_IMAGE_TYPES, GALLERY_INPUT_NAME } from './common';
 
 const ERROR_BAD_FORMAT = "Le format ou l'extension de l'image n'est pas compatible.";
 const DEFAULT_SIZE = 1024;
+const GALLERY_FOLDER = 'gallery';
 
 export const actions: Actions = {
 	upload: async (event) => {
@@ -17,7 +19,7 @@ export const actions: Actions = {
 		const db = await getDb(event);
 		let errs = [];
 		for await (const file of files) {
-			const v = await z
+			const parsed = await z
 				.any()
 				.refine(
 					(f) => GALLERY_IMAGE_TYPES.includes(f.type),
@@ -27,6 +29,7 @@ export const actions: Actions = {
 					const s = sharp(Buffer.from(await f.arrayBuffer()));
 					const buffer = await s
 						.resize({ width: DEFAULT_SIZE, withoutEnlargement: true })
+						.rotate()
 						.webp()
 						.toBuffer();
 					const stats = await s.stats();
@@ -36,36 +39,87 @@ export const actions: Actions = {
 						name: `${date}-${rand}.webp`,
 						type: 'image/webp',
 						buffer,
-						dominant_color: [stats.dominant.r, stats.dominant.g, stats.dominant.b],
-						average_color: [
-							stats.channels[0].mean,
-							stats.channels[1].mean,
-							stats.channels[2].mean,
+						color_dominant: [stats.dominant.r, stats.dominant.g, stats.dominant.b],
+						color_mean: [
+							stats.channels[0].mean.toFixed(0),
+							stats.channels[1].mean.toFixed(0),
+							stats.channels[2].mean.toFixed(0),
 						],
 					};
 				})
 				.safeParseAsync(file);
-			if (!v.success) {
-				errs.push(v.error);
+			if (!parsed.success) {
+				errs.push(parsed.error);
 				return;
 			}
-			const sRes = await db.storage
+			const storageRes = await db.storage
 				.from(StorageBucket.Projects)
 				.upload(
-					[event.params.projectId, GALLERY_FOLDER, v.data.name].join('/'),
-					v.data.buffer,
-					{ contentType: v.data.type }
+					[event.params.projectId, GALLERY_FOLDER, parsed.data.name].join('/'),
+					parsed.data.buffer,
+					{ contentType: parsed.data.type, upsert: true }
 				);
-			if (sRes.error) {
-				errs.push(sRes.error);
+			if (storageRes.error) {
+				errs.push(storageRes.error);
+			} else {
+				console.log(storageRes.data.path);
+				const statsRes = await db
+					.from('projects_gallery_images')
+					.update({
+						color_dominant: pgarr(parsed.data.color_dominant),
+						color_mean: pgarr(parsed.data.color_mean),
+					})
+					.eq('name', storageRes.data?.path)
+					.single();
+				console.log(statsRes);
+				if (statsRes.error) {
+					errs.push(statsRes.error);
+					// Cleanup uploaded file if error from metadata update.
+					const delStorageRes = await db.storage
+						.from(StorageBucket.Projects)
+						.remove([storageRes.data.path]);
+					if (delStorageRes.error) {
+						errs.push(delStorageRes.error);
+					}
+				}
 			}
-			// const cRes = await db
-			// 	.from('projects_gallery_images')
-			// 	.update({ color_1: '', color_2: '', color_3: '' });
 		}
 		if (errs.length) {
 			throw error(500, { message: JSON.stringify(errs) });
 			// return fail(400, { errors: errs });
+		}
+	},
+	update: async (event) => {
+		if (!event.params.projectId) {
+			return fail(StatusCode.BadRequest);
+		}
+		const formData = await event.request.formData();
+		const parsed = zfd
+			.formData(
+				z.record(
+					z.coerce.number(),
+					z.object({
+						id: zfd.text(),
+						name: zfd.text(),
+						title: zfd.text(z.string().nullable().default(null)),
+						description: zfd.text(z.string().nullable().default(null)),
+					})
+				)
+			)
+			.transform((dataObject) => {
+				return Object.entries(dataObject).map(([k, v]) => {
+					return { ...v, order: Number(k), project_id: event.params.projectId };
+				});
+			})
+			.safeParse(formData);
+		if (!parsed.success) {
+			return fail(StatusCode.BadRequest, parsed.error.formErrors.fieldErrors);
+		}
+		const db = await getDb(event);
+		const updateRes = await db.from('projects_gallery_images').upsert(parsed.data);
+		console.log(updateRes);
+		if (updateRes.error) {
+			return fail(StatusCode.InternalServerError, updateRes.error);
 		}
 	},
 	delete: async (event) => {
@@ -88,21 +142,6 @@ export const actions: Actions = {
 		if (deleteRes.error) {
 			throw error(500, deleteRes.error);
 		}
-	},
-	update: async (event) => {
-		if (!event.params.projectId) {
-			return;
-		}
-		const formData = await event.request.formData();
-		console.log(formData);
-		// const formData = await event.request.formData();
-		// console.log(formData);
-		// const db = await getDb(event);
-		// // Do some processing with sharp to produce webp sourcesets...
-		// const iRes = await db.storage
-		// 	.from(StorageBucket.Projects)
-		// 	.upload(`${event.params.projectId}/${StorageFolder.Gallery}/some-image-name.jpg`, d, {});
-		// console.log(iRes);
 	},
 	/**
 	 * Promote the passed image as the project's banner image. Unsets previous banner.

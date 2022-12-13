@@ -4,10 +4,9 @@ export const GALLERY_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'ima
 
 export const GALLERY_INPUT_NAME = 'files';
 
-export const GALLERY_FOLDER = 'gallery';
-
-export const GALLERY_SRCSET = [
-	{ tag: 'sm', width: 640 },
-	{ tag: 'md', width: 960 },
-	{ tag: 'lg', width: 1200 },
-] as const;
+/**
+ * Delete form id composer.
+ */
+export function del(imageId: string) {
+	return `${imageId}-delete`;
+}

@@ -17,7 +17,7 @@
 
 	export let name: keyof typeof icons;
 	export let secondaryColor: string = 'currentColor';
-	export let thickness: number | string = 1.5;
+	export let strokeWidth: number | string = 1.5;
 	export let scaleStroke: boolean = false;
 	export let delay: number = 0;
 	export let style: string | undefined = undefined;
@@ -39,7 +39,7 @@
 	class="icon {className}"
 	{style}
 	style:--secondary-color={secondaryColor}
-	style:--thickness={cssSize(thickness)}
+	style:--stroke-width={cssSize(strokeWidth)}
 >
 	{#key name}
 		<g
@@ -102,7 +102,7 @@
 			}
 			&.stroke {
 				stroke: currentColor;
-				stroke-width: var(--thickness);
+				stroke-width: var(--stroke-width);
 				stroke-linejoin: round;
 				stroke-linecap: square;
 			}

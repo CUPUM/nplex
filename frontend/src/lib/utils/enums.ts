@@ -88,6 +88,8 @@ export enum Cookie {
  */
 export enum LoadDependency {
 	Session = 'auth:session',
+	EditorProject = 'editor:project',
+	UserProfile = 'user:profile',
 }
 
 /**

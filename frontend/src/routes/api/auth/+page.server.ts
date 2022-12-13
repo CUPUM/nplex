@@ -41,7 +41,7 @@ export const actions: Actions = {
 			})
 			.safeParse(d);
 		if (!v.success) {
-			return fail(400, v.error.flatten().fieldErrors);
+			return fail(400, v.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
 		const signupRes = await db.auth.signUp({

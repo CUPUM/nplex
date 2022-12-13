@@ -113,7 +113,7 @@
 				</Popover>
 			{:else}
 				<AppNavbarButton round cta href={authModal.getUrl({ url: $page.url }).toString()}>
-					<Icon name="user" thickness="1.5" style="font-size: 1.25em" />
+					<Icon name="user" strokeWidth="1.5" style="font-size: 1.25em" />
 				</AppNavbarButton>
 			{/if}
 		</nav>
@@ -123,9 +123,12 @@
 <style lang="scss">
 	header {
 		position: sticky;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		z-index: 100;
 		top: 0;
-		padding: 0 1rem;
+		padding: 0;
 		margin: 0;
 		font-size: var(--ui-text-sm);
 	}
@@ -133,6 +136,7 @@
 	.wrapper {
 		position: relative;
 		max-width: var(--ui-size-xl);
+		width: 100%;
 		display: grid;
 		grid-template-columns:
 			[full-start main-start]
@@ -144,18 +148,19 @@
 			[session-end full-end];
 		grid-auto-flow: dense;
 		padding-top: 0.5rem;
+		padding-inline: 2rem;
 		margin: 0 auto;
 		flex-direction: row;
-		align-items: stretch;
-		gap: 3rem;
+		align-items: center;
+		gap: 1rem;
 		@include mobile {
 			grid-template-columns:
 				[full-start main-start]
-				1fr
+				auto
 				[main-end category-start]
-				1fr
+				auto
 				[category-end session-start]
-				1fr
+				auto
 				[session-end full-end];
 		}
 	}
@@ -178,9 +183,16 @@
 	.category {
 		grid-column: category;
 		justify-content: center;
-		background: col(bg, 000, 0.8);
+		background: col(bg, 500, 0.8);
 		border-radius: var(--ui-radius-md);
-		box-shadow: 0 0 0 var(--ui-inset) col(bg, 000, 0.8);
+		width: 100%;
+		gap: 0;
+		backdrop-filter: blur(10px);
+
+		:global(a) {
+			background: transparent;
+			backdrop-filter: none;
+		}
 	}
 	.session {
 		grid-column: session;

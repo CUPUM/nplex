@@ -752,9 +752,8 @@ export interface Database {
           project_id: string
           name: string
           id: string
-          color_1: unknown | null
-          color_2: unknown | null
-          color_3: unknown | null
+          color_dominant: unknown | null
+          color_mean: unknown | null
         }
         Insert: {
           created_at?: string
@@ -767,9 +766,8 @@ export interface Database {
           project_id: string
           name: string
           id: string
-          color_1?: unknown | null
-          color_2?: unknown | null
-          color_3?: unknown | null
+          color_dominant?: unknown | null
+          color_mean?: unknown | null
         }
         Update: {
           created_at?: string
@@ -782,9 +780,8 @@ export interface Database {
           project_id?: string
           name?: string
           id?: string
-          color_1?: unknown | null
-          color_2?: unknown | null
-          color_3?: unknown | null
+          color_dominant?: unknown | null
+          color_mean?: unknown | null
         }
       }
       projects_materials: {
