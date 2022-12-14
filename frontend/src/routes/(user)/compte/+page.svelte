@@ -3,7 +3,7 @@
 	import { invalidate } from '$app/navigation';
 	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
-	import { LoadDependency } from '$utils/enums';
+	import { LOAD_DEPENDENCIES } from '$utils/enums';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
@@ -18,7 +18,7 @@
 		return async ({ update, result }) => {
 			update({ reset: false });
 			if (result.type === 'failure') {
-				invalidate(LoadDependency.UserProfile);
+				invalidate(LOAD_DEPENDENCIES.USER_PROFILE);
 			}
 		};
 	}}

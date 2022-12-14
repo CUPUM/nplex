@@ -9,13 +9,13 @@
 
 <script lang="ts">
 	export let host: HTMLElement | undefined = undefined;
-	export let easing: string = 'cubic-bezier(0.1, 0, 0.2, 1)';
-	export let duration = 550;
+	export let easing: string = 'cubic-bezier(0.05, 0, 0, 1)';
+	export let duration = 300;
 	export let delay = 0;
-	export let opacityStart = 0.2;
+	export let opacityStart = 0.25;
 	export let opacityEnd = 0;
-	export let opacityEasing = easing;
-	export let opacityDuration = 750;
+	export let opacityEasing = 'ease-out';
+	export let opacityDuration = 1000;
 	export let opacityDelay = 350;
 	export let spreadStart = 0;
 	export let spreadEnd = 1;
@@ -29,6 +29,8 @@
 	export let colorDuration = duration;
 	export let colorDelay = delay;
 	export let blur: number = 0;
+
+	const N_ANIMATIONS = 3;
 
 	let destructor: () => void;
 	let ripples: { x: number; y: number; d: number; animations: number }[] = [];
@@ -49,15 +51,11 @@
 				x,
 				y,
 				d,
-				animations: 0,
+				animations: N_ANIMATIONS,
 			};
 			ripples.push(r);
 			ripples = ripples;
 		}
-	}
-
-	function start(e: AnimationEvent, ripple: typeof ripples[number]) {
-		ripple.animations++;
 	}
 
 	function end(e: AnimationEvent, ripple: typeof ripples[number]) {
@@ -109,7 +107,6 @@
 			style:--x="{r.x}px"
 			style:--y="{r.y}px"
 			style:--d="{r.d}px"
-			on:animationstart|self={(e) => start(e, r)}
 			on:animationend|self={(e) => end(e, r)}
 		/>
 	{/each}

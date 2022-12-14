@@ -8,7 +8,7 @@
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { rootScroll } from '$stores/scroll';
-	import { SearchParam } from '$utils/enums';
+	import { SEARCH_PARAMS } from '$utils/enums';
 	import { derived, get } from 'svelte/store';
 
 	const SCROLL_LOCK = Symbol('auth');
@@ -24,7 +24,7 @@
 	export const authModal = (function () {
 		const { subscribe } = derived(page, (_page) => {
 			if (browser) {
-				const open = _page.url.searchParams.has(SearchParam.AuthModal);
+				const open = _page.url.searchParams.has(SEARCH_PARAMS.AUTH_MODAL);
 				if (!open) {
 					rootScroll.unlock(SCROLL_LOCK);
 				} else {
@@ -36,7 +36,7 @@
 						});
 					}
 					rootScroll.lock(SCROLL_LOCK);
-					const mode = _page.url.searchParams.get(SearchParam.AuthModal);
+					const mode = _page.url.searchParams.get(SEARCH_PARAMS.AUTH_MODAL);
 					return mode && (Object.values(AuthMode) as string[]).includes(mode)
 						? (mode as AuthMode)
 						: AuthMode.SignIn;
@@ -56,9 +56,9 @@
 		}) {
 			const re = new URL(url, get(page).url);
 			if (open) {
-				re.searchParams.set(SearchParam.AuthModal, mode);
+				re.searchParams.set(SEARCH_PARAMS.AUTH_MODAL, mode);
 			} else {
-				re.searchParams.delete(SearchParam.AuthModal);
+				re.searchParams.delete(SEARCH_PARAMS.AUTH_MODAL);
 			}
 			return re;
 		}

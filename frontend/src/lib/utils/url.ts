@@ -53,7 +53,7 @@ export function getSegments(routePath: string) {
 // /**
 //  * To do.
 //  */
-// export function objectToURLSearchParams(obj: Record<string, unknown>): URLSearchParams {
+// export function objectToURLSEARCH_PARAMSs(obj: Record<string, unknown>): URLSEARCH_PARAMSs {
 // 	Object.entries(obj);
 // 	return;
 // }
@@ -61,7 +61,7 @@ export function getSegments(routePath: string) {
 // /**
 //  * To do.
 //  */
-// export function URLSearchParamsToObject(params: URLSearchParams) {
+// export function URLSEARCH_PARAMSsToObject(params: URLSEARCH_PARAMSs) {
 // 	const obj = {};
 // 	params.forEach((v: string, k: string) => {
 // 		obj[k] = v;

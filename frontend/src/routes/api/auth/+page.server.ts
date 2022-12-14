@@ -1,7 +1,7 @@
 import { dev } from '$app/environment';
 import { queryMessage } from '$routes/AppMessagesOutlet.svelte';
 import { getDb } from '$utils/database';
-import { Cookie, SearchParam } from '$utils/enums';
+import { COOKIES, SEARCH_PARAMS } from '$utils/enums';
 import type { AuthSession } from '@supabase/supabase-js';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
@@ -10,7 +10,7 @@ import type { Actions, RequestEvent } from './$types';
 import { PASSWORD_MIN } from './common';
 
 function setAuth(event: RequestEvent, session: AuthSession) {
-	event.cookies.set(Cookie.Auth, JSON.stringify(session), {
+	event.cookies.set(COOKIES.AUTH, JSON.stringify(session), {
 		path: '/',
 		sameSite: 'strict',
 		maxAge: session.expires_in,
@@ -20,7 +20,7 @@ function setAuth(event: RequestEvent, session: AuthSession) {
 	const re = event.request.headers.get('referer');
 	if (re) {
 		let reurl = new URL(re);
-		reurl.searchParams.delete(SearchParam.AuthModal);
+		reurl.searchParams.delete(SEARCH_PARAMS.AUTH_MODAL);
 		const to = (reurl.pathname === '/' ? '/compte' : reurl.pathname) + reurl.search;
 		throw redirect(302, to);
 	}
@@ -113,7 +113,7 @@ export const actions: Actions = {
 			}).toString();
 			throw redirect(300, to);
 		}
-		event.cookies.delete(Cookie.Session, { path: '/' });
+		event.cookies.delete(COOKIES.SESSION, { path: '/' });
 	},
 	/**
 	 * Handle requests for forgotten password.

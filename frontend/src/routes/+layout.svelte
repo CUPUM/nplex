@@ -9,7 +9,7 @@
 	import '$styles/themes.css';
 	import '$styles/vars.scss';
 	import { browserDb } from '$utils/database';
-	import { LoadDependency } from '$utils/enums';
+	import { LOAD_DEPENDENCIES } from '$utils/enums';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import AppAuthModal, { authModal } from './AppAuthModal.svelte';
@@ -32,7 +32,7 @@
 				// Because tab switch fires a SIGNED_IN event and causes unwarranted page invalidation.
 				return;
 			}
-			invalidate(LoadDependency.Session);
+			invalidate(LOAD_DEPENDENCIES.SESSION);
 		});
 	}
 

@@ -1,5 +1,5 @@
 import { getDb } from '$utils/database';
-import { StatusCode, StorageBucket } from '$utils/enums';
+import { STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { pgarr } from '$utils/format';
 import { error, fail } from '@sveltejs/kit';
 import sharp from 'sharp';
@@ -53,7 +53,7 @@ export const actions: Actions = {
 				return;
 			}
 			const storageRes = await db.storage
-				.from(StorageBucket.Projects)
+				.from(STORAGE_BUCKETS.PROJECTS)
 				.upload(
 					[event.params.projectId, GALLERY_FOLDER, parsed.data.name].join('/'),
 					parsed.data.buffer,
@@ -76,7 +76,7 @@ export const actions: Actions = {
 					errs.push(statsRes.error);
 					// Cleanup uploaded file if error from metadata update.
 					const delStorageRes = await db.storage
-						.from(StorageBucket.Projects)
+						.from(STORAGE_BUCKETS.PROJECTS)
 						.remove([storageRes.data.path]);
 					if (delStorageRes.error) {
 						errs.push(delStorageRes.error);
@@ -91,7 +91,7 @@ export const actions: Actions = {
 	},
 	update: async (event) => {
 		if (!event.params.projectId) {
-			return fail(StatusCode.BadRequest);
+			return fail(STATUS_CODES.BadRequest);
 		}
 		const formData = await event.request.formData();
 		const parsed = zfd
@@ -113,13 +113,13 @@ export const actions: Actions = {
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(StatusCode.BadRequest, parsed.error.formErrors.fieldErrors);
+			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
 		const updateRes = await db.from('projects_gallery_images').upsert(parsed.data);
 		console.log(updateRes);
 		if (updateRes.error) {
-			return fail(StatusCode.InternalServerError, updateRes.error);
+			return fail(STATUS_CODES.InternalServerError, updateRes.error);
 		}
 	},
 	delete: async (event) => {
@@ -137,7 +137,7 @@ export const actions: Actions = {
 		}
 		const db = await getDb(event);
 		const deleteRes = await db.storage
-			.from(StorageBucket.Projects)
+			.from(STORAGE_BUCKETS.PROJECTS)
 			.remove([parsed.data.file_name]);
 		if (deleteRes.error) {
 			throw error(500, deleteRes.error);

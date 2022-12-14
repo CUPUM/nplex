@@ -1,6 +1,6 @@
 import { getDb } from '$utils/database';
 import { dbAdmin } from '$utils/databaseAdmin';
-import { StatusCode } from '$utils/enums';
+import { STATUS_CODES } from '$utils/enums';
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
@@ -10,7 +10,7 @@ export const actions: Actions = {
 	 */
 	update: async (event) => {
 		if (!event.locals.session) {
-			return fail(StatusCode.Unauthorized);
+			return fail(STATUS_CODES.Unauthorized);
 		}
 		const formData = Object.fromEntries(await event.request.formData());
 		const db = await getDb(event);
@@ -20,7 +20,7 @@ export const actions: Actions = {
 			.eq('id', event.locals.session.user.id)
 			.single();
 		if (update.error) {
-			return fail(StatusCode.BadRequest, { ...update.error });
+			return fail(STATUS_CODES.BadRequest, { ...update.error });
 		}
 	},
 
@@ -29,17 +29,17 @@ export const actions: Actions = {
 	 */
 	delete: async ({ request, locals }) => {
 		if (!locals.session) {
-			return fail(StatusCode.Unauthorized);
+			return fail(STATUS_CODES.Unauthorized);
 		}
 		const formData = await request.formData();
 		const id = formData.get('id');
 		if (!id || id !== locals.session.user.id) {
-			return fail(StatusCode.BadRequest);
+			return fail(STATUS_CODES.BadRequest);
 		}
 		const deleteRes = await dbAdmin.auth.admin.deleteUser(id);
 		if (deleteRes.error) {
-			throw error(StatusCode.InternalServerError);
+			throw error(STATUS_CODES.InternalServerError);
 		}
-		throw redirect(StatusCode.MovedPermanently, '/');
+		throw redirect(STATUS_CODES.MovedPermanently, '/');
 	},
 };

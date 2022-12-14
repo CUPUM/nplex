@@ -1,5 +1,3 @@
-import type { Category } from 'src/app';
-
 /**
  * The following declarations detail various route objects and object arrays to help generate
  * navbars or other UI elements. The route objects can also serve as a matching reference to keep
@@ -9,123 +7,102 @@ import type { Category } from 'src/app';
  * app's possible routing state.
  */
 
+import { CATEGORIES, type Category } from './enums';
+
 interface Route {
 	/**
 	 * Non-based full absolute pathname, with leading slash.
 	 */
 	pathname: string;
 	/**
-	 * Title to be used in navbars or as a label for other elements. Routes not calling for a title
+	 * Label to be used in navbars or as a label for other elements. Routes not calling for a title
 	 * should not need to be defined here.
 	 */
-	title: string;
+	label: string;
 }
 
-/**
- * Main navigation routes.
- */
-export const mainRoutes: Route[] = [
-	{
+export const MAIN_ROUTES = {
+	about: {
 		pathname: '/a-propos',
-		title: 'À propos',
+		label: 'À propos',
 	},
-	{
+	guides: {
 		pathname: '/guides',
-		title: 'Guides',
+		label: 'Guides',
 	},
-	{
-		pathname: '/',
-		title: 'Explorer',
+	explore: {
+		pathname: '',
+		label: 'Explorer',
 	},
-];
+} satisfies Record<string, Route>;
 
-export interface ExploreRoute extends Route {
-	category: Category;
-}
-
-/**
- * Routes for the different categories of "exploration" mode for browsing and searching.
- */
-export const exploreRoutes: ExploreRoute[] = [
-	{
-		pathname: '/projets',
-		title: 'Projets',
-		category: 'projects',
-	},
-	{
-		pathname: '/organisations',
-		title: 'Organisations',
-		category: 'organisations',
-	},
-	{
-		pathname: '/acteurs',
-		title: 'Acteurs',
-		category: 'actors',
-	},
-];
-
-export const editorBase: Route = {
-	pathname: '/editer',
-	title: 'Éditer',
-};
-
-interface CreationRoute extends Route {
-	category: Category;
-	disabled?: boolean;
-}
-
-/**
- * Relative creation-root routes for the submission forms.
- */
-export const createRoutes: CreationRoute[] = [
-	{
-		pathname: editorBase.pathname + '/projet',
-		title: 'Créer un projet',
-		category: 'projects',
-	},
-	{
-		pathname: editorBase.pathname + '/organisation',
-		title: 'Créer une organisation',
-		category: 'organisations',
-		disabled: true,
-	},
-	{
-		pathname: editorBase.pathname + '/acteur',
-		title: 'Créer un profil d’acteur',
-		category: 'actors',
-		disabled: true,
-	},
-];
-
-interface EditRoute extends Route {
-	category: Category;
-	disabled?: boolean;
-}
-
-/**
- * Relative creation-root routes for the submission forms.
- */
-export const editRoutes: CreationRoute[] = [
-	{
-		pathname: editorBase.pathname + '/projet',
-		title: 'Éditer un projet',
-		category: 'projects',
-	},
-	{
-		pathname: editorBase.pathname + '/organisation',
-		title: 'Éditer une organisation',
-		category: 'organisations',
-		disabled: true,
-	},
-	{
-		pathname: editorBase.pathname + '/acteur',
-		title: 'Éditer un profil d’acteur',
-		category: 'actors',
-		disabled: true,
-	},
-];
-
-export const userBase: Route = {
+export const USER_BASE_ROUTE = {
 	pathname: '/compte',
-	title: 'Mon compte',
-};
+	label: 'Mon compte',
+} satisfies Route;
+
+export const USER_ROUTES = {
+	// Add
+} satisfies Record<string, Route>;
+
+interface ExploreRoute extends Route {
+	category: Category;
+}
+
+export const EXPLORE_ROUTES = {
+	projects: {
+		pathname: '/projets',
+		label: 'Projets',
+		category: CATEGORIES.PROJECTS,
+	},
+	organisations: {
+		pathname: '/organisations',
+		label: 'Organisations',
+		category: CATEGORIES.ORGANISATIONS,
+	},
+	actors: {
+		pathname: '/acteurs',
+		label: 'Acteurs',
+		category: CATEGORIES.ACTORS,
+	},
+} satisfies Record<string, ExploreRoute>;
+
+export const EDITOR_BASE_ROUTE = {
+	pathname: '/editer',
+	label: 'Éditer',
+} satisfies Route;
+
+interface EditorRoute extends Route {
+	category: Category;
+	disabled?: boolean;
+	subpath: string;
+}
+
+export const EDITOR_ROUTES = {
+	project: {
+		subpath: '/projet',
+		label: 'Éditer un projet',
+		category: 'projects',
+		get pathname() {
+			return EDITOR_BASE_ROUTE.pathname + this.subpath;
+		},
+	},
+	organisation: {
+		subpath: '/organisation',
+		label: 'Éditer une organisation',
+		category: 'organisations',
+		disabled: true,
+		get pathname() {
+			return EDITOR_BASE_ROUTE.pathname + this.subpath;
+		},
+	},
+	actor: {
+		subpath: '/acteur',
+		label: 'Éditer un profil d’acteur',
+		category: 'actors',
+		disabled: true,
+		get pathname() {
+			return EDITOR_BASE_ROUTE.pathname + this.subpath;
+		},
+	},
+} satisfies Record<string, EditorRoute>;

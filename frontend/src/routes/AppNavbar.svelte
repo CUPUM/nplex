@@ -23,13 +23,12 @@
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
 	import { rootScroll } from '$stores/scroll';
-	import { editorBase, exploreRoutes, mainRoutes, userBase } from '$utils/routes';
+	import { EDITOR_BASE_ROUTE, EXPLORE_ROUTES, MAIN_ROUTES, USER_BASE_ROUTE } from '$utils/routes';
 	import { writable } from 'svelte/store';
 	import type { ValueOf } from 'ts-essentials';
 	import { authModal } from './AppAuthModal.svelte';
 	import AppNavbarButton from './AppNavbarButton.svelte';
-	import AppNavbarCreateMenu from './AppNavbarCreateMenu.svelte';
-	import AppNavbarEditMenu from './AppNavbarEditMenu.svelte';
+	import AppNavbarEditorMenu from './AppNavbarEditorMenu.svelte';
 	import AppNavbarUserMenu from './AppNavbarUserMenu.svelte';
 	import type { ThemeClass } from './AppThemes.svelte';
 
@@ -40,8 +39,16 @@
 	let thres = navbarHeight || 40;
 	let loadingCategoryPath: string | null = '';
 
+	const mainNav = Object.values(MAIN_ROUTES);
+	const exploreNav = Object.values(EXPLORE_ROUTES);
+
 	beforeNavigate(({ to }) => {
-		if (to && exploreRoutes.map((r) => r.pathname).includes(to.url.pathname)) {
+		if (
+			to &&
+			Object.values(EXPLORE_ROUTES)
+				.map((r) => r.pathname as string)
+				.includes(to.url.pathname)
+		) {
 			loadingCategoryPath = to.url.pathname;
 		}
 	});
@@ -60,19 +67,19 @@
 			<AppNavbarButton round href="/">
 				<Logo short style="font-size: larger" />
 			</AppNavbarButton>
-			{#each mainRoutes as route}
+			{#each mainNav as route}
 				<AppNavbarButton href={route.pathname} current={route.pathname === rootPathname}>
-					{route.title}
+					{route.label}
 				</AppNavbarButton>
 			{/each}
 		</nav>
 		<nav class="category">
-			{#each exploreRoutes as r}
+			{#each exploreNav as r}
 				<AppNavbarButton
 					href={r.pathname}
 					current={$page.url.pathname.startsWith(r.pathname)}
 				>
-					{r.title}
+					{r.label}
 				</AppNavbarButton>
 			{/each}
 		</nav>
@@ -82,32 +89,20 @@
 					<AppNavbarButton
 						equi
 						slot="control"
-						href={editorBase.pathname}
-						current={$page.url.pathname.startsWith(editorBase.pathname)}
+						href={EDITOR_BASE_ROUTE.pathname}
+						current={$page.url.pathname.startsWith(EDITOR_BASE_ROUTE.pathname)}
 						active={open}
 					>
-						<Icon name="pen-plus" style="font-size: 1.25em" />
+						<Icon name="pen" style="font-size: 1.25em" />
 					</AppNavbarButton>
-					<AppNavbarCreateMenu />
-				</Popover>
-				<Popover place="bottom" align="end" hover let:open>
-					<AppNavbarButton
-						equi
-						slot="control"
-						href={editorBase.pathname}
-						current={$page.url.pathname.startsWith(editorBase.pathname)}
-						active={open}
-					>
-						<Icon name="file" style="font-size: 1.25em" />
-					</AppNavbarButton>
-					<AppNavbarEditMenu />
+					<AppNavbarEditorMenu />
 				</Popover>
 				<Popover hover place="bottom" align="end" let:open>
 					<Avatar
 						active={open}
 						slot="control"
 						data={$page.data.session.user}
-						href={userBase.pathname}
+						href={USER_BASE_ROUTE.pathname}
 					/>
 					<AppNavbarUserMenu />
 				</Popover>

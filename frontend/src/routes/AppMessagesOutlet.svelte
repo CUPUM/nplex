@@ -125,7 +125,7 @@
 				? new URL(url)
 				: new RelativeURL(url);
 		messages.forEach((m) => {
-			newURL.searchParams.append(SearchParam.Message, JSON.stringify(m));
+			newURL.searchParams.append(SEARCH_PARAMS.MESSAGE, JSON.stringify(m));
 		});
 		return typeof url === 'string' ? newURL.toString() : url;
 	}
@@ -136,7 +136,7 @@
 	import { page } from '$app/stores';
 	import Icon from '$components/Icon.svelte';
 	import { transform } from '$transitions/transform';
-	import { SearchParam } from '$utils/enums';
+	import { SEARCH_PARAMS } from '$utils/enums';
 	import { RelativeURL } from '$utils/url';
 	import type { ComponentProps, SvelteComponentTyped } from 'svelte';
 	import { flip } from 'svelte/animate';
@@ -154,8 +154,8 @@
 	}
 
 	afterNavigate(({ from, to }) => {
-		if (!to || !to.url.searchParams.has(SearchParam.Message)) return;
-		const q = to.url.searchParams.getAll(SearchParam.Message).reduce((acc, m) => {
+		if (!to || !to.url.searchParams.has(SEARCH_PARAMS.MESSAGE)) return;
+		const q = to.url.searchParams.getAll(SEARCH_PARAMS.MESSAGE).reduce((acc, m) => {
 			const json = JSON.parse(m);
 			const parsed = queryMessageSchema.safeParse(json);
 			if (parsed.success) acc.push(parsed.data);
@@ -164,7 +164,7 @@
 		if (q.length) {
 			messages.dispatch(...q);
 			const o = $page.url.searchParams;
-			o.delete(SearchParam.Message);
+			o.delete(SEARCH_PARAMS.MESSAGE);
 			goto('?' + o.toString(), { replaceState: true });
 		}
 	});

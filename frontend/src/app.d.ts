@@ -1,6 +1,7 @@
 /// <reference types="@sveltejs/kit" />
 import type { Database } from '$types/database';
 import type { DatabaseBuff } from '$types/databaseBuff';
+import type { Category } from '$utils/enums';
 import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
 
@@ -10,8 +11,6 @@ export type Session = DeepOmit<AuthSession, { user: { role: never } }> & {
 		'avatar_url' | 'first_name' | 'public_email'
 	>;
 };
-
-export type Category = 'projects' | 'organisations' | 'actors';
 
 declare global {
 	namespace svelte.JSX {

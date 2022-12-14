@@ -1,10 +1,10 @@
 import { getDb } from '$utils/database';
-import { LoadDependency } from '$utils/enums';
+import { LOAD_DEPENDENCIES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from '../$types';
 
 export const load: LayoutLoad = async (event) => {
-	event.depends(LoadDependency.UserProfile);
+	event.depends(LOAD_DEPENDENCIES.USER_PROFILE);
 	const { session } = await event.parent();
 	if (!session) {
 		throw error(400);

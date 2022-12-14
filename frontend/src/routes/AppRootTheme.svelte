@@ -7,7 +7,7 @@
  -->
 <script lang="ts" context="module">
 	import { browser } from '$app/environment';
-	import { Cookie } from '$utils/enums';
+	import { COOKIES } from '$utils/enums';
 	import jscookie from 'js-cookie';
 	import { writable } from 'svelte/store';
 	import { ThemeClass, themeClassPattern } from './AppThemes.svelte';
@@ -18,12 +18,12 @@
 	function updateThemeCookie(name: keyof typeof ThemeClass) {
 		if (browser) {
 			if (name) {
-				jscookie.set(Cookie.Theme, name, {
+				jscookie.set(COOKIES.THEME, name, {
 					path: '/',
 					expires: Date.now() + COOKIE_LIFETIME,
 				});
 			} else {
-				jscookie.remove(Cookie.Theme, { path: '/' });
+				jscookie.remove(COOKIES.THEME, { path: '/' });
 			}
 		}
 	}

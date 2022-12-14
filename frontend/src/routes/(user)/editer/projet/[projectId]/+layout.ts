@@ -1,11 +1,11 @@
 import { getDb } from '$utils/database';
-import { LoadDependency, StorageBucket } from '$utils/enums';
+import { LOAD_DEPENDENCIES, STORAGE_BUCKETS } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
 export const load: LayoutLoad = async (event) => {
-	event.depends(LoadDependency.EditorProject);
+	event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
 	const db = await getDb(event);
 	const descriptorsRes = await db.rpc('get_project_descriptors').single();
 	if (descriptorsRes.error) {
@@ -56,7 +56,7 @@ export const load: LayoutLoad = async (event) => {
 			: []
 		).map((img) => ({
 			...img,
-			publicUrl: db.storage.from(StorageBucket.Projects).getPublicUrl(img.name).data
+			publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.name).data
 				.publicUrl,
 		})),
 	};
