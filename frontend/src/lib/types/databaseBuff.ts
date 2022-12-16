@@ -36,7 +36,9 @@ export interface DatabaseBuff {
 					})[];
 					siteOwnerships: Database['public']['Tables']['project_site_ownership']['Row'][];
 					siteUsagesCategories: Database['public']['Tables']['project_site_usage_category']['Row'][];
-					siteUsages: Database['public']['Tables']['project_site_usage']['Row'][];
+					siteUsages: (Database['public']['Tables']['project_site_usage']['Row'] & {
+						category_ids: Database['public']['Tables']['project_site_usage_site_usage_category']['Row']['category_id'][];
+					})[];
 					implantationModes: Database['public']['Tables']['project_implantation_mode']['Row'][];
 					materialOrigins: Database['public']['Tables']['project_material_origin']['Row'][];
 					materialTypes: Database['public']['Tables']['project_material_type']['Row'][];

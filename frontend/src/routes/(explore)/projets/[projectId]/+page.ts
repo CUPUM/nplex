@@ -1,4 +1,4 @@
-import { queryMessage } from '$routes/AppMessagesOutlet.svelte';
+import { queryMessage } from '$routes/MessagesOutlet.svelte';
 import { getDb } from '$utils/database';
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';

@@ -100,7 +100,7 @@
 			}}
 		>
 			{#if $$slots.default}
-				<div class="inner">
+				<div class="inner nest">
 					<slot {open} />
 				</div>
 			{/if}
@@ -127,29 +127,26 @@
 	}
 
 	.popover {
-		--radius: var(--ui-radius-md);
 		display: block;
 		flex-shrink: 0;
 		width: auto;
 		pointer-events: all;
 		user-select: initial;
-		z-index: 100;
 		position: relative;
 		padding: 0;
 		margin: 0;
-		overflow: visible;
 		transform-origin: inherit;
 		z-index: 1000;
 	}
 
 	.inner {
+		--radius: var(--ui-radius-md);
+		--inset: var(--ui-inset);
 		position: relative;
 		background: col(bg, 000);
-		box-shadow: 0 1rem 3.5rem -2rem rgba(0, 10, 20, 0.25);
 		border-radius: var(--radius);
-		display: inline-flex;
-		flex-direction: column;
-		// border: 1px solid col(bg, 000);
+		padding: var(--inset);
+		box-shadow: 0 0.5em 3em -2em rgb(0, 20, 40, 0.2);
 	}
 
 	.top {

@@ -9,7 +9,7 @@
 	import Loading from '$components/Loading.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
-	import { ThemeClass } from '$routes/AppThemes.svelte';
+	import { THEME_CLASSES } from '$utils/themes';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
@@ -103,13 +103,8 @@
 				out:scale={{ start: 0.95 }}
 			>
 				<fieldset>
-					<Image
-						class="gallery-image"
-						src={image.publicUrl}
-						alt={image.id}
-						objectFit="cover"
-					/>
-					<menu class={ThemeClass.dark}>
+					<Image class="gallery-image" src={image.publicUrl} alt={image.id} objectFit="cover" />
+					<menu class={THEME_CLASSES.DARK}>
 						<Tooltip message="Supprimer" place="top">
 							<Button type="submit" round form={del(image.id)}>
 								<Icon name="trash" />
@@ -121,9 +116,7 @@
 							</Button>
 						</Tooltip>
 						<Tooltip message="Avancer" place="top">
-							<Button style="margin-left: auto;" round
-								><Icon name="arrow-left" /></Button
-							>
+							<Button style="margin-left: auto;" round><Icon name="arrow-left" /></Button>
 						</Tooltip>
 						<Tooltip message="Reculer" place="top">
 							<Button round><Icon name="arrow-right" /></Button>
@@ -136,25 +129,13 @@
 					<Field name="[{i}].title" value={image.title ?? ''} variant="outlined">
 						<svelte:fragment slot="label">Titre</svelte:fragment>
 					</Field>
-					<TextArea
-						name="[{i}].description"
-						value={image.description ?? ''}
-						variant="outlined"
-					>
+					<TextArea name="[{i}].description" value={image.description ?? ''} variant="outlined">
 						<svelte:fragment slot="label">Description</svelte:fragment>
 					</TextArea>
 				</div>
 				{#if dragging !== null && dragging !== i}
-					<hr
-						class="before"
-						class:target={target === i}
-						on:dragover={() => dragover(i)}
-					/>
-					<hr
-						class="after"
-						class:target={target === i + 1}
-						on:dragover={() => dragover(i + 1)}
-					/>
+					<hr class="before" class:target={target === i} on:dragover={() => dragover(i)} />
+					<hr class="after" class:target={target === i + 1} on:dragover={() => dragover(i + 1)} />
 				{/if}
 			</li>
 		{/each}

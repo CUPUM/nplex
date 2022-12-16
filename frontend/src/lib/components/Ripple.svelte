@@ -4,7 +4,7 @@
 	Adds a visual ripple effect on interactive elements.
 -->
 <script lang="ts" context="module">
-	export const RIPPLE_ATTRIBUTE = 'data-ripple';
+	export const RIPPLE_ATTRIBUTE = 'ripple-host';
 </script>
 
 <script lang="ts">

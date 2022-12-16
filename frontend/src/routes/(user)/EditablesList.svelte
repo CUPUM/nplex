@@ -2,6 +2,8 @@
 </script>
 
 <script lang="ts">
+	import { autoHash } from '$actions/autoHash';
+
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import Switch from '$components/Switch.svelte';
@@ -21,6 +23,7 @@
 
 	export let title: string;
 	export let data: D[];
+	export let id: string;
 
 	const filters = {
 		all: 'Tous',
@@ -48,7 +51,7 @@
 	];
 </script>
 
-<section>
+<section {id} use:autoHash>
 	<header>
 		<h3 class="e-h3">{title}</h3>
 		<form action="" use:enhance method="POST">

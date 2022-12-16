@@ -1,4 +1,5 @@
-/// <reference types="@sveltejs/kit" />
+// /// <reference types="@sveltejs/kit" />
+
 import type { Database } from '$types/database';
 import type { DatabaseBuff } from '$types/databaseBuff';
 import type { Category } from '$utils/enums';
@@ -34,9 +35,8 @@ declare global {
 		}
 		interface Locals {
 			/**
-			 * 1-to-1 correspondance with the app session cookie, used as source to populate locals.
-			 * Keep content to a minimum (essential data only) while adhering to a partial
-			 * App.PageData shape.
+			 * 1-to-1 correspondance with the app session cookie, used as source to populate locals. Keep
+			 * content to a minimum (essential data only) while adhering to a partial App.PageData shape.
 			 */
 			session?: DeepPick<
 				Session,

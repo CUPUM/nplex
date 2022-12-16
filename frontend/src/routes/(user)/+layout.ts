@@ -1,4 +1,4 @@
-import { queryMessage } from '$routes/AppMessagesOutlet.svelte';
+import { queryMessage } from '$routes/MessagesOutlet.svelte';
 import { getDb, getPagination } from '$utils/database';
 import { error, redirect } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
@@ -16,7 +16,12 @@ export const load: LayoutLoad = async (event) => {
 	const db = await getDb(event);
 	const projectsRes = await db
 		.from('editable_projects')
-		.select('*')
+		.select(
+			`
+			*,
+			type:project_type(*)
+		`
+		)
 		.order('updated_at', { ascending: false })
 		.range(...getPagination(0, 10));
 	if (projectsRes.error) {

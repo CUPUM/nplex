@@ -1,5 +1,4 @@
-import { dev } from '$app/environment';
-import { queryMessage } from '$routes/AppMessagesOutlet.svelte';
+import { queryMessage } from '$routes/MessagesOutlet.svelte';
 import { getDb } from '$utils/database';
 import { COOKIES, SEARCH_PARAMS } from '$utils/enums';
 import type { AuthSession } from '@supabase/supabase-js';
@@ -7,16 +6,14 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { Actions, RequestEvent } from './$types';
-import { PASSWORD_MIN } from './common';
+import { SERVER_COOKIE_OPTIONS } from './common';
 
 function setAuth(event: RequestEvent, session: AuthSession) {
 	event.cookies.set(COOKIES.AUTH, JSON.stringify(session), {
-		path: '/',
-		sameSite: 'strict',
+		...SERVER_COOKIE_OPTIONS,
 		maxAge: session.expires_in,
-		httpOnly: true,
-		secure: !dev,
 	});
+	// To do: replace referer by a redirect search param.
 	const re = event.request.headers.get('referer');
 	if (re) {
 		let reurl = new URL(re);
@@ -35,7 +32,7 @@ export const actions: Actions = {
 		const v = zfd
 			.formData({
 				email: zfd.text(z.string().email()),
-				password: zfd.text(z.string().min(PASSWORD_MIN)),
+				password: zfd.text(z.string().min(8)),
 				first_name: zfd.text(z.string().optional()),
 				last_name: zfd.text(z.string().optional()),
 			})

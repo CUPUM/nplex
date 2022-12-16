@@ -30,16 +30,18 @@ export function autoHash(
 	}: AutoHashOptions = {}
 ) {
 	function check(entries: IntersectionObserverEntry[]) {
-		const currentPage = get(page);
-		for (const entry of entries) {
-			if (entry.isIntersecting) {
-				const to = new URL(currentPage.url);
-				to.hash = hash;
-				goto(to.toString(), { replaceState: true, noScroll: true });
-			} else if (currentPage.url.hash === hash && clearOnLeave) {
-				const to = new URL(currentPage.url);
-				to.hash = '';
-				goto(to.toString());
+		if (hash) {
+			const currentPage = get(page);
+			for (const entry of entries) {
+				if (entry.isIntersecting) {
+					const to = new URL(currentPage.url);
+					to.hash = hash;
+					goto(to.toString(), { replaceState: true, noScroll: true });
+				} else if (currentPage.url.hash === hash && clearOnLeave) {
+					const to = new URL(currentPage.url);
+					to.hash = '';
+					goto(to.toString(), { replaceState: true, noScroll: true });
+				}
 			}
 		}
 	}

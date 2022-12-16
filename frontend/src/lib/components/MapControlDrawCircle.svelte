@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { Cursor } from '$utils/enums';
+	import { CURSOR } from '$utils/enums';
 	import type { ComponentProps } from 'svelte';
 	import Button from './Button.svelte';
 	import Icon from './Icon.svelte';
@@ -25,7 +25,7 @@
 
 	$: typedProps = $$props as $$Props;
 	$: active = draw && $currentMode === MODE_KEY;
-	$: mapContext?.setCursor(active ? Cursor.Crosshair : undefined);
+	$: mapContext?.setCursor(active ? CURSOR.Crosshair : undefined);
 
 	function setMode() {
 		if (map && draw) {
@@ -37,7 +37,13 @@
 	}
 </script>
 
-<Button equi={!$$slots.default || typedProps.equi} variant="ghost" {...typedProps} {active} on:click={setMode}>
+<Button
+	equi={!$$slots.default || typedProps.equi}
+	variant="ghost"
+	{...typedProps}
+	{active}
+	on:click={setMode}
+>
 	<slot>
 		<Icon name="pin" />
 	</slot>

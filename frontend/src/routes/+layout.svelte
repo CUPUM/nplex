@@ -3,7 +3,7 @@
 	import { afterNavigate, beforeNavigate, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
-	import AppMessagesOutlet from '$routes/AppMessagesOutlet.svelte';
+	import MessagesOutlet from '$routes/MessagesOutlet.svelte';
 	import '$styles/app.scss';
 	import '$styles/resets.scss';
 	import '$styles/themes.css';
@@ -12,10 +12,10 @@
 	import { LOAD_DEPENDENCIES } from '$utils/enums';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
-	import AppAuthModal, { authModal } from './AppAuthModal.svelte';
-	import AppFooter from './AppFooter.svelte';
-	import AppNavbar from './AppNavbar.svelte';
-	import AppRootTheme from './AppRootTheme.svelte';
+	import AuthModal, { authModal } from './AuthModal.svelte';
+	import Footer from './Footer.svelte';
+	import Navbar from './Navbar.svelte';
+	import RootTheme from './RootTheme.svelte';
 
 	export let data: LayoutData;
 
@@ -26,11 +26,16 @@
 	let mounted = false;
 
 	if (browser) {
-		browserDb.auth.onAuthStateChange((event, session) => {
-			console.log(event);
+		browserDb.auth.onAuthStateChange(async (event, session) => {
 			if (event === 'SIGNED_IN' && session?.user.id === data.session?.user.id) {
 				// Because tab switch fires a SIGNED_IN event and causes unwarranted page invalidation.
 				return;
+			}
+			if (event === 'TOKEN_REFRESHED' && session) {
+				await fetch('/api/auth/refresh', {
+					method: 'POST',
+					body: JSON.stringify(session),
+				});
 			}
 			invalidate(LOAD_DEPENDENCIES.SESSION);
 		});
@@ -53,7 +58,7 @@
 
 <svelte:window bind:scrollY />
 
-<AppRootTheme />
+<RootTheme />
 <div
 	class="container"
 	class:hidden={!mounted}
@@ -62,24 +67,24 @@
 	style:--scroll-px="{scrollY}px"
 	style:--navbar-height-px="{navbarHeight}px"
 >
-	<AppNavbar bind:navbarHeight />
+	<Navbar bind:navbarHeight />
 	<main>
 		<slot />
 	</main>
 	{#if $page.data.showFooter}
-		<AppFooter />
+		<Footer />
 	{/if}
 </div>
 <div class="border" class:authing={$authModal} />
-<AppAuthModal />
-<AppMessagesOutlet />
+<AuthModal />
+<MessagesOutlet />
 <LoadingProgress bind:this={progress} />
 
 <style lang="scss" module>
 	.container {
 		position: relative;
 		transform-origin: 50vw calc(var(--scroll-px) + 50vh);
-		transition: transform 0.35s cubic-bezier(0.2, 0, 0, 1), opacity 0.5s ease-out;
+		transition: transform 0.35s cubic-bezier(0.2, 0, 0.2, 1.2), opacity 0.5s ease-out;
 		&.hidden {
 			transform: scale(0.98);
 			opacity: 0;
@@ -101,11 +106,11 @@
 		color: col(bg, 300);
 		box-shadow: 0 0 0 10rem currentColor;
 		transition: border-radius 0.35s cubic-bezier(0.2, 0, 0, 1),
-			transform 0.35s cubic-bezier(0.2, 0, 0, 1);
+			transform 0.35s cubic-bezier(0.2, 0, 0.2, 1.2);
 		&.authing {
 			transform: scale(0.94);
 			width: calc(100vw - var(--ui-scroll-size));
-			border-radius: 1.5rem;
+			border-radius: var(--ui-radius-xl);
 			color: col(bg, 900);
 		}
 	}

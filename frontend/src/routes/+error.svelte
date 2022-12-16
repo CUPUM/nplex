@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { THEME_NAMES } from '$utils/themes';
 	import { onDestroy, onMount } from 'svelte/internal';
-	import { rootTheme } from './AppRootTheme.svelte';
+	import { rootTheme } from './RootTheme.svelte';
 
 	onMount(() => {
-		rootTheme.set('dark');
+		rootTheme.set(THEME_NAMES.DARK);
 	});
 
 	onDestroy(() => {

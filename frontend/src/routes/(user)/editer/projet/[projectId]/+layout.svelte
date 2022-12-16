@@ -3,7 +3,7 @@
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
-	import { editorBase } from '$utils/routes';
+	import { EDITOR_BASE_ROUTE } from '$utils/routes';
 	import type { Page } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
@@ -20,7 +20,7 @@
 	let sections = false;
 
 	function href(page: Page, destination: typeof routes[number] | null) {
-		const base = `${editorBase.pathname}/projet/${page.params.projectId}`;
+		const base = `${EDITOR_BASE_ROUTE.pathname}/projet/${page.params.projectId}`;
 		if (!destination) {
 			return base;
 		}
@@ -30,7 +30,7 @@
 
 	function current(page: Page) {
 		const seg = page.url.pathname.replace(
-			editorBase.pathname + '/projet/' + page.params.projectId,
+			EDITOR_BASE_ROUTE.pathname + '/projet/' + page.params.projectId,
 			''
 		);
 		return routes.findIndex((r) => r.subpath === seg);
@@ -47,7 +47,7 @@
 
 <header>
 	<hgroup>
-		<p>Éditeur de projet</p>
+		<span>Éditeur de projet</span>
 		<h1>{data.project.title}</h1>
 	</hgroup>
 </header>
@@ -95,58 +95,32 @@
 
 <style lang="scss">
 	header {
-		width: 100%;
-		position: relative;
-		padding-block: calc(var(--navbar-height-px) + 4rem);
-		margin-top: calc(-1 * var(--navbar-height-px));
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
 		align-items: center;
-		min-height: 100vh;
-
-		&:before {
-			content: '';
-			z-index: -1;
-			position: absolute;
-			// height: max(1px, calc(100% - 2.5 * var(--scroll-px)));
-			height: 100%;
-			bottom: 0;
-			left: min(2rem, calc(0.2 * var(--scroll-px)));
-			right: min(2rem, calc(0.2 * var(--scroll-px)));
-			justify-self: center;
-			background: col(bg, 900);
-			border-radius: min(var(--ui-radius-xl), calc(0.5 * var(--scroll-px)));
-			transition: all 0.2s ease-out;
-		}
+		justify-content: center;
+		padding-block: calc(var(--navbar-height-px) + 4rem);
+		padding-inline: 2rem;
 	}
 
 	hgroup {
 		display: flex;
 		flex-direction: column;
-		max-width: var(--ui-size-xl);
-		width: 100%;
-		margin: 0 auto;
-		padding-inline: 4rem;
 		gap: 1rem;
+		text-align: center;
+		max-width: var(--ui-size-lg);
 	}
 
-	h1 {
-		width: 100%;
-	}
-
-	p {
-		color: col(fg, 500, 0.5);
+	span {
 		font-size: var(--ui-text-xl);
-		// color: transparent;
-		// -webkit-text-stroke: 1.25px col(fg, 100, 0.25);
+		font-weight: 600;
 	}
 
 	.toolbar {
-		padding: 0 2rem;
+		padding: 0 var(--ui-gutter);
 		width: 100%;
 		position: sticky;
-		bottom: 2rem;
+		bottom: var(--ui-gutter);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -178,7 +152,7 @@
 		position: absolute;
 		pointer-events: all;
 		bottom: 100%;
-		margin-bottom: 0.5rem;
+		margin-bottom: var(--ui-gutter);
 		display: inline-flex;
 		flex-direction: row;
 		justify-content: center;

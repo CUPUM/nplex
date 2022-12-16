@@ -13,7 +13,7 @@
 	</figure>
 	<section>
 		<div class="title">{datum.title}</div>
-		<div class="type">{datum.type_id}</div>
+		<div class="type">{datum.type.title}</div>
 	</section>
 </a>
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
+	import { EDITABLES_HASHES } from './common';
 	import EditablesList from './EditablesList.svelte';
 	import EditablesProjectCard from './EditablesProjectCard.svelte';
 
@@ -10,7 +11,7 @@
 <header>
 	<h2>Fiches éditables</h2>
 </header>
-<EditablesList title="Projets" data={data.projects} let:datum>
+<EditablesList id={EDITABLES_HASHES.projects} title="Projets" data={data.projects} let:datum>
 	{#if datum.id === 'placeholder'}
 		<a href="/editer/projet">Démarrer un nouveau projet</a>
 	{:else}

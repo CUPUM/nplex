@@ -259,13 +259,13 @@
 
 <style lang="scss">
 	:where(.map) {
-		all: unset;
 		position: relative;
 		display: block;
 		padding: 0;
 		margin: 0;
-		width: 400px;
-		height: 300px;
+		width: 100%;
+		height: 100%;
+		border-radius: inherit;
 	}
 
 	.map-container {

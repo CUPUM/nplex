@@ -1,15 +1,10 @@
-import { dev } from '$app/environment';
 import { getDb } from '$utils/database';
 import { COOKIES } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
 import type { AuthSession } from '@supabase/supabase-js';
 import { json } from '@sveltejs/kit';
-import type { RequestEvent, RequestHandler } from './$types';
-
-function clearSession(event: RequestEvent) {
-	event.cookies.delete(COOKIES.SESSION, { path: '/' });
-	return json(null);
-}
+import { clearSession, SERVER_COOKIE_OPTIONS, tokenData } from '../common';
+import type { RequestHandler } from './$types';
 
 /**
  * Use this endpoint to initialize or update a session cookie, EXCLUDING signouts. It verifies the
@@ -46,7 +41,9 @@ export const POST: RequestHandler = async (event) => {
 		.eq('id', authSession.user.id)
 		.single();
 
-	if (profileRes.error || !profileRes.data.role) return clearSession(event);
+	if (profileRes.error || !profileRes.data.role) {
+		return clearSession(event);
+	}
 
 	const pageDataSession: App.PageData['session'] = {
 		...authSession,
@@ -58,23 +55,19 @@ export const POST: RequestHandler = async (event) => {
 				: profileRes.data.role.role,
 		},
 	};
-	const cookieSession: App.Locals['session'] = {
-		access_token: pageDataSession.access_token,
-		refresh_token: pageDataSession.refresh_token,
-		provider_refresh_token: pageDataSession.provider_refresh_token,
-		expires_at: pageDataSession.expires_at ?? Date.now() + pageDataSession.expires_in * 1000,
-		expires_in: pageDataSession.expires_in,
-		user: {
-			id: pageDataSession.user.id,
-			role: pageDataSession.user.role,
-		},
-	};
-	event.cookies.set(COOKIES.SESSION, JSON.stringify(cookieSession), {
-		path: '/',
-		httpOnly: true,
-		sameSite: 'strict',
-		secure: !dev,
-		maxAge: authSession.expires_in,
-	});
+	event.cookies.set(
+		COOKIES.SESSION,
+		JSON.stringify({
+			...tokenData(pageDataSession),
+			user: {
+				id: pageDataSession.user.id,
+				role: pageDataSession.user.role,
+			},
+		} satisfies App.Locals['session']),
+		{
+			...SERVER_COOKIE_OPTIONS,
+			maxAge: authSession.expires_in,
+		}
+	);
 	return json(pageDataSession);
 };

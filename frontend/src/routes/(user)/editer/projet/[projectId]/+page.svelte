@@ -31,13 +31,7 @@
 				<li>
 					<label>
 						{d.title}
-						<input
-							type="radio"
-							name="type_id"
-							bind:group={data.project.type_id}
-							value={d.id}
-							id=""
-						/>
+						<input type="radio" name="type_id" bind:group={data.project.type_id} value={d.id} />
 					</label>
 				</li>
 			{/each}
@@ -93,7 +87,12 @@
 	</fieldset>
 	<fieldset>
 		<h3>Description</h3>
-		<textarea name="description" rows="10" placeholder="Décrivez votre projet" />
+		<textarea
+			name="description"
+			value={data.project.description}
+			rows="10"
+			placeholder="Décrivez votre projet"
+		/>
 	</fieldset>
 </form>
 

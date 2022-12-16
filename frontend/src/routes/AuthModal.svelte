@@ -103,9 +103,9 @@
 	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import ProviderLogo, { providers } from '$components/ProviderLogo.svelte';
+	import { THEME_CLASSES } from '$utils/themes';
 	import { linear } from 'svelte/easing';
 	import { fade, scale, slide } from 'svelte/transition';
-	import { ThemeClass } from './AppThemes.svelte';
 
 	const Action = {
 		SignIn: '/api/auth?/signin',
@@ -119,11 +119,11 @@
 
 {#if $authModal}
 	<div
-		class="bg {ThemeClass.light}"
+		class="bg {THEME_CLASSES.LIGHT}"
 		aria-hidden="true"
 		transition:fade={{ duration: 150, easing: linear }}
 	/>
-	<dialog class={ThemeClass.light}>
+	<dialog class={THEME_CLASSES.LIGHT}>
 		<form
 			class="sign"
 			transition:scale={{ start: 0.95 }}
@@ -191,9 +191,7 @@
 					variant={$authModal === AuthMode.SignUp ? 'cta' : 'default'}
 					type={$authModal === AuthMode.SignUp ? 'submit' : 'button'}
 					href={$authModal === AuthMode.SignIn
-						? authModal
-								.getUrl({ url: $page.url, open: true, mode: AuthMode.SignUp })
-								.toString()
+						? authModal.getUrl({ url: $page.url, open: true, mode: AuthMode.SignUp }).toString()
 						: undefined}
 					contentAlign="center"
 					formaction={Action.SignUp}

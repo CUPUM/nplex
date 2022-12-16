@@ -86,11 +86,9 @@
 	:where(.icon) {
 		display: inline-block;
 		vertical-align: middle;
-		// vertical-align: calc(-0.5em + 0.5ex);
 		position: relative;
 		padding: 0;
 		margin: 0;
-		// margin-bottom: calc(-0.25em + 0.25ex);
 		width: 1em;
 		height: 1em;
 		overflow: visible;

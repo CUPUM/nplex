@@ -6,7 +6,7 @@
 -->
 <script lang="ts" context="module">
 	export const navbarTheme = (function () {
-		const { subscribe, set } = writable<ValueOf<typeof ThemeClass> | null>(null);
+		const { subscribe, set } = writable<keyof typeof THEME_CLASSES | null>(null);
 		return {
 			subscribe,
 			set,
@@ -24,13 +24,12 @@
 	import Popover from '$components/Popover.svelte';
 	import { rootScroll } from '$stores/scroll';
 	import { EDITOR_BASE_ROUTE, EXPLORE_ROUTES, MAIN_ROUTES, USER_BASE_ROUTE } from '$utils/routes';
+	import { THEME_CLASSES } from '$utils/themes';
 	import { writable } from 'svelte/store';
-	import type { ValueOf } from 'ts-essentials';
-	import { authModal } from './AppAuthModal.svelte';
 	import AppNavbarButton from './AppNavbarButton.svelte';
 	import AppNavbarEditorMenu from './AppNavbarEditorMenu.svelte';
 	import AppNavbarUserMenu from './AppNavbarUserMenu.svelte';
-	import type { ThemeClass } from './AppThemes.svelte';
+	import { authModal } from './AuthModal.svelte';
 
 	export let navbarHeight = 0;
 
@@ -58,10 +57,14 @@
 	});
 
 	$: hidden = $rootScroll.down && $rootScroll.y > thres;
-	$: rootPathname = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
+	$: rootPathname = $page.data.category ? '' : '/' + $page.url.pathname.split('/', 2)[1];
 </script>
 
-<header class={$navbarTheme ?? ''} class:hidden bind:clientHeight={navbarHeight}>
+<header
+	class={$navbarTheme ? THEME_CLASSES[$navbarTheme] : ''}
+	class:hidden
+	bind:clientHeight={navbarHeight}
+>
 	<div class="wrapper">
 		<nav class="main">
 			<AppNavbarButton round href="/">
@@ -75,10 +78,7 @@
 		</nav>
 		<nav class="category">
 			{#each exploreNav as r}
-				<AppNavbarButton
-					href={r.pathname}
-					current={$page.url.pathname.startsWith(r.pathname)}
-				>
+				<AppNavbarButton href={r.pathname} current={$page.url.pathname.startsWith(r.pathname)}>
 					{r.label}
 				</AppNavbarButton>
 			{/each}
@@ -142,8 +142,8 @@
 			1fr
 			[session-end full-end];
 		grid-auto-flow: dense;
-		padding-top: 0.5rem;
-		padding-inline: 2rem;
+		padding-top: var(--ui-gutter);
+		padding-inline: var(--ui-gutter);
 		margin: 0 auto;
 		flex-direction: row;
 		align-items: center;
@@ -171,10 +171,12 @@
 			flex-direction: column;
 		}
 	}
+
 	.main {
 		grid-column: main;
 		justify-content: flex-start;
 	}
+
 	.category {
 		grid-column: category;
 		justify-content: center;
@@ -183,12 +185,8 @@
 		width: 100%;
 		gap: 0;
 		backdrop-filter: blur(10px);
-
-		:global(a) {
-			background: transparent;
-			backdrop-filter: none;
-		}
 	}
+
 	.session {
 		grid-column: session;
 		justify-content: flex-end;

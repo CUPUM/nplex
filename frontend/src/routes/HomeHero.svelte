@@ -5,12 +5,12 @@
 	import { intersection } from '$actions/intersection';
 	import { reveal, slipMask } from '$actions/reveal';
 	import Button from '$components/Button.svelte';
+	import { THEME_CLASSES, THEME_NAMES } from '$utils/themes';
 	import { onDestroy } from 'svelte';
-	import { navbarTheme } from './AppNavbar.svelte';
-	import { ThemeClass } from './AppThemes.svelte';
+	import { navbarTheme } from './Navbar.svelte';
 
 	function headerEnter() {
-		navbarTheme.set(ThemeClass.dark);
+		navbarTheme.set(THEME_NAMES.DARK);
 	}
 
 	function headerLeave() {
@@ -23,7 +23,7 @@
 </script>
 
 <header
-	class={ThemeClass.dark}
+	class={THEME_CLASSES.DARK}
 	use:intersection={{ rootMargin: '-40px 0px 0px 0px' }}
 	on:enter={headerEnter}
 	on:leave={headerLeave}
@@ -51,13 +51,12 @@
 </header>
 <section class="pres">
 	<p>
-		Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nihil itaque maiores perferendis
-		autem error. Maxime eos modi impedit quod praesentium, unde numquam delectus architecto
-		nostrum possimus aperiam est consectetur cum. Officiis autem corporis similique minus
-		debitis cumque, beatae excepturi pariatur ullam odio ea! Voluptate adipisci temporibus
-		suscipit, cumque vero, fugit fugiat blanditiis culpa ut placeat repellendus nemo soluta
-		similique illum, dolorem vel veniam at quo pariatur quibusdam esse nobis. Fugiat impedit ut
-		provident.
+		Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nihil itaque maiores perferendis autem
+		error. Maxime eos modi impedit quod praesentium, unde numquam delectus architecto nostrum
+		possimus aperiam est consectetur cum. Officiis autem corporis similique minus debitis cumque,
+		beatae excepturi pariatur ullam odio ea! Voluptate adipisci temporibus suscipit, cumque vero,
+		fugit fugiat blanditiis culpa ut placeat repellendus nemo soluta similique illum, dolorem vel
+		veniam at quo pariatur quibusdam esse nobis. Fugiat impedit ut provident.
 	</p>
 	<Button>Explorer</Button>
 </section>
@@ -66,22 +65,20 @@
 	header {
 		z-index: 1;
 		position: relative;
-		height: calc(100vh + 2rem);
+		min-height: 100vh;
 		padding: 0;
-		padding-bottom: 5rem;
+		padding-bottom: 2rem;
 		padding-top: calc(var(--navbar-height-px) + 6rem);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: flex-end;
-		margin: 0;
+		width: 100%;
 		margin-top: calc(-1 * var(--navbar-height-px));
 		background: col(bg, 100);
-		border-radius: min(2rem, calc(0.2 * var(--scroll-px)));
+		border-radius: min(var(--ui-radius-xl), calc(0.2 * var(--scroll-px)));
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
-		box-shadow: 0 -100px col(bg, 100);
-		transition: border-radius 0.2s ease-out;
 	}
 
 	hgroup {
@@ -141,6 +138,6 @@
 	}
 
 	p {
-		max-width: var(--ui-display-small);
+		max-width: var(--ui-size-md);
 	}
 </style>

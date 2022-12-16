@@ -1,47 +1,47 @@
-interface ProjectEditorRoute {
-	title: string;
-	subpath: '' | `/${string}`;
-	tag?: string;
-}
-
-export const GALLERY_UPLOAD_FORM_ID = 'gallery-upload';
-
-/**
- * Sub-forms of the project editor.
- */
-export const routes = [
-	{
-		title: 'Général',
-		subpath: '',
-	},
-	{
-		title: 'Galerie',
-		subpath: '/galerie',
-		tag: GALLERY_UPLOAD_FORM_ID,
-	},
-	{
-		title: 'Site',
-		subpath: '/site',
-	},
-	{
-		title: 'Bâtiment',
-		subpath: '/batiment',
-	},
-	{
-		title: 'Processus',
-		subpath: '/processus',
-	},
-	{
-		title: 'Exemplarité',
-		subpath: '/exemplarite',
-	},
-	{
-		title: 'Visibilité',
-		subpath: '/parametres',
-	},
-] satisfies ProjectEditorRoute[];
-
 /**
  * Explicit constant form naming (id) required for the menu's buttons' "form" attribute.
  */
 export const EDITOR_FORM_ID = 'project-editor';
+
+export const GALLERY_UPLOAD_FORM_ID = 'gallery-upload';
+
+interface ProjectEditorRoute {
+	title: string;
+	subpath: '' | `/${string}`;
+	hash?: string;
+}
+
+/**
+ * Sub-forms of the project editor.
+ */
+export const EDITOR_NAV_ROUTES = {
+	GENERAL: {
+		title: 'Général',
+		subpath: '',
+	},
+	GALLERY: {
+		title: 'Galerie',
+		subpath: '/galerie',
+		hash: GALLERY_UPLOAD_FORM_ID,
+	},
+	SITE: {
+		title: 'Site',
+		subpath: '/site',
+	},
+	BUILDING: {
+		title: 'Bâtiment',
+		subpath: '/batiment',
+	},
+	PROCESS: {
+		title: 'Processus',
+		subpath: '/processus',
+	},
+	EXAMPLARITY: {
+		title: 'Exemplarité',
+		subpath: '/exemplarite',
+	},
+	VISIBILITY: {
+		title: 'Visibilité',
+		subpath: '/parametres',
+	},
+} as const satisfies Record<string, ProjectEditorRoute>;

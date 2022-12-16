@@ -1,7 +1,7 @@
-import { DEFAULT_THEME } from '$routes/AppRootTheme.svelte';
-import { ThemeClass } from '$routes/AppThemes.svelte';
+import { getUserTheme } from '$routes/RootTheme.svelte';
 import { COOKIES } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
+import { THEME_CLASSES } from '$utils/themes';
 import type { Handle } from '@sveltejs/kit';
 
 /**
@@ -11,11 +11,10 @@ import type { Handle } from '@sveltejs/kit';
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.session = safeJsonParse(event.cookies.get(COOKIES.SESSION)) ?? undefined;
 
-	const themeInit = event.cookies.get(COOKIES.THEME) ?? DEFAULT_THEME;
-	const themeClass = (ThemeClass as any)[themeInit] ?? ThemeClass[DEFAULT_THEME];
+	const theme = THEME_CLASSES[getUserTheme(event)];
 
 	const res = await resolve(event, {
-		transformPageChunk: ({ html }) => html.replace('%theme%', themeClass),
+		transformPageChunk: ({ html }) => html.replace('%theme%', theme),
 	});
 
 	return res;

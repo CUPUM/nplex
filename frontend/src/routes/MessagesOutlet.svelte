@@ -35,8 +35,8 @@
 	};
 
 	/**
-	 * Singleton store containing stack of messages dispatched from anywhere in the app. This
-	 * store's contents are displayed in the app's root layout.
+	 * Singleton store containing stack of messages dispatched from anywhere in the app. This store's
+	 * contents are displayed in the app's root layout.
 	 */
 	export const messages = (function () {
 		const { subscribe, set, update } = writable<Message[]>([]);
@@ -121,9 +121,7 @@
 		...messages: Message[]
 	): string | URL | RelativeURL {
 		const newURL =
-			url instanceof URL && !(url instanceof RelativeURL)
-				? new URL(url)
-				: new RelativeURL(url);
+			url instanceof URL && !(url instanceof RelativeURL) ? new URL(url) : new RelativeURL(url);
 		messages.forEach((m) => {
 			newURL.searchParams.append(SEARCH_PARAMS.MESSAGE, JSON.stringify(m));
 		});
@@ -202,10 +200,7 @@
 						{@html message.content}
 					</span>
 				{:else}
-					<svelte:component
-						this={message.content.component}
-						{...message.content.props || {}}
-					/>
+					<svelte:component this={message.content.component} {...message.content.props || {}} />
 				{/if}
 			</div>
 			<button on:click={(e) => closeMessage(e, message)}>

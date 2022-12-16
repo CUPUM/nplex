@@ -16,7 +16,7 @@
 </script>
 
 <svelte:element
-	this={href ? 'a' : 'button'}
+	this={typeof href === 'string' ? 'a' : 'button'}
 	class="navbar-button"
 	class:cta
 	class:current
@@ -50,14 +50,14 @@
 		color: col(fg, 700);
 		outline: 0px dashed transparent;
 		outline-offset: 0px;
-		transition: all 0.15s cubic-bezier(0, 0, 0, 1), box-shadow 0.25s ease-out;
+		transition: all 0.1s, box-shadow 0.25s ease-out;
 		backdrop-filter: blur(10px);
 		background: col(bg, 700, 0.5);
 		&:hover,
 		&.active,
 		&:active {
-			color: col(primary, 900);
-			background: col(primary, 100, 0.5);
+			color: col(bg, 500);
+			background: col(fg, 100, 0.95);
 		}
 		&.current:not(.active) {
 			cursor: default;
@@ -67,7 +67,6 @@
 	}
 	.inner {
 		position: relative;
-		align-items: center;
 		height: 1.6em;
 	}
 	.disabled {

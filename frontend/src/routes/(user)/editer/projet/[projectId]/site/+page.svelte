@@ -2,193 +2,153 @@
 </script>
 
 <script lang="ts">
-	import Map from '$components/Map.svelte';
-	import MapControlDrawCircle from '$components/MapControlDrawCircle.svelte';
-	import MapControlFile from '$components/MapControlFile.svelte';
-	import MapControlFullscreen from '$components/MapControlFullscreen.svelte';
-	import MapControlGeolocate from '$components/MapControlGeolocate.svelte';
-	import MapDraw, { MapDrawSourceId } from '$components/MapDraw.svelte';
-	import MapPopup from '$components/MapPopup.svelte';
-	import MapToolbar from '$components/MapToolbar.svelte';
-	import Tooltip from '$components/Tooltip.svelte';
-	import { messages } from '$routes/AppMessagesOutlet.svelte';
-	import { throttle } from '$utils/function';
-	import { dbProjectLocationSchema } from '$utils/validation';
-	import type {
-		DrawCreateEvent,
-		DrawDeleteEvent,
-		DrawRenderEvent,
-		DrawUpdateEvent,
-	} from '@mapbox/mapbox-gl-draw';
-	import distance from '@turf/distance';
-	import type { LngLat, MapMouseEvent } from 'maplibre-gl';
-	import type { ComponentProps } from 'svelte';
+	import { enhance } from '$app/forms';
+	import { EDITOR_FORM_ID } from '../common';
 	import type { PageData } from './$types';
+	import { INPUT_NAMES } from './common';
+	import SiteLocation from './SiteLocation.svelte';
 
 	export let data: PageData;
 
-	let location: string;
-	let tracking = false;
-	let map: ComponentProps<Map>['map'];
-	let draw: ComponentProps<MapDraw>['draw'];
-	let info = false;
-	let mousedown = false;
-	let r = 0;
-	let lnglat: LngLat | null = null;
-	$: if (draw && data.project && data.project.location_geometry) {
-		const geojson = dbProjectLocationSchema.safeParse(data.project);
-		if (!geojson.success) {
-			messages.dispatch({
-				content: `La géométrie récupérée de la base de données ne semble pas être valide. (${JSON.stringify(
-					geojson.error
-				)})`,
-				type: 'error',
-			});
-		} else {
-			draw.deleteAll();
-			draw.add(geojson.data);
+	function usages(category: number | null) {
+		if (category === null) {
+			return [];
 		}
+		return data.descriptors.siteUsages.filter((u) => u.category_ids.includes(category));
 	}
-	function onMousemove(e: CustomEvent<MapMouseEvent>) {
-		lnglat = e.detail.lngLat;
-		if (!mousedown) info = false;
-	}
-	function onMouseup() {
-		mousedown = false;
-	}
-	function onMousedown() {
-		mousedown = true;
-	}
-	function updateLocationGeometry(
-		e: CustomEvent<DrawCreateEvent | DrawUpdateEvent | DrawDeleteEvent>
-	) {
-		const feature = e.detail.features[0];
-		if (draw) {
-			switch (e.detail.type) {
-				case 'draw.delete':
-					draw.deleteAll();
-					location = '';
-					break;
-				default:
-					const prev = draw
-						.getAll()
-						.features.map((f) => (f.id ?? '') + '')
-						.filter((id) => id && id !== feature.id);
-					draw.delete(prev);
-					location = JSON.stringify(feature);
-					break;
-			}
-		}
-	}
-	const onRender = throttle((e: CustomEvent<DrawRenderEvent>) => {
-		const sf = e.detail.target.querySourceFeatures(MapDrawSourceId.Hot);
-		const pts = sf.filter(
-			(f) => f.properties && f.properties.meta === 'vertex' && f.geometry.type === 'Point'
-		) as GeoJSON.Feature<GeoJSON.Point>[];
-		if (!(pts.length > 1)) return;
-		r = +distance(pts[0].geometry.coordinates, pts[1].geometry.coordinates, {
-			units: 'meters',
-		});
-		if (mousedown) info = true;
-		else info = false;
-	}, 10);
 </script>
 
-<form action="">
-	<h2>Détails du site</h2>
-	<fieldset>
+<form
+	id={EDITOR_FORM_ID}
+	method="POST"
+	action="?/update"
+	use:enhance={({ form, data, action, cancel }) => {
+		return async ({ update, result }) => {
+			update({ reset: false });
+		};
+	}}
+>
+	<header>
+		<h2>Détails du site</h2>
+	</header>
+	<fieldset class="ownership">
 		<h3>Propriété du lieu</h3>
+		<ul>
+			{#each data.descriptors.siteOwnerships as ownership}
+				<li>
+					<label>
+						<span>{ownership.title}</span>
+						<input
+							type="radio"
+							name={INPUT_NAMES.OWNERSHIP}
+							value={ownership.id}
+							bind:group={data.project.site_ownership_id}
+						/>
+					</label>
+				</li>
+			{/each}
+		</ul>
 	</fieldset>
-	<fieldset>
-		<h3>Situez votre projet</h3>
-		<section class="map-section">
-			<Map
-				cooperativeGestures={true}
-				bind:map
-				on:mousemove={onMousemove}
-				on:mousedown={onMousedown}
-				on:mouseup={onMouseup}
-			>
-				{#if info && lnglat}
-					<MapPopup {lnglat} class="info" offset={[0, -10]}>
-						Rayon: {r.toFixed(0)}m
-					</MapPopup>
-				{/if}
-				<MapDraw
-					bind:draw
-					on:create={updateLocationGeometry}
-					on:update={updateLocationGeometry}
-					on:delete={updateLocationGeometry}
-					on:render={onRender}
-				>
-					<MapToolbar position="left" direction="column">
-						<Tooltip
-							message={tracking
-								? 'Cesser de suivre votre position'
-								: 'Centrer la carte sur votre localisation actuelle'}
-							place="right"
-						>
-							<div>
-								<MapControlGeolocate
-									on:trackuserlocationstart={() => (tracking = true)}
-									on:trackuserlocationend={() => (tracking = false)}
-								/>
-							</div>
-						</Tooltip>
-						<Tooltip message="Activez le mode plein écran" place="right">
-							<div>
-								<MapControlFullscreen />
-							</div>
-						</Tooltip>
-						<hr />
-						<Tooltip
-							message="Dessinez un cercle pour situer votre projet"
-							place="right"
-						>
-							<div>
-								<MapControlDrawCircle variant="cta" />
-							</div>
-						</Tooltip>
-						<Tooltip message="Téléversez un tracer géographique" place="right">
-							<div>
-								<MapControlFile disabled />
-							</div>
-						</Tooltip>
-					</MapToolbar>
-					<input type="hidden" readonly name="location" value={location} />
-				</MapDraw>
-			</Map>
+	<article>
+		<section class="map">
+			<SiteLocation project={data.project} />
 		</section>
-	</fieldset>
-	<fieldset>
-		<h3>Superficie du terrain</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Usage principal</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Usage(s) secondaire(s)</h3>
-	</fieldset>
-	<fieldset>
-		<h3>Rues adjacentes</h3>
-	</fieldset>
+		<fieldset class="fields">
+			<h3>Situez votre projet</h3>
+			<!-- Add input here instead of in SiteLocation -->
+		</fieldset>
+		<fieldset class="fields">
+			<h3>Superficie du terrain</h3>
+			<p>
+				Note: Vous pouvez utiliser la règle sur la carte pour vous aider à évaluer la superficie du
+				lieu.
+			</p>
+			<input
+				type="number"
+				name={INPUT_NAMES.AREA}
+				placeholder="Superficie"
+				bind:value={data.project.site_area}
+			/>m<sup>2</sup>
+			<input type="range" min="1" max="1000" step="1" bind:value={data.project.site_area} />
+		</fieldset>
+		<fieldset class="fields">
+			<h3>Usage principal</h3>
+			<fieldset>
+				<h4>Catégorie</h4>
+				<select
+					name={INPUT_NAMES.MAIN_USAGE_CATEGORY}
+					bind:value={data.project.site_usage_category_id}
+				>
+					{#each data.descriptors.siteUsagesCategories as uc}
+						<option value={uc.id}>{uc.title}</option>
+					{/each}
+				</select>
+				<h4>Usage principal</h4>
+				{#if typeof data.project.site_usage_category_id === 'number'}
+					<select
+						placeholder="Usage principal"
+						name={INPUT_NAMES.MAIN_USAGE}
+						bind:value={data.project.site_usage_id}
+					>
+						{#each usages(data.project.site_usage_category_id) as u}
+							<option value={u.id}>{u.title}</option>
+						{/each}
+					</select>
+				{/if}
+			</fieldset>
+			<fieldset class="fields">
+				<h3>Usage(s) secondaire(s)</h3>
+			</fieldset>
+			<fieldset>
+				<h3>Rues/ruelles adjacentes</h3>
+				<input
+					type="number"
+					name="adjacent_streets"
+					bind:value={data.project.adjacent_streets}
+					placeholder="Nombre de rue(s) ou de ruelle(s) bordant le site"
+					id=""
+				/>
+			</fieldset>
+		</fieldset>
+	</article>
 </form>
 
 <style lang="scss">
 	form {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: var(--ui-gutter);
+		padding: var(--ui-gutter);
 	}
 
-	.map-section {
-		width: 100%;
+	.ownership {
+		border-radius: var(--ui-block-radius);
+		background: red;
+	}
+
+	article {
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--ui-gutter);
+		flex-direction: row;
+	}
+
+	.map {
+		--top: calc(var(--navbar-height-px) + var(--ui-gutter));
+		position: sticky;
+		top: var(--top);
+		height: calc(100vh - var(--top) - var(--ui-gutter));
+		border-radius: var(--ui-block-radius);
+		grid-row: 1 / -1;
+		grid-column: 1;
+	}
+
+	.fields {
 		padding: 2rem;
-		:global(.map) {
-			border-radius: 1.5rem;
-			width: 100%;
-			aspect-ratio: 3 / 2;
-			height: unset;
-			max-height: 80vh;
-			max-width: var(--ui-size-xl);
-			margin: 0 auto;
-		}
+		border-radius: var(--ui-block-radius);
+		background: col(bg, 900);
+		grid-column: 2;
 	}
 </style>

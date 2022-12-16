@@ -81,7 +81,7 @@ interface EditorRoute extends Route {
 export const EDITOR_ROUTES = {
 	project: {
 		subpath: '/projet',
-		label: 'Éditer un projet',
+		label: 'Créer un projet',
 		category: 'projects',
 		get pathname() {
 			return EDITOR_BASE_ROUTE.pathname + this.subpath;
