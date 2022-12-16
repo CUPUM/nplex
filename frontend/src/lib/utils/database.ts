@@ -1,10 +1,12 @@
 import { browser } from '$app/environment';
+import { invalidate } from '$app/navigation';
+import { page } from '$app/stores';
 // @ts-ignore:next-line
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { createClient, type SupportedStorage } from '@supabase/supabase-js';
 import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
-
-const EXPIRY_MARGIN = 1000;
+import { get } from 'svelte/store';
+import { LOAD_DEPENDENCIES } from './enums';
 
 export const browserDb = createClient<App.DatabaseSchema>(
 	PUBLIC_SUPABASE_URL,
@@ -17,6 +19,28 @@ export const browserDb = createClient<App.DatabaseSchema>(
 		},
 	}
 );
+if (browser) {
+	browserDb.auth.onAuthStateChange(async (event, session) => {
+		// Tab switch fires a SIGNED_IN event...
+		const pagedata = get(page).data;
+		if (
+			event === 'SIGNED_IN' &&
+			pagedata &&
+			'session' in pagedata &&
+			session?.user.id === pagedata.session?.user.id
+		) {
+			// ...This prevents unwarranted page invalidation.
+			return;
+		}
+		if (event === 'TOKEN_REFRESHED' && session) {
+			await fetch('/api/auth/update-tokens', {
+				method: 'POST',
+				body: JSON.stringify(session),
+			});
+			invalidate(LOAD_DEPENDENCIES.SESSION);
+		}
+	});
+}
 
 /**
  * Fill-in replacement for lack of local storage on server context.

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { afterNavigate, beforeNavigate, invalidate } from '$app/navigation';
+	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
 	import MessagesOutlet from '$routes/MessagesOutlet.svelte';
@@ -8,8 +7,6 @@
 	import '$styles/resets.scss';
 	import '$styles/themes.css';
 	import '$styles/vars.scss';
-	import { browserDb } from '$utils/database';
-	import { LOAD_DEPENDENCIES } from '$utils/enums';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import AuthModal, { authModal } from './AuthModal.svelte';
@@ -24,22 +21,6 @@
 	let navbarHeight: number = 0;
 	let scrollY = 0;
 	let mounted = false;
-
-	if (browser) {
-		browserDb.auth.onAuthStateChange(async (event, session) => {
-			if (event === 'SIGNED_IN' && session?.user.id === data.session?.user.id) {
-				// Because tab switch fires a SIGNED_IN event and causes unwarranted page invalidation.
-				return;
-			}
-			if (event === 'TOKEN_REFRESHED' && session) {
-				await fetch('/api/auth/refresh', {
-					method: 'POST',
-					body: JSON.stringify(session),
-				});
-			}
-			invalidate(LOAD_DEPENDENCIES.SESSION);
-		});
-	}
 
 	onMount(() => {
 		mounted = true;
