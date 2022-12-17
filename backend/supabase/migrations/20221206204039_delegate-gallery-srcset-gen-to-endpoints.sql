@@ -1,18 +1,18 @@
-alter table "public"."projects_gallery_images" drop constraint "projects_gallery_images_pkey";
+alter table "public"."projects_images" drop constraint "projects_images_pkey";
 
-drop index if exists "public"."projects_gallery_images_pkey";
+drop index if exists "public"."projects_images_pkey";
 
-alter table "public"."projects_gallery_images" drop column "file_names";
+alter table "public"."projects_images" drop column "file_names";
 
-alter table "public"."projects_gallery_images" add column "id" uuid not null;
+alter table "public"."projects_images" add column "id" uuid not null;
 
-CREATE UNIQUE INDEX projects_gallery_images_pkey ON public.projects_gallery_images USING btree (project_id, id);
+CREATE UNIQUE INDEX projects_images_pkey ON public.projects_images USING btree (project_id, id);
 
-alter table "public"."projects_gallery_images" add constraint "projects_gallery_images_pkey" PRIMARY KEY using index "projects_gallery_images_pkey";
+alter table "public"."projects_images" add constraint "projects_images_pkey" PRIMARY KEY using index "projects_images_pkey";
 
-alter table "public"."projects_gallery_images" add constraint "projects_gallery_images_id_fkey" FOREIGN KEY (id) REFERENCES storage.objects(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+alter table "public"."projects_images" add constraint "projects_images_id_fkey" FOREIGN KEY (id) REFERENCES storage.objects(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
 
-alter table "public"."projects_gallery_images" validate constraint "projects_gallery_images_id_fkey";
+alter table "public"."projects_images" validate constraint "projects_images_id_fkey";
 
 set check_function_bodies = off;
 
@@ -39,9 +39,9 @@ AS $function$
 	begin
 	if (new.bucket_id = 'projects') and ((storage.foldername(new.name))[2] = 'gallery')
 	then
-		insert into public.projects_gallery_images (id, project_id, name, updated_by_id, created_by_id)
+		insert into public.projects_images (id, project_id, name, updated_by_id, created_by_id)
         values (new.id, (storage.foldername(new.name))[1]::uuid, new.name, auth.uid(), auth.uid());
-		/*insert into public.projects_gallery_images as g (name, project_id, updated_by_id, created_by_id, file_names)
+		/*insert into public.projects_images as g (name, project_id, updated_by_id, created_by_id, file_names)
         values ((storage.foldername(new.name))[3]::text, (storage.foldername(new.name))[1]::uuid, auth.uid(), auth.uid(), array[new.name])
         on conflict (name) do update set
         file_names = array_append(g.file_names, new.name);*/

@@ -52,7 +52,7 @@ create or replace view "public"."editable_projects" as  SELECT projects.id,
     projects.cost_max,
     projects.type_id,
     projects.combustible,
-    projects.banner_url
+    projects.banner_id
    FROM projects
   WHERE user_can_edit_project();
 

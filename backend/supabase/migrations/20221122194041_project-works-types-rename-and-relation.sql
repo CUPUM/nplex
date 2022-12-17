@@ -183,7 +183,7 @@ create or replace view "public"."editable_projects" as  SELECT p.id,
     p.building_construction_year,
     p.type_id,
     p.combustible,
-    p.banner_url,
+    p.banner_id,
     p.location_geometry,
     p.location_radius,
     p.cost_range

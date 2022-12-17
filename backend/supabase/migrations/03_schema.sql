@@ -166,7 +166,7 @@ create table "public"."projects" (
     "cost_max" integer,
     "type_id" smallint,
     "combustible" boolean,
-    "banner_url" text
+    "banner_id" text
 );
 
 create table "public"."projects_events" (

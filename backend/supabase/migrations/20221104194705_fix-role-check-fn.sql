@@ -106,7 +106,7 @@ create or replace view "public"."editable_projects" as  SELECT p.id,
     p.cost_max,
     p.type_id,
     p.combustible,
-    p.banner_url
+    p.banner_id
    FROM projects p
   WHERE user_can_edit_project(p.*);
 
