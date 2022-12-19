@@ -70,7 +70,11 @@
 		</nav>
 		<nav class="category ">
 			{#each exploreNav as r}
-				<NavbarButton href={r.pathname} current={$page.url.pathname.startsWith(r.pathname)}>
+				<NavbarButton
+					group={'category'}
+					href={r.pathname}
+					current={$page.url.pathname.startsWith(r.pathname)}
+				>
 					{r.label}
 				</NavbarButton>
 			{/each}
@@ -209,6 +213,17 @@
 		border-radius: var(--ui-radius-md);
 		backdrop-filter: blur(12px);
 		box-shadow: 0 0 0 2px col(fg, 100, 0.1);
+
+		// :global([data-group='category']) {
+		// 	&:not(:first-of-type) {
+		// 		border-top-left-radius: 0;
+		// 		border-bottom-left-radius: 0;
+		// 	}
+		// 	&:not(:last-of-type) {
+		// 		border-top-right-radius: 0;
+		// 		border-bottom-right-radius: 0;
+		// 	}
+		// }
 	}
 
 	.session {

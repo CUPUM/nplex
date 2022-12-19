@@ -134,8 +134,6 @@
 	}
 
 	.ownership {
-		border-radius: var(--ui-block-radius);
-		background: red;
 	}
 
 	article {
@@ -154,20 +152,25 @@
 	}
 
 	.map {
-		--top: calc(var(--ui-nav-px) + var(--ui-gutter));
+		--top: var(--ui-nav-px);
+		--bottom: var(--ui-gutter);
 		position: sticky;
 		top: var(--top);
-		height: calc(100vh - var(--top) - var(--ui-gutter));
-		border-radius: var(--ui-block-radius);
+		height: calc(100vh - var(--top) - var(--bottom));
+		border-radius: var(--ui-radius-lg);
 	}
 
 	.fields {
+		display: flex;
+		flex-direction: column;
 		border-radius: var(--ui-block-radius);
-		background: col(bg, 900);
+		gap: var(--ui-gutter);
 
 		> fieldset {
 			padding: 2rem;
 			min-height: 400px;
+			border: 1px solid col(bg, 900);
+			border-radius: var(--ui-radius-lg);
 		}
 	}
 </style>

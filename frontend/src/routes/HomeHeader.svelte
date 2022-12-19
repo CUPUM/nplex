@@ -2,6 +2,7 @@
 	import { intersection } from '$actions/intersection';
 	import { LOGO_SYMBOLS, LOGO_VIEWBOX } from '$components/Logo2.svelte';
 	import { THEME_CLASSES, THEME_NAMES } from '$utils/themes';
+	import { onDestroy } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { navbarTheme } from './Navbar.svelte';
 
@@ -16,6 +17,10 @@
 		entered = false;
 		navbarTheme.reset();
 	}
+
+	onDestroy(() => {
+		leave();
+	});
 </script>
 
 <header

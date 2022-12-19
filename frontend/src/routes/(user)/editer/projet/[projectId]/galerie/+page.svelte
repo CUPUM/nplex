@@ -15,7 +15,7 @@
 	import { EDITOR_FORM_ID, GALLERY_UPLOAD_FORM_ID } from '../common';
 	import type { PageData } from './$types';
 	import { imageform } from './common';
-	import InputImage from './InputImage.svelte';
+	import ImageInput from './ImageInput.svelte';
 
 	export let data: PageData;
 
@@ -72,7 +72,7 @@
 		<h2>Ajoutez vos photos</h2>
 		<p>Montez une galerie d'images pour présenter votre projet.</p>
 	</hgroup>
-	<InputImage {uploading} />
+	<ImageInput {uploading} />
 </form>
 <form
 	class="update"
@@ -105,7 +105,7 @@
 					<Image class="gallery-image" src={image.publicUrl} alt={image.id} />
 					<menu class={THEME_CLASSES.DARK}>
 						<Tooltip message="Supprimer" place="top">
-							<Button type="submit" round form={imageform(image.id)}>
+							<Button type="submit" round warning form={imageform(image.id)}>
 								<Icon name="trash" />
 							</Button>
 						</Tooltip>

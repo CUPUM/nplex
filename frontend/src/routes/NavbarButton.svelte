@@ -24,6 +24,7 @@
 	class:disabled
 	class:equi
 	class:round
+	data-group={group}
 	aria-disabled={disabled}
 	{href}
 	on:pointerdown

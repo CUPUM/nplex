@@ -32,10 +32,12 @@
 :where(input),
 :where(form),
 :where(fieldset) {
+	font-family: inherit;
 	min-width: unset;
 }
 
 :where(button) {
+	font-family: inherit;
 	font-size: inherit;
 	background: unset;
 	border: unset;

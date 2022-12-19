@@ -50,7 +50,7 @@
 		text-align: center;
 		background: col(fg, 900, 0.1);
 		opacity: 0.5;
-		min-height: var(--ui-block-xs);
+		min-height: 12rem;
 		transition: all 0.2s ease-out;
 
 		&:hover {
@@ -70,7 +70,7 @@
 	}
 
 	.icon {
-		font-size: var(--ui-text-3xl);
+		font-size: 2rem;
 		transition: all 0.1s ease-in-out;
 	}
 

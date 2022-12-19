@@ -1,26 +1,15 @@
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
-	import Image from '$components/Image.svelte';
-	import { browserDb } from '$utils/database';
-	import { STORAGE_BUCKETS } from '$utils/enums';
 	import { EXPLORE_ROUTES } from '$utils/routes';
 	import type { PageData } from './$types';
 
-	export let projects: PageData['projects'];
+	export let organisations: PageData['organisations'];
 
-	const heading = 'Explorer les projets';
-
-	function pimg(p: typeof projects[number]) {
-		if (p.banner && 'name' in p.banner) {
-			return browserDb.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(p.banner.name).data
-				.publicUrl;
-		}
-		return '';
-	}
+	const heading = 'Explorer les bureaux et organismes';
 </script>
 
 <article>
-	<a class="heading" href={EXPLORE_ROUTES.projects.pathname}>
+	<a class="heading" href={EXPLORE_ROUTES.organisations.pathname}>
 		<h2>{heading}</h2>
 		<div class="icon">
 			<Icon name="arrow-right" strokeWidth="4" />
@@ -30,20 +19,9 @@
 		<input type="search" name="" id="" />
 	</form>
 	<ul>
-		{#each projects as p (p.id)}
+		{#each organisations as o (o.id)}
 			<li>
-				<a class="card" href="{EXPLORE_ROUTES.projects.pathname}/{p.id}">
-					<Image
-						alt=""
-						src={pimg(p)}
-						class="image"
-						color={['rgb(55,160,120)', 'rgb(20,120,50)', 'rgb(80, 150, 80)']}
-					/>
-					<section class="detail">
-						<h1>{p.title}</h1>
-						<p>&#9829;{p.likes_sum}</p>
-					</section>
-				</a>
+				<a class="card" href="{EXPLORE_ROUTES.organisations.pathname}/{o.id}">Yhello!</a>
 			</li>
 		{/each}
 	</ul>
@@ -109,21 +87,5 @@
 		position: relative;
 		height: 100%;
 		width: 100%;
-
-		:global(.image) {
-			width: 100%;
-			flex: 1;
-			min-height: 0;
-			border-radius: var(--ui-radius-lg);
-		}
-	}
-
-	.detail {
-		padding: 1rem;
-	}
-
-	h1 {
-		font-weight: 600;
-		font-size: var(--ui-text-lg);
 	}
 </style>
