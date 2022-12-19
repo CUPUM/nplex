@@ -36,7 +36,7 @@
 	aria-roledescription="icon-{name}"
 	preserveAspectRatio="xMidYMid"
 	viewBox={icon.viewBox}
-	class="icon {className}"
+	class={className}
 	{style}
 	style:--secondary-color={secondaryColor}
 	style:--stroke-width={cssSize(strokeWidth)}
@@ -45,16 +45,16 @@
 		<g
 			in:transform|local={{
 				scale: 0.5,
-				rotateX: 30,
+				rotateX: 20,
 				translateY: -20,
 				duration: 350,
 				easing: cubicOut,
 			}}
 			out:transform|local={{
 				scale: 0.75,
-				rotateZ: -30,
+				rotateZ: -20,
 				translateY: 20,
-				duration: 150,
+				duration: 250,
 				easing: cubicIn,
 			}}
 			on:introstart={() => (initDelay = 0)}
@@ -83,7 +83,7 @@
 </svg>
 
 <style lang="scss">
-	:where(.icon) {
+	:where(svg) {
 		display: inline-block;
 		vertical-align: middle;
 		position: relative;
@@ -92,18 +92,26 @@
 		width: 1em;
 		height: 1em;
 		overflow: visible;
-		& path {
+
+		g {
+			transform-origin: center center;
+		}
+
+		path {
 			fill: none;
 			stroke: none;
+
 			&.fill {
 				fill: currentColor;
 			}
+
 			&.stroke {
 				stroke: currentColor;
 				stroke-width: var(--stroke-width);
 				stroke-linejoin: round;
 				stroke-linecap: square;
 			}
+
 			&.secondary {
 				color: var(--secondary-color);
 			}

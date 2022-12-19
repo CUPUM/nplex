@@ -23,7 +23,7 @@
 	import { intersection } from '$actions/intersection';
 	import type { Cursor } from '$utils/enums';
 	import { debounce } from '$utils/function';
-	import { gesturesText, locales, locations, styles, type MapLocale } from '$utils/map';
+	import { gesturesText, locales, locations, MAP_STYLES, type MapLocale } from '$utils/map';
 	import {
 		Map,
 		MapMouseEvent,
@@ -50,7 +50,7 @@
 	export { className as class };
 	// Maplibre props
 	export let map: Map | undefined = undefined;
-	export let styleSpecification: string | StyleSpecification = styles.light;
+	export let styleSpecification: string | StyleSpecification = MAP_STYLES.LIGHT;
 	export let locale: MapLocale = locales.french;
 	export let pitch: MapOptions['pitch'] = 0;
 	export let bearing: MapOptions['bearing'] = 0;

@@ -8,6 +8,14 @@ import type { Actions } from './$types';
 const updateSchema = zfd
 	.formData({
 		site_ownership_id: zfd.numeric(z.number().optional()),
+		site_usage_category_id: zfd.numeric(z.number().optional()),
+		site_usage_id: zfd.numeric(z.number().optional()),
+		secondary_usages: zfd.numeric(z.number()),
+	})
+	.refine((data) => {
+		if (typeof data.site_usage_id === 'number' && typeof data.site_usage_category_id !== 'number') {
+			return "Vous devez définir une catégorie d'usage pour pouvoir assigner un usage au site";
+		}
 	})
 	.transform((parsed) => {
 		const { ...project } = parsed;
@@ -28,10 +36,15 @@ export const actions: Actions = {
 			// return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
-		const projectUpdate = await db.from('projects').update({
-			id: event.params.projectId,
-			...parsed.data.project,
-		});
+		const projectUpdate = await db
+			.from('projects')
+			.update({
+				id: event.params.projectId,
+				...parsed.data.project,
+				test: '',
+			})
+			.eq('id', event.params.projectId)
+			.single();
 		if (projectUpdate.error) {
 			throw error(STATUS_CODES.InternalServerError, projectUpdate.error);
 		}

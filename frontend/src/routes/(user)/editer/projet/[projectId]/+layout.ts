@@ -31,13 +31,13 @@ export const load: LayoutLoad = async (event) => {
 					*
 				)
 			),
-			gallery:projects_gallery_images!project_id (
+			gallery:projects_images!project_id (
 				*
 			)
 		`
 		)
 		.eq('id', event.params.projectId)
-		.order('order', { foreignTable: 'projects_gallery_images', ascending: true })
+		.order('order', { foreignTable: 'projects_images', ascending: true })
 		.single();
 	if (projectRes.error) {
 		throw error(500, projectRes.error);
@@ -56,8 +56,7 @@ export const load: LayoutLoad = async (event) => {
 			: []
 		).map((img) => ({
 			...img,
-			publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.name).data
-				.publicUrl,
+			publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.name).data.publicUrl,
 		})),
 	};
 	return {

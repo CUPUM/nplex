@@ -36,7 +36,7 @@
 <style lang="scss">
 	label {
 		position: relative;
-		border-radius: var(--ui-radius-lg);
+		border-radius: var(--ui-radius-xl);
 		color: col(fg, 900);
 		font-weight: 400;
 		line-height: 1.5;
@@ -50,13 +50,12 @@
 		text-align: center;
 		background: col(fg, 900, 0.1);
 		opacity: 0.5;
-		min-height: var(--ui-size-xs);
+		min-height: var(--ui-block-xs);
 		transition: all 0.2s ease-out;
 
 		&:hover {
 			opacity: 1;
-			transform: scale(1.01);
-			border-radius: var(--ui-radius-xl);
+			border-radius: var(--ui-radius-lg);
 		}
 	}
 
@@ -78,6 +77,6 @@
 	legend {
 		text-align: center;
 		padding-bottom: 1.5rem;
-		max-width: var(--ui-size-xs);
+		max-width: var(--ui-block-xs);
 	}
 </style>

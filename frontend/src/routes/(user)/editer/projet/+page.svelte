@@ -22,8 +22,8 @@
 >
 	<h1>Créer un nouveau projet</h1>
 	<p>
-		Pour initialiser une fiche de projet, commencez par définir un titre.<br />(Celui-ci pourra
-		être modifié ultérieurement.)
+		Pour initialiser une fiche de projet, commencez par définir un titre.<br />(Celui-ci pourra être
+		modifié ultérieurement.)
 	</p>
 	<Field name="title" bind:value={title} invalid={Boolean(form?.title?.length)}>
 		<svelte:fragment slot="label">Titre du projet</svelte:fragment>
@@ -37,8 +37,8 @@
 <style lang="scss">
 	form {
 		width: 100%;
-		max-width: var(--ui-size-xl);
-		min-height: calc(100vh - var(--navbar-height-px));
+		max-width: var(--ui-block-xl);
+		min-height: calc(100vh - var(--ui-nav-px));
 		margin: 0 auto;
 		padding: 4rem 2rem;
 		gap: 2rem;

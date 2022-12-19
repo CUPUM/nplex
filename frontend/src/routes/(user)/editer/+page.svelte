@@ -41,7 +41,7 @@
 
 <style lang="scss" module>
 	article {
-		min-height: calc(100vh - var(--navbar-height-px));
+		min-height: calc(100vh - var(--ui-nav-px));
 		padding: var(--ui-space-large) var(--ui-space-small);
 		width: 100%;
 		background: col(bg, 700);
@@ -90,17 +90,17 @@
 	}
 
 	.sub {
-		font-size: var(--ui-size-x2small);
+		font-size: var(--ui-block-x2small);
 		font-weight: 400;
 	}
 
 	em {
 		font-style: normal;
 		font-weight: 450;
-		font-size: var(--ui-size-large);
+		font-size: var(--ui-block-large);
 	}
 
 	a .icon {
-		font-size: var(--ui-size-large);
+		font-size: var(--ui-block-large);
 	}
 </style>

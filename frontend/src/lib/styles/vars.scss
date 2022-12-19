@@ -8,52 +8,38 @@
 
 :root {
 	// Dynamic variables bound in root layout or somehow available app-wide.
-	--navbar-height-px: 0px;
-	--scroll: 0;
-	--scroll-px: 0px;
+	--ui-nav-px: 0px;
+	--ui-scroll: 0;
+	--ui-scroll-px: 0px;
 	// Nestable props from inherit function (see utils.scss). Repeated here for IDE autocompletion.
 	--inset: 0px;
 	--inset-parent: 0px;
 	--inset-sum: 0px;
 	--ui-inset: 3px;
-	--ui-gutter: 0.5rem;
-	--ui-block-radius: var(--ui-radius-2xl);
-	// Top offset for hash scrolls.
-	--ui-scroll-margin: calc(var(--navbar-height-px) + var(--ui-gutter));
-	--ui-main-width: 1280px;
-	// Spacing / sizing
+	--ui-scroll-margin: calc(var(--ui-nav-px) + var(--ui-gutter));
+	--ui-gutter: 1.5rem;
 	--ui-height: 3.5em;
 	--ui-pad-x: 1.25em;
-	// Corner roundings
-	--ui-radius-xs: 6px;
+	--ui-width-main: 1600px;
+	--ui-width-p: 600px;
+	--ui-scroll-size: 6px;
+	--ui-scroll-color: rgb(var(--rgb-fg-100), 0.5);
 	--ui-radius-sm: 10px;
 	--ui-radius-md: 16px;
 	--ui-radius-lg: 24px;
 	--ui-radius-xl: 36px;
-	--ui-radius-2xl: 52px;
-	// Text/content sizing
-	--ui-text-2xs: 9px;
-	--ui-text-xs: 12px;
-	--ui-text-sm: 14px;
-	--ui-text-md: 16px;
-	--ui-text-lg: 18px;
-	--ui-text-xl: 24px;
-	--ui-text-2xl: 32px;
-	--ui-text-3xl: 56px;
-	--ui-text-4xl: 92px;
-	// Block sizing
-	--ui-size-2xs: 240px;
-	--ui-size-xs: 320px;
-	--ui-size-sm: 480px;
-	--ui-size-md: 620px;
-	--ui-size-lg: 960px;
-	--ui-size-xl: 1280px;
-	// Fonts
+	--ui-text-2xs: 0.5rem;
+	--ui-text-xs: 0.75rem;
+	--ui-text-sm: 0.875rem;
+	--ui-text-md: 1rem;
+	--ui-text-lg: 2.5rem;
+	--ui-text-xl: 3.75rem;
+	--ui-text-2xl: 6rem;
 	--ui-font-main: 'Outfit', sans-serif;
 	--ui-font-misc: 'Space Mono', monospace;
-	// Scrollbar
-	--ui-scroll-size: 6px;
-	--ui-scroll-color: rgb(var(--rgb-fg-100), 0.5);
+	--ui-ease-in: cubic-bezier(0.8, 0, 0.9, 1);
+	--ui-ease-out: cubic-bezier(0.1, 0, 0.1, 1);
+	--ui-ease-in-out: cubic-bezier(0.7, 0, 0.15, 1);
 }
 
 .compact {

@@ -35,6 +35,12 @@
 	min-width: unset;
 }
 
+:where(button) {
+	font-size: inherit;
+	background: unset;
+	border: unset;
+}
+
 :where(h1),
 :where(h2),
 :where(h3),

@@ -12,6 +12,10 @@ const ERROR_BAD_FORMAT = "Le format ou l'extension de l'image n'est pas compatib
 const DEFAULT_SIZE = 1024;
 const GALLERY_FOLDER = 'gallery';
 
+const promoteSchema = zfd.formData({
+	id: zfd.text(),
+});
+
 export const actions: Actions = {
 	upload: async (event) => {
 		const formData = await event.request.formData();
@@ -64,7 +68,7 @@ export const actions: Actions = {
 			} else {
 				console.log(storageRes.data.path);
 				const statsRes = await db
-					.from('projects_gallery_images')
+					.from('projects_images')
 					.update({
 						color_dominant: pgarr(parsed.data.color_dominant),
 						color_mean: pgarr(parsed.data.color_mean),
@@ -116,7 +120,7 @@ export const actions: Actions = {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
-		const updateRes = await db.from('projects_gallery_images').upsert(parsed.data);
+		const updateRes = await db.from('projects_images').upsert(parsed.data);
 		console.log(updateRes);
 		if (updateRes.error) {
 			return fail(STATUS_CODES.InternalServerError, updateRes.error);
@@ -146,5 +150,46 @@ export const actions: Actions = {
 	/**
 	 * Promote the passed image as the project's banner image. Unsets previous banner.
 	 */
-	promote: async (event) => {},
+	promote: async (event) => {
+		if (!event.params.projectId) {
+			return fail(STATUS_CODES.BadRequest);
+		}
+		const formData = await event.request.formData();
+		const parsed = promoteSchema.safeParse(formData);
+		if (!parsed.success) {
+			return fail(STATUS_CODES.BadRequest);
+		}
+		const db = await getDb(event);
+		const promoteRes = await db
+			.from('projects')
+			.update({ banner_id: parsed.data.id })
+			.eq('id', event.params.projectId)
+			.single();
+		if (promoteRes.error) {
+			throw error(STATUS_CODES.InternalServerError, promoteRes.error);
+		}
+	},
+	/**
+	 * Demote (remove) the passed image as the project's banner image. Leaves the project banner as
+	 * null.
+	 */
+	demote: async (event) => {
+		if (!event.params.projectId) {
+			return fail(STATUS_CODES.BadRequest);
+		}
+		const formData = await event.request.formData();
+		const parsed = promoteSchema.safeParse(formData);
+		if (!parsed.success) {
+			return fail(STATUS_CODES.BadRequest);
+		}
+		const db = await getDb(event);
+		const promoteRes = await db
+			.from('projects')
+			.update({ banner_id: null })
+			.eq('id', event.params.projectId)
+			.single();
+		if (promoteRes.error) {
+			throw error(STATUS_CODES.InternalServerError, promoteRes.error);
+		}
+	},
 };

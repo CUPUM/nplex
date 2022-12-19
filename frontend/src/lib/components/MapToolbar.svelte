@@ -36,7 +36,7 @@
 		--inset: 3px;
 		--x: 0;
 		--y: 0;
-		font-size: var(--ui-size-small);
+		font-size: var(--ui-block-small);
 		position: absolute;
 		display: flex;
 		flex-direction: row;

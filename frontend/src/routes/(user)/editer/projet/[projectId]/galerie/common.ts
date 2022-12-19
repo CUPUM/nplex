@@ -7,6 +7,6 @@ export const GALLERY_INPUT_NAME = 'files';
 /**
  * Delete form id composer.
  */
-export function del(imageId: string) {
-	return `${imageId}-delete`;
+export function imageform(imageId: string) {
+	return `form-${imageId}`;
 }

@@ -16,7 +16,7 @@
 		default: {
 			datum: D;
 		};
-		placeholder: {};
+		create: {};
 	}
 
 	type D = $$Generic<{ id: string | null; created_by_id: string | null }>;
@@ -25,16 +25,17 @@
 	export let data: D[];
 	export let id: string;
 
-	const filters = {
+	const FILTERS = {
 		all: 'Tous',
 		creator: 'Créés par moi',
 		collaborator: 'Partagés avec moi',
-	};
-	const placeholder = {
-		id: 'placeholder',
-	};
+	} as const;
 
-	let filter: keyof typeof filters = 'all';
+	const PLACEHOLDER = {
+		id: 'create',
+	} as const;
+
+	let filter: keyof typeof FILTERS = 'all';
 	$: filtered = [
 		...data.filter((d) => {
 			switch (filter) {
@@ -47,7 +48,7 @@
 					return true;
 			}
 		}),
-		placeholder,
+		PLACEHOLDER,
 	];
 </script>
 
@@ -56,7 +57,7 @@
 		<h3 class="e-h3">{title}</h3>
 		<form action="" use:enhance method="POST">
 			<Switch bind:group={filter} name="filter">
-				{#each Object.entries(filters) as [k, v]}
+				{#each Object.entries(FILTERS) as [k, v]}
 					<SwitchItem value={k}>
 						{v}
 					</SwitchItem>
@@ -72,7 +73,7 @@
 				out:scale|local={{ start: 0.8, duration: 200, delay: (filtered.length - i) * 50 }}
 			>
 				{#if !('created_by_id' in datum)}
-					<slot name="placeholder" />
+					<slot name="create" />
 				{:else}
 					<slot {datum} />
 				{/if}
@@ -85,6 +86,7 @@
 	section {
 		display: flex;
 		flex-direction: column;
+		scroll-margin-top: var(--ui-scroll-margin);
 	}
 
 	header {
@@ -100,18 +102,18 @@
 	}
 
 	h3 {
-		padding: var(--ui-size-x2small) 0;
+		padding: var(--ui-block-x2small) 0;
 	}
 
 	form {
-		font-size: var(--ui-size-xsmall);
+		font-size: var(--ui-block-xsmall);
 	}
 
 	ul {
-		--scroll-color: transparent;
+		--ui-scroll-color: transparent;
 		display: flex;
 		flex-direction: row;
-		gap: 0;
+		gap: 1rem;
 		overflow-x: scroll;
 		padding: 0 2rem;
 	}

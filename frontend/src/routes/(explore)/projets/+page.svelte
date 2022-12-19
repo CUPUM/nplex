@@ -32,8 +32,8 @@
 		padding: 1rem;
 		padding-top: 0;
 		height: 100vh;
-		padding-top: var(--navbar-height-px);
-		margin-top: calc(-1 * var(--navbar-height-px));
+		padding-top: var(--ui-nav-px);
+		margin-top: calc(-1 * var(--ui-nav-px));
 	}
 
 	form {

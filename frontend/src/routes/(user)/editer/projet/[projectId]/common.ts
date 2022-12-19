@@ -5,7 +5,7 @@ export const EDITOR_FORM_ID = 'project-editor';
 
 export const GALLERY_UPLOAD_FORM_ID = 'gallery-upload';
 
-interface ProjectEditorRoute {
+export interface EditorNavRoute {
 	title: string;
 	subpath: '' | `/${string}`;
 	hash?: string;
@@ -44,4 +44,6 @@ export const EDITOR_NAV_ROUTES = {
 		title: 'Visibilité',
 		subpath: '/parametres',
 	},
-} as const satisfies Record<string, ProjectEditorRoute>;
+} as const satisfies Record<string, EditorNavRoute>;
+
+export const EDITOR_NAV_ROUTES_ARR = Object.values(EDITOR_NAV_ROUTES);

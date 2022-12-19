@@ -1,5 +1,5 @@
 import { queryMessage } from '$routes/MessagesOutlet.svelte';
-import { getDb, getPagination } from '$utils/database';
+import { getDb, pagination } from '$utils/database';
 import { error, redirect } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
@@ -23,11 +23,10 @@ export const load: LayoutLoad = async (event) => {
 		`
 		)
 		.order('updated_at', { ascending: false })
-		.range(...getPagination(0, 10));
+		.range(...pagination(0, 10));
 	if (projectsRes.error) {
 		throw error(404, projectsRes.error);
 	}
-
 	return {
 		projects: projectsRes.data,
 	};

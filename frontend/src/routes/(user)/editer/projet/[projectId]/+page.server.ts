@@ -47,7 +47,7 @@ export const actions: Actions = {
 		if (worksDelete.error) {
 			return fail(STATUS_CODES.InternalServerError, worksDelete.error);
 		}
-		// Append new ones
+		// Append new works.
 		const worksUpsert = await db.from('projects_works').upsert(
 			parsed.data.work_id.map((wid) => {
 				return {
@@ -65,7 +65,7 @@ export const actions: Actions = {
 		const formData = Object.fromEntries(await event.request.formData());
 		if (!formData.id) return fail(401);
 		const db = await getDb(event);
-		const deleteRes = await db.from('projects').delete().eq('id', formData.id);
+		const deleteRes = await db.from('projects').delete().eq('id', formData.id).single();
 		if (deleteRes.error) throw error(500, deleteRes.error);
 		throw redirect(301, '/editer');
 	},

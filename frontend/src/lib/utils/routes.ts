@@ -31,7 +31,7 @@ export const MAIN_ROUTES = {
 		label: 'Guides',
 	},
 	explore: {
-		pathname: '',
+		pathname: '/',
 		label: 'Explorer',
 	},
 } satisfies Record<string, Route>;

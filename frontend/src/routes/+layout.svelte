@@ -2,6 +2,7 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
+	import Logo from '$components/Logo2.svelte';
 	import MessagesOutlet from '$routes/MessagesOutlet.svelte';
 	import '$styles/app.scss';
 	import '$styles/resets.scss';
@@ -39,14 +40,15 @@
 
 <svelte:window bind:scrollY />
 
+<Logo />
 <RootTheme />
 <div
 	class="container"
 	class:hidden={!mounted}
 	class:authing={$authModal}
-	style:--scroll={scrollY}
-	style:--scroll-px="{scrollY}px"
-	style:--navbar-height-px="{navbarHeight}px"
+	style:--ui-scroll={scrollY}
+	style:--ui-scroll-px="{scrollY}px"
+	style:--ui-nav-px="{navbarHeight}px"
 >
 	<Navbar bind:navbarHeight />
 	<main>
@@ -64,7 +66,7 @@
 <style lang="scss" module>
 	.container {
 		position: relative;
-		transform-origin: 50vw calc(var(--scroll-px) + 50vh);
+		transform-origin: 50vw calc(var(--ui-scroll-px) + 50vh);
 		transition: transform 0.35s cubic-bezier(0.2, 0, 0.2, 1.2), opacity 0.5s ease-out;
 		&.hidden {
 			transform: scale(0.98);

@@ -26,6 +26,7 @@
 	class:round
 	aria-disabled={disabled}
 	{href}
+	on:pointerdown
 >
 	<Ripple color="var(--color-primary-500)" />
 	<div class="inner">
@@ -48,11 +49,11 @@
 		border-radius: var(--bradius);
 		letter-spacing: 0.02em;
 		color: col(fg, 700);
+		background: col(bg, 100, 0.8);
 		outline: 0px dashed transparent;
 		outline-offset: 0px;
 		transition: all 0.1s, box-shadow 0.25s ease-out;
-		backdrop-filter: blur(10px);
-		background: col(bg, 700, 0.5);
+		backdrop-filter: blur(12px);
 		&:hover,
 		&.active,
 		&:active {
@@ -62,7 +63,7 @@
 		&.current:not(.active) {
 			cursor: default;
 			color: col(primary, 500);
-			background: col(bg, 100, 0.7);
+			// background: col(bg, 100, 0.7);
 		}
 	}
 	.inner {

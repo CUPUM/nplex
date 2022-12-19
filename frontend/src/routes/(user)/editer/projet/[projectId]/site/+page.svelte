@@ -1,11 +1,7 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { EDITOR_FORM_ID } from '../common';
 	import type { PageData } from './$types';
-	import { INPUT_NAMES } from './common';
 	import SiteLocation from './SiteLocation.svelte';
 
 	export let data: PageData;
@@ -14,7 +10,10 @@
 		if (category === null) {
 			return [];
 		}
-		return data.descriptors.siteUsages.filter((u) => u.category_ids.includes(category));
+		const filtered = data.descriptors.siteUsages.filter((u) => {
+			u.category_ids.includes(category);
+		});
+		return filtered;
 	}
 </script>
 
@@ -40,7 +39,7 @@
 						<span>{ownership.title}</span>
 						<input
 							type="radio"
-							name={INPUT_NAMES.OWNERSHIP}
+							name="site_ownership_id"
 							value={ownership.id}
 							bind:group={data.project.site_ownership_id}
 						/>
@@ -53,51 +52,63 @@
 		<section class="map">
 			<SiteLocation project={data.project} />
 		</section>
-		<fieldset class="fields">
-			<h3>Situez votre projet</h3>
-			<!-- Add input here instead of in SiteLocation -->
-		</fieldset>
-		<fieldset class="fields">
-			<h3>Superficie du terrain</h3>
-			<p>
-				Note: Vous pouvez utiliser la règle sur la carte pour vous aider à évaluer la superficie du
-				lieu.
-			</p>
-			<input
-				type="number"
-				name={INPUT_NAMES.AREA}
-				placeholder="Superficie"
-				bind:value={data.project.site_area}
-			/>m<sup>2</sup>
-			<input type="range" min="1" max="1000" step="1" bind:value={data.project.site_area} />
-		</fieldset>
-		<fieldset class="fields">
-			<h3>Usage principal</h3>
+		<section class="fields">
 			<fieldset>
-				<h4>Catégorie</h4>
-				<select
-					name={INPUT_NAMES.MAIN_USAGE_CATEGORY}
-					bind:value={data.project.site_usage_category_id}
-				>
-					{#each data.descriptors.siteUsagesCategories as uc}
-						<option value={uc.id}>{uc.title}</option>
-					{/each}
-				</select>
-				<h4>Usage principal</h4>
-				{#if typeof data.project.site_usage_category_id === 'number'}
-					<select
-						placeholder="Usage principal"
-						name={INPUT_NAMES.MAIN_USAGE}
-						bind:value={data.project.site_usage_id}
-					>
-						{#each usages(data.project.site_usage_category_id) as u}
-							<option value={u.id}>{u.title}</option>
+				<h3>Situez votre projet</h3>
+				<!-- Add input here instead of in SiteLocation -->
+			</fieldset>
+			<fieldset>
+				<h3>Arrondissement</h3>
+				<p>Confirmez dans quel arrondissement se situe le site du projet.</p>
+				<ul>
+					<li>Choix...</li>
+				</ul>
+				<h3>Quartier</h3>
+				<p>Confirmez dans quel quartier se situe le site du projet.</p>
+				<ul>
+					<li>Choix...</li>
+				</ul>
+			</fieldset>
+			<fieldset>
+				<h3>Superficie du terrain</h3>
+				<p>
+					Note: Vous pouvez utiliser la règle sur la carte pour vous aider à évaluer la superficie
+					du lieu.
+				</p>
+				<input
+					type="number"
+					name="site_area"
+					placeholder="Superficie"
+					bind:value={data.project.site_area}
+				/>m<sup>2</sup>
+				<input type="range" min="1" max="1000" step="1" bind:value={data.project.site_area} />
+			</fieldset>
+			<fieldset>
+				<h3>Usage principal</h3>
+				<fieldset>
+					<h4>Catégorie</h4>
+					<select name="site_usage_category_id" bind:value={data.project.site_usage_category_id}>
+						{#each data.descriptors.siteUsagesCategories as uc}
+							<option value={uc.id}>{uc.title}</option>
 						{/each}
 					</select>
-				{/if}
-			</fieldset>
-			<fieldset class="fields">
+					<h4>Usage principal</h4>
+					{#if typeof data.project.site_usage_category_id === 'number'}
+						<select
+							placeholder="Usage principal"
+							name="site_usage_id"
+							bind:value={data.project.site_usage_id}
+						>
+							{#each usages(data.project.site_usage_category_id) as u}
+								<option value={u.id}>{u.title}</option>
+							{/each}
+						</select>
+					{/if}
+				</fieldset>
 				<h3>Usage(s) secondaire(s)</h3>
+				<fieldset>
+					<p>Ajouter...</p>
+				</fieldset>
 			</fieldset>
 			<fieldset>
 				<h3>Rues/ruelles adjacentes</h3>
@@ -109,7 +120,7 @@
 					id=""
 				/>
 			</fieldset>
-		</fieldset>
+		</section>
 	</article>
 </form>
 
@@ -129,26 +140,34 @@
 
 	article {
 		position: relative;
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: var(--ui-gutter);
+		display: flex;
 		flex-direction: row;
+		gap: var(--ui-gutter);
+		max-width: var(--ui-block-lg);
+		width: 100%;
+		margin: 0 auto;
+
+		> section {
+			width: 100%;
+			flex: auto;
+		}
 	}
 
 	.map {
-		--top: calc(var(--navbar-height-px) + var(--ui-gutter));
+		--top: calc(var(--ui-nav-px) + var(--ui-gutter));
 		position: sticky;
 		top: var(--top);
 		height: calc(100vh - var(--top) - var(--ui-gutter));
 		border-radius: var(--ui-block-radius);
-		grid-row: 1 / -1;
-		grid-column: 1;
 	}
 
 	.fields {
-		padding: 2rem;
 		border-radius: var(--ui-block-radius);
 		background: col(bg, 900);
-		grid-column: 2;
+
+		> fieldset {
+			padding: 2rem;
+			min-height: 400px;
+		}
 	}
 </style>

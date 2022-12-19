@@ -29,7 +29,7 @@
 		min-height: 100vh;
 		padding: 4rem;
 		margin: 0 auto;
-		margin-top: calc(-1 * var(--navbar-height-px));
+		margin-top: calc(-1 * var(--ui-nav-px));
 		color: var(--color-error-300);
 	}
 

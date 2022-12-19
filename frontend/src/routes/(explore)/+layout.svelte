@@ -38,7 +38,7 @@
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		min-height: calc(100vh - var(--navbar-height-px));
+		min-height: calc(100vh - var(--ui-nav-px));
 		align-items: stretch;
 	}
 
@@ -67,7 +67,7 @@
 		flex-direction: row;
 		align-items: center;
 		overflow-x: scroll;
-		--scroll-size: 0px;
+		--ui-scroll-size: 0px;
 		padding: 0 1rem;
 		gap: 0.5rem;
 	}

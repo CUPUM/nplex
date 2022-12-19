@@ -68,15 +68,15 @@
 		min-height: 100vh;
 		padding: 0;
 		padding-bottom: 2rem;
-		padding-top: calc(var(--navbar-height-px) + 6rem);
+		padding-top: calc(var(--ui-nav-px) + 6rem);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: flex-end;
 		width: 100%;
-		margin-top: calc(-1 * var(--navbar-height-px));
+		margin-top: calc(-1 * var(--ui-nav-px));
 		background: col(bg, 100);
-		border-radius: min(var(--ui-radius-xl), calc(0.2 * var(--scroll-px)));
+		border-radius: min(var(--ui-radius-xl), calc(0.2 * var(--ui-scroll-px)));
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
 	}
@@ -115,7 +115,7 @@
 		@for $i from 0 through 4 {
 			& :global(span > :nth-child(#{5 - $i})) {
 				position: relative;
-				bottom: calc(var(--scroll-px) * #{0.1 * $i});
+				bottom: calc(var(--ui-scroll-px) * #{0.1 * $i});
 				transition: bottom 0.2s;
 			}
 		}
@@ -124,7 +124,7 @@
 	.pres {
 		position: sticky;
 		bottom: 0;
-		padding: var(--ui-size-x4large) var(--ui-size-small);
+		padding: var(--ui-block-x4large) var(--ui-block-small);
 		margin: 0;
 		width: 100%;
 		min-height: 50vh;
@@ -138,6 +138,6 @@
 	}
 
 	p {
-		max-width: var(--ui-size-md);
+		max-width: var(--ui-block-md);
 	}
 </style>

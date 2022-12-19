@@ -6,7 +6,7 @@ import type { Category } from '$utils/enums';
 import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
 
-export type Session = DeepOmit<AuthSession, { user: { role: never } }> & {
+type Session = DeepOmit<AuthSession, { user: { role: never } }> & {
 	user: { role: Database['public']['Enums']['user_role'] } & Pick<
 		App.DatabaseSchema['public']['Tables']['users']['Row'],
 		'avatar_url' | 'first_name' | 'public_email'

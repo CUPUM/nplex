@@ -84,7 +84,7 @@
 		flex: none;
 		white-space: nowrap;
 		font-weight: 300;
-		font-size: var(--ui-text-xs);
+		font-size: var(--ui-text-sm);
 		padding: 0.5em 1em 0.6em 1em;
 		margin: 0;
 		background: col(bg, 900, 0.95);

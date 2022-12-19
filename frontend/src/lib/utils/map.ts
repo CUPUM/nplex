@@ -1,26 +1,21 @@
 import type { MapDrawStyles } from '$types/map';
 import type { GestureOptions, LngLatBoundsLike, LngLatLike, Map } from 'maplibre-gl';
 import type { createEventDispatcher } from 'svelte';
-import { themes } from './themes';
-
-/**
- * Various utility and helpers related to Map Libre, the Map primitive component and its slotable
- * children.
- */
+import { THEMES } from './themes';
 
 /**
  * Dictionnary of JSON styles for map baselayer.
  */
-export const styles = {
-	light: 'https://api.maptiler.com/maps/basic/style.json?key=dtV5LH1SmQB4VOb80qqI',
-	toner: 'https://api.maptiler.com/maps/toner/style.json?key=dtV5LH1SmQB4VOb80qqI',
-};
+export const MAP_STYLES = {
+	LIGHT: 'https://api.maptiler.com/maps/basic/style.json?key=dtV5LH1SmQB4VOb80qqI',
+	TONER: 'https://api.maptiler.com/maps/toner/style.json?key=dtV5LH1SmQB4VOb80qqI',
+} as const;
 
 /**
  * Default Draw styles, taken from:
  * https://github.com/mapbox/mapbox-gl-draw/blob/main/src/lib/theme.js.
  */
-export const drawStyles: MapDrawStyles = [
+export const MAP_DRAW_STYLES: MapDrawStyles = [
 	{
 		id: 'gl-draw-polygon-fill-inactive',
 		type: 'fill',
@@ -31,8 +26,8 @@ export const drawStyles: MapDrawStyles = [
 			['!=', 'mode', 'static'],
 		],
 		paint: {
-			'fill-color': themes.light.primary[700],
-			'fill-outline-color': themes.light.primary[700],
+			'fill-color': THEMES.LIGHT.primary[700],
+			'fill-outline-color': THEMES.LIGHT.primary[700],
 			'fill-opacity': 0.1,
 		},
 	},
@@ -44,14 +39,14 @@ export const drawStyles: MapDrawStyles = [
 			'fill-color': [
 				'case',
 				['boolean', ['feature-state', 'error'], false],
-				themes.light.error[500],
-				themes.light.primary[500],
+				THEMES.LIGHT.error[500],
+				THEMES.LIGHT.primary[500],
 			],
 			'fill-outline-color': [
 				'case',
 				['boolean', ['feature-state', 'error'], false],
-				themes.light.error[500],
-				themes.light.primary[500],
+				THEMES.LIGHT.error[500],
+				THEMES.LIGHT.primary[500],
 			],
 			'fill-opacity': 0.1,
 		},
@@ -62,7 +57,7 @@ export const drawStyles: MapDrawStyles = [
 		filter: ['all', ['==', '$type', 'Point'], ['==', 'meta', 'midpoint']],
 		paint: {
 			'circle-radius': 3,
-			'circle-color': themes.light.primary[500],
+			'circle-color': THEMES.LIGHT.primary[500],
 		},
 	},
 	{
@@ -79,7 +74,7 @@ export const drawStyles: MapDrawStyles = [
 			'line-join': 'round',
 		},
 		paint: {
-			'line-color': themes.light.primary[700],
+			'line-color': THEMES.LIGHT.primary[700],
 			'line-width': 2,
 		},
 	},
@@ -92,7 +87,7 @@ export const drawStyles: MapDrawStyles = [
 			'line-join': 'round',
 		},
 		paint: {
-			'line-color': themes.light.primary[500],
+			'line-color': THEMES.LIGHT.primary[500],
 			'line-dasharray': [0.2, 2],
 			'line-width': 2,
 		},
@@ -111,7 +106,7 @@ export const drawStyles: MapDrawStyles = [
 			'line-join': 'round',
 		},
 		paint: {
-			'line-color': themes.light.primary[700],
+			'line-color': THEMES.LIGHT.primary[700],
 			'line-width': 2,
 		},
 	},
@@ -124,7 +119,7 @@ export const drawStyles: MapDrawStyles = [
 			'line-join': 'round',
 		},
 		paint: {
-			'line-color': themes.light.primary[500],
+			'line-color': THEMES.LIGHT.primary[500],
 			'line-dasharray': [0.2, 2],
 			'line-width': 2,
 		},
@@ -132,12 +127,7 @@ export const drawStyles: MapDrawStyles = [
 	{
 		id: 'gl-draw-polygon-and-line-vertex-stroke-inactive',
 		type: 'circle',
-		filter: [
-			'all',
-			['==', 'meta', 'vertex'],
-			['==', '$type', 'Point'],
-			['!=', 'mode', 'static'],
-		],
+		filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
 		paint: {
 			'circle-radius': 5,
 			'circle-color': '#fff',
@@ -146,15 +136,10 @@ export const drawStyles: MapDrawStyles = [
 	{
 		id: 'gl-draw-polygon-and-line-vertex-inactive',
 		type: 'circle',
-		filter: [
-			'all',
-			['==', 'meta', 'vertex'],
-			['==', '$type', 'Point'],
-			['!=', 'mode', 'static'],
-		],
+		filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
 		paint: {
 			'circle-radius': 3,
-			'circle-color': themes.light.primary[500],
+			'circle-color': THEMES.LIGHT.primary[500],
 		},
 	},
 	{
@@ -185,18 +170,13 @@ export const drawStyles: MapDrawStyles = [
 		],
 		paint: {
 			'circle-radius': 3,
-			'circle-color': themes.light.primary[700],
+			'circle-color': THEMES.LIGHT.primary[700],
 		},
 	},
 	{
 		id: 'gl-draw-point-stroke-active',
 		type: 'circle',
-		filter: [
-			'all',
-			['==', '$type', 'Point'],
-			['==', 'active', 'true'],
-			['!=', 'meta', 'midpoint'],
-		],
+		filter: ['all', ['==', '$type', 'Point'], ['==', 'active', 'true'], ['!=', 'meta', 'midpoint']],
 		paint: {
 			'circle-radius': 7,
 			'circle-color': '#fff',
@@ -205,15 +185,10 @@ export const drawStyles: MapDrawStyles = [
 	{
 		id: 'gl-draw-point-active',
 		type: 'circle',
-		filter: [
-			'all',
-			['==', '$type', 'Point'],
-			['!=', 'meta', 'midpoint'],
-			['==', 'active', 'true'],
-		],
+		filter: ['all', ['==', '$type', 'Point'], ['!=', 'meta', 'midpoint'], ['==', 'active', 'true']],
 		paint: {
 			'circle-radius': 5,
-			'circle-color': themes.light.primary[500],
+			'circle-color': THEMES.LIGHT.primary[500],
 		},
 	},
 	{
@@ -267,7 +242,7 @@ export const drawStyles: MapDrawStyles = [
  * Include default values for omited styles.
  */
 export function extendDefaultDrawStyles(styles: MapDrawStyles) {
-	const o = Object.fromEntries(drawStyles.map((s) => [s.id, s]));
+	const o = Object.fromEntries(MAP_DRAW_STYLES.map((s) => [s.id, s]));
 	for (const s of styles) {
 		o[s.id] = s;
 	}
@@ -284,7 +259,7 @@ export function createDrawStyles(
 ) {
 	let filled = styles
 		.map((s) => {
-			const base = drawStyles.find((d) => d.id === s.id);
+			const base = MAP_DRAW_STYLES.find((d) => d.id === s.id);
 			if (!base) return false;
 			return {
 				...base,

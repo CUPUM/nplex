@@ -571,7 +571,7 @@ export interface Database {
           implantation_mode_id: number | null
           building_construction_year: number | null
           type_id: number | null
-          banner_url: string | null
+          banner_id: string | null
           location_geometry: unknown | null
           location_radius: number | null
           cost_range: unknown
@@ -595,7 +595,7 @@ export interface Database {
           implantation_mode_id?: number | null
           building_construction_year?: number | null
           type_id?: number | null
-          banner_url?: string | null
+          banner_id?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
           cost_range?: unknown
@@ -619,7 +619,7 @@ export interface Database {
           implantation_mode_id?: number | null
           building_construction_year?: number | null
           type_id?: number | null
-          banner_url?: string | null
+          banner_id?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
           cost_range?: unknown
@@ -740,7 +740,7 @@ export interface Database {
           description?: string | null
         }
       }
-      projects_gallery_images: {
+      projects_images: {
         Row: {
           created_at: string
           updated_at: string
@@ -1173,7 +1173,7 @@ export interface Database {
           implantation_mode_id: number | null
           building_construction_year: number | null
           type_id: number | null
-          banner_url: string | null
+          banner_id: string | null
           location_geometry: unknown | null
           location_radius: number | null
           cost_range: unknown | null
@@ -1197,7 +1197,7 @@ export interface Database {
           implantation_mode_id?: number | null
           building_construction_year?: number | null
           type_id?: number | null
-          banner_url?: string | null
+          banner_id?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
           cost_range?: unknown | null
@@ -1221,7 +1221,7 @@ export interface Database {
           implantation_mode_id?: number | null
           building_construction_year?: number | null
           type_id?: number | null
-          banner_url?: string | null
+          banner_id?: string | null
           location_geometry?: unknown | null
           location_radius?: number | null
           cost_range?: unknown | null

@@ -101,7 +101,7 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-		max-width: var(--ui-size-xl);
+		max-width: var(--ui-block-xl);
 		padding: 2rem;
 		margin: 0 auto;
 		align-items: flex-start;

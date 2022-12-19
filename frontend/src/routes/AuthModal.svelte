@@ -237,7 +237,7 @@
 		align-items: center;
 		height: 100vh;
 		width: 100vw;
-		padding: var(--ui-size-x2large) var(--ui-size-medium);
+		padding: var(--ui-block-x2large) var(--ui-block-medium);
 		margin: 0;
 		top: 0;
 		left: 0;

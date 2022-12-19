@@ -47,14 +47,14 @@
 	.xsmall {
 	}
 	.small {
-		font-size: var(--ui-size-small);
+		font-size: var(--ui-block-small);
 	}
 	.medium {
-		font-size: var(--ui-size-medium);
+		font-size: var(--ui-block-medium);
 	}
 	.large {
 		font-weight: 550;
-		font-size: var(--ui-size-large);
+		font-size: var(--ui-block-large);
 	}
 	.xlarge {
 	}

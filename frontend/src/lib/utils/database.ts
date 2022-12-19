@@ -8,6 +8,9 @@ import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { get } from 'svelte/store';
 import { LOAD_DEPENDENCIES } from './enums';
 
+/**
+ * Supabase client instance reserved to browser context.
+ */
 export const browserDb = createClient<App.DatabaseSchema>(
 	PUBLIC_SUPABASE_URL,
 	PUBLIC_SUPABASE_ANON_KEY,
@@ -21,18 +24,26 @@ export const browserDb = createClient<App.DatabaseSchema>(
 );
 if (browser) {
 	browserDb.auth.onAuthStateChange(async (event, session) => {
-		// Tab switch fires a SIGNED_IN event...
-		const pagedata = get(page).data;
-		if (
-			event === 'SIGNED_IN' &&
-			pagedata &&
-			'session' in pagedata &&
-			session?.user.id === pagedata.session?.user.id
-		) {
-			// ...This prevents unwarranted page invalidation.
-			return;
+		let update = false;
+		if (event === 'SIGNED_IN') {
+			// Tab switching triggers a signed in event...
+			const pagedata = get(page).data;
+			if (pagedata) {
+				const sameUser = pagedata.session?.user.id === session?.user.id;
+				const sameAccessToken = pagedata.session?.access_token === session?.access_token;
+				const sameRefreshToken = pagedata.session?.refresh_token === session?.refresh_token;
+				if (!sameUser || !sameAccessToken || !sameRefreshToken) {
+					// If the sign in leads to a different session state, then percolate update.
+					update = true;
+				}
+			}
+		} else if (event === 'TOKEN_REFRESHED') {
+			if (session) {
+				update = true;
+			}
 		}
-		if (event === 'TOKEN_REFRESHED' && session) {
+		// Send auth state update to server to adjust session cookie.
+		if (update) {
 			await fetch('/api/auth/update-tokens', {
 				method: 'POST',
 				body: JSON.stringify(session),
@@ -60,6 +71,10 @@ function sessionStorage(): SupportedStorage {
 	};
 }
 
+/**
+ * Supabase client instanciator for short-lived (request event lifecycle) instances reserved to
+ * server context.
+ */
 function createServerClient() {
 	return createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		auth: {
@@ -115,7 +130,7 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
  *
  * @param page Zero-based desired page, i.e. pagination start at index 0.
  */
-export function getPagination(page: number, size: number): [start: number, end: number] {
+export function pagination(page: number, size: number): [start: number, end: number] {
 	const start = page * size;
 	const end = start + size;
 	return [start, end];

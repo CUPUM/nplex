@@ -5,7 +5,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { getMapContext } from '$components/Map.svelte';
-	import { themes } from '$utils/themes';
+	import { THEMES } from '$utils/themes';
 	import type { PageData } from '.svelte-kit/types/src/routes/$types';
 	import type { MapLayerMouseEvent } from 'maplibre-gl';
 	import { onDestroy } from 'svelte';
@@ -29,7 +29,9 @@
 			data: {
 				type: 'FeatureCollection',
 				features: projects
-					.filter((p) => p.location_geometry && 'coordinates' in p.location_geometry && p.location_radius)
+					.filter(
+						(p) => p.location_geometry && 'coordinates' in p.location_geometry && p.location_radius
+					)
 					.map((p) => {
 						return {
 							type: 'Feature',
@@ -52,11 +54,11 @@
 			paint: {
 				'circle-pitch-alignment': 'map',
 				'circle-pitch-scale': 'map',
-				'circle-color': themes.light.primary[500],
+				'circle-color': THEMES.LIGHT.primary[500],
 				'circle-opacity': 0.8,
 				// 'circle-blur': 0.2,
 				'circle-stroke-width': 5,
-				'circle-stroke-color': themes.light.primary[700],
+				'circle-stroke-color': THEMES.LIGHT.primary[700],
 				'circle-stroke-opacity': 0.25,
 				'circle-radius': [
 					'interpolate',

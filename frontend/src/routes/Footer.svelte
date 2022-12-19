@@ -99,7 +99,7 @@
 
 	.inner {
 		width: 100%;
-		max-width: var(--ui-size-xl);
+		max-width: var(--ui-block-xl);
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		align-items: stretch;
@@ -136,7 +136,7 @@
 		list-style-type: none;
 		padding: 0;
 		margin: 0;
-		font-size: var(--ui-size-xsmall);
+		font-size: var(--ui-block-xsmall);
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;

@@ -30,7 +30,7 @@
 
 <script lang="ts">
 	import type { MapDrawStyles } from '$types/map';
-	import { drawStyles } from '$utils/map';
+	import { MAP_DRAW_STYLES } from '$utils/map';
 
 	import type {
 		DrawActionableEvent,
@@ -50,7 +50,7 @@
 	import { getMapContext } from './Map.svelte';
 
 	export let modes: typeof MapboxDraw.modes = MapboxDraw.modes;
-	export let styles: MapDrawStyles = drawStyles;
+	export let styles: MapDrawStyles = MAP_DRAW_STYLES;
 
 	export const draw: MapboxDraw = new MapboxDraw({
 		displayControlsDefault: false,

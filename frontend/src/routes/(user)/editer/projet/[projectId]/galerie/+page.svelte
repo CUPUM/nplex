@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
-
 	import { enhance } from '$app/forms';
 	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
@@ -15,7 +14,7 @@
 	import { fly, scale } from 'svelte/transition';
 	import { EDITOR_FORM_ID, GALLERY_UPLOAD_FORM_ID } from '../common';
 	import type { PageData } from './$types';
-	import { del } from './common';
+	import { imageform } from './common';
 	import InputImage from './InputImage.svelte';
 
 	export let data: PageData;
@@ -27,11 +26,10 @@
 	let target: number | null = null;
 
 	function move(index: number, target: number) {
-		const corrected = index < target ? target - 1 : target;
-		if (corrected === index) {
+		if (target === index) {
 			return;
 		}
-		data.project.gallery.splice(corrected, 0, data.project.gallery.splice(index, 1)[0]);
+		data.project.gallery.splice(target, 0, data.project.gallery.splice(index, 1)[0]);
 		data.project.gallery = data.project.gallery;
 	}
 
@@ -40,9 +38,9 @@
 	}
 
 	function drop() {
-		console.log('drop');
 		if (target !== null && dragging !== null) {
-			move(dragging, target);
+			const corrected = target > dragging ? target - 1 : target;
+			move(dragging, corrected);
 		}
 		dragging = null;
 		target = null;
@@ -98,32 +96,48 @@
 				on:dragover={(e) => e.preventDefault()}
 				on:dragstart={() => dragstart(i)}
 				on:drop={drop}
+				on:dragend={drop}
 				animate:flip={{ duration: 500, easing: expoOut }}
 				in:fly={{ y: 12, delay: i * 100, easing: expoOut }}
-				out:scale={{ start: 0.95 }}
+				out:scale|local={{ start: 0.95 }}
 			>
-				<fieldset>
-					<Image class="gallery-image" src={image.publicUrl} alt={image.id} objectFit="cover" />
+				<div class="image">
+					<Image class="gallery-image" src={image.publicUrl} alt={image.id} />
 					<menu class={THEME_CLASSES.DARK}>
 						<Tooltip message="Supprimer" place="top">
-							<Button type="submit" round form={del(image.id)}>
+							<Button type="submit" round form={imageform(image.id)}>
 								<Icon name="trash" />
 							</Button>
 						</Tooltip>
-						<Tooltip message="Définir comme bannière" place="top">
-							<Button type="submit" round form={del(image.id)}>
+						<Tooltip message="Avancer" place="top">
+							<Button style="margin-left: auto;" round on:pointerdown={() => move(i, i - 1)}
+								><Icon name="arrow-left" /></Button
+							>
+						</Tooltip>
+						<Tooltip
+							message={data.project.banner_id === image.id
+								? 'Retirer de la bannière'
+								: 'Définir comme bannière'}
+							place="top"
+						>
+							<Button
+								type="submit"
+								formaction={data.project.banner_id === image.id ? '?/demote' : '?/promote'}
+								active={data.project.banner_id === image.id}
+								round
+								form={imageform(image.id)}
+							>
 								<Icon name="bookmark" />
 							</Button>
 						</Tooltip>
-						<Tooltip message="Avancer" place="top">
-							<Button style="margin-left: auto;" round><Icon name="arrow-left" /></Button>
-						</Tooltip>
 						<Tooltip message="Reculer" place="top">
-							<Button round><Icon name="arrow-right" /></Button>
+							<Button round on:pointerdown={() => move(i, i + 1)}
+								><Icon name="arrow-right" /></Button
+							>
 						</Tooltip>
 					</menu>
-				</fieldset>
-				<div class="detail">
+				</div>
+				<fieldset>
 					<input type="hidden" name="[{i}].id" readonly value={image.id} />
 					<input type="hidden" name="[{i}].name" readonly value={image.name} />
 					<Field name="[{i}].title" value={image.title ?? ''} variant="outlined">
@@ -132,10 +146,14 @@
 					<TextArea name="[{i}].description" value={image.description ?? ''} variant="outlined">
 						<svelte:fragment slot="label">Description</svelte:fragment>
 					</TextArea>
-				</div>
+				</fieldset>
 				{#if dragging !== null && dragging !== i}
-					<hr class="before" class:target={target === i} on:dragover={() => dragover(i)} />
-					<hr class="after" class:target={target === i + 1} on:dragover={() => dragover(i + 1)} />
+					<div class="drop before" class:target={target === i} on:dragover={() => dragover(i)} />
+					<div
+						class="drop after"
+						class:target={target === i + 1}
+						on:dragover={() => dragover(i + 1)}
+					/>
 				{/if}
 			</li>
 		{/each}
@@ -144,10 +162,11 @@
 		{/if}
 	</ol>
 </form>
-<!-- Hidden forms to handle deletions -->
+<!-- Hidden forms to handle single-image actions -->
 {#each data.project.gallery as image}
-	<form hidden method="POST" action="?/delete" id={del(image.id)} use:enhance>
+	<form hidden method="POST" action="?/delete" id={imageform(image.id)} use:enhance>
 		<input type="hidden" readonly name="file_name" value={image.name} />
+		<input type="hidden" readonly name="id" value={image.id} />
 	</form>
 {/each}
 
@@ -157,9 +176,9 @@
 	}
 
 	.upload {
-		max-width: var(--ui-size-xl);
+		max-width: var(--ui-block-xl);
 		width: 100%;
-		padding-top: calc(4rem + var(--navbar-height-px));
+		padding-top: calc(4rem + var(--ui-nav-px));
 		padding-inline: 2rem;
 		margin-inline: auto;
 		border-radius: var(--ui-radius-lg);
@@ -177,14 +196,14 @@
 			opacity: 0.5;
 			line-height: 1.5;
 			margin: 1rem;
-			max-width: var(--ui-size-2xs);
+			max-width: var(--ui-block-2xs);
 		}
 	}
 
 	.update {
 		display: flex;
 		flex-direction: column;
-		max-width: var(--ui-size-xl);
+		max-width: var(--ui-block-xl);
 		width: 100%;
 		margin-inline: auto;
 		padding-inline: 2rem;
@@ -204,19 +223,20 @@
 		.dragging {
 			li:not(.drag-subject) {
 				opacity: 0.8;
+				transform: scale(0.98);
 			}
 		}
 		.drag-subject {
 			opacity: 1;
-			box-shadow: 0 0 0 5px col(fg, 900, 0.1);
-			background: col(fg, 900, 0.1);
+			box-shadow: 0 1rem 5rem -4rem black;
+			background: col(bg, 000);
 		}
 		li {
 			cursor: move;
 			position: relative;
 			flex: none;
 			border-radius: var(--ui-radius-lg);
-			transition: all 0.1s ease-out;
+			transition: all 0.2s var(--ui-ease-out);
 			&:hover {
 				border-radius: var(--ui-radius-md);
 				menu::before {
@@ -224,7 +244,7 @@
 				}
 			}
 		}
-		fieldset {
+		.image {
 			display: flex;
 			position: relative;
 			padding: 0;
@@ -264,13 +284,13 @@
 				transition: opacity 0.2s;
 			}
 		}
-		.detail {
+		fieldset {
 			margin-top: 1rem;
 			gap: 1rem;
 			display: flex;
 			flex-direction: column;
 		}
-		hr {
+		.drop {
 			position: absolute;
 			height: calc(100% + 2rem);
 			width: calc(50% + 1rem);

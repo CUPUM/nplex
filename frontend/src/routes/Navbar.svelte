@@ -1,8 +1,7 @@
 <!--
 	@component
-	## Navbar
+	# Navbar
 	Main navigation bar singleton located in the app's root layout.
-
 -->
 <script lang="ts" context="module">
 	export const navbarTheme = (function () {
@@ -13,80 +12,73 @@
 			reset: () => set(null),
 		};
 	})();
+
+	const SCROLL_LOCK_KEY = 'nav-scroll-lock';
 </script>
 
 <script lang="ts">
-	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Avatar from '$components/Avatar.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
-	import { rootScroll } from '$stores/scroll';
 	import { EDITOR_BASE_ROUTE, EXPLORE_ROUTES, MAIN_ROUTES, USER_BASE_ROUTE } from '$utils/routes';
 	import { THEME_CLASSES } from '$utils/themes';
 	import { writable } from 'svelte/store';
-	import AppNavbarButton from './AppNavbarButton.svelte';
-	import AppNavbarEditorMenu from './AppNavbarEditorMenu.svelte';
-	import AppNavbarUserMenu from './AppNavbarUserMenu.svelte';
 	import { authModal } from './AuthModal.svelte';
+	import NavbarButton from './NavbarButton.svelte';
+	import NavbarEditorMenu from './NavbarEditorMenu.svelte';
+	import NavbarUserMenu from './NavbarUserMenu.svelte';
 
 	export let navbarHeight = 0;
 
-	let hidden: boolean;
-	let rootPathname: string;
-	let thres = navbarHeight || 40;
-	let loadingCategoryPath: string | null = '';
+	let open = false;
+	let rootsegment: string;
 
 	const mainNav = Object.values(MAIN_ROUTES);
 	const exploreNav = Object.values(EXPLORE_ROUTES);
 
-	beforeNavigate(({ to }) => {
-		if (
-			to &&
-			Object.values(EXPLORE_ROUTES)
-				.map((r) => r.pathname as string)
-				.includes(to.url.pathname)
-		) {
-			loadingCategoryPath = to.url.pathname;
-		}
-	});
+	$: rootsegment = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
 
-	afterNavigate(() => {
-		loadingCategoryPath = null;
-	});
+	function toggle() {
+		open = !open;
+	}
 
-	$: hidden = $rootScroll.down && $rootScroll.y > thres;
-	$: rootPathname = $page.data.category ? '' : '/' + $page.url.pathname.split('/', 2)[1];
+	// $: if (open) {
+	// 	rootScroll.lock(SCROLL_LOCK_KEY);
+	// } else {
+	// 	rootScroll.unlock(SCROLL_LOCK_KEY);
+	// }
 </script>
 
-<header
-	class={$navbarTheme ? THEME_CLASSES[$navbarTheme] : ''}
-	class:hidden
-	bind:clientHeight={navbarHeight}
->
-	<div class="wrapper">
+<header class={$navbarTheme ? THEME_CLASSES[$navbarTheme] : ''} bind:clientHeight={navbarHeight}>
+	<menu class="toggle ">
+		<NavbarButton on:pointerdown={toggle} round>
+			<Icon name={open ? 'cross' : 'arrow-down-right'} />
+		</NavbarButton>
+	</menu>
+	<div class="navs" class:open>
 		<nav class="main">
-			<AppNavbarButton round href="/">
+			<NavbarButton round href="/">
 				<Logo short style="font-size: larger" />
-			</AppNavbarButton>
+			</NavbarButton>
 			{#each mainNav as route}
-				<AppNavbarButton href={route.pathname} current={route.pathname === rootPathname}>
+				<NavbarButton href={route.pathname} current={route.pathname === rootsegment}>
 					{route.label}
-				</AppNavbarButton>
+				</NavbarButton>
 			{/each}
 		</nav>
-		<nav class="category">
+		<nav class="category ">
 			{#each exploreNav as r}
-				<AppNavbarButton href={r.pathname} current={$page.url.pathname.startsWith(r.pathname)}>
+				<NavbarButton href={r.pathname} current={$page.url.pathname.startsWith(r.pathname)}>
 					{r.label}
-				</AppNavbarButton>
+				</NavbarButton>
 			{/each}
 		</nav>
-		<nav class="session">
+		<nav class="session ">
 			{#if $page.data.session}
 				<Popover place="bottom" align="end" hover let:open>
-					<AppNavbarButton
+					<NavbarButton
 						equi
 						slot="control"
 						href={EDITOR_BASE_ROUTE.pathname}
@@ -94,8 +86,8 @@
 						active={open}
 					>
 						<Icon name="pen" style="font-size: 1.25em" />
-					</AppNavbarButton>
-					<AppNavbarEditorMenu />
+					</NavbarButton>
+					<NavbarEditorMenu />
 				</Popover>
 				<Popover hover place="bottom" align="end" let:open>
 					<Avatar
@@ -104,12 +96,12 @@
 						data={$page.data.session.user}
 						href={USER_BASE_ROUTE.pathname}
 					/>
-					<AppNavbarUserMenu />
+					<NavbarUserMenu />
 				</Popover>
 			{:else}
-				<AppNavbarButton round cta href={authModal.getUrl({ url: $page.url }).toString()}>
+				<NavbarButton round href={authModal.getUrl({ url: $page.url }).toString()}>
 					<Icon name="user" strokeWidth="1.5" style="font-size: 1.25em" />
-				</AppNavbarButton>
+				</NavbarButton>
 			{/if}
 		</nav>
 	</div>
@@ -117,20 +109,23 @@
 
 <style lang="scss">
 	header {
+		pointer-events: none;
 		position: sticky;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		z-index: 100;
 		top: 0;
-		padding: 0;
-		margin: 0;
-		font-size: var(--ui-text-sm);
+
+		@include tablet {
+			align-items: flex-start;
+		}
 	}
 
-	.wrapper {
+	.navs {
 		position: relative;
-		max-width: var(--ui-size-xl);
+		max-width: var(--ui-block-xl);
+		font-size: var(--ui-text-sm);
 		width: 100%;
 		display: grid;
 		grid-template-columns:
@@ -142,33 +137,64 @@
 			1fr
 			[session-end full-end];
 		grid-auto-flow: dense;
-		padding-top: var(--ui-gutter);
-		padding-inline: var(--ui-gutter);
+		padding: var(--ui-gutter);
+		padding-top: 0.5rem;
 		margin: 0 auto;
 		flex-direction: row;
 		align-items: center;
 		gap: 1rem;
-		@include mobile {
-			grid-template-columns:
-				[full-start main-start]
-				auto
-				[main-end category-start]
-				auto
-				[category-end session-start]
-				auto
-				[session-end full-end];
+
+		@include tablet {
+			display: flex;
+			flex: unset;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: flex-end;
+			font-size: var(--ui-text-md);
+			position: absolute;
+			pointer-events: none;
+			border-radius: var(--ui-radius-lg);
+			overflow: hidden;
+			height: 100vh;
+			width: 0;
+			background: col(bg, 100, 0.92);
+			backdrop-filter: blur(8px);
+			transform-origin: top left;
+			transition: all 0.35s var(--ui-ease-in);
+			&:not(.open) {
+				padding-inline: 0;
+			}
+
+			&.open {
+				pointer-events: all;
+				width: 100vw;
+				transition: all 0.2s var(--ui-ease-out);
+			}
 		}
 	}
 
-	.main,
-	.category,
-	.session {
+	menu {
+		pointer-events: all;
+		width: 100%;
+		z-index: 100;
+		padding: var(--ui-gutter);
+		display: none;
+
+		@include tablet {
+			display: block;
+		}
+	}
+
+	nav {
+		position: relative;
+		pointer-events: all;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		gap: 3px;
-		@include mobile {
+		@include tablet {
 			flex-direction: column;
+			align-items: flex-start;
 		}
 	}
 
@@ -180,11 +206,9 @@
 	.category {
 		grid-column: category;
 		justify-content: center;
-		background: col(bg, 500, 0.8);
 		border-radius: var(--ui-radius-md);
-		width: 100%;
-		gap: 0;
-		backdrop-filter: blur(10px);
+		backdrop-filter: blur(12px);
+		box-shadow: 0 0 0 2px col(fg, 100, 0.1);
 	}
 
 	.session {

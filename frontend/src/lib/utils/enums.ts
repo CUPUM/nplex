@@ -3,6 +3,9 @@ import type { ValueOf } from 'ts-essentials';
 // Enums (app-wide and module-specific) should be UPPERCASED.
 // Conversly, their corresponding union types - provided when relevant - should be PascalCased and singular.
 
+/**
+ * The main exploration categories.
+ */
 export const CATEGORIES = {
 	PROJECTS: 'projects',
 	ORGANISATIONS: 'organisations',
@@ -10,6 +13,24 @@ export const CATEGORIES = {
 } as const;
 
 export type Category = ValueOf<typeof CATEGORIES>;
+
+/**
+ * Cities enum used to future-proof api designs, facilitating normalized route params and more.
+ */
+export const CITIES = {
+	MONTREAL: {
+		param: 'montreal',
+		label: 'Montréal',
+		name: 'Ville de Montréal',
+	},
+} as const satisfies Record<
+	string,
+	{
+		param: Lowercase<string>;
+		label: string;
+		name: string;
+	}
+>;
 
 /**
  * Global dictionnary of keys to help set and get a URL's search params consistently and avoid
