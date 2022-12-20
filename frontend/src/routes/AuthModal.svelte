@@ -226,7 +226,7 @@
 		height: 100vh;
 		top: 0;
 		left: 0;
-		background: col(fg, 300, 0.95);
+		background: col(fg, 100, 0.9);
 	}
 
 	dialog {

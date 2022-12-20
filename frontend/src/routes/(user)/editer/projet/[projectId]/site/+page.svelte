@@ -30,7 +30,7 @@
 	<header>
 		<h2>Détails du site</h2>
 	</header>
-	<fieldset class="ownership">
+	<section class="ownership">
 		<h3>Propriété du lieu</h3>
 		<ul>
 			{#each data.descriptors.siteOwnerships as ownership}
@@ -47,12 +47,12 @@
 				</li>
 			{/each}
 		</ul>
-	</fieldset>
-	<article>
-		<section class="map">
+	</section>
+	<section class="columns">
+		<div class="map">
 			<SiteLocation project={data.project} />
-		</section>
-		<section class="fields">
+		</div>
+		<div class="fields">
 			<fieldset>
 				<h3>Situez votre projet</h3>
 				<!-- Add input here instead of in SiteLocation -->
@@ -120,8 +120,8 @@
 					id=""
 				/>
 			</fieldset>
-		</section>
-	</article>
+		</div>
+	</section>
 </form>
 
 <style lang="scss">
@@ -136,27 +136,30 @@
 	.ownership {
 	}
 
-	article {
+	.columns {
 		position: relative;
 		display: flex;
 		flex-direction: row;
 		gap: var(--ui-gutter);
-		max-width: var(--ui-block-lg);
+		max-width: var(--ui-width-main);
 		width: 100%;
 		margin: 0 auto;
 
-		> section {
+		> div {
 			width: 100%;
 			flex: auto;
 		}
 	}
 
 	.map {
-		--top: var(--ui-nav-px);
-		--bottom: var(--ui-gutter);
+		// --top: var(--ui-nav-px);
+		// --bottom: var(--ui-gutter);
 		position: sticky;
-		top: var(--top);
-		height: calc(100vh - var(--top) - var(--bottom));
+		// top: var(--top);
+		// height: calc(100vh - var(--top) - var(--bottom));
+		top: 0;
+		height: 100vh;
+		padding: var(--ui-gutter);
 		border-radius: var(--ui-radius-lg);
 	}
 

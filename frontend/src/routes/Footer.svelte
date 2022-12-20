@@ -43,14 +43,6 @@
 	on:leave={() => (out = true)}
 >
 	<div class="inner">
-		<section class="chair">
-			<a href="/">
-				<Logo />
-			</a>
-			<a class="cc sub" href="http://unesco-paysage.umontreal.ca/" rel="external">
-				&copy; Chaire UNESCO en paysage urbain de l'Université de Montréal
-			</a>
-		</section>
 		<section>
 			<hgroup class="sub" style="--i: 0">
 				<Icon name="map" {...iconOptions} />&ensp;Carte du site
@@ -87,24 +79,34 @@
 				{/each}
 			</ul>
 		</section>
+		<section class="chair">
+			<a href="/">
+				<Logo />
+			</a>
+			<a class="cc sub" href="http://unesco-paysage.umontreal.ca/" rel="external">
+				&copy; Chaire UNESCO en paysage urbain de l'Université de Montréal
+			</a>
+		</section>
 	</div>
 </footer>
 
 <style lang="scss">
 	.footer {
-		padding: 3rem 2rem;
-		margin: 0;
 		font-size: var(--ui-text-sm);
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.inner {
 		width: 100%;
-		max-width: var(--ui-block-xl);
+		max-width: var(--ui-width-main);
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		align-items: stretch;
-		gap: 2rem;
-		margin: 0 auto;
+		gap: var(--ui-gutter);
+		padding: 4rem var(--ui-gutter);
+		padding-bottom: 2rem;
 	}
 
 	.sub {
@@ -164,13 +166,14 @@
 	}
 
 	.chair {
-		font-size: var(--ui-text-xl);
+		font-size: var(--ui-text-lg);
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: var(--ui-gutter);
 		justify-content: space-between;
 		align-items: center;
 		grid-column: 1 / -1;
+		margin-top: 4rem;
 	}
 
 	.cc {

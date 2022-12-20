@@ -13,6 +13,7 @@
 	</Map>
 	<form action="" use:enhance method="POST">
 		Filtres
+		<p>Inclure les projets non-publiés auxquel j'ai accès.</p>
 		<fieldset>Filtre 1</fieldset>
 	</form>
 	<ul>

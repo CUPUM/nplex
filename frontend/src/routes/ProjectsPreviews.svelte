@@ -7,19 +7,34 @@
 	import type { PageData } from './$types';
 
 	export let projects: PageData['projects'];
+	export let scrollTarget: HTMLElement;
 
 	const heading = 'Explorer les projets';
 
-	function pimg(p: typeof projects[number]) {
+	function pimage(p: typeof projects[number]) {
 		if (p.banner && 'name' in p.banner) {
 			return browserDb.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(p.banner.name).data
 				.publicUrl;
 		}
 		return '';
 	}
+
+	function pcolors(p: typeof projects[number]) {
+		if (!p.gallery) {
+			return '';
+		}
+		if (!Array.isArray(p.gallery)) {
+			p.gallery = [p.gallery];
+		}
+		return p.gallery.reduce((acc, curr) => {
+			acc.push('rgb' + curr.color_dominant);
+			acc.push('rgb' + curr.color_mean);
+			return acc;
+		}, [] as string[]);
+	}
 </script>
 
-<article>
+<article bind:this={scrollTarget}>
 	<a class="heading" href={EXPLORE_ROUTES.projects.pathname}>
 		<h2>{heading}</h2>
 		<div class="icon">
@@ -33,12 +48,7 @@
 		{#each projects as p (p.id)}
 			<li>
 				<a class="card" href="{EXPLORE_ROUTES.projects.pathname}/{p.id}">
-					<Image
-						alt=""
-						src={pimg(p)}
-						class="image"
-						color={['rgb(55,160,120)', 'rgb(20,120,50)', 'rgb(80, 150, 80)']}
-					/>
+					<Image alt="" src={pimage(p)} class="image" color={pcolors(p)} />
 					<section class="detail">
 						<h1>{p.title}</h1>
 						<p>&#9829;{p.likes_sum}</p>
@@ -55,6 +65,8 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		padding-top: var(--ui-nav-px);
+		scroll-snap-align: start;
 	}
 
 	.heading {

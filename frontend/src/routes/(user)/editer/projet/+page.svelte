@@ -21,32 +21,54 @@
 	}}
 >
 	<h1>Créer un nouveau projet</h1>
-	<p>
-		Pour initialiser une fiche de projet, commencez par définir un titre.<br />(Celui-ci pourra être
-		modifié ultérieurement.)
-	</p>
-	<Field name="title" bind:value={title} invalid={Boolean(form?.title?.length)}>
-		<svelte:fragment slot="label">Titre du projet</svelte:fragment>
-	</Field>
-	<Button type="submit" disabled={!title}>
-		Créer
-		<Icon slot="leading" name="plus" />
-	</Button>
+	<fieldset>
+		<p>
+			Pour initialiser une fiche de projet, commencez par définir un titre. Ce titre pourra être
+			modifié ultérieurement.
+		</p>
+		<Field name="title" class="title" bind:value={title} invalid={Boolean(form?.title?.length)}>
+			<svelte:fragment slot="label">Titre du projet</svelte:fragment>
+		</Field>
+		<Button type="submit" disabled={!title}>
+			Créer
+			<Icon slot="leading" name="plus" />
+		</Button>
+	</fieldset>
 </form>
 
 <style lang="scss">
 	form {
 		width: 100%;
-		max-width: var(--ui-block-xl);
-		min-height: calc(100vh - var(--ui-nav-px));
+		padding-block: calc(var(--ui-nav-px) + var(--ui-gutter));
+		min-height: 100vh;
 		margin: 0 auto;
-		padding: 4rem 2rem;
-		gap: 2rem;
-		// border-radius: var(--ui-radius-lg);
-		// background: col(bg, 900);
+		margin-top: calc(-1 * var(--ui-nav-px));
+		background: col(bg, 500);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		gap: 2rem;
+	}
+
+	h1 {
+		font-size: var(--ui-text-2xl);
+		max-width: var(--ui-font-main);
+		padding: 0 var(--ui-gutter);
+		font-weight: 600;
+	}
+
+	fieldset {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2rem;
+		width: 100%;
+		max-width: var(--ui-width-p);
+		padding: 0 var(--ui-gutter);
+
+		:global(.title) {
+			width: 100%;
+		}
 	}
 </style>

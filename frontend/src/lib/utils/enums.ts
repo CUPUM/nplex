@@ -42,6 +42,9 @@ export const SEARCH_PARAMS = {
 	AUTH_MODAL: 'auth',
 	MESSAGE: 'message',
 	REDIRECT: 'redirect',
+	PROJECT_ID: 'projectid',
+	IMAGE_ID: 'imageid',
+	FILENAME: 'filename',
 } as const;
 
 export type SearchParam = ValueOf<typeof SEARCH_PARAMS>;

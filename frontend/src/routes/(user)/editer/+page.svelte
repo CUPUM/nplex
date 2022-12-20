@@ -1,13 +1,8 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
-	import { page } from '$app/stores';
 	import Icon from '$components/Icon.svelte';
+	import { EDITOR_ROUTES } from '$utils/routes';
 	import { onMount } from 'svelte';
-	import { scale } from 'svelte/transition';
-
-	const base = $page.url.pathname;
+	import { fly } from 'svelte/transition';
 
 	let mounted = false;
 
@@ -17,35 +12,42 @@
 </script>
 
 <article>
-	<h2 class="e-h2">Créez une nouvelle fiche</h2>
+	<header>
+		<h1>Créer un nouvelle fiche</h1>
+		<h2>Choisissez le type du document que vous souhaitez créer.</h2>
+	</header>
 	<nav>
 		{#if mounted}
-			<a href="{base}/organisation" in:scale={{ start: 0.9, delay: 150 }}>
-				<div class="sub">Créer une nouvelle</div>
-				<em>organisation</em>
-				<Icon name="pen-plus" class="icon" strokeWidth="2" />
-			</a>
-			<a href="{base}/projet" class="project" in:scale={{ start: 0.9, delay: 300 }}>
-				<div class="sub">Créer un nouveau</div>
+			<a
+				href={EDITOR_ROUTES.project.pathname}
+				style:grid-area="project"
+				in:fly={{ y: 20, delay: 0 }}
+			>
+				<Icon name="pen-plus" class="icon" strokeWidth="1" scaleStroke />
+				<span>Créer un nouveau</span>
 				<em>projet</em>
-				<Icon name="pen-plus" class="icon" strokeWidth="2" />
 			</a>
-			<a href="{base}/acteur" in:scale={{ start: 0.9, delay: 450 }}>
-				<div class="sub">Créer un nouveau</div>
+			<a
+				href={EDITOR_ROUTES.organisation.pathname}
+				style:grid-area="organisation"
+				in:fly={{ x: -20, delay: 150 }}
+			>
+				<Icon name="pen-plus" class="icon" strokeWidth="1" scaleStroke />
+				<span>Créer une nouvelle</span>
+				<em>organisation</em>
+			</a>
+			<a href={EDITOR_ROUTES.actor.pathname} style:grid-area="actor" in:fly={{ x: 20, delay: 300 }}>
+				<Icon name="pen-plus" class="icon" strokeWidth="1" scaleStroke />
+				<span>Créer un nouveau</span>
 				<em>profil d'acteur</em>
-				<Icon name="pen-plus" class="icon" strokeWidth="2" />
 			</a>
 		{/if}
 	</nav>
 </article>
 
-<style lang="scss" module>
+<style lang="scss">
 	article {
-		min-height: calc(100vh - var(--ui-nav-px));
-		padding: var(--ui-space-large) var(--ui-space-small);
 		width: 100%;
-		background: col(bg, 700);
-		border-radius: 2rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -53,54 +55,69 @@
 	}
 
 	nav {
+		padding: var(--ui-gutter);
+
 		display: grid;
-		grid-template-columns: 1fr 1.25fr 1fr;
-		flex-wrap: wrap;
+		grid-template-areas:
+			'project			project'
+			'organisation	actor';
 		width: 100%;
-		max-width: var(--ui-display-medium);
-		margin: 0 auto;
-		padding: var(--ui-space-small);
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
-		gap: var(--ui-space-small);
+		max-width: var(--ui-width-main);
+		gap: var(--ui-gutter);
 	}
 
 	a {
+		position: relative;
+		z-index: 0;
 		display: flex;
-		gap: 0.5em;
+		gap: 0.5rem;
 		flex-wrap: nowrap;
-		aspect-ratio: 3 / 4;
 		flex-direction: column;
-		padding: var(--ui-space-xsmall);
+		padding: 4rem;
+		min-height: 30vh;
 		align-items: center;
 		justify-content: center;
-		text-align: center;
-		background: transparent;
-		border: 1px dashed col(fg, 000, 0.1);
-		color: col(fg, 100);
-		border-radius: 1.5rem;
+		border: 1px dashed transparent;
+		background: col(bg, 500);
+		color: col(fg, 900);
+		border-radius: var(--ui-radius-xl);
 		line-height: 1;
-		transition: all 0.1s ease-out;
+		font-size: var(--ui-text-lg);
+		transition: all 0.1s var(--ui-ease-out);
 
 		&:hover {
-			background: col(fg, 000, 0.1);
-			box-shadow: 0 0 0 6px col(fg, 000, 0.1);
+			background: col(primary, 300);
+			border: 1px dashed col(primary, 300, 0.2);
+			border-radius: var(--ui-radius-lg);
+			color: col(bg, 300);
+
+			:global(.icon) {
+				transform: scale(0.9);
+			}
 		}
 	}
 
-	.sub {
-		font-size: var(--ui-block-x2small);
-		font-weight: 400;
+	span {
+		z-index: 1;
+		font-weight: 350;
 	}
 
 	em {
 		font-style: normal;
-		font-weight: 450;
-		font-size: var(--ui-block-large);
+		z-index: 1;
+		font-weight: 600;
+		font-size: var(--ui-text-xl);
+		// text-transform: uppercase;
 	}
 
-	a .icon {
-		font-size: var(--ui-block-large);
+	a :global(.icon) {
+		z-index: 0;
+		position: absolute;
+		align-self: center;
+		justify-self: center;
+		font-size: 200px;
+		opacity: 0.05;
+		color: col(fg, 500);
+		transition: all 0.1s;
 	}
 </style>

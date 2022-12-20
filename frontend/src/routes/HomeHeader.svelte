@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
+	import { browser } from '$app/environment';
+	import Icon from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS, LOGO_VIEWBOX } from '$components/Logo2.svelte';
 	import { THEME_CLASSES, THEME_NAMES } from '$utils/themes';
 	import { onDestroy } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { navbarTheme } from './Navbar.svelte';
+
+	export let scrollTarget: HTMLElement;
 
 	let entered = false;
 
@@ -18,6 +22,21 @@
 		navbarTheme.reset();
 	}
 
+	function consult() {
+		if (browser) {
+			scrollTarget.scrollIntoView({
+				block: 'start',
+				behavior: 'smooth',
+			});
+		}
+	}
+
+	function keydown(e: KeyboardEvent) {
+		if (e.key === 'Enter' || e.key === 'ArrowDown') {
+			consult();
+		}
+	}
+
 	onDestroy(() => {
 		leave();
 	});
@@ -29,7 +48,7 @@
 	on:leave={leave}
 	class={THEME_CLASSES.DARK}
 >
-	<svg viewBox={LOGO_VIEWBOX}>
+	<svg viewBox={LOGO_VIEWBOX} on:click={consult} on:keydown={keydown}>
 		<g>
 			{#if entered}
 				<use in:fly={{ y: 30, delay: 250 }} href={LOGO_SYMBOLS.n.href} />
@@ -40,28 +59,60 @@
 			{/if}
 		</g>
 	</svg>
+	<button on:click={consult}>
+		<div class="arrow">
+			<Icon name="arrow-down" strokeWidth="4" />
+		</div>
+	</button>
 </header>
 
 <style lang="scss">
 	header {
-		--radius: min(var(--ui-radius-xl), calc(var(--ui-scroll-px) * 0.2));
+		--radius: min(var(--ui-radius-xl), calc(var(--ui-scroll-px) * 0.1));
+		position: relative;
 		height: 100vh;
 		width: 100%;
 		margin-top: calc(-1 * var(--ui-nav-px));
 		background: col(bg, 100);
 		border-bottom-left-radius: var(--radius);
 		border-bottom-right-radius: var(--radius);
-		transition: all 0.15s var(--ui-ease-out);
+		transition: all 0.15s ease-in-out;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		scroll-snap-align: start;
 	}
 
 	svg {
+		cursor: pointer;
 		width: 250px;
 	}
 
 	g {
 		fill: col(fg, 100);
+	}
+
+	button {
+		cursor: pointer;
+		position: absolute;
+		text-align: center;
+		bottom: 0;
+		padding-block: var(--ui-gutter);
+		color: col(fg, 100);
+		font-size: 3rem;
+		width: 100%;
+
+		&:hover {
+			.arrow {
+				opacity: 0.25;
+				transform: translateY(0);
+			}
+		}
+	}
+
+	.arrow {
+		opacity: 0.15;
+		transform: translateY(-0.25em);
+		transition: all 0.35s var(--ui-ease-out);
 	}
 </style>

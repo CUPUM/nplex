@@ -69,7 +69,7 @@
 	}
 	.inner {
 		position: relative;
-		height: 1.6em;
+		height: 1.3em;
 	}
 	.disabled {
 		pointer-events: none;

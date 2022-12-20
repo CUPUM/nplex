@@ -6,10 +6,12 @@
 	import ProjectsPreviews from './ProjectsPreviews.svelte';
 
 	export let data: PageData;
+
+	let scrollTarget: HTMLElement;
 </script>
 
-<HomeHeader />
-<ProjectsPreviews projects={data.projects} />
+<HomeHeader {scrollTarget} />
+<ProjectsPreviews bind:scrollTarget projects={data.projects} />
 <OrganisationsPreviews organisations={data.organisations} />
 <ActorsPreviews actors={data.actors} />
 

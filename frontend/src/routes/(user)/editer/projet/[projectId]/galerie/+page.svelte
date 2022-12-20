@@ -8,13 +8,13 @@
 	import Loading from '$components/Loading.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
+	import { SEARCH_PARAMS } from '$utils/enums';
 	import { THEME_CLASSES } from '$utils/themes';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import { EDITOR_FORM_ID, GALLERY_UPLOAD_FORM_ID } from '../common';
 	import type { PageData } from './$types';
-	import { imageform } from './common';
 	import ImageInput from './ImageInput.svelte';
 
 	export let data: PageData;
@@ -105,7 +105,12 @@
 					<Image class="gallery-image" src={image.publicUrl} alt={image.id} />
 					<menu class={THEME_CLASSES.DARK}>
 						<Tooltip message="Supprimer" place="top">
-							<Button type="submit" round warning form={imageform(image.id)}>
+							<Button
+								type="submit"
+								round
+								warning
+								formaction="?/delete&{SEARCH_PARAMS.FILENAME}={image.name}"
+							>
 								<Icon name="trash" />
 							</Button>
 						</Tooltip>
@@ -122,10 +127,11 @@
 						>
 							<Button
 								type="submit"
-								formaction={data.project.banner_id === image.id ? '?/demote' : '?/promote'}
+								formaction="{data.project.banner_id === image.id
+									? '?/demote'
+									: '?/promote'}&{SEARCH_PARAMS.IMAGE_ID}={image.id}"
 								active={data.project.banner_id === image.id}
 								round
-								form={imageform(image.id)}
 							>
 								<Icon name="bookmark" />
 							</Button>
@@ -162,13 +168,6 @@
 		{/if}
 	</ol>
 </form>
-<!-- Hidden forms to handle single-image actions -->
-{#each data.project.gallery as image}
-	<form hidden method="POST" action="?/delete" id={imageform(image.id)} use:enhance>
-		<input type="hidden" readonly name="file_name" value={image.name} />
-		<input type="hidden" readonly name="id" value={image.id} />
-	</form>
-{/each}
 
 <style lang="scss">
 	h2 {
@@ -176,7 +175,7 @@
 	}
 
 	.upload {
-		max-width: var(--ui-block-xl);
+		max-width: var(--ui-width-main);
 		width: 100%;
 		padding-top: calc(4rem + var(--ui-nav-px));
 		padding-inline: 2rem;
@@ -203,7 +202,7 @@
 	.update {
 		display: flex;
 		flex-direction: column;
-		max-width: var(--ui-block-xl);
+		max-width: var(--ui-width-main);
 		width: 100%;
 		margin-inline: auto;
 		padding-inline: 2rem;

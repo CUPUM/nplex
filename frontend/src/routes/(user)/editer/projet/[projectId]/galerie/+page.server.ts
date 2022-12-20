@@ -1,5 +1,5 @@
 import { getDb } from '$utils/database';
-import { STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
+import { SEARCH_PARAMS, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { pgarr } from '$utils/format';
 import { error, fail } from '@sveltejs/kit';
 import sharp from 'sharp';
@@ -11,10 +11,6 @@ import { GALLERY_IMAGE_TYPES, GALLERY_INPUT_NAME } from './common';
 const ERROR_BAD_FORMAT = "Le format ou l'extension de l'image n'est pas compatible.";
 const DEFAULT_SIZE = 1024;
 const GALLERY_FOLDER = 'gallery';
-
-const promoteSchema = zfd.formData({
-	id: zfd.text(),
-});
 
 export const actions: Actions = {
 	upload: async (event) => {
@@ -130,19 +126,12 @@ export const actions: Actions = {
 		if (!event.params.projectId) {
 			return;
 		}
-		const formData = await event.request.formData();
-		const parsed = zfd
-			.formData({
-				file_name: zfd.text(),
-			})
-			.safeParse(formData);
-		if (!parsed.success) {
-			return fail(400, parsed.error.formErrors.fieldErrors);
+		const imageName = event.url.searchParams.get(SEARCH_PARAMS.FILENAME);
+		if (!imageName) {
+			return fail(STATUS_CODES.BadRequest);
 		}
 		const db = await getDb(event);
-		const deleteRes = await db.storage
-			.from(STORAGE_BUCKETS.PROJECTS)
-			.remove([parsed.data.file_name]);
+		const deleteRes = await db.storage.from(STORAGE_BUCKETS.PROJECTS).remove([imageName]);
 		if (deleteRes.error) {
 			throw error(500, deleteRes.error);
 		}
@@ -154,15 +143,14 @@ export const actions: Actions = {
 		if (!event.params.projectId) {
 			return fail(STATUS_CODES.BadRequest);
 		}
-		const formData = await event.request.formData();
-		const parsed = promoteSchema.safeParse(formData);
-		if (!parsed.success) {
+		const imageId = event.url.searchParams.get(SEARCH_PARAMS.IMAGE_ID);
+		if (!imageId) {
 			return fail(STATUS_CODES.BadRequest);
 		}
 		const db = await getDb(event);
 		const promoteRes = await db
 			.from('projects')
-			.update({ banner_id: parsed.data.id })
+			.update({ banner_id: imageId })
 			.eq('id', event.params.projectId)
 			.single();
 		if (promoteRes.error) {
@@ -177,9 +165,8 @@ export const actions: Actions = {
 		if (!event.params.projectId) {
 			return fail(STATUS_CODES.BadRequest);
 		}
-		const formData = await event.request.formData();
-		const parsed = promoteSchema.safeParse(formData);
-		if (!parsed.success) {
+		const imageId = event.url.searchParams.get(SEARCH_PARAMS.IMAGE_ID);
+		if (!imageId) {
 			return fail(STATUS_CODES.BadRequest);
 		}
 		const db = await getDb(event);
@@ -187,7 +174,8 @@ export const actions: Actions = {
 			.from('projects')
 			.update({ banner_id: null })
 			.eq('id', event.params.projectId)
-			.single();
+			.eq('banner_id', imageId)
+			.maybeSingle();
 		if (promoteRes.error) {
 			throw error(STATUS_CODES.InternalServerError, promoteRes.error);
 		}

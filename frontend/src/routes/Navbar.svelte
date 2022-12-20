@@ -128,7 +128,7 @@
 
 	.navs {
 		position: relative;
-		max-width: var(--ui-block-xl);
+		max-width: var(--ui-width-main);
 		font-size: var(--ui-text-sm);
 		width: 100%;
 		display: grid;
@@ -142,7 +142,7 @@
 			[session-end full-end];
 		grid-auto-flow: dense;
 		padding: var(--ui-gutter);
-		padding-top: 0.5rem;
+		padding-top: calc(0.5 * var(--ui-gutter));
 		margin: 0 auto;
 		flex-direction: row;
 		align-items: center;
