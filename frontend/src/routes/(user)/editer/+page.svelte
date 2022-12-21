@@ -1,8 +1,9 @@
 <script lang="ts">
-	import Icon from '$components/Icon.svelte';
+	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import { EDITOR_ROUTES } from '$utils/routes';
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
+	import { EDITABLES_HASHES } from '../common';
 
 	let mounted = false;
 
@@ -13,33 +14,49 @@
 
 <article>
 	<header>
-		<h1>Créer un nouvelle fiche</h1>
-		<h2>Choisissez le type du document que vous souhaitez créer.</h2>
+		<h1>Créer ou éditer une fiche</h1>
+		<h2>Choisissez le type de document que vous souhaitez créer ou modifier.</h2>
 	</header>
 	<nav>
 		{#if mounted}
-			<a
-				href={EDITOR_ROUTES.project.pathname}
+			<section
+				class="project {ICON_CLASSES.HOVER}"
 				style:grid-area="project"
 				in:fly={{ y: 20, delay: 0 }}
 			>
-				<Icon name="pen-plus" class="icon" strokeWidth="1" scaleStroke />
-				<span>Créer un nouveau</span>
-				<em>projet</em>
-			</a>
+				<a href={EDITOR_ROUTES.project.pathname}>
+					<Icon name="pen-plus" class="icon" />
+					<hr />
+					<span class="label">Créer un nouveau<br /><em>projet</em></span>
+				</a>
+				<a href={EDITOR_ROUTES.descriptors.pathname}>
+					<span>Gérer les descripteurs</span>
+					<Icon name="parameters" />
+				</a>
+				<a href="#{EDITABLES_HASHES.PROJECTS}">
+					Éditer
+					<Icon name="file" />
+				</a>
+			</section>
 			<a
 				href={EDITOR_ROUTES.organisation.pathname}
 				style:grid-area="organisation"
 				in:fly={{ x: -20, delay: 150 }}
+				class={ICON_CLASSES.HOVER}
 			>
-				<Icon name="pen-plus" class="icon" strokeWidth="1" scaleStroke />
-				<span>Créer une nouvelle</span>
-				<em>organisation</em>
+				<Icon name="pen-plus" class="icon" />
+				<hr />
+				<span>Créer une nouvelle<br /><em>organisation</em></span>
 			</a>
-			<a href={EDITOR_ROUTES.actor.pathname} style:grid-area="actor" in:fly={{ x: 20, delay: 300 }}>
-				<Icon name="pen-plus" class="icon" strokeWidth="1" scaleStroke />
-				<span>Créer un nouveau</span>
-				<em>profil d'acteur</em>
+			<a
+				href={EDITOR_ROUTES.actor.pathname}
+				style:grid-area="actor"
+				in:fly={{ x: 20, delay: 300 }}
+				class={ICON_CLASSES.HOVER}
+			>
+				<Icon name="pen-plus" class="icon" />
+				<hr />
+				<span>Créer un nouveau<br /><em>profil d'acteur</em></span>
 			</a>
 		{/if}
 	</nav>
@@ -48,15 +65,34 @@
 <style lang="scss">
 	article {
 		width: 100%;
+		max-width: var(--ui-width-main);
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: center;
+	}
+
+	header {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		padding: 4rem 2rem;
+		font-size: var(--ui-text-xl);
+		max-width: var(--ui-width-p);
+	}
+
+	h1 {
+		font-weight: 600;
+	}
+
+	h2 {
+		font-weight: 350;
+		font-size: var(--ui-text-lg);
+		line-height: 1.25;
 	}
 
 	nav {
 		padding: var(--ui-gutter);
-
 		display: grid;
 		grid-template-areas:
 			'project			project'
@@ -66,13 +102,19 @@
 		gap: var(--ui-gutter);
 	}
 
+	.project {
+		display: grid;
+		grid-template-areas:
+			'new	edit'
+			'new	descriptors';
+	}
+
 	a {
 		position: relative;
-		z-index: 0;
 		display: flex;
-		gap: 0.5rem;
+		gap: 2rem;
 		flex-wrap: nowrap;
-		flex-direction: column;
+		flex-direction: row;
 		padding: 4rem;
 		min-height: 30vh;
 		align-items: center;
@@ -83,41 +125,29 @@
 		border-radius: var(--ui-radius-xl);
 		line-height: 1;
 		font-size: var(--ui-text-lg);
-		transition: all 0.1s var(--ui-ease-out);
+		transition: all 0.15s var(--ui-ease-out);
 
 		&:hover {
-			background: col(primary, 300);
-			border: 1px dashed col(primary, 300, 0.2);
-			border-radius: var(--ui-radius-lg);
-			color: col(bg, 300);
-
-			:global(.icon) {
-				transform: scale(0.9);
-			}
+			background: col(primary, 500);
 		}
-	}
 
-	span {
-		z-index: 1;
-		font-weight: 350;
-	}
+		hr {
+			background: currentColor;
+			opacity: 0.1;
+			padding: 0.5px;
+			align-self: stretch;
+		}
 
-	em {
-		font-style: normal;
-		z-index: 1;
-		font-weight: 600;
-		font-size: var(--ui-text-xl);
-		// text-transform: uppercase;
-	}
+		span {
+			z-index: 1;
+			font-weight: 350;
+		}
 
-	a :global(.icon) {
-		z-index: 0;
-		position: absolute;
-		align-self: center;
-		justify-self: center;
-		font-size: 200px;
-		opacity: 0.05;
-		color: col(fg, 500);
-		transition: all 0.1s;
+		em {
+			font-style: normal;
+			z-index: 1;
+			font-weight: 600;
+			font-size: var(--ui-text-xl);
+		}
 	}
 </style>

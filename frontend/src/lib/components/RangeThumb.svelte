@@ -1,17 +1,10 @@
 <script lang="ts">
-	import { Ctx } from '$utils/enums';
-	import { getContext } from 'svelte';
-	import { spring } from 'svelte/motion';
-	import type { RangeContext } from './Range.svelte';
+	import { getRangeContext } from './Range.svelte';
 
-	const { min, max, step } = getContext<RangeContext>(Ctx.Range);
+	const { min, max, step } = getRangeContext();
 
 	export let value: number;
 	export let name: string;
-
-	const springValue = spring(value, { stiffness: 0.35, damping: 0.65 });
-
-	$: springValue.set(value);
 </script>
 
 <div class="thumb" style:--value={value} />
@@ -40,7 +33,9 @@
 		--size: 40px;
 		position: absolute;
 		top: calc(-0.5 * var(--size));
-		left: calc((((100% - 0.5 * var(--size)) * var(--value)) / (var(--max) - var(--min))) - 0.5 * var(--size));
+		left: calc(
+			(((100% - 0.5 * var(--size)) * var(--value)) / (var(--max) - var(--min))) - 0.5 * var(--size)
+		);
 		width: var(--size);
 		height: var(--size);
 		border-radius: 50%;

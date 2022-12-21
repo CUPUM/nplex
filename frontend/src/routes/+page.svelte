@@ -15,5 +15,5 @@
 <OrganisationsPreviews organisations={data.organisations} />
 <ActorsPreviews actors={data.actors} />
 
-<style lang="scss" module>
+<style lang="scss">
 </style>

@@ -7,12 +7,13 @@
 	padding: 0;
 	margin: 0;
 	font-size: 16px;
-	line-height: 1;
+	line-height: 1.65;
 	font-weight: 400;
 	accent-color: col(primary, 500);
 	overflow-x: hidden;
 	overflow-y: scroll;
 	scroll-snap-type: y proximity;
+	scroll-behavior: smooth;
 	transition: background 0.25s ease-in-out;
 
 	&[lock-scroll] {

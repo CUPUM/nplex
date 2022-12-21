@@ -46,7 +46,12 @@
 			const rect = containerRef.getBoundingClientRect();
 			const x = e.clientX - rect.left;
 			const y = e.clientY - rect.top;
-			const d = 2 * Math.max(Math.hypot(x, y), Math.hypot(rect.width - x, rect.height - y));
+			const d =
+				2 *
+				Math.max(
+					Math.ceil(Math.hypot(x, y)),
+					Math.ceil(Math.hypot(rect.width - x, rect.height - y))
+				);
 			const r = {
 				x,
 				y,
@@ -135,8 +140,7 @@
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
 		filter: blur(var(--blur));
-		animation: var(--opacity-duration) var(--opacity-easing) var(--opacity-delay) 1 forwards
-				fade,
+		animation: var(--opacity-duration) var(--opacity-easing) var(--opacity-delay) 1 forwards fade,
 			var(--spread-duration) var(--spread-easing) var(--spread-delay) 1 forwards spread,
 			var(--color-duration) var(--color-easing) var(--color-delay) 1 forwards color;
 	}

@@ -133,7 +133,7 @@ export const actions: Actions = {
 		const db = await getDb(event);
 		const deleteRes = await db.storage.from(STORAGE_BUCKETS.PROJECTS).remove([imageName]);
 		if (deleteRes.error) {
-			throw error(500, deleteRes.error);
+			throw error(STATUS_CODES.InternalServerError, deleteRes.error);
 		}
 	},
 	/**

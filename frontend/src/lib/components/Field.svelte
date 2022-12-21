@@ -7,7 +7,7 @@
 	const CTX_KEY = 'field-context';
 
 	interface FieldContext {
-		value: Writable<string>;
+		value: Writable<string | null | undefined>;
 		inputRef: Writable<HTMLInputElement>;
 	}
 
@@ -23,9 +23,9 @@
 	import Ripple from './Ripple.svelte';
 
 	export let id: string | undefined = undefined;
-	export let value: string = '';
-	export let prefix: string = '';
-	export let suffix: string = '';
+	export let value: string | null | undefined = null;
+	export let prefix: string | null | undefined = null;
+	export let suffix: string | null | undefined = null;
 	export let name: string | undefined = undefined;
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
 	export let variant: 'default' | 'outlined' | 'cta' = 'default';
@@ -57,7 +57,7 @@
 	const _inputRef = writable<typeof inputRef>();
 	$: _inputRef.set(inputRef);
 
-	const _value = writable(value);
+	const _value = writable<typeof value>(value);
 	$: value = $_value;
 	$: _value.set(value);
 
@@ -263,7 +263,7 @@
 		flex: 0;
 		white-space: pre;
 		opacity: 0.25;
-		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
+		transition: all 0.2s var(--ui-ease-out);
 		.focused &,
 		:not(.focused):not(.has-label) & {
 			transform: translateY(0);
@@ -318,16 +318,17 @@
 		white-space: nowrap;
 		top: 50%;
 		transform: translateY(-50%);
-		transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
+		transition: all 0.2s var(--ui-ease-out);
 	}
 	.left,
 	.right,
 	.bottom {
+		--thickness: 1px;
 		pointer-events: none;
 		position: absolute;
 		height: 50%;
 		transition: all 0.15s ease-out;
-		border-width: var(--outline-thickness, 1px);
+		border-width: var(--thickness);
 		border-style: solid;
 	}
 	.left {
@@ -364,9 +365,9 @@
 	// Variants
 
 	:where(.default) {
-		color: col(fg, 500);
-		background: col(fg, 100, 0.1);
-		transition: all 0.1s ease-out;
+		color: col(fg, 900);
+		background: col(bg, 900, 0.5);
+		transition: all 0.15s var(--ui-ease-out);
 		.outline {
 			display: none;
 		}
@@ -383,8 +384,8 @@
 		&.has-value,
 		&.focused {
 			label {
-				top: 1.5em;
-				font-size: clamp(12px, 0.5em, 24px);
+				top: 1.25em;
+				font-size: clamp(11px, 0.5em, 24px);
 			}
 			.prefix,
 			.suffix {
@@ -399,19 +400,18 @@
 			}
 		}
 		&.has-value {
-			color: col(fg, 100);
-			input {
-				opacity: 1;
-			}
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(fg, 100);
-			// background: col(bg, 900);
+			color: col(fg, 500);
+			background: col(bg, 900);
 		}
 		&.focused {
-			color: col(bg, 500);
-			background: col(fg, 300);
+			color: col(fg, 000);
+			background: col(bg, 700);
+			input {
+				opacity: 1;
+			}
 		}
 	}
 

@@ -1,9 +1,27 @@
-<script lang="ts">
-	import { Ctx } from '$utils/enums';
-	import { getContext } from 'svelte';
+<script lang="ts" context="module">
+	import { getContext, setContext } from 'svelte';
 
-	export let from: number;
-	export let to: number;
+	const CTX_KEY = 'range-line-context';
 
-	const rangeCtx = getContext(Ctx.Range);
+	interface RangeLineContext {
+		test: string;
+	}
+
+	export function getRangeLineContext() {
+		return getContext<RangeLineContext>(CTX_KEY);
+	}
 </script>
+
+<script lang="ts">
+	setContext<RangeLineContext>(CTX_KEY, {
+		test: '',
+	});
+</script>
+
+<div class="line">Range Line: {''}</div>
+<slot />
+
+<style lang="scss">
+	:where(.line) {
+	}
+</style>

@@ -1,68 +1,57 @@
 <script lang="ts" context="module">
-	export interface RangeContext {
-		min: Writable<number>;
-		max: Writable<number>;
-		step: Writable<number>;
+	const CTX_KEY = 'range-context';
+
+	interface RangeContext {
+		min: Readable<number>;
+		max: Readable<number>;
+		step: Readable<number>;
+	}
+
+	export function getRangeContext() {
+		return getContext<RangeContext>(CTX_KEY);
 	}
 </script>
 
 <script lang="ts">
-	import { Ctx } from '$utils/enums';
-	import { setContext } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
+	import { getContext, setContext } from 'svelte';
+	import { writable, type Readable } from 'svelte/store';
 
 	export let min: string | number = 0;
 	export let max: string | number = 10;
 	export let step: string | number = 1;
-	export let tickMarks: boolean = false;
+	export let direction: 'horizontal' | 'vertical' = 'horizontal';
 
 	const _min = writable(+min);
+	$: _min.set(+min);
 	const _max = writable(+max);
+	$: _max.set(+max);
 	const _step = writable(+step);
+	$: _step.set(+step);
 
 	$: $_min = +min;
 	$: $_max = +max;
 	$: $_step = +step;
 
-	setContext<RangeContext>(Ctx.Range, {
-		min: _min,
-		max: _max,
-		step: _step,
+	setContext<RangeContext>(CTX_KEY, {
+		min: { subscribe: _min.subscribe },
+		max: { subscribe: _max.subscribe },
+		step: { subscribe: _step.subscribe },
 	});
 </script>
 
-<fieldset style:--min={$_min} style:--max={$_max}>
-	<div class="track">
-		{#if tickMarks}
-			<div class="ticks">
-				<div class="tick" />
-			</div>
-		{/if}
-		<slot />
-	</div>
+<fieldset class="range {direction}">
+	<slot />
 </fieldset>
 
 <style lang="scss">
-	fieldset {
-		padding: 0;
-		border: none;
+	:where(.range) {
 		position: relative;
-	}
-
-	.track {
-		position: relative;
-		height: 3px;
-		width: 100%;
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: minmax(var(--ui-height), auto);
 		background: red;
 	}
 
-	.ticks {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: row;
+	.vertical {
 	}
 </style>

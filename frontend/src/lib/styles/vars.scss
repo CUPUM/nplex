@@ -16,7 +16,6 @@
 	--inset-parent: 0px;
 	--inset-sum: 0px;
 	--ui-inset: 3px;
-	--ui-scroll-margin: calc(var(--ui-nav-px) + var(--ui-gutter));
 	--ui-gutter: 1.5rem;
 	--ui-height: 3.5em;
 	--ui-pad-x: 1.25em;
@@ -25,16 +24,16 @@
 	--ui-scroll-size: 6px;
 	--ui-scroll-color: rgb(var(--rgb-fg-100), 0.5);
 	--ui-radius-sm: 10px;
-	--ui-radius-md: 16px;
+	--ui-radius-md: 18px;
 	--ui-radius-lg: 24px;
 	--ui-radius-xl: 36px;
 	--ui-text-2xs: 0.5rem;
 	--ui-text-xs: 0.75rem;
 	--ui-text-sm: 0.875rem;
 	--ui-text-md: 1rem;
-	--ui-text-lg: 2.5rem;
-	--ui-text-xl: 3.75rem;
-	--ui-text-2xl: 6rem;
+	--ui-text-lg: 2.25rem;
+	--ui-text-xl: 3.5rem;
+	--ui-text-2xl: 5.5rem;
 	--ui-font-main: 'Outfit', sans-serif;
 	--ui-font-misc: 'Space Mono', monospace;
 	--ui-ease-in: cubic-bezier(0.8, 0, 0.9, 1);
@@ -43,7 +42,7 @@
 }
 
 .compact {
-	--ui-inset: 0px;
-	--ui-height: 2.8em;
+	--ui-inset: 1px;
+	--ui-height: 2.5em;
 	--ui-pad-x: 1em;
 }

@@ -37,5 +37,5 @@ export const POST: RequestHandler = async (event) => {
 			maxAge: parsedRefresh.data.expires_in,
 		}
 	);
-	return new Response();
+	return new Response(null, { status: STATUS_CODES.Ok });
 };

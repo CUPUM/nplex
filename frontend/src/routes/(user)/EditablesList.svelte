@@ -1,9 +1,11 @@
 <script lang="ts" context="module">
+	export const EDITABLES_NEW = {
+		id: 'new',
+	} as const;
 </script>
 
 <script lang="ts">
 	import { autoHash } from '$actions/autoHash';
-
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import Switch from '$components/Switch.svelte';
@@ -11,13 +13,6 @@
 	import { flip } from 'svelte/animate';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
-
-	interface $$Slots {
-		default: {
-			datum: D;
-		};
-		create: {};
-	}
 
 	type D = $$Generic<{ id: string | null; created_by_id: string | null }>;
 
@@ -29,10 +24,6 @@
 		all: 'Tous',
 		creator: 'Créés par moi',
 		collaborator: 'Partagés avec moi',
-	} as const;
-
-	const PLACEHOLDER = {
-		id: 'create',
 	} as const;
 
 	let filter: keyof typeof FILTERS = 'all';
@@ -48,7 +39,7 @@
 					return true;
 			}
 		}),
-		PLACEHOLDER,
+		EDITABLES_NEW,
 	];
 </script>
 
@@ -56,7 +47,7 @@
 	<header>
 		<h3 class="e-h3">{title}</h3>
 		<form action="" use:enhance method="POST">
-			<Switch bind:group={filter} name="filter">
+			<Switch bind:group={filter} variant="outlined" name="filter" compact>
 				{#each Object.entries(FILTERS) as [k, v]}
 					<SwitchItem value={k}>
 						{v}
@@ -72,11 +63,7 @@
 				in:scale={{ start: 0.9, duration: 300, easing: cubicOut, delay: i * 50 }}
 				out:scale|local={{ start: 0.8, duration: 200, delay: (filtered.length - i) * 50 }}
 			>
-				{#if !('created_by_id' in datum)}
-					<slot name="create" />
-				{:else}
-					<slot {datum} />
-				{/if}
+				<slot {datum} />
 			</li>
 		{/each}
 	</ul>
@@ -85,32 +72,36 @@
 <style lang="scss">
 	section {
 		display: flex;
+		width: 100%;
 		flex-direction: column;
-		scroll-margin-top: var(--ui-scroll-margin);
+		scroll-margin-top: var(--ui-nav-px);
 	}
 
 	header {
 		display: flex;
-		flex-direction: column;
-		gap: 0;
-		padding: 2rem 0;
-		padding-bottom: 0;
-		max-width: var(--ui-display-large);
+		flex-direction: row;
+		align-items: flex-end;
+		gap: 1rem;
+		padding: var(--ui-gutter);
+		max-width: var(--ui-width-main);
 		width: 100%;
 		margin: 0 auto;
-		padding: 0 2rem;
 	}
 
 	h3 {
-		padding: var(--ui-block-x2small) 0;
+		font-size: var(--ui-text-xl);
+		font-weight: 600;
+		padding-inline: var(--ui-gutter);
 	}
 
 	form {
-		font-size: var(--ui-block-xsmall);
+		margin-bottom: 0.75em;
+		font-size: var(--ui-text-sm);
 	}
 
 	ul {
-		--ui-scroll-color: transparent;
+		--scroll-color: transparent;
+		--scroll-size: 0;
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;

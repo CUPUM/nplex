@@ -6,7 +6,8 @@ import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/publi
 import { createClient, type SupportedStorage } from '@supabase/supabase-js';
 import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { get } from 'svelte/store';
-import { LOAD_DEPENDENCIES } from './enums';
+import type { ValueOf } from 'ts-essentials';
+import { LOAD_DEPENDENCIES, STORAGE_BUCKETS } from './enums';
 
 /**
  * Supabase client instance reserved to browser context.
@@ -135,3 +136,35 @@ export function pagination(page: number, size: number): [start: number, end: num
 	const end = start + size;
 	return [start, end];
 }
+
+/**
+ * Reduce inline verbosity of getting storage assets' public URL.
+ */
+export function publicurl(bucket: ValueOf<typeof STORAGE_BUCKETS>, name?: string | null) {
+	if (!name) {
+		return '';
+	}
+	return browserDb.storage.from(bucket).getPublicUrl(name).data.publicUrl;
+}
+
+/**
+ * Helper to format a project gallery's colors as a flat array.
+ */
+export function projectcolors(gallery?: ProjectGalleryItem | ProjectGalleryItem[] | null) {
+	if (!gallery) {
+		return '';
+	}
+	if (!Array.isArray(gallery)) {
+		gallery = [gallery];
+	}
+	return gallery.reduce((acc, curr) => {
+		if (curr.color_dominant) {
+			acc.push('rgb' + curr.color_dominant);
+		}
+		if (curr.color_mean) {
+			acc.push('rgb' + curr.color_mean);
+		}
+		return acc;
+	}, [] as string[]);
+}
+type ProjectGalleryItem = Partial<App.DatabaseSchema['public']['Tables']['projects_images']['Row']>;

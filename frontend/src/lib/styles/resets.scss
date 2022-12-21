@@ -37,6 +37,7 @@
 }
 
 :where(button) {
+	cursor: pointer;
 	font-family: inherit;
 	font-size: inherit;
 	background: unset;
@@ -51,6 +52,7 @@
 :where(h6) {
 	font-size: inherit;
 	font-weight: inherit;
+	line-height: 1.1;
 }
 
 :where(ol),
@@ -61,6 +63,7 @@
 }
 
 :where(a) {
+	cursor: pointer;
 	color: inherit;
 	text-decoration: none;
 }
@@ -116,4 +119,8 @@
 :-webkit-autofill:focus,
 :-webkit-autofill:active {
 	transition: all 0s 50000s;
+}
+
+:where(code) {
+	font-family: var(--ui-font-misc);
 }

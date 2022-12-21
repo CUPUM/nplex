@@ -3,6 +3,8 @@
 </script>
 
 <script lang="ts">
+	import { ICON_CLASSES } from '$components/Icon.svelte';
+
 	import Ripple from '$components/Ripple.svelte';
 
 	export let href: string | undefined = undefined;
@@ -17,7 +19,7 @@
 
 <svelte:element
 	this={typeof href === 'string' ? 'a' : 'button'}
-	class="navbar-button"
+	class="navbar-button {ICON_CLASSES.HOVER} {active || current ? ICON_CLASSES.HOLD : ''}"
 	class:cta
 	class:current
 	class:active
@@ -49,6 +51,7 @@
 		height: calc(var(--ui-height) - 2 * var(--inset, 0px));
 		border-radius: var(--bradius);
 		letter-spacing: 0.02em;
+		line-height: 1;
 		color: col(fg, 700);
 		background: col(bg, 100, 0.8);
 		outline: 0px dashed transparent;

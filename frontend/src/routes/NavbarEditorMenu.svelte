@@ -28,7 +28,7 @@
 				</a>
 			</li>
 			<li>
-				<a class="button" href="{EDITOR_ROUTES.project.pathname}#{EDITABLES_HASHES.projects}">
+				<a class="button" href="{EDITOR_ROUTES.project.pathname}#{EDITABLES_HASHES.PROJECTS}">
 					<span>Modifier un projet</span>
 					<Icon name="file" />
 				</a>

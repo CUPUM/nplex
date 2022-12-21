@@ -1,5 +1,5 @@
 export const EDITABLES_HASHES = {
-	projects: '#projets-editables',
-	organisations: '#organisations-editables',
-	actors: '#acteurs-editables',
+	PROJECTS: 'projets-editables',
+	ORGANISATIONS: 'organisations-editables',
+	ACTORS: 'acteurs-editables',
 };

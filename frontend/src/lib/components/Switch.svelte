@@ -2,7 +2,6 @@
 	@component
 	## Switch
 	Generic switch set component used to contextualize a group of Switch Items.
-	
 -->
 <script lang="ts" context="module">
 	const CTX_KEY = 'switch-context';
@@ -12,8 +11,7 @@
 	interface SwitchContext {
 		group: Writable<any>;
 		name: string | undefined;
-		setMark: (label: HTMLLabelElement, clear?: boolean) => void;
-		setTempMark: (label: HTMLLabelElement, clear?: boolean) => void;
+		currentRef: Writable<HTMLElement | null>;
 	}
 
 	export function getSwitchContext() {
@@ -22,10 +20,11 @@
 </script>
 
 <script lang="ts">
-	import { getContext, onMount, setContext } from 'svelte';
+	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { cubicInOut } from 'svelte/easing';
 	import { writable, type Writable } from 'svelte/store';
 	import { scale } from 'svelte/transition';
+	import Ripple from './Ripple.svelte';
 
 	export let name: string | undefined = undefined;
 	export let variant: Variant = 'default';
@@ -41,8 +40,7 @@
 	export { className as class };
 
 	let switchRef: HTMLElement;
-	let mark: HTMLLabelElement | undefined;
-	let tempMark: HTMLLabelElement | undefined;
+	let currentRef: Writable<HTMLElement | null> = writable(null);
 	let markBox = '';
 	let resizeObserver: ResizeObserver;
 
@@ -50,71 +48,53 @@
 	$: group = $_group;
 	$: _group.set(group);
 
-	function updateMarkBox() {
-		const element = tempMark ?? mark;
+	function getBox(element: HTMLElement | null) {
 		if (!element) {
-			markBox = '';
-			return;
+			return '';
 		}
-		markBox =
+		return (
 			`top: ${element.offsetTop}px;` +
 			`left: ${element.offsetLeft}px;` +
 			`width: ${element.offsetWidth}px;` +
-			`height: ${element.offsetHeight}px;`;
-	}
-
-	function setMark(label?: HTMLLabelElement) {
-		mark = label;
-		if (label && tempMark === label) {
-			tempMark = undefined;
-		}
-	}
-
-	function setTempMark(label?: HTMLLabelElement) {
-		if (label !== mark) {
-			tempMark = label;
-			return;
-		}
-		tempMark = undefined;
+			`height: ${element.offsetHeight}px;`
+		);
 	}
 
 	onMount(() => {
-		resizeObserver = new ResizeObserver(updateMarkBox);
+		resizeObserver = new ResizeObserver(() => {
+			markBox = getBox($currentRef);
+		});
+		resizeObserver.observe(switchRef);
 	});
 
-	$: if (mark || tempMark) {
-		updateMarkBox();
-	}
+	onDestroy(() => {
+		resizeObserver?.disconnect();
+	});
 
-	$: if (switchRef) {
-		resizeObserver?.observe(switchRef);
-	}
+	$: markBox = getBox($currentRef);
 
 	setContext<SwitchContext>(CTX_KEY, {
 		group: _group,
 		name,
-		setMark,
-		setTempMark,
+		currentRef,
 	});
 </script>
 
 <svelte:element
 	this={as ? as : 'fieldset'}
 	bind:this={switchRef}
-	class="switch nest {variant} {orientation} {className}"
-	class:temp={tempMark}
+	class="switch {variant} {orientation} {className}"
 	class:compact
 	{style}
 	{required}
 	{readonly}
 	{disabled}
-	on:mouseleave={() => setTempMark()}
 >
-	{#if mark || tempMark}
+	<Ripple color="white" />
+	{#if currentRef}
 		<div
 			transition:scale|local={{ duration: 150, start: 0.9, opacity: 0, easing: cubicInOut }}
 			class="mark"
-			class:temp={tempMark}
 			style={markBox}
 		/>
 	{/if}
@@ -123,54 +103,45 @@
 
 <style lang="scss">
 	:where(.switch) {
-		--height: calc(var(--ui-height) - 2 * var(--ui-inset-sum));
-		--inset: var(--ui-inset);
-		--radius: var(--ui-radius-md);
+		--switch-inset: var(--ui-inset);
+		--switch-radius: var(--ui-radius-md);
 		position: relative;
-		font-size: 1em;
-		position: relative;
+		font-size: inherit;
 		border: none;
 		display: inline-flex;
 		flex-direction: row;
 		margin: 0;
 		gap: 0;
 		flex: none;
-		padding: var(--inset);
-		border-radius: calc(var(--radius) - var(--ui-inset-sum));
+		padding: var(--switch-inset);
+		border-radius: var(--switch-radius);
 		font-weight: 400;
-		transition: all 0.15s ease-out;
+		transition: all 0.15s var(--ui-ease-out);
 		&.column {
 			flex-direction: column;
 		}
 	}
 	.mark {
 		position: absolute;
-		border-radius: calc(var(--radius) - var(--ui-inset-sum) - var(--inset));
-		transition: all 0.15s cubic-bezier(0, 0, 0, 1); // cubic-bezier(0.5, 0, 0.2, 1.2);
+		border-radius: calc(var(--switch-radius) - var(--switch-inset));
+		transition: all 0.15s var(--ui-ease-out);
 	}
 
 	// Variants
 
 	:where(.default) {
-		color: col(fg, 500);
-		background: col(fg, 100, 0.05);
-		transition: all 0.1s ease-out;
+		color: col(fg, 900);
+		background: col(bg, 900, 0.5);
 		.mark {
 			background: col(fg, 300);
 		}
-		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			// background: col(fg, 900, 0.2);
-		}
-		&.temp {
-			.mark {
-				background: col(fg, 500);
-			}
+			background: col(bg, 900, 0.6);
 		}
 	}
 
 	:where(.outlined) {
-		color: col(fg, 300);
+		color: col(fg, 900);
 		background: transparent;
 		transition: all 0.1s ease-out;
 		&::before {
@@ -181,20 +152,18 @@
 			width: 100%;
 			height: 100%;
 			border-radius: inherit;
-			border: 1px solid currentColor;
+			border: 1px solid col(bg, 900);
 			transition: all 0.1s ease-out;
-			opacity: 0.25;
+			opacity: 0.5;
+		}
+		&:hover {
+			color: col(fg, 300);
+			&::before {
+				opacity: 1;
+			}
 		}
 		.mark {
 			background: col(fg, 500);
-		}
-		&.temp {
-			color: col(fg, 900);
-			.mark {
-				opacity: 0.5;
-				background: transparent;
-				border: 1px solid currentColor;
-			}
 		}
 	}
 </style>

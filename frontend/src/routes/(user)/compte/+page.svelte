@@ -3,6 +3,7 @@
 	import { invalidate } from '$app/navigation';
 	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
+	import TextArea from '$components/TextArea.svelte';
 	import { LOAD_DEPENDENCIES } from '$utils/enums';
 	import type { ActionData, PageData } from './$types';
 
@@ -42,7 +43,7 @@
 	<Field variant="outlined" readonly value={data.profile.role?.role}>
 		<svelte:fragment slot="label">Rôle</svelte:fragment>
 	</Field>
-	<textarea name="about" value={data.profile.about} placeholder="À propos de moi" />
+	<TextArea name="about" value={data.profile.about} placeholder="À propos de moi" />
 	<Button type="submit">Mettre mon profil à jour</Button>
 	<Button type="submit" variant="danger" formaction="?/delete">Supprimer mon profil</Button>
 </form>

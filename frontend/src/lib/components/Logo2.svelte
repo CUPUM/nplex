@@ -6,9 +6,9 @@
 	interface LogoSymbol {
 		id: string;
 		href: `#${string}`;
-		// x: `${number}`;
-		// y: `${number}`;
-		// viewBox: `${number} ${number} ${number} ${number}`;
+		x: `${number}`;
+		y: `${number}`;
+		viewBox: `${number} ${number} ${number} ${number}`;
 		// width: `${number}`;
 		// height: `${number}`;
 	}
@@ -17,26 +17,40 @@
 		n: {
 			id: 'logo-symbol-n',
 			href: '#logo-symbol-n',
+			x: '0',
+			y: '0',
+			viewBox: '0 0 100 100',
 		},
 		p: {
 			id: 'logo-symbol-p',
 			href: '#logo-symbol-p',
+			x: '0',
+			y: '0',
+			viewBox: '0 0 100 100',
 		},
 		l: {
 			id: 'logo-symbol-l',
 			href: '#logo-symbol-l',
+			x: '0',
+			y: '0',
+			viewBox: '0 0 100 100',
 		},
 		e: {
 			id: 'logo-symbol-e',
 			href: '#logo-symbol-e',
+			x: '0',
+			y: '0',
+			viewBox: '0 0 100 100',
 		},
 		x: {
 			id: 'logo-symbol-x',
 			href: '#logo-symbol-x',
+			x: '0',
+			y: '0',
+			viewBox: '0 0 100 100',
 		},
 	} as const satisfies Record<string, LogoSymbol>;
 
-	// width="1001" height="386" viewBox="0 0 1001 386"
 	export const LOGO_WIDTH = 1001;
 	export const LOGO_HEIGHT = 386;
 	export const LOGO_VIEWBOX = `0 0 ${LOGO_WIDTH} ${LOGO_HEIGHT}`;

@@ -116,4 +116,13 @@ export const actions: Actions = {
 	 * Handle requests for forgotten password.
 	 */
 	forgot: async () => {},
+	/**
+	 * Using a provider, with server-side handling to ensure fullfilment of registration process with
+	 * required data.
+	 */
+	provider: async (event) => {
+		console.log('Hit provider action', event);
+		// const db = await getDb(event);
+		// const providerRes = await db.auth.signInWithOAuth()
+	},
 };

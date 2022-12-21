@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Icon from '$components/Icon.svelte';
+	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import Image from '$components/Image.svelte';
-	import { browserDb } from '$utils/database';
+	import { projectcolors, publicurl } from '$utils/database';
 	import { STORAGE_BUCKETS } from '$utils/enums';
 	import { EXPLORE_ROUTES } from '$utils/routes';
 	import type { PageData } from './$types';
@@ -10,32 +10,10 @@
 	export let scrollTarget: HTMLElement;
 
 	const heading = 'Explorer les projets';
-
-	function pimage(p: typeof projects[number]) {
-		if (p.banner && 'name' in p.banner) {
-			return browserDb.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(p.banner.name).data
-				.publicUrl;
-		}
-		return '';
-	}
-
-	function pcolors(p: typeof projects[number]) {
-		if (!p.gallery) {
-			return '';
-		}
-		if (!Array.isArray(p.gallery)) {
-			p.gallery = [p.gallery];
-		}
-		return p.gallery.reduce((acc, curr) => {
-			acc.push('rgb' + curr.color_dominant);
-			acc.push('rgb' + curr.color_mean);
-			return acc;
-		}, [] as string[]);
-	}
 </script>
 
 <article bind:this={scrollTarget}>
-	<a class="heading" href={EXPLORE_ROUTES.projects.pathname}>
+	<a class="heading {ICON_CLASSES.HOVER}" href={EXPLORE_ROUTES.projects.pathname}>
 		<h2>{heading}</h2>
 		<div class="icon">
 			<Icon name="arrow-right" strokeWidth="4" />
@@ -48,7 +26,12 @@
 		{#each projects as p (p.id)}
 			<li>
 				<a class="card" href="{EXPLORE_ROUTES.projects.pathname}/{p.id}">
-					<Image alt="" src={pimage(p)} class="image" color={pcolors(p)} />
+					<Image
+						alt=""
+						src={publicurl(STORAGE_BUCKETS.PROJECTS, p.banner?.name)}
+						class="image"
+						color={projectcolors(p.gallery)}
+					/>
 					<section class="detail">
 						<h1>{p.title}</h1>
 						<p>&#9829;{p.likes_sum}</p>
@@ -66,7 +49,7 @@
 		flex-direction: column;
 		align-items: center;
 		padding-top: var(--ui-nav-px);
-		scroll-snap-align: start;
+		// scroll-snap-align: start;
 	}
 
 	.heading {
@@ -121,12 +104,18 @@
 		position: relative;
 		height: 100%;
 		width: 100%;
+		border-radius: var(--ui-radius-lg);
+		transition: background 0.25s;
 
 		:global(.image) {
 			width: 100%;
 			flex: 1;
 			min-height: 0;
 			border-radius: var(--ui-radius-lg);
+		}
+
+		&:hover {
+			background: col(bg, 000);
 		}
 	}
 

@@ -22,7 +22,7 @@
 	import { writable, type Writable } from 'svelte/store';
 
 	export let id: string | undefined = undefined;
-	export let value: string = '';
+	export let value: string | null | undefined = null;
 	export let name: string | undefined = undefined;
 	export let variant: 'default' | 'outlined' | 'cta' = 'default';
 	export let resize: boolean | undefined = undefined;

@@ -1,4 +1,3 @@
-import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import { get } from 'svelte/store';
 
@@ -29,24 +28,24 @@ export function autoHash(
 		threshold = 0,
 	}: AutoHashOptions = {}
 ) {
-	function check(entries: IntersectionObserverEntry[]) {
+	function update(entries: IntersectionObserverEntry[]) {
 		if (hash) {
 			const currentPage = get(page);
 			for (const entry of entries) {
 				if (entry.isIntersecting) {
 					const to = new URL(currentPage.url);
-					to.hash = hash;
-					goto(to.toString(), { replaceState: true, noScroll: true });
+					// to.hash = hash;
+					// goto(to.toString(), { replaceState: true, noScroll: true });
 				} else if (currentPage.url.hash === hash && clearOnLeave) {
 					const to = new URL(currentPage.url);
-					to.hash = '';
-					goto(to.toString(), { replaceState: true, noScroll: true });
+					// to.hash = '';
+					// goto(to.toString(), { replaceState: true, noScroll: true });
 				}
 			}
 		}
 	}
 
-	const observer = new IntersectionObserver(check, {
+	const observer = new IntersectionObserver(update, {
 		root,
 		rootMargin,
 		threshold,

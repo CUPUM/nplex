@@ -12,10 +12,12 @@
 	import { derived, get } from 'svelte/store';
 
 	const SCROLL_LOCK = Symbol('auth');
-	enum AuthMode {
-		SignIn = 'signin',
-		SignUp = 'signup',
-	}
+	const AUTH_MODES = {
+		SignIn: 'signin',
+		SignUp: 'signup',
+		Provider: 'provider',
+	} as const;
+	type AuthMode = ValueOf<typeof AUTH_MODES>;
 
 	/**
 	 * Singleton store to open/close the auth modal and consequently update the client's URL search
@@ -23,32 +25,35 @@
 	 */
 	export const authModal = (function () {
 		const { subscribe } = derived(page, (_page) => {
-			if (browser) {
-				const open = _page.url.searchParams.has(SEARCH_PARAMS.AUTH_MODAL);
-				if (!open) {
-					rootScroll.unlock(SCROLL_LOCK);
-				} else {
-					if (_page.data?.session) {
-						// For when a user navigates back after a redirect (ex.: on successful signin).
-						// This prevents from showing the AuthModal again, which would be irrelevant as the session is persisted.
-						return goto(getUrl({ url: _page.url, open: false }), {
-							replaceState: true,
-						});
-					}
-					rootScroll.lock(SCROLL_LOCK);
-					const mode = _page.url.searchParams.get(SEARCH_PARAMS.AUTH_MODAL);
-					return mode && (Object.values(AuthMode) as string[]).includes(mode)
-						? (mode as AuthMode)
-						: AuthMode.SignIn;
-				}
+			if (!browser) {
+				return false;
 			}
-			return false;
+			const open = _page.url.searchParams.has(SEARCH_PARAMS.AUTH_MODAL);
+			if (!open) {
+				rootScroll.unlock(SCROLL_LOCK);
+				return false;
+			} else {
+				if (_page.data?.session) {
+					// For when a user navigates back after a redirect (ex.: on successful signin).
+					// This prevents from showing the AuthModal again, which would be irrelevant as the session is persisted.
+					goto(getUrl({ url: _page.url, open: false }), {
+						replaceState: true,
+						noScroll: true,
+					});
+					return false;
+				}
+				rootScroll.lock(SCROLL_LOCK);
+				const mode = _page.url.searchParams.get(SEARCH_PARAMS.AUTH_MODAL);
+				return mode && (Object.values(AUTH_MODES) as string[]).includes(mode)
+					? (mode as AuthMode)
+					: AUTH_MODES.SignIn;
+			}
 		});
 
 		function getUrl({
 			url,
 			open = true,
-			mode = AuthMode.SignIn,
+			mode = AUTH_MODES.SignIn,
 		}: {
 			url: string | URL;
 			open?: boolean;
@@ -65,7 +70,7 @@
 
 		async function open({
 			url,
-			mode = AuthMode.SignIn,
+			mode = AUTH_MODES.SignIn,
 			...opts
 		}: { url?: string | URL; mode?: AuthMode } & Parameters<typeof goto>[1] = {}) {
 			if (!browser) return;
@@ -106,6 +111,7 @@
 	import { THEME_CLASSES } from '$utils/themes';
 	import { linear } from 'svelte/easing';
 	import { fade, scale, slide } from 'svelte/transition';
+	import type { ValueOf } from 'ts-essentials';
 
 	const Action = {
 		SignIn: '/api/auth?/signin',
@@ -129,7 +135,7 @@
 			transition:scale={{ start: 0.95 }}
 			use:clickoutside={true}
 			on:clickoutside={() => authModal.close()}
-			action={$authModal === AuthMode.SignUp ? Action.SignUp : Action.SignIn}
+			action={$authModal === AUTH_MODES.SignUp ? Action.SignUp : Action.SignIn}
 			method="POST"
 			use:enhance={({ form, data, action, cancel }) => {
 				currentAction = action.pathname + action.search;
@@ -154,7 +160,7 @@
 						<FieldReset />
 					</svelte:fragment>
 				</Field>
-				{#if $authModal === AuthMode.SignUp}
+				{#if $authModal === AUTH_MODES.SignUp}
 					<div class="signup fill-row" transition:slide|local={{ duration: 200 }}>
 						<Field required variant="default" name="first_name">
 							<svelte:fragment slot="label">Prénom/pseudonyme</svelte:fragment>
@@ -175,7 +181,7 @@
 				<Button
 					class="fill-row"
 					type="submit"
-					variant={$authModal === AuthMode.SignIn ? 'cta' : 'default'}
+					variant={$authModal === AUTH_MODES.SignIn ? 'cta' : 'default'}
 					contentAlign="center"
 					formaction={Action.SignIn}
 					loading={currentAction === Action.SignIn}
@@ -188,10 +194,10 @@
 				>
 				<Button
 					class="small-button"
-					variant={$authModal === AuthMode.SignUp ? 'cta' : 'default'}
-					type={$authModal === AuthMode.SignUp ? 'submit' : 'button'}
-					href={$authModal === AuthMode.SignIn
-						? authModal.getUrl({ url: $page.url, open: true, mode: AuthMode.SignUp }).toString()
+					variant={$authModal === AUTH_MODES.SignUp ? 'cta' : 'default'}
+					type={$authModal === AUTH_MODES.SignUp ? 'submit' : 'button'}
+					href={$authModal === AUTH_MODES.SignIn
+						? authModal.getUrl({ url: $page.url, open: true, mode: AUTH_MODES.SignUp }).toString()
 						: undefined}
 					contentAlign="center"
 					formaction={Action.SignUp}

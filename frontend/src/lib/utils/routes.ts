@@ -81,7 +81,15 @@ interface EditorRoute extends Route {
 export const EDITOR_ROUTES = {
 	project: {
 		subpath: '/projet',
-		label: 'Créer un projet',
+		label: 'Projet',
+		category: 'projects',
+		get pathname() {
+			return EDITOR_BASE_ROUTE.pathname + this.subpath;
+		},
+	},
+	descriptors: {
+		subpath: '/descripteurs',
+		label: 'Descripteurs de projet',
 		category: 'projects',
 		get pathname() {
 			return EDITOR_BASE_ROUTE.pathname + this.subpath;
@@ -89,7 +97,7 @@ export const EDITOR_ROUTES = {
 	},
 	organisation: {
 		subpath: '/organisation',
-		label: 'Éditer une organisation',
+		label: 'Organisation',
 		category: 'organisations',
 		disabled: true,
 		get pathname() {
@@ -98,7 +106,7 @@ export const EDITOR_ROUTES = {
 	},
 	actor: {
 		subpath: '/acteur',
-		label: 'Éditer un profil d’acteur',
+		label: 'Acteur',
 		category: 'actors',
 		disabled: true,
 		get pathname() {

@@ -17,6 +17,7 @@
 	import Ripple from '$components/Ripple.svelte';
 	import { getContext, setContext } from 'svelte';
 	import { getButtonGroupContext } from './ButtonGroup.svelte';
+	import { ICON_CLASSES } from './Icon.svelte';
 
 	export let href: string | undefined = undefined;
 	export let id: string | undefined = undefined;
@@ -55,7 +56,7 @@
 <svelte:element
 	this={as ? as : href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
-	class="button nest {computedVariant} {contentAlign} {className}"
+	class="button nest {computedVariant} {contentAlign} {className} {ICON_CLASSES.HOVER}"
 	class:compact
 	class:warning
 	class:equi
@@ -230,7 +231,7 @@
 			justify-content: left;
 			text-align: left;
 		}
-		.end:not(.equi) {
+		.end:not(.equi) & {
 			justify-content: right;
 			text-align: right;
 		}
@@ -256,7 +257,7 @@
 
 	:where(.default) {
 		color: col(fg, 300);
-		background: col(fg, 900, 0.1);
+		background: col(bg, 900, 0.5);
 		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {

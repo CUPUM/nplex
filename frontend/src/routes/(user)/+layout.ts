@@ -19,7 +19,9 @@ export const load: LayoutLoad = async (event) => {
 		.select(
 			`
 			*,
-			type:project_type(*)
+			type:project_type(*),
+			banner:projects_images!banner_id(*),
+			gallery:projects_images!project_id(*)
 		`
 		)
 		.order('updated_at', { ascending: false })

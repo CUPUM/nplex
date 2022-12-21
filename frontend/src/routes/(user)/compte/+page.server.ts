@@ -2,7 +2,10 @@ import { getDb } from '$utils/database';
 import { dbAdmin } from '$utils/databaseAdmin';
 import { STATUS_CODES } from '$utils/enums';
 import { error, fail, redirect } from '@sveltejs/kit';
+import { zfd } from 'zod-form-data';
 import type { Actions } from './$types';
+
+const profileSchema = zfd.formData({});
 
 export const actions: Actions = {
 	/**

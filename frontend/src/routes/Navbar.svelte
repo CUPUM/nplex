@@ -103,8 +103,12 @@
 					<NavbarUserMenu />
 				</Popover>
 			{:else}
-				<NavbarButton round href={authModal.getUrl({ url: $page.url }).toString()}>
-					<Icon name="user" strokeWidth="1.5" style="font-size: 1.25em" />
+				<NavbarButton
+					round
+					active={!!$authModal}
+					href={authModal.getUrl({ url: $page.url }).toString()}
+				>
+					<Icon name="user" strokeWidth="2" style="font-size: 1.25em" />
 				</NavbarButton>
 			{/if}
 		</nav>

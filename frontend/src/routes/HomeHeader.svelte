@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
 	import { browser } from '$app/environment';
-	import Icon from '$components/Icon.svelte';
+	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS, LOGO_VIEWBOX } from '$components/Logo2.svelte';
 	import { THEME_CLASSES, THEME_NAMES } from '$utils/themes';
 	import { onDestroy } from 'svelte';
@@ -59,16 +59,16 @@
 			{/if}
 		</g>
 	</svg>
-	<button on:click={consult}>
+	<button on:click={consult} class={ICON_CLASSES.HOVER}>
 		<div class="arrow">
-			<Icon name="arrow-down" strokeWidth="4" />
+			<Icon name="arrow-down" strokeWidth="3" />
 		</div>
 	</button>
 </header>
 
 <style lang="scss">
 	header {
-		--radius: min(var(--ui-radius-xl), calc(var(--ui-scroll-px) * 0.1));
+		--radius: min(var(--ui-radius-xl), calc(var(--ui-scroll-px) * 0.2));
 		position: relative;
 		height: 100vh;
 		width: 100%;
@@ -76,11 +76,10 @@
 		background: col(bg, 100);
 		border-bottom-left-radius: var(--radius);
 		border-bottom-right-radius: var(--radius);
-		transition: all 0.15s ease-in-out;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		scroll-snap-align: start;
+		transition: all 0.15s ease-out;
 	}
 
 	svg {
@@ -104,7 +103,7 @@
 
 		&:hover {
 			.arrow {
-				opacity: 0.25;
+				opacity: 1;
 				transform: translateY(0);
 			}
 		}

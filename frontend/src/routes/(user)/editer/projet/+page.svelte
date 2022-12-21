@@ -20,24 +20,35 @@
 		};
 	}}
 >
-	<h1>Créer un nouveau projet</h1>
-	<fieldset>
-		<p>
-			Pour initialiser une fiche de projet, commencez par définir un titre. Ce titre pourra être
-			modifié ultérieurement.
-		</p>
-		<Field name="title" class="title" bind:value={title} invalid={Boolean(form?.title?.length)}>
-			<svelte:fragment slot="label">Titre du projet</svelte:fragment>
+	<div>
+		<h1>Créez votre nouveau projet</h1>
+		<Field
+			name="title"
+			class="title"
+			placeholder="Titre"
+			variant="outlined"
+			bind:value={title}
+			invalid={Boolean(form?.title?.length)}
+		>
+			<svelte:fragment slot="trailing">
+				<Button type="submit" disabled={!title}>
+					Créer
+					<Icon slot="leading" name="plus" />
+				</Button>
+			</svelte:fragment>
 		</Field>
-		<Button type="submit" disabled={!title}>
-			Créer
-			<Icon slot="leading" name="plus" />
-		</Button>
-	</fieldset>
+		<section>
+			<Icon name="info-circle" />
+			<p>
+				Pour débuter, donnez un titre à vorte projet. Ce titre pourra être modifié ultérieurement.
+			</p>
+		</section>
+	</div>
 </form>
 
 <style lang="scss">
 	form {
+		--radius: min(var(--ui-radius-xl), calc(var(--ui-scroll-px) * 0.2));
 		width: 100%;
 		padding-block: calc(var(--ui-nav-px) + var(--ui-gutter));
 		min-height: 100vh;
@@ -48,27 +59,40 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 2rem;
+		border-bottom-left-radius: var(--radius);
+		border-bottom-right-radius: var(--radius);
+	}
+
+	div {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		padding-inline: var(--ui-gutter);
+		max-width: var(--ui-width-main);
+		width: 100%;
+		gap: 1rem;
 	}
 
 	h1 {
-		font-size: var(--ui-text-2xl);
-		max-width: var(--ui-font-main);
-		padding: 0 var(--ui-gutter);
-		font-weight: 600;
-	}
-
-	fieldset {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 2rem;
 		width: 100%;
 		max-width: var(--ui-width-p);
-		padding: 0 var(--ui-gutter);
+		font-size: var(--ui-text-2xl);
+		font-weight: 600;
+		text-align: center;
+		margin-bottom: 5rem;
+	}
 
-		:global(.title) {
-			width: 100%;
-		}
+	section {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 1em;
+		opacity: 0.2;
+	}
+
+	form :global(.title) {
+		width: 100%;
+		max-width: var(--ui-width-main);
+		font-size: 1.5rem;
 	}
 </style>
