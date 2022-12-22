@@ -54,7 +54,7 @@
 <header class={$navbarTheme ? THEME_CLASSES[$navbarTheme] : ''} bind:clientHeight={navbarHeight}>
 	<menu class="toggle ">
 		<NavbarButton on:pointerdown={toggle} round>
-			<Icon name={open ? 'cross' : 'arrow-down-right'} />
+			<Icon name={open ? 'cross' : 'arrow-down-right'} strokeWidth="3" />
 		</NavbarButton>
 	</menu>
 	<div class="navs" class:open>

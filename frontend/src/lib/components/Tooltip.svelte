@@ -11,6 +11,7 @@
 	import Tether from './Tether.svelte';
 
 	export let message: string = '';
+	export let disabled: boolean | undefined = undefined;
 	export let open: boolean = false;
 	export let hover: boolean = true;
 	export let place: ComponentProps<Tether>['place'] = 'top';
@@ -33,7 +34,7 @@
 		open = false;
 	}
 
-	$: if (!message) {
+	$: if (!message || disabled) {
 		hide();
 	}
 

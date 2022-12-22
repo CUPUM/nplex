@@ -95,7 +95,7 @@
 	}
 
 	form {
-		margin-bottom: 0.75em;
+		margin-bottom: 0.6em;
 		font-size: var(--ui-text-sm);
 	}
 

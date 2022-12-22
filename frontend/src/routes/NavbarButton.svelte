@@ -58,21 +58,30 @@
 		outline-offset: 0px;
 		transition: all 0.1s, box-shadow 0.25s ease-out;
 		backdrop-filter: blur(12px);
-		&:hover,
-		&.active,
-		&:active {
+		&:hover {
+			color: col(bg, 500);
+			background: col(fg, 300, 0.95);
+		}
+
+		&.active {
 			color: col(bg, 500);
 			background: col(fg, 100, 0.95);
 		}
+
 		&.current:not(.active) {
 			cursor: default;
 			color: col(primary, 500);
-			// background: col(bg, 100, 0.7);
+
+			&:hover {
+				background: col(primary, 100, 0.2);
+			}
 		}
 	}
 	.inner {
 		position: relative;
 		height: 1.3em;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	.disabled {
 		pointer-events: none;
@@ -88,17 +97,6 @@
 		padding: 0;
 		border-radius: 50%;
 	}
-
-	// :global(.button-group) .navbar-button {
-	// 	&:not(:first-of-type) {
-	// 		border-top-left-radius: 0; // calc(var(--bradius) * 0.25);
-	// 		border-bottom-left-radius: 0; // calc(var(--bradius) * 0.25);
-	// 	}
-	// 	&:not(:last-of-type) {
-	// 		border-top-right-radius: 0; // calc(var(--bradius) * 0.25);
-	// 		border-bottom-right-radius: 0; // calc(var(--bradius) * 0.25);
-	// 	}
-	// }
 
 	// Call-to-action variant
 	.cta {

@@ -4,6 +4,7 @@
 	import Icon from '$components/Icon.svelte';
 	import Range from '$components/Range.svelte';
 	import RangeLine from '$components/RangeLine.svelte';
+	import RangeThumb from '$components/RangeThumb.svelte';
 	import Switch from '$components/Switch.svelte';
 	import SwitchItem from '$components/SwitchItem.svelte';
 	import TextArea from '$components/TextArea.svelte';
@@ -68,12 +69,10 @@
 	</fieldset>
 	<fieldset>
 		<h3>Fourchette de coûts</h3>
-		<Range>
-			Test
-			<RangeLine>
-				<!-- <RangeThumb />
-				<RangeThumb /> -->
-			</RangeLine>
+		<Range min="0" max="500000" step="1">
+			<RangeLine />
+			<RangeThumb name="cost_range_min" bind:value={data.project.cost_range[0]} />
+			<RangeThumb name="cost_range_max" bind:value={data.project.cost_range[1]} />
 		</Range>
 		<label>
 			Min

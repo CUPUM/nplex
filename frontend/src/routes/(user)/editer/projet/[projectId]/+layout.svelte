@@ -67,7 +67,7 @@
 			</nav>
 		{/if}
 		<menu class="nest" in:fly={{ y: 30, easing: expoOut, delay: 500, duration: 750 }}>
-			<Tooltip message="Éditer&nbsp;: {prev?.title}">
+			<Tooltip message="Éditer&nbsp;: {prev?.title}" disabled={!prev}>
 				<Button href={href($page, prev)} disabled={!prev} equi variant="ghost">
 					<Icon name="arrow-left" />
 				</Button>
@@ -83,7 +83,7 @@
 					<input type="checkbox" hidden bind:checked={sections} />
 				</Button>
 			</Tooltip>
-			<Tooltip message="Éditer&nbsp;: {next?.title}">
+			<Tooltip message="Éditer&nbsp;: {next?.title}" disabled={!next}>
 				<Button href={href($page, next)} disabled={!next} equi variant="ghost">
 					<Icon name="arrow-right" />
 				</Button>

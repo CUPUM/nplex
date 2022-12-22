@@ -3,7 +3,6 @@
 	## Image
 	Primitive image component capable of handling modern web image formats (webp / source-sets),
 	and providing optimization functionalities such as lazy-loading.
-
 -->
 <script lang="ts" context="module">
 	interface SourceSpecification {
@@ -135,6 +134,7 @@
 	{/if}
 	{#if error || !src}
 		<div class="no-img">
+			<slot name="placeholder" />
 			{#if error}
 				<slot name="error">
 					<Icon class="icon" name="image-delete" />
@@ -163,7 +163,6 @@
 
 	.no-img {
 		border-radius: inherit;
-		font-size: 1.5rem;
 		width: 100%;
 		height: 100%;
 		top: 0;
@@ -176,6 +175,7 @@
 
 		:global(.icon) {
 			filter: invert(1);
+			font-size: 1.5rem;
 			opacity: 0.4;
 		}
 	}

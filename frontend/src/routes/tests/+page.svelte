@@ -2,71 +2,36 @@
 </script>
 
 <script lang="ts">
-	import Button from '$components/Button.svelte';
-	import Field from '$components/Field.svelte';
-	import Icon from '$components/Icon.svelte';
-	import Switch from '$components/Switch.svelte';
-	import SwitchItem from '$components/SwitchItem.svelte';
-	import Tooltip from '$components/Tooltip.svelte';
+	import Range from '$components/Range.svelte';
+	import RangeLine from '$components/RangeLine.svelte';
+	import RangeThumb from '$components/RangeThumb.svelte';
 
-	let group = '1';
-	let size = 12;
-	let s = 'c';
+	let a = 10;
+	let b = 40;
+	let c = 50;
 </script>
 
 <article>
-	<Field>
-		<Button slot="leading">Test</Button>
-		<Tooltip message="some tooltip!" slot="trailing">
-			<Button>With tooltip!</Button>
-		</Tooltip>
-	</Field>
-	<Tooltip message="some tooltip!" place="right">
-		<Button>With tooltip!</Button>
-	</Tooltip>
-</article>
-<article class="test">
-	<Switch bind:group={s}>
-		<SwitchItem value="a">TEST <Icon name="file" /></SwitchItem>
-		<SwitchItem value="b"
-			>Tesass asd asd asd asda sddt <Icon name="user" style="font-size: 2.5em" /></SwitchItem
-		>
-		<SwitchItem value="c">Test</SwitchItem>
-	</Switch>
+	<Range min="0" max="100" step="5">
+		<RangeLine bind:from={a} bind:to={b} bidirectional draggable />
+		<RangeThumb name="a" bind:value={a} />
+		<RangeThumb name="b" bind:value={b} />
+		<RangeThumb name="c" bind:value={c} />
+	</Range>
+	<hr />
+	<Range min="0" max="100" step="5" direction="column" style="height: 200px;">
+		<RangeLine>
+			<RangeThumb name="a" value={a} />
+			<RangeThumb name="b" value={b} />
+			<RangeThumb name="c" value={c} />
+		</RangeLine>
+	</Range>
 </article>
 
-<style lang="scss" module>
+<style lang="scss">
 	article {
 		padding: 4rem;
-	}
-
-	.test {
-		font-size: 1rem;
-	}
-
-	button {
-		position: absolute;
-		font-size: var(--ui-text-md);
-		background: col(bg, 500);
-		padding: 0 1em;
-		height: 3em;
-		border-radius: var(--ui-radius-md);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: background 0.25s ease-out;
-
-		span {
-			display: inline-block;
-			line-height: 1em;
-		}
-
-		&:hover {
-			background: col(bg, 700);
-		}
-	}
-
-	.space {
-		height: 200px;
+		width: 100%;
+		height: 500px;
 	}
 </style>

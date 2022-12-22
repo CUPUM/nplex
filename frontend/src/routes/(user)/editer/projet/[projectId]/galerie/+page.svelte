@@ -226,6 +226,7 @@
 			}
 		}
 		.drag-subject {
+			cursor: grab;
 			opacity: 1;
 			box-shadow: 0 1rem 5rem -4rem black;
 			background: col(bg, 000);

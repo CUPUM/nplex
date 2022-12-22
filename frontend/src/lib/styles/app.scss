@@ -30,6 +30,10 @@ body {
 	margin: 0;
 }
 
+* {
+	outline-color: col(primary, 500, 0.5);
+}
+
 ::-webkit-scrollbar {
 	width: var(--scroll-size, var(--ui-scroll-size));
 	height: var(--scroll-size, var(--ui-scroll-size));

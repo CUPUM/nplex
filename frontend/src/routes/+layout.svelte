@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
@@ -8,6 +9,7 @@
 	import '$styles/resets.scss';
 	import '$styles/themes.css';
 	import '$styles/vars.scss';
+	import { browserDb } from '$utils/database';
 	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import AuthModal, { authModal } from './AuthModal.svelte';
@@ -21,6 +23,14 @@
 	let navbarHeight: number = 0;
 	let scrollY = 0;
 	let mounted = false;
+
+	if (browser) {
+		// Initialize the client-side db auth based on the session extracted from cookies, if any.
+		if (data.session) {
+			browserDb.auth.setSession(data.session);
+			browserDb.auth.signInWithPassword;
+		}
+	}
 
 	onMount(() => {
 		mounted = true;
