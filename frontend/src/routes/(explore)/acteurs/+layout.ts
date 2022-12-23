@@ -1,7 +1,7 @@
 import type { LayoutLoad } from './$types';
 
-export const load: LayoutLoad = ({ data }) => {
+export const load = (async (event) => {
 	return {
 		category: 'actors',
 	};
-};
+}) satisfies LayoutLoad;

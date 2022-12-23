@@ -1,5 +1,5 @@
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async (event) => {
+export const load = (async (event) => {
 	return {};
-};
+}) satisfies PageLoad;

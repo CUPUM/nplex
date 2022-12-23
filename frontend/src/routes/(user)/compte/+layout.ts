@@ -3,7 +3,7 @@ import { LOAD_DEPENDENCIES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from '../$types';
 
-export const load: LayoutLoad = async (event) => {
+export const load = (async (event) => {
 	event.depends(LOAD_DEPENDENCIES.USER_PROFILE);
 	const { session } = await event.parent();
 	if (!session) {
@@ -35,4 +35,4 @@ export const load: LayoutLoad = async (event) => {
 	return {
 		profile,
 	};
-};
+}) satisfies LayoutLoad;

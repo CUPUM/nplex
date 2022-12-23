@@ -1,5 +1,5 @@
 import type { LayoutLoad } from './$types';
 
-export const load: LayoutLoad = () => {
+export const load = ((event) => {
 	return {};
-};
+}) satisfies LayoutLoad;

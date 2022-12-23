@@ -3,7 +3,7 @@ import { getDb } from '$utils/database';
 import { redirect } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async (event) => {
+export const load = (async (event) => {
 	const db = await getDb(event);
 	const projectRes = await db
 		.from('projects')
@@ -23,4 +23,4 @@ export const load: PageLoad = async (event) => {
 		categoryIsResetable: true,
 		project: projectRes.data,
 	};
-};
+}) satisfies PageLoad;

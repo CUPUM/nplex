@@ -3,7 +3,7 @@ import { getDb, pagination } from '$utils/database';
 import { error, redirect } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
-export const load: LayoutLoad = async (event) => {
+export const load = (async (event) => {
 	const { session } = await event.parent();
 	if (!session) {
 		throw redirect(
@@ -32,4 +32,4 @@ export const load: LayoutLoad = async (event) => {
 	return {
 		projects: projectsRes.data,
 	};
-};
+}) satisfies LayoutLoad;

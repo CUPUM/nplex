@@ -4,7 +4,7 @@ import { safeJsonParse } from '$utils/json';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
-export const load: LayoutLoad = async (event) => {
+export const load = (async (event) => {
 	event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
 	const db = await getDb(event);
 	const descriptorsRes = await db.rpc('get_project_descriptors').single();
@@ -63,4 +63,4 @@ export const load: LayoutLoad = async (event) => {
 		project: projectTransform,
 		descriptors: descriptorsRes.data,
 	};
-};
+}) satisfies LayoutLoad;

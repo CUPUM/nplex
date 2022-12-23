@@ -1,7 +1,7 @@
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = ({ params }) => {
+export const load = ((event) => {
 	return {
-		articleId: params.articleId,
+		articleId: event.params.articleId,
 	};
-};
+}) satisfies PageLoad;

@@ -1,6 +1,6 @@
 import type { LayoutLoad } from './$types';
 
-export const load: LayoutLoad = async (event) => {
+export const load = (async (event) => {
 	const { session } = event.data;
 
 	return {
@@ -10,4 +10,4 @@ export const load: LayoutLoad = async (event) => {
 		showCategoryNav: false,
 		showExploreSearchbar: false,
 	};
-};
+}) satisfies LayoutLoad;

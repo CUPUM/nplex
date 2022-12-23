@@ -3,7 +3,7 @@ import { STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async (event) => {
+export const load = (async (event) => {
 	const db = await getDb(event);
 
 	const projectsRes = await db
@@ -54,4 +54,4 @@ export const load: PageLoad = async (event) => {
 		organisations: organisationsRes.data,
 		actors: actorsRes.data,
 	};
-};
+}) satisfies PageLoad;
