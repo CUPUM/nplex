@@ -1,23 +1,15 @@
 <script lang="ts">
-	import Icon from '$components/Icon.svelte';
 	import { EXPLORE_ROUTES } from '$utils/routes';
 	import type { PageData } from './$types';
+	import PreviewsHeader from './PreviewsHeader.svelte';
 
 	export let actors: PageData['actors'];
-
-	const heading = 'Explorer les profils de professionnels';
 </script>
 
 <article>
-	<a class="heading" href={EXPLORE_ROUTES.actors.pathname}>
-		<h2>{heading}</h2>
-		<div class="icon">
-			<Icon name="arrow-right" strokeWidth="4" />
-		</div>
-	</a>
-	<form action="">
-		<input type="search" name="" id="" />
-	</form>
+	<PreviewsHeader href={EXPLORE_ROUTES.actors.pathname} action="?/actors">
+		Explorer les profils de professionnels
+	</PreviewsHeader>
 	<ul>
 		{#each actors as a (a.id)}
 			<li>

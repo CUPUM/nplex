@@ -42,7 +42,6 @@
 		margin: 1rem;
 		margin-top: 0;
 		height: 100vh;
-		// margin-top: calc(-1 * var(--ui-nav-px));
 	}
 
 	h1 {

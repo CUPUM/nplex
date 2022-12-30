@@ -1,23 +1,15 @@
 <script lang="ts">
-	import Icon from '$components/Icon.svelte';
 	import { EXPLORE_ROUTES } from '$utils/routes';
 	import type { PageData } from './$types';
+	import PreviewsHeader from './PreviewsHeader.svelte';
 
 	export let organisations: PageData['organisations'];
-
-	const heading = 'Explorer les bureaux et organismes';
 </script>
 
 <article>
-	<a class="heading" href={EXPLORE_ROUTES.organisations.pathname}>
-		<h2>{heading}</h2>
-		<div class="icon">
-			<Icon name="arrow-right" strokeWidth="4" />
-		</div>
-	</a>
-	<form action="">
-		<input type="search" name="" id="" />
-	</form>
+	<PreviewsHeader href={EXPLORE_ROUTES.organisations.pathname} action="?/organisations">
+		Explorer les bureaux et organismes
+	</PreviewsHeader>
 	<ul>
 		{#each organisations as o (o.id)}
 			<li>

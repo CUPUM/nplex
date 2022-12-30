@@ -30,7 +30,7 @@
 	import NavbarEditorMenu from './NavbarEditorMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
 
-	export let navbarHeight = 0;
+	export let navbarHeight;
 
 	let open = false;
 	let rootsegment: string;
@@ -118,10 +118,11 @@
 <style lang="scss">
 	header {
 		pointer-events: none;
-		position: sticky;
+		position: fixed;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		width: 100%;
 		z-index: 100;
 		top: 0;
 

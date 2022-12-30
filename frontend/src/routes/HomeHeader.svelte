@@ -72,14 +72,13 @@
 		position: relative;
 		height: 100vh;
 		width: 100%;
-		margin-top: calc(-1 * var(--ui-nav-px));
 		background: col(bg, 100);
 		border-bottom-left-radius: var(--radius);
 		border-bottom-right-radius: var(--radius);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition: all 0.15s ease-out;
+		transition: border-radius 0.15s ease-out;
 	}
 
 	svg {

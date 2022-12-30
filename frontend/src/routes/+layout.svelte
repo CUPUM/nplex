@@ -51,7 +51,7 @@
 <RootTheme />
 <div
 	class="container"
-	class:hidden={!mounted}
+	class:unmounted={!mounted}
 	class:authing={$authModal}
 	style:--ui-scroll={scrollY}
 	style:--ui-scroll-px="{scrollY}px"
@@ -75,9 +75,7 @@
 		position: relative;
 		transform-origin: 50vw calc(var(--ui-scroll-px) + 50vh);
 		transition: transform 0.25s var(--ui-ease-out), opacity 0.5s ease-out;
-		&.hidden {
-			transform: scale(0.98);
-			opacity: 0;
+		&.unmounted {
 		}
 		&.authing {
 			transform: scale(0.96);

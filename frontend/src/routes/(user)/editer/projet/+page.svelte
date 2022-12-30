@@ -56,8 +56,6 @@
 		padding-block: calc(var(--ui-nav-px) + var(--ui-gutter));
 		min-height: 100vh;
 		margin: 0 auto;
-		margin-top: calc(-1 * var(--ui-nav-px));
-		// background: col(bg, 500);
 		border: 1px solid col(fg, 900, min(0.1, calc(var(--ui-scroll) * 0.001)));
 		border-top: none;
 		display: flex;
