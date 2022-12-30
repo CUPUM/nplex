@@ -74,8 +74,9 @@
 	.container {
 		position: relative;
 		transform-origin: 50vw calc(var(--ui-scroll-px) + 50vh);
-		transition: transform 0.25s var(--ui-ease-out), opacity 0.5s ease-out;
+		transition: transform 0.25s var(--ui-ease-out);
 		&.unmounted {
+			transform: scale(1.04);
 		}
 		&.authing {
 			transform: scale(0.96);
