@@ -52,7 +52,6 @@
 	setContext<ButtonContext>(CTX_KEY, {});
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <svelte:element
 	this={as ? as : href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
@@ -66,6 +65,7 @@
 	class:loading
 	class:grouped={buttonGroupContext}
 	aria-disabled={disabled}
+	role="button"
 	{style}
 	{href}
 	{id}

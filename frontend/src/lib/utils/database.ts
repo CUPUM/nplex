@@ -3,6 +3,7 @@ import { invalidate } from '$app/navigation';
 import { page } from '$app/stores';
 // @ts-ignore:next-line
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
+import { setSessionCookie, tokenData } from '$routes/api/auth/common';
 import { createClient, type SupportedStorage } from '@supabase/supabase-js';
 import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { get } from 'svelte/store';
@@ -96,12 +97,19 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 	if (event && 'locals' in event) {
 		if (!event.locals.db) {
 			event.locals.db = createServerClient();
-		}
-		if (event.locals.session) {
-			// const dbSession = (await event.locals.db.auth.getSession()).data.session;
-			// if (!dbSession || dbSession.user.id !== event.locals.session.user.id) {
-			await event.locals.db.auth.setSession(event.locals.session);
-			// }
+			if (event.locals.session) {
+				const authsession = await event.locals.db.auth.setSession(event.locals.session);
+				if (
+					!authsession.error &&
+					authsession.data.session &&
+					event.locals.session.access_token !== authsession.data.session?.access_token
+				) {
+					setSessionCookie(event, {
+						...event.locals.session,
+						...tokenData(authsession.data.session),
+					});
+				}
+			}
 		}
 		return event.locals.db;
 	}

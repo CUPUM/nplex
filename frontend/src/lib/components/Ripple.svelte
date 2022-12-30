@@ -9,8 +9,8 @@
 
 <script lang="ts">
 	export let host: HTMLElement | undefined = undefined;
-	export let easing: string = 'cubic-bezier(0.05, 0, 0, 1)';
-	export let duration = 300;
+	export let easing: string = 'cubic-bezier(0, 0, .2, 1)';
+	export let duration = 350;
 	export let delay = 0;
 	export let opacityStart = 0.25;
 	export let opacityEnd = 0;

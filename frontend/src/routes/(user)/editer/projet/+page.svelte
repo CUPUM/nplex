@@ -3,6 +3,8 @@
 	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
 	import Icon from '$components/Icon.svelte';
+	import Tooltip from '$components/Tooltip.svelte';
+	import { fly } from 'svelte/transition';
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;
@@ -21,28 +23,29 @@
 	}}
 >
 	<div>
-		<h1>Créez votre nouveau projet</h1>
-		<Field
-			name="title"
-			class="title"
-			placeholder="Titre"
-			variant="outlined"
-			bind:value={title}
-			invalid={Boolean(form?.title?.length)}
-		>
-			<svelte:fragment slot="trailing">
-				<Button type="submit" disabled={!title}>
-					Créer
-					<Icon slot="leading" name="plus" />
-				</Button>
-			</svelte:fragment>
-		</Field>
-		<section>
-			<Icon name="info-circle" />
-			<p>
-				Pour débuter, donnez un titre à vorte projet. Ce titre pourra être modifié ultérieurement.
-			</p>
-		</section>
+		<h1 in:fly={{ y: 20 }}>Créez votre nouveau projet</h1>
+		<fieldset in:fly={{ y: -20, delay: 150 }}>
+			<Tooltip
+				place="bottom"
+				message="Vous pourrez toujours modifier le titre une fois le projet créé."
+			>
+				<Field
+					name="title"
+					class="title"
+					placeholder="Donnez un titre à vorte projet"
+					variant="outlined"
+					bind:value={title}
+					invalid={Boolean(form?.title?.length)}
+				>
+					<svelte:fragment slot="trailing">
+						<Button type="submit" disabled={!title}>
+							Créer
+							<Icon slot="leading" name="plus" />
+						</Button>
+					</svelte:fragment>
+				</Field>
+			</Tooltip>
+		</fieldset>
 	</div>
 </form>
 
@@ -54,7 +57,9 @@
 		min-height: 100vh;
 		margin: 0 auto;
 		margin-top: calc(-1 * var(--ui-nav-px));
-		background: col(bg, 500);
+		// background: col(bg, 500);
+		border: 1px solid col(fg, 900, min(0.1, calc(var(--ui-scroll) * 0.001)));
+		border-top: none;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -68,18 +73,18 @@
 		align-items: center;
 		flex-direction: column;
 		padding-inline: var(--ui-gutter);
-		max-width: var(--ui-width-main);
+		max-width: var(--ui-width-md);
 		width: 100%;
 		gap: 1rem;
 	}
 
 	h1 {
 		width: 100%;
-		max-width: var(--ui-width-p);
 		font-size: var(--ui-text-2xl);
 		font-weight: 600;
+		max-width: var(--ui-width-p);
 		text-align: center;
-		margin-bottom: 5rem;
+		margin-bottom: 4rem;
 	}
 
 	section {
@@ -90,9 +95,8 @@
 		opacity: 0.2;
 	}
 
-	form :global(.title) {
+	fieldset {
 		width: 100%;
-		max-width: var(--ui-width-main);
-		font-size: 1.5rem;
+		font-size: 1.25rem;
 	}
 </style>

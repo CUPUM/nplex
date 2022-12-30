@@ -19,6 +19,7 @@
 	export let name: string | undefined = undefined;
 	export let as: keyof HTMLElementTagNameMap | undefined = undefined;
 	export let compact: boolean | undefined = undefined;
+	export let round: boolean | undefined = undefined;
 	export let style: string | undefined = undefined;
 	let className: string = '';
 	export { className as class };
@@ -33,12 +34,13 @@
 </script>
 
 <svelte:element
-	this={as ? as : value ? 'label' : 'div'}
-	class="token nest {variant}"
+	this={as ? as : value !== undefined ? 'label' : 'div'}
+	class="token {variant}"
 	class:active
 	class:warning
 	class:compact
 	class:checked
+	class:round
 	{disabled}
 	on:click
 	on:focus
@@ -62,7 +64,7 @@
 		</div>
 	{/if}
 	<div class="main">
-		<slot />
+		<slot {checked} />
 	</div>
 	{#if $$slots.trailing}
 		<div class="trailing">
@@ -73,57 +75,21 @@
 
 <style lang="scss">
 	:where(.token) {
-		--height: calc(var(--ui-height) - 2 * var(--ui-inset-sum));
-		--inset: var(--ui-inset);
-		--pad-inline: calc(var(--ui-padding-inline) / 3);
-		--gutter-inline: calc(2 * var(--ui-padding-inline) / 3);
+		--height: calc(var(--ui-height) - 2 * var(--ui-inset));
+		--radius: calc(var(--ui-radius-md) - var(--ui-inset));
 		position: relative;
-		cursor: pointer;
-		display: grid;
-		grid-template-columns:
-			[full-start leading-start]
-			minmax(var(--pad-inline), auto)
-			[leading-end main-start]
-			1fr
-			[main-end trailing-start]
-			minmax(var(--pad-inline), auto)
-			[trailing-end full-end];
-		grid-template-rows: minmax(var(--height), auto);
-		font-weight: 300;
-		flex: none;
-		flex-direction: row;
+		display: inline-flex;
+		height: var(--height);
 		align-items: center;
-		justify-content: space-between;
-		border: none;
-		padding: var(--inset);
-		margin: 0;
-		border-radius: 999px;
-	}
-	.leading {
-		grid-column: leading;
-	}
-	.trailing {
-		grid-column: trailing;
-	}
-	.main {
-		grid-column: main;
-		padding-inline: var(--gutter-inline);
-	}
-	.leading,
-	.trailing,
-	.main {
-		padding-bottom: calc(0.5em - 0.5ex);
+		border-radius: var(--radius);
+		background: wheat;
 	}
 
-	.default {
-		color: col(fg, 100);
-		border: 1px solid currentColor;
-		&:hover {
-			background: col(fg, 100, 0.1);
-		}
+	.round {
+		border-radius: 99px;
 	}
 
-	.checked {
-		color: red;
+	.main {
+		padding-inline: var(--ui-pad-x);
 	}
 </style>

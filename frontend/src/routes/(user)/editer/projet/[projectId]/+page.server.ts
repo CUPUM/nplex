@@ -4,10 +4,11 @@ import { pgarr } from '$utils/format';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
+import { titleSchema } from '../+page.server';
 
 const updateSchema = zfd
 	.formData({
-		title: zfd.text(),
+		title: titleSchema,
 		type_id: zfd.numeric(z.number().optional()),
 		cost_range: zfd.json(z.tuple([z.number().nonnegative(), z.number().nonnegative()])),
 		description: zfd.text(z.string().optional()),
@@ -22,6 +23,26 @@ const updateSchema = zfd
 	});
 
 export const actions: Actions = {
+	title: async (event) => {
+		if (!event.params.projectId) return;
+		const formData = await event.request.formData();
+		const parsed = zfd
+			.formData({
+				title: titleSchema,
+			})
+			.safeParse(formData);
+		if (!parsed.success) {
+			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
+		}
+		const db = await getDb(event);
+		const titleUpdate = await db
+			.from('projects')
+			.update({ title: parsed.data.title })
+			.eq('id', event.params.projectId);
+		if (titleUpdate.error) {
+			return fail(STATUS_CODES.InternalServerError, titleUpdate.error);
+		}
+	},
 	update: async (event) => {
 		if (!event.params.projectId) {
 			return;

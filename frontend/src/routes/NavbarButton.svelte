@@ -19,7 +19,7 @@
 
 <svelte:element
 	this={typeof href === 'string' ? 'a' : 'button'}
-	class="navbar-button {ICON_CLASSES.HOVER} {active || current ? ICON_CLASSES.HOLD : ''}"
+	class="navbar-button {ICON_CLASSES.HOVER} {active ? ICON_CLASSES.HOLD : ''}"
 	class:cta
 	class:current
 	class:active
@@ -53,7 +53,7 @@
 		letter-spacing: 0.02em;
 		line-height: 1;
 		color: col(fg, 700);
-		background: col(bg, 100, 0.8);
+		background: col(bg, 100, 0.9);
 		outline: 0px dashed transparent;
 		outline-offset: 0px;
 		transition: all 0.1s, box-shadow 0.25s ease-out;

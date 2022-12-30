@@ -3,7 +3,7 @@ import { COOKIES } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
 import type { AuthSession } from '@supabase/supabase-js';
 import { json } from '@sveltejs/kit';
-import { clearSession, SERVER_COOKIE_OPTIONS, tokenData } from '../common';
+import { clearSession, setSessionCookie, tokenData } from '../common';
 import type { RequestHandler } from './$types';
 
 /**
@@ -55,19 +55,12 @@ export const POST: RequestHandler = async (event) => {
 				: profileRes.data.role.role,
 		},
 	};
-	event.cookies.set(
-		COOKIES.SESSION,
-		JSON.stringify({
-			...tokenData(pageDataSession),
-			user: {
-				id: pageDataSession.user.id,
-				role: pageDataSession.user.role,
-			},
-		} satisfies App.Locals['session']),
-		{
-			...SERVER_COOKIE_OPTIONS,
-			maxAge: authSession.expires_in,
-		}
-	);
+	setSessionCookie(event, {
+		...tokenData(pageDataSession),
+		user: {
+			id: pageDataSession.user.id,
+			role: pageDataSession.user.role,
+		},
+	});
 	return json(pageDataSession);
 };

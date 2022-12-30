@@ -34,6 +34,7 @@
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	aria-roledescription="icon-{name}"
+	role="presentation"
 	preserveAspectRatio="xMidYMid"
 	viewBox={icon.viewBox}
 	class={className}

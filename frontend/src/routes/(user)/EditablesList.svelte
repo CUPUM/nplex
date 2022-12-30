@@ -106,7 +106,11 @@
 		flex-direction: row;
 		gap: 1rem;
 		overflow-x: scroll;
-		padding: 0 2rem;
+		padding-block: 0;
+		padding-inline: max(
+			var(--ui-gutter),
+			calc(50vw + var(--ui-gutter) - 0.5 * var(--ui-width-main))
+		);
 	}
 
 	li {

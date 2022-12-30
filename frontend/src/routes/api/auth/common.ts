@@ -1,5 +1,6 @@
 import { dev } from '$app/environment';
 import { COOKIES } from '$utils/enums';
+import type { AuthSession } from '@supabase/supabase-js';
 import { json, type RequestEvent } from '@sveltejs/kit';
 
 type CookieOptions = Parameters<RequestEvent['cookies']['set']>[2];
@@ -10,6 +11,20 @@ export const SERVER_COOKIE_OPTIONS: CookieOptions = {
 	sameSite: 'strict',
 	secure: !dev,
 };
+
+export function setAuthCookie(event: RequestEvent, session: AuthSession) {
+	event.cookies.set(COOKIES.AUTH, JSON.stringify(session), {
+		...SERVER_COOKIE_OPTIONS,
+		maxAge: session.expires_in,
+	});
+}
+
+export function setSessionCookie(event: RequestEvent, session: NonNullable<App.Locals['session']>) {
+	event.cookies.set(COOKIES.SESSION, JSON.stringify(session), {
+		...SERVER_COOKIE_OPTIONS,
+		maxAge: session.expires_in,
+	});
+}
 
 export function clearSession(event: RequestEvent) {
 	event.cookies.delete(COOKIES.SESSION, { path: '/' });

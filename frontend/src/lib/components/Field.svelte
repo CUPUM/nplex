@@ -23,9 +23,9 @@
 	import Ripple from './Ripple.svelte';
 
 	export let id: string | undefined = undefined;
-	export let value: string | null | undefined = null;
-	export let prefix: string | null | undefined = null;
-	export let suffix: string | null | undefined = null;
+	export let value: string | null | undefined = '';
+	export let prefix: string | null | undefined = '';
+	export let suffix: string | null | undefined = '';
 	export let name: string | undefined = undefined;
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
 	export let variant: 'default' | 'outlined' | 'cta' = 'default';
@@ -398,8 +398,6 @@
 					top: 0.35em;
 				}
 			}
-		}
-		&.has-value {
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {

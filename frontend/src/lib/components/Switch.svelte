@@ -28,7 +28,7 @@
 
 	export let name: string | undefined = undefined;
 	export let variant: Variant = 'default';
-	export let orientation: 'column' | 'row' = 'row';
+	export let direction: 'column' | 'row' = 'row';
 	export let compact: boolean | undefined = undefined;
 	export let group: any = undefined;
 	export let required: boolean | undefined = undefined;
@@ -83,7 +83,7 @@
 <svelte:element
 	this={as ? as : 'fieldset'}
 	bind:this={switchRef}
-	class="switch {variant} {orientation} {className}"
+	class="switch {variant} {direction} {className}"
 	class:compact
 	{style}
 	{required}

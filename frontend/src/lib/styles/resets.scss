@@ -30,10 +30,13 @@
 }
 
 :where(input),
+:where(textarea),
 :where(form),
 :where(fieldset) {
+	font-size: inherit;
 	font-family: inherit;
 	min-width: unset;
+	color: inherit;
 }
 
 :where(button) {
@@ -42,6 +45,8 @@
 	font-size: inherit;
 	background: unset;
 	border: unset;
+	padding: unset;
+	color: inherit;
 }
 
 :where(h1),
@@ -105,12 +110,17 @@
 	box-sizing: border-box;
 }
 
-::-ms-clear,
-::-ms-reveal,
-::-webkit-search-decoration,
-::-webkit-search-cancel-button,
-::-webkit-search-results-button,
-::-webkit-search-results-decoration {
+/* clears the 'X' from Internet Explorer */
+input[type='search']::-ms-clear,
+input[type='search']::-ms-reveal {
+	display: none;
+	width: 0;
+	height: 0;
+}
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
 	display: none;
 }
 

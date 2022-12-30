@@ -1,44 +1,68 @@
+<!--
+	@component
+	# Range Thumb
+	Range input thumb control.
+	
+-->
+<script lang="ts" context="module">
+	export const rangeThumbSpringOptions: Parameters<typeof spring<number>>[1] = {
+		stiffness: 0.25,
+		damping: 0.75,
+	};
+</script>
+
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { createEventDispatcher, onDestroy } from 'svelte';
+	import { spring } from 'svelte/motion';
 	import { getRangeContext } from './Range.svelte';
 
+	const {
+		min: rangeMin,
+		max: rangeMax,
+		step,
+		snap,
+		direction,
+		pc,
+		map,
+		disabled: rangeDisabled,
+	} = getRangeContext();
+
 	export let value: number;
+	export let min: number = $rangeMin;
+	export let max: number = $rangeMax;
 	export let name: string | undefined = undefined;
 	export let id: string | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
 
-	const { min, max, step, direction, pc, px, disabled: rangeDisabled } = getRangeContext();
 	const dispatch = createEventDispatcher<'dragstart' | 'dragend' | 'drag'>();
+	const relvalue = spring(pc(value), rangeThumbSpringOptions);
 
 	let active = false;
 	let thumbRef: HTMLElement;
-	let prevx: number | undefined;
-	let prevy: number | undefined;
-	$: dist = pc(value);
+	let startvalue: number | undefined;
+	let startx: number | undefined;
+	let starty: number | undefined;
+	$: relvalue.set(pc(value));
 
 	function drag(e: PointerEvent) {
-		if (!thumbRef || prevx === undefined || prevy === undefined) {
+		if (!thumbRef || startx === undefined || starty === undefined || startvalue === undefined) {
 			return;
 		}
 		let delta = 0;
 		if (direction === 'row') {
-			delta = e.pageX - prevx;
+			delta = e.pageX - startx;
 		} else {
-			delta = e.pageY - prevy;
+			delta = e.pageY - starty;
 		}
-		value = Math.max(Math.min(value + px(delta), $max), $min);
-		prevx = e.pageX;
-		prevy = e.pageY;
+		value = snap(Math.max(Math.min(startvalue + map(delta), max), min));
 	}
 
 	function dragstart(e: PointerEvent) {
-		if ($rangeDisabled || disabled) {
-			return;
-		}
 		active = true;
-		prevx = e.pageX;
-		prevy = e.pageY;
+		startvalue = value;
+		startx = e.pageX;
+		starty = e.pageY;
 		if (browser) {
 			document.addEventListener('pointerup', dragend, { once: true });
 			document.addEventListener('pointermove', drag);
@@ -47,8 +71,9 @@
 
 	function dragend(e: PointerEvent) {
 		active = false;
-		prevx = undefined;
-		prevy = undefined;
+		startvalue = undefined;
+		startx = undefined;
+		starty = undefined;
 		document.removeEventListener('pointermove', drag);
 	}
 
@@ -71,16 +96,22 @@
 	{name}
 	{id}
 	step={$step}
-	min={$min}
-	max={$max}
+	{min}
+	{max}
 />
 <button
 	bind:this={thumbRef}
-	style:--dist="{dist}%"
+	style:--relvalue="{$relvalue}%"
 	on:pointerdown={dragstart}
 	disabled={$rangeDisabled ?? disabled}
 	class:active
-/>
+>
+	{#if $$slots.default}
+		<label>
+			<slot {value} />
+		</label>
+	{/if}
+</button>
 
 <style lang="scss">
 	button {
@@ -93,13 +124,17 @@
 		user-select: none;
 		outline: none;
 
+		&:disabled {
+			pointer-events: none;
+		}
+
 		:global(.row .inner) > & {
-			left: var(--dist);
+			left: var(--relvalue);
 			transform: translateX(-50%);
 		}
 
 		:global(.column .inner) > & {
-			top: var(--dist);
+			top: var(--relvalue);
 			transform: translateY(-50%);
 		}
 
@@ -119,7 +154,7 @@
 
 	.active,
 	button:focus-visible {
-		z-index: 1;
+		z-index: 10;
 		background: red;
 
 		&::before {

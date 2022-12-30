@@ -8,7 +8,8 @@
 		direction: 'row' | 'column';
 		disabled: Readable<boolean | undefined>;
 		pc: (value: number) => number;
-		px: (value: number) => number;
+		map: (value: number) => number;
+		snap: (value: number) => number;
 	}
 
 	export function getRangeContext() {
@@ -20,21 +21,21 @@
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Readable } from 'svelte/store';
 
-	export let min: string | number;
-	export let max: string | number;
-	export let step: string | number;
+	export let min: number;
+	export let max: number;
+	export let step: number;
 	export let direction: RangeContext['direction'] = 'row';
 	export let disabled: boolean | undefined = undefined;
 	export let style: string | undefined = undefined;
 	let className: string = '';
 	export { className as class };
 
-	const _min = writable(+min);
-	$: _min.set(+min);
-	const _max = writable(+max);
-	$: _max.set(+max);
-	const _step = writable(+step);
-	$: _step.set(+step);
+	const _min = writable(min);
+	$: _min.set(min);
+	const _max = writable(max);
+	$: _max.set(max);
+	const _step = writable(step);
+	$: _step.set(step);
 	const _disabled = writable<boolean | undefined>(disabled);
 	$: _disabled.set(disabled);
 
@@ -45,16 +46,24 @@
 	 * Translating a domain-bound absolute value to a percentage distance.
 	 */
 	function pc(input: number) {
-		const mapped = Math.max((input - +min) / +max - +min) * 100;
-		return Math.max(Math.min(mapped, +max), +min);
+		const mapped = Math.max((input - min) / max - min) * 100;
+		return Math.max(Math.min(mapped, max), min);
 	}
 
 	/**
 	 * Translating a domainless (viewport) pixel value to a bound percentage.
 	 */
-	function px(input: number) {
+	function map(input: number) {
 		const domain = direction === 'row' ? trackw : trackh;
-		return (input * (+max - +min)) / domain;
+		return (input / domain) * (max - min);
+	}
+
+	/**
+	 * Snap a given value according to the range step-size. Snapped values are calculated from the
+	 * range's min.
+	 */
+	function snap(input: number) {
+		return Math.round((input - min) / step) * step + min;
 	}
 
 	setContext<RangeContext>(CTX_KEY, {
@@ -64,11 +73,12 @@
 		direction,
 		disabled: { subscribe: _disabled.subscribe },
 		pc,
-		px,
+		map,
+		snap,
 	});
 </script>
 
-<fieldset class="range {direction} {className}" {style}>
+<fieldset class="range {direction} {className}" {style} style:--min={min} style:--max={max}>
 	<div class="inner">
 		<div class="track" bind:clientWidth={trackw} bind:clientHeight={trackh} />
 		<slot />
@@ -77,9 +87,10 @@
 
 <style lang="scss">
 	:where(.range) {
+		--domain: calc(var(--max) - var(--min));
 		--thumb-size: 1em;
 		--thumb-radius: calc(var(--thumb-size) * 0.5);
-		--track-thickness: max(2px, 0.1em);
+		--track-thickness: max(3px, 0.3em);
 		display: flex;
 		position: relative;
 		align-items: center;
@@ -92,7 +103,7 @@
 
 		.inner {
 			width: 100%;
-			height: var(--ui-height);
+			// height: var(--ui-height);
 		}
 	}
 
@@ -101,7 +112,7 @@
 
 		.inner {
 			height: 100%;
-			width: var(--ui-height);
+			// width: var(--ui-height);
 		}
 	}
 

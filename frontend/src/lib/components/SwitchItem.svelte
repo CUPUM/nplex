@@ -83,8 +83,10 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		justify-content: inherit;
 		padding: 0 var(--ui-pad-x);
 		padding-bottom: calc(0.5em - 0.5ex);
+		white-space: nowrap;
 	}
 	.current .slot {
 		animation: press 0.25s ease-in-out;

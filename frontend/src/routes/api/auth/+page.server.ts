@@ -1,18 +1,13 @@
 import { queryMessage } from '$routes/MessagesOutlet.svelte';
 import { getDb } from '$utils/database';
 import { COOKIES, SEARCH_PARAMS } from '$utils/enums';
-import type { AuthSession } from '@supabase/supabase-js';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { Actions, RequestEvent } from './$types';
-import { SERVER_COOKIE_OPTIONS } from './common';
+import { setAuthCookie } from './common';
 
-function setAuth(event: RequestEvent, session: AuthSession) {
-	event.cookies.set(COOKIES.AUTH, JSON.stringify(session), {
-		...SERVER_COOKIE_OPTIONS,
-		maxAge: session.expires_in,
-	});
+function re(event: RequestEvent) {
 	// To do: replace referer by a redirect search param.
 	const re = event.request.headers.get('referer');
 	if (re) {
@@ -55,7 +50,8 @@ export const actions: Actions = {
 			return fail(500, { message: "Erreur d'authentification", ...signupRes.error });
 		}
 		// Modify below if email confirmation required.
-		setAuth(event, signupRes.data.session);
+		setAuthCookie(event, signupRes.data.session);
+		re(event);
 	},
 	/**
 	 * Validate inputs permissively (with fewer constraints than on signup), then against database
@@ -90,7 +86,8 @@ export const actions: Actions = {
 			}).toString();
 			throw redirect(300, to);
 		}
-		setAuth(event, signinRes.data.session);
+		setAuthCookie(event, signinRes.data.session);
+		re(event);
 	},
 	/**
 	 * Sign out the user based on auth cookie data. (Signing out at the supabase-auth level should

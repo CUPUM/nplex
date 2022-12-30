@@ -216,6 +216,7 @@
 		justify-content: center;
 		border-radius: var(--ui-radius-md);
 		backdrop-filter: blur(12px);
+		background: col(fg, 100, 0.1);
 		box-shadow: 0 0 0 2px col(fg, 100, 0.1);
 
 		// :global([data-group='category']) {

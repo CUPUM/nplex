@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import Field from '$components/Field.svelte';
+	import FieldIcon from '$components/FieldIcon.svelte';
+	import FieldReset from '$components/FieldReset.svelte';
 	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import Image from '$components/Image.svelte';
 	import { projectcolors, publicurl } from '$utils/database';
@@ -13,15 +17,20 @@
 </script>
 
 <article bind:this={scrollTarget}>
-	<a class="heading {ICON_CLASSES.HOVER}" href={EXPLORE_ROUTES.projects.pathname}>
-		<h2>{heading}</h2>
-		<div class="icon">
-			<Icon name="arrow-right" strokeWidth="4" />
-		</div>
-	</a>
-	<form action="">
-		<input type="search" name="" id="" />
-	</form>
+	<header>
+		<a class="heading {ICON_CLASSES.HOVER}" href={EXPLORE_ROUTES.projects.pathname}>
+			<h2>{heading}</h2>
+			<div class="icon">
+				<Icon name="arrow-right" strokeWidth="4" />
+			</div>
+		</a>
+		<form method="POST" use:enhance action="?/projects">
+			<Field type="search" placeholder="Chercher des projets" variant="outlined">
+				<FieldIcon name="search" slot="leading" />
+				<FieldReset slot="trailing" />
+			</Field>
+		</form>
+	</header>
 	<ul>
 		{#each projects as p (p.id)}
 			<li>
@@ -49,7 +58,22 @@
 		flex-direction: column;
 		align-items: center;
 		padding-top: var(--ui-nav-px);
-		// scroll-snap-align: start;
+	}
+
+	header {
+		width: 100%;
+		max-width: var(--ui-width-main);
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--ui-gutter);
+		padding-inline: var(--ui-gutter);
+		margin-top: var(--ui-gutter);
+	}
+
+	form {
+		width: 400px;
+		max-width: 100%;
 	}
 
 	.heading {
@@ -58,12 +82,12 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: 0.5em;
-		padding: var(--ui-gutter);
 		position: relative;
 		width: 100%;
 		max-width: --ui-block;
 		font-size: var(--ui-text-xl);
 		font-weight: 500;
+		transition: color 0.25s ease-out;
 
 		.icon {
 			opacity: 0;
@@ -73,6 +97,7 @@
 		}
 
 		&:hover {
+			color: col(primary, 500);
 			.icon {
 				transform: translateX(0);
 				opacity: 1;
@@ -85,11 +110,15 @@
 		width: 100%;
 		display: flex;
 		flex-direction: row;
-		gap: var(--ui-gutter);
+		gap: 0;
 		height: 500px;
 		overflow-x: scroll;
 		justify-content: stretch;
-		padding-inline: var(--ui-gutter);
+		padding-block: var(--ui-gutter);
+		padding-inline: max(
+			var(--ui-gutter),
+			calc(50vw + var(--ui-gutter) - 0.5 * var(--ui-width-main))
+		);
 	}
 
 	li {

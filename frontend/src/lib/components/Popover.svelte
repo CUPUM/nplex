@@ -6,7 +6,6 @@
 
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
-
 	import { afterNavigate } from '$app/navigation';
 	import { cssSize } from '$utils/css';
 	import { tick, type ComponentProps } from 'svelte';

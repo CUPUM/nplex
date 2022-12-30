@@ -1,7 +1,7 @@
 import { COOKIES, STATUS_CODES } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
 import { z } from 'zod';
-import { SERVER_COOKIE_OPTIONS, tokenData } from '../common';
+import { setSessionCookie, tokenData } from '../common';
 import type { RequestHandler } from './$types';
 
 const tokensSchema = z.object({
@@ -22,25 +22,18 @@ export const POST: RequestHandler = async (event) => {
 	const parsedCookie = tokensSchema.passthrough().safeParse(cookie);
 	const refresh = await event.request.json();
 	const parsedRefresh = tokensSchema.safeParse(refresh);
-	console.log('Auth refresh endpoint', cookie, refresh);
 	if (!parsedRefresh.success || !parsedCookie.success) {
-		event.cookies.delete(COOKIES.SESSION);
+		event.cookies.delete(COOKIES.SESSION, { path: '/' });
 		return new Response(null, {
 			status: STATUS_CODES.Ok,
 			statusText: 'La session est invalide.',
 		});
 		// throw error(STATUS_CODES.InternalServerError, 'Problem refreshing tokens.');
 	}
-	event.cookies.set(
-		COOKIES.SESSION,
-		JSON.stringify({
-			...parsedCookie.data,
-			...tokenData(parsedRefresh.data),
-		} satisfies Partial<App.Locals['session']>),
-		{
-			...SERVER_COOKIE_OPTIONS,
-			maxAge: parsedRefresh.data.expires_in,
-		}
-	);
+
+	setSessionCookie(event, {
+		...(parsedCookie.data as NonNullable<App.Locals['session']>),
+		...tokenData(parsedRefresh.data),
+	});
 	return new Response(null, { status: STATUS_CODES.Ok });
 };
