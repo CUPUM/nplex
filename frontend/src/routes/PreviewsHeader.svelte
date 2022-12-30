@@ -10,6 +10,7 @@
 
 	export let href: string;
 	export let action: `?/${string}`;
+	export let placeholder: string;
 </script>
 
 <header>
@@ -20,7 +21,7 @@
 		</div>
 	</a>
 	<form method="POST" use:enhance {action}>
-		<Field type="search" placeholder="Chercher des projets" variant="outlined">
+		<Field type="search" {placeholder} variant="outlined">
 			<FieldIcon name="search" slot="leading" />
 			<FieldReset slot="trailing" />
 		</Field>

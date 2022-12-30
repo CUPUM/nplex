@@ -7,7 +7,11 @@
 </script>
 
 <article>
-	<PreviewsHeader href={EXPLORE_ROUTES.organisations.pathname} action="?/organisations">
+	<PreviewsHeader
+		href={EXPLORE_ROUTES.organisations.pathname}
+		action="?/organisations"
+		placeholder="Chercher des projets"
+	>
 		Explorer les bureaux et organismes
 	</PreviewsHeader>
 	<ul>

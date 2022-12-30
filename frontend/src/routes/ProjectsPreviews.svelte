@@ -11,7 +11,11 @@
 </script>
 
 <article bind:this={scrollTarget}>
-	<PreviewsHeader href={EXPLORE_ROUTES.projects.pathname} action="?/projects">
+	<PreviewsHeader
+		href={EXPLORE_ROUTES.projects.pathname}
+		action="?/projects"
+		placeholder="Chercher des projets"
+	>
 		Explorer les projets
 	</PreviewsHeader>
 	<ul>

@@ -7,7 +7,11 @@
 </script>
 
 <article>
-	<PreviewsHeader href={EXPLORE_ROUTES.actors.pathname} action="?/actors">
+	<PreviewsHeader
+		href={EXPLORE_ROUTES.actors.pathname}
+		action="?/actors"
+		placeholder="Chercher des projets"
+	>
 		Explorer les profils de professionnels
 	</PreviewsHeader>
 	<ul>
