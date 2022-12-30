@@ -4,7 +4,7 @@ import { pgarr } from '$utils/format';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import { titleSchema } from '../+page.server';
+import { titleSchema } from '../common';
 
 const updateSchema = zfd
 	.formData({

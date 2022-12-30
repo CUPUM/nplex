@@ -10,6 +10,10 @@ const config: UserConfig = {
 		port: process.env.PORT ? +process.env.PORT : 3000,
 	},
 	plugins: [icons(), themes(THEMES), sveltekit()],
+	ssr: {
+		// https://github.com/airjp73/remix-validated-form/issues/141
+		noExternal: ['zod-form-data'],
+	},
 };
 
 export default config;
