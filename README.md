@@ -18,8 +18,6 @@ This project's stack is organized throughout packages respective of each service
 - __The [backend](/backend)__
   - [Supabase](https://supabase.io/) for the PostgreSQL database and authentication services
     - [PostGIS](https://postgis.net/) extension for the GIS related types and functions
-- __The [web-facing server and reverse-proxy](/webserver)__
-  - Nginx
 
 ### Service packages
 

@@ -24,6 +24,7 @@
 	"license": "MIT",
 	"packageManager": "pnpm@6.25.0",
 	"scripts": {
+		"serve": "node ./build/index.js",
 		"gen-db-types": "cd ../backend && supabase gen types typescript --local > ../frontend/src/lib/types/database.ts",
 		"gen-remote-db-types": ". ../.env && cd ../backend && supabase gen types typescript --db-url ${SUPABASE_DB_URL} > ../frontend/src/lib/types/database.ts",
 		"dev": "vite dev",
