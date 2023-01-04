@@ -3,7 +3,7 @@
 	import { browser } from '$app/environment';
 	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS, LOGO_VIEWBOX } from '$components/Logo2.svelte';
-	import { THEME_CLASSES, THEME_NAMES } from '$utils/themes';
+	import { THEME_NAMES } from '$utils/themes';
 	import { onDestroy } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { navbarTheme } from './Navbar.svelte';
@@ -14,7 +14,7 @@
 
 	function enter() {
 		entered = true;
-		navbarTheme.set(THEME_NAMES.DARK);
+		navbarTheme.set(THEME_NAMES.dark);
 	}
 
 	function leave() {
@@ -46,7 +46,7 @@
 	use:intersection={{ rootMargin: '-30px 0px 0px 0px' }}
 	on:enter={enter}
 	on:leave={leave}
-	class={THEME_CLASSES.DARK}
+	data-theme={THEME_NAMES.dark}
 >
 	<svg viewBox={LOGO_VIEWBOX} on:click={consult} on:keydown={keydown}>
 		<g>

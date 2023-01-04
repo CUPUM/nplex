@@ -1,8 +1,9 @@
 // Here imports cannot use path alias as the module is imported in vite.config
-import { themeClasses, themeNames, type Theme } from '../../plugins/themes/utils';
+import type { ValueOf } from 'ts-essentials';
+import { themeNames, type Theme } from '../../plugins/themes/utils';
 
 export const THEMES = {
-	LIGHT: {
+	light: {
 		bg: {
 			'000': 'hsl(54, 20%, 100%)',
 			100: 'hsl(55, 20%, 97%)',
@@ -48,7 +49,7 @@ export const THEMES = {
 			900: 'hsl(5, 70%, 46%)',
 		},
 	},
-	DARK: {
+	dark: {
 		bg: {
 			'000': 'hsl(204, 20%, 0%)',
 			100: 'hsl(203, 19%, 8%)',
@@ -96,6 +97,6 @@ export const THEMES = {
 	},
 } as const satisfies Record<string, Theme>;
 
-export const THEME_CLASSES = themeClasses(THEMES);
-
 export const THEME_NAMES = themeNames(THEMES);
+
+export type ThemeName = ValueOf<typeof THEME_NAMES>;

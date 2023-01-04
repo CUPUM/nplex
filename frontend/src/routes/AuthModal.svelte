@@ -108,7 +108,7 @@
 	import Icon from '$components/Icon.svelte';
 	import Logo from '$components/Logo.svelte';
 	import ProviderLogo, { providers } from '$components/ProviderLogo.svelte';
-	import { THEME_CLASSES } from '$utils/themes';
+	import { THEME_NAMES } from '$utils/themes';
 	import { linear } from 'svelte/easing';
 	import { fade, scale, slide } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
@@ -125,11 +125,12 @@
 
 {#if $authModal}
 	<div
-		class="bg {THEME_CLASSES.LIGHT}"
+		class="bg"
 		aria-hidden="true"
+		data-theme={THEME_NAMES.light}
 		transition:fade={{ duration: 150, easing: linear }}
 	/>
-	<dialog class={THEME_CLASSES.LIGHT}>
+	<dialog data-theme={THEME_NAMES.light}>
 		<form
 			class="sign"
 			transition:scale={{ start: 0.95 }}

@@ -4,7 +4,7 @@
 
  -->
 <script lang="ts">
-	import { THEME_CLASSES } from '$utils/themes';
+	import { THEME_NAMES } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -59,7 +59,8 @@
 	<slot slot="control" {open} />
 	{#if open}
 		<div
-			class="tooltip {THEME_CLASSES.DARK} {place} {align}"
+			class="tooltip {place} {align}"
+			data-theme={THEME_NAMES.dark}
 			in:scale={{ start: 0.5, easing: expoOut, duration: 100 }}
 			out:scale={{ start: 0.75, easing: expoIn, duration: 75 }}
 		>

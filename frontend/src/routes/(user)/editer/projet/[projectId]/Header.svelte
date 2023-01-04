@@ -1,10 +1,7 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { debounce } from '$utils/function';
-	import { THEME_CLASSES } from '$utils/themes';
+	import { THEME_NAMES } from '$utils/themes';
 
 	import type { PageData } from './$types';
 
@@ -15,7 +12,7 @@
 	}, 500);
 </script>
 
-<header class={THEME_CLASSES.DARK}>
+<header data-theme={THEME_NAMES.dark}>
 	<hgroup>
 		<h1>Éditeur de projet</h1>
 	</hgroup>
@@ -55,6 +52,7 @@
 		padding: 0;
 		font-size: var(--ui-text-2xl);
 		color: col(fg, 100);
+		margin-top: var(--ui-nav-px);
 	}
 
 	hr {

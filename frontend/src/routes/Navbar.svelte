@@ -5,7 +5,7 @@
 -->
 <script lang="ts" context="module">
 	export const navbarTheme = (function () {
-		const { subscribe, set } = writable<keyof typeof THEME_CLASSES | null>(null);
+		const { subscribe, set } = writable<ThemeName | null>(null);
 		return {
 			subscribe,
 			set,
@@ -23,14 +23,14 @@
 	import Logo from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
 	import { EDITOR_BASE_ROUTE, EXPLORE_ROUTES, MAIN_ROUTES, USER_BASE_ROUTE } from '$utils/routes';
-	import { THEME_CLASSES } from '$utils/themes';
+	import { THEME_NAMES, type ThemeName } from '$utils/themes';
 	import { writable } from 'svelte/store';
 	import { authModal } from './AuthModal.svelte';
 	import NavbarButton from './NavbarButton.svelte';
 	import NavbarEditorMenu from './NavbarEditorMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
 
-	export let navbarHeight;
+	// export let navbarHeight;
 
 	let open = false;
 	let rootsegment: string;
@@ -51,7 +51,7 @@
 	// }
 </script>
 
-<header class={$navbarTheme ? THEME_CLASSES[$navbarTheme] : ''} bind:clientHeight={navbarHeight}>
+<header data-theme={$navbarTheme ? THEME_NAMES[$navbarTheme] : undefined}>
 	<menu class="toggle ">
 		<NavbarButton on:pointerdown={toggle} round>
 			<Icon name={open ? 'cross' : 'arrow-down-right'} strokeWidth="3" />
@@ -118,7 +118,7 @@
 <style lang="scss">
 	header {
 		pointer-events: none;
-		position: fixed;
+		position: sticky;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

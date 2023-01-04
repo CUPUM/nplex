@@ -37,30 +37,30 @@ export function vars(
 		.join('; ');
 }
 
-/**
- * Get or compose a theme's class name with the plugin's established format.
- */
-export function themeClass<T extends string>(name: T) {
-	return `ui-theme-${name.toLowerCase() as Lowercase<T>}` as const;
-}
+// /**
+//  * Get or compose a theme's class name with the plugin's established format.
+//  */
+// export function themeClass<T extends string>(name: T) {
+// 	return `ui-theme-${name.toLowerCase() as Lowercase<T>}` as const;
+// }
 
-/**
- * Pattern for matching theme classes in a className attribute.
- */
-export const themeClassPattern = new RegExp(/\bui-theme-.+?\b/, 'gi');
+// /**
+//  * Pattern for matching theme classes in a className attribute.
+//  */
+// export const themeClassPattern = new RegExp(/\bui-theme-.+?\b/, 'gi');
 
-/**
- * Create an enum-like dictionary to retrieve theme class names. The themes argument must be an `as
- * const` object.
- */
-export function themeClasses<T extends Record<string, Theme>>(themes: T) {
-	const names = Object.keys(themes);
-	const classes = names.map((t) => [t, themeClass(t)]);
-	return Object.fromEntries(classes) as Record<
-		Extract<keyof T, string>,
-		ReturnType<typeof themeClass<Extract<keyof T, string>>>
-	>;
-}
+// /**
+//  * Create an enum-like dictionary to retrieve theme class names. The themes argument must be an `as
+//  * const` object.
+//  */
+// export function themeClasses<T extends Record<string, Theme>>(themes: T) {
+// 	const names = Object.keys(themes);
+// 	const classes = names.map((t) => [t, themeClass(t)]);
+// 	return Object.fromEntries(classes) as Record<
+// 		Extract<keyof T, string>,
+// 		ReturnType<typeof themeClass<Extract<keyof T, string>>>
+// 	>;
+// }
 
 /**
  * Create an enum-like object to retrieve theme names (i.e. themes' record keys). The themes
@@ -68,8 +68,5 @@ export function themeClasses<T extends Record<string, Theme>>(themes: T) {
  */
 export function themeNames<T extends Record<string, Theme>>(themes: T) {
 	const names = Object.keys(themes);
-	return Object.fromEntries(names.map((n) => [n, n])) as Record<
-		Extract<keyof T, string>,
-		Extract<keyof T, string>
-	>;
+	return Object.fromEntries(names.map(name => [name, name])) as {[K in keyof T]: K}
 }

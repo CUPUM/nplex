@@ -57,7 +57,7 @@
 	style:--ui-scroll-px="{scrollY}px"
 	style:--ui-nav-px="{navbarHeight}px"
 >
-	<Navbar bind:navbarHeight />
+	<Navbar />
 	<main>
 		<slot />
 	</main>
@@ -74,6 +74,7 @@
 	.container {
 		position: relative;
 		transform-origin: 50vw calc(var(--ui-scroll-px) + 50vh);
+		transform: scale(1);
 		transition: transform 0.25s var(--ui-ease-out);
 		&.unmounted {
 			transform: scale(1.04);

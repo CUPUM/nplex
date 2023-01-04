@@ -54,11 +54,11 @@
 			paint: {
 				'circle-pitch-alignment': 'map',
 				'circle-pitch-scale': 'map',
-				'circle-color': THEMES.LIGHT.primary[500],
+				'circle-color': THEMES.light.primary[500],
 				'circle-opacity': 0.8,
 				// 'circle-blur': 0.2,
 				'circle-stroke-width': 5,
-				'circle-stroke-color': THEMES.LIGHT.primary[700],
+				'circle-stroke-color': THEMES.light.primary[700],
 				'circle-stroke-opacity': 0.25,
 				'circle-radius': [
 					'interpolate',

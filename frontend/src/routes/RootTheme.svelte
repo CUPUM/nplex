@@ -7,22 +7,19 @@
  -->
 <script lang="ts" context="module">
 	import { browser } from '$app/environment';
-	import { themeClassPattern } from '$plugins/themes/utils';
 	import { COOKIES } from '$utils/enums';
-	import { THEME_CLASSES } from '$utils/themes';
+	import { THEME_NAMES, type ThemeName } from '$utils/themes';
 	import type { RequestEvent } from '@sveltejs/kit';
 	import jscookie from 'js-cookie';
 	import { writable } from 'svelte/store';
 
-	type ThemeName = keyof typeof THEME_CLASSES;
-
-	const COOKIE_LIFETIME = 60 * 60 * 24 * 365;
-	const ROOT = browser ? (document.querySelector(':root') as HTMLElement) : undefined;
-
 	/**
 	 * Use this theme to initialize the first SSR result inside hooks.
 	 */
-	export const DEFAULT_THEME: ThemeName = 'LIGHT' as const;
+	export let fallback: ThemeName = THEME_NAMES.light;
+
+	const COOKIE_LIFETIME = 60 * 60 * 24 * 365;
+	const ROOT = browser ? (document.querySelector(':root') as HTMLElement) : undefined;
 
 	function setUserTheme(name: ThemeName | null) {
 		if (browser) {
@@ -43,8 +40,8 @@
 			: browser
 			? jscookie.get(COOKIES.THEME)
 			: undefined;
-		if (!cookie || !(THEME_CLASSES as any)[cookie]) {
-			return DEFAULT_THEME;
+		if (!cookie || !(THEME_NAMES as any)[cookie]) {
+			return fallback;
 		}
 		return cookie as ThemeName;
 	}
@@ -55,10 +52,7 @@
 		const { subscribe, set: _set } = writable(init);
 		function set(name: ThemeName, setCookie: boolean = false) {
 			if (ROOT) {
-				ROOT.className = ROOT.className.replace(themeClassPattern, '');
-				if (name) {
-					ROOT.classList.add(THEME_CLASSES[name]);
-				}
+				ROOT.setAttribute('data-theme', name);
 			}
 			if (setCookie) {
 				setUserTheme(name);

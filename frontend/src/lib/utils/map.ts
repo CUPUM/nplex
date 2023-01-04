@@ -26,8 +26,8 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
 			['!=', 'mode', 'static'],
 		],
 		paint: {
-			'fill-color': THEMES.LIGHT.primary[700],
-			'fill-outline-color': THEMES.LIGHT.primary[700],
+			'fill-color': THEMES.light.primary[700],
+			'fill-outline-color': THEMES.light.primary[700],
 			'fill-opacity': 0.1,
 		},
 	},
@@ -39,14 +39,14 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
 			'fill-color': [
 				'case',
 				['boolean', ['feature-state', 'error'], false],
-				THEMES.LIGHT.error[500],
-				THEMES.LIGHT.primary[500],
+				THEMES.light.error[500],
+				THEMES.light.primary[500],
 			],
 			'fill-outline-color': [
 				'case',
 				['boolean', ['feature-state', 'error'], false],
-				THEMES.LIGHT.error[500],
-				THEMES.LIGHT.primary[500],
+				THEMES.light.error[500],
+				THEMES.light.primary[500],
 			],
 			'fill-opacity': 0.1,
 		},
@@ -57,7 +57,7 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
 		filter: ['all', ['==', '$type', 'Point'], ['==', 'meta', 'midpoint']],
 		paint: {
 			'circle-radius': 3,
-			'circle-color': THEMES.LIGHT.primary[500],
+			'circle-color': THEMES.light.primary[500],
 		},
 	},
 	{
@@ -74,7 +74,7 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
 			'line-join': 'round',
 		},
 		paint: {
-			'line-color': THEMES.LIGHT.primary[700],
+			'line-color': THEMES.light.primary[700],
 			'line-width': 2,
 		},
 	},
@@ -87,7 +87,7 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
 			'line-join': 'round',
 		},
 		paint: {
-			'line-color': THEMES.LIGHT.primary[500],
+			'line-color': THEMES.light.primary[500],
 			'line-dasharray': [0.2, 2],
 			'line-width': 2,
 		},
@@ -106,7 +106,7 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
 			'line-join': 'round',
 		},
 		paint: {
-			'line-color': THEMES.LIGHT.primary[700],
+			'line-color': THEMES.light.primary[700],
 			'line-width': 2,
 		},
 	},
@@ -119,7 +119,7 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
 			'line-join': 'round',
 		},
 		paint: {
-			'line-color': THEMES.LIGHT.primary[500],
+			'line-color': THEMES.light.primary[500],
 			'line-dasharray': [0.2, 2],
 			'line-width': 2,
 		},
@@ -139,7 +139,7 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
 		filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
 		paint: {
 			'circle-radius': 3,
-			'circle-color': THEMES.LIGHT.primary[500],
+			'circle-color': THEMES.light.primary[500],
 		},
 	},
 	{
@@ -170,7 +170,7 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
 		],
 		paint: {
 			'circle-radius': 3,
-			'circle-color': THEMES.LIGHT.primary[700],
+			'circle-color': THEMES.light.primary[700],
 		},
 	},
 	{
@@ -188,7 +188,7 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
 		filter: ['all', ['==', '$type', 'Point'], ['!=', 'meta', 'midpoint'], ['==', 'active', 'true']],
 		paint: {
 			'circle-radius': 5,
-			'circle-color': THEMES.LIGHT.primary[500],
+			'circle-color': THEMES.light.primary[500],
 		},
 	},
 	{
