@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { debounce } from '$utils/function';
-	import { THEME_NAMES } from '$utils/themes';
+	import { THEMES } from '$utils/themes';
 
 	import type { PageData } from './$types';
 
@@ -12,7 +12,7 @@
 	}, 500);
 </script>
 
-<header data-theme={THEME_NAMES.dark}>
+<header data-theme={THEMES.dark}>
 	<hgroup>
 		<h1>Éditeur de projet</h1>
 	</hgroup>

@@ -4,7 +4,7 @@
 	import Icon from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { EDITOR_BASE_ROUTE, EDITOR_ROUTES } from '$utils/routes';
-	import { THEME_NAMES } from '$utils/themes';
+	import { THEMES } from '$utils/themes';
 	import type { Page } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
@@ -56,7 +56,7 @@
 		{/if}
 		<menu
 			class="nest"
-			data-theme={THEME_NAMES.dark}
+			data-theme={THEMES.dark}
 			in:fly={{ y: 30, easing: expoOut, delay: 500, duration: 750 }}
 		>
 			<Tooltip message="Éditer&nbsp;: {prev?.title}" disabled={!prev}>

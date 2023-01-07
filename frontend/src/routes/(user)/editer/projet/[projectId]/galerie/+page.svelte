@@ -9,7 +9,7 @@
 	import TextArea from '$components/TextArea.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { SEARCH_PARAMS } from '$utils/enums';
-  import { THEME_NAMES } from '$utils/themes';
+	import { THEMES } from '$utils/themes';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
@@ -103,7 +103,7 @@
 			>
 				<div class="image">
 					<Image class="gallery-image" src={image.publicUrl} alt={image.id} />
-					<menu data-theme={THEME_NAMES.dark}>
+					<menu data-theme={THEMES.dark}>
 						<Tooltip message="Supprimer" place="top">
 							<Button
 								type="submit"

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { LayoutData } from './$types';
-	import type { EDITABLES_NEW } from './EditablesList.svelte';
+	import type { LayoutData } from '../$types';
+	import type { EDITABLES_NEW } from '../EditablesList.svelte';
 
 	export let datum: LayoutData['actors'][number] | typeof EDITABLES_NEW;
 </script>

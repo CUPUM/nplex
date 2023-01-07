@@ -1,5 +1,5 @@
 import { getDb } from '$utils/database';
-import { LOAD_DEPENDENCIES } from '$utils/enums';
+import { LOAD_DEPENDENCIES, STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from '../$types';
 
@@ -7,9 +7,10 @@ export const load = (async (event) => {
 	event.depends(LOAD_DEPENDENCIES.USER_PROFILE);
 	const { session } = await event.parent();
 	if (!session) {
-		throw error(400);
+		throw error(STATUS_CODES.Unauthorized);
 	}
 	const db = await getDb(event);
+	// User's profile data.
 	const profileRes = await db
 		.from('users')
 		.select(
@@ -22,17 +23,17 @@ export const load = (async (event) => {
 		)
 		.eq('id', session.user.id)
 		.single();
-
-	if (profileRes.error || !profileRes.data) {
-		throw error(500, profileRes.error);
+	if (profileRes.error) {
+		throw error(STATUS_CODES.InternalServerError, profileRes.error);
+	}
+	// Getting list of roles for form.
+	const rolesRes = await db.from('user_role_details').select('*');
+	if (rolesRes.error) {
+		throw error(STATUS_CODES.InternalServerError, rolesRes.error);
 	}
 
-	const profile = {
-		...profileRes.data,
-		role: Array.isArray(profileRes.data.role) ? profileRes.data.role[0] : profileRes.data.role,
-	};
-
 	return {
-		profile,
+		profile: profileRes.data,
+		roles: rolesRes.data,
 	};
 }) satisfies LayoutLoad;

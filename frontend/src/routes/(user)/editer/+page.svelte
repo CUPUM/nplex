@@ -3,7 +3,7 @@
 	import { EDITOR_ROUTES } from '$utils/routes';
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
-	import { EDITABLES_HASHES } from '../common';
+	import { EDITABLES_HASHES } from './common';
 
 	let mounted = false;
 
