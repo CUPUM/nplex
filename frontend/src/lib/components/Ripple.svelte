@@ -22,7 +22,7 @@
 	export let spreadEasing = easing;
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
-	export let color: string = 'rgb(120, 130, 140)';
+	export let color: string = 'currentColor';
 	export let colorStart: string = color;
 	export let colorEnd: string = colorStart;
 	export let colorEasing = easing;

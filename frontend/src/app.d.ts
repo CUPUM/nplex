@@ -1,8 +1,10 @@
 // /// <reference types="@sveltejs/kit" />
 
+import type { POPOVER_OPEN_ATTR } from '$components/Popover.svelte';
 import type { Database } from '$types/database';
 import type { DatabaseBuff } from '$types/databaseBuff';
 import type { Category } from '$utils/enums';
+import type { ThemeName } from '$utils/themes';
 import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
 
@@ -17,9 +19,11 @@ declare global {
 	namespace svelte.JSX {
 		// Extend elements typing to allow custom attributes added using `use` directives (actions).
 		interface HTMLAttributes<T> {
-			onclickoutside?: (event?: CustomEvent) => unknown;
-			onenter?: (event?: CustomEvent) => unknown;
-			onleave?: (event?: CustomEvent) => unknown;
+			'onclickoutside'?: (event?: CustomEvent<Event>) => unknown;
+			'onenter'?: (event?: CustomEvent) => unknown;
+			'onleave'?: (event?: CustomEvent) => unknown;
+			[POPOVER_OPEN_ATTR]?: '';
+			'data-theme'?: ThemeName;
 		}
 	}
 	namespace App {

@@ -11,1221 +11,1244 @@ export interface Database {
     Tables: {
       actors: {
         Row: {
-          id: string
+          about: string | null
           created_at: string
-          updated_at: string
           created_by_id: string
-          updated_by_id: string
           first_name: string
+          id: string
           last_name: string | null
           middle_name: string | null
-          about: string | null
+          updated_at: string
+          updated_by_id: string
         }
         Insert: {
-          id: string
+          about?: string | null
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
           first_name: string
+          id: string
           last_name?: string | null
           middle_name?: string | null
-          about?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
         Update: {
-          id?: string
+          about?: string | null
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
           first_name?: string
+          id?: string
           last_name?: string | null
           middle_name?: string | null
-          about?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       notifications: {
         Row: {
-          id: string
+          body: string
           created_at: string
           created_by_id: string
-          updated_by_id: string | null
-          updated_at: string
-          title: string | null
-          body: string
           expiry: string | null
+          id: string
+          title: string | null
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
-          id: string
+          body: string
           created_at?: string
           created_by_id?: string
-          updated_by_id?: string | null
-          updated_at?: string
-          title?: string | null
-          body: string
           expiry?: string | null
+          id: string
+          title?: string | null
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
-          id?: string
+          body?: string
           created_at?: string
           created_by_id?: string
-          updated_by_id?: string | null
-          updated_at?: string
-          title?: string | null
-          body?: string
           expiry?: string | null
+          id?: string
+          title?: string | null
+          updated_at?: string
+          updated_by_id?: string | null
         }
       }
       organizations: {
         Row: {
-          id: string
+          about: string | null
           created_at: string
           created_by_id: string
-          updated_at: string
-          updated_by_id: string
+          id: string
           name: string
           short_name: string | null
-          about: string | null
+          updated_at: string
+          updated_by_id: string
         }
         Insert: {
-          id: string
+          about?: string | null
           created_at?: string
           created_by_id?: string
-          updated_at?: string
-          updated_by_id?: string
+          id: string
           name: string
           short_name?: string | null
-          about?: string | null
-        }
-        Update: {
-          id?: string
-          created_at?: string
-          created_by_id?: string
           updated_at?: string
           updated_by_id?: string
+        }
+        Update: {
+          about?: string | null
+          created_at?: string
+          created_by_id?: string
+          id?: string
           name?: string
           short_name?: string | null
-          about?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       project_event_type: {
         Row: {
-          id: number
-          title: string
-          description: string | null
-          durative: boolean
           created_at: string
           created_by_id: string
+          description: string | null
+          durative: boolean
+          id: number
+          title: string
           updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: number
-          title: string
-          description?: string | null
-          durative: boolean
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          durative: boolean
+          id?: number
+          title: string
           updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string | null
-          durative?: boolean
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          durative?: boolean
+          id?: number
+          title?: string
           updated_at?: string
           updated_by_id?: string | null
         }
       }
       project_event_type_subevent_type: {
         Row: {
-          id: number
-          event_type_id: number
-          subevent_type_id: number
           created_at: string
           created_by_id: string
+          event_type_id: number
+          id: number
+          subevent_type_id: number
           updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: number
-          event_type_id: number
-          subevent_type_id: number
           created_at?: string
           created_by_id?: string
+          event_type_id: number
+          id?: number
+          subevent_type_id: number
           updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: number
-          event_type_id?: number
-          subevent_type_id?: number
           created_at?: string
           created_by_id?: string
+          event_type_id?: number
+          id?: number
+          subevent_type_id?: number
           updated_at?: string
           updated_by_id?: string | null
         }
       }
       project_exemplarity_indicator: {
         Row: {
-          id: number
-          title: string
-          description: string | null
           created_at: string
-          updated_at: string
           created_by_id: string
-          updated_by_id: string | null
+          description: string | null
+          id: number
           indicator_category_id: number | null
+          title: string
+          updated_at: string
+          updated_by_id: string | null
         }
         Insert: {
-          id?: number
-          title: string
-          description?: string | null
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string | null
+          description?: string | null
+          id?: number
           indicator_category_id?: number | null
+          title: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string | null
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string | null
+          description?: string | null
+          id?: number
           indicator_category_id?: number | null
+          title?: string
+          updated_at?: string
+          updated_by_id?: string | null
         }
       }
       project_exemplarity_indicator_category: {
         Row: {
-          id: number
           created_at: string
-          updated_at: string
-          title: string
-          description: string | null
           created_by_id: string
+          description: string | null
+          id: number
+          title: string
+          updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: number
           created_at?: string
-          updated_at?: string
-          title: string
-          description?: string | null
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title: string
+          updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: number
           created_at?: string
-          updated_at?: string
-          title?: string
-          description?: string | null
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title?: string
+          updated_at?: string
           updated_by_id?: string | null
         }
       }
       project_implantation_mode: {
         Row: {
-          id: number
-          title: string
-          description: string | null
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          title: string
           updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: number
-          title: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title: string
           updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title?: string
           updated_at?: string
           updated_by_id?: string | null
         }
       }
       project_material_origin: {
         Row: {
-          id: number
-          title: string
-          label: string
-          description: string | null
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          label: string
+          title: string
           updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: number
-          title: string
-          label: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          label: string
+          title: string
           updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: number
-          title?: string
-          label?: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          label?: string
+          title?: string
           updated_at?: string
           updated_by_id?: string | null
         }
       }
       project_material_type: {
         Row: {
-          id: number
-          title: string
-          description: string | null
           combustible: boolean
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          title: string
           updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: number
-          title: string
-          description?: string | null
           combustible: boolean
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title: string
           updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string | null
           combustible?: boolean
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title?: string
           updated_at?: string
           updated_by_id?: string | null
         }
       }
       project_material_use: {
         Row: {
-          id: number
-          title: string
-          description: string | null
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          title: string
           updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: number
-          title: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title: string
           updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title?: string
           updated_at?: string
           updated_by_id?: string | null
         }
       }
       project_site_ownership: {
         Row: {
-          id: number
-          title: string
-          description: string | null
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          title: string
           updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: number
-          title: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title: string
           updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title?: string
           updated_at?: string
           updated_by_id?: string | null
         }
       }
       project_site_usage: {
         Row: {
-          id: number
-          title: string
-          description: string | null
-          is_building: boolean
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          is_building: boolean
+          title: string
           updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: number
-          title: string
-          description?: string | null
-          is_building: boolean
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          is_building: boolean
+          title: string
           updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string | null
-          is_building?: boolean
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          is_building?: boolean
+          title?: string
           updated_at?: string
           updated_by_id?: string | null
         }
       }
       project_site_usage_category: {
         Row: {
-          id: number
-          title: string
-          description: string | null
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          title: string
           updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: number
-          title: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title: string
           updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title?: string
           updated_at?: string
           updated_by_id?: string | null
         }
       }
       project_site_usage_site_usage_category: {
         Row: {
-          usage_id: number
           category_id: number
           created_at: string
           created_by_id: string
           updated_at: string
           updated_by_id: string | null
+          usage_id: number
         }
         Insert: {
-          usage_id: number
           category_id: number
           created_at?: string
           created_by_id?: string
           updated_at?: string
           updated_by_id?: string | null
+          usage_id: number
         }
         Update: {
-          usage_id?: number
           category_id?: number
           created_at?: string
           created_by_id?: string
           updated_at?: string
           updated_by_id?: string | null
+          usage_id?: number
         }
       }
       project_type: {
         Row: {
-          id: number
-          title: string
-          description: string | null
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          title: string
           updated_at: string
           updated_by_id: string
         }
         Insert: {
-          id?: number
-          title: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title: string
           updated_at?: string
           updated_by_id?: string
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title?: string
           updated_at?: string
           updated_by_id?: string
         }
       }
       project_type_work: {
         Row: {
-          type_id: number
-          work_id: number
           created_at: string
           created_by_id: string
+          type_id: number
           updated_at: string
           updated_by_id: string
+          work_id: number
         }
         Insert: {
-          type_id: number
-          work_id: number
           created_at?: string
           created_by_id?: string
+          type_id: number
           updated_at?: string
           updated_by_id?: string
+          work_id: number
         }
         Update: {
-          type_id?: number
-          work_id?: number
           created_at?: string
           created_by_id?: string
+          type_id?: number
           updated_at?: string
           updated_by_id?: string
+          work_id?: number
         }
       }
       project_work: {
         Row: {
-          id: number
-          title: string
-          description: string | null
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          title: string
           updated_at: string
           updated_by_id: string
         }
         Insert: {
-          id?: number
-          title: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title: string
           updated_at?: string
           updated_by_id?: string
         }
         Update: {
-          id?: number
-          title?: string
-          description?: string | null
           created_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: number
+          title?: string
           updated_at?: string
           updated_by_id?: string
         }
       }
       projects: {
         Row: {
-          id: string
+          adjacent_streets: number | null
+          area: number | null
+          banner_id: string | null
+          building_area: number | null
+          building_construction_year: number | null
+          cost_range: unknown
           created_at: string
-          updated_at: string
           created_by_id: string
-          updated_by_id: string
-          title: string
           description: string | null
+          id: string
+          implantation_mode_id: number | null
+          likes_sum: number
+          location_geometry: unknown | null
+          location_radius: number | null
+          site_area: number | null
           site_ownership_id: number | null
           site_usage_category_id: number | null
           site_usage_id: number | null
-          site_area: number | null
-          area: number | null
-          adjacent_streets: number | null
-          building_area: number | null
-          implantation_mode_id: number | null
-          building_construction_year: number | null
+          title: string
           type_id: number | null
-          banner_id: string | null
-          location_geometry: unknown | null
-          location_radius: number | null
-          cost_range: unknown
-          likes_sum: number
+          updated_at: string
+          updated_by_id: string
         }
         Insert: {
-          id?: string
+          adjacent_streets?: number | null
+          area?: number | null
+          banner_id?: string | null
+          building_area?: number | null
+          building_construction_year?: number | null
+          cost_range?: unknown
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          title: string
           description?: string | null
+          id?: string
+          implantation_mode_id?: number | null
+          likes_sum?: number
+          location_geometry?: unknown | null
+          location_radius?: number | null
+          site_area?: number | null
           site_ownership_id?: number | null
           site_usage_category_id?: number | null
           site_usage_id?: number | null
-          site_area?: number | null
-          area?: number | null
-          adjacent_streets?: number | null
-          building_area?: number | null
-          implantation_mode_id?: number | null
-          building_construction_year?: number | null
+          title: string
           type_id?: number | null
-          banner_id?: string | null
-          location_geometry?: unknown | null
-          location_radius?: number | null
-          cost_range?: unknown
-          likes_sum?: number
+          updated_at?: string
+          updated_by_id?: string
         }
         Update: {
-          id?: string
+          adjacent_streets?: number | null
+          area?: number | null
+          banner_id?: string | null
+          building_area?: number | null
+          building_construction_year?: number | null
+          cost_range?: unknown
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          title?: string
           description?: string | null
+          id?: string
+          implantation_mode_id?: number | null
+          likes_sum?: number
+          location_geometry?: unknown | null
+          location_radius?: number | null
+          site_area?: number | null
           site_ownership_id?: number | null
           site_usage_category_id?: number | null
           site_usage_id?: number | null
-          site_area?: number | null
-          area?: number | null
-          adjacent_streets?: number | null
-          building_area?: number | null
-          implantation_mode_id?: number | null
-          building_construction_year?: number | null
+          title?: string
           type_id?: number | null
-          banner_id?: string | null
-          location_geometry?: unknown | null
-          location_radius?: number | null
-          cost_range?: unknown
-          likes_sum?: number
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       projects_events: {
         Row: {
-          id: string
           created_at: string
-          updated_at: string
           created_by_id: string
-          updated_by_id: string
-          project_id: string
-          type_id: number
-          parent_id: string | null
-          title: string
           description: string | null
-          start_date: string
           end_date: string | null
+          id: string
+          parent_id: string | null
+          project_id: string
+          start_date: string
+          title: string
+          type_id: number
+          updated_at: string
+          updated_by_id: string
         }
         Insert: {
-          id?: string
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          project_id: string
-          type_id: number
-          parent_id?: string | null
-          title: string
           description?: string | null
-          start_date: string
           end_date?: string | null
+          id?: string
+          parent_id?: string | null
+          project_id: string
+          start_date: string
+          title: string
+          type_id: number
+          updated_at?: string
+          updated_by_id?: string
         }
         Update: {
-          id?: string
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          project_id?: string
-          type_id?: number
-          parent_id?: string | null
-          title?: string
           description?: string | null
-          start_date?: string
           end_date?: string | null
+          id?: string
+          parent_id?: string | null
+          project_id?: string
+          start_date?: string
+          title?: string
+          type_id?: number
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       projects_events_ressources: {
         Row: {
-          id: string
-          event_id: string
-          project_id: string
           created_at: string
-          updated_at: string
           created_by_id: string
-          updated_by_id: string
-          title: string
           description: string | null
+          event_id: string
+          id: string
+          project_id: string
+          title: string
+          updated_at: string
+          updated_by_id: string
           url: string | null
         }
         Insert: {
-          id?: string
-          event_id: string
-          project_id: string
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          title: string
           description?: string | null
+          event_id: string
+          id?: string
+          project_id: string
+          title: string
+          updated_at?: string
+          updated_by_id?: string
           url?: string | null
         }
         Update: {
-          id?: string
-          event_id?: string
-          project_id?: string
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          title?: string
           description?: string | null
+          event_id?: string
+          id?: string
+          project_id?: string
+          title?: string
+          updated_at?: string
+          updated_by_id?: string
           url?: string | null
         }
       }
       projects_exemplarity_indicators: {
         Row: {
-          id: string
           created_at: string
-          updated_at: string
           created_by_id: string
-          updated_by_id: string
-          project_id: string
-          exemplarity_indicator_id: number
           description: string | null
+          exemplarity_indicator_id: number
+          id: string
+          project_id: string
+          updated_at: string
+          updated_by_id: string
         }
         Insert: {
-          id?: string
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          project_id: string
-          exemplarity_indicator_id: number
           description?: string | null
+          exemplarity_indicator_id: number
+          id?: string
+          project_id: string
+          updated_at?: string
+          updated_by_id?: string
         }
         Update: {
-          id?: string
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          project_id?: string
-          exemplarity_indicator_id?: number
           description?: string | null
+          exemplarity_indicator_id?: number
+          id?: string
+          project_id?: string
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       projects_images: {
         Row: {
-          created_at: string
-          updated_at: string
-          created_by_id: string
-          updated_by_id: string
-          title: string | null
-          description: string | null
-          order: number | null
-          project_id: string
-          name: string
-          id: string
           color_dominant: unknown | null
           color_mean: unknown | null
+          created_at: string
+          created_by_id: string
+          description: string | null
+          id: string
+          name: string
+          order: number | null
+          project_id: string
+          title: string | null
+          updated_at: string
+          updated_by_id: string
         }
         Insert: {
+          color_dominant?: unknown | null
+          color_mean?: unknown | null
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          title?: string | null
           description?: string | null
+          id: string
+          name: string
           order?: number | null
           project_id: string
-          name: string
-          id: string
-          color_dominant?: unknown | null
-          color_mean?: unknown | null
+          title?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
         Update: {
-          created_at?: string
-          updated_at?: string
-          created_by_id?: string
-          updated_by_id?: string
-          title?: string | null
-          description?: string | null
-          order?: number | null
-          project_id?: string
-          name?: string
-          id?: string
           color_dominant?: unknown | null
           color_mean?: unknown | null
+          created_at?: string
+          created_by_id?: string
+          description?: string | null
+          id?: string
+          name?: string
+          order?: number | null
+          project_id?: string
+          title?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       projects_materials: {
         Row: {
-          id: string
           created_at: string
-          updated_at: string
           created_by_id: string
-          updated_by_id: string
-          project_id: string
+          description: string | null
+          id: string
           material_type_id: number
           origin_id: number | null
+          project_id: string
           sustainability: number | null
-          description: string | null
+          updated_at: string
+          updated_by_id: string
         }
         Insert: {
-          id?: string
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          project_id: string
+          description?: string | null
+          id?: string
           material_type_id: number
           origin_id?: number | null
+          project_id: string
           sustainability?: number | null
-          description?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
         Update: {
-          id?: string
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
-          project_id?: string
+          description?: string | null
+          id?: string
           material_type_id?: number
           origin_id?: number | null
+          project_id?: string
           sustainability?: number | null
-          description?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       projects_materials_uses: {
         Row: {
-          id: number
           created_at: string
-          updated_at: string
           created_by_id: string
-          updated_by_id: string
+          description: string | null
+          id: number
+          material_use_id: number
           project_id: string
           project_material_id: string
-          material_use_id: number
-          description: string | null
+          updated_at: string
+          updated_by_id: string
         }
         Insert: {
-          id?: number
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
+          description?: string | null
+          id?: number
+          material_use_id: number
           project_id: string
           project_material_id: string
-          material_use_id: number
-          description?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
         Update: {
-          id?: number
           created_at?: string
-          updated_at?: string
           created_by_id?: string
-          updated_by_id?: string
+          description?: string | null
+          id?: number
+          material_use_id?: number
           project_id?: string
           project_material_id?: string
-          material_use_id?: number
-          description?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       projects_programs: {
         Row: {
-          id: number
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          project_id: string
+          title: string
           updated_at: string
           updated_by_id: string
-          project_id: string
-          title: string
-          description: string | null
         }
         Insert: {
-          id?: number
           created_at?: string
           created_by_id?: string
-          updated_at?: string
-          updated_by_id?: string
+          description?: string | null
+          id?: number
           project_id: string
           title: string
-          description?: string | null
-        }
-        Update: {
-          id?: number
-          created_at?: string
-          created_by_id?: string
           updated_at?: string
           updated_by_id?: string
+        }
+        Update: {
+          created_at?: string
+          created_by_id?: string
+          description?: string | null
+          id?: number
           project_id?: string
           title?: string
-          description?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       projects_publication_status: {
         Row: {
           project_id: string
+          status: Database["public"]["Enums"]["publication_status"]
           updated_at: string
           updated_by_id: string
-          status: Database["public"]["Enums"]["publication_status"]
         }
         Insert: {
           project_id: string
+          status?: Database["public"]["Enums"]["publication_status"]
           updated_at?: string
           updated_by_id?: string
-          status?: Database["public"]["Enums"]["publication_status"]
         }
         Update: {
           project_id?: string
+          status?: Database["public"]["Enums"]["publication_status"]
           updated_at?: string
           updated_by_id?: string
-          status?: Database["public"]["Enums"]["publication_status"]
         }
       }
       projects_users: {
         Row: {
-          project_id: string
-          user_id: string
           created_at: string
-          granted_role: Database["public"]["Enums"]["user_role"]
-          updated_at: string
           created_by_id: string
+          granted_role: Database["public"]["Enums"]["user_role"]
+          project_id: string
+          updated_at: string
           updated_by_id: string
+          user_id: string
         }
         Insert: {
-          project_id: string
-          user_id: string
           created_at?: string
-          granted_role?: Database["public"]["Enums"]["user_role"]
-          updated_at?: string
           created_by_id?: string
+          granted_role?: Database["public"]["Enums"]["user_role"]
+          project_id: string
+          updated_at?: string
           updated_by_id?: string
+          user_id: string
         }
         Update: {
-          project_id?: string
-          user_id?: string
           created_at?: string
-          granted_role?: Database["public"]["Enums"]["user_role"]
-          updated_at?: string
           created_by_id?: string
+          granted_role?: Database["public"]["Enums"]["user_role"]
+          project_id?: string
+          updated_at?: string
           updated_by_id?: string
+          user_id?: string
         }
       }
       projects_works: {
         Row: {
           created_at: string
-          updated_at: string
-          project_id: string
           created_by_id: string
+          project_id: string
+          updated_at: string
           updated_by_id: string
           work_id: number
         }
         Insert: {
           created_at?: string
-          updated_at?: string
-          project_id: string
           created_by_id?: string
+          project_id: string
+          updated_at?: string
           updated_by_id?: string
           work_id: number
         }
         Update: {
           created_at?: string
-          updated_at?: string
-          project_id?: string
           created_by_id?: string
+          project_id?: string
+          updated_at?: string
           updated_by_id?: string
           work_id?: number
         }
       }
-      users: {
+      user_role_details: {
         Row: {
-          id: string
-          updated_at: string
-          avatar_url: string | null
-          about: string | null
-          public_email: string | null
-          updated_by_id: string
-          first_name: string | null
-          last_name: string | null
-          created_at: string
+          description: string
+          label: string
+          user_role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
-          id: string
-          updated_at?: string
-          avatar_url?: string | null
-          about?: string | null
-          public_email?: string | null
-          updated_by_id: string
-          first_name?: string | null
-          last_name?: string | null
-          created_at?: string
+          description: string
+          label: string
+          user_role: Database["public"]["Enums"]["user_role"]
         }
         Update: {
-          id?: string
-          updated_at?: string
-          avatar_url?: string | null
+          description?: string
+          label?: string
+          user_role?: Database["public"]["Enums"]["user_role"]
+        }
+      }
+      users: {
+        Row: {
+          about: string | null
+          avatar_url: string | null
+          created_at: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          public_email: string | null
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
           about?: string | null
-          public_email?: string | null
-          updated_by_id?: string
-          first_name?: string | null
-          last_name?: string | null
+          avatar_url?: string | null
           created_at?: string
+          first_name?: string | null
+          id: string
+          last_name?: string | null
+          public_email?: string | null
+          updated_at?: string
+          updated_by_id: string
+        }
+        Update: {
+          about?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          public_email?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       users_notifications: {
         Row: {
           created_at: string
-          user_id: string
           notification_id: string
+          user_id: string
         }
         Insert: {
           created_at?: string
-          user_id: string
           notification_id: string
+          user_id: string
         }
         Update: {
           created_at?: string
-          user_id?: string
           notification_id?: string
+          user_id?: string
         }
       }
       users_projects_collections: {
         Row: {
-          id: string
           created_at: string
-          updated_at: string
           created_by_id: string
+          description: string | null
+          id: string
           is_public: boolean
           title: string
-          description: string | null
+          updated_at: string
           updated_by_id: string | null
         }
         Insert: {
-          id?: string
           created_at?: string
-          updated_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: string
           is_public?: boolean
           title: string
-          description?: string | null
+          updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
-          id?: string
           created_at?: string
-          updated_at?: string
           created_by_id?: string
+          description?: string | null
+          id?: string
           is_public?: boolean
           title?: string
-          description?: string | null
+          updated_at?: string
           updated_by_id?: string | null
         }
       }
       users_projects_collections_items: {
         Row: {
-          id: number
-          created_by_id: string
-          created_at: string
-          updated_at: string
           collection_id: string
-          project_id: string
+          created_at: string
+          created_by_id: string
           description: string | null
+          id: number
+          project_id: string
+          updated_at: string
           updated_by_id: string
         }
         Insert: {
-          id?: number
-          created_by_id?: string
-          created_at?: string
-          updated_at?: string
           collection_id: string
-          project_id: string
+          created_at?: string
+          created_by_id?: string
           description?: string | null
+          id?: number
+          project_id: string
+          updated_at?: string
           updated_by_id?: string
         }
         Update: {
-          id?: number
-          created_by_id?: string
-          created_at?: string
-          updated_at?: string
           collection_id?: string
-          project_id?: string
+          created_at?: string
+          created_by_id?: string
           description?: string | null
+          id?: number
+          project_id?: string
+          updated_at?: string
           updated_by_id?: string
         }
       }
       users_projects_likes: {
         Row: {
-          id: number
-          user_id: string
-          project_id: string
           created_at: string
+          id: number
+          project_id: string
+          user_id: string
         }
         Insert: {
-          id?: number
-          user_id?: string
-          project_id: string
           created_at?: string
+          id?: number
+          project_id: string
+          user_id?: string
         }
         Update: {
-          id?: number
-          user_id?: string
-          project_id?: string
           created_at?: string
+          id?: number
+          project_id?: string
+          user_id?: string
         }
       }
       users_projects_queries: {
         Row: {
-          id: number
           created_at: string
           created_by_id: string
+          description: string | null
+          id: number
+          query: Json
+          title: string
           updated_at: string
           updated_by_id: string
-          query: Json
-          title: string
-          description: string | null
         }
         Insert: {
-          id?: number
           created_at?: string
           created_by_id?: string
-          updated_at?: string
-          updated_by_id?: string
+          description?: string | null
+          id?: number
           query: Json
           title: string
-          description?: string | null
-        }
-        Update: {
-          id?: number
-          created_at?: string
-          created_by_id?: string
           updated_at?: string
           updated_by_id?: string
+        }
+        Update: {
+          created_at?: string
+          created_by_id?: string
+          description?: string | null
+          id?: number
           query?: Json
           title?: string
-          description?: string | null
+          updated_at?: string
+          updated_by_id?: string
         }
       }
       users_roles: {
         Row: {
-          user_id: string
-          updated_at: string
+          request: Database["public"]["Enums"]["user_role"] | null
+          requested_at: string | null
           role: Database["public"]["Enums"]["user_role"]
+          updated_at: string
           updated_by_id: string
+          user_id: string
         }
         Insert: {
-          user_id: string
-          updated_at?: string
+          request?: Database["public"]["Enums"]["user_role"] | null
+          requested_at?: string | null
           role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
           updated_by_id?: string
+          user_id: string
         }
         Update: {
-          user_id?: string
-          updated_at?: string
+          request?: Database["public"]["Enums"]["user_role"] | null
+          requested_at?: string | null
           role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
           updated_by_id?: string
+          user_id?: string
         }
       }
     }
     Views: {
       editable_projects: {
         Row: {
-          id: string | null
+          adjacent_streets: number | null
+          area: number | null
+          banner_id: string | null
+          building_area: number | null
+          building_construction_year: number | null
+          cost_range: unknown | null
           created_at: string | null
-          updated_at: string | null
           created_by_id: string | null
-          updated_by_id: string | null
-          title: string | null
           description: string | null
+          id: string | null
+          implantation_mode_id: number | null
+          likes_sum: number | null
+          location_geometry: unknown | null
+          location_radius: number | null
+          site_area: number | null
           site_ownership_id: number | null
           site_usage_category_id: number | null
           site_usage_id: number | null
-          site_area: number | null
-          area: number | null
-          adjacent_streets: number | null
-          building_area: number | null
-          implantation_mode_id: number | null
-          building_construction_year: number | null
+          title: string | null
           type_id: number | null
-          banner_id: string | null
-          location_geometry: unknown | null
-          location_radius: number | null
-          cost_range: unknown | null
-          likes_sum: number | null
+          updated_at: string | null
+          updated_by_id: string | null
         }
         Insert: {
-          id?: string | null
+          adjacent_streets?: number | null
+          area?: number | null
+          banner_id?: string | null
+          building_area?: number | null
+          building_construction_year?: number | null
+          cost_range?: unknown | null
           created_at?: string | null
-          updated_at?: string | null
           created_by_id?: string | null
-          updated_by_id?: string | null
-          title?: string | null
           description?: string | null
+          id?: string | null
+          implantation_mode_id?: number | null
+          likes_sum?: number | null
+          location_geometry?: unknown | null
+          location_radius?: number | null
+          site_area?: number | null
           site_ownership_id?: number | null
           site_usage_category_id?: number | null
           site_usage_id?: number | null
-          site_area?: number | null
-          area?: number | null
-          adjacent_streets?: number | null
-          building_area?: number | null
-          implantation_mode_id?: number | null
-          building_construction_year?: number | null
+          title?: string | null
           type_id?: number | null
-          banner_id?: string | null
-          location_geometry?: unknown | null
-          location_radius?: number | null
-          cost_range?: unknown | null
-          likes_sum?: number | null
+          updated_at?: string | null
+          updated_by_id?: string | null
         }
         Update: {
-          id?: string | null
+          adjacent_streets?: number | null
+          area?: number | null
+          banner_id?: string | null
+          building_area?: number | null
+          building_construction_year?: number | null
+          cost_range?: unknown | null
           created_at?: string | null
-          updated_at?: string | null
           created_by_id?: string | null
-          updated_by_id?: string | null
-          title?: string | null
           description?: string | null
+          id?: string | null
+          implantation_mode_id?: number | null
+          likes_sum?: number | null
+          location_geometry?: unknown | null
+          location_radius?: number | null
+          site_area?: number | null
           site_ownership_id?: number | null
           site_usage_category_id?: number | null
           site_usage_id?: number | null
-          site_area?: number | null
-          area?: number | null
-          adjacent_streets?: number | null
-          building_area?: number | null
-          implantation_mode_id?: number | null
-          building_construction_year?: number | null
+          title?: string | null
           type_id?: number | null
-          banner_id?: string | null
-          location_geometry?: unknown | null
-          location_radius?: number | null
-          cost_range?: unknown | null
-          likes_sum?: number | null
+          updated_at?: string | null
+          updated_by_id?: string | null
         }
       }
     }
@@ -1285,11 +1308,11 @@ export interface Database {
       }
       user_can_edit_project:
         | {
-            Args: { p_id: string }
+            Args: { p_row: unknown }
             Returns: boolean
           }
         | {
-            Args: { p_row: unknown }
+            Args: { p_id: string }
             Returns: boolean
           }
       user_has_role:
@@ -1309,6 +1332,135 @@ export interface Database {
         | "rejected_approval"
         | "published"
       user_role: "nplex" | "admin" | "editor" | "visitor"
+    }
+  }
+  storage: {
+    Tables: {
+      buckets: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          owner: string | null
+          public: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id: string
+          name: string
+          owner?: string | null
+          public?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          owner?: string | null
+          public?: boolean | null
+          updated_at?: string | null
+        }
+      }
+      migrations: {
+        Row: {
+          executed_at: string | null
+          hash: string
+          id: number
+          name: string
+        }
+        Insert: {
+          executed_at?: string | null
+          hash: string
+          id: number
+          name: string
+        }
+        Update: {
+          executed_at?: string | null
+          hash?: string
+          id?: number
+          name?: string
+        }
+      }
+      objects: {
+        Row: {
+          bucket_id: string | null
+          created_at: string | null
+          id: string
+          last_accessed_at: string | null
+          metadata: Json | null
+          name: string | null
+          owner: string | null
+          path_tokens: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          bucket_id?: string | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          metadata?: Json | null
+          name?: string | null
+          owner?: string | null
+          path_tokens?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          bucket_id?: string | null
+          created_at?: string | null
+          id?: string
+          last_accessed_at?: string | null
+          metadata?: Json | null
+          name?: string | null
+          owner?: string | null
+          path_tokens?: string[] | null
+          updated_at?: string | null
+        }
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      extension: {
+        Args: { name: string }
+        Returns: string
+      }
+      filename: {
+        Args: { name: string }
+        Returns: string
+      }
+      foldername: {
+        Args: { name: string }
+        Returns: string[]
+      }
+      get_size_by_bucket: {
+        Args: Record<PropertyKey, never>
+        Returns: { size: number; bucket_id: string }[]
+      }
+      search: {
+        Args: {
+          prefix: string
+          bucketname: string
+          limits: number
+          levels: number
+          offsets: number
+          search: string
+          sortcolumn: string
+          sortorder: string
+        }
+        Returns: {
+          name: string
+          id: string
+          updated_at: string
+          created_at: string
+          last_accessed_at: string
+          metadata: Json
+        }[]
+      }
+    }
+    Enums: {
+      [_ in never]: never
     }
   }
 }

@@ -2,7 +2,7 @@
 import type { ValueOf } from 'ts-essentials';
 import { themeNames, type Theme } from '../../plugins/themes/utils';
 
-export const THEMES = {
+export const THEME_PALETTES = {
 	light: {
 		bg: {
 			'000': 'hsl(54, 20%, 100%)',
@@ -97,6 +97,6 @@ export const THEMES = {
 	},
 } as const satisfies Record<string, Theme>;
 
-export const THEME_NAMES = themeNames(THEMES);
+export const THEMES = themeNames(THEME_PALETTES);
 
-export type ThemeName = ValueOf<typeof THEME_NAMES>;
+export type ThemeName = ValueOf<typeof THEMES>;

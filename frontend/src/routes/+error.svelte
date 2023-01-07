@@ -1,18 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { THEME_NAMES } from '$utils/themes';
-	import { onDestroy, onMount } from 'svelte/internal';
-	import { rootTheme } from './RootTheme.svelte';
-
-	onMount(() => {
-		rootTheme.set(THEME_NAMES.DARK);
-	});
-
-	onDestroy(() => {
-		rootTheme.reset();
-	});
+	import { THEMES } from '$utils/themes';
+	import RootTheme from './RootTheme.svelte';
 </script>
 
+<RootTheme theme={THEMES.dark} />
 <div>
 	<h1>Oops!</h1>
 	<h2>Erreur: {$page.status}</h2>

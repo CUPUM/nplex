@@ -8,7 +8,7 @@
 </script>
 
 <i class="field-icon">
-	<Icon scaleStroke={false} strokeWidth="1.5" {...typedProps} />
+	<Icon {...typedProps} />
 </i>
 
 <style lang="scss">

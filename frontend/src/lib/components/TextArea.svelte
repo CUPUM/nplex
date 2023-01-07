@@ -2,13 +2,12 @@
 	@component
 	# Text Area
 	Multiline text input component.
-
 -->
 <script lang="ts" context="module">
 	const CTX_KEY = 'text-area-context';
 
 	interface TextAreaContext {
-		value: Writable<string>;
+		value: Writable<string | null | undefined>;
 		textAreaRef: Writable<HTMLTextAreaElement>;
 	}
 
@@ -37,7 +36,7 @@
 	export let minlength: number | undefined = undefined;
 	export let loading: boolean | undefined = undefined;
 	export let placeholder: string = '';
-	export let pattern: RegExp | undefined = undefined; // Figure out how to make work with ozd validators...
+	export let pattern: RegExp | undefined = undefined;
 	export let dirty: boolean = false;
 	export let tabindex: number = 0;
 	let className: string = '';
@@ -52,7 +51,7 @@
 	const _textAreaRef = writable<typeof textAreaRef>();
 	$: _textAreaRef.set(textAreaRef);
 
-	const _value = writable(value);
+	const _value = writable<typeof value>(value);
 	$: value = $_value;
 	$: _value.set(value);
 
@@ -62,13 +61,13 @@
 	});
 </script>
 
-<div
+<fieldset
 	class="text-area nest {variant} {className}"
 	{style}
 	class:compact
 	class:warning
 	class:focused
-	class:disabled
+	{disabled}
 	class:readonly
 	class:loading
 	class:success
@@ -87,7 +86,6 @@
 	{/if}
 	<textarea
 		bind:this={textAreaRef}
-		class="input"
 		{name}
 		{id}
 		{required}
@@ -109,7 +107,7 @@
 			<slot name="trailing" />
 		</div>
 	{/if}
-</div>
+</fieldset>
 
 <style lang="scss">
 	:where(.text-area) {
@@ -119,7 +117,7 @@
 			[full-start leading-start]
 			auto
 			[leading-end main-start]
-			mimax(var(--ui-height), 1fr)
+			mimax(calc(3 * var(--lh)), 1fr)
 			[main-end trailing-start]
 			auto
 			[trailing-end full-end];
@@ -129,19 +127,19 @@
 		background: col(fg, 100, 0.1);
 	}
 
-	.label {
-	}
-
-	.input {
+	textarea {
 		position: relative;
-		// grid-row: main;
+		grid-row: main;
 		font-family: inherit;
 		font-size: inherit;
-		line-height: 1.2em;
-		padding: var(--ui-padding-inline);
+		line-height: 1.5em;
+		padding: calc(0.5 * var(--ui-height) - 0.75em) var(--ui-pad-x);
 		background: transparent;
 		border: none;
 		resize: none;
 		outline: none;
+	}
+
+	.outline {
 	}
 </style>

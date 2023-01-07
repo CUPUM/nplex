@@ -7,12 +7,12 @@ const observers: IntersectionObserver[] = [];
 
 const defaultOptions = { root: null, rootMargin: '-50% 0px -50%', threshold: 0 };
 
-export const INTERSECTION_EVENT_NAME = {
+export const INTERSECTION_EVENT = {
 	enter: 'enter',
 	leave: 'leave',
 } as const;
 
-export type IntersectionEventName = ValueOf<typeof INTERSECTION_EVENT_NAME>;
+export type IntersectionEventName = ValueOf<typeof INTERSECTION_EVENT>;
 
 /**
  * Action to observe an element's intersection with the viewport.
@@ -47,9 +47,9 @@ function setObserver(options: IntersectionObserverInit) {
 	const newObserver = new IntersectionObserver((entries) => {
 		for (const entry of entries) {
 			if (entry.isIntersecting) {
-				entry.target.dispatchEvent(new CustomEvent(INTERSECTION_EVENT_NAME.enter));
+				entry.target.dispatchEvent(new CustomEvent(INTERSECTION_EVENT.enter));
 			} else {
-				entry.target.dispatchEvent(new CustomEvent(INTERSECTION_EVENT_NAME.leave));
+				entry.target.dispatchEvent(new CustomEvent(INTERSECTION_EVENT.leave));
 			}
 		}
 	}, options);

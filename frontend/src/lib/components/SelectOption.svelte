@@ -1,18 +1,28 @@
 <script lang="ts">
-	import { Ctx } from '$utils/enums';
-	import { getContext } from 'svelte';
+	import { getSelectContext } from './Select.svelte';
 
-	export let id: string;
-	export let value;
+	export let id: string | undefined = undefined;
+	export let term: string;
+	export let value: any;
 
-	const selectCtx = getContext(Ctx.Select);
-	const selectGroupCtx = getContext(Ctx.SelectGroup);
+	const {} = getSelectContext();
 </script>
 
-<option name="option-{id}" {id} {value}>
-	<slot />
-</option>
-<div class="test" />
+<option {id} {value} />
+<div>
+	<dt>
+		<slot name="term">
+			{value}
+		</slot>
+	</dt>
+	{#if $$slots.detail}
+		<slot name="detail" />
+	{/if}
+</div>
 
 <style lang="scss">
+	div {
+		padding: 1rem;
+		border: 1px solid blue;
+	}
 </style>

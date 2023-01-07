@@ -3,7 +3,7 @@
  *
  * Credits to @bluwy: https://github.com/sveltejs/svelte/issues/2659.
  */
-export function inputOnReset(element: HTMLElement) {
+export default function dispatchOnReset(element: HTMLElement) {
 	const form = ((element as any).form as HTMLFormElement) || null;
 	if (!form) return;
 

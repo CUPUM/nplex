@@ -3,7 +3,7 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import LoadingProgress from '$components/LoadingProgress.svelte';
-	import Logo from '$components/Logo2.svelte';
+	import Logo from '$components/Logo.svelte';
 	import MessagesOutlet from '$routes/MessagesOutlet.svelte';
 	import '$styles/app.scss';
 	import '$styles/resets.scss';
@@ -15,12 +15,10 @@
 	import AuthModal, { authModal } from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
 	import Navbar from './Navbar.svelte';
-	import RootTheme from './RootTheme.svelte';
 
 	export let data: LayoutData;
 
 	let progress: LoadingProgress;
-	let navbarHeight: number = 0;
 	let scrollY = 0;
 	let mounted = false;
 
@@ -48,14 +46,12 @@
 <svelte:window bind:scrollY />
 
 <Logo />
-<RootTheme />
 <div
 	class="container"
 	class:unmounted={!mounted}
 	class:authing={$authModal}
 	style:--ui-scroll={scrollY}
 	style:--ui-scroll-px="{scrollY}px"
-	style:--ui-nav-px="{navbarHeight}px"
 >
 	<Navbar />
 	<main>

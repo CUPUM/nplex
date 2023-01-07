@@ -15,7 +15,6 @@
 
 <script lang="ts">
 	import { transform } from '$transitions/transform';
-
 	import { cssSize } from '$utils/css';
 	import { icons } from '$utils/icons';
 	import { cubicIn, cubicOut } from 'svelte/easing';

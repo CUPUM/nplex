@@ -1,7 +1,10 @@
 /**
  * Helper function to debounce passed function's execution.
  */
-export function debounce<Args extends any[], F extends (...args: Args) => any>(f: F, timeout = 250) {
+export function debounce<Args extends any[], F extends (...args: Args) => any>(
+	f: F,
+	timeout = 250
+) {
 	let timer: any;
 
 	function d(...args: Parameters<F>) {
@@ -21,7 +24,10 @@ export function debounce<Args extends any[], F extends (...args: Args) => any>(f
 /**
  * Function wrapper to throttle the passed function's execution rate.
  */
-export function throttle<Args extends any[], F extends (...args: Args) => any>(f: F, timeout = 250) {
+export function throttle<Args extends any[], F extends (...args: Args) => any>(
+	f: F,
+	timeout = 250
+) {
 	let timer: any;
 	let last: number;
 

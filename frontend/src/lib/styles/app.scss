@@ -1,7 +1,7 @@
 @import './utils.scss';
 
 :root {
-	background: col(bg, 100);
+	background: var(--ui-bg, col(bg, 100));
 	font-family: var(--ui-font-main);
 	color: col(fg, 500);
 	padding: 0;
@@ -67,11 +67,12 @@ body {
 	scrollbar-width: none;
 }
 
-.rule {
+hr {
 	padding: 0.5px;
-	border: none;
-	margin: 0;
-	background: col(fg, 100, 0.1);
+	background: col(fg, 100, 0.06);
+	[data-theme='dark'] & {
+		background: col(fg, 900, 0.12);
+	}
 }
 
 @keyframes press {

@@ -1,8 +1,22 @@
+import type { Theme } from '$plugins/themes/utils';
 import { paramCase } from 'change-case';
 
 /**
- * This file contains helpers used to declare styles.
+ * This file contains helpers used to declare styles; css or sass related.
  */
+
+/**
+ * Helper equivalent to the Sass helper function used to compose CSS var names for theme-dependent
+ * colors.
+ *
+ * See /styles/utils.scss for sass homologue.
+ */
+export function col<C extends keyof Theme>(color: C, shade: keyof Theme[C], alpha?: number) {
+	if (alpha === undefined || alpha === 1) {
+		return `var(--color-${color}-${String(shade)})`;
+	}
+	return `rgb(var(--rgb-${color}-${String(shade)}), ${alpha})`;
+}
 
 /**
  * Translate unitless number or string to pixel value.
@@ -30,8 +44,8 @@ export const cssSizeUnits = ['px', '%', 'em', 'rem', 'vh', 'vw', 'vmin', 'vmax',
 const unitsRegex = `/${cssSizeUnits.join('|')}/`;
 
 /**
- * Helper to parse CSS values and return an object with the number and unit extracted. Returned unit will be undefined
- * if input has none or if it doesn't match any of the accepted units.
+ * Helper to parse CSS values and return an object with the number and unit extracted. Returned unit
+ * will be undefined if input has none or if it doesn't match any of the accepted units.
  */
 export function decomposeCssSize(input: string | number): {
 	value: number;
@@ -54,17 +68,22 @@ export function fade(color: string, alpha: number) {
 }
 
 /**
- * Quick variable name composer to get out-of-ts CSS variables. Any cased inputs will be translated to kebab-case.
+ * Quick variable name composer to get out-of-ts CSS variables. Any cased inputs will be translated
+ * to kebab-case.
  */
 export function getVar(name: string, keepCasing?: boolean, fallback?: string | number) {
 	return `var(--${keepCasing ? name : paramCase(name)}${fallback ? ', ' + fallback : ''})`;
 }
 
 /**
- * Compose a quick reference svelte CSS variable names map to easily reuse them in vanilla extract styles. returns an
- * object mapping the input camelCased names to the expected kebab-case full `var(--...)` function.
+ * Compose a quick reference svelte CSS variable names map to easily reuse them in vanilla extract
+ * styles. returns an object mapping the input camelCased names to the expected kebab-case full
+ * `var(--...)` function.
  */
-export function varBook<K extends string>(names: readonly K[], keepCasing?: boolean): { [V in K]: string } {
+export function varBook<K extends string>(
+	names: readonly K[],
+	keepCasing?: boolean
+): { [V in K]: string } {
 	return Object.fromEntries(names.map((n) => [n, getVar(n, keepCasing)])) as any;
 }
 
@@ -72,8 +91,8 @@ export function varBook<K extends string>(names: readonly K[], keepCasing?: bool
  * Compose CSS animation shorthand(s) from passed parameters. See
  * https://developer.mozilla.org/en-US/docs/Web/CSS/animation for expected order of params.
  *
- * Duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name animation: 3s
- * ease-in 1s 2 reverse both paused slidein;
+ * Duration | easing-function | delay | iteration-count | direction | fill-mode | play-state | name
+ * animation: 3s ease-in 1s 2 reverse both paused slidein;
  *
  * Duration | easing-function | delay | name animation: 3s linear 1s slidein;
  *

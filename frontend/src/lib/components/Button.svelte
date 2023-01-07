@@ -2,7 +2,6 @@
 	@component
 	## Button
 	Primitive button component.
-
 -->
 <script lang="ts" context="module">
 	const CTX_KEY = 'button-context';
@@ -141,7 +140,7 @@
 		flex-direction: row;
 		align-items: center;
 		font-weight: 350;
-		font-size: 1em;
+		font-size: inherit;
 		border-radius: calc(var(--radius) - var(--inset-sum));
 		cursor: pointer;
 		letter-spacing: 0em;
@@ -314,7 +313,7 @@
 		}
 		&:global(.active) {
 			color: col(primary, 700);
-			background: col(primary, 100, 0.3);
+			background: col(primary, 300, 0.3);
 		}
 	}
 

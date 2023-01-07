@@ -17,21 +17,25 @@
 </script>
 
 <script lang="ts">
-	import { inputOnReset } from '$actions/inputOnReset';
+	import dispatchOnReset from '$actions/dispatchOnReset';
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
+	import { fly } from 'svelte/transition';
+	import Dirtiness from './Dirtiness.svelte';
 	import Ripple from './Ripple.svelte';
 
 	export let id: string | undefined = undefined;
 	export let value: string | null | undefined = '';
+	export let sample: typeof value = value;
 	export let prefix: string | null | undefined = '';
 	export let suffix: string | null | undefined = '';
 	export let name: string | undefined = undefined;
-	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
+	export let type: 'search' | 'text' | 'password' | 'number' | 'email' | 'select' = 'text';
 	export let variant: 'default' | 'outlined' | 'cta' = 'default';
 	export let compact: boolean | undefined = undefined;
 	export let required: boolean | undefined = undefined;
 	export let readonly: boolean | undefined = undefined;
+	export let select: boolean | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
 	export let warning: boolean | undefined = undefined;
 	export let success: boolean | undefined = undefined;
@@ -39,8 +43,9 @@
 	export let maxlength: number | undefined = undefined;
 	export let minlength: number | undefined = undefined;
 	export let loading: boolean | undefined = undefined;
+	export let autocomplete: string | undefined = 'off';
 	export let placeholder: string = '';
-	export let pattern: RegExp | undefined = undefined; // Figure out how to make work with ozd validators...
+	export let pattern: RegExp | undefined = undefined;
 	export let dirty: boolean = false;
 	export let tabindex: number = 0;
 	let className: string = '';
@@ -50,29 +55,16 @@
 		inputRef.focus();
 	}
 
+	let inputRef: HTMLInputElement;
+	let fieldRef: HTMLElement;
 	let labelWidth = 0;
 	let focused = false;
-	let fieldRef: HTMLElement;
-	let inputRef: HTMLInputElement;
 	const _inputRef = writable<typeof inputRef>();
 	$: _inputRef.set(inputRef);
 
 	const _value = writable<typeof value>(value);
 	$: value = $_value;
 	$: _value.set(value);
-
-	function checkValidity() {
-		invalid = !value
-			? false
-			: pattern
-			? !inputRef?.checkValidity()
-			: minlength
-			? !(inputRef.value.length >= minlength)
-			: maxlength
-			? !(inputRef.value.length <= maxlength)
-			: undefined;
-		// success = pattern || minlength || maxlength ? !invalid : undefined;
-	}
 
 	function handleInput(e: Event) {
 		const ev = (e.target as HTMLInputElement).value;
@@ -97,7 +89,7 @@
 
 	function handleBlur(e: FocusEvent) {
 		focused = false;
-		checkValidity();
+		// validate();
 	}
 
 	setContext<FieldContext>(CTX_KEY, {
@@ -106,78 +98,89 @@
 	});
 </script>
 
-<div
-	bind:this={fieldRef}
-	class="field nest {variant} {className}"
-	{style}
-	class:compact
-	class:warning
-	class:focused
-	class:disabled
-	class:readonly
-	class:loading
-	class:success
-	class:invalid
-	class:dirty
-	class:has-value={value !== ''}
-	class:has-placeholder={placeholder !== ''}
-	class:has-label={$$slots.label}
-	style:--label-width="{labelWidth}px"
-	on:pointerup={handleClick}
->
-	<Ripple />
-	<div class="outline left" />
-	<div class="outline right" />
-	<div class="outline bottom" />
-	{#if $$slots.leading}
-		<div class="leading">
-			<slot name="leading" />
-		</div>
-	{/if}
-	{#if $$slots.label}
-		<label for={id} bind:clientWidth={labelWidth}>
-			{#if required}<span class="star">*</span>{/if}<slot name="label" />
-		</label>
-	{/if}
-	{#if prefix}
-		<span class="prefix">{prefix}</span>
-	{/if}
-	<input
-		bind:this={inputRef}
-		class="input"
-		autocomplete="new-{type}"
-		{type}
-		{name}
-		{placeholder}
-		{value}
-		{maxlength}
-		{minlength}
+<Dirtiness {sample} bind:dirty let:check>
+	<fieldset
+		bind:this={fieldRef}
+		class="field nest {variant} {className}"
+		{style}
+		class:compact
+		class:warning
+		class:focused
 		{disabled}
-		{required}
-		{tabindex}
-		{readonly}
-		pattern={pattern ? pattern.source : undefined}
-		use:inputOnReset
-		on:input={handleInput}
-		on:focus={handleFocus}
-		on:blur={handleBlur}
+		class:readonly
+		class:select
+		class:loading
+		class:success
+		class:invalid
+		class:dirty
+		class:has-value={!!value}
+		class:has-placeholder={placeholder !== ''}
+		class:has-label={$$slots.label}
+		style:--label-width="{labelWidth}px"
+		on:pointerup={handleClick}
+		on:click
+		on:pointerdown
 		on:focus
-		on:blur
-		on:input
 		on:keypress
 		on:keydown
 		on:keyup
-		on:click
-	/>
-	{#if suffix}
-		<span class="suffix">{suffix}</span>
-	{/if}
-	{#if $$slots.trailing}
-		<div class="trailing">
-			<slot name="trailing" />
-		</div>
-	{/if}
-</div>
+	>
+		<Ripple />
+		<div class="outline left" />
+		<div class="outline right" />
+		<div class="outline bottom" />
+		{#if $$slots.leading}
+			<div class="leading">
+				<slot {dirty} name="leading" />
+			</div>
+		{/if}
+		{#if $$slots.label}
+			<label in:fly={{ y: 6, opacity: 0 }} for={id} bind:clientWidth={labelWidth}>
+				<slot {dirty} name="label" />{#if required}<span class="star">*</span>{/if}
+			</label>
+		{/if}
+		{#if prefix}
+			<span class="prefix">{prefix}</span>
+		{/if}
+		{#if type === 'select'}{:else}{/if}
+		<input
+			in:fly={{ y: -6, opacity: 0 }}
+			bind:this={inputRef}
+			class="input"
+			{autocomplete}
+			{type}
+			{name}
+			{placeholder}
+			{value}
+			{maxlength}
+			{minlength}
+			{disabled}
+			{required}
+			{tabindex}
+			{readonly}
+			pattern={pattern ? pattern.source : undefined}
+			use:dispatchOnReset
+			on:input={handleInput}
+			on:input={check}
+			on:focus={handleFocus}
+			on:blur={handleBlur}
+			on:focus
+			on:blur
+			on:input
+			on:keypress
+			on:keydown
+			on:keyup
+		/>
+		{#if suffix}
+			<span class="suffix">{suffix}</span>
+		{/if}
+		{#if $$slots.trailing}
+			<div class="trailing">
+				<slot {dirty} name="trailing" />
+			</div>
+		{/if}
+	</fieldset>
+</Dirtiness>
 
 <style lang="scss">
 	:where(.field) {
@@ -220,7 +223,10 @@
 			pointer-events: none;
 		}
 		&.readonly {
-			cursor: not-allowed;
+			cursor: default;
+		}
+		&.select {
+			cursor: pointer;
 		}
 		&.warning {
 			color: red !important;
@@ -277,6 +283,7 @@
 		grid-column: suffix;
 	}
 	input {
+		cursor: inherit;
 		font-family: inherit;
 		font-weight: inherit;
 		font-size: inherit;
@@ -359,7 +366,7 @@
 	}
 	.star {
 		color: col(primary, 900);
-		padding-right: 0.2em;
+		padding-left: 0.2em;
 	}
 
 	// Variants
@@ -384,7 +391,7 @@
 		&.has-value,
 		&.focused {
 			label {
-				top: 1.25em;
+				top: 1.5em;
 				font-size: clamp(11px, 0.5em, 24px);
 			}
 			.prefix,
@@ -395,7 +402,7 @@
 				.prefix,
 				.suffix,
 				input {
-					top: 0.35em;
+					top: 0.45em;
 				}
 			}
 		}
@@ -418,6 +425,9 @@
 		color: col(fg, 700);
 		background: transparent;
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
+		label {
+			opacity: 0.35;
+		}
 		.outline {
 			border-color: col(fg, 900);
 			opacity: 0.2;
@@ -432,7 +442,7 @@
 		&.has-value,
 		&.focused {
 			label {
-				opacity: 0.5;
+				opacity: 0.35;
 				top: 0em;
 				padding-block: 0;
 				font-size: clamp(12px, 0.5em, 24px);
@@ -456,7 +466,7 @@
 			color: col(fg, 300);
 			background: transparent;
 			.outline {
-				opacity: 0.5;
+				opacity: 0.35;
 			}
 		}
 		&.focused {

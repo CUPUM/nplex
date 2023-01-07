@@ -1,9 +1,5 @@
 <script lang="ts" context="module">
-	import type { SignInWithOAuthCredentials } from '@supabase/supabase-js';
-
-	export const providers: Partial<
-		Record<SignInWithOAuthCredentials['provider'], { title: string; filepath: string; svg: string }>
-	> = {
+	export const SOCIAL_ICONS = {
 		linkedin: {
 			title: 'LinkedIn',
 			filepath: '/media/socials/linkedin.svg',
@@ -41,18 +37,18 @@
 		</svg>
 		`,
 		},
-	} as const;
+	} satisfies Record<string, { title: string; filepath: string; svg: string }>;
 </script>
 
 <script lang="ts">
 	import { cssSize } from '$utils/css';
 
-	export let name: keyof typeof providers;
+	export let name: keyof typeof SOCIAL_ICONS;
 	export let size: string | number = '1em';
 </script>
 
 <svg style:--size={cssSize(size)} preserveAspectRatio="xMidYMid">
-	{@html providers[name]?.svg}
+	{@html SOCIAL_ICONS[name]?.svg}
 </svg>
 
 <style lang="scss">
@@ -64,7 +60,6 @@
 		margin: 0;
 		padding: 0;
 		display: inline-block;
-		top: 0.1em;
 
 		& :global(svg) {
 			width: 100%;

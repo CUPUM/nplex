@@ -39,7 +39,6 @@
 
 <style lang="scss">
 	.navbar-button {
-		--bradius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -48,15 +47,14 @@
 		cursor: pointer;
 		font-weight: 500;
 		padding: 0 1.25em;
-		height: calc(var(--ui-height) - 2 * var(--inset, 0px));
-		border-radius: var(--bradius);
+		height: var(--ui-height);
+		border-radius: var(--ui-radius-md);
 		letter-spacing: 0.02em;
 		line-height: 1;
 		color: col(fg, 700);
 		background: col(bg, 100, 0.9);
 		outline: 0px dashed transparent;
 		outline-offset: 0px;
-		transition: all 0.1s, box-shadow 0.25s ease-out;
 		backdrop-filter: blur(12px);
 		&:hover {
 			color: col(bg, 500);

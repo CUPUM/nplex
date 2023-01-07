@@ -1,22 +1,10 @@
-import { queryMessage } from '$routes/MessagesOutlet.svelte';
 import { getDb } from '$utils/database';
-import { COOKIES, SEARCH_PARAMS } from '$utils/enums';
+import { COOKIES, SEARCH_PARAMS, STATUS_CODES } from '$utils/enums';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import type { Actions, RequestEvent } from './$types';
+import type { Actions } from './$types';
 import { setAuthCookie } from './common';
-
-function re(event: RequestEvent) {
-	// To do: replace referer by a redirect search param.
-	const re = event.request.headers.get('referer');
-	if (re) {
-		let reurl = new URL(re);
-		reurl.searchParams.delete(SEARCH_PARAMS.AUTH_MODAL);
-		const to = (reurl.pathname === '/' ? '/compte' : reurl.pathname) + reurl.search;
-		throw redirect(302, to);
-	}
-}
 
 export const actions: Actions = {
 	/**
@@ -47,11 +35,15 @@ export const actions: Actions = {
 			},
 		});
 		if (signupRes.error || !signupRes.data.session) {
-			return fail(500, { message: "Erreur d'authentification", ...signupRes.error });
+			return fail(500, { authError: signupRes.error });
 		}
 		// Modify below if email confirmation required.
 		setAuthCookie(event, signupRes.data.session);
-		re(event);
+		// re(event);
+		const re = event.url.searchParams.get(SEARCH_PARAMS.REDIRECT);
+		if (re) {
+			throw redirect(STATUS_CODES.TemporaryRedirect, re);
+		}
 	},
 	/**
 	 * Validate inputs permissively (with fewer constraints than on signup), then against database
@@ -72,22 +64,20 @@ export const actions: Actions = {
 		}
 		const db = await getDb(event);
 		const signinRes = await db.auth.signInWithPassword({ ...v.data });
-		if (signinRes.error || !signinRes.data.session) {
-			const re = event.request.headers.get('referer');
-			if (!re) {
-				throw error(500, {
-					message: "Impossible de récupérer l'adresse du référant.",
-					...signinRes.error,
-				});
-			}
-			const to = queryMessage(re, {
-				content: JSON.stringify(signinRes.error),
-				type: 'error',
-			}).toString();
-			throw redirect(300, to);
+		if (signinRes.error) {
+			return fail(STATUS_CODES.InternalServerError, { authError: signinRes.error });
+		}
+		if (!signinRes.data.session) {
+			throw error(STATUS_CODES.ExpectationFailed, {
+				message:
+					'Il y a eu un problème lors de la récupération de votre session. Veuillez essayer à nouveau.',
+			});
 		}
 		setAuthCookie(event, signinRes.data.session);
-		re(event);
+		const re = event.url.searchParams.get(SEARCH_PARAMS.REDIRECT);
+		if (re) {
+			throw redirect(STATUS_CODES.TemporaryRedirect, re);
+		}
 	},
 	/**
 	 * Sign out the user based on auth cookie data. (Signing out at the supabase-auth level should
@@ -97,15 +87,7 @@ export const actions: Actions = {
 		const db = await getDb(event);
 		const signoutRes = await db.auth.signOut();
 		if (signoutRes.error) {
-			const re = event.request.headers.get('referer');
-			if (!re) {
-				throw error(500, { ...signoutRes.error });
-			}
-			const to = queryMessage(re, {
-				content: JSON.stringify(signoutRes.error),
-				type: 'error',
-			}).toString();
-			throw redirect(300, to);
+			return fail(STATUS_CODES.InternalServerError, { authError: signoutRes.error });
 		}
 		event.cookies.delete(COOKIES.SESSION, { path: '/' });
 	},

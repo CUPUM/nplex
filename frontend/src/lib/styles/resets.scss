@@ -61,7 +61,8 @@
 }
 
 :where(ol),
-:where(ul) {
+:where(ul),
+:where(menu) {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -124,11 +125,20 @@ input[type='search']::-webkit-search-results-decoration {
 	display: none;
 }
 
-:-webkit-autofill,
-:-webkit-autofill:hover,
-:-webkit-autofill:focus,
-:-webkit-autofill:active {
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
 	transition: all 0s 50000s;
+}
+
+input:-webkit-autofill::first-line,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-webkit {
+	font-family: inherit !important;
 }
 
 :where(code) {

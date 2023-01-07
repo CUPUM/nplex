@@ -2,7 +2,7 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import Icon from '$components/Icon.svelte';
 	import { EDITOR_ROUTES } from '$utils/routes';
-	import { EDITABLES_HASHES } from './(user)/common';
+	import { EDITABLES_HASHES } from './(user)/editer/common';
 
 	let loading: string | null = null;
 

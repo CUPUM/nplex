@@ -1,7 +1,6 @@
 import { writeFile } from 'fs';
-import { relative, resolve } from 'path';
+import { resolve } from 'path';
 import prettier from 'prettier';
-import { cwd } from 'process';
 import type { Plugin } from 'vite';
 import { PRETTIER_CONFIG } from '../common';
 import { fade, vars, type Theme } from './utils';

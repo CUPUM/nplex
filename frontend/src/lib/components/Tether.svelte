@@ -1,3 +1,5 @@
+<svelte:options accessors />
+
 <!--
 	@component
 	Tethers slotted content to a given HTMLElement or to the mouse-position.
@@ -10,98 +12,98 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import { cssSize } from '$utils/css';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 
-	export let place: 'top' | 'right' | 'bottom' | 'left';
-	export let align: 'start' | 'center' | 'end' | 'stretch';
-	export let distance: number | string;
-	export let controlRef: HTMLElement | undefined = undefined;
+	export let place: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
+	export let align: 'start' | 'center' | 'end' | 'stretch' = 'start';
+	export let distance: number | string = 0;
 
+	/**
+	 * Anchoring div, with "display: contents" style.
+	 */
+	export let anchorRef: HTMLElement | undefined = undefined;
+
+	/**
+	 * Attached content.
+	 */
 	let tetherRef: HTMLElement;
+
 	let mutationObs: MutationObserver;
-	let controlRefPresenceObs: MutationObserver;
 	let resizeObs: ResizeObserver;
 	let x: number;
 	let y: number;
 	let w: number;
 	let h: number;
-	let destructors: () => void;
+	let dispose: () => void;
 
 	function updatePosition() {
-		if (controlRef) {
-			y = controlRef.offsetTop;
-			x = controlRef.offsetLeft;
-			w = controlRef.offsetWidth;
-			h = controlRef.offsetHeight;
+		if (anchorRef?.firstElementChild instanceof HTMLElement) {
+			y = anchorRef.firstElementChild.offsetTop;
+			x = anchorRef.firstElementChild.offsetLeft;
+			w = anchorRef.firstElementChild.offsetWidth;
+			h = anchorRef.firstElementChild.offsetHeight;
 		}
 	}
 
-	function updateControlRef(e?: MutationRecord[]) {
-		if (
-			!controlRef ||
-			(e &&
-				e.some((m) =>
-					controlRef instanceof Element
-						? Array.from(m.removedNodes).includes(controlRef)
-						: false
-				))
-		) {
-			if (tetherRef.previousElementSibling instanceof HTMLElement) {
-				controlRef = tetherRef.previousElementSibling ?? undefined;
-			}
-		}
-	}
-
-	function tether(control: HTMLElement) {
-		if (destructors) destructors();
-		control.addEventListener('transitionend', updatePosition);
+	function tether(anchor: HTMLElement) {
+		anchor.addEventListener('transitionend', updatePosition);
 		resizeObs = new ResizeObserver(updatePosition);
 		mutationObs = new MutationObserver(updatePosition);
-		controlRefPresenceObs = new MutationObserver(updateControlRef);
-		if (control.offsetParent) {
-			resizeObs.observe(control, {});
-			resizeObs.observe(control.offsetParent, {});
-			mutationObs.observe(control, { attributes: true });
-			mutationObs.observe(control.offsetParent, { attributes: true });
-			controlRefPresenceObs.observe(control.offsetParent, { childList: true });
+		if (anchor.offsetParent) {
+			resizeObs.observe(anchor, {});
+			resizeObs.observe(anchor.offsetParent, {});
+			mutationObs.observe(anchor, { attributes: true });
+			mutationObs.observe(anchor.offsetParent, { attributes: true });
 		}
-		destructors = () => {
-			control.removeEventListener('transitionend', updatePosition);
+		dispose = () => {
+			anchor.removeEventListener('transitionend', updatePosition);
 			resizeObs?.disconnect();
 			mutationObs?.disconnect();
-			controlRefPresenceObs?.disconnect();
 		};
 	}
 
-	$: if (controlRef) {
-		tether(controlRef);
+	$: if (anchorRef) {
+		tether(anchorRef);
+		updatePosition();
 	}
 
-	onMount(() => {
-		updateControlRef();
-		updatePosition();
-	});
-
 	onDestroy(() => {
-		if (destructors) destructors();
+		if (dispose) {
+			dispose();
+		}
 	});
 </script>
 
-<slot name="control" />
 <div
-	class="tether {place} {align}"
-	bind:this={tetherRef}
+	bind:this={anchorRef}
+	class="anchor"
 	use:clickoutside
+	on:clickoutside|self
+	on:pointerdown|self
+	on:pointerup|self
+	on:pointerleave|self
+	on:pointerenter|self
+>
+	<slot name="anchor" />
+</div>
+<div
+	bind:this={tetherRef}
+	class="tether {place} {align}"
 	style:--x="{x}px"
 	style:--y="{y}px"
 	style:--w="{w}px"
 	style:--h="{h}px"
 	style:--d={cssSize(distance)}
 >
-	<slot {controlRef} />
+	<slot {anchorRef} />
 </div>
 
 <style lang="scss">
+	.anchor {
+		position: relative;
+		display: contents !important;
+	}
+
 	.tether {
 		pointer-events: none;
 		user-select: none;

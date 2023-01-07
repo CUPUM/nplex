@@ -7,19 +7,20 @@
  */
 
 :root {
-	// Dynamic variables bound in root layout or somehow available app-wide.
-	--ui-nav-px: 0px;
+	--ui-nav-px: 85px;
 	--ui-scroll: 0;
 	--ui-scroll-px: 0px;
 	// Nestable props from inherit function (see utils.scss). Repeated here for IDE autocompletion.
+	// TO DEPRECATE.
 	--inset: 0px;
 	--inset-parent: 0px;
 	--inset-sum: 0px;
 	--ui-inset: 3px;
+	// End nestable props
 	--ui-gutter: 1.5rem;
 	--ui-height: 3.5em;
-	--ui-pad-x: 1.25em;
-	--ui-width-main: 1600px;
+	--ui-pad-x: 1.3em;
+	--ui-width-main: 1480px;
 	--ui-width-lg: 1200px;
 	--ui-width-md: 900px;
 	--ui-width-p: 600px;

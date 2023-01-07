@@ -97,7 +97,6 @@
 </script>
 
 <script lang="ts">
-	import { clickoutside } from '$actions/clickoutside';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import Button from '$components/Button.svelte';
@@ -106,12 +105,13 @@
 	import FieldReset from '$components/FieldReset.svelte';
 	import FieldTogglePassword from '$components/FieldTogglePassword.svelte';
 	import Icon from '$components/Icon.svelte';
-	import Logo from '$components/Logo.svelte';
-	import ProviderLogo, { providers } from '$components/ProviderLogo.svelte';
-	import { THEME_NAMES } from '$utils/themes';
+	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
+	import SocialIcon, { SOCIAL_ICONS } from '$components/SocialIcon.svelte';
+	import { THEMES } from '$utils/themes';
 	import { linear } from 'svelte/easing';
 	import { fade, scale, slide } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
+	import { USER_ROUTES } from './(user)/u/common';
 
 	const Action = {
 		SignIn: '/api/auth?/signin',
@@ -119,23 +119,31 @@
 		ForgotPassword: '/api/auth?/forgot',
 		UseProvider: '/api/auth?/provider',
 	} as const;
+
 	let currentAction: string | null = null;
-	let providerNames = Object.keys(providers) as (keyof typeof providers)[];
+	const providers = [
+		'facebook',
+		'google',
+		'linkedin',
+		'twitter',
+	] satisfies (keyof typeof SOCIAL_ICONS)[];
+
+	$: console.log($page.url.pathname);
 </script>
 
 {#if $authModal}
 	<div
 		class="bg"
 		aria-hidden="true"
-		data-theme={THEME_NAMES.light}
+		data-theme={THEMES.light}
 		transition:fade={{ duration: 150, easing: linear }}
+		on:pointerdown={() => authModal.close()}
 	/>
-	<dialog data-theme={THEME_NAMES.light}>
+	<dialog data-theme={THEMES.light}>
 		<form
+			autocomplete="off"
 			class="sign"
 			transition:scale={{ start: 0.95 }}
-			use:clickoutside={true}
-			on:clickoutside={() => authModal.close()}
 			action={$authModal === AUTH_MODES.SignUp ? Action.SignUp : Action.SignIn}
 			method="POST"
 			use:enhance={({ form, data, action, cancel }) => {
@@ -146,7 +154,11 @@
 				};
 			}}
 		>
-			<Logo class="logo" />
+			<a href="/" class="logo">
+				<svg xmlns="http://www.w3.org/2000/svg" overflow="visible">
+					<use href={LOGO_SYMBOLS_HREFS.full} fill="currentColor" />
+				</svg>
+			</a>
 			<fieldset class="fields">
 				<Field required class="fill-row" variant="default" name="email" type="email">
 					<FieldIcon name="letter" slot="leading" />
@@ -164,7 +176,7 @@
 				{#if $authModal === AUTH_MODES.SignUp}
 					<div class="signup fill-row" transition:slide|local={{ duration: 200 }}>
 						<Field required variant="default" name="first_name">
-							<svelte:fragment slot="label">Prénom/pseudonyme</svelte:fragment>
+							<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
 							<svelte:fragment slot="trailing">
 								<FieldReset />
 							</svelte:fragment>
@@ -184,7 +196,9 @@
 					type="submit"
 					variant={$authModal === AUTH_MODES.SignIn ? 'cta' : 'default'}
 					contentAlign="center"
-					formaction={Action.SignIn}
+					formaction="{Action.SignIn}{$page.url.pathname === '/'
+						? `&${SEARCH_PARAMS.REDIRECT}=${USER_ROUTES.home.pathname}`
+						: ''}"
 					loading={currentAction === Action.SignIn}
 				>
 					<Icon name="login" slot="trailing" />
@@ -201,21 +215,23 @@
 						? authModal.getUrl({ url: $page.url, open: true, mode: AUTH_MODES.SignUp }).toString()
 						: undefined}
 					contentAlign="center"
-					formaction={Action.SignUp}
+					formaction="{Action.SignUp}{$page.url.pathname === '/'
+						? `&${SEARCH_PARAMS.REDIRECT}=${USER_ROUTES.home.pathname}`
+						: ''}"
 					loading={currentAction === Action.SignUp}
 				>
-					Créer un compte
+					Créer {$authModal === AUTH_MODES.SignUp ? 'mon' : 'un'} compte
 				</Button>
 			</fieldset>
 			<hr />
 			<fieldset class="providers" disabled>
-				<span>Me connecter avec&ensp;<subtle>(non-disponible)</subtle></span>
+				<span>Me connecter avec:</span>
 				<ul class="scroll">
-					{#each providerNames as name, i}
+					{#each providers as name, i}
 						<li>
 							<Button variant="outlined" style="flex: none;" disabled>
-								<ProviderLogo {name} slot="leading" />
-								{providers[name]?.title}
+								<SocialIcon {name} slot="leading" />
+								{SOCIAL_ICONS[name]?.title}
 							</Button>
 						</li>
 					{/each}
@@ -227,6 +243,7 @@
 
 <style lang="scss">
 	.bg {
+		cursor: pointer;
 		z-index: 1000;
 		position: fixed;
 		width: 100vw;
@@ -237,6 +254,7 @@
 	}
 
 	dialog {
+		pointer-events: none;
 		position: fixed;
 		z-index: 1000;
 		display: flex;
@@ -251,98 +269,102 @@
 		background: transparent;
 		border: none;
 		perspective: 1000px;
+	}
 
-		:global(.logo) {
-			color: col(primary, 500);
-			font-size: var(--ui-text-2xl);
-			padding: var(--ui-text-lg);
-			margin: var(--ui-text-md) auto;
+	form {
+		pointer-events: all;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		flex-wrap: nowrap;
+		width: 100%;
+		max-width: 450px;
+		max-height: 100%;
+		background: col(bg, 300);
+		box-shadow: 0 3rem 6rem -3rem rgba(0, 0, 20, 0.5), 0 3rem 3rem 2rem rgba(0, 0, 0, 0.1);
+		padding: 0;
+		border-radius: var(--ui-radius-lg);
+		border: none;
+		overflow: hidden;
+	}
+
+	.logo {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		color: col(primary, 500);
+		border-bottom: 1px solid col(fg, 100, 0.05);
+		padding: calc(2 * var(--ui-gutter)) var(--ui-gutter);
+		margin-bottom: 2.5rem;
+
+		svg {
+			height: var(--ui-text-xl);
 		}
+	}
 
-		form {
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-start;
-			flex-wrap: nowrap;
-			width: 100%;
-			max-width: 450px;
-			max-height: 100%;
-			background: col(bg, 500);
-			// box-shadow: 0 3rem 8rem -4rem black, 0 3rem 3rem 2rem rgba(0, 0, 0, 0.1);
-			padding: 0;
-			border-radius: 1.5rem;
-			border: none;
-			overflow: hidden;
-		}
+	.fields {
+		position: relative;
+		width: 100%;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 1rem;
+		border: none;
+		padding: 0 2.5rem;
+		margin: 0;
+		min-width: 0;
+		overflow-y: auto;
+	}
 
-		.fields {
-			position: relative;
-			width: 100%;
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			flex-direction: column;
-			align-items: stretch;
-			gap: 1rem;
-			border: none;
-			padding: 0 2.5rem;
-			margin: 0;
-			min-width: 0;
-			overflow-y: auto;
-		}
+	form :global(.fill-row) {
+		grid-column: 1 / -1;
+	}
 
-		:global(.fill-row) {
-			grid-column: 1 / -1;
-		}
+	form :global(.small-button) {
+		font-size: var(--ui-text-sm);
+	}
 
-		:global(.small-button) {
-			font-size: var(--ui-text-xs);
-		}
+	.signup {
+		display: flex;
+		flex-direction: column;
+		gap: inherit;
+	}
 
-		.signup {
-			display: flex;
-			flex-direction: column;
-			gap: inherit;
-		}
+	hr {
+		margin: 2rem 0;
+	}
 
-		hr {
-			height: 1px;
-			margin: 2rem 0;
-			border: none;
-			background: col(fg, 100, 0.05);
-		}
+	.providers {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		border: none;
+		margin: 0;
+		gap: 1rem;
+		padding: 0;
+		min-width: 0;
 
-		.providers {
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			border: none;
-			margin: 0;
-			gap: 2rem;
-			padding: 0;
-			min-width: 0;
-			span {
-				display: block;
-				margin: 0 2.5rem;
-				text-align: center;
-				opacity: 0.5;
-				font-size: var(--ui-text-xs);
-			}
-			ul {
-				position: relative;
-				list-style-type: none;
-				margin: 0;
-				display: flex;
-				flex-direction: row;
-				gap: 1rem;
-				padding: 2rem 3rem;
-				padding-top: 0;
-				overflow-x: scroll;
-			}
-		}
-
-		subtle {
+		span {
+			display: block;
+			margin: 0 2.5rem;
+			text-align: center;
 			opacity: 0.5;
+			font-size: var(--ui-text-sm);
+		}
+
+		ul {
+			position: relative;
+			list-style-type: none;
+			margin: 0;
+			display: flex;
+			flex-direction: row;
+			gap: 1rem;
+			padding: 2rem 3rem;
+			padding-top: 0;
+			overflow-x: scroll;
 		}
 	}
 </style>

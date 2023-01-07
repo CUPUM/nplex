@@ -9,7 +9,7 @@
 
 import { CATEGORIES, type Category } from './enums';
 
-interface Route {
+export type Route<T = {}> = {
 	/**
 	 * Non-based full absolute pathname, with leading slash.
 	 */
@@ -18,70 +18,58 @@ interface Route {
 	 * Label to be used in navbars or as a label for other elements. Routes not calling for a title
 	 * should not need to be defined here.
 	 */
-	label: string;
-}
+	title: string;
+} & T;
+
+export type Routes<T = {}> = Record<string, Route<T>>;
 
 export const MAIN_ROUTES = {
 	about: {
 		pathname: '/a-propos',
-		label: 'À propos',
+		title: 'À propos',
 	},
 	guides: {
 		pathname: '/guides',
-		label: 'Guides',
+		title: 'Guides',
 	},
 	explore: {
 		pathname: '/',
-		label: 'Explorer',
+		title: 'Explorer',
 	},
-} satisfies Record<string, Route>;
+} satisfies Routes;
 
 export const USER_BASE_ROUTE = {
-	pathname: '/compte',
-	label: 'Mon compte',
+	pathname: '/u',
+	title: 'Mon compte',
 } satisfies Route;
-
-export const USER_ROUTES = {
-	// Add
-} satisfies Record<string, Route>;
-
-interface ExploreRoute extends Route {
-	category: Category;
-}
 
 export const EXPLORE_ROUTES = {
 	projects: {
 		pathname: '/projets',
-		label: 'Projets',
+		title: 'Projets',
 		category: CATEGORIES.PROJECTS,
 	},
 	organisations: {
 		pathname: '/organisations',
-		label: 'Organisations',
+		title: 'Organisations',
 		category: CATEGORIES.ORGANISATIONS,
 	},
 	actors: {
 		pathname: '/acteurs',
-		label: 'Acteurs',
+		title: 'Acteurs',
 		category: CATEGORIES.ACTORS,
 	},
-} satisfies Record<string, ExploreRoute>;
+} satisfies Routes<{ category: Category }>;
 
 export const EDITOR_BASE_ROUTE = {
 	pathname: '/editer',
-	label: 'Éditer',
+	title: 'Éditer',
 } satisfies Route;
-
-interface EditorRoute extends Route {
-	category: Category;
-	disabled?: boolean;
-	subpath: string;
-}
 
 export const EDITOR_ROUTES = {
 	project: {
 		subpath: '/projet',
-		label: 'Projet',
+		title: 'Projet',
 		category: 'projects',
 		get pathname() {
 			return EDITOR_BASE_ROUTE.pathname + this.subpath;
@@ -89,7 +77,7 @@ export const EDITOR_ROUTES = {
 	},
 	descriptors: {
 		subpath: '/descripteurs',
-		label: 'Descripteurs de projet',
+		title: 'Descripteurs de projet',
 		category: 'projects',
 		get pathname() {
 			return EDITOR_BASE_ROUTE.pathname + this.subpath;
@@ -97,7 +85,7 @@ export const EDITOR_ROUTES = {
 	},
 	organisation: {
 		subpath: '/organisation',
-		label: 'Organisation',
+		title: 'Organisation',
 		category: 'organisations',
 		disabled: true,
 		get pathname() {
@@ -106,11 +94,11 @@ export const EDITOR_ROUTES = {
 	},
 	actor: {
 		subpath: '/acteur',
-		label: 'Acteur',
+		title: 'Acteur',
 		category: 'actors',
 		disabled: true,
 		get pathname() {
 			return EDITOR_BASE_ROUTE.pathname + this.subpath;
 		},
 	},
-} satisfies Record<string, EditorRoute>;
+} satisfies Routes<{ category: Category; disabled?: boolean; subpath: string }>;

@@ -4,34 +4,66 @@
 	Main navigation bar singleton located in the app's root layout.
 -->
 <script lang="ts" context="module">
+	import { intersection, INTERSECTION_EVENT } from '$actions/intersection';
+
+	/**
+	 * Singleton store to apply a theme to the navbar different than root theme.
+	 */
 	export const navbarTheme = (function () {
-		const { subscribe, set } = writable<ThemeName | null>(null);
+		const { subscribe, set } = writable<ThemeName | undefined>(undefined);
 		return {
 			subscribe,
 			set,
-			reset: () => set(null),
+			reset: () => set(undefined),
 		};
 	})();
 
-	const SCROLL_LOCK_KEY = 'nav-scroll-lock';
+	/**
+	 * Action to update the navbar's theme based on element intersection.
+	 */
+	export function setNavbarTheme(
+		element: HTMLElement,
+		options: { theme: ThemeName; observerOptions?: IntersectionObserverInit }
+	): SvelteActionReturnType {
+		const intersect = intersection(element, options.observerOptions);
+		function handleEnter() {
+			navbarTheme.set(options.theme);
+		}
+		function handleLeave() {
+			navbarTheme.reset();
+		}
+		element.addEventListener(INTERSECTION_EVENT.enter, handleEnter);
+		element.addEventListener(INTERSECTION_EVENT.leave, handleLeave);
+		return {
+			update(newOptions) {
+				if (newOptions.observerOptions) {
+					intersect.update(newOptions.observerOptions);
+				}
+			},
+			destroy() {
+				intersect.destroy();
+				handleLeave();
+			},
+		};
+	}
 </script>
 
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Avatar from '$components/Avatar.svelte';
 	import Icon from '$components/Icon.svelte';
-	import Logo from '$components/Logo.svelte';
+	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
 	import { EDITOR_BASE_ROUTE, EXPLORE_ROUTES, MAIN_ROUTES, USER_BASE_ROUTE } from '$utils/routes';
-	import { THEME_NAMES, type ThemeName } from '$utils/themes';
+	import { THEMES, type ThemeName } from '$utils/themes';
+	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { authModal } from './AuthModal.svelte';
 	import NavbarButton from './NavbarButton.svelte';
 	import NavbarEditorMenu from './NavbarEditorMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
 
-	// export let navbarHeight;
-
+	let mounted = false;
 	let open = false;
 	let rootsegment: string;
 
@@ -44,38 +76,38 @@
 		open = !open;
 	}
 
-	// $: if (open) {
-	// 	rootScroll.lock(SCROLL_LOCK_KEY);
-	// } else {
-	// 	rootScroll.unlock(SCROLL_LOCK_KEY);
-	// }
+	onMount(() => {
+		mounted = true;
+	});
 </script>
 
-<header data-theme={$navbarTheme ? THEME_NAMES[$navbarTheme] : undefined}>
-	<menu class="toggle ">
+<header data-theme={$navbarTheme ? THEMES[$navbarTheme] : undefined}>
+	<menu class="toggle">
 		<NavbarButton on:pointerdown={toggle} round>
 			<Icon name={open ? 'cross' : 'arrow-down-right'} strokeWidth="3" />
 		</NavbarButton>
 	</menu>
-	<div class="navs" class:open>
+	<div class="navs" class:open class:unmounted={!mounted}>
 		<nav class="main">
 			<NavbarButton round href="/">
-				<Logo short style="font-size: larger" />
+				<svg xmlns="http://www.w3.org/2000/svg" height="1em" width="100%">
+					<use href={LOGO_SYMBOLS_HREFS.monogram} fill="currentColor" />
+				</svg>
 			</NavbarButton>
 			{#each mainNav as route}
 				<NavbarButton href={route.pathname} current={route.pathname === rootsegment}>
-					{route.label}
+					{route.title}
 				</NavbarButton>
 			{/each}
 		</nav>
-		<nav class="category ">
+		<nav class="category" hidden={!$page.data.showCategoryNav}>
 			{#each exploreNav as r}
 				<NavbarButton
 					group={'category'}
 					href={r.pathname}
 					current={$page.url.pathname.startsWith(r.pathname)}
 				>
-					{r.label}
+					{r.title}
 				</NavbarButton>
 			{/each}
 		</nav>
@@ -195,21 +227,35 @@
 	}
 
 	nav {
+		--d: calc(0.35s + var(--i, 0) * 0.1s);
 		position: relative;
 		pointer-events: all;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: 3px;
+		gap: 2px;
+		transition: transform 0.25s cubic-bezier(0, 0, 0, 1) var(--d), opacity 0.25s ease-out var(--d);
+
 		@include tablet {
 			flex-direction: column;
 			align-items: flex-start;
 		}
 	}
 
+	.unmounted nav,
+	nav[hidden] {
+		transform: translateY(-12px);
+		opacity: 0;
+	}
+
+	nav[hidden] {
+		transition-delay: 0s;
+	}
+
 	.main {
 		grid-column: main;
 		justify-content: flex-start;
+		--i: 0;
 	}
 
 	.category {
@@ -219,21 +265,12 @@
 		backdrop-filter: blur(12px);
 		background: col(fg, 100, 0.1);
 		box-shadow: 0 0 0 2px col(fg, 100, 0.1);
-
-		// :global([data-group='category']) {
-		// 	&:not(:first-of-type) {
-		// 		border-top-left-radius: 0;
-		// 		border-bottom-left-radius: 0;
-		// 	}
-		// 	&:not(:last-of-type) {
-		// 		border-top-right-radius: 0;
-		// 		border-bottom-right-radius: 0;
-		// 	}
-		// }
+		--i: 1;
 	}
 
 	.session {
 		grid-column: session;
 		justify-content: flex-end;
+		--i: 2;
 	}
 </style>

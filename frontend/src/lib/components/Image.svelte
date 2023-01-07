@@ -32,7 +32,6 @@
 	export let src: string | undefined = undefined;
 	export let srcset: SourceSpecification[] | undefined = undefined;
 	export let alt: string;
-	export let color: string | string[] | undefined = undefined;
 	export let objectFit: css.Properties['objectFit'] = 'cover';
 	export let style: string | undefined = undefined;
 	let className: string = '';
@@ -41,41 +40,6 @@
 	let setsrc: string | undefined = undefined;
 	let error = false;
 	let loading = false;
-	$: background = formatBackground(color);
-
-	function formatBackground(input: typeof color) {
-		if (!input) {
-			return null;
-		}
-		if (typeof input === 'string') {
-			return input;
-		}
-		if (Array.isArray(input)) {
-			const bg = `linear-gradient(90deg, ${input[0]} -10%, ${input[input.length - 1]} 110%)`;
-			return input
-				.map((c) => {
-					const x = (Math.random() * GRADIENT_AREA - GRADIENT_OUTSET).toFixed(1);
-					const y = (Math.random() * GRADIENT_AREA - GRADIENT_OUTSET).toFixed(1);
-					const spread = (GRADIENT_SPREAD_MIN + Math.random() * GRADIENT_SPREAD_RANGE).toFixed(1);
-					return `radial-gradient(circle at ${x}% ${y}%, ${c} 0px, transparent ${spread}%)`;
-				})
-				.join(',');
-		}
-	}
-
-	function formatSrcset(input: typeof srcset) {
-		if (!input) {
-			return undefined;
-		}
-		return input.map((s) => `${s.src} ${s.width}w`).join(', ');
-	}
-
-	function formatSizes(input: typeof srcset) {
-		if (!input) {
-			return undefined;
-		}
-		return input.map((s) => `(${s.media.condition}: ${s.media.width}px) ${s.width}px`).join(', ');
-	}
 
 	function handleError(e: Event) {
 		error = Boolean(src);
@@ -96,17 +60,7 @@
 	});
 </script>
 
-<picture
-	class={className}
-	{style}
-	style:--background={background}
-	on:click
-	on:mouseover
-	on:mousedown
-	on:focus
-	on:blur
-	on:keypress
->
+<picture class={className} {style} on:click on:mouseover on:mousedown on:focus on:blur on:keypress>
 	{#if srcset}
 		{#each srcset as s}
 			<source srcset={s.src} media={String(s.media)} />
@@ -133,8 +87,8 @@
 		</slot>
 	{/if}
 	{#if error || !src}
-		<div class="no-img">
-			<slot name="placeholder" />
+		<div class="placeholder">
+			<slot />
 			{#if error}
 				<slot name="error">
 					<Icon class="icon" name="image-delete" />
@@ -161,7 +115,7 @@
 		}
 	}
 
-	.no-img {
+	.placeholder {
 		border-radius: inherit;
 		width: 100%;
 		height: 100%;
@@ -171,10 +125,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: var(--background, col(bg, 900));
+		background: col(bg, 900);
 
 		:global(.icon) {
-			filter: invert(1);
 			font-size: 1.5rem;
 			opacity: 0.4;
 		}

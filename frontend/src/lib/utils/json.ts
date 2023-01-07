@@ -26,8 +26,8 @@ export const ES6JSON = {
 		return value;
 	},
 	/**
-	 * Use this function to customize JSON.parse behavior and ensure proper revival of stringified
-	 * ES6 Maps and Sets.
+	 * Use this function to customize JSON.parse behavior and ensure proper revival of stringified ES6
+	 * Maps and Sets.
 	 */
 	reviver: (key: any, value: any) => {
 		if (value instanceof Object && value._flag === ES6JSON._flag) {

@@ -3,8 +3,16 @@
 	Attaches a tooltip element to the last HTML element passed through the component's default slot.
 
  -->
+<script lang="ts" context="module">
+	const TIP_ROUNDNESS = 20;
+	const TIP =
+		`M 0,-0 C ${TIP_ROUNDNESS},0 ` +
+		`${50 - TIP_ROUNDNESS},50 50,50 C ${50 + TIP_ROUNDNESS},50 ` +
+		`${100 - TIP_ROUNDNESS},0 100,-0 Z`;
+</script>
+
 <script lang="ts">
-	import { THEME_NAMES } from '$utils/themes';
+	import { THEMES } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -18,14 +26,6 @@
 	export let align: ComponentProps<Tether>['align'] = 'center';
 	export let distance: ComponentProps<Tether>['distance'] = 5;
 
-	let controlRef: HTMLElement;
-	let destructors: () => void;
-	const tipRoundness = 20;
-	const tip =
-		`M 0,-0 C ${tipRoundness},0 ` +
-		`${50 - tipRoundness},50 50,50 C ${50 + tipRoundness},50 ` +
-		`${100 - tipRoundness},0 100,-0 Z`;
-
 	function show() {
 		open = true;
 	}
@@ -37,30 +37,30 @@
 	$: if (!message || disabled) {
 		hide();
 	}
-
-	function setTriggers(ref: HTMLElement) {
-		if (destructors) destructors();
-		const start = hover ? 'mouseenter' : 'click';
-		const end = hover ? 'mouseleave' : 'clickoutside';
-		ref.addEventListener(start, show);
-		ref.addEventListener(end, hide);
-		destructors = () => {
-			ref.removeEventListener(start, show);
-			ref.removeEventListener(end, hide);
-		};
-	}
-
-	$: if (controlRef) {
-		setTriggers(controlRef);
-	}
 </script>
 
-<Tether bind:controlRef {place} {align} {distance}>
-	<slot slot="control" {open} />
+<Tether
+	on:pointerdown={() => {
+		if (!hover) show();
+	}}
+	on:clickoutside={() => {
+		if (!hover) hide();
+	}}
+	on:pointerenter={() => {
+		if (hover) show();
+	}}
+	on:pointerleave={() => {
+		if (hover) hide();
+	}}
+	{place}
+	{align}
+	{distance}
+>
+	<slot slot="anchor" {open} />
 	{#if open}
 		<div
 			class="tooltip {place} {align}"
-			data-theme={THEME_NAMES.dark}
+			data-theme={THEMES.dark}
 			in:scale={{ start: 0.5, easing: expoOut, duration: 100 }}
 			out:scale={{ start: 0.75, easing: expoIn, duration: 75 }}
 		>
@@ -68,7 +68,7 @@
 				{message}
 			</slot>
 			<svg class="tip" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-				<path d={tip} />
+				<path d={TIP} />
 			</svg>
 		</div>
 	{/if}
@@ -89,9 +89,9 @@
 		font-size: var(--ui-text-sm);
 		padding: 0.5em 1em 0.6em 1em;
 		margin: 0;
-		background: col(bg, 900, 0.95);
+		background: col(bg, 900, 0.96);
 		color: col(fg, 100);
-		border-radius: 0.5em;
+		border-radius: 0.75em;
 		letter-spacing: 0.02em;
 		transform-origin: inherit;
 		z-index: 1000;
@@ -107,7 +107,7 @@
 		background: transparent;
 		overflow: visible;
 		path {
-			fill: col(bg, 900, 0.95);
+			fill: col(bg, 900, 0.96);
 		}
 	}
 

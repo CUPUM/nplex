@@ -1,11 +1,16 @@
+<!--
+	@component
+	# Popover
+	
+-->
 <script lang="ts" context="module">
-	let latest: HTMLElement | null = null;
+	export const POPOVER_OPEN_ATTR = 'data-popover-open' as const;
+	const TIME_BUFFER = 25;
 
-	const OPEN_CLASS = 'popover-control-open';
+	let latest: HTMLElement | null = null;
 </script>
 
 <script lang="ts">
-	import { clickoutside } from '$actions/clickoutside';
 	import { afterNavigate } from '$app/navigation';
 	import { cssSize } from '$utils/css';
 	import { tick, type ComponentProps } from 'svelte';
@@ -13,66 +18,61 @@
 	import { fade, scale } from 'svelte/transition';
 	import Tether from './Tether.svelte';
 
-	export let open: boolean = false;
 	export let hover: boolean = false;
+	export let open: boolean = false;
 	export let closeOnNav: boolean = true;
 	export let bg: boolean = false;
 	export let place: ComponentProps<Tether>['place'] = 'bottom';
 	export let align: ComponentProps<Tether>['align'] = 'center';
-	export let distance: ComponentProps<Tether>['distance'] = 5;
+	export let distance: NonNullable<ComponentProps<Tether>['distance']> = 5;
 
-	let controlRef: HTMLElement;
-	let destructors: () => void;
-	let timeBuffer = 25;
-	let timer: any;
+	let tether: Tether;
+	let contentRef: HTMLElement;
+	let timeout: any;
 
 	$: if (open) {
-		const cl = ['active'];
-		if (bg) {
-			cl.push(OPEN_CLASS);
-		}
-		controlRef?.classList.add(...cl);
+		latest = tether?.anchorRef ?? null;
+		tether.anchorRef?.setAttribute(POPOVER_OPEN_ATTR, '');
 	} else {
-		controlRef?.classList.remove('active', OPEN_CLASS);
+		tether?.anchorRef?.removeAttribute(POPOVER_OPEN_ATTR);
 	}
 
-	function show(e?: Event) {
-		latest = controlRef;
-		clearTimeout(timer);
-		open = true;
+	function handleClick(e: Event) {
+		open = !open;
 	}
 
-	function hide(e?: Event) {
-		if (!e || !(e.type === 'mouseleave')) {
-			open = false;
+	function handleClickoutside(e: Event) {
+		if (e instanceof CustomEvent<Event>) {
+			if (e.detail.target instanceof Node && !contentRef?.contains(e.detail.target)) {
+				open = false;
+			}
+		}
+	}
+
+	async function handleLeave(e: Event) {
+		if (!hover) {
 			return;
 		}
-		timer = setTimeout(() => {
+		timeout = setTimeout(() => {
 			open = false;
-		}, timeBuffer);
+			timeout = null;
+		}, TIME_BUFFER);
 	}
 
-	function setTriggers(ref: HTMLElement) {
-		if (destructors) destructors();
-		const start = hover ? 'mouseenter' : 'click';
-		const end = hover ? 'mouseleave' : null;
-		ref.addEventListener(start, show);
-		if (end) ref.addEventListener(end, hide);
-		destructors = () => {
-			ref.removeEventListener(start, show);
-			if (end) ref.removeEventListener(end, hide);
-		};
-	}
-
-	$: if (controlRef) {
-		setTriggers(controlRef);
+	function handleEnter(e: Event) {
+		if (!hover) {
+			return;
+		}
+		open = true;
+		clearTimeout(timeout);
 	}
 
 	afterNavigate(async () => {
 		if (closeOnNav) {
-			// Awaiting a tick avoids conflict with other navigation-related logic (ex.: button loading state check).
+			// Awaiting a tick avoids conflict with other navigation-related logic
+			// (ex.: button loading state check).
 			await tick();
-			hide();
+			open = false;
 		}
 	});
 </script>
@@ -80,21 +80,29 @@
 {#if open && bg}
 	<div class="bg" transition:fade|local={{ duration: 350 }} />
 {/if}
-<Tether bind:controlRef {place} {align} distance="0">
-	<slot name="control" slot="control" {open} />
+<Tether
+	bind:this={tether}
+	{place}
+	{align}
+	distance="0"
+	on:pointerdown={handleClick}
+	on:clickoutside={handleClickoutside}
+	on:pointerleave={handleLeave}
+	on:pointerenter={handleEnter}
+>
+	<slot name="control" slot="anchor" {open} />
 	{#if open}
 		<div
-			on:mouseenter={show}
-			on:mouseleave={hide}
-			use:clickoutside
-			on:clickoutside={hide}
+			on:pointerleave|self={handleLeave}
+			on:pointerenter|self={handleEnter}
+			bind:this={contentRef}
 			class="popover {align} {place}"
 			style:--d={cssSize(distance)}
 			in:scale={{ start: 0.9, easing: expoOut, duration: 100, opacity: 0 }}
 			out:scale|local={{
 				start: 0.8,
 				easing: expoIn,
-				duration: latest === controlRef ? 100 : 0,
+				duration: latest === tether?.anchorRef ? 100 : 0,
 				opacity: 0,
 			}}
 		>
@@ -121,7 +129,7 @@
 		opacity: 0.1;
 	}
 
-	:global(.popover-control-open) {
+	:global([popover-control-open]) {
 		z-index: 999 !important;
 	}
 

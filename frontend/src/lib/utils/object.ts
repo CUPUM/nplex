@@ -15,7 +15,8 @@ export function objectFromFormData<T extends {} = any>(formData: FormData) {
 }
 
 /**
- * Utility function expecting an object and returning an array of flattened keys and their path-end value.
+ * Utility function expecting an object and returning an array of flattened keys and their path-end
+ * value.
  */
 export function flatten(source: Record<string | number, any>): Flattened {
 	return Object.entries(source).reduce<Flattened>((acc, [k, v]) => {
@@ -70,6 +71,9 @@ export function removeEmptyProps<T extends Record<keyof T, any>>(obj: T): Partia
 	return Object.fromEntries(
 		Object.entries(obj)
 			.filter(([k, v]) => v !== null || v !== '' || v !== undefined)
-			.map(([k, v]) => [k, typeof v === 'object' ? removeEmptyProps(v as Record<string | number, unknown>) : v])
+			.map(([k, v]) => [
+				k,
+				typeof v === 'object' ? removeEmptyProps(v as Record<string | number, unknown>) : v,
+			])
 	) as Partial<T>;
 }

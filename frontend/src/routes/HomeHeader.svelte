@@ -1,26 +1,14 @@
 <script lang="ts">
-	import { intersection } from '$actions/intersection';
 	import { browser } from '$app/environment';
 	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
-	import { LOGO_SYMBOLS, LOGO_VIEWBOX } from '$components/Logo2.svelte';
-	import { THEME_NAMES } from '$utils/themes';
-	import { onDestroy } from 'svelte';
+	import { FULL_VIEWBOX, LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
+	import { THEMES } from '$utils/themes';
 	import { fly } from 'svelte/transition';
-	import { navbarTheme } from './Navbar.svelte';
+	import { setNavbarTheme } from './Navbar.svelte';
 
 	export let scrollTarget: HTMLElement;
 
 	let entered = false;
-
-	function enter() {
-		entered = true;
-		navbarTheme.set(THEME_NAMES.dark);
-	}
-
-	function leave() {
-		entered = false;
-		navbarTheme.reset();
-	}
 
 	function consult() {
 		if (browser) {
@@ -36,28 +24,26 @@
 			consult();
 		}
 	}
-
-	onDestroy(() => {
-		leave();
-	});
 </script>
 
 <header
-	use:intersection={{ rootMargin: '-30px 0px 0px 0px' }}
-	on:enter={enter}
-	on:leave={leave}
-	data-theme={THEME_NAMES.dark}
+	use:setNavbarTheme={{ theme: THEMES.dark, observerOptions: { rootMargin: '-30px 0px 0px 0px' } }}
+	on:enter={() => {
+		entered = true;
+	}}
+	on:leave={() => {
+		entered = false;
+	}}
+	data-theme={THEMES.dark}
 >
-	<svg viewBox={LOGO_VIEWBOX} on:click={consult} on:keydown={keydown}>
-		<g>
-			{#if entered}
-				<use in:fly={{ y: 30, delay: 250 }} href={LOGO_SYMBOLS.n.href} />
-				<use in:fly={{ y: 30, delay: 300 }} href={LOGO_SYMBOLS.p.href} />
-				<use in:fly={{ y: 30, delay: 350 }} href={LOGO_SYMBOLS.l.href} />
-				<use in:fly={{ y: 30, delay: 400 }} href={LOGO_SYMBOLS.e.href} />
-				<use in:fly={{ y: 30, delay: 450 }} href={LOGO_SYMBOLS.x.href} />
-			{/if}
-		</g>
+	<svg viewBox={FULL_VIEWBOX} on:click={consult} on:keydown={keydown}>
+		{#if entered}
+			<use in:fly={{ y: 30, delay: 250 }} href={LOGO_SYMBOLS_HREFS.n} />
+			<use in:fly={{ y: 30, delay: 300 }} href={LOGO_SYMBOLS_HREFS.p} />
+			<use in:fly={{ y: 30, delay: 350 }} href={LOGO_SYMBOLS_HREFS.l} />
+			<use in:fly={{ y: 30, delay: 400 }} href={LOGO_SYMBOLS_HREFS.e} />
+			<use in:fly={{ y: 30, delay: 450 }} href={LOGO_SYMBOLS_HREFS.x} />
+		{/if}
 	</svg>
 	<button on:click={consult} class={ICON_CLASSES.HOVER}>
 		<div class="arrow">
@@ -78,15 +64,13 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		margin-top: calc(-1 * var(--ui-nav-px));
 		transition: border-radius 0.15s ease-out;
 	}
 
 	svg {
 		cursor: pointer;
 		width: 250px;
-	}
-
-	g {
 		fill: col(fg, 100);
 	}
 

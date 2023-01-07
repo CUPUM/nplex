@@ -62,7 +62,7 @@
 			opacity: 0;
 			font-size: 0.5em;
 			transform: translateX(-0.25em);
-			transition: transform 0.2s var(--ui-ease-out);
+			transition: transform 0.2s var(--ui-ease-out), opacity 0.2s;
 		}
 
 		&:hover {

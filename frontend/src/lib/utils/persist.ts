@@ -24,10 +24,7 @@ interface Persisted<T> {
 export function persistValue<T>(key: string, value: T) {
 	if (!browser) return;
 	// To do: check version to clear if persisted is not up to date.
-	localStorage.setItem(
-		key,
-		JSON.stringify(<Persisted<T>>{ value, _v: version }, ES6JSON.replacer)
-	);
+	localStorage.setItem(key, JSON.stringify(<Persisted<T>>{ value, _v: version }, ES6JSON.replacer));
 }
 
 /**

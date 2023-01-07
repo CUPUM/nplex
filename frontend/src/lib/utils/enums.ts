@@ -41,7 +41,7 @@ export const CITIES = {
 export const SEARCH_PARAMS = {
 	AUTH_MODAL: 'auth',
 	MESSAGE: 'message',
-	REDIRECT: 'redirect',
+	REDIRECT: 'redirectTo',
 	PROJECT_ID: 'projectid',
 	IMAGE_ID: 'imageid',
 	FILENAME: 'filename',
