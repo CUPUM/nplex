@@ -1,153 +1,145 @@
 <script lang="ts">
-	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
-	import { EDITOR_ROUTES } from '$utils/routes';
-	import { onMount } from 'svelte';
+	import Icon from '$components/Icon.svelte';
 	import { fly } from 'svelte/transition';
-	import { EDITABLES_HASHES } from './common';
-
-	let mounted = false;
-
-	onMount(() => {
-		mounted = true;
-	});
 </script>
 
-<article>
-	<header>
-		<h1>Créer ou éditer une fiche</h1>
-		<h2>Choisissez le type de document que vous souhaitez créer ou modifier.</h2>
-	</header>
-	<nav>
-		{#if mounted}
-			<section
-				class="project {ICON_CLASSES.HOVER}"
-				style:grid-area="project"
-				in:fly={{ y: 20, delay: 0 }}
-			>
-				<a href={EDITOR_ROUTES.project.pathname}>
-					<Icon name="pen-plus" class="icon" />
-					<hr />
-					<span class="label">Créer un nouveau<br /><em>projet</em></span>
-				</a>
-				<a href={EDITOR_ROUTES.descriptors.pathname}>
-					<span>Gérer les descripteurs</span>
-					<Icon name="parameters" />
-				</a>
-				<a href="#{EDITABLES_HASHES.PROJECTS}">
-					Éditer
-					<Icon name="file" />
-				</a>
-			</section>
-			<a
-				href={EDITOR_ROUTES.organisation.pathname}
-				style:grid-area="organisation"
-				in:fly={{ x: -20, delay: 150 }}
-				class={ICON_CLASSES.HOVER}
-			>
-				<Icon name="pen-plus" class="icon" />
-				<hr />
-				<span>Créer une nouvelle<br /><em>organisation</em></span>
-			</a>
-			<a
-				href={EDITOR_ROUTES.actor.pathname}
-				style:grid-area="actor"
-				in:fly={{ x: 20, delay: 300 }}
-				class={ICON_CLASSES.HOVER}
-			>
-				<Icon name="pen-plus" class="icon" />
-				<hr />
-				<span>Créer un nouveau<br /><em>profil d'acteur</em></span>
-			</a>
-		{/if}
-	</nav>
-</article>
+<header>
+	<hgroup>
+		<h1 in:fly={{ y: 20 }}>Éditez une fiche</h1>
+		<span in:fly={{ y: -10, delay: 250 }}>
+			<Icon name="pen" style="top: -.15em" />&emsp;Choisissez le type de document que vous souhaitez
+			créer ou modifier.
+		</span>
+	</hgroup>
+</header>
+<ul>
+	<li class="project">
+		<div class="edit">
+			<a href="/" class="fill-link" role="presentation" />
+			<a href="/" class="create">Créer un nouveau projet</a>
+			<a href="/" class="modify">Modifier un projet existant</a>
+		</div>
+		<a class="edit descriptors" href="/">Éditer les descripteurs de projet</a>
+	</li>
+	<li class="edit">
+		<a href="/" class="fill-link" role="presentation" />
+		<a href="/" class="create">Créer une nouvelle organisation</a>
+		<a href="/" class="modify">Modifier une organisation répertoriée</a>
+	</li>
+	<li class="edit">
+		<a href="/" class="fill-link" role="presentation" />
+		<a href="/" class="create">Créer une nouvelle organisation</a>
+		<a href="/" class="modify">Modifier une organisation répertoriée</a>
+	</li>
+</ul>
 
 <style lang="scss">
-	article {
-		width: 100%;
-		max-width: var(--ui-width-main);
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		justify-content: center;
-	}
-
 	header {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		padding: 4rem 2rem;
-		font-size: var(--ui-text-xl);
-		max-width: var(--ui-width-p);
-	}
-
-	h1 {
-		font-weight: 600;
-	}
-
-	h2 {
-		font-weight: 350;
-		font-size: var(--ui-text-lg);
-		line-height: 1.25;
-	}
-
-	nav {
 		padding: var(--ui-gutter);
-		display: grid;
-		grid-template-areas:
-			'project			project'
-			'organisation	actor';
 		width: 100%;
 		max-width: var(--ui-width-main);
-		gap: var(--ui-gutter);
-	}
+		align-self: center;
 
-	.project {
-		display: grid;
-		grid-template-areas:
-			'new	edit'
-			'new	descriptors';
-	}
-
-	a {
-		position: relative;
-		display: flex;
-		gap: 2rem;
-		flex-wrap: nowrap;
-		flex-direction: row;
-		padding: 4rem;
-		min-height: 30vh;
-		align-items: center;
-		justify-content: center;
-		border: 1px dashed transparent;
-		background: col(bg, 500);
-		color: col(fg, 900);
-		border-radius: var(--ui-radius-xl);
-		line-height: 1;
-		font-size: var(--ui-text-lg);
-		transition: all 0.15s var(--ui-ease-out);
-
-		&:hover {
-			background: col(primary, 500);
+		hgroup {
+			width: 100%;
+			max-width: var(--ui-width-lg);
+			margin: 0 auto;
+			display: flex;
+			flex-direction: column;
+			gap: 2rem;
+			align-items: center;
+			justify-content: center;
+			min-height: 50vh;
 		}
 
-		hr {
-			background: currentColor;
-			opacity: 0.1;
-			padding: 0.5px;
-			align-self: stretch;
+		h1 {
+			text-align: center;
+			font-size: var(--ui-text-2xl);
+			font-weight: 600;
 		}
 
 		span {
-			z-index: 1;
-			font-weight: 350;
+			display: block;
+			font-weight: 300;
+			line-height: 1.25;
+			letter-spacing: 0.2px;
+			font-size: var(--ui-text-md);
+		}
+	}
+
+	ul {
+		width: 100%;
+		padding: var(--ui-gutter);
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		justify-content: flex-start;
+		gap: var(--ui-gutter);
+	}
+
+	.fill-link {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 0;
+	}
+
+	.project {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		gap: 1px;
+		border-radius: var(--ui-radius-lg);
+		overflow: hidden;
+
+		.edit {
+			flex: 2;
+			border-radius: 0;
 		}
 
-		em {
-			font-style: normal;
-			z-index: 1;
-			font-weight: 600;
-			font-size: var(--ui-text-xl);
+		.descriptors {
+			flex: 1;
+		}
+	}
+
+	.edit {
+		position: relative;
+		background: col(bg, 100);
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4rem;
+		padding: 4rem;
+		border-radius: var(--ui-radius-xl);
+		font-size: var(--ui-text-xl);
+		line-height: 1.2;
+	}
+
+	.descriptors {
+	}
+
+	.create {
+		position: relative;
+		z-index: 1;
+	}
+
+	.modify {
+		position: relative;
+		z-index: 1;
+		display: inline-block;
+		font-size: var(--ui-text-md);
+		border: 1px solid col(fg, 500, 0.1);
+		// background: col(fg, 500);
+		// color: col(bg, 900);
+		padding: 1.15em 1.75em 1.35em;
+		border-radius: 99px;
+
+		&:hover {
+			background: col(fg, 500);
 		}
 	}
 </style>

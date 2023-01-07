@@ -2,12 +2,9 @@
 	import { page } from '$app/stores';
 	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
-	import RootBackground from '$routes/RootBackground.svelte';
-	import { col } from '$utils/css';
 	import { USER_ROUTES } from './common';
 </script>
 
-<RootBackground color={col('bg', '500')} />
 <article>
 	<menu>
 		{#each Object.values(USER_ROUTES) as r}
