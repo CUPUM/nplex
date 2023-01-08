@@ -149,6 +149,7 @@
 	.inner {
 		--radius: var(--ui-radius-md);
 		--inset: var(--ui-inset);
+		color: col(fg, 500);
 		position: relative;
 		background: col(bg, 000);
 		display: flex;

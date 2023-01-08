@@ -3,12 +3,13 @@
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
-	import { EDITOR_BASE_ROUTE, EDITOR_ROUTES } from '$utils/routes';
+	import { EDITOR_BASE_ROUTE } from '$utils/routes';
 	import { THEMES } from '$utils/themes';
 	import type { Page } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
+	import { EDITOR_ROUTES } from '../../common';
 	import { EDITOR_FORM_ID, EDITOR_NAV_ROUTES_ARR, type EditorNavRoute } from './common';
 
 	let mount = false;

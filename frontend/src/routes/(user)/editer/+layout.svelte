@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
-	import { EDITABLES_HASHES } from './common';
+	import { EDITOR_ROUTES } from './common';
 	import EditableProjectCard from './EditableProjectCard.svelte';
 	import EditablesList from './EditablesList.svelte';
 
@@ -14,13 +14,18 @@
 		<span>Explorez les fiches pour lesquelles vous avez des droits d'édition.</span>
 	</hgroup>
 </header>
-<EditablesList id={EDITABLES_HASHES.projects} title="Projets" data={data.projects} let:datum>
+<EditablesList id={EDITOR_ROUTES.project.edit.hash} title="Projets" data={data.projects} let:datum>
 	<EditableProjectCard project={datum} />
 </EditablesList>
-<EditablesList id={EDITABLES_HASHES.projects} title="Organisations" data={data.projects} let:datum>
+<EditablesList
+	id={EDITOR_ROUTES.organisation.edit.hash}
+	title="Organisations"
+	data={data.projects}
+	let:datum
+>
 	<EditableProjectCard project={datum} />
 </EditablesList>
-<EditablesList id={EDITABLES_HASHES.projects} title="Acteurs" data={data.projects} let:datum>
+<EditablesList id={EDITOR_ROUTES.actor.edit.hash} title="Acteurs" data={data.projects} let:datum>
 	<EditableProjectCard project={datum} />
 </EditablesList>
 

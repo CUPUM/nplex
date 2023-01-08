@@ -53,8 +53,8 @@
 	form {
 		--radius: min(var(--ui-radius-xl), calc(var(--ui-scroll-px) * 0.2));
 		width: 100%;
-		padding-block: calc(var(--ui-nav-px) + var(--ui-gutter));
-		min-height: 100vh;
+		min-height: calc(100vh - var(--ui-nav-px));
+		padding-bottom: var(--ui-nav-px);
 		margin: 0 auto;
 		border: 1px solid col(fg, 900, min(0.1, calc(var(--ui-scroll) * 0.001)));
 		border-top: none;

@@ -2,8 +2,8 @@
 	import Image from '$components/Image.svelte';
 	import { projectcolors, publicurl } from '$utils/database';
 	import { STORAGE_BUCKETS } from '$utils/enums';
-	import { EDITOR_ROUTES } from '$utils/routes';
 	import type { LayoutData } from './$types';
+	import { EDITOR_ROUTES } from './common';
 	import type { EDITABLES_NEW } from './EditablesList.svelte';
 
 	export let project: LayoutData['projects'][number] | typeof EDITABLES_NEW;
