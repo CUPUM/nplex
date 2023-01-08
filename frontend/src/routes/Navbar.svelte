@@ -95,7 +95,7 @@
 				</svg>
 			</NavbarButton>
 			{#each mainNav as route}
-				<NavbarButton href={route.pathname} current={route.pathname === rootsegment}>
+				<NavbarButton href={route.pathname} current={route.pathname.split('#')[0] === rootsegment}>
 					{route.title}
 				</NavbarButton>
 			{/each}
@@ -250,6 +250,7 @@
 
 	nav[hidden] {
 		transition-delay: 0s;
+		pointer-events: none;
 	}
 
 	.main {

@@ -1,5 +1,7 @@
 import type { LayoutLoad } from './$types';
 
 export const load = ((event) => {
-	return {};
+	return {
+		showCategoryNav: true,
+	};
 }) satisfies LayoutLoad;

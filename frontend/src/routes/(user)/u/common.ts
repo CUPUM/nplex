@@ -6,11 +6,6 @@ function base(pathname: string) {
 }
 
 export const USER_ROUTES = {
-	home: {
-		title: 'Accueil',
-		pathname: base(''),
-		icon: 'home',
-	},
 	profile: {
 		title: 'Compte',
 		pathname: base('/compte'),

@@ -10,7 +10,7 @@
 	export let scrollTarget: HTMLElement;
 </script>
 
-<article bind:this={scrollTarget}>
+<article bind:this={scrollTarget} id="explore">
 	<PreviewsHeader
 		href={EXPLORE_ROUTES.projects.pathname}
 		action="?/projects"

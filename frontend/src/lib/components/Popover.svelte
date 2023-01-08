@@ -151,6 +151,9 @@
 		--inset: var(--ui-inset);
 		position: relative;
 		background: col(bg, 000);
+		display: flex;
+		flex-direction: column;
+		gap: var(--ui-inset);
 		border-radius: var(--radius);
 		padding: var(--inset);
 		box-shadow: 0 0.5em 3em -2em rgb(0, 20, 40, 0.2);

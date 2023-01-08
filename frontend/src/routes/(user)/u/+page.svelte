@@ -1,36 +1,93 @@
 <script lang="ts">
+	import { EDITOR_BASE_ROUTE } from '$utils/routes';
+	import { expoOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
+	import { USER_ROUTES } from './common';
+
+	const repeat = Array(30);
+	function saliant() {
+		const r = Math.round(Math.random() * 5);
+		return Math.round(Math.random() * 3) + 2;
+	}
+	const routes = [...Object.values(USER_ROUTES), EDITOR_BASE_ROUTE];
 </script>
 
 <ul>
-	<li>Mes notifications</li>
-	<li>Mes projets</li>
-	<li>Mes organisations</li>
-	<li>Mes acteurs</li>
-	<li>Mes favoris</li>
-	<li>Mes collections</li>
+	{#each routes as r, i}
+		{@const s = saliant()}
+		<li
+			in:fly={{
+				y: Math.random() * 40 - 20,
+				opacity: 0,
+				delay: i * 50 + 50,
+				easing: expoOut,
+				duration: 500,
+			}}
+		>
+			<a href={r.pathname}>
+				{#each repeat as clone, i}
+					<span
+						style:padding-left="{(Math.random() * 1).toFixed(2)}em"
+						role={i === s ? 'presentation' : undefined}
+						class:saliant={i === s}
+					>
+						{r.title}
+					</span>
+				{/each}
+			</a>
+		</li>
+	{/each}
 </ul>
 
 <style lang="scss">
-	form {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
+	ul {
 		width: 100%;
-		padding: var(--ui-gutter);
-		padding-top: 0;
+		padding: 0 var(--ui-gutter);
+		display: grid;
+		grid-template-columns: 1fr 1fr;
 		gap: var(--ui-gutter);
-		border-radius: var(--ui-radius-lg);
-		border: 1px solid col(fg, 100, 0.1);
+
+		@include tablet {
+			display: flex;
+			flex-direction: column;
+		}
 	}
 
-	.sub {
-		font-weight: 300;
-		opacity: 0.5;
+	li {
+		display: inline-block;
+		position: relative;
+		width: 100%;
 	}
 
-	h2 {
-		font-size: var(--ui-text-lg);
-		font-weight: 600;
-		padding: var(--ui-gutter) 0;
+	a {
+		display: block;
+		word-break: break-all;
+		white-space: normal;
+		overflow: hidden;
+		line-height: 1;
+		width: 100%;
+		height: 6.15em;
+		border-radius: var(--ui-radius-xl);
+		color: col(bg, 100);
+		// background: col(bg, 100);
+		border: 1px dashed col(bg, 100);
+		font-size: max(var(--ui-text-xl), 3vw);
+		font-weight: 500;
+		transition: all 0.2s var(--ui-ease-out);
+
+		&:hover {
+			// border-radius: var(--ui-radius-2xl);
+			border: 1px dashed col(primary, 500);
+			background: col(primary, 300);
+			color: col(primary, 500);
+		}
+	}
+
+	.saliant {
+		padding-inline: 1em !important;
+		word-break: keep-all;
+		display: inline-block;
+		color: col(fg, 900);
+		-webkit-text-stroke: 0px !important;
 	}
 </style>

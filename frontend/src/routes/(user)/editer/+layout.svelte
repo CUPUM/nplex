@@ -14,13 +14,13 @@
 		<span>Explorez les fiches pour lesquelles vous avez des droits d'édition.</span>
 	</hgroup>
 </header>
-<EditablesList id={EDITABLES_HASHES.PROJECTS} title="Projets" data={data.projects} let:datum>
+<EditablesList id={EDITABLES_HASHES.projects} title="Projets" data={data.projects} let:datum>
 	<EditableProjectCard project={datum} />
 </EditablesList>
-<EditablesList id={EDITABLES_HASHES.PROJECTS} title="Organisations" data={data.projects} let:datum>
+<EditablesList id={EDITABLES_HASHES.projects} title="Organisations" data={data.projects} let:datum>
 	<EditableProjectCard project={datum} />
 </EditablesList>
-<EditablesList id={EDITABLES_HASHES.PROJECTS} title="Acteurs" data={data.projects} let:datum>
+<EditablesList id={EDITABLES_HASHES.projects} title="Acteurs" data={data.projects} let:datum>
 	<EditableProjectCard project={datum} />
 </EditablesList>
 

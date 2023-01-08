@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
-	import { USER_ROUTES } from './common';
+	import { USER_ROUTES } from '../common';
 </script>
 
 <article>

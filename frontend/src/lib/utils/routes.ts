@@ -33,7 +33,7 @@ export const MAIN_ROUTES = {
 		title: 'Guides',
 	},
 	explore: {
-		pathname: '/',
+		pathname: '/#explore',
 		title: 'Explorer',
 	},
 } satisfies Routes;
@@ -69,7 +69,7 @@ export const EDITOR_BASE_ROUTE = {
 export const EDITOR_ROUTES = {
 	project: {
 		subpath: '/projet',
-		title: 'Projet',
+		title: 'Projets',
 		category: 'projects',
 		get pathname() {
 			return EDITOR_BASE_ROUTE.pathname + this.subpath;
@@ -85,7 +85,7 @@ export const EDITOR_ROUTES = {
 	},
 	organisation: {
 		subpath: '/organisation',
-		title: 'Organisation',
+		title: 'Organisations',
 		category: 'organisations',
 		disabled: true,
 		get pathname() {
@@ -94,7 +94,7 @@ export const EDITOR_ROUTES = {
 	},
 	actor: {
 		subpath: '/acteur',
-		title: 'Acteur',
+		title: 'Acteurs',
 		category: 'actors',
 		disabled: true,
 		get pathname() {

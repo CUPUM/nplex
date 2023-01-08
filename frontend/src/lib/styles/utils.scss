@@ -3,7 +3,7 @@
  * Defined with max-width as the app is designed desktop-first.
  */
 $bp-mobile: 480px;
-$bp-tablet: 768px;
+$bp-tablet: 760px;
 @mixin mobile {
 	@media (max-width: #{$bp-mobile}) {
 		@content;

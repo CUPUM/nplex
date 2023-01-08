@@ -9,7 +9,7 @@
 		{ pathname: '/', title: 'Accueil' },
 		{ pathname: '/a-propos', title: 'À propos' },
 		{ pathname: '/guides', title: 'Guides' },
-		{ pathname: '/equipe', title: 'Équipe' },
+		// { pathname: '/equipe', title: 'Équipe' },
 	];
 
 	const exploreLinks = [
@@ -28,7 +28,7 @@
 	];
 
 	const iconOptions: Partial<ComponentProps<Icon>> = {
-		strokeWidth: 1.5,
+		strokeWidth: 2,
 		style: 'font-size: 1.25em;',
 	};
 
@@ -45,7 +45,7 @@
 	<div class="inner">
 		<section>
 			<hgroup class="sub" style="--i: 0">
-				<Icon name="map" {...iconOptions} />&ensp;Carte du site
+				<Icon name="map" {...iconOptions} />&ensp;Sections
 			</hgroup>
 			<ul>
 				{#each mainLinks as link, i}
@@ -96,17 +96,19 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		// border: 1px solid col(fg, 100, 0.05);
+		margin-top: var(--ui-gutter);
+		// border-radius: var(--ui-radius-xl) var(--ui-radius-xl) 0 0;
 	}
 
 	.inner {
 		width: 100%;
-		max-width: var(--ui-width-main);
+		max-width: var(--ui-width-md);
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		align-items: stretch;
 		gap: var(--ui-gutter);
-		padding: 4rem var(--ui-gutter);
-		padding-bottom: 2rem;
+		padding: 3rem var(--ui-gutter);
 	}
 
 	.sub {
@@ -173,7 +175,6 @@
 		justify-content: space-between;
 		align-items: center;
 		grid-column: 1 / -1;
-		margin-top: 4rem;
 	}
 
 	.cc {

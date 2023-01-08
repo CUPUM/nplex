@@ -69,9 +69,10 @@
 		&.current:not(.active) {
 			cursor: default;
 			color: col(primary, 500);
+			box-shadow: 0 0 0 1px col(primary, 500, 0.2);
 
 			&:hover {
-				background: col(primary, 100, 0.2);
+				background: col(primary, 100, 0.25);
 			}
 		}
 	}

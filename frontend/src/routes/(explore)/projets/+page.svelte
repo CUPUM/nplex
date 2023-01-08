@@ -34,6 +34,7 @@
 		padding-top: 0;
 		height: 100vh;
 		padding-top: var(--ui-nav-px);
+		margin-top: calc(-1 * var(--ui-nav-px));
 	}
 
 	form {
