@@ -115,6 +115,11 @@
 	box-sizing: border-box;
 }
 
+::placeholder {
+	color: inherit;
+	opacity: 0.3;
+}
+
 /* clears the 'X' from Internet Explorer */
 input[type='search']::-ms-clear,
 input[type='search']::-ms-reveal {

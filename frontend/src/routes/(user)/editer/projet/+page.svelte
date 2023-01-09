@@ -8,6 +8,7 @@
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;
+	export let loading = false;
 
 	let title = '';
 </script>
@@ -17,6 +18,7 @@
 	method="POST"
 	action="?/create"
 	use:enhance={({ form, data, action, cancel }) => {
+		loading = true;
 		return async ({ update, result }) => {
 			update({ reset: false });
 		};
@@ -38,9 +40,9 @@
 					invalid={Boolean(form?.title?.length)}
 				>
 					<svelte:fragment slot="trailing">
-						<Button type="submit" disabled={!title}>
+						<Button type="submit" disabled={!title} {loading}>
 							Créer
-							<Icon slot="leading" name="plus" />
+							<Icon slot="leading" name="arrow-right" />
 						</Button>
 					</svelte:fragment>
 				</Field>

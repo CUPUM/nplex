@@ -27,7 +27,7 @@
 </script>
 
 <header
-	use:setNavbarTheme={{ theme: THEMES.dark, observerOptions: { rootMargin: '-30px 0px 0px 0px' } }}
+	use:setNavbarTheme={THEMES.dark}
 	on:enter={() => {
 		entered = true;
 	}}

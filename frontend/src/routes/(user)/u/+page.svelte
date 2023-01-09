@@ -69,15 +69,15 @@
 		height: 6.15em;
 		border-radius: var(--ui-radius-xl);
 		color: col(bg, 100);
-		// background: col(bg, 100);
-		border: 1px dashed col(bg, 100);
+		background: col(bg, 300);
+		// border: 1px dashed col(bg, 100);
 		font-size: max(var(--ui-text-xl), 3vw);
 		font-weight: 500;
 		transition: all 0.2s var(--ui-ease-out);
 
 		&:hover {
 			// border-radius: var(--ui-radius-2xl);
-			border: 1px dashed col(primary, 500);
+			// border: 1px dashed col(primary, 500);
 			background: col(primary, 300);
 			color: col(primary, 500);
 		}

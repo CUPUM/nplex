@@ -191,7 +191,7 @@
 		gap: 0;
 		flex-direction: row;
 		align-items: center;
-		font-weight: 350;
+		font-weight: 400;
 		font-size: inherit;
 		border-radius: calc(var(--radius) - var(--inset-sum));
 		cursor: text;
@@ -279,10 +279,6 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
-		&::placeholder {
-			color: currentColor;
-			opacity: 0.35;
-		}
 		&:-webkit-autofill,
 		&:-webkit-autofill:hover,
 		&:-webkit-autofill:focus,
@@ -292,6 +288,7 @@
 	}
 
 	label {
+		opacity: 0.3;
 		position: absolute;
 		pointer-events: none;
 		padding-bottom: calc(0.5em - 0.5ex);
@@ -358,9 +355,6 @@
 		.outline {
 			display: none;
 		}
-		label {
-			opacity: 0.5;
-		}
 		&.haslabel {
 			.affix {
 				opacity: 0;
@@ -370,6 +364,7 @@
 		&.hasvalue,
 		&:focus-within {
 			label {
+				opacity: 0.5;
 				top: 1.5em;
 				font-size: clamp(11px, 0.5em, 24px);
 			}
@@ -401,9 +396,6 @@
 		color: col(fg, 700);
 		background: transparent;
 		transition: color 0.1s ease-out, background 0.1s ease-out;
-		label {
-			opacity: 0.5;
-		}
 		.outline {
 			border-color: col(fg, 900);
 			opacity: 0.5;
@@ -417,7 +409,7 @@
 		&.hasvalue,
 		&:focus-within {
 			label {
-				opacity: 0.35;
+				opacity: 0.5;
 				top: 0em;
 				padding-block: 0;
 				font-size: clamp(12px, 0.5em, 24px);
@@ -449,11 +441,11 @@
 			.outline {
 				--thickness: 1.5px;
 				opacity: 1;
-				border-color: col(primary, 700);
+				border-color: col(primary, 500);
 			}
 			label {
 				opacity: 1;
-				color: col(primary, 700);
+				color: col(primary, 500);
 			}
 		}
 	}
@@ -466,9 +458,6 @@
 		.outline {
 			display: none;
 		}
-		label {
-			opacity: 0.5;
-		}
 		&.haslabel {
 			.affix {
 				opacity: 0;
@@ -478,6 +467,7 @@
 		&.hasvalue,
 		&:focus-within {
 			label {
+				opacity: 0.5;
 				top: 1.5em;
 				font-size: clamp(11px, 0.5em, 24px);
 			}

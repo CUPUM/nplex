@@ -1,7 +1,3 @@
-<script lang="ts" context="module">
-	export const BUTTON_GROUP_CLASS = 'button-group';
-</script>
-
 <script lang="ts">
 	import { ICON_CLASSES } from '$components/Icon.svelte';
 

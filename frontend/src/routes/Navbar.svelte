@@ -21,13 +21,12 @@
 	/**
 	 * Action to update the navbar's theme based on element intersection.
 	 */
-	export function setNavbarTheme(
-		element: HTMLElement,
-		options: { theme: ThemeName; observerOptions?: IntersectionObserverInit }
-	): SvelteActionReturnType {
-		const intersect = intersection(element, options.observerOptions);
+	export function setNavbarTheme(element: HTMLElement, theme: ThemeName): SvelteActionReturnType {
+		const intersect = intersection(element, {
+			rootMargin: '-40px 0px 0px 0px',
+		});
 		function handleEnter() {
-			navbarTheme.set(options.theme);
+			navbarTheme.set(theme);
 		}
 		function handleLeave() {
 			navbarTheme.reset();

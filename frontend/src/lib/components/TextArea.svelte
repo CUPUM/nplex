@@ -142,6 +142,7 @@
 		position: relative;
 		display: grid;
 		border-radius: var(--ui-radius-md);
+		font-weight: 400;
 		&:disabled {
 			opacity: 0.5;
 			pointer-events: none;
@@ -227,6 +228,7 @@
 	}
 
 	label {
+		opacity: 0.3;
 		position: absolute;
 		pointer-events: none;
 		line-height: 1.5em;
@@ -309,7 +311,7 @@
 			display: none;
 		}
 		label {
-			opacity: 0.5;
+			opacity: 0.3;
 		}
 		&.haslabel {
 			.affix {
@@ -320,6 +322,7 @@
 		&.hasvalue,
 		&:focus-within {
 			label {
+				opacity: 0.5;
 				top: 0.5em;
 				font-size: clamp(11px, 0.5em, 24px);
 			}
@@ -367,7 +370,7 @@
 		&.hasvalue,
 		&:focus-within {
 			label {
-				opacity: 0.35;
+				opacity: 0.5;
 				top: -0.5em;
 				line-height: 1em;
 				padding-block: 0;
@@ -413,10 +416,10 @@
 			.outline {
 				--thickness: 1.5px;
 				opacity: 1;
-				border-color: col(primary, 700);
+				border-color: col(primary, 500);
 			}
 			label {
-				color: col(primary, 700);
+				color: col(primary, 500);
 				opacity: 1;
 			}
 		}
@@ -442,6 +445,7 @@
 		&.hasvalue,
 		&:focus-within {
 			label {
+				opacity: 0.5;
 				top: 0.5em;
 				font-size: clamp(11px, 0.5em, 24px);
 			}

@@ -42,9 +42,7 @@
 		value={data.profile.about}
 		placeholder="Rédigez une courte description pour accompagner votre profil."
 	>
-		<svelte:fragment slot="leading">Leading</svelte:fragment>
 		<svelte:fragment slot="label">À propos</svelte:fragment>
-		<svelte:fragment slot="trailing">Trailing</svelte:fragment>
 	</TextArea>
 	<Button style="align-self: flex-end" type="submit">Sauvegarder</Button>
 </form>
