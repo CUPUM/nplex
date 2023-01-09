@@ -107,11 +107,11 @@
 	import Icon from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import SocialIcon, { SOCIAL_ICONS } from '$components/SocialIcon.svelte';
+	import { USER_BASE_ROUTE } from '$utils/routes';
 	import { THEMES } from '$utils/themes';
 	import { linear } from 'svelte/easing';
-	import { fade, scale, slide } from 'svelte/transition';
+	import { fade, fly, scale, slide } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
-	import { USER_ROUTES } from './(user)/u/common';
 
 	const Action = {
 		SignIn: '/api/auth?/signin',
@@ -155,7 +155,7 @@
 			}}
 		>
 			<a href="/" class="logo">
-				<svg xmlns="http://www.w3.org/2000/svg" overflow="visible">
+				<svg xmlns="http://www.w3.org/2000/svg" overflow="visible" in:fly={{ y: -10, delay: 150 }}>
 					<use href={LOGO_SYMBOLS_HREFS.full} fill="currentColor" />
 				</svg>
 			</a>
@@ -197,7 +197,7 @@
 					variant={$authModal === AUTH_MODES.SignIn ? 'cta' : 'default'}
 					contentAlign="center"
 					formaction="{Action.SignIn}{$page.url.pathname === '/'
-						? `&${SEARCH_PARAMS.REDIRECT}=${USER_ROUTES.home.pathname}`
+						? `&${SEARCH_PARAMS.REDIRECT}=${USER_BASE_ROUTE.pathname}`
 						: ''}"
 					loading={currentAction === Action.SignIn}
 				>
@@ -216,7 +216,7 @@
 						: undefined}
 					contentAlign="center"
 					formaction="{Action.SignUp}{$page.url.pathname === '/'
-						? `&${SEARCH_PARAMS.REDIRECT}=${USER_ROUTES.home.pathname}`
+						? `&${SEARCH_PARAMS.REDIRECT}=${USER_BASE_ROUTE.pathname}`
 						: ''}"
 					loading={currentAction === Action.SignUp}
 				>
@@ -297,7 +297,6 @@
 		color: col(primary, 500);
 		border-bottom: 1px solid col(fg, 100, 0.05);
 		padding: calc(2 * var(--ui-gutter)) var(--ui-gutter);
-		margin-bottom: 2.5rem;
 
 		svg {
 			height: var(--ui-text-xl);
@@ -313,7 +312,8 @@
 		align-items: stretch;
 		gap: 1rem;
 		border: none;
-		padding: 0 2.5rem;
+		padding: 2.5rem;
+		padding-bottom: 0rem;
 		margin: 0;
 		min-width: 0;
 		overflow-y: auto;

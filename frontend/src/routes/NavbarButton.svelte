@@ -19,7 +19,7 @@
 
 <svelte:element
 	this={typeof href === 'string' ? 'a' : 'button'}
-	class="navbar-button {ICON_CLASSES.HOVER} {active ? ICON_CLASSES.HOLD : ''}"
+	class="navbar-button focus-outline-visible {ICON_CLASSES.HOVER} {active ? ICON_CLASSES.HOLD : ''}"
 	class:cta
 	class:current
 	class:active

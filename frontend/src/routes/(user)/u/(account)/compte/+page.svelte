@@ -36,9 +36,17 @@
 	<Field name="public_email" variant="outlined" value={data.profile.public_email}>
 		<svelte:fragment slot="label">Courriel public</svelte:fragment>
 	</Field>
-	<TextArea name="about" value={data.profile.about} placeholder="À propos de moi" />
+	<TextArea
+		name="about"
+		variant="outlined"
+		value={data.profile.about}
+		placeholder="Rédigez une courte description pour accompagner votre profil."
+	>
+		<svelte:fragment slot="leading">Leading</svelte:fragment>
+		<svelte:fragment slot="label">À propos</svelte:fragment>
+		<svelte:fragment slot="trailing">Trailing</svelte:fragment>
+	</TextArea>
 	<Button style="align-self: flex-end" type="submit">Sauvegarder</Button>
-	<button class="ui-button" type="submit">Sauvegarder</button>
 </form>
 <form
 	method="POST"
@@ -88,7 +96,7 @@
 	}}
 >
 	<input name="id" type="hidden" value={data.profile.id} readonly autocomplete="false" />
-	<h2>Paramètres</h2>
+	<h2>Sécurité</h2>
 	<h3>Modifier mon courriel d'authentification</h3>
 	<Field placeholder="Courriel d'authentification" type="email" value={data.session?.user.email} />
 	<h3>Modifier mon mot de passe</h3>
@@ -96,9 +104,32 @@
 		<FieldTogglePassword slot="trailing" />
 	</Field>
 	<Field placeholder="Nouveau mot de passe" type="password" />
-	<h3>Supprimer</h3>
-	<Button variant="danger"><Icon name="warn" slot="leading" />Supprimer mon compte</Button>
+	<h3>Désactivation</h3>
+	<Button variant="danger" style="align-self: flex-start"
+		><Icon name="warn" slot="leading" />Supprimer mon compte</Button
+	>
 </form>
 
 <style lang="scss">
+	form {
+		display: flex;
+		flex-direction: column;
+		gap: var(--ui-gutter);
+	}
+
+	h2 {
+		font-size: var(--ui-text-xl);
+		margin: 0.5em 0;
+		font-weight: 600;
+	}
+
+	h3 {
+		font-size: var(--ui-text-lg);
+		font-weight: 600;
+		margin: 0.5em 0;
+
+		h2 + & {
+			margin-top: 0;
+		}
+	}
 </style>

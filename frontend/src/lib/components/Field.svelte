@@ -17,7 +17,6 @@
 </script>
 
 <script lang="ts">
-	import dispatchOnReset from '$actions/dispatchOnReset';
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
@@ -25,11 +24,11 @@
 	import Ripple from './Ripple.svelte';
 
 	export let id: string | undefined = undefined;
+	export let name: string | undefined = undefined;
 	export let value: string | null | undefined = '';
 	export let sample: typeof value = value;
 	export let prefix: string | null | undefined = '';
 	export let suffix: string | null | undefined = '';
-	export let name: string | undefined = undefined;
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' | 'select' = 'text';
 	export let variant: 'default' | 'outlined' | 'cta' = 'default';
 	export let compact: boolean | undefined = undefined;
@@ -52,13 +51,20 @@
 	export { className as class };
 	export let style: string | undefined = undefined;
 	export function focus() {
-		inputRef.focus();
+		console.log('focusin');
+		inputRef.focus({});
+		console.log(inputRef.getAttribute('focus'));
+	}
+	export function blur() {
+		inputRef.blur();
 	}
 
 	let inputRef: HTMLInputElement;
-	let fieldRef: HTMLElement;
 	let labelWidth = 0;
-	let focused = false;
+	$: hasvalue = !!value;
+	$: hasplaceholder = placeholder !== '';
+	$: haslabel = $$slots.label;
+
 	const _inputRef = writable<typeof inputRef>();
 	$: _inputRef.set(inputRef);
 
@@ -72,26 +78,6 @@
 		value = ev;
 	}
 
-	function handleFocus() {
-		focused = true;
-		invalid = undefined;
-		success = undefined;
-	}
-
-	function handleClick(e: MouseEvent) {
-		if (
-			e.target instanceof Element &&
-			(e.target === fieldRef || e.target.parentElement === fieldRef)
-		) {
-			focus();
-		}
-	}
-
-	function handleBlur(e: FocusEvent) {
-		focused = false;
-		// validate();
-	}
-
 	setContext<FieldContext>(CTX_KEY, {
 		value: _value,
 		inputRef: _inputRef,
@@ -100,27 +86,26 @@
 
 <Dirtiness {sample} bind:dirty let:check>
 	<fieldset
-		bind:this={fieldRef}
-		class="field nest {variant} {className}"
+		class="container nest focus-outline-within {variant} {className}"
 		{style}
+		{disabled}
 		class:compact
 		class:warning
-		class:focused
-		{disabled}
 		class:readonly
 		class:select
 		class:loading
 		class:success
 		class:invalid
 		class:dirty
-		class:has-value={!!value}
-		class:has-placeholder={placeholder !== ''}
-		class:has-label={$$slots.label}
+		class:hasvalue
+		class:hasplaceholder
+		class:haslabel
+		class:required
 		style:--label-width="{labelWidth}px"
-		on:pointerup={handleClick}
+		on:click|self={focus}
 		on:click
 		on:pointerdown
-		on:focus
+		on:pointerup
 		on:keypress
 		on:keydown
 		on:keyup
@@ -130,19 +115,18 @@
 		<div class="outline right" />
 		<div class="outline bottom" />
 		{#if $$slots.leading}
-			<div class="leading">
+			<div class="aside leading" on:click|self={focus}>
 				<slot {dirty} name="leading" />
 			</div>
 		{/if}
 		{#if $$slots.label}
 			<label in:fly={{ y: 6, opacity: 0 }} for={id} bind:clientWidth={labelWidth}>
-				<slot {dirty} name="label" />{#if required}<span class="star">*</span>{/if}
+				<slot {dirty} name="label" /><span class="star">*</span>
 			</label>
 		{/if}
 		{#if prefix}
-			<span class="prefix">{prefix}</span>
+			<span class="affix prefix">{prefix}</span>
 		{/if}
-		{#if type === 'select'}{:else}{/if}
 		<input
 			in:fly={{ y: -6, opacity: 0 }}
 			bind:this={inputRef}
@@ -159,23 +143,18 @@
 			{tabindex}
 			{readonly}
 			pattern={pattern ? pattern.source : undefined}
-			use:dispatchOnReset
 			on:input={handleInput}
 			on:input={check}
-			on:focus={handleFocus}
-			on:blur={handleBlur}
 			on:focus
 			on:blur
 			on:input
-			on:keypress
-			on:keydown
-			on:keyup
+			on:change
 		/>
 		{#if suffix}
-			<span class="suffix">{suffix}</span>
+			<span class="affix suffix">{suffix}</span>
 		{/if}
 		{#if $$slots.trailing}
-			<div class="trailing">
+			<div class="aside trailing" on:click|self={focus}>
 				<slot {dirty} name="trailing" />
 			</div>
 		{/if}
@@ -183,7 +162,7 @@
 </Dirtiness>
 
 <style lang="scss">
-	:where(.field) {
+	:where(.container) {
 		--radius: var(--ui-radius-md);
 		--height: calc(var(--ui-height) - 2 * var(--inset-sum));
 		--inset: var(--ui-inset);
@@ -216,9 +195,8 @@
 		font-size: inherit;
 		border-radius: calc(var(--radius) - var(--inset-sum));
 		cursor: text;
-		outline: 0px solid transparent;
 		transition: transform 0.15s ease-out;
-		&.disabled {
+		&:disabled {
 			opacity: 0.5;
 			pointer-events: none;
 		}
@@ -241,8 +219,8 @@
 			background: col(success, 100, 0.1) !important;
 		}
 	}
-	.leading,
-	.trailing {
+
+	.aside {
 		padding: var(--inset) 0;
 		margin: 0;
 		gap: 0;
@@ -260,8 +238,8 @@
 	.trailing {
 		grid-column: trailing;
 	}
-	.prefix,
-	.suffix {
+
+	.affix {
 		position: relative;
 		display: inline-block;
 		padding-bottom: calc(0.5em - 0.5ex);
@@ -270,8 +248,8 @@
 		white-space: pre;
 		opacity: 0.25;
 		transition: all 0.2s var(--ui-ease-out);
-		.focused &,
-		:not(.focused):not(.has-label) & {
+		:focus-within &,
+		:not(:focus-within):not(.haslabel) & {
 			transform: translateY(0);
 			opacity: 0.5;
 		}
@@ -282,18 +260,16 @@
 	.suffix {
 		grid-column: suffix;
 	}
+
 	input {
 		cursor: inherit;
 		font-family: inherit;
 		font-weight: inherit;
 		font-size: inherit;
+		color: inherit;
 		position: relative;
-		color: currentColor;
-		margin: 0;
-		padding: 0;
 		padding-bottom: calc(0.5em - 0.5ex);
 		grid-column: main;
-		display: block;
 		top: 0;
 		flex: 1;
 		white-space: nowrap;
@@ -314,10 +290,10 @@
 			transition: background-color 0s 50000s;
 		}
 	}
+
 	label {
 		position: absolute;
 		pointer-events: none;
-		padding-inline: var(--label-padding);
 		padding-bottom: calc(0.5em - 0.5ex);
 		grid-column: prefix-start / suffix-end;
 		max-width: 100%;
@@ -325,11 +301,10 @@
 		white-space: nowrap;
 		top: 50%;
 		transform: translateY(-50%);
-		transition: all 0.2s var(--ui-ease-out);
+		transition: all 0.15s var(--ui-ease-out);
 	}
-	.left,
-	.right,
-	.bottom {
+
+	.outline {
 		--thickness: 1px;
 		pointer-events: none;
 		position: absolute;
@@ -364,9 +339,14 @@
 		border-bottom-right-radius: inherit;
 		border-bottom-left-radius: inherit;
 	}
+
 	.star {
+		display: none;
 		color: col(primary, 900);
 		padding-left: 0.2em;
+		.required & {
+			display: inline-block;
+		}
 	}
 
 	// Variants
@@ -374,33 +354,30 @@
 	:where(.default) {
 		color: col(fg, 900);
 		background: col(bg, 900, 0.5);
-		transition: all 0.15s var(--ui-ease-out);
+		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			display: none;
 		}
 		label {
 			opacity: 0.5;
 		}
-		&.has-label {
-			.prefix,
-			.suffix {
+		&.haslabel {
+			.affix {
 				opacity: 0;
 			}
 		}
-		&.has-placeholder,
-		&.has-value,
-		&.focused {
+		&.hasplaceholder,
+		&.hasvalue,
+		&:focus-within {
 			label {
 				top: 1.5em;
 				font-size: clamp(11px, 0.5em, 24px);
 			}
-			.prefix,
-			.suffix {
+			.affix {
 				opacity: 0.5;
 			}
-			&.has-label {
-				.prefix,
-				.suffix,
+			&.haslabel {
+				.affix,
 				input {
 					top: 0.45em;
 				}
@@ -411,9 +388,9 @@
 			color: col(fg, 500);
 			background: col(bg, 900);
 		}
-		&.focused {
+		&:focus-within {
 			color: col(fg, 000);
-			background: col(bg, 700);
+			background: col(bg, 300);
 			input {
 				opacity: 1;
 			}
@@ -421,62 +398,62 @@
 	}
 
 	:where(.outlined) {
-		--outline-thickness: 1px;
 		color: col(fg, 700);
 		background: transparent;
-		transition: color 0.1s ease-out, background-color 0.1s ease-out;
+		transition: color 0.1s ease-out, background 0.1s ease-out;
 		label {
-			opacity: 0.35;
+			opacity: 0.5;
 		}
 		.outline {
 			border-color: col(fg, 900);
-			opacity: 0.2;
+			opacity: 0.5;
 		}
-		&.has-label {
-			.prefix,
-			.suffix {
+		&.haslabel {
+			.affix {
 				opacity: 0;
 			}
 		}
-		&.has-placeholder,
-		&.has-value,
-		&.focused {
+		&.hasplaceholder,
+		&.hasvalue,
+		&:focus-within {
 			label {
 				opacity: 0.35;
 				top: 0em;
 				padding-block: 0;
 				font-size: clamp(12px, 0.5em, 24px);
 			}
-			.prefix,
-			.suffix {
+			.affix {
 				opacity: 0.35;
 			}
-			&.has-label {
-				.outline.left {
+			&.haslabel {
+				.left {
 					right: var(--notch-padding);
 				}
-				.outline.right {
+				.right {
 					left: calc(var(--label-width) + var(--notch-padding));
 				}
 			}
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover,
-		&.focused {
+		&:focus-within {
 			color: col(fg, 300);
 			background: transparent;
 			.outline {
-				opacity: 0.35;
+				opacity: 0.75;
 			}
 		}
-		&.focused {
+		&:focus-within {
 			outline: none;
 			color: col(fg, 100);
 			.outline {
+				--thickness: 1.5px;
 				opacity: 1;
+				border-color: col(primary, 700);
 			}
 			label {
 				opacity: 1;
+				color: col(primary, 700);
 			}
 		}
 	}
@@ -485,41 +462,38 @@
 		color: col(bg, 300);
 		background: col(primary, 500);
 		box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
-		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
+		transition: color 0.1s ease-out, background 0.1s ease-out, box-shadow 0.25s ease-in-out;
 		.outline {
 			display: none;
 		}
 		label {
-			opacity: 0.35;
+			opacity: 0.5;
 		}
-		&.has-label {
-			.prefix,
-			.suffix {
+		&.haslabel {
+			.affix {
 				opacity: 0;
 			}
 		}
-		&.has-placeholder,
-		&.has-value,
-		&.focused {
+		&.hasplaceholder,
+		&.hasvalue,
+		&:focus-within {
 			label {
-				top: 1.25em;
-				font-size: clamp(10px, 0.5em, 24px);
+				top: 1.5em;
+				font-size: clamp(11px, 0.5em, 24px);
 			}
-			.prefix,
-			.suffix {
+			.affix {
 				opacity: 0.5;
 			}
-			&.has-label {
-				.prefix,
-				.suffix,
+			&.haslabel {
+				.affix,
 				input {
-					top: 0.35em;
+					top: 0.45em;
 				}
 			}
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover,
-		&.focused {
+		&:focus-within {
 			box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.5);
 			color: col(bg, 100);
 			background: col(primary, 700);
@@ -527,7 +501,7 @@
 				opacity: 0.5;
 			}
 		}
-		&.focused {
+		&:focus-within {
 			box-shadow: 0 0.5em 1em -0.5em col(primary, 900, 0.5);
 			color: col(bg, 100);
 		}

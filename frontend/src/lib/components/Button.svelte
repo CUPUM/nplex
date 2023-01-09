@@ -54,7 +54,7 @@
 <svelte:element
 	this={as ? as : href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
-	class="button nest {computedVariant} {contentAlign} {className} {ICON_CLASSES.HOVER}"
+	class="button nest focus-outline-visible {computedVariant} {contentAlign} {className} {ICON_CLASSES.HOVER}"
 	class:compact
 	class:warning
 	class:equi
@@ -144,7 +144,6 @@
 		border-radius: calc(var(--radius) - var(--inset-sum));
 		cursor: pointer;
 		letter-spacing: 0em;
-		outline: 0px solid transparent;
 		transform-origin: center;
 	}
 	.center {
@@ -191,18 +190,12 @@
 		}
 	}
 	.warning {
-		// outline-width: 2px;
-		// outline-color: col(error, 500);
-		// background: col(error, 100);
 		color: col(error, 500);
 	}
 	.button:focus {
 		.content {
 			animation: press 0.25s ease-in-out;
 		}
-	}
-	.button:focus-visible {
-		outline: var(--ui-outline);
 	}
 	.loading {
 		.content {

@@ -9,10 +9,13 @@
 		`M 0,-0 C ${TIP_ROUNDNESS},0 ` +
 		`${50 - TIP_ROUNDNESS},50 50,50 C ${50 + TIP_ROUNDNESS},50 ` +
 		`${100 - TIP_ROUNDNESS},0 100,-0 Z`;
+	const TIME_BUFFER_IN = 350;
+	const TIME_BUFFER_OUT = 500;
+	let TIMER: any;
+	let DELAY = false;
 </script>
 
 <script lang="ts">
-	import { THEMES } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -25,12 +28,10 @@
 	export let place: ComponentProps<Tether>['place'] = 'top';
 	export let align: ComponentProps<Tether>['align'] = 'center';
 	export let distance: ComponentProps<Tether>['distance'] = 5;
-
-	function show() {
+	export function show() {
 		open = true;
 	}
-
-	function hide() {
+	export function hide() {
 		open = false;
 	}
 
@@ -47,10 +48,24 @@
 		if (!hover) hide();
 	}}
 	on:pointerenter={() => {
-		if (hover) show();
+		if (hover) {
+			clearTimeout(TIMER);
+			if (DELAY) {
+				TIMER = setTimeout(() => {
+					show();
+					DELAY = false;
+				}, TIME_BUFFER_IN);
+			} else {
+				show();
+			}
+		}
 	}}
 	on:pointerleave={() => {
 		if (hover) hide();
+		clearTimeout(TIMER);
+		TIMER = setTimeout(() => {
+			DELAY = true;
+		}, TIME_BUFFER_OUT);
 	}}
 	{place}
 	{align}
@@ -60,7 +75,6 @@
 	{#if open}
 		<div
 			class="tooltip {place} {align}"
-			data-theme={THEMES.dark}
 			in:scale={{ start: 0.5, easing: expoOut, duration: 100 }}
 			out:scale={{ start: 0.75, easing: expoIn, duration: 75 }}
 		>
@@ -85,17 +99,17 @@
 		display: block;
 		flex: none;
 		white-space: nowrap;
-		font-weight: 300;
-		font-size: var(--ui-text-sm);
+		font-weight: 350;
+		font-size: var(--ui-text-xs);
 		padding: 0.5em 1em 0.6em 1em;
 		margin: 0;
-		background: col(bg, 900, 0.96);
-		color: col(fg, 100);
-		border-radius: 0.75em;
+		background: col(fg, 500, 0.96);
+		color: col(bg, 500);
+		border-radius: 0.8em;
 		letter-spacing: 0.02em;
 		transform-origin: inherit;
 		z-index: 1000;
-		box-shadow: 0 0.8em 1.8em -0.8em rgba(0, 10, 20, 0.5);
+		// box-shadow: 0 0.8em 1.8em -0.8em rgba(0, 10, 20, 0.5);
 	}
 
 	.tip {
@@ -107,7 +121,7 @@
 		background: transparent;
 		overflow: visible;
 		path {
-			fill: col(bg, 900, 0.96);
+			fill: col(fg, 500, 0.96);
 		}
 	}
 

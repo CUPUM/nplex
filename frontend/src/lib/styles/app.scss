@@ -75,6 +75,18 @@ hr {
 	}
 }
 
+.focus-outline- {
+	&within,
+	&visible {
+		transition: outline 0.2s var(--ui-ease-out) !important;
+		outline: 0px solid transparent;
+	}
+	&within:focus-within,
+	&visible:focus-visible {
+		outline: 5px solid rgb(var(--rgb-primary-300), 0.2);
+	}
+}
+
 @keyframes press {
 	0% {
 		transform: scale(1);

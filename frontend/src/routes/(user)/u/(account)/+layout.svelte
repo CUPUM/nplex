@@ -29,9 +29,10 @@
 
 <style lang="scss">
 	article {
-		display: flex;
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
 		margin: 0 auto;
-		flex-direction: row;
 		gap: var(--ui-gutter);
 		align-items: flex-start;
 		width: 100%;
@@ -82,9 +83,12 @@
 	}
 
 	section {
+		position: relative;
 		display: flex;
-		flex: 1;
+		align-items: stretch;
 		flex-direction: column;
 		gap: var(--ui-gutter);
+		width: 100%;
+		max-width: var(--ui-width-md);
 	}
 </style>

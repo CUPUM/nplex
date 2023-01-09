@@ -5,6 +5,7 @@
 -->
 <script lang="ts" context="module">
 	export const RIPPLE_ATTRIBUTE = 'ripple-host';
+	const N_ANIMATIONS = 3;
 </script>
 
 <script lang="ts">
@@ -12,11 +13,11 @@
 	export let easing: string = 'cubic-bezier(0, 0, .2, 1)';
 	export let duration = 350;
 	export let delay = 0;
-	export let opacityStart = 0.25;
+	export let opacityStart = 0.2;
 	export let opacityEnd = 0;
 	export let opacityEasing = 'ease-out';
 	export let opacityDuration = 1000;
-	export let opacityDelay = 350;
+	export let opacityDelay = 0;
 	export let spreadStart = 0;
 	export let spreadEnd = 1;
 	export let spreadEasing = easing;
@@ -30,10 +31,8 @@
 	export let colorDelay = delay;
 	export let blur: number = 0;
 
-	const N_ANIMATIONS = 3;
-
 	let destructor: () => void;
-	let ripples: { x: number; y: number; d: number; animations: number }[] = [];
+	let ripples: { x: number; y: number; d: number; animations: number; out?: boolean }[] = [];
 	let containerRef: HTMLDivElement;
 	$: listenerRef = host ?? containerRef?.parentElement;
 
@@ -60,7 +59,16 @@
 			};
 			ripples.push(r);
 			ripples = ripples;
+			document.addEventListener('pointerup', remove);
+			document.addEventListener('pointercancel', remove);
 		}
+	}
+
+	function remove() {
+		ripples[ripples.length - 1].out = true;
+		ripples = ripples;
+		document.removeEventListener('pointerup', remove);
+		document.removeEventListener('pointercancel', remove);
 	}
 
 	function end(e: AnimationEvent, ripple: typeof ripples[number]) {
@@ -109,6 +117,7 @@
 	{#each ripples as r (r)}
 		<div
 			class="ripple"
+			class:out={r.out}
 			style:--x="{r.x}px"
 			style:--y="{r.y}px"
 			style:--d="{r.d}px"
@@ -127,6 +136,7 @@
 		right: 0;
 		border-radius: inherit;
 		overflow: hidden;
+		z-index: 10;
 	}
 
 	.ripple {
@@ -140,6 +150,11 @@
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
 		filter: blur(var(--blur));
+		animation: var(--spread-duration) var(--spread-easing) var(--spread-delay) 1 forwards spread,
+			var(--color-duration) var(--color-easing) var(--color-delay) 1 forwards color;
+	}
+
+	.out {
 		animation: var(--opacity-duration) var(--opacity-easing) var(--opacity-delay) 1 forwards fade,
 			var(--spread-duration) var(--spread-easing) var(--spread-delay) 1 forwards spread,
 			var(--color-duration) var(--color-easing) var(--color-delay) 1 forwards color;
