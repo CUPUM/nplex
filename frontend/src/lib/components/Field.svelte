@@ -76,12 +76,11 @@
 		inputRef?.blur();
 	}
 
-	let inputRef: InputRef = undefined;
-	let labelWidth = 0;
+	let inputRef: InputRef;
+	let labelWidth: number;
 	$: hasvalue = !!value;
 	$: hasplaceholder = placeholder !== '';
 	$: haslabel = $$slots.label && !nolabel;
-	$: console.log(haslabel);
 
 	const _inputRef = writable<InputRef>();
 	$: _inputRef.set(inputRef);
@@ -165,7 +164,7 @@
 			{bindInputRef}
 		>
 			<input
-				in:fly={{ y: -6, opacity: 0 }}
+				in:fly={{ y: -6 }}
 				bind:this={inputRef}
 				data-field-input
 				class="input"

@@ -65,11 +65,8 @@
 		Notez que pour obtenir un rôle qui vous accorde plus de permissions, votre demande devra être
 		approuvée par un administrateur.
 	</p>
-	<Select
-		options={data.roles.map((role) => ({ ...role, value: role.user_role, text: role.label }))}
-		let:option
-	>
-		<p>{option.description}</p>
+	<Select options={data.roles} let:datum>
+		<option value={datum.user_role}>{datum.label}</option>
 	</Select>
 	<div class="ui-select">
 		<span>Test</span>

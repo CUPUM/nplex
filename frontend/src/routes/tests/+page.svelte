@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Field from '$components/Field.svelte';
 	import Select from '$components/Select.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import type { ComponentProps } from 'svelte';
@@ -20,22 +19,22 @@
 </script>
 
 <article>
+	{#each data.roles as role}
+		<input type="radio" value={role} />
+	{/each}
+</article>
+<article>
 	<TextArea />
 	{#each ['default', 'outlined', 'cta'] as v}
 		<label><input type="radio" value={v} bind:group={variant} /> {v}</label>
 	{/each}
 </article>
 <article>
-	<Select {variant} options={roles} bind:value>
-		<svelte:fragment slot="label">Label</svelte:fragment>
-	</Select>
-	<Field placeholder="Placeholder" {variant}>
-		<svelte:fragment slot="label">Label</svelte:fragment>
-	</Field>
-	<Select {variant} placeholder="test">
-		<svelte:fragment slot="options" />
+	<Select placeholder="test" {variant} options={roles} bind:value let:datum>
+		<option value={datum}>{datum.text}</option>
 	</Select>
 </article>
+<section />
 
 <!-- <article use:setRootBackground={{ color: 'red' }}>
 	<Select options={data.roles.map((r) => r.label)} let:option>
@@ -61,5 +60,19 @@
 		background: col(bg, 500);
 		margin: 3px;
 		border-radius: 1em;
+	}
+
+	section {
+		width: 100%;
+		height: 500px;
+		background: linear-gradient(121.28deg, #a4006c 0%, #ffeca8 100%),
+			linear-gradient(121.28deg, #69003f 0%, #fff8f8 100%),
+			linear-gradient(238.72deg, #00ffff 0%, #0212a4 100%),
+			radial-gradient(67.16% 100% at 50% 0%, #ff00b8 0%, #ffffff 100%),
+			linear-gradient(140.54deg, #7000ff 0%, #001aff 72.37%),
+			linear-gradient(307.43deg, #ffe927 0%, #00114d 100%),
+			radial-gradient(107% 142.8% at 15.71% 104.5%, #ffffff 0%, #a7aa00 100%), #ffffff;
+		background-blend-mode: overlay, difference, difference, overlay, difference, difference,
+			difference, normal;
 	}
 </style>
