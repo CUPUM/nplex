@@ -7,7 +7,7 @@
 	$: typedProps = $$props as $$Props;
 </script>
 
-<i class="field-icon">
+<i class="field-icon {typedProps.class || ''}">
 	<Icon {...typedProps} />
 </i>
 

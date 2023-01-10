@@ -28,6 +28,7 @@
 	export let equi: boolean = false;
 	export let round: boolean = false;
 	export let type: 'button' | 'submit' | 'reset' | 'file' = 'button';
+	export let readonly: boolean | undefined = undefined;
 	let for_: string | undefined = undefined;
 	export { for_ as for };
 	export let active: boolean | undefined = false;
@@ -63,8 +64,8 @@
 	class:disabled
 	class:loading
 	class:grouped={buttonGroupContext}
-	aria-disabled={disabled}
 	role="button"
+	{disabled}
 	{style}
 	{href}
 	{id}
@@ -74,6 +75,7 @@
 	{title}
 	{tabindex}
 	{formaction}
+	{readonly}
 	for={for_}
 	on:click
 	on:pointerdown

@@ -2,6 +2,7 @@
 </script>
 
 <script lang="ts">
+	function confirm() {}
 </script>
 
 <slot name="trigger">

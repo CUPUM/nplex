@@ -12,12 +12,12 @@
 	import { derived, get } from 'svelte/store';
 
 	const SCROLL_LOCK = Symbol('auth');
-	const AUTH_MODES = {
+	export const AUTHMODAL_MODE = {
 		SignIn: 'signin',
 		SignUp: 'signup',
 		Provider: 'provider',
 	} as const;
-	type AuthMode = ValueOf<typeof AUTH_MODES>;
+	type AuthMode = ValueOf<typeof AUTHMODAL_MODE>;
 
 	/**
 	 * Singleton store to open/close the auth modal and consequently update the client's URL search
@@ -44,16 +44,16 @@
 				}
 				rootScroll.lock(SCROLL_LOCK);
 				const mode = _page.url.searchParams.get(SEARCH_PARAMS.AUTH_MODAL);
-				return mode && (Object.values(AUTH_MODES) as string[]).includes(mode)
+				return mode && (Object.values(AUTHMODAL_MODE) as string[]).includes(mode)
 					? (mode as AuthMode)
-					: AUTH_MODES.SignIn;
+					: AUTHMODAL_MODE.SignIn;
 			}
 		});
 
 		function getUrl({
 			url,
 			open = true,
-			mode = AUTH_MODES.SignIn,
+			mode = AUTHMODAL_MODE.SignIn,
 		}: {
 			url: string | URL;
 			open?: boolean;
@@ -70,7 +70,7 @@
 
 		async function open({
 			url,
-			mode = AUTH_MODES.SignIn,
+			mode = AUTHMODAL_MODE.SignIn,
 			...opts
 		}: { url?: string | URL; mode?: AuthMode } & Parameters<typeof goto>[1] = {}) {
 			if (!browser) return;
@@ -127,8 +127,6 @@
 		'linkedin',
 		'twitter',
 	] satisfies (keyof typeof SOCIAL_ICONS)[];
-
-	$: console.log($page.url.pathname);
 </script>
 
 {#if $authModal}
@@ -144,7 +142,7 @@
 			autocomplete="off"
 			class="sign"
 			transition:scale={{ start: 0.95 }}
-			action={$authModal === AUTH_MODES.SignUp ? Action.SignUp : Action.SignIn}
+			action={$authModal === AUTHMODAL_MODE.SignUp ? Action.SignUp : Action.SignIn}
 			method="POST"
 			use:enhance={({ form, data, action, cancel }) => {
 				currentAction = action.pathname + action.search;
@@ -173,7 +171,7 @@
 						<FieldReset />
 					</svelte:fragment>
 				</Field>
-				{#if $authModal === AUTH_MODES.SignUp}
+				{#if $authModal === AUTHMODAL_MODE.SignUp}
 					<div class="signup fill-row" transition:slide|local={{ duration: 200 }}>
 						<Field required variant="default" name="first_name">
 							<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
@@ -194,7 +192,7 @@
 				<Button
 					class="fill-row"
 					type="submit"
-					variant={$authModal === AUTH_MODES.SignIn ? 'cta' : 'default'}
+					variant={$authModal === AUTHMODAL_MODE.SignIn ? 'cta' : 'default'}
 					contentAlign="center"
 					formaction="{Action.SignIn}{$page.url.pathname === '/'
 						? `&${SEARCH_PARAMS.REDIRECT}=${USER_BASE_ROUTE.pathname}`
@@ -209,10 +207,12 @@
 				>
 				<Button
 					class="small-button"
-					variant={$authModal === AUTH_MODES.SignUp ? 'cta' : 'default'}
-					type={$authModal === AUTH_MODES.SignUp ? 'submit' : 'button'}
-					href={$authModal === AUTH_MODES.SignIn
-						? authModal.getUrl({ url: $page.url, open: true, mode: AUTH_MODES.SignUp }).toString()
+					variant={$authModal === AUTHMODAL_MODE.SignUp ? 'cta' : 'default'}
+					type={$authModal === AUTHMODAL_MODE.SignUp ? 'submit' : 'button'}
+					href={$authModal === AUTHMODAL_MODE.SignIn
+						? authModal
+								.getUrl({ url: $page.url, open: true, mode: AUTHMODAL_MODE.SignUp })
+								.toString()
 						: undefined}
 					contentAlign="center"
 					formaction="{Action.SignUp}{$page.url.pathname === '/'
@@ -220,7 +220,7 @@
 						: ''}"
 					loading={currentAction === Action.SignUp}
 				>
-					Créer {$authModal === AUTH_MODES.SignUp ? 'mon' : 'un'} compte
+					Créer {$authModal === AUTHMODAL_MODE.SignUp ? 'mon' : 'un'} compte
 				</Button>
 			</fieldset>
 			<hr />

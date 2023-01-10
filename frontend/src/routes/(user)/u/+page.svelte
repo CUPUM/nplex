@@ -1,7 +1,9 @@
 <script lang="ts">
+	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import { EDITOR_BASE_ROUTE } from '$utils/routes';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
+	import type { ValueOf } from 'ts-essentials';
 	import { USER_ROUTES } from './common';
 
 	const repeat = Array(30);
@@ -9,7 +11,10 @@
 		const r = Math.round(Math.random() * 5);
 		return Math.round(Math.random() * 3) + 2;
 	}
-	const routes = [...Object.values(USER_ROUTES), EDITOR_BASE_ROUTE];
+	const routes: (ValueOf<typeof USER_ROUTES> | typeof EDITOR_BASE_ROUTE)[] = [
+		...Object.values(USER_ROUTES),
+		EDITOR_BASE_ROUTE,
+	];
 </script>
 
 <ul>
@@ -23,9 +28,15 @@
 				easing: expoOut,
 				duration: 500,
 			}}
+			class={ICON_CLASSES.HOVER}
 		>
 			<a href={r.pathname}>
 				{#each repeat as clone, i}
+					{#if i === s && 'icon' in r}
+						<i>
+							<Icon name={r.icon} style="top: -.1em; display: inline" strokeWidth="2.5" />
+						</i>
+					{/if}
 					<span
 						style:padding-left="{(Math.random() * 1).toFixed(2)}em"
 						role={i === s ? 'presentation' : undefined}
@@ -42,9 +53,10 @@
 <style lang="scss">
 	ul {
 		width: 100%;
+		max-width: var(--ui-width-main);
 		padding: 0 var(--ui-gutter);
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
 		gap: var(--ui-gutter);
 
 		@include tablet {
@@ -66,24 +78,23 @@
 		overflow: hidden;
 		line-height: 1;
 		width: 100%;
-		height: 6.15em;
+		aspect-ratio: 1 / 1;
 		border-radius: var(--ui-radius-xl);
 		color: col(bg, 100);
 		background: col(bg, 300);
-		// border: 1px dashed col(bg, 100);
-		font-size: max(var(--ui-text-xl), 3vw);
+		font-size: clamp(var(--ui-text-lg), 4vw, var(--ui-text-xl));
 		font-weight: 500;
 		transition: all 0.2s var(--ui-ease-out);
 
 		&:hover {
-			// border-radius: var(--ui-radius-2xl);
-			// border: 1px dashed col(primary, 500);
+			border-radius: var(--ui-radius-2xl);
 			background: col(primary, 300);
 			color: col(primary, 500);
 		}
 	}
 
-	.saliant {
+	.saliant,
+	i {
 		padding-inline: 1em !important;
 		word-break: keep-all;
 		display: inline-block;

@@ -1,9 +1,7 @@
 <script lang="ts">
-	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
-	import Icon from '$components/Icon.svelte';
+	import Select from '$components/Select.svelte';
 	import TextArea from '$components/TextArea.svelte';
-	import Tooltip from '$components/Tooltip.svelte';
 	import type { ComponentProps } from 'svelte';
 	import type { PageData } from './$types';
 
@@ -12,36 +10,31 @@
 	let a = 10;
 	let b = 40;
 	let c = 50;
-
+	const roles = data.roles.map((r) => ({ ...r, value: r, text: r.label }));
 	let v = 'ceci est une valeur initiale';
 	let bool = false;
 
-	let open = false;
+	let value = roles[0];
 
 	let variant: ComponentProps<TextArea>['variant'] = 'outlined';
 </script>
 
 <article>
-	<fieldset>
-		{#each ['default', 'cta', 'outlined'] as v}
-			<Tooltip message="Tooltip: {v}">
-				<label>{v} <input type="radio" value={v} bind:group={variant} /></label>
-			</Tooltip>
-		{/each}
-	</fieldset>
-	<TextArea {variant}>
-		<svelte:fragment slot="label">Slotted label</svelte:fragment>
-	</TextArea>
-	<TextArea {variant}>
-		<svelte:fragment slot="leading"><Button>Leading!</Button></svelte:fragment>
-		<svelte:fragment slot="trailing"
-			><Button><Icon name="settings" slot="leading" />Test</Button></svelte:fragment
-		>
-		<svelte:fragment slot="label">Slotted label</svelte:fragment>
-	</TextArea>
-	<Field {variant}>
-		<svelte:fragment slot="label">Label yay <Icon name="pen" /></svelte:fragment>
+	<TextArea />
+	{#each ['default', 'outlined', 'cta'] as v}
+		<label><input type="radio" value={v} bind:group={variant} /> {v}</label>
+	{/each}
+</article>
+<article>
+	<Select {variant} options={roles} bind:value>
+		<svelte:fragment slot="label">Label</svelte:fragment>
+	</Select>
+	<Field placeholder="Placeholder" {variant}>
+		<svelte:fragment slot="label">Label</svelte:fragment>
 	</Field>
+	<Select {variant} placeholder="test">
+		<svelte:fragment slot="options" />
+	</Select>
 </article>
 
 <!-- <article use:setRootBackground={{ color: 'red' }}>

@@ -1,3 +1,4 @@
+import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import { get } from 'svelte/store';
 
@@ -34,12 +35,12 @@ export function autoHash(
 			for (const entry of entries) {
 				if (entry.isIntersecting) {
 					const to = new URL(currentPage.url);
-					// to.hash = hash;
-					// goto(to.toString(), { replaceState: true, noScroll: true });
+					to.hash = hash;
+					goto(to.toString(), { replaceState: true, noScroll: true });
 				} else if (currentPage.url.hash === hash && clearOnLeave) {
 					const to = new URL(currentPage.url);
-					// to.hash = '';
-					// goto(to.toString(), { replaceState: true, noScroll: true });
+					to.hash = '';
+					goto(to.toString(), { replaceState: true, noScroll: true });
 				}
 			}
 		}

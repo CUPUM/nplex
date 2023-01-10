@@ -17,7 +17,7 @@
 	this={typeof href === 'string' ? 'a' : 'button'}
 	class="navbar-button focus-outline-visible {ICON_CLASSES.HOVER} {active ? ICON_CLASSES.HOLD : ''}"
 	class:cta
-	class:current
+	data-current={current || undefined}
 	class:active
 	class:disabled
 	class:equi
@@ -48,10 +48,8 @@
 		letter-spacing: 0.02em;
 		line-height: 1;
 		color: col(fg, 700);
-		background: col(bg, 100, 0.9);
-		outline: 0px dashed transparent;
-		outline-offset: 0px;
-		backdrop-filter: blur(12px);
+		background: col(bg, 100, 0.85);
+		backdrop-filter: blur(8px);
 		&:hover {
 			color: col(bg, 500);
 			background: col(fg, 300, 0.95);
@@ -62,10 +60,10 @@
 			background: col(fg, 100, 0.95);
 		}
 
-		&.current:not(.active) {
+		&[data-current]:not(.active) {
 			cursor: default;
 			color: col(primary, 500);
-			box-shadow: 0 0 0 1px col(primary, 500, 0.2);
+			// box-shadow: 0 0 0 1px col(primary, 500, 0.2);
 
 			&:hover {
 				background: col(primary, 100, 0.25);

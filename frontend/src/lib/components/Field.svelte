@@ -6,9 +6,24 @@
 <script lang="ts" context="module">
 	const CTX_KEY = 'field-context';
 
+	type Value =
+		| string
+		| number
+		| boolean
+		| Record<string | number | symbol, unknown>
+		| Array<unknown>
+		| undefined
+		| null;
+	type InputRef =
+		| HTMLInputElement
+		| HTMLSelectElement
+		| HTMLButtonElement
+		| HTMLTextAreaElement
+		| undefined;
+
 	interface FieldContext {
-		value: Writable<string | null | undefined>;
-		inputRef: Writable<HTMLInputElement>;
+		value: Writable<Value>;
+		inputRef: Writable<InputRef>;
 	}
 
 	export function getFieldContext() {
@@ -25,8 +40,8 @@
 
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
-	export let value: string | null | undefined = '';
-	export let sample: typeof value = value;
+	export let value: Value = '';
+	export let sample: Value = value;
 	export let prefix: string | null | undefined = '';
 	export let suffix: string | null | undefined = '';
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' | 'select' = 'text';
@@ -34,7 +49,6 @@
 	export let compact: boolean | undefined = undefined;
 	export let required: boolean | undefined = undefined;
 	export let readonly: boolean | undefined = undefined;
-	export let select: boolean | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
 	export let warning: boolean | undefined = undefined;
 	export let success: boolean | undefined = undefined;
@@ -45,37 +59,45 @@
 	export let autocomplete: string | undefined = 'off';
 	export let placeholder: string = '';
 	export let pattern: RegExp | undefined = undefined;
+	export let format: ((value: Value) => Value) | undefined = undefined;
 	export let dirty: boolean = false;
 	export let tabindex: number = 0;
+	export let style: string | undefined = undefined;
 	let className: string = '';
 	export { className as class };
-	export let style: string | undefined = undefined;
+	/**
+	 * Only way to properly prevent label div when passing empty label slot (ex.: Select.svelte)
+	 */
+	export let nolabel: boolean = false;
 	export function focus() {
-		console.log('focusin');
-		inputRef.focus({});
-		console.log(inputRef.getAttribute('focus'));
+		inputRef?.focus({});
 	}
 	export function blur() {
-		inputRef.blur();
+		inputRef?.blur();
 	}
 
-	let inputRef: HTMLInputElement;
+	let inputRef: InputRef = undefined;
 	let labelWidth = 0;
 	$: hasvalue = !!value;
 	$: hasplaceholder = placeholder !== '';
-	$: haslabel = $$slots.label;
+	$: haslabel = $$slots.label && !nolabel;
+	$: console.log(haslabel);
 
-	const _inputRef = writable<typeof inputRef>();
+	const _inputRef = writable<InputRef>();
 	$: _inputRef.set(inputRef);
 
 	const _value = writable<typeof value>(value);
 	$: value = $_value;
 	$: _value.set(value);
 
+	function bindInputRef(element: NonNullable<InputRef>) {
+		inputRef = element;
+	}
+
 	function handleInput(e: Event) {
-		const ev = (e.target as HTMLInputElement).value;
-		// if (format) ev = format(ev);
-		value = ev;
+		if (e.target && 'value' in e.target) {
+			value = format ? format(e.target.value as any) : (e.target.value as any);
+		}
 	}
 
 	setContext<FieldContext>(CTX_KEY, {
@@ -85,6 +107,7 @@
 </script>
 
 <Dirtiness {sample} bind:dirty let:check>
+	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<fieldset
 		class="container nest focus-outline-within {variant} {className}"
 		{style}
@@ -92,7 +115,6 @@
 		class:compact
 		class:warning
 		class:readonly
-		class:select
 		class:loading
 		class:success
 		class:invalid
@@ -111,49 +133,68 @@
 		on:keyup
 	>
 		<Ripple />
-		<div class="outline left" />
-		<div class="outline right" />
-		<div class="outline bottom" />
 		{#if $$slots.leading}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div class="aside leading" on:click|self={focus}>
 				<slot {dirty} name="leading" />
 			</div>
 		{/if}
-		{#if $$slots.label}
+		{#if haslabel}
 			<label in:fly={{ y: 6, opacity: 0 }} for={id} bind:clientWidth={labelWidth}>
 				<slot {dirty} name="label" /><span class="star">*</span>
 			</label>
 		{/if}
+		<!-- Placing outlines here to allow css dependence on label:empty with sibling selector -->
+		<div class="outline left" />
+		<div class="outline right" />
+		<div class="outline bottom" />
 		{#if prefix}
 			<span class="affix prefix">{prefix}</span>
 		{/if}
-		<input
-			in:fly={{ y: -6, opacity: 0 }}
-			bind:this={inputRef}
-			class="input"
+		<slot
+			name="input"
 			{autocomplete}
-			{type}
-			{name}
 			{placeholder}
-			{value}
-			{maxlength}
-			{minlength}
+			{handleInput}
 			{disabled}
 			{required}
 			{tabindex}
 			{readonly}
-			pattern={pattern ? pattern.source : undefined}
-			on:input={handleInput}
-			on:input={check}
-			on:focus
-			on:blur
-			on:input
-			on:change
-		/>
+			{pattern}
+			{check}
+			{bindInputRef}
+		>
+			<input
+				in:fly={{ y: -6, opacity: 0 }}
+				bind:this={inputRef}
+				data-field-input
+				class="input"
+				{autocomplete}
+				{id}
+				{type}
+				{name}
+				{placeholder}
+				{value}
+				{maxlength}
+				{minlength}
+				{disabled}
+				{required}
+				{tabindex}
+				{readonly}
+				pattern={pattern ? pattern.source : undefined}
+				on:input={handleInput}
+				on:input={check}
+				on:focus
+				on:blur
+				on:input
+				on:change
+			/>
+		</slot>
 		{#if suffix}
 			<span class="affix suffix">{suffix}</span>
 		{/if}
 		{#if $$slots.trailing}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div class="aside trailing" on:click|self={focus}>
 				<slot {dirty} name="trailing" />
 			</div>
@@ -190,7 +231,7 @@
 		grid-template-rows: minmax(var(--height), auto);
 		gap: 0;
 		flex-direction: row;
-		align-items: center;
+		align-items: stretch;
 		font-weight: 400;
 		font-size: inherit;
 		border-radius: calc(var(--radius) - var(--inset-sum));
@@ -202,9 +243,6 @@
 		}
 		&.readonly {
 			cursor: default;
-		}
-		&.select {
-			cursor: pointer;
 		}
 		&.warning {
 			color: red !important;
@@ -261,7 +299,7 @@
 		grid-column: suffix;
 	}
 
-	input {
+	fieldset :global(*[data-field-input]) {
 		cursor: inherit;
 		font-family: inherit;
 		font-weight: inherit;
@@ -373,7 +411,7 @@
 			}
 			&.haslabel {
 				.affix,
-				input {
+				:global(*[data-field-input]) {
 					top: 0.45em;
 				}
 			}
@@ -386,7 +424,7 @@
 		&:focus-within {
 			color: col(fg, 000);
 			background: col(bg, 300);
-			input {
+			:global(*[data-field-input]) {
 				opacity: 1;
 			}
 		}
@@ -476,7 +514,7 @@
 			}
 			&.haslabel {
 				.affix,
-				input {
+				:global(*[data-field-input]) {
 					top: 0.45em;
 				}
 			}

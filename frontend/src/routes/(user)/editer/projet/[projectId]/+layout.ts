@@ -60,7 +60,17 @@ export const load = (async (event) => {
 		})),
 	};
 	return {
+		/**
+		 * Use this data as a the basis for form bindings.
+		 */
 		project: projectTransform,
+		/**
+		 * Use this data as a sample reference to compare values bound in forms and establish dirty
+		 * fields.
+		 *
+		 * ## Do not modify this data, it is to be used as a reference.
+		 */
+		projectSample: { ...projectTransform },
 		descriptors: descriptorsRes.data,
 	};
 }) satisfies LayoutLoad;

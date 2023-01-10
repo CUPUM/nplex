@@ -8,7 +8,14 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	export let sample: string | number | boolean | undefined | null;
+	export let sample:
+		| string
+		| number
+		| boolean
+		| Record<string | number | symbol, unknown>
+		| Array<unknown>
+		| undefined
+		| null;
 	export let dirty = false;
 
 	const dispatch = createEventDispatcher();

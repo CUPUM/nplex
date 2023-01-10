@@ -23,7 +23,7 @@
 	 */
 	export function setNavbarTheme(element: HTMLElement, theme: ThemeName): SvelteActionReturnType {
 		const intersect = intersection(element, {
-			rootMargin: '-40px 0px 0px 0px',
+			rootMargin: '-40px 0px 0% 0px',
 		});
 		function handleEnter() {
 			navbarTheme.set(theme);
@@ -263,8 +263,8 @@
 		justify-content: center;
 		border-radius: var(--ui-radius-md);
 		backdrop-filter: blur(12px);
-		background: col(fg, 100, 0.1);
-		box-shadow: 0 0 0 2px col(fg, 100, 0.1);
+		background: col(bg, 900, 0.5);
+		box-shadow: 0 0 0 2px col(bg, 900, 0.5);
 		--i: 1;
 	}
 

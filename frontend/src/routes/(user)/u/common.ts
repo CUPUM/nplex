@@ -26,4 +26,4 @@ export const USER_ROUTES = {
 		pathname: base('/favoris'),
 		icon: 'bookmark',
 	},
-} satisfies Routes<{ icon?: keyof typeof icons }>;
+} satisfies Routes<{ icon: keyof typeof icons }>;

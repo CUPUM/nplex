@@ -1,42 +1,56 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
+	import { KEY } from '$utils/enums';
 	import { debounce } from '$utils/function';
 	import { THEMES } from '$utils/themes';
-
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const handleChange = debounce((e) => {
-		console.log('change!', e);
-	}, 500);
+	let titleRef: HTMLElement;
+
+	function handleKey(e: KeyboardEvent) {
+		if (e.key === KEY.Enter) {
+			e.preventDefault();
+		}
+	}
+
+	const handleChange = debounce((e) => {}, 500);
 </script>
 
-<header data-theme={THEMES.dark}>
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<header data-theme={THEMES.dark} class={ICON_CLASSES.HOVER} on:click={() => titleRef.focus()}>
 	<hgroup>
 		<h1>Éditeur de projet</h1>
-	</hgroup>
-	<hr />
-	<form
-		method="POST"
-		action="?/title"
-		use:enhance={() => {
-			return ({ update }) => {
-				update({ reset: false });
-			};
-		}}
-		on:input={handleChange}
-	>
-		<h2 contenteditable="true" name="title" bind:textContent={data.project.title} />
-		<input
-			type="text"
-			name="title"
-			hidden
-			value={data.project.title}
-			id=""
+		<hr />
+		<form
+			method="POST"
+			action="?/title"
+			use:enhance={() => {
+				return ({ update }) => {
+					update({ reset: false });
+				};
+			}}
 			on:input={handleChange}
-		/>
-	</form>
+		>
+			<Icon name="pen" class="icon" />
+			<h2
+				bind:this={titleRef}
+				contenteditable="true"
+				bind:textContent={data.project.title}
+				on:keydown={handleKey}
+			/>
+			<input
+				type="text"
+				name="title"
+				hidden
+				value={data.project.title}
+				id=""
+				on:input={handleChange}
+			/>
+		</form>
+	</hgroup>
 </header>
 
 <style lang="scss">
@@ -44,20 +58,19 @@
 		position: relative;
 		align-self: stretch;
 		margin-inline: var(--ui-gutter);
-		display: grid;
-		grid-template-columns: 1fr 0px 2fr;
-		min-height: 50vh;
 		background: col(bg, 300);
 		border-radius: var(--ui-radius-xl);
-		padding: 0;
 		font-size: var(--ui-text-2xl);
 		color: col(fg, 100);
-		margin-top: var(--ui-nav-px);
 	}
 
-	hr {
-		padding: 0.5px;
-		background: col(fg, 500, 0.1);
+	hgroup {
+		margin: 0 auto;
+		min-height: 50vh;
+		width: 100%;
+		max-width: var(--ui-width-main);
+		display: grid;
+		grid-template-columns: 1fr 0px 2fr;
 	}
 
 	form {
@@ -68,15 +81,26 @@
 		border-radius: inherit;
 		border-top-left-radius: 0;
 		border-bottom-left-radius: 0;
+		padding: 2rem;
 		transition: all 0.25s var(--ui-ease-out);
 
 		&:hover {
-			box-shadow: 0 2rem 7rem -3rem rgb(0, 10, 20, 0.5);
+			color: col(primary, 700);
+		}
+
+		&:focus-within {
+			color: col(primary, 500);
+		}
+
+		:global(.icon) {
+			align-self: flex-end;
+			opacity: 0.2;
+			font-size: 0.5em;
 		}
 	}
 
 	h1 {
-		align-self: center;
+		align-self: flex-start;
 		font-size: var(--ui-text-lg);
 		padding: 3rem;
 		font-weight: 400;
@@ -88,6 +112,6 @@
 		outline: none;
 		word-break: keep-all;
 		hyphens: auto;
-		padding: 2rem;
+		padding: 1rem;
 	}
 </style>

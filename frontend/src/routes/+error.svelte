@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { THEMES } from '$utils/themes';
 	import RootTheme from './RootTheme.svelte';
 </script>
 
-<RootTheme theme={THEMES.dark} />
+<RootTheme theme="dark" />
 <div>
 	<h1>Oops!</h1>
 	<h2>Erreur: {$page.status}</h2>

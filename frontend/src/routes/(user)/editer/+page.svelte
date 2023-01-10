@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
 	import { fly } from 'svelte/transition';
+	import { EDITOR_ROUTES } from './common';
 </script>
 
 <header>
@@ -15,21 +16,25 @@
 <ul>
 	<li class="project">
 		<div class="edit">
-			<a href="/" class="fill-link" role="presentation" />
-			<a href="/" class="create">Créer un nouveau projet</a>
-			<a href="/" class="modify">Modifier un projet existant</a>
+			<a href={EDITOR_ROUTES.project.pathname} class="fill-link" role="presentation" />
+			<a href={EDITOR_ROUTES.project.pathname} class="create">Créer un nouveau projet</a>
+			<a href={EDITOR_ROUTES.project.edit.pathname} class="modify">Modifier un projet existant</a>
 		</div>
-		<a class="edit descriptors" href="/">Éditer les descripteurs de projet</a>
+		<a class="edit descriptors" href={EDITOR_ROUTES.project.descriptors.pathname}
+			>Éditer les descripteurs de projet</a
+		>
 	</li>
 	<li class="edit">
-		<a href="/" class="fill-link" role="presentation" />
-		<a href="/" class="create">Créer une nouvelle organisation</a>
-		<a href="/" class="modify">Modifier une organisation répertoriée</a>
+		<a href={EDITOR_ROUTES.organisation.pathname} class="fill-link" role="presentation" />
+		<a href={EDITOR_ROUTES.organisation.pathname} class="create">Créer une nouvelle organisation</a>
+		<a href={EDITOR_ROUTES.organisation.edit.pathname} class="modify"
+			>Modifier une organisation répertoriée</a
+		>
 	</li>
 	<li class="edit">
-		<a href="/" class="fill-link" role="presentation" />
-		<a href="/" class="create">Créer une nouvelle organisation</a>
-		<a href="/" class="modify">Modifier une organisation répertoriée</a>
+		<a href={EDITOR_ROUTES.actor.pathname} class="fill-link" role="presentation" />
+		<a href={EDITOR_ROUTES.actor.pathname} class="create">Créer un nouveau profil d'acteur</a>
+		<a href={EDITOR_ROUTES.actor.edit.pathname} class="modify">Modifier un profil d'acteur</a>
 	</li>
 </ul>
 
@@ -69,6 +74,7 @@
 
 	ul {
 		width: 100%;
+		max-width: var(--ui-width-lg);
 		padding: var(--ui-gutter);
 		display: flex;
 		flex-direction: row;
@@ -92,7 +98,7 @@
 		display: flex;
 		flex-direction: row;
 		gap: 1px;
-		border-radius: var(--ui-radius-lg);
+		border-radius: var(--ui-radius-xl);
 		overflow: hidden;
 
 		.edit {
@@ -117,6 +123,12 @@
 		border-radius: var(--ui-radius-xl);
 		font-size: var(--ui-text-xl);
 		line-height: 1.2;
+		transition: all 0.15s ease-out;
+
+		&:hover {
+			color: col(fg, 100);
+			background: col(primary, 300);
+		}
 	}
 
 	.descriptors {
@@ -133,13 +145,13 @@
 		display: inline-block;
 		font-size: var(--ui-text-md);
 		border: 1px solid col(fg, 500, 0.1);
-		// background: col(fg, 500);
-		// color: col(bg, 900);
 		padding: 1.15em 1.75em 1.35em;
 		border-radius: 99px;
+		transition: all 0.25s ease-out;
 
 		&:hover {
 			background: col(fg, 500);
+			color: col(bg, 500);
 		}
 	}
 </style>

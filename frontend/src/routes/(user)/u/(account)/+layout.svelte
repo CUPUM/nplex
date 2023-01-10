@@ -5,7 +5,7 @@
 	import { USER_ROUTES } from '../common';
 </script>
 
-<article>
+<div class="account">
 	<menu>
 		{#each Object.values(USER_ROUTES) as r}
 			{@const current = $page.url.pathname === r.pathname || undefined}
@@ -22,16 +22,18 @@
 			</a>
 		{/each}
 	</menu>
-	<section>
+	<article>
 		<slot />
-	</section>
-</article>
+	</article>
+</div>
 
 <style lang="scss">
-	article {
+	.account {
+		--aside-width: 180px;
 		position: relative;
 		display: grid;
-		grid-template-columns: 1fr auto 1fr;
+		// grid-template-columns: var(--aside-width) 1fr var(--aside-width);
+		grid-template-columns: var(--aside-width) 1fr;
 		margin: 0 auto;
 		gap: var(--ui-gutter);
 		align-items: flex-start;
@@ -82,13 +84,12 @@
 		}
 	}
 
-	section {
+	article {
 		position: relative;
 		display: flex;
 		align-items: stretch;
 		flex-direction: column;
 		gap: var(--ui-gutter);
 		width: 100%;
-		max-width: var(--ui-width-md);
 	}
 </style>

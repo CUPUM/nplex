@@ -5,7 +5,7 @@ import type { Database } from '$types/database';
 import type { DatabaseBuff } from '$types/databaseBuff';
 import type { Category } from '$utils/enums';
 import type { ThemeName } from '$utils/themes';
-import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
+import type { AuthSession, PostgrestError, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
 
 type Session = DeepOmit<AuthSession, { user: { role: never } }> & {
@@ -34,8 +34,8 @@ declare global {
 			 */
 			session?: Session;
 			category?: Category;
-			showCategoryNav: boolean;
-			showFooter: boolean;
+			showCategoryNav?: boolean;
+			showFooter?: boolean;
 		}
 		interface Locals {
 			/**
@@ -59,9 +59,12 @@ declare global {
 			 */
 			db?: SupabaseClient<App.DatabaseSchema>;
 		}
-		// interface Error extends Partial<PostgrestError> {
-		// 	// Add additional custom error props here.
-		// }
+		interface Error {
+			// Has message prop by default ($page.error.message).
+			// Code is also accessible in $page.status
+			proposeAuth?: boolean;
+			database?: PostgrestError;
+		}
 		// interface Platform {}
 	}
 }
