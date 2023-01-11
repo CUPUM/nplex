@@ -333,18 +333,7 @@
 		color: col(bg, 300);
 		background: col(error, 500);
 		box-shadow: 0 0.2em 1em -0.5em col(error, 500, 0);
-		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
-		&::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			border-radius: inherit;
-			border: 1px solid col(error, 700);
-			transition: all 0.1s ease-in-out;
-		}
+		transition: all 0.2s ease-out, box-shadow 0.25s ease-in-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(bg, 100);

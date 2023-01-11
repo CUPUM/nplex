@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { EDITOR_FORM_ID } from '../common';
+	import { formid } from '../common';
 	import type { PageData } from './$types';
 	import SiteLocation from './SiteLocation.svelte';
 
@@ -18,7 +18,7 @@
 </script>
 
 <form
-	id={EDITOR_FORM_ID}
+	id={formid}
 	method="POST"
 	action="?/update"
 	use:enhance={({ form, data, action, cancel }) => {

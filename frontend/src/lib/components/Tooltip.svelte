@@ -16,6 +16,7 @@
 </script>
 
 <script lang="ts">
+	import { THEMES, type ThemeName } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -25,6 +26,7 @@
 	export let disabled: boolean | undefined = undefined;
 	export let open: boolean = false;
 	export let hover: boolean = true;
+	export let theme: ThemeName = THEMES.dark;
 	export let place: ComponentProps<Tether>['place'] = 'top';
 	export let align: ComponentProps<Tether>['align'] = 'center';
 	export let distance: ComponentProps<Tether>['distance'] = 5;
@@ -74,12 +76,13 @@
 	<slot slot="anchor" {open} />
 	{#if open}
 		<div
+			data-theme={theme}
 			class="tooltip {place} {align}"
 			in:scale={{ start: 0.5, easing: expoOut, duration: 100 }}
 			out:scale={{ start: 0.75, easing: expoIn, duration: 75 }}
 		>
 			<slot name="message" {open}>
-				{message}
+				{@html message}
 			</slot>
 			<svg class="tip" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
 				<path d={TIP} />
@@ -98,13 +101,16 @@
 		pointer-events: none;
 		display: block;
 		flex: none;
-		white-space: nowrap;
+		// white-space: nowrap;
+		width: max-content;
+		line-height: 1.3;
 		font-weight: 350;
 		font-size: var(--ui-text-xs);
+		max-width: var(--ui-width-p);
 		padding: 0.5em 1em 0.6em 1em;
 		margin: 0;
-		background: col(fg, 500, 0.96);
-		color: col(bg, 500);
+		background: col(bg, 100, 0.94);
+		color: col(fg, 500);
 		border-radius: 0.8em;
 		letter-spacing: 0.02em;
 		transform-origin: inherit;
@@ -121,7 +127,7 @@
 		background: transparent;
 		overflow: visible;
 		path {
-			fill: col(fg, 500, 0.96);
+			fill: col(bg, 100, 0.94);
 		}
 	}
 

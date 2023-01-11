@@ -18,11 +18,15 @@
 	import { cssSize } from '$utils/css';
 	import { icons } from '$utils/icons';
 	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { draw as drawTransition, fade } from 'svelte/transition';
 
 	export let name: keyof typeof icons;
 	export let secondaryColor: string = 'currentColor';
 	export let strokeWidth: number | string = 2;
 	export let animate: boolean = true;
+	export let draw: boolean = false;
+	export let drawDelay: number = 50;
+	export let drawDuration: number = 500;
 	export let style: string | undefined = undefined;
 	let className: string = '';
 	export { className as class };
@@ -47,34 +51,64 @@
 		<g
 			in:transform|local={{
 				scale: 0.5,
-				rotateX: 20,
+				rotateX: 30,
 				translateY: -20,
 				duration: 350,
 				easing: cubicOut,
 			}}
 			out:transform|local={{
 				scale: 0.75,
-				rotateZ: -20,
+				rotateX: -30,
 				translateY: 20,
 				duration: 250,
 				easing: cubicIn,
 			}}
 		>
-			{#each icon.paths as path, i}
-				{#if path.fill}
-					<path class="fill" class:secondary={path.type === 'secondary'} d={path.d} style:--i={i} />
-				{/if}
-				{#if path.stroke}
-					<path
-						class="stroke"
-						class:secondary={path.type === 'secondary'}
-						d={path.d}
-						pathLength={PATH_LENGTH}
-						style:--i={i}
-						style:--dir={Math.round(Math.random()) * 2 - 1}
-					/>
-				{/if}
-			{/each}
+			{#if draw}
+				{#each icon.paths as path, i}
+					{#if path.fill}
+						<path
+							class="fill"
+							in:fade={{ duration: drawDuration, delay: i * drawDelay }}
+							class:secondary={path.type === 'secondary'}
+							d={path.d}
+							style:--i={i}
+						/>
+					{/if}
+					{#if path.stroke}
+						<path
+							in:drawTransition={{ duration: drawDuration, delay: i * drawDelay }}
+							class="stroke"
+							class:secondary={path.type === 'secondary'}
+							d={path.d}
+							pathLength={PATH_LENGTH}
+							style:--i={i}
+							style:--dir={Math.round(Math.random()) * 2 - 1}
+						/>
+					{/if}
+				{/each}
+			{:else}
+				{#each icon.paths as path, i}
+					{#if path.fill}
+						<path
+							class="fill"
+							class:secondary={path.type === 'secondary'}
+							d={path.d}
+							style:--i={i}
+						/>
+					{/if}
+					{#if path.stroke}
+						<path
+							class="stroke"
+							class:secondary={path.type === 'secondary'}
+							d={path.d}
+							pathLength={PATH_LENGTH}
+							style:--i={i}
+							style:--dir={Math.round(Math.random()) * 2 - 1}
+						/>
+					{/if}
+				{/each}
+			{/if}
 		</g>
 	{/key}
 </svg>
@@ -89,6 +123,7 @@
 		margin: 0;
 		width: 1em;
 		height: 1em;
+		perspective: 100px;
 		overflow: visible;
 
 		g {

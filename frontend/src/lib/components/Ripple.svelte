@@ -23,7 +23,7 @@
 	export let spreadEasing = easing;
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
-	export let color: string = 'currentColor';
+	export let color: string = 'var(--color-bg-000)';
 	export let colorStart: string = color;
 	export let colorEnd: string = colorStart;
 	export let colorEasing = easing;
@@ -71,7 +71,7 @@
 		document.removeEventListener('pointercancel', remove);
 	}
 
-	function end(e: AnimationEvent, ripple: typeof ripples[number]) {
+	function end(e: AnimationEvent, ripple: (typeof ripples)[number]) {
 		ripple.animations--;
 		if (!ripple.animations) {
 			ripples.splice(ripples.indexOf(ripple), 1);

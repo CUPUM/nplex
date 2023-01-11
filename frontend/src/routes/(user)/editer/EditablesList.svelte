@@ -5,7 +5,6 @@
 </script>
 
 <script lang="ts">
-	import { autoHash } from '$actions/autoHash';
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import Switch from '$components/Switch.svelte';
@@ -43,7 +42,7 @@
 	];
 </script>
 
-<section {id} use:autoHash>
+<section {id}>
 	<header>
 		<h3 class="e-h3">{title}</h3>
 		<form action="" use:enhance method="POST">

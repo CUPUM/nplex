@@ -36,6 +36,7 @@ declare global {
 			category?: Category;
 			showCategoryNav?: boolean;
 			showFooter?: boolean;
+			theme?: ThemeName;
 		}
 		interface Locals {
 			/**

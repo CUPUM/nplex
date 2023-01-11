@@ -11,20 +11,18 @@
 	import TextArea from '$components/TextArea.svelte';
 	import Token from '$components/Token.svelte';
 	import { flip } from 'svelte/animate';
-	import { fly, scale } from 'svelte/transition';
+	import { scale } from 'svelte/transition';
 	import type { ActionData, PageData } from './$types';
-	import { EDITOR_FORM_ID } from './common';
+	import { formid } from './common';
 
 	export let data: PageData;
 	export let form: ActionData;
-
-	// const typeSearch = new Fuse()
 
 	$: types = data.descriptors.types.find((t) => t.id === data.project.type_id)?.works ?? [];
 </script>
 
 <form
-	id={EDITOR_FORM_ID}
+	id={formid}
 	method="POST"
 	action="?/update"
 	use:enhance={({ form, data, action, cancel }) => {
@@ -32,13 +30,10 @@
 			update({ reset: false });
 		};
 	}}
-	on:change={() => console.log('change!')}
 >
-	<section class="general">
-		<fieldset in:fly={{ y: 20 }} class="type">
-			<header>
-				<h3>Type de projet</h3>
-			</header>
+	<fieldset>
+		<legend>Type de projet </legend>
+		<section>
 			<Switch bind:group={data.project.type_id} name="type_id">
 				{#each data.descriptors.types as d}
 					<SwitchItem value={d.id}>
@@ -46,42 +41,42 @@
 					</SwitchItem>
 				{/each}
 			</Switch>
-		</fieldset>
-		<hr />
-		<fieldset class="works">
-			<header>
-				<h3>Travaux</h3>
-				<Field type="search">
-					<FieldIcon name="search" slot="leading" />
-				</Field>
-			</header>
-			{#if data.project.type_id}
-				<ul>
-					{#each types as w, i (w.id)}
-						<li
-							animate:flip={{ delay: i * 20, duration: 150 }}
-							transition:scale|local={{ delay: i * 20 }}
-						>
-							<Token>
-								{w.title}
-								<input
-									type="checkbox"
-									name="work_id"
-									bind:group={data.project.work_ids}
-									value={w.id}
-								/>
-							</Token>
-						</li>
-					{/each}
-				</ul>
-			{:else}
-				<div class="notice">
-					<Icon name="info-circle" />
-					<p>Sélectionnez d'abord un type de projet.</p>
-				</div>
-			{/if}
-		</fieldset>
-	</section>
+		</section>
+	</fieldset>
+	<hr />
+	<fieldset class="works">
+		<header>
+			<h3>Travaux</h3>
+			<Field type="search">
+				<FieldIcon name="search" slot="leading" />
+			</Field>
+		</header>
+		{#if data.project.type_id}
+			<ul>
+				{#each types as w, i (w.id)}
+					<li
+						animate:flip={{ delay: i * 20, duration: 150 }}
+						transition:scale|local={{ delay: i * 20 }}
+					>
+						<Token>
+							{w.title}
+							<input
+								type="checkbox"
+								name="work_id"
+								bind:group={data.project.work_ids}
+								value={w.id}
+							/>
+						</Token>
+					</li>
+				{/each}
+			</ul>
+		{:else}
+			<div class="notice">
+				<Icon name="info-circle" />
+				<p>Sélectionnez d'abord un type de projet.</p>
+			</div>
+		{/if}
+	</fieldset>
 	<fieldset>
 		<h3>Fourchette de coûts</h3>
 		<Range min={0} max={500000} step={1}>
@@ -128,32 +123,32 @@
 <style lang="scss" module>
 	form {
 		width: 100%;
-		max-width: var(--ui-width-main);
-		padding: var(--ui-gutter);
 		display: flex;
+		align-items: stretch;
 		flex-direction: column;
 		margin: 0 auto;
-		align-items: flex-start;
-	}
-
-	h3 {
-		font-size: var(--ui-text-lg);
-		font-weight: 600;
-		margin-bottom: 2rem;
-		white-space: nowrap;
-	}
-
-	.general {
-		width: 100%;
-		display: grid;
-		grid-template-columns: 1fr 2fr;
-		gap: var(--ui-gutter);
 	}
 
 	fieldset {
+		width: 100%;
+		max-width: var(--ui-width-main);
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
 		padding: var(--ui-gutter);
-		border-radius: var(--ui-radius-lg);
-		background: col(bg, 000);
-		// border: 1px solid col(fg, 900, 0.1);
+	}
+
+	legend {
+		position: sticky;
+		top: var(--ui-nav-px);
+		flex: 1;
+		float: left; // Required to clear outset by vendor styling.
+		appearance: none;
+		font-size: var(--ui-text-lg);
+		font-weight: 550;
+	}
+
+	section {
+		flex: 2;
 	}
 </style>

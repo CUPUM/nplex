@@ -10,9 +10,7 @@ import type { Handle } from '@sveltejs/kit';
  */
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.session = safeJsonParse(event.cookies.get(COOKIES.SESSION)) ?? undefined;
-
 	const theme = THEMES[getUserTheme(event)];
-
 	const res = await resolve(event, {
 		transformPageChunk: ({ html }) => html.replace('%app.theme%', theme),
 	});

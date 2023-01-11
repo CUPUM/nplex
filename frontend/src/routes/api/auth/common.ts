@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
 import { COOKIES } from '$utils/enums';
-import type { AuthSession } from '@supabase/supabase-js';
+import type { AuthSession, Session } from '@supabase/supabase-js';
 import { json, type RequestEvent } from '@sveltejs/kit';
 
 type CookieOptions = Parameters<RequestEvent['cookies']['set']>[2];
@@ -32,7 +32,7 @@ export function clearSession(event: RequestEvent) {
 }
 
 type TokenData = Pick<
-	NonNullable<App.Locals['session']>,
+	NonNullable<Session>,
 	| 'access_token'
 	| 'refresh_token'
 	| 'provider_refresh_token'

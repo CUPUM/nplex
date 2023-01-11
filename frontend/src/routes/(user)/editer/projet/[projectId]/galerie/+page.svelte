@@ -13,7 +13,7 @@
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-	import { EDITOR_FORM_ID, GALLERY_UPLOAD_FORM_ID } from '../common';
+	import { formid } from '../common';
 	import type { PageData } from './$types';
 	import ImageInput from './ImageInput.svelte';
 
@@ -66,7 +66,6 @@
 		};
 	}}
 	class="upload"
-	id={GALLERY_UPLOAD_FORM_ID}
 >
 	<hgroup>
 		<h2>Ajoutez vos photos</h2>
@@ -78,7 +77,7 @@
 	class="update"
 	method="POST"
 	action="?/update"
-	id={EDITOR_FORM_ID}
+	id={formid}
 	use:enhance={({ form, data, action, cancel }) => {
 		updating = true;
 		return async ({ update, result }) => {

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
+	import { ICON_CLASSES } from '$components/Icon.svelte';
 	import { KEY } from '$utils/enums';
 	import { debounce } from '$utils/function';
-	import { THEMES } from '$utils/themes';
+	import { fly } from 'svelte/transition';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -20,10 +20,9 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<header data-theme={THEMES.dark} class={ICON_CLASSES.HOVER} on:click={() => titleRef.focus()}>
+<header class={ICON_CLASSES.HOVER} on:click={() => titleRef.focus()} in:fly={{ y: -10 }}>
 	<hgroup>
-		<h1>Éditeur de projet</h1>
-		<hr />
+		<h1>Projet&thinsp;:</h1>
 		<form
 			method="POST"
 			action="?/title"
@@ -34,8 +33,9 @@
 			}}
 			on:input={handleChange}
 		>
-			<Icon name="pen" class="icon" />
-			<h2
+			<!-- <Icon name="pen" class="icon" /> -->
+			<span
+				class="title"
 				bind:this={titleRef}
 				contenteditable="true"
 				bind:textContent={data.project.title}
@@ -57,11 +57,9 @@
 	header {
 		position: relative;
 		align-self: stretch;
-		margin-inline: var(--ui-gutter);
-		background: col(bg, 300);
-		border-radius: var(--ui-radius-xl);
-		font-size: var(--ui-text-2xl);
-		color: col(fg, 100);
+		margin-top: calc(-1 * var(--ui-nav-px));
+		border-bottom: 1px solid col(fg, 100, 0.05);
+		padding-bottom: var(--ui-nav-px);
 	}
 
 	hgroup {
@@ -70,7 +68,7 @@
 		width: 100%;
 		max-width: var(--ui-width-main);
 		display: grid;
-		grid-template-columns: 1fr 0px 2fr;
+		grid-template-columns: 1fr 2fr;
 	}
 
 	form {
@@ -78,40 +76,50 @@
 		flex-direction: column;
 		width: 100%;
 		justify-content: flex-end;
-		border-radius: inherit;
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
-		padding: 2rem;
+		margin-top: var(--ui-nav-px);
+		padding: 1rem;
+		gap: 3rem;
 		transition: all 0.25s var(--ui-ease-out);
 
 		&:hover {
-			color: col(primary, 700);
-		}
-
-		&:focus-within {
 			color: col(primary, 500);
 		}
 
+		&:focus-within {
+			color: col(primary, 700);
+
+			:global(.icon) {
+				opacity: 0.5;
+			}
+		}
+
 		:global(.icon) {
-			align-self: flex-end;
-			opacity: 0.2;
+			align-self: flex-start;
+			opacity: 0.25;
 			font-size: 0.5em;
 		}
 	}
 
 	h1 {
-		align-self: flex-start;
-		font-size: var(--ui-text-lg);
-		padding: 3rem;
-		font-weight: 400;
+		cursor: pointer;
+		align-self: flex-end;
+		font-size: var(--ui-text-2xl);
+		padding: 1rem;
+		margin-top: var(--ui-nav-px);
+		font-weight: 600;
 		flex: 1;
 		line-height: 1.25;
 	}
 
-	h2 {
+	.title {
+		line-height: 1.2;
 		outline: none;
 		word-break: keep-all;
 		hyphens: auto;
-		padding: 1rem;
+		font-family: var(--ui-font-misc);
+		font-weight: 300;
+		font-style: italic;
+		font-size: var(--ui-text-xl);
+		padding-bottom: 0.15em;
 	}
 </style>

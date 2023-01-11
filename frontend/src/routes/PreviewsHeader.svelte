@@ -53,7 +53,6 @@
 		gap: 0.5em;
 		position: relative;
 		width: 100%;
-		max-width: --ui-block;
 		font-size: var(--ui-text-xl);
 		font-weight: 500;
 		transition: color 0.15s ease-out;

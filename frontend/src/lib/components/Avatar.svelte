@@ -143,6 +143,7 @@
 	}
 
 	text {
-		fill: #eeeeee;
+		fill: black;
+		filter: invert(0.2);
 	}
 </style>

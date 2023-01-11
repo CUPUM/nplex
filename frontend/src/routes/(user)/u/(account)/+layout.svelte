@@ -79,8 +79,9 @@
 		}
 
 		&[data-current] {
-			color: col(bg, 700);
-			background: col(fg, 500);
+			color: col(primary, 500);
+			font-weight: 600;
+			// background: col(fg, 500);
 		}
 	}
 

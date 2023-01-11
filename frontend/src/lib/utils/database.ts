@@ -80,7 +80,7 @@ function sessionStorage(): SupportedStorage {
 function createServerClient() {
 	return createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		auth: {
-			persistSession: true,
+			persistSession: false,
 			autoRefreshToken: false,
 			detectSessionInUrl: false,
 			storage: sessionStorage(),
@@ -98,17 +98,27 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 		if (!event.locals.db) {
 			event.locals.db = createServerClient();
 			if (event.locals.session) {
-				const authsession = await event.locals.db.auth.setSession(event.locals.session);
-				if (
-					!authsession.error &&
-					authsession.data.session &&
-					event.locals.session.access_token !== authsession.data.session?.access_token
-				) {
-					setSessionCookie(event, {
-						...event.locals.session,
-						...tokenData(authsession.data.session),
-					});
-				}
+				// Update session in cookie if newly set session results in token refresh.
+				// const authsession = await event.locals.db.auth.setSession(event.locals.session);
+				// if (
+				// 	!authsession.error &&
+				// 	authsession.data.session &&
+				// 	event.locals.session.access_token !== authsession.data.session?.access_token
+				// ) {
+				// 	setSessionCookie(event, {
+				// 		...event.locals.session,
+				// 		...tokenData(authsession.data.session),
+				// 	});
+				// }
+				await event.locals.db.auth.setSession(event.locals.session);
+				event.locals.db.auth.onAuthStateChange((e, s) => {
+					if (e === 'TOKEN_REFRESHED' && s && event.locals.session) {
+						setSessionCookie(event, {
+							...event.locals.session,
+							...tokenData(s),
+						});
+					}
+				});
 			}
 		}
 		return event.locals.db;

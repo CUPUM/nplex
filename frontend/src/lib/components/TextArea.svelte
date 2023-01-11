@@ -228,7 +228,7 @@
 	}
 
 	label {
-		opacity: 0.3;
+		opacity: 0.5;
 		position: absolute;
 		pointer-events: none;
 		line-height: 1.5em;
@@ -301,6 +301,12 @@
 		resize: vertical;
 	}
 
+	.haslabel {
+		.affix {
+			opacity: 0;
+		}
+	}
+
 	// Variants
 
 	:where(.default) {
@@ -309,14 +315,6 @@
 		transition: all 0.15s var(--ui-ease-out);
 		.outline {
 			display: none;
-		}
-		label {
-			opacity: 0.3;
-		}
-		&.haslabel {
-			.affix {
-				opacity: 0;
-			}
 		}
 		&.hasplaceholder,
 		&.hasvalue,
@@ -354,17 +352,9 @@
 		color: col(fg, 700);
 		background: transparent;
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
-		label {
-			opacity: 0.5;
-		}
 		.outline {
 			border-color: col(fg, 900);
-			opacity: 0.5;
-		}
-		&.haslabel {
-			.affix {
-				opacity: 0;
-			}
+			opacity: 0.25;
 		}
 		&.hasplaceholder,
 		&.hasvalue,
@@ -409,6 +399,9 @@
 			.outline {
 				opacity: 0.75;
 			}
+			label {
+				opacity: 1;
+			}
 		}
 		&:focus-within {
 			outline: none;
@@ -420,7 +413,6 @@
 			}
 			label {
 				color: col(primary, 500);
-				opacity: 1;
 			}
 		}
 	}
@@ -432,14 +424,6 @@
 		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
 		.outline {
 			display: none;
-		}
-		label {
-			opacity: 0.35;
-		}
-		&.haslabel {
-			.affix {
-				opacity: 0;
-			}
 		}
 		&.hasplaceholder,
 		&.hasvalue,

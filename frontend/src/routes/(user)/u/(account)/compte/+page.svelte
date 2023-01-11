@@ -27,18 +27,17 @@
 >
 	<h2>Général</h2>
 	<input name="id" type="hidden" value={data.profile.id} readonly />
-	<Field name="first_name" variant="outlined" value={data.profile.first_name} required>
+	<Field name="first_name" value={data.profile.first_name} required>
 		<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
 	</Field>
-	<Field name="last_name" variant="outlined" value={data.profile.last_name}>
+	<Field name="last_name" value={data.profile.last_name}>
 		<svelte:fragment slot="label">Nom de famille</svelte:fragment>
 	</Field>
-	<Field name="public_email" variant="outlined" value={data.profile.public_email}>
+	<Field name="public_email" value={data.profile.public_email}>
 		<svelte:fragment slot="label">Courriel public</svelte:fragment>
 	</Field>
 	<TextArea
 		name="about"
-		variant="outlined"
 		value={data.profile.about}
 		placeholder="Rédigez une courte description pour accompagner votre profil."
 	>

@@ -75,14 +75,14 @@
 		padding-inline: var(--ui-gutter);
 		max-width: var(--ui-width-md);
 		width: 100%;
-		gap: 1rem;
+		gap: 0;
 	}
 
 	h1 {
 		width: 100%;
-		font-size: var(--ui-text-2xl);
+		font-size: var(--ui-text-xl);
 		font-weight: 600;
-		max-width: var(--ui-width-p);
+		max-width: var(--ui-width-main);
 		text-align: center;
 		margin-bottom: 4rem;
 	}

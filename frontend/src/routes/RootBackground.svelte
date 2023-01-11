@@ -15,8 +15,8 @@
 	 */
 	export const rootBackground = (function () {
 		const root: HTMLElement | undefined = browser ? document.documentElement : undefined;
-		const { subscribe, set, update } = writable<string | null>(null);
-		function _set(color: string | null, duration?: number) {
+		const { subscribe, set, update } = writable<string>('');
+		function _set(color: string, duration?: number) {
 			set(color);
 			if (root) {
 				if (duration && !isNaN(duration)) {
@@ -35,12 +35,12 @@
 					root.addEventListener('transitionend', resetTransition);
 					root.addEventListener('transitioncancel', resetTransition);
 				}
-				root.style.setProperty('--ui-bg', color);
+				root.style.setProperty('--ui-bg', color || null);
 			}
 		}
 		return {
 			subscribe,
-			reset: (duration?: number) => _set(null, duration),
+			reset: (duration?: number) => _set('', duration),
 			set: (color: string, duration?: number) => _set(color, duration),
 		};
 	})();

@@ -19,7 +19,7 @@
 	import Tether from './Tether.svelte';
 
 	export let hover: boolean = false;
-	export let open: boolean = false;
+	export let opened: boolean = false;
 	export let closeOnNav: boolean = true;
 	export let bg: boolean = false;
 	export let place: ComponentProps<Tether>['place'] = 'bottom';
@@ -30,7 +30,7 @@
 	let contentRef: HTMLElement;
 	let timeout: any;
 
-	$: if (open) {
+	$: if (opened) {
 		latest = tether?.anchorRef ?? null;
 		tether.anchorRef?.setAttribute(POPOVER_OPEN_ATTR, '');
 	} else {
@@ -38,13 +38,13 @@
 	}
 
 	function handleClick(e: Event) {
-		open = !open;
+		opened = !opened;
 	}
 
 	function handleClickoutside(e: Event) {
 		if (e instanceof CustomEvent<Event>) {
 			if (e.detail.target instanceof Node && !contentRef?.contains(e.detail.target)) {
-				open = false;
+				opened = false;
 			}
 		}
 	}
@@ -54,7 +54,7 @@
 			return;
 		}
 		timeout = setTimeout(() => {
-			open = false;
+			opened = false;
 			timeout = null;
 		}, TIME_BUFFER);
 	}
@@ -63,7 +63,7 @@
 		if (!hover) {
 			return;
 		}
-		open = true;
+		opened = true;
 		clearTimeout(timeout);
 	}
 
@@ -72,12 +72,12 @@
 			// Awaiting a tick avoids conflict with other navigation-related logic
 			// (ex.: button loading state check).
 			await tick();
-			open = false;
+			opened = false;
 		}
 	});
 </script>
 
-{#if open && bg}
+{#if opened && bg}
 	<div class="bg" transition:fade|local={{ duration: 350 }} />
 {/if}
 <Tether
@@ -90,8 +90,8 @@
 	on:pointerleave={handleLeave}
 	on:pointerenter={handleEnter}
 >
-	<slot name="control" slot="anchor" {open} />
-	{#if open}
+	<slot name="control" slot="anchor" open={opened} />
+	{#if opened}
 		<div
 			on:pointerleave|self={handleLeave}
 			on:pointerenter|self={handleEnter}
@@ -108,7 +108,7 @@
 		>
 			{#if $$slots.default}
 				<div class="inner nest">
-					<slot {open} />
+					<slot open={opened} />
 				</div>
 			{/if}
 			<slot name="content" />

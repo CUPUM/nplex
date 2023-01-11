@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
-	import { fly } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import { EDITOR_ROUTES } from './common';
 </script>
 
@@ -8,32 +8,33 @@
 	<hgroup>
 		<h1 in:fly={{ y: 20 }}>Éditez une fiche</h1>
 		<span in:fly={{ y: -10, delay: 250 }}>
-			<Icon name="pen" style="top: -.15em" />&emsp;Choisissez le type de document que vous souhaitez
+			<Icon name="pen" style="top: -.15em" />&emsp;Choisissez le type de données que vous souhaitez
 			créer ou modifier.
 		</span>
 	</hgroup>
 </header>
 <ul>
-	<li class="project">
-		<div class="edit">
+	<li class="block project" in:fade={{ delay: 0 }}>
+		<div class="group">
 			<a href={EDITOR_ROUTES.project.pathname} class="fill-link" role="presentation" />
-			<a href={EDITOR_ROUTES.project.pathname} class="create">Créer un nouveau projet</a>
+			<a href={EDITOR_ROUTES.project.pathname} class="main-link">Créer un nouveau projet</a>
 			<a href={EDITOR_ROUTES.project.edit.pathname} class="modify">Modifier un projet existant</a>
 		</div>
-		<a class="edit descriptors" href={EDITOR_ROUTES.project.descriptors.pathname}
+		<hr />
+		<a class="main-link group descriptors" href={EDITOR_ROUTES.project.descriptors.pathname}
 			>Éditer les descripteurs de projet</a
 		>
 	</li>
-	<li class="edit">
+	<li class="block group" in:fade={{ delay: 100 }}>
 		<a href={EDITOR_ROUTES.organisation.pathname} class="fill-link" role="presentation" />
-		<a href={EDITOR_ROUTES.organisation.pathname} class="create">Créer une nouvelle organisation</a>
-		<a href={EDITOR_ROUTES.organisation.edit.pathname} class="modify"
-			>Modifier une organisation répertoriée</a
+		<a href={EDITOR_ROUTES.organisation.pathname} class="main-link"
+			>Créer une nouvelle organisation</a
 		>
+		<a href={EDITOR_ROUTES.organisation.edit.pathname} class="modify">Modifier une organisation</a>
 	</li>
-	<li class="edit">
+	<li class="block group" in:fade={{ delay: 200 }}>
 		<a href={EDITOR_ROUTES.actor.pathname} class="fill-link" role="presentation" />
-		<a href={EDITOR_ROUTES.actor.pathname} class="create">Créer un nouveau profil d'acteur</a>
+		<a href={EDITOR_ROUTES.actor.pathname} class="main-link">Créer un nouveau profil d'acteur</a>
 		<a href={EDITOR_ROUTES.actor.edit.pathname} class="modify">Modifier un profil d'acteur</a>
 	</li>
 </ul>
@@ -54,7 +55,7 @@
 			gap: 2rem;
 			align-items: center;
 			justify-content: center;
-			min-height: 50vh;
+			// min-height: 50vh;
 		}
 
 		h1 {
@@ -74,7 +75,7 @@
 
 	ul {
 		width: 100%;
-		max-width: var(--ui-width-lg);
+		max-width: var(--ui-width-md);
 		padding: var(--ui-gutter);
 		display: flex;
 		flex-direction: row;
@@ -82,6 +83,19 @@
 		align-items: flex-start;
 		justify-content: flex-start;
 		gap: var(--ui-gutter);
+		font-weight: 500;
+	}
+
+	.block {
+		background: col(bg, 300);
+		border-radius: var(--ui-radius-xl);
+		font-size: var(--ui-text-lg);
+		transition: all 0.15s ease-out;
+		&:hover {
+			background: col(primary, 300);
+			color: col(fg, 300);
+			box-shadow: 0 1rem 7rem -3rem col(primary, 900, 0.5);
+		}
 	}
 
 	.fill-link {
@@ -97,44 +111,44 @@
 		width: 100%;
 		display: flex;
 		flex-direction: row;
-		gap: 1px;
 		border-radius: var(--ui-radius-xl);
 		overflow: hidden;
-
 		.edit {
-			flex: 2;
+			flex: 1;
 			border-radius: 0;
 		}
-
 		.descriptors {
+			display: flex;
+			// justify-content: center;
+			// font-size: 0.75em;
 			flex: 1;
 		}
 	}
 
-	.edit {
+	.group {
 		position: relative;
-		background: col(bg, 100);
 		flex: 1;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 4rem;
 		padding: 4rem;
-		border-radius: var(--ui-radius-xl);
-		font-size: var(--ui-text-xl);
 		line-height: 1.2;
-		transition: all 0.15s ease-out;
+	}
+
+	a:not(.modify) {
+		text-decoration-line: underline;
+		text-decoration-color: transparent;
+		text-decoration-thickness: 0.3em;
+		text-decoration-skip-ink: none;
+		transition: 0.25s;
 
 		&:hover {
-			color: col(fg, 100);
-			background: col(primary, 300);
+			text-decoration-color: col(primary, 700);
 		}
 	}
 
-	.descriptors {
-	}
-
-	.create {
+	.main-link {
 		position: relative;
 		z-index: 1;
 	}
@@ -145,13 +159,15 @@
 		display: inline-block;
 		font-size: var(--ui-text-md);
 		border: 1px solid col(fg, 500, 0.1);
-		padding: 1.15em 1.75em 1.35em;
-		border-radius: 99px;
-		transition: all 0.25s ease-out;
+		padding: 1em 1.5em 1.25em;
+		border-radius: var(--ui-radius-md);
+		font-weight: 400;
+		transition: background 0.25s ease-out;
 
 		&:hover {
-			background: col(fg, 500);
-			color: col(bg, 500);
+			background: col(bg, 300);
+			color: col(primary, 700);
+			border: 1px solid transparent;
 		}
 	}
 </style>

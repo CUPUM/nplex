@@ -9,32 +9,35 @@
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
+	import type { ValueOf } from 'ts-essentials';
 	import { EDITOR_ROUTES } from '../../common';
-	import { EDITOR_FORM_ID, EDITOR_NAV_ROUTES_ARR, type EditorNavRoute } from './common';
+	import { EDITOR_PARTS_ROUTES, formid } from './common';
 
 	let mount = false;
 	let sections = false;
 
-	function href(page: Page, destination: EditorNavRoute | null) {
+	const lookup = Object.values(EDITOR_PARTS_ROUTES);
+
+	function href(page: Page, destination: ValueOf<typeof EDITOR_PARTS_ROUTES> | null) {
 		const base = `${EDITOR_ROUTES.project.pathname}/${page.params.projectId}`;
 		if (!destination) {
 			return base;
 		}
-		const hash = destination.hash ? `#${destination.hash}` : '';
+		const hash = 'hash' in destination ? `#${destination.hash}` : '';
 		return base + destination.subpath + hash;
 	}
 
-	function current(page: Page) {
+	function getcurrent(page: Page) {
 		const seg = page.url.pathname.replace(
 			EDITOR_BASE_ROUTE.pathname + '/projet/' + page.params.projectId,
 			''
 		);
-		return EDITOR_NAV_ROUTES_ARR.findIndex((r) => r.subpath === seg);
+		return lookup.findIndex((r) => r.subpath === seg);
 	}
 
-	$: cindex = current($page);
-	$: next = cindex >= EDITOR_NAV_ROUTES_ARR.length - 1 ? null : EDITOR_NAV_ROUTES_ARR[cindex + 1];
-	$: prev = cindex === 0 ? null : EDITOR_NAV_ROUTES_ARR[cindex - 1];
+	$: current = getcurrent($page);
+	$: next = current >= lookup.length - 1 ? null : lookup[current + 1];
+	$: prev = current === 0 ? null : lookup[current - 1];
 
 	onMount(() => {
 		mount = true;
@@ -42,41 +45,43 @@
 </script>
 
 {#if mount}
-	<div class="toolbar">
+	<div class="toolbar" data-theme={THEMES.dark}>
 		{#if sections}
 			<nav
 				in:fly={{ y: 20, opacity: 0, duration: 200, easing: expoOut }}
 				out:scale|local={{ duration: 150, start: 0.96 }}
 			>
-				{#each EDITOR_NAV_ROUTES_ARR as r}
+				{#each lookup as r}
 					<Button variant="ghost" href={href($page, r)}>
 						{r.title}
 					</Button>
 				{/each}
 			</nav>
 		{/if}
-		<menu
-			class="nest"
-			data-theme={THEMES.dark}
-			in:fly={{ y: 30, easing: expoOut, delay: 500, duration: 750 }}
-		>
-			<Tooltip message="Éditer&nbsp;: {prev?.title}" disabled={!prev}>
+		<menu class="nest" in:fly={{ y: 30, easing: expoOut, delay: 500, duration: 750 }}>
+			<Tooltip
+				message={prev ? `Revenir vers: ${prev.title}` : undefined}
+				disabled={!prev}
+				align="start"
+			>
 				<Button href={href($page, prev)} disabled={!prev} equi variant="ghost">
 					<Icon name="arrow-left" />
 				</Button>
 			</Tooltip>
-			<Tooltip message="Sauvegarder">
-				<Button type="submit" variant="ghost" form={EDITOR_FORM_ID} equi>
-					<Icon name="save" />
-				</Button>
-			</Tooltip>
-			<Tooltip message="Voir les sections">
-				<Button equi as="label" variant="ghost">
-					<Icon name={sections ? 'cross' : 'dots-horizontal'} />
-					<input type="checkbox" hidden bind:checked={sections} />
-				</Button>
-			</Tooltip>
-			<Tooltip message="Éditer&nbsp;: {next?.title}" disabled={!next}>
+			<Button as="label" variant="ghost">
+				<Icon name={sections ? 'chevron-down' : 'hamburger'} slot="trailing" />
+				Sesctions
+				<input type="checkbox" hidden bind:checked={sections} />
+			</Button>
+			<Button type="submit" variant="ghost" form={formid}>
+				Sauvegarder
+				<Icon name="save" slot="trailing" />
+			</Button>
+			<Tooltip
+				message={next ? `Continuer vers: ${next.title}` : undefined}
+				disabled={!next}
+				align="end"
+			>
 				<Button href={href($page, next)} disabled={!next} equi variant="ghost">
 					<Icon name="arrow-right" />
 				</Button>
@@ -87,6 +92,7 @@
 
 <style lang="scss">
 	.toolbar {
+		pointer-events: none;
 		padding: 0 var(--ui-gutter);
 		width: 100%;
 		position: sticky;
@@ -94,13 +100,13 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		pointer-events: none;
 		font-size: var(--ui-text-md);
+		margin-top: var(--ui-gutter);
 	}
 
 	menu {
 		--radius: var(--ui-radius-md);
-		--outset: 1.5px;
+		--outset: 3px;
 		pointer-events: all;
 		display: inline-flex;
 		flex-direction: row;
@@ -108,12 +114,13 @@
 		margin: 0 auto;
 		background: col(bg, 000, 0.9);
 		border-radius: calc(var(--radius) + var(--outset));
-		border: var(--outset) solid transparent;
+		padding: var(--outset);
 		backdrop-filter: blur(8px);
 		transition: all 0.25s ease-out;
 
 		&:hover {
-			border-color: col(bg, 900);
+			border-color: col(bg, 000);
+			box-shadow: 0 0 0 3px col(bg, 000, 0.5);
 		}
 	}
 
@@ -123,7 +130,7 @@
 		position: absolute;
 		pointer-events: all;
 		bottom: 100%;
-		margin-bottom: var(--ui-gutter);
+		margin-bottom: var(--ui-inset);
 		display: inline-flex;
 		flex-direction: row;
 		justify-content: center;

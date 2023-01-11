@@ -325,7 +325,7 @@
 	}
 
 	label {
-		opacity: 0.3;
+		opacity: 0.5;
 		position: absolute;
 		pointer-events: none;
 		padding-bottom: calc(0.5em - 0.5ex);
@@ -383,6 +383,12 @@
 		}
 	}
 
+	.haslabel {
+		.affix {
+			opacity: 0;
+		}
+	}
+
 	// Variants
 
 	:where(.default) {
@@ -391,11 +397,6 @@
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			display: none;
-		}
-		&.haslabel {
-			.affix {
-				opacity: 0;
-			}
 		}
 		&.hasplaceholder,
 		&.hasvalue,
@@ -435,12 +436,7 @@
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			border-color: col(fg, 900);
-			opacity: 0.5;
-		}
-		&.haslabel {
-			.affix {
-				opacity: 0;
-			}
+			opacity: 0.25;
 		}
 		&.hasplaceholder,
 		&.hasvalue,
@@ -471,6 +467,9 @@
 			.outline {
 				opacity: 0.75;
 			}
+			label {
+				opacity: 1;
+			}
 		}
 		&:focus-within {
 			outline: none;
@@ -481,7 +480,6 @@
 				border-color: col(primary, 500);
 			}
 			label {
-				opacity: 1;
 				color: col(primary, 500);
 			}
 		}
@@ -494,11 +492,6 @@
 		transition: color 0.1s ease-out, background 0.1s ease-out, box-shadow 0.25s ease-in-out;
 		.outline {
 			display: none;
-		}
-		&.haslabel {
-			.affix {
-				opacity: 0;
-			}
 		}
 		&.hasplaceholder,
 		&.hasvalue,

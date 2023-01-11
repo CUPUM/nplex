@@ -1,20 +1,12 @@
-/**
- * Explicit constant form naming (id) required for the menu's buttons' "form" attribute.
- */
-export const EDITOR_FORM_ID = 'project-editor';
+import { writable } from 'svelte/store';
 
-export const GALLERY_UPLOAD_FORM_ID = 'gallery-upload';
+export const formid = 'project-editor';
 
-export interface EditorNavRoute {
-	title: string;
-	subpath: '' | `/${string}`;
-	hash?: string;
-}
+export const topid = 'project-editor-content';
 
-/**
- * Sub-forms of the project editor.
- */
-export const EDITOR_NAV_ROUTES = {
+const dirty = writable<boolean>();
+
+export const EDITOR_PARTS_ROUTES = {
 	GENERAL: {
 		title: 'Général',
 		subpath: '',
@@ -22,28 +14,38 @@ export const EDITOR_NAV_ROUTES = {
 	GALLERY: {
 		title: 'Galerie',
 		subpath: '/galerie',
-		hash: GALLERY_UPLOAD_FORM_ID,
+		hash: topid,
 	},
 	SITE: {
 		title: 'Site',
 		subpath: '/site',
+		hash: topid,
 	},
 	BUILDING: {
 		title: 'Bâtiment',
 		subpath: '/batiment',
+		hash: topid,
 	},
 	PROCESS: {
 		title: 'Processus',
 		subpath: '/processus',
+		hash: topid,
 	},
 	EXAMPLARITY: {
 		title: 'Exemplarité',
 		subpath: '/exemplarite',
+		hash: topid,
 	},
 	VISIBILITY: {
 		title: 'Visibilité',
 		subpath: '/parametres',
+		hash: topid,
 	},
-} as const satisfies Record<string, EditorNavRoute>;
-
-export const EDITOR_NAV_ROUTES_ARR = Object.values(EDITOR_NAV_ROUTES);
+} satisfies Record<
+	string,
+	{
+		title: string;
+		subpath: '' | `/${string}`;
+		hash?: string;
+	}
+>;

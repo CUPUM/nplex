@@ -61,6 +61,7 @@
 	import NavbarButton from './NavbarButton.svelte';
 	import NavbarEditorMenu from './NavbarEditorMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
+	import { rootBackground } from './RootBackground.svelte';
 
 	let mounted = false;
 	let open = false;
@@ -80,7 +81,10 @@
 	});
 </script>
 
-<header data-theme={$navbarTheme ? THEMES[$navbarTheme] : undefined}>
+<header
+	data-theme={$navbarTheme ? THEMES[$navbarTheme] : undefined}
+	style:--nav-bg={$rootBackground}
+>
 	<menu class="toggle">
 		<NavbarButton on:pointerdown={toggle} round>
 			<Icon name={open ? 'cross' : 'arrow-down-right'} strokeWidth="3" />
@@ -148,6 +152,7 @@
 
 <style lang="scss">
 	header {
+		--nav-bg: var(--color-bg-100);
 		pointer-events: none;
 		position: sticky;
 		display: flex;
