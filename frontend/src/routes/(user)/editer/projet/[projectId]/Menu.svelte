@@ -68,15 +68,18 @@
 					<Icon name="arrow-left" />
 				</Button>
 			</Tooltip>
+			<!-- <hr /> -->
 			<Button as="label" variant="ghost">
 				<Icon name={sections ? 'chevron-down' : 'hamburger'} slot="trailing" />
 				Sesctions
 				<input type="checkbox" hidden bind:checked={sections} />
 			</Button>
+			<!-- <hr /> -->
 			<Button type="submit" variant="ghost" form={formid}>
 				Sauvegarder
 				<Icon name="save" slot="trailing" />
 			</Button>
+			<!-- <hr /> -->
 			<Tooltip
 				message={next ? `Continuer vers: ${next.title}` : undefined}
 				disabled={!next}
@@ -110,7 +113,7 @@
 		pointer-events: all;
 		display: inline-flex;
 		flex-direction: row;
-		gap: 0;
+		gap: 1px;
 		margin: 0 auto;
 		background: col(bg, 000, 0.9);
 		border-radius: calc(var(--radius) + var(--outset));

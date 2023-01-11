@@ -7,7 +7,7 @@ import type { LayoutLoad } from './$types';
 export const load = (async (event) => {
 	event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
 	const db = await getDb(event);
-	const descriptorsRes = await db.rpc('get_project_descriptors').single();
+	const descriptorsRes = await db.rpc('get_project_descriptors').limit(1).single();
 	if (descriptorsRes.error) {
 		throw error(500, descriptorsRes.error);
 	}
@@ -60,17 +60,7 @@ export const load = (async (event) => {
 		})),
 	};
 	return {
-		/**
-		 * Use this data as a the basis for form bindings.
-		 */
 		project: projectTransform,
-		/**
-		 * Use this data as a sample reference to compare values bound in forms and establish dirty
-		 * fields.
-		 *
-		 * ## Do not modify this data, it is to be used as a reference.
-		 */
-		projectSample: { ...projectTransform },
 		descriptors: descriptorsRes.data,
 	};
 }) satisfies LayoutLoad;

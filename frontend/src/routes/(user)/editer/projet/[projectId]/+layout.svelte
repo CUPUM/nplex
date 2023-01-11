@@ -4,7 +4,7 @@
 	import type { ActionData, PageData } from './$types';
 	import { topid } from './common';
 	import Header from './Header.svelte';
-	import Toolbar from './Toolbar.svelte';
+	import Menu from './Menu.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -15,7 +15,7 @@
 <Header {data} />
 <article id={topid}>
 	<slot />
-	<Toolbar />
+	<Menu />
 </article>
 
 <style lang="scss">

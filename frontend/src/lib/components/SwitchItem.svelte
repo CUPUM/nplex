@@ -70,6 +70,7 @@
 		align-items: center;
 		justify-content: center;
 		border-radius: var(--item-radius);
+		font-weight: 400;
 		padding: 0;
 		margin: 0;
 		gap: 0;
@@ -102,8 +103,8 @@
 		}
 		&.current {
 			cursor: default;
-			color: col(bg, 700);
-			background: col(fg, 900, 0);
+			color: col(bg, 500);
+			background: col(fg, 500, 0);
 		}
 	}
 
@@ -116,6 +117,19 @@
 		&.current {
 			cursor: default;
 			color: col(bg, 500);
+		}
+	}
+
+	:global(.colored) > :where(.switch-item) {
+		color: currentColor;
+		// border: 1px solid transparent;
+		&:hover:not(.current) {
+			color: col(primary, 500);
+			// border: 1px solid col(primary, 500, 0.2);
+		}
+		&.current {
+			cursor: default;
+			color: col(primary, 700);
 		}
 	}
 </style>

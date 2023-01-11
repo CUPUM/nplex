@@ -64,7 +64,7 @@
 
 	hgroup {
 		margin: 0 auto;
-		min-height: 50vh;
+		// min-height: 50vh;
 		width: 100%;
 		max-width: var(--ui-width-main);
 		display: grid;
@@ -102,7 +102,7 @@
 
 	h1 {
 		cursor: pointer;
-		align-self: flex-end;
+		// align-self: flex-end;
 		font-size: var(--ui-text-2xl);
 		padding: 1rem;
 		margin-top: var(--ui-nav-px);
@@ -120,6 +120,6 @@
 		font-weight: 300;
 		font-style: italic;
 		font-size: var(--ui-text-xl);
-		padding-bottom: 0.15em;
+		padding-top: 2em;
 	}
 </style>

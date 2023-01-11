@@ -6,7 +6,7 @@
 <script lang="ts" context="module">
 	const CTX_KEY = 'switch-context';
 
-	type Variant = 'default' | 'outlined';
+	type Variant = 'default' | 'outlined' | 'colored';
 
 	interface SwitchContext {
 		group: Writable<any>;
@@ -133,7 +133,7 @@
 		color: col(fg, 900);
 		background: col(bg, 900, 0.5);
 		.mark {
-			background: col(fg, 300);
+			background: col(fg, 500);
 		}
 		&:hover {
 			background: col(bg, 900, 0.6);
@@ -142,7 +142,6 @@
 
 	:where(.outlined) {
 		color: col(fg, 900);
-		background: transparent;
 		transition: all 0.1s ease-out;
 		&::before {
 			content: '';
@@ -164,6 +163,19 @@
 		}
 		.mark {
 			background: col(fg, 500);
+		}
+	}
+
+	:where(.colored) {
+		color: col(fg, 900);
+		transition: all 0.2s var(--ui-ease-out);
+		border: 1px solid col(fg, 100, 0.1);
+		&:hover {
+			color: col(fg, 300);
+			border: 1px solid col(primary, 500, 0.2);
+		}
+		.mark {
+			background: col(primary, 100, 0.2);
 		}
 	}
 </style>

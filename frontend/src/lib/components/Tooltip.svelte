@@ -22,35 +22,33 @@
 	import { scale } from 'svelte/transition';
 	import Tether from './Tether.svelte';
 
-	export let message: string = '';
+	export let message: string | undefined | null = '';
 	export let disabled: boolean | undefined = undefined;
-	export let open: boolean = false;
+	export let opened: boolean = false;
 	export let hover: boolean = true;
 	export let theme: ThemeName = THEMES.dark;
 	export let place: ComponentProps<Tether>['place'] = 'top';
 	export let align: ComponentProps<Tether>['align'] = 'center';
 	export let distance: ComponentProps<Tether>['distance'] = 5;
-	export function show() {
-		open = true;
-	}
-	export function hide() {
-		open = false;
-	}
+	export let passive: boolean = false;
 
-	$: if (!message || disabled) {
-		hide();
+	function show() {
+		opened = true;
+	}
+	function hide() {
+		opened = false;
 	}
 </script>
 
 <Tether
 	on:pointerdown={() => {
-		if (!hover) show();
+		if (!hover && !passive) show();
 	}}
 	on:clickoutside={() => {
-		if (!hover) hide();
+		if (!hover && !passive) hide();
 	}}
 	on:pointerenter={() => {
-		if (hover) {
+		if (hover && !passive) {
 			clearTimeout(TIMER);
 			if (DELAY) {
 				TIMER = setTimeout(() => {
@@ -63,7 +61,7 @@
 		}
 	}}
 	on:pointerleave={() => {
-		if (hover) hide();
+		if (hover && !passive) hide();
 		clearTimeout(TIMER);
 		TIMER = setTimeout(() => {
 			DELAY = true;
@@ -73,15 +71,15 @@
 	{align}
 	{distance}
 >
-	<slot slot="anchor" {open} />
-	{#if open}
+	<slot slot="anchor" open={opened} />
+	{#if opened && message && !disabled}
 		<div
 			data-theme={theme}
 			class="tooltip {place} {align}"
 			in:scale={{ start: 0.5, easing: expoOut, duration: 100 }}
 			out:scale={{ start: 0.75, easing: expoIn, duration: 75 }}
 		>
-			<slot name="message" {open}>
+			<slot name="message" open={opened}>
 				{@html message}
 			</slot>
 			<svg class="tip" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">

@@ -1,7 +1,57 @@
 <script lang="ts" context="module">
-	export const EDITABLES_NEW = {
+	type DatumBase = { id: string | null; created_by_id: string | null; published: boolean };
+
+	type FilterFunction = <T extends DatumBase>(d: T) => boolean;
+	type AuthoringFilterFunction = <T extends DatumBase>(d: T, uid: string) => boolean;
+
+	type Filters<F> = Record<string, { text: string; filter: F }>;
+
+	const EDITABLES_NEW = {
 		id: 'new',
 	} as const;
+
+	const AUTHORING_FILTERS = {
+		all: {
+			text: 'Tous',
+			filter: (d, uid) => true,
+		},
+		mine: {
+			text: 'Créés par moi',
+			filter: (d, uid) => {
+				return d.created_by_id === uid;
+			},
+		},
+		shared: {
+			text: 'Partagés avec moi',
+			filter: (d, uid) => {
+				return d.created_by_id !== uid;
+			},
+		},
+	} satisfies Filters<AuthoringFilterFunction>;
+
+	const PUBLICATION_FILTERS = {
+		all: {
+			text: 'Tous',
+			filter: (d) => true,
+		},
+		draft: {
+			text: 'Brouillons',
+			filter: (d) => {
+				return !d.published;
+			},
+		},
+		published: {
+			text: 'Publiés',
+			filter: (d) => {
+				return d.published;
+			},
+		},
+	} satisfies Filters<FilterFunction>;
+
+	type PersistedFilters = {
+		authoring: keyof typeof AUTHORING_FILTERS;
+		publication: keyof typeof PUBLICATION_FILTERS;
+	};
 </script>
 
 <script lang="ts">
@@ -9,35 +59,29 @@
 	import { page } from '$app/stores';
 	import Switch from '$components/Switch.svelte';
 	import SwitchItem from '$components/SwitchItem.svelte';
+	import { getPersistedValue, persistValue } from '$utils/persist';
 	import { flip } from 'svelte/animate';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
-	type D = $$Generic<{ id: string | null; created_by_id: string | null }>;
+	type D = $$Generic<DatumBase>;
 
 	export let title: string;
 	export let data: D[];
 	export let id: string;
 
-	const FILTERS = {
-		all: 'Tous',
-		creator: 'Créés par moi',
-		collaborator: 'Partagés avec moi',
-	} as const;
-
-	let filter: keyof typeof FILTERS = 'all';
+	const storageKey = `editables-filter-${id}`;
+	let applied = getPersistedValue<PersistedFilters>(storageKey, {
+		authoring: 'all',
+		publication: 'all',
+	});
+	$: persistValue(storageKey, applied);
 	$: filtered = [
-		...data.filter((d) => {
-			switch (filter) {
-				case 'creator':
-					return d.created_by_id === $page.data.session?.user.id;
-				case 'collaborator':
-					return d.created_by_id !== $page.data.session?.user.id;
-				case 'all':
-				default:
-					return true;
-			}
-		}),
+		...data.filter(
+			(d) =>
+				AUTHORING_FILTERS[applied.authoring].filter(d, $page.data.session?.user.id!) &&
+				PUBLICATION_FILTERS[applied.publication].filter(d)
+		),
 		EDITABLES_NEW,
 	];
 </script>
@@ -46,13 +90,26 @@
 	<header>
 		<h3 class="e-h3">{title}</h3>
 		<form action="" use:enhance method="POST">
-			<Switch bind:group={filter} variant="outlined" name="filter" compact>
-				{#each Object.entries(FILTERS) as [k, v]}
+			<Switch bind:group={applied.authoring} variant="colored" name="filter" compact>
+				{#each Object.entries(AUTHORING_FILTERS) as [k, v]}
 					<SwitchItem value={k}>
-						{v}
+						{v.text}
 					</SwitchItem>
 				{/each}
 			</Switch>
+			<Switch bind:group={applied.publication} variant="colored" name="filter" compact>
+				{#each Object.entries(PUBLICATION_FILTERS) as [k, v]}
+					<SwitchItem value={k}>
+						{v.text}
+					</SwitchItem>
+				{/each}
+			</Switch>
+			<!-- {#each FILTER_KEYS as f}
+				<label class:applied={applied.includes(f)}>
+					{FILTERS[f].text}
+					<input type="checkbox" hidden value={f} bind:group={applied} />
+				</label>
+			{/each} -->
 		</form>
 	</header>
 	<ul class:none={filtered.length === 1}>
@@ -96,6 +153,36 @@
 	form {
 		margin-bottom: 0.6em;
 		font-size: var(--ui-text-sm);
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		gap: 0.5em;
+
+		label {
+			user-select: none;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			padding-block: 0.25em 0.5em;
+			padding-inline: 1.25em;
+			border-radius: 99px;
+			border: 1px solid col(fg, 500, 0.1);
+			transition: all 0.2s var(--ui-ease-out);
+
+			&:hover:not(.applied) {
+				color: col(primary, 500);
+				border: 1px solid col(primary, 500, 0.2);
+			}
+		}
+
+		.applied {
+			color: col(primary, 700);
+			background: col(primary, 100, 0.2);
+			border: 1px solid transparent;
+
+			&:hover {
+			}
+		}
 	}
 
 	ul {
