@@ -295,7 +295,7 @@
 			width: calc(50% + 1rem);
 			top: -1rem;
 			opacity: 0;
-			color: col(fg, 500);
+			color: col(fg, 300);
 			border: 1px solid transparent;
 			border-radius: var(--ui-radius-md);
 			transition: all 0.2s ease-out;

@@ -13,6 +13,7 @@
 		name="description"
 		value={formproject.description}
 		placeholder="Décrivez votre projet"
+		style="height: 400px; width: 100%;"
 	/>
 </ProjectFormGroup>
 

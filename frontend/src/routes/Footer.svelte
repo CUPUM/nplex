@@ -158,7 +158,7 @@
 		opacity: 1;
 		font-weight: 500;
 		transform: translateY(0);
-		color: col(fg, 900);
+		color: col(fg, 000);
 		transition: all 1s cubic-bezier(0, 0, 0, 1) calc(var(--i) * 0.1s + 0.2s);
 		.out & {
 			opacity: 0;

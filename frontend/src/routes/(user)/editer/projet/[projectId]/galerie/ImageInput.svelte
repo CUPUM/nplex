@@ -16,7 +16,7 @@
 <label class:uploading>
 	<Ripple />
 	<div class="icon">
-		<Icon name="image-add" strokeWidth="2" />
+		<Icon name="image-add" strokeWidth={2} />
 	</div>
 	<legend>Cliquez pour importer vos photos ou déposez des fichiers ici.</legend>
 	<input
@@ -37,7 +37,7 @@
 	label {
 		position: relative;
 		border-radius: var(--ui-radius-xl);
-		color: col(fg, 900);
+		color: col(fg, 000);
 		font-weight: 400;
 		line-height: 1.5;
 		display: flex;

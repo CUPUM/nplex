@@ -10,38 +10,68 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 
+	type RootBackground = {
+		body: string | null;
+		overscroll: string | null;
+	};
+	const RESET: RootBackground = { body: null, overscroll: null };
+
 	/**
 	 * Global store to allow bg-color transitions on the site's body.
 	 */
 	export const rootBackground = (function () {
-		const root: HTMLElement | undefined = browser ? document.documentElement : undefined;
-		const { subscribe, set, update } = writable<string>('');
-		function _set(color: string, duration?: number) {
-			set(color);
+		const root = browser ? document.documentElement : undefined;
+		const body = browser ? document.body : undefined;
+		const { subscribe, set, update } = writable<typeof RESET>(RESET);
+
+		let transitionTimer: any = undefined;
+		let overscrollSynced = true;
+
+		function resetTransition(e: TransitionEvent) {
 			if (root) {
-				if (duration && !isNaN(duration)) {
-					/**
-					 * Handling cases where a custom duration is passed, making sure to unset the appended
-					 * transition property after completion.
-					 */
-					function resetTransition(e: TransitionEvent) {
-						if (root) {
-							root.style.transition = '';
-							root.removeEventListener('transitionend', resetTransition);
-							root.removeEventListener('transitioncancel', resetTransition);
-						}
-					}
-					root.style.transition = `background ${duration}ms ease-in-out`;
-					root.addEventListener('transitionend', resetTransition);
-					root.addEventListener('transitioncancel', resetTransition);
-				}
-				root.style.setProperty('--ui-bg', color || null);
+				root.style.transition = '';
 			}
+		}
+
+		function _set(opts: Partial<typeof RESET> & { duration?: number }) {
+			update((prev) => {
+				const newBody = opts.body === undefined ? prev.body : opts.body;
+				const newOverscroll =
+					opts.overscroll === undefined
+						? overscrollSynced
+							? newBody
+							: prev.overscroll
+						: opts.overscroll;
+				if (opts.overscroll) {
+					overscrollSynced = false;
+				} else if (newOverscroll === null && newBody === null) {
+					overscrollSynced = true;
+				}
+
+				if (root) {
+					if (opts.duration && !isNaN(opts.duration)) {
+						/**
+						 * Handling cases where a custom duration is passed, making sure to unset the appended
+						 * transition property after completion.
+						 */
+						root.style.transition = `background ${opts.duration}ms ease-in-out`;
+						clearTimeout(transitionTimer);
+						transitionTimer = setTimeout(resetTransition, opts.duration);
+					}
+					root.style.setProperty('background', newOverscroll);
+				}
+				if (body) {
+					body.style.setProperty('--ui-bg', newBody);
+				}
+				return { body: newBody, overscroll: newOverscroll };
+			});
 		}
 		return {
 			subscribe,
-			reset: (duration?: number) => _set('', duration),
-			set: (color: string, duration?: number) => _set(color, duration),
+			reset: (duration?: number) => _set({ body: null, overscroll: null, duration }),
+			resetOverscroll: (duration?: number) => _set({ overscroll: null, duration }),
+			resetBody: (duration?: number) => _set({ body: null, duration }),
+			set: _set,
 		};
 	})();
 
@@ -50,11 +80,14 @@
 	 */
 	export function setRootBackground(
 		element: HTMLElement,
-		options: { color: string; observerOptions?: IntersectionObserverInit }
+		options: Parameters<(typeof rootBackground)['set']>[0] & {
+			observerOptions?: IntersectionObserverInit;
+		}
 	): SvelteActionReturnType {
-		const intersect = intersection(element, options.observerOptions);
+		const { observerOptions, ...colorOptions } = options;
+		const intersect = intersection(element, observerOptions);
 		function handleEnter() {
-			rootBackground.set(options.color);
+			rootBackground.set(colorOptions);
 		}
 		function handleLeave() {
 			rootBackground.reset();
@@ -77,15 +110,17 @@
 
 <script lang="ts">
 	/**
-	 * Set a root background color encompassing this component instance's lifecycle.
+	 * Set app background color encompassing this component instance's lifecycle.
 	 */
-	export let color: string;
+	export let body: RootBackground['body'] | undefined = undefined;
+	export let overscroll: RootBackground['overscroll'] | undefined = undefined;
+	export let duration: number | undefined = undefined;
 
 	onMount(() => {
-		rootBackground.set(color);
+		rootBackground.set({ body, overscroll, duration });
 	});
 
 	onDestroy(() => {
-		rootBackground.reset();
+		rootBackground.reset(duration);
 	});
 </script>

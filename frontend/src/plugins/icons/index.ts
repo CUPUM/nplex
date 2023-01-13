@@ -4,6 +4,7 @@ import toPath from 'element-to-path';
 import { readdirSync, readFileSync, writeFile } from 'fs';
 import { extname, parse, resolve } from 'path';
 import prettier from 'prettier';
+import { svgPathProperties } from 'svg-path-properties';
 import { parse as parseSvg, type INode } from 'svgson';
 import type { Plugin } from 'vite';
 import { PRETTIER_CONFIG } from '../common';
@@ -24,15 +25,18 @@ function extractSvgPaths(svg: INode) {
 		type: keyof typeof SVG_PATH_TYPES;
 		fill: boolean;
 		stroke: boolean;
+		length: number;
 	}[] = [];
 
 	if (['path', 'rect', 'line', 'polyline', 'polygon', 'circle', 'ellipse'].includes(svg.name)) {
 		const d = svg.name === 'path' ? svg.attributes.d : toPath(svg);
+		const pathProps = new svgPathProperties(d);
 		paths.push({
 			d,
 			type: (svg.attributes.type as keyof typeof SVG_PATH_TYPES) ?? 'primary',
 			fill: !!svg.attributes.fill,
 			stroke: !!svg.attributes.stroke,
+			length: Math.ceil(pathProps.getTotalLength()),
 		});
 	}
 	if (svg.children.length) {

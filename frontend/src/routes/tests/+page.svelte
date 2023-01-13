@@ -1,4 +1,7 @@
 <script lang="ts">
+	import Button from '$components/Button.svelte';
+	import Field from '$components/Field.svelte';
+	import Loading from '$components/Loading.svelte';
 	import Select from '$components/Select.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import type { ComponentProps } from 'svelte';
@@ -16,8 +19,36 @@
 	let value = roles[0];
 
 	let variant: ComponentProps<TextArea>['variant'] = 'outlined';
+
+	async function getAvatar(name: string = 'fallback') {
+		image = await fetch('/api/generate-avatar/' + name);
+	}
+
+	let image: any;
+	$: console.log(image);
 </script>
 
+<article>
+	<Field type="text" value="test">
+		<svelte:fragment slot="trailing" let:value>
+			<Button
+				on:click={() => {
+					getAvatar(String(value));
+				}}>Fetch avatar!</Button
+			>
+		</svelte:fragment>
+	</Field>
+	<div>
+		{#await image}
+			Loading image
+			<Loading />
+		{:then value}
+			{image}
+		{:catch error}
+			Erreur :/
+		{/await}
+	</div>
+</article>
 <article>
 	{#each data.roles as role}
 		<input type="radio" value={role} />

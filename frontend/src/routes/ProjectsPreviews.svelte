@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Image from '$components/Image.svelte';
-	import { projectcolors, publicurl } from '$utils/database';
+	import ImagePlaceholder from '$components/ImagePlaceholder.svelte';
+	import { maybeSingle } from '$types/utils';
 	import { STORAGE_BUCKETS } from '$utils/enums';
+	import { projectcolors, publicurl } from '$utils/format';
 	import { EXPLORE_ROUTES } from '$utils/routes';
 	import type { PageData } from './$types';
 	import PreviewsHeader from './PreviewsHeader.svelte';
@@ -24,10 +26,11 @@
 				<a class="card" href="{EXPLORE_ROUTES.projects.pathname}/{p.id}">
 					<Image
 						alt=""
-						src={publicurl(STORAGE_BUCKETS.PROJECTS, p.banner?.name)}
+						src={publicurl(STORAGE_BUCKETS.PROJECTS, maybeSingle(p.banner)?.name)}
 						class="image"
-						color={projectcolors(p.gallery)}
-					/>
+					>
+						<ImagePlaceholder color={projectcolors(p.gallery)} />
+					</Image>
 					<section class="detail">
 						<h1>{p.title}</h1>
 						<p>&#9829;{p.likes_sum}</p>

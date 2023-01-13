@@ -95,7 +95,8 @@
 	>
 		<Ripple />
 		{#if $$slots.leading}
-			<div class="aside leading" on:click|self={focus}>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<div class="aside leading" on:pointerdown={focus}>
 				<slot name="leading" />
 			</div>
 		{/if}
@@ -126,7 +127,8 @@
 			on:input
 		/>
 		{#if $$slots.trailing}
-			<div class="aside trailing" on:click|self={focus}>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<div class="aside trailing" on:pointerdown={focus}>
 				<slot name="trailing" />
 			</div>
 		{/if}
@@ -142,6 +144,8 @@
 		position: relative;
 		display: grid;
 		border-radius: var(--ui-radius-md);
+		// height: 400px;
+		min-height: 0;
 		font-weight: 400;
 		&:disabled {
 			opacity: 0.5;
@@ -213,6 +217,7 @@
 		font-weight: inherit;
 		font-size: inherit;
 		color: inherit;
+		flex-grow: 1;
 		position: relative;
 		grid-row: main;
 		grid-column: main;
@@ -220,11 +225,11 @@
 		font-size: inherit;
 		line-height: 1.5em;
 		padding-right: var(--ui-pad-x);
-		padding-block: var(--pad-y);
-		flex: 1;
+		padding-bottom: var(--pad-y);
+		margin-top: var(--pad-y);
 		background: transparent;
-		overflow-x: hidden;
 		resize: none;
+		transition: all 0.15s var(--ui-ease-out);
 	}
 
 	label {
@@ -310,7 +315,7 @@
 	// Variants
 
 	:where(.default) {
-		color: col(fg, 900);
+		color: col(fg, 000);
 		background: col(bg, 900, 0.5);
 		transition: all 0.15s var(--ui-ease-out);
 		.outline {
@@ -321,7 +326,7 @@
 		&:focus-within {
 			label {
 				opacity: 0.5;
-				top: 0.5em;
+				top: 0.75em;
 				font-size: clamp(11px, 0.5em, 24px);
 			}
 			.affix {
@@ -330,17 +335,17 @@
 			&.haslabel {
 				.affix,
 				textarea {
-					top: 0.45em;
+					margin-top: calc(var(--pad-y) + 1.5em);
 				}
 			}
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(fg, 500);
+			color: col(fg, 300);
 			background: col(bg, 900);
 		}
 		&:focus-within {
-			color: col(fg, 000);
+			color: col(fg, 900);
 			background: col(bg, 300);
 			textarea {
 				opacity: 1;
@@ -349,11 +354,11 @@
 	}
 
 	:where(.outlined) {
-		color: col(fg, 700);
+		color: col(fg, 100);
 		background: transparent;
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		.outline {
-			border-color: col(fg, 900);
+			border-color: col(fg, 000);
 			opacity: 0.25;
 		}
 		&.hasplaceholder,
@@ -394,7 +399,7 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover,
 		&:focus-within {
-			color: col(fg, 300);
+			color: col(fg, 500);
 			background: transparent;
 			.outline {
 				opacity: 0.75;
@@ -405,7 +410,7 @@
 		}
 		&:focus-within {
 			outline: none;
-			color: col(fg, 100);
+			color: col(fg, 700);
 			.outline {
 				--thickness: 1.5px;
 				opacity: 1;
@@ -430,7 +435,7 @@
 		&:focus-within {
 			label {
 				opacity: 0.5;
-				top: 0.5em;
+				top: 0.75em;
 				font-size: clamp(11px, 0.5em, 24px);
 			}
 			.affix {
@@ -439,7 +444,7 @@
 			&.haslabel {
 				.affix,
 				textarea {
-					top: 0.35em;
+					margin-top: calc(var(--pad-y) + 1.5em);
 				}
 			}
 		}

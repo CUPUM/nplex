@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from '$components/Icon.svelte';
+	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { EDITOR_ROUTES } from './common';
 </script>
@@ -15,25 +15,37 @@
 </header>
 <ul>
 	<li class="block project" in:fade={{ delay: 0 }}>
-		<div class="group">
-			<a href={EDITOR_ROUTES.project.pathname} class="fill-link" role="presentation" />
+		<div class="group {ICON_CLASSES.hover}">
+			<a href={EDITOR_ROUTES.project.pathname} class="fill" role="presentation" aria-hidden="true">
+				<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
+			</a>
 			<a href={EDITOR_ROUTES.project.pathname} class="main-link">Créer un nouveau projet</a>
 			<a href={EDITOR_ROUTES.project.edit.pathname} class="modify">Modifier un projet existant</a>
 		</div>
 		<hr />
-		<a class="main-link group descriptors" href={EDITOR_ROUTES.project.descriptors.pathname}
-			>Éditer les descripteurs de projet</a
+		<a
+			class="main-link group descriptors {ICON_CLASSES.hover}"
+			href={EDITOR_ROUTES.project.descriptors.pathname}
 		>
+			<div class="fill" role="presentation" aria-hidden="true">
+				<Icon name="parameters" strokeWidth={1} strokeLinecap="round" />
+			</div>
+			<span style="z-index: 1">Éditer les descripteurs de projet</span>
+		</a>
 	</li>
-	<li class="block group" in:fade={{ delay: 100 }}>
-		<a href={EDITOR_ROUTES.organisation.pathname} class="fill-link" role="presentation" />
+	<li class="block group {ICON_CLASSES.hover}" in:fade={{ delay: 100 }}>
+		<a href={EDITOR_ROUTES.project.pathname} class="fill" role="presentation" aria-hidden="true">
+			<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
+		</a>
 		<a href={EDITOR_ROUTES.organisation.pathname} class="main-link"
 			>Créer une nouvelle organisation</a
 		>
 		<a href={EDITOR_ROUTES.organisation.edit.pathname} class="modify">Modifier une organisation</a>
 	</li>
-	<li class="block group" in:fade={{ delay: 200 }}>
-		<a href={EDITOR_ROUTES.actor.pathname} class="fill-link" role="presentation" />
+	<li class="block group {ICON_CLASSES.hover}" in:fade={{ delay: 200 }}>
+		<a href={EDITOR_ROUTES.project.pathname} class="fill" role="presentation" aria-hidden="true">
+			<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
+		</a>
 		<a href={EDITOR_ROUTES.actor.pathname} class="main-link">Créer un nouveau profil d'acteur</a>
 		<a href={EDITOR_ROUTES.actor.edit.pathname} class="modify">Modifier un profil d'acteur</a>
 	</li>
@@ -41,7 +53,8 @@
 
 <style lang="scss">
 	header {
-		padding: var(--ui-gutter);
+		padding-inline: var(--ui-gutter);
+		padding-block: 4rem;
 		width: 100%;
 		max-width: var(--ui-width-main);
 		align-self: center;
@@ -52,7 +65,7 @@
 			margin: 0 auto;
 			display: flex;
 			flex-direction: column;
-			gap: 2rem;
+			gap: 1rem;
 			align-items: center;
 			justify-content: center;
 			// min-height: 50vh;
@@ -90,21 +103,35 @@
 		background: col(bg, 300);
 		border-radius: var(--ui-radius-xl);
 		font-size: var(--ui-text-lg);
-		transition: all 0.15s ease-out;
+		transition: all 0.1s ease-out;
 		&:hover {
 			background: col(primary, 300);
-			color: col(fg, 300);
+			color: col(fg, 500);
 			box-shadow: 0 1rem 7rem -3rem col(primary, 900, 0.5);
+
+			& .fill {
+				color: col(primary, 500);
+			}
 		}
 	}
 
-	.fill-link {
+	.fill {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
 		z-index: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: clamp(200px, 40vw, 500px);
+		color: col(bg, 100);
+		transition: all 0.1s ease-out;
+
+		& :global(*) {
+			pointer-events: none;
+		}
 	}
 
 	.project {
@@ -112,7 +139,7 @@
 		display: flex;
 		flex-direction: row;
 		border-radius: var(--ui-radius-xl);
-		overflow: hidden;
+
 		.edit {
 			flex: 1;
 			border-radius: 0;
@@ -134,18 +161,6 @@
 		gap: 4rem;
 		padding: 4rem;
 		line-height: 1.2;
-	}
-
-	a:not(.modify) {
-		text-decoration-line: underline;
-		text-decoration-color: transparent;
-		text-decoration-thickness: 0.3em;
-		text-decoration-skip-ink: none;
-		transition: 0.25s;
-
-		&:hover {
-			text-decoration-color: col(primary, 700);
-		}
 	}
 
 	.main-link {

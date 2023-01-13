@@ -7,7 +7,7 @@
 
 	export let data: PageData;
 	export let formproject: PageData['project'];
-	export let typeTooltip: boolean;
+	export let typeTooltip: boolean = false;
 </script>
 
 <ProjectFormGroup>

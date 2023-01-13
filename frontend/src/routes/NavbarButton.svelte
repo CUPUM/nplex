@@ -14,7 +14,7 @@
 
 <svelte:element
 	this={typeof href === 'string' ? 'a' : 'button'}
-	class="navbar-button focus-outline-visible {ICON_CLASSES.HOVER} {active ? ICON_CLASSES.HOLD : ''}"
+	class="navbar-button focus-outline-visible {ICON_CLASSES.hover} {active ? ICON_CLASSES.hold : ''}"
 	class:cta
 	data-current={current || undefined}
 	class:active
@@ -46,10 +46,10 @@
 		border-radius: var(--ui-radius-md);
 		letter-spacing: 0.02em;
 		line-height: 1;
-		color: col(fg, 700);
+		color: col(fg, 100);
 		// background: col(bg, 100, 0.85);
 		backdrop-filter: blur(8px);
-		transition: all 0.1s ease;
+		transition: all 0.15s var(--ui-ease-out);
 
 		&::before {
 			content: '';
@@ -61,13 +61,13 @@
 			height: 100%;
 			background: var(--nav-bg);
 			opacity: 0.8;
-			transition: all 0.1s ease;
+			transition: all 0.15s var(--ui-ease-out);
 		}
 
-		&:hover {
+		&:hover:not([data-current]) {
 			color: col(bg, 500);
 			&::before {
-				background: col(fg, 300);
+				background: col(fg, 500);
 				opacity: 0.95;
 			}
 		}
@@ -81,16 +81,16 @@
 		}
 
 		&[data-current]:not(.active) {
-			cursor: default;
+			// cursor: default;
 			color: col(primary, 500);
 			// box-shadow: 0 0 0 1px col(primary, 500, 0.2);
 
-			&:hover {
-				&::before {
-					background: col(primary, 300);
-					opacity: 0.25;
-				}
-			}
+			// &:hover {
+			// 	&::before {
+			// 		background: col(primary, 300);
+			// 		opacity: 0.25;
+			// 	}
+			// }
 		}
 	}
 	.inner {
@@ -118,7 +118,7 @@
 	.cta {
 		color: col(bg, 100);
 		&::before {
-			background: col(fg, 500);
+			background: col(fg, 300);
 			opacity: 0.9;
 		}
 		&:hover,

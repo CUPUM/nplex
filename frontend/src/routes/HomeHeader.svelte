@@ -2,13 +2,23 @@
 	import { browser } from '$app/environment';
 	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import { FULL_VIEWBOX, LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
-	import { THEMES } from '$utils/themes';
+	import { KEY } from '$utils/enums';
+	import { THEMES, THEME_PALETTES } from '$utils/themes';
+	import { onDestroy } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { setNavbarTheme } from './Navbar.svelte';
+	import { rootBackground } from './RootBackground.svelte';
 
 	export let scrollTarget: HTMLElement;
 
 	let entered = false;
+	let y = 0;
+	$: darkbg = y < 50;
+	$: if (darkbg) {
+		rootBackground.set({ overscroll: THEME_PALETTES.dark.bg[300] });
+	} else {
+		rootBackground.resetOverscroll();
+	}
 
 	function consult() {
 		if (browser) {
@@ -20,12 +30,18 @@
 	}
 
 	function keydown(e: KeyboardEvent) {
-		if (e.key === 'Enter' || e.key === 'ArrowDown') {
+		console.log(e);
+		if (e.key === KEY.Enter || e.key === KEY.ArrowDown) {
 			consult();
 		}
 	}
+
+	onDestroy(() => {
+		rootBackground.reset();
+	});
 </script>
 
+<svelte:window bind:scrollY={y} />
 <header
 	use:setNavbarTheme={THEMES.dark}
 	on:enter={() => {
@@ -45,16 +61,16 @@
 			<use in:fly={{ y: 30, delay: 450 }} href={LOGO_SYMBOLS_HREFS.x} />
 		{/if}
 	</svg>
-	<button on:click={consult} class={ICON_CLASSES.HOVER}>
+	<button on:click={consult} class={ICON_CLASSES.hover}>
 		<div class="arrow">
-			<Icon name="arrow-down" strokeWidth="3" />
+			<Icon name="arrow-down" strokeWidth={3} />
 		</div>
 	</button>
 </header>
 
 <style lang="scss">
 	header {
-		--radius: min(var(--ui-radius-xl), calc(var(--ui-scroll-px) * 0.2));
+		--radius: min(var(--ui-radius-2xl), calc(var(--ui-scroll-px) * 0.15));
 		position: relative;
 		height: 100vh;
 		width: 100%;
@@ -71,7 +87,7 @@
 	svg {
 		cursor: pointer;
 		width: 250px;
-		fill: col(fg, 100);
+		fill: col(fg, 700);
 	}
 
 	button {
@@ -80,7 +96,7 @@
 		text-align: center;
 		bottom: 0;
 		padding-block: var(--ui-gutter);
-		color: col(fg, 100);
+		color: col(fg, 700);
 		font-size: 3rem;
 		width: 100%;
 

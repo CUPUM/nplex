@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
+	import Breadcrumbs from './Breadcrumbs.svelte';
 	import { EDITOR_ROUTES } from './common';
 	import EditableProjectCard from './EditableProjectCard.svelte';
 	import EditablesList from './EditablesList.svelte';
@@ -7,6 +8,7 @@
 	export let data: LayoutData;
 </script>
 
+<Breadcrumbs />
 <slot />
 <header>
 	<hgroup>

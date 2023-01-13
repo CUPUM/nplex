@@ -14,7 +14,7 @@
 	import { afterNavigate } from '$app/navigation';
 	import { cssSize } from '$utils/css';
 	import { tick, type ComponentProps } from 'svelte';
-	import { expoIn, expoOut } from 'svelte/easing';
+	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
 	import Tether from './Tether.svelte';
 
@@ -98,10 +98,10 @@
 			bind:this={contentRef}
 			class="popover {align} {place}"
 			style:--d={cssSize(distance)}
-			in:scale={{ start: 0.9, easing: expoOut, duration: 100, opacity: 0 }}
+			in:scale={{ start: 0.95, easing: cubicOut, duration: 150, opacity: 0 }}
 			out:scale|local={{
-				start: 0.8,
-				easing: expoIn,
+				start: 0.9,
+				easing: cubicIn,
 				duration: latest === tether?.anchorRef ? 100 : 0,
 				opacity: 0,
 			}}
@@ -149,7 +149,7 @@
 	.inner {
 		--radius: var(--ui-radius-md);
 		--inset: var(--ui-inset);
-		color: col(fg, 500);
+		color: col(fg, 300);
 		position: relative;
 		background: col(bg, 000);
 		display: flex;
@@ -157,7 +157,11 @@
 		gap: var(--ui-inset);
 		border-radius: var(--radius);
 		padding: var(--inset);
-		box-shadow: 0 0.5em 3em -2em rgb(0, 20, 40, 0.2);
+		box-shadow: 0 0 0 1px col(bg, 500, 0.2), 0 1.5em 5em -3em rgb(0, 10, 30, 0.2);
+
+		> :global(:where(hr)) {
+			margin-inline: calc(-1 * var(--inset));
+		}
 	}
 
 	.top {

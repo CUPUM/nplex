@@ -14,10 +14,10 @@
 </script>
 
 <header>
-	<a class="heading {ICON_CLASSES.HOVER}" {href}>
+	<a class="heading {ICON_CLASSES.hover}" {href}>
 		<h2><slot /></h2>
 		<div class="icon">
-			<Icon name="arrow-right" strokeWidth="4" />
+			<Icon name="arrow-right" strokeWidth={4} />
 		</div>
 	</a>
 	<form method="POST" use:enhance {action}>

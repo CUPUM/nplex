@@ -258,7 +258,7 @@
 		aspect-ratio: 1 / 1;
 		position: absolute;
 		left: calc(100% + 0.5em);
-		color: col(fg, 100);
+		color: col(fg, 700);
 		background: col(bg, 300);
 		transition: all 0.1s;
 

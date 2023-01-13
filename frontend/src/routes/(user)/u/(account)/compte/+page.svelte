@@ -36,11 +36,7 @@
 	<Field name="public_email" value={data.profile.public_email}>
 		<svelte:fragment slot="label">Courriel public</svelte:fragment>
 	</Field>
-	<TextArea
-		name="about"
-		value={data.profile.about}
-		placeholder="Rédigez une courte description pour accompagner votre profil."
-	>
+	<TextArea name="about" value={data.profile.about}>
 		<svelte:fragment slot="label">À propos</svelte:fragment>
 	</TextArea>
 	<Button style="align-self: flex-end" type="submit">Sauvegarder</Button>
@@ -65,13 +61,13 @@
 		approuvée par un administrateur.
 	</p>
 	<Select options={data.roles} let:datum>
-		<option value={datum.user_role}>{datum.label}</option>
+		<option value={datum.user_role}>{datum.title}</option>
 	</Select>
 	<div class="ui-select">
 		<span>Test</span>
 		<select name="role">
 			{#each data.roles as role}
-				<option value={role.user_role}>{role.label}: <i>{role.description}</i></option>
+				<option value={role.user_role}>{role.title}: <i>{role.description}</i></option>
 			{/each}
 		</select>
 	</div>

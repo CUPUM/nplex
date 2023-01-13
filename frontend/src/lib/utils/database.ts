@@ -7,8 +7,7 @@ import { setSessionCookie, tokenData } from '$routes/api/auth/common';
 import { createClient, type SupportedStorage } from '@supabase/supabase-js';
 import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { get } from 'svelte/store';
-import type { ValueOf } from 'ts-essentials';
-import { LOAD_DEPENDENCIES, STORAGE_BUCKETS } from './enums';
+import { LOAD_DEPENDENCIES } from './enums';
 
 /**
  * Supabase client instance reserved to browser context.
@@ -142,47 +141,3 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 	}
 	return db;
 }
-
-/**
- * Takes desired page range, page size, and returns tuple of start and end to be used with range
- * selector of db client.
- *
- * @param page Zero-based desired page, i.e. pagination start at index 0.
- */
-export function pagination(page: number, size: number): [start: number, end: number] {
-	const start = page * size;
-	const end = start + size;
-	return [start, end];
-}
-
-/**
- * Reduce inline verbosity of getting storage assets' public URL.
- */
-export function publicurl(bucket: ValueOf<typeof STORAGE_BUCKETS>, name?: string | null) {
-	if (!name) {
-		return '';
-	}
-	return browserDb.storage.from(bucket).getPublicUrl(name).data.publicUrl;
-}
-
-/**
- * Helper to format a project gallery's colors as a flat array.
- */
-export function projectcolors(gallery?: ProjectGalleryItem | ProjectGalleryItem[] | null) {
-	if (!gallery) {
-		return '';
-	}
-	if (!Array.isArray(gallery)) {
-		gallery = [gallery];
-	}
-	return gallery.reduce((acc, curr) => {
-		if (curr.color_dominant) {
-			acc.push('rgb' + curr.color_dominant);
-		}
-		if (curr.color_mean) {
-			acc.push('rgb' + curr.color_mean);
-		}
-		return acc;
-	}, [] as string[]);
-}
-type ProjectGalleryItem = Partial<App.DatabaseSchema['public']['Tables']['projects_images']['Row']>;

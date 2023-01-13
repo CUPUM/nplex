@@ -48,6 +48,7 @@
 	<div class="toolbar" data-theme={THEMES.dark}>
 		{#if sections}
 			<nav
+				class="nest"
 				in:fly={{ y: 20, opacity: 0, duration: 200, easing: expoOut }}
 				out:scale|local={{ duration: 150, start: 0.96 }}
 			>
@@ -70,7 +71,7 @@
 			</Tooltip>
 			<!-- <hr /> -->
 			<Button as="label" variant="ghost">
-				<Icon name={sections ? 'chevron-down' : 'hamburger'} slot="trailing" />
+				<Icon name={sections ? 'chevron-down' : 'chevron-up'} slot="trailing" />
 				Sesctions
 				<input type="checkbox" hidden bind:checked={sections} />
 			</Button>

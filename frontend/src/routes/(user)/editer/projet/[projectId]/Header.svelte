@@ -20,9 +20,8 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<header class={ICON_CLASSES.HOVER} on:click={() => titleRef.focus()} in:fly={{ y: -10 }}>
+<header class={ICON_CLASSES.hover} on:click={() => titleRef.focus()} in:fly={{ y: -10 }}>
 	<hgroup>
-		<h1>Projet&thinsp;:</h1>
 		<form
 			method="POST"
 			action="?/title"
@@ -57,14 +56,12 @@
 	header {
 		position: relative;
 		align-self: stretch;
-		margin-top: calc(-1 * var(--ui-nav-px));
 		border-bottom: 1px solid col(fg, 100, 0.05);
 		padding-bottom: var(--ui-nav-px);
 	}
 
 	hgroup {
 		margin: 0 auto;
-		// min-height: 50vh;
 		width: 100%;
 		max-width: var(--ui-width-main);
 		display: grid;
@@ -72,11 +69,11 @@
 	}
 
 	form {
+		grid-column: 2;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
 		justify-content: flex-end;
-		margin-top: var(--ui-nav-px);
 		padding: 1rem;
 		gap: 3rem;
 		transition: all 0.25s var(--ui-ease-out);
@@ -100,26 +97,15 @@
 		}
 	}
 
-	h1 {
-		cursor: pointer;
-		// align-self: flex-end;
-		font-size: var(--ui-text-2xl);
-		padding: 1rem;
-		margin-top: var(--ui-nav-px);
-		font-weight: 600;
-		flex: 1;
-		line-height: 1.25;
-	}
-
 	.title {
 		line-height: 1.2;
 		outline: none;
 		word-break: keep-all;
 		hyphens: auto;
-		font-family: var(--ui-font-misc);
-		font-weight: 300;
-		font-style: italic;
-		font-size: var(--ui-text-xl);
-		padding-top: 2em;
+		// font-family: var(--ui-font-misc);
+		font-weight: 600;
+		// font-style: italic;
+		font-size: var(--ui-text-2xl);
+		// padding-top: 2em;
 	}
 </style>

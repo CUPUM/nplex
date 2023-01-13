@@ -2,11 +2,15 @@ import { getDb } from '$utils/database';
 import { SEARCH_PARAMS, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { pgarr } from '$utils/format';
 import { error, fail } from '@sveltejs/kit';
+import { colord, extend } from 'colord';
+import labPlugin from 'colord/plugins/lab';
 import sharp from 'sharp';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { Actions } from './$types';
 import { GALLERY_IMAGE_TYPES, GALLERY_INPUT_NAME } from './common';
+
+extend([labPlugin]);
 
 const ERROR_BAD_FORMAT = "Le format ou l'extension de l'image n'est pas compatible.";
 const DEFAULT_SIZE = 1024;
@@ -35,16 +39,24 @@ export const actions: Actions = {
 					const stats = await s.stats();
 					const date = new Date().toLocaleDateString('fr-CA');
 					const rand = crypto.randomUUID();
+					const dominant = colord(stats.dominant);
+					const dominant_hsl = dominant.toHsl();
+					const dominant_lab = dominant.toLab();
+					const mean = colord({
+						r: Math.round(stats.channels[0].mean),
+						g: Math.round(stats.channels[1].mean),
+						b: Math.round(stats.channels[2].mean),
+					});
+					const mean_hsl = mean.toHsl();
+					const mean_lab = mean.toLab();
 					return {
 						name: `${date}-${rand}.webp`,
 						type: 'image/webp',
 						buffer,
-						color_dominant: [stats.dominant.r, stats.dominant.g, stats.dominant.b],
-						color_mean: [
-							stats.channels[0].mean.toFixed(0),
-							stats.channels[1].mean.toFixed(0),
-							stats.channels[2].mean.toFixed(0),
-						],
+						color_dominant_hsl: pgarr([dominant_hsl.h, dominant_hsl.s, dominant_hsl.l]),
+						color_dominant_lab: pgarr([dominant_lab.l, dominant_lab.a, dominant_lab.b]),
+						color_mean_hsl: pgarr([mean_hsl.h, mean_hsl.s, mean_hsl.l]),
+						color_mean_lab: pgarr([mean_lab.l, mean_lab.a, mean_lab.b]),
 					};
 				})
 				.safeParseAsync(file);
@@ -62,16 +74,16 @@ export const actions: Actions = {
 			if (storageRes.error) {
 				errs.push(storageRes.error);
 			} else {
-				console.log(storageRes.data.path);
 				const statsRes = await db
 					.from('projects_images')
 					.update({
-						color_dominant: pgarr(parsed.data.color_dominant),
-						color_mean: pgarr(parsed.data.color_mean),
+						color_dominant_hsl: parsed.data.color_dominant_hsl as any,
+						color_dominant_lab: parsed.data.color_dominant_lab as any,
+						color_mean_hsl: parsed.data.color_mean_hsl as any,
+						color_mean_lab: parsed.data.color_mean_lab as any,
 					})
 					.eq('name', storageRes.data?.path)
 					.single();
-				console.log(statsRes);
 				if (statsRes.error) {
 					errs.push(statsRes.error);
 					// Cleanup uploaded file if error from metadata update.
@@ -116,11 +128,17 @@ export const actions: Actions = {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
-		const updateRes = await db.from('projects_images').upsert(parsed.data);
-		console.log(updateRes);
-		if (updateRes.error) {
-			return fail(STATUS_CODES.InternalServerError, updateRes.error);
-		}
+		// Select...
+		// then
+		// Patch array
+		// then
+		// Upsert without creating...
+		// const updateRes = await db.from('projects_images').upsert(
+		// );
+		// console.log(updateRes);
+		// if (updateRes.error) {
+		// 	return fail(STATUS_CODES.InternalServerError, updateRes.error);
+		// }
 	},
 	delete: async (event) => {
 		if (!event.params.projectId) {

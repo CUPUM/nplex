@@ -23,7 +23,7 @@
 	 */
 	export function setNavbarTheme(element: HTMLElement, theme: ThemeName): SvelteActionReturnType {
 		const intersect = intersection(element, {
-			rootMargin: '-40px 0px 0% 0px',
+			rootMargin: '-38px 0px 0% 0px',
 		});
 		function handleEnter() {
 			navbarTheme.set(theme);
@@ -83,11 +83,11 @@
 
 <header
 	data-theme={$navbarTheme ? THEMES[$navbarTheme] : undefined}
-	style:--nav-bg={$rootBackground}
+	style:--nav-bg={$rootBackground.body}
 >
 	<menu class="toggle">
 		<NavbarButton on:pointerdown={toggle} round>
-			<Icon name={open ? 'cross' : 'arrow-down-right'} strokeWidth="3" />
+			<Icon name={open ? 'cross' : 'arrow-down-right'} strokeWidth={3} />
 		</NavbarButton>
 	</menu>
 	<div class="navs" class:open class:unmounted={!mounted}>
@@ -143,7 +143,7 @@
 					active={!!$authModal}
 					href={authModal.getUrl({ url: $page.url }).toString()}
 				>
-					<Icon name="user" strokeWidth="2" style="font-size: 1.25em" />
+					<Icon name="user" strokeWidth={2} style="font-size: 1.25em" />
 				</NavbarButton>
 			{/if}
 		</nav>

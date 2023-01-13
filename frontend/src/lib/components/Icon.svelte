@@ -6,8 +6,8 @@
 -->
 <script lang="ts" context="module">
 	export const ICON_CLASSES = {
-		HOVER: 'i-hover-anim',
-		HOLD: 'i-hold-anim',
+		hover: 'i-hover-anim',
+		hold: 'i-hold-anim',
 	} as const;
 
 	const PATH_LENGTH = 100;
@@ -22,8 +22,10 @@
 
 	export let name: keyof typeof icons;
 	export let secondaryColor: string = 'currentColor';
-	export let strokeWidth: number | string = 2;
+	export let strokeWidth: number = 2;
+	export let strokeLinecap: 'square' | 'round' = 'square';
 	export let animate: boolean = true;
+	export let animateSpeed: number = 1;
 	export let draw: boolean = false;
 	export let drawDelay: number = 50;
 	export let drawDuration: number = 500;
@@ -45,7 +47,9 @@
 	{style}
 	style:--secondary-color={secondaryColor}
 	style:--stroke-width={cssSize(strokeWidth)}
-	style:--l={PATH_LENGTH}
+	style:--stroke-linecap={strokeLinecap}
+	style:--speed={animateSpeed}
+	style:--size={icon.height}
 >
 	{#key name}
 		<g
@@ -81,7 +85,7 @@
 							class="stroke"
 							class:secondary={path.type === 'secondary'}
 							d={path.d}
-							pathLength={PATH_LENGTH}
+							style:--l={path.length}
 							style:--i={i}
 							style:--dir={Math.round(Math.random()) * 2 - 1}
 						/>
@@ -102,7 +106,7 @@
 							class="stroke"
 							class:secondary={path.type === 'secondary'}
 							d={path.d}
-							pathLength={PATH_LENGTH}
+							style:--l={path.length}
 							style:--i={i}
 							style:--dir={Math.round(Math.random()) * 2 - 1}
 						/>
@@ -115,7 +119,6 @@
 
 <style lang="scss">
 	:where(svg) {
-		--gap: calc(var(--l) * 0.5);
 		display: inline-block;
 		vertical-align: middle;
 		position: relative;
@@ -139,13 +142,17 @@
 			}
 
 			&.stroke {
+				--gap: calc(var(--l) * 0.75);
+				--lcorr: calc(var(--l) + 2 * var(--stroke-width));
+				// Calculating the animation duration (for hover and hold modes) independently of the icon's size
+				--d: calc(((var(--l) * 100ms / var(--size)) + 350ms) / var(--speed));
 				stroke: currentColor;
 				stroke-width: var(--stroke-width);
 				stroke-linejoin: round;
-				stroke-linecap: square;
+				stroke-linecap: var(--stroke-linecap);
 				stroke-dasharray: var(--l) var(--gap);
 				stroke-dashoffset: 0;
-				transition: stroke-dashoffset 0.5s calc(0.1s * var(--i)) var(--ui-ease-out);
+				transition: stroke-dashoffset var(--d) calc(0.1s * var(--i)) var(--ui-ease-out);
 			}
 
 			&.secondary {

@@ -1,5 +1,6 @@
-import { getDb, pagination } from '$utils/database';
+import { getDb } from '$utils/database';
 import { STATUS_CODES } from '$utils/enums';
+import { pagination } from '$utils/format';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 

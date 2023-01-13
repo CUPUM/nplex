@@ -37,8 +37,8 @@ export const EDITOR_PARTS_ROUTES = {
 		hash: topid,
 	},
 	VISIBILITY: {
-		title: 'Visibilité',
-		subpath: '/parametres',
+		title: 'Publication',
+		subpath: '/publication',
 		hash: topid,
 	},
 } satisfies Record<

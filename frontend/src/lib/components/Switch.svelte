@@ -89,6 +89,8 @@
 	{required}
 	{readonly}
 	{disabled}
+	on:pointerenter
+	on:pointerleave
 >
 	<Ripple color="white" />
 	{#if currentRef}
@@ -130,10 +132,10 @@
 	// Variants
 
 	:where(.default) {
-		color: col(fg, 900);
+		color: col(fg, 000);
 		background: col(bg, 900, 0.5);
 		.mark {
-			background: col(fg, 500);
+			background: col(fg, 300);
 		}
 		&:hover {
 			background: col(bg, 900, 0.6);
@@ -141,7 +143,7 @@
 	}
 
 	:where(.outlined) {
-		color: col(fg, 900);
+		color: col(fg, 000);
 		transition: all 0.1s ease-out;
 		&::before {
 			content: '';
@@ -156,22 +158,22 @@
 			opacity: 0.5;
 		}
 		&:hover {
-			color: col(fg, 300);
+			color: col(fg, 500);
 			&::before {
 				opacity: 1;
 			}
 		}
 		.mark {
-			background: col(fg, 500);
+			background: col(fg, 300);
 		}
 	}
 
 	:where(.colored) {
-		color: col(fg, 900);
+		color: col(fg, 000);
 		transition: all 0.2s var(--ui-ease-out);
 		border: 1px solid col(fg, 100, 0.1);
 		&:hover {
-			color: col(fg, 300);
+			color: col(fg, 500);
 			border: 1px solid col(primary, 500, 0.2);
 		}
 		.mark {

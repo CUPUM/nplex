@@ -55,6 +55,8 @@
 	export let invalid: boolean | undefined = undefined;
 	export let maxlength: number | undefined = undefined;
 	export let minlength: number | undefined = undefined;
+	export let min: number | undefined = undefined;
+	export let max: number | undefined = undefined;
 	export let loading: boolean | undefined = undefined;
 	export let autocomplete: string | undefined = 'off';
 	export let placeholder: string = '';
@@ -78,7 +80,7 @@
 
 	let inputRef: InputRef;
 	let labelWidth: number;
-	$: hasvalue = !!value;
+	$: hasvalue = !!value || value === 0;
 	$: hasplaceholder = placeholder !== '';
 	$: haslabel = $$slots.label && !nolabel;
 
@@ -135,12 +137,12 @@
 		{#if $$slots.leading}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div class="aside leading" on:click|self={focus}>
-				<slot {dirty} name="leading" />
+				<slot {dirty} {value} name="leading" />
 			</div>
 		{/if}
 		{#if haslabel}
 			<label in:fly={{ y: 6, opacity: 0 }} for={id} bind:clientWidth={labelWidth}>
-				<slot {dirty} name="label" /><span class="star">*</span>
+				<slot {dirty} {value} name="label" /><span class="star">*</span>
 			</label>
 		{/if}
 		<!-- Placing outlines here to allow css dependence on label:empty with sibling selector -->
@@ -176,6 +178,8 @@
 				{value}
 				{maxlength}
 				{minlength}
+				{min}
+				{max}
 				{disabled}
 				{required}
 				{tabindex}
@@ -195,7 +199,7 @@
 		{#if $$slots.trailing}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div class="aside trailing" on:click|self={focus}>
-				<slot {dirty} name="trailing" />
+				<slot {dirty} {value} name="trailing" />
 			</div>
 		{/if}
 	</fieldset>
@@ -392,7 +396,7 @@
 	// Variants
 
 	:where(.default) {
-		color: col(fg, 900);
+		color: col(fg, 000);
 		background: col(bg, 900, 0.5);
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
@@ -418,11 +422,11 @@
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(fg, 500);
+			color: col(fg, 300);
 			background: col(bg, 900);
 		}
 		&:focus-within {
-			color: col(fg, 000);
+			color: col(fg, 900);
 			background: col(bg, 300);
 			:global(*[data-field-input]) {
 				opacity: 1;
@@ -431,11 +435,11 @@
 	}
 
 	:where(.outlined) {
-		color: col(fg, 700);
+		color: col(fg, 100);
 		background: transparent;
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
-			border-color: col(fg, 900);
+			border-color: col(fg, 000);
 			opacity: 0.25;
 		}
 		&.hasplaceholder,
@@ -462,7 +466,7 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover,
 		&:focus-within {
-			color: col(fg, 300);
+			color: col(fg, 500);
 			background: transparent;
 			.outline {
 				opacity: 0.75;
@@ -473,7 +477,7 @@
 		}
 		&:focus-within {
 			outline: none;
-			color: col(fg, 100);
+			color: col(fg, 700);
 			.outline {
 				--thickness: 1.5px;
 				opacity: 1;

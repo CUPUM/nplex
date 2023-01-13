@@ -98,7 +98,7 @@
 	:global(.default) > :where(.switch-item) {
 		color: currentColor;
 		&:hover {
-			color: col(fg, 100);
+			color: col(fg, 700);
 			background: col(fg, 100, 0.1);
 		}
 		&.current {
@@ -111,7 +111,7 @@
 	:global(.outlined) > :where(.switch-item) {
 		color: currentColor;
 		&:hover {
-			color: col(fg, 100);
+			color: col(fg, 700);
 			background: col(fg, 100, 0.1);
 		}
 		&.current {

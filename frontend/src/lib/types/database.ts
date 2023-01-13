@@ -742,8 +742,10 @@ export interface Database {
       }
       projects_images: {
         Row: {
-          color_dominant: unknown | null
-          color_mean: unknown | null
+          color_dominant_hsl: unknown
+          color_dominant_lab: unknown
+          color_mean_hsl: unknown
+          color_mean_lab: unknown
           created_at: string
           created_by_id: string
           description: string | null
@@ -756,8 +758,10 @@ export interface Database {
           updated_by_id: string
         }
         Insert: {
-          color_dominant?: unknown | null
-          color_mean?: unknown | null
+          color_dominant_hsl: unknown
+          color_dominant_lab: unknown
+          color_mean_hsl: unknown
+          color_mean_lab: unknown
           created_at?: string
           created_by_id?: string
           description?: string | null
@@ -770,8 +774,10 @@ export interface Database {
           updated_by_id?: string
         }
         Update: {
-          color_dominant?: unknown | null
-          color_mean?: unknown | null
+          color_dominant_hsl?: unknown
+          color_dominant_lab?: unknown
+          color_mean_hsl?: unknown
+          color_mean_lab?: unknown
           created_at?: string
           created_by_id?: string
           description?: string | null
@@ -967,17 +973,17 @@ export interface Database {
       user_role_details: {
         Row: {
           description: string
-          label: string
+          title: string
           user_role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
           description: string
-          label: string
+          title: string
           user_role: Database["public"]["Enums"]["user_role"]
         }
         Update: {
           description?: string
-          label?: string
+          title?: string
           user_role?: Database["public"]["Enums"]["user_role"]
         }
       }

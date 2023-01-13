@@ -1,3 +1,4 @@
+import { maybeSingle } from '$types/utils';
 import { getDb } from '$utils/database';
 import { COOKIES } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
@@ -50,9 +51,7 @@ export const POST: RequestHandler = async (event) => {
 		user: {
 			...authSession.user,
 			...profileRes.data,
-			role: Array.isArray(profileRes.data.role)
-				? profileRes.data.role[0].role
-				: profileRes.data.role.role,
+			role: maybeSingle(profileRes.data.role).role,
 		},
 	};
 	setSessionCookie(event, {

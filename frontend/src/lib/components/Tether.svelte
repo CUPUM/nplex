@@ -139,10 +139,10 @@
 		top: var(--y);
 		transform-origin: center bottom;
 		&.start {
-			transform-origin: left bottom;
+			transform-origin: calc(0.5 * var(--w)) bottom;
 		}
 		&.end {
-			transform-origin: right bottom;
+			transform-origin: calc(100% - 0.5 * var(--w)) bottom;
 		}
 	}
 
@@ -150,10 +150,10 @@
 		top: calc(var(--y) + var(--h));
 		transform-origin: center top;
 		&.start {
-			transform-origin: left top;
+			transform-origin: calc(0.5 * var(--w)) top;
 		}
 		&.end {
-			transform-origin: right top;
+			transform-origin: calc(100% - 0.5 * var(--w)) top;
 		}
 	}
 
@@ -173,10 +173,10 @@
 		left: var(--x);
 		transform-origin: right center;
 		&.start {
-			transform-origin: right top;
+			transform-origin: right calc(0.5 * var(--h));
 		}
 		&.end {
-			transform-origin: right bottom;
+			transform-origin: right calc(100% - 0.5 * var(--h));
 		}
 	}
 
@@ -184,10 +184,10 @@
 		left: calc(var(--x) + var(--w));
 		transform-origin: left center;
 		&.start {
-			transform-origin: left top;
+			transform-origin: left calc(0.5 * var(--h));
 		}
 		&.end {
-			transform-origin: left bottom;
+			transform-origin: left calc(100% - 0.5 * var(--h));
 		}
 	}
 </style>

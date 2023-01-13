@@ -14,7 +14,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { createEventDispatcher, onDestroy, tick } from 'svelte';
+	import { onDestroy, tick } from 'svelte';
 	import { spring } from 'svelte/motion';
 	import type { ValueOf } from 'ts-essentials';
 	import { getRangeContext } from './Range.svelte';
@@ -60,11 +60,9 @@
 		colliding(POINT.to);
 	}
 
-	const dispatch = createEventDispatcher();
 	const relfrom = spring(from, rangeThumbSpringOptions);
 	const relto = spring(to, rangeThumbSpringOptions);
 
-	let active = false;
 	let lineRef: HTMLElement;
 	let startfrom: number | undefined;
 	let startto: number | undefined;
@@ -93,7 +91,6 @@
 	}
 
 	function dragstart(e: PointerEvent) {
-		active = true;
 		startfrom = from;
 		startto = to;
 		startx = e.pageX;
@@ -105,7 +102,6 @@
 	}
 
 	function dragend(e: PointerEvent) {
-		active = false;
 		startfrom = undefined;
 		startto = undefined;
 		startx = undefined;
@@ -130,18 +126,23 @@
 		style:--relfrom="{$relfrom}%"
 		style:--relto="{$relto}%"
 		class="line"
-		class:active
 		on:pointerdown={dragstart}
-	/>
+	>
+		{#if $$slots.default}
+			<label>
+				<slot />
+			</label>
+		{/if}
+	</svelte:element>
 {/if}
 
 <style lang="scss">
 	.line {
 		--line-thickness: calc(var(--track-thickness) + 2px);
 		position: absolute;
-		background: blue;
 		border-radius: 99px;
 		outline: none;
+		transition: box-shadow 0.25s var(--ui-ease-out), background 0.25s var(--ui-ease-out);
 
 		:global(.row .inner) > & {
 			height: var(--line-thickness);
@@ -150,23 +151,9 @@
 		}
 
 		:global(.column .inner) > & {
-			background: red;
 			width: var(--line-thickness);
 			top: var(--relfrom);
 			height: max(0%, calc(var(--relto) - var(--relfrom)));
-		}
-
-		&::before {
-			content: '';
-			opacity: 0;
-			position: absolute;
-			top: 0;
-			left: 0;
-			bottom: 0;
-			right: 0;
-			border-radius: 99px;
-			background: blue;
-			transition: all 0.2s var(--ui-ease-out);
 		}
 	}
 
@@ -175,16 +162,18 @@
 		pointer-events: none;
 	}
 
-	.active,
-	.line:focus-visible {
-		background: red;
+	// Variants
 
-		&::before {
-			opacity: 0.5;
-			top: -5px;
-			left: -5px;
-			bottom: -5px;
-			right: -5px;
+	:global(.default .inner) > {
+		button {
+			background: col(fg, 000);
+			box-shadow: 0 0 0 0 col(primary, 500, 0);
+
+			&:active,
+			&:focus-visible {
+				background: col(primary, 700);
+				box-shadow: 0 0 0 var(--outline-width) col(primary, 300, 0.5);
+			}
 		}
 	}
 </style>

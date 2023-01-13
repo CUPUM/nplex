@@ -55,7 +55,7 @@
 <svelte:element
 	this={as ? as : href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
-	class="button nest focus-outline-visible {computedVariant} {contentAlign} {className} {ICON_CLASSES.HOVER}"
+	class="button nest focus-outline-visible {computedVariant} {contentAlign} {className} {ICON_CLASSES.hover}"
 	class:compact
 	class:warning
 	class:equi
@@ -250,22 +250,22 @@
 	// Variants
 
 	:where(.default) {
-		color: col(fg, 300);
+		color: col(fg, 500);
 		background: col(bg, 900, 0.5);
 		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(bg, 700);
-			background: col(fg, 300);
+			background: col(fg, 500);
 		}
 		&:global(.active) {
 			color: col(bg, 900);
-			background: col(fg, 900);
+			background: col(fg, 000);
 		}
 	}
 
 	:where(.outlined) {
-		color: col(fg, 300);
+		color: col(fg, 500);
 		background: transparent;
 		transition: all 0.1s ease-out;
 		&::before {
@@ -283,14 +283,14 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(bg, 700);
-			background: col(fg, 300);
+			background: col(fg, 500);
 			&::before {
 				border: 5px solid transparent;
 			}
 		}
 		&:global(.active) {
 			color: col(bg, 900);
-			background: col(fg, 900);
+			background: col(fg, 000);
 			&::before {
 				border: 5px solid transparent;
 			}
@@ -298,13 +298,13 @@
 	}
 
 	:where(.ghost) {
-		color: col(fg, 500);
+		color: col(fg, 300);
 		background: transparent;
 		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(bg, 700);
-			background: col(fg, 300);
+			background: col(fg, 500);
 		}
 		&:global(.active) {
 			color: col(primary, 700);

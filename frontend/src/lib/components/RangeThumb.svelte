@@ -13,7 +13,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { createEventDispatcher, onDestroy } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import { spring } from 'svelte/motion';
 	import { getRangeContext } from './Range.svelte';
 
@@ -35,10 +35,8 @@
 	export let id: string | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
 
-	const dispatch = createEventDispatcher<'dragstart' | 'dragend' | 'drag'>();
 	const relvalue = spring(pc(value), rangeThumbSpringOptions);
 
-	let active = false;
 	let thumbRef: HTMLElement;
 	let startvalue: number | undefined;
 	let startx: number | undefined;
@@ -59,7 +57,6 @@
 	}
 
 	function dragstart(e: PointerEvent) {
-		active = true;
 		startvalue = value;
 		startx = e.pageX;
 		starty = e.pageY;
@@ -70,7 +67,6 @@
 	}
 
 	function dragend(e: PointerEvent) {
-		active = false;
 		startvalue = undefined;
 		startx = undefined;
 		starty = undefined;
@@ -88,8 +84,9 @@
 <input
 	type="range"
 	hidden
+	readonly
 	disabled={$rangeDisabled ?? disabled}
-	bind:value
+	{value}
 	on:input
 	on:change
 	on:reset
@@ -104,7 +101,6 @@
 	style:--relvalue="{$relvalue}%"
 	on:pointerdown={dragstart}
 	disabled={$rangeDisabled ?? disabled}
-	class:active
 >
 	{#if $$slots.default}
 		<label>
@@ -119,13 +115,18 @@
 		cursor: pointer;
 		height: var(--thumb-size);
 		width: var(--thumb-size);
-		border-radius: 99px;
-		background: blue;
+		border-radius: 50%;
 		user-select: none;
 		outline: none;
+		transition: box-shadow 0.25s var(--ui-ease-out), background 0.25s var(--ui-ease-out);
 
 		&:disabled {
 			pointer-events: none;
+		}
+
+		&:active,
+		&:focus-visible {
+			z-index: 10;
 		}
 
 		:global(.row .inner) > & {
@@ -137,32 +138,34 @@
 			top: var(--relvalue);
 			transform: translateY(-50%);
 		}
+	}
 
-		&::before {
-			content: '';
-			opacity: 0;
-			position: absolute;
-			top: 0;
-			left: 0;
-			bottom: 0;
-			right: 0;
-			border-radius: 99px;
-			background: blue;
-			transition: all 0.15s var(--ui-ease-out);
+	// Variants
+
+	:global(.default .inner) > {
+		button {
+			background: col(fg, 900, 1);
+			box-shadow: 0 0 0 0 col(primary, 500, 0);
+
+			&:active,
+			&:focus-visible {
+				z-index: 10;
+				background: col(primary, 700);
+				box-shadow: 0 0 0 var(--outline-width) col(primary, 300, 0.5);
+			}
 		}
 	}
 
-	.active,
-	button:focus-visible {
-		z-index: 10;
-		background: red;
-
-		&::before {
-			opacity: 0.5;
-			top: -5px;
-			left: -5px;
-			bottom: -5px;
-			right: -5px;
+	:global(.cta .inner) > {
+		button {
+			background: col(primary, 700, 1);
+			box-shadow: 0 0 0 0 col(primary, 500, 0);
+			&:active,
+			&:focus-visible {
+				z-index: 10;
+				background: col(fg, 300);
+				box-shadow: 0 0 0 var(--outline-width) col(primary, 300, 0.5);
+			}
 		}
 	}
 </style>

@@ -28,7 +28,6 @@
 	<ProjectWorks {data} bind:formproject bind:typeTooltip />
 	<ProjectCostRange {data} bind:formproject />
 	<ProjectDescription {data} bind:formproject />
-	<hr />
 </form>
 
 <style lang="scss" module>

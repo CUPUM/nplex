@@ -1,3 +1,4 @@
+import { maybeSingle } from '$types/utils';
 import { getDb } from '$utils/database';
 import { LOAD_DEPENDENCIES, STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
@@ -26,14 +27,28 @@ export const load = (async (event) => {
 	if (profileRes.error) {
 		throw error(STATUS_CODES.InternalServerError, profileRes.error);
 	}
+	// Role details.
+	const roleRes = await db
+		.from('user_role_details')
+		.select()
+		.eq('user_role', maybeSingle(profileRes.data.role)?.role)
+		.maybeSingle();
 	// Getting list of roles for form.
 	const rolesRes = await db.from('user_role_details').select('*');
 	if (rolesRes.error) {
 		throw error(STATUS_CODES.InternalServerError, rolesRes.error);
 	}
+	if (!roleRes.data) {
+		throw error(STATUS_CODES.InternalServerError, {
+			message: 'Incapable de trouver les informations pour le rôle du profil.',
+		});
+	}
 
 	return {
-		profile: profileRes.data,
+		profile: {
+			...profileRes.data,
+			role: { ...maybeSingle(profileRes.data.role), details: roleRes.data },
+		},
 		roles: rolesRes.data,
 	};
 }) satisfies LayoutLoad;

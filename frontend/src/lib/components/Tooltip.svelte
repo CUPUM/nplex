@@ -18,7 +18,7 @@
 <script lang="ts">
 	import { THEMES, type ThemeName } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
-	import { expoIn, expoOut } from 'svelte/easing';
+	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import Tether from './Tether.svelte';
 
@@ -76,8 +76,8 @@
 		<div
 			data-theme={theme}
 			class="tooltip {place} {align}"
-			in:scale={{ start: 0.5, easing: expoOut, duration: 100 }}
-			out:scale={{ start: 0.75, easing: expoIn, duration: 75 }}
+			in:scale={{ start: 0.75, easing: cubicOut, duration: 75, opacity: 0 }}
+			out:scale={{ start: 0.9, easing: cubicIn, duration: 125, opacity: 0 }}
 		>
 			<slot name="message" open={opened}>
 				{@html message}
@@ -108,7 +108,7 @@
 		padding: 0.5em 1em 0.6em 1em;
 		margin: 0;
 		background: col(bg, 100, 0.94);
-		color: col(fg, 500);
+		color: col(fg, 300);
 		border-radius: 0.8em;
 		letter-spacing: 0.02em;
 		transform-origin: inherit;

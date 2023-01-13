@@ -20,6 +20,18 @@ Make sure you are in the `/backend` package, i.e. the directory of this readme, 
 supabase start
 ```
 
+### Connecting to the local instance using a manager
+
+For a better experience, we can then connect to the running postgres database through a database manager such as dBeaver or BeeKeeper, using the following connection info:
+
+| credential | value |
+| --- | --- |
+| Host | `localhost`|
+| Port | `54322` |
+| Database | `postgres` |
+| Username | `postgres` |
+| Password | default: `postgres` |
+
 ### Persist local modifications into diff migration files
 
 ```sh

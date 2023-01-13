@@ -4,11 +4,11 @@
 	--ui-bg: var(--color-bg-100);
 	background: var(--ui-bg);
 	font-family: var(--ui-font-main);
-	color: col(fg, 500);
+	color: col(fg, 300);
 	padding: 0;
 	margin: 0;
 	line-height: 1.65;
-	font-weight: 400;
+	font-weight: 350;
 	accent-color: col(primary, 500);
 	overflow-x: hidden;
 	overflow-y: scroll;
@@ -23,15 +23,14 @@
 }
 
 body {
+	// Bg here so :root can have a different bg specific to overscroll.
+	background: var(--ui-bg);
 	position: relative;
 	width: 100%;
 	min-height: 100vh;
 	padding: 0;
 	margin: 0;
-}
-
-* {
-	outline-color: col(primary, 500, 0.5);
+	transition: inherit;
 }
 
 ::-webkit-scrollbar {
@@ -83,7 +82,7 @@ hr {
 	}
 	&within:focus-within,
 	&visible:focus-visible {
-		outline: 5px solid rgb(var(--rgb-primary-300), 0.2);
+		outline: 3px solid rgb(var(--rgb-primary-500), 0.25);
 	}
 }
 

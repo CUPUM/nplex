@@ -1,28 +1,17 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
-	import Ripple from '$components/Ripple.svelte';
-	import { USER_ROUTES } from '../common';
+	import RootBackground from '$routes/RootBackground.svelte';
+	import { col } from '$utils/css';
+	import { fly } from 'svelte/transition';
+	import type { LayoutData } from './$types';
+	import Menu from './Menu.svelte';
+
+	export let data: LayoutData;
 </script>
 
+<RootBackground body={col('bg', '000')} />
 <div class="account">
-	<menu>
-		{#each Object.values(USER_ROUTES) as r}
-			{@const current = $page.url.pathname === r.pathname || undefined}
-			<a
-				href={r.pathname}
-				data-current={current}
-				class="{ICON_CLASSES.HOVER} {current ? ICON_CLASSES.HOLD : ''}"
-			>
-				<Ripple />
-				<i>
-					<Icon name={r.icon} strokeWidth="2.5" />
-				</i>
-				{r.title}
-			</a>
-		{/each}
-	</menu>
-	<article>
+	<Menu profile={data.profile} />
+	<article in:fly={{ y: 10 }}>
 		<slot />
 	</article>
 </div>
@@ -40,49 +29,7 @@
 		width: 100%;
 		max-width: var(--ui-width-main);
 		padding: 0 var(--ui-gutter);
-	}
-
-	menu {
-		--radius: var(--ui-radius-md);
-		display: flex;
-		flex-direction: column;
-		position: sticky;
-		top: var(--ui-nav-px);
-		gap: var(--ui-inset);
-	}
-
-	a {
-		position: relative;
-		font-size: var(--ui-text-sm);
-		border-radius: var(--radius);
-		padding: 1.15em 1.5em;
-		padding-bottom: 1.35em;
-		line-height: 1em;
-		gap: 1em;
-		font-weight: 500;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		transition: all 0.25s var(--ui-ease-out);
-
-		&:focus {
-			animation: press 0.25s var(--ui-ease-out);
-		}
-
-		i {
-			font-size: 1.2em;
-		}
-
-		&:hover {
-			color: col(primary, 700);
-			background: col(primary, 100, 0.25);
-		}
-
-		&[data-current] {
-			color: col(primary, 500);
-			font-weight: 600;
-			// background: col(fg, 500);
-		}
+		// border-top: 1px solid col(fg, 100, 0.1);
 	}
 
 	article {

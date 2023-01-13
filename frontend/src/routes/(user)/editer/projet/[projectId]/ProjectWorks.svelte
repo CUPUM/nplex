@@ -3,10 +3,11 @@
 	import FieldIcon from '$components/FieldIcon.svelte';
 	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
+	import { throttle } from '$utils/function';
 	import { flip } from 'svelte/animate';
-	import { cubicInOut } from 'svelte/easing';
+	import { cubicInOut, expoInOut } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
-	import { fly, scale } from 'svelte/transition';
+	import { crossfade, fly, scale } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import ProjectFormGroup from './ProjectFormGroup.svelte';
 
@@ -14,8 +15,32 @@
 	export let formproject: PageData['project'];
 	export let typeTooltip: boolean;
 
-	let timer: any;
 	let worksHeight = tweened(0, { duration: 350, easing: cubicInOut });
+	let searchFieldsetRef: HTMLFieldSetElement;
+	let typeTooltipTimer: any = 0;
+
+	function manageTooltip(e: PointerEvent) {
+		if (e.target === searchFieldsetRef) {
+			if (!typeTooltip && !typeTooltipTimer) {
+				typeTooltipTimer = setTimeout(() => {
+					typeTooltip = true;
+					typeTooltipTimer = 0;
+				}, 250);
+			}
+		} else {
+			typeTooltip = false;
+			typeTooltipTimer = 0;
+			clearTimeout(typeTooltipTimer);
+		}
+	}
+
+	const thottleTooltip = throttle(manageTooltip, 50);
+
+	const [send, receive] = crossfade({
+		duration: (d) => d + 200,
+		easing: expoInOut,
+		fallback: (node: Element) => scale(node, { duration: 250, start: 0.9 }),
+	});
 
 	$: typeWorks =
 		data.descriptors.types
@@ -23,24 +48,12 @@
 			?.works.map((w) => ({ ...w, selected: false })) ?? [];
 </script>
 
+<svelte:window on:pointermove={thottleTooltip} />
+
 <ProjectFormGroup>
 	<svelte:fragment slot="legend">
 		Travaux
-		<fieldset
-			disabled={!formproject.type_id}
-			id="works-search"
-			on:pointerenter={() => {
-				if (!formproject.type_id) {
-					timer = setTimeout(() => {
-						typeTooltip = true;
-					}, 250);
-				}
-			}}
-			on:pointerleave={() => {
-				timer = clearTimeout;
-				typeTooltip = false;
-			}}
-		>
+		<fieldset bind:this={searchFieldsetRef} disabled={!formproject.type_id} id="works-search">
 			<Field>
 				<FieldIcon slot="leading" name="search" />
 			</Field>
@@ -48,18 +61,17 @@
 	</svelte:fragment>
 	<ul id="works-selected">
 		{#if formproject.work_ids.length}
-			{#each formproject.work_ids as work_id, i (work_id)}
-				{@const w = data.descriptors.works.find((work) => work.id === work_id)}
+			{#each typeWorks.filter((w) => formproject.work_ids.includes(w.id)) as w, i (w.id)}
 				<li
-					in:scale={{ delay: i * 20, duration: 200, start: 0.9 }}
-					out:scale={{ duration: 150, start: 0.8 }}
+					in:receive={{ key: w.id }}
+					out:send={{ key: w.id }}
 					animate:flip={{ delay: i * 20, duration: 150 }}
 				>
 					<Tooltip message={w.description}>
 						<span class="token">
 							<span>{w?.title}</span>
-							<label class="clear {ICON_CLASSES.HOVER}">
-								<Icon name="cross" strokeWidth="2" />
+							<label class="clear {ICON_CLASSES.hover}">
+								<Icon name="cross" strokeWidth={2} />
 								<input
 									hidden
 									type="checkbox"
@@ -80,9 +92,10 @@
 		{#if formproject.type_id}
 			<div style:height="{$worksHeight}px" />
 			<ul id="works" bind:clientHeight={$worksHeight}>
-				{#each typeWorks as w, i (w.id)}
+				{#each typeWorks.filter((w) => !formproject.work_ids?.includes(w.id)) as w, i (w.id)}
 					<li
-						in:scale={{ delay: i * 20, duration: 200, start: 0.9, opacity: 0 }}
+						in:receive={{ key: w.id }}
+						out:send={{ key: w.id }}
 						animate:flip={{ delay: i * 20, duration: 150 }}
 					>
 						<Tooltip message={w.description}>
@@ -165,7 +178,7 @@
 		.token {
 			--inset: 8px;
 			cursor: default;
-			background: col(fg, 500);
+			background: col(fg, 300);
 			color: col(bg, 500);
 			padding: var(--inset);
 			padding-left: 0;
@@ -176,7 +189,7 @@
 
 			&:hover {
 				// color: col(bg, 900);
-				// background: col(fg, 900);
+				// background: col(fg, 000);
 				// box-shadow: 0 0.5em 2em -1em black;
 
 				.clear {

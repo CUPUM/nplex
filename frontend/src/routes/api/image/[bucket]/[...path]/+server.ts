@@ -8,6 +8,8 @@ const DEFAULT_FORMAT = 'webp';
 
 /**
  * Serves optimized versions of images stored in **public** buckets on Supabase's storage.
+ *
+ * ! Deprecate (too compute-intensive...) !
  */
 export const GET: RequestHandler = async (event) => {
 	const db = await getDb(event);

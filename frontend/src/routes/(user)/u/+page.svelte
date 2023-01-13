@@ -28,13 +28,13 @@
 				easing: expoOut,
 				duration: 500,
 			}}
-			class={ICON_CLASSES.HOVER}
+			class={ICON_CLASSES.hover}
 		>
 			<a href={r.pathname}>
 				{#each repeat as clone, i}
 					{#if i === s && 'icon' in r}
 						<i>
-							<Icon name={r.icon} style="top: -.1em; display: inline" strokeWidth="2.5" />
+							<Icon name={r.icon} style="top: -.1em; display: inline" strokeWidth={2.5} />
 						</i>
 					{/if}
 					<span
@@ -98,7 +98,7 @@
 		padding-inline: 1em !important;
 		word-break: keep-all;
 		display: inline-block;
-		color: col(fg, 900);
+		color: col(fg, 000);
 		-webkit-text-stroke: 0px !important;
 	}
 </style>

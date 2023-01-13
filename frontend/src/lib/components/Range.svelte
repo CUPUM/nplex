@@ -1,3 +1,9 @@
+<!--
+	@component
+	# Range
+	A range input primitive that can host RangeGroups and RangeThumbs.
+	
+-->
 <script lang="ts" context="module">
 	const CTX_KEY = 'range-context';
 
@@ -25,6 +31,7 @@
 	export let max: number;
 	export let step: number;
 	export let direction: RangeContext['direction'] = 'row';
+	export let variant: 'default' | 'cta' | 'outlined' = 'default';
 	export let disabled: boolean | undefined = undefined;
 	export let style: string | undefined = undefined;
 	let className: string = '';
@@ -78,7 +85,12 @@
 	});
 </script>
 
-<fieldset class="range {direction} {className}" {style} style:--min={min} style:--max={max}>
+<fieldset
+	class="range {variant} {direction} {className}"
+	{style}
+	style:--min={min}
+	style:--max={max}
+>
 	<div class="inner">
 		<div class="track" bind:clientWidth={trackw} bind:clientHeight={trackh} />
 		<slot />
@@ -91,28 +103,26 @@
 		--thumb-size: 1em;
 		--thumb-radius: calc(var(--thumb-size) * 0.5);
 		--track-thickness: max(3px, 0.3em);
+		--outline-width: 5px;
 		display: flex;
 		position: relative;
 		align-items: center;
 		justify-content: center;
-		border: 1px solid red;
 	}
 
 	:where(.row) {
 		padding-inline: var(--thumb-radius);
-
 		.inner {
 			width: 100%;
-			// height: var(--ui-height);
+			height: var(--ui-height);
 		}
 	}
 
 	:where(.column) {
 		padding-block: var(--thumb-radius);
-
 		.inner {
 			height: 100%;
-			// width: var(--ui-height);
+			width: var(--ui-height);
 		}
 	}
 
@@ -125,17 +135,31 @@
 
 	.track {
 		position: absolute;
-		background: currentColor;
 		border-radius: 99px;
-
 		.row & {
 			width: 100%;
 			height: var(--track-thickness);
 		}
-
 		.column & {
 			height: 100%;
 			width: var(--track-thickness);
+		}
+	}
+
+	// Variants
+
+	.default {
+		.track {
+			background: col(bg, 900);
+		}
+	}
+
+	.outlined {
+	}
+
+	.cta {
+		.track {
+			background: col(primary, 900, 0.5);
 		}
 	}
 </style>

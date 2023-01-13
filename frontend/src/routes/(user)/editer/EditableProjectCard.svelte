@@ -1,22 +1,24 @@
 <script lang="ts">
 	import Image from '$components/Image.svelte';
-	import { projectcolors, publicurl } from '$utils/database';
+	import ImagePlaceholder from '$components/ImagePlaceholder.svelte';
+	import { maybeSingle } from '$types/utils';
 	import { STORAGE_BUCKETS } from '$utils/enums';
+	import { projectcolors, publicurl } from '$utils/format';
 	import type { LayoutData } from './$types';
 	import { EDITOR_ROUTES } from './common';
-	import type { EDITABLES_NEW } from './EditablesList.svelte';
 
-	export let project: LayoutData['projects'][number] | typeof EDITABLES_NEW;
+	export let project: LayoutData['projects'][number];
 </script>
 
 {#if 'title' in project}
 	<a href="{EDITOR_ROUTES.project.pathname}/{project.id}">
 		<Image
 			class="banner"
-			src={publicurl(STORAGE_BUCKETS.PROJECTS, project.banner?.name)}
+			src={publicurl(STORAGE_BUCKETS.PROJECTS, maybeSingle(project.banner)?.name)}
 			alt="Image-bannière: {project.title}"
-			color={projectcolors(project.gallery)}
-		/>
+		>
+			<ImagePlaceholder color={projectcolors(project.gallery)} />
+		</Image>
 		{project.title}
 	</a>
 {:else}
