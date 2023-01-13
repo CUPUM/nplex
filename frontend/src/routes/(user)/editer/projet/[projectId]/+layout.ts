@@ -1,6 +1,6 @@
 import { getDb } from '$utils/database';
 import { LOAD_DEPENDENCIES, STORAGE_BUCKETS } from '$utils/enums';
-import { safeJsonParse } from '$utils/json';
+import { jsarr } from '$utils/format';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
@@ -42,10 +42,11 @@ export const load = (async (event) => {
 	if (projectRes.error) {
 		throw error(500, projectRes.error);
 	}
+	console.log(projectRes.data.cost_range);
 	// Doing some transformations to format data for the client.
 	const projectTransform = {
 		...projectRes.data,
-		cost_range: safeJsonParse<[number, number]>(projectRes.data.cost_range) ?? [0, 0],
+		cost_range: jsarr(projectRes.data.cost_range).map((n) => Number(n)),
 		work_ids: Array.isArray(projectRes.data.work_ids)
 			? projectRes.data.work_ids.map((w) => w.work_id)
 			: [projectRes.data?.work_ids?.work_id],

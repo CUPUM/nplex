@@ -10,11 +10,16 @@
 		to: 'to',
 	} as const;
 	type Point = ValueOf<typeof POINT>;
+
+	function stepify(value: number, step: number, op: 'ceil' | 'round' | 'floor') {
+		const stepped = value / step;
+		return Math[op](stepped) * step;
+	}
 </script>
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { onDestroy, tick } from 'svelte';
+	import { onDestroy, onMount, tick } from 'svelte';
 	import { spring } from 'svelte/motion';
 	import type { ValueOf } from 'ts-essentials';
 	import { getRangeContext } from './Range.svelte';
@@ -72,6 +77,11 @@
 	$: relfrom.set(pc(collide ? from : Math.min(from, to)));
 	$: relto.set(pc(collide ? to : Math.max(from, to)));
 
+	onMount(() => {
+		relfrom.set(pc(collide ? from : Math.min(from, to)), { hard: true });
+		relto.set(pc(collide ? to : Math.max(from, to)), { hard: true });
+	});
+
 	function drag(e: PointerEvent) {
 		if (!lineRef || startx === undefined || starty === undefined) {
 			return;
@@ -121,6 +131,7 @@
 {#if line}
 	<svelte:element
 		this={draggable ? 'button' : 'div'}
+		type="button"
 		disabled={$disabled}
 		bind:this={lineRef}
 		style:--relfrom="{$relfrom}%"

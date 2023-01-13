@@ -6,22 +6,6 @@ import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { titleSchema } from '../common';
 
-const updateSchema = zfd
-	.formData({
-		title: titleSchema,
-		type_id: zfd.numeric(z.number().optional()),
-		cost_range: zfd.json(z.tuple([z.number().nonnegative(), z.number().nonnegative()])),
-		description: zfd.text(z.string().optional()),
-		work_id: zfd.repeatableOfType(zfd.numeric()),
-	})
-	.transform((parsed) => {
-		const { work_id, ...project } = parsed;
-		return {
-			project,
-			work_id,
-		};
-	});
-
 export const actions: Actions = {
 	title: async (event) => {
 		if (!event.params.projectId) return;
@@ -49,15 +33,36 @@ export const actions: Actions = {
 		}
 		const formData = await event.request.formData();
 		const db = await getDb(event);
-		const parsed = updateSchema.safeParse(formData);
+		const parsed = zfd
+			.formData({
+				type_id: zfd.numeric(z.number().optional()),
+				cost_range: zfd
+					.json(z.tuple([z.number().nonnegative(), z.number().nonnegative()]))
+					.transform((minmax) => pgarr(minmax) as `[${number},${number}]`),
+				description: zfd.text(z.string().optional()),
+				work_id: zfd.repeatableOfType(zfd.numeric()),
+			})
+			.transform((parsed) => {
+				const { work_id, ...project } = parsed;
+				return {
+					project,
+					work_id,
+				};
+			})
+			.safeParse(formData);
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		// General project data.
-		const projectUpdate = await db.from('projects').update(parsed.data.project).single();
+		const projectUpdate = await db
+			.from('projects')
+			.update(parsed.data.project)
+			.eq('id', event.params.projectId)
+			.single();
 		if (projectUpdate.error) {
 			return fail(STATUS_CODES.InternalServerError, projectUpdate.error);
 		}
+		console.log(projectUpdate);
 		// Project works.
 		// Remove any works row not present in formData.
 		const worksDelete = await db

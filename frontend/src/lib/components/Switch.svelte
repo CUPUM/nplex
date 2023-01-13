@@ -177,7 +177,7 @@
 			border: 1px solid col(primary, 500, 0.2);
 		}
 		.mark {
-			background: col(primary, 100, 0.2);
+			background: col(primary, 300, 0.2);
 		}
 	}
 </style>

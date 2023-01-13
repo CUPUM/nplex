@@ -19,11 +19,11 @@ export const USER_ROUTES = {
 	collections: {
 		title: 'Collections',
 		pathname: base('/collections'),
-		icon: 'bookmark',
+		icon: 'bookmarks',
 	},
 	favorites: {
 		title: 'Favoris',
 		pathname: base('/favoris'),
-		icon: 'bookmark',
+		icon: 'heart',
 	},
 } satisfies Routes<{ icon: keyof typeof icons }>;

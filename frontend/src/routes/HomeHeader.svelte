@@ -15,7 +15,7 @@
 	let y = 0;
 	$: darkbg = y < 50;
 	$: if (darkbg) {
-		rootBackground.set({ overscroll: THEME_PALETTES.dark.bg[300] });
+		rootBackground.set({ overscroll: THEME_PALETTES.dark.bg[100] });
 	} else {
 		rootBackground.resetOverscroll();
 	}

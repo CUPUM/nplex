@@ -15,7 +15,6 @@ type Session = DeepOmit<AuthSession, { user: { role: never } }> & {
 	>;
 };
 
-type CostRange = `[${number},${number}]`;
 type ColorVector = `(${number}, ${number}, ${number})`;
 
 declare global {
@@ -69,13 +68,13 @@ declare global {
 					Tables: {
 						projects: {
 							Row: {
-								cost_range: CostRange;
+								cost_range: `(${number},${number})`;
 							};
 							Insert: {
-								cost_range?: CostRange;
+								cost_range?: `[${number},${number}]`;
 							};
 							Update: {
-								cost_range?: CostRange;
+								cost_range?: `[${number},${number}]`;
 							};
 						};
 						projects_images: {

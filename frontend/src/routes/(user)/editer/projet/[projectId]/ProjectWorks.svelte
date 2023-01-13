@@ -5,9 +5,9 @@
 	import Tooltip from '$components/Tooltip.svelte';
 	import { throttle } from '$utils/function';
 	import { flip } from 'svelte/animate';
-	import { cubicInOut, expoInOut } from 'svelte/easing';
+	import { cubicInOut, expoOut } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
-	import { crossfade, fly, scale } from 'svelte/transition';
+	import { crossfade, fly } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import ProjectFormGroup from './ProjectFormGroup.svelte';
 
@@ -38,8 +38,8 @@
 
 	const [send, receive] = crossfade({
 		duration: (d) => d + 200,
-		easing: expoInOut,
-		fallback: (node: Element) => scale(node, { duration: 250, start: 0.9 }),
+		easing: expoOut,
+		// fallback: (node: Element) => scale(node, { duration: 250, start: 0.9 }),
 	});
 
 	$: typeWorks =
@@ -149,7 +149,7 @@
 		gap: 0;
 		// border-radius: 99px;
 		// border: 1px solid col(fg, 100, 0.2);
-		background: col(bg, 500);
+		background: col(bg, 700);
 		cursor: pointer;
 		transition: all 0.15s var(--ui-ease-out);
 
@@ -168,6 +168,7 @@
 	}
 
 	#works-selected {
+		z-index: 1;
 		min-height: var(--ui-height);
 		font-size: var(--ui-text-sm);
 		display: flex;

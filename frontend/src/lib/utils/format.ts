@@ -16,8 +16,9 @@ export function pgarr<T extends readonly unknown[] | unknown[]>(arr: T, text?: b
 	return `(${arr.join(',')})`;
 }
 
-const test = ['a', 2] as const;
-const formatted = pgarr(test);
+export function jsarr<T extends `(${string})`>(pgarr: T): string[] {
+	return pgarr.slice(1, -1).split(',');
+}
 
 /**
  * Takes desired page range, page size, and returns tuple of start and end to be used with range

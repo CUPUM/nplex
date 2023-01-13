@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { ICON_CLASSES } from '$components/Icon.svelte';
+	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
 	import { KEY } from '$utils/enums';
 	import { debounce } from '$utils/function';
 	import { fly } from 'svelte/transition';
@@ -20,7 +20,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<header class={ICON_CLASSES.hover} on:click={() => titleRef.focus()} in:fly={{ y: -10 }}>
+<header class={ICON_CLASSES.hover} in:fly={{ y: -10 }}>
 	<hgroup>
 		<form
 			method="POST"
@@ -31,8 +31,9 @@
 				};
 			}}
 			on:input={handleChange}
+			on:click|self={() => titleRef.focus()}
 		>
-			<!-- <Icon name="pen" class="icon" /> -->
+			<Icon name="pen" class="icon" />
 			<span
 				class="title"
 				bind:this={titleRef}
@@ -57,7 +58,7 @@
 		position: relative;
 		align-self: stretch;
 		border-bottom: 1px solid col(fg, 100, 0.05);
-		padding-bottom: var(--ui-nav-px);
+		padding-bottom: var(--ui-gutter);
 	}
 
 	hgroup {
@@ -65,6 +66,7 @@
 		width: 100%;
 		max-width: var(--ui-width-main);
 		display: grid;
+		gap: var(--ui-gutter);
 		grid-template-columns: 1fr 2fr;
 	}
 
@@ -74,8 +76,9 @@
 		flex-direction: column;
 		width: 100%;
 		justify-content: flex-end;
-		padding: 1rem;
-		gap: 3rem;
+		padding-top: 20vh;
+		padding-bottom: 20vh;
+		cursor: text;
 		transition: all 0.25s var(--ui-ease-out);
 
 		&:hover {
@@ -98,14 +101,11 @@
 	}
 
 	.title {
-		line-height: 1.2;
+		line-height: 1.1;
 		outline: none;
 		word-break: keep-all;
 		hyphens: auto;
-		// font-family: var(--ui-font-misc);
 		font-weight: 600;
-		// font-style: italic;
 		font-size: var(--ui-text-2xl);
-		// padding-top: 2em;
 	}
 </style>

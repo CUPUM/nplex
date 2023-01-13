@@ -9,7 +9,6 @@
 	type Value =
 		| string
 		| number
-		| boolean
 		| Record<string | number | symbol, unknown>
 		| Array<unknown>
 		| undefined
@@ -44,7 +43,7 @@
 	export let sample: Value = value;
 	export let prefix: string | null | undefined = '';
 	export let suffix: string | null | undefined = '';
-	export let type: 'search' | 'text' | 'password' | 'number' | 'email' | 'select' = 'text';
+	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
 	export let variant: 'default' | 'outlined' | 'cta' = 'default';
 	export let compact: boolean | undefined = undefined;
 	export let required: boolean | undefined = undefined;
@@ -57,11 +56,11 @@
 	export let minlength: number | undefined = undefined;
 	export let min: number | undefined = undefined;
 	export let max: number | undefined = undefined;
+	export let step: number | undefined = undefined;
 	export let loading: boolean | undefined = undefined;
 	export let autocomplete: string | undefined = 'off';
 	export let placeholder: string = '';
 	export let pattern: RegExp | undefined = undefined;
-	export let format: ((value: Value) => Value) | undefined = undefined;
 	export let dirty: boolean = false;
 	export let tabindex: number = 0;
 	export let style: string | undefined = undefined;
@@ -97,7 +96,7 @@
 
 	function handleInput(e: Event) {
 		if (e.target && 'value' in e.target) {
-			value = format ? format(e.target.value as any) : (e.target.value as any);
+			const val = type === 'number' ? Number(e.target.value) : e.target.value;
 		}
 	}
 
@@ -180,6 +179,7 @@
 				{minlength}
 				{min}
 				{max}
+				{step}
 				{disabled}
 				{required}
 				{tabindex}
@@ -281,6 +281,7 @@
 	}
 
 	.affix {
+		align-self: center;
 		position: relative;
 		display: inline-block;
 		padding-bottom: calc(0.5em - 0.5ex);
@@ -416,7 +417,7 @@
 			&.haslabel {
 				.affix,
 				:global(*[data-field-input]) {
-					top: 0.45em;
+					top: 0.5em;
 				}
 			}
 		}

@@ -98,7 +98,7 @@
 		padding-inline: 1em !important;
 		word-break: keep-all;
 		display: inline-block;
-		color: col(fg, 000);
+		color: col(fg, 100);
 		-webkit-text-stroke: 0px !important;
 	}
 </style>

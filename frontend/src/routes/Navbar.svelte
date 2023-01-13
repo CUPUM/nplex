@@ -268,8 +268,8 @@
 		justify-content: center;
 		border-radius: var(--ui-radius-md);
 		backdrop-filter: blur(12px);
-		background: col(bg, 900, 0.5);
-		box-shadow: 0 0 0 2px col(bg, 900, 0.5);
+		background: col(bg, 900, 0.75);
+		box-shadow: 0 0 0 2px col(bg, 900, 0.75);
 		--i: 1;
 	}
 

@@ -104,7 +104,7 @@
 		&.current {
 			cursor: default;
 			color: col(bg, 500);
-			background: col(fg, 500, 0);
+			background: col(fg, 100, 0);
 		}
 	}
 

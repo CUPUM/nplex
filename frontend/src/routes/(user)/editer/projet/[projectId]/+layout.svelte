@@ -11,7 +11,7 @@
 </script>
 
 <!-- <RootTheme theme="dark" /> -->
-<RootBackground body={col('bg', '300')} />
+<RootBackground body={col('bg', '500')} />
 <Header {data} />
 <article id={topid}>
 	<slot />

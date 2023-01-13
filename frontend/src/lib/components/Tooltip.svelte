@@ -22,7 +22,7 @@
 	import { scale } from 'svelte/transition';
 	import Tether from './Tether.svelte';
 
-	export let message: string | undefined | null = '';
+	export let message: string | undefined | null = null;
 	export let disabled: boolean | undefined = undefined;
 	export let opened: boolean = false;
 	export let hover: boolean = true;
@@ -37,6 +37,13 @@
 	}
 	function hide() {
 		opened = false;
+	}
+
+	$: if (disabled) {
+		hide();
+	}
+	$: if (message === undefined || message === null) {
+		hide();
 	}
 </script>
 
@@ -72,7 +79,7 @@
 	{distance}
 >
 	<slot slot="anchor" open={opened} />
-	{#if opened && message && !disabled}
+	{#if opened}
 		<div
 			data-theme={theme}
 			class="tooltip {place} {align}"

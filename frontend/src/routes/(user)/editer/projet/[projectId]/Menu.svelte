@@ -4,7 +4,6 @@
 	import Icon from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { EDITOR_BASE_ROUTE } from '$utils/routes';
-	import { THEMES } from '$utils/themes';
 	import type { Page } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
@@ -45,7 +44,7 @@
 </script>
 
 {#if mount}
-	<div class="toolbar" data-theme={THEMES.dark}>
+	<div class="toolbar">
 		{#if sections}
 			<nav
 				class="nest"
@@ -96,6 +95,7 @@
 
 <style lang="scss">
 	.toolbar {
+		z-index: 10;
 		pointer-events: none;
 		padding: 0 var(--ui-gutter);
 		width: 100%;

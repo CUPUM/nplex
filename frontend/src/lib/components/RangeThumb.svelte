@@ -101,6 +101,7 @@
 	style:--relvalue="{$relvalue}%"
 	on:pointerdown={dragstart}
 	disabled={$rangeDisabled ?? disabled}
+	type="button"
 >
 	{#if $$slots.default}
 		<label>

@@ -47,7 +47,6 @@
 		letter-spacing: 0.02em;
 		line-height: 1;
 		color: col(fg, 100);
-		// background: col(bg, 100, 0.85);
 		backdrop-filter: blur(8px);
 		transition: all 0.15s var(--ui-ease-out);
 
@@ -60,8 +59,12 @@
 			width: 100%;
 			height: 100%;
 			background: var(--nav-bg);
-			opacity: 0.8;
+			opacity: 0.75;
 			transition: all 0.15s var(--ui-ease-out);
+
+			:global(.category) > & {
+				opacity: 1;
+			}
 		}
 
 		&:hover:not([data-current]) {
@@ -81,16 +84,7 @@
 		}
 
 		&[data-current]:not(.active) {
-			// cursor: default;
 			color: col(primary, 500);
-			// box-shadow: 0 0 0 1px col(primary, 500, 0.2);
-
-			// &:hover {
-			// 	&::before {
-			// 		background: col(primary, 300);
-			// 		opacity: 0.25;
-			// 	}
-			// }
 		}
 	}
 	.inner {
