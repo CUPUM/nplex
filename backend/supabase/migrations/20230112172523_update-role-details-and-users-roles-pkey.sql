@@ -23,3 +23,9 @@ alter table "public"."user_role_details" add constraint "user_role_details_label
 alter table "public"."users_roles" add constraint "users_roles_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) not valid;
 
 alter table "public"."users_roles" validate constraint "users_roles_user_id_fkey";
+
+insert into "public"."user_role_details" ("user_role", "title", "description")
+values
+    ('admin', 'Administrateur', 'Les administrateurs...'),
+    ('editor', 'Éditeur de contenu', 'Les éditeurs...'),
+    ('visitor', 'Visiteur', 'Les visiteurs...');

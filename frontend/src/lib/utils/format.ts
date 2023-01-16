@@ -1,6 +1,17 @@
+import type { Arrify } from '$types/utils';
 import type { ValueOf } from 'ts-essentials';
 import { browserDb } from './database';
 import type { STORAGE_BUCKETS } from './enums';
+
+/**
+ * CAD currency formatter.
+ */
+export const cadformatter = new Intl.NumberFormat('fr-CA', {
+	style: 'currency',
+	currency: 'CAD',
+	currencyDisplay: 'narrowSymbol',
+	maximumFractionDigits: 0,
+});
 
 /**
  * Translate a javascript array to a postgres compliant array string.
@@ -16,8 +27,20 @@ export function pgarr<T extends readonly unknown[] | unknown[]>(arr: T, text?: b
 	return `(${arr.join(',')})`;
 }
 
+/**
+ * Counter-part to pgarr, useful to parse array strings from postgrest responses into actual js
+ * arrays.
+ */
 export function jsarr<T extends `(${string})`>(pgarr: T): string[] {
 	return pgarr.slice(1, -1).split(',');
+}
+
+/**
+ * Make a value always an array, i.e. wrap non-array inputs in an array.
+ */
+export function alwaysarr<T>(arr: T): Arrify<T> {
+	if (arr === undefined || arr === null) return <Arrify<T>>[];
+	return Array.isArray(arr) ? <Arrify<T>>arr : <Arrify<T>>[arr];
 }
 
 /**

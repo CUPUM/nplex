@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
+	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import { EDITOR_BASE_ROUTE } from '$utils/routes';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
@@ -28,7 +28,7 @@
 				easing: expoOut,
 				duration: 500,
 			}}
-			class={ICON_CLASSES.hover}
+			class={ICON_CLASS.hover}
 		>
 			<a href={r.pathname}>
 				{#each repeat as clone, i}
@@ -82,7 +82,7 @@
 		border-radius: var(--ui-radius-xl);
 		color: col(bg, 100);
 		background: col(bg, 300);
-		font-size: clamp(var(--ui-text-lg), 4vw, var(--ui-text-xl));
+		font-size: clamp(var(--ui-text-xl), 4vw, var(--ui-text-2xl));
 		font-weight: 500;
 		transition: all 0.2s var(--ui-ease-out);
 

@@ -9,7 +9,7 @@
 	import MapToolbar from '$components/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { messages } from '$routes/MessagesOutlet.svelte';
-	import { throttle } from '$utils/function';
+	import { throttle } from '$utils/modifiers';
 	import { dbProjectLocationSchema } from '$utils/validation';
 	import type {
 		DrawCreateEvent,

@@ -10,7 +10,7 @@
 		{datum.title}
 	</a>
 {:else}
-	<a href=""> Nouveau projet :D </a>
+	<a href="">Créer un nouveau profil d'acteur.</a>
 {/if}
 
 <style lang="scss">

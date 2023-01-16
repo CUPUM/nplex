@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
+	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import { FULL_VIEWBOX, LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import { KEY } from '$utils/enums';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
@@ -13,7 +13,7 @@
 
 	let entered = false;
 	let y = 0;
-	$: darkbg = y < 50;
+	$: darkbg = y < 500;
 	$: if (darkbg) {
 		rootBackground.set({ overscroll: THEME_PALETTES.dark.bg[100] });
 	} else {
@@ -61,7 +61,7 @@
 			<use in:fly={{ y: 30, delay: 450 }} href={LOGO_SYMBOLS_HREFS.x} />
 		{/if}
 	</svg>
-	<button on:click={consult} class={ICON_CLASSES.hover}>
+	<button on:click={consult} class={ICON_CLASS.hover}>
 		<div class="arrow">
 			<Icon name="arrow-down" strokeWidth={3} />
 		</div>
@@ -93,14 +93,23 @@
 	button {
 		cursor: pointer;
 		position: absolute;
-		text-align: center;
-		bottom: 0;
-		padding-block: var(--ui-gutter);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		bottom: var(--ui-gutter);
 		color: col(fg, 700);
 		font-size: 3rem;
-		width: 100%;
+		width: 5rem;
+		aspect-ratio: 1 / 1;
+		border-radius: 50%;
+		outline: none;
+		border: none;
+		transition: all 0.25s;
 
-		&:hover {
+		&:hover,
+		&:focus-visible {
+			background: col(primary, 100, 0.1);
+			color: col(primary, 500);
 			.arrow {
 				opacity: 1;
 				transform: translateY(0);
@@ -109,6 +118,8 @@
 	}
 
 	.arrow {
+		display: flex;
+		align-items: center;
 		opacity: 0.15;
 		transform: translateY(-0.25em);
 		transition: all 0.35s var(--ui-ease-out);

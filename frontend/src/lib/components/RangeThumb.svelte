@@ -13,8 +13,10 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { KEY } from '$utils/enums';
 	import { onDestroy } from 'svelte';
 	import { spring } from 'svelte/motion';
+	import { scale } from 'svelte/transition';
 	import { getRangeContext } from './Range.svelte';
 
 	const {
@@ -34,6 +36,8 @@
 	export let name: string | undefined = undefined;
 	export let id: string | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
+	export let labelPosition: 'top' | 'right' | 'bottom' | 'left' =
+		direction === 'row' ? 'top' : 'right';
 
 	const relvalue = spring(pc(value), rangeThumbSpringOptions);
 
@@ -41,7 +45,25 @@
 	let startvalue: number | undefined;
 	let startx: number | undefined;
 	let starty: number | undefined;
-	$: relvalue.set(pc(value));
+	let focused = false;
+	$: relvalue.set(pc(value)), value;
+
+	function handleKey(e: KeyboardEvent) {
+		if (!focused) {
+			return;
+		}
+		const jump = e.shiftKey ? ($rangeMax - $rangeMin) / 10 : $step;
+		switch (e.key) {
+			case KEY.ArrowUp:
+			case KEY.ArrowRight:
+				value += jump;
+				break;
+			case KEY.ArrowDown:
+			case KEY.ArrowLeft:
+				value -= jump;
+				break;
+		}
+	}
 
 	function drag(e: PointerEvent) {
 		if (!thumbRef || startx === undefined || starty === undefined || startvalue === undefined) {
@@ -60,10 +82,8 @@
 		startvalue = value;
 		startx = e.pageX;
 		starty = e.pageY;
-		if (browser) {
-			document.addEventListener('pointerup', dragend, { once: true });
-			document.addEventListener('pointermove', drag);
-		}
+		document.addEventListener('pointerup', dragend, { once: true });
+		document.addEventListener('pointermove', drag);
 	}
 
 	function dragend(e: PointerEvent) {
@@ -80,6 +100,8 @@
 		}
 	});
 </script>
+
+<svelte:window on:keydown={handleKey} />
 
 <input
 	type="range"
@@ -102,9 +124,15 @@
 	on:pointerdown={dragstart}
 	disabled={$rangeDisabled ?? disabled}
 	type="button"
+	on:focus={() => {
+		focused = true;
+	}}
+	on:blur={() => {
+		focused = false;
+	}}
 >
-	{#if $$slots.default}
-		<label>
+	{#if $$slots.default && focused}
+		<label class={labelPosition} transition:scale|local={{ duration: 200, start: 0.95 }}>
 			<slot {value} />
 		</label>
 	{/if}
@@ -113,6 +141,9 @@
 <style lang="scss">
 	button {
 		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		cursor: pointer;
 		height: var(--thumb-size);
 		width: var(--thumb-size);
@@ -133,26 +164,53 @@
 		:global(.row .inner) > & {
 			left: var(--relvalue);
 			transform: translateX(-50%);
+
+			label {
+			}
 		}
 
 		:global(.column .inner) > & {
 			top: var(--relvalue);
 			transform: translateY(-50%);
+
+			label {
+			}
+		}
+	}
+
+	label {
+		--gap: 5px;
+		position: absolute;
+		width: max-content;
+
+		&.top {
+			transform-origin: bottom center;
+			bottom: 100%;
+			margin-bottom: var(--gap);
 		}
 	}
 
 	// Variants
 
-	:global(.default .inner) > {
-		button {
-			background: col(fg, 900, 1);
+	:global(.default .inner) {
+		> button {
+			background: col(fg, 900);
 			box-shadow: 0 0 0 0 col(primary, 500, 0);
 
 			&:active,
-			&:focus-visible {
-				z-index: 10;
+			&:focus {
 				background: col(primary, 700);
 				box-shadow: 0 0 0 var(--outline-width) col(primary, 300, 0.5);
+			}
+
+			&:hover {
+				background: col(primary, 500);
+			}
+		}
+
+		&:focus-within {
+			button:not(:focus) {
+				background: col(primary, 900);
 			}
 		}
 	}

@@ -80,7 +80,7 @@
 
 	h1 {
 		width: 100%;
-		font-size: var(--ui-text-xl);
+		font-size: var(--ui-text-2xl);
 		font-weight: 600;
 		max-width: var(--ui-width-main);
 		text-align: center;

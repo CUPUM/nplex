@@ -13,6 +13,8 @@ export function maybeSingle<T>(entity: T) {
 	return entity as T extends unknown[] ? T[0] : T;
 }
 
+export type Arrify<T> = T extends null | undefined ? [] : T extends readonly unknown[] ? T : [T];
+
 // Uses unexported ts helper from ts-essentials.
 // More on the subject: https://github.com/ts-essentials/ts-essentials/issues/339
 type AnyRecord<T = any> = Record<KeyofBase, T>;

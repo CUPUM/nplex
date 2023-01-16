@@ -7,7 +7,8 @@
  */
 
 :root {
-	--ui-nav-px: 85px;
+	--ui-bg: var(--color-bg-100);
+	--ui-nav-px: 91px;
 	--ui-scroll: 0;
 	--ui-scroll-px: 0px;
 	// Nestable props from inherit function (see utils.scss). Repeated here for IDE autocompletion.
@@ -27,17 +28,18 @@
 	--ui-scroll-size: 6px;
 	--ui-scroll-color: rgb(var(--rgb-fg-100), 0.5);
 	--ui-radius-sm: 10px;
-	--ui-radius-md: 18px;
+	--ui-radius-md: 16px;
 	--ui-radius-lg: 24px;
 	--ui-radius-xl: 36px;
 	--ui-radius-2xl: 52px;
-	--ui-text-2xs: 0.5rem;
+	--ui-text-2xs: 0.625rem;
 	--ui-text-xs: 0.75rem;
 	--ui-text-sm: 0.875rem;
 	--ui-text-md: 1rem;
-	--ui-text-lg: 2rem;
-	--ui-text-xl: 3.5rem;
-	--ui-text-2xl: 5.5rem;
+	--ui-text-lg: 1.5rem;
+	--ui-text-xl: 2.25rem;
+	--ui-text-2xl: 3.25rem;
+	--ui-text-3xl: 5.5rem;
 	--ui-font-main: 'Outfit', sans-serif;
 	--ui-font-misc: 'Space Mono', monospace;
 	--ui-ease-in: cubic-bezier(0.8, 0, 0.9, 1);

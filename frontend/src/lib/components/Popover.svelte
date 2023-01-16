@@ -151,13 +151,14 @@
 		--inset: var(--ui-inset);
 		color: col(fg, 300);
 		position: relative;
-		background: col(bg, 000);
+		background: col(bg, 000, 0.9);
+		backdrop-filter: blur(8px);
 		display: flex;
 		flex-direction: column;
 		gap: var(--ui-inset);
 		border-radius: var(--radius);
 		padding: var(--inset);
-		box-shadow: 0 0 0 1px col(bg, 500, 0.2), 0 1.5em 5em -3em rgb(0, 10, 30, 0.2);
+		box-shadow: 0 0 0 1px col(bg, 500, 0.25), 0 3em 5em -4em rgb(0, 10, 30, 0.25);
 
 		> :global(:where(hr)) {
 			margin-inline: calc(-1 * var(--inset));

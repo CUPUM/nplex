@@ -1,6 +1,3 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 </script>
 
@@ -25,18 +22,18 @@
 			[full-start legend-start]
 			1fr
 			[legend-end section-start]
-			2fr
+			3fr
 			[section-end full-end];
 		align-items: flex-start;
 		gap: var(--ui-gutter);
-		padding: var(--ui-gutter);
+		padding: 4rem var(--ui-gutter);
 
 		> legend {
 			grid-column: legend;
 			position: sticky;
 			top: var(--ui-nav-px);
 			float: left; // Required to clear outset by vendor styling.
-			font-size: var(--ui-text-lg);
+			font-size: var(--ui-text-xl);
 			font-weight: 550;
 			padding: 0;
 			line-height: 1.5;

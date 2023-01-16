@@ -2,18 +2,20 @@
 	import RootBackground from '$routes/RootBackground.svelte';
 	import { col } from '$utils/css';
 	import type { ActionData, PageData } from './$types';
-	import { topid } from './common';
+	import { formProject, STARTID } from './common';
 	import Header from './Header.svelte';
 	import Menu from './Menu.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
+
+	$: formProject.set(data.project);
 </script>
 
 <!-- <RootTheme theme="dark" /> -->
 <RootBackground body={col('bg', '500')} />
 <Header {data} />
-<article id={topid}>
+<article id={STARTID}>
 	<slot />
 	<Menu />
 </article>

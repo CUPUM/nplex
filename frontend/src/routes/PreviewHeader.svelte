@@ -6,19 +6,23 @@
 	import Field from '$components/Field.svelte';
 	import FieldIcon from '$components/FieldIcon.svelte';
 	import FieldReset from '$components/FieldReset.svelte';
-	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
+	import Icon from '$components/Icon.svelte';
 
 	export let href: string;
 	export let action: `?/${string}`;
 	export let placeholder: string;
+	export let title: string;
 </script>
 
 <header>
-	<a class="heading {ICON_CLASSES.hover}" {href}>
-		<h2><slot /></h2>
-		<div class="icon">
-			<Icon name="arrow-right" strokeWidth={4} />
-		</div>
+	<a class="heading" {href}>
+		<span>Explorer les</span>
+		<hgroup>
+			<h2>{title}</h2>
+			<div class="icon">
+				<Icon name="arrow-right" strokeWidth={4.5} />
+			</div>
+		</hgroup>
 	</a>
 	<form method="POST" use:enhance {action}>
 		<Field type="search" {placeholder} variant="outlined">
@@ -45,31 +49,49 @@
 		max-width: 100%;
 	}
 
-	.heading {
+	a {
 		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.5em;
+		flex-direction: column;
+		align-items: flex-start;
 		position: relative;
 		width: 100%;
-		font-size: var(--ui-text-xl);
-		font-weight: 500;
-		transition: color 0.15s ease-out;
-
-		.icon {
-			opacity: 0;
-			font-size: 0.5em;
-			transform: translateX(-0.25em);
-			transition: transform 0.2s var(--ui-ease-out), opacity 0.2s;
-		}
+		transition: color 0.1s ease-out;
+		line-height: 1;
 
 		&:hover {
 			color: col(primary, 500);
+
 			.icon {
 				transform: translateX(0);
 				opacity: 1;
+				transition: transform 0.15s var(--ui-ease-out), opacity 0.25s ease-out;
 			}
 		}
+	}
+
+	span {
+		font-size: var(--ui-text-md);
+		text-indent: 0.4em;
+	}
+
+	hgroup {
+		display: flex;
+		flex-direction: row;
+		gap: 1em;
+		font-size: var(--ui-text-3xl);
+		font-weight: 600;
+	}
+
+	h2 {
+		line-height: 1;
+	}
+
+	.icon {
+		position: relative;
+		top: 0.25em;
+		opacity: 0;
+		font-size: 0.5em;
+		transform: translateX(-0.1em);
+		transition: transform 0s 0.2s, opacity 0.2s ease-in;
 	}
 </style>

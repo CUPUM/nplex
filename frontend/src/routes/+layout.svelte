@@ -2,8 +2,8 @@
 	import { browser } from '$app/environment';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import LoadingProgress from '$components/LoadingProgress.svelte';
 	import Logo from '$components/Logo.svelte';
+	import LoadingProgress from '$routes/LoadingProgress.svelte';
 	import MessagesOutlet from '$routes/MessagesOutlet.svelte';
 	import '$styles/app.scss';
 	import '$styles/resets.scss';
@@ -119,7 +119,7 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		font-size: var(--ui-text-xl);
+		font-size: var(--ui-text-2xl);
 		opacity: 0.2;
 	}
 </style>

@@ -3,7 +3,9 @@
 	import Range from '$components/Range.svelte';
 	import RangeGroup from '$components/RangeGroup.svelte';
 	import RangeThumb from '$components/RangeThumb.svelte';
+	import { cadformatter } from '$utils/format';
 	import type { PageData } from './$types';
+	import { formProject } from './common';
 	import ProjectFormGroup from './ProjectFormGroup.svelte';
 
 	const min = 0;
@@ -12,7 +14,6 @@
 	const step = 10;
 
 	export let data: PageData;
-	export let formproject: PageData['project'];
 </script>
 
 <ProjectFormGroup>
@@ -26,26 +27,29 @@
 		</div>
 	</svelte:fragment>
 	<section>
+		<Range {min} {max} {step} ticks={10000}>
+			<svelte:fragment slot="tick" let:tick>
+				{cadformatter.format(tick)}
+			</svelte:fragment>
+			<RangeGroup
+				bind:from={$formProject.cost_range[0]}
+				push
+				draggable
+				bind:to={$formProject.cost_range[1]}
+			/>
+			<RangeThumb name="cost_range_min" bind:value={$formProject.cost_range[0]} let:value />
+			<RangeThumb name="cost_range_max" bind:value={$formProject.cost_range[1]} />
+		</Range>
 		<div class="fields">
-			<Field type="number" prefix="C$" {min} {max} {step} bind:value={formproject.cost_range[0]}>
+			<Field type="number" prefix="C$ " {min} {max} {step} bind:value={$formProject.cost_range[0]}>
 				<svelte:fragment slot="label">Min.</svelte:fragment>
 			</Field>
-			<Field type="number" prefix="C$" {min} {max} {step} bind:value={formproject.cost_range[1]}>
+			<Field type="number" prefix="C$ " {min} {max} {step} bind:value={$formProject.cost_range[1]}>
 				<svelte:fragment slot="label">Max.</svelte:fragment>
 			</Field>
 		</div>
-		<Range {min} {max} {step}>
-			<RangeGroup
-				bind:from={formproject.cost_range[0]}
-				push
-				draggable
-				bind:to={formproject.cost_range[1]}
-			/>
-			<RangeThumb name="cost_range_min" bind:value={formproject.cost_range[0]} />
-			<RangeThumb name="cost_range_max" bind:value={formproject.cost_range[1]} />
-		</Range>
 	</section>
-	<input type="hidden" name="cost_range" readonly value="[{formproject.cost_range}]" />
+	<input type="hidden" name="cost_range" readonly value="[{$formProject.cost_range}]" />
 </ProjectFormGroup>
 
 <style lang="scss">
@@ -59,8 +63,10 @@
 	}
 
 	section {
+		display: flex;
+		flex-direction: column;
+		gap: var(--ui-gutter);
 		width: 100%;
-		// margin-block: 4rem;
 		max-width: var(--ui-width-p);
 	}
 

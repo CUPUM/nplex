@@ -137,6 +137,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: flex-end;
+		justify-content: space-between;
 		gap: 1rem;
 		padding: var(--ui-gutter);
 		max-width: var(--ui-width-main);
@@ -145,13 +146,13 @@
 	}
 
 	h3 {
-		font-size: var(--ui-text-xl);
+		font-size: var(--ui-text-2xl);
 		font-weight: 600;
-		padding-inline: var(--ui-gutter);
+		// padding-inline: var(--ui-gutter);
 	}
 
 	form {
-		margin-bottom: 0.6em;
+		margin-bottom: 0.4em;
 		font-size: var(--ui-text-sm);
 		display: flex;
 		flex-direction: row;

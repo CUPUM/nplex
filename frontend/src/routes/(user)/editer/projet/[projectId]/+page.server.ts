@@ -50,41 +50,46 @@ export const actions: Actions = {
 				};
 			})
 			.safeParse(formData);
+		console.log(parsed);
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		// General project data.
-		const projectUpdate = await db
-			.from('projects')
+		db.from('projects')
 			.update(parsed.data.project)
 			.eq('id', event.params.projectId)
-			.single();
-		if (projectUpdate.error) {
-			return fail(STATUS_CODES.InternalServerError, projectUpdate.error);
-		}
-		console.log(projectUpdate);
+			.single()
+			.then((up) => {
+				if (up.error) {
+					return fail(STATUS_CODES.InternalServerError, up.error);
+				}
+			});
 		// Project works.
 		// Remove any works row not present in formData.
-		const worksDelete = await db
-			.from('projects_works')
+		db.from('projects_works')
 			.delete()
 			.eq('project_id', event.params.projectId)
-			.not('work_id', 'in', pgarr(parsed.data.work_id));
-		if (worksDelete.error) {
-			return fail(STATUS_CODES.InternalServerError, worksDelete.error);
-		}
-		// Append new works.
-		const worksUpsert = await db.from('projects_works').upsert(
-			parsed.data.work_id.map((wid) => {
-				return {
-					project_id: event.params.projectId!,
-					work_id: wid,
-				};
-			})
-		);
-		if (worksUpsert.error) {
-			return fail(STATUS_CODES.InternalServerError, worksUpsert.error);
-		}
+			.not('work_id', 'in', pgarr(parsed.data.work_id))
+			.then((del) => {
+				if (del.error) {
+					return fail(STATUS_CODES.InternalServerError, del.error);
+				} else {
+					db.from('projects_works')
+						.upsert(
+							parsed.data.work_id.map((wid) => {
+								return {
+									project_id: event.params.projectId!,
+									work_id: wid,
+								};
+							})
+						)
+						.then((up) => {
+							if (up.error) {
+								return fail(STATUS_CODES.InternalServerError, up.error);
+							}
+						});
+				}
+			});
 	},
 	delete: async (event) => {
 		if (!event.locals.session) return fail(401);

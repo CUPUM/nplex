@@ -1,23 +1,22 @@
 <script lang="ts">
 	import { EXPLORE_ROUTES } from '$utils/routes';
 	import type { PageData } from './$types';
-	import PreviewsHeader from './PreviewsHeader.svelte';
+	import PreviewsHeader from './PreviewHeader.svelte';
 
-	export let organisations: PageData['organisations'];
+	export let actors: PageData['actors'];
 </script>
 
 <article>
 	<PreviewsHeader
-		href={EXPLORE_ROUTES.organisations.pathname}
-		action="?/organisations"
+		title="Acteurs & artisans"
+		href={EXPLORE_ROUTES.actors.pathname}
+		action="?/actors"
 		placeholder="Chercher des projets"
-	>
-		Explorer les bureaux et organismes
-	</PreviewsHeader>
+	/>
 	<ul>
-		{#each organisations as o (o.id)}
+		{#each actors as a (a.id)}
 			<li>
-				<a class="card" href="{EXPLORE_ROUTES.organisations.pathname}/{o.id}">Yhello!</a>
+				<a class="card" href="{EXPLORE_ROUTES.actors.pathname}/{a.id}"> Bonjour! </a>
 			</li>
 		{/each}
 	</ul>
@@ -41,7 +40,7 @@
 		position: relative;
 		width: 100%;
 		max-width: --ui-block;
-		font-size: var(--ui-text-xl);
+		font-size: var(--ui-text-2xl);
 		font-weight: 500;
 
 		.icon {

@@ -34,7 +34,6 @@
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
-	import Dirtiness from './Dirtiness.svelte';
 	import Ripple from './Ripple.svelte';
 
 	export let id: string | undefined = undefined;
@@ -95,8 +94,19 @@
 	}
 
 	function handleInput(e: Event) {
-		if (e.target && 'value' in e.target) {
-			const val = type === 'number' ? Number(e.target.value) : e.target.value;
+		if (e.target instanceof Element && 'value' in e.target) {
+			if (type === 'number') {
+				let number = Number(e.target.value);
+				if (min !== undefined) {
+					number = Math.max(min, number);
+				}
+				if (max !== undefined) {
+					number = Math.min(max, number);
+				}
+				value = number;
+			} else {
+				value = e.target.value as Value;
+			}
 		}
 	}
 
@@ -106,104 +116,100 @@
 	});
 </script>
 
-<Dirtiness {sample} bind:dirty let:check>
-	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<fieldset
-		class="container nest focus-outline-within {variant} {className}"
-		{style}
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<fieldset
+	class="container nest focus-outline-within {variant} {className}"
+	{style}
+	{disabled}
+	class:compact
+	class:warning
+	class:readonly
+	class:loading
+	class:success
+	class:invalid
+	class:dirty
+	class:hasvalue
+	class:hasplaceholder
+	class:haslabel
+	class:required
+	style:--label-width="{labelWidth}px"
+	on:click|self={focus}
+	on:click
+	on:pointerdown
+	on:pointerup
+	on:keypress
+	on:keydown
+	on:keyup
+>
+	<Ripple />
+	{#if $$slots.leading}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<div class="aside leading" on:click|self={focus}>
+			<slot {dirty} {value} name="leading" />
+		</div>
+	{/if}
+	{#if haslabel}
+		<label in:fly={{ y: 6, opacity: 0 }} for={id} bind:clientWidth={labelWidth}>
+			<slot {dirty} {value} name="label" /><span class="star">*</span>
+		</label>
+	{/if}
+	<!-- Placing outlines here to allow css dependence on label:empty with sibling selector -->
+	<div class="outline left" />
+	<div class="outline right" />
+	<div class="outline bottom" />
+	{#if prefix}
+		<span class="affix prefix">{prefix}</span>
+	{/if}
+	<slot
+		name="input"
+		{autocomplete}
+		{placeholder}
+		{handleInput}
 		{disabled}
-		class:compact
-		class:warning
-		class:readonly
-		class:loading
-		class:success
-		class:invalid
-		class:dirty
-		class:hasvalue
-		class:hasplaceholder
-		class:haslabel
-		class:required
-		style:--label-width="{labelWidth}px"
-		on:click|self={focus}
-		on:click
-		on:pointerdown
-		on:pointerup
-		on:keypress
-		on:keydown
-		on:keyup
+		{required}
+		{tabindex}
+		{readonly}
+		{pattern}
+		{bindInputRef}
 	>
-		<Ripple />
-		{#if $$slots.leading}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div class="aside leading" on:click|self={focus}>
-				<slot {dirty} {value} name="leading" />
-			</div>
-		{/if}
-		{#if haslabel}
-			<label in:fly={{ y: 6, opacity: 0 }} for={id} bind:clientWidth={labelWidth}>
-				<slot {dirty} {value} name="label" /><span class="star">*</span>
-			</label>
-		{/if}
-		<!-- Placing outlines here to allow css dependence on label:empty with sibling selector -->
-		<div class="outline left" />
-		<div class="outline right" />
-		<div class="outline bottom" />
-		{#if prefix}
-			<span class="affix prefix">{prefix}</span>
-		{/if}
-		<slot
-			name="input"
+		<input
+			in:fly={{ y: -6 }}
+			bind:this={inputRef}
+			data-field-input
+			class="input"
 			{autocomplete}
+			{id}
+			{type}
+			{name}
 			{placeholder}
-			{handleInput}
+			{value}
+			{maxlength}
+			{minlength}
+			{min}
+			{max}
+			{step}
 			{disabled}
 			{required}
 			{tabindex}
 			{readonly}
-			{pattern}
-			{check}
-			{bindInputRef}
-		>
-			<input
-				in:fly={{ y: -6 }}
-				bind:this={inputRef}
-				data-field-input
-				class="input"
-				{autocomplete}
-				{id}
-				{type}
-				{name}
-				{placeholder}
-				{value}
-				{maxlength}
-				{minlength}
-				{min}
-				{max}
-				{step}
-				{disabled}
-				{required}
-				{tabindex}
-				{readonly}
-				pattern={pattern ? pattern.source : undefined}
-				on:input={handleInput}
-				on:input={check}
-				on:focus
-				on:blur
-				on:input
-				on:change
-			/>
-		</slot>
-		{#if suffix}
-			<span class="affix suffix">{suffix}</span>
-		{/if}
-		{#if $$slots.trailing}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div class="aside trailing" on:click|self={focus}>
-				<slot {dirty} {value} name="trailing" />
-			</div>
-		{/if}
-	</fieldset>
-</Dirtiness>
+			pattern={pattern ? pattern.source : undefined}
+			on:input={handleInput}
+			on:focus
+			on:blur
+			on:input
+			on:change
+		/>
+	</slot>
+	{#if suffix}
+		<span class="affix suffix">{suffix}</span>
+	{/if}
+	{#if $$slots.trailing}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<div class="aside trailing" on:click|self={focus}>
+			<slot {dirty} {value} name="trailing" />
+		</div>
+	{/if}
+</fieldset>
 
 <style lang="scss">
 	:where(.container) {
@@ -398,7 +404,7 @@
 
 	:where(.default) {
 		color: col(fg, 000);
-		background: col(bg, 900, 0.5);
+		background: col(fg, 000, 0.1);
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			display: none;
@@ -424,11 +430,11 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(fg, 300);
-			background: col(bg, 900);
+			background: col(fg, 000, 0.2);
 		}
 		&:focus-within {
 			color: col(fg, 900);
-			background: col(bg, 300);
+			background: col(bg, 900);
 			:global(*[data-field-input]) {
 				opacity: 1;
 			}

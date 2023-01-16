@@ -30,6 +30,7 @@
 	export let min: number;
 	export let max: number;
 	export let step: number;
+	export let ticks: 'step' | number | undefined = undefined;
 	export let direction: RangeContext['direction'] = 'row';
 	export let variant: 'default' | 'cta' | 'outlined' = 'default';
 	export let disabled: boolean | undefined = undefined;
@@ -53,8 +54,8 @@
 	 * Translating a domain-bound absolute value to a percentage distance.
 	 */
 	function pc(input: number) {
-		const mapped = Math.max((input - min) / max - min) * 100;
-		return Math.max(Math.min(mapped, max), min);
+		const mapped = ((input - min) / (max - min)) * 100;
+		return Math.max(Math.min(mapped, 100), 0);
 	}
 
 	/**
@@ -93,6 +94,33 @@
 >
 	<div class="inner">
 		<div class="track" bind:clientWidth={trackw} bind:clientHeight={trackh} />
+		{#if ticks}
+			{#if ticks === 'step'}
+				{@const arr = [
+					...Array((max - min) / step)
+						.fill(undefined)
+						.map((un, i) => min + i * step),
+					max,
+				]}
+				{#each arr as tick, i}
+					<div class="tick" style:--tick={tick}>
+						<slot name="tick" {tick} first={i === 0} last={i === arr.length - 1} />
+					</div>
+				{/each}
+			{:else}
+				{@const arr = [
+					...Array(Math.round((max - min) / ticks))
+						.fill(undefined)
+						.map((un, i) => min + i * Number(ticks)),
+					max,
+				]}
+				{#each arr as tick, i}
+					<div class="tick" style:--tick={tick}>
+						<slot name="tick" tick={Number(tick)} first={i === 0} last={i === arr.length - 1} />
+					</div>
+				{/each}
+			{/if}
+		{/if}
 		<slot />
 	</div>
 </fieldset>
@@ -143,6 +171,31 @@
 		.column & {
 			height: 100%;
 			width: var(--track-thickness);
+		}
+	}
+
+	.tick {
+		--d: 1em;
+		font-size: var(--ui-text-xs);
+		font-variant-numeric: tabular-nums;
+		text-align: center;
+		z-index: -1;
+		color: col(fg, 100, 0.5);
+		position: absolute;
+		left: calc((var(--tick) - var(--min)) * 100% / var(--domain));
+		top: 50%;
+		margin-top: var(--d);
+		height: 1em;
+		width: max-content;
+		transform: translateX(-50%);
+		&::before {
+			bottom: 100%;
+			left: calc(50% - 0.5px);
+			content: '';
+			position: absolute;
+			height: var(--d);
+			width: 1px;
+			background: col(bg, 900);
 		}
 	}
 

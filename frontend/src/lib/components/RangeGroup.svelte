@@ -19,6 +19,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { KEY } from '$utils/enums';
 	import { onDestroy, onMount, tick } from 'svelte';
 	import { spring } from 'svelte/motion';
 	import type { ValueOf } from 'ts-essentials';
@@ -65,14 +66,15 @@
 		colliding(POINT.to);
 	}
 
-	const relfrom = spring(from, rangeThumbSpringOptions);
-	const relto = spring(to, rangeThumbSpringOptions);
+	const relfrom = spring(pc(from), rangeThumbSpringOptions);
+	const relto = spring(pc(to), rangeThumbSpringOptions);
 
 	let lineRef: HTMLElement;
 	let startfrom: number | undefined;
 	let startto: number | undefined;
 	let startx: number | undefined;
 	let starty: number | undefined;
+	let focused = false;
 
 	$: relfrom.set(pc(collide ? from : Math.min(from, to)));
 	$: relto.set(pc(collide ? to : Math.max(from, to)));
@@ -81,6 +83,25 @@
 		relfrom.set(pc(collide ? from : Math.min(from, to)), { hard: true });
 		relto.set(pc(collide ? to : Math.max(from, to)), { hard: true });
 	});
+
+	function handleKey(e: KeyboardEvent) {
+		if (!focused) {
+			return;
+		}
+		const jump = e.shiftKey ? ($max - $min) / 10 : $step;
+		switch (e.key) {
+			case KEY.ArrowUp:
+			case KEY.ArrowRight:
+				from += jump;
+				to += jump;
+				break;
+			case KEY.ArrowDown:
+			case KEY.ArrowLeft:
+				from -= jump;
+				to -= jump;
+				break;
+		}
+	}
 
 	function drag(e: PointerEvent) {
 		if (!lineRef || startx === undefined || starty === undefined) {
@@ -105,10 +126,8 @@
 		startto = to;
 		startx = e.pageX;
 		starty = e.pageY;
-		if (browser) {
-			document.addEventListener('pointerup', dragend, { once: true });
-			document.addEventListener('pointermove', drag);
-		}
+		document.addEventListener('pointerup', dragend, { once: true });
+		document.addEventListener('pointermove', drag);
 	}
 
 	function dragend(e: PointerEvent) {
@@ -128,6 +147,8 @@
 	});
 </script>
 
+<svelte:window on:keydown={handleKey} />
+
 {#if line}
 	<svelte:element
 		this={draggable ? 'button' : 'div'}
@@ -138,6 +159,12 @@
 		style:--relto="{$relto}%"
 		class="line"
 		on:pointerdown={dragstart}
+		on:focus={() => {
+			focused = true;
+		}}
+		on:blur={() => {
+			focused = false;
+		}}
 	>
 		{#if $$slots.default}
 			<label>
@@ -149,7 +176,7 @@
 
 <style lang="scss">
 	.line {
-		--line-thickness: calc(var(--track-thickness) + 2px);
+		--line-thickness: calc(var(--track-thickness) + 4px);
 		position: absolute;
 		border-radius: 99px;
 		outline: none;
@@ -175,15 +202,25 @@
 
 	// Variants
 
-	:global(.default .inner) > {
-		button {
-			background: col(fg, 000);
+	:global(.default .inner) {
+		> button {
+			background: col(fg, 900);
 			box-shadow: 0 0 0 0 col(primary, 500, 0);
 
 			&:active,
-			&:focus-visible {
+			&:focus {
 				background: col(primary, 700);
 				box-shadow: 0 0 0 var(--outline-width) col(primary, 300, 0.5);
+			}
+
+			&:hover {
+				background: col(primary, 500);
+			}
+		}
+
+		&:focus-within {
+			button:not(:focus) {
+				background: col(primary, 900);
 			}
 		}
 	}

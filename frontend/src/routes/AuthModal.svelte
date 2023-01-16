@@ -173,7 +173,7 @@
 				</Field>
 				{#if $authModal === AUTHMODAL_MODE.SignUp}
 					<div class="signup fill-row" transition:slide|local={{ duration: 200 }}>
-						<Field required variant="default" name="first_name">
+						<Field variant="default" name="first_name">
 							<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
 							<svelte:fragment slot="trailing">
 								<FieldReset />
@@ -250,7 +250,7 @@
 		height: 100vh;
 		top: 0;
 		left: 0;
-		background: col(fg, 100, 0.9);
+		background: col(fg, 700, 0.9);
 	}
 
 	dialog {
@@ -299,7 +299,7 @@
 		padding: calc(2 * var(--ui-gutter)) var(--ui-gutter);
 
 		svg {
-			height: var(--ui-text-xl);
+			height: var(--ui-text-2xl);
 		}
 	}
 

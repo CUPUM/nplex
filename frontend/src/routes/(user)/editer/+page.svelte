@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
+	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { EDITOR_ROUTES } from './common';
 </script>
@@ -15,8 +15,8 @@
 </header>
 <ul>
 	<li class="block project" in:fade={{ delay: 0 }}>
-		<div class="group {ICON_CLASSES.hover}">
-			<a href={EDITOR_ROUTES.project.pathname} class="fill" role="presentation" aria-hidden="true">
+		<div class="group {ICON_CLASS.hover}">
+			<a href={EDITOR_ROUTES.project.pathname} class="fill" aria-hidden="true">
 				<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
 			</a>
 			<a href={EDITOR_ROUTES.project.pathname} class="main-link">Créer un nouveau projet</a>
@@ -24,17 +24,17 @@
 		</div>
 		<hr />
 		<a
-			class="main-link group descriptors {ICON_CLASSES.hover}"
+			class="main-link group descriptors {ICON_CLASS.hover}"
 			href={EDITOR_ROUTES.project.descriptors.pathname}
 		>
-			<div class="fill" role="presentation" aria-hidden="true">
+			<div class="fill" aria-hidden="true">
 				<Icon name="parameters" strokeWidth={1} strokeLinecap="round" />
 			</div>
 			<span style="z-index: 1">Éditer les descripteurs de projet</span>
 		</a>
 	</li>
-	<li class="block group {ICON_CLASSES.hover}" in:fade={{ delay: 100 }}>
-		<a href={EDITOR_ROUTES.project.pathname} class="fill" role="presentation" aria-hidden="true">
+	<li class="block group {ICON_CLASS.hover}" in:fade={{ delay: 100 }}>
+		<a href={EDITOR_ROUTES.project.pathname} class="fill" aria-hidden="true">
 			<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
 		</a>
 		<a href={EDITOR_ROUTES.organisation.pathname} class="main-link"
@@ -42,8 +42,8 @@
 		>
 		<a href={EDITOR_ROUTES.organisation.edit.pathname} class="modify">Modifier une organisation</a>
 	</li>
-	<li class="block group {ICON_CLASSES.hover}" in:fade={{ delay: 200 }}>
-		<a href={EDITOR_ROUTES.project.pathname} class="fill" role="presentation" aria-hidden="true">
+	<li class="block group {ICON_CLASS.hover}" in:fade={{ delay: 200 }}>
+		<a href={EDITOR_ROUTES.project.pathname} class="fill" aria-hidden="true">
 			<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
 		</a>
 		<a href={EDITOR_ROUTES.actor.pathname} class="main-link">Créer un nouveau profil d'acteur</a>
@@ -73,7 +73,7 @@
 
 		h1 {
 			text-align: center;
-			font-size: var(--ui-text-2xl);
+			font-size: var(--ui-text-3xl);
 			font-weight: 600;
 		}
 
@@ -88,7 +88,7 @@
 
 	ul {
 		width: 100%;
-		max-width: var(--ui-width-md);
+		max-width: var(--ui-width-lg);
 		padding: var(--ui-gutter);
 		display: flex;
 		flex-direction: row;
@@ -96,13 +96,13 @@
 		align-items: flex-start;
 		justify-content: flex-start;
 		gap: var(--ui-gutter);
-		font-weight: 500;
+		font-weight: 550;
 	}
 
 	.block {
 		background: col(bg, 300);
 		border-radius: var(--ui-radius-xl);
-		font-size: var(--ui-text-lg);
+		font-size: var(--ui-text-xl);
 		transition: all 0.1s ease-out;
 		&:hover {
 			background: col(primary, 300);
@@ -176,13 +176,14 @@
 		border: 1px solid col(fg, 500, 0.1);
 		padding: 1em 1.5em 1.25em;
 		border-radius: var(--ui-radius-md);
-		font-weight: 400;
+		font-weight: 500;
 		transition: background 0.25s ease-out;
 
 		&:hover {
 			background: col(bg, 300);
 			color: col(primary, 700);
 			border: 1px solid transparent;
+			box-shadow: 0 1rem 4rem -1rem col(primary, 500);
 		}
 	}
 </style>

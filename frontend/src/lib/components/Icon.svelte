@@ -5,7 +5,7 @@
 
 -->
 <script lang="ts" context="module">
-	export const ICON_CLASSES = {
+	export const ICON_CLASS = {
 		hover: 'i-hover-anim',
 		hold: 'i-hold-anim',
 	} as const;

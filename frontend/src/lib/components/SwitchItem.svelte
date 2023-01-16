@@ -48,7 +48,7 @@
 	on:mouseenter
 	on:mouseleave
 >
-	<input {id} {value} {name} type="radio" hidden bind:group={$group} />
+	<input {id} {value} {name} type="radio" bind:group={$group} hidden />
 	<span class="slot">
 		<slot />
 	</span>
@@ -97,7 +97,8 @@
 
 	:global(.default) > :where(.switch-item) {
 		color: currentColor;
-		&:hover {
+		&:hover,
+		&:focus-within {
 			color: col(fg, 700);
 			background: col(fg, 100, 0.1);
 		}
@@ -110,7 +111,8 @@
 
 	:global(.outlined) > :where(.switch-item) {
 		color: currentColor;
-		&:hover {
+		&:hover,
+		&:focus-within {
 			color: col(fg, 700);
 			background: col(fg, 100, 0.1);
 		}

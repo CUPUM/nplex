@@ -3,6 +3,8 @@
 	Attaches a tooltip element to the last HTML element passed through the component's default slot.
 
  -->
+<svelte:options accessors={true} />
+
 <script lang="ts" context="module">
 	const TIP_ROUNDNESS = 20;
 	const TIP =
@@ -18,7 +20,7 @@
 <script lang="ts">
 	import { THEMES, type ThemeName } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
-	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { cubicIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import Tether from './Tether.svelte';
 
@@ -32,43 +34,36 @@
 	export let distance: ComponentProps<Tether>['distance'] = 5;
 	export let passive: boolean = false;
 
-	function show() {
+	function open() {
 		opened = true;
 	}
-	function hide() {
+	function close() {
 		opened = false;
-	}
-
-	$: if (disabled) {
-		hide();
-	}
-	$: if (message === undefined || message === null) {
-		hide();
 	}
 </script>
 
 <Tether
 	on:pointerdown={() => {
-		if (!hover && !passive) show();
+		if (!hover && !passive) open();
 	}}
 	on:clickoutside={() => {
-		if (!hover && !passive) hide();
+		if (!hover && !passive) close();
 	}}
 	on:pointerenter={() => {
 		if (hover && !passive) {
 			clearTimeout(TIMER);
 			if (DELAY) {
 				TIMER = setTimeout(() => {
-					show();
+					open();
 					DELAY = false;
 				}, TIME_BUFFER_IN);
 			} else {
-				show();
+				open();
 			}
 		}
 	}}
 	on:pointerleave={() => {
-		if (hover && !passive) hide();
+		if (hover && !passive) close();
 		clearTimeout(TIMER);
 		TIMER = setTimeout(() => {
 			DELAY = true;
@@ -79,12 +74,12 @@
 	{distance}
 >
 	<slot slot="anchor" open={opened} />
-	{#if opened}
+	{#if opened && message && !disabled}
 		<div
 			data-theme={theme}
 			class="tooltip {place} {align}"
-			in:scale={{ start: 0.75, easing: cubicOut, duration: 75, opacity: 0 }}
-			out:scale={{ start: 0.9, easing: cubicIn, duration: 125, opacity: 0 }}
+			in:scale={{ start: 0.95, easing: expoOut, duration: 150, opacity: 0 }}
+			out:scale={{ start: 0.98, easing: cubicIn, duration: 200, opacity: 0 }}
 		>
 			<slot name="message" open={opened}>
 				{@html message}

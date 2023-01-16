@@ -16,13 +16,6 @@ alter table "public"."user_role_details" add constraint "user_role_details_pkey"
 alter table "public"."user_role_details" add constraint "user_role_details_label_key" UNIQUE using index "user_role_details_label_key";
 
 
-insert into "public"."user_role_details" ("user_role", "label", "description")
-values
-    ('admin', 'Administrateur', 'Les administrateurs...'),
-    ('editor', 'Éditeur de contenu', 'Les éditeurs...'),
-    ('visitor', 'Visiteur', 'Les visiteurs...');
-
-
 create policy "Only admins can update" on public.user_role_details
 	as permissive
 	for update

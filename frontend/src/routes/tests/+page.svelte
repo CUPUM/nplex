@@ -1,79 +1,28 @@
 <script lang="ts">
-	import Button from '$components/Button.svelte';
-	import Field from '$components/Field.svelte';
-	import Loading from '$components/Loading.svelte';
-	import Select from '$components/Select.svelte';
-	import TextArea from '$components/TextArea.svelte';
-	import type { ComponentProps } from 'svelte';
+	import Counter from '$components/Counter.svelte';
+	import Icon from '$components/Icon.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	let a = 10;
-	let b = 40;
-	let c = 50;
-	const roles = data.roles.map((r) => ({ ...r, value: r, text: r.label }));
-	let v = 'ceci est une valeur initiale';
-	let bool = false;
-
-	let value = roles[0];
-
-	let variant: ComponentProps<TextArea>['variant'] = 'outlined';
-
-	async function getAvatar(name: string = 'fallback') {
-		image = await fetch('/api/generate-avatar/' + name);
-	}
-
-	let image: any;
-	$: console.log(image);
+	let value = 10;
 </script>
 
 <article>
-	<Field type="text" value="test">
-		<svelte:fragment slot="trailing" let:value>
-			<Button
-				on:click={() => {
-					getAvatar(String(value));
-				}}>Fetch avatar!</Button
-			>
-		</svelte:fragment>
-	</Field>
-	<div>
-		{#await image}
-			Loading image
-			<Loading />
-		{:then value}
-			{image}
-		{:catch error}
-			Erreur :/
-		{/await}
-	</div>
+	<input type="range" name="" bind:value min="0" max="200" id="" />
+	<Counter {value} />
 </article>
 <article>
-	{#each data.roles as role}
-		<input type="radio" value={role} />
-	{/each}
+	<button>
+		Some text
+		<Icon name="settings" />
+	</button>
+	<button>
+		Some text
+		<Icon name="settings" />
+	</button>
 </article>
-<article>
-	<TextArea />
-	{#each ['default', 'outlined', 'cta'] as v}
-		<label><input type="radio" value={v} bind:group={variant} /> {v}</label>
-	{/each}
-</article>
-<article>
-	<Select placeholder="test" {variant} options={roles} bind:value let:datum>
-		<option value={datum}>{datum.text}</option>
-	</Select>
-</article>
-<section />
 
-<!-- <article use:setRootBackground={{ color: 'red' }}>
-	<Select options={data.roles.map((r) => r.label)} let:option>
-		<p>{option}</p>
-	</Select>
-</article>
-<article>Some article</article>
-<article>Another</article> -->
 <style lang="scss">
 	article {
 		width: 100%;
@@ -84,6 +33,14 @@
 		align-items: center;
 		justify-content: center;
 		border: 1px solid blue;
+	}
+
+	button {
+		display: inline-flex;
+		align-items: center;
+		border: 1px solid col(fg, 100, 0.2);
+		border-radius: 1em;
+		padding: 1em;
 	}
 
 	label {

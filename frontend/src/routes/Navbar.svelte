@@ -264,12 +264,13 @@
 	}
 
 	.category {
+		--inset: 3px;
 		grid-column: category;
 		justify-content: center;
-		border-radius: var(--ui-radius-md);
-		backdrop-filter: blur(12px);
-		background: col(bg, 900, 0.75);
-		box-shadow: 0 0 0 2px col(bg, 900, 0.75);
+		border-radius: calc(var(--ui-radius-md) + var(--inset));
+		backdrop-filter: blur(8px);
+		background: col(bg, 900, 0.5);
+		padding: var(--inset);
 		--i: 1;
 	}
 

@@ -1,45 +1,44 @@
 import { writable } from 'svelte/store';
+import type { LayoutData } from './$types';
 
-export const formid = 'project-editor';
+export const FORMID = 'project-editor';
 
-export const topid = 'project-editor-content';
+export const STARTID = 'project-editor-content';
 
-const dirty = writable<boolean>();
-
-export const EDITOR_PARTS_ROUTES = {
-	GENERAL: {
+export const PROJECT_EDITOR_ROUTES = {
+	general: {
 		title: 'Général',
 		subpath: '',
 	},
-	GALLERY: {
+	gallery: {
 		title: 'Galerie',
 		subpath: '/galerie',
-		hash: topid,
+		hash: STARTID,
 	},
-	SITE: {
+	site: {
 		title: 'Site',
 		subpath: '/site',
-		hash: topid,
+		hash: STARTID,
 	},
-	BUILDING: {
+	building: {
 		title: 'Bâtiment',
 		subpath: '/batiment',
-		hash: topid,
+		hash: STARTID,
 	},
-	PROCESS: {
+	process: {
 		title: 'Processus',
 		subpath: '/processus',
-		hash: topid,
+		hash: STARTID,
 	},
-	EXAMPLARITY: {
+	exemplarity: {
 		title: 'Exemplarité',
 		subpath: '/exemplarite',
-		hash: topid,
+		hash: STARTID,
 	},
-	VISIBILITY: {
+	publication: {
 		title: 'Publication',
 		subpath: '/publication',
-		hash: topid,
+		hash: STARTID,
 	},
 } satisfies Record<
 	string,
@@ -49,3 +48,7 @@ export const EDITOR_PARTS_ROUTES = {
 		hash?: string;
 	}
 >;
+
+export const typeTooltip = writable<boolean>(false);
+
+export const formProject = writable<LayoutData['project']>();

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
-	import Breadcrumbs from './Breadcrumbs.svelte';
 	import { EDITOR_ROUTES } from './common';
 	import EditableProjectCard from './EditableProjectCard.svelte';
 	import EditablesList from './EditablesList.svelte';
@@ -8,7 +7,7 @@
 	export let data: LayoutData;
 </script>
 
-<Breadcrumbs />
+<!-- <Breadcrumbs /> -->
 <slot />
 <header>
 	<hgroup>
@@ -52,7 +51,7 @@
 
 		h2 {
 			text-align: center;
-			font-size: var(--ui-text-2xl);
+			font-size: var(--ui-text-3xl);
 			font-weight: 600;
 		}
 

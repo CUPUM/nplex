@@ -6,7 +6,7 @@
 	import { projectcolors, publicurl } from '$utils/format';
 	import { EXPLORE_ROUTES } from '$utils/routes';
 	import type { PageData } from './$types';
-	import PreviewsHeader from './PreviewsHeader.svelte';
+	import PreviewsHeader from './PreviewHeader.svelte';
 
 	export let projects: PageData['projects'];
 	export let scrollTarget: HTMLElement;
@@ -14,12 +14,11 @@
 
 <article bind:this={scrollTarget} id="explore">
 	<PreviewsHeader
+		title="Projets"
 		href={EXPLORE_ROUTES.projects.pathname}
 		action="?/projects"
 		placeholder="Chercher des projets"
-	>
-		Explorer les projets
-	</PreviewsHeader>
+	/>
 	<ul>
 		{#each projects as p (p.id)}
 			<li>
@@ -99,6 +98,6 @@
 
 	h1 {
 		font-weight: 600;
-		font-size: var(--ui-text-lg);
+		font-size: var(--ui-text-xl);
 	}
 </style>

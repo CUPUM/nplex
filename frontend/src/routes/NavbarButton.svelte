@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ICON_CLASSES } from '$components/Icon.svelte';
+	import { ICON_CLASS } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
 
 	export let href: string | undefined = undefined;
@@ -14,7 +14,7 @@
 
 <svelte:element
 	this={typeof href === 'string' ? 'a' : 'button'}
-	class="navbar-button focus-outline-visible {ICON_CLASSES.hover} {active ? ICON_CLASSES.hold : ''}"
+	class="navbar-button focus-outline-visible {ICON_CLASS.hover} {active ? ICON_CLASS.hold : ''}"
 	class:cta
 	data-current={current || undefined}
 	class:active
@@ -47,8 +47,8 @@
 		letter-spacing: 0.02em;
 		line-height: 1;
 		color: col(fg, 100);
-		backdrop-filter: blur(8px);
-		transition: all 0.15s var(--ui-ease-out);
+		backdrop-filter: blur(6px);
+		transition: all 0.15s ease-out;
 
 		&::before {
 			content: '';
@@ -60,7 +60,7 @@
 			height: 100%;
 			background: var(--nav-bg);
 			opacity: 0.75;
-			transition: all 0.15s var(--ui-ease-out);
+			transition: all 0.15s ease-out;
 
 			:global(.category) > & {
 				opacity: 1;

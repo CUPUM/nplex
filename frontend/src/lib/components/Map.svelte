@@ -22,8 +22,8 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
 	import type { Cursor } from '$utils/enums';
-	import { debounce } from '$utils/function';
 	import { gesturesText, locales, locations, MAP_STYLES, type MapLocale } from '$utils/map';
+	import { debounce } from '$utils/modifiers';
 	import {
 		Map,
 		MapMouseEvent,

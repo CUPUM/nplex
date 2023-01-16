@@ -6,12 +6,15 @@ export function debounce<Args extends any[], F extends (...args: Args) => any>(
 	timeout = 250
 ) {
 	let timer: any;
+	let cache: ReturnType<F>;
 
 	function d(...args: Parameters<F>) {
 		clearTimeout(timer);
 		timer = setTimeout(() => {
-			f(...args);
+			cache = f(...args);
+			return cache;
 		}, timeout);
+		return cache;
 	}
 
 	d.cancel = function () {
@@ -24,24 +27,27 @@ export function debounce<Args extends any[], F extends (...args: Args) => any>(
 /**
  * Function wrapper to throttle the passed function's execution rate.
  */
-export function throttle<Args extends any[], F extends (...args: Args) => any>(
+export function throttle<Args extends any[], F extends (...args: Args) => ReturnType<F>>(
 	f: F,
 	timeout = 250
 ) {
 	let timer: any;
 	let last: number;
+	let cache: ReturnType<F>;
 
 	function t(...args: Parameters<F>) {
 		clearTimeout(timer);
 		const now = Date.now();
 		if (last + timeout > now) {
 			timer = setTimeout(() => {
-				f(...args);
+				cache = f(...args);
+				return cache;
 			}, timeout + 1);
 		} else {
 			last = now;
-			f(...args);
+			cache = f(...args);
 		}
+		return cache;
 	}
 
 	t.cancel = function () {

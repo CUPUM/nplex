@@ -16,7 +16,7 @@
 	import Ripple from '$components/Ripple.svelte';
 	import { getContext, setContext } from 'svelte';
 	import { getButtonGroupContext } from './ButtonGroup.svelte';
-	import { ICON_CLASSES } from './Icon.svelte';
+	import { ICON_CLASS } from './Icon.svelte';
 
 	export let href: string | undefined = undefined;
 	export let id: string | undefined = undefined;
@@ -55,7 +55,7 @@
 <svelte:element
 	this={as ? as : href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
-	class="button nest focus-outline-visible {computedVariant} {contentAlign} {className} {ICON_CLASSES.hover}"
+	class="button nest focus-outline-visible {computedVariant} {contentAlign} {className} {ICON_CLASS.hover}"
 	class:compact
 	class:warning
 	class:equi

@@ -36,7 +36,7 @@
 	<Field name="public_email" value={data.profile.public_email}>
 		<svelte:fragment slot="label">Courriel public</svelte:fragment>
 	</Field>
-	<TextArea name="about" value={data.profile.about}>
+	<TextArea name="about" variant="outlined" value={data.profile.about}>
 		<svelte:fragment slot="label">À propos</svelte:fragment>
 	</TextArea>
 	<Button style="align-self: flex-end" type="submit">Sauvegarder</Button>
@@ -108,13 +108,13 @@
 	}
 
 	h2 {
-		font-size: var(--ui-text-xl);
+		font-size: var(--ui-text-2xl);
 		margin: 0.5em 0;
 		font-weight: 600;
 	}
 
 	h3 {
-		font-size: var(--ui-text-lg);
+		font-size: var(--ui-text-xl);
 		font-weight: 600;
 		margin: 0.5em 0;
 

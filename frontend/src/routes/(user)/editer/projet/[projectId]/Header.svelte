@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
+	import { ICON_CLASS } from '$components/Icon.svelte';
 	import { KEY } from '$utils/enums';
-	import { debounce } from '$utils/function';
+	import { debounce } from '$utils/modifiers';
 	import { fly } from 'svelte/transition';
 	import type { PageData } from './$types';
 
@@ -20,7 +20,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<header class={ICON_CLASSES.hover} in:fly={{ y: -10 }}>
+<header class={ICON_CLASS.hover} in:fly={{ y: -10 }}>
 	<hgroup>
 		<form
 			method="POST"
@@ -33,7 +33,6 @@
 			on:input={handleChange}
 			on:click|self={() => titleRef.focus()}
 		>
-			<Icon name="pen" class="icon" />
 			<span
 				class="title"
 				bind:this={titleRef}
@@ -55,6 +54,7 @@
 
 <style lang="scss">
 	header {
+		user-select: none;
 		position: relative;
 		align-self: stretch;
 		border-bottom: 1px solid col(fg, 100, 0.05);
@@ -67,7 +67,7 @@
 		max-width: var(--ui-width-main);
 		display: grid;
 		gap: var(--ui-gutter);
-		grid-template-columns: 1fr 2fr;
+		grid-template-columns: 1fr 3fr;
 	}
 
 	form {
@@ -82,7 +82,7 @@
 		transition: all 0.25s var(--ui-ease-out);
 
 		&:hover {
-			color: col(primary, 500);
+			color: col(primary, 700);
 		}
 
 		&:focus-within {
@@ -106,6 +106,7 @@
 		word-break: keep-all;
 		hyphens: auto;
 		font-weight: 600;
-		font-size: var(--ui-text-2xl);
+		font-size: var(--ui-text-3xl);
+		max-width: var(--ui-width-md);
 	}
 </style>

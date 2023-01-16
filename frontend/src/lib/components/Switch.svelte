@@ -128,12 +128,15 @@
 		border-radius: calc(var(--switch-radius) - var(--switch-inset));
 		transition: all 0.15s var(--ui-ease-out);
 	}
+	.compact {
+		--switch-radius: 99px;
+	}
 
 	// Variants
 
 	:where(.default) {
 		color: col(fg, 000);
-		background: col(bg, 900, 0.5);
+		background: col(fg, 100, 0.1);
 		.mark {
 			background: col(fg, 300);
 		}

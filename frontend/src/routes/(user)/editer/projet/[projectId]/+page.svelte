@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { ActionData, PageData } from './$types';
-	import { formid } from './common';
+	import { FORMID } from './common';
 	import ProjectCostRange from './ProjectCostRange.svelte';
 	import ProjectDescription from './ProjectDescription.svelte';
 	import ProjectType from './ProjectType.svelte';
@@ -9,13 +9,10 @@
 
 	export let data: PageData;
 	export let form: ActionData;
-
-	let formproject = { ...data.project };
-	let typeTooltip = false;
 </script>
 
 <form
-	id={formid}
+	id={FORMID}
 	method="POST"
 	action="?/update"
 	use:enhance={({ form, data, action, cancel }) => {
@@ -24,10 +21,10 @@
 		};
 	}}
 >
-	<ProjectType {data} bind:formproject {typeTooltip} />
-	<ProjectWorks {data} bind:formproject bind:typeTooltip />
-	<ProjectCostRange {data} bind:formproject />
-	<ProjectDescription {data} bind:formproject />
+	<ProjectDescription {data} />
+	<ProjectType {data} />
+	<ProjectWorks {data} />
+	<ProjectCostRange {data} />
 </form>
 
 <style lang="scss" module>

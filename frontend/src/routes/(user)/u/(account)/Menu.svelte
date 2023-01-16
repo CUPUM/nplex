@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Avatar from '$components/Avatar.svelte';
-	import Icon, { ICON_CLASSES } from '$components/Icon.svelte';
+	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
 	import { maybeSingle } from '$types/utils';
 	import { fly } from 'svelte/transition';
@@ -27,12 +27,12 @@
 			<a
 				href={r.pathname}
 				data-current={current}
-				class="{ICON_CLASSES.hover} {current ? ICON_CLASSES.hold : ''}"
+				class="{ICON_CLASS.hover} {current ? ICON_CLASS.hold : ''}"
 				in:fly={{ x: 10, delay: i * 75 }}
 			>
 				<Ripple />
 				<i>
-					<Icon name={r.icon} strokeWidth={2.5} />
+					<Icon name={r.icon} strokeWidth={2} />
 				</i>
 				{r.title}
 			</a>

@@ -168,7 +168,7 @@
 	}
 
 	.chair {
-		font-size: var(--ui-text-lg);
+		font-size: var(--ui-text-xl);
 		display: flex;
 		flex-direction: column;
 		gap: var(--ui-gutter);

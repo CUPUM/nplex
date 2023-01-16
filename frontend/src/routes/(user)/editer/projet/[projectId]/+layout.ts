@@ -1,17 +1,25 @@
 import { getDb } from '$utils/database';
-import { LOAD_DEPENDENCIES, STORAGE_BUCKETS } from '$utils/enums';
-import { jsarr } from '$utils/format';
+import { LOAD_DEPENDENCIES, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
+import { alwaysarr, jsarr } from '$utils/format';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
 export const load = (async (event) => {
 	event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
 	const db = await getDb(event);
-	const descriptorsRes = await db.rpc('get_project_descriptors').limit(1).single();
-	if (descriptorsRes.error) {
-		throw error(500, descriptorsRes.error);
-	}
-	const projectRes = await db
+
+	const descriptors = db
+		.rpc('get_project_descriptors')
+		.limit(1)
+		.single()
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			return res.data;
+		});
+
+	const project = await db
 		.from('projects')
 		.select(
 			`
@@ -38,30 +46,25 @@ export const load = (async (event) => {
 		)
 		.eq('id', event.params.projectId)
 		.order('order', { foreignTable: 'projects_images', ascending: true })
-		.single();
-	if (projectRes.error) {
-		throw error(500, projectRes.error);
-	}
-	console.log(projectRes.data.cost_range);
-	// Doing some transformations to format data for the client.
-	const projectTransform = {
-		...projectRes.data,
-		cost_range: jsarr(projectRes.data.cost_range).map((n) => Number(n)),
-		work_ids: Array.isArray(projectRes.data.work_ids)
-			? projectRes.data.work_ids.map((w) => w.work_id)
-			: [projectRes.data?.work_ids?.work_id],
-		gallery: (Array.isArray(projectRes.data.gallery)
-			? projectRes.data.gallery
-			: projectRes.data.gallery
-			? [projectRes.data.gallery]
-			: []
-		).map((img) => ({
-			...img,
-			publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.name).data.publicUrl,
-		})),
-	};
+		.single()
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			// Doing some transformations to format data for the client.
+			return {
+				...res.data,
+				cost_range: jsarr(res.data.cost_range).map((n) => Number(n)),
+				work_ids: alwaysarr(res.data.work_ids).map((w) => w.work_id),
+				gallery: alwaysarr(res.data.gallery).map((img) => ({
+					...img,
+					publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.name).data
+						.publicUrl,
+				})),
+			};
+		});
 	return {
-		project: projectTransform,
-		descriptors: descriptorsRes.data,
+		project,
+		descriptors,
 	};
 }) satisfies LayoutLoad;

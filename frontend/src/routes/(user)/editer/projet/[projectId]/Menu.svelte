@@ -4,20 +4,21 @@
 	import Icon from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { EDITOR_BASE_ROUTE } from '$utils/routes';
+	import { THEMES } from '$utils/themes';
 	import type { Page } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
 	import { EDITOR_ROUTES } from '../../common';
-	import { EDITOR_PARTS_ROUTES, formid } from './common';
+	import { FORMID, PROJECT_EDITOR_ROUTES } from './common';
 
 	let mount = false;
 	let sections = false;
 
-	const lookup = Object.values(EDITOR_PARTS_ROUTES);
+	const lookup = Object.values(PROJECT_EDITOR_ROUTES);
 
-	function href(page: Page, destination: ValueOf<typeof EDITOR_PARTS_ROUTES> | null) {
+	function href(page: Page, destination: ValueOf<typeof PROJECT_EDITOR_ROUTES> | null) {
 		const base = `${EDITOR_ROUTES.project.pathname}/${page.params.projectId}`;
 		if (!destination) {
 			return base;
@@ -44,7 +45,7 @@
 </script>
 
 {#if mount}
-	<div class="toolbar">
+	<div class="toolbar" data-theme={THEMES.dark}>
 		{#if sections}
 			<nav
 				class="nest"
@@ -70,12 +71,12 @@
 			</Tooltip>
 			<!-- <hr /> -->
 			<Button as="label" variant="ghost">
-				<Icon name={sections ? 'chevron-down' : 'chevron-up'} slot="trailing" />
-				Sesctions
+				<Icon name={sections ? 'chevron-down' : 'hamburger'} slot="trailing" />
+				Sections
 				<input type="checkbox" hidden bind:checked={sections} />
 			</Button>
 			<!-- <hr /> -->
-			<Button type="submit" variant="ghost" form={formid}>
+			<Button type="submit" variant="ghost" form={FORMID}>
 				Sauvegarder
 				<Icon name="save" slot="trailing" />
 			</Button>
@@ -116,13 +117,14 @@
 		flex-direction: row;
 		gap: 1px;
 		margin: 0 auto;
-		background: col(bg, 000, 0.9);
+		background: col(bg, 000, 0.85);
+		backdrop-filter: blur(8px);
 		border-radius: calc(var(--radius) + var(--outset));
 		padding: var(--outset);
-		backdrop-filter: blur(8px);
 		transition: all 0.25s ease-out;
 
-		&:hover {
+		&:hover,
+		nav:hover + & {
 			border-color: col(bg, 000);
 			box-shadow: 0 0 0 3px col(bg, 000, 0.5);
 		}
@@ -140,7 +142,7 @@
 		justify-content: center;
 		left: 50%;
 		transform: translateX(-50%);
-		background: col(bg, 000, 0.9);
+		background: col(bg, 000, 0.85);
 		backdrop-filter: blur(8px);
 		border-radius: var(--radius);
 		padding: var(--inset);
