@@ -233,7 +233,6 @@
 	nav {
 		--d: calc(0.35s + var(--i, 0) * 0.1s);
 		position: relative;
-		pointer-events: all;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -243,6 +242,10 @@
 		@include tablet {
 			flex-direction: column;
 			align-items: flex-start;
+		}
+
+		> :global(*) {
+			pointer-events: all;
 		}
 	}
 
