@@ -10,7 +10,6 @@
 <ProjectFormGroup>
 	<svelte:fragment slot="legend">Description</svelte:fragment>
 	<TextArea
-		variant="outlined"
 		name="description"
 		value={$formProject.description}
 		placeholder="Décrivez votre projet"

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { messages } from '$routes/MessagesOutlet.svelte';
 	import type { ActionData, PageData } from './$types';
 	import { FORMID } from './common';
 	import ProjectCostRange from './ProjectCostRange.svelte';
@@ -9,6 +10,10 @@
 
 	export let data: PageData;
 	export let form: ActionData;
+
+	$: if (form) {
+		messages.dispatch({ content: 'Projet mis à jour avec succès', type: 'success' });
+	}
 </script>
 
 <form

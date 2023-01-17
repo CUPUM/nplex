@@ -404,7 +404,7 @@
 
 	:where(.default) {
 		color: col(fg, 000);
-		background: col(fg, 000, 0.1);
+		background: col(fg, 100, 0.1);
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			display: none;
@@ -430,7 +430,7 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(fg, 300);
-			background: col(fg, 000, 0.2);
+			background: col(fg, 100, 0.2);
 		}
 		&:focus-within {
 			color: col(fg, 900);

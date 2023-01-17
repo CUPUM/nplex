@@ -1,58 +1,38 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import Icon from '$components/Icon.svelte';
 	import Loading from '$components/Loading.svelte';
 	import Ripple from '$components/Ripple.svelte';
 	import { GALLERY_IMAGE_TYPES, GALLERY_INPUT_NAME } from './common';
 
-	let uploading = false;
-
-	function upload(e: Event) {
-		if (e.target instanceof HTMLInputElement && e.target.form) {
-			e.target.form.requestSubmit();
-		}
-	}
+	export let loading = false;
 </script>
 
-<form
-	method="POST"
-	action="?/upload"
-	use:enhance={({ form, data, action, cancel }) => {
-		uploading = true;
-		return async ({ update, result }) => {
-			update({ reset: true });
-			uploading = false;
-		};
-	}}
-	class="upload"
->
-	<label class:uploading>
-		<Ripple />
-		<hgroup>
-			<h2>Ajoutez vos photos</h2>
-			<p>Montez une galerie d'images pour présenter votre projet.</p>
-		</hgroup>
-		<div class="icon">
-			<Icon name="image-add" strokeWidth={2} />
-		</div>
-		<legend>Cliquez pour importer vos photos ou déposez des fichiers ici.</legend>
-		<input
-			hidden
-			type="file"
-			name={GALLERY_INPUT_NAME}
-			accept={GALLERY_IMAGE_TYPES.join(',')}
-			multiple
-			on:change
-			on:change={upload}
-		/>
-		{#if uploading}
-			<Loading />
-		{/if}
-	</label>
-</form>
+<label class:loading>
+	<Ripple />
+	<hgroup>
+		<h2>Ajoutez vos photos</h2>
+		<p>Montez une galerie d'images pour présenter votre projet.</p>
+	</hgroup>
+	<div class="icon">
+		<Icon name="image-add" strokeWidth={2} />
+	</div>
+	<legend>Cliquez pour importer vos photos ou déposez des fichiers ici.</legend>
+	<input
+		hidden
+		type="file"
+		name={GALLERY_INPUT_NAME}
+		accept={GALLERY_IMAGE_TYPES.join(',')}
+		multiple
+		on:change
+	/>
+	{#if loading}
+		<Loading />
+	{/if}
+</label>
 
 <style lang="scss">
 	label {
+		font-size: var(--ui-text-md);
 		position: relative;
 		border-radius: var(--ui-radius-xl);
 		color: col(fg, 000);
@@ -77,7 +57,7 @@
 		}
 	}
 
-	.uploading {
+	.loading {
 		pointer-events: none;
 		background: col(fg, 900, 0.2);
 

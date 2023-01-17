@@ -194,7 +194,7 @@
 
 	:global(.default .inner) {
 		> button {
-			background: col(fg, 900);
+			background: col(fg, 300);
 			box-shadow: 0 0 0 0 col(primary, 500, 0);
 
 			&:active,

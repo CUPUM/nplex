@@ -10,10 +10,14 @@
 
 <script lang="ts">
 	export let host: HTMLElement | undefined = undefined;
-	export let easing: string = 'cubic-bezier(0, 0, .2, 1)';
-	export let duration = 350;
+	export let easing: string = 'cubic-bezier(0, 0, 0, 1)';
+	/**
+	 * R multiplier where duration = d * speed.
+	 */
+	export let speed: number = 1.5;
+	export let duration: number | undefined = undefined;
 	export let delay = 0;
-	export let opacityStart = 0.2;
+	export let opacityStart = 0.1;
 	export let opacityEnd = 0;
 	export let opacityEasing = 'ease-out';
 	export let opacityDuration = 1000;
@@ -21,18 +25,26 @@
 	export let spreadStart = 0;
 	export let spreadEnd = 1;
 	export let spreadEasing = easing;
+	export let spreadSpeed = speed;
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
-	export let color: string = 'var(--color-bg-000)';
+	export let color: string = 'var(--color-fg-100)';
 	export let colorStart: string = color;
 	export let colorEnd: string = colorStart;
 	export let colorEasing = easing;
+	export let colorSpeed = speed;
 	export let colorDuration = duration;
 	export let colorDelay = delay;
 	export let blur: number = 0;
 
 	let destructor: () => void;
-	let ripples: { x: number; y: number; d: number; animations: number; out?: boolean }[] = [];
+	let ripples: {
+		x: number;
+		y: number;
+		d: number;
+		animations: number;
+		out?: boolean;
+	}[] = [];
 	let containerRef: HTMLDivElement;
 	$: listenerRef = host ?? containerRef?.parentElement;
 
@@ -51,13 +63,13 @@
 					Math.ceil(Math.hypot(x, y)),
 					Math.ceil(Math.hypot(rect.width - x, rect.height - y))
 				);
-			const r = {
+			const ripple = {
 				x,
 				y,
 				d,
 				animations: N_ANIMATIONS,
 			};
-			ripples.push(r);
+			ripples.push(ripple);
 			ripples = ripples;
 			document.addEventListener('pointerup', remove);
 			document.addEventListener('pointercancel', remove);
@@ -100,17 +112,14 @@
 	style:--opacity-start={opacityStart}
 	style:--opacity-end={opacityEnd}
 	style:--opacity-easing={opacityEasing}
-	style:--opacity-duration="{opacityDuration}ms"
 	style:--opacity-delay="{opacityDelay}ms"
 	style:--spread-start={spreadStart}
 	style:--spread-end={spreadEnd}
 	style:--spread-easing={spreadEasing}
-	style:--spread-duration="{spreadDuration}ms"
 	style:--spread-delay="{spreadDelay}ms"
 	style:--color-start={colorStart}
 	style:--color-end={colorEnd}
 	style:--color-easing={colorEasing}
-	style:--color-duration="{colorDuration}ms"
 	style:--color-delay="{colorDelay}ms"
 	style:--blur="{blur}px"
 >
@@ -121,6 +130,9 @@
 			style:--x="{r.x}px"
 			style:--y="{r.y}px"
 			style:--d="{r.d}px"
+			style:--opacity-duration="{opacityDuration}ms"
+			style:--spread-duration="{spreadDuration ?? r.d / spreadSpeed}ms"
+			style:--color-duration="{colorDuration ?? r.d / colorSpeed}ms"
 			on:animationend|self={(e) => end(e, r)}
 		/>
 	{/each}

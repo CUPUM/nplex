@@ -9,6 +9,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Loading from './Loading.svelte';
+	import Ripple from './Ripple.svelte';
 	import { getSwitchContext } from './Switch.svelte';
 
 	export let id: string | undefined = undefined;
@@ -48,6 +49,7 @@
 	on:mouseenter
 	on:mouseleave
 >
+	<Ripple />
 	<input {id} {value} {name} type="radio" bind:group={$group} hidden />
 	<span class="slot">
 		<slot />

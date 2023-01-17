@@ -17,7 +17,7 @@
 		place="bottom"
 		passive
 	>
-		<Switch bind:group={$formProject.type_id} name="type_id">
+		<Switch bind:group={$formProject.type_id} name="type_id" variant="outlined">
 			{#each data.descriptors.types as d}
 				<SwitchItem value={d.id}>
 					{d.title}

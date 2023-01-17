@@ -138,7 +138,7 @@
 	import { RelativeURL } from '$utils/url';
 	import type { ComponentProps, SvelteComponentTyped } from 'svelte';
 	import { flip } from 'svelte/animate';
-	import { expoInOut, expoOut } from 'svelte/easing';
+	import { cubicIn, cubicOut, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
 	function closeMessage(e: MouseEvent, message: Message) {
@@ -177,9 +177,9 @@
 				scale: 0.95,
 				opacity: 0,
 				duration: 350,
-				easing: expoOut,
+				easing: cubicOut,
 			}}
-			out:scale|local={{ start: 0.95, opacity: 0, duration: 150, easing: expoInOut }}
+			out:scale|local={{ start: 0.9, opacity: 0, duration: 150, easing: cubicIn }}
 			animate:flip={{ duration: 350, easing: expoOut }}
 			class={message.type}
 			on:click|once={(e) => cancelTimer(e, message)}
@@ -218,7 +218,7 @@
 		left: 0;
 		width: 100%;
 		height: 0%;
-		padding: 2rem;
+		padding: var(--ui-gutter);
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
@@ -308,8 +308,17 @@
 		background: col(error, 700);
 		color: col(bg, 700);
 
-		& .progress {
+		.progress {
 			background: col(error, 900);
+		}
+	}
+
+	.success {
+		background: col(bg, 000);
+		color: col(success, 900);
+
+		.progress {
+			background: col(success, 500);
 		}
 	}
 

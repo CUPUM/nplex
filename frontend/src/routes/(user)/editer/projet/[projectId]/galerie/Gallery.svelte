@@ -12,12 +12,12 @@
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-	import { formid } from '../common';
+	import { FORMID } from '../common';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+	export let updating = false;
 
-	let updating = false;
 	let dragging: number | null = null;
 	let target: number | null = null;
 
@@ -55,7 +55,7 @@
 	class="update"
 	method="POST"
 	action="?/update"
-	id={formid}
+	id={FORMID}
 	use:enhance={({ form, data, action, cancel }) => {
 		updating = true;
 		return async ({ update, result }) => {

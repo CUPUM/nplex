@@ -32,7 +32,7 @@
 			>
 				<Ripple />
 				<i>
-					<Icon name={r.icon} strokeWidth={2} />
+					<Icon name={r.icon} />
 				</i>
 				{r.title}
 			</a>
@@ -68,6 +68,7 @@
 		display: inherit;
 		flex-direction: inherit;
 		gap: inherit;
+		transition: all 0.25s var(--ui-ease-out);
 	}
 
 	a {

@@ -93,7 +93,7 @@ hr {
 			&:focus-within,
 			&:focus-visible {
 				&::after {
-					outline: 5px solid rgb(var(--rgb-primary-100), 0.25);
+					outline: 5px solid rgb(var(--rgb-primary-100), 0.35);
 					// outline-offset: 1.5px;
 				}
 			}

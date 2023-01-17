@@ -66,7 +66,8 @@ export const actions: Actions = {
 			});
 		// Project works.
 		// Remove any works row not present in formData.
-		db.from('projects_works')
+		await db
+			.from('projects_works')
 			.delete()
 			.eq('project_id', event.params.projectId)
 			.not('work_id', 'in', pgarr(parsed.data.work_id))
@@ -90,6 +91,7 @@ export const actions: Actions = {
 						});
 				}
 			});
+		return { success: true };
 	},
 	delete: async (event) => {
 		if (!event.locals.session) return fail(401);

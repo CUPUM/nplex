@@ -21,6 +21,7 @@
 	let progress: LoadingProgress;
 	let scrollY = 0;
 	let mounted = false;
+	let outroing: HTMLElement;
 
 	if (browser) {
 		// Initialize the client-side db auth based on the session extracted from cookies, if any.
@@ -34,12 +35,18 @@
 		mounted = true;
 	});
 
-	beforeNavigate(() => {
+	beforeNavigate(({ from, to }) => {
 		progress?.start?.();
+		if (browser) {
+			document.documentElement.style.scrollBehavior = 'initial';
+		}
 	});
 
 	afterNavigate(() => {
 		progress?.complete?.();
+		if (browser) {
+			document.documentElement.style.scrollBehavior = '';
+		}
 	});
 </script>
 

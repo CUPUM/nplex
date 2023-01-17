@@ -107,7 +107,7 @@
 						<li
 							in:receive={{ key: w.id }}
 							out:send={{ key: w.id }}
-							animate:flip={{ delay: i * 20, duration: 150 }}
+							animate:flip={{ duration: 150 }}
 						>
 							<Tooltip message={w.description}>
 								<span class="token">
@@ -137,11 +137,7 @@
 			<div style:height="{$worksHeight}px" aria-hidden />
 			<ul id="works" bind:clientHeight={$worksHeight}>
 				{#each (searchResults ?? available).filter((w) => !$formProject.work_ids.includes(w.id)) as w, i (w.id)}
-					<li
-						in:receive={{ key: w.id }}
-						out:send={{ key: w.id }}
-						animate:flip={{ delay: i * 10, duration: 100 }}
-					>
+					<li in:receive={{ key: w.id }} out:send={{ key: w.id }} animate:flip={{ duration: 100 }}>
 						<Tooltip message={w.description}>
 							<button class="token" on:pointerdown={() => add(w.id)} type="button">
 								<span>{w.title}</span>
@@ -244,7 +240,7 @@
 				// box-shadow: 0 0.5em 2em -1em black;
 
 				.clear {
-					color: col(error, 300);
+					opacity: 1;
 				}
 			}
 		}
@@ -264,8 +260,8 @@
 
 			&:hover {
 				opacity: 1;
-				color: col(error, 100);
-				background: col(error, 100, 0.1);
+				color: col(error, 500);
+				background: col(error, 100, 0.2);
 			}
 		}
 	}

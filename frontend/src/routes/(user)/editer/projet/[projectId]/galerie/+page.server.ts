@@ -21,7 +21,6 @@ export const actions: Actions = {
 		const formData = await event.request.formData();
 		const files = formData.getAll(GALLERY_INPUT_NAME);
 		const db = await getDb(event);
-		let errs = [];
 		for await (const file of files) {
 			const parsed = await z
 				.any()
@@ -61,44 +60,41 @@ export const actions: Actions = {
 				})
 				.safeParseAsync(file);
 			if (!parsed.success) {
-				errs.push(parsed.error);
-				return;
+				throw error(STATUS_CODES.BadRequest, parsed.error);
 			}
-			const storageRes = await db.storage
+			// Upload to storage and update relevant rows.
+			await db.storage
 				.from(STORAGE_BUCKETS.PROJECTS)
 				.upload(
 					[event.params.projectId, GALLERY_FOLDER, parsed.data.name].join('/'),
 					parsed.data.buffer,
 					{ contentType: parsed.data.type, upsert: true }
-				);
-			if (storageRes.error) {
-				errs.push(storageRes.error);
-			} else {
-				const statsRes = await db
-					.from('projects_images')
-					.update({
-						color_dominant_hsl: parsed.data.color_dominant_hsl as any,
-						color_dominant_lab: parsed.data.color_dominant_lab as any,
-						color_mean_hsl: parsed.data.color_mean_hsl as any,
-						color_mean_lab: parsed.data.color_mean_lab as any,
-					})
-					.eq('name', storageRes.data?.path)
-					.single();
-				if (statsRes.error) {
-					errs.push(statsRes.error);
-					// Cleanup uploaded file if error from metadata update.
-					const delStorageRes = await db.storage
-						.from(STORAGE_BUCKETS.PROJECTS)
-						.remove([storageRes.data.path]);
-					if (delStorageRes.error) {
-						errs.push(delStorageRes.error);
+				)
+				.then((storage) => {
+					if (storage.error) {
+						throw error(STATUS_CODES.InternalServerError, storage.error);
 					}
-				}
-			}
-		}
-		if (errs.length) {
-			throw error(500, { message: JSON.stringify(errs) });
-			// return fail(400, { errors: errs });
+					db.from('projects_images')
+						.update({
+							color_dominant_hsl: parsed.data.color_dominant_hsl as any,
+							color_dominant_lab: parsed.data.color_dominant_lab as any,
+							color_mean_hsl: parsed.data.color_mean_hsl as any,
+							color_mean_lab: parsed.data.color_mean_lab as any,
+						})
+						.eq('name', storage.data.path)
+						.single()
+						.then(async (update) => {
+							if (update.error) {
+								const del = await db.storage
+									.from(STORAGE_BUCKETS.PROJECTS)
+									.remove([storage.data.path]);
+								if (del.error) {
+									throw error(STATUS_CODES.InternalServerError, del.error);
+								}
+								throw error(STATUS_CODES.InternalServerError, update.error);
+							}
+						});
+				});
 		}
 	},
 	update: async (event) => {

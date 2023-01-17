@@ -5,6 +5,7 @@
 	import { debounce } from '$utils/modifiers';
 	import { fly } from 'svelte/transition';
 	import type { PageData } from './$types';
+	import { formProject } from './common';
 
 	export let data: PageData;
 
@@ -14,6 +15,13 @@
 		if (e.key === KEY.Enter) {
 			e.preventDefault();
 		}
+	}
+
+	function handleBlur() {
+		if (!$formProject.title) {
+			$formProject.title = data.project.title;
+		}
+		console.log(data.project.title);
 	}
 
 	const handleChange = debounce((e) => {}, 500);
@@ -37,17 +45,11 @@
 				class="title"
 				bind:this={titleRef}
 				contenteditable="true"
-				bind:textContent={data.project.title}
+				bind:textContent={$formProject.title}
 				on:keydown={handleKey}
+				on:blur={handleBlur}
 			/>
-			<input
-				type="text"
-				name="title"
-				hidden
-				value={data.project.title}
-				id=""
-				on:input={handleChange}
-			/>
+			<input type="text" name="title" hidden value={$formProject.title} on:input={handleChange} />
 		</form>
 	</hgroup>
 </header>
@@ -68,45 +70,39 @@
 		display: grid;
 		gap: var(--ui-gutter);
 		grid-template-columns: 1fr 3fr;
+		padding-inline: var(--ui-gutter);
 	}
 
 	form {
 		grid-column: 2;
-		display: flex;
-		flex-direction: column;
 		width: 100%;
-		justify-content: flex-end;
 		padding-top: 20vh;
 		padding-bottom: 20vh;
 		cursor: text;
-		transition: all 0.25s var(--ui-ease-out);
-
-		&:hover {
-			color: col(primary, 700);
-		}
-
-		&:focus-within {
-			color: col(primary, 700);
-
-			:global(.icon) {
-				opacity: 0.5;
-			}
-		}
-
-		:global(.icon) {
-			align-self: flex-start;
-			opacity: 0.25;
-			font-size: 0.5em;
-		}
 	}
 
 	.title {
-		line-height: 1.1;
+		display: inline;
+		line-height: 1.1em;
 		outline: none;
 		word-break: keep-all;
 		hyphens: auto;
 		font-weight: 600;
 		font-size: var(--ui-text-3xl);
 		max-width: var(--ui-width-md);
+		border-radius: var(--ui-radius-md);
+		box-decoration-break: clone;
+		color: col(fg, 500);
+		caret-color: col(primary, 500);
+		caret-shape: block;
+		transition: all 0.1s ease-out;
+
+		&:hover {
+			color: col(fg, 900);
+		}
+
+		&:focus {
+			color: col(primary, 000);
+		}
 	}
 </style>

@@ -121,7 +121,7 @@
 		backdrop-filter: blur(8px);
 		border-radius: calc(var(--radius) + var(--outset));
 		padding: var(--outset);
-		transition: all 0.25s ease-out;
+		transition: all 0.25s var(--ui-ease-out);
 
 		&:hover,
 		nav:hover + & {
@@ -147,5 +147,10 @@
 		border-radius: var(--radius);
 		padding: var(--inset);
 		transform-origin: bottom center;
+		transition: all 0.25s var(--ui-ease-out);
+
+		&:hover {
+			box-shadow: 0 0 0 3px col(bg, 000, 0.5);
+		}
 	}
 </style>

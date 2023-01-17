@@ -20,7 +20,7 @@
 <script lang="ts">
 	import { THEMES, type ThemeName } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
-	import { cubicIn, expoOut } from 'svelte/easing';
+	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import Tether from './Tether.svelte';
 
@@ -39,6 +39,10 @@
 	}
 	function close() {
 		opened = false;
+	}
+
+	$: if (disabled) {
+		close();
 	}
 </script>
 
@@ -78,8 +82,8 @@
 		<div
 			data-theme={theme}
 			class="tooltip {place} {align}"
-			in:scale={{ start: 0.95, easing: expoOut, duration: 150, opacity: 0 }}
-			out:scale={{ start: 0.98, easing: cubicIn, duration: 200, opacity: 0 }}
+			in:scale={{ start: 0.9, easing: cubicOut, duration: 200, opacity: 0 }}
+			out:scale={{ start: 0.95, easing: cubicIn, duration: 250, opacity: 0 }}
 		>
 			<slot name="message" open={opened}>
 				{@html message}

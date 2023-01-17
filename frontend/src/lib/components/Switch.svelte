@@ -24,7 +24,6 @@
 	import { cubicInOut } from 'svelte/easing';
 	import { writable, type Writable } from 'svelte/store';
 	import { scale } from 'svelte/transition';
-	import Ripple from './Ripple.svelte';
 
 	export let name: string | undefined = undefined;
 	export let variant: Variant = 'default';
@@ -92,7 +91,6 @@
 	on:pointerenter
 	on:pointerleave
 >
-	<Ripple color="white" />
 	{#if currentRef}
 		<div
 			transition:scale|local={{ duration: 150, start: 0.9, opacity: 0, easing: cubicInOut }}
@@ -156,14 +154,13 @@
 			width: 100%;
 			height: 100%;
 			border-radius: inherit;
-			border: 1px solid col(bg, 900);
+			border: 1px solid col(fg, 100, 0.1);
 			transition: all 0.1s ease-out;
-			opacity: 0.5;
 		}
 		&:hover {
 			color: col(fg, 500);
 			&::before {
-				opacity: 1;
+				border: 1px solid col(fg, 100, 0.2);
 			}
 		}
 		.mark {
