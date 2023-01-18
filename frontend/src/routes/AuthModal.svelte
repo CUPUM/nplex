@@ -109,9 +109,12 @@
 	import SocialIcon, { SOCIAL_ICONS } from '$components/SocialIcon.svelte';
 	import { USER_BASE_ROUTE } from '$utils/routes';
 	import { THEMES } from '$utils/themes';
+	import type { ActionResult } from '@sveltejs/kit';
 	import { linear } from 'svelte/easing';
 	import { fade, fly, scale, slide } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
+	import type { AuthFailure } from './api/auth/common';
+	import { messages } from './MessagesOutlet.svelte';
 
 	const Action = {
 		SignIn: '/api/auth?/signin',
@@ -121,12 +124,22 @@
 	} as const;
 
 	let currentAction: string | null = null;
+
 	const providers = [
 		'facebook',
 		'google',
 		'linkedin',
 		'twitter',
 	] satisfies (keyof typeof SOCIAL_ICONS)[];
+
+	let failure: AuthFailure = {};
+
+	function followup(result: ActionResult) {
+		if (result.type === 'failure' && 'data' in result) {
+			failure = result.data as AuthFailure;
+			messages.error(...Object.values(failure).map((f) => ({ content: f.join('\n') })));
+		}
+	}
 </script>
 
 {#if $authModal}
@@ -145,10 +158,12 @@
 			action={$authModal === AUTHMODAL_MODE.SignUp ? Action.SignUp : Action.SignIn}
 			method="POST"
 			use:enhance={({ form, data, action, cancel }) => {
+				failure = {};
 				currentAction = action.pathname + action.search;
 				return async ({ update, result }) => {
 					update({ reset: false });
 					currentAction = null;
+					followup(result);
 				};
 			}}
 		>
@@ -158,12 +173,24 @@
 				</svg>
 			</a>
 			<fieldset class="fields">
-				<Field required class="fill-row" variant="default" name="email" type="email">
+				<Field
+					type="email"
+					class="fill-row"
+					variant="default"
+					name="email"
+					invalid={!!failure.email}
+				>
 					<FieldIcon name="letter" slot="leading" />
 					<svelte:fragment slot="label">Courriel</svelte:fragment>
 					<FieldReset slot="trailing" />
 				</Field>
-				<Field required class="fill-row" variant="default" name="password" type="password">
+				<Field
+					type="password"
+					class="fill-row"
+					variant="default"
+					name="password"
+					invalid={!!failure.password}
+				>
 					<FieldIcon slot="leading" name="lock-close" />
 					<svelte:fragment slot="label">Mot de passe</svelte:fragment>
 					<svelte:fragment slot="trailing">
@@ -173,13 +200,13 @@
 				</Field>
 				{#if $authModal === AUTHMODAL_MODE.SignUp}
 					<div class="signup fill-row" transition:slide|local={{ duration: 200 }}>
-						<Field variant="default" name="first_name">
+						<Field variant="default" name="first_name" invalid={!!failure.first_name}>
 							<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
 							<svelte:fragment slot="trailing">
 								<FieldReset />
 							</svelte:fragment>
 						</Field>
-						<Field variant="default" name="last_name">
+						<Field variant="default" name="last_name" invalid={!!failure.last_name}>
 							<svelte:fragment slot="label">Nom de famille</svelte:fragment>
 							<svelte:fragment slot="trailing">
 								<FieldReset />
@@ -312,8 +339,7 @@
 		align-items: stretch;
 		gap: 1rem;
 		border: none;
-		padding: 2.5rem;
-		padding-bottom: 0rem;
+		padding: 2rem 2.5rem;
 		margin: 0;
 		min-width: 0;
 		overflow-y: auto;
@@ -334,7 +360,7 @@
 	}
 
 	hr {
-		margin: 2rem 0;
+		margin-bottom: 2rem;
 	}
 
 	.providers {

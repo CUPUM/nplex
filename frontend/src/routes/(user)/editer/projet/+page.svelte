@@ -3,12 +3,19 @@
 	import Button from '$components/Button.svelte';
 	import Field from '$components/Field.svelte';
 	import Icon from '$components/Icon.svelte';
-	import Tooltip from '$components/Tooltip.svelte';
-	import { fly } from 'svelte/transition';
+	import { messages } from '$routes/MessagesOutlet.svelte';
+	import { fade, fly } from 'svelte/transition';
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;
 	export let loading = false;
+
+	$: if (form?.error) {
+		messages.error({ content: form.error });
+	}
+	$: if (form?.title) {
+		messages.error({ content: form.title.join(' ') });
+	}
 
 	let title = '';
 </script>
@@ -21,32 +28,31 @@
 		loading = true;
 		return async ({ update, result }) => {
 			update({ reset: false });
+			loading = false;
 		};
 	}}
 >
 	<div>
 		<h1 in:fly={{ y: 20 }}>Créez votre nouveau projet</h1>
 		<fieldset in:fly={{ y: -20, delay: 150 }}>
-			<Tooltip
-				place="bottom"
-				message="Vous pourrez toujours modifier le titre une fois le projet créé."
+			<Field
+				name="title"
+				class="title"
+				placeholder="Donnez un titre à vorte projet"
+				variant="outlined"
+				bind:value={title}
+				invalid={!!form?.title}
 			>
-				<Field
-					name="title"
-					class="title"
-					placeholder="Donnez un titre à vorte projet"
-					variant="outlined"
-					bind:value={title}
-					invalid={Boolean(form?.title?.length)}
-				>
-					<svelte:fragment slot="trailing">
-						<Button type="submit" disabled={!title} {loading}>
-							Créer
-							<Icon slot="leading" name="arrow-right" />
-						</Button>
-					</svelte:fragment>
-				</Field>
-			</Tooltip>
+				<svelte:fragment slot="trailing">
+					<Button type="submit" disabled={!title} {loading}>
+						Créer
+						<Icon slot="leading" name="arrow-right" />
+					</Button>
+				</svelte:fragment>
+			</Field>
+			<span in:fade={{ delay: 500 }}
+				>Vous pourrez toujours modifier le titre une fois le projet créé.</span
+			>
 		</fieldset>
 	</div>
 </form>
@@ -84,7 +90,7 @@
 		font-weight: 600;
 		max-width: var(--ui-width-main);
 		text-align: center;
-		margin-bottom: 4rem;
+		margin-bottom: 2rem;
 	}
 
 	section {
@@ -98,5 +104,15 @@
 	fieldset {
 		width: 100%;
 		font-size: 1.25rem;
+	}
+
+	span {
+		display: inline-block;
+		width: 100%;
+		text-align: center;
+		margin-top: var(--ui-gutter);
+		font-size: var(--ui-text-md);
+		font-weight: 300;
+		color: col(fg, 000);
 	}
 </style>

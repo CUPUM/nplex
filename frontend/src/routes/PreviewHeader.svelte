@@ -2,10 +2,6 @@
 </script>
 
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import Field from '$components/Field.svelte';
-	import FieldIcon from '$components/FieldIcon.svelte';
-	import FieldReset from '$components/FieldReset.svelte';
 	import Icon from '$components/Icon.svelte';
 
 	export let href: string;
@@ -24,12 +20,12 @@
 			</div>
 		</hgroup>
 	</a>
-	<form method="POST" use:enhance {action}>
+	<!-- <form method="POST" use:enhance {action}>
 		<Field type="search" {placeholder} variant="outlined">
 			<FieldIcon name="search" slot="leading" />
 			<FieldReset slot="trailing" />
 		</Field>
-	</form>
+	</form> -->
 </header>
 
 <style lang="scss">

@@ -209,13 +209,13 @@ export const STATUS_CODES = {
 } as const;
 
 /**
- * Dictionnary of error codes and their translated message. (Provided as object since enums do not
- * support number members.)
+ * Dictionnary of db rest api error messages and their translated counterpart.
  */
-export const ErrorCodeMessage = {
-	400: 'Impossible!',
-	500: '',
-} as const;
+export const ERROR_MESSAGE = {
+	'Invalid login credentials': 'Les identifiants utilisés ne sont pas valides.',
+};
+
+export const ERROR_CODE_STATUS = {} as const;
 
 /**
  * List of CSS cursor values.

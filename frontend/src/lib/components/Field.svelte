@@ -50,6 +50,9 @@
 	export let disabled: boolean | undefined = undefined;
 	export let warning: boolean | undefined = undefined;
 	export let success: boolean | undefined = undefined;
+	/**
+	 * Sets a warning state momentarily and unsets it after a 5s timeout.
+	 */
 	export let invalid: boolean | undefined = undefined;
 	export let maxlength: number | undefined = undefined;
 	export let minlength: number | undefined = undefined;
@@ -78,9 +81,17 @@
 
 	let inputRef: InputRef;
 	let labelWidth: number;
+	let invalidSample: Value = null;
+	let invalidTimer: any = null;
 	$: hasvalue = !!value || value === 0;
 	$: hasplaceholder = placeholder !== '';
 	$: haslabel = $$slots.label && !nolabel;
+
+	$: if (invalid) {
+		invalidTimer = setTimeout(() => {
+			clearInvalid();
+		}, 5000);
+	}
 
 	const _inputRef = writable<InputRef>();
 	$: _inputRef.set(inputRef);
@@ -108,6 +119,16 @@
 				value = e.target.value as Value;
 			}
 		}
+		if (value !== invalidSample) {
+			clearInvalid();
+		}
+	}
+
+	function clearInvalid() {
+		invalid = false;
+		clearTimeout(invalidTimer);
+		invalidTimer = null;
+		invalidSample = null;
 	}
 
 	setContext<FieldContext>(CTX_KEY, {
@@ -122,11 +143,10 @@
 	{style}
 	{disabled}
 	class:compact
-	class:warning
+	class:warning={warning || invalid}
 	class:readonly
 	class:loading
 	class:success
-	class:invalid
 	class:dirty
 	class:hasvalue
 	class:hasplaceholder
@@ -254,12 +274,12 @@
 			cursor: default;
 		}
 		&.warning {
-			color: red !important;
-			background: col(error, 100, 0.1);
-		}
-		&.invalid {
 			color: col(error, 700) !important;
 			background: col(error, 100, 0.1) !important;
+
+			.outline {
+				border-color: col(error, 500) !important;
+			}
 		}
 		&.success {
 			color: col(success, 700) !important;

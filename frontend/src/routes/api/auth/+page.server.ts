@@ -1,10 +1,16 @@
-import { getDb } from '$utils/database';
+import { errmsg, getDb } from '$utils/database';
 import { COOKIES, SEARCH_PARAMS, STATUS_CODES } from '$utils/enums';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { Actions } from './$types';
-import { setAuthCookie } from './common';
+import { setAuthCookie, type AuthFailure } from './common';
+
+const emailSchema = zfd.text(
+	z
+		.string({ required_error: 'Une adresse courriel est requise.' })
+		.email('Adresse courriel invalide.')
+);
 
 export const actions: Actions = {
 	/**
@@ -14,17 +20,28 @@ export const actions: Actions = {
 		const formData = await event.request.formData();
 		const parsed = zfd
 			.formData({
-				email: zfd.text(z.string().email()),
-				password: zfd.text(z.string().min(8)),
-				first_name: zfd.text(z.string().min(1)),
+				email: emailSchema,
+				password: zfd.text(
+					z
+						.string({ required_error: 'Vous devez fournir définir un mot de passe.' })
+						.min(8, 'Veuillez définir un mot de passe avec au minium 8 caractères.')
+				),
+				first_name: zfd.text(
+					z
+						.string({
+							required_error:
+								'Veillez définir un nom d’utilisateur. Il peut s’agir de votre prénom ou d’un pseudonyme.',
+						})
+						.min(1, 'Vous devez fournir un nom avec au minimum 1 caractère.')
+				),
 				last_name: zfd.text(z.string().optional()),
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(400, parsed.error.formErrors.fieldErrors);
+			return fail<AuthFailure>(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
-		const signupRes = await db.auth.signUp({
+		const signup = await db.auth.signUp({
 			email: parsed.data.email,
 			password: parsed.data.password,
 			options: {
@@ -34,11 +51,18 @@ export const actions: Actions = {
 				},
 			},
 		});
-		if (signupRes.error || !signupRes.data.session) {
-			return fail(500, { authError: signupRes.error });
+		if (signup.error) {
+			return fail<AuthFailure>(STATUS_CODES.InternalServerError, {
+				errors: [errmsg(signup.error)],
+			});
+		}
+		if (!signup.data.session) {
+			return fail<AuthFailure>(STATUS_CODES.InternalServerError, {
+				errors: ['Une erreur est survenue lors de la récupération de la session'],
+			});
 		}
 		// Modify below if email confirmation required.
-		setAuthCookie(event, signupRes.data.session);
+		setAuthCookie(event, signup.data.session);
 		const re = event.url.searchParams.get(SEARCH_PARAMS.REDIRECT);
 		if (re) {
 			throw redirect(STATUS_CODES.TemporaryRedirect, re);
@@ -53,26 +77,27 @@ export const actions: Actions = {
 		const parsed = zfd
 			.formData(
 				z.object({
-					email: zfd.text(z.string().email()),
+					email: emailSchema,
 					password: zfd.text(),
 				})
 			)
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(400, parsed.error.flatten().fieldErrors);
+			return fail<AuthFailure>(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
-		const signinRes = await db.auth.signInWithPassword({ ...parsed.data });
-		if (signinRes.error) {
-			return fail(STATUS_CODES.InternalServerError, { authError: signinRes.error });
-		}
-		if (!signinRes.data.session) {
-			throw error(STATUS_CODES.ExpectationFailed, {
-				message:
-					'Il y a eu un problème lors de la récupération de votre session. Veuillez essayer à nouveau.',
+		const signin = await db.auth.signInWithPassword({ ...parsed.data });
+		if (signin.error) {
+			return fail<AuthFailure>(STATUS_CODES.InternalServerError, {
+				errors: [errmsg(signin.error)],
 			});
 		}
-		setAuthCookie(event, signinRes.data.session);
+		if (!signin.data.session) {
+			return fail<AuthFailure>(STATUS_CODES.InternalServerError, {
+				errors: ['Une erreur est survenue lors de la récupération de la session'],
+			});
+		}
+		setAuthCookie(event, signin.data.session);
 		const re = event.url.searchParams.get(SEARCH_PARAMS.REDIRECT);
 		if (re) {
 			throw redirect(STATUS_CODES.TemporaryRedirect, re);
@@ -86,7 +111,7 @@ export const actions: Actions = {
 		const db = await getDb(event);
 		const signoutRes = await db.auth.signOut();
 		if (signoutRes.error) {
-			return fail(STATUS_CODES.InternalServerError, { authError: signoutRes.error });
+			throw error(STATUS_CODES.InternalServerError);
 		}
 		event.cookies.delete(COOKIES.SESSION, { path: '/' });
 	},

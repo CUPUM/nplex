@@ -139,7 +139,7 @@
 	import type { ComponentProps, SvelteComponentTyped } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { cubicIn, cubicOut, expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
+	import { fly, scale } from 'svelte/transition';
 
 	function closeMessage(e: MouseEvent, message: Message) {
 		e.stopPropagation();
@@ -176,11 +176,11 @@
 				translateY: 8,
 				scale: 0.95,
 				opacity: 0,
-				duration: 350,
+				duration: 250,
 				easing: cubicOut,
 			}}
-			out:scale|local={{ start: 0.9, opacity: 0, duration: 150, easing: cubicIn }}
-			animate:flip={{ duration: 350, easing: expoOut }}
+			out:scale|local={{ start: 0.9, opacity: 0, duration: 100, easing: cubicIn }}
+			animate:flip={{ duration: 250, easing: expoOut }}
 			class={message.type}
 			on:click|once={(e) => cancelTimer(e, message)}
 		>
@@ -203,7 +203,10 @@
 					<svelte:component this={message.content.component} {...message.content.props || {}} />
 				{/if}
 			</div>
-			<button on:click={(e) => closeMessage(e, message)}>
+			<button
+				in:fly={{ x: -10, delay: 200, easing: cubicOut, duration: 250 }}
+				on:click={(e) => closeMessage(e, message)}
+			>
 				<Icon name="cross" style="font-size: 1.25em" />
 			</button>
 		</dialog>

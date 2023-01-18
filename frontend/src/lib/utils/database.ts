@@ -4,10 +4,15 @@ import { page } from '$app/stores';
 // @ts-ignore:next-line
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
 import { setSessionCookie, tokenData } from '$routes/api/auth/common';
-import { createClient, type SupportedStorage } from '@supabase/supabase-js';
+import {
+	AuthError,
+	createClient,
+	type PostgrestError,
+	type SupportedStorage,
+} from '@supabase/supabase-js';
 import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { get } from 'svelte/store';
-import { LOAD_DEPENDENCIES } from './enums';
+import { ERROR_MESSAGE, LOAD_DEPENDENCIES } from './enums';
 
 /**
  * Supabase client instance reserved to browser context.
@@ -140,4 +145,22 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 		}
 	}
 	return db;
+}
+
+/**
+ * Retrieve translated error description.
+ */
+export function errmsg(error: AuthError | PostgrestError, fallback?: string) {
+	if (error instanceof AuthError) {
+		return (
+			(ERROR_MESSAGE as Record<any, string>)[error.message] ??
+			fallback ??
+			`Il y a eu une erreur d’authentification. (${error.name}, ${error.status})`
+		);
+	} else if ('code' in error) {
+		return (
+			(ERROR_MESSAGE as Record<any, string>)[error.message] ?? fallback ?? JSON.stringify(error)
+		);
+	}
+	return fallback ?? JSON.stringify(error);
 }

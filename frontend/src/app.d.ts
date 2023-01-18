@@ -5,7 +5,7 @@ import type { Database } from '$types/database';
 import type { DeepReplace } from '$types/utils';
 import type { Category } from '$utils/enums';
 import type { ThemeName } from '$utils/themes';
-import type { AuthSession, PostgrestError, SupabaseClient } from '@supabase/supabase-js';
+import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
 
 type Session = DeepOmit<AuthSession, { user: { role: never } }> & {
@@ -133,12 +133,5 @@ declare global {
 			 */
 			db?: SupabaseClient<App.DatabaseSchema>;
 		}
-		interface Error {
-			// Has message prop by default ($page.error.message).
-			// Code is also accessible in $page.status
-			proposeAuth?: boolean;
-			database?: PostgrestError;
-		}
-		// interface Platform {}
 	}
 }

@@ -5,6 +5,15 @@ import { json, type RequestEvent } from '@sveltejs/kit';
 
 type CookieOptions = Parameters<RequestEvent['cookies']['set']>[2];
 
+export type AuthFailure = {
+	email?: string[];
+	password?: string[];
+	first_name?: string[];
+	last_name?: string[];
+	provider?: string[];
+	errors?: string[];
+};
+
 export const SERVER_COOKIE_OPTIONS: CookieOptions = {
 	path: '/',
 	httpOnly: true,
