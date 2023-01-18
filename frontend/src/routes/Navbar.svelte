@@ -162,7 +162,7 @@
 		z-index: 100;
 		top: 0;
 
-		@include tablet {
+		@include small {
 			align-items: flex-start;
 		}
 	}
@@ -189,7 +189,7 @@
 		align-items: center;
 		gap: 1rem;
 
-		@include tablet {
+		@include small {
 			display: flex;
 			flex: unset;
 			flex-direction: column;
@@ -225,7 +225,7 @@
 		padding: var(--ui-gutter);
 		display: none;
 
-		@include tablet {
+		@include small {
 			display: block;
 		}
 	}
@@ -239,7 +239,7 @@
 		gap: 2px;
 		transition: transform 0.25s cubic-bezier(0, 0, 0, 1) var(--d), opacity 0.25s ease-out var(--d);
 
-		@include tablet {
+		@include small {
 			flex-direction: column;
 			align-items: flex-start;
 		}

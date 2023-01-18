@@ -18,7 +18,7 @@
 
 	const lookup = Object.values(PROJECT_EDITOR_ROUTES);
 
-	function href(page: Page, destination: ValueOf<typeof PROJECT_EDITOR_ROUTES> | null) {
+	function pathname(page: Page, destination: ValueOf<typeof PROJECT_EDITOR_ROUTES> | null) {
 		const base = `${EDITOR_ROUTES.project.pathname}/${page.params.projectId}`;
 		if (!destination) {
 			return base;
@@ -48,14 +48,16 @@
 	<div class="toolbar" data-theme={THEMES.dark}>
 		{#if sections}
 			<nav
-				class="nest"
 				in:fly={{ y: 20, opacity: 0, duration: 200, easing: expoOut }}
 				out:scale|local={{ duration: 150, start: 0.96 }}
 			>
 				{#each lookup as r}
-					<Button variant="ghost" href={href($page, r)}>
-						{r.title}
-					</Button>
+					{@const href = pathname($page, r)}
+					<a {href} data-current={$page.url.pathname === href.split('#')[0]}>
+						<span>
+							{r.title}
+						</span>
+					</a>
 				{/each}
 			</nav>
 		{/if}
@@ -65,28 +67,25 @@
 				disabled={!prev}
 				align="start"
 			>
-				<Button href={href($page, prev)} disabled={!prev} equi variant="ghost">
+				<Button href={pathname($page, prev)} disabled={!prev} equi variant="ghost">
 					<Icon name="arrow-left" />
 				</Button>
 			</Tooltip>
-			<!-- <hr /> -->
-			<Button as="label" variant="ghost">
+			<Button as="label" variant="ghost" active={sections}>
 				<Icon name={sections ? 'chevron-down' : 'hamburger'} slot="trailing" />
 				Sections
 				<input type="checkbox" hidden bind:checked={sections} />
 			</Button>
-			<!-- <hr /> -->
 			<Button type="submit" variant="ghost" form={FORMID}>
 				Sauvegarder
 				<Icon name="save" slot="trailing" />
 			</Button>
-			<!-- <hr /> -->
 			<Tooltip
 				message={next ? `Continuer vers: ${next.title}` : undefined}
 				disabled={!next}
 				align="end"
 			>
-				<Button href={href($page, next)} disabled={!next} equi variant="ghost">
+				<Button href={pathname($page, next)} disabled={!next} equi variant="ghost">
 					<Icon name="arrow-right" />
 				</Button>
 			</Tooltip>
@@ -133,6 +132,7 @@
 	nav {
 		--radius: var(--ui-radius-md);
 		--inset: var(--ui-inset);
+		font-size: var(--ui-text-sm);
 		position: absolute;
 		pointer-events: all;
 		bottom: 100%;
@@ -144,13 +144,37 @@
 		transform: translateX(-50%);
 		background: col(bg, 000, 0.85);
 		backdrop-filter: blur(8px);
-		border-radius: var(--radius);
+		border-radius: calc(var(--inset) + var(--radius));
 		padding: var(--inset);
 		transform-origin: bottom center;
 		transition: all 0.25s var(--ui-ease-out);
 
 		&:hover {
 			box-shadow: 0 0 0 3px col(bg, 000, 0.5);
+		}
+
+		a {
+			height: var(--ui-height);
+			border-radius: var(--radius);
+			display: flex;
+			align-items: center;
+			padding-inline: var(--ui-pad-x);
+			color: col(fg, 100);
+			transition: all 0.15s var(--ui-ease-out);
+
+			&:hover {
+				color: col(primary, 700);
+				background: col(primary, 700, 0.1);
+			}
+
+			&[data-current='true'] {
+				color: col(primary, 500);
+			}
+
+			span {
+				position: relative;
+				top: -0.1em;
+			}
 		}
 	}
 </style>

@@ -165,6 +165,8 @@
 		position: absolute;
 		border-radius: 99px;
 		.row & {
+			box-sizing: content-box;
+			padding-inline: calc(0.5 * var(--track-thickness));
 			width: 100%;
 			height: var(--track-thickness);
 		}
@@ -176,6 +178,7 @@
 
 	.tick {
 		--d: 1em;
+		--l: 0.5em;
 		font-size: var(--ui-text-xs);
 		font-variant-numeric: tabular-nums;
 		text-align: center;
@@ -184,26 +187,39 @@
 		position: absolute;
 		left: calc((var(--tick) - var(--min)) * 100% / var(--domain));
 		top: 50%;
-		margin-top: var(--d);
+		margin-top: calc(0.5 * var(--track-thickness));
+		padding-top: var(--d);
 		height: 1em;
 		width: max-content;
 		transform: translateX(-50%);
 		&::before {
-			bottom: 100%;
-			left: calc(50% - 0.5px);
+			top: 0;
+			left: calc(50%);
+			transform: translateX(-50%);
 			content: '';
 			position: absolute;
-			height: var(--d);
-			width: 1px;
-			background: col(bg, 900);
+			height: var(--l);
+			width: 1.5px;
+			background: col(fg, 100, 0.1);
 		}
+		// &::after {
+		// 	content: '';
+		// 	position: absolute;
+		// 	bottom: 100%;
+		// 	width: var(--track-thickness);
+		// 	aspect-ratio: 1;
+		// 	border-radius: 50%;
+		// 	background: col(fg, 100, 0.2);
+		// 	left: calc(50%);
+		// 	transform: translateX(-50%);
+		// }
 	}
 
 	// Variants
 
 	.default {
 		.track {
-			background: col(bg, 900);
+			background: col(fg, 100, 0.2);
 		}
 	}
 

@@ -48,7 +48,7 @@
 		"browserslist": "^4.21.4",
 		"csstype": "^3.1.1",
 		"element-to-path": "^1.2.1",
-		"esbuild": "^0.17.1",
+		"esbuild": "^0.17.2",
 		"eslint": "^8.32.0",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-svelte3": "^4.0.0",

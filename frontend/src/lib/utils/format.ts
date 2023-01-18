@@ -43,6 +43,15 @@ export function alwaysarr<T>(arr: T): Arrify<T> {
 	return Array.isArray(arr) ? <Arrify<T>>arr : <Arrify<T>>[arr];
 }
 
+export function csshsl(pghsl: string) {
+	let comma = 0;
+	return `hsl${pghsl
+		.replace(/,/g, (substr) => {
+			return ++comma === 2 ? '%,' : substr;
+		})
+		.replace(')', '%)')}`;
+}
+
 /**
  * Takes desired page range, page size, and returns tuple of start and end to be used with range
  * selector of db client.

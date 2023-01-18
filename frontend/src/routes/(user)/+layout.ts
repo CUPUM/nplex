@@ -7,6 +7,8 @@ const MESSAGE = 'Désolé, un compte est requis pour accéder à cette section d
 
 export const load = (async (event) => {
 	const { session } = await event.parent();
+	// console.log('User layout', session);
+
 	if (!session) {
 		throw redirect(STATUS_CODES.TemporaryRedirect, queryMessage('/', { content: MESSAGE }));
 	}

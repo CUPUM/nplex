@@ -59,7 +59,7 @@
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: var(--ui-gutter);
 
-		@include tablet {
+		@include small {
 			display: flex;
 			flex-direction: column;
 		}

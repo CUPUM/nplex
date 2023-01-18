@@ -138,6 +138,7 @@
 		--inset: var(--ui-inset);
 		--notch-padding: 0.25em;
 		--pad-y: calc(var(--ui-height) * 0.5 - 1em);
+		cursor: text;
 		position: relative;
 		display: grid;
 		border-radius: var(--radius);
@@ -161,6 +162,11 @@
 		&.success {
 			color: col(success, 700) !important;
 			background: col(success, 100, 0.1) !important;
+		}
+
+		--scroll-size: 0px;
+		&:hover {
+			--scroll-size: initial;
 		}
 	}
 
@@ -225,7 +231,12 @@
 		margin-top: var(--pad-y);
 		background: transparent;
 		resize: none;
+		mask-image: linear-gradient(to top, transparent 0px, black 1em);
 		transition: all 0.15s var(--ui-ease-out);
+
+		&:hover {
+			mask-image: none;
+		}
 	}
 
 	label {
@@ -325,15 +336,11 @@
 				top: 0.75em;
 				font-size: clamp(11px, 0.5em, 24px);
 			}
-			// .affix {
-			// 	opacity: 0.5;
-			// }
-			// &.haslabel {
-			// 	.affix,
-			// 	textarea {
-			// 		margin-top: calc(var(--pad-y) + 1.5em);
-			// 	}
-			// }
+			&.haslabel {
+				textarea {
+					margin-top: calc(var(--pad-y) + 1.5em);
+				}
+			}
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {

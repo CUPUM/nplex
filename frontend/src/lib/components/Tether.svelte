@@ -50,8 +50,8 @@
 		resizeObs = new ResizeObserver(updatePosition);
 		mutationObs = new MutationObserver(updatePosition);
 		if (anchor.offsetParent) {
-			resizeObs.observe(anchor, {});
-			resizeObs.observe(anchor.offsetParent, {});
+			resizeObs.observe(anchor);
+			resizeObs.observe(anchor.offsetParent);
 			mutationObs.observe(anchor, { attributes: true });
 			mutationObs.observe(anchor.offsetParent, { attributes: true });
 		}

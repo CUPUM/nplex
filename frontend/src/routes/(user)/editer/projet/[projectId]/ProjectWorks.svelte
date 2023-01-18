@@ -105,8 +105,8 @@
 				{#if selected.length}
 					{#each selected as w, i (w.id)}
 						<li
-							in:receive={{ key: w.id }}
-							out:send={{ key: w.id }}
+							in:receive|local={{ key: w.id }}
+							out:send|local={{ key: w.id }}
 							animate:flip={{ duration: 150 }}
 						>
 							<Tooltip message={w.description}>
@@ -137,7 +137,11 @@
 			<div style:height="{$worksHeight}px" aria-hidden />
 			<ul id="works" bind:clientHeight={$worksHeight}>
 				{#each (searchResults ?? available).filter((w) => !$formProject.work_ids.includes(w.id)) as w, i (w.id)}
-					<li in:receive={{ key: w.id }} out:send={{ key: w.id }} animate:flip={{ duration: 100 }}>
+					<li
+						in:receive|local={{ key: w.id }}
+						out:send|local={{ key: w.id }}
+						animate:flip={{ duration: 100 }}
+					>
 						<Tooltip message={w.description}>
 							<button class="token" on:pointerdown={() => add(w.id)} type="button">
 								<span>{w.title}</span>

@@ -11,26 +11,26 @@ export const actions: Actions = {
 	 * Sign up a new user.
 	 */
 	signup: async (event) => {
-		const d = await event.request.formData();
-		const v = zfd
+		const formData = await event.request.formData();
+		const parsed = zfd
 			.formData({
 				email: zfd.text(z.string().email()),
 				password: zfd.text(z.string().min(8)),
-				first_name: zfd.text(z.string().optional()),
+				first_name: zfd.text(z.string().min(1)),
 				last_name: zfd.text(z.string().optional()),
 			})
-			.safeParse(d);
-		if (!v.success) {
-			return fail(400, v.error.formErrors.fieldErrors);
+			.safeParse(formData);
+		if (!parsed.success) {
+			return fail(400, parsed.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
 		const signupRes = await db.auth.signUp({
-			email: v.data.email,
-			password: v.data.password,
+			email: parsed.data.email,
+			password: parsed.data.password,
 			options: {
 				data: {
-					first_name: v.data.first_name,
-					last_name: v.data.last_name,
+					first_name: parsed.data.first_name,
+					last_name: parsed.data.last_name,
 				},
 			},
 		});
@@ -39,7 +39,6 @@ export const actions: Actions = {
 		}
 		// Modify below if email confirmation required.
 		setAuthCookie(event, signupRes.data.session);
-		// re(event);
 		const re = event.url.searchParams.get(SEARCH_PARAMS.REDIRECT);
 		if (re) {
 			throw redirect(STATUS_CODES.TemporaryRedirect, re);
@@ -50,20 +49,20 @@ export const actions: Actions = {
 	 * login.
 	 */
 	signin: async (event) => {
-		const d = await event.request.formData();
-		const v = zfd
+		const formData = await event.request.formData();
+		const parsed = zfd
 			.formData(
 				z.object({
 					email: zfd.text(z.string().email()),
 					password: zfd.text(),
 				})
 			)
-			.safeParse(d);
-		if (!v.success) {
-			return fail(400, v.error.flatten().fieldErrors);
+			.safeParse(formData);
+		if (!parsed.success) {
+			return fail(400, parsed.error.flatten().fieldErrors);
 		}
 		const db = await getDb(event);
-		const signinRes = await db.auth.signInWithPassword({ ...v.data });
+		const signinRes = await db.auth.signInWithPassword({ ...parsed.data });
 		if (signinRes.error) {
 			return fail(STATUS_CODES.InternalServerError, { authError: signinRes.error });
 		}

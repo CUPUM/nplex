@@ -6,7 +6,7 @@
 
 ### See it live
 
-:pick: Under construction :pick:
+:pick: Under construction :pick: at [nplex.design](www.nplex.design)
 
 ### Stack
 

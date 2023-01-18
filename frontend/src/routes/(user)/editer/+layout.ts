@@ -23,7 +23,7 @@ export const load = (async (event) => {
 		.order('updated_at', { ascending: false })
 		.range(...pagination(0, 10));
 	if (projectsRes.error) {
-		throw error(404, projectsRes.error);
+		throw error(STATUS_CODES.NotFound, projectsRes.error);
 	}
 	return {
 		projects: projectsRes.data,

@@ -742,10 +742,10 @@ export interface Database {
       }
       projects_images: {
         Row: {
-          color_dominant_hsl: unknown
-          color_dominant_lab: unknown
-          color_mean_hsl: unknown
-          color_mean_lab: unknown
+          color_dominant_hsl: unknown | null
+          color_dominant_lab: unknown | null
+          color_mean_hsl: unknown | null
+          color_mean_lab: unknown | null
           created_at: string
           created_by_id: string
           description: string | null
@@ -758,10 +758,10 @@ export interface Database {
           updated_by_id: string
         }
         Insert: {
-          color_dominant_hsl: unknown
-          color_dominant_lab: unknown
-          color_mean_hsl: unknown
-          color_mean_lab: unknown
+          color_dominant_hsl?: unknown | null
+          color_dominant_lab?: unknown | null
+          color_mean_hsl?: unknown | null
+          color_mean_lab?: unknown | null
           created_at?: string
           created_by_id?: string
           description?: string | null
@@ -774,10 +774,10 @@ export interface Database {
           updated_by_id?: string
         }
         Update: {
-          color_dominant_hsl?: unknown
-          color_dominant_lab?: unknown
-          color_mean_hsl?: unknown
-          color_mean_lab?: unknown
+          color_dominant_hsl?: unknown | null
+          color_dominant_lab?: unknown | null
+          color_mean_hsl?: unknown | null
+          color_mean_lab?: unknown | null
           created_at?: string
           created_by_id?: string
           description?: string | null
@@ -1261,11 +1261,11 @@ export interface Database {
     Functions: {
       cube:
         | {
-            Args: { "": number[] }
+            Args: { "": number }
             Returns: unknown
           }
         | {
-            Args: { "": number }
+            Args: { "": number[] }
             Returns: unknown
           }
       cube_dim: {
@@ -1314,11 +1314,11 @@ export interface Database {
       }
       user_can_edit_project:
         | {
-            Args: { p_row: unknown }
+            Args: { p_id: string }
             Returns: boolean
           }
         | {
-            Args: { p_id: string }
+            Args: { p_row: unknown }
             Returns: boolean
           }
       user_has_role:

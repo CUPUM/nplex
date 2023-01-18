@@ -13,14 +13,6 @@
 			width: number;
 		};
 	}
-
-	// Consts:
-	const GRADIENT_SPREAD_MIN = 40;
-	const GRADIENT_SPREAD_MAX = 110;
-	const GRADIENT_OUTSET = 20;
-	// Derived consts:
-	const GRADIENT_AREA = 100 + 2 * GRADIENT_OUTSET;
-	const GRADIENT_SPREAD_RANGE = GRADIENT_SPREAD_MAX - GRADIENT_SPREAD_MIN;
 </script>
 
 <script lang="ts">
@@ -33,6 +25,8 @@
 	export let srcset: SourceSpecification[] | undefined = undefined;
 	export let alt: string;
 	export let objectFit: css.Properties['objectFit'] = 'cover';
+	export let draggable: boolean | undefined = undefined;
+	export let color: string | undefined = undefined;
 	export let style: string | undefined = undefined;
 	let className: string = '';
 	export { className as class };
@@ -60,13 +54,25 @@
 	});
 </script>
 
-<picture class={className} {style} on:click on:mouseover on:mousedown on:focus on:blur on:keypress>
+<picture
+	{draggable}
+	class={className}
+	{style}
+	on:click
+	on:mouseover
+	on:mousedown
+	on:focus
+	on:blur
+	on:keypress
+	style:--color={color}
+>
 	{#if srcset}
 		{#each srcset as s}
 			<source srcset={s.src} media={String(s.media)} />
 		{/each}
 	{/if}
 	<img
+		draggable="false"
 		{alt}
 		src={setsrc}
 		loading="lazy"
@@ -109,6 +115,8 @@
 		border-radius: inherit;
 		width: 100%;
 		height: 100%;
+		background: var(--color, transparent);
+		transition: background 0.25s ease;
 
 		&.none {
 			opacity: 0;
@@ -125,7 +133,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: col(bg, 900);
+		background: var(--color, var(--color-fg-900, 0.1));
 
 		:global(.icon) {
 			font-size: 1.5rem;

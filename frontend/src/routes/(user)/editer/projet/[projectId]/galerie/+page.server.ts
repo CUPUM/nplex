@@ -102,6 +102,8 @@ export const actions: Actions = {
 			return fail(STATUS_CODES.BadRequest);
 		}
 		const formData = await event.request.formData();
+		formData.delete('files');
+		console.log(formData);
 		const parsed = zfd
 			.formData(
 				z.record(
@@ -120,21 +122,15 @@ export const actions: Actions = {
 				});
 			})
 			.safeParse(formData);
+		console.log(parsed);
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
-		// Select...
-		// then
-		// Patch array
-		// then
-		// Upsert without creating...
-		// const updateRes = await db.from('projects_images').upsert(
-		// );
-		// console.log(updateRes);
-		// if (updateRes.error) {
-		// 	return fail(STATUS_CODES.InternalServerError, updateRes.error);
-		// }
+		const patch = await db.from('projects_images').upsert(parsed.data);
+		if (patch.error) {
+			throw error(STATUS_CODES.InternalServerError, patch.error);
+		}
 	},
 	delete: async (event) => {
 		if (!event.params.projectId) {
@@ -145,9 +141,9 @@ export const actions: Actions = {
 			return fail(STATUS_CODES.BadRequest);
 		}
 		const db = await getDb(event);
-		const deleteRes = await db.storage.from(STORAGE_BUCKETS.PROJECTS).remove([imageName]);
-		if (deleteRes.error) {
-			throw error(STATUS_CODES.InternalServerError, deleteRes.error);
+		const del = await db.storage.from(STORAGE_BUCKETS.PROJECTS).remove([imageName]);
+		if (del.error) {
+			throw error(STATUS_CODES.InternalServerError, del.error);
 		}
 	},
 	/**
