@@ -94,6 +94,7 @@
 		margin: 0 auto;
 		width: 100%;
 		padding-top: var(--ui-nav-px);
+		padding-bottom: 1.5rem;
 		max-width: var(--ui-width-main);
 		display: grid;
 		gap: 2rem;
