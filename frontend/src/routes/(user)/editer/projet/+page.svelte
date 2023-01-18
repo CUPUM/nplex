@@ -78,7 +78,7 @@
 		display: flex;
 		align-items: center;
 		flex-direction: column;
-		padding-inline: var(--ui-gutter);
+		padding-inline: 1.5rem;
 		max-width: var(--ui-width-md);
 		width: 100%;
 		gap: 0;
@@ -110,7 +110,7 @@
 		display: inline-block;
 		width: 100%;
 		text-align: center;
-		margin-top: var(--ui-gutter);
+		margin-top: 1.5rem;
 		font-size: var(--ui-text-md);
 		font-weight: 300;
 		color: col(fg, 000);

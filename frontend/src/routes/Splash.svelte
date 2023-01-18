@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { intersection } from '$actions/intersection';
 	import { browser } from '$app/environment';
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import { FULL_VIEWBOX, LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
@@ -44,6 +45,7 @@
 <svelte:window bind:scrollY={y} />
 <header
 	use:setNavbarTheme={THEMES.dark}
+	use:intersection
 	on:enter={() => {
 		entered = true;
 	}}
@@ -96,7 +98,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		bottom: var(--ui-gutter);
+		bottom: 1.5rem;
 		color: col(fg, 700);
 		font-size: 3rem;
 		width: 5rem;

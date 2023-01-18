@@ -129,8 +129,8 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-		gap: var(--ui-gutter);
-		padding: var(--ui-gutter);
+		gap: 1.5rem;
+		padding: 1.5rem;
 	}
 
 	.ownership {
@@ -140,7 +140,7 @@
 		position: relative;
 		display: flex;
 		flex-direction: row;
-		gap: var(--ui-gutter);
+		gap: 1.5rem;
 		max-width: var(--ui-width-main);
 		width: 100%;
 		margin: 0 auto;
@@ -153,13 +153,13 @@
 
 	.map {
 		// --top: var(--ui-nav-px);
-		// --bottom: var(--ui-gutter);
+		// --bottom: 1.5rem;
 		position: sticky;
 		// top: var(--top);
 		// height: calc(100vh - var(--top) - var(--bottom));
 		top: 0;
 		height: 100vh;
-		padding: var(--ui-gutter);
+		padding: 1.5rem;
 		border-radius: var(--ui-radius-lg);
 	}
 
@@ -167,7 +167,7 @@
 		display: flex;
 		flex-direction: column;
 		border-radius: var(--ui-block-radius);
-		gap: var(--ui-gutter);
+		gap: 1.5rem;
 
 		> fieldset {
 			padding: 2rem;

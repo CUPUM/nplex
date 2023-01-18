@@ -97,7 +97,7 @@
 		align-items: center;
 		justify-content: center;
 		// border: 1px solid col(fg, 100, 0.05);
-		margin-top: var(--ui-gutter);
+		margin-top: 1.5rem;
 		// border-radius: var(--ui-radius-xl) var(--ui-radius-xl) 0 0;
 	}
 
@@ -107,8 +107,8 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		align-items: stretch;
-		gap: var(--ui-gutter);
-		padding: 3rem var(--ui-gutter);
+		gap: 1.5rem;
+		padding: 3rem 1.5rem;
 	}
 
 	.sub {
@@ -171,7 +171,7 @@
 		font-size: var(--ui-text-xl);
 		display: flex;
 		flex-direction: column;
-		gap: var(--ui-gutter);
+		gap: 1.5rem;
 		justify-content: space-between;
 		align-items: center;
 		grid-column: 1 / -1;

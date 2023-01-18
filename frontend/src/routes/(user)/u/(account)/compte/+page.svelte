@@ -104,7 +104,7 @@
 	form {
 		display: flex;
 		flex-direction: column;
-		gap: var(--ui-gutter);
+		gap: 1.5rem;
 	}
 
 	h2 {

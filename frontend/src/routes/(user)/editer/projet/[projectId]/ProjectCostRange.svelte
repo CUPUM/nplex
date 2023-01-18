@@ -65,7 +65,7 @@
 	section {
 		display: flex;
 		flex-direction: column;
-		gap: var(--ui-gutter);
+		gap: 1.5rem;
 		width: 100%;
 		max-width: var(--ui-width-p);
 	}
@@ -73,7 +73,7 @@
 	.fields {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: var(--ui-gutter);
-		margin-bottom: var(--ui-gutter);
+		gap: 1.5rem;
+		margin-bottom: 1.5rem;
 	}
 </style>

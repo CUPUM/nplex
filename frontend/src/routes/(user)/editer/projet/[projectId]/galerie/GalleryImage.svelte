@@ -181,8 +181,8 @@
 <style lang="scss">
 	div {
 		perspective: 1000px;
-		padding: calc(0.5 * var(--ui-gutter));
-		margin-bottom: var(--ui-gutter);
+		padding: calc(0.5 * 1.5rem);
+		margin-bottom: 1.5rem;
 		border-radius: var(--ui-radius-lg);
 		transition: box-shadow 0.25s ease-in-out;
 	}
@@ -237,11 +237,11 @@
 		scale: 0.96;
 
 		&.before {
-			transform: rotateY(-12deg);
+			transform: rotateY(-8deg) translateX(24px);
 		}
 
 		&.after {
-			transform: rotateY(12deg);
+			transform: rotateY(8deg) translateX(-24px);
 		}
 	}
 

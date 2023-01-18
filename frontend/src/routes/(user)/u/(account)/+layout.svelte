@@ -24,11 +24,11 @@
 		// grid-template-columns: var(--aside-width) 1fr var(--aside-width);
 		grid-template-columns: var(--aside-width) 1fr;
 		margin: 0 auto;
-		gap: var(--ui-gutter);
+		gap: 1.5rem;
 		align-items: flex-start;
 		width: 100%;
 		max-width: var(--ui-width-main);
-		padding: 0 var(--ui-gutter);
+		padding: 0 1.5rem;
 		// border-top: 1px solid col(fg, 100, 0.1);
 	}
 
@@ -37,7 +37,7 @@
 		display: flex;
 		align-items: stretch;
 		flex-direction: column;
-		gap: var(--ui-gutter);
+		gap: 1.5rem;
 		width: 100%;
 	}
 </style>

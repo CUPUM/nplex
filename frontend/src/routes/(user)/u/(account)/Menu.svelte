@@ -51,7 +51,7 @@
 	}
 
 	header {
-		padding: var(--ui-gutter);
+		padding: 1.5rem;
 		background-color: col(bg, 000);
 		border-radius: var(--ui-radius-lg);
 		color: col(fg, 300);

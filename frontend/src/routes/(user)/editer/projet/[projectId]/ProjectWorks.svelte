@@ -164,7 +164,7 @@
 
 	#search-works {
 		font-size: var(--ui-text-md);
-		margin-top: var(--ui-gutter);
+		margin-top: 1.5rem;
 	}
 
 	#works {

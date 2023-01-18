@@ -4,7 +4,12 @@
 	Main navigation bar singleton located in the app's root layout.
 -->
 <script lang="ts" context="module">
-	import { intersection, INTERSECTION_EVENT } from '$actions/intersection';
+	import { intersection } from '$actions/intersection';
+
+	const NAVBAR_INTERSECTION_EVENT = {
+		enter: 'navbar.enter',
+		leave: 'navbar.leave',
+	};
 
 	/**
 	 * Singleton store to apply a theme to the navbar different than root theme.
@@ -23,16 +28,18 @@
 	 */
 	export function setNavbarTheme(element: HTMLElement, theme: ThemeName): SvelteActionReturnType {
 		const intersect = intersection(element, {
+			events: NAVBAR_INTERSECTION_EVENT,
 			rootMargin: '-38px 0px 0% 0px',
 		});
 		function handleEnter() {
 			navbarTheme.set(theme);
+			console.log('navbar enter!');
 		}
 		function handleLeave() {
 			navbarTheme.reset();
 		}
-		element.addEventListener(INTERSECTION_EVENT.enter, handleEnter);
-		element.addEventListener(INTERSECTION_EVENT.leave, handleLeave);
+		element.addEventListener(NAVBAR_INTERSECTION_EVENT.enter, handleEnter);
+		element.addEventListener(NAVBAR_INTERSECTION_EVENT.leave, handleLeave);
 		return {
 			update(newOptions) {
 				if (newOptions.observerOptions) {
@@ -182,8 +189,8 @@
 			1fr
 			[session-end full-end];
 		grid-auto-flow: dense;
-		padding: var(--ui-gutter);
-		padding-top: calc(0.5 * var(--ui-gutter));
+		padding: 1.5rem;
+		padding-top: calc(0.5 * 1.5rem);
 		margin: 0 auto;
 		flex-direction: row;
 		align-items: center;
@@ -222,7 +229,7 @@
 		pointer-events: all;
 		width: 100%;
 		z-index: 100;
-		padding: var(--ui-gutter);
+		padding: 1.5rem;
 		display: none;
 
 		@include small {

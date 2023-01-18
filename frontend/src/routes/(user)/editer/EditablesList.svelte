@@ -139,7 +139,7 @@
 		align-items: flex-end;
 		justify-content: space-between;
 		gap: 1rem;
-		padding: var(--ui-gutter);
+		padding: 1.5rem;
 		max-width: var(--ui-width-main);
 		width: 100%;
 		margin: 0 auto;
@@ -148,7 +148,7 @@
 	h3 {
 		font-size: var(--ui-text-2xl);
 		font-weight: 600;
-		// padding-inline: var(--ui-gutter);
+		// padding-inline: 1.5rem;
 	}
 
 	form {
@@ -194,10 +194,7 @@
 		gap: 1rem;
 		overflow-x: scroll;
 		padding-block: 0;
-		padding-inline: max(
-			var(--ui-gutter),
-			calc(50vw + var(--ui-gutter) - 0.5 * var(--ui-width-main))
-		);
+		padding-inline: max(1.5rem, calc(50vw + 1.5rem - 0.5 * var(--ui-width-main)));
 	}
 
 	li {

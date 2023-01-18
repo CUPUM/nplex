@@ -5,10 +5,15 @@
 
 -->
 <script lang="ts" context="module">
-	import { intersection, INTERSECTION_EVENT } from '$actions/intersection';
+	import { intersection } from '$actions/intersection';
 	import { browser } from '$app/environment';
 	import { onDestroy, onMount } from 'svelte';
 	import { writable } from 'svelte/store';
+
+	const BACKGROUND_INTERSECTION_EVENT = {
+		enter: 'background.enter',
+		leave: 'background.leave',
+	};
 
 	type RootBackground = {
 		body: string | null;
@@ -22,10 +27,10 @@
 	export const rootBackground = (function () {
 		const root = browser ? document.documentElement : undefined;
 		const body = browser ? document.body : undefined;
-		const { subscribe, set, update } = writable<typeof RESET>(RESET);
+		const { subscribe, set, update } = writable<RootBackground>(RESET);
 
 		let transitionTimer: any = undefined;
-		let overscrollSynced = true;
+		// let overscrollSynced = true;
 
 		function resetTransition(e: TransitionEvent) {
 			if (root) {
@@ -37,16 +42,16 @@
 			update((prev) => {
 				const newBody = opts.body === undefined ? prev.body : opts.body;
 				const newOverscroll =
-					opts.overscroll === undefined
-						? overscrollSynced
-							? newBody
-							: prev.overscroll
-						: opts.overscroll;
-				if (opts.overscroll) {
-					overscrollSynced = false;
-				} else if (newOverscroll === null && newBody === null) {
-					overscrollSynced = true;
-				}
+					opts.overscroll == null
+						? newBody
+						: // ? newBody
+						  // : prev.overscroll
+						  opts.overscroll;
+				// if (opts.overscroll) {
+				// 	overscrollSynced = false;
+				// } else if (newOverscroll === null && newBody === null) {
+				// 	overscrollSynced = true;
+				// }
 
 				if (root) {
 					if (opts.duration && !isNaN(opts.duration)) {
@@ -85,15 +90,23 @@
 		}
 	): SvelteActionReturnType {
 		const { observerOptions, ...colorOptions } = options;
-		const intersect = intersection(element, observerOptions);
+		const intersect = intersection(element, {
+			events: BACKGROUND_INTERSECTION_EVENT,
+			...observerOptions,
+		});
 		function handleEnter() {
 			rootBackground.set(colorOptions);
 		}
 		function handleLeave() {
-			rootBackground.reset();
+			if (colorOptions.body) {
+				rootBackground.resetBody();
+			}
+			if (colorOptions.overscroll) {
+				rootBackground.resetOverscroll();
+			}
 		}
-		element.addEventListener(INTERSECTION_EVENT.enter, handleEnter);
-		element.addEventListener(INTERSECTION_EVENT.leave, handleLeave);
+		element.addEventListener(BACKGROUND_INTERSECTION_EVENT.enter, handleEnter);
+		element.addEventListener(BACKGROUND_INTERSECTION_EVENT.leave, handleLeave);
 		return {
 			update(newOptions) {
 				if (newOptions.observerOptions) {

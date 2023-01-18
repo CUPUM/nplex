@@ -286,25 +286,38 @@
 		}
 		:global(.maplibregl-cooperative-gesture-screen) {
 			font-family: var(--ui-font-main);
-			font-weight: 300;
-			font-size: var(--ui-text-xs);
-			color: col(bg, 500);
+			font-weight: 400;
+			font-size: var(--ui-text-sm);
+			color: col(fg, 100);
 			background: transparent;
 			& > :global(*) {
 				padding: 1.25em 1.5em;
 				padding-bottom: 1.5em;
 				border-radius: var(--ui-radius-md);
-				background: col(fg, 300, 0.8);
+				background: col(bg, 300);
 			}
 		}
 		:global(.maplibregl-ctrl-attrib) {
 			font-family: var(--ui-font-main);
 			font-weight: 300;
 			font-size: var(--ui-text-2xs);
-			background: col(bg, 100, 0.5);
 			margin: 1rem;
-			padding: 0.5em 1em;
-			border-radius: 0.5em;
+			background: transparent;
+			display: flex;
+			flex-direction: row;
+			padding: 0;
+			padding-right: 3em;
+		}
+		:global(.maplibregl-ctrl-attrib-button) {
+			display: inline-block;
+			align-self: flex-end;
+			bottom: 0;
+			top: unset;
+		}
+		:global(.maplibregl-ctrl-attrib-inner) {
+			background: col(bg, 100, 0.5);
+			padding: 0.5em 1.5em;
+			border-radius: 1em;
 		}
 	}
 

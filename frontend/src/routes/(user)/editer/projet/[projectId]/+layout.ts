@@ -27,13 +27,13 @@ export const load = (async (event) => {
 			work_ids:projects_works (
 				work_id
 			),
-			updated_by:updated_by_id (
+			updated_by:users!projects_updated_by_id_fkey (
 				*,
 				role:users_roles!users_roles_user_id_fkey (
 					*
 				)
 			),
-			created_by:created_by_id (
+			created_by:users!projects_created_by_id_fkey (
 				*,
 				role:users_roles!users_roles_user_id_fkey (
 					*

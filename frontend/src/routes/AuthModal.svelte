@@ -323,7 +323,7 @@
 		width: 100%;
 		color: col(primary, 500);
 		border-bottom: 1px solid col(fg, 100, 0.05);
-		padding: calc(2 * var(--ui-gutter)) var(--ui-gutter);
+		padding: calc(2 * 1.5rem) 1.5rem;
 
 		svg {
 			height: var(--ui-text-2xl);

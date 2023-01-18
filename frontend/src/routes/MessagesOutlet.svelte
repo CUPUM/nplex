@@ -221,7 +221,7 @@
 		left: 0;
 		width: 100%;
 		height: 0%;
-		padding: var(--ui-gutter);
+		padding: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;

@@ -39,6 +39,7 @@
 		align-items: stretch;
 		flex-direction: column;
 		margin: 0 auto;
-		gap: 0;
+		margin-top: 1px;
+		gap: 2px;
 	}
 </style>

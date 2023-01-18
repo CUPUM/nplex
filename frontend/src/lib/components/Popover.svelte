@@ -149,6 +149,9 @@
 	.inner {
 		--radius: var(--ui-radius-md);
 		--inset: var(--ui-inset);
+		--outset: 6px;
+		// To cleanup once new auto nesting solution found. Current one depends on --radius and --inset for inheritance.
+		--pad: calc(var(--outset) + var(--inset));
 		color: col(fg, 300);
 		position: relative;
 		background: col(bg, 000, 0.9);
@@ -156,12 +159,13 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--ui-inset);
-		border-radius: var(--radius);
-		padding: var(--inset);
+		border-radius: calc(var(--radius) + var(--outset));
+		padding: var(--pad);
 		box-shadow: 0 0 0 1px col(bg, 500, 0.25), 0 3em 5em -4em rgb(0, 10, 30, 0.25);
 
 		> :global(:where(hr)) {
-			margin-inline: calc(-1 * var(--inset));
+			margin-inline: calc(-1 * var(--pad));
+			margin-block: var(--inset);
 		}
 	}
 

@@ -85,14 +85,14 @@
 		flex-direction: column;
 		margin: 0 auto;
 		gap: 0;
-		padding-block: var(--ui-gutter);
+		padding-block: 1.5rem;
 
 		h2 {
-			// margin-top: var(--ui-nav-px);
+			margin-top: var(--ui-nav-px);
 			top: 0;
 			position: relative;
-			margin-bottom: var(--ui-gutter);
-			margin-inline: var(--ui-gutter);
+			margin-bottom: 1.5rem;
+			margin-inline: 1.5rem;
 		}
 	}
 
@@ -100,7 +100,7 @@
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
 		gap: 0;
-		padding: calc(0.5 * var(--ui-gutter));
+		padding: calc(0.5 * 1.5rem);
 
 		@include medium {
 			grid-template-columns: repeat(3, 1fr);

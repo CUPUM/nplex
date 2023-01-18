@@ -35,9 +35,9 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: var(--ui-gutter);
-		padding-inline: var(--ui-gutter);
-		margin-top: var(--ui-gutter);
+		gap: 1.5rem;
+		padding-inline: 1.5rem;
+		margin-top: 1.5rem;
 	}
 
 	form {

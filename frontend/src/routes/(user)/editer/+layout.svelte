@@ -32,7 +32,7 @@
 
 <style lang="scss">
 	header {
-		padding: var(--ui-gutter);
+		padding: 1.5rem;
 		width: 100%;
 		max-width: var(--ui-width-main);
 		align-self: center;

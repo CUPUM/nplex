@@ -58,11 +58,8 @@
 		height: 500px;
 		overflow-x: scroll;
 		justify-content: stretch;
-		padding-block: var(--ui-gutter);
-		padding-inline: max(
-			var(--ui-gutter),
-			calc(50vw + var(--ui-gutter) - 0.5 * var(--ui-width-main))
-		);
+		padding-block: 1.5rem;
+		padding-inline: max(1.5rem, calc(50vw + 1.5rem - 0.5 * var(--ui-width-main)));
 	}
 
 	li {

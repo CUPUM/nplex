@@ -97,15 +97,15 @@
 	.toolbar {
 		z-index: 10;
 		pointer-events: none;
-		padding: 0 var(--ui-gutter);
+		padding: 0 1.5rem;
 		width: 100%;
 		position: sticky;
-		bottom: var(--ui-gutter);
+		bottom: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		font-size: var(--ui-text-md);
-		margin-top: var(--ui-gutter);
+		margin-top: 1.5rem;
 	}
 
 	menu {

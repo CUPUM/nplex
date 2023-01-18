@@ -53,7 +53,7 @@
 
 <style lang="scss">
 	header {
-		padding-inline: var(--ui-gutter);
+		padding-inline: 1.5rem;
 		padding-block: 4rem;
 		width: 100%;
 		max-width: var(--ui-width-main);
@@ -89,13 +89,13 @@
 	ul {
 		width: 100%;
 		max-width: var(--ui-width-lg);
-		padding: var(--ui-gutter);
+		padding: 1.5rem;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		align-items: flex-start;
 		justify-content: flex-start;
-		gap: var(--ui-gutter);
+		gap: 1.5rem;
 		font-weight: 550;
 	}
 

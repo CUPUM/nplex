@@ -10,6 +10,8 @@
 	</section>
 </fieldset>
 
+<hr />
+
 <style lang="scss">
 	fieldset {
 		position: relative;
@@ -24,14 +26,16 @@
 			3fr
 			[section-end full-end];
 		align-items: flex-start;
-		gap: var(--ui-gutter);
-		padding: 4rem var(--ui-gutter);
+		gap: 1.5rem;
+		padding: 1.5rem;
+		// background: col(bg, 500);
+		// border-radius: var(--ui-radius-xl);
 
 		section {
 			grid-column: section;
 			display: flex;
 			flex-direction: column;
-			gap: var(--ui-gutter);
+			gap: 2rem;
 			align-items: flex-start;
 		}
 	}

@@ -36,7 +36,7 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: 0.5em;
-		padding: var(--ui-gutter);
+		padding: 1.5rem;
 		position: relative;
 		width: 100%;
 		max-width: --ui-block;
@@ -63,11 +63,11 @@
 		width: 100%;
 		display: flex;
 		flex-direction: row;
-		gap: var(--ui-gutter);
+		gap: 1.5rem;
 		height: 500px;
 		overflow-x: scroll;
 		justify-content: stretch;
-		padding-inline: var(--ui-gutter);
+		padding-inline: 1.5rem;
 	}
 
 	li {

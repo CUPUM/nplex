@@ -54,10 +54,10 @@
 	ul {
 		width: 100%;
 		max-width: var(--ui-width-main);
-		padding: 0 var(--ui-gutter);
+		padding: 0 1.5rem;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
-		gap: var(--ui-gutter);
+		gap: 1.5rem;
 
 		@include small {
 			display: flex;

@@ -42,7 +42,7 @@
 		justify-content: center;
 		cursor: pointer;
 		padding: 3rem;
-		margin: calc(var(--ui-gutter) * 0.5);
+		margin: calc(1.5rem * 0.5);
 		text-align: center;
 		border: 2px dashed col(fg, 100, 0.2);
 		min-height: 12rem;
