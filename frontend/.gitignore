@@ -7,7 +7,6 @@ node_modules
 .pnpm-store
 .pnpm-debug.log
 
-
 # Generated assets
 /src/lib/styles/themes.css
 /src/lib/utils/icons.ts
