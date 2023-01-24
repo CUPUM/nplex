@@ -6,7 +6,7 @@
 	Main navigation bar singleton located in the app's root layout.
 -->
 <script lang="ts" context="module">
-	const OVERLAP_TOP = 38;
+	const OVERLAP_TOP = 41;
 	const OVERLAP_HEIGHT = 20;
 
 	type NavbarStyle = {
