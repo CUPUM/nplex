@@ -3,22 +3,18 @@
 	import Field from '$components/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import type { PageData } from './$types';
-	import { ADJACENT_STREETS_MAX, ADJACENT_STREETS_MIN, project } from './common';
+	import { ADJACENT_STREETS_MAX, ADJACENT_STREETS_MIN } from './common';
 
-	export let adjacentStreets: PageData['project']['adjacent_streets'];
+	export let adjacent_streets: PageData['project']['adjacent_streets'];
+
+	$: _adjacent_streets = adjacent_streets;
 
 	function increment() {
-		$project.adjacent_streets = Math.min(
-			ADJACENT_STREETS_MAX,
-			($project.adjacent_streets ?? 0) + 1
-		);
+		_adjacent_streets = Math.min(ADJACENT_STREETS_MAX, (_adjacent_streets ?? 0) + 1);
 	}
 
 	function decrement() {
-		$project.adjacent_streets = Math.max(
-			ADJACENT_STREETS_MIN,
-			($project.adjacent_streets ?? 0) - 1
-		);
+		_adjacent_streets = Math.max(ADJACENT_STREETS_MIN, (_adjacent_streets ?? 0) - 1);
 	}
 </script>
 
@@ -30,7 +26,7 @@
 			type="number"
 			variant="outlined"
 			name="adjacent_streets"
-			bind:value={$project.adjacent_streets}
+			bind:value={_adjacent_streets}
 			min={ADJACENT_STREETS_MIN}
 			max={ADJACENT_STREETS_MAX}
 			textAlign="center"

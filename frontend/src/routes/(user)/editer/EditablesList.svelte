@@ -141,12 +141,18 @@
 		display: flex;
 		flex-direction: row;
 		align-items: flex-end;
+		flex-wrap: wrap;
 		justify-content: space-between;
 		gap: 1rem;
 		padding: 1.5rem;
 		max-width: var(--ui-width-main);
 		width: 100%;
 		margin: 0 auto;
+
+		@include medium {
+			flex-direction: column;
+			align-items: flex-start;
+		}
 	}
 
 	h3 {

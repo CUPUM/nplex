@@ -7,17 +7,16 @@ import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { PageData } from './$types';
 
+//
+// Sharable two-way bound form values.
+//
 export const _type_id = writable<PageData['project']['type_id']>();
+export const _banner_id = writable<PageData['project']['banner_id']>();
 
 /**
  * Page-wide copy of data.descriptors.
  */
 export const descriptors = writable<PageData['descriptors']>();
-
-/**
- * Dirty-able copy of data.project.
- */
-export const project = writable<PageData['project']>();
 
 /**
  * Map of dirty fields, managed by each formgroup component.

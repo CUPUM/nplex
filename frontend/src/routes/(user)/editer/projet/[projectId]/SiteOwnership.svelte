@@ -1,9 +1,11 @@
 <script lang="ts">
 	import Select from '$components/Select.svelte';
 	import type { PageData } from './$types';
-	import { descriptors, project } from './common';
+	import { descriptors } from './common';
 
-	export let ownershipId: PageData['project']['site_ownership_id'];
+	export let ownership_id: PageData['project']['site_ownership_id'];
+
+	$: _ownership_id = ownership_id;
 </script>
 
 <fieldset class="formgroup">
@@ -13,7 +15,7 @@
 			placeholder="Sélectionnez un type de propriétaire"
 			options={$descriptors.siteOwnerships}
 			variant="outlined"
-			bind:value={$project.site_ownership_id}
+			bind:value={_ownership_id}
 			name="site_ownership_id"
 		>
 			<option let:option slot="option" value={option.id}>

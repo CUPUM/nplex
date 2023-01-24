@@ -1,12 +1,15 @@
 <script lang="ts">
 	import Select from '$components/Select.svelte';
 	import type { PageData } from './$types';
-	import { descriptors, getAvailableUsages, project } from './common';
+	import { descriptors, getAvailableUsages } from './common';
 
-	export let usageCategoryId: PageData['project']['site_usage_category_id'];
-	export let usageId: PageData['project']['site_usage_id'];
+	export let usage_category_id: PageData['project']['site_usage_category_id'];
+	export let usage_id: PageData['project']['site_usage_id'];
 
-	$: availableUsages = getAvailableUsages($project.site_usage_category_id);
+	$: _usage_category_id = usage_category_id;
+	$: _usage_id = usage_id;
+
+	$: availableUsages = getAvailableUsages(_usage_category_id);
 </script>
 
 <fieldset class="formgroup">
@@ -15,7 +18,7 @@
 		<Select
 			name="site_usage_category_id"
 			options={$descriptors.siteUsagesCategories}
-			bind:value={$project.site_usage_category_id}
+			bind:value={_usage_category_id}
 		>
 			<svelte:fragment slot="label">Catégorie</svelte:fragment>
 			<option slot="option" let:option value={option.id}>
@@ -25,8 +28,8 @@
 		<Select
 			name="site_usage_id"
 			options={availableUsages}
-			bind:value={$project.site_usage_id}
-			disabled={$project.site_usage_category_id == null}
+			bind:value={_usage_id}
+			disabled={_usage_category_id == null}
 		>
 			<svelte:fragment slot="label">Usage</svelte:fragment>
 			<option slot="option" let:option value={option.id}>{option.title}</option>

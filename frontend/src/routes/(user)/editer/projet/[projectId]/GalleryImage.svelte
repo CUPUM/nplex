@@ -22,7 +22,7 @@
 	import { fly } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
 	import type { PageData } from './$types';
-	import { project } from './common';
+	import { _banner_id } from './common';
 
 	export let image: PageData['project']['gallery'][number];
 	export let i: number;
@@ -142,17 +142,15 @@
 					>
 				</Tooltip>
 				<Tooltip
-					message={$project.banner_id === image.id
-						? 'Retirer de la bannière'
-						: 'Définir comme bannière'}
+					message={$_banner_id === image.id ? 'Retirer de la bannière' : 'Définir comme bannière'}
 					place="top"
 				>
 					<Button
 						type="submit"
-						formaction="{$project.banner_id === image.id
+						formaction="{$_banner_id === image.id
 							? '?/demote'
 							: '?/promote'}&{SEARCH_PARAMS.IMAGE_ID}={image.id}"
-						active={$project.banner_id === image.id}
+						active={$_banner_id === image.id}
 						round
 					>
 						<Icon name="bookmark" />

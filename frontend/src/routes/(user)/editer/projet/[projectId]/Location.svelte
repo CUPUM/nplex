@@ -11,10 +11,15 @@
 		setCircleRadius,
 	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import type { PageData } from './$types';
-	import { LOCATION_MAX_RADIUS, map, mapdraw, project } from './common';
+	import { LOCATION_MAX_RADIUS, map, mapdraw } from './common';
 
-	export let geometry: PageData['project']['location_geometry'];
-	export let radius: PageData['project']['location_radius'];
+	export let location_geometry: PageData['project']['location_geometry'];
+	export let location_radius: PageData['project']['location_radius'];
+
+	// To do: implement deep cloning & deep comparison of geojson.
+	// Alternatively, clone only relevant properties as distinct local variables.
+	let _location_geometry = { ...location_geometry };
+	$: _location_radius = location_radius;
 
 	let inited = false;
 
@@ -27,7 +32,7 @@
 					setCircleRadius(selected.features[0], LOCATION_MAX_RADIUS);
 				}
 				const center = getCircleCenter(selected.features[0]);
-				$project.location_geometry = center;
+				_location_geometry = center;
 			}
 		}
 	}, 50);

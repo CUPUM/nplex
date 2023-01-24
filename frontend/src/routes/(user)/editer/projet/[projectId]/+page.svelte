@@ -3,7 +3,7 @@
 	import Button from '$components/Button.svelte';
 	import type { ActionData, PageData } from './$types';
 	import AdjacentStreets from './AdjacentStreets.svelte';
-	import { descriptors, dirty, project } from './common';
+	import { descriptors, dirty } from './common';
 	import CostRange from './CostRange.svelte';
 	import Description from './Description.svelte';
 	import Gallery from './Gallery.svelte';
@@ -20,7 +20,6 @@
 	export let data: PageData;
 	export let form: ActionData;
 
-	$: project.set({ ...data.project });
 	$: descriptors.set({ ...data.descriptors });
 
 	$: if (form) {
@@ -39,7 +38,7 @@
 >
 	<!--
 		One-way data bindings (downward) for reference "clean" data from the db.
-		Two-way bindings are done with the $project store.
+		Two-way bindings are done with local variables, or shared stores when necessary.
 	-->
 	<Header title={data.project.title} />
 	<Description description={data.project.description} />
@@ -47,18 +46,21 @@
 	<Works work_ids={data.project.work_ids} />
 	<CostRange cost_range={data.project.cost_range} />
 	<Gallery gallery={data.project.gallery} />
-	<SiteOwnership ownershipId={data.project.site_ownership_id} />
+	<SiteOwnership ownership_id={data.project.site_ownership_id} />
 	<SiteUsage
-		usageId={data.project.site_usage_id}
-		usageCategoryId={data.project.site_usage_category_id}
+		usage_id={data.project.site_usage_id}
+		usage_category_id={data.project.site_usage_category_id}
 	/>
-	<SiteSecondaryUsages secondaryUsages={data.project.secondary_usages} />
+	<SiteSecondaryUsages secondary_usages={data.project.secondary_usages} />
 
 	<!-- Map-related formgroups -->
 	<section class="split">
 		<div class="mapfields">
-			<Location geometry={data.project.location_geometry} radius={data.project.location_radius} />
-			<AdjacentStreets adjacentStreets={data.project.adjacent_streets} />
+			<Location
+				location_geometry={data.project.location_geometry}
+				location_radius={data.project.location_radius}
+			/>
+			<AdjacentStreets adjacent_streets={data.project.adjacent_streets} />
 		</div>
 		<div class="map">
 			<ProjectMap />

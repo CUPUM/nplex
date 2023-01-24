@@ -3,11 +3,12 @@
 	import { cubicIn, cubicInOut, cubicOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import type { PageData } from './$types';
-	import { project } from './common';
 	import GalleryImage from './GalleryImage.svelte';
 	import GalleryInput from './GalleryInput.svelte';
 
 	export let gallery: PageData['project']['gallery'];
+
+	let _gallery = [...gallery];
 
 	const placeholder = {
 		placeholder: true,
@@ -27,16 +28,16 @@
 		if (target === current) {
 			return;
 		}
-		const stash = $project.gallery.splice(current, 1)[0];
-		$project.gallery.splice(target, 0, stash);
-		$project.gallery = $project.gallery;
+		const stash = _gallery.splice(current, 1)[0];
+		_gallery.splice(target, 0, stash);
+		_gallery = _gallery;
 	}
 </script>
 
 <fieldset>
 	<legend>Galerie</legend>
 	<ol>
-		{#each [...$project.gallery, placeholder] as image, i (image.id)}
+		{#each [..._gallery, placeholder] as image, i (image.id)}
 			<li
 				animate:flip={{ duration: 150, easing: cubicInOut }}
 				in:fly={{ duration: 300, y: 12, easing: cubicOut, delay: i * 100 }}
@@ -49,7 +50,7 @@
 					/>
 				{:else}
 					<GalleryImage
-						{image}
+						bind:image
 						on:forward={() => move(i, i - 1)}
 						on:backward={() => move(i, i + 1)}
 						on:drop={(e) => move(i, e.detail.destination)}
