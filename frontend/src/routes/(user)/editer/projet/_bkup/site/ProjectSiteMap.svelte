@@ -5,7 +5,7 @@
 	import MapControlFile from '$components/MapControlFile.svelte';
 	import MapControlFullscreen from '$components/MapControlFullscreen.svelte';
 	import MapControlGeolocate from '$components/MapControlGeolocate.svelte';
-	import MapDraw, { MapDrawSourceId } from '$components/MapDraw.svelte';
+	import MapDraw, { DRAW_SOURCE_IDS } from '$components/MapDraw.svelte';
 	import MapToolbar from '$components/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { messages } from '$routes/MessagesOutlet.svelte';
@@ -65,7 +65,7 @@
 	}
 
 	const onRender = throttle((e: CustomEvent<DrawRenderEvent>) => {
-		const sf = e.detail.target.querySourceFeatures(MapDrawSourceId.Hot);
+		const sf = e.detail.target.querySourceFeatures(DRAW_SOURCE_IDS.Hot);
 		const pts = sf.filter(
 			(f) => f.properties && f.properties.meta === 'vertex' && f.geometry.type === 'Point'
 		) as GeoJSON.Feature<GeoJSON.Point>[];

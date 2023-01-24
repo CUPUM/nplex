@@ -31,6 +31,12 @@
 	// } as const satisfies Record<string, keyof typeof DRAW_MODE_PLUGINS | 'static'>;
 	// export type DrawMode = ValueOf<typeof DRAW_MODES>;
 
+	export const DRAW_SOURCE_IDS = {
+		Hot: 'mapbox-gl-draw-hot',
+		Cold: 'mapbox-gl-draw-cold',
+	} as const;
+	export type DrawSourceId = ValueOf<typeof DRAW_SOURCE_IDS>;
+
 	export const DRAW_MODES = {
 		DrawLineString: 'draw_line_string',
 		DrawPolygon: 'draw_polygon',
