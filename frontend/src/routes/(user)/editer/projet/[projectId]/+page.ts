@@ -2,7 +2,10 @@ import { getDb } from '$utils/database';
 import { LOAD_DEPENDENCIES, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { alwaysarr, csshsl, jsrange } from '$utils/format';
 import { error } from '@sveltejs/kit';
-import { createCircle, getCircleCenter } from 'mapbox-gl-draw-geodesic';
+import {
+	createCircle,
+	getCircleCenter,
+} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 import type { PageLoad } from './$types';
 
 export const load = (async (event) => {

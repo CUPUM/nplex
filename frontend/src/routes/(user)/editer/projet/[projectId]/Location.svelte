@@ -9,7 +9,7 @@
 		getCircleRadius,
 		isCircle,
 		setCircleRadius,
-	} from 'mapbox-gl-draw-geodesic';
+	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import type { PageData } from './$types';
 	import { LOCATION_MAX_RADIUS, map, mapdraw, project } from './common';
 

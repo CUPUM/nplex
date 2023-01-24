@@ -86,7 +86,7 @@
 		DrawUpdateEvent,
 	} from '@mapbox/mapbox-gl-draw';
 	import MapboxDraw from '@mapbox/mapbox-gl-draw';
-	import * as MapboxDrawGeodesic from 'mapbox-gl-draw-geodesic';
+	import * as MapboxDrawGeodesic from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import type { ValueOf } from 'ts-essentials';
