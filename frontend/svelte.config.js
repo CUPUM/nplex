@@ -1,4 +1,4 @@
-import node from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-vercel';
 import sveltePreprocess from 'svelte-preprocess';
 import { cssModules, linearPreprocess } from 'svelte-preprocess-cssmodules';
 
@@ -21,7 +21,7 @@ const config = {
 		}),
 	]),
 	kit: {
-		adapter: node(),
+		adapter: adapter(),
 		env: {
 			publicPrefix: 'PUBLIC',
 			dir: '..',
