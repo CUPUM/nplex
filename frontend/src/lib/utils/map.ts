@@ -1,6 +1,7 @@
 import type { MapDrawStyles } from '$types/map';
 import type { GestureOptions, LngLatBoundsLike, LngLatLike, Map } from 'maplibre-gl';
 import type { createEventDispatcher } from 'svelte';
+import { locations } from './map/locations';
 import { THEME_PALETTES } from './themes';
 
 /**
@@ -380,23 +381,4 @@ const frenchGestures: GestureOptions = {
 };
 export const gesturesText = {
 	french: frenchGestures,
-};
-
-/**
- * Reusable hard-coded location presets.
- */
-
-const montreal: {
-	bounds: LngLatBoundsLike;
-	center: LngLatLike;
-} = {
-	bounds: [
-		[-73.449, 45.396],
-		[-73.959, 45.677],
-	],
-	center: [-73.65, 45.55],
-};
-
-export const locations = {
-	montreal,
 };

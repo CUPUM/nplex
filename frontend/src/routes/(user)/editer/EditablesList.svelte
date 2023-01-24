@@ -88,7 +88,7 @@
 
 <section {id}>
 	<header>
-		<h3 class="e-h3">{title}</h3>
+		<h3>{title}</h3>
 		<form action="" use:enhance method="POST">
 			<Switch bind:group={applied.authoring} variant="colored" name="filter" compact>
 				{#each Object.entries(AUTHORING_FILTERS) as [k, v]}
@@ -131,6 +131,10 @@
 		width: 100%;
 		flex-direction: column;
 		scroll-margin-top: var(--ui-nav-px);
+
+		// &:first-of-type {
+		margin-top: var(--ui-nav-px);
+		// }
 	}
 
 	header {
@@ -146,9 +150,7 @@
 	}
 
 	h3 {
-		font-size: var(--ui-text-2xl);
-		font-weight: 600;
-		// padding-inline: 1.5rem;
+		@include h2;
 	}
 
 	form {
@@ -157,7 +159,7 @@
 		display: flex;
 		flex-direction: row;
 		overflow-x: auto;
-		gap: 0.5em;
+		gap: 1em;
 
 		label {
 			user-select: none;
@@ -191,10 +193,10 @@
 		--scroll-size: 0;
 		display: flex;
 		flex-direction: row;
-		gap: 1rem;
+		gap: 1.5rem;
 		overflow-x: scroll;
 		padding-block: 0;
-		padding-inline: max(1.5rem, calc(50vw + 1.5rem - 0.5 * var(--ui-width-main)));
+		padding-inline: max(1.5rem, calc(50% + 1.5rem - 0.5 * var(--ui-width-main)));
 	}
 
 	li {

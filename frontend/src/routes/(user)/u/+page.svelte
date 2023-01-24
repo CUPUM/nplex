@@ -59,6 +59,10 @@
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: 1.5rem;
 
+		@include medium {
+			grid-template-columns: 1fr 1fr;
+		}
+
 		@include small {
 			display: flex;
 			flex-direction: column;
@@ -85,6 +89,11 @@
 		font-size: clamp(var(--ui-text-xl), 4vw, var(--ui-text-2xl));
 		font-weight: 500;
 		transition: all 0.2s var(--ui-ease-out);
+
+		@include small {
+			aspect-ratio: 2 / 1;
+			font-size: var(--ui-text-2xl);
+		}
 
 		&:hover {
 			border-radius: var(--ui-radius-2xl);

@@ -13,7 +13,7 @@
 
 	export let value: number;
 	export let format: (value: number) => string = (v) => v.toString();
-	export let timeout: number = 250;
+	export let timeout: number = 100;
 	export let transition: T['in'] = fly as any;
 	export let transitionOptions:
 		| Parameters<T['in']>[1]

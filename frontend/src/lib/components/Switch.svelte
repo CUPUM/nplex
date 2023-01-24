@@ -155,12 +155,12 @@
 			height: 100%;
 			border-radius: inherit;
 			border: 1px solid col(fg, 100, 0.1);
-			transition: all 0.1s ease-out;
+			transition: all 0.15s ease-out;
 		}
 		&:hover {
 			color: col(fg, 500);
 			&::before {
-				border: 1px solid col(fg, 100, 0.2);
+				border: 1px solid col(fg, 100, 0.5);
 			}
 		}
 		.mark {

@@ -182,7 +182,7 @@
 		font-size: var(--ui-text-xs);
 		font-variant-numeric: tabular-nums;
 		text-align: center;
-		z-index: -1;
+		// z-index: 1;
 		color: col(fg, 100, 0.5);
 		position: absolute;
 		left: calc((var(--tick) - var(--min)) * 100% / var(--domain));

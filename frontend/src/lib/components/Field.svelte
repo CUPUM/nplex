@@ -44,6 +44,15 @@
 	export let suffix: string | null | undefined = '';
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
 	export let variant: 'default' | 'outlined' | 'cta' = 'default';
+	export let textAlign:
+		| 'start'
+		| 'end'
+		| 'left'
+		| 'right'
+		| 'center'
+		| 'justify'
+		| 'match-parent'
+		| undefined = undefined;
 	export let compact: boolean | undefined = undefined;
 	export let required: boolean | undefined = undefined;
 	export let readonly: boolean | undefined = undefined;
@@ -108,12 +117,6 @@
 		if (e.target instanceof Element && 'value' in e.target) {
 			if (type === 'number') {
 				let number = Number(e.target.value);
-				if (min !== undefined) {
-					number = Math.max(min, number);
-				}
-				if (max !== undefined) {
-					number = Math.min(max, number);
-				}
 				value = number;
 			} else {
 				value = e.target.value as Value;
@@ -197,6 +200,7 @@
 			bind:this={inputRef}
 			data-field-input
 			class="input"
+			style:text-align={textAlign}
 			{autocomplete}
 			{id}
 			{type}
@@ -344,7 +348,7 @@
 		border: none;
 		outline: none;
 		background: transparent;
-		overflow: hidden;
+		// overflow: hidden;
 		text-overflow: ellipsis;
 		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
 		&:-webkit-autofill,
@@ -356,7 +360,7 @@
 	}
 
 	label {
-		opacity: 0.5;
+		opacity: 0.35;
 		position: absolute;
 		pointer-events: none;
 		padding-bottom: calc(0.5em - 0.5ex);
@@ -424,7 +428,7 @@
 
 	:where(.default) {
 		color: col(fg, 000);
-		background: col(fg, 100, 0.1);
+		background: col(fg, 100, 0.075);
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			display: none;
@@ -450,7 +454,7 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(fg, 300);
-			background: col(fg, 100, 0.2);
+			background: col(fg, 100, 0.1);
 		}
 		&:focus-within {
 			color: col(fg, 900);

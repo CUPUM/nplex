@@ -113,6 +113,6 @@
 		margin-top: 1.5rem;
 		font-size: var(--ui-text-md);
 		font-weight: 300;
-		color: col(fg, 000);
+		color: col(fg, 100, 0.5);
 	}
 </style>

@@ -81,7 +81,7 @@
 			<slot name="label" />
 		{/if}
 	</svelte:fragment>
-	<svelte:fragment slot="input" let:check let:bindInputRef>
+	<svelte:fragment slot="input" let:bindInputRef>
 		<input type="text" value={text} {placeholder} readonly data-field-input in:fly={{ y: -6 }} />
 		<select
 			size="0"
@@ -96,8 +96,8 @@
 		>
 			<option disabled={required} hidden={required} />
 			{#if options.length}
-				{#each options as datum, i}
-					<slot {datum} {i} />
+				{#each options as option, i}
+					<slot name="option" {option} {i} />
 				{/each}
 			{/if}
 		</select>
@@ -111,25 +111,6 @@
 </Field>
 
 <style lang="scss">
-	ul {
-		background: black;
-	}
-
-	menu {
-		display: flex;
-		flex-direction: column;
-		gap: 0;
-		min-width: 100%;
-	}
-
-	li {
-		cursor: pointer;
-	}
-
-	.disabled {
-		pointer-events: none;
-	}
-
 	select {
 		cursor: pointer;
 		position: absolute;

@@ -915,6 +915,35 @@ export interface Database {
           updated_by_id?: string
         }
       }
+      projects_secondary_usages: {
+        Row: {
+          category_id: number
+          created_at: string
+          created_by_id: string | null
+          project_id: string
+          updated_at: string
+          updated_by_id: string | null
+          usage_id: number
+        }
+        Insert: {
+          category_id: number
+          created_at?: string
+          created_by_id?: string | null
+          project_id: string
+          updated_at?: string
+          updated_by_id?: string | null
+          usage_id: number
+        }
+        Update: {
+          category_id?: number
+          created_at?: string
+          created_by_id?: string | null
+          project_id?: string
+          updated_at?: string
+          updated_by_id?: string | null
+          usage_id?: number
+        }
+      }
       projects_users: {
         Row: {
           created_at: string
@@ -1261,11 +1290,11 @@ export interface Database {
     Functions: {
       cube:
         | {
-            Args: { "": number }
+            Args: { "": number[] }
             Returns: unknown
           }
         | {
-            Args: { "": number[] }
+            Args: { "": number }
             Returns: unknown
           }
       cube_dim: {
@@ -1314,11 +1343,11 @@ export interface Database {
       }
       user_can_edit_project:
         | {
-            Args: { p_id: string }
+            Args: { p_row: unknown }
             Returns: boolean
           }
         | {
-            Args: { p_row: unknown }
+            Args: { p_id: string }
             Returns: boolean
           }
       user_has_role:
@@ -1338,6 +1367,9 @@ export interface Database {
         | "rejected_approval"
         | "published"
       user_role: "nplex" | "admin" | "editor" | "visitor"
+    }
+    CompositeTypes: {
+      [_ in never]: never
     }
   }
   storage: {
@@ -1466,6 +1498,9 @@ export interface Database {
       }
     }
     Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
       [_ in never]: never
     }
   }

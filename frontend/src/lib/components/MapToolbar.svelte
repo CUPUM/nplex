@@ -4,9 +4,6 @@
 	Adds a toolbar inside a map pane.
 
  -->
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 
@@ -26,7 +23,7 @@
 	onDestroy(() => {});
 </script>
 
-<menu class="toolbar nest compact {direction} {position}">
+<menu class="toolbar nest {direction} {position}">
 	<slot />
 </menu>
 
@@ -36,7 +33,7 @@
 		--inset: 3px;
 		--x: 0;
 		--y: 0;
-		font-size: var(--ui-block-small);
+		font-size: 1rem;
 		position: absolute;
 		display: flex;
 		flex-direction: row;
@@ -49,7 +46,7 @@
 		opacity: 0;
 		gap: 1px;
 		transform: translate(var(--x), var(--y));
-		transition: all 0.25s 0.5s cubic-bezier(0.25, 0, 0.5, 1);
+		transition: all 0.25s cubic-bezier(0.25, 0, 0.5, 1);
 		:global(hr) {
 			border: none;
 			margin-inline: var(--inset);

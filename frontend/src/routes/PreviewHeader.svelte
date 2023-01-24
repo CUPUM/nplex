@@ -12,7 +12,7 @@
 
 <header>
 	<a class="heading" {href}>
-		<span>Explorer les</span>
+		<!-- <span>Explorer les</span> -->
 		<hgroup>
 			<h2>{title}</h2>
 			<div class="icon">
@@ -60,7 +60,6 @@
 			.icon {
 				transform: translateX(0);
 				opacity: 1;
-				transition: transform 0.15s var(--ui-ease-out), opacity 0.25s ease-out;
 			}
 		}
 	}
@@ -73,7 +72,8 @@
 	hgroup {
 		display: flex;
 		flex-direction: row;
-		gap: 1em;
+		gap: 1.5rem;
+		align-items: center;
 		font-size: var(--ui-text-3xl);
 		font-weight: 600;
 	}
@@ -84,10 +84,10 @@
 
 	.icon {
 		position: relative;
-		top: 0.25em;
+		top: 0.1em;
 		opacity: 0;
 		font-size: 0.5em;
 		transform: translateX(-0.1em);
-		transition: transform 0s 0.2s, opacity 0.2s ease-in;
+		transition: transform 0.15s var(--ui-ease-out), opacity 0.1s ease-out;
 	}
 </style>

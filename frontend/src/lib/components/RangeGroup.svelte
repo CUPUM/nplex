@@ -37,9 +37,9 @@
 
 	function pushing(pusher: Point) {
 		if (pusher === POINT.from) {
-			to = Math.max(to, from);
+			to = Math.min(Math.max(to, from), $max);
 		} else {
-			from = Math.min(to, from);
+			from = Math.max(Math.min(to, from), $min);
 		}
 	}
 
@@ -206,13 +206,11 @@
 		> button {
 			background: col(fg, 300);
 			box-shadow: 0 0 0 0 col(primary, 500, 0);
-
 			&:active,
 			&:focus {
 				background: col(primary, 700);
 				box-shadow: 0 0 0 var(--outline-width) col(primary, 300, 0.5);
 			}
-
 			&:hover {
 				background: col(primary, 500);
 			}

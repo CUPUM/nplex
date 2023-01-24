@@ -1,65 +1,114 @@
+<svelte:options />
+
 <!--
 	@component
 	# Navbar
 	Main navigation bar singleton located in the app's root layout.
 -->
 <script lang="ts" context="module">
-	import { intersection } from '$actions/intersection';
+	const OVERLAP_TOP = 38;
+	const OVERLAP_HEIGHT = 20;
 
-	const NAVBAR_INTERSECTION_EVENT = {
-		enter: 'navbar.enter',
-		leave: 'navbar.leave',
+	type NavbarStyle = {
+		theme?: ThemeName;
+		background?: string;
 	};
 
 	/**
 	 * Singleton store to apply a theme to the navbar different than root theme.
 	 */
-	export const navbarTheme = (function () {
-		const { subscribe, set } = writable<ThemeName | undefined>(undefined);
+	export const navbarStyle = (function () {
+		const { subscribe, set } = writable<NavbarStyle>({});
+		/**
+		 * First-in-last-out log of applied theme. Prevents bindings from canceling one-another when
+		 * close.
+		 */
+		const keepTheme = new Map<any, NonNullable<NavbarStyle['theme']>>();
+		const keepBackground = new Map<any, NonNullable<NavbarStyle['background']>>();
+		function _set(opts: NavbarStyle, key: any) {
+			if (opts.theme) {
+				keepTheme.set(key, opts.theme);
+			} else {
+				keepTheme.delete(key);
+			}
+			if (opts.background) {
+				keepBackground.set(key, opts.background);
+			} else {
+				keepBackground.delete(key);
+			}
+			const newTheme = keepTheme.size ? [...keepTheme][keepTheme.size - 1][1] : undefined;
+			const newBackground = keepBackground.size
+				? [...keepBackground][keepBackground.size - 1][1]
+				: undefined;
+			set({ theme: newTheme, background: newBackground });
+		}
 		return {
 			subscribe,
-			set,
-			reset: () => set(undefined),
+			set: _set,
+			reset: (key?: any) => _set({}, key),
 		};
 	})();
 
 	/**
-	 * Action to update the navbar's theme based on element intersection.
+	 * Action to control navbar theme when it overlaps the given element.
 	 */
-	export function setNavbarTheme(element: HTMLElement, theme: ThemeName): SvelteActionReturnType {
-		const intersect = intersection(element, {
-			events: NAVBAR_INTERSECTION_EVENT,
-			rootMargin: '-38px 0px 0% 0px',
-		});
-		function handleEnter() {
-			navbarTheme.set(theme);
-			console.log('navbar enter!');
-		}
-		function handleLeave() {
-			navbarTheme.reset();
-		}
-		element.addEventListener(NAVBAR_INTERSECTION_EVENT.enter, handleEnter);
-		element.addEventListener(NAVBAR_INTERSECTION_EVENT.leave, handleLeave);
-		return {
-			update(newOptions) {
-				if (newOptions.observerOptions) {
-					intersect.update(newOptions.observerOptions);
+	export function overlapNavbarStyle(element: Element, opts: NavbarStyle): SvelteActionReturnType {
+		let hasEnteredOnce = false;
+		let observer: IntersectionObserver;
+		const handleIntersection = ((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					hasEnteredOnce = true;
+					navbarStyle.set(opts, element);
+				} else {
+					if (hasEnteredOnce) {
+						navbarStyle.reset(element);
+					}
 				}
+			});
+		}) satisfies IntersectionObserverCallback;
+		function initObserver() {
+			const rootMargin = `-${OVERLAP_TOP}px 0px -${
+				window.innerHeight - (OVERLAP_TOP + OVERLAP_HEIGHT)
+			}px 0px`;
+			observer = new IntersectionObserver(handleIntersection, { rootMargin });
+			observer.observe(element);
+		}
+		initObserver();
+		const handleResize = debounce(() => {
+			if (observer) {
+				observer.unobserve(element);
+				observer.disconnect();
+			}
+			initObserver();
+		}, 250);
+		window.addEventListener('resize', handleResize);
+		return {
+			update(args) {
+				opts = args;
 			},
 			destroy() {
-				intersect.destroy();
-				handleLeave();
+				navbarStyle.reset(element);
+				window.removeEventListener('resize', handleResize);
+				if (observer) {
+					observer.unobserve(element);
+					observer.disconnect();
+				}
 			},
 		};
 	}
 </script>
 
 <script lang="ts">
+	import { afterNavigate, beforeNavigate } from '$app/navigation';
+
 	import { page } from '$app/stores';
 	import Avatar from '$components/Avatar.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
+	import { col } from '$utils/css';
+	import { debounce } from '$utils/modifiers';
 	import { EDITOR_BASE_ROUTE, EXPLORE_ROUTES, MAIN_ROUTES, USER_BASE_ROUTE } from '$utils/routes';
 	import { THEMES, type ThemeName } from '$utils/themes';
 	import { onMount } from 'svelte';
@@ -73,11 +122,22 @@
 	let mounted = false;
 	let open = false;
 	let rootsegment: string;
+	let naving = false;
+
+	beforeNavigate(() => {
+		naving = true;
+	});
+
+	afterNavigate(() => {
+		naving = false;
+	});
 
 	const mainNav = Object.values(MAIN_ROUTES);
 	const exploreNav = Object.values(EXPLORE_ROUTES);
 
 	$: rootsegment = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
+	$: navbg = naving ? 'transparent' : $navbarStyle.background ?? $rootBackground.body ?? null;
+	$: categorybg = naving ? 'transparent' : col('bg', '900', 0.5);
 
 	function toggle() {
 		open = !open;
@@ -89,8 +149,8 @@
 </script>
 
 <header
-	data-theme={$navbarTheme ? THEMES[$navbarTheme] : undefined}
-	style:--nav-bg={$rootBackground.body}
+	data-theme={$navbarStyle.theme ? THEMES[$navbarStyle.theme] : undefined}
+	style:--nav-bg={navbg}
 >
 	<menu class="toggle">
 		<NavbarButton on:pointerdown={toggle} round>
@@ -110,7 +170,7 @@
 				</NavbarButton>
 			{/each}
 		</nav>
-		<nav class="category" hidden={!$page.data.showCategoryNav}>
+		<nav class="category" style:background={categorybg} hidden={!$page.data.showCategoryNav}>
 			{#each exploreNav as r}
 				<NavbarButton
 					group={'category'}
@@ -149,6 +209,7 @@
 					round
 					active={!!$authModal}
 					href={authModal.getUrl({ url: $page.url }).toString()}
+					noscroll
 				>
 					<Icon name="user" strokeWidth={2} style="font-size: 1.25em" />
 				</NavbarButton>
@@ -244,7 +305,8 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 2px;
-		transition: transform 0.25s cubic-bezier(0, 0, 0, 1) var(--d), opacity 0.25s ease-out var(--d);
+		transition: transform 0.25s cubic-bezier(0, 0, 0, 1) var(--d), opacity 0.25s ease-out var(--d),
+			background 0.1s ease;
 
 		@include small {
 			flex-direction: column;
@@ -275,13 +337,12 @@
 
 	.category {
 		--inset: 3px;
+		--i: 1;
 		grid-column: category;
 		justify-content: center;
 		border-radius: calc(var(--ui-radius-md) + var(--inset));
 		backdrop-filter: blur(8px);
-		background: col(bg, 900, 0.5);
 		padding: var(--inset);
-		--i: 1;
 	}
 
 	.session {

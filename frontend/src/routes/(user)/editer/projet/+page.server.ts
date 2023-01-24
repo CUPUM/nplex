@@ -22,6 +22,11 @@ export const actions: Actions = {
 				error: errmsg(insert.error),
 			});
 		}
-		throw redirect(302, `/editer/projet/${insert.data?.id}`);
+		if (!insert.data.id) {
+			return fail(STATUS_CODES.InternalServerError, {
+				error: "Problème de récupération de l'identifiant du projet",
+			});
+		}
+		throw redirect(STATUS_CODES.MovedTemporarily, `/editer/projet/${insert.data?.id}`);
 	},
 };

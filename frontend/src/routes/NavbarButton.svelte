@@ -10,6 +10,7 @@
 	export let round: boolean | undefined = undefined;
 	export let active: boolean | undefined = undefined;
 	export let group: string | undefined = undefined;
+	export let noscroll: true | undefined = undefined;
 </script>
 
 <svelte:element
@@ -17,6 +18,7 @@
 	class="navbar-button focus-outline-visible {ICON_CLASS.hover} {active ? ICON_CLASS.hold : ''}"
 	class:cta
 	data-current={current || undefined}
+	data-sveltekit-noscroll={noscroll ? '' : 'off'}
 	class:active
 	class:disabled
 	class:equi
@@ -48,7 +50,7 @@
 		line-height: 1;
 		color: col(fg, 100);
 		backdrop-filter: blur(6px);
-		transition: all 0.15s ease-out;
+		transition: all 0.15s ease;
 
 		&::before {
 			content: '';
@@ -60,7 +62,7 @@
 			height: 100%;
 			background: var(--nav-bg);
 			opacity: 0.75;
-			transition: all 0.15s ease-out;
+			transition: all 0.1s ease;
 
 			:global(.category) > & {
 				opacity: 1;

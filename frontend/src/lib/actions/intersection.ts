@@ -22,7 +22,6 @@ export function intersection(
 	options?: IntersectionObserverInit & { events?: { enter: string; leave: string } }
 ) {
 	const defaultedOptions = { ...DEFAULT_OPTIONS, ...options };
-	console.log(defaultedOptions);
 	const observer = new IntersectionObserver(
 		(entries) => {
 			for (const entry of entries) {

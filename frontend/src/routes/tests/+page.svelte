@@ -1,66 +1,61 @@
 <script lang="ts">
-	import Counter from '$components/Counter.svelte';
-	import Icon from '$components/Icon.svelte';
+	import { overlapNavbarStyle } from '$routes/Navbar.svelte';
+	import { THEMES } from '$utils/themes';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	let value = 10;
+	let background = 'aliceblue';
 </script>
 
+<hr />
+
+<div style:background>Top</div>
 <article>
-	<input type="range" name="" bind:value min="0" max="200" id="" />
-	<Counter {value} />
+	<!-- some content -->
 </article>
 <article>
-	<button>
-		Some text
-		<Icon name="settings" />
-	</button>
-	<button>
-		Some text
-		<Icon name="settings" />
-	</button>
+	<!-- some content -->
+</article>
+<article use:overlapNavbarStyle={{ theme: THEMES.dark }} style="background: cornsilk" />
+<article use:overlapNavbarStyle={{ theme: THEMES.dark }} style="height: 200px; background: wheat;">
+	<!-- some content -->
+</article>
+<article>
+	<!-- some content -->
+</article>
+<article>
+	<!-- some content -->
+</article>
+<article>
+	<!-- some content -->
+</article>
+<article>
+	<!-- some content -->
 </article>
 
 <style lang="scss">
+	hr {
+		background: red;
+		position: sticky;
+		top: 120px;
+		padding: 0.5px;
+		width: 100%;
+		z-index: 10;
+	}
+
 	article {
+		border: 1px solid black;
 		width: 100%;
-		padding: 3rem;
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		align-items: center;
-		justify-content: center;
-		border: 1px solid blue;
+		height: 1200px;
 	}
 
-	button {
-		display: inline-flex;
-		align-items: center;
-		border: 1px solid col(fg, 100, 0.2);
-		border-radius: 1em;
-		padding: 1em;
-	}
-
-	label {
-		padding: 1em;
-		background: col(bg, 500);
-		margin: 3px;
-		border-radius: 1em;
-	}
-
-	section {
+	div {
+		position: sticky;
+		top: var(--ui-nav-px);
+		padding: 1rem;
+		transition: 0.2s;
 		width: 100%;
-		height: 500px;
-		background: linear-gradient(121.28deg, #a4006c 0%, #ffeca8 100%),
-			linear-gradient(121.28deg, #69003f 0%, #fff8f8 100%),
-			linear-gradient(238.72deg, #00ffff 0%, #0212a4 100%),
-			radial-gradient(67.16% 100% at 50% 0%, #ff00b8 0%, #ffffff 100%),
-			linear-gradient(140.54deg, #7000ff 0%, #001aff 72.37%),
-			linear-gradient(307.43deg, #ffe927 0%, #00114d 100%),
-			radial-gradient(107% 142.8% at 15.71% 104.5%, #ffffff 0%, #a7aa00 100%), #ffffff;
-		background-blend-mode: overlay, difference, difference, overlay, difference, difference,
-			difference, normal;
+		border: 1px solid grey;
 	}
 </style>

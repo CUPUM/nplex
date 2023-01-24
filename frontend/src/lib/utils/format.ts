@@ -36,11 +36,27 @@ export function jsarr<T extends `(${string})`>(pgarr: T): string[] {
 }
 
 /**
+ * Parse a returned range value from PostgREST and return a two-number tuple.
+ */
+export function jsrange<T extends 'empty' | Parameters<typeof jsarr>[0]>(
+	pgrange: T,
+	fallback: [number, number] = [0, 0]
+): number[] {
+	if (!pgrange || pgrange === 'empty') {
+		return fallback;
+	}
+	const arr = jsarr(pgrange).map((n) => Number(n));
+	arr.length = 2;
+	return arr;
+}
+
+/**
  * Make a value always an array, i.e. wrap non-array inputs in an array.
  */
-export function alwaysarr<T>(arr: T): Arrify<T> {
-	if (arr === undefined || arr === null) return <Arrify<T>>[];
-	return Array.isArray(arr) ? <Arrify<T>>arr : <Arrify<T>>[arr];
+export function alwaysarr<T>(arr: T) {
+	type AlwaysArr = NonNullable<T>;
+	if (arr == null) return <Arrify<AlwaysArr>>[];
+	return Array.isArray(arr) ? <Arrify<AlwaysArr>>arr : <Arrify<AlwaysArr>>[arr];
 }
 
 export function csshsl(pghsl: string) {

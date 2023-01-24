@@ -5,21 +5,14 @@
 
 -->
 <script lang="ts" context="module">
-	import { intersection } from '$actions/intersection';
 	import { browser } from '$app/environment';
 	import { onDestroy, onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 
-	const BACKGROUND_INTERSECTION_EVENT = {
-		enter: 'background.enter',
-		leave: 'background.leave',
-	};
-
 	type RootBackground = {
-		body: string | null;
-		overscroll: string | null;
+		body?: string;
+		overscroll?: string;
 	};
-	const RESET: RootBackground = { body: null, overscroll: null };
 
 	/**
 	 * Global store to allow bg-color transitions on the site's body.
@@ -27,56 +20,53 @@
 	export const rootBackground = (function () {
 		const root = browser ? document.documentElement : undefined;
 		const body = browser ? document.body : undefined;
-		const { subscribe, set, update } = writable<RootBackground>(RESET);
-
+		const { subscribe, set } = writable<RootBackground>({});
 		let transitionTimer: any = undefined;
-		// let overscrollSynced = true;
-
+		const keepBody = new Map<any, string>();
+		const keepOverscroll = new Map<any, string>();
+		// const keepDuration = new Map<any, number>();
 		function resetTransition(e: TransitionEvent) {
 			if (root) {
 				root.style.transition = '';
 			}
 		}
-
-		function _set(opts: Partial<typeof RESET> & { duration?: number }) {
-			update((prev) => {
-				const newBody = opts.body === undefined ? prev.body : opts.body;
-				const newOverscroll =
-					opts.overscroll == null
-						? newBody
-						: // ? newBody
-						  // : prev.overscroll
-						  opts.overscroll;
-				// if (opts.overscroll) {
-				// 	overscrollSynced = false;
-				// } else if (newOverscroll === null && newBody === null) {
-				// 	overscrollSynced = true;
-				// }
-
-				if (root) {
-					if (opts.duration && !isNaN(opts.duration)) {
-						/**
-						 * Handling cases where a custom duration is passed, making sure to unset the appended
-						 * transition property after completion.
-						 */
-						root.style.transition = `background ${opts.duration}ms ease-in-out`;
-						clearTimeout(transitionTimer);
-						transitionTimer = setTimeout(resetTransition, opts.duration);
-					}
-					root.style.setProperty('background', newOverscroll);
+		function _set(opts: Partial<RootBackground> & { duration?: number }, key: any) {
+			if (opts.body) {
+				keepBody.set(key, opts.body);
+			} else {
+				keepBody.delete(key);
+			}
+			if (opts.overscroll) {
+				keepOverscroll.set(key, opts.overscroll);
+			} else {
+				keepOverscroll.delete(key);
+			}
+			// if (opts.duration) {
+			// 	keepDuration.set(key ?? defaultKey, opts.duration);
+			// } else if (!keepOverscroll.has(key) && !keepBody.has(key)) {
+			// 	keepDuration.delete(key);
+			// }
+			const newBody = keepBody.size ? [...keepBody][keepBody.size - 1][1] : undefined;
+			const newOverscroll = keepOverscroll.size
+				? [...keepOverscroll][keepOverscroll.size - 1][1]
+				: newBody;
+			if (root) {
+				if (opts.duration) {
+					root.style.transition = `background ${opts.duration}ms ease-in-out`;
+					clearTimeout(transitionTimer);
+					transitionTimer = setTimeout(resetTransition, opts.duration);
 				}
-				if (body) {
-					body.style.setProperty('--ui-bg', newBody);
-				}
-				return { body: newBody, overscroll: newOverscroll };
-			});
+				root.style.setProperty('background', newOverscroll ?? null);
+			}
+			if (body) {
+				body.style.setProperty('--ui-bg', newBody ?? null);
+			}
+			set({ body: newBody, overscroll: newOverscroll });
 		}
 		return {
 			subscribe,
-			reset: (duration?: number) => _set({ body: null, overscroll: null, duration }),
-			resetOverscroll: (duration?: number) => _set({ overscroll: null, duration }),
-			resetBody: (duration?: number) => _set({ body: null, duration }),
 			set: _set,
+			reset: (key: any, duration?: number) => _set({ duration }, key),
 		};
 	})();
 
@@ -85,37 +75,44 @@
 	 */
 	export function setRootBackground(
 		element: HTMLElement,
-		options: Parameters<(typeof rootBackground)['set']>[0] & {
-			observerOptions?: IntersectionObserverInit;
-		}
+		opts: Parameters<(typeof rootBackground)['set']>[0] & IntersectionObserverInit
 	): SvelteActionReturnType {
-		const { observerOptions, ...colorOptions } = options;
-		const intersect = intersection(element, {
-			events: BACKGROUND_INTERSECTION_EVENT,
-			...observerOptions,
-		});
-		function handleEnter() {
-			rootBackground.set(colorOptions);
-		}
-		function handleLeave() {
-			if (colorOptions.body) {
-				rootBackground.resetBody();
-			}
-			if (colorOptions.overscroll) {
-				rootBackground.resetOverscroll();
-			}
-		}
-		element.addEventListener(BACKGROUND_INTERSECTION_EVENT.enter, handleEnter);
-		element.addEventListener(BACKGROUND_INTERSECTION_EVENT.leave, handleLeave);
-		return {
-			update(newOptions) {
-				if (newOptions.observerOptions) {
-					intersect.update(newOptions.observerOptions);
+		let hasEnteredOnce = false;
+		let observer: IntersectionObserver;
+		const handleIntersection = ((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					hasEnteredOnce = true;
+					rootBackground.set(
+						{ body: opts.body, overscroll: opts.overscroll, duration: opts.duration },
+						element
+					);
+				} else {
+					if (hasEnteredOnce) {
+						rootBackground.reset(element, opts.duration);
+					}
 				}
+			});
+		}) satisfies IntersectionObserverCallback;
+		function initObserver() {
+			observer = new IntersectionObserver(handleIntersection, {
+				root: opts.root,
+				rootMargin: opts.rootMargin ?? '-50% 0px 0% 0px',
+				threshold: opts.threshold,
+			});
+			observer.observe(element);
+		}
+		initObserver();
+		return {
+			update(args) {
+				opts = { ...opts, ...args };
 			},
 			destroy() {
-				intersect.destroy();
-				handleLeave();
+				rootBackground.reset(element, opts.duration);
+				if (observer) {
+					observer.unobserve(element);
+					observer.disconnect();
+				}
 			},
 		};
 	}
@@ -129,11 +126,13 @@
 	export let overscroll: RootBackground['overscroll'] | undefined = undefined;
 	export let duration: number | undefined = undefined;
 
+	const key = {};
+
 	onMount(() => {
-		rootBackground.set({ body, overscroll, duration });
+		rootBackground.set({ body, overscroll, duration }, key);
 	});
 
 	onDestroy(() => {
-		rootBackground.reset(duration);
+		rootBackground.reset(key, duration);
 	});
 </script>

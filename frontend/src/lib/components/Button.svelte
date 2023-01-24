@@ -141,7 +141,7 @@
 		gap: 0;
 		flex-direction: row;
 		align-items: center;
-		font-weight: 350;
+		font-weight: 400;
 		font-size: inherit;
 		border-radius: calc(var(--radius) - var(--inset-sum));
 		cursor: pointer;
@@ -251,7 +251,7 @@
 
 	:where(.default) {
 		color: col(fg, 500);
-		background: col(bg, 900, 0.5);
+		background: col(fg, 100, 0.1);
 		transition: all 0.1s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
@@ -330,13 +330,13 @@
 	}
 
 	:where(.danger) {
-		color: col(bg, 300);
-		background: col(error, 500);
+		color: col(error, 500);
+		background: col(error, 900, 0.2);
 		box-shadow: 0 0.2em 1em -0.5em col(error, 500, 0);
 		transition: all 0.2s ease-out, box-shadow 0.25s ease-in-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(bg, 100);
+			color: col(bg, 300);
 			background: col(error, 700);
 			box-shadow: 0 0.8em 1.5em -1em col(error, 900, 0.5);
 		}

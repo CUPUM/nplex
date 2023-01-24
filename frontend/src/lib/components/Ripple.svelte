@@ -9,8 +9,10 @@
 </script>
 
 <script lang="ts">
+	import { getBoxDistances } from '$utils/math/geometry';
+
 	export let host: HTMLElement | undefined = undefined;
-	export let easing: string = 'cubic-bezier(0, 0, 0, 1)';
+	export let easing: string = 'cubic-bezier(0, 0, .5, 1)';
 	/**
 	 * R multiplier where duration = d * speed.
 	 */
@@ -57,12 +59,7 @@
 			const rect = containerRef.getBoundingClientRect();
 			const x = e.clientX - rect.left;
 			const y = e.clientY - rect.top;
-			const d =
-				2 *
-				Math.max(
-					Math.ceil(Math.hypot(x, y)),
-					Math.ceil(Math.hypot(rect.width - x, rect.height - y))
-				);
+			const d = 2 * Math.max(...getBoxDistances([x, y], rect));
 			const ripple = {
 				x,
 				y,

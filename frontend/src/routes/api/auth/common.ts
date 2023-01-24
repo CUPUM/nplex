@@ -2,8 +2,16 @@ import { dev } from '$app/environment';
 import { COOKIES } from '$utils/enums';
 import type { AuthSession, Session } from '@supabase/supabase-js';
 import { json, type RequestEvent } from '@sveltejs/kit';
+import { z } from 'zod';
+import { zfd } from 'zod-form-data';
 
 type CookieOptions = Parameters<RequestEvent['cookies']['set']>[2];
+
+export const emailSchema = zfd.text(
+	z
+		.string({ required_error: 'Une adresse courriel est requise.' })
+		.email('Adresse courriel invalide.')
+);
 
 export type AuthFailure = {
 	email?: string[];

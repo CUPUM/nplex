@@ -161,7 +161,7 @@
 				failure = {};
 				currentAction = action.pathname + action.search;
 				return async ({ update, result }) => {
-					update({ reset: false });
+					await update({ reset: false });
 					currentAction = null;
 					followup(result);
 				};

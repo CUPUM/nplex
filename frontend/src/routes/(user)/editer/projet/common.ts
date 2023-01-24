@@ -14,3 +14,5 @@ export const titleSchema = zfd.text(
 			message: 'Le titre du projet doit être composé d’au minimum 3 mots',
 		})
 );
+
+export const adjacentStreetsSchema = zfd.numeric(z.number().min(0).max(5));

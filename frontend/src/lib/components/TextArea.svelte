@@ -240,7 +240,7 @@
 	}
 
 	label {
-		opacity: 0.5;
+		opacity: 0.35;
 		position: absolute;
 		pointer-events: none;
 		line-height: 1.5em;
@@ -313,17 +313,11 @@
 		resize: vertical;
 	}
 
-	// .haslabel {
-	// 	.affix {
-	// 		opacity: 0;
-	// 	}
-	// }
-
 	// Variants
 
 	:where(.default) {
 		color: col(fg, 000);
-		background: col(fg, 100, 0.1);
+		background: col(fg, 100, 0.075);
 		transition: all 0.15s var(--ui-ease-out);
 		.outline {
 			display: none;
@@ -345,7 +339,7 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(fg, 300);
-			background: col(fg, 100, 0.2);
+			background: col(fg, 100, 0.1);
 		}
 		&:focus-within {
 			color: col(fg, 900);
@@ -361,8 +355,8 @@
 		background: transparent;
 		transition: color 0.1s ease-out, background-color 0.1s ease-out;
 		.outline {
-			border-color: col(fg, 000);
-			opacity: 0.25;
+			border-color: col(fg, 100);
+			opacity: 0.2;
 		}
 		&.hasplaceholder,
 		&.hasvalue,

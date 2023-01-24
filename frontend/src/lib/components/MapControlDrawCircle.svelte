@@ -3,47 +3,31 @@
 	## Map Control: Draw Circle
 
 -->
-<script lang="ts" context="module">
-	const MODE_KEY = 'draw_circle';
-</script>
-
 <script lang="ts">
 	import { CURSOR } from '$utils/enums';
-	import type { ComponentProps } from 'svelte';
 	import Button from './Button.svelte';
 	import Icon from './Icon.svelte';
 	import { getMapContext } from './Map.svelte';
-	import { getMapDrawContext } from './MapDraw.svelte';
+	import { DRAW_EVENTS, DRAW_MODES, getMapDrawContext } from './MapDraw.svelte';
 
-	type $$Props = ComponentProps<Button>;
+	export let initialRadiusInKm: number = 0.5;
 
-	const mapContext = getMapContext();
-	const drawContext = getMapDrawContext();
-	const map = mapContext?.getMap();
-	const draw = drawContext?.getMapDraw();
-	const currentMode = drawContext?.currentMode;
+	const { getMap, setCursor } = getMapContext();
+	const { mode, getMapDraw } = getMapDrawContext();
 
-	$: typedProps = $$props as $$Props;
-	$: active = draw && $currentMode === MODE_KEY;
-	$: mapContext?.setCursor(active ? CURSOR.Crosshair : undefined);
+	$: active = $mode === DRAW_MODES.DrawCircle;
+	$: setCursor(active ? CURSOR.Crosshair : undefined);
 
-	function setMode() {
-		if (map && draw) {
-			draw.changeMode(MODE_KEY);
-			map.fire('draw.modechange', {
-				mode: MODE_KEY,
-			});
+	function setMode(e: PointerEvent & { target: EventTarget | null }) {
+		if (getMapDraw()) {
+			const newMode = active ? DRAW_MODES.SimpleSelect : DRAW_MODES.DrawCircle;
+			getMapDraw()?.changeMode(newMode as any, { initialRadiusInKm });
+			getMap()?.fire(DRAW_EVENTS.modechange, { mode: newMode });
 		}
 	}
 </script>
 
-<Button
-	equi={!$$slots.default || typedProps.equi}
-	variant="ghost"
-	{...typedProps}
-	{active}
-	on:click={setMode}
->
+<Button equi={!$$slots.default} variant="ghost" {active} on:pointerdown={setMode}>
 	<slot>
 		<Icon name="pin" />
 	</slot>

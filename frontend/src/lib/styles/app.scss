@@ -18,11 +18,16 @@
 	&[lock-scroll] {
 		overflow-y: hidden;
 		padding-right: var(--ui-scroll-size);
+
+		@include mobile {
+			overflow-y: scroll;
+			padding-right: 0;
+		}
 	}
 }
 
 body {
-	// Bg here so :root can have a different bg specific to overscroll.
+	// Background also set here so :root can have a different bg specific to overscroll.
 	background: var(--ui-bg);
 	position: relative;
 	width: 100%;
@@ -42,7 +47,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-	// border-radius: 99px;
+	border-radius: 3px;
 	background: col(fg, 500, 0.25);
 }
 
@@ -53,6 +58,32 @@ body {
 :root {
 	scrollbar-width: thin;
 	scrollbar-color: var(--scroll-color, var(--ui-scroll-color)) transparent;
+	&::-webkit-scrollbar {
+		width: var(--scroll-size, var(--ui-scroll-size));
+		height: var(--scroll-size, var(--ui-scroll-size));
+	}
+
+	@include mobile {
+		scrollbar-width: auto;
+		&::-webkit-scrollbar {
+			width: initial;
+			height: initial;
+		}
+		&::-webkit-scrollbar-track {
+			background: initial;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: initial;
+		}
+		::-webkit-scrollbar-thumb:hover {
+			background: initial;
+		}
+	}
+}
+
+::selection {
+	background: col(primary, 500);
+	color: col(fg, 500);
 }
 
 /**
@@ -87,14 +118,15 @@ hr {
 				width: 100%;
 				height: 100%;
 				border-radius: inherit;
-				outline: 0px solid rgb(var(--rgb-primary-100), 0);
-				transition: all 0.3s ease-out;
+				outline: 0px solid rgb(var(--rgb-primary-300), 0);
+				outline-offset: 0px;
+				transition: all 0.2s ease-out;
 			}
 			&:focus-within,
 			&:focus-visible {
 				&::after {
-					outline: 5px solid rgb(var(--rgb-primary-100), 0.35);
-					// outline-offset: 1.5px;
+					outline: 3px solid rgb(var(--rgb-primary-300), 0.5);
+					outline-offset: 1px;
 				}
 			}
 		}

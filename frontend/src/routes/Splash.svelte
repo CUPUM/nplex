@@ -3,23 +3,16 @@
 	import { browser } from '$app/environment';
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import { FULL_VIEWBOX, LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
+	import { col } from '$utils/css';
 	import { KEY } from '$utils/enums';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
-	import { onDestroy } from 'svelte';
-	import { fly } from 'svelte/transition';
-	import { setNavbarTheme } from './Navbar.svelte';
-	import { rootBackground } from './RootBackground.svelte';
+	import { fade, fly } from 'svelte/transition';
+	import { overlapNavbarStyle } from './Navbar.svelte';
+	import { setRootBackground } from './RootBackground.svelte';
 
 	export let scrollTarget: HTMLElement;
 
 	let entered = false;
-	let y = 0;
-	$: darkbg = y < 500;
-	$: if (darkbg) {
-		rootBackground.set({ overscroll: THEME_PALETTES.dark.bg[100] });
-	} else {
-		rootBackground.resetOverscroll();
-	}
 
 	function consult() {
 		if (browser) {
@@ -31,20 +24,15 @@
 	}
 
 	function keydown(e: KeyboardEvent) {
-		console.log(e);
 		if (e.key === KEY.Enter || e.key === KEY.ArrowDown) {
 			consult();
 		}
 	}
-
-	onDestroy(() => {
-		rootBackground.reset();
-	});
 </script>
 
-<svelte:window bind:scrollY={y} />
 <header
-	use:setNavbarTheme={THEMES.dark}
+	use:overlapNavbarStyle={{ theme: THEMES.dark, background: col('bg', '300') }}
+	use:setRootBackground={{ overscroll: THEME_PALETTES.dark.bg[300] }}
 	use:intersection
 	on:enter={() => {
 		entered = true;
@@ -56,11 +44,11 @@
 >
 	<svg viewBox={FULL_VIEWBOX} on:click={consult} on:keydown={keydown}>
 		{#if entered}
-			<use in:fly={{ y: 30, delay: 250 }} href={LOGO_SYMBOLS_HREFS.n} />
-			<use in:fly={{ y: 30, delay: 300 }} href={LOGO_SYMBOLS_HREFS.p} />
-			<use in:fly={{ y: 30, delay: 350 }} href={LOGO_SYMBOLS_HREFS.l} />
-			<use in:fly={{ y: 30, delay: 400 }} href={LOGO_SYMBOLS_HREFS.e} />
-			<use in:fly={{ y: 30, delay: 450 }} href={LOGO_SYMBOLS_HREFS.x} />
+			<use in:fly={{ y: 30, delay: 250 }} href={LOGO_SYMBOLS_HREFS.n} out:fade|local />
+			<use in:fly={{ y: 30, delay: 300 }} href={LOGO_SYMBOLS_HREFS.p} out:fade|local />
+			<use in:fly={{ y: 30, delay: 350 }} href={LOGO_SYMBOLS_HREFS.l} out:fade|local />
+			<use in:fly={{ y: 30, delay: 400 }} href={LOGO_SYMBOLS_HREFS.e} out:fade|local />
+			<use in:fly={{ y: 30, delay: 450 }} href={LOGO_SYMBOLS_HREFS.x} out:fade|local />
 		{/if}
 	</svg>
 	<button on:click={consult} class={ICON_CLASS.hover}>
@@ -76,7 +64,7 @@
 		position: relative;
 		height: 100vh;
 		width: 100%;
-		background: col(bg, 100);
+		background: col(bg, 300);
 		border-bottom-left-radius: var(--radius);
 		border-bottom-right-radius: var(--radius);
 		display: flex;

@@ -9,24 +9,34 @@
 
 <!-- <Breadcrumbs /> -->
 <slot />
-<header>
+<!-- <header>
 	<hgroup>
 		<h2>Mes fiches</h2>
 		<span>Explorez les fiches pour lesquelles vous avez des droits d'édition.</span>
 	</hgroup>
-</header>
-<EditablesList id={EDITOR_ROUTES.project.edit.hash} title="Projets" data={data.projects} let:datum>
-	<EditableProjectCard project={datum} />
-</EditablesList>
+</header> -->
 <EditablesList
-	id={EDITOR_ROUTES.organisation.edit.hash}
-	title="Organisations"
+	id={EDITOR_ROUTES.project.edit.hash}
+	title="Mes projets"
 	data={data.projects}
 	let:datum
 >
 	<EditableProjectCard project={datum} />
 </EditablesList>
-<EditablesList id={EDITOR_ROUTES.actor.edit.hash} title="Acteurs" data={data.projects} let:datum>
+<EditablesList
+	id={EDITOR_ROUTES.organisation.edit.hash}
+	title="Mes organisations"
+	data={data.projects}
+	let:datum
+>
+	<EditableProjectCard project={datum} />
+</EditablesList>
+<EditablesList
+	id={EDITOR_ROUTES.actor.edit.hash}
+	title="Mes profils d'acteurs"
+	data={data.projects}
+	let:datum
+>
 	<EditableProjectCard project={datum} />
 </EditablesList>
 

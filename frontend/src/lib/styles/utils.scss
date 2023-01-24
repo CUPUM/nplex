@@ -1,3 +1,16 @@
+@mixin h1 {
+	font-size: var(--ui-text-3xl);
+	font-weight: 550;
+}
+@mixin h2 {
+	font-size: var(--ui-text-2xl);
+	font-weight: 600;
+}
+@mixin h3 {
+	font-size: var(--ui-text-xl);
+	font-weight: 600;
+}
+
 /**
  * Helpers to scope styles with breakpoints.
  * Defined with max-width as the app is designed desktop-first.

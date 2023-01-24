@@ -22,24 +22,10 @@
 <script lang="ts">
 	import { intersection } from '$actions/intersection';
 	import type { Cursor } from '$utils/enums';
-	import { gesturesText, locales, locations, MAP_STYLES, type MapLocale } from '$utils/map';
+	import { gesturesText, locales, MAP_STYLES, type MapLocale } from '$utils/map';
+	import { locations } from '$utils/map/locations';
 	import { debounce } from '$utils/modifiers';
-	import {
-		Map,
-		MapMouseEvent,
-		MapTouchEvent,
-		MapWheelEvent,
-		type MapContextEvent,
-		type MapDataEvent,
-		type MapLibreEvent,
-		type MapLibreZoomEvent,
-		type MapOptions,
-		type MapSourceDataEvent,
-		type MapStyleDataEvent,
-		type MapStyleImageMissingEvent,
-		type MapTerrainEvent,
-		type StyleSpecification,
-	} from 'maplibre-gl';
+	import { Map, type MapOptions, type StyleSpecification } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
@@ -48,9 +34,8 @@
 	export let style: string | undefined = undefined;
 	let className: string = '';
 	export { className as class };
-	// Maplibre props
 	export let map: Map | undefined = undefined;
-	export let styleSpecification: string | StyleSpecification = MAP_STYLES.LIGHT;
+	export let mapStyle: string | StyleSpecification = MAP_STYLES.LIGHT;
 	export let locale: MapLocale = locales.french;
 	export let pitch: MapOptions['pitch'] = 0;
 	export let bearing: MapOptions['bearing'] = 0;
@@ -63,70 +48,19 @@
 	export let dragRotate: MapOptions['dragRotate'] = true;
 	export let pitchWithRotate: MapOptions['pitchWithRotate'] = true;
 	export let cooperativeGestures: MapOptions['cooperativeGestures'] = false;
-	// ...add rest as needed.
+	// Append as needed...
 
 	let containerRef: HTMLElement;
-	let mapRef: HTMLDivElement;
+	let mapContainerRef: HTMLDivElement;
 	let resizeObserver: ResizeObserver;
 
 	const loading = writable(true);
-	const dispatch = createEventDispatcher<{
-		error: ErrorEvent;
-		load: MapLibreEvent;
-		idle: MapLibreEvent;
-		remove: MapLibreEvent;
-		render: MapLibreEvent;
-		resize: MapLibreEvent;
-		webglcontextlost: MapContextEvent;
-		webglcontextrestored: MapContextEvent;
-		dataloading: MapDataEvent;
-		data: MapDataEvent;
-		tiledataloading: MapDataEvent;
-		sourcedataloading: MapSourceDataEvent;
-		styledataloading: MapStyleDataEvent;
-		sourcedata: MapSourceDataEvent;
-		styledata: MapStyleDataEvent;
-		styleimagemissing: MapStyleImageMissingEvent;
-		dataabort: MapDataEvent;
-		sourcedataabort: MapSourceDataEvent;
-		boxzoomcancel: MapLibreZoomEvent;
-		boxzoomstart: MapLibreZoomEvent;
-		boxzoomend: MapLibreZoomEvent;
-		touchcancel: MapTouchEvent;
-		touchmove: MapTouchEvent;
-		touchend: MapTouchEvent;
-		touchstart: MapTouchEvent;
-		click: MapMouseEvent;
-		contextmenu: MapMouseEvent;
-		dblclick: MapMouseEvent;
-		mousemove: MapMouseEvent;
-		mouseup: MapMouseEvent;
-		mousedown: MapMouseEvent;
-		mouseout: MapMouseEvent;
-		mouseover: MapMouseEvent;
-		movestart: MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined>;
-		move: MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined>;
-		moveend: MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined>;
-		zoomstart: MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined>;
-		zoom: MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined>;
-		zoomend: MapLibreEvent<MouseEvent | TouchEvent | WheelEvent | undefined>;
-		rotatestart: MapLibreEvent<MouseEvent | TouchEvent | undefined>;
-		rotate: MapLibreEvent<MouseEvent | TouchEvent | undefined>;
-		rotateend: MapLibreEvent<MouseEvent | TouchEvent | undefined>;
-		dragstart: MapLibreEvent<MouseEvent | TouchEvent | undefined>;
-		drag: MapLibreEvent<MouseEvent | TouchEvent | undefined>;
-		dragend: MapLibreEvent<MouseEvent | TouchEvent | undefined>;
-		pitchstart: MapLibreEvent<MouseEvent | TouchEvent | undefined>;
-		pitch: MapLibreEvent<MouseEvent | TouchEvent | undefined>;
-		pitchend: MapLibreEvent<MouseEvent | TouchEvent | undefined>;
-		wheel: MapWheelEvent;
-		terrain: MapTerrainEvent;
-	}>();
+	const dispatch = createEventDispatcher();
 
 	function init() {
 		map = new Map({
-			container: mapRef,
-			style: styleSpecification,
+			container: mapContainerRef,
+			style: mapStyle,
 			center,
 			zoom,
 			maxZoom,
@@ -139,67 +73,12 @@
 			cooperativeGestures: cooperativeGestures ? gesturesText.french : cooperativeGestures,
 			locale,
 			pitchWithRotate,
-		});
-
-		(
-			[
-				'error',
-				'load',
-				'idle',
-				'remove',
-				'render',
-				'resize',
-				'webglcontextlost',
-				'webglcontextrestored',
-				'dataloading',
-				'data',
-				'tiledataloading',
-				'sourcedataloading',
-				'styledataloading',
-				'sourcedata',
-				'styledata',
-				'styleimagemissing',
-				'dataabort',
-				'sourcedataabort',
-				'boxzoomcancel',
-				'boxzoomstart',
-				'boxzoomend',
-				'touchcancel',
-				'touchmove',
-				'touchend',
-				'touchstart',
-				'click',
-				'contextmenu',
-				'dblclick',
-				'mousemove',
-				'mouseup',
-				'mousedown',
-				'mouseout',
-				'mouseover',
-				'movestart',
-				'move',
-				'moveend',
-				'zoomstart',
-				'zoom',
-				'zoomend',
-				'rotatestart',
-				'rotate',
-				'rotateend',
-				'dragstart',
-				'drag',
-				'dragend',
-				'pitchstart',
-				'pitch',
-				'pitchend',
-				'wheel',
-				'terrain',
-			] as const
-		).forEach((name) => {
-			map?.on(name, (e) => dispatch(name, e));
+			attributionControl: false,
 		});
 
 		map.once('load', (e) => {
 			loading.set(false);
+			dispatch('init', e);
 		});
 	}
 
@@ -236,13 +115,13 @@
 
 <figure
 	bind:this={containerRef}
-	class="map {className}"
-	class:is-loading={$loading}
+	class="container {className}"
+	class:loading={$loading}
 	{style}
 	use:intersection={{ rootMargin: '100px 100px' }}
 	on:enter|once={init}
 >
-	<div class="map-container" class:is-loading={$loading} bind:this={mapRef} />
+	<div class="map-container" class:loading={$loading} bind:this={mapContainerRef} />
 	{#if $loading}
 		<div class="loading">
 			<slot name="loading">
@@ -258,7 +137,7 @@
 </figure>
 
 <style lang="scss">
-	:where(.map) {
+	:where(.container) {
 		position: relative;
 		display: block;
 		padding: 0;
@@ -275,10 +154,10 @@
 		height: 100%;
 		overflow: hidden;
 		border-radius: inherit;
-		transition: all 0.25s ease-out;
-		&.is-loading {
-			transform: scale(0.99);
-			opacity: 0.25;
+		transition: transform 0.5s ease-out, opacity 0.5s;
+		&.loading {
+			transform: scale(0.98);
+			opacity: 0;
 		}
 		:global(canvas) {
 			outline: none;
@@ -296,28 +175,6 @@
 				border-radius: var(--ui-radius-md);
 				background: col(bg, 300);
 			}
-		}
-		:global(.maplibregl-ctrl-attrib) {
-			font-family: var(--ui-font-main);
-			font-weight: 300;
-			font-size: var(--ui-text-2xs);
-			margin: 1rem;
-			background: transparent;
-			display: flex;
-			flex-direction: row;
-			padding: 0;
-			padding-right: 3em;
-		}
-		:global(.maplibregl-ctrl-attrib-button) {
-			display: inline-block;
-			align-self: flex-end;
-			bottom: 0;
-			top: unset;
-		}
-		:global(.maplibregl-ctrl-attrib-inner) {
-			background: col(bg, 100, 0.5);
-			padding: 0.5em 1.5em;
-			border-radius: 1em;
 		}
 	}
 
