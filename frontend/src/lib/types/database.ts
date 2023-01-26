@@ -566,8 +566,6 @@ export interface Database {
           id: string
           implantation_mode_id: number | null
           likes_sum: number
-          location_geometry: unknown | null
-          location_radius: number | null
           site_area: number | null
           site_ownership_id: number | null
           site_usage_category_id: number | null
@@ -590,8 +588,6 @@ export interface Database {
           id?: string
           implantation_mode_id?: number | null
           likes_sum?: number
-          location_geometry?: unknown | null
-          location_radius?: number | null
           site_area?: number | null
           site_ownership_id?: number | null
           site_usage_category_id?: number | null
@@ -614,8 +610,6 @@ export interface Database {
           id?: string
           implantation_mode_id?: number | null
           likes_sum?: number
-          location_geometry?: unknown | null
-          location_radius?: number | null
           site_area?: number | null
           site_ownership_id?: number | null
           site_usage_category_id?: number | null
@@ -786,6 +780,35 @@ export interface Database {
           order?: number | null
           project_id?: string
           title?: string | null
+          updated_at?: string
+          updated_by_id?: string
+        }
+      }
+      projects_location: {
+        Row: {
+          created_at: string
+          created_by_id: string
+          geometry: unknown | null
+          project_id: string
+          radius: number | null
+          updated_at: string
+          updated_by_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by_id?: string
+          geometry?: unknown | null
+          project_id: string
+          radius?: number | null
+          updated_at?: string
+          updated_by_id?: string
+        }
+        Update: {
+          created_at?: string
+          created_by_id?: string
+          geometry?: unknown | null
+          project_id?: string
+          radius?: number | null
           updated_at?: string
           updated_by_id?: string
         }
@@ -1226,8 +1249,6 @@ export interface Database {
           id: string | null
           implantation_mode_id: number | null
           likes_sum: number | null
-          location_geometry: unknown | null
-          location_radius: number | null
           site_area: number | null
           site_ownership_id: number | null
           site_usage_category_id: number | null
@@ -1250,8 +1271,6 @@ export interface Database {
           id?: string | null
           implantation_mode_id?: number | null
           likes_sum?: number | null
-          location_geometry?: unknown | null
-          location_radius?: number | null
           site_area?: number | null
           site_ownership_id?: number | null
           site_usage_category_id?: number | null
@@ -1274,8 +1293,6 @@ export interface Database {
           id?: string | null
           implantation_mode_id?: number | null
           likes_sum?: number | null
-          location_geometry?: unknown | null
-          location_radius?: number | null
           site_area?: number | null
           site_ownership_id?: number | null
           site_usage_category_id?: number | null
@@ -1290,11 +1307,11 @@ export interface Database {
     Functions: {
       cube:
         | {
-            Args: { "": number[] }
+            Args: { "": number }
             Returns: unknown
           }
         | {
-            Args: { "": number }
+            Args: { "": number[] }
             Returns: unknown
           }
       cube_dim: {
@@ -1343,11 +1360,11 @@ export interface Database {
       }
       user_can_edit_project:
         | {
-            Args: { p_row: unknown }
+            Args: { p_id: string }
             Returns: boolean
           }
         | {
-            Args: { p_id: string }
+            Args: { p_row: unknown }
             Returns: boolean
           }
       user_has_role:
