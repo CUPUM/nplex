@@ -42,6 +42,7 @@
 	export { className as class };
 	export let style: string | undefined = undefined;
 	export let as: keyof HTMLElementTagNameMap | undefined = undefined;
+	export let noscroll: true | undefined = undefined;
 
 	let buttonRef: HTMLElement;
 	const buttonGroupContext = getButtonGroupContext();
@@ -55,6 +56,7 @@
 <svelte:element
 	this={as ? as : href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
+	data-sveltekit-noscroll={noscroll ? '' : 'off'}
 	class="button nest focus-outline-visible {computedVariant} {contentAlign} {className} {ICON_CLASS.hover}"
 	class:compact
 	class:warning

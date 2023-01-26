@@ -236,6 +236,7 @@
 					class="small-button"
 					variant={$authModal === AUTHMODAL_MODE.SignUp ? 'cta' : 'default'}
 					type={$authModal === AUTHMODAL_MODE.SignUp ? 'submit' : 'button'}
+					noscroll
 					href={$authModal === AUTHMODAL_MODE.SignIn
 						? authModal
 								.getUrl({ url: $page.url, open: true, mode: AUTHMODAL_MODE.SignUp })
