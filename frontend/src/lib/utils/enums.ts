@@ -1,5 +1,20 @@
 import type { ValueOf } from 'ts-essentials';
 
+export const BRACKETS = {
+	curly: {
+		start: '{',
+		end: '}',
+	},
+	square: {
+		start: '[',
+		end: ']',
+	},
+	parenthesis: {
+		start: '(',
+		end: ')',
+	},
+} as const satisfies Record<string, { start: string; end: string }>;
+
 export const KEY = {
 	Undefined: 'Undefined',
 	Space: ' ',
@@ -71,7 +86,7 @@ export type Category = ValueOf<typeof CATEGORIES>;
  * Cities enum used to future-proof api designs, facilitating normalized route params and more.
  */
 export const CITIES = {
-	MONTREAL: {
+	Montreal: {
 		param: 'montreal',
 		label: 'Montréal',
 		name: 'Ville de Montréal',

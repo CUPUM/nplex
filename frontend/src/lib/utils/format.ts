@@ -1,7 +1,12 @@
-import type { Arrify } from '$types/utils';
+import type { Arrify, PgRange } from '$types/utils';
 import type { ValueOf } from 'ts-essentials';
+import { z } from 'zod';
 import { browserDb } from './database';
-import type { STORAGE_BUCKETS } from './enums';
+import { BRACKETS, type STORAGE_BUCKETS } from './enums';
+
+//
+// International format helpers (currencies, dates, etc.).
+//
 
 /**
  * CAD currency formatter.
@@ -13,59 +18,142 @@ export const cadformatter = new Intl.NumberFormat('fr-CA', {
 	maximumFractionDigits: 0,
 });
 
+//
+// Postgres, PostGIS, and PostgREST format helpers.
+// For more information, refer to https://postgrest.org/en/stable/how-tos/working-with-postgresql-data-types.html
+//
+
+/**
+ * Format a given GeoJSON geometry to a PostGIS-compatible geometry.
+ *
+ * - ('Point', 'POINT(0 0)')
+ * - ('Linestring', 'LINESTRING(0 0, 1 1, 2 1, 2 2)')
+ * - ('Polygon', 'POLYGON((0 0, 1 0, 1 1, 0 1, 0 0))')
+ * - ('PolygonWithHole', 'POLYGON((0 0, 10 0, 10 10, 0 10, 0 0),(1 1, 1 2, 2 2, 2 1, 1 1))')
+ * - ('Collection', 'GEOMETRYCOLLECTION(POINT(2 0),POLYGON((0 0, 1 0, 1 1, 0 1, 0 0)))')
+ */
+export function toPgGeom(geometry: GeoJSON.Geometry) {
+	console.log(geometry);
+	const feature = z.object({});
+}
+
+// /**
+//  * POSTGIS-specific geometry validation and formatting.
+//  * (https://postgis.net/workshops/postgis-intro/geometries.html)
+//  *
+//  * Native shapes expected by POSTGIS and returned by this validator are:
+//  *
+
+//  */
+// export const postgisGeometrySchema = geometrySchema.transform((geom) => {
+// 	switch (geom.type) {
+// 		case 'point':
+// 			return `POINT(${geom.coordinates[1]} ${geom.coordinates[0]})`;
+// 		case 'linestring':
+// 			return ``;
+// 		case 'polygon':
+// 			return ``;
+// 	}
+// });
+
+/**
+ * Parses a PostGIS Geometry stringified response from PostGREST into a GeoJSON Feature object.
+ */
+export function fromPgGeom(
+	geometry: string,
+	/**
+	 * Properties to optionally insert into the Feature's definition.
+	 */
+	properties?: Record<string, any>
+) {
+	return '';
+}
+
 /**
  * Translate a javascript array to a postgres compliant array string.
- *
- * @param arr The javascript array source.
- * @param text Determines if the array should be formatted as a text representation, using curly
- *   brackets instead of parentheses and wrapping each values in double-quotes.
  */
-export function pgarr<T extends readonly unknown[] | unknown[]>(arr: T, text?: boolean) {
-	if (text) {
-		return `{${arr.map((v) => '"' + v + '"').join(',')}}`;
+export function toPgArr<T extends readonly unknown[] | unknown[]>(
+	/**
+	 * Source array.
+	 */
+	array: T,
+	opts?: {
+		/**
+		 * Determines if the array should be formatted as a text representation (`{"a","b","c",...}`
+		 * instead of regular array (`(a,b,c)`)
+		 */
+		text?: boolean;
+		brackets?: keyof typeof BRACKETS;
 	}
-	return `(${arr.join(',')})`;
+) {
+	// if (opts?.text) {
+	// 	return `{${array.map((item) => '"' + item + '"').join(',')}}`;
+	// }
+	const bracketPair = BRACKETS[opts?.brackets ?? (opts?.text ? 'curly' : 'parenthesis')];
+	const arrString = opts?.text ? array.map((item) => `"${item}"`).join(',') : array.join(',');
+	return `${bracketPair.start}${arrString}${bracketPair.end}` as const;
 }
 
 /**
  * Counter-part to pgarr, useful to parse array strings from postgrest responses into actual js
  * arrays.
  */
-export function jsarr<T extends `(${string})`>(pgarr: T): string[] {
-	return pgarr.slice(1, -1).split(',');
+export function fromPgArr(pgArr: string): string[] {
+	return pgArr.slice(1, -1).split(',');
 }
 
 /**
- * Parse a returned range value from PostgREST and return a two-number tuple.
+ * Synctatic sugar wrapper for toArr expecting a two-member number tuple or null.
  */
-export function jsrange<T extends 'empty' | Parameters<typeof jsarr>[0]>(
-	pgrange: T,
+export function toPgRange<T extends [number, number] | null>(range: T) {
+	if (!range) {
+		return null;
+	}
+	return toPgArr(range, { brackets: 'square' }) as PgRange;
+}
+
+/**
+ * Parse a range stringified value from PostgREST and return a two-number tuple.
+ */
+export function fromPgRange<T extends 'empty' | null | undefined | string>(
+	pgRange: T,
 	fallback: [number, number] = [0, 0]
-): number[] {
-	if (!pgrange || pgrange === 'empty') {
+): [number, number] {
+	if (!pgRange || pgRange === 'empty') {
 		return fallback;
 	}
-	const arr = jsarr(pgrange).map((n) => Number(n));
-	arr.length = 2;
-	return arr;
+	const arr = fromPgArr(pgRange)
+		.map((n) => Number(n))
+		.slice(0, 2);
+	if (arr.length < 2) {
+		console.error('Extracted array does not have 2 members, expected for ranges.');
+	}
+	return [arr[0] ?? fallback[0], arr[1] ?? fallback[1]];
 }
 
 /**
  * Make a value always an array, i.e. wrap non-array inputs in an array.
  */
-export function alwaysarr<T>(arr: T) {
+export function alwaysArr<T>(arr: T) {
 	type AlwaysArr = NonNullable<T>;
 	if (arr == null) return <Arrify<AlwaysArr>>[];
 	return Array.isArray(arr) ? <Arrify<AlwaysArr>>arr : <Arrify<AlwaysArr>>[arr];
 }
 
-export function csshsl(pghsl: string) {
-	let comma = 0;
-	return `hsl${pghsl
-		.replace(/,/g, (substr) => {
-			return ++comma === 2 ? '%,' : substr;
-		})
-		.replace(')', '%)')}`;
+/**
+ * Takes a Postgres cube string and returns a CSS-ready hsl color string.
+ */
+export function pgCubeToHsl(pgCube: string): `hsl(${number},${number}%,${number}%)` | '' {
+	try {
+		const comps = fromPgArr(pgCube).map((n) => Number(n));
+		if (comps.length !== 3) {
+			throw new Error(`Extracted array has ${comps.length} members instead 3.`);
+		}
+		return `hsl(${comps[0]},${comps[1]}%,${comps[2]}%)`;
+	} catch (error) {
+		console.error(error);
+		return '';
+	}
 }
 
 /**
@@ -110,4 +198,4 @@ export function projectcolors(gallery?: ProjectGalleryItem | ProjectGalleryItem[
 		return acc;
 	}, [] as string[]);
 }
-type ProjectGalleryItem = Partial<App.DatabaseSchema['public']['Tables']['projects_images']['Row']>;
+type ProjectGalleryItem = Partial<App.Database['public']['Tables']['projects_images']['Row']>;
