@@ -17,17 +17,13 @@ import { ERROR_MESSAGE, LOAD_DEPENDENCIES } from './enums';
 /**
  * Supabase client instance reserved to browser context.
  */
-export const browserDb = createClient<App.DatabaseSchema>(
-	PUBLIC_SUPABASE_URL,
-	PUBLIC_SUPABASE_ANON_KEY,
-	{
-		auth: {
-			persistSession: false,
-			autoRefreshToken: true,
-			detectSessionInUrl: false,
-		},
-	}
-);
+export const browserDb = createClient<App.Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+	auth: {
+		persistSession: false,
+		autoRefreshToken: true,
+		detectSessionInUrl: false,
+	},
+});
 if (browser) {
 	browserDb.auth.onAuthStateChange(async (event, session) => {
 		let update = false;
@@ -82,7 +78,7 @@ function sessionStorage(): SupportedStorage {
  * server context.
  */
 function createServerClient() {
-	return createClient<App.DatabaseSchema>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+	return createClient<App.Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		auth: {
 			persistSession: false,
 			autoRefreshToken: false,
