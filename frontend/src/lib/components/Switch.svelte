@@ -134,12 +134,12 @@
 
 	:where(.default) {
 		color: col(fg, 000);
-		background: col(fg, 100, 0.1);
+		background: col(fg, 500, 0.05);
 		.mark {
 			background: col(fg, 300);
 		}
 		&:hover {
-			background: col(bg, 900, 0.6);
+			// background: col(fg, 900, 0.6);
 		}
 	}
 
@@ -154,7 +154,7 @@
 			width: 100%;
 			height: 100%;
 			border-radius: inherit;
-			border: 1px solid col(fg, 100, 0.1);
+			border: 1px solid col(fg, 100, 0.2);
 			transition: all 0.15s ease-out;
 		}
 		&:hover {

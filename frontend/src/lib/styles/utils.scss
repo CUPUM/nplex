@@ -15,21 +15,18 @@
  * Helpers to scope styles with breakpoints.
  * Defined with max-width as the app is designed desktop-first.
  */
-$bp-mobile: 480px;
-$bp-small: 760px;
-$bp-medium: 1200px;
 @mixin mobile {
-	@media (max-width: #{$bp-mobile}) {
+	@media (max-width: 480px) {
 		@content;
 	}
 }
-@mixin small {
-	@media (max-width: #{$bp-small}) {
+@mixin tablet {
+	@media (max-width: 1024px) {
 		@content;
 	}
 }
-@mixin medium {
-	@media (max-width: #{$bp-medium}) {
+@mixin laptop {
+	@media (max-width: 1200px) {
 		@content;
 	}
 }

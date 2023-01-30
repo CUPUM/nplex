@@ -2,7 +2,7 @@ drop view if exists "public"."editable_projects";
 
 alter table "public"."projects" drop column "location";
 
-alter table "public"."projects" add column "location_geometry" postgis.geometry;
+alter table "public"."projects" add column "location_geometry" geometry;
 
 alter table "public"."projects" add column "location_radius" real;
 

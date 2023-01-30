@@ -7,19 +7,14 @@
 
 	$: _description = description;
 
-	$: if (_description == '') {
-		_description = null;
-	}
-
-	$: $dirty.description = _description !== description;
+	$: $dirty.description = (_description ?? '') !== (description ?? '');
 </script>
 
 <fieldset class="formgroup">
-	<legend class="formgroup-legend">Description</legend>
-	<section class="formgroup-fields">
+	<legend class="formlegend">Description</legend>
+	<section class="formfields">
 		<TextArea
 			name="description"
-			variant="default"
 			bind:value={_description}
 			placeholder="Décrivez votre projet"
 			style="height: 300px; width: 100%;"
@@ -28,4 +23,7 @@
 </fieldset>
 
 <style lang="scss">
+	.formfields {
+		max-width: var(--ui-width-md);
+	}
 </style>

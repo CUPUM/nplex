@@ -86,7 +86,7 @@
 		opacity: 0;
 		fill: none;
 		stroke: currentColor;
-		stroke-width: 16px;
+		stroke-width: 12px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		animation-duration: calc(var(--draw-s) * var(--shapes-n));

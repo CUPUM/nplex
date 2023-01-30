@@ -4,7 +4,18 @@
 	import Ripple from '$components/Ripple.svelte';
 	import { IMAGE_TYPES } from './common';
 
-	export let loading = false;
+	let loading = false;
+	let inputRef: HTMLInputElement;
+
+	function upload(e: Event) {
+		if (
+			e.target instanceof Element &&
+			'form' in e.target &&
+			e.target.form instanceof HTMLFormElement
+		) {
+			e.target.form.requestSubmit(inputRef);
+		}
+	}
 </script>
 
 <label class:loading>
@@ -13,7 +24,15 @@
 		<Icon name="image-add" animateSpeed={2} strokeWidth={1} />
 	</div>
 	<legend>Cliquez pour sélectionner ou déposez des fichiers ici.</legend>
-	<input hidden type="file" name="images" accept={IMAGE_TYPES.join(',')} multiple on:change />
+	<input
+		hidden
+		type="file"
+		name="images"
+		accept={IMAGE_TYPES.join(',')}
+		multiple
+		on:change={upload}
+	/>
+	<input type="submit" hidden formaction="?/upload_image" bind:this={inputRef} />
 	{#if loading}
 		<Loading />
 	{/if}
@@ -35,7 +54,7 @@
 		justify-content: center;
 		cursor: pointer;
 		padding: 3rem;
-		margin: calc(1.5rem * 0.5);
+		// margin: calc(1.5rem * 0.5);
 		text-align: center;
 		border: 1px dashed col(fg, 100, 0.2);
 		transition: all 0.15s ease-out;

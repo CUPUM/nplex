@@ -1,6 +1,8 @@
 import type Map from '$components/Map.svelte';
 import type MapDraw from '$components/MapDraw.svelte';
-import { pgarr } from '$utils/format';
+import { toPgGeom, toPgRange } from '$utils/format';
+import { positionSchema } from '$utils/validation';
+import { point } from '@turf/turf';
 import type { ComponentProps } from 'svelte';
 import { get, writable } from 'svelte/store';
 import { z } from 'zod';
@@ -9,9 +11,11 @@ import type { PageData } from './$types';
 
 //
 // Sharable two-way bound form values.
+// Form values that do not need to be shared are located in respective components.
 //
 export const _type_id = writable<PageData['project']['type_id']>();
 export const _banner_id = writable<PageData['project']['banner_id']>();
+export const _location_radius = writable<PageData['project']['location']['radius']>();
 
 /**
  * Page-wide copy of data.descriptors.
@@ -36,7 +40,9 @@ export const mapdraw = writable<ComponentProps<MapDraw>['draw']>();
 /**
  * Filter valid site usages based on usage category.
  */
-export function getAvailableUsages(categoryId: PageData['project']['site_usage_category_id']) {
+export function getAvailableUsages(
+	categoryId: PageData['project']['site_usage_category_id'] | undefined
+) {
 	if (categoryId == null) {
 		return [];
 	} else
@@ -54,6 +60,8 @@ export const IMAGE_MAX_SIZE = 5e6;
 export const IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 export const IMAGE_MAX_RESOLUTION = 1_600;
 export const IMAGE_GALLERY_FOLDER = 'gallery';
+export const IMAGE_TITLE_MAX_LENGTH = 200;
+export const IMAGE_DESCRIPTION_MAX_LENGTH = 500;
 export const LOCATION_DEFAULT_RADIUS = 500;
 export const LOCATION_MAX_RADIUS = 1_500;
 export const ADJACENT_STREETS_MIN = 0;
@@ -80,26 +88,74 @@ export const descriptionSchema = zfd.text(
 		.optional()
 );
 
+export const typeIdSchema = zfd.numeric(z.number().optional());
+
 export const costRangeSchema = zfd
 	.json(z.tuple([z.number().nonnegative(), z.number().nonnegative()]))
-	.refine(
-		([min, max]) => min >= COST_MIN && min <= COST_MAX,
-		`La valeur minimum du projet ne respecte pas les limites.`
-	)
-	.refine(
-		([min, max]) => max >= COST_MIN && max <= COST_MAX,
-		`La valeur maximum du projet ne respecte pas les limites.`
-	)
-	.refine(
-		([min, max]) => min <= max,
-		`La différence entre la valeur minimum et la valeur maximum du projet n'est pas valide.`
-	)
-	.transform((minmax) => pgarr(minmax) as `[${number},${number}]`)
+	.superRefine(([min, max], ctx) => {
+		if (min < COST_MIN || min > COST_MAX) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: `La valeur minimum du projet ne respecte pas les limites.`,
+			});
+		}
+		if (max < COST_MIN || max > COST_MAX) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: `La valeur maximum du projet ne respecte pas les limites.`,
+			});
+		}
+		if (min > max) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: `La différence entre la valeur minimum et la valeur maximum du projet n'est pas valide.`,
+			});
+		}
+	})
+	.transform((minmax) => toPgRange(minmax))
 	.optional();
 
 export const workIdsSchema = zfd
 	.repeatableOfType(zfd.numeric())
 	.transform((workids) => workids ?? []);
+
+export const gallerySchema = zfd.repeatableOfType(
+	z.object({
+		id: zfd.text(),
+		name: zfd.text(),
+		title: zfd.text(
+			z
+				.string()
+				.max(IMAGE_TITLE_MAX_LENGTH, "Le titre de l'image dépasse le nombre maximum de caractères.")
+				.nullable()
+				.default(null)
+		),
+		description: zfd.text(
+			z
+				.string()
+				.max(
+					IMAGE_DESCRIPTION_MAX_LENGTH,
+					"La description de l'image dépasse le nombre maximum de caractères."
+				)
+				.nullable()
+				.default(null)
+		),
+	})
+);
+
+export const locationSchema = zfd
+	.json(
+		z.object({
+			center: positionSchema.optional(),
+			radius: z.number().optional(),
+		})
+	)
+	.transform(({ center, radius }) => {
+		return {
+			geometry: center ? toPgGeom(point(center).geometry) : null,
+			radius,
+		};
+	});
 
 export const adjacentStreetsSchema = zfd.numeric(
 	z
@@ -112,4 +168,5 @@ export const adjacentStreetsSchema = zfd.numeric(
 			ADJACENT_STREETS_MAX,
 			`Le site du projet ne peut pas être bordé par plus de ${ADJACENT_STREETS_MAX} rues.`
 		)
+		.optional()
 );

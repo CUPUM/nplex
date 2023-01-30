@@ -3,26 +3,34 @@
 	import { cubicIn, cubicInOut, cubicOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import type { PageData } from './$types';
+	import { dirty } from './common';
 	import GalleryImage from './GalleryImage.svelte';
 	import GalleryInput from './GalleryInput.svelte';
 
 	export let gallery: PageData['project']['gallery'];
+	$: $dirty.gallery =
+		_gallery.length !== gallery.length ||
+		!_gallery.every(
+			(image, i) =>
+				gallery[i] &&
+				gallery[i].id === image.id &&
+				(gallery[i].description ?? '') === (image.description ?? '') &&
+				(gallery[i].title ?? '') === (image.title ?? '')
+		);
 
-	let _gallery = [...gallery];
+	/**
+	 * Keep a local editable copy of gallery in sync with refreshed db data.
+	 */
+	let _gallery: typeof gallery = [];
+	function syncGallery(sample: typeof gallery) {
+		_gallery = gallery.map((i) => ({ ...i }));
+	}
+	$: syncGallery(gallery);
 
 	const placeholder = {
 		placeholder: true,
 		id: '-1',
-	};
-
-	const ACTION = {
-		upload: '?/upload',
-		update: '?/update',
-	};
-
-	let formRef: HTMLFormElement;
-	let uploadInputRef: HTMLInputElement;
-	let currentAction: string | null = null;
+	} as const;
 
 	function move(current: number, target: number) {
 		if (target === current) {
@@ -34,45 +42,45 @@
 	}
 </script>
 
-<fieldset>
-	<legend>Galerie</legend>
-	<ol>
-		{#each [..._gallery, placeholder] as image, i (image.id)}
-			<li
-				animate:flip={{ duration: 150, easing: cubicInOut }}
-				in:fly={{ duration: 300, y: 12, easing: cubicOut, delay: i * 100 }}
-				out:scale|local={{ duration: 150, start: 0.95, easing: cubicIn }}
-			>
-				{#if 'placeholder' in image}
-					<GalleryInput
-						on:change={() => formRef.requestSubmit(uploadInputRef)}
-						loading={currentAction === ACTION.upload}
-					/>
-				{:else}
-					<GalleryImage
-						bind:image
-						on:forward={() => move(i, i - 1)}
-						on:backward={() => move(i, i + 1)}
-						on:drop={(e) => move(i, e.detail.destination)}
-						{i}
-					/>
-				{/if}
-			</li>
-		{/each}
-	</ol>
+<fieldset class="formgroup">
+	<legend class="formlegend">Galerie</legend>
+	<section class="formfields">
+		<ol>
+			{#each [..._gallery, placeholder] as image, i (image.id)}
+				<li
+					animate:flip={{ duration: 150, easing: cubicInOut }}
+					in:fly={{ duration: 300, y: 12, easing: cubicOut, delay: i * 100 }}
+					out:scale|local={{ duration: 150, start: 0.95, easing: cubicIn }}
+				>
+					{#if 'placeholder' in image}
+						<GalleryInput />
+					{:else}
+						<GalleryImage
+							bind:image
+							on:forward={() => move(i, i - 1)}
+							on:backward={() => move(i, i + 1)}
+							on:drop={(e) => move(i, e.detail.destination)}
+							{i}
+						/>
+					{/if}
+				</li>
+			{/each}
+		</ol>
+	</section>
 </fieldset>
 
 <style lang="scss">
 	ol {
+		--gap: 2rem;
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
-		gap: 0;
+		gap: var(--gap);
 
-		@include medium {
+		@include laptop {
 			grid-template-columns: repeat(3, 1fr);
 		}
 
-		@include small {
+		@include tablet {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}

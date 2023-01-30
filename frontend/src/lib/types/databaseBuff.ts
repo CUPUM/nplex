@@ -67,6 +67,11 @@ export type BuffedDatabase = DeepReplace<
 						color_mean_lab: PgCube;
 					};
 				};
+				projects_location: {
+					Row: {
+						geometry?: GeoJSON.Point;
+					};
+				};
 			};
 		};
 	}

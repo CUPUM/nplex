@@ -428,7 +428,7 @@
 
 	:where(.default) {
 		color: col(fg, 000);
-		background: col(fg, 100, 0.075);
+		background: col(fg, 500, 0.05);
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			display: none;
@@ -438,7 +438,7 @@
 		&:focus-within {
 			label {
 				opacity: 0.5;
-				top: 1.5em;
+				top: 1.25em;
 				font-size: clamp(11px, 0.5em, 24px);
 			}
 			.affix {

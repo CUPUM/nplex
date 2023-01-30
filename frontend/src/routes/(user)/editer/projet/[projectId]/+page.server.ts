@@ -1,21 +1,28 @@
 import { getDb } from '$utils/database';
-import { STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
-import { pgarr } from '$utils/format';
+import { SEARCH_PARAMS, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
+import { toPgArr } from '$utils/format';
 import { error, fail, redirect } from '@sveltejs/kit';
-import { colord } from 'colord';
+import { colord, extend } from 'colord';
+import labPlugin from 'colord/plugins/lab';
 import sharp from 'sharp';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { Actions } from './$types';
 import {
+	adjacentStreetsSchema,
 	costRangeSchema,
 	descriptionSchema,
+	gallerySchema,
 	IMAGE_GALLERY_FOLDER,
 	IMAGE_MAX_RESOLUTION,
 	IMAGE_TYPES,
+	locationSchema,
 	titleSchema,
+	typeIdSchema,
 	workIdsSchema,
 } from './common';
+
+extend([labPlugin]);
 
 export const actions: Actions = {
 	/**
@@ -23,28 +30,32 @@ export const actions: Actions = {
 	 */
 	update: async (event) => {
 		const formData = await event.request.formData();
+		console.log({ ...formData });
 		const parsed = zfd
 			.formData({
 				title: titleSchema,
 				description: descriptionSchema,
-				type_id: zfd.numeric(z.number().optional()),
+				type_id: typeIdSchema,
 				work_id: workIdsSchema,
 				cost_range: costRangeSchema,
+				adjacent_streets: adjacentStreetsSchema,
+				location: locationSchema,
+				gallery: gallerySchema,
 			})
-			.transform((data) => {
-				const { work_id, ...project } = data;
+			.transform(({ work_id, location, gallery, ...project }) => {
 				return {
+					gallery,
 					project,
+					location,
 					work_id,
 				};
 			})
 			.safeParse(formData);
-
-		console.log(parsed);
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
+		// projects table
 		const projectUpdate = db
 			.from('projects')
 			.update(parsed.data.project)
@@ -53,13 +64,13 @@ export const actions: Actions = {
 				if (res.error) {
 					throw error(STATUS_CODES.InternalServerError, { ...res.error });
 				}
-				return parsed.data;
 			});
+		// project_works table
 		const worksDelete = db
 			.from('projects_works')
 			.delete()
 			.eq('project_id', event.params.projectId)
-			.not('work_id', 'in', pgarr(parsed.data.work_id))
+			.not('work_id', 'in', toPgArr(parsed.data.work_id))
 			.then((del) => {
 				if (del.error) {
 					return fail(STATUS_CODES.InternalServerError, { ...del.error });
@@ -67,19 +78,42 @@ export const actions: Actions = {
 				return db
 					.from('projects_works')
 					.upsert(
-						parsed.data.work_id.map((work_id) => {
-							return {
-								project_id: event.params.projectId,
-								work_id,
-							};
-						})
+						parsed.data.work_id.map((work_id) => ({
+							project_id: event.params.projectId,
+							work_id,
+						}))
 					)
 					.then((up) => {
 						if (up.error) {
 							return fail(STATUS_CODES.InternalServerError, { ...up.error });
 						}
-						return up.data;
 					});
+			});
+		// projects_images table
+		const galleryUpdate = db
+			.from('projects_images')
+			.upsert(
+				parsed.data.gallery.map((img, i) => ({
+					...img,
+					order: i,
+					project_id: event.params.projectId,
+				}))
+			)
+			.then((res) => {
+				if (res.error) {
+					throw fail(STATUS_CODES.InternalServerError, { ...res.error });
+				}
+			});
+		// projects_location table
+		const locationUpdate = db
+			.from('projects_location')
+			.update(parsed.data.location)
+			.eq('project_id', event.params.projectId)
+			.then((res) => {
+				if (res.error) {
+					throw error(STATUS_CODES.InternalServerError, { ...res.error });
+				}
+				console.log(res);
 			});
 	},
 	/**
@@ -112,11 +146,15 @@ export const actions: Actions = {
 			const date = new Date().toLocaleDateString('fr-CA');
 			const rand = crypto.randomUUID();
 			const dominant = colord(stats.dominant);
+			const dominant_hsl = dominant.toHsl();
+			const dominant_lab = dominant.toLab();
 			const mean = colord({
 				r: Math.round(stats.channels[0].mean),
 				g: Math.round(stats.channels[1].mean),
 				b: Math.round(stats.channels[2].mean),
 			});
+			const mean_hsl = mean.toHsl();
+			const mean_lab = mean.toLab();
 			return db.storage
 				.from(STORAGE_BUCKETS.PROJECTS)
 				.upload(
@@ -131,10 +169,10 @@ export const actions: Actions = {
 					const update = await db
 						.from('projects_images')
 						.update({
-							color_dominant_hsl: dominant.toHsl() as any,
-							color_dominant_lab: dominant.toLab() as any,
-							color_mean_hsl: mean.toHsl() as any,
-							color_mean_lab: mean.toLab() as any,
+							color_dominant_hsl: toPgArr([dominant_hsl.h, dominant_hsl.s, dominant_hsl.l]) as any,
+							color_dominant_lab: toPgArr([dominant_lab.l, dominant_lab.a, dominant_lab.b]) as any,
+							color_mean_hsl: toPgArr([mean_hsl.h, mean_hsl.s, mean_hsl.l]) as any,
+							color_mean_lab: toPgArr([mean_lab.l, mean_lab.a, mean_lab.b]) as any,
 						})
 						.eq('name', stored.data.path)
 						.select('id')
@@ -152,6 +190,61 @@ export const actions: Actions = {
 				});
 		});
 		return Promise.all(uploads);
+	},
+	/**
+	 * Delete a gallery image.
+	 */
+	delete_image: async (event) => {
+		if (!event.params.projectId) {
+			return;
+		}
+		const imageName = event.url.searchParams.get(SEARCH_PARAMS.FILENAME);
+		if (!imageName) {
+			return fail(STATUS_CODES.BadRequest);
+		}
+		const db = await getDb(event);
+		const del = await db.storage.from(STORAGE_BUCKETS.PROJECTS).remove([imageName]);
+		if (del.error) {
+			throw error(STATUS_CODES.InternalServerError, del.error);
+		}
+	},
+	/**
+	 * Promote the passed image as the project's banner image. Unsets previous banner.
+	 */
+	promote_image: async (event) => {
+		const imageId = event.url.searchParams.get(SEARCH_PARAMS.IMAGE_ID);
+		if (!imageId) {
+			return fail(STATUS_CODES.BadRequest);
+		}
+		const db = await getDb(event);
+		const promoteRes = await db
+			.from('projects')
+			.update({ banner_id: imageId })
+			.eq('id', event.params.projectId)
+			.single();
+		if (promoteRes.error) {
+			throw error(STATUS_CODES.InternalServerError, promoteRes.error);
+		}
+	},
+	/**
+	 * Demote (remove) the passed image as the project's banner image. Leaves the project banner as
+	 * null.
+	 */
+	demote_image: async (event) => {
+		const imageId = event.url.searchParams.get(SEARCH_PARAMS.IMAGE_ID);
+		if (!imageId) {
+			return fail(STATUS_CODES.BadRequest);
+		}
+		const db = await getDb(event);
+		const promoteRes = await db
+			.from('projects')
+			.update({ banner_id: null })
+			.eq('id', event.params.projectId)
+			.eq('banner_id', imageId)
+			.maybeSingle();
+		if (promoteRes.error) {
+			throw error(STATUS_CODES.InternalServerError, promoteRes.error);
+		}
 	},
 	/**
 	 * Delete a project by its id.

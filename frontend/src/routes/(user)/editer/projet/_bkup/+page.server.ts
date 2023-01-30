@@ -1,6 +1,6 @@
 import { getDb } from '$utils/database';
 import { STATUS_CODES } from '$utils/enums';
-import { pgarr } from '$utils/format';
+import { toPgArr } from '$utils/format';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
@@ -38,7 +38,7 @@ export const actions: Actions = {
 				type_id: zfd.numeric(z.number().optional()),
 				cost_range: zfd
 					.json(z.tuple([z.number().nonnegative(), z.number().nonnegative()]))
-					.transform((minmax) => pgarr(minmax) as `[${number},${number}]`),
+					.transform((minmax) => toPgArr(minmax) as `[${number},${number}]`),
 				description: zfd.text(z.string().optional()),
 				work_id: zfd.repeatableOfType(zfd.numeric()),
 			})
@@ -70,7 +70,7 @@ export const actions: Actions = {
 			.from('projects_works')
 			.delete()
 			.eq('project_id', event.params.projectId)
-			.not('work_id', 'in', pgarr(parsed.data.work_id))
+			.not('work_id', 'in', toPgArr(parsed.data.work_id))
 			.then((del) => {
 				if (del.error) {
 					return fail(STATUS_CODES.InternalServerError, del.error);

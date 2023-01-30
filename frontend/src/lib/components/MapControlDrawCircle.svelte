@@ -10,7 +10,7 @@
 	import { getMapContext } from './Map.svelte';
 	import { DRAW_EVENTS, DRAW_MODES, getMapDrawContext } from './MapDraw.svelte';
 
-	export let initialRadiusInKm: number = 0.5;
+	export let initialRadius: number = 500;
 
 	const { getMap, setCursor } = getMapContext();
 	const { mode, getMapDraw } = getMapDrawContext();
@@ -21,7 +21,7 @@
 	function setMode(e: PointerEvent & { target: EventTarget | null }) {
 		if (getMapDraw()) {
 			const newMode = active ? DRAW_MODES.SimpleSelect : DRAW_MODES.DrawCircle;
-			getMapDraw()?.changeMode(newMode as any, { initialRadiusInKm });
+			getMapDraw()?.changeMode(newMode as any);
 			getMap()?.fire(DRAW_EVENTS.modechange, { mode: newMode });
 		}
 	}

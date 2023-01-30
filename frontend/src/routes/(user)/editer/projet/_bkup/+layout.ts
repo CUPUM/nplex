@@ -1,6 +1,6 @@
 import { getDb } from '$utils/database';
 import { LOAD_DEPENDENCIES, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
-import { alwaysarr, csshsl, jsrange } from '$utils/format';
+import { alwaysArr, fromPgRange, pgCubeToHsl } from '$utils/format';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
@@ -58,13 +58,13 @@ export const load = (async (event) => {
 			// Doing some transformations to format data for the client.
 			return {
 				...res.data,
-				cost_range: jsrange(res.data.cost_range),
-				work_ids: alwaysarr(res.data.work_ids).map((w) => w.work_id),
-				secondary_usages: alwaysarr(res.data.secondary_usages),
-				gallery: alwaysarr(res.data.gallery).map((img) => ({
+				cost_range: fromPgRange(res.data.cost_range),
+				work_ids: alwaysArr(res.data.work_ids).map((w) => w.work_id),
+				secondary_usages: alwaysArr(res.data.secondary_usages),
+				gallery: alwaysArr(res.data.gallery).map((img) => ({
 					...img,
-					color_mean_hsl: csshsl(img.color_mean_hsl),
-					color_dominant_hsl: csshsl(img.color_dominant_hsl),
+					color_mean_hsl: pgCubeToHsl(img.color_mean_hsl),
+					color_dominant_hsl: pgCubeToHsl(img.color_dominant_hsl),
 					publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.name).data
 						.publicUrl,
 				})),

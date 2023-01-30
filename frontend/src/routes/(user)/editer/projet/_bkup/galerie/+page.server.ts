@@ -1,6 +1,6 @@
 import { getDb } from '$utils/database';
 import { SEARCH_PARAMS, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
-import { pgarr } from '$utils/format';
+import { toPgArr } from '$utils/format';
 import { error, fail } from '@sveltejs/kit';
 import { colord, extend } from 'colord';
 import labPlugin from 'colord/plugins/lab';
@@ -52,10 +52,10 @@ export const actions: Actions = {
 						name: `${date}-${rand}.webp`,
 						type: 'image/webp',
 						buffer,
-						color_dominant_hsl: pgarr([dominant_hsl.h, dominant_hsl.s, dominant_hsl.l]),
-						color_dominant_lab: pgarr([dominant_lab.l, dominant_lab.a, dominant_lab.b]),
-						color_mean_hsl: pgarr([mean_hsl.h, mean_hsl.s, mean_hsl.l]),
-						color_mean_lab: pgarr([mean_lab.l, mean_lab.a, mean_lab.b]),
+						color_dominant_hsl: toPgArr([dominant_hsl.h, dominant_hsl.s, dominant_hsl.l]),
+						color_dominant_lab: toPgArr([dominant_lab.l, dominant_lab.a, dominant_lab.b]),
+						color_mean_hsl: toPgArr([mean_hsl.h, mean_hsl.s, mean_hsl.l]),
+						color_mean_lab: toPgArr([mean_lab.l, mean_lab.a, mean_lab.b]),
 					};
 				})
 				.safeParseAsync(file);

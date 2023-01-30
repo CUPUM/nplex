@@ -10,7 +10,6 @@
 	interface MapContext {
 		getMap: () => Map | undefined;
 		getContainer: () => HTMLElement;
-		loading: Writable<boolean>;
 		setCursor: (cursor: Cursor | undefined) => void;
 	}
 
@@ -25,10 +24,10 @@
 	import { gesturesText, locales, MAP_STYLES, type MapLocale } from '$utils/map';
 	import { locations } from '$utils/map/locations';
 	import { debounce } from '$utils/modifiers';
-	import { Map, type MapOptions, type StyleSpecification } from 'maplibre-gl';
+	// import { Map, type MapOptions, type StyleSpecification } from 'maplibre-gl';
+	import type { Map, MapOptions, StyleSpecification } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
 	import Loading from './Loading.svelte';
 
 	export let style: string | undefined = undefined;
@@ -54,11 +53,11 @@
 	let mapContainerRef: HTMLDivElement;
 	let resizeObserver: ResizeObserver;
 
-	const loading = writable(true);
 	const dispatch = createEventDispatcher();
 
-	function init() {
-		map = new Map({
+	async function init() {
+		const { Map } = await import('maplibre-gl');
+		const premap = new Map({
 			container: mapContainerRef,
 			style: mapStyle,
 			center,
@@ -75,9 +74,8 @@
 			pitchWithRotate,
 			attributionControl: false,
 		});
-
-		map.once('load', (e) => {
-			loading.set(false);
+		premap.once('load', (e) => {
+			map = premap;
 			dispatch('init', e);
 		});
 	}
@@ -97,7 +95,6 @@
 
 	setContext<MapContext>(CTX_KEY, {
 		getMap: () => map,
-		loading,
 		getContainer: () => containerRef,
 		setCursor,
 	});
@@ -116,13 +113,13 @@
 <figure
 	bind:this={containerRef}
 	class="container {className}"
-	class:loading={$loading}
+	class:loading={!map}
 	{style}
 	use:intersection={{ rootMargin: '100px 100px' }}
 	on:enter|once={init}
 >
-	<div class="map-container" class:loading={$loading} bind:this={mapContainerRef} />
-	{#if $loading}
+	<div class="map-container" bind:this={mapContainerRef} />
+	{#if !map}
 		<div class="loading">
 			<slot name="loading">
 				<Loading />
@@ -155,7 +152,7 @@
 		overflow: hidden;
 		border-radius: inherit;
 		transition: transform 0.5s ease-out, opacity 0.5s;
-		&.loading {
+		.loading & {
 			transform: scale(0.98);
 			opacity: 0;
 		}

@@ -1,12 +1,7 @@
 import type { Arrify, PgRange } from '$types/utils';
 import type { ValueOf } from 'ts-essentials';
-import { z } from 'zod';
 import { browserDb } from './database';
-import { BRACKETS, type STORAGE_BUCKETS } from './enums';
-
-//
-// International format helpers (currencies, dates, etc.).
-//
+import { BRACKETS, SRID, type STORAGE_BUCKETS } from './enums';
 
 /**
  * CAD currency formatter.
@@ -18,43 +13,85 @@ export const cadformatter = new Intl.NumberFormat('fr-CA', {
 	maximumFractionDigits: 0,
 });
 
-//
-// Postgres, PostGIS, and PostgREST format helpers.
-// For more information, refer to https://postgrest.org/en/stable/how-tos/working-with-postgresql-data-types.html
-//
+/**
+ * Postgres, PostGIS, and PostgREST format helpers. For more information, refer to
+ * https://postgrest.org/en/stable/how-tos/working-with-postgresql-data-types.html.
+ */
 
 /**
- * Format a given GeoJSON geometry to a PostGIS-compatible geometry.
- *
- * - ('Point', 'POINT(0 0)')
- * - ('Linestring', 'LINESTRING(0 0, 1 1, 2 1, 2 2)')
- * - ('Polygon', 'POLYGON((0 0, 1 0, 1 1, 0 1, 0 0))')
- * - ('PolygonWithHole', 'POLYGON((0 0, 10 0, 10 10, 0 10, 0 0),(1 1, 1 2, 2 2, 2 1, 1 1))')
- * - ('Collection', 'GEOMETRYCOLLECTION(POINT(2 0),POLYGON((0 0, 1 0, 1 1, 0 1, 0 0)))')
+ * Stringifies a GeoJSON Geometry object into well-known-text for PostGIS. Taken and adapted from:
+ * https://github.com/benrei/wkt.
  */
-export function toPgGeom(geometry: GeoJSON.Geometry) {
-	console.log(geometry);
-	const feature = z.object({});
+export function toPgGeom(
+	geometry: GeoJSON.Geometry,
+	projection: SRID | null = SRID.WebMercator,
+	thirdOrdinate: 'Z' | 'M' = 'Z'
+): string {
+	function point(p: GeoJSON.Position) {
+		return p.join(' ');
+	}
+	function line(l: GeoJSON.Position[]) {
+		return l.map(point).join(', ');
+	}
+	function lines(r: GeoJSON.Position[][]) {
+		return r.map(line).map(wrap).join(', ');
+	}
+	function wrap(s: string) {
+		return '(' + s + ')';
+	}
+	function ordinates(n: number) {
+		switch (n) {
+			case 2:
+				return '';
+			case 3:
+				return thirdOrdinate;
+			case 4:
+				return thirdOrdinate + thirdOrdinate === 'Z' ? 'M' : 'Z';
+			default:
+				throw new Error(
+					`Invalid coordinates size: given coordinate has ${n} dimensions. Max is 4.`
+				);
+		}
+	}
+	const srid = projection ? 'SRID=' + projection + ';' : '';
+	let coordstr: string;
+	let dimensions;
+	switch (geometry.type) {
+		case 'Point':
+			coordstr = point(geometry.coordinates);
+			dimensions = geometry.coordinates.length;
+			break;
+		case 'LineString':
+			coordstr = line(geometry.coordinates);
+			dimensions = geometry.coordinates[0].length;
+			break;
+		case 'Polygon':
+			coordstr = lines(geometry.coordinates);
+			dimensions = geometry.coordinates[0][0].length;
+			break;
+		case 'MultiPoint':
+			coordstr = line(geometry.coordinates);
+			dimensions = geometry.coordinates[0].length;
+			break;
+		case 'MultiLineString':
+			coordstr = lines(geometry.coordinates);
+			dimensions = geometry.coordinates[0][0].length;
+			break;
+		case 'MultiPolygon':
+			coordstr = geometry.coordinates.map(lines).map(wrap).join(', ');
+			dimensions = geometry.coordinates[0][0][0].length;
+			break;
+		case 'GeometryCollection':
+			coordstr = geometry.geometries.map((geom) => toPgGeom(geom, null, thirdOrdinate)).join(', ');
+			dimensions = 2;
+			break;
+		default:
+			throw new Error(
+				'Provided GeoJSON geometry object is not valid for conversion to PostGIS-ready WKT.'
+			);
+	}
+	return `${srid}${geometry.type.toUpperCase()}${ordinates(dimensions)}(${coordstr})`;
 }
-
-// /**
-//  * POSTGIS-specific geometry validation and formatting.
-//  * (https://postgis.net/workshops/postgis-intro/geometries.html)
-//  *
-//  * Native shapes expected by POSTGIS and returned by this validator are:
-//  *
-
-//  */
-// export const postgisGeometrySchema = geometrySchema.transform((geom) => {
-// 	switch (geom.type) {
-// 		case 'point':
-// 			return `POINT(${geom.coordinates[1]} ${geom.coordinates[0]})`;
-// 		case 'linestring':
-// 			return ``;
-// 		case 'polygon':
-// 			return ``;
-// 	}
-// });
 
 /**
  * Parses a PostGIS Geometry stringified response from PostGREST into a GeoJSON Feature object.
@@ -181,7 +218,7 @@ export function publicurl(bucket: ValueOf<typeof STORAGE_BUCKETS>, name?: string
 /**
  * Helper to format a project gallery's colors as a flat array.
  */
-export function projectcolors(gallery?: ProjectGalleryItem | ProjectGalleryItem[] | null) {
+export function projectColors(gallery?: ProjectGalleryItem | ProjectGalleryItem[] | null) {
 	if (!gallery) {
 		return '';
 	}

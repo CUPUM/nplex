@@ -55,6 +55,7 @@
 	export function overlapNavbarStyle(element: Element, opts: NavbarStyle): SvelteActionReturnType {
 		let hasEnteredOnce = false;
 		let observer: IntersectionObserver;
+		let windowHeight: number;
 		const handleIntersection = ((entries) => {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
@@ -73,10 +74,14 @@
 			}px 0px`;
 			observer = new IntersectionObserver(handleIntersection, { rootMargin });
 			observer.observe(element);
+			windowHeight = window.innerHeight;
 		}
 		initObserver();
-		const handleResize = debounce(() => {
+		const handleResize = debounce((e: UIEvent) => {
 			if (observer) {
+				if (windowHeight === window.innerHeight) {
+					return;
+				}
 				observer.unobserve(element);
 				observer.disconnect();
 			}
@@ -101,7 +106,6 @@
 
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
-
 	import { page } from '$app/stores';
 	import Avatar from '$components/Avatar.svelte';
 	import Icon from '$components/Icon.svelte';
@@ -125,11 +129,11 @@
 	let naving = false;
 
 	beforeNavigate(() => {
-		naving = true;
+		// naving = true;
 	});
 
 	afterNavigate(() => {
-		naving = false;
+		// naving = false;
 	});
 
 	const mainNav = Object.values(MAIN_ROUTES);
@@ -230,7 +234,7 @@
 		z-index: 100;
 		top: 0;
 
-		@include small {
+		@include tablet {
 			align-items: flex-start;
 		}
 	}
@@ -257,7 +261,7 @@
 		align-items: center;
 		gap: 1rem;
 
-		@include small {
+		@include tablet {
 			display: flex;
 			flex: unset;
 			flex-direction: column;
@@ -293,7 +297,7 @@
 		padding: 1.5rem;
 		display: none;
 
-		@include small {
+		@include tablet {
 			display: block;
 		}
 	}
@@ -308,7 +312,7 @@
 		transition: transform 0.25s cubic-bezier(0, 0, 0, 1) var(--d), opacity 0.25s ease-out var(--d),
 			background 0.1s ease;
 
-		@include small {
+		@include tablet {
 			flex-direction: column;
 			align-items: flex-start;
 		}

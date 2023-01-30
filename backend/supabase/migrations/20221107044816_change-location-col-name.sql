@@ -2,7 +2,7 @@ drop view if exists "public"."editable_projects";
 
 alter table "public"."projects" drop column "location_geometry";
 
-alter table "public"."projects" add column "location" postgis.geometry;
+alter table "public"."projects" add column "location" geometry;
 
 create or replace view "public"."editable_projects" as  SELECT p.id,
     p.created_at,

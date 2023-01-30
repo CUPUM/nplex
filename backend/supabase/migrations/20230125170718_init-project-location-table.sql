@@ -6,7 +6,7 @@ create table "public"."projects_location" (
     "updated_at" timestamp with time zone not null default now(),
     "created_by_id" uuid not null default default_uid(),
     "updated_by_id" uuid not null default default_uid(),
-    "geometry" postgis.geometry,
+    "geometry" geometry,
     "radius" real
 );
 

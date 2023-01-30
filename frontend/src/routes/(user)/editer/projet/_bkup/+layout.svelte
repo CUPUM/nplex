@@ -56,7 +56,7 @@
 		gap: 3rem;
 		padding: 3rem 2.5rem;
 
-		@include medium {
+		@include laptop {
 			padding: 1.5rem;
 		}
 	}

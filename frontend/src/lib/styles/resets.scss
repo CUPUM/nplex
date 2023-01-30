@@ -45,6 +45,10 @@
 	margin: 0;
 }
 
+:where(fieldset > legend) {
+	float: left;
+}
+
 :where(button) {
 	cursor: pointer;
 	font-family: inherit;

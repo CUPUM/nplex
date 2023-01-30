@@ -125,20 +125,25 @@
 	>
 		<Image class="image" src={image.publicUrl} alt={image.id} color={image.color_dominant_hsl} />
 		{#if !isDragging}
-			<menu data-theme={THEMES.dark} out:fly|local={{ y: 6 }} in:fly|local={{ y: 6, delay: 250 }}>
+			<menu
+				data-theme={THEMES.dark}
+				out:fly|local={{ y: 6, duration: 150 }}
+				in:fly|local={{ y: 6, delay: 250, duration: 150 }}
+			>
 				<Tooltip message="Supprimer" place="top">
 					<Button
 						type="submit"
-						round
 						variant="danger"
-						formaction="?/delete&{SEARCH_PARAMS.FILENAME}={image.name}"
+						formaction="?/delete_image&{SEARCH_PARAMS.FILENAME}={image.name}"
+						style="backdrop-filter: blur(8px);"
 					>
 						<Icon name="trash" />
 					</Button>
 				</Tooltip>
 				<Tooltip message="Avancer" place="top">
-					<Button style="margin-left: auto;" round on:pointerdown={() => dispatch('forward')}
-						><Icon name="arrow-left" /></Button
+					<Button
+						style="margin-left: auto; backdrop-filter: blur(8px);"
+						on:pointerdown={() => dispatch('forward')}><Icon name="arrow-left" /></Button
 					>
 				</Tooltip>
 				<Tooltip
@@ -147,29 +152,33 @@
 				>
 					<Button
 						type="submit"
+						style="backdrop-filter: blur(8px);"
 						formaction="{$_banner_id === image.id
-							? '?/demote'
-							: '?/promote'}&{SEARCH_PARAMS.IMAGE_ID}={image.id}"
+							? '?/demote_image'
+							: '?/promote_image'}&{SEARCH_PARAMS.IMAGE_ID}={image.id}"
 						active={$_banner_id === image.id}
-						round
 					>
 						<Icon name="bookmark" />
 					</Button>
 				</Tooltip>
 				<Tooltip message="Reculer" place="top">
-					<Button round on:pointerdown={() => dispatch('backward')}
-						><Icon name="arrow-right" /></Button
+					<Button on:pointerdown={() => dispatch('backward')} style="backdrop-filter: blur(8px);">
+						<Icon name="arrow-right" /></Button
 					>
 				</Tooltip>
 			</menu>
 		{/if}
 		<fieldset>
-			<input type="hidden" name="[{i}].id" readonly value={image.id} />
-			<input type="hidden" name="[{i}].name" readonly value={image.name} />
-			<Field name="[{i}].title" value={image.title ?? ''}>
+			<input type="hidden" name="gallery[{i}].id" readonly value={image.id} />
+			<input type="hidden" name="gallery[{i}].name" readonly value={image.name} />
+			<Field name="gallery[{i}].title" bind:value={image.title}>
 				<svelte:fragment slot="label">Titre</svelte:fragment>
 			</Field>
-			<TextArea style="height: 100px;" name="[{i}].description" value={image.description ?? ''}>
+			<TextArea
+				style="height: 100px;"
+				name="gallery[{i}].description"
+				bind:value={image.description}
+			>
 				<svelte:fragment slot="label">Description</svelte:fragment>
 			</TextArea>
 		</fieldset>
@@ -179,8 +188,8 @@
 <style lang="scss">
 	div {
 		perspective: 1000px;
-		padding: calc(0.5 * 1.5rem);
-		margin-bottom: 1.5rem;
+		padding: calc(0.5 * var(--gap));
+		margin-inline: calc(-0.5 * var(--gap));
 		border-radius: var(--ui-radius-lg);
 		transition: box-shadow 0.25s ease-in-out;
 	}
@@ -209,7 +218,7 @@
 			// box-shadow: 0 0 0 10px col(bg, 300);
 
 			:global(.image) {
-				box-shadow: 0 1rem 5rem -2.5rem var(--color);
+				box-shadow: 0 1rem 5rem -2.5rem rgb(0, 10, 20, 0.25);
 			}
 		}
 

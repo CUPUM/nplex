@@ -9,12 +9,11 @@
 </script>
 
 <fieldset class="formgroup">
-	<legend class="formgroup-legend">Propriété du site</legend>
-	<section class="formgroup-fields">
+	<legend class="formlegend">Propriété du site</legend>
+	<section class="formfields">
 		<Select
 			placeholder="Sélectionnez un type de propriétaire"
 			options={$descriptors.siteOwnerships}
-			variant="outlined"
 			bind:value={_ownership_id}
 			name="site_ownership_id"
 		>

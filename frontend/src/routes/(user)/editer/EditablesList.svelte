@@ -1,16 +1,22 @@
 <script lang="ts" context="module">
-	type DatumBase = { id: string | null; created_by_id: string | null; published: boolean };
-
+	type DatumBase = {
+		id: string | null;
+		created_by_id: string | null;
+		publication_status?: Pick<
+			App.Database['public']['Tables']['projects_publication_status']['Row'],
+			'status'
+		> | null;
+	};
 	type FilterFunction = <T extends DatumBase>(d: T) => boolean;
 	type AuthoringFilterFunction = <T extends DatumBase>(d: T, uid: string) => boolean;
-
 	type Filters<F> = Record<string, { text: string; filter: F }>;
 
-	const EDITABLES_NEW = {
+	const defaultDatum = {
 		id: 'new',
 	} as const;
+	export type EditablesDefault = typeof defaultDatum;
 
-	const AUTHORING_FILTERS = {
+	const authoring = {
 		all: {
 			text: 'Tous',
 			filter: (d, uid) => true,
@@ -29,7 +35,7 @@
 		},
 	} satisfies Filters<AuthoringFilterFunction>;
 
-	const PUBLICATION_FILTERS = {
+	const publishing = {
 		all: {
 			text: 'Tous',
 			filter: (d) => true,
@@ -37,20 +43,20 @@
 		draft: {
 			text: 'Brouillons',
 			filter: (d) => {
-				return !d.published;
+				return d.publication_status?.status !== 'published';
 			},
 		},
 		published: {
 			text: 'Publiés',
 			filter: (d) => {
-				return d.published;
+				return d.publication_status?.status === 'published';
 			},
 		},
 	} satisfies Filters<FilterFunction>;
 
 	type PersistedFilters = {
-		authoring: keyof typeof AUTHORING_FILTERS;
-		publication: keyof typeof PUBLICATION_FILTERS;
+		authoring: keyof typeof authoring;
+		publishing: keyof typeof publishing;
 	};
 </script>
 
@@ -62,7 +68,7 @@
 	import { getPersistedValue, persistValue } from '$utils/persist';
 	import { flip } from 'svelte/animate';
 	import { cubicOut, expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
+	import { fly, scale } from 'svelte/transition';
 
 	type D = $$Generic<DatumBase>;
 
@@ -73,16 +79,16 @@
 	const storageKey = `editables-filter-${id}`;
 	let applied = getPersistedValue<PersistedFilters>(storageKey, {
 		authoring: 'all',
-		publication: 'all',
+		publishing: 'all',
 	});
 	$: persistValue(storageKey, applied);
 	$: filtered = [
 		...data.filter(
 			(d) =>
-				AUTHORING_FILTERS[applied.authoring].filter(d, $page.data.session?.user.id!) &&
-				PUBLICATION_FILTERS[applied.publication].filter(d)
+				authoring[applied.authoring].filter(d, $page.data.session?.user.id!) &&
+				publishing[applied.publishing].filter(d)
 		),
-		EDITABLES_NEW,
+		defaultDatum,
 	];
 </script>
 
@@ -91,14 +97,14 @@
 		<h3>{title}</h3>
 		<form action="" use:enhance method="POST">
 			<Switch bind:group={applied.authoring} variant="colored" name="filter" compact>
-				{#each Object.entries(AUTHORING_FILTERS) as [k, v]}
+				{#each Object.entries(authoring) as [k, v]}
 					<SwitchItem value={k}>
 						{v.text}
 					</SwitchItem>
 				{/each}
 			</Switch>
-			<Switch bind:group={applied.publication} variant="colored" name="filter" compact>
-				{#each Object.entries(PUBLICATION_FILTERS) as [k, v]}
+			<Switch bind:group={applied.publishing} variant="colored" name="filter" compact>
+				{#each Object.entries(publishing) as [k, v]}
 					<SwitchItem value={k}>
 						{v.text}
 					</SwitchItem>
@@ -116,7 +122,7 @@
 		{#each filtered as datum, i (datum.id)}
 			<li
 				animate:flip={{ duration: (d) => d * 0.5, easing: expoOut, delay: i * 50 }}
-				in:scale={{ start: 0.9, duration: 300, easing: cubicOut, delay: i * 50 }}
+				in:fly={{ y: 8, duration: 300, easing: cubicOut, delay: i * 50 }}
 				out:scale|local={{ start: 0.8, duration: 200, delay: (filtered.length - i) * 50 }}
 			>
 				<slot {datum} />
@@ -145,11 +151,12 @@
 		justify-content: space-between;
 		gap: 1rem;
 		padding: 1.5rem;
+		padding-top: 0.5rem;
 		max-width: var(--ui-width-main);
 		width: 100%;
 		margin: 0 auto;
 
-		@include medium {
+		@include laptop {
 			flex-direction: column;
 			align-items: flex-start;
 		}

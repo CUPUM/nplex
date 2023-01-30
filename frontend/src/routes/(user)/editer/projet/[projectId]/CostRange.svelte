@@ -25,22 +25,14 @@
 </script>
 
 <fieldset class="formgroup">
-	<legend class="formgroup-legend">
+	<legend class="formlegend">
 		Fourchette de coûts
-		<p>
+		<p class="forminfo">
 			Indiquez approximativement les coûts totaux du projet, selon un niveau de précision avec
 			lequel vous êtes confortable.
 		</p>
 	</legend>
-	<section class="formgroup-fields">
-		<Range min={COST_MIN} max={COST_MAX} step={COST_STEP} ticks={10000}>
-			<svelte:fragment slot="tick" let:tick>
-				{cadformatter.format(tick)}
-			</svelte:fragment>
-			<RangeGroup bind:from={_cost_range[0]} push draggable bind:to={_cost_range[1]} />
-			<RangeThumb name="cost_range_min" bind:value={_cost_range[0]} let:value />
-			<RangeThumb name="cost_range_max" bind:value={_cost_range[1]} />
-		</Range>
+	<section class="formfields">
 		<div class="fields">
 			<Field
 				type="number"
@@ -65,30 +57,41 @@
 				<svelte:fragment slot="label">Max.</svelte:fragment>
 			</Field>
 		</div>
+		<Range
+			style="flex: 1; padding-inline: 2rem;"
+			min={COST_MIN}
+			max={COST_MAX}
+			step={COST_STEP}
+			ticks={10000}
+		>
+			<svelte:fragment slot="tick" let:tick>
+				{cadformatter.format(tick)}
+			</svelte:fragment>
+			<RangeGroup bind:from={_cost_range[0]} push draggable bind:to={_cost_range[1]} />
+			<RangeThumb name="cost_range_min" bind:value={_cost_range[0]} let:value />
+			<RangeThumb name="cost_range_max" bind:value={_cost_range[1]} />
+		</Range>
 		<input type="hidden" name="cost_range" readonly value="[{_cost_range}]" />
 	</section>
 </fieldset>
 
 <style lang="scss">
-	p {
-		max-width: var(--ui-width-p);
-		color: col(fg, 100, 0.35);
-		margin-top: 1rem;
-		font-weight: 350;
-		font-size: 1rem;
-		padding-right: 2rem;
-	}
-
 	section {
+		display: flex;
+		flex-direction: row;
 		align-items: stretch;
-		gap: 1.5rem;
-		max-width: var(--ui-width-p);
+		gap: 3rem;
+
+		@include tablet {
+			flex-direction: column;
+			gap: 3rem;
+		}
 	}
 
 	.fields {
+		flex: 1;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 1.5rem;
-		margin-bottom: 1.5rem;
 	}
 </style>

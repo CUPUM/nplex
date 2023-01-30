@@ -33,10 +33,14 @@
 	}
 
 	export function complete() {
+		if (!timeout) {
+			return;
+		}
 		clearTimeout(timeout);
 		n.set(100);
 		timeout = setTimeout(() => {
 			n.set(0, { duration: 0 });
+			timeout = undefined;
 		}, 500);
 	}
 </script>

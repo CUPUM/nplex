@@ -102,7 +102,7 @@
 		&:hover,
 		&:focus-within {
 			color: col(fg, 700);
-			background: col(fg, 100, 0.1);
+			background: col(bg, 900);
 		}
 		&.current {
 			cursor: default;

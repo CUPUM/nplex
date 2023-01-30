@@ -36,13 +36,15 @@
 	});
 
 	beforeNavigate(({ from, to }) => {
-		progress?.start?.();
-		if (browser) {
-			document.documentElement.style.scrollBehavior = 'initial';
+		if (from?.route.id !== to?.route.id) {
+			progress?.start?.();
+			if (browser) {
+				document.documentElement.style.scrollBehavior = 'initial';
+			}
 		}
 	});
 
-	afterNavigate(() => {
+	afterNavigate(({ from, to }) => {
 		progress?.complete?.();
 		if (browser) {
 			document.documentElement.style.scrollBehavior = '';

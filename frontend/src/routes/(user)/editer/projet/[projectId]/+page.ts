@@ -1,11 +1,8 @@
+import { maybeSingle } from '$types/utils';
 import { getDb } from '$utils/database';
 import { LOAD_DEPENDENCIES, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
-import { alwaysarr, csshsl, jsrange } from '$utils/format';
+import { alwaysArr, fromPgRange, pgCubeToHsl } from '$utils/format';
 import { error } from '@sveltejs/kit';
-import {
-	createCircle,
-	getCircleCenter,
-} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 import type { PageLoad } from './$types';
 
 export const load = (async (event) => {
@@ -35,6 +32,9 @@ export const load = (async (event) => {
 				usage_id,
 				category_id
 			),
+			location:projects_location (
+				*
+			),
 			updated_by:users!projects_updated_by_id_fkey (
 				*,
 				role:users_roles!users_roles_user_id_fkey (
@@ -54,27 +54,30 @@ export const load = (async (event) => {
 		)
 		.eq('id', event.params.projectId)
 		.order('order', { foreignTable: 'projects_images', ascending: true })
-		.single()
+		.maybeSingle()
 		.then((res) => {
 			if (res.error) {
 				throw error(STATUS_CODES.InternalServerError, res.error);
 			}
+			if (!res.data) {
+				throw error(STATUS_CODES.NotFound, {
+					message: `Il ne semble pas y avoir de projet ici, ou le projet ne vous est pas accessible.`,
+				});
+			}
 			// Applying transformations to format data for easier client consumption.
 			return {
 				...res.data,
-				cost_range: jsrange(res.data.cost_range),
-				work_ids: alwaysarr(res.data.work_ids).map((w) => w.work_id),
-				secondary_usages: alwaysarr(res.data.secondary_usages),
-				gallery: alwaysarr(res.data.gallery).map((img) => ({
+				cost_range: fromPgRange(res.data.cost_range),
+				work_ids: alwaysArr(res.data.work_ids).map((w) => w.work_id),
+				secondary_usages: alwaysArr(res.data.secondary_usages),
+				gallery: alwaysArr(res.data.gallery).map((img) => ({
 					...img,
-					color_mean_hsl: csshsl(img.color_mean_hsl),
-					color_dominant_hsl: csshsl(img.color_dominant_hsl),
+					color_mean_hsl: pgCubeToHsl(img.color_mean_hsl),
+					color_dominant_hsl: pgCubeToHsl(img.color_dominant_hsl),
 					publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.name).data
 						.publicUrl,
 				})),
-				location_geometry: (res.data.location_radius != null && res.data.location_geometry != null
-					? createCircle(getCircleCenter(res.data.location_geometry), res.data.location_radius)
-					: res.data.location_geometry) as GeoJSON.Feature,
+				location: maybeSingle(res.data.location)!,
 			};
 		});
 	return {

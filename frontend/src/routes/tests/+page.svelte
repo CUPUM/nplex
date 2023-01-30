@@ -1,61 +1,59 @@
 <script lang="ts">
-	import { overlapNavbarStyle } from '$routes/Navbar.svelte';
-	import { THEMES } from '$utils/themes';
+	import { enhance } from '$app/forms';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	let background = 'aliceblue';
+	let options = [
+		{ name: 'a', age: 2 },
+		{ name: 'c', age: 4 },
+		{ name: 'b', age: 3 },
+	];
+
+	const sources = [
+		{
+			name: 'Montreal districts',
+			url: '/api/geo/montreal/districts.json',
+		},
+	] satisfies { name: string; url: string }[];
+
+	async function get(url: string) {
+		const res = await fetch(url, { method: 'GET' });
+		if (!res.ok) {
+			console.error(res);
+		}
+		const json = await res.json();
+		console.log(json);
+	}
 </script>
 
-<hr />
-
-<div style:background>Top</div>
 <article>
-	<!-- some content -->
+	<form method="POST" use:enhance>
+		<select name="test" id="">
+			{#each options as option}
+				<option value={option}>{option.name}</option>
+			{/each}
+		</select>
+		<button type="submit">Submit!</button>
+	</form>
 </article>
 <article>
-	<!-- some content -->
-</article>
-<article use:overlapNavbarStyle={{ theme: THEMES.dark }} style="background: cornsilk" />
-<article use:overlapNavbarStyle={{ theme: THEMES.dark }} style="height: 200px; background: wheat;">
-	<!-- some content -->
-</article>
-<article>
-	<!-- some content -->
-</article>
-<article>
-	<!-- some content -->
-</article>
-<article>
-	<!-- some content -->
-</article>
-<article>
-	<!-- some content -->
+	{#each sources as source}
+		<button
+			on:pointerdown={() => {
+				get(source.url);
+			}}>Fetch {source.name}</button
+		>
+	{/each}
 </article>
 
 <style lang="scss">
-	hr {
-		background: red;
-		position: sticky;
-		top: 120px;
-		padding: 0.5px;
-		width: 100%;
-		z-index: 10;
-	}
-
 	article {
-		border: 1px solid black;
-		width: 100%;
-		height: 1200px;
+		padding: 5rem;
 	}
 
-	div {
-		position: sticky;
-		top: var(--ui-nav-px);
-		padding: 1rem;
-		transition: 0.2s;
-		width: 100%;
-		border: 1px solid grey;
+	button {
+		padding: 0.5rem;
+		background: lightgrey;
 	}
 </style>

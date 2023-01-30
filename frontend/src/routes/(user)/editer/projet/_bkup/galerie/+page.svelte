@@ -101,11 +101,11 @@
 		gap: 0;
 		padding: calc(0.5 * 1.5rem);
 
-		@include medium {
+		@include laptop {
 			grid-template-columns: repeat(3, 1fr);
 		}
 
-		@include small {
+		@include tablet {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}

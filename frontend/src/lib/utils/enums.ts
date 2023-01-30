@@ -15,6 +15,21 @@ export const BRACKETS = {
 	},
 } as const satisfies Record<string, { start: string; end: string }>;
 
+/**
+ * Common coordinate projection systems and their Spatial Reference System ID.
+ */
+export const SRID = {
+	/**
+	 * Lat/Lon globe-based coordinate system. Uses degrees to represent spheroid position.
+	 */
+	WGS84: 4326,
+	/**
+	 * Lat/Lon flat-map coordinates in meters. Generally the default system used for web apps.
+	 */
+	WebMercator: 3857,
+} as const;
+export type SRID = ValueOf<typeof SRID>;
+
 export const KEY = {
 	Undefined: 'Undefined',
 	Space: ' ',

@@ -317,7 +317,7 @@
 
 	:where(.default) {
 		color: col(fg, 000);
-		background: col(fg, 100, 0.075);
+		background: col(fg, 500, 0.05);
 		transition: all 0.15s var(--ui-ease-out);
 		.outline {
 			display: none;

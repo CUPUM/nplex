@@ -1,6 +1,6 @@
 drop view if exists "public"."editable_projects";
 
-alter table "public"."projects" alter column "location_geometry" set data type postgis.geometry(Point) using "location_geometry"::postgis.geometry(Point);
+alter table "public"."projects" alter column "location_geometry" set data type geometry(Point) using "location_geometry"::geometry(Point);
 
 create or replace view "public"."editable_projects" as  SELECT p.id,
     p.created_at,

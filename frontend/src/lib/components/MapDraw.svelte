@@ -86,7 +86,7 @@
 		DrawUpdateEvent,
 	} from '@mapbox/mapbox-gl-draw';
 	import MapboxDraw from '@mapbox/mapbox-gl-draw';
-	import * as MapboxDrawGeodesic from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
+	import * as MapboxGeodesic from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import type { ValueOf } from 'ts-essentials';
@@ -94,7 +94,6 @@
 
 	const { getMap } = getMapContext();
 	const dispatch = createEventDispatcher();
-	let inited = false;
 
 	/**
 	 * Initializes as the default mode and then is updated to reflect current mode.
@@ -107,17 +106,19 @@
 	/**
 	 * Core instance of mapbox draw plugin extended with circle modes.
 	 */
-	export const draw: MapboxDraw = new MapboxDraw({
+	export let draw: MapboxDraw | undefined;
+
+	const predraw = new MapboxDraw({
 		styles: MAP_DRAW_STYLES,
 		displayControlsDefault: false,
-		modes: MapboxDrawGeodesic.enable(MapboxDraw.modes),
+		modes: MapboxGeodesic.enable(MapboxDraw.modes),
 		defaultMode: mode,
 	});
 
 	onMount(() => {
 		const map = getMap();
 		if (map) {
-			map.addControl(draw as any);
+			map.addControl(predraw as any);
 			map.on(DRAW_EVENTS.modechange, (e: MapboxDraw.DrawModeChangeEvent) => {
 				dispatch(DRAW_EVENTS.modechange, e);
 				mode = e.mode as DrawMode;
@@ -146,7 +147,7 @@
 			map.on(DRAW_EVENTS.actionable, (e: DrawActionableEvent) => {
 				dispatch(DRAW_EVENTS.actionable, e);
 			});
-			inited = true;
+			draw = predraw;
 		}
 	});
 
@@ -156,27 +157,29 @@
 	 * https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md.
 	 */
 	function setMode(mode: DrawMode, opts?: any) {
-		if (draw.getMode() !== mode) {
-			draw.changeMode(mode as any, opts);
+		if (draw?.getMode() !== mode) {
+			draw?.changeMode(mode as any, opts);
 			getMap()?.fire(DRAW_EVENTS.modechange, {
 				mode,
 			});
 		}
 	}
 
-	$: if (inited && mode) setMode(mode);
+	$: if (draw && mode) {
+		setMode(mode);
+	}
 
 	function handleKeydown(e: KeyboardEvent) {
-		const selected = draw.getSelected();
+		const selected = draw?.getSelected();
 		if (e.key === KEY.Delete || e.key === KEY.Backspace) {
 			if (selected) {
-				draw.trash();
+				draw?.trash();
 			}
 		}
 	}
 
 	setContext<MapDrawContext>(CTX_KEY, {
-		getMapDraw: () => draw,
+		getMapDraw: () => draw!,
 		mode: _mode,
 		setMode,
 	});
@@ -186,4 +189,6 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<slot />
+{#if draw}
+	<slot />
+{/if}

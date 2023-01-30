@@ -45,7 +45,8 @@
 		max-width: calc(100% - 2 * var(--margin));
 		opacity: 0;
 		gap: 1px;
-		transform: translate(var(--x), var(--y));
+		// transform: translate(var(--x), var(--y));
+		transform: scale(0.98);
 		transition: all 0.25s cubic-bezier(0.25, 0, 0.5, 1);
 		:global(hr) {
 			border: none;
@@ -74,22 +75,22 @@
 	}
 
 	.top {
-		--y: -3px;
+		// --y: -3px;
 		top: 0;
 	}
 
 	.bottom {
-		--y: 3px;
+		// --y: 3px;
 		bottom: 0;
 	}
 
 	.left {
-		--x: -3px;
+		// --x: -3px;
 		left: 0;
 	}
 
 	.right {
-		--x: 3px;
+		// --x: 3px;
 		right: 0;
 	}
 </style>

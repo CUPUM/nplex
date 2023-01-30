@@ -3,11 +3,13 @@
 	import Field from '$components/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import type { PageData } from './$types';
-	import { ADJACENT_STREETS_MAX, ADJACENT_STREETS_MIN } from './common';
+	import { ADJACENT_STREETS_MAX, ADJACENT_STREETS_MIN, dirty } from './common';
 
 	export let adjacent_streets: PageData['project']['adjacent_streets'];
 
 	$: _adjacent_streets = adjacent_streets;
+
+	$: $dirty.adjacent_streets = _adjacent_streets != adjacent_streets;
 
 	function increment() {
 		_adjacent_streets = Math.min(ADJACENT_STREETS_MAX, (_adjacent_streets ?? 0) + 1);

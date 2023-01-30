@@ -1,97 +1,99 @@
 <script lang="ts">
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { DRAW_EVENTS } from '$components/MapDraw.svelte';
+	import { DRAW_EVENTS, DRAW_MODES } from '$components/MapDraw.svelte';
 	import { throttle } from '$utils/modifiers';
-	import type { DrawCreateEvent, DrawRenderEvent, DrawUpdateEvent } from '@mapbox/mapbox-gl-draw';
+	import type { DrawCreateEvent, DrawRenderEvent } from '@mapbox/mapbox-gl-draw';
 	import {
 		getCircleCenter,
 		getCircleRadius,
-		isCircle,
-		setCircleRadius,
 	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
+	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
-	import { LOCATION_MAX_RADIUS, map, mapdraw } from './common';
+	import { dirty, map, mapdraw, _location_radius } from './common';
 
-	export let location_geometry: PageData['project']['location_geometry'];
-	export let location_radius: PageData['project']['location_radius'];
+	export let location: PageData['project']['location'];
+	$: _location_center = location.geometry?.coordinates;
+	$: $_location_radius = location.radius;
 
-	// To do: implement deep cloning & deep comparison of geojson.
-	// Alternatively, clone only relevant properties as distinct local variables.
-	let _location_geometry = { ...location_geometry };
-	$: _location_radius = location_radius;
+	$: $dirty.location =
+		_location_center?.[0] !== location.geometry?.coordinates[0] ||
+		_location_center?.[1] !== location.geometry?.coordinates[1] ||
+		$_location_radius !== location.radius;
 
-	let inited = false;
-
-	const updateLocationGeometry = throttle((e: DrawRenderEvent) => {
+	const updateLocation = throttle((e: DrawRenderEvent) => {
 		if ($mapdraw) {
 			const selected = $mapdraw.getSelected();
-			if (selected.features.length && isCircle(selected.features[0])) {
-				const radius = getCircleRadius(selected.features[0]) * 1000;
-				if (radius > LOCATION_MAX_RADIUS) {
-					setCircleRadius(selected.features[0], LOCATION_MAX_RADIUS);
-				}
-				const center = getCircleCenter(selected.features[0]);
-				_location_geometry = center;
+			if (selected.features.length) {
+				_location_center = getCircleCenter(selected.features[0]);
+				$_location_radius = getCircleRadius(selected.features[0]) * 1000;
 			}
 		}
-	}, 50);
+	}, 100);
 
-	$: if ($map) {
-		if (!inited) {
-			$map.on(DRAW_EVENTS.create, (e: DrawCreateEvent) => {
-				// Clear previously created features, limit drawn features to 1.
-				const del = $mapdraw?.getAll().features.reduce((acc, feature) => {
-					if (feature.id != null && feature.id != e.features[0].id) {
-						acc.push(feature.id + '');
-					}
-					return acc;
-				}, Array<string>(0));
-				if (del && del.length) {
-					$mapdraw?.delete(del);
-				}
-			});
-
-			$map.on(DRAW_EVENTS.update, (e: DrawUpdateEvent) => {
-				console.log('update');
-			});
-
-			$map.on(DRAW_EVENTS.actionable, (e) => {
-				console.log('actionable', e);
-			});
-
-			$map.on(DRAW_EVENTS.render, (e: DrawRenderEvent) => {
-				updateLocationGeometry(e);
-			});
+	function onCreate(e: DrawCreateEvent) {
+		const del = $mapdraw?.getAll().features.reduce((acc, feature) => {
+			if (feature.id != null && feature.id != e.features[0].id) {
+				acc.push(feature.id + '');
+			}
+			return acc;
+		}, Array<string>(0));
+		if (del && del.length) {
+			$mapdraw?.delete(del);
 		}
-		inited = true;
 	}
 
 	function setCircleMode() {
-		// if ($map && $draw) {
-		// 	console.log($draw.getMode() == mode);
-		// 	if ($draw.getMode() == mode) {
-		// 		$draw.changeMode(DRAW_MODES.simple_select as any);
-		// 		$draw.changeMode(DRAW_MODES.simple_select as any);
-		// 	} else {
-		// 		$draw.changeMode(mode as any, { initialRadiusInKm: LOCATION_DEFAULT_RADIUS_KM });
-		// 	}
-		// 	$map.fire(DRAW_EVENTS.modechange, { mode });
-		// }
+		if ($map && $mapdraw) {
+			const newMode =
+				$mapdraw.getMode() === DRAW_MODES.DrawCircle
+					? DRAW_MODES.SimpleSelect
+					: DRAW_MODES.DrawCircle;
+			$mapdraw.changeMode(newMode as any);
+			$map.fire(DRAW_EVENTS.modechange, { mode: newMode });
+		}
 	}
+
+	$: if ($map) {
+		/**
+		 * Clear previously created features, limit to 1 drawn feature.
+		 */
+		$map.on(DRAW_EVENTS.create, onCreate);
+		$map.on(DRAW_EVENTS.render, updateLocation);
+	}
+
+	onDestroy(() => {
+		if ($map) {
+			$map.off(DRAW_EVENTS.create, onCreate);
+			$map.off(DRAW_EVENTS.render, updateLocation);
+		}
+	});
 </script>
 
 <fieldset class="site-formgroup">
 	<legend class="site-formgroup-legend">Localisation</legend>
 	<section class="site-formgroup-fields">
 		Situez votre projet sur la carte ci-contre.
+		<code>
+			radius: {$_location_radius}
+		</code>
 		<Button on:pointerdown={setCircleMode}>
 			<Icon name="path-circle" slot="leading" />
 			Tracer une zone approximative.
 		</Button>
-		<input type="hidden" name="location_geojson" />
+		<input
+			type="hidden"
+			readonly
+			name="location"
+			value={JSON.stringify({ center: _location_center, radius: $_location_radius })}
+		/>
 	</section>
 </fieldset>
 
 <style lang="scss">
+	fieldset {
+		background: var(--ui-bg);
+		border-radius: var(--ui-radius-lg);
+		padding: 2rem;
+	}
 </style>

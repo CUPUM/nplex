@@ -59,11 +59,11 @@
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: 1.5rem;
 
-		@include medium {
+		@include laptop {
 			grid-template-columns: 1fr 1fr;
 		}
 
-		@include small {
+		@include tablet {
 			display: flex;
 			flex-direction: column;
 		}
@@ -90,7 +90,7 @@
 		font-weight: 500;
 		transition: all 0.2s var(--ui-ease-out);
 
-		@include small {
+		@include tablet {
 			aspect-ratio: 2 / 1;
 			font-size: var(--ui-text-2xl);
 		}

@@ -9,10 +9,6 @@
 -- See https://github.com/supabase/cli/issues/380 for context.
 -- 
 
-create schema if not exists "postgis";
+create extension if not exists "postgis" with schema "extensions";
 
-grant usage on schema "postgis" to "postgres";
-
-create extension if not exists "postgis" with schema "postgis";
-
-create extension if not exists "cube";
+create extension if not exists "cube" with schema "extensions";

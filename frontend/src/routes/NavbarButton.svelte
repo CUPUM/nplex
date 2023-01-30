@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { ICON_CLASS } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
+	import { col } from '$utils/css';
 
 	export let href: string | undefined = undefined;
 	export let current: boolean | undefined = undefined;
@@ -28,7 +29,7 @@
 	{href}
 	on:pointerdown
 >
-	<Ripple color="var(--color-primary-500)" />
+	<Ripple color={col('primary', '500')} opacityStart={0.5} />
 	<div class="inner">
 		<slot />
 	</div>

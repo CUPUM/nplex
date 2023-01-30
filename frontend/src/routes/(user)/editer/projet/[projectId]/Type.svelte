@@ -11,9 +11,9 @@
 	$: $dirty.type_id = $_type_id !== type_id;
 </script>
 
-<fieldset>
-	<legend>Type de projet</legend>
-	<section>
+<fieldset class="formgroup">
+	<legend class="formlegend">Type de projet</legend>
+	<section class="formfields">
 		<Switch bind:group={$_type_id} name="type_id">
 			{#each $descriptors.types as type}
 				<SwitchItem value={type.id}>

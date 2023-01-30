@@ -13,8 +13,8 @@
 </script>
 
 <fieldset class="formgroup">
-	<legend class="formgroup-legend">Usage principal</legend>
-	<section class="formgroup-fields">
+	<legend class="formlegend">Usage principal</legend>
+	<section class="formfields">
 		<Select
 			name="site_usage_category_id"
 			options={$descriptors.siteUsagesCategories}
@@ -38,7 +38,7 @@
 </fieldset>
 
 <style lang="scss">
-	.formgroup-fields {
+	.formfields {
 		display: flex;
 		flex-direction: row;
 		gap: 2rem;

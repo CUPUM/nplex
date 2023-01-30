@@ -2,7 +2,12 @@ import type { Builtin, KeyofBase } from 'ts-essentials';
 
 export type PgCube = `(${number},${number},${number})`;
 
-export type PgRange = `[${number},${number}[`;
+export type PgRange = `[${number},${number}]`;
+
+export type MinimalSingleGeometry = Pick<
+	Extract<GeoJSON.Geometry, { coordinates: NonUndefinable<unknown> }>,
+	'type' | 'coordinates'
+>;
 
 /**
  * Until the postgrest / supabase client's typing system for joined data is improved, sprinkle this

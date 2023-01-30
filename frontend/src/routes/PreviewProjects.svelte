@@ -3,7 +3,7 @@
 	import ImagePlaceholder from '$components/ImagePlaceholder.svelte';
 	import { maybeSingle } from '$types/utils';
 	import { STORAGE_BUCKETS } from '$utils/enums';
-	import { projectcolors, publicurl } from '$utils/format';
+	import { projectColors, publicurl } from '$utils/format';
 	import { EXPLORE_ROUTES } from '$utils/routes';
 	import type { PageData } from './$types';
 	import PreviewsHeader from './PreviewHeader.svelte';
@@ -28,7 +28,7 @@
 						src={publicurl(STORAGE_BUCKETS.PROJECTS, maybeSingle(p.banner)?.name)}
 						class="image"
 					>
-						<ImagePlaceholder color={projectcolors(p.gallery)} />
+						<ImagePlaceholder color={projectColors(p.gallery)} />
 					</Image>
 					<section class="detail">
 						<h1>{p.title}</h1>

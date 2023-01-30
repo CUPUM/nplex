@@ -18,7 +18,7 @@
 
 	$: $dirty.work_ids =
 		selected.length !== (work_ids.length ?? []) ||
-		!selected.every((work) => (work_ids ?? []).indexOf(work.id) >= 0);
+		!selected.every((work) => (work_ids ?? []).indexOf(work.id) > -1);
 
 	$: available = $descriptors.types.find((t) => t.id === $_type_id)?.works ?? [];
 
@@ -61,75 +61,75 @@
 </script>
 
 <fieldset class="formgroup">
-	<legend class="formgroup-legend">
-		Travaux
+	<legend class="formlegend">Travaux</legend>
+	<section class="formfields">
 		<fieldset id="search-works" disabled={_type_id === null}>
-			<Field placeholder="Chercher un type de travail" on:input={handleSearch}>
+			<Field placeholder="Chercher un type de travail" variant="outlined" on:input={handleSearch}>
 				<FieldIcon slot="leading" name="search" />
 			</Field>
 		</fieldset>
-	</legend>
-	<section class="formgroup-fields">
-		{#if $_type_id !== null}
-			<div class="height-wrap" style="overflow: visible">
-				<div style:height="{$selectedWorksHeight}px" aria-hidden />
-				<ul id="selected-works" bind:clientHeight={$selectedWorksHeight}>
-					{#each selected as w, i (w.id)}
-						<li
-							in:receive|local={{ key: w.id }}
-							out:send|local={{ key: w.id }}
-							animate:flip={{ duration: 150 }}
-						>
-							<Tooltip message={w.description}>
-								<span class="token">
-									<span>{w.title}</span>
-									<label class="clear {ICON_CLASS.hover}">
-										<Icon name="cross" strokeWidth={2} />
-										<input
-											hidden
-											type="checkbox"
-											name="work_id"
-											bind:group={_work_ids}
-											value={w.id}
-										/>
-									</label>
-								</span>
-							</Tooltip>
-						</li>
-					{/each}
-					{#if !selected.length}
-						<p class="info" transition:fly|local={{ y: 6, duration: 250 }}>
-							Sélectionnez un ou plusieurs travaux...
-						</p>
-					{/if}
-				</ul>
-			</div>
-			<div class="height-wrap" style="overflow: visible;">
-				<div style:height="{$worksHeight}px" aria-hidden />
-				<ul id="works" bind:clientHeight={$worksHeight}>
-					{#each (searchResults ?? available).filter((w) => !_work_ids.includes(w.id)) as w, i (w.id)}
-						<li
-							in:receive|local={{ key: w.id }}
-							out:send|local={{ key: w.id }}
-							animate:flip={{ duration: 100 }}
-						>
-							<Tooltip message={w.description}>
-								<button class="token" on:pointerdown={() => add(w.id)} type="button">
-									<span>{w.title}</span>
-								</button>
-							</Tooltip>
-						</li>
-					{/each}
-				</ul>
-			</div>
-		{:else}
-			<p class="info">Sélectionnez d'abord un type de projet.</p>
-		{/if}
+		<fieldset id="inputs-tokens">
+			{#if $_type_id !== null}
+				<div class="height-wrap" style="overflow: visible; margin-bottom: 1rem">
+					<div style:height="{$selectedWorksHeight}px" aria-hidden />
+					<ul id="selected-works" bind:clientHeight={$selectedWorksHeight}>
+						{#each selected as w, i (w.id)}
+							<li
+								in:receive|local={{ key: w.id }}
+								out:send|local={{ key: w.id }}
+								animate:flip={{ duration: 150 }}
+							>
+								<Tooltip message={w.description}>
+									<span class="token">
+										<span>{w.title}</span>
+										<label class="clear {ICON_CLASS.hover}">
+											<Icon name="cross" strokeWidth={2} />
+											<input
+												hidden
+												type="checkbox"
+												name="work_id"
+												bind:group={_work_ids}
+												value={w.id}
+											/>
+										</label>
+									</span>
+								</Tooltip>
+							</li>
+						{/each}
+						{#if !selected.length}
+							<p class="info" transition:fly|local={{ y: 6, duration: 250 }}>
+								Sélectionnez un ou plusieurs travaux...
+							</p>
+						{/if}
+					</ul>
+				</div>
+				<div class="height-wrap" style="overflow: visible;">
+					<div style:height="{$worksHeight}px" aria-hidden />
+					<ul id="works" bind:clientHeight={$worksHeight}>
+						{#each (searchResults ?? available).filter((w) => !_work_ids.includes(w.id)) as w, i (w.id)}
+							<li
+								in:receive|local={{ key: w.id }}
+								out:send|local={{ key: w.id }}
+								animate:flip={{ duration: 100 }}
+							>
+								<Tooltip message={w.description}>
+									<button class="token" on:pointerdown={() => add(w.id)} type="button">
+										<span>{w.title}</span>
+									</button>
+								</Tooltip>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{:else}
+				<p class="info">Sélectionnez d'abord un type de projet.</p>
+			{/if}
+		</fieldset>
 	</section>
 </fieldset>
 
 <style lang="scss">
-	.formgroup-fields {
+	#inputs-tokens {
 		overflow-y: hidden;
 	}
 
@@ -140,7 +140,8 @@
 
 	#search-works {
 		font-size: 1rem;
-		margin-top: 1.5rem;
+		padding-bottom: 1.5rem;
+		max-width: var(--ui-width-p);
 	}
 
 	#works {

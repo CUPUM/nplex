@@ -3,7 +3,7 @@
 -- (somehow unset at some point, which breaks latter migrations since the generation omits schema names when calling procedures or tables...)
 -- 
 
-set search_path to public,auth,extensions;
+-- set search_path to public,auth,extensions;
 
 -- 
 -- Initial tables
@@ -158,7 +158,7 @@ create table "public"."projects" (
     "category_id" smallint,
     "area" numeric,
     "adjacent_streets" smallint,
-    "location_geometry" postgis.geometry,
+    "location_geometry" geometry,
     "building_area" numeric,
     "implantation_mode_id" smallint,
     "building_construction_year" smallint,

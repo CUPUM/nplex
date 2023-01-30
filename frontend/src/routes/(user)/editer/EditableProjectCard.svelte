@@ -4,11 +4,12 @@
 	import ImagePlaceholder from '$components/ImagePlaceholder.svelte';
 	import { maybeSingle } from '$types/utils';
 	import { STORAGE_BUCKETS } from '$utils/enums';
-	import { projectcolors, publicurl } from '$utils/format';
+	import { projectColors, publicurl } from '$utils/format';
 	import type { LayoutData } from './$types';
 	import { EDITOR_ROUTES } from './common';
+	import type { EditablesDefault } from './EditablesList.svelte';
 
-	export let project: LayoutData['projects'][number];
+	export let project: LayoutData['projects'][number] | EditablesDefault;
 </script>
 
 {#if 'title' in project}
@@ -18,7 +19,7 @@
 			src={publicurl(STORAGE_BUCKETS.PROJECTS, maybeSingle(project.banner)?.name)}
 			alt="Image-bannière: {project.title}"
 		>
-			<ImagePlaceholder color={projectcolors(project.gallery)} />
+			<ImagePlaceholder color={projectColors(project.gallery)} />
 		</Image>
 		{project.title}
 	</a>
