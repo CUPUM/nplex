@@ -20,5 +20,6 @@
 	"jsdocDescriptionWithDot": true,
 	"jsdocSingleLineComment": false,
 	"quoteProps": "consistent",
-	"embeddedLanguageFormatting": "auto"
+	"embeddedLanguageFormatting": "auto",
+	"htmlWhitespaceSensitivity": "ignore"
 }
