@@ -13,7 +13,7 @@
 			out:scale|local={{ start: 0.95, duration: 200 }}
 		>
 			<Button variant="cta" type="submit">
-				Soumettre
+				Sauvegarder
 				<Icon name="save" slot="trailing" />
 			</Button>
 		</div>

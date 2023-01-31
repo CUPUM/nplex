@@ -107,7 +107,6 @@
 	 * Core instance of mapbox draw plugin extended with circle modes.
 	 */
 	export let draw: MapboxDraw | undefined;
-
 	const predraw = new MapboxDraw({
 		styles: MAP_DRAW_STYLES,
 		displayControlsDefault: false,
@@ -184,7 +183,12 @@
 		setMode,
 	});
 
-	onDestroy(() => {});
+	onDestroy(() => {
+		if (draw) {
+			getMap()?.removeControl(draw as any);
+			draw = undefined;
+		}
+	});
 </script>
 
 <svelte:window on:keydown={handleKeydown} />

@@ -13,6 +13,7 @@
 	export let data: PageData;
 </script>
 
+<h2>Général</h2>
 <form
 	method="POST"
 	action="?/update"
@@ -25,15 +26,14 @@
 		};
 	}}
 >
-	<h2>Général</h2>
 	<input name="id" type="hidden" value={data.profile.id} readonly />
-	<Field name="first_name" value={data.profile.first_name} required>
+	<Field name="first_name" variant="outlined" value={data.profile.first_name} required>
 		<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
 	</Field>
-	<Field name="last_name" value={data.profile.last_name}>
+	<Field name="last_name" variant="outlined" value={data.profile.last_name}>
 		<svelte:fragment slot="label">Nom de famille</svelte:fragment>
 	</Field>
-	<Field name="public_email" value={data.profile.public_email}>
+	<Field name="public_email" variant="outlined" value={data.profile.public_email}>
 		<svelte:fragment slot="label">Courriel public</svelte:fragment>
 	</Field>
 	<TextArea name="about" variant="outlined" value={data.profile.about}>
@@ -60,14 +60,18 @@
 		Notez que pour obtenir un rôle qui vous accorde plus de permissions, votre demande devra être
 		approuvée par un administrateur.
 	</p>
-	<Select options={data.roles} let:datum>
-		<option value={datum.user_role}>{datum.title}</option>
+	<Select options={data.roles} variant="outlined">
+		<svelte:fragment slot="label">Rôle</svelte:fragment>
+		<option slot="option" let:option value={option.user_role}>{option.title}</option>
 	</Select>
 	<div class="ui-select">
 		<span>Test</span>
 		<select name="role">
 			{#each data.roles as role}
-				<option value={role.user_role}>{role.title}: <i>{role.description}</i></option>
+				<option value={role.user_role}>
+					{role.title}:
+					<i>{role.description}</i>
+				</option>
 			{/each}
 		</select>
 	</div>
@@ -95,9 +99,9 @@
 	</Field>
 	<Field placeholder="Nouveau mot de passe" type="password" />
 	<h3>Désactivation</h3>
-	<Button variant="danger" style="align-self: flex-start"
-		><Icon name="warn" slot="leading" />Supprimer mon compte</Button
-	>
+	<Button variant="danger" style="align-self: flex-start">
+		<Icon name="warn" slot="leading" />Supprimer mon compte
+	</Button>
 </form>
 
 <style lang="scss">
@@ -108,9 +112,7 @@
 	}
 
 	h2 {
-		font-size: var(--ui-text-2xl);
-		margin: 0.5em 0;
-		font-weight: 600;
+		@include h2;
 	}
 
 	h3 {

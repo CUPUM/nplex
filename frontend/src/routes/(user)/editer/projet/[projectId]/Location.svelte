@@ -1,16 +1,17 @@
 <script lang="ts">
 	import Button from '$components/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { DRAW_EVENTS, DRAW_MODES } from '$components/MapDraw.svelte';
+	import { DRAW_EVENTS } from '$components/MapDraw.svelte';
 	import { throttle } from '$utils/modifiers';
 	import type { DrawCreateEvent, DrawRenderEvent } from '@mapbox/mapbox-gl-draw';
 	import {
+		createCircle,
 		getCircleCenter,
 		getCircleRadius,
 	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
-	import { dirty, map, mapdraw, _location_radius } from './common';
+	import { dirty, LOCATION_DEFAULT_RADIUS, map, mapdraw, _location_radius } from './common';
 
 	export let location: PageData['project']['location'];
 	$: _location_center = location.geometry?.coordinates;
@@ -23,10 +24,10 @@
 
 	const updateLocation = throttle((e: DrawRenderEvent) => {
 		if ($mapdraw) {
-			const selected = $mapdraw.getSelected();
-			if (selected.features.length) {
-				_location_center = getCircleCenter(selected.features[0]);
-				$_location_radius = getCircleRadius(selected.features[0]) * 1000;
+			const features = $mapdraw.getAll().features;
+			if (features.length) {
+				_location_center = getCircleCenter(features[0]);
+				$_location_radius = getCircleRadius(features[0]) * 1000;
 			}
 		}
 	}, 100);
@@ -43,14 +44,19 @@
 		}
 	}
 
-	function setCircleMode() {
+	function create() {
 		if ($map && $mapdraw) {
-			const newMode =
-				$mapdraw.getMode() === DRAW_MODES.DrawCircle
-					? DRAW_MODES.SimpleSelect
-					: DRAW_MODES.DrawCircle;
-			$mapdraw.changeMode(newMode as any);
-			$map.fire(DRAW_EVENTS.modechange, { mode: newMode });
+			const center = $map.getCenter().toArray();
+			const circle = createCircle(center, LOCATION_DEFAULT_RADIUS / 1000);
+			$mapdraw.add(circle);
+			$map.fire(DRAW_EVENTS.create, { features: [circle] });
+			// $map.fire(DRAW_EVENTS.render);
+			// 	const newMode =
+			// 		$mapdraw.getMode() === DRAW_MODES.DrawCircle
+			// 			? DRAW_MODES.SimpleSelect
+			// 			: DRAW_MODES.DrawCircle;
+			// 	$mapdraw.changeMode(newMode as any);
+			// 	$map.fire(DRAW_EVENTS.modechange, { mode: newMode });
 		}
 	}
 
@@ -70,16 +76,12 @@
 	});
 </script>
 
-<fieldset class="site-formgroup">
-	<legend class="site-formgroup-legend">Localisation</legend>
-	<section class="site-formgroup-fields">
-		Situez votre projet sur la carte ci-contre.
-		<code>
-			radius: {$_location_radius}
-		</code>
-		<Button on:pointerdown={setCircleMode}>
+<fieldset class="formgroup">
+	<legend class="formlegend">Localisation</legend>
+	<section class="formfields">
+		<Button on:pointerdown={create}>
 			<Icon name="path-circle" slot="leading" />
-			Tracer une zone approximative.
+			Situez votre projet sur la carte
 		</Button>
 		<input
 			type="hidden"
@@ -92,7 +94,7 @@
 
 <style lang="scss">
 	fieldset {
-		background: var(--ui-bg);
+		background: col(bg, 300);
 		border-radius: var(--ui-radius-lg);
 		padding: 2rem;
 	}

@@ -7,9 +7,11 @@
 	import { overlapNavbarStyle } from '$routes/Navbar.svelte';
 	import { setRootBackground } from '$routes/RootBackground.svelte';
 	import { col } from '$utils/css';
+	import { MAP_STYLES } from '$utils/map';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
 	import type { ActionData, PageData } from './$types';
 	import AdjacentStreets from './AdjacentStreets.svelte';
+	import Area from './Area.svelte';
 	import { descriptors, map, mapdraw, _banner_id } from './common';
 	import CostRange from './CostRange.svelte';
 	import Description from './Description.svelte';
@@ -70,17 +72,25 @@
 		usage_id={data.project.site_usage_id}
 		usage_category_id={data.project.site_usage_category_id}
 	/>
+	<hr />
 	<SiteSecondaryUsages secondary_usages={data.project.secondary_usages} />
 	<hr />
-	<!-- Map-related formgroups -->
+	<!--
+		Map-related formgroups
+	-->
 	<section class="split">
 		<div class="mapfields">
 			<Location location={data.project.location} />
+			<hr />
+			<Area />
+			<hr />
 			<District />
+			<hr />
 			<AdjacentStreets adjacent_streets={data.project.adjacent_streets} />
+			<hr />
 		</div>
 		<div class="map">
-			<Map cooperativeGestures={true} bind:map={$map}>
+			<Map cooperativeGestures={true} bind:map={$map} mapStyle={MAP_STYLES.Dark}>
 				<MapAttributionControl position="bottom-right" />
 				<MapDraw bind:draw={$mapdraw}>
 					<ProjectMapToolbar />
@@ -96,6 +106,45 @@
 			</Map>
 		</div>
 	</section>
+	<fieldset>
+		<h2>Détails du bâtiment</h2>
+		<fieldset>
+			<h3>Mode d'implantation</h3>
+			<ul>
+				{#each data.descriptors.implantationModes as mode}
+					<li>
+						<label>
+							{mode.title}
+							<input
+								type="radio"
+								name="implantation_mode_id"
+								bind:group={data.project.implantation_mode_id}
+								value={mode.id}
+							/>
+						</label>
+					</li>
+				{/each}
+			</ul>
+		</fieldset>
+		<fieldset>
+			<h3>Nombre d'étages</h3>
+		</fieldset>
+		<fieldset>
+			<h3>Année de construction</h3>
+		</fieldset>
+		<fieldset>
+			<h3>Emprise au sol</h3>
+		</fieldset>
+	</fieldset>
+	<fieldset>
+		<h2>Processus et déroulement du projet</h2>
+		<fieldset>
+			<h3>Événements</h3>
+		</fieldset>
+	</fieldset>
+	<fieldset>
+		<h3>Indicateurs d'exemplarité</h3>
+	</fieldset>
 	<Visibility />
 	<Menu />
 </form>
@@ -114,10 +163,15 @@
 		:global(.formgroup) {
 			display: flex;
 			flex-direction: column;
-			padding: 3rem 1.5rem;
+			padding: 3rem;
 			width: 100%;
 			max-width: var(--ui-width-main);
 			gap: 1.5rem;
+
+			@include laptop {
+				padding-inline: 1.5rem;
+				max-width: var(--ui-width-);
+			}
 		}
 
 		:global(.formlegend) {
@@ -141,9 +195,17 @@
 	hr {
 		background: col(primary, 100, 0.1);
 		width: 100%;
+
+		.split & {
+			z-index: -1;
+			left: 0;
+			position: absolute;
+			width: 100vw;
+		}
 	}
 
 	.split {
+		max-width: var(--ui-width-main);
 		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -153,18 +215,19 @@
 		position: sticky;
 		width: 100%;
 		top: 0;
+		z-index: 1;
 		height: 100vh;
 		border-radius: var(--ui-radius-lg);
-		grid-column: 1 / -1;
+		grid-column: 2;
 		grid-row: 1;
-		padding: 5rem 3rem;
+		justify-self: flex-end;
+		padding: 1.5rem;
 	}
 
 	.mapfields {
 		grid-row: 1;
 		grid-column: 1;
-		// height: 200vh;
 		z-index: 1;
-		padding: 1.5rem;
+		padding-block: 1.5rem;
 	}
 </style>

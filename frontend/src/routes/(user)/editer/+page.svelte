@@ -14,17 +14,16 @@
 	</hgroup>
 </header>
 <ul>
-	<li class="block project" in:fade={{ delay: 0 }}>
-		<div class="group {ICON_CLASS.hover}">
+	<li class="group" in:fade={{ delay: 0 }}>
+		<div class="block {ICON_CLASS.hover}">
 			<a href={EDITOR_ROUTES.project.pathname} class="fill" aria-hidden="true">
 				<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
 			</a>
 			<a href={EDITOR_ROUTES.project.pathname} class="main-link">Créer un nouveau projet</a>
 			<a href={EDITOR_ROUTES.project.edit.pathname} class="modify">Modifier un projet existant</a>
 		</div>
-		<hr />
 		<a
-			class="main-link group descriptors {ICON_CLASS.hover}"
+			class="block main-link descriptors {ICON_CLASS.hover}"
 			href={EDITOR_ROUTES.project.descriptors.pathname}
 		>
 			<div class="fill" aria-hidden="true">
@@ -33,16 +32,16 @@
 			<span style="z-index: 1">Éditer les descripteurs de projet</span>
 		</a>
 	</li>
-	<li class="block group {ICON_CLASS.hover}" in:fade={{ delay: 100 }}>
+	<li class="block {ICON_CLASS.hover}" in:fade={{ delay: 100 }}>
 		<a href={EDITOR_ROUTES.project.pathname} class="fill" aria-hidden="true">
 			<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
 		</a>
-		<a href={EDITOR_ROUTES.organisation.pathname} class="main-link"
-			>Créer une nouvelle organisation</a
-		>
+		<a href={EDITOR_ROUTES.organisation.pathname} class="main-link">
+			Créer une nouvelle organisation
+		</a>
 		<a href={EDITOR_ROUTES.organisation.edit.pathname} class="modify">Modifier une organisation</a>
 	</li>
-	<li class="block group {ICON_CLASS.hover}" in:fade={{ delay: 200 }}>
+	<li class="block {ICON_CLASS.hover}" in:fade={{ delay: 200 }}>
 		<a href={EDITOR_ROUTES.project.pathname} class="fill" aria-hidden="true">
 			<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
 		</a>
@@ -68,7 +67,6 @@
 			gap: 1rem;
 			align-items: center;
 			justify-content: center;
-			// min-height: 50vh;
 		}
 
 		h1 {
@@ -99,14 +97,43 @@
 		font-weight: 550;
 	}
 
+	.group {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+
+		& .block:not(:last-child) {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+
+		& .block:not(:first-child) {
+			border-left-width: 0px;
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+	}
+
 	.block {
-		background: col(bg, 300);
+		position: relative;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4rem;
+		padding: 4rem;
+		line-height: 1.2;
+		// background: col(bg, 300);
+		border: 1px dashed col(fg, 500, 0.1);
 		border-radius: var(--ui-radius-xl);
 		font-size: var(--ui-text-xl);
 		transition: all 0.1s ease-out;
+
 		&:hover {
+			z-index: 1;
 			background: col(primary, 300);
 			color: col(fg, 500);
+			border: 1px dashed transparent;
 			box-shadow: 0 1rem 7rem -3rem col(primary, 900, 0.5);
 
 			& .fill {
@@ -126,41 +153,13 @@
 		align-items: center;
 		justify-content: center;
 		font-size: clamp(200px, 40vw, 500px);
-		color: col(bg, 100);
+		color: col(bg, 900);
+		border-radius: inherit;
 		transition: all 0.1s ease-out;
 
 		& :global(*) {
 			pointer-events: none;
 		}
-	}
-
-	.project {
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-		border-radius: var(--ui-radius-xl);
-
-		.edit {
-			flex: 1;
-			border-radius: 0;
-		}
-		.descriptors {
-			display: flex;
-			// justify-content: center;
-			// font-size: 0.75em;
-			flex: 1;
-		}
-	}
-
-	.group {
-		position: relative;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 4rem;
-		padding: 4rem;
-		line-height: 1.2;
 	}
 
 	.main-link {

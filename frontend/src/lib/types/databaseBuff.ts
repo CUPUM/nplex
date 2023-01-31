@@ -14,7 +14,7 @@ export type BuffedDatabase = DeepReplace<
 							} & Database['public']['Tables']['project_work']['Row'])[];
 						})[];
 						works: (Database['public']['Tables']['project_work']['Row'] & {
-							type_ids: Database['public']['Tables']['project_type']['Row']['id'][];
+							types_ids: Database['public']['Tables']['project_type']['Row']['id'][];
 						})[];
 						siteOwnerships: Database['public']['Tables']['project_site_ownership']['Row'][];
 						siteUsagesCategories: Database['public']['Tables']['project_site_usage_category']['Row'][];

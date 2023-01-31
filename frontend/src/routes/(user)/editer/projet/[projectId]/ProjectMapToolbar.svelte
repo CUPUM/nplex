@@ -14,8 +14,8 @@
 	<Tooltip
 		message={tracking
 			? 'Cesser de suivre votre position'
-			: 'Centrer la carte sur votre localisation actuelle'}
-		place="bottom"
+			: 'Centrer la carte sur votre position actuelle'}
+		place="left"
 	>
 		<div>
 			<MapControlGeolocate
@@ -24,18 +24,18 @@
 			/>
 		</div>
 	</Tooltip>
-	<Tooltip message="Activez le mode plein écran" place="bottom">
+	<Tooltip message="Activez le mode plein écran" place="left">
 		<div>
 			<MapControlFullscreen />
 		</div>
 	</Tooltip>
 	<hr />
-	<Tooltip message="Dessinez un cercle pour situer votre projet" place="bottom">
+	<Tooltip message="Dessinez un cercle pour situer votre projet" place="left">
 		<div>
 			<MapControlDrawCircle initialRadius={LOCATION_DEFAULT_RADIUS} />
 		</div>
 	</Tooltip>
-	<Tooltip message="Téléversez un tracer géographique" place="bottom">
+	<Tooltip message="Téléversez un fichier de localisation" place="left">
 		<div>
 			<MapControlFile disabled />
 		</div>

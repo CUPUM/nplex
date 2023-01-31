@@ -8,8 +8,8 @@ import { THEME_PALETTES } from './themes';
  * Dictionnary of JSON styles for map baselayer.
  */
 export const MAP_STYLES = {
-	LIGHT: 'https://api.maptiler.com/maps/basic/style.json?key=dtV5LH1SmQB4VOb80qqI',
-	TONER: 'https://api.maptiler.com/maps/toner/style.json?key=dtV5LH1SmQB4VOb80qqI',
+	Light: 'https://api.maptiler.com/maps/basic/style.json?key=dtV5LH1SmQB4VOb80qqI',
+	Dark: 'https://api.maptiler.com/maps/streets-v2-dark/style.json?key=dtV5LH1SmQB4VOb80qqI',
 } as const;
 
 /**

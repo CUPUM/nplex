@@ -41,7 +41,7 @@
 	.formfields {
 		display: flex;
 		flex-direction: row;
-		gap: 2rem;
+		gap: 1.5rem;
 		flex-wrap: wrap;
 		width: 100%;
 		max-width: var(--ui-width-p);

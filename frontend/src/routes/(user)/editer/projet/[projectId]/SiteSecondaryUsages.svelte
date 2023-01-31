@@ -1,14 +1,14 @@
 <script lang="ts">
 	import Button from '$components/Button.svelte';
-	import Icon from '$components/Icon.svelte';
+	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Select from '$components/Select.svelte';
 	import { flip } from 'svelte/animate';
 	import { cubicOut } from 'svelte/easing';
-	import type { DeepUndefinable } from 'ts-essentials';
+	import type { DeepNullable } from 'ts-essentials';
 	import type { PageData } from './$types';
 	import { descriptors, getAvailableUsages } from './common';
 
-	type FormSecondaryUsages = DeepUndefinable<(typeof secondary_usages)[number]> & {
+	type FormSecondaryUsages = DeepNullable<(typeof secondary_usages)[number]> & {
 		id: string;
 	};
 
@@ -29,8 +29,8 @@
 		_secondary_usages = [
 			..._secondary_usages,
 			{
-				category_id: undefined,
-				usage_id: undefined,
+				category_id: null,
+				usage_id: null,
 				id: crypto.getRandomValues(new Uint8Array(6)).join(''),
 			},
 		] satisfies FormSecondaryUsages[];
@@ -71,14 +71,14 @@
 							<svelte:fragment slot="label">Usage</svelte:fragment>
 							<option slot="option" let:option value={option.id}>{option.title}</option>
 						</Select>
-						<Button on:pointerdown={() => remove(usage)}
-							><Icon name="eraser" slot="trailing" />Effacer</Button
-						>
-					{:else}
-						<Button variant="outlined" on:pointerdown={add}>
-							<Icon name="plus" slot="leading" />
-							Ajouter un usage secondaire
+						<Button variant="danger" equi on:pointerdown={() => remove(usage)}>
+							<Icon name="trash" />
 						</Button>
+					{:else}
+						<button on:pointerdown={add} class="add {ICON_CLASS.hover}">
+							<Icon name="plus" strokeWidth={2.5} style="opacity: .5" />
+							<span class="inner"> Ajouter un usage secondaire </span>
+						</button>
 					{/if}
 				</li>
 			{/each}
@@ -98,8 +98,33 @@
 		display: flex;
 		flex-direction: row;
 		gap: 1.5rem;
-		padding: 1.5rem;
+		padding: 1rem;
 		border: 1px solid col(fg, 500, 0.05);
 		border-radius: var(--ui-radius-lg);
+	}
+
+	button {
+		color: col(fg, 100);
+		height: var(--ui-height);
+		border-radius: var(--ui-radius-md);
+		border: 1px dashed col(fg, 500, 0.1);
+		display: flex;
+		flex-direction: row;
+		padding-inline: var(--ui-pad-x);
+		align-items: center;
+		gap: 0.5em;
+		transition: all 0.1s ease-out;
+
+		.inner {
+			display: block;
+			position: relative;
+			top: -0.1em;
+		}
+
+		&:hover {
+			color: col(primary, 700);
+			background: col(primary, 500, 0.1);
+			border: 1px dashed transparent;
+		}
 	}
 </style>

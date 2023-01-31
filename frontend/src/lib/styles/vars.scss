@@ -8,7 +8,7 @@
 
 :root {
 	--ui-bg: var(--color-bg-100);
-	--ui-nav-px: 91px;
+	--ui-nav-px: 87px;
 	--ui-scroll: 0;
 	--ui-scroll-px: 0px;
 	// Nestable props from inherit function (see utils.scss). Repeated here for IDE autocompletion.
@@ -44,6 +44,10 @@
 	--ui-ease-in: cubic-bezier(0.8, 0, 0.9, 1);
 	--ui-ease-out: cubic-bezier(0.1, 0, 0.1, 1);
 	--ui-ease-in-out: cubic-bezier(0.7, 0, 0.15, 1);
+
+	@include tablet {
+		--ui-nav-px: 104px;
+	}
 }
 
 .compact {

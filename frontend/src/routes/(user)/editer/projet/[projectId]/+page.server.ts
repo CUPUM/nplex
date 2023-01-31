@@ -30,7 +30,6 @@ export const actions: Actions = {
 	 */
 	update: async (event) => {
 		const formData = await event.request.formData();
-		console.log({ ...formData });
 		const parsed = zfd
 			.formData({
 				title: titleSchema,

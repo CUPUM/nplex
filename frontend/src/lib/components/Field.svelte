@@ -173,7 +173,8 @@
 	{/if}
 	{#if haslabel}
 		<label in:fly={{ y: 6, opacity: 0 }} for={id} bind:clientWidth={labelWidth}>
-			<slot {dirty} {value} name="label" /><span class="star">*</span>
+			<slot {dirty} {value} name="label" />
+			<span class="star">*</span>
 		</label>
 	{/if}
 	<!-- Placing outlines here to allow css dependence on label:empty with sibling selector -->
@@ -435,7 +436,8 @@
 		}
 		&.hasplaceholder,
 		&.hasvalue,
-		&:focus-within {
+		&:focus-within,
+		&:has(:-webkit-autofill) {
 			label {
 				opacity: 0.5;
 				top: 1.25em;
@@ -475,7 +477,8 @@
 		}
 		&.hasplaceholder,
 		&.hasvalue,
-		&:focus-within {
+		&:focus-within,
+		&:has(:-webkit-autofill) {
 			label {
 				opacity: 0.5;
 				top: 0em;
@@ -530,7 +533,8 @@
 		}
 		&.hasplaceholder,
 		&.hasvalue,
-		&:focus-within {
+		&:focus-within,
+		&:has(:-webkit-autofill) {
 			label {
 				opacity: 0.5;
 				top: 1.5em;

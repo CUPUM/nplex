@@ -34,7 +34,7 @@
 	let className: string = '';
 	export { className as class };
 	export let map: Map | undefined = undefined;
-	export let mapStyle: string | StyleSpecification = MAP_STYLES.LIGHT;
+	export let mapStyle: string | StyleSpecification = MAP_STYLES.Light;
 	export let locale: MapLocale = locales.french;
 	export let pitch: MapOptions['pitch'] = 0;
 	export let bearing: MapOptions['bearing'] = 0;
@@ -106,6 +106,7 @@
 
 	onDestroy(() => {
 		map?.remove();
+		map = undefined;
 		resizeObserver?.disconnect();
 	});
 </script>

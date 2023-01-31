@@ -187,8 +187,10 @@
 	}
 	.disabled,
 	.button:disabled {
-		opacity: 0.5;
+		opacity: 0.25;
 		pointer-events: none;
+		background: transparent;
+		color: col(fg, 100);
 		.content {
 			transform: scale(0.95);
 		}

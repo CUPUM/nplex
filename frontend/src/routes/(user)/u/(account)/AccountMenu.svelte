@@ -43,6 +43,8 @@
 <style lang="scss">
 	menu {
 		--radius: var(--ui-radius-md);
+		justify-self: flex-start;
+		padding-inline: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		position: sticky;

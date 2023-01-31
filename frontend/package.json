@@ -44,7 +44,7 @@
 		"@typescript-eslint/eslint-plugin": "^5.49.0",
 		"@typescript-eslint/parser": "^5.49.0",
 		"autoprefixer": "^10.4.13",
-		"browserslist": "^4.21.4",
+		"browserslist": "^4.21.5",
 		"csstype": "^3.1.1",
 		"element-to-path": "^1.2.1",
 		"esbuild": "^0.17.5",

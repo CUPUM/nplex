@@ -104,7 +104,8 @@
 	<div class="outline bottom" />
 	{#if $$slots.label}
 		<label in:fly={{ y: 6, opacity: 0 }} for={id} bind:clientWidth={labelWidth}>
-			<slot {dirty} name="label" /><span class="star">*</span>
+			<slot {dirty} name="label" />
+			<span class="star">*</span>
 		</label>
 	{/if}
 	<textarea
@@ -324,7 +325,8 @@
 		}
 		&.hasplaceholder,
 		&.hasvalue,
-		&:focus-within {
+		&:focus-within,
+		&:has(:-webkit-autofill) {
 			label {
 				opacity: 0.5;
 				top: 0.75em;
@@ -360,7 +362,8 @@
 		}
 		&.hasplaceholder,
 		&.hasvalue,
-		&:focus-within {
+		&:focus-within,
+		&:has(:-webkit-autofill) {
 			label {
 				opacity: 0.5;
 				top: -0.5em;
@@ -429,7 +432,8 @@
 		}
 		&.hasplaceholder,
 		&.hasvalue,
-		&:focus-within {
+		&:focus-within,
+		&:has(:-webkit-autofill) {
 			label {
 				opacity: 0.5;
 				top: 0.75em;

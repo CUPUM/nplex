@@ -63,7 +63,7 @@ export const IMAGE_GALLERY_FOLDER = 'gallery';
 export const IMAGE_TITLE_MAX_LENGTH = 200;
 export const IMAGE_DESCRIPTION_MAX_LENGTH = 500;
 export const LOCATION_DEFAULT_RADIUS = 500;
-export const LOCATION_MAX_RADIUS = 1_500;
+export const LOCATION_MAX_RADIUS = 2_500;
 export const ADJACENT_STREETS_MIN = 0;
 export const ADJACENT_STREETS_MAX = 5;
 
@@ -147,7 +147,7 @@ export const locationSchema = zfd
 	.json(
 		z.object({
 			center: positionSchema.optional(),
-			radius: z.number().optional(),
+			radius: z.number().max(LOCATION_MAX_RADIUS).optional(),
 		})
 	)
 	.transform(({ center, radius }) => {

@@ -20,13 +20,12 @@
 	}
 </script>
 
-<fieldset class="site-formgroup">
-	<legend class="site-formgroup-legend">Rues/ruelles adjacentes</legend>
-	<section>
+<fieldset class="formgroup">
+	<legend class="formlegend">Rues/ruelles adjacentes</legend>
+	<section class="formfields">
 		<Field
 			readonly
 			type="number"
-			variant="outlined"
 			name="adjacent_streets"
 			bind:value={_adjacent_streets}
 			min={ADJACENT_STREETS_MIN}
@@ -34,8 +33,12 @@
 			textAlign="center"
 			style="width: 160px;"
 		>
-			<Button equi slot="leading" on:pointerdown={decrement}><Icon name="minus" /></Button>
-			<Button equi slot="trailing" on:pointerdown={increment}><Icon name="plus" /></Button>
+			<Button equi variant="ghost" slot="leading" on:pointerdown={decrement}>
+				<Icon name="minus" />
+			</Button>
+			<Button equi variant="ghost" slot="trailing" on:pointerdown={increment}>
+				<Icon name="plus" />
+			</Button>
 		</Field>
 	</section>
 </fieldset>

@@ -129,11 +129,11 @@
 	let naving = false;
 
 	beforeNavigate(() => {
-		// naving = true;
+		naving = true;
 	});
 
 	afterNavigate(() => {
-		// naving = false;
+		naving = false;
 	});
 
 	const mainNav = Object.values(MAIN_ROUTES);
@@ -158,7 +158,7 @@
 >
 	<menu class="toggle">
 		<NavbarButton on:pointerdown={toggle} round>
-			<Icon name={open ? 'cross' : 'arrow-down-right'} strokeWidth={3} />
+			<Icon name={open ? 'cross' : 'hamburger'} strokeWidth={3} />
 		</NavbarButton>
 	</menu>
 	<div class="navs" class:open class:unmounted={!mounted}>
@@ -254,8 +254,7 @@
 			1fr
 			[session-end full-end];
 		grid-auto-flow: dense;
-		padding: 1.5rem;
-		padding-top: calc(0.5 * 1.5rem);
+		padding: 1rem 1.5rem;
 		margin: 0 auto;
 		flex-direction: row;
 		align-items: center;

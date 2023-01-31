@@ -1,4 +1,6 @@
 <script lang="ts">
+	import RootBackground from '$routes/RootBackground.svelte';
+	import { col } from '$utils/css';
 	import type { LayoutData } from './$types';
 	import { EDITOR_ROUTES } from './common';
 	import EditableProjectCard from './EditableProjectCard.svelte';
@@ -8,6 +10,7 @@
 </script>
 
 <!-- <Breadcrumbs /> -->
+<RootBackground body={col('bg', '700')} />
 <slot />
 <!-- <header>
 	<hgroup>

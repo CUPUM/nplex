@@ -1,4 +1,16 @@
 /**
+ * Helper to reactively shallow-clone a given array or object.
+ */
+// export function clone<T extends unknown[] | Record<string | number, unknown>>(source: T) {
+//  if(Array.isArray(source)) {
+// 	return [...source]
+//  }
+//  else if (isObject(source)) {
+// 	return
+//  }
+// }
+
+/**
  * By default, stringification and parsing of JSON doesn't take into account ES6 objects of type Map
  * and Set, and simply stringifies them to empty objects "{}"
  *
