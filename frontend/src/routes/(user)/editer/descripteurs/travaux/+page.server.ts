@@ -6,8 +6,19 @@ import { zfd } from 'zod-form-data';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
+	create: async (event) => {
+		const formData = await event.request.formData();
+		const parsed = zfd.formData({}).safeParse(formData);
+		if (!parsed.success) {
+			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
+		}
+		const db = await getDb(event);
+		const insert = db.from('');
+	},
 	update: async (event) => {
-		console.log(event);
+		const formData = await event.request.formData();
+		console.log(event.locals.session?.user.role);
+		console.log(formData);
 	},
 	delete: async (event) => {
 		const formData = await event.request.formData();
@@ -28,8 +39,7 @@ export const actions: Actions = {
 			.then((res) => {
 				console.log(res);
 				if (res.error) {
-					console.log(res.error);
-					throw error(STATUS_CODES.InternalServerError, { ...res.error });
+					throw error(STATUS_CODES.InternalServerError, { message: res.error.message });
 				}
 			});
 	},

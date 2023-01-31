@@ -19,7 +19,11 @@
 </p>
 <ul>
 	{#each works as work (work.id)}
-		<li animate:flip>
+		<li
+			animate:flip={{
+				duration: 250,
+			}}
+		>
 			{#if 'title' in work}
 				<Work
 					id={work.id}
