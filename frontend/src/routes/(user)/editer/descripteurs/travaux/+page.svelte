@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
+	import { cubicInOut } from 'svelte/easing';
+	import { scale } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import Work from './Work.svelte';
 
@@ -23,6 +25,7 @@
 			animate:flip={{
 				duration: 250,
 			}}
+			transition:scale|local={{ duration: 150, opacity: 0, easing: cubicInOut }}
 		>
 			{#if 'title' in work}
 				<Work
@@ -45,8 +48,9 @@
 	}
 
 	p {
-		color: col(fg, 100);
-		max-width: var(--ui-width-p);
+		color: col(fg, 000);
+		opacity: 0.75;
+		max-width: var(--ui-width-sm);
 	}
 
 	form {
@@ -60,5 +64,6 @@
 	}
 
 	li {
+		transform-origin: bottom center;
 	}
 </style>

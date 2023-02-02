@@ -234,7 +234,7 @@
 		z-index: 100;
 		top: 0;
 
-		@include tablet {
+		@include breakpoint.tablet {
 			align-items: flex-start;
 		}
 	}
@@ -260,7 +260,7 @@
 		align-items: center;
 		gap: 1rem;
 
-		@include tablet {
+		@include breakpoint.tablet {
 			display: flex;
 			flex: unset;
 			flex-direction: column;
@@ -296,7 +296,7 @@
 		padding: 1.5rem;
 		display: none;
 
-		@include tablet {
+		@include breakpoint.tablet {
 			display: block;
 		}
 	}
@@ -311,7 +311,7 @@
 		transition: transform 0.25s cubic-bezier(0, 0, 0, 1) var(--d), opacity 0.25s ease-out var(--d),
 			background 0.1s ease;
 
-		@include tablet {
+		@include breakpoint.tablet {
 			flex-direction: column;
 			align-items: flex-start;
 		}

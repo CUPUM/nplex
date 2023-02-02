@@ -141,7 +141,7 @@
 	#search-works {
 		font-size: 1rem;
 		padding-bottom: 1.5rem;
-		max-width: var(--ui-width-p);
+		max-width: var(--ui-width-sm);
 	}
 
 	#works {

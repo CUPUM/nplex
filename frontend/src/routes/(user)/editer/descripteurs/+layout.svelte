@@ -22,7 +22,7 @@
 		position: relative;
 		flex: 1;
 		width: 100%;
-		min-height: calc(100vh - var(--ui-nav-px));
+		min-height: calc(100vh - var(--ui-nav-h));
 		display: grid;
 		grid-template-columns:
 			minmax(0, calc(50% - 0.5 * var(--ui-width-main)))
@@ -38,7 +38,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-		padding: 3rem;
+		padding: 2.5rem 3rem;
 	}
 
 	.bg {

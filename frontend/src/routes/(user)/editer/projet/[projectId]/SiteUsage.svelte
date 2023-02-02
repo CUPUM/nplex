@@ -44,7 +44,7 @@
 		gap: 1.5rem;
 		flex-wrap: wrap;
 		width: 100%;
-		max-width: var(--ui-width-p);
+		max-width: var(--ui-width-sm);
 
 		& > :global(*) {
 			flex: 1;

@@ -1,43 +1,36 @@
-@import './utils.scss';
+@use './utils/breakpoint.scss';
 
 /**
- * These variables, prefixed with "ui-", contain the default values and should never be reassigned.
+ * These variables, prefixed with "--ui-", contain the default values and should never be reassigned.
  * Locally derived variables should use the same name minus the prefix.
  * Ex.: A customized local adjustment of --ui-radius should be declared with : --radius: ...
  */
 
 :root {
 	--ui-bg: var(--color-bg-100);
-	--ui-nav-px: 87px;
-	--ui-scroll: 0;
-	--ui-scroll-px: 0px;
-	// Nestable props from inherit function (see utils.scss). Repeated here for IDE autocompletion.
-	// TO DEPRECATE.
-	--inset: 0px;
-	--inset-parent: 0px;
-	--inset-sum: 0px;
-	--ui-inset: 3px;
-	// End nestable props
+	--ui-nav-h: 87px;
+	--ui-scroll-y: 0px;
+	--ui-scroll-y-int: 0;
+	--ui-inset: 5px;
 	--ui-height: 3.5em;
-	--ui-pad-x: 1.3em;
-	--ui-width-main: 1480px;
-	--ui-width-lg: 1200px;
+	--ui-pad-x: 1.25em;
+	--ui-width-sm: 600px;
 	--ui-width-md: 900px;
-	--ui-width-p: 600px;
+	--ui-width-lg: 1200px;
+	--ui-width-main: 1480px;
 	--ui-scroll-size: 6px;
 	--ui-scroll-color: rgb(var(--rgb-fg-000), 1);
-	--ui-radius-sm: 10px;
-	--ui-radius-md: 16px;
-	--ui-radius-lg: 24px;
-	--ui-radius-xl: 36px;
-	--ui-radius-2xl: 52px;
-	--ui-text-2xs: 0.625rem;
+	--ui-radius-sm: 9px;
+	--ui-radius-md: 14px;
+	--ui-radius-lg: 21px;
+	--ui-radius-xl: 32px;
+	--ui-radius-2xl: 48px;
 	--ui-text-xs: 0.75rem;
 	--ui-text-sm: 0.875rem;
 	--ui-text-md: 1rem;
 	--ui-text-lg: 1.5rem;
-	--ui-text-xl: 2.25rem;
-	--ui-text-2xl: 3.25rem;
+	--ui-text-xl: 2.75rem;
+	--ui-text-2xl: 3.75rem;
 	--ui-text-3xl: 5.5rem;
 	--ui-font-main: 'Outfit', sans-serif;
 	--ui-font-misc: 'Space Mono', monospace;
@@ -45,8 +38,8 @@
 	--ui-ease-out: cubic-bezier(0.1, 0, 0.1, 1);
 	--ui-ease-in-out: cubic-bezier(0.7, 0, 0.15, 1);
 
-	@include tablet {
-		--ui-nav-px: 104px;
+	@include breakpoint.tablet {
+		--ui-nav-h: 104px;
 	}
 }
 

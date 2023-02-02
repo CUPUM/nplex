@@ -37,7 +37,7 @@
 <style lang="scss">
 	header {
 		padding-block: 2rem;
-		margin-top: var(--ui-nav-px);
+		margin-top: var(--ui-nav-h);
 		margin-inline: 1.5rem;
 		align-self: stretch;
 		background: col(bg, 500);
@@ -51,7 +51,7 @@
 			border-radius: 0 0 var(--ui-text-xl) var(--ui-text-xl);
 			margin-top: 0;
 			margin-inline: 0;
-			padding-top: var(--ui-nav-px);
+			padding-top: var(--ui-nav-h);
 		}
 	}
 

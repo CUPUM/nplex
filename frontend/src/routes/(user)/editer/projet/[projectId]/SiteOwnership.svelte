@@ -27,7 +27,7 @@
 <style lang="scss">
 	section {
 		align-items: stretch;
-		max-width: var(--ui-width-p);
+		max-width: var(--ui-width-sm);
 		// font-size: var(--ui-text-sm);
 	}
 

@@ -1,0 +1,32 @@
+// :disabled
+// :empty
+// :enabled
+// :optional
+// :required
+// :out-of-range
+// :placeholder-shown
+// :valid
+// :invalid
+// :focus-within
+// :focus-visible
+
+.field {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+
+	> input {
+	}
+
+	> prefix {
+	}
+
+	> suffix {
+	}
+
+	> leading {
+	}
+
+	> trailing {
+	}
+}

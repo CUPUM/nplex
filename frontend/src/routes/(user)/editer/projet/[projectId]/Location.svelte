@@ -8,10 +8,18 @@
 		createCircle,
 		getCircleCenter,
 		getCircleRadius,
+		setCircleRadius,
 	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
-	import { dirty, LOCATION_DEFAULT_RADIUS, map, mapdraw, _location_radius } from './common';
+	import {
+		dirty,
+		LOCATION_DEFAULT_RADIUS,
+		LOCATION_MAX_RADIUS,
+		map,
+		mapdraw,
+		_location_radius,
+	} from './common';
 
 	export let location: PageData['project']['location'];
 	$: _location_center = location.geometry?.coordinates;
@@ -24,10 +32,15 @@
 
 	const updateLocation = throttle((e: DrawRenderEvent) => {
 		if ($mapdraw) {
-			const features = $mapdraw.getAll().features;
-			if (features.length) {
-				_location_center = getCircleCenter(features[0]);
-				$_location_radius = getCircleRadius(features[0]) * 1000;
+			const feature = $mapdraw.getAll().features[0];
+			if (feature) {
+				let radius = getCircleRadius(feature) * 1000;
+				if (radius > LOCATION_MAX_RADIUS) {
+					radius = LOCATION_MAX_RADIUS;
+					setCircleRadius(feature, radius);
+				}
+				_location_center = getCircleCenter(feature);
+				$_location_radius = radius;
 			}
 		}
 	}, 100);

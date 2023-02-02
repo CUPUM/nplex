@@ -32,14 +32,14 @@
 		padding-top: var(--ui-radius-lg);
 		justify-self: flex-start;
 		position: sticky;
-		top: var(--ui-nav-px);
+		top: var(--ui-nav-h);
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
 		overflow: visible;
 		z-index: 1;
 
-		@include tablet {
+		@include breakpoint.tablet {
 			position: relative;
 			top: 0;
 			width: 100%;

@@ -9,7 +9,7 @@ import { paramCase } from 'change-case';
  * Helper equivalent to the Sass helper function used to compose CSS var names for theme-dependent
  * colors.
  *
- * See /styles/utils.scss for sass homologue.
+ * See /styles/color.scss for sass homologue.
  */
 export function col<C extends keyof Theme>(color: C, shade: keyof Theme[C], alpha?: number) {
 	if (alpha === undefined || alpha === 1) {

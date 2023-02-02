@@ -80,7 +80,7 @@
 			grid-template-columns: repeat(3, 1fr);
 		}
 
-		@include tablet {
+		@include breakpoint.tablet {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}

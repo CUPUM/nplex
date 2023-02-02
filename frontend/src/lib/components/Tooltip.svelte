@@ -110,7 +110,7 @@
 		line-height: 1.3;
 		font-weight: 350;
 		font-size: var(--ui-text-xs);
-		max-width: var(--ui-width-p);
+		max-width: var(--ui-width-sm);
 		padding: 0.5em 1em 0.6em 1em;
 		margin: 0;
 		background: col(bg, 100, 0.94);

@@ -20,6 +20,8 @@
 	$: _description = description;
 	$: _types_ids = [...types_ids];
 
+	$: if (description) console.log(description);
+
 	$: dirty = _title !== title;
 	$: dirty = _description !== description;
 	$: dirty =

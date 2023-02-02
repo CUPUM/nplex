@@ -7,8 +7,6 @@ export const load = (async (event) => {
 	const sessionRes = await event.fetch('/api/auth/session.json', { method: 'POST' });
 	const session: App.PageData['session'] = await sessionRes.json();
 
-	// console.log('Root server layout', session);
-
 	return {
 		session,
 	};

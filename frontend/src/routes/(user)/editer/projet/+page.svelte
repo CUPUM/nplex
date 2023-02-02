@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Button from '$components/Button.svelte';
-	import Field from '$components/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { messages } from '$routes/MessagesOutlet.svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -35,7 +33,7 @@
 	<div>
 		<h1 in:fly={{ y: 20 }}>Créez votre nouveau projet</h1>
 		<fieldset in:fly={{ y: -20, delay: 150 }}>
-			<Field
+			<!-- <Field
 				name="title"
 				class="title"
 				placeholder="Donnez un titre à vorte projet"
@@ -49,29 +47,42 @@
 						<Icon slot="leading" name="arrow-right" />
 					</Button>
 				</svelte:fragment>
-			</Field>
-			<span in:fade={{ delay: 500 }}
-				>Vous pourrez toujours modifier le titre une fois le projet créé.</span
-			>
+			</Field> -->
+			<div class="title">
+				<input
+					placeholder="Donnez un titre à vorte projet"
+					bind:value={title}
+					type="text"
+					name="title"
+				/>
+				<button class="button" type="submit" disabled={!title}>
+					<span class="button-leading">
+						<Icon name="arrow-right" />
+					</span>
+					<span class="button-inner">Créer</span>
+				</button>
+			</div>
+			<span in:fade={{ delay: 500 }}>
+				Vous pourrez toujours modifier le titre une fois le projet créé.
+			</span>
 		</fieldset>
 	</div>
 </form>
 
 <style lang="scss">
 	form {
-		--radius: min(var(--ui-radius-xl), calc(var(--ui-scroll-px) * 0.2));
+		// --radius: min(var(--ui-radius-xl), calc(var(--ui-scroll-y) * 0.2));
 		width: 100%;
-		min-height: calc(100vh - var(--ui-nav-px));
-		padding-bottom: var(--ui-nav-px);
+		min-height: calc(100vh - var(--ui-nav-h));
+		padding-bottom: var(--ui-nav-h);
 		margin: 0 auto;
-		border: 1px solid col(fg, 900, min(0.1, calc(var(--ui-scroll) * 0.001)));
-		border-top: none;
+		border-bottom: 1px solid col(fg, 900, min(0.1, calc(var(--ui-scroll-y-int) * 0.001)));
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		border-bottom-left-radius: var(--radius);
-		border-bottom-right-radius: var(--radius);
+		// border-bottom-left-radius: var(--radius);
+		// border-bottom-right-radius: var(--radius);
 	}
 
 	div {

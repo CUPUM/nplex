@@ -82,7 +82,7 @@
 		align-items: stretch;
 		gap: 3rem;
 
-		@include tablet {
+		@include breakpoint.tablet {
 			flex-direction: column;
 			gap: 3rem;
 		}

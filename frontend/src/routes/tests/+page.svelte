@@ -28,6 +28,11 @@
 </script>
 
 <article>
+	<button class="button">
+		<span class="main">test</span>
+	</button>
+</article>
+<article>
 	<form method="POST" use:enhance>
 		<select name="test" id="">
 			{#each options as option}
@@ -42,18 +47,15 @@
 		<button
 			on:pointerdown={() => {
 				get(source.url);
-			}}>Fetch {source.name}</button
+			}}
 		>
+			Fetch {source.name}
+		</button>
 	{/each}
 </article>
 
 <style lang="scss">
 	article {
 		padding: 5rem;
-	}
-
-	button {
-		padding: 0.5rem;
-		background: lightgrey;
 	}
 </style>

@@ -1,7 +1,7 @@
 import type { MapDrawStyles } from '$types/map';
 import type { GestureOptions, LngLatBoundsLike, LngLatLike, Map } from 'maplibre-gl';
 import type { createEventDispatcher } from 'svelte';
-import { locations } from './map/locations';
+import { LOCATIONS } from './map/locations';
 import { THEME_PALETTES } from './themes';
 
 /**
@@ -320,7 +320,7 @@ export async function getClientLocation(options?: PositionOptions) {
  */
 export async function centerMapOnClientLocation(
 	map: Map,
-	fallback: LngLatBoundsLike | LngLatLike = locations.montreal.bounds
+	fallback: LngLatBoundsLike | LngLatLike = LOCATIONS.montreal.bounds
 ) {
 	try {
 		const center = await getClientLocation({
@@ -340,10 +340,6 @@ export async function centerMapOnClientLocation(
 	}
 }
 
-/**
- * Partial french locale.
- */
-
 export type MapLocale = Partial<{
 	'AttributionControl.ToggleAttribution': string;
 	'AttributionControl.MapFeedback': string;
@@ -361,24 +357,17 @@ export type MapLocale = Partial<{
 	'ScrollZoomBlocker.CmdMessage': string;
 }>;
 
-const frenchLocale: MapLocale = {
-	'ScrollZoomBlocker.CtrlMessage': 'Utilisez ctrl + ↕ pour zoomer',
-	'ScrollZoomBlocker.CmdMessage': 'Utilisez ⌘ + ↕ pour zoomer',
-};
+export const MAP_LOCALES = {
+	french: {
+		'ScrollZoomBlocker.CtrlMessage': 'Utilisez ctrl + ↕ pour zoomer',
+		'ScrollZoomBlocker.CmdMessage': 'Utilisez ⌘ + ↕ pour zoomer',
+	},
+} as const satisfies Record<string, MapLocale>;
 
-export const locales = {
-	french: frenchLocale,
-};
-
-/**
- * French help text for cooperative gestures.
- */
-
-const frenchGestures: GestureOptions = {
-	windowsHelpText: 'Utilisez Ctrl + ⭥ pour zoomer la carte',
-	macHelpText: 'Utilisez&ensp;⌘ + ⭥&ensp;pour zoomer la carte',
-	mobileHelpText: 'Utilisez deux doigts pour déplacer la carte',
-};
-export const gesturesText = {
-	french: frenchGestures,
-};
+export const MAP_GESTURES_TEXT = {
+	french: {
+		windowsHelpText: 'Utilisez Ctrl + ⭥ pour zoomer.',
+		macHelpText: 'Utilisez <kbd>cmd ⌘</kbd> et défilez <kbd>⭥</kbd> pour zoomer.',
+		mobileHelpText: 'Utilisez deux doigts pour déplacer.',
+	},
+} as const satisfies Record<string, GestureOptions>;

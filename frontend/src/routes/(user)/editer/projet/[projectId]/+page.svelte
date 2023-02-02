@@ -157,7 +157,7 @@
 		flex-direction: column;
 		background: col(bg, 300);
 		color: col(fg, 100);
-		margin-top: calc(-1 * var(--ui-nav-px));
+		margin-top: calc(-1 * var(--ui-nav-h));
 		border-radius: 0 0 var(--ui-radius-xl) var(--ui-radius-xl);
 
 		:global(.formgroup) {
@@ -184,7 +184,7 @@
 		}
 
 		:global(.forminfo) {
-			max-width: var(--ui-width-p);
+			max-width: var(--ui-width-sm);
 			color: col(fg, 100, 0.35);
 			margin-block: 1rem;
 			font-weight: 350;

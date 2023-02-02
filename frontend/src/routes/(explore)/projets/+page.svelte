@@ -1,59 +1,37 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import Map from '$components/Map.svelte';
+	import { rootScroll } from '$stores/scroll';
+	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import MapProjects from './MapProjects.svelte';
 
 	export let data: PageData;
+
+	const key = {};
+
+	onMount(() => {
+		rootScroll.lock(key);
+	});
+
+	onDestroy(() => {
+		rootScroll.unlock(key);
+	});
 </script>
 
-<div class="projects">
+<article>
 	<Map>
-		<MapProjects projects={data.projects} />
+		<!-- <MapProjects projects={data.projects} /> -->
 	</Map>
-	<form action="" use:enhance method="POST">
-		Filtres
-		<p>Inclure les projets non-publiés auxquel j'ai accès.</p>
-		<fieldset>Filtre 1</fieldset>
-	</form>
-	<ul>
-		{#each data.projects as p}
-			<li>{p}</li>
-		{/each}
-	</ul>
-</div>
+</article>
 
 <style lang="scss">
-	.projects {
+	article {
 		position: relative;
-		flex: 1 0 auto;
 		display: flex;
 		flex-direction: row;
 		align-items: stretch;
-		padding: 1rem;
 		padding-top: 0;
 		height: 100vh;
-		padding-top: var(--ui-nav-px);
-		margin-top: calc(-1 * var(--ui-nav-px));
-	}
-
-	form {
-		all: unset;
-		padding: 1rem;
-		border-radius: 1rem;
-		background: white;
-	}
-
-	fieldset {
-		all: unset;
-	}
-
-	.projects :global(.map) {
-		// position: absolute;
-		flex: none;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
+		width: 100vw;
+		margin-top: calc(-1 * var(--ui-nav-h));
 	}
 </style>

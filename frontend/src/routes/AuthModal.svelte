@@ -110,7 +110,7 @@
 	import { USER_BASE_ROUTE } from '$utils/routes';
 	import { THEMES } from '$utils/themes';
 	import type { ActionResult } from '@sveltejs/kit';
-	import { linear } from 'svelte/easing';
+	import { cubicOut, linear } from 'svelte/easing';
 	import { fade, fly, scale, slide } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
 	import type { AuthFailure } from './api/auth/common';
@@ -199,7 +199,7 @@
 					</svelte:fragment>
 				</Field>
 				{#if $authModal === AUTHMODAL_MODE.SignUp}
-					<div class="signup fill-row" transition:slide|local={{ duration: 200 }}>
+					<div class="signup fill-row" transition:slide|local={{ duration: 120, easing: cubicOut }}>
 						<Field variant="default" name="first_name" invalid={!!failure.first_name}>
 							<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
 							<svelte:fragment slot="trailing">
@@ -229,9 +229,9 @@
 					<Icon name="login" slot="trailing" />
 					Me connecter
 				</Button>
-				<Button disabled variant="ghost" class="small-button" contentAlign="center"
-					>Mot de passe oublié ?</Button
-				>
+				<Button disabled variant="ghost" class="small-button" contentAlign="center">
+					Mot de passe oublié ?
+				</Button>
 				<Button
 					class="small-button"
 					variant={$authModal === AUTHMODAL_MODE.SignUp ? 'cta' : 'default'}

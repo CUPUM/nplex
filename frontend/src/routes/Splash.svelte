@@ -60,7 +60,7 @@
 
 <style lang="scss">
 	header {
-		--radius: min(var(--ui-radius-2xl), calc(var(--ui-scroll-px) * 0.15));
+		--radius: min(var(--ui-radius-2xl), calc(var(--ui-scroll-y) * 0.15));
 		position: relative;
 		height: 100vh;
 		width: 100%;
@@ -70,7 +70,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin-top: calc(-1 * var(--ui-nav-px));
+		margin-top: calc(-1 * var(--ui-nav-h));
 		transition: border-radius 0.15s ease-out;
 	}
 

@@ -46,7 +46,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		padding-top: var(--ui-nav-px);
+		padding-top: var(--ui-nav-h);
 	}
 
 	ul {

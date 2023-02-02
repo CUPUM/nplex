@@ -53,6 +53,11 @@
 		backdrop-filter: blur(6px);
 		transition: all 0.15s ease;
 
+		&:focus-visible,
+		&:focus {
+			z-index: 1;
+		}
+
 		&::before {
 			content: '';
 			position: absolute;

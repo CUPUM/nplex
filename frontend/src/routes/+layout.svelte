@@ -6,11 +6,14 @@
 	import LoadingProgress from '$routes/LoadingProgress.svelte';
 	import MessagesOutlet from '$routes/MessagesOutlet.svelte';
 	import '$styles/app.scss';
-	import '$styles/resets.scss';
+	import '$styles/classes/button.scss';
+	import '$styles/classes/field.scss';
+	import '$styles/classes/general.scss';
+	import '$styles/classes/link.scss';
+	import '$styles/reset.scss';
 	import '$styles/themes.css';
 	import '$styles/vars.scss';
 	import { browserDb } from '$utils/database';
-	import { onMount } from 'svelte';
 	import type { LayoutData } from './$types';
 	import AuthModal, { authModal } from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
@@ -20,8 +23,6 @@
 
 	let progress: LoadingProgress;
 	let scrollY = 0;
-	let mounted = false;
-	let outroing: HTMLElement;
 
 	if (browser) {
 		// Initialize the client-side db auth based on the session extracted from cookies, if any.
@@ -30,10 +31,6 @@
 			browserDb.auth.signInWithPassword;
 		}
 	}
-
-	onMount(() => {
-		mounted = true;
-	});
 
 	beforeNavigate(({ from, to }) => {
 		if (from?.route.id !== to?.route.id) {
@@ -57,10 +54,9 @@
 <Logo />
 <div
 	class="container"
-	class:unmounted={!mounted}
 	class:authing={$authModal}
 	style:--ui-scroll={scrollY}
-	style:--ui-scroll-px="{scrollY}px"
+	style:--ui-scroll-y="{scrollY}px"
 >
 	<Navbar />
 	<main>
@@ -78,12 +74,9 @@
 <style lang="scss" module>
 	.container {
 		position: relative;
-		transform-origin: 50vw calc(var(--ui-scroll-px) + 50vh);
+		transform-origin: 50vw calc(var(--ui-scroll-y) + 50vh);
 		transform: scale(1);
 		transition: transform 0.25s var(--ui-ease-out);
-		&.unmounted {
-			transform: scale(1.04);
-		}
 		&.authing {
 			transform: scale(0.96);
 		}

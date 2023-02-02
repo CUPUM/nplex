@@ -1,4 +1,5 @@
-@import './utils.scss';
+@use './utils/breakpoint.scss';
+@use './utils/color.scss' as *;
 
 :root {
 	background: var(--ui-bg);
@@ -19,9 +20,27 @@
 		overflow-y: hidden;
 		padding-right: var(--ui-scroll-size);
 
-		@include mobile {
+		@include breakpoint.mobile {
 			overflow-y: scroll;
 			padding-right: 0;
+		}
+	}
+
+	&::-webkit-scrollbar {
+		width: var(--ui-scroll-size);
+		height: var(--ui-scroll-size);
+
+		&-track {
+			background: var(--ui-bg);
+		}
+
+		&-thumb {
+			border-radius: 3px;
+			background: col(fg, 100);
+		}
+
+		&-thumb:hover {
+			background: col(fg, 900);
 		}
 	}
 }
@@ -35,48 +54,22 @@ body {
 	padding: 0;
 	margin: 0;
 	transition: inherit;
-}
 
-::-webkit-scrollbar {
-	width: var(--scroll-size, var(--ui-scroll-size));
-	height: var(--scroll-size, var(--ui-scroll-size));
-}
-
-::-webkit-scrollbar-track {
-	background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-	border-radius: 3px;
-	background: col(fg, 500, 0.25);
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: var(--scroll-color, var(--ui-scroll-color));
-}
-
-:root {
-	scrollbar-width: thin;
-	scrollbar-color: var(--scroll-color, var(--ui-scroll-color)) transparent;
-	&::-webkit-scrollbar {
+	::-webkit-scrollbar {
 		width: var(--scroll-size, var(--ui-scroll-size));
 		height: var(--scroll-size, var(--ui-scroll-size));
-	}
 
-	@include mobile {
-		scrollbar-width: auto;
-		&::-webkit-scrollbar {
-			width: initial;
-			height: initial;
+		&-track {
+			background: transparent;
 		}
-		&::-webkit-scrollbar-track {
-			background: initial;
+
+		&-thumb {
+			border-radius: 3px;
+			background: col(fg, 500, 0.25);
 		}
-		&::-webkit-scrollbar-thumb {
-			background: initial;
-		}
-		::-webkit-scrollbar-thumb:hover {
-			background: initial;
+
+		&-thumb:hover {
+			background: var(--scroll-color, var(--ui-scroll-color));
 		}
 	}
 }
@@ -86,65 +79,13 @@ body {
 	color: col(fg, 500);
 }
 
-/**
- * Helper classes and animations.
- */
-
-.no-scrollbar {
-	--scroll-size: 0px;
-	--scroll-color: transparent;
-	scrollbar-width: none;
-}
-
-hr {
-	padding: 0.5px;
-	background: col(fg, 500, 0.05);
-}
-
-.focus-press {
-	&:focus,
-	&:focus-within {
-		animation: press 0.2s var(--ui-ease-out);
-	}
-}
-
-.focus-outline- {
-	&within,
-	&visible {
-		// Excluding outlined variants
-		&:not(.outlined) {
-			&::after {
-				pointer-events: none;
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				border-radius: inherit;
-				outline: 0px solid rgb(var(--rgb-primary-300), 0);
-				outline-offset: 0px;
-				transition: all 0.2s ease-out;
-			}
-			&:focus-within,
-			&:focus-visible {
-				&::after {
-					outline: 3px solid rgb(var(--rgb-primary-300), 0.5);
-					outline-offset: 1px;
-				}
-			}
-		}
-	}
-}
-
-@keyframes press {
-	0% {
-		transform: scale(1);
-	}
-	25% {
-		transform: scale(0.96);
-	}
-	100% {
-		transform: scale(1);
-	}
+kbd {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding-inline: 0.5em;
+	height: 2em;
+	margin-inline: 0.25em;
+	border-radius: 0.5em;
+	border: 1px solid col(fg, 500, 0.1);
 }

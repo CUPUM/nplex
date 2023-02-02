@@ -1,0 +1,12 @@
+@mixin focuspress {
+	&:focus,
+	&:focus-within {
+		animation: press 0.2s var(--ui-ease-out);
+	}
+}
+
+@mixin noscrollbar {
+	--scroll-size: 0px;
+	--scroll-color: transparent;
+	scrollbar-width: none;
+}

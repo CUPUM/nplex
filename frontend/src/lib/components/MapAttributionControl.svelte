@@ -1,6 +1,3 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import { AttributionControl, type AttributionOptions, type ControlPosition } from 'maplibre-gl';
 	import { onDestroy, onMount } from 'svelte';

@@ -48,7 +48,7 @@
 		display: flex;
 		flex-direction: column;
 		position: sticky;
-		top: var(--ui-nav-px);
+		top: var(--ui-nav-h);
 		gap: var(--ui-inset);
 	}
 

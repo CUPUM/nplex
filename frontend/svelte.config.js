@@ -12,9 +12,9 @@ const config = {
 			typescript: true,
 			scss: {
 				includePaths: ['src/lib/styles'],
-				prependData: "@import 'utils.scss';",
+				prependData: "@use 'utils/breakpoint.scss'; @use 'utils/color.scss' as * ;",
 			},
-			postcss: true,
+			// postcss: true,
 		}),
 		cssModules({
 			mode: 'mixed',

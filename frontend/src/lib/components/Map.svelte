@@ -1,16 +1,19 @@
 <!--
 	@component
 	## Map
-	Generic map primitive component to instanciate a MapLibre map.
+	Generic map primitive component to instanciate a MapLibre context and map.
 
 -->
 <script lang="ts" context="module">
+	/**
+	 * Context.
+	 */
+
 	const CTX_KEY = 'map-context';
 
 	interface MapContext {
-		getMap: () => Map | undefined;
-		getContainer: () => HTMLElement;
-		setCursor: (cursor: Cursor | undefined) => void;
+		getMap: () => Map;
+		cursor: Writable<Cursor | null>;
 	}
 
 	export function getMapContext() {
@@ -19,60 +22,115 @@
 </script>
 
 <script lang="ts">
-	import { intersection } from '$actions/intersection';
 	import type { Cursor } from '$utils/enums';
-	import { gesturesText, locales, MAP_STYLES, type MapLocale } from '$utils/map';
-	import { locations } from '$utils/map/locations';
+	import { MAP_GESTURES_TEXT, MAP_LOCALES, MAP_STYLES, type MapLocale } from '$utils/map';
+	import { LOCATIONS } from '$utils/map/locations';
 	import { debounce } from '$utils/modifiers';
-	// import { Map, type MapOptions, type StyleSpecification } from 'maplibre-gl';
-	import type { Map, MapOptions, StyleSpecification } from 'maplibre-gl';
+	import { Map, type MapOptions } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
+	import { writable, type Writable } from 'svelte/store';
 	import Loading from './Loading.svelte';
 
-	export let style: string | undefined = undefined;
-	let className: string = '';
-	export { className as class };
-	export let map: Map | undefined = undefined;
-	export let mapStyle: string | StyleSpecification = MAP_STYLES.Light;
-	export let locale: MapLocale = locales.french;
-	export let pitch: MapOptions['pitch'] = 0;
-	export let bearing: MapOptions['bearing'] = 0;
+	export let interactive: MapOptions['interactive'] = true;
 	export let bearingSnap: MapOptions['bearingSnap'] = undefined;
+	export let attributionControl: MapOptions['attributionControl'] = undefined;
+	export let customAttribution: MapOptions['customAttribution'] = undefined;
+	export let preserveDrawingBuffer: MapOptions['preserveDrawingBuffer'] = undefined;
+	export let antialias: MapOptions['antialias'] = true;
+	export let refreshExpiredTiles: MapOptions['refreshExpiredTiles'] = true;
+	export let maxBounds: MapOptions['maxBounds'] = undefined;
+	export let scrollZoom: MapOptions['scrollZoom'] = undefined;
+	export let minZoom: MapOptions['minZoom'] = 1;
+	export let maxZoom: MapOptions['maxZoom'] = 20;
+	export let minPitch: MapOptions['minPitch'] = undefined;
+	export let maxPitch: MapOptions['maxPitch'] = undefined;
+	export let boxZoom: MapOptions['boxZoom'] = undefined;
+	export let dragRotate: MapOptions['dragRotate'] = undefined;
+	export let dragPan: MapOptions['dragPan'] = undefined;
+	export let keyboard: MapOptions['keyboard'] = undefined;
+	export let doubleClickZoom: MapOptions['doubleClickZoom'] = undefined;
+	export let touchZoomRotate: MapOptions['touchZoomRotate'] = undefined;
+	export let touchPitch: MapOptions['touchPitch'] = undefined;
+	export let cooperativeGestures: MapOptions['cooperativeGestures'] = MAP_GESTURES_TEXT.french;
+	export let trackResize: MapOptions['trackResize'] = undefined;
+	export let center: MapOptions['center'] = undefined;
 	export let zoom: MapOptions['zoom'] = 10;
-	export let maxZoom: MapOptions['maxZoom'] = undefined;
-	export let minZoom: MapOptions['minZoom'] = undefined;
-	export let center: MapOptions['center'] = locations.montreal.center;
-	export let dragPan: MapOptions['dragPan'] = true;
-	export let dragRotate: MapOptions['dragRotate'] = true;
-	export let pitchWithRotate: MapOptions['pitchWithRotate'] = true;
-	export let cooperativeGestures: MapOptions['cooperativeGestures'] = false;
-	// Append as needed...
+	export let bearing: MapOptions['bearing'] = 0;
+	export let pitch: MapOptions['pitch'] = 0;
+	export let renderWorldCopies: MapOptions['renderWorldCopies'] = undefined;
+	export let maxTileCacheSize: MapOptions['maxTileCacheSize'] = undefined;
+	export let transformRequest: MapOptions['transformRequest'] = undefined;
+	export let locale: MapLocale = MAP_LOCALES.french;
+	export let fadeDuration: MapOptions['fadeDuration'] = undefined;
+	export let crossSourceCollisions: MapOptions['crossSourceCollisions'] = undefined;
+	export let collectResourceTiming: MapOptions['collectResourceTiming'] = undefined;
+	export let clickTolerance: MapOptions['clickTolerance'] = undefined;
+	export let bounds: MapOptions['bounds'] = LOCATIONS.montreal.bounds;
+	export let fitBoundsOptions: MapOptions['fitBoundsOptions'] = undefined;
+	export let localIdeographFontFamily: MapOptions['localIdeographFontFamily'] = undefined;
+	export let style: MapOptions['style'] = MAP_STYLES.Light;
+	export let pitchWithRotate: MapOptions['pitchWithRotate'] = undefined;
+	export let pixelRatio: MapOptions['pixelRatio'] = undefined;
+	export let map: Map | undefined = undefined;
+
+	const maplibreLogo: MapOptions['maplibreLogo'] = false;
+	const logoPosition: MapOptions['logoPosition'] = undefined;
+	const hash: MapOptions['hash'] = false;
+	const failIfMajorPerformanceCaveat: MapOptions['failIfMajorPerformanceCaveat'] = true;
 
 	let containerRef: HTMLElement;
-	let mapContainerRef: HTMLDivElement;
 	let resizeObserver: ResizeObserver;
 
 	const dispatch = createEventDispatcher();
 
-	async function init() {
-		const { Map } = await import('maplibre-gl');
+	function init() {
 		const premap = new Map({
-			container: mapContainerRef,
-			style: mapStyle,
+			container: containerRef,
+			style,
+			hash,
+			interactive,
+			bearingSnap,
+			attributionControl,
+			customAttribution,
+			maplibreLogo,
+			logoPosition,
+			failIfMajorPerformanceCaveat,
+			preserveDrawingBuffer,
+			antialias,
+			refreshExpiredTiles,
+			maxBounds,
+			scrollZoom,
+			minZoom,
+			maxZoom,
+			minPitch,
+			maxPitch,
+			boxZoom,
+			dragRotate,
+			dragPan,
+			keyboard,
+			doubleClickZoom,
+			touchZoomRotate,
+			touchPitch,
+			cooperativeGestures,
+			trackResize,
 			center,
 			zoom,
-			maxZoom,
-			minZoom,
-			pitch,
 			bearing,
-			bearingSnap,
-			dragPan,
-			dragRotate,
-			cooperativeGestures: cooperativeGestures ? gesturesText.french : cooperativeGestures,
+			pitch,
+			renderWorldCopies,
+			maxTileCacheSize,
+			transformRequest,
 			locale,
+			fadeDuration,
+			crossSourceCollisions,
+			collectResourceTiming,
+			clickTolerance,
+			bounds,
+			fitBoundsOptions,
+			localIdeographFontFamily,
 			pitchWithRotate,
-			attributionControl: false,
+			pixelRatio,
 		});
 		premap.once('load', (e) => {
 			map = premap;
@@ -80,10 +138,18 @@
 		});
 	}
 
-	function setCursor(cursor: Cursor | undefined) {
+	/**
+	 * Reactive cursor customization.
+	 */
+	const cursor = writable<Cursor | null>(null);
+	$: if ($cursor || $cursor === null) {
 		if (map && map.getCanvas()) {
-			if (!cursor) return map.getCanvas().style.removeProperty('cursor');
-			map.getCanvas().style.cursor = cursor;
+			const c = map.getCanvas();
+			if (!$cursor) {
+				c.style.removeProperty('cursor');
+			} else {
+				c.style.cursor = $cursor;
+			}
 		}
 	}
 
@@ -94,14 +160,14 @@
 	}, 5);
 
 	setContext<MapContext>(CTX_KEY, {
-		getMap: () => map,
-		getContainer: () => containerRef,
-		setCursor,
+		getMap: () => map!,
+		cursor,
 	});
 
 	onMount(() => {
 		resizeObserver = new ResizeObserver(handleResize);
 		resizeObserver.observe(containerRef);
+		init();
 	});
 
 	onDestroy(() => {
@@ -111,15 +177,10 @@
 	});
 </script>
 
-<figure
-	bind:this={containerRef}
-	class="container {className}"
-	class:loading={!map}
-	{style}
-	use:intersection={{ rootMargin: '100px 100px' }}
-	on:enter|once={init}
->
-	<div class="map-container" bind:this={mapContainerRef} />
+<figure bind:this={containerRef} class:loading={!map}>
+	{#if map}
+		<slot {map} />
+	{/if}
 	{#if !map}
 		<div class="loading">
 			<slot name="loading">
@@ -127,69 +188,42 @@
 			</slot>
 		</div>
 	{/if}
-	{#if map && $$slots.default}
-		<div class="slot">
-			<slot {map} />
-		</div>
-	{/if}
 </figure>
 
 <style lang="scss">
-	:where(.container) {
+	figure {
 		position: relative;
-		display: block;
-		padding: 0;
-		margin: 0;
 		width: 100%;
 		height: 100%;
-		border-radius: inherit;
-	}
 
-	.map-container {
-		position: relative;
-		border-radius: inherit;
-		width: 100%;
-		height: 100%;
-		overflow: hidden;
-		border-radius: inherit;
-		transition: transform 0.5s ease-out, opacity 0.5s;
-		.loading & {
-			transform: scale(0.98);
-			opacity: 0;
-		}
-		:global(canvas) {
-			outline: none;
-			background: transparent;
-		}
 		:global(.maplibregl-cooperative-gesture-screen) {
+			background: none;
 			font-family: var(--ui-font-main);
-			font-weight: 400;
-			font-size: var(--ui-text-sm);
+			font-size: var(--ui-text-xs);
+			font-weight: 450;
 			color: col(fg, 100);
-			background: transparent;
-			& > :global(*) {
-				padding: 1.25em 1.5em;
-				padding-bottom: 1.5em;
-				border-radius: var(--ui-radius-md);
-				background: col(bg, 300);
-			}
+			transform: scale(0.9);
+			transition: all 0.15s var(--ui-ease-in) 1s;
+		}
+
+		:global(.maplibregl-cooperative-gesture-screen.maplibregl-show) {
+			transform: scale(1);
+			transition: all 0.02s ease-out;
+		}
+
+		:global(.maplibregl-desktop-message),
+		:global(.maplibregl-mobile-message) {
+			padding-inline: 1.25rem;
+			padding-block: 0.5rem 0.7rem;
+			border-radius: var(--ui-radius-md);
+			background: col(bg, 100);
 		}
 	}
 
-	.loading,
-	.slot {
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 100%;
+	.loading {
+		font-size: 1.5rem;
 		width: 100%;
-		pointer-events: none;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-radius: inherit;
-		& > :global(*) {
-			pointer-events: initial;
-		}
+		height: 100%;
+		z-index: 1;
 	}
 </style>

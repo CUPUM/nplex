@@ -3,7 +3,7 @@ import type { LngLatBoundsLike, LngLatLike } from 'maplibre-gl';
 /**
  * Reusable hard-coded geographic locations.
  */
-export const locations = {
+export const LOCATIONS = {
 	montreal: {
 		bounds: [
 			[-73.449, 45.396],

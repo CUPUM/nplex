@@ -30,14 +30,14 @@
 	export let spreadSpeed = speed;
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
-	export let color: string = 'var(--color-fg-100)';
+	export let color: string = 'var(--color-primary-100)';
 	export let colorStart: string = color;
 	export let colorEnd: string = colorStart;
 	export let colorEasing = easing;
 	export let colorSpeed = speed;
 	export let colorDuration = duration;
 	export let colorDelay = delay;
-	export let blur: number = 0;
+	export let blur: number = 8;
 
 	let destructor: () => void;
 	let ripples: {
@@ -128,8 +128,8 @@
 			style:--y="{r.y}px"
 			style:--d="{r.d}px"
 			style:--opacity-duration="{opacityDuration}ms"
-			style:--spread-duration="{spreadDuration ?? r.d / spreadSpeed}ms"
-			style:--color-duration="{colorDuration ?? r.d / colorSpeed}ms"
+			style:--spread-duration="{spreadDuration ?? 50 + r.d / spreadSpeed}ms"
+			style:--color-duration="{colorDuration ?? 50 + r.d / colorSpeed}ms"
 			on:animationend|self={(e) => end(e, r)}
 		/>
 	{/each}
@@ -154,11 +154,13 @@
 		top: var(--y);
 		opacity: var(--opacity-start);
 		width: calc(var(--d) * var(--spread-start));
-		background: var(--color-start);
+		color: var(--color-start);
+		background: currentColor;
 		aspect-ratio: 1 / 1;
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
-		filter: blur(var(--blur));
+		// filter: blur(var(--blur));
+		box-shadow: 0 0 var(--blur) currentColor;
 		animation: var(--spread-duration) var(--spread-easing) var(--spread-delay) 1 forwards spread,
 			var(--color-duration) var(--color-easing) var(--color-delay) 1 forwards color;
 	}
@@ -183,7 +185,7 @@
 
 	@keyframes color {
 		to {
-			background: var(--color-end);
+			color: var(--color-end);
 		}
 	}
 </style>

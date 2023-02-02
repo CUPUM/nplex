@@ -15,8 +15,8 @@
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
-		in:scale={{ duration: 500, start: 0, opacity: 1, easing: elasticOut }}
-		out:scale={{ duration: 250, start: 0, opacity: 0, easing: expoIn }}
+		in:scale={{ duration: 500, start: 0.5, opacity: 1, easing: elasticOut }}
+		out:scale={{ duration: 250, start: 0.5, opacity: 0, easing: expoIn }}
 		width="1em"
 		height="1em"
 	>

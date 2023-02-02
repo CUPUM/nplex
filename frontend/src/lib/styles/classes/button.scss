@@ -1,0 +1,120 @@
+@import '../vars.scss';
+@import '../utils/color.scss';
+
+// :target
+// :target-within
+
+.button {
+	--inset: 0px;
+	--radius: var(--ui-radius-md);
+	position: relative;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	height: var(--ui-height);
+	padding-inline: var(--ui-pad-x);
+	border-radius: calc(var(--radius) - var(--inset));
+
+	> .text {
+		display: inline-block;
+		position: relative;
+		top: -0.1em;
+	}
+
+	> .leading {
+	}
+
+	> .trailing {
+	}
+
+	&:disabled,
+	&.disabled {
+		opacity: 0.25;
+		cursor: default;
+		// pointer-events: none;
+	}
+
+	// Default
+	background: col(fg, 500, 0.1);
+	color: col(fg, 500);
+	&:hover,
+	&:focus-visible {
+		color: col(bg, 700);
+		background: col(fg, 500);
+	}
+	&[data-active],
+	&[data-current] {
+		color: col(bg, 900);
+		background: col(fg, 000);
+	}
+
+	// Outlined
+	&.outlined {
+		color: col(fg, 500);
+		background: transparent;
+		border: 1px solid black;
+		&:hover,
+		&:focus-visible {
+			color: col(bg, 700);
+			background: col(fg, 500);
+		}
+		&[data-active],
+		&[data-current] {
+			color: col(bg, 900);
+			background: col(fg, 000);
+		}
+	}
+
+	//
+	// :where(.ghost) {
+	// 	color: col(fg, 300);
+	// 	background: transparent;
+	// 	transition: all 0.1s ease-out;
+	// 	:global(.hover-source:hover) &:global(.hover-target),
+	// 	&:hover {
+	// 		color: col(bg, 700);
+	// 		background: col(fg, 500);
+	// 	}
+	// 	&:global(.active) {
+	// 		color: col(primary, 700);
+	// 		background: col(primary, 300, 0.3);
+	// 	}
+	// }
+
+	// :where(.cta) {
+	// 	color: col(bg, 300);
+	// 	background: col(primary, 500);
+	// 	// box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
+	// 	transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
+	// 	:global(.hover-source:hover) &:global(.hover-target),
+	// 	&:hover {
+	// 		color: col(bg, 100);
+	// 		background: col(primary, 700);
+	// 		// box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.25);
+	// 	}
+	// 	&:global(.active) {
+	// 		filter: brightness(0.9);
+	// 		// box-shadow: 0 0.5em 1em -0.5em col(primary, 900, 0.5);
+	// 	}
+	// }
+
+	// :where(.danger) {
+	// 	color: col(error, 500);
+	// 	background: col(error, 900, 0.2);
+	// 	box-shadow: 0 0.2em 1em -0.5em col(error, 500, 0);
+	// 	transition: all 0.2s ease-out, box-shadow 0.25s ease-in-out;
+	// 	:global(.hover-source:hover) &:global(.hover-target),
+	// 	&:hover {
+	// 		color: col(bg, 300);
+	// 		background: col(error, 700);
+	// 		box-shadow: 0 0.8em 1.5em -1em col(error, 900, 0.5);
+	// 	}
+	// 	&:global(.active) {
+	// 		&:not(.disabled) {
+	// 			color: var(--color-error-300);
+	// 			background: var(--color-error-900);
+	// 			box-shadow: 0 0.5em 1em -0.5em col(error, 900, 0.5);
+	// 		}
+	// 	}
+	// }
+}
