@@ -4,43 +4,54 @@
 // :target
 // :target-within
 
-.button {
-	--inset: 0px;
-	--radius: var(--ui-radius-md);
+//
+// App theme button
+//
+.ui-button {
+	--ui-ripple-color: #{col(primary, 100)};
 	position: relative;
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	flex-direction: row;
-	height: var(--ui-height);
+	gap: 0.75em;
+	font-weight: 425;
+	height: calc(var(--ui-height) - 2 * var(--inset, 0px));
 	padding-inline: var(--ui-pad-x);
-	border-radius: calc(var(--radius) - var(--inset));
+	line-height: 1.2;
+	border-radius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
 
-	> .text {
-		display: inline-block;
+	.ui-text {
 		position: relative;
-		top: -0.1em;
+		bottom: 0.1em;
 	}
 
-	> .leading {
-	}
-
-	> .trailing {
+	.ui-icon {
+		font-size: 1.2em;
 	}
 
 	&:disabled,
 	&.disabled {
 		opacity: 0.25;
 		cursor: default;
-		// pointer-events: none;
 	}
 
+	&.equi {
+		width: calc(var(--ui-height) - 2 * var(--inset, 0px));
+		padding-inline: 0;
+		justify-content: center;
+	}
+
+	//
 	// Default
+	//
 	background: col(fg, 500, 0.1);
-	color: col(fg, 500);
+	color: col(fg, 000);
+	transition: all 0.2s ease-out;
 	&:hover,
 	&:focus-visible {
 		color: col(bg, 700);
-		background: col(fg, 500);
+		background: col(fg, 300);
+		transition: all 0.1s ease-out;
 	}
 	&[data-active],
 	&[data-current] {
@@ -48,15 +59,19 @@
 		background: col(fg, 000);
 	}
 
+	//
 	// Outlined
+	//
 	&.outlined {
+		--ui-ripple-color: #{col(fg, 000)};
 		color: col(fg, 500);
 		background: transparent;
-		border: 1px solid black;
+		border: 1px solid col(fg, 500, 0.2);
 		&:hover,
 		&:focus-visible {
-			color: col(bg, 700);
-			background: col(fg, 500);
+			color: col(fg, 700);
+			background: col(fg, 500, 0.2);
+			border-color: transparent;
 		}
 		&[data-active],
 		&[data-current] {

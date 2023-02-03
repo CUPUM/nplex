@@ -1,0 +1,31 @@
+@use '../utils/color.scss' as *;
+
+//
+// Loading skeleton.
+// Give a placeholder / suspense element a pulsing gradient animation.
+//
+.ui-skeleton {
+	color: col(fg, 500, 0.05);
+	border-radius: inherit;
+	background: linear-gradient(-90deg, currentColor 0%, transparent 50%, currentColor 100%);
+	background-size: 400% 100%;
+	animation: ui-skeleton-pulse 1.25s ease-in-out infinite;
+
+	&-text {
+		color: col(fg, 500, 0.05);
+		height: 1em;
+		border-radius: var(--ui-radius-sm);
+		background: linear-gradient(-90deg, currentColor 0%, transparent 50%, currentColor 100%);
+		background-size: 400% 100%;
+		animation: ui-skeleton-pulse 1.25s ease-in-out infinite;
+	}
+}
+
+@keyframes ui-skeleton-pulse {
+	0% {
+		background-position: 0% 0%;
+	}
+	100% {
+		background-position: -135% 0%;
+	}
+}

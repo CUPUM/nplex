@@ -4,7 +4,7 @@
 
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { getMapContext } from '$components/Map.svelte';
+	import { getMapContext } from '$components/Map/Map.svelte';
 	import { THEME_PALETTES } from '$utils/themes';
 	import type { PageData } from '.svelte-kit/types/src/routes/$types';
 	import type { MapLayerMouseEvent } from 'maplibre-gl';

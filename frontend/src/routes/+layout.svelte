@@ -5,19 +5,15 @@
 	import Logo from '$components/Logo.svelte';
 	import LoadingProgress from '$routes/LoadingProgress.svelte';
 	import MessagesOutlet from '$routes/MessagesOutlet.svelte';
+	import Navbar from '$routes/Navbar.svelte';
 	import '$styles/app.scss';
-	import '$styles/classes/button.scss';
-	import '$styles/classes/field.scss';
-	import '$styles/classes/general.scss';
-	import '$styles/classes/link.scss';
 	import '$styles/reset.scss';
 	import '$styles/themes.css';
 	import '$styles/vars.scss';
-	import { browserDb } from '$utils/database';
+	import { browserDb } from '$utils/database/client';
 	import type { LayoutData } from './$types';
 	import AuthModal, { authModal } from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
-	import Navbar from './Navbar.svelte';
 
 	export let data: LayoutData;
 

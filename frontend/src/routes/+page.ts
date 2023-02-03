@@ -1,4 +1,4 @@
-import { getDb } from '$utils/database';
+import { getDb } from '$utils/database/client';
 import { LOAD_DEPENDENCIES, STATUS_CODES } from '$utils/enums';
 import { pagination } from '$utils/format';
 import { error } from '@sveltejs/kit';

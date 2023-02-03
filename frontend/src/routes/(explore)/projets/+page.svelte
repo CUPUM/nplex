@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Map from '$components/Map.svelte';
+	import Map from '$components/Map/Map.svelte';
 	import { rootScroll } from '$stores/scroll';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';

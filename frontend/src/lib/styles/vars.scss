@@ -1,4 +1,5 @@
 @use './utils/breakpoint.scss';
+@use './utils/color.scss' as *;
 
 /**
  * These variables, prefixed with "--ui-", contain the default values and should never be reassigned.
@@ -7,13 +8,14 @@
  */
 
 :root {
-	--ui-bg: var(--color-bg-100);
-	--ui-nav-h: 87px;
+	--ui-bg: #{col(bg, 100)};
+	--ui-nav-h: 83.5px;
 	--ui-scroll-y: 0px;
 	--ui-scroll-y-int: 0;
+	--ui-ripple-color: #{col(fg, 900)};
 	--ui-inset: 5px;
-	--ui-height: 3.5em;
-	--ui-pad-x: 1.25em;
+	--ui-height: 3.25em;
+	--ui-pad-x: 1.35em;
 	--ui-width-sm: 600px;
 	--ui-width-md: 900px;
 	--ui-width-lg: 1200px;
@@ -44,7 +46,7 @@
 }
 
 .compact {
-	--ui-inset: 1px;
-	--ui-height: 2.5em;
+	--ui-inset: 2px;
+	--ui-height: 2.75em;
 	--ui-pad-x: 1em;
 }

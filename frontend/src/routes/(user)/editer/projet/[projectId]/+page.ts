@@ -1,5 +1,5 @@
 import { maybeSingle } from '$types/utils';
-import { getDb } from '$utils/database';
+import { getDb } from '$utils/database/client';
 import { LOAD_DEPENDENCIES, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { alwaysArr, fromPgRange, pgCubeToHsl } from '$utils/format';
 import { error } from '@sveltejs/kit';

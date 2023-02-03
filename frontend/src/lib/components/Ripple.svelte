@@ -30,7 +30,7 @@
 	export let spreadSpeed = speed;
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
-	export let color: string = 'var(--color-primary-100)';
+	export let color: string = 'var(--ui-ripple-color)';
 	export let colorStart: string = color;
 	export let colorEnd: string = colorStart;
 	export let colorEasing = easing;

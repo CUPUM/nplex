@@ -1,4 +1,5 @@
 import adapter from '@sveltejs/adapter-vercel';
+import autoprefixer from 'autoprefixer';
 import sveltePreprocess from 'svelte-preprocess';
 import { cssModules, linearPreprocess } from 'svelte-preprocess-cssmodules';
 
@@ -14,7 +15,9 @@ const config = {
 				includePaths: ['src/lib/styles'],
 				prependData: "@use 'utils/breakpoint.scss'; @use 'utils/color.scss' as * ;",
 			},
-			// postcss: true,
+			postcss: {
+				plugins: [autoprefixer()],
+			},
 		}),
 		cssModules({
 			mode: 'mixed',
@@ -37,6 +40,9 @@ const config = {
 			$types: 'src/lib/types',
 			$utils: 'src/lib/utils',
 			$plugins: 'src/plugins',
+			// Houdini
+			// '~': path.resolve('./src'),
+			$houdini: './$houdini',
 		},
 		files: {
 			hooks: {

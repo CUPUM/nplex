@@ -1,5 +1,5 @@
 import { maybeSingle } from '$types/utils';
-import { getDb } from '$utils/database';
+import { getDb } from '$utils/database/client';
 import { COOKIES } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
 import type { AuthSession } from '@supabase/supabase-js';

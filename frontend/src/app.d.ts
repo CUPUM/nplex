@@ -8,7 +8,7 @@ import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
 
 type Session = DeepOmit<AuthSession, { user: { role: never } }> & {
-	user: { role: App.Database['public']['Enums']['user_role'] } & Pick<
+	user: { role: App.Database['public']['Enums']['app_role'] } & Pick<
 		App.Database['public']['Tables']['users']['Row'],
 		'avatar_url' | 'first_name' | 'public_email'
 	>;

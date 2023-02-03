@@ -62,13 +62,13 @@
 	</p>
 	<Select options={data.roles} variant="outlined">
 		<svelte:fragment slot="label">Rôle</svelte:fragment>
-		<option slot="option" let:option value={option.user_role}>{option.title}</option>
+		<option slot="option" let:option value={option.app_role}>{option.title}</option>
 	</Select>
 	<div class="ui-select">
 		<span>Test</span>
 		<select name="role">
 			{#each data.roles as role}
-				<option value={role.user_role}>
+				<option value={role.app_role}>
 					{role.title}:
 					<i>{role.description}</i>
 				</option>

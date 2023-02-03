@@ -140,7 +140,8 @@
 	const exploreNav = Object.values(EXPLORE_ROUTES);
 
 	$: rootsegment = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
-	$: navbg = naving ? 'transparent' : $navbarStyle.background ?? $rootBackground.body ?? null;
+	// $: navbg = naving ? 'transparent' : $navbarStyle.background ?? $rootBackground.body ?? null;
+	$: navbg = $navbarStyle.background ?? $rootBackground.body ?? null;
 	$: categorybg = naving ? 'transparent' : col('bg', '900', 0.5);
 
 	function toggle() {
@@ -157,35 +158,37 @@
 	style:--nav-bg={navbg}
 >
 	<menu class="toggle">
-		<NavbarButton on:pointerdown={toggle} round>
+		<NavbarButton rounded on:pointerdown={toggle}>
 			<Icon name={open ? 'cross' : 'hamburger'} strokeWidth={3} />
 		</NavbarButton>
 	</menu>
-	<div class="navs" class:open class:unmounted={!mounted}>
-		<nav class="main">
-			<NavbarButton round href="/">
+	<nav class:open class:unmounted={!mounted}>
+		<section class="main">
+			<NavbarButton rounded href="/">
 				<svg xmlns="http://www.w3.org/2000/svg" height="1em" width="100%">
 					<use href={LOGO_SYMBOLS_HREFS.monogram} fill="currentColor" />
 				</svg>
 			</NavbarButton>
 			{#each mainNav as route}
-				<NavbarButton href={route.pathname} current={route.pathname.split('#')[0] === rootsegment}>
+				<NavbarButton
+					href={route.pathname}
+					current={route.pathname.split('#')[0] === rootsegment || undefined}
+				>
 					{route.title}
 				</NavbarButton>
 			{/each}
-		</nav>
-		<nav class="category" style:background={categorybg} hidden={!$page.data.showCategoryNav}>
+		</section>
+		<section class="category" style:background={categorybg} hidden={!$page.data.showCategoryNav}>
 			{#each exploreNav as r}
 				<NavbarButton
-					group={'category'}
 					href={r.pathname}
-					current={$page.url.pathname.startsWith(r.pathname)}
+					current={$page.url.pathname.startsWith(r.pathname) || undefined}
 				>
 					{r.title}
 				</NavbarButton>
 			{/each}
-		</nav>
-		<nav class="session ">
+		</section>
+		<section class="session ">
 			{#if $page.data.session}
 				<Popover place="bottom" align="end" hover let:open>
 					<NavbarButton
@@ -210,7 +213,7 @@
 				</Popover>
 			{:else}
 				<NavbarButton
-					round
+					rounded
 					active={!!$authModal}
 					href={authModal.getUrl({ url: $page.url }).toString()}
 					noscroll
@@ -218,8 +221,8 @@
 					<Icon name="user" strokeWidth={2} style="font-size: 1.25em" />
 				</NavbarButton>
 			{/if}
-		</nav>
-	</div>
+		</section>
+	</nav>
 </header>
 
 <style lang="scss">
@@ -239,7 +242,7 @@
 		}
 	}
 
-	.navs {
+	nav {
 		position: relative;
 		max-width: var(--ui-width-main);
 		font-size: var(--ui-text-sm);
@@ -301,7 +304,7 @@
 		}
 	}
 
-	nav {
+	section {
 		--d: calc(0.35s + var(--i, 0) * 0.1s);
 		position: relative;
 		display: flex;
@@ -321,13 +324,13 @@
 		}
 	}
 
-	.unmounted nav,
-	nav[hidden] {
+	.unmounted section,
+	section[hidden] {
 		transform: translateY(-12px);
 		opacity: 0;
 	}
 
-	nav[hidden] {
+	section[hidden] {
 		transition-delay: 0s;
 		pointer-events: none;
 	}

@@ -1,3 +1,6 @@
+@import '../vars.scss';
+@import '../utils/color.scss';
+
 // :disabled
 // :empty
 // :enabled
@@ -10,23 +13,68 @@
 // :focus-within
 // :focus-visible
 
-.field {
-	display: flex;
-	flex-direction: row;
+.ui-field {
+	--inset: var(--ui-inset);
+	--radius: var(--ui-radius-md);
+	// --ui-ripple-color: #{col(primary, 100)};
+	position: relative;
+	display: inline-flex;
 	align-items: center;
+	flex-direction: row;
+	gap: var(--inset);
+	font-weight: 425;
+	height: var(--ui-height);
+	padding-inline: var(--inset);
+	line-height: 1.2;
+	border-radius: var(--radius);
 
-	> input {
+	> input,
+	> select,
+	> .ui-input {
+		position: relative;
+		align-self: stretch;
+		padding-bottom: 0.2em;
+		padding-inline: calc(var(--ui-pad-x) - var(--inset));
+		background: transparent;
+		text-overflow: ellipsis;
+
+		&::placeholder {
+			position: relative;
+			color: red;
+		}
 	}
 
-	> prefix {
+	// Wrapper to group label and input, only necessary if label.
+	> .ui-label-input {
+		position: relative;
+		display: flex;
+		flex-direction: inherit;
+		height: 100%;
+
+		+ legend,
+		+ label {
+			pointer-events: none;
+			text-overflow: ellipsis;
+			max-width: 100%;
+			position: absolute;
+		}
 	}
 
-	> suffix {
+	> .prefix {
 	}
 
-	> leading {
+	> .suffix {
 	}
 
-	> trailing {
+	> .leading {
 	}
+
+	> .trailing {
+	}
+
+	//
+	// Default
+	//
+	background: col(fg, 500, 0.1);
+	border: 1px solid black;
 }

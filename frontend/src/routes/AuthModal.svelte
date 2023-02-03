@@ -147,7 +147,7 @@
 		class="bg"
 		aria-hidden="true"
 		data-theme={THEMES.light}
-		transition:fade={{ duration: 150, easing: linear }}
+		out:fade={{ duration: 150, easing: linear }}
 		on:pointerdown={() => authModal.close()}
 	/>
 	<dialog data-theme={THEMES.light}>
@@ -173,6 +173,15 @@
 				</svg>
 			</a>
 			<fieldset class="fields">
+				<!-- <fieldset class="field">
+					<div class="leading">
+						<Icon name="letter" />
+					</div>
+					<input type="email" name="email" placeholder="Courriel" />
+					<div class="trailing">
+						<button></button>
+					</div>
+				</fieldset> -->
 				<Field
 					type="email"
 					class="fill-row"

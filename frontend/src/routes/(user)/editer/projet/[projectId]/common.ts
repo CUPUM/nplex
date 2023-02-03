@@ -1,5 +1,5 @@
-import type Map from '$components/Map.svelte';
-import type MapDraw from '$components/MapDraw.svelte';
+import type Map from '$components/Map/Map.svelte';
+import type MapDraw from '$components/Map/MapDraw.svelte';
 import { toPgGeom, toPgRange } from '$utils/format';
 import { positionSchema } from '$utils/validation';
 import { point } from '@turf/turf';

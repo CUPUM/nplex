@@ -1,0 +1,5597 @@
+type Actors implements Node {
+  about: String
+  createdAt: Datetime!
+  createdBy: Users
+  createdById: UUID!
+  firstName: String!
+  id: UUID!
+  lastName: String
+  middleName: String
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID!
+}
+
+type ActorsConnection {
+  edges: [ActorsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ActorsDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Actors!]!
+}
+
+type ActorsEdge {
+  cursor: String!
+  node: Actors!
+}
+
+input ActorsFilter {
+  about: StringFilter
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  firstName: StringFilter
+  id: UUIDFilter
+  lastName: StringFilter
+  middleName: StringFilter
+  nodeId: IDFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ActorsInsertInput {
+  about: String
+  createdAt: Datetime
+  createdById: UUID
+  firstName: String
+  id: UUID
+  lastName: String
+  middleName: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ActorsInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Actors!]!
+}
+
+input ActorsOrderBy {
+  about: OrderByDirection
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  firstName: OrderByDirection
+  id: OrderByDirection
+  lastName: OrderByDirection
+  middleName: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ActorsUpdateInput {
+  about: String
+  createdAt: Datetime
+  createdById: UUID
+  firstName: String
+  id: UUID
+  lastName: String
+  middleName: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ActorsUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Actors!]!
+}
+
+enum AppPermission {
+  project_delete
+  project_insert
+  project_publish
+  project_select
+  project_update
+}
+
+"""
+Boolean expression comparing fields on type "AppPermission"
+"""
+input AppPermissionFilter {
+  eq: AppPermission
+  in: [AppPermission!]
+  is: FilterIs
+  neq: AppPermission
+}
+
+enum AppRole {
+  admin
+  editor
+  nplex
+  visitor
+}
+
+"""
+Boolean expression comparing fields on type "AppRole"
+"""
+input AppRoleFilter {
+  eq: AppRole
+  in: [AppRole!]
+  is: FilterIs
+  neq: AppRole
+}
+
+scalar BigInt
+
+"""
+Boolean expression comparing fields on type "BigInt"
+"""
+input BigIntFilter {
+  eq: BigInt
+  gt: BigInt
+  gte: BigInt
+  in: [BigInt!]
+  is: FilterIs
+  lt: BigInt
+  lte: BigInt
+  neq: BigInt
+}
+
+"""
+Boolean expression comparing fields on type "Boolean"
+"""
+input BooleanFilter {
+  eq: Boolean
+  gt: Boolean
+  gte: Boolean
+  in: [Boolean!]
+  is: FilterIs
+  lt: Boolean
+  lte: Boolean
+  neq: Boolean
+}
+
+scalar Cursor
+
+scalar Date
+
+"""
+Boolean expression comparing fields on type "Date"
+"""
+input DateFilter {
+  eq: Date
+  gt: Date
+  gte: Date
+  in: [Date!]
+  is: FilterIs
+  lt: Date
+  lte: Date
+  neq: Date
+}
+
+scalar Datetime
+
+"""
+Boolean expression comparing fields on type "Datetime"
+"""
+input DatetimeFilter {
+  eq: Datetime
+  gt: Datetime
+  gte: Datetime
+  in: [Datetime!]
+  is: FilterIs
+  lt: Datetime
+  lte: Datetime
+  neq: Datetime
+}
+
+enum FilterIs {
+  NOT_NULL
+  NULL
+}
+
+"""
+Boolean expression comparing fields on type "Float"
+"""
+input FloatFilter {
+  eq: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  is: FilterIs
+  lt: Float
+  lte: Float
+  neq: Float
+}
+
+"""
+Boolean expression comparing fields on type "ID"
+"""
+input IDFilter {
+  eq: ID
+}
+
+"""
+Boolean expression comparing fields on type "Int"
+"""
+input IntFilter {
+  eq: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  is: FilterIs
+  lt: Int
+  lte: Int
+  neq: Int
+}
+
+scalar JSON
+
+"""The root type for creating and mutating data"""
+type Mutation {
+  """Deletes zero or more records from the `Actors` collection"""
+  deleteFromActorsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ActorsFilter
+  ): ActorsDeleteResponse!
+
+  """Deletes zero or more records from the `Notifications` collection"""
+  deleteFromNotificationsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: NotificationsFilter
+  ): NotificationsDeleteResponse!
+
+  """Deletes zero or more records from the `Organizations` collection"""
+  deleteFromOrganizationsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: OrganizationsFilter
+  ): OrganizationsDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectEventType` collection"""
+  deleteFromProjectEventTypeCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectEventTypeFilter
+  ): ProjectEventTypeDeleteResponse!
+
+  """
+  Deletes zero or more records from the `ProjectEventTypeSubeventType` collection
+  """
+  deleteFromProjectEventTypeSubeventTypeCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectEventTypeSubeventTypeFilter
+  ): ProjectEventTypeSubeventTypeDeleteResponse!
+
+  """
+  Deletes zero or more records from the `ProjectExemplarityIndicatorCategory` collection
+  """
+  deleteFromProjectExemplarityIndicatorCategoryCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectExemplarityIndicatorCategoryFilter
+  ): ProjectExemplarityIndicatorCategoryDeleteResponse!
+
+  """
+  Deletes zero or more records from the `ProjectExemplarityIndicator` collection
+  """
+  deleteFromProjectExemplarityIndicatorCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectExemplarityIndicatorFilter
+  ): ProjectExemplarityIndicatorDeleteResponse!
+
+  """
+  Deletes zero or more records from the `ProjectImplantationMode` collection
+  """
+  deleteFromProjectImplantationModeCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectImplantationModeFilter
+  ): ProjectImplantationModeDeleteResponse!
+
+  """
+  Deletes zero or more records from the `ProjectMaterialOrigin` collection
+  """
+  deleteFromProjectMaterialOriginCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectMaterialOriginFilter
+  ): ProjectMaterialOriginDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectMaterialType` collection"""
+  deleteFromProjectMaterialTypeCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectMaterialTypeFilter
+  ): ProjectMaterialTypeDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectMaterialUse` collection"""
+  deleteFromProjectMaterialUseCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectMaterialUseFilter
+  ): ProjectMaterialUseDeleteResponse!
+
+  """
+  Deletes zero or more records from the `ProjectSiteOwnership` collection
+  """
+  deleteFromProjectSiteOwnershipCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectSiteOwnershipFilter
+  ): ProjectSiteOwnershipDeleteResponse!
+
+  """
+  Deletes zero or more records from the `ProjectSiteUsageCategory` collection
+  """
+  deleteFromProjectSiteUsageCategoryCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectSiteUsageCategoryFilter
+  ): ProjectSiteUsageCategoryDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectSiteUsage` collection"""
+  deleteFromProjectSiteUsageCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectSiteUsageFilter
+  ): ProjectSiteUsageDeleteResponse!
+
+  """
+  Deletes zero or more records from the `ProjectSiteUsageSiteUsageCategory` collection
+  """
+  deleteFromProjectSiteUsageSiteUsageCategoryCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectSiteUsageSiteUsageCategoryFilter
+  ): ProjectSiteUsageSiteUsageCategoryDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectType` collection"""
+  deleteFromProjectTypeCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectTypeFilter
+  ): ProjectTypeDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectTypeWork` collection"""
+  deleteFromProjectTypeWorkCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectTypeWorkFilter
+  ): ProjectTypeWorkDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectWork` collection"""
+  deleteFromProjectWorkCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectWorkFilter
+  ): ProjectWorkDeleteResponse!
+
+  """Deletes zero or more records from the `Projects` collection"""
+  deleteFromProjectsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsFilter
+  ): ProjectsDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectsImages` collection"""
+  deleteFromProjectsImagesCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsImagesFilter
+  ): ProjectsImagesDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectsLocation` collection"""
+  deleteFromProjectsLocationCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsLocationFilter
+  ): ProjectsLocationDeleteResponse!
+
+  """
+  Deletes zero or more records from the `ProjectsPublicationStatus` collection
+  """
+  deleteFromProjectsPublicationStatusCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsPublicationStatusFilter
+  ): ProjectsPublicationStatusDeleteResponse!
+
+  """
+  Deletes zero or more records from the `ProjectsSecondaryUsages` collection
+  """
+  deleteFromProjectsSecondaryUsagesCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsSecondaryUsagesFilter
+  ): ProjectsSecondaryUsagesDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectsUsers` collection"""
+  deleteFromProjectsUsersCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsUsersFilter
+  ): ProjectsUsersDeleteResponse!
+
+  """Deletes zero or more records from the `ProjectsWorks` collection"""
+  deleteFromProjectsWorksCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsWorksFilter
+  ): ProjectsWorksDeleteResponse!
+
+  """Deletes zero or more records from the `RoleDetails` collection"""
+  deleteFromRoleDetailsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: RoleDetailsFilter
+  ): RoleDetailsDeleteResponse!
+
+  """Deletes zero or more records from the `RolePermissions` collection"""
+  deleteFromRolePermissionsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: RolePermissionsFilter
+  ): RolePermissionsDeleteResponse!
+
+  """Deletes zero or more records from the `Users` collection"""
+  deleteFromUsersCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersFilter
+  ): UsersDeleteResponse!
+
+  """Deletes zero or more records from the `UsersNotifications` collection"""
+  deleteFromUsersNotificationsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersNotificationsFilter
+  ): UsersNotificationsDeleteResponse!
+
+  """
+  Deletes zero or more records from the `UsersProjectsCollections` collection
+  """
+  deleteFromUsersProjectsCollectionsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersProjectsCollectionsFilter
+  ): UsersProjectsCollectionsDeleteResponse!
+
+  """Deletes zero or more records from the `UsersProjectsLikes` collection"""
+  deleteFromUsersProjectsLikesCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersProjectsLikesFilter
+  ): UsersProjectsLikesDeleteResponse!
+
+  """
+  Deletes zero or more records from the `UsersProjectsQueries` collection
+  """
+  deleteFromUsersProjectsQueriesCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersProjectsQueriesFilter
+  ): UsersProjectsQueriesDeleteResponse!
+
+  """Deletes zero or more records from the `UsersRoles` collection"""
+  deleteFromUsersRolesCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersRolesFilter
+  ): UsersRolesDeleteResponse!
+
+  """Adds one or more `Actors` records to the collection"""
+  insertIntoActorsCollection(objects: [ActorsInsertInput!]!): ActorsInsertResponse
+
+  """Adds one or more `Notifications` records to the collection"""
+  insertIntoNotificationsCollection(objects: [NotificationsInsertInput!]!): NotificationsInsertResponse
+
+  """Adds one or more `Organizations` records to the collection"""
+  insertIntoOrganizationsCollection(objects: [OrganizationsInsertInput!]!): OrganizationsInsertResponse
+
+  """Adds one or more `ProjectEventType` records to the collection"""
+  insertIntoProjectEventTypeCollection(objects: [ProjectEventTypeInsertInput!]!): ProjectEventTypeInsertResponse
+
+  """
+  Adds one or more `ProjectEventTypeSubeventType` records to the collection
+  """
+  insertIntoProjectEventTypeSubeventTypeCollection(objects: [ProjectEventTypeSubeventTypeInsertInput!]!): ProjectEventTypeSubeventTypeInsertResponse
+
+  """
+  Adds one or more `ProjectExemplarityIndicatorCategory` records to the collection
+  """
+  insertIntoProjectExemplarityIndicatorCategoryCollection(objects: [ProjectExemplarityIndicatorCategoryInsertInput!]!): ProjectExemplarityIndicatorCategoryInsertResponse
+
+  """
+  Adds one or more `ProjectExemplarityIndicator` records to the collection
+  """
+  insertIntoProjectExemplarityIndicatorCollection(objects: [ProjectExemplarityIndicatorInsertInput!]!): ProjectExemplarityIndicatorInsertResponse
+
+  """Adds one or more `ProjectImplantationMode` records to the collection"""
+  insertIntoProjectImplantationModeCollection(objects: [ProjectImplantationModeInsertInput!]!): ProjectImplantationModeInsertResponse
+
+  """Adds one or more `ProjectMaterialOrigin` records to the collection"""
+  insertIntoProjectMaterialOriginCollection(objects: [ProjectMaterialOriginInsertInput!]!): ProjectMaterialOriginInsertResponse
+
+  """Adds one or more `ProjectMaterialType` records to the collection"""
+  insertIntoProjectMaterialTypeCollection(objects: [ProjectMaterialTypeInsertInput!]!): ProjectMaterialTypeInsertResponse
+
+  """Adds one or more `ProjectMaterialUse` records to the collection"""
+  insertIntoProjectMaterialUseCollection(objects: [ProjectMaterialUseInsertInput!]!): ProjectMaterialUseInsertResponse
+
+  """Adds one or more `ProjectSiteOwnership` records to the collection"""
+  insertIntoProjectSiteOwnershipCollection(objects: [ProjectSiteOwnershipInsertInput!]!): ProjectSiteOwnershipInsertResponse
+
+  """Adds one or more `ProjectSiteUsageCategory` records to the collection"""
+  insertIntoProjectSiteUsageCategoryCollection(objects: [ProjectSiteUsageCategoryInsertInput!]!): ProjectSiteUsageCategoryInsertResponse
+
+  """Adds one or more `ProjectSiteUsage` records to the collection"""
+  insertIntoProjectSiteUsageCollection(objects: [ProjectSiteUsageInsertInput!]!): ProjectSiteUsageInsertResponse
+
+  """
+  Adds one or more `ProjectSiteUsageSiteUsageCategory` records to the collection
+  """
+  insertIntoProjectSiteUsageSiteUsageCategoryCollection(objects: [ProjectSiteUsageSiteUsageCategoryInsertInput!]!): ProjectSiteUsageSiteUsageCategoryInsertResponse
+
+  """Adds one or more `ProjectType` records to the collection"""
+  insertIntoProjectTypeCollection(objects: [ProjectTypeInsertInput!]!): ProjectTypeInsertResponse
+
+  """Adds one or more `ProjectTypeWork` records to the collection"""
+  insertIntoProjectTypeWorkCollection(objects: [ProjectTypeWorkInsertInput!]!): ProjectTypeWorkInsertResponse
+
+  """Adds one or more `ProjectWork` records to the collection"""
+  insertIntoProjectWorkCollection(objects: [ProjectWorkInsertInput!]!): ProjectWorkInsertResponse
+
+  """Adds one or more `Projects` records to the collection"""
+  insertIntoProjectsCollection(objects: [ProjectsInsertInput!]!): ProjectsInsertResponse
+
+  """Adds one or more `ProjectsImages` records to the collection"""
+  insertIntoProjectsImagesCollection(objects: [ProjectsImagesInsertInput!]!): ProjectsImagesInsertResponse
+
+  """Adds one or more `ProjectsLocation` records to the collection"""
+  insertIntoProjectsLocationCollection(objects: [ProjectsLocationInsertInput!]!): ProjectsLocationInsertResponse
+
+  """Adds one or more `ProjectsPublicationStatus` records to the collection"""
+  insertIntoProjectsPublicationStatusCollection(objects: [ProjectsPublicationStatusInsertInput!]!): ProjectsPublicationStatusInsertResponse
+
+  """Adds one or more `ProjectsSecondaryUsages` records to the collection"""
+  insertIntoProjectsSecondaryUsagesCollection(objects: [ProjectsSecondaryUsagesInsertInput!]!): ProjectsSecondaryUsagesInsertResponse
+
+  """Adds one or more `ProjectsUsers` records to the collection"""
+  insertIntoProjectsUsersCollection(objects: [ProjectsUsersInsertInput!]!): ProjectsUsersInsertResponse
+
+  """Adds one or more `ProjectsWorks` records to the collection"""
+  insertIntoProjectsWorksCollection(objects: [ProjectsWorksInsertInput!]!): ProjectsWorksInsertResponse
+
+  """Adds one or more `RoleDetails` records to the collection"""
+  insertIntoRoleDetailsCollection(objects: [RoleDetailsInsertInput!]!): RoleDetailsInsertResponse
+
+  """Adds one or more `RolePermissions` records to the collection"""
+  insertIntoRolePermissionsCollection(objects: [RolePermissionsInsertInput!]!): RolePermissionsInsertResponse
+
+  """Adds one or more `Users` records to the collection"""
+  insertIntoUsersCollection(objects: [UsersInsertInput!]!): UsersInsertResponse
+
+  """Adds one or more `UsersNotifications` records to the collection"""
+  insertIntoUsersNotificationsCollection(objects: [UsersNotificationsInsertInput!]!): UsersNotificationsInsertResponse
+
+  """Adds one or more `UsersProjectsCollections` records to the collection"""
+  insertIntoUsersProjectsCollectionsCollection(objects: [UsersProjectsCollectionsInsertInput!]!): UsersProjectsCollectionsInsertResponse
+
+  """Adds one or more `UsersProjectsLikes` records to the collection"""
+  insertIntoUsersProjectsLikesCollection(objects: [UsersProjectsLikesInsertInput!]!): UsersProjectsLikesInsertResponse
+
+  """Adds one or more `UsersProjectsQueries` records to the collection"""
+  insertIntoUsersProjectsQueriesCollection(objects: [UsersProjectsQueriesInsertInput!]!): UsersProjectsQueriesInsertResponse
+
+  """Adds one or more `UsersRoles` records to the collection"""
+  insertIntoUsersRolesCollection(objects: [UsersRolesInsertInput!]!): UsersRolesInsertResponse
+
+  """Updates zero or more records in the `Actors` collection"""
+  updateActorsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ActorsFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ActorsUpdateInput!
+  ): ActorsUpdateResponse!
+
+  """Updates zero or more records in the `Notifications` collection"""
+  updateNotificationsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: NotificationsFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: NotificationsUpdateInput!
+  ): NotificationsUpdateResponse!
+
+  """Updates zero or more records in the `Organizations` collection"""
+  updateOrganizationsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: OrganizationsFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: OrganizationsUpdateInput!
+  ): OrganizationsUpdateResponse!
+
+  """Updates zero or more records in the `ProjectEventType` collection"""
+  updateProjectEventTypeCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectEventTypeFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectEventTypeUpdateInput!
+  ): ProjectEventTypeUpdateResponse!
+
+  """
+  Updates zero or more records in the `ProjectEventTypeSubeventType` collection
+  """
+  updateProjectEventTypeSubeventTypeCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectEventTypeSubeventTypeFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectEventTypeSubeventTypeUpdateInput!
+  ): ProjectEventTypeSubeventTypeUpdateResponse!
+
+  """
+  Updates zero or more records in the `ProjectExemplarityIndicatorCategory` collection
+  """
+  updateProjectExemplarityIndicatorCategoryCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectExemplarityIndicatorCategoryFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectExemplarityIndicatorCategoryUpdateInput!
+  ): ProjectExemplarityIndicatorCategoryUpdateResponse!
+
+  """
+  Updates zero or more records in the `ProjectExemplarityIndicator` collection
+  """
+  updateProjectExemplarityIndicatorCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectExemplarityIndicatorFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectExemplarityIndicatorUpdateInput!
+  ): ProjectExemplarityIndicatorUpdateResponse!
+
+  """
+  Updates zero or more records in the `ProjectImplantationMode` collection
+  """
+  updateProjectImplantationModeCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectImplantationModeFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectImplantationModeUpdateInput!
+  ): ProjectImplantationModeUpdateResponse!
+
+  """Updates zero or more records in the `ProjectMaterialOrigin` collection"""
+  updateProjectMaterialOriginCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectMaterialOriginFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectMaterialOriginUpdateInput!
+  ): ProjectMaterialOriginUpdateResponse!
+
+  """Updates zero or more records in the `ProjectMaterialType` collection"""
+  updateProjectMaterialTypeCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectMaterialTypeFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectMaterialTypeUpdateInput!
+  ): ProjectMaterialTypeUpdateResponse!
+
+  """Updates zero or more records in the `ProjectMaterialUse` collection"""
+  updateProjectMaterialUseCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectMaterialUseFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectMaterialUseUpdateInput!
+  ): ProjectMaterialUseUpdateResponse!
+
+  """Updates zero or more records in the `ProjectSiteOwnership` collection"""
+  updateProjectSiteOwnershipCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectSiteOwnershipFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectSiteOwnershipUpdateInput!
+  ): ProjectSiteOwnershipUpdateResponse!
+
+  """
+  Updates zero or more records in the `ProjectSiteUsageCategory` collection
+  """
+  updateProjectSiteUsageCategoryCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectSiteUsageCategoryFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectSiteUsageCategoryUpdateInput!
+  ): ProjectSiteUsageCategoryUpdateResponse!
+
+  """Updates zero or more records in the `ProjectSiteUsage` collection"""
+  updateProjectSiteUsageCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectSiteUsageFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectSiteUsageUpdateInput!
+  ): ProjectSiteUsageUpdateResponse!
+
+  """
+  Updates zero or more records in the `ProjectSiteUsageSiteUsageCategory` collection
+  """
+  updateProjectSiteUsageSiteUsageCategoryCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectSiteUsageSiteUsageCategoryFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectSiteUsageSiteUsageCategoryUpdateInput!
+  ): ProjectSiteUsageSiteUsageCategoryUpdateResponse!
+
+  """Updates zero or more records in the `ProjectType` collection"""
+  updateProjectTypeCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectTypeFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectTypeUpdateInput!
+  ): ProjectTypeUpdateResponse!
+
+  """Updates zero or more records in the `ProjectTypeWork` collection"""
+  updateProjectTypeWorkCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectTypeWorkFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectTypeWorkUpdateInput!
+  ): ProjectTypeWorkUpdateResponse!
+
+  """Updates zero or more records in the `ProjectWork` collection"""
+  updateProjectWorkCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectWorkFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectWorkUpdateInput!
+  ): ProjectWorkUpdateResponse!
+
+  """Updates zero or more records in the `Projects` collection"""
+  updateProjectsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectsUpdateInput!
+  ): ProjectsUpdateResponse!
+
+  """Updates zero or more records in the `ProjectsImages` collection"""
+  updateProjectsImagesCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsImagesFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectsImagesUpdateInput!
+  ): ProjectsImagesUpdateResponse!
+
+  """Updates zero or more records in the `ProjectsLocation` collection"""
+  updateProjectsLocationCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsLocationFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectsLocationUpdateInput!
+  ): ProjectsLocationUpdateResponse!
+
+  """
+  Updates zero or more records in the `ProjectsPublicationStatus` collection
+  """
+  updateProjectsPublicationStatusCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsPublicationStatusFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectsPublicationStatusUpdateInput!
+  ): ProjectsPublicationStatusUpdateResponse!
+
+  """
+  Updates zero or more records in the `ProjectsSecondaryUsages` collection
+  """
+  updateProjectsSecondaryUsagesCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsSecondaryUsagesFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectsSecondaryUsagesUpdateInput!
+  ): ProjectsSecondaryUsagesUpdateResponse!
+
+  """Updates zero or more records in the `ProjectsUsers` collection"""
+  updateProjectsUsersCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsUsersFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectsUsersUpdateInput!
+  ): ProjectsUsersUpdateResponse!
+
+  """Updates zero or more records in the `ProjectsWorks` collection"""
+  updateProjectsWorksCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProjectsWorksFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProjectsWorksUpdateInput!
+  ): ProjectsWorksUpdateResponse!
+
+  """Updates zero or more records in the `RoleDetails` collection"""
+  updateRoleDetailsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: RoleDetailsFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: RoleDetailsUpdateInput!
+  ): RoleDetailsUpdateResponse!
+
+  """Updates zero or more records in the `RolePermissions` collection"""
+  updateRolePermissionsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: RolePermissionsFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: RolePermissionsUpdateInput!
+  ): RolePermissionsUpdateResponse!
+
+  """Updates zero or more records in the `Users` collection"""
+  updateUsersCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: UsersUpdateInput!
+  ): UsersUpdateResponse!
+
+  """Updates zero or more records in the `UsersNotifications` collection"""
+  updateUsersNotificationsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersNotificationsFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: UsersNotificationsUpdateInput!
+  ): UsersNotificationsUpdateResponse!
+
+  """
+  Updates zero or more records in the `UsersProjectsCollections` collection
+  """
+  updateUsersProjectsCollectionsCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersProjectsCollectionsFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: UsersProjectsCollectionsUpdateInput!
+  ): UsersProjectsCollectionsUpdateResponse!
+
+  """Updates zero or more records in the `UsersProjectsLikes` collection"""
+  updateUsersProjectsLikesCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersProjectsLikesFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: UsersProjectsLikesUpdateInput!
+  ): UsersProjectsLikesUpdateResponse!
+
+  """Updates zero or more records in the `UsersProjectsQueries` collection"""
+  updateUsersProjectsQueriesCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersProjectsQueriesFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: UsersProjectsQueriesUpdateInput!
+  ): UsersProjectsQueriesUpdateResponse!
+
+  """Updates zero or more records in the `UsersRoles` collection"""
+  updateUsersRolesCollection(
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: UsersRolesFilter
+
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: UsersRolesUpdateInput!
+  ): UsersRolesUpdateResponse!
+}
+
+interface Node {
+  """Retrieves a record by `ID`"""
+  nodeId: ID!
+}
+
+type Notifications implements Node {
+  body: String!
+  createdAt: Datetime!
+  createdById: UUID!
+  expiry: Datetime
+  id: UUID!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  title: String
+  updatedAt: Datetime!
+  updatedById: UUID
+  users: Users
+  usersNotificationsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersNotificationsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersNotificationsOrderBy!]
+  ): UsersNotificationsConnection
+}
+
+type NotificationsConnection {
+  edges: [NotificationsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type NotificationsDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Notifications!]!
+}
+
+type NotificationsEdge {
+  cursor: String!
+  node: Notifications!
+}
+
+input NotificationsFilter {
+  body: StringFilter
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  expiry: DatetimeFilter
+  id: UUIDFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input NotificationsInsertInput {
+  body: String
+  createdAt: Datetime
+  createdById: UUID
+  expiry: Datetime
+  id: UUID
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type NotificationsInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Notifications!]!
+}
+
+input NotificationsOrderBy {
+  body: OrderByDirection
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  expiry: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input NotificationsUpdateInput {
+  body: String
+  createdAt: Datetime
+  createdById: UUID
+  expiry: Datetime
+  id: UUID
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type NotificationsUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Notifications!]!
+}
+
+"""Defines a per-field sorting order"""
+enum OrderByDirection {
+  """Ascending order, nulls first"""
+  AscNullsFirst
+
+  """Ascending order, nulls last"""
+  AscNullsLast
+
+  """Descending order, nulls first"""
+  DescNullsFirst
+
+  """Descending order, nulls last"""
+  DescNullsLast
+}
+
+type Organizations implements Node {
+  about: String
+  createdAt: Datetime!
+  createdBy: Users
+  createdById: UUID!
+  id: UUID!
+  name: String!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  shortName: String
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID!
+}
+
+type OrganizationsConnection {
+  edges: [OrganizationsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type OrganizationsDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Organizations!]!
+}
+
+type OrganizationsEdge {
+  cursor: String!
+  node: Organizations!
+}
+
+input OrganizationsFilter {
+  about: StringFilter
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  id: UUIDFilter
+  name: StringFilter
+  nodeId: IDFilter
+  shortName: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input OrganizationsInsertInput {
+  about: String
+  createdAt: Datetime
+  createdById: UUID
+  id: UUID
+  name: String
+  shortName: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type OrganizationsInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Organizations!]!
+}
+
+input OrganizationsOrderBy {
+  about: OrderByDirection
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  id: OrderByDirection
+  name: OrderByDirection
+  shortName: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input OrganizationsUpdateInput {
+  about: String
+  createdAt: Datetime
+  createdById: UUID
+  id: UUID
+  name: String
+  shortName: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type OrganizationsUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Organizations!]!
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type ProjectEventType implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  durative: Boolean!
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectEventTypeConnection {
+  edges: [ProjectEventTypeEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectEventTypeDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectEventType!]!
+}
+
+type ProjectEventTypeEdge {
+  cursor: String!
+  node: ProjectEventType!
+}
+
+input ProjectEventTypeFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  durative: BooleanFilter
+  id: IntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectEventTypeInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  durative: Boolean
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectEventTypeInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectEventType!]!
+}
+
+input ProjectEventTypeOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  durative: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+type ProjectEventTypeSubeventType implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  eventTypeId: Int!
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  subeventTypeId: Int!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectEventTypeSubeventTypeConnection {
+  edges: [ProjectEventTypeSubeventTypeEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectEventTypeSubeventTypeDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectEventTypeSubeventType!]!
+}
+
+type ProjectEventTypeSubeventTypeEdge {
+  cursor: String!
+  node: ProjectEventTypeSubeventType!
+}
+
+input ProjectEventTypeSubeventTypeFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  eventTypeId: IntFilter
+  id: IntFilter
+  nodeId: IDFilter
+  subeventTypeId: IntFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectEventTypeSubeventTypeInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  eventTypeId: Int
+  subeventTypeId: Int
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectEventTypeSubeventTypeInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectEventTypeSubeventType!]!
+}
+
+input ProjectEventTypeSubeventTypeOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  eventTypeId: OrderByDirection
+  id: OrderByDirection
+  subeventTypeId: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectEventTypeSubeventTypeUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  eventTypeId: Int
+  subeventTypeId: Int
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectEventTypeSubeventTypeUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectEventTypeSubeventType!]!
+}
+
+input ProjectEventTypeUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  durative: Boolean
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectEventTypeUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectEventType!]!
+}
+
+type ProjectExemplarityIndicator implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+  indicatorCategory: ProjectExemplarityIndicatorCategory
+  indicatorCategoryId: Int
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectExemplarityIndicatorCategory implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  projectExemplarityIndicatorCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectExemplarityIndicatorFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectExemplarityIndicatorOrderBy!]
+  ): ProjectExemplarityIndicatorConnection
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectExemplarityIndicatorCategoryConnection {
+  edges: [ProjectExemplarityIndicatorCategoryEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectExemplarityIndicatorCategoryDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectExemplarityIndicatorCategory!]!
+}
+
+type ProjectExemplarityIndicatorCategoryEdge {
+  cursor: String!
+  node: ProjectExemplarityIndicatorCategory!
+}
+
+input ProjectExemplarityIndicatorCategoryFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectExemplarityIndicatorCategoryInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectExemplarityIndicatorCategoryInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectExemplarityIndicatorCategory!]!
+}
+
+input ProjectExemplarityIndicatorCategoryOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectExemplarityIndicatorCategoryUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectExemplarityIndicatorCategoryUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectExemplarityIndicatorCategory!]!
+}
+
+type ProjectExemplarityIndicatorConnection {
+  edges: [ProjectExemplarityIndicatorEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectExemplarityIndicatorDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectExemplarityIndicator!]!
+}
+
+type ProjectExemplarityIndicatorEdge {
+  cursor: String!
+  node: ProjectExemplarityIndicator!
+}
+
+input ProjectExemplarityIndicatorFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  indicatorCategoryId: IntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectExemplarityIndicatorInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  indicatorCategoryId: Int
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectExemplarityIndicatorInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectExemplarityIndicator!]!
+}
+
+input ProjectExemplarityIndicatorOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  indicatorCategoryId: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectExemplarityIndicatorUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  indicatorCategoryId: Int
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectExemplarityIndicatorUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectExemplarityIndicator!]!
+}
+
+type ProjectImplantationMode implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  projectsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsOrderBy!]
+  ): ProjectsConnection
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectImplantationModeConnection {
+  edges: [ProjectImplantationModeEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectImplantationModeDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectImplantationMode!]!
+}
+
+type ProjectImplantationModeEdge {
+  cursor: String!
+  node: ProjectImplantationMode!
+}
+
+input ProjectImplantationModeFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectImplantationModeInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectImplantationModeInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectImplantationMode!]!
+}
+
+input ProjectImplantationModeOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectImplantationModeUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectImplantationModeUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectImplantationMode!]!
+}
+
+type ProjectMaterialOrigin implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+  label: String!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectMaterialOriginConnection {
+  edges: [ProjectMaterialOriginEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectMaterialOriginDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectMaterialOrigin!]!
+}
+
+type ProjectMaterialOriginEdge {
+  cursor: String!
+  node: ProjectMaterialOrigin!
+}
+
+input ProjectMaterialOriginFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  label: StringFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectMaterialOriginInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  label: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectMaterialOriginInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectMaterialOrigin!]!
+}
+
+input ProjectMaterialOriginOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  label: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectMaterialOriginUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  label: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectMaterialOriginUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectMaterialOrigin!]!
+}
+
+type ProjectMaterialType implements Node {
+  combustible: Boolean!
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectMaterialTypeConnection {
+  edges: [ProjectMaterialTypeEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectMaterialTypeDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectMaterialType!]!
+}
+
+type ProjectMaterialTypeEdge {
+  cursor: String!
+  node: ProjectMaterialType!
+}
+
+input ProjectMaterialTypeFilter {
+  combustible: BooleanFilter
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectMaterialTypeInsertInput {
+  combustible: Boolean
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectMaterialTypeInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectMaterialType!]!
+}
+
+input ProjectMaterialTypeOrderBy {
+  combustible: OrderByDirection
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectMaterialTypeUpdateInput {
+  combustible: Boolean
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectMaterialTypeUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectMaterialType!]!
+}
+
+type ProjectMaterialUse implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectMaterialUseConnection {
+  edges: [ProjectMaterialUseEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectMaterialUseDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectMaterialUse!]!
+}
+
+type ProjectMaterialUseEdge {
+  cursor: String!
+  node: ProjectMaterialUse!
+}
+
+input ProjectMaterialUseFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectMaterialUseInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectMaterialUseInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectMaterialUse!]!
+}
+
+input ProjectMaterialUseOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectMaterialUseUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectMaterialUseUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectMaterialUse!]!
+}
+
+type ProjectSiteOwnership implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  projectsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsOrderBy!]
+  ): ProjectsConnection
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectSiteOwnershipConnection {
+  edges: [ProjectSiteOwnershipEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectSiteOwnershipDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteOwnership!]!
+}
+
+type ProjectSiteOwnershipEdge {
+  cursor: String!
+  node: ProjectSiteOwnership!
+}
+
+input ProjectSiteOwnershipFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectSiteOwnershipInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectSiteOwnershipInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteOwnership!]!
+}
+
+input ProjectSiteOwnershipOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectSiteOwnershipUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectSiteOwnershipUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteOwnership!]!
+}
+
+type ProjectSiteUsage implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+  isBuilding: Boolean!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  projectsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsOrderBy!]
+  ): ProjectsConnection
+  projectsSecondaryUsagesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsSecondaryUsagesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsSecondaryUsagesOrderBy!]
+  ): ProjectsSecondaryUsagesConnection
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectSiteUsageCategory implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  projectsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsOrderBy!]
+  ): ProjectsConnection
+  projectsSecondaryUsagesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsSecondaryUsagesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsSecondaryUsagesOrderBy!]
+  ): ProjectsSecondaryUsagesConnection
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID
+}
+
+type ProjectSiteUsageCategoryConnection {
+  edges: [ProjectSiteUsageCategoryEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectSiteUsageCategoryDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteUsageCategory!]!
+}
+
+type ProjectSiteUsageCategoryEdge {
+  cursor: String!
+  node: ProjectSiteUsageCategory!
+}
+
+input ProjectSiteUsageCategoryFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectSiteUsageCategoryInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectSiteUsageCategoryInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteUsageCategory!]!
+}
+
+input ProjectSiteUsageCategoryOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectSiteUsageCategoryUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectSiteUsageCategoryUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteUsageCategory!]!
+}
+
+type ProjectSiteUsageConnection {
+  edges: [ProjectSiteUsageEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectSiteUsageDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteUsage!]!
+}
+
+type ProjectSiteUsageEdge {
+  cursor: String!
+  node: ProjectSiteUsage!
+}
+
+input ProjectSiteUsageFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  isBuilding: BooleanFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectSiteUsageInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  isBuilding: Boolean
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectSiteUsageInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteUsage!]!
+}
+
+input ProjectSiteUsageOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  isBuilding: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+type ProjectSiteUsageSiteUsageCategory implements Node {
+  categoryId: Int!
+  createdAt: Datetime!
+  createdById: UUID!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  updatedAt: Datetime!
+  updatedById: UUID
+  usageId: Int!
+}
+
+type ProjectSiteUsageSiteUsageCategoryConnection {
+  edges: [ProjectSiteUsageSiteUsageCategoryEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectSiteUsageSiteUsageCategoryDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteUsageSiteUsageCategory!]!
+}
+
+type ProjectSiteUsageSiteUsageCategoryEdge {
+  cursor: String!
+  node: ProjectSiteUsageSiteUsageCategory!
+}
+
+input ProjectSiteUsageSiteUsageCategoryFilter {
+  categoryId: IntFilter
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  nodeId: IDFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+  usageId: IntFilter
+}
+
+input ProjectSiteUsageSiteUsageCategoryInsertInput {
+  categoryId: Int
+  createdAt: Datetime
+  createdById: UUID
+  updatedAt: Datetime
+  updatedById: UUID
+  usageId: Int
+}
+
+type ProjectSiteUsageSiteUsageCategoryInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteUsageSiteUsageCategory!]!
+}
+
+input ProjectSiteUsageSiteUsageCategoryOrderBy {
+  categoryId: OrderByDirection
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+  usageId: OrderByDirection
+}
+
+input ProjectSiteUsageSiteUsageCategoryUpdateInput {
+  categoryId: Int
+  createdAt: Datetime
+  createdById: UUID
+  updatedAt: Datetime
+  updatedById: UUID
+  usageId: Int
+}
+
+type ProjectSiteUsageSiteUsageCategoryUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteUsageSiteUsageCategory!]!
+}
+
+input ProjectSiteUsageUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  isBuilding: Boolean
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectSiteUsageUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectSiteUsage!]!
+}
+
+type ProjectType implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  projectTypeWorkCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectTypeWorkFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectTypeWorkOrderBy!]
+  ): ProjectTypeWorkConnection
+  projectsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsOrderBy!]
+  ): ProjectsConnection
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID!
+}
+
+type ProjectTypeConnection {
+  edges: [ProjectTypeEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectTypeDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectType!]!
+}
+
+type ProjectTypeEdge {
+  cursor: String!
+  node: ProjectType!
+}
+
+input ProjectTypeFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectTypeInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectTypeInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectType!]!
+}
+
+input ProjectTypeOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectTypeUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectTypeUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectType!]!
+}
+
+type ProjectTypeWork implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  type: ProjectType
+  typeId: Int!
+  updatedAt: Datetime!
+  updatedById: UUID!
+  work: ProjectWork
+  workId: Int!
+}
+
+type ProjectTypeWorkConnection {
+  edges: [ProjectTypeWorkEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectTypeWorkDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectTypeWork!]!
+}
+
+type ProjectTypeWorkEdge {
+  cursor: String!
+  node: ProjectTypeWork!
+}
+
+input ProjectTypeWorkFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  nodeId: IDFilter
+  typeId: IntFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+  workId: IntFilter
+}
+
+input ProjectTypeWorkInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  typeId: Int
+  updatedAt: Datetime
+  updatedById: UUID
+  workId: Int
+}
+
+type ProjectTypeWorkInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectTypeWork!]!
+}
+
+input ProjectTypeWorkOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  typeId: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+  workId: OrderByDirection
+}
+
+input ProjectTypeWorkUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  typeId: Int
+  updatedAt: Datetime
+  updatedById: UUID
+  workId: Int
+}
+
+type ProjectTypeWorkUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectTypeWork!]!
+}
+
+type ProjectWork implements Node {
+  createdAt: Datetime!
+  createdById: UUID!
+  description: String
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  projectTypeWorkCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectTypeWorkFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectTypeWorkOrderBy!]
+  ): ProjectTypeWorkConnection
+  projectsWorksCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsWorksFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsWorksOrderBy!]
+  ): ProjectsWorksConnection
+  title: String!
+  updatedAt: Datetime!
+  updatedById: UUID!
+}
+
+type ProjectWorkConnection {
+  edges: [ProjectWorkEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectWorkDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectWork!]!
+}
+
+type ProjectWorkEdge {
+  cursor: String!
+  node: ProjectWork!
+}
+
+input ProjectWorkFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: IntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectWorkInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectWorkInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectWork!]!
+}
+
+input ProjectWorkOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectWorkUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectWorkUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectWork!]!
+}
+
+type Projects implements Node {
+  adjacentStreets: Int
+  area: String
+  banner: ProjectsImages
+  bannerId: UUID
+  buildingArea: String
+  buildingConstructionYear: Int
+  costRange: String!
+  createdAt: Datetime!
+  createdBy: Users
+  createdById: UUID!
+  description: String
+  id: UUID!
+  implantationMode: ProjectImplantationMode
+  implantationModeId: Int
+  likesSum: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  projectsImagesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsImagesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsImagesOrderBy!]
+  ): ProjectsImagesConnection
+  projectsLocation: ProjectsLocation
+  projectsPublicationStatus: ProjectsPublicationStatus
+  projectsSecondaryUsagesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsSecondaryUsagesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsSecondaryUsagesOrderBy!]
+  ): ProjectsSecondaryUsagesConnection
+  projectsUsersCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsUsersFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsUsersOrderBy!]
+  ): ProjectsUsersConnection
+  projectsWorksCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsWorksFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsWorksOrderBy!]
+  ): ProjectsWorksConnection
+  siteArea: String
+  siteOwnership: ProjectSiteOwnership
+  siteOwnershipId: Int
+  siteUsage: ProjectSiteUsage
+  siteUsageCategory: ProjectSiteUsageCategory
+  siteUsageCategoryId: Int
+  siteUsageId: Int
+  title: String!
+  type: ProjectType
+  typeId: Int
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID!
+  usersProjectsLikesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersProjectsLikesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersProjectsLikesOrderBy!]
+  ): UsersProjectsLikesConnection
+}
+
+type ProjectsConnection {
+  edges: [ProjectsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectsDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Projects!]!
+}
+
+type ProjectsEdge {
+  cursor: String!
+  node: Projects!
+}
+
+input ProjectsFilter {
+  adjacentStreets: IntFilter
+  area: StringFilter
+  bannerId: UUIDFilter
+  buildingArea: StringFilter
+  buildingConstructionYear: IntFilter
+  costRange: StringFilter
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: UUIDFilter
+  implantationModeId: IntFilter
+  likesSum: IntFilter
+  nodeId: IDFilter
+  siteArea: StringFilter
+  siteOwnershipId: IntFilter
+  siteUsageCategoryId: IntFilter
+  siteUsageId: IntFilter
+  title: StringFilter
+  typeId: IntFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+type ProjectsImages implements Node {
+  colorDominantHsl: String
+  colorDominantLab: String
+  colorMeanHsl: String
+  colorMeanLab: String
+  createdAt: Datetime!
+  createdBy: Users
+  createdById: UUID!
+  description: String
+  id: UUID!
+  name: String!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  order: Int
+  project: Projects
+  projectId: UUID!
+  projectsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsOrderBy!]
+  ): ProjectsConnection
+  title: String
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID!
+}
+
+type ProjectsImagesConnection {
+  edges: [ProjectsImagesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectsImagesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsImages!]!
+}
+
+type ProjectsImagesEdge {
+  cursor: String!
+  node: ProjectsImages!
+}
+
+input ProjectsImagesFilter {
+  colorDominantHsl: StringFilter
+  colorDominantLab: StringFilter
+  colorMeanHsl: StringFilter
+  colorMeanLab: StringFilter
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: UUIDFilter
+  name: StringFilter
+  nodeId: IDFilter
+  order: IntFilter
+  projectId: UUIDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectsImagesInsertInput {
+  colorDominantHsl: String
+  colorDominantLab: String
+  colorMeanHsl: String
+  colorMeanLab: String
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  id: UUID
+  name: String
+  order: Int
+  projectId: UUID
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectsImagesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsImages!]!
+}
+
+input ProjectsImagesOrderBy {
+  colorDominantHsl: OrderByDirection
+  colorDominantLab: OrderByDirection
+  colorMeanHsl: OrderByDirection
+  colorMeanLab: OrderByDirection
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  name: OrderByDirection
+  order: OrderByDirection
+  projectId: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectsImagesUpdateInput {
+  colorDominantHsl: String
+  colorDominantLab: String
+  colorMeanHsl: String
+  colorMeanLab: String
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  id: UUID
+  name: String
+  order: Int
+  projectId: UUID
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectsImagesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsImages!]!
+}
+
+input ProjectsInsertInput {
+  adjacentStreets: Int
+  area: String
+  bannerId: UUID
+  buildingArea: String
+  buildingConstructionYear: Int
+  costRange: String
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  id: UUID
+  implantationModeId: Int
+  likesSum: Int
+  siteArea: String
+  siteOwnershipId: Int
+  siteUsageCategoryId: Int
+  siteUsageId: Int
+  title: String
+  typeId: Int
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectsInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Projects!]!
+}
+
+type ProjectsLocation implements Node {
+  createdAt: Datetime!
+  createdBy: Users
+  createdById: UUID!
+  geometry: String
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  project: Projects
+  projectId: UUID!
+  radius: Float
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID!
+}
+
+type ProjectsLocationConnection {
+  edges: [ProjectsLocationEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectsLocationDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsLocation!]!
+}
+
+type ProjectsLocationEdge {
+  cursor: String!
+  node: ProjectsLocation!
+}
+
+input ProjectsLocationFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  geometry: StringFilter
+  nodeId: IDFilter
+  projectId: UUIDFilter
+  radius: FloatFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectsLocationInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  geometry: String
+  projectId: UUID
+  radius: Float
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectsLocationInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsLocation!]!
+}
+
+input ProjectsLocationOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  geometry: OrderByDirection
+  projectId: OrderByDirection
+  radius: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectsLocationUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  geometry: String
+  projectId: UUID
+  radius: Float
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectsLocationUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsLocation!]!
+}
+
+input ProjectsOrderBy {
+  adjacentStreets: OrderByDirection
+  area: OrderByDirection
+  bannerId: OrderByDirection
+  buildingArea: OrderByDirection
+  buildingConstructionYear: OrderByDirection
+  costRange: OrderByDirection
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  implantationModeId: OrderByDirection
+  likesSum: OrderByDirection
+  siteArea: OrderByDirection
+  siteOwnershipId: OrderByDirection
+  siteUsageCategoryId: OrderByDirection
+  siteUsageId: OrderByDirection
+  title: OrderByDirection
+  typeId: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+type ProjectsPublicationStatus implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  project: Projects
+  projectId: UUID!
+  status: PublicationStatus!
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID!
+}
+
+type ProjectsPublicationStatusConnection {
+  edges: [ProjectsPublicationStatusEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectsPublicationStatusDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsPublicationStatus!]!
+}
+
+type ProjectsPublicationStatusEdge {
+  cursor: String!
+  node: ProjectsPublicationStatus!
+}
+
+input ProjectsPublicationStatusFilter {
+  nodeId: IDFilter
+  projectId: UUIDFilter
+  status: PublicationStatusFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input ProjectsPublicationStatusInsertInput {
+  projectId: UUID
+  status: PublicationStatus
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectsPublicationStatusInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsPublicationStatus!]!
+}
+
+input ProjectsPublicationStatusOrderBy {
+  projectId: OrderByDirection
+  status: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input ProjectsPublicationStatusUpdateInput {
+  projectId: UUID
+  status: PublicationStatus
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectsPublicationStatusUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsPublicationStatus!]!
+}
+
+type ProjectsSecondaryUsages implements Node {
+  category: ProjectSiteUsageCategory
+  categoryId: Int!
+  createdAt: Datetime!
+  createdBy: Users
+  createdById: UUID
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  project: Projects
+  projectId: UUID!
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID
+  usage: ProjectSiteUsage
+  usageId: Int!
+}
+
+type ProjectsSecondaryUsagesConnection {
+  edges: [ProjectsSecondaryUsagesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectsSecondaryUsagesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsSecondaryUsages!]!
+}
+
+type ProjectsSecondaryUsagesEdge {
+  cursor: String!
+  node: ProjectsSecondaryUsages!
+}
+
+input ProjectsSecondaryUsagesFilter {
+  categoryId: IntFilter
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  nodeId: IDFilter
+  projectId: UUIDFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+  usageId: IntFilter
+}
+
+input ProjectsSecondaryUsagesInsertInput {
+  categoryId: Int
+  createdAt: Datetime
+  createdById: UUID
+  projectId: UUID
+  updatedAt: Datetime
+  updatedById: UUID
+  usageId: Int
+}
+
+type ProjectsSecondaryUsagesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsSecondaryUsages!]!
+}
+
+input ProjectsSecondaryUsagesOrderBy {
+  categoryId: OrderByDirection
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  projectId: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+  usageId: OrderByDirection
+}
+
+input ProjectsSecondaryUsagesUpdateInput {
+  categoryId: Int
+  createdAt: Datetime
+  createdById: UUID
+  projectId: UUID
+  updatedAt: Datetime
+  updatedById: UUID
+  usageId: Int
+}
+
+type ProjectsSecondaryUsagesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsSecondaryUsages!]!
+}
+
+input ProjectsUpdateInput {
+  adjacentStreets: Int
+  area: String
+  bannerId: UUID
+  buildingArea: String
+  buildingConstructionYear: Int
+  costRange: String
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  id: UUID
+  implantationModeId: Int
+  likesSum: Int
+  siteArea: String
+  siteOwnershipId: Int
+  siteUsageCategoryId: Int
+  siteUsageId: Int
+  title: String
+  typeId: Int
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type ProjectsUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Projects!]!
+}
+
+type ProjectsUsers implements Node {
+  createdAt: Datetime!
+  createdBy: Users
+  createdById: UUID!
+  grantedRole: AppRole!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  project: Projects
+  projectId: UUID!
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID!
+  user: Users
+  userId: UUID!
+}
+
+type ProjectsUsersConnection {
+  edges: [ProjectsUsersEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectsUsersDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsUsers!]!
+}
+
+type ProjectsUsersEdge {
+  cursor: String!
+  node: ProjectsUsers!
+}
+
+input ProjectsUsersFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  grantedRole: AppRoleFilter
+  nodeId: IDFilter
+  projectId: UUIDFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+  userId: UUIDFilter
+}
+
+input ProjectsUsersInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  grantedRole: AppRole
+  projectId: UUID
+  updatedAt: Datetime
+  updatedById: UUID
+  userId: UUID
+}
+
+type ProjectsUsersInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsUsers!]!
+}
+
+input ProjectsUsersOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  grantedRole: OrderByDirection
+  projectId: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+  userId: OrderByDirection
+}
+
+input ProjectsUsersUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  grantedRole: AppRole
+  projectId: UUID
+  updatedAt: Datetime
+  updatedById: UUID
+  userId: UUID
+}
+
+type ProjectsUsersUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsUsers!]!
+}
+
+type ProjectsWorks implements Node {
+  createdAt: Datetime!
+  createdBy: Users
+  createdById: UUID!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  project: Projects
+  projectId: UUID!
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID!
+  work: ProjectWork
+  workId: Int!
+}
+
+type ProjectsWorksConnection {
+  edges: [ProjectsWorksEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProjectsWorksDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsWorks!]!
+}
+
+type ProjectsWorksEdge {
+  cursor: String!
+  node: ProjectsWorks!
+}
+
+input ProjectsWorksFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  nodeId: IDFilter
+  projectId: UUIDFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+  workId: IntFilter
+}
+
+input ProjectsWorksInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  projectId: UUID
+  updatedAt: Datetime
+  updatedById: UUID
+  workId: Int
+}
+
+type ProjectsWorksInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsWorks!]!
+}
+
+input ProjectsWorksOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  projectId: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+  workId: OrderByDirection
+}
+
+input ProjectsWorksUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  projectId: UUID
+  updatedAt: Datetime
+  updatedById: UUID
+  workId: Int
+}
+
+type ProjectsWorksUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProjectsWorks!]!
+}
+
+enum PublicationStatus {
+  pending_approval
+  published
+  rejected_approval
+  unpublished
+}
+
+"""
+Boolean expression comparing fields on type "PublicationStatus"
+"""
+input PublicationStatusFilter {
+  eq: PublicationStatus
+  in: [PublicationStatus!]
+  is: FilterIs
+  neq: PublicationStatus
+}
+
+"""The root type for querying data"""
+type Query {
+  """A pagable collection of type `Actors`"""
+  actorsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ActorsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ActorsOrderBy!]
+  ): ActorsConnection
+
+  """Retrieve a record by its `ID`"""
+  node(
+    """The record's `ID`"""
+    nodeId: ID!
+  ): Node
+
+  """A pagable collection of type `Notifications`"""
+  notificationsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: NotificationsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [NotificationsOrderBy!]
+  ): NotificationsConnection
+
+  """A pagable collection of type `Organizations`"""
+  organizationsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: OrganizationsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [OrganizationsOrderBy!]
+  ): OrganizationsConnection
+
+  """A pagable collection of type `ProjectEventType`"""
+  projectEventTypeCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectEventTypeFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectEventTypeOrderBy!]
+  ): ProjectEventTypeConnection
+
+  """A pagable collection of type `ProjectEventTypeSubeventType`"""
+  projectEventTypeSubeventTypeCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectEventTypeSubeventTypeFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectEventTypeSubeventTypeOrderBy!]
+  ): ProjectEventTypeSubeventTypeConnection
+
+  """A pagable collection of type `ProjectExemplarityIndicatorCategory`"""
+  projectExemplarityIndicatorCategoryCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectExemplarityIndicatorCategoryFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectExemplarityIndicatorCategoryOrderBy!]
+  ): ProjectExemplarityIndicatorCategoryConnection
+
+  """A pagable collection of type `ProjectExemplarityIndicator`"""
+  projectExemplarityIndicatorCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectExemplarityIndicatorFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectExemplarityIndicatorOrderBy!]
+  ): ProjectExemplarityIndicatorConnection
+
+  """A pagable collection of type `ProjectImplantationMode`"""
+  projectImplantationModeCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectImplantationModeFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectImplantationModeOrderBy!]
+  ): ProjectImplantationModeConnection
+
+  """A pagable collection of type `ProjectMaterialOrigin`"""
+  projectMaterialOriginCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectMaterialOriginFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectMaterialOriginOrderBy!]
+  ): ProjectMaterialOriginConnection
+
+  """A pagable collection of type `ProjectMaterialType`"""
+  projectMaterialTypeCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectMaterialTypeFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectMaterialTypeOrderBy!]
+  ): ProjectMaterialTypeConnection
+
+  """A pagable collection of type `ProjectMaterialUse`"""
+  projectMaterialUseCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectMaterialUseFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectMaterialUseOrderBy!]
+  ): ProjectMaterialUseConnection
+
+  """A pagable collection of type `ProjectSiteOwnership`"""
+  projectSiteOwnershipCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectSiteOwnershipFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectSiteOwnershipOrderBy!]
+  ): ProjectSiteOwnershipConnection
+
+  """A pagable collection of type `ProjectSiteUsageCategory`"""
+  projectSiteUsageCategoryCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectSiteUsageCategoryFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectSiteUsageCategoryOrderBy!]
+  ): ProjectSiteUsageCategoryConnection
+
+  """A pagable collection of type `ProjectSiteUsage`"""
+  projectSiteUsageCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectSiteUsageFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectSiteUsageOrderBy!]
+  ): ProjectSiteUsageConnection
+
+  """A pagable collection of type `ProjectSiteUsageSiteUsageCategory`"""
+  projectSiteUsageSiteUsageCategoryCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectSiteUsageSiteUsageCategoryFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectSiteUsageSiteUsageCategoryOrderBy!]
+  ): ProjectSiteUsageSiteUsageCategoryConnection
+
+  """A pagable collection of type `ProjectType`"""
+  projectTypeCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectTypeFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectTypeOrderBy!]
+  ): ProjectTypeConnection
+
+  """A pagable collection of type `ProjectTypeWork`"""
+  projectTypeWorkCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectTypeWorkFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectTypeWorkOrderBy!]
+  ): ProjectTypeWorkConnection
+
+  """A pagable collection of type `ProjectWork`"""
+  projectWorkCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectWorkFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectWorkOrderBy!]
+  ): ProjectWorkConnection
+
+  """A pagable collection of type `Projects`"""
+  projectsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsOrderBy!]
+  ): ProjectsConnection
+
+  """A pagable collection of type `ProjectsImages`"""
+  projectsImagesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsImagesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsImagesOrderBy!]
+  ): ProjectsImagesConnection
+
+  """A pagable collection of type `ProjectsLocation`"""
+  projectsLocationCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsLocationFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsLocationOrderBy!]
+  ): ProjectsLocationConnection
+
+  """A pagable collection of type `ProjectsPublicationStatus`"""
+  projectsPublicationStatusCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsPublicationStatusFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsPublicationStatusOrderBy!]
+  ): ProjectsPublicationStatusConnection
+
+  """A pagable collection of type `ProjectsSecondaryUsages`"""
+  projectsSecondaryUsagesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsSecondaryUsagesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsSecondaryUsagesOrderBy!]
+  ): ProjectsSecondaryUsagesConnection
+
+  """A pagable collection of type `ProjectsUsers`"""
+  projectsUsersCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsUsersFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsUsersOrderBy!]
+  ): ProjectsUsersConnection
+
+  """A pagable collection of type `ProjectsWorks`"""
+  projectsWorksCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsWorksFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsWorksOrderBy!]
+  ): ProjectsWorksConnection
+
+  """A pagable collection of type `RoleDetails`"""
+  roleDetailsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: RoleDetailsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [RoleDetailsOrderBy!]
+  ): RoleDetailsConnection
+
+  """A pagable collection of type `RolePermissions`"""
+  rolePermissionsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: RolePermissionsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [RolePermissionsOrderBy!]
+  ): RolePermissionsConnection
+
+  """A pagable collection of type `spatial_ref_sys`"""
+  spatial_ref_sysCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: spatial_ref_sysFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [spatial_ref_sysOrderBy!]
+  ): spatial_ref_sysConnection
+
+  """A pagable collection of type `Users`"""
+  usersCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersOrderBy!]
+  ): UsersConnection
+
+  """A pagable collection of type `UsersNotifications`"""
+  usersNotificationsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersNotificationsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersNotificationsOrderBy!]
+  ): UsersNotificationsConnection
+
+  """A pagable collection of type `UsersProjectsCollections`"""
+  usersProjectsCollectionsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersProjectsCollectionsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersProjectsCollectionsOrderBy!]
+  ): UsersProjectsCollectionsConnection
+
+  """A pagable collection of type `UsersProjectsLikes`"""
+  usersProjectsLikesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersProjectsLikesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersProjectsLikesOrderBy!]
+  ): UsersProjectsLikesConnection
+
+  """A pagable collection of type `UsersProjectsQueries`"""
+  usersProjectsQueriesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersProjectsQueriesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersProjectsQueriesOrderBy!]
+  ): UsersProjectsQueriesConnection
+
+  """A pagable collection of type `UsersRoles`"""
+  usersRolesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersRolesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersRolesOrderBy!]
+  ): UsersRolesConnection
+}
+
+type RoleDetails implements Node {
+  appRole: AppRole!
+  description: String!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  title: String!
+}
+
+type RoleDetailsConnection {
+  edges: [RoleDetailsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type RoleDetailsDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [RoleDetails!]!
+}
+
+type RoleDetailsEdge {
+  cursor: String!
+  node: RoleDetails!
+}
+
+input RoleDetailsFilter {
+  appRole: AppRoleFilter
+  description: StringFilter
+  nodeId: IDFilter
+  title: StringFilter
+}
+
+input RoleDetailsInsertInput {
+  appRole: AppRole
+  description: String
+  title: String
+}
+
+type RoleDetailsInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [RoleDetails!]!
+}
+
+input RoleDetailsOrderBy {
+  appRole: OrderByDirection
+  description: OrderByDirection
+  title: OrderByDirection
+}
+
+input RoleDetailsUpdateInput {
+  appRole: AppRole
+  description: String
+  title: String
+}
+
+type RoleDetailsUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [RoleDetails!]!
+}
+
+type RolePermissions implements Node {
+  createdAt: Datetime
+  id: BigInt!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  permission: AppPermission!
+  role: AppRole!
+}
+
+type RolePermissionsConnection {
+  edges: [RolePermissionsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type RolePermissionsDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [RolePermissions!]!
+}
+
+type RolePermissionsEdge {
+  cursor: String!
+  node: RolePermissions!
+}
+
+input RolePermissionsFilter {
+  createdAt: DatetimeFilter
+  id: BigIntFilter
+  nodeId: IDFilter
+  permission: AppPermissionFilter
+  role: AppRoleFilter
+}
+
+input RolePermissionsInsertInput {
+  createdAt: Datetime
+  permission: AppPermission
+  role: AppRole
+}
+
+type RolePermissionsInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [RolePermissions!]!
+}
+
+input RolePermissionsOrderBy {
+  createdAt: OrderByDirection
+  id: OrderByDirection
+  permission: OrderByDirection
+  role: OrderByDirection
+}
+
+input RolePermissionsUpdateInput {
+  createdAt: Datetime
+  permission: AppPermission
+  role: AppRole
+}
+
+type RolePermissionsUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [RolePermissions!]!
+}
+
+"""
+Boolean expression comparing fields on type "String"
+"""
+input StringFilter {
+  eq: String
+  gt: String
+  gte: String
+  in: [String!]
+  is: FilterIs
+  lt: String
+  lte: String
+  neq: String
+}
+
+scalar Time
+
+"""
+Boolean expression comparing fields on type "Time"
+"""
+input TimeFilter {
+  eq: Time
+  gt: Time
+  gte: Time
+  in: [Time!]
+  is: FilterIs
+  lt: Time
+  lte: Time
+  neq: Time
+}
+
+scalar UUID
+
+"""
+Boolean expression comparing fields on type "UUID"
+"""
+input UUIDFilter {
+  eq: UUID
+  in: [UUID!]
+  is: FilterIs
+  neq: UUID
+}
+
+type Users implements Node {
+  about: String
+  actorsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ActorsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ActorsOrderBy!]
+  ): ActorsConnection
+  avatarUrl: String
+  createdAt: Datetime!
+  firstName: String
+  id: UUID!
+  lastName: String
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  notifications: Notifications
+  organizationsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: OrganizationsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [OrganizationsOrderBy!]
+  ): OrganizationsConnection
+  projectsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsOrderBy!]
+  ): ProjectsConnection
+  projectsImagesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsImagesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsImagesOrderBy!]
+  ): ProjectsImagesConnection
+  projectsLocationCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsLocationFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsLocationOrderBy!]
+  ): ProjectsLocationConnection
+  projectsPublicationStatusCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsPublicationStatusFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsPublicationStatusOrderBy!]
+  ): ProjectsPublicationStatusConnection
+  projectsSecondaryUsagesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsSecondaryUsagesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsSecondaryUsagesOrderBy!]
+  ): ProjectsSecondaryUsagesConnection
+  projectsUsersCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsUsersFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsUsersOrderBy!]
+  ): ProjectsUsersConnection
+  projectsWorksCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProjectsWorksFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProjectsWorksOrderBy!]
+  ): ProjectsWorksConnection
+  publicEmail: String
+  updatedAt: Datetime!
+  updatedById: UUID!
+  usersProjectsCollectionsCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersProjectsCollectionsFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersProjectsCollectionsOrderBy!]
+  ): UsersProjectsCollectionsConnection
+  usersProjectsLikesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersProjectsLikesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersProjectsLikesOrderBy!]
+  ): UsersProjectsLikesConnection
+  usersProjectsQueriesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersProjectsQueriesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersProjectsQueriesOrderBy!]
+  ): UsersProjectsQueriesConnection
+  usersRoles: UsersRoles
+  usersRolesCollection(
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: UsersRolesFilter
+
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Sort order to apply to the collection"""
+    orderBy: [UsersRolesOrderBy!]
+  ): UsersRolesConnection
+}
+
+type UsersConnection {
+  edges: [UsersEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UsersDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Users!]!
+}
+
+type UsersEdge {
+  cursor: String!
+  node: Users!
+}
+
+input UsersFilter {
+  about: StringFilter
+  avatarUrl: StringFilter
+  createdAt: DatetimeFilter
+  firstName: StringFilter
+  id: UUIDFilter
+  lastName: StringFilter
+  nodeId: IDFilter
+  publicEmail: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input UsersInsertInput {
+  about: String
+  avatarUrl: String
+  createdAt: Datetime
+  firstName: String
+  id: UUID
+  lastName: String
+  publicEmail: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type UsersInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Users!]!
+}
+
+type UsersNotifications implements Node {
+  createdAt: Datetime!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  notification: Notifications
+  notificationId: UUID!
+  userId: UUID!
+}
+
+type UsersNotificationsConnection {
+  edges: [UsersNotificationsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UsersNotificationsDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersNotifications!]!
+}
+
+type UsersNotificationsEdge {
+  cursor: String!
+  node: UsersNotifications!
+}
+
+input UsersNotificationsFilter {
+  createdAt: DatetimeFilter
+  nodeId: IDFilter
+  notificationId: UUIDFilter
+  userId: UUIDFilter
+}
+
+input UsersNotificationsInsertInput {
+  createdAt: Datetime
+  notificationId: UUID
+  userId: UUID
+}
+
+type UsersNotificationsInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersNotifications!]!
+}
+
+input UsersNotificationsOrderBy {
+  createdAt: OrderByDirection
+  notificationId: OrderByDirection
+  userId: OrderByDirection
+}
+
+input UsersNotificationsUpdateInput {
+  createdAt: Datetime
+  notificationId: UUID
+  userId: UUID
+}
+
+type UsersNotificationsUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersNotifications!]!
+}
+
+input UsersOrderBy {
+  about: OrderByDirection
+  avatarUrl: OrderByDirection
+  createdAt: OrderByDirection
+  firstName: OrderByDirection
+  id: OrderByDirection
+  lastName: OrderByDirection
+  publicEmail: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+type UsersProjectsCollections implements Node {
+  createdAt: Datetime!
+  createdBy: Users
+  createdById: UUID!
+  description: String
+  id: UUID!
+  isPublic: Boolean!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  title: String!
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID
+}
+
+type UsersProjectsCollectionsConnection {
+  edges: [UsersProjectsCollectionsEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UsersProjectsCollectionsDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersProjectsCollections!]!
+}
+
+type UsersProjectsCollectionsEdge {
+  cursor: String!
+  node: UsersProjectsCollections!
+}
+
+input UsersProjectsCollectionsFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: UUIDFilter
+  isPublic: BooleanFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input UsersProjectsCollectionsInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  id: UUID
+  isPublic: Boolean
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type UsersProjectsCollectionsInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersProjectsCollections!]!
+}
+
+input UsersProjectsCollectionsOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  isPublic: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input UsersProjectsCollectionsUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  id: UUID
+  isPublic: Boolean
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type UsersProjectsCollectionsUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersProjectsCollections!]!
+}
+
+type UsersProjectsLikes implements Node {
+  createdAt: Datetime!
+  id: Int!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  project: Projects
+  projectId: UUID!
+  user: Users
+  userId: UUID!
+}
+
+type UsersProjectsLikesConnection {
+  edges: [UsersProjectsLikesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UsersProjectsLikesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersProjectsLikes!]!
+}
+
+type UsersProjectsLikesEdge {
+  cursor: String!
+  node: UsersProjectsLikes!
+}
+
+input UsersProjectsLikesFilter {
+  createdAt: DatetimeFilter
+  id: IntFilter
+  nodeId: IDFilter
+  projectId: UUIDFilter
+  userId: UUIDFilter
+}
+
+input UsersProjectsLikesInsertInput {
+  createdAt: Datetime
+  projectId: UUID
+  userId: UUID
+}
+
+type UsersProjectsLikesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersProjectsLikes!]!
+}
+
+input UsersProjectsLikesOrderBy {
+  createdAt: OrderByDirection
+  id: OrderByDirection
+  projectId: OrderByDirection
+  userId: OrderByDirection
+}
+
+input UsersProjectsLikesUpdateInput {
+  createdAt: Datetime
+  projectId: UUID
+  userId: UUID
+}
+
+type UsersProjectsLikesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersProjectsLikes!]!
+}
+
+type UsersProjectsQueries implements Node {
+  createdAt: Datetime!
+  createdBy: Users
+  createdById: UUID!
+  description: String
+  id: BigInt!
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  query: JSON!
+  title: String!
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID!
+}
+
+type UsersProjectsQueriesConnection {
+  edges: [UsersProjectsQueriesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UsersProjectsQueriesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersProjectsQueries!]!
+}
+
+type UsersProjectsQueriesEdge {
+  cursor: String!
+  node: UsersProjectsQueries!
+}
+
+input UsersProjectsQueriesFilter {
+  createdAt: DatetimeFilter
+  createdById: UUIDFilter
+  description: StringFilter
+  id: BigIntFilter
+  nodeId: IDFilter
+  title: StringFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+}
+
+input UsersProjectsQueriesInsertInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  query: JSON
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type UsersProjectsQueriesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersProjectsQueries!]!
+}
+
+input UsersProjectsQueriesOrderBy {
+  createdAt: OrderByDirection
+  createdById: OrderByDirection
+  description: OrderByDirection
+  id: OrderByDirection
+  title: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+}
+
+input UsersProjectsQueriesUpdateInput {
+  createdAt: Datetime
+  createdById: UUID
+  description: String
+  query: JSON
+  title: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type UsersProjectsQueriesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersProjectsQueries!]!
+}
+
+type UsersRoles implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  request: AppRole
+  requestedAt: Datetime
+  role: AppRole!
+  updatedAt: Datetime!
+  updatedBy: Users
+  updatedById: UUID!
+  user: Users
+  userId: UUID!
+}
+
+type UsersRolesConnection {
+  edges: [UsersRolesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UsersRolesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersRoles!]!
+}
+
+type UsersRolesEdge {
+  cursor: String!
+  node: UsersRoles!
+}
+
+input UsersRolesFilter {
+  nodeId: IDFilter
+  request: AppRoleFilter
+  requestedAt: DatetimeFilter
+  role: AppRoleFilter
+  updatedAt: DatetimeFilter
+  updatedById: UUIDFilter
+  userId: UUIDFilter
+}
+
+input UsersRolesInsertInput {
+  request: AppRole
+  requestedAt: Datetime
+  role: AppRole
+  updatedAt: Datetime
+  updatedById: UUID
+  userId: UUID
+}
+
+type UsersRolesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersRoles!]!
+}
+
+input UsersRolesOrderBy {
+  request: OrderByDirection
+  requestedAt: OrderByDirection
+  role: OrderByDirection
+  updatedAt: OrderByDirection
+  updatedById: OrderByDirection
+  userId: OrderByDirection
+}
+
+input UsersRolesUpdateInput {
+  request: AppRole
+  requestedAt: Datetime
+  role: AppRole
+  updatedAt: Datetime
+  updatedById: UUID
+  userId: UUID
+}
+
+type UsersRolesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [UsersRoles!]!
+}
+
+input UsersUpdateInput {
+  about: String
+  avatarUrl: String
+  createdAt: Datetime
+  firstName: String
+  id: UUID
+  lastName: String
+  publicEmail: String
+  updatedAt: Datetime
+  updatedById: UUID
+}
+
+type UsersUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [Users!]!
+}
+
+type spatial_ref_sys implements Node {
+  auth_name: String
+  auth_srid: Int
+
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  proj4text: String
+  srid: Int!
+  srtext: String
+}
+
+type spatial_ref_sysConnection {
+  edges: [spatial_ref_sysEdge!]!
+  pageInfo: PageInfo!
+}
+
+type spatial_ref_sysEdge {
+  cursor: String!
+  node: spatial_ref_sys!
+}
+
+input spatial_ref_sysFilter {
+  auth_name: StringFilter
+  auth_srid: IntFilter
+  nodeId: IDFilter
+  proj4text: StringFilter
+  srid: IntFilter
+  srtext: StringFilter
+}
+
+input spatial_ref_sysOrderBy {
+  auth_name: OrderByDirection
+  auth_srid: OrderByDirection
+  proj4text: OrderByDirection
+  srid: OrderByDirection
+  srtext: OrderByDirection
+}

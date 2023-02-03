@@ -1,5 +1,5 @@
-import { getDb } from '$utils/database';
-import { dbAdmin } from '$utils/databaseAdmin';
+import { dbAdmin } from '$utils/database/admin';
+import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';

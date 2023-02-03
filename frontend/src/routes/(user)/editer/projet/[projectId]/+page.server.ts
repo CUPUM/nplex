@@ -1,4 +1,4 @@
-import { getDb } from '$utils/database';
+import { getDb } from '$utils/database/client';
 import { SEARCH_PARAMS, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { toPgArr } from '$utils/format';
 import { error, fail, redirect } from '@sveltejs/kit';

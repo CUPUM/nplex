@@ -7,6 +7,31 @@ export type Json =
   | Json[]
 
 export interface Database {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       actors: {
@@ -971,7 +996,7 @@ export interface Database {
         Row: {
           created_at: string
           created_by_id: string
-          granted_role: Database["public"]["Enums"]["user_role"]
+          granted_role: Database["public"]["Enums"]["app_role"]
           project_id: string
           updated_at: string
           updated_by_id: string
@@ -980,7 +1005,7 @@ export interface Database {
         Insert: {
           created_at?: string
           created_by_id?: string
-          granted_role?: Database["public"]["Enums"]["user_role"]
+          granted_role?: Database["public"]["Enums"]["app_role"]
           project_id: string
           updated_at?: string
           updated_by_id?: string
@@ -989,7 +1014,7 @@ export interface Database {
         Update: {
           created_at?: string
           created_by_id?: string
-          granted_role?: Database["public"]["Enums"]["user_role"]
+          granted_role?: Database["public"]["Enums"]["app_role"]
           project_id?: string
           updated_at?: string
           updated_by_id?: string
@@ -1022,21 +1047,41 @@ export interface Database {
           work_id?: number
         }
       }
-      user_role_details: {
+      role_details: {
         Row: {
+          app_role: Database["public"]["Enums"]["app_role"]
           description: string
           title: string
-          user_role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
+          app_role: Database["public"]["Enums"]["app_role"]
           description: string
           title: string
-          user_role: Database["public"]["Enums"]["user_role"]
         }
         Update: {
+          app_role?: Database["public"]["Enums"]["app_role"]
           description?: string
           title?: string
-          user_role?: Database["public"]["Enums"]["user_role"]
+        }
+      }
+      role_permissions: {
+        Row: {
+          created_at: string | null
+          id: number
+          permission: Database["public"]["Enums"]["app_permission"]
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          permission: Database["public"]["Enums"]["app_permission"]
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          permission?: Database["public"]["Enums"]["app_permission"]
+          role?: Database["public"]["Enums"]["app_role"]
         }
       }
       users: {
@@ -1209,25 +1254,25 @@ export interface Database {
       }
       users_roles: {
         Row: {
-          request: Database["public"]["Enums"]["user_role"] | null
+          request: Database["public"]["Enums"]["app_role"] | null
           requested_at: string | null
-          role: Database["public"]["Enums"]["user_role"]
+          role: Database["public"]["Enums"]["app_role"]
           updated_at: string
           updated_by_id: string
           user_id: string
         }
         Insert: {
-          request?: Database["public"]["Enums"]["user_role"] | null
+          request?: Database["public"]["Enums"]["app_role"] | null
           requested_at?: string | null
-          role?: Database["public"]["Enums"]["user_role"]
+          role?: Database["public"]["Enums"]["app_role"]
           updated_at?: string
           updated_by_id?: string
           user_id: string
         }
         Update: {
-          request?: Database["public"]["Enums"]["user_role"] | null
+          request?: Database["public"]["Enums"]["app_role"] | null
           requested_at?: string | null
-          role?: Database["public"]["Enums"]["user_role"]
+          role?: Database["public"]["Enums"]["app_role"]
           updated_at?: string
           updated_by_id?: string
           user_id?: string
@@ -1305,43 +1350,17 @@ export interface Database {
       }
     }
     Functions: {
-      cube:
+      authorize:
         | {
-            Args: { "": number }
-            Returns: unknown
+            Args: Record<PropertyKey, never>
+            Returns: boolean
           }
         | {
-            Args: { "": number[] }
-            Returns: unknown
+            Args: {
+              requested_permission: Database["public"]["Enums"]["app_permission"]
+            }
+            Returns: boolean
           }
-      cube_dim: {
-        Args: { "": unknown }
-        Returns: number
-      }
-      cube_in: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      cube_is_point: {
-        Args: { "": unknown }
-        Returns: boolean
-      }
-      cube_out: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      cube_recv: {
-        Args: { "": unknown }
-        Returns: unknown
-      }
-      cube_send: {
-        Args: { "": unknown }
-        Returns: string
-      }
-      cube_size: {
-        Args: { "": unknown }
-        Returns: number
-      }
       default_uid: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -1373,17 +1392,23 @@ export interface Database {
             Returns: boolean
           }
         | {
-            Args: { role: Database["public"]["Enums"]["user_role"] }
+            Args: { role: Database["public"]["Enums"]["app_role"] }
             Returns: boolean
           }
     }
     Enums: {
+      app_permission:
+        | "project_insert"
+        | "project_delete"
+        | "project_update"
+        | "project_select"
+        | "project_publish"
+      app_role: "nplex" | "admin" | "editor" | "visitor"
       publication_status:
         | "unpublished"
         | "pending_approval"
         | "rejected_approval"
         | "published"
-      user_role: "nplex" | "admin" | "editor" | "visitor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1497,12 +1522,12 @@ export interface Database {
         Args: {
           prefix: string
           bucketname: string
-          limits: number
-          levels: number
-          offsets: number
-          search: string
-          sortcolumn: string
-          sortorder: string
+          limits?: number
+          levels?: number
+          offsets?: number
+          search?: string
+          sortcolumn?: string
+          sortorder?: string
         }
         Returns: {
           name: string

@@ -8,7 +8,7 @@
 	export let cta: boolean | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
 	export let equi: boolean | undefined = undefined;
-	export let round: boolean | undefined = undefined;
+	export let rounded: boolean | undefined = undefined;
 	export let active: boolean | undefined = undefined;
 	export let group: string | undefined = undefined;
 	export let noscroll: true | undefined = undefined;
@@ -23,7 +23,7 @@
 	class:active
 	class:disabled
 	class:equi
-	class:round
+	class:rounded
 	data-group={group}
 	aria-disabled={disabled}
 	{href}
@@ -51,7 +51,7 @@
 		line-height: 1;
 		color: col(fg, 100);
 		backdrop-filter: blur(6px);
-		transition: all 0.15s ease;
+		// transition: all 0.1s ease;
 
 		&:focus-visible,
 		&:focus {
@@ -68,7 +68,7 @@
 			height: 100%;
 			background: var(--nav-bg);
 			opacity: 0.75;
-			transition: all 0.1s ease;
+			// transition: all 0.1s ease;
 
 			:global(.category) > & {
 				opacity: 1;
@@ -110,7 +110,7 @@
 		padding: 0;
 	}
 
-	.round {
+	.rounded {
 		aspect-ratio: 1;
 		padding: 0;
 		border-radius: 50%;

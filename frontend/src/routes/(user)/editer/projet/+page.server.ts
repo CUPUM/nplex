@@ -1,4 +1,4 @@
-import { errmsg, getDb } from '$utils/database';
+import { errmsg, getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';

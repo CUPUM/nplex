@@ -1,5 +1,6 @@
 @use './utils/breakpoint.scss';
 @use './utils/color.scss' as *;
+@use 'classes';
 
 :root {
 	background: var(--ui-bg);
@@ -14,7 +15,7 @@
 	overflow-y: scroll;
 	scroll-snap-type: y proximity;
 	scroll-behavior: smooth;
-	transition: background 0.2s ease;
+	// transition: background 0.2s ease;
 
 	&[lock-scroll] {
 		overflow-y: hidden;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Map from '$components/Map.svelte';
-	import MapAttributionControl from '$components/MapAttributionControl.svelte';
+	import Map from '$components/Map/Map.svelte';
+	import MapAttributionControl from '$components/Map/MapAttributionControl.svelte';
 	import MapDraw from '$components/MapDraw.svelte';
 	import MapDrawCircle from '$components/MapDrawCircle.svelte';
 	import { overlapNavbarStyle } from '$routes/Navbar.svelte';

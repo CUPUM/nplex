@@ -1,4 +1,4 @@
-import { getDb } from '$utils/database';
+import { getDb } from '$utils/database/client';
 import sharp from 'sharp';
 import type { RequestHandler } from './$types';
 import { options } from './common';

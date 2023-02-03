@@ -1,5 +1,5 @@
 import { maybeSingle } from '$types/utils';
-import { getDb } from '$utils/database';
+import { getDb } from '$utils/database/client';
 import { LOAD_DEPENDENCIES, STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
@@ -29,12 +29,12 @@ export const load = (async (event) => {
 	}
 	// Role details.
 	const roleRes = await db
-		.from('user_role_details')
+		.from('app_role_details')
 		.select()
-		.eq('user_role', maybeSingle(profileRes.data.role)?.role)
+		.eq('app_role', maybeSingle(profileRes.data.role)?.role)
 		.maybeSingle();
 	// Getting list of roles for form.
-	const rolesRes = await db.from('user_role_details').select('*');
+	const rolesRes = await db.from('app_role_details').select('*');
 	if (rolesRes.error) {
 		throw error(STATUS_CODES.InternalServerError, rolesRes.error);
 	}

@@ -1,7 +1,8 @@
 @use '../utils/mixins.scss';
 
 .rounded {
-	border-radius: 999px;
+	--radius: 999px;
+	border-radius: 999px !important;
 }
 
 // Remove scrollbar but keep scrollability of element with overflow auto or overflow scroll.
@@ -19,31 +20,9 @@
 	@include mixins.focuspress;
 }
 
-// Give a placeholder / suspense element a pulsing gradient animation
-.skeleton {
-	border-radius: inherit;
-	animation: skeleton-pulse 1s infinite;
-}
-.skeleton-text {
-	height: 1em;
-	border-radius: var(--ui-radius-sm);
-	animation: skeleton-pulse 1s infinite;
-}
-@keyframes skeleton-pulse {
-	0% {
-		transform: scale(1);
-	}
-	25% {
-		transform: scale(0.96);
-	}
-	100% {
-		transform: scale(1);
-	}
-}
-
-.focus-outline- {
-	&within,
-	&visible {
+.focus-outline {
+	&-within,
+	&-visible {
 		// Excluding outlined variants
 		&:not(.outlined) {
 			&::after {

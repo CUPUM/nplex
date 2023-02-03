@@ -12,7 +12,8 @@
 		"forceConsistentCasingInFileNames": true,
 		"allowJs": true,
 		"checkJs": true,
-		"strict": true
+		"strict": true,
+		"rootDirs": [".", "./.svelte-kit/types", "./$houdini/types"]
 	},
 	"include": ["src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "src/**/*.svx", "src/**/*.d.ts"]
 }

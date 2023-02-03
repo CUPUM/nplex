@@ -1,4 +1,4 @@
-import { errmsg, getDb } from '$utils/database';
+import { errmsg, getDb } from '$utils/database/client';
 import { COOKIES, SEARCH_PARAMS, STATUS_CODES } from '$utils/enums';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';

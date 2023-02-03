@@ -1,0 +1,2 @@
+schema: 'src/lib/graphql/schema.graphql'
+documents: 'src/**/*.{graphql,gql,js,ts,svelte}'

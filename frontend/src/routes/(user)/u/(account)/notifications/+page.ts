@@ -1,5 +1,5 @@
 import { maybeSingle } from '$types/utils';
-import { getDb } from '$utils/database';
+import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
