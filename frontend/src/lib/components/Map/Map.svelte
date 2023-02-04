@@ -22,6 +22,8 @@
 </script>
 
 <script lang="ts">
+	import { browser } from '$app/environment';
+
 	import type { Cursor } from '$utils/enums';
 	import { MAP_GESTURES_TEXT, MAP_LOCALES, MAP_STYLES, type MapLocale } from '$utils/map';
 	import { LOCATIONS } from '$utils/map/locations';
@@ -39,7 +41,7 @@
 	export let preserveDrawingBuffer: MapOptions['preserveDrawingBuffer'] = undefined;
 	export let antialias: MapOptions['antialias'] = true;
 	export let refreshExpiredTiles: MapOptions['refreshExpiredTiles'] = true;
-	export let maxBounds: MapOptions['maxBounds'] = undefined;
+	export let maxBounds: MapOptions['maxBounds'] = LOCATIONS.montreal.maxBounds;
 	export let minZoom: MapOptions['minZoom'] = 1;
 	export let maxZoom: MapOptions['maxZoom'] = 20;
 	export let minPitch: MapOptions['minPitch'] = undefined;
@@ -61,7 +63,7 @@
 	export let maxTileCacheSize: MapOptions['maxTileCacheSize'] = undefined;
 	export let transformRequest: MapOptions['transformRequest'] = undefined;
 	export let locale: MapLocale = MAP_LOCALES.french;
-	export let fadeDuration: MapOptions['fadeDuration'] = undefined;
+	export let fadeDuration: MapOptions['fadeDuration'] = 50;
 	export let crossSourceCollisions: MapOptions['crossSourceCollisions'] = undefined;
 	export let collectResourceTiming: MapOptions['collectResourceTiming'] = undefined;
 	export let clickTolerance: MapOptions['clickTolerance'] = undefined;
@@ -121,7 +123,7 @@
 			maxTileCacheSize,
 			transformRequest,
 			locale,
-			fadeDuration,
+			fadeDuration, // WARNING: IF UNDEFINED CAUSES PROBLEM WITH MAPBOX DRAW
 			crossSourceCollisions,
 			collectResourceTiming,
 			clickTolerance,
@@ -169,9 +171,11 @@
 	});
 
 	onMount(() => {
-		resizeObserver = new ResizeObserver(handleResize);
-		resizeObserver.observe(containerRef);
-		init();
+		if (browser) {
+			resizeObserver = new ResizeObserver(handleResize);
+			resizeObserver.observe(containerRef);
+			init();
+		}
 	});
 
 	onDestroy(() => {
@@ -185,8 +189,7 @@
 	<div class="map-container" bind:this={containerRef} />
 	{#if map}
 		<slot {map} />
-	{/if}
-	{#if !map}
+	{:else}
 		<div class="loading">
 			<slot name="loading">
 				<Loading />

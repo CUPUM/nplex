@@ -1,5 +1,32 @@
 import type { ValueOf } from 'ts-essentials';
 
+/**
+ * MapboxDraw event names.
+ */
+export const DRAW_EVENTS = {
+	Create: 'draw.create',
+	Delete: 'draw.delete',
+	Update: 'draw.update',
+	Render: 'draw.render',
+	Combine: 'draw.combine',
+	Uncombine: 'draw.uncombine',
+	ModeChange: 'draw.modechange',
+	Actionable: 'draw.actionable',
+	SelectionChange: 'draw.selectionchange',
+} as const satisfies Record<string, MapboxDraw.DrawEventType>;
+
+/**
+ * MapboxDraw internal source layer ids.
+ */
+export const DRAW_SOURCE_IDS = {
+	Hot: 'mapbox-gl-draw-hot',
+	Cold: 'mapbox-gl-draw-cold',
+} as const;
+export type DrawSourceId = ValueOf<typeof DRAW_SOURCE_IDS>;
+
+/**
+ * Bracket pairs, useful for parsing or formatting functions.
+ */
 export const BRACKETS = {
 	curly: {
 		start: '{',

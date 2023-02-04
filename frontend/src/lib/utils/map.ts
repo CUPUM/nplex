@@ -16,7 +16,7 @@ export const MAP_STYLES = {
  * Default Draw styles, taken from:
  * https://github.com/mapbox/mapbox-gl-draw/blob/main/src/lib/theme.js.
  */
-export const MAP_DRAW_STYLES: MapDrawStyles = [
+export const DRAW_STYLES: MapDrawStyles = [
 	{
 		id: 'gl-draw-polygon-fill-inactive',
 		type: 'fill',
@@ -243,7 +243,7 @@ export const MAP_DRAW_STYLES: MapDrawStyles = [
  * Include default values for omited styles.
  */
 export function extendDefaultDrawStyles(styles: MapDrawStyles) {
-	const o = Object.fromEntries(MAP_DRAW_STYLES.map((s) => [s.id, s]));
+	const o = Object.fromEntries(DRAW_STYLES.map((s) => [s.id, s]));
 	for (const s of styles) {
 		o[s.id] = s;
 	}
@@ -260,7 +260,7 @@ export function createDrawStyles(
 ) {
 	let filled = styles
 		.map((s) => {
-			const base = MAP_DRAW_STYLES.find((d) => d.id === s.id);
+			const base = DRAW_STYLES.find((d) => d.id === s.id);
 			if (!base) return false;
 			return {
 				...base,

@@ -5,18 +5,22 @@
 
 	let draw: ComponentProps<MapDraw>['draw'];
 
-	function setMode(e: any) {
-		console.log(draw?.getMode());
+	function toggleMode(e: any) {
+		if (draw?.getMode() == 'draw_points') {
+			draw.changeMode('simple_select');
+			return;
+		}
+		draw?.changeMode('draw_points', { max: 5 });
 	}
 </script>
 
 <article>
 	<section>
 		<Map>
-			<MapDraw bind:draw mode="multi_point" />
+			<MapDraw bind:draw />
 		</Map>
 	</section>
-	<button class="ui-button" on:pointerdown={setMode}><span class="ui-text">Draw!</span></button>
+	<button class="ui-button" on:pointerdown={toggleMode}><span class="ui-text">Draw!</span></button>
 </article>
 
 <style lang="scss">
