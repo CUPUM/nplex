@@ -17,13 +17,13 @@ declare global {
 const DEFAULT_GROUP = 'points';
 
 type DrawPointsState = {
-	max?: number;
+	maxCount?: number;
 	group: number | string;
 };
 
 type DrawPointsOptions = {
 	points?: Position[];
-	max?: DrawPointsState['max'];
+	maxCount?: DrawPointsState['maxCount'];
 	group?: DrawPointsState['group'];
 };
 
@@ -41,7 +41,7 @@ function createPoint(coordinates: Position): GeoJSON.Feature<GeoJSON.Point> {
 }
 
 export const DrawPointsMode: MapboxDraw.DrawCustomMode<DrawPointsState, DrawPointsOptions> = {
-	onSetup({ points = [[-73.65, 45.55]], max = undefined, group = DEFAULT_GROUP }) {
+	onSetup({ points = [[-73.65, 45.55]], maxCount = undefined, group = DEFAULT_GROUP }) {
 		// Init _draw_points prop on map.
 		if (!this.map._draw_points) {
 			this.map._draw_points = {
@@ -54,15 +54,15 @@ export const DrawPointsMode: MapboxDraw.DrawCustomMode<DrawPointsState, DrawPoin
 		}
 		const prevFeatures = this.map._draw_points.features[group];
 		// Adjusting previously added group's points to the current max.
-		if (max) {
-			const prevExceeding = prevFeatures.splice(0, Math.max(0, prevFeatures.length - max));
+		if (maxCount) {
+			const prevExceeding = prevFeatures.splice(0, Math.max(0, prevFeatures.length - maxCount));
 			prevExceeding.forEach((f) => {
 				this.deleteFeature(String(f.id));
 			});
 		}
 		// Append new points if not over max.
 		points.every((coord, i) => {
-			if (max && i + prevFeatures.length >= max) {
+			if (maxCount && i + prevFeatures.length >= maxCount) {
 				return false;
 			}
 			const point = this.newFeature(createPoint(coord)) as MapboxDraw.DrawPoint;
@@ -71,7 +71,7 @@ export const DrawPointsMode: MapboxDraw.DrawCustomMode<DrawPointsState, DrawPoin
 			return true;
 		});
 		return {
-			max,
+			maxCount,
 			group,
 		};
 	},
@@ -79,7 +79,7 @@ export const DrawPointsMode: MapboxDraw.DrawCustomMode<DrawPointsState, DrawPoin
 	onClick(state, e) {
 		const newPoint = this.newFeature(createPoint(e.lngLat.toArray())) as MapboxDraw.DrawPoint;
 		const group = this.map._draw_points!.features[state.group];
-		if (state.max && group.length && group.length >= state.max) {
+		if (state.maxCount && group.length && group.length >= state.maxCount) {
 			const remove = group.shift();
 			if (remove && remove.id != null) {
 				this.deleteFeature(String(remove.id));

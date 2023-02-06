@@ -12,10 +12,6 @@
 </i>
 
 <style lang="scss">
-	:where(i) {
-		all: unset;
-	}
-
 	.field-icon {
 		--gap: 0.2em;
 		position: relative;

@@ -19,8 +19,4 @@
 	ul {
 		width: 100%;
 	}
-
-	h2 {
-		@include h2;
-	}
 </style>

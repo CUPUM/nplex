@@ -156,14 +156,10 @@
 		width: 100%;
 		margin: 0 auto;
 
-		@include laptop {
+		@include breakpoint.laptop {
 			flex-direction: column;
 			align-items: flex-start;
 		}
-	}
-
-	h3 {
-		@include h2;
 	}
 
 	form {

@@ -319,7 +319,7 @@
 			align-items: flex-start;
 		}
 
-		> :global(*) {
+		&:not([hidden]) > :global(*) {
 			pointer-events: all;
 		}
 	}
@@ -328,11 +328,11 @@
 	section[hidden] {
 		transform: translateY(-12px);
 		opacity: 0;
+		pointer-events: none;
 	}
 
 	section[hidden] {
 		transition-delay: 0s;
-		pointer-events: none;
 	}
 
 	.main {

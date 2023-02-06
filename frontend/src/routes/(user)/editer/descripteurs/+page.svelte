@@ -26,8 +26,4 @@
 		text-transform: uppercase;
 		font-weight: 700;
 	}
-
-	h1 {
-		@include h1;
-	}
 </style>

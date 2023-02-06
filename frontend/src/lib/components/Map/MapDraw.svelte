@@ -11,26 +11,19 @@
 <script lang="ts" context="module">
 	const CTX_KEY = 'map-draw-context';
 
-	export const DRAW_MODES = {
-		DrawLineString: 'draw_line_string',
-		DrawPolygon: 'draw_polygon',
-		DrawPoint: 'draw_point',
-		DirectSelect: 'direct_select',
-		SimpleSelect: 'simple_select',
-		DrawPoints: 'draw_points',
-		// DrawCircle: 'draw_circle',
-		// DragCircle: 'drag_circle',
-	} as const;
-	export type DrawMode = ValueOf<typeof DRAW_MODES>;
+	// const MODES = {
+	// 	...MapboxDraw.modes,
+	// 	draw_points: DrawPointsMode,
+	// 	draw_circle: DrawCircleMode,
+	// } as const satisfies Record<DrawMode, MapboxDraw.DrawCustomMode>;
 
-	const MODES = {
+	const MODES: Record<DrawMode, MapboxDraw.DrawCustomMode> = MapboxGeodesic.enable({
 		...MapboxDraw.modes,
-		draw_points: DrawPointsMode,
-	} as const satisfies Record<DrawMode, MapboxDraw.DrawCustomMode>;
+	});
 
 	interface MapDrawContext {
 		getMapDraw: () => MapboxDraw;
-		mode: Writable<DrawMode>;
+		mode: Readable<DrawMode>;
 		changeMode: (mode: DrawMode, opts?: any) => void;
 	}
 
@@ -41,9 +34,8 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { DRAW_EVENTS } from '$utils/enums';
+	import { DRAW_EVENTS, DRAW_MODES, type DrawMode } from '$utils/enums';
 	import { DRAW_STYLES } from '$utils/map';
-	import { DrawPointsMode } from '$utils/map/modes/points';
 	import type {
 		DrawActionableEvent,
 		DrawCombineEvent,
@@ -56,10 +48,9 @@
 	} from '@mapbox/mapbox-gl-draw';
 	import MapboxDraw from '@mapbox/mapbox-gl-draw';
 	import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-	// import * as MapboxGeodesic from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
+	import * as MapboxGeodesic from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
-	import type { ValueOf } from 'ts-essentials';
+	import { writable, type Readable } from 'svelte/store';
 	import { getMapContext } from './Map.svelte';
 
 	/**
@@ -69,7 +60,8 @@
 	/**
 	 * Initializes as the default mode and then is updated to reflect current mode.
 	 */
-	export let mode: DrawMode = 'draw_points';
+	export let mode: DrawMode = DRAW_MODES.SimpleSelect;
+	export let styles: object[] = DRAW_STYLES;
 
 	const { getMap } = getMapContext();
 	const dispatch = createEventDispatcher();
@@ -80,9 +72,11 @@
 			const map = getMap();
 			if (map) {
 				const predraw = new MapboxDraw({
-					styles: DRAW_STYLES,
+					styles,
 					modes: MODES,
+					displayControlsDefault: true,
 					defaultMode,
+					userProperties: true,
 				});
 				map.addControl(predraw as any);
 				map.on(DRAW_EVENTS.ModeChange, (e: MapboxDraw.DrawModeChangeEvent) => {
@@ -147,7 +141,6 @@
 	// }
 
 	const _mode = writable<typeof mode>();
-	$: mode = $_mode;
 	$: if (mode) {
 		_mode.set(mode);
 		changeMode(mode);
@@ -155,7 +148,7 @@
 
 	setContext<MapDrawContext>(CTX_KEY, {
 		getMapDraw: () => draw!,
-		mode: _mode,
+		mode: { subscribe: _mode.subscribe },
 		changeMode,
 	});
 

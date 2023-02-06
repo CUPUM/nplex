@@ -168,7 +168,7 @@
 			max-width: var(--ui-width-main);
 			gap: 1.5rem;
 
-			@include laptop {
+			@include breakpoint.laptop {
 				padding-inline: 1.5rem;
 				max-width: var(--ui-width-);
 			}

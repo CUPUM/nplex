@@ -1,6 +1,3 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import type { ComponentProps } from 'svelte';
 	import Button from './Button.svelte';
@@ -8,16 +5,14 @@
 	import Icon from './Icon.svelte';
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
-	export let defaultValue: string | undefined = undefined;
+	export let defaultValue: any = null;
 
 	const { value, inputRef } = getFieldContext();
 
-	$: computedDefaultValue = defaultValue ?? $inputRef?.defaultValue;
-
-	$: show = $value !== computedDefaultValue;
+	$: show = $value != defaultValue && $value != '';
 
 	function reset() {
-		value.set(computedDefaultValue);
+		value.set(defaultValue);
 	}
 </script>
 

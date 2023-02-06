@@ -17,23 +17,24 @@
 		<Ripple />
 		<span class="ui-text">Test</span>
 	</button>
-	<button class="button cta">
+	<button class="ui-button cta">
 		<Ripple />
 		<span class="text">Test</span>
 	</button>
 </article>
 <article>
 	<h2>Field</h2>
-	<fieldset class="ui-field">
+	<!-- <fieldset class="ui-field">
 		<button class="ui-button"><span class="ui-text">Test</span></button>
 		<input type="text" name="" id="" placeholder="Placeholder" />
-		<button class="ui-button">Test</button>
-	</fieldset>
-	<fieldset class="ui-field">
+		<button class="ui-button"><div class="ui-text">Test</div></button>
+	</fieldset> -->
+	<fieldset class="ui-field" style="width: 100%;">
 		<button class="ui-button"><span class="ui-text">Test</span></button>
+		<Icon name="settings" />
 		<div class="ui-label-input">
-			<legend>Test</legend>
 			<input type="number" min="10" max="100" name="" id="" placeholder="Placeholder" />
+			<legend>Test</legend>
 		</div>
 	</fieldset>
 </article>

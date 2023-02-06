@@ -31,9 +31,9 @@ declare module 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic' {
 		radius: number
 	): any;
 
-	export function enable<M extends Record<string, MapboxDraw.DrawCustomMode>>(
+	export function enable<M extends Record<unkown, MapboxDraw.DrawCustomMode>>(
 		modes: M
-	): Record<string, any>;
+	): M & { draw_circle: MapboxDraw.DrawCustomMode; static: MapboxDraw.DrawCustomMode };
 }
 
 declare module 'maplibre-gl-draw-circle';

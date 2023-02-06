@@ -57,7 +57,7 @@
 	this={as ? as : href && !disabled ? 'a' : 'button'}
 	bind:this={buttonRef}
 	data-sveltekit-noscroll={noscroll ? '' : 'off'}
-	class="button nest focus-outline-visible {computedVariant} {contentAlign} {className} {ICON_CLASS.hover}"
+	class="button focus-outline-visible {computedVariant} {contentAlign} {className} {ICON_CLASS.hover}"
 	class:compact
 	class:warning
 	class:equi
@@ -119,9 +119,8 @@
 
 <style lang="scss">
 	:where(.button) {
-		--height: calc(var(--ui-height) - 2 * var(--inset-sum));
-		--inset: var(--ui-inset);
-		--radius: var(--ui-radius-md);
+		--button-height: calc(var(--ui-height) - 2 * var(--inset, 0px));
+		--button-radius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
 		position: relative;
 		display: inline-grid;
 		grid-template-columns:
@@ -136,7 +135,7 @@
 			[trailing-end trailing-padding-start]
 			var(--ui-pad-x)
 			[trailing-padding-end full-end];
-		grid-template-rows: minmax(var(--height), auto);
+		grid-template-rows: var(--button-height);
 		border: none;
 		padding: 0;
 		font-family: inherit;
@@ -145,7 +144,7 @@
 		align-items: center;
 		font-weight: 400;
 		font-size: inherit;
-		border-radius: calc(var(--radius) - var(--inset-sum));
+		border-radius: var(--button-radius);
 		cursor: pointer;
 		letter-spacing: 0em;
 		transform-origin: center;
@@ -175,7 +174,7 @@
 			[leading-padding-end leading-start]
 			0
 			[leading-end main-start]
-			var(--height)
+			var(--button-height)
 			[main-end trailing-start]
 			0
 			[trailing-end trailing-padding-start]

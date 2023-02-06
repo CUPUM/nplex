@@ -173,15 +173,6 @@
 				</svg>
 			</a>
 			<fieldset class="fields">
-				<!-- <fieldset class="field">
-					<div class="leading">
-						<Icon name="letter" />
-					</div>
-					<input type="email" name="email" placeholder="Courriel" />
-					<div class="trailing">
-						<button></button>
-					</div>
-				</fieldset> -->
 				<Field
 					type="email"
 					class="fill-row"

@@ -27,8 +27,8 @@ export const DRAW_STYLES: MapDrawStyles = [
 			['!=', 'mode', 'static'],
 		],
 		paint: {
-			'fill-color': THEME_PALETTES.light.primary[700],
-			'fill-outline-color': THEME_PALETTES.light.primary[700],
+			'fill-color': THEME_PALETTES.light.primary[500],
+			'fill-outline-color': THEME_PALETTES.light.primary[500],
 			'fill-opacity': 0.1,
 		},
 	},
@@ -41,15 +41,15 @@ export const DRAW_STYLES: MapDrawStyles = [
 				'case',
 				['boolean', ['feature-state', 'error'], false],
 				THEME_PALETTES.light.error[500],
-				THEME_PALETTES.light.primary[500],
+				THEME_PALETTES.light.primary[300],
 			],
 			'fill-outline-color': [
 				'case',
 				['boolean', ['feature-state', 'error'], false],
 				THEME_PALETTES.light.error[500],
-				THEME_PALETTES.light.primary[500],
+				THEME_PALETTES.light.primary[300],
 			],
-			'fill-opacity': 0.1,
+			'fill-opacity': 0.2,
 		},
 	},
 	{
@@ -57,7 +57,7 @@ export const DRAW_STYLES: MapDrawStyles = [
 		type: 'circle',
 		filter: ['all', ['==', '$type', 'Point'], ['==', 'meta', 'midpoint']],
 		paint: {
-			'circle-radius': 3,
+			'circle-radius': 4,
 			'circle-color': THEME_PALETTES.light.primary[500],
 		},
 	},
@@ -76,7 +76,7 @@ export const DRAW_STYLES: MapDrawStyles = [
 		},
 		paint: {
 			'line-color': THEME_PALETTES.light.primary[700],
-			'line-width': 2,
+			'line-width': 1.5,
 		},
 	},
 	{
@@ -89,8 +89,8 @@ export const DRAW_STYLES: MapDrawStyles = [
 		},
 		paint: {
 			'line-color': THEME_PALETTES.light.primary[500],
-			'line-dasharray': [0.2, 2],
-			'line-width': 2,
+			'line-dasharray': [0.25, 2],
+			'line-width': 1.5,
 		},
 	},
 	{
@@ -108,7 +108,7 @@ export const DRAW_STYLES: MapDrawStyles = [
 		},
 		paint: {
 			'line-color': THEME_PALETTES.light.primary[700],
-			'line-width': 2,
+			'line-width': 1.5,
 		},
 	},
 	{
@@ -121,8 +121,8 @@ export const DRAW_STYLES: MapDrawStyles = [
 		},
 		paint: {
 			'line-color': THEME_PALETTES.light.primary[500],
-			'line-dasharray': [0.2, 2],
-			'line-width': 2,
+			'line-dasharray': [0.25, 2],
+			'line-width': 1.5,
 		},
 	},
 	{

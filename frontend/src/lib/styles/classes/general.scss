@@ -1,4 +1,21 @@
 @use '../utils/mixins.scss';
+@use '../utils/color.scss' as *;
+
+h1,
+.h1 {
+}
+
+h2,
+.h2 {
+}
+
+h3,
+.h3 {
+}
+
+h4,
+.h4 {
+}
 
 .rounded {
 	--radius: 999px;
@@ -36,13 +53,13 @@
 				border-radius: inherit;
 				outline: 0px solid rgb(var(--rgb-primary-300), 0);
 				outline-offset: 0px;
-				transition: all 0.2s ease-out;
+				transition: all 0.15s;
 			}
 			&:focus-within,
 			&:focus-visible {
 				&::after {
-					outline: 3px solid rgb(var(--rgb-primary-300), 0.5);
-					outline-offset: 1px;
+					outline: 2px solid col(primary, 300);
+					// outline-offset: 0px;
 				}
 			}
 		}

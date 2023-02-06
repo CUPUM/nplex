@@ -111,10 +111,6 @@
 		gap: 1.5rem;
 	}
 
-	h2 {
-		@include h2;
-	}
-
 	h3 {
 		font-size: var(--ui-text-xl);
 		font-weight: 600;

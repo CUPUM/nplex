@@ -16,31 +16,89 @@ export const DRAW_EVENTS = {
 } as const satisfies Record<string, MapboxDraw.DrawEventType>;
 
 /**
- * MapboxDraw internal source layer ids.
+ * Keys (string names) of mapbox draw modes including custom modes.
  */
-export const DRAW_SOURCE_IDS = {
+export const DRAW_MODES = {
+	Static: 'static',
+	DrawLineString: 'draw_line_string',
+	DrawPolygon: 'draw_polygon',
+	DrawPoint: 'draw_point',
+	DirectSelect: 'direct_select',
+	SimpleSelect: 'simple_select',
+	// DrawPoints: 'draw_points',
+	DrawCircle: 'draw_circle',
+} as const;
+export type DrawMode = ValueOf<typeof DRAW_MODES>;
+
+export const DRAW_CLASSES = {
+	CONTROL_BASE: 'mapboxgl-ctrl',
+	CONTROL_PREFIX: 'mapboxgl-ctrl-',
+	CONTROL_BUTTON: 'mapbox-gl-draw_ctrl-draw-btn',
+	CONTROL_BUTTON_LINE: 'mapbox-gl-draw_line',
+	CONTROL_BUTTON_POLYGON: 'mapbox-gl-draw_polygon',
+	CONTROL_BUTTON_POINT: 'mapbox-gl-draw_point',
+	CONTROL_BUTTON_TRASH: 'mapbox-gl-draw_trash',
+	CONTROL_BUTTON_COMBINE_FEATURES: 'mapbox-gl-draw_combine',
+	CONTROL_BUTTON_UNCOMBINE_FEATURES: 'mapbox-gl-draw_uncombine',
+	CONTROL_GROUP: 'mapboxgl-ctrl-group',
+	ATTRIBUTION: 'mapboxgl-ctrl-attrib',
+	ACTIVE_BUTTON: 'active',
+	BOX_SELECT: 'mapbox-gl-draw_boxselect',
+} as const;
+
+export const DRAW_SOURCES = {
 	Hot: 'mapbox-gl-draw-hot',
 	Cold: 'mapbox-gl-draw-cold',
 } as const;
-export type DrawSourceId = ValueOf<typeof DRAW_SOURCE_IDS>;
 
-/**
- * Bracket pairs, useful for parsing or formatting functions.
- */
-export const BRACKETS = {
-	curly: {
-		start: '{',
-		end: '}',
-	},
-	square: {
-		start: '[',
-		end: ']',
-	},
-	parenthesis: {
-		start: '(',
-		end: ')',
-	},
-} as const satisfies Record<string, { start: string; end: string }>;
+export const DRAW_TYPES = {
+	Polygon: 'polygon',
+	Line: 'line_string',
+	Point: 'point',
+} as const;
+
+export const DRAW_UPDATE_ACTIONS = {
+	Move: 'move',
+	ChangeCoordinates: 'change_coordinates',
+} as const;
+
+export const DRAW_META_PROPERTY = {
+	Feature: 'feature',
+	Midpoint: 'midpoint',
+	Vertex: 'vertex',
+} as const;
+
+export const DRAW_ACTIVE_STATES = {
+	Active: 'true',
+	Inactive: 'false',
+} as const;
+
+export const DRAW_INTERACTIONS = {
+	ScrollZoom: 'scrollZoom',
+	BoxZoom: 'boxZoom',
+	DragRotate: 'dragRotate',
+	DragPan: 'dragPan',
+	Keyboard: 'keyboard',
+	DoubleClickZoom: 'doubleClickZoom',
+	TouchZoomRotate: 'touchZoomRotate',
+};
+
+export const GEOJSON_TYPES = {
+	Feature: 'Feature',
+	FeatureCollection: 'FeatureCollection',
+} as const;
+export type GeoJSONType = ValueOf<typeof GEOJSON_TYPES>;
+
+export const GEOJSON_GEOMETRY_TYPE = {
+	Point: 'Point',
+	MultiPoint: 'MultiPoint',
+	LineString: 'LineString',
+	MultiLineString: 'MultiLineString',
+	Polygon: 'Polygon',
+	MultiPolygon: 'MultiPolygon',
+	GeometryCollection: 'GeometryCollection',
+} as const satisfies Record<GeoJSON.GeoJsonGeometryTypes, GeoJSON.GeoJsonGeometryTypes>;
+export type GeoJSONGeometryType = ValueOf<typeof GEOJSON_GEOMETRY_TYPE>;
 
 /**
  * Common coordinate projection systems and their Spatial Reference System ID.
@@ -56,6 +114,21 @@ export const SRID = {
 	WebMercator: 3857,
 } as const;
 export type SRID = ValueOf<typeof SRID>;
+
+export const BRACKETS = {
+	curly: {
+		start: '{',
+		end: '}',
+	},
+	square: {
+		start: '[',
+		end: ']',
+	},
+	parenthesis: {
+		start: '(',
+		end: ')',
+	},
+} as const satisfies Record<string, { start: string; end: string }>;
 
 export const KEY = {
 	Undefined: 'Undefined',
@@ -109,9 +182,6 @@ export const KEY = {
 	ZoomIn: 'ZoomIn',
 	ZoomOut: 'ZoomOut',
 } as const;
-
-// Enums (app-wide and module-specific) should be UPPERCASED.
-// Conversly, their corresponding union types - provided when relevant - should be PascalCased and singular.
 
 /**
  * The main exploration categories.
@@ -278,12 +348,14 @@ export const ERROR_CODE_STATUS = {} as const;
  * List of CSS cursor values.
  */
 export const CURSOR = {
+	Add: 'add',
 	Alias: 'alias',
 	Auto: 'auto',
 	Cell: 'cell',
 	Copy: 'copy',
 	Crosshair: 'crosshair',
 	Default: 'default',
+	Drag: 'drag',
 	Grab: 'grab',
 	Grabbing: 'grabbing',
 	Help: 'help',

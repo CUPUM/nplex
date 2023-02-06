@@ -43,10 +43,6 @@
 </ul>
 
 <style lang="scss">
-	h2 {
-		@include h2;
-	}
-
 	p {
 		color: col(fg, 000);
 		opacity: 0.75;

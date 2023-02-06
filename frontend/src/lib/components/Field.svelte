@@ -142,7 +142,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <fieldset
-	class="container nest focus-outline-within {variant} {className}"
+	class="container focus-outline-within {variant} {className}"
 	{style}
 	{disabled}
 	class:compact
@@ -239,7 +239,7 @@
 <style lang="scss">
 	:where(.container) {
 		--radius: var(--ui-radius-md);
-		--height: calc(var(--ui-height) - 2 * var(--inset-sum));
+		--height: var(--ui-height);
 		--inset: var(--ui-inset);
 		--notch-padding: 0.25em;
 		--gutter: calc(var(--ui-pad-x) / 3);
@@ -268,7 +268,7 @@
 		align-items: stretch;
 		font-weight: 400;
 		font-size: inherit;
-		border-radius: calc(var(--radius) - var(--inset-sum));
+		border-radius: var(--radius);
 		cursor: text;
 		transition: transform 0.15s ease-out;
 		&:disabled {
@@ -456,11 +456,11 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(fg, 300);
-			background: col(fg, 100, 0.1);
+			background: col(fg, 500, 0.1);
 		}
 		&:focus-within {
 			color: col(fg, 900);
-			background: col(bg, 900);
+			background: col(fg, 500, 0.1);
 			:global(*[data-field-input]) {
 				opacity: 1;
 			}

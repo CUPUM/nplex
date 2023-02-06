@@ -59,7 +59,7 @@
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: 1.5rem;
 
-		@include laptop {
+		@include breakpoint.laptop {
 			grid-template-columns: 1fr 1fr;
 		}
 
