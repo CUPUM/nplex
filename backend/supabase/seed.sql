@@ -50,7 +50,7 @@ values
     ('nplex', 'Nplex', 'Utilisateur par défaut.'),
     ('admin', 'Administrateur', 'Administrateur avec accès et permissions permettant de gérer les droits des éditeurs et visiteurs.'),
     ('editor', 'Éditeur', 'Collaborateur ayant les droits de base pour la gestion et la publication de contenu.'),
-    ('visitor', 'Visitor', 'Utilisateurs sans droits particuliers de publication.');
+    ('visitor', 'Visiteur', 'Utilisateurs sans droits particuliers de publication.');
 
 
 -- Insert sample lists values.
