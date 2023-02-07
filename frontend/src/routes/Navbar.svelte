@@ -198,7 +198,6 @@
 		<section class="category" hidden={!$page.data.showCategoryNavbar}>
 			{#each exploreNav as r}
 				<NavbarButton
-					noscroll={r.noscroll}
 					category
 					href={r.pathname}
 					current={$page.url.pathname.startsWith(r.pathname) || undefined}

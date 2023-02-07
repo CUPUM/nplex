@@ -10,12 +10,10 @@
 
 	onMount(() => {
 		rootScroll.lock(key);
-		// navbarMaxWidth.set(NAVBAR_MAX_WIDTH.Full);
 	});
 
 	onDestroy(() => {
 		rootScroll.unlock(key);
-		// navbarMaxWidth.reset();
 	});
 
 	function handleSubmit() {}
@@ -25,7 +23,7 @@
 	<Map cooperativeGestures={false}>
 		<div class="ui-skeleton" slot="loading" />
 	</Map>
-	<form on:submit={handleSubmit} />
+	<!-- <form on:submit={handleSubmit} /> -->
 </article>
 
 <style lang="scss">

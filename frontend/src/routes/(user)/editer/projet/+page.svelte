@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Button from '$components/Button/Button.svelte';
+	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { messages } from '$routes/MessagesOutlet.svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -26,6 +28,9 @@
 		loading = true;
 		return async ({ update, result }) => {
 			update({ reset: false });
+			if (result.type === 'success' || result.type === 'redirect') {
+				return;
+			}
 			loading = false;
 		};
 	}}
@@ -33,7 +38,7 @@
 	<div>
 		<h1 in:fly={{ y: 20 }}>Créez votre nouveau projet</h1>
 		<fieldset in:fly={{ y: -20, delay: 150 }}>
-			<!-- <Field
+			<Field
 				name="title"
 				class="title"
 				placeholder="Donnez un titre à vorte projet"
@@ -47,21 +52,7 @@
 						<Icon slot="leading" name="arrow-right" />
 					</Button>
 				</svelte:fragment>
-			</Field> -->
-			<div class="title">
-				<input
-					placeholder="Donnez un titre à vorte projet"
-					bind:value={title}
-					type="text"
-					name="title"
-				/>
-				<button class="button" type="submit" disabled={!title}>
-					<span class="button-leading">
-						<Icon name="arrow-right" />
-					</span>
-					<span class="button-inner">Créer</span>
-				</button>
-			</div>
+			</Field>
 			<span in:fade={{ delay: 500 }}>
 				Vous pourrez toujours modifier le titre une fois le projet créé.
 			</span>
@@ -100,7 +91,7 @@
 		font-size: var(--ui-text-2xl);
 		font-weight: 600;
 		max-width: var(--ui-width-main);
-		text-align: center;
+		// text-align: center;
 		margin-bottom: 2rem;
 	}
 
@@ -120,7 +111,7 @@
 	span {
 		display: inline-block;
 		width: 100%;
-		text-align: center;
+		// text-align: center;
 		margin-top: 1.5rem;
 		font-size: var(--ui-text-md);
 		font-weight: 300;

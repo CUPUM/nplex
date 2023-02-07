@@ -20,7 +20,7 @@
 
 	export let href: string | undefined = undefined;
 	export let id: string | undefined = undefined;
-	export let variant: 'default' | 'outlined' | 'ghost' | 'cta' | 'danger' | undefined = undefined;
+	export let variant: 'default' | 'outlined' | 'ghost' | 'cta' | 'danger' | 'dashed' = 'default';
 	export let disabled: boolean | undefined = undefined;
 	export let loading: boolean = false;
 	export let warning: boolean = false;
@@ -252,7 +252,7 @@
 
 	// Variants
 
-	:where(.default) {
+	.default {
 		color: col(fg, 500);
 		background: col(fg, 100, 0.1);
 		transition: all 0.1s ease-out;
@@ -267,7 +267,8 @@
 		}
 	}
 
-	:where(.outlined) {
+	.outlined,
+	.dashed {
 		color: col(fg, 500);
 		background: transparent;
 		transition: all 0.1s ease-out;
@@ -300,7 +301,13 @@
 		}
 	}
 
-	:where(.ghost) {
+	.dashed {
+		&::before {
+			border-style: dashed !important;
+		}
+	}
+
+	.ghost {
 		color: col(fg, 300);
 		background: transparent;
 		transition: all 0.1s ease-out;
@@ -315,7 +322,7 @@
 		}
 	}
 
-	:where(.cta) {
+	.cta {
 		color: col(bg, 300);
 		background: col(primary, 500);
 		// box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
@@ -332,7 +339,7 @@
 		}
 	}
 
-	:where(.danger) {
+	.danger {
 		color: col(error, 500);
 		background: col(error, 900, 0.2);
 		box-shadow: 0 0.2em 1em -0.5em col(error, 500, 0);

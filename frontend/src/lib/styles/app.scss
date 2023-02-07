@@ -17,7 +17,7 @@
 	scroll-behavior: smooth;
 	// transition: background 0.2s ease;
 
-	&[lock-scroll] {
+	&[data-lock-scroll] {
 		overflow-y: hidden;
 		padding-right: var(--ui-scroll-size);
 

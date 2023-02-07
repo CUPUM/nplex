@@ -43,7 +43,7 @@
 	export let prefix: string | null | undefined = '';
 	export let suffix: string | null | undefined = '';
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
-	export let variant: 'default' | 'outlined' | 'cta' | 'opaque' = 'default';
+	export let variant: 'default' | 'outlined' | 'cta' | 'opaque' | 'dashed' = 'default';
 	export let textAlign:
 		| 'start'
 		| 'end'
@@ -155,7 +155,7 @@
 	class:hasplaceholder
 	class:haslabel
 	class:required
-	style:--label-width="{labelWidth}px"
+	style:--label-width="{labelWidth ?? 0}px"
 	on:click|self={focus}
 	on:click
 	on:pointerdown
@@ -427,7 +427,8 @@
 
 	// Variants
 
-	.default {
+	.default,
+	.opaque {
 		color: col(fg, 000);
 		background: col(fg, 500, 0.05);
 		transition: color 0.1s ease-out, background 0.1s ease-out;
@@ -472,28 +473,6 @@
 		background: col(bg, 500);
 		box-shadow: 0 0.25rem 1rem -0.5rem transparent;
 		transition: color 0.1s ease-out, background 0.1s ease-out, box-shadow 0.25s ease-out;
-		.outline {
-			display: none;
-		}
-		&.hasplaceholder,
-		&.hasvalue,
-		&:focus-within,
-		&:has(:-webkit-autofill) {
-			label {
-				opacity: 0.5;
-				top: 1.25em;
-				font-size: clamp(11px, 0.5em, 24px);
-			}
-			.affix {
-				opacity: 0.5;
-			}
-			&.haslabel {
-				.affix,
-				:global(*[data-field-input]) {
-					top: 0.5em;
-				}
-			}
-		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(fg, 700);
@@ -509,7 +488,8 @@
 		}
 	}
 
-	.outlined {
+	.outlined,
+	.dashed {
 		color: col(fg, 100);
 		background: transparent;
 		transition: color 0.1s ease-out, background 0.1s ease-out;
@@ -562,6 +542,12 @@
 			label {
 				color: col(primary, 500);
 			}
+		}
+	}
+
+	.dashed {
+		.outline {
+			border-style: dashed !important;
 		}
 	}
 
