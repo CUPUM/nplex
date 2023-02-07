@@ -71,7 +71,7 @@
 			width: 100%;
 			height: 100%;
 			background: var(--nav-bg);
-			opacity: 0.75;
+			opacity: 0.5;
 		}
 		&:hover:not([data-current]) {
 			color: col(primary, 700);

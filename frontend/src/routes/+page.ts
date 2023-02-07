@@ -52,7 +52,7 @@ export const load = (async (event) => {
 	}
 
 	return {
-		showCategoryNav: true,
+		showCategoryNavbar: true,
 		projects: projectsRes.data,
 		organisations: organisationsRes.data,
 		actors: actorsRes.data,

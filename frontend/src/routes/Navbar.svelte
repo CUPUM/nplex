@@ -8,12 +8,13 @@
 <script lang="ts" context="module">
 	const OVERLAP_TOP = 41;
 	const OVERLAP_HEIGHT = 20;
+
 	export const NAVBAR_MAX_WIDTH = {
 		Default: null,
 		Full: 'full',
 	} as const;
 
-	type NavbarMaxWidth = ValueOf<typeof NAVBAR_MAX_WIDTH>;
+	export type NavbarMaxWidth = ValueOf<typeof NAVBAR_MAX_WIDTH>;
 
 	type NavbarStyle = {
 		theme?: ThemeName;
@@ -109,17 +110,17 @@
 		};
 	}
 
-	/**
-	 * Enables managing the max-width of the navbar on a per-page basis.
-	 */
-	export const navbarMaxWidth = (function () {
-		const store = writable<NavbarMaxWidth>(NAVBAR_MAX_WIDTH.Default);
+	// /**
+	//  * Enables managing the max-width of the navbar on a per-page basis.
+	//  */
+	// export const navbarMaxWidth = (function () {
+	// 	const store = writable<NavbarMaxWidth>(NAVBAR_MAX_WIDTH.Default);
 
-		return {
-			...store,
-			reset: () => store.set(NAVBAR_MAX_WIDTH.Default),
-		};
-	})();
+	// 	return {
+	// 		...store,
+	// 		reset: () => store.set(NAVBAR_MAX_WIDTH.Default),
+	// 	};
+	// })();
 </script>
 
 <script lang="ts">
@@ -178,7 +179,7 @@
 			<Icon name={open ? 'cross' : 'hamburger'} strokeWidth={3} />
 		</NavbarButton>
 	</menu>
-	<nav class:open class:unmounted={!mounted} class={$navbarMaxWidth}>
+	<nav class:open class:unmounted={!mounted} class={$page.data.navbarMaxWidth}>
 		<section class="main">
 			<NavbarButton rounded href="/">
 				<svg xmlns="http://www.w3.org/2000/svg" height="1em" width="100%">
@@ -194,7 +195,7 @@
 				</NavbarButton>
 			{/each}
 		</section>
-		<section class="category" hidden={!$page.data.showCategoryNav}>
+		<section class="category" hidden={!$page.data.showCategoryNavbar}>
 			{#each exploreNav as r}
 				<NavbarButton
 					noscroll={r.noscroll}
@@ -383,7 +384,7 @@
 			height: 100%;
 			border-radius: inherit;
 			background: var(--nav-bg);
-			opacity: 0.75;
+			opacity: 0.5;
 			transition: opacity 0.25s;
 		}
 
