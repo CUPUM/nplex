@@ -1,8 +1,5 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
-	import Popover from './Popover.svelte';
+	import Popover from '../Popover.svelte';
 
 	export let opened: boolean = false;
 

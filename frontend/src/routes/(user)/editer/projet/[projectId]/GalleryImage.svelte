@@ -9,10 +9,10 @@
 </script>
 
 <script lang="ts">
-	import Button from '$components/Button.svelte';
-	import Field from '$components/Field.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
-	import Image from '$components/Image.svelte';
+	import Image from '$components/Image/Image.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { SEARCH_PARAMS } from '$utils/enums';
@@ -143,8 +143,10 @@
 				<Tooltip message="Avancer" place="top">
 					<Button
 						style="margin-left: auto; backdrop-filter: blur(8px);"
-						on:pointerdown={() => dispatch('forward')}><Icon name="arrow-left" /></Button
+						on:pointerdown={() => dispatch('forward')}
 					>
+						<Icon name="arrow-left" />
+					</Button>
 				</Tooltip>
 				<Tooltip
 					message={$_banner_id === image.id ? 'Retirer de la bannière' : 'Définir comme bannière'}
@@ -163,8 +165,8 @@
 				</Tooltip>
 				<Tooltip message="Reculer" place="top">
 					<Button on:pointerdown={() => dispatch('backward')} style="backdrop-filter: blur(8px);">
-						<Icon name="arrow-right" /></Button
-					>
+						<Icon name="arrow-right" />
+					</Button>
 				</Tooltip>
 			</menu>
 		{/if}

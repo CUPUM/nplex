@@ -2,12 +2,12 @@
 	import { enhance } from '$app/forms';
 	import Map from '$components/Map/Map.svelte';
 	import MapAttributionControl from '$components/Map/MapAttributionControl.svelte';
-	import MapDraw from '$components/MapDraw.svelte';
-	import MapDrawCircle from '$components/MapDrawCircle.svelte';
+	import MapDraw from '$components/Map/MapDraw.svelte';
+	import MapDrawCircle from '$components/Map/MapDrawCircle.svelte';
 	import { overlapNavbarStyle } from '$routes/Navbar.svelte';
 	import { setRootBackground } from '$routes/RootBackground.svelte';
 	import { col } from '$utils/css';
-	import { MAP_STYLES } from '$utils/map';
+	import { MAP_STYLES } from '$utils/map/styles';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
 	import type { ActionData, PageData } from './$types';
 	import AdjacentStreets from './AdjacentStreets.svelte';

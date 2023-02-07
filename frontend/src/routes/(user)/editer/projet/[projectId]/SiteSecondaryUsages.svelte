@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$components/Button.svelte';
+	import Button from '$components/Button/Button.svelte';
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Select from '$components/Select.svelte';
 	import { flip } from 'svelte/animate';
@@ -77,7 +77,7 @@
 					{:else}
 						<button on:pointerdown={add} class="add {ICON_CLASS.hover}">
 							<Icon name="plus" strokeWidth={2.5} style="opacity: .5" />
-							<span class="inner"> Ajouter un usage secondaire </span>
+							<span class="inner">Ajouter un usage secondaire</span>
 						</button>
 					{/if}
 				</li>

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Field from '$components/Field.svelte';
-	import Range from '$components/Range.svelte';
-	import RangeGroup from '$components/RangeGroup.svelte';
-	import RangeThumb from '$components/RangeThumb.svelte';
+	import Field from '$components/Field/Field.svelte';
+	import Range from '$components/Range/Range.svelte';
+	import RangeGroup from '$components/Range/RangeGroup.svelte';
+	import RangeThumb from '$components/Range/RangeThumb.svelte';
 	import { cadformatter } from '$utils/format';
 	import type { PageData } from './$types';
 	import { COST_MAX, COST_MIN, COST_STEP, dirty } from './common';

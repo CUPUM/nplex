@@ -12,11 +12,11 @@
 </script>
 
 <script lang="ts">
+	import { ICON_CLASS } from '$components/Icon.svelte';
 	import Loading from '$components/Loading.svelte';
 	import Ripple from '$components/Ripple.svelte';
 	import { getContext, setContext } from 'svelte';
 	import { getButtonGroupContext } from './ButtonGroup.svelte';
-	import { ICON_CLASS } from './Icon.svelte';
 
 	export let href: string | undefined = undefined;
 	export let id: string | undefined = undefined;

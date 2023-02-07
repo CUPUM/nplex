@@ -63,8 +63,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import Switch from '$components/Switch.svelte';
-	import SwitchItem from '$components/SwitchItem.svelte';
+	import Switch from '$components/Switch/Switch.svelte';
+	import SwitchItem from '$components/Switch/SwitchItem.svelte';
 	import { getPersistedValue, persistValue } from '$utils/persist';
 	import { flip } from 'svelte/animate';
 	import { cubicOut, expoOut } from 'svelte/easing';

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Button from '$components/Button.svelte';
+	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { EDITOR_ROUTES } from './(user)/editer/common';
 </script>
@@ -23,8 +23,8 @@
 		active={$page.url.pathname.startsWith(`${group.pathname}#${group.edit.hash}`)}
 	>
 		<Icon name="pen" slot="leading" />
-		{group.edit.title}</Button
-	>
+		{group.edit.title}
+	</Button>
 	{#if 'descriptors' in group}
 		<Button
 			variant="ghost"
@@ -33,10 +33,10 @@
 			active={$page.url.pathname.startsWith(group.descriptors.pathname)}
 		>
 			<Icon name="graph" slot="leading" />
-			{group.descriptors.title}</Button
-		>
+			{group.descriptors.title}
+		</Button>
 	{/if}
-	<hr />
+	<hr class="rule" />
 {/each}
 
 <style lang="scss">

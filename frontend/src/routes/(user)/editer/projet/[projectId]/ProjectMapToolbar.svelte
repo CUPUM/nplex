@@ -1,9 +1,9 @@
 <script lang="ts">
-	import MapControlDrawCircle from '$components/MapControlDrawCircle.svelte';
-	import MapControlFile from '$components/MapControlFile.svelte';
-	import MapControlFullscreen from '$components/MapControlFullscreen.svelte';
-	import MapControlGeolocate from '$components/MapControlGeolocate.svelte';
-	import MapToolbar from '$components/MapToolbar.svelte';
+	import MapControlDrawCircle from '$components/Map/MapControlDrawCircle.svelte';
+	import MapControlFile from '$components/Map/MapControlFile.svelte';
+	import MapControlFullscreen from '$components/Map/MapControlFullscreen.svelte';
+	import MapControlGeolocate from '$components/Map/MapControlGeolocate.svelte';
+	import MapToolbar from '$components/Map/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { LOCATION_DEFAULT_RADIUS } from './common';
 

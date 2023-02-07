@@ -4,15 +4,11 @@
 	A custom Maplibre control to handle opening and displaying data from local file(s) uploaded by users.
 
  -->
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import type { ComponentProps } from 'svelte';
-
-	import Button from './Button.svelte';
-	import Icon from './Icon.svelte';
-	import { getMapContext } from './Map/Map.svelte';
+	import Button from '../Button/Button.svelte';
+	import Icon from '../Icon.svelte';
+	import { getMapContext } from './Map.svelte';
 
 	type $$Props = ComponentProps<Button>;
 

@@ -4,15 +4,12 @@
 	For implementation inspo, see maplibre/mapbox control workflow: https://maplibre.org/maplibre-gl-js-docs/api/markers/
 
 -->
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
+	import Button from '$components/Button/Button.svelte';
+	import Icon from '$components/Icon.svelte';
 	import { GeolocateControl, type MapEvent } from 'maplibre-gl';
 	import { createEventDispatcher, onDestroy, type ComponentProps } from 'svelte';
-	import Button from './Button.svelte';
-	import Icon from './Icon.svelte';
-	import { getMapContext } from './Map/Map.svelte';
+	import { getMapContext } from './Map.svelte';
 
 	type $$Props = Omit<ComponentProps<Button>, 'active'>;
 	type GeolocateEvent = 'trackuserlocationstart' | 'geolocate' | 'trackuserlocationend';

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Image from '$components/Image.svelte';
-	import ImagePlaceholder from '$components/ImagePlaceholder.svelte';
+	import Image from '$components/Image/Image.svelte';
+	import ImagePlaceholder from '$components/Image/ImagePlaceholder.svelte';
 	import { maybeSingle } from '$types/utils';
 	import { STORAGE_BUCKETS } from '$utils/enums';
 	import { projectColors, publicurl } from '$utils/format';

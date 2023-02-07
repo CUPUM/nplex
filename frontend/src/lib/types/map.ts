@@ -1,4 +1,8 @@
-import type { CircleLayerSpecification, FillLayerSpecification, LineLayerSpecification } from 'maplibre-gl';
+import type {
+	CircleLayerSpecification,
+	FillLayerSpecification,
+	LineLayerSpecification,
+} from 'maplibre-gl';
 
 /**
  * Styles shape guard.
@@ -7,7 +11,12 @@ export type MapDrawStyles = (
 	| ({
 			id: 'gl-draw-polygon-fill-inactive';
 			type: 'fill';
-			filter: ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']];
+			filter: [
+				'all',
+				['==', 'active', 'false'],
+				['==', '$type', 'Polygon'],
+				['!=', 'mode', 'static']
+			];
 	  } & Pick<FillLayerSpecification, 'layout' | 'paint'>)
 	| ({
 			id: 'gl-draw-polygon-fill-active';
@@ -22,7 +31,12 @@ export type MapDrawStyles = (
 	| ({
 			id: 'gl-draw-polygon-stroke-inactive';
 			type: 'line';
-			filter: ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']];
+			filter: [
+				'all',
+				['==', 'active', 'false'],
+				['==', '$type', 'Polygon'],
+				['!=', 'mode', 'static']
+			];
 	  } & Pick<LineLayerSpecification, 'layout' | 'paint'>)
 	| ({
 			id: 'gl-draw-polygon-stroke-active';
@@ -32,7 +46,12 @@ export type MapDrawStyles = (
 	| ({
 			id: 'gl-draw-line-inactive';
 			type: 'line';
-			filter: ['all', ['==', 'active', 'false'], ['==', '$type', 'LineString'], ['!=', 'mode', 'static']];
+			filter: [
+				'all',
+				['==', 'active', 'false'],
+				['==', '$type', 'LineString'],
+				['!=', 'mode', 'static']
+			];
 	  } & Pick<LineLayerSpecification, 'layout' | 'paint'>)
 	| ({
 			id: 'gl-draw-line-active';
@@ -74,12 +93,22 @@ export type MapDrawStyles = (
 	| ({
 			id: 'gl-draw-point-stroke-active';
 			type: 'circle';
-			filter: ['all', ['==', '$type', 'Point'], ['==', 'active', 'true'], ['!=', 'meta', 'midpoint']];
+			filter: [
+				'all',
+				['==', '$type', 'Point'],
+				['==', 'active', 'true'],
+				['!=', 'meta', 'midpoint']
+			];
 	  } & Pick<CircleLayerSpecification, 'layout' | 'paint'>)
 	| ({
 			id: 'gl-draw-point-active';
 			type: 'circle';
-			filter: ['all', ['==', '$type', 'Point'], ['!=', 'meta', 'midpoint'], ['==', 'active', 'true']];
+			filter: [
+				'all',
+				['==', '$type', 'Point'],
+				['!=', 'meta', 'midpoint'],
+				['==', 'active', 'true']
+			];
 	  } & Pick<CircleLayerSpecification, 'layout' | 'paint'>)
 	| ({
 			id: 'gl-draw-polygon-fill-static';

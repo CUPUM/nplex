@@ -3,25 +3,22 @@
 	## Map Fullscreen Control
 	
 -->
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import { FullscreenControl } from 'maplibre-gl';
 	import type { ComponentProps } from 'svelte';
 	import { onDestroy } from 'svelte';
-	import Button from './Button.svelte';
-	import Icon from './Icon.svelte';
-	import { getMapContext } from './Map/Map.svelte';
+	import Button from '../Button/Button.svelte';
+	import Icon from '../Icon.svelte';
+	import { getMapContext } from './Map.svelte';
 
 	type $$Props = ComponentProps<Button>;
 
 	let expanded = false;
 	$: typedProps = $$props as $$Props;
 
-	const mapContext = getMapContext();
-	const map = mapContext.getMap();
-	const container = mapContext.getContainer();
+	const { getMap, cursor } = getMapContext();
+	const map = getMap();
+	const container = map.getContainer().parentElement!;
 	const fullscreen = new FullscreenControl({
 		container,
 	});

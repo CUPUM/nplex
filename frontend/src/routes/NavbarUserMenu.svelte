@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import Button from '$components/Button.svelte';
+	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { USER_ROUTES } from './(user)/u/common';
 
@@ -27,7 +27,7 @@
 		{r.title}
 	</Button>
 {/each}
-<hr />
+<hr class="rule" />
 <form
 	id={SIGNOUT_FORM_ID}
 	action="/api/auth?/signout"

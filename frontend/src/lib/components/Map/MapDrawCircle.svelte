@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { DRAW_EVENTS } from '$utils/enums';
 	import { createCircle } from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { onDestroy, onMount } from 'svelte';
-	import { getMapContext } from './Map/Map.svelte';
-	import { DRAW_EVENTS, getMapDrawContext } from './MapDraw.svelte';
+	import { getMapContext } from './Map.svelte';
+	import { getMapDrawContext } from './MapDraw.svelte';
 
 	export let center: GeoJSON.Position;
 	export let radius: number;
@@ -17,7 +18,7 @@
 		const draw = getMapDraw();
 		if (map && draw) {
 			draw.add(circle);
-			map.fire(DRAW_EVENTS.create, { features: [circle] });
+			map.fire(DRAW_EVENTS.Create, { features: [circle] });
 		}
 	});
 

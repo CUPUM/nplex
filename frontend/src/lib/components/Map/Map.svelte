@@ -23,10 +23,10 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-
 	import type { Cursor } from '$utils/enums';
-	import { MAP_GESTURES_TEXT, MAP_LOCALES, MAP_STYLES, type MapLocale } from '$utils/map';
 	import { LOCATIONS } from '$utils/map/locations';
+	import { MAP_STYLES } from '$utils/map/styles';
+	import { MAP_GESTURES_TEXT, MAP_LOCALES, type MapLocale } from '$utils/map/ui';
 	import { debounce } from '$utils/modifiers';
 	import { Map, type MapOptions } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
@@ -41,29 +41,29 @@
 	export let preserveDrawingBuffer: MapOptions['preserveDrawingBuffer'] = undefined;
 	export let antialias: MapOptions['antialias'] = true;
 	export let refreshExpiredTiles: MapOptions['refreshExpiredTiles'] = true;
-	export let maxBounds: MapOptions['maxBounds'] = LOCATIONS.montreal.maxBounds;
+	export let maxBounds: MapOptions['maxBounds'] = undefined;
 	export let minZoom: MapOptions['minZoom'] = 1;
 	export let maxZoom: MapOptions['maxZoom'] = 20;
 	export let minPitch: MapOptions['minPitch'] = undefined;
 	export let maxPitch: MapOptions['maxPitch'] = undefined;
 	export let boxZoom: MapOptions['boxZoom'] = undefined;
-	export let dragRotate: MapOptions['dragRotate'] = undefined;
-	export let dragPan: MapOptions['dragPan'] = undefined;
-	export let keyboard: MapOptions['keyboard'] = undefined;
-	export let doubleClickZoom: MapOptions['doubleClickZoom'] = undefined;
-	export let touchZoomRotate: MapOptions['touchZoomRotate'] = undefined;
-	export let touchPitch: MapOptions['touchPitch'] = undefined;
+	export let dragRotate: MapOptions['dragRotate'] = true;
+	export let dragPan: MapOptions['dragPan'] = true;
+	export let keyboard: MapOptions['keyboard'] = true;
+	export let doubleClickZoom: MapOptions['doubleClickZoom'] = true;
+	export let touchZoomRotate: MapOptions['touchZoomRotate'] = true;
+	export let touchPitch: MapOptions['touchPitch'] = true;
 	export let cooperativeGestures: MapOptions['cooperativeGestures'] = MAP_GESTURES_TEXT.french;
 	export let trackResize: MapOptions['trackResize'] = false;
 	export let center: MapOptions['center'] = undefined;
 	export let zoom: MapOptions['zoom'] = 10;
 	export let bearing: MapOptions['bearing'] = 0;
 	export let pitch: MapOptions['pitch'] = 0;
-	export let renderWorldCopies: MapOptions['renderWorldCopies'] = undefined;
+	export let renderWorldCopies: MapOptions['renderWorldCopies'] = true;
 	export let maxTileCacheSize: MapOptions['maxTileCacheSize'] = undefined;
 	export let transformRequest: MapOptions['transformRequest'] = undefined;
 	export let locale: MapLocale = MAP_LOCALES.french;
-	export let fadeDuration: MapOptions['fadeDuration'] = 50;
+	export let fadeDuration: MapOptions['fadeDuration'] = 125;
 	export let crossSourceCollisions: MapOptions['crossSourceCollisions'] = undefined;
 	export let collectResourceTiming: MapOptions['collectResourceTiming'] = undefined;
 	export let clickTolerance: MapOptions['clickTolerance'] = undefined;
@@ -71,7 +71,7 @@
 	export let fitBoundsOptions: MapOptions['fitBoundsOptions'] = undefined;
 	export let localIdeographFontFamily: MapOptions['localIdeographFontFamily'] = undefined;
 	export let style: MapOptions['style'] = MAP_STYLES.Light;
-	export let pitchWithRotate: MapOptions['pitchWithRotate'] = undefined;
+	export let pitchWithRotate: MapOptions['pitchWithRotate'] = true;
 	export let pixelRatio: MapOptions['pixelRatio'] = undefined;
 	export let map: Map | undefined = undefined;
 	export let maplibreLogo: MapOptions['maplibreLogo'] = false;
@@ -123,7 +123,7 @@
 			maxTileCacheSize,
 			transformRequest,
 			locale,
-			fadeDuration, // WARNING: IF UNDEFINED CAUSES PROBLEM WITH MAPBOX DRAW
+			fadeDuration, // warning: if undefined causes problem with mapbox draw
 			crossSourceCollisions,
 			collectResourceTiming,
 			clickTolerance,
@@ -133,6 +133,8 @@
 			pitchWithRotate,
 			pixelRatio,
 		});
+
+		premap.resize();
 
 		premap.once('load', (e) => {
 			map = premap;
@@ -163,7 +165,7 @@
 		requestAnimationFrame(() => {
 			map?.resize();
 		});
-	}, 5);
+	}, 10);
 
 	setContext<MapContext>(CTX_KEY, {
 		getMap: () => map!,

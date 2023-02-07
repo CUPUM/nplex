@@ -8,6 +8,12 @@
 <script lang="ts" context="module">
 	const OVERLAP_TOP = 41;
 	const OVERLAP_HEIGHT = 20;
+	export const NAVBAR_MAX_WIDTH = {
+		Default: null,
+		Full: 'full',
+	} as const;
+
+	type NavbarMaxWidth = ValueOf<typeof NAVBAR_MAX_WIDTH>;
 
 	type NavbarStyle = {
 		theme?: ThemeName;
@@ -102,6 +108,18 @@
 			},
 		};
 	}
+
+	/**
+	 * Enables managing the max-width of the navbar on a per-page basis.
+	 */
+	export const navbarMaxWidth = (function () {
+		const store = writable<NavbarMaxWidth>(NAVBAR_MAX_WIDTH.Default);
+
+		return {
+			...store,
+			reset: () => store.set(NAVBAR_MAX_WIDTH.Default),
+		};
+	})();
 </script>
 
 <script lang="ts">
@@ -111,12 +129,12 @@
 	import Icon from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
-	import { col } from '$utils/css';
 	import { debounce } from '$utils/modifiers';
 	import { EDITOR_BASE_ROUTE, EXPLORE_ROUTES, MAIN_ROUTES, USER_BASE_ROUTE } from '$utils/routes';
 	import { THEMES, type ThemeName } from '$utils/themes';
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
+	import type { ValueOf } from 'ts-essentials';
 	import { authModal } from './AuthModal.svelte';
 	import NavbarButton from './NavbarButton.svelte';
 	import NavbarEditorMenu from './NavbarEditorMenu.svelte';
@@ -140,9 +158,7 @@
 	const exploreNav = Object.values(EXPLORE_ROUTES);
 
 	$: rootsegment = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
-	// $: navbg = naving ? 'transparent' : $navbarStyle.background ?? $rootBackground.body ?? null;
 	$: navbg = $navbarStyle.background ?? $rootBackground.body ?? null;
-	$: categorybg = naving ? 'transparent' : col('bg', '900', 0.5);
 
 	function toggle() {
 		open = !open;
@@ -162,7 +178,7 @@
 			<Icon name={open ? 'cross' : 'hamburger'} strokeWidth={3} />
 		</NavbarButton>
 	</menu>
-	<nav class:open class:unmounted={!mounted}>
+	<nav class:open class:unmounted={!mounted} class={$navbarMaxWidth}>
 		<section class="main">
 			<NavbarButton rounded href="/">
 				<svg xmlns="http://www.w3.org/2000/svg" height="1em" width="100%">
@@ -178,9 +194,11 @@
 				</NavbarButton>
 			{/each}
 		</section>
-		<section class="category" style:background={categorybg} hidden={!$page.data.showCategoryNav}>
+		<section class="category" hidden={!$page.data.showCategoryNav}>
 			{#each exploreNav as r}
 				<NavbarButton
+					noscroll={r.noscroll}
+					category
 					href={r.pathname}
 					current={$page.url.pathname.startsWith(r.pathname) || undefined}
 				>
@@ -262,6 +280,11 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 1rem;
+		transition: max-width 0.25s var(--ui-ease-in-out);
+
+		&.full {
+			max-width: 100%;
+		}
 
 		@include breakpoint.tablet {
 			display: flex;
@@ -349,6 +372,24 @@
 		border-radius: calc(var(--ui-radius-md) + var(--inset));
 		backdrop-filter: blur(8px);
 		padding: var(--inset);
+		transition: background 0.15s;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border-radius: inherit;
+			background: var(--nav-bg);
+			opacity: 0.75;
+			transition: opacity 0.25s;
+		}
+
+		&:hover {
+			background: col(fg, 100, 0.1);
+		}
 	}
 
 	.session {

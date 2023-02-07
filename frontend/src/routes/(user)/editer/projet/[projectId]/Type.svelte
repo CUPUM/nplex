@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Switch from '$components/Switch.svelte';
-	import SwitchItem from '$components/SwitchItem.svelte';
+	import Switch from '$components/Switch/Switch.svelte';
+	import SwitchItem from '$components/Switch/SwitchItem.svelte';
 	import type { PageData } from './$types';
 	import { descriptors, dirty, _type_id } from './common';
 

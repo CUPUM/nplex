@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Button from '$components/Button.svelte';
-	import Field from '$components/Field.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
 	import type { PageData } from './$types';

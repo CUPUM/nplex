@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Button from '$components/Button.svelte';
+	import Button from '$components/Button/Button.svelte';
 	import { authModal, AUTHMODAL_MODE } from '$routes/AuthModal.svelte';
 </script>
 

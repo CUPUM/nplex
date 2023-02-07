@@ -1,4 +1,5 @@
 import { paramCase } from 'change-case';
+import { debounce } from '../../lib/utils/modifiers';
 // @ts-ignore:next-line
 import toPath from 'element-to-path';
 import { readdirSync, readFileSync, writeFile } from 'fs';
@@ -51,7 +52,7 @@ function extractSvgPaths(svg: INode) {
  * Plugin to handle and automate generation of icons' ts definition from svg assets.
  */
 export default function plugin(): Plugin {
-	async function writeIcons() {
+	const writeIcons = debounce(async () => {
 		try {
 			const promises = readdirSync(SOURCE_DIR)
 				.filter((f) => extname(f).toLocaleLowerCase() === '.svg')
@@ -88,7 +89,7 @@ export default function plugin(): Plugin {
 		} catch (error) {
 			console.error('Error generating new icons', error);
 		}
-	}
+	}, 250);
 
 	return {
 		name: 'nplex-icons',

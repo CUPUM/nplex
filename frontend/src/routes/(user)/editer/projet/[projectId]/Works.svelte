@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Field from '$components/Field.svelte';
-	import FieldIcon from '$components/FieldIcon.svelte';
+	import Field from '$components/Field/Field.svelte';
+	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { debounce } from '$utils/modifiers';

@@ -4,26 +4,26 @@
 
 -->
 <script lang="ts">
-	import { CURSOR } from '$utils/enums';
-	import Button from '../Button.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import { DRAW_MODES } from '$utils/enums';
 	import Icon from '../Icon.svelte';
 	import { getMapContext } from './Map.svelte';
-	import { DRAW_MODES, getMapDrawContext } from './MapDraw.svelte';
+	import { getMapDrawContext } from './MapDraw.svelte';
 
 	export let initialRadius: number = 500;
 
 	const { getMap, cursor } = getMapContext();
-	const { mode, getMapDraw, setMode } = getMapDrawContext();
+	const { mode, getMapDraw, changeMode } = getMapDrawContext();
 
 	$: active = $mode === DRAW_MODES.DrawCircle;
-	$: cursor.set(active ? CURSOR.Crosshair : null);
+	// $: cursor.set(active ? CURSOR.Crosshair : null);
 </script>
 
 <Button
 	equi={!$$slots.default}
 	variant="ghost"
 	{active}
-	on:pointerdown={() => setMode(active ? DRAW_MODES.SimpleSelect : DRAW_MODES.DrawCircle)}
+	on:pointerdown={() => changeMode(active ? DRAW_MODES.SimpleSelect : DRAW_MODES.DrawCircle)}
 >
 	<slot>
 		<Icon name="pin" />

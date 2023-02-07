@@ -35,7 +35,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { DRAW_EVENTS, DRAW_MODES, type DrawMode } from '$utils/enums';
-	import { DRAW_STYLES } from '$utils/map';
+	import { DRAW_STYLES } from '$utils/map/draw/styles';
 	import type {
 		DrawActionableEvent,
 		DrawCombineEvent,

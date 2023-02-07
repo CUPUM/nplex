@@ -34,7 +34,7 @@
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
-	import Ripple from './Ripple.svelte';
+	import Ripple from '../Ripple.svelte';
 
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
@@ -43,7 +43,7 @@
 	export let prefix: string | null | undefined = '';
 	export let suffix: string | null | undefined = '';
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
-	export let variant: 'default' | 'outlined' | 'cta' = 'default';
+	export let variant: 'default' | 'outlined' | 'cta' | 'opaque' = 'default';
 	export let textAlign:
 		| 'start'
 		| 'end'
@@ -299,6 +299,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		overflow-x: auto;
 		&:not(:empty) {
 			gap: 3px;
 			padding: var(--inset);
@@ -349,7 +350,6 @@
 		border: none;
 		outline: none;
 		background: transparent;
-		// overflow: hidden;
 		text-overflow: ellipsis;
 		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
 		&:-webkit-autofill,
@@ -427,7 +427,7 @@
 
 	// Variants
 
-	:where(.default) {
+	.default {
 		color: col(fg, 000);
 		background: col(fg, 500, 0.05);
 		transition: color 0.1s ease-out, background 0.1s ease-out;
@@ -467,7 +467,49 @@
 		}
 	}
 
-	:where(.outlined) {
+	.opaque {
+		color: col(fg, 100);
+		background: col(bg, 500);
+		box-shadow: 0 0.25rem 1rem -0.5rem transparent;
+		transition: color 0.1s ease-out, background 0.1s ease-out, box-shadow 0.25s ease-out;
+		.outline {
+			display: none;
+		}
+		&.hasplaceholder,
+		&.hasvalue,
+		&:focus-within,
+		&:has(:-webkit-autofill) {
+			label {
+				opacity: 0.5;
+				top: 1.25em;
+				font-size: clamp(11px, 0.5em, 24px);
+			}
+			.affix {
+				opacity: 0.5;
+			}
+			&.haslabel {
+				.affix,
+				:global(*[data-field-input]) {
+					top: 0.5em;
+				}
+			}
+		}
+		:global(.hover-source:hover) &:global(.hover-target),
+		&:hover {
+			color: col(fg, 700);
+			background: col(bg, 700);
+		}
+		&:focus-within {
+			color: col(fg, 900);
+			background: col(bg, 100);
+			box-shadow: 0 1rem 2rem -1rem rgb(0, 20, 40, 0.5);
+			:global(*[data-field-input]) {
+				opacity: 1;
+			}
+		}
+	}
+
+	.outlined {
 		color: col(fg, 100);
 		background: transparent;
 		transition: color 0.1s ease-out, background 0.1s ease-out;
@@ -523,7 +565,7 @@
 		}
 	}
 
-	:where(.cta) {
+	.cta {
 		color: col(bg, 300);
 		background: col(primary, 500);
 		box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);

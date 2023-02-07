@@ -17,9 +17,6 @@
 		flex-direction: column;
 		width: 100%;
 		min-height: calc(100vh - var(--ui-nav-h));
-		align-items: stretch;
-	}
-
-	form {
+		align-items: center;
 	}
 </style>

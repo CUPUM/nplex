@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
-	import Button from '$components/Button.svelte';
-	import Field from '$components/Field.svelte';
-	import FieldTogglePassword from '$components/FieldTogglePassword.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Field from '$components/Field/Field.svelte';
+	import FieldTogglePassword from '$components/Field/FieldTogglePassword.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Select from '$components/Select.svelte';
 	import TextArea from '$components/TextArea.svelte';

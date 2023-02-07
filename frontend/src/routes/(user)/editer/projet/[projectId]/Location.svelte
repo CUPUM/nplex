@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Button from '$components/Button.svelte';
+	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { DRAW_EVENTS } from '$components/MapDraw.svelte';
+	import { DRAW_EVENTS } from '$utils/enums';
 	import { throttle } from '$utils/modifiers';
 	import type { DrawCreateEvent, DrawRenderEvent } from '@mapbox/mapbox-gl-draw';
 	import {
@@ -62,7 +62,7 @@
 			const center = $map.getCenter().toArray();
 			const circle = createCircle(center, LOCATION_DEFAULT_RADIUS / 1000);
 			$mapdraw.add(circle);
-			$map.fire(DRAW_EVENTS.create, { features: [circle] });
+			$map.fire(DRAW_EVENTS.Create, { features: [circle] });
 			// $map.fire(DRAW_EVENTS.render);
 			// 	const newMode =
 			// 		$mapdraw.getMode() === DRAW_MODES.DrawCircle
@@ -77,14 +77,14 @@
 		/**
 		 * Clear previously created features, limit to 1 drawn feature.
 		 */
-		$map.on(DRAW_EVENTS.create, onCreate);
-		$map.on(DRAW_EVENTS.render, updateLocation);
+		$map.on(DRAW_EVENTS.Create, onCreate);
+		$map.on(DRAW_EVENTS.Render, updateLocation);
 	}
 
 	onDestroy(() => {
 		if ($map) {
-			$map.off(DRAW_EVENTS.create, onCreate);
-			$map.off(DRAW_EVENTS.render, updateLocation);
+			$map.off(DRAW_EVENTS.Create, onCreate);
+			$map.off(DRAW_EVENTS.Render, updateLocation);
 		}
 	});
 </script>

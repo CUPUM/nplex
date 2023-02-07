@@ -18,8 +18,8 @@
 <script lang="ts">
 	import type css from 'csstype';
 	import { onMount } from 'svelte';
-	import Icon from './Icon.svelte';
-	import Loading from './Loading.svelte';
+	import Icon from '../Icon.svelte';
+	import Loading from '../Loading.svelte';
 
 	export let src: string | undefined = undefined;
 	export let srcset: SourceSpecification[] | undefined = undefined;

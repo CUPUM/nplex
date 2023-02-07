@@ -99,11 +99,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import Button from '$components/Button.svelte';
-	import Field from '$components/Field.svelte';
-	import FieldIcon from '$components/FieldIcon.svelte';
-	import FieldReset from '$components/FieldReset.svelte';
-	import FieldTogglePassword from '$components/FieldTogglePassword.svelte';
+	import Button from '$components/Button/Button.svelte';
+	import Field from '$components/Field/Field.svelte';
+	import FieldIcon from '$components/Field/FieldIcon.svelte';
+	import FieldReset from '$components/Field/FieldReset.svelte';
+	import FieldTogglePassword from '$components/Field/FieldTogglePassword.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import SocialIcon, { SOCIAL_ICONS } from '$components/SocialIcon.svelte';

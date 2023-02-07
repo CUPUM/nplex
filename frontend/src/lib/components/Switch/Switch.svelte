@@ -117,6 +117,7 @@
 		border-radius: var(--switch-radius);
 		font-weight: 400;
 		transition: all 0.15s var(--ui-ease-out);
+		overflow: auto;
 		&.column {
 			flex-direction: column;
 		}

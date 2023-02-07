@@ -3,13 +3,11 @@
 	# Switch Item
 	Atomic component for options slotable into the Switch component.
  -->
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
+	import Loading from '$components/Loading.svelte';
+	import Ripple from '$components/Ripple.svelte';
+
 	import { onMount } from 'svelte';
-	import Loading from './Loading.svelte';
-	import Ripple from './Ripple.svelte';
 	import { getSwitchContext } from './Switch.svelte';
 
 	export let id: string | undefined = undefined;

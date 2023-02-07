@@ -6,25 +6,26 @@
 	export let href: string | undefined = undefined;
 	export let current: boolean | undefined = undefined;
 	export let cta: boolean | undefined = undefined;
+	export let category: boolean | undefined = undefined;
 	export let disabled: boolean | undefined = undefined;
 	export let equi: boolean | undefined = undefined;
 	export let rounded: boolean | undefined = undefined;
 	export let active: boolean | undefined = undefined;
-	export let group: string | undefined = undefined;
-	export let noscroll: true | undefined = undefined;
+	export let noscroll: boolean | undefined = undefined;
 </script>
 
 <svelte:element
 	this={typeof href === 'string' ? 'a' : 'button'}
 	class="navbar-button focus-outline-visible {ICON_CLASS.hover} {active ? ICON_CLASS.hold : ''}"
 	class:cta
+	class:category
 	data-current={current || undefined}
 	data-sveltekit-noscroll={noscroll ? '' : 'off'}
 	class:active
 	class:disabled
+	{disabled}
 	class:equi
 	class:rounded
-	data-group={group}
 	aria-disabled={disabled}
 	{href}
 	on:pointerdown
@@ -49,15 +50,18 @@
 		border-radius: var(--ui-radius-md);
 		letter-spacing: 0.02em;
 		line-height: 1;
-		color: col(fg, 100);
-		backdrop-filter: blur(6px);
-		// transition: all 0.1s ease;
 
 		&:focus-visible,
 		&:focus {
 			z-index: 1;
 		}
 
+		//
+		// Default
+		//
+
+		color: col(fg, 100);
+		backdrop-filter: blur(6px);
 		&::before {
 			content: '';
 			position: absolute;
@@ -68,21 +72,15 @@
 			height: 100%;
 			background: var(--nav-bg);
 			opacity: 0.75;
-			// transition: all 0.1s ease;
-
-			:global(.category) > & {
-				opacity: 1;
-			}
 		}
-
 		&:hover:not([data-current]) {
-			color: col(bg, 500);
+			color: col(primary, 700);
 			&::before {
-				background: col(fg, 500);
-				opacity: 0.95;
+				opacity: 0.25;
+				background: col(primary, 100);
+				// box-shadow: inset 0 0 0 1px col(primary, 300);
 			}
 		}
-
 		&.active {
 			color: col(primary, 900);
 			&::before {
@@ -90,21 +88,60 @@
 				opacity: 0.5;
 			}
 		}
-
 		&[data-current]:not(.active) {
-			color: col(primary, 500);
+			color: col(bg, 500);
+			&::before {
+				background: col(fg, 500);
+				opacity: 0.95;
+			}
+		}
+
+		//
+		// Category
+		//
+
+		&.category {
+			backdrop-filter: none;
+			&::before {
+				opacity: 0;
+			}
+		}
+
+		//
+		// Call-to-action variant
+		//
+
+		&.cta {
+			color: col(bg, 100);
+			&::before {
+				background: col(fg, 300);
+				opacity: 0.9;
+			}
+			&:hover,
+			&.active,
+			&:active {
+				color: col(primary, 700);
+				&::before {
+					background: col(primary, 300);
+					opacity: 0.5;
+				}
+			}
 		}
 	}
+
 	.inner {
 		position: relative;
 		height: 1.3em;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
-	.disabled {
+
+	.disabled,
+	:disabled {
 		pointer-events: none;
 		opacity: 0.25;
 	}
+
 	.equi {
 		aspect-ratio: 1;
 		padding: 0;
@@ -114,23 +151,5 @@
 		aspect-ratio: 1;
 		padding: 0;
 		border-radius: 50%;
-	}
-
-	// Call-to-action variant
-	.cta {
-		color: col(bg, 100);
-		&::before {
-			background: col(fg, 300);
-			opacity: 0.9;
-		}
-		&:hover,
-		&.active,
-		&:active {
-			color: col(primary, 700);
-			&::before {
-				background: col(primary, 300);
-				opacity: 0.5;
-			}
-		}
 	}
 </style>

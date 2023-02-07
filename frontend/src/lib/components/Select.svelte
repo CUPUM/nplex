@@ -14,7 +14,7 @@
 <script lang="ts">
 	import { getContext, type ComponentProps } from 'svelte';
 	import { fly } from 'svelte/transition';
-	import Field from './Field.svelte';
+	import Field from './Field/Field.svelte';
 	import Icon from './Icon.svelte';
 
 	type Option = $$Generic;

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$components/Button.svelte';
+	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';

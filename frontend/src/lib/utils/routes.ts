@@ -48,18 +48,21 @@ export const EXPLORE_ROUTES = {
 		pathname: '/projets',
 		title: 'Projets',
 		category: CATEGORIES.PROJECTS,
+		noscroll: true,
 	},
 	organisations: {
 		pathname: '/organisations',
 		title: 'Organisations',
 		category: CATEGORIES.ORGANISATIONS,
+		noscroll: false,
 	},
 	actors: {
 		pathname: '/acteurs',
 		title: 'Acteurs',
 		category: CATEGORIES.ACTORS,
+		noscroll: false,
 	},
-} satisfies Routes<{ category: Category }>;
+} satisfies Routes<{ category: Category; noscroll?: boolean }>;
 
 export const EDITOR_BASE_ROUTE = {
 	pathname: '/editer',
