@@ -9,7 +9,6 @@
 
 	$: ({ profile, roles } = $page.data as LayoutData);
 	$: userRoleDetails = roles.find((r) => r.app_role === profile.role.role);
-	$: console.log(roles);
 </script>
 
 <menu>

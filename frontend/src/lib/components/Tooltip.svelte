@@ -23,6 +23,7 @@
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import Tether from './Tether.svelte';
+	import Tip from './Tip.svelte';
 
 	export let message: string | undefined | null = null;
 	export let disabled: boolean | undefined = undefined;
@@ -88,9 +89,7 @@
 			<slot name="message" open={opened}>
 				{@html message}
 			</slot>
-			<svg class="tip" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-				<path d={TIP} />
-			</svg>
+			<Tip class="tip" />
 		</div>
 	{/if}
 </Tether>
@@ -120,24 +119,16 @@
 		transform-origin: inherit;
 		z-index: 1000;
 		// box-shadow: 0 0.8em 1.8em -0.8em rgba(0, 10, 20, 0.5);
-	}
 
-	.tip {
-		position: absolute;
-		height: var(--tip-size);
-		width: var(--tip-size);
-		padding: 0;
-		margin: 0;
-		background: transparent;
-		overflow: visible;
-		path {
-			fill: col(bg, 100, 0.94);
+		:global(.tip) {
+			font-size: var(--tip-size);
+			color: col(bg, 100, 0.94);
 		}
 	}
 
 	.top {
 		bottom: var(--d-sum);
-		& .tip {
+		& :global(.tip) {
 			bottom: 0;
 			left: 50%;
 			transform: translate(-50%, 100%);
@@ -146,7 +137,7 @@
 
 	.bottom {
 		top: var(--d-sum);
-		& .tip {
+		& :global(.tip) {
 			top: 0;
 			left: 50%;
 			transform: translate(-50%, -100%) rotate(180deg);
@@ -156,12 +147,12 @@
 	.top,
 	.bottom {
 		&.start {
-			& .tip {
+			& :global(.tip) {
 				left: var(--tip-pad);
 			}
 		}
 		&.end {
-			& .tip {
+			& :global(.tip) {
 				left: calc(100% - var(--tip-pad));
 			}
 		}
@@ -169,7 +160,7 @@
 
 	.right {
 		left: var(--d-sum);
-		& .tip {
+		& :global(.tip) {
 			left: 0;
 			top: 50%;
 			transform: translate(-100%, -50%) rotate(90deg);
@@ -178,7 +169,7 @@
 
 	.left {
 		right: var(--d-sum);
-		& .tip {
+		& :global(.tip) {
 			right: 0;
 			top: 50%;
 			transform: translate(100%, -50%) rotate(-90deg);
@@ -188,12 +179,12 @@
 	.left,
 	.right {
 		&.start {
-			& .tip {
+			& :global(.tip) {
 				top: var(--tip-pad);
 			}
 		}
 		&.end {
-			& .tip {
+			& :global(.tip) {
 				top: calc(100% - var(--tip-pad));
 			}
 		}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Tooltip from '$components/Tooltip.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -28,9 +29,11 @@
 </script>
 
 <article>
-	<button class="button">
-		<span class="main">test</span>
-	</button>
+	<Tooltip message="test">
+		<button class="button">
+			<span class="main">test</span>
+		</button>
+	</Tooltip>
 </article>
 <article>
 	<form method="POST" use:enhance>

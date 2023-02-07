@@ -5,6 +5,9 @@
 	Tethers slotted content to a given HTMLElement or to the mouse-position.
 	Useful for positioning content relative to controls, in cases like tooltips and popovers.
 
+	Two CSS classes can be accessed:
+	- `.ui-anchor`
+	- `.ui-tether`: has the place and align classes
 -->
 <script lang="ts" context="module">
 </script>
@@ -76,7 +79,7 @@
 
 <div
 	bind:this={anchorRef}
-	class="anchor"
+	class="ui-anchor"
 	use:clickoutside
 	on:clickoutside|self
 	on:pointerdown|self
@@ -88,7 +91,7 @@
 </div>
 <div
 	bind:this={tetherRef}
-	class="tether {place} {align}"
+	class="ui-tether {place} {align}"
 	style:--x="{x}px"
 	style:--y="{y}px"
 	style:--w="{w}px"
@@ -99,12 +102,12 @@
 </div>
 
 <style lang="scss">
-	.anchor {
+	.ui-anchor {
 		position: relative;
 		display: contents !important;
 	}
 
-	.tether {
+	.ui-tether {
 		pointer-events: none;
 		user-select: none;
 		position: absolute;

@@ -16,7 +16,9 @@
 	import { tick, type ComponentProps } from 'svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
+	import Menu from './Menu/Menu.svelte';
 	import Tether from './Tether.svelte';
+	import Tip from './Tip.svelte';
 
 	export let hover: boolean = false;
 	export let opened: boolean = false;
@@ -107,9 +109,10 @@
 			}}
 		>
 			{#if $$slots.default}
-				<div class="inner nest">
+				<Menu>
 					<slot open={opened} />
-				</div>
+				</Menu>
+				<Tip />
 			{/if}
 			<slot name="content" />
 		</div>
@@ -134,6 +137,9 @@
 	}
 
 	.popover {
+		--tip-pad: calc(0.5 * var(--w));
+		--tip-size: 1em;
+		--d-sum: calc(var(--d) + 0.5 * var(--tip-size));
 		display: block;
 		flex-shrink: 0;
 		width: auto;
@@ -144,48 +150,80 @@
 		margin: 0;
 		transform-origin: inherit;
 		z-index: 1000;
-	}
 
-	.inner {
-		--radius: var(--ui-radius-md);
-		--inset: var(--ui-inset);
-		--outset: 6px;
-		// To cleanup once new auto nesting solution found. Current one depends on --radius and --inset for inheritance.
-		--pad: calc(var(--outset) + var(--inset));
-		color: col(fg, 300);
-		position: relative;
-		background: col(bg, 000, 0.9);
-		backdrop-filter: blur(8px);
-		display: flex;
-		flex-direction: column;
-		gap: var(--ui-inset);
-		border-radius: calc(var(--radius) + var(--outset));
-		padding: var(--pad);
-		box-shadow: 0 0 0 1px col(bg, 500, 0.25), 0 3em 5em -4em rgb(0, 10, 30, 0.25);
-
-		> :global(:where(hr)) {
-			margin-inline: calc(-1 * var(--pad));
-			margin-block: var(--inset);
+		:global(.ui-tip) {
+			font-size: var(--tip-size);
+			color: col(bg, 000, 0.85);
 		}
 	}
 
 	.top {
 		bottom: 0;
 		padding-bottom: var(--d);
+		& :global(.ui-tip) {
+			bottom: var(--d);
+			left: 50%;
+			transform: translate(-50%, 100%);
+		}
 	}
 
 	.bottom {
 		top: 0;
 		padding-top: var(--d);
+		& :global(.ui-tip) {
+			top: var(--d);
+			left: 50%;
+			transform: translate(-50%, -100%) rotate(180deg);
+		}
 	}
 
 	.right {
 		left: 0;
 		padding-left: var(--d);
+		& :global(.ui-tip) {
+			left: var(--d);
+			top: 50%;
+			transform: translate(-100%, -50%) rotate(90deg);
+		}
 	}
 
 	.left {
-		right: 0;
+		right: var(--d);
 		padding-right: var(--d);
+		& :global(.ui-tip) {
+			right: 0;
+			top: 50%;
+			transform: translate(100%, -50%) rotate(-90deg);
+		}
+	}
+
+	// Tip
+
+	.top,
+	.bottom {
+		&.start {
+			& :global(.ui-tip) {
+				left: var(--tip-pad);
+			}
+		}
+		&.end {
+			& :global(.ui-tip) {
+				left: calc(100% - var(--tip-pad));
+			}
+		}
+	}
+
+	.left,
+	.right {
+		&.start {
+			& :global(.ui-tip) {
+				top: var(--tip-pad);
+			}
+		}
+		&.end {
+			& :global(.ui-tip) {
+				top: calc(100% - var(--tip-pad));
+			}
+		}
 	}
 </style>

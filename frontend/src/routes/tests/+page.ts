@@ -5,7 +5,7 @@ import type { PageLoad } from './$types';
 
 export const load = (async (event) => {
 	const db = await getDb();
-	const rolesRes = await db.from('app_role_details').select('*');
+	const rolesRes = await db.from('role_details').select('*');
 	// const d = await event.fetch(`/api/geo/${CITIES.Montreal.param}/find-districts.json`);
 	// console.log(await d.json());
 	if (rolesRes.error) {
