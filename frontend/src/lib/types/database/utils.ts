@@ -1,4 +1,4 @@
-import type { NonUndefinable } from '$types/utils';
+import type { NonUndefinable, Single } from '$types/utils';
 
 export type PgCube = `(${number},${number},${number})`;
 
@@ -24,3 +24,28 @@ export function maybeSingle<T>(entity: T) {
 export type TableName = keyof App.Database['public']['Tables'];
 
 export type TableRow<T extends TableName> = App.Database['public']['Tables'][T]['Row'];
+
+type BuffOptions = 'single' | 'maybeSingle';
+
+/**
+ * As it stands, typescript can't do partial inference of generics :(. We are thus currying through
+ * buff() to provide a common type inference site.
+ */
+export function buff<D>(data: D) {
+	type SingleD = Single<D>;
+	function singularize<Buff extends Partial<{ [K in keyof SingleD]: BuffOptions }>>() {
+		type TBuff = {
+			[K in keyof Buff]: K extends keyof SingleD
+				? Buff[K] extends 'single'
+					? Single<SingleD[K]>
+					: Buff[K] extends 'maybeSingle'
+					? Single<SingleD[K]> | null
+					: Buff[K]
+				: boolean;
+		};
+		type S = Omit<SingleD, keyof Buff> & TBuff;
+		return data as D extends unknown[] ? S[] : S;
+	}
+
+	return { singularize };
+}

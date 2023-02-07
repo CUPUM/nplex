@@ -1049,18 +1049,18 @@ export interface Database {
       }
       role_details: {
         Row: {
-          app_role: Database["public"]["Enums"]["app_role"]
           description: string
+          role: Database["public"]["Enums"]["app_role"]
           title: string
         }
         Insert: {
-          app_role: Database["public"]["Enums"]["app_role"]
           description: string
+          role: Database["public"]["Enums"]["app_role"]
           title: string
         }
         Update: {
-          app_role?: Database["public"]["Enums"]["app_role"]
           description?: string
+          role?: Database["public"]["Enums"]["app_role"]
           title?: string
         }
       }

@@ -372,7 +372,7 @@
 		border-radius: calc(var(--ui-radius-md) + var(--inset));
 		backdrop-filter: blur(8px);
 		padding: var(--inset);
-		transition: background 0.15s;
+		transition: background 0.2s;
 
 		&::before {
 			content: '';
@@ -384,11 +384,15 @@
 			border-radius: inherit;
 			background: var(--nav-bg);
 			opacity: 0.5;
+			filter: brightness(100%);
 			transition: opacity 0.25s;
 		}
 
-		&:hover {
-			background: col(fg, 100, 0.1);
+		:global([data-theme='light']) &:hover {
+			background: col(bg, 000, 0.5);
+		}
+		:global([data-theme='dark']) &:hover {
+			background: col(bg, 700, 0.8);
 		}
 	}
 

@@ -42,12 +42,12 @@
 				name="title"
 				class="title"
 				placeholder="Donnez un titre à vorte projet"
-				variant="outlined"
+				variant="default"
 				bind:value={title}
 				invalid={!!form?.title}
 			>
 				<svelte:fragment slot="trailing">
-					<Button type="submit" disabled={!title} {loading}>
+					<Button type="submit" variant="cta" disabled={!title} {loading}>
 						Créer
 						<Icon slot="leading" name="arrow-right" />
 					</Button>

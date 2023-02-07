@@ -462,7 +462,7 @@ create table "public"."projects_works" (
 
 
 create table "public"."role_details" (
-    "app_role" app_role not null,
+    "role" app_role not null,
     "description" text not null,
     "title" text not null
 );
@@ -564,7 +564,7 @@ create unique index actors_pkey on public.actors using btree (id);
 
 create unique index app_role_details_label_key on public.role_details using btree (title);
 
-create unique index app_role_details_pkey on public.role_details using btree (app_role);
+create unique index app_role_details_pkey on public.role_details using btree (role);
 
 create unique index notifications_pkey on public.notifications using btree (id);
 

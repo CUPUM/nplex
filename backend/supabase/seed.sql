@@ -45,7 +45,7 @@ values (
 -- Populate role_details
 
 insert into public.role_details
-    (app_role, title, description)
+    (role, title, description)
 values
     ('nplex', 'Nplex', 'Utilisateur par défaut.'),
     ('admin', 'Administrateur', 'Administrateur avec accès et permissions permettant de gérer les droits des éditeurs et visiteurs.'),

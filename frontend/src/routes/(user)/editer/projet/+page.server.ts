@@ -16,17 +16,17 @@ export const actions: Actions = {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
 		const db = await getDb(event);
-		const insert = await db.from('projects').insert(parsed.data).select('id').single();
-		if (insert.error) {
+		const newProject = await db.from('projects').insert(parsed.data).select('id').single();
+		if (newProject.error) {
 			return fail(STATUS_CODES.InternalServerError, {
-				error: errmsg(insert.error),
+				error: errmsg(newProject.error),
 			});
 		}
-		if (!insert.data.id) {
+		if (!newProject.data.id) {
 			return fail(STATUS_CODES.InternalServerError, {
 				error: "Problème de récupération de l'identifiant du projet",
 			});
 		}
-		throw redirect(STATUS_CODES.MovedTemporarily, `/editer/projet/${insert.data?.id}`);
+		throw redirect(STATUS_CODES.MovedTemporarily, `/editer/projet/${newProject.data.id}`);
 	},
 };

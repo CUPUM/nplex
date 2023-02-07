@@ -1,4 +1,4 @@
-import { maybeSingle } from '$types/database/utils';
+import { buff } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { pagination } from '$utils/format';
@@ -28,12 +28,7 @@ export const load = (async (event) => {
 			if (res.error) {
 				throw error(STATUS_CODES.InternalServerError, { ...res.error });
 			}
-			return res.data.map((p) => {
-				return {
-					...p,
-					publication_status: maybeSingle(p.publication_status),
-				};
-			});
+			return buff(res.data).singularize<{ publication_status: 'single' }>();
 		});
 	return {
 		projects,

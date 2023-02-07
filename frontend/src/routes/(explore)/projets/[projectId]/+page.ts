@@ -2,7 +2,7 @@ import { dbAdmin } from '$utils/database/admin';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { PageLoad } from './$types';
 
 export const load = (async (event) => {
 	const db = await getDb(event);
@@ -39,4 +39,4 @@ export const load = (async (event) => {
 		project: projectRes.data,
 		showFooter: true,
 	};
-}) satisfies PageServerLoad;
+}) satisfies PageLoad;
