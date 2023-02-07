@@ -7,7 +7,7 @@
 </script>
 
 <div class="account">
-	<AccountMenu profile={data.profile} />
+	<AccountMenu />
 	<article in:fly={{ y: 10 }}>
 		<slot />
 	</article>

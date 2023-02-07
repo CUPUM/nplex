@@ -6,13 +6,15 @@ import type { LayoutLoad } from './$types';
 
 export const load = (async (event) => {
 	event.depends(LOAD_DEPENDENCIES.USER_PROFILE);
+
 	const { session } = await event.parent();
 	if (!session) {
 		throw error(STATUS_CODES.Unauthorized);
 	}
+
 	const db = await getDb(event);
-	// User's profile data.
-	const profileRes = await db
+
+	const profile = db
 		.from('users')
 		.select(
 			`
@@ -23,32 +25,32 @@ export const load = (async (event) => {
 			`
 		)
 		.eq('id', session.user.id)
-		.single();
-	if (profileRes.error) {
-		throw error(STATUS_CODES.InternalServerError, profileRes.error);
-	}
-	// Role details.
-	const roleRes = await db
-		.from('app_role_details')
-		.select()
-		.eq('app_role', maybeSingle(profileRes.data.role)?.role)
-		.maybeSingle();
-	// Getting list of roles for form.
-	const rolesRes = await db.from('app_role_details').select('*');
-	if (rolesRes.error) {
-		throw error(STATUS_CODES.InternalServerError, rolesRes.error);
-	}
-	if (!roleRes.data) {
-		throw error(STATUS_CODES.InternalServerError, {
-			message: 'Incapable de trouver les informations pour le rôle du profil.',
+		.limit(1)
+		.single()
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			console.log(res.data);
+			return maybeSingle({
+				...res.data,
+				role: maybeSingle(res.data.role)!,
+			})!;
 		});
-	}
+
+	const roles = await db
+		.from('role_details')
+		.select('*')
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			console.log(res);
+			return res.data;
+		});
 
 	return {
-		profile: {
-			...profileRes.data,
-			role: { ...maybeSingle(profileRes.data.role), details: roleRes.data },
-		},
-		roles: rolesRes.data,
+		profile,
+		roles,
 	};
 }) satisfies LayoutLoad;

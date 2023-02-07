@@ -32,6 +32,7 @@
 
 <script lang="ts">
 	import { getContext, setContext } from 'svelte';
+	import { expoOut } from 'svelte/easing';
 	import { writable, type Writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import Ripple from '../Ripple.svelte';
@@ -197,7 +198,7 @@
 		{bindInputRef}
 	>
 		<input
-			in:fly={{ y: -6 }}
+			in:fly|local={{ y: 6, delay: 150, easing: expoOut, duration: 250 }}
 			bind:this={inputRef}
 			data-field-input
 			class="input"
@@ -469,19 +470,20 @@
 	}
 
 	.opaque {
+		--ui-ripple-color: #{col(primary, 500)};
 		color: col(fg, 100);
-		background: col(bg, 500);
+		background: col(bg, 300);
 		box-shadow: 0 0.25rem 1rem -0.5rem transparent;
 		transition: color 0.1s ease-out, background 0.1s ease-out, box-shadow 0.25s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(fg, 700);
-			background: col(bg, 700);
+			color: col(fg, 000);
+			background: col(bg, 100);
 		}
 		&:focus-within {
-			color: col(fg, 900);
-			background: col(bg, 100);
-			box-shadow: 0 1rem 2rem -1rem rgb(0, 20, 40, 0.5);
+			color: col(fg, 700);
+			background: col(bg, 000);
+			// box-shadow: 0 1rem 2rem -1rem rgb(0, 20, 40, 0.5);
 			:global(*[data-field-input]) {
 				opacity: 1;
 			}

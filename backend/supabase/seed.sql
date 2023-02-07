@@ -1,6 +1,4 @@
--- 
 -- Register default 'nplex' user.
--- 
 
 insert into auth.users (
         id,
@@ -43,9 +41,19 @@ values (
         ''
     );
 
--- 
+
+-- Populate role_details
+
+insert into public.role_details
+    (app_role, title, description)
+values
+    ('nplex', 'Nplex', 'Utilisateur par défaut.'),
+    ('admin', 'Administrateur', 'Administrateur avec accès et permissions permettant de gérer les droits des éditeurs et visiteurs.'),
+    ('editor', 'Éditeur', 'Collaborateur ayant les droits de base pour la gestion et la publication de contenu.'),
+    ('visitor', 'Visitor', 'Utilisateurs sans droits particuliers de publication.');
+
+
 -- Insert sample lists values.
--- 
 
 insert into public.project_type
     (id, title, description)
@@ -128,7 +136,6 @@ values
     (2, 24),
     (2, 25),
     (2, 26);
-
 
 insert into public.project_site_ownership
     (title, description)

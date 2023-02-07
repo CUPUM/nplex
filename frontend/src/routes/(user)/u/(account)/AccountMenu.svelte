@@ -3,12 +3,13 @@
 	import Avatar from '$components/Avatar.svelte';
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
-	import { maybeSingle } from '$types/utils';
 	import { fly } from 'svelte/transition';
 	import { USER_ROUTES } from '../common';
 	import type { LayoutData } from './$types';
 
-	export let profile: LayoutData['profile'];
+	$: ({ profile, roles } = $page.data as LayoutData);
+	$: userRoleDetails = roles.find((r) => r.app_role === profile.role.role);
+	$: console.log(roles);
 </script>
 
 <menu>
@@ -18,7 +19,7 @@
 		{/if}
 		<hgroup>
 			<h1>{profile.first_name}</h1>
-			<span>{maybeSingle(profile.role)?.details.title}</span>
+			<span>{userRoleDetails?.title}</span>
 		</hgroup>
 	</header>
 	<nav>
