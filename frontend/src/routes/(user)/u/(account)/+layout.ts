@@ -1,4 +1,4 @@
-import { maybeSingle } from '$types/utils';
+import { maybeSingle } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { LOAD_DEPENDENCIES, STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';

@@ -1,4 +1,5 @@
-import type { Arrify, PgRange } from '$types/utils';
+import type { PgRange } from '$types/database/utils';
+import type { Arrify } from '$types/utils';
 import type { ValueOf } from 'ts-essentials';
 import { browserDb } from './database/client';
 import { BRACKETS, SRID, type STORAGE_BUCKETS } from './enums';

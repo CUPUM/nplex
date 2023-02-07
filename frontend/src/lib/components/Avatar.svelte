@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Database } from '$types/database';
+	import type { Database } from '$types/database/generated';
 	import Loading from './Loading.svelte';
 	import Ripple from './Ripple.svelte';
 

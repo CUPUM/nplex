@@ -1,6 +1,7 @@
+import type { DeepReplace } from '$types/deepReplace';
 import type { DeepOmit } from 'ts-essentials';
-import type { Database } from './database';
-import type { DeepReplace, PgCube, PgRange } from './utils';
+import type { Database } from './generated';
+import type { PgCube, PgRange } from './utils';
 
 export type BuffedDatabase = DeepReplace<
 	DeepOmit<Database, { public: { Functions: { get_project_descriptors: { Returns: true } } } }> & {

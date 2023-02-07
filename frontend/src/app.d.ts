@@ -2,7 +2,8 @@
 
 import type { POPOVER_OPEN_ATTR } from '$components/Popover.svelte';
 import type { NavbarMaxWidth } from '$routes/Navbar.svelte';
-import type { BuffedDatabase } from '$types/databaseBuff';
+import type { BuffedDatabase } from '$types/database/buff';
+import type { TableRow } from '$types/database/utils';
 import type { Category } from '$utils/enums';
 import type { ThemeName } from '$utils/themes';
 import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
@@ -10,7 +11,7 @@ import type { DeepOmit, DeepPick } from 'ts-essentials';
 
 type Session = DeepOmit<AuthSession, { user: { role: never } }> & {
 	user: { role: App.Database['public']['Enums']['app_role'] } & Pick<
-		App.Database['public']['Tables']['users']['Row'],
+		TableRow<'users'>,
 		'avatar_url' | 'first_name' | 'public_email'
 	>;
 };

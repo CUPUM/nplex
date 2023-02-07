@@ -1,4 +1,4 @@
-import { maybeSingle } from '$types/utils';
+import { maybeSingle } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { LOAD_DEPENDENCIES, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { alwaysArr, fromPgRange, pgCubeToHsl } from '$utils/format';
