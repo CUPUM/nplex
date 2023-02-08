@@ -286,7 +286,7 @@
 			[category-end session-start]
 			1fr
 			[session-end full-end];
-		grid-auto-flow: dense;
+		// grid-auto-flow: dense;
 		padding: 1rem 1.5rem;
 		margin: 0 auto;
 		flex-direction: row;
@@ -344,6 +344,7 @@
 		--d: calc(0.35s + var(--i, 0) * 0.1s);
 		position: relative;
 		display: flex;
+		flex: none;
 		flex-direction: row;
 		align-items: center;
 		gap: 2px;
@@ -373,14 +374,15 @@
 
 	.main {
 		grid-column: main;
-		justify-content: flex-start;
+		// justify-content: flex-start;
+		justify-self: flex-start;
 		--i: 0;
 	}
 
 	.category {
 		--i: 1;
 		grid-column: category;
-		justify-content: center;
+		justify-self: center;
 		border-radius: calc(var(--ui-radius-md) + var(--ui-inset));
 		backdrop-filter: blur(8px);
 		padding: var(--ui-inset);
@@ -415,7 +417,7 @@
 
 	.session {
 		grid-column: session;
-		justify-content: flex-end;
+		justify-self: flex-end;
 		--i: 2;
 	}
 </style>

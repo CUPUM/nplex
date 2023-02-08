@@ -9,7 +9,10 @@
 
 :root {
 	--ui-bg: #{col(bg, 100)};
-	--ui-nav-h: 81px;
+	--ui-nav-h: 81px; // Retrieved manually, adjust whenever modifying navbar style.
+	--ui-nav-center-w: calc(
+		min(100%, var(--ui-width-main)) - 2 * 1.5rem - 2 * 1rem - 2 * 319px
+	); // 319px = width of main nav (largest of both side navs);
 	--ui-scroll-y: 0px;
 	--ui-scroll-y-int: 0;
 	--ui-ripple-color: #{col(fg, 900)};
@@ -42,7 +45,7 @@
 	--ui-ease-in-out: cubic-bezier(0.7, 0, 0.15, 1);
 
 	@include breakpoint.tablet {
-		--ui-nav-h: 104px;
+		--ui-nav-h: 88px; // Retrieved manually
 	}
 }
 
