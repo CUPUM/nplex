@@ -6,32 +6,46 @@
 -->
 <script lang="ts" context="module">
 	import { writable } from 'svelte/store';
-	import type { Newable } from 'ts-essentials';
+	import type { Newable, ValueOf } from 'ts-essentials';
 	import { z } from 'zod';
 
-	type Message<T = string | SvelteComponentTyped> = {
-		content: T extends string
-			? T
-			: T extends SvelteComponentTyped
+	export const MESSAGE_TYPES = {
+		Error: 'error',
+		Success: 'success',
+		Default: 'default',
+	} as const;
+
+	export type MessageType = ValueOf<typeof MESSAGE_TYPES>;
+
+	type Message<C = string | SvelteComponentTyped> = {
+		content: C extends string
+			? C
+			: C extends SvelteComponentTyped
 			? {
-					component: Newable<T>;
-					props?: ComponentProps<T>;
+					component: Newable<C>;
+					props?: ComponentProps<C>;
 			  }
 			: unknown;
 		timer?: number;
-		type?: 'error' | 'success' | 'default';
+		type?: MessageType;
 	};
 
 	const queryMessageSchema: z.ZodType<Message<string>> = z.object({
 		content: z.string(),
 		timer: z.number().optional(),
-		type: z.union([z.literal('error'), z.literal('success'), z.literal('default')]).optional(),
+		type: z
+			.union([
+				z.literal(MESSAGE_TYPES.Error),
+				z.literal(MESSAGE_TYPES.Success),
+				z.literal(MESSAGE_TYPES.Default),
+			])
+			.optional(),
 	});
 
 	const defaultMessage: Message<string> = {
 		content: '',
 		timer: 4000,
-		type: 'default',
+		type: MESSAGE_TYPES.Default,
 	};
 
 	/**
@@ -58,31 +72,48 @@
 			timeouts.clear();
 			set([]);
 		}
-		function dispatch(...messages: Message[]) {
+		function dispatch(...messages: Message[] | string[]) {
 			const defaulted = messages.map((m) => {
-				m = { ...defaultMessage, ...m };
-				if (m.timer) {
+				let mObj: Message;
+				if (typeof m === 'string') {
+					mObj = { content: m };
+				} else {
+					mObj = { ...defaultMessage, ...m };
+				}
+				if (mObj.timer) {
 					timeouts.set(
-						m,
-						setTimeout(() => clear(m), m.timer)
+						mObj,
+						setTimeout(() => clear(mObj), mObj.timer)
 					);
 				}
-				return m;
+				return mObj;
 			});
 			update((curr) => [...curr, ...defaulted]);
 		}
-		function error(...messages: Omit<Message, 'type'>[]) {
+		function error(...messages: Omit<Message, 'type'>[] | string[]) {
 			dispatch(
 				...messages.map((m) => {
-					(m as Message).type = 'error';
+					if (typeof m === 'string') {
+						return {
+							content: m,
+							type: MESSAGE_TYPES.Error,
+						};
+					}
+					(m as Message).type = MESSAGE_TYPES.Error;
 					return m;
 				})
 			);
 		}
-		function success(...messages: Omit<Message, 'type'>[]) {
+		function success(...messages: Omit<Message, 'type'>[] | string[]) {
 			dispatch(
 				...messages.map((m) => {
-					(m as Message).type = 'success';
+					if (typeof m === 'string') {
+						return {
+							content: m,
+							type: MESSAGE_TYPES.Success,
+						};
+					}
+					(m as Message).type = MESSAGE_TYPES.Success;
 					return m;
 				})
 			);

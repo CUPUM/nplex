@@ -92,7 +92,10 @@
 			color: col(fg, 900);
 			&::before {
 				opacity: 0.1;
-				background: col(fg, 500);
+				background: col(fg, 100);
+				// opacity: 0.5;
+				// background: none;
+				// border: 1px solid col(primary, 300);
 			}
 		}
 

@@ -37,7 +37,7 @@ specifiers:
   postcss: ^8.4.21
   postcss-load-config: ^4.0.1
   postcss-normalize: ^10.0.1
-  prettier: ^2.8.3
+  prettier: ^2.8.4
   prettier-plugin-jsdoc: 0.4.2
   prettier-plugin-svelte: ^2.9.0
   sass: ^1.58.0
@@ -52,7 +52,7 @@ specifiers:
   tslib: ^2.5.0
   typescript: ^4.9.5
   vite: ^4.1.1
-  zod: ^3.20.2
+  zod: ^3.20.3
   zod-form-data: ^1.2.4
 
 dependencies:
@@ -70,8 +70,8 @@ dependencies:
   maplibre-gl: 2.4.0
   maplibre-gl-draw-circle: 0.1.1
   sharp: 0.31.3
-  zod: 3.20.2
-  zod-form-data: 1.2.4_zod@3.20.2
+  zod: 3.20.3
+  zod-form-data: 1.2.4_zod@3.20.3
 
 devDependencies:
   '@graphql-codegen/cli': 3.0.0_oagga47ridy4omgf45pd3y74j4
@@ -97,9 +97,9 @@ devDependencies:
   postcss: 8.4.21
   postcss-load-config: 4.0.1_postcss@8.4.21
   postcss-normalize: 10.0.1_jrpp4geoaqu5dz2gragkckznb4
-  prettier: 2.8.3
-  prettier-plugin-jsdoc: 0.4.2_prettier@2.8.3
-  prettier-plugin-svelte: 2.9.0_kdmmghgdi3ngrsq6otxkjilbry
+  prettier: 2.8.4
+  prettier-plugin-jsdoc: 0.4.2_prettier@2.8.4
+  prettier-plugin-svelte: 2.9.0_jrsxveqmsx2uadbqiuq74wlc4u
   sass: 1.58.0
   svelte: 3.55.1
   svelte-check: 3.0.3_2fhq4e3e5we74q3fjwcjkwqgle
@@ -1384,8 +1384,8 @@ packages:
       - encoding
     dev: false
 
-  /@supabase/postgrest-js/1.3.2:
-    resolution: {integrity: sha512-/RRsBNtVnUiVp1wUFY/MGfxEGDD1+lA8cxvU3cbzRCNeo1dQfzQ3cw9ssRnp1r/DXkyjzujGQ8d1a+EJewr8dQ==}
+  /@supabase/postgrest-js/1.4.0:
+    resolution: {integrity: sha512-Qwk7T/thG4gtVjxxVGlnhH9tPWXyBGIpQMxNUtAIyASgJoEEuUFS/Wx/GqGDIfwRtrn1qqZjE6sZon5ULAdRLQ==}
     dependencies:
       cross-fetch: 3.1.5
     transitivePeerDependencies:
@@ -1414,7 +1414,7 @@ packages:
     dependencies:
       '@supabase/functions-js': 2.0.0
       '@supabase/gotrue-js': 2.11.0
-      '@supabase/postgrest-js': 1.3.2
+      '@supabase/postgrest-js': 1.4.0
       '@supabase/realtime-js': 2.6.0
       '@supabase/storage-js': 2.3.0
       cross-fetch: 3.1.5
@@ -3044,7 +3044,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.5
-      caniuse-lite: 1.0.30001450
+      caniuse-lite: 1.0.30001451
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -3115,8 +3115,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001450
-      electron-to-chromium: 1.4.288
+      caniuse-lite: 1.0.30001451
+      electron-to-chromium: 1.4.289
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -3173,8 +3173,8 @@ packages:
       pascal-case: 3.1.2
       tslib: 2.5.0
 
-  /caniuse-lite/1.0.30001450:
-    resolution: {integrity: sha512-qMBmvmQmFXaSxexkjjfMvD5rnDL0+m+dUMZKoDYsGG8iZN29RuYh9eRoMvKsT6uMAWlyUUGDEQGJJYjzCIO9ew==}
+  /caniuse-lite/1.0.30001451:
+    resolution: {integrity: sha512-XY7UbUpGRatZzoRft//5xOa69/1iGJRBlrieH6QYrkKLIFn3m7OVEJ81dSrKoy2BnKsdbX5cLrOispZNYo9v2w==}
     dev: true
 
   /capital-case/1.0.4:
@@ -3670,8 +3670,8 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /electron-to-chromium/1.4.288:
-    resolution: {integrity: sha512-8s9aJf3YiokIrR+HOQzNOGmEHFXVUQzXM/JaViVvKdCkNUjS+lEa/uT7xw3nDVG/IgfxiIwUGkwJ6AR1pTpYsQ==}
+  /electron-to-chromium/1.4.289:
+    resolution: {integrity: sha512-relLdMfPBxqGCxy7Gyfm1HcbRPcFUJdlgnCPVgQ23sr1TvUrRJz0/QPoGP0+x41wOVSTN/Wi3w6YDgHiHJGOzg==}
     dev: true
 
   /element-to-path/1.2.1:
@@ -5385,8 +5385,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /minipass/4.0.2:
-    resolution: {integrity: sha512-4Hbzei7ZyBp+1aw0874YWpKOubZd/jc53/XU+gkYry1QV+VvrbO8icLM5CUtm4F0hyXn85DXYKEMIS26gitD3A==}
+  /minipass/4.0.3:
+    resolution: {integrity: sha512-OW2r4sQ0sI+z5ckEt5c1Tri4xTgZwYDxpE54eqWlQloQRoWtXjqt9udJ5Z4dSv7wK+nfFI7FRXyCpBSft+gpFw==}
     engines: {node: '>=8'}
     dev: true
 
@@ -5852,7 +5852,7 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier-plugin-jsdoc/0.4.2_prettier@2.8.3:
+  /prettier-plugin-jsdoc/0.4.2_prettier@2.8.4:
     resolution: {integrity: sha512-w2jnAQm3z0GAG0bhzVJeehzDtrhGMSxJjit5ApCc2oxWfc7+jmLAkbtdOXaSpfwZz3IWkk+PiQPeRrLNpbM+Mw==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -5861,23 +5861,23 @@ packages:
       binary-searching: 2.0.5
       comment-parser: 1.3.1
       mdast-util-from-markdown: 1.3.0
-      prettier: 2.8.3
+      prettier: 2.8.4
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /prettier-plugin-svelte/2.9.0_kdmmghgdi3ngrsq6otxkjilbry:
+  /prettier-plugin-svelte/2.9.0_jrsxveqmsx2uadbqiuq74wlc4u:
     resolution: {integrity: sha512-3doBi5NO4IVgaNPtwewvrgPpqAcvNv0NwJNflr76PIGgi9nf1oguQV1Hpdm9TI2ALIQVn/9iIwLpBO5UcD2Jiw==}
     peerDependencies:
       prettier: ^1.16.4 || ^2.0.0
       svelte: ^3.2.0
     dependencies:
-      prettier: 2.8.3
+      prettier: 2.8.4
       svelte: 3.55.1
     dev: true
 
-  /prettier/2.8.3:
-    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
+  /prettier/2.8.4:
+    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
@@ -6544,7 +6544,7 @@ packages:
     dependencies:
       chownr: 2.0.0
       fs-minipass: 2.1.0
-      minipass: 4.0.2
+      minipass: 4.0.3
       minizlib: 2.1.2
       mkdirp: 1.0.4
       yallist: 4.0.0
@@ -7116,14 +7116,14 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zod-form-data/1.2.4_zod@3.20.2:
+  /zod-form-data/1.2.4_zod@3.20.3:
     resolution: {integrity: sha512-mI/rgItfvYQpvzEqGuBda/nuTHrMNoFZJ5cpiGLC5O3ZaVwI0XVo3/yTY2RreVMu57wGcDrfQcTRe5aMq2ijYA==}
     peerDependencies:
       zod: ^3.11.x
     dependencies:
-      zod: 3.20.2
+      zod: 3.20.3
     dev: false
 
-  /zod/3.20.2:
-    resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
+  /zod/3.20.3:
+    resolution: {integrity: sha512-+MLeeUcLTlnzVo5xDn9+LVN9oX4esvgZ7qfZczBN+YVUvZBafIrPPVyG2WdjMWU2Qkb2ZAh2M8lpqf1wIoGqJQ==}
     dev: false

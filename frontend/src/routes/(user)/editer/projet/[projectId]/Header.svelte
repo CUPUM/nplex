@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Icon from '$components/Icon.svelte';
 	import { KEY } from '$utils/enums';
 	import type { PageData } from './$types';
 	import { dirty } from './common';
 
-	export let title: PageData['project']['title'];
+	$: ({ title } = ($page.data as PageData).project);
 
 	$: _title = title;
 
@@ -37,7 +38,7 @@
 <style lang="scss">
 	header {
 		padding-block: 2rem;
-		margin-top: var(--ui-nav-h);
+		// margin-top: var(--ui-nav-h);
 		margin-inline: 1.5rem;
 		align-self: stretch;
 		background: col(bg, 500);

@@ -7,7 +7,7 @@
 
 	export let data: PageData;
 
-	const key = {};
+	const key = Symbol('projects');
 
 	onMount(() => {
 		rootScroll.lock(key);

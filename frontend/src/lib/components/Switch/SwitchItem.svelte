@@ -60,7 +60,7 @@
 </svelte:element>
 
 <style lang="scss">
-	:where(.switch-item) {
+	.switch-item {
 		--item-height: calc(var(--ui-height) - 2 * var(--switch-inset));
 		--item-radius: calc(var(--switch-radius) - var(--switch-inset));
 		position: relative;

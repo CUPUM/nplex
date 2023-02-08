@@ -4,14 +4,15 @@
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { messages } from '$routes/MessagesOutlet.svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
+	import { fade, fly, scale } from 'svelte/transition';
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;
 	export let loading = false;
 
 	$: if (form?.error) {
-		messages.error({ content: form.error });
+		messages.error(...[form.error].flat());
 	}
 	$: if (form?.title) {
 		messages.error({ content: form.title.join(' ') });
@@ -35,9 +36,9 @@
 		};
 	}}
 >
-	<div>
-		<h1 in:fly={{ y: 20 }}>Créez votre nouveau projet</h1>
-		<fieldset in:fly={{ y: -20, delay: 150 }}>
+	<div in:scale={{ start: 0.96, easing: cubicOut, duration: 250 }}>
+		<h1 in:fly={{ y: 12 }}>Créez votre nouveau projet</h1>
+		<fieldset in:fly={{ y: -12, delay: 150 }}>
 			<Field
 				name="title"
 				class="title"
@@ -47,7 +48,7 @@
 				invalid={!!form?.title}
 			>
 				<svelte:fragment slot="trailing">
-					<Button type="submit" variant="cta" disabled={!title} {loading}>
+					<Button type="submit" variant="ghost" disabled={!title} {loading}>
 						Créer
 						<Icon slot="leading" name="arrow-right" />
 					</Button>
@@ -77,22 +78,24 @@
 	}
 
 	div {
+		position: relative;
 		display: flex;
 		align-items: center;
 		flex-direction: column;
-		padding-inline: 1.5rem;
+		padding: 2.5rem 3rem;
+		border-radius: var(--ui-radius-xl);
 		max-width: var(--ui-width-md);
 		width: 100%;
-		gap: 0;
+		gap: 3rem;
+		border: 1px dashed col(fg, 500, 0.1);
 	}
 
 	h1 {
 		width: 100%;
 		font-size: var(--ui-text-2xl);
 		font-weight: 600;
+		text-align: center;
 		max-width: var(--ui-width-main);
-		// text-align: center;
-		margin-bottom: 2rem;
 	}
 
 	section {
@@ -109,10 +112,10 @@
 	}
 
 	span {
+		text-align: center;
 		display: inline-block;
 		width: 100%;
-		// text-align: center;
-		margin-top: 1.5rem;
+		margin-top: 2rem;
 		font-size: var(--ui-text-md);
 		font-weight: 300;
 		color: col(fg, 100, 0.5);

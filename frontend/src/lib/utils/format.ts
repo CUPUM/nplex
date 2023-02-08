@@ -153,7 +153,7 @@ export function toPgRange<T extends [number, number] | null>(range: T) {
 /**
  * Parse a range stringified value from PostgREST and return a two-number tuple.
  */
-export function fromPgRange<T extends 'empty' | null | undefined | string>(
+export function pgRangeToArr<T extends 'empty' | null | undefined | string>(
 	pgRange: T,
 	fallback: [number, number] = [0, 0]
 ): [number, number] {

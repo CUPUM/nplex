@@ -4,10 +4,29 @@ import { toPgGeom, toPgRange } from '$utils/format';
 import { positionSchema } from '$utils/validation';
 import { point } from '@turf/turf';
 import type { ComponentProps } from 'svelte';
-import { get, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { PageData } from './$types';
+
+export const FORM_ID = 'project-editor-form';
+export const TITLE_MIN_WORDS = 3;
+export const TITLE_MAX_WORDS = 24;
+export const DESCRIPTION_MAX_WORDS = 250;
+export const COST_MIN = 0;
+export const COST_MAX = 50_000;
+export const COST_MAX_DELTA = 1_000;
+export const COST_STEP = 10;
+export const IMAGE_MAX_SIZE = 5e6;
+export const IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+export const IMAGE_MAX_RESOLUTION = 1_600;
+export const IMAGE_GALLERY_FOLDER = 'gallery';
+export const IMAGE_TITLE_MAX_LENGTH = 200;
+export const IMAGE_DESCRIPTION_MAX_LENGTH = 500;
+export const LOCATION_DEFAULT_RADIUS = 500;
+export const LOCATION_MAX_RADIUS = 2_500;
+export const ADJACENT_STREETS_MIN = 0;
+export const ADJACENT_STREETS_MAX = 5;
 
 //
 // Sharable two-way bound form values.
@@ -16,11 +35,6 @@ import type { PageData } from './$types';
 export const _type_id = writable<PageData['project']['type_id']>();
 export const _banner_id = writable<PageData['project']['banner_id']>();
 export const _location_radius = writable<PageData['project']['location']['radius']>();
-
-/**
- * Page-wide copy of data.descriptors.
- */
-export const descriptors = writable<PageData['descriptors']>();
 
 /**
  * Map of dirty fields, managed by each formgroup component.
@@ -41,31 +55,13 @@ export const mapdraw = writable<ComponentProps<MapDraw>['draw']>();
  * Filter valid site usages based on usage category.
  */
 export function getAvailableUsages(
+	descriptors: App.Database['public']['Functions']['get_project_descriptors']['Returns'],
 	categoryId: PageData['project']['site_usage_category_id'] | undefined
 ) {
 	if (categoryId == null) {
 		return [];
-	} else
-		return get(descriptors).siteUsages.filter((usage) => usage.category_ids.includes(categoryId));
+	} else return descriptors.siteUsages.filter((usage) => usage.category_ids.includes(categoryId));
 }
-
-export const TITLE_MIN_WORDS = 3;
-export const TITLE_MAX_WORDS = 24;
-export const DESCRIPTION_MAX_WORDS = 250;
-export const COST_MIN = 0;
-export const COST_MAX = 50_000;
-export const COST_MAX_DELTA = 1_000;
-export const COST_STEP = 10;
-export const IMAGE_MAX_SIZE = 5e6;
-export const IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-export const IMAGE_MAX_RESOLUTION = 1_600;
-export const IMAGE_GALLERY_FOLDER = 'gallery';
-export const IMAGE_TITLE_MAX_LENGTH = 200;
-export const IMAGE_DESCRIPTION_MAX_LENGTH = 500;
-export const LOCATION_DEFAULT_RADIUS = 500;
-export const LOCATION_MAX_RADIUS = 2_500;
-export const ADJACENT_STREETS_MIN = 0;
-export const ADJACENT_STREETS_MAX = 5;
 
 export const titleSchema = zfd.text(
 	z

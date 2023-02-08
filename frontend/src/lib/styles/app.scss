@@ -3,6 +3,7 @@
 @use 'classes';
 
 :root {
+	position: relative;
 	background: var(--ui-bg);
 	font-family: var(--ui-font-main);
 	color: col(fg, 500);
@@ -15,14 +16,15 @@
 	overflow-y: scroll;
 	scroll-snap-type: y proximity;
 	scroll-behavior: smooth;
-	// transition: background 0.2s ease;
 
-	&[data-lock-scroll] {
+	&[data-lock-scroll]:not[data-lock-scroll='nav'] {
 		overflow-y: hidden;
 		padding-right: var(--ui-scroll-size);
+	}
 
-		@include breakpoint.mobile {
-			overflow-y: scroll;
+	@include breakpoint.tablet {
+		&[data-lock-scroll] {
+			overflow-y: hidden;
 			padding-right: 0;
 		}
 	}

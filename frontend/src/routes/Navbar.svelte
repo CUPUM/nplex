@@ -130,6 +130,7 @@
 	import Icon from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
+	import { rootScroll } from '$stores/scroll';
 	import { debounce } from '$utils/modifiers';
 	import { EDITOR_BASE_ROUTE, EXPLORE_ROUTES, MAIN_ROUTES, USER_BASE_ROUTE } from '$utils/routes';
 	import { THEMES, type ThemeName } from '$utils/themes';
@@ -141,6 +142,12 @@
 	import NavbarEditorMenu from './NavbarEditorMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
 	import { rootBackground } from './RootBackground.svelte';
+
+	/**
+	 * Key used as data-lock-scroll value for targeted behavior. Important: keep in sync with app.scss
+	 * [data-lock-scroll] selector.
+	 */
+	const key = Symbol('nav');
 
 	let mounted = false;
 	let open = false;
@@ -163,6 +170,11 @@
 
 	function toggle() {
 		open = !open;
+		if (open) {
+			rootScroll.lock(key);
+		} else {
+			rootScroll.unlock(key);
+		}
 	}
 
 	onMount(() => {
@@ -295,12 +307,12 @@
 			font-size: var(--ui-text-md);
 			position: absolute;
 			pointer-events: none;
-			border-radius: var(--ui-radius-lg);
+			border-radius: 0 var(--ui-radius-lg) var(--ui-radius-lg) 0;
 			overflow: hidden;
 			height: 100vh;
 			width: 0;
-			background: col(bg, 100, 0.92);
-			backdrop-filter: blur(8px);
+			background: col(bg, 100);
+			// backdrop-filter: blur(8px);
 			transform-origin: top left;
 			transition: all 0.35s var(--ui-ease-in);
 			&:not(.open) {
@@ -308,6 +320,7 @@
 			}
 
 			&.open {
+				border-radius: 0;
 				pointer-events: all;
 				width: 100vw;
 				transition: all 0.2s var(--ui-ease-out);
@@ -315,11 +328,11 @@
 		}
 	}
 
-	menu {
+	.toggle {
 		pointer-events: all;
 		width: 100%;
 		z-index: 100;
-		padding: 1.5rem;
+		padding: 1rem;
 		display: none;
 
 		@include breakpoint.tablet {
@@ -365,14 +378,18 @@
 	}
 
 	.category {
-		--inset: 3px;
 		--i: 1;
 		grid-column: category;
 		justify-content: center;
-		border-radius: calc(var(--ui-radius-md) + var(--inset));
+		border-radius: calc(var(--ui-radius-md) + var(--ui-inset));
 		backdrop-filter: blur(8px);
-		padding: var(--inset);
+		padding: var(--ui-inset);
+		margin-block: calc(-1 * var(--ui-inset));
 		transition: background 0.2s;
+
+		@include breakpoint.tablet {
+			margin-block: unset;
+		}
 
 		&::before {
 			content: '';

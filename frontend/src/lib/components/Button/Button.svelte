@@ -329,7 +329,7 @@
 		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(bg, 100);
+			color: col(bg, 500);
 			background: col(primary, 700);
 			// box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.25);
 		}

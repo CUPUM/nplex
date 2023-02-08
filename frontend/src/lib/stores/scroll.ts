@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+import type { KeyOfSet } from '$types/utils';
 import { writable } from 'svelte/store';
 
 const DIRECTION_THRESHOLD = 20;
@@ -32,7 +33,7 @@ export const rootScroll = (function () {
 		down: false,
 		locked: false,
 	});
-	let locks = new Set();
+	let locks = new Set<Symbol | number | string>();
 
 	function updateStore(e: Event) {
 		update((prev) => {
@@ -62,18 +63,29 @@ export const rootScroll = (function () {
 		});
 	}
 
-	function lock(key: any) {
+	function keyString(key: KeyOfSet<typeof locks>) {
+		if (typeof key === 'symbol') {
+			return key.toString();
+		}
+		return key + '';
+	}
+
+	function lock(key: KeyOfSet<typeof locks>) {
 		locks.add(key);
 		if (browser) {
-			document.documentElement.setAttribute(LOCK_ATTRIBUTE, '');
+			document.documentElement.setAttribute(LOCK_ATTRIBUTE, keyString(key));
 		}
 	}
 
-	function unlock(key: any) {
-		if (!locks.size) return;
+	function unlock(key: KeyOfSet<typeof locks>) {
 		locks.delete(key);
-		if (!locks.size) {
-			if (browser) {
+		if (browser) {
+			if (locks.size) {
+				const last = Array.from(locks).pop();
+				if (last) {
+					document.documentElement.setAttribute(LOCK_ATTRIBUTE, keyString(last));
+				}
+			} else {
 				document.documentElement.removeAttribute(LOCK_ATTRIBUTE);
 			}
 		}

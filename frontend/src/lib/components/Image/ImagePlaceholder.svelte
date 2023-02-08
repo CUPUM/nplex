@@ -17,6 +17,7 @@
 	import { THEME_PALETTES } from '$utils/themes';
 
 	export let color: string | string[] = THEME_PALETTES.light.bg[900];
+	export let style: string | undefined = undefined;
 
 	// function formatColors(input: typeof color) {
 	// 	const n = Math.round(Math.random() * (MAX_NODES - MIN_NODES)) + MIN_NODES;
@@ -55,7 +56,7 @@
 	}
 </script>
 
-<div style:--background={background} />
+<div style:--background={background} {style} />
 
 <style lang="scss">
 	div {
