@@ -251,7 +251,7 @@
 					Créer {$authModal === AUTHMODAL_MODE.SignUp ? 'mon' : 'un'} compte
 				</Button>
 			</fieldset>
-			<hr />
+			<hr class="rule" />
 			<fieldset class="providers" disabled>
 				<span>Me connecter avec:</span>
 				<ul class="scroll">

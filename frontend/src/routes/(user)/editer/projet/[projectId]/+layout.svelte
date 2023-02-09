@@ -58,10 +58,6 @@
 		border-radius: 99px; //var(--ui-radius-md);
 		gap: 0.5em;
 
-		@include breakpoint.tablet {
-			max-width: calc(100% - 12rem);
-		}
-
 		span {
 			white-space: nowrap;
 			flex: none;

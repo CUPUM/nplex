@@ -349,7 +349,7 @@
 		align-items: center;
 		gap: 2px;
 		transition: transform 0.25s cubic-bezier(0, 0, 0, 1) var(--d), opacity 0.25s ease-out var(--d),
-			background 0.1s ease;
+			background 0.2s ease;
 
 		@include breakpoint.tablet {
 			flex-direction: column;
@@ -387,7 +387,6 @@
 		backdrop-filter: blur(8px);
 		padding: var(--ui-inset);
 		margin-block: calc(-1 * var(--ui-inset));
-		transition: background 0.2s;
 
 		@include breakpoint.tablet {
 			margin-block: unset;

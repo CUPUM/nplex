@@ -46,6 +46,9 @@
 
 	@include breakpoint.tablet {
 		--ui-nav-h: 88px; // Retrieved manually
+		--ui-nav-center-w: calc(
+			100% - 2 * (1.5rem + 56px + 1.5rem)
+		); // 100% - (outer gutter + menu button width + inner gutter)
 	}
 }
 

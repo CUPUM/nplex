@@ -4,8 +4,8 @@ specifiers:
   '@graphql-codegen/cli': ^3.0.0
   '@mapbox/mapbox-gl-draw': 1.4.0
   '@supabase/supabase-js': 2.7.1
-  '@sveltejs/adapter-vercel': ^2.0.1
-  '@sveltejs/kit': 1.5.0
+  '@sveltejs/adapter-vercel': ^2.0.2
+  '@sveltejs/kit': 1.5.2
   '@turf/turf': ^6.5.0
   '@types/js-cookie': ^3.0.2
   '@types/mapbox__mapbox-gl-draw': ^1.3.3
@@ -52,8 +52,8 @@ specifiers:
   tslib: ^2.5.0
   typescript: ^4.9.5
   vite: ^4.1.1
-  zod: ^3.20.3
-  zod-form-data: ^1.2.4
+  zod: ^3.20.6
+  zod-form-data: ^1.3.1
 
 dependencies:
   '@mapbox/mapbox-gl-draw': 1.4.0
@@ -70,13 +70,13 @@ dependencies:
   maplibre-gl: 2.4.0
   maplibre-gl-draw-circle: 0.1.1
   sharp: 0.31.3
-  zod: 3.20.3
-  zod-form-data: 1.2.4_zod@3.20.3
+  zod: 3.20.6
+  zod-form-data: 1.3.1_zod@3.20.6
 
 devDependencies:
   '@graphql-codegen/cli': 3.0.0_oagga47ridy4omgf45pd3y74j4
-  '@sveltejs/adapter-vercel': 2.0.1_@sveltejs+kit@1.5.0
-  '@sveltejs/kit': 1.5.0_svelte@3.55.1+vite@4.1.1
+  '@sveltejs/adapter-vercel': 2.0.2_@sveltejs+kit@1.5.2
+  '@sveltejs/kit': 1.5.2_svelte@3.55.1+vite@4.1.1
   '@types/js-cookie': 3.0.2
   '@types/mapbox__mapbox-gl-draw': 1.3.3
   '@types/node': 18.13.0
@@ -1423,12 +1423,12 @@ packages:
       - supports-color
     dev: false
 
-  /@sveltejs/adapter-vercel/2.0.1_@sveltejs+kit@1.5.0:
-    resolution: {integrity: sha512-pIFUcOui3jFGA12hvsgcCYWDhQc1XlvLZ/VScAxoRBvSgnGvIhXELmzB01AAm36MYZG16HZPn5LRA0TOwcjpcg==}
+  /@sveltejs/adapter-vercel/2.0.2_@sveltejs+kit@1.5.2:
+    resolution: {integrity: sha512-Mn80jy3rPNWB9iBp93MHXWwOh1qyxNzMNal0Dd80rD3As5Qi5L3lGhr1cIZ3T3Y3giwAVxzjMiHEflaUb8sjqg==}
     peerDependencies:
       '@sveltejs/kit': ^1.5.0
     dependencies:
-      '@sveltejs/kit': 1.5.0_svelte@3.55.1+vite@4.1.1
+      '@sveltejs/kit': 1.5.2_svelte@3.55.1+vite@4.1.1
       '@vercel/nft': 0.22.6
       esbuild: 0.16.17
     transitivePeerDependencies:
@@ -1436,8 +1436,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.5.0_svelte@3.55.1+vite@4.1.1:
-    resolution: {integrity: sha512-AkWgCO9i2djZjTqCgIQJ5XfnSzRINowh2w2Gk9wDRuTwxKizSuYe3jNvds/HCDDGHo8XE5E0yWNC9j2XxbrX+g==}
+  /@sveltejs/kit/1.5.2_svelte@3.55.1+vite@4.1.1:
+    resolution: {integrity: sha512-ZLi5x1dy5M4EU/NlH/fvSJ1k2wT3/04NaEOkSMJvGS0JYyFPn+H2tXbVQg7XI/eX84d5GeScxwmn4UVZWaMbsA==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     requiresBuild: true
@@ -3116,7 +3116,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001451
-      electron-to-chromium: 1.4.289
+      electron-to-chromium: 1.4.292
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -3670,8 +3670,8 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /electron-to-chromium/1.4.289:
-    resolution: {integrity: sha512-relLdMfPBxqGCxy7Gyfm1HcbRPcFUJdlgnCPVgQ23sr1TvUrRJz0/QPoGP0+x41wOVSTN/Wi3w6YDgHiHJGOzg==}
+  /electron-to-chromium/1.4.292:
+    resolution: {integrity: sha512-ESWOSyJy5odDlE8wvh5NNAMORv4r6assPwIPGHEMWrWD0SONXcG/xT+9aD9CQyeRwyYDPo6dJT4Bbeg5uevVQQ==}
     dev: true
 
   /element-to-path/1.2.1:
@@ -4460,7 +4460,7 @@ packages:
       graphql: ^14.0.0 || ^15.0.0
     dependencies:
       '@kitql/helper': 0.5.0
-      '@sveltejs/kit': 1.5.0_svelte@3.55.1+vite@4.1.1
+      '@sveltejs/kit': 1.5.2_svelte@3.55.1+vite@4.1.1
       ast-types: 0.16.1
       estree-walker: 3.0.3
       graphql: 16.6.0
@@ -7116,14 +7116,14 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zod-form-data/1.2.4_zod@3.20.3:
-    resolution: {integrity: sha512-mI/rgItfvYQpvzEqGuBda/nuTHrMNoFZJ5cpiGLC5O3ZaVwI0XVo3/yTY2RreVMu57wGcDrfQcTRe5aMq2ijYA==}
+  /zod-form-data/1.3.1_zod@3.20.6:
+    resolution: {integrity: sha512-Uicl6vXkAqsc58Zj8ktmIJOIa3W+iI1fbfFNlGbfxBXiSZzuOiSKvIQQZAvU8H14kVgpKUpvhnBlrskis5t8HQ==}
     peerDependencies:
       zod: ^3.11.x
     dependencies:
-      zod: 3.20.3
+      zod: 3.20.6
     dev: false
 
-  /zod/3.20.3:
-    resolution: {integrity: sha512-+MLeeUcLTlnzVo5xDn9+LVN9oX4esvgZ7qfZczBN+YVUvZBafIrPPVyG2WdjMWU2Qkb2ZAh2M8lpqf1wIoGqJQ==}
+  /zod/3.20.6:
+    resolution: {integrity: sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==}
     dev: false
