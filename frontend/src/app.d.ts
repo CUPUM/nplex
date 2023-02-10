@@ -9,7 +9,7 @@ import type { ThemeName } from '$utils/themes';
 import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
 
-type Session = DeepOmit<AuthSession, { user: { role: never } }> & {
+type UserSession = DeepOmit<AuthSession, { user: { role: never } }> & {
 	user: { role: App.Database['public']['Enums']['app_role'] } & Pick<
 		TableRow<'users'>,
 		'avatar_url' | 'first_name' | 'public_email'
@@ -33,7 +33,7 @@ declare global {
 			/**
 			 * Nplex-specific session derived from Supabase session.
 			 */
-			session?: Session;
+			session?: UserSession;
 			category?: Category;
 			showCategoryNavbar?: boolean;
 			showFooter?: boolean;
@@ -46,7 +46,7 @@ declare global {
 			 * content to a minimum (essential data only) while adhering to a partial App.PageData shape.
 			 */
 			session?: DeepPick<
-				Session,
+				UserSession,
 				{
 					access_token: true;
 					refresh_token: true;

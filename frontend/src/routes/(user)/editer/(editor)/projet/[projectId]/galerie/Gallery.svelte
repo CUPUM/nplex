@@ -2,10 +2,10 @@
 	import { flip } from 'svelte/animate';
 	import { cubicIn, cubicInOut, cubicOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-	import type { PageData } from './$types';
-	import { dirty } from './common';
-	import GalleryImage from './GalleryImage.svelte';
-	import GalleryInput from './GalleryInput.svelte';
+	import type { PageData } from '../$types';
+	import { dirty } from '../common';
+	import GalleryImage from '../GalleryImage.svelte';
+	import GalleryInput from '../GalleryInput.svelte';
 
 	export let gallery: PageData['project']['gallery'];
 	$: $dirty.gallery =

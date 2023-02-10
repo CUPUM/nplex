@@ -9,16 +9,12 @@ export const load = (async (event) => {
 	event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
 	const db = await getDb(event);
 
-	const descriptors = db
-		.rpc('get_project_descriptors')
-		.limit(1)
-		.single()
-		.then((res) => {
-			if (res.error) {
-				throw error(STATUS_CODES.InternalServerError, res.error);
-			}
-			return res.data;
-		});
+	const descriptors = db.rpc('get_project_descriptors').then((res) => {
+		if (res.error) {
+			throw error(STATUS_CODES.InternalServerError, res.error);
+		}
+		return res.data;
+	});
 
 	const project = await db
 		.from('projects')
@@ -80,6 +76,7 @@ export const load = (async (event) => {
 				location: maybeSingle(res.data.location)!,
 			};
 		});
+
 	return {
 		project,
 		descriptors,

@@ -2,8 +2,8 @@
 	import { page } from '$app/stores';
 	import { cssSize } from '$utils/css';
 	import type { ComponentProps } from 'svelte';
+	import Ripple from '../Ripple.svelte';
 	import Avatar from './Avatar.svelte';
-	import Ripple from './Ripple.svelte';
 
 	export let size: string | number = '1em';
 	export let warning: boolean | undefined = undefined;

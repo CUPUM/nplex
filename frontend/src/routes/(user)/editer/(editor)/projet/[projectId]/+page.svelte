@@ -2,7 +2,9 @@
 	import { enhance } from '$app/forms';
 	import type { ActionData, PageData } from './$types';
 	import { FORM_ID } from './common';
-	import Header from './Header.svelte';
+	import Description from './Description.svelte';
+	import Title from './Title.svelte';
+	import Type from './Type.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -22,9 +24,9 @@
 		};
 	}}
 >
-	<Header />
-	<!-- <Description description={data.project.description} /> -->
-	<!-- <Type type_id={data.project.type_id} /> -->
+	<Title />
+	<Description />
+	<Type />
 	<!-- <Works work_ids={data.project.work_ids} /> -->
 	<!-- <CostRange cost_range={data.project.cost_range} /> -->
 	<!-- <Gallery gallery={data.project.gallery} /> -->

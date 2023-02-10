@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Avatar from '$components/Avatar.svelte';
+	import Avatar from '$components/Avatar/Avatar.svelte';
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
 	import { fly } from 'svelte/transition';
@@ -8,7 +8,7 @@
 	import type { LayoutData } from './$types';
 
 	$: ({ profile, roles } = $page.data as LayoutData);
-	$: userRoleDetails = roles.find((r) => r.app_role === profile.role.role);
+	$: userRoleDetails = roles.find((r) => r.role === profile.role.role);
 </script>
 
 <menu>

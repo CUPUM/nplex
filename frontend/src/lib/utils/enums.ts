@@ -187,12 +187,27 @@ export const KEY = {
  * The main exploration categories.
  */
 export const CATEGORIES = {
-	PROJECTS: 'projects',
-	ORGANISATIONS: 'organisations',
-	ACTORS: 'actors',
+	Projects: 'projects',
+	Organisations: 'organisations',
+	Actors: 'actors',
 } as const;
 
 export type Category = ValueOf<typeof CATEGORIES>;
+
+export const CATEGORY_TITLES = {
+	[CATEGORIES.Projects]: {
+		singular: 'Projet',
+		plural: 'Projets',
+	},
+	[CATEGORIES.Organisations]: {
+		singular: 'Organisation',
+		plural: 'Organisations',
+	},
+	[CATEGORIES.Actors]: {
+		singular: 'Acteur',
+		plural: 'Acteurs',
+	},
+} as const satisfies Record<Category, { singular: string; plural: string }>;
 
 /**
  * Cities enum used to future-proof api designs, facilitating normalized route params and more.

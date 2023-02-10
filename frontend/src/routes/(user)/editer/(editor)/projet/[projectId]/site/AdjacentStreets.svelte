@@ -2,8 +2,8 @@
 	import Button from '$components/Button/Button.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
-	import type { PageData } from './$types';
-	import { ADJACENT_STREETS_MAX, ADJACENT_STREETS_MIN, dirty } from './common';
+	import type { PageData } from '../$types';
+	import { ADJACENT_STREETS_MAX, ADJACENT_STREETS_MIN, dirty } from '../common';
 
 	export let adjacent_streets: PageData['project']['adjacent_streets'];
 

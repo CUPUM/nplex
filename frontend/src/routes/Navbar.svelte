@@ -126,7 +126,7 @@
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import Avatar from '$components/Avatar.svelte';
+	import Avatar from '$components/Avatar/Avatar.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';

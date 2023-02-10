@@ -78,7 +78,7 @@ function sessionStorage(): SupportedStorage {
  * server context.
  */
 function createServerClient() {
-	return createClient<App.Database>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+	return createClient<App.Database, 'public'>(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		auth: {
 			persistSession: false,
 			autoRefreshToken: false,

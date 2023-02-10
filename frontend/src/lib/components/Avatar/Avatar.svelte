@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Database } from '$types/database/generated';
-	import Loading from './Loading.svelte';
-	import Ripple from './Ripple.svelte';
+	import Loading from '../Loading.svelte';
+	import Ripple from '../Ripple.svelte';
 
 	type AvatarData = Pick<
 		Database['public']['Tables']['users']['Row'],
@@ -92,7 +92,7 @@
 		padding: 0;
 		margin: 0;
 		cursor: pointer;
-		opacity: 0.9;
+		// opacity: 1;
 		transform: scale(0.95);
 		transition: all 0.15s ease-out;
 		&::after {
@@ -110,7 +110,7 @@
 		}
 		&:hover,
 		&.active {
-			opacity: 1;
+			// opacity: 1;
 			transform: scale(1);
 			&::after {
 				border: 2px solid currentColor;

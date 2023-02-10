@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import TextArea from '$components/TextArea.svelte';
 	import type { PageData } from './$types';
 	import { dirty } from './common';
 
-	export let description: PageData['project']['description'];
+	$: description = ($page.data as PageData).project.description;
 
 	$: _description = description;
 

@@ -1,40 +1,3 @@
-<script lang="ts" context="module">
-	export const PROJECT_EDITOR_ROUTES = {
-		General: {
-			pathname: '',
-			title: 'Général',
-		},
-		Site: {
-			pathname: '/site',
-			title: 'Site',
-		},
-		Gallery: {
-			pathname: '/gallery',
-			title: 'Galerie',
-		},
-		Processus: {
-			pathname: '/processus',
-			title: 'Processus',
-		},
-		Processus1: {
-			pathname: '/processus',
-			title: 'Processus',
-		},
-		Processus2: {
-			pathname: '/processus',
-			title: 'Processus',
-		},
-		Processus3: {
-			pathname: '/processus',
-			title: 'Processus',
-		},
-		Site2: {
-			pathname: '/site',
-			title: 'Site',
-		},
-	} as const satisfies Routes;
-</script>
-
 <script lang="ts">
 	import { horizontalScroll } from '$actions/horizontalScroll';
 	import { page } from '$app/stores';
@@ -44,18 +7,14 @@
 	import type { Routes } from '$utils/routes';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
-	import { EDITOR_ROUTES } from '../../common';
-	import type { PageData } from './$types';
 
-	$: ({ id } = ($page.data as PageData).project);
-	$: base = `${EDITOR_ROUTES.project.pathname}/${id}`;
-	$: current = $page.url.pathname.replace(base, '');
+	export let routes: Routes;
 </script>
 
-<nav in:fly={{ y: 12, delay: 250, easing: expoOut }} use:horizontalScroll={{}}>
+<nav in:fly={{ y: -12, delay: 250, easing: expoOut }} use:horizontalScroll={{}}>
 	<OverflowEffect>
-		{#each Object.values(PROJECT_EDITOR_ROUTES) as route}
-			<a href="{base}{route.pathname}" data-current={current === route.pathname || undefined}>
+		{#each Object.values(routes) as route}
+			<a href={route.pathname} data-current={$page.url.pathname === route.pathname || undefined}>
 				<Ripple color={col('primary', 500)} />
 				<span class="inner">
 					{route.title}

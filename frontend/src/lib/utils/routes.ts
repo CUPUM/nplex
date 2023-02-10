@@ -47,19 +47,19 @@ export const EXPLORE_ROUTES = {
 	projects: {
 		pathname: '/projets',
 		title: 'Projets',
-		category: CATEGORIES.PROJECTS,
+		category: CATEGORIES.Projects,
 		noscroll: true,
 	},
 	organisations: {
 		pathname: '/organisations',
 		title: 'Organisations',
-		category: CATEGORIES.ORGANISATIONS,
+		category: CATEGORIES.Organisations,
 		noscroll: false,
 	},
 	actors: {
 		pathname: '/acteurs',
 		title: 'Acteurs',
-		category: CATEGORIES.ACTORS,
+		category: CATEGORIES.Actors,
 		noscroll: false,
 	},
 } satisfies Routes<{ category: Category; noscroll?: boolean }>;

@@ -36,6 +36,9 @@
 		};
 	}}
 >
+	<!-- <div class="illustration">
+		<IllustrationNewProject />
+	</div> -->
 	<div in:scale={{ start: 0.96, easing: cubicOut, duration: 250 }}>
 		<h1 in:fly={{ y: 12 }}>Créez votre nouveau projet</h1>
 		<fieldset in:fly={{ y: -12, delay: 150 }}>
@@ -77,6 +80,18 @@
 		// border-bottom-right-radius: var(--radius);
 	}
 
+	.illustration {
+		--base-1: #{col(bg, 100)};
+		--base-2: #{col(bg, 300)};
+		--base-3: #{col(bg, 900)};
+		--accent-1: #{col(primary, 100)};
+		--accent-2: #{col(primary, 300)};
+		--accent-3: #{col(primary, 500)};
+		position: absolute;
+		height: 600px;
+		opacity: 0.5;
+	}
+
 	div {
 		position: relative;
 		display: flex;
@@ -87,7 +102,7 @@
 		max-width: var(--ui-width-md);
 		width: 100%;
 		gap: 3rem;
-		border: 1px dashed col(fg, 500, 0.1);
+		// border: 1px dashed col(fg, 500, 0.1);
 	}
 
 	h1 {

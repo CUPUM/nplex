@@ -432,6 +432,7 @@
 	.opaque {
 		color: col(fg, 000);
 		background: col(fg, 500, 0.05);
+		// background: col(bg, 900);
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			display: none;
@@ -459,10 +460,12 @@
 		&:hover {
 			color: col(fg, 300);
 			background: col(fg, 500, 0.1);
+			// background: col(bg, 500);
 		}
 		&:focus-within {
 			color: col(fg, 900);
 			background: col(fg, 500, 0.1);
+			// background: col(bg, 300);
 			:global(*[data-field-input]) {
 				opacity: 1;
 			}

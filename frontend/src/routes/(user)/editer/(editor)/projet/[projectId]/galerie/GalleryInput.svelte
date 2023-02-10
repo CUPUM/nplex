@@ -2,7 +2,7 @@
 	import Icon from '$components/Icon.svelte';
 	import Loading from '$components/Loading.svelte';
 	import Ripple from '$components/Ripple.svelte';
-	import { IMAGE_TYPES } from './common';
+	import { IMAGE_TYPES } from '../common';
 
 	let loading = false;
 	let inputRef: HTMLInputElement;

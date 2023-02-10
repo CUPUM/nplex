@@ -1,8 +1,9 @@
 import { errmsg, getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
-import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';
-import { titleSchema } from './common';
+import type { Actions } from './$types';
+import { titleSchema } from './[projectId]/common';
 
 export const actions: Actions = {
 	create: async (event) => {

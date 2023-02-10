@@ -1,7 +1,7 @@
 <!--
 	@component
 	# Root Theme
-	This singleton component manages the theme class applied to the `:root` element of the app.html.
+	This singleton component manages the theme class applied to the `:root` element of app.html.
 	The theme can be updated by the client using the global theme store.
 	Percolation of theme updates to the theme cookie can also be enabled/disabled for each use cases.
 
@@ -21,7 +21,7 @@
 	export let defaultTheme: ThemeName = THEMES.light;
 
 	const COOKIE_LIFETIME = 60 * 60 * 24 * 365;
-	const ROOT = browser ? (document.querySelector(':root') as HTMLElement) : undefined;
+	const ROOT = browser ? document.documentElement : undefined;
 
 	function setUserTheme(name: ThemeName | null) {
 		if (browser) {

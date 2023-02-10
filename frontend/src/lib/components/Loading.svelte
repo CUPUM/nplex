@@ -1,6 +1,7 @@
 <!-- 
 	@component
 	Use this component to add loading spinner overlay to any element/container.
+
  -->
 <script lang="ts">
 	import { elasticOut, expoIn } from 'svelte/easing';

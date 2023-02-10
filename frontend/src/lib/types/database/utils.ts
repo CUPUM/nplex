@@ -41,7 +41,7 @@ export function buff<D>(data: D) {
 					: Buff[K] extends 'maybeSingle'
 					? Single<SingleD[K]> | null
 					: Buff[K]
-				: boolean;
+				: never;
 		};
 		type S = Omit<SingleD, keyof Buff> & TBuff;
 		return data as D extends unknown[] ? S[] : S;

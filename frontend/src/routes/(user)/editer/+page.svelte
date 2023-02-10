@@ -123,11 +123,11 @@
 		gap: 4rem;
 		padding: 4rem;
 		line-height: 1.2;
-		// background: col(bg, 300);
+		background: col(bg, 500);
 		border: 1px dashed col(fg, 500, 0.1);
 		border-radius: var(--ui-radius-xl);
 		font-size: var(--ui-text-xl);
-		transition: all 0.1s ease-out;
+		transition: all 0.1s;
 
 		&:hover {
 			z-index: 1;
@@ -155,7 +155,7 @@
 		font-size: clamp(200px, 40vw, 500px);
 		color: col(bg, 900);
 		border-radius: inherit;
-		transition: all 0.1s ease-out;
+		transition: all 0.1s;
 
 		& :global(*) {
 			pointer-events: none;

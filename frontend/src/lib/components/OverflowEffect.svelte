@@ -26,36 +26,45 @@
 	let overflowRight: boolean = false;
 	let overflowBottom: boolean = false;
 	let overflowLeft: boolean = false;
+	let observer: ResizeObserver;
 
-	function checkOverflow(scrollElement: HTMLElement) {
-		overflowTop = scrollElement.scrollTop > BUFFER_DISTANCE;
-		overflowRight =
-			scrollElement.scrollLeft + scrollElement.offsetWidth <
-			scrollElement.scrollWidth - BUFFER_DISTANCE;
-		overflowBottom =
-			scrollElement.scrollTop + scrollElement.offsetHeight <
-			scrollElement.scrollHeight - BUFFER_DISTANCE;
-		overflowLeft = scrollElement.scrollLeft > BUFFER_DISTANCE;
+	function checkOverflow() {
+		if (contentRef.parentElement) {
+			overflowTop = contentRef.parentElement.scrollTop > BUFFER_DISTANCE;
+			overflowRight =
+				contentRef.parentElement.scrollLeft + contentRef.parentElement.offsetWidth <
+				contentRef.parentElement.scrollWidth - BUFFER_DISTANCE;
+			overflowBottom =
+				contentRef.parentElement.scrollTop + contentRef.parentElement.offsetHeight <
+				contentRef.parentElement.scrollHeight - BUFFER_DISTANCE;
+			overflowLeft = contentRef.parentElement.scrollLeft > BUFFER_DISTANCE;
+		}
 	}
 
 	function handleScroll(e: Event & { target: EventTarget | null }) {
 		if (e.target instanceof HTMLElement) {
-			checkOverflow(e.target);
+			checkOverflow();
 		}
 	}
 
 	onMount(() => {
 		if (browser) {
+			observer = new ResizeObserver(checkOverflow);
 			if (contentRef.parentElement) {
+				observer.observe(contentRef.parentElement);
 				contentRef.parentElement.addEventListener('scroll', handleScroll);
-				checkOverflow(contentRef.parentElement);
+				checkOverflow();
 			}
 		}
 	});
 
 	onDestroy(() => {
 		if (browser) {
-			contentRef.parentElement?.removeEventListener('scroll', handleScroll);
+			if (contentRef.parentElement) {
+				observer.unobserve(contentRef.parentElement);
+				observer.disconnect();
+				contentRef.parentElement.removeEventListener('scroll', handleScroll);
+			}
 		}
 	});
 </script>
@@ -86,6 +95,7 @@
 
 <style lang="scss">
 	.content {
+		all: inherit;
 		display: contents;
 	}
 
