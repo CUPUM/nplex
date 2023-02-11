@@ -11,7 +11,11 @@
 	export let routes: Routes;
 </script>
 
-<nav in:fly={{ y: -12, delay: 250, easing: expoOut }} use:horizontalScroll={{}}>
+<nav
+	in:fly={{ y: -12, delay: 250, easing: expoOut }}
+	use:horizontalScroll={{}}
+	class="no-scrollbar"
+>
 	<OverflowEffect>
 		{#each Object.values(routes) as route}
 			<a href={route.pathname} data-current={$page.url.pathname === route.pathname || undefined}>
@@ -26,7 +30,9 @@
 
 <style lang="scss">
 	nav {
-		--scroll-size: 0;
+		--inset: var(--ui-inset);
+		--overflow-outset: var(--inset);
+		--radius: var(--ui-radius-md);
 		position: sticky;
 		font-size: var(--ui-text-sm);
 		max-width: var(--ui-nav-center-w);
@@ -37,7 +43,8 @@
 		overflow-x: auto;
 		background: col(bg, 300);
 		margin-top: 1rem;
-		border-radius: var(--ui-radius-md);
+		border-radius: var(--radius);
+		padding: var(--ui-inset);
 	}
 
 	a {
@@ -46,10 +53,9 @@
 		align-items: center;
 		font-weight: 500;
 		flex: none;
-		height: var(--ui-height);
-		border-radius: var(--ui-radius-md);
+		height: calc(var(--ui-height) - var(--inset));
+		border-radius: calc(var(--radius) - var(--inset));
 		padding-inline: var(--ui-pad-x);
-		// backdrop-filter: blur(3px);
 		transition: all 0.15s ease-out;
 
 		&:hover:not([data-current]) {
@@ -81,14 +87,13 @@
 		&::after {
 			content: '';
 			position: absolute;
-			bottom: 0;
-			// top: 100%;
+			top: 100%;
 			left: 50%;
 			width: 0%;
-			height: var(--ui-inset);
+			height: var(--inset);
 			opacity: 0;
 			background: currentColor;
-			border-radius: 3px 3px 0 0;
+			border-radius: 2px 2px 0 0;
 			transition: all 0.25s var(--ui-ease-out);
 		}
 	}

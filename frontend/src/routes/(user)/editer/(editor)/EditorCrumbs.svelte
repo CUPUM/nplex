@@ -23,7 +23,7 @@
 	// onMount(() => {mounted = true})
 </script>
 
-<nav in:fly={{ y: -6, delay: 250 }}>
+<nav in:fly={{ y: -6, delay: 250 }} class="no-scrollbar">
 	<OverflowEffect>
 		{#each [baseCrumb, ...$crumbs] as crumb (crumb.pathname + crumb.label)}
 			<span class="sep"><Icon name="chevron-right" strokeWidth={1.5} /></span>
@@ -38,7 +38,7 @@
 
 <style lang="scss">
 	nav {
-		--scroll-size: 0;
+		--overflow-outset: var(--ui-inset);
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;

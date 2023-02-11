@@ -1,8 +1,6 @@
 import type Map from '$components/Map/Map.svelte';
 import type MapDraw from '$components/Map/MapDraw.svelte';
-import { EDITOR_ROUTES } from '$routes/(user)/editer/common';
 import { toPgGeom, toPgRange } from '$utils/format';
-import type { Routes } from '$utils/routes';
 import { positionSchema } from '$utils/validation';
 import { point } from '@turf/turf';
 import type { ComponentProps } from 'svelte';
@@ -11,36 +9,6 @@ import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { PageData } from './$types';
 
-function base(subpath: string) {
-	return EDITOR_ROUTES.project.edit.pathname + subpath;
-}
-
-export const PROJECT_EDITOR_ROUTES = {
-	General: {
-		pathname: base(''),
-		title: 'Général',
-	},
-	Site: {
-		pathname: base('/site'),
-		title: 'Site',
-	},
-	Gallery: {
-		pathname: base('/galerie'),
-		title: 'Galerie',
-	},
-	Processus: {
-		pathname: base('/processus'),
-		title: 'Processus',
-	},
-	Exemplarity: {
-		pathname: base('/exemplarite'),
-		title: 'Indicateurs d’exemplarité',
-	},
-	Settings: {
-		pathname: base('/parametres'),
-		title: 'Paramètres',
-	},
-} as const satisfies Routes;
 export const FORM_ID = 'project-editor-form';
 export const TITLE_MIN_WORDS = 3;
 export const TITLE_MAX_WORDS = 24;

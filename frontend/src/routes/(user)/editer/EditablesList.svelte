@@ -118,7 +118,7 @@
 			{/each} -->
 		</form>
 	</header>
-	<ul class:none={filtered.length === 1}>
+	<ul class:none={filtered.length === 1} class="no-scrollbar">
 		{#each filtered as datum, i (datum.id)}
 			<li
 				animate:flip={{ duration: (d) => d * 0.5, easing: expoOut, delay: i * 50 }}
@@ -198,8 +198,6 @@
 	}
 
 	ul {
-		--scroll-color: transparent;
-		--scroll-size: 0;
 		display: flex;
 		flex-direction: row;
 		gap: 1.5rem;

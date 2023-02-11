@@ -2,6 +2,7 @@
 	@component
 	# Overflow Effect
 	Create visual cues to signal presence of available (unreached) overflow content.
+	
 -->
 <script lang="ts" context="module">
 	/**
@@ -79,7 +80,7 @@
 		<div class="fx" />
 	</div>
 {/if}
-<div class="content" bind:this={contentRef}>
+<div class="contents" bind:this={contentRef}>
 	<slot />
 </div>
 {#if right}
@@ -94,12 +95,15 @@
 {/if}
 
 <style lang="scss">
-	.content {
+	.contents {
 		all: inherit;
 		display: contents;
 	}
 
 	.end {
+		--ui-overflow-outset: var(--overflow-outset, 0px);
+		--corr: calc(-1 * var(--ui-overflow-outset));
+		border-radius: inherit;
 		pointer-events: none;
 		position: sticky;
 		flex: none;
@@ -110,13 +114,13 @@
 			top: 0;
 			left: 0;
 			max-height: 100%;
-			overflow: visible;
 
 			.fx {
-				left: 0;
-				height: 100%;
+				top: var(--corr);
+				left: var(--corr);
+				height: calc(100% - 2 * var(--corr));
 				width: var(--fx-size);
-				background: linear-gradient(90deg, var(--fx-color) 0%, transparent 100%);
+				background: linear-gradient(90deg, var(--fx-color) 0%, transparent 50%);
 			}
 		}
 
@@ -139,10 +143,11 @@
 			max-height: 100%;
 
 			.fx {
-				right: 0;
-				height: 100%;
+				right: var(--corr);
+				top: var(--corr);
+				height: calc(100% - 2 * var(--corr));
 				width: var(--fx-size);
-				background: linear-gradient(-90deg, var(--fx-color) 0%, transparent 100%);
+				background: linear-gradient(-90deg, var(--fx-color) 0%, transparent 50%);
 			}
 		}
 
@@ -161,13 +166,14 @@
 	}
 
 	.fx {
-		--fx-size: 100px;
+		--fx-size: 120px;
+		border-radius: inherit;
 		opacity: 0;
 		position: absolute;
 		transition: all 0.25s ease-out;
 
 		.active & {
-			opacity: 0.8;
+			opacity: 1;
 		}
 	}
 </style>

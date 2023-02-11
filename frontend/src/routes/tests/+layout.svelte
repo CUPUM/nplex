@@ -1,29 +1,45 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import OverflowEffect from '$components/OverflowEffect.svelte';
 
 	const links = [
 		{ href: '/tests', title: 'Playground' },
 		{ href: '/tests/sizes', title: 'Sizes' },
 		{ href: '/tests/components', title: 'Components' },
+		{ href: '/tests/components', title: 'Components' },
+		{ href: '/tests/components', title: 'Components' },
+		{ href: '/tests/components', title: 'Components' },
 	] satisfies { href: string; title: string }[];
 </script>
 
-<nav>
-	{#each links as link}
-		<a href={link.href} data-current={$page.url.pathname === link.href || undefined}>
-			{link.title}
-		</a>
-	{/each}
+<nav class="no-scrollbar">
+	<OverflowEffect color="red">
+		<div class="inner">
+			{#each links as link}
+				<a href={link.href} data-current={$page.url.pathname === link.href || undefined}>
+					{link.title}
+				</a>
+			{/each}
+		</div>
+	</OverflowEffect>
 </nav>
-<slot><!-- optional fallback --></slot>
+<slot />
 
 <style lang="scss">
 	nav {
+		position: relative;
 		display: flex;
 		flex-direction: row;
-		background: col(fg, 500, 0.05);
-		padding: var(--ui-inset);
+		background: col(fg, 500, 0.2);
 		border-radius: 10px;
+		max-width: 300px;
+		overflow-x: scroll;
+	}
+
+	.inner {
+		display: flex;
+		flex-direction: inherit;
+		padding: 20px;
 	}
 
 	a {

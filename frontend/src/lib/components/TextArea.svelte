@@ -68,7 +68,7 @@
 </script>
 
 <fieldset
-	class="container nest focus-outline-within {variant} {direction} {className}"
+	class="container nest focus-outline-within no-scrollbar {variant} {direction} {className}"
 	{style}
 	{disabled}
 	class:compact
@@ -163,11 +163,6 @@
 		&.success {
 			color: col(success, 700) !important;
 			background: col(success, 100, 0.1) !important;
-		}
-
-		--scroll-size: 0px;
-		&:hover {
-			--scroll-size: initial;
 		}
 	}
 
