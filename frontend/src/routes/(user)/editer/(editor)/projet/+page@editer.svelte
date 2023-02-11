@@ -105,14 +105,6 @@
 		// border: 1px dashed col(fg, 500, 0.1);
 	}
 
-	h1 {
-		width: 100%;
-		font-size: var(--ui-text-2xl);
-		font-weight: 600;
-		text-align: center;
-		max-width: var(--ui-width-main);
-	}
-
 	section {
 		display: flex;
 		flex-direction: row;

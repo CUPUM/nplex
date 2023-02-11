@@ -76,11 +76,11 @@
 		grid-template-columns: repeat(4, 1fr);
 		gap: var(--gap);
 
-		@include breakpoint.laptop {
+		@include laptop {
 			grid-template-columns: repeat(3, 1fr);
 		}
 
-		@include breakpoint.tablet {
+		@include tablet {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}

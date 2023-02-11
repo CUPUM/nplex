@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Field from '$components/Field/Field.svelte';
 	import Range from '$components/Range/Range.svelte';
 	import RangeGroup from '$components/Range/RangeGroup.svelte';
@@ -7,20 +8,19 @@
 	import type { PageData } from './$types';
 	import { COST_MAX, COST_MIN, COST_STEP, dirty } from './common';
 
-	export let cost_range: PageData['project']['cost_range'];
+	$: [costmin, costmax] = ($page.data as PageData).project.cost_range;
 
-	let _cost_range = [...cost_range];
+	$: _costmin = costmin;
+	$: _costmax = costmax;
 
-	$: $dirty.cost_range = _cost_range[0] !== cost_range[0] || _cost_range[1] !== cost_range[1];
+	$: $dirty.cost_range = _costmin !== costmin || _costmax !== costmax;
 
 	function checkMin() {
-		_cost_range[0] = Math.max(COST_MIN, Math.min(_cost_range[0], COST_MAX, _cost_range[1]));
-		_cost_range = _cost_range;
+		_costmin = Math.max(COST_MIN, Math.min(_costmin, COST_MAX, _costmax));
 	}
 
 	function checkMax() {
-		_cost_range[1] = Math.min(COST_MAX, Math.max(_cost_range[1], COST_MIN, _cost_range[0]));
-		_cost_range = _cost_range;
+		_costmax = Math.min(COST_MAX, Math.max(_costmax, COST_MIN, _costmin));
 	}
 </script>
 
@@ -38,9 +38,9 @@
 				type="number"
 				prefix="C$ "
 				min={COST_MIN}
-				max={Math.min(COST_MAX, _cost_range[1])}
+				max={Math.min(COST_MAX, _costmax)}
 				step={COST_STEP}
-				bind:value={_cost_range[0]}
+				bind:value={_costmin}
 				on:change={checkMin}
 			>
 				<svelte:fragment slot="label">Min.</svelte:fragment>
@@ -48,10 +48,10 @@
 			<Field
 				type="number"
 				prefix="C$ "
-				min={Math.max(COST_MIN, _cost_range[0])}
+				min={Math.max(COST_MIN, _costmin)}
 				max={COST_MAX}
 				step={COST_STEP}
-				bind:value={_cost_range[1]}
+				bind:value={_costmax}
 				on:change={checkMax}
 			>
 				<svelte:fragment slot="label">Max.</svelte:fragment>
@@ -67,11 +67,11 @@
 			<svelte:fragment slot="tick" let:tick>
 				{cadformatter.format(tick)}
 			</svelte:fragment>
-			<RangeGroup bind:from={_cost_range[0]} push draggable bind:to={_cost_range[1]} />
-			<RangeThumb name="cost_range_min" bind:value={_cost_range[0]} let:value />
-			<RangeThumb name="cost_range_max" bind:value={_cost_range[1]} />
+			<RangeGroup bind:from={_costmin} push draggable bind:to={_costmax} />
+			<RangeThumb name="cost_range_min" bind:value={_costmin} let:value />
+			<RangeThumb name="cost_range_costmax" bind:value={_costmax} />
 		</Range>
-		<input type="hidden" name="cost_range" readonly value="[{_cost_range}]" />
+		<input type="hidden" name="cost_range" readonly value="[{_costmin},{_costmax}]" />
 	</section>
 </fieldset>
 
@@ -82,7 +82,7 @@
 		align-items: stretch;
 		gap: 3rem;
 
-		@include breakpoint.tablet {
+		@include tablet {
 			flex-direction: column;
 			gap: 3rem;
 		}

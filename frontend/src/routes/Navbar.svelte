@@ -267,8 +267,9 @@
 		z-index: 100;
 		top: 0;
 
-		@include breakpoint.tablet {
+		@include tablet {
 			align-items: flex-start;
+			justify-content: flex-start;
 		}
 	}
 
@@ -298,7 +299,7 @@
 			max-width: 100%;
 		}
 
-		@include breakpoint.tablet {
+		@include tablet {
 			display: flex;
 			flex: unset;
 			flex-direction: column;
@@ -330,12 +331,13 @@
 
 	.toggle {
 		pointer-events: all;
-		width: 100%;
+		flex: none;
+		align-self: flex-start;
 		z-index: 100;
-		padding: 1rem;
+		margin: 1rem;
 		display: none;
 
-		@include breakpoint.tablet {
+		@include tablet {
 			display: block;
 		}
 	}
@@ -351,7 +353,7 @@
 		transition: transform 0.25s cubic-bezier(0, 0, 0, 1) var(--d), opacity 0.25s ease-out var(--d),
 			background 0.2s ease;
 
-		@include breakpoint.tablet {
+		@include tablet {
 			flex-direction: column;
 			align-items: flex-start;
 		}
@@ -381,14 +383,17 @@
 
 	.category {
 		--i: 1;
+		// --inset: var(--ui-inset);
+		// padding: var(--inset);
+		// border-radius: var(--ui-radius-md);
 		grid-column: category;
 		justify-self: center;
-		border-radius: calc(var(--ui-radius-md) + var(--ui-inset));
-		backdrop-filter: blur(8px);
 		padding: var(--ui-inset);
+		border-radius: calc(var(--ui-inset) + var(--ui-radius-md));
+		backdrop-filter: blur(8px);
 		margin-block: calc(-1 * var(--ui-inset));
 
-		@include breakpoint.tablet {
+		@include tablet {
 			margin-block: unset;
 		}
 
@@ -406,10 +411,10 @@
 			transition: opacity 0.25s;
 		}
 
-		:global([data-theme='light']) &:hover {
+		:global([data-theme='light']) & {
 			background: col(bg, 000, 0.5);
 		}
-		:global([data-theme='dark']) &:hover {
+		:global([data-theme='dark']) & {
 			background: col(bg, 700, 0.8);
 		}
 	}

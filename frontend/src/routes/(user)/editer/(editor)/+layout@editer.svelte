@@ -14,7 +14,6 @@
 >
 	<EditorCrumbs />
 	<slot />
-	<!-- <EditorToolbar /> -->
 </article>
 
 <style lang="scss">

@@ -1,6 +1,5 @@
-@use './utils/breakpoint.scss';
-@use './utils/color.scss' as *;
-@use 'classes';
+@use 'helpers';
+@use 'utils' as *;
 
 :root {
 	position: relative;
@@ -22,7 +21,7 @@
 		padding-right: var(--ui-scroll-size);
 	}
 
-	@include breakpoint.tablet {
+	@include tablet {
 		&[data-lock-scroll] {
 			overflow-y: hidden;
 			padding-right: 0;
@@ -75,20 +74,4 @@ body {
 			background: var(--scroll-color, var(--ui-scroll-color));
 		}
 	}
-}
-
-::selection {
-	background: col(primary, 500);
-	color: col(fg, 500);
-}
-
-kbd {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	padding-inline: 0.5em;
-	height: 2em;
-	margin-inline: 0.25em;
-	border-radius: 0.5em;
-	border: 1px solid col(fg, 500, 0.1);
 }

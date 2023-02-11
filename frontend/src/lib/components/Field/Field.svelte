@@ -31,6 +31,8 @@
 </script>
 
 <script lang="ts">
+	import { browser } from '$app/environment';
+
 	import { getContext, setContext } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import { writable, type Writable } from 'svelte/store';
@@ -214,7 +216,7 @@
 			{min}
 			{max}
 			{step}
-			{disabled}
+			disabled={disabled || !browser}
 			{required}
 			{tabindex}
 			{readonly}

@@ -1,5 +1,4 @@
-@use './utils/breakpoint.scss';
-@use './utils/color.scss' as *;
+@use 'utils' as *;
 
 /**
  * These variables, prefixed with "--ui-", contain the default values and should never be reassigned.
@@ -44,10 +43,10 @@
 	--ui-ease-out: cubic-bezier(0.1, 0, 0.1, 1);
 	--ui-ease-in-out: cubic-bezier(0.7, 0, 0.15, 1);
 
-	@include breakpoint.tablet {
+	@include tablet {
 		--ui-nav-h: 88px; // Retrieved manually
 		--ui-nav-center-w: calc(
-			100% - 2 * (1.5rem + 56px + 1.5rem)
+			100% - 2 * (1.5rem + 56px)
 		); // 100% - (outer gutter + menu button width + inner gutter)
 	}
 }

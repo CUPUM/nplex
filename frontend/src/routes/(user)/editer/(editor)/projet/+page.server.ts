@@ -28,6 +28,6 @@ export const actions: Actions = {
 				error: "Problème de récupération de l'identifiant du projet",
 			});
 		}
-		throw redirect(STATUS_CODES.MovedTemporarily, `/editer/projet/${newProject.data.id}`);
+		throw redirect(STATUS_CODES.TemporaryRedirect, `/editer/projet/${newProject.data.id}`);
 	},
 };

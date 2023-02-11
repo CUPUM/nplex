@@ -39,7 +39,7 @@
 		overflow: visible;
 		z-index: 1;
 
-		@include breakpoint.tablet {
+		@include tablet {
 			position: relative;
 			top: 0;
 			width: 100%;

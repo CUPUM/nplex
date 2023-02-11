@@ -1,12 +1,12 @@
 import { maybeSingle } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
-import { LOAD_DEPENDENCIES, STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
+import { STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { alwaysArr, pgCubeToHsl, pgRangeToArr } from '$utils/format';
 import { error } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 
 export const load = (async (event) => {
-	event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
+	// event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
 	const db = await getDb(event);
 
 	const descriptors = db.rpc('get_project_descriptors').then((res) => {

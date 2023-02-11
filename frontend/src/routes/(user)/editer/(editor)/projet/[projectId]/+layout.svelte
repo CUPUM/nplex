@@ -4,7 +4,9 @@
 	import { onDestroy } from 'svelte';
 	import { crumbs } from '../../EditorCrumbs.svelte';
 	import EditorNavbar from '../../EditorNavbar.svelte';
+	import EditorToolbar from '../../EditorToolbar.svelte';
 	import type { LayoutData } from './$types';
+	import { dirty, FORM_ID } from './common';
 
 	export let data: LayoutData;
 
@@ -49,6 +51,7 @@
 
 <EditorNavbar routes={PROJECT_EDITOR_ROUTES} />
 <slot />
+<EditorToolbar dirty={!!Object.values($dirty).filter((v) => v).length} formid={FORM_ID} />
 
 <style lang="scss">
 </style>

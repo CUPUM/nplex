@@ -48,7 +48,7 @@
 		justify-content: center;
 		border-radius: var(--ui-radius-xl);
 
-		@include breakpoint.laptop {
+		@include laptop {
 			border-radius: 0 0 var(--ui-text-xl) var(--ui-text-xl);
 			margin-top: 0;
 			margin-inline: 0;

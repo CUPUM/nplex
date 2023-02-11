@@ -17,13 +17,9 @@
 		label: 'Éditeur',
 		pathname: '/editer',
 	};
-
-	// let mounted = false;
-
-	// onMount(() => {mounted = true})
 </script>
 
-<nav in:fly={{ y: -6, delay: 250 }} class="no-scrollbar">
+<nav in:fly={{ y: -6, delay: 500 }} class="no-scrollbar">
 	<OverflowEffect>
 		{#each [baseCrumb, ...$crumbs] as crumb (crumb.pathname + crumb.label)}
 			<span class="sep"><Icon name="chevron-right" strokeWidth={1.5} /></span>
@@ -39,19 +35,23 @@
 <style lang="scss">
 	nav {
 		--overflow-outset: var(--ui-inset);
+		--radius: var(--ui-radius-md);
+		--inset: var(--ui-inset);
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
 		align-items: stretch;
 		justify-content: flex-start;
-		margin-top: 0.75rem;
-		padding: var(--ui-inset);
+		margin-top: 1rem;
+		font-size: var(--ui-text-sm);
+		padding: var(--inset);
 		height: var(--ui-height);
 		font-weight: 400;
 		max-width: var(--ui-nav-center-w);
-		border: 1px solid col(primary, 300, 0.1);
-		color: col(primary, 300);
-		border-radius: 99px; //var(--ui-radius-md);
+		background: col(bg, 500);
+		// border: 1px solid col(primary, 300, 0.1);
+		color: col(fg, 900, 0.35);
+		border-radius: var(--radius);
 		overflow-x: auto;
 	}
 
@@ -60,7 +60,7 @@
 		flex: none;
 		align-items: center;
 		padding-inline: 1em;
-		border-radius: inherit;
+		border-radius: calc(var(--radius) - var(--inset));
 		transition: all 0.25s;
 
 		&:first-of-type {
@@ -72,7 +72,7 @@
 		}
 
 		&:hover {
-			color: col(primary, 700);
+			color: col(primary, 500);
 			background: col(primary, 100, 0.1);
 			transition: all 0.1s;
 		}

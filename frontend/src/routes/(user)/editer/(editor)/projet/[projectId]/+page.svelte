@@ -2,9 +2,11 @@
 	import { enhance } from '$app/forms';
 	import type { ActionData, PageData } from './$types';
 	import { FORM_ID } from './common';
+	import CostRange from './CostRange.svelte';
 	import Description from './Description.svelte';
 	import Title from './Title.svelte';
 	import Type from './Type.svelte';
+	import Works from './Works.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -27,8 +29,8 @@
 	<Title />
 	<Description />
 	<Type />
-	<!-- <Works work_ids={data.project.work_ids} /> -->
-	<!-- <CostRange cost_range={data.project.cost_range} /> -->
+	<Works />
+	<CostRange />
 	<!-- <Gallery gallery={data.project.gallery} /> -->
 	<!-- <SiteOwnership ownership_id={data.project.site_ownership_id} /> -->
 	<!-- <SiteUsage
@@ -121,7 +123,7 @@
 			max-width: var(--ui-width-main);
 			gap: 1.5rem;
 
-			@include breakpoint.laptop {
+			@include laptop {
 				padding-inline: 1.5rem;
 				max-width: var(--ui-width-);
 			}

@@ -1,36 +1,33 @@
-<script lang="ts" context="module">
-	export const showToolbar = writable(true);
-</script>
-
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { cubicOut } from 'svelte/easing';
-	import { writable } from 'svelte/store';
 	import { fly, scale } from 'svelte/transition';
-	import { dirty } from './common';
+
+	export let dirty: boolean | undefined = undefined;
+	export let formid: string | undefined = undefined;
 </script>
 
-{#if $showToolbar}
-	<menu transition:fly|local={{ y: 12 }}>
-		{#if Object.values($dirty).filter((v) => v).length}
-			<div
-				in:fly={{ y: 6, duration: 200, easing: cubicOut }}
-				out:scale|local={{ start: 0.95, duration: 200 }}
-			>
-				<Button variant="cta" type="submit">
-					Sauvegarder
-					<Icon name="save" slot="trailing" />
-				</Button>
-			</div>
-		{/if}
-	</menu>
-{/if}
+<menu transition:fly|local={{ y: 12 }}>
+	{#if dirty}
+		<div
+			in:fly={{ y: 6, duration: 200, easing: cubicOut }}
+			out:scale|local={{ start: 0.95, duration: 200 }}
+		>
+			<Button variant="cta" type="submit" form={formid}>
+				Sauvegarder
+				<Icon name="save" slot="trailing" />
+			</Button>
+		</div>
+	{/if}
+</menu>
 
 <style lang="scss">
 	menu {
 		position: sticky;
 		margin-inline: 1.5rem;
+		margin-top: -1.5rem;
+		margin-bottom: 1.5rem;
 		bottom: 1.5rem;
 		align-self: stretch;
 		display: flex;

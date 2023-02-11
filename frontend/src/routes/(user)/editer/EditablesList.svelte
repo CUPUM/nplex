@@ -156,7 +156,7 @@
 		width: 100%;
 		margin: 0 auto;
 
-		@include breakpoint.laptop {
+		@include laptop {
 			flex-direction: column;
 			align-items: flex-start;
 		}

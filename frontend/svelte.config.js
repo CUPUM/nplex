@@ -13,7 +13,7 @@ const config = {
 			typescript: true,
 			scss: {
 				includePaths: ['src/lib/styles'],
-				prependData: "@use 'utils/breakpoint.scss'; @use 'utils/color.scss' as * ;",
+				prependData: "@use 'utils' as *;",
 			},
 			postcss: {
 				plugins: [autoprefixer()],

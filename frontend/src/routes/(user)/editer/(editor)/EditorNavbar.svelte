@@ -33,6 +33,7 @@
 		--inset: var(--ui-inset);
 		--overflow-outset: var(--inset);
 		--radius: var(--ui-radius-md);
+		z-index: 10;
 		position: sticky;
 		font-size: var(--ui-text-sm);
 		max-width: var(--ui-nav-center-w);
@@ -53,9 +54,10 @@
 		align-items: center;
 		font-weight: 500;
 		flex: none;
-		height: calc(var(--ui-height) - var(--inset));
+		height: calc(var(--ui-height) - 2 * var(--inset));
 		border-radius: calc(var(--radius) - var(--inset));
 		padding-inline: var(--ui-pad-x);
+		// backdrop-filter: blur(8px);
 		transition: all 0.15s ease-out;
 
 		&:hover:not([data-current]) {
@@ -69,7 +71,7 @@
 			right: 0;
 			z-index: 10;
 			color: col(primary, 500);
-			background: col(bg, 300, 0.9);
+			background: col(bg, 300);
 
 			&::after {
 				width: calc(100% - 3rem);

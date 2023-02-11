@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Field from '$components/Field/Field.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
-	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
+	import Icon from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { debounce } from '$utils/modifiers';
 	import Fuse from 'fuse.js';
@@ -10,19 +11,22 @@
 	import { tweened } from 'svelte/motion';
 	import { crossfade, fly, scale } from 'svelte/transition';
 	import type { PageData } from './$types';
-	import { descriptors, dirty, _type_id } from './common';
+	import { dirty, _type_id } from './common';
 
-	export let work_ids: PageData['project']['work_ids'];
-
-	let _work_ids = [...work_ids];
+	$: descriptors = ($page.data as PageData).descriptors;
+	$: workids = [...(($page.data as PageData).project.work_ids ?? [])];
+	let _workids = Array.from(workids ?? []);
+	// $: if (workids) {
+	// 	_workids = [...workids];
+	// }
 
 	$: $dirty.work_ids =
-		selected.length !== (work_ids.length ?? []) ||
-		!selected.every((work) => (work_ids ?? []).indexOf(work.id) > -1);
+		selected.length !== (workids.length ?? []) ||
+		!selected.every((work) => (workids ?? []).indexOf(work.id) > -1);
 
-	$: available = $descriptors.types.find((t) => t.id === $_type_id)?.works ?? [];
+	$: available = descriptors.types.find((t) => t.id === $_type_id)?.works ?? [];
 
-	$: selected = _work_ids.reduce((acc, curr) => {
+	$: selected = _workids.reduce((acc, curr) => {
 		const w = available.find((w) => w.id === curr);
 		if (w) {
 			acc.push(w);
@@ -41,8 +45,8 @@
 	});
 
 	function add(wid: number) {
-		if (_work_ids.indexOf(wid) < 0) {
-			_work_ids = [..._work_ids, wid];
+		if (_workids.indexOf(wid) < 0) {
+			_workids = [..._workids, wid];
 		}
 	}
 
@@ -82,13 +86,13 @@
 								<Tooltip message={w.description}>
 									<span class="token">
 										<span>{w.title}</span>
-										<label class="clear {ICON_CLASS.hover}">
+										<label class="clear">
 											<Icon name="cross" strokeWidth={2} />
 											<input
 												hidden
 												type="checkbox"
 												name="work_id"
-												bind:group={_work_ids}
+												bind:group={_workids}
 												value={w.id}
 											/>
 										</label>
@@ -106,7 +110,7 @@
 				<div class="height-wrap" style="overflow: visible;">
 					<div style:height="{$worksHeight}px" aria-hidden />
 					<ul id="works" bind:clientHeight={$worksHeight}>
-						{#each (searchResults ?? available).filter((w) => !_work_ids.includes(w.id)) as w, i (w.id)}
+						{#each (searchResults ?? available).filter((w) => !_workids.includes(w.id)) as w, i (w.id)}
 							<li
 								in:receive|local={{ key: w.id }}
 								out:send|local={{ key: w.id }}
@@ -175,7 +179,7 @@
 		color: col(fg, 100, 0.8);
 		// border: 1px solid col(fg, 100, 0.1);
 		cursor: pointer;
-		transition: all 0.1s var(--ui-ease-out);
+		// transition: all 0.1s var(--ui-ease-out);
 
 		&:hover {
 			// border: 1px solid col(primary, 500, 0.1);
