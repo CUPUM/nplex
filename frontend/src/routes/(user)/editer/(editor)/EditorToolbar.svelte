@@ -26,8 +26,8 @@
 	menu {
 		position: sticky;
 		margin-inline: 1.5rem;
-		margin-top: -1.5rem;
-		margin-bottom: 1.5rem;
+		// margin-top: -1.5rem;
+		// margin-bottom: 1.5rem;
 		bottom: 1.5rem;
 		align-self: stretch;
 		display: flex;

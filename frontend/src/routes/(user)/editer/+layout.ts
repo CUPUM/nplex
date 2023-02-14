@@ -12,7 +12,7 @@ export const load = (async (event) => {
 	}
 	const db = await getDb(event);
 	const projects = db
-		.from('editable_projects')
+		.from('projects')
 		.select(
 			`
 				*,

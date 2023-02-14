@@ -166,8 +166,8 @@
 		margin-bottom: 0.4em;
 		font-size: var(--ui-text-sm);
 		display: flex;
+		flex-wrap: wrap;
 		flex-direction: row;
-		overflow-x: auto;
 		gap: 1em;
 
 		label {

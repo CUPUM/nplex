@@ -6,14 +6,12 @@
 		{ href: '/tests', title: 'Playground' },
 		{ href: '/tests/sizes', title: 'Sizes' },
 		{ href: '/tests/components', title: 'Components' },
-		{ href: '/tests/components', title: 'Components' },
-		{ href: '/tests/components', title: 'Components' },
-		{ href: '/tests/components', title: 'Components' },
+		{ href: '/tests/tween-height', title: 'Tweening!' },
 	] satisfies { href: string; title: string }[];
 </script>
 
 <nav class="no-scrollbar">
-	<OverflowEffect color="red">
+	<OverflowEffect>
 		<div class="inner">
 			{#each links as link}
 				<a href={link.href} data-current={$page.url.pathname === link.href || undefined}>
@@ -32,7 +30,6 @@
 		flex-direction: row;
 		background: col(fg, 500, 0.2);
 		border-radius: 10px;
-		max-width: 300px;
 		overflow-x: scroll;
 	}
 

@@ -17,6 +17,8 @@
 </script>
 
 <script lang="ts">
+	import { browser } from '$app/environment';
+
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
@@ -68,7 +70,7 @@
 </script>
 
 <fieldset
-	class="container nest focus-outline-within no-scrollbar {variant} {direction} {className}"
+	class="ui-text-area nest focus-outline-within {variant} {direction} {className}"
 	{style}
 	{disabled}
 	class:compact
@@ -111,6 +113,7 @@
 	<textarea
 		bind:this={textareaRef}
 		bind:value
+		disabled={!browser || disabled}
 		{name}
 		{id}
 		{required}
@@ -134,7 +137,7 @@
 </fieldset>
 
 <style lang="scss">
-	:where(.container) {
+	.ui-text-area {
 		--radius: var(--ui-radius-md);
 		--inset: var(--ui-inset);
 		--notch-padding: 0.25em;
@@ -223,11 +226,16 @@
 		font-size: inherit;
 		line-height: 1.5em;
 		padding-right: var(--ui-pad-x);
-		padding-bottom: var(--pad-y);
-		margin-top: var(--pad-y);
+		padding-block: var(--pad-y);
 		background: transparent;
 		resize: none;
-		mask-image: linear-gradient(to top, transparent 0px, black 1em);
+		mask-image: linear-gradient(
+			0deg,
+			transparent 0px,
+			black 1em,
+			black calc(100% - 1em),
+			transparent 100%
+		);
 		transition: all 0.15s var(--ui-ease-out);
 
 		&:hover {
@@ -314,7 +322,7 @@
 	:where(.default) {
 		color: col(fg, 000);
 		background: col(fg, 500, 0.05);
-		transition: all 0.15s var(--ui-ease-out);
+		transition: all 0.1s;
 		.outline {
 			display: none;
 		}
@@ -336,11 +344,11 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(fg, 300);
-			background: col(fg, 100, 0.1);
+			// background: col(fg, 100, 0.1);
 		}
 		&:focus-within {
-			color: col(fg, 900);
-			background: col(bg, 900);
+			color: col(fg, 500);
+			background: col(fg, 100, 0.1);
 			textarea {
 				opacity: 1;
 			}

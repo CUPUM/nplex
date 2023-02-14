@@ -22,11 +22,10 @@ export const load = (async (event) => {
 			`
 			*,
 			work_ids:projects_works (
-				work_id
+				*
 			),
-			secondary_usages:projects_secondary_usages (
-				usage_id,
-				category_id
+			usages:projects_usages (
+				*
 			),
 			location:projects_location (
 				*
@@ -65,7 +64,7 @@ export const load = (async (event) => {
 				...res.data,
 				cost_range: pgRangeToArr(res.data.cost_range),
 				work_ids: alwaysArr(res.data.work_ids).map((w) => w.work_id),
-				secondary_usages: alwaysArr(res.data.secondary_usages),
+				usages: alwaysArr(res.data.usages),
 				gallery: alwaysArr(res.data.gallery).map((img) => ({
 					...img,
 					color_mean_hsl: pgCubeToHsl(img.color_mean_hsl),

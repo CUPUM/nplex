@@ -6,92 +6,86 @@
 	import RangeThumb from '$components/Range/RangeThumb.svelte';
 	import { cadformatter } from '$utils/format';
 	import type { PageData } from './$types';
-	import { COST_MAX, COST_MIN, COST_STEP, dirty } from './common';
+	import { COST_MAX, COST_MAX_DELTA, COST_MIN, COST_STEP, dirty } from './common';
 
 	$: [costmin, costmax] = ($page.data as PageData).project.cost_range;
 
-	$: _costmin = costmin;
-	$: _costmax = costmax;
+	$: form_costmin = costmin;
+	$: form_costmax = costmax;
 
-	$: $dirty.cost_range = _costmin !== costmin || _costmax !== costmax;
+	$: $dirty.cost_range = form_costmin !== costmin || form_costmax !== costmax;
 
 	function checkMin() {
-		_costmin = Math.max(COST_MIN, Math.min(_costmin, COST_MAX, _costmax));
+		form_costmin = Math.max(COST_MIN, Math.min(form_costmin, COST_MAX, form_costmax));
 	}
 
 	function checkMax() {
-		_costmax = Math.min(COST_MAX, Math.max(_costmax, COST_MIN, _costmin));
+		form_costmax = Math.min(COST_MAX, Math.max(form_costmax, COST_MIN, form_costmin));
 	}
 </script>
 
-<fieldset class="formgroup">
-	<legend class="formlegend">
-		Fourchette de coûts
-		<p class="forminfo">
-			Indiquez approximativement les coûts totaux du projet, selon un niveau de précision avec
-			lequel vous êtes confortable.
-		</p>
-	</legend>
-	<section class="formfields">
-		<div class="fields">
-			<Field
-				type="number"
-				prefix="C$ "
-				min={COST_MIN}
-				max={Math.min(COST_MAX, _costmax)}
-				step={COST_STEP}
-				bind:value={_costmin}
-				on:change={checkMin}
-			>
-				<svelte:fragment slot="label">Min.</svelte:fragment>
-			</Field>
-			<Field
-				type="number"
-				prefix="C$ "
-				min={Math.max(COST_MIN, _costmin)}
-				max={COST_MAX}
-				step={COST_STEP}
-				bind:value={_costmax}
-				on:change={checkMax}
-			>
-				<svelte:fragment slot="label">Max.</svelte:fragment>
-			</Field>
-		</div>
-		<Range
-			style="flex: 1; padding-inline: 2rem;"
+<section class="editor-section">
+	<h3>Fourchette de coûts</h3>
+	<div class="ui-info">
+		Indiquez approximativement les coûts totaux du projet, selon un niveau de précision avec lequel
+		vous êtes confortable.
+	</div>
+	<fieldset class="fields">
+		<Field
+			type="number"
+			prefix="C$ "
 			min={COST_MIN}
+			max={Math.min(COST_MAX, form_costmax)}
+			step={COST_STEP}
+			bind:value={form_costmin}
+			on:change={checkMin}
+		>
+			<svelte:fragment slot="label">Min.</svelte:fragment>
+		</Field>
+		<Field
+			type="number"
+			prefix="C$ "
+			min={Math.max(COST_MIN, form_costmin)}
 			max={COST_MAX}
 			step={COST_STEP}
-			ticks={10000}
+			bind:value={form_costmax}
+			on:change={checkMax}
 		>
+			<svelte:fragment slot="label">Max.</svelte:fragment>
+		</Field>
+		<Range min={COST_MIN} max={COST_MAX} step={COST_STEP} ticks={10000}>
 			<svelte:fragment slot="tick" let:tick>
 				{cadformatter.format(tick)}
 			</svelte:fragment>
-			<RangeGroup bind:from={_costmin} push draggable bind:to={_costmax} />
-			<RangeThumb name="cost_range_min" bind:value={_costmin} let:value />
-			<RangeThumb name="cost_range_costmax" bind:value={_costmax} />
+			<RangeGroup
+				bind:from={form_costmin}
+				pushpull
+				draggable
+				bind:to={form_costmax}
+				maxdelta={COST_MAX_DELTA}
+			/>
+			<RangeThumb name="cost_range_min" bind:value={form_costmin} let:value />
+			<RangeThumb name="cost_range_costmax" bind:value={form_costmax} />
 		</Range>
-		<input type="hidden" name="cost_range" readonly value="[{_costmin},{_costmax}]" />
-	</section>
-</fieldset>
+	</fieldset>
+	<input type="hidden" name="cost_range" readonly value="[{form_costmin},{form_costmax}]" />
+</section>
 
 <style lang="scss">
-	section {
-		display: flex;
-		flex-direction: row;
-		align-items: stretch;
-		gap: 3rem;
-
-		@include tablet {
-			flex-direction: column;
-			gap: 3rem;
-		}
+	.ui-info {
+		max-width: var(--ui-width-sm);
 	}
 
-	.fields {
-		flex: 1;
+	fieldset {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 1.5rem;
+		flex-direction: row;
+		gap: 2rem;
+		margin-top: 2rem;
+		grid-template-columns: 1fr 1fr 4fr;
+		grid-auto-flow: dense;
+
+		@include tablet {
+			grid-template-columns: 1fr 1fr;
+		}
 	}
 </style>

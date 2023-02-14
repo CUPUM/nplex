@@ -35,6 +35,7 @@
 <style lang="scss">
 	nav {
 		--overflow-outset: var(--ui-inset);
+		--overflow-color: #{col(bg, 700)};
 		--radius: var(--ui-radius-md);
 		--inset: var(--ui-inset);
 		display: flex;
@@ -42,20 +43,23 @@
 		flex-wrap: nowrap;
 		align-items: stretch;
 		justify-content: flex-start;
-		margin-top: 1rem;
-		font-size: var(--ui-text-sm);
+		margin-top: calc(1rem - var(--inset));
+		// font-size: var(--ui-text-sm);
 		padding: var(--inset);
 		height: var(--ui-height);
-		font-weight: 400;
+		font-weight: 500;
 		max-width: var(--ui-nav-center-w);
-		background: col(bg, 500);
+		background: col(bg, 700);
 		// border: 1px solid col(primary, 300, 0.1);
-		color: col(fg, 900, 0.35);
+		color: col(fg, 000);
 		border-radius: var(--radius);
 		overflow-x: auto;
+		z-index: 1;
+		// box-shadow: 0 0 0 1px col(bg, 900);
 	}
 
 	a {
+		font-size: var(--ui-text-sm);
 		display: flex;
 		flex: none;
 		align-items: center;

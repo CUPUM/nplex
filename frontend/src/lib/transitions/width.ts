@@ -1,9 +1,21 @@
-import { expoOut } from 'svelte/easing';
+import { cubicOut } from 'svelte/easing';
+import type { EasingFunction } from 'svelte/transition';
+
+interface WidthOptions {
+	delay?: number;
+	duration?: number;
+	opacity?: number;
+	easing?: EasingFunction;
+}
 
 /**
- * Transition an element's width on insert / remove, akin to svelte's `slide` transition for width instead of height.
+ * Transition an element's width on insert / remove, akin to svelte's `slide` transition for width
+ * instead of height.
  */
-export function width(el: Element, { delay = 0, duration = 350, opacity = 1, easing = expoOut }) {
+export function width(
+	el: Element,
+	{ delay = 0, duration = 250, opacity = 0, easing = cubicOut }: WidthOptions = {}
+): SvelteTransitionReturnType {
 	const style = getComputedStyle(el);
 	const _opacity = +style.opacity;
 	const width = parseFloat(style.width);

@@ -145,7 +145,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <fieldset
-	class="container focus-outline-within {variant} {className}"
+	class="ui-field focus-outline-within {variant} {className}"
 	{style}
 	{disabled}
 	class:compact
@@ -240,7 +240,7 @@
 </fieldset>
 
 <style lang="scss">
-	:where(.container) {
+	.ui-field {
 		--radius: var(--ui-radius-md);
 		--height: var(--ui-height);
 		--inset: var(--ui-inset);
@@ -270,7 +270,6 @@
 		flex-direction: row;
 		align-items: stretch;
 		font-weight: 400;
-		font-size: inherit;
 		border-radius: var(--radius);
 		cursor: text;
 		transition: transform 0.15s ease-out;
@@ -348,18 +347,24 @@
 		padding-bottom: calc(0.5em - 0.5ex);
 		grid-column: main;
 		top: 0;
+		min-width: 10ch;
 		flex: 1;
 		white-space: nowrap;
 		border: none;
 		outline: none;
 		background: transparent;
 		text-overflow: ellipsis;
+		overflow: hidden;
 		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
 		&:-webkit-autofill,
 		&:-webkit-autofill:hover,
 		&:-webkit-autofill:focus,
 		&:-webkit-autofill:active {
 			transition: background-color 0s 50000s;
+		}
+
+		&[type='number'] {
+			font-variant-numeric: tabular-nums;
 		}
 	}
 
@@ -445,8 +450,9 @@
 		&:has(:-webkit-autofill) {
 			label {
 				opacity: 0.5;
-				top: 1.25em;
-				font-size: clamp(11px, 0.5em, 24px);
+				top: 1.5em;
+				font-size: max(11px, 0.65em);
+				// font-size: 0.65em;
 			}
 			.affix {
 				opacity: 0.5;

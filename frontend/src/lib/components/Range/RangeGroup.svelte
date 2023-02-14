@@ -31,19 +31,24 @@
 	export let from: number = $min;
 	export let to: number = $max;
 	export let draggable: boolean = false;
-	export let push: boolean = false;
+	export let maxdelta: number | undefined = undefined;
+	export let mindelta: number = 0;
+	export let pushpull: boolean = false;
 	export let collide: boolean = true;
 	export let line: boolean = true;
 
-	function pushing(pusher: Point) {
+	function _pushpull(pusher: Point) {
 		if (pusher === POINT.from) {
-			to = Math.min(Math.max(to, from), $max);
+			const toMax = Math.max(to, from + mindelta);
+			to = maxdelta ? Math.min(toMax, $max, from + maxdelta) : Math.min(toMax, $max);
 		} else {
-			from = Math.max(Math.min(to, from), $min);
+			const fromMin = Math.min(to - mindelta, from);
+			from = maxdelta ? Math.max(fromMin, $min, to - maxdelta) : Math.max(fromMin, $min);
 		}
 	}
 
-	async function colliding(collider: Point) {
+	async function _collide(collider: Point) {
+		// To do: add maxdelta / mindelta logic
 		if (collider === POINT.from) {
 			await tick();
 			from = Math.min(to, from);
@@ -53,17 +58,17 @@
 		}
 	}
 
-	$: if (push && from !== undefined) {
-		pushing(POINT.from);
+	$: if (pushpull && from != undefined) {
+		_pushpull(POINT.from);
 	}
-	$: if (push && to !== undefined) {
-		pushing(POINT.to);
+	$: if (pushpull && to != undefined) {
+		_pushpull(POINT.to);
 	}
-	$: if (collide && !push && from !== undefined) {
-		colliding(POINT.from);
+	$: if (collide && !pushpull && from != undefined) {
+		_collide(POINT.from);
 	}
-	$: if (collide && !push && to !== undefined) {
-		colliding(POINT.to);
+	$: if (collide && !pushpull && to != undefined) {
+		_collide(POINT.to);
 	}
 
 	const relfrom = spring(pc(from), rangeThumbSpringOptions);

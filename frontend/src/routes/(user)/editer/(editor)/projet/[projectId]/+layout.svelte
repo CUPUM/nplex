@@ -19,21 +19,25 @@
 			pathname: base(''),
 			title: 'Général',
 		},
-		Site: {
-			pathname: base('/site'),
-			title: 'Site',
+		Localisation: {
+			pathname: base('/localisation'),
+			title: 'Localisation',
 		},
 		Gallery: {
 			pathname: base('/galerie'),
 			title: 'Galerie',
 		},
-		Processus: {
-			pathname: base('/processus'),
-			title: 'Processus',
+		Materials: {
+			pathname: base('/materiaux'),
+			title: 'Matériaux',
 		},
 		Exemplarity: {
 			pathname: base('/exemplarite'),
 			title: 'Indicateurs d’exemplarité',
+		},
+		Realization: {
+			pathname: base('/realisation'),
+			title: 'Réalisation',
 		},
 		Settings: {
 			pathname: base('/parametres'),
@@ -50,8 +54,22 @@
 </script>
 
 <EditorNavbar routes={PROJECT_EDITOR_ROUTES} />
+<hr />
 <slot />
 <EditorToolbar dirty={!!Object.values($dirty).filter((v) => v).length} formid={FORM_ID} />
 
 <style lang="scss">
+	hr {
+		color: col(fg, 100, 0.2);
+		height: 1px;
+		background-image: linear-gradient(
+			90deg,
+			currentColor,
+			currentColor 20%,
+			transparent 20%,
+			transparent 100%
+		);
+		background-size: 10px 2px;
+		align-self: stretch;
+	}
 </style>

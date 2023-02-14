@@ -49,6 +49,7 @@
 
 body {
 	// Background also set here so :root can have a different bg specific to overscroll.
+	// overflow-x: hidden;
 	background: var(--ui-bg);
 	position: relative;
 	width: 100%;

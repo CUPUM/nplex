@@ -1,4 +1,5 @@
 import type { NonUndefinable, Single } from '$types/utils';
+import type { Database } from './generated';
 
 export type PgCube = `(${number},${number},${number})`;
 
@@ -23,7 +24,7 @@ export function maybeSingle<T>(entity: T) {
 
 export type TableName = keyof App.Database['public']['Tables'];
 
-export type TableRow<T extends TableName> = App.Database['public']['Tables'][T]['Row'];
+export type TableRow<T extends TableName, Schema extends Database = App.Database> = Schema['public']['Tables'][T]['Row'];
 
 type BuffOptions = 'single' | 'maybeSingle';
 

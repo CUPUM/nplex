@@ -1,7 +1,11 @@
 <script lang="ts">
 </script>
 
-<h1>Paramètres du projet</h1>
+<form action="">
+	<fieldset>Visibilité du projet</fieldset>
+	<fieldset>Partage</fieldset>
+	<fieldset>Supprimer</fieldset>
+</form>
 
 <style lang="scss">
 </style>

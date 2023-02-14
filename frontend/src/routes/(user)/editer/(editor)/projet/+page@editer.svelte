@@ -4,8 +4,7 @@
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { messages } from '$routes/MessagesOutlet.svelte';
-	import { cubicOut } from 'svelte/easing';
-	import { fade, fly, scale } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;
@@ -29,23 +28,22 @@
 		loading = true;
 		return async ({ update, result }) => {
 			update({ reset: false });
-			if (result.type === 'success' || result.type === 'redirect') {
-				return;
+			if (result.type !== 'success' && result.type !== 'redirect') {
+				loading = false;
 			}
-			loading = false;
 		};
 	}}
 >
 	<!-- <div class="illustration">
 		<IllustrationNewProject />
 	</div> -->
-	<div in:scale={{ start: 0.96, easing: cubicOut, duration: 250 }}>
-		<h1 in:fly={{ y: 12 }}>Créez votre nouveau projet</h1>
+	<div>
+		<h2 in:fly={{ y: 12 }}>Créez votre nouveau projet.</h2>
 		<fieldset in:fly={{ y: -12, delay: 150 }}>
 			<Field
 				name="title"
 				class="title"
-				placeholder="Donnez un titre à vorte projet"
+				placeholder="Donnez un titre à vorte projet..."
 				variant="default"
 				bind:value={title}
 				invalid={!!form?.title}
@@ -57,7 +55,7 @@
 					</Button>
 				</svelte:fragment>
 			</Field>
-			<span in:fade={{ delay: 500 }}>
+			<span class="ui-info" in:fade={{ delay: 500 }}>
 				Vous pourrez toujours modifier le titre une fois le projet créé.
 			</span>
 		</fieldset>
@@ -71,7 +69,7 @@
 		min-height: calc(100vh - var(--ui-nav-h));
 		padding-bottom: var(--ui-nav-h);
 		margin: 0 auto;
-		border-bottom: 1px solid col(fg, 900, min(0.1, calc(var(--ui-scroll-y-int) * 0.001)));
+		// border-bottom: 1px solid col(fg, 900, min(0.1, calc(var(--ui-scroll-y-int) * 0.001)));
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -97,11 +95,13 @@
 		display: flex;
 		align-items: center;
 		flex-direction: column;
-		padding: 2.5rem 3rem;
+		padding: 3.5rem 4rem;
 		border-radius: var(--ui-radius-xl);
 		max-width: var(--ui-width-md);
 		width: 100%;
 		gap: 3rem;
+		// box-shadow: var(--ui-shadow-sm);
+		// background: col(bg, 900);
 		// border: 1px dashed col(fg, 500, 0.1);
 	}
 
@@ -124,7 +124,5 @@
 		width: 100%;
 		margin-top: 2rem;
 		font-size: var(--ui-text-md);
-		font-weight: 300;
-		color: col(fg, 100, 0.5);
 	}
 </style>

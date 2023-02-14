@@ -13,14 +13,12 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { col } from '$utils/css';
 	import { onDestroy, onMount } from 'svelte';
 
 	export let top: boolean = false;
 	export let right: boolean = true;
 	export let bottom: boolean = false;
 	export let left: boolean = true;
-	export let color: string = col('bg', 300);
 
 	let contentRef: HTMLDivElement;
 	let overflowTop: boolean = false;
@@ -71,12 +69,12 @@
 </script>
 
 {#if left}
-	<div aria-hidden="true" class="end left" class:active={overflowLeft} style:--fx-color={color}>
+	<div aria-hidden="true" class="end left" class:active={overflowLeft}>
 		<div class="fx" />
 	</div>
 {/if}
 {#if top}
-	<div aria-hidden="true" class="end top" class:active={overflowTop} style:--fx-color={color}>
+	<div aria-hidden="true" class="end top" class:active={overflowTop}>
 		<div class="fx" />
 	</div>
 {/if}
@@ -84,12 +82,12 @@
 	<slot />
 </div>
 {#if right}
-	<div aria-hidden="true" class="end right" class:active={overflowRight} style:--fx-color={color}>
+	<div aria-hidden="true" class="end right" class:active={overflowRight}>
 		<div class="fx" />
 	</div>
 {/if}
 {#if bottom}
-	<div aria-hidden="true" class="end bottom" class:active={overflowBottom} style:--fx-color={color}>
+	<div aria-hidden="true" class="end bottom" class:active={overflowBottom}>
 		<div class="fx" />
 	</div>
 {/if}
@@ -102,12 +100,13 @@
 
 	.end {
 		--ui-overflow-outset: var(--overflow-outset, 0px);
+		--ui-overflow-color: var(--overflow-color, #{col(bg, 500)});
 		--corr: calc(-1 * var(--ui-overflow-outset));
 		border-radius: inherit;
 		pointer-events: none;
 		position: sticky;
 		flex: none;
-		z-index: 1;
+		z-index: 999;
 		overflow: visible;
 
 		&.left {
@@ -120,7 +119,7 @@
 				left: var(--corr);
 				height: calc(100% - 2 * var(--corr));
 				width: var(--fx-size);
-				background: linear-gradient(90deg, var(--fx-color) 0%, transparent 50%);
+				background: linear-gradient(90deg, var(--ui-overflow-color) 0%, transparent 50%);
 			}
 		}
 
@@ -133,7 +132,7 @@
 				top: 0;
 				width: 100%;
 				height: var(--fx-size);
-				background: var(--fx-color);
+				background: var(--ui-overflow-color);
 			}
 		}
 
@@ -147,7 +146,7 @@
 				top: var(--corr);
 				height: calc(100% - 2 * var(--corr));
 				width: var(--fx-size);
-				background: linear-gradient(-90deg, var(--fx-color) 0%, transparent 50%);
+				background: linear-gradient(-90deg, var(--ui-overflow-color) 0%, transparent 50%);
 			}
 		}
 
@@ -160,7 +159,7 @@
 				bottom: 0;
 				width: 100%;
 				height: var(--fx-size);
-				background: var(--fx-color);
+				background: var(--ui-overflow-color);
 			}
 		}
 	}

@@ -26,51 +26,6 @@
 	opacity: 0.05;
 }
 
-.info {
-	color: col(fg, 500);
-	opacity: 0.35;
-	font-weight: 425;
-}
-
-/**
- * Anchors
- */
-.link {
-	:not(:local-link) {
-		// External links
-	}
-}
-
-/**
- * Loading skeleton.
- * Give a placeholder / suspense element a pulsing gradient animation.
- */
-.ui-skeleton {
-	--ui-skeleton-color: #{col(fg, 500, 0.05)};
-	background: linear-gradient(
-		-90deg,
-		var(--ui-skeleton-color) 0%,
-		transparent 50%,
-		var(--ui-skeleton-color) 100%
-	);
-	background-size: 400% 100%;
-	animation: ui-skeleton-pulse 1.25s ease-in-out infinite;
-
-	&-text {
-		color: col(fg, 500, 0.05);
-		height: 1em;
-		border-radius: var(--ui-radius-sm);
-		background: linear-gradient(
-			-90deg,
-			var(--ui-skeleton-color) 0%,
-			transparent 50%,
-			var(--ui-skeleton-color) 100%
-		);
-		background-size: 400% 100%;
-		animation: ui-skeleton-pulse 1.25s ease-in-out infinite;
-	}
-}
-
 /**
  * Animate element when focused
  */
@@ -100,7 +55,7 @@
 		&:focus-within,
 		&:focus-visible {
 			&::after {
-				outline: 2px solid col(primary, 300, 0);
+				outline: 2px solid col(primary, 300);
 				// outline-offset: 0px;
 			}
 		}

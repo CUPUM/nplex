@@ -11,20 +11,15 @@
 	$: $dirty.description = (_description ?? '') !== (description ?? '');
 </script>
 
-<fieldset class="formgroup">
-	<legend class="formlegend">Description</legend>
-	<section class="formfields">
-		<TextArea
-			name="description"
-			bind:value={_description}
-			placeholder="Décrivez votre projet"
-			style="height: 300px; width: 100%;"
-		/>
-	</section>
-</fieldset>
+<section class="editor-section">
+	<h3>Description</h3>
+	<TextArea
+		name="description"
+		bind:value={_description}
+		placeholder="Décrivez votre projet"
+		style="height: 300px; width: 100%;"
+	/>
+</section>
 
 <style lang="scss">
-	.formfields {
-		max-width: var(--ui-width-md);
-	}
 </style>

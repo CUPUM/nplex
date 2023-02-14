@@ -27,6 +27,7 @@
 	import { getContext, setContext } from 'svelte';
 	import { writable, type Readable } from 'svelte/store';
 
+	export let id: string | undefined = undefined;
 	export let min: number;
 	export let max: number;
 	export let step: number;
@@ -87,6 +88,7 @@
 </script>
 
 <fieldset
+	{id}
 	class="range {variant} {direction} {className}"
 	{style}
 	style:--min={min}

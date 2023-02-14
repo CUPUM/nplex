@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { DRAW_EVENTS } from '$utils/enums';
@@ -11,65 +12,55 @@
 		setCircleRadius,
 	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { onDestroy } from 'svelte';
+	import { dirty } from '../common';
 	import type { PageData } from './$types';
 	import {
-		dirty,
+		locationRadius,
 		LOCATION_DEFAULT_RADIUS,
 		LOCATION_MAX_RADIUS,
 		map,
-		mapdraw,
-		_location_radius,
+		mapDraw,
 	} from './common';
 
-	export let location: PageData['project']['location'];
-	$: _location_center = location.geometry?.coordinates;
-	$: $_location_radius = location.radius;
+	$: location = ($page.data as PageData).project.location;
+	let form_center: typeof location.geometry;
+	let form_radius: typeof location.radius;
 
-	$: $dirty.location =
-		_location_center?.[0] !== location.geometry?.coordinates[0] ||
-		_location_center?.[1] !== location.geometry?.coordinates[1] ||
-		$_location_radius !== location.radius;
+	$: $dirty.location = form_radius !== location.radius;
 
 	const updateLocation = throttle((e: DrawRenderEvent) => {
-		if ($mapdraw) {
-			const feature = $mapdraw.getAll().features[0];
+		if ($mapDraw) {
+			const feature = $mapDraw.getAll().features[0];
 			if (feature) {
 				let radius = getCircleRadius(feature) * 1000;
 				if (radius > LOCATION_MAX_RADIUS) {
 					radius = LOCATION_MAX_RADIUS;
 					setCircleRadius(feature, radius);
 				}
-				_location_center = getCircleCenter(feature);
-				$_location_radius = radius;
+				form_center = getCircleCenter(feature);
+				$locationRadius = radius;
 			}
 		}
 	}, 100);
 
 	function onCreate(e: DrawCreateEvent) {
-		const del = $mapdraw?.getAll().features.reduce((acc, feature) => {
+		const del = $mapDraw?.getAll().features.reduce((acc, feature) => {
 			if (feature.id != null && feature.id != e.features[0].id) {
 				acc.push(feature.id + '');
 			}
 			return acc;
 		}, Array<string>(0));
 		if (del && del.length) {
-			$mapdraw?.delete(del);
+			$mapDraw?.delete(del);
 		}
 	}
 
 	function create() {
-		if ($map && $mapdraw) {
+		if ($map && $mapDraw) {
 			const center = $map.getCenter().toArray();
 			const circle = createCircle(center, LOCATION_DEFAULT_RADIUS / 1000);
-			$mapdraw.add(circle);
+			$mapDraw.add(circle);
 			$map.fire(DRAW_EVENTS.Create, { features: [circle] });
-			// $map.fire(DRAW_EVENTS.render);
-			// 	const newMode =
-			// 		$mapdraw.getMode() === DRAW_MODES.DrawCircle
-			// 			? DRAW_MODES.SimpleSelect
-			// 			: DRAW_MODES.DrawCircle;
-			// 	$mapdraw.changeMode(newMode as any);
-			// 	$map.fire(DRAW_EVENTS.modechange, { mode: newMode });
 		}
 	}
 
@@ -89,8 +80,8 @@
 	});
 </script>
 
-<fieldset class="formgroup">
-	<legend class="formlegend">Localisation</legend>
+<section class="editor-section">
+	<h3>Localisation</h3>
 	<section class="formfields">
 		<Button on:pointerdown={create}>
 			<Icon name="path-circle" slot="leading" />
@@ -100,15 +91,10 @@
 			type="hidden"
 			readonly
 			name="location"
-			value={JSON.stringify({ center: _location_center, radius: $_location_radius })}
+			value={JSON.stringify({ center: form_center, radius: form_radius })}
 		/>
 	</section>
-</fieldset>
+</section>
 
 <style lang="scss">
-	fieldset {
-		background: col(bg, 300);
-		border-radius: var(--ui-radius-lg);
-		padding: 2rem;
-	}
 </style>

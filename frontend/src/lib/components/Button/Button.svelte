@@ -323,13 +323,13 @@
 	}
 
 	.cta {
-		color: col(bg, 300);
+		color: col(bg, 700);
 		background: col(primary, 500);
 		// box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
 		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(bg, 500);
+			color: col(bg, 100);
 			background: col(primary, 700);
 			// box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.25);
 		}

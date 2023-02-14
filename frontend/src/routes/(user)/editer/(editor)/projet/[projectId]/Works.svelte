@@ -3,22 +3,27 @@
 	import Field from '$components/Field/Field.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import Icon from '$components/Icon.svelte';
+	import Token from '$components/Token/Token.svelte';
+	import TokenButton from '$components/Token/TokenButton.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { debounce } from '$utils/modifiers';
 	import Fuse from 'fuse.js';
 	import { flip } from 'svelte/animate';
-	import { cubicInOut, expoOut } from 'svelte/easing';
-	import { tweened } from 'svelte/motion';
-	import { crossfade, fly, scale } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import { dirty, _type_id } from './common';
 
 	$: descriptors = ($page.data as PageData).descriptors;
+
 	$: workids = [...(($page.data as PageData).project.work_ids ?? [])];
-	let _workids = Array.from(workids ?? []);
-	// $: if (workids) {
-	// 	_workids = [...workids];
-	// }
+
+	let form_workids: typeof workids = [];
+	function sync(trigger: any) {
+		if (Array.isArray(workids)) {
+			form_workids = [...workids];
+		}
+	}
+	$: sync(workids);
 
 	$: $dirty.work_ids =
 		selected.length !== (workids.length ?? []) ||
@@ -26,7 +31,7 @@
 
 	$: available = descriptors.types.find((t) => t.id === $_type_id)?.works ?? [];
 
-	$: selected = _workids.reduce((acc, curr) => {
+	$: selected = form_workids.reduce((acc, curr) => {
 		const w = available.find((w) => w.id === curr);
 		if (w) {
 			acc.push(w);
@@ -34,19 +39,11 @@
 		return acc;
 	}, Array<(typeof available)[number]>(0));
 
-	let worksHeight = tweened(0, { duration: 350, easing: cubicInOut });
-	let selectedWorksHeight = tweened(0, { duration: 150, easing: cubicInOut });
 	let searchResults: typeof available | null = null;
 
-	const [send, receive] = crossfade({
-		duration: (d) => 0.5 * d + 150,
-		easing: expoOut,
-		fallback: (node: Element) => scale(node, { duration: 150, start: 0.94 }),
-	});
-
 	function add(wid: number) {
-		if (_workids.indexOf(wid) < 0) {
-			_workids = [..._workids, wid];
+		if (form_workids.indexOf(wid) < 0) {
+			form_workids = [...form_workids, wid];
 		}
 	}
 
@@ -64,195 +61,103 @@
 	}, 250);
 </script>
 
-<fieldset class="formgroup">
-	<legend class="formlegend">Travaux</legend>
-	<section class="formfields">
-		<fieldset id="search-works" disabled={_type_id === null}>
-			<Field placeholder="Chercher un type de travail" variant="outlined" on:input={handleSearch}>
-				<FieldIcon slot="leading" name="search" />
-			</Field>
+<section class="editor-section">
+	<h3>Travaux</h3>
+	<ul class="selected">
+		{#each selected as w, i (w.id)}
+			<li animate:flip={{ duration: 150 }}>
+				<Tooltip message={w.description}>
+					<Token active>
+						{w.title}
+						<TokenButton slot="trailing" as="label">
+							<Icon name="cross" strokeWidth={2} />
+							<input hidden type="checkbox" name="work_id" bind:group={form_workids} value={w.id} />
+						</TokenButton>
+					</Token>
+				</Tooltip>
+			</li>
+		{/each}
+		{#if !selected.length}
+			<p class="ui-info" in:fly|local={{ y: 6, duration: 250 }}>
+				Sélectionnez un ou plusieurs travaux...
+			</p>
+		{/if}
+	</ul>
+	<fieldset class="search" disabled={_type_id === null}>
+		<Field
+			class="field"
+			placeholder="Chercher un type de travail"
+			variant="default"
+			on:input={handleSearch}
+		>
+			<svelte:fragment slot="leading">
+				<FieldIcon name="search" />
+			</svelte:fragment>
+		</Field>
+	</fieldset>
+	{#each descriptors.workCategories as category}
+		<fieldset>
+			<h4>{category.title}</h4>
 		</fieldset>
-		<fieldset id="inputs-tokens">
-			{#if $_type_id !== null}
-				<div class="height-wrap" style="overflow: visible; margin-bottom: 1rem">
-					<div style:height="{$selectedWorksHeight}px" aria-hidden />
-					<ul id="selected-works" bind:clientHeight={$selectedWorksHeight}>
-						{#each selected as w, i (w.id)}
-							<li
-								in:receive|local={{ key: w.id }}
-								out:send|local={{ key: w.id }}
-								animate:flip={{ duration: 150 }}
-							>
-								<Tooltip message={w.description}>
-									<span class="token">
-										<span>{w.title}</span>
-										<label class="clear">
-											<Icon name="cross" strokeWidth={2} />
-											<input
-												hidden
-												type="checkbox"
-												name="work_id"
-												bind:group={_workids}
-												value={w.id}
-											/>
-										</label>
-									</span>
-								</Tooltip>
-							</li>
-						{/each}
-						{#if !selected.length}
-							<p class="info" transition:fly|local={{ y: 6, duration: 250 }}>
-								Sélectionnez un ou plusieurs travaux...
-							</p>
-						{/if}
-					</ul>
-				</div>
-				<div class="height-wrap" style="overflow: visible;">
-					<div style:height="{$worksHeight}px" aria-hidden />
-					<ul id="works" bind:clientHeight={$worksHeight}>
-						{#each (searchResults ?? available).filter((w) => !_workids.includes(w.id)) as w, i (w.id)}
-							<li
-								in:receive|local={{ key: w.id }}
-								out:send|local={{ key: w.id }}
-								animate:flip={{ duration: 100 }}
-							>
-								<Tooltip message={w.description}>
-									<button class="token" on:pointerdown={() => add(w.id)} type="button">
-										<span>{w.title}</span>
-									</button>
-								</Tooltip>
-							</li>
-						{/each}
-					</ul>
-				</div>
-			{:else}
-				<p class="info">Sélectionnez d'abord un type de projet.</p>
-			{/if}
-		</fieldset>
-	</section>
-</fieldset>
+		<ul class="list">
+			{#each (searchResults ?? available).filter((w) => !form_workids.includes(w.id) && w.category_id === category.id) as w, i (w.id)}
+				<li animate:flip={{ duration: 100 }}>
+					<Tooltip message={w.description}>
+						<Token on:pointerdown={() => add(w.id)} as="button">
+							{w.title}
+						</Token>
+					</Tooltip>
+				</li>
+			{/each}
+		</ul>
+	{/each}
+</section>
 
 <style lang="scss">
-	#inputs-tokens {
-		overflow-y: hidden;
-	}
-
-	.height-wrap {
-		position: relative;
-		width: 100%;
-	}
-
-	#search-works {
-		font-size: 1rem;
-		padding-bottom: 1.5rem;
-		max-width: var(--ui-width-sm);
-	}
-
-	#works {
-		top: 0;
+	.ui-info {
 		display: flex;
-		position: absolute;
-		flex-direction: row;
-		align-items: flex-start;
-		flex-wrap: wrap;
-		gap: 0.5em;
-		font-size: var(--ui-text-sm);
-		color: col(fg, 900, 0.8);
-		min-height: var(--ui-height);
-
-		li {
-			flex: none;
-		}
-	}
-
-	.token {
-		border: none;
-		user-select: none;
-		font-weight: 400;
-		display: flex;
-		flex-direction: row;
 		align-items: center;
 		height: 3em;
-		gap: 0;
-		border-radius: 1.5em;
-		background: col(fg, 500, 0.05);
-		color: col(fg, 100, 0.8);
-		// border: 1px solid col(fg, 100, 0.1);
-		cursor: pointer;
-		// transition: all 0.1s var(--ui-ease-out);
-
-		&:hover {
-			// border: 1px solid col(primary, 500, 0.1);
-			background: col(primary, 300, 0.2);
-			color: col(primary, 700);
-		}
-
-		span {
-			position: relative;
-			display: block;
-			top: -0.05em;
-			padding-inline: var(--ui-pad-x);
-		}
+		font-size: var(--ui-text-md);
 	}
 
-	#selected-works {
-		position: absolute;
-		width: 100%;
-		top: 0;
-		z-index: 1;
-		min-height: var(--ui-height);
-		font-size: var(--ui-text-sm);
+	.selected {
+		padding-block: 1em;
 		display: flex;
-		align-items: flex-start;
 		flex-direction: row;
 		flex-wrap: wrap;
 		gap: 0.5em;
+		font-size: var(--ui-text-sm);
+	}
 
-		.token {
-			--inset: 6px;
-			cursor: default;
-			background: col(fg, 300);
-			color: col(bg, 500);
-			padding: var(--inset);
-			padding-left: 0;
+	.search {
+		position: sticky;
+		top: var(--ui-nav-h);
+		align-self: flex-start;
+		width: var(--ui-width-sm);
+		margin-block: 2rem;
+		z-index: 1;
 
-			span {
-				padding-right: 0.5em;
-			}
-
-			&:hover {
-				.clear {
-					opacity: 1;
-				}
-			}
-		}
-
-		.clear {
-			cursor: pointer;
-			height: 100%;
-			aspect-ratio: 1 / 1;
-			background: transparent;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 1rem;
-			border-radius: 99px;
-			opacity: 0.5;
-			transition: all 0.15s;
-
-			&:hover {
-				opacity: 1;
-				color: col(error, 500);
-				background: col(error, 100, 0.2);
-			}
+		:global(.field) {
+			backdrop-filter: blur(10px);
 		}
 	}
 
-	.info {
-		font-size: 1rem;
-		position: absolute;
-		color: col(fg, 100, 0.35);
-		margin-top: 1rem;
-		text-indent: 0.5em;
+	.list {
+		position: relative;
+		font-size: var(--ui-text-sm);
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 0.5em;
+		align-items: flex-start;
+		justify-content: flex-start;
+		padding-block: 1rem;
+	}
+
+	li {
+		display: inline-block;
+		position: relative;
+		flex: none;
 	}
 </style>

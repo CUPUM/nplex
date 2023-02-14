@@ -63,36 +63,45 @@ values
 
 select setval(pg_get_serial_sequence('public.project_type', 'id'), max(id)) from public.project_type;
 
+insert into public.project_work_category
+    (title, label, description)
+values
+    ('Travaux d’intérieur', 'Intérieur', ''),
+    ('Travaux d’extérieur', 'Extérieur', ''),
+    ('Travaux de fondation ou de structure', 'Fondation / structure', '');
+
+select setval(pg_get_serial_sequence('public.project_type', 'id'), max(id)) from public.project_type;
+
 
 insert into public.project_work
-    (id, title, description)
+    (id, title, category_id, description)
 values
-    (1, 'Construction de nouveau bâtiment', ''),
-    (2, 'Installation de placottoir', ''),
-    (3, 'Aménagement de parc', ''),
-    (4, 'Travaux de chaussée de ruelle', ''),
-    (5, 'Intervention de végétalisation', ''),
-    (6, 'Agrandissement en hauteur de bâtiment', ''),
-    (7, 'Agrandissement en aire de bâtiment', ''),
-    (8, 'Agrandissement en aire de plancher', ''),
-    (9, 'Création ou modification d’une aire communicante', ''),
-    (10, 'Création ou modification d’une mezzanine', ''),
-    (11, 'Changement en bâtiment de grande hauteur', ''),
-    (12, 'Modification des mesures de lutte contre l’incendie', ''),
-    (13, 'Aménagement de cour arrière', ''),
-    (14, 'Aménagement de cour avant', ''),
-    (15, 'Changement d’usage principal', ''),
-    (16, 'Réfection de façade avant', ''),
-    (17, 'Réfection de façade arrière', ''),
-    (18, 'Ajout ou modification d’une construction hors-toit', ''),
-    (19, 'Ajout ou changement d’escalier extérieur', ''),
-    (20, 'Ajout ou rénovation d’escalier intérieur', ''),
-    (21, 'Ajout ou changement de balcon extérieur', ''),
-    (22, 'Ajout ou rénovation de patio arrière', ''),
-    (23, 'Aménagement de terrasse', ''),
-    (24, 'Installation de mobilier urbain', ''),
-    (25, 'Fusion de logements', ''),
-    (26, 'Division de logements', '');
+    (1, 'Construction de nouveau bâtiment', 1, ''),
+    (2, 'Installation de placottoir', 1, ''),
+    (3, 'Aménagement de parc', 1, ''),
+    (4, 'Travaux de chaussée de ruelle', 1, ''),
+    (5, 'Intervention de végétalisation', 1, ''),
+    (6, 'Agrandissement en hauteur de bâtiment', 1, ''),
+    (7, 'Agrandissement en aire de bâtiment', 1, ''),
+    (8, 'Agrandissement en aire de plancher', 1, ''),
+    (9, 'Création ou modification d’une aire communicante', 1, ''),
+    (10, 'Création ou modification d’une mezzanine', 1, ''),
+    (11, 'Changement en bâtiment de grande hauteur', 1, ''),
+    (12, 'Modification des mesures de lutte contre l’incendie', 1, ''),
+    (13, 'Aménagement de cour arrière', 1, ''),
+    (14, 'Aménagement de cour avant', 1, ''),
+    (15, 'Changement d’usage principal', 1, ''),
+    (16, 'Réfection de façade avant', 1, ''),
+    (17, 'Réfection de façade arrière', 1, ''),
+    (18, 'Ajout ou modification d’une construction hors-toit', 1, ''),
+    (19, 'Ajout ou changement d’escalier extérieur', 1, ''),
+    (20, 'Ajout ou rénovation d’escalier intérieur', 1, ''),
+    (21, 'Ajout ou changement de balcon extérieur', 1, ''),
+    (22, 'Ajout ou rénovation de patio arrière', 1, ''),
+    (23, 'Aménagement de terrasse', 1, ''),
+    (24, 'Installation de mobilier urbain', 1, ''),
+    (25, 'Fusion de logements', 1, ''),
+    (26, 'Division de logements', 1, '');
 
 select setval(pg_get_serial_sequence('public.project_work', 'id'), max(id)) from public.project_work;
 
@@ -141,9 +150,9 @@ insert into public.project_site_ownership
     (title, description)
 values
     ('Particulier', ''),
-    ('Entreprise privée', ''),
+    ('Commercial', ''),
     ('Communautaire', ''),
-    ('Gouvernement / institution', '');
+    ('Gouvernemental / institutionnel', '');
 
 -- select setval(pg_get_serial_sequence('project_ownership', 'id'), max(id)) from public.project_ownership;
 

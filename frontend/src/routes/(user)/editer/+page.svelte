@@ -1,20 +1,20 @@
 <script lang="ts">
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { EDITOR_ROUTES } from './common';
 </script>
 
 <header>
 	<hgroup>
 		<h1 in:fly={{ y: 20 }}>Éditez une fiche</h1>
-		<span in:fly={{ y: -10, delay: 250 }}>
+		<span class="ui-info" in:fly={{ y: -10, delay: 250 }}>
 			<Icon name="pen" style="top: -.15em" />&emsp;Choisissez le type de données que vous souhaitez
 			créer ou modifier.
 		</span>
 	</hgroup>
 </header>
 <ul>
-	<li class="group" in:fade={{ delay: 0 }}>
+	<li class="group" in:fly={{ delay: 0, y: 12 }}>
 		<div class="block {ICON_CLASS.hover}">
 			<a href={EDITOR_ROUTES.project.pathname} class="fill" aria-hidden="true">
 				<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
@@ -32,7 +32,7 @@
 			<span style="z-index: 1">Éditer les descripteurs de projet</span>
 		</a>
 	</li>
-	<li class="block {ICON_CLASS.hover}" in:fade={{ delay: 100 }}>
+	<li class="block {ICON_CLASS.hover}" in:fly={{ delay: 100, y: 12 }}>
 		<a href={EDITOR_ROUTES.project.pathname} class="fill" aria-hidden="true">
 			<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
 		</a>
@@ -41,7 +41,7 @@
 		</a>
 		<a href={EDITOR_ROUTES.organisation.edit.pathname} class="modify">Modifier une organisation</a>
 	</li>
-	<li class="block {ICON_CLASS.hover}" in:fade={{ delay: 200 }}>
+	<li class="block {ICON_CLASS.hover}" in:fly={{ delay: 200, y: 12 }}>
 		<a href={EDITOR_ROUTES.project.pathname} class="fill" aria-hidden="true">
 			<Icon name="pen" strokeWidth={1} strokeLinecap="round" />
 		</a>
@@ -67,20 +67,6 @@
 			gap: 1rem;
 			align-items: center;
 			justify-content: center;
-		}
-
-		h1 {
-			text-align: center;
-			font-size: var(--ui-text-3xl);
-			font-weight: 600;
-		}
-
-		span {
-			display: block;
-			font-weight: 300;
-			line-height: 1.25;
-			letter-spacing: 0.2px;
-			font-size: var(--ui-text-md);
 		}
 	}
 
@@ -124,7 +110,7 @@
 		padding: 4rem;
 		line-height: 1.2;
 		background: col(bg, 500);
-		border: 1px dashed col(fg, 500, 0.1);
+		// border: 1px dashed col(fg, 500, 0.1);
 		border-radius: var(--ui-radius-xl);
 		font-size: var(--ui-text-xl);
 		transition: all 0.1s;
@@ -133,7 +119,7 @@
 			z-index: 1;
 			background: col(primary, 300);
 			color: col(fg, 500);
-			border: 1px dashed transparent;
+			// border: 1px dashed transparent;
 			box-shadow: 0 1rem 7rem -3rem col(primary, 900, 0.5);
 
 			& .fill {

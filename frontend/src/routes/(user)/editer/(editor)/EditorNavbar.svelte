@@ -32,20 +32,24 @@
 	nav {
 		--inset: var(--ui-inset);
 		--overflow-outset: var(--inset);
+		--overflow-color: var(--editor-bg);
 		--radius: var(--ui-radius-md);
 		z-index: 10;
 		position: sticky;
 		font-size: var(--ui-text-sm);
 		max-width: var(--ui-nav-center-w);
-		top: 1rem;
+		// top: 1rem;
+		top: calc(1rem - var(--inset));
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
 		overflow-x: auto;
-		background: col(bg, 300);
-		margin-top: 1rem;
+		background: var(--editor-bg);
+		margin-top: 2rem;
 		border-radius: var(--radius);
-		padding: var(--ui-inset);
+		// border-radius: calc(var(--inset) + var(--radius));
+		padding: var(--inset);
+		// box-shadow: var(--ui-shadow-md);
 	}
 
 	a {
@@ -54,10 +58,11 @@
 		align-items: center;
 		font-weight: 500;
 		flex: none;
-		height: calc(var(--ui-height) - 2 * var(--inset));
+		// height: calc(var(--ui-height) - 2 * var(--inset));
 		border-radius: calc(var(--radius) - var(--inset));
+		height: var(--ui-height);
+		// border-radius: var(--radius);
 		padding-inline: var(--ui-pad-x);
-		// backdrop-filter: blur(8px);
 		transition: all 0.15s ease-out;
 
 		&:hover:not([data-current]) {
@@ -71,7 +76,7 @@
 			right: 0;
 			z-index: 10;
 			color: col(primary, 500);
-			background: col(bg, 300);
+			background: var(--editor-bg);
 
 			&::after {
 				width: calc(100% - 3rem);
