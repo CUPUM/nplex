@@ -94,7 +94,7 @@
 
 <section {id}>
 	<header>
-		<h3>{title}</h3>
+		<h3 class="h2">{title}</h3>
 		<form action="" use:enhance method="POST">
 			<Switch bind:group={applied.authoring} variant="colored" name="filter" compact>
 				{#each Object.entries(authoring) as [k, v]}
@@ -137,10 +137,7 @@
 		width: 100%;
 		flex-direction: column;
 		scroll-margin-top: var(--ui-nav-h);
-
-		// &:first-of-type {
 		margin-top: var(--ui-nav-h);
-		// }
 	}
 
 	header {
@@ -208,5 +205,40 @@
 
 	li {
 		flex: 0;
+
+		/**
+		 * New entry card, inherits from local a tag.
+		 */
+		:global(.new-entry) {
+			display: flex;
+			flex-direction: column;
+			padding: 1.5rem;
+			gap: 1rem;
+			align-items: center;
+			justify-content: center;
+			background: transparent;
+			color: col(fg, 100);
+			border: 1px dashed col(fg, 100, 0.2);
+			transition: all 0.2s;
+			& > :global(*) {
+				opacity: 0.5;
+				transition: opacity 0.5s;
+			}
+			&:hover {
+				color: col(fg, 500);
+				border: 1px dashed transparent;
+				background: col(fg, 100, 0.1);
+				& > :global(*) {
+					opacity: 1;
+				}
+			}
+			:global(span) {
+				text-align: center;
+				font-weight: 400;
+			}
+			:global(i) {
+				font-size: 2rem;
+			}
+		}
 	}
 </style>

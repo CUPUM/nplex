@@ -69,6 +69,26 @@ export interface Database {
           updated_by_id?: string
         }
       }
+      actors_users: {
+        Row: {
+          actor_id: string
+          created_at: string
+          role: Database["public"]["Enums"]["app_role"] | null
+          user_id: string
+        }
+        Insert: {
+          actor_id: string
+          created_at?: string
+          role?: Database["public"]["Enums"]["app_role"] | null
+          user_id: string
+        }
+        Update: {
+          actor_id?: string
+          created_at?: string
+          role?: Database["public"]["Enums"]["app_role"] | null
+          user_id?: string
+        }
+      }
       notifications: {
         Row: {
           body: string
@@ -116,7 +136,7 @@ export interface Database {
           about?: string | null
           created_at?: string
           created_by_id?: string
-          id: string
+          id?: string
           name: string
           short_name?: string | null
           updated_at?: string
@@ -131,6 +151,26 @@ export interface Database {
           short_name?: string | null
           updated_at?: string
           updated_by_id?: string
+        }
+      }
+      organizations_users: {
+        Row: {
+          created_at: string
+          organization_id: string
+          role: Database["public"]["Enums"]["app_role"] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          organization_id: string
+          role?: Database["public"]["Enums"]["app_role"] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          organization_id?: string
+          role?: Database["public"]["Enums"]["app_role"] | null
+          user_id?: string
         }
       }
       project_event_type: {
@@ -1022,8 +1062,8 @@ export interface Database {
         Row: {
           created_at: string
           created_by_id: string
-          granted_role: Database["public"]["Enums"]["app_role"]
           project_id: string
+          role: Database["public"]["Enums"]["app_role"]
           updated_at: string
           updated_by_id: string
           user_id: string
@@ -1031,8 +1071,8 @@ export interface Database {
         Insert: {
           created_at?: string
           created_by_id?: string
-          granted_role?: Database["public"]["Enums"]["app_role"]
           project_id: string
+          role?: Database["public"]["Enums"]["app_role"]
           updated_at?: string
           updated_by_id?: string
           user_id: string
@@ -1040,8 +1080,8 @@ export interface Database {
         Update: {
           created_at?: string
           created_by_id?: string
-          granted_role?: Database["public"]["Enums"]["app_role"]
           project_id?: string
+          role?: Database["public"]["Enums"]["app_role"]
           updated_at?: string
           updated_by_id?: string
           user_id?: string
@@ -1306,7 +1346,135 @@ export interface Database {
       }
     }
     Views: {
-      [_ in never]: never
+      editable_actors: {
+        Row: {
+          about: string | null
+          created_at: string | null
+          created_by_id: string | null
+          first_name: string | null
+          id: string | null
+          last_name: string | null
+          middle_name: string | null
+          updated_at: string | null
+          updated_by_id: string | null
+        }
+        Insert: {
+          about?: string | null
+          created_at?: string | null
+          created_by_id?: string | null
+          first_name?: string | null
+          id?: string | null
+          last_name?: string | null
+          middle_name?: string | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+        }
+        Update: {
+          about?: string | null
+          created_at?: string | null
+          created_by_id?: string | null
+          first_name?: string | null
+          id?: string | null
+          last_name?: string | null
+          middle_name?: string | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+        }
+      }
+      editable_organizations: {
+        Row: {
+          about: string | null
+          created_at: string | null
+          created_by_id: string | null
+          id: string | null
+          name: string | null
+          short_name: string | null
+          updated_at: string | null
+          updated_by_id: string | null
+        }
+        Insert: {
+          about?: string | null
+          created_at?: string | null
+          created_by_id?: string | null
+          id?: string | null
+          name?: string | null
+          short_name?: string | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+        }
+        Update: {
+          about?: string | null
+          created_at?: string | null
+          created_by_id?: string | null
+          id?: string | null
+          name?: string | null
+          short_name?: string | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+        }
+      }
+      editable_projects: {
+        Row: {
+          adjacent_streets: number | null
+          area: number | null
+          banner_id: string | null
+          building_area: number | null
+          building_construction_year: number | null
+          cost_range: unknown | null
+          created_at: string | null
+          created_by_id: string | null
+          description: string | null
+          id: string | null
+          implantation_mode_id: number | null
+          likes_sum: number | null
+          site_area: number | null
+          site_ownership_id: number | null
+          title: string | null
+          type_id: number | null
+          updated_at: string | null
+          updated_by_id: string | null
+        }
+        Insert: {
+          adjacent_streets?: number | null
+          area?: number | null
+          banner_id?: string | null
+          building_area?: number | null
+          building_construction_year?: number | null
+          cost_range?: unknown | null
+          created_at?: string | null
+          created_by_id?: string | null
+          description?: string | null
+          id?: string | null
+          implantation_mode_id?: number | null
+          likes_sum?: number | null
+          site_area?: number | null
+          site_ownership_id?: number | null
+          title?: string | null
+          type_id?: number | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+        }
+        Update: {
+          adjacent_streets?: number | null
+          area?: number | null
+          banner_id?: string | null
+          building_area?: number | null
+          building_construction_year?: number | null
+          cost_range?: unknown | null
+          created_at?: string | null
+          created_by_id?: string | null
+          description?: string | null
+          id?: string | null
+          implantation_mode_id?: number | null
+          likes_sum?: number | null
+          site_area?: number | null
+          site_ownership_id?: number | null
+          title?: string | null
+          type_id?: number | null
+          updated_at?: string | null
+          updated_by_id?: string | null
+        }
+      }
     }
     Functions: {
       authorize:
@@ -1318,23 +1486,25 @@ export interface Database {
             Args: { requested_permission: string }
             Returns: boolean
           }
-      default_uid: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      get_project_descriptors: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      get_relegate_uid: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      project_is_public: {
-        Args: { p_id: string }
-        Returns: boolean
-      }
-      user_can_edit_project:
+      authorize_actor_update:
+        | {
+            Args: { actor: unknown }
+            Returns: boolean
+          }
+        | {
+            Args: { actor_id: string }
+            Returns: boolean
+          }
+      authorize_org_update:
+        | {
+            Args: { org: unknown }
+            Returns: boolean
+          }
+        | {
+            Args: { org_id: string }
+            Returns: boolean
+          }
+      authorize_project_update:
         | {
             Args: { p_id: string }
             Returns: boolean
@@ -1343,6 +1513,22 @@ export interface Database {
             Args: { p_row: unknown }
             Returns: boolean
           }
+      default_uid: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      get_relegate_uid: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      project_descriptors: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      project_is_public: {
+        Args: { p_id: string }
+        Returns: boolean
+      }
       user_has_role:
         | {
             Args: Record<PropertyKey, never>

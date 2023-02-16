@@ -4,9 +4,6 @@
 	
 -->
 <script lang="ts">
-	import type { Newable } from 'ts-essentials';
-	import Loading from './Loading.svelte';
-
 	export let cue = false;
 	export let useViewport = false;
 	let getComponent: () => Promise<{ default: C }>;
@@ -14,7 +11,7 @@
 
 	type C = $$Generic;
 
-	let component: Newable<C>;
+	let component: C;
 	let error: any;
 
 	async function load() {
@@ -38,7 +35,7 @@
 	<slot {component} />
 {:else}
 	<slot name="loading">
-		<Loading />
+		<div class="ui-skeleton-fill" />
 	</slot>
 {/if}
 

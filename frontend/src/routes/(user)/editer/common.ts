@@ -29,7 +29,7 @@ export const EDITOR_ROUTES = {
 			},
 		},
 	},
-	organisation: {
+	organization: {
 		subpath: '/organisation',
 		title: 'Organisations',
 		disabled: true,

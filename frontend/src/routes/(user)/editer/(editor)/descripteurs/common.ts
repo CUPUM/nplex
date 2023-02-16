@@ -1,5 +1,5 @@
 import type { Route } from '$utils/routes';
-import { EDITOR_ROUTES } from '../common';
+import { EDITOR_ROUTES } from '../../common';
 
 const baseRoute = EDITOR_ROUTES.project.descriptors;
 

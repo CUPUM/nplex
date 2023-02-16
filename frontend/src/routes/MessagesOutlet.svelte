@@ -44,7 +44,7 @@
 
 	const defaultMessage: Message<string> = {
 		content: '',
-		timer: 4000,
+		timer: 5000,
 		type: MESSAGE_TYPES.Default,
 	};
 
@@ -238,7 +238,7 @@
 				in:fly={{ x: -10, delay: 200, easing: cubicOut, duration: 250 }}
 				on:click={(e) => closeMessage(e, message)}
 			>
-				<Icon name="cross" style="font-size: 1.25em" />
+				<Icon name="cross" style="font-size: 1.25em; top: -.1em" />
 			</button>
 		</dialog>
 	{/each}
@@ -280,9 +280,8 @@
 
 	button {
 		cursor: pointer;
-		width: 3em;
+		width: 2.75em;
 		padding: 0;
-		padding-bottom: 0.2em;
 		margin: 0;
 		display: flex;
 		justify-content: center;
@@ -293,7 +292,7 @@
 		position: absolute;
 		left: calc(100% + 0.5em);
 		color: col(fg, 700);
-		background: col(bg, 300);
+		background: col(bg, 100);
 		transition: all 0.1s;
 
 		&:hover {
@@ -309,6 +308,7 @@
 	.icon {
 		position: relative;
 		display: inline-flex;
+		height: 1em;
 		// margin-right: 0.25em;
 	}
 
@@ -332,8 +332,8 @@
 
 	.progress {
 		width: 100%;
-		height: 3px;
-		border-radius: 0 0 3px 3px;
+		height: 5px;
+		border-radius: 2px 2px 0 0;
 		animation: timer forwards var(--timer) linear;
 		background: col(fg, 100, 0.2);
 	}

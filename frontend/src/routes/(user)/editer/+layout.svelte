@@ -3,6 +3,7 @@
 	import { col } from '$utils/css';
 	import type { LayoutData } from './$types';
 	import { EDITOR_ROUTES } from './common';
+	import EditableOrganizationCard from './EditableOrganizationCard.svelte';
 	import EditableProjectCard from './EditableProjectCard.svelte';
 	import EditablesList from './EditablesList.svelte';
 
@@ -11,12 +12,12 @@
 
 <RootBackground body={col('bg', '700')} />
 <slot />
-<!-- <header>
+<header>
 	<hgroup>
-		<h2>Mes fiches</h2>
-		<span>Explorez les fiches pour lesquelles vous avez des droits d'édition.</span>
+		<h1 class="h1">Mes fiches</h1>
+		<span class="ui-info">Explorez les fiches pour lesquelles vous avez des droits d'édition.</span>
 	</hgroup>
-</header> -->
+</header>
 <EditablesList
 	id={EDITOR_ROUTES.project.edit.hash}
 	title="Mes projets"
@@ -26,12 +27,12 @@
 	<EditableProjectCard project={datum} />
 </EditablesList>
 <EditablesList
-	id={EDITOR_ROUTES.organisation.edit.hash}
+	id={EDITOR_ROUTES.organization.edit.hash}
 	title="Mes organisations"
-	data={data.projects}
+	data={data.organizations}
 	let:datum
 >
-	<EditableProjectCard project={datum} />
+	<EditableOrganizationCard organization={datum} />
 </EditablesList>
 <EditablesList
 	id={EDITOR_ROUTES.actor.edit.hash}
@@ -45,6 +46,7 @@
 <style lang="scss">
 	header {
 		padding: 1.5rem;
+		margin-top: 3rem;
 		width: 100%;
 		max-width: var(--ui-width-main);
 		align-self: center;
@@ -58,21 +60,6 @@
 			gap: 2rem;
 			align-items: center;
 			justify-content: center;
-			min-height: 50vh;
-		}
-
-		h2 {
-			text-align: center;
-			font-size: var(--ui-text-3xl);
-			font-weight: 600;
-		}
-
-		span {
-			display: block;
-			font-weight: 300;
-			line-height: 1.25;
-			letter-spacing: 0.2px;
-			font-size: var(--ui-text-md);
 		}
 	}
 </style>

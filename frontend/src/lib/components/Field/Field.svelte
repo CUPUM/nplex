@@ -23,6 +23,8 @@
 	interface FieldContext {
 		value: Writable<Value>;
 		inputRef: Writable<InputRef>;
+		min?: number;
+		max?: number;
 	}
 
 	export function getFieldContext() {
@@ -32,9 +34,9 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-
 	import { getContext, setContext } from 'svelte';
 	import { expoOut } from 'svelte/easing';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { writable, type Writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import Ripple from '../Ripple.svelte';
@@ -42,7 +44,6 @@
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
 	export let value: Value = '';
-	export let sample: Value = value;
 	export let prefix: string | null | undefined = '';
 	export let suffix: string | null | undefined = '';
 	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
@@ -78,6 +79,7 @@
 	export let dirty: boolean = false;
 	export let tabindex: number = 0;
 	export let style: string | undefined = undefined;
+	export let list: HTMLInputAttributes['list'] = undefined;
 	let className: string = '';
 	export { className as class };
 	/**
@@ -216,6 +218,7 @@
 			{min}
 			{max}
 			{step}
+			{list}
 			disabled={disabled || !browser}
 			{required}
 			{tabindex}
@@ -347,7 +350,7 @@
 		padding-bottom: calc(0.5em - 0.5ex);
 		grid-column: main;
 		top: 0;
-		min-width: 10ch;
+		// min-width: 10ch;
 		flex: 1;
 		white-space: nowrap;
 		border: none;
@@ -451,7 +454,7 @@
 			label {
 				opacity: 0.5;
 				top: 1.5em;
-				font-size: max(11px, 0.65em);
+				font-size: max(var(--ui-text-xs), 0.65em);
 				// font-size: 0.65em;
 			}
 			.affix {
@@ -518,7 +521,8 @@
 				opacity: 0.5;
 				top: 0em;
 				padding-block: 0;
-				font-size: clamp(12px, 0.5em, 24px);
+				font-size: max(var(--ui-text-xs), 0.65em);
+				// font-size: clamp(12px, 0.5em, 24px);
 			}
 			.affix {
 				opacity: 0.35;
@@ -579,7 +583,7 @@
 			label {
 				opacity: 0.5;
 				top: 1.5em;
-				font-size: clamp(11px, 0.5em, 24px);
+				font-size: clamp(var(--ui-text-xs), 0.5em, 24px);
 			}
 			.affix {
 				opacity: 0.5;

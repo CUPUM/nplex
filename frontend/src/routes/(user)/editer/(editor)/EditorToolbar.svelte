@@ -24,12 +24,13 @@
 
 <style lang="scss">
 	menu {
+		max-width: var(--ui-width-main);
+		width: 100%;
 		position: sticky;
-		margin-inline: 1.5rem;
-		// margin-top: -1.5rem;
-		// margin-bottom: 1.5rem;
+		padding-inline: 1.5rem;
+		margin-top: 8rem;
 		bottom: 1.5rem;
-		align-self: stretch;
+		align-self: center;
 		display: flex;
 		justify-content: flex-end;
 		align-items: flex-end;

@@ -13,6 +13,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { debounce } from '$utils/modifiers';
 	import { onDestroy, onMount } from 'svelte';
 
 	export let top: boolean = false;
@@ -46,9 +47,13 @@
 		}
 	}
 
+	const handleResize = debounce(() => {
+		checkOverflow();
+	}, 100);
+
 	onMount(() => {
 		if (browser) {
-			observer = new ResizeObserver(checkOverflow);
+			observer = new ResizeObserver(handleResize);
 			if (contentRef.parentElement) {
 				observer.observe(contentRef.parentElement);
 				contentRef.parentElement.addEventListener('scroll', handleScroll);

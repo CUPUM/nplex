@@ -11,26 +11,47 @@ export const load = (async (event) => {
 		throw error(STATUS_CODES.Unauthorized);
 	}
 	const db = await getDb(event);
+
+	// Editable projects
 	const projects = db
-		.from('projects')
+		.from('editable_projects')
 		.select(
 			`
-				*,
-				type:project_type(*),
-				banner:projects_images!banner_id(*),
-				gallery:projects_images!project_id(*),
-				publication_status:projects_publication_status(*)
-			`
+		*,
+		type:project_type(*),
+		banner:projects_images!banner_id(*),
+		gallery:projects_images!project_id(*),
+		publication_status:projects_publication_status(*)
+	`
 		)
 		.order('updated_at', { ascending: false })
 		.range(...pagination(0, 10))
 		.then((res) => {
 			if (res.error) {
-				throw error(STATUS_CODES.InternalServerError, { ...res.error });
+				throw error(STATUS_CODES.InternalServerError, res.error);
 			}
 			return buff(res.data).singularize<{ publication_status: 'single' }>();
 		});
+
+	// Editable orgs
+	const organizations = db
+		.from('editable_organizations')
+		.select(
+			`
+	*
+	`
+		)
+		.order('updated_at', { ascending: false })
+		.range(...pagination(0, 10))
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			return res.data;
+		});
+
 	return {
 		projects,
+		organizations,
 	};
 }) satisfies LayoutLoad;

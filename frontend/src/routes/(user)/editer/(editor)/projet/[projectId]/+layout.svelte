@@ -54,22 +54,8 @@
 </script>
 
 <EditorNavbar routes={PROJECT_EDITOR_ROUTES} />
-<hr />
 <slot />
 <EditorToolbar dirty={!!Object.values($dirty).filter((v) => v).length} formid={FORM_ID} />
 
 <style lang="scss">
-	hr {
-		color: col(fg, 100, 0.2);
-		height: 1px;
-		background-image: linear-gradient(
-			90deg,
-			currentColor,
-			currentColor 20%,
-			transparent 20%,
-			transparent 100%
-		);
-		background-size: 10px 2px;
-		align-self: stretch;
-	}
 </style>

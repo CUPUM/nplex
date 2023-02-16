@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import Field from '$components/Field/Field.svelte';
 	import { KEY } from '$utils/enums';
 	import type { PageData } from './$types';
 	import { dirty } from './common';
@@ -18,20 +19,27 @@
 </script>
 
 <header class="editor-section">
-	<h3>Titre du projet</h3>
+	<h3 class="legend">Titre du projet</h3>
+	<Field bind:value={title} variant="default" name="title">
+		<!-- <svelte:fragment slot="label">Titre du projet</svelte:fragment> -->
+	</Field>
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<!-- svelte-ignore a11y-positive-tabindex -->
-	<h1
+	<!-- <h1
 		class:dirty={$dirty.title}
 		class="title"
 		contenteditable="true"
 		bind:textContent={_title}
 		on:keydown={handleKey}
 	/>
-	<input type="text" name="title" hidden readonly value={_title} />
+	<input type="text" name="title" hidden readonly value={_title} /> -->
 </header>
 
 <style lang="scss">
+	header {
+		// font-size: var(--ui-text-lg);
+	}
+
 	.title {
 		display: inline !important;
 		align-self: flex-start;

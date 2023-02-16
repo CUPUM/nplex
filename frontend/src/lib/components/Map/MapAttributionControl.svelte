@@ -3,14 +3,14 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { getMapContext } from './Map.svelte';
 
-	export let compact: AttributionOptions['compact'] = undefined;
+	// export let compact: AttributionOptions['compact'] = undefined;
 	export let customAttribution: AttributionOptions['customAttribution'] = undefined;
 	export let position: ControlPosition = 'bottom-left';
 
 	const { getMap } = getMapContext();
 
 	let map: ReturnType<typeof getMap>;
-	const control = new AttributionControl({ compact, customAttribution });
+	const control = new AttributionControl({ compact: true, customAttribution });
 
 	onMount(() => {
 		map = getMap();
@@ -30,15 +30,18 @@
 	.maplibregl-ctrl-attrib {
 		font-family: var(--ui-font-main);
 		font-size: var(--ui-text-2xs);
-		// background-color: rgb(200, 210, 220, 0.2);
-		backdrop-filter: blur(8px);
+		background-color: col(fg, 100, 0.2) !important;
+		backdrop-filter: blur(4px);
+		padding: 2px 10px 3px 10px !important;
+		border-radius: 99px !important;
 	}
 
 	.maplibregl-ctrl-attrib-button {
+		display: none !important;
 	}
 
 	.maplibregl-ctrl-attrib-inner > * {
-		// color: col(fg, 500) !important;
+		color: col(fg, 100) !important;
 		background: transparent;
 	}
 </style>

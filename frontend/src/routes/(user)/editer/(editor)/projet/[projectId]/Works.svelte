@@ -13,7 +13,7 @@
 	import type { PageData } from './$types';
 	import { dirty, _type_id } from './common';
 
-	$: descriptors = ($page.data as PageData).descriptors;
+	$: ({ workCategories, types } = ($page.data as PageData).descriptors);
 
 	$: workids = [...(($page.data as PageData).project.work_ids ?? [])];
 
@@ -29,7 +29,7 @@
 		selected.length !== (workids.length ?? []) ||
 		!selected.every((work) => (workids ?? []).indexOf(work.id) > -1);
 
-	$: available = descriptors.types.find((t) => t.id === $_type_id)?.works ?? [];
+	$: available = types.find((t) => t.id === $_type_id)?.works ?? [];
 
 	$: selected = form_workids.reduce((acc, curr) => {
 		const w = available.find((w) => w.id === curr);
@@ -62,7 +62,7 @@
 </script>
 
 <section class="editor-section">
-	<h3>Travaux</h3>
+	<h3 class="legend">Travaux</h3>
 	<ul class="selected">
 		{#each selected as w, i (w.id)}
 			<li animate:flip={{ duration: 150 }}>
@@ -85,17 +85,30 @@
 	</ul>
 	<fieldset class="search" disabled={_type_id === null}>
 		<Field
+			type="search"
 			class="field"
 			placeholder="Chercher un type de travail"
 			variant="default"
+			list="works-data"
 			on:input={handleSearch}
 		>
 			<svelte:fragment slot="leading">
 				<FieldIcon name="search" />
 			</svelte:fragment>
 		</Field>
+		<datalist id="works-data">
+			{#each workCategories as c}
+				<optgroup>
+					{#each available.filter((w) => w.category_id === c.id) as w}
+						<option value={w.title} on:select={(e) => console.log(e)}>
+							{w.description}Bonjour
+						</option>
+					{/each}
+				</optgroup>
+			{/each}
+		</datalist>
 	</fieldset>
-	{#each descriptors.workCategories as category}
+	{#each workCategories as category}
 		<fieldset>
 			<h4>{category.title}</h4>
 		</fieldset>

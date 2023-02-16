@@ -27,9 +27,13 @@
 	}}
 >
 	<Title />
+	<hr />
 	<Description />
+	<hr />
 	<Type />
+	<hr />
 	<Works />
+	<hr />
 	<CostRange />
 </form>
 
@@ -39,6 +43,5 @@
 		display: flex;
 		align-items: center;
 		flex-direction: column;
-		padding-bottom: 6rem;
 	}
 </style>

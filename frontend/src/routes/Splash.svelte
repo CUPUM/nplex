@@ -71,7 +71,7 @@
 		align-items: center;
 		justify-content: center;
 		margin-top: calc(-1 * var(--ui-nav-h));
-		transition: border-radius 0.15s ease-out;
+		// transition: border-radius 0.15s ease-out;
 	}
 
 	svg {

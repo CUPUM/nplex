@@ -3,19 +3,28 @@
 	import { page } from '$app/stores';
 	import OverflowEffect from '$components/OverflowEffect.svelte';
 	import Ripple from '$components/Ripple.svelte';
+	import WatchScrollSize from '$components/WatchScrollSize.svelte';
+	import { rootScroll } from '$stores/scroll';
 	import { col } from '$utils/css';
 	import type { Routes } from '$utils/routes';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
 	export let routes: Routes;
+
+	$: stuck = $rootScroll.y > 1;
+
+	let scrollWidth: number;
 </script>
 
 <nav
 	in:fly={{ y: -12, delay: 250, easing: expoOut }}
 	use:horizontalScroll={{}}
 	class="no-scrollbar"
+	class:stuck
+	style:--w="{scrollWidth}px"
 >
+	<WatchScrollSize bind:scrollWidth />
 	<OverflowEffect>
 		{#each Object.values(routes) as route}
 			<a href={route.pathname} data-current={$page.url.pathname === route.pathname || undefined}>
@@ -27,18 +36,21 @@
 		{/each}
 	</OverflowEffect>
 </nav>
+<hr />
 
 <style lang="scss">
+	hr {
+		margin-bottom: 3rem;
+	}
+
 	nav {
 		--inset: var(--ui-inset);
 		--overflow-outset: var(--inset);
 		--overflow-color: var(--editor-bg);
 		--radius: var(--ui-radius-md);
-		z-index: 10;
 		position: sticky;
 		font-size: var(--ui-text-sm);
-		max-width: var(--ui-nav-center-w);
-		// top: 1rem;
+		max-width: var(--w);
 		top: calc(1rem - var(--inset));
 		display: flex;
 		flex-direction: row;
@@ -47,9 +59,14 @@
 		background: var(--editor-bg);
 		margin-top: 2rem;
 		border-radius: var(--radius);
-		// border-radius: calc(var(--inset) + var(--radius));
 		padding: var(--inset);
-		// box-shadow: var(--ui-shadow-md);
+		z-index: 10;
+		transition: max-width 0.35s var(--ui-ease-in-out), background 0.5s;
+
+		&.stuck {
+			// --editor-bg: #{col(bg, 300)};
+			max-width: var(--ui-nav-center-w);
+		}
 	}
 
 	a {

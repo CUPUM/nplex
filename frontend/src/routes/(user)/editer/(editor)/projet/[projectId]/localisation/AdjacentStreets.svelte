@@ -1,7 +1,6 @@
 <script lang="ts">
-	import Button from '$components/Button/Button.svelte';
 	import Field from '$components/Field/Field.svelte';
-	import Icon from '$components/Icon.svelte';
+	import FieldButtonIncrement from '$components/Field/FieldButtonIncrement.svelte';
 	import type { PageData } from '../$types';
 	import { dirty } from '../common';
 	import { ADJACENT_STREETS_MAX, ADJACENT_STREETS_MIN } from './common';
@@ -21,28 +20,23 @@
 	}
 </script>
 
-<fieldset class="formgroup">
-	<legend class="formlegend">Rues/ruelles adjacentes</legend>
-	<section class="formfields">
-		<Field
-			readonly
-			type="number"
-			name="adjacent_streets"
-			bind:value={_adjacent_streets}
-			min={ADJACENT_STREETS_MIN}
-			max={ADJACENT_STREETS_MAX}
-			textAlign="center"
-			style="width: 160px;"
-		>
-			<Button equi variant="ghost" slot="leading" on:pointerdown={decrement}>
-				<Icon name="minus" />
-			</Button>
-			<Button equi variant="ghost" slot="trailing" on:pointerdown={increment}>
-				<Icon name="plus" />
-			</Button>
-		</Field>
-	</section>
-</fieldset>
+<section class="editor-section">
+	<legend class="legend">Rues adjacentes</legend>
+	<p class="ui-info">Combien de rues ou de ruelles bordent directement le terrain?</p>
+	<Field
+		readonly
+		type="number"
+		name="adjacent_streets"
+		bind:value={_adjacent_streets}
+		min={ADJACENT_STREETS_MIN}
+		max={ADJACENT_STREETS_MAX}
+		textAlign="center"
+		style="width: 160px;"
+	>
+		<FieldButtonIncrement down slot="leading" />
+		<FieldButtonIncrement up slot="trailing" />
+	</Field>
+</section>
 
 <style lang="scss">
 </style>

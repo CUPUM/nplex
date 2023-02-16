@@ -100,12 +100,12 @@
 			bind:this={contentRef}
 			class="popover {align} {place}"
 			style:--d={cssSize(distance)}
-			in:scale={{ start: 0.95, easing: cubicOut, duration: 150, opacity: 0 }}
+			in:scale={{ start: 0.95, easing: cubicOut, duration: 150, opacity: 1 }}
 			out:scale|local={{
 				start: 0.9,
 				easing: cubicIn,
 				duration: latest === tether?.anchorRef ? 100 : 0,
-				opacity: 0,
+				opacity: 1,
 			}}
 		>
 			{#if $$slots.default}

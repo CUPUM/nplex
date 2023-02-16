@@ -178,6 +178,7 @@
 					class="fill-row"
 					variant="default"
 					name="email"
+					required
 					invalid={!!failure.email}
 				>
 					<FieldIcon name="letter" slot="leading" />
@@ -189,6 +190,7 @@
 					class="fill-row"
 					variant="default"
 					name="password"
+					required
 					invalid={!!failure.password}
 				>
 					<FieldIcon slot="leading" name="lock-close" />
@@ -200,7 +202,7 @@
 				</Field>
 				{#if $authModal === AUTHMODAL_MODE.SignUp}
 					<div class="signup fill-row" transition:slide|local={{ duration: 120, easing: cubicOut }}>
-						<Field variant="default" name="first_name" invalid={!!failure.first_name}>
+						<Field variant="default" name="first_name" required invalid={!!failure.first_name}>
 							<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
 							<svelte:fragment slot="trailing">
 								<FieldReset />
@@ -221,6 +223,7 @@
 					type="submit"
 					variant={$authModal === AUTHMODAL_MODE.SignIn ? 'cta' : 'default'}
 					contentAlign="center"
+					formnovalidate
 					formaction="{Action.SignIn}{$page.url.pathname === '/'
 						? `&${SEARCH_PARAMS.REDIRECT}=${USER_BASE_ROUTE.pathname}`
 						: ''}"

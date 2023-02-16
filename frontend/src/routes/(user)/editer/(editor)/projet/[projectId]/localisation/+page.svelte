@@ -1,17 +1,15 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Map from '$components/Map/Map.svelte';
-	import MapAttributionControl from '$components/Map/MapAttributionControl.svelte';
-	import MapDraw from '$components/Map/MapDraw.svelte';
-	import MapDrawCircle from '$components/Map/MapDrawCircle.svelte';
-	import { MAP_STYLES } from '$utils/map/styles';
+	import ImplantationMode from '../ImplantationMode.svelte';
 	import type { PageData } from './$types';
 	import AdjacentStreets from './AdjacentStreets.svelte';
 	import Area from './Area.svelte';
-	import { map, mapDraw } from './common';
+	import ConstructionYear from './ConstructionYear.svelte';
 	import District from './District.svelte';
+	import Footprint from './Footprint.svelte';
+	import Levels from './Levels.svelte';
+	import LocalisationMap from './LocalisationMap.svelte';
 	import Location from './Location.svelte';
-	import ProjectMapToolbar from './ProjectMapToolbar.svelte';
 
 	export let data: PageData;
 </script>
@@ -26,75 +24,64 @@
 		};
 	}}
 >
-	<section class="map">
-		<Map cooperativeGestures={true} bind:map={$map} style={MAP_STYLES.Dark}>
-			<MapAttributionControl position="bottom-right" />
-			<MapDraw bind:draw={$mapDraw} mode="draw_circle">
-				<ProjectMapToolbar />
-				{#if data.project.location.geometry && data.project.location.radius}
-					{#key data.project.location}
-						<MapDrawCircle
-							center={data.project.location.geometry?.coordinates}
-							radius={data.project.location.radius}
-						/>
-					{/key}
-				{/if}
-			</MapDraw>
-		</Map>
-	</section>
-	<section>
+	<div class="map">
+		<LocalisationMap />
+	</div>
+	<div class="fields">
 		<Location />
+		<hr />
 		<Area />
+		<hr />
 		<District />
+		<hr />
 		<AdjacentStreets adjacent_streets={data.project.adjacent_streets} />
-		<h2>Détails du bâtiment</h2>
-		<fieldset>
-			<h3>Mode d'implantation</h3>
-			<ul>
-				{#each data.descriptors.implantationModes as mode}
-					<li>
-						<label>
-							{mode.title}
-							<input
-								type="radio"
-								name="implantation_mode_id"
-								bind:group={data.project.implantation_mode_id}
-								value={mode.id}
-							/>
-						</label>
-					</li>
-				{/each}
-			</ul>
-		</fieldset>
-		<fieldset>
-			<h3>Nombre d'étages</h3>
-		</fieldset>
-		<fieldset>
-			<h3>Année de construction</h3>
-		</fieldset>
-		<fieldset>
-			<h3>Emprise au sol</h3>
-		</fieldset>
-	</section>
+		<hr />
+		<ImplantationMode />
+		<hr />
+		<Levels />
+		<hr />
+		<ConstructionYear />
+		<hr />
+		<Footprint />
+	</div>
 </form>
 
 <style lang="scss">
 	form {
 		width: 100%;
-		max-width: var(--ui-width-main);
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		grid-auto-flow: dense;
 	}
 
+	hr {
+		grid-column: 1 / -1;
+	}
+
 	.map {
+		--pad-top: calc(var(--ui-nav-h) + 1rem);
+		padding-inline: 1.5rem;
 		grid-column: 2;
+		grid-row: 1;
 		position: sticky;
-		top: 0;
-		margin-block: var(--ui-nav-h);
-		top: var(--ui-nav-h);
-		height: calc(100vh - 2 * var(--ui-nav-h));
-		margin-right: 1.5rem;
+		top: var(--pad-top);
+		height: calc(100vh - var(--pad-top) - 7rem);
 		border-radius: var(--ui-radius-lg);
+		max-width: calc(var(--ui-width-main) / 2);
+		// box-shadow: var(--ui-shadow-lg);
+	}
+
+	.fields {
+		grid-column: 1 / -1;
+		grid-row: 1;
+		display: grid;
+		grid-template-columns: inherit;
+		gap: inherit;
+
+		:global(.editor-section) {
+			max-width: calc(var(--ui-width-main) / 2);
+			grid-column: 1;
+			justify-self: flex-end;
+		}
 	}
 </style>

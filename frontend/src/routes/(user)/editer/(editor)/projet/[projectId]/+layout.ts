@@ -9,7 +9,7 @@ export const load = (async (event) => {
 	// event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
 	const db = await getDb(event);
 
-	const descriptors = db.rpc('get_project_descriptors').then((res) => {
+	const descriptors = db.rpc('project_descriptors').then((res) => {
 		if (res.error) {
 			throw error(STATUS_CODES.InternalServerError, res.error);
 		}

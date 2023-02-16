@@ -28,28 +28,32 @@
 		color: col(fg, 100);
 		background: var(--editor-bg);
 		margin-top: calc(-1 * var(--ui-nav-h));
-		// padding-bottom: 1.5rem;
+		padding-bottom: 1.5rem;
+
+		:global(hr) {
+			// display: none;
+			padding: 0.5px;
+			// background: col(fg, 100, 0.1);
+			background: col(bg, 900);
+			width: 100%;
+		}
+
+		:global(.legend) {
+			font-size: var(--ui-text-lg);
+			font-weight: 450;
+			margin-bottom: 1em;
+		}
 
 		:global(.editor-section) {
-			display: flex;
-			flex-direction: column;
-			padding: 3rem;
+			// display: flex;
+			// flex-direction: column;
+			padding: 3rem 1.5rem;
 			width: 100%;
-			max-width: var(--ui-width-lg);
+			max-width: var(--ui-width-md);
 
 			@include laptop {
-				padding-inline: 1.5rem;
+				padding: 3rem 1.5rem;
 				max-width: var(--ui-width-md);
-			}
-
-			:global(h3) {
-				color: col(primary, 300);
-				margin-bottom: 1em;
-			}
-
-			:global(h4) {
-				color: col(primary, 300);
-				margin-bottom: 1em;
 			}
 		}
 	}

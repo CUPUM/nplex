@@ -1,3 +1,15 @@
+<script lang="ts" context="module">
+	import { getContext } from 'svelte';
+
+	const CTX_KEY = 'menu-context';
+
+	interface MenuContext {}
+
+	export function getMenuContext() {
+		return getContext<MenuContext>(CTX_KEY);
+	}
+</script>
+
 <script lang="ts">
 </script>
 
@@ -13,18 +25,18 @@
 		--pad: calc(var(--outset) + var(--inset));
 		color: col(fg, 300);
 		position: relative;
-		background: col(bg, 000, 0.85);
-		backdrop-filter: blur(8px);
+		background: col(bg, 000);
+		// backdrop-filter: blur(8px);
 		display: flex;
 		flex-direction: column;
-		gap: var(--ui-inset);
+		// gap: var(--ui-inset);
 		border-radius: calc(var(--radius) + var(--outset));
 		padding: var(--pad);
-		box-shadow: 0 0 0 1px col(bg, 500, 0.25), 0 3em 5em -4em rgb(0, 10, 30, 0.25);
+		box-shadow: var(--ui-shadow-md);
 
 		> :global(:where(hr)) {
 			margin-inline: calc(-1 * var(--pad));
-			margin-block: var(--inset);
+			margin-block: calc(var(--inset) + var(--outset));
 		}
 	}
 </style>

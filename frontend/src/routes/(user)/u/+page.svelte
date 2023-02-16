@@ -1,9 +1,7 @@
 <script lang="ts">
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
-	import { EDITOR_BASE_ROUTE } from '$utils/routes';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
-	import type { ValueOf } from 'ts-essentials';
 	import { USER_ROUTES } from './common';
 
 	const repeat = Array(30);
@@ -11,10 +9,7 @@
 		const r = Math.round(Math.random() * 5);
 		return Math.round(Math.random() * 3) + 2;
 	}
-	const routes: (ValueOf<typeof USER_ROUTES> | typeof EDITOR_BASE_ROUTE)[] = [
-		...Object.values(USER_ROUTES),
-		EDITOR_BASE_ROUTE,
-	];
+	const routes = Object.values(USER_ROUTES);
 </script>
 
 <ul>
@@ -34,7 +29,12 @@
 				{#each repeat as clone, i}
 					{#if i === s && 'icon' in r}
 						<i>
-							<Icon name={r.icon} style="top: -.1em; display: inline" strokeWidth={2.5} />
+							<Icon
+								name={r.icon}
+								style="top: -.1em; display: inline"
+								strokeWidth={2.5}
+								strokeLinecap="round"
+							/>
 						</i>
 					{/if}
 					<span

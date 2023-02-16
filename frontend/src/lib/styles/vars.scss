@@ -34,18 +34,18 @@
 	--ui-text-sm: 0.875rem;
 	--ui-text-md: 1rem;
 	--ui-text-lg: 1.5rem;
-	--ui-text-xl: 2.75rem;
+	--ui-text-xl: 2.5rem;
 	--ui-text-2xl: 3.75rem;
 	--ui-text-3xl: 5.5rem;
 	--ui-font-main: 'Outfit', sans-serif;
 	--ui-font-misc: 'Space Mono', monospace;
-	--ui-ease-in: cubic-bezier(0.8, 0, 0.9, 1);
+	--ui-ease-in: cubic-bezier(0.9, 0, 0.9, 1);
 	--ui-ease-out: cubic-bezier(0.1, 0, 0.1, 1);
-	--ui-ease-in-out: cubic-bezier(0.7, 0, 0.15, 1);
-	--ui-shadow-sm: 0 0.25rem 1rem -0.5rem rgb(0, 20, 40, 0.25);
-	--ui-shadow-md: 0 0.75rem 1.5rem -0.75rem rgb(0, 20, 40, 0.25);
-	--ui-shadow-lg: 0 1.5rem 3rem -1.25rem rgb(0, 20, 40, 0.25);
-	--ui-shadow-xl: 0 3rem 7rem -3rem rgb(0, 20, 40, 0.25);
+	--ui-ease-in-out: cubic-bezier(0.7, 0, 0.3, 1);
+	--ui-shadow-sm: 0 0.25rem 1rem -0.5rem rgb(0, 10, 20, 0.2);
+	--ui-shadow-md: 0 0.75rem 1.5rem -0.75rem rgb(0, 10, 20, 0.22);
+	--ui-shadow-lg: 0 1.5rem 3rem -1.25rem rgb(0, 10, 20, 0.25);
+	--ui-shadow-xl: 0 3rem 7rem -3rem rgb(0, 10, 20, 0.28);
 
 	@include tablet {
 		--ui-nav-h: 88px; // Retrieved manually

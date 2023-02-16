@@ -43,7 +43,7 @@
 		flex-wrap: nowrap;
 		align-items: stretch;
 		justify-content: flex-start;
-		margin-top: calc(1rem - var(--inset));
+		margin-block: calc(1rem - var(--inset));
 		// font-size: var(--ui-text-sm);
 		padding: var(--inset);
 		height: var(--ui-height);

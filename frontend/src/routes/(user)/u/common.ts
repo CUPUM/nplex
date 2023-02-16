@@ -1,5 +1,5 @@
 import type { icons } from '$utils/icons';
-import { USER_BASE_ROUTE, type Routes } from '$utils/routes';
+import { EDITOR_BASE_ROUTE, USER_BASE_ROUTE, type Routes } from '$utils/routes';
 
 function base(pathname: string) {
 	return `${USER_BASE_ROUTE.pathname}${pathname}` as const;
@@ -25,5 +25,10 @@ export const USER_ROUTES = {
 		title: 'Favoris',
 		pathname: base('/favoris'),
 		icon: 'heart',
+	},
+	editor: {
+		title: 'Éditeur',
+		pathname: EDITOR_BASE_ROUTE.pathname,
+		icon: 'pen',
 	},
 } satisfies Routes<{ icon: keyof typeof icons }>;

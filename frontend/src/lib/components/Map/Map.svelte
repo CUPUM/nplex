@@ -32,7 +32,6 @@
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
-	import Loading from '../Loading.svelte';
 
 	export let interactive: MapOptions['interactive'] = true;
 	export let bearingSnap: MapOptions['bearingSnap'] = undefined;
@@ -53,7 +52,7 @@
 	export let doubleClickZoom: MapOptions['doubleClickZoom'] = true;
 	export let touchZoomRotate: MapOptions['touchZoomRotate'] = true;
 	export let touchPitch: MapOptions['touchPitch'] = true;
-	export let cooperativeGestures: MapOptions['cooperativeGestures'] = MAP_GESTURES_TEXT.french;
+	export let cooperativeGestures: MapOptions['cooperativeGestures'] = true;
 	export let trackResize: MapOptions['trackResize'] = false;
 	export let center: MapOptions['center'] = undefined;
 	export let zoom: MapOptions['zoom'] = 10;
@@ -113,7 +112,8 @@
 			doubleClickZoom,
 			touchZoomRotate,
 			touchPitch,
-			cooperativeGestures,
+			cooperativeGestures:
+				cooperativeGestures === true ? MAP_GESTURES_TEXT.french : cooperativeGestures,
 			trackResize,
 			center,
 			zoom,
@@ -194,7 +194,8 @@
 	{:else}
 		<div class="loading">
 			<slot name="loading">
-				<Loading />
+				<div class="ui-skeleton-fill" />
+				<!-- <Loading /> -->
 			</slot>
 		</div>
 	{/if}
@@ -203,6 +204,9 @@
 <style lang="scss">
 	figure {
 		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width: 100%;
 		height: 100%;
 		border-radius: inherit;
@@ -238,16 +242,20 @@
 		:global(.maplibregl-mobile-message) {
 			padding-inline: 1.25rem;
 			padding-block: 0.5rem 0.7rem;
-			border-radius: var(--ui-radius-md);
-			background: col(fg, 100, 0.1);
-			// border: 1px solid col(fg, 100, 0.1);
+			// border-radius: var(--ui-radius-md);
+			border-radius: 99px;
+			background: col(fg, 100, 0.2);
 		}
 	}
 
 	.loading {
+		position: absolute;
+		top: 0;
+		left: 0;
 		font-size: 1.5rem;
 		width: 100%;
 		height: 100%;
 		z-index: 1;
+		border-radius: inherit;
 	}
 </style>

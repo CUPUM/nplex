@@ -100,7 +100,7 @@
 		&:hover,
 		&:focus-within {
 			color: col(fg, 700);
-			background: col(bg, 900);
+			background: col(fg, 100, 0.1);
 		}
 		&.current {
 			cursor: default;

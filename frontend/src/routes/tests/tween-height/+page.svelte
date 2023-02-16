@@ -1,13 +1,16 @@
 <script lang="ts">
-	import { tweenHeight } from '$actions/tweenHeight';
 	import Button from '$components/Button/Button.svelte';
+	import WatchScrollSize from '$components/WatchScrollSize.svelte';
 
 	let arr = [1, 2, 3];
+
+	let scrollHeight = 0;
 </script>
 
 <article>
-	Hello, this is to test height tweening.
-	<ul use:tweenHeight>
+	{scrollHeight}
+	<ul>
+		<WatchScrollSize bind:scrollHeight />
 		{#each arr as n}
 			<li>{n}</li>
 		{/each}
@@ -26,6 +29,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+		height: 250px;
 	}
 
 	li {

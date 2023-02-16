@@ -13,8 +13,9 @@
 
 	// const MODES = {
 	// 	...MapboxDraw.modes,
-	// 	draw_points: DrawPointsMode,
 	// 	draw_circle: DrawCircleMode,
+	// 	simple_select: DrawSimpleSelectMode,
+	// 	static: DrawStaticMode,
 	// } as const satisfies Record<DrawMode, MapboxDraw.DrawCustomMode>;
 
 	const MODES: Record<DrawMode, MapboxDraw.DrawCustomMode> = MapboxGeodesic.enable({
@@ -34,7 +35,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { DRAW_EVENTS, DRAW_MODES, type DrawMode } from '$utils/enums';
+	import { DRAW_EVENTS, DRAW_MODES, KEY, type DrawMode } from '$utils/enums';
 	import { DRAW_STYLES } from '$utils/map/draw/styles';
 	import type {
 		DrawActionableEvent,
@@ -48,7 +49,7 @@
 	} from '@mapbox/mapbox-gl-draw';
 	import MapboxDraw from '@mapbox/mapbox-gl-draw';
 	import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
-	import * as MapboxGeodesic from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
+	import MapboxGeodesic from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { writable, type Readable } from 'svelte/store';
 	import { getMapContext } from './Map.svelte';
@@ -74,7 +75,7 @@
 				const predraw = new MapboxDraw({
 					styles,
 					modes: MODES,
-					displayControlsDefault: true,
+					displayControlsDefault: false,
 					defaultMode,
 					userProperties: true,
 				});
@@ -131,14 +132,17 @@
 		});
 	}
 
-	// function handleKeydown(e: KeyboardEvent) {
-	// 	const selected = draw?.getSelected();
-	// 	if (e.key === KEY.Delete || e.key === KEY.Backspace) {
-	// 		if (selected) {
-	// 			draw?.trash();
-	// 		}
-	// 	}
-	// }
+	function handleKeydown(e: KeyboardEvent) {
+		if (draw) {
+			const selected = draw.getSelected();
+			console.log(draw.getAll());
+			if (e.key === KEY.Delete || e.key === KEY.Backspace) {
+				if (selected) {
+					draw.trash();
+				}
+			}
+		}
+	}
 
 	const _mode = writable<typeof mode>();
 	$: if (mode) {
@@ -160,7 +164,7 @@
 	});
 </script>
 
-<!-- <svelte:window on:keydown={handleKeydown} /> -->
+<svelte:window on:keydown={handleKeydown} />
 
 {#if draw}
 	<slot />

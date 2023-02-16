@@ -14,8 +14,8 @@
 </script>
 
 <section class="editor-section">
-	<h3>Type de projet</h3>
-	<Switch style="align-self: flex-start" bind:group={$_type_id} name="type_id">
+	<h3 class="legend">Type de projet</h3>
+	<Switch style="align-self: flex-start" variant="default" bind:group={$_type_id} name="type_id">
 		{#each descriptors.types as type}
 			<SwitchItem value={type.id}>
 				{type.title}

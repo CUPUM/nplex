@@ -81,8 +81,13 @@
 </script>
 
 <section class="editor-section">
-	<h3>Localisation</h3>
-	<section class="formfields">
+	<h3 class="legend">Emplacement</h3>
+	<p class="ui-info">
+		Situez le site du projet sur la carte ci-contre en y dessinant un cercle. Le diamètre du cercle
+		vous permet d'établir le niveau de précision avec lequel vous souhaitez localiser le projet.
+	</p>
+	<p class="ui-info">Assurrez-vous que votre tracé couvre bien l'emplacement du projet.</p>
+	<fieldset>
 		<Button on:pointerdown={create}>
 			<Icon name="path-circle" slot="leading" />
 			Situez votre projet sur la carte
@@ -93,8 +98,11 @@
 			name="location"
 			value={JSON.stringify({ center: form_center, radius: form_radius })}
 		/>
-	</section>
+	</fieldset>
 </section>
 
 <style lang="scss">
+	fieldset {
+		font-size: var(--ui-text-sm);
+	}
 </style>

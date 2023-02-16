@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<h1>Créer une organisation</h1>
+<slot />
 
 <style lang="scss">
 </style>

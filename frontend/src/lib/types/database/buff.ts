@@ -4,10 +4,10 @@ import type { Database } from './generated';
 import type { PgCube, PgRange, TableRow } from './utils';
 
 export type BuffedDatabase = DeepReplace<
-	DeepOmit<Database, { public: { Functions: { get_project_descriptors: { Returns: true } } } }> & {
+	DeepOmit<Database, { public: { Functions: { project_descriptors: { Returns: true } } } }> & {
 		public: {
 			Functions: {
-				get_project_descriptors: {
+				project_descriptors: {
 					Returns: {
 						types: (TableRow<'project_type'> & {
 							works: ({

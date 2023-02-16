@@ -16,12 +16,13 @@
 	import Loading from '$components/Loading.svelte';
 	import Ripple from '$components/Ripple.svelte';
 	import { getContext, setContext } from 'svelte';
+	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 	import { getButtonGroupContext } from './ButtonGroup.svelte';
 
-	export let href: string | undefined = undefined;
-	export let id: string | undefined = undefined;
+	export let href: HTMLAnchorAttributes['href'] = undefined;
+	export let id: HTMLButtonAttributes['id'] = undefined;
 	export let variant: 'default' | 'outlined' | 'ghost' | 'cta' | 'danger' | 'dashed' = 'default';
-	export let disabled: boolean | undefined = undefined;
+	export let disabled: HTMLButtonAttributes['disabled'] = undefined;
 	export let loading: boolean = false;
 	export let warning: boolean = false;
 	export let compact: boolean = false;
@@ -33,11 +34,12 @@
 	export { for_ as for };
 	export let active: boolean | undefined = false;
 	export let contentAlign: 'start' | 'center' | 'end' = 'start';
-	export let value: string | undefined = undefined;
-	export let form: string | undefined = undefined;
-	export let title: string | undefined = undefined;
-	export let formaction: string | undefined = undefined;
-	export let tabindex: number | undefined = undefined;
+	export let value: HTMLButtonAttributes['value'] = undefined;
+	export let form: HTMLButtonAttributes['form'] = undefined;
+	export let title: HTMLButtonAttributes['title'] = undefined;
+	export let formaction: HTMLButtonAttributes['formaction'] = undefined;
+	export let formnovalidate: HTMLButtonAttributes['formnovalidate'] = undefined;
+	export let tabindex: HTMLButtonAttributes['tabindex'] = undefined;
 	let className: string | undefined = '';
 	export { className as class };
 	export let style: string | undefined = undefined;
@@ -78,6 +80,7 @@
 	{tabindex}
 	{formaction}
 	{readonly}
+	{formnovalidate}
 	for={for_}
 	on:click
 	on:pointerdown
@@ -310,11 +313,11 @@
 	.ghost {
 		color: col(fg, 300);
 		background: transparent;
-		transition: all 0.1s ease-out;
+		transition: all 0.1s;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(bg, 700);
-			background: col(fg, 500);
+			color: col(fg, 900);
+			background: col(bg, 900, 0.5);
 		}
 		&:global(.active) {
 			color: col(primary, 700);
@@ -323,13 +326,13 @@
 	}
 
 	.cta {
-		color: col(bg, 700);
+		color: col(bg, 300);
 		background: col(primary, 500);
 		// box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
 		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(bg, 100);
+			color: col(bg, 500);
 			background: col(primary, 700);
 			// box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.25);
 		}

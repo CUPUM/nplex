@@ -23,14 +23,15 @@
 	onDestroy(() => {});
 </script>
 
-<menu class="toolbar nest {direction} {position}">
+<menu class="toolbar {direction} {position}">
 	<slot />
 </menu>
 
 <style lang="scss">
 	.toolbar {
 		--margin: 1em;
-		--inset: 3px;
+		--inset: var(--ui-inset);
+		--radius: var(--ui-radius-md);
 		--x: 0;
 		--y: 0;
 		font-size: 1rem;
@@ -43,9 +44,10 @@
 		background: col(bg, 100);
 		border-radius: var(--ui-radius-md);
 		max-width: calc(100% - 2 * var(--margin));
+		font-size: var(--ui-text-sm);
 		opacity: 0;
 		gap: 1px;
-		// transform: translate(var(--x), var(--y));
+		transform: translate(var(--x), var(--y));
 		transform: scale(0.98);
 		transition: all 0.25s cubic-bezier(0.25, 0, 0.5, 1);
 		:global(hr) {
@@ -68,7 +70,7 @@
 		}
 	}
 
-	:global(figure):hover > :global(*) > .toolbar {
+	:global(figure):hover .toolbar {
 		opacity: 1;
 		transform: translate(0);
 		transition: all 0.15s cubic-bezier(0.25, 0, 0.5, 1);

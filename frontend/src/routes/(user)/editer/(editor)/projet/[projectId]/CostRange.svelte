@@ -25,7 +25,7 @@
 </script>
 
 <section class="editor-section">
-	<h3>Fourchette de coûts</h3>
+	<h3 class="legend">Fourchette de coûts</h3>
 	<div class="ui-info">
 		Indiquez approximativement les coûts totaux du projet, selon un niveau de précision avec lequel
 		vous êtes confortable.
@@ -39,6 +39,7 @@
 			step={COST_STEP}
 			bind:value={form_costmin}
 			on:change={checkMin}
+			style="grid-area: min;"
 		>
 			<svelte:fragment slot="label">Min.</svelte:fragment>
 		</Field>
@@ -50,10 +51,11 @@
 			step={COST_STEP}
 			bind:value={form_costmax}
 			on:change={checkMax}
+			style="grid-area: max;"
 		>
 			<svelte:fragment slot="label">Max.</svelte:fragment>
 		</Field>
-		<Range min={COST_MIN} max={COST_MAX} step={COST_STEP} ticks={10000}>
+		<Range min={COST_MIN} max={COST_MAX} step={COST_STEP} ticks={10000} style="grid-area: range;">
 			<svelte:fragment slot="tick" let:tick>
 				{cadformatter.format(tick)}
 			</svelte:fragment>
@@ -81,7 +83,7 @@
 		flex-direction: row;
 		gap: 2rem;
 		margin-top: 2rem;
-		grid-template-columns: 1fr 1fr 4fr;
+		grid-template-areas: 'min range range range range max';
 		grid-auto-flow: dense;
 
 		@include tablet {

@@ -1,8 +1,10 @@
 <script lang="ts">
+	import Token from '$components/Token/Token.svelte';
 	import {
 		CITY_DISTRICT_SOURCES,
 		type CityDistrictData,
 	} from '$routes/api/geo/[city]/districts.json/common';
+	import type { GeoJSONFeature } from 'maplibre-gl';
 
 	const districts = fetch(CITY_DISTRICT_SOURCES.montreal, {
 		cache: 'force-cache',
@@ -21,28 +23,24 @@
 			return null;
 		});
 
-	// $: overlapping = districts.then(data => {
-	// 	if (!data) {
-	// 		return []
-	// 	}
-	// 	const filtered = data.features.filter(f => )
-	// });
+	async function getOverlappingDistricts(location: GeoJSONFeature) {
+		// return new Promise();
+	}
 </script>
 
-<fieldset>
-	<legend>Arrondissement & quartier</legend>
-	<p>
+<section class="editor-section">
+	<h3 class="legend">Arrondissement & quartier</h3>
+	<p class="ui-info">
 		Sélectionnez confirmez l'arrondissement dans la liste suivante établie en fonction de votre
 		localisation du projet:
 	</p>
 	<ul>
+		<!-- {await getOverlappingDistricts()} -->
 		<li>
-			<label>
-				<input type="radio" name="" id="" />
-			</label>
+			<Token>Test</Token>
 		</li>
 	</ul>
-</fieldset>
+</section>
 
 <style lang="scss">
 </style>

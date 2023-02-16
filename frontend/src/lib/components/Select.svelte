@@ -22,7 +22,6 @@
 	export let variant: ComponentProps<Field>['variant'] = 'default';
 	export let id: ComponentProps<Field>['id'] = undefined;
 	export let name: ComponentProps<Field>['name'] = undefined;
-	export let sample: ComponentProps<Field>['sample'] = undefined;
 	export let value: ComponentProps<Field>['value'] = undefined;
 	export let options: Option[];
 	export let placeholder: ComponentProps<Field>['placeholder'] = undefined;
@@ -57,7 +56,6 @@
 <Field
 	{style}
 	{value}
-	{sample}
 	{prefix}
 	{suffix}
 	{id}
