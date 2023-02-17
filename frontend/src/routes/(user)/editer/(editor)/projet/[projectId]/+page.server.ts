@@ -3,6 +3,7 @@ import { STATUS_CODES } from '$utils/enums';
 import { toPgArr } from '$utils/format';
 import { error, fail } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';
+import { EDITOR_FORM_ACTION } from '../../common';
 import type { Actions } from './$types';
 import {
 	costRangeSchema,
@@ -16,8 +17,9 @@ export const actions: Actions = {
 	/**
 	 * Update full project and related tables.
 	 */
-	update: async (event) => {
+	[EDITOR_FORM_ACTION]: async (event) => {
 		const formData = await event.request.formData();
+		console.log(formData.get('cost_range'));
 		const parsed = zfd
 			.formData({
 				title: titleSchema,
@@ -33,6 +35,7 @@ export const actions: Actions = {
 				};
 			})
 			.safeParse(formData);
+		console.log(parsed);
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}

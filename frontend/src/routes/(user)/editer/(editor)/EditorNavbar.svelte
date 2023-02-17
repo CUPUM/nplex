@@ -17,54 +17,66 @@
 	let scrollWidth: number;
 </script>
 
-<nav
-	in:fly={{ y: -12, delay: 250, easing: expoOut }}
-	use:horizontalScroll={{}}
-	class="no-scrollbar"
-	class:stuck
-	style:--w="{scrollWidth}px"
->
-	<WatchScrollSize bind:scrollWidth />
-	<OverflowEffect>
-		{#each Object.values(routes) as route}
-			<a href={route.pathname} data-current={$page.url.pathname === route.pathname || undefined}>
-				<Ripple color={col('primary', 500)} />
-				<span class="inner">
-					{route.title}
-				</span>
-			</a>
-		{/each}
-	</OverflowEffect>
-</nav>
-<hr />
+<header>
+	<nav
+		in:fly={{ y: -12, delay: 250, easing: expoOut }}
+		use:horizontalScroll={{}}
+		class="no-scrollbar"
+		class:stuck
+		style:--w="{scrollWidth}px"
+	>
+		<WatchScrollSize bind:scrollWidth />
+		<OverflowEffect>
+			{#each Object.values(routes) as route}
+				<a href={route.pathname} data-current={$page.url.pathname === route.pathname || undefined}>
+					<Ripple color={col('primary', 500)} />
+					<span class="inner">
+						{route.title}
+					</span>
+				</a>
+			{/each}
+		</OverflowEffect>
+	</nav>
+	<hr />
+</header>
 
 <style lang="scss">
+	header {
+		--inset: var(--ui-inset);
+		width: 100%;
+		background: var(--editor-bg);
+		position: sticky;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		top: 0;
+		z-index: 1;
+		margin-top: 2rem;
+		padding-top: calc(1rem - var(--inset));
+	}
+
 	hr {
-		margin-bottom: 3rem;
+		margin-top: 1rem;
 	}
 
 	nav {
-		--inset: var(--ui-inset);
 		--overflow-outset: var(--inset);
 		--overflow-color: var(--editor-bg);
 		--radius: var(--ui-radius-md);
-		position: sticky;
 		font-size: var(--ui-text-sm);
 		max-width: var(--w);
-		top: calc(1rem - var(--inset));
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
 		overflow-x: auto;
 		background: var(--editor-bg);
-		margin-top: 2rem;
 		border-radius: var(--radius);
 		padding: var(--inset);
 		z-index: 10;
 		transition: max-width 0.35s var(--ui-ease-in-out), background 0.5s;
 
 		&.stuck {
-			// --editor-bg: #{col(bg, 300)};
+			--editor-bg: #{col(bg, 700)};
 			max-width: var(--ui-nav-center-w);
 		}
 	}

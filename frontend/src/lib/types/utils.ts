@@ -1,3 +1,4 @@
+import type { Writable } from 'svelte/store';
 import type { KeyofBase } from 'ts-essentials';
 
 /**
@@ -9,6 +10,8 @@ import type { KeyofBase } from 'ts-essentials';
 export type AnyRecord<T = any> = Record<KeyofBase, T>;
 
 export type NonUndefinable<T> = T extends undefined ? never : T;
+
+export type ValueOfWritable<W extends Writable<unknown>> = W extends Writable<infer T> ? T : never;
 
 export type Arrify<T> = T extends null | undefined ? [] : T extends readonly unknown[] ? T : [T];
 

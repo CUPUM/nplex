@@ -1,5 +1,3 @@
-<svelte:options />
-
 <!--
 	@component
 	# Navbar
@@ -9,72 +7,56 @@
 	const OVERLAP_TOP = 41;
 	const OVERLAP_HEIGHT = 20;
 
-	export const NAVBAR_MAX_WIDTH = {
+	export const NAVBAR_WIDTH = {
 		Default: null,
 		Full: 'full',
 	} as const;
+	type NavbarWidth = ValueOf<typeof NAVBAR_WIDTH>;
 
-	export type NavbarMaxWidth = ValueOf<typeof NAVBAR_MAX_WIDTH>;
+	export const navbarWidth = writableLedger<NavbarWidth>(NAVBAR_WIDTH.Default);
 
-	type NavbarStyle = {
+	export const navbarTheme = writableLedger<ThemeName | null>(null);
+
+	export const navbarBackground = writableLedger<string | null>(null);
+
+	interface OverlapNavbarOptions {
 		theme?: ThemeName;
 		background?: string;
-	};
-
-	/**
-	 * Singleton store to apply a theme to the navbar different than root theme.
-	 */
-	export const navbarStyle = (function () {
-		const { subscribe, set } = writable<NavbarStyle>({});
-		/**
-		 * First-in-last-out log of applied theme. Prevents bindings from canceling one-another when
-		 * close.
-		 */
-		const keepTheme = new Map<any, NonNullable<NavbarStyle['theme']>>();
-		const keepBackground = new Map<any, NonNullable<NavbarStyle['background']>>();
-		function _set(opts: NavbarStyle, key: any) {
-			if (opts.theme) {
-				keepTheme.set(key, opts.theme);
-			} else {
-				keepTheme.delete(key);
-			}
-			if (opts.background) {
-				keepBackground.set(key, opts.background);
-			} else {
-				keepBackground.delete(key);
-			}
-			const newTheme = keepTheme.size ? [...keepTheme][keepTheme.size - 1][1] : undefined;
-			const newBackground = keepBackground.size
-				? [...keepBackground][keepBackground.size - 1][1]
-				: undefined;
-			set({ theme: newTheme, background: newBackground });
-		}
-		return {
-			subscribe,
-			set: _set,
-			reset: (key?: any) => _set({}, key),
-		};
-	})();
+		width?: NavbarWidth;
+	}
 
 	/**
 	 * Action to control navbar theme when it overlaps the given element.
 	 */
-	export function overlapNavbarStyle(element: Element, opts: NavbarStyle): SvelteActionReturnType {
+	export function overlapNavbar(
+		element: Element,
+		opts: OverlapNavbarOptions
+	): SvelteActionReturnType {
 		let hasEnteredOnce = false;
 		let observer: IntersectionObserver;
 		let windowHeight: number;
-		const handleIntersection = ((entries) => {
+		function handleIntersection(entries: IntersectionObserverEntry[]) {
 			entries.forEach((entry) => {
 				if (entry.isIntersecting) {
 					hasEnteredOnce = true;
-					navbarStyle.set(opts, element);
+					if (opts.background !== undefined) {
+						navbarBackground.set(element, opts.background);
+					}
+					if (opts.theme !== undefined) {
+						navbarTheme.set(element, opts.theme);
+					}
+					if (opts.width !== undefined) {
+						navbarWidth.set(element, opts.width);
+					}
 				} else {
 					if (hasEnteredOnce) {
-						navbarStyle.reset(element);
+						navbarWidth.unset(element);
+						navbarTheme.unset(element);
+						navbarBackground.unset(element);
 					}
 				}
 			});
-		}) satisfies IntersectionObserverCallback;
+		}
 		function initObserver() {
 			const rootMargin = `-${OVERLAP_TOP}px 0px -${
 				window.innerHeight - (OVERLAP_TOP + OVERLAP_HEIGHT)
@@ -100,7 +82,9 @@
 				opts = args;
 			},
 			destroy() {
-				navbarStyle.reset(element);
+				navbarWidth.unset(element);
+				navbarTheme.unset(element);
+				navbarBackground.unset(element);
 				window.removeEventListener('resize', handleResize);
 				if (observer) {
 					observer.unobserve(element);
@@ -109,22 +93,9 @@
 			},
 		};
 	}
-
-	// /**
-	//  * Enables managing the max-width of the navbar on a per-page basis.
-	//  */
-	// export const navbarMaxWidth = (function () {
-	// 	const store = writable<NavbarMaxWidth>(NAVBAR_MAX_WIDTH.Default);
-
-	// 	return {
-	// 		...store,
-	// 		reset: () => store.set(NAVBAR_MAX_WIDTH.Default),
-	// 	};
-	// })();
 </script>
 
 <script lang="ts">
-	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Avatar from '$components/Avatar/Avatar.svelte';
 	import Icon from '$components/Icon.svelte';
@@ -133,9 +104,9 @@
 	import { rootScroll } from '$stores/scroll';
 	import { debounce } from '$utils/modifiers';
 	import { EDITOR_BASE_ROUTE, EXPLORE_ROUTES, MAIN_ROUTES, USER_BASE_ROUTE } from '$utils/routes';
+	import { writableLedger } from '$utils/store';
 	import { THEMES, type ThemeName } from '$utils/themes';
 	import { onMount } from 'svelte';
-	import { writable } from 'svelte/store';
 	import type { ValueOf } from 'ts-essentials';
 	import { authModal } from './AuthModal.svelte';
 	import NavbarButton from './NavbarButton.svelte';
@@ -152,21 +123,12 @@
 	let mounted = false;
 	let open = false;
 	let rootsegment: string;
-	let naving = false;
-
-	beforeNavigate(() => {
-		naving = true;
-	});
-
-	afterNavigate(() => {
-		naving = false;
-	});
 
 	const mainNav = Object.values(MAIN_ROUTES);
 	const exploreNav = Object.values(EXPLORE_ROUTES);
 
 	$: rootsegment = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
-	$: navbg = $navbarStyle.background ?? $rootBackground.body ?? null;
+	$: navbg = $navbarBackground ?? $rootBackground.body ?? null;
 
 	function toggle() {
 		open = !open;
@@ -182,16 +144,13 @@
 	});
 </script>
 
-<header
-	data-theme={$navbarStyle.theme ? THEMES[$navbarStyle.theme] : undefined}
-	style:--nav-bg={navbg}
->
+<header data-theme={$navbarTheme ? THEMES[$navbarTheme] : undefined} style:--nav-bg={navbg}>
 	<menu class="toggle">
 		<NavbarButton rounded on:pointerdown={toggle}>
 			<Icon name={open ? 'cross' : 'hamburger'} strokeWidth={3} />
 		</NavbarButton>
 	</menu>
-	<nav class:open class:unmounted={!mounted} class={$page.data.navbarMaxWidth}>
+	<nav class:open class:unmounted={!mounted} class={$navbarWidth}>
 		<section class="main">
 			<NavbarButton rounded href="/">
 				<svg xmlns="http://www.w3.org/2000/svg" height="1em" width="100%">
@@ -376,16 +335,12 @@
 
 	.main {
 		grid-column: main;
-		// justify-content: flex-start;
 		justify-self: flex-start;
 		--i: 0;
 	}
 
 	.category {
 		--i: 1;
-		// --inset: var(--ui-inset);
-		// padding: var(--inset);
-		// border-radius: var(--ui-radius-md);
 		grid-column: category;
 		justify-self: center;
 		padding: var(--ui-inset);

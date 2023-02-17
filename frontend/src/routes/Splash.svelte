@@ -7,7 +7,7 @@
 	import { KEY } from '$utils/enums';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
 	import { fade, fly } from 'svelte/transition';
-	import { overlapNavbarStyle } from './Navbar.svelte';
+	import { overlapNavbar } from './Navbar.svelte';
 	import { setRootBackground } from './RootBackground.svelte';
 
 	export let scrollTarget: HTMLElement;
@@ -31,7 +31,7 @@
 </script>
 
 <header
-	use:overlapNavbarStyle={{ theme: THEMES.dark, background: col('bg', '300') }}
+	use:overlapNavbar={{ theme: THEMES.dark, background: col('bg', '300') }}
 	use:setRootBackground={{ overscroll: THEME_PALETTES.dark.bg[300] }}
 	use:intersection
 	on:enter={() => {

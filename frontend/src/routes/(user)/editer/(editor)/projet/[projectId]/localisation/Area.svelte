@@ -2,15 +2,15 @@
 	import Button from '$components/Button/Button.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
+	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 </script>
 
-<section class="editor-section">
-	<h3 class="legend">Superficie du terrain</h3>
+<EditorFormgroup legend="Superficie du terrain">
 	<p class="ui-info">
 		Vous pouvez utiliser l'outil de mesure <kbd><Icon name="path-line" /></kbd>
-		d'aire disponible sur la carte pour vous aider à évaluer. Notez que les tracés produits avec cet
-		outil ne sont pas sauvegardés.
+		disponible sur la carte pour vous aider à évaluer l'aire.
 	</p>
+	<p class="ui-info">Notez que les tracés produits avec cet outil ne sont pas sauvegardés.</p>
 	<Field
 		style="flex: 1;"
 		type="number"
@@ -20,7 +20,7 @@
 	/>
 	<Button>Synchroniser avec la carte</Button>
 	<Button>Dessiner</Button>
-</section>
+</EditorFormgroup>
 
 <style lang="scss">
 	.area {
@@ -29,9 +29,5 @@
 		gap: 1.5rem;
 		align-self: stretch;
 		width: 100%;
-	}
-
-	p {
-		max-width: var(--ui-width-sm);
 	}
 </style>

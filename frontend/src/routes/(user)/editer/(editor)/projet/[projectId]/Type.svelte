@@ -1,28 +1,29 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import Switch from '$components/Switch/Switch.svelte';
 	import SwitchItem from '$components/Switch/SwitchItem.svelte';
-	import type { PageData } from './$types';
-	import { dirty, _type_id } from './common';
+	import { editorDirty } from '../../common';
+	import EditorFormgroup from '../../EditorFormgroup.svelte';
+	import { descriptors, form_type_id, project } from './common';
 
-	$: descriptors = ($page.data as PageData).descriptors;
-	$: type_id = ($page.data as PageData).project.type_id;
+	$: $form_type_id = $project.type_id;
 
-	$: $_type_id = type_id;
-
-	$: $dirty.type_id = $_type_id !== type_id;
+	$: $editorDirty.type_id = $form_type_id !== $project.type_id;
 </script>
 
-<section class="editor-section">
-	<h3 class="legend">Type de projet</h3>
-	<Switch style="align-self: flex-start" variant="default" bind:group={$_type_id} name="type_id">
-		{#each descriptors.types as type}
+<EditorFormgroup legend="Type de projet">
+	<Switch
+		style="align-self: flex-start"
+		variant="default"
+		bind:group={$form_type_id}
+		name="type_id"
+	>
+		{#each $descriptors.types as type}
 			<SwitchItem value={type.id}>
 				{type.title}
 			</SwitchItem>
 		{/each}
 	</Switch>
-</section>
+</EditorFormgroup>
 
 <style lang="scss">
 </style>

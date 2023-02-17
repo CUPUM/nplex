@@ -35,7 +35,7 @@
 	}}
 >
 	<div>
-		<h2 in:fly={{ y: 12 }}>
+		<h2 class="h2" in:fly={{ y: 12 }}>
 			Créez votre <nobr>nouveau projet.</nobr>
 		</h2>
 		<fieldset in:fly={{ y: -12, delay: 150 }}>

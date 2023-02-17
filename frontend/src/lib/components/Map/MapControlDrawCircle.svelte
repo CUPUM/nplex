@@ -16,7 +16,6 @@
 	const { mode, getMapDraw, changeMode } = getMapDrawContext();
 
 	$: active = $mode === DRAW_MODES.DrawCircle;
-	// $: cursor.set(active ? CURSOR.Crosshair : null);
 </script>
 
 <Button
@@ -26,7 +25,7 @@
 	on:pointerdown={() => changeMode(active ? DRAW_MODES.SimpleSelect : DRAW_MODES.DrawCircle)}
 >
 	<slot>
-		<Icon name="pin" />
+		<Icon name="path-circle" />
 	</slot>
 </Button>
 

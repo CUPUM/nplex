@@ -1,28 +1,28 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import TextArea from '$components/TextArea.svelte';
-	import type { PageData } from './$types';
-	import { dirty } from './common';
+	import { editorDirty } from '../../common';
+	import EditorFormgroup from '../../EditorFormgroup.svelte';
+	import { project } from './common';
 
-	$: description = ($page.data as PageData).project.description;
+	$: form_description = $project.description;
 
-	$: _description = description;
-
-	$: $dirty.description = (_description ?? '') !== (description ?? '');
+	$: $editorDirty.description = (form_description ?? '') !== ($project.description ?? '');
 </script>
 
-<section class="editor-section">
-	<h3 class="legend">Description</h3>
-	<TextArea
-		name="description"
-		variant="default"
-		placeholder="Décrivez votre projet en quelques phrases."
-		bind:value={_description}
-		style="height: 300px; width: 100%;"
-	>
-		<!-- <svelte:fragment slot="label">Description du projet</svelte:fragment> -->
-	</TextArea>
-</section>
+<EditorFormgroup legend="Description">
+	<div>
+		<TextArea
+			name="description"
+			variant="default"
+			placeholder="Décrivez votre projet en quelques phrases."
+			bind:value={form_description}
+			style="height: 300px;"
+		/>
+	</div>
+</EditorFormgroup>
 
 <style lang="scss">
+	div {
+		max-width: var(--ui-width-md);
+	}
 </style>

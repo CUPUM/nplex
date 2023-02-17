@@ -1,39 +1,24 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import ImplantationMode from '../ImplantationMode.svelte';
 	import type { PageData } from './$types';
-	import AdjacentStreets from './AdjacentStreets.svelte';
 	import Area from './Area.svelte';
-	import ConstructionYear from './ConstructionYear.svelte';
 	import District from './District.svelte';
-	import Footprint from './Footprint.svelte';
-	import Levels from './Levels.svelte';
 	import LocalisationMap from './LocalisationMap.svelte';
 	import Location from './Location.svelte';
 
 	export let data: PageData;
 </script>
 
-<form
-	method="POST"
-	action="?/update"
-	use:enhance
-	use:enhance={({ form, data, action, cancel }) => {
-		return async ({ update, result }) => {
-			update({ reset: false });
-		};
-	}}
->
-	<div class="map">
+<div>
+	<section class="map">
 		<LocalisationMap />
-	</div>
-	<div class="fields">
+	</section>
+	<section class="fields">
 		<Location />
 		<hr />
 		<Area />
 		<hr />
 		<District />
-		<hr />
+		<!-- <hr />
 		<AdjacentStreets adjacent_streets={data.project.adjacent_streets} />
 		<hr />
 		<ImplantationMode />
@@ -42,12 +27,12 @@
 		<hr />
 		<ConstructionYear />
 		<hr />
-		<Footprint />
-	</div>
-</form>
+		<Footprint /> -->
+	</section>
+</div>
 
 <style lang="scss">
-	form {
+	div {
 		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -66,9 +51,6 @@
 		position: sticky;
 		top: var(--pad-top);
 		height: calc(100vh - var(--pad-top) - 7rem);
-		border-radius: var(--ui-radius-lg);
-		max-width: calc(var(--ui-width-main) / 2);
-		// box-shadow: var(--ui-shadow-lg);
 	}
 
 	.fields {

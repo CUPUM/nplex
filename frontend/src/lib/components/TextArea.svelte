@@ -18,8 +18,8 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-
 	import { getContext, setContext } from 'svelte';
+	import { cubicOut } from 'svelte/easing';
 	import { writable, type Writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import Ripple from './Ripple.svelte';
@@ -127,6 +127,7 @@
 		on:blur
 		on:change
 		on:input
+		in:fly={{ y: 6, easing: cubicOut, delay: 250 }}
 	/>
 	{#if $$slots.trailing}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->

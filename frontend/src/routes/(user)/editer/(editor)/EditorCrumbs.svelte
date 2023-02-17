@@ -19,43 +19,56 @@
 	};
 </script>
 
-<nav in:fly={{ y: -6, delay: 500 }} class="no-scrollbar">
-	<OverflowEffect>
-		{#each [baseCrumb, ...$crumbs] as crumb (crumb.pathname + crumb.label)}
-			<span class="sep"><Icon name="chevron-right" strokeWidth={1.5} /></span>
-			<a href={crumb.pathname}>
-				<span>
-					{crumb.label}
-				</span>
-			</a>
-		{/each}
-	</OverflowEffect>
-</nav>
+<header>
+	<nav in:fly={{ y: -6, delay: 500 }} class="no-scrollbar">
+		<OverflowEffect>
+			{#each [baseCrumb, ...$crumbs] as crumb (crumb.pathname + crumb.label)}
+				<span class="sep"><Icon name="chevron-right" strokeWidth={1.5} /></span>
+				<a href={crumb.pathname}>
+					<span>
+						{crumb.label}
+					</span>
+				</a>
+			{/each}
+		</OverflowEffect>
+	</nav>
+</header>
 
 <style lang="scss">
+	header {
+		--inset: var(--ui-inset);
+		position: sticky;
+		top: 0;
+		width: 100%;
+		padding-block: calc(1rem - var(--inset));
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 5;
+		background: var(--editor-bg);
+		border-bottom: 1px solid col(fg, 500, 0.05);
+	}
+
 	nav {
 		--overflow-outset: var(--ui-inset);
 		--overflow-color: #{col(bg, 700)};
 		--radius: var(--ui-radius-md);
-		--inset: var(--ui-inset);
+		justify-self: center;
+		grid-column: full;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
 		align-items: stretch;
 		justify-content: flex-start;
-		margin-block: calc(1rem - var(--inset));
-		// font-size: var(--ui-text-sm);
 		padding: var(--inset);
 		height: var(--ui-height);
 		font-weight: 500;
 		max-width: var(--ui-nav-center-w);
 		background: col(bg, 700);
-		// border: 1px solid col(primary, 300, 0.1);
 		color: col(fg, 000);
 		border-radius: var(--radius);
 		overflow-x: auto;
 		z-index: 1;
-		// box-shadow: 0 0 0 1px col(bg, 900);
 	}
 
 	a {

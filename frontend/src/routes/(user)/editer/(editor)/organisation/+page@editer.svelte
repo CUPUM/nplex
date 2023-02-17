@@ -23,7 +23,7 @@
 	}}
 >
 	<div>
-		<h2 in:fly={{ y: 12 }}>Créez une nouvelle organisation.</h2>
+		<h2 class="h2" in:fly={{ y: 12 }}>Créez une nouvelle organisation.</h2>
 		<fieldset>
 			<Field
 				name="name"

@@ -2,7 +2,7 @@
 </script>
 
 <script lang="ts">
-	function confirm() {}
+	// Pass a promise that can either be resolved or rejected
 </script>
 
 <slot name="trigger">

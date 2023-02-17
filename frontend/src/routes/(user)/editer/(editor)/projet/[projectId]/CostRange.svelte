@@ -1,43 +1,51 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import Field from '$components/Field/Field.svelte';
 	import Range from '$components/Range/Range.svelte';
 	import RangeGroup from '$components/Range/RangeGroup.svelte';
 	import RangeThumb from '$components/Range/RangeThumb.svelte';
 	import { cadformatter } from '$utils/format';
-	import type { PageData } from './$types';
-	import { COST_MAX, COST_MAX_DELTA, COST_MIN, COST_STEP, dirty } from './common';
+	import { editorDirty } from '../../common';
+	import EditorFormgroup from '../../EditorFormgroup.svelte';
+	import { COST_MAX, COST_MAX_DELTA, COST_MIN, COST_STEP, project } from './common';
 
-	$: [costmin, costmax] = ($page.data as PageData).project.cost_range;
+	let form_cost_range = [...$project.cost_range];
 
-	$: form_costmin = costmin;
-	$: form_costmax = costmax;
+	function sync() {
+		form_cost_range = [...$project.cost_range];
+	}
 
-	$: $dirty.cost_range = form_costmin !== costmin || form_costmax !== costmax;
+	$: $project.cost_range, sync();
+
+	$: $editorDirty.cost_range = !form_cost_range.every((v, i) => v === $project.cost_range[i]);
 
 	function checkMin() {
-		form_costmin = Math.max(COST_MIN, Math.min(form_costmin, COST_MAX, form_costmax));
+		form_cost_range[0] = Math.max(
+			COST_MIN,
+			Math.min(form_cost_range[0], COST_MAX, form_cost_range[1])
+		);
 	}
 
 	function checkMax() {
-		form_costmax = Math.min(COST_MAX, Math.max(form_costmax, COST_MIN, form_costmin));
+		form_cost_range[1] = Math.min(
+			COST_MAX,
+			Math.max(form_cost_range[1], COST_MIN, form_cost_range[0])
+		);
 	}
 </script>
 
-<section class="editor-section">
-	<h3 class="legend">Fourchette de coûts</h3>
-	<div class="ui-info">
+<EditorFormgroup legend="Fourchette de coûts">
+	<p class="ui-info">
 		Indiquez approximativement les coûts totaux du projet, selon un niveau de précision avec lequel
 		vous êtes confortable.
-	</div>
+	</p>
 	<fieldset class="fields">
 		<Field
 			type="number"
 			prefix="C$ "
 			min={COST_MIN}
-			max={Math.min(COST_MAX, form_costmax)}
+			max={Math.min(COST_MAX, form_cost_range[1])}
 			step={COST_STEP}
-			bind:value={form_costmin}
+			bind:value={form_cost_range[0]}
 			on:change={checkMin}
 			style="grid-area: min;"
 		>
@@ -46,10 +54,10 @@
 		<Field
 			type="number"
 			prefix="C$ "
-			min={Math.max(COST_MIN, form_costmin)}
+			min={Math.max(COST_MIN, form_cost_range[0])}
 			max={COST_MAX}
 			step={COST_STEP}
-			bind:value={form_costmax}
+			bind:value={form_cost_range[1]}
 			on:change={checkMax}
 			style="grid-area: max;"
 		>
@@ -60,25 +68,22 @@
 				{cadformatter.format(tick)}
 			</svelte:fragment>
 			<RangeGroup
-				bind:from={form_costmin}
+				bind:from={form_cost_range[0]}
 				pushpull
 				draggable
-				bind:to={form_costmax}
+				bind:to={form_cost_range[1]}
 				maxdelta={COST_MAX_DELTA}
 			/>
-			<RangeThumb name="cost_range_min" bind:value={form_costmin} let:value />
-			<RangeThumb name="cost_range_costmax" bind:value={form_costmax} />
+			<RangeThumb name="cost_range_min" bind:value={form_cost_range[0]} let:value />
+			<RangeThumb name="cost_range_costmax" bind:value={form_cost_range[1]} />
 		</Range>
 	</fieldset>
-	<input type="hidden" name="cost_range" readonly value="[{form_costmin},{form_costmax}]" />
-</section>
+	<input type="hidden" name="cost_range" readonly value="[{form_cost_range.toString()}]" />
+</EditorFormgroup>
 
 <style lang="scss">
-	.ui-info {
-		max-width: var(--ui-width-sm);
-	}
-
 	fieldset {
+		max-width: var(--ui-width-md);
 		display: grid;
 		flex-direction: row;
 		gap: 2rem;
@@ -87,7 +92,9 @@
 		grid-auto-flow: dense;
 
 		@include tablet {
-			grid-template-columns: 1fr 1fr;
+			grid-template-areas:
+				'min		max'
+				'range	range';
 		}
 	}
 </style>

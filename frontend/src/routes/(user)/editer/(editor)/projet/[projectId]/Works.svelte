@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import AnimateHeight from '$components/AnimateHeight.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import Icon from '$components/Icon.svelte';
@@ -9,29 +9,25 @@
 	import { debounce } from '$utils/modifiers';
 	import Fuse from 'fuse.js';
 	import { flip } from 'svelte/animate';
-	import { fly } from 'svelte/transition';
-	import type { PageData } from './$types';
-	import { dirty, _type_id } from './common';
+	import { editorDirty } from '../../common';
+	import EditorFormgroup from '../../EditorFormgroup.svelte';
+	import { descriptors, form_type_id, project } from './common';
 
-	$: ({ workCategories, types } = ($page.data as PageData).descriptors);
-
-	$: workids = [...(($page.data as PageData).project.work_ids ?? [])];
-
-	let form_workids: typeof workids = [];
+	let form_work_ids: typeof $project.work_ids = [];
 	function sync(trigger: any) {
-		if (Array.isArray(workids)) {
-			form_workids = [...workids];
+		if (Array.isArray($project.work_ids)) {
+			form_work_ids = [...$project.work_ids];
 		}
 	}
-	$: sync(workids);
+	$: sync($project.work_ids);
 
-	$: $dirty.work_ids =
-		selected.length !== (workids.length ?? []) ||
-		!selected.every((work) => (workids ?? []).indexOf(work.id) > -1);
+	$: $editorDirty.work_ids =
+		selected.length !== ($project.work_ids.length ?? []) ||
+		!selected.every((work) => ($project.work_ids ?? []).indexOf(work.id) > -1);
 
-	$: available = types.find((t) => t.id === $_type_id)?.works ?? [];
+	$: available = $descriptors.types.find((t) => t.id === $form_type_id)?.works ?? [];
 
-	$: selected = form_workids.reduce((acc, curr) => {
+	$: selected = form_work_ids.reduce((acc, curr) => {
 		const w = available.find((w) => w.id === curr);
 		if (w) {
 			acc.push(w);
@@ -42,8 +38,8 @@
 	let searchResults: typeof available | null = null;
 
 	function add(wid: number) {
-		if (form_workids.indexOf(wid) < 0) {
-			form_workids = [...form_workids, wid];
+		if (form_work_ids.indexOf(wid) < 0) {
+			form_work_ids = [...form_work_ids, wid];
 		}
 	}
 
@@ -61,29 +57,34 @@
 	}, 250);
 </script>
 
-<section class="editor-section">
-	<h3 class="legend">Travaux</h3>
-	<ul class="selected">
-		{#each selected as w, i (w.id)}
-			<li animate:flip={{ duration: 150 }}>
-				<Tooltip message={w.description}>
-					<Token active>
-						{w.title}
-						<TokenButton slot="trailing" as="label">
-							<Icon name="cross" strokeWidth={2} />
-							<input hidden type="checkbox" name="work_id" bind:group={form_workids} value={w.id} />
-						</TokenButton>
-					</Token>
-				</Tooltip>
-			</li>
-		{/each}
-		{#if !selected.length}
-			<p class="ui-info" in:fly|local={{ y: 6, duration: 250 }}>
-				Sélectionnez un ou plusieurs travaux...
-			</p>
-		{/if}
-	</ul>
-	<fieldset class="search" disabled={_type_id === null}>
+<EditorFormgroup legend="Travaux">
+	<AnimateHeight>
+		<ul class="selected">
+			{#each selected as w, i (w.id)}
+				<li animate:flip={{ duration: 150 }}>
+					<Tooltip message={w.description}>
+						<Token active>
+							{w.title}
+							<TokenButton slot="trailing" as="label">
+								<Icon name="cross" strokeWidth={2} />
+								<input
+									hidden
+									type="checkbox"
+									name="work_id"
+									bind:group={form_work_ids}
+									value={w.id}
+								/>
+							</TokenButton>
+						</Token>
+					</Tooltip>
+				</li>
+			{/each}
+			{#if !selected.length}
+				<Token disabled variant="dashed">Sélectionnez un ou plusieurs travaux...</Token>
+			{/if}
+		</ul>
+	</AnimateHeight>
+	<fieldset class="search" disabled={form_type_id === null}>
 		<Field
 			type="search"
 			class="field"
@@ -97,7 +98,7 @@
 			</svelte:fragment>
 		</Field>
 		<datalist id="works-data">
-			{#each workCategories as c}
+			{#each $descriptors.workCategories as c}
 				<optgroup>
 					{#each available.filter((w) => w.category_id === c.id) as w}
 						<option value={w.title} on:select={(e) => console.log(e)}>
@@ -108,32 +109,26 @@
 			{/each}
 		</datalist>
 	</fieldset>
-	{#each workCategories as category}
+	{#each $descriptors.workCategories as category}
 		<fieldset>
 			<h4>{category.title}</h4>
 		</fieldset>
 		<ul class="list">
-			{#each (searchResults ?? available).filter((w) => !form_workids.includes(w.id) && w.category_id === category.id) as w, i (w.id)}
+			{#each (searchResults ?? available).filter((w) => w.category_id === category.id) as w, i (w.id)}
 				<li animate:flip={{ duration: 100 }}>
 					<Tooltip message={w.description}>
-						<Token on:pointerdown={() => add(w.id)} as="button">
+						<Token as="label" variant="subtle">
 							{w.title}
+							<input type="checkbox" bind:group={form_work_ids} value={w.id} hidden />
 						</Token>
 					</Tooltip>
 				</li>
 			{/each}
 		</ul>
 	{/each}
-</section>
+</EditorFormgroup>
 
 <style lang="scss">
-	.ui-info {
-		display: flex;
-		align-items: center;
-		height: 3em;
-		font-size: var(--ui-text-md);
-	}
-
 	.selected {
 		padding-block: 1em;
 		display: flex;
@@ -144,6 +139,7 @@
 	}
 
 	.search {
+		font-size: var(--ui-text-sm);
 		position: sticky;
 		top: var(--ui-nav-h);
 		align-self: flex-start;

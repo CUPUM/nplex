@@ -6,7 +6,7 @@ import type { LayoutLoad } from './$types';
 export const load = (async (event) => {
 	const db = await getDb(event);
 	const descriptors = db
-		.rpc('get_project_descriptors')
+		.rpc('project_descriptors')
 		.single()
 		.then((res) => {
 			if (res.error) {

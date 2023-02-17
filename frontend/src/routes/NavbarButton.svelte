@@ -56,9 +56,7 @@
 			z-index: 1;
 		}
 
-		//
 		// Default
-		//
 
 		color: col(fg, 100);
 		backdrop-filter: blur(6px);
@@ -99,9 +97,7 @@
 			}
 		}
 
-		//
 		// Category
-		//
 
 		&.category {
 			backdrop-filter: none;
@@ -110,9 +106,7 @@
 			}
 		}
 
-		//
 		// Call-to-action variant
-		//
 
 		&.cta {
 			color: col(bg, 100);

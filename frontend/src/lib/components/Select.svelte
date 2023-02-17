@@ -13,6 +13,7 @@
 
 <script lang="ts">
 	import { getContext, type ComponentProps } from 'svelte';
+	import { cubicOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import Field from './Field/Field.svelte';
 	import Icon from './Icon.svelte';
@@ -80,7 +81,14 @@
 		{/if}
 	</svelte:fragment>
 	<svelte:fragment slot="input" let:bindInputRef>
-		<input type="text" value={text} {placeholder} readonly data-field-input in:fly={{ y: -6 }} />
+		<input
+			type="text"
+			value={text}
+			{placeholder}
+			readonly
+			data-field-input
+			in:fly={{ y: 6, easing: cubicOut, delay: 250 }}
+		/>
 		<select
 			size="0"
 			bind:value

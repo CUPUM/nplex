@@ -15,5 +15,12 @@
 		"strict": true,
 		"rootDirs": [".", "./.svelte-kit/types", "./$houdini/types"]
 	},
-	"include": ["src/**/*.js", "src/**/*.ts", "src/**/*.svelte", "src/**/*.svx", "src/**/*.d.ts"]
+	"include": [
+		"src/**/*.js",
+		"src/**/*.ts",
+		"src/**/*.svelte",
+		"src/**/*.svx",
+		"src/**/*.d.ts",
+		".svelte-kit/ambient.d.ts"
+	]
 }

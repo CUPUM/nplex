@@ -137,7 +137,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: clamp(200px, 40vw, 500px);
-		color: col(bg, 500);
+		color: col(bg, 100);
 		border-radius: inherit;
 		transition: all 0.1s;
 

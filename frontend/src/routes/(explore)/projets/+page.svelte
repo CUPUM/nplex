@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Map from '$components/Map/Map.svelte';
+	import { navbarWidth, NAVBAR_WIDTH } from '$routes/Navbar.svelte';
 	import { rootScroll } from '$stores/scroll';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
@@ -9,12 +10,15 @@
 
 	const key = Symbol('projects');
 
+	navbarWidth.set(key, NAVBAR_WIDTH.Full);
+
 	onMount(() => {
 		rootScroll.lock(key);
 	});
 
 	onDestroy(() => {
 		rootScroll.unlock(key);
+		navbarWidth.unset(key);
 	});
 
 	function handleSubmit() {}

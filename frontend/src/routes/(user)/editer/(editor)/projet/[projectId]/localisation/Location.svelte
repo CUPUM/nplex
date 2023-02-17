@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { DRAW_EVENTS } from '$utils/enums';
 	import { throttle } from '$utils/modifiers';
@@ -12,7 +11,8 @@
 		setCircleRadius,
 	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { onDestroy } from 'svelte';
-	import { dirty } from '../common';
+	import { editorDirty } from '../../../common';
+	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 	import {
 		locationRadius,
@@ -26,7 +26,7 @@
 	let form_center: typeof location.geometry;
 	let form_radius: typeof location.radius;
 
-	$: $dirty.location = form_radius !== location.radius;
+	$: $editorDirty.location = form_radius !== location.radius;
 
 	const updateLocation = throttle((e: DrawRenderEvent) => {
 		if ($mapDraw) {
@@ -80,26 +80,25 @@
 	});
 </script>
 
-<section class="editor-section">
-	<h3 class="legend">Emplacement</h3>
+<EditorFormgroup legend="Emplacement">
 	<p class="ui-info">
-		Situez le site du projet sur la carte ci-contre en y dessinant un cercle. Le diamètre du cercle
-		vous permet d'établir le niveau de précision avec lequel vous souhaitez localiser le projet.
+		<kbd>
+			<Icon name="path-circle" />
+		</kbd>
+		Situez le projet sur la carte ci-contre en y dessinant un cercle. Notez que le diamètre du cercle
+		permet de garder l'emplacement confidentiel lorsque le projet sera publié.
 	</p>
-	<p class="ui-info">Assurrez-vous que votre tracé couvre bien l'emplacement du projet.</p>
-	<fieldset>
-		<Button on:pointerdown={create}>
-			<Icon name="path-circle" slot="leading" />
-			Situez votre projet sur la carte
-		</Button>
-		<input
-			type="hidden"
-			readonly
-			name="location"
-			value={JSON.stringify({ center: form_center, radius: form_radius })}
-		/>
-	</fieldset>
-</section>
+	<p class="ui-info">
+		Assurrez-vous toutefois que le centre du cercle correspond bien à l'emplacement du projet. Son
+		bon positionnement est essentiel pour permettre d'extrapoler des données supplémentaires.
+	</p>
+	<input
+		type="hidden"
+		readonly
+		name="location"
+		value={JSON.stringify({ center: form_center, radius: form_radius })}
+	/>
+</EditorFormgroup>
 
 <style lang="scss">
 	fieldset {

@@ -1,7 +1,6 @@
 // /// <reference types="@sveltejs/kit" />
 
 import type { POPOVER_OPEN_ATTR } from '$components/Popover.svelte';
-import type { NavbarMaxWidth } from '$routes/Navbar.svelte';
 import type { BuffedDatabase } from '$types/database/buff';
 import type { TableRow } from '$types/database/utils';
 import type { Category } from '$utils/enums';
@@ -38,7 +37,6 @@ declare global {
 			showCategoryNavbar?: boolean;
 			showFooter?: boolean;
 			theme?: ThemeName;
-			navbarMaxWidth?: NavbarMaxWidth;
 		}
 		interface Locals {
 			/**

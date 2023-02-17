@@ -5,19 +5,19 @@
 	import { getFieldContext } from './Field.svelte';
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
-	export let defaultValue: any = null;
+	export let value: any = null;
 
-	const { value, inputRef } = getFieldContext();
+	const { value: fieldValue, inputRef } = getFieldContext();
 
-	$: show = $value != defaultValue && $value != '';
+	$: show = $fieldValue != value && $fieldValue != '';
 
 	function reset() {
-		value.set(defaultValue);
+		fieldValue.set(value);
 	}
 </script>
 
 {#if show}
 	<Button {variant} equi on:click on:click={reset} tabindex={-1}>
-		<Icon name="cross" />
+		<Icon name={value == null ? 'cross' : 'undo'} />
 	</Button>
 {/if}

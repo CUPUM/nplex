@@ -35,7 +35,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { getContext, setContext } from 'svelte';
-	import { expoOut } from 'svelte/easing';
+	import { cubicOut } from 'svelte/easing';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { writable, type Writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
@@ -202,7 +202,7 @@
 		{bindInputRef}
 	>
 		<input
-			in:fly|local={{ y: 6, delay: 150, easing: expoOut, duration: 250 }}
+			in:fly|local={{ y: 6, delay: 250, easing: cubicOut }}
 			bind:this={inputRef}
 			data-field-input
 			class="input"

@@ -1,4 +1,3 @@
-import { NAVBAR_MAX_WIDTH } from '$routes/Navbar.svelte';
 import { getDb } from '$utils/database/client';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
@@ -11,6 +10,5 @@ export const load = (async (event) => {
 	return {
 		showFooter: false,
 		projects: projectsRes.data,
-		navbarMaxWidth: NAVBAR_MAX_WIDTH.Full,
 	};
 }) satisfies PageLoad;

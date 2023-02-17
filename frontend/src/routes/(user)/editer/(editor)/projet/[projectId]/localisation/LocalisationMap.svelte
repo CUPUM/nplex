@@ -2,19 +2,20 @@
 	import Map from '$components/Map/Map.svelte';
 	import MapAttributionControl from '$components/Map/MapAttributionControl.svelte';
 	import MapControlDrawCircle from '$components/Map/MapControlDrawCircle.svelte';
+	import MapControlDrawMeasure from '$components/Map/MapControlDrawMeasure.svelte';
 	import MapControlFile from '$components/Map/MapControlFile.svelte';
 	import MapControlFullscreen from '$components/Map/MapControlFullscreen.svelte';
 	import MapControlGeolocate from '$components/Map/MapControlGeolocate.svelte';
 	import MapDraw from '$components/Map/MapDraw.svelte';
 	import MapToolbar from '$components/Map/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
-	import { MAP_STYLES } from '$utils/map/styles';
+	import tonerDark from '$utils/map/styles/tonerDark';
 	import { LOCATION_DEFAULT_RADIUS, map, mapDraw } from './common';
 
 	let tracking = false;
 </script>
 
-<Map cooperativeGestures={true} bind:map={$map} style={MAP_STYLES.Dark}>
+<Map cooperativeGestures={true} bind:map={$map} mapStyle={tonerDark} id="editor-map">
 	<MapAttributionControl position="bottom-left" />
 	<MapDraw bind:draw={$mapDraw} mode="draw_circle">
 		<MapToolbar position="top right" direction="column">
@@ -31,20 +32,25 @@
 					/>
 				</div>
 			</Tooltip>
-			<Tooltip message="Activez le mode plein écran" place="left">
+			<Tooltip message="Activer le mode plein écran" place="left">
 				<div>
 					<MapControlFullscreen />
 				</div>
 			</Tooltip>
 			<hr />
-			<Tooltip message="Dessinez un cercle pour situer votre projet" place="left">
+			<Tooltip message="Dessiner un cercle pour situer le projet" place="left">
 				<div>
 					<MapControlDrawCircle initialRadius={LOCATION_DEFAULT_RADIUS} />
 				</div>
 			</Tooltip>
-			<Tooltip message="Téléversez un fichier de localisation" place="left">
+			<Tooltip message="Téléverser un fichier de localisation" place="left">
 				<div>
 					<MapControlFile disabled />
+				</div>
+			</Tooltip>
+			<Tooltip message="Prendre des mesures en traçant sur la carte" place="left">
+				<div>
+					<MapControlDrawMeasure />
 				</div>
 			</Tooltip>
 		</MapToolbar>
@@ -52,4 +58,8 @@
 </Map>
 
 <style lang="scss">
+	:global(#editor-map) {
+		border-radius: var(--ui-radius-lg);
+		border: 1px solid col(fg, 100, 0.1);
+	}
 </style>

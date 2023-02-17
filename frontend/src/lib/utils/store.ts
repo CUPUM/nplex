@@ -1,4 +1,4 @@
-import { writable, type Readable, type Writable } from 'svelte/store';
+import { writable, type Readable, type Updater, type Writable } from 'svelte/store';
 
 /**
  * In certain situations (ex.: stores required for context reactivity), we should be able to derive
@@ -11,37 +11,47 @@ export function writeReadable<T>(
 	...args: Parameters<typeof writable<T>>
 ): [readable: Readable<T>, store: Writable<T>] {
 	const store = writable(...args);
-
 	return [{ subscribe: store.subscribe }, store];
 }
 
-// /**
-//  * Create a special readable store that fetches an endpoint on start. Readable should also provide
-//  * an extra method to refresh the data by refetching the endpoint.
-//  */
-// export function createFetchReadable<T>(url: string) {
-// 	type FetchStore =
-// 		| {
-// 				data: T;
-// 				fetching: boolean;
-// 		  }
-// 		| {
-// 				data: null;
-// 				fetching: true;
-// 		  };
+/**
+ * Writable store with a chronological cumulative memory of keyed values.
+ *
+ * ! Do not use for frequently updated values !
+ */
+export function writableLedger<T>(init: T, fallback?: T) {
+	const store = writable<T | undefined>(init);
 
-// 	const { subscribe, set, update } = writable<FetchStore>(
-// 		{ data: null, fetching: true },
-// 		(set) => {
+	/**
+	 * First-in-last-out log of applied theme. Allows returning to previous value and prevents
+	 * bindings from canceling one-another when reset/unset.
+	 */
+	const ledger = new Map<any, T | undefined>();
 
-// 		}
-// 	);
+	function set(key: any, value: T | undefined) {
+		ledger.set(key, value);
+		store.set(value);
+	}
 
-// 	function refresh() {}
+	function unset(key: any) {
+		if (ledger.has(key)) {
+			ledger.delete(key);
+			store.set(ledger.size ? [...ledger][ledger.size - 1][1] : fallback);
+		}
+	}
 
-// 	return {
-// 		subscribe,
-// 		refresh,
-// 		fetching,
-// 	};
-// }
+	function update(key: any, updater: Updater<T | undefined>) {
+		store.update((prev) => {
+			const next = updater(prev);
+			ledger.set(key, next);
+			return updater(next);
+		});
+	}
+
+	return {
+		subscribe: store.subscribe,
+		set,
+		update,
+		unset,
+	};
+}

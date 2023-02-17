@@ -28,11 +28,12 @@
 	import { MAP_STYLES } from '$utils/map/styles';
 	import { MAP_GESTURES_TEXT, MAP_LOCALES, type MapLocale } from '$utils/map/ui';
 	import { debounce } from '$utils/modifiers';
-	import { Map, type MapOptions } from 'maplibre-gl';
+	import { Map, type MapEventType, type MapOptions } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 
+	export let id: string | undefined = undefined;
 	export let interactive: MapOptions['interactive'] = true;
 	export let bearingSnap: MapOptions['bearingSnap'] = undefined;
 	export let attributionControl: MapOptions['attributionControl'] = undefined;
@@ -69,7 +70,7 @@
 	export let bounds: MapOptions['bounds'] = LOCATIONS.montreal.bounds;
 	export let fitBoundsOptions: MapOptions['fitBoundsOptions'] = undefined;
 	export let localIdeographFontFamily: MapOptions['localIdeographFontFamily'] = undefined;
-	export let style: MapOptions['style'] = MAP_STYLES.Light;
+	export let mapStyle: MapOptions['style'] = MAP_STYLES.Light;
 	export let pitchWithRotate: MapOptions['pitchWithRotate'] = true;
 	export let pixelRatio: MapOptions['pixelRatio'] = undefined;
 	export let map: Map | undefined = undefined;
@@ -78,16 +79,27 @@
 	export let hash: MapOptions['hash'] = false;
 	export let failIfMajorPerformanceCaveat: MapOptions['failIfMajorPerformanceCaveat'] = true;
 	export let scrollZoom: MapOptions['scrollZoom'] = true;
+	let className: string = '';
+	export { className as class };
+	export let style: string | undefined = undefined;
 
 	let containerRef: HTMLElement;
 	let resizeObserver: ResizeObserver;
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<
+		Pick<{ [Event in keyof MapEventType]: MapEventType[Event] }, 'click'> & {
+			init: MapEventType['load'];
+		}
+	>();
+
+	// type $$Events = {
+	// 	click: CustomEvent<MapEventType['click']>;
+	// };
 
 	function init() {
 		const premap = new Map({
 			container: containerRef,
-			style,
+			style: mapStyle,
 			hash,
 			interactive,
 			bearingSnap,
@@ -141,7 +153,8 @@
 			dispatch('init', e);
 
 			map.on('click', (e) => {
-				dispatch('click', e);
+				// console.log(map?.queryRenderedFeatures(e.point));
+				dispatch<'click'>('click', e);
 			});
 		});
 	}
@@ -187,8 +200,8 @@
 	});
 </script>
 
-<figure class:loading={!map}>
-	<div class="map-container" bind:this={containerRef} />
+<figure class={className} {style} {id}>
+	<div class="ui-map-container" bind:this={containerRef} />
 	{#if map}
 		<slot {map} />
 	{:else}
@@ -211,7 +224,7 @@
 		height: 100%;
 		border-radius: inherit;
 
-		.map-container {
+		.ui-map-container {
 			width: 100%;
 			height: 100%;
 			border-radius: inherit;

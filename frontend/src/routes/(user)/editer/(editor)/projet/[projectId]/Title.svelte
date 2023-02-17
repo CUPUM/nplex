@@ -1,15 +1,13 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import Field from '$components/Field/Field.svelte';
 	import { KEY } from '$utils/enums';
-	import type { PageData } from './$types';
-	import { dirty } from './common';
+	import { editorDirty } from '../../common';
+	import EditorFormgroup from '../../EditorFormgroup.svelte';
+	import { project } from './common';
 
-	$: ({ title } = ($page.data as PageData).project);
+	$: form_title = $project.title;
 
-	$: _title = title;
-
-	$: $dirty.title = _title !== title;
+	$: $editorDirty.title = form_title !== $project.title;
 
 	function handleKey(e: KeyboardEvent) {
 		if (e.key === KEY.Enter) {
@@ -18,49 +16,14 @@
 	}
 </script>
 
-<header class="editor-section">
-	<h3 class="legend">Titre du projet</h3>
-	<Field bind:value={title} variant="default" name="title">
-		<!-- <svelte:fragment slot="label">Titre du projet</svelte:fragment> -->
-	</Field>
-	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-	<!-- svelte-ignore a11y-positive-tabindex -->
-	<!-- <h1
-		class:dirty={$dirty.title}
-		class="title"
-		contenteditable="true"
-		bind:textContent={_title}
-		on:keydown={handleKey}
-	/>
-	<input type="text" name="title" hidden readonly value={_title} /> -->
-</header>
+<EditorFormgroup legend="Titre du projet">
+	<div>
+		<Field bind:value={form_title} variant="default" name="title" />
+	</div>
+</EditorFormgroup>
 
 <style lang="scss">
-	header {
-		// font-size: var(--ui-text-lg);
-	}
-
-	.title {
-		display: inline !important;
-		align-self: flex-start;
-		pointer-events: all;
-		font-weight: 350;
-		border: none;
-		outline: none;
-		box-decoration-break: clone;
-		border-radius: var(--ui-radius-md);
-		line-height: 1.2;
-		transition: all 0.1s ease-out;
-
-		&:hover {
-			background: col(fg, 100, 0.05);
-			// box-shadow: 0 0 0 6px col(bg, 900);
-		}
-
-		&:focus {
-			color: col(primary, 500);
-			background: col(primary, 100, 0.1);
-			// box-shadow: 0 0 0 6px col(primary, 100, 0.1);
-		}
+	div {
+		max-width: var(--ui-width-md);
 	}
 </style>

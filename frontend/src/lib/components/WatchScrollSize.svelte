@@ -8,24 +8,20 @@
 	let mutationObserver: MutationObserver;
 	let hint: HTMLElement;
 
-	function handleResize(entries: ResizeObserverEntry[]) {
-		if (entries[0].target.scrollHeight !== scrollHeight) {
-			scrollHeight = entries[0].target.scrollHeight;
-		}
-		if (entries[0].target.scrollWidth !== scrollWidth) {
-			scrollWidth = entries[0].target.scrollWidth;
+	function handleResize(entries?: ResizeObserverEntry[]) {
+		const el = entries ? entries[0].target : hint.parentElement;
+		if (el) {
+			if (el.scrollHeight !== scrollHeight && el.scrollHeight > 0) {
+				scrollHeight = el.scrollHeight;
+			}
+			if (el.scrollWidth !== scrollWidth && el.scrollWidth > 0) {
+				scrollWidth = el.scrollWidth;
+			}
 		}
 	}
 
 	function handleMutation(entries: MutationRecord[]) {
-		if (hint.parentElement) {
-			if (hint.parentElement.scrollHeight !== scrollHeight) {
-				scrollHeight = hint.parentElement.scrollHeight;
-			}
-			if (hint.parentElement.scrollWidth !== scrollWidth) {
-				scrollWidth = hint.parentElement.scrollWidth;
-			}
-		}
+		handleResize();
 	}
 
 	onMount(() => {
@@ -39,6 +35,7 @@
 				attributes: true,
 			});
 		}
+		handleResize();
 	});
 
 	onDestroy(() => {
