@@ -16,7 +16,7 @@
 	scroll-snap-type: y proximity;
 	scroll-behavior: smooth;
 
-	&[data-lock-scroll]:not[data-lock-scroll='nav'] {
+	&[data-lock-scroll]:not([data-lock-scroll*='nav']) {
 		overflow-y: hidden;
 		padding-right: var(--ui-scroll-size);
 	}
@@ -49,10 +49,8 @@
 
 body {
 	// Background also set here so :root can have a different bg specific to overscroll.
-	// overflow-x: hidden;
 	background: var(--ui-bg);
 	position: relative;
-	width: 100%;
 	min-height: 100vh;
 	padding: 0;
 	margin: 0;

@@ -15,6 +15,18 @@ export const ADJACENT_STREETS_MIN = 0;
 export const ADJACENT_STREETS_MAX = 5;
 
 /**
+ * Filter valid site usages based on usage category.
+ */
+export function getAvailableUsages(
+	descriptors: App.Database['public']['Functions']['project_descriptors']['Returns'],
+	categoryId: PageData['project']['usages'][number]['category_id'] | undefined
+) {
+	if (categoryId == null) {
+		return [];
+	} else return descriptors.siteUsages.filter((usage) => usage.category_ids.includes(categoryId));
+}
+
+/**
  * Maplibre instance.
  */
 export const map = writable<ComponentProps<Map>['map']>();

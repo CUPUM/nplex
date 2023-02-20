@@ -469,9 +469,8 @@
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(fg, 300);
-			background: col(fg, 500, 0.1);
-			// background: col(bg, 500);
+			color: col(fg, 700);
+			// background: col(fg, 500, 0.1);
 		}
 		&:focus-within {
 			color: col(fg, 900);

@@ -4,22 +4,18 @@
 	Create visual cues to signal presence of available (unreached) overflow content.
 	
 -->
-<script lang="ts" context="module">
-	/**
-	 * Distance from an end within which the overflow effect is considered unnecessary.
-	 */
-	const BUFFER_DISTANCE = 50;
-</script>
-
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { debounce } from '$utils/modifiers';
 	import { onDestroy, onMount } from 'svelte';
+	import Icon from './Icon.svelte';
 
 	export let top: boolean = false;
 	export let right: boolean = true;
 	export let bottom: boolean = false;
 	export let left: boolean = true;
+	export let bufferDistance = 50;
+	export let scrollDistance = 200;
 
 	let contentRef: HTMLDivElement;
 	let overflowTop: boolean = false;
@@ -30,15 +26,22 @@
 
 	function checkOverflow() {
 		if (contentRef.parentElement) {
-			overflowTop = contentRef.parentElement.scrollTop > BUFFER_DISTANCE;
+			overflowTop = contentRef.parentElement.scrollTop > bufferDistance;
 			overflowRight =
 				contentRef.parentElement.scrollLeft + contentRef.parentElement.offsetWidth <
-				contentRef.parentElement.scrollWidth - BUFFER_DISTANCE;
+				contentRef.parentElement.scrollWidth - bufferDistance;
 			overflowBottom =
 				contentRef.parentElement.scrollTop + contentRef.parentElement.offsetHeight <
-				contentRef.parentElement.scrollHeight - BUFFER_DISTANCE;
-			overflowLeft = contentRef.parentElement.scrollLeft > BUFFER_DISTANCE;
+				contentRef.parentElement.scrollHeight - bufferDistance;
+			overflowLeft = contentRef.parentElement.scrollLeft > bufferDistance;
 		}
+	}
+
+	function scroll(direction: 'up' | 'right' | 'down' | 'left') {
+		const top = direction === 'up' ? -scrollDistance : direction === 'down' ? scrollDistance : 0;
+		const left =
+			direction === 'left' ? -scrollDistance : direction === 'right' ? scrollDistance : 0;
+		contentRef.parentElement?.scrollBy({ top, left, behavior: 'smooth' });
 	}
 
 	function handleScroll(e: Event & { target: EventTarget | null }) {
@@ -75,12 +78,20 @@
 
 {#if left}
 	<div aria-hidden="true" class="end left" class:active={overflowLeft}>
-		<div class="fx" />
+		<div class="fx">
+			<button on:pointerdown={() => scroll('left')} disabled={!overflowLeft}>
+				<Icon name="chevron-left" />
+			</button>
+		</div>
 	</div>
 {/if}
 {#if top}
 	<div aria-hidden="true" class="end top" class:active={overflowTop}>
-		<div class="fx" />
+		<div class="fx">
+			<button on:pointerdown={() => scroll('up')} disabled={!overflowTop}>
+				<Icon name="chevron-right" />
+			</button>
+		</div>
 	</div>
 {/if}
 <div class="contents" bind:this={contentRef}>
@@ -88,12 +99,20 @@
 </div>
 {#if right}
 	<div aria-hidden="true" class="end right" class:active={overflowRight}>
-		<div class="fx" />
+		<div class="fx">
+			<button on:pointerdown={() => scroll('right')} disabled={!overflowRight}>
+				<Icon name="chevron-right" />
+			</button>
+		</div>
 	</div>
 {/if}
 {#if bottom}
 	<div aria-hidden="true" class="end bottom" class:active={overflowBottom}>
-		<div class="fx" />
+		<div class="fx">
+			<button on:pointerdown={() => scroll('down')} disabled={!overflowBottom}>
+				<Icon name="chevron-right" />
+			</button>
+		</div>
 	</div>
 {/if}
 
@@ -101,6 +120,36 @@
 	.contents {
 		all: inherit;
 		display: contents;
+	}
+
+	button {
+		pointer-events: all;
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		aspect-ratio: 1;
+		color: col(fg, 000, 0.5);
+		border-radius: 99px;
+		opacity: 0.8;
+		background: var(--ui-overflow-color);
+		transition: all 0.15s;
+
+		&:disabled {
+			pointer-events: none;
+		}
+
+		&:hover {
+			opacity: 1;
+			color: col(fg, 500);
+			filter: brightness(1.1);
+		}
+	}
+
+	i {
+		position: relative;
+		top: -0.1em;
 	}
 
 	.end {
@@ -124,7 +173,7 @@
 				left: var(--corr);
 				height: calc(100% - 2 * var(--corr));
 				width: var(--fx-size);
-				background: linear-gradient(90deg, var(--ui-overflow-color) 0%, transparent 50%);
+				background: linear-gradient(90deg, var(--ui-overflow-color) 0%, transparent 100%);
 			}
 		}
 
@@ -151,7 +200,8 @@
 				top: var(--corr);
 				height: calc(100% - 2 * var(--corr));
 				width: var(--fx-size);
-				background: linear-gradient(-90deg, var(--ui-overflow-color) 0%, transparent 50%);
+				background: linear-gradient(-90deg, var(--ui-overflow-color) 0%, transparent 100%);
+				justify-content: flex-end;
 			}
 		}
 
@@ -172,6 +222,9 @@
 	.fx {
 		--fx-size: 120px;
 		border-radius: inherit;
+		padding: 5px;
+		display: flex;
+		align-items: stretch;
 		opacity: 0;
 		position: absolute;
 		transition: all 0.25s ease-out;

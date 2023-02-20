@@ -11,13 +11,13 @@
 </script>
 
 <Title />
-<hr />
+<!-- <hr /> -->
 <Description />
-<hr />
+<!-- <hr /> -->
 <Type />
-<hr />
+<!-- <hr /> -->
 <Works />
-<hr />
+<!-- <hr /> -->
 <CostRange />
 
 <style lang="scss" module>

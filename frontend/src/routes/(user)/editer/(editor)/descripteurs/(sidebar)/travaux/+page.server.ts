@@ -28,7 +28,6 @@ export const actions: Actions = {
 				};
 			})
 			.safeParse(formData);
-		console.log(parsed);
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
@@ -59,7 +58,6 @@ export const actions: Actions = {
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}
-		console.log(parsed);
 		const db = await getDb(event);
 		const del = db
 			.from('project_work')

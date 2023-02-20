@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import AnimateHeight from '$components/AnimateHeight.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
@@ -6,26 +7,26 @@
 	import Token from '$components/Token/Token.svelte';
 	import TokenButton from '$components/Token/TokenButton.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
+	import { KEY } from '$utils/enums';
 	import { debounce } from '$utils/modifiers';
 	import Fuse from 'fuse.js';
+	import { onDestroy } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { editorDirty } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
-	import { descriptors, form_type_id, project } from './common';
+	import type { PageData } from './$types';
+	import { form_type_id } from './common';
 
-	let form_work_ids: typeof $project.work_ids = [];
-	function sync(trigger: any) {
-		if (Array.isArray($project.work_ids)) {
-			form_work_ids = [...$project.work_ids];
-		}
+	$: work_ids = ($page.data as PageData).project.work_ids;
+	$: descriptors = ($page.data as PageData).descriptors;
+
+	let form_work_ids = [...($page.data as PageData).project.work_ids];
+	function sync() {
+		form_work_ids = [...work_ids];
 	}
-	$: sync($project.work_ids);
+	$: work_ids, sync();
 
-	$: $editorDirty.work_ids =
-		selected.length !== ($project.work_ids.length ?? []) ||
-		!selected.every((work) => ($project.work_ids ?? []).indexOf(work.id) > -1);
-
-	$: available = $descriptors.types.find((t) => t.id === $form_type_id)?.works ?? [];
+	$: available = descriptors.types.find((t) => t.id === $form_type_id)?.works ?? [];
 
 	$: selected = form_work_ids.reduce((acc, curr) => {
 		const w = available.find((w) => w.id === curr);
@@ -35,11 +36,30 @@
 		return acc;
 	}, Array<(typeof available)[number]>(0));
 
+	$: $editorDirty.work_ids =
+		selected.length !== (work_ids.length ?? []) ||
+		!selected.every((work) => (work_ids ?? []).indexOf(work.id) > -1);
+
 	let searchResults: typeof available | null = null;
 
-	function add(wid: number) {
-		if (form_work_ids.indexOf(wid) < 0) {
-			form_work_ids = [...form_work_ids, wid];
+	/**
+	 * Returns true if new value added.
+	 */
+	function addByTitle(title: string) {
+		const found = available.find((w) => w.title === title);
+		console.log(found);
+		if (found && !form_work_ids.includes(found.id)) {
+			form_work_ids = [...form_work_ids, found.id];
+			return true;
+		}
+		return false;
+	}
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (e.key === KEY.Enter || e.key === KEY.Tab) {
+			if (e.target instanceof HTMLInputElement) {
+				addByTitle(e.target.value) && (e.target.value = '');
+			}
 		}
 	}
 
@@ -55,9 +75,13 @@
 			}
 		}
 	}, 250);
+
+	onDestroy(() => {
+		delete $editorDirty.work_ids;
+	});
 </script>
 
-<EditorFormgroup legend="Travaux">
+<EditorFormgroup legend="Travaux" style="align-self: stretch;">
 	<AnimateHeight>
 		<ul class="selected">
 			{#each selected as w, i (w.id)}
@@ -89,16 +113,17 @@
 			type="search"
 			class="field"
 			placeholder="Chercher un type de travail"
-			variant="default"
+			variant="outlined"
 			list="works-data"
 			on:input={handleSearch}
+			on:keydown={handleKeydown}
 		>
 			<svelte:fragment slot="leading">
 				<FieldIcon name="search" />
 			</svelte:fragment>
 		</Field>
 		<datalist id="works-data">
-			{#each $descriptors.workCategories as c}
+			{#each descriptors.workCategories as c}
 				<optgroup>
 					{#each available.filter((w) => w.category_id === c.id) as w}
 						<option value={w.title} on:select={(e) => console.log(e)}>
@@ -109,22 +134,22 @@
 			{/each}
 		</datalist>
 	</fieldset>
-	{#each $descriptors.workCategories as category}
-		<fieldset>
-			<h4>{category.title}</h4>
-		</fieldset>
-		<ul class="list">
-			{#each (searchResults ?? available).filter((w) => w.category_id === category.id) as w, i (w.id)}
-				<li animate:flip={{ duration: 100 }}>
-					<Tooltip message={w.description}>
-						<Token as="label" variant="subtle">
-							{w.title}
-							<input type="checkbox" bind:group={form_work_ids} value={w.id} hidden />
-						</Token>
-					</Tooltip>
-				</li>
-			{/each}
-		</ul>
+	{#each descriptors.workCategories as category}
+		<h4>{category.title}</h4>
+		<AnimateHeight>
+			<ul class="list">
+				{#each (searchResults ?? available).filter((w) => w.category_id === category.id) as w, i (w.id)}
+					<li animate:flip={{ duration: 100 }}>
+						<Tooltip message={w.description}>
+							<Token as="label" variant="subtle">
+								{w.title}
+								<input type="checkbox" bind:group={form_work_ids} value={w.id} hidden />
+							</Token>
+						</Tooltip>
+					</li>
+				{/each}
+			</ul>
+		</AnimateHeight>
 	{/each}
 </EditorFormgroup>
 
@@ -140,16 +165,10 @@
 
 	.search {
 		font-size: var(--ui-text-sm);
-		position: sticky;
-		top: var(--ui-nav-h);
 		align-self: flex-start;
 		width: var(--ui-width-sm);
 		margin-block: 2rem;
 		z-index: 1;
-
-		:global(.field) {
-			backdrop-filter: blur(10px);
-		}
 	}
 
 	.list {
@@ -168,5 +187,11 @@
 		display: inline-block;
 		position: relative;
 		flex: none;
+	}
+
+	h4 {
+		font-size: var(--ui-text-sm);
+		font-weight: 500;
+		margin-left: 1em;
 	}
 </style>

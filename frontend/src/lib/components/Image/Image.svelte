@@ -19,7 +19,6 @@
 	import type css from 'csstype';
 	import { onMount } from 'svelte';
 	import Icon from '../Icon.svelte';
-	import Loading from '../Loading.svelte';
 
 	export let src: string | undefined = undefined;
 	export let srcset: SourceSpecification[] | undefined = undefined;
@@ -89,7 +88,8 @@
 	/>
 	{#if loading}
 		<slot name="loading">
-			<Loading />
+			<div class="ui-skeleton-fill" />
+			<!-- <Loading /> -->
 		</slot>
 	{/if}
 	{#if error || !src}
@@ -108,7 +108,9 @@
 	:where(picture) {
 		position: relative;
 		border-radius: inherit;
-		display: inline-block;
+		display: block;
+		padding: 0;
+		flex: none;
 	}
 
 	:where(img) {

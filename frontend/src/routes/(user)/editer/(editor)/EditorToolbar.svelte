@@ -3,18 +3,19 @@
 	import Icon from '$components/Icon.svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-	import { editorDirty, EDITOR_FORM_ID } from './common';
+	import { editorDirty, EDITOR_FORM_ACTION, EDITOR_FORM_ID } from './common';
 
 	$: dirty = Object.values($editorDirty).filter((v) => v).length;
 </script>
 
+<!-- <Modal>Test</Modal> -->
 <menu>
 	{#if dirty}
 		<div
 			in:fly={{ y: 6, duration: 200, easing: cubicOut }}
 			out:scale|local={{ start: 0.95, duration: 200 }}
 		>
-			<Button variant="cta" type="submit" form={EDITOR_FORM_ID}>
+			<Button variant="cta" type="submit" form={EDITOR_FORM_ID} formaction="?/{EDITOR_FORM_ACTION}">
 				Sauvegarder
 				<Icon name="save" slot="trailing" />
 			</Button>

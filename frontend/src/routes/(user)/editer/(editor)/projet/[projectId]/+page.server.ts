@@ -35,7 +35,6 @@ export const actions: Actions = {
 				};
 			})
 			.safeParse(formData);
-		console.log(parsed);
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
 		}

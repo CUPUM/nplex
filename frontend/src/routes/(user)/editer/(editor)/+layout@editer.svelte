@@ -1,40 +1,74 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { page } from '$app/stores';
+	import Button from '$components/Button/Button.svelte';
+	import Modal from '$components/Modal/Modal.svelte';
+	import ModalConfirmNavigation from '$components/Modal/ModalConfirmNavigation.svelte';
 	import { NAVBAR_WIDTH, overlapNavbar } from '$routes/Navbar.svelte';
 	import { setRootBackground } from '$routes/RootBackground.svelte';
-	import type { LayoutData } from './$types';
-	import { EDITOR_FORM_ACTION, EDITOR_FORM_ID } from './common';
-	import EditorCrumbs from './EditorCrumbs.svelte';
-	import EditorSidebar from './EditorSidebar.svelte';
+	import { THEMES, THEME_PALETTES } from '$utils/themes';
+	import { editorDirty } from './common';
 	import EditorToolbar from './EditorToolbar.svelte';
 
-	$: ({ background, overscroll, theme } = $page.data as LayoutData);
+	// $: ({ background, overscroll, theme } = $page.data as LayoutData);
+
+	let background = THEME_PALETTES.dark.bg[500];
 </script>
 
 <article
-	data-theme={theme}
-	use:overlapNavbar={{ theme, background, width: NAVBAR_WIDTH.Full }}
-	use:setRootBackground={{ overscroll }}
+	data-theme={THEMES.dark}
+	use:overlapNavbar={{ theme: THEMES.dark, background, width: NAVBAR_WIDTH.Full }}
+	use:setRootBackground={{ overscroll: background }}
 	style:--editor-bg={background}
 >
-	<EditorCrumbs />
-	<section>
-		<EditorSidebar />
-		<form
-			id={EDITOR_FORM_ID}
-			method="POST"
-			action="?/{EDITOR_FORM_ACTION}"
-			use:enhance={({ form, data, action, cancel }) => {
-				return async ({ update, result }) => {
-					update({ reset: false });
-				};
-			}}
-		>
-			<slot />
-			<EditorToolbar />
-		</form>
-	</section>
+	<slot />
+	<EditorToolbar />
+	<Modal opened>
+		<svelte:fragment slot="header">Hello</svelte:fragment>
+		<ul>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+			<li>Yeehaw</li>
+		</ul>
+		<svelte:fragment slot="footer">Hello</svelte:fragment>
+	</Modal>
+	<ModalConfirmNavigation
+		intercept={Object.values($editorDirty).filter((v) => v).length > 0}
+		let:confirm
+		let:cancel
+	>
+		Hello!
+		<Button>Sauvegarder et continuer</Button>
+		<Button>Continuer sans sauvegarder</Button>
+		<Button on:click={cancel}>Annuler</Button>
+	</ModalConfirmNavigation>
 </article>
 
 <style lang="scss">
@@ -48,51 +82,5 @@
 		background: var(--editor-bg);
 		margin-top: calc(-1 * var(--ui-nav-h));
 		min-height: 100vh;
-	}
-
-	section {
-		width: 100%;
-		flex: 1;
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		justify-content: flex-start;
-	}
-
-	form {
-		flex: 1;
-		align-self: stretch;
-
-		@include tablet {
-			// width: 100%;
-			// flex: none;
-		}
-
-		&:not(:first-child) {
-			border-left: 1px solid col(fg, 500, 0.05);
-		}
-
-		:global(hr) {
-			padding: 0.5px;
-			background: col(bg, 900);
-			width: 100%;
-		}
-
-		:global(.legend) {
-			font-size: var(--ui-text-lg);
-			font-weight: 450;
-			margin-bottom: 1em;
-		}
-
-		:global(.editor-section) {
-			padding: 3rem 1.5rem;
-			width: 100%;
-			max-width: var(--ui-width-md);
-
-			@include laptop {
-				padding: 3rem 1.5rem;
-				max-width: var(--ui-width-md);
-			}
-		}
 	}
 </style>

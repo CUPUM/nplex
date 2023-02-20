@@ -8,12 +8,13 @@
 </script>
 
 <script lang="ts">
-	import Icon from '$components/Icon.svelte';
 	import OverflowEffect from '$components/OverflowEffect.svelte';
 	import { writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 
-	let baseCrumb: Crumb = {
+	// export let crumbs: Crumb[];
+
+	const baseCrumb: Crumb = {
 		label: 'Éditeur',
 		pathname: '/editer',
 	};
@@ -22,8 +23,8 @@
 <header>
 	<nav in:fly={{ y: -6, delay: 500 }} class="no-scrollbar">
 		<OverflowEffect>
-			{#each [baseCrumb, ...$crumbs] as crumb (crumb.pathname + crumb.label)}
-				<span class="sep"><Icon name="chevron-right" strokeWidth={1.5} /></span>
+			{#each [baseCrumb, baseCrumb, baseCrumb, baseCrumb, baseCrumb, baseCrumb, baseCrumb, baseCrumb, baseCrumb] as crumb, i (i)}
+				<span class="sep">/</span>
 				<a href={crumb.pathname}>
 					<span>
 						{crumb.label}
@@ -45,13 +46,13 @@
 		align-items: center;
 		justify-content: center;
 		z-index: 5;
-		background: var(--editor-bg);
-		border-bottom: 1px solid col(fg, 500, 0.05);
+		// background: var(--editor-bg);
+		// border-bottom: 1px solid col(fg, 500, 0.05);
 	}
 
 	nav {
 		--overflow-outset: var(--ui-inset);
-		--overflow-color: #{col(bg, 700)};
+		--overflow-color: var(--editor-bg);
 		--radius: var(--ui-radius-md);
 		justify-self: center;
 		grid-column: full;
@@ -64,7 +65,7 @@
 		height: var(--ui-height);
 		font-weight: 500;
 		max-width: var(--ui-nav-center-w);
-		background: col(bg, 700);
+		background: var(--overflow-color);
 		color: col(fg, 000);
 		border-radius: var(--radius);
 		overflow-x: auto;
@@ -101,8 +102,9 @@
 	}
 
 	.sep {
+		pointer-events: none;
 		opacity: 0.25;
-		top: -0.2em;
+		top: -0.1em;
 		align-self: center;
 
 		&:first-of-type {

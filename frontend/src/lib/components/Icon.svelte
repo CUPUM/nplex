@@ -2,7 +2,6 @@
 	@component
 	## Icon
 	Primitive component to facilitate adding icons in a consistent manner across the ui.
-
 -->
 <script lang="ts" context="module">
 	export const ICON_CLASS = {
@@ -26,7 +25,7 @@
 	export let strokeWidth: number = 2;
 	export let strokeLinecap: 'square' | 'round' = 'square';
 	export let animate: boolean = true;
-	export let animateSpeed: number = 1;
+	export let animationSpeed: number = 1;
 	// export let draw: boolean = false;
 	// export let drawDelay: number = 50;
 	// export let drawDuration: number = 500;
@@ -49,7 +48,7 @@
 	style:--secondary-color={secondaryColor}
 	style:--stroke-width={cssSize(strokeWidth)}
 	style:--stroke-linecap={strokeLinecap}
-	style:--speed={animateSpeed}
+	style:--speed={animationSpeed}
 	style:--height={icon.height}
 >
 	{#each icon.paths as path, i}

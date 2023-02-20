@@ -5,7 +5,6 @@
 	Content is reactively positioned according to passed coordinates.
 	This makes it possible to either anchor the tooltip at a static location or move it around (ex.: follow the user's pointer).
 	By default, if no coordinates are passed through props, the popup will follow the pointer.
-
 -->
 <script lang="ts" context="module">
 </script>

@@ -4,18 +4,12 @@
 	import { fly } from 'svelte/transition';
 	import { USER_ROUTES } from './common';
 
-	const repeat = Array(30);
-	function saliant() {
-		const r = Math.round(Math.random() * 5);
-		return Math.round(Math.random() * 3) + 2;
-	}
 	const routes = Object.values(USER_ROUTES);
 </script>
 
 <article>
 	<ul>
 		{#each routes as r, i}
-			{@const s = saliant()}
 			<li
 				in:fly={{
 					y: Math.random() * 40 - 20,
@@ -27,25 +21,12 @@
 				class={ICON_CLASS.hover}
 			>
 				<a href={r.pathname}>
-					{#each repeat as clone, i}
-						{#if i === s && 'icon' in r}
-							<i>
-								<Icon
-									name={r.icon}
-									style="top: -.1em; display: inline"
-									strokeWidth={2.5}
-									strokeLinecap="round"
-								/>
-							</i>
-						{/if}
-						<span
-							style:padding-left="{(Math.random() * 1).toFixed(2)}em"
-							role={i === s ? 'presentation' : undefined}
-							class:saliant={i === s}
-						>
-							{r.title}
-						</span>
-					{/each}
+					<i>
+						<Icon name={r.icon} strokeWidth={2.5} animationSpeed={0.3} strokeLinecap="round" />
+					</i>
+					<span>
+						{r.title}
+					</span>
 				</a>
 			</li>
 		{/each}
@@ -85,43 +66,50 @@
 	}
 
 	a {
-		display: block;
-		word-break: break-all;
-		white-space: normal;
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		overflow: hidden;
-		line-height: 1;
 		width: 100%;
 		aspect-ratio: 1 / 1;
 		border-radius: var(--ui-radius-xl);
-		color: col(bg, 100);
+		color: col(fg, 100);
 		background: col(bg, 300);
-		font-size: clamp(var(--ui-text-lg), 3vw, var(--ui-text-2xl));
+		font-size: var(--ui-text-xl);
+		padding: 1.5rem;
 		font-weight: 500;
-		transition: all 0.2s var(--ui-ease-out);
+		transition: all 0.15s ease-out;
+
+		span {
+			z-index: 1;
+		}
 
 		@include tablet {
 			aspect-ratio: 2 / 1;
-			font-size: var(--ui-text-2xl);
+			font-size: var(--ui-text-xl);
 		}
 
 		&:hover {
-			// border-radius: var(--ui-radius-lg);
-			background: col(primary, 300);
-			color: col(primary, 500);
+			color: col(fg, 900);
+			background: col(primary, 100);
+			overflow: visible;
+			box-shadow: var(--ui-shadow-md);
 
-			.saliant,
 			i {
-				color: col(fg, 700);
+				color: col(primary, 300);
 			}
 		}
 	}
 
-	.saliant,
 	i {
-		padding-inline: 1em !important;
-		word-break: keep-all;
-		display: inline-block;
-		color: col(fg, 100);
-		-webkit-text-stroke: 0px !important;
+		top: 0;
+		display: flex;
+		height: 100%;
+		align-items: center;
+		color: col(bg, 100);
+		font-size: 500px;
+		position: absolute;
+		transition: inherit;
 	}
 </style>

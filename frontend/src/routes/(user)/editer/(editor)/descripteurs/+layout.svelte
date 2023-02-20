@@ -1,21 +1,17 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
-	import { crumbs } from '../EditorCrumbs.svelte';
-	import { editorSidebarContent } from '../EditorSidebar.svelte';
+	import { crumbs } from '../EditorHeader.svelte';
 	import { descriptors } from '../projet/[projectId]/common';
-	import type { PageData } from './$types';
-	import EditorSidebarDescriptors from './EditorSidebarDescriptors.svelte';
+	import type { LayoutData } from './$types';
 
-	export let data: PageData;
+	export let data: LayoutData;
 
 	$: descriptors.set(data.descriptors);
 
-	crumbs.set([{ label: 'Descripteurs', pathname: '/editer/descripteurs' }]);
-	editorSidebarContent.set(EditorSidebarDescriptors);
+	crumbs.set([{ label: 'Descripteurs de projet', pathname: '/editer/descripteurs' }]);
 
 	onDestroy(() => {
 		crumbs.set([]);
-		editorSidebarContent.set(undefined);
 	});
 </script>
 

@@ -1,16 +1,20 @@
 <script lang="ts">
-	import type { LayoutData } from '../$types';
-	import type { EDITABLES_NEW } from '../EditablesList.svelte';
+	import type { LayoutData } from './$types';
+	import { EDITOR_ROUTES } from './common';
+	import EditableNewCard from './EditableNewCard.svelte';
+	import type { EditablesDefault } from './EditablesList.svelte';
 
-	export let datum: LayoutData['actors'][number] | typeof EDITABLES_NEW;
+	export let actor: LayoutData['actors'][number] | EditablesDefault;
 </script>
 
-{#if 'title' in datum}
-	<a>
-		{datum.title}
+{#if 'title' in actor}
+	<a class="actor" href="{EDITOR_ROUTES.actor.pathname}/{actor.id}">
+		{actor.title}
 	</a>
 {:else}
-	<a href="">Créer un nouveau profil d'acteur.</a>
+	<a href={EDITOR_ROUTES.actor.pathname}>
+		<EditableNewCard>Créer un profil de personne</EditableNewCard>
+	</a>
 {/if}
 
 <style lang="scss">
@@ -18,6 +22,9 @@
 		display: grid;
 		height: 350px;
 		aspect-ratio: 2 /3;
-		background: red;
+		border-radius: var(--ui-radius-lg);
+	}
+
+	.actor {
 	}
 </style>

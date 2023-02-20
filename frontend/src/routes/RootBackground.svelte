@@ -2,7 +2,6 @@
 	@component
 	# Root Background
 	Singleton to control the app's root element background color property.
-
 -->
 <script lang="ts" context="module">
 	import { browser } from '$app/environment';

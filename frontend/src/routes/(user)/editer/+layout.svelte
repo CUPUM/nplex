@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
 	import { EDITOR_ROUTES } from './common';
+	import EditableActorCard from './EditableActorCard.svelte';
 	import EditableOrganizationCard from './EditableOrganizationCard.svelte';
 	import EditableProjectCard from './EditableProjectCard.svelte';
 	import EditablesList from './EditablesList.svelte';
@@ -35,10 +36,10 @@
 <EditablesList
 	id={EDITOR_ROUTES.actor.edit.hash}
 	title="Mes profils d'acteurs"
-	data={data.projects}
+	data={data.actors}
 	let:datum
 >
-	<EditableProjectCard project={datum} />
+	<EditableActorCard actor={datum} />
 </EditablesList>
 
 <style lang="scss">

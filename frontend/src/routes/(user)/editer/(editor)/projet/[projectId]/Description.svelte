@@ -1,12 +1,15 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import TextArea from '$components/TextArea.svelte';
 	import { editorDirty } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
-	import { project } from './common';
+	import type { PageData } from './$types';
 
-	$: form_description = $project.description;
+	$: ({ description } = ($page.data as PageData).project);
 
-	$: $editorDirty.description = (form_description ?? '') !== ($project.description ?? '');
+	$: form_description = description;
+
+	$: $editorDirty.description = (form_description ?? '') !== (description ?? '');
 </script>
 
 <EditorFormgroup legend="Description">
@@ -23,6 +26,7 @@
 
 <style lang="scss">
 	div {
-		max-width: var(--ui-width-md);
+		width: var(--ui-width-md);
+		max-width: 100%;
 	}
 </style>

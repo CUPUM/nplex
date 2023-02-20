@@ -3,7 +3,7 @@ import type { KeyOfSet } from '$types/utils';
 import { writable } from 'svelte/store';
 
 const DIRECTION_THRESHOLD = 20;
-const LOCK_ATTRIBUTE = 'data-lock-scroll';
+const SCROLL_LOCK_ATTRIBUTE = 'data-lock-scroll';
 
 /**
  * @param y Current vertical distance.
@@ -33,6 +33,7 @@ export const rootScroll = (function () {
 		down: false,
 		locked: false,
 	});
+
 	let locks = new Set<Symbol | number | string>();
 
 	function updateStore(e: Event) {
@@ -65,7 +66,7 @@ export const rootScroll = (function () {
 
 	function keyString(key: KeyOfSet<typeof locks>) {
 		if (typeof key === 'symbol') {
-			return key.toString();
+			return key.description + '';
 		}
 		return key + '';
 	}
@@ -73,7 +74,7 @@ export const rootScroll = (function () {
 	function lock(key: KeyOfSet<typeof locks>) {
 		locks.add(key);
 		if (browser) {
-			document.documentElement.setAttribute(LOCK_ATTRIBUTE, keyString(key));
+			document.documentElement.setAttribute(SCROLL_LOCK_ATTRIBUTE, keyString(key));
 		}
 	}
 
@@ -82,11 +83,11 @@ export const rootScroll = (function () {
 		if (browser) {
 			if (locks.size) {
 				const last = Array.from(locks).pop();
-				if (last) {
-					document.documentElement.setAttribute(LOCK_ATTRIBUTE, keyString(last));
+				if (last != null) {
+					document.documentElement.setAttribute(SCROLL_LOCK_ATTRIBUTE, keyString(last));
 				}
 			} else {
-				document.documentElement.removeAttribute(LOCK_ATTRIBUTE);
+				document.documentElement.removeAttribute(SCROLL_LOCK_ATTRIBUTE);
 			}
 		}
 	}

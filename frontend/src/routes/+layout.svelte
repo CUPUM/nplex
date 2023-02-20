@@ -3,9 +3,10 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Logo from '$components/Logo.svelte';
-	import LoadingProgress from '$routes/LoadingProgress.svelte';
+	import ModalOutlet from '$components/Modal/ModalOutlet.svelte';
 	import MessagesOutlet from '$routes/MessagesOutlet.svelte';
 	import Navbar from '$routes/Navbar.svelte';
+	import ProgressBar from '$routes/ProgressBar.svelte';
 	import '$styles/app.scss';
 	import '$styles/reset.scss';
 	import '$styles/themes.css';
@@ -17,7 +18,6 @@
 
 	export let data: LayoutData;
 
-	let progress: LoadingProgress;
 	let scrollY = 0;
 
 	if (browser) {
@@ -28,17 +28,15 @@
 		}
 	}
 
-	beforeNavigate(({ from, to }) => {
-		if (from?.route.id !== to?.route.id) {
-			progress?.start?.();
+	beforeNavigate((navigation) => {
+		if (navigation.from?.route.id !== navigation.to?.route.id) {
 			if (browser) {
 				document.documentElement.style.scrollBehavior = 'initial';
 			}
 		}
 	});
 
-	afterNavigate(({ from, to }) => {
-		progress?.complete?.();
+	afterNavigate((navigation) => {
 		if (browser) {
 			document.documentElement.style.scrollBehavior = '';
 		}
@@ -65,7 +63,8 @@
 <div class="border" class:authing={$authModal} />
 <AuthModal />
 <MessagesOutlet />
-<LoadingProgress bind:this={progress} />
+<ModalOutlet />
+<ProgressBar />
 
 <style lang="scss" module>
 	.container {

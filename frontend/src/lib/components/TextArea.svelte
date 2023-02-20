@@ -27,7 +27,6 @@
 	export let id: string | undefined = undefined;
 	export let name: string | undefined = undefined;
 	export let value: string | null | undefined = null;
-	export let sample: typeof value = value;
 	export let variant: 'default' | 'outlined' | 'cta' = 'default';
 	export let direction: 'row' | 'column' = 'column';
 	export let resize: boolean | undefined = undefined;
@@ -344,7 +343,7 @@
 		}
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(fg, 300);
+			color: col(fg, 700);
 			// background: col(fg, 100, 0.1);
 		}
 		&:focus-within {

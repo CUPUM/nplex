@@ -1,13 +1,19 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Switch from '$components/Switch/Switch.svelte';
 	import SwitchItem from '$components/Switch/SwitchItem.svelte';
 	import { editorDirty } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
-	import { descriptors, form_type_id, project } from './common';
+	import type { PageData } from './$types';
+	import { form_type_id } from './common';
 
-	$: $form_type_id = $project.type_id;
+	$: descriptors = ($page.data as PageData).descriptors;
 
-	$: $editorDirty.type_id = $form_type_id !== $project.type_id;
+	$: ({ type_id } = ($page.data as PageData).project);
+
+	$: $form_type_id = type_id;
+
+	$: $editorDirty.type_id = $form_type_id !== type_id;
 </script>
 
 <EditorFormgroup legend="Type de projet">
@@ -17,7 +23,7 @@
 		bind:group={$form_type_id}
 		name="type_id"
 	>
-		{#each $descriptors.types as type}
+		{#each descriptors.types as type}
 			<SwitchItem value={type.id}>
 				{type.title}
 			</SwitchItem>

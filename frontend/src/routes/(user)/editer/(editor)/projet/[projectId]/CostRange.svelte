@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Field from '$components/Field/Field.svelte';
 	import Range from '$components/Range/Range.svelte';
 	import RangeGroup from '$components/Range/RangeGroup.svelte';
@@ -6,17 +7,19 @@
 	import { cadformatter } from '$utils/format';
 	import { editorDirty } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
-	import { COST_MAX, COST_MAX_DELTA, COST_MIN, COST_STEP, project } from './common';
+	import type { PageData } from './$types';
+	import { COST_MAX, COST_MAX_DELTA, COST_MIN, COST_STEP } from './common';
 
-	let form_cost_range = [...$project.cost_range];
+	$: cost_range = ($page.data as PageData).project.cost_range;
 
+	let form_cost_range = [...($page.data as PageData).project.cost_range];
 	function sync() {
-		form_cost_range = [...$project.cost_range];
+		form_cost_range = [...cost_range];
 	}
 
-	$: $project.cost_range, sync();
+	$: cost_range, sync();
 
-	$: $editorDirty.cost_range = !form_cost_range.every((v, i) => v === $project.cost_range[i]);
+	$: $editorDirty.cost_range = !form_cost_range.every((v, i) => v === cost_range[i]);
 
 	function checkMin() {
 		form_cost_range[0] = Math.max(
@@ -83,7 +86,8 @@
 
 <style lang="scss">
 	fieldset {
-		max-width: var(--ui-width-md);
+		width: var(--ui-width-md);
+		max-width: 100%;
 		display: grid;
 		flex-direction: row;
 		gap: 2rem;

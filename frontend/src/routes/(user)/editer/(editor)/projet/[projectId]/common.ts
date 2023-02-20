@@ -2,7 +2,7 @@ import { toPgRange } from '$utils/format';
 import { writable } from 'svelte/store';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import type { LayoutData, PageData } from './$types';
+import type { PageData } from './$types';
 
 export const FORM_ID = 'project-editor-form';
 export const TITLE_MIN_WORDS = 3;
@@ -13,23 +13,8 @@ export const COST_MAX = 50_000;
 export const COST_MAX_DELTA = 10_000;
 export const COST_STEP = 10;
 
-export const project = writable<LayoutData['project']>();
-export const descriptors = writable<LayoutData['descriptors']>();
-
 export const form_type_id = writable<PageData['project']['type_id']>();
 export const form_banner_id = writable<PageData['project']['banner_id']>();
-
-/**
- * Filter valid site usages based on usage category.
- */
-export function getAvailableUsages(
-	descriptors: App.Database['public']['Functions']['project_descriptors']['Returns'],
-	categoryId: PageData['project']['usages'][number]['category_id'] | undefined
-) {
-	if (categoryId == null) {
-		return [];
-	} else return descriptors.siteUsages.filter((usage) => usage.category_ids.includes(categoryId));
-}
 
 export const titleSchema = zfd.text(
 	z

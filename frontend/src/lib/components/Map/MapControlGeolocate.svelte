@@ -2,7 +2,6 @@
 	@component
 	Simple button-wrapper component to add geolocation control to the parent map.
 	For implementation inspo, see maplibre/mapbox control workflow: https://maplibre.org/maplibre-gl-js-docs/api/markers/
-
 -->
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';

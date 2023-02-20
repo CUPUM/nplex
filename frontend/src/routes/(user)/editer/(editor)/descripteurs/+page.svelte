@@ -1,14 +1,12 @@
 <script lang="ts">
 </script>
 
-<header>
-	<hgroup>
+<div>
+	<header>
 		<h1>Descripteurs de projets</h1>
-	</hgroup>
-</header>
-<article>
-	<p>Les descripteurs de projet sont utilisés pour...</p>
-</article>
+	</header>
+	<ul />
+</div>
 
 <style lang="scss">
 	header {

@@ -2,7 +2,6 @@
 	@component
 	## Auth Modal
 	Singleton component for supabase client (browser) authentication.
-
 -->
 <script lang="ts" context="module">
 	import { browser } from '$app/environment';
@@ -11,7 +10,8 @@
 	import { SEARCH_PARAMS } from '$utils/enums';
 	import { derived, get } from 'svelte/store';
 
-	const SCROLL_LOCK = Symbol('auth');
+	const key = Symbol('auth');
+
 	export const AUTHMODAL_MODE = {
 		SignIn: 'signin',
 		SignUp: 'signup',
@@ -30,7 +30,7 @@
 			}
 			const open = _page.url.searchParams.has(SEARCH_PARAMS.AUTH_MODAL);
 			if (!open) {
-				rootScroll.unlock(SCROLL_LOCK);
+				rootScroll.unlock(key);
 				return false;
 			} else {
 				if (_page.data?.session) {
@@ -42,7 +42,7 @@
 					});
 					return false;
 				}
-				rootScroll.lock(SCROLL_LOCK);
+				rootScroll.lock(key);
 				const mode = _page.url.searchParams.get(SEARCH_PARAMS.AUTH_MODAL);
 				return mode && (Object.values(AUTHMODAL_MODE) as string[]).includes(mode)
 					? (mode as AuthMode)

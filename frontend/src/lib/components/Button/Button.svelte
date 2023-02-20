@@ -343,14 +343,16 @@
 	}
 
 	.danger {
-		color: col(error, 500);
-		background: col(error, 900, 0.2);
+		color: col(error, 700);
+		background: col(error, 100, 0.5);
+		border: 1px solid col(error, 100, 0.5);
 		box-shadow: 0 0.2em 1em -0.5em col(error, 500, 0);
-		transition: all 0.2s ease-out, box-shadow 0.25s ease-in-out;
+		transition: all 0.1s ease-out, box-shadow 0.2s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
 			color: col(bg, 300);
 			background: col(error, 700);
+			border-color: transparent;
 			box-shadow: 0 0.8em 1.5em -1em col(error, 900, 0.5);
 		}
 		&:global(.active) {

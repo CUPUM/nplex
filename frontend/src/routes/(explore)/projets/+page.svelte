@@ -2,6 +2,7 @@
 	import Map from '$components/Map/Map.svelte';
 	import { navbarWidth, NAVBAR_WIDTH } from '$routes/Navbar.svelte';
 	import { rootScroll } from '$stores/scroll';
+	import tonerLight from '$utils/map/styles/tonerLight';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';
 	import ProjectsFacets from './ProjectsFacets.svelte';
@@ -29,7 +30,7 @@
 		<ProjectsFacets />
 	</section>
 	<section class="map">
-		<Map cooperativeGestures={false}>
+		<Map cooperativeGestures={false} mapStyle={tonerLight}>
 			<div class="ui-skeleton" slot="loading" />
 		</Map>
 	</section>

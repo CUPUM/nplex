@@ -87,13 +87,13 @@
 			}
 		}
 		&[data-current]:not(.active) {
-			color: col(fg, 900);
+			color: col(primary, 500);
 			&::before {
-				opacity: 0.75;
-				background: col(bg, 900);
+				opacity: 0.9;
+				// background: var(--nav-bg);
 				// opacity: 0.5;
 				// background: none;
-				// border: 1px solid col(primary, 300);
+				border: 1px dashed col(primary, 100, 0.5);
 			}
 		}
 

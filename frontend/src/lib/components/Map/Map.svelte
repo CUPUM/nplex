@@ -2,7 +2,6 @@
 	@component
 	## Map
 	Generic map primitive component to instanciate a MapLibre context and map.
-
 -->
 <script lang="ts" context="module">
 	/**
@@ -257,7 +256,7 @@
 			padding-block: 0.5rem 0.7rem;
 			// border-radius: var(--ui-radius-md);
 			border-radius: 99px;
-			background: col(fg, 100, 0.2);
+			background: col(bg, 300, 0.75);
 		}
 	}
 

@@ -1,60 +1,21 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Tooltip from '$components/Tooltip.svelte';
-	import type { PageData } from './$types';
 
-	export let data: PageData;
-
-	let options = [
-		{ name: 'a', age: 2 },
-		{ name: 'c', age: 4 },
-		{ name: 'b', age: 3 },
-	];
-
-	const sources = [
-		{
-			name: 'Montreal districts',
-			url: '/api/geo/montreal/districts.json',
-		},
-	] satisfies { name: string; url: string }[];
-
-	async function get(url: string) {
-		const res = await fetch(url, { method: 'GET' });
-		if (!res.ok) {
-			console.error(res);
+	async function getData() {
+		const res = await fetch('/api/test.json');
+		if (res.ok) {
+			const json = await res.json();
+			console.log(json);
 		}
-		const json = await res.json();
-		console.log(json);
 	}
 </script>
 
 <article>
-	<Tooltip message="test">
-		<button class="button">
-			<span class="main">test</span>
-		</button>
-	</Tooltip>
-</article>
-<article>
-	<form method="POST" use:enhance>
-		<select name="test" id="">
-			{#each options as option}
-				<option value={option}>{option.name}</option>
-			{/each}
-		</select>
-		<button type="submit">Submit!</button>
+	<form use:enhance method="POST">
+		<input type="text" name="name" placeholder="Nameridoo" id="" />
+		<button type="submit">Submit that name</button>
 	</form>
-</article>
-<article>
-	{#each sources as source}
-		<button
-			on:pointerdown={() => {
-				get(source.url);
-			}}
-		>
-			Fetch {source.name}
-		</button>
-	{/each}
+	<button on:click={getData}>Get server data!</button>
 </article>
 
 <style lang="scss">

@@ -1,7 +1,6 @@
 <!--
 	@component
 	## Map Control: Draw Circle
-
 -->
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';

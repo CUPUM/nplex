@@ -2,7 +2,6 @@
 	@component
 	Singleton component acting as a toast-like messages outlet.
 	Also holds the ongoing messages stack store.
-
 -->
 <script lang="ts" context="module">
 	import { writable } from 'svelte/store';

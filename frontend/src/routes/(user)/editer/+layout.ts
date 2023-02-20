@@ -50,8 +50,28 @@ export const load = (async (event) => {
 			return res.data;
 		});
 
+	// Editable actors
+	const actors = db
+		.from('editable_actors')
+		.select(
+			`
+	*
+	`
+		)
+		.order('updated_at', { ascending: false })
+		.range(...pagination(0, 10))
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			return res.data;
+		});
+
 	return {
+		// defer: {
 		projects,
 		organizations,
+		actors,
+		// },
 	};
 }) satisfies LayoutLoad;

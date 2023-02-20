@@ -1,21 +1,14 @@
-import { z } from 'zod';
-import { zfd } from 'zod-form-data';
+import { data } from '$routes/api/someServerModule';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
 	default: async (event) => {
 		const formData = await event.request.formData();
-		console.log({ ...formData });
-		const parsed = zfd
-			.formData({
-				test: zfd.json(
-					z.object({
-						name: z.string(),
-						age: z.number(),
-					})
-				),
-			})
-			.safeParse(formData);
-		console.log(parsed);
+		const name = formData.get('name');
+		if (name) {
+			console.log('before', data);
+			data.name = String(name);
+			console.log('after', data);
+		}
 	},
 };

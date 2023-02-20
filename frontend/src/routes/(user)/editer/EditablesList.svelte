@@ -110,12 +110,6 @@
 					</SwitchItem>
 				{/each}
 			</Switch>
-			<!-- {#each FILTER_KEYS as f}
-				<label class:applied={applied.includes(f)}>
-					{FILTERS[f].text}
-					<input type="checkbox" hidden value={f} bind:group={applied} />
-				</label>
-			{/each} -->
 		</form>
 	</header>
 	<ul class:none={filtered.length === 1} class="no-scrollbar">
@@ -166,32 +160,6 @@
 		flex-wrap: wrap;
 		flex-direction: row;
 		gap: 1em;
-
-		label {
-			user-select: none;
-			cursor: pointer;
-			display: flex;
-			align-items: center;
-			padding-block: 0.25em 0.5em;
-			padding-inline: 1.25em;
-			border-radius: 99px;
-			border: 1px solid col(fg, 500, 0.1);
-			transition: all 0.2s var(--ui-ease-out);
-
-			&:hover:not(.applied) {
-				color: col(primary, 500);
-				border: 1px solid col(primary, 500, 0.2);
-			}
-		}
-
-		.applied {
-			color: col(primary, 700);
-			background: col(primary, 100, 0.2);
-			border: 1px solid transparent;
-
-			&:hover {
-			}
-		}
 	}
 
 	ul {
@@ -205,40 +173,5 @@
 
 	li {
 		flex: 0;
-
-		/**
-		 * New entry card, inherits from local a tag.
-		 */
-		:global(.new-entry) {
-			display: flex;
-			flex-direction: column;
-			padding: 1.5rem;
-			gap: 1rem;
-			align-items: center;
-			justify-content: center;
-			background: transparent;
-			color: col(fg, 100);
-			border: 1px dashed col(fg, 100, 0.2);
-			transition: all 0.2s;
-			& > :global(*) {
-				opacity: 0.5;
-				transition: opacity 0.5s;
-			}
-			&:hover {
-				color: col(fg, 500);
-				border: 1px dashed transparent;
-				background: col(fg, 100, 0.1);
-				& > :global(*) {
-					opacity: 1;
-				}
-			}
-			:global(span) {
-				text-align: center;
-				font-weight: 400;
-			}
-			:global(i) {
-				font-size: 2rem;
-			}
-		}
 	}
 </style>

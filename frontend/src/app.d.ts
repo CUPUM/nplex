@@ -19,7 +19,7 @@ declare global {
 	namespace svelte.JSX {
 		// Extend elements typing to allow custom attributes added using `use` directives (actions).
 		interface HTMLAttributes<T> {
-			'onclickoutside'?: (event?: CustomEvent<Event>) => unknown;
+			'onclickoutside'?: (event: CustomEvent<Event>) => unknown;
 			'onenter'?: (event?: CustomEvent) => unknown;
 			'onleave'?: (event?: CustomEvent) => unknown;
 			[POPOVER_OPEN_ATTR]?: '';

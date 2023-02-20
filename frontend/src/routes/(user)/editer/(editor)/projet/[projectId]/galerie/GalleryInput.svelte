@@ -21,7 +21,7 @@
 <label class:loading>
 	<Ripple />
 	<div class="icon">
-		<Icon name="image-add" animateSpeed={2} strokeWidth={1} />
+		<Icon name="image-add" animationSpeed={2} strokeWidth={1} />
 	</div>
 	<legend>Cliquez pour sélectionner ou déposez des fichiers ici.</legend>
 	<input

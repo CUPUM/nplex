@@ -1,53 +1,69 @@
 <!--
 	@component
-	## Loading Progress
+	## Progress Bar
 	A simple loading indicator singleton styled as a progress bar at the top of the viewport.
 
  -->
-<script lang="ts">
-	import { cubicOut } from 'svelte/easing';
-	import { tweened, type Tweened } from 'svelte/motion';
-	import { fade } from 'svelte/transition';
-
-	export let n: Tweened<number> = tweened(0, {
+<script lang="ts" context="module">
+	const progress: Tweened<number> = tweened(0, {
 		duration: 250,
 		easing: cubicOut,
 	});
 
 	let timeout: ReturnType<typeof setTimeout> | undefined;
 
-	export function start() {
-		if ($n) {
+	export function startProgress() {
+		if (get(progress)) {
 			clearTimeout(timeout);
-			n.set(0, { duration: 0 });
+			progress.set(0, { duration: 0 });
 		}
 		const init = Math.random() * 50;
-		n.set(init);
+		progress.set(init);
 		(function increment() {
 			const t = Math.max(Math.random() * 1000, 150);
 			timeout = setTimeout(() => {
-				n.update((prev) => prev + ((100 - prev) * Math.random()) / 2);
+				progress.update((prev) => prev + ((100 - prev) * Math.random()) / 2);
 				increment();
 			}, t);
 		})();
 	}
 
-	export function complete() {
+	export function completeProgress(value: number = 100) {
 		if (!timeout) {
 			return;
 		}
 		clearTimeout(timeout);
-		n.set(100);
+		progress.set(value);
 		timeout = setTimeout(() => {
-			n.set(0, { duration: 0 });
+			progress.set(0, { duration: 0 });
 			timeout = undefined;
 		}, 500);
 	}
+
+	export function resetProgress() {
+		completeProgress(0);
+	}
 </script>
 
-{#if $n}
+<script lang="ts">
+	import { afterNavigate, beforeNavigate } from '$app/navigation';
+	import { cubicOut } from 'svelte/easing';
+	import { tweened, type Tweened } from 'svelte/motion';
+	import { get } from 'svelte/store';
+	import { fade } from 'svelte/transition';
+
+	beforeNavigate((navigation) => {
+		startProgress();
+	});
+
+	afterNavigate((navigation) => {
+		completeProgress();
+	});
+</script>
+
+{#if $progress}
 	<div class="track" out:fade={{ duration: 250 }}>
-		<div class="progress" style:width="{Math.round($n)}%" />
+		<div class="progress" style:width="{Math.round($progress)}%" />
 	</div>
 {/if}
 

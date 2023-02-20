@@ -1,19 +1,20 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Field from '$components/Field/Field.svelte';
-	import { KEY } from '$utils/enums';
+	import { onDestroy } from 'svelte';
 	import { editorDirty } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
-	import { project } from './common';
+	import type { PageData } from './$types';
 
-	$: form_title = $project.title;
+	$: ({ title } = ($page.data as PageData).project);
 
-	$: $editorDirty.title = form_title !== $project.title;
+	$: form_title = title;
 
-	function handleKey(e: KeyboardEvent) {
-		if (e.key === KEY.Enter) {
-			e.preventDefault();
-		}
-	}
+	$: $editorDirty.title = form_title !== title;
+
+	onDestroy(() => {
+		delete $editorDirty.title;
+	});
 </script>
 
 <EditorFormgroup legend="Titre du projet">
@@ -24,6 +25,7 @@
 
 <style lang="scss">
 	div {
-		max-width: var(--ui-width-md);
+		width: var(--ui-width-md);
+		max-width: 100%;
 	}
 </style>

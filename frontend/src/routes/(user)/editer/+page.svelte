@@ -11,7 +11,7 @@
 			<div class="block {ICON_CLASS.hover}">
 				<Ripple />
 				<a href={EDITOR_ROUTES.project.pathname} class="fill" aria-hidden="true">
-					<Icon animateSpeed={0.3} name="pen" strokeWidth={2} strokeLinecap="round" />
+					<Icon animationSpeed={0.3} name="pen" strokeWidth={2} strokeLinecap="round" />
 				</a>
 				<a href={EDITOR_ROUTES.project.pathname} class="main-link">Créer un nouveau projet</a>
 				<a href={EDITOR_ROUTES.project.edit.pathname} class="modify">
@@ -25,7 +25,7 @@
 			>
 				<Ripple />
 				<div class="fill" aria-hidden="true">
-					<Icon animateSpeed={0.3} name="parameters" strokeWidth={2} strokeLinecap="round" />
+					<Icon animationSpeed={0.3} name="parameters" strokeWidth={2} strokeLinecap="round" />
 				</div>
 				<span style="z-index: 1">Éditer les descripteurs de projet</span>
 			</a>
@@ -33,7 +33,7 @@
 		<li class="block {ICON_CLASS.hover}" in:fly={{ delay: 100, y: 12 }}>
 			<Ripple />
 			<a href={EDITOR_ROUTES.organization.pathname} class="fill" aria-hidden="true">
-				<Icon animateSpeed={0.3} name="pen" strokeWidth={2} strokeLinecap="round" />
+				<Icon animationSpeed={0.3} name="pen" strokeWidth={2} strokeLinecap="round" />
 			</a>
 			<a href={EDITOR_ROUTES.organization.pathname} class="main-link">
 				Créer une nouvelle organisation
@@ -46,7 +46,7 @@
 		<li class="block {ICON_CLASS.hover}" in:fly={{ delay: 200, y: 12 }}>
 			<Ripple />
 			<a href={EDITOR_ROUTES.actor.pathname} class="fill" aria-hidden="true">
-				<Icon animateSpeed={0.3} name="pen" strokeWidth={2} strokeLinecap="round" />
+				<Icon animationSpeed={0.3} name="pen" strokeWidth={2} strokeLinecap="round" />
 			</a>
 			<a href={EDITOR_ROUTES.actor.pathname} class="main-link">Créer un nouveau profil d'acteur</a>
 			<a href={EDITOR_ROUTES.actor.edit.pathname} class="modify">
@@ -116,12 +116,12 @@
 		&:hover {
 			overflow: visible;
 			z-index: 1;
-			background: col(primary, 300);
+			background: col(primary, 100);
 			color: col(fg, 500);
 			box-shadow: 0 1rem 7rem -3rem col(primary, 900, 0.5);
 
 			& .fill {
-				color: col(primary, 500);
+				color: col(primary, 300);
 			}
 		}
 	}

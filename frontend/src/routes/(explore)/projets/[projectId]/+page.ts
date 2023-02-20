@@ -1,4 +1,3 @@
-import { dbAdmin } from '$utils/database/admin';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
@@ -15,22 +14,12 @@ export const load = (async (event) => {
 	if (projectRes.error) {
 		throw error(STATUS_CODES.InternalServerError, {
 			message: 'Erreur de la base de données',
-			database: projectRes.error,
+			// database: projectRes.error,
 		});
 	}
 	if (!projectRes.count) {
-		const existsRes = await dbAdmin
-			.from('projects')
-			.select('id', { count: 'exact' })
-			.eq('id', event.params.projectId)
-			.limit(1)
-			.maybeSingle();
-		if (!existsRes.count) {
-			throw error(STATUS_CODES.BadRequest, { message: 'Oops. Ce projet ne semble pas exister.' });
-		}
 		throw error(STATUS_CODES.BadRequest, {
-			message: "Vous n'avez pas accès à ce projet.",
-			proposeAuth: false,
+			message: "Ce projet n'exsite pas ou vous n'y avez pas accès.",
 		});
 	}
 
