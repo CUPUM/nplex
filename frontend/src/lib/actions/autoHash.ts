@@ -1,7 +1,3 @@
-import { goto } from '$app/navigation';
-import { page } from '$app/stores';
-import { get } from 'svelte/store';
-
 interface AutoHashOptions extends IntersectionObserverInit {
 	/**
 	 * String to use as the hash. Defaults to the host element's id.
@@ -25,35 +21,26 @@ export function autoHash(
 		hash = element.id,
 		clearOnLeave = true,
 		root = null,
-		rootMargin = '-50% -25% -50% -25%',
+		rootMargin = '-50% 0% 0% 0%',
 		threshold = 0,
 	}: AutoHashOptions = {}
 ) {
-	function update(entries: IntersectionObserverEntry[]) {
+	function updateHash(entries: IntersectionObserverEntry[]) {
 		if (hash) {
-			const currentPage = get(page);
-			for (const entry of entries) {
-				if (entry.isIntersecting) {
-					const to = new URL(currentPage.url);
-					to.hash = hash;
-					goto(to.toString(), { replaceState: true, noScroll: true });
-				} else if (currentPage.url.hash === hash && clearOnLeave) {
-					const to = new URL(currentPage.url);
-					to.hash = '';
-					goto(to.toString(), { replaceState: true, noScroll: true });
-				}
+			if (entries[0].isIntersecting) {
+				location.hash = hash;
+			} else if (location.hash.slice(1) === hash && clearOnLeave) {
+				console.log('should clear!');
+				location.hash = '';
 			}
 		}
 	}
-
-	const observer = new IntersectionObserver(update, {
+	const observer = new IntersectionObserver(updateHash, {
 		root,
 		rootMargin,
 		threshold,
 	});
-
 	observer.observe(element);
-
 	return {
 		update(newOptions: AutoHashOptions) {
 			// Handle options update.
