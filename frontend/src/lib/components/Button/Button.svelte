@@ -12,6 +12,8 @@
 </script>
 
 <script lang="ts">
+	import { page } from '$app/stores';
+
 	import { ICON_CLASS } from '$components/Icon.svelte';
 	import Loading from '$components/Loading.svelte';
 	import Ripple from '$components/Ripple.svelte';
@@ -33,6 +35,7 @@
 	let for_: string | undefined = undefined;
 	export { for_ as for };
 	export let active: boolean | undefined = false;
+	export let autoActive: boolean = true;
 	export let contentAlign: 'start' | 'center' | 'end' = 'start';
 	export let value: HTMLButtonAttributes['value'] = undefined;
 	export let form: HTMLButtonAttributes['form'] = undefined;
@@ -51,6 +54,9 @@
 	const buttonGroupVariant = buttonGroupContext?.variant;
 
 	$: computedVariant = variant ?? buttonGroupVariant ?? 'default';
+	$: if (autoActive && href) {
+		active = $page.url.pathname === href.split('#')[0].split('?')[0];
+	}
 
 	setContext<ButtonContext>(CTX_KEY, {});
 </script>
@@ -320,8 +326,10 @@
 			background: col(bg, 900, 0.5);
 		}
 		&:global(.active) {
-			color: col(primary, 700);
-			background: col(primary, 300, 0.3);
+			color: col(primary, 500);
+			&:hover {
+				background: col(primary, 100, 0.1);
+			}
 		}
 	}
 
@@ -343,23 +351,19 @@
 	}
 
 	.danger {
-		color: col(error, 700);
-		background: col(error, 100, 0.5);
-		border: 1px solid col(error, 100, 0.5);
+		color: col(error, 500);
+		background: col(error, 700, 0.2);
 		box-shadow: 0 0.2em 1em -0.5em col(error, 500, 0);
 		transition: all 0.1s ease-out, box-shadow 0.2s ease-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(bg, 300);
+			color: rgb(250, 245, 230);
 			background: col(error, 700);
-			border-color: transparent;
-			box-shadow: 0 0.8em 1.5em -1em col(error, 900, 0.5);
 		}
 		&:global(.active) {
 			&:not(.disabled) {
 				color: var(--color-error-300);
 				background: var(--color-error-900);
-				box-shadow: 0 0.5em 1em -0.5em col(error, 900, 0.5);
 			}
 		}
 	}
