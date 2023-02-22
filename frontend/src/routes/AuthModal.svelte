@@ -345,7 +345,7 @@
 		border: none;
 		padding: 2rem 2.5rem;
 		margin: 0;
-		min-width: 0;
+		// min-width: 0;
 		overflow-y: auto;
 	}
 
@@ -375,7 +375,7 @@
 		margin: 0;
 		gap: 1rem;
 		padding: 0;
-		min-width: 0;
+		// min-width: 0;
 
 		span {
 			display: block;
