@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { EDITOR_ROUTES } from './(user)/editer/common';
+	import { EDITOR_ROUTES } from './(authed)/editer/common';
 </script>
 
 {#each Object.values(EDITOR_ROUTES) as group, i}

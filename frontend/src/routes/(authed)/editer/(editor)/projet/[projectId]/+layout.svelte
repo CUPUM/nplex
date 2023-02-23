@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 	import Sidebar from '$components/Sidebar/Sidebar.svelte';
 	import SidebarButton from '$components/Sidebar/SidebarButton.svelte';
-	import { EDITOR_ROUTES } from '$routes/(user)/editer/common';
+	import { EDITOR_ROUTES } from '$routes/(authed)/editer/common';
 	import { EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../common';
 	import EditorHeader from '../../EditorHeader.svelte';
 	import type { LayoutData } from './$types';

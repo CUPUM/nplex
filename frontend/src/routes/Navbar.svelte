@@ -122,12 +122,12 @@
 
 	let mounted = false;
 	let open = false;
-	let rootsegment: string;
+	let rootSegment: string;
 
 	const mainNav = Object.values(MAIN_ROUTES);
 	const exploreNav = Object.values(EXPLORE_ROUTES);
 
-	$: rootsegment = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
+	$: rootSegment = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
 	$: navbg = $navbarBackground ?? $rootBackground.body ?? null;
 
 	function toggle() {
@@ -160,7 +160,7 @@
 			{#each mainNav as route}
 				<NavbarButton
 					href={route.pathname}
-					current={route.pathname.split('#')[0] === rootsegment || undefined}
+					current={route.pathname.split('#')[0] === rootSegment || undefined}
 				>
 					{route.title}
 				</NavbarButton>
@@ -361,15 +361,13 @@
 		&::before {
 			content: '';
 			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset: 0;
 			border-radius: inherit;
 			background: var(--nav-bg);
 			opacity: 0.5;
 			filter: brightness(100%);
-			transition: opacity 0.25s;
+			border: 1px solid var(--nab-bg);
+			transition: opacity 0.25s, border 0.25s;
 		}
 
 		:global([data-theme='light']) & {

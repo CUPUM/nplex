@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { USER_ROUTES } from './(user)/u/common';
+	import { USER_ROUTES } from './(authed)/u/common';
 
 	const SIGNOUT_FORM_ID = 'signout-form';
 
