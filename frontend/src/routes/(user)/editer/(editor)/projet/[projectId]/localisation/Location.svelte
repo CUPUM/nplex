@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import Dirty from '$components/Dirty.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { DRAW_EVENTS } from '$utils/enums';
 	import { throttle } from '$utils/modifiers';
 	import type { DrawCreateEvent, DrawRenderEvent } from '@mapbox/mapbox-gl-draw';
+	import type { Position } from '@turf/turf';
 	import {
-		createCircle,
 		getCircleCenter,
 		getCircleRadius,
 		setCircleRadius,
@@ -14,19 +15,15 @@
 	import { editorDirty } from '../../../common';
 	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
-	import {
-		locationRadius,
-		LOCATION_DEFAULT_RADIUS,
-		LOCATION_MAX_RADIUS,
-		map,
-		mapDraw,
-	} from './common';
+	import { locationRadius, LOCATION_MAX_RADIUS, map, mapDraw } from './common';
 
-	$: location = ($page.data as PageData).project.location;
-	let form_center: typeof location.geometry;
-	let form_radius: typeof location.radius;
-
-	$: $editorDirty.location = form_radius !== location.radius;
+	$: ({ location } = ($page.data as PageData).project);
+	$: editRadius = location.radius;
+	let editCenter: Position;
+	function sync() {
+		editCenter = [...location.geometry!.coordinates];
+	}
+	$: if (location.geometry) sync();
 
 	const updateLocation = throttle((e: DrawRenderEvent) => {
 		if ($mapDraw) {
@@ -37,7 +34,7 @@
 					radius = LOCATION_MAX_RADIUS;
 					setCircleRadius(feature, radius);
 				}
-				form_center = getCircleCenter(feature);
+				editCenter = getCircleCenter(feature);
 				$locationRadius = radius;
 			}
 		}
@@ -55,14 +52,14 @@
 		}
 	}
 
-	function create() {
-		if ($map && $mapDraw) {
-			const center = $map.getCenter().toArray();
-			const circle = createCircle(center, LOCATION_DEFAULT_RADIUS / 1000);
-			$mapDraw.add(circle);
-			$map.fire(DRAW_EVENTS.Create, { features: [circle] });
-		}
-	}
+	// function create() {
+	// 	if ($map && $mapDraw) {
+	// 		const center = $map.getCenter().toArray();
+	// 		const circle = createCircle(center, LOCATION_DEFAULT_RADIUS / 1000);
+	// 		$mapDraw.add(circle);
+	// 		$map.fire(DRAW_EVENTS.Create, { features: [circle] });
+	// 	}
+	// }
 
 	$: if ($map) {
 		/**
@@ -80,6 +77,11 @@
 	});
 </script>
 
+<Dirty
+	sample={{ radius: location.radius, center: location.geometry?.coordinates }}
+	specimen={{ radius: editRadius, center: editCenter }}
+	bind:dirty={$editorDirty.location}
+/>
 <EditorFormgroup legend="Emplacement">
 	<p class="ui-info">
 		<kbd>
@@ -96,7 +98,7 @@
 		type="hidden"
 		readonly
 		name="location"
-		value={JSON.stringify({ center: form_center, radius: form_radius })}
+		value={JSON.stringify({ center: editCenter, radius: editRadius })}
 	/>
 </EditorFormgroup>
 

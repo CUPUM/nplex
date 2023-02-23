@@ -18,6 +18,7 @@
 	--ui-inset: 4px;
 	--ui-height: 3.5em;
 	--ui-pad-x: 1.35em;
+	--ui-border-thickness: 1px;
 	--ui-width-sm: 600px;
 	--ui-width-md: 900px;
 	--ui-width-lg: 1200px;
@@ -43,16 +44,18 @@
 	--ui-ease-in: cubic-bezier(0.9, 0, 0.9, 1);
 	--ui-ease-out: cubic-bezier(0.1, 0, 0.1, 1);
 	--ui-ease-in-out: cubic-bezier(0.7, 0, 0.3, 1);
-	--ui-shadow-sm: 0 0.25rem 1rem -0.5rem rgb(0, 10, 20, 0.2);
-	--ui-shadow-md: 0 0.75rem 1.5rem -0.75rem rgb(0, 10, 20, 0.22);
-	--ui-shadow-lg: 0 1.5rem 3rem -1.25rem rgb(0, 10, 20, 0.25);
-	--ui-shadow-xl: 0 3rem 7rem -3rem rgb(0, 10, 20, 0.28);
+	--ui-shadow-xs: 0 0.2rem 0.5rem -0.4rem rgb(0, 10, 20, 0.22);
+	--ui-shadow-sm: 0 0.25rem 1rem -0.5rem rgb(0, 10, 20, 0.24);
+	--ui-shadow-md: 0 0.75rem 1.5rem -0.75rem rgb(0, 10, 20, 0.26);
+	--ui-shadow-lg: 0 1.5rem 3rem -1.25rem rgb(0, 10, 20, 0.28);
+	--ui-shadow-xl: 0 3rem 7rem -3rem rgb(0, 10, 20, 0.3);
 
 	@include tablet {
 		--ui-nav-h: 88px; // Retrieved manually
 		--ui-nav-center-w: calc(
 			100% - 2 * (1.5rem + 56px)
 		); // 100% - (outer gutter + menu button width + inner gutter)
+		--ui-border-thickness: 1.5px;
 	}
 }
 

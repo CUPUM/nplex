@@ -19,10 +19,24 @@
 		| HTMLButtonElement
 		| HTMLTextAreaElement
 		| undefined;
+	type InputType =
+		| 'text'
+		| 'password'
+		| 'tel'
+		| 'number'
+		| 'date'
+		| 'datetime-local'
+		| 'email'
+		| 'search'
+		| 'time'
+		| 'month'
+		| 'week'
+		| 'url';
 
 	interface FieldContext {
 		value: Writable<Value>;
 		inputRef: Writable<InputRef>;
+		type: Writable<InputType>;
 		min?: number;
 		max?: number;
 	}
@@ -46,7 +60,7 @@
 	export let value: Value = '';
 	export let prefix: string | null | undefined = '';
 	export let suffix: string | null | undefined = '';
-	export let type: 'search' | 'text' | 'password' | 'number' | 'email' = 'text';
+	export let type: InputType = 'text';
 	export let variant: 'default' | 'outlined' | 'cta' | 'opaque' | 'dashed' = 'default';
 	export let textAlign:
 		| 'start'
@@ -67,6 +81,7 @@
 	 * Sets a warning state momentarily and unsets it after a 5s timeout.
 	 */
 	export let invalid: boolean | undefined = undefined;
+	export let dirty: boolean | undefined = undefined;
 	export let maxlength: number | undefined = undefined;
 	export let minlength: number | undefined = undefined;
 	export let min: number | undefined = undefined;
@@ -76,7 +91,6 @@
 	export let autocomplete: string | undefined = 'off';
 	export let placeholder: string = '';
 	export let pattern: RegExp | undefined = undefined;
-	export let dirty: boolean = false;
 	export let tabindex: number = 0;
 	export let style: string | undefined = undefined;
 	export let list: HTMLInputAttributes['list'] = undefined;
@@ -106,6 +120,10 @@
 			clearInvalid();
 		}, 5000);
 	}
+
+	const _type = writable<InputType>(type);
+	$: type = $_type;
+	$: _type.set(type);
 
 	const _inputRef = writable<InputRef>();
 	$: _inputRef.set(inputRef);
@@ -142,6 +160,7 @@
 	setContext<FieldContext>(CTX_KEY, {
 		value: _value,
 		inputRef: _inputRef,
+		type: _type,
 	});
 </script>
 
@@ -173,12 +192,12 @@
 	{#if $$slots.leading}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div class="aside leading" on:click|self={focus}>
-			<slot {dirty} {value} name="leading" />
+			<slot {value} name="leading" />
 		</div>
 	{/if}
 	{#if haslabel}
 		<label in:fly={{ y: 6, opacity: 0 }} for={id} bind:clientWidth={labelWidth}>
-			<slot {dirty} {value} name="label" />
+			<slot {value} name="label" />
 			<span class="star">*</span>
 		</label>
 	{/if}
@@ -237,7 +256,7 @@
 	{#if $$slots.trailing}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div class="aside trailing" on:click|self={focus}>
-			<slot {dirty} {value} name="trailing" />
+			<slot {value} name="trailing" />
 		</div>
 	{/if}
 </fieldset>
@@ -283,7 +302,9 @@
 		&.readonly {
 			cursor: default;
 		}
-		&.warning {
+		&.warning,
+		&:has(:out-of-range),
+		&:has(:invalid) {
 			color: col(error, 700) !important;
 			background: col(error, 100, 0.1) !important;
 
@@ -350,7 +371,6 @@
 		padding-bottom: calc(0.5em - 0.5ex);
 		grid-column: main;
 		top: 0;
-		// min-width: 10ch;
 		flex: 1;
 		white-space: nowrap;
 		border: none;

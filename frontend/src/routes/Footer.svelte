@@ -44,10 +44,10 @@
 >
 	<div class="inner">
 		<section>
-			<hgroup class="sub" style="--i: 0">
+			<hgroup class="sub l" style="--i: 0">
 				<Icon name="map" {...iconOptions} />&ensp;Sections
 			</hgroup>
-			<ul>
+			<ul class="l">
 				{#each mainLinks as link, i}
 					<li style="--i: {i}">
 						<Link href={link.pathname}>{link.title}</Link>
@@ -109,6 +109,12 @@
 		align-items: stretch;
 		gap: 1.5rem;
 		padding: 3rem 1.5rem;
+
+		@include mobile {
+			display: flex;
+			flex-direction: column;
+			padding-bottom: 1.5rem;
+		}
 	}
 
 	.sub {
@@ -134,6 +140,16 @@
 		&.r {
 			justify-content: flex-end;
 		}
+		@include mobile {
+			padding-top: 1rem;
+			border-top: 1px solid col(fg, 100, 0.1);
+			&.c {
+				justify-content: flex-start;
+			}
+			&.r {
+				justify-content: flex-start;
+			}
+		}
 	}
 
 	ul {
@@ -149,6 +165,14 @@
 		}
 		&.r {
 			align-items: flex-end;
+		}
+		@include mobile {
+			&.c {
+				align-items: flex-start;
+			}
+			&.r {
+				align-items: flex-start;
+			}
 		}
 	}
 
@@ -179,5 +203,6 @@
 
 	.cc {
 		margin: 0;
+		padding-inline: 1rem;
 	}
 </style>

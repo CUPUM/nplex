@@ -11,12 +11,12 @@
 	import Portal from '$components/Portal.svelte';
 	import { rootScroll } from '$stores/scroll';
 	import { unsafeUid } from '$utils/random';
-	import { cubicOut } from 'svelte/easing';
-	import { fade, scale } from 'svelte/transition';
+	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { fade, fly, scale } from 'svelte/transition';
 	import { modalOutletRef } from './ModalOutlet.svelte';
 
 	export let opened = false;
-	export let background: string = 'rgb(10,15,20,.5)';
+	export let background: string = '';
 	export let lockScroll: false | string = false;
 	export let closeOnClickoutside = true;
 
@@ -35,7 +35,7 @@
 
 {#if opened && $modalOutletRef}
 	<Portal target={$modalOutletRef}>
-		<div class="bg" style:background transition:fade|local={{ duration: 150 }} />
+		<div class="bg" style:--background={background} transition:fade|local={{ duration: 150 }} />
 		<dialog
 			use:clickoutside
 			on:clickoutside
@@ -44,7 +44,8 @@
 					close();
 				}
 			}}
-			transition:scale={{ start: 0.98, duration: 200, easing: cubicOut }}
+			in:scale={{ start: 0.98, duration: 100, easing: cubicOut }}
+			out:fly|local={{ y: 8, duration: 100, easing: cubicIn }}
 		>
 			{#if $$slots.header}
 				<header>
@@ -70,12 +71,11 @@
 		left: 0;
 		height: 100%;
 		width: 100%;
-		background: rgb(10, 15, 20, 0.5);
+		background: var(--background, rgb(24, 26, 30, 0.75));
 	}
 
 	dialog {
-		--pad: 1.5rem;
-		--bg: #{col(bg, 100)};
+		--bg: #{col(bg, 300)};
 		pointer-events: all;
 		position: relative;
 		display: flex;
@@ -85,27 +85,39 @@
 		box-shadow: var(--ui-shadow-lg);
 		padding: 0;
 		margin: 0 auto;
-		overflow-y: scroll;
+		overflow-y: auto;
 		max-height: 100%;
 		border-radius: var(--ui-radius-lg);
 	}
 
 	article {
-		padding: var(--pad);
+		padding: 2rem;
+		flex: 1;
+		font-size: var(--ui-text-sm);
+		color: col(fg, 500);
 	}
 
 	header {
+		color: col(fg, 000);
 		background: var(--bg);
 		position: sticky;
+		font-size: var(--ui-text-md);
+		font-weight: 500;
 		top: 0;
-		padding: var(--pad);
+		padding: 2rem;
 		padding-bottom: 1rem;
 		border-bottom: 1px solid col(fg, 100, 0.1);
 	}
 
 	footer {
+		display: flex;
+		flex-direction: row;
+		gap: 3px;
+		align-items: center;
+		justify-content: flex-end;
+		font-size: var(--ui-text-sm);
 		background: var(--bg);
-		padding: var(--pad);
+		padding: 1rem;
 		padding-top: 1rem;
 		position: sticky;
 		bottom: 0;

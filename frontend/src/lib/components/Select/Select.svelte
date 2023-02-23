@@ -15,8 +15,8 @@
 	import { getContext, type ComponentProps } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
-	import Field from './Field/Field.svelte';
-	import Icon from './Icon.svelte';
+	import Field from '../Field/Field.svelte';
+	import Icon from '../Icon.svelte';
 
 	type Option = $$Generic;
 

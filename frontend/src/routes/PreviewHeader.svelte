@@ -74,8 +74,12 @@
 		flex-direction: row;
 		gap: 1.5rem;
 		align-items: center;
-		font-size: var(--ui-text-3xl);
 		font-weight: 600;
+		font-size: var(--ui-text-3xl);
+		@include mobile {
+			font-size: var(--ui-text-2xl);
+			flex-wrap: wrap;
+		}
 	}
 
 	h2 {
@@ -89,5 +93,9 @@
 		font-size: 0.5em;
 		transform: translateX(-0.1em);
 		transition: transform 0.15s var(--ui-ease-out), opacity 0.1s ease-out;
+
+		@include mobile {
+			display: none;
+		}
 	}
 </style>

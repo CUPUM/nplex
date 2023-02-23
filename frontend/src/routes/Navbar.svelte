@@ -268,11 +268,11 @@
 			position: absolute;
 			pointer-events: none;
 			border-radius: 0 var(--ui-radius-lg) var(--ui-radius-lg) 0;
-			overflow: hidden;
-			height: 100vh;
+			overflow-x: hidden;
+			overflow-y: auto;
+			height: 100svh;
 			width: 0;
 			background: col(bg, 100);
-			// backdrop-filter: blur(8px);
 			transform-origin: top left;
 			transition: all 0.35s var(--ui-ease-in);
 			&:not(.open) {
@@ -341,15 +341,21 @@
 
 	.category {
 		--i: 1;
+		--outset: var(--ui-inset);
+		--radius: var(--ui-radius-md);
 		grid-column: category;
 		justify-self: center;
-		padding: var(--ui-inset);
-		border-radius: calc(var(--ui-inset) + var(--ui-radius-md));
+		padding: var(--outset);
+		border-radius: calc(var(--outset) + var(--radius));
 		backdrop-filter: blur(8px);
-		margin-block: calc(-1 * var(--ui-inset));
+		box-shadow: var(--ui-shadow-xs);
+		margin-block: calc(-1 * var(--outset));
 
 		@include tablet {
+			--outset: 0px;
 			margin-block: unset;
+			border: var(--ui-border-thickness) solid col(fg, 100, 0.1);
+			box-shadow: unset;
 		}
 
 		&::before {

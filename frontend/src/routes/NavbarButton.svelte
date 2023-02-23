@@ -47,7 +47,7 @@
 		font-weight: 500;
 		padding: 0 1.25em;
 		height: calc(var(--ui-height) - 2 * var(--inset, 0px));
-		border-radius: calc(var(--ui-radius-md) - var(--inset, 0px));
+		border-radius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
 		letter-spacing: 0.02em;
 		line-height: 1;
 
@@ -93,7 +93,7 @@
 				// background: var(--nav-bg);
 				// opacity: 0.5;
 				// background: none;
-				border: 1px dashed col(primary, 100, 0.5);
+				border: var(--ui-border-thickness) dashed col(primary, 500, 0.5);
 			}
 		}
 

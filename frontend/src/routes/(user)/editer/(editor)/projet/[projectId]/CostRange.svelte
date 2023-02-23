@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import Dirty from '$components/Dirty.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import Range from '$components/Range/Range.svelte';
 	import RangeGroup from '$components/Range/RangeGroup.svelte';
@@ -16,10 +17,7 @@
 	function sync() {
 		form_cost_range = [...cost_range];
 	}
-
 	$: cost_range, sync();
-
-	$: $editorDirty.cost_range = !form_cost_range.every((v, i) => v === cost_range[i]);
 
 	function checkMin() {
 		form_cost_range[0] = Math.max(
@@ -36,6 +34,12 @@
 	}
 </script>
 
+<Dirty
+	sample={cost_range}
+	specimen={form_cost_range}
+	bind:dirty={$editorDirty.cost_range}
+	strictOrder
+/>
 <EditorFormgroup legend="Fourchette de coûts">
 	<p class="ui-info">
 		Indiquez approximativement les coûts totaux du projet, selon un niveau de précision avec lequel
@@ -86,16 +90,17 @@
 
 <style lang="scss">
 	fieldset {
-		width: var(--ui-width-md);
-		max-width: 100%;
+		width: 100%;
+		max-width: var(--ui-width-md);
 		display: grid;
 		flex-direction: row;
 		gap: 2rem;
 		margin-top: 2rem;
-		grid-template-areas: 'min range range range range max';
-		grid-auto-flow: dense;
+		grid-template-areas: 'min range max';
+		grid-template-columns: 1fr 3fr 1fr;
 
 		@include tablet {
+			grid-template-columns: 1fr 1fr;
 			grid-template-areas:
 				'min		max'
 				'range	range';

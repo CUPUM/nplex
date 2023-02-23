@@ -50,13 +50,8 @@
 		width: 100%;
 		max-width: var(--ui-width-main);
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 		gap: 1.5rem;
-
-		@include tablet {
-			display: flex;
-			flex-direction: column;
-		}
 	}
 
 	li {
@@ -91,6 +86,7 @@
 		}
 
 		&:hover {
+			z-index: 1;
 			color: col(fg, 900);
 			background: col(primary, 100);
 			overflow: visible;
@@ -103,6 +99,7 @@
 	}
 
 	i {
+		pointer-events: none;
 		top: 0;
 		display: flex;
 		height: 100%;

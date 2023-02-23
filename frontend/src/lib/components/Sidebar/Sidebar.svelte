@@ -15,7 +15,7 @@
 		position: sticky;
 		top: var(--ui-nav-h);
 		overflow-y: auto;
-		padding: 1.5rem 1rem;
+		padding-top: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		overflow-x: hidden;

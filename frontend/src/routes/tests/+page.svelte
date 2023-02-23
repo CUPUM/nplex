@@ -1,25 +1,77 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-
-	async function getData() {
-		const res = await fetch('/api/test.json');
-		if (res.ok) {
-			const json = await res.json();
-			console.log(json);
-		}
-	}
+	import Breadcrumbs from '$components/Breadcrumbs/Breadcrumbs.svelte';
+	import BreadcrumbsItem from '$components/Breadcrumbs/BreadcrumbsItem.svelte';
+	import BreadcrumbsSeparator from '$components/Breadcrumbs/BreadcrumbsSeparator.svelte';
+	import OverflowEffect from '$components/OverflowEffect.svelte';
 </script>
 
 <article>
-	<form use:enhance method="POST">
-		<input type="text" name="name" placeholder="Nameridoo" id="" />
-		<button type="submit">Submit that name</button>
-	</form>
-	<button on:click={getData}>Get server data!</button>
+	<Breadcrumbs>
+		<BreadcrumbsItem href="/tests">Test</BreadcrumbsItem>
+		<BreadcrumbsSeparator />
+		<BreadcrumbsItem href="/tests">Test</BreadcrumbsItem>
+		<BreadcrumbsSeparator />
+		<BreadcrumbsItem href="/tests">Test</BreadcrumbsItem>
+		<BreadcrumbsSeparator />
+		<BreadcrumbsItem href="/tsests">Test</BreadcrumbsItem>
+		<BreadcrumbsSeparator />
+		<BreadcrumbsItem href="/tests">Test</BreadcrumbsItem>
+		<BreadcrumbsSeparator />
+		<BreadcrumbsItem href="/tests">Test</BreadcrumbsItem>
+		<BreadcrumbsSeparator />
+		<BreadcrumbsItem href="/tests">Test</BreadcrumbsItem>
+		<BreadcrumbsSeparator />
+		<BreadcrumbsItem href="/tests">Test</BreadcrumbsItem>
+		<BreadcrumbsSeparator />
+		<BreadcrumbsItem href="/tests">Test</BreadcrumbsItem>
+	</Breadcrumbs>
+</article>
+<article>
+	<nav>
+		<OverflowEffect x>
+			<div class="inner">
+				<a href="/">Test</a>
+				<a href="/">Test</a>
+				<a href="/">Test</a>
+				<a href="/">Test</a>
+				<a href="/">Test</a>
+				<a href="/">Test</a>
+				<a href="/">Test</a>
+				<a href="/">Test</a>
+				<a href="/">Test</a>
+				<a href="/">Test</a>
+				<a href="/">Test</a>
+			</div>
+		</OverflowEffect>
+	</nav>
 </article>
 
 <style lang="scss">
 	article {
 		padding: 5rem;
+	}
+
+	nav {
+		flex: none;
+		display: block;
+		border-radius: 1em;
+		background: wheat;
+		position: relative;
+		width: 300px;
+
+		.inner {
+			position: relative;
+			height: var(--ui-height);
+			padding: 3px 1em;
+			display: inline-flex;
+			flex-wrap: nowrap;
+			gap: 1em;
+			align-items: center;
+		}
+
+		a {
+			display: block;
+			flex: none;
+		}
 	}
 </style>

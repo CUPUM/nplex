@@ -11,13 +11,9 @@
 </script>
 
 <Title />
-<!-- <hr /> -->
 <Description />
-<!-- <hr /> -->
 <Type />
-<!-- <hr /> -->
 <Works />
-<!-- <hr /> -->
 <CostRange />
 
 <style lang="scss" module>

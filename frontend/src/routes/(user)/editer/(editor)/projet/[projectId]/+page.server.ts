@@ -36,7 +36,7 @@ export const actions: Actions = {
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
+			return fail(STATUS_CODES.BadRequest, { fieldErrors: parsed.error.formErrors.fieldErrors });
 		}
 		const db = await getDb(event);
 		// projects table
@@ -75,5 +75,6 @@ export const actions: Actions = {
 						}
 					});
 			});
+		return { nut: true };
 	},
 };

@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import Area from './Area.svelte';
-	import District from './District.svelte';
 	import LocalisationMap from './LocalisationMap.svelte';
 	import Location from './Location.svelte';
 
@@ -14,10 +12,8 @@
 	</section>
 	<section class="fields">
 		<Location />
-		<hr />
-		<Area />
-		<hr />
-		<District />
+		<!-- <Area /> -->
+		<!-- <District /> -->
 		<!-- <hr />
 		<AdjacentStreets adjacent_streets={data.project.adjacent_streets} />
 		<hr />
@@ -36,16 +32,12 @@
 		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		grid-auto-flow: dense;
-	}
-
-	hr {
-		grid-column: 1 / -1;
+		gap: 1.5rem;
 	}
 
 	.map {
-		--pad-top: calc(var(--ui-nav-h) + 1rem);
-		padding-inline: 1.5rem;
+		--pad-top: calc(var(--ui-nav-h) + 1.5rem);
+		align-self: flex-start;
 		grid-column: 2;
 		grid-row: 1;
 		position: sticky;
@@ -54,10 +46,9 @@
 	}
 
 	.fields {
-		grid-column: 1 / -1;
-		grid-row: 1;
-		display: grid;
-		grid-template-columns: inherit;
+		grid-column: 1;
+		display: flex;
+		flex-direction: column;
 		gap: inherit;
 
 		:global(.editor-section) {

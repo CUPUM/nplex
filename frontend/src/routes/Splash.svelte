@@ -62,7 +62,7 @@
 	header {
 		--radius: min(var(--ui-radius-2xl), calc(var(--ui-scroll-y) * 0.15));
 		position: relative;
-		height: 100vh;
+		height: 100svh;
 		width: 100%;
 		background: col(bg, 300);
 		border-bottom-left-radius: var(--radius);

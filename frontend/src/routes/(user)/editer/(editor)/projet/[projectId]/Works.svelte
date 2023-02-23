@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import AnimateHeight from '$components/AnimateHeight.svelte';
+	import Dirty from '$components/Dirty.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import Icon from '$components/Icon.svelte';
@@ -15,7 +16,7 @@
 	import { editorDirty } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
-	import { form_type_id } from './common';
+	import { editTypeId } from './common';
 
 	$: work_ids = ($page.data as PageData).project.work_ids;
 	$: descriptors = ($page.data as PageData).descriptors;
@@ -26,7 +27,7 @@
 	}
 	$: work_ids, sync();
 
-	$: available = descriptors.types.find((t) => t.id === $form_type_id)?.works ?? [];
+	$: available = descriptors.types.find((t) => t.id === $editTypeId)?.works ?? [];
 
 	$: selected = form_work_ids.reduce((acc, curr) => {
 		const w = available.find((w) => w.id === curr);
@@ -35,10 +36,6 @@
 		}
 		return acc;
 	}, Array<(typeof available)[number]>(0));
-
-	$: $editorDirty.work_ids =
-		selected.length !== (work_ids.length ?? []) ||
-		!selected.every((work) => (work_ids ?? []).indexOf(work.id) > -1);
 
 	let searchResults: typeof available | null = null;
 
@@ -81,6 +78,7 @@
 	});
 </script>
 
+<Dirty sample={work_ids} specimen={form_work_ids} bind:dirty={$editorDirty.work_ids} />
 <EditorFormgroup legend="Travaux" style="align-self: stretch;">
 	<AnimateHeight>
 		<ul class="selected">
@@ -108,7 +106,7 @@
 			{/if}
 		</ul>
 	</AnimateHeight>
-	<fieldset class="search" disabled={form_type_id === null}>
+	<fieldset class="search" disabled={editTypeId === null}>
 		<Field
 			type="search"
 			class="field"

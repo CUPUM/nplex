@@ -10,13 +10,14 @@ const INPUT_VALUE_PROP = {
 	[INPUT_TYPE.Radio]: 'checked',
 } as const satisfies Record<ValueOf<typeof INPUT_TYPE>, string>;
 
-interface DirtyOptions {
-	comparer: any;
+export interface DirtyOptions {
+	sample: any;
+	compare?: () => boolean;
 }
 
 export default function dirty(
-	element: HTMLInputElement | HTMLTextAreaElement,
-	{}: DirtyOptions = {}
+	element: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+	{ sample, compare }: DirtyOptions
 ): SvelteActionReturnType {
 	const type = element.type.toLowerCase();
 	const prop: ValueOf<typeof INPUT_VALUE_PROP> | 'value' =

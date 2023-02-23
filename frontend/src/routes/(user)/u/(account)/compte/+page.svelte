@@ -5,7 +5,7 @@
 	import Field from '$components/Field/Field.svelte';
 	import FieldTogglePassword from '$components/Field/FieldTogglePassword.svelte';
 	import Icon from '$components/Icon.svelte';
-	import Select from '$components/Select.svelte';
+	import Select from '$components/Select/Select.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import { LOAD_DEPENDENCIES } from '$utils/enums';
 	import type { PageData } from './$types';
@@ -62,13 +62,13 @@
 	</p>
 	<Select options={data.roles} variant="outlined">
 		<svelte:fragment slot="label">Rôle</svelte:fragment>
-		<option slot="option" let:option value={option.app_role}>{option.title}</option>
+		<option slot="option" let:option value={option.role}>{option.title}</option>
 	</Select>
 	<div class="ui-select">
 		<span>Test</span>
 		<select name="role">
 			{#each data.roles as role}
-				<option value={role.app_role}>
+				<option value={role.role}>
 					{role.title}:
 					<i>{role.description}</i>
 				</option>

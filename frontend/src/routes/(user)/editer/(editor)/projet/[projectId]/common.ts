@@ -13,7 +13,7 @@ export const COST_MAX = 50_000;
 export const COST_MAX_DELTA = 10_000;
 export const COST_STEP = 10;
 
-export const form_type_id = writable<PageData['project']['type_id']>();
+export const editTypeId = writable<PageData['project']['type_id']>();
 export const form_banner_id = writable<PageData['project']['banner_id']>();
 
 export const titleSchema = zfd.text(

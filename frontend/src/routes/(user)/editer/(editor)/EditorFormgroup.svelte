@@ -16,7 +16,6 @@
 		padding: 3rem;
 		width: 100%;
 		background: col(bg, 700);
-		// border: 1px solid col(fg, 000, 0.05);
 		border-radius: var(--ui-radius-lg);
 		transition: all 0.15s;
 
@@ -26,7 +25,6 @@
 
 		@include laptop {
 			padding: 2.5rem;
-			// max-width: var(--ui-width-md);
 		}
 	}
 

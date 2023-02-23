@@ -37,7 +37,7 @@
 		},
 		{
 			pathname: base('/exemplarite'),
-			title: 'Indicateurs d’exemplarité',
+			title: 'Exemplarité', // 'Indicateurs d’exemplarité'
 		},
 		{
 			pathname: base('/realisation'),
@@ -61,8 +61,6 @@
 			<SidebarButton href={r.pathname}>{r.title}</SidebarButton>
 		{/each}
 	</Sidebar>
-	<hr />
-	<!-- {#key key} -->
 	<form
 		use:enhance={({ form, data, action, cancel }) => {
 			updating = true;
@@ -79,7 +77,6 @@
 	>
 		<slot />
 	</form>
-	<!-- {/key} -->
 </div>
 
 <style lang="scss">
@@ -88,6 +85,9 @@
 		display: flex;
 		align-items: flex-start;
 		flex-direction: row;
+		gap: 1.5rem;
+		padding: 1.5rem;
+		padding-top: 0;
 	}
 
 	form {
@@ -95,9 +95,6 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		overflow-x: hidden;
-		gap: 0.5rem;
-		padding: 1.5rem 1.5rem;
-		padding-left: 0.5rem;
+		gap: 1.5rem;
 	}
 </style>

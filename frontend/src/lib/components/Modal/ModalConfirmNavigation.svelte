@@ -25,12 +25,18 @@
 	/**
 	 * Confirm the previously interrupted navigation and proceed to the expected destination.
 	 */
-	export function confirm(opts?: Parameters<typeof goto>[1]) {
+	export function confirm(opts?: Parameters<typeof goto>[1] | Event) {
 		if (intercepted) {
-			goto(intercepted.url, opts).then(() => {
+			goto(intercepted.url, opts instanceof Event ? undefined : opts).then(() => {
 				intercepted = null;
 			});
 		}
+	}
+
+	$: if (intercepted && !intercept) {
+		// We are here because the modal is opened but the interception state changed. This may be due to a form being successfully submitted.
+		// console.log('Should close and confirm');
+		confirm();
 	}
 
 	/**
@@ -61,9 +67,20 @@
 </script>
 
 <Modal opened={!!intercepted} closeOnClickoutside={false} on:clickoutside={cancel}>
-	<code>{!!intercepted}</code>
+	<svelte:fragment slot="header">Sauvegarder&thinsp;?</svelte:fragment>
 	<slot {confirm} {cancel} />
+	<svelte:fragment slot="footer">
+		<slot name="footer" />
+	</svelte:fragment>
 </Modal>
 
 <style lang="scss">
+	div {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: center;
+		gap: 3px;
+	}
 </style>

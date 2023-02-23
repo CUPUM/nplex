@@ -334,19 +334,19 @@
 	}
 
 	.cta {
-		color: col(bg, 300);
+		color: col(bg, 500);
 		background: col(primary, 500);
-		// box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
+		box-shadow: 0 0.2em 1em -0.5em col(primary, 300, 0);
 		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover {
-			color: col(bg, 500);
+			color: col(primary, 100);
 			background: col(primary, 700);
-			// box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.25);
+			box-shadow: 0 0.8em 1.5em -1em col(primary, 300, 0.25);
 		}
 		&:global(.active) {
 			filter: brightness(0.9);
-			// box-shadow: 0 0.5em 1em -0.5em col(primary, 900, 0.5);
+			box-shadow: 0 0.5em 1em -0.5em col(primary, 300, 0.5);
 		}
 	}
 

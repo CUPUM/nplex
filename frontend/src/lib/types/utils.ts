@@ -20,3 +20,5 @@ export type Single<T> = T extends readonly unknown[] ? T[0] : never;
 export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, unknown> ? K : never;
 
 export type KeyOfSet<S extends Set<unknown>> = S extends Set<infer K> ? K : never;
+
+export type PickUnion<U, S extends U> = S;

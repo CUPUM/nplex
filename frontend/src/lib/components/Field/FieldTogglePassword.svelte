@@ -10,18 +10,16 @@
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
 
-	const { inputRef } = getFieldContext();
+	const { inputRef, type } = getFieldContext();
 
 	function toggle() {
-		if (!$inputRef) {
-			return;
-		}
-		$inputRef.setAttribute('type', $inputRef.type === 'password' ? 'text' : 'password');
+		// $inputRef?.setAttribute('type', $inputRef.type === 'password' ? 'text' : 'password');
+		$type = $type === 'password' ? 'text' : 'password';
 	}
 </script>
 
 <Button {variant} on:click={toggle} equi>
-	<Icon name={$inputRef?.type === 'password' ? 'eye-open' : 'eye-cross'} />
+	<Icon name={$type === 'password' ? 'eye-open' : 'eye-cross'} />
 </Button>
 
 <style lang="scss">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Select from '$components/Select.svelte';
+	import Select from '$components/Select/Select.svelte';
 	import type { PageData } from './$types';
 	import { descriptors } from './common';
 

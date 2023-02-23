@@ -1,8 +1,10 @@
+import type { AnyRecord } from '$types/utils';
+
 /**
  * Check if value is an object.
  */
-export function isObject<T>(value: T): value is Record<any, any> {
-	return !!value && typeof value === 'object' && !Array.isArray(value);
+export function isObject<T>(value: T): value is AnyRecord {
+	return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
 /**

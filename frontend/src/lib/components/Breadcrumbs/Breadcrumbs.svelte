@@ -9,7 +9,7 @@
 </script>
 
 <nav class="ui-breadcrumbs {variant} no-scrollbar">
-	<OverflowEffect class>
+	<OverflowEffect>
 		<div class="inner">
 			<slot />
 		</div>

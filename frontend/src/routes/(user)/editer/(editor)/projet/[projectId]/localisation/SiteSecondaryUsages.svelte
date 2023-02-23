@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
-	import Select from '$components/Select.svelte';
+	import Select from '$components/Select/Select.svelte';
 	import { flip } from 'svelte/animate';
 	import { cubicOut } from 'svelte/easing';
 	import type { DeepNullable } from 'ts-essentials';
