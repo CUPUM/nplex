@@ -39,8 +39,8 @@
 		align-items: center;
 		justify-content: flex-start;
 		position: relative;
-		padding-inline: var(--ui-pad-x);
-		padding-block: 0.75em;
+		padding-inline: 1em;
+		padding-block: 0.5em;
 		border-radius: var(--ui-radius-md);
 		font-weight: 550;
 		transition: all 0.1s ease-out;

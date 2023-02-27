@@ -341,15 +341,15 @@
 
 	.category {
 		--i: 1;
-		--outset: var(--ui-inset);
+		--inset: var(--ui-inset);
 		--radius: var(--ui-radius-md);
 		grid-column: category;
 		justify-self: center;
-		padding: var(--outset);
-		border-radius: calc(var(--outset) + var(--radius));
+		padding: var(--inset);
+		border-radius: var(--radius);
 		backdrop-filter: blur(8px);
-		box-shadow: var(--ui-shadow-xs);
-		margin-block: calc(-1 * var(--outset));
+		// border-radius: calc(var(--outset) + var(--radius));
+		// margin-block: calc(-1 * var(--outset));
 
 		@include tablet {
 			--outset: 0px;

@@ -36,8 +36,12 @@
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 1.5rem;
-		padding-inline: 1.5rem;
+		padding-inline: 3rem;
 		margin-top: 1.5rem;
+
+		@include tablet {
+			padding-inline: 2rem;
+		}
 	}
 
 	form {
@@ -74,7 +78,7 @@
 		flex-direction: row;
 		gap: 1.5rem;
 		align-items: center;
-		font-weight: 600;
+		font-weight: 550;
 		font-size: var(--ui-text-3xl);
 		@include mobile {
 			font-size: var(--ui-text-2xl);

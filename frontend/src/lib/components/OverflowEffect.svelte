@@ -27,8 +27,8 @@
 	import type { ValueOf } from 'ts-essentials';
 	import Icon from './Icon.svelte';
 
-	export let x: boolean | 'auto' | 'scroll' = false;
-	export let y: boolean | 'auto' | 'scroll' = false;
+	export let x: boolean | 'auto' | 'scroll' = 'auto';
+	export let y: boolean | 'auto' | 'scroll' = 'auto';
 	export let bufferDistance = 50;
 	export let scrollDistance = 200;
 
@@ -139,7 +139,7 @@
 
 <style lang="scss">
 	.container {
-		--ui-overflow-effect-size: var(--overflow-effect-size, min(25%, 100px));
+		--ui-overflow-effect-size: var(--overflow-effect-size, min(30%, 120px));
 		--ui-overflow-effect-color: var(--overflow-effect-color, #{col(bg, 100)});
 		border-radius: inherit;
 		position: relative;

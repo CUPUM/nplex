@@ -1,86 +1,49 @@
-## Components organization
+# Components organization
 
-Components' files should be organized into three directories:
+Nplex's UI components should be organized (in progress) under their own directories as co-located
+collections of `.svelte` markup + logic and `.scss` styles.
 
-- `/primitives` : For primitive-level components used across the app to compose more complex components, layouts, or
-  pages.
-- `/complexes` : For reusable higher-order, more complex components used across multiple layouts / pages / components.
-  Complex component compositions specific to a layout or page should be placed to its side, inside the route folder.
+## Edge cases
 
-Avoid grouping components in subfolders and use clearly composed names (with prefixes, subfixes, etc.) to organize
-siblings or related components. Components should be named in `PascalCase` and without punctuation apart from the
-extension.
+### Group bindings
 
-## Archetype
+For components that need to handle `bind:group`, refer to
+https://github.com/sveltejs/svelte/issues/2308#issuecomment-539954299.
 
-Primitive components should strive to implement behaviors and props consistently. Here is a model outlining how various
-common features of such components should be setup:
+We decide to adopt the following makeshift solution:
 
-```html
-<!--
-  @component
-  ## Name
-  Description
--->
-<script lang="ts" context="module">
-  const CTX_KEY = 'component-name-context';
+```ts
+$: type === 'radio' && updateRadio(group, value);
+$: type === 'checkbox' && group && value != null && updateCheckbox(group, value);
+$: type === 'checkbox' && group && updateGroup(checked, value);
 
-  interface ComponentNameContext {
-    value: Writable<string>;
-    ...
+function updateRadio(g: $$Props['group'], v: $$Props['value']) {
+  checked = group === value;
+}
+
+function updateCheckbox(g: NonNullable<$$Props['group']>, v: NonNullable<$$Props['value']>) {
+  checked = g.indexOf(v) > -1;
+}
+
+function updateGroup(c?: boolean, v?: V) {
+  if (!group || v == null) {
+    return;
   }
-
-  export function getComponentNameContext() {
-    return getContext(CTX_KEY);
+  const index = group.indexOf(v);
+  if (c) {
+    if (index < 0) {
+      group.push(v);
+      group = group;
+    }
+  } else {
+    if (index >= 0) {
+      group.splice(index, 1);
+      group = group;
+    }
   }
-</script>
-
-<script lang="ts">
-  import { getContext } from 'svelte';
-  import { forwardEvents } from '$utils/forwardEvents';
-
-  export let someProp: string | undefined = undefined;
-  export let value: string = '';
-  let className: string = '';
-  export { className as class };
-  export let style: string | undefined = undefined;
-
-  let ref: HTMLElement;
-
-  /**
-   * Forward all on:* directives without having to manually declare them on the ref element. This reduces template
-   * clutter but results in loss of proper intellisens on component invokers (no on:... auto-completion).
-   */
-
-  forwardEvents(() => ref);
-
-  /**
-   * Some components should provide certain reactive properties through their context. This implies passing stores to
-   * ensure a proper coupling of public/private properties for reactive context accessible to children. For this to work
-   * without requiring devs to pass a store, the concerned component's exported properties have to be two-way bound with
-   * privately kept stores. For consistency, the indicated approach is as follows:
-   */
-
-  const ctx_value = writable(value);
-  $: value = $ctx_value;
-  $: ctx_value.set(value);
-
-  function handleInput(e: InputEvent) {
-    // Apply any formatting function here or in an on:change handler.
-    value = (e.target as HTMLInputElement).value;
-  }
-
-  /**
-   * Setting a context when needed.
-   */
-
-  setContext<ComponentNameContext>(CTX_KEY, {});
-</script>
-
-<input bind:this="{ref}" type="text" class="component-name {className}" {style} {value} on:input="{handleInput}" />
-
-<style lang="scss">
-  .component-name {
-  }
-</style>
+}
 ```
+
+Note that, unlike svelte's own handling of group bindings that keeps the order of the original
+array, this implementation follows a _push-last_ logic where elements are added to the group array
+in the order they are checked.

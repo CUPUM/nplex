@@ -4,14 +4,16 @@ const DEBOUNCE_RATE = 500;
 const BASE_REGEX = RegExp('^' + base);
 
 /**
- * Create an URL object from or for a relative url to facilitate URL parsing and other tasks when
- * the full href isn't necessary. Useful for handling params when concerned with in-app,
+ * Create an URL object from an optionally relative href string to facilitate URL parsing and other
+ * tasks with independant URL components. Useful for handling params when concerned with in-app,
  * root-relative, URLs.
  */
-export class RelativeURL extends URL {
+export class UnbasedURL extends URL {
 	constructor(url: ConstructorParameters<typeof URL>[0]) {
-		const fallbackBase = 'http://www.himom.com';
-		super(url, fallbackBase);
+		super(
+			url,
+			url instanceof URL || !url.startsWith('/') ? undefined : 'http://www.placeholder.com'
+		);
 	}
 	get href() {
 		return super.href.replace(super.origin, '');

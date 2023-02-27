@@ -14,6 +14,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { KEY } from '$utils/enums';
+	import { snap } from '$utils/number';
 	import { onDestroy } from 'svelte';
 	import { spring } from 'svelte/motion';
 	import { scale } from 'svelte/transition';
@@ -23,7 +24,6 @@
 		min: rangeMin,
 		max: rangeMax,
 		step,
-		snap,
 		direction,
 		pc,
 		map,
@@ -75,7 +75,9 @@
 		} else {
 			delta = e.pageY - starty;
 		}
-		value = snap(Math.max(Math.min(startvalue + map(delta), max), min));
+		value = snap(Math.max(Math.min(startvalue + map(delta), max), min), $step, {
+			origin: $rangeMin,
+		});
 	}
 
 	function dragstart(e: PointerEvent) {

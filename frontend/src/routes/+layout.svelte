@@ -83,7 +83,7 @@
 		top: 0;
 		left: 0;
 		width: 100%;
-		height: 100vh;
+		height: 100%;
 		pointer-events: none;
 		user-select: none;
 		color: col(bg, 300);

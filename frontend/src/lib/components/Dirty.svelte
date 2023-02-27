@@ -5,67 +5,9 @@
 	When using, ensure the lifecycle of the component corresponds to the desired lifecycle of the bound dirty state.
 	
 -->
-<script lang="ts" context="module">
-	import { isObject } from '$utils/object';
-
-	function isDirty<T>(sample: T, specimen: T, strictOrder: boolean): boolean {
-		const err = new Error('Types of compared values do not coincide.');
-		try {
-			if (typeof sample !== typeof specimen) {
-				if (sample == null || specimen == null) {
-					return true;
-				}
-				throw err;
-			}
-			// Compare primitives (including null and undefined) with naive equality check.
-			if (
-				typeof sample === 'string' ||
-				typeof sample === 'number' ||
-				typeof sample === 'boolean' ||
-				sample == null
-			) {
-				return specimen != sample;
-			}
-			// Compare arrays.
-			else if (Array.isArray(sample)) {
-				if (!Array.isArray(specimen)) {
-					throw err;
-				}
-				return (
-					sample.length !== specimen.length ||
-					sample.some((sampleItem, i) => {
-						if (strictOrder) {
-							return isDirty(sampleItem, specimen[i], strictOrder);
-						}
-						return specimen.every((specimenItem) => {
-							return isDirty(sampleItem, specimenItem, strictOrder);
-						});
-					})
-				);
-			}
-			// Compare objects.
-			else if (isObject(sample)) {
-				if (!isObject(specimen)) {
-					throw err;
-				}
-				const sampleKeys = Object.keys(sample);
-				const specimenKeys = Object.keys(specimen);
-				return (
-					sampleKeys.length !== specimenKeys.length ||
-					sampleKeys.some((sampleKey) => {
-						return isDirty((sample as any)[sampleKey], specimen[sampleKey], strictOrder);
-					})
-				);
-			}
-		} catch (error) {
-			console.error(error);
-		}
-		return true;
-	}
-</script>
-
 <script lang="ts">
-	import { onDestroy } from 'svelte';
+	import isEqual from '$utils/isEqual';
+	import { createEventDispatcher, onDestroy } from 'svelte';
 
 	export let dirty = false;
 	/**
@@ -79,15 +21,25 @@
 	/**
 	 * Should array comparison take into account the order of array members?
 	 */
-	export let strictOrder: boolean = false;
+	export let strictOrder: boolean | undefined = undefined;
 	/**
-	 * Comparison function.
+	 * Comparison function, should return true when values differ, i.e. when the specimen in
+	 * considered dirty.
 	 */
-	export let compare: (sample: T, specimen: T) => boolean = (s, v) => isDirty(s, v, strictOrder);
+	export let compare: (sample: T, specimen: T, strictOrder?: boolean) => boolean = (s, v) =>
+		!isEqual(s, v, strictOrder);
 
 	type T = $$Generic;
 
-	$: dirty = compare(sample, specimen);
+	const dispatch = createEventDispatcher();
+
+	$: dirty = compare(sample, specimen, strictOrder);
+
+	$: if (dirty) {
+		dispatch('dirty');
+	} else {
+		dispatch('clean');
+	}
 
 	// function sync() {
 	// 	if (typeof sample === 'object') {
@@ -101,4 +53,4 @@
 	});
 </script>
 
-<slot {specimen} {dirty} />
+<slot {dirty} />

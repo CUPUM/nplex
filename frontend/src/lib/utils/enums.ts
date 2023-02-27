@@ -1,6 +1,32 @@
 import type { ValueOf } from 'ts-essentials';
 
 /**
+ * Component / stylistic variants.
+ */
+export const VARIANTS = {
+	Default: 'default',
+	CallToAction: 'cta',
+	Outlined: 'outlined',
+	Dashed: 'dashed',
+	Ghost: 'ghost',
+	Danger: 'danger',
+	Feature: 'feature',
+} as const;
+export type Variant = ValueOf<typeof VARIANTS>;
+
+/**
+ * Granular component / stylistic semantic feedback states. These states should not be used to style
+ * components in their default appearance, they should only be used to communicate feedback.
+ */
+export const STATES = {
+	Normal: '',
+	Warning: 'warning',
+	Success: 'success',
+	Error: 'error',
+} as const;
+export type State = ValueOf<typeof STATES>;
+
+/**
  * MapboxDraw event names.
  */
 export const DRAW_EVENTS = {

@@ -9,16 +9,32 @@
 	import { getFieldContext } from './Field.svelte';
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
+	export let hold: boolean = true;
 
 	const { inputRef, type } = getFieldContext();
 
-	function toggle() {
-		// $inputRef?.setAttribute('type', $inputRef.type === 'password' ? 'text' : 'password');
-		$type = $type === 'password' ? 'text' : 'password';
+	function handleDown() {
+		if (!hold) {
+			$type = $type === 'password' ? 'text' : 'password';
+		} else {
+			$type = 'text';
+		}
+	}
+
+	function handleUp() {
+		if (hold) {
+			$type = 'password';
+		}
 	}
 </script>
 
-<Button {variant} on:click={toggle} equi>
+<Button
+	{variant}
+	on:pointerdown={handleDown}
+	on:pointercancel={handleUp}
+	on:pointerup={handleUp}
+	equi
+>
 	<Icon name={$type === 'password' ? 'eye-open' : 'eye-cross'} />
 </Button>
 

@@ -9,7 +9,7 @@
 </script>
 
 <script lang="ts">
-	import { getBoxDistances } from '$utils/math/geometry';
+	import { getBoxDistances } from '$utils/geometry/box';
 
 	export let host: HTMLElement | undefined = undefined;
 	export let easing: string = 'cubic-bezier(0, 0, .5, 1)';
@@ -30,7 +30,7 @@
 	export let spreadSpeed = speed;
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
-	export let color: string = 'var(--ui-ripple-color)';
+	export let color: string = 'var(--ripple-color, var(--ui-ripple-color))';
 	export let colorStart: string = color;
 	export let colorEnd: string = colorStart;
 	export let colorEasing = easing;

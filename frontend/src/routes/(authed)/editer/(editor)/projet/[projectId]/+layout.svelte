@@ -1,18 +1,16 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { beforeNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
-	import Sidebar from '$components/Sidebar/Sidebar.svelte';
 	import SidebarButton from '$components/Sidebar/SidebarButton.svelte';
 	import { EDITOR_ROUTES } from '$routes/(authed)/editer/common';
 	import { EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../common';
-	import EditorHeader from '../../EditorHeader.svelte';
+	import EditorLayout from '../../EditorLayout.svelte';
 	import type { LayoutData } from './$types';
+	import { editTitle } from './common';
 
 	export let data: LayoutData;
 
 	let updating = false;
-	let key: string;
 
 	function base(subpath: string) {
 		return `${EDITOR_ROUTES.project.pathname}/${($page.data as LayoutData).project.id}${subpath}`;
@@ -48,19 +46,17 @@
 			title: 'Paramètres',
 		},
 	];
-
-	beforeNavigate((navigation) => {
-		key = navigation.to?.route.id ?? '';
-	});
 </script>
 
-<EditorHeader />
-<div>
-	<Sidebar>
+<EditorLayout crumbs={[]}>
+	<svelte:fragment slot="header">
+		{$editTitle}
+	</svelte:fragment>
+	<svelte:fragment slot="sidebar">
 		{#each sidebarRoutes as r}
 			<SidebarButton href={r.pathname}>{r.title}</SidebarButton>
 		{/each}
-	</Sidebar>
+	</svelte:fragment>
 	<form
 		use:enhance={({ form, data, action, cancel }) => {
 			updating = true;
@@ -77,19 +73,9 @@
 	>
 		<slot />
 	</form>
-</div>
+</EditorLayout>
 
 <style lang="scss">
-	div {
-		width: 100%;
-		display: flex;
-		align-items: flex-start;
-		flex-direction: row;
-		gap: 1.5rem;
-		padding: 1.5rem;
-		padding-top: 0;
-	}
-
 	form {
 		flex: 1;
 		display: flex;

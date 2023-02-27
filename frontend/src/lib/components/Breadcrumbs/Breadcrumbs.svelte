@@ -25,8 +25,7 @@
 		font-weight: 500;
 		border-radius: var(--radius);
 		background: var(--overflow-color);
-		border: 1px solid black;
-		max-width: 200px;
+		// max-width: 100%;
 	}
 
 	.inner {
@@ -41,12 +40,12 @@
 	}
 
 	.default {
-		--overflow-color: #{col(bg, 700)};
+		--overflow-effect-color: #{col(bg, 700)};
 		background: col(bg, 700, 0.5);
 	}
 
 	.outlined {
-		--overflow-color: transparent;
+		--overflow-effect-color: transparent;
 		border: 1px solid col(fg, 100, 0.1);
 	}
 

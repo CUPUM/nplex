@@ -10,20 +10,25 @@
 
 <style lang="scss">
 	aside {
-		--ui-sidebar-width: 200px;
+		--ui-sidebar-width: 220px;
 		flex: none;
 		position: sticky;
 		top: var(--ui-nav-h);
-		overflow-y: auto;
-		padding-top: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		overflow-x: hidden;
+		overflow-y: auto;
+
+		@include tablet {
+			width: 0;
+			padding: 0;
+		}
 	}
 
 	.inner {
 		position: relative;
 		display: flex;
+		align-items: flex-start;
 		flex-direction: column;
 		width: var(--ui-sidebar-width);
 		gap: var(--ui-inset);

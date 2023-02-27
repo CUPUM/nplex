@@ -15,7 +15,6 @@
 		disabled: Readable<boolean | undefined>;
 		pc: (value: number) => number;
 		map: (value: number) => number;
-		snap: (value: number) => number;
 	}
 
 	export function getRangeContext() {
@@ -67,14 +66,6 @@
 		return (input / domain) * (max - min);
 	}
 
-	/**
-	 * Snap a given value according to the range step-size. Snapped values are calculated from the
-	 * range's min.
-	 */
-	function snap(input: number) {
-		return Math.round((input - min) / step) * step + min;
-	}
-
 	setContext<RangeContext>(CTX_KEY, {
 		min: { subscribe: _min.subscribe },
 		max: { subscribe: _max.subscribe },
@@ -83,7 +74,6 @@
 		disabled: { subscribe: _disabled.subscribe },
 		pc,
 		map,
-		snap,
 	});
 </script>
 

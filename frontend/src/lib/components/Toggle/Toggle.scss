@@ -1,0 +1,174 @@
+@use 'utils' as *;
+
+@mixin checked-thumb-container {
+	input:checked + .toggle-thumb-container {
+		@content;
+	}
+}
+
+.toggle {
+	/* Customizable style props. */
+	--toggle-size: 2em;
+	--toggle-inset: var(--ui-inset);
+	--toggle-direction: horizontal-tb;
+	--toggle-radius: 99px;
+	--toggle-border: 0px solid transparent;
+	--toggle-thumb-outline: 0px solid transparent;
+	// --toggle-direction: vertical-rl;
+	position: relative;
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5em;
+	cursor: pointer;
+}
+
+.readonly,
+:readonly {
+	cursor: default;
+}
+
+.disabled {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+input:first-of-type {
+	position: absolute;
+	appearance: none;
+}
+
+.toggle-thumb-container {
+	position: relative;
+	display: block;
+	writing-mode: var(--toggle-direction);
+	padding: var(--toggle-inset);
+	background-color: var(--toggle-background);
+	border-radius: var(--toggle-radius);
+	inline-size: calc(2 * var(--toggle-size) - 2 * var(--toggle-inset));
+	block-size: var(--toggle-size);
+	outline: var(--ui-outline-inactive);
+	transition: background-color 0.1s ease-out, outline 0.15s ease-out;
+
+	input:focus-visible + & {
+		outline: var(--ui-outline-active);
+	}
+
+	&::after {
+		pointer-events: none;
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		border: var(--toggle-border);
+		transition: all 0.1s ease-out;
+	}
+
+	&:active {
+		.toggle-thumb {
+			inline-size: 60%;
+		}
+	}
+}
+
+.toggle-content {
+	user-select: none;
+	position: relative;
+}
+
+.toggle-thumb {
+	position: relative;
+	inset-inline-start: 0;
+	block-size: 100%;
+	inline-size: 50%;
+	border-radius: calc(var(--toggle-radius) - var(--toggle-inset));
+	background-color: var(--toggle-thumb-color);
+	border: var(--toggle-thumb-outline);
+	transition: inset-inline-start 0.2s var(--ui-ease-out), inline-size 0.2s var(--ui-ease-out),
+		background-color 0.1s ease-out;
+}
+
+@include checked-thumb-container {
+	.toggle-thumb {
+		inset-inline-start: 50%;
+	}
+
+	&:active {
+		.toggle-thumb {
+			inset-inline-start: 40%;
+		}
+	}
+}
+
+// Default variant
+.default {
+	--ripple-color: #{col(bg, 000)};
+	--toggle-background: #{col(fg, 500, 0.1)};
+	--toggle-thumb-color: #{col(fg, 300)};
+	// --toggle-thumb-outline: 1px solid var(--toggle-thumb-color);
+
+	&:hover {
+		--toggle-thumb-color: #{col(fg, 700)};
+	}
+
+	@include checked-thumb-container {
+		--toggle-background: #{col(fg, 500)};
+		--toggle-thumb-color: #{col(bg, 500)};
+		// --toggle-thumb-color: #{col(fg, 900)};
+		// --toggle-thumb-outline: var(--ui-border-thickness) solid #{col(bg, 900, 0.8)};
+
+		&:hover {
+			--toggle-background: #{col(fg, 700)};
+			// --toggle-thumb-color: #{col(bg, 500)};
+		}
+	}
+}
+
+// Outlined variant
+.outlined {
+	--toggle-background: transparent;
+	--toggle-thumb-color: #{col(fg, 100)};
+	--toggle-border: var(--ui-border-thickness) solid #{col(fg, 500, 0.1)};
+
+	&:hover {
+		--toggle-thumb-color: #{col(fg, 700)};
+		--toggle-border: var(--ui-border-thickness) solid #{col(fg, 500, 0.5)};
+	}
+
+	@include checked-thumb-container {
+		--toggle-background: #{col(fg, 500)};
+		--toggle-thumb-color: #{col(bg, 500)};
+
+		&:hover {
+			--toggle-background: #{col(fg, 700)};
+			--toggle-thumb-color: #{col(bg, 300)};
+		}
+	}
+}
+
+// Dashed variant
+.dashed {
+	--toggle-background: transparent;
+	--toggle-thumb-color: #{col(fg, 100)};
+	--toggle-border: var(--ui-border-thickness) dashed #{col(fg, 500, 0.1)};
+
+	&:hover {
+		--toggle-thumb-color: #{col(fg, 700)};
+		--toggle-border: var(--ui-border-thickness) dashed #{col(fg, 500, 0.5)};
+	}
+
+	@include checked-thumb-container {
+		--toggle-background: #{col(fg, 500)};
+		--toggle-thumb-color: #{col(bg, 500)};
+
+		&:hover {
+			--toggle-background: #{col(fg, 700)};
+			--toggle-thumb-color: #{col(bg, 300)};
+		}
+	}
+}
+
+// Cta Variant
+
+// Danger variant

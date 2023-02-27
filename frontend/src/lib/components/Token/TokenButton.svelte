@@ -20,28 +20,5 @@
 </svelte:element>
 
 <style lang="scss">
-	.ui-token-button {
-		position: relative;
-		cursor: pointer;
-		height: calc(var(--height) - 2 * var(--inset));
-		border-radius: calc(var(--radius) - var(--inset));
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding-inline: 0.5em;
-	}
-
-	.equi {
-		width: calc(var(--height) - 2 * var(--inset));
-		padding: 0;
-	}
-
-	.default {
-		background: col(fg, 100, 0.1);
-
-		&:hover {
-			color: col(bg, 100);
-			background: col(fg, 000);
-		}
-	}
+	@use './TokenButton.scss';
 </style>

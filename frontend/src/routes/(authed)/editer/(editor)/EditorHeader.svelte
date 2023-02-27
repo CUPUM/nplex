@@ -2,33 +2,22 @@
 	import Breadcrumbs from '$components/Breadcrumbs/Breadcrumbs.svelte';
 	import BreadcrumbsItem from '$components/Breadcrumbs/BreadcrumbsItem.svelte';
 	import BreadcrumbsSeparator from '$components/Breadcrumbs/BreadcrumbsSeparator.svelte';
+	import { fly } from 'svelte/transition';
 
-	// export let crumbs: ComponentProps<Breadcrum>
+	export let crumbs: { title: string; pathname: string }[];
 </script>
 
 <header>
-	<div>
+	<div class:hidden={!crumbs.length} in:fly={{ y: 6, delay: 750 }}>
 		<Breadcrumbs>
-			<BreadcrumbsItem href="/">Bonjour</BreadcrumbsItem>
-			<BreadcrumbsSeparator />
-			<BreadcrumbsItem href="/">Bonjour</BreadcrumbsItem>
-			<BreadcrumbsSeparator />
-			<BreadcrumbsItem href="/">Bonjour</BreadcrumbsItem>
-			<BreadcrumbsSeparator />
+			{#each crumbs as crumb, i}
+				<BreadcrumbsItem href={crumb.pathname}>{crumb.title}</BreadcrumbsItem>
+				{#if i < crumbs.length - 1}
+					<BreadcrumbsSeparator />
+				{/if}
+			{/each}
 		</Breadcrumbs>
 	</div>
-	<!-- <nav in:fly={{ y: -6, delay: 500 }} class="no-scrollbar">
-		<OverflowEffect>
-			{#each [baseCrumb, baseCrumb, baseCrumb, baseCrumb, baseCrumb, baseCrumb, baseCrumb, baseCrumb, baseCrumb] as crumb, i (i)}
-				<span class="sep">/</span>
-				<a href={crumb.pathname}>
-					<span>
-						{crumb.label}
-					</span>
-				</a>
-			{/each}
-		</OverflowEffect>
-	</nav> -->
 </header>
 
 <style lang="scss">
@@ -51,5 +40,11 @@
 		max-width: var(--ui-nav-center-w);
 		width: 100%;
 		display: flex;
+		justify-content: center;
+
+		&.hidden {
+			pointer-events: none;
+			visibility: hidden;
+		}
 	}
 </style>

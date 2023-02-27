@@ -21,4 +21,44 @@ export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, u
 
 export type KeyOfSet<S extends Set<unknown>> = S extends Set<infer K> ? K : never;
 
-export type PickUnion<U, S extends U> = S;
+/**
+ * Union of standard HTMLInputElement type attributes excluding HTMLInputTypeAttribute's widening
+ * (string & {}) literal member.
+ */
+export type StrictHTMLInputTypeAttribute =
+	| 'button'
+	| 'checkbox'
+	| 'color'
+	| 'date'
+	| 'datetime-local'
+	| 'email'
+	| 'file'
+	| 'hidden'
+	| 'image'
+	| 'month'
+	| 'number'
+	| 'password'
+	| 'radio'
+	| 'range'
+	| 'reset'
+	| 'search'
+	| 'submit'
+	| 'tel'
+	| 'text'
+	| 'time'
+	| 'url'
+	| 'week';
+
+/**
+ * Typescript's native HTMLInputElement typing is too ambiguous and hardly allows more specific type
+ * constriction.
+ *
+ * We here provide a helper type that accepts a string generic that narrows down the input element's
+ * expected type attribute.
+ */
+export type TypedHTMLInputElement<
+	T extends StrictHTMLInputTypeAttribute = Exclude<
+		StrictHTMLInputTypeAttribute,
+		'button' | 'submit' | 'reset'
+	>
+> = Omit<HTMLInputElement, 'type'> & { type: T };

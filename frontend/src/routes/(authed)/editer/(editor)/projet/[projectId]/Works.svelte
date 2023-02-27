@@ -13,7 +13,7 @@
 	import Fuse from 'fuse.js';
 	import { onDestroy } from 'svelte';
 	import { flip } from 'svelte/animate';
-	import { editorDirty } from '../../common';
+	import { editorDirtyValues } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 	import { editTypeId } from './common';
@@ -74,12 +74,12 @@
 	}, 250);
 
 	onDestroy(() => {
-		delete $editorDirty.work_ids;
+		$editorDirtyValues.work_ids = false;
 	});
 </script>
 
-<Dirty sample={work_ids} specimen={form_work_ids} bind:dirty={$editorDirty.work_ids} />
-<EditorFormgroup legend="Travaux" style="align-self: stretch;">
+<Dirty sample={work_ids} specimen={form_work_ids} bind:dirty={$editorDirtyValues.work_ids} />
+<EditorFormgroup legend="Travaux">
 	<AnimateHeight>
 		<ul class="selected">
 			{#each selected as w, i (w.id)}
@@ -178,7 +178,7 @@
 		gap: 0.5em;
 		align-items: flex-start;
 		justify-content: flex-start;
-		padding-block: 1rem;
+		padding-top: 1rem;
 	}
 
 	li {
@@ -191,5 +191,6 @@
 		font-size: var(--ui-text-sm);
 		font-weight: 500;
 		margin-left: 1em;
+		margin-top: 1rem;
 	}
 </style>

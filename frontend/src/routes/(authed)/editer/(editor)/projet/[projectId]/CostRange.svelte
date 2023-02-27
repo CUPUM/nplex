@@ -6,7 +6,7 @@
 	import RangeGroup from '$components/Range/RangeGroup.svelte';
 	import RangeThumb from '$components/Range/RangeThumb.svelte';
 	import { cadformatter } from '$utils/format';
-	import { editorDirty } from '../../common';
+	import { editorDirtyValues } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 	import { COST_MAX, COST_MAX_DELTA, COST_MIN, COST_STEP } from './common';
@@ -37,7 +37,7 @@
 <Dirty
 	sample={cost_range}
 	specimen={form_cost_range}
-	bind:dirty={$editorDirty.cost_range}
+	bind:dirty={$editorDirtyValues.cost_range}
 	strictOrder
 />
 <EditorFormgroup legend="Fourchette de coûts">
@@ -47,8 +47,10 @@
 	</p>
 	<fieldset class="fields">
 		<Field
+			variant="outlined"
 			type="number"
-			prefix="C$ "
+			suffix=" $ CA"
+			textAlign="start"
 			min={COST_MIN}
 			max={Math.min(COST_MAX, form_cost_range[1])}
 			step={COST_STEP}
@@ -59,8 +61,10 @@
 			<svelte:fragment slot="label">Min.</svelte:fragment>
 		</Field>
 		<Field
+			variant="outlined"
 			type="number"
-			prefix="C$ "
+			suffix=" $ CA"
+			textAlign="start"
 			min={Math.max(COST_MIN, form_cost_range[0])}
 			max={COST_MAX}
 			step={COST_STEP}
@@ -97,7 +101,7 @@
 		gap: 2rem;
 		margin-top: 2rem;
 		grid-template-areas: 'min range max';
-		grid-template-columns: 1fr 3fr 1fr;
+		grid-template-columns: 12.5ch 1fr 12.5ch;
 
 		@include tablet {
 			grid-template-columns: 1fr 1fr;

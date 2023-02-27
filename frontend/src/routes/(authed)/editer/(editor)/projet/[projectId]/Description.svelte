@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import Dirty from '$components/Dirty.svelte';
 	import TextArea from '$components/TextArea.svelte';
-	import { editorDirty } from '../../common';
+	import { editorDirtyValues } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 
@@ -11,12 +11,16 @@
 	$: editDescription = description;
 </script>
 
-<Dirty sample={description} specimen={editDescription} bind:dirty={$editorDirty.description} />
+<Dirty
+	sample={description}
+	specimen={editDescription}
+	bind:dirty={$editorDirtyValues.description}
+/>
 <EditorFormgroup legend="Description">
 	<div>
 		<TextArea
 			name="description"
-			variant="default"
+			variant="outlined"
 			placeholder="Décrivez votre projet en quelques phrases."
 			bind:value={editDescription}
 			style="height: 300px;"

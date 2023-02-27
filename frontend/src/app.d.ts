@@ -26,6 +26,15 @@ declare global {
 			'data-theme'?: ThemeName;
 		}
 	}
+
+	interface HTMLOptionElement {
+		__value: unknown;
+	}
+
+	interface HTMLInputElement {
+		__value?: unknown;
+	}
+
 	namespace App {
 		type Database = BuffedDatabase;
 		interface PageData {

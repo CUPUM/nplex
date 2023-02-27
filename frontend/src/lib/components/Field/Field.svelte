@@ -48,6 +48,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { snap } from '$utils/number';
 	import { getContext, setContext } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
 	import type { HTMLInputAttributes } from 'svelte/elements';
@@ -114,7 +115,6 @@
 	$: hasvalue = !!value || value === 0;
 	$: hasplaceholder = placeholder !== '';
 	$: haslabel = $$slots.label && !nolabel;
-
 	$: if (invalid) {
 		invalidTimer = setTimeout(() => {
 			clearInvalid();
@@ -149,6 +149,34 @@
 			clearInvalid();
 		}
 	}
+
+	/**
+	 * Format the value when user done interacting (on blur).
+	 */
+	function format() {
+		if (value == null) {
+			return;
+		}
+		if (typeof value === 'number') {
+			if (max != null) {
+				value = Math.min(max, value);
+			}
+			if (min != null) {
+				value = Math.max(min, value);
+			}
+			if (step != null) {
+				value = snap(value, step, { origin: min ?? 0 });
+			}
+		}
+	}
+
+	/**
+	 * Format the value eagerly, in concurrence with user interactions.
+	 */
+	function eagerFormat(value: unknown) {
+		return value;
+	}
+	$: formattedValue = eagerFormat(value);
 
 	function clearInvalid() {
 		invalid = false;
@@ -244,6 +272,7 @@
 			{readonly}
 			pattern={pattern ? pattern.source : undefined}
 			on:input={handleInput}
+			on:blur={format}
 			on:focus
 			on:blur
 			on:input

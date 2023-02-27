@@ -10,23 +10,19 @@
 		to: 'to',
 	} as const;
 	type Point = ValueOf<typeof POINT>;
-
-	function stepify(value: number, step: number, op: 'ceil' | 'round' | 'floor') {
-		const stepped = value / step;
-		return Math[op](stepped) * step;
-	}
 </script>
 
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { KEY } from '$utils/enums';
+	import { snap } from '$utils/number';
 	import { onDestroy, onMount, tick } from 'svelte';
 	import { spring } from 'svelte/motion';
 	import type { ValueOf } from 'ts-essentials';
 	import { getRangeContext } from './Range.svelte';
 	import { rangeThumbSpringOptions } from './RangeThumb.svelte';
 
-	const { min, max, step, snap, direction, pc, map, disabled } = getRangeContext();
+	const { min, max, step, direction, pc, map, disabled } = getRangeContext();
 
 	export let from: number = $min;
 	export let to: number = $max;
@@ -119,10 +115,10 @@
 			delta = e.pageY - starty;
 		}
 		if (startfrom !== undefined) {
-			from = snap(Math.min(Math.max(startfrom + map(delta), $min), $max));
+			from = snap(Math.min(Math.max(startfrom + map(delta), $min), $max), $step, { origin: $min });
 		}
 		if (startto !== undefined) {
-			to = snap(Math.min(Math.max(startto + map(delta), $min), $max));
+			to = snap(Math.min(Math.max(startto + map(delta), $min), $max), $step, { origin: $min });
 		}
 	}
 

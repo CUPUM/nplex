@@ -2,19 +2,20 @@
 	import { page } from '$app/stores';
 	import Dirty from '$components/Dirty.svelte';
 	import Field from '$components/Field/Field.svelte';
-	import { editorDirty } from '../../common';
+	import { editorDirtyValues } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
+	import { editTitle } from './common';
 
 	$: ({ title } = ($page.data as PageData).project);
 
-	$: editTitle = title;
+	$: $editTitle = title;
 </script>
 
-<Dirty sample={title} specimen={editTitle} bind:dirty={$editorDirty.title} />
+<Dirty sample={title} specimen={$editTitle} bind:dirty={$editorDirtyValues.title} />
 <EditorFormgroup legend="Titre du projet">
 	<div>
-		<Field bind:value={editTitle} variant="default" name="title" />
+		<Field bind:value={$editTitle} variant="outlined" name="title" />
 	</div>
 </EditorFormgroup>
 

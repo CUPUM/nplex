@@ -75,12 +75,11 @@
 	}
 
 	dialog {
-		--bg: #{col(bg, 300)};
 		pointer-events: all;
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		background: var(--bg);
+		background: col(bg, 300);
 		max-width: var(--ui-width-sm);
 		box-shadow: var(--ui-shadow-lg);
 		padding: 0;
@@ -91,22 +90,20 @@
 	}
 
 	article {
-		padding: 2rem;
+		padding: 1.5rem 2rem;
 		flex: 1;
-		font-size: var(--ui-text-sm);
 		color: col(fg, 500);
 	}
 
 	header {
 		color: col(fg, 000);
-		background: var(--bg);
+		background: col(fg, 000, 0.05);
 		position: sticky;
-		font-size: var(--ui-text-md);
+		font-size: var(--ui-text-lg);
 		font-weight: 500;
 		top: 0;
-		padding: 2rem;
-		padding-bottom: 1rem;
-		border-bottom: 1px solid col(fg, 100, 0.1);
+		padding: 1.5rem 2rem;
+		// border-bottom: 1px solid col(fg, 100, 0.1);
 	}
 
 	footer {
@@ -116,11 +113,10 @@
 		align-items: center;
 		justify-content: flex-end;
 		font-size: var(--ui-text-sm);
-		background: var(--bg);
-		padding: 1rem;
-		padding-top: 1rem;
+		background: col(bg, 300);
+		padding: 1.5rem;
 		position: sticky;
 		bottom: 0;
-		border-top: 1px solid col(fg, 100, 0.1);
+		// border-top: 1px solid col(fg, 000, 0.1);
 	}
 </style>

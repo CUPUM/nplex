@@ -12,7 +12,7 @@
 		setCircleRadius,
 	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { onDestroy } from 'svelte';
-	import { editorDirty } from '../../../common';
+	import { editorDirtyValues } from '../../../common';
 	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 	import { locationRadius, LOCATION_MAX_RADIUS, map, mapDraw } from './common';
@@ -80,7 +80,7 @@
 <Dirty
 	sample={{ radius: location.radius, center: location.geometry?.coordinates }}
 	specimen={{ radius: editRadius, center: editCenter }}
-	bind:dirty={$editorDirty.location}
+	bind:dirty={$editorDirtyValues.location}
 />
 <EditorFormgroup legend="Emplacement">
 	<p class="ui-info">

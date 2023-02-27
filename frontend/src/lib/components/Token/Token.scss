@@ -1,0 +1,109 @@
+@use 'utils' as *;
+
+.token {
+	--token-size: 3em;
+	--token-radius: 99em;
+	--token-inset: var(--ui-inset);
+	--token-outline: 0px solid transparent;
+	--token-gutter: var(--ui-pad-x);
+	--token-outline: 0px solid transparent;
+	position: relative;
+	cursor: pointer;
+	user-select: none;
+	flex: none;
+	flex-wrap: nowrap;
+	block-size: var(--token-size);
+	border-radius: var(--token-radius);
+	padding: var(--token-inset);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	color: var(--token-color);
+	background: var(--token-background);
+	transition: all 0.1s ease-out;
+
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		border: var(--token-outline);
+	}
+}
+
+.readonly,
+:readonly {
+	cursor: default;
+}
+
+.disabled,
+:disabled {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+input {
+	position: absolute;
+	appearance: none;
+}
+
+.token-main {
+	position: relative;
+	display: block;
+	white-space: nowrap;
+	top: -0.1em;
+	line-height: 1em;
+	padding-inline-end: var(--token-inset);
+	padding-inline-start: calc(var(--token-gutter) - var(--token-inset));
+
+	.leading + & {
+		padding-left: var(--token-inset);
+	}
+
+	&:last-child {
+		padding-right: calc(var(--token-gutter) - var(--token-inset));
+	}
+}
+
+// Default variant.
+.default {
+	--token-color: #{col(fg, 000)};
+	--token-background: #{col(fg, 500, 0.1)};
+	&:hover {
+		--token-color: #{col(fg, 500)};
+		--token-background: #{col(fg, 500, 0.2)};
+	}
+	&.active,
+	&:has(:checked) {
+		color: col(bg, 900);
+		background: col(fg, 100);
+	}
+}
+
+// Outlined variant.
+.outlined {
+	--token-outline: var(--ui-border-thickness) solid #{col(fg, 500, 0.1)};
+	&:hover {
+	}
+	&.active,
+	&:has(:checked) {
+	}
+}
+
+// Dashed variant.
+.dashed {
+	--token-outline: var(--ui-border-thickness) dashed #{col(fg, 500, 0.1)};
+}
+
+// .cta {
+// 	&:hover {
+// 	}
+// 	&.active,
+// 	&:has(:checked) {
+// 	}
+// }
+
+// .dashed {
+// 	border-style: dashed;
+// }

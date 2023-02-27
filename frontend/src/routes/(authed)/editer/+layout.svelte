@@ -9,7 +9,6 @@
 	export let data: LayoutData;
 </script>
 
-<!-- <RootBackground body={col('bg', '700')} /> -->
 <slot />
 <header>
 	<hgroup>

@@ -9,7 +9,7 @@
 	const CTX_KEY = 'button-group-context';
 
 	interface ButtonGroupContext {
-		variant: ComponentProps<Button>['variant'];
+		variant: Readable<ComponentProps<Button>['variant']>;
 		direction: 'row' | 'column';
 	}
 
@@ -19,63 +19,26 @@
 </script>
 
 <script lang="ts">
+	import { VARIANTS } from '$utils/enums';
 	import { getContext, setContext, type ComponentProps } from 'svelte';
+	import { writable, type Readable } from 'svelte/store';
 	import type Button from './Button.svelte';
 
+	export let variant: ComponentProps<Button>['variant'] = VARIANTS.Default;
 	export let direction: ButtonGroupContext['direction'] = 'row';
-	export let variant: ComponentProps<Button>['variant'] = undefined;
+
+	const _variant = writable(variant);
 
 	setContext<ButtonGroupContext>(CTX_KEY, {
-		variant,
+		variant: { subscribe: _variant.subscribe },
 		direction,
 	});
 </script>
 
-<div class="button-group {direction}">
+<div class="button-group {direction}" role="button">
 	<slot />
 </div>
 
 <style lang="scss">
-	.button-group {
-		display: flex;
-		gap: 0px;
-		transition: transform 0.15s ease-out;
-
-		& > :global(.button) {
-			&:active,
-			&.loading {
-				transform: none;
-			}
-		}
-	}
-
-	.row {
-		flex-direction: row;
-		& > :global(.button) {
-			&:not(:first-of-type) {
-				border-top-left-radius: 0;
-				border-bottom-left-radius: 0;
-				margin-left: -1px;
-			}
-			&:not(:last-of-type) {
-				border-top-right-radius: 0;
-				border-bottom-right-radius: 0;
-			}
-		}
-	}
-
-	.column {
-		flex-direction: column;
-		& > :global(.button) {
-			&:not(:first-of-type) {
-				border-top-left-radius: 0;
-				border-top-right-radius: 0;
-				margin-top: -1px;
-			}
-			&:not(:last-of-type) {
-				border-bottom-left-radius: 0;
-				border-bottom-right-radius: 0;
-			}
-		}
-	}
+	@use './ButtonGroup.scss';
 </style>

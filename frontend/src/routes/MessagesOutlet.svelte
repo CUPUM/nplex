@@ -145,13 +145,13 @@
 
 	export function queryMessage(url: string, ...messages: Message[]): string;
 	export function queryMessage(url: URL, ...messages: Message[]): URL;
-	export function queryMessage(url: RelativeURL, ...messages: Message[]): RelativeURL;
+	export function queryMessage(url: UnbasedURL, ...messages: Message[]): UnbasedURL;
 	export function queryMessage(
-		url: string | URL | RelativeURL,
+		url: string | URL | UnbasedURL,
 		...messages: Message[]
-	): string | URL | RelativeURL {
+	): string | URL | UnbasedURL {
 		const newURL =
-			url instanceof URL && !(url instanceof RelativeURL) ? new URL(url) : new RelativeURL(url);
+			url instanceof URL && !(url instanceof UnbasedURL) ? new URL(url) : new UnbasedURL(url);
 		messages.forEach((m) => {
 			newURL.searchParams.append(SEARCH_PARAMS.MESSAGE, JSON.stringify(m));
 		});
@@ -165,7 +165,7 @@
 	import Icon from '$components/Icon.svelte';
 	import { transform } from '$transitions/transform';
 	import { SEARCH_PARAMS } from '$utils/enums';
-	import { RelativeURL } from '$utils/url';
+	import { UnbasedURL } from '$utils/url';
 	import type { ComponentProps, SvelteComponentTyped } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { cubicIn, cubicOut, expoOut } from 'svelte/easing';

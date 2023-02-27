@@ -96,14 +96,14 @@
 	<header>
 		<h3 class="h2">{title}</h3>
 		<form action="" use:enhance method="POST">
-			<Switch bind:group={applied.authoring} variant="colored" name="filter" compact>
+			<Switch bind:value={applied.authoring} variant="feature" name="filter" compact>
 				{#each Object.entries(authoring) as [k, v]}
 					<SwitchItem value={k}>
 						{v.text}
 					</SwitchItem>
 				{/each}
 			</Switch>
-			<Switch bind:group={applied.publishing} variant="colored" name="filter" compact>
+			<Switch bind:value={applied.publishing} variant="feature" name="filter" compact>
 				{#each Object.entries(publishing) as [k, v]}
 					<SwitchItem value={k}>
 						{v.text}

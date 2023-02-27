@@ -5,7 +5,6 @@
 	export let current: boolean | undefined = undefined;
 
 	$: current = $page.url.pathname === new URL(href, $page.url.origin).pathname || undefined;
-	$: console.log(current);
 </script>
 
 <a {href} data-sveltekit-preload-code data-sveltekit-preload-data data-current={current}>

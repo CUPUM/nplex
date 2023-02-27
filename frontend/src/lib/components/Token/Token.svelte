@@ -1,136 +1,120 @@
 <!--
 	@component
-	# Token / Chip / Pill
+	# Token
+	A token primitive input akin to a pill-shaped or chip-shaped checkbox.
 	
 -->
 <script lang="ts">
 	import Ripple from '$components/Ripple.svelte';
+	import { STATES, VARIANTS, type State, type Variant } from '$utils/enums';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
-	export let as: keyof HTMLElementTagNameMap = 'span';
-	export let variant: 'default' | 'subtle' | 'ghost' | 'cta' | 'danger' | 'outlined' | 'dashed' =
-		'default';
-	export let active: boolean | undefined = undefined;
-	export let readonly: boolean | undefined = undefined;
-	export let disabled: boolean | undefined = undefined;
+	type V = $$Generic;
 
-	$: type = as === 'button' ? 'button' : undefined;
+	type $$Props = Pick<
+		HTMLInputAttributes,
+		'required' | 'readonly' | 'name' | 'disabled' | 'tabindex'
+	> & {
+		variant?: Variant;
+		state?: State;
+		active?: boolean;
+		value?: V;
+		group?: V[];
+		type?: 'checkbox' | 'radio';
+		href?: string;
+	};
+
+	export let variant: $$Props['variant'] = VARIANTS.Default;
+	export let state: $$Props['state'] = STATES.Normal;
+	export let active: $$Props['active'] = undefined;
+	export let value: $$Props['value'] = undefined;
+	export let group: $$Props['group'] = undefined;
+	export let type: $$Props['type'] = 'checkbox';
+	export let href: $$Props['href'] = undefined;
+
+	let element: 'a' | 'label' | 'span';
+	$: element = href ? 'a' : value != null || group || active != null ? 'label' : 'span';
+	$: type === 'radio' && updateRadio(group, value);
+	$: type === 'checkbox' && group && value != null && updateCheckbox(group, value);
+	$: type === 'checkbox' && group && updateGroup(active, value);
+
+	function updateRadio(g: $$Props['group'], v: $$Props['value']) {
+		active = group === value;
+	}
+
+	function updateCheckbox(g: NonNullable<$$Props['group']>, v: NonNullable<$$Props['value']>) {
+		active = g.indexOf(v) > -1;
+	}
+
+	function updateGroup(c?: boolean, v?: V) {
+		if (!group || v == null) {
+			return;
+		}
+		const index = group.indexOf(v);
+		if (c) {
+			if (index < 0) {
+				group.push(v);
+				group = group;
+			}
+		} else {
+			if (index >= 0) {
+				group.splice(index, 1);
+				group = group;
+			}
+		}
+	}
 </script>
 
 <svelte:element
-	this={as}
-	class="ui-token {variant}"
+	this={element}
+	class="token {variant} {state}"
+	class:disabled={$$props.disabled}
 	class:active
-	class:disabled
-	class:readonly
-	{disabled}
-	{readonly}
-	{type}
-	on:pointerdown
+	{href}
 >
-	{#if !disabled && !readonly}
-		<Ripple />
+	<Ripple />
+	{#if element === 'label'}
+		{#if type === 'checkbox'}
+			<input
+				type="checkbox"
+				{value}
+				bind:checked={active}
+				{...$$restProps}
+				on:change
+				on:input
+				on:focus
+				on:blur
+				on:keydown
+			/>
+		{:else}
+			<input
+				type="radio"
+				{value}
+				bind:group
+				{...$$restProps}
+				on:change
+				on:input
+				on:focus
+				on:blur
+				on:keydown
+			/>
+		{/if}
 	{/if}
 	{#if $$slots.leading}
-		<div class="leading"><slot name="leading" /></div>
+		<span class="token-leading">
+			<slot name="leading" {active} />
+		</span>
 	{/if}
-	<div class="main"><slot /></div>
+	<span class="token-main">
+		<slot {active} />
+	</span>
 	{#if $$slots.trailing}
-		<div class="trailing"><slot name="trailing" /></div>
+		<span class="token-trailing">
+			<slot name="trailing" {active} />
+		</span>
 	{/if}
 </svelte:element>
 
 <style lang="scss">
-	.ui-token {
-		--height: 3em;
-		--radius: 999px; //var(--ui-radius-md);
-		--inset: var(--ui-inset);
-		position: relative;
-		cursor: pointer;
-		user-select: none;
-		flex: none;
-		flex-wrap: nowrap;
-		height: var(--height);
-		border-radius: var(--radius);
-		padding: var(--inset);
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: row;
-		font-weight: 400;
-	}
-
-	.readonly,
-	:readonly {
-		cursor: default;
-	}
-
-	.disabled,
-	:disabled {
-		cursor: default;
-		opacity: 0.35;
-	}
-
-	.main {
-		white-space: nowrap;
-		position: relative;
-		top: -0.1em;
-		padding-right: var(--inset);
-		padding-left: calc(var(--ui-pad-x) - var(--inset));
-		.leading + & {
-			padding-left: var(--inset);
-		}
-		&:last-child {
-			padding-right: calc(var(--ui-pad-x) - var(--inset));
-		}
-	}
-
-	.default {
-		color: col(fg, 000);
-		background: col(fg, 500, 0.05);
-		&:hover {
-			color: col(fg, 500);
-			background: col(fg, 500, 0.1);
-		}
-		&.active,
-		&:has(:checked) {
-			color: col(bg, 900);
-			background: col(fg, 100);
-		}
-	}
-
-	.subtle {
-		color: col(fg, 000, 0.8);
-		background: col(fg, 500, 0.05);
-		&:hover {
-			color: col(primary, 500);
-			background: col(primary, 300, 0.1);
-		}
-		&.active,
-		&:has(:checked) {
-			color: col(primary, 700);
-			background: col(primary, 500, 0.2);
-		}
-	}
-
-	.outlined,
-	.dashed {
-		border: 1px solid col(fg, 500, 0.1);
-		&:hover {
-		}
-		&.active,
-		&:has(:checked) {
-		}
-	}
-
-	.cta {
-		&:hover {
-		}
-		&.active,
-		&:has(:checked) {
-		}
-	}
-
-	.dashed {
-		border-style: dashed;
-	}
+	@use './Token.scss';
 </style>

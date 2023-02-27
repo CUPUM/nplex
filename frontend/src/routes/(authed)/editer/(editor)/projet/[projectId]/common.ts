@@ -2,7 +2,7 @@ import { toPgRange } from '$utils/format';
 import { writable } from 'svelte/store';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import type { PageData } from './$types';
+import type { LayoutData } from './$types';
 
 export const FORM_ID = 'project-editor-form';
 export const TITLE_MIN_WORDS = 3;
@@ -13,8 +13,9 @@ export const COST_MAX = 50_000;
 export const COST_MAX_DELTA = 10_000;
 export const COST_STEP = 10;
 
-export const editTypeId = writable<PageData['project']['type_id']>();
-export const form_banner_id = writable<PageData['project']['banner_id']>();
+export const editTitle = writable<LayoutData['project']['title']>();
+export const editTypeId = writable<LayoutData['project']['type_id']>();
+export const form_banner_id = writable<LayoutData['project']['banner_id']>();
 
 export const titleSchema = zfd.text(
 	z
