@@ -4,8 +4,6 @@
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import { editorIsDirty, EDITOR_FORM_ACTION, EDITOR_FORM_ID } from './common';
-
-	$: console.log($editorIsDirty);
 </script>
 
 <menu>

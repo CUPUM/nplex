@@ -8,6 +8,12 @@ export const IMAGE_GALLERY_FOLDER = 'gallery';
 export const IMAGE_TITLE_MAX_LENGTH = 200;
 export const IMAGE_DESCRIPTION_MAX_LENGTH = 500;
 
+export const imageSchema = zfd.file(
+	z
+		.instanceof(File)
+		.refine((file) => IMAGE_TYPES.includes(file.type), `Format d'image incompatible.`)
+);
+
 export const gallerySchema = zfd.repeatableOfType(
 	z.object({
 		id: zfd.text(),

@@ -1475,6 +1475,25 @@ export interface Database {
           updated_by_id?: string | null
         }
       }
+      random_project_images: {
+        Row: {
+          color_dominant_hsl: unknown | null
+          color_dominant_lab: unknown | null
+          color_mean_hsl: unknown | null
+          color_mean_lab: unknown | null
+          created_at: string | null
+          created_by_id: string | null
+          description: string | null
+          id: string | null
+          name: string | null
+          order: number | null
+          project_id: string | null
+          project_title: string | null
+          title: string | null
+          updated_at: string | null
+          updated_by_id: string | null
+        }
+      }
     }
     Functions: {
       authorize:
@@ -1483,34 +1502,48 @@ export interface Database {
             Returns: boolean
           }
         | {
-            Args: { requested_permission: string }
+            Args: {
+              requested_permission: string
+            }
             Returns: boolean
           }
       authorize_actor_update:
         | {
-            Args: { actor: unknown }
+            Args: {
+              actor: unknown
+            }
             Returns: boolean
           }
         | {
-            Args: { actor_id: string }
+            Args: {
+              actor_id: string
+            }
             Returns: boolean
           }
       authorize_org_update:
         | {
-            Args: { org: unknown }
+            Args: {
+              org: unknown
+            }
             Returns: boolean
           }
         | {
-            Args: { org_id: string }
+            Args: {
+              org_id: string
+            }
             Returns: boolean
           }
       authorize_project_update:
         | {
-            Args: { p_id: string }
+            Args: {
+              p_id: string
+            }
             Returns: boolean
           }
         | {
-            Args: { p_row: unknown }
+            Args: {
+              p_row: unknown
+            }
             Returns: boolean
           }
       default_uid: {
@@ -1526,7 +1559,9 @@ export interface Database {
         Returns: Json
       }
       project_is_public: {
-        Args: { p_id: string }
+        Args: {
+          p_id: string
+        }
         Returns: boolean
       }
       user_has_role:
@@ -1535,7 +1570,9 @@ export interface Database {
             Returns: boolean
           }
         | {
-            Args: { role: Database["public"]["Enums"]["app_role"] }
+            Args: {
+              role: Database["public"]["Enums"]["app_role"]
+            }
             Returns: boolean
           }
     }
@@ -1640,20 +1677,29 @@ export interface Database {
     }
     Functions: {
       extension: {
-        Args: { name: string }
+        Args: {
+          name: string
+        }
         Returns: string
       }
       filename: {
-        Args: { name: string }
+        Args: {
+          name: string
+        }
         Returns: string
       }
       foldername: {
-        Args: { name: string }
+        Args: {
+          name: string
+        }
         Returns: string[]
       }
       get_size_by_bucket: {
         Args: Record<PropertyKey, never>
-        Returns: { size: number; bucket_id: string }[]
+        Returns: {
+          size: number
+          bucket_id: string
+        }[]
       }
       search: {
         Args: {

@@ -105,7 +105,7 @@
 
 	button {
 		color: col(fg, 100);
-		height: var(--ui-height);
+		height: var(--ui-block-size-lg);
 		border-radius: var(--ui-radius-md);
 		border: 1px dashed col(fg, 500, 0.1);
 		display: flex;

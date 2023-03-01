@@ -15,7 +15,7 @@ export const COST_STEP = 10;
 
 export const editTitle = writable<LayoutData['project']['title']>();
 export const editTypeId = writable<LayoutData['project']['type_id']>();
-export const form_banner_id = writable<LayoutData['project']['banner_id']>();
+export const editBannerId = writable<LayoutData['project']['banner_id']>();
 
 export const titleSchema = zfd.text(
 	z

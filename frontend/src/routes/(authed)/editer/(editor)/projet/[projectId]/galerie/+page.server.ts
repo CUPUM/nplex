@@ -6,7 +6,7 @@ import { colord, extend } from 'colord';
 import labPlugin from 'colord/plugins/lab';
 import sharp from 'sharp';
 import type { Actions } from './$types';
-import { IMAGE_GALLERY_FOLDER, IMAGE_MAX_RESOLUTION, IMAGE_TYPES } from './common';
+import { imageSchema, IMAGE_GALLERY_FOLDER, IMAGE_MAX_RESOLUTION } from './common';
 
 extend([labPlugin]);
 
@@ -20,10 +20,7 @@ export const actions: Actions = {
 		const files = formData.getAll('images');
 		const db = await getDb(event);
 		const uploads = files.map(async (file) => {
-			const parsed = await z
-				.any()
-				.refine((file) => IMAGE_TYPES.includes(file.type), `Format d'image incompatible.`)
-				.safeParseAsync(file);
+			const parsed = await imageSchema.safeParseAsync(file);
 			if (!parsed.success) {
 				return fail(STATUS_CODES.BadRequest, { image: parsed.error.flatten() });
 			}
@@ -60,6 +57,7 @@ export const actions: Actions = {
 				)
 				.then(async (stored) => {
 					if (stored.error) {
+						console.error(stored.error);
 						throw error(STATUS_CODES.InternalServerError, { ...stored.error });
 					}
 					const update = await db
@@ -76,8 +74,10 @@ export const actions: Actions = {
 					if (update.error) {
 						const del = await db.storage.from(STORAGE_BUCKETS.PROJECTS).remove([stored.data.path]);
 						if (del.error) {
+							console.error(del.error);
 							throw error(STATUS_CODES.InternalServerError, { ...del.error });
 						}
+						console.error(update.error);
 						throw error(STATUS_CODES.InternalServerError, { ...update.error });
 					}
 					return {
@@ -85,7 +85,7 @@ export const actions: Actions = {
 					};
 				});
 		});
-		return Promise.all(uploads);
+		// return Promise.all(uploads);
 	},
 	/**
 	 * Delete a gallery image.

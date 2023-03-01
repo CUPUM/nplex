@@ -58,7 +58,7 @@
 		&[data-current] {
 			cursor: default;
 			color: col(primary, 500);
-			border-color: col(primary, 500, 0.2);
+			border-color: col(primary, 500, 0.5);
 		}
 
 		&:hover:not([data-current]) {

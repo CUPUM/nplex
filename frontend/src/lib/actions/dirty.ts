@@ -31,7 +31,6 @@ function handleSelectInput(e: Event) {
 					(o) => o.__value
 			  )
 			: select.querySelector<HTMLOptionElement>('option:checked')?.__value;
-		console.log(value);
 	}
 }
 

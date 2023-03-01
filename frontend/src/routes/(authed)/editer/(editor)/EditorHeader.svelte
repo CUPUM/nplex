@@ -38,7 +38,7 @@
 		justify-content: center;
 		padding: 3rem;
 		// background-color: col(bg, 500);
-		border: var(--ui-border-thickness) dashed col(primary, 900, 0.1);
+		border: var(--ui-border-thickness) dashed col(primary, 900, 0.25);
 		color: col(primary, 900);
 		border-radius: var(--ui-radius-xl);
 	}

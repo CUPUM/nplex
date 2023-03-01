@@ -1,7 +1,7 @@
 @use 'utils' as *;
 
 :where(.button) {
-	--button-height: calc(var(--ui-height) - 2 * var(--inset, 0px));
+	--button-height: calc(var(--ui-block-size-lg) - 2 * var(--inset, 0px));
 	--button-radius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
 	position: relative;
 	display: inline-grid;

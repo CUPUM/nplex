@@ -1,28 +1,22 @@
 import adapter from '@sveltejs/adapter-vercel';
 import autoprefixer from 'autoprefixer';
 import sveltePreprocess from 'svelte-preprocess';
-import { cssModules, linearPreprocess } from 'svelte-preprocess-cssmodules';
 
 /**
  * @type {import('@sveltejs/kit').Config}
  */
 const config = {
 	extensions: ['.svelte', '.svx'],
-	preprocess: linearPreprocess([
-		sveltePreprocess({
-			typescript: true,
-			scss: {
-				includePaths: ['src/lib/styles'],
-				prependData: "@use 'utils' as *;",
-			},
-			postcss: {
-				plugins: [autoprefixer()],
-			},
-		}),
-		cssModules({
-			mode: 'mixed',
-		}),
-	]),
+	preprocess: sveltePreprocess({
+		typescript: true,
+		scss: {
+			includePaths: ['src/lib/styles'],
+			prependData: "@use 'utils' as *;",
+		},
+		postcss: {
+			plugins: [autoprefixer()],
+		},
+	}),
 	kit: {
 		adapter: adapter(),
 		env: {

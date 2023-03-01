@@ -14,7 +14,7 @@
 	flex-direction: row;
 	gap: 0.75em;
 	font-weight: 425;
-	height: calc(var(--ui-height) - 2 * var(--inset, 0px));
+	height: calc(var(--ui-block-size-lg) - 2 * var(--inset, 0px));
 	padding-inline: var(--ui-pad-x);
 	line-height: 1.2;
 	border-radius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
@@ -35,7 +35,7 @@
 	}
 
 	&.equi {
-		width: calc(var(--ui-height) - 2 * var(--inset, 0px));
+		width: calc(var(--ui-block-size-lg) - 2 * var(--inset, 0px));
 		padding-inline: 0;
 		justify-content: center;
 	}

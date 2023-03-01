@@ -48,7 +48,7 @@
 	];
 </script>
 
-<EditorLayout crumbs={[]}>
+<EditorLayout>
 	<svelte:fragment slot="header">
 		{$editTitle}
 	</svelte:fragment>

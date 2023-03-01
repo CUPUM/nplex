@@ -293,7 +293,7 @@
 <style lang="scss">
 	.ui-field {
 		--radius: var(--ui-radius-md);
-		--height: var(--ui-height);
+		--height: var(--ui-block-size-lg);
 		--inset: var(--ui-inset);
 		--notch-padding: 0.25em;
 		--gutter: calc(var(--ui-pad-x) / 3);

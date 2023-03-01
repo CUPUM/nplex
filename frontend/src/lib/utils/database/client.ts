@@ -123,7 +123,7 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 		}
 		return event.locals.db;
 	}
-	// Mixed context
+	// Universal context
 	const db = browser ? browserDb : createServerClient();
 	if (event) {
 		let session: App.PageData['session'];

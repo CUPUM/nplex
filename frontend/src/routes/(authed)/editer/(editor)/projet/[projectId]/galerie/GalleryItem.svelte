@@ -21,10 +21,10 @@
 	import { writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
+	import { editBannerId } from '../common';
 	import type { PageData } from './$types';
-	import { _banner_id } from './common';
 
-	export let image: PageData['project']['gallery'][number];
+	export let item: PageData['project']['gallery'][number];
 	export let i: number;
 
 	const dispatch = createEventDispatcher();
@@ -112,7 +112,7 @@
 	on:pointerenter|self={enter}
 	on:pointerleave|self={leave}
 	class:dragging={isDragging}
-	style:--color={image.color_dominant_hsl}
+	style:--color={item.color_dominant_hsl}
 >
 	<figure
 		on:pointerdown={dragstart}
@@ -123,7 +123,7 @@
 		class:under={isUnder}
 		class={isUnder ? ($offset === 0 ? 'before' : 'after') : ''}
 	>
-		<Image class="image" src={image.publicUrl} alt={image.id} color={image.color_dominant_hsl} />
+		<Image class="image" src={item.publicUrl} alt={item.id} color={item.color_dominant_hsl} />
 		{#if !isDragging}
 			<menu
 				data-theme={THEMES.dark}
@@ -134,7 +134,7 @@
 					<Button
 						type="submit"
 						variant="danger"
-						formaction="?/delete_image&{SEARCH_PARAMS.FILENAME}={image.name}"
+						formaction="?/delete_image&{SEARCH_PARAMS.FILENAME}={item.name}"
 						style="backdrop-filter: blur(8px);"
 					>
 						<Icon name="trash" />
@@ -149,16 +149,16 @@
 					</Button>
 				</Tooltip>
 				<Tooltip
-					message={$_banner_id === image.id ? 'Retirer de la bannière' : 'Définir comme bannière'}
+					message={$editBannerId === item.id ? 'Retirer de la bannière' : 'Définir comme bannière'}
 					place="top"
 				>
 					<Button
 						type="submit"
 						style="backdrop-filter: blur(8px);"
-						formaction="{$_banner_id === image.id
+						formaction="{$editBannerId === item.id
 							? '?/demote_image'
-							: '?/promote_image'}&{SEARCH_PARAMS.IMAGE_ID}={image.id}"
-						active={$_banner_id === image.id}
+							: '?/promote_image'}&{SEARCH_PARAMS.IMAGE_ID}={item.id}"
+						active={$editBannerId === item.id}
 					>
 						<Icon name="bookmark" />
 					</Button>
@@ -171,15 +171,15 @@
 			</menu>
 		{/if}
 		<fieldset>
-			<input type="hidden" name="gallery[{i}].id" readonly value={image.id} />
-			<input type="hidden" name="gallery[{i}].name" readonly value={image.name} />
-			<Field name="gallery[{i}].title" bind:value={image.title}>
+			<input type="hidden" name="gallery[{i}].id" readonly value={item.id} />
+			<input type="hidden" name="gallery[{i}].name" readonly value={item.name} />
+			<Field name="gallery[{i}].title" bind:value={item.title}>
 				<svelte:fragment slot="label">Titre</svelte:fragment>
 			</Field>
 			<TextArea
 				style="height: 100px;"
 				name="gallery[{i}].description"
-				bind:value={image.description}
+				bind:value={item.description}
 			>
 				<svelte:fragment slot="label">Description</svelte:fragment>
 			</TextArea>

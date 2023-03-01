@@ -86,7 +86,7 @@
 
 		.inner {
 			position: relative;
-			height: var(--ui-height);
+			height: var(--ui-block-size-lg);
 			padding: 3px 1em;
 			display: inline-flex;
 			flex-wrap: nowrap;

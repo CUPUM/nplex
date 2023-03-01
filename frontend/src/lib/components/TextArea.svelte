@@ -141,7 +141,7 @@
 		--radius: var(--ui-radius-md);
 		--inset: var(--ui-inset);
 		--notch-padding: 0.25em;
-		--pad-y: 1.25em; // calc(var(--ui-height) * 0.5 - 1em);
+		--pad-y: 1.25em; // calc(var(--ui-block-size-lg) * 0.5 - 1em);
 		cursor: text;
 		position: relative;
 		display: grid;

@@ -83,8 +83,8 @@
 	.avatar {
 		display: inline-block;
 		position: relative;
-		height: var(--ui-height);
-		width: var(--ui-height);
+		height: var(--ui-block-size-lg);
+		width: var(--ui-block-size-lg);
 		border-radius: 99px; //var(--ui-radius);
 		border: none;
 		text-decoration: none;

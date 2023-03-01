@@ -7,6 +7,7 @@
 	import type { DrawCreateEvent, DrawRenderEvent } from '@mapbox/mapbox-gl-draw';
 	import type { Position } from '@turf/turf';
 	import {
+		createCircle,
 		getCircleCenter,
 		getCircleRadius,
 		setCircleRadius,
@@ -15,14 +16,23 @@
 	import { editorDirtyValues } from '../../../common';
 	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
-	import { locationRadius, LOCATION_MAX_RADIUS, map, mapDraw } from './common';
+	import {
+		editCenter,
+		editRadius,
+		LOCATION_DEFAULT_RADIUS,
+		LOCATION_MAX_RADIUS,
+		map,
+		mapDraw,
+	} from './common';
 
 	$: ({ location } = ($page.data as PageData).project);
-	$: editRadius = location.radius;
-	let editCenter: Position;
+
+	$: $editRadius = location.radius;
+
 	function sync() {
-		editCenter = [...location.geometry!.coordinates];
+		$editCenter = [...location.geometry!.coordinates];
 	}
+
 	$: if (location.geometry) sync();
 
 	const updateLocation = throttle((e: DrawRenderEvent) => {
@@ -32,10 +42,10 @@
 				let radius = getCircleRadius(feature) * 1000;
 				if (radius > LOCATION_MAX_RADIUS) {
 					radius = LOCATION_MAX_RADIUS;
-					setCircleRadius(feature, radius);
+					setCircleRadius(feature, radius / 1000);
 				}
-				editCenter = getCircleCenter(feature);
-				$locationRadius = radius;
+				$editCenter = getCircleCenter(feature);
+				$editRadius = radius;
 			}
 		}
 	}, 100);
@@ -52,21 +62,27 @@
 		}
 	}
 
-	// function create() {
-	// 	if ($map && $mapDraw) {
-	// 		const center = $map.getCenter().toArray();
-	// 		const circle = createCircle(center, LOCATION_DEFAULT_RADIUS / 1000);
-	// 		$mapDraw.add(circle);
-	// 		$map.fire(DRAW_EVENTS.Create, { features: [circle] });
-	// 	}
-	// }
+	function drawCircle(center?: Position, radius: number = LOCATION_DEFAULT_RADIUS) {
+		if (!$map || !$mapDraw) {
+			return;
+		}
+		center ??= $map.getCenter().toArray();
+		const circle = createCircle(center, radius / 1000);
+		$mapDraw.add(circle);
+		$map.fire(DRAW_EVENTS.Create, { features: [circle] });
+	}
 
 	$: if ($map) {
-		/**
-		 * Clear previously created features, limit to 1 drawn feature.
-		 */
+		// Clear previously created features, limit to 1 drawn feature.
 		$map.on(DRAW_EVENTS.Create, onCreate);
 		$map.on(DRAW_EVENTS.Render, updateLocation);
+	}
+
+	$: if ($mapDraw) {
+		if (location) {
+			// Add initial circle programatically.
+			drawCircle(location.geometry?.coordinates, location.radius ?? undefined);
+		}
 	}
 
 	onDestroy(() => {
@@ -79,7 +95,7 @@
 
 <Dirty
 	sample={{ radius: location.radius, center: location.geometry?.coordinates }}
-	specimen={{ radius: editRadius, center: editCenter }}
+	specimen={{ radius: $editRadius, center: $editCenter }}
 	bind:dirty={$editorDirtyValues.location}
 />
 <EditorFormgroup legend="Emplacement">
@@ -98,12 +114,9 @@
 		type="hidden"
 		readonly
 		name="location"
-		value={JSON.stringify({ center: editCenter, radius: editRadius })}
+		value={JSON.stringify({ center: $editCenter, radius: $editRadius })}
 	/>
 </EditorFormgroup>
 
 <style lang="scss">
-	fieldset {
-		font-size: var(--ui-text-sm);
-	}
 </style>

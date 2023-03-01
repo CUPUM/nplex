@@ -9,7 +9,7 @@ const config: UserConfig = {
 	server: {
 		port: process.env.PORT ? +process.env.PORT : 3000,
 	},
-	plugins: [icons(), themes(THEME_PALETTES) /* houdini() */, , sveltekit()],
+	plugins: [icons(), themes(THEME_PALETTES), sveltekit()],
 	ssr: {
 		// https://github.com/airjp73/remix-validated-form/issues/141
 		noExternal: ['zod-form-data'],
