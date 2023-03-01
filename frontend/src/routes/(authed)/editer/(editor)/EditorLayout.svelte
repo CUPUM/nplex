@@ -30,8 +30,8 @@
 <EditorToolbar />
 <!-- Unsaved data warning -->
 <ModalConfirmNavigation intercept={$editorIsDirty} let:confirm let:cancel>
-	Vous avez des données non enregistrées. Celles-ci seront perdues si vous changez de page sans les
-	sauvegarder.
+	Vous avez des données non enregistrées. Celles-ci seront perdues si vous changez de page sans
+	sauvegarder vos modifications.
 	<svelte:fragment slot="footer">
 		<Button variant="ghost" on:click={confirm}>Continuer sans sauvegarder</Button>
 		<Button variant="ghost" on:click={cancel}>Annuler</Button>

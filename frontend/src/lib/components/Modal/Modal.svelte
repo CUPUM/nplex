@@ -97,13 +97,13 @@
 
 	header {
 		color: col(fg, 000);
-		background: col(fg, 000, 0.05);
+		// background: col(fg, 000, 0.05);
 		position: sticky;
 		font-size: var(--ui-text-lg);
 		font-weight: 500;
 		top: 0;
 		padding: 1.5rem 2rem;
-		// border-bottom: 1px solid col(fg, 100, 0.1);
+		border-bottom: 1px solid col(fg, 100, 0.1);
 	}
 
 	footer {
