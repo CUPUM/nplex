@@ -77,11 +77,14 @@
 	export let id: string;
 
 	const storageKey = `editables-filter-${id}`;
+
 	let applied = getPersistedValue<PersistedFilters>(storageKey, {
 		authoring: 'all',
 		publishing: 'all',
 	});
+
 	$: persistValue(storageKey, applied);
+
 	$: filtered = [
 		...data.filter(
 			(d) =>

@@ -31,5 +31,6 @@
 <style lang="scss">
 	div {
 		width: 100%;
+		max-width: var(--ui-width-md);
 	}
 </style>

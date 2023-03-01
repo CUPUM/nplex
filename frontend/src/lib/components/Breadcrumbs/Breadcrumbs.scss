@@ -1,0 +1,44 @@
+@use 'utils' as *;
+
+@mixin children($variant) {
+	:global(.breadcrumbs.#{$variant}) {
+		@content;
+	}
+}
+
+.breadcrumbs {
+	--inset: var(--ui-inset);
+	--height: var(--ui-height);
+	--radius: var(--ui-radius-md);
+	position: relative;
+	border-radius: var(--radius);
+	background-color: var(--overflow-effect-color);
+	backdrop-filter: blur(12px);
+	max-width: 100%;
+	// border: 2px solid red;
+}
+
+.breadcrumbs-inner {
+	position: relative;
+	display: inline-flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: flex-start;
+	padding: var(--inset);
+	height: var(--height);
+	gap: 0;
+}
+
+.default {
+	--overflow-effect-color: #{col(bg, 500)};
+	background: col(bg, 500, 0.75);
+}
+
+// .outlined {
+// 	--overflow-effect-color: transparent;
+// 	border: 1px solid col(fg, 100, 0.1);
+// }
+
+// .ghost {
+// }

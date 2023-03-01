@@ -62,3 +62,14 @@ export type TypedHTMLInputElement<
 		'button' | 'submit' | 'reset'
 	>
 > = Omit<HTMLInputElement, 'type'> & { type: T };
+
+/**
+ * Retrieve the type of an event declared in the global namespace. Mostly used for retrieving
+ * directive's custom event types.
+ */
+export type AppCustomEvent<
+	E extends keyof svelteHTML.HTMLAttributes<T>,
+	T extends HTMLElement = HTMLElement
+> = NonUndefinable<svelteHTML.HTMLAttributes<T>[E]> extends (...args: any) => any
+	? Parameters<NonUndefinable<svelteHTML.HTMLAttributes<T>[E]>>[0]
+	: never;

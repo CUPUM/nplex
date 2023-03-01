@@ -32,6 +32,7 @@
 
 		@include mobile {
 			padding: 0.75rem;
+			padding-top: 0;
 			font-size: var(--ui-text-sm);
 		}
 	}

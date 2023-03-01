@@ -39,8 +39,8 @@
 	class="footer"
 	class:out
 	use:intersection={{ rootMargin: '0px 0px -50px 0px' }}
-	on:enter={() => (out = false)}
-	on:leave={() => (out = true)}
+	on:intersection.enter={() => (out = false)}
+	on:intersection.leave={() => (out = true)}
 >
 	<div class="inner">
 		<section>

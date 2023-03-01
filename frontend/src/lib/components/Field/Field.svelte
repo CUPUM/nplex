@@ -151,7 +151,7 @@
 	}
 
 	/**
-	 * Format the value when user done interacting (on blur).
+	 * Format the value when user done interacting (on change or on blur, tbd).
 	 */
 	function format() {
 		if (value == null) {
@@ -272,7 +272,7 @@
 			{readonly}
 			pattern={pattern ? pattern.source : undefined}
 			on:input={handleInput}
-			on:blur={format}
+			on:change={format}
 			on:focus
 			on:blur
 			on:input

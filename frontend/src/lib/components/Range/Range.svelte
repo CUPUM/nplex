@@ -11,28 +11,47 @@
 		min: Readable<number>;
 		max: Readable<number>;
 		step: Readable<number>;
-		direction: 'row' | 'column';
 		disabled: Readable<boolean | undefined>;
-		pc: (value: number) => number;
-		map: (value: number) => number;
+		reverse: Readable<boolean | undefined>;
+		valueToPercent: (value: number) => number;
+		pxToValue: (px: number) => number;
 	}
 
 	export function getRangeContext() {
 		return getContext<RangeContext>(CTX_KEY);
 	}
+
+	export const rangeSpringOptions: Parameters<typeof spring<number>>[1] = {
+		stiffness: 0.25,
+		damping: 0.75,
+	};
 </script>
 
 <script lang="ts">
+	import resize from '$actions/resize';
+	import type { AppCustomEvent } from '$types/utils';
+
+	import {
+		ORIENTATIONS,
+		STATES,
+		VARIANTS,
+		type Orientation,
+		type State,
+		type Variant,
+	} from '$utils/enums';
 	import { getContext, setContext } from 'svelte';
+	import type { spring } from 'svelte/motion';
 	import { writable, type Readable } from 'svelte/store';
 
 	export let id: string | undefined = undefined;
-	export let min: number;
-	export let max: number;
-	export let step: number;
+	export let min: number = 0;
+	export let max: number = 100;
+	export let step: number = 1;
 	export let ticks: 'step' | number | undefined = undefined;
-	export let direction: RangeContext['direction'] = 'row';
-	export let variant: 'default' | 'cta' | 'outlined' = 'default';
+	export let orientation: Orientation = ORIENTATIONS.Row;
+	export let reverse: boolean | undefined = undefined;
+	export let variant: Variant = VARIANTS.Default;
+	export let state: State = STATES.Normal;
 	export let disabled: boolean | undefined = undefined;
 	export let style: string | undefined = undefined;
 	let className: string = '';
@@ -46,47 +65,56 @@
 	$: _step.set(step);
 	const _disabled = writable<boolean | undefined>(disabled);
 	$: _disabled.set(disabled);
+	const _reverse = writable<boolean | undefined>(reverse);
+	$: _reverse.set(reverse);
 
-	let trackw = 0;
-	let trackh = 0;
+	let trackSize = 0;
+
+	function handleResize(e: AppCustomEvent<'on:resize'>) {
+		// const style = getComputedStyle(e.detail.entry.target);
+		trackSize = e.detail.entry.contentBoxSize[0].inlineSize;
+	}
 
 	/**
-	 * Translating a domain-bound absolute value to a percentage distance.
+	 * Translating a domain-bound range value to a domain-bound percentage distance.
 	 */
-	function pc(input: number) {
-		const mapped = ((input - min) / (max - min)) * 100;
+	function valueToPercent(value: number) {
+		const mapped = ((value - min) / (max - min)) * 100;
 		return Math.max(Math.min(mapped, 100), 0);
 	}
 
 	/**
-	 * Translating a domainless (viewport) pixel value to a bound percentage.
+	 * Translating a domain-less pixel value to a domain-bound range value.
 	 */
-	function map(input: number) {
-		const domain = direction === 'row' ? trackw : trackh;
-		return (input / domain) * (max - min);
+	function pxToValue(px: number) {
+		return (px / trackSize) * (max - min);
 	}
 
 	setContext<RangeContext>(CTX_KEY, {
 		min: { subscribe: _min.subscribe },
 		max: { subscribe: _max.subscribe },
 		step: { subscribe: _step.subscribe },
-		direction,
 		disabled: { subscribe: _disabled.subscribe },
-		pc,
-		map,
+		reverse: { subscribe: _reverse.subscribe },
+		valueToPercent,
+		pxToValue,
 	});
 </script>
 
 <fieldset
 	{id}
-	class="range {variant} {direction} {className}"
+	class="range {variant} {state} {orientation} {className}"
+	class:reverse
 	{style}
-	style:--min={min}
-	style:--max={max}
+	style:--range-min={min}
+	style:--range-max={max}
 >
-	<div class="inner">
-		<div class="track" bind:clientWidth={trackw} bind:clientHeight={trackh} />
-		{#if ticks}
+	<div class="range-track-container">
+		<div class="range-track" use:resize on:resize={handleResize} />
+		<slot />
+	</div>
+	{#if ticks}
+		<div class="range-ticks-container">
 			{#if ticks === 'step'}
 				{@const arr = [
 					...Array((max - min) / step)
@@ -95,7 +123,7 @@
 					max,
 				]}
 				{#each arr as tick, i}
-					<div class="tick" style:--tick={tick}>
+					<div class="range-tick" style:--range-tick-value={tick}>
 						<slot name="tick" {tick} first={i === 0} last={i === arr.length - 1} />
 					</div>
 				{/each}
@@ -107,120 +135,15 @@
 					max,
 				]}
 				{#each arr as tick, i}
-					<div class="tick" style:--tick={tick}>
+					<div class="range-tick" style:--range-tick-value={tick}>
 						<slot name="tick" tick={Number(tick)} first={i === 0} last={i === arr.length - 1} />
 					</div>
 				{/each}
 			{/if}
-		{/if}
-		<slot />
-	</div>
+		</div>
+	{/if}
 </fieldset>
 
 <style lang="scss">
-	:where(.range) {
-		--domain: calc(var(--max) - var(--min));
-		--thumb-size: 1em;
-		--thumb-radius: calc(var(--thumb-size) * 0.5);
-		--track-thickness: max(3px, 0.3em);
-		--outline-width: 5px;
-		display: flex;
-		position: relative;
-		align-items: center;
-		justify-content: center;
-	}
-
-	:where(.row) {
-		padding-inline: var(--thumb-radius);
-		.inner {
-			width: 100%;
-			height: var(--ui-height);
-		}
-	}
-
-	:where(.column) {
-		padding-block: var(--thumb-radius);
-		.inner {
-			height: 100%;
-			width: var(--ui-height);
-		}
-	}
-
-	.inner {
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.track {
-		position: absolute;
-		border-radius: 99px;
-		.row & {
-			box-sizing: content-box;
-			padding-inline: calc(0.5 * var(--track-thickness));
-			width: 100%;
-			height: var(--track-thickness);
-		}
-		.column & {
-			height: 100%;
-			width: var(--track-thickness);
-		}
-	}
-
-	.tick {
-		--d: 1em;
-		--l: 0.5em;
-		font-size: var(--ui-text-xs);
-		font-variant-numeric: tabular-nums;
-		text-align: center;
-		// z-index: 1;
-		color: col(fg, 100, 0.5);
-		position: absolute;
-		left: calc((var(--tick) - var(--min)) * 100% / var(--domain));
-		top: 50%;
-		margin-top: calc(0.5 * var(--track-thickness));
-		padding-top: var(--d);
-		height: 1em;
-		width: max-content;
-		transform: translateX(-50%);
-		&::before {
-			top: 0;
-			left: calc(50%);
-			transform: translateX(-50%);
-			content: '';
-			position: absolute;
-			height: var(--l);
-			width: 1.5px;
-			background: col(fg, 100, 0.1);
-		}
-		// &::after {
-		// 	content: '';
-		// 	position: absolute;
-		// 	bottom: 100%;
-		// 	width: var(--track-thickness);
-		// 	aspect-ratio: 1;
-		// 	border-radius: 50%;
-		// 	background: col(fg, 100, 0.2);
-		// 	left: calc(50%);
-		// 	transform: translateX(-50%);
-		// }
-	}
-
-	// Variants
-
-	.default {
-		.track {
-			background: col(fg, 100, 0.2);
-		}
-	}
-
-	.outlined {
-	}
-
-	.cta {
-		.track {
-			background: col(primary, 900, 0.5);
-		}
-	}
+	@use './Range.scss';
 </style>

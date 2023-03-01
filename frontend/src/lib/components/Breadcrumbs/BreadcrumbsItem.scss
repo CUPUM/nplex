@@ -1,0 +1,38 @@
+@use 'utils' as *;
+@use './Breadcrumbs.scss';
+
+.breadcrumbs-item {
+	display: flex;
+	flex: none;
+	align-items: center;
+	padding-inline: 1em;
+	height: calc(var(--height) - 2 * var(--inset));
+	border-radius: calc(var(--radius) - var(--inset));
+	transition: all 0.1s;
+
+	&:first-of-type {
+		padding-inline-start: 1.5em;
+	}
+
+	&:last-of-type {
+		padding-inline-end: 1.5em;
+	}
+}
+
+.breadcrumb-item-inner {
+	position: relative;
+	top: -0.1em;
+}
+
+@include Breadcrumbs.children(default) {
+	.breadcrumbs-item {
+		color: col(fg, 100);
+		&:hover {
+			color: col(primary, 700);
+			background-color: col(primary, 300, 0.2);
+		}
+		&[data-current]:not(:hover) {
+			background-color: col(bg, 900, 0.9);
+		}
+	}
+}

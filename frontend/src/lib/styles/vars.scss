@@ -51,6 +51,7 @@
 	--ui-shadow-xl: 0 3rem 7rem -3rem rgb(0, 10, 20, 0.3);
 	--ui-outline-inactive: 0px solid #{col(primary, 300, 0)};
 	--ui-outline-active: 2px solid #{col(primary, 300)};
+	--ui-sidebar-width: 220px;
 
 	@include tablet {
 		--ui-nav-h: 88px; // Retrieved manually

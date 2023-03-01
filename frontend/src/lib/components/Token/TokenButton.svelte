@@ -3,18 +3,17 @@
 	# Token Button
 	
 -->
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import Ripple from '$components/Ripple.svelte';
+	import { STATES, VARIANTS, type State, type Variant } from '$utils/enums';
 
 	export let as: keyof HTMLElementTagNameMap = 'button';
-	export let variant: 'default' | 'outlined' | 'danger' | 'cta' | 'ghost' = 'default';
+	export let variant: Variant = VARIANTS.Default;
+	export let state: State = STATES.Normal;
 	export let equi: boolean = true;
 </script>
 
-<svelte:element this={as} class="ui-token-button {variant}" class:equi type="button">
+<svelte:element this={as} class="token-button {variant} {state}" class:equi type="button">
 	<Ripple />
 	<slot />
 </svelte:element>

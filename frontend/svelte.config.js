@@ -42,7 +42,7 @@ const config = {
 			$plugins: 'src/plugins',
 			// Houdini
 			// '~': path.resolve('./src'),
-			$houdini: './$houdini',
+			// $houdini: './$houdini',
 		},
 		files: {
 			hooks: {

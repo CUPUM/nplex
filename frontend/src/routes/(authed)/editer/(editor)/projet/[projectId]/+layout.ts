@@ -3,7 +3,7 @@ import { getDb } from '$utils/database/client';
 import { STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { alwaysArr, pgCubeToHsl, pgRangeToArr } from '$utils/format';
 import { error } from '@sveltejs/kit';
-import type { LayoutLoad } from './$types';
+import type { LayoutLoad, LayoutParentData } from './$types';
 
 export const load = (async (event) => {
 	// event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
@@ -21,30 +21,16 @@ export const load = (async (event) => {
 		.select(
 			`
 			*,
-			work_ids:projects_works (
-				*
+			work_ids:projects_works (*),
+			usages:projects_usages (*),
+			location:projects_location (*),
+			updated_by:users!projects_updated_by_id_fkey (*,
+				role:users_roles!users_roles_user_id_fkey (*)
 			),
-			usages:projects_usages (
-				*
+			created_by:users!projects_created_by_id_fkey (*,
+				role:users_roles!users_roles_user_id_fkey (*)
 			),
-			location:projects_location (
-				*
-			),
-			updated_by:users!projects_updated_by_id_fkey (
-				*,
-				role:users_roles!users_roles_user_id_fkey (
-					*
-				)
-			),
-			created_by:users!projects_created_by_id_fkey (
-				*,
-				role:users_roles!users_roles_user_id_fkey (
-					*
-				)
-			),
-			gallery:projects_images!project_id (
-				*
-			)
+			gallery:projects_images!project_id (*)
 		`
 		)
 		.eq('id', event.params.projectId)
@@ -76,8 +62,15 @@ export const load = (async (event) => {
 			};
 		});
 
+	const crumbs: LayoutParentData['crumbs'] = [
+		...(await event.parent()).crumbs,
+		{ title: 'Projet', pathname: '/editer/projet' },
+		{ title: project.title, pathname: `/editer/projet/${event.params.projectId}` },
+	];
+
 	return {
 		project,
 		descriptors,
+		crumbs,
 	};
 }) satisfies LayoutLoad;

@@ -1,6 +1,15 @@
 import type { ValueOf } from 'ts-essentials';
 
 /**
+ * Intl (i18n) locale strings.
+ */
+export const LOCALES = {
+	Fr: 'fr-CA',
+	En: 'en-CA',
+} as const;
+export type Locale = ValueOf<typeof LOCALES>;
+
+/**
  * Component / stylistic variants.
  */
 export const VARIANTS = {
@@ -25,6 +34,51 @@ export const STATES = {
 	Error: 'error',
 } as const;
 export type State = ValueOf<typeof STATES>;
+
+/**
+ * Orientations useful for component stylings. For easier customization, provide css helper classes
+ * with the appropriate `writing-mode` propertie.
+ */
+export const ORIENTATIONS = {
+	Row: 'row',
+	Column: 'column',
+} as const;
+export type Orientation = ValueOf<typeof ORIENTATIONS>;
+
+/**
+ * Direction, use in complementarity with orientations. For styling purposes, typically refers to
+ * the `direction` property (ltr, rtl);
+ */
+export const DIRECTIONS = {
+	Normal: 'normal',
+	Reverse: 'reverse',
+} as const;
+export type Direction = ValueOf<typeof DIRECTIONS>;
+
+/**
+ * Element positionings.
+ */
+export const POSITIONINGS = {
+	Top: 'top',
+	Right: 'right',
+	Bottom: 'bottom',
+	Left: 'left',
+	BlockStart: 'blockstart',
+	BlockEnd: 'bloackend',
+	InlineStart: 'inlinestart',
+	InlineEnd: 'inlinend',
+} as const;
+export type Positioning = ValueOf<typeof POSITIONINGS>;
+
+/**
+ * Element alignments, complementary to positionings.
+ */
+export const ALIGNMENTS = {
+	Start: 'start',
+	Center: 'center',
+	End: 'end',
+} as const;
+export type Position = ValueOf<typeof ALIGNMENTS>;
 
 /**
  * MapboxDraw event names.

@@ -1,56 +1,36 @@
 <script lang="ts">
-	import Icon from '$components/Icon.svelte';
-	import Ripple from '$components/Ripple.svelte';
+	import Range from '$components/Range/Range.svelte';
+	import RangeGroup from '$components/Range/RangeGroup.svelte';
+	import RangeThumb from '$components/Range/RangeThumb.svelte';
 
-	let toggled = false;
+	let thumb1 = 50;
+	let thumb2 = 70;
 </script>
 
 <article>
-	<h2>Button</h2>
-	<button class="ui-button" on:click={() => (toggled = !toggled)}>
-		<Ripple />
-		<Icon name={toggled ? 'letter' : 'settings'} />
-		<span class="ui-text">Me connecter</span>
-	</button>
-	<button class="ui-button outlined">
-		<Icon name={toggled ? 'letter' : 'settings'} />
-		<Ripple />
-		<span class="ui-text">Test</span>
-	</button>
-	<button class="ui-button cta">
-		<Ripple />
-		<span class="text">Test</span>
-	</button>
-</article>
-<article>
-	<h2>Field</h2>
-	<!-- <fieldset class="ui-field">
-		<button class="ui-button"><span class="ui-text">Test</span></button>
-		<input type="text" name="" id="" placeholder="Placeholder" />
-		<button class="ui-button"><div class="ui-text">Test</div></button>
-	</fieldset> -->
-	<fieldset class="ui-field" style="width: 100%;">
-		<button class="ui-button"><span class="ui-text">Test</span></button>
-		<Icon name="settings" />
-		<div class="ui-label-input">
-			<input type="number" min="10" max="100" name="" id="" placeholder="Placeholder" />
-			<legend>Test</legend>
-		</div>
-	</fieldset>
-</article>
-<article>
-	<h2>Skeleton</h2>
-	<section>
-		<div class="ui-skeleton" />
-	</section>
+	<code>Thumb 1: {thumb1}</code>
+	<Range>
+		<RangeGroup
+			line
+			draggable
+			pushpull
+			bind:from={thumb1}
+			bind:to={thumb2}
+			maxdelta={50}
+			mindelta={20}
+		/>
+		<RangeThumb bind:value={thumb1} />
+		<RangeThumb bind:value={thumb2} />
+	</Range>
 </article>
 
 <style lang="scss">
 	article {
+		width: 100%;
 		padding: 5rem;
 		display: flex;
-		gap: 1rem;
-		flex-wrap: wrap;
+		flex-direction: column;
+		align-items: stretch;
 	}
 
 	h2 {

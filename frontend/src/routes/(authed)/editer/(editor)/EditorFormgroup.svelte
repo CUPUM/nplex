@@ -14,7 +14,6 @@
 	fieldset {
 		position: relative;
 		padding: 3rem;
-		width: 100%;
 		background: col(bg, 700);
 		border-radius: var(--ui-radius-lg);
 		transition: all 0.15s;

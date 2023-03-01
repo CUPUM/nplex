@@ -139,9 +139,8 @@
 				{#each (searchResults ?? available).filter((w) => w.category_id === category.id) as w, i (w.id)}
 					<li animate:flip={{ duration: 100 }}>
 						<Tooltip message={w.description}>
-							<Token as="label" variant="subtle">
+							<Token variant="feature" bind:group={form_work_ids} value={w.id}>
 								{w.title}
-								<input type="checkbox" bind:group={form_work_ids} value={w.id} hidden />
 							</Token>
 						</Tooltip>
 					</li>
@@ -159,6 +158,7 @@
 		flex-wrap: wrap;
 		gap: 0.5em;
 		font-size: var(--ui-text-sm);
+		font-weight: 450;
 	}
 
 	.search {

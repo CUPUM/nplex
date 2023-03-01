@@ -1,21 +1,23 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Button from '$components/Button/Button.svelte';
 	import ModalConfirmNavigation from '$components/Modal/ModalConfirmNavigation.svelte';
 	import Sidebar from '$components/Sidebar/Sidebar.svelte';
-	import type { ComponentProps } from 'svelte';
+	import type { LayoutData } from './$types';
 	import { editorIsDirty, EDITOR_FORM_ID } from './common';
+	import EditorCrumbs from './EditorCrumbs.svelte';
 	import EditorHeader from './EditorHeader.svelte';
 	import EditorToolbar from './EditorToolbar.svelte';
 
-	export let crumbs: ComponentProps<EditorHeader>['crumbs'];
-
 	let submitting = false;
+
+	$: ({ crumbs } = $page.data as LayoutData);
 </script>
 
-<EditorHeader {crumbs} />
-<hgroup>
+<EditorCrumbs {crumbs} />
+<EditorHeader>
 	<slot name="header" />
-</hgroup>
+</EditorHeader>
 <div class="columns">
 	<Sidebar>
 		<slot name="sidebar" />
@@ -54,9 +56,14 @@
 		align-items: flex-start;
 		flex-direction: row;
 		gap: 1.5rem;
+		padding-top: 1.5rem;
 
 		@include tablet {
 			gap: 0;
 		}
+	}
+
+	article {
+		flex: 1;
 	}
 </style>

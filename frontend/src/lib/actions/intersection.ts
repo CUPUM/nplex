@@ -1,45 +1,52 @@
-import type { ValueOf } from 'ts-essentials';
+interface IntersectionOptions extends IntersectionObserverInit {}
 
 export const INTERSECTION_EVENT = {
-	enter: 'enter',
-	leave: 'leave',
+	Enter: 'intersection.enter',
+	Leave: 'intersection.leave',
 } as const;
 
-export type IntersectionEventName = ValueOf<typeof INTERSECTION_EVENT>;
+interface IntersectionEvent {
+	entry: IntersectionObserverEntry;
+}
 
-const DEFAULT_OPTIONS = {
-	root: null,
-	rootMargin: '-50% 0px -50%',
-	threshold: 0,
-	events: INTERSECTION_EVENT,
-};
+declare global {
+	namespace svelteHTML {
+		interface HTMLAttributes<T> {
+			'on:intersection.enter'?: (event?: CustomEvent<IntersectionEvent>) => unknown;
+			'on:intersection.leave'?: (event?: CustomEvent<IntersectionEvent>) => unknown;
+		}
+	}
+}
 
 /**
  * Action to observe an element's intersection with the viewport.
  */
 export function intersection(
 	element: HTMLElement,
-	options?: IntersectionObserverInit & { events?: { enter: string; leave: string } }
+	{ root = null, rootMargin = '-50% 0px -50%', threshold = 0 }: IntersectionOptions = {}
 ) {
-	const defaultedOptions = { ...DEFAULT_OPTIONS, ...options };
 	const observer = new IntersectionObserver(
 		(entries) => {
 			for (const entry of entries) {
 				if (entry.isIntersecting) {
 					entry.target.dispatchEvent(
-						new CustomEvent(defaultedOptions.events.enter, { detail: entry })
+						new CustomEvent(INTERSECTION_EVENT.Enter, {
+							detail: { entry } satisfies IntersectionEvent,
+						})
 					);
 				} else {
 					entry.target.dispatchEvent(
-						new CustomEvent(defaultedOptions.events.leave, { detail: entry })
+						new CustomEvent(INTERSECTION_EVENT.Leave, {
+							detail: { entry } satisfies IntersectionEvent,
+						})
 					);
 				}
 			}
 		},
 		{
-			root: defaultedOptions.root,
-			rootMargin: defaultedOptions.rootMargin,
-			threshold: defaultedOptions.threshold,
+			root,
+			rootMargin,
+			threshold,
 		}
 	);
 	observer.observe(element);

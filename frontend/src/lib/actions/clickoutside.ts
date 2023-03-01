@@ -1,6 +1,19 @@
-const TRIGGER = 'pointerdown';
+type ClickoutsideOptions = (AddEventListenerOptions & {}) | boolean;
 
-export const CLICKOUTSIDE_EVENT = 'clickoutside';
+const CLICKOUTSIDE_EVENT = 'clickoutside';
+
+interface ClickoutsideEvent {
+	target: HTMLElement;
+	originalEvent: Event;
+}
+
+declare global {
+	namespace svelteHTML {
+		interface HTMLAttributes<T> {
+			'on:clickoutside'?: (event: CustomEvent<ClickoutsideEvent>) => unknown;
+		}
+	}
+}
 
 /**
  * Directive to handle clicks outside host element.
@@ -9,18 +22,22 @@ export const CLICKOUTSIDE_EVENT = 'clickoutside';
  *
  * - Do you have `pointer-evetns: none` in some parent or target child css?
  */
-export function clickoutside(node: Node, options?: AddEventListenerOptions | boolean) {
+export function clickoutside(element: HTMLElement, options?: ClickoutsideOptions) {
 	function handleClick(e: Event) {
-		if (node && !node.contains((e as any).target) && !e.defaultPrevented) {
-			node.dispatchEvent(new CustomEvent(CLICKOUTSIDE_EVENT, { detail: e }));
+		if (!element.contains((e as any).target) && !e.defaultPrevented) {
+			element.dispatchEvent(
+				new CustomEvent(CLICKOUTSIDE_EVENT, {
+					detail: { target: element, originalEvent: e } satisfies ClickoutsideEvent,
+				})
+			);
 		}
 	}
 
-	document.addEventListener(TRIGGER, handleClick, options);
+	document.addEventListener(CLICKOUTSIDE_EVENT, handleClick, options);
 
 	return {
 		destroy() {
-			document.removeEventListener(TRIGGER, handleClick);
+			document.removeEventListener(CLICKOUTSIDE_EVENT, handleClick);
 		},
 	};
 }

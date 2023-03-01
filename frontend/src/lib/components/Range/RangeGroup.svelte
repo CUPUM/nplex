@@ -6,23 +6,21 @@
 -->
 <script lang="ts" context="module">
 	const POINT = {
-		from: 'from',
-		to: 'to',
+		From: 'from',
+		To: 'to',
 	} as const;
 	type Point = ValueOf<typeof POINT>;
 </script>
 
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { KEY } from '$utils/enums';
+	import slide from '$actions/slide';
+	import type { AppCustomEvent } from '$types/utils';
 	import { snap } from '$utils/number';
-	import { onDestroy, onMount, tick } from 'svelte';
 	import { spring } from 'svelte/motion';
 	import type { ValueOf } from 'ts-essentials';
-	import { getRangeContext } from './Range.svelte';
-	import { rangeThumbSpringOptions } from './RangeThumb.svelte';
+	import { getRangeContext, rangeSpringOptions } from './Range.svelte';
 
-	const { min, max, step, direction, pc, map, disabled } = getRangeContext();
+	const { min, max, step, valueToPercent, pxToValue, disabled } = getRangeContext();
 
 	export let from: number = $min;
 	export let to: number = $max;
@@ -33,8 +31,8 @@
 	export let collide: boolean = true;
 	export let line: boolean = true;
 
-	function _pushpull(pusher: Point) {
-		if (pusher === POINT.from) {
+	function applyPushpull(pusher: Point) {
+		if (pusher === POINT.From) {
 			const toMax = Math.max(to, from + mindelta);
 			to = maxdelta ? Math.min(toMax, $max, from + maxdelta) : Math.min(toMax, $max);
 		} else {
@@ -43,128 +41,87 @@
 		}
 	}
 
-	async function _collide(collider: Point) {
-		// To do: add maxdelta / mindelta logic
-		if (collider === POINT.from) {
-			await tick();
-			from = Math.min(to, from);
+	async function applyCollide(collider: Point) {
+		if (collider === POINT.From) {
+			const inner = Math.min(to - mindelta, from);
+			from = maxdelta ? Math.max(inner, to - maxdelta) : inner;
 		} else {
-			await tick();
-			to = Math.max(to, from);
+			const inner = Math.max(to, from + mindelta);
+			to = maxdelta ? Math.min(inner, to + maxdelta) : inner;
 		}
 	}
 
 	$: if (pushpull && from != undefined) {
-		_pushpull(POINT.from);
+		applyPushpull(POINT.From);
 	}
 	$: if (pushpull && to != undefined) {
-		_pushpull(POINT.to);
+		applyPushpull(POINT.To);
 	}
 	$: if (collide && !pushpull && from != undefined) {
-		_collide(POINT.from);
+		applyCollide(POINT.From);
 	}
 	$: if (collide && !pushpull && to != undefined) {
-		_collide(POINT.to);
+		applyCollide(POINT.To);
 	}
 
-	const relfrom = spring(pc(from), rangeThumbSpringOptions);
-	const relto = spring(pc(to), rangeThumbSpringOptions);
+	const relativeFrom = spring(valueToPercent(from), rangeSpringOptions);
+	const relativeTo = spring(valueToPercent(to), rangeSpringOptions);
+
+	$: $relativeFrom = valueToPercent(collide ? from : Math.min(from, to));
+	$: $relativeTo = valueToPercent(collide ? to : Math.max(from, to));
 
 	let lineRef: HTMLElement;
-	let startfrom: number | undefined;
-	let startto: number | undefined;
-	let startx: number | undefined;
-	let starty: number | undefined;
-	let focused = false;
+	let startFromValue: number | null = null;
+	let startToValue: number | null = null;
 
-	$: relfrom.set(pc(collide ? from : Math.min(from, to)));
-	$: relto.set(pc(collide ? to : Math.max(from, to)));
+	// function handleKey(e: KeyboardEvent) {
+	// 	if (!focused) {
+	// 		return;
+	// 	}
+	// 	const jump = e.shiftKey ? ($max - $min) / 10 : $step;
+	// 	switch (e.key) {
+	// 		case KEY.ArrowUp:
+	// 		case KEY.ArrowRight:
+	// 			from += jump;
+	// 			to += jump;
+	// 			break;
+	// 		case KEY.ArrowDown:
+	// 		case KEY.ArrowLeft:
+	// 			from -= jump;
+	// 			to -= jump;
+	// 			break;
+	// 	}
+	// }
 
-	onMount(() => {
-		relfrom.set(pc(collide ? from : Math.min(from, to)), { hard: true });
-		relto.set(pc(collide ? to : Math.max(from, to)), { hard: true });
-	});
-
-	function handleKey(e: KeyboardEvent) {
-		if (!focused) {
-			return;
+	function handleMove(e: AppCustomEvent<'on:slide.move'>) {
+		if (startFromValue != null) {
+			from = snap(Math.min(Math.max(startFromValue + pxToValue(e.detail.d), $min), $max), $step, {
+				origin: $min,
+			});
 		}
-		const jump = e.shiftKey ? ($max - $min) / 10 : $step;
-		switch (e.key) {
-			case KEY.ArrowUp:
-			case KEY.ArrowRight:
-				from += jump;
-				to += jump;
-				break;
-			case KEY.ArrowDown:
-			case KEY.ArrowLeft:
-				from -= jump;
-				to -= jump;
-				break;
-		}
-	}
-
-	function drag(e: PointerEvent) {
-		if (!lineRef || startx === undefined || starty === undefined) {
-			return;
-		}
-		let delta = 0;
-		if (direction === 'row') {
-			delta = e.pageX - startx;
-		} else {
-			delta = e.pageY - starty;
-		}
-		if (startfrom !== undefined) {
-			from = snap(Math.min(Math.max(startfrom + map(delta), $min), $max), $step, { origin: $min });
-		}
-		if (startto !== undefined) {
-			to = snap(Math.min(Math.max(startto + map(delta), $min), $max), $step, { origin: $min });
+		if (startToValue != null) {
+			to = snap(Math.min(Math.max(startToValue + pxToValue(e.detail.d), $min), $max), $step, {
+				origin: $min,
+			});
 		}
 	}
-
-	function dragstart(e: PointerEvent) {
-		startfrom = from;
-		startto = to;
-		startx = e.pageX;
-		starty = e.pageY;
-		document.addEventListener('pointerup', dragend, { once: true });
-		document.addEventListener('pointermove', drag);
-	}
-
-	function dragend(e: PointerEvent) {
-		startfrom = undefined;
-		startto = undefined;
-		startx = undefined;
-		starty = undefined;
-		document.removeEventListener('pointerup', dragend);
-		document.removeEventListener('pointermove', drag);
-	}
-
-	onDestroy(() => {
-		if (browser) {
-			document.removeEventListener('pointerup', dragend);
-			document.removeEventListener('pointermove', drag);
-		}
-	});
 </script>
 
-<svelte:window on:keydown={handleKey} />
-
 {#if line}
-	<svelte:element
-		this={draggable ? 'button' : 'div'}
-		type="button"
-		disabled={$disabled}
-		bind:this={lineRef}
-		style:--relfrom="{$relfrom}%"
-		style:--relto="{$relto}%"
-		class="line"
-		on:pointerdown={dragstart}
-		on:focus={() => {
-			focused = true;
+	<button
+		disabled={$disabled || !draggable}
+		style:--range-line-from-percent="{$relativeFrom}%"
+		style:--range-line-to-percent="{$relativeTo}%"
+		class="range-line"
+		use:slide
+		on:slide.start={() => {
+			startFromValue = from;
+			startToValue = to;
 		}}
-		on:blur={() => {
-			focused = false;
+		on:slide.move={handleMove}
+		on:slide.end={() => {
+			startFromValue = null;
+			startToValue = null;
 		}}
 	>
 		{#if $$slots.default}
@@ -172,55 +129,9 @@
 				<slot />
 			</label>
 		{/if}
-	</svelte:element>
+	</button>
 {/if}
 
 <style lang="scss">
-	.line {
-		--line-thickness: calc(var(--track-thickness) + 4px);
-		position: absolute;
-		border-radius: 99px;
-		outline: none;
-		transition: box-shadow 0.25s var(--ui-ease-out), background 0.25s var(--ui-ease-out);
-
-		:global(.row .inner) > & {
-			height: var(--line-thickness);
-			left: var(--relfrom);
-			width: max(0%, calc(var(--relto) - var(--relfrom)));
-		}
-
-		:global(.column .inner) > & {
-			width: var(--line-thickness);
-			top: var(--relfrom);
-			height: max(0%, calc(var(--relto) - var(--relfrom)));
-		}
-	}
-
-	.line:disabled,
-	div {
-		pointer-events: none;
-	}
-
-	// Variants
-
-	:global(.default .inner) {
-		> button {
-			background: col(fg, 300);
-			box-shadow: 0 0 0 0 col(primary, 500, 0);
-			&:active,
-			&:focus {
-				background: col(primary, 700);
-				box-shadow: 0 0 0 var(--outline-width) col(primary, 300, 0.5);
-			}
-			&:hover {
-				background: col(primary, 500);
-			}
-		}
-
-		&:focus-within {
-			button:not(:focus) {
-				background: col(primary, 900);
-			}
-		}
-	}
+	@use './RangeGroup.scss';
 </style>

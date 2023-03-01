@@ -3,8 +3,8 @@
 .token-button {
 	position: relative;
 	cursor: pointer;
-	height: calc(var(--height) - 2 * var(--inset));
-	border-radius: calc(var(--radius) - var(--inset));
+	height: calc(var(--token-size) - 2 * var(--token-inset));
+	border-radius: calc(var(--token-radius) - var(--token-inset));
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -12,7 +12,7 @@
 }
 
 .equi {
-	width: calc(var(--height) - 2 * var(--inset));
+	width: calc(var(--token-size) - 2 * var(--token-inset));
 	padding: 0;
 }
 

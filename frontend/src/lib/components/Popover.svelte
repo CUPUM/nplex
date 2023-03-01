@@ -44,8 +44,11 @@
 	}
 
 	function handleClickoutside(e: Event) {
-		if (e instanceof CustomEvent<Event>) {
-			if (e.detail.target instanceof Node && !contentRef?.contains(e.detail.target)) {
+		if (e instanceof CustomEvent) {
+			if (
+				e.detail.originalEvent.target instanceof Node &&
+				!contentRef?.contains(e.detail.originalEvent.target)
+			) {
 				opened = false;
 			}
 		}

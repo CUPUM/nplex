@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
-	import { crumbs } from '../EditorHeader.svelte';
+	import { crumbs } from '../EditorCrumbs.svelte';
 	import { descriptors } from '../projet/[projectId]/common';
 	import type { LayoutData } from './$types';
 

@@ -17,7 +17,7 @@
 
 <Dirty sample={type_id} specimen={$editTypeId} bind:dirty={$editorDirtyValues.type_id} />
 <EditorFormgroup legend="Type de projet">
-	<Switch style="align-self: flex-start" variant="outlined" bind:group={$editTypeId} name="type_id">
+	<Switch style="align-self: flex-start" variant="outlined" bind:value={$editTypeId} name="type_id">
 		{#each descriptors.types as type}
 			<SwitchItem value={type.id}>
 				{type.title}

@@ -10,7 +10,6 @@
 
 <style lang="scss">
 	aside {
-		--ui-sidebar-width: 220px;
 		flex: none;
 		position: sticky;
 		top: var(--ui-nav-h);

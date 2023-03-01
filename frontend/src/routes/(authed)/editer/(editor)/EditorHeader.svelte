@@ -1,50 +1,61 @@
 <script lang="ts">
-	import Breadcrumbs from '$components/Breadcrumbs/Breadcrumbs.svelte';
-	import BreadcrumbsItem from '$components/Breadcrumbs/BreadcrumbsItem.svelte';
-	import BreadcrumbsSeparator from '$components/Breadcrumbs/BreadcrumbsSeparator.svelte';
-	import { fly } from 'svelte/transition';
+	import { locale } from '$components/I18n.svelte';
 
-	export let crumbs: { title: string; pathname: string }[];
+	export let updatedAt: Date = new Date();
+	export let updatedBy: string = 'Utilisateur';
+	export let createdAt: Date = new Date();
+	export let createdBy: string = 'Utilisateur';
+
+	const dateFormatter = new Intl.DateTimeFormat($locale);
 </script>
 
 <header>
-	<div class:hidden={!crumbs.length} in:fly={{ y: 6, delay: 750 }}>
-		<Breadcrumbs>
-			{#each crumbs as crumb, i}
-				<BreadcrumbsItem href={crumb.pathname}>{crumb.title}</BreadcrumbsItem>
-				{#if i < crumbs.length - 1}
-					<BreadcrumbsSeparator />
-				{/if}
-			{/each}
-		</Breadcrumbs>
-	</div>
+	<hgroup class="main">
+		<slot />
+	</hgroup>
+	<dl>
+		<dt>Créé le</dt>
+		<dd>{dateFormatter.format(createdAt)}</dd>
+		<dt>par</dt>
+		<dd>{createdBy}</dd>
+	</dl>
+	<dl>
+		<dt>Modifié le</dt>
+		<dd>{dateFormatter.format(updatedAt)}</dd>
+		<dt>par</dt>
+		<dd>{updatedBy}</dd>
+	</dl>
 </header>
 
 <style lang="scss">
 	header {
-		--inset: var(--ui-inset);
-		position: sticky;
-		top: 0;
 		width: 100%;
-		padding-top: calc(1rem - var(--inset));
-		padding-bottom: 1.5rem;
+		min-height: 50vh;
+		min-height: 50svh;
 		display: flex;
+		flex-direction: column;
 		align-items: flex-start;
 		justify-content: center;
-		z-index: 5;
-		// background: var(--editor-bg);
-		// border-bottom: 1px solid col(fg, 500, 0.05);
+		padding: 3rem;
+		// background-color: col(bg, 500);
+		border: var(--ui-border-thickness) dashed col(primary, 900, 0.1);
+		color: col(primary, 900);
+		border-radius: var(--ui-radius-xl);
 	}
 
-	div {
-		max-width: var(--ui-nav-center-w);
-		width: 100%;
-		display: flex;
-		justify-content: center;
+	hgroup {
+		font-size: var(--ui-text-2xl);
+		font-weight: 500;
+		line-height: 1.2;
 
-		&.hidden {
-			pointer-events: none;
-			visibility: hidden;
+		@include mobile {
+			font-size: var(--ui-text-xl);
+		}
+	}
+
+	dt {
+		&::after {
+			content: '\00A0:';
 		}
 	}
 </style>

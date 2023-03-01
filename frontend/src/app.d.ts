@@ -16,12 +16,9 @@ type UserSession = DeepOmit<AuthSession, { user: { role: never } }> & {
 };
 
 declare global {
-	namespace svelte.JSX {
-		// Extend elements typing to allow custom attributes added using `use` directives (actions).
+	// For reference, read: https://github.com/sveltejs/language-tools/blob/master/docs/preprocessors/typescript.md#im-using-an-attributeevent-on-a-dom-element-and-it-throws-a-type-error
+	namespace svelteHTML {
 		interface HTMLAttributes<T> {
-			'onclickoutside'?: (event: CustomEvent<Event>) => unknown;
-			'onenter'?: (event?: CustomEvent) => unknown;
-			'onleave'?: (event?: CustomEvent) => unknown;
 			[POPOVER_OPEN_ATTR]?: '';
 			'data-theme'?: ThemeName;
 		}

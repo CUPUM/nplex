@@ -1,0 +1,68 @@
+@use 'utils' as *;
+@use './Range.scss';
+
+@mixin range($variant) {
+	:global(#{$variant}) .range-line {
+		@content;
+	}
+}
+
+.range-line {
+	--range-line-thickness: calc(var(--range-track-thickness) + 4px);
+	position: absolute;
+	border-radius: 99px;
+	outline: none;
+	block-size: var(--range-line-thickness);
+	inset-inline-start: var(--range-line-from-percent);
+	inline-size: max(0%, calc(var(--range-line-to-percent) - var(--range-line-from-percent)));
+	transition: box-shadow 0.25s var(--ui-ease-out), background 0.25s var(--ui-ease-out);
+}
+
+:disabled {
+	pointer-events: none;
+}
+
+// Default variant.
+@include Range.children(default) {
+	.range-line {
+		background-color: col(fg, 300);
+		box-shadow: 0 0 0 0 col(primary, 500, 0);
+
+		&:hover {
+			background-color: col(primary, 500);
+		}
+
+		&:focus,
+		&:active {
+			background-color: col(primary, 700);
+			box-shadow: 0 0 0 var(--range-halo-size) col(primary, 300, 0.5);
+		}
+	}
+
+	&:focus-within {
+		.range-line:not(:focus):not(:active) {
+			background-color: col(primary, 900);
+		}
+	}
+}
+
+// :global(.default .inner) {
+// 	> button {
+// 		background: col(fg, 300);
+// 		box-shadow: 0 0 0 0 col(primary, 500, 0);
+// 		&:active,
+// 		&:focus {
+// 			background: col(primary, 700);
+// 			box-shadow: 0 0 0 var(--outline-width) col(primary, 300, 0.5);
+// 		}
+// 		&:hover {
+// 			background: col(primary, 500);
+// 		}
+// 	}
+
+// 	&:focus-within {
+// 		button:not(:focus) {
+// 			background: col(primary, 900);
+// 		}
+// 	}
+// }

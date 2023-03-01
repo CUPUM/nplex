@@ -20,17 +20,17 @@
 	$: cost_range, sync();
 
 	function checkMin() {
-		form_cost_range[0] = Math.max(
-			COST_MIN,
-			Math.min(form_cost_range[0], COST_MAX, form_cost_range[1])
-		);
+		// form_cost_range[0] = Math.max(
+		// 	COST_MIN,
+		// 	Math.min(form_cost_range[0], COST_MAX, form_cost_range[1])
+		// );
 	}
 
 	function checkMax() {
-		form_cost_range[1] = Math.min(
-			COST_MAX,
-			Math.max(form_cost_range[1], COST_MIN, form_cost_range[0])
-		);
+		// form_cost_range[1] = Math.min(
+		// 	COST_MAX,
+		// 	Math.max(form_cost_range[1], COST_MIN, form_cost_range[0])
+		// );
 	}
 </script>
 

@@ -7,14 +7,11 @@
 <script lang="ts">
 	import Ripple from '$components/Ripple.svelte';
 	import { STATES, VARIANTS, type State, type Variant } from '$utils/enums';
-	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type { HTMLAnchorAttributes, HTMLInputAttributes } from 'svelte/elements';
 
 	type V = $$Generic;
 
-	type $$Props = Pick<
-		HTMLInputAttributes,
-		'required' | 'readonly' | 'name' | 'disabled' | 'tabindex'
-	> & {
+	type $$Props = (HTMLInputAttributes | HTMLAnchorAttributes) & {
 		variant?: Variant;
 		state?: State;
 		active?: boolean;
@@ -33,7 +30,7 @@
 	export let href: $$Props['href'] = undefined;
 
 	let element: 'a' | 'label' | 'span';
-	$: element = href ? 'a' : value != null || group || active != null ? 'label' : 'span';
+	$: element = href ? 'a' : value != null || group ? 'label' : 'span';
 	$: type === 'radio' && updateRadio(group, value);
 	$: type === 'checkbox' && group && value != null && updateCheckbox(group, value);
 	$: type === 'checkbox' && group && updateGroup(active, value);
@@ -71,6 +68,7 @@
 	class:disabled={$$props.disabled}
 	class:active
 	{href}
+	{...element === 'label' ? {} : $$restProps}
 >
 	<Ripple />
 	{#if element === 'label'}

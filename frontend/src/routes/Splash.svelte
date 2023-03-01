@@ -34,10 +34,10 @@
 	use:overlapNavbar={{ theme: THEMES.dark, background: col('bg', '300') }}
 	use:setRootBackground={{ overscroll: THEME_PALETTES.dark.bg[300] }}
 	use:intersection
-	on:enter={() => {
+	on:intersection.enter={() => {
 		entered = true;
 	}}
-	on:leave={() => {
+	on:intersection.leave={() => {
 		entered = false;
 	}}
 	data-theme={THEMES.dark}
