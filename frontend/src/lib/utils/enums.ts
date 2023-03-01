@@ -362,8 +362,9 @@ export const LOAD_DEPENDENCIES = {
 } as const;
 
 /**
- * Supabase-js's storage api isnt typed by default. This facilitates consistent use of bucket names
- * throughout the app.
+ * Supabase-js's storage api is not typed by default. This facilitates consistent use of bucket
+ * names throughout the app. This constant should ALWAYS reflect the bucket names defined under the
+ * db storage schema's `buckets` table.
  */
 export const STORAGE_BUCKETS = {
 	PROJECTS: 'projects',
@@ -371,6 +372,14 @@ export const STORAGE_BUCKETS = {
 	ORGANISATIONS: 'organisations',
 	ACTORS: 'actors',
 	GENERAL: 'app',
+} as const;
+
+/**
+ * Level-agnostic foldernames. Make sure to keep in sync with conditions used in sql functions /
+ * triggers.
+ */
+export const STORAGE_FOLDERS = {
+	IMAGE_GALLERY: 'image-gallery',
 } as const;
 
 export type StorageBucket = ValueOf<typeof STORAGE_BUCKETS>;

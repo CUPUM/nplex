@@ -4,7 +4,6 @@ import { zfd } from 'zod-form-data';
 export const IMAGE_MAX_SIZE = 5e6;
 export const IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 export const IMAGE_MAX_RESOLUTION = 1_600;
-export const IMAGE_GALLERY_FOLDER = 'gallery';
 export const IMAGE_TITLE_MAX_LENGTH = 200;
 export const IMAGE_DESCRIPTION_MAX_LENGTH = 500;
 
