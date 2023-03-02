@@ -15,7 +15,9 @@ type RevealCSS = Partial<
 	>
 >;
 
-type RevealWrapCSS = Partial<Pick<RevealCSS, 'clipPath' | 'perspective' | 'perspectiveOrigin' | 'transform'>>;
+type RevealWrapCSS = Partial<
+	Pick<RevealCSS, 'clipPath' | 'perspective' | 'perspectiveOrigin' | 'transform'>
+>;
 
 export interface RevealOptions extends IntersectionObserverInit {
 	/**
@@ -23,8 +25,8 @@ export interface RevealOptions extends IntersectionObserverInit {
 	 */
 	useIntersection?: boolean;
 	/**
-	 * If using intersection, should the intersection observer events be used to update the reveal state when the
-	 * element leaves the viewport, allowing for reveal to re-run on subsequent enter?
+	 * If using intersection, should the intersection observer events be used to update the reveal
+	 * state when the element leaves the viewport, allowing for reveal to re-run on subsequent enter?
 	 */
 	once?: boolean;
 	/**
@@ -52,13 +54,13 @@ export interface RevealOptions extends IntersectionObserverInit {
 	 */
 	durationOut?: RevealOptions['duration'];
 	/**
-	 * Stagger delay in ms, i.e. css transition delay applied cumulatively to units, starting at 0. Set to 0 to disable
-	 * and skip splitText().
+	 * Stagger delay in ms, i.e. css transition delay applied cumulatively to units, starting at 0.
+	 * Set to 0 to disable and skip splitText().
 	 */
 	stagger?: number | ((index: number) => number);
 	/**
-	 * Stagger delay in ms, i.e. css transition delay applied cumulatively to units, starting at 0. Set to 0 to disable
-	 * and skip splitText().
+	 * Stagger delay in ms, i.e. css transition delay applied cumulatively to units, starting at 0.
+	 * Set to 0 to disable and skip splitText().
 	 */
 	staggerOut?: RevealOptions['stagger'];
 	/**
@@ -70,7 +72,8 @@ export interface RevealOptions extends IntersectionObserverInit {
 	 */
 	easingOut?: RevealOptions['easing'];
 	/**
-	 * Styles applied to unit nodes when unentered. Will be animated towards the default (empty) styles.
+	 * Styles applied to unit nodes when unentered. Will be animated towards the default (empty)
+	 * styles.
 	 */
 	start?: RevealCSS;
 	wrapDelay?: RevealOptions['delay'];
@@ -86,7 +89,8 @@ export interface RevealOptions extends IntersectionObserverInit {
 }
 
 /**
- * Directive to transition an element on viewport intersection, without removing / inserting it from the DOM.
+ * Directive to transition an element on viewport intersection, without removing / inserting it from
+ * the DOM.
  */
 export function reveal(
 	element: HTMLElement,
@@ -118,7 +122,7 @@ export function reveal(
 		wrapStart = {},
 		wrapEnd = wrapStart,
 	}: RevealOptions = {}
-): SvelteActionReturnType {
+) {
 	const _ID = 'reveal-' + crypto.getRandomValues(new Uint32Array(1));
 
 	const ATTRIBUTES = {
@@ -318,7 +322,7 @@ export function reveal(
 			element.removeEventListener('leave', handleLeave);
 			stylesheet.remove();
 		},
-	};
+	} satisfies SvelteActionReturnType;
 }
 
 function composeRevealCssVars(
@@ -327,7 +331,14 @@ function composeRevealCssVars(
 		RevealOptions,
 		'duration' | 'durationOut' | 'easing' | 'easingOut' | 'stagger' | 'staggerOut'
 	>,
-	keys: { duration: string; durationOut: string; delay: string; delayOut: string; easing: string; easingOut: string }
+	keys: {
+		duration: string;
+		durationOut: string;
+		delay: string;
+		delayOut: string;
+		easing: string;
+		easingOut: string;
+	}
 ) {
 	return (
 		`${keys.duration}: ${
@@ -353,7 +364,9 @@ function composeRevealCssVars(
 				: transitionOptions.staggerOut ?? 0)
 		}ms;` +
 		`${keys.easing}: ${
-			typeof transitionOptions.easing === 'function' ? transitionOptions.easing(index) : transitionOptions.easing
+			typeof transitionOptions.easing === 'function'
+				? transitionOptions.easing(index)
+				: transitionOptions.easing
 		};` +
 		`${keys.easingOut}: ${
 			typeof transitionOptions.easingOut === 'function'
@@ -364,8 +377,9 @@ function composeRevealCssVars(
 }
 
 /**
- * Because the CSSStyleDeclaration interface doesnt allow us to create new style declarations using new...(), we must
- * handle regular objects ourselves and their conversion to a "style.cssText"-alike string.
+ * Because the CSSStyleDeclaration interface doesnt allow us to create new style declarations using
+ * new...(), we must handle regular objects ourselves and their conversion to a
+ * "style.cssText"-alike string.
  */
 function objectToCSSText(styleObject: Record<string, string>) {
 	if (!styleObject) return '';
@@ -397,21 +411,22 @@ function splitText(element: HTMLElement, { delimiter = '' }: SplitTextOptions = 
 				const segmentNode = document.createElement('span');
 				// segmentNode.setAttribute(SplitTextAttributes.Segment, '');
 				newNodes.push(segmentNode);
-				(delimiter instanceof RegExp ? segment.match(delimiter) ?? [] : segment.split(delimiter)).forEach(
-					(unit) => {
-						const maskNode = document.createElement('span');
-						// maskNode.style.cssText = 'position: relative; display: inline-block; transform-style: preserve-3d;';
-						segmentNode.appendChild(maskNode);
-						const contentNode = document.createElement('span');
-						maskNode.appendChild(contentNode);
-						// unitNode.setAttribute(SplitTextAttributes.Unit, '');
-						contentNode.textContent = unit;
-						// contentNode.style.cssText =
-						// 	'position: relative; display: inline-block; transform-style: preserve-3d;';
-						// unitNode.style.setProperty(SplitTextAttributes.CSSIndex, nUnits++ + '');
-						nodes.push(contentNode);
-					}
-				);
+				(delimiter instanceof RegExp
+					? segment.match(delimiter) ?? []
+					: segment.split(delimiter)
+				).forEach((unit) => {
+					const maskNode = document.createElement('span');
+					// maskNode.style.cssText = 'position: relative; display: inline-block; transform-style: preserve-3d;';
+					segmentNode.appendChild(maskNode);
+					const contentNode = document.createElement('span');
+					maskNode.appendChild(contentNode);
+					// unitNode.setAttribute(SplitTextAttributes.Unit, '');
+					contentNode.textContent = unit;
+					// contentNode.style.cssText =
+					// 	'position: relative; display: inline-block; transform-style: preserve-3d;';
+					// unitNode.style.setProperty(SplitTextAttributes.CSSIndex, nUnits++ + '');
+					nodes.push(contentNode);
+				});
 			});
 			cn.textContent = '';
 			cn.after(...newNodes);

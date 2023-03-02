@@ -48,13 +48,13 @@ function handleSelectInput(e: Event) {
 export default function dirty(
 	element: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
 	{ sample }: DirtyOptions = {}
-): SvelteActionReturnType {
+) {
 	element.addEventListener('input', (e) => console.log(e));
 
 	return {
 		update(args) {},
 		destroy() {},
-	};
+	} satisfies SvelteActionReturnType;
 }
 
 // export default function dirty(

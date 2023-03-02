@@ -35,7 +35,7 @@ export function tweenHeight(
 		easing = cubicOut,
 		delay = 0,
 	}: TweenHeightOptions = {}
-): SvelteActionReturnType {
+) {
 	const style = getComputedStyle(element);
 	if (style.position === 'static') {
 		element.style.position = 'relative';
@@ -117,5 +117,5 @@ export function tweenHeight(
 	return {
 		update(args) {},
 		destroy() {},
-	};
+	} satisfies SvelteActionReturnType;
 }

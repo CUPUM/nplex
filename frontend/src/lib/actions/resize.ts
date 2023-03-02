@@ -16,7 +16,7 @@ declare global {
  * Attach a Resize obsrver to an element. Useful for quick drop-in use when only one element should
  * be observed.
  */
-export default function resize(element: HTMLElement): SvelteActionReturnType {
+export default function resize(element: HTMLElement) {
 	function handleResize(entries: ResizeObserverEntry[]) {
 		element.dispatchEvent(
 			new CustomEvent(RESIZE_EVENT, { detail: { entry: entries[0] } satisfies ResizeEvent })
@@ -32,5 +32,5 @@ export default function resize(element: HTMLElement): SvelteActionReturnType {
 			observer.unobserve(element);
 			observer.disconnect();
 		},
-	};
+	} satisfies SvelteActionReturnType;
 }

@@ -42,10 +42,7 @@ function computeDelta(dx: number, dy: number) {
 /**
  * Dispatch an element's drag move information.
  */
-export default function slide(
-	element: HTMLElement,
-	{ disabled = false }: SlideOptions = {}
-): SvelteActionReturnType {
+export default function slide(element: HTMLElement, { disabled = false }: SlideOptions = {}) {
 	/**
 	 * Reference position.
 	 */
@@ -73,7 +70,7 @@ export default function slide(
 		);
 	}
 
-	function handleMove(e: PointerEvent) {
+	function move(e: PointerEvent) {
 		dispatch(SLIDE_EVENTS.Move, e);
 	}
 
@@ -81,7 +78,7 @@ export default function slide(
 		dispatch(SLIDE_EVENTS.End, e);
 		x0 = null;
 		y0 = null;
-		document.removeEventListener('pointermove', handleMove);
+		document.removeEventListener('pointermove', move);
 		document.removeEventListener('pointerup', end);
 		document.removeEventListener('pointercancel', end);
 	}
@@ -96,7 +93,7 @@ export default function slide(
 		dispatch(SLIDE_EVENTS.Start, e);
 		document.addEventListener('pointerup', end, { once: true });
 		document.addEventListener('pointercancel', end, { once: true });
-		document.addEventListener('pointermove', handleMove);
+		document.addEventListener('pointermove', move);
 	}
 
 	element.addEventListener('pointerdown', start);
@@ -107,9 +104,9 @@ export default function slide(
 		},
 		destroy() {
 			document.removeEventListener('pointerup', end);
-			document.removeEventListener('pointermove', handleMove);
+			document.removeEventListener('pointermove', move);
 			document.removeEventListener('pointerdown', start);
 			document.removeEventListener('pointercancel', end);
 		},
-	};
+	} satisfies SvelteActionReturnType;
 }

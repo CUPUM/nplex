@@ -15,11 +15,15 @@
 </script>
 
 <script lang="ts">
-	export let data: D[];
+	import { dragndrop, type DragndropOptions } from '$actions/dragndrop';
 
 	type D = $$Generic;
 
+	export let data: D[];
+
 	let items: DragndropItem<D>[];
+
+	let refs = new Set<HTMLElement>();
 
 	$: items = data.map((datum) => {
 		return {
@@ -31,15 +35,24 @@
 		};
 	});
 
-	function dnditem(element: HTMLElement): SvelteActionReturnType {
+	interface DragndropItemOptions extends DragndropOptions {}
+
+	function dragndropItem(element: HTMLElement, { disabled = false }: DragndropItemOptions = {}) {
+		refs.add(element);
+		const dnd = dragndrop(element, { disabled });
+
 		return {
-			update(args) {},
-			destroy() {},
-		};
+			update(args) {
+				dnd.update(args);
+			},
+			destroy() {
+				refs.delete(element);
+			},
+		} satisfies SvelteActionReturnType;
 	}
 </script>
 
-<slot {items} {dnditem} />
+<slot {items} {dragndropItem} />
 
 <style lang="scss">
 </style>

@@ -3,10 +3,7 @@ interface KeyIncrementOptions {}
 /**
  * Handle more functionality for keyboard events and numeric inputs (number, range, data, etc).
  */
-export default function keyIncrement(
-	element: HTMLInputElement,
-	{}: KeyIncrementOptions = {}
-): SvelteActionReturnType {
+export default function keyIncrement(element: HTMLInputElement, {}: KeyIncrementOptions = {}) {
 	// function handleKey(e: KeyboardEvent) {
 	// 	if (!focused) {
 	// 		return;
@@ -26,5 +23,5 @@ export default function keyIncrement(
 	return {
 		update(args) {},
 		destroy() {},
-	};
+	} satisfies SvelteActionReturnType;
 }

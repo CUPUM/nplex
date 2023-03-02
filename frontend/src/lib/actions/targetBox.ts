@@ -5,10 +5,7 @@ interface TargetBoxOptions {
 /**
  * Directive to get a target element's box and apply it to the directive's host.
  */
-export function targetBox(
-	element: HTMLElement,
-	{ target }: TargetBoxOptions = {}
-): SvelteActionReturnType {
+export function targetBox(element: HTMLElement, { target }: TargetBoxOptions = {}) {
 	element.style.position = 'absolute';
 
 	function setBox() {
@@ -47,5 +44,5 @@ export function targetBox(
 		destroy() {
 			resizeObserver.disconnect();
 		},
-	};
+	} satisfies SvelteActionReturnType;
 }
