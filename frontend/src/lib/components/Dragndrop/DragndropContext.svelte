@@ -1,8 +1,14 @@
+<!--
+	@component
+	# Dragndrop Context
+	A functional component that exposes two directives through its slot props:
+	- dragndropZone: Set the zone element.
+	- dragndropItem: Set a dragndrop list item.
+-->
 <script lang="ts" context="module">
-	const ITEM_ID_ATTR = 'data-dnd-item-id';
-
-	const ITEM_CLASS = {
-		DRAGGABLE: 'dnd-draggable',
+	const ATTRIBUTES = {
+		ITEM_KEY: 'data-dnd-item-key',
+		DRAGGABLE: 'data-dnd-draggable',
 	};
 </script>
 
@@ -12,25 +18,32 @@
 	type D = $$Generic;
 
 	export let items: D[];
-	export let getKey: (item: D) => string;
 
-	let sortItems = new Map(items.map((d) => [getKey(d), d]));
-
-	function syncDown() {
-		sortItems = new Map(items.map((d) => [getKey(d), d]));
-	}
-	$: items, syncDown();
+	let itemRefs: Map<Element, D> = new Map();
 
 	let sortable: Sortable;
 
 	function dragndropZone(element: HTMLElement) {
 		sortable = new Sortable(element, {
-			dataIdAttr: ITEM_ID_ATTR,
-			draggable: `.${ITEM_CLASS.DRAGGABLE}`,
+			dataIdAttr: ATTRIBUTES.ITEM_KEY,
+			draggable: `[${ATTRIBUTES.DRAGGABLE}]`,
 			animation: 200,
-			easing: 'cubic-bezier(.8, 0, .2, 1)',
+			easing: 'cubic-bezier(1, 0, 0, 1)',
+			forceFallback: true,
 			onSort(e) {
-				items = [...sortable.toArray().map((k) => sortItems.get(k)!)];
+				items = [...sortable.el.children].reduce((acc, curr) => {
+					const item = itemRefs.get(curr);
+					if (item) {
+						acc.push(item);
+					}
+					return acc;
+				}, <D[]>[]);
+			},
+			onChoose(e) {
+				// console.log(e);
+			},
+			onUnchoose(e) {
+				// console.log(e);
 			},
 			onChange(e) {
 				// console.log(e);
@@ -38,12 +51,23 @@
 		});
 	}
 
-	function dragndropItem(element: HTMLElement, { item }: { item: D }) {
-		element.setAttribute(ITEM_ID_ATTR, getKey(item));
-		element.classList.add(ITEM_CLASS.DRAGGABLE);
+	function dragndropItem(
+		element: HTMLElement,
+		{ item, disabled = false }: { item: D; disabled?: boolean }
+	) {
+		if (!disabled) {
+			element.setAttribute(ATTRIBUTES.DRAGGABLE, '');
+		}
+		itemRefs.set(element, item);
 		return {
-			update(args) {},
-			destroy() {},
+			update(args) {
+				if (args.disabled) {
+					element.removeAttribute(ATTRIBUTES.DRAGGABLE);
+				}
+			},
+			destroy() {
+				itemRefs.delete(element);
+			},
 		} satisfies SvelteActionReturnType;
 	}
 </script>
@@ -51,4 +75,7 @@
 <slot {dragndropZone} {dragndropItem} />
 
 <style lang="scss">
+	:global([data-dnd-draggable]) {
+		cursor: pointer;
+	}
 </style>

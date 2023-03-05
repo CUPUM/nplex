@@ -12,15 +12,10 @@
 </script>
 
 <EditorFormgroup legend="Galerie">
-	<DragndropContext
-		bind:items={galleryItems}
-		getKey={(item) => item.id}
-		let:dragndropZone
-		let:dragndropItem
-	>
+	<DragndropContext bind:items={galleryItems} let:dragndropZone let:dragndropItem>
 		<ol use:dragndropZone>
 			{#each galleryItems as item, i (item.id)}
-				<li use:dragndropItem={{ item }}>
+				<li use:dragndropItem={{ item, disabled: item === newItem }}>
 					{#if 'newItem' in item}
 						<GalleryInput />
 					{:else}
