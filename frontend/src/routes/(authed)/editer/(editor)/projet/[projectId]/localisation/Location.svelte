@@ -79,9 +79,9 @@
 	}
 
 	$: if ($mapDraw) {
-		if (location) {
+		if (location.geometry && location.radius) {
 			// Add initial circle programatically.
-			drawCircle(location.geometry?.coordinates, location.radius ?? undefined);
+			drawCircle(location.geometry.coordinates, location.radius);
 		}
 	}
 

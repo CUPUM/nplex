@@ -16,6 +16,10 @@
 			e.target.form.requestSubmit(inputRef);
 		}
 	}
+
+	function stop(e: PointerEvent) {
+		e.stopImmediatePropagation();
+	}
 </script>
 
 <label class:loading>
@@ -23,7 +27,9 @@
 	<div class="icon">
 		<Icon name="image-add" animationSpeed={2} strokeWidth={1} />
 	</div>
-	<legend>Cliquez pour sélectionner ou déposez des fichiers ici.</legend>
+	<legend>Cliquez pour choisir des images</legend>
+	<span>ou</span>
+	<legend>Glissez-déposez des fichiers ici.</legend>
 	<input
 		hidden
 		type="file"
@@ -40,6 +46,7 @@
 
 <style lang="scss">
 	label {
+		user-select: none;
 		aspect-ratio: 1;
 		font-size: var(--ui-text-md);
 		position: relative;
@@ -60,7 +67,7 @@
 
 		&:hover {
 			border: 1px dashed col(primary, 100, 0);
-			background: col(primary, 100, 0.1);
+			background: col(primary, 300, 0.1);
 			color: col(primary, 700);
 		}
 	}
@@ -80,9 +87,13 @@
 	legend {
 		font-size: var(--ui-text-sm);
 		text-align: center;
-		padding-bottom: 1rem;
 		line-height: 1.5;
 		letter-spacing: 0.1px;
 		transition: opacity 0.25s;
+	}
+
+	span {
+		display: block;
+		opacity: 0.35;
 	}
 </style>

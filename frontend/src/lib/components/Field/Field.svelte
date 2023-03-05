@@ -233,8 +233,12 @@
 	<div class="outline left" />
 	<div class="outline right" />
 	<div class="outline bottom" />
-	{#if prefix}
-		<span class="affix prefix">{prefix}</span>
+	{#if prefix || $$slots.prefix}
+		<span class="affix prefix">
+			<slot name="prefix">
+				{@html prefix}
+			</slot>
+		</span>
 	{/if}
 	<slot
 		name="input"
@@ -279,8 +283,12 @@
 			on:change
 		/>
 	</slot>
-	{#if suffix}
-		<span class="affix suffix">{suffix}</span>
+	{#if suffix || $$slots.suffix}
+		<span class="affix suffix">
+			<slot name="suffix">
+				{@html suffix}
+			</slot>
+		</span>
 	{/if}
 	{#if $$slots.trailing}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->

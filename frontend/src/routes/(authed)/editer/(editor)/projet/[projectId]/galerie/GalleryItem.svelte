@@ -9,6 +9,7 @@
 </script>
 
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Button from '$components/Button/Button.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
@@ -21,190 +22,102 @@
 	import { writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
-	import { editBannerId } from '../common';
 	import type { PageData } from './$types';
 
-	export let item: PageData['project']['gallery'][number];
+	export let data: PageData['project']['gallery'][number];
 	export let i: number;
+	export let dragging: boolean = false;
+
+	$: ({ banner_id } = ($page.data as PageData).project);
 
 	const dispatch = createEventDispatcher();
-
-	let w: number;
-	let pressed = false;
-	let startX: number | null = null;
-	let startY: number | null = null;
-	let deltaX = 0;
-	let deltaY = 0;
-	$: isUnder = $under === i;
-	$: isDragging = $dragging === i;
-
-	function dragstart(e: PointerEvent) {
-		pressed = true;
-		startX = e.clientX;
-		startY = e.clientY;
-	}
-
-	function stop() {
-		if (pressed) {
-			pressed = false;
-			$dragging = null;
-			startX = null;
-			startY = null;
-			deltaX = 0;
-			deltaY = 0;
-		}
-	}
-
-	function drag(e: PointerEvent) {
-		if (!pressed) {
-			return;
-		}
-		if (startX !== null && startY !== null) {
-			deltaX = e.clientX - startX;
-			deltaY = e.clientY - startY;
-		}
-		if (deltaX !== 0 || deltaY !== 0) {
-			$dragging = i;
-		}
-	}
-
-	function dragend() {
-		if (!isDragging) {
-			return;
-		}
-		stop();
-		if ($under != null && $offset != null) {
-			const destination = $under + $offset + ($under > i ? -1 : 0);
-			dispatch('drop', { destination });
-		} else {
-			dispatch('cancel');
-		}
-		$under = null;
-		$offset = null;
-	}
-
-	function enter() {
-		if ($dragging == null || isDragging) {
-			return;
-		}
-		$under = i;
-	}
-
-	function leave() {
-		$under = null;
-		$offset = null;
-	}
-
-	function moveover(e: PointerEvent) {
-		if (!isUnder) {
-			return;
-		}
-		$offset = e.offsetX > w * 0.5 ? OFFSET.after : OFFSET.before;
-	}
 </script>
 
-<svelte:window on:pointermove={drag} on:pointerup={dragend} on:contextmenu={dragend} />
-<svelte:body on:pointerleave={dragend} />
-
-<div
-	bind:offsetWidth={w}
-	on:pointermove={moveover}
-	on:pointerenter|self={enter}
-	on:pointerleave|self={leave}
-	class:dragging={isDragging}
-	style:--color={item.color_dominant_hsl}
->
-	<figure
-		on:pointerdown={dragstart}
-		on:pointerup={stop}
-		on:focusin={stop}
-		style:--delta-x="{deltaX}px"
-		style:--delta-y="{deltaY}px"
-		class:under={isUnder}
-		class={isUnder ? ($offset === 0 ? 'before' : 'after') : ''}
-	>
-		<Image class="image" src={item.publicUrl} alt={item.id} color={item.color_dominant_hsl} />
-		{#if !isDragging}
-			<menu
-				data-theme={THEMES.dark}
-				out:fly|local={{ y: 6, duration: 150 }}
-				in:fly|local={{ y: 6, delay: 250, duration: 150 }}
-			>
-				<Tooltip message="Supprimer" place="top">
-					<Button
-						type="submit"
-						variant="danger"
-						formaction="?/delete_image&{SEARCH_PARAMS.FILENAME}={item.name}"
-						style="backdrop-filter: blur(8px);"
-					>
-						<Icon name="trash" />
-					</Button>
-				</Tooltip>
-				<Tooltip message="Avancer" place="top">
-					<Button
-						style="margin-left: auto; backdrop-filter: blur(8px);"
-						on:pointerdown={() => dispatch('forward')}
-					>
-						<Icon name="arrow-left" />
-					</Button>
-				</Tooltip>
-				<Tooltip
-					message={$editBannerId === item.id ? 'Retirer de la bannière' : 'Définir comme bannière'}
-					place="top"
+<figure>
+	<Image class="image" src={data.publicUrl} alt={data.id} color={data.color_dominant_hsl} />
+	{#if !dragging}
+		<menu
+			data-theme={THEMES.dark}
+			out:fly|local={{ y: 6, duration: 150 }}
+			in:fly|local={{ y: 6, delay: 250, duration: 150 }}
+		>
+			<Tooltip message="Supprimer" place="top">
+				<Button
+					rounded
+					equi
+					type="submit"
+					variant="danger"
+					formaction="?/delete&{SEARCH_PARAMS.FILENAME}={data.name}"
+					style="backdrop-filter: blur(8px);"
 				>
-					<Button
-						type="submit"
-						style="backdrop-filter: blur(8px);"
-						formaction="{$editBannerId === item.id
-							? '?/demote_image'
-							: '?/promote_image'}&{SEARCH_PARAMS.IMAGE_ID}={item.id}"
-						active={$editBannerId === item.id}
-					>
-						<Icon name="bookmark" />
-					</Button>
-				</Tooltip>
-				<Tooltip message="Reculer" place="top">
-					<Button on:pointerdown={() => dispatch('backward')} style="backdrop-filter: blur(8px);">
-						<Icon name="arrow-right" />
-					</Button>
-				</Tooltip>
-			</menu>
-		{/if}
-		<fieldset>
-			<input type="hidden" name="gallery[{i}].id" readonly value={item.id} />
-			<input type="hidden" name="gallery[{i}].name" readonly value={item.name} />
-			<Field name="gallery[{i}].title" bind:value={item.title}>
-				<svelte:fragment slot="label">Titre</svelte:fragment>
-			</Field>
-			<TextArea
-				style="height: 100px;"
-				name="gallery[{i}].description"
-				bind:value={item.description}
+					<Icon name="trash" />
+				</Button>
+			</Tooltip>
+			<Tooltip message="Avancer" place="top">
+				<Button
+					rounded
+					equi
+					style="margin-left: auto; backdrop-filter: blur(8px);"
+					on:pointerdown={() => dispatch('forward')}
+				>
+					<Icon name="arrow-left" />
+				</Button>
+			</Tooltip>
+			<Tooltip
+				message={banner_id === data.id ? 'Retirer de la bannière' : 'Définir comme bannière'}
+				place="top"
 			>
-				<svelte:fragment slot="label">Description</svelte:fragment>
-			</TextArea>
-		</fieldset>
-	</figure>
-</div>
+				<Button
+					rounded
+					equi
+					type="submit"
+					style="backdrop-filter: blur(8px);"
+					formaction="{banner_id === data.id
+						? '?/demote'
+						: '?/promote'}&{SEARCH_PARAMS.IMAGE_ID}={data.id}"
+					active={banner_id === data.id}
+				>
+					<Icon name="bookmark" />
+				</Button>
+			</Tooltip>
+			<Tooltip message="Reculer" place="top">
+				<Button
+					rounded
+					equi
+					on:pointerdown={() => dispatch('backward')}
+					style="backdrop-filter: blur(8px);"
+				>
+					<Icon name="arrow-right" />
+				</Button>
+			</Tooltip>
+		</menu>
+	{/if}
+	<fieldset>
+		<input type="hidden" name="gallery[{i}].id" readonly value={data.id} />
+		<input type="hidden" name="gallery[{i}].name" readonly value={data.name} />
+		<Field variant="outlined" name="gallery[{i}].title" bind:value={data.title}>
+			<svelte:fragment slot="label">Titre</svelte:fragment>
+		</Field>
+		<TextArea
+			style="height: 100px;"
+			name="gallery[{i}].description"
+			variant="outlined"
+			bind:value={data.description}
+		>
+			<svelte:fragment slot="label">Description</svelte:fragment>
+		</TextArea>
+	</fieldset>
+</figure>
 
 <style lang="scss">
-	div {
-		perspective: 1000px;
-		padding: calc(0.5 * var(--gap));
-		margin-inline: calc(-0.5 * var(--gap));
-		border-radius: var(--ui-radius-lg);
-		transition: box-shadow 0.25s ease-in-out;
-	}
-
-	.dragging {
-		pointer-events: none;
-		z-index: 10;
-		box-shadow: inset 0 0 0 1px col(primary, 300, 0.2);
-	}
+	// .dragging {
+	// 	pointer-events: none;
+	// 	z-index: 10;
+	// 	box-shadow: inset 0 0 0 1px col(primary, 300, 0.2);
+	// }
 
 	figure {
 		--fig-radius: var(--ui-radius-lg);
-		cursor: move;
 		position: relative;
 		width: 100%;
 		aspect-ratio: var(--image-ratio);
@@ -255,6 +168,7 @@
 	}
 
 	menu {
+		isolation: isolate;
 		position: absolute;
 		grid-area: image;
 		align-self: flex-end;
@@ -263,15 +177,33 @@
 		display: flex;
 		padding: 0.5rem;
 		font-size: var(--ui-text-xs);
+		border-radius: inherit;
+
+		&::after {
+			content: '';
+			opacity: 0;
+			z-index: -1;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 150px;
+			background: linear-gradient(0deg, col(bg, 100, 0.8), col(bg, 100, 0));
+			border-radius: inherit;
+			transition: opacity 0.25s ease-out;
+
+			figure:hover & {
+				opacity: 1;
+			}
+		}
 	}
 
 	fieldset {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
-		// padding: 6px;
-		padding-top: 0;
-		margin-top: 0.5rem;
+		gap: 1.5rem;
+		padding-top: 1.5rem;
+		// margin-top: 0.5rem;
 		font-size: var(--ui-text-sm);
 	}
 </style>

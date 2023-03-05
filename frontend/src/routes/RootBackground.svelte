@@ -75,7 +75,7 @@
 	export function setRootBackground(
 		element: HTMLElement,
 		opts: Parameters<(typeof rootBackground)['set']>[0] & IntersectionObserverInit
-	): SvelteActionReturnType {
+	) {
 		let hasEnteredOnce = false;
 		let observer: IntersectionObserver;
 		const handleIntersection = ((entries) => {
@@ -113,7 +113,7 @@
 					observer.disconnect();
 				}
 			},
-		};
+		} satisfies SvelteActionReturnType;
 	}
 </script>
 

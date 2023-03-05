@@ -1,5 +1,8 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import AdjacentStreets from './AdjacentStreets.svelte';
+	import Area from './Area.svelte';
+	import District from './District.svelte';
 	import LocalisationMap from './LocalisationMap.svelte';
 	import Location from './Location.svelte';
 
@@ -12,18 +15,13 @@
 	</section>
 	<section class="fields">
 		<Location />
-		<!-- <Area /> -->
-		<!-- <District /> -->
-		<!-- <hr />
-		<AdjacentStreets adjacent_streets={data.project.adjacent_streets} />
-		<hr />
-		<ImplantationMode />
-		<hr />
-		<Levels />
-		<hr />
-		<ConstructionYear />
-		<hr />
-		<Footprint /> -->
+		<Area />
+		<District />
+		<AdjacentStreets />
+		<!-- <ImplantationMode /> -->
+		<!-- <Levels /> -->
+		<!-- <ConstructionYear /> -->
+		<!-- <Footprint /> -->
 	</section>
 </div>
 
@@ -33,6 +31,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 1.5rem;
+		flex: 1;
 	}
 
 	.map {

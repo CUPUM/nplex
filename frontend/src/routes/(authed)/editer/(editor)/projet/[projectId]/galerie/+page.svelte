@@ -1,51 +1,65 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Dragndrop from '$components/Dragndrop/Dragndrop.svelte';
+	import DragndropContext from '$components/Dragndrop/DragndropContext.svelte';
 	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 	import GalleryInput from './GalleryInput.svelte';
+	import GalleryItem from './GalleryItem.svelte';
 
-	const newItem = { id: 'new' } as const;
+	const newItem = { newItem: true, id: 'NEW_ITEM' };
 
 	$: galleryItems = [...($page.data as PageData).project.gallery, newItem];
 </script>
 
 <EditorFormgroup legend="Galerie">
-	<ol>
-		<Dragndrop data={galleryItems} let:items let:dnditem>
-			{#each items as item}
-				{#if item.datum == newItem}
-					<li><GalleryInput /></li>
-				{:else}
-					<li use:dnditem>Item: {JSON.stringify(item.datum)}</li>
-				{/if}
+	<DragndropContext
+		bind:items={galleryItems}
+		getKey={(item) => item.id}
+		let:dragndropZone
+		let:dragndropItem
+	>
+		<ol use:dragndropZone>
+			{#each galleryItems as item, i (item.id)}
+				<li use:dragndropItem={{ item }}>
+					{#if 'newItem' in item}
+						<GalleryInput />
+					{:else}
+						<GalleryItem data={item} {i} />
+					{/if}
+				</li>
 			{/each}
-		</Dragndrop>
-		<!-- {#each galleryItems as item, i (item.id)}
-			<li
-				animate:flip={{ duration: 150, easing: cubicInOut }}
-				in:fly={{ duration: 300, y: 12, easing: cubicOut, delay: i * 100 }}
-				out:scale|local={{ duration: 150, start: 0.95, easing: cubicIn }}
-			>
-				{#if item.id === 'new'}
+		</ol>
+	</DragndropContext>
+	<!-- <ol
+		use:dndzone={{ items: galleryItems, flipDurationMs: 150 }}
+		on:consider={consider}
+		on:finalize={finalize}
+	>
+		{#each galleryItems as item, i (item.id)}
+			<li animate:flip={{ duration: 200 }}>
+				{#if 'newItem' in item}
 					<GalleryInput />
 				{:else}
-					<GalleryItem
-						bind:image
-						on:forward={() => move(i, i - 1)}
-						on:backward={() => move(i, i + 1)}
-						on:drop={(e) => move(i, e.detail.destination)}
-						{i}
-					/>
+					<GalleryItem data={item} {i} shadow={} />
+					{#if SHADOW_ITEM_MARKER_PROPERTY_NAME in item && item[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+						<div>Shalut</div>
+					{/if}
 				{/if}
 			</li>
-		{/each} -->
-	</ol>
+		{/each}
+	</ol> -->
 </EditorFormgroup>
 
 <style lang="scss">
 	ol {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, 300px);
+		gap: 0;
+		grid-template-columns: 1fr 1fr 1fr;
+		width: 100%;
+		max-width: var(--ui-width-lg);
+	}
+
+	li {
+		padding: 1rem;
 	}
 </style>

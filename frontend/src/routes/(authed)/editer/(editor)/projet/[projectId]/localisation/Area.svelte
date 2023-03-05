@@ -2,6 +2,7 @@
 	import Button from '$components/Button/Button.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
+	import Tooltip from '$components/Tooltip.svelte';
 	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 </script>
 
@@ -11,15 +12,21 @@
 		disponible sur la carte pour vous aider à évaluer l'aire.
 	</p>
 	<p class="ui-info">Notez que les tracés produits avec cet outil ne sont pas sauvegardés.</p>
+
 	<Field
 		style="flex: 1;"
 		type="number"
-		suffix="m²"
+		suffix="&ensp;m²"
 		min={0}
 		placeholder="Définissez la superficie du site"
-	/>
-	<Button>Synchroniser avec la carte</Button>
-	<Button>Dessiner</Button>
+		textAlign="end"
+	>
+		<svelte:fragment slot="leading">
+			<Tooltip message="Synchroniser avec la carte.">
+				<Button equi><Icon name="link" /></Button>
+			</Tooltip>
+		</svelte:fragment>
+	</Field>
 </EditorFormgroup>
 
 <style lang="scss">

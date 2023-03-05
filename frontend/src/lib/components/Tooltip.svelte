@@ -18,6 +18,8 @@
 </script>
 
 <script lang="ts">
+	import { STATES, type State } from '$utils/enums';
+
 	import { THEMES, type ThemeName } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
@@ -30,6 +32,7 @@
 	export let opened: boolean = false;
 	export let hover: boolean = true;
 	export let theme: ThemeName = THEMES.dark;
+	export let state: State = STATES.Normal;
 	export let place: ComponentProps<Tether>['place'] = 'top';
 	export let align: ComponentProps<Tether>['align'] = 'center';
 	export let distance: ComponentProps<Tether>['distance'] = 5;
@@ -108,7 +111,7 @@
 		width: max-content;
 		line-height: 1.3;
 		font-weight: 350;
-		font-size: var(--ui-text-xs);
+		font-size: var(--ui-text-sm);
 		max-width: var(--ui-width-sm);
 		padding: 0.5em 1em 0.6em 1em;
 		margin: 0;

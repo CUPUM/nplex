@@ -28,10 +28,7 @@
 	/**
 	 * Action to control navbar theme when it overlaps the given element.
 	 */
-	export function overlapNavbar(
-		element: Element,
-		opts: OverlapNavbarOptions
-	): SvelteActionReturnType {
+	export function overlapNavbar(element: Element, opts: OverlapNavbarOptions) {
 		let hasEnteredOnce = false;
 		let observer: IntersectionObserver;
 		let windowHeight: number;
@@ -91,7 +88,7 @@
 					observer.disconnect();
 				}
 			},
-		};
+		} satisfies SvelteActionReturnType;
 	}
 </script>
 

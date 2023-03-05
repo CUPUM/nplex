@@ -21,6 +21,12 @@ declare global {
 		interface HTMLAttributes<T> {
 			[POPOVER_OPEN_ATTR]?: '';
 			'data-theme'?: ThemeName;
+			'on:consider'?: (
+				event: CustomEvent<DndEvent<ItemType>> & { target: EventTarget & T }
+			) => void;
+			'on:finalize'?: (
+				event: CustomEvent<DndEvent<ItemType>> & { target: EventTarget & T }
+			) => void;
 		}
 	}
 

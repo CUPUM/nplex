@@ -175,6 +175,7 @@
 	}
 
 	li {
-		flex: 0;
+		position: relative;
+		flex: none;
 	}
 </style>

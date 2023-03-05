@@ -27,8 +27,9 @@
 		background: var(--editor-bg);
 		margin-top: calc(-1 * var(--ui-nav-h));
 		min-height: 100vh;
-		padding: 1.5rem;
+		padding-inline: 1.5rem;
 		padding-top: 0;
+		padding-bottom: 1.5rem;
 
 		@include mobile {
 			padding: 0.75rem;
