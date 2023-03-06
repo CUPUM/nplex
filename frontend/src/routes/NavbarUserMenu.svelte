@@ -27,7 +27,7 @@
 		{r.title}
 	</Button>
 {/each}
-<hr class="rule" />
+<hr />
 <form
 	id={SIGNOUT_FORM_ID}
 	action="/api/auth?/signout"

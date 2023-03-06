@@ -14,18 +14,20 @@ export const actions: Actions = {
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
+			return fail(STATUS_CODES.BadRequest, {
+				error: parsed.error.formErrors.fieldErrors,
+			});
 		}
 		const db = await getDb(event);
 		const newProject = await db.from('projects').insert(parsed.data).select('id').single();
 		if (newProject.error) {
 			return fail(STATUS_CODES.InternalServerError, {
-				error: errmsg(newProject.error),
+				error: { internal: errmsg(newProject.error) },
 			});
 		}
 		if (!newProject.data.id) {
 			return fail(STATUS_CODES.InternalServerError, {
-				error: "Problème de récupération de l'identifiant du projet",
+				error: { internal: "Problème de récupération de l'identifiant du projet" },
 			});
 		}
 		throw redirect(STATUS_CODES.TemporaryRedirect, `/editer/projet/${newProject.data.id}`);

@@ -19,8 +19,6 @@
 	--ui-block-size-lg: 3.5em;
 	--ui-block-size-md: 2.75em;
 	--ui-block-size-sm: 2em;
-	--ui-pad-x: 1.35em;
-	--ui-border-thickness: 1px;
 	--ui-width-sm: 600px;
 	--ui-width-md: 900px;
 	--ui-width-lg: 1200px;
@@ -41,6 +39,9 @@
 	--ui-text-xl: 2.5rem;
 	--ui-text-2xl: 3.75rem;
 	--ui-text-3xl: 5.5rem;
+	--ui-pad-inline: 1.35em;
+	--ui-pad-outer: 3rem;
+	--ui-border-thickness: 1px;
 	--ui-font-main: 'Outfit', sans-serif;
 	--ui-font-misc: 'Space Mono', monospace;
 	--ui-ease-in: cubic-bezier(0.9, 0, 0.9, 1);
@@ -51,8 +52,8 @@
 	--ui-shadow-md: 0 0.75rem 1.5rem -0.75rem rgb(0, 10, 20, 0.26);
 	--ui-shadow-lg: 0 1.5rem 3rem -1.25rem rgb(0, 10, 20, 0.28);
 	--ui-shadow-xl: 0 3rem 7rem -3rem rgb(0, 10, 20, 0.3);
-	--ui-outline-inactive: 0px solid #{col(primary, 300, 0)};
 	--ui-outline-active: 2px solid #{col(primary, 300)};
+	--ui-outline-inactive: 0px solid #{col(primary, 300, 0)};
 	--ui-sidebar-width: 220px;
 
 	@include tablet {
@@ -62,10 +63,14 @@
 		); // 100% - (outer gutter + menu button width + inner gutter)
 		--ui-border-thickness: 1.5px;
 	}
+
+	@include mobile {
+		--ui-pad-outer: 0.75rem;
+	}
 }
 
 .compact {
 	--ui-inset: 2px;
 	--ui-block-size-lg: 2.75em;
-	--ui-pad-x: 1em;
+	--ui-pad-inline: 1em;
 }

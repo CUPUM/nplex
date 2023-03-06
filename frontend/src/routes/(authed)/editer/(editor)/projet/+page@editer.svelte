@@ -3,7 +3,6 @@
 	import Button from '$components/Button/Button.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { messages } from '$routes/MessagesOutlet.svelte';
 	import { fade, fly } from 'svelte/transition';
 	import type { ActionData } from './$types';
 
@@ -13,10 +12,7 @@
 	let title = '';
 
 	$: if (form?.error) {
-		messages.error(...[form.error].flat());
-	}
-	$: if (form?.title) {
-		messages.error({ content: form.title.join(' ') });
+		// messages.error(...[form.error].flat());
 	}
 </script>
 
@@ -44,7 +40,7 @@
 				class="title"
 				variant="outlined"
 				bind:value={title}
-				invalid={!!form?.title}
+				invalid={!!form?.error}
 				placeholder="Titre de projet"
 			>
 				<!-- <svelte:fragment slot="label">Titre du projet</svelte:fragment> -->

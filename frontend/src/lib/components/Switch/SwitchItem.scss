@@ -45,7 +45,7 @@ input {
 	position: relative;
 	top: -0.1em;
 	// padding-bottom: 0.2em;
-	padding-inline: calc(var(--ui-pad-x) - var(--switch-item-inset));
+	padding-inline: calc(var(--ui-pad-inline) - var(--switch-item-inset));
 }
 
 // Default variant.

@@ -144,7 +144,7 @@
 		flex-wrap: wrap;
 		justify-content: space-between;
 		gap: 1rem;
-		padding: 1.5rem;
+		padding: var(--ui-pad-outer);
 		padding-top: 0.5rem;
 		max-width: var(--ui-width-main);
 		width: 100%;
@@ -171,7 +171,10 @@
 		gap: 1.5rem;
 		overflow-x: scroll;
 		padding-block: 0;
-		padding-inline: max(1.5rem, calc(50% + 1.5rem - 0.5 * var(--ui-width-main)));
+		padding-inline: max(
+			var(--ui-pad-outer),
+			calc(50% + var(--ui-pad-outer) - 0.5 * var(--ui-width-main))
+		);
 	}
 
 	li {

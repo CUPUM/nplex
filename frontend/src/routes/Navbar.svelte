@@ -244,7 +244,7 @@
 			1fr
 			[session-end full-end];
 		// grid-auto-flow: dense;
-		padding: 1rem 1.5rem;
+		padding: 1rem var(--ui-pad-outer);
 		margin: 0 auto;
 		flex-direction: row;
 		align-items: center;
@@ -259,8 +259,8 @@
 			display: flex;
 			flex: unset;
 			flex-direction: column;
-			align-items: flex-start;
-			justify-content: flex-end;
+			align-items: center;
+			justify-content: center;
 			font-size: var(--ui-text-md);
 			position: absolute;
 			pointer-events: none;
@@ -312,6 +312,7 @@
 		@include tablet {
 			flex-direction: column;
 			align-items: flex-start;
+			gap: 1rem;
 		}
 
 		&:not([hidden]) > :global(*) {

@@ -37,7 +37,7 @@
 			position: relative;
 			align-self: stretch;
 			padding-bottom: 0.2em;
-			padding-inline: calc(var(--ui-pad-x) - var(--inset));
+			padding-inline: calc(var(--ui-pad-inline) - var(--inset));
 			background: transparent;
 			text-overflow: ellipsis;
 
@@ -55,7 +55,7 @@
 		flex: 1;
 		flex-direction: inherit;
 		height: 100%;
-		margin-left: calc(var(--ui-pad-x) - var(--inset));
+		margin-left: calc(var(--ui-pad-inline) - var(--inset));
 
 		> input,
 		> select,
@@ -81,7 +81,7 @@
 
 	> .ui-icon {
 		font-size: 1.2em;
-		margin-inline: calc(var(--ui-pad-x) * 0.5) !important;
+		margin-inline: calc(var(--ui-pad-inline) * 0.5) !important;
 
 		+ input,
 		select,

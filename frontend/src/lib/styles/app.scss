@@ -33,7 +33,8 @@
 		height: var(--ui-scroll-size);
 
 		&-track {
-			background: var(--ui-bg);
+			background: transparent;
+			// background: var(--ui-bg);
 		}
 
 		&-thumb {

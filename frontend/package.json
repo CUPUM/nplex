@@ -49,7 +49,7 @@
 		"element-to-path": "^1.2.1",
 		"esbuild": "^0.17.11",
 		"eslint": "^8.35.0",
-		"eslint-config-prettier": "^8.6.0",
+		"eslint-config-prettier": "^8.7.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"mdsvex": "^0.10.6",
 		"postcss": "^8.4.21",
@@ -86,7 +86,7 @@
 		"sharp": "^0.31.3",
 		"sortablejs": "^1.15.0",
 		"svelte-dnd-action": "^0.9.22",
-		"zod": "^3.21.0",
+		"zod": "^3.21.2",
 		"zod-form-data": "^2.0.0"
 	}
 }

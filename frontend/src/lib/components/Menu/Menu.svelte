@@ -32,11 +32,14 @@
 		// gap: var(--ui-inset);
 		border-radius: calc(var(--radius) + var(--outset));
 		padding: var(--pad);
-		box-shadow: var(--ui-shadow-md);
+		box-shadow: var(--ui-shadow-lg);
 
 		> :global(:where(hr)) {
 			margin-inline: calc(-1 * var(--pad));
 			margin-block: calc(var(--inset) + var(--outset));
+			align-self: stretch;
+			padding: 0.5px;
+			background: col(fg, 500, 0.1);
 		}
 	}
 </style>

@@ -40,7 +40,7 @@
 		grid-column: 2;
 		grid-row: 1;
 		position: sticky;
-		top: var(--pad-top);
+		top: var(--ui-nav-h);
 		height: calc(100vh - var(--pad-top) - 7rem);
 	}
 

@@ -1,6 +1,3 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
 
@@ -78,7 +75,7 @@
 		flex-direction: row;
 		gap: 1.5rem;
 		align-items: center;
-		font-weight: 550;
+		font-weight: 500;
 		font-size: var(--ui-text-3xl);
 		@include mobile {
 			font-size: var(--ui-text-2xl);

@@ -12,9 +12,10 @@
 
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
+	import { navigating } from '$app/stores';
 	import { cssSize } from '$utils/css';
 	import { tick, type ComponentProps } from 'svelte';
-	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { cubicOut, expoIn } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
 	import Menu from './Menu/Menu.svelte';
 	import Tether from './Tether.svelte';
@@ -26,6 +27,7 @@
 	export let bg: boolean = false;
 	export let place: ComponentProps<Tether>['place'] = 'bottom';
 	export let align: ComponentProps<Tether>['align'] = 'center';
+	export let tip: boolean = false;
 	export let distance: NonNullable<ComponentProps<Tether>['distance']> = 5;
 
 	let tether: Tether;
@@ -74,9 +76,7 @@
 
 	afterNavigate(async () => {
 		if (closeOnNav) {
-			// Awaiting a tick avoids conflict with other navigation-related logic
-			// (ex.: button loading state check).
-			await tick();
+			await tick(); // Awaiting a tick avoids conflict with other navigation-related logic (ex.: button loading state check).
 			opened = false;
 		}
 	});
@@ -103,19 +103,21 @@
 			bind:this={contentRef}
 			class="popover {align} {place}"
 			style:--d={cssSize(distance)}
-			in:scale={{ start: 0.95, easing: cubicOut, duration: 150, opacity: 1 }}
+			in:scale={{ start: 0.9, easing: cubicOut, duration: 150, opacity: 1 }}
 			out:scale|local={{
-				start: 0.9,
-				easing: cubicIn,
-				duration: latest === tether?.anchorRef ? 100 : 0,
-				opacity: 1,
+				start: 0.95,
+				easing: expoIn,
+				duration: latest !== tether?.anchorRef || $navigating ? 0 : 100,
+				opacity: 0,
 			}}
 		>
 			{#if $$slots.default}
 				<Menu>
 					<slot open={opened} />
 				</Menu>
-				<Tip />
+				{#if tip}
+					<Tip />
+				{/if}
 			{/if}
 			<slot name="content" />
 		</div>

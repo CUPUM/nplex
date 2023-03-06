@@ -37,9 +37,9 @@
 		align-items: flex-start;
 		justify-content: center;
 		padding: 3rem;
-		// background-color: col(bg, 500);
-		border: var(--ui-border-thickness) dashed col(primary, 900, 0.25);
-		color: col(primary, 900);
+		gap: 1.5rem;
+		border: var(--ui-border-thickness) dashed col(primary, 700, 0.25);
+		color: col(primary, 700);
 		border-radius: var(--ui-radius-xl);
 	}
 
@@ -53,7 +53,16 @@
 		}
 	}
 
+	dl {
+		font-size: var(--ui-text-sm);
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+		color: col(fg, 100);
+	}
+
 	dt {
+		opacity: 0.35;
 		&::after {
 			content: '\00A0:';
 		}

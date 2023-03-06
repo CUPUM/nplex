@@ -110,7 +110,7 @@
 		border: 1px dashed col(fg, 500, 0.1);
 		display: flex;
 		flex-direction: row;
-		padding-inline: var(--ui-pad-x);
+		padding-inline: var(--ui-pad-inline);
 		align-items: center;
 		gap: 0.5em;
 		transition: all 0.1s ease-out;

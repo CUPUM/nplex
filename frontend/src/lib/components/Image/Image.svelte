@@ -32,7 +32,7 @@
 
 	let setsrc: string | undefined = undefined;
 	let error = false;
-	let loading = false;
+	let loading = true;
 
 	function handleError(e: Event) {
 		error = Boolean(src);
@@ -74,6 +74,7 @@
 		draggable="false"
 		{alt}
 		src={setsrc}
+		class:loading
 		loading="lazy"
 		decoding="async"
 		class:none={error || !src}
@@ -113,14 +114,18 @@
 		flex: none;
 	}
 
-	:where(img) {
+	img {
 		border-radius: inherit;
 		width: 100%;
 		height: 100%;
 		background: var(--color, transparent);
-		transition: background 0.25s ease;
+		transition: background 0.25s ease, opacity 0.25s;
 
 		&.none {
+			opacity: 0;
+		}
+
+		&.loading {
 			opacity: 0;
 		}
 	}

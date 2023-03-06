@@ -14,20 +14,25 @@
 
 <script lang="ts">
 	import Sortable from 'sortablejs';
+	import { createEventDispatcher } from 'svelte';
 
 	type D = $$Generic;
 
 	export let items: D[];
 
-	let itemRefs: Map<Element, D> = new Map();
+	const itemRefs: Map<Element, D> = new Map();
 
 	let sortable: Sortable;
+
+	const dispatch = createEventDispatcher<{
+		sort: { target: HTMLElement; items: D[] };
+	}>();
 
 	function dragndropZone(element: HTMLElement) {
 		sortable = new Sortable(element, {
 			dataIdAttr: ATTRIBUTES.ITEM_KEY,
 			draggable: `[${ATTRIBUTES.DRAGGABLE}]`,
-			animation: 200,
+			animation: 250,
 			easing: 'cubic-bezier(1, 0, 0, 1)',
 			forceFallback: true,
 			onSort(e) {
@@ -38,6 +43,8 @@
 					}
 					return acc;
 				}, <D[]>[]);
+				console.log(items);
+				dispatch('sort', { items, target: sortable.el! });
 			},
 			onChoose(e) {
 				// console.log(e);

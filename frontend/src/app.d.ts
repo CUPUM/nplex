@@ -70,7 +70,7 @@ declare global {
 			/**
 			 * Database client instance confined to lifecycle of individual request event.
 			 */
-			db?: SupabaseClient<App.Database>;
+			db: SupabaseClient<App.Database>;
 		}
 	}
 }

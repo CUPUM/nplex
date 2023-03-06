@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from '$components/Icon.svelte';
+	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Loading from '$components/Loading.svelte';
 	import Ripple from '$components/Ripple.svelte';
 	import { IMAGE_TYPES } from './common';
@@ -22,14 +22,12 @@
 	}
 </script>
 
-<label class:loading>
+<label class:loading class={ICON_CLASS.hover}>
 	<Ripple />
-	<div class="icon">
-		<Icon name="image-add" animationSpeed={2} strokeWidth={1} />
-	</div>
-	<legend>Cliquez pour choisir des images</legend>
+	<Icon class="fill-icon" name="image-add" animationSpeed={0.5} strokeLinecap="round" />
+	<legend>Cliquez pour choisir</legend>
 	<span>ou</span>
-	<legend>Glissez-déposez des fichiers ici.</legend>
+	<legend>déposez vos images ici.</legend>
 	<input
 		hidden
 		type="file"
@@ -60,9 +58,9 @@
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
-		padding: 3rem;
 		text-align: center;
 		border: 1px dashed col(fg, 500, 0.1);
+		overflow: hidden;
 		transition: all 0.15s ease-out;
 
 		&:hover {
@@ -70,18 +68,19 @@
 			background: col(primary, 300, 0.1);
 			color: col(primary, 700);
 		}
+
+		:global(.fill-icon) {
+			align-self: center;
+			position: absolute;
+			opacity: 0.05;
+			font-size: 15em;
+		}
 	}
 
 	.loading {
 		border: 1px dashed col(fg, 100, 0);
 		background: col(fg, 100, 0.1);
 		color: col(fg, 700);
-	}
-
-	.icon {
-		opacity: 0.25;
-		font-size: 3rem;
-		transition: opacity 0.25s ease;
 	}
 
 	legend {

@@ -138,7 +138,7 @@
 		align-self: stretch;
 		flex-direction: row;
 		align-items: center;
-		padding-inline: calc(var(--ui-pad-x) / 2) var(--ui-pad-x);
+		padding-inline: calc(var(--ui-pad-inline) / 2) var(--ui-pad-inline);
 		height: 100%;
 		top: -0.15em;
 		transition: top 0.25s var(--ui-ease-out);

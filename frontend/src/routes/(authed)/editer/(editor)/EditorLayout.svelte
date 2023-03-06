@@ -56,7 +56,8 @@
 		align-items: flex-start;
 		flex-direction: row;
 		gap: 1.5rem;
-		padding-top: 1.5rem;
+		// padding-top: 1.5rem;
+		padding-top: var(--ui-nav-h);
 
 		@include tablet {
 			gap: 0;

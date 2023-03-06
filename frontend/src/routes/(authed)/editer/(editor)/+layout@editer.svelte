@@ -17,7 +17,7 @@
 
 <style lang="scss">
 	article {
-		--article-radius: var(--ui-radius-xl);
+		--article-radius: var(--ui-radius-2xl);
 		width: 100%;
 		display: flex;
 		flex-direction: column;
@@ -27,9 +27,8 @@
 		background: var(--editor-bg);
 		margin-top: calc(-1 * var(--ui-nav-h));
 		min-height: 100vh;
-		padding-inline: 1.5rem;
+		padding: var(--ui-pad-outer);
 		padding-top: 0;
-		padding-bottom: 1.5rem;
 
 		@include mobile {
 			padding: 0.75rem;

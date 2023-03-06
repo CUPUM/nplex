@@ -13,17 +13,13 @@
 <style lang="scss">
 	fieldset {
 		position: relative;
-		padding: 3rem;
-		background: col(bg, 700);
-		border-radius: var(--ui-radius-lg);
+		padding: var(--ui-pad-outer);
+		background: col(bg, 500);
+		border-radius: var(--ui-radius-xl);
 		transition: all 0.15s;
 
 		&.md {
 			max-width: var(--ui-width-md);
-		}
-
-		&:hover {
-			border-color: col(fg, 000, 0.1);
 		}
 
 		@include laptop {
@@ -38,10 +34,8 @@
 	h3 {
 		font-size: var(--ui-text-lg);
 		font-weight: 450;
-		margin-bottom: 1em;
-		&:first-child {
-			margin-top: -0.5rem;
-		}
+		margin-bottom: 2rem;
+		margin-top: -0.5rem;
 
 		@include tablet {
 			font-size: var(--ui-text-md);

@@ -7,7 +7,7 @@
 	display: inline-grid;
 	grid-template-columns:
 		[full-start leading-padding-start]
-		var(--ui-pad-x)
+		var(--ui-pad-inline)
 		[leading-padding-end leading-start]
 		auto
 		[leading-end main-start]
@@ -15,7 +15,7 @@
 		[main-end trailing-start]
 		auto
 		[trailing-end trailing-padding-start]
-		var(--ui-pad-x)
+		var(--ui-pad-inline)
 		[trailing-padding-end full-end];
 	grid-template-rows: var(--button-height);
 	border: none;
@@ -34,7 +34,7 @@
 .center {
 	grid-template-columns:
 		[full-start leading-padding-start]
-		var(--ui-pad-x)
+		var(--ui-pad-inline)
 		[leading-padding-end leading-start]
 		1fr
 		[leading-end main-start]
@@ -42,7 +42,7 @@
 		[main-end trailing-start]
 		1fr
 		[trailing-end trailing-padding-start]
-		var(--ui-pad-x)
+		var(--ui-pad-inline)
 		[trailing-padding-end full-end];
 }
 .equi {

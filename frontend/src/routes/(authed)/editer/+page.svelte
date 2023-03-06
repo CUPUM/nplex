@@ -114,7 +114,7 @@
 		transition: all 0.1s;
 
 		&:hover {
-			overflow: visible;
+			// overflow: visible;
 			z-index: 1;
 			background: col(primary, 100);
 			color: col(fg, 500);

@@ -304,8 +304,8 @@
 		--height: var(--ui-block-size-lg);
 		--inset: var(--ui-inset);
 		--notch-padding: 0.25em;
-		--gutter: calc(var(--ui-pad-x) / 3);
-		--gutter-out: calc(2 * var(--ui-pad-x) / 3);
+		--gutter: calc(var(--ui-pad-inline) / 3);
+		--gutter-out: calc(2 * var(--ui-pad-inline) / 3);
 		position: relative;
 		display: grid;
 		grid-template-columns:

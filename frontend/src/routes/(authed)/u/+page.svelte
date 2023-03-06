@@ -41,7 +41,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding-inline: 1.5rem;
+		padding-inline: var(--ui-pad-outer);
 		padding-bottom: var(--ui-nav-h);
 	}
 
@@ -89,7 +89,7 @@
 			z-index: 1;
 			color: col(fg, 900);
 			background: col(primary, 100);
-			overflow: visible;
+			// overflow: visible;
 			box-shadow: var(--ui-shadow-md);
 
 			i {

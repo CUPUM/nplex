@@ -172,7 +172,7 @@
 	.column {
 		grid-template-columns:
 			[full-start pad-left-start]
-			var(--ui-pad-x)
+			var(--ui-pad-inline)
 			[pad-left-end main-start]
 			1fr
 			[main-end full-end];
@@ -225,7 +225,7 @@
 		font-family: inherit;
 		font-size: inherit;
 		line-height: 1.5em;
-		padding-right: var(--ui-pad-x);
+		padding-right: var(--ui-pad-inline);
 		padding-block: var(--pad-y);
 		background: transparent;
 		resize: none;

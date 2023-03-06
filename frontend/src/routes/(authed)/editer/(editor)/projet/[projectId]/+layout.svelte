@@ -6,19 +6,24 @@
 	import { EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../common';
 	import EditorLayout from '../../EditorLayout.svelte';
 	import type { LayoutData } from './$types';
-	import { editTitle } from './common';
+	import { editTitle, editTypeId } from './common';
 
 	export let data: LayoutData;
 
+	$: $editTitle = data.project.title;
+	$: $editTypeId = data.project.type_id;
+
 	let updating = false;
 
-	function base(subpath: string) {
-		return `${EDITOR_ROUTES.project.pathname}/${($page.data as LayoutData).project.id}${subpath}`;
+	function base(subpath: string, hash: string = EDITOR_FORM_ID) {
+		return `${EDITOR_ROUTES.project.pathname}/${($page.data as LayoutData).project.id}${subpath}${
+			hash ? '#' + hash : ''
+		}`;
 	}
 
 	const sidebarRoutes = [
 		{
-			pathname: base(''),
+			pathname: base('', ''),
 			title: 'Général',
 		},
 		{
@@ -77,11 +82,13 @@
 
 <style lang="scss">
 	form {
+		// padding-top: var(--ui-nav-h);
 		flex: 1;
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
 		min-height: 100vh;
 		min-height: 100svh;
+		scroll-margin-block-start: var(--ui-nav-h);
 	}
 </style>

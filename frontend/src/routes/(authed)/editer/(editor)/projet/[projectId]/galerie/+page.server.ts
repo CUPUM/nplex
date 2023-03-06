@@ -5,20 +5,49 @@ import { error, fail } from '@sveltejs/kit';
 import { colord, extend } from 'colord';
 import labPlugin from 'colord/plugins/lab';
 import sharp from 'sharp';
+import { zfd } from 'zod-form-data';
+import { EDITOR_FORM_ACTION } from '../../../common';
 import type { Actions } from './$types';
-import { imageSchema, IMAGE_MAX_RESOLUTION } from './common';
+import { gallerySchema, imageSchema, IMAGE_MAX_RESOLUTION } from './common';
 
 extend([labPlugin]);
 
 export const actions: Actions = {
-	update: async (event) => {},
+	/**
+	 * Update gallery.
+	 */
+	[EDITOR_FORM_ACTION]: async (event) => {
+		const formData = await event.request.formData();
+		const parsed = zfd
+			.formData({
+				gallery: gallerySchema,
+			})
+			.safeParse(formData);
+		if (!parsed.success) {
+			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
+		}
+		const gallery = await event.locals.db
+			.from('projects_images')
+			.upsert(
+				parsed.data.gallery.map((img, i) => ({
+					...img,
+					order: i,
+					project_id: event.params.projectId,
+				}))
+			)
+			.then((res) => {
+				if (res.error) {
+					throw fail(STATUS_CODES.InternalServerError, { ...res.error });
+				}
+				return res;
+			});
+	},
 	/**
 	 * Upload new image(s) to the storage.
 	 */
 	upload: async (event) => {
 		const formData = await event.request.formData();
 		const files = formData.getAll('images');
-		const db = await getDb(event);
 		const uploads = await Promise.all(
 			files.map(async (file) => {
 				const parsed = await imageSchema.safeParseAsync(file);
@@ -49,7 +78,7 @@ export const actions: Actions = {
 				});
 				const mean_hsl = mean.toHsl();
 				const mean_lab = mean.toLab();
-				return db.storage
+				return event.locals.db.storage
 					.from(STORAGE_BUCKETS.PROJECTS)
 					.upload(
 						[event.params.projectId, STORAGE_FOLDERS.IMAGE_GALLERY, `${date}-${rand}.webp`].join(
@@ -63,7 +92,7 @@ export const actions: Actions = {
 							console.error('storage error', stored.error);
 							throw error(STATUS_CODES.InternalServerError, { ...stored.error });
 						}
-						const update = await db
+						const update = await event.locals.db
 							.from('projects_images')
 							.update({
 								color_dominant_hsl: toPgArr([
@@ -83,7 +112,7 @@ export const actions: Actions = {
 							.select('id')
 							.single();
 						if (update.error) {
-							const del = await db.storage
+							const del = await event.locals.db.storage
 								.from(STORAGE_BUCKETS.PROJECTS)
 								.remove([stored.data.path]);
 							if (del.error) {
@@ -110,12 +139,13 @@ export const actions: Actions = {
 		}
 		const imageName = event.url.searchParams.get(SEARCH_PARAMS.FILENAME);
 		if (!imageName) {
-			return fail(STATUS_CODES.BadRequest);
+			console.error('missing image name');
+			return fail(STATUS_CODES.BadRequest, { message: 'Missing image name.' });
 		}
-		const db = await getDb(event);
-		const del = await db.storage.from(STORAGE_BUCKETS.PROJECTS).remove([imageName]);
+		const del = await event.locals.db.storage.from(STORAGE_BUCKETS.PROJECTS).remove([imageName]);
 		if (del.error) {
-			throw error(STATUS_CODES.InternalServerError, del.error);
+			console.error(del.error);
+			return fail(STATUS_CODES.InternalServerError, { message: del.error.message });
 		}
 	},
 	/**
@@ -124,7 +154,9 @@ export const actions: Actions = {
 	promote: async (event) => {
 		const imageId = event.url.searchParams.get(SEARCH_PARAMS.IMAGE_ID);
 		if (!imageId) {
-			return fail(STATUS_CODES.BadRequest);
+			return fail(STATUS_CODES.BadRequest, {
+				message: 'Missing image identifier required to complete image promotion.',
+			});
 		}
 		const db = await getDb(event);
 		const promoteRes = await db
@@ -133,7 +165,7 @@ export const actions: Actions = {
 			.eq('id', event.params.projectId)
 			.single();
 		if (promoteRes.error) {
-			throw error(STATUS_CODES.InternalServerError, promoteRes.error);
+			return fail(STATUS_CODES.InternalServerError, promoteRes.error);
 		}
 	},
 	/**
@@ -143,7 +175,9 @@ export const actions: Actions = {
 	demote: async (event) => {
 		const imageId = event.url.searchParams.get(SEARCH_PARAMS.IMAGE_ID);
 		if (!imageId) {
-			return fail(STATUS_CODES.BadRequest);
+			return fail(STATUS_CODES.BadRequest, {
+				message: 'Missing image identifier required to complete image demotion.',
+			});
 		}
 		const db = await getDb(event);
 		const promoteRes = await db
@@ -157,30 +191,3 @@ export const actions: Actions = {
 		}
 	},
 };
-
-// // projects_images table
-// const galleryUpdate = db
-// .from('projects_images')
-// .upsert(
-// 	parsed.data.gallery.map((img, i) => ({
-// 		...img,
-// 		order: i,
-// 		project_id: event.params.projectId,
-// 	}))
-// )
-// .then((res) => {
-// 	if (res.error) {
-// 		throw fail(STATUS_CODES.InternalServerError, { ...res.error });
-// 	}
-// });
-// // projects_location table
-// const locationUpdate = db
-// .from('projects_location')
-// .update(parsed.data.location)
-// .eq('project_id', event.params.projectId)
-// .then((res) => {
-// 	if (res.error) {
-// 		throw error(STATUS_CODES.InternalServerError, { ...res.error });
-// 	}
-// 	console.log(res);
-// });
