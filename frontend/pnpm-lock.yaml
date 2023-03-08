@@ -31,6 +31,7 @@ specifiers:
   maplibre-gl: ^2.4.0
   maplibre-gl-draw-circle: ^0.1.1
   mdsvex: ^0.10.6
+  overlayscrollbars: ^2.1.0
   postcss: ^8.4.21
   postcss-load-config: ^4.0.1
   postcss-normalize: ^10.0.1
@@ -41,7 +42,7 @@ specifiers:
   sharp: ^0.31.3
   sortablejs: ^1.15.0
   svelte: ^3.55.1
-  svelte-check: ^3.0.4
+  svelte-check: ^3.1.0
   svelte-dnd-action: ^0.9.22
   svelte-preprocess: ^5.0.1
   svg-path-properties: ^1.1.0
@@ -67,6 +68,7 @@ dependencies:
   mapbox-gl-draw-geodesic: 2.1.3_naroxjghyxieipkqmxuw36oqfy
   maplibre-gl: 2.4.0
   maplibre-gl-draw-circle: 0.1.1
+  overlayscrollbars: 2.1.0
   sharp: 0.31.3
   sortablejs: 1.15.0
   svelte-dnd-action: 0.9.22_svelte@3.55.1
@@ -99,7 +101,7 @@ devDependencies:
   prettier-plugin-svelte: 2.9.0_jrsxveqmsx2uadbqiuq74wlc4u
   sass: 1.58.3
   svelte: 3.55.1
-  svelte-check: 3.0.4_yqhbri7c5yusomev55u36f7etq
+  svelte-check: 3.1.0_yqhbri7c5yusomev55u36f7etq
   svelte-preprocess: 5.0.1_o53ofcihxu4urxldnfcp5z27ga
   svg-path-properties: 1.1.0
   svgson: 5.2.1
@@ -2268,7 +2270,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001462
-      electron-to-chromium: 1.4.322
+      electron-to-chromium: 1.4.324
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -2633,8 +2635,8 @@ packages:
     resolution: {integrity: sha512-/pjZsA1b4RPHbeWZQn66SWS8nZZWLQQ23oE3Eam7aroEFGEvwKAsJfZ9ytiEMycfzXWpca4FA9QIOehf7PocBQ==}
     dev: false
 
-  /electron-to-chromium/1.4.322:
-    resolution: {integrity: sha512-KovjizNC9XB7dno/2GjxX8VS0SlfPpCjtyoKft+bCO+UfD8bFy16hY4Sh9s0h9BDxbRH2U0zX5VBjpM1LTcNlg==}
+  /electron-to-chromium/1.4.324:
+    resolution: {integrity: sha512-m+eBs/kh3TXnCuqDF6aHLLRwLK2U471JAbZ1KYigf0TM96fZglxv0/ZFBvyIxnLKsIWUoDiVnHTA2mhYz1fqdA==}
     dev: true
 
   /element-to-path/1.2.1:
@@ -3984,6 +3986,10 @@ packages:
       word-wrap: 1.2.3
     dev: true
 
+  /overlayscrollbars/2.1.0:
+    resolution: {integrity: sha512-L6p4o4aWse5pDstRnJjZaos+al+bkuAgzGIlWwlsxRSgW6+7Kvrp+kAzlWoTZ1bgB4CJj+8u5bjdq8XHEhWjrw==}
+    dev: false
+
   /p-limit/3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
     engines: {node: '>=10'}
@@ -4568,8 +4574,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check/3.0.4_yqhbri7c5yusomev55u36f7etq:
-    resolution: {integrity: sha512-feIyBAA5cSIxq4vq6mwGvGQTHy/wBVQbs5b+/VvE21WN8X7nonAuSqwvZv0UDBowzRka3Rh4gmLPH8rPePz3/w==}
+  /svelte-check/3.1.0_yqhbri7c5yusomev55u36f7etq:
+    resolution: {integrity: sha512-aSdnsGtndfqtb0dmN5qm9Zjl7wGpqh3cWF35WVCcK96TmGn2NEar4M40QW6bvaPPu089mrkZdpeD3Yar2SERBg==}
     hasBin: true
     peerDependencies:
       svelte: ^3.55.0

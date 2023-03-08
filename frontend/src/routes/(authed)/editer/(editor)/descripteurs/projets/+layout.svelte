@@ -1,28 +1,18 @@
 <script lang="ts">
+	import Icon from '$components/Icon.svelte';
 	import SidebarButton from '$components/Sidebar/SidebarButton.svelte';
-	import { EDITOR_ROUTES } from '$routes/(authed)/editer/common';
 	import EditorLayout from '../../EditorLayout.svelte';
+	import { PROJECT_DESCIPTORS_EDITOR_BASE, PROJECT_DESCRIPTORS_EDITOR_ROUTES } from './routes';
 
-	function base(subpath: string) {
-		return `${EDITOR_ROUTES.project.descriptors.pathname}${subpath}`;
-	}
-
-	const links = [
-		{
-			pathname: base('/indicateurs'),
-			label: 'Indicateurs',
-			title: 'Indicateurs d’exemplarité',
-		},
-		{
-			pathname: base('/usages'),
-			label: 'Usages',
-			title: 'Usages & catégories',
-		},
-	];
+	const links = Object.values(PROJECT_DESCRIPTORS_EDITOR_ROUTES);
 </script>
 
 <EditorLayout>
 	<svelte:fragment slot="sidebar">
+		<SidebarButton href={PROJECT_DESCIPTORS_EDITOR_BASE.pathname}>
+			<Icon slot="leading" name="home" />Descripteurs
+		</SidebarButton>
+		<hr />
 		{#each links as link}
 			<SidebarButton href={link.pathname}>{link.label}</SidebarButton>
 		{/each}

@@ -6,75 +6,70 @@
 	
  -->
 <script lang="ts" context="module">
-	const BUTTON_GROUP_ITEM_ATTR = 'data-button-group';
+	const BUTTON_ATTRIBUTE = 'data-button-group';
 
-	interface ButtonGroupContext {
-		variant: Readable<ComponentProps<Button>['variant']>;
-		orientation: Orientation;
-		direction: Direction;
-		groupElement: (buttonElement: HTMLElement) => void;
-	}
+	// interface ButtonGroupContext {
+	// 	// variant: Readable<ComponentProps<Button>['variant']>;
+	// 	// orientation: Orientation;
+	// 	// direction: Direction;
+	// 	// groupElement: (buttonElement: HTMLElement) => void;
+	// }
 
-	export function getButtonGroupContext(key: Symbol) {
-		return getContext<ButtonGroupContext>(key);
-	}
+	// export function getButtonGroupContext(key: Symbol) {
+	// 	return getContext<ButtonGroupContext>(key);
+	// }
 </script>
 
 <script lang="ts">
-	import {
-		DIRECTIONS,
-		ORIENTATIONS,
-		VARIANTS,
-		type Direction,
-		type Orientation,
-	} from '$utils/enums';
-	import { getContext, setContext, type ComponentProps } from 'svelte';
-	import { writable, type Readable } from 'svelte/store';
-	import type Button from './Button.svelte';
-	export let variant: ComponentProps<Button>['variant'] = VARIANTS.Outlined;
-	export let orientation: ButtonGroupContext['orientation'] = ORIENTATIONS.Row;
-	export let direction: ButtonGroupContext['direction'] = DIRECTIONS.Normal;
+	import { DIRECTIONS, ORIENTATIONS, type Direction, type Orientation } from '$utils/enums';
+	import { onDestroy, onMount } from 'svelte';
+
+	export let orientation: Orientation = ORIENTATIONS.Row;
+	export let direction: Direction = DIRECTIONS.Normal;
 	let className: string = '';
 	export { className as class };
 	export let style: string | undefined = undefined;
 
-	const _variant = writable(variant);
-	const key = Symbol('button-group-context');
+	// const _variant = writable(variant);
+	// const key = Symbol('button-group-context');
 
 	let buttonGroupRef: HTMLElement;
+	let observer: MutationObserver;
 
-	function updateFirstAndLast() {
-		if (buttonGroupRef) {
-			const items = [...buttonGroupRef.querySelectorAll(`[${BUTTON_GROUP_ITEM_ATTR}]`)];
-			items.forEach((el, i) => {
-				let val = [];
-				if (i === 0) {
-					val.push('first');
-				}
-				if (i === items.length - 1) {
-					val.push('last');
-				}
-				el.setAttribute(BUTTON_GROUP_ITEM_ATTR, val.join(' '));
-			});
+	function updateAttributes(records?: MutationRecord[]) {
+		let buttons = [...buttonGroupRef.querySelectorAll(':scope > .button, :scope > * > .button')];
+		if (records) {
+			// Possible to use record instead of querying?
+		} else {
+			// buttons.push(...buttonGroupRef.querySelectorAll(':scope > .button, :scope > * > .button'));
 		}
+		buttons.forEach((el, i) => {
+			let attr = [];
+			if (i === 0) {
+				attr.push('start');
+			}
+			if (i === buttons.length - 1) {
+				attr.push('end');
+			}
+			el.setAttribute(BUTTON_ATTRIBUTE, attr.join(' '));
+		});
 	}
 
-	function groupElement(element: HTMLElement) {
-		element.setAttribute(BUTTON_GROUP_ITEM_ATTR, '');
-		updateFirstAndLast();
-		return {
-			destroy() {
-				element.removeAttribute(BUTTON_GROUP_ITEM_ATTR);
-				updateFirstAndLast();
-			},
-		} satisfies SvelteActionReturnType;
-	}
+	// setContext<ButtonGroupContext>(key, {
+	// 	variant: { subscribe: _variant.subscribe },
+	// 	orientation,
+	// 	direction,
+	// 	// groupElement,
+	// });
 
-	setContext<ButtonGroupContext>(key, {
-		variant: { subscribe: _variant.subscribe },
-		orientation,
-		direction,
-		groupElement,
+	onMount(() => {
+		observer = new MutationObserver(updateAttributes);
+		observer.observe(buttonGroupRef, { childList: true });
+		updateAttributes();
+	});
+
+	onDestroy(() => {
+		observer?.disconnect();
 	});
 </script>
 
@@ -84,7 +79,7 @@
 	{style}
 	role="button"
 >
-	<slot {key} />
+	<slot />
 </div>
 
 <style lang="scss">

@@ -45,6 +45,7 @@
 		position: relative;
 		padding-inline: 1em;
 		padding-block: 0.5em;
+		gap: 1em;
 		border-radius: var(--ui-radius-md);
 		font-weight: 550;
 		transition: all 0.1s ease-out;
@@ -53,6 +54,15 @@
 	.main {
 		position: relative;
 		top: -0.1em;
+	}
+
+	.leading,
+	.trailing {
+		position: relative;
+		align-self: center;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
 	}
 
 	.default {

@@ -32,5 +32,11 @@
 		flex-direction: column;
 		width: var(--ui-sidebar-width);
 		gap: var(--ui-inset);
+
+		> :global(hr) {
+			align-self: stretch;
+			border-bottom: var(--ui-border-thickness) dashed col(fg, 100, 0.1);
+			margin: 1.5rem 1rem;
+		}
 	}
 </style>

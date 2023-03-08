@@ -24,13 +24,14 @@ export const load = (async (event) => {
 			work_ids:projects_works (*),
 			usages:projects_usages (*),
 			location:projects_location (*),
-			updated_by:users!projects_updated_by_id_fkey (*,
+			gallery:projects_images!project_id (*),
+			indicators:projects_exemplarity_indicators (*),
+			updated_by:updated_by_id (*,
 				role:users_roles!users_roles_user_id_fkey (*)
 			),
-			created_by:users!projects_created_by_id_fkey (*,
+			created_by:created_by_id (*,
 				role:users_roles!users_roles_user_id_fkey (*)
-			),
-			gallery:projects_images!project_id (*)
+			)
 		`
 		)
 		.eq('id', event.params.projectId)
@@ -51,6 +52,7 @@ export const load = (async (event) => {
 				cost_range: pgRangeToArr(res.data.cost_range),
 				work_ids: alwaysArr(res.data.work_ids).map((w) => w.work_id),
 				usages: alwaysArr(res.data.usages),
+				location: maybeSingle(res.data.location)!,
 				gallery: alwaysArr(res.data.gallery).map((img) => ({
 					...img,
 					color_mean_hsl: pgCubeToHsl(img.color_mean_hsl),
@@ -58,7 +60,7 @@ export const load = (async (event) => {
 					publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.name).data
 						.publicUrl,
 				})),
-				location: maybeSingle(res.data.location)!,
+				indicators: alwaysArr(res.data.indicators),
 			};
 		});
 

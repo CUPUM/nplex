@@ -29,7 +29,7 @@
 		out:fly|local={{ y: 6, duration: 150 }}
 		in:fly|local={{ y: 6, delay: 250, duration: 150 }}
 	>
-		<Tooltip message="Supprimer" place="top">
+		<Tooltip message="Supprimer" place="top" align="start">
 			<Button
 				equi
 				type="submit"
@@ -55,6 +55,7 @@
 		<Tooltip
 			message={banner_id === data.id ? 'Retirer de la bannière' : 'Définir comme bannière'}
 			place="top"
+			align="end"
 		>
 			<Button
 				equi

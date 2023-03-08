@@ -60,13 +60,14 @@
 
 <style lang="scss">
 	header {
-		--radius: min(var(--ui-radius-2xl), calc(var(--ui-scroll-px) * 0.15));
+		--splash-radius: min(var(--ui-radius-2xl), calc(var(--ui-scroll-px) * 0.15));
 		position: relative;
 		height: 100svh;
 		width: 100%;
+		padding-block: var(--ui-nav-h);
 		background: col(bg, 300);
-		border-bottom-left-radius: var(--radius);
-		border-bottom-right-radius: var(--radius);
+		border-bottom-left-radius: var(--splash-radius);
+		border-bottom-right-radius: var(--splash-radius);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -75,9 +76,13 @@
 	}
 
 	svg {
+		position: relative;
 		cursor: pointer;
-		width: 250px;
+		// width: 250px;
 		fill: col(fg, 700);
+		object-fit: contain;
+		max-width: var(--ui-width-main);
+		padding: var(--ui-pad-outer);
 	}
 
 	button {

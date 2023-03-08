@@ -149,8 +149,8 @@
 	</menu>
 	<nav class:open class:unmounted={!mounted} class={$navbarWidth}>
 		<section class="main">
-			<NavbarButton rounded href="/">
-				<svg xmlns="http://www.w3.org/2000/svg" height="1em" width="100%">
+			<NavbarButton equi rounded href="/">
+				<svg xmlns="http://www.w3.org/2000/svg" class="logo">
 					<use href={LOGO_SYMBOLS_HREFS.monogram} fill="currentColor" />
 				</svg>
 			</NavbarButton>
@@ -199,6 +199,7 @@
 				</Popover>
 			{:else}
 				<NavbarButton
+					equi
 					rounded
 					active={!!$authModal}
 					href={authModal.getUrl({ url: $page.url }).toString()}
@@ -380,5 +381,10 @@
 		grid-column: session;
 		justify-self: flex-end;
 		--i: 2;
+	}
+
+	.logo {
+		position: relative;
+		top: -0.1em;
 	}
 </style>

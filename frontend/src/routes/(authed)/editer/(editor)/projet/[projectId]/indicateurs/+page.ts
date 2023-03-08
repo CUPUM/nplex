@@ -13,13 +13,7 @@ export const load = (async (event) => {
 			`
 		*,
 		indicators:project_exemplarity_indicator (
-			*,
-			created_by:users!project_exemplarity_indicator_created_by_id_fkey (
-				*
-			),
-			updated_by:users!project_exemplarity_indicator_updated_by_id_fkey (
-				*
-			)
+			*
 		)
 		`
 		)

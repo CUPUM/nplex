@@ -3,7 +3,7 @@
 @mixin not-first-group-button {
 	&,
 	& > :global(*) {
-		> :global(.button[data-button-group]:not([data-button-group*='first'])) {
+		> :global(.button[data-button-group]:not([data-button-group*='start'])) {
 			@content;
 		}
 	}
@@ -12,7 +12,7 @@
 @mixin not-last-group-button {
 	&,
 	& > :global(*) {
-		> :global(.button[data-button-group]:not([data-button-group*='last'])) {
+		> :global(.button[data-button-group]:not([data-button-group*='end'])) {
 			@content;
 		}
 	}
@@ -22,7 +22,7 @@
 	display: flex;
 	gap: 0;
 	justify-content: inherit;
-	overflow: visible;
+	// overflow: visible;
 
 	&.row {
 		flex-direction: row;
@@ -30,8 +30,8 @@
 		@include not-first-group-button {
 			border-start-start-radius: 0;
 			border-end-start-radius: 0;
-			// margin-inline-start: calc(-1 * var(--ui-border-thickness));
-			&::before {
+			&::before,
+			&::after {
 				border-inline-start: none;
 			}
 		}
@@ -48,7 +48,8 @@
 		@include not-first-group-button {
 			border-start-start-radius: 0;
 			border-start-end-radius: 0;
-			&::before {
+			&::before,
+			&::after {
 				border-block-start: none;
 			}
 		}

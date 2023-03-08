@@ -15,7 +15,7 @@
 		position: relative;
 		padding: var(--ui-pad-outer);
 		background: col(bg, 700);
-		border: 1px solid col(fg, 000, 0.1);
+		// border: 1px solid col(fg, 000, 0.1);
 		border-radius: var(--ui-radius-lg);
 		transition: all 0.15s;
 

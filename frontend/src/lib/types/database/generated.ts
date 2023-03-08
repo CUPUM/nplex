@@ -240,7 +240,8 @@ export interface Database {
           created_by_id: string
           description: string | null
           id: number
-          indicator_category_id: number | null
+          indicator_category_id: number
+          label: string
           title: string
           updated_at: string
           updated_by_id: string | null
@@ -250,7 +251,8 @@ export interface Database {
           created_by_id?: string
           description?: string | null
           id?: number
-          indicator_category_id?: number | null
+          indicator_category_id: number
+          label: string
           title: string
           updated_at?: string
           updated_by_id?: string | null
@@ -260,7 +262,8 @@ export interface Database {
           created_by_id?: string
           description?: string | null
           id?: number
-          indicator_category_id?: number | null
+          indicator_category_id?: number
+          label?: string
           title?: string
           updated_at?: string
           updated_by_id?: string | null
@@ -272,6 +275,7 @@ export interface Database {
           created_by_id: string
           description: string | null
           id: number
+          label: string
           title: string
           updated_at: string
           updated_by_id: string | null
@@ -281,6 +285,7 @@ export interface Database {
           created_by_id?: string
           description?: string | null
           id?: number
+          label: string
           title: string
           updated_at?: string
           updated_by_id?: string | null
@@ -290,9 +295,33 @@ export interface Database {
           created_by_id?: string
           description?: string | null
           id?: number
+          label?: string
           title?: string
           updated_at?: string
           updated_by_id?: string | null
+        }
+      }
+      project_exemplarity_indicator_ressources: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: number
+          indicator_id: number
+          link: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          indicator_id: number
+          link?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          indicator_id?: number
+          link?: string | null
         }
       }
       project_implantation_mode: {
@@ -1592,7 +1621,10 @@ export interface Database {
     Tables: {
       buckets: {
         Row: {
+          allowed_mime_types: string[] | null
+          avif_autodetection: boolean | null
           created_at: string | null
+          file_size_limit: number | null
           id: string
           name: string
           owner: string | null
@@ -1600,7 +1632,10 @@ export interface Database {
           updated_at: string | null
         }
         Insert: {
+          allowed_mime_types?: string[] | null
+          avif_autodetection?: boolean | null
           created_at?: string | null
+          file_size_limit?: number | null
           id: string
           name: string
           owner?: string | null
@@ -1608,7 +1643,10 @@ export interface Database {
           updated_at?: string | null
         }
         Update: {
+          allowed_mime_types?: string[] | null
+          avif_autodetection?: boolean | null
           created_at?: string | null
+          file_size_limit?: number | null
           id?: string
           name?: string
           owner?: string | null
