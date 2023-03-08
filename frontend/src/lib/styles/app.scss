@@ -14,17 +14,17 @@
 	overflow-x: hidden;
 	overflow-y: scroll;
 	scroll-snap-type: y proximity;
-	scroll-behavior: smooth;
+	// scroll-behavior: smooth; // Re-enable if no overlayscrollbars.
 
 	&[data-lock-scroll]:not([data-lock-scroll*='nav']) {
 		overflow-y: hidden;
-		padding-right: var(--ui-scroll-size);
+		// padding-right: var(--ui-scroll-size); // Re-enable if no overlayscrollbars.
 	}
 
 	@include tablet {
 		&[data-lock-scroll] {
 			overflow-y: hidden;
-			padding-right: 0;
+			// padding-right: 0; // Re-enable if no overlayscrollbars.
 		}
 	}
 

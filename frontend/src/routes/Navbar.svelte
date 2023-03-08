@@ -385,6 +385,7 @@
 
 	.logo {
 		position: relative;
-		top: -0.1em;
+		// top: -0.1em;
+		height: 1em;
 	}
 </style>

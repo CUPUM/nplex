@@ -12,6 +12,8 @@
 	import '$styles/themes.css';
 	import '$styles/vars.scss';
 	import { browserDb } from '$utils/database/client';
+	import { OverlayScrollbars } from 'overlayscrollbars';
+	import 'overlayscrollbars/overlayscrollbars.css';
 	import type { LayoutData } from './$types';
 	import AuthModal, { authModal } from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
@@ -19,8 +21,25 @@
 	export let data: LayoutData;
 
 	let scrollY = 0;
+	let rootScrollbar: OverlayScrollbars;
 
 	if (browser) {
+		rootScrollbar = OverlayScrollbars(document.body, {
+			paddingAbsolute: false,
+			overflow: {
+				x: 'hidden',
+				y: 'scroll',
+			},
+			scrollbars: {
+				theme: 'os-theme-dark',
+				visibility: 'auto',
+				autoHide: 'move',
+				autoHideDelay: 1500,
+				dragScroll: true,
+				clickScroll: false,
+				pointers: ['mouse', 'touch', 'pen'],
+			},
+		});
 		if (data.session) {
 			// Initialize the client-side db auth based on the session extracted from cookies, if any.
 			browserDb.auth.setSession(data.session);
@@ -94,7 +113,7 @@
 		transition: border-radius 0.25s var(--ui-ease-out), transform 0.25s var(--ui-ease-out);
 		&.authing {
 			transform: scale(0.96);
-			width: calc(100vw - var(--ui-scroll-size));
+			// width: calc(100vw - var(--ui-scroll-size));
 			border-radius: var(--ui-radius-xl);
 			color: col(bg, 900);
 		}

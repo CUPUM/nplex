@@ -44,6 +44,9 @@ const config = {
 				client: 'src/hooks/client',
 			},
 		},
+		output: {
+			preloadStrategy: 'preload-mjs', // Soon to be not relevant: https://kit.svelte.dev/docs/configuration
+		},
 	},
 	compilerOptions: {
 		// Only applies to prod.
