@@ -32,6 +32,7 @@
 		align-items: flex-start;
 		justify-content: center;
 		z-index: 5;
+		font-weight: 500;
 		max-width: var(--ui-nav-center-w);
 		// background: var(--editor-bg);
 		// border-bottom: 1px solid col(fg, 500, 0.05);

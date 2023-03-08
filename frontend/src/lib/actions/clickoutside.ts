@@ -20,7 +20,7 @@ declare global {
  *
  * If you are having trouble with this behavior, check the following potential pain points:
  *
- * - Do you have `pointer-evetns: none` in some parent or target child css?
+ * - Do you have `pointer-events: none` in some parent or target child css?
  */
 export function clickoutside(element: HTMLElement, options?: ClickoutsideOptions) {
 	function handleClick(e: Event) {
@@ -33,7 +33,7 @@ export function clickoutside(element: HTMLElement, options?: ClickoutsideOptions
 		}
 	}
 
-	document.addEventListener(CLICKOUTSIDE_EVENT, handleClick, options);
+	document.addEventListener('click', handleClick, options);
 
 	return {
 		destroy() {

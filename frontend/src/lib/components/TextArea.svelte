@@ -83,7 +83,7 @@
 	class:hasplaceholder
 	class:haslabel
 	class:required
-	style:--label-width="{labelWidth}px"
+	style:--text-area-label-width="{labelWidth}px"
 	on:click|self={focus}
 	on:click
 	on:pointerdown
@@ -387,7 +387,7 @@
 					right: var(--notch-padding);
 				}
 				.right {
-					left: calc(var(--label-width) + var(--notch-padding));
+					left: calc(var(--text-area-label-width) + var(--notch-padding));
 				}
 				.leading:not(:empty) ~ {
 					.left {

@@ -93,7 +93,7 @@
 				// background: var(--nav-bg);
 				// opacity: 0.5;
 				// background: none;
-				border: var(--ui-border-thickness) dashed col(primary, 500, 0.5);
+				// border: var(--ui-border-thickness) dashed col(primary, 500, 0.5);
 			}
 		}
 

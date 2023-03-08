@@ -17,7 +17,7 @@
 
 <style lang="scss">
 	article {
-		--article-radius: var(--ui-radius-2xl);
+		--article-radius: min(var(--ui-radius-2xl), calc(0.1 * var(--ui-scroll-px)));
 		width: 100%;
 		display: flex;
 		flex-direction: column;

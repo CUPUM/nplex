@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { LayoutData } from './$types';
+	import type { ComponentProps } from 'svelte';
+	import type { LayoutData, Snapshot } from './$types';
 	import { EDITOR_ROUTES } from './common';
 	import EditableActorCard from './EditableActorCard.svelte';
 	import EditableOrganizationCard from './EditableOrganizationCard.svelte';
@@ -7,6 +8,28 @@
 	import EditablesList from './EditablesList.svelte';
 
 	export let data: LayoutData;
+
+	let projectsFilters: ComponentProps<EditablesList<any>>['filters'] = {
+		authoring: 'all',
+		publishing: 'all',
+	};
+	let organisationsFilters: ComponentProps<EditablesList<any>>['filters'] = {
+		authoring: 'all',
+		publishing: 'all',
+	};
+	let actorsFilters: ComponentProps<EditablesList<any>>['filters'] = {
+		authoring: 'all',
+		publishing: 'all',
+	};
+
+	export const snapshot: Snapshot = {
+		capture: () => {
+			return { projectsFilters, organisationsFilters, actorsFilters };
+		},
+		restore: (persisted) => {
+			({ projectsFilters, organisationsFilters, actorsFilters } = persisted);
+		},
+	};
 </script>
 
 <slot />
@@ -17,6 +40,7 @@
 	</hgroup>
 </header>
 <EditablesList
+	bind:filters={projectsFilters}
 	id={EDITOR_ROUTES.project.edit.hash}
 	title="Mes projets"
 	data={data.projects}
@@ -25,6 +49,7 @@
 	<EditableProjectCard project={datum} />
 </EditablesList>
 <EditablesList
+	bind:filters={organisationsFilters}
 	id={EDITOR_ROUTES.organization.edit.hash}
 	title="Mes organisations"
 	data={data.organizations}
@@ -33,6 +58,7 @@
 	<EditableOrganizationCard organization={datum} />
 </EditablesList>
 <EditablesList
+	bind:filters={actorsFilters}
 	id={EDITOR_ROUTES.actor.edit.hash}
 	title="Mes profils d'acteurs"
 	data={data.actors}

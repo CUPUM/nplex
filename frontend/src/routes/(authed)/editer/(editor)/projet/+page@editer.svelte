@@ -10,10 +10,6 @@
 
 	let creating = false;
 	let title = '';
-
-	$: if (form?.error) {
-		// messages.error(...[form.error].flat());
-	}
 </script>
 
 <form
@@ -40,7 +36,7 @@
 				class="title"
 				variant="outlined"
 				bind:value={title}
-				invalid={!!form?.error}
+				invalid={!!form?.errorMessages.length}
 				placeholder="Titre de projet"
 			>
 				<!-- <svelte:fragment slot="label">Titre du projet</svelte:fragment> -->
@@ -56,8 +52,8 @@
 				</Button>
 			</Field>
 			<span class="ui-info" in:fade={{ delay: 500 }}>
-				<Icon name="info-circle" style="margin-right: .5em; top: -.1em" /> Vous pourrez toujours modifier
-				ce titre une fois le projet créé.
+				<Icon name="info-circle" style="margin-right: .5em; top: -.1em" />
+				Vous pourrez toujours modifier ce titre une fois le projet créé.
 			</span>
 		</fieldset>
 	</div>

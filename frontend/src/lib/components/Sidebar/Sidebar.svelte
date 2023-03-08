@@ -13,6 +13,7 @@
 		flex: none;
 		position: sticky;
 		top: var(--ui-nav-h);
+		padding-top: 1.5rem;
 		display: flex;
 		flex-direction: column;
 		overflow-x: hidden;

@@ -7,6 +7,8 @@
  * app's possible routing state.
  */
 
+class RouteTree {}
+
 import { CATEGORIES, type Category } from './enums';
 
 export type Route<T = {}> = {

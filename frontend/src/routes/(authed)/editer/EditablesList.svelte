@@ -65,7 +65,6 @@
 	import { page } from '$app/stores';
 	import Switch from '$components/Switch/Switch.svelte';
 	import SwitchItem from '$components/Switch/SwitchItem.svelte';
-	import { getPersistedValue, persistValue } from '$utils/persist';
 	import { flip } from 'svelte/animate';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
@@ -75,21 +74,13 @@
 	export let title: string;
 	export let data: D[];
 	export let id: string;
-
-	const storageKey = `editables-filter-${id}`;
-
-	let applied = getPersistedValue<PersistedFilters>(storageKey, {
-		authoring: 'all',
-		publishing: 'all',
-	});
-
-	$: persistValue(storageKey, applied);
+	export let filters: PersistedFilters;
 
 	$: filtered = [
 		...data.filter(
 			(d) =>
-				authoring[applied.authoring].filter(d, $page.data.session?.user.id!) &&
-				publishing[applied.publishing].filter(d)
+				authoring[filters.authoring].filter(d, $page.data.session?.user.id!) &&
+				publishing[filters.publishing].filter(d)
 		),
 		defaultDatum,
 	];
@@ -99,14 +90,14 @@
 	<header>
 		<h3 class="h2">{title}</h3>
 		<form action="" use:enhance method="POST">
-			<Switch bind:value={applied.authoring} variant="feature" name="filter" compact>
+			<Switch bind:value={filters.authoring} variant="feature" name="filter" compact>
 				{#each Object.entries(authoring) as [k, v]}
 					<SwitchItem value={k}>
 						{v.text}
 					</SwitchItem>
 				{/each}
 			</Switch>
-			<Switch bind:value={applied.publishing} variant="feature" name="filter" compact>
+			<Switch bind:value={filters.publishing} variant="feature" name="filter" compact>
 				{#each Object.entries(publishing) as [k, v]}
 					<SwitchItem value={k}>
 						{v.text}

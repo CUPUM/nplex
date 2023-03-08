@@ -16,7 +16,7 @@
 	/**
 	 * R multiplier where duration = d * speed.
 	 */
-	export let speed: number = 1.5;
+	export let speed: number = 1;
 	export let duration: number | undefined = undefined;
 	export let delay = 0;
 	export let opacityStart = 0.1;
@@ -128,8 +128,8 @@
 			style:--y="{r.y}px"
 			style:--d="{r.d}px"
 			style:--opacity-duration="{opacityDuration}ms"
-			style:--spread-duration="{spreadDuration ?? 50 + r.d / spreadSpeed}ms"
-			style:--color-duration="{colorDuration ?? 50 + r.d / colorSpeed}ms"
+			style:--spread-duration="{spreadDuration ?? 100 + (0.5 * r.d) / spreadSpeed}ms"
+			style:--color-duration="{colorDuration ?? 100 + (0.5 * r.d) / colorSpeed}ms"
 			on:animationend|self={(e) => end(e, r)}
 		/>
 	{/each}

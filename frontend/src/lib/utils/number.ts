@@ -12,3 +12,12 @@ export function snap(
 ) {
 	return round((value - origin) / step) * step + origin;
 }
+
+/**
+ * Provide a quick polyfill for mod operations (%) that ensure continuity with negative numbers.
+ *
+ * @see https://stackoverflow.com/questions/4467539/javascript-modulo-gives-a-negative-result-for-negative-numbers
+ */
+export function mod(number: number, modulus: number) {
+	return ((number % modulus) + modulus) % modulus;
+}

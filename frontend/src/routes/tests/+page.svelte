@@ -1,6 +1,10 @@
 <script lang="ts">
+	import Button from '$components/Button/Button.svelte';
+	import ButtonGroup from '$components/Button/ButtonGroup.svelte';
 	import DragndropContext from '$components/Dragndrop/DragndropContext.svelte';
+	import Popover from '$components/Popover.svelte';
 	import Toggle from '$components/Toggle/Toggle.svelte';
+	import Tooltip from '$components/Tooltip.svelte';
 
 	let items = [
 		{ id: 'test', checked: false, label: '32rsf4wsoad asdpoajda' },
@@ -14,21 +18,38 @@
 	];
 </script>
 
-<!-- <article>
-	<pre>{JSON.stringify(items, undefined, 2)}</pre>
-	<ol use:sortable={{ items, getKey: (d) => d.id }} on:sort={onSort}>
-		{#each items as item (item.id)}
-			<li data-key={item.id}>
-				{item.label}
-				<br />
-				<Toggle bind:checked={item.checked}>{item.checked}</Toggle>
-			</li>
-		{/each}
-	</ol>
-</article> -->
+<article>
+	<ButtonGroup let:key orientation="column">
+		<Button group={key}>Okidoki</Button>
+		<Tooltip message="chaotic tooltip">
+			<Button group={key}>Test2</Button>
+		</Tooltip>
+		<Popover>
+			<Button slot="control" group={key}>Test3</Button>
+			<h1>Hello</h1>
+			<h2>Test</h2>
+			<!-- <ButtonGroup> -->
+			<Button>Test inner1</Button>
+			<Button>Test inner2</Button>
+			<Button>Test inner3</Button>
+			<!-- </ButtonGroup> -->
+		</Popover>
+		<Button group={key}>Test4</Button>
+	</ButtonGroup>
+	<Popover>
+		<button slot="control">Test</button>
+		<ul>
+			<li>test1</li>
+			<li>test1</li>
+			<li>test1</li>
+			<li>test1</li>
+			<li>test1</li>
+		</ul>
+	</Popover>
+</article>
 <article>
 	<pre>{JSON.stringify(items, undefined, 2)}</pre>
-	<DragndropContext bind:items getKey={(d) => d.id} let:dragndropZone let:dragndropItem>
+	<DragndropContext bind:items let:dragndropZone let:dragndropItem>
 		<ol use:dragndropZone>
 			{#each items as item (item.id)}
 				<li use:dragndropItem={{ item }}>
@@ -48,6 +69,11 @@
 		display: grid;
 		gap: 1.5rem;
 		grid-template-columns: 350px 1fr;
+	}
+
+	.test {
+		padding: 1rem;
+		border: 1px solid blue;
 	}
 
 	pre {

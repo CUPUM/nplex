@@ -9,5 +9,9 @@ export const load = (async (event) => {
 
 	return {
 		session,
+		category: undefined,
+		showFooter: true,
+		showCategoryNavbar: false,
+		showExploreSearchbar: false,
 	};
 }) satisfies LayoutServerLoad;

@@ -39,8 +39,8 @@
 			title: 'Matériaux',
 		},
 		{
-			pathname: base('/exemplarite'),
-			title: 'Exemplarité', // 'Indicateurs d’exemplarité'
+			pathname: base('/indicateurs'),
+			title: 'Indicateurs',
 		},
 		{
 			pathname: base('/realisation'),

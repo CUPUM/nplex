@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import AnimateHeight from '$components/AnimateHeight.svelte';
 	import Dirty from '$components/Dirty.svelte';
 	import DragndropContext from '$components/Dragndrop/DragndropContext.svelte';
+	import { offsetItem } from '$utils/array';
 	import { flip } from 'svelte/animate';
-	import { cubicOut } from 'svelte/easing';
+	import { cubicOut, expoIn, expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import { editorDirtyValues } from '../../../common';
 	import EditorFormgroup from '../../../EditorFormgroup.svelte';
@@ -20,11 +22,9 @@
 	}
 
 	let galleryItems = cloneData();
-
 	function syncDown() {
 		galleryItems = cloneData();
 	}
-
 	$: data.project.gallery, syncDown();
 </script>
 
@@ -35,24 +35,32 @@
 	strictOrder
 />
 <EditorFormgroup legend="Galerie">
-	<DragndropContext bind:items={galleryItems} let:dragndropZone let:dragndropItem>
-		<ol use:dragndropZone>
-			{#each galleryItems as item, i (item.id)}
-				<li
-					animate:flip={{ duration: 200, easing: cubicOut }}
-					in:fly={{ opacity: 0, y: 12, duration: 250, easing: cubicOut, delay: 150 * i }}
-					out:scale|local={{ duration: 200, start: 0.95, easing: cubicOut }}
-					use:dragndropItem={{ item, disabled: item === newItem }}
-				>
-					{#if 'newItem' in item}
-						<GalleryInput />
-					{:else}
-						<GalleryItem bind:data={item} {i} />
-					{/if}
-				</li>
-			{/each}
-		</ol>
-	</DragndropContext>
+	<AnimateHeight>
+		<DragndropContext bind:items={galleryItems} let:dragndropZone let:dragndropItem>
+			<ol use:dragndropZone>
+				{#each galleryItems as item, i (item.id)}
+					<li
+						animate:flip={{ duration: 150, easing: expoOut }}
+						in:fly={{ opacity: 0, y: 12, duration: 250, easing: cubicOut, delay: 150 * i }}
+						out:scale|local={{ duration: 150, start: 0.95, easing: expoIn }}
+						use:dragndropItem={{ item, disabled: item === newItem }}
+					>
+						{#if 'newItem' in item}
+							<GalleryInput />
+						{:else}
+							<GalleryItem
+								on:shift={(e) => {
+									galleryItems = offsetItem(galleryItems, i, e.detail, [galleryItems.length - 1]);
+								}}
+								bind:data={item}
+								{i}
+							/>
+						{/if}
+					</li>
+				{/each}
+			</ol>
+		</DragndropContext>
+	</AnimateHeight>
 </EditorFormgroup>
 
 <style lang="scss">
@@ -60,7 +68,5 @@
 		display: grid;
 		gap: 3rem 2rem;
 		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		// width: 100%;
-		// max-width: var(--ui-width-lg);
 	}
 </style>

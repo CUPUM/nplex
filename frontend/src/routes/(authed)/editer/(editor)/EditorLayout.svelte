@@ -15,9 +15,11 @@
 </script>
 
 <EditorCrumbs {crumbs} />
-<EditorHeader>
-	<slot name="header" />
-</EditorHeader>
+{#if $$slots.header}
+	<EditorHeader>
+		<slot name="header" />
+	</EditorHeader>
+{/if}
 <div class="columns">
 	<Sidebar>
 		<slot name="sidebar" />
@@ -57,7 +59,8 @@
 		flex-direction: row;
 		gap: 1.5rem;
 		// padding-top: 1.5rem;
-		padding-top: var(--ui-nav-h);
+		// padding-top: var(--ui-nav-h);
+		scroll-margin-top: calc(-1 * var(--ui-nav-h));
 
 		@include tablet {
 			gap: 0;

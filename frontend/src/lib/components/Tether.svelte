@@ -78,14 +78,15 @@
 </script>
 
 <div
+	use:clickoutside
 	bind:this={anchorRef}
 	class="ui-anchor"
-	use:clickoutside
-	on:clickoutside|self
-	on:pointerdown|self
-	on:pointerup|self
-	on:pointerleave|self
-	on:pointerenter|self
+	on:clickoutside
+	on:keydown
+	on:click
+	on:pointerup
+	on:pointerleave
+	on:pointerenter
 >
 	<slot name="anchor" />
 </div>

@@ -28,6 +28,7 @@
 
 	type $$Props = (HTMLButtonAttributes | HTMLAnchorAttributes) & {
 		as?: ButtonElement;
+		group?: Symbol;
 		href?: string;
 		variant?: Variant;
 		state?: State;
@@ -45,6 +46,7 @@
 	};
 
 	export let as: $$Props['as'] = undefined;
+	export let group: Symbol | undefined = undefined;
 	export let variant: $$Props['variant'] = VARIANTS.Default;
 	export let type: $$Props['type'] = 'button';
 	export let state: $$Props['state'] = STATES.Normal;
@@ -61,14 +63,14 @@
 	export { className as class };
 	export let style: $$Props['style'] = undefined;
 
-	const group = getButtonGroupContext();
+	const groupContext = group ? getButtonGroupContext(group) : undefined;
 
-	$: groupVariant = group?.variant;
+	const groupElement = groupContext?.groupElement ?? ((el: HTMLElement) => {});
 
+	$: groupVariant = groupContext?.variant;
+	$: computedVariant = groupVariant ? $groupVariant : variant;
 	$: element = as ? as : href ? 'a' : 'button';
-
 	$: hrefURL = href ? new UnbasedURL(href) : undefined;
-
 	$: if (autoActive && hrefURL) {
 		active = $page.url.pathname === hrefURL.pathname;
 	}
@@ -76,12 +78,10 @@
 
 <svelte:element
 	this={element}
+	use:groupElement
 	role="button"
 	{type}
-	class="button {groupVariant
-		? $groupVariant
-		: variant} {state} {contentAlign} {className} {ICON_CLASS.hover}"
-	class:grouped={group}
+	class="button {computedVariant} {state} {contentAlign} {className} {ICON_CLASS.hover}"
 	class:compact
 	class:equi
 	class:rounded

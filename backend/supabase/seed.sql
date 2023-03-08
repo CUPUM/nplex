@@ -319,32 +319,33 @@ values
 
 
 insert into public.project_exemplarity_indicator_category
-    (id, title, description)
+    (id, title, label, description)
 values
-    (1, 'Matériaux', ''),
-    (2, 'Processus', ''),
-    (3, 'Concept', ''),
-    (4, 'Impact social', ''),
-    (5, 'Environnement', '');
+    (1, 'Résilience', 'Résilience', ''),
+    (2, 'Environnement', 'Environnement', ''),
+    (3, 'Économie', 'Économie', ''),
+    (4, 'Culture', 'Culture', ''),
+    (5, 'Équité, diversité et inclusion', 'Équité, diversité & inclusion', ''),
+    (6, 'Santé et bien-être', 'Santé & bien-être', '');
 
 select setval(pg_get_serial_sequence('public.project_exemplarity_indicator_category', 'id'), max(id)) from public.project_exemplarity_indicator_category;
 
 
 insert into public.project_exemplarity_indicator
-    (indicator_category_id, title, description)
+    (indicator_category_id, title, label, description)
 values
-    (1, 'Matériaux écologiques', ''),
-    (1, 'Construction durable', ''),
-    (1, 'Recyclage ou réutilisation de matériaux', ''),
-    (2, 'Processus participatif', ''),
-    (2, 'Consultation du voisinage', ''),
-    (2, 'Recherche historique', ''),
-    (3, 'Innovation', ''),
-    (3, 'Intégration contextuelle', ''),
-    (4, 'Réduction du bruit', ''),
-    (4, 'Amélioration de la sécurité', ''),
-    (4, 'Saines habitudes de vie', ''),
-    (5, 'Ilôt de fraîcheur', ''),
-    (5, 'Gestion des eaux de pluie', ''),
-    (5, 'Biodiversité', ''),
-    (5, 'Efficacité thermique', '');
+    (1, 'Matériaux écologiques', 'Matériaux écologiques', ''),
+    (1, 'Construction durable', 'Construction durable', ''),
+    (1, 'Recyclage ou réutilisation de matériaux', 'Recyclage ou réutilisation de matériaux', ''),
+    (2, 'Processus participatif', 'Processus participatif', ''),
+    (2, 'Consultation du voisinage', 'Consultation du voisinage', ''),
+    (2, 'Recherche historique', 'Recherche historique', ''),
+    (3, 'Innovation', 'Innovation', ''),
+    (3, 'Intégration contextuelle', 'Intégration contextuelle', ''),
+    (4, 'Réduction du bruit', 'Réduction du bruit', ''),
+    (4, 'Amélioration de la sécurité', 'Amélioration de la sécurité', ''),
+    (4, 'Saines habitudes de vie', 'Saines habitudes de vie', ''),
+    (5, 'Ilôt de fraîcheur', 'Ilôt de fraîcheur', ''),
+    (5, 'Gestion des eaux de pluie', 'Gestion des eaux de pluie', ''),
+    (5, 'Biodiversité', 'Biodiversité', ''),
+    (5, 'Efficacité thermique', 'Efficacité thermique', '');

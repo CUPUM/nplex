@@ -22,7 +22,7 @@
 			>
 				<a href={r.pathname}>
 					<i>
-						<Icon name={r.icon} strokeWidth={2.5} animationSpeed={0.3} strokeLinecap="round" />
+						<Icon name={r.icon} strokeWidth={2} animationSpeed={0.3} strokeLinecap="round" />
 					</i>
 					<span>
 						{r.title}
@@ -50,7 +50,7 @@
 		width: 100%;
 		max-width: var(--ui-width-main);
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 		gap: 1.5rem;
 	}
 

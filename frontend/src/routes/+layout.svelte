@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 	import Logo from '$components/Logo.svelte';
 	import ModalOutlet from '$components/Modal/ModalOutlet.svelte';
-	import MessagesOutlet from '$routes/MessagesOutlet.svelte';
+	import MessagesOutlet, { messages } from '$routes/MessagesOutlet.svelte';
 	import Navbar from '$routes/Navbar.svelte';
 	import ProgressBar from '$routes/ProgressBar.svelte';
 	import '$styles/app.scss';
@@ -21,12 +21,15 @@
 	let scrollY = 0;
 
 	if (browser) {
-		// Initialize the client-side db auth based on the session extracted from cookies, if any.
 		if (data.session) {
+			// Initialize the client-side db auth based on the session extracted from cookies, if any.
 			browserDb.auth.setSession(data.session);
 			browserDb.auth.signInWithPassword;
 		}
 	}
+
+	// Catch and dispatch acion error messages.
+	$: if ($page.form?.errorMessages?.length) messages.error(...$page.form.errorMessages);
 
 	beforeNavigate((navigation) => {
 		if (navigation.from?.route.id !== navigation.to?.route.id) {
@@ -50,7 +53,7 @@
 	class="container"
 	class:authing={$authModal}
 	style:--ui-scroll={scrollY}
-	style:--ui-scroll-y="{scrollY}px"
+	style:--ui-scroll-px="{scrollY}px"
 >
 	<Navbar />
 	<main>
@@ -69,7 +72,7 @@
 <style lang="scss" module>
 	.container {
 		position: relative;
-		transform-origin: 50vw calc(var(--ui-scroll-y) + 50vh);
+		transform-origin: 50vw calc(var(--ui-scroll-px) + 50vh);
 		transform: scale(1);
 		transition: transform 0.25s var(--ui-ease-out);
 		&.authing {
@@ -108,15 +111,5 @@
 		flex-direction: column;
 		padding: 0;
 		margin: 0;
-	}
-
-	.loader {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		font-size: var(--ui-text-2xl);
-		opacity: 0.2;
 	}
 </style>

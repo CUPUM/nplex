@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { locale } from '$components/I18n.svelte';
+	import { cubicOut } from 'svelte/easing';
+	import { slide } from 'svelte/transition';
 
 	export let updatedAt: Date = new Date();
 	export let updatedBy: string = 'Utilisateur';
@@ -9,7 +11,7 @@
 	const dateFormatter = new Intl.DateTimeFormat($locale);
 </script>
 
-<header>
+<header transition:slide|local={{ duration: 250, easing: cubicOut }}>
 	<hgroup class="main">
 		<slot />
 	</hgroup>
@@ -38,9 +40,11 @@
 		justify-content: center;
 		padding: 3rem;
 		gap: 1.5rem;
-		border: var(--ui-border-thickness) dashed col(primary, 700, 0.25);
+		border: var(--ui-border-thickness) dashed col(primary, 700, 0.5);
 		color: col(primary, 700);
-		border-radius: var(--ui-radius-xl);
+		border-radius: var(--ui-radius-lg);
+		margin-bottom: var(--ui-nav-h);
+		opacity: max(0, calc(1 - var(--ui-scroll) * 0.002));
 	}
 
 	hgroup {

@@ -90,7 +90,7 @@
 	{place}
 	{align}
 	distance="0"
-	on:pointerdown={handleClick}
+	on:click={handleClick}
 	on:clickoutside={handleClickoutside}
 	on:pointerleave={handleLeave}
 	on:pointerenter={handleEnter}

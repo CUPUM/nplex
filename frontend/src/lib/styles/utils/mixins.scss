@@ -10,3 +10,9 @@
 	--scroll-color: transparent;
 	scrollbar-width: none;
 }
+
+@mixin loading-skeleton($color: var(--loading-skeleton-color, #{rgb(var(--rgb-fg-500), 0.05)})) {
+	background: linear-gradient(-90deg, $color 0%, transparent 50%, $color 100%);
+	background-size: 400% 100%;
+	animation: ui-skeleton-pulse 1.25s ease-in-out infinite;
+}

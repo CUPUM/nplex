@@ -9,7 +9,7 @@ export const load = (async (event) => {
 
 	const db = await getDb(event);
 
-	const projectsRes = await db
+	const projects = db
 		.from('projects')
 		.select(
 			`
@@ -19,42 +19,48 @@ export const load = (async (event) => {
 		`
 		)
 		.order('updated_at', { ascending: false })
-		.range(...pagination(0, 10));
+		.range(...pagination(0, 10))
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			return res.data;
+		});
 
-	if (projectsRes.error) {
-		throw error(STATUS_CODES.InternalServerError, projectsRes.error);
-	}
-
-	const organisationsRes = await db
+	const organisations = db
 		.from('organizations')
 		.select(
 			`
 			*
 		`
 		)
-		.range(...pagination(0, 10));
+		.range(...pagination(0, 10))
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			return res.data;
+		});
 
-	if (organisationsRes.error) {
-		throw error(STATUS_CODES.InternalServerError, organisationsRes.error);
-	}
-
-	const actorsRes = await db
+	const actors = db
 		.from('actors')
 		.select(
 			`
 			*
 		`
 		)
-		.range(...pagination(0, 20));
-
-	if (actorsRes.error) {
-		throw error(STATUS_CODES.InternalServerError, actorsRes.error);
-	}
+		.range(...pagination(0, 20))
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			return res.data;
+		});
 
 	return {
 		showCategoryNavbar: true,
-		projects: projectsRes.data,
-		organisations: organisationsRes.data,
-		actors: actorsRes.data,
+		projects,
+		organisations,
+		actors,
 	};
 }) satisfies PageLoad;

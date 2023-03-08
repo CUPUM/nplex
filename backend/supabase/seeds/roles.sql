@@ -1,3 +1,6 @@
+-- Wait on better supporrt for db-level roles before using this.
+-- Follow: 
+
 -- Create new roles
 
 create role app_user;

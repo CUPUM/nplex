@@ -3,6 +3,7 @@ import type { Actions } from './$types';
 
 export const actions: Actions = {
 	[EDITOR_FORM_ACTION]: async (event) => {
+		console.log('Update', event.request);
 		// Do stuff.
 	},
 };

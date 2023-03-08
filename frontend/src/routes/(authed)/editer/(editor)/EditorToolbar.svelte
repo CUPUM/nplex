@@ -27,7 +27,7 @@
 		bottom: 1.5rem;
 		align-self: center;
 		display: flex;
-		justify-content: flex-end;
+		justify-content: center;
 		align-items: flex-end;
 		flex-direction: row;
 		height: 0;

@@ -1,19 +1,13 @@
-<script lang="ts" context="module">
-	const OFFSET = {
-		before: 0,
-		after: 1,
-	} as const;
-</script>
-
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Button from '$components/Button/Button.svelte';
+	import ButtonGroup from '$components/Button/ButtonGroup.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Image from '$components/Image/Image.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
-	import { SEARCH_PARAMS } from '$utils/enums';
+	import { KEY, SEARCH_PARAMS } from '$utils/enums';
 	import { THEMES } from '$utils/themes';
 	import { createEventDispatcher } from 'svelte';
 	import { fly } from 'svelte/transition';
@@ -24,10 +18,11 @@
 
 	$: ({ banner_id } = ($page.data as PageData).project);
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ shift: number }>();
 </script>
 
 <figure>
+	<input type="submit" hidden />
 	<Image class="image" src={data.publicUrl} alt={data.id} color={data.color_dominant_hsl} />
 	<menu
 		data-theme={THEMES.dark}
@@ -36,7 +31,6 @@
 	>
 		<Tooltip message="Supprimer" place="top">
 			<Button
-				rounded
 				equi
 				type="submit"
 				variant="danger"
@@ -46,23 +40,23 @@
 				<Icon name="trash" />
 			</Button>
 		</Tooltip>
-		<Tooltip message="Avancer" place="top">
-			<Button
-				rounded
-				equi
-				style="margin-left: auto;"
-				class="menu-button"
-				on:pointerdown={() => dispatch('forward')}
-			>
-				<Icon name="arrow-left" />
-			</Button>
-		</Tooltip>
+		<ButtonGroup>
+			<Tooltip message="Avancer" place="top">
+				<Button equi class="menu-button" on:pointerdown={() => dispatch('shift', -1)}>
+					<Icon name="arrow-left" />
+				</Button>
+			</Tooltip>
+			<Tooltip message="Reculer" place="top">
+				<Button equi on:pointerdown={() => dispatch('shift', 1)} class="menu-button">
+					<Icon name="arrow-right" />
+				</Button>
+			</Tooltip>
+		</ButtonGroup>
 		<Tooltip
 			message={banner_id === data.id ? 'Retirer de la bannière' : 'Définir comme bannière'}
 			place="top"
 		>
 			<Button
-				rounded
 				equi
 				type="submit"
 				class="menu-button"
@@ -74,16 +68,11 @@
 				<Icon name="bookmark" />
 			</Button>
 		</Tooltip>
-		<Tooltip message="Reculer" place="top">
-			<Button rounded equi on:pointerdown={() => dispatch('backward')} class="menu-button">
-				<Icon name="arrow-right" />
-			</Button>
-		</Tooltip>
 	</menu>
 	<fieldset>
 		<input type="hidden" name="gallery[{i}].id" readonly value={data.id} />
 		<input type="hidden" name="gallery[{i}].name" readonly value={data.name} />
-		<Field variant="outlined" name="gallery[{i}].title" bind:value={data.title}>
+		<Field variant="outlined" name="gallery[{i}].title" bind:value={data.title} tabindex={0}>
 			<svelte:fragment slot="label">Titre</svelte:fragment>
 		</Field>
 		<TextArea
@@ -91,6 +80,12 @@
 			name="gallery[{i}].description"
 			variant="outlined"
 			bind:value={data.description}
+			on:keypress={(e) => {
+				if (e.key === KEY.Enter) {
+					e.preventDefault();
+					if (e.target instanceof HTMLElement) e.target.closest('form')?.requestSubmit();
+				}
+			}}
 		>
 			<svelte:fragment slot="label">Description</svelte:fragment>
 		</TextArea>
@@ -122,6 +117,7 @@
 		position: absolute;
 		grid-area: image;
 		align-self: flex-end;
+		justify-content: space-between;
 		width: 100%;
 		gap: 3px;
 		display: flex;

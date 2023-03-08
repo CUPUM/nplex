@@ -1,13 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Ripple from '$components/Ripple.svelte';
+	import { UnbasedURL } from '$utils/url';
 
 	export let href: string | undefined = undefined;
 	export let element: keyof HTMLElementTagNameMap | undefined = undefined;
 	export let variant: 'default' | 'cta' | 'outlined' = 'default';
 	export let current: boolean | undefined | 'auto' = 'auto';
 
-	$: computedCurrent = (current === 'auto' && href && $page.url.pathname === href) || undefined;
+	$: hrefUrl = href ? new UnbasedURL(href) : undefined;
+
+	$: computedCurrent =
+		(current === 'auto' && hrefUrl && $page.url.pathname === hrefUrl.pathname) || undefined;
 </script>
 
 <svelte:element
@@ -58,7 +62,7 @@
 		&[data-current] {
 			cursor: default;
 			color: col(primary, 500);
-			border-color: col(primary, 500, 0.5);
+			border-color: col(primary, 700, 0.5);
 		}
 
 		&:hover:not([data-current]) {

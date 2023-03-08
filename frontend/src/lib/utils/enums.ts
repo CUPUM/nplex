@@ -77,6 +77,7 @@ export const ALIGNMENTS = {
 	Start: 'start',
 	Center: 'center',
 	End: 'end',
+	Stretch: 'stretch',
 } as const;
 export type Position = ValueOf<typeof ALIGNMENTS>;
 
@@ -442,11 +443,11 @@ export const STATUS_CODES = {
 /**
  * Dictionnary of db rest api error messages and their translated counterpart.
  */
-export const ERROR_MESSAGE = {
+export const DB_ERROR_MESSAGE = {
 	'Invalid login credentials': 'Les identifiants utilisés ne sont pas valides.',
-};
+} as Record<string | number, string>;
 
-export const ERROR_CODE_STATUS = {} as const;
+export const DB_ERROR_CODE_STATUS = {} as const;
 
 /**
  * List of CSS cursor values.
