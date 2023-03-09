@@ -13,12 +13,13 @@
 	a {
 		display: flex;
 		aspect-ratio: 1;
-		align-items: center;
-		padding: 2rem;
+		align-items: flex-end;
+		padding: 2.5rem 3rem;
 		color: col(primary, 500);
 		background-color: col(primary, 100, 0.1);
 		font-weight: 500;
-		font-size: var(--ui-text-lg);
+		line-height: 1.2;
+		font-size: var(--ui-text-xl);
 		border-radius: var(--ui-radius-lg);
 		transition: all 0.1s ease-out;
 

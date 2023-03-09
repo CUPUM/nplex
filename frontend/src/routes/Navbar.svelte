@@ -141,7 +141,7 @@
 	});
 </script>
 
-<header data-theme={$navbarTheme ? THEMES[$navbarTheme] : undefined} style:--nav-bg={navbg}>
+<header data-theme={$navbarTheme ? THEMES[$navbarTheme] : undefined} style:--navbar-bg={navbg}>
 	<menu class="toggle">
 		<NavbarButton rounded on:pointerdown={toggle}>
 			<Icon name={open ? 'cross' : 'hamburger'} strokeWidth={3} />
@@ -214,7 +214,8 @@
 
 <style lang="scss">
 	header {
-		--nav-bg: var(--color-bg-100);
+		--navbar-bg: var(--color-bg-100);
+		--navbar-transition: 0.25s ease;
 		pointer-events: none;
 		position: sticky;
 		display: flex;
@@ -307,8 +308,7 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 2px;
-		transition: transform 0.25s cubic-bezier(0, 0, 0, 1) var(--d), opacity 0.25s ease-out var(--d),
-			background 0.2s ease;
+		transition: transform 0.25s cubic-bezier(0, 0, 0, 1) var(--d), opacity 0.25s ease-out var(--d);
 
 		@include tablet {
 			flex-direction: column;
@@ -329,6 +329,7 @@
 	}
 
 	section[hidden] {
+		// --d: 0s;
 		transition-delay: 0s;
 	}
 
@@ -347,8 +348,6 @@
 		padding: var(--inset);
 		border-radius: var(--radius);
 		backdrop-filter: blur(8px);
-		// border-radius: calc(var(--outset) + var(--radius));
-		// margin-block: calc(-1 * var(--outset));
 
 		@include tablet {
 			--outset: 0px;
@@ -362,18 +361,19 @@
 			position: absolute;
 			inset: 0;
 			border-radius: inherit;
-			background: var(--nav-bg);
-			opacity: 0.5;
-			filter: brightness(100%);
-			border: 1px solid var(--nab-bg);
-			transition: opacity 0.25s, border 0.25s;
-		}
+			background: var(--navbar-bg);
+			opacity: 0.8;
+			border: var(--ui-border-thickness) solid var(--nab-bg);
+			filter: brightness(1.5);
+			transition: opacity 0.25s, background var(--navbar-transition),
+				filter var(--navbar-transition);
 
-		:global([data-theme='light']) & {
-			background: col(bg, 000, 0.5);
-		}
-		:global([data-theme='dark']) & {
-			background: col(bg, 700, 0.8);
+			// :global([data-theme='light']) & {
+			// 	filter: brightness(2);
+			// }
+			// :global([data-theme='dark']) & {
+			// 	filter: brightness(1.5);
+			// }
 		}
 	}
 
@@ -385,7 +385,6 @@
 
 	.logo {
 		position: relative;
-		// top: -0.1em;
 		height: 1em;
 	}
 </style>

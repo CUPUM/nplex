@@ -2,11 +2,13 @@
 	import Breadcrumbs from '$components/Breadcrumbs/Breadcrumbs.svelte';
 	import BreadcrumbsItem from '$components/Breadcrumbs/BreadcrumbsItem.svelte';
 	import BreadcrumbsSeparator from '$components/Breadcrumbs/BreadcrumbsSeparator.svelte';
+	import { cubicOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 
 	export let crumbs: { title: string; pathname: string }[];
 </script>
 
-<div>
+<div in:fly={{ y: 6, duration: 350, easing: cubicOut, delay: 150 }}>
 	<Breadcrumbs>
 		{#each crumbs as crumb, i}
 			<BreadcrumbsItem href={crumb.pathname}>{crumb.title}</BreadcrumbsItem>

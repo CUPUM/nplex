@@ -120,6 +120,7 @@
 			clearInvalid();
 		}, 5000);
 	}
+	$: computedPlaceholder = placeholder ? placeholder + (required ? ' *' : '') : undefined;
 
 	const _type = writable<InputType>(type);
 	$: type = $_type;
@@ -262,7 +263,7 @@
 			{id}
 			{type}
 			{name}
-			{placeholder}
+			placeholder={computedPlaceholder}
 			{value}
 			{maxlength}
 			{minlength}

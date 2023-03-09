@@ -1,3 +1,29 @@
+@use 'sass:map';
+@import '../vars/typography.scss';
+
+/**
+ * Helpers to scope styles with breakpoints.
+ * Defined with max-width as the app is designed desktop-first.
+ */
+@mixin mobile {
+	@media (max-width: 480px) {
+		@content;
+	}
+}
+@mixin tablet {
+	@media (max-width: 1024px) {
+		@content;
+	}
+}
+@mixin laptop {
+	@media (max-width: 1200px) {
+		@content;
+	}
+}
+
+/**
+ * Add a press animation on
+ */
 @mixin focus-press {
 	&:focus,
 	&:focus-within {
@@ -5,14 +31,46 @@
 	}
 }
 
+/**
+ * Hide native scrollbar.
+ */
 @mixin no-scrollbar {
 	--scroll-size: 0px;
 	--scroll-color: transparent;
 	scrollbar-width: none;
 }
 
-@mixin loading-skeleton($color: var(--loading-skeleton-color, #{rgb(var(--rgb-fg-500), 0.05)})) {
+/**
+ * Create a pulsing skeleton effect for loading content.
+ */
+@mixin skeleton-pulse($color: var(--loading-skeleton-color, #{rgb(var(--rgb-fg-500), 0.05)})) {
 	background: linear-gradient(-90deg, $color 0%, transparent 50%, $color 100%);
 	background-size: 400% 100%;
 	animation: ui-skeleton-pulse 1.25s ease-in-out infinite;
+}
+
+/**
+ * Typography mixins used as source for other derived typography styles (base and components).
+ * - @mixin _typography is a private mixin used to reduce verbosity of the public mixin
+ * - @mixin typography is a public mixin to generate breakpointed typography styles
+ */
+@mixin _typography($properties) {
+	@if type-of($properties) == 'map' {
+		font-size: map.get($properties, 'size');
+		font-weight: map.get($properties, 'weight');
+		line-height: map.get($properties, 'line');
+		letter-spacing: map.get($properties, 'letter');
+	}
+}
+@mixin typography($level, $size) {
+	$properties: map.get($typography-system, $level, $size);
+	@include _typography($properties);
+	@include tablet {
+		$tablet: map.get($properties, 'tablet');
+		@include _typography($tablet);
+	}
+	@include mobile {
+		$mobile: map.get($properties, 'mobile');
+		@include _typography($mobile);
+	}
 }

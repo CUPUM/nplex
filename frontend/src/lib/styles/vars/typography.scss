@@ -1,0 +1,97 @@
+/**
+ * Typography system map
+ */
+$typography-system: (
+	heading: (
+		2xl: (
+			size: var(--ui-text-4xl),
+			weight: 500,
+			line: 1em,
+			letter: -1px,
+			tablet: (),
+			mobile: (),
+		),
+		xl: (
+			size: var(--ui-text-3xl),
+			weight: 500,
+			line: 1.05em,
+			letter: -0.8px,
+			tablet: (),
+			mobile: (),
+		),
+		lg: (
+			size: var(--ui-text-2xl),
+			weight: 525,
+			line: 1.12em,
+			letter: -0.4px,
+			tablet: (),
+			mobile: (),
+		),
+		md: (
+			size: var(--ui-text-xl),
+			weight: 550,
+			line: 1.2em,
+			letter: -0.2px,
+			tablet: (),
+			mobile: (),
+		),
+		sm: (
+			size: var(--ui-text-lg),
+			weight: 600,
+			line: 1.23em,
+			letter: -0.1px,
+			tablet: (),
+			mobile: (),
+		),
+		xs: (
+			size: var(--ui-text-md),
+			weight: 625,
+			line: 1.3em,
+			letter: 0px,
+			tablet: (),
+			mobile: (),
+		),
+	),
+	text: (
+		xl: (
+			size: var(--ui-text-xl),
+			weight: 275,
+			line: 1.15em,
+			letter: -0.5px,
+			tablet: (),
+			mobile: (),
+		),
+		lg: (
+			size: var(--ui-text-lg),
+			weight: 300,
+			line: 1.2em,
+			letter: -0.25px,
+			tablet: (),
+			mobile: (),
+		),
+		md: (
+			size: var(--ui-text-md),
+			weight: 350,
+			line: 1.25em,
+			letter: 0px,
+			tablet: (),
+			mobile: (),
+		),
+		sm: (
+			size: var(--ui-text-sm),
+			weight: 375,
+			line: 1.28em,
+			letter: 0.1px,
+			tablet: (),
+			mobile: (),
+		),
+		xs: (
+			size: var(--ui-text-xs),
+			weight: 400,
+			line: 1.32em,
+			letter: 0.2px,
+			tablet: (),
+			mobile: (),
+		),
+	),
+);

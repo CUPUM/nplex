@@ -1,4 +1,4 @@
-@use 'utils' as *;
+@use '../utils' as *;
 
 /**
  * These variables, prefixed with "--ui-", contain the default values and should never be reassigned.
@@ -39,6 +39,7 @@
 	--ui-text-xl: 2.5rem;
 	--ui-text-2xl: 3.75rem;
 	--ui-text-3xl: 5.5rem;
+	--ui-text-4xl: 7.5rem;
 	--ui-pad-inline: 1.35em;
 	--ui-pad-outer: 3rem;
 	--ui-border-thickness: 1px;

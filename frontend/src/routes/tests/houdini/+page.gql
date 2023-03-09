@@ -1,5 +1,0 @@
-query Works {
-	works: projectWorkCollection {
-		title
-	}
-}

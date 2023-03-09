@@ -7,7 +7,7 @@ import type { PageLoad } from './$types';
 export const load = (async (event) => {
 	const db = await getDb(event);
 
-	const indicators = db
+	const metaIndicators = db
 		.from('project_exemplarity_indicator_category')
 		.select(
 			`
@@ -33,6 +33,6 @@ export const load = (async (event) => {
 		});
 
 	return {
-		indicators,
+		metaIndicators,
 	};
 }) satisfies PageLoad;

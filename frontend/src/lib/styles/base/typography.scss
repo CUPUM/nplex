@@ -1,0 +1,32 @@
+@use '../utils' as *;
+
+::selection {
+	background: col(primary, 500);
+	color: col(fg, 500);
+}
+
+kbd {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding-inline: 0.5em;
+	height: 2em;
+	border-radius: 0.5em;
+	border: 1px solid col(fg, 500, 0.1);
+}
+
+p {
+	max-width: 50ch;
+}
+
+.info {
+	opacity: 0.35;
+}
+
+@each $level, $sizes in $typography-system {
+	@each $size, $properties in $sizes {
+		.#{$level}-#{$size} {
+			@include typography($level, $size);
+		}
+	}
+}

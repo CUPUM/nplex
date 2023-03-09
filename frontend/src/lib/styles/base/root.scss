@@ -1,0 +1,75 @@
+@use '../utils' as *;
+
+:root {
+	@include typography('text', 'md');
+	position: relative;
+	background: var(--ui-bg);
+	font-family: var(--ui-font-main);
+	color: col(fg, 500);
+	padding: 0;
+	margin: 0;
+	accent-color: col(primary, 500);
+	overflow-x: hidden;
+	overflow-y: scroll;
+	scroll-snap-type: y proximity;
+	// scroll-behavior: smooth; // Re-enable if no overlayscrollbars.
+
+	&[data-lock-scroll]:not([data-lock-scroll*='nav']) {
+		overflow-y: hidden;
+		// padding-right: var(--ui-scroll-size); // Re-enable if no overlayscrollbars.
+	}
+
+	@include tablet {
+		&[data-lock-scroll] {
+			overflow-y: hidden;
+			// padding-right: 0; // Re-enable if no overlayscrollbars.
+		}
+	}
+
+	&::-webkit-scrollbar {
+		width: var(--ui-scroll-size);
+		height: var(--ui-scroll-size);
+
+		&-track {
+			background: transparent;
+			// background: var(--ui-bg);
+		}
+
+		&-thumb {
+			border-radius: 3px;
+			background: col(fg, 100);
+		}
+
+		&-thumb:hover {
+			background: col(fg, 900);
+		}
+	}
+}
+
+body {
+	// Background also set here so :root can have a different bg specific to overscroll.
+	background: var(--ui-bg);
+	position: relative;
+	min-height: 100vh;
+	padding: 0;
+	margin: 0;
+	transition: inherit;
+
+	::-webkit-scrollbar {
+		width: var(--scroll-size, var(--ui-scroll-size));
+		height: var(--scroll-size, var(--ui-scroll-size));
+
+		&-track {
+			background: transparent;
+		}
+
+		&-thumb {
+			border-radius: 3px;
+			background: col(fg, 500, 0.25);
+		}
+
+		&-thumb:hover {
+			background: var(--scroll-color, var(--ui-scroll-color));
+		}
+	}
+}

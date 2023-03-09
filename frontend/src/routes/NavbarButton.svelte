@@ -50,16 +50,10 @@
 		border-radius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
 		letter-spacing: 0.02em;
 		line-height: 1;
-
-		&:focus-visible,
-		&:focus {
-			z-index: 1;
-		}
-
-		// Default
-
 		color: col(fg, 100);
 		backdrop-filter: blur(6px);
+		transition: color var(--navbar-transition);
+
 		&::before {
 			content: '';
 			position: absolute;
@@ -68,15 +62,15 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
-			background: var(--nav-bg);
+			background: var(--navbar-bg);
 			opacity: 0.75;
+			transition: background var(--navbar-transition), opacity var(--navbar-transition);
 		}
 		&:hover:not([data-current]) {
 			color: col(primary, 700);
 			&::before {
 				opacity: 0.25;
 				background: col(primary, 100);
-				// box-shadow: inset 0 0 0 1px col(primary, 300);
 			}
 		}
 		&.active {
@@ -90,11 +84,12 @@
 			color: col(primary, 500);
 			&::before {
 				opacity: 0.9;
-				// background: var(--nav-bg);
-				// opacity: 0.5;
-				// background: none;
-				// border: var(--ui-border-thickness) dashed col(primary, 500, 0.5);
 			}
+		}
+
+		&:focus-visible,
+		&:focus {
+			z-index: 1;
 		}
 
 		// Category

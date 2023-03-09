@@ -8,11 +8,8 @@
 	import Navbar from '$routes/Navbar.svelte';
 	import ProgressBar from '$routes/ProgressBar.svelte';
 	import '$styles/app.scss';
-	import '$styles/reset.scss';
-	import '$styles/themes.css';
-	import '$styles/vars.scss';
 	import { browserDb } from '$utils/database/client';
-	import { OverlayScrollbars } from 'overlayscrollbars';
+	import { ClickScrollPlugin, OverlayScrollbars } from 'overlayscrollbars';
 	import 'overlayscrollbars/overlayscrollbars.css';
 	import type { LayoutData } from './$types';
 	import AuthModal, { authModal } from './AuthModal.svelte';
@@ -23,20 +20,20 @@
 	let scrollY = 0;
 	let rootScrollbar: OverlayScrollbars;
 
+	OverlayScrollbars.plugin(ClickScrollPlugin);
+
 	if (browser) {
+		// Init root custom scrollbar
 		rootScrollbar = OverlayScrollbars(document.body, {
+			showNativeOverlaidScrollbars: true,
 			paddingAbsolute: false,
-			overflow: {
-				x: 'hidden',
-				y: 'scroll',
-			},
 			scrollbars: {
-				theme: 'os-theme-dark',
+				theme: 'nplex-scroll-theme',
 				visibility: 'auto',
 				autoHide: 'move',
 				autoHideDelay: 1500,
 				dragScroll: true,
-				clickScroll: false,
+				clickScroll: true,
 				pointers: ['mouse', 'touch', 'pen'],
 			},
 		});
@@ -48,7 +45,9 @@
 	}
 
 	// Catch and dispatch acion error messages.
-	$: if ($page.form?.errorMessages?.length) messages.error(...$page.form.errorMessages);
+	$: if ($page.form?.errorMessages?.length) {
+		messages.error(...$page.form.errorMessages);
+	}
 
 	beforeNavigate((navigation) => {
 		if (navigation.from?.route.id !== navigation.to?.route.id) {
