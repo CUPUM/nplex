@@ -82,7 +82,7 @@
 		fill: col(fg, 700);
 		object-fit: contain;
 		max-width: var(--ui-width-main);
-		padding: var(--ui-pad-outer);
+		padding: 3rem;
 	}
 
 	button {
