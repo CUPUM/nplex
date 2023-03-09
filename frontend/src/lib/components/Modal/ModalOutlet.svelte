@@ -25,9 +25,12 @@
 		height: 100%;
 		width: 100vw;
 		padding: 12rem;
+		overflow-y: scroll;
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		z-index: 1000;
 
 		@include tablet {
 			// padding: 6rem;

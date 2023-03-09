@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Field from '$components/Field/Field.svelte';
+	import Modal from '$components/Modal/Modal.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData['metaIndicators'][number]['indicators'][number];
@@ -12,15 +13,11 @@
 	<Field variant="outlined" placeholder="Titre court" required bind:value={data.label} />
 	<Field variant="outlined" placeholder="Description" bind:value={data.description} />
 </fieldset>
+<Modal opened>Test</Modal>
 
 <style lang="scss">
 	fieldset {
-		display: flex;
-		flex-direction: column;
-		font-size: var(--ui-text-sm);
-		padding: 6px;
-		gap: 3px;
-		background-color: col(bg, 500);
-		border-radius: var(--ui-radius-lg);
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
 	}
 </style>

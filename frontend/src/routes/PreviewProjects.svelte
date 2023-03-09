@@ -19,7 +19,7 @@
 		action="?/projects"
 		placeholder="Chercher des projets"
 	/>
-	<ul class="no-scrollbar">
+	<ul class="noscrollbar">
 		{#each projects as p (p.id)}
 			<li>
 				<a class="card" href="{EXPLORE_ROUTES.projects.pathname}/{p.id}">

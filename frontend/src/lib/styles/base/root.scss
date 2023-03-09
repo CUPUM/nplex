@@ -12,38 +12,6 @@
 	overflow-x: hidden;
 	overflow-y: scroll;
 	scroll-snap-type: y proximity;
-	// scroll-behavior: smooth; // Re-enable if no overlayscrollbars.
-
-	&[data-lock-scroll]:not([data-lock-scroll*='nav']) {
-		overflow-y: hidden;
-		// padding-right: var(--ui-scroll-size); // Re-enable if no overlayscrollbars.
-	}
-
-	@include tablet {
-		&[data-lock-scroll] {
-			overflow-y: hidden;
-			// padding-right: 0; // Re-enable if no overlayscrollbars.
-		}
-	}
-
-	&::-webkit-scrollbar {
-		width: var(--ui-scroll-size);
-		height: var(--ui-scroll-size);
-
-		&-track {
-			background: transparent;
-			// background: var(--ui-bg);
-		}
-
-		&-thumb {
-			border-radius: 3px;
-			background: col(fg, 100);
-		}
-
-		&-thumb:hover {
-			background: col(fg, 900);
-		}
-	}
 }
 
 body {

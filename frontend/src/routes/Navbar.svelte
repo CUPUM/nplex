@@ -98,7 +98,8 @@
 	import Icon from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
-	import { rootScroll } from '$stores/scroll';
+	import { media } from '$stores/media';
+	import { rootScroll } from '$stores/rootScroll';
 	import { debounce } from '$utils/modifiers';
 	import { EDITOR_BASE_ROUTE, EXPLORE_ROUTES, MAIN_ROUTES, USER_BASE_ROUTE } from '$utils/routes';
 	import { writableLedger } from '$utils/store';
@@ -112,8 +113,8 @@
 	import { rootBackground } from './RootBackground.svelte';
 
 	/**
-	 * Key used as data-lock-scroll value for targeted behavior. Important: keep in sync with app.scss
-	 * [data-lock-scroll] selector.
+	 * Key used as data-scroll-lock value for targeted behavior. Important: keep in sync with app.scss
+	 * [data-scroll-lock] selector.
 	 */
 	const key = Symbol('nav');
 
@@ -126,14 +127,10 @@
 
 	$: rootSegment = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
 	$: navbg = $navbarBackground ?? $rootBackground.body ?? null;
-
-	function toggle() {
-		open = !open;
-		if (open) {
-			rootScroll.lock(key);
-		} else {
-			rootScroll.unlock(key);
-		}
+	$: if (($media.tablet || $media.mobile) && open) {
+		rootScroll.lock(key);
+	} else {
+		rootScroll.unlock(key);
 	}
 
 	onMount(() => {
@@ -143,7 +140,7 @@
 
 <header data-theme={$navbarTheme ? THEMES[$navbarTheme] : undefined} style:--navbar-bg={navbg}>
 	<menu class="toggle">
-		<NavbarButton rounded on:pointerdown={toggle}>
+		<NavbarButton equi rounded on:pointerdown={() => (open = !open)}>
 			<Icon name={open ? 'cross' : 'hamburger'} strokeWidth={3} />
 		</NavbarButton>
 	</menu>

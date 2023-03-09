@@ -6,7 +6,7 @@
 </script>
 
 <header in:fly={{ y: 12, easing: cubicOut, duration: 350 }}>
-	<h1>Gérez les listes contrôlées des descripteurs de projet</h1>
+	<h1 class="heading-xl">Gérez les listes contrôlées des descripteurs de projet</h1>
 </header>
 <ul>
 	{#each Object.values(PROJECT_DESCRIPTORS_EDITOR_ROUTES) as route, i}
@@ -24,24 +24,21 @@
 		justify-content: flex-end;
 		padding: var(--ui-pad-outer);
 		margin-bottom: 1.5rem;
-		background-color: col(primary, 100, 0.2);
+		background-color: col(primary, 100, 0.25);
 		border-radius: var(--ui-radius-lg);
-		font-size: var(--ui-text-3xl);
-		font-weight: 500;
-		line-height: 1.2;
 		opacity: max(0, calc(1 - var(--ui-scroll) * 0.002));
-		color: transparent;
-		-webkit-text-stroke: 1px col(primary, 500);
 	}
 
 	h1 {
+		color: transparent;
 		max-width: var(--ui-width-md);
+		-webkit-text-stroke: 1px col(primary, 700);
 	}
 
 	ul {
 		position: relative;
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 		gap: 1.5rem;
 	}
 </style>

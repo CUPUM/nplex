@@ -16,7 +16,7 @@
 
 <svelte:element
 	this={href ? 'a' : element ? element : 'button'}
-	class="ui-sidebar-button focus-press {variant}"
+	class="ui-sidebar-button focuspress {variant}"
 	{href}
 	data-current={current === 'auto' ? computedCurrent : current || undefined}
 >

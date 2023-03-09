@@ -9,7 +9,7 @@
 	export let variant: Variant = VARIANTS.Default;
 </script>
 
-<nav class="breadcrumbs {variant} no-scrollbar">
+<nav class="breadcrumbs {variant} noscrollbar">
 	<OverflowEffect>
 		<div class="breadcrumbs-inner">
 			<slot />

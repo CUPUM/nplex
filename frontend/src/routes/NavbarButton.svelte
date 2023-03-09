@@ -135,6 +135,7 @@
 	}
 
 	.equi {
+		flex: none;
 		aspect-ratio: 1;
 		padding: 0;
 	}

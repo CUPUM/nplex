@@ -6,7 +6,7 @@
 <script lang="ts" context="module">
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-	import { rootScroll } from '$stores/scroll';
+	import { rootScroll } from '$stores/rootScroll';
 	import { SEARCH_PARAMS } from '$utils/enums';
 	import { derived, get } from 'svelte/store';
 
@@ -239,7 +239,7 @@
 					class="small-button"
 					variant={$authModal === AUTHMODAL_MODE.SignUp ? 'cta' : 'default'}
 					type={$authModal === AUTHMODAL_MODE.SignUp ? 'submit' : 'button'}
-					noscroll
+					data-sveltekit-noscroll
 					href={$authModal === AUTHMODAL_MODE.SignIn
 						? authModal
 								.getUrl({ url: $page.url, open: true, mode: AUTHMODAL_MODE.SignUp })

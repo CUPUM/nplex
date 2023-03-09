@@ -52,7 +52,7 @@
 	--os-handle-interactive-area-offset: 0;
 }
 
-[data-lock-scroll]:not([data-lock-scroll*='nav']) > * > .os-scrollbar {
+[data-scroll-lock]:not([data-scroll-lock*='nav']) > * > .os-scrollbar {
 	overflow-y: hidden;
 	opacity: 0;
 	z-index: -1;
@@ -60,7 +60,7 @@
 }
 
 @include tablet {
-	[data-lock-scroll] > * > .os-scrollbar {
+	[data-scroll-lock] > * > .os-scrollbar {
 		overflow-y: hidden;
 		opacity: 0;
 		z-index: -1;

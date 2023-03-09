@@ -9,7 +9,7 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import Portal from '$components/Portal.svelte';
-	import { rootScroll } from '$stores/scroll';
+	import { rootScroll } from '$stores/rootScroll';
 	import { unsafeUid } from '$utils/random';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fade, fly, scale } from 'svelte/transition';
@@ -77,6 +77,7 @@
 	dialog {
 		pointer-events: all;
 		position: relative;
+		flex: none;
 		display: flex;
 		flex-direction: column;
 		background: col(bg, 300);

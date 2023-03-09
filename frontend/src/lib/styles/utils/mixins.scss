@@ -6,17 +6,22 @@
  * Defined with max-width as the app is designed desktop-first.
  */
 @mixin mobile {
-	@media (max-width: 480px) {
+	@media screen and (max-width: 640px) {
 		@content;
 	}
 }
 @mixin tablet {
-	@media (max-width: 1024px) {
+	@media screen and (max-width: 1024px) {
 		@content;
 	}
 }
 @mixin laptop {
-	@media (max-width: 1200px) {
+	@media screen and (max-width: 1200px) {
+		@content;
+	}
+}
+@mixin desktop {
+	@media screen and (min-width: 1201px) {
 		@content;
 	}
 }
@@ -24,7 +29,7 @@
 /**
  * Add a press animation on
  */
-@mixin focus-press {
+@mixin focuspress {
 	&:focus,
 	&:focus-within {
 		animation: press 0.2s var(--ui-ease-out);
@@ -34,7 +39,7 @@
 /**
  * Hide native scrollbar.
  */
-@mixin no-scrollbar {
+@mixin noscrollbar {
 	--scroll-size: 0px;
 	--scroll-color: transparent;
 	scrollbar-width: none;

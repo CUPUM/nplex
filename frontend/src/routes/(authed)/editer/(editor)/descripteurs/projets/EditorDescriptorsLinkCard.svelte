@@ -11,9 +11,10 @@
 
 <style lang="scss">
 	a {
+		position: relative;
 		display: flex;
 		aspect-ratio: 1;
-		align-items: flex-end;
+		align-items: flex-start;
 		padding: 2.5rem 3rem;
 		color: col(primary, 500);
 		background-color: col(primary, 100, 0.1);

@@ -106,7 +106,7 @@
 			</Switch>
 		</form>
 	</header>
-	<ul class:none={filtered.length === 1} class="no-scrollbar">
+	<ul class:none={filtered.length === 1} class="noscrollbar">
 		{#each filtered as datum, i (datum.id)}
 			<li
 				animate:flip={{ duration: (d) => d * 0.5, easing: expoOut, delay: i * 50 }}

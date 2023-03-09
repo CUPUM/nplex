@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Map from '$components/Map/Map.svelte';
 	import { navbarWidth, NAVBAR_WIDTH } from '$routes/Navbar.svelte';
-	import { rootScroll } from '$stores/scroll';
+	import { rootScroll } from '$stores/rootScroll';
 	import tonerLight from '$utils/map/styles/tonerLight';
 	import { onDestroy, onMount } from 'svelte';
 	import type { PageData } from './$types';

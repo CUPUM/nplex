@@ -7,9 +7,9 @@
 	import MessagesOutlet, { messages } from '$routes/MessagesOutlet.svelte';
 	import Navbar from '$routes/Navbar.svelte';
 	import ProgressBar from '$routes/ProgressBar.svelte';
+	import { rootScroll } from '$stores/rootScroll';
 	import '$styles/app.scss';
 	import { browserDb } from '$utils/database/client';
-	import { ClickScrollPlugin, OverlayScrollbars } from 'overlayscrollbars';
 	import 'overlayscrollbars/overlayscrollbars.css';
 	import type { LayoutData } from './$types';
 	import AuthModal, { authModal } from './AuthModal.svelte';
@@ -18,25 +18,9 @@
 	export let data: LayoutData;
 
 	let scrollY = 0;
-	let rootScrollbar: OverlayScrollbars;
-
-	OverlayScrollbars.plugin(ClickScrollPlugin);
 
 	if (browser) {
-		// Init root custom scrollbar
-		rootScrollbar = OverlayScrollbars(document.body, {
-			showNativeOverlaidScrollbars: true,
-			paddingAbsolute: false,
-			scrollbars: {
-				theme: 'nplex-scroll-theme',
-				visibility: 'auto',
-				autoHide: 'move',
-				autoHideDelay: 1500,
-				dragScroll: true,
-				clickScroll: true,
-				pointers: ['mouse', 'touch', 'pen'],
-			},
-		});
+		rootScroll.init();
 		if (data.session) {
 			// Initialize the client-side db auth based on the session extracted from cookies, if any.
 			browserDb.auth.setSession(data.session);

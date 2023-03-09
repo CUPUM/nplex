@@ -97,7 +97,7 @@
 
 <div class="container">
 	<div
-		class="scroll no-scrollbar"
+		class="scroll noscrollbar"
 		style:overflow-x={typeof x === 'string' ? x : x ? 'auto' : undefined}
 		style:overflow-y={typeof y === 'string' ? y : y ? 'auto' : undefined}
 		bind:this={scrollRef}
