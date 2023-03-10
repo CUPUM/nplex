@@ -8,9 +8,8 @@
 	import Select from '$components/Select/Select.svelte';
 	import TextArea from '$components/TextArea.svelte';
 	import { LOAD_DEPENDENCIES } from '$utils/enums';
-	import type { PageData } from './$types';
 
-	export let data: PageData;
+	export let data;
 </script>
 
 <h2>Général</h2>

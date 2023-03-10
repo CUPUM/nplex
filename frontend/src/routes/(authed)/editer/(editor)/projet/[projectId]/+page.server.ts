@@ -4,7 +4,6 @@ import { toPgArr } from '$utils/format';
 import { error, fail } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';
 import { EDITOR_FORM_ACTION } from '../../common';
-import type { Actions } from './$types';
 import {
 	costRangeSchema,
 	descriptionSchema,
@@ -13,7 +12,7 @@ import {
 	workIdsSchema,
 } from './common';
 
-export const actions: Actions = {
+export const actions = {
 	/**
 	 * Update full project and related tables.
 	 */

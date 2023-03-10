@@ -2,9 +2,8 @@ import { getDb } from '$utils/database/client';
 import { LOAD_DEPENDENCIES, STATUS_CODES } from '$utils/enums';
 import { pagination } from '$utils/format';
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
 
-export const load = (async (event) => {
+export const load = async (event) => {
 	event.depends(LOAD_DEPENDENCIES.SESSION);
 
 	const db = await getDb(event);
@@ -63,4 +62,4 @@ export const load = (async (event) => {
 		organisations,
 		actors,
 	};
-}) satisfies PageLoad;
+};

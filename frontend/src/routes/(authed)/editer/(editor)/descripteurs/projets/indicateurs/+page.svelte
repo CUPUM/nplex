@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Dirty from '$components/Dirty.svelte';
+	import DragndropContext from '$components/Dragndrop/DragndropContext.svelte';
 	import { fly } from 'svelte/transition';
 	import { editorDirtyValues, EDITOR_FORM_ID } from '../../../common';
 	import type { PageData } from './$types';
 	import IndicatorCard from './IndicatorCard.svelte';
 
-	export let data: PageData;
+	export let data;
 
 	let formMetaIndicators: PageData['metaIndicators'];
 	function syncDown() {
@@ -27,7 +28,7 @@
 <form action={EDITOR_FORM_ID} method="POST" use:enhance>
 	<header>
 		<h2 class="heading-xl">Indicateurs d'exemplarité</h2>
-		<p class="ui-info">
+		<p class="info">
 			Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro eligendi expedita distinctio
 			aliquam possimus asperiores neque sed accusamus voluptatum dolore?
 		</p>
@@ -35,14 +36,19 @@
 	{#each formMetaIndicators as metaIndicator, i0}
 		<section>
 			<h3 class="heading-md">{metaIndicator.title}</h3>
-			<p class="ui-info">{metaIndicator.description || 'Description à venir...'}</p>
-			<ul>
-				{#each metaIndicator.indicators as indicator, i1 (indicator.id)}
-					<li in:fly={{ y: -6, duration: 350, delay: 100 * i1 }}>
-						<IndicatorCard bind:data={indicator} i={i1} />
-					</li>
-				{/each}
-			</ul>
+			<p class="info">{metaIndicator.description || 'Description à venir...'}</p>
+			<DragndropContext bind:items={metaIndicator.indicators} let:dragndropZone let:dragndropItem>
+				<ul use:dragndropZone>
+					{#each metaIndicator.indicators as indicator, i1 (indicator.id)}
+						<li
+							use:dragndropItem={{ item: indicator }}
+							in:fly={{ y: -6, duration: 350, delay: 100 * i1 }}
+						>
+							<IndicatorCard metaId={metaIndicator.id} bind:data={indicator} i={i1} />
+						</li>
+					{/each}
+				</ul>
+			</DragndropContext>
 		</section>
 	{/each}
 </form>
@@ -51,7 +57,7 @@
 	form {
 		display: flex;
 		flex-direction: column;
-		gap: 3rem;
+		gap: 0.5rem;
 	}
 
 	header {
@@ -62,27 +68,13 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
-		border-bottom: var(--ui-border-thickness) dashed col(fg, 100, 0.2);
-		padding-bottom: 3rem;
-
-		&::after {
-			content: '';
-			width: 100%;
-			height: 12px;
-			position: absolute;
-			bottom: 0;
-			transform: translateY(50%);
-			border-inline: var(--ui-border-thickness) dashed col(fg, 100, 0.2);
-		}
-	}
-
-	h3 {
-		padding-left: 3rem;
-		border-left: var(--ui-border-thickness) dashed col(fg, 100, 0.2);
+		padding: 3rem;
+		background-color: col(bg, 500);
+		border-radius: var(--ui-radius-lg);
 	}
 
 	ul {
+		margin-top: 1.5rem;
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 		gap: 1.5rem;

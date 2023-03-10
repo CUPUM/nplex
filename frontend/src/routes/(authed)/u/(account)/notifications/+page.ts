@@ -2,9 +2,8 @@ import { maybeSingle } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
 
-export const load = (async (event) => {
+export const load = async (event) => {
 	const db = await getDb(event);
 	const notifications = db
 		.from('users_notifications')
@@ -30,4 +29,4 @@ export const load = (async (event) => {
 	return {
 		notifications,
 	};
-}) satisfies PageLoad;
+};

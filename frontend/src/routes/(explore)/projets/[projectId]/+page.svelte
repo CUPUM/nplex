@@ -1,11 +1,10 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	// import ProjectGallery from '$components/complexes/ProjectGallery.svelte';
 	// import ProjectHeader from '$components/complexes/ProjectHeader.svelte';
 	// import ProjectTimeline from '$components/complexes/ProjectTimeline.svelte';
 	import { reveal, slipMask } from '$actions/reveal';
 
-	export let data: PageData;
+	export let data;
 </script>
 
 <article>

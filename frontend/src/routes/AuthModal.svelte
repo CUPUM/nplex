@@ -179,7 +179,7 @@
 					variant="default"
 					name="email"
 					required
-					invalid={!!failure.email}
+					warning={!!failure.email}
 				>
 					<FieldIcon name="letter" slot="leading" />
 					<svelte:fragment slot="label">Courriel</svelte:fragment>
@@ -191,7 +191,7 @@
 					variant="default"
 					name="password"
 					required
-					invalid={!!failure.password}
+					warning={!!failure.password}
 				>
 					<FieldIcon slot="leading" name="lock-close" />
 					<svelte:fragment slot="label">Mot de passe</svelte:fragment>
@@ -202,13 +202,13 @@
 				</Field>
 				{#if $authModal === AUTHMODAL_MODE.SignUp}
 					<div class="signup fill-row" transition:slide|local={{ duration: 120, easing: cubicOut }}>
-						<Field variant="default" name="first_name" required invalid={!!failure.first_name}>
+						<Field variant="default" name="first_name" required warning={!!failure.first_name}>
 							<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
 							<svelte:fragment slot="trailing">
 								<FieldReset />
 							</svelte:fragment>
 						</Field>
-						<Field variant="default" name="last_name" invalid={!!failure.last_name}>
+						<Field variant="default" name="last_name" warning={!!failure.last_name}>
 							<svelte:fragment slot="label">Nom de famille</svelte:fragment>
 							<svelte:fragment slot="trailing">
 								<FieldReset />
@@ -237,9 +237,10 @@
 				</Button>
 				<Button
 					class="small-button"
+					data-sveltekit-noscroll
+					data-sveltekit-replacestate
 					variant={$authModal === AUTHMODAL_MODE.SignUp ? 'cta' : 'default'}
 					type={$authModal === AUTHMODAL_MODE.SignUp ? 'submit' : 'button'}
-					data-sveltekit-noscroll
 					href={$authModal === AUTHMODAL_MODE.SignIn
 						? authModal
 								.getUrl({ url: $page.url, open: true, mode: AUTHMODAL_MODE.SignUp })

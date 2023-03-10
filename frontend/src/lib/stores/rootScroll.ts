@@ -7,7 +7,7 @@ OverlayScrollbars.plugin(ClickScrollPlugin);
 const DIRECTION_THRESHOLD = 20;
 const SCROLL_LOCK_ATTRIBUTE = 'data-scroll-lock';
 
-type ScrollLockKey = {} | Symbol | number | string;
+export type ScrollLockKey = {} | Symbol | number | string;
 
 interface ScrollData {
 	/**

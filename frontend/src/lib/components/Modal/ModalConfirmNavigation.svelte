@@ -66,13 +66,15 @@
 	});
 </script>
 
-<Modal opened={!!intercepted} closeOnClickoutside={false} on:clickoutside={cancel}>
-	<svelte:fragment slot="header">Sauvegarder&thinsp;?</svelte:fragment>
-	<slot {confirm} {cancel} />
-	<svelte:fragment slot="footer">
-		<slot name="footer" />
-	</svelte:fragment>
-</Modal>
+{#if !!intercepted}
+	<Modal closeOnClickoutside={false} on:clickoutside={cancel}>
+		<svelte:fragment slot="header">Sauvegarder&thinsp;?</svelte:fragment>
+		<slot {confirm} {cancel} />
+		<svelte:fragment slot="footer">
+			<slot name="footer" />
+		</svelte:fragment>
+	</Modal>
+{/if}
 
 <style lang="scss">
 	div {

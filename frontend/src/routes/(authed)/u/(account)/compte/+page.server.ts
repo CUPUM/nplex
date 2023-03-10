@@ -4,7 +4,6 @@ import { STATUS_CODES } from '$utils/enums';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import type { Actions } from './$types';
 
 const profileSchema = zfd.formData(
 	z
@@ -17,7 +16,7 @@ const profileSchema = zfd.formData(
 		.passthrough()
 );
 
-export const actions: Actions = {
+export const actions = {
 	/**
 	 * Update user profile info.
 	 */

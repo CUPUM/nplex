@@ -1,13 +1,13 @@
 <script lang="ts">
 	import type { ComponentProps } from 'svelte';
-	import type { LayoutData, Snapshot } from './$types';
+	import type { Snapshot } from './$types';
 	import { EDITOR_ROUTES } from './common';
 	import EditableActorCard from './EditableActorCard.svelte';
 	import EditableOrganizationCard from './EditableOrganizationCard.svelte';
 	import EditableProjectCard from './EditableProjectCard.svelte';
 	import EditablesList from './EditablesList.svelte';
 
-	export let data: LayoutData;
+	export let data;
 
 	let projectsFilters: ComponentProps<EditablesList<any>>['filters'] = {
 		authoring: 'all',

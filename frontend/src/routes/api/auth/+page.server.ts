@@ -4,7 +4,6 @@ import { errorMessages } from '$utils/validation';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import type { Actions, PageServerLoad } from './$types';
 import { emailSchema, setAuthCookie, type AuthFailure } from './common';
 
 // export const ssr = false;
@@ -12,15 +11,15 @@ import { emailSchema, setAuthCookie, type AuthFailure } from './common';
 /**
  * For the page.svelte to act as a simple redirect.
  */
-export const load = (async (event) => {
+export const load = async (event) => {
 	const { session } = await event.parent();
 	if (!session) {
 		console.log('No session!');
 	}
 	throw redirect(STATUS_CODES.TemporaryRedirect, '/u');
-}) satisfies PageServerLoad;
+};
 
-export const actions: Actions = {
+export const actions = {
 	/**
 	 * Sign up a new user.
 	 */

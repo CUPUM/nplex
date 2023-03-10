@@ -2,9 +2,8 @@ import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { alwaysArr } from '$utils/format';
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
 
-export const load = (async (event) => {
+export const load = async (event) => {
 	const db = await getDb(event);
 
 	const metaIndicators = db
@@ -35,4 +34,4 @@ export const load = (async (event) => {
 	return {
 		metaIndicators,
 	};
-}) satisfies PageLoad;
+};

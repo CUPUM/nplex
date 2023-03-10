@@ -3,9 +3,8 @@ import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { pagination } from '$utils/format';
 import { error } from '@sveltejs/kit';
-import type { LayoutLoad } from './$types';
 
-export const load = (async (event) => {
+export const load = async (event) => {
 	const { session } = await event.parent();
 	if (!session) {
 		throw error(STATUS_CODES.Unauthorized);
@@ -74,4 +73,4 @@ export const load = (async (event) => {
 		actors,
 		// },
 	};
-}) satisfies LayoutLoad;
+};

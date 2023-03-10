@@ -31,15 +31,6 @@
 
 <style lang="scss">
 	.layout {
-		// display: grid;
-		// grid-template-columns:
-		// 	[full-start sidebar-start]
-		// 	1fr
-		// 	[sidebar-end main-start main-primary-start]
-		// 	minmax(auto, var(--ui-width-main))
-		// 	[main-primary-end main-secondary-start]
-		// 	1fr
-		// 	[main-secondary-end main-end full-end];
 		align-self: stretch;
 		display: flex;
 		flex-direction: row;

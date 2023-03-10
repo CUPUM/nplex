@@ -41,7 +41,7 @@
 	} from '$utils/enums';
 	import { getContext, setContext } from 'svelte';
 	import type { spring } from 'svelte/motion';
-	import { writable, type Readable } from 'svelte/store';
+	import { readonly, writable, type Readable } from 'svelte/store';
 
 	export let id: string | undefined = undefined;
 	export let min: number = 0;
@@ -91,11 +91,11 @@
 	}
 
 	setContext<RangeContext>(CTX_KEY, {
-		min: { subscribe: _min.subscribe },
-		max: { subscribe: _max.subscribe },
-		step: { subscribe: _step.subscribe },
-		disabled: { subscribe: _disabled.subscribe },
-		reverse: { subscribe: _reverse.subscribe },
+		min: readonly(_min),
+		max: readonly(_max),
+		step: readonly(_step),
+		disabled: readonly(_disabled),
+		reverse: readonly(_reverse),
 		valueToPercent,
 		pxToValue,
 	});

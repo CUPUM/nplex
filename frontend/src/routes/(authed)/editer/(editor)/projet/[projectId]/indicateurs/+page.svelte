@@ -3,9 +3,8 @@
 	import Token from '$components/Token/Token.svelte';
 	import { editorDirtyValues, editorIsDirty } from '../../../common';
 	import EditorFormgroup from '../../../EditorFormgroup.svelte';
-	import type { PageData } from './$types';
 
-	export let data: PageData;
+	export let data;
 
 	let formIndicators: string[];
 	function syncDown() {

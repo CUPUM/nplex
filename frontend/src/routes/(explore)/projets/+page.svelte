@@ -4,10 +4,9 @@
 	import { rootScroll } from '$stores/rootScroll';
 	import tonerLight from '$utils/map/styles/tonerLight';
 	import { onDestroy, onMount } from 'svelte';
-	import type { PageData } from './$types';
 	import ProjectsFacets from './ProjectsFacets.svelte';
 
-	export let data: PageData;
+	export let data;
 
 	const key = Symbol('projects');
 

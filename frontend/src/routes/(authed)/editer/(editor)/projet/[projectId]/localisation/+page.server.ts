@@ -3,10 +3,9 @@ import { STATUS_CODES } from '$utils/enums';
 import { error, fail } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';
 import { EDITOR_FORM_ACTION } from '../../../common';
-import type { Actions } from './$types';
 import { locationSchema } from './common';
 
-export const actions: Actions = {
+export const actions = {
 	[EDITOR_FORM_ACTION]: async (event) => {
 		const formData = await event.request.formData();
 		console.log(formData);

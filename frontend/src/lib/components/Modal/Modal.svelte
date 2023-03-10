@@ -10,30 +10,24 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Portal from '$components/Portal.svelte';
 	import { rootScroll } from '$stores/rootScroll';
-	import { unsafeUid } from '$utils/random';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fade, fly, scale } from 'svelte/transition';
 	import { modalOutletRef } from './ModalOutlet.svelte';
 
-	export let opened = false;
 	export let background: string = '';
-	export let lockScroll: false | string = false;
+	export let lockScroll: boolean = true;
 	export let closeOnClickoutside = true;
 
-	const key = unsafeUid();
+	const key = Symbol('modal');
 
-	export function close() {
-		opened = false;
-	}
-
-	$: if (opened && lockScroll) {
-		rootScroll.lock(key);
-	} else {
+	$: if (lockScroll === false) {
 		rootScroll.unlock(key);
+	} else {
+		rootScroll.lock(key);
 	}
 </script>
 
-{#if opened && $modalOutletRef}
+{#if $modalOutletRef}
 	<Portal target={$modalOutletRef}>
 		<div class="bg" style:--background={background} transition:fade|local={{ duration: 150 }} />
 		<dialog

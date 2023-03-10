@@ -22,6 +22,13 @@ export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, u
 export type KeyOfSet<S extends Set<unknown>> = S extends Set<infer K> ? K : never;
 
 /**
+ * Make an object with readonly props mutable.
+ */
+export type Mutable<T> = {
+	-readonly [key in keyof T]: T[key];
+};
+
+/**
  * Union of standard HTMLInputElement type attributes excluding HTMLInputTypeAttribute's widening
  * (string & {}) literal member.
  */

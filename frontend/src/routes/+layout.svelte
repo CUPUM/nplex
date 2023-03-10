@@ -11,11 +11,10 @@
 	import '$styles/app.scss';
 	import { browserDb } from '$utils/database/client';
 	import 'overlayscrollbars/overlayscrollbars.css';
-	import type { LayoutData } from './$types';
 	import AuthModal, { authModal } from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
 
-	export let data: LayoutData;
+	export let data;
 
 	let scrollY = 0;
 

@@ -48,14 +48,19 @@ export default function isEqual<T>(
 					return isEqual(sampleItem, specimen[i], strictOrder);
 				});
 			}
-			return (
-				sample.every((sampleItem) => {
-					return specimen.some((specimenItem) => isEqual(sampleItem, specimenItem, strictOrder));
-				}) &&
-				specimen.every((specimenItem) => {
-					return sample.some((sampleItem) => isEqual(sampleItem, specimenItem, strictOrder));
-				})
-			);
+			const eqed = new Set();
+			return sample.every((sampleItem) => {
+				return specimen.some((specimenItem) => {
+					const eq = isEqual(sampleItem, specimenItem, strictOrder);
+					if (eq) {
+						if (eqed.has(specimenItem)) {
+							return false;
+						}
+						eqed.add(specimenItem);
+					}
+					return eq;
+				});
+			});
 		}
 		// Compare objects.
 		else if (isObject(sample)) {

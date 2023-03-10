@@ -1,12 +1,11 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import AdjacentStreets from './AdjacentStreets.svelte';
 	import Area from './Area.svelte';
 	import District from './District.svelte';
 	import LocalisationMap from './LocalisationMap.svelte';
 	import Location from './Location.svelte';
 
-	export let data: PageData;
+	export let data;
 </script>
 
 <div>

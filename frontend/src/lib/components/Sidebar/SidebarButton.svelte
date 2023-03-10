@@ -44,7 +44,7 @@
 		justify-content: flex-start;
 		position: relative;
 		padding-inline: 1em;
-		padding-block: 0.5em;
+		padding-block: 0.75em;
 		gap: 1em;
 		border-radius: var(--ui-radius-md);
 		font-weight: 550;

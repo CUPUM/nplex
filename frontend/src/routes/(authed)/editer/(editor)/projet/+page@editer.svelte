@@ -36,7 +36,7 @@
 				class="title"
 				variant="outlined"
 				bind:value={title}
-				invalid={!!form?.errorMessages.length}
+				warning={!!form?.errorMessages.length}
 				placeholder="Titre de projet"
 			>
 				<!-- <svelte:fragment slot="label">Titre du projet</svelte:fragment> -->

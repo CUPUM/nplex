@@ -2,9 +2,8 @@ import { maybeSingle } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { LOAD_DEPENDENCIES, STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
-import type { LayoutLoad } from './$types';
 
-export const load = (async (event) => {
+export const load = async (event) => {
 	event.depends(LOAD_DEPENDENCIES.USER_PROFILE);
 
 	const { session } = await event.parent();
@@ -53,4 +52,4 @@ export const load = (async (event) => {
 		profile,
 		roles,
 	};
-}) satisfies LayoutLoad;
+};

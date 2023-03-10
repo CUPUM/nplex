@@ -2,16 +2,27 @@
 	import { ICON_CLASS } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
 	import { col } from '$utils/css';
+	import type { HTMLAnchorAttributes } from 'svelte/elements';
 
-	export let href: string | undefined = undefined;
-	export let current: boolean | undefined = undefined;
-	export let cta: boolean | undefined = undefined;
-	export let category: boolean | undefined = undefined;
-	export let disabled: boolean | undefined = undefined;
-	export let equi: boolean | undefined = undefined;
-	export let rounded: boolean | undefined = undefined;
-	export let active: boolean | undefined = undefined;
-	export let noscroll: boolean | undefined = undefined;
+	type $$Props = HTMLAnchorAttributes & {
+		href?: string;
+		current?: boolean;
+		cta?: boolean;
+		category?: boolean;
+		disabled?: boolean;
+		equi?: boolean;
+		rounded?: boolean;
+		active?: boolean;
+	};
+
+	export let href: $$Props['href'] = undefined;
+	export let current: $$Props['current'] = undefined;
+	export let cta: $$Props['cta'] = undefined;
+	export let category: $$Props['category'] = undefined;
+	export let disabled: $$Props['disabled'] = undefined;
+	export let equi: $$Props['equi'] = undefined;
+	export let rounded: $$Props['rounded'] = undefined;
+	export let active: $$Props['active'] = undefined;
 </script>
 
 <svelte:element
@@ -20,7 +31,6 @@
 	class:cta
 	class:category
 	data-current={current || undefined}
-	data-sveltekit-noscroll={noscroll ? '' : 'off'}
 	class:active
 	class:disabled
 	{disabled}
@@ -29,6 +39,7 @@
 	aria-disabled={disabled}
 	{href}
 	on:pointerdown
+	{...$$restProps}
 >
 	<Ripple color={col('primary', '500')} opacityStart={0.5} />
 	<div class="inner">

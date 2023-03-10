@@ -1,8 +1,7 @@
 import type { ComponentProps } from 'svelte';
-import type { LayoutLoad } from './$types';
 import type EditorCrumbs from './EditorCrumbs.svelte';
 
-export const load = (async (event) => {
+export const load = async (event) => {
 	const baseCrumb: ComponentProps<EditorCrumbs>['crumbs'][number] = {
 		title: 'Éditeur',
 		pathname: '/editer',
@@ -11,4 +10,4 @@ export const load = (async (event) => {
 	return {
 		crumbs: [baseCrumb],
 	};
-}) satisfies LayoutLoad;
+};

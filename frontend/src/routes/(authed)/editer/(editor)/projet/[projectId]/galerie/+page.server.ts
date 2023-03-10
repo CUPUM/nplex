@@ -7,12 +7,11 @@ import labPlugin from 'colord/plugins/lab';
 import sharp from 'sharp';
 import { zfd } from 'zod-form-data';
 import { EDITOR_FORM_ACTION } from '../../../common';
-import type { Actions } from './$types';
 import { gallerySchema, imageSchema, IMAGE_MAX_RESOLUTION } from './common';
 
 extend([labPlugin]);
 
-export const actions: Actions = {
+export const actions = {
 	/**
 	 * Update gallery.
 	 */

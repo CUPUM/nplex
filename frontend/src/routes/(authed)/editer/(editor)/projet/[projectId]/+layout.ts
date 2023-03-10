@@ -3,9 +3,9 @@ import { getDb } from '$utils/database/client';
 import { STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { alwaysArr, pgCubeToHsl, pgRangeToArr } from '$utils/format';
 import { error } from '@sveltejs/kit';
-import type { LayoutLoad, LayoutParentData } from './$types';
+import type { LayoutParentData } from './$types';
 
-export const load = (async (event) => {
+export const load = async (event) => {
 	// event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
 	const db = await getDb(event);
 
@@ -75,4 +75,4 @@ export const load = (async (event) => {
 		descriptors,
 		crumbs,
 	};
-}) satisfies LayoutLoad;
+};

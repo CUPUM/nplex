@@ -51,7 +51,7 @@
 	import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 	import * as MapboxGeodesic from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
-	import { writable, type Readable } from 'svelte/store';
+	import { readonly, writable, type Readable } from 'svelte/store';
 	import { getMapContext } from './Map.svelte';
 
 	/**
@@ -152,7 +152,7 @@
 
 	setContext<MapDrawContext>(CTX_KEY, {
 		getMapDraw: () => draw!,
-		mode: { subscribe: _mode.subscribe },
+		mode: readonly(_mode),
 		changeMode,
 	});
 

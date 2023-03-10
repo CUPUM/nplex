@@ -9,11 +9,10 @@
 	import { fly, scale } from 'svelte/transition';
 	import { editorDirtyValues } from '../../../common';
 	import EditorFormgroup from '../../../EditorFormgroup.svelte';
-	import type { PageData } from './$types';
 	import GalleryInput from './GalleryInput.svelte';
 	import GalleryItem from './GalleryItem.svelte';
 
-	export let data: PageData;
+	export let data;
 
 	const newItem = { newItem: true, id: 'NEW_ITEM' };
 

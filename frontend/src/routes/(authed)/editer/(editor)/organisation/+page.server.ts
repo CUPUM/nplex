@@ -2,10 +2,9 @@ import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';
-import type { Actions } from './$types';
 import { orgNameSchema } from './common';
 
-export const actions: Actions = {
+export const actions = {
 	create: async (event) => {
 		const formData = await event.request.formData();
 		const parsed = zfd

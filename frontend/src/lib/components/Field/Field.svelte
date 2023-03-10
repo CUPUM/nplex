@@ -6,19 +6,13 @@
 <script lang="ts" context="module">
 	const CTX_KEY = 'field-context';
 
-	type Value =
-		| string
-		| number
-		| Record<string | number | symbol, unknown>
-		| Array<unknown>
-		| undefined
-		| null;
 	type InputRef =
 		| HTMLInputElement
 		| HTMLSelectElement
 		| HTMLButtonElement
 		| HTMLTextAreaElement
 		| undefined;
+
 	type InputType =
 		| 'text'
 		| 'password'
@@ -32,6 +26,14 @@
 		| 'month'
 		| 'week'
 		| 'url';
+
+	type Value =
+		| string
+		| number
+		| Record<string | number | symbol, unknown>
+		| Array<unknown>
+		| undefined
+		| null;
 
 	interface FieldContext {
 		value: Writable<Value>;
@@ -48,6 +50,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { VARIANTS, type Variant } from '$utils/enums';
 	import { snap } from '$utils/number';
 	import { getContext, setContext } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
@@ -56,51 +59,47 @@
 	import { fly } from 'svelte/transition';
 	import Ripple from '../Ripple.svelte';
 
-	export let id: string | undefined = undefined;
-	export let name: string | undefined = undefined;
+	type V = $$Generic<Value>;
+
+	type $$Props = HTMLInputAttributes & {
+		value?: V;
+		prefix?: string | null;
+		suffix?: string | null;
+		type?: InputType;
+		variant?: Variant;
+		textAlign?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent';
+		compact?: boolean;
+		loading?: boolean;
+		warning?: boolean;
+		success?: boolean;
+		focus?: () => void;
+		blur?: () => void;
+	};
+
+	export let id: $$Props['id'] = undefined;
 	export let value: Value = '';
-	export let prefix: string | null | undefined = '';
-	export let suffix: string | null | undefined = '';
-	export let type: InputType = 'text';
-	export let variant: 'default' | 'outlined' | 'cta' | 'opaque' | 'dashed' = 'default';
-	export let textAlign:
-		| 'start'
-		| 'end'
-		| 'left'
-		| 'right'
-		| 'center'
-		| 'justify'
-		| 'match-parent'
-		| undefined = undefined;
-	export let compact: boolean | undefined = undefined;
-	export let required: boolean | undefined = undefined;
-	export let readonly: boolean | undefined = undefined;
-	export let disabled: boolean | undefined = undefined;
-	export let warning: boolean | undefined = undefined;
-	export let success: boolean | undefined = undefined;
-	/**
-	 * Sets a warning state momentarily and unsets it after a 5s timeout.
-	 */
-	export let invalid: boolean | undefined = undefined;
-	export let dirty: boolean | undefined = undefined;
-	export let maxlength: number | undefined = undefined;
-	export let minlength: number | undefined = undefined;
-	export let min: number | undefined = undefined;
-	export let max: number | undefined = undefined;
-	export let step: number | undefined = undefined;
-	export let loading: boolean | undefined = undefined;
-	export let autocomplete: string | undefined = 'off';
-	export let placeholder: string = '';
-	export let pattern: RegExp | undefined = undefined;
-	export let tabindex: number = 0;
-	export let style: string | undefined = undefined;
-	export let list: HTMLInputAttributes['list'] = undefined;
-	let className: string = '';
+	export let prefix: $$Props['prefix'] = undefined;
+	export let suffix: $$Props['suffix'] = undefined;
+	export let type: $$Props['type'] = 'text';
+	export let variant: $$Props['variant'] = VARIANTS.Default;
+	export let textAlign: $$Props['textAlign'] = undefined;
+	export let compact: $$Props['compact'] = undefined;
+	export let required: $$Props['required'] = undefined;
+	export let readonly: $$Props['readonly'] = undefined;
+	export let disabled: $$Props['disabled'] = undefined;
+	export let warning: $$Props['warning'] = undefined;
+	export let success: $$Props['success'] = undefined;
+	export let maxlength: $$Props['minlength'] = undefined;
+	export let minlength: $$Props['maxlength'] = undefined;
+	export let min: $$Props['min'] = undefined;
+	export let max: $$Props['max'] = undefined;
+	export let step: $$Props['step'] = undefined;
+	export let loading: $$Props['loading'] = undefined;
+	export let autocomplete: $$Props['autocomplete'] = 'off';
+	export let placeholder: $$Props['placeholder'] = '';
+	export let style: $$Props['style'] = undefined;
+	let className: $$Props['class'] = '';
 	export { className as class };
-	/**
-	 * Only way to properly prevent label div when passing empty label slot (ex.: Select.svelte)
-	 */
-	export let nolabel: boolean = false;
 	export function focus() {
 		inputRef?.focus({});
 	}
@@ -110,21 +109,15 @@
 
 	let inputRef: InputRef;
 	let labelWidth: number;
-	let invalidSample: Value = null;
-	let invalidTimer: any = null;
-	$: hasvalue = !!value || value === 0;
-	$: hasplaceholder = placeholder !== '';
-	$: haslabel = $$slots.label && !nolabel;
-	$: if (invalid) {
-		invalidTimer = setTimeout(() => {
-			clearInvalid();
-		}, 5000);
-	}
+
+	$: hasvalue = value != null;
+	$: haslabel = $$slots.label;
+	$: hasplaceholder = placeholder != null && placeholder !== '';
 	$: computedPlaceholder = placeholder ? placeholder + (required ? ' *' : '') : undefined;
 
 	const _type = writable<InputType>(type);
 	$: type = $_type;
-	$: _type.set(type);
+	$: _type.set(type ?? 'text');
 
 	const _inputRef = writable<InputRef>();
 	$: _inputRef.set(inputRef);
@@ -146,9 +139,6 @@
 				value = e.target.value as Value;
 			}
 		}
-		if (value !== invalidSample) {
-			clearInvalid();
-		}
 	}
 
 	/**
@@ -160,13 +150,13 @@
 		}
 		if (typeof value === 'number') {
 			if (max != null) {
-				value = Math.min(max, value);
+				value = Math.min(+max, value);
 			}
 			if (min != null) {
-				value = Math.max(min, value);
+				value = Math.max(+min, value);
 			}
 			if (step != null) {
-				value = snap(value, step, { origin: min ?? 0 });
+				value = snap(value, +step, { origin: +(min ?? 0) });
 			}
 		}
 	}
@@ -178,13 +168,6 @@
 		return value;
 	}
 	$: formattedValue = eagerFormat(value);
-
-	function clearInvalid() {
-		invalid = false;
-		clearTimeout(invalidTimer);
-		invalidTimer = null;
-		invalidSample = null;
-	}
 
 	setContext<FieldContext>(CTX_KEY, {
 		value: _value,
@@ -199,11 +182,10 @@
 	{style}
 	{disabled}
 	class:compact
-	class:warning={warning || invalid}
+	class:warning
 	class:readonly
 	class:loading
 	class:success
-	class:dirty
 	class:hasvalue
 	class:hasplaceholder
 	class:haslabel
@@ -248,9 +230,7 @@
 		{handleInput}
 		{disabled}
 		{required}
-		{tabindex}
 		{readonly}
-		{pattern}
 		{bindInputRef}
 	>
 		<input
@@ -260,9 +240,7 @@
 			class="input"
 			style:text-align={textAlign}
 			{autocomplete}
-			{id}
 			{type}
-			{name}
 			placeholder={computedPlaceholder}
 			{value}
 			{maxlength}
@@ -270,12 +248,10 @@
 			{min}
 			{max}
 			{step}
-			{list}
 			disabled={disabled || !browser}
 			{required}
-			{tabindex}
 			{readonly}
-			pattern={pattern ? pattern.source : undefined}
+			{...$$restProps}
 			on:input={handleInput}
 			on:change={format}
 			on:focus
@@ -300,371 +276,5 @@
 </fieldset>
 
 <style lang="scss">
-	.ui-field {
-		--radius: var(--ui-radius-md);
-		--height: var(--ui-block-size-lg);
-		--inset: var(--ui-inset);
-		--notch-padding: 0.25em;
-		--gutter: calc(var(--ui-pad-inline) / 3);
-		--gutter-out: calc(2 * var(--ui-pad-inline) / 3);
-		position: relative;
-		display: grid;
-		grid-template-columns:
-			[full-start leading-start]
-			minmax(var(--gutter-out), auto)
-			[leading-end leading-gutter-start]
-			var(--gutter)
-			[leading-gutter-end prefix-start]
-			auto
-			[prefix-end main-start]
-			minmax(0, 1fr)
-			[main-end suffix-start]
-			auto
-			[suffix-end trailing-gutter-start]
-			var(--gutter)
-			[trailing-gutter-end trailing-start]
-			minmax(var(--gutter-out), auto)
-			[trailing-end full-end];
-		grid-template-rows: minmax(var(--height), auto);
-		gap: 0;
-		flex-direction: row;
-		align-items: stretch;
-		font-weight: 400;
-		border-radius: var(--radius);
-		cursor: text;
-		transition: transform 0.15s ease-out;
-		&:disabled {
-			opacity: 0.5;
-			pointer-events: none;
-		}
-		&.readonly {
-			cursor: default;
-		}
-		&.warning,
-		&:has(:out-of-range),
-		&:has(:invalid) {
-			color: col(error, 700) !important;
-			background: col(error, 100, 0.1) !important;
-
-			.outline {
-				border-color: col(error, 500) !important;
-			}
-		}
-		&.success {
-			color: col(success, 700) !important;
-			background: col(success, 100, 0.1) !important;
-		}
-	}
-
-	.aside {
-		padding: var(--inset) 0;
-		margin: 0;
-		gap: 0;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		overflow-x: auto;
-		&:not(:empty) {
-			gap: 3px;
-			padding: var(--inset);
-		}
-	}
-	.leading {
-		grid-column: leading;
-	}
-	.trailing {
-		grid-column: trailing;
-	}
-
-	.affix {
-		align-self: center;
-		position: relative;
-		display: inline-block;
-		padding-bottom: calc(0.5em - 0.5ex);
-		top: 0;
-		flex: 0;
-		white-space: pre;
-		opacity: 0.25;
-		transition: all 0.2s var(--ui-ease-out);
-		:focus-within &,
-		:not(:focus-within):not(.haslabel) & {
-			transform: translateY(0);
-			opacity: 0.5;
-		}
-	}
-	.prefix {
-		grid-column: prefix;
-	}
-	.suffix {
-		grid-column: suffix;
-	}
-
-	fieldset :global(*[data-field-input]) {
-		cursor: inherit;
-		font-family: inherit;
-		font-weight: inherit;
-		font-size: inherit;
-		color: inherit;
-		position: relative;
-		padding-bottom: calc(0.5em - 0.5ex);
-		grid-column: main;
-		top: 0;
-		flex: 1;
-		white-space: nowrap;
-		border: none;
-		outline: none;
-		background: transparent;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
-		&:-webkit-autofill,
-		&:-webkit-autofill:hover,
-		&:-webkit-autofill:focus,
-		&:-webkit-autofill:active {
-			transition: background-color 0s 50000s;
-		}
-
-		&[type='number'] {
-			font-variant-numeric: tabular-nums;
-		}
-	}
-
-	label {
-		opacity: 0.35;
-		position: absolute;
-		pointer-events: none;
-		padding-bottom: calc(0.5em - 0.5ex);
-		grid-column: prefix-start / suffix-end;
-		max-width: 100%;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		top: 50%;
-		transform: translateY(-50%);
-		transition: all 0.15s var(--ui-ease-out);
-	}
-
-	.outline {
-		--thickness: 1px;
-		pointer-events: none;
-		position: absolute;
-		height: 50%;
-		transition: all 0.15s ease-out;
-		border-width: var(--thickness);
-		border-style: solid;
-	}
-	.left {
-		grid-column-end: leading-gutter-end;
-		left: 0;
-		right: 0;
-		top: 0;
-		border-top-left-radius: inherit;
-		border-right-width: 0;
-		border-bottom-width: 0;
-	}
-	.right {
-		grid-column-start: leading-gutter-end;
-		left: 0;
-		right: 0;
-		top: 0;
-		border-left-width: 0;
-		border-bottom-width: 0;
-		border-top-right-radius: inherit;
-	}
-	.bottom {
-		left: 0;
-		right: 0;
-		bottom: 0;
-		border-top-width: 0;
-		border-bottom-right-radius: inherit;
-		border-bottom-left-radius: inherit;
-	}
-
-	.star {
-		display: none;
-		color: col(primary, 900);
-		padding-left: 0.2em;
-		.required & {
-			display: inline-block;
-		}
-	}
-
-	.haslabel {
-		.affix {
-			opacity: 0;
-		}
-	}
-
-	// Variants
-
-	.default,
-	.opaque {
-		color: col(fg, 000);
-		background: col(fg, 500, 0.05);
-		// background: col(bg, 900);
-		transition: color 0.1s ease-out, background 0.1s ease-out;
-		.outline {
-			display: none;
-		}
-		&.hasplaceholder,
-		&.hasvalue,
-		&:focus-within,
-		&:has(:-webkit-autofill) {
-			label {
-				opacity: 0.5;
-				top: 1.5em;
-				font-size: max(var(--ui-text-xs), 0.65em);
-				// font-size: 0.65em;
-			}
-			.affix {
-				opacity: 0.5;
-			}
-			&.haslabel {
-				.affix,
-				:global(*[data-field-input]) {
-					top: 0.5em;
-				}
-			}
-		}
-		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover {
-			color: col(fg, 700);
-			// background: col(fg, 500, 0.1);
-		}
-		&:focus-within {
-			color: col(fg, 900);
-			background: col(fg, 500, 0.1);
-			// background: col(bg, 300);
-			:global(*[data-field-input]) {
-				opacity: 1;
-			}
-		}
-	}
-
-	.opaque {
-		--ui-ripple-color: #{col(primary, 500)};
-		color: col(fg, 100);
-		background: col(bg, 300);
-		box-shadow: 0 0.25rem 1rem -0.5rem transparent;
-		transition: color 0.1s ease-out, background 0.1s ease-out, box-shadow 0.25s ease-out;
-		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover {
-			color: col(fg, 000);
-			background: col(bg, 100);
-		}
-		&:focus-within {
-			color: col(fg, 700);
-			background: col(bg, 000);
-			// box-shadow: 0 1rem 2rem -1rem rgb(0, 20, 40, 0.5);
-			:global(*[data-field-input]) {
-				opacity: 1;
-			}
-		}
-	}
-
-	.outlined,
-	.dashed {
-		color: col(fg, 100);
-		background: transparent;
-		transition: color 0.1s ease-out, background 0.1s ease-out;
-		.outline {
-			border-color: col(fg, 000);
-			opacity: 0.25;
-		}
-		&.hasplaceholder,
-		&.hasvalue,
-		&:focus-within,
-		&:has(:-webkit-autofill) {
-			label {
-				opacity: 0.5;
-				top: 0em;
-				padding-block: 0;
-				font-size: max(var(--ui-text-xs), 0.65em);
-				// font-size: clamp(12px, 0.5em, 24px);
-			}
-			.affix {
-				opacity: 0.35;
-			}
-			&.haslabel {
-				.left {
-					right: var(--notch-padding);
-				}
-				.right {
-					left: calc(var(--label-width) + var(--notch-padding));
-				}
-			}
-		}
-		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover,
-		&:focus-within {
-			color: col(fg, 500);
-			background: transparent;
-			.outline {
-				opacity: 0.75;
-			}
-			label {
-				opacity: 1;
-			}
-		}
-		&:focus-within {
-			outline: none;
-			color: col(fg, 700);
-			.outline {
-				--thickness: 1.5px;
-				opacity: 1;
-				border-color: col(primary, 500);
-			}
-			label {
-				color: col(primary, 500);
-			}
-		}
-	}
-
-	.dashed {
-		.outline {
-			border-style: dashed !important;
-		}
-	}
-
-	.cta {
-		color: col(bg, 300);
-		background: col(primary, 500);
-		box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
-		transition: color 0.1s ease-out, background 0.1s ease-out, box-shadow 0.25s ease-in-out;
-		.outline {
-			display: none;
-		}
-		&.hasplaceholder,
-		&.hasvalue,
-		&:focus-within,
-		&:has(:-webkit-autofill) {
-			label {
-				opacity: 0.5;
-				top: 1.5em;
-				font-size: clamp(var(--ui-text-xs), 0.5em, 24px);
-			}
-			.affix {
-				opacity: 0.5;
-			}
-			&.haslabel {
-				.affix,
-				:global(*[data-field-input]) {
-					top: 0.45em;
-				}
-			}
-		}
-		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover,
-		&:focus-within {
-			box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.5);
-			color: col(bg, 100);
-			background: col(primary, 700);
-			label {
-				opacity: 0.5;
-			}
-		}
-		&:focus-within {
-			box-shadow: 0 0.5em 1em -0.5em col(primary, 900, 0.5);
-			color: col(bg, 100);
-		}
-	}
+	@use './Field.scss';
 </style>

@@ -8,7 +8,7 @@
 	import type { LayoutData } from './$types';
 	import { editTitle, editTypeId } from './common';
 
-	export let data: LayoutData;
+	export let data;
 
 	$: $editTitle = data.project.title;
 	$: $editTypeId = data.project.type_id;

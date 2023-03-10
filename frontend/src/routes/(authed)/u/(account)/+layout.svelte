@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
-	import type { LayoutData } from './$types';
 	import AccountMenu from './AccountMenu.svelte';
 
-	export let data: LayoutData;
+	export let data;
 </script>
 
 <div class="account">

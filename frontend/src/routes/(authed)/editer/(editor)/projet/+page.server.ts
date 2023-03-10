@@ -2,10 +2,9 @@ import { STATUS_CODES } from '$utils/enums';
 import { errorMessages } from '$utils/validation';
 import { fail, redirect } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';
-import type { Actions } from './$types';
 import { titleSchema } from './[projectId]/common';
 
-export const actions: Actions = {
+export const actions = {
 	create: async (event) => {
 		const formData = await event.request.formData();
 		const parsed = zfd

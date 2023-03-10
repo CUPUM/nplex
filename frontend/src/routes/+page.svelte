@@ -1,11 +1,10 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import ActorsPreviews from './PreviewActors.svelte';
 	import OrganisationsPreviews from './PreviewOrganisations.svelte';
 	import ProjectsPreviews from './PreviewProjects.svelte';
 	import Splash from './Splash.svelte';
 
-	export let data: PageData;
+	export let data;
 
 	let scrollTarget: HTMLElement;
 </script>

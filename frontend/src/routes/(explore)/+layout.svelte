@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { LayoutData } from './$types';
 	import ExploreSearch from './ExploreSearch.svelte';
 
-	export let data: LayoutData;
+	export let data;
 </script>
 
 <div class="explore">

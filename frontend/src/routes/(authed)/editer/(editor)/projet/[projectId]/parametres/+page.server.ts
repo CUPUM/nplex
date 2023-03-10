@@ -1,8 +1,7 @@
 import { getDb } from '$utils/database/client';
 import { error, fail, redirect } from '@sveltejs/kit';
-import type { Actions } from './$types';
 
-export const actions: Actions = {
+export const actions = {
 	update: async (event) => {},
 	/**
 	 * Delete a project by its id.

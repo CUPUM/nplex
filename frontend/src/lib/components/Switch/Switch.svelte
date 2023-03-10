@@ -24,7 +24,7 @@
 	import { STATES, VARIANTS, type State, type Variant } from '$utils/enums';
 	import { getContext, setContext } from 'svelte';
 	import { cubicInOut } from 'svelte/easing';
-	import { writable, type Readable, type Writable } from 'svelte/store';
+	import { readonly as readonlyStore, writable, type Readable, type Writable } from 'svelte/store';
 	import { scale } from 'svelte/transition';
 
 	export let variant: Variant = VARIANTS.Default;
@@ -59,9 +59,9 @@
 	setContext<SwitchContext>(CTX_KEY, {
 		currentRef,
 		group: _group,
-		name: { subscribe: _name.subscribe },
-		required: { subscribe: _required.subscribe },
-		readonly: { subscribe: _readonly.subscribe },
+		name: readonlyStore(_name),
+		required: readonlyStore(_required),
+		readonly: readonlyStore(_readonly),
 	});
 </script>
 

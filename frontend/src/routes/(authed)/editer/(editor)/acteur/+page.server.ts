@@ -1,5 +1,3 @@
-import type { Actions } from '../../acteur/$types';
-
-export const actions: Actions = {
+export const actions = {
 	create: async (event) => {},
 };

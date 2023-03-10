@@ -13,7 +13,7 @@
 	import { fly } from 'svelte/transition';
 	import type { PageData } from './$types';
 
-	export let data: PageData['project']['gallery'][number];
+	export let data['project']['gallery'][number];
 	export let i: number;
 
 	$: ({ banner_id } = ($page.data as PageData).project);
