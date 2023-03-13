@@ -332,7 +332,7 @@ select setval(pg_get_serial_sequence('public.project_exemplarity_indicator_categ
 
 
 insert into public.project_exemplarity_indicator
-    (indicator_category_id, title, label, description)
+    (category_id, title, label, description)
 values
     (1, 'Matériaux écologiques', 'Matériaux écologiques', ''),
     (1, 'Construction durable', 'Construction durable', ''),
