@@ -236,33 +236,33 @@ export interface Database {
       }
       project_exemplarity_indicator: {
         Row: {
+          category_id: number
           created_at: string
           created_by_id: string
           description: string | null
           id: number
-          indicator_category_id: number
           label: string
           title: string
           updated_at: string
           updated_by_id: string | null
         }
         Insert: {
+          category_id: number
           created_at?: string
           created_by_id?: string
           description?: string | null
           id?: number
-          indicator_category_id: number
           label: string
           title: string
           updated_at?: string
           updated_by_id?: string | null
         }
         Update: {
+          category_id?: number
           created_at?: string
           created_by_id?: string
           description?: string | null
           id?: number
-          indicator_category_id?: number
           label?: string
           title?: string
           updated_at?: string

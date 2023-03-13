@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import AnimateHeight from '$components/AnimateHeight.svelte';
+	import Button from '$components/Button/Button.svelte';
 	import Dirty from '$components/Dirty.svelte';
 	import DragndropProvider from '$components/Dragndrop/DragndropProvider.svelte';
 	import Icon from '$components/Icon.svelte';
@@ -70,11 +71,14 @@
 								use:dragndropItem={{ item: indicator }}
 								in:fly|local={{ y: -6, duration: 350, delay: 100 * i1 }}
 							>
-								<IndicatorCard metaId={metaIndicator.id} bind:data={indicator} i={i1} />
+								<IndicatorCard categoryId={metaIndicator.id} bind:data={indicator} i={i1} />
 							</li>
 						{/each}
 					</ul>
 				</DragndropProvider>
+				<Button variant="ghost" style="font-size: var(--ui-text-sm);">
+					<Icon name="plus" slot="leading" /> Créer un nouvel indicateur
+				</Button>
 			</AnimateHeight>
 		</section>
 	{/each}
@@ -107,6 +111,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+		max-width: var(--ui-width-md);
+		margin-bottom: 0.5rem;
 	}
 
 	li {
