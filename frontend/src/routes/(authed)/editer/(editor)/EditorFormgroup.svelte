@@ -5,7 +5,7 @@
 
 <fieldset class={maxWith ?? ''}>
 	{#if legend}
-		<h3>{legend}</h3>
+		<h3 class="heading-md">{legend}</h3>
 	{/if}
 	<slot />
 </fieldset>
@@ -13,15 +13,14 @@
 <style lang="scss">
 	fieldset {
 		position: relative;
-		padding: var(--ui-pad-outer);
-		background: col(bg, 500);
-		// border: 1px dashed col(fg, 000, 0.1);
+		padding: 3rem;
+		background-color: col(bg, 700);
 		border-radius: var(--ui-radius-lg);
 		transition: all 0.15s;
 
-		&.md {
-			max-width: var(--ui-width-md);
-		}
+		// &.md {
+		// 	max-width: var(--ui-width-md);
+		// }
 
 		@include laptop {
 			padding: 2.5rem;
@@ -29,17 +28,6 @@
 
 		@include tablet {
 			padding: 1.5rem 1.25rem;
-		}
-	}
-
-	h3 {
-		font-size: var(--ui-text-lg);
-		font-weight: 450;
-		margin-bottom: 2rem;
-		margin-top: -0.5rem;
-
-		@include tablet {
-			font-size: var(--ui-text-md);
 		}
 	}
 </style>

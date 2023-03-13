@@ -1,4 +1,6 @@
 import {
+	INDICATORS_KEY,
+	INDICATORS_KEY_NEW,
 	INDICATOR_LABEL_MAX,
 	INDICATOR_TITLE_MAX,
 } from '$routes/(authed)/editer/(editor)/descripteurs/projets/indicateurs/common';
@@ -29,52 +31,56 @@ const indicatorBaseSchema = z.object({
 	description: zfd.text(z.string().nullable().default(null)),
 });
 
-const indicatorsSchema = zfd.formData({
-	indicators: z
-		.record(
-			z.string(),
-			indicatorBaseSchema.extend({
-				id: zfd.numeric(),
-			})
-		)
-		.transform((o) => Object.values(o)),
-	new: zfd.repeatableOfType(indicatorBaseSchema),
-});
-
 export const actions = {
 	update: async (event) => {
 		const formData = await event.request.formData();
-		const parsed = indicatorsSchema.safeParse(formData);
+		const parsed = zfd
+			.formData({
+				[INDICATORS_KEY]: z
+					.record(
+						z.string(),
+						indicatorBaseSchema.extend({
+							id: zfd.numeric(),
+						})
+					)
+					.transform((o) => Object.values(o)),
+			})
+			.safeParse(formData);
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, { errorMessages: errorMessages(parsed.error) });
 		}
+		const up = event.locals.db
+			.from('project_exemplarity_indicator')
+			.upsert(parsed.data[INDICATORS_KEY])
+			.then((res) => {
+				if (res.error) {
+					throw error(STATUS_CODES.InternalServerError, res.error);
+				}
+				return { updated: true };
+			});
 
-		const promises = [
-			event.locals.db
-				.from('project_exemplarity_indicator')
-				.upsert(parsed.data.indicators)
-				.then((res) => {
-					if (res.error) {
-						throw error(STATUS_CODES.InternalServerError, res.error);
-					}
-				}),
-		];
-
-		if (parsed.data.new.length) {
-			promises.push(
-				event.locals.db
-					.from('project_exemplarity_indicator')
-					.insert(parsed.data.new)
-					.then((res) => {
-						if (res.error) {
-							throw error(STATUS_CODES.InternalServerError, res.error);
-						}
-					})
-			);
-		}
-
-		await Promise.all(promises);
+		return await up;
 	},
+
+	create: async (event) => {
+		const formData = await event.request.formData();
+		const parsed = zfd
+			.formData({
+				[INDICATORS_KEY_NEW]: indicatorBaseSchema,
+			})
+			.safeParse(formData);
+		if (!parsed.success) {
+			return fail(STATUS_CODES.BadGateway, { errorMessages: errorMessages(parsed.error) });
+		}
+		const ins = await event.locals.db
+			.from('project_exemplarity_indicator')
+			.insert(parsed.data[INDICATORS_KEY_NEW]);
+		if (ins.error) {
+			throw error(STATUS_CODES.InternalServerError, ins.error);
+		}
+		return { created: true };
+	},
+
 	delete: async (event) => {
 		const indicatorId = event.url.searchParams.get('id');
 		if (!indicatorId) {
@@ -87,6 +93,8 @@ export const actions = {
 			.delete()
 			.eq('id', indicatorId);
 		if (del.error) {
+			throw error(STATUS_CODES.InternalServerError, del.error);
 		}
+		return { deleted: true };
 	},
 };

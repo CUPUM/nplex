@@ -1,16 +1,22 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import AnimateHeight from '$components/AnimateHeight.svelte';
-	import Button from '$components/Button/Button.svelte';
 	import Dirty from '$components/Dirty.svelte';
 	import DragndropProvider from '$components/Dragndrop/DragndropProvider.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { fly } from 'svelte/transition';
 	import { editorDirtyValues, EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../../common';
+	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 	import IndicatorCard from './IndicatorCard.svelte';
+	import IndicatorCreate from './IndicatorCreate.svelte';
 
 	export let data;
+
+	type NewIndicator = Pick<
+		PageData['metaIndicators'][number]['indicators'][number],
+		'id' | 'title' | 'label' | 'description'
+	>;
 
 	let formMetaIndicators: PageData['metaIndicators'];
 	function syncDown() {
@@ -52,13 +58,13 @@
 	}}
 >
 	{#each formMetaIndicators as metaIndicator, i0}
-		<section>
+		<EditorFormgroup legend={metaIndicator.title}>
 			<AnimateHeight>
-				<h3 class="heading-md">{metaIndicator.title}</h3>
 				<p class="info">{metaIndicator.description || 'Description à venir...'}</p>
 				<DragndropProvider
+					fallbackClass="dnd-fallback-indicator-cardx"
 					bind:items={metaIndicator.indicators}
-					sort={false}
+					sort={true}
 					let:dragndropZone
 					let:dragndropItem
 					group={{
@@ -71,16 +77,14 @@
 								use:dragndropItem={{ item: indicator }}
 								in:fly|local={{ y: -6, duration: 350, delay: 100 * i1 }}
 							>
-								<IndicatorCard categoryId={metaIndicator.id} bind:data={indicator} i={i1} />
+								<IndicatorCard categoryId={metaIndicator.id} bind:data={indicator} />
 							</li>
 						{/each}
 					</ul>
 				</DragndropProvider>
-				<Button variant="ghost" style="font-size: var(--ui-text-sm);">
-					<Icon name="plus" slot="leading" /> Créer un nouvel indicateur
-				</Button>
+				<IndicatorCreate categoryId={metaIndicator.id} />
 			</AnimateHeight>
-		</section>
+		</EditorFormgroup>
 	{/each}
 </form>
 
@@ -93,20 +97,26 @@
 		gap: 0.5rem;
 	}
 
+	:global(.dnd-ghost) {
+		opacity: 0.5;
+		scale: 0.98;
+		// transform: scale(0.9);
+	}
+
+	:global(.dnd-dragging) {
+		opacity: 1 !important;
+		background-color: col(bg, 900);
+		border-radius: var(--ui-radius-md);
+		box-shadow: var(--ui-shadow-md);
+		scale: 0.98;
+	}
+
 	header {
 		padding: 3rem;
 	}
 
-	section {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		padding: 3rem;
-		background-color: col(bg, 500);
-		border-radius: var(--ui-radius-lg);
-	}
-
 	ul {
+		position: relative;
 		margin-top: 1.5rem;
 		display: flex;
 		flex-direction: column;
@@ -116,6 +126,8 @@
 	}
 
 	li {
+		list-style-type: none;
 		position: relative;
+		transition: opacity 0.15s, scale 0.15s ease-out, background-color 0.15s ease;
 	}
 </style>

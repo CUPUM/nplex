@@ -10,35 +10,93 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Portal from '$components/Portal.svelte';
 	import { rootScroll } from '$stores/rootScroll';
-	import { onDestroy } from 'svelte';
+	import type { NonUndefinable } from '$types/utils';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fade, fly, scale } from 'svelte/transition';
 	import { modalOutletRef } from './ModalOutlet.svelte';
+
+	type T = $$Generic<(...args: unknown) => unknown>;
 
 	export let backgroundColor: string = '';
 	export let lockScroll: boolean = true;
 	export let closeOnClickoutside = true;
 	export let opened: boolean = false;
-
-	// const dispatch = createEventDispatcher<{[e in 'open' | 'close']: CustomEvent<{originalEvent: PointerEvent}>}>();
+	export let callback: T | undefined = undefined;
 
 	const key = Symbol('modal');
 
+	let openedOnce = false;
+	let confirmed = false;
+	let canceled = false;
+
+	const dispatch = createEventDispatcher<{
+		[e in 'open' | 'close']: {
+			confirmed: boolean;
+			canceled: boolean;
+		};
+	}>();
+
 	$: if (lockScroll === false || !opened) {
 		rootScroll.unlock(key);
+		if (openedOnce) {
+			dispatch('close', { canceled, confirmed });
+		}
+		confirmed = false;
+		canceled = false;
 	} else if (opened) {
+		openedOnce = true;
 		rootScroll.lock(key);
+		dispatch('open', { canceled, confirmed });
+		confirmed = false;
+		canceled = false;
 	}
 
 	function close() {
 		opened = false;
 	}
 
+	function cancel() {
+		canceled = true;
+		confirmed = false;
+		close();
+	}
+
+	/**
+	 * Calls the callback, if any, and closes the modal.
+	 */
+	async function confirm(...args: T extends NonUndefinable<T> ? Parameters<T> : never) {
+		canceled = false;
+		confirmed = true;
+		if (callback) {
+			if (callback) {
+				await callback(...args);
+			}
+		}
+		close();
+	}
+
+	/**
+	 * Define a callback that requires confirmation before being completed. Users confirm or abort the
+	 * callback.
+	 */
+	function requestConfirmation(e?: Event) {
+		if (e) {
+			e.preventDefault();
+		}
+		opened = true;
+	}
+
+	onMount(() => {
+		if (opened) openedOnce = true;
+	});
+
 	onDestroy(() => {
 		rootScroll.unlock(key);
 	});
 </script>
 
+<slot name="control" {requestConfirmation} />
 {#if $modalOutletRef && opened}
 	<Portal target={$modalOutletRef}>
 		<div
@@ -59,15 +117,15 @@
 		>
 			{#if $$slots.header}
 				<header>
-					<slot name="header" {close} />
+					<slot name="header" {close} {cancel} {confirm} />
 				</header>
 			{/if}
 			<article class="main">
-				<slot {close}>Modal content placeholder</slot>
+				<slot {close} {cancel} {confirm}>Modal content placeholder</slot>
 			</article>
 			{#if $$slots.footer}
 				<footer>
-					<slot name="footer" {close} />
+					<slot name="footer" {close} {cancel} {confirm} />
 				</footer>
 			{/if}
 		</dialog>
@@ -92,6 +150,7 @@
 		display: flex;
 		flex-direction: column;
 		background: col(bg, 300);
+		color: col(fg, 100);
 		max-width: var(--ui-width-sm);
 		box-shadow: var(--ui-shadow-lg);
 		padding: 0;
@@ -104,18 +163,15 @@
 	article {
 		padding: 1.5rem 2rem;
 		flex: 1;
-		color: col(fg, 500);
 	}
 
 	header {
-		color: col(fg, 000);
 		// background: col(fg, 000, 0.05);
 		position: sticky;
-		font-size: var(--ui-text-lg);
-		font-weight: 500;
 		top: 0;
 		padding: 1.5rem 2rem;
 		border-bottom: 1px dashed col(fg, 100, 0.1);
+		@include typography(heading, xs);
 	}
 
 	footer {

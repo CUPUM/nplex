@@ -8,7 +8,7 @@ specifiers:
   '@turf/turf': ^6.5.0
   '@types/js-cookie': ^3.0.3
   '@types/mapbox__mapbox-gl-draw': ^1.3.3
-  '@types/node': ^18.15.0
+  '@types/node': ^18.15.1
   '@types/prettier': ^2.7.2
   '@types/sharp': ^0.31.1
   '@types/sortablejs': ^1.15.0
@@ -42,7 +42,7 @@ specifiers:
   sharp: ^0.31.3
   sortablejs: ^1.15.0
   svelte: ^3.56.0
-  svelte-check: ^3.1.2
+  svelte-check: ^3.1.3
   svelte-dnd-action: ^0.9.22
   svelte-preprocess: ^5.0.1
   svg-path-properties: ^1.1.0
@@ -80,7 +80,7 @@ devDependencies:
   '@sveltejs/kit': 1.11.0_svelte@3.56.0+vite@4.1.4
   '@types/js-cookie': 3.0.3
   '@types/mapbox__mapbox-gl-draw': 1.3.3
-  '@types/node': 18.15.0
+  '@types/node': 18.15.1
   '@types/prettier': 2.7.2
   '@typescript-eslint/eslint-plugin': 5.54.1_4rfaf6mlw2mmutqjcopwvbftpu
   '@typescript-eslint/parser': 5.54.1_vgl77cfdswitgr47lm5swmv43m
@@ -101,14 +101,14 @@ devDependencies:
   prettier-plugin-svelte: 2.9.0_gan2xfhhcbz3kbkivttwsjndea
   sass: 1.59.2
   svelte: 3.56.0
-  svelte-check: 3.1.2_cywm432h5wildlvspqka3k5vpm
+  svelte-check: 3.1.3_cywm432h5wildlvspqka3k5vpm
   svelte-preprocess: 5.0.1_jaggnctj4msbyugbagfslffsiq
   svg-path-properties: 1.1.0
   svgson: 5.2.1
   ts-essentials: 9.3.1_typescript@4.9.5
   tslib: 2.5.0
   typescript: 4.9.5
-  vite: 4.1.4_x7dzuadbe27hczg4caescy3qve
+  vite: 4.1.4_swj55raienxruyuzro43n7r3he
 
 packages:
 
@@ -823,7 +823,7 @@ packages:
       svelte: 3.56.0
       tiny-glob: 0.2.9
       undici: 5.20.0
-      vite: 4.1.4_x7dzuadbe27hczg4caescy3qve
+      vite: 4.1.4_swj55raienxruyuzro43n7r3he
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -841,7 +841,7 @@ packages:
       magic-string: 0.29.0
       svelte: 3.56.0
       svelte-hmr: 0.15.1_svelte@3.56.0
-      vite: 4.1.4_x7dzuadbe27hczg4caescy3qve
+      vite: 4.1.4_swj55raienxruyuzro43n7r3he
       vitefu: 0.2.4_vite@4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -1937,8 +1937,8 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
 
-  /@types/node/18.15.0:
-    resolution: {integrity: sha512-z6nr0TTEOBGkzLGmbypWOGnpSpSIBorEhC4L+4HeQ2iezKCi4f77kyslRwvHeNitymGQ+oFyIWGP96l/DPSV9w==}
+  /@types/node/18.15.1:
+    resolution: {integrity: sha512-U2TWca8AeHSmbpi314QBESRk7oPjSZjDsR+c+H4ECC1l+kFgpZf8Ydhv3SJpPy51VyZHHqxlb6mTTqYNNRVAIw==}
 
   /@types/pbf/3.0.2:
     resolution: {integrity: sha512-EDrLIPaPXOZqDjrkzxxbX7UlJSeQVgah3i0aA4pOSzmK9zq3BIh7/MZIQxED7slJByvKM4Gc6Hypyu2lJzh3SQ==}
@@ -1970,7 +1970,7 @@ packages:
   /@types/sharp/0.31.1:
     resolution: {integrity: sha512-5nWwamN9ZFHXaYEincMSuza8nNfOof8nmO+mcI+Agx1uMUk4/pQnNIcix+9rLPXzKrm1pS34+6WRDbDV0Jn7ag==}
     dependencies:
-      '@types/node': 18.15.0
+      '@types/node': 18.15.1
     dev: false
 
   /@types/sortablejs/1.15.0:
@@ -2226,7 +2226,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.5
-      caniuse-lite: 1.0.30001464
+      caniuse-lite: 1.0.30001465
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -2284,7 +2284,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001464
+      caniuse-lite: 1.0.30001465
       electron-to-chromium: 1.4.328
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
@@ -2335,8 +2335,8 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /caniuse-lite/1.0.30001464:
-    resolution: {integrity: sha512-oww27MtUmusatpRpCGSOneQk2/l5czXANDSFvsc7VuOQ86s3ANhZetpwXNf1zY/zdfP63Xvjz325DAdAoES13g==}
+  /caniuse-lite/1.0.30001465:
+    resolution: {integrity: sha512-HvjgL3MYAJjceTDCcjRnQGjwUz/5qec9n7JPOzUursUoOTIsYCSDOb1l7RsnZE8mjbxG78zVRCKfrBXyvChBag==}
     dev: true
 
   /capital-case/1.0.4:
@@ -4589,8 +4589,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check/3.1.2_cywm432h5wildlvspqka3k5vpm:
-    resolution: {integrity: sha512-8nIPXPe8TiUiWPCAoegU+l1NaL5DKLnN6+H1dJqbjkD6IkhpDTMj2q8Z88lhCOsq1F3E7st5/Vn7eGeGkSo/aA==}
+  /svelte-check/3.1.3_cywm432h5wildlvspqka3k5vpm:
+    resolution: {integrity: sha512-DK+DJBD4l9Q9wgphQvSzL9hXhmHbGjq8Y0PDgVth1ewikJzHBIxu7jWuOR7SZcWkorBm3wCJzWMNtZzMyJvHBQ==}
     hasBin: true
     peerDependencies:
       svelte: ^3.55.0
@@ -4932,7 +4932,7 @@ packages:
       unist-util-stringify-position: 2.0.3
     dev: true
 
-  /vite/4.1.4_x7dzuadbe27hczg4caescy3qve:
+  /vite/4.1.4_swj55raienxruyuzro43n7r3he:
     resolution: {integrity: sha512-3knk/HsbSTKEin43zHu7jTwYWv81f8kgAL99G5NWBcA1LKvtvcVAC4JjBH1arBunO9kQka+1oGbrMKOjk4ZrBg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -4957,7 +4957,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.15.0
+      '@types/node': 18.15.1
       esbuild: 0.16.17
       postcss: 8.4.21
       resolve: 1.22.1
@@ -4975,7 +4975,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.1.4_x7dzuadbe27hczg4caescy3qve
+      vite: 4.1.4_swj55raienxruyuzro43n7r3he
     dev: true
 
   /vt-pbf/3.1.3:

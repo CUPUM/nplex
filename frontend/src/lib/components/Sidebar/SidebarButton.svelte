@@ -73,6 +73,7 @@
 		&[data-current] {
 			cursor: default;
 			color: col(secondary, 500);
+			background: col(secondary, 100, 0.05);
 			border-color: col(secondary, 700, 0.5);
 		}
 

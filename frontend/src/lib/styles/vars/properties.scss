@@ -64,6 +64,7 @@
 			100% - 2 * (1.5rem + 56px)
 		); // 100% - (outer gutter + menu button width + inner gutter)
 		--ui-border-thickness: 1.5px;
+		--ui-pad-outer: 1.5rem;
 	}
 
 	@include mobile {

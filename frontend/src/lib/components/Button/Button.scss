@@ -196,7 +196,7 @@
 	:global(.hover-source:hover) &:global(.hover-target),
 	&:hover {
 		color: col(fg, 900);
-		background: col(bg, 900, 0.5);
+		background: col(fg, 100, 0.05);
 	}
 	&:global(.active) {
 		color: col(primary, 500);

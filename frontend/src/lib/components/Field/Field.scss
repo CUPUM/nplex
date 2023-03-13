@@ -187,7 +187,7 @@ label {
 
 .star {
 	display: none;
-	color: col(primary, 900);
+	// color: col(primary, 900);
 	padding-left: 0.2em;
 	.required & {
 		display: inline-block;

@@ -42,7 +42,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { VARIANTS, type Variant } from '$utils/enums';
+	import { STATES, VARIANTS, type State, type Variant } from '$utils/enums';
 	import { snap } from '$utils/number';
 	import { getContext, setContext } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
@@ -59,6 +59,7 @@
 		suffix?: string | null;
 		type?: InputType;
 		variant?: Variant;
+		state?: State;
 		textAlign?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent';
 		compact?: boolean;
 		loading?: boolean;
@@ -75,6 +76,7 @@
 	export let suffix: $$Props['suffix'] = undefined;
 	export let type: $$Props['type'] = 'text';
 	export let variant: $$Props['variant'] = VARIANTS.Default;
+	export let state: $$Props['state'] = STATES.Normal;
 	export let textAlign: $$Props['textAlign'] = undefined;
 	export let compact: $$Props['compact'] = undefined;
 	export let required: $$Props['required'] = undefined;
@@ -108,6 +110,8 @@
 	$: haslabel = $$slots.label;
 	$: hasplaceholder = placeholder != null && placeholder !== '';
 	$: computedPlaceholder = placeholder ? placeholder + (required ? ' *' : '') : undefined;
+
+	// const dispatch = createEventDispatcher();
 
 	const _type = writable<InputType>(type);
 	$: type = $_type;
@@ -168,6 +172,10 @@
 		inputRef: _inputRef,
 		type: _type,
 	});
+
+	// onDestroy(() => {
+	// 	dispatch('destroy');
+	// });
 </script>
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->

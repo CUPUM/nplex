@@ -31,8 +31,8 @@
 </script>
 
 <header
-	use:overlapNavbar={{ theme: THEMES.dark, background: col('bg', '300') }}
-	use:setRootBackground={{ overscroll: THEME_PALETTES.dark.bg[300] }}
+	use:overlapNavbar={{ theme: THEMES.dark, background: col('bg', '500') }}
+	use:setRootBackground={{ overscroll: THEME_PALETTES.dark.bg[500] }}
 	use:intersection
 	on:intersection.enter={() => {
 		entered = true;
@@ -65,7 +65,7 @@
 		height: 100svh;
 		width: 100%;
 		padding-block: var(--ui-nav-h);
-		background: col(bg, 300);
+		background: col(bg, 500);
 		border-bottom-left-radius: var(--splash-radius);
 		border-bottom-right-radius: var(--splash-radius);
 		display: flex;
@@ -83,6 +83,8 @@
 		object-fit: contain;
 		max-width: var(--ui-width-main);
 		padding: 3rem;
+		opacity: max(0, calc(1 - 0.0015 * var(--ui-scroll)));
+		transition: opacity 0.25s ease;
 	}
 
 	button {
@@ -103,7 +105,7 @@
 
 		&:hover,
 		&:focus-visible {
-			background: col(primary, 100, 0.1);
+			background: col(primary, 100, 0.2);
 			color: col(primary, 500);
 			.arrow {
 				opacity: 1;
@@ -115,7 +117,7 @@
 	.arrow {
 		display: flex;
 		align-items: center;
-		opacity: 0.15;
+		opacity: 0.2;
 		transform: translateY(-0.25em);
 		transition: all 0.35s var(--ui-ease-out);
 	}

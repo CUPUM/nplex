@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { cubicOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import { editorIsDirty, EDITOR_FORM_ACTION, EDITOR_FORM_ID } from './common';
 </script>
@@ -9,8 +9,8 @@
 <menu>
 	{#if $editorIsDirty}
 		<div
-			in:fly={{ y: 6, duration: 200, easing: cubicOut }}
-			out:scale|local={{ start: 0.96, duration: 200, easing: cubicIn }}
+			in:fly={{ y: 6, duration: 150, easing: cubicOut }}
+			out:scale|local={{ start: 0.98, duration: 150, easing: cubicOut }}
 		>
 			<Button variant="cta" type="submit" form={EDITOR_FORM_ID} formaction="?/{EDITOR_FORM_ACTION}">
 				Sauvegarder

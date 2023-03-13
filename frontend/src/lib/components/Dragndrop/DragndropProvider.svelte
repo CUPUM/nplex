@@ -23,6 +23,8 @@
 	import Sortable from 'sortablejs';
 	import { createEventDispatcher } from 'svelte';
 
+	// Sortable.mount(new MultiDrag(), new AutoScroll(), new OnSpill());
+
 	type D = $$Generic;
 
 	export let items: D[];
@@ -33,22 +35,22 @@
 	export let touchStartThreshold: Sortable.Options['touchStartThreshold'] = 0;
 	export let disabled: Sortable.Options['disabled'] = false;
 	export let animation: Sortable.Options['animation'] = 350;
-	export let easing: Sortable.Options['easing'] = 'cubic-bezier(1, 0, 0, 1)';
+	export let easing: Sortable.Options['easing'] = 'cubic-bezier(.5, 0, 0, 1)';
 	export let handle: Sortable.Options['handle'] = '';
 	export let filter: Sortable.Options['filter'] = '';
 	export let preventOnFilter: Sortable.Options['preventOnFilter'] = true;
 	// export let draggable: Sortable.Options['draggable'] = ".item";
 	// export let dataIdAttr: Sortable.Options['dataIdAttr'] = 'data-i';
-	export let ghostClass: Sortable.Options['ghostClass'] = '';
-	export let chosenClass: Sortable.Options['chosenClass'] = '';
-	export let dragClass: Sortable.Options['dragClass'] = '';
+	export let ghostClass: Sortable.Options['ghostClass'] = 'dnd-ghost';
+	export let chosenClass: Sortable.Options['chosenClass'] = 'dnd-chosen';
+	export let dragClass: Sortable.Options['dragClass'] = 'dnd-dragging';
 	export let swapThreshold: Sortable.Options['swapThreshold'] = 1;
 	export let invertSwap: Sortable.Options['invertSwap'] = false;
 	export let invertedSwapThreshold: Sortable.Options['invertedSwapThreshold'] = 1;
 	export let direction: Sortable.Options['direction'] = undefined;
 	export let forceFallback: Sortable.Options['forceFallback'] = true;
-	export let fallbackClass: Sortable.Options['fallbackClass'] = '';
-	export let fallbackOnBody: Sortable.Options['fallbackOnBody'] = true;
+	export let fallbackClass: Sortable.Options['fallbackClass'] = 'dnd-fallback';
+	export let fallbackOnBody: Sortable.Options['fallbackOnBody'] = false;
 	export let fallbackTolerance: Sortable.Options['fallbackTolerance'] = 0;
 	export let dragoverBubble: Sortable.Options['dragoverBubble'] = false;
 	export let removeCloneOnHide: Sortable.Options['removeCloneOnHide'] = true;
@@ -66,7 +68,7 @@
 			draggable: `[${ATTRIBUTES.DRAGGABLE}]`,
 			scrollSensitivity: 100,
 			scrollSpeed: 16,
-			scroll: true,
+			scroll: element,
 			bubbleScroll: true,
 			group,
 			sort,
@@ -93,7 +95,12 @@
 			dragoverBubble,
 			removeCloneOnHide,
 			emptyInsertThreshold,
-			// scrollFn(offsetX, offsetY, originalEvent, touchEvt, hoverTargetEl) {},
+			scrollFn(offsetX, offsetY, originalEvent, touchEvt, hoverTargetEl) {
+				// if (!fallbackOnBody) {
+				// 	console.log(offsetX, offsetY, hoverTargetEl);
+				// }
+				return 'continue';
+			},
 			onSort(e) {
 				items = [...sortable.el.children].reduce((acc, curr) => {
 					const item = itemsRefs.get(curr);
@@ -114,6 +121,12 @@
 				// console.log(e);
 			},
 		});
+		return {
+			update(args) {},
+			destroy() {
+				sortable.destroy();
+			},
+		} satisfies SvelteActionReturnType;
 	}
 
 	function dragndropItem(
