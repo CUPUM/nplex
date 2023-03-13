@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Dirty from '$components/Dirty.svelte';
-	import TextArea from '$components/TextArea.svelte';
+	import TextArea from '$components/TextArea/TextArea.svelte';
 	import { editorDirtyValues } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';

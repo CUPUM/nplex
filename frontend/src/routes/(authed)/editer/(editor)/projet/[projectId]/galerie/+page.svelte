@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import AnimateHeight from '$components/AnimateHeight.svelte';
 	import Dirty from '$components/Dirty.svelte';
-	import DragndropContext from '$components/Dragndrop/DragndropContext.svelte';
+	import DragndropProvider from '$components/Dragndrop/DragndropProvider.svelte';
 	import { offsetItem } from '$utils/array';
 	import { flip } from 'svelte/animate';
 	import { cubicOut, expoIn, expoOut } from 'svelte/easing';
@@ -35,7 +35,7 @@
 />
 <EditorFormgroup legend="Galerie">
 	<AnimateHeight>
-		<DragndropContext bind:items={galleryItems} let:dragndropZone let:dragndropItem>
+		<DragndropProvider bind:items={galleryItems} let:dragndropZone let:dragndropItem>
 			<ol use:dragndropZone>
 				{#each galleryItems as item, i (item.id)}
 					<li
@@ -58,7 +58,7 @@
 					</li>
 				{/each}
 			</ol>
-		</DragndropContext>
+		</DragndropProvider>
 	</AnimateHeight>
 </EditorFormgroup>
 

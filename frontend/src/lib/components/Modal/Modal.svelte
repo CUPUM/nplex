@@ -10,32 +10,48 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Portal from '$components/Portal.svelte';
 	import { rootScroll } from '$stores/rootScroll';
+	import { onDestroy } from 'svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fade, fly, scale } from 'svelte/transition';
 	import { modalOutletRef } from './ModalOutlet.svelte';
 
-	export let background: string = '';
+	export let backgroundColor: string = '';
 	export let lockScroll: boolean = true;
 	export let closeOnClickoutside = true;
+	export let opened: boolean = false;
+
+	// const dispatch = createEventDispatcher<{[e in 'open' | 'close']: CustomEvent<{originalEvent: PointerEvent}>}>();
 
 	const key = Symbol('modal');
 
-	$: if (lockScroll === false) {
+	$: if (lockScroll === false || !opened) {
 		rootScroll.unlock(key);
-	} else {
+	} else if (opened) {
 		rootScroll.lock(key);
 	}
+
+	function close() {
+		opened = false;
+	}
+
+	onDestroy(() => {
+		rootScroll.unlock(key);
+	});
 </script>
 
-{#if $modalOutletRef}
+{#if $modalOutletRef && opened}
 	<Portal target={$modalOutletRef}>
-		<div class="bg" style:--background={background} transition:fade|local={{ duration: 150 }} />
+		<div
+			class="bg"
+			style:--background={backgroundColor}
+			transition:fade|local={{ duration: 150 }}
+		/>
 		<dialog
 			use:clickoutside
 			on:clickoutside
 			on:clickoutside={() => {
 				if (closeOnClickoutside) {
-					close();
+					opened = false;
 				}
 			}}
 			in:scale={{ start: 0.98, duration: 100, easing: cubicOut }}
@@ -43,15 +59,15 @@
 		>
 			{#if $$slots.header}
 				<header>
-					<slot name="header" />
+					<slot name="header" {close} />
 				</header>
 			{/if}
 			<article class="main">
-				<slot>Modal content placeholder</slot>
+				<slot {close}>Modal content placeholder</slot>
 			</article>
 			{#if $$slots.footer}
 				<footer>
-					<slot name="footer" />
+					<slot name="footer" {close} />
 				</footer>
 			{/if}
 		</dialog>
@@ -60,6 +76,7 @@
 
 <style lang="scss">
 	.bg {
+		pointer-events: all;
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -98,7 +115,7 @@
 		font-weight: 500;
 		top: 0;
 		padding: 1.5rem 2rem;
-		border-bottom: 1px solid col(fg, 100, 0.1);
+		border-bottom: 1px dashed col(fg, 100, 0.1);
 	}
 
 	footer {
@@ -112,6 +129,7 @@
 		padding: 1.5rem;
 		position: sticky;
 		bottom: 0;
-		// border-top: 1px solid col(fg, 000, 0.1);
+		border-top: 1px dashed col(fg, 100, 0.1);
+		// background: col(bg, 100);
 	}
 </style>

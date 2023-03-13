@@ -200,7 +200,7 @@
 					rounded
 					active={!!$authModal}
 					href={authModal.getUrl({ url: $page.url }).toString()}
-					data-sveltekit-noscroll
+					data-sveltekit-noscroll=""
 				>
 					<Icon name="user" strokeWidth={2} style="font-size: 1.25em" />
 				</NavbarButton>
@@ -212,7 +212,7 @@
 <style lang="scss">
 	header {
 		--navbar-bg: var(--color-bg-100);
-		--navbar-transition: 0.25s ease;
+		--navbar-transition: 0.15s ease;
 		pointer-events: none;
 		position: sticky;
 		display: flex;

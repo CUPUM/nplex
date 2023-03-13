@@ -103,7 +103,7 @@
 		pointer-events: none;
 		border: 1px dashed col(fg, 100, 0);
 		color: col(fg, 700);
-		@include loading-skeleton;
+		@include skeleton-pulse;
 
 		legend {
 			opacity: 0;

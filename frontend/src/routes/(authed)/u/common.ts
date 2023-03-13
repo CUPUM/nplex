@@ -24,7 +24,7 @@ export const USER_ROUTES = {
 	favorites: {
 		title: 'Favoris',
 		pathname: base('/favoris'),
-		icon: 'heart',
+		icon: 'hearts',
 	},
 	editor: {
 		title: 'Éditeur',

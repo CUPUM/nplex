@@ -99,14 +99,14 @@
 	bind:dirty={$editorDirtyValues.location}
 />
 <EditorFormgroup legend="Emplacement">
-	<p class="ui-info">
+	<p class="info">
 		<kbd>
 			<Icon name="path-circle" />
 		</kbd>
 		Situez le projet sur la carte ci-contre en y dessinant un cercle. Notez que le diamètre du cercle
 		permet de garder l'emplacement confidentiel lorsque le projet sera publié.
 	</p>
-	<p class="ui-info">
+	<p class="info">
 		Assurrez-vous toutefois que le centre du cercle correspond bien à l'emplacement du projet. Son
 		bon positionnement est essentiel pour permettre d'extrapoler des données supplémentaires.
 	</p>

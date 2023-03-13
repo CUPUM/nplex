@@ -6,7 +6,7 @@
 	import FieldTogglePassword from '$components/Field/FieldTogglePassword.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Select from '$components/Select/Select.svelte';
-	import TextArea from '$components/TextArea.svelte';
+	import TextArea from '$components/TextArea/TextArea.svelte';
 	import { LOAD_DEPENDENCIES } from '$utils/enums';
 
 	export let data;

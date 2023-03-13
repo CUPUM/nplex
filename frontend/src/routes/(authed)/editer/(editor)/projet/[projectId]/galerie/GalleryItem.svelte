@@ -5,7 +5,7 @@
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Image from '$components/Image/Image.svelte';
-	import TextArea from '$components/TextArea.svelte';
+	import TextArea from '$components/TextArea/TextArea.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { KEY, SEARCH_PARAMS } from '$utils/enums';
 	import { THEMES } from '$utils/themes';
@@ -13,7 +13,7 @@
 	import { fly } from 'svelte/transition';
 	import type { PageData } from './$types';
 
-	export let data['project']['gallery'][number];
+	export let data: PageData['project']['gallery'][number];
 	export let i: number;
 
 	$: ({ banner_id } = ($page.data as PageData).project);

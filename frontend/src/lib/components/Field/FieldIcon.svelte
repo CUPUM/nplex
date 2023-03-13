@@ -4,23 +4,27 @@
 
 	type $$Props = ComponentProps<Icon>;
 
-	$: typedProps = $$props as $$Props;
+	export let name: $$Props['name'];
+	export let style: string | undefined = undefined;
+	let className: string | undefined = '';
+	export { className as class };
 </script>
 
-<i class="field-icon {typedProps.class || ''}">
-	<Icon {...typedProps} />
+<i class="field-icon {className}" {style}>
+	<Icon {name} {...$$restProps} />
 </i>
 
 <style lang="scss">
 	.field-icon {
 		--gap: 0.2em;
 		position: relative;
-		display: inline-block;
+		display: flex;
+		align-items: center;
 		line-height: 1;
-		padding-bottom: calc(0.5em - 0.5ex);
 		opacity: 0.5;
 		padding-inline: var(--ui-pad-inline);
-		transition: all 0.25s;
+		align-self: stretch;
+		transition: all 0.1s ease;
 		:global(.leading) > &:last-child {
 			padding-right: 0;
 		}

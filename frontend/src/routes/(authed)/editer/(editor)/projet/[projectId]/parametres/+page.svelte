@@ -9,7 +9,7 @@
 
 <EditorFormgroup legend="Visibilité du projet">
 	{#if role === 'admin' || role === 'editor'}
-		<p class="ui-info">
+		<p class="info">
 			Vous pouvez ici contrôler la visibilité de la fiche. Les fiches non-publiées sont visibles
 			uniquement pour les collaborateurs et les administrateurs.
 		</p>
@@ -18,12 +18,12 @@
 			<Icon name="upload" slot="trailing" />
 		</Button>
 	{:else if role === 'visitor'}
-		<p class="ui-info">
+		<p class="info">
 			Vous pouvez ici contrôler la visibilité de la fiche. Votre statut d'utilisateur actuel ne vous
 			permet pas de rendre du contenu public de manière autonome, mais vous pouvez envoyer une
 			demande de publication. Celle-ci sera traitée par un administrateur ou un éditeur.
 		</p>
-		<p class="ui-info">
+		<p class="info">
 			Les fiches non-publiées sont visibles uniquement pour les collaborateurs et les
 			administrateurs.
 		</p>
@@ -34,7 +34,7 @@
 	{/if}
 </EditorFormgroup>
 <EditorFormgroup legend="Accès">
-	<p class="ui-info">
+	<p class="info">
 		Les droits d'accès aux fiches peuvent être partagés avec d'autres utilisateurs de Nplex. En
 		ajoutant des collaborateurs au projet, ceux-ci se verront accorder les permissions nécessaires
 		pour consulter la fiche même si elle n'est pas publiée. Il pourront aussi éditer le contenu de
@@ -42,7 +42,7 @@
 	</p>
 </EditorFormgroup>
 <EditorFormgroup legend="Supprimer">
-	<p class="ui-info">Attention, les projets supprimés ne peuvent pas être récupérés.</p>
+	<p class="info">Attention, les projets supprimés ne peuvent pas être récupérés.</p>
 	<fieldset class="delete">
 		<Button variant="danger" type="submit" formaction="?/delete">
 			<Icon name="trash" slot="leading" />Supprimer le projet

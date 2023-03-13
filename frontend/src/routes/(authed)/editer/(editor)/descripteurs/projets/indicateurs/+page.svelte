@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import AnimateHeight from '$components/AnimateHeight.svelte';
 	import Dirty from '$components/Dirty.svelte';
-	import DragndropContext from '$components/Dragndrop/DragndropContext.svelte';
+	import DragndropProvider from '$components/Dragndrop/DragndropProvider.svelte';
+	import Icon from '$components/Icon.svelte';
 	import { fly } from 'svelte/transition';
-	import { editorDirtyValues, EDITOR_FORM_ID } from '../../../common';
+	import { editorDirtyValues, EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../../common';
 	import type { PageData } from './$types';
 	import IndicatorCard from './IndicatorCard.svelte';
 
@@ -25,36 +27,63 @@
 	specimen={formMetaIndicators}
 	bind:dirty={$editorDirtyValues.indicators}
 />
-<form action={EDITOR_FORM_ID} method="POST" use:enhance>
-	<header>
-		<h2 class="heading-xl">Indicateurs d'exemplarité</h2>
-		<p class="info">
-			Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro eligendi expedita distinctio
-			aliquam possimus asperiores neque sed accusamus voluptatum dolore?
-		</p>
-	</header>
+<header>
+	<h2 class="heading-xl">Indicateurs d'exemplarité</h2>
+	<p class="text-lg info">
+		Les indicateurs d'exemplarité consistent en plusieurs ensembles de jetons utilisés pour décrire
+		les projets et souligner les caractéristiques qui témoignent de leur qualité.
+	</p>
+	<p class="info">
+		<Icon name="info-circle" />&ensp; Ci-dessous, vous pouvez gérer la banque générale des
+		indicateurs qui pourront par la suite être associés aux divers projets documentés sur la
+		plateforme. Vous pouvez changer la catégorie d'un indicateur en le glissant d'une boîte à
+		l'autre.
+	</p>
+</header>
+<form
+	id={EDITOR_FORM_ID}
+	action={EDITOR_FORM_ACTION}
+	method="POST"
+	use:enhance={(a) => {
+		return (f) => {
+			f.update({ reset: false });
+		};
+	}}
+>
 	{#each formMetaIndicators as metaIndicator, i0}
 		<section>
-			<h3 class="heading-md">{metaIndicator.title}</h3>
-			<p class="info">{metaIndicator.description || 'Description à venir...'}</p>
-			<DragndropContext bind:items={metaIndicator.indicators} let:dragndropZone let:dragndropItem>
-				<ul use:dragndropZone>
-					{#each metaIndicator.indicators as indicator, i1 (indicator.id)}
-						<li
-							use:dragndropItem={{ item: indicator }}
-							in:fly={{ y: -6, duration: 350, delay: 100 * i1 }}
-						>
-							<IndicatorCard metaId={metaIndicator.id} bind:data={indicator} i={i1} />
-						</li>
-					{/each}
-				</ul>
-			</DragndropContext>
+			<AnimateHeight>
+				<h3 class="heading-md">{metaIndicator.title}</h3>
+				<p class="info">{metaIndicator.description || 'Description à venir...'}</p>
+				<DragndropProvider
+					bind:items={metaIndicator.indicators}
+					sort={false}
+					let:dragndropZone
+					let:dragndropItem
+					group={{
+						name: 'indicators',
+					}}
+				>
+					<ul use:dragndropZone>
+						{#each metaIndicator.indicators as indicator, i1 (indicator.id)}
+							<li
+								use:dragndropItem={{ item: indicator }}
+								in:fly|local={{ y: -6, duration: 350, delay: 100 * i1 }}
+							>
+								<IndicatorCard metaId={metaIndicator.id} bind:data={indicator} i={i1} />
+							</li>
+						{/each}
+					</ul>
+				</DragndropProvider>
+			</AnimateHeight>
 		</section>
 	{/each}
 </form>
 
 <style lang="scss">
 	form {
+		// display: grid;
+		// grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
@@ -75,8 +104,12 @@
 
 	ul {
 		margin-top: 1.5rem;
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-		gap: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	li {
+		position: relative;
 	}
 </style>

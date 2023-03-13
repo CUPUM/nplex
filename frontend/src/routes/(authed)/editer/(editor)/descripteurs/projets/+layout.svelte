@@ -4,6 +4,7 @@
 	import Sidebar from '$components/Sidebar/Sidebar.svelte';
 	import SidebarButton from '$components/Sidebar/SidebarButton.svelte';
 	import EditorCrumbs from '../../EditorCrumbs.svelte';
+	import EditorToolbar from '../../EditorToolbar.svelte';
 	import type { LayoutData } from './$types';
 	import { PROJECT_DESCIPTORS_EDITOR_BASE, PROJECT_DESCRIPTORS_EDITOR_ROUTES } from './routes';
 
@@ -28,6 +29,7 @@
 		<slot />
 	</section>
 </div>
+<EditorToolbar />
 
 <style lang="scss">
 	.layout {

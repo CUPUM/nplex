@@ -41,7 +41,7 @@
 	strictOrder
 />
 <EditorFormgroup legend="Fourchette de coûts">
-	<p class="ui-info">
+	<p class="info">
 		Indiquez approximativement les coûts totaux du projet, selon un niveau de précision avec lequel
 		vous êtes confortable.
 	</p>

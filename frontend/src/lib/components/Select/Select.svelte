@@ -18,26 +18,27 @@
 	import Field from '../Field/Field.svelte';
 	import Icon from '../Icon.svelte';
 
-	type Option = $$Generic;
+	type O = $$Generic;
 
-	export let variant: ComponentProps<Field>['variant'] = 'default';
-	export let id: ComponentProps<Field>['id'] = undefined;
-	export let name: ComponentProps<Field>['name'] = undefined;
-	export let value: ComponentProps<Field>['value'] = undefined;
-	export let options: Option[];
-	export let placeholder: ComponentProps<Field>['placeholder'] = undefined;
-	export let prefix: ComponentProps<Field>['prefix'] = '';
-	export let suffix: ComponentProps<Field>['suffix'] = '';
-	export let required: ComponentProps<Field>['required'] = undefined;
-	export let compact: ComponentProps<Field>['compact'] = undefined;
-	export let disabled: ComponentProps<Field>['disabled'] = undefined;
-	export let warning: ComponentProps<Field>['warning'] = undefined;
-	export let success: ComponentProps<Field>['success'] = undefined;
-	export let loading: ComponentProps<Field>['loading'] = undefined;
-	export let tabindex: ComponentProps<Field>['tabindex'] = undefined;
-	export let dirty: ComponentProps<Field>['dirty'] = undefined;
-	export let style: ComponentProps<Field>['style'] = undefined;
-	let className: ComponentProps<Field>['class'] = undefined;
+	type $$Props = ComponentProps<Field<O>> & {};
+
+	export let options: O[];
+	export let variant: ComponentProps<Field<O>>['variant'] = 'default';
+	export let id: ComponentProps<Field<O>>['id'] = undefined;
+	export let name: ComponentProps<Field<O>>['name'] = undefined;
+	export let value: ComponentProps<Field<O>>['value'] = undefined;
+	export let placeholder: ComponentProps<Field<O>>['placeholder'] = undefined;
+	export let prefix: ComponentProps<Field<O>>['prefix'] = '';
+	export let suffix: ComponentProps<Field<O>>['suffix'] = '';
+	export let required: ComponentProps<Field<O>>['required'] = undefined;
+	export let compact: ComponentProps<Field<O>>['compact'] = undefined;
+	export let disabled: ComponentProps<Field<O>>['disabled'] = undefined;
+	export let warning: ComponentProps<Field<O>>['warning'] = undefined;
+	export let success: ComponentProps<Field<O>>['success'] = undefined;
+	export let loading: ComponentProps<Field<O>>['loading'] = undefined;
+	export let tabindex: ComponentProps<Field<O>>['tabindex'] = undefined;
+	export let style: ComponentProps<Field<O>>['style'] = undefined;
+	let className: ComponentProps<Field<O>>['class'] = undefined;
 	export { className as class };
 
 	let selectRef: HTMLSelectElement;
@@ -70,9 +71,7 @@
 	{tabindex}
 	{name}
 	{required}
-	bind:dirty
 	class={className}
-	nolabel={!$$slots.label}
 >
 	<slot name="leading" slot="leading" />
 	<svelte:fragment slot="label">

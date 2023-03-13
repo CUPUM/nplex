@@ -119,6 +119,7 @@
 			<svelte:fragment slot="leading">
 				<FieldIcon name="search" />
 			</svelte:fragment>
+			<!-- <FieldOptions slot="options" /> -->
 		</Field>
 		<datalist id="works-data">
 			{#each descriptors.workCategories as c}

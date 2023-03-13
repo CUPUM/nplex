@@ -43,8 +43,14 @@
 	&.warning,
 	&:has(:out-of-range),
 	&:has(:invalid) {
+		--ui-outline-color: #{col(error, 500, 0.5)};
 		color: col(error, 700) !important;
 		background: col(error, 100, 0.1) !important;
+
+		::placeholder,
+		.label {
+			opacity: 0.5;
+		}
 
 		.outline {
 			border-color: col(error, 500) !important;

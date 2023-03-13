@@ -7,11 +7,11 @@
 </script>
 
 <EditorFormgroup legend="Superficie du terrain">
-	<p class="ui-info">
+	<p class="info">
 		Vous pouvez utiliser l'outil de mesure <kbd><Icon name="path-line" /></kbd>
 		disponible sur la carte pour vous aider à évaluer l'aire.
 	</p>
-	<p class="ui-info">Notez que les tracés produits avec cet outil ne sont pas sauvegardés.</p>
+	<p class="info">Notez que les tracés produits avec cet outil ne sont pas sauvegardés.</p>
 
 	<Field
 		style="flex: 1;"

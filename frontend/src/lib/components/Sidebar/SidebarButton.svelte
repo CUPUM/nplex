@@ -38,6 +38,7 @@
 
 <style lang="scss">
 	.ui-sidebar-button {
+		--ripple-color: #{col(secondary, 500)};
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -67,17 +68,17 @@
 
 	.default {
 		color: col(fg, 000);
-		border: 1px dashed col(primary, 500, 0);
+		border: var(--ui-border-thickness) dashed col(secondary, 500, 0);
 
 		&[data-current] {
 			cursor: default;
-			color: col(primary, 500);
-			border-color: col(primary, 700, 0.5);
+			color: col(secondary, 500);
+			border-color: col(secondary, 700, 0.5);
 		}
 
 		&:hover:not([data-current]) {
-			color: col(primary, 700);
-			background: col(primary, 100, 0.1);
+			color: col(secondary, 700);
+			background: col(secondary, 100, 0.1);
 		}
 	}
 </style>

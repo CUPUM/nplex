@@ -22,7 +22,11 @@
 		publishing: 'all',
 	};
 
-	export const snapshot: Snapshot = {
+	export const snapshot: Snapshot<{
+		projectsFilters: typeof projectsFilters;
+		organisationsFilters: typeof organisationsFilters;
+		actorsFilters: typeof actorsFilters;
+	}> = {
 		capture: () => {
 			return { projectsFilters, organisationsFilters, actorsFilters };
 		},
@@ -35,8 +39,8 @@
 <slot />
 <header>
 	<hgroup>
-		<h1 class="h1">Mes fiches</h1>
-		<span class="ui-info">Explorez les fiches pour lesquelles vous avez des droits d'édition.</span>
+		<h1 class="heading-xl">Mes fiches</h1>
+		<span class="info">Explorez les fiches pour lesquelles vous avez des droits d'édition.</span>
 	</hgroup>
 </header>
 <EditablesList

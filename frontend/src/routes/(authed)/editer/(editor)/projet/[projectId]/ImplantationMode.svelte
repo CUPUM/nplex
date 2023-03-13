@@ -13,7 +13,7 @@
 
 <section class="editor-section">
 	<h3 class="legend">Mode d'implantation</h3>
-	<p class="ui-info">
+	<p class="info">
 		S'il y a lieu, indiquez comment le bâtiment s'imbrique parmi les bâtiments voisins.
 	</p>
 	<Switch bind:group={form_implantationModeId} name="implantation_mode_id">

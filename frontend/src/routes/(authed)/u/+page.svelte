@@ -105,7 +105,7 @@
 		height: 100%;
 		align-items: center;
 		color: col(bg, 100);
-		font-size: 500px;
+		font-size: 400px;
 		position: absolute;
 		transition: inherit;
 	}

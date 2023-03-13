@@ -30,7 +30,7 @@
 </script>
 
 <EditorFormgroup legend="Arrondissement & quartier">
-	<p class="ui-info">
+	<p class="info">
 		Sélectionnez confirmez l'arrondissement dans la liste suivante établie en fonction de votre
 		localisation du projet:
 	</p>

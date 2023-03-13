@@ -19,7 +19,7 @@
 	bind:dirty={$editorDirtyValues.adjacent_streets}
 />
 <EditorFormgroup legend="Rues adjacentes">
-	<p class="ui-info">Combien de rues ou de ruelles bordent directement le terrain?</p>
+	<p class="info">Combien de rues ou de ruelles bordent directement le terrain?</p>
 	<Field
 		readonly
 		type="number"

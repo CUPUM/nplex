@@ -8,14 +8,17 @@
 
 <style lang="scss">
 	aside {
-		--ui-aside-inset: var(--aside-inset, var(--ui-inset));
+		--ui-aside-inset: var(--aside-inset, 6px);
 		flex: none;
 		position: sticky;
 		display: flex;
-		align-items: flex-start;
+		align-items: stretch;
 		flex-direction: column;
-		top: var(--ui-nav-h);
-		padding-top: 1.5rem;
+		top: calc(var(--ui-nav-h));
+		padding: var(--ui-aside-inset);
+		border-radius: var(--ui-radius-lg);
+		// background-color: col(secondary, 100, 0.05);
+		border: var(--ui-border-thickness) solid col(secondary, 100, 0.2);
 		overflow-x: hidden;
 		overflow-y: auto;
 		gap: var(--ui-aside-inset);
@@ -23,22 +26,22 @@
 
 		> :global(hr) {
 			align-self: stretch;
-			border: var(--ui-border-thickness) dashed col(fg, 500, 0.2);
+			border: var(--ui-border-thickness) solid col(secondary, 100, 0.2);
 			border-top: none;
-			margin: 1.5rem var(--ui-border-thickness);
+			margin: 0 calc(-1 * var(--ui-aside-inset));
 			position: relative;
 			overflow: visible;
 
-			&::after {
-				content: '';
-				position: absolute;
-				height: 12px;
-				width: calc(100% + 2 * var(--ui-border-thickness));
-				top: 0;
-				left: calc(-1 * var(--ui-border-thickness));
-				transform: translateY(-50%);
-				border-inline: inherit;
-			}
+			// &::after {
+			// 	content: '';
+			// 	position: absolute;
+			// 	height: 12px;
+			// 	width: calc(100% + 2 * var(--ui-border-thickness));
+			// 	top: 0;
+			// 	left: calc(-1 * var(--ui-border-thickness));
+			// 	transform: translateY(-50%);
+			// 	border-inline: inherit;
+			// }
 		}
 	}
 </style>

@@ -88,7 +88,7 @@
 
 <section {id}>
 	<header>
-		<h3 class="h2">{title}</h3>
+		<h3 class="heading-lg">{title}</h3>
 		<form action="" use:enhance method="POST">
 			<Switch bind:value={filters.authoring} variant="feature" name="filter" compact>
 				{#each Object.entries(authoring) as [k, v]}

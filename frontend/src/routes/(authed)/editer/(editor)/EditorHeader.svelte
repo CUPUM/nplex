@@ -41,14 +41,18 @@
 		padding: 3rem;
 		gap: 1.5rem;
 		border: var(--ui-border-thickness) dashed col(primary, 700, 0.5);
+		// background-color: col(primary, 100, 0.2);
 		color: col(primary, 700);
 		border-radius: var(--ui-radius-lg);
 		margin-bottom: var(--ui-nav-h);
 		opacity: max(0, calc(1 - var(--ui-scroll) * 0.002));
+		transition: opacity 0.25s ease;
 	}
 
 	hgroup {
-		font-size: var(--ui-text-2xl);
+		// color: transparent;
+		// -webkit-text-stroke: 1px col(primary, 700);
+		font-size: var(--ui-text-3xl);
 		font-weight: 500;
 		line-height: 1.2;
 

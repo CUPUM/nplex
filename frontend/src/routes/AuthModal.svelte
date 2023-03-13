@@ -237,7 +237,7 @@
 				</Button>
 				<Button
 					class="small-button"
-					data-sveltekit-noscroll
+					data-sveltekit-noscroll=""
 					data-sveltekit-replacestate
 					variant={$authModal === AUTHMODAL_MODE.SignUp ? 'cta' : 'default'}
 					type={$authModal === AUTHMODAL_MODE.SignUp ? 'submit' : 'button'}

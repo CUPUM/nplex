@@ -27,16 +27,8 @@
 		| 'week'
 		| 'url';
 
-	type Value =
-		| string
-		| number
-		| Record<string | number | symbol, unknown>
-		| Array<unknown>
-		| undefined
-		| null;
-
 	interface FieldContext {
-		value: Writable<Value>;
+		value: Writable<unknown>;
 		inputRef: Writable<InputRef>;
 		type: Writable<InputType>;
 		min?: number;
@@ -72,12 +64,13 @@
 		loading?: boolean;
 		warning?: boolean;
 		success?: boolean;
+		rounded?: boolean;
 		focus?: () => void;
 		blur?: () => void;
 	};
 
 	export let id: $$Props['id'] = undefined;
-	export let value: Value = '';
+	export let value: any = '';
 	export let prefix: $$Props['prefix'] = undefined;
 	export let suffix: $$Props['suffix'] = undefined;
 	export let type: $$Props['type'] = 'text';
@@ -98,6 +91,7 @@
 	export let autocomplete: $$Props['autocomplete'] = 'off';
 	export let placeholder: $$Props['placeholder'] = '';
 	export let style: $$Props['style'] = undefined;
+	export let rounded: boolean | undefined = undefined;
 	let className: $$Props['class'] = '';
 	export { className as class };
 	export function focus() {
@@ -136,7 +130,7 @@
 				let number = Number(e.target.value);
 				value = number;
 			} else {
-				value = e.target.value as Value;
+				value = e.target.value;
 			}
 		}
 	}
@@ -190,6 +184,7 @@
 	class:hasplaceholder
 	class:haslabel
 	class:required
+	class:rounded
 	style:--label-width="{labelWidth ?? 0}px"
 	on:click|self={focus}
 	on:click
@@ -273,6 +268,8 @@
 			<slot {value} name="trailing" />
 		</div>
 	{/if}
+	<!-- For options list and other appended extensions -->
+	<slot name="options" />
 </fieldset>
 
 <style lang="scss">
