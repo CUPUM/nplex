@@ -155,5 +155,19 @@
 <style lang="scss">
 	:global([data-dnd-draggable]) {
 		cursor: pointer;
+		// transition: scale 0.25 var(--ui-ease-out), opacity 0.25s;
 	}
+
+	// :global(.dnd-fallback) {
+	// }
+
+	// :global(.dnd-ghost) {
+	// 	opacity: 0.5 !important;
+	// 	scale: 0.98;
+	// 	transition: scale 0.25 var(--ui-ease-out), opacity 0.25s;
+	// }
+
+	// :global(.dnd-dragging) {
+	// 	scale: 0.98;
+	// }
 </style>

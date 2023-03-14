@@ -26,13 +26,14 @@
 
 @include Breadcrumbs.children(default) {
 	.breadcrumbs-item {
-		color: col(fg, 100);
+		color: col(fg, 100, 0.75);
 		&:hover {
-			color: col(primary, 700);
-			background-color: col(primary, 300, 0.2);
+			color: col(primary, 900);
+			background-color: col(primary, 300, 0.1);
 		}
 		&[data-current]:not(:hover) {
-			background-color: col(bg, 900, 0.9);
+			color: col(fg, 500);
+			// background-color: col(bg, 900, 0.9);
 		}
 	}
 }

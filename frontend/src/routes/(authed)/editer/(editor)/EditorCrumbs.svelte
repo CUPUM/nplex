@@ -2,6 +2,7 @@
 	import Breadcrumbs from '$components/Breadcrumbs/Breadcrumbs.svelte';
 	import BreadcrumbsItem from '$components/Breadcrumbs/BreadcrumbsItem.svelte';
 	import BreadcrumbsSeparator from '$components/Breadcrumbs/BreadcrumbsSeparator.svelte';
+	import Icon from '$components/Icon.svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
@@ -13,7 +14,7 @@
 		{#each crumbs as crumb, i}
 			<BreadcrumbsItem href={crumb.pathname}>{crumb.title}</BreadcrumbsItem>
 			{#if i < crumbs.length - 1}
-				<BreadcrumbsSeparator />
+				<BreadcrumbsSeparator><Icon name="chevron-right" /></BreadcrumbsSeparator>
 			{/if}
 		{/each}
 	</Breadcrumbs>

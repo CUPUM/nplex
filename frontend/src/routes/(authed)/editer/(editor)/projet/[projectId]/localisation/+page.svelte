@@ -29,18 +29,17 @@
 		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: 1.5rem;
+		gap: var(--ui-gutter);
 		flex: 1;
 	}
 
 	.map {
-		--pad-top: calc(var(--ui-nav-h) + 1.5rem);
 		align-self: flex-start;
 		grid-column: 2;
 		grid-row: 1;
 		position: sticky;
 		top: var(--ui-nav-h);
-		height: calc(100vh - var(--pad-top) - 7rem);
+		height: calc(100vh - var(--ui-nav-h) - var(--ui-gutter));
 	}
 
 	.fields {

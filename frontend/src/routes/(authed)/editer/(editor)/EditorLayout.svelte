@@ -33,10 +33,7 @@
 		display: flex;
 		align-items: flex-start;
 		flex-direction: row;
-		gap: 1.5rem;
-		// padding-top: 1.5rem;
-		// padding-top: var(--ui-nav-h);
-		scroll-margin-top: calc(-1 * var(--ui-nav-h));
+		gap: var(--ui-gutter);
 
 		@include tablet {
 			gap: 0;

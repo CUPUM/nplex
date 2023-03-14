@@ -27,7 +27,7 @@
 	}}
 >
 	<div>
-		<h2 class="h2" in:fly={{ y: 12 }}>
+		<h2 class="heading-lg" in:fly={{ y: 12 }}>
 			Créez votre <nobr>nouveau projet.</nobr>
 		</h2>
 		<fieldset in:fly={{ y: -12, delay: 150 }}>
@@ -37,7 +37,7 @@
 				variant="outlined"
 				bind:value={title}
 				warning={!!form?.errorMessages.length}
-				placeholder="Titre de projet"
+				placeholder="Titre du projet"
 			>
 				<!-- <svelte:fragment slot="label">Titre du projet</svelte:fragment> -->
 				<Button

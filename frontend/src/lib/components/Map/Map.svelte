@@ -252,8 +252,8 @@
 
 		:global(.maplibregl-desktop-message),
 		:global(.maplibregl-mobile-message) {
-			padding-inline: 1.25rem;
-			padding-block: 0.5rem 0.7rem;
+			padding-inline: 1.5rem;
+			padding-block: 0.8rem 0.9rem;
 			// border-radius: var(--ui-radius-md);
 			border-radius: 99px;
 			background: col(bg, 300, 0.75);

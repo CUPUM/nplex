@@ -15,6 +15,7 @@
 <style lang="scss">
 	.new-entry {
 		position: relative;
+		flex: 1;
 		border-radius: inherit;
 		display: flex;
 		flex-direction: column;

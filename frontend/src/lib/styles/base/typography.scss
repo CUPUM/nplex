@@ -6,13 +6,16 @@
 }
 
 kbd {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	padding-inline: 0.5em;
-	height: 2em;
-	border-radius: 0.5em;
-	border: 1px solid col(fg, 500, 0.1);
+	// align-items: center;
+	// justify-content: center;
+	padding: 0.35em 0.5em 0.4em;
+	border-radius: 0.6em;
+	border: 1px solid col(fg, 100, 0.1);
+	background-color: col(fg, 100, 0.05);
+
+	> .ui-icon {
+		top: -0.1em;
+	}
 }
 
 p {

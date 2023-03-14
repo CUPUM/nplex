@@ -5,10 +5,9 @@
 	--token-radius: 99em;
 	--token-inset: var(--ui-inset);
 	--token-border: 0px solid transparent;
-	--token-gutter: var(--ui-pad-inline);
-	--token-border: 0px solid transparent;
+	--token-gutter: 0.5em;
+	--token-pad-inline: calc(var(--ui-pad-inline) - var(--token-inset));
 	position: relative;
-	cursor: pointer;
 	user-select: none;
 	flex: none;
 	flex-wrap: nowrap;
@@ -30,6 +29,10 @@
 		inset: 0;
 		border-radius: inherit;
 		border: var(--token-border);
+	}
+
+	&:not(span) {
+		cursor: pointer;
 	}
 }
 
@@ -55,15 +58,15 @@ input {
 	white-space: nowrap;
 	top: -0.1em;
 	line-height: 1em;
-	padding-inline-end: var(--token-inset);
-	padding-inline-start: calc(var(--token-gutter) - var(--token-inset));
+	padding-inline-end: var(--token-gutter);
+	padding-inline-start: var(--token-pad-inline);
 
 	.leading + & {
-		padding-left: var(--token-inset);
+		padding-inline-start: var(--token-inset);
 	}
 
 	&:last-child {
-		padding-right: calc(var(--token-gutter) - var(--token-inset));
+		padding-right: var(--token-pad-inline);
 	}
 }
 
@@ -71,20 +74,24 @@ input {
 .default {
 	--token-color: #{col(fg, 000)};
 	--token-background: #{col(fg, 500, 0.1)};
-	&:hover {
+	&:hover:not(span) {
 		--token-color: #{col(fg, 500)};
 		--token-background: #{col(fg, 500, 0.2)};
 	}
 	&.active {
 		--token-color: #{col(bg, 900)};
 		--token-background: #{col(fg, 100)};
+		&:hover:not(span) {
+			--token-color: #{col(bg, 500)};
+			--token-background: #{col(fg, 300)};
+		}
 	}
 }
 
 // Outlined variant.
 .outlined {
 	--token-border: var(--ui-border-thickness) solid #{col(fg, 500, 0.1)};
-	&:hover {
+	&:hover:not(span) {
 	}
 	&.active {
 	}

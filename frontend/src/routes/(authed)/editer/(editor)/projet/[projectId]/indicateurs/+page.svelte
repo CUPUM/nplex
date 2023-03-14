@@ -1,24 +1,24 @@
 <script lang="ts">
 	import Dirty from '$components/Dirty.svelte';
+	import Icon from '$components/Icon.svelte';
 	import Token from '$components/Token/Token.svelte';
-	import { editorDirtyValues, editorIsDirty } from '../../../common';
+	import TokenButton from '$components/Token/TokenButton.svelte';
+	import { editorDirtyValues } from '../../../common';
 	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 
 	export let data;
 
-	let formIndicators: string[];
+	let formIndicators: number[];
 	function syncDown() {
-		formIndicators = data.project.indicators.map((ind) => ind.id);
+		formIndicators = data.project.indicators.map((pi) => pi.exemplarity_indicator_id);
 	}
 	syncDown();
 
 	$: syncDown();
-
-	$: console.log($editorIsDirty);
 </script>
 
 <Dirty
-	sample={data.project.indicators.map((ind) => ind.id)}
+	sample={data.project.indicators.map((pi) => pi.exemplarity_indicator_id)}
 	specimen={formIndicators}
 	bind:dirty={$editorDirtyValues.indicators}
 />
@@ -27,7 +27,10 @@
 		<!-- <AnimateHeight> -->
 		<ul>
 			{#each metaIndicator.indicators as indicator}
-				<Token value={indicator.id} bind:group={formIndicators}>{indicator.title}</Token>
+				<Token name="indicator_id" value={indicator.id} bind:group={formIndicators}>
+					{indicator.title}
+					<TokenButton slot="trailing"><Icon name="question" /></TokenButton>
+				</Token>
 			{/each}
 		</ul>
 		<!-- </AnimateHeight> -->

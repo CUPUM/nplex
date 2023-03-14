@@ -8,6 +8,12 @@
 </script>
 
 <article>
+	<!-- Title -->
+	<!-- Indicators -->
+	<!-- Type -->
+	<!-- Works -->
+	<!-- Gallery -->
+	<!-- Timeline / works -->
 	<header>
 		<img src="https://picsum.photos/seed/{data.project.id}/800/1000" alt="" />
 		<h1 use:reveal={{ ...slipMask, delimiter: '', stagger: (i) => 50 + 2 * i }}>

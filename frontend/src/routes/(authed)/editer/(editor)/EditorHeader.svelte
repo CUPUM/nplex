@@ -12,61 +12,76 @@
 </script>
 
 <header transition:slide|local={{ duration: 250, easing: cubicOut }}>
-	<hgroup class="main">
-		<slot />
+	<hgroup class="heading">
+		<h1 class="heading-xl">
+			<slot name="heading" />
+		</h1>
 	</hgroup>
-	<dl>
-		<dt>Créé le</dt>
-		<dd>{dateFormatter.format(createdAt)}</dd>
-		<dt>par</dt>
-		<dd>{createdBy}</dd>
-	</dl>
-	<dl>
-		<dt>Modifié le</dt>
-		<dd>{dateFormatter.format(updatedAt)}</dd>
-		<dt>par</dt>
-		<dd>{updatedBy}</dd>
-	</dl>
+	<section>
+		{#if $$slots.nav}
+			<nav>
+				<slot name="nav" />
+			</nav>
+		{/if}
+		<dl>
+			<dt>Créé le</dt>
+			<dd>{dateFormatter.format(createdAt)}</dd>
+			<dt>par</dt>
+			<dd>{createdBy}</dd>
+		</dl>
+		<dl>
+			<dt>Modifié le</dt>
+			<dd>{dateFormatter.format(updatedAt)}</dd>
+			<dt>par</dt>
+			<dd>{updatedBy}</dd>
+		</dl>
+	</section>
 </header>
 
 <style lang="scss">
 	header {
 		width: 100%;
-		min-height: 50vh;
-		min-height: 50svh;
+		min-height: calc(100vh - var(--ui-gutter) - var(--ui-nav-h));
+		min-height: calc(100svh - var(--ui-gutter) - var(--ui-nav-h));
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		justify-content: center;
-		padding: 3rem;
-		gap: 1.5rem;
-		border: var(--ui-border-thickness) dashed col(primary, 700, 0.5);
-		// background-color: col(primary, 100, 0.2);
-		color: col(primary, 700);
+		padding: var(--ui-pad-outer);
+		gap: var(--ui-pad-outer);
+		border: var(--ui-border-thickness) dashed col(primary, 500, 0.75);
+		// background-color: col(fg, 000, 0.05);
 		border-radius: var(--ui-radius-lg);
-		margin-bottom: var(--ui-nav-h);
+		margin-bottom: var(--ui-gutter);
 		opacity: max(0, calc(1 - var(--ui-scroll) * 0.002));
 		transition: opacity 0.25s ease;
 	}
 
 	hgroup {
-		// color: transparent;
-		// -webkit-text-stroke: 1px col(primary, 700);
-		font-size: var(--ui-text-3xl);
-		font-weight: 500;
-		line-height: 1.2;
-
-		@include mobile {
-			font-size: var(--ui-text-xl);
-		}
+		flex: 1;
+		display: flex;
+		align-items: center;
 	}
 
-	dl {
+	section {
 		font-size: var(--ui-text-sm);
 		display: flex;
 		flex-direction: row;
+		flex-wrap: wrap;
 		gap: 1rem;
-		color: col(fg, 100);
+	}
+
+	dl {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.5em;
+		color: col(primary, 500);
+		padding: 0 1.5em;
+		height: var(--ui-block-size-lg);
+		border-radius: var(--ui-radius-md);
+		// background-color: col(primary, 100, 0.1);
+		border: var(--ui-border-thickness) solid col(primary, 100, 0.2);
 	}
 
 	dt {

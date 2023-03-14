@@ -74,6 +74,5 @@ export const actions = {
 						}
 					});
 			});
-		return { nut: true };
 	},
 };

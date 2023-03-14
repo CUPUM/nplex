@@ -68,18 +68,18 @@
 
 	.default {
 		color: col(fg, 000);
-		border: var(--ui-border-thickness) dashed col(secondary, 500, 0);
+		// border: var(--ui-border-thickness) dashed col(secondary, 500, 0);
 
 		&[data-current] {
 			cursor: default;
-			color: col(secondary, 500);
-			background: col(secondary, 100, 0.05);
-			border-color: col(secondary, 700, 0.5);
+			color: col(secondary, 700);
+			background: col(secondary, 100, 0.1);
+			// border-color: col(secondary, 700, 0.5);
 		}
 
 		&:hover:not([data-current]) {
-			color: col(secondary, 700);
-			background: col(secondary, 100, 0.1);
+			color: col(secondary, 300);
+			background: col(secondary, 100, 0.05);
 		}
 	}
 </style>

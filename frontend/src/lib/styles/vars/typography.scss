@@ -37,7 +37,7 @@ $typography-system: (
 		),
 		sm: (
 			size: var(--ui-text-lg),
-			weight: 600,
+			weight: 575,
 			line: 1.23em,
 			letter: -0.1px,
 			tablet: (),
@@ -45,7 +45,7 @@ $typography-system: (
 		),
 		xs: (
 			size: var(--ui-text-md),
-			weight: 625,
+			weight: 600,
 			line: 1.3em,
 			letter: 0px,
 			tablet: (),

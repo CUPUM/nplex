@@ -15,6 +15,7 @@
 	background-color: var(--overflow-effect-color);
 	backdrop-filter: blur(12px);
 	max-width: 100%;
+	font-weight: 400;
 	// border: 2px solid red;
 }
 
@@ -31,8 +32,8 @@
 }
 
 .default {
-	--overflow-effect-color: #{col(bg, 500)};
-	background: col(bg, 900, 0.5);
+	--overflow-effect-color: #{col(bg, 700)};
+	background: col(bg, 700, 0.6);
 }
 
 // .outlined {

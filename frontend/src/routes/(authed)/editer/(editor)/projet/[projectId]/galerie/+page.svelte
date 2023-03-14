@@ -27,13 +27,20 @@
 	$: data.project.gallery, syncDown();
 </script>
 
+<header class="editor-section-header">
+	<h1 class="heading-lg">Galerie</h1>
+	<p class="info">
+		Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde aspernatur minima enim
+		praesentium blanditiis. Est culpa quia qui incidunt sequi.
+	</p>
+</header>
 <Dirty
 	specimen={galleryItems.slice(0, -1)}
 	sample={$page.data.project.gallery}
 	bind:dirty={$editorDirtyValues.gallery}
 	strictOrder
 />
-<EditorFormgroup legend="Galerie">
+<EditorFormgroup>
 	<AnimateHeight>
 		<DragndropProvider bind:items={galleryItems} let:dragndropZone let:dragndropItem>
 			<ol use:dragndropZone>
@@ -63,6 +70,9 @@
 </EditorFormgroup>
 
 <style lang="scss">
+	header {
+	}
+
 	ol {
 		display: grid;
 		gap: 3rem 2rem;

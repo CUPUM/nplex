@@ -23,7 +23,7 @@
 		flex-direction: column;
 		justify-content: flex-end;
 		padding: var(--ui-pad-outer);
-		margin-bottom: 1.5rem;
+		margin-bottom: var(--ui-gutter);
 		background-color: col(primary, 100, 0.25);
 		border-radius: var(--ui-radius-lg);
 		opacity: max(0, calc(1 - var(--ui-scroll) * 0.002));
@@ -39,6 +39,6 @@
 		position: relative;
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-		gap: 1.5rem;
+		gap: var(--ui-gutter);
 	}
 </style>

@@ -19,6 +19,8 @@
 		group?: V[];
 		type?: 'checkbox' | 'radio';
 		href?: string;
+		disabled?: boolean;
+		readonly?: boolean;
 	};
 
 	export let variant: $$Props['variant'] = VARIANTS.Default;
@@ -28,6 +30,8 @@
 	export let group: $$Props['group'] = undefined;
 	export let type: $$Props['type'] = 'checkbox';
 	export let href: $$Props['href'] = undefined;
+	export let disabled: $$Props['disabled'] = undefined;
+	export let readonly: $$Props['readonly'] = undefined;
 
 	let element: 'a' | 'label' | 'span';
 	$: element = href ? 'a' : value != null || group ? 'label' : 'span';
@@ -65,12 +69,15 @@
 <svelte:element
 	this={element}
 	class="token {variant} {state}"
-	class:disabled={$$props.disabled}
+	class:readonly
+	class:disabled
 	class:active
 	{href}
 	{...element === 'label' ? {} : $$restProps}
 >
-	<Ripple />
+	{#if !readonly && !disabled}
+		<Ripple />
+	{/if}
 	{#if element === 'label'}
 		{#if type === 'checkbox'}
 			<input

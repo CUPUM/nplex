@@ -29,7 +29,11 @@ export const load = async (event) => {
 			if (res.error) {
 				throw error(STATUS_CODES.InternalServerError, res.error);
 			}
-			return buff(res.data).singularize<{ publication_status: 'single' }>();
+			return buff(res.data).singularize<{
+				publication_status: 'single';
+				type: 'single';
+				banner: 'maybeSingle';
+			}>();
 		});
 
 	// Editable orgs

@@ -3,7 +3,7 @@
 	import ImagePlaceholder from '$components/Image/ImagePlaceholder.svelte';
 	import { maybeSingle } from '$types/database/utils';
 	import { STORAGE_BUCKETS } from '$utils/enums';
-	import { projectColors, publicurl } from '$utils/format';
+	import { projectColors, publicUrl } from '$utils/format';
 	import { EXPLORE_ROUTES } from '$utils/routes';
 	import type { PageData } from './$types';
 	import PreviewsHeader from './PreviewHeader.svelte';
@@ -25,7 +25,7 @@
 				<a class="card" href="{EXPLORE_ROUTES.projects.pathname}/{p.id}">
 					<Image
 						alt=""
-						src={publicurl(STORAGE_BUCKETS.PROJECTS, maybeSingle(p.banner)?.name)}
+						src={publicUrl(STORAGE_BUCKETS.PROJECTS, maybeSingle(p.banner)?.name)}
 						class="image"
 					>
 						<ImagePlaceholder color={projectColors(p.gallery)} />

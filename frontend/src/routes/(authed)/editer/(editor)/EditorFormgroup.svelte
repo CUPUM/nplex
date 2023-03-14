@@ -12,10 +12,15 @@
 
 <style lang="scss">
 	fieldset {
+		// display: flex;
+		// flex-direction: column;
+		// align-items: flex-start;
 		position: relative;
 		padding: 3rem;
-		background-color: col(bg, 700);
+		background-color: col(bg, 500);
+		border: 1px solid col(bg, 700);
 		border-radius: var(--ui-radius-lg);
+		box-shadow: var(--ui-shadow-md);
 		transition: all 0.15s;
 
 		// &.md {
@@ -29,5 +34,10 @@
 		@include tablet {
 			padding: 1.5rem 1.25rem;
 		}
+	}
+
+	h3 {
+		margin-top: -0.5em;
+		margin-bottom: 2rem;
 	}
 </style>

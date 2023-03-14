@@ -1,6 +1,7 @@
 import type { PgRange } from '$types/database/utils';
 import type { Arrify } from '$types/utils';
 import type { ValueOf } from 'ts-essentials';
+import { col } from './css';
 import { browserDb } from './database/client';
 import { BRACKETS, SRID, type STORAGE_BUCKETS } from './enums';
 
@@ -209,7 +210,7 @@ export function pagination(page: number, size: number): [start: number, end: num
 /**
  * Reduce inline verbosity of getting storage assets' public URL.
  */
-export function publicurl(bucket: ValueOf<typeof STORAGE_BUCKETS>, name?: string | null) {
+export function publicUrl(bucket: ValueOf<typeof STORAGE_BUCKETS>, name?: string | null) {
 	if (!name) {
 		return '';
 	}
@@ -219,9 +220,12 @@ export function publicurl(bucket: ValueOf<typeof STORAGE_BUCKETS>, name?: string
 /**
  * Helper to format a project gallery's colors as a flat array.
  */
-export function projectColors(gallery?: ProjectGalleryItem | ProjectGalleryItem[] | null) {
-	if (!gallery) {
-		return '';
+export function projectColors(
+	gallery?: ProjectGalleryItem | ProjectGalleryItem[] | null,
+	fallback: string | string[] = col('primary', '900', 0.1)
+) {
+	if (!gallery || (Array.isArray(gallery) && !gallery.length)) {
+		return fallback;
 	}
 	if (!Array.isArray(gallery)) {
 		gallery = [gallery];

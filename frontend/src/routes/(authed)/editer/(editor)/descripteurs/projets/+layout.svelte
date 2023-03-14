@@ -36,7 +36,7 @@
 		align-self: stretch;
 		display: flex;
 		flex-direction: row;
-		gap: 1.5rem;
+		gap: var(--ui-gutter);
 	}
 
 	.sidebar {

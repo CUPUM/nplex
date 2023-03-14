@@ -1,19 +1,17 @@
 <script lang="ts" context="module">
-	import { getContext } from 'svelte';
-
-	const CTX_KEY = 'menu-context';
-
-	interface MenuContext {}
-
-	export function getMenuContext() {
-		return getContext<MenuContext>(CTX_KEY);
-	}
 </script>
 
 <script lang="ts">
+	import { onMount } from 'svelte';
+
+	let mounted = false;
+
+	onMount(() => {
+		mounted = true;
+	});
 </script>
 
-<menu>
+<menu class:mounted>
 	<slot />
 </menu>
 
@@ -32,7 +30,8 @@
 		// gap: var(--ui-inset);
 		border-radius: calc(var(--radius) + var(--outset));
 		padding: var(--pad);
-		box-shadow: var(--ui-shadow-lg);
+		box-shadow: 0 0 0.5rem -0.5rem rgb(0, 0, 0, 0);
+		transition: box-shadow 0.25s;
 
 		> :global(:where(hr)) {
 			margin-inline: calc(-1 * var(--pad));
@@ -41,5 +40,9 @@
 			padding: 0.5px;
 			background: col(fg, 500, 0.1);
 		}
+	}
+
+	.mounted {
+		box-shadow: var(--ui-shadow-md);
 	}
 </style>

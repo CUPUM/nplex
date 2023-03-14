@@ -9,11 +9,21 @@
 	export let form;
 </script>
 
+<header>
+	<h1 class="heading-lg">Général</h1>
+	<p class="info">
+		Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde aspernatur minima enim
+		praesentium blanditiis. Est culpa quia qui incidunt sequi.
+	</p>
+</header>
 <Title />
 <Description />
 <Type />
 <Works />
 <CostRange />
 
-<style lang="scss" module>
+<style lang="scss">
+	header {
+		padding: var(--ui-pad-outer);
+	}
 </style>

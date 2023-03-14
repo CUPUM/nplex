@@ -35,5 +35,9 @@
 			padding-top: 0;
 			font-size: var(--ui-text-sm);
 		}
+
+		:global(.editor-section-header) {
+			padding: var(--ui-pad-outer);
+		}
 	}
 </style>

@@ -13,6 +13,7 @@
 	import Fuse from 'fuse.js';
 	import { onDestroy } from 'svelte';
 	import { flip } from 'svelte/animate';
+	import { fly } from 'svelte/transition';
 	import { editorDirtyValues } from '../../common';
 	import EditorFormgroup from '../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
@@ -83,7 +84,7 @@
 	<AnimateHeight>
 		<ul class="selected">
 			{#each selected as w, i (w.id)}
-				<li animate:flip={{ duration: 150 }}>
+				<li animate:flip={{ duration: 150 }} transition:fly|local={{ y: 6, duration: 150 }}>
 					<Tooltip message={w.description}>
 						<Token active>
 							{w.title}
