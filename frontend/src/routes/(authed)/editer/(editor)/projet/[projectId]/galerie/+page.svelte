@@ -27,7 +27,7 @@
 	$: data.project.gallery, syncDown();
 </script>
 
-<header class="editor-section-header">
+<header class="editor-tab-header">
 	<h1 class="heading-lg">Galerie</h1>
 	<p class="info">
 		Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde aspernatur minima enim

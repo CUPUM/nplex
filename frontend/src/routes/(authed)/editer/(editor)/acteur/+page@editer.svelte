@@ -23,7 +23,7 @@
 	}}
 >
 	<div>
-		<h2 class="h2" in:fly={{ y: 12 }}>Créez un nouveau profil.</h2>
+		<h2 class="heading-lg" in:fly={{ y: 12 }}>Créez un nouveau profil.</h2>
 		<fieldset>
 			<Field
 				name="name"

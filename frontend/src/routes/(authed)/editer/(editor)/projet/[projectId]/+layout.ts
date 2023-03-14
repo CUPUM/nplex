@@ -31,7 +31,8 @@ export const load = async (event) => {
 			),
 			created_by:created_by_id (*,
 				role:users_roles!users_roles_user_id_fkey (*)
-			)
+			),
+			publication_status:projects_publication_status (status)
 		`
 		)
 		.eq('id', event.params.projectId)
@@ -61,6 +62,7 @@ export const load = async (event) => {
 						.publicUrl,
 				})),
 				indicators: alwaysArr(res.data.indicators),
+				publication_status: maybeSingle(res.data.publication_status)!,
 			};
 		});
 

@@ -1,6 +1,6 @@
 @use 'utils' as *;
 
-:where(.button) {
+.button {
 	--button-height: calc(var(--ui-block-size-lg) - 2 * var(--inset, 0px));
 	--button-radius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
 	position: relative;
@@ -20,12 +20,10 @@
 	grid-template-rows: var(--button-height);
 	border: none;
 	padding: 0;
-	font-family: inherit;
 	gap: 0;
 	flex-direction: row;
 	align-items: center;
 	font-weight: 400;
-	font-size: inherit;
 	border-radius: var(--button-radius);
 	cursor: pointer;
 	letter-spacing: 0em;
@@ -70,14 +68,11 @@
 .button:disabled {
 	opacity: 0.25;
 	pointer-events: none;
-	background: transparent;
+	background-color: transparent;
 	color: col(fg, 100);
 	.content {
 		transform: scale(0.95);
 	}
-}
-.warning {
-	color: col(error, 500);
 }
 .button:focus {
 	.content {
@@ -132,27 +127,73 @@
 	}
 }
 
-// Variants
+// Default variant
 
 .default {
-	color: col(fg, 500);
-	background: col(fg, 100, 0.1);
+	--color: #{col(fg, 500)};
+	--background-color: #{col(fg, 100, 0.1)};
+	--hover-color: #{col(bg, 700)};
+	--hover-background-color: #{col(fg, 500)};
+	--active-color: #{col(bg, 900)};
+	--active-background-color: #{col(fg, 000)};
+	color: var(--color);
+	background-color: var(--background-color);
 	transition: all 0.1s ease-out;
-	:global(.hover-source:hover) &:global(.hover-target),
-	&:hover {
-		color: col(bg, 700);
-		background: col(fg, 500);
+	&:hover,
+	&:focus-visible {
+		color: var(--hover-color);
+		background-color: var(--hover-background-color);
 	}
+	&.active,
 	&:global(.active) {
-		color: col(bg, 900);
-		background: col(fg, 000);
+		color: var(--active-color);
+		background-color: var(--active-background-color);
+	}
+
+	&.warning {
+		--color: #{col(error, 900)};
+		--background-color: #{col(error, 900, 0.1)};
+		--hover-color: #{col(bg, 700)};
+		--hover-background-color: #{col(fg, 500)};
+		--active-color: #{col(bg, 900)};
+		--active-background-color: #{col(fg, 000)};
+	}
+
+	&.error {
+		--color: #{col(error, 500)};
+		--background-color: #{col(error, 300, 0.25)};
+		--hover-color: #{col(bg, 700)};
+		--hover-background-color: #{col(error, 900)};
+		--active-color: #{col(bg, 900)};
+		--active-background-color: #{col(fg, 000)};
+	}
+
+	&.success {
+		--color: #{col(success, 500)};
+		--background-color: #{col(success, 300, 0.25)};
+		--hover-color: #{col(bg, 700)};
+		--hover-background-color: #{col(success, 900)};
+		--active-color: #{col(bg, 900)};
+		--active-background-color: #{col(fg, 000)};
 	}
 }
 
+// Outlined variant(s)
+
 .outlined,
 .dashed {
-	color: col(fg, 500);
-	background: transparent;
+	--color: #{col(fg, 500)};
+	--background-color: transparent;
+	--border-style: solid;
+	--border: var(--ui-border-thickness) var(--border-style) currentColor;
+	--hover-color: #{col(fg, 900)};
+	--hover-background-color: #{col(fg, 100, 0.1)};
+	--hover-border: 3px var(--border-style) transparent;
+	--active-color: #{col(fg, 700)};
+	--active-background-color: #{col(fg, 000, 0.1)};
+	--active-border: 3px var(--border-style) transparent;
+	color: var(--color);
+	background-color: var(--background-color);
 	transition: all 0.1s ease-out;
 	&::before {
 		content: '';
@@ -162,81 +203,173 @@
 		width: 100%;
 		height: 100%;
 		border-radius: inherit;
-		border: 1px solid currentColor;
-		transition: all 0.1s ease-out;
+		border: var(--border);
 		opacity: 0.25;
+		transition: all 0.2s ease-out;
 	}
-	:global(.hover-source:hover) &:global(.hover-target),
-	&:hover {
-		color: col(bg, 700);
-		background: col(fg, 500);
+	&:hover,
+	&:focus-visible {
+		color: var(--hover-color);
+		background-color: var(--hover-background-color);
 		&::before {
-			border: 5px solid transparent;
+			border: var(--hover-border);
 		}
 	}
+	&.active,
 	&:global(.active) {
-		color: col(bg, 900);
-		background: col(fg, 000);
+		color: var(--active-color);
+		background-color: var(--active-background-color);
 		&::before {
-			border: 5px solid transparent;
+			border: var(--active-border);
 		}
+	}
+
+	&.warning {
+		--color: #{col(error, 900)};
+		--border: var(--ui-border-thickness) var(--border-style) currentColor;
+		// --hover-color: #{col(error, 900)};
+		// --hover-background-color: #{col(error, 900, 0.1)};
+		// --active-color: #{col(error, 900)};
+		// --active-background-color: #{col(error, 100, 0.1)};
+	}
+
+	&.error {
+		--color: #{col(error, 700)};
+		--background-color: #{col(error, 100, 0.1)};
+		--border: var(--ui-border-thickness) var(--border-style) currentColor;
+		--hover-color: #{col(error, 900)};
+		--hover-background-color: #{col(error, 300, 0.2)};
+		--hover-border: 3px var(--border-style) #{col(error, 500, 0)};
+		--active-color: #{col(error, 900)};
+		--active-background-color: #{col(error, 500, 0.2)};
+		--active-border: 3px var(--border-style) #{col(error, 500, 0)};
+	}
+
+	&.success {
+		--color: #{col(success, 700)};
+		--background-color: #{col(success, 100, 0.1)};
+		--border: var(--ui-border-thickness) var(--border-style) currentColor;
+		--hover-color: #{col(success, 900)};
+		--hover-background-color: #{col(success, 300, 0.2)};
+		--hover-border: 3px var(--border-style) #{col(success, 500, 0)};
+		--active-color: #{col(success, 900)};
+		--active-background-color: #{col(success, 500, 0.2)};
+		--active-border: 3px var(--border-style) #{col(success, 500, 0)};
 	}
 }
+
+// Dashed variant
 
 .dashed {
-	&::before {
-		border-style: dashed !important;
-	}
-}
-
-.ghost {
-	color: col(fg, 300);
-	background: transparent;
-	transition: all 0.1s;
-	:global(.hover-source:hover) &:global(.hover-target),
-	&:hover {
-		color: col(fg, 900);
-		background: col(fg, 100, 0.05);
-	}
-	&:global(.active) {
-		color: col(primary, 500);
-		&:hover {
-			background: col(primary, 100, 0.1);
+	--border-style: dashed;
+	&.error,
+	&.success {
+		&::before {
+			opacity: 0.35;
 		}
 	}
 }
 
+// Ghost variant
+
+.ghost {
+	--color: #{col(fg, 300)};
+	--background-color: transparent;
+	--hover-color: #{col(fg, 900)};
+	--hover-background-color: #{col(fg, 100, 0.05)};
+	--active-color: #{col(primary, 500)};
+	--active-background-color: #{col(primary, 100, 0.1)};
+	color: var(--color);
+	background-color: var(--background-color);
+	transition: all 0.1s;
+	&:hover,
+	&:focus-visible {
+		color: var(--hover-color);
+		background-color: var(--hover-background-color);
+	}
+	&.active,
+	&:global(.active) {
+		color: var(--active-color);
+		background-color: var(--active-background-color);
+	}
+
+	&.warning {
+		--color: #{col(error, 900)};
+		// --hover-color: #{col(error, 900)};
+		// --hover-background-color: #{col(error, 700, 0.05)};
+		// --active-color: #{col(error, 900)};
+		// --active-background-color: #{col(error, 700, 0.1)};
+	}
+
+	&.error {
+		--color: #{col(error, 500)};
+		--hover-color: #{col(error, 700)};
+		--hover-background-color: #{col(error, 300, 0.2)};
+		--hover-color: #{col(error, 900)};
+		--hover-background-color: #{col(error, 500, 0.2)};
+	}
+
+	&.success {
+		--color: #{col(success, 500)};
+		--hover-color: #{col(success, 700)};
+		--hover-background-color: #{col(success, 300, 0.2)};
+		--hover-color: #{col(success, 900)};
+		--hover-background-color: #{col(success, 500, 0.2)};
+	}
+}
+
+// Call to action variant
+
 .cta {
-	color: col(bg, 500);
-	background: col(primary, 500);
-	box-shadow: 0 0.2em 1em -0.5em col(primary, 300, 0);
+	--color: #{col(bg, 500)};
+	--background-color: #{col(primary, 500)};
+	--box-shadow: 0 0.2em 1em -0.5em #{col(primary, 300, 0)};
+	--hover-color: #{col(primary, 100)};
+	--hover-background-color: #{col(primary, 700)};
+	--hover-box-shadow: 0 0.8em 1.5em -1em #{col(primary, 300, 0.25)};
+	--active-box-shadow: 0 0.5em 1em -0.5em #{col(primary, 300, 0.5)};
+	color: var(--color);
+	background-color: var(--background-color);
+	box-shadow: var(--color);
 	transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
-	:global(.hover-source:hover) &:global(.hover-target),
-	&:hover {
-		color: col(primary, 100);
-		background: col(primary, 700);
-		box-shadow: 0 0.8em 1.5em -1em col(primary, 300, 0.25);
+	&:hover,
+	&:focus-visible {
+		color: var(--hover-color);
+		background-color: var(--hover-background-color);
+		box-shadow: var(--hover-box-shadow);
 	}
 	&:global(.active) {
 		filter: brightness(0.9);
-		box-shadow: 0 0.5em 1em -0.5em col(primary, 300, 0.5);
+		box-shadow: var(--active-box-shadow);
 	}
-}
 
-.danger {
-	color: col(error, 500);
-	background: col(error, 700, 0.2);
-	box-shadow: 0 0.2em 1em -0.5em col(error, 500, 0);
-	transition: all 0.1s ease-out, box-shadow 0.2s ease-out;
-	:global(.hover-source:hover) &:global(.hover-target),
-	&:hover {
-		color: rgb(250, 245, 230);
-		background: col(error, 700);
+	&.warning {
+		--color: #{col(bg, 300)};
+		--background-color: #{col(error, 700)};
+		--box-shadow: 0 0.2em 1em -0.5em #{col(error, 500, 0)};
+		--hover-color: #{col(error, 100)};
+		--hover-background-color: #{col(error, 900)};
+		--hover-box-shadow: 0 0.8em 1.5em -1em #{col(error, 500, 0.25)};
+		--active-box-shadow: 0 0.5em 1em -0.5em #{col(error, 300, 0.5)};
 	}
-	&:global(.active) {
-		&:not(.disabled) {
-			color: var(--color-error-300);
-			background: var(--color-error-900);
-		}
+
+	&.error {
+		--color: #{col(error, 500)};
+		--background-color: #{col(bg, 000)};
+		--box-shadow: 0 0.2em 1em -0.5em #{col(error, 300, 0.25)};
+		--hover-color: #{col(error, 900)};
+		--hover-background-color: #{col(bg, 000)};
+		--hover-box-shadow: 0 0.8em 1.5em -1em #{col(error, 300, 0.5)};
+		--active-box-shadow: 0 0.5em 1em -0.5em #{col(error, 300, 0.5)};
+	}
+
+	&.success {
+		--color: #{col(success, 500)};
+		--background-color: #{col(bg, 000)};
+		--box-shadow: 0 0.2em 1em -0.5em #{col(success, 300, 0.25)};
+		--hover-color: #{col(success, 900)};
+		--hover-background-color: #{col(bg, 000)};
+		--hover-box-shadow: 0 0.8em 1.5em -1em #{col(success, 300, 0.5)};
+		--active-box-shadow: 0 0.5em 1em -0.5em #{col(success, 300, 0.5)};
 	}
 }

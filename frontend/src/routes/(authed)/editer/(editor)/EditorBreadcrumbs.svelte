@@ -3,16 +3,21 @@
 	import BreadcrumbsItem from '$components/Breadcrumbs/BreadcrumbsItem.svelte';
 	import BreadcrumbsSeparator from '$components/Breadcrumbs/BreadcrumbsSeparator.svelte';
 	import Icon from '$components/Icon.svelte';
+	import type { ComponentProps } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
-	export let crumbs: { title: string; pathname: string }[];
+	export let crumbs: {
+		title: string;
+		pathname: string;
+		matcher?: ComponentProps<BreadcrumbsItem>['matcher'];
+	}[];
 </script>
 
 <div in:fly={{ y: 6, duration: 350, easing: cubicOut, delay: 150 }}>
 	<Breadcrumbs>
 		{#each crumbs as crumb, i}
-			<BreadcrumbsItem href={crumb.pathname}>{crumb.title}</BreadcrumbsItem>
+			<BreadcrumbsItem href={crumb.pathname} matcher={crumb.matcher}>{crumb.title}</BreadcrumbsItem>
 			{#if i < crumbs.length - 1}
 				<BreadcrumbsSeparator><Icon name="chevron-right" /></BreadcrumbsSeparator>
 			{/if}

@@ -21,6 +21,7 @@
 		href?: string;
 		disabled?: boolean;
 		readonly?: boolean;
+		equi?: boolean;
 	};
 
 	export let variant: $$Props['variant'] = VARIANTS.Default;
@@ -32,6 +33,7 @@
 	export let href: $$Props['href'] = undefined;
 	export let disabled: $$Props['disabled'] = undefined;
 	export let readonly: $$Props['readonly'] = undefined;
+	export let equi: $$Props['equi'] = undefined;
 
 	let element: 'a' | 'label' | 'span';
 	$: element = href ? 'a' : value != null || group ? 'label' : 'span';
@@ -72,6 +74,7 @@
 	class:readonly
 	class:disabled
 	class:active
+	class:equi
 	{href}
 	{...element === 'label' ? {} : $$restProps}
 >

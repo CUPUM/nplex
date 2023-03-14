@@ -18,7 +18,7 @@
 		padding: var(--ui-aside-inset);
 		border-radius: var(--ui-radius-lg);
 		// background-color: col(bg, 500);
-		border: var(--ui-border-thickness) dashed col(secondary, 100, 0.25);
+		border: var(--ui-border-thickness) dashed col(secondary, 300, 0.25);
 		// border: var(--ui-border-thickness) solid col(fg, 100, 0.1);
 		overflow-x: hidden;
 		overflow-y: auto;
@@ -27,7 +27,7 @@
 
 		> :global(hr) {
 			align-self: stretch;
-			border: var(--ui-border-thickness) dashed col(secondary, 100, 0.2);
+			border: var(--ui-border-thickness) dashed col(secondary, 300, 0.25);
 			border-top: none;
 			margin: 0 calc(-1 * var(--ui-aside-inset));
 			position: relative;

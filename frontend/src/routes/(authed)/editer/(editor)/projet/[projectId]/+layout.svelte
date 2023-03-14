@@ -7,7 +7,7 @@
 	import SidebarButton from '$components/Sidebar/SidebarButton.svelte';
 	import { EDITOR_ROUTES } from '$routes/(authed)/editer/common';
 	import { EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../common';
-	import EditorCrumbs from '../../EditorCrumbs.svelte';
+	import EditorBreadcrumbs from '../../EditorBreadcrumbs.svelte';
 	import EditorHeader from '../../EditorHeader.svelte';
 	import EditorNavigationModal from '../../EditorNavigationModal.svelte';
 	import EditorToolbar from '../../EditorToolbar.svelte';
@@ -59,8 +59,8 @@
 	];
 </script>
 
-<EditorCrumbs crumbs={data.crumbs} />
-<EditorHeader>
+<EditorBreadcrumbs crumbs={data.crumbs} />
+<EditorHeader isPublic={data.project.publication_status.status === 'published'}>
 	<svelte:fragment slot="heading">{$editTitle}</svelte:fragment>
 	<svelte:fragment slot="nav">
 		<Button variant="cta" href="/projets/{data.project.id}">

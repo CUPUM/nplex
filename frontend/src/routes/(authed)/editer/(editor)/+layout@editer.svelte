@@ -3,7 +3,7 @@
 	import { setRootBackground } from '$routes/RootBackground.svelte';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
 
-	let background = THEME_PALETTES.dark.bg[300];
+	let background = THEME_PALETTES.dark.bg[500];
 </script>
 
 <article
@@ -36,8 +36,23 @@
 			font-size: var(--ui-text-sm);
 		}
 
-		:global(.editor-section-header) {
+		:global(.editor-tab-header) {
 			padding: var(--ui-pad-outer);
+		}
+
+		:global(.editor-formgroup) {
+			position: relative;
+			padding: 3rem;
+			background-color: col(bg, 700);
+			border: 1px solid col(bg, 900);
+			border-radius: var(--ui-radius-lg);
+			box-shadow: var(--ui-shadow-md);
+		}
+
+		:global(.editor-formgroup-title) {
+			@include typography(heading, md);
+			margin-top: -0.5em;
+			margin-bottom: 2rem;
 		}
 	}
 </style>

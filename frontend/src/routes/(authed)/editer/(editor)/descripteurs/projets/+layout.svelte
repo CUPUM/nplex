@@ -3,7 +3,7 @@
 	import Icon from '$components/Icon.svelte';
 	import Sidebar from '$components/Sidebar/Sidebar.svelte';
 	import SidebarButton from '$components/Sidebar/SidebarButton.svelte';
-	import EditorCrumbs from '../../EditorCrumbs.svelte';
+	import EditorBreadcrumbs from '../../EditorBreadcrumbs.svelte';
 	import EditorToolbar from '../../EditorToolbar.svelte';
 	import type { LayoutData } from './$types';
 	import { PROJECT_DESCIPTORS_EDITOR_BASE, PROJECT_DESCRIPTORS_EDITOR_ROUTES } from './routes';
@@ -12,7 +12,7 @@
 	$: ({ crumbs } = $page.data as LayoutData);
 </script>
 
-<EditorCrumbs {crumbs} />
+<EditorBreadcrumbs {crumbs} />
 <div class="layout">
 	<section class="sidebar">
 		<Sidebar>

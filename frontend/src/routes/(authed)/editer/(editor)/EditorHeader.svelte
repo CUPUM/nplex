@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { locale } from '$components/I18n.svelte';
+	import Icon from '$components/Icon.svelte';
+	import Token from '$components/Token/Token.svelte';
+	import Tooltip from '$components/Tooltip.svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
 
+	export let isPublic: boolean | undefined = undefined;
 	export let updatedAt: Date = new Date();
 	export let updatedBy: string = 'Utilisateur';
 	export let createdAt: Date = new Date();
@@ -12,6 +16,24 @@
 </script>
 
 <header transition:slide|local={{ duration: 250, easing: cubicOut }}>
+	{#if isPublic != null}
+		<Tooltip
+			message={isPublic
+				? 'Ce projet est présentement visible publiquement.'
+				: "Ce projet n'est pas présentement visible publiquement."}
+			place="bottom"
+			align="start"
+		>
+			<section>
+				<Token equi readonly variant="outlined" active={isPublic}>
+					<Icon name={isPublic ? 'eye-open' : 'eye-close'} />
+				</Token>
+				<span class="info">
+					{isPublic ? 'Publiée' : 'Brouillon (privée)'}
+				</span>
+			</section>
+		</Tooltip>
+	{/if}
 	<hgroup class="heading">
 		<h1 class="heading-xl">
 			<slot name="heading" />
@@ -67,6 +89,7 @@
 		font-size: var(--ui-text-sm);
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 		flex-wrap: wrap;
 		gap: 1rem;
 	}
@@ -76,18 +99,25 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 0.5em;
-		color: col(primary, 500);
+		color: col(primary, 700);
 		padding: 0 1.5em;
 		height: var(--ui-block-size-lg);
 		border-radius: var(--ui-radius-md);
 		// background-color: col(primary, 100, 0.1);
-		border: var(--ui-border-thickness) solid col(primary, 100, 0.2);
+		border: var(--ui-border-thickness) solid col(primary, 500, 0.2);
 	}
 
 	dt {
+		position: relative;
+		top: -0.1em;
 		opacity: 0.35;
 		&::after {
 			content: '\00A0:';
 		}
+	}
+
+	dd {
+		position: relative;
+		top: -0.1em;
 	}
 </style>

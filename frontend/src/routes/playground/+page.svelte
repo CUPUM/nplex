@@ -1,4 +1,7 @@
 <script lang="ts">
+	import Button from '$components/Button/Button.svelte';
+	import { STATES, VARIANTS } from '$utils/enums';
+
 	const h = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];
 	const t = ['xl', 'lg', 'md', 'sm', 'xs'];
 </script>
@@ -23,6 +26,16 @@
 		{/each}
 	</section>
 </article>
+<article>
+	<h1>Button variants and states</h1>
+	<div>
+		{#each Object.values(VARIANTS) as variant}
+			{#each Object.values(STATES) as state}
+				<Button {variant} {state}>{variant}{state ? ': ' + state : ''}</Button>
+			{/each}
+		{/each}
+	</div>
+</article>
 
 <style lang="scss">
 	article {
@@ -39,5 +52,12 @@
 		gap: 1.5rem;
 		width: 100%;
 		padding: 3rem;
+	}
+
+	div {
+		display: flex;
+		flex-direction: row;
+		gap: 0.25em;
+		flex-wrap: wrap;
 	}
 </style>

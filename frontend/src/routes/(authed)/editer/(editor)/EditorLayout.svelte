@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import Sidebar from '$components/Sidebar/Sidebar.svelte';
 	import type { LayoutData } from './$types';
-	import EditorCrumbs from './EditorCrumbs.svelte';
+	import EditorBreadcrumbs from './EditorBreadcrumbs.svelte';
 	import EditorHeader from './EditorHeader.svelte';
 	import EditorNavigationModal from './EditorNavigationModal.svelte';
 	import EditorToolbar from './EditorToolbar.svelte';
@@ -10,7 +10,7 @@
 	$: ({ crumbs } = $page.data as LayoutData);
 </script>
 
-<EditorCrumbs {crumbs} />
+<EditorBreadcrumbs {crumbs} />
 {#if $$slots.header}
 	<EditorHeader>
 		<slot name="header" />

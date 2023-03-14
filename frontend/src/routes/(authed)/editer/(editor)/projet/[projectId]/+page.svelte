@@ -9,7 +9,7 @@
 	export let form;
 </script>
 
-<header>
+<header class="editor-tab-header">
 	<h1 class="heading-lg">Général</h1>
 	<p class="info">
 		Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde aspernatur minima enim
@@ -23,7 +23,4 @@
 <CostRange />
 
 <style lang="scss">
-	header {
-		padding: var(--ui-pad-outer);
-	}
 </style>

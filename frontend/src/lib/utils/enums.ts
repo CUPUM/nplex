@@ -18,7 +18,6 @@ export const VARIANTS = {
 	Outlined: 'outlined',
 	Dashed: 'dashed',
 	Ghost: 'ghost',
-	Danger: 'danger', // Gradually deprecate in favor of State: Warning or Error
 	Feature: 'feature',
 } as const;
 export type Variant = ValueOf<typeof VARIANTS>;
