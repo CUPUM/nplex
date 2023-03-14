@@ -1,12 +1,10 @@
 <script lang="ts">
-	import { width } from '$transitions/width';
-
 	function search(e: Event) {
 		e.preventDefault();
 	}
 </script>
 
-<form on:submit={search} transition:width|local={{}} />
+<form on:submit={search} />
 
 <style lang="scss">
 	form {

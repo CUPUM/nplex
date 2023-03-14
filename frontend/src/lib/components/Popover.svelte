@@ -13,9 +13,10 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
 	import { navigating } from '$app/stores';
+	import flyScale from '$transitions/flyScale';
 	import { cssSize } from '$utils/css';
 	import { tick, type ComponentProps } from 'svelte';
-	import { cubicOut, expoIn } from 'svelte/easing';
+	import { expoIn, expoOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
 	import Menu from './Menu/Menu.svelte';
 	import Tether from './Tether.svelte';
@@ -103,7 +104,7 @@
 			bind:this={contentRef}
 			class="popover {align} {place}"
 			style:--d={cssSize(distance)}
-			in:scale={{ start: 0.9, easing: cubicOut, duration: 150, opacity: 1 }}
+			in:flyScale={{ scale: 0.95, y: -16, easing: expoOut, duration: 200, opacity: 0 }}
 			out:scale|local={{
 				start: 0.95,
 				easing: expoIn,

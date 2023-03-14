@@ -64,11 +64,15 @@ export const load = async (event) => {
 			};
 		});
 
-	const crumbs: LayoutParentData['crumbs'] = [
+	const crumbs = [
 		...(await event.parent()).crumbs,
 		{ title: 'Projet', pathname: '/editer/projet' },
-		{ title: project.title, pathname: `/editer/projet/${event.params.projectId}` },
-	];
+		{
+			title: project.title,
+			pathname: `/editer/projet/${event.params.projectId}`,
+			matcher: new RegExp('/editer/projet/([A-Za-z0-9-]+)/([A-Za-z0-9-_]+)'),
+		},
+	] satisfies LayoutParentData['crumbs'];
 
 	return {
 		project,
