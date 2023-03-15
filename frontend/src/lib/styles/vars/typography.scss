@@ -55,7 +55,7 @@ $typography-system: (
 	text: (
 		xl: (
 			size: var(--ui-text-xl),
-			weight: 275,
+			weight: 250,
 			line: 1.5em,
 			letter: -0.5px,
 			tablet: (),
@@ -63,7 +63,7 @@ $typography-system: (
 		),
 		lg: (
 			size: var(--ui-text-lg),
-			weight: 300,
+			weight: 275,
 			line: 1.475em,
 			letter: -0.25px,
 			tablet: (),
@@ -71,7 +71,7 @@ $typography-system: (
 		),
 		md: (
 			size: var(--ui-text-md),
-			weight: 350,
+			weight: 300,
 			line: 1.45em,
 			letter: 0px,
 			tablet: (),
@@ -79,7 +79,7 @@ $typography-system: (
 		),
 		sm: (
 			size: var(--ui-text-sm),
-			weight: 375,
+			weight: 325,
 			line: 1.425em,
 			letter: 0.1px,
 			tablet: (),
@@ -87,7 +87,7 @@ $typography-system: (
 		),
 		xs: (
 			size: var(--ui-text-xs),
-			weight: 400,
+			weight: 350,
 			line: 1.4em,
 			letter: 0.2px,
 			tablet: (),

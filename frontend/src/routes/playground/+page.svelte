@@ -1,11 +1,38 @@
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
+	import Field from '$components/Field/Field.svelte';
 	import { STATES, VARIANTS } from '$utils/enums';
+	import { fetchStore } from '$utils/store';
 
 	const h = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];
 	const t = ['xl', 'lg', 'md', 'sm', 'xs'];
+
+	const q = fetchStore('Hello', async (v) => {
+		return fetch('/playground/data.json', { method: 'GET' }).then((res) => res.json());
+	});
+
+	// const sq = fetchStore('I donno', (v) => {
+	// 	return browserDb.from('projects_images').select('*', { count: 'exact' }).then(res => {
+	// 		if (res.error) throw new Error('');
+	// 	});
+	// 	// .then((res) => {
+	// 	// 	if (res.error) throw res.error;
+	// 	// 	return res.data;
+	// 	// });
+	// });
 </script>
 
+<article>
+	<Field bind:value={$q.query}>
+		<svelte:fragment slot="trailing">
+			<!-- <Button on:click={$q.fetch}>Fetch</Button> -->
+		</svelte:fragment>
+	</Field>
+	<code>
+		error: {$q.error}; loading: {$q.loading};
+		{JSON.stringify($q.data, null, 2)}
+	</code>
+</article>
 <article>
 	<h1>Typography system</h1>
 	<section>

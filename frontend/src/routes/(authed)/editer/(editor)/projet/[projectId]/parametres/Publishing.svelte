@@ -24,7 +24,7 @@
 		<p class="info">
 			Vous pouvez ici contrôler la visibilité de la fiche. Votre statut d'utilisateur actuel ne vous
 			permet pas de rendre du contenu public de manière autonome, mais vous pouvez envoyer une
-			demande de publication. Celle-ci sera traitée par un administrateur ou un éditeur.
+			demande de publication. Celle-ci sera prise en charge par un administrateur ou un éditeur.
 		</p>
 		<p class="info">
 			Les fiches non-publiées sont visibles uniquement pour les collaborateurs et les

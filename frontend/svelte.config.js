@@ -34,9 +34,6 @@ const config = {
 			$types: 'src/lib/types',
 			$utils: 'src/lib/utils',
 			$plugins: 'src/plugins',
-			// Houdini
-			// '~': path.resolve('./src'),
-			// $houdini: './$houdini',
 		},
 		files: {
 			hooks: {
@@ -45,7 +42,7 @@ const config = {
 			},
 		},
 		output: {
-			preloadStrategy: 'preload-mjs', // Soon to be not relevant: https://kit.svelte.dev/docs/configuration
+			preloadStrategy: 'modulepreload', // 'preload-mjs', // Soon to be not relevant: https://kit.svelte.dev/docs/configuration
 		},
 	},
 	compilerOptions: {

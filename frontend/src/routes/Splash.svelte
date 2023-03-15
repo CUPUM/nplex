@@ -37,18 +37,15 @@
 	use:overlapNavbar={{ theme: THEMES.dark, background: col('bg', '300') }}
 	use:setRootBackground={{ overscroll: THEME_PALETTES.dark.bg[300] }}
 	use:intersection
-	on:intersection.enter={() => {
+	on:intersection.enter|once={() => {
 		entered = true;
-	}}
-	on:intersection.leave={() => {
-		entered = false;
 	}}
 	data-theme={THEMES.dark}
 >
 	{#each images as image, i (image.id)}
 		<SplashImage {image} {i} />
 	{/each}
-	<svg viewBox={FULL_VIEWBOX} on:click={consult} on:keydown={keydown}>
+	<svg class="logo" viewBox={FULL_VIEWBOX} on:click={consult} on:keydown={keydown}>
 		{#if entered}
 			<use in:fly={{ y: 30, delay: 250 }} href={LOGO_SYMBOLS_HREFS.n} out:fade|local />
 			<use in:fly={{ y: 30, delay: 300 }} href={LOGO_SYMBOLS_HREFS.p} out:fade|local />
@@ -57,6 +54,16 @@
 			<use in:fly={{ y: 30, delay: 450 }} href={LOGO_SYMBOLS_HREFS.x} out:fade|local />
 		{/if}
 	</svg>
+	<!-- Strokes overlay -->
+	<!-- <svg class="logo-strokes" viewBox={FULL_VIEWBOX}>
+		{#if entered}
+			<use in:fly={{ y: 30, delay: 250 }} href={LOGO_SYMBOLS_HREFS.n} out:fade|local />
+			<use in:fly={{ y: 30, delay: 300 }} href={LOGO_SYMBOLS_HREFS.p} out:fade|local />
+			<use in:fly={{ y: 30, delay: 350 }} href={LOGO_SYMBOLS_HREFS.l} out:fade|local />
+			<use in:fly={{ y: 30, delay: 400 }} href={LOGO_SYMBOLS_HREFS.e} out:fade|local />
+			<use in:fly={{ y: 30, delay: 450 }} href={LOGO_SYMBOLS_HREFS.x} out:fade|local />
+		{/if}
+	</svg> -->
 	<button on:click={consult} class={ICON_CLASS.hover}>
 		<div class="arrow">
 			<Icon name="arrow-down" strokeWidth={3} />
@@ -81,7 +88,8 @@
 		// transition: border-radius 0.15s ease-out;
 	}
 
-	svg {
+	.logo,
+	.logo-strokes {
 		position: relative;
 		cursor: pointer;
 		// width: 250px;
@@ -91,6 +99,18 @@
 		padding: 3rem;
 		// opacity: max(0, calc(1 - 0.0015 * var(--ui-scroll)));
 		// transition: opacity 0.25s ease;
+	}
+
+	.logo-strokes {
+		z-index: 10;
+		position: absolute;
+
+		use {
+			stroke: col(fg, 100);
+			stroke-width: var(--ui-border-thickness);
+			stroke-dasharray: 4px 2px;
+			fill: none;
+		}
 	}
 
 	button {

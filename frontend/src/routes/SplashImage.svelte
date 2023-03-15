@@ -49,7 +49,7 @@
 		transform: translate(-50%, -50%) scale(0.9);
 		opacity: 0;
 		// background-color: col(bg, 000, 0.25);
-		backdrop-filter: blur(16px);
+		backdrop-filter: blur(12px);
 		// border: 1px solid col(bg, 900, 0.2);
 		transition-property: transform, opacity;
 		transition-duration: var(--d);
@@ -63,7 +63,7 @@
 
 	.loaded {
 		opacity: 1;
-		box-shadow: 0 1rem 5rem -0rem col(bg, 100);
+		box-shadow: 0 1rem 5rem -2rem col(bg, 100);
 		transform: translate(-50%, -50%) scale(1);
 	}
 </style>

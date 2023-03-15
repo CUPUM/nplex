@@ -15,4 +15,10 @@ export const actions = {
 		if (deleteRes.error) throw error(500, deleteRes.error);
 		throw redirect(301, '/editer');
 	},
+	/**
+	 * Search across all visible users using a string.
+	 */
+	searchUser: async (event) => {
+		console.log(event);
+	},
 };

@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
-import { readable, writable, type Updater } from 'svelte/store';
+import { debounce } from '$utils/modifiers';
+import { get, readable, writable, type Updater } from 'svelte/store';
 
 /**
  * Writable store with a chronological cumulative memory of keyed values.
@@ -36,6 +37,150 @@ export function writableLedger<T>(init: T, fallback?: T) {
 		update,
 		unset,
 	};
+}
+
+/**
+ * Create a writable that handles a given input query using a given fetching function.
+ */
+export function fetchStore<T, R, F extends (input: T) => Promise<R> | PromiseLike<R>>(
+	/**
+	 * Writable's initial query input, if any.
+	 */
+	init: T,
+	/**
+	 * Use the query value and fetch data.
+	 */
+	fetcher: F,
+	/**
+	 * Debounce reactivity to query input changes to avoid request flood when bound to high frequency
+	 * trigger such as an input element's value.
+	 */
+	debounceTime = 250,
+	/**
+	 * Should the data be cleared when a new request is initiated or should it be held onto until a
+	 * response is received?
+	 */
+	staleWhileLoading = true,
+	/**
+	 * Should the stale data be cleared whenever a request fails?
+	 */
+	staleOnError = true
+) {
+	interface FetchStore {
+		/**
+		 * The input query.
+		 */
+		query: T;
+		/**
+		 * Indicates if the store is currently awaiting data from a request.
+		 */
+		loading: boolean;
+		/**
+		 * Indicates if the request failed.
+		 */
+		error: boolean | any;
+		/**
+		 * Indicates if the request succeeded and new data was populated.
+		 */
+		success: boolean;
+		/**
+		 * Returned data kept up to date.
+		 */
+		data?: R | null;
+		/**
+		 * Manually force a refreshing of the store's data.
+		 */
+		// refresh: () => ReturnType<F>;
+	}
+
+	let cached: FetchStore | undefined;
+
+	const store = writable<FetchStore>(
+		{
+			query: init,
+			loading: false,
+			error: false,
+			success: false,
+			data: null,
+			// refresh: ;
+		},
+		function start(set) {
+			if (init != null && browser) {
+				immediateFetcher(cached?.query ?? init);
+			}
+			return function stop() {
+				if (browser) {
+					cached = get(store);
+				}
+			};
+		}
+	);
+
+	async function immediateFetcher(q: T) {
+		// Set the pending states.
+		store.update((v) => {
+			return {
+				...v,
+				loading: true,
+				error: staleWhileLoading ? v.error : false,
+				success: staleWhileLoading ? v.success : false,
+				data: staleWhileLoading ? v.data : null,
+			};
+		});
+		// Initiate the request and keep track of response.
+		try {
+			await fetcher(q).then((res) => {
+				store.update((v) => {
+					return {
+						...v,
+						loading: false,
+						success: true,
+						error: false,
+						data: res ?? null,
+					};
+				});
+			});
+		} catch (err) {
+			store.update((v) => {
+				return {
+					...v,
+					loading: false,
+					success: false,
+					error: err ?? true,
+					data: staleOnError ? v.data : null,
+				};
+			});
+		}
+	}
+
+	function refresh() {
+		const q = get(store).query;
+		immediateFetcher(q);
+	}
+
+	const debouncedFetcher = debounce((q: T) => {
+		immediateFetcher(q);
+	}, debounceTime);
+
+	function _update(updater: Updater<FetchStore>) {
+		// console.log('updating');
+		store.update((v) => {
+			debouncedFetcher(v.query);
+			return updater(v);
+		});
+	}
+
+	function _set(v: FetchStore) {
+		// console.log('setting');
+		_update((prev) => {
+			return {
+				...prev,
+				...v,
+			};
+		});
+	}
+
+	return { ...store, update: _update, set: _set, refresh };
 }
 
 export type WritableLedger<T> = ReturnType<typeof writableLedger<T>>;
