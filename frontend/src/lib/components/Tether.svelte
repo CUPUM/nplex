@@ -55,8 +55,8 @@
 		if (anchor.offsetParent) {
 			resizeObs.observe(anchor);
 			resizeObs.observe(anchor.offsetParent);
-			mutationObs.observe(anchor, { attributes: true });
-			mutationObs.observe(anchor.offsetParent, { attributes: true });
+			mutationObs.observe(anchor, { attributes: true, childList: true });
+			mutationObs.observe(anchor.offsetParent, { attributes: true, childList: true });
 		}
 		dispose = () => {
 			anchor.removeEventListener('transitionend', updatePosition);

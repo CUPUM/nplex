@@ -10,19 +10,15 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Portal from '$components/Portal.svelte';
 	import { rootScroll } from '$stores/rootScroll';
-	import type { NonUndefinable } from '$types/utils';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fade, fly, scale } from 'svelte/transition';
 	import { modalOutletRef } from './ModalOutlet.svelte';
 
-	type T = $$Generic<(...args: unknown) => unknown>;
-
 	export let backgroundColor: string = '';
 	export let lockScroll: boolean = true;
 	export let closeOnClickoutside = true;
 	export let opened: boolean = false;
-	export let callback: T | undefined = undefined;
 
 	const key = Symbol('modal');
 
@@ -65,14 +61,9 @@
 	/**
 	 * Calls the callback, if any, and closes the modal.
 	 */
-	async function confirm(...args: T extends NonUndefinable<T> ? Parameters<T> : never) {
+	async function confirm() {
 		canceled = false;
 		confirmed = true;
-		if (callback) {
-			if (callback) {
-				await callback(...args);
-			}
-		}
 		close();
 	}
 

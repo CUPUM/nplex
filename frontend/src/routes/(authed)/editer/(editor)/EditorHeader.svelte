@@ -4,7 +4,7 @@
 	import Token from '$components/Token/Token.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { cubicOut } from 'svelte/easing';
-	import { slide } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 
 	export let isPublic: boolean | undefined = undefined;
 	export let updatedAt: Date = new Date();
@@ -15,7 +15,7 @@
 	const dateFormatter = new Intl.DateTimeFormat($locale);
 </script>
 
-<header transition:slide|local={{ duration: 250, easing: cubicOut }}>
+<header in:fly={{ y: 6, duration: 250, easing: cubicOut }}>
 	{#if isPublic != null}
 		<Tooltip
 			message={isPublic

@@ -3,7 +3,6 @@
 	import Dirty from '$components/Dirty.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import { editorDirtyValues } from '../../common';
-	import EditorFormgroup from '../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 	import { editTitle } from './common';
 
@@ -13,11 +12,12 @@
 </script>
 
 <Dirty sample={title} specimen={$editTitle} bind:dirty={$editorDirtyValues.title} />
-<EditorFormgroup legend="Titre du projet">
+<fieldset class="editor-formgroup">
+	<h3 class="editor-formgroup-title">Titre du projet</h3>
 	<div>
 		<Field bind:value={$editTitle} variant="outlined" name="title" />
 	</div>
-</EditorFormgroup>
+</fieldset>
 
 <style lang="scss">
 	div {

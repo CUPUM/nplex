@@ -90,8 +90,6 @@
 			{/key}
 		{/if}
 	{/each}
-	<!-- {/if} -->
-	<!-- {/key} -->
 </svg>
 
 <style lang="scss">

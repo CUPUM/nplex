@@ -75,12 +75,4 @@
 </Modal>
 
 <style lang="scss">
-	div {
-		width: 100%;
-		display: flex;
-		flex-wrap: wrap;
-		flex-direction: row;
-		justify-content: center;
-		gap: 3px;
-	}
 </style>
