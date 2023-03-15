@@ -17,22 +17,22 @@
 
 <header in:fly={{ y: 6, duration: 250, easing: cubicOut }}>
 	{#if isPublic != null}
-		<Tooltip
-			message={isPublic
-				? 'Ce projet est présentement visible publiquement.'
-				: "Ce projet n'est pas présentement visible publiquement."}
-			place="bottom"
-			align="start"
-		>
-			<section>
+		<section>
+			<Tooltip
+				message={isPublic
+					? 'Ce projet est présentement visible publiquement.'
+					: "Ce projet n'est pas présentement visible publiquement."}
+				place="bottom"
+				align="start"
+			>
 				<Token equi readonly variant="outlined" active={isPublic}>
 					<Icon name={isPublic ? 'eye-open' : 'eye-close'} />
 				</Token>
-				<span class="info">
-					{isPublic ? 'Publiée' : 'Brouillon (privée)'}
-				</span>
-			</section>
-		</Tooltip>
+			</Tooltip>
+			<span class="info">
+				{isPublic ? 'Publiée' : 'Brouillon (privée)'}
+			</span>
+		</section>
 	{/if}
 	<hgroup class="heading">
 		<h1 class="heading-xl">

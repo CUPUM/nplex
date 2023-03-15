@@ -7,10 +7,13 @@
 	import { KEY } from '$utils/enums';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
 	import { fade, fly } from 'svelte/transition';
+	import type { PageData } from './$types';
 	import { overlapNavbar } from './Navbar.svelte';
 	import { setRootBackground } from './RootBackground.svelte';
+	import SplashImage from './SplashImage.svelte';
 
 	export let scrollTarget: HTMLElement;
+	export let images: PageData['splashImages'];
 
 	let entered = false;
 
@@ -42,6 +45,9 @@
 	}}
 	data-theme={THEMES.dark}
 >
+	{#each images as image, i (image.id)}
+		<SplashImage {image} {i} />
+	{/each}
 	<svg viewBox={FULL_VIEWBOX} on:click={consult} on:keydown={keydown}>
 		{#if entered}
 			<use in:fly={{ y: 30, delay: 250 }} href={LOGO_SYMBOLS_HREFS.n} out:fade|local />
@@ -83,8 +89,8 @@
 		object-fit: contain;
 		max-width: var(--ui-width-main);
 		padding: 3rem;
-		opacity: max(0, calc(1 - 0.0015 * var(--ui-scroll)));
-		transition: opacity 0.25s ease;
+		// opacity: max(0, calc(1 - 0.0015 * var(--ui-scroll)));
+		// transition: opacity 0.25s ease;
 	}
 
 	button {

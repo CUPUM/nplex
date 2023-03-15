@@ -14,10 +14,12 @@
 			Vous pouvez ici contrôler la visibilité de la fiche. Les fiches non-publiées sont visibles
 			uniquement pour les collaborateurs et les administrateurs.
 		</p>
-		<Button variant="cta">
-			Publier
-			<Icon name="upload" slot="trailing" />
-		</Button>
+		<div class="publish">
+			<Button variant="cta">
+				Publier
+				<Icon name="upload" slot="leading" />
+			</Button>
+		</div>
 	{:else if role === 'visitor'}
 		<p class="info">
 			Vous pouvez ici contrôler la visibilité de la fiche. Votre statut d'utilisateur actuel ne vous
@@ -28,12 +30,17 @@
 			Les fiches non-publiées sont visibles uniquement pour les collaborateurs et les
 			administrateurs.
 		</p>
-		<Button variant="cta">
-			Demander à publier le projet
-			<Icon name="announcement" slot="trailing" />
-		</Button>
+		<div class="publish">
+			<Button variant="cta">
+				Demander à publier le projet
+				<Icon name="announcement" slot="leading" />
+			</Button>
+		</div>
 	{/if}
 </fieldset>
 
 <style lang="scss">
+	.publish {
+		font-size: var(--ui-text-sm);
+	}
 </style>

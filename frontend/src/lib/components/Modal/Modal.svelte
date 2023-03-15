@@ -10,6 +10,8 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Portal from '$components/Portal.svelte';
 	import { rootScroll } from '$stores/rootScroll';
+	import { closest, type ClosestReadable } from '$utils/store';
+	import type { ThemeName } from '$utils/themes';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fade, fly, scale } from 'svelte/transition';
@@ -19,12 +21,15 @@
 	export let lockScroll: boolean = true;
 	export let closeOnClickoutside = true;
 	export let opened: boolean = false;
+	export let theme: ThemeName | undefined = undefined;
 
 	const key = Symbol('modal');
 
 	let openedOnce = false;
 	let confirmed = false;
 	let canceled = false;
+	let probeRef: HTMLElement;
+	let closestTheme: ClosestReadable<'data-theme'>;
 
 	const dispatch = createEventDispatcher<{
 		[e in 'open' | 'close']: {
@@ -80,6 +85,7 @@
 
 	onMount(() => {
 		if (opened) openedOnce = true;
+		closestTheme = closest(probeRef, 'data-theme');
 	});
 
 	onDestroy(() => {
@@ -88,6 +94,7 @@
 </script>
 
 <slot name="control" {requestConfirmation} />
+<div class="modal-probe" hidden bind:this={probeRef} />
 {#if $modalOutletRef && opened}
 	<Portal target={$modalOutletRef}>
 		<div
@@ -96,6 +103,7 @@
 			transition:fade|local={{ duration: 150 }}
 		/>
 		<dialog
+			data-theme={theme ?? $closestTheme}
 			use:clickoutside
 			on:clickoutside
 			on:clickoutside={() => {

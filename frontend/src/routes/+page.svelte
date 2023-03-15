@@ -9,7 +9,7 @@
 	let scrollTarget: HTMLElement;
 </script>
 
-<Splash {scrollTarget} />
+<Splash {scrollTarget} images={data.splashImages} />
 <ProjectsPreviews bind:scrollTarget projects={data.projects} />
 <hr />
 <OrganisationsPreviews organisations={data.organisations} />

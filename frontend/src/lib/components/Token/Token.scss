@@ -19,7 +19,7 @@
 	justify-content: center;
 	flex-direction: row;
 	color: var(--token-color);
-	background: var(--token-background);
+	background-color: var(--token-background);
 	transition: all 0.1s ease-out;
 
 	&::after {
@@ -94,15 +94,40 @@ input {
 }
 
 // Outlined variant.
+
 .outlined {
-	--token-border: var(--ui-border-thickness) solid #{col(fg, 500, 0.1)};
+	--color: #{col(fg, 500)};
+	--background-color: transparent;
+	--border: var(--ui-border-thickness) solid #{col(fg, 500, 0.1)};
+	--hover-color: #{col(fg, 700)};
+	--hover-background-color: #{col(fg, 100, 0.1)};
+	--hover-border: 3px solid #{col(fg, 500, 0)};
+	--active-color: #{col(fg, 900)};
+	--active-background-color: #{col(fg, 500, 0.1)};
+	--active-border: 3px solid #{col(fg, 500, 0)};
+	color: var(--color);
+	background-color: var(--background-color);
+	border: var(--border);
 	&:hover:not(span) {
+		color: var(--hover-color);
+		background-color: var(--hover-background-color);
+		border: var(--hover-border);
 	}
 	&.active {
+		color: var(--active-color);
+		background-color: var(--active-background-color);
+		border: var(--active-border);
+	}
+	&.warning {
+	}
+	&.error {
+	}
+	&.success {
 	}
 }
 
 // Dashed variant.
+
 .dashed {
 	--token-border: var(--ui-border-thickness) dashed #{col(fg, 500, 0.1)};
 }

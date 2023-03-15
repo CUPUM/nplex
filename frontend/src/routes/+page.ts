@@ -26,6 +26,17 @@ export const load = async (event) => {
 			return res.data;
 		});
 
+	const splashImages = db
+		.from('random_project_images')
+		.select('*')
+		.limit(10)
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			return res.data;
+		});
+
 	const organisations = db
 		.from('organizations')
 		.select(
@@ -59,6 +70,7 @@ export const load = async (event) => {
 	return {
 		showCategoryNavbar: true,
 		projects,
+		splashImages,
 		organisations,
 		actors,
 	};

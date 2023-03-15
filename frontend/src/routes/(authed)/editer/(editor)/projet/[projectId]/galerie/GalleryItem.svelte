@@ -33,7 +33,7 @@
 			<Button
 				equi
 				type="submit"
-				variant="danger"
+				state="warning"
 				formaction="?/delete&{SEARCH_PARAMS.FILENAME}={data.name}"
 				class="menu-button"
 			>
