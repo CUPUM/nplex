@@ -67,7 +67,7 @@
 	$: element = as ? as : href ? 'a' : 'button';
 	$: hrefURL = href ? new UnbasedURL(href) : undefined;
 	$: if (autoActive && hrefURL) {
-		active = $page.url.pathname === hrefURL.pathname;
+		active = type === 'submit' ? false : $page.url.pathname === hrefURL.pathname;
 	}
 </script>
 

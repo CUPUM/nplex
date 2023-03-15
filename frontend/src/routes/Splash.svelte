@@ -92,6 +92,7 @@
 	.logo-strokes {
 		position: relative;
 		cursor: pointer;
+		width: 100%;
 		// width: 250px;
 		fill: col(fg, 700);
 		object-fit: contain;

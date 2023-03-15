@@ -45,6 +45,7 @@
 		padding-bottom: 0.5em;
 		font-size: var(--ui-text-xs);
 		opacity: 0.35;
+		font-weight: 500;
 		letter-spacing: 0.2px;
 	}
 

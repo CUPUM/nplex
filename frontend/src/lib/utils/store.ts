@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import { debounce } from '$utils/modifiers';
 import { get, readable, writable, type Updater } from 'svelte/store';
+import type { Awaited } from 'ts-essentials';
 
 /**
  * Writable store with a chronological cumulative memory of keyed values.
@@ -39,14 +40,39 @@ export function writableLedger<T>(init: T, fallback?: T) {
 	};
 }
 
+// type FetchStore<Q, R> = Writable<{
+// 	/**
+// 	 * The input query.
+// 	 */
+// 	query: Q;
+// 	/**
+// 	 * Indicates if the store is currently awaiting data from a request.
+// 	 */
+// 	loading: boolean;
+// 	/**
+// 	 * Indicates if the request failed.
+// 	 */
+// 	error: boolean | any;
+// 	/**
+// 	 * Indicates if the request succeeded and new data was populated.
+// 	 */
+// 	success: boolean;
+// 	/**
+// 	 * Returned data kept up to date.
+// 	 */
+// 	data?: R | null;
+// }> & {
+// 	refresh: () => Promise<R> | PromiseLike<R>;
+// };
+
 /**
  * Create a writable that handles a given input query using a given fetching function.
  */
-export function fetchStore<T, R, F extends (input: T) => Promise<R> | PromiseLike<R>>(
+export function fetchStore<Q, F extends (query: Q) => Promise<any> | PromiseLike<any>>(
 	/**
 	 * Writable's initial query input, if any.
 	 */
-	init: T,
+	init: Q,
 	/**
 	 * Use the query value and fetch data.
 	 */
@@ -66,11 +92,11 @@ export function fetchStore<T, R, F extends (input: T) => Promise<R> | PromiseLik
 	 */
 	staleOnError = true
 ) {
-	interface FetchStore {
+	type FetchStoreValue = {
 		/**
 		 * The input query.
 		 */
-		query: T;
+		query: Q;
 		/**
 		 * Indicates if the store is currently awaiting data from a request.
 		 */
@@ -86,37 +112,35 @@ export function fetchStore<T, R, F extends (input: T) => Promise<R> | PromiseLik
 		/**
 		 * Returned data kept up to date.
 		 */
-		data?: R | null;
-		/**
-		 * Manually force a refreshing of the store's data.
-		 */
-		// refresh: () => ReturnType<F>;
-	}
-
-	let cached: FetchStore | undefined;
-
-	const store = writable<FetchStore>(
+		data: Awaited<ReturnType<F>> | null;
+	};
+	/**
+	 * Base store used to keep track of request states and reactive query input value.
+	 */
+	const store = writable<FetchStoreValue>(
 		{
 			query: init,
 			loading: false,
 			error: false,
 			success: false,
 			data: null,
-			// refresh: ;
 		},
 		function start(set) {
-			if (init != null && browser) {
-				immediateFetcher(cached?.query ?? init);
+			const q = get(store).query;
+			if (q != null) {
+				immediateFetcher(q);
 			}
 			return function stop() {
-				if (browser) {
-					cached = get(store);
-				}
+				// if (browser) {
+				// 	cached = get(store);
+				// }
 			};
 		}
 	);
-
-	async function immediateFetcher(q: T) {
+	/**
+	 * Wrapped fetcher keeping the base store in sync.
+	 */
+	async function immediateFetcher(q: Q) {
 		// Set the pending states.
 		store.update((v) => {
 			return {
@@ -152,25 +176,26 @@ export function fetchStore<T, R, F extends (input: T) => Promise<R> | PromiseLik
 			});
 		}
 	}
-
-	function refresh() {
-		const q = get(store).query;
-		immediateFetcher(q);
-	}
-
-	const debouncedFetcher = debounce((q: T) => {
+	/**
+	 * Debounced fetcher wrapper.
+	 */
+	const debouncedFetcher = debounce((q: Q) => {
 		immediateFetcher(q);
 	}, debounceTime);
-
-	function _update(updater: Updater<FetchStore>) {
+	/**
+	 * Exposed store update method.
+	 */
+	function _update(updater: Updater<FetchStoreValue>) {
 		// console.log('updating');
 		store.update((v) => {
 			debouncedFetcher(v.query);
 			return updater(v);
 		});
 	}
-
-	function _set(v: FetchStore) {
+	/**
+	 * Exposed store set method.
+	 */
+	function _set(v: FetchStoreValue) {
 		// console.log('setting');
 		_update((prev) => {
 			return {
@@ -179,21 +204,32 @@ export function fetchStore<T, R, F extends (input: T) => Promise<R> | PromiseLik
 			};
 		});
 	}
-
-	return { ...store, update: _update, set: _set, refresh };
+	/**
+	 * Manually force a refreshing of the store's data.
+	 */
+	function refresh() {
+		const q = get(store).query;
+		immediateFetcher(q);
+	}
+	return {
+		subscribe: store.subscribe,
+		update: _update,
+		set: _set,
+		refresh,
+	};
 }
 
 export type WritableLedger<T> = ReturnType<typeof writableLedger<T>>;
 
 /**
- * Observe the target element's closest parent with given attribute and return its value.
+ * Observe the target element's closest DOM parent with given attribute and return its value.
  */
 export function closest<
 	A extends string,
 	V = A extends keyof svelteHTML.HTMLAttributes
 		? svelteHTML.HTMLAttributes[A]
 		: string | undefined | null
->(element: Element, attribute: A) {
+>(element: Element, attribute: A, fromRoot = false) {
 	const p = element.closest(`[${attribute}]`);
 	const init = p?.getAttribute(attribute);
 	return readable<V>((init as V) ?? undefined, function start(set) {

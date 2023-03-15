@@ -236,6 +236,7 @@
 					Mot de passe oublié ?
 				</Button>
 				<Button
+					autoActive={false}
 					class="small-button"
 					data-sveltekit-noscroll=""
 					data-sveltekit-replacestate

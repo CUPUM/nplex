@@ -1,18 +1,25 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Field from '$components/Field/Field.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
-	import { debounce } from '$utils/modifiers';
-	import { writable } from 'svelte/store';
+	import { browserDb } from '$utils/database/client';
+	import { fetchStore } from '$utils/store';
+	import type { PageData } from './$types';
 
-	const searchUser = function () {
-		const { subscribe, set } = writable<T>();
-		let result;
-		const query = debounce((q: string) => {});
-		return {
-			subscribe,
-			set,
-		};
-	};
+	$: collaborators = ($page.data as PageData).collaborators;
+
+	const searchUsers = fetchStore('', async (s) => {
+		return browserDb
+			.from('users')
+			.select('*')
+			.textSearch('first_name', `'${s}'`)
+			.then((res) => {
+				if (res.error) {
+					throw res.error;
+				}
+				return res.data;
+			});
+	});
 </script>
 
 <fieldset class="editor-formgroup">
@@ -24,14 +31,38 @@
 		la fiche, mais ne pourront pas la supprimer.
 	</p>
 	<h4 class="heading-sm">Collaborateurs</h4>
-	<p class="info">Pour ajouter des collaborateurs au projet,</p>
-	<ul />
-	<Field placeholder="Chercher un utilisateur..." bind:value={$searchUser.query}>
-		<svelte:fragment slot="leading">
-			<FieldIcon name="search" />
-		</svelte:fragment>
-	</Field>
+	<p class="info">
+		Utilisez la barre de recherche ci-dessous pour ajouter des collaborateurs au projet.
+	</p>
+	<div class="search">
+		<Field placeholder="Chercher un utilisateur..." bind:value={$searchUsers.query}>
+			<svelte:fragment slot="leading">
+				<FieldIcon name="search" />
+			</svelte:fragment>
+		</Field>
+	</div>
+	<ul>
+		{#if collaborators.length}
+			{#each collaborators as c}
+				<li>{c.user.first_name}</li>
+			{/each}
+		{:else}
+			<li class="info">Vous êtes présentement l'unique collaborateur sur ce projet.</li>
+		{/if}
+	</ul>
 </fieldset>
 
 <style lang="scss">
+	.search {
+		margin-block: 1.5rem;
+		max-width: var(--ui-width-sm);
+	}
+
+	ul {
+		display: flex;
+		flex-direction: column;
+		padding: 1.5rem;
+		border-radius: var(--ui-radius-lg);
+		background-color: col(bg, 900);
+	}
 </style>

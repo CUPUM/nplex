@@ -8,7 +8,7 @@
 	const t = ['xl', 'lg', 'md', 'sm', 'xs'];
 
 	const q = fetchStore('Hello', async (v) => {
-		return fetch('/playground/data.json', { method: 'GET' }).then((res) => res.json());
+		return fetch('/playground/data.json', { method: 'GET' }).then(async (res) => res.json());
 	});
 
 	// const sq = fetchStore('I donno', (v) => {
@@ -20,6 +20,8 @@
 	// 	// 	return res.data;
 	// 	// });
 	// });
+
+	$: console.log($q.data);
 </script>
 
 <article>

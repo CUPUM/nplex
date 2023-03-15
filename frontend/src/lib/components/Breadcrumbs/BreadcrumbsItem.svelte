@@ -8,9 +8,8 @@
 
 	$: hrefUrl = new UnbasedURL(href);
 	$: autoCurrent =
-		(matcher
-			? $page.url.pathname.match(matcher)?.length
-			: $page.url.pathname === hrefUrl.pathname) || undefined;
+		(matcher ? $page.url.href.match(matcher)?.length : $page.url.pathname === hrefUrl.pathname) ||
+		undefined;
 </script>
 
 <a
