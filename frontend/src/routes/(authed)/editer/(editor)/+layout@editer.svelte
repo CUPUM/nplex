@@ -38,6 +38,8 @@
 
 		:global(.editor-tab-header) {
 			padding: var(--ui-pad-outer);
+			border: var(--ui-border-thickness) dashed col(fg, 100, 0.1);
+			border-radius: var(--ui-radius-xl);
 		}
 
 		:global(.editor-formgroup) {
@@ -45,7 +47,7 @@
 			padding: 3rem;
 			background-color: col(bg, 700);
 			border: 1px solid col(bg, 900);
-			border-radius: var(--ui-radius-lg);
+			border-radius: var(--ui-radius-xl);
 			box-shadow: var(--ui-shadow-md);
 		}
 

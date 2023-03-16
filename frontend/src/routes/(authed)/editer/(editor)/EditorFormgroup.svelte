@@ -19,7 +19,7 @@
 		padding: 3rem;
 		background-color: col(bg, 700);
 		border: 1px solid col(bg, 900);
-		border-radius: var(--ui-radius-lg);
+		border-radius: var(--ui-radius-xl);
 		box-shadow: var(--ui-shadow-md);
 		transition: all 0.15s;
 

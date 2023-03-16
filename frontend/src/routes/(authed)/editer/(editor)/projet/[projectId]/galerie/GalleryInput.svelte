@@ -9,6 +9,7 @@
 
 	let inputRef: HTMLInputElement;
 
+	// To do: use xhr store to keep track of progress.
 	function upload(e: Event) {
 		if (
 			e.target instanceof Element &&

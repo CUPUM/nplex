@@ -30,7 +30,7 @@
 				</Token>
 			</Tooltip>
 			<span class="info">
-				{isPublic ? 'Publiée' : 'Brouillon (privée)'}
+				{isPublic ? 'Fiche publiée' : 'Fiche brouillon (privée)'}
 			</span>
 		</section>
 	{/if}
@@ -45,23 +45,26 @@
 				<slot name="nav" />
 			</nav>
 		{/if}
-		<dl>
-			<dt>Créé le</dt>
-			<dd>{dateFormatter.format(createdAt)}</dd>
-			<dt>par</dt>
-			<dd>{createdBy}</dd>
-		</dl>
-		<dl>
-			<dt>Modifié le</dt>
-			<dd>{dateFormatter.format(updatedAt)}</dd>
-			<dt>par</dt>
-			<dd>{updatedBy}</dd>
-		</dl>
+		<nobr>
+			<dl>
+				<dt>Créé le</dt>
+				<dd>{dateFormatter.format(createdAt)}</dd>
+				<dt>par</dt>
+				<dd>{createdBy}</dd>
+			</dl>
+			<dl>
+				<dt>Modifié le</dt>
+				<dd>{dateFormatter.format(updatedAt)}</dd>
+				<dt>par</dt>
+				<dd>{updatedBy}</dd>
+			</dl>
+		</nobr>
 	</section>
 </header>
 
 <style lang="scss">
 	header {
+		position: relative; // Avoids positioning problem with nested tooltip due to offsetParent changing during transition...
 		width: 100%;
 		min-height: calc(100vh - var(--ui-gutter) - var(--ui-nav-h));
 		min-height: calc(100svh - var(--ui-gutter) - var(--ui-nav-h));
@@ -71,9 +74,9 @@
 		justify-content: center;
 		padding: var(--ui-pad-outer);
 		gap: var(--ui-pad-outer);
-		border: var(--ui-border-thickness) dashed col(primary, 500, 0.75);
-		// background-color: col(fg, 000, 0.05);
-		border-radius: var(--ui-radius-lg);
+		// border: var(--ui-border-thickness) dashed col(primary, 500, 0.75);
+		background-color: col(primary, 300, 0.1);
+		border-radius: var(--ui-radius-xl);
 		margin-bottom: var(--ui-gutter);
 		opacity: max(0, calc(1 - var(--ui-scroll) * 0.002));
 		transition: opacity 0.25s ease;
@@ -105,6 +108,11 @@
 		border-radius: var(--ui-radius-md);
 		// background-color: col(primary, 100, 0.1);
 		border: var(--ui-border-thickness) solid col(primary, 500, 0.2);
+	}
+
+	nobr {
+		display: inherit;
+		gap: inherit;
 	}
 
 	dt {

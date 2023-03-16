@@ -9,17 +9,23 @@
 	$: collaborators = ($page.data as PageData).collaborators;
 
 	const searchUsers = fetchStore('', async (s) => {
-		return browserDb
-			.from('users')
-			.select('*')
-			.textSearch('first_name', `'${s}'`)
-			.then((res) => {
-				if (res.error) {
-					throw res.error;
-				}
-				return res.data;
-			});
+		if (s.length) {
+			return browserDb
+				.from('users')
+				.select('*')
+				.textSearch('first_name', `'${s}'`)
+				.then((res) => {
+					console.log(res);
+					if (res.error) {
+						throw res.error;
+					}
+					return res.data;
+				});
+		}
+		return [];
 	});
+
+	$: console.log($searchUsers.data);
 </script>
 
 <fieldset class="editor-formgroup">

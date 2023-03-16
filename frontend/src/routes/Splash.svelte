@@ -55,7 +55,7 @@
 		{/if}
 	</svg>
 	<!-- Strokes overlay -->
-	<!-- <svg class="logo-strokes" viewBox={FULL_VIEWBOX}>
+	<svg class="logo-strokes" viewBox={FULL_VIEWBOX}>
 		{#if entered}
 			<use in:fly={{ y: 30, delay: 250 }} href={LOGO_SYMBOLS_HREFS.n} out:fade|local />
 			<use in:fly={{ y: 30, delay: 300 }} href={LOGO_SYMBOLS_HREFS.p} out:fade|local />
@@ -63,7 +63,7 @@
 			<use in:fly={{ y: 30, delay: 400 }} href={LOGO_SYMBOLS_HREFS.e} out:fade|local />
 			<use in:fly={{ y: 30, delay: 450 }} href={LOGO_SYMBOLS_HREFS.x} out:fade|local />
 		{/if}
-	</svg> -->
+	</svg>
 	<button on:click={consult} class={ICON_CLASS.hover}>
 		<div class="arrow">
 			<Icon name="arrow-down" strokeWidth={3} />
@@ -107,14 +107,15 @@
 		position: absolute;
 
 		use {
-			stroke: col(fg, 100);
-			stroke-width: var(--ui-border-thickness);
+			stroke: col(bg, 500);
+			stroke-width: 1px;
 			stroke-dasharray: 4px 2px;
 			fill: none;
 		}
 	}
 
 	button {
+		z-index: 10;
 		cursor: pointer;
 		position: absolute;
 		display: flex;
@@ -122,6 +123,7 @@
 		justify-content: center;
 		bottom: 1.5rem;
 		color: col(fg, 700);
+		// background-color: col(bg, 300, 0.2);
 		font-size: 3rem;
 		width: 5rem;
 		aspect-ratio: 1 / 1;
@@ -132,7 +134,7 @@
 
 		&:hover,
 		&:focus-visible {
-			background: col(primary, 100, 0.2);
+			background-color: col(primary, 100, 0.2);
 			color: col(primary, 500);
 			.arrow {
 				opacity: 1;

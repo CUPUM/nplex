@@ -59,7 +59,7 @@
 		"prettier-plugin-jsdoc": "0.4.2",
 		"prettier-plugin-svelte": "^2.9.0",
 		"sass": "^1.59.3",
-		"svelte": "^3.56.0",
+		"svelte": "^3.57.0",
 		"svelte-check": "^3.1.4",
 		"svelte-preprocess": "^5.0.2",
 		"svg-path-properties": "^1.1.0",
@@ -67,11 +67,11 @@
 		"ts-essentials": "^9.3.1",
 		"tslib": "^2.5.0",
 		"typescript": "^4.9.5",
-		"vite": "^4.1.4"
+		"vite": "^4.2.0"
 	},
 	"dependencies": {
 		"@mapbox/mapbox-gl-draw": "1.4.1",
-		"@supabase/supabase-js": "2.10.0",
+		"@supabase/supabase-js": "2.11.0",
 		"@turf/turf": "^6.5.0",
 		"@types/sharp": "^0.31.1",
 		"@types/sortablejs": "^1.15.1",

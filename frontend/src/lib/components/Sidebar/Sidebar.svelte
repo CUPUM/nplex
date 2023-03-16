@@ -8,28 +8,29 @@
 
 <style lang="scss">
 	aside {
-		--ui-aside-inset: var(--aside-inset, 6px);
+		--sidebar-inset: var(--aside-inset, 6px);
+		--sidebar-radius: var(--ui-radius-lg);
 		flex: none;
 		position: sticky;
 		display: flex;
 		align-items: stretch;
 		flex-direction: column;
 		top: calc(var(--ui-nav-h));
-		padding: var(--ui-aside-inset);
-		border-radius: var(--ui-radius-lg);
+		padding: var(--sidebar-inset);
+		border-radius: var(--sidebar-radius);
 		// background-color: col(bg, 500);
 		border: var(--ui-border-thickness) dashed col(secondary, 300, 0.25);
 		// border: var(--ui-border-thickness) solid col(fg, 100, 0.1);
 		overflow-x: hidden;
 		overflow-y: auto;
-		gap: var(--ui-aside-inset);
+		gap: var(--sidebar-inset);
 		width: var(--ui-sidebar-width);
 
 		> :global(hr) {
 			align-self: stretch;
 			border: var(--ui-border-thickness) dashed col(secondary, 300, 0.25);
 			border-top: none;
-			margin: 0 calc(-1 * var(--ui-aside-inset));
+			margin: 0 calc(-1 * var(--sidebar-inset));
 			position: relative;
 			overflow: visible;
 

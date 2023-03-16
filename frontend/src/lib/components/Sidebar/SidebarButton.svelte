@@ -39,6 +39,7 @@
 <style lang="scss">
 	.ui-sidebar-button {
 		--ripple-color: #{col(secondary, 500)};
+		--sidebar-button-radius: calc(var(--sidebar-radius) - var(--sidebar-inset));
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -47,7 +48,7 @@
 		padding-inline: 1em;
 		padding-block: 0.75em;
 		gap: 1em;
-		border-radius: var(--ui-radius-md);
+		border-radius: var(--sidebar-button-radius);
 		font-weight: 550;
 		transition: all 0.1s ease-out;
 	}

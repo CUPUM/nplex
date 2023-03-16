@@ -5,6 +5,11 @@
 	Tethers slotted content to a given HTMLElement or to the mouse-position.
 	Useful for positioning content relative to controls, in cases like tooltips and popovers.
 
+	Attention: Make sure the offsetParent of the anchor is not 'static' positioned.
+	If the tethered item is statically positionned inside a component that is transitioned,
+	there will be a miscalculation of its position due to the initial offsetParent
+	being different when the svelte applies a non static position for the transition.
+
 	Two CSS classes can be accessed:
 	- `.ui-anchor`
 	- `.ui-tether`: has the place and align classes
@@ -15,7 +20,8 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import { cssSize } from '$utils/css';
-	import { onDestroy } from 'svelte';
+	import { debounce } from '$utils/modifiers';
+	import { onDestroy, onMount } from 'svelte';
 
 	export let place: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
 	export let align: 'start' | 'center' | 'end' | 'stretch' = 'start';
@@ -26,11 +32,6 @@
 	 */
 	export let anchorRef: HTMLElement | undefined = undefined;
 
-	/**
-	 * Attached content.
-	 */
-	let tetherRef: HTMLElement;
-
 	let mutationObs: MutationObserver;
 	let resizeObs: ResizeObserver;
 	let x: number;
@@ -39,25 +40,27 @@
 	let h: number;
 	let dispose: () => void;
 
-	function updatePosition() {
+	const updatePosition = debounce(async () => {
 		if (anchorRef?.firstElementChild instanceof HTMLElement) {
 			y = anchorRef.firstElementChild.offsetTop;
 			x = anchorRef.firstElementChild.offsetLeft;
 			w = anchorRef.firstElementChild.offsetWidth;
 			h = anchorRef.firstElementChild.offsetHeight;
 		}
-	}
+	}, 50);
 
 	function tether(anchor: HTMLElement) {
-		anchor.addEventListener('transitionend', updatePosition);
+		anchor.addEventListener('transitionend', updatePosition, {});
 		resizeObs = new ResizeObserver(updatePosition);
 		mutationObs = new MutationObserver(updatePosition);
 		if (anchor.offsetParent) {
 			resizeObs.observe(anchor);
 			resizeObs.observe(anchor.offsetParent);
-			mutationObs.observe(anchor, { attributes: true, childList: true });
-			mutationObs.observe(anchor.offsetParent, { attributes: true, childList: true });
+			mutationObs.observe(anchor, { attributes: true });
+			mutationObs.observe(anchor.offsetParent, { attributes: true });
+			anchor.offsetParent.addEventListener('transitionend', () => console.log(anchor.offsetParent));
 		}
+		updatePosition();
 		dispose = () => {
 			anchor.removeEventListener('transitionend', updatePosition);
 			resizeObs?.disconnect();
@@ -65,10 +68,9 @@
 		};
 	}
 
-	$: if (anchorRef) {
-		tether(anchorRef);
-		updatePosition();
-	}
+	onMount(async () => {
+		tether(anchorRef!);
+	});
 
 	onDestroy(() => {
 		if (dispose) {
@@ -88,10 +90,9 @@
 	on:pointerleave
 	on:pointerenter
 >
-	<slot name="anchor" />
+	<slot name="anchor" {updatePosition} />
 </div>
 <div
-	bind:this={tetherRef}
 	class="ui-tether {place} {align}"
 	style:--x="{x}px"
 	style:--y="{y}px"
@@ -99,7 +100,7 @@
 	style:--h="{h}px"
 	style:--d={cssSize(distance)}
 >
-	<slot {anchorRef} />
+	<slot {anchorRef} {updatePosition} />
 </div>
 
 <style lang="scss">

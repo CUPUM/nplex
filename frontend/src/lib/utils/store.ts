@@ -40,31 +40,6 @@ export function writableLedger<T>(init: T, fallback?: T) {
 	};
 }
 
-// type FetchStore<Q, R> = Writable<{
-// 	/**
-// 	 * The input query.
-// 	 */
-// 	query: Q;
-// 	/**
-// 	 * Indicates if the store is currently awaiting data from a request.
-// 	 */
-// 	loading: boolean;
-// 	/**
-// 	 * Indicates if the request failed.
-// 	 */
-// 	error: boolean | any;
-// 	/**
-// 	 * Indicates if the request succeeded and new data was populated.
-// 	 */
-// 	success: boolean;
-// 	/**
-// 	 * Returned data kept up to date.
-// 	 */
-// 	data?: R | null;
-// }> & {
-// 	refresh: () => Promise<R> | PromiseLike<R>;
-// };
-
 /**
  * Create a writable that handles a given input query using a given fetching function.
  */
@@ -217,6 +192,27 @@ export function fetchStore<Q, F extends (query: Q) => Promise<any> | PromiseLike
 		set: _set,
 		refresh,
 	};
+}
+
+/**
+ * A store to manage upload or download of files through XML Http Requests while keeping track of
+ * progress states.
+ */
+export function xhrStore() {
+	// Should return a store with the following shape:
+	// {
+	// 	data: input source being uploaded (full data) or being downloaded (progressively extended data)
+	// 	uploading: boolean;
+	// 	downloading: boolean;
+	// 	progress: number (percent)
+	// 	total: number (byte size)
+	// 	loaded: number (byte size)
+	// 	success: boolean;
+	// 	error: boolean;
+	// }
+	// Along with following non reactive methods:
+	// upload(destinationUrl: string, data?: File or whatever. If present will set store data to this and will upload this. Else will attempt to upload store's current data)
+	// download(sourceUrl: string)
 }
 
 export type WritableLedger<T> = ReturnType<typeof writableLedger<T>>;

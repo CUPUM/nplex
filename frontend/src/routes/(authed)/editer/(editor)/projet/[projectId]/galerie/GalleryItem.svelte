@@ -18,6 +18,13 @@
 
 	$: ({ banner_id } = ($page.data as PageData).project);
 
+	let bannerAction: 'promoting' | 'demoting' | null = null;
+	$: if (banner_id) {
+		bannerAction = null;
+	}
+	$: bannerActive =
+		(banner_id === data.id && bannerAction !== 'demoting') || bannerAction === 'promoting';
+
 	const dispatch = createEventDispatcher<{ shift: number }>();
 </script>
 
@@ -64,7 +71,11 @@
 				formaction="{banner_id === data.id
 					? '?/demote'
 					: '?/promote'}&{SEARCH_PARAMS.IMAGE_ID}={data.id}"
-				active={banner_id === data.id}
+				active={bannerActive}
+				loading={!!bannerAction}
+				on:click={() => {
+					bannerAction = banner_id === data.id ? 'demoting' : 'promoting';
+				}}
 			>
 				<Icon name="bookmark" />
 			</Button>
