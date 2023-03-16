@@ -15,12 +15,13 @@
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { editorDirtyValues } from '../../common';
-	import EditorFormgroup from '../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 	import { editTypeId } from './common';
 
 	$: work_ids = ($page.data as PageData).project.work_ids;
 	$: descriptors = ($page.data as PageData).descriptors;
+
+	$: console.log(descriptors);
 
 	let form_work_ids = [...($page.data as PageData).project.work_ids];
 	function sync() {
@@ -80,7 +81,8 @@
 </script>
 
 <Dirty sample={work_ids} specimen={form_work_ids} bind:dirty={$editorDirtyValues.work_ids} />
-<EditorFormgroup legend="Travaux">
+<fieldset class="editor-formgroup">
+	<h3 class="editor-formgroup-title">Travaux</h3>
 	<AnimateHeight>
 		<ul class="selected">
 			{#each selected as w, i (w.id)}
@@ -150,7 +152,7 @@
 			</ul>
 		</AnimateHeight>
 	{/each}
-</EditorFormgroup>
+</fieldset>
 
 <style lang="scss">
 	.selected {

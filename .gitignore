@@ -1,6 +1,8 @@
 .DS_Store
 .env
 .env.local
+.env.production
+.env.production.local
 node_modules
 .pnpm-store
 .pnpm-debug.log
