@@ -21,8 +21,6 @@
 	$: work_ids = ($page.data as PageData).project.work_ids;
 	$: descriptors = ($page.data as PageData).descriptors;
 
-	$: console.log(descriptors);
-
 	let form_work_ids = [...($page.data as PageData).project.work_ids];
 	function sync() {
 		form_work_ids = [...work_ids];

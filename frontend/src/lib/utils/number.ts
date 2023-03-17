@@ -21,3 +21,17 @@ export function snap(
 export function mod(number: number, modulus: number) {
 	return ((number % modulus) + modulus) % modulus;
 }
+
+/**
+ * Quick sum of an array of numbers.
+ */
+export function sum(...numbers: number[]) {
+	return numbers.reduce((total, n) => total + n, 0);
+}
+
+/**
+ * Quickly get the average of an array of numbers.
+ */
+export function avg(...numbers: number[]) {
+	return sum(...numbers) / numbers.length;
+}

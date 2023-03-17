@@ -1,4 +1,5 @@
 import { toPgRange } from '$utils/format';
+import { avg } from '$utils/number';
 import { writable } from 'svelte/store';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
@@ -9,9 +10,14 @@ export const TITLE_MIN_WORDS = 3;
 export const TITLE_MAX_WORDS = 24;
 export const DESCRIPTION_MAX_WORDS = 250;
 export const COST_MIN = 0;
-export const COST_MAX = 50_000;
+export const COST_MAX = 100_000;
 export const COST_MAX_DELTA = 10_000;
+export const COST_MAX_DELTA_R = 0.2;
 export const COST_STEP = 10;
+
+export function maxCostDelta(min: number, max: number) {
+	return avg(min, max) * COST_MAX_DELTA_R;
+}
 
 export const editTitle = writable<LayoutData['project']['title']>();
 export const editTypeId = writable<LayoutData['project']['type_id']>();
@@ -54,7 +60,7 @@ export const costRangeSchema = zfd
 				message: `La valeur maximum du projet ne respecte pas les limites.`,
 			});
 		}
-		if (min > max || max - min > COST_MAX_DELTA) {
+		if (min > max || max - min > maxCostDelta(min, max)) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: `La différence entre la valeur minimum et la valeur maximum du projet n'est pas valide.`,

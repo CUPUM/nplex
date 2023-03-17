@@ -23,7 +23,7 @@ export const actions = {
 			.eq('project_id', event.params.projectId)
 			.not('exemplarity_indicator_id', 'in', toPgArr(parsed.data.indicator_id))
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				if (res.error) throw res.error;
 			});
 
@@ -36,7 +36,7 @@ export const actions = {
 				}))
 			)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				if (res.error) throw res.error;
 			});
 

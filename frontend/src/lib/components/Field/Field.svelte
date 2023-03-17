@@ -106,7 +106,7 @@
 	let inputRef: InputRef;
 	let labelWidth: number;
 
-	$: hasvalue = value != null;
+	$: hasvalue = value != null && (value != '' || value == '0');
 	$: haslabel = $$slots.label;
 	$: hasplaceholder = placeholder != null && placeholder !== '';
 	$: computedPlaceholder = placeholder ? placeholder + (required ? ' *' : '') : undefined;

@@ -47,13 +47,13 @@
 		{/if}
 		<nobr>
 			<dl>
-				<dt>Créé le</dt>
+				<dt>Créée le</dt>
 				<dd>{dateFormatter.format(createdAt)}</dd>
 				<dt>par</dt>
 				<dd>{createdBy}</dd>
 			</dl>
 			<dl>
-				<dt>Modifié le</dt>
+				<dt>Modifiée le</dt>
 				<dd>{dateFormatter.format(updatedAt)}</dd>
 				<dt>par</dt>
 				<dd>{updatedBy}</dd>

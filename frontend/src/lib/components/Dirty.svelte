@@ -15,7 +15,7 @@
 	 */
 	export let sample: T;
 	/**
-	 * Bind a variable to allow the dirty component to sync.
+	 * The modifiable value that should be marked as dirty or clean.
 	 */
 	export let specimen: T;
 	/**

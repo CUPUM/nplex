@@ -20,9 +20,11 @@
 
 	type O = $$Generic;
 
-	type $$Props = ComponentProps<Field<O>> & {};
+	type $$Props = ComponentProps<Field<O>> & {
+		options: O[];
+	};
 
-	export let options: O[];
+	export let options: $$Props['options'];
 	export let variant: ComponentProps<Field<O>>['variant'] = 'default';
 	export let id: ComponentProps<Field<O>>['id'] = undefined;
 	export let name: ComponentProps<Field<O>>['name'] = undefined;

@@ -49,7 +49,7 @@ export default function dirty(
 	element: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement,
 	{ sample }: DirtyOptions = {}
 ) {
-	element.addEventListener('input', (e) => console.log(e));
+	// element.addEventListener('input', (e) => console.log(e));
 
 	return {
 		update(args) {},

@@ -8,7 +8,7 @@ import { locationSchema } from './common';
 export const actions = {
 	[EDITOR_FORM_ACTION]: async (event) => {
 		const formData = await event.request.formData();
-		console.log(formData);
+		// console.log(formData);
 		const parsed = zfd
 			.formData({
 				location: locationSchema,

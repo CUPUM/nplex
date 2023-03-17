@@ -239,7 +239,7 @@
 					autoActive={false}
 					class="small-button"
 					data-sveltekit-noscroll=""
-					data-sveltekit-replacestate
+					data-sveltekit-replacestate=""
 					variant={$authModal === AUTHMODAL_MODE.SignUp ? 'cta' : 'default'}
 					type={$authModal === AUTHMODAL_MODE.SignUp ? 'submit' : 'button'}
 					href={$authModal === AUTHMODAL_MODE.SignIn

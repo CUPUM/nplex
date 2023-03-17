@@ -39,7 +39,7 @@
 		grid-row: 1;
 		position: sticky;
 		top: var(--ui-nav-h);
-		height: calc(100vh - var(--ui-nav-h) - var(--ui-gutter));
+		height: calc(100vh - var(--ui-nav-h) - 1.5rem);
 	}
 
 	.fields {

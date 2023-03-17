@@ -19,9 +19,11 @@ export default function isEqual<T>(
 ): boolean {
 	const err = new Error('Types of compared values do not coincide.');
 	try {
-		if (typeof sample !== typeof specimen) {
+		if (typeof sample != typeof specimen) {
 			// Handle comparison when types differ because one of element is nullish.
-			if (sample == null || specimen == null) {
+			if ((sample == null && specimen == '') || (sample == '' && specimen == null)) {
+				return true;
+			} else if (sample == null || specimen == null) {
 				return false;
 			}
 			throw err;

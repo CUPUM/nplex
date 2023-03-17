@@ -58,7 +58,6 @@
 			resizeObs.observe(anchor.offsetParent);
 			mutationObs.observe(anchor, { attributes: true });
 			mutationObs.observe(anchor.offsetParent, { attributes: true });
-			anchor.offsetParent.addEventListener('transitionend', () => console.log(anchor.offsetParent));
 		}
 		updatePosition();
 		dispose = () => {

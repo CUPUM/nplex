@@ -222,7 +222,10 @@ export function publicUrl(bucket: ValueOf<typeof STORAGE_BUCKETS>, name?: string
  */
 export function projectColors(
 	gallery?: ProjectGalleryItem | ProjectGalleryItem[] | null,
-	fallback: string | string[] = col('primary', '900', 0.1)
+	fallback: string | string[] = [
+		col('primary', '500', Math.random() * 0.25 + 0.1),
+		col('primary', '700', 0.25),
+	]
 ) {
 	if (!gallery || (Array.isArray(gallery) && !gallery.length)) {
 		return fallback;

@@ -15,13 +15,13 @@
 <EditorBreadcrumbs {crumbs} />
 <div class="layout">
 	<section class="sidebar">
-		<Sidebar>
-			<SidebarButton href={PROJECT_DESCIPTORS_EDITOR_BASE.pathname}>
+		<Sidebar variant="outlined">
+			<SidebarButton i={0} href={PROJECT_DESCIPTORS_EDITOR_BASE.pathname}>
 				<Icon slot="leading" name="home" />Descripteurs
 			</SidebarButton>
 			<hr />
-			{#each links as link}
-				<SidebarButton href={link.pathname}>{link.label}</SidebarButton>
+			{#each links as link, i}
+				<SidebarButton i={i + 1} href={link.pathname}>{link.label}</SidebarButton>
 			{/each}
 		</Sidebar>
 	</section>

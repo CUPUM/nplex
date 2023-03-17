@@ -119,7 +119,7 @@
 	 * https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md.
 	 */
 	function changeMode(mode: DrawMode, opts?: any) {
-		console.log('changing mode!', mode);
+		// console.log('changing mode!', mode);
 		if (!mode || !draw) {
 			return;
 		}
@@ -135,7 +135,7 @@
 	function handleKeydown(e: KeyboardEvent) {
 		if (draw) {
 			const selected = draw.getSelected();
-			console.log(draw.getAll());
+			// console.log(draw.getAll());
 			if (e.key === KEY.Delete || e.key === KEY.Backspace) {
 				if (selected) {
 					draw.trash();

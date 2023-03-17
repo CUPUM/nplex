@@ -15,9 +15,9 @@
 </script>
 
 {#if 'title' in project}
-	<div class="project-card-outer project">
+	<div class="project-card project">
 		<Ripple />
-		<a href={editorHref} class="project-fill">
+		<a href={editorHref} class="fill">
 			<Image
 				class="banner"
 				src={publicUrl(STORAGE_BUCKETS.PROJECTS, project.banner?.name)}
@@ -26,59 +26,73 @@
 				<ImagePlaceholder color={projectColors(project.gallery)} />
 			</Image>
 		</a>
-		<section>
-			<div class="project-title heading-sm">
+		<div class="summary">
+			<div class="title heading-sm">
 				{project.title}
 			</div>
-			<div class="project-type">
+			<div class="type">
 				{project.type?.title ?? 'Type non défini'}
 			</div>
-			<div class="project-works">Travaux...</div>
-		</section>
+			<div class="works">Travaux...</div>
+		</div>
 	</div>
 {:else}
 	<!-- New project card -->
-	<a href="/editer/projet" class="project-card-outer">
+	<a href="/editer/projet" class="project-card">
 		<EditableNewCard>Créer un projet</EditableNewCard>
 	</a>
 {/if}
 
 <style lang="scss">
-	.project-card-outer {
+	.project-card {
+		--card-inset: 6px;
+		--card-radius: var(--ui-radius-xl);
 		position: relative;
 		display: flex;
 		flex-direction: column;
 		height: 450px;
 		aspect-ratio: 3 /4;
-		border-radius: var(--ui-radius-lg);
+		border-radius: var(--card-radius);
+		padding: var(--card-inset);
 		isolation: isolate;
+		overflow: hidden;
 	}
 
 	.project {
-		background: col(bg, 100);
+		background: col(bg, 900);
 		justify-content: flex-end;
+		transition: all 0.25s var(--ui-ease-out);
 
 		&:hover {
-			section {
+			transform: translateY(-0.5em);
+
+			:global(.banner) {
+				transform: scale(1.1);
+			}
+
+			.summary {
 				opacity: 1;
-				transform: translateY(-0.5em);
 			}
 		}
 	}
 
-	.project-fill {
+	.fill {
 		z-index: -1;
 		position: absolute;
 		height: 100%;
 		width: 100%;
-		border-radius: var(--ui-radius-lg);
+		top: 0;
+		left: 0;
+		border-radius: inherit;
 
 		:global(.banner) {
 			height: 100%;
+			transform: scale(1);
+			transition: all 0.25s var(--ui-ease-out);
 		}
 	}
 
-	section {
+	.summary {
 		position: relative;
 		opacity: 0.8;
 		transform: translateY(0);
@@ -87,14 +101,15 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		transition: all 0.2s var(--ui-ease-out);
+		// background-color: col(bg, 500);
+		border-radius: calc(var(--card-radius) - var(--card-inset));
 
-		.project-title {
+		.title {
 			// word-break: break-all;
 			word-wrap: break-word;
 		}
 
-		.project-type {
+		.type {
 			pointer-events: none;
 			display: inline-flex;
 			align-self: flex-start;

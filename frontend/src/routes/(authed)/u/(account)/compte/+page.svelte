@@ -7,13 +7,17 @@
 	import Icon from '$components/Icon.svelte';
 	import Select from '$components/Select/Select.svelte';
 	import TextArea from '$components/TextArea/TextArea.svelte';
+	import Token from '$components/Token/Token.svelte';
+	import Tooltip from '$components/Tooltip.svelte';
 	import { LOAD_DEPENDENCIES } from '$utils/enums';
 
 	export let data;
+
+	$: role = data.roles.find((r) => r.role === data.profile.role.role);
 </script>
 
-<h2>Général</h2>
 <form
+	class="account-formgroup"
 	method="POST"
 	action="?/update"
 	use:enhance={({ form, data, action, cancel }) => {
@@ -25,22 +29,39 @@
 		};
 	}}
 >
+	<h2 class="account-formgroup-title">Général</h2>
 	<input name="id" type="hidden" value={data.profile.id} readonly />
-	<Field name="first_name" variant="outlined" value={data.profile.first_name} required>
-		<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
-	</Field>
-	<Field name="last_name" variant="outlined" value={data.profile.last_name}>
-		<svelte:fragment slot="label">Nom de famille</svelte:fragment>
-	</Field>
-	<Field name="public_email" variant="outlined" value={data.profile.public_email}>
-		<svelte:fragment slot="label">Courriel public</svelte:fragment>
-	</Field>
-	<TextArea name="about" variant="outlined" value={data.profile.about}>
-		<svelte:fragment slot="label">À propos</svelte:fragment>
-	</TextArea>
+	<fieldset class="general">
+		<fieldset class="names">
+			<Field
+				style="flex: 1; min-width: 350px"
+				name="first_name"
+				variant="default"
+				value={data.profile.first_name}
+				required
+			>
+				<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
+			</Field>
+			<Field
+				style="flex: 1; min-width: 350px"
+				name="last_name"
+				variant="default"
+				value={data.profile.last_name}
+			>
+				<svelte:fragment slot="label">Nom de famille</svelte:fragment>
+			</Field>
+		</fieldset>
+		<Field name="public_email" variant="default" value={data.profile.public_email}>
+			<svelte:fragment slot="label">Courriel public</svelte:fragment>
+		</Field>
+		<TextArea name="about" variant="default" value={data.profile.about}>
+			<svelte:fragment slot="label">À propos</svelte:fragment>
+		</TextArea>
+	</fieldset>
 	<Button style="align-self: flex-end" type="submit">Sauvegarder</Button>
 </form>
 <form
+	class="account-formgroup"
 	method="POST"
 	action="?/role"
 	autocomplete="off"
@@ -53,9 +74,12 @@
 		};
 	}}
 >
-	<h2>Rôle & permissions</h2>
-	<p>Modifiez le rôle associé à votre compte.</p>
-	<p class="sub">
+	<h2 class="account-formgroup-title">Rôle & permissions</h2>
+	<p>Modifiez le rôle associé à votre compte. Votre rôle actuel est:</p>
+	<Tooltip message={role?.description} place="right">
+		<Token readonly>{role?.title}</Token>
+	</Tooltip>
+	<p class="info">
 		Notez que pour obtenir un rôle qui vous accorde plus de permissions, votre demande devra être
 		approuvée par un administrateur.
 	</p>
@@ -63,19 +87,9 @@
 		<svelte:fragment slot="label">Rôle</svelte:fragment>
 		<option slot="option" let:option value={option.role}>{option.title}</option>
 	</Select>
-	<div class="ui-select">
-		<span>Test</span>
-		<select name="role">
-			{#each data.roles as role}
-				<option value={role.role}>
-					{role.title}:
-					<i>{role.description}</i>
-				</option>
-			{/each}
-		</select>
-	</div>
 </form>
 <form
+	class="account-formgroup"
 	autocomplete="off"
 	method="POST"
 	action="?/update"
@@ -88,35 +102,42 @@
 		};
 	}}
 >
+	<h2 class="account-formgroup-title">Sécurité</h2>
 	<input name="id" type="hidden" value={data.profile.id} readonly autocomplete="false" />
-	<h2>Sécurité</h2>
-	<h3>Modifier mon courriel d'authentification</h3>
-	<Field placeholder="Courriel d'authentification" type="email" value={data.session?.user.email} />
-	<h3>Modifier mon mot de passe</h3>
+	<h3 class="heading-sm">Modifier mon courriel d'authentification</h3>
+	<Field placeholder="Courriel d'authentification" type="email" value={data.session?.user.email}>
+		<svelte:fragment slot="trailing">
+			<Button type="submit" disabled><Icon name="lock-close" slot="leading" />Modifier</Button>
+		</svelte:fragment>
+	</Field>
+	<h3 class="heading-sm">Modifier mon mot de passe</h3>
 	<Field placeholder="Mot de passe actuel" type="password" name="new_password">
 		<FieldTogglePassword slot="trailing" />
 	</Field>
 	<Field placeholder="Nouveau mot de passe" type="password" />
-	<h3>Désactivation</h3>
-	<Button variant="danger" style="align-self: flex-start">
+	<h3 class="heading-sm">Désactivation</h3>
+	<Button variant="cta" state="warning" style="align-self: flex-start">
 		<Icon name="warn" slot="leading" />Supprimer mon compte
 	</Button>
 </form>
 
 <style lang="scss">
-	form {
+	fieldset.general {
 		display: flex;
 		flex-direction: column;
+		gap: 1.5rem;
+		align-items: stretch;
+		margin-bottom: 1.5rem;
+	}
+
+	fieldset.names {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
 		gap: 1.5rem;
 	}
 
 	h3 {
-		font-size: var(--ui-text-xl);
-		font-weight: 600;
-		margin: 0.5em 0;
-
-		h2 + & {
-			margin-top: 0;
-		}
+		margin-block: 2rem 1.5rem;
 	}
 </style>

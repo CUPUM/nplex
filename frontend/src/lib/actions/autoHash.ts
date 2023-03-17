@@ -30,7 +30,7 @@ export function autoHash(
 			if (entries[0].isIntersecting) {
 				location.hash = hash;
 			} else if (location.hash.slice(1) === hash && clearOnLeave) {
-				console.log('should clear!');
+				// console.log('should clear!');
 				location.hash = '';
 			}
 		}
