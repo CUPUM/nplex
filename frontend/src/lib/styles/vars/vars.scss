@@ -43,7 +43,7 @@
 	--ui-pad-inline: 1.35em;
 	--ui-pad-outer: 3rem;
 	--ui-gutter: 0.75rem;
-	--ui-border-thickness: 1px;
+	--ui-border-thickness: 1.5px;
 	--ui-font-main: 'Outfit', sans-serif;
 	--ui-font-misc: 'Space Mono', monospace;
 	--ui-ease-in: cubic-bezier(0.9, 0, 0.9, 1);
@@ -64,7 +64,7 @@
 		--ui-nav-center-w: calc(
 			100% - 2 * (1.5rem + 56px)
 		); // 100% - (outer gutter + menu button width + inner gutter)
-		--ui-border-thickness: 1.5px;
+		--ui-border-thickness: 2.5px;
 		--ui-pad-outer: 1.5rem;
 	}
 

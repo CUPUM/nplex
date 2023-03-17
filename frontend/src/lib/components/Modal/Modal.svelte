@@ -53,6 +53,10 @@
 		canceled = false;
 	}
 
+	function open() {
+		opened = true;
+	}
+
 	function close() {
 		opened = false;
 	}
@@ -80,7 +84,7 @@
 		if (e) {
 			e.preventDefault();
 		}
-		opened = true;
+		open();
 	}
 
 	onMount(() => {
@@ -93,7 +97,7 @@
 	});
 </script>
 
-<slot name="control" {requestConfirmation} />
+<slot name="control" {requestConfirmation} {open} />
 <div class="modal-probe" hidden bind:this={probeRef} />
 {#if $modalOutletRef && opened}
 	<Portal target={$modalOutletRef}>
@@ -160,7 +164,7 @@
 	}
 
 	article {
-		padding: 1.5rem 2rem;
+		padding: 2rem;
 		flex: 1;
 	}
 

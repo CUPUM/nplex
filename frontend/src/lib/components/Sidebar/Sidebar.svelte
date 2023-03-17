@@ -31,6 +31,10 @@
 			margin: var(--ui-border-thickness) calc(-1 * var(--sidebar-gap));
 			position: relative;
 		}
+
+		@include mobile {
+			// position: fixed;
+		}
 	}
 
 	.default {

@@ -1,6 +1,7 @@
 @use 'utils' as *;
 
 .ui-field {
+	--border-thickness: var(--ui-border-thickness);
 	--radius: var(--ui-radius-md);
 	--height: var(--ui-block-size-lg);
 	--inset: var(--ui-inset);
@@ -150,12 +151,11 @@ label {
 }
 
 .outline {
-	--thickness: 1px;
 	pointer-events: none;
 	position: absolute;
 	height: 50%;
 	transition: all 0.15s ease-out;
-	border-width: var(--thickness);
+	border-width: var(--border-thickness);
 	border-style: solid;
 }
 .left {
@@ -315,7 +315,6 @@ label {
 		outline: none;
 		color: col(fg, 700);
 		.outline {
-			--thickness: 1.5px;
 			opacity: 1;
 			border-color: col(primary, 500);
 		}

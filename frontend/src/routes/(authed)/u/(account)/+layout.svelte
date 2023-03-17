@@ -79,7 +79,7 @@
 			color: col(fg, 100);
 			padding: var(--ui-pad-outer);
 			border-radius: var(--ui-radius-xl);
-			background-color: col(bg, 300);
+			background-color: col(bg, 500);
 			// border: var(--ui-border-thickness) solid col(bg, 000);
 		}
 

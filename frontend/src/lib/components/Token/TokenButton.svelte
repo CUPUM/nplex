@@ -15,7 +15,9 @@
 
 <svelte:element this={as} class="token-button {variant} {state}" class:equi type="button">
 	<Ripple />
-	<slot />
+	<div class="token-button-inner">
+		<slot />
+	</div>
 </svelte:element>
 
 <style lang="scss">

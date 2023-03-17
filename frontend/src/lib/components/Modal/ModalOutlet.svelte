@@ -24,7 +24,7 @@
 		left: 0;
 		height: 100%;
 		width: 100%;
-		padding: 12rem;
+		padding: var(--ui-pad-outer);
 		overflow-y: scroll;
 		overflow-x: hidden;
 		display: flex;

@@ -8,12 +8,17 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding-inline: 0.5em;
+	padding-inline: var(--ui-pad-inline);
 }
 
 .equi {
 	width: calc(var(--token-size) - 2 * var(--token-inset));
 	padding: 0;
+}
+
+.token-button-inner {
+	position: relative;
+	top: -0.1em;
 }
 
 .default {

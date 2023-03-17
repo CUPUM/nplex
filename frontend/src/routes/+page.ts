@@ -29,7 +29,7 @@ export const load = async (event) => {
 	const splashImages = db
 		.from('random_project_images')
 		.select('*')
-		.limit(10)
+		.limit(5)
 		.then((res) => {
 			if (res.error) {
 				throw error(STATUS_CODES.InternalServerError, res.error);
