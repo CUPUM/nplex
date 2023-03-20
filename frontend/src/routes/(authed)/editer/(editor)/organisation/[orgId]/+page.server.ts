@@ -15,7 +15,7 @@ export const actions = {
 		const formData = await event.request.formData();
 		const parsed = updateSchema.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { errorMessages: errorMessages(parsed.error) });
+			return fail(STATUS_CODES.BadRequest, { messages: { error: errorMessages(parsed.error) } });
 		}
 
 		const up = await event.locals.db

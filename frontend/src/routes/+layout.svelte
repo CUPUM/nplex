@@ -28,8 +28,14 @@
 	}
 
 	// Catch and dispatch acion error messages.
-	$: if ($page.form?.errorMessages?.length) {
-		messages.error(...$page.form.errorMessages);
+	$: if ($page.form?.messages?.error?.length) {
+		messages.error(...$page.form.messages.error);
+	}
+	$: if ($page.form?.messages?.success?.length) {
+		messages.success(...$page.form.messages.success);
+	}
+	$: if ($page.form?.messages?.normal?.length) {
+		messages.dispatch(...$page.form.messages.normal);
 	}
 
 	beforeNavigate((navigation) => {

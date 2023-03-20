@@ -11,7 +11,7 @@
 	export const MESSAGE_TYPES = {
 		Error: 'error',
 		Success: 'success',
-		Default: 'default',
+		Normal: 'normal',
 	} as const;
 
 	export type MessageType = ValueOf<typeof MESSAGE_TYPES>;
@@ -36,7 +36,7 @@
 			.union([
 				z.literal(MESSAGE_TYPES.Error),
 				z.literal(MESSAGE_TYPES.Success),
-				z.literal(MESSAGE_TYPES.Default),
+				z.literal(MESSAGE_TYPES.Normal),
 			])
 			.optional(),
 	});
@@ -44,7 +44,7 @@
 	const defaultMessage: Message<string> = {
 		content: '',
 		timer: 5000,
-		type: MESSAGE_TYPES.Default,
+		type: MESSAGE_TYPES.Normal,
 	};
 
 	/**
@@ -221,9 +221,9 @@
 			{/if}
 			<div class="content">
 				{#if typeof message.content === 'string'}
-					{#if message.type === 'error'}
+					{#if message.type === 'error' || message.type === 'success'}
 						<div class="icon">
-							<Icon name="warn" />
+							<Icon name={message.type === 'error' ? 'warn' : 'check-circle'} />
 						</div>
 					{/if}
 					<span class="text">
@@ -237,7 +237,7 @@
 				in:fly={{ x: -10, delay: 200, easing: cubicOut, duration: 250 }}
 				on:click={(e) => closeMessage(e, message)}
 			>
-				<Icon name="cross" style="font-size: 1.25em; top: -.1em" />
+				<Icon name="cross" style="font-size: 1.25em;" />
 			</button>
 		</dialog>
 	{/each}
@@ -292,16 +292,20 @@
 		left: calc(100% + 0.5em);
 		color: col(fg, 700);
 		background: col(bg, 100);
-		transition: all 0.1s;
+		opacity: 0.8;
+		transform: scale(0.95);
+		transition: all 0.1s ease-out;
 
 		&:hover {
+			opacity: 1;
 			background: col(bg, 000);
+			transform: scale(1);
 		}
 	}
 
 	.content {
 		position: relative;
-		padding: 1em;
+		padding: 1em 1.2em;
 	}
 
 	.icon {
@@ -347,11 +351,11 @@
 	}
 
 	.success {
-		background: col(bg, 000);
-		color: col(success, 900);
+		background: col(success, 500);
+		color: col(bg, 500);
 
 		.progress {
-			background: col(success, 500);
+			background: col(success, 900);
 		}
 	}
 

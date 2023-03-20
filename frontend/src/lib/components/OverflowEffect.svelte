@@ -29,7 +29,7 @@
 
 	export let x: boolean | 'auto' | 'scroll' = 'auto';
 	export let y: boolean | 'auto' | 'scroll' = 'auto';
-	export let bufferDistance = 50;
+	export let bufferDistance = 5;
 	export let scrollDistance = 200;
 
 	let observer: ResizeObserver;
@@ -148,6 +148,7 @@
 	}
 
 	.scroll {
+		position: relative;
 		border-radius: inherit;
 		// grid-area: contents;
 	}
@@ -216,10 +217,5 @@
 		&:hover {
 			opacity: 1;
 		}
-	}
-
-	i {
-		position: relative;
-		top: -0.1em;
 	}
 </style>

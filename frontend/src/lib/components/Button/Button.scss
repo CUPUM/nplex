@@ -151,8 +151,8 @@
 	}
 
 	&.warning {
-		--color: #{col(error, 900)};
-		--background-color: #{col(error, 900, 0.1)};
+		--color: #{col(secondary, 900)};
+		--background-color: #{col(secondary, 900, 0.1)};
 		--hover-color: #{col(bg, 700)};
 		--hover-background-color: #{col(fg, 500)};
 		--active-color: #{col(bg, 900)};
@@ -204,7 +204,7 @@
 		height: 100%;
 		border-radius: inherit;
 		border: var(--border);
-		opacity: 0.25;
+		opacity: 0.1;
 		transition: all 0.2s ease-out;
 	}
 	&:hover,

@@ -47,7 +47,7 @@ export const actions = {
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { errorMessages: errorMessages(parsed.error) });
+			return fail(STATUS_CODES.BadRequest, { messages: { error: errorMessages(parsed.error) } });
 		}
 		const up = event.locals.db
 			.from('project_exemplarity_indicator')
@@ -70,7 +70,7 @@ export const actions = {
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadGateway, { errorMessages: errorMessages(parsed.error) });
+			return fail(STATUS_CODES.BadGateway, { messages: { error: errorMessages(parsed.error) } });
 		}
 		const ins = await event.locals.db
 			.from('project_exemplarity_indicator')
@@ -85,7 +85,9 @@ export const actions = {
 		const indicatorId = event.url.searchParams.get('id');
 		if (!indicatorId) {
 			fail(STATUS_CODES.BadRequest, {
-				errorMessages: ["Aucun identificateur d'indicateur trouvé dans la requête pour supprimer."],
+				messages: {
+					error: ["Aucun identificateur d'indicateur trouvé dans la requête pour supprimer."],
+				},
 			});
 		}
 		const del = await event.locals.db

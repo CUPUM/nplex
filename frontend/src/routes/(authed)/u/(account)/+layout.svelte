@@ -79,13 +79,13 @@
 			color: col(fg, 100);
 			padding: var(--ui-pad-outer);
 			border-radius: var(--ui-radius-xl);
-			background-color: col(bg, 500);
+			background-color: col(bg, 100);
 			// border: var(--ui-border-thickness) solid col(bg, 000);
 		}
 
 		:global(.account-formgroup-title) {
 			@include typography(heading, md);
-			margin-top: -0.5em;
+			margin-top: -0.25em;
 			margin-bottom: 2rem;
 		}
 	}

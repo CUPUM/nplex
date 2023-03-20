@@ -16,6 +16,7 @@
 		SignIn: 'signin',
 		SignUp: 'signup',
 		Provider: 'provider',
+		ConfirmEmail: 'confirm-email',
 	} as const;
 	type AuthMode = ValueOf<typeof AUTHMODAL_MODE>;
 
@@ -109,11 +110,9 @@
 	import SocialIcon, { SOCIAL_ICONS } from '$components/SocialIcon.svelte';
 	import { USER_BASE_ROUTE } from '$utils/routes';
 	import { THEMES } from '$utils/themes';
-	import type { ActionResult } from '@sveltejs/kit';
 	import { cubicOut, linear } from 'svelte/easing';
 	import { fade, fly, scale, slide } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
-	import type { AuthFailure } from './api/auth/common';
 	import { messages } from './MessagesOutlet.svelte';
 
 	const Action = {
@@ -125,21 +124,14 @@
 
 	let currentAction: string | null = null;
 
+	let confirmEmail = '';
+
 	const providers = [
 		'facebook',
 		'google',
 		'linkedin',
 		'twitter',
 	] satisfies (keyof typeof SOCIAL_ICONS)[];
-
-	let failure: AuthFailure = {};
-
-	function followup(result: ActionResult) {
-		if (result.type === 'failure' && 'data' in result) {
-			failure = result.data as AuthFailure;
-			messages.error(...Object.values(failure).map((f) => ({ content: f.join('\n') })));
-		}
-	}
 </script>
 
 {#if $authModal}
@@ -158,12 +150,22 @@
 			action={$authModal === AUTHMODAL_MODE.SignUp ? Action.SignUp : Action.SignIn}
 			method="POST"
 			use:enhance={({ form, data, action, cancel }) => {
-				failure = {};
 				currentAction = action.pathname + action.search;
 				return async ({ update, result }) => {
 					await update({ reset: false });
 					currentAction = null;
-					followup(result);
+					if ('data' in result && result.data) {
+						if (result.data.confirmEmail) {
+							confirmEmail = result.data.confirmEmail;
+							goto(
+								authModal.getUrl({ url: $page.url, open: true, mode: AUTHMODAL_MODE.ConfirmEmail })
+							);
+							messages.success('Compte créé avec succès!');
+						}
+						if (result.data.errors?.length) {
+							messages.error(...result.data.errors);
+						}
+					}
 				};
 			}}
 		>
@@ -172,104 +174,118 @@
 					<use href={LOGO_SYMBOLS_HREFS.full} fill="currentColor" />
 				</svg>
 			</a>
-			<fieldset class="fields">
-				<Field
-					type="email"
-					class="fill-row"
-					variant="default"
-					name="email"
-					required
-					warning={!!failure.email}
-				>
-					<FieldIcon name="letter" slot="leading" />
-					<svelte:fragment slot="label">Courriel</svelte:fragment>
-					<FieldReset slot="trailing" />
-				</Field>
-				<Field
-					type="password"
-					class="fill-row"
-					variant="default"
-					name="password"
-					required
-					warning={!!failure.password}
-				>
-					<FieldIcon slot="leading" name="lock-close" />
-					<svelte:fragment slot="label">Mot de passe</svelte:fragment>
-					<svelte:fragment slot="trailing">
-						<FieldTogglePassword />
-						<FieldReset />
-					</svelte:fragment>
-				</Field>
-				{#if $authModal === AUTHMODAL_MODE.SignUp}
-					<div class="signup fill-row" transition:slide|local={{ duration: 120, easing: cubicOut }}>
-						<Field variant="default" name="first_name" required warning={!!failure.first_name}>
-							<svelte:fragment slot="label">Prénom ou pseudonyme</svelte:fragment>
-							<svelte:fragment slot="trailing">
-								<FieldReset />
-							</svelte:fragment>
-						</Field>
-						<Field variant="default" name="last_name" warning={!!failure.last_name}>
-							<svelte:fragment slot="label">Nom de famille</svelte:fragment>
-							<svelte:fragment slot="trailing">
-								<FieldReset />
-							</svelte:fragment>
-						</Field>
-					</div>
-					<!-- Prepending a signup submit button to intercept default "enter" handling -->
-					<button type="submit" hidden formaction={Action.SignUp} />
-				{/if}
-				<Button
-					class="fill-row"
-					type="submit"
-					variant={$authModal === AUTHMODAL_MODE.SignIn ? 'cta' : 'default'}
-					contentAlign="center"
-					formnovalidate
-					formaction="{Action.SignIn}{$page.url.pathname === '/'
-						? `&${SEARCH_PARAMS.REDIRECT}=${USER_BASE_ROUTE.pathname}`
-						: ''}"
-					loading={currentAction === Action.SignIn}
-				>
-					<Icon name="login" slot="trailing" />
-					Me connecter
-				</Button>
-				<Button disabled variant="ghost" class="small-button" contentAlign="center">
-					Mot de passe oublié ?
-				</Button>
-				<Button
-					autoActive={false}
-					class="small-button"
-					data-sveltekit-noscroll=""
-					data-sveltekit-replacestate=""
-					variant={$authModal === AUTHMODAL_MODE.SignUp ? 'cta' : 'default'}
-					type={$authModal === AUTHMODAL_MODE.SignUp ? 'submit' : 'button'}
-					href={$authModal === AUTHMODAL_MODE.SignIn
-						? authModal
-								.getUrl({ url: $page.url, open: true, mode: AUTHMODAL_MODE.SignUp })
-								.toString()
-						: undefined}
-					contentAlign="center"
-					formaction="{Action.SignUp}{$page.url.pathname === '/'
-						? `&${SEARCH_PARAMS.REDIRECT}=${USER_BASE_ROUTE.pathname}`
-						: ''}"
-					loading={currentAction === Action.SignUp}
-				>
-					Créer {$authModal === AUTHMODAL_MODE.SignUp ? 'mon' : 'un'} compte
-				</Button>
-			</fieldset>
-			<hr class="rule" />
-			<fieldset class="providers" disabled>
-				<span>Me connecter avec:</span>
-				<ul class="scroll">
-					{#each providers as name, i}
-						<li>
-							<Button variant="outlined" style="flex: none;" disabled>
-								<SocialIcon {name} slot="leading" />
-								{SOCIAL_ICONS[name]?.title}
-							</Button>
-						</li>
-					{/each}
-				</ul>
-			</fieldset>
+			{#if $authModal === AUTHMODAL_MODE.ConfirmEmail}
+				<article in:fly|local={{ duration: 150, y: 6, easing: cubicOut }}>
+					<h2 class="heading-md">Votre compte a été créé avec succès!</h2>
+					<p class="info">
+						Il ne vous reste qu'à confirmer votre adresse courriel pour compléter votre inscription.
+						Un courriel de demande de confirmation a été envoyé à l'adresse <i>
+							{confirmEmail}
+						</i>
+						.
+					</p>
+					<Button
+						autoActive={false}
+						href={authModal
+							.getUrl({ url: $page.url, mode: AUTHMODAL_MODE.SignIn, open: true })
+							.toString()}
+						style="font-size: var(--ui-text-sm); margin-block: 1.5rem;"
+					>
+						J'ai confirmé mon courriel
+						<Icon slot="trailing" name="check" />
+					</Button>
+				</article>
+			{:else}
+				<fieldset class="fields" in:fly|local={{ duration: 150, y: 6, easing: cubicOut }}>
+					<Field type="email" class="fill-row" variant="default" name="email" required>
+						<FieldIcon name="letter" slot="leading" />
+						<svelte:fragment slot="label">Courriel</svelte:fragment>
+						<FieldReset slot="trailing" />
+					</Field>
+					<Field type="password" class="fill-row" variant="default" name="password" required>
+						<FieldIcon slot="leading" name="lock-close" />
+						<svelte:fragment slot="label">Mot de passe</svelte:fragment>
+						<svelte:fragment slot="trailing">
+							<FieldTogglePassword />
+							<FieldReset />
+						</svelte:fragment>
+					</Field>
+					{#if $authModal === AUTHMODAL_MODE.SignUp}
+						<div
+							class="signup fill-row"
+							transition:slide|local={{ duration: 120, easing: cubicOut }}
+						>
+							<Field variant="default" name="first_name" required>
+								<svelte:fragment slot="label">Prénom/pseudonyme</svelte:fragment>
+								<svelte:fragment slot="trailing">
+									<FieldReset />
+								</svelte:fragment>
+							</Field>
+							<Field variant="default" name="last_name">
+								<svelte:fragment slot="label">Nom de famille</svelte:fragment>
+								<svelte:fragment slot="trailing">
+									<FieldReset />
+								</svelte:fragment>
+							</Field>
+						</div>
+						<!-- Prepending a signup submit button to intercept default "enter" handling -->
+						<button type="submit" hidden formaction={Action.SignUp} />
+					{/if}
+					<Button
+						disabled={!!currentAction}
+						class="fill-row"
+						type="submit"
+						variant={$authModal === AUTHMODAL_MODE.SignIn ? 'cta' : 'default'}
+						contentAlign="center"
+						formnovalidate
+						formaction="{Action.SignIn}{$page.url.pathname === '/'
+							? `&${SEARCH_PARAMS.REDIRECT}=${USER_BASE_ROUTE.pathname}`
+							: ''}"
+						loading={currentAction?.startsWith(Action.SignIn)}
+					>
+						<Icon name="login" slot="trailing" />
+						Me connecter
+					</Button>
+					<Button disabled variant="ghost" class="small-button" contentAlign="center">
+						Mot de passe oublié ?
+					</Button>
+					<Button
+						disabled={!!currentAction}
+						autoActive={false}
+						class="small-button"
+						data-sveltekit-noscroll=""
+						data-sveltekit-replacestate=""
+						variant={$authModal === AUTHMODAL_MODE.SignUp ? 'cta' : 'default'}
+						type={$authModal === AUTHMODAL_MODE.SignUp ? 'submit' : 'button'}
+						href={$authModal === AUTHMODAL_MODE.SignIn
+							? authModal
+									.getUrl({ url: $page.url, open: true, mode: AUTHMODAL_MODE.SignUp })
+									.toString()
+							: undefined}
+						contentAlign="center"
+						formaction="{Action.SignUp}{$page.url.pathname === '/'
+							? `&${SEARCH_PARAMS.REDIRECT}=${USER_BASE_ROUTE.pathname}`
+							: ''}"
+						loading={currentAction?.startsWith(Action.SignUp)}
+					>
+						Créer {$authModal === AUTHMODAL_MODE.SignUp ? 'mon' : 'un'} compte
+					</Button>
+				</fieldset>
+				<hr />
+				<fieldset class="providers" disabled in:slide|local={{ duration: 150 }}>
+					<span>Me connecter avec (à venir)</span>
+					<ul class="scroll">
+						{#each providers as name, i}
+							<li>
+								<Button variant="outlined" style="flex: none;" disabled>
+									<SocialIcon {name} slot="leading" />
+									{SOCIAL_ICONS[name]?.title}
+								</Button>
+							</li>
+						{/each}
+					</ul>
+				</fieldset>
+			{/if}
 		</form>
 	</dialog>
 {/if}
@@ -312,14 +328,20 @@
 		justify-content: flex-start;
 		flex-wrap: nowrap;
 		width: 100%;
-		max-width: 450px;
+		max-width: 500px;
 		max-height: 100%;
 		background: col(bg, 300);
 		box-shadow: 0 3rem 6rem -3rem rgba(0, 0, 20, 0.5), 0 3rem 3rem 2rem rgba(0, 0, 0, 0.1);
 		padding: 0;
-		border-radius: var(--ui-radius-lg);
+		border-radius: var(--ui-radius-xl);
 		border: none;
 		overflow: hidden;
+	}
+
+	article {
+		padding: 1.5rem 3rem;
+		text-align: center;
+		color: col(fg, 100);
 	}
 
 	.logo {
@@ -328,7 +350,7 @@
 		justify-content: center;
 		width: 100%;
 		color: col(primary, 500);
-		border-bottom: 1px solid col(fg, 100, 0.05);
+		border-bottom: 1px solid col(fg, 000, 0.1);
 		padding: calc(2 * 1.5rem) 1.5rem;
 
 		svg {
@@ -345,7 +367,7 @@
 		align-items: stretch;
 		gap: 1rem;
 		border: none;
-		padding: 2rem 2.5rem;
+		padding: 2rem;
 		margin: 0;
 		// min-width: 0;
 		overflow-y: auto;
@@ -361,12 +383,16 @@
 
 	.signup {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		gap: inherit;
+		> :global(*) {
+			flex: 1;
+		}
 	}
 
 	hr {
 		margin-bottom: 2rem;
+		border-bottom: 1px solid col(fg, 000, 0.1);
 	}
 
 	.providers {

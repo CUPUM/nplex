@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { cachedState } from '$actions/cachedState';
 	import { intersection } from '$actions/intersection';
 	import { browser } from '$app/environment';
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import { FULL_VIEWBOX, LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import { col } from '$utils/css';
-	import { browserDb } from '$utils/database/client';
-	import { KEY, STORAGE_BUCKETS } from '$utils/enums';
+	import { getProjectImageUrl } from '$utils/database/helpers';
+	import { KEY } from '$utils/enums';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
 	import { fade, fly } from 'svelte/transition';
 	import type { PageData } from './$types';
@@ -17,7 +18,9 @@
 
 	let entered = false;
 
-	const imgSize = 300;
+	const logoChars = ['n', 'p', 'l', 'e', 'x'] as const;
+
+	const logoImgsLoaded = images.map(() => false);
 
 	function consult() {
 		if (browser) {
@@ -55,62 +58,29 @@
 					height="100%"
 				>
 					<image
-						href={browserDb.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(image.name ?? '')
-							.data.publicUrl}
 						x="0"
 						y="0"
 						height="100%"
 						preserveAspectRatio="xMidYMid"
+						use:cachedState
+						on:load|once={() => (logoImgsLoaded[i] = true)}
+						on:error|once={() => (logoImgsLoaded[i] = true)}
+						href={getProjectImageUrl(image.name ?? '')}
 					/>
 				</pattern>
 			{/each}
 		</defs>
-		{#if entered}
-			<g>
+		{#if entered && logoImgsLoaded.every((loaded) => loaded)}
+			{#each logoChars as char, i (char)}
 				<use
-					in:fly={{ y: 30, delay: 250 }}
-					href={LOGO_SYMBOLS_HREFS.n}
+					in:fly={{ y: 30, delay: 250 + 50 * i }}
+					href={LOGO_SYMBOLS_HREFS[char]}
 					out:fade|local
-					fill="url(#splash-image-0)"
-					viewBox="0 0 200 200"
+					fill="url(#splash-image-{i})"
 				/>
-			</g>
-			<use
-				in:fly={{ y: 30, delay: 300 }}
-				href={LOGO_SYMBOLS_HREFS.p}
-				fill="url(#splash-image-1)"
-				out:fade|local
-			/>
-			<use
-				in:fly={{ y: 30, delay: 350 }}
-				href={LOGO_SYMBOLS_HREFS.l}
-				fill="url(#splash-image-2)"
-				out:fade|local
-			/>
-			<use
-				in:fly={{ y: 30, delay: 400 }}
-				href={LOGO_SYMBOLS_HREFS.e}
-				fill="url(#splash-image-3)"
-				out:fade|local
-			/>
-			<use
-				in:fly={{ y: 30, delay: 450 }}
-				href={LOGO_SYMBOLS_HREFS.x}
-				fill="url(#splash-image-4)"
-				out:fade|local
-			/>
+			{/each}
 		{/if}
 	</svg>
-	<!-- Strokes overlay -->
-	<!-- <svg class="logo-strokes" viewBox={FULL_VIEWBOX}>
-		{#if entered}
-			<use in:fly={{ y: 30, delay: 250 }} href={LOGO_SYMBOLS_HREFS.n} out:fade|local />
-			<use in:fly={{ y: 30, delay: 300 }} href={LOGO_SYMBOLS_HREFS.p} out:fade|local />
-			<use in:fly={{ y: 30, delay: 350 }} href={LOGO_SYMBOLS_HREFS.l} out:fade|local />
-			<use in:fly={{ y: 30, delay: 400 }} href={LOGO_SYMBOLS_HREFS.e} out:fade|local />
-			<use in:fly={{ y: 30, delay: 450 }} href={LOGO_SYMBOLS_HREFS.x} out:fade|local />
-		{/if}
-	</svg> -->
 	<button on:click={consult} class={ICON_CLASS.hover}>
 		<div class="arrow">
 			<Icon name="arrow-down" strokeWidth={3} />
@@ -133,7 +103,7 @@
 		justify-content: center;
 		margin-top: calc(-1 * var(--ui-nav-h));
 		overflow: hidden;
-		// transition: border-radius 0.15s ease-out;
+		transition: border-radius 0.15s ease-out;
 	}
 
 	.logo {
@@ -145,11 +115,7 @@
 		object-fit: contain;
 		max-width: var(--ui-width-main);
 		padding: 3rem;
-		// stroke: col(bg, 900);
-		// stroke-dasharray: 12px 6px;
-		// stroke-linecap: round;
-		// stroke-linejoin: round;
-		// stroke-width: 2px;
+		opacity: max(0, calc(1 - 0.001 * var(--ui-scroll)));
 		overflow: visible;
 	}
 

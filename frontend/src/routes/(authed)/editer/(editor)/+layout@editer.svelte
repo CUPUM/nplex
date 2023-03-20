@@ -53,7 +53,7 @@
 
 		:global(.editor-formgroup-title) {
 			@include typography(heading, md);
-			margin-top: -0.5em;
+			margin-top: -0.25em;
 			margin-bottom: 2rem;
 		}
 	}

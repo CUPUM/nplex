@@ -3,12 +3,12 @@
 	import Field from '$components/Field/Field.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import { browserDb } from '$utils/database/client';
-	import { fetchStore } from '$utils/store';
+	import { queryStore } from '$utils/store';
 	import type { PageData } from './$types';
 
 	$: collaborators = ($page.data as PageData).collaborators;
 
-	const searchUsers = fetchStore('', async (s) => {
+	const searchUsers = queryStore('', async (s) => {
 		if (s.length) {
 			return browserDb
 				.from('users')

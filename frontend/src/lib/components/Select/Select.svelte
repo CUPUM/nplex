@@ -110,7 +110,7 @@
 		</select>
 	</svelte:fragment>
 	<svelte:fragment slot="trailing">
-		<button>
+		<button class="select-arrow" type="button" tabindex="-1">
 			<Icon class="arrow" name="chevron-down" />
 		</button>
 		<slot name="trailing" />
@@ -127,13 +127,13 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		z-index: 1;
 		font-size: inherit;
 		font-family: inherit;
 		outline: none;
 	}
 
-	button {
+	.select-arrow {
+		pointer-events: none;
 		position: relative;
 		display: flex;
 		align-self: stretch;

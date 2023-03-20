@@ -7,20 +7,19 @@ import { zfd } from 'zod-form-data';
 
 type CookieOptions = Parameters<RequestEvent['cookies']['set']>[2];
 
+export type AuthFeedback = {
+	email?: string[];
+	first_name?: string[];
+	last_name?: string[];
+	password?: string[];
+	errors?: string[];
+};
+
 export const emailSchema = zfd.text(
 	z
 		.string({ required_error: 'Une adresse courriel est requise.' })
 		.email('Adresse courriel invalide.')
 );
-
-export type AuthFailure = {
-	email?: string[];
-	password?: string[];
-	first_name?: string[];
-	last_name?: string[];
-	provider?: string[];
-	errors?: string[];
-};
 
 export const SERVER_COOKIE_OPTIONS: CookieOptions = {
 	path: '/',

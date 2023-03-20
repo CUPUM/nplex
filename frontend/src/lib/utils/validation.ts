@@ -1,5 +1,5 @@
 import { AuthError, type PostgrestError } from '@supabase/supabase-js';
-import { z, ZodError } from 'zod';
+import { ZodError, z } from 'zod';
 import { DB_ERROR_MESSAGE } from './enums';
 
 /**
@@ -10,6 +10,8 @@ export const positionSchema = z.union([
 	z.tuple([z.number(), z.number(), z.number()]),
 	z.tuple([z.number(), z.number(), z.number(), z.number()]),
 ]);
+
+export const roleSchema = z.union([z.literal('visitor'), z.literal('editor'), z.literal('admin')]);
 
 /**
  * Retrieve error messages from various types of input.

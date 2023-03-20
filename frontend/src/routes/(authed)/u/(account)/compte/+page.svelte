@@ -9,7 +9,6 @@
 	import Select from '$components/Select/Select.svelte';
 	import TextArea from '$components/TextArea/TextArea.svelte';
 	import Token from '$components/Token/Token.svelte';
-	import Tooltip from '$components/Tooltip.svelte';
 	import { LOAD_DEPENDENCIES } from '$utils/enums';
 
 	export let data;
@@ -19,9 +18,7 @@
 		dirtyGeneral = false;
 	}
 
-	$: console.log(dirtyGeneral);
-
-	$: role = data.roles.find((r) => r.role === data.profile.role.role);
+	let desiredRole = '';
 </script>
 
 <form
@@ -44,7 +41,7 @@
 			<Field
 				style="flex: 1; min-width: 350px"
 				name="first_name"
-				variant="default"
+				variant="outlined"
 				value={data.profile.first_name}
 				on:change={() => {
 					dirtyGeneral = true;
@@ -56,7 +53,7 @@
 			<Field
 				style="flex: 1; min-width: 350px"
 				name="last_name"
-				variant="default"
+				variant="outlined"
 				value={data.profile.last_name}
 				on:change={() => {
 					dirtyGeneral = true;
@@ -67,7 +64,7 @@
 		</fieldset>
 		<Field
 			name="public_email"
-			variant="default"
+			variant="outlined"
 			value={data.profile.public_email}
 			on:change={() => {
 				dirtyGeneral = true;
@@ -77,7 +74,7 @@
 		</Field>
 		<TextArea
 			name="about"
-			variant="default"
+			variant="outlined"
 			value={data.profile.about}
 			on:change={() => {
 				dirtyGeneral = true;
@@ -97,50 +94,58 @@
 <section class="account-formgroup">
 	<h2 class="account-formgroup-title">Rôle & permissions</h2>
 	<p class="info">Gérer le rôle associé à mon compte.</p>
+	<h3 class="heading-sm">Mon rôle actuel</h3>
 	<fieldset id="role">
-		<span class="heading-xs">Mon rôle actuel:</span>
-		<Tooltip message={role?.description} place="right">
-			<Token readonly variant="outlined">
-				{role?.title}
+		<section>
+			<Token readonly variant="default">
+				{data.profile.role_title}
 			</Token>
-		</Tooltip>
-	</fieldset>
-	<Modal>
-		<svelte:fragment slot="control" let:open>
-			<Button
-				type="button"
-				slot="control"
-				on:click={open}
-				equi={false}
-				style="font-size: var(--ui-text-sm);"
+			<p class="info">{data.profile.role_description}</p>
+		</section>
+		<Modal>
+			<svelte:fragment slot="control" let:open>
+				<Button
+					variant="outlined"
+					type="button"
+					slot="control"
+					on:click={open}
+					equi={false}
+					style="font-size: var(--ui-text-sm);"
+				>
+					Demander un nouveau rôle
+					<Icon name="shield" slot="trailing" />
+				</Button>
+			</svelte:fragment>
+			<svelte:fragment slot="header">Demandez un rôle</svelte:fragment>
+			<form
+				method="POST"
+				action="?/role"
+				autocomplete="off"
+				use:enhance={({ form, data, action, cancel }) => {
+					return async ({ update, result }) => {
+						update({ reset: false });
+						if (result.type === 'failure') {
+							invalidate(LOAD_DEPENDENCIES.USER_PROFILE);
+						}
+					};
+				}}
 			>
-				Demander un nouveau rôle
-				<Icon name="shield" slot="trailing" />
-			</Button>
-		</svelte:fragment>
-		<form
-			method="POST"
-			action="?/role"
-			autocomplete="off"
-			use:enhance={({ form, data, action, cancel }) => {
-				return async ({ update, result }) => {
-					update({ reset: false });
-					if (result.type === 'failure') {
-						invalidate(LOAD_DEPENDENCIES.USER_PROFILE);
-					}
-				};
-			}}
-		>
-			<p class="info">
-				Notez que pour obtenir un rôle qui vous accorde plus de permissions, votre demande devra
-				être approuvée par un administrateur.
-			</p>
-			<Select options={data.roles} variant="outlined">
-				<svelte:fragment slot="label">Rôle désiré</svelte:fragment>
-				<option slot="option" let:option value={option.role}>{option.title}</option>
-			</Select>
-		</form>
-	</Modal>
+				<p style="margin-top: 0;">
+					Notez que pour obtenir un rôle qui vous accorde plus de permissions, votre demande devra
+					être approuvée par un administrateur.
+				</p>
+				<Select options={data.roles} bind:value={desiredRole} variant="outlined" name="role">
+					<svelte:fragment slot="label">Rôle désiré</svelte:fragment>
+					<option slot="option" let:option value={option.role}>{option.title}</option>
+					<svelte:fragment slot="trailing">
+						<Button type="submit" disabled={!desiredRole}>
+							Envoyer la demande <Icon slot="trailing" name="arrow-right" />
+						</Button>
+					</svelte:fragment>
+				</Select>
+			</form>
+		</Modal>
+	</fieldset>
 </section>
 <form
 	class="account-formgroup"
@@ -194,7 +199,13 @@
 	}
 
 	#role {
-		margin-bottom: 1.5rem;
+		flex-wrap: wrap;
+		align-items: flex-start;
+
+		section {
+			flex: 1;
+			max-width: 50%;
+		}
 	}
 
 	h3 {

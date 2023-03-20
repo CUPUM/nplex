@@ -37,6 +37,16 @@ export type BuffedDatabase = DeepReplace<
 	},
 	{
 		public: {
+			Views: {
+				users_extended: {
+					Row: {
+						role: NonNullable<Database['public']['Views']['users_extended']['Row']['role']>;
+						role_title: NonNullable<
+							Database['public']['Views']['users_extended']['Row']['role_title']
+						>;
+					};
+				};
+			};
 			Tables: {
 				projects: {
 					Row: {

@@ -32,6 +32,13 @@ export type TableRow<
 	Schema extends Database = App.Database
 > = Schema['public']['Tables'][T]['Row'];
 
+export type ViewName = keyof App.Database['public']['Views'];
+
+export type ViewRow<
+	V extends ViewName,
+	Schema extends Database = App.Database
+> = Schema['public']['Views'][V]['Row'];
+
 type BuffOptions = 'single' | 'maybeSingle';
 
 /**

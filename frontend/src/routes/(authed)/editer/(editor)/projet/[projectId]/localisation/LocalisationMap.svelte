@@ -13,6 +13,8 @@
 	import { LOCATION_DEFAULT_RADIUS, map, mapDraw } from './common';
 
 	let tracking = false;
+
+	export let localisationDraw;
 </script>
 
 <Map cooperativeGestures={true} bind:map={$map} mapStyle={tonerDark} id="editor-map">

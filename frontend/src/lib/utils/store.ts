@@ -40,38 +40,65 @@ export function writableLedger<T>(init: T, fallback?: T) {
 	};
 }
 
+// /**
+//  * Async store
+//  */
+// export function asyncStore<T>(init: T) {
+// 	const store = writable<T>(init);
+// }
+
 /**
- * Create a writable that handles a given input query using a given fetching function.
+ * Create a writable that reactively applies a given input query using to a given fetching function.
+ * The fetcher doesn't necessarily have to be a window.fetch, it can be any async function that
+ * returns data or throws when failing.
  */
-export function fetchStore<Q, F extends (query: Q) => Promise<any> | PromiseLike<any>>(
+export function queryStore<Q, F extends (query: Q) => Promise<any> | PromiseLike<any>>(
 	/**
 	 * Writable's initial query input, if any.
 	 */
 	init: Q,
 	/**
-	 * Use the query value and fetch data.
+	 * Use the query value and pass it to an async handler, for example a data fetching function.
 	 */
-	fetcher: F,
-	/**
-	 * Debounce reactivity to query input changes to avoid request flood when bound to high frequency
-	 * trigger such as an input element's value.
-	 */
-	debounceTime = 250,
-	/**
-	 * Should the data be cleared when a new request is initiated or should it be held onto until a
-	 * response is received?
-	 */
-	staleWhileLoading = true,
-	/**
-	 * Should the stale data be cleared whenever a request fails?
-	 */
-	staleOnError = true
+	handler: F,
+	{
+		rate = 250,
+		limiter = debounce,
+		staleWhileLoading = true,
+		staleOnError = true,
+	}: {
+		/**
+		 * Limiting the execution rate of the handler.
+		 */
+		rate?: 250;
+		/**
+		 * Debounce/throttle reactivity to query input changes based on rate value to avoid request
+		 * flood when bound to high frequency trigger such as an input element's value. Accepts any
+		 * limiting function.
+		 */
+		limiter?: (
+			f: any,
+			rate?: number
+		) => {
+			(...args: unknown[]): any;
+			cancel?: () => void;
+		};
+		/**
+		 * Should the data be cleared when a new request is initiated or should it be held onto until a
+		 * response is received?
+		 */
+		staleWhileLoading?: boolean;
+		/**
+		 * Should the stale data be cleared whenever a request fails?
+		 */
+		staleOnError?: boolean;
+	} = {}
 ) {
 	type FetchStoreValue = {
 		/**
 		 * The input query.
 		 */
-		query: Q;
+		input: Q;
 		/**
 		 * Indicates if the store is currently awaiting data from a request.
 		 */
@@ -87,23 +114,23 @@ export function fetchStore<Q, F extends (query: Q) => Promise<any> | PromiseLike
 		/**
 		 * Returned data kept up to date.
 		 */
-		data: Awaited<ReturnType<F>> | null;
+		res: Awaited<ReturnType<F>> | null;
 	};
 	/**
 	 * Base store used to keep track of request states and reactive query input value.
 	 */
 	const store = writable<FetchStoreValue>(
 		{
-			query: init,
+			input: init,
 			loading: false,
 			error: false,
 			success: false,
-			data: null,
+			res: null,
 		},
 		function start(set) {
-			const q = get(store).query;
+			const q = get(store).input;
 			if (q != null) {
-				immediateFetcher(q);
+				immediateHandler(q);
 			}
 			return function stop() {
 				// if (browser) {
@@ -115,7 +142,7 @@ export function fetchStore<Q, F extends (query: Q) => Promise<any> | PromiseLike
 	/**
 	 * Wrapped fetcher keeping the base store in sync.
 	 */
-	async function immediateFetcher(q: Q) {
+	async function immediateHandler(q: Q) {
 		// Set the pending states.
 		store.update((v) => {
 			return {
@@ -123,19 +150,19 @@ export function fetchStore<Q, F extends (query: Q) => Promise<any> | PromiseLike
 				loading: true,
 				error: staleWhileLoading ? v.error : false,
 				success: staleWhileLoading ? v.success : false,
-				data: staleWhileLoading ? v.data : null,
+				res: staleWhileLoading ? v.res : null,
 			};
 		});
 		// Initiate the request and keep track of response.
 		try {
-			await fetcher(q).then((res) => {
+			await handler(q).then((res) => {
 				store.update((v) => {
 					return {
 						...v,
 						loading: false,
 						success: true,
 						error: false,
-						data: res ?? null,
+						res: res ?? null,
 					};
 				});
 			});
@@ -146,7 +173,7 @@ export function fetchStore<Q, F extends (query: Q) => Promise<any> | PromiseLike
 					loading: false,
 					success: false,
 					error: err ?? true,
-					data: staleOnError ? v.data : null,
+					res: staleOnError ? v.res : null,
 				};
 			});
 		}
@@ -154,16 +181,16 @@ export function fetchStore<Q, F extends (query: Q) => Promise<any> | PromiseLike
 	/**
 	 * Debounced fetcher wrapper.
 	 */
-	const debouncedFetcher = debounce((q: Q) => {
-		immediateFetcher(q);
-	}, debounceTime);
+	const limitedHandler = limiter((q: Q) => {
+		immediateHandler(q);
+	}, rate);
 	/**
 	 * Exposed store update method.
 	 */
 	function _update(updater: Updater<FetchStoreValue>) {
 		// console.log('updating');
 		store.update((v) => {
-			debouncedFetcher(v.query);
+			limitedHandler(v.input);
 			return updater(v);
 		});
 	}
@@ -183,8 +210,8 @@ export function fetchStore<Q, F extends (query: Q) => Promise<any> | PromiseLike
 	 * Manually force a refreshing of the store's data.
 	 */
 	function refresh() {
-		const q = get(store).query;
-		immediateFetcher(q);
+		const q = get(store).input;
+		immediateHandler(q);
 	}
 	return {
 		subscribe: store.subscribe,

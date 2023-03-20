@@ -1,13 +1,15 @@
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
 	import Field from '$components/Field/Field.svelte';
+	import Option from '$components/Options/Option.svelte';
+	import OptionsList from '$components/Options/OptionsList.svelte';
 	import { STATES, VARIANTS } from '$utils/enums';
-	import { fetchStore } from '$utils/store';
+	import { queryStore } from '$utils/store';
 
 	const h = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];
 	const t = ['xl', 'lg', 'md', 'sm', 'xs'];
 
-	const q = fetchStore('Hello', async (v) => {
+	const q = queryStore('Hello', async (v) => {
 		return fetch('/playground/data.json', { method: 'GET' }).then(async (res) => res.json());
 	});
 
@@ -21,18 +23,25 @@
 	// 	// });
 	// });
 
-	$: console.log($q.data);
+	$: console.log($q.res);
 </script>
 
 <article>
-	<Field bind:value={$q.query}>
+	<Field>
+		<OptionsList slot="options">
+			<Option value="test">Test</Option>
+		</OptionsList>
+	</Field>
+</article>
+<article>
+	<Field bind:value={$q.input}>
 		<svelte:fragment slot="trailing">
 			<!-- <Button on:click={$q.fetch}>Fetch</Button> -->
 		</svelte:fragment>
 	</Field>
 	<code>
 		error: {$q.error}; loading: {$q.loading};
-		{JSON.stringify($q.data, null, 2)}
+		{JSON.stringify($q.res, null, 2)}
 	</code>
 </article>
 <article>

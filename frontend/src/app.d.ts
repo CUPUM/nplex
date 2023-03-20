@@ -1,17 +1,24 @@
 // /// <reference types="@sveltejs/kit" />
 
 import type { POPOVER_OPEN_ATTR } from '$components/Popover.svelte';
+import type { MessageType } from '$routes/MessagesOutlet.svelte';
 import type { BuffedDatabase } from '$types/database/buff';
-import type { TableRow } from '$types/database/utils';
+import type { ViewRow } from '$types/database/utils';
 import type { Category } from '$utils/enums';
 import type { ThemeName } from '$utils/themes';
 import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
 
 type UserSession = DeepOmit<AuthSession, { user: { role: never } }> & {
-	user: { role: App.Database['public']['Enums']['app_role'] } & Pick<
-		TableRow<'users'>,
-		'avatar_url' | 'first_name' | 'public_email'
+	user: Pick<
+		ViewRow<'extended_users'>,
+		| 'avatar_url'
+		| 'first_name'
+		| 'last_name'
+		| 'public_email'
+		| 'role'
+		| 'role_title'
+		| 'role_description'
 	>;
 };
 
@@ -71,6 +78,9 @@ declare global {
 			 * Database client instance confined to lifecycle of individual request event.
 			 */
 			db: SupabaseClient<App.Database>;
+		}
+		interface ActionFailure {
+			messages: Record<MessageType, string[]>;
 		}
 	}
 }

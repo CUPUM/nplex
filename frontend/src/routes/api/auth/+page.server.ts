@@ -4,7 +4,7 @@ import { errorMessages } from '$utils/validation';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import { emailSchema, setAuthCookie, type AuthFailure } from './common';
+import { emailSchema, setAuthCookie, type AuthFeedback } from './common';
 
 // export const ssr = false;
 
@@ -45,7 +45,7 @@ export const actions = {
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { errorMessages: errorMessages(parsed.error) });
+			return fail<AuthFeedback>(STATUS_CODES.BadRequest, { errors: errorMessages(parsed.error) });
 		}
 		const db = await getDb(event);
 		const signup = await db.auth.signUp({
@@ -59,12 +59,18 @@ export const actions = {
 			},
 		});
 		if (signup.error) {
-			return fail(STATUS_CODES.InternalServerError, {
-				errorMessages: errorMessages(signup.error),
+			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
+				errors: errorMessages(signup.error),
 			});
 		}
+		if (signup.data.user && !signup.data.session) {
+			// Email confirmation needed (https://supabase.com/docs/reference/javascript/auth-signup);
+			return {
+				confirmEmail: signup.data.user.email,
+			};
+		}
 		if (!signup.data.session) {
-			return fail<AuthFailure>(STATUS_CODES.InternalServerError, {
+			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
 				errors: ['Une erreur est survenue lors de la récupération de la session'],
 			});
 		}
@@ -91,18 +97,20 @@ export const actions = {
 			)
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { errorMessages: errorMessages(parsed.error) });
+			return fail<AuthFeedback>(STATUS_CODES.BadRequest, {
+				errors: errorMessages(parsed.error),
+			});
 		}
 		const db = await getDb(event);
 		const signin = await db.auth.signInWithPassword({ ...parsed.data });
 		if (signin.error) {
-			return fail(STATUS_CODES.InternalServerError, {
-				errorMessages: errorMessages(signin.error),
+			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
+				errors: errorMessages(signin.error),
 			});
 		}
 		if (!signin.data.session) {
 			console.log(signin);
-			return fail<AuthFailure>(STATUS_CODES.InternalServerError, {
+			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
 				errors: ['Une erreur est survenue lors de la récupération de la session'],
 			});
 		}

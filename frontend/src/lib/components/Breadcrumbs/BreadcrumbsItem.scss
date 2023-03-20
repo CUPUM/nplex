@@ -2,7 +2,7 @@
 @use './Breadcrumbs.scss';
 
 .breadcrumbs-item {
-	display: flex;
+	display: inline-flex;
 	flex: none;
 	align-items: center;
 	padding-inline: 1em;

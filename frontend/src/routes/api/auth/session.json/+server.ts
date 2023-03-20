@@ -1,4 +1,3 @@
-import { maybeSingle } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { COOKIES } from '$utils/enums';
 import { safeJsonParse } from '$utils/json';
@@ -9,7 +8,7 @@ import type { RequestHandler } from './$types';
 
 /**
  * Use this endpoint to initialize or update a session cookie, EXCLUDING signouts. It verifies the
- * previous cookies or the posted data sets an updated cookie accordingly, while also returning the
+ * previous cookies or the posted data, sets an updated cookie accordingly while also returning the
  * extended user data to populate PageData. It is thus imperative that this endpoint always resolve
  * with returned data to set, update, or erase the session in both the client's data props and
  * cookies. The data in question should abide by the shape of App.PageData['session'] or null.
@@ -28,15 +27,16 @@ export const POST: RequestHandler = async (event) => {
 	}
 
 	const profileRes = await db
-		.from('users')
+		.from('users_extended')
 		.select(
 			`
 				public_email,
 				first_name,
+				last_name,
 				avatar_url,
-				role:users_roles!users_roles_user_id_fkey(
-					role
-				)
+				role,
+				role_description,
+				role_title
 			`
 		)
 		.eq('id', authSession.user.id)
@@ -46,14 +46,13 @@ export const POST: RequestHandler = async (event) => {
 		return clearSession(event);
 	}
 
-	const pageDataSession: App.PageData['session'] = {
+	const pageDataSession = {
 		...authSession,
 		user: {
 			...authSession.user,
 			...profileRes.data,
-			role: maybeSingle(profileRes.data.role).role,
 		},
-	};
+	} satisfies App.PageData['session'];
 	setSessionCookie(event, {
 		...tokenData(pageDataSession),
 		user: {

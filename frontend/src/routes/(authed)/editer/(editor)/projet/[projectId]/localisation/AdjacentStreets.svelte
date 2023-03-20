@@ -1,14 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import Dirty from '$components/Dirty.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import FieldButtonIncrement from '$components/Field/FieldButtonIncrement.svelte';
 	import type { PageData } from '../$types';
 	import { editorDirtyValues } from '../../../common';
-	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 	import { ADJACENT_STREETS_MAX, ADJACENT_STREETS_MIN } from './common';
 
-	$: ({ adjacent_streets } = ($page.data as PageData).project);
+	export let adjacent_streets: PageData['project']['adjacent_streets'];
 
 	$: editAdjacentStreets = adjacent_streets;
 </script>
@@ -18,7 +16,8 @@
 	specimen={editAdjacentStreets}
 	bind:dirty={$editorDirtyValues.adjacent_streets}
 />
-<EditorFormgroup legend="Rues adjacentes">
+<fieldset class="editor-formgroup">
+	<h3 class="editor-formgroup-title">Rues adjacentes</h3>
 	<p class="info">Combien de rues ou de ruelles bordent directement le terrain?</p>
 	<Field
 		readonly
@@ -33,7 +32,7 @@
 		<FieldButtonIncrement down slot="leading" />
 		<FieldButtonIncrement up slot="trailing" />
 	</Field>
-</EditorFormgroup>
+</fieldset>
 
 <style lang="scss">
 </style>

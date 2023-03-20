@@ -35,7 +35,7 @@ export const actions = {
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { fieldErrors: parsed.error.formErrors.fieldErrors });
+			return fail(STATUS_CODES.BadRequest, { fielderror: parsed.error.formErrors.fieldErrors });
 		}
 		const db = await getDb(event);
 		// projects table

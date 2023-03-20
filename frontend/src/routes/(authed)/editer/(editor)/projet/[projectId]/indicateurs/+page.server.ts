@@ -14,7 +14,7 @@ export const actions = {
 		const formData = await event.request.formData();
 		const parsed = projectIndicatorsSchema.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { errorMessages: errorMessages(parsed.error) });
+			return fail(STATUS_CODES.BadRequest, { messages: { error: errorMessages(parsed.error) } });
 		}
 
 		const del = event.locals.db

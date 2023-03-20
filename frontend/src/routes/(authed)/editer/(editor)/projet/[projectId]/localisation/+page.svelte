@@ -2,7 +2,7 @@
 	import AdjacentStreets from './AdjacentStreets.svelte';
 	import Area from './Area.svelte';
 	import District from './District.svelte';
-	import LocalisationMap from './LocalisationMap.svelte';
+	// import LocalisationMap from './LocalisationMap.svelte';
 	import Location from './Location.svelte';
 
 	export let data;
@@ -10,13 +10,18 @@
 
 <div>
 	<section class="map">
-		<LocalisationMap />
+		<!-- {#await import('./LocalisationMap.svelte')}
+			Loading map...
+		{:then LocalisationMap}
+			<LocalisationMap.default />
+		{/await} -->
+		<!-- <LocalisationMap /> -->
 	</section>
 	<section class="fields">
-		<Location />
+		<Location location={data.project.location} />
 		<Area />
 		<District />
-		<AdjacentStreets />
+		<AdjacentStreets adjacent_streets={data.project.adjacent_streets} />
 		<!-- <ImplantationMode /> -->
 		<!-- <Levels /> -->
 		<!-- <ConstructionYear /> -->

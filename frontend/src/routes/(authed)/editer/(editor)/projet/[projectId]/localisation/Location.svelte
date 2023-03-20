@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import Dirty from '$components/Dirty.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { DRAW_EVENTS } from '$utils/enums';
@@ -14,7 +13,6 @@
 	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { onDestroy } from 'svelte';
 	import { editorDirtyValues } from '../../../common';
-	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 	import {
 		editCenter,
@@ -25,7 +23,7 @@
 		mapDraw,
 	} from './common';
 
-	$: ({ location } = ($page.data as PageData).project);
+	export let location: PageData['project']['location'];
 
 	$: $editRadius = location.radius;
 
@@ -98,13 +96,16 @@
 	specimen={{ radius: $editRadius, center: $editCenter }}
 	bind:dirty={$editorDirtyValues.location}
 />
-<EditorFormgroup legend="Emplacement">
-	<p class="info">
+<fieldset class="editor-formgroup">
+	<h3 class="editor-formgroup-title">Emplacement</h3>
+	<p>
 		<kbd>
 			<Icon name="path-circle" />
 		</kbd>
-		Situez le projet sur la carte ci-contre en y dessinant un cercle. Notez que le diamètre du cercle
-		permet de garder l'emplacement confidentiel lorsque le projet sera publié.
+	</p>
+	<p class="info">
+		Situez le projet sur la carte ci-contre en y dessinant un cercle. Notez que le diamètre du
+		cercle permet de garder l'emplacement confidentiel lorsque le projet sera publié.
 	</p>
 	<p class="info">
 		Assurrez-vous toutefois que le centre du cercle correspond bien à l'emplacement du projet. Son
@@ -116,7 +117,11 @@
 		name="location"
 		value={JSON.stringify({ center: $editCenter, radius: $editRadius })}
 	/>
-</EditorFormgroup>
+</fieldset>
 
 <style lang="scss">
+	kbd {
+		display: inline-block;
+		margin-bottom: 0.25em;
+	}
 </style>

@@ -1,9 +1,22 @@
+import { STORAGE_BUCKETS } from '$utils/enums';
 import type { RequestEvent } from '@sveltejs/kit';
-import { getDb } from './client';
+import { browserDb, getDb } from './client';
 
 /**
- * Get a map of public avatar urls associatied with user ids.
+ * Browser-side helper to get public URL to storage project image.
  */
-export async function getAvatars<U extends string | string[]>(userIds: U, event?: RequestEvent) {
+export function getProjectImageUrl(name: string) {
+	return browserDb.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(name).data.publicUrl;
+}
+
+export function getProjectImagesUrls(...names: string[]) {
+	return names.map((name) => getProjectImageUrl(name));
+}
+
+export async function getUserProfiles<U extends string | string[]>(
+	userIds: U,
+	event?: RequestEvent
+) {
 	const db = await getDb(event);
+	// const profiles = await db.from('')
 }

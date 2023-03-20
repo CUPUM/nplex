@@ -1,4 +1,3 @@
-import { maybeSingle } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { LOAD_DEPENDENCIES, STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
@@ -14,13 +13,10 @@ export const load = async (event) => {
 	const db = await getDb(event);
 
 	const profile = db
-		.from('users')
+		.from('users_extended')
 		.select(
 			`
-				*,
-				role:users_roles!users_roles_user_id_fkey(
-					*
-				)
+				*
 			`
 		)
 		.eq('id', session.user.id)
@@ -30,11 +26,7 @@ export const load = async (event) => {
 			if (res.error) {
 				throw error(STATUS_CODES.InternalServerError, res.error);
 			}
-			console.log(res.data);
-			return maybeSingle({
-				...res.data,
-				role: maybeSingle(res.data.role)!,
-			})!;
+			return res.data;
 		});
 
 	const roles = await db
@@ -44,7 +36,6 @@ export const load = async (event) => {
 			if (res.error) {
 				throw error(STATUS_CODES.InternalServerError, res.error);
 			}
-			console.log(res);
 			return res.data;
 		});
 

@@ -14,8 +14,8 @@ export const actions = {
 			.safeParse(formData);
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, {
-				errors: parsed.error.formErrors.fieldErrors,
-				errorMessages: errorMessages(parsed.error),
+				error: parsed.error.formErrors.fieldErrors,
+				messages: { error: errorMessages(parsed.error) },
 			});
 		}
 		const newProject = await event.locals.db
@@ -25,12 +25,12 @@ export const actions = {
 			.single();
 		if (newProject.error) {
 			return fail(STATUS_CODES.InternalServerError, {
-				errorMessages: errorMessages(newProject.error),
+				messages: { error: errorMessages(newProject.error) },
 			});
 		}
 		if (!newProject.data.id) {
 			return fail(STATUS_CODES.InternalServerError, {
-				errorMessages: ["Problème de récupération de l'identifiant du nouveau projet."],
+				messages: { error: ["Problème de récupération de l'identifiant du nouveau projet."] },
 			});
 		}
 		throw redirect(STATUS_CODES.TemporaryRedirect, `/editer/projet/${newProject.data.id}`);

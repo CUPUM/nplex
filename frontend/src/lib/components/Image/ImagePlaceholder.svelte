@@ -50,10 +50,10 @@
 			.join(',');
 	}
 
-	let background = formatBackground(color);
-	$: if (color) {
-		background = formatBackground(color);
-	}
+	const background = formatBackground(color);
+	// $: if (color) {
+	// 	background = formatBackground(color);
+	// }
 </script>
 
 <div style:--background={background} {style} />
