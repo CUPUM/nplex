@@ -15,7 +15,7 @@ export const EDITOR_ROUTES = {
 		},
 		descriptors: {
 			subpath: '/descripteurs/projets',
-			title: 'Descripteurs de projet',
+			title: 'Descripteurs des projets',
 			pathname: EDITOR_BASE_ROUTE.pathname + '/descripteurs/projets',
 		},
 	},

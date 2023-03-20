@@ -109,6 +109,10 @@ textarea {
 	}
 }
 
+::placeholder {
+	opacity: 0.35;
+}
+
 label {
 	opacity: 0.35;
 	position: absolute;
@@ -225,7 +229,7 @@ label {
 	}
 }
 
-:where(.outlined) {
+.outlined {
 	color: col(fg, 100);
 	background: transparent;
 	transition: color 0.1s ease-out, background-color 0.1s ease-out;
@@ -277,8 +281,9 @@ label {
 		.outline {
 			opacity: 0.75;
 		}
-		label {
-			opacity: 1;
+		label,
+		::placeholder {
+			opacity: 0.5;
 		}
 	}
 	&:focus-within {
