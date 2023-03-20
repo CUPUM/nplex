@@ -1,7 +1,24 @@
 import { browser } from '$app/environment';
+import { page } from '$app/stores';
 import { debounce } from '$utils/modifiers';
-import { get, readable, writable, type Updater } from 'svelte/store';
+import { derived, get, readable, writable, type Updater } from 'svelte/store';
 import type { Awaited } from 'ts-essentials';
+
+/**
+ * Global user store with added utility methods.
+ */
+export const user = derived(page, ($p) => {
+	if (!$p.data.session || !$p.data.session.user) {
+		return null;
+	}
+	return {
+		...$p.data.session.user,
+		hasRole(...role: (App.UserRole | string)[]) {
+			if (!$p.data.session?.user?.role) return false;
+			return role.includes($p.data.session.user.role);
+		},
+	};
+});
 
 /**
  * Writable store with a chronological cumulative memory of keyed values.

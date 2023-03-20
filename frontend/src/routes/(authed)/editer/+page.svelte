@@ -1,7 +1,10 @@
 <script lang="ts">
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
+	import Token from '$components/Token/Token.svelte';
+	import { user } from '$utils/store';
 	import { fly } from 'svelte/transition';
+	import { ALLOWED_ROLES } from './(editor)/descripteurs/common';
 	import { EDITOR_ROUTES } from './common';
 </script>
 
@@ -22,12 +25,18 @@
 			<a
 				class="block main-link descriptors {ICON_CLASS.hover}"
 				href={EDITOR_ROUTES.project.descriptors.pathname}
+				aria-disabled={$user?.hasRole(...ALLOWED_ROLES)}
 			>
 				<Ripple />
 				<div class="fill" aria-hidden="true">
 					<Icon animationSpeed={0.3} name="parameters" strokeWidth={2} strokeLinecap="round" />
 				</div>
 				<span style="z-index: 1">Éditer les descripteurs de projet</span>
+				{#if !$user?.hasRole(...ALLOWED_ROLES)}
+					<Token style="font-size: var(--ui-text-sm)" variant="default" state="warning">
+						Éditeurs & administrateurs seulement
+					</Token>
+				{/if}
 			</a>
 		</li>
 		<li class="block {ICON_CLASS.hover}" in:fly={{ delay: 100, y: 12 }}>
@@ -78,6 +87,12 @@
 		justify-content: flex-start;
 		gap: 1.5rem;
 		font-weight: 500;
+	}
+
+	[aria-disabled] {
+		opacity: 0.25;
+		pointer-events: none;
+		user-select: none;
 	}
 
 	.group {

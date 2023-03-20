@@ -109,7 +109,6 @@ export const actions = {
 			});
 		}
 		if (!signin.data.session) {
-			console.log(signin);
 			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
 				errors: ['Une erreur est survenue lors de la récupération de la session'],
 			});
@@ -142,9 +141,5 @@ export const actions = {
 	 * Using a provider, with server-side handling to ensure fullfilment of registration process with
 	 * required data.
 	 */
-	provider: async (event) => {
-		console.log('Hit provider action', event);
-		// const db = await getDb(event);
-		// const providerRes = await db.auth.signInWithOAuth()
-	},
+	provider: async (event) => {},
 };

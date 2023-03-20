@@ -16,7 +16,7 @@ export const browserDb = createClient<App.Database>(PUBLIC_SUPABASE_URL, PUBLIC_
 	auth: {
 		persistSession: false,
 		autoRefreshToken: true,
-		detectSessionInUrl: false,
+		detectSessionInUrl: browser,
 	},
 });
 if (browser) {
@@ -25,13 +25,18 @@ if (browser) {
 		if (event === 'SIGNED_IN') {
 			// Tab switching triggers a signed in event...
 			const pagedata = get(page).data;
-			if (pagedata) {
-				const sameUser = pagedata.session?.user.id === session?.user.id;
-				const sameAccessToken = pagedata.session?.access_token === session?.access_token;
-				const sameRefreshToken = pagedata.session?.refresh_token === session?.refresh_token;
-				if (!sameUser || !sameAccessToken || !sameRefreshToken) {
-					// If the sign in leads to a different session state, then percolate update.
-					update = true;
+			const sameUser = pagedata?.session?.user.id === session?.user.id;
+			const sameAccessToken = pagedata?.session?.access_token === session?.access_token;
+			const sameRefreshToken = pagedata?.session?.refresh_token === session?.refresh_token;
+			if (!sameUser || !sameAccessToken || !sameRefreshToken) {
+				// If the sign in leads to a different session state, then percolate update.
+				update = true;
+				if (!pagedata?.session && session) {
+					// If signin form detected url tokens.
+					await fetch('/api/auth/token-signin', {
+						method: 'POST',
+						body: JSON.stringify(session),
+					});
 				}
 			}
 		} else if (event === 'TOKEN_REFRESHED') {
@@ -93,18 +98,6 @@ export async function getDb(event?: LoadEvent | ServerLoadEvent | RequestEvent) 
 		if (!event.locals.db) {
 			event.locals.db = createServerClient();
 			if (event.locals.session) {
-				// Update session in cookie if newly set session results in token refresh.
-				// const authsession = await event.locals.db.auth.setSession(event.locals.session);
-				// if (
-				// 	!authsession.error &&
-				// 	authsession.data.session &&
-				// 	event.locals.session.access_token !== authsession.data.session?.access_token
-				// ) {
-				// 	setSessionCookie(event, {
-				// 		...event.locals.session,
-				// 		...tokenData(authsession.data.session),
-				// 	});
-				// }
 				await event.locals.db.auth.setSession(event.locals.session);
 				event.locals.db.auth.onAuthStateChange((e, s) => {
 					if (e === 'TOKEN_REFRESHED' && s && event.locals.session) {

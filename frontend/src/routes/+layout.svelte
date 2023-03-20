@@ -23,7 +23,6 @@
 		if (data.session) {
 			// Initialize the client-side db auth based on the session extracted from cookies, if any.
 			browserDb.auth.setSession(data.session);
-			browserDb.auth.signInWithPassword;
 		}
 	}
 

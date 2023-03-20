@@ -30,7 +30,6 @@ export const POST: RequestHandler = async (event) => {
 		});
 		// throw error(STATUS_CODES.InternalServerError, 'Problem refreshing tokens.');
 	}
-
 	setSessionCookie(event, {
 		...(parsedCookie.data as NonNullable<App.Locals['session']>),
 		...tokenData(parsedRefresh.data),

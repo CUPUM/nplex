@@ -124,7 +124,7 @@
 
 	let currentAction: string | null = null;
 
-	let confirmEmail = '';
+	let confirmEmail = 'asdasd';
 
 	const providers = [
 		'facebook',
@@ -174,9 +174,11 @@
 					<use href={LOGO_SYMBOLS_HREFS.full} fill="currentColor" />
 				</svg>
 			</a>
-			{#if $authModal === AUTHMODAL_MODE.ConfirmEmail}
+			{#if $authModal === AUTHMODAL_MODE.ConfirmEmail && confirmEmail}
 				<article in:fly|local={{ duration: 150, y: 6, easing: cubicOut }}>
-					<h2 class="heading-md">Votre compte a été créé avec succès!</h2>
+					<p>
+						<em>Votre compte a été créé avec succès!</em>
+					</p>
 					<p class="info">
 						Il ne vous reste qu'à confirmer votre adresse courriel pour compléter votre inscription.
 						Un courriel de demande de confirmation a été envoyé à l'adresse <i>

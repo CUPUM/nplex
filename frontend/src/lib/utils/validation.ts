@@ -1,6 +1,15 @@
 import { AuthError, type PostgrestError } from '@supabase/supabase-js';
+import type { RequestEvent } from '@sveltejs/kit';
 import { ZodError, z } from 'zod';
 import { DB_ERROR_MESSAGE } from './enums';
+
+/**
+ * Short utility function to quickly check a request user's role-based authorization.
+ */
+export function userHasRole(event: RequestEvent, ...roles: App.UserRole[]) {
+	if (!event.locals.session?.user.role) return false;
+	return roles.includes(event.locals.session?.user.role);
+}
 
 /**
  * Utility to validate a given point's coords in [lng, lat]

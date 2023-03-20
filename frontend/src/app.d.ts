@@ -11,7 +11,7 @@ import type { DeepOmit, DeepPick } from 'ts-essentials';
 
 type UserSession = DeepOmit<AuthSession, { user: { role: never } }> & {
 	user: Pick<
-		ViewRow<'extended_users'>,
+		ViewRow<'users_extended'>,
 		| 'avatar_url'
 		| 'first_name'
 		| 'last_name'
@@ -23,30 +23,28 @@ type UserSession = DeepOmit<AuthSession, { user: { role: never } }> & {
 };
 
 declare global {
-	// For reference, read: https://github.com/sveltejs/language-tools/blob/master/docs/preprocessors/typescript.md#im-using-an-attributeevent-on-a-dom-element-and-it-throws-a-type-error
+	/**
+	 * @see https://github.com/sveltejs/language-tools/blob/master/docs/preprocessors/typescript.md#im-using-an-attributeevent-on-a-dom-element-and-it-throws-a-type-error
+	 */
 	namespace svelteHTML {
 		interface HTMLAttributes<T> {
 			[POPOVER_OPEN_ATTR]?: '';
 			'data-theme'?: ThemeName;
-			'on:consider'?: (
-				event: CustomEvent<DndEvent<ItemType>> & { target: EventTarget & T }
-			) => void;
-			'on:finalize'?: (
-				event: CustomEvent<DndEvent<ItemType>> & { target: EventTarget & T }
-			) => void;
 		}
 	}
 
+	// Force-adding typing for svelte's internally used element property.
 	interface HTMLOptionElement {
 		__value: unknown;
 	}
-
 	interface HTMLInputElement {
 		__value?: unknown;
 	}
 
 	namespace App {
 		type Database = BuffedDatabase;
+		type UserRole = BuffedDatabase['public']['Enums']['app_role'];
+		type PublicationStatus = BuffedDatabase['public']['Enums']['publication_status'];
 		interface PageData {
 			/**
 			 * Nplex-specific session derived from Supabase session.

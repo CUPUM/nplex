@@ -265,6 +265,7 @@
 		font-size: var(--ui-text-sm);
 		pointer-events: all;
 		position: relative;
+		font-weight: 400;
 		max-width: 50ch;
 		flex: none;
 		display: flex;
@@ -312,13 +313,12 @@
 		position: relative;
 		display: inline-flex;
 		height: 1em;
-		// margin-right: 0.25em;
+		margin-right: 0.25em;
 	}
 
 	.text {
 		position: relative;
 		top: -0.1em;
-		padding-inline: 0.25em;
 	}
 
 	.progress-container {

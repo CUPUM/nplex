@@ -9,14 +9,43 @@ export function getProjectImageUrl(name: string) {
 	return browserDb.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(name).data.publicUrl;
 }
 
+/**
+ * Retrieve public url hrefs pointing to project images.
+ */
 export function getProjectImagesUrls(...names: string[]) {
 	return names.map((name) => getProjectImageUrl(name));
 }
 
-export async function getUserProfiles<U extends string | string[]>(
+/**
+ * Get a user's profile.
+ */
+export async function getUserProfiles<U extends string | string[], Q extends string>(
 	userIds: U,
+	query: Q,
 	event?: RequestEvent
 ) {
 	const db = await getDb(event);
-	// const profiles = await db.from('')
+	if (Array.isArray(userIds)) {
+		return db
+			.from('users_extended')
+			.select(query)
+			.in('id', userIds)
+			.then((res) => {
+				if (res.error) {
+					return [];
+				}
+				return res.data;
+			});
+	} else {
+		return db
+			.from('users_extended')
+			.select(query)
+			.eq('id', userIds)
+			.then((res) => {
+				if (res.error) {
+					return null;
+				}
+				return res.data;
+			});
+	}
 }
