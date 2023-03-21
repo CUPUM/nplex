@@ -304,8 +304,8 @@ label {
 		}
 	}
 	:global(.hover-source:hover) &:global(.hover-target),
-	&:hover,
-	&:focus-within {
+	&:hover:not(.readonly),
+	&:focus-within:not(.readonly) {
 		color: col(fg, 500);
 		background: transparent;
 		.outline {

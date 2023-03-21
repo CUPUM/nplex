@@ -50,6 +50,13 @@
 .equi {
 	aspect-ratio: 1;
 	flex: none;
+	padding-inline: 0;
+	justify-content: center;
+
+	.token-main {
+		padding-inline: 0 !important;
+		flex: 0;
+	}
 }
 
 input {

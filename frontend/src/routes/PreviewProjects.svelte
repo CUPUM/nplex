@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Icon from '$components/Icon.svelte';
 	import Image from '$components/Image/Image.svelte';
 	import ImagePlaceholder from '$components/Image/ImagePlaceholder.svelte';
 	import { maybeSingle } from '$types/database/utils';
@@ -31,8 +32,11 @@
 						<ImagePlaceholder color={projectColors(p.gallery)} />
 					</Image>
 					<section class="detail">
-						<h1>{p.title}</h1>
-						<p>&#9829;{p.likes_sum}</p>
+						<h1 class="heading-sm">{p.title}</h1>
+						<span class="likes">
+							<Icon name="hearts" />
+							2
+						</span>
 					</section>
 				</a>
 			</li>
@@ -93,8 +97,14 @@
 		padding: 1rem;
 	}
 
-	h1 {
-		font-weight: 600;
-		font-size: var(--ui-text-xl);
+	.likes {
+		padding: 0.5em 1em;
+		border-radius: 99px;
+		display: inline-flex;
+		flex-direction: row;
+		gap: 0.5em;
+		align-items: center;
+		background-color: col(primary, 100, 0.1);
+		color: col(primary, 900);
 	}
 </style>

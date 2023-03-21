@@ -164,7 +164,13 @@
 	<h2 class="account-formgroup-title">Sécurité</h2>
 	<input name="id" type="hidden" value={data.profile.id} readonly autocomplete="false" />
 	<h3 class="heading-sm">Modifier mon courriel d'authentification</h3>
-	<Field placeholder="Courriel d'authentification" type="email" value={data.session?.user.email}>
+	<Field
+		readonly
+		placeholder="Courriel d'authentification"
+		type="email"
+		variant="dashed"
+		value={data.session?.user.email}
+	>
 		<svelte:fragment slot="trailing">
 			<Button type="submit" disabled><Icon name="lock-close" slot="leading" />Modifier</Button>
 		</svelte:fragment>
