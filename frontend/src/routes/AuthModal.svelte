@@ -218,7 +218,7 @@
 							transition:slide|local={{ duration: 120, easing: cubicOut }}
 						>
 							<Field variant="default" name="first_name" required>
-								<svelte:fragment slot="label">Prénom/pseudonyme</svelte:fragment>
+								<svelte:fragment slot="label">Prénom / alias</svelte:fragment>
 								<svelte:fragment slot="trailing">
 									<FieldReset />
 								</svelte:fragment>

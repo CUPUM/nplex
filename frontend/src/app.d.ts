@@ -1,26 +1,13 @@
 // /// <reference types="@sveltejs/kit" />
 
 import type { POPOVER_OPEN_ATTR } from '$components/Popover.svelte';
-import type { MessageType } from '$routes/MessagesOutlet.svelte';
 import type { BuffedDatabase } from '$types/database/buff';
 import type { ViewRow } from '$types/database/utils';
+import type { NonUndefinable } from '$types/utils';
 import type { Category } from '$utils/enums';
 import type { ThemeName } from '$utils/themes';
 import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
-
-type UserSession = DeepOmit<AuthSession, { user: { role: never } }> & {
-	user: Pick<
-		ViewRow<'users_extended'>,
-		| 'avatar_url'
-		| 'first_name'
-		| 'last_name'
-		| 'public_email'
-		| 'role'
-		| 'role_title'
-		| 'role_description'
-	>;
-};
 
 declare global {
 	/**
@@ -42,14 +29,38 @@ declare global {
 	}
 
 	namespace App {
+		/**
+		 * Database's general schema, including manual buffs.
+		 */
 		type Database = BuffedDatabase;
-		type UserRole = BuffedDatabase['public']['Enums']['app_role'];
-		type PublicationStatus = BuffedDatabase['public']['Enums']['publication_status'];
+		/**
+		 * Database client type, including general schema typings.
+		 */
+		type DatabaseClient = SupabaseClient<App.Database>;
+		/**
+		 * Database user role enum.
+		 */
+		type UserRole = App.Database['public']['Enums']['app_role'];
+		/**
+		 * Database entries publication status enum.
+		 */
+		type PublicationStatus = App.Database['public']['Enums']['publication_status'];
+		/**
+		 * Base (minimal) page data available everywhere.
+		 */
 		interface PageData {
-			/**
-			 * Nplex-specific session derived from Supabase session.
-			 */
-			session?: UserSession;
+			session?: DeepOmit<AuthSession, { user: { role: never } }> & {
+				user: Pick<
+					ViewRow<'users_extended'>,
+					| 'avatar_url'
+					| 'first_name'
+					| 'last_name'
+					| 'public_email'
+					| 'role'
+					| 'role_title'
+					| 'role_description'
+				>;
+			};
 			category?: Category;
 			showCategoryNavbar?: boolean;
 			showFooter?: boolean;
@@ -61,7 +72,7 @@ declare global {
 			 * content to a minimum (essential data only) while adhering to a partial App.PageData shape.
 			 */
 			session?: DeepPick<
-				UserSession,
+				NonUndefinable<App.PageData['session']>,
 				{
 					access_token: true;
 					refresh_token: true;
@@ -75,10 +86,10 @@ declare global {
 			/**
 			 * Database client instance confined to lifecycle of individual request event.
 			 */
-			db: SupabaseClient<App.Database>;
+			db: App.DatabaseClient;
 		}
-		interface ActionFailure {
-			messages: Record<MessageType, string[]>;
-		}
+		// interface ActionFailure {
+		// 	messages: Record<MessageType, string[]>;
+		// }
 	}
 }

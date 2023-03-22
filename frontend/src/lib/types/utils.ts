@@ -7,9 +7,11 @@ export type NonUndefinable<T> = T extends undefined ? never : T;
 
 export type ValueOfWritable<W extends Writable<unknown>> = W extends Writable<infer T> ? T : never;
 
-export type Arrify<T> = T extends null | undefined ? [] : T extends readonly unknown[] ? T : [T];
+export type Many<T> = T extends null | undefined ? [] : T extends readonly unknown[] ? T : [T];
 
-export type Single<T> = T extends readonly unknown[] ? T[0] : never;
+export type Single<T> = NonNullable<T extends readonly unknown[] ? T[0] : T>;
+
+export type MaybeSingle<T> = Single<T> | null | undefined;
 
 export type KeyOfMap<M extends Map<unknown, unknown>> = M extends Map<infer K, unknown> ? K : never;
 

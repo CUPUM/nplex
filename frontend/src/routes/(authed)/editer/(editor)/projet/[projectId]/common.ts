@@ -1,9 +1,12 @@
 import { toPgRange } from '$utils/format';
-import { avg } from '$utils/number';
+import { avg, snap } from '$utils/number';
 import { writable } from 'svelte/store';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import type { LayoutData } from './$types';
+
+export const descriptors = writable<LayoutData['descriptors']>();
+export const projectData = writable<LayoutData['project']>();
 
 export const FORM_ID = 'project-editor-form';
 export const TITLE_MIN_WORDS = 3;
@@ -12,15 +15,12 @@ export const DESCRIPTION_MAX_WORDS = 250;
 export const COST_MIN = 0;
 export const COST_MAX = 100_000;
 export const COST_MAX_DELTA = 10_000;
-export const COST_MAX_DELTA_R = 0.2;
+export const COST_MAX_DELTA_R = 0.25;
 export const COST_STEP = 10;
 
 export function maxCostDelta(min: number, max: number) {
-	return avg(min, max) * COST_MAX_DELTA_R;
+	return snap(avg(min, max) * COST_MAX_DELTA_R, COST_STEP, { origin: COST_MIN, round: Math.floor });
 }
-
-export const editTitle = writable<LayoutData['project']['title']>();
-export const editTypeId = writable<LayoutData['project']['type_id']>();
 
 export const titleSchema = zfd.text(
 	z

@@ -15,7 +15,7 @@
 	--ui-scroll: 0;
 	--ui-scroll-px: 0px;
 	--ui-ripple-color: #{col(fg, 900)};
-	--ui-inset: 4px;
+	--ui-inset: 5px;
 	--ui-block-size-lg: 3.5em;
 	--ui-block-size-md: 2.75em;
 	--ui-block-size-sm: 2em;
@@ -74,7 +74,7 @@
 }
 
 .compact {
-	--ui-inset: 2px;
+	--ui-inset: 3px;
 	--ui-block-size-lg: 2.75em;
 	--ui-pad-inline: 1em;
 }

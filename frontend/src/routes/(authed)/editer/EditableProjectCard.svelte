@@ -8,7 +8,7 @@
 	import EditableNewCard from './EditableNewCard.svelte';
 	import type { EditablesDefault } from './EditablesList.svelte';
 
-	export let project: LayoutData['projects'][number] | EditablesDefault;
+	export let project: Awaited<LayoutData['defer']['editableProjects']>[number] | EditablesDefault;
 
 	const editorHref = `/editer/projet/${project.id}`;
 	const explorerHref = `/projets/${project.id}`;
@@ -53,7 +53,6 @@
 		height: 450px;
 		aspect-ratio: 3 /4;
 		border-radius: var(--card-radius);
-		padding: var(--card-inset);
 		isolation: isolate;
 		overflow: hidden;
 	}

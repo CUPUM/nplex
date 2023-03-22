@@ -12,7 +12,7 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { spring } from 'svelte/motion';
 	import { scale } from 'svelte/transition';
-	import { getRangeContext, rangeSpringOptions } from './Range.svelte';
+	import { getRangeContext, motionOptions } from './Range.svelte';
 
 	const {
 		min: rangeMin,
@@ -40,7 +40,7 @@
 	export let readonly: $$Props['readonly'] = undefined;
 	export let labelPosition: $$Props['labelPosition'] = POSITIONINGS.BlockStart;
 
-	const relativeValue = spring(valueToPercent(value), rangeSpringOptions);
+	const relativeValue = spring(valueToPercent(value), motionOptions);
 
 	$: $relativeValue = valueToPercent(value);
 	$: computedMax = max ?? $rangeMax;

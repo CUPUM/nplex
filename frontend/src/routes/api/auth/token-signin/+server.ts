@@ -8,7 +8,6 @@ import { z } from 'zod';
  */
 export const POST = async (event) => {
 	const body = await event.request.json();
-	console.log(body);
 	const tokens = z
 		.object({
 			access_token: z.string(),

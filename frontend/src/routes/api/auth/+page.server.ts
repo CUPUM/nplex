@@ -1,6 +1,6 @@
 import { getDb } from '$utils/database/client';
 import { COOKIES, SEARCH_PARAMS, STATUS_CODES } from '$utils/enums';
-import { errorMessages } from '$utils/validation';
+import { failureMessages } from '$utils/validation';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
@@ -45,7 +45,7 @@ export const actions = {
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail<AuthFeedback>(STATUS_CODES.BadRequest, { errors: errorMessages(parsed.error) });
+			return fail<AuthFeedback>(STATUS_CODES.BadRequest, { errors: failureMessages(parsed.error) });
 		}
 		const db = await getDb(event);
 		const signup = await db.auth.signUp({
@@ -60,7 +60,7 @@ export const actions = {
 		});
 		if (signup.error) {
 			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
-				errors: errorMessages(signup.error),
+				errors: failureMessages(signup.error),
 			});
 		}
 		if (signup.data.user && !signup.data.session) {
@@ -98,14 +98,14 @@ export const actions = {
 			.safeParse(formData);
 		if (!parsed.success) {
 			return fail<AuthFeedback>(STATUS_CODES.BadRequest, {
-				errors: errorMessages(parsed.error),
+				errors: failureMessages(parsed.error),
 			});
 		}
 		const db = await getDb(event);
 		const signin = await db.auth.signInWithPassword({ ...parsed.data });
 		if (signin.error) {
 			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
-				errors: errorMessages(signin.error),
+				errors: failureMessages(signin.error),
 			});
 		}
 		if (!signin.data.session) {

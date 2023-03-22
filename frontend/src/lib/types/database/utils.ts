@@ -1,4 +1,4 @@
-import type { NonUndefinable, Single } from '$types/utils';
+import type { Many, MaybeSingle, NonUndefinable, Single } from '$types/utils';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from './generated';
 
@@ -39,27 +39,42 @@ export type ViewRow<
 	Schema extends Database = App.Database
 > = Schema['public']['Views'][V]['Row'];
 
-type BuffOptions = 'single' | 'maybeSingle';
-
 /**
  * As it stands, typescript can't do partial inference of generics :(. We are thus currying through
  * buff() to provide a common type inference site.
  */
-export function buff<D>(data: D) {
+export function fixTypes<D>(data: D) {
 	type SingleD = Single<D>;
-	function singularize<Buff extends Partial<{ [K in keyof SingleD]: BuffOptions }>>() {
-		type TBuff = {
-			[K in keyof Buff]: K extends keyof SingleD
-				? Buff[K] extends 'single'
-					? Single<SingleD[K]>
-					: Buff[K] extends 'maybeSingle'
-					? Single<SingleD[K]> | null
-					: Buff[K]
-				: never;
+	type FilterD = Partial<{ [K in keyof SingleD]: true }>;
+
+	function toSingle<ToSingle extends FilterD>() {
+		type F = {
+			[K in keyof SingleD]: K extends keyof ToSingle ? Single<SingleD[K]> : SingleD[K];
 		};
-		type S = Omit<SingleD, keyof Buff> & TBuff;
-		return data as D extends unknown[] ? S[] : S;
+		type Fixed = D extends unknown[] ? F[] : F;
+		return fixTypes(data as Fixed);
 	}
 
-	return { singularize };
+	function toMaybeSingle<ToMaybeSingle extends FilterD>() {
+		type F = {
+			[K in keyof SingleD]: K extends keyof ToMaybeSingle ? MaybeSingle<SingleD[K]> : SingleD[K];
+		};
+		type Fixed = D extends unknown[] ? F[] : F;
+		return fixTypes(data as Fixed);
+	}
+
+	function toMany<ToMany extends FilterD>() {
+		type F = {
+			[K in keyof SingleD]: K extends keyof ToMany ? Many<SingleD[K]> : SingleD[K];
+		};
+		type Fixed = D extends unknown[] ? F[] : F;
+		return fixTypes(data as Fixed);
+	}
+
+	return {
+		data,
+		toSingle,
+		toMaybeSingle,
+		toMany,
+	};
 }

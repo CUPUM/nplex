@@ -5,7 +5,7 @@
 	import EditableNewCard from './EditableNewCard.svelte';
 	import type { EditablesDefault } from './EditablesList.svelte';
 
-	export let organization: LayoutData['organizations'][number] | EditablesDefault;
+	export let organization: Awaited<LayoutData['defer']['editableOrgs']>[number] | EditablesDefault;
 </script>
 
 {#if 'name' in organization}

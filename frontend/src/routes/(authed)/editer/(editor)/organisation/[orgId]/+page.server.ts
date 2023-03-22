@@ -1,7 +1,7 @@
-import { orgNameSchema } from '$routes/(authed)/editer/(editor)/organisation/common';
 import { orgShortNameSchema } from '$routes/(authed)/editer/(editor)/organisation/[orgId]/common';
+import { orgNameSchema } from '$routes/(authed)/editer/(editor)/organisation/common';
 import { STATUS_CODES } from '$utils/enums';
-import { errorMessages } from '$utils/validation';
+import { failureMessages } from '$utils/validation';
 import { error, fail } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';
 
@@ -15,7 +15,7 @@ export const actions = {
 		const formData = await event.request.formData();
 		const parsed = updateSchema.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { messages: { error: errorMessages(parsed.error) } });
+			return fail(STATUS_CODES.BadRequest, { messages: { error: failureMessages(parsed.error) } });
 		}
 
 		const up = await event.locals.db

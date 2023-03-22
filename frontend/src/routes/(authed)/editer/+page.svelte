@@ -2,10 +2,14 @@
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
 	import Token from '$components/Token/Token.svelte';
-	import { user } from '$utils/store';
+	import { userHasRole } from '$utils/validation';
 	import { fly } from 'svelte/transition';
 	import { ALLOWED_ROLES } from './(editor)/descripteurs/common';
 	import { EDITOR_ROUTES } from './common';
+
+	export let data;
+
+	let canEditDescriptors = userHasRole(data, ...ALLOWED_ROLES);
 </script>
 
 <div class="wrap">
@@ -25,14 +29,14 @@
 			<a
 				class="block main-link descriptors {ICON_CLASS.hover}"
 				href={EDITOR_ROUTES.project.descriptors.pathname}
-				aria-disabled={$user?.hasRole(...ALLOWED_ROLES)}
+				aria-disabled={canEditDescriptors}
 			>
 				<Ripple />
 				<div class="fill" aria-hidden="true">
 					<Icon animationSpeed={0.3} name="parameters" strokeWidth={2} strokeLinecap="round" />
 				</div>
 				<span style="z-index: 1">Éditer les descripteurs de projet</span>
-				{#if !$user?.hasRole(...ALLOWED_ROLES)}
+				{#if canEditDescriptors}
 					<Token style="font-size: var(--ui-text-sm)" variant="default" state="warning">
 						Éditeurs & administrateurs seulement
 					</Token>

@@ -6,94 +6,83 @@
 -->
 <script lang="ts" context="module">
 	const POINT = {
-		From: 'from',
+		From: 'form',
 		To: 'to',
 	} as const;
-	type Point = ValueOf<typeof POINT>;
 </script>
 
 <script lang="ts">
 	import slide from '$actions/slide';
-	import type { AppCustomEvent } from '$types/utils';
+	import type { AppCustomEvent, NonUndefinable } from '$types/utils';
 	import { snap } from '$utils/number';
+	import { tick } from 'svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { spring } from 'svelte/motion';
-	import type { ValueOf } from 'ts-essentials';
-	import { getRangeContext, rangeSpringOptions } from './Range.svelte';
+	import { getRangeContext, motionOptions } from './Range.svelte';
+	import RangeThumb from './RangeThumb.svelte';
 
 	const { min, max, step, valueToPercent, pxToValue, disabled } = getRangeContext();
 
-	export let from: number = $min;
-	export let to: number = $max;
-	export let draggable: boolean = false;
-	export let maxdelta: number | undefined = undefined;
-	export let mindelta: number = 0;
-	export let pushpull: boolean = false;
-	export let collide: boolean = true;
-	export let line: boolean = true;
+	type $$Props = HTMLInputAttributes & {
+		from?: number;
+		to?: number;
+		draggable?: boolean;
+		maxDelta?: number;
+		minDelta?: number;
+		pushpull?: boolean;
+		collide?: boolean;
+		line?: boolean;
+	};
 
-	function applyPushpull(pusher: Point) {
-		if (pusher === POINT.From) {
-			const toMax = Math.max(to, from + mindelta);
-			to = maxdelta ? Math.min(toMax, $max, from + maxdelta) : Math.min(toMax, $max);
-		} else {
-			const fromMin = Math.min(to - mindelta, from);
-			from = maxdelta ? Math.max(fromMin, $min, to - maxdelta) : Math.max(fromMin, $min);
+	export let from: $$Props['from'] = undefined;
+	export let to: $$Props['to'] = undefined;
+	export let draggable: $$Props['draggable'] = false;
+	export let maxDelta: $$Props['maxDelta'] = undefined;
+	export let minDelta: NonUndefinable<$$Props['minDelta']> = 0;
+	export let pushpull: $$Props['pushpull'] = false;
+	export let collide: $$Props['collide'] = true;
+	export let line: $$Props['line'] = true;
+
+	let computedFrom = from ?? $min;
+	let computedTo = to ?? $max;
+	$: computedFrom = from ?? $min;
+	$: computedTo = to ?? $max;
+
+	async function checkFrom() {
+		if (pushpull) {
+			await tick();
+			const toMin = Math.max(computedFrom + minDelta, computedTo);
+			to = maxDelta ? Math.min($max, toMin, computedFrom + maxDelta) : Math.min($max, toMin);
+		} else if (collide) {
+			const fromMax = Math.min(computedTo - minDelta, computedFrom);
+			from = maxDelta ? Math.max($min, fromMax, computedTo - maxDelta) : Math.max(fromMax, $min);
 		}
 	}
 
-	async function applyCollide(collider: Point) {
-		if (collider === POINT.From) {
-			const inner = Math.min(to - mindelta, from);
-			from = maxdelta ? Math.max(inner, to - maxdelta) : inner;
-		} else {
-			const inner = Math.max(to, from + mindelta);
-			to = maxdelta ? Math.min(inner, to + maxdelta) : inner;
+	async function checkTo() {
+		if (pushpull) {
+			await tick();
+			const fromMax = Math.min(computedTo - minDelta, computedFrom);
+			from = maxDelta ? Math.max($min, fromMax, computedTo - maxDelta) : Math.max($min, fromMax);
+		} else if (collide) {
+			const toMin = Math.max(computedFrom + minDelta, computedTo);
+			to = maxDelta ? Math.min($max, toMin, computedFrom + maxDelta) : Math.min(toMin, $max);
 		}
 	}
 
-	$: if (pushpull && from != undefined) {
-		applyPushpull(POINT.From);
-	}
-	$: if (pushpull && to != undefined) {
-		applyPushpull(POINT.To);
-	}
-	$: if (collide && !pushpull && from != undefined) {
-		applyCollide(POINT.From);
-	}
-	$: if (collide && !pushpull && to != undefined) {
-		applyCollide(POINT.To);
-	}
+	$: if (from) checkFrom();
+	$: if (to) checkTo();
 
-	const relativeFrom = spring(valueToPercent(from), rangeSpringOptions);
-	const relativeTo = spring(valueToPercent(to), rangeSpringOptions);
+	const relativeFrom = spring(valueToPercent(computedFrom), motionOptions);
+	$: relativeFrom.set(valueToPercent(collide ? computedFrom : Math.min(computedFrom, computedTo)));
 
-	$: $relativeFrom = valueToPercent(collide ? from : Math.min(from, to));
-	$: $relativeTo = valueToPercent(collide ? to : Math.max(from, to));
+	const relativeTo = spring(valueToPercent(computedTo), motionOptions);
+	$: relativeTo.set(valueToPercent(collide ? computedTo : Math.max(computedFrom, computedTo)));
 
-	let lineRef: HTMLElement;
 	let startFromValue: number | null = null;
 	let startToValue: number | null = null;
 
-	// function handleKey(e: KeyboardEvent) {
-	// 	if (!focused) {
-	// 		return;
-	// 	}
-	// 	const jump = e.shiftKey ? ($max - $min) / 10 : $step;
-	// 	switch (e.key) {
-	// 		case KEY.ArrowUp:
-	// 		case KEY.ArrowRight:
-	// 			from += jump;
-	// 			to += jump;
-	// 			break;
-	// 		case KEY.ArrowDown:
-	// 		case KEY.ArrowLeft:
-	// 			from -= jump;
-	// 			to -= jump;
-	// 			break;
-	// 	}
-	// }
-
-	function handleMove(e: AppCustomEvent<'on:slide.move'>) {
+	function handleLineMove(e: AppCustomEvent<'on:slide.move'>) {
 		if (startFromValue != null) {
 			from = snap(Math.min(Math.max(startFromValue + pxToValue(e.detail.d), $min), $max), $step, {
 				origin: $min,
@@ -107,6 +96,7 @@
 	}
 </script>
 
+<br />
 {#if line}
 	<button
 		disabled={$disabled || !draggable}
@@ -115,10 +105,10 @@
 		class="range-line"
 		use:slide
 		on:slide.start={() => {
-			startFromValue = from;
-			startToValue = to;
+			startFromValue = from ?? null;
+			startToValue = to ?? null;
 		}}
-		on:slide.move={handleMove}
+		on:slide.move={handleLineMove}
 		on:slide.end={() => {
 			startFromValue = null;
 			startToValue = null;
@@ -131,6 +121,13 @@
 		{/if}
 	</button>
 {/if}
+{#if from != null}
+	<RangeThumb bind:value={from} />
+{/if}
+{#if to != null}
+	<RangeThumb bind:value={to} />
+{/if}
+<input type="hidden" {...$$restProps} readonly value="[{computedFrom},{computedTo}]" />
 
 <style lang="scss">
 	@use './RangeGroup.scss';

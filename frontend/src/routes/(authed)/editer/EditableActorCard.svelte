@@ -4,7 +4,7 @@
 	import EditableNewCard from './EditableNewCard.svelte';
 	import type { EditablesDefault } from './EditablesList.svelte';
 
-	export let actor: LayoutData['actors'][number] | EditablesDefault;
+	export let actor: Awaited<LayoutData['defer']['editableActors']>[number] | EditablesDefault;
 </script>
 
 {#if 'title' in actor}

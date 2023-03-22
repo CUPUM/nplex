@@ -3,6 +3,9 @@ import type { DeepOmit } from 'ts-essentials';
 import type { Database } from './generated';
 import type { PgCube, PgRange, TableRow } from './utils';
 
+/**
+ * Manually buffing the generated types where the CLI has trouble.
+ */
 export type BuffedDatabase = DeepReplace<
 	DeepOmit<Database, { public: { Functions: { project_descriptors: { Returns: true } } } }> & {
 		public: {

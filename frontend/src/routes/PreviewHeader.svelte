@@ -11,10 +11,12 @@
 	<a class="heading" {href}>
 		<!-- <span>Explorer les</span> -->
 		<hgroup>
-			<h2>{title}</h2>
-			<div class="icon">
-				<Icon name="arrow-right" strokeWidth={4.5} />
-			</div>
+			<h2 class="heading-lg">
+				{title}
+				<span class="icon">
+					<Icon name="search" strokeLinecap="round" />
+				</span>
+			</h2>
 		</hgroup>
 	</a>
 	<!-- <form method="POST" use:enhance {action}>
@@ -59,15 +61,10 @@
 			color: col(primary, 500);
 
 			.icon {
-				transform: translateX(0);
-				opacity: 1;
+				transform: scale(1) translateY(0);
+				opacity: 0.5;
 			}
 		}
-	}
-
-	span {
-		font-size: var(--ui-text-md);
-		text-indent: 0.4em;
 	}
 
 	hgroup {
@@ -75,24 +72,17 @@
 		flex-direction: row;
 		gap: 1.5rem;
 		align-items: center;
-		font-weight: 500;
-		font-size: var(--ui-text-3xl);
-		@include mobile {
-			font-size: var(--ui-text-2xl);
-			flex-wrap: wrap;
-		}
-	}
-
-	h2 {
-		line-height: 1;
+		flex-wrap: wrap;
 	}
 
 	.icon {
+		display: inline-block;
 		position: relative;
-		top: 0.1em;
 		opacity: 0;
-		font-size: 0.5em;
-		transform: translateX(-0.1em);
+		top: -0.1em;
+		margin-left: 0.25em;
+		transform-origin: bottom center;
+		transform: scale(0.95) translateY(0.1em);
 		transition: transform 0.15s var(--ui-ease-out), opacity 0.1s ease-out;
 
 		@include mobile {

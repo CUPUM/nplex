@@ -1,5 +1,5 @@
 import type { PgRange } from '$types/database/utils';
-import type { Arrify } from '$types/utils';
+import type { Many } from '$types/utils';
 import type { ValueOf } from 'ts-essentials';
 import { col } from './css';
 import { browserDb } from './database/client';
@@ -174,9 +174,9 @@ export function pgRangeToArr<T extends 'empty' | null | undefined | string>(
  * Make a value always an array, i.e. wrap non-array inputs in an array.
  */
 export function alwaysArr<T>(arr: T) {
-	type AlwaysArr = NonNullable<T>;
-	if (arr == null) return <Arrify<AlwaysArr>>[];
-	return Array.isArray(arr) ? <Arrify<AlwaysArr>>arr : <Arrify<AlwaysArr>>[arr];
+	type AlwaysT = NonNullable<T>;
+	if (arr == null) return <Many<AlwaysT>>[];
+	return Array.isArray(arr) ? <Many<AlwaysT>>arr : <Many<AlwaysT>>[arr];
 }
 
 /**

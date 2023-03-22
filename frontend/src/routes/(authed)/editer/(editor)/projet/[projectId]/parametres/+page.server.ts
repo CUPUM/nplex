@@ -19,6 +19,6 @@ export const actions = {
 	 * Search across all visible users using a string.
 	 */
 	searchUser: async (event) => {
-		console.log(event);
+		// console.log(event);
 	},
 };

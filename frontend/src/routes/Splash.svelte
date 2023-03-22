@@ -8,6 +8,7 @@
 	import { getProjectImageUrl } from '$utils/database/helpers';
 	import { KEY } from '$utils/enums';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
+	import { expoOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import { overlapNavbar } from './Navbar.svelte';
@@ -81,11 +82,17 @@
 			{/each}
 		{/if}
 	</svg>
-	<button on:click={consult} class={ICON_CLASS.hover}>
-		<div class="arrow">
-			<Icon name="arrow-down" strokeWidth={3} />
-		</div>
-	</button>
+	{#if entered}
+		<button
+			in:fly={{ y: -6, delay: 500, duration: 1200, easing: expoOut }}
+			on:click={consult}
+			class={ICON_CLASS.hover}
+		>
+			<div class="arrow">
+				<Icon name="arrow-down" strokeWidth={3} />
+			</div>
+		</button>
+	{/if}
 </header>
 
 <style lang="scss">

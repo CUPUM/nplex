@@ -72,18 +72,22 @@
 	type D = $$Generic<DatumBase>;
 
 	export let title: string;
-	export let data: D[];
+	export let data: Promise<D[]>;
 	export let id: string;
 	export let filters: PersistedFilters;
 
-	$: filtered = [
-		...data.filter(
-			(d) =>
-				authoring[filters.authoring].filter(d, $page.data.session?.user.id!) &&
-				publishing[filters.publishing].filter(d)
-		),
-		defaultDatum,
-	];
+	let filtered: (D | typeof defaultDatum)[] = [defaultDatum];
+
+	$: data.then((d) => {
+		filtered = [
+			...d.filter(
+				(d) =>
+					authoring[filters.authoring].filter(d, $page.data.session?.user.id!) &&
+					publishing[filters.publishing].filter(d)
+			),
+			defaultDatum,
+		];
+	});
 </script>
 
 <section {id}>

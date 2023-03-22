@@ -4,62 +4,63 @@
 	import Icon from '$components/Icon.svelte';
 	import Sidebar from '$components/Sidebar/Sidebar.svelte';
 	import SidebarButton from '$components/Sidebar/SidebarButton.svelte';
-	import { EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../common';
+	import { editorUpdating, EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../common';
 	import EditorBreadcrumbs from '../../EditorBreadcrumbs.svelte';
 	import EditorHeader from '../../EditorHeader.svelte';
-	import EditorNavigationModal from '../../EditorNavigationModal.svelte';
-	import EditorToolbar from '../../EditorToolbar.svelte';
-	import { editTitle, editTypeId } from './common';
+	import { descriptors, projectData } from './common';
 
 	export let data;
 
-	$: $editTitle = data.project.title;
-	$: $editTypeId = data.project.type_id;
+	$: $descriptors = data.descriptors;
 
-	let updating = false;
+	function syncEditorData() {
+		projectData.set(JSON.parse(JSON.stringify(data.project)));
+	}
+	syncEditorData();
+	$: data, syncEditorData();
 
 	const sidebarRoutes = [
 		{
 			subpath: '',
 			title: 'Général',
-			formHash: false,
+			hash: null,
 		},
 		{
 			subpath: '/localisation',
 			title: 'Localisation',
-			formHash: true,
+			hash: EDITOR_FORM_ID,
 		},
 		{
 			subpath: '/galerie',
 			title: 'Galerie',
-			formHash: true,
+			hash: EDITOR_FORM_ID,
 		},
 		{
 			subpath: '/materiaux',
 			title: 'Matériaux',
-			formHash: true,
+			hash: EDITOR_FORM_ID,
 		},
 		{
 			subpath: '/indicateurs',
 			title: 'Indicateurs',
-			formHash: true,
+			hash: EDITOR_FORM_ID,
 		},
 		{
 			subpath: '/realisation',
 			title: 'Réalisation',
-			formHash: true,
+			hash: EDITOR_FORM_ID,
 		},
 		{
 			subpath: '/parametres',
 			title: 'Paramètres',
-			formHash: true,
+			hash: EDITOR_FORM_ID,
 		},
 	];
 </script>
 
 <EditorBreadcrumbs crumbs={data.crumbs} />
 <EditorHeader isPublic={data.project.publication_status.status === 'published'}>
-	<svelte:fragment slot="heading">{$editTitle}</svelte:fragment>
+	<svelte:fragment slot="heading">{$projectData.title}</svelte:fragment>
 	<svelte:fragment slot="nav">
 		<Button variant="cta" href="/projets/{data.project.id}">
 			Consulter la fiche d'exploration du projet <Icon name="file" slot="trailing" />
@@ -71,7 +72,7 @@
 		{#each sidebarRoutes as r, i}
 			<SidebarButton
 				{i}
-				href="/editer/projet/{data.project.id}{r.subpath}{r.formHash ? '#' + EDITOR_FORM_ID : ''}"
+				href="/editer/projet/{data.project.id}{r.subpath}{r.hash ? '#' + r.hash : ''}"
 			>
 				{r.title}
 			</SidebarButton>
@@ -79,11 +80,11 @@
 	</Sidebar>
 	<form
 		use:enhance={({ form, data, action, cancel }) => {
-			updating = true;
+			editorUpdating.set(true);
 			return async ({ update, result }) => {
 				update({ reset: false });
 				if (result.type !== 'success' && result.type !== 'redirect') {
-					updating = false;
+					editorUpdating.set(false);
 				}
 			};
 		}}
@@ -94,8 +95,6 @@
 		<slot />
 	</form>
 </div>
-<EditorToolbar />
-<EditorNavigationModal />
 
 <style lang="scss">
 	.editor-columns {

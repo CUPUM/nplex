@@ -2,6 +2,8 @@
 	import { NAVBAR_WIDTH, overlapNavbar } from '$routes/Navbar.svelte';
 	import { setRootBackground } from '$routes/RootBackground.svelte';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
+	import EditorNavigationModal from './EditorNavigationModal.svelte';
+	import EditorToolbar from './EditorToolbar.svelte';
 
 	let background = THEME_PALETTES.dark.bg[500];
 </script>
@@ -13,6 +15,8 @@
 	style:--editor-bg={background}
 >
 	<slot />
+	<EditorToolbar />
+	<EditorNavigationModal />
 </article>
 
 <style lang="scss">
@@ -46,9 +50,15 @@
 			position: relative;
 			padding: 3rem;
 			background-color: col(bg, 700);
-			border: 1px solid col(bg, 900);
+			// border: 1px solid col(bg, 900);
 			border-radius: var(--ui-radius-xl);
-			box-shadow: var(--ui-shadow-md);
+			// box-shadow: var(--ui-shadow-md);
+		}
+
+		:global(.editor-formgroup-stack) {
+			display: flex;
+			flex-direction: column;
+			gap: 3rem;
 		}
 
 		:global(.editor-formgroup-title) {

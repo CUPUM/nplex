@@ -1,6 +1,6 @@
 import { STATUS_CODES } from '$utils/enums';
 import { toPgArr } from '$utils/format';
-import { errorMessages } from '$utils/validation';
+import { failureMessages } from '$utils/validation';
 import { fail } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';
 import { EDITOR_FORM_ACTION } from '../../../common';
@@ -14,7 +14,7 @@ export const actions = {
 		const formData = await event.request.formData();
 		const parsed = projectIndicatorsSchema.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { messages: { error: errorMessages(parsed.error) } });
+			return fail(STATUS_CODES.BadRequest, { messages: { error: failureMessages(parsed.error) } });
 		}
 
 		const del = event.locals.db

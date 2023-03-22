@@ -1,12 +1,12 @@
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
 	import ModalConfirmNavigation from '$components/Modal/ModalConfirmNavigation.svelte';
-	import { editorIsDirty, EDITOR_FORM_ID } from './common';
+	import { editorDirty, EDITOR_FORM_ID } from './common';
 
 	let submitting = false;
 </script>
 
-<ModalConfirmNavigation intercept={$editorIsDirty} let:confirm let:cancel>
+<ModalConfirmNavigation intercept={$editorDirty} let:confirm let:cancel>
 	Vous avez des données non enregistrées. Celles-ci seront perdues si vous changez de page sans
 	sauvegarder vos modifications.
 	<svelte:fragment slot="footer">

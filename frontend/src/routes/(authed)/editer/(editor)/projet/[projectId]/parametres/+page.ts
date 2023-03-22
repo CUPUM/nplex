@@ -1,4 +1,4 @@
-import { buff } from '$types/database/utils';
+import { fixTypes } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
@@ -19,7 +19,7 @@ export const load = async (event) => {
 				console.log(res.error);
 				throw error(STATUS_CODES.InternalServerError, res.error);
 			}
-			const d = buff(res.data).singularize<{ user: 'single' }>();
+			const d = fixTypes(res.data).singularize<{ user: 'single' }>();
 
 			return d;
 		});

@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import AnimateHeight from '$components/AnimateHeight.svelte';
-	import Dirty from '$components/Dirty.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import Icon from '$components/Icon.svelte';
@@ -11,25 +9,13 @@
 	import { KEY } from '$utils/enums';
 	import { debounce } from '$utils/modifiers';
 	import Fuse from 'fuse.js';
-	import { onDestroy } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
-	import { editorDirtyValues } from '../../common';
-	import type { PageData } from './$types';
-	import { editTypeId } from './common';
+	import { descriptors, projectData } from './common';
 
-	$: work_ids = ($page.data as PageData).project.work_ids;
-	$: descriptors = ($page.data as PageData).descriptors;
+	$: available = $descriptors.types.find((t) => t.id === $projectData.type_id)?.works ?? [];
 
-	let form_work_ids = [...($page.data as PageData).project.work_ids];
-	function sync() {
-		form_work_ids = [...work_ids];
-	}
-	$: work_ids, sync();
-
-	$: available = descriptors.types.find((t) => t.id === $editTypeId)?.works ?? [];
-
-	$: selected = form_work_ids.reduce((acc, curr) => {
+	$: selected = $projectData.work_ids.reduce((acc, curr) => {
 		const w = available.find((w) => w.id === curr);
 		if (w) {
 			acc.push(w);
@@ -44,9 +30,8 @@
 	 */
 	function addByTitle(title: string) {
 		const found = available.find((w) => w.title === title);
-		console.log(found);
-		if (found && !form_work_ids.includes(found.id)) {
-			form_work_ids = [...form_work_ids, found.id];
+		if (found && !$projectData.work_ids.includes(found.id)) {
+			$projectData.work_ids = [...$projectData.work_ids, found.id];
 			return true;
 		}
 		return false;
@@ -72,15 +57,10 @@
 			}
 		}
 	}, 250);
-
-	onDestroy(() => {
-		$editorDirtyValues.work_ids = false;
-	});
 </script>
 
-<Dirty sample={work_ids} specimen={form_work_ids} bind:dirty={$editorDirtyValues.work_ids} />
 <fieldset class="editor-formgroup">
-	<h3 class="editor-formgroup-title">Travaux</h3>
+	<h3 class="editor-formgroup-title">Interventions</h3>
 	<AnimateHeight>
 		<ul class="selected">
 			{#each selected as w, i (w.id)}
@@ -94,7 +74,7 @@
 									hidden
 									type="checkbox"
 									name="work_id"
-									bind:group={form_work_ids}
+									bind:group={$projectData.work_ids}
 									value={w.id}
 								/>
 							</TokenButton>
@@ -107,7 +87,7 @@
 			{/if}
 		</ul>
 	</AnimateHeight>
-	<fieldset class="search" disabled={editTypeId === null}>
+	<fieldset class="search" disabled={$projectData.type_id == null}>
 		<Field
 			type="search"
 			class="field"
@@ -123,7 +103,7 @@
 			<!-- <FieldOptions slot="options" /> -->
 		</Field>
 		<datalist id="works-data">
-			{#each descriptors.workCategories as c}
+			{#each $descriptors.workCategories as c}
 				<optgroup>
 					{#each available.filter((w) => w.category_id === c.id) as w}
 						<option value={w.title} on:select={(e) => console.log(e)}>
@@ -134,14 +114,14 @@
 			{/each}
 		</datalist>
 	</fieldset>
-	{#each descriptors.workCategories as category}
+	{#each $descriptors.workCategories as category}
 		<h4>{category.title}</h4>
 		<AnimateHeight>
 			<ul class="list">
 				{#each (searchResults ?? available).filter((w) => w.category_id === category.id) as w, i (w.id)}
 					<li animate:flip={{ duration: 100 }}>
 						<Tooltip message={w.description}>
-							<Token variant="feature" bind:group={form_work_ids} value={w.id}>
+							<Token variant="feature" bind:group={$projectData.work_ids} value={w.id}>
 								{w.title}
 							</Token>
 						</Tooltip>

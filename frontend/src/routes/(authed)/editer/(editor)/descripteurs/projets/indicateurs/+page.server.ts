@@ -5,7 +5,7 @@ import {
 	INDICATOR_TITLE_MAX,
 } from '$routes/(authed)/editer/(editor)/descripteurs/projets/indicateurs/common';
 import { STATUS_CODES } from '$utils/enums';
-import { errorMessages } from '$utils/validation';
+import { failureMessages } from '$utils/validation';
 import { error, fail } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
@@ -47,7 +47,7 @@ export const actions = {
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { messages: { error: errorMessages(parsed.error) } });
+			return fail(STATUS_CODES.BadRequest, { messages: { error: failureMessages(parsed.error) } });
 		}
 		const up = event.locals.db
 			.from('project_exemplarity_indicator')
@@ -70,7 +70,7 @@ export const actions = {
 			})
 			.safeParse(formData);
 		if (!parsed.success) {
-			return fail(STATUS_CODES.BadGateway, { messages: { error: errorMessages(parsed.error) } });
+			return fail(STATUS_CODES.BadGateway, { messages: { error: failureMessages(parsed.error) } });
 		}
 		const ins = await event.locals.db
 			.from('project_exemplarity_indicator')

@@ -21,9 +21,11 @@
 		return getContext<RangeContext>(CTX_KEY);
 	}
 
-	export const rangeSpringOptions: Parameters<typeof spring<number>>[1] = {
-		stiffness: 0.25,
-		damping: 0.75,
+	export const motionOptions: Parameters<typeof spring<number>>[1] = {
+		// easing: elasticOut,
+		// duration: 150,
+		stiffness: 0.4,
+		damping: 0.8,
 	};
 </script>
 

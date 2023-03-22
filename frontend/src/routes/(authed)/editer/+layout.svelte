@@ -3,7 +3,7 @@
 	import type { Snapshot } from './$types';
 	import { EDITOR_ROUTES } from './common';
 	import EditableActorCard from './EditableActorCard.svelte';
-	import EditableOrganizationCard from './EditableOrganizationCard.svelte';
+	import EditableOrgCard from './EditableOrgCard.svelte';
 	import EditableProjectCard from './EditableProjectCard.svelte';
 	import EditablesList from './EditablesList.svelte';
 
@@ -47,7 +47,7 @@
 	bind:filters={projectsFilters}
 	id={EDITOR_ROUTES.project.edit.hash}
 	title="Mes projets"
-	data={data.projects}
+	data={data.defer.editableProjects}
 	let:datum
 >
 	<EditableProjectCard project={datum} />
@@ -56,16 +56,16 @@
 	bind:filters={organisationsFilters}
 	id={EDITOR_ROUTES.organization.edit.hash}
 	title="Mes organisations"
-	data={data.organizations}
+	data={data.defer.editableOrgs}
 	let:datum
 >
-	<EditableOrganizationCard organization={datum} />
+	<EditableOrgCard organization={datum} />
 </EditablesList>
 <EditablesList
 	bind:filters={actorsFilters}
 	id={EDITOR_ROUTES.actor.edit.hash}
 	title="Mes profils d'acteurs"
-	data={data.actors}
+	data={data.defer.editableActors}
 	let:datum
 >
 	<EditableActorCard actor={datum} />
