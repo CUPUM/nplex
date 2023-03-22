@@ -9,7 +9,8 @@
 	import { getMapContext } from './Map.svelte';
 	import { getMapDrawContext } from './MapDraw.svelte';
 
-	export let initialRadius: number = 500;
+	// export let initialRadius: number = 500;
+	// export let options: any = undefined;
 
 	const { getMap, cursor } = getMapContext();
 	const { mode, getMapDraw, changeMode } = getMapDrawContext();

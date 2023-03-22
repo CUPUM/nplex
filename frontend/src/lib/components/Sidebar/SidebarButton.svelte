@@ -93,6 +93,25 @@
 		}
 	}
 
+	.feature,
+	:global(.feature) .sidebar-button {
+		align-self: flex-start;
+		--ripple-color: #{col(secondary, 500)};
+		color: col(fg, 100);
+
+		&[data-current] {
+			cursor: default;
+			color: col(secondary, 900);
+			background: col(secondary, 100, 0.2);
+			// border-color: col(secondary, 700, 0.5);
+		}
+
+		&:hover:not([data-current]) {
+			color: col(secondary, 500);
+			background: col(secondary, 100, 0.1);
+		}
+	}
+
 	.outlined,
 	:global(.outlined) .sidebar-button {
 		--ripple-color: #{col(secondary, 500)};

@@ -7,8 +7,11 @@
 
 	export let center: GeoJSON.Position;
 	export let radius: number;
+	export let maxRadius: number | undefined;
 
-	const circle = createCircle(center, radius / 1000);
+	if (maxRadius && radius > maxRadius) {
+		radius = maxRadius;
+	}
 
 	const { getMap } = getMapContext();
 	const { getMapDraw } = getMapDrawContext();
@@ -17,6 +20,7 @@
 		const map = getMap();
 		const draw = getMapDraw();
 		if (map && draw) {
+			const circle = createCircle(center, radius / 1000);
 			draw.add(circle);
 			map.fire(DRAW_EVENTS.Create, { features: [circle] });
 		}

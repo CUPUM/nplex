@@ -47,7 +47,7 @@ export function fixTypes<D>(data: D) {
 	type SingleD = Single<D>;
 	type FilterD = Partial<{ [K in keyof SingleD]: true }>;
 
-	function toSingle<ToSingle extends FilterD>() {
+	function toSingle<ToSingle extends FilterD = {}>() {
 		type F = {
 			[K in keyof SingleD]: K extends keyof ToSingle ? Single<SingleD[K]> : SingleD[K];
 		};
@@ -55,7 +55,7 @@ export function fixTypes<D>(data: D) {
 		return fixTypes(data as Fixed);
 	}
 
-	function toMaybeSingle<ToMaybeSingle extends FilterD>() {
+	function toMaybeSingle<ToMaybeSingle extends FilterD = {}>() {
 		type F = {
 			[K in keyof SingleD]: K extends keyof ToMaybeSingle ? MaybeSingle<SingleD[K]> : SingleD[K];
 		};
@@ -63,7 +63,7 @@ export function fixTypes<D>(data: D) {
 		return fixTypes(data as Fixed);
 	}
 
-	function toMany<ToMany extends FilterD>() {
+	function toMany<ToMany extends FilterD = {}>() {
 		type F = {
 			[K in keyof SingleD]: K extends keyof ToMany ? Many<SingleD[K]> : SingleD[K];
 		};

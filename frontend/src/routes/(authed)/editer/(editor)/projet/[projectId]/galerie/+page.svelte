@@ -8,7 +8,6 @@
 	import { cubicOut, expoIn, expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import { editorDirtyValues } from '../../../common';
-	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 	import GalleryInput from './GalleryInput.svelte';
 	import GalleryItem from './GalleryItem.svelte';
 
@@ -40,7 +39,7 @@
 	bind:dirty={$editorDirtyValues.gallery}
 	strictOrder
 />
-<EditorFormgroup>
+<fieldset class="editor-formgroup">
 	<AnimateHeight>
 		<DragndropProvider bind:items={galleryItems} let:dragndropZone let:dragndropItem>
 			<ol use:dragndropZone>
@@ -67,7 +66,7 @@
 			</ol>
 		</DragndropProvider>
 	</AnimateHeight>
-</EditorFormgroup>
+</fieldset>
 
 <style lang="scss">
 	header {

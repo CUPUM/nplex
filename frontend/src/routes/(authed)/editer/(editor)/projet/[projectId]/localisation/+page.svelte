@@ -2,23 +2,34 @@
 	import AdjacentStreets from './AdjacentStreets.svelte';
 	import Area from './Area.svelte';
 	import District from './District.svelte';
-	// import LocalisationMap from './LocalisationMap.svelte';
 	import Location from './Location.svelte';
 
 	export let data;
 </script>
 
+<header class="editor-tab-header">
+	<h1 class="heading-lg">Localisation & bâtiment</h1>
+	<p>
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis nostrum, dicta quis fugit
+		vitae deleniti quos ipsam, fugiat inventore cupiditate iusto omnis explicabo iure eligendi
+		dolores hic perferendis sint doloremque.
+	</p>
+	<p>
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur dolores illum aliquam,
+		delectus asperiores similique!
+	</p>
+</header>
 <div>
 	<section class="map">
-		<!-- {#await import('./LocalisationMap.svelte')}
-			Loading map...
-		{:then LocalisationMap}
-			<LocalisationMap.default />
-		{/await} -->
+		{#await import('./PlaceMap.svelte')}
+			Loading map..../PlaceMap.svelte
+		{:then PlaceMap}
+			<svelte:component this={PlaceMap.default} />
+		{/await}
 		<!-- <LocalisationMap /> -->
 	</section>
 	<section class="fields">
-		<Location location={data.project.location} />
+		<Location />
 		<Area />
 		<District />
 		<AdjacentStreets adjacent_streets={data.project.adjacent_streets} />

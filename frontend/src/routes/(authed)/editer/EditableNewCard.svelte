@@ -8,7 +8,7 @@
 	</div>
 	<span><slot>Créer une nouvelle fiche</slot></span>
 	<i>
-		<Icon name="file-add" animate={false} />
+		<Icon name="file-add" strokeWidth={1.2} animate={false} />
 	</i>
 </div>
 
@@ -25,15 +25,15 @@
 		align-items: center;
 		justify-content: center;
 		color: col(fg, 500);
-		border: 1px dashed col(fg, 100, 0.1);
+		border: var(--ui-border-thickness) dashed col(fg, 100, 0.1);
 		font-size: var(--ui-text-md);
-		font-weight: 450;
+		font-weight: 425;
 		transition: all 0.15s ease-out;
 
 		&:hover {
 			color: col(primary, 700);
 			background: col(primary, 300, 0.1);
-			border: 1px dashed col(primary, 300, 0);
+			border: var(--ui-border-thickness) dashed col(primary, 300, 0);
 
 			.fill-icon {
 				color: col(primary, 300);
@@ -64,6 +64,6 @@
 	}
 
 	i {
-		font-size: var(--ui-text-lg);
+		font-size: 2.5em;
 	}
 </style>

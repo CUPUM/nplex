@@ -68,7 +68,7 @@
 	</svelte:fragment>
 </EditorHeader>
 <div class="editor-columns">
-	<Sidebar variant="outlined">
+	<Sidebar variant="feature">
 		{#each sidebarRoutes as r, i}
 			<SidebarButton
 				{i}

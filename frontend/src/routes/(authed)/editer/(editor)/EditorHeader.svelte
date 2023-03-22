@@ -75,10 +75,10 @@
 		padding: var(--ui-pad-outer);
 		gap: var(--ui-pad-outer);
 		// border: var(--ui-border-thickness) dashed col(primary, 500, 0.75);
-		background-color: col(primary, 300, 0.1);
+		background-color: col(primary, 300);
 		border-radius: var(--ui-radius-xl);
 		margin-bottom: var(--ui-gutter);
-		opacity: max(0, calc(1 - var(--ui-scroll) * 0.002));
+		opacity: max(0, calc(1 - var(--ui-scroll) * 0.0015));
 		transition: opacity 0.25s ease;
 	}
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Variant } from '$utils/enums';
 
-	export let variant: Extract<Variant, 'default' | 'outlined'> = 'default';
+	export let variant: Extract<Variant, 'default' | 'outlined' | 'feature'> = 'default';
 </script>
 
 <aside class={variant}>
@@ -23,6 +23,7 @@
 		border-radius: var(--sidebar-radius);
 		overflow-x: hidden;
 		overflow-y: auto;
+		max-height: calc(100vh - var(--ui-nav-h) - 1.5rem);
 		gap: var(--sidebar-gap);
 		width: var(--ui-sidebar-width);
 
@@ -48,8 +49,19 @@
 		}
 	}
 
+	.feature {
+		--sidebar-inset: 0px;
+		--sidebar-gap: 3px;
+		--sidebar-radius: var(--ui-radius-md);
+		> :global(hr) {
+			border-bottom: var(--ui-border-thickness) solid col(secondary, 100, 0.1);
+		}
+	}
+
 	.outlined {
-		border: var(--ui-border-thickness) dashed col(secondary, 300, 0.25);
+		// background: col(bg, 100);
+		// border: var(--ui-border-thickness) dashed col(secondary, 300, 0.25);
+		border: var(--ui-border-thickness) solid col(secondary, 100, 0.1);
 		> :global(hr) {
 			border-bottom: var(--ui-border-thickness) dashed col(secondary, 300, 0.25);
 		}

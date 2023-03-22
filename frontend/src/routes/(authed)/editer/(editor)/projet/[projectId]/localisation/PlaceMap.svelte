@@ -10,11 +10,9 @@
 	import MapToolbar from '$components/Map/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import tonerDark from '$utils/map/styles/tonerDark';
-	import { LOCATION_DEFAULT_RADIUS, map, mapDraw } from './common';
+	import { map, mapDraw } from './common';
 
 	let tracking = false;
-
-	export let localisationDraw;
 </script>
 
 <Map cooperativeGestures={true} bind:map={$map} mapStyle={tonerDark} id="editor-map">
@@ -42,7 +40,7 @@
 			<hr />
 			<Tooltip message="Dessiner un cercle pour situer le projet" place="left">
 				<div>
-					<MapControlDrawCircle initialRadius={LOCATION_DEFAULT_RADIUS} />
+					<MapControlDrawCircle />
 				</div>
 			</Tooltip>
 			<Tooltip message="Téléverser un fichier de localisation" place="left">

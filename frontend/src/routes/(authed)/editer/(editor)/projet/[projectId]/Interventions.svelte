@@ -115,7 +115,7 @@
 		</datalist>
 	</fieldset>
 	{#each $descriptors.workCategories as category}
-		<h4>{category.title}</h4>
+		<h4 class="category-title heading-sm">{category.title}</h4>
 		<AnimateHeight>
 			<ul class="list">
 				{#each (searchResults ?? available).filter((w) => w.category_id === category.id) as w, i (w.id)}
@@ -169,10 +169,7 @@
 		flex: none;
 	}
 
-	h4 {
-		font-size: var(--ui-text-sm);
-		font-weight: 500;
-		margin-left: 1em;
-		margin-top: 1rem;
+	.category-title {
+		margin: 1em 0.25em 0.5em;
 	}
 </style>

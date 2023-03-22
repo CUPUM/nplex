@@ -48,7 +48,6 @@
 	</p>
 </header>
 <fieldset class="editor-formgroup">
-	projectData
 	<h3 class="editor-formgroup-title">Sommmaire</h3>
 	<div class="editor-formgroup-stack" style="max-width: var(--ui-width-md);">
 		<Field variant="outlined" name="title" bind:value={$projectData.title}>

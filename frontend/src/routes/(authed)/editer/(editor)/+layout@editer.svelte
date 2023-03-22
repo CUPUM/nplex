@@ -42,7 +42,9 @@
 
 		:global(.editor-tab-header) {
 			padding: var(--ui-pad-outer);
-			border: var(--ui-border-thickness) dashed col(fg, 100, 0.1);
+			// border: var(--ui-border-thickness) dashed col(fg, 100, 0.1);
+			background-color: col(secondary, 100);
+			// color: col(secondary, 900);
 			border-radius: var(--ui-radius-xl);
 		}
 

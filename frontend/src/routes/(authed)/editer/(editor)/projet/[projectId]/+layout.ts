@@ -1,7 +1,7 @@
-import { maybeSingle } from '$types/database/utils';
+import { fixTypes } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
-import { alwaysArr, pgCubeToHsl, pgRangeToArr } from '$utils/format';
+import { pgCubeToHsl, pgRangeToArr } from '$utils/format';
 import { error } from '@sveltejs/kit';
 import type { LayoutParentData } from './$types';
 
@@ -16,14 +16,17 @@ export const load = async (event) => {
 		return res.data;
 	});
 
-	const project = await db
+	const project = db
 		.from('projects')
 		.select(
 			`
 			*,
-			work_ids:projects_works (*),
+			works:projects_works (*),
 			usages:projects_usages (*),
-			location:projects_location (*),
+			location:projects_location (
+				center:geometry->coordinates,
+				radius
+			),
 			gallery:projects_images!project_id (*),
 			indicators:projects_exemplarity_indicators (*),
 			updated_by:updated_by_id (*,
@@ -32,7 +35,7 @@ export const load = async (event) => {
 			created_by:created_by_id (*,
 				role:users_roles!users_roles_user_id_fkey (*)
 			),
-			publication_status:projects_publication_status (status)
+			publication_status:projects_publication_status (*)
 		`
 		)
 		.eq('id', event.params.projectId)
@@ -40,6 +43,7 @@ export const load = async (event) => {
 		.maybeSingle()
 		.then((res) => {
 			if (res.error) {
+				console.error(res.error);
 				throw error(STATUS_CODES.InternalServerError, res.error);
 			}
 			if (!res.data) {
@@ -47,22 +51,25 @@ export const load = async (event) => {
 					message: `Il ne semble pas y avoir de projet ici, ou le projet ne vous est pas accessible.`,
 				});
 			}
-			// Applying transformations to format data for easier client consumption.
+			console.log(res.data);
+			const fixed = fixTypes(res.data)
+				.toMany<{ works: true; usages: true; gallery: true; indicators: true }>()
+				.toSingle<{ location: true; publication_status: true }>().data;
 			return {
-				...res.data,
-				cost_range: pgRangeToArr(res.data.cost_range),
-				work_ids: alwaysArr(res.data.work_ids).map((w) => w.work_id),
-				usages: alwaysArr(res.data.usages),
-				location: maybeSingle(res.data.location)!,
-				gallery: alwaysArr(res.data.gallery).map((img) => ({
+				...fixed,
+				cost_range: pgRangeToArr(fixed.cost_range),
+				work_ids: fixed.works.map((w) => w.work_id),
+				location: {
+					...fixed.location,
+					center: fixed.location.center as GeoJSON.Point['coordinates'] | null,
+				},
+				gallery: fixed.gallery.map((img) => ({
 					...img,
 					color_mean_hsl: pgCubeToHsl(img.color_mean_hsl),
 					color_dominant_hsl: pgCubeToHsl(img.color_dominant_hsl),
 					publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.name).data
 						.publicUrl,
 				})),
-				indicators: alwaysArr(res.data.indicators),
-				publication_status: maybeSingle(res.data.publication_status)!,
 			};
 		});
 
@@ -70,7 +77,7 @@ export const load = async (event) => {
 		...(await event.parent()).crumbs,
 		{ title: 'Projet', pathname: '/editer/projet' },
 		{
-			title: project.title,
+			title: (await project).title,
 			pathname: `/editer/projet/${event.params.projectId}`,
 			matcher: new RegExp('/editer/projet/([A-Za-z0-9-]+)/([A-Za-z0-9-_]+)'),
 		},

@@ -1,56 +1,46 @@
 <script lang="ts">
-	import Dirty from '$components/Dirty.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { DRAW_EVENTS } from '$utils/enums';
-	import { throttle } from '$utils/modifiers';
 	import type { DrawCreateEvent, DrawRenderEvent } from '@mapbox/mapbox-gl-draw';
 	import type { Position } from '@turf/turf';
 	import {
 		createCircle,
 		getCircleCenter,
 		getCircleRadius,
+		isCircle,
 		setCircleRadius,
 	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { onDestroy } from 'svelte';
-	import { editorDirtyValues } from '../../../common';
-	import type { PageData } from './$types';
-	import {
-		editCenter,
-		editRadius,
-		LOCATION_DEFAULT_RADIUS,
-		LOCATION_MAX_RADIUS,
-		map,
-		mapDraw,
-	} from './common';
+	import { projectData } from '../common';
+	import { LOCATION_DEFAULT_RADIUS, LOCATION_MAX_RADIUS, map, mapDraw } from './common';
 
-	export let location: PageData['project']['location'];
+	const FEATURE_KEY = 'projectLocationCircle';
 
-	$: $editRadius = location.radius;
-
-	function sync() {
-		$editCenter = [...location.geometry!.coordinates];
+	function isLocationCircle(feature: GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>) {
+		return isCircle(feature); //&& feature.properties && FEATURE_KEY in feature.properties;
 	}
 
-	$: if (location.geometry) sync();
-
-	const updateLocation = throttle((e: DrawRenderEvent) => {
-		if ($mapDraw) {
-			const feature = $mapDraw.getAll().features[0];
-			if (feature) {
-				let radius = getCircleRadius(feature) * 1000;
-				if (radius > LOCATION_MAX_RADIUS) {
-					radius = LOCATION_MAX_RADIUS;
-					setCircleRadius(feature, radius / 1000);
-				}
-				$editCenter = getCircleCenter(feature);
-				$editRadius = radius;
+	const onRender = (e: DrawRenderEvent) => {
+		if (!$mapDraw) return;
+		const selected = $mapDraw.getSelected();
+		const locationCircle = selected.features.find(isLocationCircle);
+		if (locationCircle) {
+			const center = getCircleCenter(locationCircle);
+			let radius = getCircleRadius(locationCircle) * 1000;
+			if (radius > LOCATION_MAX_RADIUS) {
+				radius = LOCATION_MAX_RADIUS;
+				setCircleRadius(locationCircle, radius);
+				// console.log($map?.querySourceFeatures(DRAW_SOURCES.Hot));
 			}
+			$projectData.location.center = center;
+			$projectData.location.radius = radius;
 		}
-	}, 100);
+	};
 
 	function onCreate(e: DrawCreateEvent) {
+		// Clear previously created features, limit to 1 drawn feature.
 		const del = $mapDraw?.getAll().features.reduce((acc, feature) => {
-			if (feature.id != null && feature.id != e.features[0].id) {
+			if (isLocationCircle(feature) && feature.id !== e.features[0].id) {
 				acc.push(feature.id + '');
 			}
 			return acc;
@@ -65,37 +55,36 @@
 			return;
 		}
 		center ??= $map.getCenter().toArray();
-		const circle = createCircle(center, radius / 1000);
+		const circle = createCircle(center, radius / 1000, { [FEATURE_KEY]: true });
 		$mapDraw.add(circle);
 		$map.fire(DRAW_EVENTS.Create, { features: [circle] });
 	}
 
 	$: if ($map) {
-		// Clear previously created features, limit to 1 drawn feature.
 		$map.on(DRAW_EVENTS.Create, onCreate);
-		$map.on(DRAW_EVENTS.Render, updateLocation);
+		$map.on(DRAW_EVENTS.Render, onRender);
+		// $map.on(DRAW_EVENTS.Update, (e) => console.log(e));
 	}
 
+	let inited = false;
 	$: if ($mapDraw) {
-		if (location.geometry && location.radius) {
-			// Add initial circle programatically.
-			drawCircle(location.geometry.coordinates, location.radius);
+		if (!inited) {
+			inited = true;
+			if ($projectData.location.center && $projectData.location.radius) {
+				// Add initial circle programatically.
+				drawCircle($projectData.location.center as [number, number], $projectData.location.radius);
+			}
 		}
 	}
 
 	onDestroy(() => {
 		if ($map) {
 			$map.off(DRAW_EVENTS.Create, onCreate);
-			$map.off(DRAW_EVENTS.Render, updateLocation);
+			$map.off(DRAW_EVENTS.Render, onRender);
 		}
 	});
 </script>
 
-<Dirty
-	sample={{ radius: location.radius, center: location.geometry?.coordinates }}
-	specimen={{ radius: $editRadius, center: $editCenter }}
-	bind:dirty={$editorDirtyValues.location}
-/>
 <fieldset class="editor-formgroup">
 	<h3 class="editor-formgroup-title">Emplacement</h3>
 	<p>
@@ -115,7 +104,10 @@
 		type="hidden"
 		readonly
 		name="location"
-		value={JSON.stringify({ center: $editCenter, radius: $editRadius })}
+		value={JSON.stringify({
+			center: $projectData.location.center,
+			radius: $projectData.location.radius,
+		})}
 	/>
 </fieldset>
 
