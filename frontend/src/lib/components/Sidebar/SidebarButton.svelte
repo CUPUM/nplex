@@ -8,7 +8,6 @@
 
 	export let href: string | undefined = undefined;
 	export let element: keyof HTMLElementTagNameMap | undefined = undefined;
-	export let variant: 'default' | 'cta' | 'outlined' | undefined = undefined;
 	export let current: boolean | undefined | 'auto' = 'auto';
 	export let i: number;
 
@@ -17,13 +16,13 @@
 	$: computedCurrent =
 		(current === 'auto' ? hrefUrl && $page.url.pathname === hrefUrl.pathname : current) ||
 		undefined;
+
+	$: iconClass = computedCurrent ? ICON_CLASS.hold : ICON_CLASS.hover;
 </script>
 
 <svelte:element
 	this={href ? 'a' : element ? element : 'button'}
-	class="sidebar-button focuspress {variant ?? ''} {computedCurrent
-		? ICON_CLASS.hold
-		: ICON_CLASS.hover}"
+	class="sidebar-button focuspress {iconClass}"
 	{href}
 	data-current={computedCurrent}
 	in:fly={{ x: 6, delay: i * 100, duration: 350, easing: expoOut }}
@@ -74,28 +73,26 @@
 		align-items: center;
 	}
 
-	.default,
 	:global(.default) .sidebar-button {
-		align-self: flex-start;
 		--ripple-color: #{col(primary, 500)};
-		color: col(fg, 100);
+		// align-self: flex-start;
+		color: col(primary, 700);
 
 		&[data-current] {
 			cursor: default;
-			color: col(primary, 700);
-			background: col(primary, 500, 0.15);
+			color: col(primary, 500);
+			background: col(primary, 100, 0.1);
 			// border-color: col(secondary, 700, 0.5);
 		}
 
 		&:hover:not([data-current]) {
-			color: col(primary, 500);
-			background: col(bg, 000, 0.2);
+			color: col(fg, 700);
+			background: col(fg, 500, 0.05);
 		}
 	}
 
-	.feature,
-	:global(.feature) .sidebar-button {
-		align-self: flex-start;
+	:global(.editor) .sidebar-button {
+		align-self: stretch;
 		--ripple-color: #{col(secondary, 500)};
 		color: col(fg, 100);
 
@@ -116,7 +113,7 @@
 	:global(.outlined) .sidebar-button {
 		--ripple-color: #{col(secondary, 500)};
 		color: col(fg, 000);
-		// border: var(--ui-border-thickness) dashed col(secondary, 500, 0);
+		// border: var(--ui-border-size) dashed col(secondary, 500, 0);
 
 		&[data-current] {
 			cursor: default;

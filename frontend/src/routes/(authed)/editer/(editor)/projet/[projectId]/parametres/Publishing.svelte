@@ -7,10 +7,10 @@
 	$: role = ($page.data as PageData).session?.user.role;
 </script>
 
-<fieldset class="editor-formgroup">
-	<h3 class="editor-formgroup-title">Visibilité du projet</h3>
+<fieldset class="editor-form-group">
+	<h3 class="editor-form-group-title">Visibilité du projet</h3>
 	{#if role === 'admin' || role === 'editor'}
-		<p class="info">
+		<p class="subtle">
 			Vous pouvez ici contrôler la visibilité de la fiche. Les fiches non-publiées sont visibles
 			uniquement pour les collaborateurs et les administrateurs.
 		</p>
@@ -21,12 +21,12 @@
 			</Button>
 		</div>
 	{:else if role === 'visitor'}
-		<p class="info">
+		<p class="subtle">
 			Vous pouvez ici contrôler la visibilité de la fiche. Votre statut d'utilisateur actuel ne vous
 			permet pas de rendre du contenu public de manière autonome, mais vous pouvez envoyer une
 			demande de publication. Celle-ci sera prise en charge par un administrateur ou un éditeur.
 		</p>
-		<p class="info">
+		<p class="subtle">
 			Les fiches non-publiées sont visibles uniquement pour les collaborateurs et les
 			administrateurs.
 		</p>

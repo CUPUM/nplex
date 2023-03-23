@@ -116,7 +116,7 @@ input:first-of-type {
 		--toggle-background: #{col(fg, 500)};
 		--toggle-thumb-color: #{col(bg, 500)};
 		// --toggle-thumb-color: #{col(fg, 900)};
-		// --toggle-thumb-outline: var(--ui-border-thickness) solid #{col(bg, 900, 0.8)};
+		// --toggle-thumb-outline: var(--ui-border-size) solid #{col(bg, 900, 0.8)};
 
 		&:hover {
 			--toggle-background: #{col(fg, 700)};
@@ -129,11 +129,11 @@ input:first-of-type {
 .outlined {
 	--toggle-background: transparent;
 	--toggle-thumb-color: #{col(fg, 100)};
-	--toggle-border: var(--ui-border-thickness) solid #{col(fg, 500, 0.1)};
+	--toggle-border: var(--ui-border-size) solid #{col(fg, 500, 0.1)};
 
 	&:hover {
 		--toggle-thumb-color: #{col(fg, 700)};
-		--toggle-border: var(--ui-border-thickness) solid #{col(fg, 500, 0.5)};
+		--toggle-border: var(--ui-border-size) solid #{col(fg, 500, 0.5)};
 	}
 
 	@include checked-thumb-container {
@@ -151,11 +151,11 @@ input:first-of-type {
 .dashed {
 	--toggle-background: transparent;
 	--toggle-thumb-color: #{col(fg, 100)};
-	--toggle-border: var(--ui-border-thickness) dashed #{col(fg, 500, 0.1)};
+	--toggle-border: var(--ui-border-size) dashed #{col(fg, 500, 0.1)};
 
 	&:hover {
 		--toggle-thumb-color: #{col(fg, 700)};
-		--toggle-border: var(--ui-border-thickness) dashed #{col(fg, 500, 0.5)};
+		--toggle-border: var(--ui-border-size) dashed #{col(fg, 500, 0.5)};
 	}
 
 	@include checked-thumb-container {

@@ -1,0 +1,84 @@
+@use '../utils' as *;
+
+/**
+ * These variables, prefixed with "--ui-", contain the default values and should never be reassigned.
+ * Locally derived variables should strive to use the same name, omitting the 'ui' prefix.
+ */
+:root {
+	--ui-bg: #{col(bg, 100)};
+	--ui-nav-h: 81px; // Retrieved manually, adjust whenever modifying navbar style.
+	--ui-nav-center-w: calc(
+		min(100%, var(--ui-width-main)) - 2 * 1.5rem - 2 * 1rem - 2 * 319px
+	); // 319px = width of main nav (largest of both side navs);
+	--ui-sidebar-w: 220px;
+	--ui-ripple-color: #{col(fg, 900)};
+	--ui-scroll: 0;
+	--ui-scroll-px: 0px;
+	--ui-scroll-size: 6px;
+	--ui-scroll-color: rgb(var(--rgb-fg-000), 1);
+	--ui-ease-in: cubic-bezier(0.9, 0, 0.9, 1);
+	--ui-ease-out: cubic-bezier(0, 0.2, 0, 1);
+	--ui-ease-in-out: cubic-bezier(0.7, 0, 0.3, 1);
+	--ui-shadow-xs: 0 0.1rem 0.5rem -0.25rem rgb(0, 10, 20, 0.23);
+	--ui-shadow-sm: 0 0.25rem 1rem -0.5rem rgb(0, 10, 20, 0.24);
+	--ui-shadow-md: 0 0.75rem 1.5rem -0.75rem rgb(0, 10, 20, 0.26);
+	--ui-shadow-lg: 0 1.5rem 3rem -1.25rem rgb(0, 10, 20, 0.28);
+	--ui-shadow-xl: 0 3rem 7rem -3rem rgb(0, 10, 20, 0.3);
+	--ui-outline-color: #{col(primary, 500, 0.5)};
+	--ui-outline-active: 2px solid;
+	--ui-outline-inactive: 0px solid;
+	--ui-border-size: 1.5px;
+	--ui-inset: 5px;
+	--ui-font-main: 'Outfit', sans-serif;
+	--ui-font-misc: 'Space Mono', monospace;
+	// Paragraph widths based on character heights.
+	--ui-width-p-xs: 35ch;
+	--ui-width-p-sm: 50ch;
+	--ui-width-p-md: 70ch;
+	--ui-width-p-lg: 90ch;
+	// Border radii.
+	--ui-radius-xs: 8px;
+	--ui-radius-sm: 11px;
+	--ui-radius-md: 15px;
+	--ui-radius-lg: 21px;
+	--ui-radius-xl: 32px;
+	--ui-radius-2xl: 48px;
+	// Font size system.
+	--ui-text-2xs: 0.5rem;
+	--ui-text-xs: 0.75rem;
+	--ui-text-sm: 0.875rem;
+	--ui-text-md: 1rem;
+	--ui-text-lg: 1.5rem;
+	--ui-text-xl: 2.5rem;
+	--ui-text-2xl: 3.75rem;
+	--ui-text-3xl: 5.5rem;
+	--ui-text-4xl: 7.5rem;
+	// View-level widths
+	--ui-width-main: 1400px;
+	--ui-width-sm: 600px;
+	--ui-width-md: 900px;
+	--ui-width-lg: 1200px;
+	// View-level padding or margin (generally outer bounds).
+	--ui-gutter-sm: 2rem;
+	--ui-gutter-md: 3rem;
+	--ui-gutter-lg: 5rem;
+	// Block-level unit size, generally for single line elements such as buttons, fields, etc.
+	--ui-unit-sm: 2em;
+	--ui-unit-md: 2.75em;
+	--ui-unit-lg: 3.5em;
+	// Inner-element padding, typically inline, for elements such as buttons, fields, tokens, etc.
+	--ui-pad-md: 0.75em;
+	--ui-pad-md: 1.35em;
+	--ui-pad-lg: 2.25em;
+	// Inter-element gap in grids or lists.
+	--ui-gap-sm: 0.75rem;
+	--ui-gap-md: 1.5rem;
+	--ui-gap-lg: 3rem;
+
+	@include tablet {
+		--ui-nav-h: 88px; // Retrieved manually
+		--ui-nav-center-w: calc(
+			100% - 2 * (1.5rem + 56px)
+		); // 100% - (outer gutter + menu button width + inner gutter)
+	}
+}

@@ -41,7 +41,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding-inline: var(--ui-pad-outer);
+		padding-inline: var(--ui-gutter-md);
 		padding-bottom: var(--ui-nav-h);
 	}
 

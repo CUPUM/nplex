@@ -2,7 +2,7 @@
 
 .switch {
 	--switch-inset: var(--ui-inset);
-	--switch-size: var(--ui-block-size-lg);
+	--switch-size: var(--ui-unit-lg);
 	--switch-radius: var(--ui-radius-md);
 	--switch-gutter: 0px;
 	--switch-direction: row;
@@ -60,20 +60,20 @@
 // Outlined variant.
 .outlined {
 	--switch-color: #{col(fg, 000)};
-	--switch-border: var(--ui-border-thickness) solid #{col(fg, 100, 0.2)};
+	--switch-border: var(--ui-border-size) solid #{col(fg, 100, 0.2)};
 	--switch-thumb-background: #{col(fg, 300)};
 	outline-color: transparent !important;
 
 	&:hover {
 		--switch-color: #{col(fg, 500)};
-		--switch-border: var(--ui-border-thickness) solid #{col(fg, 100, 0.5)};
+		--switch-border: var(--ui-border-size) solid #{col(fg, 100, 0.5)};
 	}
 }
 
 // Feature (subtle accent) variant.
 .feature {
 	--switch-color: #{col(fg, 000)};
-	--switch-border: var(--ui-border-thickness) solid #{col(fg, 500, 0.1)};
+	--switch-border: var(--ui-border-size) solid #{col(fg, 500, 0.1)};
 	--switch-thumb-background: #{col(primary, 500, 0.25)};
 	--ripple-color: #{col(primary, 700)};
 	outline-color: transparent !important;
@@ -81,6 +81,6 @@
 	&:hover,
 	&:focus-within {
 		--switch-color: #{col(fg, 500)};
-		--switch-border: var(--ui-border-thickness) solid #{col(primary, 700, 0.25)};
+		--switch-border: var(--ui-border-size) solid #{col(primary, 700, 0.25)};
 	}
 }

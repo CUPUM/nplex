@@ -3,14 +3,25 @@
 	import Range from '$components/Range/Range.svelte';
 	import RangeGroup from '$components/Range/RangeGroup.svelte';
 	import { cadformatter } from '$utils/format';
-	import { COST_MAX, COST_MIN, COST_STEP, maxCostDelta, projectData } from './common';
+	import {
+		COST_MAX,
+		COST_MAX_DELTA_R,
+		COST_MIN,
+		COST_STEP,
+		maxCostDelta,
+		projectData,
+	} from './common';
 </script>
 
-<fieldset class="editor-formgroup">
-	<h3 class="editor-formgroup-title">Fourchette de coûts</h3>
-	<p class="info">
+<fieldset class="editor-form-group">
+	<h3 class="editor-form-group-title">Fourchette de coûts</h3>
+	<p>
 		Indiquez approximativement les coûts totaux du projet, selon un niveau de précision avec lequel
 		vous êtes confortable.
+	</p>
+	<p class="subtle">
+		Notez qu'un écart maximum est imposé pour assurer un minimum de précision dans les données. Cet
+		écart est établi dynamiquement à {COST_MAX_DELTA_R * 100}% de la valeur moyenne de la sélection.
 	</p>
 	<fieldset class="fields">
 		<Field

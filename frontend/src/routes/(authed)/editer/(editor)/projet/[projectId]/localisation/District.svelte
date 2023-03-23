@@ -5,7 +5,6 @@
 		type CityDistrictData,
 	} from '$routes/api/geo/[city]/districts.json/common';
 	import type { GeoJSONFeature } from 'maplibre-gl';
-	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 
 	const districts = fetch(CITY_DISTRICT_SOURCES.montreal, {
 		cache: 'force-cache',
@@ -29,8 +28,9 @@
 	}
 </script>
 
-<EditorFormgroup legend="Arrondissement & quartier">
-	<p class="info">
+<fieldset class="editor-form-group">
+	<h3 class="editor-form-group-title">Arrondissement & quartier</h3>
+	<p class="subtle">
 		Sélectionnez confirmez l'arrondissement dans la liste suivante établie en fonction de votre
 		localisation du projet:
 	</p>
@@ -40,7 +40,7 @@
 			<Token>Test</Token>
 		</li>
 	</ul>
-</EditorFormgroup>
+</fieldset>
 
 <style lang="scss">
 </style>

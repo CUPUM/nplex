@@ -24,7 +24,7 @@
 		left: 0;
 		height: 100%;
 		width: 100%;
-		padding: var(--ui-pad-outer);
+		padding: var(--ui-gutter-md);
 		overflow-y: scroll;
 		overflow-x: hidden;
 		display: flex;

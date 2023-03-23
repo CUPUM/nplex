@@ -1,7 +1,5 @@
 <script lang="ts">
-	import type { Variant } from '$utils/enums';
-
-	export let variant: Extract<Variant, 'default' | 'outlined' | 'feature'> = 'default';
+	export let variant: 'default' | 'editor' = 'default';
 </script>
 
 <aside class={variant}>
@@ -25,11 +23,11 @@
 		overflow-y: auto;
 		max-height: calc(100vh - var(--ui-nav-h) - 1.5rem);
 		gap: var(--sidebar-gap);
-		width: var(--ui-sidebar-width);
+		width: var(--ui-sidebar-w);
 
 		> :global(hr) {
 			align-self: stretch;
-			margin: var(--ui-border-thickness) calc(-1 * var(--sidebar-gap));
+			margin: var(--ui-border-size) calc(-1 * var(--sidebar-gap));
 			position: relative;
 		}
 
@@ -39,31 +37,32 @@
 	}
 
 	.default {
-		--sidebar-inset: 0px;
-		--sidebar-gap: 3px;
-		--sidebar-radius: var(--ui-radius-md);
-		// background-color: col(bg, 000, 0.5);
-		// border: var(--ui-border-thickness) solid col(secondary, 100, 0.1);
+		--sidebar-inset: calc(2 * var(--ui-inset));
+		--sidebar-gap: var(--ui-inset);
+		--sidebar-radius: var(--ui-radius-lg);
+		background-color: col(bg, 100);
+		// border: var(--ui-border-size) solid col(secondary, 100, 0.1);
 		> :global(hr) {
-			border-bottom: var(--ui-border-thickness) solid col(bg, 000, 0.2);
+			border-bottom: var(--ui-border-size) solid col(bg, 000, 0.2);
 		}
 	}
 
-	.feature {
-		--sidebar-inset: 0px;
+	.editor {
+		--sidebar-inset: 0.75rem;
 		--sidebar-gap: 3px;
-		--sidebar-radius: var(--ui-radius-md);
+		--sidebar-radius: var(--ui-radius-lg);
+		background-color: col(secondary, 100, 0.1);
 		> :global(hr) {
-			border-bottom: var(--ui-border-thickness) solid col(secondary, 100, 0.1);
+			border-bottom: var(--ui-border-size) solid col(secondary, 100, 0.1);
 		}
 	}
 
 	.outlined {
 		// background: col(bg, 100);
-		// border: var(--ui-border-thickness) dashed col(secondary, 300, 0.25);
-		border: var(--ui-border-thickness) solid col(secondary, 100, 0.1);
+		// border: var(--ui-border-size) dashed col(secondary, 300, 0.25);
+		border: var(--ui-border-size) solid col(secondary, 100, 0.1);
 		> :global(hr) {
-			border-bottom: var(--ui-border-thickness) dashed col(secondary, 300, 0.25);
+			border-bottom: var(--ui-border-size) dashed col(secondary, 300, 0.25);
 		}
 	}
 </style>

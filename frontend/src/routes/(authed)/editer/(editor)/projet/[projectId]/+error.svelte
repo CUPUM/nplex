@@ -3,7 +3,7 @@
 </script>
 
 <div>
-	<code class="info">¯\_(ツ)_/¯</code>
+	<code class="subtle">¯\_(ツ)_/¯</code>
 	<h2 class="heading-sm">Erreur: {$page.status}</h2>
 	<pre>{JSON.stringify($page.error, undefined, 2)}</pre>
 </div>

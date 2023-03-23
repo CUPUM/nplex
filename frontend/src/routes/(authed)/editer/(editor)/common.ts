@@ -3,6 +3,9 @@ import { derived, writable } from 'svelte/store';
 export const EDITOR_FORM_ID = 'editor-form';
 export const EDITOR_FORM_ACTION = 'update';
 
+/**
+ * Is a form submission currently in progress?
+ */
 export const editorUpdating = writable(false);
 
 /**

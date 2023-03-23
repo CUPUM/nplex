@@ -38,7 +38,7 @@
 	}
 
 	beforeNavigate((navigation) => {
-		if (navigation.from?.route.id !== navigation.to?.route.id) {
+		if (navigation.from?.url.pathname != navigation.to?.url.pathname) {
 			if (browser) {
 				document.documentElement.style.scrollBehavior = 'initial';
 			}

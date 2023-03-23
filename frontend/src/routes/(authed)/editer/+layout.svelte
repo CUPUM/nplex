@@ -40,7 +40,7 @@
 <header>
 	<hgroup>
 		<h1 class="heading-xl">Mes fiches</h1>
-		<span class="info">Explorez les fiches pour lesquelles vous avez des droits d'édition.</span>
+		<span class="subtle">Explorez les fiches pour lesquelles vous avez des droits d'édition.</span>
 	</hgroup>
 </header>
 <EditablesList

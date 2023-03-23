@@ -76,7 +76,7 @@
 	export let id: string;
 	export let filters: PersistedFilters;
 
-	let filtered: (D | typeof defaultDatum)[] = [defaultDatum];
+	let filtered: (D | typeof defaultDatum)[] = [];
 
 	$: data.then((d) => {
 		filtered = [
@@ -114,7 +114,7 @@
 		{#each filtered as datum, i (datum.id)}
 			<li
 				animate:flip={{ duration: (d) => d * 0.5, easing: expoOut, delay: i * 50 }}
-				in:fly={{ y: 8, duration: 300, easing: cubicOut, delay: i * 50 }}
+				in:fly={{ y: 8, duration: 300, easing: cubicOut, delay: i * 100 }}
 				out:scale|local={{ start: 0.8, duration: 200, delay: (filtered.length - i) * 50 }}
 			>
 				<slot {datum} />
@@ -139,7 +139,7 @@
 		flex-wrap: wrap;
 		justify-content: space-between;
 		gap: 1rem;
-		padding-inline: var(--ui-pad-outer);
+		padding-inline: var(--ui-gutter-md);
 		padding-top: 0.5rem;
 		max-width: var(--ui-width-main);
 		width: 100%;
@@ -166,10 +166,10 @@
 		flex-direction: row;
 		gap: 1.5rem;
 		overflow-x: scroll;
-		padding-block: var(--ui-pad-outer);
+		padding-block: var(--ui-gutter-md);
 		padding-inline: max(
-			var(--ui-pad-outer),
-			calc(50% + var(--ui-pad-outer) - 0.5 * var(--ui-width-main))
+			var(--ui-gutter-md),
+			calc(50% + var(--ui-gutter-md) - 0.5 * var(--ui-width-main))
 		);
 	}
 

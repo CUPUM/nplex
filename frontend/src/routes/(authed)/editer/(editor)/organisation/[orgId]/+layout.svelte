@@ -78,14 +78,14 @@
 		display: flex;
 		flex-direction: row;
 		align-items: flex-start;
-		gap: var(--ui-gutter);
+		gap: var(--ui-gap-sm);
 	}
 
 	form {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		gap: var(--ui-gutter);
+		gap: var(--ui-gap-sm);
 		min-height: 100vh;
 		min-height: 100svh;
 		scroll-margin-block-start: var(--ui-nav-h);

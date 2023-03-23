@@ -69,7 +69,7 @@
 		justify-content: center;
 		cursor: pointer;
 		text-align: center;
-		border: var(--ui-border-thickness) dashed col(fg, 500, 0.2);
+		border: var(--ui-border-size) dashed col(fg, 500, 0.2);
 		overflow: hidden;
 		padding: 3rem;
 		transition: all 0.1s ease-out;

@@ -40,7 +40,7 @@
 		Les indicateurs d'exemplarité consistent en plusieurs ensembles de jetons utilisés pour décrire
 		les projets et souligner les caractéristiques qui témoignent de leur qualité.
 	</p>
-	<p class="info">
+	<p class="subtle">
 		<Icon name="info-circle" />&ensp; Ci-dessous, vous pouvez gérer la banque générale des
 		indicateurs qui pourront par la suite être associés aux divers projets documentés sur la
 		plateforme. Vous pouvez changer la catégorie d'un indicateur en le glissant d'une boîte à
@@ -60,7 +60,7 @@
 	{#each formMetaIndicators as metaIndicator, i0}
 		<EditorFormgroup legend={metaIndicator.title}>
 			<AnimateHeight>
-				<p class="info">{metaIndicator.description || 'Description à venir...'}</p>
+				<p class="subtle">{metaIndicator.description || 'Description à venir...'}</p>
 				<DragndropProvider
 					fallbackClass="dnd-fallback-indicator-cardx"
 					bind:items={metaIndicator.indicators}

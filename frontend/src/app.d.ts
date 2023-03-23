@@ -7,6 +7,7 @@ import type { NonUndefinable } from '$types/utils';
 import type { Category } from '$utils/enums';
 import type { ThemeName } from '$utils/themes';
 import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
+import type { SvelteComponent } from 'svelte';
 import type { DeepOmit, DeepPick } from 'ts-essentials';
 
 declare global {
@@ -65,6 +66,17 @@ declare global {
 			showCategoryNavbar?: boolean;
 			showFooter?: boolean;
 			theme?: ThemeName;
+			editorBreadcrumbs?: {
+				title: string;
+				href: string;
+				matcher?: RegExp;
+			}[];
+			editorLinks?: {
+				title: string;
+				pathname: string;
+				hash?: string;
+			}[];
+			editorHeader?: typeof SvelteComponent;
 		}
 		interface Locals {
 			/**

@@ -22,7 +22,7 @@
 		align-items: center;
 		line-height: 1;
 		opacity: 0.5;
-		padding-inline: var(--ui-pad-inline);
+		padding-inline: var(--ui-pad-md);
 		align-self: stretch;
 		transition: all 0.1s ease;
 		:global(.leading) > &:last-child {

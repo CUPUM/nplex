@@ -10,7 +10,7 @@
 	import Interventions from './Interventions.svelte';
 
 	export let data;
-	export let form;
+	// export let form;
 </script>
 
 <Dirty
@@ -40,16 +40,17 @@
 	bind:dirty={$editorDirtyValues.cost_range}
 	strictOrder
 />
-<header class="editor-tab-header">
+<header class="editor-form-header">
 	<h1 class="heading-lg">Général</h1>
-	<p class="info">
-		Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde aspernatur minima enim
-		praesentium blanditiis. Est culpa quia qui incidunt sequi.
+	<p>
+		Décrivez les aspects principaux qui caractérisent le projet. Ces champs de données serviront
+		entre autres à indexer votre fiche pour des recherches texte ainsi que pour introduire les
+		visiteurs à la portée générale du projet.
 	</p>
 </header>
-<fieldset class="editor-formgroup">
-	<h3 class="editor-formgroup-title">Sommmaire</h3>
-	<div class="editor-formgroup-stack" style="max-width: var(--ui-width-md);">
+<fieldset class="editor-form-group">
+	<h3 class="editor-form-group-title">Sommmaire</h3>
+	<div id="editor-summary-fields">
 		<Field variant="outlined" name="title" bind:value={$projectData.title}>
 			<svelte:fragment slot="label">Titre du projet</svelte:fragment>
 		</Field>
@@ -64,8 +65,8 @@
 		</TextArea>
 	</div>
 </fieldset>
-<fieldset class="editor-formgroup">
-	<h3 class="editor-formgroup-title">Travaux</h3>
+<fieldset class="editor-form-group">
+	<h3 class="editor-form-group-title">Travaux</h3>
 	<Switch
 		style="align-self: flex-start"
 		variant="outlined"
@@ -83,4 +84,9 @@
 <CostRange />
 
 <style lang="scss">
+	#editor-summary-fields {
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+	}
 </style>

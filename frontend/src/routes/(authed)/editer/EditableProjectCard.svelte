@@ -115,7 +115,7 @@
 			align-items: center;
 			padding-bottom: 0.2em;
 			padding-inline: 1em;
-			height: var(--ui-block-size-md);
+			height: var(--ui-unit-md);
 			color: col(fg, 100, 0.8);
 			border-radius: 99px;
 			background-color: col(fg, 100, 0.1);

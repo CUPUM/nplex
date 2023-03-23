@@ -3,6 +3,7 @@
 	import Field from '$components/Field/Field.svelte';
 	import Option from '$components/Options/Option.svelte';
 	import OptionsList from '$components/Options/OptionsList.svelte';
+	import ValueMask from '$components/ValueMask.svelte';
 	import { STATES, VARIANTS } from '$utils/enums';
 	import { queryStore } from '$utils/store';
 
@@ -24,8 +25,16 @@
 	// });
 
 	$: console.log($q.res);
+
+	let value = 'bonjour';
 </script>
 
+<article>
+	<ValueMask bind:value mask={[/A-Z/, /A-Z/, /0-9/, /0-9/, '-', /a-zA-Z/]} let:masked>
+		<input type="text" name="textinput" value={masked} id="mask" />
+	</ValueMask>
+	<textarea name="textarea" id="mask">Bonjour<i>asdasd</i></textarea>
+</article>
 <article>
 	<Field>
 		<OptionsList slot="options">
@@ -81,7 +90,7 @@
 		flex-direction: column;
 		gap: 3rem;
 		width: 100%;
-		padding: var(--ui-pad-outer);
+		padding: var(--ui-gutter-md);
 	}
 
 	section {

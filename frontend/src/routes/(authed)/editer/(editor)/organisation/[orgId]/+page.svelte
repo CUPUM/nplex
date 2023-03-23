@@ -16,15 +16,15 @@
 	}
 </script>
 
-<header class="editor-tab-header">
+<header class="editor-form-header">
 	<h2 class="heading-lg">Général</h2>
-	<p class="info">
+	<p class="subtle">
 		Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptas nihil quae sapiente culpa
 		labore, nemo provident vel nostrum unde placeat!
 	</p>
 </header>
-<fieldset class="editor-formgroup">
-	<h3 class="editor-formgroup-title">Nom</h3>
+<fieldset class="editor-form-group">
+	<h3 class="editor-form-group-title">Nom</h3>
 	<section>
 		<Field name="name" bind:value={editName} style="flex: 2; min-width: 250px" maxlength={NAME_MAX}>
 			<svelte:fragment slot="label">Nom de l'organisation</svelte:fragment>

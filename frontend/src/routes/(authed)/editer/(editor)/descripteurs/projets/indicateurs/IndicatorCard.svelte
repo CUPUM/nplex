@@ -143,7 +143,7 @@
 		font-size: var(--ui-text-sm);
 		padding: 0.25em;
 		background-color: col(bg, 900);
-		// border: var(--ui-border-thickness) solid col(fg, 100, 0.25);
+		// border: var(--ui-border-size) solid col(fg, 100, 0.25);
 		border-radius: calc(0.25em + var(--ui-radius-md));
 	}
 

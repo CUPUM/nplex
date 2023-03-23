@@ -8,8 +8,8 @@
 	$: _ownership_id = ownership_id;
 </script>
 
-<fieldset class="editor-formgroup">
-	<h3 class="editor-formgroup-title">Propriété du site</h3>
+<fieldset class="editor-form-group">
+	<h3 class="editor-form-group-title">Propriété du site</h3>
 	<section class="formfields">
 		<Select
 			placeholder="Sélectionnez un type de propriétaire"

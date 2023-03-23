@@ -179,7 +179,7 @@
 					<p>
 						<em>Votre compte a été créé avec succès!</em>
 					</p>
-					<p class="info">
+					<p class="subtle">
 						Il ne vous reste qu'à confirmer votre adresse courriel pour compléter votre inscription.
 						Un courriel de demande de confirmation a été envoyé à l'adresse <i>
 							{confirmEmail}

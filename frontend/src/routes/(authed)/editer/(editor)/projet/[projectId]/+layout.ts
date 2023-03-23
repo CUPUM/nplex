@@ -3,7 +3,8 @@ import { getDb } from '$utils/database/client';
 import { STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { pgCubeToHsl, pgRangeToArr } from '$utils/format';
 import { error } from '@sveltejs/kit';
-import type { LayoutParentData } from './$types';
+import { EDITOR_FORM_ID } from '../../common';
+import EditorHeaderProject from './EditorHeaderProject.svelte';
 
 export const load = async (event) => {
 	// event.depends(LOAD_DEPENDENCIES.EDITOR_PROJECT);
@@ -43,7 +44,6 @@ export const load = async (event) => {
 		.maybeSingle()
 		.then((res) => {
 			if (res.error) {
-				console.error(res.error);
 				throw error(STATUS_CODES.InternalServerError, res.error);
 			}
 			if (!res.data) {
@@ -51,7 +51,6 @@ export const load = async (event) => {
 					message: `Il ne semble pas y avoir de projet ici, ou le projet ne vous est pas accessible.`,
 				});
 			}
-			console.log(res.data);
 			const fixed = fixTypes(res.data)
 				.toMany<{ works: true; usages: true; gallery: true; indicators: true }>()
 				.toSingle<{ location: true; publication_status: true }>().data;
@@ -73,19 +72,66 @@ export const load = async (event) => {
 			};
 		});
 
-	const crumbs = [
-		...(await event.parent()).crumbs,
-		{ title: 'Projet', pathname: '/editer/projet' },
+	const editorBreadcrumbs = event.parent().then(
+		async (p) =>
+			[
+				...p.editorBreadcrumbs,
+				{
+					title: 'Projet',
+					href: '/editer/projet',
+				},
+				{
+					title: (await project).title,
+					href: `/editer/projet/${event.params.projectId}`,
+					matcher: new RegExp('/editer/projet/([A-Za-z0-9-]+)/([A-Za-z0-9-_]+)'),
+				},
+			] satisfies App.PageData['editorBreadcrumbs']
+	);
+
+	const linkBase = '/editer/projet/' + event.params.projectId;
+
+	const editorLinks = [
 		{
-			title: (await project).title,
-			pathname: `/editer/projet/${event.params.projectId}`,
-			matcher: new RegExp('/editer/projet/([A-Za-z0-9-]+)/([A-Za-z0-9-_]+)'),
+			pathname: linkBase + '',
+			title: 'Général',
 		},
-	] satisfies LayoutParentData['crumbs'];
+		{
+			pathname: linkBase + '/localisation',
+			title: 'Localisation',
+			hash: EDITOR_FORM_ID,
+		},
+		{
+			pathname: linkBase + '/galerie',
+			title: 'Galerie',
+			hash: EDITOR_FORM_ID,
+		},
+		{
+			pathname: linkBase + '/materiaux',
+			title: 'Matériaux',
+			hash: EDITOR_FORM_ID,
+		},
+		{
+			pathname: linkBase + '/indicateurs',
+			title: 'Indicateurs',
+			hash: EDITOR_FORM_ID,
+		},
+		{
+			pathname: linkBase + '/realisation',
+			title: 'Réalisation',
+			hash: EDITOR_FORM_ID,
+		},
+		{
+			pathname: linkBase + '/parametres',
+			title: 'Paramètres',
+			hash: EDITOR_FORM_ID,
+		},
+	] satisfies App.PageData['editorLinks'];
 
 	return {
 		project,
 		descriptors,
-		crumbs,
+		editorBreadcrumbs,
+		editorHeader: EditorHeaderProject,
+		editorLinks,
 	};
 };

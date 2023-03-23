@@ -1,4 +1,8 @@
 <script lang="ts">
+	import Dirty from '$components/Dirty.svelte';
+	import Loading from '$components/Loading.svelte';
+	import { editorDirtyValues } from '../../../common';
+	import { projectData } from '../common';
 	import AdjacentStreets from './AdjacentStreets.svelte';
 	import Area from './Area.svelte';
 	import District from './District.svelte';
@@ -7,7 +11,14 @@
 	export let data;
 </script>
 
-<header class="editor-tab-header">
+<!-- Tracking dirty fields -->
+<Dirty
+	sample={data.project.adjacent_streets}
+	specimen={$projectData.adjacent_streets}
+	bind:dirty={$editorDirtyValues.adjacent_streets}
+/>
+<!-- Form content -->
+<header class="editor-form-header">
 	<h1 class="heading-lg">Localisation & bâtiment</h1>
 	<p>
 		Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis nostrum, dicta quis fugit
@@ -19,10 +30,10 @@
 		delectus asperiores similique!
 	</p>
 </header>
-<div>
+<div id="editor-localisation">
 	<section class="map">
 		{#await import('./PlaceMap.svelte')}
-			Loading map..../PlaceMap.svelte
+			<Loading />
 		{:then PlaceMap}
 			<svelte:component this={PlaceMap.default} />
 		{/await}
@@ -32,7 +43,7 @@
 		<Location />
 		<Area />
 		<District />
-		<AdjacentStreets adjacent_streets={data.project.adjacent_streets} />
+		<AdjacentStreets />
 		<!-- <ImplantationMode /> -->
 		<!-- <Levels /> -->
 		<!-- <ConstructionYear /> -->
@@ -41,11 +52,11 @@
 </div>
 
 <style lang="scss">
-	div {
+	#editor-localisation {
 		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: var(--ui-gutter);
+		gap: var(--ui-gap-sm);
 		flex: 1;
 	}
 

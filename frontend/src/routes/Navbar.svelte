@@ -243,7 +243,7 @@
 			1fr
 			[session-end full-end];
 		// grid-auto-flow: dense;
-		padding: 1rem var(--ui-pad-outer);
+		padding: 1rem var(--ui-gutter-md);
 		margin: 0 auto;
 		flex-direction: row;
 		align-items: center;
@@ -349,7 +349,7 @@
 		@include tablet {
 			--outset: 0px;
 			margin-block: unset;
-			border: var(--ui-border-thickness) solid col(fg, 100, 0.1);
+			border: var(--ui-border-size) solid col(fg, 100, 0.1);
 			box-shadow: unset;
 		}
 
@@ -360,7 +360,7 @@
 			border-radius: inherit;
 			background: var(--navbar-bg);
 			opacity: 0.8;
-			border: var(--ui-border-thickness) solid var(--nab-bg);
+			border: var(--ui-border-size) solid var(--nab-bg);
 			filter: brightness(1.5);
 			transition: opacity 0.25s, background var(--navbar-transition),
 				filter var(--navbar-transition);

@@ -28,16 +28,16 @@
 	$: console.log($searchUsers.data);
 </script>
 
-<fieldset class="editor-formgroup">
-	<h3 class="editor-formgroup-title">Accès</h3>
-	<p class="info">
+<fieldset class="editor-form-group">
+	<h3 class="editor-form-group-title">Accès</h3>
+	<p class="subtle">
 		Les droits d'accès aux fiches peuvent être partagés avec d'autres utilisateurs de Nplex. En
 		ajoutant des collaborateurs au projet, ceux-ci se verront accorder les permissions nécessaires
 		pour consulter la fiche même si elle n'est pas publiée. Il pourront aussi éditer le contenu de
 		la fiche, mais ne pourront pas la supprimer.
 	</p>
 	<h4 class="heading-sm">Collaborateurs</h4>
-	<p class="info">
+	<p class="subtle">
 		Utilisez la barre de recherche ci-dessous pour ajouter des collaborateurs au projet.
 	</p>
 	<div class="search">
@@ -53,7 +53,7 @@
 				<li>{c.user.first_name}</li>
 			{/each}
 		{:else}
-			<li class="info">Vous êtes présentement l'unique collaborateur sur ce projet.</li>
+			<li class="subtle">Vous êtes présentement l'unique collaborateur sur ce projet.</li>
 		{/if}
 	</ul>
 </fieldset>

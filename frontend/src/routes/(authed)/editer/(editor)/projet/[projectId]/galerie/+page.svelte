@@ -26,9 +26,9 @@
 	$: data.project.gallery, syncDown();
 </script>
 
-<header class="editor-tab-header">
+<header class="editor-form-header">
 	<h1 class="heading-lg">Galerie</h1>
-	<p class="info">
+	<p>
 		Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde aspernatur minima enim
 		praesentium blanditiis. Est culpa quia qui incidunt sequi.
 	</p>
@@ -39,7 +39,7 @@
 	bind:dirty={$editorDirtyValues.gallery}
 	strictOrder
 />
-<fieldset class="editor-formgroup">
+<fieldset class="editor-form-group">
 	<AnimateHeight>
 		<DragndropProvider bind:items={galleryItems} let:dragndropZone let:dragndropItem>
 			<ol use:dragndropZone>

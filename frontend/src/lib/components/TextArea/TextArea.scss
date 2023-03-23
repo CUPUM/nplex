@@ -1,11 +1,11 @@
 @use 'utils' as *;
 
 .ui-text-area {
-	--border-thickness: var(--ui-border-thickness);
+	--border-thickness: var(--ui-border-size);
 	--radius: var(--ui-radius-md);
 	--inset: var(--ui-inset);
 	--notch-padding: 0.25em;
-	--pad-y: 1.25em; // calc(var(--ui-block-size-lg) * 0.5 - 1em);
+	--pad-y: 1.25em; // calc(var(--ui-unit-lg) * 0.5 - 1em);
 	cursor: text;
 	position: relative;
 	display: grid;
@@ -36,7 +36,7 @@
 .column {
 	grid-template-columns:
 		[full-start pad-left-start]
-		var(--ui-pad-inline)
+		var(--ui-pad-md)
 		[pad-left-end main-start]
 		1fr
 		[main-end full-end];
@@ -89,7 +89,7 @@ textarea {
 	font-family: inherit;
 	font-size: inherit;
 	line-height: 1.5em;
-	padding-right: var(--ui-pad-inline);
+	padding-right: var(--ui-pad-md);
 	padding-bottom: var(--pad-y);
 	padding-top: 0.5em;
 	margin-top: calc(var(--pad-y) - 0.5em);

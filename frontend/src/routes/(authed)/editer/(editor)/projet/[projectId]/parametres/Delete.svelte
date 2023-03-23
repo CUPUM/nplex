@@ -6,9 +6,9 @@
 	let opened = false;
 </script>
 
-<fieldset class="editor-formgroup">
-	<h3 class="editor-formgroup-title">Supprimer</h3>
-	<p class="info">Attention, les projets supprimés ne peuvent pas être récupérés.</p>
+<fieldset class="editor-form-group">
+	<h3 class="editor-form-group-title">Supprimer</h3>
+	<p class="subtle">Attention, les projets supprimés ne peuvent pas être récupérés.</p>
 	<Modal bind:opened>
 		<svelte:fragment slot="control" let:requestConfirmation>
 			<fieldset class="delete">

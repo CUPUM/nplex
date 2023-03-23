@@ -64,36 +64,27 @@ export interface Database {
           user_id?: string
         }
       }
-      notifications: {
+      app_notifications: {
         Row: {
           body: string
-          created_at: string
-          created_by_id: string
-          expiry: string | null
+          created_at: string | null
           id: string
+          public: boolean
           title: string
-          updated_at: string
-          updated_by_id: string | null
         }
         Insert: {
           body: string
-          created_at?: string
-          created_by_id?: string
-          expiry?: string | null
+          created_at?: string | null
           id?: string
+          public?: boolean
           title: string
-          updated_at?: string
-          updated_by_id?: string | null
         }
         Update: {
           body?: string
-          created_at?: string
-          created_by_id?: string
-          expiry?: string | null
+          created_at?: string | null
           id?: string
+          public?: boolean
           title?: string
-          updated_at?: string
-          updated_by_id?: string | null
         }
       }
       organizations: {
@@ -1154,6 +1145,26 @@ export interface Database {
           role?: Database["public"]["Enums"]["app_role"]
         }
       }
+      user_occupation: {
+        Row: {
+          description: string | null
+          id: number
+          short_title: string | null
+          title: string
+        }
+        Insert: {
+          description?: string | null
+          id?: number
+          short_title?: string | null
+          title: string
+        }
+        Update: {
+          description?: string | null
+          id?: number
+          short_title?: string | null
+          title?: string
+        }
+      }
       users: {
         Row: {
           about: string | null
@@ -1162,6 +1173,7 @@ export interface Database {
           first_name: string | null
           id: string
           last_name: string | null
+          occupation: number | null
           public_email: string | null
           updated_at: string
           updated_by_id: string
@@ -1173,6 +1185,7 @@ export interface Database {
           first_name?: string | null
           id: string
           last_name?: string | null
+          occupation?: number | null
           public_email?: string | null
           updated_at?: string
           updated_by_id: string
@@ -1184,6 +1197,7 @@ export interface Database {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          occupation?: number | null
           public_email?: string | null
           updated_at?: string
           updated_by_id?: string
@@ -1192,18 +1206,24 @@ export interface Database {
       users_notifications: {
         Row: {
           created_at: string
-          notification_id: string
+          id: string
+          read: boolean
           user_id: string
+          user_role_request: string | null
         }
         Insert: {
           created_at?: string
-          notification_id: string
+          id?: string
+          read?: boolean
           user_id: string
+          user_role_request?: string | null
         }
         Update: {
           created_at?: string
-          notification_id?: string
+          id?: string
+          read?: boolean
           user_id?: string
+          user_role_request?: string | null
         }
       }
       users_projects_collections: {

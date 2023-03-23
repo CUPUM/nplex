@@ -1,3 +1,5 @@
+@use '../utils' as *;
+
 /**
  * Base style resets to remove or normalize certain user-agent styles.
  * Partially taken from https://tailwindcss.com/ 's preflight.
@@ -31,6 +33,34 @@
 :where(p) {
 	padding: 0;
 	margin: 0;
+}
+
+::selection {
+	background: col(primary, 500);
+	color: col(fg, 500);
+}
+
+:where(kbd) {
+	padding: 0.35em 0.5em 0.4em;
+	border-radius: 0.6em;
+	border: 1px solid col(fg, 100, 0.1);
+	background-color: col(fg, 100, 0.05);
+	> .ui-icon {
+		top: -0.1em;
+	}
+}
+
+:where(em) {
+	font: inherit;
+	font-weight: 500;
+}
+
+:where(p) {
+	max-width: 50ch;
+	margin-block: 2em 1.5em;
+	&:first-child {
+		margin-top: 0;
+	}
 }
 
 :where(input),

@@ -9,16 +9,6 @@
 	export let data;
 </script>
 
-<!-- <menu>
-	<header>
-		<Avatar data={data.profile} />
-		<hgroup>
-			<h1>{data.profile.first_name}</h1>
-		</hgroup>
-	</header>
-	<nav />
-</menu> -->
-
 <div class="account">
 	<header>Test</header>
 	<Sidebar>
@@ -47,11 +37,11 @@
 		grid-template-columns: max-content 1fr;
 		// grid-template-columns: minmax(max-content, 1fr) minmax(auto, var(--ui-width-md)) minmax(0, 1fr);
 		margin: 0 auto;
-		gap: var(--ui-gutter);
+		gap: var(--ui-gap-sm);
 		align-items: flex-start;
 		width: 100%;
 		max-width: var(--ui-width-main);
-		padding: var(--ui-pad-outer);
+		padding: var(--ui-gutter-md);
 		padding-top: 0;
 	}
 
@@ -59,10 +49,10 @@
 		grid-area: header;
 		min-height: 35vh;
 		min-height: 35svh;
-		padding: var(--ui-pad-outer);
+		padding: var(--ui-gutter-md);
 		border-radius: var(--ui-radius-xl);
 		background-color: col(bg, 500);
-		// border: var(--ui-border-thickness) solid col(bg, 300);
+		// border: var(--ui-border-size) solid col(bg, 300);
 	}
 
 	article {
@@ -71,16 +61,16 @@
 		display: flex;
 		align-items: stretch;
 		flex-direction: column;
-		gap: var(--ui-gutter);
+		gap: var(--ui-gap-sm);
 		width: 100%;
 
 		:global(.account-formgroup) {
 			position: relative;
 			color: col(fg, 100);
-			padding: var(--ui-pad-outer);
+			padding: var(--ui-gutter-md);
 			border-radius: var(--ui-radius-xl);
 			background-color: col(bg, 100);
-			// border: var(--ui-border-thickness) solid col(bg, 000);
+			// border: var(--ui-border-size) solid col(bg, 000);
 		}
 
 		:global(.account-formgroup-title) {

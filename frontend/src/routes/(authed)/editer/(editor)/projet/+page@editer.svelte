@@ -51,7 +51,7 @@
 					<Icon name="arrow-right" />
 				</Button>
 			</Field>
-			<span class="info" in:fade={{ delay: 500 }}>
+			<span class="subtle" in:fade={{ delay: 500 }}>
 				<Icon name="info-circle" style="margin-right: .5em; top: -.1em" />
 				Vous pourrez toujours modifier ce titre une fois le projet créé.
 			</span>

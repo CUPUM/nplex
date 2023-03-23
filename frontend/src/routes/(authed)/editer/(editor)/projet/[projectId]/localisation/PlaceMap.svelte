@@ -3,6 +3,7 @@
 	import MapAttributionControl from '$components/Map/MapAttributionControl.svelte';
 	import MapControlDrawCircle from '$components/Map/MapControlDrawCircle.svelte';
 	import MapControlDrawMeasure from '$components/Map/MapControlDrawMeasure.svelte';
+	import MapControlDrawPolygon from '$components/Map/MapControlDrawPolygon.svelte';
 	import MapControlFile from '$components/Map/MapControlFile.svelte';
 	import MapControlFullscreen from '$components/Map/MapControlFullscreen.svelte';
 	import MapControlGeolocate from '$components/Map/MapControlGeolocate.svelte';
@@ -41,6 +42,11 @@
 			<Tooltip message="Dessiner un cercle pour situer le projet" place="left">
 				<div>
 					<MapControlDrawCircle />
+				</div>
+			</Tooltip>
+			<Tooltip message="Dessiner un polygon pour mesurer une superficie" place="left">
+				<div>
+					<MapControlDrawPolygon />
 				</div>
 			</Tooltip>
 			<Tooltip message="Téléverser un fichier de localisation" place="left">

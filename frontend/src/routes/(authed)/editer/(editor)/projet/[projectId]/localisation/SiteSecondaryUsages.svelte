@@ -105,12 +105,12 @@
 
 	button {
 		color: col(fg, 100);
-		height: var(--ui-block-size-lg);
+		height: var(--ui-unit-lg);
 		border-radius: var(--ui-radius-md);
 		border: 1px dashed col(fg, 500, 0.1);
 		display: flex;
 		flex-direction: row;
-		padding-inline: var(--ui-pad-inline);
+		padding-inline: var(--ui-pad-md);
 		align-items: center;
 		gap: 0.5em;
 		transition: all 0.1s ease-out;

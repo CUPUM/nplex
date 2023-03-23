@@ -19,6 +19,8 @@
 	}
 
 	let desiredRole = '';
+	let confirmDelete = '';
+	let validDelete = 'Je désir supprimer ' + data.session?.user.first_name;
 </script>
 
 <form
@@ -93,14 +95,14 @@
 </form>
 <section class="account-formgroup">
 	<h2 class="account-formgroup-title">Rôle & permissions</h2>
-	<p class="info">Gérer le rôle associé à mon compte.</p>
+	<p class="subtle">Gérer le rôle associé à mon compte.</p>
 	<h3 class="heading-sm">Mon rôle actuel</h3>
 	<fieldset id="role">
 		<section>
 			<Token readonly variant="default">
 				{data.profile.role_title}
 			</Token>
-			<p class="info">{data.profile.role_description}</p>
+			<p class="subtle">{data.profile.role_description}</p>
 		</section>
 		<Modal>
 			<svelte:fragment slot="control" let:open>
@@ -181,9 +183,52 @@
 	</Field>
 	<Field placeholder="Nouveau mot de passe" type="password" />
 	<h3 class="heading-sm">Désactivation</h3>
-	<Button variant="cta" state="warning" style="align-self: flex-start">
-		<Icon name="warn" slot="leading" />Supprimer mon compte
-	</Button>
+	<p>
+		Vous désirez fermer votre compte de manière définitive? Sachez que certaines ressources que vous
+		avez créées, telles que les fiches de projet et leur métadonnées, seront conservées malgré la
+		désinscription. Si vous désirez effacer ces données, assurez-vous de prévenir vos collaborateurs
+		et de supprimer vos fiches avant de compléter la fermeture de votre compte.
+	</p>
+	<p class="subtle">
+		<Icon name="info-circle" />&ensp;La gestion des fiches orphelines sera automatiquement déléguée
+		aux administrateurs de la plateforme. Les collaborateurs conserveront leurs accès.
+	</p>
+	<fieldset id="delete">
+		<Modal>
+			<svelte:fragment slot="control" let:open>
+				<Button variant="cta" state="warning" on:click={open} style="align-self: flex-start">
+					<Icon name="warn" slot="leading" />
+					Supprimer mon compte
+				</Button>
+			</svelte:fragment>
+			<svelte:fragment slot="header">
+				Confirmez la fermeture définitive de votre compte
+			</svelte:fragment>
+			<form action="?/delete" method="POST" use:enhance id="confirm-delete">
+				<p style="margin-top: 0">
+					Pour compléter la démarche, veuillez entrer la phrase suivante ci-dessous puis confirmer:
+				</p>
+				<Field value={validDelete} readonly disabled />
+				<Field
+					name="confirmation"
+					state="warning"
+					placeholder="Confirmation requise"
+					bind:value={confirmDelete}
+				/>
+			</form>
+			<svelte:fragment slot="footer">
+				<Button
+					variant="cta"
+					state="warning"
+					type="submit"
+					form="confirm-delete"
+					disabled={confirmDelete !== validDelete}
+				>
+					<Icon slot="leading" name="warn" />Supprimer mon compte
+				</Button>
+			</svelte:fragment>
+		</Modal>
+	</fieldset>
 </form>
 
 <style lang="scss">
@@ -212,6 +257,17 @@
 			flex: 1;
 			max-width: 50%;
 		}
+	}
+
+	#delete {
+		font-size: var(--ui-text-sm);
+	}
+
+	#confirm-delete {
+		display: flex;
+		flex-direction: column;
+		// align-items: flex-start;
+		gap: 1.5rem;
 	}
 
 	h3 {

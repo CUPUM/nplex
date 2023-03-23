@@ -29,7 +29,7 @@
 					<Icon name={isPublic ? 'eye-open' : 'eye-close'} />
 				</Token>
 			</Tooltip>
-			<span class="info">
+			<span class="subtle">
 				{isPublic ? 'Fiche publiée' : 'Fiche brouillon (privée)'}
 			</span>
 		</section>
@@ -66,19 +66,19 @@
 	header {
 		position: relative; // Avoids positioning problem with nested tooltip due to offsetParent changing during transition...
 		width: 100%;
-		min-height: calc(100vh - var(--ui-gutter) - var(--ui-nav-h));
-		min-height: calc(100svh - var(--ui-gutter) - var(--ui-nav-h));
+		min-height: calc(100vh - var(--ui-gap-sm) - var(--ui-nav-h));
+		min-height: calc(100svh - var(--ui-gap-sm) - var(--ui-nav-h));
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		justify-content: center;
-		padding: var(--ui-pad-outer);
-		gap: var(--ui-pad-outer);
-		// border: var(--ui-border-thickness) dashed col(primary, 500, 0.75);
+		padding: var(--ui-gutter-md);
+		gap: var(--ui-gutter-md);
+		// border: var(--ui-border-size) dashed col(primary, 500, 0.75);
 		background-color: col(primary, 300);
 		border-radius: var(--ui-radius-xl);
-		margin-bottom: var(--ui-gutter);
-		opacity: max(0, calc(1 - var(--ui-scroll) * 0.0015));
+		margin-bottom: var(--ui-gap-sm);
+		opacity: max(0, calc(1.25 - var(--ui-scroll) * 0.0015));
 		transition: opacity 0.25s ease;
 	}
 
@@ -104,10 +104,10 @@
 		gap: 0.5em;
 		color: col(primary, 700);
 		padding: 0 1.5em;
-		height: var(--ui-block-size-lg);
+		height: var(--ui-unit-lg);
 		border-radius: var(--ui-radius-md);
 		// background-color: col(primary, 100, 0.1);
-		border: var(--ui-border-thickness) solid col(primary, 500, 0.2);
+		border: var(--ui-border-size) solid col(primary, 500, 0.2);
 	}
 
 	nobr {

@@ -1,6 +1,91 @@
 @use '../utils' as *;
 
 /**
+ * Make an element rounded.
+ * Also applies rounding to --radius property for compat with components
+ */
+.rounded {
+	--radius: 999px !important;
+	border-radius: var(--radius);
+}
+
+/**
+ * Remove scrollbar but keep scrollability of element with overflow auto or overflow scroll.
+ */
+.noscrollbar {
+	@include noscrollbar;
+}
+
+/**
+ * Animate element when focused
+ */
+.focuspress {
+	@include focuspress;
+}
+
+.subtle {
+	opacity: 0.5;
+}
+
+.text-tabular {
+	font-variant-numeric: tabular-nums;
+}
+
+/**
+ * .text-{size}
+ * .heading-{size}
+ */
+@each $level, $sizes in $typography-system {
+	@each $size, $properties in $sizes {
+		.#{$level}-#{$size} {
+			@include typography($level, $size);
+		}
+	}
+}
+
+// .flex {
+// 	display: flex;
+// }
+// .flex-c {
+// 	display: flex;
+// 	flex-direction: column;
+// }
+// .flex-r {
+// 	display: flex;
+// 	flex-direction: row;
+// }
+// .flex-none {
+// 	flex: none;
+// }
+// .flex-1 {
+// 	flex: 1;
+// }
+
+// @each $size in (sm, md, lg) {
+// 	.gap-#{$size} {
+// 		gap: var(--ui-gap-#{$size});
+// 	}
+// }
+
+// /**
+//  * .w-p-{size}
+//  * .w-p-min-{size}
+//  * .w-p-max-{size}
+//  * Paragraph width in sizes relatives to character height:
+//  */
+// @each $size, $ch in (xs: 35, sm: 50, md: 70, lg: 90) {
+// 	.w-p-#{$size} {
+// 		width: #{$ch}ch;
+// 	}
+// 	.w-p-min-#{$size} {
+// 		min-width: #{$ch}ch;
+// 	}
+// 	.w-p-max-#{$size} {
+// 		max-width: #{$ch}ch;
+// 	}
+// }
+
+/**
  * Loading skeleton.
  * Give a placeholder / suspense element a pulsing gradient animation.
  */
@@ -35,29 +120,6 @@
 		top: 0;
 		left: 0;
 	}
-}
-
-/**
- * Make an element rounded.
- * Also applies rounding to --radius property for compat with components
- */
-.rounded {
-	--radius: 999px !important;
-	// border-radius: var(--radius) !important;
-}
-
-/**
- * Remove scrollbar but keep scrollability of element with overflow auto or overflow scroll.
- */
-.noscrollbar {
-	@include noscrollbar;
-}
-
-/**
- * Animate element when focused
- */
-.focuspress {
-	@include focuspress;
 }
 
 /**

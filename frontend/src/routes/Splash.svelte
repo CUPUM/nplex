@@ -97,7 +97,7 @@
 
 <style lang="scss">
 	header {
-		--splash-radius: min(var(--ui-radius-xl), calc(var(--ui-scroll-px) * 0.15));
+		--splash-radius: min(var(--ui-radius-2xl), calc(var(--ui-scroll-px) * 0.15));
 		position: relative;
 		height: 100svh;
 		width: 100%;
@@ -121,7 +121,7 @@
 		width: 100%;
 		object-fit: contain;
 		max-width: var(--ui-width-main);
-		padding: 3rem;
+		padding: 3rem 4rem;
 		opacity: max(0, calc(1 - 0.001 * var(--ui-scroll)));
 		overflow: visible;
 	}

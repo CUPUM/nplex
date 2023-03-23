@@ -1,12 +1,12 @@
 @use 'utils' as *;
 
 .token {
-	--token-size: var(--ui-block-size-md);
+	--token-size: var(--ui-unit-md);
 	--token-radius: 99em;
 	--token-inset: var(--ui-inset);
 	--token-border: 0px solid transparent;
 	--token-gutter: 0.5em;
-	--token-pad-inline: calc(var(--ui-pad-inline) - var(--token-inset));
+	--token-pad-inline: calc(var(--ui-pad-md) - var(--token-inset));
 	position: relative;
 	user-select: none;
 	flex: none;
@@ -105,7 +105,7 @@ input {
 .outlined {
 	--color: #{col(fg, 500)};
 	--background-color: transparent;
-	--border: var(--ui-border-thickness) solid #{col(fg, 500, 0.1)};
+	--border: var(--ui-border-size) solid #{col(fg, 500, 0.1)};
 	--hover-color: #{col(fg, 700)};
 	--hover-background-color: #{col(fg, 100, 0.1)};
 	--hover-border: 3px solid #{col(fg, 500, 0)};
@@ -136,23 +136,23 @@ input {
 // Dashed variant.
 
 .dashed {
-	--token-border: var(--ui-border-thickness) dashed #{col(fg, 500, 0.1)};
+	--token-border: var(--ui-border-size) dashed #{col(fg, 500, 0.1)};
 }
 
 // Feature variant.
 .feature {
 	--token-color: #{col(fg, 000)};
 	--token-background: #{col(fg, 500, 0.05)};
-	// --token-border: var(--ui-border-thickness) solid #{col(fg, 100, 0.1)};
+	// --token-border: var(--ui-border-size) solid #{col(fg, 100, 0.1)};
 	&:hover {
 		--token-color: #{col(primary, 900)};
 		--token-background: #{col(primary, 300, 0.2)};
-		// --token-border: var(--ui-border-thickness) solid #{col(primary, 300, 0.2)};
+		// --token-border: var(--ui-border-size) solid #{col(primary, 300, 0.2)};
 	}
 	&.active {
 		--token-color: #{col(primary, 700)};
 		--token-background: #{col(primary, 100, 0.2)};
-		// --token-border: var(--ui-border-thickness) solid #{col(primary, 100, 0)};
+		// --token-border: var(--ui-border-size) solid #{col(primary, 100, 0)};
 	}
 }
 

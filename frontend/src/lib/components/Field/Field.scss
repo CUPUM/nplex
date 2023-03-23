@@ -1,13 +1,13 @@
 @use 'utils' as *;
 
 .ui-field {
-	--border-thickness: var(--ui-border-thickness);
+	--border-thickness: var(--ui-border-size);
 	--radius: var(--ui-radius-md);
-	--height: var(--ui-block-size-lg);
+	--height: var(--ui-unit-lg);
 	--inset: var(--ui-inset);
 	--notch-padding: 0.25em;
-	--gutter: calc(var(--ui-pad-inline) / 3);
-	--gutter-out: calc(2 * var(--ui-pad-inline) / 3);
+	--gutter: calc(var(--ui-pad-md) / 3);
+	--gutter-out: calc(2 * var(--ui-pad-md) / 3);
 	position: relative;
 	display: grid;
 	grid-template-columns:
@@ -324,6 +324,7 @@ label {
 			border-color: col(primary, 500);
 		}
 		label {
+			opacity: 1 !important;
 			color: col(primary, 500);
 		}
 	}

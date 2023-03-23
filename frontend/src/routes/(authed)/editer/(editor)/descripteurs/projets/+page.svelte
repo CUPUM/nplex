@@ -22,8 +22,8 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
-		padding: var(--ui-pad-outer);
-		margin-bottom: var(--ui-gutter);
+		padding: var(--ui-gutter-md);
+		margin-bottom: var(--ui-gap-sm);
 		background-color: col(primary, 100, 0.25);
 		border-radius: var(--ui-radius-lg);
 		opacity: max(0, calc(1 - var(--ui-scroll) * 0.002));
@@ -39,6 +39,6 @@
 		position: relative;
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-		gap: var(--ui-gutter);
+		gap: var(--ui-gap-sm);
 	}
 </style>

@@ -1,6 +1,6 @@
 <!--
 	@component
-	## Map Control: Draw Circle
+	## Map Control: Draw Polygon
 -->
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
@@ -15,7 +15,7 @@
 	const { getMap, cursor } = getMapContext();
 	const { mode, getMapDraw, changeMode } = getMapDrawContext();
 
-	$: active = $mode === DRAW_MODES.DrawCircle;
+	$: active = $mode === DRAW_MODES.DrawPolygon;
 
 	// function setProperties(e: DrawCreateEvent) {
 	// 	if (!properties) return;
@@ -40,10 +40,10 @@
 	equi={!$$slots.default}
 	variant="ghost"
 	{active}
-	on:pointerdown={() => changeMode(active ? DRAW_MODES.SimpleSelect : DRAW_MODES.DrawCircle)}
+	on:pointerdown={() => changeMode(active ? DRAW_MODES.SimpleSelect : DRAW_MODES.DrawPolygon)}
 >
 	<slot>
-		<Icon name="path-circle" />
+		<Icon name="path-polygon" />
 	</slot>
 </Button>
 

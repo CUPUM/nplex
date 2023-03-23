@@ -3,6 +3,7 @@ import type MapDraw from '$components/Map/MapDraw.svelte';
 import { toPgGeom } from '$utils/format';
 import { positionSchema } from '$utils/validation';
 import { point } from '@turf/turf';
+import { isCircle } from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 import type { ComponentProps } from 'svelte';
 import { writable } from 'svelte/store';
 import { z } from 'zod';
@@ -13,6 +14,14 @@ export const LOCATION_DEFAULT_RADIUS = 500;
 export const LOCATION_MAX_RADIUS = 2_500;
 export const ADJACENT_STREETS_MIN = 0;
 export const ADJACENT_STREETS_MAX = 5;
+
+export const LOCATION_FEATURE_FLAG = 'projectLocationCircle';
+
+export function isLocationCircle(
+	feature: GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>
+) {
+	return isCircle(feature); //&& feature.properties && FEATURE_KEY in feature.properties;
+}
 
 /**
  * Maplibre instance.

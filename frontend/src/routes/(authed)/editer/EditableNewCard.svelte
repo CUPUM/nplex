@@ -15,9 +15,10 @@
 <style lang="scss">
 	.new-entry {
 		position: relative;
-		flex: 1;
+		top: 0;
 		border-radius: inherit;
 		display: flex;
+		height: 100%;
 		flex-direction: column;
 		padding: 2rem;
 		overflow: hidden;
@@ -25,7 +26,7 @@
 		align-items: center;
 		justify-content: center;
 		color: col(fg, 500);
-		border: var(--ui-border-thickness) dashed col(fg, 100, 0.1);
+		border: var(--ui-border-size) dashed col(fg, 100, 0.1);
 		font-size: var(--ui-text-md);
 		font-weight: 425;
 		transition: all 0.15s ease-out;
@@ -33,7 +34,7 @@
 		&:hover {
 			color: col(primary, 700);
 			background: col(primary, 300, 0.1);
-			border: var(--ui-border-thickness) dashed col(primary, 300, 0);
+			border: var(--ui-border-size) dashed col(primary, 300, 0);
 
 			.fill-icon {
 				color: col(primary, 300);
@@ -49,15 +50,16 @@
 
 	.fill-icon {
 		position: absolute;
-		font-size: 400px;
-		line-height: 1em;
-		height: 1.25em;
+		font-size: 420px;
 		opacity: 0.1;
-		// left: 0;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 
 	span,
 	i {
+		position: relative;
 		text-align: center;
 		opacity: 0.5;
 		transition: opacity 0.15s;

@@ -103,12 +103,12 @@
 
 	.inner {
 		width: 100%;
-		max-width: var(--ui-width-main);
+		max-width: var(--ui-width-md);
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		align-items: stretch;
 		gap: 1.5rem;
-		padding: 3rem var(--ui-pad-outer);
+		padding: 3rem var(--ui-gutter-md);
 
 		@include mobile {
 			display: flex;
