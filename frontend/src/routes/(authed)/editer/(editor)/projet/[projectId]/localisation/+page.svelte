@@ -41,8 +41,8 @@
 	</section>
 	<section class="fields">
 		<Location />
-		<Area />
 		<District />
+		<Area />
 		<AdjacentStreets />
 		<!-- <ImplantationMode /> -->
 		<!-- <Levels /> -->

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { DRAW_EVENTS } from '$utils/enums';
+	import { MAP_DRAW_EVENTS } from '$utils/enums';
 	import { createCircle } from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { onDestroy, onMount } from 'svelte';
 	import { getMapContext } from './Map.svelte';
@@ -22,7 +22,7 @@
 		if (map && draw) {
 			const circle = createCircle(center, radius / 1000);
 			draw.add(circle);
-			map.fire(DRAW_EVENTS.Create, { features: [circle] });
+			map.fire(MAP_DRAW_EVENTS.Create, { features: [circle] });
 		}
 	});
 

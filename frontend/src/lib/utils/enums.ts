@@ -81,9 +81,9 @@ export const ALIGNMENTS = {
 export type Position = ValueOf<typeof ALIGNMENTS>;
 
 /**
- * MapboxDraw event names.
+ * MapboxDraw event names. Based on Record<string, MapboxDraw.DrawEventType>
  */
-export const DRAW_EVENTS = {
+export const MAP_DRAW_EVENTS = {
 	Create: 'draw.create',
 	Delete: 'draw.delete',
 	Update: 'draw.update',
@@ -93,12 +93,15 @@ export const DRAW_EVENTS = {
 	ModeChange: 'draw.modechange',
 	Actionable: 'draw.actionable',
 	SelectionChange: 'draw.selectionchange',
-} as const satisfies Record<string, MapboxDraw.DrawEventType>;
+	// Custom events for MapDraw component lifecycle
+	Init: 'mapdraw.init',
+	Destroy: 'mapdraw.destroy',
+} as const;
 
 /**
  * Keys (string names) of mapbox draw modes including custom modes.
  */
-export const DRAW_MODES = {
+export const MAP_DRAW_MODES = {
 	Static: 'static',
 	DrawLineString: 'draw_line_string',
 	DrawPolygon: 'draw_polygon',
@@ -108,9 +111,9 @@ export const DRAW_MODES = {
 	// DrawPoints: 'draw_points',
 	DrawCircle: 'draw_circle',
 } as const;
-export type DrawMode = ValueOf<typeof DRAW_MODES>;
+export type MapDrawMode = ValueOf<typeof MAP_DRAW_MODES>;
 
-export const DRAW_CLASSES = {
+export const MAP_DRAW_CLASSES = {
 	CONTROL_BASE: 'mapboxgl-ctrl',
 	CONTROL_PREFIX: 'mapboxgl-ctrl-',
 	CONTROL_BUTTON: 'mapbox-gl-draw_ctrl-draw-btn',
@@ -126,34 +129,34 @@ export const DRAW_CLASSES = {
 	BOX_SELECT: 'mapbox-gl-draw_boxselect',
 } as const;
 
-export const DRAW_SOURCES = {
+export const MAP_DRAW_SOURCES = {
 	Hot: 'mapbox-gl-draw-hot',
 	Cold: 'mapbox-gl-draw-cold',
 } as const;
 
-export const DRAW_TYPES = {
+export const MAP_DRAW_TYPES = {
 	Polygon: 'polygon',
 	Line: 'line_string',
 	Point: 'point',
 } as const;
 
-export const DRAW_UPDATE_ACTIONS = {
+export const MAP_DRAW_UPDATE_ACTIONS = {
 	Move: 'move',
 	ChangeCoordinates: 'change_coordinates',
 } as const;
 
-export const DRAW_META_PROPERTY = {
+export const MAP_DRAW_META_PROPERTY = {
 	Feature: 'feature',
 	Midpoint: 'midpoint',
 	Vertex: 'vertex',
 } as const;
 
-export const DRAW_ACTIVE_STATES = {
+export const MAP_DRAW_ACTIVE_STATES = {
 	Active: 'true',
 	Inactive: 'false',
 } as const;
 
-export const DRAW_INTERACTIONS = {
+export const MAP_DRAW_INTERACTIONS = {
 	ScrollZoom: 'scrollZoom',
 	BoxZoom: 'boxZoom',
 	DragRotate: 'dragRotate',

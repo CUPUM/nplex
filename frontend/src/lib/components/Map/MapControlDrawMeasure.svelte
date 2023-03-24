@@ -1,21 +1,23 @@
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { DRAW_MODES } from '$utils/enums';
+	import { MAP_DRAW_MODES } from '$utils/enums';
 	import { getMapContext } from './Map.svelte';
-	import { getMapDrawContext } from './MapDraw.svelte';
 
-	const { getMap, cursor } = getMapContext();
-	const { mode, getMapDraw, changeMode } = getMapDrawContext();
+	const { getMap, cursor, getMapDraw, drawMode, drawChangeMode } = getMapContext();
 
-	$: active = false; // $mode === DRAW_MODES.DirectSelect
+	export let disabled: boolean | undefined = undefined;
+
+	$: active = false; // $mode === MAP_DRAW_MODES.DirectSelect
 </script>
 
 <Button
 	equi={!$$slots.default}
 	variant="ghost"
 	{active}
-	on:pointerdown={() => changeMode(active ? DRAW_MODES.SimpleSelect : DRAW_MODES.DrawCircle)}
+	on:pointerdown={() =>
+		drawChangeMode &&
+		drawChangeMode(active ? MAP_DRAW_MODES.SimpleSelect : MAP_DRAW_MODES.DrawCircle)}
 >
 	<slot>
 		<Icon name="path-line" />

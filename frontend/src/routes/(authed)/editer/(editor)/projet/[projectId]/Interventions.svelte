@@ -59,99 +59,116 @@
 	}, 250);
 </script>
 
-<div id="tokens-sections">
-	<fieldset class="editor-form-group editor-form-group-nomin">
-		<div class="stickied">
-			<h3 class="editor-form-group-title">Interventions</h3>
-			<p>Sélectionnez les interventions qui s'appliquent dans la liste ci-contre.</p>
-			<!-- Search tokens -->
-			<fieldset id="tokens-search" disabled={$projectData.type_id == null}>
-				<Field
-					type="search"
-					class="field"
-					placeholder="Chercher un type de travail"
-					variant="outlined"
-					list="works-data"
-					on:input={handleSearch}
-					on:keydown={handleKeydown}
-				>
-					<svelte:fragment slot="leading">
-						<FieldIcon name="search" />
-					</svelte:fragment>
-					<!-- <FieldOptions slot="options" /> -->
-				</Field>
-				<datalist id="works-data">
-					{#each $descriptors.workCategories as c}
-						<optgroup label={c.title}>
-							{#each available.filter((w) => w.category_id === c.id) as w}
-								<option value={w.title} on:select={(e) => console.log(e)}>
-									{w.title}
-								</option>
-							{/each}
-						</optgroup>
-					{/each}
-				</datalist>
-			</fieldset>
-			<!-- Selected tokens -->
-			<AnimateHeight>
-				<ul id="tokens-selected">
-					{#each selected as w, i (w.id)}
-						<li animate:flip={{ duration: 150 }} transition:fly|local={{ y: 6, duration: 150 }}>
-							<Tooltip message={w.description}>
-								<Token active>
-									{w.title}
-									<TokenButton slot="trailing" as="label">
-										<Icon name="cross" strokeWidth={2} />
-										<input
-											hidden
-											type="checkbox"
-											name="work_id"
-											bind:group={$projectData.work_ids}
-											value={w.id}
-										/>
-									</TokenButton>
-								</Token>
-							</Tooltip>
-						</li>
-					{/each}
-					{#if !selected.length}
-						<Token disabled variant="dashed">Sélectionnez un ou plusieurs travaux...</Token>
-					{/if}
-				</ul>
-			</AnimateHeight>
-		</div>
-	</fieldset>
-	<fieldset class="editor-form-group editor-form-group-nomin">
-		{#each $descriptors.workCategories as category}
-			<h4 class="tokens-group-title heading-sm">{category.title}</h4>
-			<AnimateHeight>
-				<ul class="tokens-group">
-					{#each (searchResults ?? available).filter((w) => w.category_id === category.id) as w, i (w.id)}
-						<li animate:flip={{ duration: 100 }}>
-							<Tooltip message={w.description}>
-								<Token variant="feature" bind:group={$projectData.work_ids} value={w.id}>
-									{w.title}
-								</Token>
-							</Tooltip>
-						</li>
-					{/each}
-				</ul>
-			</AnimateHeight>
-		{/each}
-	</fieldset>
-</div>
+<fieldset class="editor-form-group editor-form-group-nomin">
+	<h3 class="editor-form-group-title">Interventions</h3>
+	<p>Sélectionnez les interventions qui s'appliquent dans la liste ci-contre.</p>
+	<div id="tokens-sections">
+		<section id="tokens-manager">
+			<div id="tokens-manager-inner">
+				<!-- Search tokens -->
+				<fieldset id="tokens-search" disabled={$projectData.type_id == null}>
+					<Field
+						type="search"
+						class="field"
+						placeholder="Chercher un type de travail"
+						variant="outlined"
+						list="works-data"
+						on:input={handleSearch}
+						on:keydown={handleKeydown}
+					>
+						<svelte:fragment slot="leading">
+							<FieldIcon name="search" />
+						</svelte:fragment>
+						<!-- <FieldOptions slot="options" /> -->
+					</Field>
+					<datalist id="works-data">
+						{#each $descriptors.workCategories as c}
+							<optgroup label={c.title}>
+								{#each available.filter((w) => w.category_id === c.id) as w}
+									<option value={w.title} on:select={(e) => console.log(e)}>
+										{w.title}
+									</option>
+								{/each}
+							</optgroup>
+						{/each}
+					</datalist>
+				</fieldset>
+				<!-- Selected tokens -->
+				<AnimateHeight>
+					<ul id="tokens-selected">
+						{#each selected as w, i (w.id)}
+							<li animate:flip={{ duration: 150 }} transition:fly|local={{ y: 6, duration: 150 }}>
+								<Tooltip message={w.description}>
+									<Token active>
+										{w.title}
+										<TokenButton slot="trailing" as="label">
+											<Icon name="cross" strokeWidth={2} />
+											<input
+												hidden
+												type="checkbox"
+												name="work_id"
+												bind:group={$projectData.work_ids}
+												value={w.id}
+											/>
+										</TokenButton>
+									</Token>
+								</Tooltip>
+							</li>
+						{/each}
+						{#if !selected.length}
+							<Token disabled variant="dashed">Sélectionnez un ou plusieurs travaux...</Token>
+						{/if}
+					</ul>
+				</AnimateHeight>
+			</div>
+		</section>
+		<section id="tokens-lists">
+			{#each $descriptors.workCategories as category}
+				<h4 class="tokens-group-title heading-sm">{category.title}</h4>
+				<AnimateHeight>
+					<ul class="tokens-group">
+						{#each (searchResults ?? available).filter((w) => w.category_id === category.id) as w, i (w.id)}
+							<li animate:flip={{ duration: 100 }}>
+								<Tooltip message={w.description}>
+									<Token variant="feature" bind:group={$projectData.work_ids} value={w.id}>
+										{w.title}
+									</Token>
+								</Tooltip>
+							</li>
+						{/each}
+					</ul>
+				</AnimateHeight>
+			{/each}
+		</section>
+	</div>
+</fieldset>
 
 <style lang="scss">
 	#tokens-sections {
 		display: flex;
 		flex-direction: row;
-		gap: var(--ui-gap-sm);
+		flex-wrap: wrap;
+		gap: 2rem;
 		width: 100%;
 	}
 
-	.stickied {
+	#tokens-manager {
+		min-width: 400px;
+		flex: 1;
+	}
+
+	#tokens-manager-inner {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		margin-top: 1.5rem;
 		position: sticky;
 		top: calc(1.5rem + var(--ui-nav-h));
+	}
+
+	#tokens-lists {
+		min-width: var(--ui-width-sm);
+		flex: 2;
 	}
 
 	#tokens-selected {
@@ -165,13 +182,9 @@
 	}
 
 	#tokens-search {
+		position: relative;
 		font-size: var(--ui-text-sm);
-		align-self: flex-start;
-		margin-block: 2rem;
-		z-index: 1;
-	}
-
-	#tokens-all {
+		max-width: var(--ui-width-sm);
 	}
 
 	.tokens-group {

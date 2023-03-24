@@ -10,9 +10,24 @@
 
 	const CTX_KEY = 'map-context';
 
+	const MAP_OVERLAY_AREAS = [
+		'top-left',
+		'top',
+		'top-right',
+		'left',
+		'center',
+		'right',
+		'bottom-left',
+		'bottom',
+		'bottom-right',
+	] as const;
+
 	interface MapContext {
-		getMap: () => Map;
 		cursor: Writable<Cursor | null>;
+		getMap: () => Map;
+		getMapDraw: () => MapboxDraw | undefined;
+		drawMode: Readable<MapDrawMode | undefined>;
+		drawChangeMode: MapboxDraw.DrawInitEvent['changeMode'] | undefined;
 	}
 
 	export function getMapContext() {
@@ -22,15 +37,16 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import type { Cursor } from '$utils/enums';
+	import { MAP_DRAW_EVENTS, type Cursor, type MapDrawMode } from '$utils/enums';
 	import { LOCATIONS } from '$utils/map/locations';
 	import { MAP_STYLES } from '$utils/map/styles';
 	import { MAP_GESTURES_TEXT, MAP_LOCALES, type MapLocale } from '$utils/map/ui';
 	import { debounce } from '$utils/modifiers';
+	import type { DrawModeChangeEvent } from '@mapbox/mapbox-gl-draw';
 	import { Map, type MapEventType, type MapOptions } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
-	import { writable, type Writable } from 'svelte/store';
+	import { writable, type Readable, type Writable } from 'svelte/store';
 
 	export let id: string | undefined = undefined;
 	export let interactive: MapOptions['interactive'] = true;
@@ -84,6 +100,10 @@
 
 	let containerRef: HTMLElement;
 	let resizeObserver: ResizeObserver;
+	let draw: MapboxDraw | undefined;
+	let drawChangeMode: MapboxDraw.DrawInitEvent['changeMode'] | undefined;
+
+	const drawMode = writable<MapDrawMode | undefined>();
 
 	const dispatch = createEventDispatcher<
 		Pick<{ [Event in keyof MapEventType]: MapEventType[Event] }, 'click'> & {
@@ -155,6 +175,21 @@
 				// console.log(map?.queryRenderedFeatures(e.point));
 				dispatch<'click'>('click', e);
 			});
+
+			map.on(MAP_DRAW_EVENTS.Init, (e: MapboxDraw.DrawInitEvent) => {
+				draw = e.draw;
+				drawMode.set(draw.getMode() as MapDrawMode);
+				drawChangeMode = e.changeMode;
+
+				map?.once(MAP_DRAW_EVENTS.Destroy, (e) => {
+					draw = undefined;
+					drawChangeMode = undefined;
+				});
+			});
+
+			map.on(MAP_DRAW_EVENTS.ModeChange, (e: DrawModeChangeEvent) => {
+				drawMode.set(e.mode);
+			});
 		});
 	}
 
@@ -180,8 +215,11 @@
 	}, 10);
 
 	setContext<MapContext>(CTX_KEY, {
-		getMap: () => map!,
 		cursor,
+		getMap: () => map!,
+		getMapDraw: () => draw,
+		drawMode,
+		drawChangeMode,
 	});
 
 	onMount(() => {
@@ -203,6 +241,38 @@
 	<div class="ui-map-container" bind:this={containerRef} />
 	{#if map}
 		<slot {map} />
+		<div class="map-overlays">
+			{#if $$slots['top-left']}
+				<div class="map-overlay-area top left" style="grid-area: top-left">
+					<slot name="top-left" {map} />
+				</div>
+			{/if}
+			{#if $$slots.top}
+				<div class="map-overlay-area top" style="grid-area: top">
+					<slot name="top" {map} />
+				</div>
+			{/if}
+			{#if $$slots['top-right']}
+				<div class="map-overlay-area top right" style="grid-area: top-right">
+					<slot name="top-right" {map} />
+				</div>
+			{/if}
+			{#if $$slots['bottom-left']}
+				<div class="map-overlay-area bottom left" style="grid-area: bottom-left">
+					<slot name="bottom-left" {map} />
+				</div>
+			{/if}
+			{#if $$slots.bottom}
+				<div class="map-overlay-area bottom" style="grid-area: bottom">
+					<slot name="bottom" {map} />
+				</div>
+			{/if}
+			{#if $$slots['bottom-right']}
+				<div class="map-overlay-area bottom right" style="grid-area: bottom-right">
+					<slot name="bottom-right" {map} />
+				</div>
+			{/if}
+		</div>
 	{:else}
 		<div class="loading">
 			<slot name="loading">
@@ -228,6 +298,51 @@
 			height: 100%;
 			border-radius: inherit;
 			position: relative;
+		}
+
+		.map-overlays {
+			pointer-events: none;
+			padding: 1rem;
+			border-radius: inherit;
+			position: absolute;
+			inset: 0;
+			display: grid;
+			grid-template-areas:
+				'top-left top top-right'
+				'left center right'
+				'bottom-left bottom bottom-right';
+
+			.top {
+				--t-o-y: top;
+				align-items: flex-start;
+				justify-content: center;
+			}
+			.bottom {
+				--t-o-y: bottom;
+				align-items: flex-end;
+				justify-content: center;
+			}
+			.right {
+				--t-o-x: right;
+				justify-content: flex-end;
+			}
+			.left {
+				--t-o-x: left;
+				justify-content: flex-start;
+			}
+		}
+
+		.map-overlay-area {
+			position: relative;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+
+			> :global(*) {
+				transform-origin: var(--t-o-x) var(--t-o-y);
+				pointer-events: initial;
+			}
 		}
 
 		:global(canvas) {

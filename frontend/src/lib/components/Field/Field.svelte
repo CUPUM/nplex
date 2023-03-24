@@ -42,7 +42,7 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { STATES, VARIANTS, type State, type Variant } from '$utils/enums';
+	import { STATES, VARIANTS, type State } from '$utils/enums';
 	import { snap } from '$utils/number';
 	import { getContext, setContext } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
@@ -58,7 +58,7 @@
 		prefix?: string | null;
 		suffix?: string | null;
 		type?: InputType;
-		variant?: Variant;
+		variant?: 'default' | 'cta' | 'outlined' | 'dashed' | 'ghost' | 'feature' | 'opaque';
 		state?: State;
 		textAlign?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent';
 		compact?: boolean;
@@ -106,7 +106,7 @@
 	let inputRef: InputRef;
 	let labelWidth: number;
 
-	$: hasvalue = value != null && (value != '' || value == '0');
+	$: hasvalue = value != null && (value != '' || (typeof value === 'number' && value == 0));
 	$: haslabel = $$slots.label;
 	$: hasplaceholder = placeholder != null && placeholder !== '';
 	$: computedPlaceholder = placeholder ? placeholder + (required ? ' *' : '') : undefined;

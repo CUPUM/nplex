@@ -9,8 +9,8 @@ declare global {
 				store: {
 					isDirty: boolean;
 					sources: {
-						[DRAW_SOURCES.Hot]: GeoJSON.Feature[];
-						[DRAW_SOURCES.Cold]: GeoJSON.Feature[];
+						[MAP_DRAW_SOURCES.Hot]: GeoJSON.Feature[];
+						[MAP_DRAW_SOURCES.Cold]: GeoJSON.Feature[];
 					};
 					_changedFeatureIds: {
 						_items: AnyRecord;

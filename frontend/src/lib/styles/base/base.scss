@@ -13,6 +13,14 @@
 	overflow-y: scroll;
 	scroll-snap-type: y proximity;
 	scroll-behavior: smooth;
+	font-weight: 350;
+}
+
+:where([data-theme='light']) {
+	font-weight: 350;
+}
+:where([data-theme='dark']) {
+	font-weight: 300;
 }
 
 body {

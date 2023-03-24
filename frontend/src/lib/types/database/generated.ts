@@ -661,6 +661,7 @@ export interface Database {
           type_id: number | null
           updated_at: string
           updated_by_id: string
+          projects_ts: string | null
         }
         Insert: {
           adjacent_streets?: number | null
@@ -1518,24 +1519,28 @@ export interface Database {
           updated_by_id: string | null
         }
       }
-      users_extended: {
+      users_roles_extended: {
         Row: {
-          about: string | null
+          description: string | null
+          request: Database["public"]["Enums"]["app_role"] | null
+          requested_at: string | null
+          role: Database["public"]["Enums"]["app_role"] | null
+          title: string | null
+          updated_at: string | null
+          updated_by_id: string | null
+          user_id: string | null
+        }
+      }
+      users_session: {
+        Row: {
           avatar_url: string | null
-          created_at: string | null
           first_name: string | null
           id: string | null
           last_name: string | null
           public_email: string | null
           role: Database["public"]["Enums"]["app_role"] | null
           role_description: string | null
-          role_request: Database["public"]["Enums"]["app_role"] | null
-          role_requested_at: string | null
           role_title: string | null
-          role_updated_at: string | null
-          role_updated_by_id: string | null
-          updated_at: string | null
-          updated_by_id: string | null
         }
       }
     }
@@ -1607,6 +1612,12 @@ export interface Database {
           p_id: string
         }
         Returns: boolean
+      }
+      projects_ts: {
+        Args: {
+          "": unknown
+        }
+        Returns: string
       }
       user_has_role:
         | {

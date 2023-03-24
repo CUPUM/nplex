@@ -27,7 +27,7 @@ export async function getUserProfiles<U extends string | string[], Q extends str
 	const db = await getDb(event);
 	if (Array.isArray(userIds)) {
 		return db
-			.from('users_extended')
+			.from('users')
 			.select(query)
 			.in('id', userIds)
 			.then((res) => {
@@ -38,7 +38,7 @@ export async function getUserProfiles<U extends string | string[], Q extends str
 			});
 	} else {
 		return db
-			.from('users_extended')
+			.from('users')
 			.select(query)
 			.eq('id', userIds)
 			.then((res) => {

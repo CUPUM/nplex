@@ -27,17 +27,17 @@ export const POST: RequestHandler = async (event) => {
 	}
 
 	const profileRes = await db
-		.from('users_extended')
+		.from('users_session')
 		.select(
 			`
-				public_email,
-				first_name,
-				last_name,
-				avatar_url,
-				role,
-				role_description,
-				role_title
-			`
+			avatar_url,
+			first_name,
+			last_name,
+			public_email,
+			role,
+			role_title,
+			role_description
+		`
 		)
 		.eq('id', authSession.user.id)
 		.single();

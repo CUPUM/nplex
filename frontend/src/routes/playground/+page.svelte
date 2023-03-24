@@ -4,8 +4,10 @@
 	import Option from '$components/Options/Option.svelte';
 	import OptionsList from '$components/Options/OptionsList.svelte';
 	import ValueMask from '$components/ValueMask.svelte';
+	import { browserDb } from '$utils/database/client';
 	import { STATES, VARIANTS } from '$utils/enums';
 	import { queryStore } from '$utils/store';
+	import { onMount } from 'svelte';
 
 	const h = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];
 	const t = ['xl', 'lg', 'md', 'sm', 'xs'];
@@ -23,6 +25,25 @@
 	// 	// 	return res.data;
 	// 	// });
 	// });
+
+	onMount(async () => {
+		const u = await browserDb
+			.from('users')
+			.select(
+				`
+				*,
+				role:users_roles_extended!users_roles_user_id_fkey (role, title, description)
+			`
+			)
+			.limit(1)
+			.single();
+
+		if (u.error) {
+			console.log(u.error.hint);
+		} else {
+			console.log(u.data);
+		}
+	});
 
 	$: console.log($q.res);
 

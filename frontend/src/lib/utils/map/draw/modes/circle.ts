@@ -1,13 +1,13 @@
 import {
 	CURSOR,
-	DRAW_ACTIVE_STATES,
-	DRAW_EVENTS,
-	DRAW_META_PROPERTY,
-	DRAW_MODES,
-	DRAW_SOURCES,
 	GEOJSON_GEOMETRY_TYPE,
 	GEOJSON_TYPES,
 	KEY,
+	MAP_DRAW_ACTIVE_STATES,
+	MAP_DRAW_EVENTS,
+	MAP_DRAW_META_PROPERTY,
+	MAP_DRAW_MODES,
+	MAP_DRAW_SOURCES,
 } from '$utils/enums';
 import type { DrawCustomMode, DrawCustomModeThis } from '@mapbox/mapbox-gl-draw';
 import { bearing, circle, destination, distance, type Position, type Units } from '@turf/turf';
@@ -22,8 +22,8 @@ declare global {
 				store: {
 					isDirty: boolean;
 					sources: {
-						[DRAW_SOURCES.Hot]: GeoJSON.Feature[];
-						[DRAW_SOURCES.Cold]: GeoJSON.Feature[];
+						[MAP_DRAW_SOURCES.Hot]: GeoJSON.Feature[];
+						[MAP_DRAW_SOURCES.Cold]: GeoJSON.Feature[];
 					};
 					_changedFeatureIds: {
 						_items: AnyRecord;
@@ -183,7 +183,7 @@ export function toDisplayCircleFeatures(geojson: GeoJSON.GeoJSON, ctx: DrawCusto
 		if (isCircle(feature)) {
 			// Hide circle points.
 			return [];
-		} else if (properties.meta === DRAW_META_PROPERTY.Midpoint) {
+		} else if (properties.meta === MAP_DRAW_META_PROPERTY.Midpoint) {
 			console.log('Need to process midpoint.');
 			//   return processMidpoint(); // calculate geodesic midpoint
 		} else {
@@ -219,7 +219,7 @@ export function toDisplayCircleFeatures(geojson: GeoJSON.GeoJSON, ctx: DrawCusto
 		// transformRotate(baseCircle, handleBearing, { pivot: center, mutate: true });
 		geojson.geometry.coordinates = baseCircle.geometry.coordinates;
 		// Handles / visible vertices.
-		if (properties.active === DRAW_ACTIVE_STATES.Active) {
+		if (properties.active === MAP_DRAW_ACTIVE_STATES.Active) {
 			const handle = destination(center, radius, handleBearing, { units: DEFAULT_UNITS }).geometry
 				.coordinates;
 			const vertices = [handle, center].map((point, i) => {
@@ -282,8 +282,8 @@ export const DrawCircleMode: DrawCustomMode = {
 	},
 
 	onMouseUp(state, e) {
-		this.map.fire(DRAW_EVENTS.Create, { features: [state.circle.toGeoJSON()] });
-		return this.changeMode(DRAW_MODES.SimpleSelect, { featureIds: [state.circle.id] });
+		this.map.fire(MAP_DRAW_EVENTS.Create, { features: [state.circle.toGeoJSON()] });
+		return this.changeMode(MAP_DRAW_MODES.SimpleSelect, { featureIds: [state.circle.id] });
 	},
 
 	onTouchEnd(state, e) {
@@ -297,9 +297,9 @@ export const DrawCircleMode: DrawCustomMode = {
 			// 		this.deleteFeature(f.id, { silent: true });
 			// 	});
 			// }
-			this.changeMode(DRAW_MODES.SimpleSelect);
+			this.changeMode(MAP_DRAW_MODES.SimpleSelect);
 		} else if (e.key === KEY.Enter) {
-			this.changeMode(DRAW_MODES.SimpleSelect, { featureIds: [state.circle.id] });
+			this.changeMode(MAP_DRAW_MODES.SimpleSelect, { featureIds: [state.circle.id] });
 		}
 	},
 
@@ -325,8 +325,8 @@ export const DrawCircleMode: DrawCustomMode = {
 			if (state.circle) {
 				const isActivePolygon = geojson.properties.id === state.circle.id;
 				geojson.properties.active = isActivePolygon
-					? DRAW_ACTIVE_STATES.Active
-					: DRAW_ACTIVE_STATES.Inactive;
+					? MAP_DRAW_ACTIVE_STATES.Active
+					: MAP_DRAW_ACTIVE_STATES.Inactive;
 			}
 			toDisplayCircleFeatures(geojson, this._ctx).forEach(display);
 		}

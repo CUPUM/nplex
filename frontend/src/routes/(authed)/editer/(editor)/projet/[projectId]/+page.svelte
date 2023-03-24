@@ -88,5 +88,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2.5rem;
+		max-width: var(--ui-width-md);
 	}
 </style>

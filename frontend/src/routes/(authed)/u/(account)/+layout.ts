@@ -1,3 +1,4 @@
+import { fixTypes } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { LOAD_DEPENDENCIES, STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
@@ -13,10 +14,11 @@ export const load = async (event) => {
 	const db = await getDb(event);
 
 	const profile = db
-		.from('users_extended')
+		.from('users')
 		.select(
 			`
-				*
+				*,
+				occupation:user_occupation(*)
 			`
 		)
 		.eq('id', session.user.id)
@@ -26,7 +28,7 @@ export const load = async (event) => {
 			if (res.error) {
 				throw error(STATUS_CODES.InternalServerError, res.error);
 			}
-			return res.data;
+			return fixTypes(res.data).toMaybeSingle<{ occupation: true }>().data;
 		});
 
 	const roles = await db

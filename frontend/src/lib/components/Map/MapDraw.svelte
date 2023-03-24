@@ -11,37 +11,44 @@
 <script lang="ts" context="module">
 	const CTX_KEY = 'map-draw-context';
 
-	// const MODES = {
-	// 	...MapboxDraw.modes,
-	// 	draw_circle: DrawCircleMode,
-	// 	simple_select: DrawSimpleSelectMode,
-	// 	static: DrawStaticMode,
-	// } as const satisfies Record<DrawMode, MapboxDraw.DrawCustomMode>;
-
-	const MODES: Record<DrawMode, MapboxDraw.DrawCustomMode> = MapboxGeodesic.enable({
+	const MODES: Record<MapDrawMode, MapboxDraw.DrawCustomMode> = MapboxGeodesic.enable({
 		...MapboxDraw.modes,
 	});
 
-	interface MapDrawContext {
-		getMapDraw: () => MapboxDraw;
-		mode: Readable<DrawMode>;
-		changeMode: (mode: DrawMode, opts?: any) => void;
-	}
+	// interface MapDrawContext {
+	// 	getMapDraw: () => MapboxDraw;
+	// 	mode: Readable<MapDrawMode>;
+	// 	changeMode: (mode: MapDrawMode, opts?: any) => void;
+	// }
 
-	export function getMapDrawContext() {
-		return getContext<MapDrawContext>(CTX_KEY);
+	// export function getMapDrawContext() {
+	// 	return getContext<MapDrawContext>(CTX_KEY);
+	// }
+
+	declare global {
+		namespace MapboxDraw {
+			interface DrawInitEvent {
+				type: (typeof MAP_DRAW_EVENTS)['Init'];
+				draw: MapboxDraw;
+				changeMode: (mode: MapDrawMode, opts?: any) => void;
+			}
+			interface DrawDestroyEvent {
+				type: (typeof MAP_DRAW_EVENTS)['Destroy'];
+			}
+		}
 	}
 </script>
 
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { DRAW_EVENTS, DRAW_MODES, KEY, type DrawMode } from '$utils/enums';
+	import { KEY, MAP_DRAW_EVENTS, MAP_DRAW_MODES, type MapDrawMode } from '$utils/enums';
 	import { DRAW_STYLES } from '$utils/map/draw/styles';
 	import type {
 		DrawActionableEvent,
 		DrawCombineEvent,
 		DrawCreateEvent,
 		DrawDeleteEvent,
+		DrawModeChangeEvent,
 		DrawRenderEvent,
 		DrawSelectionChangeEvent,
 		DrawUncombineEvent,
@@ -50,8 +57,7 @@
 	import MapboxDraw from '@mapbox/mapbox-gl-draw';
 	import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 	import * as MapboxGeodesic from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
-	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
-	import { readonly, writable, type Readable } from 'svelte/store';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import { getMapContext } from './Map.svelte';
 
 	/**
@@ -61,7 +67,7 @@
 	/**
 	 * Initializes as the default mode and then is updated to reflect current mode.
 	 */
-	export let mode: DrawMode = DRAW_MODES.SimpleSelect;
+	export let mode: MapDrawMode = MAP_DRAW_MODES.SimpleSelect;
 	export let styles: object[] = DRAW_STYLES;
 
 	const { getMap } = getMapContext();
@@ -80,35 +86,40 @@
 					userProperties: true,
 				});
 				map.addControl(predraw as any);
-				map.on(DRAW_EVENTS.ModeChange, (e: MapboxDraw.DrawModeChangeEvent) => {
-					dispatch(DRAW_EVENTS.ModeChange, e);
-					mode = e.mode as DrawMode;
+				map.on(MAP_DRAW_EVENTS.ModeChange, (e: DrawModeChangeEvent) => {
+					dispatch(MAP_DRAW_EVENTS.ModeChange, e);
+					mode = e.mode as MapDrawMode;
 				});
-				map.on(DRAW_EVENTS.Create, (e: DrawCreateEvent) => {
-					dispatch(DRAW_EVENTS.Create, e);
+				map.on(MAP_DRAW_EVENTS.Create, (e: DrawCreateEvent) => {
+					dispatch(MAP_DRAW_EVENTS.Create, e);
 				});
-				map.on(DRAW_EVENTS.Delete, (e: DrawDeleteEvent) => {
-					dispatch(DRAW_EVENTS.Delete, e);
+				map.on(MAP_DRAW_EVENTS.Delete, (e: DrawDeleteEvent) => {
+					dispatch(MAP_DRAW_EVENTS.Delete, e);
 				});
-				map.on(DRAW_EVENTS.Combine, (e: DrawCombineEvent) => {
-					dispatch(DRAW_EVENTS.Combine, e);
+				map.on(MAP_DRAW_EVENTS.Combine, (e: DrawCombineEvent) => {
+					dispatch(MAP_DRAW_EVENTS.Combine, e);
 				});
-				map.on(DRAW_EVENTS.Uncombine, (e: DrawUncombineEvent) => {
-					dispatch(DRAW_EVENTS.Uncombine, e);
+				map.on(MAP_DRAW_EVENTS.Uncombine, (e: DrawUncombineEvent) => {
+					dispatch(MAP_DRAW_EVENTS.Uncombine, e);
 				});
-				map.on(DRAW_EVENTS.Update, (e: DrawUpdateEvent) => {
-					dispatch(DRAW_EVENTS.Update, e);
+				map.on(MAP_DRAW_EVENTS.Update, (e: DrawUpdateEvent) => {
+					dispatch(MAP_DRAW_EVENTS.Update, e);
 				});
-				map.on(DRAW_EVENTS.SelectionChange, (e: DrawSelectionChangeEvent) => {
-					dispatch(DRAW_EVENTS.SelectionChange, e);
+				map.on(MAP_DRAW_EVENTS.SelectionChange, (e: DrawSelectionChangeEvent) => {
+					dispatch(MAP_DRAW_EVENTS.SelectionChange, e);
 				});
-				map.on(DRAW_EVENTS.Render, (e: DrawRenderEvent) => {
-					dispatch(DRAW_EVENTS.Render, e);
+				map.on(MAP_DRAW_EVENTS.Render, (e: DrawRenderEvent) => {
+					dispatch(MAP_DRAW_EVENTS.Render, e);
 				});
-				map.on(DRAW_EVENTS.Actionable, (e: DrawActionableEvent) => {
-					dispatch(DRAW_EVENTS.Actionable, e);
+				map.on(MAP_DRAW_EVENTS.Actionable, (e: DrawActionableEvent) => {
+					dispatch(MAP_DRAW_EVENTS.Actionable, e);
 				});
 				draw = predraw;
+				map.fire(MAP_DRAW_EVENTS.Init, {
+					type: MAP_DRAW_EVENTS.Init,
+					draw,
+					changeMode,
+				} satisfies MapboxDraw.DrawInitEvent);
 			}
 		}
 	});
@@ -118,7 +129,7 @@
 	 * of draw.changeMode doesn't fire the corresponding event:
 	 * https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md.
 	 */
-	function changeMode(mode: DrawMode, opts?: any) {
+	function changeMode(mode: MapDrawMode, opts?: any) {
 		// console.log('changing mode!', mode);
 		if (!mode || !draw) {
 			return;
@@ -127,7 +138,7 @@
 			return;
 		}
 		draw.changeMode(mode as any, opts);
-		getMap()?.fire(DRAW_EVENTS.ModeChange, {
+		getMap()?.fire(MAP_DRAW_EVENTS.ModeChange, {
 			mode,
 		});
 	}
@@ -144,28 +155,30 @@
 		}
 	}
 
-	const _mode = writable<typeof mode>();
-	$: if (mode) {
-		_mode.set(mode);
-		changeMode(mode);
-	}
+	// const _mode = writable<typeof mode>();
+	// $: if (mode) {
+	// 	_mode.set(mode);
+	// 	changeMode(mode);
+	// }
 
-	setContext<MapDrawContext>(CTX_KEY, {
-		getMapDraw: () => draw!,
-		mode: readonly(_mode),
-		changeMode,
-	});
+	// setContext<MapDrawContext>(CTX_KEY, {
+	// 	getMapDraw: () => draw!,
+	// 	mode: readonly(_mode),
+	// 	changeMode,
+	// });
 
 	onDestroy(() => {
-		if (draw) {
-			getMap()?.removeControl(draw as any);
-			draw = undefined;
+		const map = getMap();
+		if (map) {
+			if (draw) {
+				map.removeControl(draw as any);
+			}
+			map.fire(MAP_DRAW_EVENTS.Destroy, {
+				type: MAP_DRAW_EVENTS.Destroy,
+			} satisfies MapboxDraw.DrawDestroyEvent);
 		}
+		draw = undefined;
 	});
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
-
-{#if draw}
-	<slot />
-{/if}

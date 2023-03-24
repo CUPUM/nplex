@@ -14,7 +14,6 @@ export const LOCATION_DEFAULT_RADIUS = 500;
 export const LOCATION_MAX_RADIUS = 2_500;
 export const ADJACENT_STREETS_MIN = 0;
 export const ADJACENT_STREETS_MAX = 5;
-
 export const LOCATION_FEATURE_FLAG = 'projectLocationCircle';
 
 export function isLocationCircle(
@@ -26,12 +25,12 @@ export function isLocationCircle(
 /**
  * Maplibre instance.
  */
-export const map = writable<ComponentProps<Map>['map']>();
+export const editorMap = writable<ComponentProps<Map>['map']>();
 
 /**
  * Mapbox-gl draw instance, augmented with circle-mode.
  */
-export const mapDraw = writable<ComponentProps<MapDraw>['draw']>();
+export const editorMapDraw = writable<ComponentProps<MapDraw>['draw']>();
 
 /**
  * Filter valid site usages based on usage category.

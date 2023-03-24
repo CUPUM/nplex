@@ -8,18 +8,36 @@
 	import MapControlFullscreen from '$components/Map/MapControlFullscreen.svelte';
 	import MapControlGeolocate from '$components/Map/MapControlGeolocate.svelte';
 	import MapDraw from '$components/Map/MapDraw.svelte';
+	import MapSearch from '$components/Map/MapSearch.svelte';
 	import MapToolbar from '$components/Map/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import tonerDark from '$utils/map/styles/tonerDark';
-	import { map, mapDraw } from './common';
+	import { editorMap, editorMapDraw } from './common';
 
 	let tracking = false;
 </script>
 
-<Map cooperativeGestures={true} bind:map={$map} mapStyle={tonerDark} id="editor-map">
+<Map cooperativeGestures={true} bind:map={$editorMap} mapStyle={tonerDark} id="editor-map">
+	<MapDraw bind:draw={$editorMapDraw} mode="draw_circle" />
 	<MapAttributionControl position="bottom-left" />
-	<MapDraw bind:draw={$mapDraw} mode="draw_circle">
-		<MapToolbar position="top right" direction="column">
+	<svelte:fragment slot="top-left">
+		<MapSearch />
+	</svelte:fragment>
+	<svelte:fragment slot="top-right">
+		<MapToolbar direction="column">
+			<Tooltip
+				message={tracking
+					? 'Cesser de suivre votre position'
+					: 'Centrer la carte sur votre position actuelle'}
+				place="left"
+			>
+				<div>
+					<MapControlGeolocate
+						on:trackuserlocationstart={() => (tracking = true)}
+						on:trackuserlocationend={() => (tracking = false)}
+					/>
+				</div>
+			</Tooltip>
 			<Tooltip
 				message={tracking
 					? 'Cesser de suivre votre position'
@@ -56,11 +74,11 @@
 			</Tooltip>
 			<Tooltip message="Prendre des mesures en traçant sur la carte" place="left">
 				<div>
-					<MapControlDrawMeasure />
+					<MapControlDrawMeasure disabled />
 				</div>
 			</Tooltip>
 		</MapToolbar>
-	</MapDraw>
+	</svelte:fragment>
 </Map>
 
 <style lang="scss">

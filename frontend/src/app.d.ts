@@ -2,7 +2,7 @@
 
 import type { POPOVER_OPEN_ATTR } from '$components/Popover.svelte';
 import type { BuffedDatabase } from '$types/database/buff';
-import type { ViewRow } from '$types/database/utils';
+import type { TableRow } from '$types/database/utils';
 import type { NonUndefinable } from '$types/utils';
 import type { Category } from '$utils/enums';
 import type { ThemeName } from '$utils/themes';
@@ -52,7 +52,7 @@ declare global {
 		interface PageData {
 			session?: DeepOmit<AuthSession, { user: { role: never } }> & {
 				user: Pick<
-					ViewRow<'users_extended'>,
+					TableRow<'users'>,
 					| 'avatar_url'
 					| 'first_name'
 					| 'last_name'

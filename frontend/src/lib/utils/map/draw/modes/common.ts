@@ -1,8 +1,8 @@
 import {
-	DRAW_ACTIVE_STATES,
-	DRAW_META_PROPERTY,
 	GEOJSON_GEOMETRY_TYPE,
 	GEOJSON_TYPES,
+	MAP_DRAW_ACTIVE_STATES,
+	MAP_DRAW_META_PROPERTY,
 } from '$utils/enums';
 import type { Position } from '@turf/turf';
 
@@ -45,10 +45,10 @@ export function createVertex(
 	return {
 		type: GEOJSON_TYPES.Feature,
 		properties: {
-			meta: DRAW_META_PROPERTY.Vertex,
+			meta: MAP_DRAW_META_PROPERTY.Vertex,
 			parent: parentId,
 			coord_path: path,
-			active: selected ? DRAW_ACTIVE_STATES.Active : DRAW_ACTIVE_STATES.Inactive,
+			active: selected ? MAP_DRAW_ACTIVE_STATES.Active : MAP_DRAW_ACTIVE_STATES.Inactive,
 		},
 		geometry: {
 			type: GEOJSON_GEOMETRY_TYPE.Point,

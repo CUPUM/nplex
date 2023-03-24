@@ -1,7 +1,8 @@
 import type { Writable } from 'svelte/store';
-import type { KeyofBase } from 'ts-essentials';
 
-export type AnyRecord<T = any> = Record<KeyofBase, T>;
+export type RecordKey = string | number | symbol;
+
+export type AnyRecord<T = any> = Record<RecordKey, T>;
 
 export type NonUndefinable<T> = T extends undefined ? never : T;
 
@@ -10,6 +11,18 @@ export type ValueOfWritable<W extends Writable<unknown>> = W extends Writable<in
 export type Many<T> = T extends null | undefined ? [] : T extends readonly unknown[] ? T : [T];
 
 export type Single<T> = NonNullable<T extends readonly unknown[] ? T[0] : T>;
+
+// export type DeepPartialTrue<T extends AnyRecord> = Partial<{
+// 	[K in keyof T]: true | T[K] extends AnyRecord ? DeepPartialTrue<T[K]> : never;
+// }>;
+
+// export type DeepSingle<T extends AnyRecord, S extends DeepPartialTrue<T>> = {
+// 	[K in keyof T]: S[K] extends true
+// 		? Single<T[K]>
+// 		: S[K] extends DeepPartialTrue<T[K]>
+// 		? DeepSingle<T[K], S[K]>
+// 		: T[K];
+// };
 
 export type MaybeSingle<T> = Single<T> | null | undefined;
 

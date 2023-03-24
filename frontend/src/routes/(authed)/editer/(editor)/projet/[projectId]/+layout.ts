@@ -83,7 +83,7 @@ export const load = async (event) => {
 				{
 					title: (await project).title,
 					href: `/editer/projet/${event.params.projectId}`,
-					matcher: new RegExp('/editer/projet/([A-Za-z0-9-]+)/([A-Za-z0-9-_]+)'),
+					matcher: new RegExp('/editer/projet/([A-Za-z0-9-]+)'),
 				},
 			] satisfies App.PageData['editorBreadcrumbs']
 	);

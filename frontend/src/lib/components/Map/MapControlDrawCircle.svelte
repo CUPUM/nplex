@@ -4,18 +4,22 @@
 -->
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
-	import { DRAW_MODES } from '$utils/enums';
+	import { MAP_DRAW_MODES } from '$utils/enums';
+	import { onMount } from 'svelte';
 	import Icon from '../Icon.svelte';
 	import { getMapContext } from './Map.svelte';
-	import { getMapDrawContext } from './MapDraw.svelte';
 
 	// export let initialRadius: number = 500;
 	// export let properties: AnyRecord | undefined = undefined;
 
-	const { getMap, cursor } = getMapContext();
-	const { mode, getMapDraw, changeMode } = getMapDrawContext();
+	const { getMap, cursor, getMapDraw, drawMode, drawChangeMode } = getMapContext();
+	// const { mode, getMapDraw, changeMode } = getMapDrawContext();
 
-	$: active = $mode === DRAW_MODES.DrawCircle;
+	onMount(() => {
+		console.log(getMapDraw());
+	});
+
+	$: active = $drawMode === MAP_DRAW_MODES.DrawCircle;
 
 	// function setProperties(e: DrawCreateEvent) {
 	// 	if (!properties) return;
@@ -30,9 +34,9 @@
 	// }
 
 	// $: if (active) {
-	// 	getMap().on(DRAW_EVENTS.Create, setProperties);
+	// 	getMap().on(MAP_DRAW_EVENTS.Create, setProperties);
 	// } else {
-	// 	getMap().off(DRAW_EVENTS.Create, setProperties);
+	// 	getMap().off(MAP_DRAW_EVENTS.Create, setProperties);
 	// }
 </script>
 
@@ -40,7 +44,9 @@
 	equi={!$$slots.default}
 	variant="ghost"
 	{active}
-	on:pointerdown={() => changeMode(active ? DRAW_MODES.SimpleSelect : DRAW_MODES.DrawCircle)}
+	on:pointerdown={() =>
+		drawChangeMode &&
+		drawChangeMode(active ? MAP_DRAW_MODES.SimpleSelect : MAP_DRAW_MODES.DrawCircle)}
 >
 	<slot>
 		<Icon name="path-circle" />

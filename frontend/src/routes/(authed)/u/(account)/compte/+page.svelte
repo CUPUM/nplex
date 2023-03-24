@@ -74,6 +74,16 @@
 		>
 			<svelte:fragment slot="label">Courriel public</svelte:fragment>
 		</Field>
+		<Field
+			name="occupation"
+			variant="outlined"
+			value={data.profile.occupation?.title}
+			on:change={() => {
+				dirtyGeneral = true;
+			}}
+		>
+			<svelte:fragment slot="label">Courriel public</svelte:fragment>
+		</Field>
 		<TextArea
 			name="about"
 			variant="outlined"
@@ -100,9 +110,9 @@
 	<fieldset id="role">
 		<section>
 			<Token readonly variant="default">
-				{data.profile.role_title}
+				{data.session?.user.role_title}
 			</Token>
-			<p class="subtle">{data.profile.role_description}</p>
+			<p class="subtle">{data.session?.user.role_description}</p>
 		</section>
 		<Modal>
 			<svelte:fragment slot="control" let:open>
@@ -235,9 +245,9 @@
 	#general {
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		gap: 2rem;
 		align-items: stretch;
-		margin-bottom: 1.5rem;
+		margin-bottom: 2rem;
 	}
 
 	#names,
@@ -245,7 +255,7 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		gap: 1.5rem;
+		gap: 2rem;
 		align-items: center;
 	}
 
