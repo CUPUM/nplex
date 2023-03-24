@@ -25,9 +25,9 @@
 	interface MapContext {
 		cursor: Writable<Cursor | null>;
 		getMap: () => Map;
-		getMapDraw: () => MapboxDraw | undefined;
+		getDraw: () => MapboxDraw | undefined;
 		drawMode: Readable<MapDrawMode | undefined>;
-		drawChangeMode: MapboxDraw.DrawInitEvent['changeMode'] | undefined;
+		drawChangeMode: (mode: MapDrawMode, opts?: any) => void | undefined;
 	}
 
 	export function getMapContext() {
@@ -101,7 +101,6 @@
 	let containerRef: HTMLElement;
 	let resizeObserver: ResizeObserver;
 	let draw: MapboxDraw | undefined;
-	let drawChangeMode: MapboxDraw.DrawInitEvent['changeMode'] | undefined;
 
 	const drawMode = writable<MapDrawMode | undefined>();
 
@@ -111,9 +110,21 @@
 		}
 	>();
 
-	// type $$Events = {
-	// 	click: CustomEvent<MapEventType['click']>;
-	// };
+	/**
+	 * Helper to change the draw mode AND fire the corresponding event. By default, programmatic use
+	 * of draw.changeMode doesn't fire the corresponding event:
+	 * https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md.
+	 */
+	function drawChangeMode(mode: MapDrawMode, opts?: any) {
+		if (!map || !draw) return;
+		if (draw.getMode() == mode) {
+			return;
+		}
+		draw.changeMode(mode as any, opts);
+		map.fire(MAP_DRAW_EVENTS.ModeChange, {
+			mode,
+		});
+	}
 
 	function init() {
 		const premap = new Map({
@@ -179,11 +190,9 @@
 			map.on(MAP_DRAW_EVENTS.Init, (e: MapboxDraw.DrawInitEvent) => {
 				draw = e.draw;
 				drawMode.set(draw.getMode() as MapDrawMode);
-				drawChangeMode = e.changeMode;
 
 				map?.once(MAP_DRAW_EVENTS.Destroy, (e) => {
 					draw = undefined;
-					drawChangeMode = undefined;
 				});
 			});
 
@@ -217,7 +226,7 @@
 	setContext<MapContext>(CTX_KEY, {
 		cursor,
 		getMap: () => map!,
-		getMapDraw: () => draw,
+		getDraw: () => draw,
 		drawMode,
 		drawChangeMode,
 	});

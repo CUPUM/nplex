@@ -15,22 +15,12 @@
 		...MapboxDraw.modes,
 	});
 
-	// interface MapDrawContext {
-	// 	getMapDraw: () => MapboxDraw;
-	// 	mode: Readable<MapDrawMode>;
-	// 	changeMode: (mode: MapDrawMode, opts?: any) => void;
-	// }
-
-	// export function getMapDrawContext() {
-	// 	return getContext<MapDrawContext>(CTX_KEY);
-	// }
-
 	declare global {
 		namespace MapboxDraw {
 			interface DrawInitEvent {
 				type: (typeof MAP_DRAW_EVENTS)['Init'];
 				draw: MapboxDraw;
-				changeMode: (mode: MapDrawMode, opts?: any) => void;
+				// changeMode: (mode: MapDrawMode, opts?: any) => void;
 			}
 			interface DrawDestroyEvent {
 				type: (typeof MAP_DRAW_EVENTS)['Destroy'];
@@ -118,30 +108,10 @@
 				map.fire(MAP_DRAW_EVENTS.Init, {
 					type: MAP_DRAW_EVENTS.Init,
 					draw,
-					changeMode,
 				} satisfies MapboxDraw.DrawInitEvent);
 			}
 		}
 	});
-
-	/**
-	 * Helper to change the draw mode AND fire the corresponding event. By default, programmatic use
-	 * of draw.changeMode doesn't fire the corresponding event:
-	 * https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md.
-	 */
-	function changeMode(mode: MapDrawMode, opts?: any) {
-		// console.log('changing mode!', mode);
-		if (!mode || !draw) {
-			return;
-		}
-		if (draw.getMode() == mode) {
-			return;
-		}
-		draw.changeMode(mode as any, opts);
-		getMap()?.fire(MAP_DRAW_EVENTS.ModeChange, {
-			mode,
-		});
-	}
 
 	function handleKeydown(e: KeyboardEvent) {
 		if (draw) {
@@ -154,18 +124,6 @@
 			}
 		}
 	}
-
-	// const _mode = writable<typeof mode>();
-	// $: if (mode) {
-	// 	_mode.set(mode);
-	// 	changeMode(mode);
-	// }
-
-	// setContext<MapDrawContext>(CTX_KEY, {
-	// 	getMapDraw: () => draw!,
-	// 	mode: readonly(_mode),
-	// 	changeMode,
-	// });
 
 	onDestroy(() => {
 		const map = getMap();

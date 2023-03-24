@@ -6,10 +6,11 @@
 
 	export let variant: ComponentProps<Button>['variant'] = 'ghost';
 	export let value: any = null;
+	export let disabled: boolean | undefined = undefined;
 
 	const { value: fieldValue, inputRef } = getFieldContext();
 
-	$: show = $fieldValue != value && $fieldValue != '';
+	$: show = ($fieldValue != value && $fieldValue != '') || !disabled;
 
 	function reset() {
 		fieldValue.set(value);

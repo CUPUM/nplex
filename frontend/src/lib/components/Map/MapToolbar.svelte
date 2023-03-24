@@ -32,7 +32,7 @@
 		border-radius: var(--ui-radius-md);
 		max-width: 100%;
 		font-size: var(--ui-text-sm);
-		opacity: 0.25;
+		opacity: 0.35;
 		gap: 1px;
 		transform: translate(var(--x), var(--y));
 		transform: scale(0.98);

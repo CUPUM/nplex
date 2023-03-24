@@ -12,11 +12,10 @@
 	// export let initialRadius: number = 500;
 	// export let properties: AnyRecord | undefined = undefined;
 
-	const { getMap, cursor, getMapDraw, drawMode, drawChangeMode } = getMapContext();
-	// const { mode, getMapDraw, changeMode } = getMapDrawContext();
+	const { getMap, cursor, getDraw, drawMode, drawChangeMode } = getMapContext();
 
 	onMount(() => {
-		console.log(getMapDraw());
+		console.log(getDraw());
 	});
 
 	$: active = $drawMode === MAP_DRAW_MODES.DrawCircle;
@@ -45,7 +44,6 @@
 	variant="ghost"
 	{active}
 	on:pointerdown={() =>
-		drawChangeMode &&
 		drawChangeMode(active ? MAP_DRAW_MODES.SimpleSelect : MAP_DRAW_MODES.DrawCircle)}
 >
 	<slot>

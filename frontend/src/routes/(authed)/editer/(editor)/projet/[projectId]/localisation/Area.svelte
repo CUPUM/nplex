@@ -45,7 +45,7 @@
 			l'aire. Cherchez ce bouton dans la palette d'outils de la carte. Notez que les tracés produits
 			avec cet outil ne sont pas sauvegardés.
 		</p>
-		<kbd class="text-lg"><Icon name="path-polygon" strokeWidth={1.5} /></kbd>
+		<kbd class="text-lg"><Icon name="path-polygon" /></kbd>
 	</div>
 	<div id="project-areas">
 		<Field

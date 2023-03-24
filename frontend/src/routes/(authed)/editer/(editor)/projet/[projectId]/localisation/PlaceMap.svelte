@@ -7,6 +7,7 @@
 	import MapControlFile from '$components/Map/MapControlFile.svelte';
 	import MapControlFullscreen from '$components/Map/MapControlFullscreen.svelte';
 	import MapControlGeolocate from '$components/Map/MapControlGeolocate.svelte';
+	import MapControlSelect from '$components/Map/MapControlSelect.svelte';
 	import MapDraw from '$components/Map/MapDraw.svelte';
 	import MapSearch from '$components/Map/MapSearch.svelte';
 	import MapToolbar from '$components/Map/MapToolbar.svelte';
@@ -21,7 +22,7 @@
 	<MapDraw bind:draw={$editorMapDraw} mode="draw_circle" />
 	<MapAttributionControl position="bottom-left" />
 	<svelte:fragment slot="top-left">
-		<MapSearch />
+		<MapSearch placeholder="Chercher une adresse" />
 	</svelte:fragment>
 	<svelte:fragment slot="top-right">
 		<MapToolbar direction="column">
@@ -57,6 +58,9 @@
 				</div>
 			</Tooltip>
 			<hr />
+			<div>
+				<MapControlSelect />
+			</div>
 			<Tooltip message="Dessiner un cercle pour situer le projet" place="left">
 				<div>
 					<MapControlDrawCircle />
