@@ -6,7 +6,6 @@
 	import Icon from '$components/Icon.svelte';
 	import { fly } from 'svelte/transition';
 	import { editorDirtyValues, EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../../common';
-	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 	import type { PageData } from './$types';
 	import IndicatorCard from './IndicatorCard.svelte';
 	import IndicatorCreate from './IndicatorCreate.svelte';
@@ -58,7 +57,8 @@
 	}}
 >
 	{#each formMetaIndicators as metaIndicator, i0}
-		<EditorFormgroup legend={metaIndicator.title}>
+		<fieldset class="editor-form-group">
+			<h3 class="editor-form-group-title">{metaIndicator.title}</h3>
 			<AnimateHeight>
 				<p class="subtle">{metaIndicator.description || 'Description à venir...'}</p>
 				<DragndropProvider
@@ -84,7 +84,7 @@
 				</DragndropProvider>
 				<IndicatorCreate categoryId={metaIndicator.id} />
 			</AnimateHeight>
-		</EditorFormgroup>
+		</fieldset>
 	{/each}
 </form>
 

@@ -1,8 +1,9 @@
 <script lang="ts">
-	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 </script>
 
-<EditorFormgroup legend="Matériaux" />
+<header class="editor-form-header">
+	<h2>Matériaux</h2>
+</header>
 
 <style lang="scss">
 </style>

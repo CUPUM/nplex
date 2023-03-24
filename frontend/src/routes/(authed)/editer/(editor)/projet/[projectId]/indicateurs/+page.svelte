@@ -4,7 +4,6 @@
 	import Token from '$components/Token/Token.svelte';
 	import TokenButton from '$components/Token/TokenButton.svelte';
 	import { editorDirtyValues } from '../../../common';
-	import EditorFormgroup from '../../../EditorFormgroup.svelte';
 
 	export let data;
 
@@ -23,7 +22,8 @@
 	bind:dirty={$editorDirtyValues.indicators}
 />
 {#each data.indicators as metaIndicator}
-	<EditorFormgroup legend={metaIndicator.title}>
+	<fieldset class="editor-form-group">
+		<h3 class="editor-form-group-title">{metaIndicator.title}</h3>
 		<!-- <AnimateHeight> -->
 		<ul>
 			{#each metaIndicator.indicators as indicator}
@@ -34,7 +34,7 @@
 			{/each}
 		</ul>
 		<!-- </AnimateHeight> -->
-	</EditorFormgroup>
+	</fieldset>
 {/each}
 
 <!-- {/each} -->
