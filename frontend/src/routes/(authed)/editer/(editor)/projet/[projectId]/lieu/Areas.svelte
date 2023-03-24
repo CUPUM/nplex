@@ -96,13 +96,20 @@
 			</svelte:fragment>
 			<svelte:fragment slot="label">Aire du bâtiment</svelte:fragment>
 		</Field>
-		<Field disabled variant="outlined" type="number" suffix="&ensp;m²" min={0} textAlign="end">
+		<Field
+			bind:value={$projectData.work_area}
+			variant="outlined"
+			type="number"
+			suffix="&ensp;m²"
+			min={0}
+			textAlign="end"
+		>
 			<svelte:fragment slot="leading">
 				<Tooltip message={ttip}>
 					<Button type="button" disabled={!selected} equi><Icon name="refresh" /></Button>
 				</Tooltip>
 			</svelte:fragment>
-			<svelte:fragment slot="label">Surface des travaux</svelte:fragment>
+			<svelte:fragment slot="label">Aire totale des travaux</svelte:fragment>
 		</Field>
 	</div>
 </fieldset>

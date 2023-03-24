@@ -23,6 +23,7 @@
 		} else if (down) {
 			$inputRef.stepDown(steps);
 		}
+		value.set($inputRef.value); // Else svelte is not aware of input update.
 	}
 </script>
 

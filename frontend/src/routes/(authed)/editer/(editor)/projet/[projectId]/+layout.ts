@@ -96,8 +96,8 @@ export const load = async (event) => {
 			title: 'Général',
 		},
 		{
-			pathname: linkBase + '/localisation',
-			title: 'Localisation',
+			pathname: linkBase + '/lieu',
+			title: 'Lieu',
 			hash: EDITOR_FORM_ID,
 		},
 		{

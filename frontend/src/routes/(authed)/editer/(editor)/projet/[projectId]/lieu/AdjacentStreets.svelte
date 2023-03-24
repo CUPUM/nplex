@@ -6,8 +6,8 @@
 </script>
 
 <fieldset class="editor-form-group">
-	<h3 class="editor-form-group-title">Rues adjacentes</h3>
-	<p>Combien de rues ou de ruelles bordent directement le terrain?</p>
+	<h3 class="editor-form-group-title">Voies adjacentes</h3>
+	<p class="subtle">Combien de rues ou de ruelles bordent directement le terrain?</p>
 	<Field
 		variant="outlined"
 		type="number"

@@ -39,19 +39,6 @@
 					/>
 				</div>
 			</Tooltip>
-			<Tooltip
-				message={tracking
-					? 'Cesser de suivre votre position'
-					: 'Centrer la carte sur votre position actuelle'}
-				place="left"
-			>
-				<div>
-					<MapControlGeolocate
-						on:trackuserlocationstart={() => (tracking = true)}
-						on:trackuserlocationend={() => (tracking = false)}
-					/>
-				</div>
-			</Tooltip>
 			<Tooltip message="Activer le mode plein écran" place="left">
 				<div>
 					<MapControlFullscreen />

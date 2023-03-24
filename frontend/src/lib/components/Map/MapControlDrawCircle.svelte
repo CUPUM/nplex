@@ -5,7 +5,6 @@
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
 	import { MAP_DRAW_MODES } from '$utils/enums';
-	import { onMount } from 'svelte';
 	import Icon from '../Icon.svelte';
 	import { getMapContext } from './Map.svelte';
 
@@ -13,10 +12,6 @@
 	// export let properties: AnyRecord | undefined = undefined;
 
 	const { getMap, cursor, getDraw, drawMode, drawChangeMode } = getMapContext();
-
-	onMount(() => {
-		console.log(getDraw());
-	});
 
 	$: active = $drawMode === MAP_DRAW_MODES.DrawCircle;
 

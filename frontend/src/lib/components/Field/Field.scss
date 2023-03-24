@@ -221,7 +221,7 @@ label {
 	&:has(:-webkit-autofill) {
 		label {
 			opacity: 0.5;
-			top: 1.5em;
+			top: 1.3em;
 			font-size: max(var(--ui-text-xs), 0.65em);
 			// font-size: 0.65em;
 		}
@@ -231,7 +231,7 @@ label {
 		&.haslabel {
 			.affix,
 			:global(*[data-field-input]) {
-				top: 0.5em;
+				top: 0.6em;
 			}
 		}
 	}

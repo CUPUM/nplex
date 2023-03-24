@@ -99,17 +99,20 @@
 
 <fieldset class="editor-form-group">
 	<h3 class="editor-form-group-title">Emplacement</h3>
-	<div id="editor-location-info">
+	<p>Situez le projet sur la carte ci-contre en y dessinant un cercle.</p>
+	<div id="editor-location-info" class="subtle">
 		<p>
-			Situez le projet sur la carte ci-contre en y dessinant un cercle. Recherchez cette icône dans
-			la barre d'outils de la carte. Notez que le diamètre du cercle permet de garder l'emplacement
-			relativement confidentiel lorsque le projet est publié.
+			Recherchez cette icône dans la barre d'outils de la carte. Notez que le diamètre du cercle
+			permet de garder l'emplacement relativement confidentiel lorsque le projet est publié.
+			Assurrez-vous toutefois que le centre du cercle correspond bien à l'emplacement du projet. Son
+			bon positionnement est essentiel pour nous permettre d'extrapoler des données supplémentaires
+			de manière minimalement fiable.
 		</p>
 		<kbd class="text-lg"><Icon name="path-circle" /></kbd>
 	</div>
 	<div id="editor-location-values">
 		<Field
-			variant="outlined"
+			variant="default"
 			readonly
 			type="number"
 			value={$projectData.location?.center?.[0]?.toFixed(4)}
@@ -117,7 +120,7 @@
 			<svelte:fragment slot="label">Longitude</svelte:fragment>
 		</Field>
 		<Field
-			variant="outlined"
+			variant="default"
 			readonly
 			type="number"
 			value={$projectData.location?.center?.[1]?.toFixed(4)}
@@ -125,12 +128,11 @@
 			<svelte:fragment slot="label">Lattitude</svelte:fragment>
 		</Field>
 		<Field
-			variant="outlined"
+			variant="default"
 			readonly
 			type="number"
 			value={$projectData.location?.radius?.toFixed(0)}
 			suffix="&ensp;m"
-			textAlign="end"
 		>
 			<svelte:fragment slot="label">Rayon</svelte:fragment>
 		</Field>
@@ -144,11 +146,6 @@
 			radius: $projectData.location.radius,
 		})}
 	/>
-	<p class="subtle">
-		Assurrez-vous toutefois que le centre du cercle correspond bien à l'emplacement du projet. Son
-		bon positionnement est essentiel pour nous permettre d'extrapoler des données supplémentaires de
-		manière minimalement fiable.
-	</p>
 </fieldset>
 
 <style lang="scss">
@@ -159,9 +156,9 @@
 			'radius radius';
 		grid-template-columns: 1fr 1fr;
 		flex-direction: column;
-		max-width: var(--ui-width-sm);
-		gap: 1.5rem;
-		margin-top: 3rem;
+		max-width: 300px; //var(--ui-width-sm);
+		gap: 3rem 1.5rem;
+		margin-top: 1.5rem;
 	}
 
 	#editor-location-info {

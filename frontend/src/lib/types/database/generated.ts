@@ -644,7 +644,6 @@ export interface Database {
       projects: {
         Row: {
           adjacent_streets: number | null
-          area: number | null
           banner_id: string | null
           building_area: number | null
           building_construction_year: number | null
@@ -661,11 +660,11 @@ export interface Database {
           type_id: number | null
           updated_at: string
           updated_by_id: string
+          work_area: number | null
           projects_ts: string | null
         }
         Insert: {
           adjacent_streets?: number | null
-          area?: number | null
           banner_id?: string | null
           building_area?: number | null
           building_construction_year?: number | null
@@ -682,10 +681,10 @@ export interface Database {
           type_id?: number | null
           updated_at?: string
           updated_by_id?: string
+          work_area?: number | null
         }
         Update: {
           adjacent_streets?: number | null
-          area?: number | null
           banner_id?: string | null
           building_area?: number | null
           building_construction_year?: number | null
@@ -702,6 +701,7 @@ export interface Database {
           type_id?: number | null
           updated_at?: string
           updated_by_id?: string
+          work_area?: number | null
         }
       }
       projects_events: {

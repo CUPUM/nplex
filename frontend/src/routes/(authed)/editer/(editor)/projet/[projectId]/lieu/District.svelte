@@ -29,17 +29,14 @@
 </script>
 
 <fieldset class="editor-form-group">
-	<h3 class="editor-form-group-title">Arrondissement & quartier</h3>
+	<h3 class="editor-form-group-title">Arrondissement et quartier</h3>
 	<p class="subtle">
-		Sélectionnez confirmez l'arrondissement dans la liste suivante établie en fonction de votre
-		localisation du projet:
+		Confirmez que l'arrondissement et le quartier correspondent sont justement identifiés à partir
+		du cercle de localisation.
 	</p>
-	<ul>
-		<!-- {await getOverlappingDistricts()} -->
-		<li>
-			<Token>Test</Token>
-		</li>
-	</ul>
+	<!-- {await getOverlappingDistricts()} -->
+	<Token>Arrondissement</Token>
+	<Token>Quartier</Token>
 </fieldset>
 
 <style lang="scss">

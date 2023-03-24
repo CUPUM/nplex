@@ -4,8 +4,11 @@
 	import { editorDirtyValues } from '../../../common';
 	import { projectData } from '../common';
 	import AdjacentStreets from './AdjacentStreets.svelte';
-	import Area from './Area.svelte';
+	import Areas from './Areas.svelte';
+	import ConstructionYear from './ConstructionYear.svelte';
 	import District from './District.svelte';
+	import ImplantationMode from './ImplantationMode.svelte';
+	import Levels from './Levels.svelte';
 	import Location from './Location.svelte';
 
 	export let data;
@@ -16,6 +19,12 @@
 	sample={data.project.adjacent_streets}
 	specimen={$projectData.adjacent_streets}
 	bind:dirty={$editorDirtyValues.adjacent_streets}
+/>
+<Dirty
+	sample={data.project.location}
+	specimen={$projectData.location}
+	bind:dirty={$editorDirtyValues.location}
+	strictOrder
 />
 <!-- Form content -->
 <header class="editor-form-header">
@@ -32,21 +41,20 @@
 </header>
 <div id="editor-localisation">
 	<section class="map">
-		{#await import('./PlaceMap.svelte')}
-			<Loading />
-		{:then PlaceMap}
-			<svelte:component this={PlaceMap.default} />
+		{#await import('./LocalisationMap.svelte')}
+			<Loading style="font-size: 2em; opacity: .5" />
+		{:then LocalisationMap}
+			<svelte:component this={LocalisationMap.default} />
 		{/await}
-		<!-- <LocalisationMap /> -->
 	</section>
 	<section class="fields">
 		<Location />
 		<District />
-		<Area />
+		<Areas />
 		<AdjacentStreets />
-		<!-- <ImplantationMode /> -->
-		<!-- <Levels /> -->
-		<!-- <ConstructionYear /> -->
+		<ImplantationMode />
+		<Levels />
+		<ConstructionYear />
 		<!-- <Footprint /> -->
 	</section>
 </div>

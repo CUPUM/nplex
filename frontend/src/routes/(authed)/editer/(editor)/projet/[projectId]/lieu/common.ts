@@ -15,6 +15,12 @@ export const LOCATION_MAX_RADIUS = 2_500;
 export const ADJACENT_STREETS_MIN = 0;
 export const ADJACENT_STREETS_MAX = 5;
 export const LOCATION_FEATURE_FLAG = 'projectLocationCircle';
+export const BUILDING_MIN_LEVELS = 1;
+export const BUILDING_MAX_LEVELS = 10;
+export const BUILDING_MIN_HEIGHT = 0;
+export const BUILDING_MAX_HEIGHT = 300;
+export const BUILDING_YEAR_MIN = 1800;
+export const BUILDING_YEAR_MAX = new Date().getFullYear();
 
 export function isLocationCircle(
 	feature: GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>
