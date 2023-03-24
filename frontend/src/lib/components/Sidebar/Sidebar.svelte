@@ -2,11 +2,17 @@
 	export let variant: 'default' | 'editor' = 'default';
 </script>
 
+<!-- <button class={variant}><Icon name="hamburger" /></button> -->
 <aside class={variant}>
 	<slot />
 </aside>
 
 <style lang="scss">
+	button {
+		@include tablet {
+		}
+	}
+
 	aside {
 		--sidebar-inset: var(--aside-inset, 6px);
 		--sidebar-gap: var(--sidebar-inset);
@@ -31,8 +37,8 @@
 			position: relative;
 		}
 
-		@include mobile {
-			// position: fixed;
+		@include laptop {
+			position: absolute;
 		}
 	}
 

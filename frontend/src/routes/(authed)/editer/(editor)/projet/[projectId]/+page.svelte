@@ -8,6 +8,7 @@
 	import { projectData } from './common';
 	import CostRange from './CostRange.svelte';
 	import Interventions from './Interventions.svelte';
+	import Ownership from './Ownership.svelte';
 
 	export let data;
 	// export let form;
@@ -82,6 +83,9 @@
 </fieldset>
 <Interventions />
 <CostRange />
+<Ownership />
+
+<!-- <Usages -->
 
 <style lang="scss">
 	#editor-summary-fields {

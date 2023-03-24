@@ -1,14 +1,12 @@
 <script lang="ts">
 	import Select from '$components/Select/Select.svelte';
-	import type { PageData } from './$types';
 	import { descriptors, getAvailableUsages } from './common';
 
-	export let usage_category_id: PageData['project']['site_usage_category_id'];
-	export let usage_id: PageData['project']['site_usage_id'];
+	// export let usage_category_id: PageData['project']['site_usage_category_id'];
+	// export let usage_id: PageData['project']['site_usage_id'];
 
-	$: _usage_category_id = usage_category_id;
-	$: _usage_id = usage_id;
-
+	// $: _usage_category_id = usage_category_id;
+	// $: _usage_id = usage_id;
 	$: availableUsages = getAvailableUsages(_usage_category_id);
 </script>
 

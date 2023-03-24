@@ -21,7 +21,14 @@
 
 <script lang="ts">
 	import { targetBox } from '$actions/targetBox';
-	import { STATES, VARIANTS, type State, type Variant } from '$utils/enums';
+	import {
+		ORIENTATIONS,
+		STATES,
+		VARIANTS,
+		type Orientation,
+		type State,
+		type Variant,
+	} from '$utils/enums';
 	import { getContext, setContext } from 'svelte';
 	import { cubicInOut } from 'svelte/easing';
 	import { readonly as readonlyStore, writable, type Readable, type Writable } from 'svelte/store';
@@ -29,6 +36,8 @@
 
 	export let variant: Variant = VARIANTS.Default;
 	export let state: State = STATES.Normal;
+	// export let direction: Direction = DIRECTIONS.Normal
+	export let orientation: Orientation = ORIENTATIONS.Row;
 	export let name: string | undefined = undefined;
 	export let compact: boolean | undefined = undefined;
 	export let value: V | undefined = undefined;
@@ -66,7 +75,7 @@
 </script>
 
 <fieldset
-	class="switch {variant} {state} {className}"
+	class="switch {variant} {state} {className} {orientation}"
 	class:compact
 	{style}
 	{disabled}
