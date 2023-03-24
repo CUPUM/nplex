@@ -1,6 +1,6 @@
 @use 'utils' as *;
 
-.ui-field {
+.field {
 	--border-thickness: var(--ui-border-size);
 	--radius: var(--ui-radius-md);
 	--height: var(--ui-unit-lg);
@@ -42,8 +42,8 @@
 		cursor: default;
 	}
 	&.warning,
-	&:has(:out-of-range),
-	&:has(:invalid) {
+	&.hasvalue:has(:out-of-range):not(:focus-within),
+	&.hasvalue:has(:invalid):not(:focus-within) {
 		--ui-outline-color: #{col(error, 500, 0.5)};
 		color: col(error, 700) !important;
 		background: col(error, 100, 0.1) !important;

@@ -9,7 +9,7 @@
 
 	export let data;
 
-	let canEditDescriptors = userHasRole(data, ...ALLOWED_ROLES);
+	$: canEditDescriptors = userHasRole(data, ...ALLOWED_ROLES);
 </script>
 
 <div class="wrap">
@@ -29,14 +29,14 @@
 			<a
 				class="block main-link descriptors {ICON_CLASS.hover}"
 				href={EDITOR_ROUTES.project.descriptors.pathname}
-				aria-disabled={canEditDescriptors}
+				aria-disabled={!canEditDescriptors}
 			>
 				<Ripple />
 				<div class="fill" aria-hidden="true">
 					<Icon animationSpeed={0.3} name="parameters" strokeWidth={2} strokeLinecap="round" />
 				</div>
 				<span style="z-index: 1">Éditer les descripteurs de projet</span>
-				{#if canEditDescriptors}
+				{#if !canEditDescriptors}
 					<Token style="font-size: var(--ui-text-sm)" variant="default" state="warning">
 						Éditeurs & administrateurs seulement
 					</Token>
@@ -93,7 +93,7 @@
 		font-weight: 500;
 	}
 
-	[aria-disabled] {
+	[aria-disabled='true'] {
 		opacity: 0.25;
 		pointer-events: none;
 		user-select: none;
@@ -130,6 +130,7 @@
 		border-radius: var(--ui-radius-xl);
 		font-size: var(--ui-text-xl);
 		overflow: hidden;
+		color: col(fg, 100);
 		transition: all 0.1s;
 
 		&:hover {

@@ -11,6 +11,10 @@
 
 <fieldset class="editor-form-group">
 	<h3 class="editor-form-group-title">Nombre d'étages et hauteur</h3>
+	<p class="text-lg">
+		[Note: Ajouter ici un diagramme plutôt que des champs pour consolider les différents types de
+		paliers à documenter (sous-sol, demi sous-sol, étage, hors-toit/mezzanine)]
+	</p>
 	<div class="fields">
 		<Field
 			variant="outlined"

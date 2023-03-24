@@ -123,7 +123,8 @@
 		max-width: var(--ui-width-main);
 		padding: 3rem 4rem;
 		opacity: max(0, calc(1 - 0.001 * var(--ui-scroll)));
-		overflow: visible;
+		// overflow: visible;
+		transition: all 0.2s ease-out;
 	}
 
 	button {

@@ -16,7 +16,12 @@
 	<ul>
 		{#each organisations as o (o.id)}
 			<li>
-				<a class="card" href="{EXPLORE_ROUTES.organisations.pathname}/{o.id}">Yhello!</a>
+				<a class="card" href="{EXPLORE_ROUTES.organisations.pathname}/{o.id}">
+					<legend class="heading-sm">
+						{o.name}
+					</legend>
+					<div class="shortname">{o.short_name}</div>
+				</a>
 			</li>
 		{/each}
 	</ul>
@@ -28,34 +33,6 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-	}
-
-	.heading {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		gap: 0.5em;
-		padding: 1.5rem;
-		position: relative;
-		width: 100%;
-		max-width: --ui-block;
-		font-size: var(--ui-text-2xl);
-		font-weight: 500;
-
-		.icon {
-			opacity: 0;
-			font-size: 0.5em;
-			transform: translateX(-0.25em);
-			transition: all 0.2s var(--ui-ease-out);
-		}
-
-		&:hover {
-			.icon {
-				transform: translateX(0);
-				opacity: 1;
-			}
-		}
 	}
 
 	ul {
@@ -79,8 +56,24 @@
 	.card {
 		display: flex;
 		flex-direction: column;
+		align-items: flex-start;
 		position: relative;
+		padding: 2rem;
+		gap: 1.5rem;
 		height: 100%;
 		width: 100%;
+		background-color: col(bg, 000);
+		border-radius: var(--ui-radius-lg);
+	}
+
+	.shortname {
+		padding: 0 1.2em 0.2em;
+		display: inline-flex;
+		flex-direction: row;
+		align-items: center;
+		background-color: col(secondary, 100, 0.2);
+		color: col(secondary, 900);
+		height: var(--ui-unit-md);
+		border-radius: 99px;
 	}
 </style>

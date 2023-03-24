@@ -1,9 +1,9 @@
+import EditorSidebarProject from '$routes/(authed)/editer/(editor)/projet/[projectId]/EditorSidebarProject.svelte';
 import { fixTypes } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES, STORAGE_BUCKETS } from '$utils/enums';
 import { pgCubeToHsl, pgRangeToArr } from '$utils/format';
 import { error } from '@sveltejs/kit';
-import { EDITOR_FORM_ID } from '../../common';
 import EditorHeaderProject from './EditorHeaderProject.svelte';
 
 export const load = async (event) => {
@@ -88,50 +88,11 @@ export const load = async (event) => {
 			] satisfies App.PageData['editorBreadcrumbs']
 	);
 
-	const linkBase = '/editer/projet/' + event.params.projectId;
-
-	const editorLinks = [
-		{
-			pathname: linkBase + '',
-			title: 'Général',
-		},
-		{
-			pathname: linkBase + '/lieu',
-			title: 'Lieu',
-			hash: EDITOR_FORM_ID,
-		},
-		{
-			pathname: linkBase + '/galerie',
-			title: 'Galerie',
-			hash: EDITOR_FORM_ID,
-		},
-		{
-			pathname: linkBase + '/materiaux',
-			title: 'Matériaux',
-			hash: EDITOR_FORM_ID,
-		},
-		{
-			pathname: linkBase + '/indicateurs',
-			title: 'Indicateurs',
-			hash: EDITOR_FORM_ID,
-		},
-		{
-			pathname: linkBase + '/realisation',
-			title: 'Réalisation',
-			hash: EDITOR_FORM_ID,
-		},
-		{
-			pathname: linkBase + '/parametres',
-			title: 'Paramètres',
-			hash: EDITOR_FORM_ID,
-		},
-	] satisfies App.PageData['editorLinks'];
-
 	return {
 		project,
 		descriptors,
 		editorBreadcrumbs,
 		editorHeader: EditorHeaderProject,
-		editorLinks,
+		editorSidebar: EditorSidebarProject,
 	};
 };

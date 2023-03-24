@@ -7,8 +7,6 @@
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import ModalConfirmNavigation from '$components/Modal/ModalConfirmNavigation.svelte';
-	import Sidebar from '$components/Sidebar/Sidebar.svelte';
-	import SidebarButton from '$components/Sidebar/SidebarButton.svelte';
 	import { NAVBAR_WIDTH, overlapNavbar } from '$routes/Navbar.svelte';
 	import { setRootBackground } from '$routes/RootBackground.svelte';
 	import { col } from '$utils/css';
@@ -50,15 +48,10 @@
 	{/if}
 	<div id="editor-columns">
 		<!-- Sidebar navigation -->
-		{#if $page.data.editorLinks}
-			<Sidebar variant="editor">
-				{#each $page.data.editorLinks as link, i}
-					<SidebarButton {i} href="{link.pathname}{link.hash ? '#' + link.hash : ''}">
-						{link.title}
-					</SidebarButton>
-				{/each}
-			</Sidebar>
+		{#if $page.data.editorSidebar}
+			<svelte:component this={$page.data.editorSidebar} />
 		{/if}
+		<!-- Main editor form -->
 		<form
 			class="editor-form"
 			use:enhance={({ form, data, action, cancel }) => {
@@ -158,7 +151,6 @@
 		}
 
 		menu {
-			width: 100%;
 			position: sticky;
 			bottom: 1.5rem;
 			align-self: center;

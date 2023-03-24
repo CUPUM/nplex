@@ -10,6 +10,7 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Portal from '$components/Portal.svelte';
 	import { rootScroll } from '$stores/rootScroll';
+	import { col } from '$utils/css';
 	import { closest, type ClosestReadable } from '$utils/store';
 	import type { ThemeName } from '$utils/themes';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
@@ -17,7 +18,7 @@
 	import { fade, fly, scale } from 'svelte/transition';
 	import { modalOutletRef } from './ModalOutlet.svelte';
 
-	export let backgroundColor: string = '';
+	export let backgroundColor: string = col('bg', 100, 0.75);
 	export let lockScroll: boolean = true;
 	export let closeOnClickoutside = true;
 	export let opened: boolean = false;
@@ -102,8 +103,9 @@
 {#if $modalOutletRef && opened}
 	<Portal target={$modalOutletRef}>
 		<div
+			data-theme={theme ?? $closestTheme}
 			class="bg"
-			style:--background={backgroundColor}
+			style:--modal-background={backgroundColor}
 			transition:fade|local={{ duration: 150 }}
 		/>
 		<dialog
@@ -143,7 +145,7 @@
 		left: 0;
 		height: 100%;
 		width: 100%;
-		background: var(--background, rgb(24, 26, 30, 0.75));
+		background: var(--modal-background);
 	}
 
 	dialog {
@@ -152,7 +154,7 @@
 		flex: none;
 		display: flex;
 		flex-direction: column;
-		background: col(bg, 300);
+		background: col(bg, 500);
 		color: col(fg, 100);
 		max-width: var(--ui-width-sm);
 		box-shadow: var(--ui-shadow-lg);
@@ -160,6 +162,7 @@
 		margin: 0 auto;
 		overflow-y: auto;
 		max-height: 100%;
+		// border: 1px solid col(bg, 900);
 		border-radius: var(--ui-radius-lg);
 	}
 
@@ -184,7 +187,7 @@
 		align-items: center;
 		justify-content: flex-end;
 		font-size: var(--ui-text-sm);
-		background: col(bg, 300);
+		background: col(bg, 500);
 		padding: 1.5rem;
 		position: sticky;
 		bottom: 0;

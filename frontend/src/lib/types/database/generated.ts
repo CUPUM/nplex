@@ -647,6 +647,8 @@ export interface Database {
           banner_id: string | null
           building_area: number | null
           building_construction_year: number | null
+          building_height: number | null
+          building_levels: number | null
           cost_range: unknown
           created_at: string
           created_by_id: string
@@ -668,6 +670,8 @@ export interface Database {
           banner_id?: string | null
           building_area?: number | null
           building_construction_year?: number | null
+          building_height?: number | null
+          building_levels?: number | null
           cost_range?: unknown
           created_at?: string
           created_by_id?: string
@@ -688,6 +692,8 @@ export interface Database {
           banner_id?: string | null
           building_area?: number | null
           building_construction_year?: number | null
+          building_height?: number | null
+          building_levels?: number | null
           cost_range?: unknown
           created_at?: string
           created_by_id?: string

@@ -29,8 +29,8 @@
 <style lang="scss" global>
 	.maplibregl-ctrl-attrib {
 		font-family: var(--ui-font-main);
-		font-size: var(--ui-text-2xs);
-		background-color: col(fg, 100, 0.2) !important;
+		font-size: var(--ui-text-xs);
+		background-color: col(bg, 500, 0.5) !important;
 		backdrop-filter: blur(4px);
 		padding: 2px 10px 3px 10px !important;
 		border-radius: 99px !important;

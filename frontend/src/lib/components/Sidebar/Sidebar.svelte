@@ -33,7 +33,7 @@
 
 		> :global(hr) {
 			align-self: stretch;
-			margin: var(--ui-border-size) calc(-1 * var(--sidebar-gap));
+			margin: var(--sidebar-inset) calc(-1 * var(--sidebar-inset));
 			position: relative;
 		}
 

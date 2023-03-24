@@ -180,7 +180,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <fieldset
-	class="ui-field focus-outline-within {variant} {className}"
+	class="field focus-outline-within {variant} {className}"
 	{style}
 	{disabled}
 	class:compact

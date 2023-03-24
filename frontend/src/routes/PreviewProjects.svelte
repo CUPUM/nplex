@@ -58,7 +58,7 @@
 		width: 100%;
 		display: flex;
 		flex-direction: row;
-		gap: 0;
+		gap: 1.5rem;
 		height: 500px;
 		overflow-x: scroll;
 		justify-content: stretch;

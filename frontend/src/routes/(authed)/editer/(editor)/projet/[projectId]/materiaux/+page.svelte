@@ -2,7 +2,7 @@
 </script>
 
 <header class="editor-form-header">
-	<h2>Matériaux</h2>
+	<h2 class="heading-lg">Matériaux</h2>
 </header>
 
 <style lang="scss">

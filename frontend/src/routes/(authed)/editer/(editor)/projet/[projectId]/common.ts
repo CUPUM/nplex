@@ -16,7 +16,7 @@ export const COST_MIN = 0;
 export const COST_MAX = 100_000;
 export const COST_MAX_DELTA = 10_000;
 export const COST_MAX_DELTA_R = 0.25;
-export const COST_STEP = 10;
+export const COST_STEP = 50;
 
 export function maxCostDelta(min: number, max: number) {
 	return snap(avg(min, max) * COST_MAX_DELTA_R, COST_STEP, { origin: COST_MIN, round: Math.floor });
