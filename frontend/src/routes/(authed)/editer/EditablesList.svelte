@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	type DatumBase = {
 		id: string | null;
-		created_by_id: string | null;
+		created_by: string | null;
 		publication_status?: Pick<
 			App.Database['public']['Tables']['projects_publication_status']['Row'],
 			'status'
@@ -24,13 +24,13 @@
 		mine: {
 			text: 'Créés par moi',
 			filter: (d, uid) => {
-				return d.created_by_id === uid;
+				return d.created_by === uid;
 			},
 		},
 		shared: {
 			text: 'Partagés avec moi',
 			filter: (d, uid) => {
-				return d.created_by_id !== uid;
+				return d.created_by !== uid;
 			},
 		},
 	} satisfies Filters<AuthoringFilterFunction>;

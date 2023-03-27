@@ -10,8 +10,8 @@ async function getEditableProjects(db: App.DatabaseClient, start: number = 0, en
 			`
 			*,
 			type:project_type(*),
-			banner:projects_images!banner_id(*),
-			gallery:projects_images!project_id(*),
+			banner:projects_images!banner(*),
+			gallery:projects_images!project(*),
 			publication_status:projects_publication_status(*)
 		`
 		)
@@ -28,7 +28,7 @@ async function getEditableProjects(db: App.DatabaseClient, start: number = 0, en
 
 async function getEditableOrgs(db: App.DatabaseClient, start: number = 0, end: number = 10) {
 	const orgs = await db
-		.from('editable_organizations')
+		.from('editable_organisations')
 		.select(
 			`
 		*
@@ -67,17 +67,21 @@ export const load = async (event) => {
 		});
 	}
 	try {
-		const editableProjects = getEditableProjects(event.locals.db);
-		const editableOrgs = getEditableOrgs(event.locals.db);
-		const editableActors = getEditableActors(event.locals.db);
 		return {
 			defer: {
-				editableProjects,
-				editableOrgs,
-				editableActors,
+				editableProjects: getEditableProjects(event.locals.db),
+				editableOrgs: getEditableOrgs(event.locals.db),
+				editableActors: getEditableActors(event.locals.db),
 			},
+			editorBreadcrumbs: [
+				{
+					title: 'Éditeur',
+					href: '/editer',
+				},
+			] satisfies App.PageData['editorBreadcrumbs'],
 		};
 	} catch (err) {
+		console.error(err);
 		throw error(STATUS_CODES.InternalServerError, JSON.stringify(err));
 	}
 };

@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { debounce } from '$utils/modifiers';
-import { get, readable, writable, type Updater } from 'svelte/store';
+import { derived, get, readable, writable, type Updater } from 'svelte/store';
 import type { Awaited } from 'ts-essentials';
 
 /**
@@ -37,6 +37,23 @@ export function writableLedger<T>(init: T, fallback?: T) {
 		set,
 		update,
 		unset,
+	};
+}
+
+export function createDirtyStores() {
+	/**
+	 * Map of dirty fields, managed by each formgroup component.
+	 */
+	const dirtyValues = writable<Record<string, boolean>>({});
+	/**
+	 * Are there currently any dirty values?
+	 */
+	const isDirty = derived(dirtyValues, ($dirty) => {
+		return !!Object.values($dirty).filter((v) => v).length;
+	});
+	return {
+		dirtyValues,
+		isDirty,
 	};
 }
 

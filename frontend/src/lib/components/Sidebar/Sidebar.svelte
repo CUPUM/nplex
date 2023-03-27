@@ -22,7 +22,7 @@
 		display: flex;
 		align-items: stretch;
 		flex-direction: column;
-		top: calc(var(--ui-nav-h));
+		top: var(--ui-nav-h);
 		padding: var(--sidebar-inset);
 		border-radius: var(--sidebar-radius);
 		overflow-x: hidden;
@@ -33,7 +33,7 @@
 
 		> :global(hr) {
 			align-self: stretch;
-			margin: var(--sidebar-inset) calc(-1 * var(--sidebar-inset));
+			margin: calc(var(--sidebar-inset) - var(--sidebar-gap)) calc(-1 * var(--sidebar-inset));
 			position: relative;
 		}
 
@@ -54,10 +54,10 @@
 	}
 
 	.editor {
-		--sidebar-inset: 0.75rem;
+		--sidebar-inset: 0.5rem;
 		--sidebar-gap: 3px;
 		--sidebar-radius: var(--ui-radius-lg);
-		background-color: col(secondary, 100, 0.1);
+		background-color: col(secondary, 100, 0.25);
 		> :global(hr) {
 			border-bottom: var(--ui-border-size) solid col(secondary, 100, 0.1);
 		}

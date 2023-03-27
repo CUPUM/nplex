@@ -76,11 +76,11 @@
 	class={className}
 >
 	<slot name="leading" slot="leading" />
-	<svelte:fragment slot="label">
+	<!-- <svelte:fragment slot="label">
 		{#if $$slots.label}
 			<slot name="label" />
 		{/if}
-	</svelte:fragment>
+	</svelte:fragment> -->
 	<svelte:fragment slot="input" let:bindInputRef>
 		<input
 			type="text"

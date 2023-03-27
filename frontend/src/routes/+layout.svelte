@@ -80,7 +80,7 @@
 		position: relative;
 		transform-origin: 50vw calc(var(--ui-scroll-px) + 50vh);
 		transform: scale(1);
-		transition: transform 0.25s var(--ui-ease-out);
+		transition: transform 0.5s var(--ui-ease-out);
 		&.authing {
 			transform: scale(0.96);
 		}
@@ -97,10 +97,9 @@
 		user-select: none;
 		color: col(bg, 300);
 		box-shadow: 0 0 0 10rem currentColor;
-		transition: border-radius 0.25s var(--ui-ease-out), transform 0.25s var(--ui-ease-out);
+		transition: border-radius 0.35s var(--ui-ease-out), transform 0.5s var(--ui-ease-out);
 		&.authing {
 			transform: scale(0.96);
-			// width: calc(100vw - var(--ui-scroll-size));
 			border-radius: var(--ui-radius-xl);
 			color: col(bg, 900);
 		}

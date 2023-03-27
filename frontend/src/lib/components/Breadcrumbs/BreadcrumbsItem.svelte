@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { UnbasedURL } from '$utils/url';
+	import { expoOut } from 'svelte/easing';
+	import { slide } from 'svelte/transition';
 
 	export let href: string;
 	export let current: boolean | undefined = undefined;
@@ -18,8 +20,9 @@
 	data-sveltekit-preload-code
 	data-sveltekit-preload-data
 	data-current={current ?? autoCurrent}
+	in:slide={{ axis: 'x', duration: 250, easing: expoOut }}
 >
-	<span class="breadcrumb-item-inner ">
+	<span class="breadcrumb-item-inner">
 		<slot />
 	</span>
 </a>

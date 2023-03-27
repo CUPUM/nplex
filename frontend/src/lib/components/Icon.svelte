@@ -20,6 +20,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { draw, scale } from 'svelte/transition';
 
+	export let id: string | undefined = undefined;
 	export let name: keyof typeof icons;
 	export let secondaryColor: string = 'currentColor';
 	export let strokeWidth: number = 2;
@@ -37,6 +38,7 @@
 </script>
 
 <svg
+	{id}
 	xmlns="http://www.w3.org/2000/svg"
 	aria-roledescription="icon-{name}"
 	role="presentation"

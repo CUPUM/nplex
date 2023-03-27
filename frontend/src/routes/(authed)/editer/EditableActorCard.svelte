@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
-	import { EDITOR_ROUTES } from './common';
+	import { EDITOR_ROUTES } from './constants';
 	import EditableNewCard from './EditableNewCard.svelte';
 	import type { EditablesDefault } from './EditablesList.svelte';
 

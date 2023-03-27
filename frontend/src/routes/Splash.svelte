@@ -37,7 +37,11 @@
 			consult();
 		}
 	}
+
+	let scrollY = 0;
 </script>
+
+<svelte:window bind:scrollY />
 
 <header
 	use:overlapNavbar={{ theme: THEMES.dark, background: col('bg', '300') }}
@@ -48,7 +52,7 @@
 	}}
 	data-theme={THEMES.dark}
 >
-	<svg class="logo" viewBox={FULL_VIEWBOX} on:click={consult} on:keydown={keydown}>
+	<svg id="splash-logo" viewBox={FULL_VIEWBOX} on:click={consult} on:keydown={keydown}>
 		<defs>
 			{#each images as image, i (image.id)}
 				<pattern
@@ -66,7 +70,7 @@
 						use:cachedState
 						on:load|once={() => (logoImgsLoaded[i] = true)}
 						on:error|once={() => (logoImgsLoaded[i] = true)}
-						href={getProjectImageUrl(image.name ?? '')}
+						href={getProjectImageUrl(image.storage_name ?? '')}
 					/>
 				</pattern>
 			{/each}
@@ -113,7 +117,7 @@
 		transition: border-radius 0.15s ease-out;
 	}
 
-	.logo {
+	#splash-logo {
 		will-change: transform;
 		position: relative;
 		transform: translate3d(0, calc(0.5 * var(--ui-scroll-px)), 0);
@@ -124,7 +128,7 @@
 		padding: 3rem 4rem;
 		opacity: max(0, calc(1 - 0.001 * var(--ui-scroll)));
 		// overflow: visible;
-		transition: all 0.2s ease-out;
+		// transition: all 0.01s linear;
 	}
 
 	button {

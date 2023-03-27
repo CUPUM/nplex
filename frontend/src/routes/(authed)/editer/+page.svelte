@@ -1,18 +1,17 @@
 <script lang="ts">
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Ripple from '$components/Ripple.svelte';
-	import Token from '$components/Token/Token.svelte';
 	import { userHasRole } from '$utils/validation';
 	import { fly } from 'svelte/transition';
-	import { ALLOWED_ROLES } from './(editor)/descripteurs/common';
-	import { EDITOR_ROUTES } from './common';
+	import { EDITOR_ROUTES } from './constants';
+	import { ALLOWED_ROLES } from './descripteurs/common';
 
 	export let data;
 
 	$: canEditDescriptors = userHasRole(data, ...ALLOWED_ROLES);
 </script>
 
-<div class="wrap">
+<div id="editor-splash">
 	<ul>
 		<li class="group" in:fly={{ delay: 0, y: 12 }}>
 			<div class="block {ICON_CLASS.hover}">
@@ -37,9 +36,9 @@
 				</div>
 				<span style="z-index: 1">Éditer les descripteurs de projet</span>
 				{#if !canEditDescriptors}
-					<Token style="font-size: var(--ui-text-sm)" variant="default" state="warning">
-						Éditeurs & administrateurs seulement
-					</Token>
+					<div class="notice">
+						<Icon name="warn" /> Section réservée
+					</div>
 				{/if}
 			</a>
 		</li>
@@ -71,7 +70,7 @@
 </div>
 
 <style lang="scss">
-	.wrap {
+	#editor-splash {
 		width: 100%;
 		min-height: calc(100vh - var(--ui-nav-h));
 		display: flex;
@@ -89,14 +88,36 @@
 		flex-wrap: wrap;
 		align-items: stretch;
 		justify-content: flex-start;
-		gap: 1.5rem;
+		gap: var(--ui-gap-md);
 		font-weight: 500;
 	}
 
+	.notice {
+		z-index: 1;
+		font-size: var(--ui-text-sm);
+		padding: 1.2em 1.5em 1.4em;
+		background-color: col(bg, 900);
+		color: col(fg, 100, 0.8);
+		border-radius: 99px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		font-weight: 300;
+		gap: 1em;
+	}
+
 	[aria-disabled='true'] {
-		opacity: 0.25;
 		pointer-events: none;
 		user-select: none;
+		background-color: col(bg, 700) !important;
+		// border: 1.5px dashed col(bg, 900);
+		box-shadow: none !important;
+
+		.fill,
+		span {
+			opacity: 0.2;
+			filter: blur(2px);
+		}
 	}
 
 	.group {
@@ -126,8 +147,9 @@
 		gap: 2rem;
 		padding: 3rem 3.5rem;
 		line-height: 1.2;
-		background: col(bg, 300);
+		background: col(bg, 900);
 		border-radius: var(--ui-radius-xl);
+		// box-shadow: 0 1em 3em -2em rgb(0, 0, 0.2);
 		font-size: var(--ui-text-xl);
 		overflow: hidden;
 		color: col(fg, 100);
@@ -136,12 +158,12 @@
 		&:hover {
 			// overflow: visible;
 			z-index: 1;
-			background: col(primary, 100);
+			background: col(primary, 300);
 			color: col(fg, 500);
-			box-shadow: 0 1rem 7rem -3rem col(primary, 900, 0.5);
+			box-shadow: 0 1rem 7rem -3rem col(primary, 100, 0.2);
 
 			& .fill {
-				color: col(primary, 300);
+				color: col(primary, 500);
 			}
 		}
 	}
@@ -157,7 +179,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: clamp(200px, 40vw, 500px);
-		color: col(bg, 100);
+		color: col(bg, 700);
 		border-radius: inherit;
 		transition: all 0.1s;
 
@@ -195,9 +217,9 @@
 		}
 
 		&:hover {
-			background: col(bg, 300);
-			color: col(primary, 700);
-			box-shadow: 0 1rem 4rem -1rem col(primary, 500);
+			background: col(fg, 500);
+			color: col(primary, 500);
+			box-shadow: 0 1rem 4rem -1rem col(bg, 900, 0.5);
 
 			&::before {
 				opacity: 0;

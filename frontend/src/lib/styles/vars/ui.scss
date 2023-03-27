@@ -7,6 +7,9 @@
 :root {
 	--ui-bg: #{col(bg, 100)};
 	--ui-nav-h: 81px; // Retrieved manually, adjust whenever modifying navbar style.
+	--ui-sticky-top: calc(
+		var(--ui-nav-h) + var(--ui-gutter-md)
+	); // Pre-calc for floating elements that should sticky below the navbar with adequate spacing.
 	--ui-nav-center-w: calc(
 		min(100%, var(--ui-width-main)) - 2 * 1.5rem - 2 * 1rem - 2 * 319px
 	); // 319px = width of main nav (largest of both side navs);

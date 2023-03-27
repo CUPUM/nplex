@@ -110,6 +110,12 @@
 			&::before {
 				opacity: 0;
 			}
+			&:first-of-type {
+				padding-inline-start: 1.5em;
+			}
+			&:last-of-type {
+				padding-inline-end: 1.5em;
+			}
 		}
 
 		// Call-to-action variant

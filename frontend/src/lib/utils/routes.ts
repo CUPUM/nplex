@@ -59,8 +59,8 @@ export const EXPLORE_ROUTES = {
 		noscroll: false,
 	},
 	actors: {
-		pathname: '/acteurs',
-		title: 'Acteurs',
+		pathname: '/intervenant-e-s',
+		title: 'Intervenant·e·s',
 		category: CATEGORIES.Actors,
 		noscroll: false,
 	},

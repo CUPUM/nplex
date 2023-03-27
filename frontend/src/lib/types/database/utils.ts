@@ -13,31 +13,47 @@ export type MinimalSingleGeometry = Pick<
 	'type' | 'coordinates'
 >;
 
-/**
- * Until the postgrest / supabase client's typing system for joined data is improved, sprinkle this
- * helper to typecast a *-to-one property as the expected maybeSingle.
- *
- * ! This is purely a type-casting function and does not modify data in any way !
- *
- * For info, read on: https://github.com/supabase/postgrest-js/issues/303.
- */
-export function maybeSingle<T>(entity: T) {
-	return entity as T extends unknown[] ? T[0] : T;
-}
-
-export type TableName = keyof App.Database['public']['Tables'];
+export type TableName = keyof Database['public']['Tables'];
 
 export type TableRow<
 	T extends TableName,
 	Schema extends Database = App.Database
 > = Schema['public']['Tables'][T]['Row'];
 
-export type ViewName = keyof App.Database['public']['Views'];
+export type ViewName = keyof Database['public']['Views'];
 
 export type ViewRow<
 	V extends ViewName,
 	Schema extends Database = App.Database
 > = Schema['public']['Views'][V]['Row'];
+
+export type FunctionName = keyof Database['public']['Functions'];
+
+export type FunctionReturn<
+	F extends FunctionName,
+	Schema extends Database = App.Database
+> = Schema['public']['Functions'][F]['Returns'];
+
+/**
+ * Until the postgrest / supabase client's typing system for joined data is improved, sprinkle these
+ * helpers to typecast misinterpreted cardinalities.
+ *
+ * ! These are purely type-casting functions and do not modify data in any way !
+ *
+ * For info, read on: https://github.com/supabase/postgrest-js/issues/303.
+ */
+
+export function asMaybeSingle<T>(entity: T) {
+	return entity as MaybeSingle<T>;
+}
+
+export function asSingle<T>(entity: T) {
+	return entity as Single<T>;
+}
+
+export function asMany<T>(entity: T) {
+	return entity as Many<T>;
+}
 
 /**
  * As it stands, typescript can't do partial inference of generics :(. We are thus currying through

@@ -1,4 +1,4 @@
-import { maybeSingle } from '$types/database/utils';
+import { asMaybeSingle } from '$types/database/utils';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
@@ -22,7 +22,7 @@ export const load = async (event) => {
 			return res.data.map((notification) => {
 				return {
 					...notification,
-					content: maybeSingle(notification.content)!,
+					content: asMaybeSingle(notification.content)!,
 				};
 			});
 		});

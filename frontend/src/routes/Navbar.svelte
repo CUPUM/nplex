@@ -122,9 +122,6 @@
 	let open = false;
 	let rootSegment: string;
 
-	const mainNav = Object.values(MAIN_ROUTES);
-	const exploreNav = Object.values(EXPLORE_ROUTES);
-
 	$: rootSegment = $page.data.category ? '/' : '/' + $page.url.pathname.split('/', 2)[1];
 	$: navbg = $navbarBackground ?? $rootBackground.body ?? null;
 	$: if (($media.tablet || $media.mobile) && open) {
@@ -151,7 +148,7 @@
 					<use href={LOGO_SYMBOLS_HREFS.monogram} fill="currentColor" />
 				</svg>
 			</NavbarButton>
-			{#each mainNav as route}
+			{#each Object.values(MAIN_ROUTES) as route}
 				<NavbarButton
 					href={route.pathname}
 					current={route.pathname.split('#')[0] === rootSegment || undefined}
@@ -161,7 +158,7 @@
 			{/each}
 		</section>
 		<section class="category" hidden={!$page.data.showCategoryNavbar}>
-			{#each exploreNav as r}
+			{#each Object.values(EXPLORE_ROUTES) as r}
 				<NavbarButton
 					category
 					href={r.pathname}
@@ -171,7 +168,7 @@
 				</NavbarButton>
 			{/each}
 		</section>
-		<section class="session ">
+		<section class="session">
 			{#if $page.data.session}
 				<Popover place="bottom" align="end" hover let:open>
 					<NavbarButton
@@ -339,7 +336,8 @@
 	.category {
 		--i: 1;
 		--inset: var(--ui-inset);
-		--radius: var(--ui-radius-md);
+		--radius: 99px; //var(--ui-radius-md);
+		gap: 0;
 		grid-column: category;
 		justify-self: center;
 		padding: var(--inset);
@@ -364,13 +362,6 @@
 			filter: brightness(1.5);
 			transition: opacity 0.25s, background var(--navbar-transition),
 				filter var(--navbar-transition);
-
-			// :global([data-theme='light']) & {
-			// 	filter: brightness(2);
-			// }
-			// :global([data-theme='dark']) & {
-			// 	filter: brightness(1.5);
-			// }
 		}
 	}
 

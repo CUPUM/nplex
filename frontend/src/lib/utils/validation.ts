@@ -100,3 +100,8 @@ export const profileSchema = zfd.formData(
 		about: zfd.text(z.string().nullable().default(null)),
 	})
 );
+
+export const strictCoerceBooleanSchema = z
+	.enum(['0', '1', 'true', 'false'])
+	.catch('false')
+	.transform((value) => value == 'true' || value == '1');

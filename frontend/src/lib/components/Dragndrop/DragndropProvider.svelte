@@ -131,16 +131,26 @@
 
 	function dragndropItem(
 		element: HTMLElement,
-		{ item, disabled = false }: { item: D; disabled?: boolean }
+		{ item, disabled = false }: { item?: D; disabled?: boolean }
 	) {
 		if (!disabled) {
 			element.setAttribute(ATTRIBUTES.DRAGGABLE, '');
 		}
-		itemsRefs.set(element, item);
+		if (item != null) {
+			itemsRefs.set(element, item);
+		}
 		return {
 			update(args) {
-				if (args.disabled) {
+				if (!disabled && args.disabled) {
 					element.removeAttribute(ATTRIBUTES.DRAGGABLE);
+					disabled = args.disabled;
+				} else if (disabled && !args.disabled) {
+					element.setAttribute(ATTRIBUTES.DRAGGABLE, '');
+					disabled = args.disabled;
+				}
+				if (args.item != item) {
+					itemsRefs.set(element, args.item);
+					item = args.item;
 				}
 			},
 			destroy() {

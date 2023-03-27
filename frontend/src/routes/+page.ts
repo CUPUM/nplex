@@ -9,25 +9,26 @@ async function getHomepageProjects(db: App.DatabaseClient) {
 		.select(
 			`
 			*,
-			gallery:projects_images!projects_images_project_id_fkey(*),
-			banner:projects_images!projects_banner_id_fkey(*)
+			gallery:projects_images!projects_images_project_fkey(*),
+			banner:projects_images!projects_banner_fkey(*)
 		`
 		)
 		.order('updated_at', { ascending: false })
 		.range(...pagination(0, 10));
+	console.log(res);
 	if (res.error) throw error;
 	return res.data;
 }
 
 async function getHomepageSplashImages(db: App.DatabaseClient) {
-	const res = await db.from('random_project_images').select('*').limit(5);
+	const res = await db.from('random_projects_images').select('*').limit(5);
 	if (res.error) throw error;
 	return res.data;
 }
 
 async function getHomepageOrgs(db: App.DatabaseClient) {
 	const res = await db
-		.from('organizations')
+		.from('organisations')
 		.select(
 			`
 		*

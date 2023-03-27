@@ -8,7 +8,7 @@ const BREAKPOINTS = {
 	mobile: 'screen and (max-width: 640px)',
 	tablet: 'screen and (max-width: 1024px)',
 	laptop: 'screen and (max-width: 1200px)',
-	desktop: 'screen and (min-width: 1201px)',
+	desktop: 'screen and (max-width: 1400px)',
 };
 
 const setupMq = (mediaQuery: string) => (set: Subscriber<boolean>) => {

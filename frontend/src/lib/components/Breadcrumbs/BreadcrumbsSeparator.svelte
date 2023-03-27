@@ -4,9 +4,11 @@
 	
 -->
 <script lang="ts">
+	import { expoOut } from 'svelte/easing';
+	import { slide } from 'svelte/transition';
 </script>
 
-<span>
+<span in:slide={{ axis: 'x', duration: 250, easing: expoOut }}>
 	<slot>/</slot>
 </span>
 

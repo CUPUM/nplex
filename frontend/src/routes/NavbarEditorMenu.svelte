@@ -3,8 +3,8 @@
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { userHasRole } from '$utils/validation';
-	import { ALLOWED_ROLES } from './(authed)/editer/(editor)/descripteurs/common';
-	import { EDITOR_ROUTES } from './(authed)/editer/common';
+	import { EDITOR_ROUTES } from './(authed)/editer/constants';
+	import { ALLOWED_ROLES } from './(authed)/editer/descripteurs/common';
 </script>
 
 {#each Object.values(EDITOR_ROUTES) as group, i}

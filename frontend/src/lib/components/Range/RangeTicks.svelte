@@ -48,7 +48,7 @@
 
 	li {
 		--pc: calc((var(--value) - var(--min)) / var(--domain) * 100%);
-		position: absolute;
+		position: relative;
 		flex: none;
 		display: flex;
 		flex-direction: column;

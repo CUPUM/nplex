@@ -63,6 +63,7 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-element-to-interactive-role -->
 <label
 	class="toggle {variant} {state}"
 	class:disabled={$$props.disabled}
@@ -73,8 +74,8 @@
 		<input
 			type="checkbox"
 			{value}
-			bind:checked
 			{...$$restProps}
+			bind:checked
 			on:change
 			on:input
 			on:focus
@@ -85,8 +86,8 @@
 		<input
 			type="radio"
 			{value}
-			bind:group
 			{...$$restProps}
+			bind:group
 			on:change
 			on:input
 			on:focus

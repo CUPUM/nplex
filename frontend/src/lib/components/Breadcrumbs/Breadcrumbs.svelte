@@ -4,9 +4,8 @@
 -->
 <script lang="ts">
 	import OverflowEffect from '$components/OverflowEffect.svelte';
-	import { VARIANTS, type Variant } from '$utils/enums';
 
-	export let variant: Variant = VARIANTS.Default;
+	export let variant: 'editor' = 'editor';
 </script>
 
 <nav class="breadcrumbs {variant} noscrollbar">

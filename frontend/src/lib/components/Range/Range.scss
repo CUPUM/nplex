@@ -55,27 +55,23 @@
 	flex-direction: row;
 	position: relative;
 	margin-inline: var(--range-padding-inline);
+	height: 1.5em;
 }
 
 .range-tick {
-	--d: 1em;
 	--l: 0.5em;
+	position: absolute;
 	font-size: var(--ui-text-xs);
 	font-variant-numeric: tabular-nums;
 	text-align: center;
 	color: col(fg, 100, 0.5);
-	position: absolute;
 	inset-inline-start: calc(
 		(var(--range-tick-value) - var(--range-min)) * 100% / var(--range-domain)
 	);
-	top: 50%;
-	margin-top: calc(0.5 * var(--track-thickness));
-	padding-top: var(--d);
-	height: 1em;
 	width: max-content;
 	transform: translateX(-50%);
 	&::before {
-		top: 0;
+		top: -1em;
 		left: calc(50%);
 		transform: translateX(-50%);
 		content: '';

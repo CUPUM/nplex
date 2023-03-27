@@ -10,7 +10,7 @@
 
 	const { value: fieldValue, inputRef } = getFieldContext();
 
-	$: show = ($fieldValue != value && $fieldValue != '') || !disabled;
+	$: show = $fieldValue != value && $fieldValue != '' && $fieldValue != null && !disabled;
 
 	function reset() {
 		fieldValue.set(value);

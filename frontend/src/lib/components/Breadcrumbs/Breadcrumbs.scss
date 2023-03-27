@@ -33,15 +33,10 @@
 	gap: 0;
 }
 
-.default {
+// Variants
+
+.editor {
 	--overflow-effect-color: #{col(bg, 900)};
+	--radius: 99px;
 	background: col(bg, 900);
 }
-
-// .outlined {
-// 	--overflow-effect-color: transparent;
-// 	border: 1px solid col(fg, 100, 0.1);
-// }
-
-// .ghost {
-// }
