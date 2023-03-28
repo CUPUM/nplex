@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import Field from '$components/Field/Field.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import { browserDb } from '$utils/database/client';
 	import { queryStore } from '$utils/store';
 	import type { PageData } from './$types';
 
-	$: collaborators = ($page.data as PageData).collaborators;
+	export let collaborators: PageData['collaborators'];
 
 	const searchUsers = queryStore('', async (s) => {
 		if (s.length) {
@@ -24,8 +23,6 @@
 		}
 		return [];
 	});
-
-	$: console.log($searchUsers.data);
 </script>
 
 <fieldset class="editor-form-group">
@@ -41,7 +38,7 @@
 		Utilisez la barre de recherche ci-dessous pour ajouter des collaborateurs au projet.
 	</p>
 	<div class="search">
-		<Field placeholder="Chercher un utilisateur..." bind:value={$searchUsers.query}>
+		<Field placeholder="Chercher un utilisateur..." bind:value={$searchUsers.input}>
 			<svelte:fragment slot="leading">
 				<FieldIcon name="search" />
 			</svelte:fragment>

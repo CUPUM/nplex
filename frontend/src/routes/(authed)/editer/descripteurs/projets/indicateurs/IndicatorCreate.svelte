@@ -1,6 +1,3 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
@@ -11,9 +8,9 @@
 	import Modal from '$components/Modal/Modal.svelte';
 	import TextArea from '$components/TextArea/TextArea.svelte';
 	import type { PageData } from './$types';
-	import { INDICATORS_KEY_NEW } from './common';
+	import { INDICATORS_KEY_NEW } from './constants';
 
-	export let categoryId: PageData['metaIndicators'][number]['id'];
+	export let categoryId: PageData['exemplarityCategories'][number]['id'];
 
 	export let opened = false;
 

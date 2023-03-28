@@ -94,16 +94,16 @@
 	<div class="fields">
 		<fieldset class="buttons">
 			<Tooltip message="Aussi appelé mezzanine">
-				<Button variant="dashed" on:click={() => addLevel(LEVEL_TYPES.Mezzanine)}>
+				<Button variant="dashed" rounded on:click={() => addLevel(LEVEL_TYPES.Mezzanine)}>
 					<Icon name="plus" slot="leading" />
 					Hors-toit
 				</Button>
 			</Tooltip>
-			<Button variant="dashed" on:click={() => addLevel(LEVEL_TYPES.Main)}>
+			<Button variant="dashed" rounded on:click={() => addLevel(LEVEL_TYPES.Main)}>
 				<Icon name="plus" slot="leading" />
 				Étage
 			</Button>
-			<Button variant="dashed" on:click={() => addLevel(LEVEL_TYPES.Basement)}>
+			<Button variant="dashed" rounded on:click={() => addLevel(LEVEL_TYPES.Basement)}>
 				<Icon name="plus" slot="leading" />
 				Sous-sol
 			</Button>
@@ -181,12 +181,13 @@
 		margin-top: 3rem;
 
 		@include desktop {
+			align-items: center;
 			flex-direction: column-reverse;
 		}
 	}
 
 	.buttons {
-		font-size: var(--ui-text-sm);
+		font-size: var(--ui-text-xs);
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -202,9 +203,11 @@
 
 	.diagram {
 		display: flex;
+		flex: 1;
+		width: 100%;
 		align-items: center;
 		flex-direction: column;
-		gap: 0.25em;
+		gap: 6px;
 		max-width: var(--ui-width-sm);
 	}
 
@@ -221,6 +224,7 @@
 		border-radius: var(--ui-radius-md);
 		font-size: var(--ui-text-sm);
 		background-color: col(fg, 100, 0.1);
+		// border: 1px solid col(fg, 100, 0.1);
 	}
 
 	.intervention {
@@ -229,9 +233,9 @@
 	}
 
 	.mezzanine {
-		--pattern-color: #{col(bg, 900)};
+		--pattern-color: #{col(bg, 700)};
 		--pattern-size: 1.5em;
-		aspect-ratio: 4;
+		width: 75%;
 		background: radial-gradient(
 				circle at 100% 50%,
 				transparent 20%,
@@ -255,15 +259,15 @@
 	}
 
 	.main {
-		aspect-ratio: 6;
+		width: 100%;
 		background-color: col(fg, 100, 0.1);
 	}
 
 	.basement {
-		--pattern-color: #{col(bg, 900)};
+		--pattern-color: #{col(bg, 700)};
 		--pattern-size: 1em;
 		--pattern-offset: calc(0.5 * var(--pattern-size));
-		aspect-ratio: 6;
+		width: 100%;
 		background-image: radial-gradient(var(--pattern-color) 30%, transparent 30%),
 			radial-gradient(var(--pattern-color) 30%, transparent 30%);
 		background-repeat: repeat;

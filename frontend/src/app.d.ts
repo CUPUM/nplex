@@ -70,6 +70,7 @@ declare global {
 				title: string;
 				href: string;
 				matcher?: RegExp;
+				disabled?: boolean;
 			}[];
 			// editorLinks?: {
 			// 	title: string;

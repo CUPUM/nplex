@@ -4,17 +4,25 @@
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Image from '$components/Image/Image.svelte';
+	import Select from '$components/Select/Select.svelte';
 	import TextArea from '$components/TextArea/TextArea.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
-	import { KEY, SEARCH_PARAMS } from '$utils/enums';
+	import { KEY, SEARCH_PARAMS, TEMPORALITY, type Temporality } from '$utils/enums';
 	import { THEMES } from '$utils/themes';
 	import { createEventDispatcher } from 'svelte';
 	import { fly } from 'svelte/transition';
-	import { project } from '../common';
+	import { descriptors, project } from '../common';
 	import type { PageData } from './$types';
 
 	export let data: PageData['project']['gallery'][number];
 	export let i: number;
+
+	const dispatch = createEventDispatcher<{ shift: number }>();
+	const temporalityOptions = [
+		{ temporality: TEMPORALITY.Before, label: 'Avant le projet' },
+		{ temporality: TEMPORALITY.During, label: 'Pendant le projet' },
+		{ temporality: TEMPORALITY.After, label: 'Après le projet' },
+	] as const satisfies readonly { temporality: Temporality; label: string }[];
 
 	let bannerAction: 'promoting' | 'demoting' | null = null;
 	$: if ($project.banner) {
@@ -22,8 +30,6 @@
 	}
 	$: isBanner =
 		($project.banner === data.id && bannerAction !== 'demoting') || bannerAction === 'promoting';
-
-	const dispatch = createEventDispatcher<{ shift: number }>();
 </script>
 
 <figure>
@@ -77,16 +83,33 @@
 			</Button>
 		</Tooltip>
 	</menu>
-	<fieldset>
+	<fieldset class="fields">
 		<input type="hidden" name="gallery[{i}].id" readonly value={data.id} />
-		<input type="hidden" name="gallery[{i}].name" readonly value={data.storage_name} />
-		<Field variant="outlined" name="gallery[{i}].title" bind:value={data.title} tabindex={0}>
+		<input type="hidden" name="gallery[{i}].storage_name" readonly value={data.storage_name} />
+		<Field variant="default" name="gallery[{i}].title" bind:value={data.title} tabindex={0}>
 			<svelte:fragment slot="label">Titre</svelte:fragment>
 		</Field>
+		<Select
+			name="gallery[{i}].type"
+			options={$descriptors.imageTypes}
+			required
+			bind:value={data.type}
+		>
+			<!-- <svelte:fragment slot="label">Type d'image</svelte:fragment> -->
+			<option slot="option" let:option value={option.id}>{option.title}</option>
+		</Select>
+		<Select
+			name="gallery[{i}].temporality"
+			required
+			options={temporalityOptions}
+			bind:value={data.temporality}
+		>
+			<option slot="option" let:option value={option.temporality}>{option.label}</option>
+		</Select>
 		<TextArea
 			style="height: 100px;"
 			name="gallery[{i}].description"
-			variant="outlined"
+			variant="default"
 			bind:value={data.description}
 			on:keypress={(e) => {
 				if (e.key === KEY.Enter) {
@@ -156,11 +179,11 @@
 		}
 	}
 
-	fieldset {
+	.fields {
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
-		padding-top: 1.5rem;
+		gap: var(--ui-gap-sm);
+		padding-top: var(--ui-gap-sm);
 		font-size: var(--ui-text-sm);
 	}
 </style>

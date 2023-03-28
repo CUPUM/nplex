@@ -2,7 +2,6 @@
 	export let variant: 'default' | 'editor' = 'default';
 </script>
 
-<!-- <button class={variant}><Icon name="hamburger" /></button> -->
 <aside class={variant}>
 	<slot />
 </aside>
@@ -29,7 +28,7 @@
 		overflow-y: auto;
 		max-height: calc(100vh - var(--ui-nav-h) - 1.5rem);
 		gap: var(--sidebar-gap);
-		width: var(--ui-sidebar-w);
+		// width: var(--ui-sidebar-w);
 
 		> :global(hr) {
 			align-self: stretch;

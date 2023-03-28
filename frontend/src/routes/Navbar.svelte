@@ -240,7 +240,7 @@
 			1fr
 			[session-end full-end];
 		// grid-auto-flow: dense;
-		padding: 1rem var(--ui-gutter-md);
+		padding: var(--ui-nav-pad) var(--ui-gutter-md);
 		margin: 0 auto;
 		flex-direction: row;
 		align-items: center;

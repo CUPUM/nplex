@@ -4,12 +4,12 @@
 	import Icon from '$components/Icon.svelte';
 	import Modal from '$components/Modal/Modal.svelte';
 	import TextArea from '$components/TextArea/TextArea.svelte';
-	import { EDITOR_FORM_ID } from '../../../common';
+	import { EDITOR_FORM_ID } from '$routes/(authed)/editer/constants';
 	import type { PageData } from './$types';
-	import { INDICATORS_KEY, INDICATOR_LABEL_MAX, INDICATOR_TITLE_MAX } from './common';
+	import { INDICATORS_KEY, INDICATOR_LABEL_MAX, INDICATOR_TITLE_MAX } from './constants';
 
-	export let categoryId: PageData['metaIndicators'][number]['id'];
-	export let data: PageData['metaIndicators'][number]['indicators'][number];
+	export let categoryId: PageData['exemplarityCategories'][number]['id'];
+	export let data: PageData['exemplarityCategories'][number]['indicators'][number];
 	export let opened = false;
 
 	const modalFormId = `indicator-${data.id}-details`;
@@ -57,7 +57,8 @@
 		<Button
 			slot="control"
 			equi
-			variant="danger"
+			variant="default"
+			state="warning"
 			type="submit"
 			formaction="?/delete&id={data.id}"
 			form={EDITOR_FORM_ID}
@@ -80,7 +81,8 @@
 		<Field variant="outlined" state="warning" bind:value={confirmationString} />
 		<svelte:fragment slot="footer" let:cancel>
 			<Button
-				variant="danger"
+				variant="default"
+				state="warning"
 				disabled={confirmationString !== data.title}
 				type="submit"
 				formaction="?/delete&id={data.id}"
@@ -98,7 +100,12 @@
 		readonly
 		value={categoryId}
 	/>
-	<input type="hidden" name="{INDICATORS_KEY}['{data.id}'].label" readonly value={data.label} />
+	<input
+		type="hidden"
+		name="{INDICATORS_KEY}['{data.id}'].short_title"
+		readonly
+		value={data.short_title}
+	/>
 	<input
 		type="hidden"
 		name="{INDICATORS_KEY}['{data.id}'].description"
@@ -109,13 +116,25 @@
 <Modal bind:opened>
 	<svelte:fragment slot="header">Détails de l'indicateur</svelte:fragment>
 	<div class="modal-content">
-		<Field variant="outlined" maxlength={INDICATOR_TITLE_MAX} required bind:value={data.title}>
+		<Field
+			variant="outlined"
+			maxlength={INDICATOR_TITLE_MAX}
+			required
+			bind:value={data.title}
+			name="title"
+		>
 			<svelte:fragment slot="label">Nom de l'indicateur</svelte:fragment>
 		</Field>
-		<Field variant="outlined" maxlength={INDICATOR_LABEL_MAX} required bind:value={data.label}>
+		<Field
+			variant="outlined"
+			maxlength={INDICATOR_LABEL_MAX}
+			required
+			bind:value={data.short_title}
+			name="short_title"
+		>
 			<svelte:fragment slot="label">Nom court</svelte:fragment>
 		</Field>
-		<TextArea variant="outlined" bind:value={data.description}>
+		<TextArea variant="outlined" bind:value={data.description} name="description">
 			<svelte:fragment slot="label">Description</svelte:fragment>
 		</TextArea>
 	</div>

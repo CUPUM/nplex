@@ -6,20 +6,20 @@ import { error } from '@sveltejs/kit';
 export const load = async (event) => {
 	const db = await getDb(event);
 
-	const metaIndicators = db
-		.from('project_exemplarity_indicator_category')
+	const exemplarityCategories = db
+		.from('project_exemplarity_category')
 		.select(
 			`
-		*,
-		indicators:project_exemplarity_indicator (
 			*,
-			created_by:users!project_exemplarity_indicator_created_by_id_fkey (
-				*
-			),
-			updated_by:users!project_exemplarity_indicator_updated_by_id_fkey (
-				*
+			indicators:project_exemplarity_indicator (
+				*,
+				created_by:users!project_exemplarity_indicator_created_by_fkey (
+					*
+				),
+				updated_by:users!project_exemplarity_indicator_updated_by_fkey (
+					*
+				)
 			)
-		)
 		`
 		)
 		.then((res) => {
@@ -32,6 +32,6 @@ export const load = async (event) => {
 		});
 
 	return {
-		metaIndicators,
+		exemplarityCategories,
 	};
 };

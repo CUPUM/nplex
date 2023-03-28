@@ -12,7 +12,9 @@
 	<!-- {#key $page.data.editorBreadcrumbs ?? 'crumbs'} -->
 	<Breadcrumbs>
 		{#each $page.data.editorBreadcrumbs ?? [] as crumb, i}
-			<BreadcrumbsItem href={crumb.href} matcher={crumb.matcher}>{crumb.title}</BreadcrumbsItem>
+			<BreadcrumbsItem href={crumb.href} matcher={crumb.matcher} disabled={crumb.disabled}>
+				{crumb.title}
+			</BreadcrumbsItem>
 			{#if i < ($page.data.editorBreadcrumbs ?? []).length - 1}
 				<BreadcrumbsSeparator><Icon name="chevron-right" /></BreadcrumbsSeparator>
 			{/if}
@@ -28,9 +30,7 @@
 		position: sticky;
 		top: 0;
 		width: 100%;
-		height: var(--ui-nav-h);
-		padding-top: 1rem;
-		padding-bottom: 1.5rem;
+		padding-block: var(--ui-nav-pad);
 		display: flex;
 		flex-direction: row;
 		align-items: flex-start;

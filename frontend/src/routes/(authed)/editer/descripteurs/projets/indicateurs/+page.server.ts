@@ -1,35 +1,9 @@
-import {
-	INDICATORS_KEY,
-	INDICATORS_KEY_NEW,
-	INDICATOR_LABEL_MAX,
-	INDICATOR_TITLE_MAX,
-} from '$routes/(authed)/editer/_old/descripteurs/projets/indicateurs/common';
 import { STATUS_CODES } from '$utils/enums';
 import { failureMessages } from '$utils/validation';
 import { error, fail } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-
-const indicatorBaseSchema = z.object({
-	category_id: zfd.numeric(),
-	title: zfd.text(
-		z
-			.string()
-			.max(
-				INDICATOR_TITLE_MAX,
-				`Le titre d‘un indicateur ne peut pas comporter plus que ${INDICATOR_TITLE_MAX} caractères.`
-			)
-	),
-	label: zfd.text(
-		z
-			.string()
-			.max(
-				INDICATOR_LABEL_MAX,
-				`Le titre court d‘un indicateur ne peut pas comporter plus que ${INDICATOR_LABEL_MAX} caractères.`
-			)
-	),
-	description: zfd.text(z.string().nullable().default(null)),
-});
+import { INDICATORS_KEY, INDICATORS_KEY_NEW } from './constants';
 
 export const actions = {
 	update: async (event) => {

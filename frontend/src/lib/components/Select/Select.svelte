@@ -21,7 +21,7 @@
 	type O = $$Generic;
 
 	type $$Props = ComponentProps<Field<O>> & {
-		options: O[];
+		options: readonly O[];
 	};
 
 	export let options: $$Props['options'];

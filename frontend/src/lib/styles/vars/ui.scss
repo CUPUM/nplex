@@ -6,6 +6,7 @@
  */
 :root {
 	--ui-bg: #{col(bg, 100)};
+	--ui-nav-pad: 1rem;
 	--ui-nav-h: 81px; // Retrieved manually, adjust whenever modifying navbar style.
 	--ui-sticky-top: calc(
 		var(--ui-nav-h) + var(--ui-gutter-md)
@@ -51,11 +52,12 @@
 	--ui-text-xs: 0.75rem;
 	--ui-text-sm: 0.875rem;
 	--ui-text-md: 1rem;
-	--ui-text-lg: 1.5rem;
-	--ui-text-xl: 2.5rem;
-	--ui-text-2xl: 3.75rem;
-	--ui-text-3xl: 5.5rem;
-	--ui-text-4xl: 7.5rem;
+	--ui-text-lg: 1.25rem;
+	--ui-text-xl: 1.75rem;
+	--ui-text-2xl: 2.5rem;
+	--ui-text-3xl: 3.5rem;
+	--ui-text-4xl: 5rem;
+	--ui-text-5xl: 7rem;
 	// View-level widths
 	--ui-width-main: 1400px;
 	--ui-width-sm: 600px;

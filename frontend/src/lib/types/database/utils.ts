@@ -34,6 +34,10 @@ export type FunctionReturn<
 	Schema extends Database = App.Database
 > = Schema['public']['Functions'][F]['Returns'];
 
+export type DbEnumName = keyof Database['public']['Enums'];
+
+export type DbEnum<T extends DbEnumName> = Database['public']['Enums'][T];
+
 /**
  * Until the postgrest / supabase client's typing system for joined data is improved, sprinkle these
  * helpers to typecast misinterpreted cardinalities.

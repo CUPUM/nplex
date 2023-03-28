@@ -1,5 +1,9 @@
 import { EDITOR_FORM_ACTION } from '$routes/(authed)/editer/constants';
-import { projectGalleryUpdateSchema } from '$routes/(authed)/editer/projet/schemas';
+import { IMAGE_MAX_RESOLUTION } from '$routes/(authed)/editer/projet/constants';
+import {
+	projectGalleryUpdateSchema,
+	projectImageUploadSchema,
+} from '$routes/(authed)/editer/projet/schemas';
 import { getDb } from '$utils/database/client';
 import { SEARCH_PARAMS, STATUS_CODES, STORAGE_BUCKETS, STORAGE_FOLDERS } from '$utils/enums';
 import { toPgArr } from '$utils/format';
@@ -14,37 +18,30 @@ extend([labPlugin]);
 export const actions = {
 	[EDITOR_FORM_ACTION]: async (event) => {
 		const validated = await validateFormData(event, projectGalleryUpdateSchema);
+		console.log(validated);
 		if (validated.failure) return validated.failure;
-		const galleryUpdate = await event.locals.db
-			.from('projects_images')
-			.upsert(
-				validated.data.gallery.map((img, i) => ({
-					...img,
-					order: i,
-					project_id: event.params.projectId,
-				}))
-			)
-			.then((res) => {
-				if (res.error) {
-					throw fail(STATUS_CODES.InternalServerError, { ...res.error });
-				}
-				return res;
-			});
+		const galleryUpdate = await event.locals.db.from('projects_images').upsert(
+			validated.data.gallery.map((img, i) => ({
+				...img,
+				index: i,
+				project: event.params.projectId,
+			}))
+		);
+		if (galleryUpdate.error) {
+			throw error(STATUS_CODES.InternalServerError, JSON.stringify(galleryUpdate.error));
+		}
 	},
 	/**
 	 * Upload new image(s) to the storage.
 	 */
 	upload: async (event) => {
-		const formData = await event.request.formData();
-		const files = formData.getAll('images');
+		const validated = await validateFormData(event, projectImageUploadSchema);
+		console.log(validated);
+		if (validated.failure) return validated.failure;
 		const uploads = await Promise.all(
-			files.map(async (file) => {
-				const parsed = await imageSchema.safeParseAsync(file);
-				if (!parsed.success) {
-					return fail(STATUS_CODES.BadRequest, { image: parsed.error.flatten() });
-				}
-				const image = sharp(Buffer.from(await parsed.data.arrayBuffer()));
-				const buffer = await image
+			validated.data.image_files.map(async (file) => {
+				const img = sharp(Buffer.from(await file.arrayBuffer()));
+				const buffer = await img
 					.resize({
 						width: IMAGE_MAX_RESOLUTION,
 						height: IMAGE_MAX_RESOLUTION,
@@ -54,7 +51,7 @@ export const actions = {
 					.rotate()
 					.webp()
 					.toBuffer();
-				const stats = await image.stats();
+				const stats = await img.stats();
 				const date = new Date().toLocaleDateString('fr-CA');
 				const rand = crypto.randomUUID();
 				const dominant = colord(stats.dominant);
@@ -65,8 +62,8 @@ export const actions = {
 					g: Math.round(stats.channels[1].mean),
 					b: Math.round(stats.channels[2].mean),
 				});
-				const mean_hsl = mean.toHsl();
-				const mean_lab = mean.toLab();
+				const average_hsl = mean.toHsl();
+				const average_lab = mean.toLab();
 				return event.locals.db.storage
 					.from(STORAGE_BUCKETS.PROJECTS)
 					.upload(
@@ -94,10 +91,10 @@ export const actions = {
 									dominant_lab.a,
 									dominant_lab.b,
 								]) as any,
-								color_mean_hsl: toPgArr([mean_hsl.h, mean_hsl.s, mean_hsl.l]) as any,
-								color_mean_lab: toPgArr([mean_lab.l, mean_lab.a, mean_lab.b]) as any,
+								color_average_hsl: toPgArr([average_hsl.h, average_hsl.s, average_hsl.l]) as any,
+								color_average_lab: toPgArr([average_lab.l, average_lab.a, average_lab.b]) as any,
 							})
-							.eq('name', stored.data.path)
+							.eq('storage_name', stored.data.path)
 							.select('id')
 							.single();
 						if (update.error) {
@@ -117,7 +114,7 @@ export const actions = {
 					});
 			})
 		);
-		return uploads;
+		return { success: true };
 	},
 	/**
 	 * Delete a gallery image.
@@ -150,7 +147,7 @@ export const actions = {
 		const db = await getDb(event);
 		const promoteRes = await db
 			.from('projects')
-			.update({ banner_id: imageId })
+			.update({ banner: imageId })
 			.eq('id', event.params.projectId)
 			.single();
 		if (promoteRes.error) {
@@ -171,7 +168,7 @@ export const actions = {
 		const db = await getDb(event);
 		const promoteRes = await db
 			.from('projects')
-			.update({ banner_id: null })
+			.update({ banner: null })
 			.eq('id', event.params.projectId)
 			.eq('banner_id', imageId)
 			.maybeSingle();

@@ -1,4 +1,5 @@
 import type { FunctionReturn } from '$types/database/utils';
+import { TEMPORALITY } from '$utils/enums';
 import { toPgGeom, toPgRange } from '$utils/format';
 import { avg, snap } from '$utils/number';
 import { point } from '@turf/turf';
@@ -66,7 +67,7 @@ export const projectTitleSchema = zfd.text(
 		}, `Le titre du projet doit être composé de ${TITLE_MIN_WORDS} à ${TITLE_MAX_WORDS} mots.`)
 );
 
-export const projectDescriptionSchema = zfd.text(
+const projectDescriptionSchema = zfd.text(
 	z
 		.string()
 		.trim()
@@ -77,11 +78,11 @@ export const projectDescriptionSchema = zfd.text(
 		.optional()
 );
 
-export const projectTypeSchema = zfd.numeric(z.number().optional());
+const projectTypeSchema = zfd.numeric(z.number().optional());
 
-export const projectSiteOwnershipSchema = zfd.numeric(z.number().optional());
+const projectSiteOwnershipSchema = zfd.numeric(z.number().optional());
 
-export const projectCostRangeSchema = zfd
+const projectCostRangeSchema = zfd
 	.json(z.tuple([z.number().nonnegative(), z.number().nonnegative()]))
 	.superRefine(([min, max], ctx) => {
 		if (min < COST_MIN || min > COST_MAX) {
@@ -106,7 +107,7 @@ export const projectCostRangeSchema = zfd
 	.transform((minmax) => toPgRange(minmax))
 	.optional();
 
-export const projectInterventionsSchema = zfd
+const projectInterventionsSchema = zfd
 	.repeatableOfType(zfd.numeric())
 	.transform((iid) => iid ?? []);
 
@@ -126,9 +127,9 @@ export const projectGeneralUpdateSchema = zfd
 		};
 	});
 
-export const projectAreaSchema = zfd.numeric(z.number().optional());
+const projectAreaSchema = zfd.numeric(z.number().optional());
 
-export const projectAdjacentStreetsSchema = zfd.numeric(
+const projectAdjacentStreetsSchema = zfd.numeric(
 	z
 		.number()
 		.min(
@@ -142,7 +143,7 @@ export const projectAdjacentStreetsSchema = zfd.numeric(
 		.optional()
 );
 
-export const projectAdjacentAlleysSchema = zfd.numeric(
+const projectAdjacentAlleysSchema = zfd.numeric(
 	z
 		.number()
 		.min(
@@ -156,7 +157,7 @@ export const projectAdjacentAlleysSchema = zfd.numeric(
 		.optional()
 );
 
-export const projectLocationSchema = zfd
+const projectLocationSchema = zfd
 	.json(
 		z.object({
 			center: positionSchema.nullable(),
@@ -170,9 +171,9 @@ export const projectLocationSchema = zfd
 		};
 	});
 
-export const projectImplantationModeSchema = zfd.numeric(z.number().optional());
+const projectImplantationModeSchema = zfd.numeric(z.number().optional());
 
-export const projectBuildingHeightSchema = zfd.numeric(
+const projectBuildingHeightSchema = zfd.numeric(
 	z
 		.number()
 		.min(
@@ -186,9 +187,9 @@ export const projectBuildingHeightSchema = zfd.numeric(
 		.optional()
 );
 
-export const projectBuildingLevelsSchema = zfd.repeatableOfType(strictCoerceBooleanSchema);
+const projectBuildingLevelsSchema = zfd.repeatableOfType(strictCoerceBooleanSchema);
 
-export const projectBuildingConstructionYearSchema = zfd.numeric(
+const projectBuildingConstructionYearSchema = zfd.numeric(
 	z.number().min(BUILDING_YEAR_MIN).max(BUILDING_YEAR_MAX).optional()
 );
 
@@ -215,38 +216,52 @@ export const projectPlaceUpdateSchema = zfd
 	});
 // enforce logical area containment.
 
-export const projectImageUploadSchema = zfd.file(
+export const projectImageUploadSchema = zfd.formData({
+	image_files: zfd.repeatableOfType(
+		zfd.file(
+			z
+				.instanceof(File)
+				.refine((file) => IMAGE_TYPES.includes(file.type), `Format d'image incompatible.`)
+		)
+	),
+});
+
+const projectImageTitleSchema = zfd.text(
 	z
-		.instanceof(File)
-		.refine((file) => IMAGE_TYPES.includes(file.type), `Format d'image incompatible.`)
+		.string()
+		.max(IMAGE_TITLE_MAX_LENGTH, "Le titre de l'image dépasse le nombre maximum de caractères.")
+		.nullable()
+		.default(null)
 );
+
+const projectImageDescriptionSchema = zfd.text(
+	z
+		.string()
+		.max(
+			IMAGE_DESCRIPTION_MAX_LENGTH,
+			"La description de l'image dépasse le nombre maximum de caractères."
+		)
+		.nullable()
+		.default(null)
+);
+
+const projectImageTemporalitySchema = z.enum([
+	TEMPORALITY.Before,
+	TEMPORALITY.During,
+	TEMPORALITY.After,
+]);
+
+const projectImageTypeSchema = zfd.numeric(z.number());
 
 export const projectGalleryUpdateSchema = zfd.formData({
 	gallery: zfd.repeatableOfType(
 		z.object({
 			id: zfd.text(),
 			storage_name: zfd.text(),
-			title: zfd.text(
-				z
-					.string()
-					.max(
-						IMAGE_TITLE_MAX_LENGTH,
-						"Le titre de l'image dépasse le nombre maximum de caractères."
-					)
-					.nullable()
-					.default(null)
-			),
-			description: zfd.text(
-				z
-					.string()
-					.max(
-						IMAGE_DESCRIPTION_MAX_LENGTH,
-						"La description de l'image dépasse le nombre maximum de caractères."
-					)
-					.nullable()
-					.default(null)
-			),
-			temporality: z.enum([z.literal('before'), z.literal('during'), z.literal('after')]),
+			title: projectImageTitleSchema,
+			description: projectImageDescriptionSchema,
+			temporality: projectImageTemporalitySchema,
+			type: projectImageTypeSchema,
 		})
 	),
 });

@@ -131,7 +131,7 @@
 		flex-direction: column;
 		align-items: center;
 		border-radius: 0 0 var(--article-radius) var(--article-radius);
-		color: col(fg, 100);
+		color: col(fg, 500);
 		background: var(--editor-bg);
 		margin-top: calc(-1 * var(--ui-nav-h));
 		min-height: 100vh;
@@ -179,7 +179,7 @@
 			position: relative;
 			padding: var(--ui-gutter-md);
 			border-radius: var(--ui-radius-xl);
-			background-color: col(bg, 900);
+			background-color: col(bg, 700);
 			// max-width: calc(100% - var(--ui-sidebar-w));
 			// min-width: min(var(--ui-width-md), 100%);
 		}

@@ -25,7 +25,7 @@
 			col('secondary', 100),
 			col('primary', 900),
 			col('primary', 100),
-			col('secondary', 300),
+			col('secondary', 500),
 		]}
 		style="z-index: -1;"
 	/>
@@ -102,6 +102,7 @@
 		flex: 1;
 		display: flex;
 		align-items: center;
+		color: col(fg, 900);
 	}
 
 	section {
@@ -118,7 +119,7 @@
 		flex-direction: row;
 		align-items: center;
 		gap: 0.5em;
-		color: col(fg, 100);
+		color: col(fg, 500);
 		padding: 0 1.5em;
 		height: var(--ui-unit-lg);
 		border-radius: var(--ui-radius-md);

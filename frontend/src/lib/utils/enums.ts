@@ -1,3 +1,4 @@
+import type { DbEnum } from '$types/database/utils';
 import type { ValueOf } from 'ts-essentials';
 
 /**
@@ -79,6 +80,19 @@ export const ALIGNMENTS = {
 	Stretch: 'stretch',
 } as const;
 export type Position = ValueOf<typeof ALIGNMENTS>;
+
+/**
+ * Used to indicate temporal precision on various ressources. Ex.: if images illustrate the state
+ * before or after the project.
+ *
+ * ! KEEP IN SYNC WITH DATABASE `temporality` ENUM TYPE !
+ */
+export const TEMPORALITY = {
+	Before: 'before',
+	During: 'during',
+	After: 'after',
+} as const satisfies { [k: string]: DbEnum<'temporality'> };
+export type Temporality = ValueOf<typeof TEMPORALITY>;
 
 /**
  * MapboxDraw event names. Based on Record<string, MapboxDraw.DrawEventType>

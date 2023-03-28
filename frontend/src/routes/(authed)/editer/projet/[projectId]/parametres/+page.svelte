@@ -2,6 +2,8 @@
 	import Access from './Access.svelte';
 	import Delete from './Delete.svelte';
 	import Publishing from './Publishing.svelte';
+
+	export let data;
 </script>
 
 <header class="editor-form-header">
@@ -12,7 +14,7 @@
 	</p>
 </header>
 <Publishing />
-<Access />
+<Access collaborators={data.collaborators} />
 <Delete />
 
 <style lang="scss">

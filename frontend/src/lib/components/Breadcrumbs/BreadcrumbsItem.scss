@@ -17,6 +17,11 @@
 	&:last-of-type {
 		padding-inline-end: 1.5em;
 	}
+
+	&[aria-disabled='true'] {
+		pointer-events: none;
+		opacity: 0.8;
+	}
 }
 
 .breadcrumb-item-inner {

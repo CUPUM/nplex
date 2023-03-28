@@ -3,8 +3,7 @@
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { userHasRole } from '$utils/validation';
-	import { EDITOR_ROUTES } from './(authed)/editer/constants';
-	import { ALLOWED_ROLES } from './(authed)/editer/descripteurs/common';
+	import { DECRIPTORS_ALLOWED_ROLES, EDITOR_ROUTES } from './(authed)/editer/constants';
 </script>
 
 {#each Object.values(EDITOR_ROUTES) as group, i}
@@ -33,7 +32,7 @@
 			contentAlign="start"
 			href={group.descriptors.pathname}
 			active={$page.url.pathname.startsWith(group.descriptors.pathname)}
-			disabled={!userHasRole($page.data, ...ALLOWED_ROLES)}
+			disabled={!userHasRole($page.data, ...DECRIPTORS_ALLOWED_ROLES)}
 		>
 			<Icon name="graph" slot="leading" />
 			{group.descriptors.title}

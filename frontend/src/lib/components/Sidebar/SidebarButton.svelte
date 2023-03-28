@@ -55,7 +55,7 @@
 		padding-block: 0.75em;
 		gap: 0.75em;
 		border-radius: var(--sidebar-button-radius);
-		font-weight: 500;
+		font-weight: 450;
 		transition: all 0.1s ease-out;
 	}
 
@@ -94,7 +94,7 @@
 	:global(.editor) .sidebar-button {
 		align-self: stretch;
 		--ripple-color: #{col(secondary, 500)};
-		color: col(fg, 100);
+		color: col(fg, 300);
 
 		&[data-current] {
 			cursor: default;

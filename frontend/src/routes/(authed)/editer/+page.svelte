@@ -3,12 +3,11 @@
 	import Ripple from '$components/Ripple.svelte';
 	import { userHasRole } from '$utils/validation';
 	import { fly } from 'svelte/transition';
-	import { EDITOR_ROUTES } from './constants';
-	import { ALLOWED_ROLES } from './descripteurs/common';
+	import { DECRIPTORS_ALLOWED_ROLES, EDITOR_ROUTES } from './constants';
 
 	export let data;
 
-	$: canEditDescriptors = userHasRole(data, ...ALLOWED_ROLES);
+	$: canEditDescriptors = userHasRole(data, ...DECRIPTORS_ALLOWED_ROLES);
 </script>
 
 <div id="editor-splash">

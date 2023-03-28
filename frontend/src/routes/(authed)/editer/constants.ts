@@ -1,5 +1,7 @@
 import { EDITOR_BASE_ROUTE, type Routes } from '$utils/routes';
 
+export const DECRIPTORS_ALLOWED_ROLES = ['admin', 'editor'] satisfies App.UserRole[];
+
 export const EDITOR_FORM_ID = 'editor-form';
 
 export const EDITOR_FORM_ACTION = 'update';

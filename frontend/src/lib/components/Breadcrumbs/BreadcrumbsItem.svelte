@@ -7,6 +7,7 @@
 	export let href: string;
 	export let current: boolean | undefined = undefined;
 	export let matcher: RegExp | undefined = undefined;
+	export let disabled: boolean | undefined = undefined;
 
 	$: hrefUrl = new UnbasedURL(href);
 	$: autoCurrent =
@@ -20,6 +21,7 @@
 	data-sveltekit-preload-code
 	data-sveltekit-preload-data
 	data-current={current ?? autoCurrent}
+	aria-disabled={disabled}
 	in:slide={{ axis: 'x', duration: 250, easing: expoOut }}
 >
 	<span class="breadcrumb-item-inner">

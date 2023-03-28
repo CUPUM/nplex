@@ -41,7 +41,7 @@
 	<input
 		hidden
 		type="file"
-		name="images"
+		name="image_files"
 		accept={IMAGE_TYPES.join(',')}
 		multiple
 		on:change={upload}

@@ -4,49 +4,35 @@
 	import Dirty from '$components/Dirty.svelte';
 	import DragndropProvider from '$components/Dragndrop/DragndropProvider.svelte';
 	import Icon from '$components/Icon.svelte';
+	import { dirtyValues } from '$routes/(authed)/editer/common';
+	import { EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '$routes/(authed)/editer/constants';
 	import { fly } from 'svelte/transition';
-	import { editorDirtyValues, EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../../common';
 	import type { PageData } from './$types';
+	import { exemplarityCategories } from './common';
 	import IndicatorCard from './IndicatorCard.svelte';
 	import IndicatorCreate from './IndicatorCreate.svelte';
 
 	export let data;
 
-	type NewIndicator = Pick<
-		PageData['metaIndicators'][number]['indicators'][number],
-		'id' | 'title' | 'label' | 'description'
-	>;
-
-	let formMetaIndicators: PageData['metaIndicators'];
 	function syncDown() {
-		formMetaIndicators = JSON.parse(
-			JSON.stringify(data.metaIndicators)
-		) as PageData['metaIndicators'];
+		exemplarityCategories.set(JSON.parse(JSON.stringify(data.exemplarityCategories)));
 	}
 	syncDown();
+	$: data.exemplarityCategories, syncDown();
 
-	$: data.metaIndicators, syncDown();
+	type NewIndicator = Pick<
+		PageData['exemplarityCategories'][number]['indicators'][number],
+		'id' | 'title' | 'short_title' | 'description'
+	>;
 </script>
 
 <Dirty
-	sample={data.metaIndicators}
-	specimen={formMetaIndicators}
-	bind:dirty={$editorDirtyValues.indicators}
+	sample={data.exemplarityCategories}
+	specimen={$exemplarityCategories}
+	bind:dirty={$dirtyValues.indicators}
 />
-<header>
-	<h2 class="heading-xl">Indicateurs d'exemplarité</h2>
-	<p class="text-lg info">
-		Les indicateurs d'exemplarité consistent en plusieurs ensembles de jetons utilisés pour décrire
-		les projets et souligner les caractéristiques qui témoignent de leur qualité.
-	</p>
-	<p class="subtle">
-		<Icon name="info-circle" />&ensp; Ci-dessous, vous pouvez gérer la banque générale des
-		indicateurs qui pourront par la suite être associés aux divers projets documentés sur la
-		plateforme. Vous pouvez changer la catégorie d'un indicateur en le glissant d'une boîte à
-		l'autre.
-	</p>
-</header>
 <form
+	class="editor-form"
 	id={EDITOR_FORM_ID}
 	action={EDITOR_FORM_ACTION}
 	method="POST"
@@ -56,14 +42,27 @@
 		};
 	}}
 >
-	{#each formMetaIndicators as metaIndicator, i0}
+	<header class="editor-form-header">
+		<h2 class="heading-xl">Indicateurs d'exemplarité</h2>
+		<p class="text-lg info">
+			Les indicateurs d'exemplarité consistent en plusieurs ensembles de jetons utilisés pour
+			décrire les projets et souligner les caractéristiques qui témoignent de leur qualité.
+		</p>
+		<p class="subtle">
+			<Icon name="info-circle" />&ensp; Ci-dessous, vous pouvez gérer la banque générale des
+			indicateurs qui pourront par la suite être associés aux divers projets documentés sur la
+			plateforme. Vous pouvez changer la catégorie d'un indicateur en le glissant d'une boîte à
+			l'autre.
+		</p>
+	</header>
+	{#each $exemplarityCategories as category, i0}
 		<fieldset class="editor-form-group">
-			<h3 class="editor-form-group-title">{metaIndicator.title}</h3>
+			<h3 class="editor-form-group-title">{category.title}</h3>
 			<AnimateHeight>
-				<p class="subtle">{metaIndicator.description || 'Description à venir...'}</p>
+				<p class="subtle">{category.description || 'Description à venir...'}</p>
 				<DragndropProvider
 					fallbackClass="dnd-fallback-indicator-cardx"
-					bind:items={metaIndicator.indicators}
+					bind:items={category.indicators}
 					sort={true}
 					let:dragndropZone
 					let:dragndropItem
@@ -72,17 +71,17 @@
 					}}
 				>
 					<ul use:dragndropZone>
-						{#each metaIndicator.indicators as indicator, i1 (indicator.id)}
+						{#each category.indicators as indicator, i1 (indicator.id)}
 							<li
 								use:dragndropItem={{ item: indicator }}
 								in:fly|local={{ y: -6, duration: 350, delay: 100 * i1 }}
 							>
-								<IndicatorCard categoryId={metaIndicator.id} bind:data={indicator} />
+								<IndicatorCard categoryId={category.id} bind:data={indicator} />
 							</li>
 						{/each}
 					</ul>
 				</DragndropProvider>
-				<IndicatorCreate categoryId={metaIndicator.id} />
+				<IndicatorCreate categoryId={category.id} />
 			</AnimateHeight>
 		</fieldset>
 	{/each}

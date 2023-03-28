@@ -14,6 +14,8 @@
 	export let data;
 
 	const newImage = { newItem: true, id: 'NEW_ITEM' } as const;
+
+	$: console.log($project.gallery);
 </script>
 
 <header class="editor-form-header">
