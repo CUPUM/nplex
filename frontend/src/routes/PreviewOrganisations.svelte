@@ -73,7 +73,7 @@
 		align-items: center;
 		background-color: col(secondary, 100, 0.2);
 		color: col(secondary, 900);
-		height: var(--ui-unit-md);
+		height: var(--ui-block-md);
 		border-radius: 99px;
 	}
 </style>

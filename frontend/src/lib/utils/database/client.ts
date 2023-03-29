@@ -31,13 +31,14 @@ if (browser) {
 			if (!sameUser || !sameAccessToken || !sameRefreshToken) {
 				// If the sign in leads to a different session state, then percolate update.
 				update = true;
-				if (!pagedata?.session && session) {
-					// If signin form detected url tokens.
-					await fetch('/api/auth/token-signin', {
-						method: 'POST',
-						body: JSON.stringify(session),
-					});
-				}
+				// If signin results from tokens detected in url.
+				// Need a better way to discriminate, else useless calls happens here when completing normal signin.
+				// if (!pagedata?.session && session) {
+				// 	await fetch('/api/auth/token-signin', {
+				// 		method: 'POST',
+				// 		body: JSON.stringify(session),
+				// 	});
+				// }
 			}
 		} else if (event === 'TOKEN_REFRESHED') {
 			if (session) {

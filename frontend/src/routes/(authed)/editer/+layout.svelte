@@ -71,7 +71,9 @@
 			<svelte:component this={$page.data.editorSidebar} />
 		{/if}
 		<!-- Editor main content -->
-		<slot />
+		<div id="editor-layout-slot">
+			<slot />
+		</div>
 	</div>
 	<!-- Floating toolbar -->
 	<EditorToolbar />
@@ -129,7 +131,7 @@
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: stretch;
 		border-radius: 0 0 var(--article-radius) var(--article-radius);
 		color: col(fg, 500);
 		background: var(--editor-bg);
@@ -150,6 +152,12 @@
 			flex-direction: row;
 			align-items: flex-start;
 			gap: var(--ui-gap-sm);
+		}
+
+		#editor-layout-slot {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
 		}
 
 		:global(.editor-form) {
@@ -179,7 +187,7 @@
 			position: relative;
 			padding: var(--ui-gutter-md);
 			border-radius: var(--ui-radius-xl);
-			background-color: col(bg, 700);
+			background-color: col(bg, 900);
 			// max-width: calc(100% - var(--ui-sidebar-w));
 			// min-width: min(var(--ui-width-md), 100%);
 		}

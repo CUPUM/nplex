@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import ImagePlaceholder from '$components/Image/ImagePlaceholder.svelte';
+	import MeshGradient from '$components/MeshGradient.svelte';
 	import Token from '$components/Token/Token.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { col } from '$utils/css';
@@ -19,7 +19,7 @@
 </script>
 
 <header in:fly={{ y: 6, duration: 250, easing: cubicOut }}>
-	<ImagePlaceholder
+	<MeshGradient
 		color={[
 			col('primary', 500),
 			col('secondary', 100),
@@ -48,7 +48,7 @@
 		</section>
 	{/if}
 	<hgroup class="heading">
-		<h1 class="heading-xl">
+		<h1 class="heading-2xl">
 			{#if $project?.title != null}
 				{$project.title}
 			{:else}
@@ -121,7 +121,7 @@
 		gap: 0.5em;
 		color: col(fg, 500);
 		padding: 0 1.5em;
-		height: var(--ui-unit-lg);
+		height: var(--ui-block-lg);
 		border-radius: var(--ui-radius-md);
 		// background-color: col(primary, 100, 0.1);
 		border: var(--ui-border-size) solid col(primary, 900, 0.2);

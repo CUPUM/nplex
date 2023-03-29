@@ -16,7 +16,7 @@
 
 	export type MessageType = ValueOf<typeof MESSAGE_TYPES>;
 
-	type Message<C = string | SvelteComponentTyped> = {
+	export type Message<C = string | SvelteComponentTyped> = {
 		content: C extends string
 			? C
 			: C extends SvelteComponentTyped
@@ -143,19 +143,20 @@
 		};
 	})();
 
-	export function queryMessage(url: string, ...messages: Message[]): string;
-	export function queryMessage(url: URL, ...messages: Message[]): URL;
-	export function queryMessage(url: UnbasedURL, ...messages: Message[]): UnbasedURL;
-	export function queryMessage(
-		url: string | URL | UnbasedURL,
-		...messages: Message[]
-	): string | URL | UnbasedURL {
+	// export function queryMessage(url: string, ...messages: Message[]): string;
+	// export function queryMessage(url: URL, ...messages: Message[]): URL;
+	// export function queryMessage(url: UnbasedURL, ...messages: Message[]): UnbasedURL;
+	export function queryMessage<
+		U extends string | URL | UnbasedURL,
+		T extends string | SvelteComponentTyped,
+		M = Message<T>
+	>(url: U, ...messages: M[]) {
 		const newURL =
 			url instanceof URL && !(url instanceof UnbasedURL) ? new URL(url) : new UnbasedURL(url);
 		messages.forEach((m) => {
 			newURL.searchParams.append(SEARCH_PARAMS.MESSAGE, JSON.stringify(m));
 		});
-		return typeof url === 'string' ? newURL.toString() : url;
+		return (typeof url === 'string' ? newURL.toString() : url) as U;
 	}
 </script>
 

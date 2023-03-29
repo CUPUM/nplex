@@ -34,8 +34,8 @@
 				setCircleRadius(locationCircle, radius / 1000);
 				// console.log($editorMap?.querySourceFeatures(MAP_DRAW_SOURCES.Hot));
 			}
-			// $project.location.center = center;
-			// $project.location.radius = radius;
+			$project.location.center = center;
+			$project.location.radius = radius;
 		}
 	}, 100);
 

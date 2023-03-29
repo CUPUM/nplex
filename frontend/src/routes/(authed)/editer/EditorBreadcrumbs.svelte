@@ -28,6 +28,7 @@
 		--inset: var(--ui-inset);
 		font-size: var(--ui-text-sm);
 		position: sticky;
+		align-self: center;
 		top: 0;
 		width: 100%;
 		padding-block: var(--ui-nav-pad);

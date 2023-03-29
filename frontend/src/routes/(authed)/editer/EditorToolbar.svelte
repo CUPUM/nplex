@@ -37,7 +37,7 @@
 		justify-content: center;
 		align-items: flex-end;
 		flex-direction: row;
-		height: var(--ui-unit-lg);
+		height: var(--ui-block-lg);
 		margin-top: var(--ui-gutter-md);
 		z-index: 99;
 		transform-origin: bottom center;

@@ -8,7 +8,7 @@
 
 .breadcrumbs {
 	--inset: var(--ui-inset);
-	--height: var(--ui-unit-lg);
+	--height: var(--ui-block-lg);
 	--radius: var(--ui-radius-md);
 	position: relative;
 	border-radius: var(--radius);
@@ -36,7 +36,7 @@
 // Variants
 
 .editor {
-	--overflow-effect-color: #{col(bg, 900)};
+	--overflow-effect-color: #{col(bg, 700)};
 	--radius: 99px;
-	background: col(bg, 900);
+	background: col(bg, 700);
 }

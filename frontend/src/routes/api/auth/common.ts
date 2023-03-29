@@ -1,7 +1,9 @@
 import { dev } from '$app/environment';
-import { COOKIES } from '$utils/enums';
+import { AUTHMODAL_MODE } from '$routes/AuthModal.svelte';
+import { queryMessage } from '$routes/MessagesOutlet.svelte';
+import { COOKIES, SEARCH_PARAMS } from '$utils/enums';
 import type { AuthSession, Session } from '@supabase/supabase-js';
-import { json, type RequestEvent } from '@sveltejs/kit';
+import { json, type LoadEvent, type RequestEvent } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 
@@ -14,6 +16,17 @@ export type AuthFeedback = {
 	password?: string[];
 	errors?: string[];
 };
+
+export function redirectToAuth(
+	event: RequestEvent | LoadEvent,
+	...messages: (string | Parameters<typeof queryMessage<string, string>>[1])[]
+) {
+	const to = event.url.pathname + event.url.search;
+	return queryMessage(
+		`/?${SEARCH_PARAMS.AUTH_MODAL}=${AUTHMODAL_MODE.SignUp}&${SEARCH_PARAMS.REDIRECT}=${to}`,
+		messages
+	);
+}
 
 export const emailSchema = zfd.text(
 	z
@@ -28,11 +41,21 @@ export const SERVER_COOKIE_OPTIONS: CookieOptions = {
 	secure: !dev,
 };
 
-export function setAuthCookie(event: RequestEvent, session: AuthSession) {
-	event.cookies.set(COOKIES.AUTH, JSON.stringify(session), {
-		...SERVER_COOKIE_OPTIONS,
-		maxAge: session.expires_in,
-	});
+export async function setSessionCookieFromAuth(event: RequestEvent, session: AuthSession) {
+	try {
+		const res = await event.fetch('/api/auth/session.json', {
+			method: 'POST',
+			body: JSON.stringify({ auth: session }),
+		});
+		const json = (await res.json()) as App.Locals['session'];
+		if (!json) {
+			throw new Error('Received empty session response from request initiated by auth data.');
+		}
+		setSessionCookie(event, json);
+	} catch (error) {
+		clearSession(event);
+		console.error('Error while trying to retrieve session using auth data.');
+	}
 }
 
 export function setSessionCookie(event: RequestEvent, session: NonNullable<App.Locals['session']>) {

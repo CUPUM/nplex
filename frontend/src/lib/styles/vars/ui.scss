@@ -29,8 +29,8 @@
 	--ui-shadow-lg: 0 1.5rem 3rem -1.25rem rgb(0, 10, 20, 0.28);
 	--ui-shadow-xl: 0 3rem 7rem -3rem rgb(0, 10, 20, 0.3);
 	--ui-outline-color: #{col(primary, 500, 0.5)};
-	--ui-outline-active: 2px solid;
-	--ui-outline-inactive: 0px solid;
+	--ui-outline-inactive: 0px solid transparent;
+	--ui-outline-active: 2px solid var(--ui-outline-color);
 	--ui-border-size: 1.5px;
 	--ui-inset: 5px;
 	--ui-font-main: 'Outfit', sans-serif;
@@ -68,11 +68,11 @@
 	--ui-gutter-md: 3rem;
 	--ui-gutter-lg: 5rem;
 	// Block-level unit size, generally for single line elements such as buttons, fields, etc.
-	--ui-unit-sm: 2em;
-	--ui-unit-md: 2.75em;
-	--ui-unit-lg: 3.5em;
+	--ui-block-sm: 2em;
+	--ui-block-md: 2.75em;
+	--ui-block-lg: 3.5em;
 	// Inner-element padding, typically inline, for elements such as buttons, fields, tokens, etc.
-	--ui-pad-md: 0.75em;
+	--ui-pad-sm: 0.9em;
 	--ui-pad-md: 1.35em;
 	--ui-pad-lg: 2.25em;
 	// Inter-element gap in grids or lists.

@@ -62,8 +62,8 @@
 		}
 
 		:checked + & {
-			color: col(bg, 700);
-			background-color: col(fg, 300);
+			color: col(bg, 900);
+			background-color: col(fg, 500);
 		}
 	}
 

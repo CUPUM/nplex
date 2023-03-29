@@ -1,6 +1,3 @@
-import { getDb } from '$utils/database/client';
-import { COOKIES } from '$utils/enums';
-import { safeJsonParse } from '$utils/json';
 import type { AuthSession } from '@supabase/supabase-js';
 import { json } from '@sveltejs/kit';
 import { clearSession, setSessionCookie, tokenData } from '../common';
@@ -14,19 +11,17 @@ import type { RequestHandler } from './$types';
  * cookies. The data in question should abide by the shape of App.PageData['session'] or null.
  */
 export const POST: RequestHandler = async (event) => {
-	let authSession: AuthSession | null = safeJsonParse(event.cookies.get(COOKIES.AUTH));
-	const db = await getDb(event);
-	if (authSession) {
-		event.cookies.delete(COOKIES.AUTH, { path: '/' });
-		await db.auth.setSession(authSession);
-	} else {
-		authSession = (await db.auth.getSession()).data.session;
-	}
-	if (!authSession) {
+	const authSession: AuthSession | null = event.request.body
+		? (await event.request.json())?.auth
+		: null;
+	const dbSession = authSession
+		? (await event.locals.db.auth.setSession(authSession)).data.session
+		: (await event.locals.db.auth.getSession()).data.session;
+	if (!dbSession) {
 		return clearSession(event);
 	}
 
-	const profileRes = await db
+	const profileRes = await event.locals.db
 		.from('users_session')
 		.select(
 			`
@@ -39,26 +34,36 @@ export const POST: RequestHandler = async (event) => {
 			role_description
 		`
 		)
-		.eq('id', authSession.user.id)
+		.eq('id', dbSession.user.id)
 		.single();
 
 	if (profileRes.error || !profileRes.data.role) {
 		return clearSession(event);
 	}
 
-	const pageDataSession = {
-		...authSession,
+	const sessionCookie = {
+		...tokenData(dbSession),
 		user: {
-			...authSession.user,
+			id: dbSession.user.id,
+			role: profileRes.data.role,
+		},
+	} satisfies App.Locals['session'];
+
+	// If the endpoint was hit by a post with an auth session body (aka, following a signup or signin).
+	// We send back the cookie that will then be added to the original endpoint or action's response.
+	if (authSession) {
+		return json(sessionCookie);
+	}
+
+	setSessionCookie(event, sessionCookie);
+
+	const pageDataSession = {
+		...dbSession,
+		user: {
+			...dbSession.user,
 			...profileRes.data,
 		},
 	} satisfies App.PageData['session'];
-	setSessionCookie(event, {
-		...tokenData(pageDataSession),
-		user: {
-			id: pageDataSession.user.id,
-			role: pageDataSession.user.role,
-		},
-	});
+
 	return json(pageDataSession);
 };

@@ -69,14 +69,14 @@
 		justify-content: center;
 		cursor: pointer;
 		text-align: center;
-		border: var(--ui-border-size) dashed col(fg, 500, 0.2);
+		border: var(--ui-border-size) dashed col(fg, 500, 0.1);
 		overflow: hidden;
 		padding: 3rem;
-		transition: all 0.1s ease-out;
+		transition: all 0.1s;
 
 		&:hover {
-			border-color: col(primary, 700, 0.5);
-			background: col(primary, 300, 0.1);
+			border-color: col(primary, 700, 0);
+			background: col(primary, 300, 0.2);
 			color: col(primary, 700);
 		}
 	}

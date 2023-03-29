@@ -154,7 +154,7 @@
 		flex: none;
 		display: flex;
 		flex-direction: column;
-		background: col(bg, 500);
+		background: col(bg, 700);
 		color: col(fg, 100);
 		max-width: var(--ui-width-sm);
 		box-shadow: var(--ui-shadow-lg);
@@ -187,7 +187,7 @@
 		align-items: center;
 		justify-content: flex-end;
 		font-size: var(--ui-text-sm);
-		background: col(bg, 500);
+		background: col(bg, 700);
 		padding: 1.5rem;
 		position: sticky;
 		bottom: 0;

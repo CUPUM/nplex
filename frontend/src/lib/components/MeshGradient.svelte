@@ -1,6 +1,6 @@
 <!--
 	@component
-	Image Placeholder
+	Randomly generated mesh gradient. Useful for color-themed image placeholders or header fills.
 	
  -->
 <script lang="ts" context="module">

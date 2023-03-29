@@ -42,6 +42,15 @@ export class UnbasedURL extends URL {
 }
 
 /**
+ * Takes a given href slices the first character and prepends a slash. Useful to sanitize urls
+ * obtrained form redirect search params by breaking non-internal hrefs, effectively leading to 404s
+ * in unsafe cases.
+ */
+export function forceInternalHref(href: string) {
+	return `/${href.slice(1)}`;
+}
+
+/**
  * To do.
  */
 export function getSegments(routePath: string) {

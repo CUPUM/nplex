@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Image from '$components/Image/Image.svelte';
-	import ImagePlaceholder from '$components/Image/ImagePlaceholder.svelte';
+	import MeshGradient from '$components/MeshGradient.svelte';
 	import Ripple from '$components/Ripple.svelte';
 	import { STORAGE_BUCKETS } from '$utils/enums';
 	import { projectColors, publicUrl } from '$utils/format';
@@ -20,10 +20,10 @@
 		<a href={editorHref} class="fill">
 			<Image
 				class="banner"
-				src={publicUrl(STORAGE_BUCKETS.PROJECTS, project.banner?.name)}
+				src={publicUrl(STORAGE_BUCKETS.PROJECTS, project.banner?.storage_name)}
 				alt="Image-bannière: {project.title}"
 			>
-				<ImagePlaceholder color={projectColors(project.gallery)} />
+				<MeshGradient color={projectColors(project.gallery)} />
 			</Image>
 		</a>
 		<div class="summary">
@@ -115,7 +115,7 @@
 			align-items: center;
 			padding-bottom: 0.2em;
 			padding-inline: 1em;
-			height: var(--ui-unit-md);
+			height: var(--ui-block-md);
 			color: col(fg, 100, 0.8);
 			border-radius: 99px;
 			background-color: col(fg, 100, 0.1);

@@ -1,12 +1,11 @@
 import { getDb } from '$utils/database/client';
 import { COOKIES, SEARCH_PARAMS, STATUS_CODES } from '$utils/enums';
+import { forceInternalHref } from '$utils/url';
 import { failureMessages } from '$utils/validation';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import { emailSchema, setAuthCookie, type AuthFeedback } from './common';
-
-// export const ssr = false;
+import { emailSchema, setSessionCookieFromAuth, type AuthFeedback } from './common';
 
 /**
  * For the page.svelte to act as a simple redirect.
@@ -74,11 +73,10 @@ export const actions = {
 				errors: ['Une erreur est survenue lors de la récupération de la session'],
 			});
 		}
-		// Modify below if email confirmation required.
-		setAuthCookie(event, signup.data.session);
+		await setSessionCookieFromAuth(event, signup.data.session);
 		const re = event.url.searchParams.get(SEARCH_PARAMS.REDIRECT);
 		if (re) {
-			throw redirect(STATUS_CODES.TemporaryRedirect, re);
+			throw redirect(STATUS_CODES.TemporaryRedirect, forceInternalHref(re));
 		}
 		return { success: true };
 	},
@@ -113,10 +111,11 @@ export const actions = {
 				errors: ['Une erreur est survenue lors de la récupération de la session'],
 			});
 		}
-		setAuthCookie(event, signin.data.session);
+		await setSessionCookieFromAuth(event, signin.data.session);
 		const re = event.url.searchParams.get(SEARCH_PARAMS.REDIRECT);
 		if (re) {
-			throw redirect(STATUS_CODES.TemporaryRedirect, re);
+			console.log(event.url);
+			throw redirect(STATUS_CODES.TemporaryRedirect, forceInternalHref(re));
 		}
 		return { success: true };
 	},

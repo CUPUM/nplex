@@ -1,9 +1,9 @@
-import { orgShortNameSchema } from '$routes/(authed)/editer/_old/organisation/[orgId]/common';
-import { orgNameSchema } from '$routes/(authed)/editer/_old/organisation/common';
 import { STATUS_CODES } from '$utils/enums';
 import { failureMessages } from '$utils/validation';
 import { error, fail } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';
+import { orgShortNameSchema } from './[orgId]/common';
+import { orgNameSchema } from './common';
 
 const updateSchema = zfd.formData({
 	name: orgNameSchema,

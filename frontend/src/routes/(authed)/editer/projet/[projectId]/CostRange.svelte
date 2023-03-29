@@ -2,10 +2,13 @@
 	import Field from '$components/Field/Field.svelte';
 	import Range from '$components/Range/Range.svelte';
 	import RangeGroup from '$components/Range/RangeGroup.svelte';
+	import Toggle from '$components/Toggle/Toggle.svelte';
 	import { cadformatter } from '$utils/format';
 	import { COST_MAX, COST_MAX_DELTA_R, COST_MIN, COST_STEP } from '../constants';
 	import { maxCostDelta } from '../schemas';
 	import { project } from './common';
+
+	let smallScale = false;
 </script>
 
 <fieldset class="editor-form-group">
@@ -19,6 +22,7 @@
 		écart est établi dynamiquement à {COST_MAX_DELTA_R * 100}% de la valeur moyenne de votre
 		sélection.
 	</p>
+	<Toggle bind:checked={smallScale}>Montrer l'échelle de coût pour projet à faibles coûts</Toggle>
 	<fieldset class="fields">
 		<Field
 			variant="default"
@@ -46,7 +50,13 @@
 		>
 			<svelte:fragment slot="label">Max.</svelte:fragment>
 		</Field>
-		<Range min={COST_MIN} max={COST_MAX} step={COST_STEP} ticks={25000} style="grid-area: range;">
+		<Range
+			min={COST_MIN}
+			max={smallScale ? 100_000 : COST_MAX}
+			step={COST_STEP}
+			ticks={smallScale ? 25000 : 250000}
+			style="grid-area: range;"
+		>
 			<svelte:fragment slot="tick" let:tick>
 				{cadformatter.format(tick)}
 			</svelte:fragment>

@@ -16,8 +16,8 @@
 		aspect-ratio: 1;
 		align-items: flex-start;
 		padding: 2.5rem 3rem;
-		color: col(primary, 500);
-		background-color: col(primary, 100, 0.1);
+		color: col(fg, 500);
+		background-color: col(bg, 900);
 		font-weight: 500;
 		line-height: 1.2;
 		font-size: var(--ui-text-xl);
@@ -25,8 +25,8 @@
 		transition: all 0.1s ease-out;
 
 		&:hover {
-			color: col(primary, 700);
-			background-color: col(primary, 500, 0.1);
+			color: col(fg, 700);
+			background-color: col(secondary, 300);
 		}
 	}
 </style>

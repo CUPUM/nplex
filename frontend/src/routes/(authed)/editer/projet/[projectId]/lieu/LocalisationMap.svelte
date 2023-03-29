@@ -8,6 +8,7 @@
 	import MapControlGeolocate from '$components/Map/MapControlGeolocate.svelte';
 	import MapControlSelect from '$components/Map/MapControlSelect.svelte';
 	import MapDraw from '$components/Map/MapDraw.svelte';
+	import MapMarker from '$components/Map/MapMarker.svelte';
 	import MapSearch from '$components/Map/MapSearch.svelte';
 	import MapToolbar from '$components/Map/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
@@ -18,6 +19,7 @@
 </script>
 
 <Map cooperativeGestures={true} bind:map={$editorMap} mapStyle={tonerDark} id="editor-map">
+	<MapMarker lnglat={[-73.6416, 45.5315]} />
 	<MapDraw bind:draw={$editorMapDraw} mode="draw_circle" />
 	<MapAttributionControl position="bottom-left" />
 	<svelte:fragment slot="top-left">
@@ -63,6 +65,7 @@
 <style lang="scss">
 	:global(#editor-map) {
 		border-radius: var(--ui-radius-lg);
-		border: 1px solid col(fg, 100, 0.1);
+		// border: 1px solid col(fg, 100, 0.1);
+		box-shadow: var(--ui-shadow-md);
 	}
 </style>

@@ -34,11 +34,12 @@
 					<Icon animationSpeed={0.3} name="parameters" strokeWidth={2} strokeLinecap="round" />
 				</div>
 				<span style="z-index: 1">Éditer les descripteurs de projet</span>
-				{#if !canEditDescriptors}
-					<div class="notice">
-						<Icon name="warn" /> Section réservée
-					</div>
-				{/if}
+				<!-- {#if !canEditDescriptors} -->
+				<div class="notice">
+					<Icon name={canEditDescriptors ? 'check-circle' : 'warn'} /> Section réservée aux éditeur.trice.s
+					et administrateur.trice.s.
+				</div>
+				<!-- {/if} -->
 			</a>
 		</li>
 		<li class="block {ICON_CLASS.hover}" in:fly={{ delay: 100, y: 12 }}>
@@ -94,15 +95,21 @@
 	.notice {
 		z-index: 1;
 		font-size: var(--ui-text-sm);
-		padding: 1.2em 1.5em 1.4em;
-		background-color: col(bg, 900);
-		color: col(fg, 100, 0.8);
-		border-radius: 99px;
+		// padding: 1.2em 1.5em 1.4em;
+		// background-color: col(bg, 900);
+		// color: col(fg, 100, 0.8);
+		border-radius: var(--ui-radius-md);
 		display: flex;
-		flex-direction: row;
-		align-items: center;
+		flex-direction: column;
+		align-items: flex-start;
 		font-weight: 300;
 		gap: 1em;
+		opacity: 0.5;
+
+		.block:hover & {
+			// color: col(primary, 900);
+			// background-color: col(primary, 300);
+		}
 	}
 
 	[aria-disabled='true'] {
@@ -177,7 +184,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: clamp(200px, 40vw, 500px);
+		font-size: clamp(200px, 50vw, 500px);
 		color: col(bg, 700);
 		border-radius: inherit;
 		transition: all 0.1s;

@@ -92,20 +92,20 @@
 	}
 
 	:global(.editor) .sidebar-button {
+		--ripple-color: #{col(secondary, 300)};
 		align-self: stretch;
-		--ripple-color: #{col(secondary, 500)};
 		color: col(fg, 300);
+
+		&:hover:not([data-current]) {
+			color: col(fg, 700);
+			background: col(fg, 100, 0.1);
+		}
 
 		&[data-current] {
 			cursor: default;
 			color: col(secondary, 900);
-			background: col(secondary, 100, 0.2);
+			background: col(secondary, 100, 0.25);
 			// border-color: col(secondary, 700, 0.5);
-		}
-
-		&:hover:not([data-current]) {
-			color: col(secondary, 500);
-			background: col(secondary, 100, 0.1);
 		}
 	}
 

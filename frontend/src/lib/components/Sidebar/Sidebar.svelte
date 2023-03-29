@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let variant: 'default' | 'editor' = 'default';
+	export let variant: 'default' | 'editor' | 'outlined' = 'default';
 </script>
 
 <aside class={variant}>
@@ -37,7 +37,7 @@
 		}
 
 		@include laptop {
-			position: absolute;
+			// position: absolute;
 		}
 	}
 
@@ -56,16 +56,17 @@
 		--sidebar-inset: 0.5rem;
 		--sidebar-gap: 3px;
 		--sidebar-radius: var(--ui-radius-lg);
-		background-color: col(secondary, 100, 0.25);
+		background-color: col(bg, 700);
 		> :global(hr) {
-			border-bottom: var(--ui-border-size) solid col(secondary, 100, 0.1);
+			border-bottom: var(--ui-border-size) solid col(fg, 100, 0.1);
 		}
 	}
 
 	.outlined {
-		// background: col(bg, 100);
-		// border: var(--ui-border-size) dashed col(secondary, 300, 0.25);
-		border: var(--ui-border-size) solid col(secondary, 100, 0.1);
+		--sidebar-inset: 0.5rem;
+		--sidebar-gap: 3px;
+		--sidebar-radius: var(--ui-radius-lg);
+		border: var(--ui-border-size) solid col(secondary, 500, 0.35);
 		> :global(hr) {
 			border-bottom: var(--ui-border-size) dashed col(secondary, 300, 0.25);
 		}

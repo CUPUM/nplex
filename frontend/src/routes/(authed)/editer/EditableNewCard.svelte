@@ -26,7 +26,7 @@
 		align-items: center;
 		justify-content: center;
 		color: col(fg, 500);
-		border: var(--ui-border-size) dashed col(fg, 100, 0.1);
+		border: 1px dashed col(fg, 100, 0.1);
 		font-size: var(--ui-text-md);
 		font-weight: 425;
 		transition: all 0.15s ease-out;
@@ -51,7 +51,7 @@
 	.fill-icon {
 		position: absolute;
 		font-size: 420px;
-		opacity: 0.1;
+		opacity: 0.05;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);

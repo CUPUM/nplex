@@ -1,7 +1,7 @@
 @use 'utils' as *;
 
 .token {
-	--token-size: var(--ui-unit-md);
+	--token-size: var(--ui-block-md);
 	--token-radius: 99em;
 	--token-inset: var(--ui-inset);
 	--token-border: 0px solid transparent;

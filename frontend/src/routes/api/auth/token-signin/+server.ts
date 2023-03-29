@@ -1,4 +1,4 @@
-import { setAuthCookie } from '$routes/api/auth/common';
+import { setSessionCookieFromAuth } from '$routes/api/auth/common';
 import { STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
 import { z } from 'zod';
@@ -20,7 +20,7 @@ export const POST = async (event) => {
 			message: "Les jetons d'identification utilisés ne sont pas valides.",
 		});
 	}
-	setAuthCookie(event, signin.data.session);
+	await setSessionCookieFromAuth(event, signin.data.session);
 	return new Response(null, {
 		status: 200,
 		statusText: 'Connecté avec succès en utilisant les jetons.',

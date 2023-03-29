@@ -81,6 +81,7 @@ export default function isEqual<T>(
 	} catch (error) {
 		console.error(error);
 		// throw error;
+		return false;
 	}
 	return true;
 }

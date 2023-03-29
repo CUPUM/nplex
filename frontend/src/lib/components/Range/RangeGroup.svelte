@@ -74,10 +74,14 @@
 	$: if (to) checkTo();
 
 	const relativeFrom = spring(valueToPercent(computedFrom), motionOptions);
-	$: relativeFrom.set(valueToPercent(collide ? computedFrom : Math.min(computedFrom, computedTo)));
+	$: $min,
+		$max,
+		relativeFrom.set(valueToPercent(collide ? computedFrom : Math.min(computedFrom, computedTo)));
 
 	const relativeTo = spring(valueToPercent(computedTo), motionOptions);
-	$: relativeTo.set(valueToPercent(collide ? computedTo : Math.max(computedFrom, computedTo)));
+	$: $min,
+		$max,
+		relativeTo.set(valueToPercent(collide ? computedTo : Math.max(computedFrom, computedTo)));
 
 	let startFromValue: number | null = null;
 	let startToValue: number | null = null;

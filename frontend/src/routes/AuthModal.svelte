@@ -126,6 +126,12 @@
 
 	let confirmEmail = 'asdasd';
 
+	$: redirectTo =
+		$page.url.searchParams.get(SEARCH_PARAMS.REDIRECT) ??
+		($page.url.pathname === '/' ? USER_BASE_ROUTE.pathname : '');
+
+	$: redirectToParam = redirectTo ? `&${SEARCH_PARAMS.REDIRECT}=${redirectTo}` : '';
+
 	const providers = [
 		'facebook',
 		'google',
@@ -240,9 +246,7 @@
 						variant={$authModal === AUTHMODAL_MODE.SignIn ? 'cta' : 'default'}
 						contentAlign="center"
 						formnovalidate
-						formaction="{Action.SignIn}{$page.url.pathname === '/'
-							? `&${SEARCH_PARAMS.REDIRECT}=${USER_BASE_ROUTE.pathname}`
-							: ''}"
+						formaction="{Action.SignIn}{redirectToParam}"
 						loading={currentAction?.startsWith(Action.SignIn)}
 					>
 						<Icon name="login" slot="trailing" />
@@ -265,9 +269,7 @@
 									.toString()
 							: undefined}
 						contentAlign="center"
-						formaction="{Action.SignUp}{$page.url.pathname === '/'
-							? `&${SEARCH_PARAMS.REDIRECT}=${USER_BASE_ROUTE.pathname}`
-							: ''}"
+						formaction="{Action.SignUp}{redirectToParam}"
 						loading={currentAction?.startsWith(Action.SignUp)}
 					>
 						Créer {$authModal === AUTHMODAL_MODE.SignUp ? 'mon' : 'un'} compte

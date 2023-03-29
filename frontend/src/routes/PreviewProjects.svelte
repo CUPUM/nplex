@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
 	import Image from '$components/Image/Image.svelte';
-	import ImagePlaceholder from '$components/Image/ImagePlaceholder.svelte';
+	import MeshGradient from '$components/MeshGradient.svelte';
 	import { asMaybeSingle } from '$types/database/utils';
 	import { STORAGE_BUCKETS } from '$utils/enums';
 	import { projectColors, publicUrl } from '$utils/format';
@@ -29,7 +29,7 @@
 						src={publicUrl(STORAGE_BUCKETS.PROJECTS, asMaybeSingle(p.banner)?.storage_name)}
 						class="image"
 					>
-						<ImagePlaceholder color={projectColors(p.gallery)} />
+						<MeshGradient color={projectColors(p.gallery)} />
 					</Image>
 					<section class="detail">
 						<h1 class="heading-sm">{p.title}</h1>

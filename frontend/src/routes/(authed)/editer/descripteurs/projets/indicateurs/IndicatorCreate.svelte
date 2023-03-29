@@ -11,7 +11,6 @@
 	import { INDICATORS_KEY_NEW } from './constants';
 
 	export let categoryId: PageData['exemplarityCategories'][number]['id'];
-
 	export let opened = false;
 
 	const FORM_ID = 'create-indicator';
@@ -50,7 +49,7 @@
 	</form>
 	<svelte:fragment slot="footer">
 		<Button variant="cta" type="submit" form={FORM_ID} formaction="?/create">
-			Créer <Icon name="save" slot="trailing" />
+			Créer <Icon name="check" slot="trailing" />
 		</Button>
 	</svelte:fragment>
 </Modal>

@@ -57,7 +57,7 @@
 		cursor: pointer;
 		font-weight: 450;
 		padding: 0 1.25em;
-		height: calc(var(--ui-unit-lg) - 2 * var(--inset, 0px));
+		height: calc(var(--ui-block-lg) - 2 * var(--inset, 0px));
 		border-radius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
 		letter-spacing: 0.02em;
 		line-height: 1;

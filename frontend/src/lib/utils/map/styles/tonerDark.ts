@@ -6,16 +6,16 @@ import { FONT, TRANSPARENT } from './tonerLight';
 
 const THEME = {
 	LANDSCAPE: THEME_PALETTES.dark.bg[900], // 'hsla(0, 0%, 100%, 1)',
-	GRASS_PATTERN: THEME_PALETTES.dark.bg[700],
-	WATER: colord(THEME_PALETTES.dark.fg['100']).alpha(0.2).toHslString(), // 'hsla(0, 0%, 0%, 1)',
+	GRASS_PATTERN: colord(THEME_PALETTES.dark.fg[700]).alpha(0.1).toHslString(),
+	WATER: THEME_PALETTES.dark.bg[300], // 'hsla(0, 0%, 0%, 1)',
 	NATURE: THEME_PALETTES.dark.bg[500], // 'hsla(0, 0%, 0%, 1)',
-	ROADS: colord(THEME_PALETTES.dark.bg['000']).alpha(1).toHslString(), // 'hsla(0, 0%, 0%, 1)',
-	RAILS: colord(THEME_PALETTES.dark.bg[100]).alpha(0.5).toHslString(),
-	ADMINISTRATIVE: THEME_PALETTES.dark.primary[700], // 'hsla(0, 0%, 0%, 1)',
+	ROADS: colord(THEME_PALETTES.dark.bg['500']).alpha(1).toHslString(), // 'hsla(0, 0%, 0%, 1)',
+	RAILS: colord(THEME_PALETTES.dark.bg[700]).alpha(1).toHslString(),
+	ADMINISTRATIVE: THEME_PALETTES.dark.bg['000'], // 'hsla(0, 0%, 0%, 1)',
 	BUILDINGS: THEME_PALETTES.dark.bg[100], // 'hsla(0, 0%, 0%, 1)',
 	PLACENAMES: THEME_PALETTES.dark.fg[100], // 'hsla(0, 0%, 0%, 1)',
 	ROADNAMES: THEME_PALETTES.dark.fg[100],
-	WATERNAMES: THEME_PALETTES.dark.bg[900], // 'hsla(0, 0%, 100%, 1)',
+	WATERNAMES: THEME_PALETTES.dark.fg[100], // 'hsla(0, 0%, 100%, 1)',
 	TEXT_HALO: THEME_PALETTES.dark.bg[900],
 } as const;
 

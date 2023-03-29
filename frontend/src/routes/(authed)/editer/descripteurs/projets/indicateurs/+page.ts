@@ -1,3 +1,4 @@
+import { PROJECT_DESCRIPTORS_EDITOR_ROUTES } from '$routes/(authed)/editer/descripteurs/projets/routes';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { alwaysArr } from '$utils/format';
@@ -32,6 +33,13 @@ export const load = async (event) => {
 		});
 
 	return {
+		editorBreadcrumbs: [
+			...(await event.parent()).editorBreadcrumbs,
+			{
+				title: PROJECT_DESCRIPTORS_EDITOR_ROUTES.Indicators.title,
+				href: PROJECT_DESCRIPTORS_EDITOR_ROUTES.Indicators.pathname,
+			},
+		] satisfies App.PageData['editorBreadcrumbs'],
 		exemplarityCategories,
 	};
 };

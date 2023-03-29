@@ -280,7 +280,7 @@
 		height: 1.5px;
 		background-color: transparent;
 		border-bottom: 1.5px dashed col(fg, 100, 0.2);
-		width: 50%;
+		width: 100%;
 		aspect-ratio: unset;
 	}
 
@@ -303,7 +303,7 @@
 	.remove-level {
 		position: relative;
 		aspect-ratio: 1;
-		height: var(--ui-unit-sm);
+		height: var(--ui-block-sm);
 		display: flex;
 		align-items: center;
 		justify-content: center;

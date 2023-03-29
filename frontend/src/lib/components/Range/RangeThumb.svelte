@@ -42,9 +42,9 @@
 
 	const relativeValue = spring(valueToPercent(value), motionOptions);
 
-	$: $relativeValue = valueToPercent(value);
 	$: computedMax = max ?? $rangeMax;
 	$: computedMin = min ?? $rangeMin;
+	$: min, max, $rangeMin, $rangeMax, ($relativeValue = valueToPercent(value));
 
 	let startValue: number | null = null;
 
