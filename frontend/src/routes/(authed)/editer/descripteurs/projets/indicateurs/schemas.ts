@@ -1,6 +1,11 @@
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
-import { INDICATOR_LABEL_MAX, INDICATOR_TITLE_MAX } from './constants';
+import {
+	INDICATORS_KEY,
+	INDICATORS_KEY_NEW,
+	INDICATOR_LABEL_MAX,
+	INDICATOR_TITLE_MAX,
+} from './constants';
 
 const indicatorCategorySchema = zfd.numeric();
 
@@ -24,9 +29,24 @@ const indicatorShortTitleSchema = zfd.text(
 
 const indicatorDescriptionSchema = zfd.text(z.string().nullable().default(null));
 
-export const descriptorIndicatorBaseSchema = z.object({
-	category_id: indicatorCategorySchema,
+const indicatorBaseSchema = z.object({
+	category: indicatorCategorySchema,
 	title: indicatorTitleSchema,
-	short_label: indicatorShortTitleSchema,
+	short_title: indicatorShortTitleSchema,
 	description: indicatorDescriptionSchema,
+});
+
+export const desciptorIndicatorsUpdateSchema = zfd.formData({
+	[INDICATORS_KEY]: z
+		.record(
+			z.string(),
+			indicatorBaseSchema.extend({
+				id: zfd.numeric(),
+			})
+		)
+		.transform((o) => Object.values(o)),
+});
+
+export const descriptorIndicatorCreateSchema = zfd.formData({
+	[INDICATORS_KEY_NEW]: indicatorBaseSchema,
 });

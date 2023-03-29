@@ -1,26 +1,21 @@
 <script lang="ts">
-	// const links = Object.values(PROJECT_DESCRIPTORS_EDITOR_ROUTES);
-	// $: ({ crumbs } = $page.data as LayoutData);
-
-	// export let data;
+	import { enhance } from '$app/forms';
+	import { EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../constants';
 </script>
 
-<slot />
+<form
+	class="editor-form"
+	id={EDITOR_FORM_ID}
+	action={EDITOR_FORM_ACTION}
+	method="POST"
+	use:enhance={(a) => {
+		return (f) => {
+			f.update({ reset: false });
+		};
+	}}
+>
+	<slot />
+</form>
 
 <style lang="scss">
-	.layout {
-		align-self: stretch;
-		display: flex;
-		flex-direction: row;
-		gap: var(--ui-gap-sm);
-	}
-
-	.sidebar {
-		// grid-column: sidebar;
-		flex: none;
-	}
-
-	.main {
-		flex: 1;
-	}
 </style>

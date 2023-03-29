@@ -10,7 +10,7 @@
 	import type { PageData } from './$types';
 	import { INDICATORS_KEY_NEW } from './constants';
 
-	export let categoryId: PageData['exemplarityCategories'][number]['id'];
+	export let category: PageData['exemplarityCategories'][number]['id'];
 	export let opened = false;
 
 	const FORM_ID = 'create-indicator';
@@ -39,13 +39,13 @@
 		<Field variant="outlined" name="{INDICATORS_KEY_NEW}.title" required>
 			<svetle:fragment slot="label">Titre du nouvel indicateur</svetle:fragment>
 		</Field>
-		<Field variant="outlined" name="{INDICATORS_KEY_NEW}.label" required>
+		<Field variant="outlined" name="{INDICATORS_KEY_NEW}.short_title" required>
 			<svetle:fragment slot="label">Titre court</svetle:fragment>
 		</Field>
 		<TextArea variant="outlined" name="{INDICATORS_KEY_NEW}.description">
 			<svetle:fragment slot="label">Description</svetle:fragment>
 		</TextArea>
-		<input type="hidden" name="{INDICATORS_KEY_NEW}.category_id" readonly value={categoryId} />
+		<input type="hidden" name="{INDICATORS_KEY_NEW}.category" readonly value={category} />
 	</form>
 	<svelte:fragment slot="footer">
 		<Button variant="cta" type="submit" form={FORM_ID} formaction="?/create">
@@ -60,5 +60,7 @@
 		flex-direction: column;
 		gap: 2rem;
 		padding-block: 0.5rem;
+		width: var(--ui-width-md);
+		max-width: 100%;
 	}
 </style>

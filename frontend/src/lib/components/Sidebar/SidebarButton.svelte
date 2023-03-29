@@ -94,37 +94,36 @@
 	:global(.editor) .sidebar-button {
 		--ripple-color: #{col(secondary, 300)};
 		align-self: stretch;
-		color: col(fg, 300);
+		color: col(fg, 100);
 
 		&:hover:not([data-current]) {
 			color: col(fg, 700);
-			background: col(fg, 100, 0.1);
+			background: col(bg, 100, 0.25);
 		}
 
 		&[data-current] {
 			cursor: default;
 			color: col(secondary, 900);
-			background: col(secondary, 100, 0.25);
+			background: col(secondary, 100, 0.1);
 			// border-color: col(secondary, 700, 0.5);
 		}
 	}
 
-	.outlined,
-	:global(.outlined) .sidebar-button {
+	:global(.descriptors) .sidebar-button {
 		--ripple-color: #{col(secondary, 500)};
 		color: col(fg, 000);
 		// border: var(--ui-border-size) dashed col(secondary, 500, 0);
+
+		&:hover:not([data-current]) {
+			color: col(secondary, 300);
+			background: col(secondary, 100, 0.05);
+		}
 
 		&[data-current] {
 			cursor: default;
 			color: col(secondary, 700);
 			background: col(secondary, 100, 0.1);
 			// border-color: col(secondary, 700, 0.5);
-		}
-
-		&:hover:not([data-current]) {
-			color: col(secondary, 300);
-			background: col(secondary, 100, 0.05);
 		}
 	}
 </style>

@@ -77,12 +77,12 @@
 		<Field
 			name="occupation"
 			variant="outlined"
-			value={data.profile.occupation?.title}
+			value={data.profile.occupation?.title ?? null}
 			on:change={() => {
 				dirtyGeneral = true;
 			}}
 		>
-			<svelte:fragment slot="label">Courriel public</svelte:fragment>
+			<svelte:fragment slot="label">Occupation principale</svelte:fragment>
 		</Field>
 		<TextArea
 			name="about"

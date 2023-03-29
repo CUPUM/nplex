@@ -69,7 +69,7 @@
 			color: col(fg, 100);
 			padding: var(--ui-gutter-md);
 			border-radius: var(--ui-radius-xl);
-			background-color: col(bg, 100);
+			// background-color: col(bg, 100);
 			// border: var(--ui-border-size) solid col(bg, 000);
 		}
 

@@ -14,7 +14,6 @@
 	--ui-nav-center-w: calc(
 		min(100%, var(--ui-width-main)) - 2 * 1.5rem - 2 * 1rem - 2 * 319px
 	); // 319px = width of main nav (largest of both side navs);
-	--ui-sidebar-w: 220px;
 	--ui-ripple-color: #{col(fg, 900)};
 	--ui-scroll: 0;
 	--ui-scroll-px: 0px;

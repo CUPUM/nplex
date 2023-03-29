@@ -1,23 +1,17 @@
-import { getDb } from '$utils/database/client';
+import { orgCreateSchema } from '$routes/(authed)/editer/organisation/schemas';
 import { STATUS_CODES } from '$utils/enums';
-import { error, fail, redirect } from '@sveltejs/kit';
-import { zfd } from 'zod-form-data';
-import { orgNameSchema } from './common';
+import { validateFormData } from '$utils/validation';
+import { error, redirect } from '@sveltejs/kit';
 
 export const actions = {
 	create: async (event) => {
-		const formData = await event.request.formData();
-		const parsed = zfd
-			.formData({
-				name: orgNameSchema,
-			})
-			.safeParse(formData);
-		console.log(parsed);
-		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, parsed.error.formErrors.fieldErrors);
-		}
-		const db = await getDb(event);
-		const newOrg = await db.from('organizations').insert(parsed.data).select('id').single();
+		const validated = await validateFormData(event, orgCreateSchema);
+		if (validated.failure) return validated.failure;
+		const newOrg = await event.locals.db
+			.from('organisations')
+			.insert(validated.data)
+			.select('id')
+			.single();
 		if (newOrg.error) {
 			throw error(STATUS_CODES.InternalServerError);
 		}

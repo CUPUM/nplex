@@ -15,18 +15,19 @@
 		display: flex;
 		aspect-ratio: 1;
 		align-items: flex-start;
-		padding: 2.5rem 3rem;
-		color: col(fg, 500);
+		padding: 2rem 3rem;
+		color: col(fg, 100);
 		background-color: col(bg, 900);
-		font-weight: 500;
-		line-height: 1.2;
+		font-weight: 400;
+		line-height: 1.5;
 		font-size: var(--ui-text-xl);
-		border-radius: var(--ui-radius-lg);
+		border-radius: var(--ui-radius-xl);
+		// border: var(--ui-border-size) dashed col(fg, 100, 0.1);
 		transition: all 0.1s ease-out;
 
 		&:hover {
-			color: col(fg, 700);
-			background-color: col(secondary, 300);
+			color: col(fg, 500);
+			background-color: col(secondary, 100);
 		}
 	}
 </style>

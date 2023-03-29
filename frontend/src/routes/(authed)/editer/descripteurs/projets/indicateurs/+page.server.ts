@@ -1,60 +1,41 @@
+import { EDITOR_FORM_ACTION } from '$routes/(authed)/editer/constants';
+import {
+	desciptorIndicatorsUpdateSchema,
+	descriptorIndicatorCreateSchema,
+} from '$routes/(authed)/editer/descripteurs/projets/indicateurs/schemas';
 import { STATUS_CODES } from '$utils/enums';
-import { failureMessages } from '$utils/validation';
+import { validateFormData } from '$utils/validation';
 import { error, fail } from '@sveltejs/kit';
-import { z } from 'zod';
-import { zfd } from 'zod-form-data';
 import { INDICATORS_KEY, INDICATORS_KEY_NEW } from './constants';
 
 export const actions = {
-	update: async (event) => {
-		const formData = await event.request.formData();
-		const parsed = zfd
-			.formData({
-				[INDICATORS_KEY]: z
-					.record(
-						z.string(),
-						indicatorBaseSchema.extend({
-							id: zfd.numeric(),
-						})
-					)
-					.transform((o) => Object.values(o)),
-			})
-			.safeParse(formData);
-		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { messages: { error: failureMessages(parsed.error) } });
-		}
-		const up = event.locals.db
+	[EDITOR_FORM_ACTION]: async (event) => {
+		const validated = await validateFormData(event, desciptorIndicatorsUpdateSchema);
+		if (validated.failure) return validated.failure;
+		const up = await event.locals.db
 			.from('project_exemplarity_indicator')
-			.upsert(parsed.data[INDICATORS_KEY])
+			.upsert(validated.data[INDICATORS_KEY])
 			.then((res) => {
 				if (res.error) {
 					throw error(STATUS_CODES.InternalServerError, res.error);
 				}
 				return { updated: true };
 			});
-
-		return await up;
+		return { updated: true };
 	},
-
 	create: async (event) => {
-		const formData = await event.request.formData();
-		const parsed = zfd
-			.formData({
-				[INDICATORS_KEY_NEW]: indicatorBaseSchema,
-			})
-			.safeParse(formData);
-		if (!parsed.success) {
-			return fail(STATUS_CODES.BadGateway, { messages: { error: failureMessages(parsed.error) } });
-		}
+		const validated = await validateFormData(event, descriptorIndicatorCreateSchema);
+		if (validated.failure) return validated.failure;
 		const ins = await event.locals.db
 			.from('project_exemplarity_indicator')
-			.insert(parsed.data[INDICATORS_KEY_NEW]);
-		if (ins.error) {
-			throw error(STATUS_CODES.InternalServerError, ins.error);
-		}
+			.insert(validated.data[INDICATORS_KEY_NEW])
+			.then((res) => {
+				if (res.error) {
+					throw error(STATUS_CODES.InternalServerError, res.error);
+				}
+			});
 		return { created: true };
 	},
-
 	delete: async (event) => {
 		const indicatorId = event.url.searchParams.get('id');
 		if (!indicatorId) {

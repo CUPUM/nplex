@@ -57,65 +57,120 @@
 	$: updateText(), value, selectRef;
 </script>
 
-<Field
-	{style}
-	{value}
-	{prefix}
-	{suffix}
-	{id}
-	{variant}
-	{placeholder}
-	{compact}
-	{disabled}
-	bind:warning
-	bind:success
-	{loading}
-	{tabindex}
-	{name}
-	{required}
-	class={className}
->
-	<slot name="leading" slot="leading" />
-	<!-- <svelte:fragment slot="label">
-		{#if $$slots.label}
+{#if $$slots.label}
+	<Field
+		{style}
+		{value}
+		{prefix}
+		{suffix}
+		{id}
+		{variant}
+		{placeholder}
+		{compact}
+		{disabled}
+		bind:warning
+		bind:success
+		{loading}
+		{tabindex}
+		{name}
+		{required}
+		class={className}
+	>
+		<slot name="leading" slot="leading" />
+		<svelte:fragment slot="label">
 			<slot name="label" />
-		{/if}
-	</svelte:fragment> -->
-	<svelte:fragment slot="input" let:bindInputRef>
-		<input
-			type="text"
-			value={text}
-			{placeholder}
-			readonly
-			data-field-input
-			in:fly={{ y: 6, easing: cubicOut, delay: 250 }}
-		/>
-		<select
-			size="0"
-			bind:value
-			bind:this={selectRef}
-			{id}
-			{name}
-			{disabled}
-			{required}
-			{tabindex}
-			use:bindInputRef
-		>
-			<option disabled={required} hidden={required} />
-			{#if options.length}
-				{#each options as option, i}
-					<slot name="option" {option} {i} />
-				{/each}
-			{/if}
-		</select>
-	</svelte:fragment>
-	<svelte:fragment slot="trailing">
-		<button class="select-arrow" type="button" tabindex="-1">
-			<Icon class="arrow" name="chevron-down" />
-		</button>
-		<slot name="trailing" />
-	</svelte:fragment>
-</Field>
+		</svelte:fragment>
+		<svelte:fragment slot="input" let:bindInputRef>
+			<input
+				type="text"
+				value={text}
+				{placeholder}
+				readonly
+				data-field-input
+				in:fly={{ y: 6, easing: cubicOut, delay: 250 }}
+			/>
+			<select
+				size="0"
+				bind:value
+				bind:this={selectRef}
+				{id}
+				{name}
+				{disabled}
+				{required}
+				{tabindex}
+				use:bindInputRef
+			>
+				<option disabled={required} hidden={required} />
+				{#if options.length}
+					{#each options as option, i}
+						<slot name="option" {option} {i} />
+					{/each}
+				{/if}
+			</select>
+		</svelte:fragment>
+		<svelte:fragment slot="trailing">
+			<button class="select-arrow" type="button" tabindex="-1">
+				<Icon class="arrow" name="chevron-down" />
+			</button>
+			<slot name="trailing" />
+		</svelte:fragment>
+	</Field>
+{:else}
+	<Field
+		{style}
+		{value}
+		{prefix}
+		{suffix}
+		{id}
+		{variant}
+		{placeholder}
+		{compact}
+		{disabled}
+		bind:warning
+		bind:success
+		{loading}
+		{tabindex}
+		{name}
+		{required}
+		class={className}
+	>
+		<slot name="leading" slot="leading" />
+		<svelte:fragment slot="input" let:bindInputRef>
+			<input
+				type="text"
+				value={text}
+				{placeholder}
+				readonly
+				data-field-input
+				in:fly={{ y: 6, easing: cubicOut, delay: 250 }}
+			/>
+			<select
+				size="0"
+				bind:value
+				bind:this={selectRef}
+				{id}
+				{name}
+				{disabled}
+				{required}
+				{tabindex}
+				use:bindInputRef
+			>
+				<option disabled={required} hidden={required} />
+				{#if options.length}
+					{#each options as option, i}
+						<slot name="option" {option} {i} />
+					{/each}
+				{/if}
+			</select>
+		</svelte:fragment>
+		<svelte:fragment slot="trailing">
+			<button class="select-arrow" type="button" tabindex="-1">
+				<Icon class="arrow" name="chevron-down" />
+			</button>
+			<slot name="trailing" />
+		</svelte:fragment>
+	</Field>
+{/if}
 
 <style lang="scss">
 	select {

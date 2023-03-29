@@ -21,7 +21,7 @@
 	export let data;
 
 	const theme = 'dark';
-	const shade = 500;
+	const shade = 300;
 
 	let projectsFilters: ComponentProps<EditablesList<any>>['filters'] = {
 		authoring: 'all',
@@ -187,9 +187,7 @@
 			position: relative;
 			padding: var(--ui-gutter-md);
 			border-radius: var(--ui-radius-xl);
-			background-color: col(bg, 900);
-			// max-width: calc(100% - var(--ui-sidebar-w));
-			// min-width: min(var(--ui-width-md), 100%);
+			background-color: col(bg, 700);
 		}
 
 		:global(.editor-form-group-title) {

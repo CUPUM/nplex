@@ -1,26 +1,15 @@
+import { orgGeneralUpdateSchema } from '$routes/(authed)/editer/organisation/schemas';
 import { STATUS_CODES } from '$utils/enums';
-import { failureMessages } from '$utils/validation';
-import { error, fail } from '@sveltejs/kit';
-import { zfd } from 'zod-form-data';
-import { orgShortNameSchema } from './[orgId]/common';
-import { orgNameSchema } from './common';
-
-const updateSchema = zfd.formData({
-	name: orgNameSchema,
-	short_name: orgShortNameSchema,
-});
+import { validateFormData } from '$utils/validation';
+import { error } from '@sveltejs/kit';
 
 export const actions = {
 	update: async (event) => {
-		const formData = await event.request.formData();
-		const parsed = updateSchema.safeParse(formData);
-		if (!parsed.success) {
-			return fail(STATUS_CODES.BadRequest, { messages: { error: failureMessages(parsed.error) } });
-		}
-
+		const validated = await validateFormData(event, orgGeneralUpdateSchema);
+		if (validated.failure) return validated.failure;
 		const up = await event.locals.db
 			.from('organizations')
-			.update(parsed.data)
+			.update(validated.data)
 			.eq('id', event.params.orgId)
 			.single();
 		if (up.error) {

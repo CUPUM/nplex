@@ -4,7 +4,7 @@
 	import { PROJECT_DESCRIPTORS_EDITOR_ROUTES } from './routes';
 </script>
 
-<Sidebar variant="outlined">
+<Sidebar variant="editor">
 	{#each Object.values(PROJECT_DESCRIPTORS_EDITOR_ROUTES) as link, i}
 		<SidebarButton {i} href={link.pathname}>
 			{link.label}

@@ -94,12 +94,7 @@
 		</svelte:fragment>
 	</Modal>
 	<input type="hidden" name="{INDICATORS_KEY}['{data.id}'].id" readonly value={data.id} />
-	<input
-		type="hidden"
-		name="{INDICATORS_KEY}['{data.id}'].category_id"
-		readonly
-		value={categoryId}
-	/>
+	<input type="hidden" name="{INDICATORS_KEY}['{data.id}'].category" readonly value={categoryId} />
 	<input
 		type="hidden"
 		name="{INDICATORS_KEY}['{data.id}'].short_title"
