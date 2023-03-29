@@ -26,6 +26,9 @@
 			// }
 		};
 	}}
+	on:submit={(e) => {
+		console.log(e.submitter);
+	}}
 	method="POST"
 	action="?/{EDITOR_FORM_ACTION}"
 	id={EDITOR_FORM_ID}

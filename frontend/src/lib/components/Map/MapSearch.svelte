@@ -6,24 +6,17 @@
 	import { PUBLIC_GEOAPIFY_KEY } from '$env/static/public';
 	import { KEY } from '$utils/enums';
 	import { throttle } from '$utils/modifiers';
-	import { THEME_PALETTES } from '$utils/themes';
-	import { Marker } from 'maplibre-gl';
 	import type { ComponentProps } from 'svelte';
 	import { getMapContext } from './Map.svelte';
 
 	type $$Props = ComponentProps<Field<string>>;
 
-	export let value: string;
-
 	const { getMap } = getMapContext();
 
-	const map = getMap();
+	export let value: string;
+	export let flyTo: boolean = true;
 
-	let marker = new Marker({
-		draggable: false,
-		scale: 0.75,
-		color: THEME_PALETTES.dark.secondary[100],
-	});
+	let lnglat: [number, number];
 
 	const search = throttle(async () => {
 		try {
@@ -42,13 +35,11 @@
 					PUBLIC_GEOAPIFY_KEY
 			);
 			const json = await res.json();
-			console.log(json);
 			if (json.results.length) {
-				const coords = [json.results[0].lon, json.results[0].lat] as [number, number];
-				marker.setLngLat(coords);
-				marker.addTo(map);
-				// To do: Add marker pulse and keyboard marker delete?
-				map.flyTo({ center: coords, zoom: 15 });
+				lnglat = [json.results[0].lon, json.results[0].lat] as [number, number];
+				if (flyTo) {
+					map.flyTo({ center: lnglat, zoom: 15 });
+				}
 			}
 		} catch (err) {
 			console.log(err);
@@ -56,7 +47,7 @@
 	}, 1000);
 
 	function clear() {
-		marker.remove();
+		lnglat = undefined as any;
 	}
 </script>
 
@@ -83,6 +74,10 @@
 		</svelte:fragment>
 	</Field>
 </div>
+
+{#if lnglat}
+	<slot {lnglat} />
+{/if}
 
 <style lang="scss">
 	.map-search {

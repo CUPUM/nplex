@@ -4,7 +4,6 @@ import {
 	projectGalleryUpdateSchema,
 	projectImageUploadSchema,
 } from '$routes/(authed)/editer/projet/schemas';
-import { getDb } from '$utils/database/client';
 import { SEARCH_PARAMS, STATUS_CODES, STORAGE_BUCKETS, STORAGE_FOLDERS } from '$utils/enums';
 import { toPgArr } from '$utils/format';
 import { validateFormData } from '$utils/validation';
@@ -134,24 +133,28 @@ export const actions = {
 			return fail(STATUS_CODES.InternalServerError, { message: del.error.message });
 		}
 	},
+	test: async (event) => {
+		console.log(event);
+	},
 	/**
 	 * Promote the passed image as the project's banner image. Unsets previous banner.
 	 */
 	promote: async (event) => {
+		console.log('promoting', event);
 		const imageId = event.url.searchParams.get(SEARCH_PARAMS.IMAGE_ID);
 		if (!imageId) {
 			return fail(STATUS_CODES.BadRequest, {
 				message: 'Missing image identifier required to complete image promotion.',
 			});
 		}
-		const db = await getDb(event);
-		const promoteRes = await db
+		const promoteRes = await event.locals.db
 			.from('projects')
 			.update({ banner: imageId })
 			.eq('id', event.params.projectId)
 			.single();
 		if (promoteRes.error) {
-			return fail(STATUS_CODES.InternalServerError, promoteRes.error);
+			console.log(promoteRes.error);
+			throw error(STATUS_CODES.InternalServerError, promoteRes.error);
 		}
 	},
 	/**
@@ -159,18 +162,18 @@ export const actions = {
 	 * null.
 	 */
 	demote: async (event) => {
+		console.log('demoting', event);
 		const imageId = event.url.searchParams.get(SEARCH_PARAMS.IMAGE_ID);
 		if (!imageId) {
 			return fail(STATUS_CODES.BadRequest, {
 				message: 'Missing image identifier required to complete image demotion.',
 			});
 		}
-		const db = await getDb(event);
-		const promoteRes = await db
+		const promoteRes = await event.locals.db
 			.from('projects')
 			.update({ banner: null })
 			.eq('id', event.params.projectId)
-			.eq('banner_id', imageId)
+			.eq('banner', imageId)
 			.maybeSingle();
 		if (promoteRes.error) {
 			throw error(STATUS_CODES.InternalServerError, promoteRes.error);

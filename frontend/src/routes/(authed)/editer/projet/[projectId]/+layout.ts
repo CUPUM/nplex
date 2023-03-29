@@ -1,3 +1,4 @@
+import EditorBottomNavProject from '$routes/(authed)/editer/projet/[projectId]/EditorBottomNavProject.svelte';
 import EditorHeaderProject from '$routes/(authed)/editer/projet/[projectId]/EditorHeaderProject.svelte';
 import EditorSidebarProject from '$routes/(authed)/editer/projet/[projectId]/EditorSidebarProject.svelte';
 import { asMany, asSingle } from '$types/database/utils';
@@ -28,7 +29,7 @@ export const load = async (event) => {
 				radius
 			),
 			gallery:projects_images!projects_images_project_fkey (*),
-			indicators:projects_exemplarity_indicators (*),
+			indicators:projects_exemplarity_indicators (indicator),
 			updated_by:updated_by (*,
 				role:users_roles!users_roles_user_fkey (*)
 			),
@@ -68,6 +69,7 @@ export const load = async (event) => {
 					publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.storage_name).data
 						.publicUrl,
 				})),
+				indicators: alwaysArr(res.data.indicators).map((pi) => pi.indicator),
 			};
 		});
 
@@ -88,5 +90,6 @@ export const load = async (event) => {
 		] satisfies App.PageData['editorBreadcrumbs'],
 		editorSidebar: EditorSidebarProject,
 		editorHeader: EditorHeaderProject,
+		editorBottomNav: EditorBottomNavProject,
 	};
 };

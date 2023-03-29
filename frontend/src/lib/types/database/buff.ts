@@ -31,7 +31,9 @@ export type BuffedDatabase = DeepReplace<
 						materialTypes: TableRow<'project_material_type'>[];
 						materialUses: TableRow<'project_material_use'>[];
 						eventTypes: TableRow<'project_event'>[];
-						exemplarityCategories: TableRow<'project_exemplarity_category'>[];
+						exemplarityCategories: (TableRow<'project_exemplarity_category'> & {
+							indicators: TableRow<'project_exemplarity_indicator'>[];
+						})[];
 						exemplarityIndicators: TableRow<'project_exemplarity_indicator'>[];
 						imageTypes: TableRow<'project_image_type'>[];
 					};

@@ -73,6 +73,9 @@
 		<!-- Editor main content -->
 		<div id="editor-layout-slot">
 			<slot />
+			{#if $page.data.editorBottomNav}
+				<svelte:component this={$page.data.editorBottomNav} />
+			{/if}
 		</div>
 	</div>
 	<!-- Floating toolbar -->
@@ -158,6 +161,8 @@
 			flex: 1;
 			display: flex;
 			flex-direction: column;
+			align-items: stretch;
+			gap: var(--ui-gap-sm);
 		}
 
 		:global(.editor-form) {

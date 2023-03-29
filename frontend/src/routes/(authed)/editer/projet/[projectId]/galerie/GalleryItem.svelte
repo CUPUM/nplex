@@ -25,11 +25,8 @@
 	] as const satisfies readonly { temporality: Temporality; label: string }[];
 
 	let bannerAction: 'promoting' | 'demoting' | null = null;
-	$: if ($project.banner) {
-		bannerAction = null;
-	}
-	$: isBanner =
-		($project.banner === data.id && bannerAction !== 'demoting') || bannerAction === 'promoting';
+	$: $project.banner, (bannerAction = null);
+	$: isBanner = $project.banner === data.id;
 </script>
 
 <figure>
@@ -75,7 +72,7 @@
 				formaction="{isBanner ? '?/demote' : '?/promote'}&{SEARCH_PARAMS.IMAGE_ID}={data.id}"
 				active={isBanner}
 				loading={!!bannerAction}
-				on:click={() => {
+				on:pointerup={() => {
 					bannerAction = isBanner ? 'demoting' : 'promoting';
 				}}
 			>
@@ -89,6 +86,7 @@
 		<Field variant="default" name="gallery[{i}].title" bind:value={data.title} tabindex={0}>
 			<svelte:fragment slot="label">Titre</svelte:fragment>
 		</Field>
+		<Button type="button">Ajouter un crédit <Icon slot="leading" name="plus" /></Button>
 		<Select
 			name="gallery[{i}].type"
 			options={$descriptors.imageTypes}

@@ -4,7 +4,13 @@
 	import RangeGroup from '$components/Range/RangeGroup.svelte';
 	import Toggle from '$components/Toggle/Toggle.svelte';
 	import { cadformatter } from '$utils/format';
-	import { COST_MAX, COST_MAX_DELTA_R, COST_MIN, COST_STEP } from '../constants';
+	import {
+		COST_MAX_BIG,
+		COST_MAX_DELTA_R,
+		COST_MAX_SMALL,
+		COST_MIN,
+		COST_STEP,
+	} from '../constants';
 	import { maxCostDelta } from '../schemas';
 	import { project } from './common';
 
@@ -30,7 +36,7 @@
 			suffix=" $ CA"
 			textAlign="start"
 			min={COST_MIN}
-			max={COST_MAX}
+			max={COST_MAX_BIG}
 			step={COST_STEP}
 			bind:value={$project.cost_range[0]}
 			style="grid-area: min;"
@@ -43,7 +49,7 @@
 			suffix=" $ CA"
 			textAlign="start"
 			min={COST_MIN}
-			max={COST_MAX}
+			max={COST_MAX_BIG}
 			step={COST_STEP}
 			bind:value={$project.cost_range[1]}
 			style="grid-area: max;"
@@ -52,9 +58,9 @@
 		</Field>
 		<Range
 			min={COST_MIN}
-			max={smallScale ? 100_000 : COST_MAX}
+			max={smallScale ? COST_MAX_SMALL : COST_MAX_BIG}
 			step={COST_STEP}
-			ticks={smallScale ? 25000 : 250000}
+			ticks={smallScale ? 50000 : 250000}
 			style="grid-area: range;"
 		>
 			<svelte:fragment slot="tick" let:tick>

@@ -17,7 +17,7 @@ import {
 	BUILDING_MIN_HEIGHT,
 	BUILDING_YEAR_MAX,
 	BUILDING_YEAR_MIN,
-	COST_MAX,
+	COST_MAX_BIG,
 	COST_MAX_DELTA_R,
 	COST_MIN,
 	COST_STEP,
@@ -85,13 +85,13 @@ const projectSiteOwnershipSchema = zfd.numeric(z.number().optional());
 const projectCostRangeSchema = zfd
 	.json(z.tuple([z.number().nonnegative(), z.number().nonnegative()]))
 	.superRefine(([min, max], ctx) => {
-		if (min < COST_MIN || min > COST_MAX) {
+		if (min < COST_MIN || min > COST_MAX_BIG) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: `La valeur minimum du projet ne respecte pas les limites.`,
 			});
 		}
-		if (max < COST_MIN || max > COST_MAX) {
+		if (max < COST_MIN || max > COST_MAX_BIG) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: `La valeur maximum du projet ne respecte pas les limites.`,
@@ -264,4 +264,8 @@ export const projectGalleryUpdateSchema = zfd.formData({
 			type: projectImageTypeSchema,
 		})
 	),
+});
+
+export const projectIndicatorsSchema = zfd.formData({
+	indicator: zfd.repeatableOfType(zfd.numeric()),
 });

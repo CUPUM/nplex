@@ -42,7 +42,7 @@ specifiers:
   sass: ^1.60.0
   sharp: ^0.32.0
   sortablejs: ^1.15.0
-  supabase: ^1.45.3
+  supabase: ^1.46.0
   svelte: ^3.57.0
   svelte-check: ^3.1.4
   svelte-preprocess: ^5.0.3
@@ -101,7 +101,7 @@ devDependencies:
   prettier-plugin-jsdoc: 0.4.2_prettier@2.8.7
   prettier-plugin-svelte: 2.10.0_5ir2xprf4ygk6mygilwnltaw3a
   sass: 1.60.0
-  supabase: 1.45.3
+  supabase: 1.46.0
   svelte: 3.57.0
   svelte-check: 3.1.4_2mhekp4wuw67ziunz36dwthchi
   svelte-preprocess: 5.0.3_xh4zlo6fgtzqe5odgbqh44y65e
@@ -4634,8 +4634,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /supabase/1.45.3:
-    resolution: {integrity: sha512-qdQCFRnao60IObMyMSvEFjRD8OZgd2gMDFMryQsudAAOyWCd84g7lI3yuA36XE1Ia32QPcKzQLL3jh9ceqO3HA==}
+  /supabase/1.46.0:
+    resolution: {integrity: sha512-KCwa7r5nq2sI10bjupq1ZQJDQ4/aU+SrKyMeQHn82PYzoMCzOzOdUuPzgpD+Sm25EilcJdryVbIHayhTvtzzWA==}
     hasBin: true
     requiresBuild: true
     dependencies:

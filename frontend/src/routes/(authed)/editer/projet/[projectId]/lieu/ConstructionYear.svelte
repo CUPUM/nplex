@@ -10,7 +10,7 @@
 </script>
 
 <fieldset class="editor-form-group">
-	<h3 class="editor-form-group-title">Année de construction</h3>
+	<h3 class="editor-form-group-title">Année de construction du bâtiment</h3>
 	<p class="subtle">En quelle année le bâtiment a-t-il été construit, à son origine?</p>
 	<Select variant="default" options={years} bind:value={$project.building_construction_year}>
 		<option slot="option" let:option value={option}>{option}</option>

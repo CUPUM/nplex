@@ -8,7 +8,7 @@
 -->
 <script lang="ts">
 	import Ripple from '$components/Ripple.svelte';
-	import { STATES, VARIANTS, type State, type Variant } from '$utils/enums';
+	import { STATES, type State } from '$utils/enums';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	type V = $$Generic;
@@ -17,7 +17,7 @@
 		HTMLInputAttributes,
 		'name' | 'tabindex' | 'required' | 'readonly' | 'disabled'
 	> & {
-		variant?: Variant;
+		variant?: 'default' | 'dashed' | 'outlined' | 'opaque';
 		state?: State;
 		group?: V[];
 		value?: V;
@@ -25,7 +25,7 @@
 		type?: 'checkbox' | 'radio';
 	};
 
-	export let variant: $$Props['variant'] = VARIANTS.Default;
+	export let variant: $$Props['variant'] = 'default';
 	export let state: $$Props['state'] = STATES.Normal;
 	export let type: $$Props['type'] = 'checkbox';
 	export let group: $$Props['group'] = undefined;

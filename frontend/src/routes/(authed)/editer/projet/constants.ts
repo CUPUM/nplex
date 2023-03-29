@@ -3,7 +3,8 @@ export const TITLE_MIN_WORDS = 3;
 export const TITLE_MAX_WORDS = 24;
 export const DESCRIPTION_MAX_WORDS = 250;
 export const COST_MIN = 0;
-export const COST_MAX = 1_250_000;
+export const COST_MAX_SMALL = 250_000;
+export const COST_MAX_BIG = 1_250_000;
 export const COST_MAX_DELTA_R = 0.5;
 export const COST_STEP = 500;
 // Location

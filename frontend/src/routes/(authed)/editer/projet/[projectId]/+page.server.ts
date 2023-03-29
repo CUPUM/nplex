@@ -10,7 +10,6 @@ export const actions = {
 		const validated = await validateFormData(event, projectGeneralUpdateSchema);
 		if (validated.failure) return validated.failure;
 		try {
-			// projects table
 			const generalUpdate = event.locals.db
 				.from('projects')
 				.update(validated.data.project)
@@ -20,31 +19,30 @@ export const actions = {
 						throw res.error;
 					}
 				});
-			// project_works table
+
 			const interventionsDelete = event.locals.db
 				.from('projects_interventions')
 				.delete()
 				.eq('project', event.params.projectId)
 				.not('intervention', 'in', toPgArr(validated.data.intervention))
-				.then((del) => {
-					if (del.error) {
-						throw del.error;
-					}
-					return event.locals.db
-						.from('projects_interventions')
-						.upsert(
-							validated.data.intervention.map((iid) => ({
-								project: event.params.projectId,
-								intervention: iid,
-							}))
-						)
-						.then((up) => {
-							if (up.error) {
-								console.error(up.error);
-								throw up.error;
-							}
-						});
+				.then((res) => {
+					if (res.error) throw res.error;
 				});
+
+			const interventionsUp = event.locals.db
+				.from('projects_interventions')
+				.upsert(
+					validated.data.intervention.map((iid) => ({
+						project: event.params.projectId,
+						intervention: iid,
+					})),
+					{ onConflict: 'project, intervention', ignoreDuplicates: true }
+				)
+				.then((res) => {
+					if (res.error) throw res.error;
+				});
+
+			await Promise.all([generalUpdate, interventionsDelete, interventionsUp]);
 		} catch (err) {
 			throw error(STATUS_CODES.InternalServerError, JSON.stringify(err));
 		}

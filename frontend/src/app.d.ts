@@ -79,6 +79,7 @@ declare global {
 			// }[];
 			editorHeader?: typeof SvelteComponent;
 			editorSidebar?: typeof SvelteComponent;
+			editorBottomNav?: typeof SvelteComponent;
 		}
 		interface Locals {
 			/**

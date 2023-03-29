@@ -56,9 +56,9 @@
 			{/if}
 		</h1>
 	</hgroup>
-	<section>
+	<section class="footer">
 		<Button variant="default" href="/projets/{$page.data.project?.id}">
-			Consulter la fiche d'exploration du projet <Icon name="file" slot="trailing" />
+			Visualiser la fiche du projet <Icon name="preview" slot="trailing" />
 		</Button>
 		<nobr>
 			<dl>
@@ -95,7 +95,7 @@
 		border-radius: var(--ui-radius-xl);
 		margin-bottom: var(--ui-gap-sm);
 		opacity: max(0, calc(1.25 - var(--ui-scroll) * 0.0015));
-		transition: opacity 0.25s ease;
+		transition: opacity 0.25s;
 	}
 
 	hgroup {
@@ -106,12 +106,16 @@
 	}
 
 	section {
+		position: relative;
 		font-size: var(--ui-text-sm);
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		flex-wrap: wrap;
 		gap: 1rem;
+		bottom: min(1rem, calc(0.2 * var(--ui-scroll-px)));
+		opacity: max(0, calc(1.5 - var(--ui-scroll) * 0.025));
+		transition: all 0.25s;
 	}
 
 	dl {

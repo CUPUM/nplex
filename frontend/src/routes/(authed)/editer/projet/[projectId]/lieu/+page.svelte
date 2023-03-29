@@ -87,10 +87,10 @@
 </header>
 <div id="editor-localisation">
 	<section class="map">
-		{#await import('./LocalisationMap.svelte')}
+		{#await import('./PlaceMap.svelte')}
 			<Loading style="font-size: 2em; opacity: .5" />
-		{:then LocalisationMap}
-			<svelte:component this={LocalisationMap.default} />
+		{:then PlaceMap}
+			<svelte:component this={PlaceMap.default} />
 		{/await}
 	</section>
 	<section class="fields">

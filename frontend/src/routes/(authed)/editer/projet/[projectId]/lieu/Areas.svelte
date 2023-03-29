@@ -109,7 +109,16 @@
 		>
 			<svelte:fragment slot="leading">
 				<Tooltip message={ttip}>
-					<Button type="button" disabled={!selected} equi><Icon name="refresh" /></Button>
+					<Button
+						type="button"
+						on:click={() => {
+							$project.interventions_area = getSelectedArea() ?? $project.interventions_area;
+						}}
+						disabled={!selected}
+						equi
+					>
+						<Icon name="refresh" />
+					</Button>
 				</Tooltip>
 			</svelte:fragment>
 			<svelte:fragment slot="label">Aire totale des travaux</svelte:fragment>

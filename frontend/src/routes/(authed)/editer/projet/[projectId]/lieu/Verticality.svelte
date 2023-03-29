@@ -110,15 +110,17 @@
 		</fieldset>
 		<ol class="diagram">
 			{#each allLevels as level, i (`${level.type}-${level.index}`)}
+				{@const isGround = 'ground' in level}
 				<li
 					animate:flip={{ duration: 100, easing: cubicOut, delay: i }}
-					class="level {level.type}"
+					class="{isGround ? 'ground' : 'level'} {level.type}"
 					class:intervention={'intervention' in level && level.intervention}
 					in:scale={{ start: 0.9, duration: 250, easing: elasticOut }}
 					out:scale|local={{ start: 0.95, duration: 150, easing: cubicIn }}
 				>
 					{#if 'ground' in level}
-						<hr />
+						<!-- Ground rendered by li element -->
+						Sol
 					{:else}
 						<span class="level-type">
 							{#if level.type === LEVEL_TYPES.Mezzanine}
@@ -129,6 +131,29 @@
 								Sous-sol
 							{/if}
 						</span>
+						<input type="hidden" name="building_levels_{level.type}" value={level.intervention} />
+						{#if level.type === 'mezzanine'}
+							<Tooltip message="Indiquez si ce hors-toit est touché par le projet">
+								<Toggle
+									variant="opaque"
+									bind:checked={$project.building_levels_mezzanine[level.index]}
+								/>
+							</Tooltip>
+						{:else if level.type === 'main'}
+							<Tooltip message="Indiquez si cet étage est touché par le projet">
+								<Toggle
+									variant="opaque"
+									bind:checked={$project.building_levels_main[level.index]}
+								/>
+							</Tooltip>
+						{:else if level.type === 'basement'}
+							<Tooltip message="Indiquez si ce sous-sol est touché par le projet">
+								<Toggle
+									variant="opaque"
+									bind:checked={$project.building_levels_basement[level.index]}
+								/>
+							</Tooltip>
+						{/if}
 						<Tooltip message="Supprimer ce niveau">
 							<button
 								type="button"
@@ -137,32 +162,9 @@
 									removeLevel(level.type, level.index);
 								}}
 							>
-								<Icon name="cross" />
+								<Icon name="cross" strokeWidth={2.5} />
 							</button>
 						</Tooltip>
-						<input type="hidden" name="building_levels_{level.type}" value={level.intervention} />
-						{#if level.type === 'mezzanine'}
-							<Tooltip message="Indiquez si ce hors-toit est touché par le projet">
-								<Toggle
-									variant="default"
-									bind:checked={$project.building_levels_mezzanine[level.index]}
-								/>
-							</Tooltip>
-						{:else if level.type === 'main'}
-							<Tooltip message="Indiquez si cet étage est touché par le projet">
-								<Toggle
-									variant="default"
-									bind:checked={$project.building_levels_main[level.index]}
-								/>
-							</Tooltip>
-						{:else if level.type === 'basement'}
-							<Tooltip message="Indiquez si ce sous-sol est touché par le projet">
-								<Toggle
-									variant="default"
-									bind:checked={$project.building_levels_basement[level.index]}
-								/>
-							</Tooltip>
-						{/if}
 					{/if}
 				</li>
 			{/each}
@@ -223,13 +225,12 @@
 		padding: 0 1em;
 		border-radius: var(--ui-radius-md);
 		font-size: var(--ui-text-sm);
-		background-color: col(fg, 100, 0.1);
-		// border: 1px solid col(fg, 100, 0.1);
+		background-color: col(fg, 100, 0.2) !important;
 	}
 
 	.intervention {
-		--pattern-color: #{col(fg, 500)} !important;
-		background-color: col(fg, 100) !important;
+		// --pattern-color: #{col(fg, 500)} !important;
+		background-color: col(fg, 300) !important;
 	}
 
 	.mezzanine {
@@ -255,12 +256,10 @@
 				0 calc(-0.5 * var(--pattern-size));
 		background-repeat: repeat;
 		background-size: calc(0.75 * var(--pattern-size)) var(--pattern-size);
-		background-color: col(fg, 100, 0.1);
 	}
 
 	.main {
 		width: 100%;
-		background-color: col(fg, 100, 0.1);
 	}
 
 	.basement {
@@ -273,15 +272,33 @@
 		background-repeat: repeat;
 		background-position: 0 0, var(--pattern-offset) var(--pattern-offset);
 		background-size: var(--pattern-size) var(--pattern-size);
-		background-color: col(fg, 100, 0.1);
 	}
 
 	.ground {
-		height: 1.5px;
+		height: auto;
+		padding-inline: 0;
+		position: relative;
+		font-family: var(--ui-font-misc);
+		font-size: var(--ui-text-xs);
+		letter-spacing: 0.5px;
+		text-transform: uppercase;
 		background-color: transparent;
-		border-bottom: 1.5px dashed col(fg, 100, 0.2);
 		width: 100%;
-		aspect-ratio: unset;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1em;
+		opacity: 0.25;
+
+		&::before,
+		&::after {
+			content: '';
+			position: relative;
+			width: 100%;
+			height: 0;
+			border-bottom: var(--ui-border-size) dashed currentColor;
+			flex: 1;
+		}
 	}
 
 	.level-type {
@@ -290,12 +307,12 @@
 		border-radius: 99px;
 		background-color: col(bg, 900);
 		font-size: var(--ui-text-xs);
-		text-transform: uppercase;
-		letter-spacing: 0.2px;
 		font-weight: 450;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
 		color: col(fg, 000);
 		.intervention & {
-			color: col(bg, 100);
+			color: col(bg, 900);
 			background-color: col(fg, 300);
 		}
 	}
@@ -310,6 +327,11 @@
 		border-radius: 50%;
 		color: col(fg, 100);
 		background-color: col(bg, 900);
+
+		.intervention & {
+			background-color: col(fg, 100);
+			color: col(bg, 900);
+		}
 
 		&:hover {
 			background-color: col(error, 900);

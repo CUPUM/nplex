@@ -19,11 +19,12 @@
 </script>
 
 <Map cooperativeGestures={true} bind:map={$editorMap} mapStyle={tonerDark} id="editor-map">
-	<MapMarker lnglat={[-73.6416, 45.5315]} />
 	<MapDraw bind:draw={$editorMapDraw} mode="draw_circle" />
 	<MapAttributionControl position="bottom-left" />
 	<svelte:fragment slot="top-left">
-		<MapSearch placeholder="Chercher une adresse" />
+		<MapSearch placeholder="Chercher une adresse" let:lnglat>
+			<MapMarker {lnglat} />
+		</MapSearch>
 	</svelte:fragment>
 	<svelte:fragment slot="top-right">
 		<MapToolbar direction="column">

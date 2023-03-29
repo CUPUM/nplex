@@ -5,7 +5,7 @@
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
 	import { Marker, type LngLat, type LngLatLike } from 'maplibre-gl';
-	import { onMount, type ComponentProps } from 'svelte';
+	import { onDestroy, onMount, type ComponentProps } from 'svelte';
 	import { getMapContext } from './Map.svelte';
 
 	export let lnglat: LngLat | LngLatLike;
@@ -16,18 +16,22 @@
 	export { className as class };
 
 	let markerRef: HTMLElement;
-	let marker;
+	let marker: Marker;
 
 	const { getMap } = getMapContext();
 
 	onMount(() => {
-		marker = new Marker(markerRef).setLngLat(lnglat);
+		marker = new Marker({ element: markerRef, anchor: 'bottom' }).setLngLat(lnglat);
 		const map = getMap();
 		if (map) {
 			marker.addTo(map);
 		} else {
 			console.error('No map context found for marker.');
 		}
+	});
+
+	onDestroy(() => {
+		marker.remove();
 	});
 </script>
 
