@@ -1,11 +1,9 @@
-import { getDb } from '$utils/database/client';
+import { authEmailSigninSchema, authEmailSignupSchema } from '$routes/api/auth/schemas';
 import { COOKIES, SEARCH_PARAMS, STATUS_CODES } from '$utils/enums';
 import { forceInternalHref } from '$utils/url';
-import { failureMessages } from '$utils/validation';
+import { failureMessages, validateFormData } from '$utils/validation';
 import { error, fail, redirect } from '@sveltejs/kit';
-import { z } from 'zod';
-import { zfd } from 'zod-form-data';
-import { emailSchema, setSessionCookieFromAuth, type AuthFeedback } from './common';
+import { setSessionCookieFromAuth, type AuthFeedback } from './common';
 
 /**
  * For the page.svelte to act as a simple redirect.
@@ -23,41 +21,20 @@ export const actions = {
 	 * Sign up a new user.
 	 */
 	signup: async (event) => {
-		const formData = await event.request.formData();
-		const parsed = zfd
-			.formData({
-				email: emailSchema,
-				password: zfd.text(
-					z
-						.string({ required_error: 'Vous devez fournir définir un mot de passe.' })
-						.min(8, 'Veuillez définir un mot de passe avec au minium 8 caractères.')
-				),
-				first_name: zfd.text(
-					z
-						.string({
-							required_error:
-								'Veillez définir un nom d’utilisateur. Il peut s’agir de votre prénom ou d’un pseudonyme.',
-						})
-						.min(1, 'Vous devez fournir un nom avec au minimum 1 caractère.')
-				),
-				last_name: zfd.text(z.string().optional()),
-			})
-			.safeParse(formData);
-		if (!parsed.success) {
-			return fail<AuthFeedback>(STATUS_CODES.BadRequest, { errors: failureMessages(parsed.error) });
-		}
-		const db = await getDb(event);
-		const signup = await db.auth.signUp({
-			email: parsed.data.email,
-			password: parsed.data.password,
+		const validated = await validateFormData(event, authEmailSignupSchema);
+		if (validated.failure) return validated.failure;
+		const signup = await event.locals.db.auth.signUp({
+			email: validated.data.email,
+			password: validated.data.password,
 			options: {
 				data: {
-					first_name: parsed.data.first_name,
-					last_name: parsed.data.last_name,
+					first_name: validated.data.first_name,
+					last_name: validated.data.last_name,
 				},
 			},
 		});
 		if (signup.error) {
+			console.log(signup.error);
 			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
 				errors: failureMessages(signup.error),
 			});
@@ -68,6 +45,7 @@ export const actions = {
 				confirmEmail: signup.data.user.email,
 			};
 		}
+		// If already confirmed (in theory code from hereonafter should never be reached?)
 		if (!signup.data.session) {
 			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
 				errors: ['Une erreur est survenue lors de la récupération de la session'],
@@ -85,22 +63,9 @@ export const actions = {
 	 * login.
 	 */
 	signin: async (event) => {
-		const formData = await event.request.formData();
-		const parsed = zfd
-			.formData(
-				z.object({
-					email: emailSchema,
-					password: zfd.text(),
-				})
-			)
-			.safeParse(formData);
-		if (!parsed.success) {
-			return fail<AuthFeedback>(STATUS_CODES.BadRequest, {
-				errors: failureMessages(parsed.error),
-			});
-		}
-		const db = await getDb(event);
-		const signin = await db.auth.signInWithPassword({ ...parsed.data });
+		const validated = await validateFormData(event, authEmailSigninSchema);
+		if (validated.failure) return validated.failure;
+		const signin = await event.locals.db.auth.signInWithPassword({ ...validated.data });
 		if (signin.error) {
 			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
 				errors: failureMessages(signin.error),
@@ -124,8 +89,7 @@ export const actions = {
 	 * invalidate the issued access token.)
 	 */
 	signout: async (event) => {
-		const db = await getDb(event);
-		const signoutRes = await db.auth.signOut();
+		const signoutRes = await event.locals.db.auth.signOut();
 		if (signoutRes.error) {
 			throw error(STATUS_CODES.InternalServerError);
 		}

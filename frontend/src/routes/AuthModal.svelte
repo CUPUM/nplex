@@ -110,6 +110,7 @@
 	import SocialIcon, { SOCIAL_ICONS } from '$components/SocialIcon.svelte';
 	import { USER_BASE_ROUTE } from '$utils/routes';
 	import { THEMES } from '$utils/themes';
+	import { getFailureMessages } from '$utils/validation';
 	import { cubicOut, linear } from 'svelte/easing';
 	import { fade, fly, scale, slide } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
@@ -168,8 +169,8 @@
 							);
 							messages.success('Compte créé avec succès!');
 						}
-						if (result.data.errors?.length) {
-							messages.error(...result.data.errors);
+						if (result.type === 'failure') {
+							messages.error(...getFailureMessages(result));
 						}
 					}
 				};

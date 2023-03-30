@@ -51,19 +51,34 @@ export const rootScroll = (function () {
 	function init() {
 		if (browser) {
 			rootScrollLock = scrollLock(document.documentElement);
-			os = OverlayScrollbars(document.body, {
-				showNativeOverlaidScrollbars: true,
-				paddingAbsolute: false,
-				scrollbars: {
-					theme: 'nplex-scroll-theme',
-					visibility: 'auto',
-					autoHide: 'move',
-					autoHideDelay: 1500,
-					dragScroll: true,
-					clickScroll: true,
-					pointers: ['mouse', 'touch', 'pen'],
+			os = OverlayScrollbars(
+				document.body,
+				{
+					showNativeOverlaidScrollbars: true,
+					paddingAbsolute: false,
+					scrollbars: {
+						theme: 'nplex-scroll-theme',
+						visibility: 'auto',
+						autoHide: 'move',
+						autoHideDelay: 1500,
+						dragScroll: true,
+						clickScroll: true,
+						pointers: ['mouse', 'touch', 'pen'],
+					},
 				},
-			});
+				{
+					initialized(instance) {
+						const elements = instance.elements();
+						elements.scrollbarVertical.handle.addEventListener('pointerdown', () => {
+							elements.host.style.scrollBehavior = 'initial';
+						});
+						elements.scrollbarHorizontal.handle.addEventListener('pointerup', () => {
+							elements.host.style.scrollBehavior = '';
+						});
+					},
+					destroyed(instance, canceled) {},
+				}
+			);
 		}
 	}
 

@@ -12,7 +12,7 @@
 	overflow-x: hidden;
 	overflow-y: scroll;
 	scroll-snap-type: y proximity;
-	// scroll-behavior: smooth; // breaks overlay scrollbar thumb drag
+	scroll-behavior: smooth; // breaks overlay scrollbar thumb drag
 	font-weight: 350;
 }
 

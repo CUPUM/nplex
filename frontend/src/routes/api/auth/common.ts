@@ -4,8 +4,6 @@ import { queryMessage } from '$routes/MessagesOutlet.svelte';
 import { COOKIES, SEARCH_PARAMS } from '$utils/enums';
 import type { AuthSession, Session } from '@supabase/supabase-js';
 import { json, type LoadEvent, type RequestEvent } from '@sveltejs/kit';
-import { z } from 'zod';
-import { zfd } from 'zod-form-data';
 
 type CookieOptions = Parameters<RequestEvent['cookies']['set']>[2];
 
@@ -27,12 +25,6 @@ export function redirectToAuth(
 		messages
 	);
 }
-
-export const emailSchema = zfd.text(
-	z
-		.string({ required_error: 'Une adresse courriel est requise.' })
-		.email('Adresse courriel invalide.')
-);
 
 export const SERVER_COOKIE_OPTIONS: CookieOptions = {
 	path: '/',

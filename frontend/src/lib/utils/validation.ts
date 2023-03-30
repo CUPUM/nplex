@@ -1,5 +1,6 @@
 import { AuthError, type PostgrestError } from '@supabase/supabase-js';
-import { fail, type RequestEvent } from '@sveltejs/kit';
+import { fail, type ActionResult, type RequestEvent } from '@sveltejs/kit';
+import type { Awaited } from 'ts-essentials';
 import { ZodError, ZodType, z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { DB_ERROR_MESSAGE, STATUS_CODES } from './enums';
@@ -69,6 +70,16 @@ export async function validateFormData<T extends ZodType>(event: RequestEvent, s
 				}),
 		  } as const);
 	return validated;
+}
+
+export function getFailureMessages<R extends ActionResult>(result: R) {
+	if (result.type === 'failure') {
+		type ValidationFailureData = Exclude<
+			Awaited<ReturnType<typeof validateFormData>>['failure'],
+			false
+		>['data'];
+		return (result.data as ValidationFailureData).messages.error;
+	}
 }
 
 //
