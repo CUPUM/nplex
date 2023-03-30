@@ -39,8 +39,8 @@ export const complements = [
 		hash: EDITOR_FORM_ID,
 	},
 	{
-		subpath: '/echeancier',
-		title: 'Échéancier',
+		subpath: '/calendrier',
+		title: 'Calendrier',
 		hash: EDITOR_FORM_ID,
 	},
 	{
