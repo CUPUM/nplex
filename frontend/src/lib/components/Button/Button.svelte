@@ -75,7 +75,9 @@
 	this={element}
 	role="button"
 	{type}
-	class="button {variant} {state} {contentAlign} {className} {ICON_CLASS.hover}"
+	class="button {variant} {state} {contentAlign} {className} {active
+		? ICON_CLASS.hold
+		: ICON_CLASS.hover}"
 	class:compact
 	class:equi
 	class:rounded

@@ -11,7 +11,7 @@
 <div id="editor-crumbs" in:fly={{ y: 6, duration: 350, easing: cubicOut, delay: 150 }}>
 	<!-- {#key $page.data.editorBreadcrumbs ?? 'crumbs'} -->
 	<Breadcrumbs>
-		{#each $page.data.editorBreadcrumbs ?? [] as crumb, i}
+		{#each $page.data.editorBreadcrumbs ?? [] as crumb, i (crumb.href)}
 			<BreadcrumbsItem href={crumb.href} matcher={crumb.matcher} disabled={crumb.disabled}>
 				{crumb.title}
 			</BreadcrumbsItem>

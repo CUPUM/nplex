@@ -155,6 +155,7 @@
 			flex-direction: row;
 			align-items: flex-start;
 			gap: var(--ui-gap-sm);
+			margin-top: var(--ui-gap-sm);
 		}
 
 		#editor-layout-slot {

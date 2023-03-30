@@ -15,7 +15,7 @@
 	const exploreLinks = [
 		{ pathname: '/projets', title: 'Projets' },
 		{ pathname: '/organisations', title: 'Organisations' },
-		{ pathname: '/acteurs', title: 'Acteurs' },
+		{ pathname: '/intervenant-es', title: 'Acteurs' },
 	];
 
 	const partnersLinks = [

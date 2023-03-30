@@ -6,6 +6,7 @@
 	import MapControlFile from '$components/Map/MapControlFile.svelte';
 	import MapControlFullscreen from '$components/Map/MapControlFullscreen.svelte';
 	import MapControlGeolocate from '$components/Map/MapControlGeolocate.svelte';
+	import MapControlLayers from '$components/Map/MapControlLayers.svelte';
 	import MapControlSelect from '$components/Map/MapControlSelect.svelte';
 	import MapDraw from '$components/Map/MapDraw.svelte';
 	import MapMarker from '$components/Map/MapMarker.svelte';
@@ -46,6 +47,9 @@
 					<MapControlFullscreen />
 				</div>
 			</Tooltip>
+			<!-- <Tooltip message="Contrôler les calques de la carte"> -->
+			<MapControlLayers place="left" align="start" />
+			<!-- </Tooltip> -->
 			<hr />
 			<Tooltip message="Explorer la carte et sélectionner des tracés" place="left">
 				<MapControlSelect />

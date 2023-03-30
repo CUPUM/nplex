@@ -96,7 +96,7 @@
 	on:pointerleave={handleLeave}
 	on:pointerenter={handleEnter}
 >
-	<slot name="control" slot="anchor" open={opened} />
+	<slot name="control" slot="anchor" {opened} />
 	{#if opened}
 		<div
 			on:pointerleave|self={handleLeave}
@@ -114,7 +114,7 @@
 		>
 			{#if $$slots.default}
 				<Menu>
-					<slot open={opened} />
+					<slot {opened} />
 				</Menu>
 				{#if tip}
 					<Tip />

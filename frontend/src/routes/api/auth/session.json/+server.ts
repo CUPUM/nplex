@@ -6,9 +6,11 @@ import type { RequestHandler } from './$types';
 /**
  * Use this endpoint to initialize or update a session cookie, EXCLUDING signouts. It verifies the
  * previous cookies or the posted data, sets an updated cookie accordingly while also returning the
- * extended user data to populate PageData. It is thus imperative that this endpoint always resolve
- * with returned data to set, update, or erase the session in both the client's data props and
- * cookies. The data in question should abide by the shape of App.PageData['session'] or null.
+ * extended user data to populate PageData or to pass cookie data along to another server module
+ * that fetched the present one. It is thus imperative that this endpoint always resolve with either
+ * a session cookie header or a session cookie body with returned data to set, update, or erase the
+ * session in both the client's data props and cookies. The data in question should abide by the
+ * shape of App.PageData['session'] or null.
  */
 export const POST: RequestHandler = async (event) => {
 	const authSession: AuthSession | null = event.request.body

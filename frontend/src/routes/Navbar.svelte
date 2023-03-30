@@ -170,21 +170,21 @@
 		</section>
 		<section class="session">
 			{#if $page.data.session}
-				<Popover place="bottom" align="end" hover let:open>
+				<Popover place="bottom" align="end" hover let:opened>
 					<NavbarButton
 						equi
 						slot="control"
 						href={EDITOR_BASE_ROUTE.pathname}
 						current={$page.url.pathname.startsWith(EDITOR_BASE_ROUTE.pathname)}
-						active={open}
+						active={opened}
 					>
 						<Icon name="pen" style="font-size: 1.25em" />
 					</NavbarButton>
 					<NavbarEditorMenu />
 				</Popover>
-				<Popover hover place="bottom" align="end" let:open>
+				<Popover hover place="bottom" align="end" let:opened>
 					<Avatar
-						active={open}
+						active={opened}
 						slot="control"
 						data={$page.data.session.user}
 						href={USER_BASE_ROUTE.pathname}

@@ -89,11 +89,9 @@
 		justify-content: center;
 		padding: var(--ui-gutter-md);
 		gap: var(--ui-gutter-md);
-		// border: var(--ui-border-size) dashed col(primary, 500, 0.75);
 		background-color: col(primary, 300);
 		isolation: isolate;
 		border-radius: var(--ui-radius-xl);
-		margin-bottom: var(--ui-gap-sm);
 		opacity: max(0, calc(1.25 - var(--ui-scroll) * 0.0015));
 		transition: opacity 0.25s;
 	}

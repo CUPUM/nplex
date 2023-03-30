@@ -9,6 +9,32 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      actor_organisation_role: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: number
+          short_title: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          short_title?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          short_title?: string | null
+          title?: string
+          updated_at?: string
+        }
+      }
       actors: {
         Row: {
           about: string | null
@@ -87,6 +113,26 @@ export interface Database {
           title?: string
         }
       }
+      organisation_type: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: number
+          title: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          title?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          title?: string | null
+        }
+      }
       organisations: {
         Row: {
           about: string | null
@@ -95,6 +141,7 @@ export interface Database {
           id: string
           name: string
           short_name: string | null
+          type: number | null
           updated_at: string
           updated_by: string
         }
@@ -105,6 +152,7 @@ export interface Database {
           id?: string
           name: string
           short_name?: string | null
+          type?: number | null
           updated_at?: string
           updated_by?: string
         }
@@ -115,6 +163,36 @@ export interface Database {
           id?: string
           name?: string
           short_name?: string | null
+          type?: number | null
+          updated_at?: string
+          updated_by?: string
+        }
+      }
+      organisations_actors: {
+        Row: {
+          actor: string
+          created_at: string
+          created_by: string
+          organisation: string
+          role: number | null
+          updated_at: string
+          updated_by: string
+        }
+        Insert: {
+          actor: string
+          created_at?: string
+          created_by?: string
+          organisation: string
+          role?: number | null
+          updated_at?: string
+          updated_by?: string
+        }
+        Update: {
+          actor?: string
+          created_at?: string
+          created_by?: string
+          organisation?: string
+          role?: number | null
           updated_at?: string
           updated_by?: string
         }
@@ -163,18 +241,21 @@ export interface Database {
         Row: {
           description: string | null
           id: number
+          short_description: string | null
           short_title: string
           title: string
         }
         Insert: {
           description?: string | null
           id?: number
+          short_description?: string | null
           short_title: string
           title: string
         }
         Update: {
           description?: string | null
           id?: number
+          short_description?: string | null
           short_title?: string
           title?: string
         }
@@ -700,9 +781,9 @@ export interface Database {
           index?: number | null
           project: string
           storage_name: string
-          temporality: Database["public"]["Enums"]["temporality"]
+          temporality?: Database["public"]["Enums"]["temporality"]
           title?: string | null
-          type: number
+          type?: number
           updated_at?: string
           updated_by?: string
         }
@@ -946,19 +1027,22 @@ export interface Database {
       projects_publication_status: {
         Row: {
           project: string
-          status: Database["public"]["Enums"]["publication_status"]
+          published: boolean
+          requested: boolean
           updated_at: string
           updated_by: string
         }
         Insert: {
           project: string
-          status?: Database["public"]["Enums"]["publication_status"]
+          published?: boolean
+          requested?: boolean
           updated_at?: string
           updated_by?: string
         }
         Update: {
           project?: string
-          status?: Database["public"]["Enums"]["publication_status"]
+          published?: boolean
+          requested?: boolean
           updated_at?: string
           updated_by?: string
         }
@@ -1039,26 +1123,6 @@ export interface Database {
           description?: string
           role?: Database["public"]["Enums"]["app_role"]
           title?: string
-        }
-      }
-      role_permissions: {
-        Row: {
-          created_at: string | null
-          id: number
-          permission: string
-          role: Database["public"]["Enums"]["app_role"]
-        }
-        Insert: {
-          created_at?: string | null
-          id?: number
-          permission: string
-          role: Database["public"]["Enums"]["app_role"]
-        }
-        Update: {
-          created_at?: string | null
-          id?: number
-          permission?: string
-          role?: Database["public"]["Enums"]["app_role"]
         }
       }
       user_occupation: {
@@ -1420,7 +1484,8 @@ export interface Database {
         Row: {
           fulfill: boolean | null
           project: string | null
-          status: Database["public"]["Enums"]["publication_status"] | null
+          published: boolean | null
+          requested: boolean | null
           updated_at: string | null
           updated_by: string | null
         }
@@ -1472,17 +1537,6 @@ export interface Database {
       }
     }
     Functions: {
-      authorize:
-        | {
-            Args: {
-              requested_permission: string
-            }
-            Returns: boolean
-          }
-        | {
-            Args: Record<PropertyKey, never>
-            Returns: boolean
-          }
       authorize_actor_update:
         | {
             Args: {
@@ -1499,13 +1553,13 @@ export interface Database {
       authorize_org_update:
         | {
             Args: {
-              org_id: string
+              org: unknown
             }
             Returns: boolean
           }
         | {
             Args: {
-              org: unknown
+              org_id: string
             }
             Returns: boolean
           }

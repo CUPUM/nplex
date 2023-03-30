@@ -106,6 +106,7 @@
 		height: 100svh;
 		width: 100%;
 		padding-block: var(--ui-nav-h);
+		padding-inline: 3rem;
 		background: col(bg, 300);
 		border-bottom-left-radius: var(--splash-radius);
 		border-bottom-right-radius: var(--splash-radius);
@@ -125,7 +126,7 @@
 		width: 100%;
 		object-fit: contain;
 		max-width: var(--ui-width-main);
-		padding: 3rem 4rem;
+		padding: 3rem 1rem;
 		opacity: max(0, calc(1 - 0.001 * var(--ui-scroll)));
 		// overflow: visible;
 		// transition: all 0.01s linear;

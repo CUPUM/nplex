@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import Icon from '$components/Icon.svelte';
 	import Sidebar from '$components/Sidebar/Sidebar.svelte';
 	import SidebarButton from '$components/Sidebar/SidebarButton.svelte';
 	import { EDITOR_FORM_ID } from '../../constants';
@@ -18,12 +19,13 @@
 			title: 'Membres',
 			hash: EDITOR_FORM_ID,
 		},
-		{
-			pathname: '/parametres',
-			title: 'Paramètres',
-			hash: EDITOR_FORM_ID,
-		},
 	];
+
+	const settings = {
+		pathname: '/parametres',
+		title: 'Paramètres',
+		hash: EDITOR_FORM_ID,
+	};
 </script>
 
 <Sidebar variant="editor">
@@ -32,6 +34,14 @@
 			{link.title}
 		</SidebarButton>
 	{/each}
+	<hr />
+	<SidebarButton
+		i={links.length}
+		href={composeHref($page.params.orgId, settings.pathname, settings.hash)}
+	>
+		<Icon name="settings" slot="leading" />
+		{settings.title}
+	</SidebarButton>
 </Sidebar>
 
 <style lang="scss">

@@ -40,14 +40,14 @@ export const EDITOR_ROUTES = {
 	},
 	actor: {
 		title: 'Acteurs',
-		subpath: '/acteur',
-		pathname: EDITOR_BASE_ROUTE.pathname + '/acteur',
+		subpath: '/intervenant-e',
+		pathname: EDITOR_BASE_ROUTE.pathname + '/intervenant-e',
 		create: {
-			title: "Créer un profil d'acteur",
+			title: "Créer un profil d'intervenant.e",
 		},
 		edit: {
 			hash: 'acteurs-editables',
-			title: "Modifier un profil d'acteur",
+			title: "Modifier un profil d'intervenant.e",
 			pathname: EDITOR_BASE_ROUTE.pathname + '#acteurs-editables',
 		},
 	},

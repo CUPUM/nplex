@@ -39,10 +39,9 @@
 		transition: all 0.25s var(--ui-ease-out);
 		:global(hr) {
 			border: none;
-			margin-inline: var(--inset);
-			width: 50%;
-			padding: 0.5px;
-			background: col(fg, 100, 0.05);
+			margin: var(--inset);
+			height: 0;
+			border-bottom: var(--ui-border-size) solid col(fg, 100, 0.1);
 			align-self: stretch;
 		}
 	}
@@ -50,11 +49,6 @@
 	.column {
 		flex-direction: column;
 		max-height: 100%;
-		:global(hr) {
-			margin-block: var(--inset);
-			margin-inline: auto;
-			height: 1px;
-		}
 	}
 
 	:global(figure):hover .toolbar {
