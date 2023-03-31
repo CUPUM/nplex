@@ -336,7 +336,7 @@ export interface Database {
           created_by: string
           description: string | null
           id: number
-          maybe_permit: boolean | null
+          maybe_permit: boolean
           title: string
           updated_at: string
           updated_by: string
@@ -347,7 +347,7 @@ export interface Database {
           created_by?: string
           description?: string | null
           id?: number
-          maybe_permit?: boolean | null
+          maybe_permit?: boolean
           title: string
           updated_at?: string
           updated_by?: string
@@ -358,7 +358,7 @@ export interface Database {
           created_by?: string
           description?: string | null
           id?: number
-          maybe_permit?: boolean | null
+          maybe_permit?: boolean
           title?: string
           updated_at?: string
           updated_by?: string
@@ -605,8 +605,11 @@ export interface Database {
           building_construction_year: number | null
           building_height: number | null
           building_levels_basement: boolean[]
+          building_levels_basement_count: number | null
           building_levels_main: boolean[]
+          building_levels_main_count: number | null
           building_levels_mezzanine: boolean[]
+          building_levels_mezzanine_count: number | null
           cost_range: unknown
           created_at: string
           created_by: string
@@ -617,6 +620,7 @@ export interface Database {
           likes_sum: number
           site_area: number | null
           site_ownership: number | null
+          summary: string | null
           title: string
           type: number | null
           updated_at: string
@@ -631,8 +635,11 @@ export interface Database {
           building_construction_year?: number | null
           building_height?: number | null
           building_levels_basement?: boolean[]
+          building_levels_basement_count?: number | null
           building_levels_main?: boolean[]
+          building_levels_main_count?: number | null
           building_levels_mezzanine?: boolean[]
+          building_levels_mezzanine_count?: number | null
           cost_range?: unknown
           created_at?: string
           created_by?: string
@@ -643,6 +650,7 @@ export interface Database {
           likes_sum?: number
           site_area?: number | null
           site_ownership?: number | null
+          summary?: string | null
           title: string
           type?: number | null
           updated_at?: string
@@ -656,8 +664,11 @@ export interface Database {
           building_construction_year?: number | null
           building_height?: number | null
           building_levels_basement?: boolean[]
+          building_levels_basement_count?: number | null
           building_levels_main?: boolean[]
+          building_levels_main_count?: number | null
           building_levels_mezzanine?: boolean[]
+          building_levels_mezzanine_count?: number | null
           cost_range?: unknown
           created_at?: string
           created_by?: string
@@ -668,6 +679,7 @@ export interface Database {
           likes_sum?: number
           site_area?: number | null
           site_ownership?: number | null
+          summary?: string | null
           title?: string
           type?: number | null
           updated_at?: string
@@ -1027,22 +1039,22 @@ export interface Database {
       projects_publication_status: {
         Row: {
           project: string
-          published: boolean
-          requested: boolean
+          published: string | null
+          requested: string | null
           updated_at: string
           updated_by: string
         }
         Insert: {
           project: string
-          published?: boolean
-          requested?: boolean
+          published?: string | null
+          requested?: string | null
           updated_at?: string
           updated_by?: string
         }
         Update: {
           project?: string
-          published?: boolean
-          requested?: boolean
+          published?: string | null
+          requested?: string | null
           updated_at?: string
           updated_by?: string
         }
@@ -1156,7 +1168,7 @@ export interface Database {
           occupation: number | null
           public_email: string | null
           updated_at: string
-          updated_by: string
+          updated_by: string | null
         }
         Insert: {
           about?: string | null
@@ -1168,7 +1180,7 @@ export interface Database {
           occupation?: number | null
           public_email?: string | null
           updated_at?: string
-          updated_by: string
+          updated_by?: string | null
         }
         Update: {
           about?: string | null
@@ -1180,7 +1192,7 @@ export interface Database {
           occupation?: number | null
           public_email?: string | null
           updated_at?: string
-          updated_by?: string
+          updated_by?: string | null
         }
       }
       users_notifications: {
@@ -1484,8 +1496,8 @@ export interface Database {
         Row: {
           fulfill: boolean | null
           project: string | null
-          published: boolean | null
-          requested: boolean | null
+          published: string | null
+          requested: string | null
           updated_at: string | null
           updated_by: string | null
         }

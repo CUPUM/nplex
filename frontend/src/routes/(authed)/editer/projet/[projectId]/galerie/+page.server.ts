@@ -17,7 +17,6 @@ extend([labPlugin]);
 export const actions = {
 	[EDITOR_FORM_ACTION]: async (event) => {
 		const validated = await validateFormData(event, projectGalleryUpdateSchema);
-		console.log(validated);
 		if (validated.failure) return validated.failure;
 		const galleryUpdate = await event.locals.db.from('projects_images').upsert(
 			validated.data.gallery.map((img, i) => ({
@@ -35,7 +34,6 @@ export const actions = {
 	 */
 	upload: async (event) => {
 		const validated = await validateFormData(event, projectImageUploadSchema);
-		console.log(validated);
 		if (validated.failure) return validated.failure;
 		const uploads = await Promise.all(
 			validated.data.image_files.map(async (file) => {
@@ -133,14 +131,10 @@ export const actions = {
 			return fail(STATUS_CODES.InternalServerError, { message: del.error.message });
 		}
 	},
-	test: async (event) => {
-		console.log(event);
-	},
 	/**
 	 * Promote the passed image as the project's banner image. Unsets previous banner.
 	 */
 	promote: async (event) => {
-		console.log('promoting', event);
 		const imageId = event.url.searchParams.get(SEARCH_PARAMS.IMAGE_ID);
 		if (!imageId) {
 			return fail(STATUS_CODES.BadRequest, {
@@ -153,7 +147,6 @@ export const actions = {
 			.eq('id', event.params.projectId)
 			.single();
 		if (promoteRes.error) {
-			console.log(promoteRes.error);
 			throw error(STATUS_CODES.InternalServerError, promoteRes.error);
 		}
 	},
@@ -162,7 +155,6 @@ export const actions = {
 	 * null.
 	 */
 	demote: async (event) => {
-		console.log('demoting', event);
 		const imageId = event.url.searchParams.get(SEARCH_PARAMS.IMAGE_ID);
 		if (!imageId) {
 			return fail(STATUS_CODES.BadRequest, {

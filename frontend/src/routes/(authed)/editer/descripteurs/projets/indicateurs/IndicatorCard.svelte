@@ -6,7 +6,7 @@
 	import TextArea from '$components/TextArea/TextArea.svelte';
 	import { EDITOR_FORM_ID } from '$routes/(authed)/editer/constants';
 	import type { PageData } from './$types';
-	import { INDICATORS_KEY, INDICATOR_LABEL_MAX, INDICATOR_TITLE_MAX } from './constants';
+	import { INDICATORS_KEY, INDICATOR_LABEL_MAX, INDICATOR_TITLE_MAX } from './common';
 
 	export let categoryId: PageData['exemplarityCategories'][number]['id'];
 	export let data: PageData['exemplarityCategories'][number]['indicators'][number];

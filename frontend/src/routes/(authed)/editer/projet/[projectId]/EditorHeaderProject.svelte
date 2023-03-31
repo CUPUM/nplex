@@ -11,9 +11,7 @@
 	import type { LayoutData } from './$types';
 	import { project } from './common';
 
-	let isPublic = ($page.data as LayoutData).project?.publication_status.status === 'published';
-
-	console.log($page.data.project.updated_at);
+	let isPublic = ($page.data as LayoutData).project?.publication_status.published != null;
 
 	const dateFormatter = new Intl.DateTimeFormat('fr-CA');
 </script>
@@ -111,7 +109,7 @@
 		align-items: center;
 		flex-wrap: wrap;
 		gap: 1rem;
-		bottom: min(1rem, calc(0.2 * var(--ui-scroll-px)));
+		top: min(1rem, calc(0.2 * var(--ui-scroll-px)));
 		opacity: max(0, calc(1.5 - var(--ui-scroll) * 0.025));
 		transition: all 0.25s;
 	}

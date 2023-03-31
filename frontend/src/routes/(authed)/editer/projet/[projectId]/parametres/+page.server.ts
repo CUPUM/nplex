@@ -1,8 +1,18 @@
 import { getDb } from '$utils/database/client';
+import { STATUS_CODES } from '$utils/enums';
 import { error, fail, redirect } from '@sveltejs/kit';
 
 export const actions = {
 	update: async (event) => {},
+	publish: async (event) => {
+		const pub = await event.locals.db
+			.from('projects_publication_status')
+			.update({ published: new Date().toISOString() })
+			.eq('project', event.params.projectId);
+		if (pub.error) {
+			throw error(STATUS_CODES.InternalServerError, pub.error);
+		}
+	},
 	/**
 	 * Delete a project by its id.
 	 */

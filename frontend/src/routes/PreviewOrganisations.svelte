@@ -13,7 +13,7 @@
 		action="?/organisations"
 		placeholder="Chercher des projets"
 	/>
-	<ul>
+	<ul class="noscrollbar">
 		{#each organisations as o (o.id)}
 			<li>
 				<a class="card" href="{EXPLORE_ROUTES.organisations.pathname}/{o.id}">

@@ -8,7 +8,7 @@
 	import Modal from '$components/Modal/Modal.svelte';
 	import TextArea from '$components/TextArea/TextArea.svelte';
 	import type { PageData } from './$types';
-	import { INDICATORS_KEY_NEW } from './constants';
+	import { INDICATORS_KEY_NEW } from './common';
 
 	export let category: PageData['exemplarityCategories'][number]['id'];
 	export let opened = false;

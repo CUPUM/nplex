@@ -17,6 +17,15 @@ export const load = async (event) => {
 			}
 			return res.data;
 		});
+	const categories = db
+		.from('project_intervention_category')
+		.select(`*`)
+		.then((res) => {
+			if (res.error) {
+				throw error(STATUS_CODES.InternalServerError, res.error);
+			}
+			return res.data;
+		});
 	const types = db
 		.from('project_type')
 		.select(
@@ -32,7 +41,8 @@ export const load = async (event) => {
 		});
 
 	return {
-		interventions,
 		types,
+		categories,
+		interventions,
 	};
 };

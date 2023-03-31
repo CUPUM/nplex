@@ -260,23 +260,25 @@
 			font-size: var(--ui-text-md);
 			position: absolute;
 			pointer-events: none;
-			border-radius: 0 var(--ui-radius-lg) var(--ui-radius-lg) 0;
+			border-radius: 0 var(--ui-radius-xl) var(--ui-radius-xl) 0;
 			overflow-x: hidden;
 			overflow-y: auto;
 			height: 100svh;
-			width: 0;
+			width: 80%;
+			opacity: 0;
 			background: col(bg, 100);
 			transform-origin: top left;
-			transition: all 0.35s var(--ui-ease-in);
+			transition: all 0.1s ease-in;
 			&:not(.open) {
 				padding-inline: 0;
 			}
 
 			&.open {
+				opacity: 1;
 				border-radius: 0;
 				pointer-events: all;
-				width: 100vw;
-				transition: all 0.2s var(--ui-ease-out);
+				width: 100%;
+				transition: all 0.1s var(--ui-ease-out), opacity 0s, border-radius 0.15s ease-out;
 			}
 		}
 	}

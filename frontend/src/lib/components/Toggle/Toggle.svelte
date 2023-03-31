@@ -21,7 +21,7 @@
 		state?: State;
 		group?: V[];
 		value?: V;
-		checked?: boolean;
+		checked?: boolean | null;
 		type?: 'checkbox' | 'radio';
 	};
 
@@ -44,7 +44,7 @@
 		checked = g.indexOf(v) > -1;
 	}
 
-	function updateGroup(c?: boolean, v?: V) {
+	function updateGroup(c?: boolean | null, v?: V) {
 		if (!group || v == null) {
 			return;
 		}
@@ -70,6 +70,7 @@
 	role="switch"
 	aria-checked={checked}
 >
+	<Ripple />
 	{#if type === 'checkbox'}
 		<input
 			type="checkbox"
@@ -95,15 +96,21 @@
 			on:keydown
 		/>
 	{/if}
-	<div class="toggle-thumb-container">
-		<Ripple />
-		<div class="toggle-thumb" />
+	<div class="toggle-inner">
+		<!-- {#if $$slots.on} -->
+		<div class="toggle-padded">
+			<div class="toggle-on">
+				<slot name="on" {checked} />
+			</div>
+			<!-- {/if} -->
+			<!-- {#if $$slots.off} -->
+			<div class="toggle-off">
+				<slot name="off" {checked} />
+			</div>
+			<!-- {/if} -->
+			<div class="toggle-thumb" />
+		</div>
 	</div>
-	{#if $$slots.default}
-		<span class="toggle-content">
-			<slot {checked} />
-		</span>
-	{/if}
 </label>
 
 <style lang="scss">

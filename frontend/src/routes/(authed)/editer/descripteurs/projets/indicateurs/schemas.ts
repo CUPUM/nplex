@@ -5,7 +5,7 @@ import {
 	INDICATORS_KEY_NEW,
 	INDICATOR_LABEL_MAX,
 	INDICATOR_TITLE_MAX,
-} from './constants';
+} from './common';
 
 const indicatorCategorySchema = zfd.numeric();
 

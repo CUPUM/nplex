@@ -24,7 +24,7 @@
 	export let name: keyof typeof icons;
 	export let secondaryColor: string = 'currentColor';
 	export let strokeWidth: number = 2;
-	export let strokeLinecap: 'square' | 'round' = 'square';
+	export let strokeLinecap: 'square' | 'round' = 'round';
 	export let animate: boolean = true;
 	export let animationSpeed: number = 1;
 	// export let draw: boolean = false;

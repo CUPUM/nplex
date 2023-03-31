@@ -3,6 +3,7 @@
 	import Field from '$components/Field/Field.svelte';
 	import Option from '$components/Options/Option.svelte';
 	import OptionsList from '$components/Options/OptionsList.svelte';
+	import Toggle from '$components/Toggle/Toggle.svelte';
 	import ValueMask from '$components/ValueMask.svelte';
 	import { browserDb } from '$utils/database/client';
 	import { STATES, VARIANTS } from '$utils/enums';
@@ -57,6 +58,7 @@
 	<textarea name="textarea" id="mask">Bonjour<i>asdasd</i></textarea>
 </article>
 <article>
+	<Toggle />
 	<Field>
 		<OptionsList slot="options">
 			<Option value="test">Test</Option>
@@ -109,6 +111,7 @@
 	article {
 		display: flex;
 		flex-direction: column;
+		align-items: flex-start;
 		gap: 3rem;
 		width: 100%;
 		padding: var(--ui-gutter-md);

@@ -15,7 +15,6 @@ async function getHomepageProjects(db: App.DatabaseClient) {
 		)
 		.order('updated_at', { ascending: false })
 		.range(...pagination(0, 10));
-	console.log(res);
 	if (res.error) throw error;
 	return res.data;
 }
@@ -60,6 +59,7 @@ export const load = async (event) => {
 		const projects = getHomepageProjects(db);
 		const organisations = getHomepageOrgs(db);
 		const actors = getHomepageActors(db);
+		// await Promise.all([splashImages, projects, organisations, actors]);
 		return {
 			splashImages,
 			projects,

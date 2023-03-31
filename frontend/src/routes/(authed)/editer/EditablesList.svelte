@@ -4,7 +4,7 @@
 		created_by: string | null;
 		publication_status?: Pick<
 			App.Database['public']['Tables']['projects_publication_status']['Row'],
-			'status'
+			'published'
 		> | null;
 	};
 	type FilterFunction = <T extends DatumBase>(d: T) => boolean;
@@ -43,13 +43,13 @@
 		draft: {
 			text: 'Brouillons',
 			filter: (d) => {
-				return d.publication_status?.status !== 'published';
+				return d.publication_status?.published == null;
 			},
 		},
 		published: {
 			text: 'Publiés',
 			filter: (d) => {
-				return d.publication_status?.status === 'published';
+				return d.publication_status?.published != null;
 			},
 		},
 	} satisfies Filters<FilterFunction>;
@@ -92,7 +92,7 @@
 
 <section {id}>
 	<header>
-		<h3 class="heading-lg">{title}</h3>
+		<h3 class="heading-xl">{title}</h3>
 		<form action="" use:enhance method="POST">
 			<Switch bind:value={filters.authoring} variant="feature" name="filter" compact>
 				{#each Object.entries(authoring) as [k, v]}

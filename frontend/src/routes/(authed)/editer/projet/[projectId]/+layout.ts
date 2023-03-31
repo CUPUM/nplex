@@ -36,7 +36,7 @@ export const load = async (event) => {
 			created_by:created_by (*,
 				role:users_roles!users_roles_user_fkey (*)
 			),
-			publication_status:projects_publication_status (*)
+			publication_status:projects_publication_status_fulfill (*)
 		`
 		)
 		.eq('id', event.params.projectId)

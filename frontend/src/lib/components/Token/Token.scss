@@ -18,6 +18,7 @@
 	align-items: center;
 	justify-content: center;
 	flex-direction: row;
+	flex-wrap: nowrap;
 	color: var(--token-color);
 	background-color: var(--token-background);
 	transition: all 0.1s ease-out;
@@ -51,11 +52,12 @@
 	aspect-ratio: 1;
 	flex: none;
 	padding-inline: 0;
+	gap: 0;
 	justify-content: center;
 
 	.token-main {
 		padding-inline: 0 !important;
-		flex: 0;
+		flex: none;
 	}
 }
 
@@ -66,10 +68,11 @@ input {
 
 .token-main {
 	position: relative;
-	display: block;
-	white-space: nowrap;
 	top: -0.1em;
 	line-height: 1em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 	padding-inline-end: var(--token-gutter);
 	padding-inline-start: var(--token-pad-inline);
 
@@ -96,6 +99,22 @@ input {
 		&:hover:not(span) {
 			--token-color: #{col(bg, 500)};
 			--token-background: #{col(fg, 300)};
+		}
+	}
+	&.error {
+		--token-color: #{col(error, 700)};
+		--token-background: #{col(error, 900, 0.2)};
+		&:hover:not(span) {
+			--token-color: #{col(fg, 500)};
+			--token-background: #{col(fg, 500, 0.2)};
+		}
+		&.active {
+			--token-color: #{col(bg, 900)};
+			--token-background: #{col(fg, 100)};
+			&:hover:not(span) {
+				--token-color: #{col(bg, 500)};
+				--token-background: #{col(fg, 300)};
+			}
 		}
 	}
 }
@@ -126,8 +145,26 @@ input {
 		border: var(--active-border);
 	}
 	&.warning {
+		--color: #{col(fg, 500)};
+		--background-color: transparent;
+		--border: var(--ui-border-size) solid #{col(fg, 500, 0.1)};
+		--hover-color: #{col(fg, 700)};
+		--hover-background-color: #{col(fg, 100, 0.1)};
+		--hover-border: 3px solid #{col(fg, 500, 0)};
+		--active-color: #{col(fg, 900)};
+		--active-background-color: #{col(fg, 500, 0.1)};
+		--active-border: 3px solid #{col(fg, 500, 0)};
 	}
 	&.error {
+		--color: #{col(error, 700)};
+		--background-color: transparent;
+		--border: var(--ui-border-size) solid #{col(error, 500, 0.1)};
+		--hover-color: #{col(fg, 700)};
+		--hover-background-color: #{col(fg, 100, 0.1)};
+		--hover-border: 3px solid #{col(fg, 500, 0)};
+		--active-color: #{col(fg, 900)};
+		--active-background-color: #{col(fg, 500, 0.1)};
+		--active-border: 3px solid #{col(fg, 500, 0)};
 	}
 	&.success {
 	}

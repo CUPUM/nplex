@@ -45,9 +45,17 @@ $typography-system: (
 		),
 		xs: (
 			size: var(--ui-text-md),
-			weight: 575,
+			weight: 550,
 			line: 1.3em,
 			letter: 0px,
+			tablet: (),
+			mobile: (),
+		),
+		2xs: (
+			size: var(--ui-text-sm),
+			weight: 550,
+			line: 1.35em,
+			letter: 0.1px,
 			tablet: (),
 			mobile: (),
 		),

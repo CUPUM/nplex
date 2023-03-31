@@ -1,7 +1,7 @@
 import { authEmailSigninSchema, authEmailSignupSchema } from '$routes/api/auth/schemas';
 import { COOKIES, SEARCH_PARAMS, STATUS_CODES } from '$utils/enums';
 import { forceInternalHref } from '$utils/url';
-import { failureMessages, validateFormData } from '$utils/validation';
+import { composeFailureMessages, validateFormData } from '$utils/validation';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { setSessionCookieFromAuth, type AuthFeedback } from './common';
 
@@ -36,7 +36,7 @@ export const actions = {
 		if (signup.error) {
 			console.log(signup.error);
 			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
-				errors: failureMessages(signup.error),
+				errors: composeFailureMessages(signup.error),
 			});
 		}
 		if (signup.data.user && !signup.data.session) {
@@ -68,7 +68,7 @@ export const actions = {
 		const signin = await event.locals.db.auth.signInWithPassword({ ...validated.data });
 		if (signin.error) {
 			return fail<AuthFeedback>(STATUS_CODES.InternalServerError, {
-				errors: failureMessages(signin.error),
+				errors: composeFailureMessages(signin.error),
 			});
 		}
 		if (!signin.data.session) {

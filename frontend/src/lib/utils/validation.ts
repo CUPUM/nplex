@@ -27,7 +27,7 @@ export function userHasRole(
  *
  * @returns Array of error string messages to pass to `errorMessages` when failing a form action.
  */
-export function failureMessages(
+export function composeFailureMessages(
 	failure: AuthError | PostgrestError | ZodError,
 	fallback?: string
 ): string[] {
@@ -66,12 +66,19 @@ export async function validateFormData<T extends ZodType>(event: RequestEvent, s
 		: ({
 				...parsed,
 				failure: fail(STATUS_CODES.BadRequest, {
-					messages: { error: failureMessages(parsed.error) },
+					messages: { error: composeFailureMessages(parsed.error) },
 				}),
 		  } as const);
 	return validated;
 }
 
+/**
+ * Retrieve the error messages returned by form data invalidated using the `validateFormData`
+ * helper. Used in AuthModal to manually dispatch error messages otherwise unreached at the root
+ * layout's form export since the action called is located at another route.
+ *
+ * @see https://github.com/sveltejs/kit/issues/8462#issuecomment-1479200160
+ */
 export function getFailureMessages<R extends ActionResult>(result: R) {
 	if (result.type === 'failure') {
 		type ValidationFailureData = Exclude<

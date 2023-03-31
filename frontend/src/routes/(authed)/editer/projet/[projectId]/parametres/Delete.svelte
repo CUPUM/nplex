@@ -1,9 +1,15 @@
 <script lang="ts">
 	import Button from '$components/Button/Button.svelte';
+	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Modal from '$components/Modal/Modal.svelte';
 
+	export let confirm: string;
+
+	let answer = '';
 	let opened = false;
+
+	$: valid = confirm;
 </script>
 
 <fieldset class="editor-form-group">
@@ -11,7 +17,7 @@
 	<p class="subtle">Attention, les projets supprimés ne peuvent pas être récupérés.</p>
 	<Modal bind:opened>
 		<svelte:fragment slot="control" let:requestConfirmation>
-			<fieldset class="delete">
+			<fieldset class="text-sm">
 				<Button
 					variant="cta"
 					state="warning"
@@ -26,19 +32,26 @@
 		<svelte:fragment slot="header" />
 		<p>Voulez-vous vraiment supprimer ce projet?</p>
 		<p>
-			Si oui, entrez le nom du projet, <q>
-				{'test'}
-				<q>, ci-dessous afin débarrer l'option.</q>
-			</q>
+			Si oui, entrez <q>{confirm}</q>
+			, ci-dessous afin débarrer l'option.
 		</p>
+		<Field bind:value={answer} variant="outlined" placeholder={confirm} />
 		<svelte:fragment slot="footer">
-			<Button variant="cta" state="warning">Supprimer</Button>
+			<Button variant="cta" disabled={confirm !== answer} state="warning">Supprimer</Button>
 		</svelte:fragment>
 	</Modal>
 </fieldset>
 
 <style lang="scss">
-	.delete {
-		font-size: var(--ui-text-sm);
+	q {
+		font-weight: 500;
+		color: col(error, 900);
+
+		&::after,
+		&::before {
+			color: col(fg, 100, 0.5);
+			font-weight: 400;
+			margin-inline: 0.1em;
+		}
 	}
 </style>

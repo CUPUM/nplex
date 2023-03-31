@@ -18,7 +18,7 @@
 			name="{formKey}.title"
 			required
 			placeholder="Titre"
-			value={intervention.title}
+			bind:value={intervention.title}
 		/>
 	</dt>
 	<dd>
@@ -26,9 +26,11 @@
 			type="text"
 			name="{formKey}.description"
 			placeholder="Description"
-			value={intervention.description}
+			bind:value={intervention.description}
 		/>
-		<Toggle>Requiert potentiellement un permi</Toggle>
+		<Toggle bind:checked={intervention.maybe_permit}>
+			<svelte:fragment slot="on">Permi requis</svelte:fragment>
+		</Toggle>
 	</dd>
 	<div class="project-types">
 		{#each $types as pt}
@@ -47,20 +49,25 @@
 <style lang="scss">
 	.intervention-card {
 		position: relative;
-		padding: var(--ui-inset);
+		padding: var(--ui-pad-sm);
 		border-radius: var(--ui-radius-sm);
 		background-color: col(bg, 900);
+		font-size: var(--ui-text-sm);
 		display: flex;
 		flex-direction: row;
-		gap: 3px;
+		gap: var(--ui-gap-sm);
 		align-items: center;
+
+		@include tablet {
+			// flex-direction: column;
+			flex-wrap: wrap;
+		}
 	}
 
 	.intervention-id {
 		position: relative;
 		top: -0.1em;
 		opacity: 0.25;
-		padding-inline: var(--ui-pad-md);
 	}
 
 	input[type='text'] {
@@ -96,6 +103,7 @@
 		display: flex;
 		flex-direction: row;
 		gap: 3px;
+		font-size: var(--ui-text-sm);
 	}
 
 	.project-type {
@@ -105,10 +113,13 @@
 		color: col(fg, 700);
 		background-color: col(bg, 100);
 		border-radius: 99px;
+		line-height: 1.2em;
 		display: flex;
 		align-items: center;
 		padding-bottom: 0.2em;
-		height: var(--ui-block-sm);
+		height: var(--ui-block-md);
+		white-space: nowrap;
+		text-overflow: ellipsis;
 		padding-inline: var(--ui-pad-sm);
 		opacity: 0.35;
 		transition: all 0.1s;

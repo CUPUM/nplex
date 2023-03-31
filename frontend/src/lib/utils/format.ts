@@ -195,6 +195,13 @@ export function pgCubeToHsl(pgCube: string): `hsl(${number},${number}%,${number}
 	}
 }
 
+// /**
+//  * Format a javascript Date object into an ISO-compliant timestamptz string for PostGRES
+//  */
+// export function toTimestamptz(date: Date) {
+// 	return date.toISOString().toLoca
+// }
+
 /**
  * Takes desired page range, page size, and returns tuple of start and end to be used with range
  * selector of db client.
@@ -237,8 +244,8 @@ export function projectColors(
 		if (curr.color_dominant_hsl) {
 			acc.push('hsl' + curr.color_dominant_hsl);
 		}
-		if (curr.color_mean_hsl) {
-			acc.push('hsl' + curr.color_mean_hsl);
+		if (curr.color_average_hsl) {
+			acc.push('hsl' + curr.color_average_hsl);
 		}
 		return acc;
 	}, [] as string[]);

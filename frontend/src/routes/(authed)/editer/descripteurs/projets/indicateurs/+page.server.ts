@@ -6,7 +6,7 @@ import {
 import { STATUS_CODES } from '$utils/enums';
 import { validateFormData } from '$utils/validation';
 import { error, fail } from '@sveltejs/kit';
-import { INDICATORS_KEY, INDICATORS_KEY_NEW } from './constants';
+import { INDICATORS_KEY, INDICATORS_KEY_NEW } from './common';
 
 export const actions = {
 	[EDITOR_FORM_ACTION]: async (event) => {

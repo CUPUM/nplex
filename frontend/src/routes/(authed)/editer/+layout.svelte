@@ -96,8 +96,10 @@
 <header>
 	<Icon id="editables-header-icon" name="pen" strokeLinecap="round" strokeWidth={1} />
 	<hgroup>
-		<h1 class="heading-xl">Mes fiches</h1>
-		<span class="text-lg">Explorez les fiches pour lesquelles vous avez des droits d'édition.</span>
+		<h1 class="heading-2xl">Mes fiches</h1>
+		<span class="text-md subtle">
+			Explorez les fiches pour lesquelles vous avez des droits d'édition.
+		</span>
 	</hgroup>
 </header>
 <EditablesList

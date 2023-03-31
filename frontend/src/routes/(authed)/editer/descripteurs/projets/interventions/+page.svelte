@@ -28,21 +28,24 @@
 	</p>
 	<p class="subtle">Information supplémentaire</p>
 </header>
-<dl>
-	{#each data.interventions as intervention, i (intervention.id)}
-		<div>
-			<InterventionCard bind:intervention />
-		</div>
-	{/each}
-</dl>
+{#each data.categories as c}
+	<fieldset class="editor-form-group">
+		<h3 class="editor-form-group-title">{c.title}</h3>
+		<p>{c.description ?? 'Description à venir...'}</p>
+		<dl>
+			{#each $interventions.filter((it) => it.category === c.id) as intervention, i (intervention.id)}
+				<div>
+					<InterventionCard bind:intervention />
+				</div>
+			{/each}
+		</dl>
+	</fieldset>
+{/each}
 
 <style lang="scss">
 	dl {
 		display: flex;
 		flex-direction: column;
 		gap: 3px;
-		padding: var(--ui-pad-md);
-		background-color: col(bg, 700);
-		border-radius: var(--ui-radius-xl);
 	}
 </style>

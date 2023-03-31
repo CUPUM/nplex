@@ -13,9 +13,9 @@
 		praesentium blanditiis. Est culpa quia qui incidunt sequi.
 	</p>
 </header>
-<Publishing />
+<Publishing status={data.project.publication_status} />
 <Access collaborators={data.collaborators} />
-<Delete />
+<Delete confirm={data.project.title.split(' ').slice(0, 3).join(' ')} />
 
 <style lang="scss">
 	.delete {

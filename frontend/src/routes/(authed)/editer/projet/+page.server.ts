@@ -1,6 +1,6 @@
 import { projectTitleSchema } from '$routes/(authed)/editer/projet/schemas';
 import { STATUS_CODES } from '$utils/enums';
-import { failureMessages } from '$utils/validation';
+import { composeFailureMessages } from '$utils/validation';
 import { fail, redirect } from '@sveltejs/kit';
 import { zfd } from 'zod-form-data';
 
@@ -15,7 +15,7 @@ export const actions = {
 		if (!parsed.success) {
 			return fail(STATUS_CODES.BadRequest, {
 				error: parsed.error.formErrors.fieldErrors,
-				messages: { error: failureMessages(parsed.error) },
+				messages: { error: composeFailureMessages(parsed.error) },
 			});
 		}
 		const newProject = await event.locals.db
@@ -25,7 +25,7 @@ export const actions = {
 			.single();
 		if (newProject.error) {
 			return fail(STATUS_CODES.InternalServerError, {
-				messages: { error: failureMessages(newProject.error) },
+				messages: { error: composeFailureMessages(newProject.error) },
 			});
 		}
 		if (!newProject.data.id) {

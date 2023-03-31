@@ -13,9 +13,11 @@
 	</p>
 	<p class="subtle">
 		<Icon name="info-circle" style="top: -.1em;" />&emsp;Si vous désirez partager les droit de
-		gestion de l'organisation d'autres utilisateur.rice.s qui ne sont pas associés à une fiche
-		d'intervenant.e., veuillez ajuster les accès dans la section
-		<a href="/editer/organisation/{$page.params.orgId}/parametres">paramètres</a>
+		gestion de l'organisation avec d'autres utilisateur.rice.s qui ne sont pas associé.e.s à une
+		fiche d'intervenant.e., veuillez ajuster les accès dans la section
+		<a class="link-secondary" href="/editer/organisation/{$page.params.orgId}/parametres">
+			paramètres
+		</a>
 		.
 	</p>
 </header>
