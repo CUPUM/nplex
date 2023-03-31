@@ -25,6 +25,7 @@ export const actions = {
 	},
 	create: async (event) => {
 		const validated = await validateFormData(event, descriptorIndicatorCreateSchema);
+		console.log(validated);
 		if (validated.failure) return validated.failure;
 		const ins = await event.locals.db
 			.from('project_exemplarity_indicator')

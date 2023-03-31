@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@mapbox/mapbox-gl-draw': 1.4.1
-  '@supabase/supabase-js': 2.13.0
+  '@supabase/supabase-js': 2.13.1
   '@sveltejs/adapter-vercel': ^2.4.1
   '@sveltejs/kit': 1.15.0
   '@turf/turf': ^6.5.0
@@ -42,7 +42,7 @@ specifiers:
   sass: ^1.60.0
   sharp: ^0.32.0
   sortablejs: ^1.15.0
-  supabase: ^1.46.4
+  supabase: ^1.46.5
   svelte: ^3.58.0
   svelte-check: ^3.1.4
   svelte-preprocess: ^5.0.3
@@ -57,7 +57,7 @@ specifiers:
 
 dependencies:
   '@mapbox/mapbox-gl-draw': 1.4.1
-  '@supabase/supabase-js': 2.13.0
+  '@supabase/supabase-js': 2.13.1
   '@turf/turf': 6.5.0
   '@types/sharp': 0.31.1
   '@types/sortablejs': 1.15.1
@@ -101,7 +101,7 @@ devDependencies:
   prettier-plugin-jsdoc: 0.4.2_prettier@2.8.7
   prettier-plugin-svelte: 2.10.0_ur5pqdgn24bclu6l6i7qojopk4
   sass: 1.60.0
-  supabase: 1.46.4
+  supabase: 1.46.5
   svelte: 3.58.0
   svelte-check: 3.1.4_6z4x3qks4tzb55js3uefj7jq5y
   svelte-preprocess: 5.0.3_yijvhtghmbuae5ocacwm32rod4
@@ -742,16 +742,17 @@ packages:
       - encoding
     dev: false
 
-  /@supabase/gotrue-js/2.16.0:
-    resolution: {integrity: sha512-k7curH5xxnQmUiG8AeFW7KEJST99vhFnBCidWFhuSSyLP1Ja8Ix3g4bmLUv209mhX8LmAaDMGKNQs8gG0MOKCw==}
+  /@supabase/gotrue-js/2.17.0:
+    resolution: {integrity: sha512-etPNW19TvYPPs8k61AoYeyJNoVSN7N/Lk9UFz1kZHuqnhP16RFpRgMq9+c3oht8eUAceVZP1UycRsvRa+TwXbA==}
     dependencies:
       cross-fetch: 3.1.5
+      crypto-js: 4.1.1
     transitivePeerDependencies:
       - encoding
     dev: false
 
-  /@supabase/postgrest-js/1.4.1:
-    resolution: {integrity: sha512-aruqwV/aTggkM7OVv2JinCeXmRMKHJCZpkuS1nuoa0NgLw7g3NyILSyWOKYTBJ/PxE/zXtWsBhdxFzaaNz5uxg==}
+  /@supabase/postgrest-js/1.5.0:
+    resolution: {integrity: sha512-YaU1HBE43Ba+FGmnXuvK+xYeHylkDKd04PYeKDUCoE2bUHoxSDqnjHbOwmLjnusGZi3X1MrFeUH1Wwb4bHYyIg==}
     dependencies:
       cross-fetch: 3.1.5
     transitivePeerDependencies:
@@ -776,12 +777,12 @@ packages:
       - encoding
     dev: false
 
-  /@supabase/supabase-js/2.13.0:
-    resolution: {integrity: sha512-D37k5BIwYa4/XNe9eEPz8W0L8MS5w0j16wFDd0twClJC/z+wA4tbcaeWm5Q8IsMeExPa0LrdSrQwPI5bBg6trg==}
+  /@supabase/supabase-js/2.13.1:
+    resolution: {integrity: sha512-+Q3FMj0TuI6xJBTTREIRxuLW1QreZhtRxlF5+7aprmlVq1+GsMfnpBOpXcdyhcWWL8UcmaoMJD8tJiedXGCXlg==}
     dependencies:
       '@supabase/functions-js': 2.1.0
-      '@supabase/gotrue-js': 2.16.0
-      '@supabase/postgrest-js': 1.4.1
+      '@supabase/gotrue-js': 2.17.0
+      '@supabase/postgrest-js': 1.5.0
       '@supabase/realtime-js': 2.7.1
       '@supabase/storage-js': 2.3.1
       cross-fetch: 3.1.5
@@ -2514,6 +2515,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /crypto-js/4.1.1:
+    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
+    dev: false
 
   /csscolorparser/1.0.3:
     resolution: {integrity: sha512-umPSgYwZkdFoUrH5hIq5kf0wPSXiro51nPw0j2K/c83KflkPSTBGMz6NJvMB+07VlL0y7VPo6QJcDjcgKTTm3w==}
@@ -4627,8 +4632,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /supabase/1.46.4:
-    resolution: {integrity: sha512-MG+lsu8MrCyqAyArMKtHuzYDxO1JLeKX7myKpONHHv4lgIJBuO5C8OsjBF0HknrRHHCF9u7KveSxLMLfYoYy8w==}
+  /supabase/1.46.5:
+    resolution: {integrity: sha512-N1BObR6JYubMqjacpvJ9/WixEBsPS6KSCqVxg4D+X3SLcqP3p05ppjF2he/m9b48KwNgohZ2eno5Hes8GxtNtg==}
     hasBin: true
     requiresBuild: true
     dependencies:

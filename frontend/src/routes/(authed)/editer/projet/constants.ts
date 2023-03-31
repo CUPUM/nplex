@@ -22,7 +22,8 @@ export const BUILDING_MAX_HEIGHT = 300;
 export const BUILDING_YEAR_MIN = 1800;
 export const BUILDING_YEAR_MAX = new Date().getFullYear();
 // Gallery
-export const IMAGE_MAX_SIZE = 5e6;
+export const IMAGE_MAX_PAYLOAD = 3.8 * 1024 * 1024; // Cumulative image files' max size. Vercel's hard limit is 4MB per request. We here leave 200KB headroom for the rest of the request.;
+export const IMAGE_MAX_SIZE = 5e6; // Individual image size limit. Currently useless due to vercel's hard limit.
 export const IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 export const IMAGE_MAX_RESOLUTION = 1_600;
 export const IMAGE_TITLE_MAX_LENGTH = 200;

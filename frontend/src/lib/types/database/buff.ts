@@ -13,18 +13,18 @@ export type BuffedDatabase = DeepReplace<
 				project_descriptors: {
 					Returns: {
 						types: (TableRow<'project_type'> & {
-							works: ({
+							interventions: ({
 								type: TableRow<'project_type'>['id'];
 							} & TableRow<'project_intervention'>)[];
 						})[];
 						interventionCategories: TableRow<'project_intervention_category'>[];
 						interventions: (TableRow<'project_intervention'> & {
-							types_ids: TableRow<'project_type'>['id'][];
+							types: TableRow<'project_type'>['id'][];
 						})[];
 						siteOwnerships: TableRow<'project_site_ownership'>[];
 						siteUsagesCategories: TableRow<'project_site_usage_category'>[];
 						siteUsages: (TableRow<'project_site_usage'> & {
-							category_ids: TableRow<'project_site_usage_by_category'>['category'][];
+							category: TableRow<'project_site_usage_by_category'>['category'][];
 						})[];
 						implantationModes: TableRow<'project_implantation_mode'>[];
 						materialOrigins: TableRow<'project_material_origin'>[];

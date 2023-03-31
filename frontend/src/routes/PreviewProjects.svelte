@@ -35,7 +35,7 @@
 						<h1 class="heading-sm">{p.title}</h1>
 						<span class="likes">
 							<Icon name="hearts" />
-							2
+							{p.likes_sum}
 						</span>
 					</section>
 				</a>

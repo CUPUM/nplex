@@ -157,10 +157,12 @@
 
 	q {
 		color: col(error, 900);
-		padding: 0.25em 0.5em 0.35em;
+		padding: 0.2em 0.5em 0.3em;
+		margin-inline: 0.25em;
 		border: 1px solid col(error, 500, 0.2);
 		background: col(error, 500, 0.05);
 		border-radius: 0.5em;
+		// box-decoration-break: clone;
 
 		&::before,
 		&::after {

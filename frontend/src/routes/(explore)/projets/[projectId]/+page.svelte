@@ -1,30 +1,76 @@
 <script lang="ts">
+	import Button from '$components/Button/Button.svelte';
+	import Icon from '$components/Icon.svelte';
+	import Tooltip from '$components/Tooltip.svelte';
+	import RootBackground from '$routes/RootBackground.svelte';
+	import { pgCubeToHsl } from '$utils/format';
+	import { colord } from 'colord';
 	import ProjectGallery from './ProjectGallery.svelte';
 	import ProjectHeader from './ProjectHeader.svelte';
+	import ProjectPalette from './ProjectPalette.svelte';
 	import ProjectSummary from './ProjectSummary.svelte';
 
 	export let data;
+
+	const palette = data.project.gallery.flatMap((img) => [
+		colord(pgCubeToHsl(img.color_dominant_hsl)),
+		colord(pgCubeToHsl(img.color_average_hsl)),
+	]);
+
+	const bannerColors = {
+		average: colord(pgCubeToHsl(data.project.banner?.color_average_hsl ?? '(60, 11, 80)')),
+		dominant: colord(pgCubeToHsl(data.project.banner?.color_dominant_hsl ?? '(60, 11, 80)')),
+	};
 </script>
 
-<article>
-	<ProjectHeader />
+<RootBackground />
+<article id="project">
+	<ProjectHeader title={data.project.title} banner={data.project.banner} {palette} />
+	<ProjectPalette {palette} />
 	<ProjectSummary />
 	<ProjectGallery />
+	<menu>
+		<Tooltip message="Éditer ce projet">
+			<Button rounded variant="cta" equi href="/editer/projet/{data.project.id}">
+				<Icon name="pen" />
+			</Button>
+		</Tooltip>
+	</menu>
 </article>
+<pre>
+{JSON.stringify(data.project, undefined, 2)}
+</pre>
 <aside class="border-top">
 	<header>Vous aimerez peut-être aussi:</header>
 	<div>
-		<section>Suggestions de projets</section>
-		<section>Organisations</section>
-		<section>Acteurs</section>
+		<section>Projets suggérés</section>
+		<section>Organisations suggérées</section>
+		<section>Intervenant.e.s suggérés</section>
 	</div>
 </aside>
 
 <style lang="scss">
-	article {
+	#project {
 		position: relative;
 		width: 100%;
 		padding: 0;
 		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--ui-gap-sm);
+		padding-inline: var(--ui-gap-sm);
+	}
+
+	menu {
+		align-self: flex-start;
+		position: sticky;
+		bottom: var(--ui-gutter-md);
+		left: var(--ui-gutter-md);
+	}
+
+	pre {
+		padding: 2rem;
+		font-size: var(--ui-text-xs);
+		line-height: 1.2;
 	}
 </style>

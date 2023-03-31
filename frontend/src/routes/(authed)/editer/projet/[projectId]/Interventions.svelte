@@ -13,7 +13,9 @@
 	import { fly } from 'svelte/transition';
 	import { descriptors, project } from './common';
 
-	$: available = $descriptors.types.find((t) => t.id === $project.type)?.works ?? [];
+	$: console.log($descriptors.types);
+
+	$: available = $descriptors.types.find((t) => t.id === $project.type)?.interventions ?? [];
 
 	$: selected = $project.interventions.reduce((acc, curr) => {
 		const w = available.find((w) => w.id === curr);
@@ -71,7 +73,7 @@
 						type="search"
 						class="field"
 						placeholder="Chercher un type de travail"
-						variant="outlined"
+						variant="default"
 						list="works-data"
 						on:input={handleSearch}
 						on:keydown={handleKeydown}

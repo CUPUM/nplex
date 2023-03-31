@@ -11,7 +11,7 @@
 <a
 	{href}
 	{rel}
-	class="link {variant} {className}"
+	class="ui-link {variant} {className}"
 	class:disabled
 	{disabled}
 	{style}
@@ -30,20 +30,22 @@
 </a>
 
 <style lang="scss">
-	.link {
+	.ui-link {
 		position: relative;
 		display: inline-block;
 		font-family: inherit;
 		padding: 0;
 		margin: 0;
 		border-radius: 2em;
+		box-shadow: 0 0 0 0px transparent;
 		overflow: hidden;
-		transition: all 0.2s ease-out;
 		font-weight: inherit;
+		transition: all 0.2s ease-out;
 
 		&:hover {
 			color: col(primary, 700);
 			background: col(primary, 300, 0.2);
+			box-shadow: 0 0 0 3px col(primary, 300, 0.2);
 
 			.reg {
 				opacity: 0;
@@ -65,8 +67,7 @@
 
 	.content {
 		padding: 0.4em 1em 0.6em 1em;
-		transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1),
-			opacity 0.5s cubic-bezier(0.2, 0, 0, 1);
+		transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1), opacity 0.5s cubic-bezier(0.2, 0, 0, 1);
 	}
 
 	.reg {

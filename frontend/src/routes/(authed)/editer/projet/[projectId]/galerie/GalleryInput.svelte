@@ -3,7 +3,9 @@
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import Loading from '$components/Loading.svelte';
 	import Ripple from '$components/Ripple.svelte';
-	import { IMAGE_TYPES } from '../../constants';
+	import { messages } from '$routes/MessagesOutlet.svelte';
+	import { toBytesString } from '$utils/format';
+	import { IMAGE_MAX_PAYLOAD, IMAGE_TYPES } from '../../constants';
 
 	export let uploading = false;
 
@@ -12,11 +14,27 @@
 	// To do: use xhr store to keep track of progress.
 	function upload(e: Event) {
 		if (
-			e.target instanceof Element &&
+			e.target instanceof HTMLInputElement &&
 			'form' in e.target &&
 			e.target.form instanceof HTMLFormElement
 		) {
+			const payloadSize = [...(e.target.files ?? [])].reduce(
+				(totalSize, file) => totalSize + file.size,
+				0
+			);
 			uploading = true;
+			if (payloadSize > IMAGE_MAX_PAYLOAD) {
+				uploading = false;
+				messages.error({
+					content: `Oops. Le contenu envoyé est trop lourd! une contrainte (temporaire) nous oblige à limiter la taille totale des téléversements à ~${toBytesString(
+						IMAGE_MAX_PAYLOAD,
+						0
+					)}. Vous pouvez soit compresser vos images ou les téléverser en plus petits lots (ou individuellement).`,
+					timer: 10000,
+				});
+				e.target.files = null;
+				return;
+			}
 			e.target.form.requestSubmit(inputRef);
 		}
 	}

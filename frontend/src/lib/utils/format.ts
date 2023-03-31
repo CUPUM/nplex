@@ -5,6 +5,15 @@ import { col } from './css';
 import { browserDb } from './database/client';
 import { BRACKETS, SRID, type STORAGE_BUCKETS } from './enums';
 
+export function toBytesString(byteSize: number, decimals: number = 2) {
+	if (!byteSize) return '0 Bytes';
+	const k = 1024;
+	const d = Math.max(decimals, 0);
+	const sizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+	const i = Math.floor(Math.log(byteSize) / Math.log(k));
+	return `${parseFloat((byteSize / Math.pow(k, i)).toFixed(d))} ${sizes[i]}`;
+}
+
 /**
  * CAD currency formatter.
  */
@@ -182,13 +191,13 @@ export function alwaysArr<T>(arr: T) {
 /**
  * Takes a Postgres cube string and returns a CSS-ready hsl color string.
  */
-export function pgCubeToHsl(pgCube: string): `hsl(${number},${number}%,${number}%)` | '' {
+export function pgCubeToHsl(pgCube: string, alpha?: number) {
 	try {
-		const comps = fromPgArr(pgCube).map((n) => Number(n));
+		const comps = fromPgArr(pgCube).map((v) => Number(v));
 		if (comps.length !== 3) {
 			throw new Error(`Extracted array has ${comps.length} members instead 3.`);
 		}
-		return `hsl(${comps[0]},${comps[1]}%,${comps[2]}%)`;
+		return `hsl(${comps[0]},${comps[1]}%,${comps[2]}%${alpha ? ',' + alpha : ''})`;
 	} catch (error) {
 		console.error(error);
 		return '';
@@ -227,8 +236,11 @@ export function publicUrl(bucket: ValueOf<typeof STORAGE_BUCKETS>, name?: string
 /**
  * Helper to format a project gallery's colors as a flat array.
  */
-export function projectColors(
-	gallery?: ProjectGalleryItem | ProjectGalleryItem[] | null,
+export function projectColors<
+	G extends ProjectGalleryItem | ProjectGalleryItem[] | null,
+	F extends string | string[]
+>(
+	gallery?: G,
 	fallback: string | string[] = [
 		col('primary', '500', Math.random() * 0.25 + 0.1),
 		col('primary', '700', 0.25),

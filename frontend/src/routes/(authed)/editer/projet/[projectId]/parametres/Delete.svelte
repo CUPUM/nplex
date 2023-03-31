@@ -29,11 +29,10 @@
 				</Button>
 			</fieldset>
 		</svelte:fragment>
-		<svelte:fragment slot="header" />
-		<p>Voulez-vous vraiment supprimer ce projet?</p>
+		<svelte:fragment slot="header">Voulez-vous vraiment supprimer ce projet?</svelte:fragment>
 		<p>
-			Si oui, entrez <q>{confirm}</q>
-			, ci-dessous afin débarrer l'option.
+			Afin de confirmer cette décision, veuillez entrer <q>{confirm}</q>
+			ci-dessous afin de débarrer l'option.
 		</p>
 		<Field bind:value={answer} variant="outlined" placeholder={confirm} />
 		<svelte:fragment slot="footer">
@@ -45,7 +44,7 @@
 <style lang="scss">
 	q {
 		font-weight: 500;
-		color: col(error, 900);
+		color: col(error, 500);
 
 		&::after,
 		&::before {

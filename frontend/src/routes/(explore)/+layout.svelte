@@ -1,11 +1,9 @@
 <script lang="ts">
-	import ExploreSearch from './ExploreSearch.svelte';
-
 	export let data;
 </script>
 
 <div class="explore">
-	<ExploreSearch />
+	<!-- <ExploreSearch /> -->
 	<slot />
 </div>
 

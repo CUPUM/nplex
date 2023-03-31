@@ -1,30 +1,52 @@
+import type { TableRow } from '$types/database/utils';
+import type { MaybeSingle } from '$types/utils';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
 import { error } from '@sveltejs/kit';
 
 export const load = async (event) => {
 	const db = await getDb(event);
-	const projectRes = await db
+	const project = db
 		.from('projects')
-		.select('*', { count: 'exact' })
+		.select(
+			`
+		*,
+		gallery:projects_images!projects_images_project_fkey (
+			*
+		),
+		banner:projects_images!projects_banner_fkey (
+			*
+		)
+		`,
+			{ count: 'exact' }
+		)
 		.eq('id', event.params.projectId)
 		.limit(1)
-		.maybeSingle();
-	if (projectRes.error) {
-		throw error(STATUS_CODES.InternalServerError, {
-			message: 'Erreur de la base de données',
-			// database: projectRes.error,
+		.returns<
+			[
+				Omit<TableRow<'projects'>, 'banner'> & {
+					banner: MaybeSingle<TableRow<'projects_images'>>;
+					gallery: TableRow<'projects_images'>[];
+				}
+			]
+		>()
+		.single()
+		.then((p) => {
+			if (p.error) {
+				console.log(p.error);
+				throw error(STATUS_CODES.InternalServerError, p.error);
+			}
+			if (!p.count) {
+				throw error(STATUS_CODES.NotFound, { message: 'Aucun projet trouvé ici.' });
+			}
+			return p.data;
 		});
-	}
-	if (!projectRes.count) {
-		throw error(STATUS_CODES.BadRequest, {
-			message: "Ce projet n'exsite pas ou vous n'y avez pas accès.",
-		});
-	}
+
+	// const userCanEdit = db.
 
 	return {
 		categoryIsResetable: true,
-		project: projectRes.data,
 		showFooter: true,
+		project,
 	};
 };

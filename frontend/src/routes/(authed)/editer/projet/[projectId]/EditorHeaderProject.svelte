@@ -55,8 +55,9 @@
 		</h1>
 	</hgroup>
 	<section class="footer">
-		<Button variant="default" href="/projets/{$page.data.project?.id}">
-			Visualiser la fiche du projet <Icon name="preview" slot="trailing" />
+		<Button rounded variant="default" href="/projets/{$page.data.project?.id}">
+			<Icon name="preview" slot="leading" />
+			Visualiser
 		</Button>
 		<nobr>
 			<dl>
