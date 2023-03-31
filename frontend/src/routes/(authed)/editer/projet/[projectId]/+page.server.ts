@@ -10,7 +10,7 @@ export const actions = {
 		const validated = await validateFormData(event, projectGeneralUpdateSchema);
 		if (validated.failure) return validated.failure;
 		try {
-			const generalUpdate = event.locals.db
+			const generalUpdate = await event.locals.db
 				.from('projects')
 				.update(validated.data.project)
 				.eq('id', event.params.projectId)

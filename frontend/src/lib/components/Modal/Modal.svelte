@@ -18,7 +18,7 @@
 	import { fade, fly, scale } from 'svelte/transition';
 	import { modalOutletRef } from './ModalOutlet.svelte';
 
-	export let backgroundColor: string = col('bg', 100, 0.75);
+	export let backgroundColor: string = col('bg', '100', 0.8);
 	export let lockScroll: boolean = true;
 	export let closeOnClickoutside = true;
 	export let opened: boolean = false;
@@ -106,7 +106,7 @@
 			data-theme={theme ?? $closestTheme}
 			class="bg"
 			style:--modal-background={backgroundColor}
-			transition:fade|local={{ duration: 150 }}
+			transition:fade|local={{ duration: 100 }}
 		/>
 		<dialog
 			data-theme={theme ?? $closestTheme}
@@ -117,8 +117,8 @@
 					opened = false;
 				}
 			}}
-			in:scale={{ start: 0.98, duration: 100, easing: cubicOut }}
-			out:fly|local={{ y: 8, duration: 100, easing: cubicIn }}
+			in:scale={{ start: 0.98, duration: 80, easing: cubicOut }}
+			out:fly|local={{ y: 8, duration: 80, easing: cubicIn }}
 		>
 			{#if $$slots.header}
 				<header>
@@ -157,11 +157,12 @@
 		background: col(bg, 300);
 		color: col(fg, 100);
 		max-width: var(--ui-width-sm);
-		box-shadow: var(--ui-shadow-xl), 0 0.25em 1em rgb(0, 0, 0, 0.1);
+		box-shadow: var(--ui-shadow-xl), 0 0.25em 1em rgb(0, 0, 0, 0.2);
 		padding: 0;
 		margin: 0 auto;
 		overflow-y: auto;
 		max-height: 100%;
+		transform-origin: bottom;
 		// border: 1px solid col(bg, 900);
 		border-radius: var(--ui-radius-lg);
 	}

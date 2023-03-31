@@ -52,12 +52,11 @@ export function composeFailureMessages(
 }
 
 /**
- * Consume event request's form data, parse it against a zod validation schema, and return an Action
- * Failure object if there are any validation errors.
+ * Validation wrapper for server-side schema-based form action validation and easier extraction of
+ * action failures.
  */
-export async function validateFormData<T extends ZodType>(event: RequestEvent, schema: T) {
-	const formData = await event.request.formData();
-	const parsed = zfd.formData(schema).safeParse(formData);
+export function validateAction<D extends any, S extends ZodType>(data: D, schema: S) {
+	const parsed = zfd.formData(schema).safeParse(data);
 	const validated = parsed.success
 		? ({
 				...parsed,
@@ -70,6 +69,22 @@ export async function validateFormData<T extends ZodType>(event: RequestEvent, s
 				}),
 		  } as const);
 	return validated;
+}
+
+/**
+ * Consume event request's form data, parse it against a zod validation schema, and return an Action
+ * Failure object if there are any validation errors.
+ */
+export async function validateFormData<T extends ZodType>(event: RequestEvent, schema: T) {
+	const formData = await event.request.formData();
+	return validateAction(formData, schema);
+}
+
+/**
+ * Helper to validate url search params.
+ */
+export function validateSearchParams<T extends ZodType>(event: RequestEvent, schema: T) {
+	return validateAction(event.url.searchParams, schema);
 }
 
 /**
@@ -120,6 +135,9 @@ export const profileSchema = zfd.formData(
 );
 
 export const strictCoerceBooleanSchema = z
-	.enum(['0', '1', 'true', 'false'])
+	.enum(['0', '1', 'true', 'false', 'on', 'off', 'ON', 'OFF', 'TRUE', 'FALSE'])
 	.catch('false')
-	.transform((value) => value == 'true' || value == '1');
+	.transform(
+		(value) =>
+			value == 'true' || value == '1' || value === 'TRUE' || value === 'on' || value === 'ON'
+	);

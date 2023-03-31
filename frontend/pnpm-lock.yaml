@@ -2307,7 +2307,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001473
-      electron-to-chromium: 1.4.346
+      electron-to-chromium: 1.4.347
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -2682,8 +2682,8 @@ packages:
     resolution: {integrity: sha512-/pjZsA1b4RPHbeWZQn66SWS8nZZWLQQ23oE3Eam7aroEFGEvwKAsJfZ9ytiEMycfzXWpca4FA9QIOehf7PocBQ==}
     dev: false
 
-  /electron-to-chromium/1.4.346:
-    resolution: {integrity: sha512-9ZpKQD8hyWAoYf5bccm2qpaWogAGxb833DVC0arHo9nIbiAMh+aAKHZWABR2P9sK4a3zoCq7eXg8tylqPAnuNw==}
+  /electron-to-chromium/1.4.347:
+    resolution: {integrity: sha512-LNi3+/9nV0vT6Bz1OsSoZ/w7IgNuWdefZ7mjKNjZxyRlI/ag6uMXxsxAy5Etvuixq3Q26exw2fc4bNYvYQqXSw==}
     dev: true
 
   /element-to-path/1.2.1:

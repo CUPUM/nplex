@@ -4,8 +4,7 @@
 	import Sidebar from '$components/Sidebar/Sidebar.svelte';
 	import SidebarButton from '$components/Sidebar/SidebarButton.svelte';
 	import SidebarLegend from '$components/Sidebar/SidebarLegend.svelte';
-	import { EDITOR_FORM_ID } from '../../constants';
-	import { complements, composeSectionHref, essentials } from './common';
+	import { complements, composeSectionHref, essentials, settings } from './common';
 </script>
 
 <Sidebar variant="editor">
@@ -28,9 +27,9 @@
 	<hr />
 	<SidebarButton
 		i={essentials.length + complements.length}
-		href={composeSectionHref($page.params.projectId, '/parametres', EDITOR_FORM_ID)}
+		href={composeSectionHref($page.params.projectId, settings.subpath, settings.hash)}
 	>
-		<Icon name="settings" slot="leading" />Paramètres
+		<Icon name="settings" slot="leading" />{settings.title}
 	</SidebarButton>
 </Sidebar>
 

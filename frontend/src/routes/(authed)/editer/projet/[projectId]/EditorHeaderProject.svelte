@@ -109,8 +109,8 @@
 		align-items: center;
 		flex-wrap: wrap;
 		gap: 1rem;
-		top: min(1rem, calc(0.2 * var(--ui-scroll-px)));
-		opacity: max(0, calc(1.5 - var(--ui-scroll) * 0.025));
+		// top: min(1rem, calc(0.2 * var(--ui-scroll-px)));
+		opacity: max(0, calc(3 - var(--ui-scroll) * 0.01));
 		transition: all 0.25s;
 	}
 

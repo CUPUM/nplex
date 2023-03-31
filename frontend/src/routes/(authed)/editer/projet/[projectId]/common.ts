@@ -34,8 +34,8 @@ export const essentials = [
 
 export const complements = [
 	{
-		subpath: '/intervenant-e-s',
-		title: 'Intervenant·e·s',
+		subpath: '/contributions',
+		title: 'Contributions',
 		hash: EDITOR_FORM_ID,
 	},
 	{
@@ -49,3 +49,9 @@ export const complements = [
 		hash: EDITOR_FORM_ID,
 	},
 ];
+
+export const settings = {
+	subpath: '/parametres',
+	title: 'Paramètres',
+	hash: EDITOR_FORM_ID,
+};

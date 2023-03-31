@@ -1,3 +1,4 @@
+import { strictCoerceBooleanSchema } from '$utils/validation';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import {
@@ -26,25 +27,45 @@ const interventionDescriptionSchema = zfd.text(
 			INTERVENTION_DESCRIPTION_MAX,
 			`La description d'une intervention ne peut pas dépasser ${INTERVENTION_DESCRIPTION_MAX} caractères.`
 		)
-		.optional()
+		.nullable()
+		.default(null)
 );
 
-const interventionMaybePermitSchema = z.boolean().default(false);
+const interventionMaybePermitSchema = strictCoerceBooleanSchema.default(false);
+
+const interventionIdSchema = zfd.numeric(z.number());
 
 const interventionCategorySchema = zfd.numeric(z.number());
+
+const projectTypeIdSchema = zfd.numeric(z.number());
+
+const interventionByTypeSchema = zfd.repeatableOfType(projectTypeIdSchema);
 
 export const interventionUpdateSchema = zfd.formData({
 	intervention: z
 		.record(
 			z.string(),
 			z.object({
+				id: interventionIdSchema,
 				title: interventionTitleSchema,
 				description: interventionDescriptionSchema,
 				maybe_permit: interventionMaybePermitSchema,
 				category: interventionCategorySchema,
 			})
 		)
-		.transform((o) => Object.entries(o).map(([k, v]) => ({ id: k, ...v }))),
+		.transform((o) => Object.values(o)),
+	// project_types: z
+	// 	.record(z.string(), interventionByTypeSchema)
+	// 	.transform((pt) =>
+	// 		Object.entries(pt).flatMap(([it, types]) =>
+	// 			types.flatMap((t) => ({ type: t, intervention: Number(it) }))
+	// 		)
+	// 	),
+});
+
+export const interventionTypeSchema = zfd.formData({
+	intervention: interventionIdSchema,
+	type: projectTypeIdSchema,
 });
 
 export const interventionCreateSchema = zfd.formData({});

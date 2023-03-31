@@ -2,9 +2,9 @@
 	import { page } from '$app/stores';
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { complements, composeSectionHref, essentials } from './common';
+	import { complements, composeSectionHref, essentials, settings } from './common';
 
-	const links = [...essentials, ...complements];
+	const links = [...essentials, ...complements, settings];
 
 	$: current = links.findIndex(
 		(link) =>

@@ -51,9 +51,9 @@ input:first-of-type {
 .toggle-padded {
 	position: relative;
 	height: 100%;
-	display: flex;
+	display: grid;
+	grid-template-columns: max-content;
 	flex-direction: row;
-	gap: 0.25em;
 	align-items: center;
 }
 
@@ -81,26 +81,30 @@ input:first-of-type {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	position: relative;
+	grid-column: 1;
+	grid-row: 1;
 	top: -0.1em;
 	flex: 1;
-	transition: all 0.1s ease;
+	transition: all 0.2s ease;
 }
 .toggle-on {
+	padding-inline-end: var(--toggle-size);
 	opacity: 0;
 	text-align: start;
 }
 .toggle-off {
-	opacity: 0.8;
+	padding-inline-start: var(--toggle-size);
+	opacity: 0.5;
 	text-align: end;
 }
 
 @include checked-inner {
 	.toggle-thumb {
-		inset-inline-start: 100%;
 		transform: translateX(-100%);
+		inset-inline-start: 100%;
 	}
 	.toggle-on {
-		opacity: 0.8;
+		opacity: 0.5;
 	}
 	.toggle-off {
 		opacity: 0;

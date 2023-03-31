@@ -10,7 +10,6 @@
 
 	export let categoryId: PageData['exemplarityCategories'][number]['id'];
 	export let data: PageData['exemplarityCategories'][number]['indicators'][number];
-	export let opened = false;
 
 	const modalFormId = `indicator-${data.id}-details`;
 
@@ -22,7 +21,9 @@
 		<Icon name="handle-move-vertical" />
 	</div>
 	<Field
-		variant="outlined"
+		variant="default"
+		class="text-md"
+		rounded
 		style="flex: 1"
 		placeholder="Titre"
 		name="{INDICATORS_KEY}['{data.id}'].title"
@@ -30,34 +31,57 @@
 		maxlength={INDICATOR_TITLE_MAX}
 		bind:value={data.title}
 	/>
-	<!-- <Field
-		variant="outlined"
-		style="flex: 1"
-		placeholder="Titre court"
-		required
-		maxlength={INDICATOR_LABEL_MAX}
-		name="{INDICATORS_KEY}['{data.id}'].label"
-		bind:value={data.label}
-	/> -->
-	<Button
-		equi
-		variant="default"
-		on:click={(e) => {
-			e.stopPropagation();
-			opened = true;
-		}}
-	>
-		<Icon name="parameters" />
-	</Button>
+	<Modal>
+		<Button rounded let:open equi variant="ghost" slot="control" on:click={open}>
+			<Icon name="parameters" />
+		</Button>
+		<svelte:fragment slot="header">Détails de l'indicateur</svelte:fragment>
+		<div class="modal-content">
+			<Field
+				variant="outlined"
+				maxlength={INDICATOR_TITLE_MAX}
+				required
+				bind:value={data.title}
+				name="title"
+			>
+				<svelte:fragment slot="label">Nom de l'indicateur</svelte:fragment>
+			</Field>
+			<Field
+				variant="outlined"
+				maxlength={INDICATOR_LABEL_MAX}
+				required
+				bind:value={data.short_title}
+				name="short_title"
+			>
+				<svelte:fragment slot="label">Nom court</svelte:fragment>
+			</Field>
+			<TextArea variant="outlined" bind:value={data.description} name="description">
+				<svelte:fragment slot="label">Description</svelte:fragment>
+			</TextArea>
+		</div>
+		<svelte:fragment slot="footer" let:cancel let:confirm>
+			<Button variant="ghost" on:click={cancel}>Fermer</Button>
+			<Button
+				variant="cta"
+				type="submit"
+				formaction="?/update"
+				form={EDITOR_FORM_ID}
+				on:click={confirm}
+			>
+				Sauvegarder <Icon name="check" slot="trailing" />
+			</Button>
+		</svelte:fragment>
+	</Modal>
 	<Modal
 		on:close={() => {
 			confirmationString = '';
 		}}
 	>
 		<Button
+			rounded
 			slot="control"
 			equi
-			variant="default"
+			variant="ghost"
 			state="warning"
 			type="submit"
 			formaction="?/delete&id={data.id}"
@@ -108,44 +132,6 @@
 		value={data.description}
 	/>
 </fieldset>
-<Modal bind:opened>
-	<svelte:fragment slot="header">Détails de l'indicateur</svelte:fragment>
-	<div class="modal-content">
-		<Field
-			variant="outlined"
-			maxlength={INDICATOR_TITLE_MAX}
-			required
-			bind:value={data.title}
-			name="title"
-		>
-			<svelte:fragment slot="label">Nom de l'indicateur</svelte:fragment>
-		</Field>
-		<Field
-			variant="outlined"
-			maxlength={INDICATOR_LABEL_MAX}
-			required
-			bind:value={data.short_title}
-			name="short_title"
-		>
-			<svelte:fragment slot="label">Nom court</svelte:fragment>
-		</Field>
-		<TextArea variant="outlined" bind:value={data.description} name="description">
-			<svelte:fragment slot="label">Description</svelte:fragment>
-		</TextArea>
-	</div>
-	<svelte:fragment slot="footer" let:cancel let:confirm>
-		<Button variant="ghost" on:click={cancel}>Fermer</Button>
-		<Button
-			variant="cta"
-			type="submit"
-			formaction="?/update"
-			form={EDITOR_FORM_ID}
-			on:click={confirm}
-		>
-			Sauvegarder <Icon name="check" slot="trailing" />
-		</Button>
-	</svelte:fragment>
-</Modal>
 
 <style lang="scss">
 	fieldset {
@@ -153,12 +139,12 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: stretch;
-		gap: 0.25em;
+		gap: 0.5em;
 		font-size: var(--ui-text-sm);
-		padding: 0.25em;
+		padding: 0.2em 0.5em;
 		background-color: col(bg, 900);
 		// border: var(--ui-border-size) solid col(fg, 100, 0.25);
-		border-radius: calc(0.25em + var(--ui-radius-md));
+		border-radius: calc(0.25em + var(--ui-radius-sm));
 	}
 
 	.handle {

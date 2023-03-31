@@ -39,6 +39,8 @@
 	}
 
 	let scrollY = 0;
+
+	const angle = (Math.random() * 360).toFixed(0);
 </script>
 
 <svelte:window bind:scrollY />
@@ -51,6 +53,7 @@
 		entered = true;
 	}}
 	data-theme={THEMES.dark}
+	style:--angle="{angle}deg"
 >
 	<svg id="splash-logo" viewBox={FULL_VIEWBOX} on:click={consult} on:keydown={keydown}>
 		<defs>
@@ -78,6 +81,7 @@
 		{#if entered && logoImgsLoaded.every((loaded) => loaded)}
 			{#each logoChars as char, i (char)}
 				<use
+					class="symbol"
 					in:fly={{ y: 30, delay: 250 + 50 * i }}
 					href={LOGO_SYMBOLS_HREFS[char]}
 					out:fade|local
@@ -107,7 +111,7 @@
 		width: 100%;
 		padding-block: var(--ui-nav-h);
 		padding-inline: 3rem;
-		background: col(bg, 300);
+		background: linear-gradient(var(--angle), col(bg, 300), col(bg, 100));
 		border-bottom-left-radius: var(--splash-radius);
 		border-bottom-right-radius: var(--splash-radius);
 		display: flex;
@@ -131,6 +135,10 @@
 		// overflow: visible;
 		// transition: all 0.01s linear;
 	}
+
+	// .symbol {
+	// 	filter: drop-shadow(0 1rem 0.5rem rgba(0, 0, 0, 0.5));
+	// }
 
 	button {
 		z-index: 10;

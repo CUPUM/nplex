@@ -58,7 +58,10 @@
 	<textarea name="textarea" id="mask">Bonjour<i>asdasd</i></textarea>
 </article>
 <article>
-	<Toggle />
+	<Toggle>
+		<svelte:fragment slot="on">Gros label</svelte:fragment>
+		<svelte:fragment slot="off">moyen</svelte:fragment>
+	</Toggle>
 	<Field>
 		<OptionsList slot="options">
 			<Option value="test">Test</Option>

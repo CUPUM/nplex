@@ -28,7 +28,15 @@
 		écart est établi dynamiquement à {COST_MAX_DELTA_R * 100}% de la valeur moyenne de votre
 		sélection.
 	</p>
-	<Toggle bind:checked={smallScale}>Montrer l'échelle de coût pour projet à faibles coûts</Toggle>
+	<p class="flex flex-r gap-md align-i-c">
+		<span class="text-sm">
+			<Toggle bind:checked={smallScale}>
+				<svelte:fragment slot="off">Grands-coûts</svelte:fragment>
+				<svelte:fragment slot="on">Coûts modestes</svelte:fragment>
+			</Toggle>
+		</span>
+		<span class="subtle">Ajuster l'échelle pour des coûts plus modestes?</span>
+	</p>
 	<fieldset class="fields">
 		<Field
 			variant="default"

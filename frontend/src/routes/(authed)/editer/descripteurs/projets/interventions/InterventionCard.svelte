@@ -1,5 +1,10 @@
 <script lang="ts">
+	import Button from '$components/Button/Button.svelte';
+	import Icon from '$components/Icon.svelte';
+	import Loading from '$components/Loading.svelte';
+	import Modal from '$components/Modal/Modal.svelte';
 	import Ripple from '$components/Ripple.svelte';
+	import TextArea from '$components/TextArea/TextArea.svelte';
 	import Toggle from '$components/Toggle/Toggle.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import type { PageData } from './$types';
@@ -7,43 +12,73 @@
 
 	export let intervention: PageData['interventions'][number];
 
-	const formKey = `intervention['${intervention.id}']`;
+	$: intervention, (loading = null);
+
+	let loading: number | null = null;
+
+	const interventionKey = `intervention['${intervention.id}']`;
+	const typeKey = `project_types['${intervention.id}']`;
 </script>
 
 <div class="intervention-card">
 	<code class="intervention-id">{intervention.id.toString().padStart(2, '0')}</code>
+	<input name="{interventionKey}.id" hidden readonly value={intervention.id} />
+	<input name="{interventionKey}.category" hidden readonly value={intervention.category} />
 	<dt>
 		<input
 			type="text"
-			name="{formKey}.title"
+			name="{interventionKey}.title"
 			required
 			placeholder="Titre"
 			bind:value={intervention.title}
 		/>
 	</dt>
 	<dd>
+		<Modal>
+			<Button rounded let:open slot="control" on:click={open}>
+				<Icon name="text-left" slot="leading" />Description
+			</Button>
+			<svelte:fragment slot="header">Description de l'intervention</svelte:fragment>
+			<TextArea variant="outlined" bind:value={intervention.description} />
+			<svelte:fragment slot="footer" let:close>
+				<Button type="button" on:click={close}>
+					<Icon name="check" slot="leading" />Continuer
+				</Button>
+			</svelte:fragment>
+		</Modal>
 		<input
-			type="text"
-			name="{formKey}.description"
+			type="hidden"
+			name="{interventionKey}.description"
 			placeholder="Description"
-			bind:value={intervention.description}
+			value={intervention.description}
 		/>
-		<Toggle bind:checked={intervention.maybe_permit}>
-			<svelte:fragment slot="on">Permi requis</svelte:fragment>
+		<Toggle name="{interventionKey}.maybe_permit" bind:checked={intervention.maybe_permit}>
+			<svelte:fragment slot="on">Requiert permis</svelte:fragment>
+			<svelte:fragment slot="off">Sans permis</svelte:fragment>
 		</Toggle>
+		<div class="project-types">
+			{#each $types as pt}
+				{@const checked = intervention.project_type.includes(pt.id)}
+				<Tooltip>
+					<button
+						class="project-type"
+						data-checked={checked}
+						type="submit"
+						formaction="?/{checked
+							? 'unset-type'
+							: 'set-type'}&type={pt.id}&intervention={intervention.id}"
+						on:pointerdown={() => (loading = pt.id)}
+					>
+						<Ripple />
+						{pt.title}
+						{#if loading === pt.id}
+							<Loading />
+						{/if}
+					</button>
+				</Tooltip>
+			{/each}
+		</div>
 	</dd>
-	<div class="project-types">
-		{#each $types as pt}
-			{@const inputId = `${intervention.id}-${pt.id}-input`}
-			<Tooltip>
-				<input type="checkbox" id={inputId} hidden />
-				<label class="project-type" for={inputId}>
-					<Ripple />
-					{pt.title}
-				</label>
-			</Tooltip>
-		{/each}
-	</div>
 </div>
 
 <style lang="scss">
@@ -91,12 +126,25 @@
 		}
 	}
 
+	dt {
+		@include laptop {
+			flex: 1;
+			display: flex;
+		}
+	}
+
 	dd {
 		position: relative;
 		flex: 1;
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 		gap: inherit;
+
+		@include laptop {
+			visibility: hidden;
+			position: absolute;
+		}
 	}
 
 	.project-types {
@@ -108,6 +156,7 @@
 
 	.project-type {
 		--ui-ripple-color: #{col(secondary, 900)};
+		user-select: none;
 		position: relative;
 		cursor: pointer;
 		color: col(fg, 700);
@@ -128,7 +177,7 @@
 			opacity: 0.5;
 		}
 
-		:checked + & {
+		&[data-checked='true'] {
 			opacity: 1;
 			color: col(fg, 700);
 			background-color: col(secondary, 100);
