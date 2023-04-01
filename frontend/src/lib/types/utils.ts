@@ -86,8 +86,27 @@ export type TypedHTMLInputElement<
  * directive's custom event types.
  */
 export type AppCustomEvent<
-	E extends keyof svelteHTML.HTMLAttributes<T>,
-	T extends HTMLElement = HTMLElement
-> = NonUndefinable<svelteHTML.HTMLAttributes<T>[E]> extends (...args: any) => any
-	? Parameters<NonUndefinable<svelteHTML.HTMLAttributes<T>[E]>>[0]
+	E extends keyof A,
+	A extends svelteHTML.HTMLAttributes<T> | svelteHTML.SVGAttributes<T> = svelteHTML.HTMLAttributes &
+		svelteHTML.SVGAttributes,
+	T extends Element = Element
+> = NonUndefinable<A[E]> extends (...args: any) => any
+	? Parameters<NonUndefinable<A[E]>>[0]
 	: never;
+
+// export type AppCustomSvgEvent<
+// 	E extends keyof svelteHTML.HTMLAttributes<T> | svelteHTML.SVGAttributes<T>,
+// 	T extends Element = Element
+// > = NonUndefinable<
+// 	E extends keyof svelteHTML.HTMLAttributes<T>
+// 		? svelteHTML.HTMLAttributes<T>[E]
+// 		: E extends keyof svelteHTML.SVGAttributes<T>
+// 		? svelteHTML.SVGAttributes<T>[E]
+// 		: never
+// > extends (...args: any) => any
+// 	? Parameters<E extends keyof svelteHTML.HTMLAttributes<T>
+// 		? svelteHTML.HTMLAttributes<T>[E]
+// 		: E extends keyof svelteHTML.SVGAttributes<T>
+// 		? svelteHTML.SVGAttributes<T>[E]
+// 		: never>>[0]
+// 	: never;

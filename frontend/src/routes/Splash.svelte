@@ -1,14 +1,17 @@
 <script lang="ts">
 	import { cachedState } from '$actions/cachedState';
 	import { intersection } from '$actions/intersection';
+	import svgPointer from '$actions/svgPointer';
 	import { browser } from '$app/environment';
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
 	import { FULL_VIEWBOX, LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
+	import type { AppCustomEvent } from '$types/utils';
 	import { col } from '$utils/css';
 	import { getProjectImageUrl } from '$utils/database/helpers';
 	import { KEY } from '$utils/enums';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
 	import { expoOut } from 'svelte/easing';
+	import { spring } from 'svelte/motion';
 	import { fade, fly } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import { overlapNavbar } from './Navbar.svelte';
@@ -22,6 +25,33 @@
 	const logoChars = ['n', 'p', 'l', 'e', 'x'] as const;
 
 	const logoImgsLoaded = images.map(() => false);
+
+	const circle = spring({ x: 0, y: 0, r: 0 }, { damping: 0.8, stiffness: 0.1 });
+	const square = spring({ x: 0, y: 0, s: 0, a: 0 }, { damping: 0.7, stiffness: 0.2 });
+
+	function moveSpotlight(e: AppCustomEvent<'on:svg.pointermove'>) {
+		circle.update((prev) => ({
+			x: e.detail.x,
+			y: e.detail.y,
+			r:
+				4 *
+					(Math.abs(e.detail.originalEvent.movementX) +
+						Math.abs(e.detail.originalEvent.movementY)) +
+				100,
+		}));
+		square.update((prev) => ({
+			x: e.detail.x,
+			y: e.detail.y,
+			s:
+				3 *
+					(Math.abs(e.detail.originalEvent.movementX) +
+						Math.abs(e.detail.originalEvent.movementY)) +
+				250,
+			a:
+				prev.a +
+				0.2 * Math.round(e.detail.originalEvent.movementX + e.detail.originalEvent.movementY),
+		}));
+	}
 
 	function consult() {
 		if (browser) {
@@ -38,12 +68,8 @@
 		}
 	}
 
-	let scrollY = 0;
-
 	const angle = (Math.random() * 360).toFixed(0);
 </script>
-
-<svelte:window bind:scrollY />
 
 <header
 	use:overlapNavbar={{ theme: THEMES.dark, background: col('bg', '300') }}
@@ -55,7 +81,40 @@
 	data-theme={THEMES.dark}
 	style:--angle="{angle}deg"
 >
-	<svg id="splash-logo" viewBox={FULL_VIEWBOX} on:click={consult} on:keydown={keydown}>
+	<svg
+		id="splash-logo"
+		use:svgPointer
+		on:svg.pointermove={moveSpotlight}
+		viewBox={FULL_VIEWBOX}
+		vector-effect="non-scaling-stroke"
+	>
+		<mask id="spotlight">
+			<rect
+				x={$square.x - $square.s}
+				y={$square.y - $square.s}
+				width={2 * $square.s}
+				height={2 * $square.s}
+				transform="rotate({$square.a})"
+				fill="white"
+				opacity=".7"
+				rx="50"
+			/>
+			<circle cx={$circle.x} cy={$circle.y} r={$circle.r} fill="white" />
+		</mask>
+		<mask id="spotlight-reverse">
+			<rect x="0" y="0" width="100%" height="100%" fill="white" />
+			<rect
+				x={$square.x - $square.s}
+				y={$square.y - $square.s}
+				width={2 * $square.s}
+				height={2 * $square.s}
+				transform="rotate({$square.a})"
+				fill="black"
+				opacity=".8"
+				rx="50"
+			/>
+			<circle cx={$circle.x} cy={$circle.y} r={$circle.r} fill="black" />
+		</mask>
 		<defs>
 			{#each images as image, i (image.id)}
 				<pattern
@@ -79,15 +138,29 @@
 			{/each}
 		</defs>
 		{#if entered && logoImgsLoaded.every((loaded) => loaded)}
-			{#each logoChars as char, i (char)}
-				<use
-					class="symbol"
-					in:fly={{ y: 30, delay: 250 + 50 * i }}
-					href={LOGO_SYMBOLS_HREFS[char]}
-					out:fade|local
-					fill="url(#splash-image-{i})"
-				/>
-			{/each}
+			<g mask="url(#spotlight)">
+				{#each logoChars as char, i (char)}
+					<use
+						in:fly={{ y: 30, delay: 250 + 50 * i }}
+						href={LOGO_SYMBOLS_HREFS[char]}
+						out:fade|local
+						fill="url(#splash-image-{i})"
+					/>
+				{/each}
+			</g>
+			<g mask="url(#spotlight-reverse)">
+				{#each logoChars as char, i (char)}
+					<use
+						in:fly={{ y: 30, delay: 250 + 50 * i }}
+						href={LOGO_SYMBOLS_HREFS[char]}
+						out:fade|local
+						fill="none"
+						stroke={col('fg', '000')}
+						stroke-width="1.5"
+						stroke-dasharray="10 5"
+					/>
+				{/each}
+			</g>
 		{/if}
 	</svg>
 	{#if entered}
@@ -109,9 +182,9 @@
 		position: relative;
 		height: 100svh;
 		width: 100%;
-		padding-block: var(--ui-nav-h);
-		padding-inline: 3rem;
-		background: linear-gradient(var(--angle), col(bg, 300), col(bg, 100));
+		// padding-inline: 3rem;
+		// background: linear-gradient(var(--angle), col(bg, 300), col(bg, 100));
+		background-color: col(bg, 300);
 		border-bottom-left-radius: var(--splash-radius);
 		border-bottom-right-radius: var(--splash-radius);
 		display: flex;
@@ -125,20 +198,27 @@
 	#splash-logo {
 		will-change: transform;
 		position: relative;
-		transform: translate3d(0, calc(0.5 * var(--ui-scroll-px)), 0);
-		cursor: pointer;
+		padding-inline: var(--ui-gutter-lg);
 		width: 100%;
+		height: 100%;
 		object-fit: contain;
 		max-width: var(--ui-width-main);
-		padding: 3rem 1rem;
 		opacity: max(0, calc(1 - 0.001 * var(--ui-scroll)));
-		// overflow: visible;
-		// transition: all 0.01s linear;
 	}
 
-	// .symbol {
-	// 	filter: drop-shadow(0 1rem 0.5rem rgba(0, 0, 0, 0.5));
-	// }
+	g {
+		transform: translateY(calc(0.2 * var(--ui-scroll-px)));
+	}
+
+	mask {
+		circle {
+			filter: drop-shadow(12px 24px 32px rgb(0, 0, 0, 0.75));
+		}
+		rect {
+			transform-box: fill-box;
+			transform-origin: bottom center;
+		}
+	}
 
 	button {
 		z-index: 10;

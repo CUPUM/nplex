@@ -6,7 +6,7 @@ import sveltePreprocess from 'svelte-preprocess';
  * @type {import('@sveltejs/kit').Config}
  */
 const config = {
-	extensions: ['.svelte', '.svx'],
+	extensions: ['.svelte'],
 	preprocess: sveltePreprocess({
 		typescript: true,
 		scss: {

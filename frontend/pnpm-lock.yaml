@@ -18,7 +18,6 @@ specifiers:
   browserslist: ^4.21.5
   change-case: ^4.1.2
   colord: ^2.9.3
-  cookie: ^0.5.0
   csstype: ^3.1.1
   element-to-path: ^1.2.1
   esbuild: ^0.17.14
@@ -30,6 +29,7 @@ specifiers:
   mapbox-gl-draw-geodesic: ^2.1.3
   maplibre-gl: ^2.4.0
   maplibre-gl-draw-circle: ^0.1.1
+  marked: ^4.3.0
   mdsvex: ^0.10.6
   overlayscrollbars: ^2.1.1
   panzoom: ^9.4.3
@@ -63,12 +63,12 @@ dependencies:
   '@types/sortablejs': 1.15.1
   change-case: 4.1.2
   colord: 2.9.3
-  cookie: 0.5.0
   fuse.js: 6.6.2
   js-cookie: 3.0.1
   mapbox-gl-draw-geodesic: 2.1.3_naroxjghyxieipkqmxuw36oqfy
   maplibre-gl: 2.4.0
   maplibre-gl-draw-circle: 0.1.1
+  marked: 4.3.0
   overlayscrollbars: 2.1.1
   panzoom: 9.4.3
   sharp: 0.32.0
@@ -742,8 +742,8 @@ packages:
       - encoding
     dev: false
 
-  /@supabase/gotrue-js/2.17.0:
-    resolution: {integrity: sha512-etPNW19TvYPPs8k61AoYeyJNoVSN7N/Lk9UFz1kZHuqnhP16RFpRgMq9+c3oht8eUAceVZP1UycRsvRa+TwXbA==}
+  /@supabase/gotrue-js/2.18.0:
+    resolution: {integrity: sha512-U4K7bUfNTkBErnp4zsPAsKu0T4LoKaly5940nxztMmt9iNTWMKJCPQge5e5PouHhWHvLIgrVo23+Uo+3iyUHag==}
     dependencies:
       cross-fetch: 3.1.5
       crypto-js: 4.1.1
@@ -781,7 +781,7 @@ packages:
     resolution: {integrity: sha512-+Q3FMj0TuI6xJBTTREIRxuLW1QreZhtRxlF5+7aprmlVq1+GsMfnpBOpXcdyhcWWL8UcmaoMJD8tJiedXGCXlg==}
     dependencies:
       '@supabase/functions-js': 2.1.0
-      '@supabase/gotrue-js': 2.17.0
+      '@supabase/gotrue-js': 2.18.0
       '@supabase/postgrest-js': 1.5.0
       '@supabase/realtime-js': 2.7.1
       '@supabase/storage-js': 2.3.1
@@ -2308,7 +2308,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001473
-      electron-to-chromium: 1.4.347
+      electron-to-chromium: 1.4.348
       node-releases: 2.0.10
       update-browserslist-db: 1.0.10_browserslist@4.21.5
     dev: true
@@ -2498,6 +2498,7 @@ packages:
   /cookie/0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
+    dev: true
 
   /cross-fetch/3.1.5:
     resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
@@ -2687,8 +2688,8 @@ packages:
     resolution: {integrity: sha512-/pjZsA1b4RPHbeWZQn66SWS8nZZWLQQ23oE3Eam7aroEFGEvwKAsJfZ9ytiEMycfzXWpca4FA9QIOehf7PocBQ==}
     dev: false
 
-  /electron-to-chromium/1.4.347:
-    resolution: {integrity: sha512-LNi3+/9nV0vT6Bz1OsSoZ/w7IgNuWdefZ7mjKNjZxyRlI/ag6uMXxsxAy5Etvuixq3Q26exw2fc4bNYvYQqXSw==}
+  /electron-to-chromium/1.4.348:
+    resolution: {integrity: sha512-gM7TdwuG3amns/1rlgxMbeeyNoBFPa+4Uu0c7FeROWh4qWmvSOnvcslKmWy51ggLKZ2n/F/4i2HJ+PVNxH9uCQ==}
     dev: true
 
   /element-to-path/1.2.1:
@@ -3578,6 +3579,12 @@ packages:
       supercluster: 7.1.5
       tinyqueue: 2.0.3
       vt-pbf: 3.1.3
+    dev: false
+
+  /marked/4.3.0:
+    resolution: {integrity: sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==}
+    engines: {node: '>= 12'}
+    hasBin: true
     dev: false
 
   /mdast-util-from-markdown/1.3.0:
