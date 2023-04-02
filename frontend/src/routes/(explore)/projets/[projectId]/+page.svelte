@@ -3,9 +3,7 @@
 	import Icon from '$components/Icon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import RootBackground from '$routes/RootBackground.svelte';
-	import { pgCubeToHsl } from '$utils/format';
-	import { colord } from 'colord';
-	import { makeProjectPalette, setProjectContext } from './common';
+	import { getBannerColors, getBgColor, makeProjectPalette, setProjectContext } from './common';
 	import ProjectGallery from './ProjectGallery.svelte';
 	import ProjectHeader from './ProjectHeader.svelte';
 	import ProjectSummary from './ProjectSummary.svelte';
@@ -15,15 +13,14 @@
 
 	const palette = makeProjectPalette(data.project);
 
-	const bannerColors = {
-		average: colord(pgCubeToHsl(data.project.banner?.color_average_hsl ?? '(60, 11, 80)')),
-		dominant: colord(pgCubeToHsl(data.project.banner?.color_dominant_hsl ?? '(60, 11, 80)')),
-	};
+	const bannerColors = getBannerColors(data.project);
 
-	setProjectContext({ ...data.project, palette });
+	const bgColor = getBgColor(data.project);
+
+	setProjectContext({ ...data.project, palette, bannerColors, bgColor });
 </script>
 
-<RootBackground />
+<RootBackground body={bgColor.toRgbString()} overscroll={bgColor.toRgbString()} />
 <article id="project">
 	<ProjectHeader />
 	<ProjectSummary />
@@ -58,7 +55,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--ui-gap-sm);
-		padding-inline: var(--ui-gap-sm);
+		// padding-inline: var(--ui-gap-sm);
+		margin-top: calc(-1 * var(--ui-nav-h));
 
 		:global(.project-section-title) {
 			font-size: var(--ui-text-3xl);

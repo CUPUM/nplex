@@ -8,24 +8,25 @@
 </script>
 
 <header>
-	<hgroup
-		style:background-color={project.palette[0].color.lighten(0.5).toRgbString()}
-		style:color={project.palette[0].color.darken(0).toRgbString()}
-	>
+	<!-- <MeshGradient color={project.palette.map((swatch) => swatch.color.toRgbString())} /> -->
+	<hgroup style:color={project.bgColor.darken(0.8).toRgbString()}>
 		<h1>{project.title}</h1>
 	</hgroup>
-	<img alt="Image-vitrine pour le projet «{project.title}»" src={bannerUrl} />
+	<figure>
+		<!-- <img alt="Image-vitrine pour le projet «{project.title}»" src={bannerUrl} /> -->
+	</figure>
 </header>
 
 <style lang="scss">
 	header {
 		align-self: center;
 		width: 100%;
-		max-width: var(--ui-width-main);
+		min-height: 100vh;
+		min-height: 100svh;
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		align-items: stretch;
+		align-items: center;
 		justify-content: center;
 		gap: var(--ui-gap-sm);
 	}
@@ -33,20 +34,24 @@
 	hgroup {
 		z-index: 1;
 		font-size: var(--ui-text-5xl);
-		font-weight: 550;
+		font-weight: 600;
 		padding: var(--ui-gutter-md);
 		border-radius: var(--ui-radius-xl);
+		max-width: var(--ui-width-md);
+		// text-shadow: 12px 16px 0.25em black;
 	}
 
-	img {
-		position: relative;
-		border-radius: inherit;
-		height: calc(100vh - var(--ui-nav-h) - var(--ui-gap-sm));
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		// z-index: 0;
-		object-fit: cover;
+	figure {
+		position: absolute;
 		border-radius: var(--ui-radius-xl);
+		width: var(--ui-width-lg);
+		max-width: 100%;
+		overflow: hidden;
+
+		img {
+			object-fit: cover;
+			filter: blur(6px);
+			opacity: 0.5;
+		}
 	}
 </style>

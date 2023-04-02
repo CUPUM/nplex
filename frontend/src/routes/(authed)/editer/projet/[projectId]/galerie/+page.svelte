@@ -49,7 +49,7 @@
 										$project.gallery.length - 1,
 									]);
 								}}
-								bind:data={item}
+								bind:galleryItem={item}
 								{i}
 							/>
 						{/if}

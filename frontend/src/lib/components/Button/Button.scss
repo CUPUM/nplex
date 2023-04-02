@@ -132,7 +132,7 @@
 
 .default {
 	--color: #{col(fg, 500)};
-	--background-color: #{col(fg, 100, 0.1)};
+	--background-color: #{col(fg, 000, 0.15)};
 	--hover-color: #{col(bg, 700)};
 	--hover-background-color: #{col(fg, 500)};
 	--active-color: #{col(bg, 900)};

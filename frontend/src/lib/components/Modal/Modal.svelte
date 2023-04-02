@@ -28,11 +28,12 @@
 
 	const [send, receive] = crossfade({
 		duration(d) {
-			return 50 + Math.sqrt(d * 100);
+			return 25 + Math.sqrt(d * 25);
 		},
 		fallback(node, params, intro) {
 			return scale(node, { start: 0.98, duration: 100, easing: expoOut });
 		},
+		easing: expoOut,
 	});
 
 	let openedOnce = false;
@@ -170,9 +171,8 @@
 		flex-direction: column;
 		background: col(bg, 500);
 		color: col(fg, 100);
-		max-width: var(--ui-width-sm);
-		// box-shadow: var(--ui-shadow-xl), 0 0.25em 1em rgb(0, 0, 0, 0.2);
-		box-shadow: 0 0.5em 2em -1em rgb(0, 0, 0, 0.2);
+		max-width: min(var(--ui-width-sm), 100%);
+		box-shadow: 0 1em 2em -1em rgb(0, 0, 0, 0.5);
 		padding: 0;
 		margin: 0 auto;
 		overflow-y: auto;
@@ -183,8 +183,9 @@
 	}
 
 	article {
+		--modal-padding: 2rem;
 		position: relative;
-		padding: 2rem;
+		padding: var(--modal-padding);
 		flex: 1;
 	}
 
