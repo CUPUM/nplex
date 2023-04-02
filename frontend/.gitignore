@@ -9,5 +9,5 @@ node_modules
 .pnpm-debug.log
 
 # Generated assets
-/src/lib/styles/themes.css
+/src/lib/styles/vars/themes.css
 /src/lib/utils/icons.ts
