@@ -22,21 +22,37 @@ export const load = async (event) => {
 		.select(
 			`
 			*,
-			interventions:projects_interventions (*),
-			usages:projects_usages (*),
+			interventions:projects_interventions (
+				*
+			),
+			usages:projects_usages (
+				*
+			),
 			location:projects_location (
 				center:center->coordinates,
 				radius
 			),
-			gallery:projects_images!projects_images_project_fkey (*),
-			indicators:projects_exemplarity_indicators (indicator),
-			updated_by:updated_by (*,
-				role:users_roles!users_roles_user_fkey (*)
+			gallery:projects_images!projects_images_project_fkey (
+				*
 			),
-			created_by:created_by (*,
-				role:users_roles!users_roles_user_fkey (*)
+			indicators:projects_exemplarity_indicators (
+				indicator
 			),
-			publication_status:projects_publication_status_fulfill (*)
+			updated_by:updated_by (
+				*,
+				role:users_roles!users_roles_user_fkey (
+					*
+				)
+			),
+			created_by:created_by (
+				*,
+				role:users_roles!users_roles_user_fkey (
+					*
+				)
+			),
+			publication_status:projects_publication_status_fulfill (
+				*
+			)
 		`
 		)
 		.eq('id', event.params.projectId)

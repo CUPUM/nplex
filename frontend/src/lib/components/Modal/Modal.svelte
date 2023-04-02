@@ -14,17 +14,26 @@
 	import { closest, type ClosestReadable } from '$utils/store';
 	import type { ThemeName } from '$utils/themes';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
-	import { cubicIn, cubicOut } from 'svelte/easing';
-	import { fade, fly, scale } from 'svelte/transition';
+	import { cubicIn, expoOut } from 'svelte/easing';
+	import { crossfade, fade, fly, scale } from 'svelte/transition';
 	import { modalOutletRef } from './ModalOutlet.svelte';
 
-	export let backgroundColor: string = col('bg', '100', 0.8);
+	export let backgroundColor: string = col('bg', '100', 0.9);
 	export let lockScroll: boolean = true;
 	export let closeOnClickoutside = true;
 	export let opened: boolean = false;
 	export let theme: ThemeName | undefined = undefined;
 
 	const key = Symbol('modal');
+
+	const [send, receive] = crossfade({
+		duration(d) {
+			return 50 + Math.sqrt(d * 100);
+		},
+		fallback(node, params, intro) {
+			return scale(node, { start: 0.98, duration: 100, easing: expoOut });
+		},
+	});
 
 	let openedOnce = false;
 	let confirmed = false;
@@ -54,7 +63,11 @@
 		canceled = false;
 	}
 
-	function open() {
+	function open(e?: Event) {
+		const el = e?.currentTarget ?? e?.target;
+		if (el instanceof Element) {
+			send(el, { key });
+		}
 		opened = true;
 	}
 
@@ -117,9 +130,10 @@
 					opened = false;
 				}
 			}}
-			in:scale={{ start: 0.98, duration: 80, easing: cubicOut }}
+			in:receive={{ key }}
 			out:fly|local={{ y: 8, duration: 80, easing: cubicIn }}
 		>
+			<!-- in:scale={{ start: 0.96, duration: 100, easing: expoOut }} -->
 			{#if $$slots.header}
 				<header>
 					<slot name="header" {close} {cancel} {confirm} />
@@ -154,10 +168,11 @@
 		flex: none;
 		display: flex;
 		flex-direction: column;
-		background: col(bg, 300);
+		background: col(bg, 500);
 		color: col(fg, 100);
 		max-width: var(--ui-width-sm);
-		box-shadow: var(--ui-shadow-xl), 0 0.25em 1em rgb(0, 0, 0, 0.2);
+		// box-shadow: var(--ui-shadow-xl), 0 0.25em 1em rgb(0, 0, 0, 0.2);
+		box-shadow: 0 0.5em 2em -1em rgb(0, 0, 0, 0.2);
 		padding: 0;
 		margin: 0 auto;
 		overflow-y: auto;
@@ -168,6 +183,7 @@
 	}
 
 	article {
+		position: relative;
 		padding: 2rem;
 		flex: 1;
 	}
@@ -188,7 +204,7 @@
 		align-items: center;
 		justify-content: flex-end;
 		font-size: var(--ui-text-sm);
-		background: col(bg, 300);
+		background: col(bg, 500);
 		padding: 1.5rem;
 		position: sticky;
 		bottom: 0;

@@ -7,6 +7,7 @@
 	import Ownership from './Ownership.svelte';
 	import Summary from './Summary.svelte';
 	import Type from './Type.svelte';
+	import Usage from './Usage.svelte';
 
 	export let data;
 </script>
@@ -46,6 +47,7 @@
 <Summary />
 <Type />
 <Interventions />
+<Usage />
 <CostRange />
 <Ownership />
 

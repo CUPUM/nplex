@@ -110,6 +110,13 @@
 			&::before {
 				opacity: 0;
 			}
+			&[data-current]:not(.active) {
+				color: col(fg, 900);
+				&::before {
+					background: col(fg, 100, 0.1);
+					opacity: 1;
+				}
+			}
 			&:first-of-type {
 				padding-inline-start: 1.5em;
 			}

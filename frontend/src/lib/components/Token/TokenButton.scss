@@ -23,9 +23,18 @@
 
 .default {
 	background: col(fg, 100, 0.1);
-
+	transition: all 0.1s ease-out;
 	&:hover {
 		color: col(bg, 100);
 		background: col(fg, 000);
+		transition: all 0s;
+	}
+	&.warning {
+		color: col(error, 500);
+		background-color: col(bg, 100, 0.2);
+		&:hover {
+			color: col(notice, 900);
+			background-color: col(notice, 100, 0.5);
+		}
 	}
 }

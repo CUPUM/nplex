@@ -68,4 +68,10 @@ export const interventionTypeSchema = zfd.formData({
 	type: projectTypeIdSchema,
 });
 
-export const interventionCreateSchema = zfd.formData({});
+export const interventionCreateSchema = zfd.formData({
+	title: interventionTitleSchema,
+	description: interventionDescriptionSchema,
+	maybe_permit: interventionMaybePermitSchema,
+	category: interventionCategorySchema,
+	types: interventionByTypeSchema,
+});

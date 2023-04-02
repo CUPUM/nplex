@@ -1,5 +1,5 @@
 import { EDITOR_FORM_ACTION } from '$routes/(authed)/editer/constants';
-import { IMAGE_MAX_RESOLUTION } from '$routes/(authed)/editer/projet/constants';
+import { PROJECT_IMAGE_MAX_RESOLUTION } from '$routes/(authed)/editer/projet/constants';
 import {
 	projectGalleryUpdateSchema,
 	projectImageUploadSchema,
@@ -40,8 +40,8 @@ export const actions = {
 				const img = sharp(Buffer.from(await file.arrayBuffer()));
 				const buffer = await img
 					.resize({
-						width: IMAGE_MAX_RESOLUTION,
-						height: IMAGE_MAX_RESOLUTION,
+						width: PROJECT_IMAGE_MAX_RESOLUTION,
+						height: PROJECT_IMAGE_MAX_RESOLUTION,
 						fit: 'inside',
 						withoutEnlargement: true,
 					})

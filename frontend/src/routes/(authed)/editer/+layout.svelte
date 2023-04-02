@@ -133,6 +133,7 @@
 <style lang="scss">
 	article {
 		--article-radius: min(var(--ui-radius-2xl), calc(0.1 * var(--ui-scroll-px)));
+		--formgroup-padding: var(--ui-gutter-md);
 		width: 100%;
 		display: flex;
 		flex-direction: column;

@@ -7,17 +7,20 @@
 <fieldset class="editor-form-group">
 	<h3 class="editor-form-group-title">Sommmaire</h3>
 	<div id="editor-summary-fields">
-		<Field variant="default" name="title" bind:value={$project.title}>
+		<Field class="text-lg" variant="default" name="title" bind:value={$project.title}>
 			<svelte:fragment slot="label">Titre du projet</svelte:fragment>
 		</Field>
+		<TextArea name="summary" variant="default" bind:value={$project.summary} style="height: 150px;">
+			<svelte:fragment slot="label">Résumé</svelte:fragment>
+		</TextArea>
 		<TextArea
 			name="description"
 			variant="default"
-			placeholder="Décrivez votre projet en quelques phrases."
+			placeholder="Décrivez votre projet plus en détail"
 			bind:value={$project.description}
-			style="height: 300px;"
+			style="height: 500px;"
 		>
-			<svelte:fragment slot="label">Description</svelte:fragment>
+			<svelte:fragment slot="label">Description détaillée</svelte:fragment>
 		</TextArea>
 	</div>
 </fieldset>

@@ -174,14 +174,23 @@
 
 <style lang="scss">
 	.fields {
+		--pattern-color: #{col(fg, 100, 0.1)};
+		--pattern-size: 1rem;
 		display: flex;
 		flex-direction: row;
 		gap: 3rem;
 		// flex-wrap: wrap;
 		align-items: flex-start;
 		justify-content: space-between;
-		margin-top: 3rem;
-
+		margin: calc(-1 * var(--ui-gutter-md));
+		margin-top: 0;
+		padding: var(--ui-gutter-md);
+		border-radius: inherit;
+		background: radial-gradient(var(--pattern-color) 10%, transparent 10%);
+		background-repeat: repeat;
+		background-size: var(--pattern-size) var(--pattern-size);
+		background-color: col(bg, 500);
+		border: 5px solid col(bg, 700);
 		@include desktop {
 			align-items: center;
 			flex-direction: column-reverse;
@@ -224,7 +233,7 @@
 		justify-content: center;
 		padding: 0 1em;
 		border-radius: var(--ui-radius-md);
-		font-size: var(--ui-text-sm);
+		font-size: var(--ui-text-xs);
 		background-color: col(fg, 100, 0.2) !important;
 	}
 
@@ -281,14 +290,15 @@
 		font-family: var(--ui-font-misc);
 		font-size: var(--ui-text-xs);
 		letter-spacing: 0.5px;
-		text-transform: uppercase;
+		// text-transform: uppercase;
 		background-color: transparent;
 		width: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		color: col(fg, 100);
 		gap: 1em;
-		opacity: 0.25;
+		opacity: 0.5;
 
 		&::before,
 		&::after {
@@ -298,19 +308,22 @@
 			height: 0;
 			border-bottom: var(--ui-border-size) dashed currentColor;
 			flex: 1;
+			opacity: 0.5;
 		}
 	}
 
 	.level-type {
 		display: block;
+		flex: 1;
 		padding: 0.25em 1em;
 		border-radius: 99px;
 		background-color: col(bg, 900);
-		font-size: var(--ui-text-xs);
-		font-weight: 450;
-		text-transform: uppercase;
-		letter-spacing: 0.5px;
-		color: col(fg, 000);
+		font-family: var(--ui-font-misc);
+		// font-size: var(--ui-text-sm);
+		// font-weight: 700;
+		// text-transform: uppercase;
+		// letter-spacing: 0.5px;
+		color: col(fg, 100);
 		.intervention & {
 			color: col(bg, 900);
 			background-color: col(fg, 300);
@@ -320,7 +333,7 @@
 	.remove-level {
 		position: relative;
 		aspect-ratio: 1;
-		height: var(--ui-block-sm);
+		height: var(--ui-block-md);
 		display: flex;
 		align-items: center;
 		justify-content: center;

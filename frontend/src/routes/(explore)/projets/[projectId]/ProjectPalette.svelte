@@ -1,14 +1,13 @@
 <script lang="ts">
-	import type { Colord } from 'colord';
+	import { getProjectContext } from './common';
 
-	export let palette: Colord[];
+	const project = getProjectContext();
 </script>
 
 <section>
-	<h2 class="heading-lg">Palette de couleurs</h2>
 	<dl id="project-palette">
-		{#each palette as c}
-			<dt class="project-palette-swatch" />
+		{#each project.palette as c}
+			<dt class="project-palette-swatch" style:background-color={c.color.toRgbString()} />
 		{/each}
 	</dl>
 </section>
@@ -17,9 +16,13 @@
 	#project-palette {
 		display: flex;
 		flex-direction: row;
-		gap: var(--ui-gap-md);
+		gap: 3px;
 	}
 
 	.project-palette-swatch {
+		font-size: var(--ui-text-3xl);
+		height: 1em;
+		width: 1em;
+		border-radius: 1em;
 	}
 </style>

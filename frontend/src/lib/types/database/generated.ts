@@ -617,6 +617,7 @@ export interface Database {
           id: string
           implantation_mode: number | null
           interventions_area: number | null
+          is_demo: boolean | null
           likes_sum: number
           site_area: number | null
           site_ownership: number | null
@@ -647,6 +648,7 @@ export interface Database {
           id?: string
           implantation_mode?: number | null
           interventions_area?: number | null
+          is_demo?: boolean | null
           likes_sum?: number
           site_area?: number | null
           site_ownership?: number | null
@@ -676,6 +678,7 @@ export interface Database {
           id?: string
           implantation_mode?: number | null
           interventions_area?: number | null
+          is_demo?: boolean | null
           likes_sum?: number
           site_area?: number | null
           site_ownership?: number | null

@@ -198,6 +198,10 @@ label {
 		padding-top: var(--pad-y);
 	}
 
+	&.haslabel textarea {
+		padding-top: calc(var(--pad-y) + 0.5em);
+	}
+
 	.outline {
 		display: none;
 	}
@@ -210,16 +214,10 @@ label {
 			top: 0.75em;
 			font-size: clamp(11px, 0.5em, 24px);
 		}
-		// &.haslabel {
-		// 	textarea {
-		// 		margin-top: 1.5em;
-		// 	}
-		// }
 	}
 	:global(.hover-source:hover) &:global(.hover-target),
 	&:hover {
 		color: col(fg, 700);
-		// background: col(fg, 100, 0.1);
 	}
 	&:focus-within {
 		color: col(fg, 500);

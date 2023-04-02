@@ -6,13 +6,13 @@
 -->
 <script lang="ts">
 	import Ripple from '$components/Ripple.svelte';
-	import { STATES, VARIANTS, type State, type Variant } from '$utils/enums';
+	import { STATES, VARIANTS, type State } from '$utils/enums';
 	import type { HTMLAnchorAttributes, HTMLInputAttributes } from 'svelte/elements';
 
 	type V = $$Generic;
 
 	type $$Props = (HTMLInputAttributes | HTMLAnchorAttributes) & {
-		variant?: Variant;
+		variant?: 'default' | 'outlined' | 'dashed' | 'ghost' | 'editor';
 		state?: State;
 		active?: boolean;
 		value?: V;

@@ -5,30 +5,30 @@
 	import RootBackground from '$routes/RootBackground.svelte';
 	import { pgCubeToHsl } from '$utils/format';
 	import { colord } from 'colord';
+	import { makeProjectPalette, setProjectContext } from './common';
 	import ProjectGallery from './ProjectGallery.svelte';
 	import ProjectHeader from './ProjectHeader.svelte';
-	import ProjectPalette from './ProjectPalette.svelte';
 	import ProjectSummary from './ProjectSummary.svelte';
+	import ProjectTimeline from './ProjectTimeline.svelte';
 
 	export let data;
 
-	const palette = data.project.gallery.flatMap((img) => [
-		colord(pgCubeToHsl(img.color_dominant_hsl)),
-		colord(pgCubeToHsl(img.color_average_hsl)),
-	]);
+	const palette = makeProjectPalette(data.project);
 
 	const bannerColors = {
 		average: colord(pgCubeToHsl(data.project.banner?.color_average_hsl ?? '(60, 11, 80)')),
 		dominant: colord(pgCubeToHsl(data.project.banner?.color_dominant_hsl ?? '(60, 11, 80)')),
 	};
+
+	setProjectContext({ ...data.project, palette });
 </script>
 
 <RootBackground />
 <article id="project">
-	<ProjectHeader title={data.project.title} banner={data.project.banner} {palette} />
-	<ProjectPalette {palette} />
+	<ProjectHeader />
 	<ProjectSummary />
 	<ProjectGallery />
+	<ProjectTimeline />
 	<menu>
 		<Tooltip message="Éditer ce projet">
 			<Button rounded variant="cta" equi href="/editer/projet/{data.project.id}">
@@ -59,6 +59,13 @@
 		flex-direction: column;
 		gap: var(--ui-gap-sm);
 		padding-inline: var(--ui-gap-sm);
+
+		:global(.project-section-title) {
+			font-size: var(--ui-text-3xl);
+			font-weight: 500;
+			padding: 0.3em 0.5em 0.5em;
+			color: col(fg, 500);
+		}
 	}
 
 	menu {

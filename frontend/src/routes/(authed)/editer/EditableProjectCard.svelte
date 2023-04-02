@@ -46,7 +46,7 @@
 <style lang="scss">
 	.project-card {
 		--card-inset: 6px;
-		--card-radius: var(--ui-radius-xl);
+		--card-radius: var(--ui-radius-lg);
 		position: relative;
 		display: flex;
 		flex-direction: column;

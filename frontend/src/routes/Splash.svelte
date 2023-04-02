@@ -4,7 +4,12 @@
 	import svgPointer from '$actions/svgPointer';
 	import { browser } from '$app/environment';
 	import Icon, { ICON_CLASS } from '$components/Icon.svelte';
-	import { FULL_VIEWBOX, LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
+	import {
+		LOGO_SYMBOLS_HREFS,
+		LOGO_VIEWBOX,
+		LOGO_VIEWBOX_HEIGHT,
+		LOGO_VIEWBOX_WIDTH,
+	} from '$components/Logo.svelte';
 	import type { AppCustomEvent } from '$types/utils';
 	import { col } from '$utils/css';
 	import { getProjectImageUrl } from '$utils/database/helpers';
@@ -26,15 +31,18 @@
 
 	const logoImgsLoaded = images.map(() => false);
 
-	const circle = spring({ x: 0, y: 0, r: 0 }, { damping: 0.8, stiffness: 0.1 });
-	const square = spring({ x: 0, y: 0, s: 0, a: 0 }, { damping: 0.7, stiffness: 0.2 });
+	const cx = LOGO_VIEWBOX_WIDTH / 2;
+	const cy = LOGO_VIEWBOX_HEIGHT / 2;
+
+	const circle = spring({ x: cx, y: cy, r: 0 }, { damping: 0.8, stiffness: 0.1 });
+	const square = spring({ x: cx, y: cy, s: 0, a: 0 }, { damping: 0.8, stiffness: 0.2 });
 
 	function moveSpotlight(e: AppCustomEvent<'on:svg.pointermove'>) {
 		circle.update((prev) => ({
 			x: e.detail.x,
 			y: e.detail.y,
 			r:
-				4 *
+				5 *
 					(Math.abs(e.detail.originalEvent.movementX) +
 						Math.abs(e.detail.originalEvent.movementY)) +
 				100,
@@ -85,7 +93,7 @@
 		id="splash-logo"
 		use:svgPointer
 		on:svg.pointermove={moveSpotlight}
-		viewBox={FULL_VIEWBOX}
+		viewBox={LOGO_VIEWBOX}
 		vector-effect="non-scaling-stroke"
 	>
 		<mask id="spotlight">
@@ -96,7 +104,7 @@
 				height={2 * $square.s}
 				transform="rotate({$square.a})"
 				fill="white"
-				opacity=".7"
+				opacity=".9"
 				rx="50"
 			/>
 			<circle cx={$circle.x} cy={$circle.y} r={$circle.r} fill="white" />
@@ -110,10 +118,10 @@
 				height={2 * $square.s}
 				transform="rotate({$square.a})"
 				fill="black"
-				opacity=".8"
+				opacity="1"
 				rx="50"
 			/>
-			<circle cx={$circle.x} cy={$circle.y} r={$circle.r} fill="black" />
+			<circle cx={$circle.x} cy={$circle.y} r={$circle.r} fill="black" class="reverse-shadow" />
 		</mask>
 		<defs>
 			{#each images as image, i (image.id)}
@@ -155,9 +163,11 @@
 						href={LOGO_SYMBOLS_HREFS[char]}
 						out:fade|local
 						fill="none"
-						stroke={col('fg', '000')}
-						stroke-width="1.5"
-						stroke-dasharray="10 5"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke={col('fg', '100')}
+						stroke-width="1"
+						stroke-dasharray="1rem .5rem"
 					/>
 				{/each}
 			</g>
@@ -212,11 +222,14 @@
 
 	mask {
 		circle {
-			filter: drop-shadow(12px 24px 32px rgb(0, 0, 0, 0.75));
+			filter: drop-shadow(12px 24px 48px rgb(0, 0, 0, 0.9));
+			// &.reverse-shadow {
+			// 	filter: drop-shadow(12px 24px 48px rgb(255, 255, 255, 0.9));
+			// }
 		}
 		rect {
 			transform-box: fill-box;
-			transform-origin: bottom center;
+			transform-origin: 75% 35%;
 		}
 	}
 

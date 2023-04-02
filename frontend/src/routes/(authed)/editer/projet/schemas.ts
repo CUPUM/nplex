@@ -1,4 +1,3 @@
-import type { FunctionReturn } from '$types/database/utils';
 import { TEMPORALITY } from '$utils/enums';
 import { toPgGeom, toPgRange } from '$utils/format';
 import { avg, snap } from '$utils/number';
@@ -7,27 +6,27 @@ import { isCircle } from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 import { positionSchema, strictCoerceBooleanSchema } from '../../../../lib/utils/validation';
-import type { LayoutData } from './[projectId]/$types';
 import {
-	ADJACENT_ALLEYS_MAX,
-	ADJACENT_ALLEYS_MIN,
-	ADJACENT_STREETS_MAX,
-	ADJACENT_STREETS_MIN,
-	BUILDING_MAX_HEIGHT,
-	BUILDING_MIN_HEIGHT,
-	BUILDING_YEAR_MAX,
-	BUILDING_YEAR_MIN,
-	COST_MAX_BIG,
-	COST_MAX_DELTA_R,
-	COST_MIN,
-	COST_STEP,
-	DESCRIPTION_MAX_WORDS,
-	IMAGE_DESCRIPTION_MAX_LENGTH,
-	IMAGE_TITLE_MAX_LENGTH,
-	IMAGE_TYPES,
-	LOCATION_MAX_RADIUS,
-	TITLE_MAX_WORDS,
-	TITLE_MIN_WORDS,
+	PROJECT_ADJACENT_ALLEYS_MAX,
+	PROJECT_ADJACENT_ALLEYS_MIN,
+	PROJECT_ADJACENT_STREETS_MAX,
+	PROJECT_ADJACENT_STREETS_MIN,
+	PROJECT_BUILDING_MAX_HEIGHT,
+	PROJECT_BUILDING_MIN_HEIGHT,
+	PROJECT_BUILDING_YEAR_MAX,
+	PROJECT_BUILDING_YEAR_MIN,
+	PROJECT_COST_MAX_BIG,
+	PROJECT_COST_MAX_DELTA_R,
+	PROJECT_COST_MIN,
+	PROJECT_COST_STEP,
+	PROJECT_DESCRIPTION_MAX_WORDS,
+	PROJECT_IMAGE_DESCRIPTION_MAX,
+	PROJECT_IMAGE_TITLE_MAX,
+	PROJECT_IMAGE_TYPES,
+	PROJECT_LOCATION_MAX_RADIUS,
+	PROJECT_SUMMARY_MAX_WORDS,
+	PROJECT_TITLE_MAX_WORDS,
+	PROJECT_TITLE_MIN_WORDS,
 } from './constants';
 
 //
@@ -35,17 +34,22 @@ import {
 //
 
 export function maxCostDelta(min: number, max: number) {
-	return snap(avg(min, max) * COST_MAX_DELTA_R, COST_STEP, { origin: COST_MIN, round: Math.floor });
+	return snap(avg(min, max) * PROJECT_COST_MAX_DELTA_R, PROJECT_COST_STEP, {
+		origin: PROJECT_COST_MIN,
+		round: Math.floor,
+	});
 }
 
-export function getAvailableUsages(
-	descriptors: FunctionReturn<'project_descriptors'>,
-	categoryId: LayoutData['project']['usages'][number]['category'] | undefined
-) {
-	if (categoryId == null) {
-		return [];
-	} else return descriptors.siteUsages.filter((usage) => usage.category_ids.includes(categoryId));
-}
+// export function getAvailableUsages(
+// 	descriptors: FunctionReturn<'project_descriptors'>,
+// 	usages: LayoutData['project']['usages'] | undefined
+// ) {
+// 	if (usages == null ||!usages.length) {
+// 		return [];
+// 	} else {
+// 		return descriptors.siteUsages.filter((usage) => usage.categories.includes(categoryId));
+// 	}
+// }
 
 export function isLocationCircle(
 	feature: GeoJSON.Feature<GeoJSON.Geometry, GeoJSON.GeoJsonProperties>
@@ -63,8 +67,8 @@ export const projectTitleSchema = zfd.text(
 		.trim()
 		.refine((title) => {
 			const wordcount = title.split(' ').length;
-			return wordcount >= TITLE_MIN_WORDS && wordcount <= TITLE_MAX_WORDS;
-		}, `Le titre du projet doit être composé de ${TITLE_MIN_WORDS} à ${TITLE_MAX_WORDS} mots.`)
+			return wordcount >= PROJECT_TITLE_MIN_WORDS && wordcount <= PROJECT_TITLE_MAX_WORDS;
+		}, `Le titre du projet doit être composé de ${PROJECT_TITLE_MIN_WORDS} à ${PROJECT_TITLE_MAX_WORDS} mots.`)
 );
 
 const projectDescriptionSchema = zfd.text(
@@ -73,8 +77,19 @@ const projectDescriptionSchema = zfd.text(
 		.trim()
 		.refine((desc) => {
 			const wordcount = desc.split(' ').length;
-			return wordcount <= DESCRIPTION_MAX_WORDS;
-		}, `La description du projet peut pas dépasser ${DESCRIPTION_MAX_WORDS} mots.`)
+			return wordcount <= PROJECT_DESCRIPTION_MAX_WORDS;
+		}, `La description du projet peut pas dépasser ${PROJECT_DESCRIPTION_MAX_WORDS} mots.`)
+		.optional()
+);
+
+const projectSummarySchema = zfd.text(
+	z
+		.string()
+		.trim()
+		.refine((desc) => {
+			const wordcount = desc.split(' ').length;
+			return wordcount <= PROJECT_SUMMARY_MAX_WORDS;
+		}, `Le sommaire du projet peut pas dépasser ${PROJECT_SUMMARY_MAX_WORDS} mots.`)
 		.optional()
 );
 
@@ -85,13 +100,13 @@ const projectSiteOwnershipSchema = zfd.numeric(z.number().optional());
 const projectCostRangeSchema = zfd
 	.json(z.tuple([z.number().nonnegative(), z.number().nonnegative()]))
 	.superRefine(([min, max], ctx) => {
-		if (min < COST_MIN || min > COST_MAX_BIG) {
+		if (min < PROJECT_COST_MIN || min > PROJECT_COST_MAX_BIG) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: `La valeur minimum du projet ne respecte pas les limites.`,
 			});
 		}
-		if (max < COST_MIN || max > COST_MAX_BIG) {
+		if (max < PROJECT_COST_MIN || max > PROJECT_COST_MAX_BIG) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: `La valeur maximum du projet ne respecte pas les limites.`,
@@ -114,6 +129,7 @@ const projectInterventionsSchema = zfd
 export const projectGeneralUpdateSchema = zfd
 	.formData({
 		title: projectTitleSchema,
+		summary: projectSummarySchema,
 		description: projectDescriptionSchema,
 		type: projectTypeSchema,
 		intervention: projectInterventionsSchema,
@@ -133,12 +149,12 @@ const projectAdjacentStreetsSchema = zfd.numeric(
 	z
 		.number()
 		.min(
-			ADJACENT_STREETS_MIN,
-			`Le site du projet ne peut pas être bordé par moins de ${ADJACENT_STREETS_MIN} rues.`
+			PROJECT_ADJACENT_STREETS_MIN,
+			`Le site du projet ne peut pas être bordé par moins de ${PROJECT_ADJACENT_STREETS_MIN} rues.`
 		)
 		.max(
-			ADJACENT_STREETS_MAX,
-			`Le site du projet ne peut pas être bordé par plus de ${ADJACENT_STREETS_MAX} rues.`
+			PROJECT_ADJACENT_STREETS_MAX,
+			`Le site du projet ne peut pas être bordé par plus de ${PROJECT_ADJACENT_STREETS_MAX} rues.`
 		)
 		.optional()
 );
@@ -147,12 +163,12 @@ const projectAdjacentAlleysSchema = zfd.numeric(
 	z
 		.number()
 		.min(
-			ADJACENT_ALLEYS_MIN,
-			`Le site du projet ne peut pas être bordé par moins de ${ADJACENT_ALLEYS_MIN} ruelles ou voies alternatives.`
+			PROJECT_ADJACENT_ALLEYS_MIN,
+			`Le site du projet ne peut pas être bordé par moins de ${PROJECT_ADJACENT_ALLEYS_MIN} ruelles ou voies alternatives.`
 		)
 		.max(
-			ADJACENT_ALLEYS_MAX,
-			`Le site du projet ne peut pas être bordé par plus de ${ADJACENT_ALLEYS_MAX} ruelles ou voies alternatives.`
+			PROJECT_ADJACENT_ALLEYS_MAX,
+			`Le site du projet ne peut pas être bordé par plus de ${PROJECT_ADJACENT_ALLEYS_MAX} ruelles ou voies alternatives.`
 		)
 		.optional()
 );
@@ -161,7 +177,7 @@ const projectLocationSchema = zfd
 	.json(
 		z.object({
 			center: positionSchema.nullable(),
-			radius: z.number().max(LOCATION_MAX_RADIUS).nullable(),
+			radius: z.number().max(PROJECT_LOCATION_MAX_RADIUS).nullable(),
 		})
 	)
 	.transform(({ center, radius }) => {
@@ -177,12 +193,12 @@ const projectBuildingHeightSchema = zfd.numeric(
 	z
 		.number()
 		.min(
-			BUILDING_MIN_HEIGHT,
-			`La hauteur du bâtiment du projet ne peut pas être en deçà de ${BUILDING_MIN_HEIGHT}m.`
+			PROJECT_BUILDING_MIN_HEIGHT,
+			`La hauteur du bâtiment du projet ne peut pas être en deçà de ${PROJECT_BUILDING_MIN_HEIGHT}m.`
 		)
 		.max(
-			BUILDING_MAX_HEIGHT,
-			`La hauteur du bâtiment du projet ne peut pas être au delà de ${BUILDING_MAX_HEIGHT}m.`
+			PROJECT_BUILDING_MAX_HEIGHT,
+			`La hauteur du bâtiment du projet ne peut pas être au delà de ${PROJECT_BUILDING_MAX_HEIGHT}m.`
 		)
 		.optional()
 );
@@ -190,7 +206,7 @@ const projectBuildingHeightSchema = zfd.numeric(
 const projectBuildingLevelsSchema = zfd.repeatableOfType(strictCoerceBooleanSchema);
 
 const projectBuildingConstructionYearSchema = zfd.numeric(
-	z.number().min(BUILDING_YEAR_MIN).max(BUILDING_YEAR_MAX).optional()
+	z.number().min(PROJECT_BUILDING_YEAR_MIN).max(PROJECT_BUILDING_YEAR_MAX).optional()
 );
 
 export const projectPlaceUpdateSchema = zfd
@@ -221,7 +237,7 @@ export const projectImageUploadSchema = zfd.formData({
 		zfd.file(
 			z
 				.instanceof(File)
-				.refine((file) => IMAGE_TYPES.includes(file.type), `Format d'image incompatible.`)
+				.refine((file) => PROJECT_IMAGE_TYPES.includes(file.type), `Format d'image incompatible.`)
 		)
 	),
 });
@@ -229,7 +245,7 @@ export const projectImageUploadSchema = zfd.formData({
 const projectImageTitleSchema = zfd.text(
 	z
 		.string()
-		.max(IMAGE_TITLE_MAX_LENGTH, "Le titre de l'image dépasse le nombre maximum de caractères.")
+		.max(PROJECT_IMAGE_TITLE_MAX, "Le titre de l'image dépasse le nombre maximum de caractères.")
 		.nullable()
 		.default(null)
 );
@@ -238,7 +254,7 @@ const projectImageDescriptionSchema = zfd.text(
 	z
 		.string()
 		.max(
-			IMAGE_DESCRIPTION_MAX_LENGTH,
+			PROJECT_IMAGE_DESCRIPTION_MAX,
 			"La description de l'image dépasse le nombre maximum de caractères."
 		)
 		.nullable()

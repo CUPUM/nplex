@@ -114,17 +114,14 @@ input:first-of-type {
 // Default variant
 .default {
 	--ripple-color: #{col(bg, 000)};
-	--toggle-background: #{col(fg, 500, 0.1)};
+	--toggle-background: #{col(fg, 100, 0.1)};
 	color: col(fg, 300);
-
 	&:hover {
 		color: col(fg, 700);
 	}
-
 	@include checked-inner {
 		--toggle-background: #{col(fg, 500)};
 		color: col(bg, 500);
-
 		&:hover {
 			--toggle-background: #{col(fg, 700)};
 		}
@@ -137,17 +134,14 @@ input:first-of-type {
 	--toggle-background: #{col(bg, 900)};
 	--toggle-thumb-color: #{col(fg, 300)};
 	// --toggle-thumb-outline: 1px solid var(--toggle-thumb-color);
-
 	&:hover {
 		--toggle-thumb-color: #{col(fg, 700)};
 	}
-
 	@include checked-inner {
-		--toggle-background: #{col(fg, 300)};
-		--toggle-thumb-color: #{col(bg, 900)};
+		--toggle-background: #{col(fg, 500)};
+		color: col(bg, 900);
 		// --toggle-thumb-color: #{col(fg, 900)};
 		// --toggle-thumb-outline: var(--ui-border-size) solid #{col(bg, 900, 0.8)};
-
 		&:hover {
 			--toggle-background: #{col(fg, 700)};
 			// --toggle-thumb-color: #{col(bg, 500)};

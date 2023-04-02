@@ -5,11 +5,11 @@
 	import Toggle from '$components/Toggle/Toggle.svelte';
 	import { cadformatter } from '$utils/format';
 	import {
-		COST_MAX_BIG,
-		COST_MAX_DELTA_R,
-		COST_MAX_SMALL,
-		COST_MIN,
-		COST_STEP,
+		PROJECT_COST_MAX_BIG,
+		PROJECT_COST_MAX_DELTA_R,
+		PROJECT_COST_MAX_SMALL,
+		PROJECT_COST_MIN,
+		PROJECT_COST_STEP,
 	} from '../constants';
 	import { maxCostDelta } from '../schemas';
 	import { project } from './common';
@@ -25,7 +25,7 @@
 	</p>
 	<p class="subtle">
 		Notez qu'un écart maximum est imposé pour assurer un minimum de précision dans les données. Cet
-		écart est établi dynamiquement à {COST_MAX_DELTA_R * 100}% de la valeur moyenne de votre
+		écart est établi dynamiquement à {PROJECT_COST_MAX_DELTA_R * 100}% de la valeur moyenne de votre
 		sélection.
 	</p>
 	<p class="flex flex-r gap-md align-i-c">
@@ -43,9 +43,9 @@
 			type="number"
 			suffix=" $ CA"
 			textAlign="start"
-			min={COST_MIN}
-			max={COST_MAX_BIG}
-			step={COST_STEP}
+			min={PROJECT_COST_MIN}
+			max={PROJECT_COST_MAX_BIG}
+			step={PROJECT_COST_STEP}
 			bind:value={$project.cost_range[0]}
 			style="grid-area: min;"
 		>
@@ -56,18 +56,18 @@
 			type="number"
 			suffix=" $ CA"
 			textAlign="start"
-			min={COST_MIN}
-			max={COST_MAX_BIG}
-			step={COST_STEP}
+			min={PROJECT_COST_MIN}
+			max={PROJECT_COST_MAX_BIG}
+			step={PROJECT_COST_STEP}
 			bind:value={$project.cost_range[1]}
 			style="grid-area: max;"
 		>
 			<svelte:fragment slot="label">Max.</svelte:fragment>
 		</Field>
 		<Range
-			min={COST_MIN}
-			max={smallScale ? COST_MAX_SMALL : COST_MAX_BIG}
-			step={COST_STEP}
+			min={PROJECT_COST_MIN}
+			max={smallScale ? PROJECT_COST_MAX_SMALL : PROJECT_COST_MAX_BIG}
+			step={PROJECT_COST_STEP}
 			ticks={smallScale ? 50000 : 250000}
 			style="grid-area: range;"
 		>

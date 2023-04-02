@@ -5,7 +5,7 @@
 	import Ripple from '$components/Ripple.svelte';
 	import { messages } from '$routes/MessagesOutlet.svelte';
 	import { toBytesString } from '$utils/format';
-	import { IMAGE_MAX_PAYLOAD, IMAGE_TYPES } from '../../constants';
+	import { PROJECT_IMAGE_MAX_PAYLOAD, PROJECT_IMAGE_TYPES } from '../../constants';
 
 	export let uploading = false;
 
@@ -23,11 +23,11 @@
 				0
 			);
 			uploading = true;
-			if (payloadSize > IMAGE_MAX_PAYLOAD) {
+			if (payloadSize > PROJECT_IMAGE_MAX_PAYLOAD) {
 				uploading = false;
 				messages.error({
 					content: `Oops. Le contenu envoyé est trop lourd! une contrainte (temporaire) nous oblige à limiter la taille totale des téléversements à ~${toBytesString(
-						IMAGE_MAX_PAYLOAD,
+						PROJECT_IMAGE_MAX_PAYLOAD,
 						0
 					)}. Vous pouvez soit compresser vos images ou les téléverser en plus petits lots (ou individuellement).`,
 					timer: 10000,
@@ -60,7 +60,7 @@
 		hidden
 		type="file"
 		name="image_files"
-		accept={IMAGE_TYPES.join(',')}
+		accept={PROJECT_IMAGE_TYPES.join(',')}
 		multiple
 		on:change={upload}
 	/>

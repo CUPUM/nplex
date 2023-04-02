@@ -62,7 +62,7 @@
 	--ui-width-sm: 600px;
 	--ui-width-md: 900px;
 	--ui-width-lg: 1200px;
-	// View-level padding or margin (generally outer bounds).
+	// View-level padding or margin (generally outer bounds). Independent of element font size as opposed to --ui-pad.
 	--ui-gutter-sm: 2rem;
 	--ui-gutter-md: 3rem;
 	--ui-gutter-lg: 5rem;

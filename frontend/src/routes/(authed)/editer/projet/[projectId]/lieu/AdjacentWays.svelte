@@ -2,10 +2,10 @@
 	import Field from '$components/Field/Field.svelte';
 	import FieldButtonIncrement from '$components/Field/FieldButtonIncrement.svelte';
 	import {
-		ADJACENT_ALLEYS_MAX,
-		ADJACENT_ALLEYS_MIN,
-		ADJACENT_STREETS_MAX,
-		ADJACENT_STREETS_MIN,
+		PROJECT_ADJACENT_ALLEYS_MAX,
+		PROJECT_ADJACENT_ALLEYS_MIN,
+		PROJECT_ADJACENT_STREETS_MAX,
+		PROJECT_ADJACENT_STREETS_MIN,
 	} from '../../constants';
 	import { project } from '../common';
 </script>
@@ -18,8 +18,8 @@
 		type="number"
 		name="adjacent_streets"
 		bind:value={$project.adjacent_streets}
-		min={ADJACENT_STREETS_MIN}
-		max={ADJACENT_STREETS_MAX}
+		min={PROJECT_ADJACENT_STREETS_MIN}
+		max={PROJECT_ADJACENT_STREETS_MAX}
 		textAlign="center"
 		style="width: 160px;"
 	>
@@ -32,8 +32,8 @@
 		type="number"
 		name="adjacent_alleys"
 		bind:value={$project.adjacent_alleys}
-		min={ADJACENT_ALLEYS_MIN}
-		max={ADJACENT_ALLEYS_MAX}
+		min={PROJECT_ADJACENT_ALLEYS_MIN}
+		max={PROJECT_ADJACENT_ALLEYS_MAX}
 		textAlign="center"
 		style="width: 160px;"
 	>

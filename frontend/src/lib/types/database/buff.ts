@@ -24,13 +24,15 @@ export type BuffedDatabase = DeepReplace<
 						siteOwnerships: TableRow<'project_site_ownership'>[];
 						siteUsagesCategories: TableRow<'project_site_usage_category'>[];
 						siteUsages: (TableRow<'project_site_usage'> & {
-							category: TableRow<'project_site_usage_by_category'>['category'][];
+							categories: TableRow<'project_site_usage_by_category'>['category'][];
 						})[];
 						implantationModes: TableRow<'project_implantation_mode'>[];
 						materialOrigins: TableRow<'project_material_origin'>[];
 						materialTypes: TableRow<'project_material_type'>[];
 						materialUses: TableRow<'project_material_use'>[];
-						eventTypes: TableRow<'project_event'>[];
+						eventTypes: TableRow<'project_event'>[] & {
+							subevents: TableRow<'project_event'>[];
+						};
 						exemplarityCategories: (TableRow<'project_exemplarity_category'> & {
 							indicators: TableRow<'project_exemplarity_indicator'>[];
 						})[];

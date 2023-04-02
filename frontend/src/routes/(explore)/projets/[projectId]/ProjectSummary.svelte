@@ -1,7 +1,11 @@
 <script lang="ts">
+	import RenderMarkdown from '$components/RenderMarkdown.svelte';
+	import { getProjectContext } from './common';
+
+	const project = getProjectContext();
 </script>
 
-<h2>Project summary</h2>
+<RenderMarkdown source={project.description} />
 
 <style lang="scss">
 </style>

@@ -14,9 +14,9 @@
 	} from 'mapbox-gl-draw-geodesic/dist/mapbox-gl-draw-geodesic';
 	import { onDestroy } from 'svelte';
 	import {
-		LOCATION_DEFAULT_RADIUS,
-		LOCATION_FEATURE_FLAG,
-		LOCATION_MAX_RADIUS,
+		PROJECT_LOCATION_DEFAULT_RADIUS,
+		PROJECT_LOCATION_FEATURE_FLAG,
+		PROJECT_LOCATION_MAX_RADIUS,
 	} from '../../constants';
 	import { isLocationCircle } from '../../schemas';
 	import { project } from '../common';
@@ -29,8 +29,8 @@
 		if (locationCircle) {
 			const center = getCircleCenter(locationCircle);
 			let radius = getCircleRadius(locationCircle) * 1000;
-			if (radius > LOCATION_MAX_RADIUS) {
-				radius = LOCATION_MAX_RADIUS;
+			if (radius > PROJECT_LOCATION_MAX_RADIUS) {
+				radius = PROJECT_LOCATION_MAX_RADIUS;
 				setCircleRadius(locationCircle, radius / 1000);
 				// console.log($editorMap?.querySourceFeatures(MAP_DRAW_SOURCES.Hot));
 			}
@@ -61,12 +61,12 @@
 		}
 	}
 
-	function drawCircle(center?: Position, radius: number = LOCATION_DEFAULT_RADIUS) {
+	function drawCircle(center?: Position, radius: number = PROJECT_LOCATION_DEFAULT_RADIUS) {
 		if (!$editorMap || !$editorMapDraw) {
 			return;
 		}
 		center ??= $editorMap.getCenter().toArray();
-		const circle = createCircle(center, radius / 1000, { [LOCATION_FEATURE_FLAG]: true });
+		const circle = createCircle(center, radius / 1000, { [PROJECT_LOCATION_FEATURE_FLAG]: true });
 		$editorMapDraw.add(circle);
 		$editorMap.fire(MAP_DRAW_EVENTS.Create, { features: [circle] });
 	}

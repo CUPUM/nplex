@@ -69,7 +69,6 @@ input {
 .token-main {
 	position: relative;
 	top: -0.1em;
-	line-height: 1em;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -116,6 +115,32 @@ input {
 				--token-background: #{col(fg, 300)};
 			}
 		}
+	}
+}
+
+// Editor variant
+
+.editor {
+	background-color: col(fg, 000, 0.1);
+	color: col(fg, 100);
+	font-weight: 400;
+	transition: all 0.1s ease-out;
+	&::after {
+		border: var(--ui-border-size) solid transparent;
+		transition: all 0.1s ease-out;
+	}
+	&:hover {
+		color: col(fg, 500);
+		transition: all 0s;
+		&::after {
+			border-color: col(fg, 100, 0.25);
+			transition: all 0s;
+		}
+	}
+	&.active {
+		background-color: col(fg, 100, 0.5);
+		color: col(fg, 900);
+		box-shadow: 0 0.75em 1.25em -0.75em rgb(0, 0, 0, 0.2);
 	}
 }
 

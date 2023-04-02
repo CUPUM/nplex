@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Select from '$components/Select/Select.svelte';
-	import { BUILDING_YEAR_MAX, BUILDING_YEAR_MIN } from '../../constants';
+	import { PROJECT_BUILDING_YEAR_MAX, PROJECT_BUILDING_YEAR_MIN } from '../../constants';
 	import { project } from '../common';
 
-	const years = Array(BUILDING_YEAR_MAX - BUILDING_YEAR_MIN + 2)
+	const years = Array(PROJECT_BUILDING_YEAR_MAX - PROJECT_BUILDING_YEAR_MIN + 2)
 		.fill(null)
-		.map((_, i) => BUILDING_YEAR_MIN + i)
+		.map((_, i) => PROJECT_BUILDING_YEAR_MIN + i)
 		.reverse();
 </script>
 

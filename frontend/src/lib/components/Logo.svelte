@@ -27,7 +27,9 @@
 		monogram: href(LOGO_SYMBOLS_IDS.monogram),
 	} satisfies Record<keyof typeof LOGO_SYMBOLS_IDS, `#${string}`>;
 
-	export const FULL_VIEWBOX = '0 0 1001 386';
+	export const LOGO_VIEWBOX_WIDTH = 1001;
+	export const LOGO_VIEWBOX_HEIGHT = 386;
+	export const LOGO_VIEWBOX = `0 0 ${LOGO_VIEWBOX_WIDTH} ${LOGO_VIEWBOX_HEIGHT}`;
 	export const MONOGRAM_VIEWBOX = '0 90 190 220';
 </script>
 
@@ -55,7 +57,7 @@
 		<!-- prettier-ignore -->
 		<path d="M931.399 200.62L1000.09 131.925L964.075 95.9048L895.379 164.6L826.684 95.9048L790.664 131.925L859.359 200.62L790.664 269.315L826.684 305.335L895.379 236.64L964.075 305.335L1000.09 269.315L931.399 200.62Z" />
 	</symbol>
-	<symbol id={LOGO_SYMBOLS_IDS.full} viewBox={FULL_VIEWBOX}>
+	<symbol id={LOGO_SYMBOLS_IDS.full} viewBox={LOGO_VIEWBOX}>
 		<use href={LOGO_SYMBOLS_HREFS.n} />
 		<use href={LOGO_SYMBOLS_HREFS.p} />
 		<use href={LOGO_SYMBOLS_HREFS.l} />

@@ -1,23 +1,20 @@
 <script lang="ts">
 	import { getProjectImageUrl } from '$utils/database/helpers';
-	import type { Colord } from 'colord';
-	import type { PageData } from './$types';
+	import { getProjectContext } from './common';
 
-	export let title: PageData['project']['title'];
-	export let banner: PageData['project']['banner'];
-	export let palette: Colord[];
+	const project = getProjectContext();
 
-	const bannerUrl = banner ? getProjectImageUrl(banner.storage_name) : '';
+	const bannerUrl = project.banner ? getProjectImageUrl(project.banner.storage_name) : '';
 </script>
 
 <header>
 	<hgroup
-		style:background-color={palette[0].lighten(0.5).toRgbString()}
-		style:color={palette[0].darken(0).toRgbString()}
+		style:background-color={project.palette[0].color.lighten(0.5).toRgbString()}
+		style:color={project.palette[0].color.darken(0).toRgbString()}
 	>
-		<h1>{title}</h1>
+		<h1>{project.title}</h1>
 	</hgroup>
-	<img alt="Image-vitrine pour le projet «{title}»" src={bannerUrl} />
+	<img alt="Image-vitrine pour le projet «{project.title}»" src={bannerUrl} />
 </header>
 
 <style lang="scss">
