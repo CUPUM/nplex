@@ -42,10 +42,10 @@
 			x: e.detail.x,
 			y: e.detail.y,
 			r:
-				5 *
+				2 *
 					(Math.abs(e.detail.originalEvent.movementX) +
 						Math.abs(e.detail.originalEvent.movementY)) +
-				100,
+				150,
 		}));
 		square.update((prev) => ({
 			x: e.detail.x,
@@ -98,30 +98,41 @@
 	>
 		<mask id="spotlight">
 			<rect
-				x={$square.x - $square.s}
-				y={$square.y - $square.s}
-				width={2 * $square.s}
-				height={2 * $square.s}
+				x={Math.max(0, $square.x - $square.s)}
+				y={Math.max(0, $square.y - $square.s)}
+				width={Math.max(0, 2 * $square.s)}
+				height={Math.max(0, 2 * $square.s)}
 				transform="rotate({$square.a})"
 				fill="white"
 				opacity=".9"
 				rx="50"
 			/>
-			<circle cx={$circle.x} cy={$circle.y} r={$circle.r} fill="white" />
+			<circle
+				cx={Math.max(0, $circle.x)}
+				cy={Math.max(0, $circle.y)}
+				r={Math.max(0, $circle.r)}
+				fill="white"
+			/>
 		</mask>
 		<mask id="spotlight-reverse">
 			<rect x="0" y="0" width="100%" height="100%" fill="white" />
 			<rect
-				x={$square.x - $square.s}
-				y={$square.y - $square.s}
-				width={2 * $square.s}
-				height={2 * $square.s}
+				x={Math.max(0, $square.x - $square.s)}
+				y={Math.max(0, $square.y - $square.s)}
+				width={Math.max(0, 2 * $square.s)}
+				height={Math.max(0, 2 * $square.s)}
 				transform="rotate({$square.a})"
 				fill="black"
 				opacity="1"
 				rx="50"
 			/>
-			<circle cx={$circle.x} cy={$circle.y} r={$circle.r} fill="black" class="reverse-shadow" />
+			<circle
+				cx={Math.max(0, $circle.x)}
+				cy={Math.max(0, $circle.y)}
+				r={Math.max(0, $circle.r)}
+				fill="black"
+				class="reverse-shadow"
+			/>
 		</mask>
 		<defs>
 			{#each images as image, i (image.id)}

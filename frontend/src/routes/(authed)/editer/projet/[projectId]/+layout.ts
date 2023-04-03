@@ -33,7 +33,10 @@ export const load = async (event) => {
 				radius
 			),
 			gallery:projects_images!projects_images_project_fkey (
-				*
+				*,
+				credits:projects_images_credits (
+					*
+				)
 			),
 			indicators:projects_exemplarity_indicators (
 				indicator
@@ -84,6 +87,7 @@ export const load = async (event) => {
 					color_dominant_hsl: pgCubeToHsl(img.color_dominant_hsl),
 					publicUrl: db.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(img.storage_name).data
 						.publicUrl,
+					credits: asMany(img.credits),
 				})),
 				indicators: alwaysArr(res.data.indicators).map((pi) => pi.indicator),
 			};

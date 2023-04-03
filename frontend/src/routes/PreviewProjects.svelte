@@ -33,10 +33,15 @@
 					</Image>
 					<section class="detail">
 						<h1 class="heading-sm">{p.title}</h1>
-						<span class="likes">
-							<Icon name="hearts" />
-							{p.likes_sum}
-						</span>
+						<dl>
+							<dt class="likes">
+								<Icon name="hearts" />
+								{p.likes_sum}
+							</dt>
+							{#if p.is_demo}
+								<dt class="is-demo">Projet démo.</dt>
+							{/if}
+						</dl>
 					</section>
 				</a>
 			</li>
@@ -97,7 +102,15 @@
 		padding: 1rem;
 	}
 
-	.likes {
+	dl {
+		display: flex;
+		gap: 0.5em;
+		margin-top: 1rem;
+	}
+
+	.likes,
+	.is-demo {
+		flex: none;
 		padding: 0.5em 1em;
 		border-radius: 99px;
 		display: inline-flex;
@@ -106,5 +119,10 @@
 		align-items: center;
 		background-color: col(primary, 100, 0.1);
 		color: col(primary, 900);
+	}
+
+	.is-demo {
+		color: col(fg, 100);
+		background-color: col(fg, 100, 0.1);
 	}
 </style>

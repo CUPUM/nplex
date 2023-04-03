@@ -7,16 +7,19 @@ import sveltePreprocess from 'svelte-preprocess';
  */
 const config = {
 	extensions: ['.svelte'],
-	preprocess: sveltePreprocess({
-		typescript: true,
-		scss: {
-			includePaths: ['src/lib/styles'],
-			prependData: "@use 'utils' as *;",
-		},
-		postcss: {
-			plugins: [autoprefixer()],
-		},
-	}),
+	preprocess: [
+		sveltePreprocess({
+			typescript: true,
+			scss: {
+				includePaths: ['src/lib/styles'],
+				prependData: "@use 'utils' as *;",
+			},
+			postcss: {
+				plugins: [autoprefixer()],
+			},
+		}),
+		// vitePreprocess(),
+	],
 	kit: {
 		adapter: adapter(),
 		env: {

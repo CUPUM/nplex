@@ -10,6 +10,7 @@
 	import { clickoutside } from '$actions/clickoutside';
 	import Portal from '$components/Portal.svelte';
 	import { rootScroll } from '$stores/rootScroll';
+	import type { AppCustomEvent } from '$types/utils';
 	import { col } from '$utils/css';
 	import { closest, type ClosestReadable } from '$utils/store';
 	import type { ThemeName } from '$utils/themes';
@@ -36,6 +37,7 @@
 		easing: expoOut,
 	});
 
+	let bgRef: HTMLElement;
 	let openedOnce = false;
 	let confirmed = false;
 	let canceled = false;
@@ -82,6 +84,15 @@
 		close();
 	}
 
+	function handleClickoutside(e: AppCustomEvent<'on:clickoutside'>) {
+		console.log(e);
+		if (closeOnClickoutside && e.detail.originalEvent.target === bgRef) {
+			opened = false;
+		} else if (e.detail.originalEvent.target !== bgRef) {
+			e.stopImmediatePropagation();
+		}
+	}
+
 	/**
 	 * Calls the callback, if any, and closes the modal.
 	 */
@@ -117,6 +128,7 @@
 {#if $modalOutletRef && opened}
 	<Portal target={$modalOutletRef}>
 		<div
+			bind:this={bgRef}
 			data-theme={theme ?? $closestTheme}
 			class="bg"
 			style:--modal-background={backgroundColor}
@@ -125,16 +137,11 @@
 		<dialog
 			data-theme={theme ?? $closestTheme}
 			use:clickoutside
+			on:clickoutside={handleClickoutside}
 			on:clickoutside
-			on:clickoutside={() => {
-				if (closeOnClickoutside) {
-					opened = false;
-				}
-			}}
 			in:receive={{ key }}
 			out:fly|local={{ y: 8, duration: 80, easing: cubicIn }}
 		>
-			<!-- in:scale={{ start: 0.96, duration: 100, easing: expoOut }} -->
 			{#if $$slots.header}
 				<header>
 					<slot name="header" {close} {cancel} {confirm} />
@@ -165,7 +172,7 @@
 
 	dialog {
 		pointer-events: all;
-		position: relative;
+		position: absolute;
 		flex: none;
 		display: flex;
 		flex-direction: column;

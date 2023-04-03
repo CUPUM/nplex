@@ -21,7 +21,7 @@
 </script>
 
 <RootBackground body={bgColor.toRgbString()} overscroll={bgColor.toRgbString()} />
-<article id="project">
+<article id="project" class:is-demo={data.project.is_demo}>
 	<ProjectHeader />
 	<ProjectSummary />
 	<ProjectGallery />
@@ -37,7 +37,7 @@
 <pre>
 {JSON.stringify(data.project, undefined, 2)}
 </pre>
-<aside class="border-top">
+<aside>
 	<header>Vous aimerez peut-être aussi:</header>
 	<div>
 		<section>Projets suggérés</section>
@@ -63,6 +63,18 @@
 			font-weight: 500;
 			padding: 0.3em 0.5em 0.5em;
 			color: col(fg, 500);
+		}
+
+		&.is-demo::after {
+			pointer-events: none;
+			content: '';
+			position: absolute;
+			inset: 0;
+			z-index: 1;
+			background-image: url('/media/projectDemoWatermark.svg');
+			background-repeat: repeat;
+			background-size: 8rem 8rem;
+			opacity: 0.1;
 		}
 	}
 

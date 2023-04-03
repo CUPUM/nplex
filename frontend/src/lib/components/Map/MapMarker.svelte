@@ -20,6 +20,10 @@
 
 	const { getMap } = getMapContext();
 
+	$: if (lnglat) {
+		marker?.setLngLat(lnglat);
+	}
+
 	onMount(() => {
 		marker = new Marker({ element: markerRef, anchor: 'bottom' }).setLngLat(lnglat);
 		const map = getMap();
