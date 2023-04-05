@@ -23,7 +23,7 @@
 		// backdrop-filter: blur(8px);
 		display: flex;
 		flex-direction: column;
-		// gap: var(--ui-inset);
+		// gap: var(--ui-inset-md);
 		border-radius: calc(var(--radius) + var(--menu-outset));
 		padding: var(--menu-padding);
 

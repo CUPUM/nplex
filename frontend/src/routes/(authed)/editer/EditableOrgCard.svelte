@@ -10,7 +10,13 @@
 
 {#if 'name' in organization}
 	<a class="org" href="{EDITOR_ROUTES.organization.pathname}/{organization.id}">
-		{organization.name}
+		<svg class="card-bg" />
+		<div class="details">
+			<div class="name">
+				{organization.name}
+			</div>
+			<div class="skills">Expertises (à venir)</div>
+		</div>
 	</a>
 {:else}
 	<a class="new-entry {ICON_CLASS.hover}" href={EDITOR_ROUTES.organization.pathname}>
@@ -21,12 +27,34 @@
 <style lang="scss">
 	a {
 		display: grid;
-		height: 350px;
-		aspect-ratio: 3 /4;
+		height: 400px;
+		width: 300px;
 		border-radius: var(--ui-radius-lg);
 	}
 
 	.org {
-		background: col(bg, 300);
+		// color: col(fg, 500);
+		background: col(bg, 500);
+	}
+
+	.card-bg {
+		position: absolute;
+		inset: 0;
+	}
+
+	.details {
+		padding: 2rem;
+		display: flex;
+		flex-direction: column;
+
+		.name {
+			font-size: var(--ui-text-xl);
+			line-height: 1.2;
+			font-weight: 500;
+			flex: 1;
+		}
+
+		.skills {
+		}
 	}
 </style>

@@ -1,31 +1,17 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import Button from '$components/Button/Button.svelte';
 	import Field from '$components/Field/Field.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { fade, fly } from 'svelte/transition';
+	import { enhanceEditor, updating } from '../common';
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;
 
-	let creating = false;
 	let title = '';
 </script>
 
-<form
-	id="project-create"
-	method="POST"
-	action="?/create"
-	use:enhance={({ form, data, action, cancel }) => {
-		creating = true;
-		return async ({ update, result }) => {
-			await update({ reset: false });
-			creating = false;
-			if (result.type !== 'success' && result.type !== 'redirect') {
-			}
-		};
-	}}
->
+<form id="project-create" method="POST" action="?/create" use:enhanceEditor>
 	<div>
 		<h2 class="heading-lg" in:fly={{ y: 12 }}>
 			Créez votre <nobr>nouveau projet.</nobr>
@@ -46,7 +32,7 @@
 					variant="ghost"
 					equi
 					disabled={!title}
-					loading={creating}
+					loading={$updating}
 				>
 					<Icon name="arrow-right" />
 				</Button>

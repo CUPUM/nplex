@@ -1,7 +1,7 @@
 @use 'utils' as *;
 
 .switch {
-	--switch-inset: var(--ui-inset);
+	--switch-inset: var(--ui-inset-md);
 	--switch-size: var(--ui-block-lg);
 	--switch-radius: var(--ui-radius-md);
 	--switch-gutter: 0px;
@@ -48,6 +48,8 @@
 
 .compact {
 	--switch-radius: 99em;
+	--switch-inset: var(--ui-inset-sm);
+	--switch-size: var(--ui-block-md);
 }
 
 // Default variant.

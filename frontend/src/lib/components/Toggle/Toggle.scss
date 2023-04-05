@@ -9,7 +9,7 @@
 .toggle {
 	/* Customizable style props. */
 	--toggle-size: var(--ui-block-md);
-	--toggle-inset: var(--ui-inset);
+	--toggle-inset: var(--ui-inset-md);
 	--toggle-thumb-size: calc(var(--toggle-size) - 2 * var(--toggle-inset));
 	--toggle-radius: 99px;
 	--toggle-border: 0px solid transparent;

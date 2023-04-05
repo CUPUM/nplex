@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { enhanceEditor } from '../../common';
 	import { EDITOR_FORM_ACTION, EDITOR_FORM_ID } from '../../constants';
-	import { descriptors, enhanceProjectForm, project } from './common';
+	import { descriptors, project } from './common';
 
 	export let data;
 
@@ -15,7 +16,7 @@
 
 <form
 	class="editor-form"
-	use:enhanceProjectForm
+	use:enhanceEditor
 	on:submit={(e) => {
 		console.log(e.submitter);
 	}}

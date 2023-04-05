@@ -25,7 +25,7 @@
 
 <style lang="scss">
 	#editor-crumbs {
-		--inset: var(--ui-inset);
+		--inset: var(--ui-inset-md);
 		font-size: var(--ui-text-sm);
 		position: sticky;
 		align-self: center;

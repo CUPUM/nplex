@@ -43,6 +43,9 @@
 		var(--ui-pad-md)
 		[trailing-padding-end full-end];
 }
+.compact {
+	--button-height: calc(var(--ui-block-md) - 2 * var(--inset, 0px));
+}
 .equi {
 	flex: none;
 	aspect-ratio: 1 / 1;

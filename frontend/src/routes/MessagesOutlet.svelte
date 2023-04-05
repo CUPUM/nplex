@@ -262,7 +262,7 @@
 	}
 
 	dialog {
-		--inset: var(--ui-inset);
+		--inset: var(--ui-inset-md);
 		font-size: var(--ui-text-sm);
 		pointer-events: all;
 		position: relative;

@@ -1,68 +1,91 @@
 <script lang="ts">
-	import Button from '$components/Button/Button.svelte';
-	import Icon from '$components/Icon.svelte';
-	import Tooltip from '$components/Tooltip.svelte';
-	import RootBackground from '$routes/RootBackground.svelte';
-	import { getBannerColors, getBgColor, makeProjectPalette, setProjectContext } from './common';
+	import {
+		galleryLayouts,
+		getBannerColors,
+		getBgColor,
+		makeProjectPalette,
+		setProjectContext,
+	} from './common';
 	import ProjectGallery from './ProjectGallery.svelte';
 	import ProjectHeader from './ProjectHeader.svelte';
+	import ProjectPalette from './ProjectPalette.svelte';
 	import ProjectSummary from './ProjectSummary.svelte';
+	import ProjectTechnicalSheet from './ProjectTechnicalSheet.svelte';
 	import ProjectTimeline from './ProjectTimeline.svelte';
 
 	export let data;
 
 	const palette = makeProjectPalette(data.project);
-
 	const bannerColors = getBannerColors(data.project);
-
 	const bgColor = getBgColor(data.project);
+	let galleryLayout: (typeof galleryLayouts)[number]['layout'] = 'grid';
 
 	setProjectContext({ ...data.project, palette, bannerColors, bgColor });
+
+	console.log(data.project);
+
+	export const snapshot = {
+		capture() {
+			return {
+				galleryLayout,
+			};
+		},
+		restore(snapshot) {
+			galleryLayout = snapshot.galleryLayout;
+		},
+	};
 </script>
 
-<RootBackground body={bgColor.toRgbString()} overscroll={bgColor.toRgbString()} />
-<article id="project" class:is-demo={data.project.is_demo}>
+<!-- <RootBackground body={bgColor.toRgbString()} overscroll={bgColor.toRgbString()} /> -->
+<!-- <RootBackground overscroll={bgColor.toRgbString()} /> -->
+<!-- <div
+	id="project-bg"
+	style:--bg-color={bgColor.toRgbString()}
+	use:overlapNavbar={{ background: bgColor.lighten(0).toRgbString() }}
+/> -->
+<article
+	id="project"
+	class:is-demo={data.project.is_demo}
+	style:--bg-color={bgColor.desaturate(0.2).alpha(0.5).toRgbString()}
+	style:--title-color={bannerColors.dominant.saturate(-0.2).darken(0.4).toRgbString()}
+>
 	<ProjectHeader />
+	<ProjectTechnicalSheet />
 	<ProjectSummary />
-	<ProjectGallery />
+	<ProjectPalette />
+	<ProjectGallery bind:layout={galleryLayout} />
 	<ProjectTimeline />
-	<menu>
+	<!-- <menu>
 		<Tooltip message="Éditer ce projet">
 			<Button rounded variant="cta" equi href="/editer/projet/{data.project.id}">
 				<Icon name="pen" />
 			</Button>
 		</Tooltip>
-	</menu>
+	</menu> -->
 </article>
-<pre>
-{JSON.stringify(data.project, undefined, 2)}
-</pre>
-<aside>
-	<header>Vous aimerez peut-être aussi:</header>
-	<div>
-		<section>Projets suggérés</section>
-		<section>Organisations suggérées</section>
-		<section>Intervenant.e.s suggérés</section>
-	</div>
-</aside>
 
 <style lang="scss">
 	#project {
 		position: relative;
+		align-self: center;
 		width: 100%;
-		padding: 0;
+		max-width: var(--ui-width-main);
+		padding: 0 var(--ui-gutter-sm);
 		margin: 0;
 		display: flex;
 		flex-direction: column;
+		align-items: stretch;
 		gap: var(--ui-gap-sm);
-		// padding-inline: var(--ui-gap-sm);
-		margin-top: calc(-1 * var(--ui-nav-h));
+
+		@include tablet {
+			padding-inline: var(--ui-gap-sm);
+		}
 
 		:global(.project-section-title) {
-			font-size: var(--ui-text-3xl);
+			font-size: var(--ui-text-xl);
 			font-weight: 500;
-			padding: 0.3em 0.5em 0.5em;
-			color: col(fg, 500);
+			padding: 0.8em 0.5em 1em;
+			// color: var(--title-color);
 		}
 
 		&.is-demo::after {
@@ -71,11 +94,21 @@
 			position: absolute;
 			inset: 0;
 			z-index: 1;
-			background-image: url('/media/projectDemoWatermark.svg');
+			// background-image: url('/media/projectDemoWatermark.svg');
 			background-repeat: repeat;
 			background-size: 8rem 8rem;
 			opacity: 0.1;
 		}
+	}
+
+	#project-bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100vh;
+		top: calc(-1 * var(--ui-nav-h));
+		background: linear-gradient(180deg, var(--bg-color) 0%, transparent 100%);
 	}
 
 	menu {

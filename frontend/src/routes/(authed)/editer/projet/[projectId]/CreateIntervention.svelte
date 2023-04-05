@@ -12,8 +12,8 @@
 	import Token from '$components/Token/Token.svelte';
 	import { userHasRole } from '$utils/validation';
 	import { writable } from 'svelte/store';
+	import { enhanceEditor } from '../../common';
 	import { DECRIPTORS_ALLOWED_ROLES } from '../../constants';
-	import { enhanceProjectForm } from './common';
 
 	export let categoryId: number;
 
@@ -38,7 +38,7 @@
 		id={formid}
 		action="/editer/descripteurs/projets/interventions?/create"
 		method="POST"
-		use:enhanceProjectForm={{
+		use:enhanceEditor={{
 			stateStore: creating,
 			afterUpdate: (res) => {
 				if (res.type === 'success') close();

@@ -21,6 +21,7 @@
 		style?: string;
 		class?: string;
 		current?: boolean;
+		equi?: boolean;
 	};
 
 	export let href: $$Props['href'] = undefined;
@@ -30,6 +31,7 @@
 	export let current: $$Props['current'] = undefined;
 	let className: $$Props['class'] = '';
 	export { className as class };
+	export let equi: $$Props['equi'] = undefined;
 
 	const { name, group, currentRef, required, readonly } = getSwitchContext();
 
@@ -67,6 +69,7 @@
 	{style}
 	class:readonly={$readonly}
 	class:required={$required}
+	class:equi
 	on:click
 	on:pointerdown
 	on:focus

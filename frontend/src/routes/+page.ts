@@ -9,8 +9,12 @@ async function getHomepageProjects(db: App.DatabaseClient) {
 		.select(
 			`
 			*,
-			gallery:projects_images!projects_images_project_fkey(*),
-			banner:projects_images!projects_banner_fkey(*)
+			gallery:projects_images!projects_images_project_fkey(
+				*
+			),
+			banner:projects_images!projects_banner_fkey(
+				*
+			)
 		`
 		)
 		.order('updated_at', { ascending: false })

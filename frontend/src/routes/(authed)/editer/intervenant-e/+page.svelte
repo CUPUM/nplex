@@ -15,20 +15,20 @@
 	use:enhance={({ form, data, action, cancel }) => {
 		creating = true;
 		return async ({ update, result }) => {
-			update({ reset: false });
+			await update({ reset: false });
 			if (result.type !== 'success' && result.type !== 'redirect') {
-				creating = false;
 			}
+			creating = false;
 		};
 	}}
 >
 	<div>
-		<h2 class="heading-lg" in:fly={{ y: 12 }}>Créez un nouveau profil.</h2>
+		<h2 class="heading-lg" in:fly={{ y: 12 }}>Créez un nouveau profil d'intervenant.e</h2>
 		<fieldset>
 			<Field
-				name="name"
+				name="first_name"
 				variant="outlined"
-				placeholder="Nom d'organisation ou de bureau"
+				placeholder="Prénom de la personne"
 				bind:value={name}
 			>
 				<!-- <svelte:fragment slot="label">Nom de l'organisation ou du bureau</svelte:fragment> -->
@@ -44,8 +44,8 @@
 				</Button>
 			</Field>
 			<span class="subtle" in:fade={{ delay: 500 }}>
-				<Icon name="info-circle" style="margin-right: .5em; top: -.1em" /> Vous pourrez toujours modifier
-				ce nom par après.
+				<!-- <Icon name="info-circle" style="margin-right: .5em; top: -.1em" /> Vous pourrez toujours modifier
+				ce nom par après. -->
 			</span>
 		</fieldset>
 	</div>

@@ -9,7 +9,7 @@
 .switch-item {
 	--switch-item-size: calc(var(--switch-size) - 2 * var(--switch-inset));
 	--switch-item-radius: calc(var(--switch-radius) - var(--switch-inset));
-	--switch-item-inset: var(--ui-inset);
+	--switch-item-inset: var(--ui-inset-md);
 	--switch-item-color: inherit;
 	position: relative;
 	display: flex;
@@ -25,6 +25,16 @@
 	transition: all 0.2s ease-out;
 
 	// @include focuspress;
+}
+
+.equi {
+	aspect-ratio: 1;
+	padding-inline: 0;
+	justify-content: center;
+
+	.switch-item-main {
+		padding-inline: 0;
+	}
 }
 
 input {

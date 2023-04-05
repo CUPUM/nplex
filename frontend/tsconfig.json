@@ -1,26 +1,27 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-		"target": "es2020",
-		"module": "es2020",
-		"moduleResolution": "node",
-		"lib": ["es2020", "DOM", "dom.iterable"],
-		"downlevelIteration": true,
-		"sourceMap": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
+		// "target": "es2020",
+		// "module": "es2020",
+		// "moduleResolution": "node",
+		// "lib": ["es2020", "DOM", "dom.iterable"],
+		// "downlevelIteration": true,
+		// Defaults:
 		"allowJs": true,
 		"checkJs": true,
-		"strict": true,
-		"rootDirs": [".", "./.svelte-kit/types", "./$houdini/types"]
-	},
-	"include": [
-		"src/**/*.js",
-		"src/**/*.ts",
-		"src/**/*.svelte",
-		"src/**/*.svx",
-		"src/**/*.d.ts",
-		".svelte-kit/ambient.d.ts"
-	]
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true
+	}
+	// Includes overwrite:
+	// "include": [
+	// 	"src/**/*.js",
+	// 	"src/**/*.ts",
+	// 	"src/**/*.svelte",
+	// 	"src/**/*.d.ts",
+	// 	".svelte-kit/ambient.d.ts"
+	// ]
 }

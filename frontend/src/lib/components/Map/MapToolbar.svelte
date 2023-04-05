@@ -20,7 +20,7 @@
 
 <style lang="scss">
 	.toolbar {
-		--inset: var(--ui-inset);
+		--inset: var(--ui-inset-md);
 		--x: 0;
 		--y: 0;
 		font-size: 1rem;

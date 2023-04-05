@@ -2,12 +2,12 @@
 	import Field from '$components/Field/Field.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import { browserDb } from '$utils/database/client';
-	import { queryStore } from '$utils/store';
+	import { writableQuery } from '$utils/store';
 	import type { PageData } from './$types';
 
 	export let collaborators: PageData['collaborators'];
 
-	const searchUsers = queryStore('', async (s) => {
+	const searchUsers = writableQuery('', async (s) => {
 		if (s.length) {
 			return browserDb
 				.from('users')

@@ -1,4 +1,5 @@
-import { fixTypes } from '$types/database/utils';
+import type { TableRow, ViewRow } from '$types/database/utils';
+import type { MaybeSingle } from '$types/utils';
 import { STATUS_CODES } from '$utils/enums';
 import { pagination } from '$utils/format';
 import { error } from '@sveltejs/kit';
@@ -9,21 +10,35 @@ async function getEditableProjects(db: App.DatabaseClient, start: number = 0, en
 		.select(
 			`
 			*,
-			type:project_type(*),
-			banner:projects_images!banner(*),
-			gallery:projects_images!project(*),
-			publication_status:projects_publication_status(*)
+			type:project_type(
+				*
+			),
+			banner:projects_images!banner(
+				*
+			),
+			publication_status:projects_publication_status(
+				*
+			),
+			interventions:project_intervention(
+				*
+			)
 		`
 		)
 		.order('updated_at', { ascending: false })
+		.returns<
+			(Omit<ViewRow<'editable_projects'>, 'banner'> & {
+				type: TableRow<'project_type'>;
+				banner: MaybeSingle<TableRow<'projects_images'>>;
+				publication_status: TableRow<'projects_publication_status'>;
+				interventions: TableRow<'project_intervention'>[];
+			})[]
+		>()
 		.range(...pagination(start, end));
 	if (projects.error) {
 		console.error(projects.error);
 		return [];
 	}
-	return fixTypes(projects.data)
-		.toMaybeSingle<{ banner: true }>()
-		.toSingle<{ publication_status: true; type: true }>().data;
+	return projects.data;
 }
 
 async function getEditableOrgs(db: App.DatabaseClient, start: number = 0, end: number = 10) {

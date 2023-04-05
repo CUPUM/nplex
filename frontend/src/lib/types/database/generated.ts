@@ -9,12 +9,14 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      actor_organisation_role: {
+      actor_duty: {
         Row: {
           created_at: string
           description: string | null
           id: number
           short_title: string | null
+          skill_label: string
+          skill_title: string
           title: string
           updated_at: string
         }
@@ -23,6 +25,8 @@ export interface Database {
           description?: string | null
           id?: number
           short_title?: string | null
+          skill_label: string
+          skill_title: string
           title: string
           updated_at?: string
         }
@@ -31,6 +35,8 @@ export interface Database {
           description?: string | null
           id?: number
           short_title?: string | null
+          skill_label?: string
+          skill_title?: string
           title?: string
           updated_at?: string
         }
@@ -52,7 +58,7 @@ export interface Database {
           created_at?: string
           created_by?: string
           first_name: string
-          id: string
+          id?: string
           last_name?: string | null
           middle_name?: string | null
           updated_at?: string
@@ -74,19 +80,19 @@ export interface Database {
         Row: {
           actor: string
           created_at: string
-          role: Database["public"]["Enums"]["app_role"] | null
+          updated_at: string
           user: string
         }
         Insert: {
           actor: string
           created_at?: string
-          role?: Database["public"]["Enums"]["app_role"] | null
+          updated_at?: string
           user: string
         }
         Update: {
           actor?: string
           created_at?: string
-          role?: Database["public"]["Enums"]["app_role"] | null
+          updated_at?: string
           user?: string
         }
       }
@@ -173,8 +179,10 @@ export interface Database {
           actor: string
           created_at: string
           created_by: string
+          end: string | null
+          id: string
           organisation: string
-          role: number | null
+          start: string
           updated_at: string
           updated_by: string
         }
@@ -182,8 +190,10 @@ export interface Database {
           actor: string
           created_at?: string
           created_by?: string
+          end?: string | null
+          id?: string
           organisation: string
-          role?: number | null
+          start: string
           updated_at?: string
           updated_by?: string
         }
@@ -191,10 +201,29 @@ export interface Database {
           actor?: string
           created_at?: string
           created_by?: string
+          end?: string | null
+          id?: string
           organisation?: string
-          role?: number | null
+          start?: string
           updated_at?: string
           updated_by?: string
+        }
+      }
+      organisations_actors_duty: {
+        Row: {
+          created_at: string | null
+          duty: number
+          id: string
+        }
+        Insert: {
+          created_at?: string | null
+          duty: number
+          id: string
+        }
+        Update: {
+          created_at?: string | null
+          duty?: number
+          id?: string
         }
       }
       organisations_users: {
@@ -689,6 +718,29 @@ export interface Database {
           updated_by?: string
         }
       }
+      projects_actors: {
+        Row: {
+          actor: string
+          created_at: string | null
+          duty: number | null
+          organisation: string | null
+          project: string
+        }
+        Insert: {
+          actor: string
+          created_at?: string | null
+          duty?: number | null
+          organisation?: string | null
+          project: string
+        }
+        Update: {
+          actor?: string
+          created_at?: string | null
+          duty?: number | null
+          organisation?: string | null
+          project?: string
+        }
+      }
       projects_events: {
         Row: {
           created_at: string
@@ -825,7 +877,7 @@ export interface Database {
         Row: {
           actor: string | null
           created_at: string | null
-          first_name: string
+          first_name: string | null
           id: string
           image: string
           last_name: string | null
@@ -837,7 +889,7 @@ export interface Database {
         Insert: {
           actor?: string | null
           created_at?: string | null
-          first_name: string
+          first_name?: string | null
           id: string
           image: string
           last_name?: string | null
@@ -849,7 +901,7 @@ export interface Database {
         Update: {
           actor?: string | null
           created_at?: string | null
-          first_name?: string
+          first_name?: string | null
           id?: string
           image?: string
           last_name?: string | null
@@ -1005,6 +1057,23 @@ export interface Database {
           updated_at?: string
           updated_by?: string
           use?: number
+        }
+      }
+      projects_organisations: {
+        Row: {
+          created_at: string | null
+          organisation: string
+          project: string
+        }
+        Insert: {
+          created_at?: string | null
+          organisation: string
+          project: string
+        }
+        Update: {
+          created_at?: string | null
+          organisation?: string
+          project?: string
         }
       }
       projects_programs: {

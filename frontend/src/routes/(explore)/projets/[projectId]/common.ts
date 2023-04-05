@@ -1,8 +1,53 @@
+import type Icon from '$components/Icon.svelte';
 import { defineContext } from '$utils/context';
 import { col } from '$utils/css';
 import { pgCubeToHsl } from '$utils/format';
+import { THEME_PALETTES } from '$utils/themes';
 import { colord } from 'colord';
+import type { ComponentProps } from 'svelte';
 import type { PageData } from './$types';
+
+export const galleryLayouts = [
+	{
+		layout: 'grid',
+		title: 'Grille',
+		icon: 'view-masonry-vertical',
+	},
+	{
+		layout: 'list',
+		title: 'Liste',
+		icon: 'view-list-horizontal',
+	},
+] as const satisfies readonly {
+	layout: string;
+	title: string;
+	icon: ComponentProps<Icon>['name'];
+}[];
+
+type ProjectSection = {
+	title: string;
+	shortTitle: string;
+	hash: string;
+	children?: ProjectSection[];
+};
+
+export const projectSections = [
+	{
+		title: 'Présentation du projet',
+		shortTitle: 'Présentation',
+		hash: 'presentation',
+	},
+	{
+		title: 'Description technique',
+		shortTitle: 'Description technique',
+		hash: 'description-technique',
+	},
+	{
+		title: 'Indicateurs d’exemplarité',
+		shortTitle: 'Exemplarité',
+		hash: 'exemplarite',
+	},
+] satisfies ProjectSection[];
 
 export function makeProjectPalette(project: PageData['project']) {
 	return project.gallery.flatMap((img) => [
@@ -27,8 +72,10 @@ export function getBannerColors(project: PageData['project']) {
 }
 
 export function getBgColor(project: PageData['project']) {
-	const source = colord(project.banner?.color_dominant_hsl ?? col('bg', 300));
-	return source.lighten(0.9 - source.brightness());
+	const source = colord(
+		project.banner ? pgCubeToHsl(project.banner?.color_dominant_hsl) : THEME_PALETTES.light.bg[300]
+	);
+	return source.lighten(0.85 - source.brightness()).saturate();
 }
 
 export const [getProjectContext, setProjectContext] = defineContext<

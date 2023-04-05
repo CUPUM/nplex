@@ -35,7 +35,7 @@
 	const cy = LOGO_VIEWBOX_HEIGHT / 2;
 
 	const circle = spring({ x: cx, y: cy, r: 0 }, { damping: 0.8, stiffness: 0.1 });
-	const square = spring({ x: cx, y: cy, s: 0, a: 0 }, { damping: 0.8, stiffness: 0.2 });
+	const square = spring({ x: cx, y: cy, s: 0, a: 0 }, { damping: 0.9, stiffness: 0.2 });
 
 	function moveSpotlight(e: AppCustomEvent<'on:svg.pointermove'>) {
 		circle.update((prev) => ({
@@ -51,13 +51,13 @@
 			x: e.detail.x,
 			y: e.detail.y,
 			s:
-				3 *
+				2 *
 					(Math.abs(e.detail.originalEvent.movementX) +
 						Math.abs(e.detail.originalEvent.movementY)) +
 				250,
 			a:
 				prev.a +
-				0.2 * Math.round(e.detail.originalEvent.movementX + e.detail.originalEvent.movementY),
+				0.15 * Math.round(e.detail.originalEvent.movementX + e.detail.originalEvent.movementY),
 		}));
 	}
 
@@ -233,7 +233,7 @@
 
 	mask {
 		circle {
-			filter: drop-shadow(12px 24px 48px rgb(0, 0, 0, 0.9));
+			filter: drop-shadow(12px 32px 48px rgb(0, 0, 0));
 			// &.reverse-shadow {
 			// 	filter: drop-shadow(12px 24px 48px rgb(255, 255, 255, 0.9));
 			// }

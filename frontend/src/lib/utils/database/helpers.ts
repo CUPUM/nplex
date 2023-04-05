@@ -5,8 +5,8 @@ import { browserDb, getDb } from './client';
 /**
  * Browser-side helper to get public URL to storage project image.
  */
-export function getProjectImageUrl(name: string) {
-	return browserDb.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(name).data.publicUrl;
+export function getProjectImageUrl(storageName: string) {
+	return browserDb.storage.from(STORAGE_BUCKETS.PROJECTS).getPublicUrl(storageName).data.publicUrl;
 }
 
 /**

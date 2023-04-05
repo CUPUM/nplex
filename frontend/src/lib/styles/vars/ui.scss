@@ -30,8 +30,9 @@
 	--ui-outline-color: #{col(primary, 500, 0.5)};
 	--ui-outline-inactive: 0px solid transparent;
 	--ui-outline-active: 2px solid var(--ui-outline-color);
-	--ui-border-size: 1.5px;
-	--ui-inset: 5px;
+	--ui-border-size: 1.25px;
+	--ui-inset-md: 5px;
+	--ui-inset-sm: 3px;
 	--ui-font-main: 'Outfit', sans-serif;
 	--ui-font-misc: 'Space Mono', monospace;
 	// Paragraph widths based on character heights.

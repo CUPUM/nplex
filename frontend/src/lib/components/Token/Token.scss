@@ -3,7 +3,7 @@
 .token {
 	--token-size: var(--ui-block-md);
 	--token-radius: 99em;
-	--token-inset: var(--ui-inset);
+	--token-inset: var(--ui-inset-md);
 	--token-border: 0px solid transparent;
 	--token-gutter: 0.5em;
 	--token-pad-inline: calc(var(--ui-pad-md) - var(--token-inset));

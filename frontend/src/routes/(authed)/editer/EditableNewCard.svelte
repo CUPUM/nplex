@@ -6,10 +6,10 @@
 	<div class="fill-icon">
 		<Icon name="pen-plus" strokeWidth={2.5} strokeLinecap="round" animationSpeed={0.3} />
 	</div>
-	<span><slot>Créer une nouvelle fiche</slot></span>
 	<i>
 		<Icon name="file-add" strokeWidth={1.2} animate={false} />
 	</i>
+	<span><slot>Créer une nouvelle fiche</slot></span>
 </div>
 
 <style lang="scss">
@@ -22,13 +22,13 @@
 		flex-direction: column;
 		padding: 2rem;
 		overflow: hidden;
-		gap: 1rem;
+		gap: 0.5rem;
 		align-items: center;
 		justify-content: center;
 		color: col(fg, 500);
 		border: 1px dashed col(fg, 100, 0.1);
 		font-size: var(--ui-text-md);
-		font-weight: 425;
+		font-weight: 350;
 		transition: all 0.15s ease-out;
 
 		&:hover {
@@ -66,6 +66,6 @@
 	}
 
 	i {
-		font-size: 2.5em;
+		font-size: 2em;
 	}
 </style>

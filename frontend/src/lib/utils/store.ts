@@ -39,7 +39,11 @@ export function writableLedger<T>(init: T, fallback?: T) {
 		unset,
 	};
 }
+export type WritableLedger<T> = ReturnType<typeof writableLedger<T>>;
 
+/**
+ * Instanciate two related stores used to track tainting of input fields.
+ */
 export function createDirtyStores() {
 	/**
 	 * Map of dirty fields, managed by each formgroup component.
@@ -69,7 +73,7 @@ export function createDirtyStores() {
  * The fetcher doesn't necessarily have to be a window.fetch, it can be any async function that
  * returns data or throws when failing.
  */
-export function queryStore<Q, F extends (query: Q) => Promise<any> | PromiseLike<any>>(
+export function writableQuery<Q, F extends (query: Q) => Promise<any> | PromiseLike<any>>(
 	/**
 	 * Writable's initial query input, if any.
 	 */
@@ -242,7 +246,7 @@ export function queryStore<Q, F extends (query: Q) => Promise<any> | PromiseLike
  * A store to manage upload or download of files through XML Http Requests while keeping track of
  * progress states.
  */
-export function xhrStore() {
+export function writableXhr() {
 	// Should return a store with the following shape:
 	// {
 	// 	data: input source being uploaded (full data) or being downloaded (progressively extended data)
@@ -258,8 +262,6 @@ export function xhrStore() {
 	// upload(destinationUrl: string, data?: File or whatever. If present will set store data to this and will upload this. Else will attempt to upload store's current data)
 	// download(sourceUrl: string)
 }
-
-export type WritableLedger<T> = ReturnType<typeof writableLedger<T>>;
 
 /**
  * Observe the target element's closest DOM parent with given attribute and return its value.
@@ -285,33 +287,9 @@ export function closest<
 		};
 	});
 }
-
 export type ClosestReadable<T extends string> = ReturnType<typeof closest<T>>;
 
-// export function closest<A extends string>(element: Element, ...attributes: A[]) {
-// 	type ClosestDict = Record<A, string | undefined>;
-// 	const dict = attributes.reduce<ClosestDict>((acc, curr) => {
-// 		acc[curr];
-// 		return acc;
-// 	}, {} as ClosestDict);
-// 	return readable(dict, function start(set) {
-// 		if (!browser) {
-// 			return;
-// 		}
-// 		function getClosest(e: MutationRecord[]) {
-// 			e.forEach(r => {
-// 				if (r.attributeName && r.attributeName in dict) {
-// 					const closest
-// 					dict[r.attributeName as A] = element.closest
-// 				}
-// 			})
-// 		}
-// 		const observer = new MutationObserver(getClosest);
-// 		observer.observe(document.documentElement, {
-// 			attributes: true,
-// 			subtree: true,
-// 			attributeFilter: attributes,
-// 		});
-// 		return function stop() {};
-// 	});
-// }
+/**
+ * Ready-to-use text-search store using fuse.js.
+ */
+export function writableSearch() {}

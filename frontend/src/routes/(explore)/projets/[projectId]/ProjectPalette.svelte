@@ -5,8 +5,9 @@
 </script>
 
 <section>
+	<h2 class="project-section-title">Palette</h2>
 	<dl id="project-palette">
-		{#each project.palette as c}
+		{#each project.palette.sort((a, b) => (a.type === 'dominant' ? -1 : 1)) as c}
 			<dt class="project-palette-swatch" style:background-color={c.color.toRgbString()} />
 		{/each}
 	</dl>
@@ -23,6 +24,6 @@
 		font-size: var(--ui-text-3xl);
 		height: 1em;
 		width: 1em;
-		border-radius: 1em;
+		border-radius: 0.25em;
 	}
 </style>

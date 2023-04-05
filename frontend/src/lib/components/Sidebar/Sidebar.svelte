@@ -43,8 +43,8 @@
 	}
 
 	.default {
-		--sidebar-inset: calc(2 * var(--ui-inset));
-		--sidebar-gap: var(--ui-inset);
+		--sidebar-inset: calc(2 * var(--ui-inset-md));
+		--sidebar-gap: var(--ui-inset-md);
 		--sidebar-radius: var(--ui-radius-lg);
 		background-color: col(bg, 100);
 		// border: var(--ui-border-size) solid col(secondary, 100, 0.1);

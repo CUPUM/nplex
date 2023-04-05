@@ -7,13 +7,13 @@
 	import ValueMask from '$components/ValueMask.svelte';
 	import { browserDb } from '$utils/database/client';
 	import { STATES, VARIANTS } from '$utils/enums';
-	import { queryStore } from '$utils/store';
+	import { writableQuery } from '$utils/store';
 	import { onMount } from 'svelte';
 
 	const h = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];
 	const t = ['xl', 'lg', 'md', 'sm', 'xs'];
 
-	const q = queryStore('Hello', async (v) => {
+	const q = writableQuery('Hello', async (v) => {
 		return fetch('/playground/data.json', { method: 'GET' }).then(async (res) => res.json());
 	});
 

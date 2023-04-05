@@ -3,55 +3,50 @@
 	import { getProjectContext } from './common';
 
 	const project = getProjectContext();
-
 	const bannerUrl = project.banner ? getProjectImageUrl(project.banner.storage_name) : '';
 </script>
 
-<header>
-	<!-- <MeshGradient color={project.palette.map((swatch) => swatch.color.toRgbString())} /> -->
-	<hgroup style:color={project.bgColor.darken(0.8).toRgbString()}>
-		<h1>{project.title}</h1>
-	</hgroup>
-	<figure>
-		<!-- <img alt="Image-vitrine pour le projet «{project.title}»" src={bannerUrl} /> -->
-	</figure>
+<header style:--shadow-color={project.bannerColors.dominant.darken(0.75).toRgbString()}>
+	<div class="inner" style:background-image="url({bannerUrl})">
+		<!-- <svg>
+			Random primitives here
+		</svg> -->
+		<hgroup style:color={project.bgColor.lighten(0.75).toRgbString()}>
+			<h1>{project.title}</h1>
+		</hgroup>
+	</div>
 </header>
 
 <style lang="scss">
 	header {
+		position: relative;
 		align-self: center;
 		width: 100%;
-		min-height: 100vh;
-		min-height: 100svh;
-		position: relative;
 		display: flex;
-		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: var(--ui-gap-sm);
+		max-width: var(--ui-width-main);
+	}
+
+	.inner {
+		width: 100%;
+		border-radius: var(--ui-radius-xl);
+		min-height: calc(75vh - var(--ui-nav-h));
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
 	}
 
 	hgroup {
-		z-index: 1;
-		font-size: var(--ui-text-5xl);
-		font-weight: 600;
-		padding: var(--ui-gutter-md);
-		border-radius: var(--ui-radius-xl);
-		max-width: var(--ui-width-md);
-		// text-shadow: 12px 16px 0.25em black;
 	}
 
-	figure {
-		position: absolute;
-		border-radius: var(--ui-radius-xl);
-		width: var(--ui-width-lg);
-		max-width: 100%;
-		overflow: hidden;
-
-		img {
-			object-fit: cover;
-			filter: blur(6px);
-			opacity: 0.5;
-		}
+	h1 {
+		text-align: center;
+		font-size: var(--ui-text-5xl);
+		font-weight: 475;
+		text-shadow: 0 0.125em 0.25em var(--shadow-color), 1px 2px 3px rgb(0, 0, 0, 0.3);
 	}
 </style>

@@ -8,7 +8,7 @@
 
 <article>
 	<PreviewsHeader
-		title="Acteurs & artisans"
+		title="Intervenant.e.s"
 		href={EXPLORE_ROUTES.actors.pathname}
 		action="?/actors"
 		placeholder="Chercher des projets"
@@ -16,7 +16,7 @@
 	<ul>
 		{#each actors as a (a.id)}
 			<li>
-				<a class="card" href="{EXPLORE_ROUTES.actors.pathname}/{a.id}"> Bonjour! </a>
+				<a class="card" href="{EXPLORE_ROUTES.actors.pathname}/{a.id}">Bonjour!</a>
 			</li>
 		{/each}
 	</ul>

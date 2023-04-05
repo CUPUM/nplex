@@ -337,7 +337,7 @@
 
 	.category {
 		--i: 1;
-		--inset: var(--ui-inset);
+		--inset: var(--ui-inset-md);
 		--radius: 99px; //var(--ui-radius-md);
 		gap: 0;
 		grid-column: category;

@@ -5,10 +5,10 @@
 	import Icon from '$components/Icon.svelte';
 	import Modal from '$components/Modal/Modal.svelte';
 	import TextArea from '$components/TextArea/TextArea.svelte';
+	import { enhanceEditor } from '$routes/(authed)/editer/common';
 	import { DECRIPTORS_ALLOWED_ROLES } from '$routes/(authed)/editer/constants';
 	import { userHasRole } from '$utils/validation';
 	import { writable } from 'svelte/store';
-	import { enhanceProjectForm } from '../common';
 
 	export let categoryId: number;
 
@@ -30,7 +30,7 @@
 	<svelte:fragment slot="header">Créer un nouvel indicateur d’exemplarité</svelte:fragment>
 	<form
 		method="POST"
-		use:enhanceProjectForm={{
+		use:enhanceEditor={{
 			stateStore: creating,
 			afterUpdate: (res) => {
 				if (res.type === 'success') close();
