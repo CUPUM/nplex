@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Icon from '$components/Icon.svelte';
 	import { getProjectContext } from './common';
 
 	const project = getProjectContext();
@@ -23,7 +22,7 @@
 			<div class="chip-group-inner">
 				<dd class="chip">
 					<div class="chip-inner">
-						{project.site_ownership.title}
+						{project.site_ownership?.title}
 					</div>
 				</dd>
 			</div>
@@ -42,31 +41,13 @@
 						<div class="chip-inner">
 							{itv.title}
 						</div>
-						<button class="chip-button">
+						<!-- <button class="chip-button">
 							<Icon name="question" />
-						</button>
+						</button> -->
 					</dd>
 				{/each}
 			</div>
 		</div>
-		<!-- <div
-			class="chip-group"
-			style:--chip-color={col('primary', 700)}
-			style:--chip-bg={col('primary', 300, 0.1)}
-		>
-			<dt class="chip-group-title">
-				Indicateurs d'exemplarité{project.interventions.length > 1 ? 's' : ''}
-			</dt>
-			<div class="chip-group-inner">
-				{#each project.exemplarityIndicators as indicator}
-					<dd class="chip">
-						<div class="chip-inner">
-							{indicator.title}
-						</div>
-					</dd>
-				{/each}
-			</div>
-		</div> -->
 	</dl>
 </section>
 
@@ -74,14 +55,14 @@
 	#project-tags {
 		padding: var(--ui-pad-lg);
 		// border: 1px solid var(--bg-color);
-		background-color: col(bg, 000);
+		// background-color: col(bg, 000);
 		border-radius: var(--ui-radius-xl);
 	}
 
 	.chip-groups-list {
 		display: flex;
 		flex-direction: row;
-		gap: var(--ui-gap-md);
+		gap: var(--ui-gap-lg);
 		flex-wrap: wrap;
 	}
 
@@ -95,7 +76,7 @@
 
 	.chip-group-title {
 		@include typography(text, sm);
-		margin-inline-start: 0.5em;
+		margin-inline-start: 0em;
 		// &::after {
 		// 	content: ' : ';
 		// }

@@ -5,8 +5,8 @@
 	const project = getProjectContext();
 </script>
 
-<section>
-	<!-- <h2 class="project-section-title">Présentation du projet</h2> -->
+<section class="project-section">
+	<h2 class="project-section-title">Présentation du projet</h2>
 	<div class="content">
 		<RenderMarkdown source={project.description} />
 	</div>
@@ -21,12 +21,12 @@
 		width: auto;
 		margin: 0 auto;
 		width: 100%;
-		padding-block: var(--ui-gutter-lg);
+		padding-block: var(--ui-gutter-sm);
 		// font-size: var(--ui-text-lg);
 		// font-weight: 300;
 		line-height: 1.75;
 		border-radius: var(--ui-radius-xl);
-		background-color: col(bg, 000);
+		// background-color: col(bg, 000);
 		// border: 1px solid var(--bg-color);
 
 		:global(p) {

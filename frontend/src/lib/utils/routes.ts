@@ -60,7 +60,7 @@ export const EXPLORE_ROUTES = {
 	},
 	actors: {
 		pathname: '/intervenant-e-s',
-		title: 'Intervenant·e·s',
+		title: 'Intervenant.e.s',
 		category: CATEGORIES.Actors,
 		noscroll: false,
 	},

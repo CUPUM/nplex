@@ -4,7 +4,7 @@
 	const project = getProjectContext();
 </script>
 
-<section>
+<section class="project-section">
 	<h2 class="project-section-title">Palette</h2>
 	<dl id="project-palette">
 		{#each project.palette.sort((a, b) => (a.type === 'dominant' ? -1 : 1)) as c}
@@ -14,6 +14,10 @@
 </section>
 
 <style lang="scss">
+	.project-section {
+		// background-color: col(bg, 100) !important;
+	}
+
 	#project-palette {
 		display: flex;
 		flex-direction: row;

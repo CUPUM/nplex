@@ -23,7 +23,18 @@ const orgShortNameSchema = zfd.text(
 		.optional()
 );
 
+const orgAboutSchema = zfd.text(z.string().optional());
+
+const orgUrlSchema = zfd.text(
+	z.string().url('Le lien URL soumis ne semble pas avoir un format valide.').optional()
+);
+
+const orgTypeSchema = zfd.numeric(z.number().optional());
+
 export const orgGeneralUpdateSchema = zfd.formData({
 	name: orgNameSchema,
 	short_name: orgShortNameSchema,
+	about: orgAboutSchema,
+	url: orgUrlSchema,
+	type: orgTypeSchema,
 });

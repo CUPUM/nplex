@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RootBackground from '$routes/RootBackground.svelte';
 	import {
 		galleryLayouts,
 		getBannerColors,
@@ -23,8 +24,6 @@
 
 	setProjectContext({ ...data.project, palette, bannerColors, bgColor });
 
-	console.log(data.project);
-
 	export const snapshot = {
 		capture() {
 			return {
@@ -37,13 +36,9 @@
 	};
 </script>
 
-<!-- <RootBackground body={bgColor.toRgbString()} overscroll={bgColor.toRgbString()} /> -->
+<RootBackground body={bgColor.toRgbString()} overscroll={bgColor.toRgbString()} />
+<!-- <NavbarBackground color="transparent" /> -->
 <!-- <RootBackground overscroll={bgColor.toRgbString()} /> -->
-<!-- <div
-	id="project-bg"
-	style:--bg-color={bgColor.toRgbString()}
-	use:overlapNavbar={{ background: bgColor.lighten(0).toRgbString() }}
-/> -->
 <article
 	id="project"
 	class:is-demo={data.project.is_demo}
@@ -83,10 +78,16 @@
 			padding-inline: var(--ui-gap-sm);
 		}
 
+		:global(.project-section) {
+			border-radius: var(--ui-radius-xl);
+			background: col(bg, 000, 0.5);
+			padding: var(--ui-gutter-sm);
+		}
+
 		:global(.project-section-title) {
 			font-size: var(--ui-text-xl);
 			font-weight: 500;
-			padding: 0.8em 0.5em 1em;
+			padding: 0em 0.5em 1em;
 			// color: var(--title-color);
 		}
 

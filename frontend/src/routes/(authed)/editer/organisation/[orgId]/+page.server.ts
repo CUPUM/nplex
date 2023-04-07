@@ -8,7 +8,7 @@ export const actions = {
 		const validated = await validateFormData(event, orgGeneralUpdateSchema);
 		if (validated.failure) return validated.failure;
 		const up = await event.locals.db
-			.from('organizations')
+			.from('organisations')
 			.update(validated.data)
 			.eq('id', event.params.orgId)
 			.single();

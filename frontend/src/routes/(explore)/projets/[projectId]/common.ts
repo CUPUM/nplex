@@ -75,7 +75,7 @@ export function getBgColor(project: PageData['project']) {
 	const source = colord(
 		project.banner ? pgCubeToHsl(project.banner?.color_dominant_hsl) : THEME_PALETTES.light.bg[300]
 	);
-	return source.lighten(0.85 - source.brightness()).saturate();
+	return source.lighten(0.85 - source.brightness()).saturate(0.05 - source.toHsl().s);
 }
 
 export const [getProjectContext, setProjectContext] = defineContext<

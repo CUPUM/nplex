@@ -17,6 +17,6 @@ export const actions = {
 				messages: { error: ['Une erreur est survenue lors de la création de la nouvelle fiche.'] },
 			});
 		}
-		throw redirect(STATUS_CODES.MovedTemporarily, `/editer/intervenant-e-s/${newActor.data.id}`);
+		throw redirect(STATUS_CODES.MovedTemporarily, `/editer/intervenant-e/${newActor.data.id}`);
 	},
 };
