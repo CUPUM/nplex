@@ -76,6 +76,29 @@ export interface Database {
           updated_by?: string
         }
       }
+      actors_publication_status_duplicate: {
+        Row: {
+          actor: string
+          published: string | null
+          requested: string | null
+          updated_at: string
+          updated_by: string
+        }
+        Insert: {
+          actor: string
+          published?: string | null
+          requested?: string | null
+          updated_at?: string
+          updated_by?: string
+        }
+        Update: {
+          actor?: string
+          published?: string | null
+          requested?: string | null
+          updated_at?: string
+          updated_by?: string
+        }
+      }
       actors_users: {
         Row: {
           actor: string
@@ -150,6 +173,7 @@ export interface Database {
           type: number | null
           updated_at: string
           updated_by: string
+          url: string | null
         }
         Insert: {
           about?: string | null
@@ -161,6 +185,7 @@ export interface Database {
           type?: number | null
           updated_at?: string
           updated_by?: string
+          url?: string | null
         }
         Update: {
           about?: string | null
@@ -172,6 +197,7 @@ export interface Database {
           type?: number | null
           updated_at?: string
           updated_by?: string
+          url?: string | null
         }
       }
       organisations_actors: {
@@ -224,6 +250,29 @@ export interface Database {
           created_at?: string | null
           duty?: number
           id?: string
+        }
+      }
+      organisations_publication_status: {
+        Row: {
+          organisation: string
+          published: string | null
+          requested: string | null
+          updated_at: string
+          updated_by: string
+        }
+        Insert: {
+          organisation: string
+          published?: string | null
+          requested?: string | null
+          updated_at?: string
+          updated_by?: string
+        }
+        Update: {
+          organisation?: string
+          published?: string | null
+          requested?: string | null
+          updated_at?: string
+          updated_by?: string
         }
       }
       organisations_users: {
@@ -960,9 +1009,9 @@ export interface Database {
       projects_location: {
         Row: {
           center: unknown | null
-          circle: unknown | null
           created_at: string
           created_by: string
+          obfuscated: unknown | null
           project: string
           radius: number | null
           updated_at: string
@@ -970,9 +1019,9 @@ export interface Database {
         }
         Insert: {
           center?: unknown | null
-          circle?: unknown | null
           created_at?: string
           created_by?: string
+          obfuscated?: unknown | null
           project: string
           radius?: number | null
           updated_at?: string
@@ -980,9 +1029,9 @@ export interface Database {
         }
         Update: {
           center?: unknown | null
-          circle?: unknown | null
           created_at?: string
           created_by?: string
+          obfuscated?: unknown | null
           project?: string
           radius?: number | null
           updated_at?: string
@@ -1621,6 +1670,12 @@ export interface Database {
       }
     }
     Functions: {
+      actor_is_public: {
+        Args: {
+          a_id: string
+        }
+        Returns: boolean
+      }
       authorize_actor_update:
         | {
             Args: {
@@ -1667,6 +1722,12 @@ export interface Database {
       get_relegate_uid: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      org_is_public: {
+        Args: {
+          o_id: string
+        }
+        Returns: boolean
       }
       project_descriptors: {
         Args: Record<PropertyKey, never>

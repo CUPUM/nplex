@@ -1,8 +1,31 @@
+create type "auth"."code_challenge_method" as enum ('s256', 'plain');
+
+create table "auth"."flow_state" (
+    "id" uuid not null,
+    "user_id" uuid,
+    "auth_code" text not null,
+    "code_challenge_method" auth.code_challenge_method not null,
+    "code_challenge" text not null,
+    "provider_type" text not null,
+    "provider_access_token" text,
+    "provider_refresh_token" text,
+    "created_at" timestamp with time zone,
+    "updated_at" timestamp with time zone
+);
+
+
+CREATE UNIQUE INDEX flow_state_pkey ON auth.flow_state USING btree (id);
+
+CREATE INDEX idx_auth_code ON auth.flow_state USING btree (auth_code);
+
+alter table "auth"."flow_state" add constraint "flow_state_pkey" PRIMARY KEY using index "flow_state_pkey";
+
+
 alter table "public"."organisations_actors" drop constraint "organisations_actors_role_fkey";
 
-drop view if exists "public"."editable_actors";
-
 drop view if exists "public"."projects_publication_status_fulfill";
+
+drop view if exists "public"."editable_actors";
 
 alter table "public"."actor_organisation_role" drop constraint "actor_role_pkey";
 
@@ -28,6 +51,17 @@ create table "public"."actor_duty" (
 
 alter table "public"."actor_duty" enable row level security;
 
+create table "public"."actors_publication_status_duplicate" (
+    "updated_at" timestamp with time zone not null default now(),
+    "updated_by" uuid not null default default_uid(),
+    "published" timestamp with time zone,
+    "requested" timestamp with time zone,
+    "actor" uuid not null
+);
+
+
+alter table "public"."actors_publication_status_duplicate" enable row level security;
+
 create table "public"."organisations_actors_duty" (
     "id" uuid not null,
     "created_at" timestamp with time zone default now(),
@@ -36,6 +70,17 @@ create table "public"."organisations_actors_duty" (
 
 
 alter table "public"."organisations_actors_duty" enable row level security;
+
+create table "public"."organisations_publication_status" (
+    "updated_at" timestamp with time zone not null default now(),
+    "updated_by" uuid not null default default_uid(),
+    "published" timestamp with time zone,
+    "requested" timestamp with time zone,
+    "organisation" uuid not null
+);
+
+
+alter table "public"."organisations_publication_status" enable row level security;
 
 create table "public"."projects_actors" (
     "project" uuid not null,
@@ -63,6 +108,8 @@ alter table "public"."actors_users" drop column "role";
 
 alter table "public"."actors_users" add column "updated_at" timestamp with time zone not null default now();
 
+alter table "public"."organisations" add column "url" text;
+
 alter table "public"."organisations_actors" drop column "role";
 
 alter table "public"."organisations_actors" add column "end" date;
@@ -73,9 +120,17 @@ alter table "public"."organisations_actors" add column "start" date not null;
 
 alter table "public"."projects_images_credits" alter column "first_name" drop not null;
 
-alter table "public"."projects_location" alter column "center" set data type geometry using "center"::geometry;
+alter table "public"."projects_location" drop column "circle";
 
-alter table "public"."projects_location" alter column "circle" set data type geometry using "circle"::geometry;
+alter table "public"."projects_location" add column "obfuscated" geometry(Point) generated always as (
+CASE
+    WHEN ((radius IS NULL) OR (center IS NULL)) THEN NULL::geometry(Point)
+    ELSE st_geometryn(st_generatepoints(st_buffer(center, (radius)::double precision, 'quad_segs=8'::text), 1, 10101), 1)
+END) stored;
+
+CREATE UNIQUE INDEX actors_publication_status_duplicate_pkey ON public.actors_publication_status_duplicate USING btree (actor);
+
+CREATE UNIQUE INDEX organisations_publication_status_pkey ON public.organisations_publication_status USING btree (organisation);
 
 CREATE UNIQUE INDEX organisations_users_roles_pkey ON public.organisations_actors_duty USING btree (id, duty);
 
@@ -89,13 +144,25 @@ CREATE UNIQUE INDEX organisations_actors_pkey ON public.organisations_actors USI
 
 alter table "public"."actor_duty" add constraint "actor_role_pkey" PRIMARY KEY using index "actor_role_pkey";
 
+alter table "public"."actors_publication_status_duplicate" add constraint "actors_publication_status_duplicate_pkey" PRIMARY KEY using index "actors_publication_status_duplicate_pkey";
+
 alter table "public"."organisations_actors_duty" add constraint "organisations_users_roles_pkey" PRIMARY KEY using index "organisations_users_roles_pkey";
+
+alter table "public"."organisations_publication_status" add constraint "organisations_publication_status_pkey" PRIMARY KEY using index "organisations_publication_status_pkey";
 
 alter table "public"."projects_actors" add constraint "projects_actors_pkey" PRIMARY KEY using index "projects_actors_pkey";
 
 alter table "public"."projects_organisations" add constraint "projects_organisations_pkey" PRIMARY KEY using index "projects_organisations_pkey";
 
 alter table "public"."organisations_actors" add constraint "organisations_actors_pkey" PRIMARY KEY using index "organisations_actors_pkey";
+
+alter table "public"."actors_publication_status_duplicate" add constraint "actors_publication_status_duplicate_actor_fkey" FOREIGN KEY (actor) REFERENCES actors(id) ON DELETE CASCADE not valid;
+
+alter table "public"."actors_publication_status_duplicate" validate constraint "actors_publication_status_duplicate_actor_fkey";
+
+alter table "public"."actors_publication_status_duplicate" add constraint "actors_publication_status_duplicate_updated_by_fkey" FOREIGN KEY (updated_by) REFERENCES users(id) not valid;
+
+alter table "public"."actors_publication_status_duplicate" validate constraint "actors_publication_status_duplicate_updated_by_fkey";
 
 alter table "public"."organisations_actors_duty" add constraint "organisations_actors_duty_duty_fkey" FOREIGN KEY (duty) REFERENCES actor_duty(id) ON DELETE CASCADE not valid;
 
@@ -104,6 +171,14 @@ alter table "public"."organisations_actors_duty" validate constraint "organisati
 alter table "public"."organisations_actors_duty" add constraint "organisations_actors_duty_id_fkey" FOREIGN KEY (id) REFERENCES organisations_actors(id) ON DELETE CASCADE not valid;
 
 alter table "public"."organisations_actors_duty" validate constraint "organisations_actors_duty_id_fkey";
+
+alter table "public"."organisations_publication_status" add constraint "organisations_publication_status_organisation_fkey" FOREIGN KEY (organisation) REFERENCES organisations(id) ON DELETE CASCADE not valid;
+
+alter table "public"."organisations_publication_status" validate constraint "organisations_publication_status_organisation_fkey";
+
+alter table "public"."organisations_publication_status" add constraint "organisations_publication_status_updated_by_fkey" FOREIGN KEY (updated_by) REFERENCES users(id) ON DELETE SET DEFAULT not valid;
+
+alter table "public"."organisations_publication_status" validate constraint "organisations_publication_status_updated_by_fkey";
 
 alter table "public"."projects_actors" add constraint "projects_actors_actor_fkey" FOREIGN KEY (actor) REFERENCES actors(id) ON DELETE CASCADE not valid;
 
@@ -129,6 +204,22 @@ alter table "public"."projects_organisations" add constraint "projects_organisat
 
 alter table "public"."projects_organisations" validate constraint "projects_organisations_project_fkey";
 
+set check_function_bodies = off;
+
+CREATE OR REPLACE FUNCTION public.org_is_public(o_id uuid)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+	begin
+		return exists (
+			select 1 from organisations_publication_status as ops
+  			where ops.project = o_id
+  			and ops.published is not null
+  		);
+	end;
+$function$
+;
+
 create or replace view "public"."editable_actors" as  SELECT a.id,
     a.created_at,
     a.updated_at,
@@ -140,20 +231,6 @@ create or replace view "public"."editable_actors" as  SELECT a.id,
     a.about
    FROM actors a
   WHERE authorize_actor_update(a.*);
-
-
-create or replace view "public"."projects_publication_status_fulfill" as  SELECT ps.project,
-    ps.updated_at,
-    ps.updated_by,
-    ps.published,
-    ps.requested,
-        CASE
-            WHEN ((pl.circle IS NOT NULL) AND (p.title IS NOT NULL) AND (p.type IS NOT NULL)) THEN true
-            ELSE false
-        END AS fulfill
-   FROM ((projects_publication_status ps
-     LEFT JOIN projects_location pl ON ((pl.project = ps.project)))
-     LEFT JOIN projects p ON ((p.id = ps.project)));
 
 
 
