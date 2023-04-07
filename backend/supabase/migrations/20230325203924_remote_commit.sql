@@ -245,7 +245,7 @@ drop table "public"."project_work";
 drop table "public"."project_work_category";
 
 create table "public"."organisations" (
-    "id" uuid not null default uuid_generate_v4(),
+    "id" uuid not null default extensions.uuid_generate_v4(),
     "created_at" timestamp with time zone not null default now(),
     "created_by" uuid not null default default_uid(),
     "updated_at" timestamp with time zone not null default now(),

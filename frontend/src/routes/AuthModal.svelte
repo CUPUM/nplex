@@ -242,8 +242,8 @@
 					{/if}
 					<Button
 						disabled={!!currentAction}
-						class="fill-row"
 						type="submit"
+						style="grid-column: 1 / -1;"
 						variant={$authModal === AUTHMODAL_MODE.SignIn ? 'cta' : 'default'}
 						contentAlign="center"
 						formnovalidate
@@ -253,13 +253,18 @@
 						<Icon name="login" slot="trailing" />
 						Me connecter
 					</Button>
-					<Button disabled variant="ghost" class="small-button" contentAlign="center">
+					<Button
+						style="font-size: var(--ui-text-sm)"
+						disabled
+						variant="ghost"
+						contentAlign="center"
+					>
 						Mot de passe oublié ?
 					</Button>
 					<Button
+						style="font-size: var(--ui-text-sm)"
 						disabled={!!currentAction}
 						autoActive={false}
-						class="small-button"
 						data-sveltekit-noscroll=""
 						data-sveltekit-replacestate=""
 						variant={$authModal === AUTHMODAL_MODE.SignUp ? 'cta' : 'default'}
@@ -379,7 +384,11 @@
 	}
 
 	form :global(.fill-row) {
+		display: flex;
 		grid-column: 1 / -1;
+		flex-direction: row;
+		justify-content: stretch;
+		// align-items: stretch;
 	}
 
 	form :global(.small-button) {

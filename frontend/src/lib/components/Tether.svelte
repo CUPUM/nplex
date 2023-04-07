@@ -9,17 +9,12 @@
 	If the tethered item is statically positionned inside a component that is transitioned,
 	there will be a miscalculation of its position due to the initial offsetParent
 	being different when the svelte applies a non static position for the transition.
-
-	Two CSS classes can be accessed:
-	- `.ui-anchor`
-	- `.ui-tether`: has the place and align classes
 -->
-<script lang="ts" context="module">
-</script>
 
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import { cssSize } from '$utils/css';
+	import { getClosestBoxChild } from '$utils/dom';
 	import { debounce } from '$utils/modifiers';
 	import { onDestroy, onMount } from 'svelte';
 
@@ -28,9 +23,10 @@
 	export let distance: number | string = 0;
 
 	/**
-	 * Anchoring div, with "display: contents" style.
+	 * Container of anchoring element, with "display: contents".
 	 */
-	export let anchorRef: HTMLElement | undefined = undefined;
+	export let anchorContainerRef: HTMLElement;
+	let anchorRef: HTMLElement | undefined;
 
 	let mutationObs: MutationObserver;
 	let resizeObs: ResizeObserver;
@@ -41,11 +37,12 @@
 	let dispose: () => void;
 
 	const updatePosition = debounce(async () => {
-		if (anchorRef?.firstElementChild instanceof HTMLElement) {
-			y = anchorRef.firstElementChild.offsetTop;
-			x = anchorRef.firstElementChild.offsetLeft;
-			w = anchorRef.firstElementChild.offsetWidth;
-			h = anchorRef.firstElementChild.offsetHeight;
+		anchorRef = getClosestBoxChild(anchorContainerRef);
+		if (anchorRef) {
+			y = anchorRef.offsetTop;
+			x = anchorRef.offsetLeft;
+			w = anchorRef.offsetWidth;
+			h = anchorRef.offsetHeight;
 		}
 	}, 50);
 
@@ -68,7 +65,7 @@
 	}
 
 	onMount(async () => {
-		tether(anchorRef!);
+		tether(anchorContainerRef);
 	});
 
 	onDestroy(() => {
@@ -80,7 +77,7 @@
 
 <div
 	use:clickoutside
-	bind:this={anchorRef}
+	bind:this={anchorContainerRef}
 	class="ui-anchor"
 	on:clickoutside
 	on:keydown
@@ -105,7 +102,7 @@
 <style lang="scss">
 	.ui-anchor {
 		position: relative;
-		display: contents !important;
+		display: contents;
 	}
 
 	.ui-tether {

@@ -87,26 +87,28 @@ export type TypedHTMLInputElement<
  */
 export type AppCustomEvent<
 	E extends keyof A,
-	A extends svelteHTML.HTMLAttributes<T> | svelteHTML.SVGAttributes<T> = svelteHTML.HTMLAttributes &
-		svelteHTML.SVGAttributes,
-	T extends Element = Element
+	T extends Element = Element,
+	A extends
+		| svelteHTML.HTMLAttributes<T>
+		| svelteHTML.SVGAttributes<T> = svelteHTML.HTMLAttributes<T> & svelteHTML.SVGAttributes<T>
 > = NonUndefinable<A[E]> extends (...args: any) => any
 	? Parameters<NonUndefinable<A[E]>>[0]
 	: never;
 
-// export type AppCustomSvgEvent<
-// 	E extends keyof svelteHTML.HTMLAttributes<T> | svelteHTML.SVGAttributes<T>,
-// 	T extends Element = Element
-// > = NonUndefinable<
-// 	E extends keyof svelteHTML.HTMLAttributes<T>
-// 		? svelteHTML.HTMLAttributes<T>[E]
-// 		: E extends keyof svelteHTML.SVGAttributes<T>
-// 		? svelteHTML.SVGAttributes<T>[E]
-// 		: never
-// > extends (...args: any) => any
-// 	? Parameters<E extends keyof svelteHTML.HTMLAttributes<T>
-// 		? svelteHTML.HTMLAttributes<T>[E]
-// 		: E extends keyof svelteHTML.SVGAttributes<T>
-// 		? svelteHTML.SVGAttributes<T>[E]
-// 		: never>>[0]
-// 	: never;
+/**
+ * Generate the typings for dynamic style props in $$Props declaration.
+ */
+export type StylePropsStatic<Component extends string, Properties extends string> = {
+	[P in `--${Component}-${Properties}`]?: string;
+};
+
+/**
+ * Generate the typings for dynamic style props in $$Props declaration.
+ */
+export type StylePropsDynamic<
+	Component extends string,
+	Properties extends string,
+	Conditions extends string
+> = {
+	[P in `--${Component}-${Properties}` | `--${Component}-${Conditions}-${Properties}`]?: string;
+};

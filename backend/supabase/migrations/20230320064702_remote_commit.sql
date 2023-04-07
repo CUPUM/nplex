@@ -9,7 +9,7 @@ alter table "public"."users_roles" drop constraint "users_roles_updated_by_id_fk
 
 alter table "public"."users_roles" drop constraint "users_roles_user_id_fkey";
 
-alter table "public"."notifications" alter column "id" set default uuid_generate_v4();
+alter table "public"."notifications" alter column "id" set default extensions.uuid_generate_v4();
 
 alter table "public"."notifications" alter column "title" set not null;
 

@@ -189,7 +189,7 @@ export function alwaysArr<T>(arr: T) {
 }
 
 /**
- * Takes a Postgres cube string and returns a CSS-ready hsl color string.
+ * Takes a Postgres extensions.cube string and returns a CSS-ready hsl color string.
  */
 export function pgCubeToHsl(pgCube: string, alpha?: number) {
 	try {

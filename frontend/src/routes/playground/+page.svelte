@@ -4,11 +4,14 @@
 	import Option from '$components/Options/Option.svelte';
 	import OptionsList from '$components/Options/OptionsList.svelte';
 	import Toggle from '$components/Toggle/Toggle.svelte';
+	import Token from '$components/Token/Token.svelte';
+	import Tooltip from '$components/Tooltip.svelte';
 	import ValueMask from '$components/ValueMask.svelte';
 	import { browserDb } from '$utils/database/client';
 	import { STATES, VARIANTS } from '$utils/enums';
 	import { writableQuery } from '$utils/store';
 	import { onMount } from 'svelte';
+	import TestComponent from './TestComponent.svelte';
 
 	const h = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];
 	const t = ['xl', 'lg', 'md', 'sm', 'xs'];
@@ -51,6 +54,12 @@
 	let value = 'bonjour';
 </script>
 
+<article>
+	<Token --token-color="red">Test</Token>
+	<Tooltip message="Ceci est un tooltip!" place="right">
+		<TestComponent --button-color="red">Test</TestComponent>
+	</Tooltip>
+</article>
 <article>
 	<ValueMask bind:value mask={[/A-Z/, /A-Z/, /0-9/, /0-9/, '-', /a-zA-Z/]} let:masked>
 		<input type="text" name="textinput" value={masked} id="mask" />

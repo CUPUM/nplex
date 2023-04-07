@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
-	import { col } from '$utils/css';
 	import { getProjectContext } from './common';
 
 	const project = getProjectContext();
@@ -50,7 +49,7 @@
 				{/each}
 			</div>
 		</div>
-		<div
+		<!-- <div
 			class="chip-group"
 			style:--chip-color={col('primary', 700)}
 			style:--chip-bg={col('primary', 300, 0.1)}
@@ -64,13 +63,10 @@
 						<div class="chip-inner">
 							{indicator.title}
 						</div>
-						<!-- <button class="chip-button">
-							<Icon name="info" />
-						</button> -->
 					</dd>
 				{/each}
 			</div>
-		</div>
+		</div> -->
 	</dl>
 </section>
 

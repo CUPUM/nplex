@@ -6,6 +6,7 @@
 		makeProjectPalette,
 		setProjectContext,
 	} from './common';
+	import ProjectExemplarity from './ProjectExemplarity.svelte';
 	import ProjectGallery from './ProjectGallery.svelte';
 	import ProjectHeader from './ProjectHeader.svelte';
 	import ProjectPalette from './ProjectPalette.svelte';
@@ -51,6 +52,7 @@
 >
 	<ProjectHeader />
 	<ProjectTechnicalSheet />
+	<ProjectExemplarity />
 	<ProjectSummary />
 	<ProjectPalette />
 	<ProjectGallery bind:layout={galleryLayout} />

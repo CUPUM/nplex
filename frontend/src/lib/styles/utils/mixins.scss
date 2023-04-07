@@ -2,6 +2,36 @@
 @import '../vars/typography.scss';
 
 /**
+ * Generate the base css variables for dynamic properties of a component's style including their fallback chaining (see below).
+ */
+@mixin component-dynamic-vars($component, $properties, $conditions) {
+	@include _component-condition-vars($component, $properties);
+	@each $c in $conditions {
+		@include _component-condition-vars($component, $properties, $c);
+	}
+}
+/**
+ * Creates fallback logic for vars, where precedence order is:
+ * -> user (consumer) var
+ *   -> variant condition var
+ *     -> variant default var
+ *
+ * Vars prefixed with "--ui" represent private, and sometimes computed, vars and should never be modified by parent or children.
+ */
+@mixin _component-condition-vars($component, $properties, $condition: 'default') {
+	@each $p in $properties {
+		@if $condition == 'default' {
+			--ui-#{$component}-#{$p}: var(--#{$component}-#{$p}, var(--#{$component}-variant-#{$p}));
+		} @else {
+			--ui-#{$component}-#{$condition}-#{$p}: var(
+				--#{$component}-#{$condition}-#{$p},
+				var(--#{$component}-variant-#{$condition}-#{$p}, var(--#{$component}-variant-#{$p}))
+			);
+		}
+	}
+}
+
+/**
  * Helpers to scope styles with breakpoints.
  * Defined with max-width as the app is designed desktop-first.
  */

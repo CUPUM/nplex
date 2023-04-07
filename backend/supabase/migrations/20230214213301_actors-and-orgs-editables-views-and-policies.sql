@@ -28,7 +28,7 @@ alter table "public"."organizations_users" enable row level security;
 
 alter table "public"."actors" enable row level security;
 
-alter table "public"."organizations" alter column "id" set default uuid_generate_v4();
+alter table "public"."organizations" alter column "id" set default extensions.uuid_generate_v4();
 
 alter table "public"."organizations" enable row level security;
 

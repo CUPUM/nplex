@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
-
 	import type { ComponentProps } from 'svelte';
 
 	type $$Props = ComponentProps<Icon>;
@@ -17,7 +16,7 @@
 		display: inline-flex;
 		position: relative;
 		padding-inline: 0.25em;
-		top: -0.1em;
+		// top: -0.1em;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;

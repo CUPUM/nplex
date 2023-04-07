@@ -50,12 +50,12 @@ drop index if exists "public"."projects_works_un";
 
 alter table "public"."projects_location" drop column "geometry";
 
-alter table "public"."projects_location" add column "center" geometry;
+alter table "public"."projects_location" add column "center" extensions.geometry(POINT);
 
-alter table "public"."projects_location" add column "circle" geometry generated always as (
+alter table "public"."projects_location" add column "circle" extensions.geometry(POLYGON) generated always as (
 CASE
-    WHEN ((radius IS NULL) OR (center IS NULL)) THEN NULL::geometry
-    ELSE st_buffer(center, (radius)::double precision, 'quad_segs=8'::text)
+    WHEN ((radius IS NULL) OR (center IS NULL)) THEN NULL::extensions.geometry
+    ELSE extensions.st_buffer(center, (radius)::double precision, 'quad_segs=8'::text)
 END) stored;
 
 alter table "public"."projects_materials" drop column "created_by_id";

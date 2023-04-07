@@ -12,8 +12,13 @@
 	<figure class="timeline-container">
 		<menu>
 			<Tooltip message="Ouvrir en mode plein-écran" place="left">
-				<Button equi compact variant="ghost">
+				<Button equi compact rounded variant="ghost">
 					<Icon name="expand" />
+				</Button>
+			</Tooltip>
+			<Tooltip message="Chercher un événement ou une phase" place="left">
+				<Button equi compact rounded variant="ghost">
+					<Icon name="search" />
 				</Button>
 			</Tooltip>
 		</menu>
@@ -27,6 +32,9 @@
 
 	menu {
 		position: absolute;
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
 		top: 1rem;
 		right: 1rem;
 	}

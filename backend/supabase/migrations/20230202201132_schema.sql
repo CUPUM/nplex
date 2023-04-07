@@ -274,7 +274,7 @@ create table "public"."project_work" (
 alter table "public"."project_work" enable row level security;
 
 create table "public"."projects" (
-    "id" uuid not null default uuid_generate_v4(),
+    "id" uuid not null default extensions.uuid_generate_v4(),
     "created_at" timestamp with time zone not null default now(),
     "updated_at" timestamp with time zone not null default now(),
     "created_by_id" uuid not null default default_uid(),
@@ -300,7 +300,7 @@ create table "public"."projects" (
 alter table "public"."projects" enable row level security;
 
 create table "public"."projects_events" (
-    "id" uuid not null default uuid_generate_v4(),
+    "id" uuid not null default extensions.uuid_generate_v4(),
     "created_at" timestamp with time zone not null default now(),
     "updated_at" timestamp with time zone not null default now(),
     "created_by_id" uuid not null default default_uid(),
@@ -318,7 +318,7 @@ create table "public"."projects_events" (
 alter table "public"."projects_events" enable row level security;
 
 create table "public"."projects_events_ressources" (
-    "id" uuid not null default uuid_generate_v4(),
+    "id" uuid not null default extensions.uuid_generate_v4(),
     "event_id" uuid not null,
     "project_id" uuid not null,
     "created_at" timestamp with time zone not null default now(),
@@ -332,7 +332,7 @@ create table "public"."projects_events_ressources" (
 
 
 create table "public"."projects_exemplarity_indicators" (
-    "id" uuid not null default uuid_generate_v4(),
+    "id" uuid not null default extensions.uuid_generate_v4(),
     "created_at" timestamp with time zone not null default now(),
     "updated_at" timestamp with time zone not null default now(),
     "created_by_id" uuid not null default default_uid(),
@@ -356,10 +356,10 @@ create table "public"."projects_images" (
     "project_id" uuid not null,
     "name" text not null,
     "id" uuid not null,
-    "color_dominant_hsl" cube,
-    "color_dominant_lab" cube,
-    "color_mean_hsl" cube,
-    "color_mean_lab" cube
+    "color_dominant_hsl" extensions.cube,
+    "color_dominant_lab" extensions.cube,
+    "color_mean_hsl" extensions.cube,
+    "color_mean_lab" extensions.cube
 );
 
 
@@ -371,7 +371,7 @@ create table "public"."projects_location" (
     "updated_at" timestamp with time zone not null default now(),
     "created_by_id" uuid not null default default_uid(),
     "updated_by_id" uuid not null default default_uid(),
-    "geometry" geometry,
+    "geometry" extensions.geometry,
     "radius" real
 );
 
@@ -379,7 +379,7 @@ create table "public"."projects_location" (
 alter table "public"."projects_location" enable row level security;
 
 create table "public"."projects_materials" (
-    "id" uuid not null default uuid_generate_v4(),
+    "id" uuid not null default extensions.uuid_generate_v4(),
     "created_at" timestamp with time zone not null default now(),
     "updated_at" timestamp with time zone not null default now(),
     "created_by_id" uuid not null default default_uid(),
@@ -505,7 +505,7 @@ create table "public"."users_notifications" (
 alter table "public"."users_notifications" enable row level security;
 
 create table "public"."users_projects_collections" (
-    "id" uuid not null default uuid_generate_v4(),
+    "id" uuid not null default extensions.uuid_generate_v4(),
     "created_at" timestamp with time zone not null default now(),
     "updated_at" timestamp with time zone not null default now(),
     "created_by_id" uuid not null default default_uid(),

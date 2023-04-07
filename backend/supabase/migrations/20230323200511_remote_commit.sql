@@ -47,7 +47,7 @@ drop index if exists "public"."notifications_pkey";
 drop table "public"."notifications";
 
 create table "public"."app_notifications" (
-    "id" uuid not null default uuid_generate_v4(),
+    "id" uuid not null default extensions.uuid_generate_v4(),
     "created_at" timestamp with time zone default now(),
     "title" text not null,
     "body" text not null,
@@ -71,7 +71,7 @@ alter table "public"."users" add column "occupation" bigint;
 
 alter table "public"."users_notifications" drop column "notification_id";
 
-alter table "public"."users_notifications" add column "id" uuid not null default uuid_generate_v4();
+alter table "public"."users_notifications" add column "id" uuid not null default extensions.uuid_generate_v4();
 
 alter table "public"."users_notifications" add column "read" boolean not null default false;
 

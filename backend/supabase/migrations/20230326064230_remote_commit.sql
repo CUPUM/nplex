@@ -86,9 +86,9 @@ alter table "public"."projects_images" drop column "color_mean_hsl";
 
 alter table "public"."projects_images" drop column "color_mean_lab";
 
-alter table "public"."projects_images" add column "color_average_hsl" cube;
+alter table "public"."projects_images" add column "color_average_hsl" extensions.cube;
 
-alter table "public"."projects_images" add column "color_average_lab" cube;
+alter table "public"."projects_images" add column "color_average_lab" extensions.cube;
 
 alter table "public"."users" drop column "updated_by_id";
 
