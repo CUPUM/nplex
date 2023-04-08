@@ -96,19 +96,25 @@ export type AppCustomEvent<
 	: never;
 
 /**
- * Generate the typings for dynamic style props in $$Props declaration.
+ * Generate the typings for static and dynamic style props for use in $$Props declaration.
  */
-export type StylePropsStatic<Component extends string, Properties extends string> = {
-	[P in `--${Component}-${Properties}`]?: string;
-};
-
-/**
- * Generate the typings for dynamic style props in $$Props declaration.
- */
-export type StylePropsDynamic<
+export type ComponentStyleProps<
 	Component extends string,
-	Properties extends string,
-	Conditions extends string
+	StyleProps extends {
+		static?: StylePropsRecord;
+		dynamic?: StylePropsRecord;
+		conditions?: 'hover' | 'active' | 'checked' | 'current' | 'focused';
+	}
 > = {
-	[P in `--${Component}-${Properties}` | `--${Component}-${Conditions}-${Properties}`]?: string;
-};
+	[StaticProp in keyof StyleProps['static'] &
+		string as `--${Component}-${StaticProp}`]?: StyleProps['static'][StaticProp];
+} & {
+	[DynamicProp in keyof StyleProps['dynamic'] &
+		string as `--${Component}-${DynamicProp}`]?: StyleProps['dynamic'][DynamicProp];
+} & (StyleProps['conditions'] extends string
+		? {
+				[DynamicProp in keyof StyleProps['dynamic'] &
+					string as `--${Component}-${StyleProps['conditions']}-${DynamicProp}`]?: StyleProps['dynamic'][DynamicProp];
+		  }
+		: {});
+type StylePropsRecord = Record<string | number, string | number>;

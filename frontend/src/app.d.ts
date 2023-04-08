@@ -66,17 +66,13 @@ declare global {
 			showCategoryNavbar?: boolean;
 			showFooter?: boolean;
 			theme?: ThemeName;
+			// Editor properties
 			editorBreadcrumbs?: {
 				title: string;
 				href: string;
 				matcher?: RegExp;
 				disabled?: boolean;
 			}[];
-			// editorLinks?: {
-			// 	title: string;
-			// 	pathname: string;
-			// 	hash?: string;
-			// }[];
 			editorHeader?: typeof SvelteComponent;
 			editorSidebar?: typeof SvelteComponent;
 			editorBottomNav?: typeof SvelteComponent;

@@ -1,14 +1,16 @@
 <script lang="ts">
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import { navbarBackground } from './Navbar.svelte';
 
 	export let color: string;
 
 	const key = {};
 
-	onMount(() => {
-		navbarBackground.set(key, color);
-	});
+	navbarBackground.set(key, color);
+
+	$: navbarBackground.set(key, color);
+	// onMount(() => {
+	// });
 
 	onDestroy(() => {
 		navbarBackground.unset(key);

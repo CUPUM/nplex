@@ -87,8 +87,11 @@
 		:global(.project-section-title) {
 			font-size: var(--ui-text-xl);
 			font-weight: 500;
+			padding: 0.8em 0.5em 1em;
+		}
+
+		:global(.project-section) :global(.project-section-title) {
 			padding: 0em 0.5em 1em;
-			// color: var(--title-color);
 		}
 
 		&.is-demo::after {

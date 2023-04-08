@@ -1,5 +1,7 @@
+import { CATEGORIES } from '$utils/enums.js';
+
 export const load = async (event) => {
 	return {
-		category: 'actors',
+		category: CATEGORIES.Actors,
 	};
 };

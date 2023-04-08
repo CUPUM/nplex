@@ -74,7 +74,7 @@
 			width: 100%;
 			height: 100%;
 			background: var(--navbar-bg);
-			opacity: 0.75;
+			opacity: 0.5;
 			transition: background var(--navbar-transition), opacity var(--navbar-transition);
 		}
 		&:hover:not([data-current]) {
@@ -92,9 +92,10 @@
 			}
 		}
 		&[data-current]:not(.active) {
-			color: col(primary, 500);
+			color: col(primary, 700);
 			&::before {
-				opacity: 0.9;
+				background: col(primary, 100);
+				opacity: 0.2;
 			}
 		}
 

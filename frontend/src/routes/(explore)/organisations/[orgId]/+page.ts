@@ -8,13 +8,14 @@ export const load = async (event) => {
 		.from('organisations')
 		.select(
 			`
-		*,
-		projects:projects_organisations (
-			*
-		)
+			*,
+			projects:projects_organisations (
+				*
+			)
 	`
 		)
 		.eq('id', event.params.orgId)
+		.limit(1)
 		.single()
 		.then((res) => {
 			if (res.error) {

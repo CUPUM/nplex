@@ -8,6 +8,7 @@
 	--ui-bg: #{col(bg, 100)};
 	--ui-nav-pad: 1rem;
 	--ui-nav-h: 81px; // Retrieved manually, adjust whenever modifying navbar style.
+	--ui-explore-search-h: 56px; // Retrieved manually.
 	--ui-sticky-top: calc(
 		var(--ui-nav-h) + var(--ui-gutter-md)
 	); // Pre-calc for floating elements that should sticky below the navbar with adequate spacing.
@@ -64,7 +65,7 @@
 	--ui-width-md: 900px;
 	--ui-width-lg: 1200px;
 	// View-level padding or margin (generally outer bounds). Independent of element font size as opposed to --ui-pad.
-	--ui-gutter-sm: 2rem;
+	--ui-gutter-sm: 1.5rem;
 	--ui-gutter-md: 3rem;
 	--ui-gutter-lg: 5rem;
 	// Block-level unit size, generally for single line elements such as buttons, fields, etc.

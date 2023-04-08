@@ -1607,6 +1607,39 @@ export interface Database {
           updated_by?: string | null
         }
       }
+      explore_projects: {
+        Row: {
+          adjacent_alleys: number | null
+          adjacent_streets: number | null
+          banner: string | null
+          building_area: number | null
+          building_construction_year: number | null
+          building_height: number | null
+          building_levels_basement: boolean[] | null
+          building_levels_basement_count: number | null
+          building_levels_main: boolean[] | null
+          building_levels_main_count: number | null
+          building_levels_mezzanine: boolean[] | null
+          building_levels_mezzanine_count: number | null
+          cost_range: unknown | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string | null
+          implantation_mode: number | null
+          interventions_area: number | null
+          is_demo: boolean | null
+          likes_sum: number | null
+          obfuscated_location: unknown | null
+          site_area: number | null
+          site_ownership: number | null
+          summary: string | null
+          title: string | null
+          type: number | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+      }
       projects_likes_count: {
         Row: {
           count: number | null

@@ -16,7 +16,7 @@
 	<ul>
 		{#each actors as a (a.id)}
 			<li>
-				<a class="card" href="{EXPLORE_ROUTES.actors.pathname}/{a.id}">Bonjour!</a>
+				<a class="card" href="{EXPLORE_ROUTES.actors.pathname}/{a.id}">{a.first_name}</a>
 			</li>
 		{/each}
 	</ul>

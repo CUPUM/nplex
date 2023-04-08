@@ -17,7 +17,7 @@
 	import { ICON_CLASS } from '$components/Icon.svelte';
 	import Loading from '$components/Loading.svelte';
 	import Ripple from '$components/Ripple.svelte';
-	import type { StylePropsDynamic, StylePropsStatic } from '$types/utils';
+	import type { ComponentStyleProps } from '$types/utils';
 	import { UnbasedURL } from '$utils/url';
 	import type {
 		HTMLAnchorAttributes,
@@ -25,12 +25,22 @@
 		SvelteHTMLElements,
 	} from 'svelte/elements';
 
-	type $$Props = (HTMLButtonAttributes | HTMLAnchorAttributes) &
-		StylePropsStatic<'button', 'radius'> &
-		StylePropsDynamic<
+	type $$Props = Omit<HTMLButtonAttributes | HTMLAnchorAttributes, 'class'> &
+		ComponentStyleProps<
 			'button',
-			'color' | 'background' | 'border' | 'shadow',
-			'hover' | 'checked'
+			{
+				static: {
+					radius: string;
+				};
+				dynamic: {
+					'color': string;
+					'side-color': string;
+					'background': string;
+					'border': string;
+					'shadow': string;
+				};
+				conditions: 'hover' | 'checked';
+			}
 		> & {
 			tabindex?: number;
 			as?: ButtonElement;
@@ -103,20 +113,20 @@
 >
 	<Ripple />
 	{#if $$slots.leading && !equi}
-		<div class="content leading">
+		<div class="content button-leading">
 			<slot name="leading" />
 		</div>
 	{/if}
-	<div class="content main">
+	<div class="content button-main">
 		<slot />
 	</div>
 	{#if $$slots.trailing && !equi}
-		<div class="content trailing">
+		<div class="content button-trailing">
 			<slot name="trailing" />
 		</div>
 	{/if}
 	{#if loading}
-		<div class="loading">
+		<div class="button-loading">
 			<slot name="loading">
 				<Loading />
 			</slot>
@@ -129,7 +139,7 @@
 		// Dynamic style vars
 		@include component-dynamic-vars(
 			'button',
-			('color', 'background', 'border', 'shadow'),
+			('color', 'side-color', 'background', 'border', 'shadow'),
 			('hover', 'focus', 'active')
 		);
 		// Exposed static style vars
@@ -183,6 +193,10 @@
 			&::after {
 				border: var(--ui-button-hover-border);
 			}
+			.button-leading,
+			.button-trailing {
+				color: var(--ui-button-hover-side-color);
+			}
 		}
 		&:global(.active) {
 			color: var(--ui-button-active-color);
@@ -190,6 +204,10 @@
 			box-shadow: var(--ui-button-active-shadow);
 			&::after {
 				border: var(--ui-button-active-border);
+			}
+			.button-leading,
+			.button-trailing {
+				color: var(--ui-button-active-side-color);
 			}
 		}
 		&.center {
@@ -258,7 +276,7 @@
 		text-overflow: ellipsis;
 		transition: transform 0.1s ease-out;
 	}
-	.main {
+	.button-main {
 		grid-column: main;
 		.center &,
 		.equi & {
@@ -274,7 +292,8 @@
 			text-align: right;
 		}
 	}
-	.leading {
+	.button-leading {
+		color: var(--ui-button-side-color);
 		justify-content: flex-start;
 		text-align: left;
 		grid-column: leading;
@@ -282,7 +301,8 @@
 			padding-right: 0.5em;
 		}
 	}
-	.trailing {
+	.button-trailing {
+		color: var(--ui-button-side-color);
 		justify-content: flex-end;
 		text-align: right;
 		grid-column: trailing;

@@ -5,18 +5,30 @@
 	
 -->
 <script lang="ts">
+	import type { ComponentStyleProps } from '$types/utils';
+
 	import Ripple from '$components/Ripple.svelte';
-	import type { StylePropsDynamic, StylePropsStatic } from '$types/utils';
 	import type { HTMLAnchorAttributes, HTMLInputAttributes } from 'svelte/elements';
 
 	type V = $$Generic;
 
 	type $$Props = (HTMLInputAttributes | HTMLAnchorAttributes) &
-		StylePropsStatic<'token', 'inset' | 'radius'> &
-		StylePropsDynamic<
+		ComponentStyleProps<
 			'token',
-			'color' | 'background' | 'border' | 'shadow',
-			'hover' | 'checked'
+			{
+				static: {
+					inset: string;
+					radius: string;
+				};
+				dynamic: {
+					'color': string;
+					'side-color': string;
+					'background': string;
+					'border': string;
+					'shadow': string;
+				};
+				conditions: 'hover' | 'checked';
+			}
 		> & {
 			variant?: 'default' | 'outlined' | 'dashed' | 'ghost' | 'editor' | 'cta';
 			state?: undefined | 'error' | 'warning' | 'success';
@@ -134,7 +146,7 @@
 		// Dynamic vars
 		@include component-dynamic-vars(
 			'token',
-			('color', 'background', 'border', 'shadow'),
+			('color', 'side-color', 'background', 'border', 'shadow'),
 			('hover', 'checked')
 		);
 		// Exposed static vars
@@ -180,6 +192,10 @@
 				&::after {
 					border: var(--ui-token-hover-border);
 				}
+				.token-leading,
+				.token-trailing {
+					color: var(--ui-token-hover-side-color);
+				}
 			}
 		}
 		&.checked {
@@ -188,6 +204,10 @@
 			box-shadow: var(--ui-token-checked-shadow);
 			&::after {
 				border: var(--ui-token-checked-border);
+			}
+			.token-leading,
+			.token-trailing {
+				color: var(--ui-token-checked-side-color);
 			}
 		}
 		&.readonly,
@@ -199,6 +219,11 @@
 			cursor: default;
 			opacity: 0.75;
 		}
+	}
+	.token-leading,
+	.token-trailing {
+		color: var(--ui-token-side-color);
+		transition: inherit;
 	}
 	.equi {
 		aspect-ratio: 1;
@@ -223,7 +248,7 @@
 			padding-inline: 0 !important;
 			flex: none;
 		}
-		.leading + & {
+		.token-leading + & {
 			padding-inline-start: var(--ui-token-inset);
 		}
 		&:last-child {

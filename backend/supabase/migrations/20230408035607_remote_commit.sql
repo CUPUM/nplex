@@ -21,11 +21,13 @@ CREATE INDEX idx_auth_code ON auth.flow_state USING btree (auth_code);
 alter table "auth"."flow_state" add constraint "flow_state_pkey" PRIMARY KEY using index "flow_state_pkey";
 
 
+drop policy "anyone can select locations of public projects" on "public"."projects_location";
+
 alter table "public"."organisations_actors" drop constraint "organisations_actors_role_fkey";
 
-drop view if exists "public"."projects_publication_status_fulfill";
-
 drop view if exists "public"."editable_actors";
+
+drop view if exists "public"."projects_publication_status_fulfill";
 
 alter table "public"."actor_organisation_role" drop constraint "actor_role_pkey";
 
@@ -206,6 +208,54 @@ alter table "public"."projects_organisations" validate constraint "projects_orga
 
 set check_function_bodies = off;
 
+CREATE OR REPLACE FUNCTION public.actor_is_public(a_id uuid)
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+	begin
+		return exists (
+			select 1 from actors_publication_status as aps
+  			where aps.project = a_id
+  			and aps.published is not null
+  		);
+	end;
+$function$
+;
+
+create or replace view "public"."explore_projects" as  SELECT p.id,
+    p.created_at,
+    p.updated_at,
+    p.created_by,
+    p.updated_by,
+    p.title,
+    p.description,
+    p.site_ownership,
+    p.site_area,
+    p.interventions_area,
+    p.adjacent_streets,
+    p.building_area,
+    p.implantation_mode,
+    p.building_construction_year,
+    p.type,
+    p.banner,
+    p.cost_range,
+    p.likes_sum,
+    p.building_height,
+    p.building_levels_main,
+    p.building_levels_basement,
+    p.building_levels_mezzanine,
+    p.adjacent_alleys,
+    p.summary,
+    p.building_levels_main_count,
+    p.building_levels_basement_count,
+    p.building_levels_mezzanine_count,
+    p.is_demo,
+    pl.obfuscated AS obfuscated_location
+   FROM (projects p
+     LEFT JOIN projects_location pl ON ((pl.project = p.id)))
+  WHERE project_is_public(p.id);
+
+
 CREATE OR REPLACE FUNCTION public.org_is_public(o_id uuid)
  RETURNS boolean
  LANGUAGE plpgsql
@@ -233,7 +283,18 @@ create or replace view "public"."editable_actors" as  SELECT a.id,
   WHERE authorize_actor_update(a.*);
 
 
+create or replace view "public"."projects_publication_status_fulfill" as  SELECT ps.project,
+    ps.updated_at,
+    ps.updated_by,
+    ps.published,
+    ps.requested,
+        CASE
+            WHEN ((pl.center IS NOT NULL) AND (p.title IS NOT NULL) AND (p.type IS NOT NULL)) THEN true
+            ELSE false
+        END AS fulfill
+   FROM ((projects_publication_status ps
+     LEFT JOIN projects_location pl ON ((pl.project = ps.project)))
+     LEFT JOIN projects p ON ((p.id = ps.project)));
 
-alter table "storage"."objects" add column "version" text;
 
 

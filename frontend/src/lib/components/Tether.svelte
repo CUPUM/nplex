@@ -25,7 +25,7 @@
 	/**
 	 * Container of anchoring element, with "display: contents".
 	 */
-	export let anchorContainerRef: HTMLElement;
+	let anchorContainerRef: HTMLElement;
 	let anchorRef: HTMLElement | undefined;
 
 	let mutationObs: MutationObserver;
@@ -90,11 +90,11 @@
 </div>
 <div
 	class="ui-tether {place} {align}"
-	style:--x="{x}px"
-	style:--y="{y}px"
-	style:--w="{w}px"
-	style:--h="{h}px"
-	style:--d={cssSize(distance)}
+	style:--tether-x="{x}px"
+	style:--tether-y="{y}px"
+	style:--tether-w="{w}px"
+	style:--tether-h="{h}px"
+	style:--tether-d={cssSize(distance)}
 >
 	<slot {anchorRef} {updatePosition} />
 </div>
@@ -126,8 +126,8 @@
 
 	.top,
 	.bottom {
-		left: var(--x);
-		width: var(--w);
+		left: var(--tether-x);
+		width: var(--tether-w);
 		&.start {
 			justify-content: flex-start;
 		}
@@ -137,31 +137,31 @@
 	}
 
 	.top {
-		top: var(--y);
+		top: var(--tether-y);
 		transform-origin: center bottom;
 		&.start {
-			transform-origin: calc(0.5 * var(--w)) bottom;
+			transform-origin: calc(0.5 * var(--tether-w)) bottom;
 		}
 		&.end {
-			transform-origin: calc(100% - 0.5 * var(--w)) bottom;
+			transform-origin: calc(100% - 0.5 * var(--tether-w)) bottom;
 		}
 	}
 
 	.bottom {
-		top: calc(var(--y) + var(--h));
+		top: calc(var(--tether-y) + var(--tether-h));
 		transform-origin: center top;
 		&.start {
-			transform-origin: calc(0.5 * var(--w)) top;
+			transform-origin: calc(0.5 * var(--tether-w)) top;
 		}
 		&.end {
-			transform-origin: calc(100% - 0.5 * var(--w)) top;
+			transform-origin: calc(100% - 0.5 * var(--tether-w)) top;
 		}
 	}
 
 	.left,
 	.right {
-		top: var(--y);
-		height: var(--h);
+		top: var(--tether-y);
+		height: var(--tether-h);
 		&.start {
 			align-items: flex-start;
 		}
@@ -171,24 +171,24 @@
 	}
 
 	.left {
-		left: var(--x);
+		left: var(--tether-x);
 		transform-origin: right center;
 		&.start {
-			transform-origin: right calc(0.5 * var(--h));
+			transform-origin: right calc(0.5 * var(--tether-h));
 		}
 		&.end {
-			transform-origin: right calc(100% - 0.5 * var(--h));
+			transform-origin: right calc(100% - 0.5 * var(--tether-h));
 		}
 	}
 
 	.right {
-		left: calc(var(--x) + var(--w));
+		left: calc(var(--tether-x) + var(--tether-w));
 		transform-origin: left center;
 		&.start {
-			transform-origin: left calc(0.5 * var(--h));
+			transform-origin: left calc(0.5 * var(--tether-h));
 		}
 		&.end {
-			transform-origin: left calc(100% - 0.5 * var(--h));
+			transform-origin: left calc(100% - 0.5 * var(--tether-h));
 		}
 	}
 </style>

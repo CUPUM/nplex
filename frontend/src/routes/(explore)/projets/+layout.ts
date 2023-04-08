@@ -1,5 +1,8 @@
+import { CATEGORIES } from '$utils/enums.js';
+
 export const load = async (event) => {
 	return {
-		category: 'projects',
+		category: CATEGORIES.Projects,
+		showFooter: false,
 	};
 };

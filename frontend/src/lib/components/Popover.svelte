@@ -16,7 +16,7 @@
 	import flyScale from '$transitions/flyScale';
 	import { cssSize } from '$utils/css';
 	import { tick, type ComponentProps } from 'svelte';
-	import { expoIn, expoOut } from 'svelte/easing';
+	import { cubicIn, expoOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
 	import Menu from './Menu/Menu.svelte';
 	import Tether from './Tether.svelte';
@@ -103,12 +103,12 @@
 			on:pointerenter|self={handleEnter}
 			bind:this={contentRef}
 			class="popover {align} {place}"
-			style:--d={cssSize(distance)}
-			in:flyScale={{ scale: 0.95, y: -16, easing: expoOut, duration: 200, opacity: 0 }}
+			style:--popover-d={cssSize(distance)}
+			in:flyScale={{ scale: 0.94, y: -16, easing: expoOut, duration: 200, opacity: 0 }}
 			out:scale|local={{
-				start: 0.95,
-				easing: expoIn,
-				duration: latest !== tether?.anchorRef || $navigating ? 0 : 100,
+				start: 0.96,
+				easing: cubicIn,
+				duration: (latest && latest !== tether?.anchorRef) || $navigating ? 0 : 125,
 				opacity: 0,
 			}}
 		>
@@ -143,9 +143,9 @@
 	}
 
 	.popover {
-		--tip-pad: calc(0.5 * var(--w));
+		--tip-pad: calc(0.5 * var(--tether-w));
 		--tip-size: 1em;
-		--d-sum: calc(var(--d) + 0.5 * var(--tip-size));
+		--popover-d-sum: calc(var(--popover-d) + 0.5 * var(--tip-size));
 		display: block;
 		flex-shrink: 0;
 		width: auto;
@@ -165,9 +165,9 @@
 
 	.top {
 		bottom: 0;
-		padding-bottom: var(--d);
+		padding-bottom: var(--popover-d);
 		& :global(.ui-tip) {
-			bottom: var(--d);
+			bottom: var(--popover-d);
 			left: 50%;
 			transform: translate(-50%, 100%);
 		}
@@ -175,9 +175,9 @@
 
 	.bottom {
 		top: 0;
-		padding-top: var(--d);
+		padding-top: var(--popover-d);
 		& :global(.ui-tip) {
-			top: var(--d);
+			top: var(--popover-d);
 			left: 50%;
 			transform: translate(-50%, -100%) rotate(180deg);
 		}
@@ -185,17 +185,17 @@
 
 	.right {
 		left: 0;
-		padding-left: var(--d);
+		padding-left: var(--popover-d);
 		& :global(.ui-tip) {
-			left: var(--d);
+			left: var(--popover-d);
 			top: 50%;
 			transform: translate(-100%, -50%) rotate(90deg);
 		}
 	}
 
 	.left {
-		right: var(--d);
-		padding-right: var(--d);
+		right: var(--popover-d);
+		padding-right: var(--popover-d);
 		& :global(.ui-tip) {
 			right: 0;
 			top: 50%;

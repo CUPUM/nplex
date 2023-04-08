@@ -126,6 +126,14 @@
 		});
 	}
 
+	function getDefaultCooperativeGestures(value: typeof cooperativeGestures) {
+		if (value === true) {
+			return MAP_GESTURES_TEXT.french;
+		} else {
+			return value;
+		}
+	}
+
 	function init() {
 		const premap = new Map({
 			container: containerRef,
@@ -154,8 +162,7 @@
 			doubleClickZoom,
 			touchZoomRotate,
 			touchPitch,
-			cooperativeGestures:
-				cooperativeGestures === true ? MAP_GESTURES_TEXT.french : cooperativeGestures,
+			cooperativeGestures: getDefaultCooperativeGestures(cooperativeGestures),
 			trackResize,
 			center,
 			zoom,

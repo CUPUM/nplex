@@ -1,10 +1,8 @@
 <script lang="ts">
-	import Map from '$components/Map/Map.svelte';
-	import { navbarWidth, NAVBAR_WIDTH } from '$routes/Navbar.svelte';
-	import { rootScroll } from '$stores/rootScroll';
-	import tonerLight from '$utils/map/styles/tonerLight';
-	import { onDestroy, onMount } from 'svelte';
-	import ProjectsFacets from './ProjectsFacets.svelte';
+	import { page } from '$app/stores';
+	import { NAVBAR_WIDTH, navbarWidth } from '$routes/Navbar.svelte';
+	import RootScroll from '$routes/RootScroll.svelte';
+	import { onDestroy } from 'svelte';
 
 	export let data;
 
@@ -12,69 +10,57 @@
 
 	navbarWidth.set(key, NAVBAR_WIDTH.Full);
 
-	onMount(() => {
-		rootScroll.lock(key);
-	});
-
 	onDestroy(() => {
-		rootScroll.unlock(key);
 		navbarWidth.unset(key);
 	});
 
 	function handleSubmit() {}
+
+	export const snapshot = {
+		capture() {},
+		restore(snapshot) {},
+	};
 </script>
 
-<article>
-	<section class="facets">
-		<ProjectsFacets />
-	</section>
-	<section class="map">
-		<Map cooperativeGestures={false} mapStyle={tonerLight}>
+<RootScroll lock />
+<article id="projects-explore" class:map-compact={$page.data.projectsMapCompact}>
+	<section id="projects-filters">Filtres ici</section>
+	<section id="projects-map">
+		<!-- <Map cooperativeGestures={false} mapStyle={tonerLight}>
 			<div class="ui-skeleton" slot="loading" />
-		</Map>
+		</Map> -->
+	</section>
+	<section id="projects-list">
+		<ul>
+			<li>stuff</li>
+		</ul>
 	</section>
 </article>
 
 <style lang="scss">
-	article {
-		--left-w: 400px;
-		--right-w: 400px;
-		--gutter: 1.5rem;
+	#projects-explore {
 		position: relative;
 		z-index: 0;
 		height: 100vh;
-		width: 100vw;
-		align-self: flex-start;
-		display: grid;
-		grid-template-columns:
-			[full-start gutter-start-start]
-			var(--gutter)
-			[gutter-start-end left-start]
-			var(--left-w)
-			[left-end center-start]
-			1fr
-			[center-end right-start]
-			var(--right-w)
-			[right-end gutter-end-start]
-			var(--gutter)
-			[gutter-end-end full-end];
+		height: 100svh;
+		align-self: stretch;
+		margin-top: calc(-1 * var(--ui-nav-h) - var(--ui-explore-search-h));
+		display: flex;
 		flex-direction: row;
-		align-items: flex-start;
-		margin-top: calc(-1 * var(--ui-nav-h));
 	}
 
-	.facets {
+	#projects-filters {
 		grid-column: left;
 		grid-row: 1;
 		z-index: 1;
 	}
 
-	.map {
+	#projects-map {
 		position: relative;
-		grid-column: full;
-		grid-row: 1;
-		width: 100%;
+		flex: 1;
+		border-radius: var(--ui-radius-xl);
 		height: 100%;
+		background-color: col(bg, 900);
 	}
 
 	.ui-skeleton {
