@@ -4,7 +4,7 @@
 /**
  * Generate the base css variables for dynamic properties of a component's style including their fallback chaining (see below).
  */
-@mixin component-dynamic-vars($component, $properties, $conditions) {
+@mixin dynamic-props($component, $properties, $conditions) {
 	@include _component-condition-vars($component, $properties);
 	@each $c in $conditions {
 		@include _component-condition-vars($component, $properties, $c);

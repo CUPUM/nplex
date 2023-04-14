@@ -13,7 +13,6 @@
 	import type { AppCustomEvent } from '$types/utils';
 	import { col } from '$utils/css';
 	import { getProjectImageUrl } from '$utils/database/helpers';
-	import { KEY } from '$utils/enums';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
 	import { expoOut } from 'svelte/easing';
 	import { spring } from 'svelte/motion';
@@ -34,8 +33,8 @@
 	const cx = LOGO_VIEWBOX_WIDTH / 2;
 	const cy = LOGO_VIEWBOX_HEIGHT / 2;
 
-	const circle = spring({ x: cx, y: cy, r: 0 }, { damping: 0.8, stiffness: 0.1 });
-	const square = spring({ x: cx, y: cy, s: 0, a: 0 }, { damping: 0.9, stiffness: 0.2 });
+	const circle = spring({ x: cx, y: cy, r: 0 }, { damping: 0.9, stiffness: 0.1 });
+	const square = spring({ x: cx, y: cy, s: 0, a: 0 }, { damping: 0.9, stiffness: 0.15 });
 
 	function moveSpotlight(e: AppCustomEvent<'on:svg.pointermove'>) {
 		circle.update((prev) => ({
@@ -61,7 +60,7 @@
 		}));
 	}
 
-	function consult() {
+	function begin() {
 		if (browser) {
 			scrollTarget.scrollIntoView({
 				block: 'start',
@@ -69,14 +68,6 @@
 			});
 		}
 	}
-
-	function keydown(e: KeyboardEvent) {
-		if (e.key === KEY.Enter || e.key === KEY.ArrowDown) {
-			consult();
-		}
-	}
-
-	const angle = (Math.random() * 360).toFixed(0);
 </script>
 
 <header
@@ -87,7 +78,6 @@
 		entered = true;
 	}}
 	data-theme={THEMES.dark}
-	style:--angle="{angle}deg"
 >
 	<svg
 		id="splash-logo"
@@ -104,7 +94,7 @@
 				height={Math.max(0, 2 * $square.s)}
 				transform="rotate({$square.a})"
 				fill="white"
-				opacity=".9"
+				opacity=".85"
 				rx="50"
 			/>
 			<circle
@@ -115,7 +105,15 @@
 			/>
 		</mask>
 		<mask id="spotlight-reverse">
-			<rect x="0" y="0" width="100%" height="100%" fill="white" />
+			<rect
+				x="0"
+				y="0"
+				width="100%"
+				height="100%"
+				fill="white"
+				stroke="white"
+				stroke-width="var(--ui-gutter-lg)"
+			/>
 			<rect
 				x={Math.max(0, $square.x - $square.s)}
 				y={Math.max(0, $square.y - $square.s)}
@@ -157,17 +155,19 @@
 			{/each}
 		</defs>
 		{#if entered && logoImgsLoaded.every((loaded) => loaded)}
-			<g mask="url(#spotlight)">
-				{#each logoChars as char, i (char)}
-					<use
-						in:fly={{ y: 30, delay: 250 + 50 * i }}
-						href={LOGO_SYMBOLS_HREFS[char]}
-						out:fade|local
-						fill="url(#splash-image-{i})"
-					/>
-				{/each}
+			<g class="logo-symbol-group logo-symbol-filled">
+				<g mask="url(#spotlight)">
+					{#each logoChars as char, i (char)}
+						<use
+							in:fly={{ y: 30, delay: 250 + 50 * i }}
+							href={LOGO_SYMBOLS_HREFS[char]}
+							out:fade|local
+							fill="url(#splash-image-{i})"
+						/>
+					{/each}
+				</g>
 			</g>
-			<g mask="url(#spotlight-reverse)">
+			<g class="logo-symbol-group" mask="url(#spotlight-reverse)">
 				{#each logoChars as char, i (char)}
 					<use
 						in:fly={{ y: 30, delay: 250 + 50 * i }}
@@ -177,7 +177,7 @@
 						stroke-linecap="round"
 						stroke-linejoin="round"
 						stroke={col('fg', '100')}
-						stroke-width="1"
+						stroke-width="1.5"
 						stroke-dasharray="1rem .5rem"
 					/>
 				{/each}
@@ -187,7 +187,7 @@
 	{#if entered}
 		<button
 			in:fly={{ y: -6, delay: 500, duration: 1200, easing: expoOut }}
-			on:click={consult}
+			on:click={begin}
 			class={ICON_CLASS.hover}
 		>
 			<div class="arrow">
@@ -203,8 +203,6 @@
 		position: relative;
 		height: 100svh;
 		width: 100%;
-		// padding-inline: 3rem;
-		// background: linear-gradient(var(--angle), col(bg, 300), col(bg, 100));
 		background-color: col(bg, 300);
 		border-bottom-left-radius: var(--splash-radius);
 		border-bottom-right-radius: var(--splash-radius);
@@ -224,23 +222,22 @@
 		height: 100%;
 		object-fit: contain;
 		max-width: var(--ui-width-main);
+		overflow: visible;
 		opacity: max(0, calc(1 - 0.001 * var(--ui-scroll)));
-	}
-
-	g {
-		transform: translateY(calc(0.2 * var(--ui-scroll-px)));
-	}
-
-	mask {
-		circle {
-			filter: drop-shadow(12px 32px 48px rgb(0, 0, 0));
-			// &.reverse-shadow {
-			// 	filter: drop-shadow(12px 24px 48px rgb(255, 255, 255, 0.9));
-			// }
+		.logo-symbol-group {
+			transform: translateY(calc(0.2 * var(--ui-scroll-px)));
 		}
-		rect {
-			transform-box: fill-box;
-			transform-origin: 75% 35%;
+		mask {
+			circle {
+				filter: drop-shadow(12px 48px 56px black);
+			}
+			rect {
+				transform-box: fill-box;
+				transform-origin: 75% 35%;
+			}
+		}
+		.logo-symbol-filled {
+			filter: drop-shadow(0px 16px 12px rgb(0, 0, 0, 0.25));
 		}
 	}
 

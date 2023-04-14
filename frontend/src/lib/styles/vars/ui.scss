@@ -8,7 +8,7 @@
 	--ui-bg: #{col(bg, 100)};
 	--ui-nav-pad: 1rem;
 	--ui-nav-h: 81px; // Retrieved manually, adjust whenever modifying navbar style.
-	--ui-explore-search-h: 56px; // Retrieved manually.
+	--ui-projects-toolbar-h: 61px; // Retrieved manually.
 	--ui-sticky-top: calc(
 		var(--ui-nav-h) + var(--ui-gutter-md)
 	); // Pre-calc for floating elements that should sticky below the navbar with adequate spacing.

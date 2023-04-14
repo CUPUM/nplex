@@ -9,12 +9,12 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import Portal from '$components/Portal.svelte';
-	import { rootScroll } from '$stores/rootScroll';
+	import RootScroll from '$routes/RootScroll.svelte';
 	import type { AppCustomEvent } from '$types/utils';
 	import { col } from '$utils/css';
 	import { closest, type ClosestReadable } from '$utils/store';
 	import type { ThemeName } from '$utils/themes';
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import { cubicIn, expoOut } from 'svelte/easing';
 	import { crossfade, fade, fly, scale } from 'svelte/transition';
 	import { modalOutletRef } from './ModalOutlet.svelte';
@@ -29,10 +29,10 @@
 
 	const [send, receive] = crossfade({
 		duration(d) {
-			return 25 + Math.sqrt(d * 25);
+			return 50 + Math.sqrt(d * 10);
 		},
 		fallback(node, params, intro) {
-			return scale(node, { start: 0.98, duration: 100, easing: expoOut });
+			return scale(node, { start: 0.98, duration: 125, easing: expoOut });
 		},
 		easing: expoOut,
 	});
@@ -52,7 +52,6 @@
 	}>();
 
 	$: if (lockScroll === false || !opened) {
-		rootScroll.unlock(key);
 		if (openedOnce) {
 			dispatch('close', { canceled, confirmed });
 		}
@@ -60,7 +59,6 @@
 		canceled = false;
 	} else if (opened) {
 		openedOnce = true;
-		rootScroll.lock(key);
 		dispatch('open', { canceled, confirmed });
 		confirmed = false;
 		canceled = false;
@@ -117,15 +115,12 @@
 		if (opened) openedOnce = true;
 		closestTheme = closest(probeRef, 'data-theme');
 	});
-
-	onDestroy(() => {
-		rootScroll.unlock(key);
-	});
 </script>
 
 <slot name="control" {requestConfirmation} {open} />
 <div class="modal-probe" hidden bind:this={probeRef} />
 {#if $modalOutletRef && opened}
+	<RootScroll lock={lockScroll} />
 	<Portal target={$modalOutletRef}>
 		<div
 			bind:this={bgRef}

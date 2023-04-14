@@ -6,11 +6,8 @@
 <script lang="ts" context="module">
 	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
-	import { rootScroll } from '$stores/rootScroll';
 	import { SEARCH_PARAMS } from '$utils/enums';
 	import { derived, get } from 'svelte/store';
-
-	const key = Symbol('auth');
 
 	export const AUTHMODAL_MODE = {
 		SignIn: 'signin',
@@ -31,7 +28,6 @@
 			}
 			const open = _page.url.searchParams.has(SEARCH_PARAMS.AUTH_MODAL);
 			if (!open) {
-				rootScroll.unlock(key);
 				return false;
 			} else {
 				if (_page.data?.session) {
@@ -43,7 +39,6 @@
 					});
 					return false;
 				}
-				rootScroll.lock(key);
 				const mode = _page.url.searchParams.get(SEARCH_PARAMS.AUTH_MODAL);
 				return mode && (Object.values(AUTHMODAL_MODE) as string[]).includes(mode)
 					? (mode as AuthMode)
@@ -115,6 +110,7 @@
 	import { fade, fly, scale, slide } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
 	import { messages } from './MessagesOutlet.svelte';
+	import RootScroll from './RootScroll.svelte';
 
 	const Action = {
 		SignIn: '/api/auth?/signin',
@@ -142,6 +138,7 @@
 </script>
 
 {#if $authModal}
+	<RootScroll lock />
 	<div
 		class="bg"
 		aria-hidden="true"
@@ -338,7 +335,7 @@
 		justify-content: flex-start;
 		flex-wrap: nowrap;
 		width: 100%;
-		max-width: 450px;
+		max-width: 500px;
 		max-height: 100%;
 		background: col(bg, 300);
 		box-shadow: 0 3rem 6rem -3rem rgba(0, 0, 20, 0.5), 0 3rem 3rem 2rem rgba(0, 0, 0, 0.1);

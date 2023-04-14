@@ -13,13 +13,13 @@
 	import MapSearch from '$components/Map/MapSearch.svelte';
 	import MapToolbar from '$components/Map/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
-	import tonerDark from '$utils/map/styles/tonerDark';
+	import dark from '$util$utils/map/styles/dark
 	import { editorMap, editorMapDraw } from './common';
 
 	let tracking = false;
 </script>
 
-<Map cooperativeGestures={true} bind:map={$editorMap} mapStyle={tonerDark} id="editor-map">
+<Map cooperativeGestures={true} bind:map={$editorMap} mapStyle={dark} id="editor-map">
 	<MapDraw bind:draw={$editorMapDraw} mode="draw_circle" />
 	<MapAttributionControl position="bottom-left" />
 	<svelte:fragment slot="top-left">

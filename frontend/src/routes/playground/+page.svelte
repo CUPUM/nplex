@@ -4,9 +4,7 @@
 	import FieldDropdown from '$components/Field/FieldDropdown.svelte';
 	import Icon from '$components/Icon.svelte';
 	import Token from '$components/Token/Token.svelte';
-	import { browserDb } from '$utils/database/client';
 	import { writableQuery } from '$utils/store';
-	import { onMount } from 'svelte';
 
 	const h = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];
 	const t = ['xl', 'lg', 'md', 'sm', 'xs'];
@@ -25,35 +23,33 @@
 	// 	// });
 	// });
 
-	onMount(async () => {
-		const u = await browserDb
-			.from('users')
-			.select(
-				`
-				*,
-				role:users_roles_extended!users_roles_user_id_fkey (role, title, description)
-			`
-			)
-			.limit(1)
-			.single();
-
-		if (u.error) {
-			console.log(u.error.hint);
-		} else {
-			console.log(u.data);
+	function getBox(e: Event) {
+		if (e.target instanceof HTMLElement) {
+			// console.log(e.target.offsetLeft);
+			if (e.target.parentElement instanceof HTMLElement) {
+				const parent = e.target.parentElement;
+				// console.log(parent.getBoundingClientRect());
+				console.dir(parent);
+				// console.log(e.target.parentElement.offsetLeft);
+			}
 		}
-	});
-
-	$: console.log($q.res);
-
-	let value = 'bonjour';
+	}
 </script>
 
+<article>
+	<div class="wrapper">
+		<button on:click={getBox}>Click me</button>
+		<button>Some useless button</button>
+	</div>
+</article>
 <article>
 	<Token --token-color="red">Test</Token>
 	<Button --button-side-color="red"><Icon name="settings" slot="leading" />Test</Button>
 	<FieldDropdown>
-		<Field slot="field" />
+		<Field variant="outlined" slot="field">
+			<svelte:fragment slot="label">Test label</svelte:fragment>
+			<svelte:fragment slot="leading"><Button>Test</Button></svelte:fragment>
+		</Field>
 		<li>Test</li>
 		<li>Test</li>
 		<li>Test</li>
@@ -69,6 +65,10 @@
 		gap: 3rem;
 		width: 100%;
 		padding: var(--ui-gutter-md);
+	}
+
+	.wrapper {
+		display: contents;
 	}
 
 	section {

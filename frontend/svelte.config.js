@@ -33,7 +33,7 @@ const config = {
 			$static: 'static',
 			$stores: 'src/lib/stores',
 			$styles: 'src/lib/styles',
-			$transitions: 'src/lib/transitions',
+			$motion: 'src/lib/motion',
 			$types: 'src/lib/types',
 			$utils: 'src/lib/utils',
 			$plugins: 'src/plugins',

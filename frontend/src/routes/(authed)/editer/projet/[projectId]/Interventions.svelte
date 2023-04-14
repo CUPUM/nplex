@@ -11,8 +11,8 @@
 	import Fuse from 'fuse.js';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
-	import { descriptors, project } from './common';
 	import CreateIntervention from './CreateIntervention.svelte';
+	import { descriptors, project } from './common';
 
 	$: console.log($descriptors.types);
 
@@ -72,7 +72,7 @@
 				{#each selected as w, i (w.id)}
 					<li animate:flip={{ duration: 150 }} transition:fly|local={{ y: 6, duration: 150 }}>
 						<Tooltip message={w.description}>
-							<Token variant="editor" active>
+							<Token variant="editor" checked>
 								{w.title}
 								<TokenButton slot="trailing" as="label" state="warning">
 									<Icon name="cross" strokeWidth={2} />

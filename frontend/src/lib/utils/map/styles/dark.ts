@@ -2,7 +2,7 @@ import { PUBLIC_MAPTILER_KEY } from '$env/static/public';
 import { THEME_PALETTES } from '$utils/themes';
 import { colord } from 'colord';
 import type { StyleSpecification } from 'maplibre-gl';
-import { FONT, TRANSPARENT } from './tonerLight';
+import { FONT, TRANSPARENT } from './light';
 
 const THEME = {
 	LANDSCAPE: THEME_PALETTES.dark.bg[900], // 'hsla(0, 0%, 100%, 1)',
@@ -22,7 +22,7 @@ const THEME = {
 /**
  * Derived from https://github.com/openmaptiles/maptiler-toner-gl-style.
  */
-const tonerDark: StyleSpecification = {
+const dark: StyleSpecification = {
 	version: 8,
 	name: 'Toner',
 	metadata: {
@@ -42,7 +42,8 @@ const tonerDark: StyleSpecification = {
 			url: `https://api.maptiler.com/tiles/v3/tiles.json?key=${PUBLIC_MAPTILER_KEY}`,
 		},
 	},
-	glyphs: `https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=${PUBLIC_MAPTILER_KEY}`,
+	// glyphs: `https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=${PUBLIC_MAPTILER_KEY}`,
+	glyphs: FONT_URL,
 	layers: [
 		{
 			id: 'background',
@@ -985,4 +986,4 @@ const tonerDark: StyleSpecification = {
 	id: 'c4268e48-fac9-4478-8120-201224fbd4d8',
 };
 
-export default tonerDark;
+export default dark;

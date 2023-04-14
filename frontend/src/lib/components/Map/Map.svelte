@@ -3,13 +3,9 @@
 	## Map
 	Generic map primitive component to instanciate a MapLibre context and map.
 -->
+<svelte:options accessors />
+
 <script lang="ts" context="module">
-	/**
-	 * Context.
-	 */
-
-	const CTX_KEY = 'map-context';
-
 	const MAP_OVERLAY_AREAS = [
 		'top-left',
 		'top',
@@ -30,31 +26,33 @@
 		drawChangeMode: (mode: MapDrawMode, opts?: any) => void | undefined;
 	}
 
-	export function getMapContext() {
-		return getContext<MapContext>(CTX_KEY);
-	}
+	const [getMapContext, setMapContext] = defineContext<MapContext>('map-context');
+	export { getMapContext };
 </script>
 
 <script lang="ts">
+	import resize from '$actions/resize';
 	import { browser } from '$app/environment';
+	import { defineContext } from '$utils/context';
 	import { MAP_DRAW_EVENTS, type Cursor, type MapDrawMode } from '$utils/enums';
 	import { LOCATIONS } from '$utils/map/locations';
-	import { MAP_STYLES } from '$utils/map/styles';
+	import light from '$utils/map/styles/light';
 	import { MAP_GESTURES_TEXT, MAP_LOCALES, type MapLocale } from '$utils/map/ui';
 	import { debounce } from '$utils/modifiers';
-	import type { DrawModeChangeEvent } from '@mapbox/mapbox-gl-draw';
 	import { Map, type MapEventType, type MapOptions } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
-	import { createEventDispatcher, getContext, onDestroy, onMount, setContext } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import { writable, type Readable, type Writable } from 'svelte/store';
 
+	export let map: Map | undefined = undefined;
+	export let mapStyle: MapOptions['style'] = light;
 	export let id: string | undefined = undefined;
 	export let interactive: MapOptions['interactive'] = true;
 	export let bearingSnap: MapOptions['bearingSnap'] = undefined;
 	export let attributionControl: MapOptions['attributionControl'] = undefined;
 	export let customAttribution: MapOptions['customAttribution'] = undefined;
-	export let preserveDrawingBuffer: MapOptions['preserveDrawingBuffer'] = undefined;
-	export let antialias: MapOptions['antialias'] = true;
+	export let preserveDrawingBuffer: MapOptions['preserveDrawingBuffer'] = true;
+	export let antialias: MapOptions['antialias'] = false;
 	export let refreshExpiredTiles: MapOptions['refreshExpiredTiles'] = true;
 	export let maxBounds: MapOptions['maxBounds'] = undefined;
 	export let minZoom: MapOptions['minZoom'] = 1;
@@ -85,10 +83,8 @@
 	export let bounds: MapOptions['bounds'] = LOCATIONS.montreal.bounds;
 	export let fitBoundsOptions: MapOptions['fitBoundsOptions'] = undefined;
 	export let localIdeographFontFamily: MapOptions['localIdeographFontFamily'] = undefined;
-	export let mapStyle: MapOptions['style'] = MAP_STYLES.Light;
 	export let pitchWithRotate: MapOptions['pitchWithRotate'] = true;
 	export let pixelRatio: MapOptions['pixelRatio'] = undefined;
-	export let map: Map | undefined = undefined;
 	export let maplibreLogo: MapOptions['maplibreLogo'] = false;
 	export let logoPosition: MapOptions['logoPosition'] = undefined;
 	export let hash: MapOptions['hash'] = false;
@@ -97,9 +93,9 @@
 	let className: string = '';
 	export { className as class };
 	export let style: string | undefined = undefined;
+	export let resizeDebounce: number = 50;
 
 	let containerRef: HTMLElement;
-	let resizeObserver: ResizeObserver;
 	let draw: MapboxDraw | undefined;
 
 	const drawMode = writable<MapDrawMode | undefined>();
@@ -172,7 +168,7 @@
 			maxTileCacheSize,
 			transformRequest,
 			locale,
-			fadeDuration, // warning: if undefined causes problem with mapbox draw
+			fadeDuration, // warning: if passed but undefined causes problem with mapbox draw
 			crossSourceCollisions,
 			collectResourceTiming,
 			clickTolerance,
@@ -194,18 +190,18 @@
 				dispatch<'click'>('click', e);
 			});
 
-			map.on(MAP_DRAW_EVENTS.Init, (e: MapboxDraw.DrawInitEvent) => {
-				draw = e.draw;
-				drawMode.set(draw.getMode() as MapDrawMode);
+			// map.on(MAP_DRAW_EVENTS.Init, (e: MapboxDraw.DrawInitEvent) => {
+			// 	draw = e.draw;
+			// 	drawMode.set(draw.getMode() as MapDrawMode);
 
-				map?.once(MAP_DRAW_EVENTS.Destroy, (e) => {
-					draw = undefined;
-				});
-			});
+			// 	map?.once(MAP_DRAW_EVENTS.Destroy, (e) => {
+			// 		draw = undefined;
+			// 	});
+			// });
 
-			map.on(MAP_DRAW_EVENTS.ModeChange, (e: DrawModeChangeEvent) => {
-				drawMode.set(e.mode);
-			});
+			// map.on(MAP_DRAW_EVENTS.ModeChange, (e: DrawModeChangeEvent) => {
+			// 	drawMode.set(e.mode);
+			// });
 		});
 	}
 
@@ -228,9 +224,9 @@
 		requestAnimationFrame(() => {
 			map?.resize();
 		});
-	}, 10);
+	}, resizeDebounce);
 
-	setContext<MapContext>(CTX_KEY, {
+	setMapContext({
 		cursor,
 		getMap: () => map!,
 		getDraw: () => draw,
@@ -240,8 +236,6 @@
 
 	onMount(() => {
 		if (browser) {
-			resizeObserver = new ResizeObserver(handleResize);
-			resizeObserver.observe(containerRef);
 			init();
 		}
 	});
@@ -249,12 +243,11 @@
 	onDestroy(() => {
 		map?.remove();
 		map = undefined;
-		resizeObserver?.disconnect();
 	});
 </script>
 
 <figure class={className} {style} {id}>
-	<div class="ui-map-container" bind:this={containerRef} />
+	<div class="ui-map-container" bind:this={containerRef} use:resize on:resize={handleResize} />
 	{#if map}
 		<slot {map} />
 		<div class="map-overlays">

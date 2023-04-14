@@ -18,8 +18,6 @@
 </script>
 
 <script lang="ts">
-	import { STATES, type State } from '$utils/enums';
-
 	import { THEMES, type ThemeName } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
 	import { cubicIn, cubicOut } from 'svelte/easing';
@@ -27,12 +25,13 @@
 	import Tether from './Tether.svelte';
 	import Tip from './Tip.svelte';
 
+	// type $$Props = {}
+
 	export let message: string | undefined | null = null;
 	export let disabled: boolean | undefined = undefined;
 	export let opened: boolean = false;
 	export let hover: boolean = true;
 	export let theme: ThemeName = THEMES.dark;
-	export let state: State = STATES.Normal;
 	export let place: ComponentProps<Tether>['place'] = 'top';
 	export let align: ComponentProps<Tether>['align'] = 'center';
 	export let distance: ComponentProps<Tether>['distance'] = 5;
@@ -99,9 +98,9 @@
 
 <style lang="scss">
 	.tooltip {
-		--tip-pad: calc(0.5 * var(--w));
+		--tip-pad: calc(0.5 * var(--tether-w));
 		--tip-size: 1em;
-		--d-sum: calc(var(--d) + 0.5 * var(--tip-size));
+		--d-sum: calc(var(--tether-d) + 0.5 * var(--tip-size));
 		user-select: none;
 		position: absolute;
 		pointer-events: none;

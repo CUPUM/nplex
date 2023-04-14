@@ -248,8 +248,8 @@
 		transition: max-width 0.25s var(--ui-ease-in-out);
 
 		&.full {
-			padding-inline: var(--ui-gutter-sm);
 			max-width: 100%;
+			padding-inline: var(--ui-gutter-sm);
 		}
 
 		@include tablet {
@@ -338,9 +338,9 @@
 
 	.category {
 		--i: 1;
-		--inset: var(--ui-inset-sm);
+		--inset: var(--ui-inset-md);
 		--radius: 99px; //var(--ui-radius-md);
-		gap: 0;
+		gap: 1px;
 		grid-column: category;
 		justify-self: center;
 		padding: var(--inset);

@@ -4,7 +4,8 @@
 
  -->
 <script lang="ts">
-	import { elasticOut, expoIn } from 'svelte/easing';
+	import { transform } from '$lib/motion/transitions/transform';
+	import { expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
 	export let style: string | undefined = undefined;
@@ -16,8 +17,8 @@
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
-		in:scale={{ duration: 500, start: 0.5, opacity: 1, easing: elasticOut }}
-		out:scale={{ duration: 250, start: 0.5, opacity: 0, easing: expoIn }}
+		in:transform={{ duration: 500, rotateZ: -360, opacity: 1, easing: expoOut }}
+		out:scale={{ duration: 250, start: 0.8, opacity: 0, easing: expoIn }}
 		width="1em"
 		height="1em"
 	>

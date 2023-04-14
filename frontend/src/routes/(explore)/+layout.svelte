@@ -1,9 +1,14 @@
 <script lang="ts">
+	import { PROJECTS_FILTERS_W, PROJECTS_LIST_W } from './projets/common.js';
+
 	export let data;
 </script>
 
-<div class="explore">
-	<!-- <ExploreSearch /> -->
+<div
+	class="explore"
+	style:--projects-filters-w="{PROJECTS_FILTERS_W}px"
+	style:--projects-list-w="{PROJECTS_LIST_W}px"
+>
 	<slot />
 </div>
 

@@ -27,10 +27,10 @@ export default function resize(element: HTMLElement) {
 	observer.observe(element);
 
 	return {
-		update(args) {},
+		update(args: any) {},
 		destroy() {
 			observer.unobserve(element);
 			observer.disconnect();
 		},
-	} satisfies SvelteActionReturnType;
+	};
 }

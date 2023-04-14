@@ -3,9 +3,12 @@
 	# Popover
 	
 -->
+<svelte:options accessors />
+
 <script lang="ts" context="module">
 	export const POPOVER_OPEN_ATTR = 'data-popover-open' as const;
 	const TIME_BUFFER = 25;
+	const INTRO_DISTANCE = 16;
 
 	let latest: HTMLElement | null = null;
 </script>
@@ -13,7 +16,7 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
 	import { navigating } from '$app/stores';
-	import flyScale from '$transitions/flyScale';
+	import flyScale from '$lib/motion/transitions/flyScale';
 	import { cssSize } from '$utils/css';
 	import { tick, type ComponentProps } from 'svelte';
 	import { cubicIn, expoOut } from 'svelte/easing';
@@ -35,11 +38,33 @@
 	let contentRef: HTMLElement;
 	let timeout: any;
 
+	$: inY = place === 'bottom' ? -INTRO_DISTANCE : place === 'top' ? +INTRO_DISTANCE : 0;
+	$: inX = place === 'right' ? -INTRO_DISTANCE : place === 'left' ? +INTRO_DISTANCE : 0;
+
 	$: if (opened) {
 		latest = tether?.anchorRef ?? null;
 		tether.anchorRef?.setAttribute(POPOVER_OPEN_ATTR, '');
 	} else {
 		tether?.anchorRef?.removeAttribute(POPOVER_OPEN_ATTR);
+	}
+
+	function open(e?: Event) {
+		opened = true;
+		clearTimeout(timeout);
+		// Implement similar to modal
+	}
+
+	function close(e?: Event) {
+		opened = false;
+		// Implement similar to modal
+	}
+
+	function toggle(e?: Event) {
+		if (opened) {
+			close(e);
+		} else {
+			open(e);
+		}
 	}
 
 	function handleClick(e: Event) {
@@ -96,7 +121,7 @@
 	on:pointerleave={handleLeave}
 	on:pointerenter={handleEnter}
 >
-	<slot name="control" slot="anchor" {opened} />
+	<slot name="control" slot="anchor" {opened} {open} {close} />
 	{#if opened}
 		<div
 			on:pointerleave|self={handleLeave}
@@ -104,7 +129,7 @@
 			bind:this={contentRef}
 			class="popover {align} {place}"
 			style:--popover-d={cssSize(distance)}
-			in:flyScale={{ scale: 0.94, y: -16, easing: expoOut, duration: 200, opacity: 0 }}
+			in:flyScale={{ scale: 0.94, y: inY, x: inX, easing: expoOut, duration: 200, opacity: 0 }}
 			out:scale|local={{
 				start: 0.96,
 				easing: cubicIn,
@@ -114,13 +139,13 @@
 		>
 			{#if $$slots.default}
 				<Menu>
-					<slot {opened} />
+					<slot {opened} {open} {close} />
 				</Menu>
 				{#if tip}
 					<Tip />
 				{/if}
 			{/if}
-			<slot name="content" />
+			<slot name="content" {opened} {open} {close} />
 		</div>
 	{/if}
 </Tether>

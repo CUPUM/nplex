@@ -144,7 +144,7 @@
 <style lang="scss">
 	.token {
 		// Dynamic vars
-		@include component-dynamic-vars(
+		@include dynamic-props(
 			'token',
 			('color', 'side-color', 'background', 'border', 'shadow'),
 			('hover', 'checked')

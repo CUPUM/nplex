@@ -103,7 +103,7 @@ export type ComponentStyleProps<
 	StyleProps extends {
 		static?: StylePropsRecord;
 		dynamic?: StylePropsRecord;
-		conditions?: 'hover' | 'active' | 'checked' | 'current' | 'focused';
+		conditions?: 'hover' | 'active' | 'checked' | 'current' | 'focus';
 	}
 > = {
 	[StaticProp in keyof StyleProps['static'] &

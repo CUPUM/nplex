@@ -5,11 +5,6 @@
 -->
 <script lang="ts" context="module">
 	const CTX_KEY = 'button-context';
-
-	type ButtonElement = keyof Pick<
-		SvelteHTMLElements,
-		'a' | 'span' | 'button' | 'label' | 'div' | 'input'
-	>;
 </script>
 
 <script lang="ts">
@@ -19,61 +14,63 @@
 	import Ripple from '$components/Ripple.svelte';
 	import type { ComponentStyleProps } from '$types/utils';
 	import { UnbasedURL } from '$utils/url';
-	import type {
-		HTMLAnchorAttributes,
-		HTMLButtonAttributes,
-		SvelteHTMLElements,
-	} from 'svelte/elements';
+	import type { HTMLButtonAttributes } from 'svelte/elements';
 
-	type $$Props = Omit<HTMLButtonAttributes | HTMLAnchorAttributes, 'class'> &
-		ComponentStyleProps<
-			'button',
-			{
-				static: {
-					radius: string;
-				};
-				dynamic: {
-					'color': string;
-					'side-color': string;
-					'background': string;
-					'border': string;
-					'shadow': string;
-				};
-				conditions: 'hover' | 'checked';
-			}
-		> & {
-			tabindex?: number;
-			as?: ButtonElement;
-			href?: string;
-			variant?: 'default' | 'outlined' | 'dashed' | 'cta' | 'ghost';
-			state?: undefined | 'warning' | 'success' | 'error';
-			equi?: boolean;
-			compact?: boolean;
-			loading?: boolean;
-			rounded?: boolean;
-			active?: boolean;
-			disabled?: boolean;
-			autoActive?: boolean;
-			contentAlign?: 'start' | 'center' | 'end';
-			type?: HTMLButtonAttributes['type'];
-		};
+	type Href = $$Generic<string>;
+	type As = $$Generic<'button' | 'label' | 'input'>;
+	type ButtonProps = {
+		tabindex?: typeof tabindex;
+		as?: As;
+		href?: Href;
+		variant?: typeof variant;
+		state?: typeof state;
+		equi?: typeof equi;
+		compact?: typeof compact;
+		loading?: typeof loading;
+		rounded?: typeof rounded;
+		active?: typeof active;
+		disabled?: typeof disabled;
+		autoActive?: typeof autoActive;
+		contentAlign?: typeof contentAlign;
+		type?: typeof type;
+	};
+	type ButtonStyleProps = ComponentStyleProps<
+		'button',
+		{
+			static: {
+				'radius': string;
+				'backdrop-filter': string;
+			};
+			dynamic: {
+				'filter': string;
+				'color': string;
+				'side-color': string;
+				'background': string;
+				'border': string;
+				'shadow': string;
+			};
+			conditions: 'hover' | 'focus' | 'active';
+		}
+	>;
 
-	export let as: $$Props['as'] = undefined;
-	export let variant: $$Props['variant'] = 'default';
-	export let type: $$Props['type'] = 'button';
-	export let state: $$Props['state'] = undefined;
-	export let href: $$Props['href'] = undefined;
-	export let equi: $$Props['equi'] = undefined;
-	export let compact: $$Props['compact'] = undefined;
-	export let loading: $$Props['loading'] = false;
-	export let disabled: $$Props['disabled'] = undefined;
-	export let active: $$Props['active'] = undefined;
-	export let rounded: $$Props['rounded'] = false;
-	export let autoActive: $$Props['active'] = true;
-	export let contentAlign: $$Props['contentAlign'] = 'start';
-	export let tabindex: $$Props['tabindex'] = undefined;
+	type $$Props = Omit<HTMLButtonAttributes, 'class'> & ButtonProps & ButtonStyleProps;
 
-	$: element = as ? as : href ? 'a' : 'button';
+	export let as: As | undefined = undefined;
+	export let variant: 'default' | 'outlined' | 'dashed' | 'cta' | 'ghost' = 'default';
+	export let type: HTMLButtonAttributes['type'] = 'button';
+	export let state: undefined | 'warning' | 'success' | 'error' = undefined;
+	export let href: Href | undefined = undefined;
+	export let equi: boolean | undefined = undefined;
+	export let compact: boolean | undefined = undefined;
+	export let loading: boolean | undefined = false;
+	export let disabled: boolean | undefined = undefined;
+	export let active: boolean | undefined = undefined;
+	export let rounded: boolean | undefined = false;
+	export let autoActive: boolean | undefined = true;
+	export let contentAlign: 'start' | 'center' | 'end' = 'start';
+	export let tabindex: number | undefined = undefined;
+
+	$: element = (as ? as : href ? 'a' : 'button') as 'button' | 'a';
 	$: hrefURL = href ? new UnbasedURL(href) : undefined;
 	$: if (autoActive && hrefURL) {
 		active = type === 'submit' ? false : $page.url.pathname === hrefURL.pathname;
@@ -83,17 +80,21 @@
 <svelte:element
 	this={element}
 	role="button"
-	{type}
-	class="button {variant} {state} {contentAlign} {active ? ICON_CLASS.hold : ICON_CLASS.hover}"
+	class="button {variant} {state} {contentAlign} {active != null
+		? active
+			? ICON_CLASS.hold
+			: ''
+		: ICON_CLASS.hover}"
 	class:compact
 	class:equi
 	class:rounded
 	class:active
 	class:loading
 	class:disabled
-	disabled={element === 'button' ? disabled : undefined}
+	{type}
+	{disabled}
+	href={element === 'a' ? href : undefined}
 	{tabindex}
-	{href}
 	{...$$restProps}
 	on:click
 	on:pointerdown
@@ -136,17 +137,18 @@
 
 <style lang="scss">
 	.button {
-		// Dynamic style vars
-		@include component-dynamic-vars(
+		// Exposed dynamic style props
+		@include dynamic-props(
 			'button',
-			('color', 'side-color', 'background', 'border', 'shadow'),
+			('color', 'side-color', 'background', 'border', 'shadow', 'filter'),
 			('hover', 'focus', 'active')
 		);
-		// Exposed static style vars
+		// Exposed static style props
 		--ui-button-radius: calc(
 			var(--button-radius, var(--radius, var(--ui-radius-md))) - var(--inset, 0px)
 		);
-		// Not exposed static style vars
+		--ui-button-backdrop-filter: var(--button-backdrop-filter, none);
+		// Private static style props
 		--ui-button-size: calc(var(--ui-block-lg) - 2 * var(--inset, 0px));
 		--ui-button-padding-inline: var(--ui-pad-md);
 		// Base style
@@ -178,18 +180,23 @@
 		color: var(--ui-button-color);
 		background: var(--ui-button-background);
 		box-shadow: var(--ui-button-shadow);
+		filter: var(--ui-button-filter);
+		backdrop-filter: var(--ui-button-backdrop-filter);
+		transition: all 0.1s ease-out;
 		&::after {
 			content: '';
 			position: absolute;
 			inset: 0;
 			border: var(--ui-button-border);
-			transition: all 0.1s;
+			border-radius: inherit;
+			transition: all 0.1s ease-out;
 		}
 		&:hover,
 		&:focus-visible {
 			color: var(--ui-button-hover-color);
 			background-color: var(--ui-button-hover-background);
 			box-shadow: var(--ui-button-hover-shadow);
+			filter: var(--ui-button-hover-filter);
 			&::after {
 				border: var(--ui-button-hover-border);
 			}
@@ -202,6 +209,7 @@
 			color: var(--ui-button-active-color);
 			background-color: var(--ui-button-active-background);
 			box-shadow: var(--ui-button-active-shadow);
+			filter: var(--ui-button-active-filter);
 			&::after {
 				border: var(--ui-button-active-border);
 			}
@@ -271,7 +279,7 @@
 		position: relative;
 		display: inline-block;
 		line-height: 1em;
-		padding-bottom: calc(0.5em - 0.5ex);
+		padding-bottom: 0.2em;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		transition: transform 0.1s ease-out;
@@ -313,12 +321,13 @@
 
 	// Default variant
 	.default {
-		--button-variant-color: #{col(fg, 500)};
-		--button-variant-background: #{col(fg, 000, 0.15)};
-		--button-variant-hover-color: #{col(bg, 700)};
-		--button-variant-hover-background: #{col(fg, 500)};
+		--button-variant-color: #{col(fg, 300)};
+		--button-variant-background: #{col(bg, 000)};
+		--button-variant-hover-color: #{col(fg, 900)};
+		--button-variant-hover-background: #{col(bg, 100)};
 		--button-variant-active-color: #{col(bg, 900)};
-		--button-variant-active-background: #{col(fg, 000)};
+		--button-variant-active-background: #{col(fg, 500)};
+		// --button-variant-hover-filter: brightness(0.95);
 		&.warning {
 			--button-variant-color: #{col(notice, 900)};
 			--button-variant-background: #{col(notice, 300, 0.25)};
@@ -348,19 +357,19 @@
 	// Outlined variant(s)
 	.outlined,
 	.dashed {
+		--ui-button-border-style: solid;
 		--button-variant-color: #{col(fg, 500)};
 		--button-variant-background: transparent;
-		--button-variant-border-style: solid;
-		--button-variant-border: var(--ui-border-size) var(--border-style) #{col(fg, 100, 0.1)};
+		--button-variant-border: var(--ui-border-size) var(--ui-button-border-style) #{col(fg, 100, 0.1)};
 		--button-variant-hover-color: #{col(fg, 900)};
 		--button-variant-hover-background: #{col(fg, 100, 0.1)};
-		--button-variant-hover-border: 3px var(--border-style) transparent;
+		--button-variant-hover-border: 3px var(--ui-button-border-style) transparent;
 		--button-variant-active-color: #{col(fg, 700)};
 		--button-variant-active-background: #{col(fg, 000, 0.1)};
-		--button-variant-active-border: 3px var(--border-style) transparent;
+		--button-variant-active-border: 3px var(--ui-button-border-style) transparent;
 		&.warning {
 			--button-variant-color: #{col(error, 900)};
-			--button-variant-border: var(--ui-border-size) var(--border-style) currentColor;
+			--button-variant-border: var(--ui-border-size) var(--ui-button-border-style) currentColor;
 			--button-variant-hover-color: #{col(error, 900)};
 			--button-variant-hover-background: #{col(error, 900, 0.1)};
 			--button-variant-active-color: #{col(error, 900)};
@@ -369,30 +378,30 @@
 		&.error {
 			--button-variant-color: #{col(error, 700)};
 			--button-variant-background: #{col(error, 100, 0.1)};
-			--button-variant-border: var(--ui-border-size) var(--border-style) currentColor;
+			--button-variant-border: var(--ui-border-size) var(--ui-button-border-style) currentColor;
 			--button-variant-hover-color: #{col(error, 900)};
 			--button-variant-hover-background: #{col(error, 300, 0.2)};
-			--button-variant-hover-border: 3px var(--border-style) #{col(error, 500, 0)};
+			--button-variant-hover-border: 3px var(--ui-button-border-style) #{col(error, 500, 0)};
 			--button-variant-active-color: #{col(error, 900)};
 			--button-variant-active-background: #{col(error, 500, 0.2)};
-			--button-variant-active-border: 3px var(--border-style) #{col(error, 500, 0)};
+			--button-variant-active-border: 3px var(--ui-button-border-style) #{col(error, 500, 0)};
 		}
 		&.success {
 			--button-variant-color: #{col(success, 700)};
 			--button-variant-background: #{col(success, 100, 0.1)};
-			--button-variant-border: var(--ui-border-size) var(--border-style) currentColor;
+			--button-variant-border: var(--ui-border-size) var(--ui-button-border-style) currentColor;
 			--button-variant-hover-color: #{col(success, 900)};
 			--button-variant-hover-background: #{col(success, 300, 0.2)};
-			--button-variant-hover-border: 3px var(--border-style) #{col(success, 500, 0)};
+			--button-variant-hover-border: 3px var(--ui-button-border-style) #{col(success, 500, 0)};
 			--button-variant-active-color: #{col(success, 900)};
 			--button-variant-active-background: #{col(success, 500, 0.2)};
-			--button-variant-active-border: 3px var(--border-style) #{col(success, 500, 0)};
+			--button-variant-active-border: 3px var(--ui-button-border-style) #{col(success, 500, 0)};
 		}
 	}
 
 	// Dashed variant
 	.dashed {
-		--border-style: dashed;
+		--ui-button-border-style: dashed;
 	}
 
 	// Ghost variant
@@ -432,10 +441,8 @@
 		--button-variant-hover-background: #{col(primary, 700)};
 		--button-variant-hover-shadow: 0 0.8em 1.5em -1em #{col(primary, 300, 0.25)};
 		--button-variant-active-shadow: 0 0.5em 1em -0.5em #{col(primary, 300, 0.5)};
+		--button-variant-active-filter: brightness(0.9);
 		transition: all 0.1s ease-out, box-shadow 0.25s ease-in-out;
-		&:global(.active) {
-			filter: brightness(0.9);
-		}
 		&.warning {
 			--button-variant-color: #{col(bg, 300)};
 			--button-variant-background: #{col(error, 700)};

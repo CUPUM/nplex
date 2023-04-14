@@ -37,6 +37,7 @@
 	class:equi
 	class:rounded
 	aria-disabled={disabled}
+	data-sveltekit-preload-code="hover"
 	{href}
 	on:pointerdown
 	{...$$restProps}
@@ -49,6 +50,11 @@
 
 <style lang="scss">
 	.navbar-button {
+		// --navbar-button-current-filter: brightness(0.95);
+		// :global([data-theme='dark']) & {
+		// 	--navbar-button-current-filter: brightness(1.2);
+		// }
+		// isolation: isolate;
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -61,41 +67,39 @@
 		border-radius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
 		letter-spacing: 0.02em;
 		line-height: 1;
-		color: col(fg, 300);
-		backdrop-filter: blur(6px);
+		color: col(fg, 100);
+		// backdrop-filter: blur(6px);
 		transition: color var(--navbar-transition);
 
 		&::before {
 			content: '';
 			position: absolute;
+			z-index: -1;
 			border-radius: inherit;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
+			inset: 0;
 			background: var(--navbar-bg);
-			opacity: 0.5;
+			// opacity: 0.95;
 			transition: background var(--navbar-transition), opacity var(--navbar-transition);
 		}
 		&:hover:not([data-current]) {
-			color: col(primary, 700);
+			color: col(primary, 500);
+			background: col(primary, 500, 0.1);
 			&::before {
-				opacity: 0.25;
-				background: col(primary, 100);
+				// opacity: 0.25;
 			}
 		}
 		&.active {
 			color: col(primary, 900);
+			background: col(primary, 100, 0.5);
 			&::before {
-				background: col(primary, 100);
-				opacity: 0.5;
+				// opacity: 0.5;
 			}
 		}
 		&[data-current]:not(.active) {
-			color: col(primary, 700);
+			color: col(fg, 900);
+			background: col(fg, 100, 0.1);
 			&::before {
-				background: col(primary, 100);
-				opacity: 0.2;
+				// filter: var(--navbar-button-current-filter);
 			}
 		}
 
@@ -107,17 +111,17 @@
 		// Category
 
 		&.category {
-			backdrop-filter: none;
+			// backdrop-filter: none;
 			&::before {
 				opacity: 0;
 			}
-			&[data-current]:not(.active) {
-				color: col(fg, 900);
-				&::before {
-					background: col(fg, 100, 0.1);
-					opacity: 1;
-				}
-			}
+			// &[data-current]:not(.active) {
+			// 	// color: col(fg, 900);
+			// 	&::before {
+			// 		// background: col(fg, 100, 0.1);
+			// 		// opacity: 1;
+			// 	}
+			// }
 			&:first-of-type {
 				padding-inline-start: 1.5em;
 			}

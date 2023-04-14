@@ -54,12 +54,29 @@
 	type V = $$Generic<Value>;
 
 	type $$Props = HTMLInputAttributes &
-		ComponentStyleProps<'field', {}> & {
+		ComponentStyleProps<
+			'field',
+			{
+				static: {
+					'radius': string;
+					'inset': string;
+					'backdrop-filter': string;
+				};
+				dynamic: {
+					'color': string;
+					'side-color': string;
+					'background': string;
+					'border': string;
+					'shadow': string;
+				};
+				conditions: 'hover' | 'focus';
+			}
+		> & {
 			value?: V;
 			prefix?: string | null;
 			suffix?: string | null;
 			type?: InputType;
-			variant?: 'default' | 'cta' | 'outlined' | 'dashed' | 'ghost';
+			variant?: 'default' | 'cta' | 'outlined' | 'dashed' | 'ghost' | 'explorer';
 			state?: undefined | 'error' | 'success' | 'warning';
 			textAlign?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent';
 			compact?: boolean;
@@ -181,7 +198,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <fieldset
-	class="field focus-outline-within {variant} {className}"
+	class="field {variant} {className}"
 	{style}
 	{disabled}
 	class:compact
@@ -206,7 +223,7 @@
 	<Ripple />
 	{#if $$slots.leading}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<div class="aside leading" on:click|self={focus}>
+		<div class="aside leading" on:click|self={focus} on:click={(e) => e.stopPropagation()}>
 			<slot {value} name="leading" />
 		</div>
 	{/if}
@@ -273,7 +290,7 @@
 	{/if}
 	{#if $$slots.trailing}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<div class="aside trailing" on:click|self={focus}>
+		<div class="aside trailing" on:click|self={focus} on:click={(e) => e.stopPropagation()}>
 			<slot {value} name="trailing" />
 		</div>
 	{/if}
@@ -283,20 +300,31 @@
 
 <style lang="scss">
 	.field {
-		--border-thickness: var(--ui-border-size);
-		--radius: var(--ui-radius-md);
-		--height: var(--ui-block-lg);
-		--inset: var(--ui-inset-md);
-		--notch-padding: 0.25em;
-		--gutter: calc(var(--ui-pad-md) / 3);
-		--gutter-out: calc(2 * var(--ui-pad-md) / 3);
+		// Exposed static style props
+		--radius: var(--field-radius, var(--ui-radius-md));
+		--inset: var(--field-inset, var(--ui-inset-md));
+		--ui-field-backdrop-filter: var(
+			--field-backdrop-filter,
+			var(--field-variant-backdrop-filter, none)
+		);
+		// Exposed dynamic style props
+		@include dynamic-props(
+			'field',
+			('color', 'background', 'border', 'shadow'),
+			('hover', 'focus')
+		);
+		// Private static style props
+		--ui-field-size: var(--ui-block-lg);
+		--ui-field-notch-padding: 0.25em;
+		--ui-field-gutter: calc(var(--ui-pad-md) / 3);
+		--ui-field-padding-inline: calc(2 * var(--ui-pad-md) / 3);
 		position: relative;
 		display: grid;
 		grid-template-columns:
 			[full-start leading-start]
-			minmax(var(--gutter-out), auto)
+			minmax(var(--ui-field-padding-inline), auto)
 			[leading-end leading-gutter-start]
-			var(--gutter)
+			var(--ui-field-gutter)
 			[leading-gutter-end prefix-start]
 			auto
 			[prefix-end main-start]
@@ -304,17 +332,21 @@
 			[main-end suffix-start]
 			auto
 			[suffix-end trailing-gutter-start]
-			var(--gutter)
+			var(--ui-field-gutter)
 			[trailing-gutter-end trailing-start]
-			minmax(var(--gutter-out), auto)
+			minmax(var(--ui-field-padding-inline), auto)
 			[trailing-end full-end];
-		grid-template-rows: minmax(var(--height), auto);
+		grid-template-rows: minmax(var(--ui-field-size), auto);
 		gap: 0;
 		flex-direction: row;
 		align-items: stretch;
 		font-weight: 400;
 		border-radius: var(--radius);
 		cursor: text;
+		color: var(--ui-field-color);
+		background: var(--ui-field-background);
+		box-shadow: var(--ui-field-shadow);
+		backdrop-filter: var(--ui-field-backdrop-filter);
 		transition: transform 0.15s ease-out;
 		&:disabled {
 			opacity: 0.5;
@@ -342,6 +374,23 @@
 		&.success {
 			color: col(success, 700) !important;
 			background: col(success, 100, 0.1) !important;
+		}
+		// &:hover:not(:has(.aside:hover)),
+		&:hover {
+			color: var(--ui-field-hover-color);
+			background: var(--ui-field-hover-background);
+			box-shadow: var(--ui-field-hover-shadow);
+			.outline {
+				border: var(--ui-field-hover-border);
+			}
+		}
+		&:focus-within {
+			color: var(--ui-field-focus-color);
+			background: var(--ui-field-focus-background);
+			box-shadow: var(--ui-field-focus-shadow);
+			.outline {
+				border: var(--ui-field-focus-border);
+			}
 		}
 	}
 
@@ -441,34 +490,35 @@
 		position: absolute;
 		height: 50%;
 		transition: all 0.15s ease-out;
-		border-width: var(--border-thickness);
-		border-style: solid;
-	}
-	.left {
-		grid-column-end: leading-gutter-end;
-		left: 0;
-		right: 0;
-		top: 0;
-		border-top-left-radius: inherit;
-		border-right-width: 0;
-		border-bottom-width: 0;
-	}
-	.right {
-		grid-column-start: leading-gutter-end;
-		left: 0;
-		right: 0;
-		top: 0;
-		border-left-width: 0;
-		border-bottom-width: 0;
-		border-top-right-radius: inherit;
-	}
-	.bottom {
-		left: 0;
-		right: 0;
-		bottom: 0;
-		border-top-width: 0;
-		border-bottom-right-radius: inherit;
-		border-bottom-left-radius: inherit;
+		border: var(--ui-field-border);
+		// border-width: var(--border-thickness);
+		// border-style: solid;
+		&.left {
+			grid-column-end: leading-gutter-end;
+			left: 0;
+			right: 0;
+			top: 0;
+			border-top-left-radius: inherit;
+			border-right: none !important;
+			border-bottom: none !important;
+		}
+		&.right {
+			grid-column-start: leading-gutter-end;
+			left: 0;
+			right: 0;
+			top: 0;
+			border-left: none !important;
+			border-bottom: none !important;
+			border-top-right-radius: inherit;
+		}
+		&.bottom {
+			left: 0;
+			right: 0;
+			bottom: 0;
+			border-top: none !important;
+			border-bottom-right-radius: inherit;
+			border-bottom-left-radius: inherit;
+		}
 	}
 
 	.star {
@@ -489,10 +539,15 @@
 	// Variants
 
 	.default,
-	.opaque {
-		color: col(fg, 000);
-		background: col(fg, 500, 0.05);
-		// background: col(bg, 900);
+	.explorer {
+		--field-variant-color: #{col(fg, 100)};
+		--field-variant-background: #{col(fg, 500, 0.05)};
+		--field-variant-border: none;
+		--field-variant-shadow: none;
+		--field-variant-hover-color: #{col(fg, 700)};
+		// --field-variant-hover-background: #{col(fg,000)};
+		--field-variant-focus-color: #{col(fg, 900)};
+		--field-variant-focus-background: #{col(fg, 500, 0.1)};
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			display: none;
@@ -505,7 +560,6 @@
 				opacity: 0.5;
 				top: 1.3em;
 				font-size: max(var(--ui-text-xs), 0.65em);
-				// font-size: 0.65em;
 			}
 			.affix {
 				opacity: 0.5;
@@ -517,49 +571,36 @@
 				}
 			}
 		}
-		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover {
-			color: col(fg, 700);
-			// background: col(fg, 500, 0.1);
-		}
-		&:focus-within {
-			color: col(fg, 900);
-			background: col(fg, 500, 0.1);
-			// background: col(bg, 300);
-			:global(*[data-field-input]) {
-				opacity: 1;
-			}
-		}
 	}
 
-	.opaque {
-		--ui-ripple-color: #{col(primary, 500)};
-		color: col(fg, 100);
-		background: col(bg, 300);
-		box-shadow: 0 0.25rem 1rem -0.5rem transparent;
-		transition: color 0.1s ease-out, background 0.1s ease-out, box-shadow 0.25s ease-out;
-		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover {
-			color: col(fg, 000);
-			background: col(bg, 100);
-		}
-		&:focus-within {
-			color: col(fg, 700);
-			background: col(bg, 000);
-			// box-shadow: 0 1rem 2rem -1rem rgb(0, 20, 40, 0.5);
-			:global(*[data-field-input]) {
-				opacity: 1;
-			}
-		}
+	.explorer {
+		--ripple-color: #{col(bg, 000)};
+		// --field-variant-backdrop-filter: blur(8px);
+		--field-variant-color: #{col(fg, 100)};
+		--field-variant-background: #{col(bg, 100)};
+		--field-variant-border: none;
+		--field-variant-shadow: var(--ui-shadow-sm);
+		--field-variant-hover-color: #{col(fg, 700)};
+		--field-variant-hover-background: #{col(bg, 000)};
+		--field-variant-focus-color: #{col(fg, 900)};
+		--field-variant-focus-background: #{col(bg, 300)};
 	}
 
 	.outlined,
 	.dashed {
+		--field-variant-color: #{col(fg, 100)};
+		--field-variant-background: #{col(fg, 500, 0.05)};
+		--field-variant-border: 1.5px solid #{col(fg, 000)};
+		--field-variant-shadow: none;
+		--field-variant-hover-color: #{col(fg, 700)};
+		// --field-variant-hover-background: #{col(fg,000)};
+		--field-variant-focus-color: #{col(fg, 900)};
+		--field-variant-focus-background: #{col(fg, 500, 0.1)};
 		color: col(fg, 100);
 		background: transparent;
 		transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
-			border-color: col(fg, 000);
+			// border-color: col(fg, 000);
 			opacity: 0.25;
 		}
 		&.hasplaceholder,
@@ -578,10 +619,10 @@
 			}
 			&.haslabel {
 				.left {
-					right: var(--notch-padding);
+					right: var(--ui-field-notch-padding);
 				}
 				.right {
-					left: calc(var(--label-width) + var(--notch-padding));
+					left: calc(var(--label-width) + var(--ui-field-notch-padding));
 				}
 			}
 		}

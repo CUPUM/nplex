@@ -39,7 +39,7 @@
 <style lang="scss">
 	.token-button {
 		// Dynamic vars
-		@include component-dynamic-vars('token-button', ('color', 'background', 'border'), ('hover'));
+		@include dynamic-props('token-button', ('color', 'background', 'border'), ('hover'));
 		// Static vars
 		--ui-token-button-radius: var(
 			--token-button-radius,

@@ -164,7 +164,7 @@
 	import { afterNavigate, goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Icon from '$components/Icon.svelte';
-	import { transform } from '$transitions/transform';
+	import { transform } from '$lib/motion/transitions/transform';
 	import { SEARCH_PARAMS } from '$utils/enums';
 	import { UnbasedURL } from '$utils/url';
 	import type { ComponentProps, SvelteComponentTyped } from 'svelte';

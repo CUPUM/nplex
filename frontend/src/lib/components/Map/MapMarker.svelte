@@ -40,7 +40,9 @@
 </script>
 
 <figure class="map-marker {className}" bind:this={markerRef} {style}>
-	<Icon name={icon} strokeWidth={1.5} />
+	<slot>
+		<Icon name={icon} strokeWidth={1.5} />
+	</slot>
 </figure>
 
 <style lang="scss">
