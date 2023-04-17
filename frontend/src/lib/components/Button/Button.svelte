@@ -182,6 +182,7 @@
 		box-shadow: var(--ui-button-shadow);
 		filter: var(--ui-button-filter);
 		backdrop-filter: var(--ui-button-backdrop-filter);
+		outline: var(--ui-outline-inactive);
 		transition: all 0.1s ease-out;
 		&::after {
 			content: '';
@@ -190,6 +191,9 @@
 			border: var(--ui-button-border);
 			border-radius: inherit;
 			transition: all 0.1s ease-out;
+		}
+		&:focus-visible {
+			outline: var(--ui-outline-active);
 		}
 		&:hover,
 		&:focus-visible {
@@ -322,12 +326,12 @@
 	// Default variant
 	.default {
 		--button-variant-color: #{col(fg, 300)};
-		--button-variant-background: #{col(bg, 000)};
+		--button-variant-background: #{col(fg, 100, 0.1)};
 		--button-variant-hover-color: #{col(fg, 900)};
-		--button-variant-hover-background: #{col(bg, 100)};
-		--button-variant-active-color: #{col(bg, 900)};
-		--button-variant-active-background: #{col(fg, 500)};
-		// --button-variant-hover-filter: brightness(0.95);
+		--button-variant-hover-background: #{col(fg, 100, 0.2)};
+		--button-variant-active-color: #{col(bg, 500)};
+		--button-variant-active-background: #{col(fg, 300)};
+		--button-variant-hover-filter: brightness(0.95);
 		&.warning {
 			--button-variant-color: #{col(notice, 900)};
 			--button-variant-background: #{col(notice, 300, 0.25)};

@@ -1,4 +1,4 @@
-import type { TableRow } from '$types/database/utils';
+import type { TableRow, ViewRow } from '$types/database/utils';
 import type { MaybeSingle, Single } from '$types/utils';
 import { getDb } from '$utils/database/client';
 import { STATUS_CODES } from '$utils/enums';
@@ -7,7 +7,7 @@ import { error } from '@sveltejs/kit';
 export const load = async (event) => {
 	const db = await getDb(event);
 	const project = db
-		.from('projects')
+		.from('explore_projects')
 		.select(
 			`
 		*,
@@ -36,7 +36,7 @@ export const load = async (event) => {
 		.limit(1)
 		.returns<
 			[
-				Omit<TableRow<'projects'>, 'banner'> & {
+				Omit<ViewRow<'explore_projects'>, 'banner'> & {
 					banner: MaybeSingle<TableRow<'projects_images'>>;
 					gallery: TableRow<'projects_images'>[];
 					type: Single<TableRow<'project_type'>>;

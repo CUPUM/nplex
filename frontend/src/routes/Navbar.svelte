@@ -339,7 +339,7 @@
 	.category {
 		--i: 1;
 		--inset: var(--ui-inset-md);
-		--radius: 99px; //var(--ui-radius-md);
+		--radius: var(--ui-radius-md); // 99px;
 		gap: 1px;
 		grid-column: category;
 		justify-self: center;

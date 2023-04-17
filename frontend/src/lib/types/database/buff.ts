@@ -7,10 +7,10 @@ import type { PgCube, PgRange, TableRow } from './utils';
  * Manually buffing the generated types where the CLI has trouble.
  */
 export type BuffedDatabase = DeepReplace<
-	DeepOmit<Database, { public: { Functions: { project_descriptors: { Returns: true } } } }> & {
+	DeepOmit<Database, { public: { Functions: { get_project_descriptors: { Returns: true } } } }> & {
 		public: {
 			Functions: {
-				project_descriptors: {
+				get_project_descriptors: {
 					Returns: {
 						types: (TableRow<'project_type'> & {
 							interventions: ({
@@ -49,6 +49,8 @@ export type BuffedDatabase = DeepReplace<
 				projects: {
 					Row: {
 						cost_range: PgRange | 'empty';
+						location?: GeoJSON.Point;
+						location_obfuscated?: GeoJSON.Point;
 					};
 					Insert: {
 						cost_range?: PgRange | null;
@@ -77,10 +79,11 @@ export type BuffedDatabase = DeepReplace<
 						color_average_lab: PgCube;
 					};
 				};
-				projects_location: {
+			};
+			Views: {
+				explore_projects: {
 					Row: {
-						center?: GeoJSON.Point;
-						circle?: GeoJSON.Polygon;
+						location_obfuscated: GeoJSON.Point;
 					};
 				};
 			};

@@ -11,11 +11,12 @@
 {#if $projectsFiltersOpened}
 	<section transition:fly={{ x: -24, duration: 200, easing: expoOut }}>
 		<div class="inner">
-			<form on:submit={search}>
+			<p class="text-lg subtle">À venir</p>
+			<!-- <form on:submit={search}>
 				<fieldset>Test 1</fieldset>
 				<fieldset>Test 2</fieldset>
 				<fieldset>Test 3</fieldset>
-			</form>
+			</form> -->
 		</div>
 	</section>
 {/if}
@@ -29,6 +30,12 @@
 		padding-top: var(--projects-top-overlay-h);
 		padding-bottom: var(--ui-gutter-sm);
 		align-self: stretch;
+	}
+
+	p {
+		width: 100%;
+		padding-block: 2rem;
+		text-align: center;
 	}
 
 	.inner {

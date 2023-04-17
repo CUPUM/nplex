@@ -1,6 +1,6 @@
 <!--
 	@component
-	## Map Popup (sic, keeping the nomenclature used by Mapbox / Maplibre)
+	## Map Popup (keeping the nomenclature used by Mapbox / Maplibre)
 	Primitive component facilitating the addition of tooltip or popover-like content to the map.
 	Content is reactively positioned according to passed coordinates.
 	This makes it possible to either anchor the tooltip at a static location or move it around (ex.: follow the user's pointer).
@@ -19,7 +19,7 @@
 	} from 'maplibre-gl';
 	import { onMount } from 'svelte';
 	import { scale } from 'svelte/transition';
-	import { getMapContext } from './Map/Map.svelte';
+	import { getMapContext } from './Map.svelte';
 
 	export let lnglat: LngLat | LngLatLike;
 	export let anchor: PositionAnchor = 'bottom';

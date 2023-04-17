@@ -28,9 +28,9 @@
 	--ui-shadow-md: 0 0.75rem 1.5rem -0.75rem rgb(0, 10, 20, 0.26);
 	--ui-shadow-lg: 0 1.5rem 3rem -1.25rem rgb(0, 10, 20, 0.28);
 	--ui-shadow-xl: 0 3rem 7rem -3rem rgb(0, 10, 20, 0.3);
-	--ui-outline-color: #{col(primary, 500, 0.5)};
+	--ui-outline-color: #{col(fg, 500, 0.25)};
 	--ui-outline-inactive: 0px solid transparent;
-	--ui-outline-active: 2px solid var(--ui-outline-color);
+	--ui-outline-active: 3px solid var(--ui-outline-color);
 	--ui-border-size: 1.25px;
 	--ui-inset-md: 5px;
 	--ui-inset-sm: 3px;

@@ -20,23 +20,24 @@
 		position: relative;
 		display: flex;
 		align-items: center;
+		justify-content: center;
 		line-height: 1;
 		opacity: 0.5;
-		padding-inline: var(--ui-pad-md);
+		padding-inline: var(--ui-pad-sm);
 		align-self: stretch;
 		transition: all 0.1s ease;
-		:global(.leading) > &:last-child {
-			padding-right: 0;
-		}
-		:global(.leading) > &:not(:first-child) {
-			padding-left: var(--gap);
-		}
-		:global(.trailing) > &:first-child {
-			padding-left: 0;
-		}
-		:global(.trailing) > &:not(:last-child) {
-			padding-right: var(--gap);
-		}
+		// :global(.leading) > &:last-child {
+		// 	padding-right: 0;
+		// }
+		// :global(.leading) > &:not(:first-child) {
+		// 	padding-left: var(--gap);
+		// }
+		// :global(.trailing) > &:first-child {
+		// 	padding-left: 0;
+		// }
+		// :global(.trailing) > &:not(:last-child) {
+		// 	padding-right: var(--gap);
+		// }
 		:global(.focused) & {
 			opacity: 1;
 		}

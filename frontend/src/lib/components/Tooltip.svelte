@@ -6,7 +6,7 @@
 <svelte:options accessors={true} />
 
 <script lang="ts" context="module">
-	const TIP_ROUNDNESS = 20;
+	const TIP_ROUNDNESS = 16;
 	const TIP =
 		`M 0,-0 C ${TIP_ROUNDNESS},0 ` +
 		`${50 - TIP_ROUNDNESS},50 50,50 C ${50 + TIP_ROUNDNESS},50 ` +

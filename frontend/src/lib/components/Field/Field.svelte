@@ -4,7 +4,7 @@
 	Primitive single-line input field component.
 -->
 <script lang="ts" context="module">
-	const CTX_KEY = 'field-context';
+	import { defineContext } from '$utils/context';
 
 	type InputRef =
 		| HTMLInputElement
@@ -35,16 +35,14 @@
 		max?: number;
 	}
 
-	export function getFieldContext() {
-		return getContext<FieldContext>(CTX_KEY);
-	}
+	const [getFieldContext, setFieldContext] = defineContext<FieldContext>('field-context');
+	export { getFieldContext };
 </script>
 
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import type { ComponentStyleProps } from '$types/utils';
 	import { snap } from '$utils/number';
-	import { getContext, setContext } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { writable, type Writable } from 'svelte/store';
@@ -185,7 +183,7 @@
 	}
 	$: formattedValue = eagerFormat(value);
 
-	setContext<FieldContext>(CTX_KEY, {
+	setFieldContext({
 		value: _value,
 		inputRef: _inputRef,
 		type: _type,
@@ -198,7 +196,7 @@
 
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <fieldset
-	class="field {variant} {className}"
+	class="field noscrollbar {variant} {className}"
 	{style}
 	{disabled}
 	class:compact
@@ -347,7 +345,8 @@
 		background: var(--ui-field-background);
 		box-shadow: var(--ui-field-shadow);
 		backdrop-filter: var(--ui-field-backdrop-filter);
-		transition: transform 0.15s ease-out;
+		outline: var(--ui-outline-inactive);
+		transition: transform 0.15s ease-out, outline 0.15s ease-out;
 		&:disabled {
 			opacity: 0.5;
 			pointer-events: none;
@@ -366,7 +365,6 @@
 			label {
 				opacity: 0.5;
 			}
-
 			.outline {
 				border-color: col(error, 500) !important;
 			}
@@ -384,10 +382,11 @@
 				border: var(--ui-field-hover-border);
 			}
 		}
-		&:focus-within {
+		&:has(:global(*[data-field-input]):focus) {
 			color: var(--ui-field-focus-color);
 			background: var(--ui-field-focus-background);
 			box-shadow: var(--ui-field-focus-shadow);
+			outline: var(--ui-outline-active);
 			.outline {
 				border: var(--ui-field-focus-border);
 			}
@@ -441,7 +440,7 @@
 		grid-column: suffix;
 	}
 
-	fieldset :global(*[data-field-input]) {
+	.field :global(*[data-field-input]) {
 		cursor: inherit;
 		font-family: inherit;
 		font-weight: inherit;
@@ -458,6 +457,7 @@
 		background: transparent;
 		text-overflow: ellipsis;
 		overflow: hidden;
+		min-width: 1em;
 		transition: all 0.2s cubic-bezier(0.25, 0, 0, 1);
 		&:-webkit-autofill,
 		&:-webkit-autofill:hover,
@@ -548,7 +548,7 @@
 		// --field-variant-hover-background: #{col(fg,000)};
 		--field-variant-focus-color: #{col(fg, 900)};
 		--field-variant-focus-background: #{col(fg, 500, 0.1)};
-		transition: color 0.1s ease-out, background 0.1s ease-out;
+		// transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			display: none;
 		}
@@ -583,7 +583,7 @@
 		--field-variant-hover-color: #{col(fg, 700)};
 		--field-variant-hover-background: #{col(bg, 000)};
 		--field-variant-focus-color: #{col(fg, 900)};
-		--field-variant-focus-background: #{col(bg, 300)};
+		--field-variant-focus-background: #{col(bg, 000)};
 	}
 
 	.outlined,
@@ -598,7 +598,7 @@
 		--field-variant-focus-background: #{col(fg, 500, 0.1)};
 		color: col(fg, 100);
 		background: transparent;
-		transition: color 0.1s ease-out, background 0.1s ease-out;
+		// transition: color 0.1s ease-out, background 0.1s ease-out;
 		.outline {
 			// border-color: col(fg, 000);
 			opacity: 0.25;

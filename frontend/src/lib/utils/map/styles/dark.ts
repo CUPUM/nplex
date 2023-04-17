@@ -2,7 +2,7 @@ import { PUBLIC_MAPTILER_KEY } from '$env/static/public';
 import { THEME_PALETTES } from '$utils/themes';
 import { colord } from 'colord';
 import type { StyleSpecification } from 'maplibre-gl';
-import { FONT, TRANSPARENT } from './light';
+import { FONT, TRANSPARENT } from './common';
 
 const THEME = {
 	LANDSCAPE: THEME_PALETTES.dark.bg[900], // 'hsla(0, 0%, 100%, 1)',

@@ -28,6 +28,7 @@
 
 	ul {
 		width: var(--projects-list-w);
+		display: none;
 	}
 
 	li {

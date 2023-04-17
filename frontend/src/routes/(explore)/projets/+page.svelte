@@ -61,6 +61,7 @@
 		grid-template-rows: 100vh;
 		grid-template-rows: 100svh;
 		align-self: stretch;
+		flex: 1;
 		margin-top: calc(-1 * var(--projects-top-overlay-h));
 		flex-direction: column;
 	}

@@ -13,6 +13,8 @@
 	function toggleListPane() {
 		$projectsListOpened = !$projectsListOpened;
 	}
+
+	// let tokens = [{ title: 'hello' }, { title: 'asdt4as' }];
 </script>
 
 <section id="projects-toolbar">
@@ -33,6 +35,9 @@
 					Filtres
 				</Button>
 				<FieldIcon name="search" />
+				<!-- <FieldTokens bind:data={tokens} let:datum>
+					<Token>{datum.title}</Token>
+				</FieldTokens> -->
 			</svelte:fragment>
 			<svelte:fragment slot="trailing">
 				<FieldButtonReset />

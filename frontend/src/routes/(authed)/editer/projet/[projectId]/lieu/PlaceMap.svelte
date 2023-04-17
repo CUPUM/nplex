@@ -13,7 +13,7 @@
 	import MapSearch from '$components/Map/MapSearch.svelte';
 	import MapToolbar from '$components/Map/MapToolbar.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
-	import dark from '$util$utils/map/styles/dark
+	import dark from '$utils/map/styles/dark';
 	import { editorMap, editorMapDraw } from './common';
 
 	let tracking = false;

@@ -1,5 +1,7 @@
 import type { PgRange } from '$types/database/utils';
 import type { Many } from '$types/utils';
+import type { Position } from '@turf/turf';
+import type { LngLatLike } from 'maplibre-gl';
 import type { ValueOf } from 'ts-essentials';
 import { col } from './css';
 import { browserDb } from './database/client';
@@ -263,3 +265,10 @@ export function projectColors<
 	}, [] as string[]);
 }
 type ProjectGalleryItem = Partial<App.Database['public']['Tables']['projects_images']['Row']>;
+
+export function toLngLatLike(coords: number[] | Position) {
+	// if (coords.length < 2) {
+	// 	console.error('Coordinates passed in casting function to LngLatLike are not compatible.');
+	// }
+	return [coords[0], coords[1]] as LngLatLike;
+}

@@ -1,11 +1,6 @@
-import type { TableRow } from '$types/database/utils.js';
 import { getDb } from '$utils/database/client.js';
 import { STATUS_CODES } from '$utils/enums.js';
 import { error } from '@sveltejs/kit';
-
-type ExploreProject = TableRow<'projects'> & {
-	location: Pick<TableRow<'projects_location'>, 'obfuscated'> | null;
-};
 
 export const load = async (event) => {
 	const db = await getDb(event);

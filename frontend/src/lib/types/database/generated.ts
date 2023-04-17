@@ -697,6 +697,13 @@ export interface Database {
           interventions_area: number | null
           is_demo: boolean | null
           likes_sum: number
+          location: unknown | null
+          location_obfuscated: unknown | null
+          location_radius: number
+          publication_requested: boolean
+          publication_requested_at: string | null
+          published: boolean
+          published_at: string | null
           site_area: number | null
           site_ownership: number | null
           summary: string | null
@@ -704,6 +711,7 @@ export interface Database {
           type: number | null
           updated_at: string
           updated_by: string
+          project_publication_satisfy: unknown | null
           projects_ts: string | null
         }
         Insert: {
@@ -728,6 +736,13 @@ export interface Database {
           interventions_area?: number | null
           is_demo?: boolean | null
           likes_sum?: number
+          location?: unknown | null
+          location_obfuscated?: unknown | null
+          location_radius?: number
+          publication_requested?: boolean
+          publication_requested_at?: string | null
+          published?: boolean
+          published_at?: string | null
           site_area?: number | null
           site_ownership?: number | null
           summary?: string | null
@@ -758,6 +773,13 @@ export interface Database {
           interventions_area?: number | null
           is_demo?: boolean | null
           likes_sum?: number
+          location?: unknown | null
+          location_obfuscated?: unknown | null
+          location_radius?: number
+          publication_requested?: boolean
+          publication_requested_at?: string | null
+          published?: boolean
+          published_at?: string | null
           site_area?: number | null
           site_ownership?: number | null
           summary?: string | null
@@ -1006,38 +1028,6 @@ export interface Database {
           user?: string
         }
       }
-      projects_location: {
-        Row: {
-          center: unknown | null
-          created_at: string
-          created_by: string
-          obfuscated: unknown | null
-          project: string
-          radius: number | null
-          updated_at: string
-          updated_by: string
-        }
-        Insert: {
-          center?: unknown | null
-          created_at?: string
-          created_by?: string
-          obfuscated?: unknown | null
-          project: string
-          radius?: number | null
-          updated_at?: string
-          updated_by?: string
-        }
-        Update: {
-          center?: unknown | null
-          created_at?: string
-          created_by?: string
-          obfuscated?: unknown | null
-          project?: string
-          radius?: number | null
-          updated_at?: string
-          updated_by?: string
-        }
-      }
       projects_materials: {
         Row: {
           created_at: string
@@ -1155,29 +1145,6 @@ export interface Database {
           title?: string
           updated_at?: string
           updated_by_id?: string
-        }
-      }
-      projects_publication_status: {
-        Row: {
-          project: string
-          published: string | null
-          requested: string | null
-          updated_at: string
-          updated_by: string
-        }
-        Insert: {
-          project: string
-          published?: string | null
-          requested?: string | null
-          updated_at?: string
-          updated_by?: string
-        }
-        Update: {
-          project?: string
-          published?: string | null
-          requested?: string | null
-          updated_at?: string
-          updated_by?: string
         }
       }
       projects_usages: {
@@ -1530,83 +1497,6 @@ export interface Database {
           updated_by?: string | null
         }
       }
-      editable_projects: {
-        Row: {
-          adjacent_alleys: number | null
-          adjacent_streets: number | null
-          banner: string | null
-          building_area: number | null
-          building_construction_year: number | null
-          building_height: number | null
-          building_levels_basement: boolean[] | null
-          building_levels_main: boolean[] | null
-          building_levels_mezzanine: boolean[] | null
-          cost_range: unknown | null
-          created_at: string | null
-          created_by: string | null
-          description: string | null
-          id: string | null
-          implantation_mode: number | null
-          interventions_area: number | null
-          likes_sum: number | null
-          site_area: number | null
-          site_ownership: number | null
-          title: string | null
-          type: number | null
-          updated_at: string | null
-          updated_by: string | null
-        }
-        Insert: {
-          adjacent_alleys?: number | null
-          adjacent_streets?: number | null
-          banner?: string | null
-          building_area?: number | null
-          building_construction_year?: number | null
-          building_height?: number | null
-          building_levels_basement?: boolean[] | null
-          building_levels_main?: boolean[] | null
-          building_levels_mezzanine?: boolean[] | null
-          cost_range?: unknown | null
-          created_at?: string | null
-          created_by?: string | null
-          description?: string | null
-          id?: string | null
-          implantation_mode?: number | null
-          interventions_area?: number | null
-          likes_sum?: number | null
-          site_area?: number | null
-          site_ownership?: number | null
-          title?: string | null
-          type?: number | null
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-        Update: {
-          adjacent_alleys?: number | null
-          adjacent_streets?: number | null
-          banner?: string | null
-          building_area?: number | null
-          building_construction_year?: number | null
-          building_height?: number | null
-          building_levels_basement?: boolean[] | null
-          building_levels_main?: boolean[] | null
-          building_levels_mezzanine?: boolean[] | null
-          cost_range?: unknown | null
-          created_at?: string | null
-          created_by?: string | null
-          description?: string | null
-          id?: string | null
-          implantation_mode?: number | null
-          interventions_area?: number | null
-          likes_sum?: number | null
-          site_area?: number | null
-          site_ownership?: number | null
-          title?: string | null
-          type?: number | null
-          updated_at?: string | null
-          updated_by?: string | null
-        }
-      }
       explore_projects: {
         Row: {
           adjacent_alleys: number | null
@@ -1630,7 +1520,13 @@ export interface Database {
           interventions_area: number | null
           is_demo: boolean | null
           likes_sum: number | null
-          obfuscated_location: unknown | null
+          location: unknown | null
+          location_obfuscated: unknown | null
+          location_radius: number | null
+          publication_requested: boolean | null
+          publication_requested_at: string | null
+          published: boolean | null
+          published_at: string | null
           site_area: number | null
           site_ownership: number | null
           summary: string | null
@@ -1639,21 +1535,85 @@ export interface Database {
           updated_at: string | null
           updated_by: string | null
         }
+        Insert: {
+          adjacent_alleys?: number | null
+          adjacent_streets?: number | null
+          banner?: string | null
+          building_area?: number | null
+          building_construction_year?: number | null
+          building_height?: number | null
+          building_levels_basement?: boolean[] | null
+          building_levels_basement_count?: number | null
+          building_levels_main?: boolean[] | null
+          building_levels_main_count?: number | null
+          building_levels_mezzanine?: boolean[] | null
+          building_levels_mezzanine_count?: number | null
+          cost_range?: unknown | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string | null
+          implantation_mode?: number | null
+          interventions_area?: number | null
+          is_demo?: boolean | null
+          likes_sum?: number | null
+          location?: unknown | null
+          location_obfuscated?: unknown | null
+          location_radius?: number | null
+          publication_requested?: boolean | null
+          publication_requested_at?: string | null
+          published?: boolean | null
+          published_at?: string | null
+          site_area?: number | null
+          site_ownership?: number | null
+          summary?: string | null
+          title?: string | null
+          type?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          adjacent_alleys?: number | null
+          adjacent_streets?: number | null
+          banner?: string | null
+          building_area?: number | null
+          building_construction_year?: number | null
+          building_height?: number | null
+          building_levels_basement?: boolean[] | null
+          building_levels_basement_count?: number | null
+          building_levels_main?: boolean[] | null
+          building_levels_main_count?: number | null
+          building_levels_mezzanine?: boolean[] | null
+          building_levels_mezzanine_count?: number | null
+          cost_range?: unknown | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string | null
+          implantation_mode?: number | null
+          interventions_area?: number | null
+          is_demo?: boolean | null
+          likes_sum?: number | null
+          location?: unknown | null
+          location_obfuscated?: unknown | null
+          location_radius?: number | null
+          publication_requested?: boolean | null
+          publication_requested_at?: string | null
+          published?: boolean | null
+          published_at?: string | null
+          site_area?: number | null
+          site_ownership?: number | null
+          summary?: string | null
+          title?: string | null
+          type?: number | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
       }
       projects_likes_count: {
         Row: {
           count: number | null
           id: string | null
-        }
-      }
-      projects_publication_status_fulfill: {
-        Row: {
-          fulfill: boolean | null
-          project: string | null
-          published: string | null
-          requested: string | null
-          updated_at: string | null
-          updated_by: string | null
         }
       }
       random_projects_images: {
@@ -1712,26 +1672,26 @@ export interface Database {
       authorize_actor_update:
         | {
             Args: {
-              actor: unknown
+              actor_id: string
             }
             Returns: boolean
           }
         | {
             Args: {
-              actor_id: string
+              actor: unknown
             }
             Returns: boolean
           }
       authorize_org_update:
         | {
             Args: {
-              org: unknown
+              org_id: string
             }
             Returns: boolean
           }
         | {
             Args: {
-              org_id: string
+              org: unknown
             }
             Returns: boolean
           }
@@ -1752,6 +1712,10 @@ export interface Database {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_project_descriptors: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       get_relegate_uid: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -1762,13 +1726,22 @@ export interface Database {
         }
         Returns: boolean
       }
-      project_descriptors: {
-        Args: Record<PropertyKey, never>
-        Returns: Json
-      }
-      project_is_public: {
+      project_is_public:
+        | {
+            Args: {
+              p_id: string
+            }
+            Returns: boolean
+          }
+        | {
+            Args: {
+              p_row: unknown
+            }
+            Returns: boolean
+          }
+      project_publication_satisfy: {
         Args: {
-          p_id: string
+          "": unknown
         }
         Returns: boolean
       }

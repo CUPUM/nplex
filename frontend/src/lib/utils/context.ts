@@ -1,14 +1,14 @@
 import { getContext, setContext } from 'svelte';
 
 /**
- * Allows defining a context setter and its corresponding getter for easier type-matching.
+ * Allows defining correspondingly typed context setter context getter.
  */
-export function defineContext<T>(key: any) {
-	function setter(context: T) {
+export function defineContext<T>(key: unknown) {
+	function set(context: T) {
 		return setContext<T>(key, context);
 	}
-	function getter() {
+	function get() {
 		return getContext<T>(key);
 	}
-	return [getter, setter] as [getter: typeof getter, setter: typeof setter];
+	return [get, set] as const as [getter: typeof get, setter: typeof set];
 }

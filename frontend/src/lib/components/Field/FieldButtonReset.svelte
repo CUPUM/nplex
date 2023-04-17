@@ -4,7 +4,7 @@
 	import Icon from '../Icon.svelte';
 	import { getFieldContext } from './Field.svelte';
 
-	export let variant: ComponentProps<Button>['variant'] = 'ghost';
+	export let variant: ComponentProps<Button<any, any>>['variant'] = 'ghost';
 	export let value: any = null;
 	export let disabled: boolean | undefined = undefined;
 

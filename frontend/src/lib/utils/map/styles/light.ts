@@ -2,9 +2,7 @@ import { PUBLIC_MAPTILER_KEY } from '$env/static/public';
 import { THEME_PALETTES } from '$utils/themes';
 import { colord } from 'colord';
 import type { StyleSpecification } from 'maplibre-gl';
-import { FONT, FONT_URL } from './common';
-
-export const TRANSPARENT = 'rgba(0,0,0,0)'; // 'rgba(0,0,0,0)';
+import { FONT, FONT_URL, TRANSPARENT } from './common';
 
 const TEXT_HALO_WIDTH = 1;
 

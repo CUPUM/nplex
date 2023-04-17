@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Loading from '$components/Loading.svelte';
 	import Map from '$components/Map/Map.svelte';
+	import MapMarker from '$components/Map/MapMarker.svelte';
+	import { toLngLatLike } from '$utils/format';
 	import light from '$utils/map/styles/light';
 	import { expoOut } from 'svelte/easing';
 	import type { PageData } from './$types';
@@ -33,7 +35,13 @@
 			<Loading />
 		</div>
 		{#each projects as p}
-			<!-- <MapMarker lnglat={p.obfuscated_location} /> -->
+			<MapMarker lnglat={toLngLatLike(p.location_obfuscated.coordinates)} anchor="center">
+				<a class="project-marker" href="/projets/{p.id}">
+					<!-- <div class="project-marker-inner">
+						{p.title}
+					</div> -->
+				</a>
+			</MapMarker>
 		{/each}
 	</Map>
 </section>
@@ -45,15 +53,33 @@
 		inset: 0;
 		flex: 1;
 		background: col(bg, 700);
-		// transition: all 0.25s var(--ui-ease-out);
-		// &:not(:first-child) {
-		// 	border-top-left-radius: var(--projects-map-radius);
-		// 	border-bottom-left-radius: var(--projects-map-radius);
-		// }
-		// &:not(:last-child) {
-		// 	border-top-right-radius: var(--projects-map-radius);
-		// 	border-bottom-right-radius: var(--projects-map-radius);
-		// }
+		// border-radius: var(--projects-map-radius);
+		// border-top-left-radius: var(--projects-map-radius);
+		// border-top-right-radius: var(--projects-map-radius);
+	}
+
+	.project-marker {
+		display: block;
+		width: 1rem;
+		height: 1rem;
+		border-radius: 50%;
+		background: col(primary, 500);
+		transition: all 0.25s var(--ui-ease-out);
+		&:hover {
+			width: 1.25rem;
+			height: 1.25rem;
+		}
+	}
+
+	.project-marker-inner {
+		position: absolute;
+		font-size: 1rem;
+		max-width: 50ch;
+		text-align: center;
+		// background: col(bg, 100);
+		display: block;
+		white-space: nowrap;
+		transform: translate(-50%, -100%);
 	}
 
 	.loading-wrapper {
