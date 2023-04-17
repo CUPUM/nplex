@@ -655,7 +655,7 @@
 
 	.dashed {
 		.outline {
-			border-style: dashed !important;
+			border-style: dashed;
 		}
 	}
 

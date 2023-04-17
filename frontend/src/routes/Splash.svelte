@@ -237,7 +237,7 @@
 			}
 		}
 		.logo-symbol-filled {
-			filter: drop-shadow(0px 16px 12px rgb(0, 0, 0, 0.25));
+			// filter: drop-shadow(0px 16px 12px rgb(0, 0, 0, 0.25));
 		}
 	}
 

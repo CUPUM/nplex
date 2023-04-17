@@ -335,7 +335,7 @@
 		justify-content: flex-start;
 		flex-wrap: nowrap;
 		width: 100%;
-		max-width: 500px;
+		max-width: 45ch;
 		max-height: 100%;
 		background: col(bg, 300);
 		box-shadow: 0 3rem 6rem -3rem rgba(0, 0, 20, 0.5), 0 3rem 3rem 2rem rgba(0, 0, 0, 0.1);
