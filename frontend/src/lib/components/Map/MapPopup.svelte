@@ -12,24 +12,15 @@
 <script lang="ts">
 	import { defineContext } from '$utils/context';
 	import type { LngLat, LngLatLike } from 'maplibre-gl';
-	import { onDestroy, onMount } from 'svelte';
 	import { getMapContext } from './Map.svelte';
 	import { getMapMarkerContext } from './MapMarker.svelte';
 
-	export let latlng: LngLat | LngLatLike | undefined = undefined;
+	export let lnglat: LngLat | LngLatLike | undefined = undefined;
 
 	let popupRef: HTMLElement;
 
 	const { getMap } = getMapContext();
 	const markerContext = getMapMarkerContext();
-
-	onMount(() => {
-		if (markerContext?.getMapMarker != null) {
-			const marker = markerContext.getMapMarker();
-		}
-	});
-
-	onDestroy(() => {});
 </script>
 
 <div class="map-popup" bind:this={popupRef}>

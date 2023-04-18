@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Loading from '$components/Loading.svelte';
 	import Map from '$components/Map/Map.svelte';
+	import MapAttributionControl from '$components/Map/MapAttributionControl.svelte';
 	import MapMarker from '$components/Map/MapMarker.svelte';
+	import MapPopup from '$components/Map/MapPopup.svelte';
 	import { toLngLatLike } from '$utils/format';
 	import light from '$utils/map/styles/light';
 	import { expoOut } from 'svelte/easing';
@@ -36,6 +38,7 @@
 
 <section id="projects-map">
 	<Map cooperativeGestures={false} mapStyle={light} bind:this={mapRef}>
+		<MapAttributionControl position="bottom-right" />
 		<div class="loading-wrapper" slot="loading">
 			<Loading />
 		</div>
@@ -43,8 +46,8 @@
 			{@const lnglat = toLngLatLike(p.location_obfuscated.coordinates)}
 			<MapMarker {lnglat} anchor="center">
 				<a class="project-marker" href="/projets/{p.id}" />
+				<MapPopup {lnglat}>Test</MapPopup>
 			</MapMarker>
-			<!-- <MapPopup {lnglat}>Test</MapPopup> -->
 		{/each}
 	</Map>
 </section>
