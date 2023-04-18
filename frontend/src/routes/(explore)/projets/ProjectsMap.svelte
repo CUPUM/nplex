@@ -17,16 +17,21 @@
 
 	let mapRef: Map;
 
-	$: if (mapRef && ($projectsFiltersOpened != null || $projectsListOpened != null)) {
-		mapRef?.map?.easeTo({
-			padding: {
-				left: $projectsFiltersOpened ? PROJECTS_FILTERS_W : 0,
-				right: $projectsListOpened ? PROJECTS_LIST_W : 0,
-			},
-			duration: 250,
-			easing: expoOut,
-		});
-	}
+	$: mapRef?.map?.easeTo({
+		padding: {
+			left: $projectsFiltersOpened ? PROJECTS_FILTERS_W : 0,
+		},
+		duration: 250,
+		easing: expoOut,
+	});
+
+	$: mapRef?.map?.easeTo({
+		padding: {
+			right: $projectsListOpened ? PROJECTS_LIST_W : 0,
+		},
+		duration: 250,
+		easing: expoOut,
+	});
 </script>
 
 <section id="projects-map">
@@ -35,13 +40,11 @@
 			<Loading />
 		</div>
 		{#each projects as p}
-			<MapMarker lnglat={toLngLatLike(p.location_obfuscated.coordinates)} anchor="center">
-				<a class="project-marker" href="/projets/{p.id}">
-					<!-- <div class="project-marker-inner">
-						{p.title}
-					</div> -->
-				</a>
+			{@const lnglat = toLngLatLike(p.location_obfuscated.coordinates)}
+			<MapMarker {lnglat} anchor="center">
+				<a class="project-marker" href="/projets/{p.id}" />
 			</MapMarker>
+			<!-- <MapPopup {lnglat}>Test</MapPopup> -->
 		{/each}
 	</Map>
 </section>

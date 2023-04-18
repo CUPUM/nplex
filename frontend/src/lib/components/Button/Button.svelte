@@ -368,8 +368,8 @@
 		--button-variant-hover-color: #{col(fg, 900)};
 		--button-variant-hover-background: #{col(fg, 100, 0.1)};
 		--button-variant-hover-border: 3px var(--ui-button-border-style) transparent;
-		--button-variant-active-color: #{col(fg, 700)};
-		--button-variant-active-background: #{col(fg, 000, 0.1)};
+		--button-variant-active-color: #{col(bg, 500)};
+		--button-variant-active-background: #{col(fg, 500)};
 		--button-variant-active-border: 3px var(--ui-button-border-style) transparent;
 		&.warning {
 			--button-variant-color: #{col(error, 900)};

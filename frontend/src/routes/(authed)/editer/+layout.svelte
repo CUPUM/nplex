@@ -9,14 +9,13 @@
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
 	import type { Snapshot } from './$types';
-	import { isDirty, updating } from './common';
-	import { EDITOR_FORM_ID, EDITOR_ROUTES } from './constants';
-	import EditableActorCard from './EditableActorCard.svelte';
 	import EditableOrgCard from './EditableOrgCard.svelte';
 	import EditableProjectCard from './EditableProjectCard.svelte';
 	import EditablesList from './EditablesList.svelte';
 	import EditorBreadcrumbs from './EditorBreadcrumbs.svelte';
 	import EditorToolbar from './EditorToolbar.svelte';
+	import { isDirty, updating } from './common';
+	import { EDITOR_FORM_ID, EDITOR_ROUTES } from './constants';
 
 	export let data;
 
@@ -58,7 +57,7 @@
 		width: NAVBAR_WIDTH.Full,
 	}}
 	use:setRootBackground={{ overscroll: THEME_PALETTES[theme].bg[shade] }}
-	style:--editor-bg={col('bg', shade)}
+	style:--editor-background={col('bg', shade)}
 >
 	<EditorBreadcrumbs />
 	<!-- Top header -->
@@ -106,7 +105,7 @@
 	bind:filters={projectsFilters}
 	id={EDITOR_ROUTES.project.edit.hash}
 	title="Mes projets"
-	data={data.defer.editableProjects}
+	data={data.editableProjects}
 	let:datum
 >
 	<EditableProjectCard project={datum} />
@@ -115,12 +114,13 @@
 	bind:filters={orgFilters}
 	id={EDITOR_ROUTES.organization.edit.hash}
 	title="Mes organisations"
-	data={data.defer.editableOrgs}
+	data={data.editableOrgs}
 	let:datum
 >
 	<EditableOrgCard organization={datum} />
 </EditablesList>
-<EditablesList
+
+<!-- <EditablesList
 	bind:filters={actorsFilters}
 	id={EDITOR_ROUTES.actor.edit.hash}
 	title="Mes profils d'acteurs"
@@ -128,7 +128,7 @@
 	let:datum
 >
 	<EditableActorCard actor={datum} />
-</EditablesList>
+</EditablesList> -->
 
 <style lang="scss">
 	article {
@@ -140,10 +140,10 @@
 		align-items: stretch;
 		border-radius: 0 0 var(--article-radius) var(--article-radius);
 		color: col(fg, 500);
-		background: var(--editor-bg);
+		background: var(--editor-background);
 		margin-top: calc(-1 * var(--ui-nav-h));
 		min-height: 100vh;
-		padding: var(--ui-gutter-md);
+		padding: var(--ui-gutter-sm);
 		padding-top: 0;
 
 		@include mobile {

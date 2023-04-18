@@ -4,14 +4,12 @@
 	import Icon from '$components/Icon.svelte';
 	import MeshGradient from '$components/MeshGradient.svelte';
 	import Token from '$components/Token/Token.svelte';
+	import TokenIcon from '$components/Token/TokenIcon.svelte';
 	import Tooltip from '$components/Tooltip.svelte';
 	import { col } from '$utils/css';
 	import { cubicOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
-	import type { LayoutData } from './$types';
 	import { project } from './common';
-
-	let isPublic = ($page.data as LayoutData).project?.publication_status.published != null;
 
 	const dateFormatter = new Intl.DateTimeFormat('fr-CA');
 </script>
@@ -27,24 +25,32 @@
 		]}
 		style="z-index: -1;"
 	/>
-	{#if isPublic != null}
-		<section>
-			<Tooltip
-				message={isPublic
-					? 'Ce projet est présentement visible publiquement.'
-					: "Ce projet n'est pas présentement visible publiquement."}
-				place="bottom"
-				align="start"
-			>
-				<Token equi readonly variant="outlined" active={isPublic}>
-					<Icon name={isPublic ? 'eye-open' : 'eye-close'} />
-				</Token>
-			</Tooltip>
-			<span class="subtle">
-				{isPublic ? 'Fiche publiée' : 'Fiche brouillon (privée)'}
-			</span>
-		</section>
-	{/if}
+	<section>
+		<Tooltip
+			message={$project?.published
+				? 'Ce projet est présentement visible publiquement.'
+				: "Ce projet n'est pas présentement visible publiquement."}
+			place="bottom"
+			align="start"
+		>
+			<Token equi readonly variant="outlined" checked={$project?.published}>
+				<Icon name={$project?.published ? 'eye-open' : 'eye-close'} />
+			</Token>
+		</Tooltip>
+		<span class="subtle">
+			{#if $project?.published}
+				Fiche publiée
+			{:else}
+				Fiche brouillon (privée)
+			{/if}
+		</span>
+		{#if !$project?.publication_satisfy}
+			<Token --token-color={col('error', 500)} --token-background={col('error', 700, 0.25)}>
+				<TokenIcon name="warn" slot="leading" />
+				Information incomplète requise pour publication
+			</Token>
+		{/if}
+	</section>
 	<hgroup class="heading">
 		<h1 class="heading-2xl">
 			{#if $project?.title != null}
@@ -55,22 +61,26 @@
 		</h1>
 	</hgroup>
 	<section class="footer">
-		<Button rounded variant="default" href="/projets/{$page.data.project?.id}">
+		<Button
+			variant="default"
+			href="/projets/{$page.data.project?.id}"
+			--button-background={'var(--editor-background)'}
+		>
 			<Icon name="preview" slot="leading" />
 			Visualiser
 		</Button>
 		<nobr>
 			<dl>
 				<dt>Créée le</dt>
-				<dd>{dateFormatter.format(new Date($page.data.project?.created_at))}</dd>
+				<dd>{dateFormatter.format(new Date($project?.created_at ?? Date.now()))}</dd>
 				<dt>par</dt>
-				<dd>{$page.data.project?.created_by?.first_name}</dd>
+				<dd>{$project?.created_by?.first_name}</dd>
 			</dl>
 			<dl>
 				<dt>Modifiée le</dt>
-				<dd>{dateFormatter.format(new Date($page.data.project?.updated_at))}</dd>
+				<dd>{dateFormatter.format(new Date($project?.updated_at ?? Date.now()))}</dd>
 				<dt>par</dt>
-				<dd>{$page.data.project?.updated_by?.first_name}</dd>
+				<dd>{$project?.updated_by?.first_name}</dd>
 			</dl>
 		</nobr>
 	</section>

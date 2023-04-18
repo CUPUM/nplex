@@ -41,5 +41,10 @@
 		:global(.focused) & {
 			opacity: 1;
 		}
+
+		:global(.affix) & {
+			padding-inline: var(--ui-pad-xs);
+			top: 0.1em;
+		}
 	}
 </style>

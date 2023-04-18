@@ -574,7 +574,7 @@
 	}
 
 	.explorer {
-		--ripple-color: #{col(bg, 000)};
+		--ripple-color: #{col(fg, 100)};
 		// --field-variant-backdrop-filter: blur(8px);
 		--field-variant-color: #{col(fg, 100)};
 		--field-variant-background: #{col(bg, 100)};

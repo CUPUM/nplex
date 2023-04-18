@@ -14,8 +14,6 @@
 	import CreateIntervention from './CreateIntervention.svelte';
 	import { descriptors, project } from './common';
 
-	$: console.log($descriptors.types);
-
 	$: available = $descriptors.types.find((t) => t.id === $project.type)?.interventions ?? [];
 
 	$: selected = $project.interventions.reduce((acc, curr) => {

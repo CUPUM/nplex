@@ -15,8 +15,7 @@
 	.token-icon {
 		display: inline-flex;
 		position: relative;
-		padding-inline: 0.25em;
-		// top: -0.1em;
+		padding-inline: 0.5em;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;

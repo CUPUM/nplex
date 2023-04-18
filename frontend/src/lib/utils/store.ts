@@ -115,7 +115,7 @@ export function writableQuery<Q, F extends (query: Q) => Promise<any> | PromiseL
 		staleOnError?: boolean;
 	} = {}
 ) {
-	type FetchStoreValue = {
+	type WritableQueryValue = {
 		/**
 		 * The input query.
 		 */
@@ -140,7 +140,7 @@ export function writableQuery<Q, F extends (query: Q) => Promise<any> | PromiseL
 	/**
 	 * Base store used to keep track of request states and reactive query input value.
 	 */
-	const store = writable<FetchStoreValue>(
+	const store = writable<WritableQueryValue>(
 		{
 			input: init,
 			loading: false,
@@ -208,7 +208,7 @@ export function writableQuery<Q, F extends (query: Q) => Promise<any> | PromiseL
 	/**
 	 * Exposed store update method.
 	 */
-	function _update(updater: Updater<FetchStoreValue>) {
+	function _update(updater: Updater<WritableQueryValue>) {
 		// console.log('updating');
 		store.update((v) => {
 			limitedHandler(v.input);
@@ -218,7 +218,7 @@ export function writableQuery<Q, F extends (query: Q) => Promise<any> | PromiseL
 	/**
 	 * Exposed store set method.
 	 */
-	function _set(v: FetchStoreValue) {
+	function _set(v: WritableQueryValue) {
 		// console.log('setting');
 		_update((prev) => {
 			return {
@@ -268,8 +268,8 @@ export function writableXhr() {
  */
 export function closest<
 	A extends string,
-	V = A extends keyof svelteHTML.HTMLAttributes
-		? svelteHTML.HTMLAttributes[A]
+	V = A extends keyof svelteHTML.HTMLAttributes<any>
+		? svelteHTML.HTMLAttributes<any>[A]
 		: string | undefined | null
 >(element: Element, attribute: A, fromRoot = false) {
 	const p = element.closest(`[${attribute}]`);

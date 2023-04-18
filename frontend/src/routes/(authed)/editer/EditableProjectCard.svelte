@@ -7,7 +7,7 @@
 	import EditableNewCard from './EditableNewCard.svelte';
 	import type { EditablesDefault } from './EditablesList.svelte';
 
-	export let project: Awaited<LayoutData['defer']['editableProjects']>[number] | EditablesDefault;
+	export let project: Awaited<LayoutData['editableProjects']>[number] | EditablesDefault;
 
 	const editorHref = `/editer/projet/${project.id}`;
 	const explorerHref = `/projets/${project.id}`;
@@ -20,7 +20,7 @@
 				.lighten(-0.4)
 				.toRgbString()
 		: col('bg', 900)} -->
-	<div class="project-card project" class:published={project.publication_status.published}>
+	<div class="project-card project" class:published={project.published}>
 		<Ripple />
 		<a href={editorHref} class="fill">
 			<Image
@@ -33,7 +33,7 @@
 		</a>
 		<div class="summary">
 			<div class="status">
-				{project.publication_status.published ? 'Publié' : 'Non-publié'}
+				{project.published ? 'Publié' : 'Non-publié'}
 			</div>
 			<div class="title">
 				{project.title}

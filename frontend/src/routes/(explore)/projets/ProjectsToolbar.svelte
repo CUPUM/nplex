@@ -4,7 +4,7 @@
 	import FieldButtonReset from '$components/Field/FieldButtonReset.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { projectsFiltersOpened, projectsListOpened } from './common';
+	import { projectsFiltersOpened, projectsListOpened, projectsTs } from './common';
 
 	function toggleFiltersPane() {
 		$projectsFiltersOpened = !$projectsFiltersOpened;
@@ -13,17 +13,20 @@
 	function toggleListPane() {
 		$projectsListOpened = !$projectsListOpened;
 	}
-
-	// let tokens = [{ title: 'hello' }, { title: 'asdt4as' }];
 </script>
 
 <section id="projects-toolbar">
 	<form>
-		<Field placeholder="Chercher des projets" variant="explorer" data-sveltekit-keepfocus={true}>
+		<Field
+			placeholder="Chercher des projets"
+			variant="explorer"
+			data-sveltekit-keepfocus={true}
+			bind:value={$projectsTs.input}
+		>
 			<svelte:fragment slot="leading">
 				<Button
 					type="button"
-					variant="default"
+					variant="outlined"
 					on:click={toggleFiltersPane}
 					active={$projectsFiltersOpened}
 				>
@@ -34,22 +37,26 @@
 					/>
 					Filtres
 				</Button>
-				<FieldIcon name="search" />
 				<!-- <FieldTokens bind:data={tokens} let:datum>
 					<Token>{datum.title}</Token>
 				</FieldTokens> -->
 			</svelte:fragment>
+			<svelte:fragment slot="prefix">
+				<FieldIcon name="search" strokeWidth={2.5} />
+			</svelte:fragment>
 			<svelte:fragment slot="trailing">
 				<FieldButtonReset />
-				<Button equi type="submit"><Icon name="arrow-right" /></Button>
+				<Button equi type="submit" variant="outlined">
+					<Icon name="arrow-right" />
+				</Button>
 			</svelte:fragment>
 		</Field>
 	</form>
-	<menu>
+	<!-- <menu>
 		<Button equi on:click={toggleListPane}>
 			<Icon name="map" />
 		</Button>
-	</menu>
+	</menu> -->
 </section>
 
 <style lang="scss">

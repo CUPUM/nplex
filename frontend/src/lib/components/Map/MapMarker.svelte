@@ -2,8 +2,16 @@
 	@component
 	A common map marker, needs to be nested within a MapLayer? (to determine).
 -->
+<script lang="ts" context="module">
+	const [getMapMarkerContext, setMapMarkerContext] = defineContext<{
+		getMapMarker: () => Marker;
+	}>('map-marker-context');
+	export { getMapMarkerContext };
+</script>
+
 <script lang="ts">
 	import Icon from '$components/Icon.svelte';
+	import { defineContext } from '$utils/context';
 	import { Marker, Popup, type LngLat, type LngLatLike, type MarkerOptions } from 'maplibre-gl';
 	import { onDestroy, onMount, type ComponentProps } from 'svelte';
 	import { getMapContext } from './Map.svelte';
@@ -50,16 +58,25 @@
 		}
 	});
 
+	function getMapMarker() {
+		return marker;
+	}
+
+	setMapMarkerContext({ getMapMarker });
+
 	onDestroy(() => {
 		marker.remove();
 	});
 </script>
 
 <figure class="map-marker {className}" bind:this={markerRef} {style} style:font-size={size}>
-	<slot {marker}>
-		<Icon name={icon} strokeWidth={1.5} />
-	</slot>
+	{#if marker}
+		<slot {marker}>
+			<Icon name={icon} strokeWidth={1.5} />
+		</slot>
+	{/if}
 </figure>
+<slot name="popup" {marker} />
 
 <style lang="scss">
 	.map-marker {

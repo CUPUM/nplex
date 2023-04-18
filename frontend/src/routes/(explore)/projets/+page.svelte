@@ -1,14 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import NavbarWidth from '$routes/NavbarWidth.svelte';
 	import RootScroll from '$routes/RootScroll.svelte';
-	import { get } from 'svelte/store';
 	import type { Snapshot } from './$types';
 	import ProjectsFilters from './ProjectsFilters.svelte';
 	import ProjectsList from './ProjectsList.svelte';
 	import ProjectsMap from './ProjectsMap.svelte';
 	import ProjectsToolbar from './ProjectsToolbar.svelte';
-	import { projectsFiltersOpened, projectsListOpened } from './common';
+	import { projectsFiltersOpened, projectsListOpened, projectsTs } from './common';
 
 	export let data;
 
@@ -17,16 +15,19 @@
 	export const snapshot: Snapshot<{
 		filtersOpened: boolean;
 		listOpened: boolean;
+		ts: string;
 	}> = {
 		capture() {
 			return {
-				filtersOpened: get(projectsFiltersOpened),
-				listOpened: get(projectsListOpened),
+				filtersOpened: $projectsFiltersOpened,
+				listOpened: $projectsListOpened,
+				ts: $projectsTs.input,
 			};
 		},
 		restore(snapshot) {
-			projectsFiltersOpened.set(snapshot.filtersOpened);
-			projectsListOpened.set(snapshot.listOpened);
+			$projectsFiltersOpened = snapshot.filtersOpened;
+			$projectsListOpened = snapshot.listOpened;
+			$projectsTs.input = snapshot.ts;
 		},
 	};
 </script>
@@ -34,7 +35,7 @@
 <RootScroll lock />
 <NavbarWidth width="full" />
 <ProjectsToolbar />
-<article id="projects-explore" class:map-compact={$page.data.projectsMapCompact}>
+<article id="projects-explore">
 	<ProjectsFilters />
 	<ProjectsMap projects={data.projects} />
 	<ProjectsList projects={data.projects} />

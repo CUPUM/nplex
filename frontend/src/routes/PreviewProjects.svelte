@@ -64,10 +64,10 @@
 		display: flex;
 		flex-direction: row;
 		gap: 1.5rem;
-		height: 500px;
+		height: clamp(400px, 75vh, 600px);
 		overflow-x: scroll;
 		justify-content: stretch;
-		padding-block: 1.5rem;
+		padding-block: 2rem;
 		padding-inline: max(1.5rem, calc(50vw + 1.5rem - 0.5 * var(--ui-width-main)));
 	}
 

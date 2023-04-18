@@ -61,7 +61,7 @@ export function isLocationCircle(
 // Validation schemas
 //
 
-export const projectTitleSchema = zfd.text(
+const projectTitleSchema = zfd.text(
 	z
 		.string()
 		.trim()
@@ -70,6 +70,10 @@ export const projectTitleSchema = zfd.text(
 			return wordcount >= PROJECT_TITLE_MIN_WORDS && wordcount <= PROJECT_TITLE_MAX_WORDS;
 		}, `Le titre du projet doit être composé de ${PROJECT_TITLE_MIN_WORDS} à ${PROJECT_TITLE_MAX_WORDS} mots.`)
 );
+
+export const projectCreateSchema = zfd.formData({
+	title: projectTitleSchema,
+});
 
 const projectDescriptionSchema = zfd.text(
 	z

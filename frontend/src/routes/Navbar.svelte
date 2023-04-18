@@ -118,6 +118,8 @@
 	 */
 	const key = Symbol('nav');
 
+	const exploreRoutes = [EXPLORE_ROUTES.projects, EXPLORE_ROUTES.organisations];
+
 	let mounted = false;
 	let open = false;
 	let rootSegment: string;
@@ -158,7 +160,7 @@
 			{/each}
 		</section>
 		<section class="category" hidden={!$page.data.showCategoryNavbar}>
-			{#each Object.values(EXPLORE_ROUTES) as r}
+			{#each exploreRoutes as r}
 				<NavbarButton
 					category
 					href={r.pathname}
@@ -339,8 +341,8 @@
 	.category {
 		--i: 1;
 		--inset: var(--ui-inset-md);
-		--radius: var(--ui-radius-md); // 99px;
-		gap: 1px;
+		--radius: 99px;
+		gap: 2px;
 		grid-column: category;
 		justify-self: center;
 		padding: var(--inset);

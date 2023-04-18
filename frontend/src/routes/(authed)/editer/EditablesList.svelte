@@ -2,10 +2,7 @@
 	type DatumBase = {
 		id: string | null;
 		created_by: string | null;
-		publication_status?: Pick<
-			App.Database['public']['Tables']['projects_publication_status']['Row'],
-			'published'
-		> | null;
+		published?: boolean;
 	};
 	type FilterFunction = <T extends DatumBase>(d: T) => boolean;
 	type AuthoringFilterFunction = <T extends DatumBase>(d: T, uid: string) => boolean;
@@ -43,13 +40,13 @@
 		draft: {
 			text: 'Brouillons',
 			filter: (d) => {
-				return d.publication_status?.published == null;
+				return d.published === false;
 			},
 		},
 		published: {
 			text: 'Publiés',
 			filter: (d) => {
-				return d.publication_status?.published != null;
+				return d.published === true;
 			},
 		},
 	} satisfies Filters<FilterFunction>;
@@ -72,22 +69,20 @@
 	type D = $$Generic<DatumBase>;
 
 	export let title: string;
-	export let data: Promise<D[]>;
+	export let data: D[];
 	export let id: string;
 	export let filters: PersistedFilters;
 
 	let filtered: (D | typeof defaultDatum)[] = [];
 
-	$: data.then((d) => {
-		filtered = [
-			...d.filter(
-				(d) =>
-					authoring[filters.authoring].filter(d, $page.data.session?.user.id!) &&
-					publishing[filters.publishing].filter(d)
-			),
-			defaultDatum,
-		];
-	});
+	$: filtered = [
+		...data.filter(
+			(d) =>
+				authoring[filters.authoring].filter(d, $page.data.session?.user.id!) &&
+				publishing[filters.publishing].filter(d)
+		),
+		defaultDatum,
+	];
 </script>
 
 <section {id}>
