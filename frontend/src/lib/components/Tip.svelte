@@ -19,16 +19,16 @@
 	export { className as class };
 </script>
 
-<svg class="ui-tip {className}" {style} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+<svg class="ui-tip {className}" {style} viewBox="26 2 74 50" preserveAspectRatio="xMinYMin slice">
 	<path d={TIP} />
 </svg>
 
 <style lang="scss">
-	:global(.ui-tip) {
+	.ui-tip {
 		pointer-events: none;
 		position: absolute;
-		height: 1em;
-		width: 1em;
+		height: 0.5em;
+		width: 0.5em;
 		padding: 0;
 		margin: 0;
 		background: transparent;

@@ -2,7 +2,9 @@ import { PUBLIC_MAPTILER_KEY } from '$env/static/public';
 import { THEME_PALETTES } from '$utils/themes';
 import { colord } from 'colord';
 import type { StyleSpecification } from 'maplibre-gl';
-import { FONT, TRANSPARENT } from './common';
+import { FONT, FONT_URL, TRANSPARENT } from './common';
+
+const TEXT_HALO_WIDTH = 1;
 
 const THEME = {
 	LANDSCAPE: THEME_PALETTES.dark.bg[900], // 'hsla(0, 0%, 100%, 1)',
@@ -476,12 +478,12 @@ const dark: StyleSpecification = {
 			'minzoom': 16,
 			'paint': {
 				'fill-antialias': true,
-				'fill-color': colord(THEME.BUILDINGS).alpha(0.1).toHslString(),
+				'fill-color': colord(THEME.BUILDINGS).alpha(0.5).toHslString(),
 				'fill-opacity': {
 					base: 1,
 					stops: [
-						[13, 0],
-						[16, 1],
+						[8, 0],
+						[11, 1],
 					],
 				},
 				'fill-outline-color': THEME.BUILDINGS,
@@ -616,11 +618,11 @@ const dark: StyleSpecification = {
 				'symbol-placement': 'line',
 				'symbol-spacing': 350,
 				'text-field': '{name:latin} {name:nonlatin}',
-				'text-font': [FONT],
+				'text-font': [FONT.Regular],
 				'text-letter-spacing': 0.2,
 				'text-max-width': 5,
 				'text-rotation-alignment': 'map',
-				'text-size': 14,
+				'text-size': 12,
 				'visibility': 'visible',
 			},
 			'minzoom': 7,
@@ -638,13 +640,13 @@ const dark: StyleSpecification = {
 				'symbol-placement': 'line',
 				'symbol-spacing': 200,
 				'text-field': '{name:latin} {name:nonlatin}',
-				'text-font': ['Noto Sans Bold Italic'],
+				'text-font': [FONT.Medium],
 				'text-max-width': 9,
 				'text-rotation-alignment': 'map',
 				'text-size': {
 					stops: [
 						[14, 12],
-						[18, 19],
+						[18, 16],
 					],
 				},
 				'visibility': 'visible',
@@ -664,11 +666,11 @@ const dark: StyleSpecification = {
 				'symbol-placement': 'point',
 				'symbol-spacing': 250,
 				'text-field': '{name:latin} {name:nonlatin}',
-				'text-font': [FONT],
+				'text-font': [FONT.Regular],
 				'text-letter-spacing': 0.1,
 				'text-max-width': 6,
 				'text-rotation-alignment': 'map',
-				'text-size': 14,
+				'text-size': 12,
 				'text-transform': 'none',
 			},
 			'minzoom': 4,
@@ -686,11 +688,11 @@ const dark: StyleSpecification = {
 				'symbol-placement': 'point',
 				'symbol-spacing': 350,
 				'text-field': '{name:latin} {name:nonlatin}',
-				'text-font': [FONT],
+				'text-font': [FONT.Regular],
 				'text-letter-spacing': 0.2,
 				'text-max-width': 5,
 				'text-rotation-alignment': 'map',
-				'text-size': 14,
+				'text-size': 12,
 				'text-transform': 'uppercase',
 			},
 			'minzoom': 2,
@@ -709,8 +711,8 @@ const dark: StyleSpecification = {
 				'text-field': '{name:latin} {name:nonlatin}',
 				'text-font': {
 					stops: [
-						[6, ['Noto Sans Regular']],
-						[16, ['Noto Sans Bold']],
+						[6, [FONT.Regular]],
+						[16, [FONT.Medium]],
 					],
 				},
 				'text-keep-upright': true,
@@ -729,7 +731,7 @@ const dark: StyleSpecification = {
 				'text-color': THEME.ROADNAMES,
 				'text-halo-blur': 0,
 				'text-halo-color': THEME.TEXT_HALO,
-				'text-halo-width': 3,
+				'text-halo-width': TEXT_HALO_WIDTH,
 			},
 			'source': 'openmaptiles',
 			'source-layer': 'transportation_name',
@@ -747,8 +749,8 @@ const dark: StyleSpecification = {
 				'text-field': '{name:latin} {name:nonlatin}',
 				'text-font': {
 					stops: [
-						[6, ['Noto Sans Regular']],
-						[16, ['Noto Sans Bold']],
+						[6, [FONT.Regular]],
+						[16, [FONT.Medium]],
 					],
 				},
 				'text-rotation-alignment': 'map',
@@ -765,7 +767,7 @@ const dark: StyleSpecification = {
 			'paint': {
 				'text-color': THEME.ROADNAMES,
 				'text-halo-color': THEME.TEXT_HALO,
-				'text-halo-width': 3,
+				'text-halo-width': TEXT_HALO_WIDTH,
 			},
 			'source': 'openmaptiles',
 			'source-layer': 'transportation_name',
@@ -777,7 +779,7 @@ const dark: StyleSpecification = {
 			'layout': {
 				'symbol-placement': 'point',
 				'text-field': '{name:latin}',
-				'text-font': [FONT],
+				'text-font': [FONT.Regular],
 				'text-line-height': 1,
 				'text-pitch-alignment': 'map',
 				'text-size': 12,
@@ -785,10 +787,10 @@ const dark: StyleSpecification = {
 			},
 			'minzoom': 11,
 			'paint': {
-				'icon-halo-width': 1,
+				'icon-halo-width': TEXT_HALO_WIDTH,
 				'text-color': THEME.PLACENAMES,
 				'text-halo-color': THEME.TEXT_HALO,
-				'text-halo-width': 2,
+				'text-halo-width': TEXT_HALO_WIDTH,
 			},
 			'source': 'openmaptiles',
 			'source-layer': 'park',
@@ -802,15 +804,15 @@ const dark: StyleSpecification = {
 				'text-field': '{name:latin} {name:nonlatin}',
 				'text-font': {
 					stops: [
-						[12, ['Nunito Regular']],
-						[16, ['Nunito Semi Bold']],
+						[12, [FONT.Regular]],
+						[16, [FONT.Medium]],
 					],
 				},
 				'text-max-width': 10,
 				'text-size': {
 					stops: [
 						[12, 12],
-						[16, 18],
+						[16, 14],
 					],
 				},
 				'visibility': 'visible',
@@ -820,7 +822,7 @@ const dark: StyleSpecification = {
 				'text-color': THEME.PLACENAMES,
 				'text-halo-blur': 0,
 				'text-halo-color': THEME.TEXT_HALO,
-				'text-halo-width': 2,
+				'text-halo-width': TEXT_HALO_WIDTH,
 			},
 			'source': 'openmaptiles',
 			'source-layer': 'place',
@@ -834,17 +836,16 @@ const dark: StyleSpecification = {
 				'text-field': '{name:latin}',
 				'text-font': {
 					stops: [
-						[4, ['Nunito Regular']],
-						[7, ['Nunito Bold']],
+						[4, [FONT.Regular]],
+						[7, [FONT.Medium]],
 					],
 				},
 				'text-max-width': 10,
 				'text-size': {
 					stops: [
-						[4, 14],
-						[7, 15],
-						[8, 19],
-						[16, 22],
+						[4, 12],
+						[7, 14],
+						[8, 16],
 					],
 				},
 				'visibility': 'visible',
@@ -856,7 +857,7 @@ const dark: StyleSpecification = {
 				'text-color': THEME.PLACENAMES,
 				'text-halo-blur': 0,
 				'text-halo-color': THEME.TEXT_HALO,
-				'text-halo-width': 2,
+				'text-halo-width': TEXT_HALO_WIDTH,
 			},
 			'source': 'openmaptiles',
 			'source-layer': 'place',
@@ -870,15 +871,15 @@ const dark: StyleSpecification = {
 				'text-field': '{name:latin}',
 				'text-font': {
 					stops: [
-						[8, ['Nunito Regular']],
-						[14, ['Nunito Bold']],
+						[8, [FONT.Regular]],
+						[14, [FONT.Medium]],
 					],
 				},
 				'text-max-width': 10,
 				'text-size': {
 					stops: [
-						[8, 15],
-						[16, 18],
+						[8, 12],
+						[16, 14],
 					],
 				},
 				'visibility': 'visible',
@@ -890,7 +891,7 @@ const dark: StyleSpecification = {
 				'text-color': THEME.PLACENAMES,
 				'text-halo-blur': 0,
 				'text-halo-color': THEME.TEXT_HALO,
-				'text-halo-width': 2,
+				'text-halo-width': TEXT_HALO_WIDTH,
 			},
 			'source': 'openmaptiles',
 			'source-layer': 'place',
@@ -901,7 +902,7 @@ const dark: StyleSpecification = {
 			'id': 'place_state-label',
 			'layout': {
 				'text-field': '{name:latin} {name:nonlatin}',
-				'text-font': ['Nunito Semi Bold'],
+				'text-font': [FONT.Medium],
 				'text-max-width': 10,
 				'text-size': 13,
 				'text-transform': 'uppercase',
@@ -926,8 +927,8 @@ const dark: StyleSpecification = {
 				'text-field': '{name:latin}',
 				'text-font': {
 					stops: [
-						[3, ['Nunito Regular']],
-						[4, ['Nunito Bold']],
+						[3, [FONT.Regular]],
+						[4, [FONT.Medium]],
 					],
 				},
 				'text-ignore-placement': false,
@@ -948,7 +949,7 @@ const dark: StyleSpecification = {
 			'paint': {
 				'text-color': THEME.PLACENAMES,
 				'text-halo-color': THEME.TEXT_HALO,
-				'text-halo-width': 2,
+				'text-halo-width': TEXT_HALO_WIDTH,
 			},
 			'source': 'openmaptiles',
 			'source-layer': 'place',
@@ -959,7 +960,7 @@ const dark: StyleSpecification = {
 			'id': 'place_label_continent',
 			'layout': {
 				'text-field': '{name:latin}',
-				'text-font': ['Nunito Extra Bold'],
+				'text-font': [FONT.Medium],
 				'text-line-height': 1.1,
 				'text-max-width': 10,
 				'text-size': {
@@ -975,7 +976,7 @@ const dark: StyleSpecification = {
 			'paint': {
 				'text-color': THEME.PLACENAMES,
 				'text-halo-color': THEME.TEXT_HALO,
-				'text-halo-width': 2,
+				'text-halo-width': TEXT_HALO_WIDTH,
 			},
 			'source': 'openmaptiles',
 			'source-layer': 'place',

@@ -27,7 +27,7 @@
 
 <svelte:element
 	this={typeof href === 'string' ? 'a' : 'button'}
-	class="navbar-button focus-outline-visible {ICON_CLASS.hover} {active ? ICON_CLASS.hold : ''}"
+	class="navbar-button {ICON_CLASS.hover} {active ? ICON_CLASS.hold : ''}"
 	class:cta
 	class:category
 	data-current={current || undefined}
@@ -50,11 +50,6 @@
 
 <style lang="scss">
 	.navbar-button {
-		// --navbar-button-current-filter: brightness(0.95);
-		// :global([data-theme='dark']) & {
-		// 	--navbar-button-current-filter: brightness(1.2);
-		// }
-		// isolation: isolate;
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -68,8 +63,8 @@
 		letter-spacing: 0.02em;
 		line-height: 1;
 		color: col(fg, 100);
-		// backdrop-filter: blur(6px);
-		transition: color var(--navbar-transition);
+		outline: var(--ui-outline-inactive);
+		transition: all var(--navbar-transition);
 
 		&::before {
 			content: '';
@@ -78,31 +73,23 @@
 			border-radius: inherit;
 			inset: 0;
 			background: var(--navbar-bg);
-			// opacity: 0.95;
 			transition: background var(--navbar-transition), opacity var(--navbar-transition);
 		}
 		&:hover:not([data-current]) {
 			color: col(primary, 500);
 			background: col(primary, 500, 0.1);
-			&::before {
-				// opacity: 0.25;
-			}
 		}
 		&.active {
 			color: col(primary, 900);
 			background: col(primary, 100, 0.5);
-			&::before {
-				// opacity: 0.5;
-			}
 		}
 		&[data-current]:not(.active) {
 			color: col(fg, 900);
 			background: col(fg, 100, 0.1);
-			&::before {
-				// filter: var(--navbar-button-current-filter);
-			}
 		}
-
+		&:focus-visible {
+			outline: var(--ui-outline-active);
+		}
 		&:focus-visible,
 		&:focus {
 			z-index: 1;

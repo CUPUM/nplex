@@ -6,7 +6,6 @@ import { error } from '@sveltejs/kit';
 
 export const actions = {
 	[EDITOR_FORM_ACTION]: async (event) => {
-		// console.log(await event.request.formData());
 		const validated = await validateFormData(event, projectPlaceUpdateSchema);
 		console.log(validated);
 		if (validated.failure) return validated.failure;
@@ -14,21 +13,13 @@ export const actions = {
 		try {
 			const projectUpdate = event.locals.db
 				.from('projects')
-				.update(validated.data.project)
+				.update(validated.data)
 				.eq('id', event.params.projectId)
 				.then((res) => {
 					if (res.error) throw res.error;
 				});
 
-			const locationUpdate = event.locals.db
-				.from('projects_location')
-				.update(validated.data.location)
-				.eq('project', event.params.projectId)
-				.then((res) => {
-					if (res.error) throw res.error;
-				});
-
-			await Promise.all([projectUpdate, locationUpdate]);
+			await Promise.all([projectUpdate]);
 		} catch (err) {
 			throw error(STATUS_CODES.InternalServerError, JSON.stringify(err));
 		}

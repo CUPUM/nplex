@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Loading from '$components/Loading.svelte';
 	import Map from '$components/Map/Map.svelte';
 	import MapAttributionControl from '$components/Map/MapAttributionControl.svelte';
 	import MapMarker from '$components/Map/MapMarker.svelte';
 	import MapPopup from '$components/Map/MapPopup.svelte';
 	import { toLngLatLike } from '$utils/format';
 	import light from '$utils/map/styles/light';
+	import type { LngLat, MapEventType } from 'maplibre-gl';
 	import { expoOut } from 'svelte/easing';
 	import type { PageData } from './$types';
 	import {
@@ -34,21 +34,30 @@
 		duration: 250,
 		easing: expoOut,
 	});
+
+	function handleClickPopup(e: CustomEvent<MapEventType['click']>) {
+		console.log(e);
+		clickPopup = clickPopup ? null : e.detail.lngLat;
+	}
+
+	let clickPopup: LngLat | null = null;
 </script>
 
+^
+
 <section id="projects-map">
-	<Map cooperativeGestures={false} mapStyle={light} bind:this={mapRef}>
+	<Map cooperativeGestures={false} mapStyle={light} bind:this={mapRef} on:click={handleClickPopup}>
 		<MapAttributionControl position="bottom-right" />
-		<div class="loading-wrapper" slot="loading">
-			<Loading />
-		</div>
 		{#each projects as p}
 			{@const lnglat = toLngLatLike(p.location_obfuscated.coordinates)}
-			<MapMarker {lnglat} anchor="center">
-				<a class="project-marker" href="/projets/{p.id}" />
-				<MapPopup {lnglat}>Test</MapPopup>
+			<MapMarker {lnglat} draggable>
+				<!-- <a class="project-marker" href="/projets/{p.id}" /> -->
+				<MapPopup slot="popup">Test</MapPopup>
 			</MapMarker>
 		{/each}
+		{#if clickPopup}
+			<MapPopup lnglat={clickPopup}>Test</MapPopup>
+		{/if}
 	</Map>
 </section>
 
@@ -86,9 +95,5 @@
 		display: block;
 		white-space: nowrap;
 		transform: translate(-50%, -100%);
-	}
-
-	.loading-wrapper {
-		color: col(bg, 900);
 	}
 </style>

@@ -5,7 +5,7 @@
 	import CostRange from './CostRange.svelte';
 	import Interventions from './Interventions.svelte';
 	import Ownership from './Ownership.svelte';
-	import Summary from './Summary.svelte';
+	import Presentation from './Presentation.svelte';
 	import Type from './Type.svelte';
 	import Usage from './Usage.svelte';
 
@@ -44,7 +44,7 @@
 		visiteurs à la portée générale du projet.
 	</p>
 </header>
-<Summary />
+<Presentation />
 <Type />
 <Interventions />
 <Usage />

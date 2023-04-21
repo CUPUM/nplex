@@ -1,16 +1,20 @@
 <script lang="ts">
+	import HomepageHeader from './HomepageHeader.svelte';
+	import HomepageIntroduction from './HomepageIntroduction.svelte';
+	import HomepageParticipate from './HomepageParticipate.svelte';
+	import HomepageProjects from './HomepageProjects.svelte';
 	import OrganisationsPreviews from './PreviewOrganisations.svelte';
-	import ProjectsPreviews from './PreviewProjects.svelte';
-	import Splash from './Splash.svelte';
 
 	export let data;
 
 	let scrollTarget: HTMLElement;
 </script>
 
-<Splash {scrollTarget} images={data.splashImages} />
-<ProjectsPreviews bind:scrollTarget projects={data.projects} />
+<HomepageHeader {scrollTarget} images={data.splashImages} />
+<HomepageIntroduction />
+<HomepageProjects bind:scrollTarget projects={data.projects} />
 <OrganisationsPreviews organisations={data.organisations} />
+<HomepageParticipate />
 
 <!-- <ActorsPreviews actors={data.actors} /> -->
 

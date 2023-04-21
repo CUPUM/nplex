@@ -10,7 +10,7 @@
 	const TIME_BUFFER = 25;
 	const INTRO_DISTANCE = 16;
 
-	let latest: HTMLElement | null = null;
+	let latest: Tether | null = null;
 </script>
 
 <script lang="ts">
@@ -42,7 +42,7 @@
 	$: inX = place === 'right' ? -INTRO_DISTANCE : place === 'left' ? +INTRO_DISTANCE : 0;
 
 	$: if (opened) {
-		latest = tether?.anchorRef ?? null;
+		latest = tether ?? null;
 		tether.anchorRef?.setAttribute(POPOVER_OPEN_ATTR, '');
 	} else {
 		tether?.anchorRef?.removeAttribute(POPOVER_OPEN_ATTR);
@@ -133,7 +133,7 @@
 			out:scale|local={{
 				start: 0.96,
 				easing: cubicIn,
-				duration: (latest && latest !== tether?.anchorRef) || $navigating ? 0 : 125,
+				duration: (latest && latest !== tether) || $navigating ? 0 : 125,
 				opacity: 0,
 			}}
 		>

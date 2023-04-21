@@ -3,8 +3,10 @@
 	import Field from '$components/Field/Field.svelte';
 	import FieldDropdown from '$components/Field/FieldDropdown.svelte';
 	import Icon from '$components/Icon.svelte';
+	import Map from '$components/Map/Map.svelte';
 	import Token from '$components/Token/Token.svelte';
 	import { writableQuery } from '$utils/store';
+	import { Marker } from 'maplibre-gl';
 
 	const h = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];
 	const t = ['xl', 'lg', 'md', 'sm', 'xs'];
@@ -22,6 +24,12 @@
 	// 	// 	return res.data;
 	// 	// });
 	// });
+
+	let map: maplibregl.Map;
+
+	$: if (map) {
+		const marker = new Marker({ draggable: true }).setLngLat([0, 0]).addTo(map);
+	}
 
 	function getBox(e: Event) {
 		if (e.target instanceof HTMLElement) {
@@ -42,6 +50,9 @@
 		<button>Some useless button</button>
 	</div>
 </article>
+<article id="map-wrapper">
+	<Map bind:map />
+</article>
 <article>
 	<Token --token-color="red">Test</Token>
 	<Button --button-side-color="red"><Icon name="settings" slot="leading" />Test</Button>
@@ -59,12 +70,18 @@
 
 <style lang="scss">
 	article {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 3rem;
 		width: 100%;
 		padding: var(--ui-gutter-md);
+	}
+
+	#map-wrapper {
+		height: 500px;
+		width: 500px;
 	}
 
 	.wrapper {

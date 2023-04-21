@@ -34,8 +34,8 @@
 				setCircleRadius(locationCircle, radius / 1000);
 				// console.log($editorMap?.querySourceFeatures(MAP_DRAW_SOURCES.Hot));
 			}
-			$project.location.center = center;
-			$project.location.radius = radius;
+			$project.location = center;
+			$project.location_radius = radius;
 		}
 	}, 100);
 
@@ -81,9 +81,9 @@
 	$: if ($editorMapDraw) {
 		if (!inited) {
 			inited = true;
-			if ($project.location.center && $project.location.radius) {
+			if ($project.location && $project.location_radius) {
 				// Add initial circle programatically.
-				drawCircle($project.location.center as [number, number], $project.location.radius);
+				drawCircle($project.location.coordinates, $project.location_radius);
 			}
 		}
 	}
@@ -114,7 +114,7 @@
 			variant="default"
 			readonly
 			type="number"
-			value={$project.location.center?.[0]?.toFixed(4)}
+			value={$project.location?.coordinates[0]?.toFixed(4)}
 			style="grid-area: lon"
 		>
 			<svelte:fragment slot="label">Longitude</svelte:fragment>
@@ -123,7 +123,7 @@
 			variant="default"
 			readonly
 			type="number"
-			value={$project.location.center?.[1]?.toFixed(4)}
+			value={$project.location?.coordinates[1]?.toFixed(4)}
 			style="grid-area: lat"
 		>
 			<svelte:fragment slot="label">Lattitude</svelte:fragment>
@@ -132,7 +132,7 @@
 			variant="default"
 			readonly
 			type="number"
-			value={$project.location.radius?.toFixed(0)}
+			value={$project.location_radius?.toFixed(0)}
 			suffix="&ensp;m"
 			style="grid-area: radius"
 		>
@@ -144,8 +144,8 @@
 		readonly
 		name="location"
 		value={JSON.stringify({
-			center: $project.location.center,
-			radius: $project.location.radius,
+			center: $project.location,
+			radius: $project.location_radius,
 		})}
 	/>
 </fieldset>

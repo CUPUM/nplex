@@ -7,6 +7,7 @@ export const PROJECTS_LIST_W = 350;
 
 export const projectsFiltersOpened = writable(false);
 export const projectsListOpened = writable(true);
+export const projectsFiltersExpanded = writable<Record<string, boolean>>({});
 export const projectsTs = writableQuery('', async (ts) => {
 	const db = await getDb();
 	if (!ts) {

@@ -1,25 +1,28 @@
 <script lang="ts">
-	export let href: string;
+	import type { HTMLAnchorAttributes } from 'svelte/elements';
+
 	export let variant: 'default' | 'cta' | 'footer' | 'ghost' = 'default';
-	export let disabled: boolean | undefined = undefined;
-	export let style: string | undefined = undefined;
-	let className: string = '';
-	export { className as class };
-	export let rel: 'external' | undefined = undefined;
+	export let status: undefined | 'warning' = undefined;
+	export let href: string;
+
+	type $$Props = Omit<HTMLAnchorAttributes, 'class'> & {
+		variant?: typeof variant;
+		href: string;
+	};
 </script>
 
 <a
+	class="link"
+	data-variant={variant}
+	data-status={status}
 	{href}
-	{rel}
-	class="ui-link {variant} {className}"
-	class:disabled
-	{disabled}
-	{style}
+	{...$$restProps}
 	on:click
 	on:focus
 	on:blur
 	on:mouseover
 	on:mousemove
+	on:mouseleave
 >
 	<div class="content reg">
 		<slot />
@@ -30,7 +33,7 @@
 </a>
 
 <style lang="scss">
-	.ui-link {
+	.link {
 		position: relative;
 		display: inline-block;
 		font-family: inherit;

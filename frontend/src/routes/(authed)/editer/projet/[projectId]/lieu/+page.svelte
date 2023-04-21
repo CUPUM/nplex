@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Dirty from '$components/Dirty.svelte';
-	import Loading from '$components/Loading.svelte';
 	import { dirtyValues } from '$routes/(authed)/editer/common';
 	import { project } from '../common';
 	import AdjacentWays from './AdjacentWays.svelte';
@@ -17,6 +16,12 @@
 	sample={data.project.location}
 	specimen={$project.location}
 	bind:dirty={$dirtyValues.location}
+	strictOrder
+/>
+<Dirty
+	sample={data.project.location_radius}
+	specimen={$project.location_radius}
+	bind:dirty={$dirtyValues.location_radius}
 	strictOrder
 />
 <Dirty
@@ -88,7 +93,7 @@
 <div id="editor-localisation">
 	<section class="map">
 		{#await import('./PlaceMap.svelte')}
-			<Loading style="font-size: 2em; opacity: .5" />
+			<!-- <Loading style="font-size: 2em; opacity: .5" /> -->
 		{:then PlaceMap}
 			<svelte:component this={PlaceMap.default} />
 		{/await}

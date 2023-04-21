@@ -9,10 +9,7 @@
 		"source.organizeImports": true,
 		"source.fixAll": true
 	},
-	/**
-	 * Where svelte-language plugin should look for css globals needed for intellisens.
-	 */
-	"svelte.plugin.css.globals": "src/lib/styles/vars.scss",
+	"svelte.plugin.css.globals": "src/lib/styles/vars.scss", // Where svelte-language plugin should look for css globals needed for intellisens.
 	"svelte.enable-ts-plugin": true,
 	"[svelte]": {
 		"editor.defaultFormatter": "svelte.svelte-vscode"

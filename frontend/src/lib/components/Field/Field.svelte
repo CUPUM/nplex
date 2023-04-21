@@ -74,7 +74,7 @@
 			prefix?: string | null;
 			suffix?: string | null;
 			type?: InputType;
-			variant?: 'default' | 'cta' | 'outlined' | 'dashed' | 'ghost' | 'explorer';
+			variant?: 'default' | 'cta' | 'outlined' | 'dashed' | 'ghost';
 			state?: undefined | 'error' | 'success' | 'warning';
 			textAlign?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent';
 			compact?: boolean;
@@ -537,18 +537,7 @@
 	}
 
 	// Variants
-
-	.default,
-	.explorer {
-		--field-variant-color: #{col(fg, 100)};
-		--field-variant-background: #{col(fg, 500, 0.05)};
-		--field-variant-border: none;
-		--field-variant-shadow: none;
-		--field-variant-hover-color: #{col(fg, 700)};
-		// --field-variant-hover-background: #{col(fg,000)};
-		--field-variant-focus-color: #{col(fg, 900)};
-		--field-variant-focus-background: #{col(fg, 500, 0.1)};
-		// transition: color 0.1s ease-out, background 0.1s ease-out;
+	@mixin default-base {
 		.outline {
 			display: none;
 		}
@@ -573,32 +562,20 @@
 		}
 	}
 
-	.explorer {
-		--ripple-color: #{col(fg, 100)};
-		// --field-variant-backdrop-filter: blur(8px);
-		--field-variant-color: #{col(fg, 100)};
-		--field-variant-background: #{col(bg, 100)};
-		--field-variant-border: none;
-		--field-variant-shadow: var(--ui-shadow-sm);
-		--field-variant-hover-color: #{col(fg, 700)};
-		--field-variant-hover-background: #{col(bg, 000)};
-		--field-variant-focus-color: #{col(fg, 900)};
-		--field-variant-focus-background: #{col(bg, 000)};
-	}
-
-	.outlined,
-	.dashed {
+	.default {
 		--field-variant-color: #{col(fg, 100)};
 		--field-variant-background: #{col(fg, 500, 0.05)};
-		--field-variant-border: 1.5px solid #{col(fg, 000)};
+		--field-variant-border: none;
 		--field-variant-shadow: none;
 		--field-variant-hover-color: #{col(fg, 700)};
 		// --field-variant-hover-background: #{col(fg,000)};
 		--field-variant-focus-color: #{col(fg, 900)};
 		--field-variant-focus-background: #{col(fg, 500, 0.1)};
-		color: col(fg, 100);
-		background: transparent;
 		// transition: color 0.1s ease-out, background 0.1s ease-out;
+		@include default-base;
+	}
+
+	@mixin outlined-base {
 		.outline {
 			// border-color: col(fg, 000);
 			opacity: 0.25;
@@ -651,6 +628,22 @@
 				color: col(primary, 500);
 			}
 		}
+	}
+
+	.outlined,
+	.dashed {
+		--field-variant-color: #{col(fg, 100)};
+		--field-variant-background: #{col(fg, 500, 0.05)};
+		--field-variant-border: var(--ui-border-size) solid #{col(fg, 000)};
+		--field-variant-shadow: none;
+		--field-variant-hover-color: #{col(fg, 700)};
+		// --field-variant-hover-background: #{col(fg,000)};
+		--field-variant-focus-color: #{col(fg, 900)};
+		--field-variant-focus-background: #{col(fg, 500, 0.1)};
+		color: col(fg, 100);
+		background: transparent;
+		// transition: color 0.1s ease-out, background 0.1s ease-out;
+		@include outlined-base;
 	}
 
 	.dashed {

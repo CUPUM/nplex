@@ -33,12 +33,14 @@
 <script lang="ts">
 	import resize from '$actions/resize';
 	import { browser } from '$app/environment';
+	import Loading from '$components/Loading.svelte';
 	import { defineContext } from '$utils/context';
 	import { MAP_DRAW_EVENTS, type Cursor, type MapDrawMode } from '$utils/enums';
 	import { LOCATIONS } from '$utils/map/locations';
 	import light from '$utils/map/styles/light';
 	import { MAP_GESTURES_TEXT, MAP_LOCALES, type MapLocale } from '$utils/map/ui';
 	import { debounce } from '$utils/modifiers';
+	import type { DrawModeChangeEvent } from '@mapbox/mapbox-gl-draw';
 	import { Map, type MapEventType, type MapOptions } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
@@ -66,7 +68,7 @@
 	export let doubleClickZoom: MapOptions['doubleClickZoom'] = true;
 	export let touchZoomRotate: MapOptions['touchZoomRotate'] = true;
 	export let touchPitch: MapOptions['touchPitch'] = true;
-	export let cooperativeGestures: MapOptions['cooperativeGestures'] = true;
+	export let cooperativeGestures: MapOptions['cooperativeGestures'] = false;
 	export let trackResize: MapOptions['trackResize'] = false;
 	export let center: MapOptions['center'] = undefined;
 	export let zoom: MapOptions['zoom'] = 10;
@@ -76,10 +78,10 @@
 	export let maxTileCacheSize: MapOptions['maxTileCacheSize'] = undefined;
 	export let transformRequest: MapOptions['transformRequest'] = undefined;
 	export let locale: MapLocale = MAP_LOCALES.french;
-	export let fadeDuration: MapOptions['fadeDuration'] = 125;
+	export let fadeDuration: MapOptions['fadeDuration'] = 150;
 	export let crossSourceCollisions: MapOptions['crossSourceCollisions'] = undefined;
 	export let collectResourceTiming: MapOptions['collectResourceTiming'] = undefined;
-	export let clickTolerance: MapOptions['clickTolerance'] = undefined;
+	export let clickTolerance: MapOptions['clickTolerance'] = 1;
 	export let bounds: MapOptions['bounds'] = LOCATIONS.montreal.bounds;
 	export let fitBoundsOptions: MapOptions['fitBoundsOptions'] = undefined;
 	export let localIdeographFontFamily: MapOptions['localIdeographFontFamily'] = undefined;
@@ -100,11 +102,11 @@
 
 	const drawMode = writable<MapDrawMode | undefined>();
 
-	const dispatch = createEventDispatcher<
-		Pick<{ [Event in keyof MapEventType]: MapEventType[Event] }, 'click'> & {
-			init: MapEventType['load'];
-		}
-	>();
+	const dispatch = createEventDispatcher<{
+		init: MapEventType['load'];
+		load: MapEventType['load'];
+		click: MapEventType['click'];
+	}>();
 
 	/**
 	 * Helper to change the draw mode AND fire the corresponding event. By default, programmatic use
@@ -185,23 +187,27 @@
 			map = premap;
 			dispatch('init', e);
 
-			map.on('click', (e) => {
-				// console.log(map?.queryRenderedFeatures(e.point));
-				dispatch<'click'>('click', e);
+			map.on('load', (e) => {
+				dispatch('load', e);
 			});
 
-			// map.on(MAP_DRAW_EVENTS.Init, (e: MapboxDraw.DrawInitEvent) => {
-			// 	draw = e.draw;
-			// 	drawMode.set(draw.getMode() as MapDrawMode);
+			map.on('click', (e) => {
+				dispatch('click', e);
+			});
 
-			// 	map?.once(MAP_DRAW_EVENTS.Destroy, (e) => {
-			// 		draw = undefined;
-			// 	});
-			// });
+			// To do: REMOVE AND IMPLEMENT ELSEWHERE;
+			map.on(MAP_DRAW_EVENTS.Init, (e: MapboxDraw.DrawInitEvent) => {
+				draw = e.draw;
+				drawMode.set(draw.getMode() as MapDrawMode);
 
-			// map.on(MAP_DRAW_EVENTS.ModeChange, (e: DrawModeChangeEvent) => {
-			// 	drawMode.set(e.mode);
-			// });
+				map?.once(MAP_DRAW_EVENTS.Destroy, (e) => {
+					draw = undefined;
+				});
+			});
+
+			map.on(MAP_DRAW_EVENTS.ModeChange, (e: DrawModeChangeEvent) => {
+				drawMode.set(e.mode);
+			});
 		});
 	}
 
@@ -225,6 +231,19 @@
 			map?.resize();
 		});
 	}, resizeDebounce);
+
+	// Reactive map options
+	$: if (bearing != null) map?.setBearing(bearing);
+	$: if (center != null) map?.setCenter(center);
+	$: if (bounds != null) map?.fitBounds(bounds);
+	$: map?.setMaxBounds(maxBounds);
+	$: if (pitch != null) map?.setPitch(pitch);
+	$: map?.setMinPitch(minPitch);
+	$: map?.setMaxPitch(maxPitch);
+	$: if (zoom != null) map?.setZoom(zoom);
+	$: map?.setMinZoom(minZoom);
+	$: map?.setMaxZoom(maxZoom);
+	$: if (bearing != null) map?.setBearing(bearing);
 
 	setMapContext({
 		cursor,
@@ -285,8 +304,7 @@
 	{:else}
 		<div class="loading">
 			<slot name="loading">
-				<div class="ui-skeleton-fill" />
-				<!-- <Loading /> -->
+				<Loading />
 			</slot>
 		</div>
 	{/if}
@@ -385,6 +403,7 @@
 	}
 
 	.loading {
+		pointer-events: none;
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -393,5 +412,6 @@
 		height: 100%;
 		z-index: 1;
 		border-radius: inherit;
+		color: col(bg, 900);
 	}
 </style>

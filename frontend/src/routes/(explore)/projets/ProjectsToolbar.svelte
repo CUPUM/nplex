@@ -4,6 +4,7 @@
 	import FieldButtonReset from '$components/Field/FieldButtonReset.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import Icon from '$components/Icon.svelte';
+	import { col } from '$utils/css';
 	import { projectsFiltersOpened, projectsListOpened, projectsTs } from './common';
 
 	function toggleFiltersPane() {
@@ -19,7 +20,13 @@
 	<form>
 		<Field
 			placeholder="Chercher des projets"
-			variant="explorer"
+			variant="default"
+			rounded
+			--field-background={col('bg', 300, 0)}
+			--field-hover-background={col('bg', '000')}
+			--field-active-background={col('bg', '000')}
+			--field-backdrop-filter="blur(16px)"
+			--field-shadow="var(--ui-shadow-sm)"
 			data-sveltekit-keepfocus={true}
 			bind:value={$projectsTs.input}
 		>
@@ -62,8 +69,10 @@
 <style lang="scss">
 	#projects-toolbar {
 		// position: absolute;
+		// bottom: 0;
+		// width: 100%;
 		z-index: 1;
-		font-size: var(--ui-text-sm);
+		// font-size: var(--ui-text-sm);
 		align-self: stretch;
 		padding-inline: var(--ui-gutter-sm);
 		display: flex;
@@ -80,6 +89,6 @@
 
 	form {
 		flex: 1;
-		max-width: var(--projects-filters-w);
+		// max-width: var(--projects-filters-w);
 	}
 </style>

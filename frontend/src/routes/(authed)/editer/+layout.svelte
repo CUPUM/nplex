@@ -62,7 +62,9 @@
 	<EditorBreadcrumbs />
 	<!-- Top header -->
 	{#if $page.data.editorHeader}
-		<svelte:component this={$page.data.editorHeader} />
+		<div id="editor-header-layout">
+			<svelte:component this={$page.data.editorHeader} />
+		</div>
 	{/if}
 	<div id="editor-sidebar-layout">
 		<!-- Sidebar navigation -->
@@ -142,14 +144,21 @@
 		color: col(fg, 500);
 		background: var(--editor-background);
 		margin-top: calc(-1 * var(--ui-nav-h));
-		min-height: 100vh;
-		padding: var(--ui-gutter-sm);
-		padding-top: 0;
+		// min-height: 100vh;
+		padding-inline: var(--ui-gutter-sm);
+		// padding-top: 0;
 
 		@include mobile {
 			padding: 0.75rem;
 			padding-top: 0;
 			font-size: var(--ui-text-sm);
+		}
+
+		#editor-header-layout {
+			display: flex;
+			align-items: stretch;
+			align-self: stretch;
+			margin-bottom: var(--ui-gap-sm);
 		}
 
 		#editor-sidebar-layout {
@@ -158,7 +167,6 @@
 			flex-direction: row;
 			align-items: flex-start;
 			gap: var(--ui-gap-sm);
-			margin-top: var(--ui-gap-sm);
 		}
 
 		#editor-layout-slot {

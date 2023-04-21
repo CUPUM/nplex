@@ -18,7 +18,7 @@ const THEME = {
 	PLACENAMES: colord(THEME_PALETTES.light.fg[100]).alpha(0.8).toHslString(), // 'hsla(0, 0%, 0%, 1)',
 	ROADNAMES: colord(THEME_PALETTES.light.fg[100]).alpha(0.8).toHslString(),
 	WATERNAMES: colord(THEME_PALETTES.light.bg[100]).alpha(0.8).toHslString(), // 'hsla(0, 0%, 100%, 1)',
-	TEXT_HALO: TRANSPARENT, // THEME_PALETTES.light.bg['500'],
+	TEXT_HALO: THEME_PALETTES.light.bg['300'],
 } as const;
 
 /**

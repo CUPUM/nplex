@@ -177,19 +177,34 @@ const projectAdjacentAlleysSchema = zfd.numeric(
 		.optional()
 );
 
-const projectLocationSchema = zfd
-	.json(
-		z.object({
-			center: positionSchema.nullable(),
-			radius: z.number().max(PROJECT_LOCATION_MAX_RADIUS).nullable(),
-		})
-	)
-	.transform(({ center, radius }) => {
-		return {
-			center: center ? toPgGeom(point(center).geometry) : null,
-			radius,
-		};
-	});
+// const projectLocationSchema = zfd
+// 	.json(
+// 		z.object({
+// 			center: positionSchema.nullable(),
+// 			radius: z.number().max(PROJECT_LOCATION_MAX_RADIUS).nullable(),
+// 		})
+// 	)
+// 	.transform(({ center, radius }) => {
+// 		return {
+// 			center: center ? toPgGeom(point(center).geometry) : null,
+// 			radius,
+// 		};
+// 	});
+
+const projectLocationSchema = positionSchema
+	.optional()
+	.transform((p) => (p ? toPgGeom(point(p).geometry) : null));
+
+const projectLocationRadiusSchema = zfd.numeric(
+	z
+		.number()
+		.min(0, 'Le rayon de localisation ne peut pas être négatif.')
+		.max(
+			PROJECT_LOCATION_MAX_RADIUS,
+			`Le rayon de localisation du projet ne peut pas dépasser ${PROJECT_LOCATION_MAX_RADIUS} mètres.`
+		)
+		.optional()
+);
 
 const projectImplantationModeSchema = zfd.numeric(z.number().optional());
 
@@ -213,27 +228,27 @@ const projectBuildingConstructionYearSchema = zfd.numeric(
 	z.number().min(PROJECT_BUILDING_YEAR_MIN).max(PROJECT_BUILDING_YEAR_MAX).optional()
 );
 
-export const projectPlaceUpdateSchema = zfd
-	.formData({
-		location: projectLocationSchema,
-		adjacent_streets: projectAdjacentStreetsSchema,
-		adjacent_alleys: projectAdjacentAlleysSchema,
-		site_area: projectAreaSchema,
-		building_area: projectAreaSchema,
-		interventions_area: projectAreaSchema,
-		implantation_mode: projectImplantationModeSchema,
-		building_height: projectBuildingHeightSchema,
-		building_levels_mezzanine: projectBuildingLevelsSchema,
-		building_levels_main: projectBuildingLevelsSchema,
-		building_levels_basement: projectBuildingLevelsSchema,
-		building_construction_year: projectBuildingConstructionYearSchema,
-	})
-	.transform(({ location, ...project }) => {
-		return {
-			location,
-			project,
-		};
-	});
+export const projectPlaceUpdateSchema = zfd.formData({
+	location: projectLocationSchema,
+	location_radius: projectLocationRadiusSchema,
+	adjacent_streets: projectAdjacentStreetsSchema,
+	adjacent_alleys: projectAdjacentAlleysSchema,
+	site_area: projectAreaSchema,
+	building_area: projectAreaSchema,
+	interventions_area: projectAreaSchema,
+	implantation_mode: projectImplantationModeSchema,
+	building_height: projectBuildingHeightSchema,
+	building_levels_mezzanine: projectBuildingLevelsSchema,
+	building_levels_main: projectBuildingLevelsSchema,
+	building_levels_basement: projectBuildingLevelsSchema,
+	building_construction_year: projectBuildingConstructionYearSchema,
+});
+// .transform(({ location, ...project }) => {
+// 	return {
+// 		location,
+// 		project,
+// 	};
+// });
 // enforce logical area containment.
 
 export const projectImageUploadSchema = zfd.formData({

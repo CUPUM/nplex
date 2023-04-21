@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { expoOut } from 'svelte/easing';
-	import { fly } from 'svelte/transition';
+	import { expoIn, expoOut } from 'svelte/easing';
+	import { fly, scale } from 'svelte/transition';
+	import ProjectsFilterCostRange from './ProjectsFilterCostRange.svelte';
 	import { projectsFiltersOpened } from './common';
 
 	function search(e: Event) {
@@ -9,20 +10,21 @@
 </script>
 
 {#if $projectsFiltersOpened}
-	<section transition:fly={{ x: -24, duration: 200, easing: expoOut }}>
-		<div class="inner">
-			<p class="text-lg subtle">À venir</p>
-			<!-- <form on:submit={search}>
-				<fieldset>Test 1</fieldset>
-				<fieldset>Test 2</fieldset>
-				<fieldset>Test 3</fieldset>
-			</form> -->
-		</div>
+	<section
+		id="projects-filters"
+		in:fly={{ x: '-2rem', duration: 350, easing: expoOut, opacity: 0 }}
+		out:scale|local={{ start: 0.9, duration: 150, easing: expoIn, opacity: 0 }}
+	>
+		<form class="inner">
+			<ProjectsFilterCostRange />
+			<ProjectsFilterCostRange />
+			<ProjectsFilterCostRange />
+		</form>
 	</section>
 {/if}
 
 <style lang="scss">
-	section {
+	#projects-filters {
 		z-index: 1;
 		position: relative;
 		grid-column: filters;
@@ -30,21 +32,18 @@
 		padding-top: var(--projects-top-overlay-h);
 		padding-bottom: var(--ui-gutter-sm);
 		align-self: stretch;
-	}
-
-	p {
-		width: 100%;
-		padding-block: 2rem;
-		text-align: center;
-	}
-
-	.inner {
-		background: col(bg, 500);
-		border-radius: var(--ui-radius-lg);
-		width: var(--projects-filters-w);
-		height: 100%;
+		justify-content: flex-start;
+		transform-origin: top left;
 	}
 
 	form {
+		display: flex;
+		flex-direction: column;
+		border-radius: var(--ui-radius-lg);
+		width: var(--projects-filters-w);
+		height: 100%;
+		align-items: stretch;
+		justify-content: flex-start;
+		gap: var(--ui-gap-sm);
 	}
 </style>

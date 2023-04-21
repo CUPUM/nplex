@@ -6,21 +6,28 @@
 	import ProjectsList from './ProjectsList.svelte';
 	import ProjectsMap from './ProjectsMap.svelte';
 	import ProjectsToolbar from './ProjectsToolbar.svelte';
-	import { projectsFiltersOpened, projectsListOpened, projectsTs } from './common';
+	import {
+		projectsFiltersExpanded,
+		projectsFiltersOpened,
+		projectsListOpened,
+		projectsTs,
+	} from './common';
 
 	export let data;
 
 	function handleSubmit() {}
 
 	export const snapshot: Snapshot<{
-		filtersOpened: boolean;
-		listOpened: boolean;
-		ts: string;
+		filtersOpened: typeof $projectsFiltersOpened;
+		listOpened: typeof $projectsListOpened;
+		ts: typeof $projectsTs.input;
+		filtersExpanded: typeof $projectsFiltersExpanded;
 	}> = {
 		capture() {
 			return {
 				filtersOpened: $projectsFiltersOpened,
 				listOpened: $projectsListOpened,
+				filtersExpanded: $projectsFiltersExpanded,
 				ts: $projectsTs.input,
 			};
 		},
@@ -28,6 +35,7 @@
 			$projectsFiltersOpened = snapshot.filtersOpened;
 			$projectsListOpened = snapshot.listOpened;
 			$projectsTs.input = snapshot.ts;
+			$projectsFiltersExpanded = snapshot.filtersExpanded;
 		},
 	};
 </script>
