@@ -24,7 +24,7 @@
 	export let closeOnNav: boolean | { params: boolean; hash: boolean; pathname: boolean } = true;
 	export let closeOnClickoutside: boolean = true;
 	export let place: 'top' | 'right' | 'bottom' | 'left' = 'bottom';
-	export let align: 'start' | 'center' | 'end' | 'stretch' = 'start';
+	export let align: 'start' | 'center' | 'end' = 'start';
 	export let distance: string | undefined = undefined;
 	export let boundingElement: Element | undefined = undefined; // Used as box reference for automatic positioning and sizing correction.
 
@@ -231,6 +231,7 @@
 		flex-wrap: nowrap;
 		overflow: visible;
 		perspective: 500px;
+		outline: 1px solid red;
 	}
 
 	.top,
@@ -246,7 +247,7 @@
 	}
 
 	.top {
-		top: var(--tether-y);
+		bottom: calc(100% - var(--tether-y));
 		padding-bottom: var(--tether-d);
 		transform-origin: center bottom;
 		&.start {
@@ -282,7 +283,7 @@
 	}
 
 	.left {
-		left: var(--tether-x);
+		right: calc(100% - var(--tether-x));
 		padding-right: var(--tether-d);
 		transform-origin: right center;
 		&.start {

@@ -87,11 +87,10 @@
 			background: col(primary, 100, 0.5);
 		}
 		&[data-current]:not(.active) {
-			// 	color: col(primary, 500);
-			// 	background: col(primary, 100, 0.2);
 			color: col(bg, 300);
+			background: transparent;
 			&::before {
-				background: col(fg, 300);
+				background: col(fg, 500);
 			}
 		}
 		&:focus-visible {

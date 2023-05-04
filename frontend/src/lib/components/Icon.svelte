@@ -16,7 +16,7 @@
 		strokeWidth: 2.25,
 	};
 
-	const TRANSITION_DURATION = 250;
+	const TRANSITION_DURATION = 300;
 	const TRANSITION_STAGGER = 75;
 
 	type IconPathTransitionOptions = {
@@ -109,13 +109,13 @@
 			in:pathtransition|local={{
 				duration: applyIn ? TRANSITION_DURATION : 0,
 				delay: applyIn ? TRANSITION_DURATION + i * TRANSITION_STAGGER : 0,
-				angle: 180,
+				angle: 90,
 				easing: expoOut,
 			}}
 			out:pathtransition|local={{
 				duration: TRANSITION_DURATION,
 				delay: i * TRANSITION_STAGGER,
-				angle: -180,
+				angle: -90,
 				easing: expoIn,
 			}}
 			class:fill={path.fill}

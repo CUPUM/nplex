@@ -11,12 +11,12 @@
 	<h2 class="project-section-title">Calendrier</h2>
 	<figure class="timeline-container">
 		<menu>
-			<Tooltip message="Ouvrir en mode plein-écran" place="left">
+			<Tooltip message="Ouvrir en mode plein-écran" place="left" opened>
 				<Button equi compact rounded variant="ghost">
 					<Icon name="expand" />
 				</Button>
 			</Tooltip>
-			<Tooltip message="Chercher un événement ou une phase" place="left">
+			<Tooltip message="Chercher un événement ou une phase" place="left" opened>
 				<Button equi compact rounded variant="ghost">
 					<Icon name="search" />
 				</Button>

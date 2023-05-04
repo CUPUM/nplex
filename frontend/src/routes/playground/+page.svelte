@@ -47,25 +47,31 @@
 			}
 		}
 	}
+
+	let place: ComponentProps<Tooltip>['place'] = 'top';
+	let align: ComponentProps<Tooltip>['align'] = 'center';
 </script>
 
 <article>
-	<!-- <Popover align="start">
-		<svelte:fragment slot="control" let:open>
-			<button on:click={open}>Click me</button>
-		</svelte:fragment>
-		<p style="width:200px; height: 200px; background:red;">Test</p>
-	</Popover> -->
-	<!-- <Tooltip message="test de pmessage de tooltip">
-		<button>Some useless button</button>
-	</Tooltip> -->
-	<Tooltip message="test de message de tooltip" place="right" align="end">
+	<fieldset>
+		<select bind:value={place}>
+			{#each ['top', 'bottom', 'left', 'right'] as p}
+				<option value={p}>{p}</option>
+			{/each}
+		</select>
+		<select bind:value={align}>
+			{#each ['start', 'center', 'end', 'stretch'] as a}
+				<option value={a}>{a}</option>
+			{/each}
+		</select>
+	</fieldset>
+	<Tooltip message="test de message de tooltip" {place} {align} opened>
 		<button>Some useless button</button>
 	</Tooltip>
-	<Tooltip message="test de message de tooltip" place="right" align="end">
+	<Tooltip message="test de message de tooltip" {place} {align}>
 		<button>Test 2</button>
 	</Tooltip>
-	<Tooltip message="test de message de tooltip" place="right" align="end">
+	<Tooltip message="test de message de tooltip" {place} {align}>
 		<button>Test 34</button>
 	</Tooltip>
 </article>
@@ -101,7 +107,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 3rem;
+		gap: 2rem;
 		width: 100%;
 		padding: var(--ui-gutter-md);
 	}
