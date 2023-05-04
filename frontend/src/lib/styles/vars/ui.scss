@@ -5,7 +5,7 @@
  * Locally derived variables should strive to use the same name, omitting the 'ui' prefix.
  */
 :root {
-	--ui-bg: #{col(bg, 100)};
+	--ui-bg: #{col(bg, 300)};
 	--ui-nav-pad: 1rem;
 	--ui-nav-h: 76px; // Retrieved manually, adjust whenever modifying navbar style.
 	--ui-projects-toolbar-h: 61px; // Retrieved manually.
@@ -20,8 +20,8 @@
 	--ui-scroll-px: 0px;
 	--ui-scroll-size: 6px;
 	--ui-scroll-color: rgb(var(--rgb-fg-000), 1);
-	--ui-ease-in: cubic-bezier(0.9, 0, 0.9, 1);
-	--ui-ease-out: cubic-bezier(0, 0.2, 0, 1);
+	--ui-ease-in: cubic-bezier(1, 0, 1, 1);
+	--ui-ease-out: cubic-bezier(0, 0, 0, 1);
 	--ui-ease-in-out: cubic-bezier(0.7, 0, 0.3, 1);
 	--ui-shadow-xs: 0 0.1rem 0.5rem -0.25rem rgb(0, 10, 20, 0.23);
 	--ui-shadow-sm: 0 0.25rem 1rem -0.5rem rgb(0, 10, 20, 0.24);

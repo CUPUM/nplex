@@ -65,10 +65,10 @@ dependencies:
 devDependencies:
   '@sveltejs/adapter-vercel':
     specifier: ^2.4.3
-    version: 2.4.3(@sveltejs/kit@1.15.10)
+    version: 2.4.3(@sveltejs/kit@1.16.0)
   '@sveltejs/kit':
-    specifier: 1.15.10
-    version: 1.15.10(svelte@3.58.0)(vite@4.3.4)
+    specifier: 1.16.0
+    version: 1.16.0(svelte@3.58.0)(vite@4.3.4)
   '@types/dompurify':
     specifier: ^3.0.2
     version: 3.0.2
@@ -142,14 +142,14 @@ devDependencies:
     specifier: ^1.62.1
     version: 1.62.1
   supabase:
-    specifier: ^1.54.0
-    version: 1.54.0
+    specifier: ^1.54.5
+    version: 1.54.5
   svelte:
     specifier: ^3.58.0
     version: 3.58.0
   svelte-check:
-    specifier: ^3.2.0
-    version: 3.2.0(postcss-load-config@4.0.1)(postcss@8.4.23)(sass@1.62.1)(svelte@3.58.0)
+    specifier: ^3.3.0
+    version: 3.3.0(postcss-load-config@4.0.1)(postcss@8.4.23)(sass@1.62.1)(svelte@3.58.0)
   svelte-preprocess:
     specifier: ^5.0.3
     version: 5.0.3(postcss-load-config@4.0.1)(postcss@8.4.23)(sass@1.62.1)(svelte@3.58.0)(typescript@5.0.4)
@@ -656,12 +656,12 @@ packages:
       - supports-color
     dev: false
 
-  /@sveltejs/adapter-vercel@2.4.3(@sveltejs/kit@1.15.10):
+  /@sveltejs/adapter-vercel@2.4.3(@sveltejs/kit@1.16.0):
     resolution: {integrity: sha512-3k/3udwaioFYdKDAgQcWSByB+KCbtjX+ARonYGCtYE0iuxWLStrESxy3SaU+17XD5Frh8w7tfY8ft4TV3ej3Dg==}
     peerDependencies:
       '@sveltejs/kit': ^1.5.0
     dependencies:
-      '@sveltejs/kit': 1.15.10(svelte@3.58.0)(vite@4.3.4)
+      '@sveltejs/kit': 1.16.0(svelte@3.58.0)(vite@4.3.4)
       '@vercel/nft': 0.22.6
       esbuild: 0.17.18
     transitivePeerDependencies:
@@ -669,8 +669,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit@1.15.10(svelte@3.58.0)(vite@4.3.4):
-    resolution: {integrity: sha512-qRZxODfsixjgY+7OOxhAQB8viVaxjyDUz2lM6cE22kObzF5mNke81FIxB2wdaOX42LyfVwIYULZQSr7duxLZ7w==}
+  /@sveltejs/kit@1.16.0(svelte@3.58.0)(vite@4.3.4):
+    resolution: {integrity: sha512-uCCZuI5MVSAviQFYsts5VHSmvBUp2u/CPeWfwAYxbWZoPg8lsM24JGjLhCh0peQwQjIDXXVDVQI0jdvSGs91Lg==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     requiresBuild: true
@@ -2188,7 +2188,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001482
-      electron-to-chromium: 1.4.380
+      electron-to-chromium: 1.4.382
       node-releases: 2.0.10
       update-browserslist-db: 1.0.11(browserslist@4.21.5)
     dev: true
@@ -2568,8 +2568,8 @@ packages:
     resolution: {integrity: sha512-/pjZsA1b4RPHbeWZQn66SWS8nZZWLQQ23oE3Eam7aroEFGEvwKAsJfZ9ytiEMycfzXWpca4FA9QIOehf7PocBQ==}
     dev: false
 
-  /electron-to-chromium@1.4.380:
-    resolution: {integrity: sha512-XKGdI4pWM78eLH2cbXJHiBnWUwFSzZM7XujsB6stDiGu9AeSqziedP6amNLpJzE3i0rLTcfAwdCTs5ecP5yeSg==}
+  /electron-to-chromium@1.4.382:
+    resolution: {integrity: sha512-czMavlW52VIPgutbVL9JnZIZuFijzsG1ww/1z2Otu1r1q+9Qe2bTsH3My3sZarlvwyqHM6+mnZfEnt2Vr4dsIg==}
     dev: true
 
   /element-to-path@1.2.1:
@@ -4477,8 +4477,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /supabase@1.54.0:
-    resolution: {integrity: sha512-1pRWYKkV7WOkZuM88pWZ4vgc77WrQAaTD67mzdV4FNjaEG1JKQUbm9wdgRjjyB1+fI3zy9QKKsaRy/wa2GxMJg==}
+  /supabase@1.54.5:
+    resolution: {integrity: sha512-tGQczhPxT+lg6u3rFaCPvLSGCB/WT2GsrPSNeXdO7507VdAGmZHz4R77uxV/JxXL7vsr8TeqgYXOlCNfrVD/AQ==}
     hasBin: true
     requiresBuild: true
     dependencies:
@@ -4500,8 +4500,8 @@ packages:
       has-flag: 4.0.0
     dev: true
 
-  /svelte-check@3.2.0(postcss-load-config@4.0.1)(postcss@8.4.23)(sass@1.62.1)(svelte@3.58.0):
-    resolution: {integrity: sha512-6ZnscN8dHEN5Eq5LgIzjj07W9nc9myyBH+diXsUAuiY/3rt0l65/LCIQYlIuoFEjp2F1NhXqZiJwV9omPj9tMw==}
+  /svelte-check@3.3.0(postcss-load-config@4.0.1)(postcss@8.4.23)(sass@1.62.1)(svelte@3.58.0):
+    resolution: {integrity: sha512-wZtOvY8V2fjzCbS4dGjDp0Ebh6VyXg6A39s7TDc8wc0154yqWKu18Rd9Ad+GOs7sXst7dbTmjvOaexjwoqPM7A==}
     hasBin: true
     peerDependencies:
       svelte: ^3.55.0

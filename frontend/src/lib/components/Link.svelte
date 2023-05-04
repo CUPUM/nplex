@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 
-	export let variant: 'default' | 'cta' | 'footer' | 'ghost' = 'default';
+	export let variant: 'default' | 'cta' | 'outlined' | 'footer' | 'ghost' = 'default';
 	export let status: undefined | 'warning' = undefined;
 	export let href: string;
 

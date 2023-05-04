@@ -43,7 +43,8 @@
 	{...$$restProps}
 >
 	<Ripple color={col('primary', '500')} opacityStart={0.5} />
-	<div class="inner nofx">
+	<div class="fx" />
+	<div class="inner">
 		<slot />
 	</div>
 </svelte:element>
@@ -60,7 +61,6 @@
 		cursor: pointer;
 		font-weight: 500;
 		padding: 0 var(--ui-pad-md);
-		// height: var(--button-size);
 		height: calc(var(--button-size) - 2 * var(--inset, 0px));
 		border-radius: calc(var(--radius, var(--button-radius)) - var(--inset, 0px));
 		letter-spacing: 0.02em;
@@ -72,12 +72,13 @@
 		&::before {
 			content: '';
 			position: absolute;
-			z-index: -2;
 			border-radius: inherit;
 			inset: 0;
+			z-index: -2;
 			background: var(--navbar-bg);
 			transition: background var(--navbar-transition), opacity var(--navbar-transition);
 		}
+
 		&:hover:not([data-current]) {
 			color: col(primary, 500);
 			background: col(primary, 500, 0.1);
@@ -90,7 +91,8 @@
 			color: col(bg, 300);
 			background: transparent;
 			&::before {
-				background: col(fg, 500);
+				// background: col(fg, 500);
+				background: transparent;
 			}
 		}
 		&:focus-visible {
@@ -128,5 +130,42 @@
 		flex: none;
 		aspect-ratio: 1;
 		padding: 0;
+	}
+
+	.fx {
+		display: inherit;
+		align-items: inherit;
+		justify-content: inherit;
+		border-radius: inherit;
+		padding: inherit;
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+
+		&::before {
+			content: '';
+			position: absolute;
+			border-radius: inherit;
+			width: 100%;
+			height: 100%;
+			left: 0;
+			top: 100%;
+			background: col(fg, 500);
+			rotate: 16deg;
+			scale: 0.75;
+			transform-origin: bottom;
+			// opacity: 0;
+			transition: all 0.3s var(--ui-ease-out), background var(--navbar-transition);
+		}
+
+		[data-current]:not(.active) & {
+			&::before {
+				// opacity: 1;
+				top: 0;
+				rotate: 0deg;
+				scale: 1;
+				transition: all 0.15s var(--ui-ease-out), background var(--navbar-transition);
+			}
+		}
 	}
 </style>

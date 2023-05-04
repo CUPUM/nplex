@@ -172,7 +172,7 @@
 		</section>
 		<section class="session">
 			{#if $page.data.session}
-				<Popover place="bottom" align="end" useHover let:opened>
+				<Popover place="bottom" align="end" let:opened>
 					<NavbarButton
 						equi
 						slot="control"
@@ -184,7 +184,7 @@
 					</NavbarButton>
 					<NavbarEditorMenu />
 				</Popover>
-				<Popover useHover place="bottom" align="end" let:opened>
+				<Popover place="bottom" align="end" let:opened>
 					<Avatar
 						active={opened}
 						slot="control"
@@ -210,7 +210,7 @@
 
 <style lang="scss">
 	header {
-		--navbar-bg: var(--color-bg-100);
+		--navbar-bg: #{col(bg, 300)};
 		--navbar-transition: 0.1s ease-out;
 		pointer-events: none;
 		position: sticky;
@@ -359,7 +359,7 @@
 			border-radius: inherit;
 			background: var(--navbar-bg);
 			opacity: 1;
-			border: var(--ui-border-size) solid rgb(255, 255, 255, 0.05);
+			border: var(--ui-border-size) solid col(fg, 100, 0.1);
 			transition: opacity 0.25s, background var(--navbar-transition),
 				filter var(--navbar-transition);
 		}
