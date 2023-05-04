@@ -12,7 +12,7 @@ const config: UserConfig = {
 	plugins: [icons(), themes(THEME_PALETTES), sveltekit()],
 	ssr: {
 		// https://github.com/airjp73/remix-validated-form/issues/141
-		noExternal: ['zod-form-data'],
+		// noExternal: ['zod-form-data'],
 	},
 };
 

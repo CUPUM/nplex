@@ -6,188 +6,190 @@
 <svelte:options accessors={true} />
 
 <script lang="ts" context="module">
-	const TIP_ROUNDNESS = 16;
-	const TIP =
-		`M 0,-0 C ${TIP_ROUNDNESS},0 ` +
-		`${50 - TIP_ROUNDNESS},50 50,50 C ${50 + TIP_ROUNDNESS},50 ` +
-		`${100 - TIP_ROUNDNESS},0 100,-0 Z`;
-	const TIME_BUFFER_IN = 350;
-	const TIME_BUFFER_OUT = 500;
-	let TIMER: any;
-	let DELAY = false;
+	const ANGLE = 60;
+	let DELAY = 250;
+
+	let latest: {} | null = null;
 </script>
 
 <script lang="ts">
+	import { transform } from '$motion/transitions/transform';
 	import { THEMES, type ThemeName } from '$utils/themes';
-	import type { ComponentProps } from 'svelte';
-	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { tick, type ComponentProps } from 'svelte';
+	import { cubicIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
-	import Tether from './Tether.svelte';
+	import Tether from './Tether/Tether.svelte';
 	import Tip from './Tip.svelte';
 
-	// type $$Props = {}
-
 	export let message: string | undefined | null = null;
-	export let disabled: boolean | undefined = undefined;
-	export let opened: boolean = false;
-	export let hover: boolean = true;
 	export let theme: ThemeName = THEMES.dark;
+	export let selectable: boolean = false;
+	export let disabled: ComponentProps<Tether>['disabled'] = undefined;
+	export let opened: ComponentProps<Tether>['opened'] = false;
 	export let place: ComponentProps<Tether>['place'] = 'top';
 	export let align: ComponentProps<Tether>['align'] = 'center';
-	export let distance: ComponentProps<Tether>['distance'] = 5;
-	export let passive: boolean = false;
+	export let distance: ComponentProps<Tether>['distance'] = '5px';
 
-	function open() {
-		opened = true;
-	}
-	function close() {
-		opened = false;
+	const key = {};
+
+	let timeout: any;
+
+	$: rotateX = place === 'top' ? ANGLE : place === 'bottom' ? -ANGLE : 0;
+	$: rotateY = place === 'right' ? ANGLE : place === 'left' ? -ANGLE : 0;
+
+	async function handleOpen() {
+		if (timeout) {
+			clearTimeout(timeout);
+			timeout = undefined;
+		}
+		await tick();
+		latest = key;
 	}
 
-	$: if (disabled) {
-		close();
+	function handleClose() {
+		timeout = setTimeout(() => {
+			if (latest === key) {
+				latest = null;
+				timeout = undefined;
+			}
+		}, 350);
 	}
 </script>
 
 <Tether
-	on:pointerdown={() => {
-		if (!hover && !passive) open();
-	}}
-	on:clickoutside={() => {
-		if (!hover && !passive) close();
-	}}
-	on:pointerenter={() => {
-		if (hover && !passive) {
-			clearTimeout(TIMER);
-			if (DELAY) {
-				TIMER = setTimeout(() => {
-					open();
-					DELAY = false;
-				}, TIME_BUFFER_IN);
-			} else {
-				open();
-			}
-		}
-	}}
-	on:pointerleave={() => {
-		if (hover && !passive) close();
-		clearTimeout(TIMER);
-		TIMER = setTimeout(() => {
-			DELAY = true;
-		}, TIME_BUFFER_OUT);
-	}}
+	bind:opened
 	{place}
 	{align}
 	{distance}
+	useClick={false}
+	{disabled}
+	on:open={handleOpen}
+	on:close={handleClose}
 >
-	<slot slot="anchor" open={opened} />
-	{#if opened && message && !disabled}
+	<svelte:fragment slot="anchor">
+		<slot {opened} />
+	</svelte:fragment>
+	<svelte:fragment slot="content">
 		<div
+			class:selectable
 			data-theme={theme}
 			class="tooltip {place} {align}"
-			in:scale={{ start: 0.9, easing: cubicOut, duration: 100, opacity: 0 }}
-			out:scale={{ start: 0.95, easing: cubicIn, duration: 150, opacity: 0 }}
+			in:transform={{
+				rotateX,
+				rotateY,
+				easing: expoOut,
+				duration: 150,
+				opacity: 0,
+				delay: latest ? 0 : DELAY,
+			}}
+			out:scale|local={{ start: 0.95, easing: cubicIn, duration: 150, opacity: 0 }}
 		>
-			<slot name="message" open={opened}>
-				{@html message}
-			</slot>
-			<Tip class="tip" />
+			<div class="tooltip-content">
+				<slot name="message" {opened}>
+					{@html message}
+				</slot>
+			</div>
+			<Tip class="tooltip-tip" />
 		</div>
-	{/if}
+	</svelte:fragment>
 </Tether>
 
 <style lang="scss">
 	.tooltip {
+		--tooltip-background: #{col(bg, 100, 0.94)};
 		--tip-pad: calc(0.5 * var(--tether-w));
 		--tip-size: 1em;
-		--d-sum: calc(var(--tether-d) + 0.5 * var(--tip-size));
 		user-select: none;
-		position: absolute;
 		pointer-events: none;
-		display: block;
+		position: relative;
 		flex: none;
-		// white-space: nowrap;
-		width: max-content;
-		line-height: 1.3;
-		font-weight: 350;
+		align-items: center;
+		display: flex;
 		font-size: var(--ui-text-sm);
-		max-width: var(--ui-width-sm);
-		padding: 0.5em 1em 0.6em 1em;
-		margin: 0;
-		background: col(bg, 100, 0.94);
-		color: col(fg, 300);
-		border-radius: 0.8em;
-		letter-spacing: 0.02em;
 		transform-origin: inherit;
-		z-index: 1000;
-		// box-shadow: 0 0.8em 1.8em -0.8em rgba(0, 10, 20, 0.5);
+		z-index: 999;
 
-		:global(.tip) {
+		:global(.tooltip-tip) {
+			position: relative;
 			font-size: var(--tip-size);
-			color: col(bg, 100, 0.94);
+			color: var(--tooltip-background);
+		}
+
+		&:not(.selectable) {
+			pointer-events: none;
+			user-select: none;
 		}
 	}
 
+	.tooltip-content {
+		position: relative;
+		line-height: 1.3;
+		font-weight: 350;
+		letter-spacing: 0.02em;
+		width: max-content;
+		max-width: var(--ui-width-sm);
+		margin: 0;
+		padding: 0.5em 1em 0.6em 1em;
+		background: var(--tooltip-background);
+		border-radius: 0.75em;
+		color: col(fg, 300);
+	}
+
 	.top {
-		bottom: var(--d-sum);
-		& :global(.tip) {
-			bottom: 0;
-			left: 50%;
-			transform: translate(-50%, 100%);
+		flex-direction: column;
+		& :global(.tooltip-tip) {
 		}
 	}
 
 	.bottom {
-		top: var(--d-sum);
-		& :global(.tip) {
-			top: 0;
-			left: 50%;
-			transform: translate(-50%, -100%) rotate(180deg);
+		flex-direction: column-reverse;
+		& :global(.tooltip-tip) {
+			rotate: 180deg;
 		}
 	}
 
 	.top,
 	.bottom {
 		&.start {
-			& :global(.tip) {
+			align-items: start;
+			& :global(.tooltip-tip) {
 				left: var(--tip-pad);
 			}
 		}
 		&.end {
-			& :global(.tip) {
-				left: calc(100% - var(--tip-pad));
+			align-items: end;
+			& :global(.tooltip-tip) {
+				right: var(--tip-pad);
 			}
 		}
 	}
 
 	.right {
-		left: var(--d-sum);
-		& :global(.tip) {
-			left: 0;
-			top: 50%;
-			transform: translate(-100%, -50%) rotate(90deg);
+		flex-direction: row-reverse;
+		& :global(.tooltip-tip) {
+			rotate: 90deg;
 		}
 	}
 
 	.left {
-		right: var(--d-sum);
-		& :global(.tip) {
-			right: 0;
-			top: 50%;
-			transform: translate(100%, -50%) rotate(-90deg);
+		flex-direction: row;
+		& :global(.tooltip-tip) {
+			rotate: -90deg;
 		}
 	}
 
 	.left,
 	.right {
 		&.start {
-			& :global(.tip) {
-				top: var(--tip-pad);
+			align-items: start;
+			& :global(.tooltip-tip) {
+				align-self: center;
 			}
 		}
 		&.end {
-			& :global(.tip) {
-				top: calc(100% - var(--tip-pad));
+			align-items: end;
+			& :global(.tooltip-tip) {
+				align-self: center;
 			}
 		}
 	}

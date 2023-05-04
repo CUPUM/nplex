@@ -5,8 +5,11 @@
 	import Icon from '$components/Icon.svelte';
 	import Map from '$components/Map/Map.svelte';
 	import Token from '$components/Token/Token.svelte';
+	import Tooltip from '$components/Tooltip.svelte';
+	import { icons } from '$utils/icons';
 	import { writableQuery } from '$utils/store';
 	import { Marker } from 'maplibre-gl';
+	import type { ComponentProps } from 'svelte';
 
 	const h = ['2xl', 'xl', 'lg', 'md', 'sm', 'xs'];
 	const t = ['xl', 'lg', 'md', 'sm', 'xs'];
@@ -24,6 +27,8 @@
 	// 	// 	return res.data;
 	// 	// });
 	// });
+
+	let icon: ComponentProps<Icon>['name'] = 'alarm';
 
 	let map: maplibregl.Map;
 
@@ -45,10 +50,32 @@
 </script>
 
 <article>
-	<div class="wrapper">
-		<button on:click={getBox}>Click me</button>
+	<!-- <Popover align="start">
+		<svelte:fragment slot="control" let:open>
+			<button on:click={open}>Click me</button>
+		</svelte:fragment>
+		<p style="width:200px; height: 200px; background:red;">Test</p>
+	</Popover> -->
+	<!-- <Tooltip message="test de pmessage de tooltip">
 		<button>Some useless button</button>
-	</div>
+	</Tooltip> -->
+	<Tooltip message="test de message de tooltip" place="right" align="end">
+		<button>Some useless button</button>
+	</Tooltip>
+	<Tooltip message="test de message de tooltip" place="right" align="end">
+		<button>Test 2</button>
+	</Tooltip>
+	<Tooltip message="test de message de tooltip" place="right" align="end">
+		<button>Test 34</button>
+	</Tooltip>
+</article>
+<article style="flex-direction: row;">
+	<select bind:value={icon}>
+		{#each Object.keys(icons) as i}
+			<option value={i}>{i}</option>
+		{/each}
+	</select>
+	<Icon name={icon} size="3rem" />
 </article>
 <article id="map-wrapper">
 	<Map bind:map />
@@ -86,6 +113,12 @@
 
 	.wrapper {
 		display: contents;
+	}
+
+	button {
+		// position: relative;
+		padding: 1em;
+		background-color: pink;
 	}
 
 	section {

@@ -30,15 +30,21 @@ interface SlipOptions {
 	/**
 	 * If the host element's box should clip its content during the transition.
 	 */
-	overflow?: 'hidden' | 'visible' | 'hidden hidden' | 'visible visible' | 'hidden visible' | 'visible hidden';
+	overflow?:
+		| 'hidden'
+		| 'visible'
+		| 'hidden hidden'
+		| 'visible visible'
+		| 'hidden visible'
+		| 'visible hidden';
 }
 
 /**
- * Transition that primes smoothly inserting an element by sizing its width and/or its height (similarly to svelte's
- * slide transition).
+ * Transition that primes smoothly inserting an element by sizing its width and/or its height
+ * (similarly to svelte's slide transition).
  *
- * This transition also allows combining this with a fly, scale, and/or fade transition, in addition to an overflow
- * property to customize content-clipping during the transition's life.
+ * This transition also allows combining this with a fly, scale, and/or fade transition, in addition
+ * to an overflow property to customize content-clipping during the transition's life.
  */
 export function slip(
 	el: Element,
@@ -115,12 +121,12 @@ export function slip(
 			return (
 				`overflow: ${t < 1 ? overflow : _overflow};` +
 				`opacity: ${_opacity - d_opacity * u};` +
-				`transform: ${_transform} scale(${1 - u * d_scaleX}, ${1 - u * d_scaleY}) translate(${(1 - t) * x}px, ${
-					(1 - t) * y
-				}px);` +
+				`transform: ${_transform} scale(${1 - u * d_scaleX}, ${1 - u * d_scaleY}) translate(${
+					(1 - t) * x
+				}px, ${(1 - t) * y}px);` +
 				txHeight +
 				txWidth
 			);
 		},
-	};
+	} satisfies SvelteTransitionReturnType;
 }

@@ -7,133 +7,75 @@
 
 <script lang="ts" context="module">
 	export const POPOVER_OPEN_ATTR = 'data-popover-open' as const;
-	const TIME_BUFFER = 25;
 	const INTRO_DISTANCE = 16;
 
-	let latest: Tether | null = null;
+	let latest: {} | null = null;
 </script>
 
 <script lang="ts">
-	import { afterNavigate } from '$app/navigation';
 	import { navigating } from '$app/stores';
-	import flyScale from '$lib/motion/transitions/flyScale';
-	import { cssSize } from '$utils/css';
-	import { tick, type ComponentProps } from 'svelte';
+	import flyScale from '$motion/transitions/flyScale';
+	import type { ComponentProps } from 'svelte';
 	import { cubicIn, expoOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
 	import Menu from './Menu/Menu.svelte';
-	import Tether from './Tether.svelte';
+	import Tether from './Tether/Tether.svelte';
 	import Tip from './Tip.svelte';
 
-	export let hover: boolean = false;
-	export let opened: boolean = false;
-	export let closeOnNav: boolean = true;
-	export let bg: boolean = false;
+	export let useTip: boolean = false;
+	export let background: false | undefined | string = false;
+	export let opened: ComponentProps<Tether>['opened'] = false;
+	export let useClick: ComponentProps<Tether>['useClick'] = false;
+	export let disabled: ComponentProps<Tether>['disabled'] = undefined;
+	export let distance: ComponentProps<Tether>['distance'] = '6px';
 	export let place: ComponentProps<Tether>['place'] = 'bottom';
 	export let align: ComponentProps<Tether>['align'] = 'center';
-	export let tip: boolean = false;
-	export let distance: NonNullable<ComponentProps<Tether>['distance']> = 5;
+	export let closeOnNav: ComponentProps<Tether>['closeOnNav'] = true;
+	export let closeOnClickoutside: ComponentProps<Tether>['closeOnClickoutside'] = true;
 
-	let tether: Tether;
-	let contentRef: HTMLElement;
+	const key = {};
 	let timeout: any;
 
 	$: inY = place === 'bottom' ? -INTRO_DISTANCE : place === 'top' ? +INTRO_DISTANCE : 0;
 	$: inX = place === 'right' ? -INTRO_DISTANCE : place === 'left' ? +INTRO_DISTANCE : 0;
 
-	$: if (opened) {
-		latest = tether ?? null;
-		tether.anchorRef?.setAttribute(POPOVER_OPEN_ATTR, '');
-	} else {
-		tether?.anchorRef?.removeAttribute(POPOVER_OPEN_ATTR);
+	function handleOpen() {
+		latest = key;
 	}
 
-	function open(e?: Event) {
-		opened = true;
-		clearTimeout(timeout);
-		// Implement similar to modal
-	}
-
-	function close(e?: Event) {
-		opened = false;
-		// Implement similar to modal
-	}
-
-	function toggle(e?: Event) {
-		if (opened) {
-			close(e);
-		} else {
-			open(e);
+	function handleClose() {
+		if (latest === key) {
+			latest = null;
 		}
 	}
-
-	function handleClick(e: Event) {
-		opened = !opened;
-	}
-
-	function handleClickoutside(e: Event) {
-		if (e instanceof CustomEvent) {
-			if (
-				e.detail.originalEvent.target instanceof Node &&
-				!contentRef?.contains(e.detail.originalEvent.target)
-			) {
-				opened = false;
-			}
-		}
-	}
-
-	async function handleLeave(e: Event) {
-		if (!hover) {
-			return;
-		}
-		timeout = setTimeout(() => {
-			opened = false;
-			timeout = null;
-		}, TIME_BUFFER);
-	}
-
-	function handleEnter(e: Event) {
-		if (!hover) {
-			return;
-		}
-		opened = true;
-		clearTimeout(timeout);
-	}
-
-	afterNavigate(async () => {
-		if (closeOnNav) {
-			await tick(); // Awaiting a tick avoids conflict with other navigation-related logic (ex.: button loading state check).
-			opened = false;
-		}
-	});
 </script>
 
-{#if opened && bg}
-	<div class="bg" transition:fade|local={{ duration: 350 }} />
+{#if opened && background}
+	<div class="bg" style:background transition:fade|local={{ duration: 350 }} />
 {/if}
 <Tether
-	bind:this={tether}
+	bind:opened
 	{place}
 	{align}
-	distance="0"
-	on:click={handleClick}
-	on:clickoutside={handleClickoutside}
-	on:pointerleave={handleLeave}
-	on:pointerenter={handleEnter}
+	{distance}
+	{disabled}
+	{useClick}
+	{closeOnNav}
+	{closeOnClickoutside}
+	on:open={handleOpen}
+	on:close={handleClose}
 >
-	<slot name="control" slot="anchor" {opened} {open} {close} />
-	{#if opened}
+	<svelte:fragment slot="anchor" let:open let:close let:toggle>
+		<slot name="control" {opened} {open} {close} {toggle} />
+	</svelte:fragment>
+	<svelte:fragment slot="content" let:open let:close let:toggle>
 		<div
-			on:pointerleave|self={handleLeave}
-			on:pointerenter|self={handleEnter}
-			bind:this={contentRef}
 			class="popover {align} {place}"
-			style:--popover-d={cssSize(distance)}
 			in:flyScale={{ scale: 0.94, y: inY, x: inX, easing: expoOut, duration: 200, opacity: 0 }}
 			out:scale|local={{
 				start: 0.96,
 				easing: cubicIn,
-				duration: (latest && latest !== tether) || $navigating ? 0 : 125,
+				duration: (latest && latest !== key) || $navigating ? 0 : 125,
 				opacity: 0,
 			}}
 		>
@@ -141,17 +83,18 @@
 				<Menu>
 					<slot {opened} {open} {close} />
 				</Menu>
-				{#if tip}
-					<Tip />
+				{#if useTip}
+					<Tip class="popover-tip" />
 				{/if}
 			{/if}
-			<slot name="content" {opened} {open} {close} />
+			<slot name="content" {opened} {open} {close} {toggle} />
 		</div>
-	{/if}
+	</svelte:fragment>
 </Tether>
 
 <style lang="scss">
 	.bg {
+		--popover-background: black;
 		pointer-events: none;
 		z-index: 99;
 		position: fixed;
@@ -159,18 +102,11 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		background: rgb(10, 20, 30);
-		opacity: 0.1;
-	}
-
-	:global([popover-control-open]) {
-		z-index: 999 !important;
 	}
 
 	.popover {
 		--tip-pad: calc(0.5 * var(--tether-w));
 		--tip-size: 1em;
-		--popover-d-sum: calc(var(--popover-d) + 0.5 * var(--tip-size));
 		display: block;
 		flex-shrink: 0;
 		width: auto;
@@ -180,19 +116,18 @@
 		padding: 0;
 		margin: 0;
 		transform-origin: inherit;
-		z-index: 1000;
+		z-index: 999;
 
-		:global(.ui-tip) {
+		:global(.popover-tip) {
+			position: relative;
 			font-size: var(--tip-size);
-			color: col(bg, 000, 0.85);
+			color: var(--popover-background);
 		}
 	}
 
 	.top {
 		bottom: 0;
-		padding-bottom: var(--popover-d);
 		& :global(.ui-tip) {
-			bottom: var(--popover-d);
 			left: 50%;
 			transform: translate(-50%, 100%);
 		}
@@ -200,9 +135,7 @@
 
 	.bottom {
 		top: 0;
-		padding-top: var(--popover-d);
 		& :global(.ui-tip) {
-			top: var(--popover-d);
 			left: 50%;
 			transform: translate(-50%, -100%) rotate(180deg);
 		}
@@ -210,17 +143,14 @@
 
 	.right {
 		left: 0;
-		padding-left: var(--popover-d);
 		& :global(.ui-tip) {
-			left: var(--popover-d);
 			top: 50%;
 			transform: translate(-100%, -50%) rotate(90deg);
 		}
 	}
 
 	.left {
-		right: var(--popover-d);
-		padding-right: var(--popover-d);
+		right: 0;
 		& :global(.ui-tip) {
 			right: 0;
 			top: 50%;

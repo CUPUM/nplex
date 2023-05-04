@@ -95,7 +95,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Avatar from '$components/Avatar/Avatar.svelte';
-	import Icon from '$components/Icon.svelte';
+	import Icon, { ICON_BUTTON_BASE } from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
 	import { media } from '$stores/media';
@@ -172,7 +172,7 @@
 		</section>
 		<section class="session">
 			{#if $page.data.session}
-				<Popover place="bottom" align="end" hover let:opened>
+				<Popover place="bottom" align="end" useHover let:opened>
 					<NavbarButton
 						equi
 						slot="control"
@@ -180,11 +180,11 @@
 						current={$page.url.pathname.startsWith(EDITOR_BASE_ROUTE.pathname)}
 						active={opened}
 					>
-						<Icon name="pen" style="font-size: 1.25em" />
+						<Icon name="pen" {...ICON_BUTTON_BASE} />
 					</NavbarButton>
 					<NavbarEditorMenu />
 				</Popover>
-				<Popover hover place="bottom" align="end" let:opened>
+				<Popover useHover place="bottom" align="end" let:opened>
 					<Avatar
 						active={opened}
 						slot="control"
@@ -201,7 +201,7 @@
 					href={authModal.getUrl({ url: $page.url }).toString()}
 					data-sveltekit-noscroll=""
 				>
-					<Icon name="user" strokeWidth={2} style="font-size: 1.25em" />
+					<Icon name="user" {...ICON_BUTTON_BASE} />
 				</NavbarButton>
 			{/if}
 		</section>
@@ -211,7 +211,7 @@
 <style lang="scss">
 	header {
 		--navbar-bg: var(--color-bg-100);
-		--navbar-transition: 0.15s ease;
+		--navbar-transition: 0.1s ease-out;
 		pointer-events: none;
 		position: sticky;
 		display: flex;
@@ -340,31 +340,26 @@
 
 	.category {
 		--i: 1;
-		--inset: var(--ui-inset-md);
+		--inset: var(--ui-inset-sm);
+		// --radius: calc(var(--ui-radius-md) + var(--inset));
 		--radius: 99px;
+		// --radius: var(--ui-radius-md);
 		gap: 2px;
 		grid-column: category;
 		justify-self: center;
 		padding: var(--inset);
 		border-radius: var(--radius);
-		backdrop-filter: blur(8px);
-
-		@include tablet {
-			--outset: 0px;
-			margin-block: unset;
-			border: var(--ui-border-size) solid col(fg, 100, 0.1);
-			box-shadow: unset;
-		}
+		z-index: 1;
 
 		&::before {
+			z-index: -2;
 			content: '';
 			position: absolute;
 			inset: 0;
 			border-radius: inherit;
 			background: var(--navbar-bg);
-			opacity: 0.8;
-			border: var(--ui-border-size) solid var(--nab-bg);
-			filter: brightness(1.5);
+			opacity: 1;
+			border: var(--ui-border-size) solid rgb(255, 255, 255, 0.05);
 			transition: opacity 0.25s, background var(--navbar-transition),
 				filter var(--navbar-transition);
 		}

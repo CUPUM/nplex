@@ -43,23 +43,26 @@
 	{...$$restProps}
 >
 	<Ripple color={col('primary', '500')} opacityStart={0.5} />
-	<div class="inner">
+	<div class="inner nofx">
 		<slot />
 	</div>
 </svelte:element>
 
 <style lang="scss">
 	.navbar-button {
+		--button-radius: var(--ui-radius-md);
+		--button-size: 2.75rem;
 		position: relative;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
 		cursor: pointer;
-		font-weight: 450;
-		padding: 0 1.25em;
-		height: calc(var(--ui-block-lg) - 2 * var(--inset, 0px));
-		border-radius: calc(var(--radius, var(--ui-radius-md)) - var(--inset, 0px));
+		font-weight: 500;
+		padding: 0 var(--ui-pad-md);
+		// height: var(--button-size);
+		height: calc(var(--button-size) - 2 * var(--inset, 0px));
+		border-radius: calc(var(--radius, var(--button-radius)) - var(--inset, 0px));
 		letter-spacing: 0.02em;
 		line-height: 1;
 		color: col(fg, 100);
@@ -69,7 +72,7 @@
 		&::before {
 			content: '';
 			position: absolute;
-			z-index: -1;
+			z-index: -2;
 			border-radius: inherit;
 			inset: 0;
 			background: var(--navbar-bg);
@@ -84,31 +87,22 @@
 			background: col(primary, 100, 0.5);
 		}
 		&[data-current]:not(.active) {
-			color: col(fg, 900);
-			background: col(fg, 100, 0.1);
+			// 	color: col(primary, 500);
+			// 	background: col(primary, 100, 0.2);
+			color: col(bg, 300);
+			&::before {
+				background: col(fg, 300);
+			}
 		}
 		&:focus-visible {
 			outline: var(--ui-outline-active);
 		}
 		&:focus-visible,
 		&:focus {
-			z-index: 1;
+			z-index: 2;
 		}
 
-		// Category
-
 		&.category {
-			// backdrop-filter: none;
-			&::before {
-				opacity: 0;
-			}
-			// &[data-current]:not(.active) {
-			// 	// color: col(fg, 900);
-			// 	&::before {
-			// 		// background: col(fg, 100, 0.1);
-			// 		// opacity: 1;
-			// 	}
-			// }
 			&:first-of-type {
 				padding-inline-start: 1.5em;
 			}
@@ -116,30 +110,11 @@
 				padding-inline-end: 1.5em;
 			}
 		}
-
-		// Call-to-action variant
-
-		&.cta {
-			color: col(bg, 100);
-			&::before {
-				background: col(fg, 300);
-				opacity: 0.9;
-			}
-			&:hover,
-			&.active,
-			&:active {
-				color: col(primary, 700);
-				&::before {
-					background: col(primary, 300);
-					opacity: 0.5;
-				}
-			}
-		}
 	}
 
 	.inner {
 		position: relative;
-		height: 1.3em;
+		height: 1.3em; // Improve visual vertical center
 		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
@@ -154,9 +129,5 @@
 		flex: none;
 		aspect-ratio: 1;
 		padding: 0;
-	}
-
-	.rounded {
-		border-radius: 50%;
 	}
 </style>

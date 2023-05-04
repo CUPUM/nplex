@@ -1,5 +1,4 @@
 <script lang="ts">
-	import RootBackground from '$routes/RootBackground.svelte';
 	import {
 		galleryLayouts,
 		getBannerColors,
@@ -36,7 +35,7 @@
 	};
 </script>
 
-<RootBackground body={bgColor.toRgbString()} overscroll={bgColor.toRgbString()} />
+<!-- <RootBackground body={bgColor.toRgbString()} overscroll={bgColor.toRgbString()} /> -->
 <!-- <NavbarBackground color="transparent" /> -->
 <!-- <RootBackground overscroll={bgColor.toRgbString()} /> -->
 <article

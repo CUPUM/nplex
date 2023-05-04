@@ -3,7 +3,6 @@ type ClickoutsideOptions = (AddEventListenerOptions & {}) | boolean;
 const CLICKOUTSIDE_EVENT = 'clickoutside';
 
 interface ClickoutsideEvent {
-	target: HTMLElement;
 	originalEvent: PointerEvent;
 }
 
@@ -27,8 +26,15 @@ declare global {
 export function clickoutside(element: HTMLElement, options?: ClickoutsideOptions) {
 	let startOutside = false;
 
-	function handleDown(e: PointerEvent) {
+	function isValidEvent(e: Event) {
 		if (e.target instanceof Node && !element.contains(e.target) && !e.defaultPrevented) {
+			return true;
+		}
+		return false;
+	}
+
+	function handleDown(e: PointerEvent) {
+		if (isValidEvent(e)) {
 			startOutside = true;
 		}
 	}
@@ -37,10 +43,10 @@ export function clickoutside(element: HTMLElement, options?: ClickoutsideOptions
 		if (!startOutside) {
 			return;
 		}
-		if (e.target instanceof Node && !element.contains(e.target) && !e.defaultPrevented) {
+		if (isValidEvent(e)) {
 			element.dispatchEvent(
 				new CustomEvent(CLICKOUTSIDE_EVENT, {
-					detail: { target: element, originalEvent: e } satisfies ClickoutsideEvent,
+					detail: { originalEvent: e } satisfies ClickoutsideEvent,
 				})
 			);
 		}

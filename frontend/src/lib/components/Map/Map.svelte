@@ -196,6 +196,7 @@
 			});
 
 			// To do: REMOVE AND IMPLEMENT ELSEWHERE;
+
 			map.on(MAP_DRAW_EVENTS.Init, (e: MapboxDraw.DrawInitEvent) => {
 				draw = e.draw;
 				drawMode.set(draw.getMode() as MapDrawMode);

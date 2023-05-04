@@ -8,7 +8,7 @@ export type Theme = {
 		[shade in ShadeKey<'000' | 100 | 300 | 500 | 700 | 900>]: string;
 	};
 } & {
-	[color in 'primary' | 'secondary' | 'success' | 'error' | 'notice']: {
+	[color in 'primary' | 'secondary' | 'success' | 'error']: {
 		[shade in ShadeKey<100 | 300 | 500 | 700 | 900>]: string;
 	};
 };

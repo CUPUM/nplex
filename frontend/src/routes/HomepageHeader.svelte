@@ -41,22 +41,22 @@
 			x: e.detail.x,
 			y: e.detail.y,
 			r:
-				2 *
+				1.5 *
 					(Math.abs(e.detail.originalEvent.movementX) +
 						Math.abs(e.detail.originalEvent.movementY)) +
-				150,
+				200,
 		}));
 		square.update((prev) => ({
 			x: e.detail.x,
 			y: e.detail.y,
 			s:
-				2 *
+				1.5 *
 					(Math.abs(e.detail.originalEvent.movementX) +
 						Math.abs(e.detail.originalEvent.movementY)) +
 				250,
 			a:
 				prev.a +
-				0.15 * Math.round(e.detail.originalEvent.movementX + e.detail.originalEvent.movementY),
+				0.1 * Math.round(e.detail.originalEvent.movementX + e.detail.originalEvent.movementY),
 		}));
 	}
 
@@ -94,7 +94,7 @@
 				height={Math.max(0, 2 * $square.s)}
 				transform="rotate({$square.a})"
 				fill="white"
-				opacity=".85"
+				opacity=".5"
 				rx="50"
 			/>
 			<circle
@@ -229,7 +229,7 @@
 		}
 		mask {
 			circle {
-				filter: drop-shadow(12px 48px 56px black);
+				filter: drop-shadow(16px 24px 56px black);
 			}
 			rect {
 				transform-box: fill-box;

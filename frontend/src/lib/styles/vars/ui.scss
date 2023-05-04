@@ -7,7 +7,7 @@
 :root {
 	--ui-bg: #{col(bg, 100)};
 	--ui-nav-pad: 1rem;
-	--ui-nav-h: 81px; // Retrieved manually, adjust whenever modifying navbar style.
+	--ui-nav-h: 76px; // Retrieved manually, adjust whenever modifying navbar style.
 	--ui-projects-toolbar-h: 61px; // Retrieved manually.
 	--ui-sticky-top: calc(
 		var(--ui-nav-h) + var(--ui-gutter-md)

@@ -11,18 +11,31 @@ export function unsafeUid(length: number = 8) {
 		.slice(0, length);
 }
 
+export function getRandomInt(max: number) {
+	return Math.round(Math.random() * max);
+}
+
 /**
- * (Simple Fischer-Yates shuffle?)
+ * Pure Fischer-Yates shuffle.
+ *
+ * @returns A new shuffled array.
+ * @see https://bost.ocks.org/mike/shuffle/
  */
 export function shuffleItems<T>(array: T[]) {
-	// let oldElement;
-	// for (let i = array.length - 1; i > 0; i--) {
-	// 	let rand = Math.floor(Math.random() * (i + 1));
-	// 	oldElement = array[i];
-	// 	array[i] = array[rand];
-	// 	array[rand] = oldElement;
-	// }
-	// return array;
+	let shuffled = [...array];
+	let m = array.length;
+	let i: number;
+	let current: T;
+	// While there remain elements to shuffle…
+	while (m) {
+		// Pick a remaining element…
+		i = Math.floor(Math.random() * m--);
+		// And swap it with the current element.
+		current = array[m];
+		array[m] = array[i];
+		array[i] = current;
+	}
+	return shuffled;
 }
 
 function sampleItem<T>(array: T[]) {
@@ -55,5 +68,12 @@ export function sampleItems<T, N extends number>(
 	} else if (n === 1) {
 		return sampleItem(array);
 	} else {
+		const l = limit ? Math.max(n, array.length) : n;
+		if (duplicates) {
+			return Array(l)
+				.fill(null)
+				.map((_) => sampleItem(array));
+		}
+		return shuffleItems(array).slice(0, l);
 	}
 }

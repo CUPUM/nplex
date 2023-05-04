@@ -5,7 +5,6 @@
 	import Logo from '$components/Logo.svelte';
 	import ModalOutlet from '$components/Modal/ModalOutlet.svelte';
 	import MessagesOutlet, { messages } from '$routes/MessagesOutlet.svelte';
-	import Navbar from '$routes/Navbar.svelte';
 	import ProgressBar from '$routes/ProgressBar.svelte';
 	import { rootScroll } from '$stores/rootScroll';
 	import '$styles/app.scss';
@@ -13,6 +12,7 @@
 	import 'overlayscrollbars/overlayscrollbars.css';
 	import AuthModal, { authModal } from './AuthModal.svelte';
 	import Footer from './Footer.svelte';
+	import Navbar from './Navbar.svelte';
 
 	export let data;
 

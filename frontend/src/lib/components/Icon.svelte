@@ -4,21 +4,68 @@
 	Primitive component to facilitate adding icons in a consistent manner across the ui.
 -->
 <script lang="ts" context="module">
+	import type { SvelteEasingFunction } from '$types/utils';
+
 	export const ICON_CLASS = {
 		hover: 'i-hover-anim',
 		hold: 'i-hold-anim',
 	} as const;
 
-	const TRANSITION_DURATION = 175;
-	const TRANSITION_DELAY = TRANSITION_DURATION * 0.75;
-	const TRANSITION_STAGGER = 50;
+	export const ICON_BUTTON_BASE = {
+		size: '1.125em',
+		strokeWidth: 2.25,
+	};
+
+	const TRANSITION_DURATION = 250;
+	const TRANSITION_STAGGER = 75;
+
+	type IconPathTransitionOptions = {
+		angle?: number;
+		duration?: number;
+		delay?: number;
+		easing?: SvelteEasingFunction;
+	};
+
+	function pathtransition(
+		element: SVGPathElement,
+		{ angle = 0, delay = 0, duration = 1250, easing = linear }: IconPathTransitionOptions = {}
+	) {
+		const style = getComputedStyle(element);
+		if (style.fill !== 'none') {
+			return {
+				delay,
+				duration,
+				easing,
+				css: (t, u) => `
+			transform-origin: center;
+			transform: scale(${1 - u * 0.5});
+			opacity: ${t};
+		`,
+			} satisfies SvelteTransitionReturnType;
+		}
+		let len = element.getTotalLength();
+		if (style.strokeLinecap !== 'butt') {
+			len += parseInt(style.strokeWidth);
+		}
+		return {
+			delay,
+			duration,
+			easing,
+			css: (t, u) => `
+			transform-origin: 50% 50%;
+			transform: rotate(${u * angle}deg);
+			stroke-dasharray: ${len};
+			stroke-dashoffset: ${u * len};
+		`,
+		} satisfies SvelteTransitionReturnType;
+	}
 </script>
 
 <script lang="ts">
 	import { cssSize } from '$utils/css';
 	import { icons } from '$utils/icons';
-	import { cubicOut } from 'svelte/easing';
-	import { draw, scale } from 'svelte/transition';
+	import { onMount } from 'svelte';
+	import { expoIn, expoOut, linear } from 'svelte/easing';
 
 	export let id: string | undefined = undefined;
 	export let name: keyof typeof icons;
@@ -27,14 +74,18 @@
 	export let strokeLinecap: 'square' | 'round' = 'round';
 	export let animate: boolean = true;
 	export let animationSpeed: number = 1;
-	// export let draw: boolean = false;
-	// export let drawDelay: number = 50;
-	// export let drawDuration: number = 500;
-	export let style: string | undefined = undefined;
+	export let size: string = '1em';
+	export let intro: boolean = false;
 	let className: string = '';
 	export { className as class };
 
 	$: icon = icons[name];
+
+	let applyIn = intro;
+
+	onMount(() => {
+		applyIn = true;
+	});
 </script>
 
 <svg
@@ -46,51 +97,33 @@
 	viewBox={icon.viewBox}
 	class="ui-icon {className}"
 	class:animate
-	{style}
+	style:font-size={size}
 	style:--secondary-color={secondaryColor}
 	style:--stroke-width={cssSize(strokeWidth)}
 	style:--stroke-linecap={strokeLinecap}
 	style:--speed={animationSpeed}
 	style:--height={icon.height}
 >
-	{#each icon.paths as path, i}
-		{#if path.fill}
-			{#key path}
-				<path
-					transition:scale|local={{
-						duration: TRANSITION_DURATION,
-						start: 0.8,
-						delay: i * TRANSITION_STAGGER,
-					}}
-					class="fill"
-					class:secondary={path.type === 'secondary'}
-					d={path.d}
-					style:--i={i}
-				/>
-			{/key}
-		{/if}
-		{#if path.stroke}
-			{#key path}
-				<path
-					in:draw|local={{
-						duration: TRANSITION_DURATION,
-						easing: cubicOut,
-						delay: i * TRANSITION_STAGGER + TRANSITION_DELAY,
-					}}
-					out:draw|local={{
-						duration: TRANSITION_DURATION,
-						easing: cubicOut,
-						delay: i * TRANSITION_STAGGER,
-					}}
-					class="stroke"
-					class:secondary={path.type === 'secondary'}
-					d={path.d}
-					style:--l={path.length}
-					style:--i={i}
-					style:--dir={Math.round(Math.random()) * 2 - 1}
-				/>
-			{/key}
-		{/if}
+	{#each icon.paths as path, i (path)}
+		<path
+			in:pathtransition|local={{
+				duration: applyIn ? TRANSITION_DURATION : 0,
+				delay: applyIn ? TRANSITION_DURATION + i * TRANSITION_STAGGER : 0,
+				angle: 180,
+				easing: expoOut,
+			}}
+			out:pathtransition|local={{
+				duration: TRANSITION_DURATION,
+				delay: i * TRANSITION_STAGGER,
+				angle: -180,
+				easing: expoIn,
+			}}
+			class:fill={path.fill}
+			class:stroke={path.stroke}
+			class:secondary={path.type === 'secondary'}
+			d={path.d}
+			style:--i={i}
+		/>
 	{/each}
 </svg>
 
@@ -105,6 +138,7 @@
 		overflow: visible;
 
 		path {
+			// transform-origin: center;
 			fill: none;
 			stroke: none;
 
