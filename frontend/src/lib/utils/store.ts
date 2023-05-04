@@ -3,6 +3,10 @@ import { debounce } from '$utils/modifiers';
 import { derived, get, readable, writable, type Updater } from 'svelte/store';
 import type { Awaited } from 'ts-essentials';
 
+const numerator = writable<number>(1);
+const denominator = writable<number>(1);
+const fraction = derived([numerator, denominator], ([n, d]) => n / d);
+
 /**
  * Writable store with a chronological cumulative memory of keyed values.
  *
