@@ -1,20 +1,17 @@
 <h1 align="center">
   <img width="300" height="auto" src="frontend/static/logo/nplex-color.svg" alt="nplex">
 </h1>
+<p align="center">
 
-## General
+</p>
 
-### See it live
+## See it live
 
-:pick:
+The app's frontend is deployed on Vercel and is available at [nplex.design](www.nplex.design).
 
-Under construction at [nplex.design](www.nplex.design)
+## Stack
 
-:pick:
-
-### Stack
-
-This project's stack is organized throughout packages respective of each service, such as:
+The project's stack is scaffolded on:
 
 - __[Frontend](/frontend)__
   - [SvelteKit](https://kit.svelte.dev/) as the SSR-capable frontend framework.

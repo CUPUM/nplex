@@ -8,10 +8,6 @@
 	"plugins": ["prettier-plugin-svelte", "prettier-plugin-jsdoc"],
 	"pluginSearchDirs": ["."],
 	"proseWrap": "always",
-	"overrides": [
-		{ "files": "*.svelte", "options": { "parser": "svelte" } },
-		{ "files": "*.md", "options": { "useTabs": false, "tabWidth": 2 } }
-	],
 	"bracketSpacing": true,
 	"bracketSameLine": false,
 	"arrowParens": "always",
@@ -21,5 +17,6 @@
 	"jsdocSingleLineComment": false,
 	"quoteProps": "consistent",
 	"embeddedLanguageFormatting": "auto",
-	"htmlWhitespaceSensitivity": "ignore"
+	"htmlWhitespaceSensitivity": "ignore",
+	"overrides": [{ "files": "*.md", "options": { "useTabs": false, "tabWidth": 2 } }]
 }

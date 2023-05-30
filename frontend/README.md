@@ -1,12 +1,6 @@
-<h1 align="center">
-  <img width="300" height="auto" src="static/logo/nplex-color.svg" alt="nplex">
-</h1>
+## Install
 
-## Getting started
-
-### Setting things up
-
-After cloning the repo, initialize the project and its dependencies locally:
+After cloning the repo, initialize the project and its dependencies locally using pnpm:
 
 ```sh
 pnpm install
