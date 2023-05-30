@@ -123,6 +123,8 @@
 			class:secondary={path.type === 'secondary'}
 			d={path.d}
 			style:--i={i}
+			style:--dir={Math.round(Math.random()) * 2 - 1}
+			style:--l={path.length}
 		/>
 	{/each}
 </svg>
@@ -141,28 +143,28 @@
 			// transform-origin: center;
 			fill: none;
 			stroke: none;
+		}
 
-			&.fill {
-				fill: currentColor;
-			}
+		.fill {
+			fill: currentColor;
+		}
 
-			&.stroke {
-				--gap: calc(var(--l) * 0.75);
-				--lcorr: calc(var(--l) + 2 * var(--stroke-width));
-				// Calculating the animation duration (for hover and hold modes) independently of the icon's height
-				--d: calc(((var(--l) * 100ms / var(--height)) + 350ms) / var(--speed));
-				stroke: currentColor;
-				stroke-width: var(--stroke-width);
-				stroke-linejoin: round;
-				stroke-linecap: var(--stroke-linecap);
-				stroke-dasharray: var(--l) var(--gap);
-				stroke-dashoffset: 0;
-				transition: stroke-dashoffset var(--d) calc(0.1s * var(--i)) var(--ui-ease-out);
-			}
+		.stroke {
+			--gap: calc(var(--l) * 0.75);
+			--lcorr: calc(var(--l) + 2 * var(--stroke-width));
+			// Calculating the animation duration (for hover and hold modes) independently of the icon's height
+			--d: calc(((var(--l) * 100ms / var(--height)) + 350ms) / var(--speed));
+			stroke: currentColor;
+			stroke-width: var(--stroke-width);
+			stroke-linejoin: round;
+			stroke-linecap: var(--stroke-linecap);
+			stroke-dasharray: var(--l) var(--gap);
+			stroke-dashoffset: 0;
+			transition: stroke-dashoffset var(--d) calc(0.1s * var(--i)) var(--ui-ease-out);
+		}
 
-			&.secondary {
-				color: var(--secondary-color);
-			}
+		.secondary {
+			color: var(--secondary-color);
 		}
 	}
 

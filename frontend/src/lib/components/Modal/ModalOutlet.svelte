@@ -28,7 +28,7 @@
 		overflow-y: scroll;
 		overflow-x: hidden;
 		display: flex;
-		gap: var(--ui-gap-md);
+		gap: var(--ui-gutter-sm);
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;

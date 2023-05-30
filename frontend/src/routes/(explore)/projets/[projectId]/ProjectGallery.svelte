@@ -44,7 +44,7 @@
 
 	ol {
 		columns: 3 250px;
-		column-gap: var(--ui-gap-sm);
+		column-gap: var(--ui-gutter-xs);
 		column-fill: balance;
 		line-height: 0;
 	}
@@ -54,7 +54,7 @@
 		width: 100%;
 		display: inline-block;
 		text-align: center;
-		margin-bottom: var(--ui-gap-sm);
+		margin-bottom: var(--ui-gutter-xs);
 		// break-before: column;
 	}
 

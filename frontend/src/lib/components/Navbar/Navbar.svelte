@@ -98,6 +98,7 @@
 	import Icon, { ICON_BUTTON_BASE } from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
 	import Popover from '$components/Popover.svelte';
+	import { authModal } from '$routes/AuthModal.svelte';
 	import { media } from '$stores/media';
 	import { rootScroll } from '$stores/rootScroll';
 	import { debounce } from '$utils/modifiers';
@@ -106,11 +107,11 @@
 	import { THEMES, type ThemeName } from '$utils/themes';
 	import { onMount } from 'svelte';
 	import type { ValueOf } from 'ts-essentials';
-	import { authModal } from './AuthModal.svelte';
+	import { rootBackground } from '../Root/RootBackground.svelte';
 	import NavbarButton from './NavbarButton.svelte';
+	import NavbarCategory from './NavbarCategory.svelte';
 	import NavbarEditorMenu from './NavbarEditorMenu.svelte';
 	import NavbarUserMenu from './NavbarUserMenu.svelte';
-	import { rootBackground } from './RootBackground.svelte';
 
 	/**
 	 * Key used as data-scroll-lock value for targeted behavior. Important: keep in sync with app.scss
@@ -159,7 +160,7 @@
 				</NavbarButton>
 			{/each}
 		</section>
-		<section class="category" hidden={!$page.data.showCategoryNavbar}>
+		<!-- <section class="category" hidden={!$page.data.showCategoryNavbar}>
 			{#each exploreRoutes as r}
 				<NavbarButton
 					category
@@ -169,7 +170,8 @@
 					{r.title}
 				</NavbarButton>
 			{/each}
-		</section>
+		</section> -->
+		<NavbarCategory />
 		<section class="session">
 			{#if $page.data.session}
 				<Popover place="bottom" align="end" let:opened>
@@ -242,7 +244,7 @@
 			1fr
 			[session-end full-end];
 		// grid-auto-flow: dense;
-		padding: var(--ui-nav-pad) var(--ui-gutter-md);
+		padding: var(--ui-nav-pad) var(--ui-gutter-sm);
 		margin: 0 auto;
 		flex-direction: row;
 		align-items: center;

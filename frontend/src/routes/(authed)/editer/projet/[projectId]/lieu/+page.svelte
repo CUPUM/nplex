@@ -114,7 +114,7 @@
 		width: 100%;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 		flex: 1;
 	}
 

@@ -18,6 +18,10 @@ export function col<C extends keyof Theme>(color: C, shade: keyof Theme[C], alph
 	return `rgb(var(--rgb-${color}-${String(shade)}), ${alpha})`;
 }
 
+export function radius(size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl') {
+	return `var(--ui-radius-${size})`;
+}
+
 /**
  * Translate unitless number or string to pixel value.
  */

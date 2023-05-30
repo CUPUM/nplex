@@ -5,6 +5,7 @@ import type { BuffedDatabase } from '$types/database/buff';
 import type { ViewRow } from '$types/database/utils';
 import type { NonUndefinable } from '$types/utils';
 import type { Category } from '$utils/enums';
+import type { Locale } from '$utils/language/locales';
 import type { ThemeName } from '$utils/themes';
 import type { AuthSession, SupabaseClient } from '@supabase/supabase-js';
 import type { SvelteComponent } from 'svelte';
@@ -78,10 +79,8 @@ declare global {
 			editorBottomNav?: typeof SvelteComponent;
 		}
 		interface Locals {
-			/**
-			 * 1-to-1 correspondance with the app session cookie, used as source to populate locals. Keep
-			 * content to a minimum (essential data only) while adhering to a partial App.PageData shape.
-			 */
+			locale: Locale;
+			db: App.DatabaseClient;
 			session?: DeepPick<
 				NonUndefinable<App.PageData['session']>,
 				{
@@ -94,10 +93,6 @@ declare global {
 					user: { id: true; role: true };
 				}
 			>;
-			/**
-			 * Database client instance confined to lifecycle of individual request event.
-			 */
-			db: App.DatabaseClient;
 		}
 		// interface ActionFailure {
 		// 	messages: Record<MessageType, string[]>;

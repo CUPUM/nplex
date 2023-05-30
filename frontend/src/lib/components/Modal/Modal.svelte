@@ -9,7 +9,7 @@
 <script lang="ts">
 	import { clickoutside } from '$actions/clickoutside';
 	import Portal from '$components/Portal.svelte';
-	import RootScroll from '$routes/RootScroll.svelte';
+	import RootScroll from '$components/Root/RootScroll.svelte';
 	import type { AppCustomEvent } from '$types/utils';
 	import { col } from '$utils/css';
 	import { closest, type ClosestReadable } from '$utils/store';

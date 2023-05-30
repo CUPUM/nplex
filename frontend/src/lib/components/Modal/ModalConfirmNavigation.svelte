@@ -7,7 +7,7 @@
 
 <script lang="ts">
 	import { beforeNavigate, goto } from '$app/navigation';
-	import { resetProgress } from '$routes/ProgressBar.svelte';
+	import { resetProgress } from '$components/Root/RootProgress.svelte';
 	import type { NavigationTarget } from '@sveltejs/kit';
 	import { tick } from 'svelte';
 	import Modal from './Modal.svelte';

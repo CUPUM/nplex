@@ -88,7 +88,7 @@
 		flex-wrap: wrap;
 		align-items: stretch;
 		justify-content: flex-start;
-		gap: var(--ui-gap-md);
+		gap: var(--ui-gutter-sm);
 		font-weight: 500;
 	}
 

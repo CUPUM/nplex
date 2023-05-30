@@ -88,7 +88,7 @@
 	.name {
 		display: flex;
 		flex-direction: column;
-		gap: var(--ui-gap-md);
+		gap: var(--ui-gutter-sm);
 	}
 
 	.name {

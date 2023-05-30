@@ -1,13 +1,11 @@
 <script lang="ts">
 	import Map from '$components/Map/Map.svelte';
 	import MapAttributionControl from '$components/Map/MapAttributionControl.svelte';
-	import MapMarker from '$components/Map/MapMarker.svelte';
-	import MapPopup from '$components/Map/MapPopup.svelte';
-	import { toLngLatLike } from '$utils/format';
 	import light from '$utils/map/styles/light';
 	import type { LngLat, MapEventType } from 'maplibre-gl';
 	import { expoOut } from 'svelte/easing';
 	import type { PageData } from './$types';
+	import ProjectMarker from './ProjectMarker.svelte';
 	import {
 		PROJECTS_FILTERS_W,
 		PROJECTS_LIST_W,
@@ -18,6 +16,7 @@
 	export let projects: PageData['projects'];
 
 	let mapRef: Map;
+	let current: {} | null = null;
 
 	$: mapRef?.map?.easeTo({
 		padding: {
@@ -35,9 +34,8 @@
 		easing: expoOut,
 	});
 
-	function handleClickPopup(e: CustomEvent<MapEventType['click']>) {
-		console.log(e);
-		clickPopup = clickPopup ? null : e.detail.lngLat;
+	function getClickNearest(e: CustomEvent<MapEventType['click']>) {
+		console.log('to do: get project nearest to click', e);
 	}
 
 	let clickPopup: LngLat | null = null;
@@ -46,18 +44,19 @@
 ^
 
 <section id="projects-map">
-	<Map cooperativeGestures={false} mapStyle={light} bind:this={mapRef} on:click={handleClickPopup}>
+	<Map
+		cooperativeGestures={false}
+		mapStyle={light}
+		bind:this={mapRef}
+		on:click={getClickNearest}
+		on:click={() => {
+			current = null;
+		}}
+	>
 		<MapAttributionControl position="bottom-right" />
-		{#each projects as p}
-			{@const lnglat = toLngLatLike(p.location_obfuscated.coordinates)}
-			<MapMarker {lnglat} draggable>
-				<!-- <a class="project-marker" href="/projets/{p.id}" /> -->
-				<MapPopup slot="popup">Test</MapPopup>
-			</MapMarker>
+		{#each projects as project}
+			<ProjectMarker {project} bind:current />
 		{/each}
-		{#if clickPopup}
-			<MapPopup lnglat={clickPopup}>Test</MapPopup>
-		{/if}
 	</Map>
 </section>
 

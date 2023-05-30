@@ -11,8 +11,8 @@
 
 <script lang="ts">
 	import Tip from '$components/Tip.svelte';
-	import { springOut } from '$motion/easing/spring';
 	import { defineContext } from '$utils/context';
+	import { col } from '$utils/css';
 	import {
 		Marker,
 		type LngLat,
@@ -21,7 +21,7 @@
 		type PopupOptions,
 	} from 'maplibre-gl';
 	import { onDestroy, onMount } from 'svelte';
-	import { expoIn } from 'svelte/easing';
+	import { expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import { getMapContext } from './Map.svelte';
 	import { getMapMarkerContext } from './MapMarker.svelte';
@@ -32,38 +32,15 @@
 		PopupOptions['anchor'],
 		'bottom' | 'top' | 'left' | 'right' | 'center'
 	> = 'bottom';
+	export let background: string = col('bg', 100);
 
 	const { getMap } = getMapContext();
 	const { getMapMarker, lnglat: markerLnglat } = getMapMarkerContext() ?? {};
 
-	$: computedLnglat = lnglat ?? $markerLnglat;
-
 	let popupRef: HTMLElement;
 	let popupMarker: Marker;
 
-	// function open(e: Event) {
-	// 	opened = true;
-	// }
-
-	// function close(e: Event) {
-	// 	opened = false;
-	// }
-
-	// function toggle(e: Event) {
-	// 	opened ? close(e) : open(e);
-	// }
-
-	// function handleClickoutside(e: Event) {
-	// 	if (closeOnClickoutside) {
-	// 		close(e);
-	// 	}
-	// }
-
-	// function handleMove(e: Event) {
-	// 	if (closeOnMove) {
-	// 		close(e);
-	// 	}
-	// }
+	$: computedLnglat = lnglat ?? $markerLnglat;
 
 	$: if (popupMarker && computedLnglat) {
 		popupMarker.setLngLat(computedLnglat);
@@ -73,11 +50,9 @@
 		popupMarker = new Marker({ element: popupRef, anchor, offset })
 			.setLngLat(computedLnglat)
 			.addTo(getMap());
-		// getMap()?.on('move', handleMove);
 	});
 
 	onDestroy(() => {
-		// getMap()?.off('move', handleMove);
 		popupMarker.remove();
 	});
 </script>
@@ -85,9 +60,9 @@
 <div class="map-popup-container" bind:this={popupRef}>
 	<div
 		class="map-popup {anchor}"
+		style:--map-popup-background={background}
 		on:clickoutside
-		in:scale={{ start: 0.75, opacity: 1, duration: 100, easing: springOut }}
-		out:scale={{ start: 1, opacity: 0, duration: 100, easing: expoIn }}
+		transition:scale|local={{ duration: 250, start: 0.9, opacity: 0, easing: expoOut }}
 	>
 		<div class="map-popup-content">
 			<slot>Popup content</slot>
@@ -107,16 +82,17 @@
 
 	.map-popup-container {
 		position: absolute;
+		z-index: 999;
 	}
 
 	.map-popup {
-		--map-popup-background: #{col(bg, 900)};
 		display: flex;
 		gap: 0;
 		font-size: 1rem;
 		align-items: center;
 
 		@include map-popup-tip {
+			z-index: 1;
 			position: relative;
 			color: var(--map-popup-background);
 		}
@@ -160,6 +136,6 @@
 	.map-popup-content {
 		border-radius: var(--ui-radius-lg);
 		background: var(--map-popup-background);
-		padding: 2rem;
+		box-shadow: var(--ui-shadow-md);
 	}
 </style>

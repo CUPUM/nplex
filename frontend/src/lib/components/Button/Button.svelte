@@ -58,7 +58,7 @@
 	export let as: As | undefined = undefined;
 	export let variant: 'default' | 'outlined' | 'dashed' | 'cta' | 'ghost' = 'default';
 	export let type: HTMLButtonAttributes['type'] = 'button';
-	export let state: undefined | 'warning' | 'success' | 'error' = undefined;
+	export let state: '' | 'warning' | 'success' | 'error' = '';
 	export let href: Href | undefined = undefined;
 	export let equi: boolean | undefined = undefined;
 	export let compact: boolean | undefined = undefined;
@@ -75,16 +75,13 @@
 	$: if (autoActive && hrefURL) {
 		active = type === 'submit' ? false : $page.url.pathname === hrefURL.pathname;
 	}
+	$: iconAnimationClass = active ? ICON_CLASS.hold : ICON_CLASS.hover;
 </script>
 
 <svelte:element
 	this={element}
 	role="button"
-	class="button {variant} {state} {contentAlign} {active != null
-		? active
-			? ICON_CLASS.hold
-			: ''
-		: ICON_CLASS.hover}"
+	class="button {variant} {state} {contentAlign} {iconAnimationClass}"
 	class:compact
 	class:equi
 	class:rounded
@@ -153,7 +150,7 @@
 		--ui-button-padding-inline: var(--ui-pad-md);
 		// Base style
 		position: relative;
-		display: grid;
+		display: inline-grid;
 		grid-template-columns:
 			[full-start leading-padding-start]
 			var(--ui-button-padding-inline)

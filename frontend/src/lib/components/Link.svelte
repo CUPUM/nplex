@@ -7,86 +7,63 @@
 
 	type $$Props = Omit<HTMLAnchorAttributes, 'class'> & {
 		variant?: typeof variant;
+		status?: typeof status;
 		href: string;
 	};
 </script>
 
-<a
-	class="link"
-	data-variant={variant}
-	data-status={status}
-	{href}
-	{...$$restProps}
-	on:click
-	on:focus
-	on:blur
-	on:mouseover
-	on:mousemove
-	on:mouseleave
->
-	<div class="content reg">
-		<slot />
-	</div>
-	<div class="content fx">
-		<slot />
-	</div>
+<a class="link" data-variant={variant} data-status={status} {href} {...$$restProps}>
+	<slot />
 </a>
 
 <style lang="scss">
+	// .link {
+	// 	@mixin link-base {
+	// 		border-radius: 1em;
+	// 		padding-inline: 0.5em;
+	// 		padding-block: 0.2em 0.4em;
+	// 		box-decoration-break: clone;
+	// 		color: var(--link-color);
+	// 		background-color: var(--link-background);
+	// 		box-shadow: 0 0 0 0em var(--link-background);
+	// 		transition: all 0.2s var(--ui-ease-out);
+	// 		&:hover {
+	// 			color: var(--link-hover-color);
+	// 			background-color: var(--link-hover-background);
+	// 			box-shadow: 0 0 0 0.2em var(--link-hover-background);
+	// 		}
+	// 	}
+	// 	--link-color: #{col(primary, 900)};
+	// 	--link-background: #{col(primary, 100, 0.1)};
+	// 	--link-hover-color: #{col(fg, 900)};
+	// 	--link-hover-background: #{col(primary, 500, 0.2)};
+	// 	@include link-base;
+
+	// 	&-secondary {
+	// 		--link-color: #{col(secondary, 900)};
+	// 		--link-background: #{col(secondary, 500, 0.2)};
+	// 		--link-hover-color: #{col(fg, 900)};
+	// 		--link-hover-background: #{col(secondary, 500, 0.5)};
+	// 		@include link-base;
+	// 	}
+	// }
+
 	.link {
-		position: relative;
-		display: inline-block;
-		font-family: inherit;
-		padding: 0;
-		margin: 0;
-		border-radius: 2em;
-		box-shadow: 0 0 0 0px transparent;
-		overflow: hidden;
-		font-weight: inherit;
-		transition: all 0.2s ease-out;
-
+		border-radius: 1em;
+		padding-inline: 0.35em;
+		padding-block: 0.2em 0.4em;
+		box-decoration-break: clone;
+		color: var(--link-color);
+		background-color: var(--link-background);
+		box-shadow: 0 0 0 0em var(--link-background);
+		transition: all 0.2s var(--ui-ease-out);
 		&:hover {
-			color: col(primary, 700);
-			background: col(primary, 300, 0.2);
-			box-shadow: 0 0 0 3px col(primary, 300, 0.2);
-
-			.reg {
-				opacity: 0;
-				transform: rotate(-15deg);
-			}
-
-			.fx {
-				opacity: 1;
-				transform: rotate(0deg);
-			}
-		}
-
-		&.disabled {
-			pointer-events: none;
-			opacity: 0.5;
-			transform: scale(0.99);
+			color: var(--link-hover-color);
+			background-color: var(--link-hover-background);
+			box-shadow: 0 0 0 0.2em var(--link-hover-background);
 		}
 	}
 
-	.content {
-		padding: 0.4em 1em 0.6em 1em;
-		transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1), opacity 0.5s cubic-bezier(0.2, 0, 0, 1);
-	}
-
-	.reg {
-		opacity: 1;
-		transform: rotate(0deg);
-		transform-origin: -5em center;
-	}
-
-	.fx {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		opacity: 0;
-		transform: rotate(-15deg);
-		transform-origin: calc(100% + 5em) center;
+	[data-variant='default'] {
 	}
 </style>

@@ -158,7 +158,7 @@
 		flex: 1;
 		display: flex;
 		flex-direction: row;
-		gap: var(--ui-gap-md);
+		gap: var(--ui-gutter-sm);
 		align-items: flex-start;
 		justify-content: stretch;
 	}

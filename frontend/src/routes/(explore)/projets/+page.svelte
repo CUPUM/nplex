@@ -1,6 +1,6 @@
 <script lang="ts">
-	import NavbarWidth from '$routes/NavbarWidth.svelte';
-	import RootScroll from '$routes/RootScroll.svelte';
+	import NavbarWidth from '$components/Navbar/NavbarWidth.svelte';
+	import RootScroll from '$components/Root/RootScroll.svelte';
 	import type { Snapshot } from './$types';
 	import ProjectsFilters from './ProjectsFilters.svelte';
 	import ProjectsList from './ProjectsList.svelte';

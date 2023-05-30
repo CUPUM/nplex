@@ -16,7 +16,7 @@
 	import type { NonUndefinable } from '$types/utils';
 	import { defineContext } from '$utils/context';
 	import { Marker, type LngLat, type LngLatLike, type MarkerOptions } from 'maplibre-gl';
-	import { onDestroy, onMount, type ComponentProps } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount, type ComponentProps } from 'svelte';
 	import { expoIn } from 'svelte/easing';
 	import { readonly, writable, type Readable } from 'svelte/store';
 	import { scale } from 'svelte/transition';
@@ -37,7 +37,7 @@
 	let marker: Marker;
 
 	const { getMap } = getMapContext();
-
+	const dispatch = createEventDispatcher();
 	const _lnglat = writable<typeof lnglat>(lnglat);
 	$: _lnglat.set(lnglat);
 
@@ -68,6 +68,10 @@
 				lnglat = e.target.getLngLat();
 			}
 		});
+
+		marker.on('click', (e) => {
+			dispatch('click', e);
+		});
 	});
 
 	function getMapMarker() {
@@ -84,34 +88,41 @@
 	});
 </script>
 
-<figure class="map-marker-container" bind:this={markerRef}>
-	<div
-		class="map-marker"
-		style:font-size={size}
-		style:transform-origin={anchor?.replace('-', ' ')}
-		in:scale={{ start: 0.75, opacity: 1, duration: 150, easing: springOut }}
-		out:scale={{ start: 0.9, opacity: 0, duration: 100, easing: expoIn }}
-	>
-		{#if marker}
-			<slot {marker}>
-				<Icon class="map-marker-icon" name={icon} strokeWidth={1.5} />
-			</slot>
-		{/if}
-	</div>
+<figure class="map-marker" bind:this={markerRef} style:transform-origin={anchor?.replace('-', ' ')}>
+	{#if $$slots.default}
+		<slot />
+	{:else}
+		<div
+			class="map-marker-default"
+			style:font-size={size}
+			in:scale={{ start: 0.75, opacity: 1, duration: 150, easing: springOut }}
+			out:scale={{ start: 0.9, opacity: 0, duration: 100, easing: expoIn }}
+		>
+			<Icon class="map-marker-icon" name={icon} strokeWidth={1.5} />
+		</div>
+	{/if}
 </figure>
 <slot name="popup" {marker} />
 
 <style lang="scss">
-	.map-marker-container {
+	.map-marker {
 		position: absolute;
+		padding: 0;
+		margin: 0;
+		height: auto;
+		display: flex;
+
+		&:hover {
+			z-index: 100;
+		}
+	}
+
+	.map-marker-default {
+		position: relative;
 
 		:global(.map-marker-icon) {
 			padding: 0;
 			margin: -0.1em; // Removing the svg path's margin.
 		}
-	}
-
-	.map-marker {
-		position: relative;
 	}
 </style>

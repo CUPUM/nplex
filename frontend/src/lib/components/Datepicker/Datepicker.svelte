@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import { locale } from '$components/I18n.svelte';
+	import { locale } from '$components/Language/Translation.svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	type V = $$Generic;

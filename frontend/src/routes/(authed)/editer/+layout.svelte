@@ -3,8 +3,8 @@
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
 	import ModalConfirmNavigation from '$components/Modal/ModalConfirmNavigation.svelte';
-	import { NAVBAR_WIDTH, overlapNavbar } from '$routes/Navbar.svelte';
-	import { setRootBackground } from '$routes/RootBackground.svelte';
+	import { NAVBAR_WIDTH, overlapNavbar } from '$components/Navbar/Navbar.svelte';
+	import { setRootBackground } from '$components/Root/RootBackground.svelte';
 	import { col } from '$utils/css';
 	import { THEMES, THEME_PALETTES } from '$utils/themes';
 	import type { ComponentProps } from 'svelte';
@@ -158,7 +158,7 @@
 			display: flex;
 			align-items: stretch;
 			align-self: stretch;
-			margin-bottom: var(--ui-gap-sm);
+			margin-bottom: var(--ui-gutter-xs);
 		}
 
 		#editor-sidebar-layout {
@@ -166,7 +166,7 @@
 			display: flex;
 			flex-direction: row;
 			align-items: flex-start;
-			gap: var(--ui-gap-sm);
+			gap: var(--ui-gutter-xs);
 		}
 
 		#editor-layout-slot {
@@ -174,7 +174,7 @@
 			display: flex;
 			flex-direction: column;
 			align-items: stretch;
-			gap: var(--ui-gap-sm);
+			gap: var(--ui-gutter-xs);
 		}
 
 		:global(.editor-form) {
@@ -182,7 +182,7 @@
 			display: flex;
 			flex-direction: column;
 			align-items: stretch;
-			gap: var(--ui-gap-sm);
+			gap: var(--ui-gutter-xs);
 			min-height: 100vh;
 			min-height: 100svh;
 			scroll-margin-block-start: var(--ui-nav-h);

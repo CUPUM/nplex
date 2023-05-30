@@ -18,6 +18,6 @@
 		position: relative;
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(325px, 1fr));
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 	}
 </style>

@@ -62,14 +62,14 @@
 	.chip-groups-list {
 		display: flex;
 		flex-direction: row;
-		gap: var(--ui-gap-lg);
+		gap: var(--ui-gutter-lg);
 		flex-wrap: wrap;
 	}
 
 	.chip-group {
 		display: flex;
 		flex-direction: column;
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 		align-items: flex-start;
 		flex-grow: 0;
 	}

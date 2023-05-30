@@ -23,7 +23,7 @@
 	ul {
 		display: flex;
 		flex-direction: row;
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 	}
 
 	li {

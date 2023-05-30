@@ -90,7 +90,7 @@
 		font-size: var(--ui-text-sm);
 		display: flex;
 		flex-direction: row;
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 		align-items: center;
 
 		@include tablet {
@@ -111,7 +111,7 @@
 		display: flex;
 		align-items: center;
 		padding-bottom: 0.2em;
-		padding-inline: var(--ui-gap-sm);
+		padding-inline: var(--ui-gutter-xs);
 		min-height: var(--ui-block-lg);
 		flex: 1;
 		border-radius: var(--ui-radius-sm);

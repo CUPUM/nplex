@@ -4,15 +4,15 @@
 	import { page } from '$app/stores';
 	import Logo from '$components/Logo.svelte';
 	import ModalOutlet from '$components/Modal/ModalOutlet.svelte';
+	import Navbar from '$components/Navbar/Navbar.svelte';
+	import ProgressBar from '$components/Root/RootProgress.svelte';
 	import MessagesOutlet, { messages } from '$routes/MessagesOutlet.svelte';
-	import ProgressBar from '$routes/ProgressBar.svelte';
 	import { rootScroll } from '$stores/rootScroll';
 	import '$styles/app.scss';
 	import { browserDb } from '$utils/database/client';
 	import 'overlayscrollbars/overlayscrollbars.css';
+	import Footer from '../lib/components/Footer/Footer.svelte';
 	import AuthModal, { authModal } from './AuthModal.svelte';
-	import Footer from './Footer.svelte';
-	import Navbar from './Navbar.svelte';
 
 	export let data;
 

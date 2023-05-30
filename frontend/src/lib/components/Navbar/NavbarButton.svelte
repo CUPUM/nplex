@@ -132,6 +132,10 @@
 		padding: 0;
 	}
 
+	.rounded {
+		--button-radius: 99px;
+	}
+
 	.fx {
 		display: inherit;
 		align-items: inherit;

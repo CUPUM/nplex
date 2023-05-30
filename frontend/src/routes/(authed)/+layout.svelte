@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RootBackground from '$routes/RootBackground.svelte';
+	import RootBackground from '$components/Root/RootBackground.svelte';
 	import { col } from '$utils/css';
 </script>
 

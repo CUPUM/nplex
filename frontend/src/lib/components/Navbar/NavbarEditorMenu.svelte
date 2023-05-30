@@ -2,8 +2,8 @@
 	import { page } from '$app/stores';
 	import Button from '$components/Button/Button.svelte';
 	import Icon from '$components/Icon.svelte';
+	import { DECRIPTORS_ALLOWED_ROLES, EDITOR_ROUTES } from '$routes/(authed)/editer/constants';
 	import { userHasRole } from '$utils/validation';
-	import { DECRIPTORS_ALLOWED_ROLES, EDITOR_ROUTES } from './(authed)/editer/constants';
 </script>
 
 {#each Object.values(EDITOR_ROUTES) as group, i}

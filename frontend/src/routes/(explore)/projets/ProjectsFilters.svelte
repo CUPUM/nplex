@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { expoIn, expoOut } from 'svelte/easing';
-	import { fly, scale } from 'svelte/transition';
+	import { expoOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 	import ProjectsFilterCostRange from './ProjectsFilterCostRange.svelte';
 	import { projectsFiltersOpened } from './common';
 
@@ -13,7 +13,7 @@
 	<section
 		id="projects-filters"
 		in:fly={{ x: '-2rem', duration: 350, easing: expoOut, opacity: 0 }}
-		out:scale|local={{ start: 0.9, duration: 150, easing: expoIn, opacity: 0 }}
+		out:fly|local={{ x: '-2rem', duration: 250, easing: expoOut, opacity: 0 }}
 	>
 		<form class="inner">
 			<ProjectsFilterCostRange />
@@ -44,6 +44,6 @@
 		height: 100%;
 		align-items: stretch;
 		justify-content: flex-start;
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 	}
 </style>

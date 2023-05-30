@@ -37,7 +37,7 @@
 		grid-template-columns: max-content 1fr;
 		// grid-template-columns: minmax(max-content, 1fr) minmax(auto, var(--ui-width-md)) minmax(0, 1fr);
 		margin: 0 auto;
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 		align-items: flex-start;
 		width: 100%;
 		max-width: var(--ui-width-main);
@@ -61,7 +61,7 @@
 		display: flex;
 		align-items: stretch;
 		flex-direction: column;
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 		width: 100%;
 
 		:global(.account-formgroup) {

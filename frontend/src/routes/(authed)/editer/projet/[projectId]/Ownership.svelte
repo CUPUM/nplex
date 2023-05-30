@@ -42,7 +42,7 @@
 	.fields {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 	}
 
 	.ownership-card {

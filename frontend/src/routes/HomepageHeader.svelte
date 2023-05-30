@@ -10,29 +10,27 @@
 		LOGO_VIEWBOX_HEIGHT,
 		LOGO_VIEWBOX_WIDTH,
 	} from '$components/Logo.svelte';
+	import { overlapNavbar } from '$components/Navbar/Navbar.svelte';
 	import type { AppCustomEvent } from '$types/utils';
 	import { col } from '$utils/css';
 	import { getProjectImageUrl } from '$utils/database/helpers';
-	import { THEMES, THEME_PALETTES } from '$utils/themes';
+	import { THEMES, THEME_PALETTES, type ThemeName } from '$utils/themes';
 	import { expoOut } from 'svelte/easing';
 	import { spring } from 'svelte/motion';
 	import { fade, fly } from 'svelte/transition';
+	import { setRootBackground } from '../lib/components/Root/RootBackground.svelte';
 	import type { PageData } from './$types';
-	import { overlapNavbar } from './Navbar.svelte';
-	import { setRootBackground } from './RootBackground.svelte';
 
 	export let scrollTarget: HTMLElement;
 	export let images: PageData['splashImages'];
 
 	let entered = false;
 
+	const theme: ThemeName = 'dark';
 	const logoChars = ['n', 'p', 'l', 'e', 'x'] as const;
-
 	const logoImgsLoaded = images.map(() => false);
-
 	const cx = LOGO_VIEWBOX_WIDTH / 2;
 	const cy = LOGO_VIEWBOX_HEIGHT / 2;
-
 	const circle = spring({ x: cx, y: cy, r: 0 }, { damping: 0.9, stiffness: 0.1 });
 	const square = spring({ x: cx, y: cy, s: 0, a: 0 }, { damping: 0.9, stiffness: 0.15 });
 
@@ -71,13 +69,13 @@
 </script>
 
 <header
-	use:overlapNavbar={{ theme: THEMES.dark, background: col('bg', '300') }}
-	use:setRootBackground={{ overscroll: THEME_PALETTES.dark.bg[300] }}
+	use:overlapNavbar={{ theme: THEMES[theme], background: col('bg', '300') }}
+	use:setRootBackground={{ overscroll: THEME_PALETTES[theme].bg[300] }}
 	use:intersection
 	on:intersection.enter|once={() => {
 		entered = true;
 	}}
-	data-theme={THEMES.dark}
+	data-theme={THEMES[theme]}
 >
 	<svg
 		id="splash-logo"
@@ -155,7 +153,7 @@
 			{/each}
 		</defs>
 		{#if entered && logoImgsLoaded.every((loaded) => loaded)}
-			<g class="logo-symbol-group logo-symbol-filled">
+			<g class="logo-symbol-group logo-symbol-fill">
 				<g mask="url(#spotlight)">
 					{#each logoChars as char, i (char)}
 						<use
@@ -167,18 +165,12 @@
 					{/each}
 				</g>
 			</g>
-			<g class="logo-symbol-group" mask="url(#spotlight-reverse)">
+			<g class="logo-symbol-group logo-symbol-stroke" mask="url(#spotlight-reverse)">
 				{#each logoChars as char, i (char)}
 					<use
 						in:fly={{ y: 30, delay: 250 + 50 * i }}
 						href={LOGO_SYMBOLS_HREFS[char]}
 						out:fade|local
-						fill="none"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke={col('fg', '100')}
-						stroke-width="1.5"
-						stroke-dasharray="1rem .5rem"
 					/>
 				{/each}
 			</g>
@@ -225,7 +217,7 @@
 		overflow: visible;
 		opacity: max(0, calc(1 - 0.001 * var(--ui-scroll)));
 		.logo-symbol-group {
-			transform: translateY(calc(0.2 * var(--ui-scroll-px)));
+			// transform: translateY(calc(0.2 * var(--ui-scroll-px)));
 		}
 		mask {
 			circle {
@@ -236,8 +228,16 @@
 				transform-origin: 75% 35%;
 			}
 		}
-		.logo-symbol-filled {
-			// filter: drop-shadow(0px 16px 12px rgb(0, 0, 0, 0.25));
+		.logo-symbol-fill {
+			// filter: contrast(0.75);
+		}
+		.logo-symbol-stroke {
+			fill: none;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			stroke: col(fg, 100);
+			stroke-width: 1px;
+			stroke-dasharray: 1rem 0.5rem;
 		}
 	}
 

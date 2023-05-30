@@ -102,6 +102,7 @@
 	import FieldTogglePassword from '$components/Field/FieldTogglePassword.svelte';
 	import Icon from '$components/Icon.svelte';
 	import { LOGO_SYMBOLS_HREFS } from '$components/Logo.svelte';
+	import RootScroll from '$components/Root/RootScroll.svelte';
 	import SocialIcon, { SOCIAL_ICONS } from '$components/SocialIcon.svelte';
 	import { USER_BASE_ROUTE } from '$utils/routes';
 	import { THEMES } from '$utils/themes';
@@ -110,7 +111,6 @@
 	import { fade, fly, scale, slide } from 'svelte/transition';
 	import type { ValueOf } from 'ts-essentials';
 	import { messages } from './MessagesOutlet.svelte';
-	import RootScroll from './RootScroll.svelte';
 
 	const Action = {
 		SignIn: '/api/auth?/signin',

@@ -90,8 +90,8 @@
 	header {
 		position: relative; // Avoids positioning problem with nested tooltip due to offsetParent changing during transition...
 		width: 100%;
-		min-height: calc(100vh - var(--ui-gap-sm) - var(--ui-nav-h));
-		min-height: calc(100svh - var(--ui-gap-sm) - var(--ui-nav-h));
+		min-height: calc(100vh - var(--ui-gutter-xs) - var(--ui-nav-h));
+		min-height: calc(100svh - var(--ui-gutter-xs) - var(--ui-nav-h));
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;

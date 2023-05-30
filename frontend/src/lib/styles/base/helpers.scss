@@ -9,37 +9,6 @@
 	border-radius: var(--radius);
 }
 
-.link {
-	@mixin link-base {
-		border-radius: 1em;
-		padding-inline: 0.5em;
-		padding-block: 0.2em 0.4em;
-		box-decoration-break: clone;
-		color: var(--link-color);
-		background-color: var(--link-background);
-		box-shadow: 0 0 0 0em var(--link-background);
-		transition: all 0.2s var(--ui-ease-out);
-		&:hover {
-			color: var(--link-hover-color);
-			background-color: var(--link-hover-background);
-			box-shadow: 0 0 0 0.2em var(--link-hover-background);
-		}
-	}
-	--link-color: #{col(primary, 900)};
-	--link-background: #{col(primary, 100, 0.1)};
-	--link-hover-color: #{col(fg, 900)};
-	--link-hover-background: #{col(primary, 500, 0.2)};
-	@include link-base;
-
-	&-secondary {
-		--link-color: #{col(secondary, 900)};
-		--link-background: #{col(secondary, 500, 0.2)};
-		--link-hover-color: #{col(fg, 900)};
-		--link-hover-background: #{col(secondary, 500, 0.5)};
-		@include link-base;
-	}
-}
-
 /**
  * Remove scrollbar but keep scrollability of element with overflow auto or overflow scroll.
  */
@@ -47,157 +16,157 @@
 	@include noscrollbar;
 }
 
-/**
- * Animate element when focused
- */
-.focuspress {
-	@include focuspress;
-}
+// /**
+//  * Animate element when focused
+//  */
+// .focuspress {
+// 	@include focuspress;
+// }
 
-.subtle {
-	opacity: 0.5;
-}
+// .subtle {
+// 	opacity: 0.5;
+// }
 
-.text-tabular {
-	font-variant-numeric: tabular-nums;
-}
+// .text-tabular {
+// 	font-variant-numeric: tabular-nums;
+// }
 
 /**
  * .text-{size}
  * .heading-{size}
  */
-@each $level, $sizes in $typography-system {
-	@each $size, $properties in $sizes {
-		.#{$level}-#{$size} {
-			@include typography($level, $size);
-		}
-	}
-}
+// @each $level, $sizes in $typography-system {
+// 	@each $size, $properties in $sizes {
+// 		.#{$level}-#{$size} {
+// 			@include typography($level, $size);
+// 		}
+// 	}
+// }
 
 /*
  * Flex helpers
  */
-.flex {
-	display: flex;
-	&-i {
-		display: inline-flex;
-	}
-	&-r {
-		flex-direction: row;
-	}
-	&-c {
-		flex-direction: column;
-	}
-	&-r-r {
-		flex-direction: row-reverse;
-	}
-	&-c-r {
-		flex-direction: column-reverse;
-	}
-	&-none {
-		flex: none;
-	}
-	&-1 {
-		flex: 1;
-	}
-	&-2 {
-		flex: 2;
-	}
-	&-3 {
-		flex: 3;
-	}
-	&-w {
-		flex-wrap: wrap;
-	}
-	&-n-w {
-		flex-wrap: nowrap;
-	}
-}
+// .flex {
+// 	display: flex;
+// 	&-i {
+// 		display: inline-flex;
+// 	}
+// 	&-r {
+// 		flex-direction: row;
+// 	}
+// 	&-c {
+// 		flex-direction: column;
+// 	}
+// 	&-r-r {
+// 		flex-direction: row-reverse;
+// 	}
+// 	&-c-r {
+// 		flex-direction: column-reverse;
+// 	}
+// 	&-none {
+// 		flex: none;
+// 	}
+// 	&-1 {
+// 		flex: 1;
+// 	}
+// 	&-2 {
+// 		flex: 2;
+// 	}
+// 	&-3 {
+// 		flex: 3;
+// 	}
+// 	&-w {
+// 		flex-wrap: wrap;
+// 	}
+// 	&-n-w {
+// 		flex-wrap: nowrap;
+// 	}
+// }
 
-.align {
-	&-s {
-		&-fs {
-			align-self: flex-start;
-		}
-		&-fe {
-			align-self: flex-end;
-		}
-		&-s {
-			align-self: stretch;
-		}
-		&-c {
-			align-self: center;
-		}
-	}
-	&-i {
-		&-fs {
-			align-items: flex-start;
-		}
-		&-fe {
-			align-items: flex-end;
-		}
-		&-s {
-			align-items: stretch;
-		}
-		&-c {
-			align-items: center;
-		}
-	}
-}
+// .align {
+// 	&-s {
+// 		&-fs {
+// 			align-self: flex-start;
+// 		}
+// 		&-fe {
+// 			align-self: flex-end;
+// 		}
+// 		&-s {
+// 			align-self: stretch;
+// 		}
+// 		&-c {
+// 			align-self: center;
+// 		}
+// 	}
+// 	&-i {
+// 		&-fs {
+// 			align-items: flex-start;
+// 		}
+// 		&-fe {
+// 			align-items: flex-end;
+// 		}
+// 		&-s {
+// 			align-items: stretch;
+// 		}
+// 		&-c {
+// 			align-items: center;
+// 		}
+// 	}
+// }
 
-.justify {
-	&-f-s {
-		justify-content: flex-start;
-	}
-	&-f-e {
-		justify-content: flex-end;
-	}
-	&-s {
-		justify-content: stretch;
-	}
-	&-c {
-		justify-content: center;
-	}
-	&-s-b {
-		justify-content: space-between;
-	}
-	&-s-a {
-		justify-content: space-around;
-	}
-	&-s-e {
-		justify-content: space-evenly;
-	}
-}
+// .justify {
+// 	&-f-s {
+// 		justify-content: flex-start;
+// 	}
+// 	&-f-e {
+// 		justify-content: flex-end;
+// 	}
+// 	&-s {
+// 		justify-content: stretch;
+// 	}
+// 	&-c {
+// 		justify-content: center;
+// 	}
+// 	&-s-b {
+// 		justify-content: space-between;
+// 	}
+// 	&-s-a {
+// 		justify-content: space-around;
+// 	}
+// 	&-s-e {
+// 		justify-content: space-evenly;
+// 	}
+// }
 
 /*
  * Position helpers
  */
-.position {
-	&-r {
-		position: relative;
-	}
+// .position {
+// 	&-r {
+// 		position: relative;
+// 	}
 
-	&-a {
-		position: absolute;
-	}
-}
+// 	&-a {
+// 		position: absolute;
+// 	}
+// }
 
 /**
  * Gap helpers
  */
-@each $size in (sm, md, lg) {
-	.gap {
-		&-#{$size} {
-			gap: var(--ui-gap-#{$size});
-		}
-		&-r-#{$size} {
-			row-gap: var(--ui-gap-#{$size});
-		}
-		&-c-#{$size} {
-			column-gap: var(--ui-gap-#{$size});
-		}
-	}
-}
+// @each $size in (sm, md, lg) {
+// 	.gap {
+// 		&-#{$size} {
+// 			gap: var(--ui-gap-#{$size});
+// 		}
+// 		&-r-#{$size} {
+// 			row-gap: var(--ui-gap-#{$size});
+// 		}
+// 		&-c-#{$size} {
+// 			column-gap: var(--ui-gap-#{$size});
+// 		}
+// 	}
+// }
 
 // /**
 //  * Padding helpers
@@ -311,75 +280,75 @@
  * Loading skeleton.
  * Give a placeholder / suspense element a pulsing gradient animation.
  */
-.skeleton {
-	@mixin skeleton-base {
-		--ui-skeleton-color: #{col(fg, 500, 0.05)};
-		background: linear-gradient(
-			-90deg,
-			var(--ui-skeleton-color) 0%,
-			transparent 50%,
-			var(--ui-skeleton-color) 100%
-		);
-		background-size: 400% 100%;
-		animation: skeleton-pulse 1.3s ease-in-out infinite;
-	}
+// .skeleton {
+// 	@mixin skeleton-base {
+// 		--ui-skeleton-color: #{col(fg, 500, 0.05)};
+// 		background: linear-gradient(
+// 			-90deg,
+// 			var(--ui-skeleton-color) 0%,
+// 			transparent 50%,
+// 			var(--ui-skeleton-color) 100%
+// 		);
+// 		background-size: 400% 100%;
+// 		animation: skeleton-pulse 1.3s ease-in-out infinite;
+// 	}
 
-	@include skeleton-base;
+// 	@include skeleton-base;
 
-	&-text {
-		@include skeleton-base;
-		height: 1em;
-		border-radius: var(--ui-radius-sm);
-	}
+// 	&-text {
+// 		@include skeleton-base;
+// 		height: 1em;
+// 		border-radius: var(--ui-radius-sm);
+// 	}
 
-	&-fill {
-		@include skeleton-base;
-		z-index: 1;
-		width: 100%;
-		height: 100%;
-		border-radius: inherit;
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
-}
+// 	&-fill {
+// 		@include skeleton-base;
+// 		z-index: 1;
+// 		width: 100%;
+// 		height: 100%;
+// 		border-radius: inherit;
+// 		position: absolute;
+// 		top: 0;
+// 		left: 0;
+// 	}
+// }
 
 /**
  * Animate outline around element when focused
  */
-.focus-outline-within,
-.focus-outline-visible {
-	@mixin focuseoutline {
-		&::after {
-			pointer-events: none;
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			border-radius: inherit;
-			outline-offset: 0px;
-			outline-color: var(--ui-outline-color);
-			transition: all 0.15s;
-		}
-		&:focus-within,
-		&:focus-visible {
-			&::after {
-				outline: var(--ui-outline-active);
-				outline-color: var(--ui-outline-color);
-			}
-		}
-	}
+// .focus-outline-within,
+// .focus-outline-visible {
+// 	@mixin focuseoutline {
+// 		&::after {
+// 			pointer-events: none;
+// 			content: '';
+// 			position: absolute;
+// 			top: 0;
+// 			left: 0;
+// 			width: 100%;
+// 			height: 100%;
+// 			border-radius: inherit;
+// 			outline-offset: 0px;
+// 			outline-color: var(--ui-outline-color);
+// 			transition: all 0.15s;
+// 		}
+// 		&:focus-within,
+// 		&:focus-visible {
+// 			&::after {
+// 				outline: var(--ui-outline-active);
+// 				outline-color: var(--ui-outline-color);
+// 			}
+// 		}
+// 	}
 
-	// Excluding outlined variants
-	&:not(.outlined):not(.dashed) {
-		@include focuseoutline;
+// 	// Excluding outlined variants
+// 	&:not(.outlined):not(.dashed) {
+// 		@include focuseoutline;
 
-		&:has(&) {
-			&::after {
-				outline: none;
-			}
-		}
-	}
-}
+// 		&:has(&) {
+// 			&::after {
+// 				outline: none;
+// 			}
+// 		}
+// 	}
+// }

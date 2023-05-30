@@ -118,7 +118,7 @@
 		flex-direction: column;
 		width: var(--ui-width-md);
 		max-width: 100%;
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 	}
 
 	h4 {

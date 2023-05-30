@@ -52,7 +52,7 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(325px, 1fr));
 		flex-direction: row;
-		gap: var(--ui-gap-md);
+		gap: var(--ui-gutter-sm);
 		padding-inline: 1.5rem;
 		padding-block: 2rem;
 

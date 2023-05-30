@@ -4,7 +4,6 @@
 	import FieldButtonReset from '$components/Field/FieldButtonReset.svelte';
 	import FieldIcon from '$components/Field/FieldIcon.svelte';
 	import Icon from '$components/Icon.svelte';
-	import { col } from '$utils/css';
 	import { projectsFiltersOpened, projectsListOpened, projectsTs } from './common';
 
 	function toggleFiltersPane() {
@@ -19,14 +18,9 @@
 <section id="projects-toolbar">
 	<form>
 		<Field
+			type="search"
 			placeholder="Chercher des projets"
-			variant="default"
-			rounded
-			--field-background={col('bg', 300, 0)}
-			--field-hover-background={col('bg', '000')}
-			--field-active-background={col('bg', '000')}
-			--field-backdrop-filter="blur(16px)"
-			--field-shadow="var(--ui-shadow-sm)"
+			variant="explore"
 			data-sveltekit-keepfocus={true}
 			bind:value={$projectsTs.input}
 		>
@@ -44,9 +38,6 @@
 					/>
 					Filtres
 				</Button>
-				<!-- <FieldTokens bind:data={tokens} let:datum>
-					<Token>{datum.title}</Token>
-				</FieldTokens> -->
 			</svelte:fragment>
 			<svelte:fragment slot="prefix">
 				<FieldIcon name="search" strokeWidth={2.5} />
@@ -59,27 +50,19 @@
 			</svelte:fragment>
 		</Field>
 	</form>
-	<!-- <menu>
-		<Button equi on:click={toggleListPane}>
-			<Icon name="map" />
-		</Button>
-	</menu> -->
 </section>
 
 <style lang="scss">
 	#projects-toolbar {
-		// position: absolute;
-		// bottom: 0;
-		// width: 100%;
 		z-index: 1;
-		// font-size: var(--ui-text-sm);
+		font-size: var(--ui-text-sm);
 		align-self: stretch;
 		padding-inline: var(--ui-gutter-sm);
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		gap: var(--ui-gap-md);
-		margin-bottom: var(--ui-gap-sm);
+		gap: var(--ui-gutter-sm);
+		margin-bottom: var(--ui-gutter-xs);
 		pointer-events: none;
 
 		> :global(*) {

@@ -58,16 +58,12 @@
 	--ui-text-2xl: 2.5rem;
 	--ui-text-3xl: 3.5rem;
 	--ui-text-4xl: 5rem;
-	--ui-text-5xl: 7rem;
+	--ui-text-5xl: 8rem;
 	// View-level widths
 	--ui-width-main: 1400px;
 	--ui-width-sm: 600px;
 	--ui-width-md: 900px;
 	--ui-width-lg: 1200px;
-	// View-level padding or margin (generally outer bounds). Independent of element font size as opposed to --ui-pad.
-	--ui-gutter-sm: 1.5rem;
-	--ui-gutter-md: 3rem;
-	--ui-gutter-lg: 5rem;
 	// Block-level unit size, generally for single line elements such as buttons, fields, etc.
 	--ui-block-sm: 2em;
 	--ui-block-md: 2.75em;
@@ -77,10 +73,11 @@
 	--ui-pad-sm: 0.9em;
 	--ui-pad-md: 1.35em;
 	--ui-pad-lg: 2.25em;
-	// Inter-element gap in grids or lists.
-	--ui-gap-sm: 0.75rem;
-	--ui-gap-md: 1.5rem;
-	--ui-gap-lg: 3rem;
+	// Inter-element gap in grids or lists and outer view gutter.
+	--ui-gutter-xs: 0.75rem;
+	--ui-gutter-sm: 1rem;
+	--ui-gutter-md: 1.5rem;
+	--ui-gutter-lg: 2.5rem;
 
 	@include tablet {
 		--ui-nav-h: 88px; // Retrieved manually

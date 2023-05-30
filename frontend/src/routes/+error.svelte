@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import RootTheme from './RootTheme.svelte';
+	import RootTheme from '$components/Root/RootTheme.svelte';
 </script>
 
 <RootTheme theme="dark" />

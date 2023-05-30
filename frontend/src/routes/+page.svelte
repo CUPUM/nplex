@@ -1,7 +1,6 @@
 <script lang="ts">
 	import HomepageHeader from './HomepageHeader.svelte';
 	import HomepageIntroduction from './HomepageIntroduction.svelte';
-	import HomepageParticipate from './HomepageParticipate.svelte';
 	import HomepageProjects from './HomepageProjects.svelte';
 	import OrganisationsPreviews from './PreviewOrganisations.svelte';
 
@@ -14,7 +13,6 @@
 <HomepageIntroduction />
 <HomepageProjects bind:scrollTarget projects={data.projects} />
 <OrganisationsPreviews organisations={data.organisations} />
-<HomepageParticipate />
 
 <!-- <ActorsPreviews actors={data.actors} /> -->
 

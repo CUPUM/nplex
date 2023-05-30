@@ -74,7 +74,7 @@
 			prefix?: string | null;
 			suffix?: string | null;
 			type?: InputType;
-			variant?: 'default' | 'cta' | 'outlined' | 'dashed' | 'ghost';
+			variant?: 'default' | 'outlined' | 'dashed' | 'explore';
 			state?: undefined | 'error' | 'success' | 'warning';
 			textAlign?: 'start' | 'end' | 'left' | 'right' | 'center' | 'justify' | 'match-parent';
 			compact?: boolean;
@@ -255,8 +255,7 @@
 		<input
 			in:fly|local={{ y: 6, delay: 250, easing: cubicOut }}
 			bind:this={inputRef}
-			data-field-input
-			class="input"
+			class="field-input"
 			style:text-align={textAlign}
 			{autocomplete}
 			{type}
@@ -440,7 +439,7 @@
 		grid-column: suffix;
 	}
 
-	.field :global(*[data-field-input]) {
+	.field :global(.field-input) {
 		cursor: inherit;
 		font-family: inherit;
 		font-weight: inherit;
@@ -464,10 +463,10 @@
 		&:-webkit-autofill:focus,
 		&:-webkit-autofill:active {
 			transition: background-color 0s 50000s;
-		}
 
-		&[type='number'] {
-			font-variant-numeric: tabular-nums;
+			&[type='number'] {
+				font-variant-numeric: tabular-nums;
+			}
 		}
 	}
 
@@ -555,7 +554,7 @@
 			}
 			&.haslabel {
 				.affix,
-				:global(*[data-field-input]) {
+				:global(.field-input) {
 					top: 0.6em;
 				}
 			}
@@ -577,8 +576,7 @@
 
 	@mixin outlined-base {
 		.outline {
-			// border-color: col(fg, 000);
-			opacity: 0.25;
+			// opacity: 0.25;
 		}
 		&.hasplaceholder,
 		&.hasvalue,
@@ -589,7 +587,6 @@
 				top: 0em;
 				padding-block: 0;
 				font-size: max(var(--ui-text-xs), 0.65em);
-				// font-size: clamp(12px, 0.5em, 24px);
 			}
 			.affix {
 				opacity: 0.35;
@@ -606,11 +603,6 @@
 		:global(.hover-source:hover) &:global(.hover-target),
 		&:hover:not(.readonly),
 		&:focus-within:not(.readonly) {
-			color: col(fg, 500);
-			background: transparent;
-			.outline {
-				opacity: 0.75;
-			}
 			label,
 			::placeholder {
 				opacity: 0.5;
@@ -618,14 +610,8 @@
 		}
 		&:focus-within {
 			outline: none;
-			color: col(fg, 700);
-			.outline {
-				opacity: 1;
-				border-color: col(primary, 500);
-			}
 			label {
 				opacity: 1 !important;
-				color: col(primary, 500);
 			}
 		}
 	}
@@ -633,15 +619,13 @@
 	.outlined,
 	.dashed {
 		--field-variant-color: #{col(fg, 100)};
-		--field-variant-background: #{col(fg, 500, 0.05)};
+		--field-variant-background: transparent;
 		--field-variant-border: var(--ui-border-size) solid #{col(fg, 000)};
 		--field-variant-shadow: none;
 		--field-variant-hover-color: #{col(fg, 700)};
 		// --field-variant-hover-background: #{col(fg,000)};
 		--field-variant-focus-color: #{col(fg, 900)};
 		--field-variant-focus-background: #{col(fg, 500, 0.1)};
-		color: col(fg, 100);
-		background: transparent;
 		// transition: color 0.1s ease-out, background 0.1s ease-out;
 		@include outlined-base;
 	}
@@ -652,46 +636,16 @@
 		}
 	}
 
-	.cta {
-		color: col(bg, 300);
-		background: col(primary, 500);
-		box-shadow: 0 0.2em 1em -0.5em col(primary, 500, 0);
-		transition: color 0.1s ease-out, background 0.1s ease-out, box-shadow 0.25s ease-in-out;
-		.outline {
-			display: none;
-		}
-		&.hasplaceholder,
-		&.hasvalue,
-		&:focus-within,
-		&:has(:-webkit-autofill) {
-			label {
-				opacity: 0.5;
-				top: 1.5em;
-				font-size: clamp(var(--ui-text-xs), 0.5em, 24px);
-			}
-			.affix {
-				opacity: 0.5;
-			}
-			&.haslabel {
-				.affix,
-				:global(*[data-field-input]) {
-					top: 0.45em;
-				}
-			}
-		}
-		:global(.hover-source:hover) &:global(.hover-target),
-		&:hover,
-		&:focus-within {
-			box-shadow: 0 0.8em 1.5em -1em col(primary, 900, 0.5);
-			color: col(bg, 100);
-			background: col(primary, 700);
-			label {
-				opacity: 0.5;
-			}
-		}
-		&:focus-within {
-			box-shadow: 0 0.5em 1em -0.5em col(primary, 900, 0.5);
-			color: col(bg, 100);
-		}
+	.explore {
+		--field-inset: 3px;
+		--field-variant-color: #{col(fg, 100)};
+		--field-variant-background: #{col(bg, 100)};
+		// --field-variant-border: var(--ui-border-size) solid #{col(fg, 100, 0.1)};
+		--field-variant-hover-color: #{col(fg, 700)};
+		--field-variant-hover-background: #{col(bg, 300)};
+		--field-variant-focus-color: #{col(fg, 900)};
+		--field-variant-focus-background: #{col(bg, 100)};
+		// --field-variant-focus-border: var(--ui-border-size) solid #{col(fg, 100, 1)};
+		// @include outlined-base;
 	}
 </style>

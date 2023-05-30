@@ -71,10 +71,10 @@
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 
 		@include tablet {
-			padding-inline: var(--ui-gap-sm);
+			padding-inline: var(--ui-gutter-xs);
 		}
 
 		:global(.project-section) {

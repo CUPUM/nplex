@@ -49,8 +49,8 @@
 		background-color: col(fg, 100, 0.05);
 		border-radius: var(--ui-radius-xl);
 		position: relative;
-		height: calc(100vh - 2 * var(--ui-gap-sm) - var(--ui-nav-h));
-		height: calc(100svh - 2 * var(--ui-gap-sm) - var(--ui-nav-h));
+		height: calc(100vh - 2 * var(--ui-gutter-xs) - var(--ui-nav-h));
+		height: calc(100svh - 2 * var(--ui-gutter-xs) - var(--ui-nav-h));
 	}
 
 	legend {

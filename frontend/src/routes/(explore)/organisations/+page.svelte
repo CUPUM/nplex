@@ -40,7 +40,7 @@
 		display: flex;
 		flex-direction: row;
 		padding: var(--ui-gutter-md);
-		gap: var(--ui-gap-lg);
+		gap: var(--ui-gutter-lg);
 		align-items: flex-start;
 		align-self: center;
 		width: 100%;
@@ -59,7 +59,7 @@
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		gap: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
 	}
 	li {
 		position: relative;

@@ -2,15 +2,6 @@ import type { DbEnum } from '$types/database/utils';
 import type { ValueOf } from 'ts-essentials';
 
 /**
- * Intl (i18n) locale strings.
- */
-export const LOCALES = {
-	Fr: 'fr-CA',
-	En: 'en-CA',
-} as const;
-export type Locale = ValueOf<typeof LOCALES>;
-
-/**
  * Component / stylistic variants.
  */
 export const VARIANTS = {

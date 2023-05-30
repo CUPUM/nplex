@@ -23,14 +23,14 @@
 <style lang="scss">
 	header {
 		position: relative;
-		min-height: calc(75vh - var(--ui-gap-sm) - var(--ui-nav-h));
-		min-height: calc(75svh - var(--ui-gap-sm) - var(--ui-nav-h));
+		min-height: calc(75vh - var(--ui-gutter-xs) - var(--ui-nav-h));
+		min-height: calc(75svh - var(--ui-gutter-xs) - var(--ui-nav-h));
 		display: flex;
 		gap: 3rem;
 		flex-direction: column;
 		justify-content: center;
 		padding: var(--ui-gutter-md);
-		margin-bottom: var(--ui-gap-sm);
+		margin-bottom: var(--ui-gutter-xs);
 		border: var(--ui-border-size) solid col(primary, 300);
 		// border-block-color: transparent;
 		border-radius: var(--ui-radius-xl);

@@ -192,8 +192,8 @@
 	.fields {
 		display: flex;
 		flex-direction: column;
-		gap: var(--ui-gap-sm);
-		padding-top: var(--ui-gap-sm);
+		gap: var(--ui-gutter-xs);
+		padding-top: var(--ui-gutter-xs);
 		font-size: var(--ui-text-sm);
 	}
 </style>

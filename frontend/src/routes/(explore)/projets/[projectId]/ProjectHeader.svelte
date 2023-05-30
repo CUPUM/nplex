@@ -51,7 +51,7 @@
 	#mask {
 		display: grid;
 		grid-template-columns: repeat(6, 1fr);
-		gap: var(--ui-gap-md);
+		gap: var(--ui-gutter-sm);
 	}
 
 	.shape {
