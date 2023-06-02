@@ -1,12 +1,7 @@
-.DS_Store
-.env
-node_modules
 /build
 /.vercel
 /.svelte-kit
 /package
-.pnpm-store
-.pnpm-debug.log
 
 # Generated assets
 /src/lib/styles/vars/themes.css

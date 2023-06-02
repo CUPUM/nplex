@@ -5,9 +5,11 @@ import { THEME_PALETTES } from './src/lib/utils/themes';
 import icons from './src/plugins/icons';
 import themes from './src/plugins/themes';
 
+const port = process.env.PORT ? +process.env.PORT : 3000;
+
 const config: UserConfig = {
 	server: {
-		port: process.env.PORT ? +process.env.PORT : 3000,
+		port,
 	},
 	plugins: [icons(), themes(THEME_PALETTES), sveltekit()],
 	ssr: {

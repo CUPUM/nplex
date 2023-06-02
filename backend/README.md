@@ -2,7 +2,7 @@
 
 ## Getting started
 
-Nplex scaffolds its data management on Supabase. We advise developping locally instead of directly against the live cloud instance to minimize risks of breaking the production database. This workflow is greatly simplified by [Supabase's CLI](https://supabase.com/docs/reference/cli).
+Nplex scaffolds its data management and backend functions on Supabase. We advise developping locally instead of directly against the live cloud instance to minimize risks of breaking the production database. This workflow is greatly simplified by [Supabase's CLI](https://supabase.com/docs/reference/cli).
 
 ### Running Supabase locally
 

@@ -1,11 +1,8 @@
 .DS_Store
-.env
-.env.local
-.env.production
-node_modules
 .pnpm-store
 .pnpm-debug.log
+node_modules
+.env
+.env.*
+!.env.template
 
-# Supabase
-**/supabase/.branches
-**/supabase/.temp

@@ -8,7 +8,7 @@ import prettier from 'prettier';
 import { svgPathProperties } from 'svg-path-properties';
 import { parse as parseSvg, type INode } from 'svgson';
 import type { Plugin } from 'vite';
-import { PRETTIER_CONFIG } from '../common';
+import { prettierConfig } from '../common';
 
 const OUTPUT_FILE = resolve('src', 'lib', 'utils', 'icons.ts');
 const SOURCE_DIR = resolve(__dirname, 'assets');
@@ -79,7 +79,7 @@ export default function plugin(): Plugin {
 
 			const formatted = prettier.format(statements.join('\n\n'), {
 				parser: 'typescript',
-				...PRETTIER_CONFIG,
+				...prettierConfig,
 			});
 
 			writeFile(OUTPUT_FILE, formatted, (error) => {

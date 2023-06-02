@@ -11,18 +11,17 @@ The app's frontend is deployed on Vercel and is available at [nplex.design](www.
 
 ## Stack
 
-The project's stack is scaffolded on:
-
-- __[Frontend](/frontend)__
-  - [SvelteKit](https://kit.svelte.dev/) as the SSR-capable frontend framework.
-- __[Backend](/backend)__
-  - [Supabase](https://supabase.io/) for the PostgreSQL database, PostgREST API, authentication services, and more.
+- `frontend`: [SvelteKit](https://kit.svelte.dev/)
+- `backend`: [Supabase](https://supabase.com/)
 
 ## Getting started
 
 ### Using the prescribed package manager
 
-The mono-repo is scaffolded on `pnpm`'s workspace feature. Make sure to work using `pnpm` rather than `npm`. This is to allow dependency optimizations and globally cached packages on your machine.
+The project's monorepo expects you to use `pnpm` as the package manager to enable proper use of its
+workspace features. Using `npm` is not indicated. This allows dependency optimizations with shared
+and cached packages on developement or production devices. If you do not have `pnpm` installed,
+please refer to: https://pnpm.io/installation or simply proceed with:
 
 ```sh
 npm install -g pnpm
@@ -30,15 +29,35 @@ npm install -g pnpm
 
 ### Completing your local setup
 
-Before building or starting any service, make sure to define the required environment variables in a `.env` file at the root of the repo by using [`.env.template`](.env.template) as a guideline.
-The `.env` file is not included in commits, and never should be, as it can contain sensitive information for service authentications.
+Before building or starting any service, make sure to define the required environment variables in a
+`.env` file at the root of the repo. A reference [`.env.template`](.env.template) is provided to
+help identify required variables. Any populated `.env` files are not included in commits, and never
+should be, as they contain sensitive information for service authentications.
 
-### Running scripts
+### Install
 
-For the time being, the only global (workspace level) scripts defined are to install the app(s).
 You can install everything at once:
 
 ```sh
 pnpm install
 ```
 
+### Scripts
+
+#### Package-level scripts
+
+Utility scripts are provided to facilitate running package-specific scripts. To run `frontend`
+scripts:
+
+```sh
+pnpm frontend ...
+
+# For example, to dun the frontend dev server:
+pnpm frontend dev
+```
+
+The same applies for `backend` scripts.
+
+#### Root scripts
+
+##### Generating types

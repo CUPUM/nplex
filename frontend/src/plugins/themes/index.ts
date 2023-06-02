@@ -4,7 +4,7 @@ import { resolve } from 'path';
 import prettier from 'prettier';
 import type { Plugin } from 'vite';
 import { flatten } from '../../lib/utils/object';
-import { PRETTIER_CONFIG } from '../common';
+import { prettierConfig } from '../common';
 import type { Theme } from './utils';
 
 const OUTPUT_STYLES = resolve('src', 'lib', 'styles', 'vars', 'themes.css');
@@ -52,7 +52,7 @@ export default function plugin(themes: Record<string, Theme>): Plugin {
 
 			const formatted = prettier.format(statements.join('\n\n'), {
 				parser: 'css',
-				...PRETTIER_CONFIG,
+				...prettierConfig,
 			});
 
 			writeFile(OUTPUT_STYLES, formatted, (error) => {

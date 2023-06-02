@@ -1,17 +1,50 @@
 {
-  "name": "nplex",
-  "version": "1.0.0",
-  "description": "Nplex monorepo",
-  "scripts": {
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CUPUM/nplex.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/CUPUM/nplex/issues"
-  },
-  "homepage": "https://github.com/CUPUM/nplex#readme"
+	"name": "nplex",
+	"version": "1.0.0",
+	"license": "ISC",
+	"homepage": "www.nplex.design",
+	"description": "Monorepo for the Nplex project app.",
+	"author": {
+		"name": "Emmanuel Beaudry Marchand",
+		"email": "emmanuel.beaudry.marchand@umontreal.ca"
+	},
+	"contributors": [
+		{
+			"name": "UNESCO Chair in Urban Landscape",
+			"url": "https://github.com/CUPUM"
+		},
+		{
+			"name": "City of Montreal",
+			"url": "https://montreal.ca/"
+		},
+		{
+			"name": "Design Montreal",
+			"url": "https://designmontreal.com/"
+		},
+		{
+			"name": "Inven_T",
+			"url": "https://inven-t.umontreal.ca/"
+		},
+		{
+			"name": "University of Montreal",
+			"url": "https://www.umontreal.ca/"
+		}
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CUPUM/nplex.git"
+	},
+	"bugs": {
+		"url": "https://github.com/CUPUM/nplex/issues"
+	},
+	"engines": {
+		"pnpm": "^8.6.0"
+	},
+	"packageManager": "pnpm@8.6.0",
+	"scripts": {
+		"frontend": "pnpm --filter frontend",
+		"frontend2": "pnpm --filter frontend-2",
+		"backend": "pnpm --filter backend",
+		"gentypes": "pnpm ..."
+	}
 }

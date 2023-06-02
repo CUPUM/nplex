@@ -1,11 +1,11 @@
-import adapter from '@sveltejs/adapter-vercel';
+import vercel from '@sveltejs/adapter-vercel';
 import autoprefixer from 'autoprefixer';
 import sveltePreprocess from 'svelte-preprocess';
 
 /**
  * @type {import('@sveltejs/kit').Config}
  */
-const config = {
+export default {
 	extensions: ['.svelte'],
 	preprocess: [
 		sveltePreprocess({
@@ -18,10 +18,9 @@ const config = {
 				plugins: [autoprefixer()],
 			},
 		}),
-		// vitePreprocess(),
 	],
 	kit: {
-		adapter: adapter(),
+		adapter: vercel(),
 		env: {
 			publicPrefix: 'PUBLIC',
 			dir: '..',
@@ -45,13 +44,10 @@ const config = {
 			},
 		},
 		output: {
-			preloadStrategy: 'modulepreload', // 'preload-mjs', // Soon to be not relevant: https://kit.svelte.dev/docs/configuration
+			preloadStrategy: 'modulepreload',
 		},
 	},
 	compilerOptions: {
-		// Only applies to prod.
-		cssHash: ({ hash, css /* name, filename */ }) => `nplex-${hash(css)}`,
+		cssHash: (styles) => `nplex-${styles.hash(styles.css)}`, // Only applies to prod.
 	},
 };
-
-export default config;
