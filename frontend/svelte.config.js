@@ -1,24 +1,12 @@
 import vercel from '@sveltejs/adapter-vercel';
-import autoprefixer from 'autoprefixer';
-import sveltePreprocess from 'svelte-preprocess';
+import { vitePreprocess } from '@sveltejs/kit/vite';
 
 /**
  * @type {import('@sveltejs/kit').Config}
  */
 export default {
 	extensions: ['.svelte'],
-	preprocess: [
-		sveltePreprocess({
-			typescript: true,
-			scss: {
-				includePaths: ['src/lib/styles'],
-				prependData: "@use 'utils' as *;",
-			},
-			postcss: {
-				plugins: [autoprefixer()],
-			},
-		}),
-	],
+	preprocess: [vitePreprocess()],
 	kit: {
 		adapter: vercel(),
 		env: {

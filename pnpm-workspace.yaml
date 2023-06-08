@@ -2,9 +2,10 @@ packages:
   # SvelteKit app
   - 'frontend/**'
   # SvelteKit app v2 (svelte 4)
-  - 'frontend-2/**'
-  # Supabase db and functions
-  - 'database/**'
+  - 'frontend2/**'
+  # Utility packages
+  - 'icons/**'
+  - 'theme/**'
   # Mixed general purpose contents for github, docs, or public references
   - 'misc/**'
   # Markdown-based documentation

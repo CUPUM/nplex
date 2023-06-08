@@ -15,6 +15,5 @@
 		"editor.defaultFormatter": "svelte.svelte-vscode"
 	},
 	"svelte.enable-ts-plugin": true,
-	"svelte.plugin.css.globals": "frontend/src/lib/styles/vars.scss",
 	"typescript.tsdk": "node_modules/typescript/lib"
 }

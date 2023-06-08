@@ -231,7 +231,7 @@
 		flex-wrap: nowrap;
 		overflow: visible;
 		perspective: 500px;
-		outline: 1px solid red;
+		// outline: 1px solid red;
 	}
 
 	.top,

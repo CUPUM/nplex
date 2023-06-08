@@ -42,8 +42,7 @@
 	},
 	"packageManager": "pnpm@8.6.0",
 	"scripts": {
-		"frontend": "pnpm --filter frontend",
-		"frontend2": "pnpm --filter frontend-2",
+		"frontend": "pnpm --filter @nplex/frontend",
 		"backend": "pnpm --filter backend",
 		"gentypes": "pnpm ..."
 	}

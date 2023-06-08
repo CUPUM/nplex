@@ -1,0 +1,10 @@
+@import 'theme';
+
+:root {
+	font-size: 100%;
+	font-family: var(--font-main);
+}
+
+body {
+	font-size: var(--size-md);
+}

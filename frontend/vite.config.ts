@@ -1,5 +1,5 @@
-// @ts-ignore:next-line
 import { sveltekit } from '@sveltejs/kit/vite';
+import autoprefixer from 'autoprefixer';
 import type { UserConfig } from 'vite';
 import { THEME_PALETTES } from './src/lib/utils/themes';
 import icons from './src/plugins/icons';
@@ -12,9 +12,15 @@ const config: UserConfig = {
 		port,
 	},
 	plugins: [icons(), themes(THEME_PALETTES), sveltekit()],
-	ssr: {
-		// https://github.com/airjp73/remix-validated-form/issues/141
-		// noExternal: ['zod-form-data'],
+	css: {
+		preprocessorOptions: {
+			scss: {
+				additionalData: `@use '$styles/utils' as *;`,
+			},
+		},
+		postcss: {
+			plugins: [autoprefixer()],
+		},
 	},
 };
 
