@@ -1,28 +1,32 @@
-// App-wide constants for locale definitions
-
 import type { ValueOf } from 'type-fest';
 
-export const locales = {
-	french: 'fr',
-	english: 'en',
+/**
+ * Source dictionnary for accepted app locales.
+ */
+export const LOCALES = {
+	FRENCH: 'fr',
+	ENGLISH: 'en',
 } as const;
 
-export type Locale = ValueOf<typeof locales>;
+export type Locale = ValueOf<typeof LOCALES>;
 
-export const locales_arr = [locales.french, locales.english] as const;
+export const LOCALES_ARR = Object.values(LOCALES);
 
-export const locale_fallback = locales.french;
+/**
+ * Determine if a given locale string code is valid.
+ */
+export function isLocale(locale?: string): locale is Locale {
+	return LOCALES_ARR.indexOf(locale as any) > -1;
+}
 
-export const locale_cookie_name = 'i18n-locale';
+export const LOCALE_DEFAULT = LOCALES.FRENCH;
 
-export const locale_cookie_maxage = 34_560_000; // 400 days, maximum allowed
-
-export const locales_details = {
-	[locales.english]: {
+export const LOCALES_DETAILS = {
+	[LOCALES.ENGLISH]: {
 		name: 'English',
 		label: 'En',
 	},
-	[locales.french]: {
+	[LOCALES.FRENCH]: {
 		name: 'Français',
 		label: 'Fr',
 	},

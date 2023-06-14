@@ -95,12 +95,6 @@
 				<Field>
 					<svelte:fragment slot="label">Nom de famille</svelte:fragment>
 				</Field>
-				<Field>
-					<svelte:fragment slot="label">Nom de famille</svelte:fragment>
-				</Field>
-				<Field>
-					<svelte:fragment slot="label">Nom de famille</svelte:fragment>
-				</Field>
 			</fieldset>
 			<svelte:fragment slot="footer">
 				<!--  -->
@@ -113,12 +107,18 @@
 </Modal>
 
 <style lang="scss">
+	// fieldset {
+	// 	display: flex;
+	// 	flex-direction: column;
+	// 	gap: 1rem;
+	// }
+
 	.fields {
 		display: flex;
 		flex-direction: column;
 		width: var(--ui-width-md);
 		max-width: 100%;
-		gap: var(--ui-gutter-xs);
+		gap: 1rem;
 	}
 
 	h4 {

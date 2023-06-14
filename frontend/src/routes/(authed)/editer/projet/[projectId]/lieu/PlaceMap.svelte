@@ -19,7 +19,7 @@
 	let tracking = false;
 </script>
 
-<Map cooperativeGestures={true} bind:map={$editorMap} mapStyle={dark} id="editor-map">
+<Map cooperativeGestures={false} bind:map={$editorMap} mapStyle={dark} id="editor-map">
 	<MapDraw bind:draw={$editorMapDraw} mode="draw_circle" />
 	<MapAttributionControl position="bottom-left" />
 	<svelte:fragment slot="top-left">

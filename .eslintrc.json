@@ -7,7 +7,7 @@
 		"prettier"
 	],
 	"parser": "@typescript-eslint/parser",
-	"plugins": ["@typescript-eslint"],
+	"plugins": ["@typescript-eslint", "formatjs"],
 	"parserOptions": {
 		"sourceType": "module",
 		"ecmaVersion": 2020,
@@ -20,7 +20,7 @@
 	},
 	"overrides": [
 		{
-			"files": ["*.svelte"],
+			"files": ["**/*.svelte"],
 			"parser": "svelte-eslint-parser",
 			"parserOptions": {
 				"parser": "@typescript-eslint/parser"

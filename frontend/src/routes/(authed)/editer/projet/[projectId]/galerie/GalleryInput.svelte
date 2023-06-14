@@ -23,18 +23,18 @@
 				0
 			);
 			uploading = true;
-			if (payloadSize > PROJECT_IMAGE_MAX_PAYLOAD) {
-				uploading = false;
-				messages.error({
-					content: `Oops. Le contenu envoyé est trop lourd! une contrainte (temporaire) nous oblige à limiter la taille totale des téléversements à ~${toBytesString(
-						PROJECT_IMAGE_MAX_PAYLOAD,
-						0
-					)}. Vous pouvez soit compresser vos images ou les téléverser en plus petits lots (ou individuellement).`,
-					timer: 10000,
-				});
-				e.target.files = null;
-				return;
-			}
+			// if (payloadSize > PROJECT_IMAGE_MAX_PAYLOAD) {
+			// 	uploading = false;
+			// 	messages.error({
+			// 		content: `Oops. Le contenu envoyé est trop lourd! une contrainte (temporaire) nous oblige à limiter la taille totale des téléversements à ~${toBytesString(
+			// 			PROJECT_IMAGE_MAX_PAYLOAD,
+			// 			0
+			// 		)}. Vous pouvez soit compresser vos images ou les téléverser en plus petits lots (ou individuellement).`,
+			// 		timer: 10000,
+			// 	});
+			// 	e.target.files = null;
+			// 	return;
+			// }
 			e.target.form.requestSubmit(inputRef);
 		}
 	}

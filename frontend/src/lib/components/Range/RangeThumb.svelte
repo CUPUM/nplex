@@ -102,5 +102,64 @@
 </label>
 
 <style lang="scss">
-	@use './RangeThumb.scss';
+	@use './Range.scss';
+
+.range-thumb {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	block-size: var(--range-thumb-size);
+	inline-size: var(--range-thumb-size);
+	background-color: var(--range-thumb-color);
+	border-radius: var(--range-thumb-radius);
+	user-select: none;
+	outline: none;
+	inset-inline-start: var(--range-thumb-percent);
+	inset-block-start: 50%;
+	transform: translate(-50%, -50%);
+	transition: box-shadow 0.25s var(--ui-ease-out), background 0.25s var(--ui-ease-out);
+}
+
+input {
+	pointer-events: none;
+	appearance: none;
+	opacity: 0;
+	position: absolute;
+}
+
+:disabled,
+.disabled,
+.readonly {
+	pointer-events: none;
+}
+
+:active,
+:has(:active),
+:focus-within {
+	z-index: 10;
+}
+
+// Default variant.
+@include Range.children(default) {
+	.range-thumb {
+		background: col(fg, 300);
+		box-shadow: 0 0 0 0 col(primary, 500, 0);
+		&:has(:active),
+		&:focus-within {
+			background: col(primary, 700);
+			box-shadow: 0 0 0 var(--range-halo-size) col(primary, 300, 0.5);
+		}
+		&:hover {
+			background: col(primary, 500);
+		}
+	}
+	&:focus-within,
+	&:has(:active) {
+		.range-thumb:not(:focus) {
+			background: col(primary, 900);
+		}
+	}
+}
 </style>

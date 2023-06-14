@@ -191,7 +191,7 @@
 		:global(.editor-form-header) {
 			position: relative;
 			align-self: stretch;
-			padding: var(--ui-gutter-md);
+			padding: 3rem;
 			border-radius: var(--ui-radius-xl);
 			background-color: col(secondary, 100);
 
@@ -202,7 +202,7 @@
 
 		:global(.editor-form-group) {
 			position: relative;
-			padding: var(--ui-gutter-md);
+			padding: 3rem;
 			border-radius: var(--ui-radius-xl);
 			background-color: col(bg, 700);
 		}

@@ -1,5 +1,7 @@
 export async function load(event) {
 	return {
-		test: 'hello world',
+		// locale: event.locals.locale,
+		// session: event.locals.session,
+		// theme: event.locals.theme,
 	};
 }

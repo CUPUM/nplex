@@ -6,7 +6,9 @@ import { error, fail, redirect } from '@sveltejs/kit';
 export const actions = {
 	create: async (event) => {
 		const validated = await validateFormData(event, projectCreateSchema);
-		if (validated.failure) return validated.failure;
+		if (validated.failure) {
+			return validated.failure;
+		}
 		const newProject = await event.locals.db
 			.from('projects')
 			.insert(validated.data)

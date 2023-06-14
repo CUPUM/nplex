@@ -6,20 +6,26 @@
 	"trailingComma": "es5",
 	"printWidth": 100,
 	"plugins": ["prettier-plugin-svelte", "prettier-plugin-jsdoc"],
-	"pluginSearchDirs": ["."],
 	"proseWrap": "always",
 	"bracketSpacing": true,
 	"bracketSameLine": false,
 	"arrowParens": "always",
 	"svelteIndentScriptAndStyle": true,
 	"svelteAllowShorthand": true,
+	"svelteSortOrder": "scripts-options-markup-styles",
 	"jsdocDescriptionWithDot": true,
 	"jsdocSingleLineComment": false,
 	"quoteProps": "consistent",
 	"embeddedLanguageFormatting": "auto",
 	"htmlWhitespaceSensitivity": "ignore",
 	"overrides": [
-		{ "files": "*.md", "options": { "useTabs": false, "tabWidth": 2 } },
-		{ "files": "*.svelte", "options": { "parser": "svelte" } }
+		{
+			"files": "**/*.md",
+			"options": { "useTabs": false, "tabWidth": 2 }
+		},
+		{
+			"files": "**/*.svelte",
+			"options": { "parser": "svelte" }
+		}
 	]
 }

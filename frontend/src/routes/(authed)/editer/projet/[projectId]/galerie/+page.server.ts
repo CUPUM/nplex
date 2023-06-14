@@ -17,7 +17,9 @@ extend([labPlugin]);
 export const actions = {
 	[EDITOR_FORM_ACTION]: async (event) => {
 		const validated = await validateFormData(event, projectGalleryUpdateSchema);
-		if (validated.failure) return validated.failure;
+		if (validated.failure) {
+			return validated.failure;
+		}
 		const galleryUpdate = await event.locals.db.from('projects_images').upsert(
 			validated.data.gallery.map((img, i) => ({
 				...img,
@@ -34,7 +36,9 @@ export const actions = {
 	 */
 	upload: async (event) => {
 		const validated = await validateFormData(event, projectImageUploadSchema);
-		if (validated.failure) return validated.failure;
+		if (validated.failure) {
+			return validated.failure;
+		}
 		const uploads = await Promise.all(
 			validated.data.image_files.map(async (file) => {
 				const img = sharp(Buffer.from(await file.arrayBuffer()));

@@ -13,7 +13,7 @@
 		praesentium blanditiis. Est culpa quia qui incidunt sequi.
 	</p>
 </header>
-<Publishing status={data.project.publication_status} />
+<Publishing status={data.project.published} />
 <Access collaborators={data.collaborators} />
 <Delete confirm={data.project.title.split(' ').slice(0, 3).join(' ')} />
 

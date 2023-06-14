@@ -19,11 +19,25 @@
 </nav>
 
 <style lang="scss">
+	:not([hidden]) > :global(*) {
+			pointer-events: all;
+		}
+
+	[hidden] {
+		transform: translateY(-12px);
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	[hidden] {
+		// --d: 0s;
+		transition-delay: 0s;
+	}
+
 	.category {
 		--i: 1;
 		--inset: var(--ui-inset-sm);
 		--radius: 99px;
-		pointer-events: initial;
 		position: relative;
 		display: flex;
 		flex: none;
