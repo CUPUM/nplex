@@ -1,20 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { LOCALES_ARR } from '$lib/i18n/locales';
-
-	// const cache = createIntlCache();
-	// const intl = createIntl(
-	// 	{
-	// 		locale: LOCALES.FRENCH,
-	// 		messages: {
-	// 			hello: 'Bonjour toi.',
-	// 		},
-	// 	},
-	// 	cache
-	// );
+	import { LOCALES_ARR } from '$lib/i18n/constants';
 </script>
-
-<svelte:options immutable={true} />
 
 <!-- <form method="POST" action="/?/locale" use:enhanceLocale>
 	{#each LOCALES_ARR as l}

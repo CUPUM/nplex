@@ -28,6 +28,7 @@
 		}
 	],
 	"rules": {
-		"curly": ["error", "all"]
+		"curly": ["error", "all"],
+		"formatjs/enforce-placeholders": true
 	}
 }

@@ -1,46 +1,70 @@
 import { enhance } from '$app/forms';
 import { STATUS_CODE } from '$lib/utils/status';
-import { fail, type Action, type Handle, type RequestEvent } from '@sveltejs/kit';
-import { LOCALE_DEFAULT, isLocale, type Locale } from './locales';
+import {
+	fail,
+	type Action,
+	type Handle,
+	type LoadEvent,
+	type RequestEvent,
+	type ServerLoadEvent,
+} from '@sveltejs/kit';
+import {
+	LOCALE_COOKIE_NAME,
+	LOCALE_DEFAULT,
+	LOCALE_INPUT_NAME,
+	LOCALE_PARAM_NAME,
+	type Locale,
+} from './constants';
+import { isSupportedLocale } from './validation';
 
-// const LOCALE_COOKIE_NAME = 'locale';
-// const LOCALE_COOKIE_MAXAGE = 34_560_000; // 400 days, maximum allowed
-const LOCALE_PARAM_NAME = 'locale';
+/**
+ * Finds the first valid locale among request's headers by passing through in order of preference,
+ * if any.
+ */
+function getAcceptLanguageLocale(event: RequestEvent) {
+	const headers = event.request.headers.get('Accept-Language')?.split(',');
+	if (headers) {
+		const header = headers.find((l): l is Locale => {
+			return isSupportedLocale(l);
+		});
+		if (header) {
+			return header;
+		}
+	}
+	return null;
+}
 
-export const LOCALE_INPUT_NAME = 'locale';
+/**
+ * Parses event cookies to look for defined locale and returns valid locale if any is found.
+ * Alternatively, deletes cookie if invalid locale is found.
+ */
+function getCookieLocale(event: RequestEvent) {
+	const cookie = event.cookies.get(LOCALE_COOKIE_NAME);
+	if (isSupportedLocale(cookie)) {
+		return cookie;
+	}
+	if (cookie) {
+		event.cookies.delete(LOCALE_COOKIE_NAME);
+	}
+	return null;
+}
 
 /**
  * Parse an event's request metadata and try to identify a valid locale.
  */
-function getEventLocale<E extends RequestEvent>(event: E) {
-	// const cookie = event.cookies.get(LOCALE_COOKIE_NAME);
-	// if (isLocale(cookie)) {
-	// 	return cookie;
-	// }
-	// if (cookie) {
-	// 	event.cookies.delete(LOCALE_COOKIE_NAME);
-	// }
+export function getEventLocale<E extends RequestEvent | ServerLoadEvent | LoadEvent>(event: E) {
 	const param = event.params[LOCALE_PARAM_NAME];
-	if (isLocale(param)) {
+	if (isSupportedLocale(param)) {
 		return param;
 	}
 	return LOCALE_DEFAULT;
-	// const headers = event.request.headers.get('Accept-Language')?.split(',');
-	// if (headers) {
-	// 	const header = headers.find((l): l is Locale => {
-	// 		return isLocale(l);
-	// 	});
-	// 	if (header) {
-	// 		return header;
-	// 	}
-	// }
-	// return localeDefault;
+	// return getAcceptLanguageLocale(event) ?? LOCALE_DEFAULT;
 }
 
 /**
  * Sets event.locals.locale for downstream resolving and sets cookie.
  */
-function setEventLocale<E extends RequestEvent>(event: E, locale: Locale) {
+function setEventLocale<E extends RequestEvent | ServerLoadEvent>(event: E, locale: Locale) {
 	// event.cookies.set(LOCALE_COOKIE_NAME, locale, { maxAge: LOCALE_COOKIE_MAXAGE, path: '/' });
 	event.locals.locale = locale;
 }
@@ -51,7 +75,6 @@ function setEventLocale<E extends RequestEvent>(event: E, locale: Locale) {
  */
 export const handleLocale = (async ({ event, resolve }) => {
 	const locale = getEventLocale(event);
-	console.log('Handle locale: ', locale);
 	setEventLocale(event, locale);
 	// Set html lang attribute using event.locals to account for possible different value
 	// set by downstream action resolve.
@@ -60,7 +83,6 @@ export const handleLocale = (async ({ event, resolve }) => {
 			return input.html.replace('%lang%', event.locals.locale);
 		},
 	});
-
 	return res;
 }) satisfies Handle;
 
@@ -70,7 +92,7 @@ export const handleLocale = (async ({ event, resolve }) => {
 export const actionLocale = (async (event) => {
 	const formData = await event.request.formData();
 	const input = formData.get(LOCALE_INPUT_NAME)?.toString();
-	if (!isLocale(input)) {
+	if (!isSupportedLocale(input)) {
 		return fail(STATUS_CODE.BAD_REQUEST);
 	}
 	setEventLocale(event, input);
@@ -88,7 +110,7 @@ export const enhanceLocale = ((form) => {
 				result.type === 'success' &&
 				result.data &&
 				typeof result.data === 'string' &&
-				isLocale(result.data)
+				isSupportedLocale(result.data)
 			) {
 				document.documentElement.setAttribute('lang', result.data);
 			}

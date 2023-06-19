@@ -1,7 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 
-import type { Locale } from '$lib/i18n/locales';
+import type { Locale } from '$lib/i18n/constants';
 import type { Theme } from '$lib/theming/themes';
 
 declare global {
@@ -36,8 +36,8 @@ declare global {
 		}
 		interface PageData {
 			locale: App.Locals['locale'];
-			session?: App.Locals['session'];
 			theme: App.Locals['theme'];
+			session?: App.Locals['session'];
 		}
 		// interface Platform {}
 	}
