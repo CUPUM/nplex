@@ -1,4 +1,4 @@
-import { handleLocale } from '$lib/i18n/handle';
+import handleLocale from '$lib/i18n/hook.server';
 import { handleTheme } from '$lib/theming/handle';
 import { sequence } from '@sveltejs/kit/hooks';
 

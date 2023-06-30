@@ -5,7 +5,11 @@
 			"path": "."
 		},
 		{
-			"name": "frontend",
+			"name": "frontend (old)",
+			"path": "frontend"
+		},
+		{
+			"name": "frontend (new)",
 			"path": "frontend2"
 		}
 	],

@@ -11,3 +11,22 @@ examples are:
 - `en`: English
 - `en-CA`: English (Canada)
 - `de-CH`: German (Switzerland)
+
+## Anatomy of translations
+
+Translations are designed as collections of locale-specific dictionnaries. Each dictionnary for a
+set of translations should provide homo-morphic definitions. Messages can be namespaced at will, as
+long as the general structure follows:
+
+```ts
+Translations: {
+	[locale]: {
+		[namespace /* or message key */]: {
+			[messageKey]: 'Message string',
+			[anotherMessageKey]: (name: string, count: PluralCount) => `Message with ${name} and count-specific ${plural({1: 'formatting', 'many': 'formattings'}, count)}`
+		}
+		// ...
+	}
+	// ...
+}
+```

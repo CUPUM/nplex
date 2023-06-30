@@ -1,4 +1,4 @@
-import { getEventLocale } from '$lib/i18n/handle.js';
+import { getEventLocale } from '$lib/i18n/event';
 
 export async function load(event) {
 	// event.depends('i18n:locale');

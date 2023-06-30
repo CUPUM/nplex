@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { createTranslation } from '$lib/i18n/translate.js';
+	import { createTranslation, plural, type PluralCount } from '$lib/i18n/translate.js';
 	import { THEMES_ARR } from '$lib/theming/themes.js';
 
 	export let data;
@@ -8,15 +8,19 @@
 	const t = createTranslation({
 		fr: {
 			theme: {
-				dark: (n: number) => `Sombre ${n}`,
+				dark: 'Sombre',
 				light: 'Clair',
 			},
+			test: (name: string, n: PluralCount<'many'>) =>
+				`${name} a ${plural({ many: 'plusieurs fruits', 0: 'aucun fruit' }, n)}.`,
 		},
 		en: {
 			theme: {
-				dark: (n: number) => `Dark ${n}`,
+				dark: 'Dark',
 				light: 'Light',
 			},
+			test: (name: string, n: PluralCount<'many'>) =>
+				`${name} has ${plural({ many: 'many fruits', 0: 'no fruit' }, n)}.`,
 		},
 	});
 </script>
@@ -36,6 +40,7 @@
 		<button type="submit" value={theme}>{$t.theme[theme]}</button>
 	{/each}
 </form>
+<p>{$t.test('Bob', 2)}</p>
 
 <slot />
 

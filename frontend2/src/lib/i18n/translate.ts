@@ -1,59 +1,90 @@
 import { page } from '$app/stores';
 import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
-import { derived } from 'svelte/store';
-import { LOCALE_PARAM_NAME, type Locale, type LocaleDefault } from './constants';
-import { getEventLocale } from './handle';
+import { derived, type Readable } from 'svelte/store';
+import {
+	LOCALE_DEFAULT,
+	PLURAL_THRESHOLDS,
+	PLURAL_THRESHOLDS_DEFAULT,
+	PLURAL_THRESHOLDS_NUMERABLE_ARR,
+	type Locale,
+	type LocaleDefault,
+	type PluralThreshold,
+	type PluralThresholdNumerable,
+} from './constants';
+import { getEventLocale } from './event';
+
+export type PluralCount<T extends PluralThreshold = PluralThreshold> =
+	| Extract<PluralThreshold, T>
+	| number;
+
+export type PluralFormats<T = string> = { [P in PluralCount]?: T };
 
 /**
- * Derived store to compose locale-specific href strings.
- *
- * @example
- * 	<a hreflang={$page.data.locale} href={$thref('about')}>
- * 		...
- * 	</a>;
- * 	// or, for targeting specific locales
- * 	<a hreflang={'fr'} href={$thref('about', 'fr')}>
- * 		...
- * 	</a>;
+ * Create a message formatter that depends on a given count or count threshold.
  */
-export const thref = derived(page, ($page) => {
-	function localizeHref<H extends string>(href: H, locale: Locale = $page.data.locale) {
-		const localeString: `/${Locale}` | '' = LOCALE_PARAM_NAME in $page.params ? `/${locale}` : '';
-		return `${localeString}${href}` as const;
+export function plural<T, F extends PluralFormats<T>, C extends keyof F | number>(
+	formats: Readonly<F>,
+	count: C,
+	options?: { thresholds?: { [P in PluralThresholdNumerable]: number } }
+) {
+	if (typeof count === 'number') {
+		// Handle number counts
+		if (count in formats) {
+			return formats[count];
+		}
+		if (count > 1) {
+			// Handle number thresholds by corresponding string
+			const numerable = PLURAL_THRESHOLDS_NUMERABLE_ARR.find((t) => {
+				return t in formats && count <= (options?.thresholds?.[t] ?? PLURAL_THRESHOLDS_DEFAULT[t]);
+			});
+			return formats[numerable ?? PLURAL_THRESHOLDS.Many];
+		}
 	}
-	return localizeHref;
-});
+	// Handle string thresholds
+	// else if (pluralizeThresholdSchema.safeParse(count).success) {
+	// 	return formats[count as keyof F];
+	// }
+	return formats[count];
+}
 
-// export function getEventHref() {}
+type MessageFunction = <A extends string | number | PluralCount>(...args: A[]) => string | number;
+
+type Message = string | number | MessageFunction;
+
+// type Dictionnary<T> =
+
+// type Translations<T extends Dictionnary> = Record<LocaleDefault, T> & Record<Locale, T & object>;
+
+type Translations<T> = Record<LocaleDefault, T> & Record<Locale, T & object>;
 
 /**
- * Function to access a given translation object's message using dot notation and properly expecting
- * formatting parameters if needed.
+ * Get dictionnary by locale key, fall back to default locale if not available.
  */
-function createFormat<D extends unknown>(dictionnary: D extends object ? D : never) {
-	// function format(messageKey: string, formatOptions?: any) {}
-	return dictionnary;
+function safeGetLocaleDictionnary<T>(
+	translations: Translations<T>,
+	locale: Locale | null | undefined
+) {
+	return translations[locale ?? LOCALE_DEFAULT] ?? translations[LOCALE_DEFAULT];
 }
 
 /**
  * Create a reactive formatting function that derives the given translations' dictionnary from
  * $page.data.locale.
  */
-function createReactiveFormat<T>(
-	translations: Record<LocaleDefault, T> & Record<Locale, T & object>
-) {
+function createDerivedTranslation<T>(translations: Translations<T>) {
 	return derived(page, ($page) => {
-		return createFormat(translations[$page.data.locale]);
+		return safeGetLocaleDictionnary(translations, $page.data.locale);
 	});
 }
 
 /**
- * Utility function to automatically access the contextually accurate translation in a series of
- * language-specific homomorphic dictionnaries. Defined dictionnary messages can be namespaced at
- * will and then accessed through their dot-notation path. Translations are either:
+ * Utility function to automatically access the contextually (reactive in `.svelte` files and static
+ * in load functions) accurate translation in a series of language-specific homomorphic
+ * dictionnaries. Defined dictionnary messages can be namespaced at will and then accessed through
+ * their dot-notation path. Translations are either:
  *
- * - A translation store when in browser environment (derived from detected
- *   $page.params[localeParam]);
+ * - In component environements (.svelte files): a store derived from detected
+ *   $page.params[localeParam];
  * - A translation object in server or universal environment;
  *
  * Note that the `& object` in the second record type of the intersection prevents further inference
@@ -66,34 +97,32 @@ function createReactiveFormat<T>(
  *
  * @warning Ugly function overloading is only way to narrow generic type in returned value.
  */
-export function createTranslation<T>(
-	translations: Record<LocaleDefault, T> & Record<Locale, T & object>
-): ReturnType<typeof createReactiveFormat<T>>;
+export function createTranslation<T>(translations: Translations<T>): Readable<T>;
 export function createTranslation<T, C extends RequestEvent | ServerLoadEvent | LoadEvent>(
-	translations: Record<LocaleDefault, T> & Record<Locale, T & object>,
+	translations: Translations<T>,
 	context: C
-): ReturnType<typeof createFormat<T>>;
+): T;
 export function createTranslation<T, C extends RequestEvent | ServerLoadEvent | LoadEvent>(
 	/**
 	 * Dictionnaries for each locales, must abide by the shape of the default locale's dictionnary.
 	 */
-	translations: Record<LocaleDefault, T> & Record<Locale, T & object>,
+	translations: Translations<T>,
 	/**
 	 * Context establishing the locale to use.
 	 */
 	context?: C
-): ReturnType<typeof createFormat<T>> {
+) {
 	if (context && typeof context === 'object') {
 		// If in a server event environement.
 		if ('locals' in context) {
-			return createFormat(translations[context.locals.locale]) as any;
+			return translations[context.locals.locale];
 		}
 		// If in universal environment.
 		if ('params' in context) {
-			const lang = getEventLocale(context);
-			return createFormat(translations[lang]) as any;
+			const locale = getEventLocale(context);
+			return translations[locale];
 		}
 	}
 	// Else, if in client environnement.
-	return createReactiveFormat(translations) as any;
+	return createDerivedTranslation(translations);
 }
