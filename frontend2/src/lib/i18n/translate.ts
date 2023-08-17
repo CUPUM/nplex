@@ -47,9 +47,23 @@ export function plural<T, F extends PluralFormats<T>, C extends keyof F | number
 	return formats[count];
 }
 
-type MessageFunction = <A extends string | number | PluralCount>(...args: A[]) => string | number;
+/**
+ * Locale-aware number formatter.
+ */
+export function number<N extends number>(number: N, options?: Intl.NumberFormatOptions) {
+	// Intl.NumberFormat
+}
 
-type Message = string | number | MessageFunction;
+/**
+ * Locale-aware date formatter.
+ */
+export function date<D extends Date | number>(date: D, options?: Intl.DateTimeFormatOptions) {
+	// Intl.DateFormat
+}
+
+type MessageInterpolation = <A>(...args: A[]) => string | number;
+
+type Message = string | number | MessageInterpolation;
 
 // type Dictionnary<T> =
 

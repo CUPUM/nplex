@@ -6,13 +6,13 @@ import { LOCALE_DEFAULT, LOCALE_PARAM_NAME, type Locale } from './constants';
 /**
  * Create a localizer for un-localized hrefs.
  */
-function localize<H>(href: H, locale: Locale) {
+function localize<R>(route: R, locale: Locale) {
 	// This is where the locale segment persistence is determined.
 	// As it is, the locale param is prepended whenever the href points to a non-default-locale.
 	// This could be fine-tuned to, for example, account for user's preferences.
 	// const localeParam = locale === LOCALE_DEFAULT ? ('' as const) : (`/${locale}` as const);
 	// return `${localeParam}${href}` as const;
-	return resolvePath(`/[[${LOCALE_PARAM_NAME}]]${href}`, {
+	return resolvePath(`/[[${LOCALE_PARAM_NAME}]]${route}`, {
 		[LOCALE_PARAM_NAME]: locale === LOCALE_DEFAULT ? '' : locale,
 	});
 }
@@ -31,7 +31,11 @@ export const lhref = derived(page, ($page) => {
  */
 export const lswitch = derived(page, ($page) => {
 	return (locale: Locale) => {
-		$page.params[LOCALE_PARAM_NAME] = locale;
-		return resolvePath($page.route.id ?? `/[[${LOCALE_PARAM_NAME}]]`, $page.params);
+		let tail = $page.url.href.replace($page.url.origin, '');
+		const p = $page.params[LOCALE_PARAM_NAME];
+		if (p) {
+			tail.replace(`/${p}`, '');
+		}
+		return localize(tail, locale);
 	};
 });

@@ -1,7 +1,7 @@
 import { getContext, setContext } from 'svelte';
 
 /**
- * Allows defining correspondingly typed context setter context getter.
+ * Allows defining correspondingly typed context setter and context getter.
  */
 export function defineContext<T>(key: unknown) {
 	function set(context: T) {

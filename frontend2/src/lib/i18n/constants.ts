@@ -27,10 +27,6 @@ export const LOCALES_DETAILS = {
 	},
 } satisfies { [L in Locale]: { name: string; label: string } };
 
-// export const LOCALE_COOKIE_NAME = 'locale';
-
-// export const LOCALE_COOKIE_MAXAGE = 34_560_000; // 400 days, maximum typically allowed by browsers.
-
 export const LOCALE_PARAM_NAME = 'locale';
 
 export const PLURAL_THRESHOLDS = {
