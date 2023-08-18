@@ -1,8 +1,0 @@
-/build
-/.vercel
-/.svelte-kit
-/package
-
-# Generated assets
-/src/lib/styles/vars/themes.css
-/src/lib/utils/icons.ts

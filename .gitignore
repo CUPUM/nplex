@@ -1,8 +1,10 @@
 .DS_Store
-.pnpm-store
-.pnpm-debug.log
 node_modules
+/build
+/.svelte-kit
+/package
 .env
 .env.*
-!.env.template
-
+!.env.example
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
