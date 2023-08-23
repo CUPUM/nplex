@@ -1,18 +1,23 @@
-import { SUPABASE_DB_URL } from '$env/static/private';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
+import { NEON_DB_URL } from '$env/static/private';
+import { Pool } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-serverless';
 
-const client = postgres(SUPABASE_DB_URL);
-export const db = drizzle(client);
+/**
+ * Supabase db.
+ *
+ * @see https://orm.drizzle.team/docs/installation-and-db-connection/postgresql/supabase
+ */
 
-// /**
-//  * Instanciate or reuse a short-lived server-side db client on a request event basis.
-//  */
-// export function useDb(event: RequestEvent) {
-// 	if (!event.locals.db) {
-// 		const client = postgres(SUPABASE_DB_URL);
-// 		const db = drizzle(client);
-// 		event.locals.db = db;
-// 	}
-// 	return event.locals.db;
-// }
+// export const client = postgres(SUPABASE_DB_URL);
+// export const db = drizzle(client);
+
+/**
+ * Neon db.
+ *
+ * @see https://orm.drizzle.team/docs/installation-and-db-connection/postgresql/neon
+ */
+
+// neonConfig.fetchConnectionCache = true;
+// export const client = neon(NEON_DB_URL);
+export const pool = new Pool({ connectionString: NEON_DB_URL });
+export const db = drizzle(pool);

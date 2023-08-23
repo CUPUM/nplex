@@ -1,13 +1,30 @@
 // See https://kit.svelte.dev/docs/types#app
 
+import type { Auth as LuciaAuth } from '$lib/auth/auth.server';
 import type { Locale } from '$lib/i18n/constants';
 import type { Theme } from '$lib/themes/validation';
+
+// See https://lucia-auth.com/getting-started
+declare global {
+	namespace Lucia {
+		type Auth = LuciaAuth;
+		type DatabaseUserAttributes = {
+			//
+		};
+		type DatabaseSessionAttributes = {
+			//
+		};
+	}
+}
 
 // for information about these interfaces
 declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
+			auth: Lucia.Auth;
+			user: Lucia.DatabaseUserAttributes;
+			session: Lucia.DatabaseSessionAttributes;
 			/**
 			 * Client's language as determined by the i18n middleware.
 			 */
@@ -19,11 +36,11 @@ declare global {
 		}
 		interface PageData {
 			/**
-			 * Client-forwarded locals.locale
+			 * Client-forwarded locals.locale.
 			 */
 			locale: App.Locals['locale'];
 			/**
-			 * Client-forwarded locals.theme
+			 * Client-forwarded locals.theme.
 			 */
 			theme: App.Locals['theme'];
 		}
