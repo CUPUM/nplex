@@ -20,7 +20,7 @@ function safeGetLocaleDictionnary<T>(
  * Create a reactive formatting function that derives the given translations' dictionnary from
  * $page.data.locale.
  */
-function createDerivedTranslation<T>(translations: Translations<T>) {
+function createDerivedTranslations<T>(translations: Translations<T>) {
 	return derived(page, ($page) => {
 		return safeGetLocaleDictionnary(translations, $page.data.locale);
 	});
@@ -46,12 +46,12 @@ function createDerivedTranslation<T>(translations: Translations<T>) {
  *
  * @warning Ugly function overloading is only way to narrow generic type in returned value.
  */
-export function createTranslation<T>(translations: Translations<T>): Readable<T>;
-export function createTranslation<T, C extends RequestEvent | ServerLoadEvent | LoadEvent>(
+export function createTranslations<T>(translations: Translations<T>): Readable<T>;
+export function createTranslations<T, C extends RequestEvent | ServerLoadEvent | LoadEvent>(
 	translations: Translations<T>,
 	context: C
 ): T;
-export function createTranslation<T, C extends RequestEvent | ServerLoadEvent | LoadEvent>(
+export function createTranslations<T, C extends RequestEvent | ServerLoadEvent | LoadEvent>(
 	/**
 	 * Dictionnaries for each locales, must abide by the shape of the default locale's dictionnary.
 	 */
@@ -73,5 +73,5 @@ export function createTranslation<T, C extends RequestEvent | ServerLoadEvent | 
 		}
 	}
 	// Else, if in client environnement.
-	return createDerivedTranslation(translations);
+	return createDerivedTranslations(translations);
 }

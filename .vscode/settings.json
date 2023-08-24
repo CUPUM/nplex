@@ -17,5 +17,5 @@
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.preferences.quoteStyle": "single",
 	"svelte.enable-ts-plugin": true,
-	"svelte.plugin.css.globals": "src/*.*css"
+	"svelte.plugin.css.globals": "src/*.css,src/*.scss"
 }

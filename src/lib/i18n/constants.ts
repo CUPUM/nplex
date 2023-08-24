@@ -4,27 +4,27 @@ import type { ValueOf } from 'type-fest';
  * Source dictionnary for accepted app locales.
  */
 export const LOCALES = {
-	French: 'fr',
-	English: 'en'
+	FRENCH: 'fr',
+	ENGLISH: 'en',
 } as const;
 
 export type Locale = ValueOf<typeof LOCALES>;
 
 export const LOCALES_ARR = Object.values(LOCALES);
 
-export const LOCALE_DEFAULT = LOCALES.French;
+export const LOCALE_DEFAULT = LOCALES.FRENCH;
 
 export type LocaleDefault = typeof LOCALE_DEFAULT;
 
 export const LOCALES_DETAILS = {
-	[LOCALES.English]: {
+	[LOCALES.ENGLISH]: {
 		name: 'English',
-		label: 'En'
+		label: 'En',
 	},
-	[LOCALES.French]: {
+	[LOCALES.FRENCH]: {
 		name: 'Français',
-		label: 'Fr'
-	}
+		label: 'Fr',
+	},
 } satisfies { [L in Locale]: { name: string; label: string } };
 
 export const LOCALE_PARAM = 'locale';

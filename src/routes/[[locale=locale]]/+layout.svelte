@@ -1,8 +1,10 @@
 <script lang="ts">
+	import Navmenu from '$lib/components/Navmenu.svelte';
+
 	export let data;
 </script>
 
-<header>Header / navbar</header>
+<Navmenu />
 <main>
 	<p>{data.locale}</p>
 	<slot />

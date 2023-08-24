@@ -6,17 +6,17 @@ const port = process.env.PORT ? +process.env.PORT : 3000;
 
 export default defineConfig({
 	server: {
-		port
+		port,
 	},
 	plugins: [sveltekit()],
 	css: {
 		preprocessorOptions: {
 			scss: {
-				// additionalData: `@import '...';`,
-			}
+				additionalData: `@import '$lib/media/breakpoints.scss';`,
+			},
 		},
 		postcss: {
-			plugins: [autoprefixer()]
-		}
-	}
+			plugins: [autoprefixer()],
+		},
+	},
 });

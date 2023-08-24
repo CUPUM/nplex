@@ -43,7 +43,7 @@ export const CURSOR = {
 	VERTICAL_TEXT: 'vertical-text',
 	W_RESIZE: 'w-resize',
 	ZOOM_IN: 'zoom-in',
-	ZOOM_OUT: 'zoom-out'
+	ZOOM_OUT: 'zoom-out',
 } as const;
 
 export type Cursor = ValueOf<typeof CURSOR>;
@@ -103,7 +103,7 @@ export const STATUS_CODE = {
 	GATEWAY_TIMEOUT: 504,
 	HTTP_VERSION_NOT_SUPPORTED: 505,
 	INSUFFICIENT_STORAGE: 507,
-	NETWORK_AUTHENTICATION_REQUIRED: 511
+	NETWORK_AUTHENTICATION_REQUIRED: 511,
 } as const;
 
 export type StatusCode = ValueOf<typeof STATUS_CODE>;

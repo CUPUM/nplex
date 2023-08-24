@@ -1,0 +1,17 @@
+@use 'sass:map';
+
+$breakpoints: (
+	sm: 480px,
+	md: 768px,
+	lg: 1024px,
+);
+
+/*
+Small-first (mobile-first) breakpoints media queries.
+*/
+@mixin breakpoint($breakpoint) {
+	$px: map.get($breakpoints, $breakpoint);
+	@media screen and (min-width: $px) {
+		@content;
+	}
+}
