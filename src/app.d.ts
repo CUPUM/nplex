@@ -2,7 +2,7 @@
 
 import type { Auth as LuciaAuth } from '$lib/auth/auth.server';
 import type { Locale } from '$lib/i18n/constants';
-import type { Theme } from '$lib/themes/validation';
+import type { Mode } from '$lib/modes/constants';
 
 // See https://lucia-auth.com/getting-started
 declare global {
@@ -32,7 +32,7 @@ declare global {
 			/**
 			 * Private theme_mode value for handle hook.
 			 */
-			theme: Theme;
+			mode: Mode;
 		}
 		interface PageData {
 			/**
@@ -42,7 +42,7 @@ declare global {
 			/**
 			 * Client-forwarded locals.theme.
 			 */
-			theme: App.Locals['theme'];
+			mode: App.Locals['mode'];
 		}
 		// interface Platform {}
 	}

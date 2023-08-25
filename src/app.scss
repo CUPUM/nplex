@@ -104,12 +104,18 @@
 }
 
 :root {
+	position: relative;
 	font-size: 100%;
 	font-family: var(--font-main);
 	color: var(--color-neutral-800);
 	background-color: var(--color-neutral-100);
+	overflow-x: hidden;
 }
 
 body {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-height: 100svh;
 	font-size: var(--size-md);
 }

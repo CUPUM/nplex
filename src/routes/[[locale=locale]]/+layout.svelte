@@ -1,15 +1,23 @@
 <script lang="ts">
-	import Navmenu from '$lib/components/Navmenu.svelte';
+	import Footer from '$lib/components/footer.svelte';
+	import Navmenu from '$lib/components/navmenu.svelte';
 
-	export let data;
+	// export let data;
 </script>
 
 <Navmenu />
 <main>
-	<p>{data.locale}</p>
 	<slot />
 </main>
-<footer>Footer</footer>
+<Footer />
 
 <style lang="scss">
+	main {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		flex-wrap: nowrap;
+		padding: 0;
+		margin: 0;
+	}
 </style>
