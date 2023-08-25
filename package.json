@@ -80,7 +80,7 @@
 	"type": "module",
 	"dependencies": {
 		"@lucia-auth/adapter-postgresql": "^2.0.0",
-		"@melt-ui/svelte": "^0.38.1",
+		"@melt-ui/svelte": "^0.39.0",
 		"@neondatabase/serverless": "^0.6.0",
 		"@tabler/icons-svelte": "^2.32.0",
 		"drizzle-orm": "^0.28.5",
