@@ -45,6 +45,7 @@ function createDerivedTranslations<T>(translations: Translations<T>) {
  * 	<h1>{$t('header.title')}</h1>
  *
  * @warning Ugly function overloading is only way to narrow generic type in returned value.
+ * @see https://github.com/microsoft/TypeScript/issues/33014
  */
 export function createTranslations<T>(translations: Translations<T>): Readable<T>;
 export function createTranslations<T, C extends RequestEvent | ServerLoadEvent | LoadEvent>(

@@ -3,7 +3,7 @@
 	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
 	import { i18nlink, i18nswitch } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { THEMES_ARR, THEMES_DETAILS, THEMES_TRANSLATIONS } from '$lib/modes/constants';
+	import { MODES_ARR, MODES_DETAILS, MODES_TRANSLATIONS } from '$lib/modes/constants';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
 	import { IconLanguage } from '@tabler/icons-svelte';
 	import { fly } from 'svelte/transition';
@@ -52,12 +52,12 @@
 				</a>
 			{/each}
 		</menu>
-		<button class="button" use:melt={$themeTrigger}>{$THEMES_TRANSLATIONS.label}</button>
+		<button class="button" use:melt={$themeTrigger}>{$MODES_TRANSLATIONS.label}</button>
 		<menu class="dropdown" use:melt={$themeMenu} in:fly>
-			{#each THEMES_ARR as theme}
+			{#each MODES_ARR as theme}
 				<button class="dropdown-item" use:melt={$themeItem}>
-					<svelte:component this={THEMES_DETAILS[theme].icon} />
-					{$THEMES_TRANSLATIONS[theme]}
+					<svelte:component this={MODES_DETAILS[theme].icon} />
+					{$MODES_TRANSLATIONS[theme]}
 				</button>
 			{/each}
 		</menu>
