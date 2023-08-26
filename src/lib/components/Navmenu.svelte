@@ -3,9 +3,10 @@
 	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
 	import { i18nlink, i18nswitch } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { MODES_ARR, MODES_DETAILS, MODES_TRANSLATIONS } from '$lib/modes/constants';
+	import { mode } from '$lib/modes/store';
+	import { ripple } from '$lib/ripple/action';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
-	import { IconLanguage } from '@tabler/icons-svelte';
+	import { IconLanguage, IconUserCircle } from '@tabler/icons-svelte';
 	import { fly } from 'svelte/transition';
 
 	const t = createTranslations({
@@ -13,46 +14,54 @@
 			about: 'À propos',
 			guides: 'Guides',
 			projects: 'Projets',
+			login: 'Me connecter',
 		},
 		en: {
 			about: 'About',
 			guides: 'Guides',
 			projects: 'Projects',
+			login: 'Login',
 		},
 	});
 
 	const {
 		elements: { menu: localeMenu, item: localeItem, trigger: localeTrigger, arrow: localeArrow },
-	} = createDropdownMenu();
-
-	const {
-		elements: { menu: themeMenu, item: themeItem, trigger: themeTrigger, arrow: themeArrow },
-	} = createDropdownMenu();
+		states: { open: localeOpen },
+	} = createDropdownMenu({ forceVisible: true });
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
 <header>
 	<nav class="group">
-		<a class="button" {...$i18nlink('/about')}>{$t.about}</a>
-		<a class="button" {...$i18nlink('/guides')}>{$t.guides}</a>
-		<a class="button" {...$i18nlink('/projects')}>{$t.projects}</a>
+		<a class="button" use:ripple {...$i18nlink('/')}>N</a>
+		<a class="button" use:ripple {...$i18nlink('/about')}>{$t.about}</a>
+		<a class="button" use:ripple {...$i18nlink('/guides')}>{$t.guides}</a>
+		<a class="button" use:ripple {...$i18nlink('/projects')}>{$t.projects}</a>
 	</nav>
 	<!-- User nav -->
-	<nav class="group"></nav>
+	<nav class="group">
+		<a class="button" {...$i18nlink('/login')}>
+			<IconUserCircle size="1.5em" />
+			{$t.login}
+		</a>
+	</nav>
 	<!-- User settings -->
 	<menu class="group">
 		<button class="button" use:melt={$localeTrigger}>
-			<IconLanguage stroke={1.75} size="1.5em" />
+			<IconLanguage size="1.5em" />
 			<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
 		</button>
-		<menu class="dropdown" use:melt={$localeMenu}>
-			{#each LOCALES_ARR as locale}
-				<a class="dropdown-item" {...$i18nswitch(locale)} use:melt={$localeItem}>
-					{LOCALES_DETAILS[locale].name}
-				</a>
-			{/each}
-		</menu>
-		<button class="button" use:melt={$themeTrigger}>{$MODES_TRANSLATIONS.label}</button>
+		{#if $localeOpen}
+			<menu class="dropdown" use:melt={$localeMenu} transition:fly={{ y: -5 }}>
+				{#each LOCALES_ARR as locale}
+					<a class="dropdown-item" {...$i18nswitch(locale)} use:melt={$localeItem}>
+						{LOCALES_DETAILS[locale].name}
+					</a>
+				{/each}
+			</menu>
+		{/if}
+		<button class="button" on:pointerdown={mode.toggle}>Toggle!</button>
+		<!-- <button class="button" use:melt={$themeTrigger}>{$MODES_TRANSLATIONS.label}</button>
 		<menu class="dropdown" use:melt={$themeMenu} in:fly>
 			{#each MODES_ARR as theme}
 				<button class="dropdown-item" use:melt={$themeItem}>
@@ -60,7 +69,7 @@
 					{$MODES_TRANSLATIONS[theme]}
 				</button>
 			{/each}
-		</menu>
+		</menu> -->
 	</menu>
 </header>
 
@@ -68,6 +77,7 @@
 	header {
 		display: flex;
 		flex-direction: row;
+		padding: var(--space-sm);
 	}
 
 	.group {
@@ -89,12 +99,25 @@
 		letter-spacing: 0.02em;
 		padding-inline: var(--size-lg);
 		border-radius: var(--radius-sm);
-		background-color: white;
+		outline: 1px solid transparent;
+		outline-offset: 4px;
+		transition:
+			all 0.1s ease-out,
+			outline 0.25s ease-out,
+			outline-offset 0.25s ease-out;
 
-		&:focus,
+		&:hover {
+			background-color: color-mix(in hsl, var(--color-primary-500) 20%, transparent);
+		}
+
+		&:focus-visible {
+			z-index: 1;
+			outline: 3px solid color-mix(in hsl, var(--color-primary-500) 50%, transparent);
+			outline-offset: 0;
+		}
+
 		&[data-state='open'] {
 			z-index: 1;
-			outline: 3px solid red;
 		}
 	}
 

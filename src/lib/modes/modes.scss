@@ -2,7 +2,7 @@
 Sass mixin for streamlined use of theme-specific stylings.
 */
 @mixin mode($mode) {
-	:global:root.#{$mode} {
+	:global:root[data-mode='#{$mode}'] {
 		@content;
 	}
 	// @media (prefers-color-scheme: $mode) {

@@ -56,11 +56,12 @@
 		"@sveltejs/adapter-auto": "^2.1.0",
 		"@sveltejs/adapter-vercel": "^3.0.3",
 		"@sveltejs/kit": "^1.23.0",
+		"@types/js-cookie": "^3.0.3",
 		"@typescript-eslint/eslint-plugin": "^6.4.1",
 		"@typescript-eslint/parser": "^6.4.1",
 		"autoprefixer": "^10.4.15",
 		"drizzle-kit": "^0.19.13",
-		"eslint": "^8.47.0",
+		"eslint": "^8.48.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-svelte": "^2.33.0",
 		"prettier": "^3.0.2",
@@ -79,12 +80,13 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@lucia-auth/adapter-postgresql": "^2.0.0",
-		"@melt-ui/svelte": "^0.39.0",
+		"@lucia-auth/adapter-postgresql": "^2.0.1",
+		"@melt-ui/svelte": "^0.39.1",
 		"@neondatabase/serverless": "^0.6.0",
 		"@tabler/icons-svelte": "^2.32.0",
 		"drizzle-orm": "^0.28.5",
 		"drizzle-zod": "^0.5.1",
+		"js-cookie": "^3.0.5",
 		"lucia": "^2.4.0"
 	}
 }

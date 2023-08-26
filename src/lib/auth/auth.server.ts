@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
-import { pool } from '$lib/database/db.server';
-import { keys, sessions, users } from '$lib/database/schema';
+import { pool } from '$lib/db/db.server';
+import { keys, sessions, users } from '$lib/db/schema/auth';
 import { pg } from '@lucia-auth/adapter-postgresql';
 import { getTableName } from 'drizzle-orm';
 import { lucia } from 'lucia';
@@ -14,6 +14,14 @@ export const auth = lucia({
 		session: getTableName(sessions),
 		key: getTableName(keys),
 	}),
+	getUserAttributes(databaseUser) {
+		return {
+			id: databaseUser.id,
+			role: databaseUser.role,
+		};
+	},
+	// getSessionAttributes(databaseSession) {
+	// },
 });
 
 export type Auth = typeof auth;

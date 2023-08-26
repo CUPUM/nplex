@@ -1,6 +1,7 @@
 <script lang="ts">
-	import Footer from '$lib/components/footer.svelte';
-	import Navmenu from '$lib/components/navmenu.svelte';
+	import Footer from '$lib/components/Footer.svelte';
+	import Navmenu from '$lib/components/Navmenu.svelte';
+	import '../../app.scss';
 
 	// export let data;
 </script>

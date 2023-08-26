@@ -40,3 +40,7 @@ export const MODES_TRANSLATIONS = createTranslations({
 		[MODES.DARK]: 'Dark',
 	},
 });
+
+export const MODE_COOKIE_NAME = 'mode';
+
+export const MODE_ATTRIBUTE = 'data-mode';

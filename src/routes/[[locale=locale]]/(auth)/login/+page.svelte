@@ -19,4 +19,8 @@
 </form>
 
 <style lang="scss">
+	button {
+		padding: 1rem;
+		background-color: rgba(0, 0, 0, 0.2);
+	}
 </style>

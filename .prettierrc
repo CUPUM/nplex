@@ -5,12 +5,28 @@
 	"singleQuote": true,
 	"trailingComma": "es5",
 	"printWidth": 100,
-	"plugins": ["prettier-plugin-svelte", "prettier-plugin-jsdoc"],
-	"pluginSearchDirs": ["."],
+	"plugins": [
+		"prettier-plugin-svelte",
+		"prettier-plugin-jsdoc"
+	],
+	"pluginSearchDirs": [
+		"."
+	],
 	"proseWrap": "always",
 	"overrides": [
-		{ "files": "*.svelte", "options": { "parser": "svelte" } },
-		{ "files": "*.md", "options": { "useTabs": false, "tabWidth": 2 } }
+		{
+			"files": "*.svelte",
+			"options": {
+				"parser": "svelte"
+			}
+		},
+		{
+			"files": "*.md",
+			"options": {
+				"useTabs": false,
+				"tabWidth": 2
+			}
+		}
 	],
 	"bracketSpacing": true,
 	"bracketSameLine": false,
