@@ -13,24 +13,23 @@ import { userRole } from '../custom-types/user-role';
 import { locales } from './i18n';
 
 /**
- * Database schema for managing everything auth oriented and related to lucia and users' metadata.
- * Separated from the default schema for convenience's sake and for improved database portability /
- * separation of concerns.
+ * Managing everything auth oriented and related to lucia and users' metadata.
  *
  * @see https://lucia-auth.com/guidebook/drizzle-orm
  * @see https://lucia-auth.com/database-adapters/postgres
  */
-export const usersSchema = pgSchema('users');
+
+export const authSchema = pgSchema('auth');
 
 /**
  * Base user roles. More granular control for RBAC on certain entities can be refined at said
  * entities' level (ex: projectsUsers.role, ...).
  */
-export const userRoles = usersSchema.table('user_roles', {
+export const userRoles = authSchema.table('user_roles', {
 	role: userRole('role').primaryKey(),
 });
 
-export const userRolesTranslations = usersSchema.table(
+export const userRolesTranslations = authSchema.table(
 	'user_roles_t',
 	{
 		role: userRole('role').references(() => userRoles.role, {
@@ -49,11 +48,11 @@ export const userRolesTranslations = usersSchema.table(
 	}
 );
 
-export const userOccupations = usersSchema.table('user_occupations', {
+export const userOccupations = authSchema.table('user_occupations', {
 	id: serial('id').primaryKey(),
 });
 
-export const userOccupationsTranslations = usersSchema.table(
+export const userOccupationsTranslations = authSchema.table(
 	'user_occupations_t',
 	{
 		id: serial('id').references(() => userOccupations.id, {
@@ -77,7 +76,7 @@ export const userOccupationsTranslations = usersSchema.table(
  *
  * @see https://lucia-auth.com/basics/users
  */
-export const users = usersSchema.table('users', {
+export const users = authSchema.table('users', {
 	id: varchar('id', { length: 15 }).primaryKey(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
@@ -96,7 +95,7 @@ export const users = usersSchema.table('users', {
 	lastName: text('last_name'),
 });
 
-export const usersOccupations = usersSchema.table('users_occupations', {
+export const usersOccupations = authSchema.table('users_occupations', {
 	userId: varchar('user_id').references(() => users.id, {
 		onDelete: 'cascade',
 		onUpdate: 'cascade',
@@ -112,7 +111,7 @@ export const usersOccupations = usersSchema.table('users_occupations', {
  *
  * @see https://lucia-auth.com/basics/sessions
  */
-export const sessions = usersSchema.table('sessions', {
+export const sessions = authSchema.table('auth_sessions', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	userId: varchar('user_id', { length: 15 })
 		.notNull()
@@ -126,7 +125,7 @@ export const sessions = usersSchema.table('sessions', {
  *
  * @see https://lucia-auth.com/basics/keys
  */
-export const keys = usersSchema.table('keys', {
+export const keys = authSchema.table('auth_keys', {
 	id: varchar('id', { length: 255 }).primaryKey(),
 	userId: varchar('user_id', { length: 15 })
 		.notNull()

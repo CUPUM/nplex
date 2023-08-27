@@ -1,7 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 
 import type { Auth as LuciaAuth } from '$lib/auth/auth.server';
-import type { users } from '$lib/db/schema/users';
+import type { users } from '$lib/db/schema/auth';
 import type { Locale } from '$lib/i18n/constants';
 import type { Mode } from '$lib/modes/constants';
 import type { InferSelectModel } from 'drizzle-orm';

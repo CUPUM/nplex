@@ -53,7 +53,8 @@
 		"db:run": "tsx --tsconfig ./.svelte-kit/tsconfig.json node_modules/drizzle-kit/index.cjs",
 		"db:gen": "pnpm db:run generate:pg",
 		"db:studio": "pnpm db:run studio",
-		"db:apply": "tsx --tsconfig ./.svelte-kit/tsconfig.json ./scripts/apply.ts"
+		"db:apply": "tsx --tsconfig ./.svelte-kit/tsconfig.json ./scripts/apply.ts",
+		"db:seed": "tsx --tsconfig ./.svelte-kit/tsconfig.json ./scripts/seed.ts"
 	},
 	"devDependencies": {
 		"@melt-ui/pp": "^0.1.2",

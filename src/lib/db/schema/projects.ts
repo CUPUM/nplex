@@ -1,7 +1,7 @@
-import { pgTable, primaryKey, serial, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { pgTable, primaryKey, serial, text, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { locale } from '../custom-types/locale';
+import { users } from './auth';
 import { locales } from './i18n';
-import { users } from './users';
 
 /**
  * Universal project descriptors.
@@ -59,10 +59,10 @@ export const projects = pgTable('projects', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-	createdBy: uuid('created_by')
+	createdBy: varchar('created_by')
 		.notNull()
 		.references(() => users.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
-	updatedBy: uuid('updated_by')
+	updatedBy: varchar('updated_by')
 		.notNull()
 		.references(() => users.id, { onDelete: 'restrict', onUpdate: 'cascade' }),
 	typeId: serial('type_id').references(() => projectTypes.id, {
@@ -74,7 +74,7 @@ export const projects = pgTable('projects', {
 export const projectsTranslations = pgTable(
 	'projects_t',
 	{
-		id: serial('id').references(() => projects.id, {
+		id: uuid('id').references(() => projects.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
