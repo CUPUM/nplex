@@ -1,12 +1,12 @@
 import type { Config } from 'drizzle-kit';
-import { DB_MIGRATIONS_FOLDER, ENV } from './scripts/common';
+import { DB_MIGRATIONS_FOLDER, ENV } from './scripts/constants';
 
 export default {
-	schema: './src/lib/database/schema.ts',
+	schema: './src/lib/db/schema/*',
 	out: DB_MIGRATIONS_FOLDER,
 	driver: 'pg',
 	breakpoints: true,
 	dbCredentials: {
-		connectionString: ENV.SUPABASE_DB_URL,
+		connectionString: ENV.NEON_DB_URL,
 	},
 } satisfies Config;
