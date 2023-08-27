@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@lucia-auth/adapter-postgresql':
     specifier: ^2.0.1
-    version: 2.0.1(lucia@2.4.0)
+    version: 2.0.1(lucia@2.4.0)(postgres@3.3.5)
   '@melt-ui/svelte':
     specifier: ^0.39.1
     version: 0.39.1(svelte@4.2.0)
@@ -19,7 +19,7 @@ dependencies:
     version: 2.32.0(svelte@4.2.0)
   drizzle-orm:
     specifier: ^0.28.5
-    version: 0.28.5(@neondatabase/serverless@0.6.0)
+    version: 0.28.5(@neondatabase/serverless@0.6.0)(postgres@3.3.5)
   drizzle-zod:
     specifier: ^0.5.1
     version: 0.5.1(drizzle-orm@0.28.5)(zod@3.22.2)
@@ -55,6 +55,12 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.15
     version: 10.4.15(postcss@8.4.28)
+  dotenv:
+    specifier: ^16.3.1
+    version: 16.3.1
+  dotenv-expand:
+    specifier: ^10.0.0
+    version: 10.0.0
   drizzle-kit:
     specifier: ^0.19.13
     version: 0.19.13
@@ -67,6 +73,9 @@ devDependencies:
   eslint-plugin-svelte:
     specifier: ^2.33.0
     version: 2.33.0(eslint@8.48.0)(svelte@4.2.0)
+  postgres:
+    specifier: ^3.3.5
+    version: 3.3.5
   prettier:
     specifier: ^3.0.2
     version: 3.0.2
@@ -94,9 +103,12 @@ devDependencies:
   tslib:
     specifier: ^2.6.2
     version: 2.6.2
+  tsx:
+    specifier: ^3.12.7
+    version: 3.12.7
   type-fest:
-    specifier: ^4.2.0
-    version: 4.2.0
+    specifier: ^4.3.0
+    version: 4.3.0
   typescript:
     specifier: ^5.2.2
     version: 5.2.2
@@ -123,6 +135,13 @@ packages:
 
   /@drizzle-team/studio@0.0.5:
     resolution: {integrity: sha512-ps5qF0tMxWRVu+V5gvCRrQNqlY92aTnIKdq27gm9LZMSdaKYZt6AVvSK1dlUMzs6Rt0Jm80b+eWct6xShBKhIw==}
+    dev: true
+
+  /@esbuild-kit/cjs-loader@2.4.2:
+    resolution: {integrity: sha512-BDXFbYOJzT/NBEtp71cvsrGPwGAMGRB/349rwKuoxNSiKjPraNNnlK6MIIabViCjqZugu6j+xeMDlEkWdHHJSg==}
+    dependencies:
+      '@esbuild-kit/core-utils': 3.1.0
+      get-tsconfig: 4.7.0
     dev: true
 
   /@esbuild-kit/core-utils@3.1.0:
@@ -631,7 +650,7 @@ packages:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  /@lucia-auth/adapter-postgresql@2.0.1(lucia@2.4.0):
+  /@lucia-auth/adapter-postgresql@2.0.1(lucia@2.4.0)(postgres@3.3.5):
     resolution: {integrity: sha512-HrgyCsHXEWMD3oF2vSzbqucwGR9zCNvsV5MTV/J3EkiTHskjJXRoVqIoOONeLsdBTy+nIciyoWNMAYe9LJj3tA==}
     peerDependencies:
       lucia: ^2.0.0
@@ -644,6 +663,7 @@ packages:
         optional: true
     dependencies:
       lucia: 2.4.0
+      postgres: 3.3.5
     dev: false
 
   /@mapbox/node-pre-gyp@1.0.11:
@@ -1460,6 +1480,16 @@ packages:
       esutils: 2.0.3
     dev: true
 
+  /dotenv-expand@10.0.0:
+    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /dotenv@16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
+    engines: {node: '>=12'}
+    dev: true
+
   /dreamopt@0.8.0:
     resolution: {integrity: sha512-vyJTp8+mC+G+5dfgsY+r3ckxlz+QMX40VjPQsZc5gxVAxLmi64TBoVkP54A/pRAXMXsbu2GMMBrZPxNv23waMg==}
     engines: {node: '>=0.4.0'}
@@ -1487,7 +1517,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.28.5(@neondatabase/serverless@0.6.0):
+  /drizzle-orm@0.28.5(@neondatabase/serverless@0.6.0)(postgres@3.3.5):
     resolution: {integrity: sha512-6r6Iw4c38NAmW6TiKH3TUpGUQ1YdlEoLJOQptn8XPx3Z63+vFNKfAiANqrIiYZiMjKR9+NYAL219nFrmo1duXA==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -1550,6 +1580,7 @@ packages:
         optional: true
     dependencies:
       '@neondatabase/serverless': 0.6.0
+      postgres: 3.3.5
     dev: false
 
   /drizzle-zod@0.5.1(drizzle-orm@0.28.5)(zod@3.22.2):
@@ -1558,7 +1589,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.28.5(@neondatabase/serverless@0.6.0)
+      drizzle-orm: 0.28.5(@neondatabase/serverless@0.6.0)(postgres@3.3.5)
       zod: 3.22.2
     dev: false
 
@@ -2996,6 +3027,9 @@ packages:
       xtend: 4.0.2
     dev: false
 
+  /postgres@3.3.5:
+    resolution: {integrity: sha512-+JD93VELV9gHkqpV5gdL5/70HdGtEw4/XE1S4BC8f1mcPmdib3K5XsKVbnR1XcAyC41zOnifJ+9YRKxdIsXiUw==}
+
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
@@ -3476,6 +3510,17 @@ packages:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
     dev: true
 
+  /tsx@3.12.7:
+    resolution: {integrity: sha512-C2Ip+jPmqKd1GWVQDvz/Eyc6QJbGfE7NrR3fx5BpEHMZsEHoIxHL1j+lKdGobr8ovEyqeNkPLSKp6SCSOt7gmw==}
+    hasBin: true
+    dependencies:
+      '@esbuild-kit/cjs-loader': 2.4.2
+      '@esbuild-kit/core-utils': 3.1.0
+      '@esbuild-kit/esm-loader': 2.5.5
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: true
+
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -3488,8 +3533,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /type-fest@4.2.0:
-    resolution: {integrity: sha512-5zknd7Dss75pMSED270A1RQS3KloqRJA9XbXLe0eCxyw7xXFb3rd+9B0UQ/0E+LQT6lnrLviEolYORlRWamn4w==}
+  /type-fest@4.3.0:
+    resolution: {integrity: sha512-XbMcLhoaaX/vw1S8jTKysTlznqSPxDXj1Jf56neDMksT1xoKr02pFAhHhDbW9bFejktlwKto18/UsdXlnUCBMg==}
     engines: {node: '>=16'}
     dev: true
 

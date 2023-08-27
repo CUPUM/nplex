@@ -7,12 +7,21 @@
 
 ## See it live
 
-The app's frontend is deployed on Vercel and is available at [nplex.design](www.nplex.design).
+The app's frontend is deployed on Vercel and is available at [nplex.design](www.nplex.design). The
+backend is currently being ported to Neondb for greater schema agnosticity.
 
 ## Stack
 
-- `frontend`: [SvelteKit](https://kit.svelte.dev/)
-- `backend`: [Supabase](https://supabase.com/)
+- SvelteKit
+- Drizzle-orm & drizzle-kit
+- Lucia auth
+- Melt-UI
+- SvelteKit Superforms
+
+## Hosting
+
+- Vercel (frontend)
+- Neon (database)
 
 ## Getting started
 
@@ -21,9 +30,13 @@ The app's frontend is deployed on Vercel and is available at [nplex.design](www.
 The project's monorepo expects you to use `pnpm` as the package manager to enable proper use of its
 workspace features. Using `npm` is not indicated. This allows dependency optimizations with shared
 and cached packages on developement or production devices. If you do not have `pnpm` installed,
-please refer to: https://pnpm.io/installation or simply proceed with:
+please refer to: <https://pnpm.io/installation> or simply proceed with either:
 
 ```sh
+# brew (preferred method)
+brew install pnpm
+
+# npm
 npm install -g pnpm
 ```
 
@@ -36,7 +49,7 @@ should be, as they contain sensitive information for service authentications.
 
 ### Install
 
-You can install everything at once:
+Install everything at once:
 
 ```sh
 pnpm install
@@ -57,7 +70,3 @@ pnpm frontend dev
 ```
 
 The same applies for `backend` scripts.
-
-#### Root scripts
-
-##### Generating types
