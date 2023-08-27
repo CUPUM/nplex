@@ -4,13 +4,22 @@ import { derived } from 'svelte/store';
 import { LOCALE_DEFAULT, LOCALE_PARAM, type Locale } from './constants';
 
 /**
+ * Extract the localizable part of a given in-app url, i.e. the url parts after the origin.
+ */
+function getTail(url: URL) {
+	const str = url.toString();
+	return str.split(url.origin)[1];
+}
+
+/**
  * Create a localizer for un-localized in-app hrefs.
  */
-export function localize<H extends string>(href: H, locale: Locale) {
+export function localize<T extends string | URL>(location: T, locale: Locale) {
+	const str = typeof location === 'string' ? location : getTail(location);
 	// This is where the locale segment persistence is determined.
 	// As it is, the locale param is prepended whenever the href points to a non-default-locale.
 	// This could be fine-tuned to, for example, account for user's preferences in localstorage / cookies / page.data.
-	return resolvePath(`/[[${LOCALE_PARAM}]]${href}`, {
+	return resolvePath(`/[[${LOCALE_PARAM}]]${str}`, {
 		[LOCALE_PARAM]: locale === LOCALE_DEFAULT ? '' : locale,
 	});
 }

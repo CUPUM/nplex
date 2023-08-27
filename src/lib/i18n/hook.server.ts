@@ -1,5 +1,6 @@
 import type { Handle } from '@sveltejs/kit';
 import { getEventLocale } from './event';
+import { createI18nRedirect } from './redirect.server';
 
 /**
  * Handle hook handler to manage i18n persistence. Checks for cookie, else falls back to browser
@@ -8,10 +9,11 @@ import { getEventLocale } from './event';
 const handle = (async ({ event, resolve }) => {
 	const locale = getEventLocale(event);
 	event.locals.locale = locale;
+	event.locals.redirect = createI18nRedirect(event);
 	const res = resolve(event, {
 		transformPageChunk(input) {
 			return input.html.replace('%lang%', event.locals.locale);
-		}
+		},
 	});
 	return res;
 }) satisfies Handle;

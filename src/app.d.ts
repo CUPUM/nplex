@@ -3,6 +3,7 @@
 import type { Auth as LuciaAuth } from '$lib/auth/auth.server';
 import type { users } from '$lib/db/schema/auth';
 import type { Locale } from '$lib/i18n/constants';
+import type { createI18nRedirect } from '$lib/i18n/redirect.server';
 import type { Mode } from '$lib/modes/constants';
 import type { InferSelectModel } from 'drizzle-orm';
 import type { AuthRequest } from 'lucia';
@@ -30,6 +31,10 @@ declare global {
 			 * Client's language as determined by the i18n middleware.
 			 */
 			locale: Locale;
+			/**
+			 * Pre-localized redirect helper.
+			 */
+			redirect: ReturnType<typeof createI18nRedirect>;
 			/**
 			 * Private theme_mode value for handle hook.
 			 */
