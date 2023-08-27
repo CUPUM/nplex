@@ -1,9 +1,6 @@
 <script lang="ts">
 	import Footer from '$lib/components/Footer.svelte';
 	import Navmenu from '$lib/components/Navmenu.svelte';
-	import '../../app.scss';
-
-	// export let data;
 </script>
 
 <Navmenu />
@@ -20,5 +17,9 @@
 		flex-wrap: nowrap;
 		padding: 0;
 		margin: 0;
+
+		@include dark {
+			color: red;
+		}
 	}
 </style>

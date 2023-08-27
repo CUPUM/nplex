@@ -111,9 +111,15 @@
 	position: relative;
 	font-size: 100%;
 	font-family: var(--font-main);
-	color: var(--color-neutral-800);
-	background-color: var(--color-neutral-100);
 	overflow-x: hidden;
+	color: var(--color-neutral-700);
+	background-color: var(--color-neutral-100);
+	transition: all 0.1s ease-out;
+
+	&[data-mode='dark'] {
+		color: var(--color-neutral-300);
+		background-color: var(--color-neutral-900);
+	}
 }
 
 body {
@@ -121,5 +127,4 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100svh;
-	font-size: var(--size-md);
 }

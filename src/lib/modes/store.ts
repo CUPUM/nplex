@@ -16,6 +16,7 @@ export const mode = (function () {
 		const unsub = page.subscribe((d) => {
 			store.set(d.data.mode);
 		});
+		store.set(getModeCookie());
 		return function stop() {
 			unsub();
 		};

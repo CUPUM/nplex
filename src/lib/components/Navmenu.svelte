@@ -3,11 +3,13 @@
 	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
 	import { i18nlink, i18nswitch } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
+	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
 	import { ripple } from '$lib/ripple/action';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
-	import { IconLanguage, IconUserCircle } from '@tabler/icons-svelte';
-	import { fly } from 'svelte/transition';
+	import { IconLanguage, IconUser } from '@tabler/icons-svelte';
+	import { expoOut } from 'svelte/easing';
+	import { fly, scale } from 'svelte/transition';
 
 	const t = createTranslations({
 		fr: {
@@ -40,9 +42,8 @@
 	</nav>
 	<!-- User nav -->
 	<nav class="group">
-		<a class="button" {...$i18nlink('/login')}>
-			<IconUserCircle size="1.5em" />
-			{$t.login}
+		<a class="button square" {...$i18nlink('/signup')}>
+			<IconUser size="1.5em" class="button-icon" />
 		</a>
 	</nav>
 	<!-- User settings -->
@@ -60,16 +61,13 @@
 				{/each}
 			</menu>
 		{/if}
-		<button class="button" on:pointerdown={mode.toggle}>Toggle!</button>
-		<!-- <button class="button" use:melt={$themeTrigger}>{$MODES_TRANSLATIONS.label}</button>
-		<menu class="dropdown" use:melt={$themeMenu} in:fly>
-			{#each MODES_ARR as theme}
-				<button class="dropdown-item" use:melt={$themeItem}>
-					<svelte:component this={MODES_DETAILS[theme].icon} />
-					{$MODES_TRANSLATIONS[theme]}
-				</button>
-			{/each}
-		</menu> -->
+		<button class="button square" use:ripple on:pointerdown={mode.toggle}>
+			{#key $mode}
+				<div transition:scale={{ start: 0, duration: 350, easing: expoOut }} class="button-icon">
+					<svelte:component this={MODES_DETAILS[$mode].icon} size="1.5em" />
+				</div>
+			{/key}
+		</button>
 	</menu>
 </header>
 
@@ -92,7 +90,7 @@
 		flex-direction: row;
 		gap: var(--space-3xs);
 		align-items: center;
-		justify-content: flex-start;
+		justify-content: center;
 		height: var(--space-2xl);
 		font-size: var(--size-sm);
 		font-weight: 450;
@@ -119,6 +117,22 @@
 		&[data-state='open'] {
 			z-index: 1;
 		}
+
+		&.square {
+			aspect-ratio: 1;
+			padding: 0;
+			:global(.button-icon) {
+				position: absolute;
+			}
+		}
+
+		&:hover :global(.button-icon) {
+			// scale: 1.1;
+		}
+	}
+
+	:global(.button-icon) {
+		// transition: scale 0.25s ease-out;
 	}
 
 	#locale-label {
