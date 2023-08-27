@@ -12,7 +12,7 @@ export default defineConfig({
 	css: {
 		preprocessorOptions: {
 			scss: {
-				additionalData: `@import '$lib/media/breakpoints.scss';`,
+				additionalData: `@use '$lib/media/breakpoints.scss' as *; @use '$lib/modes/modes.scss' as *;`,
 			},
 		},
 		postcss: {
