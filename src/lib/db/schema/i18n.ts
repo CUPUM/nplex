@@ -20,33 +20,3 @@ export const locales = i18nSchema.table('locales', {
 	locale: locale('locale').primaryKey(),
 	name: text('name').notNull().unique(),
 });
-
-// /**
-//  * Global table of translations.
-//  */
-// export const translations = i18nSchema.table(
-// 	'translations',
-// 	{
-// 		textContentId: uuid('text_content_id').references(() => textContents.id, {
-// 			onDelete: 'cascade',
-// 			onUpdate: 'cascade',
-// 		}),
-// 		locale: locale('locale').references(() => locales.locale, {
-// 			onDelete: 'cascade',
-// 			onUpdate: 'cascade',
-// 		}),
-// 		text: text('text'),
-// 	},
-// 	(table) => {
-// 		return {
-// 			pk: primaryKey(table.textContentId, table.locale),
-// 		};
-// 	}
-// );
-
-// /**
-//  * Intermediate linking table for one-to-many.
-//  */
-// export const textContents = i18nSchema.table('text_contents', {
-// 	id: uuid('id').defaultRandom().primaryKey(),
-// });
