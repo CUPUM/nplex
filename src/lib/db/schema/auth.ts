@@ -1,4 +1,4 @@
-import { USERS_ROLES } from '$lib/auth/constants';
+import { USER_ROLES } from '$lib/auth/constants';
 import {
 	bigint,
 	pgSchema,
@@ -85,7 +85,7 @@ export const users = authSchema.table('users', {
 			onDelete: 'set default',
 			onUpdate: 'cascade',
 		})
-		.default(USERS_ROLES.VISITOR)
+		.default(USER_ROLES.VISITOR)
 		.notNull(),
 	email: text('email').unique(),
 	publicEmail: text('email'),

@@ -1,5 +1,7 @@
 import { config } from 'dotenv';
 import { expand } from 'dotenv-expand';
+import { drizzle } from 'drizzle-orm/postgres-js';
+import pg from 'postgres';
 import { z } from 'zod';
 
 // Sourcing env vars for scripts that run outside of vite/sveltekit.
@@ -18,3 +20,9 @@ export const ENV = z
 	.parse(process.env);
 
 export const DB_MIGRATIONS_FOLDER = './migrations';
+
+export function createDrizzle() {
+	const client = pg(ENV.NEON_DB_URL_NOPOOL, { max: 1, ssl: 'require' });
+	const db = drizzle(client);
+	return db;
+}

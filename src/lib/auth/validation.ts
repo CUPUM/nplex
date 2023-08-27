@@ -1,14 +1,14 @@
 import { z } from 'zod';
-import { USERS_ROLES_ARR, type UserRole } from './constants';
+import { USER_ROLES_ARR, type UserRole } from './constants';
 
 /**
  * Validate a given input user role.
  */
 export function isUserRole(maybeUserRole: unknown): maybeUserRole is UserRole {
-	return USERS_ROLES_ARR.indexOf(maybeUserRole as UserRole) > -1;
+	return USER_ROLES_ARR.indexOf(maybeUserRole as UserRole) > -1;
 }
 
-const joinedRoles = USERS_ROLES_ARR.join(', ');
+const joinedRoles = USER_ROLES_ARR.join(', ');
 
 export const userRoleSchema = z.custom<UserRole>(
 	(data) => {
