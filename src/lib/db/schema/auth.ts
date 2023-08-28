@@ -1,6 +1,8 @@
 import { USER_ROLES } from '$lib/auth/constants';
+import type { InferSelectModel } from 'drizzle-orm';
 import {
 	bigint,
+	boolean,
 	pgSchema,
 	primaryKey,
 	serial,
@@ -87,24 +89,50 @@ export const users = authSchema.table('users', {
 		})
 		.default(USER_ROLES.VISITOR)
 		.notNull(),
-	email: text('email').unique(),
-	publicEmail: text('email'),
+	email: text('email').unique().notNull(),
+	emailVerified: boolean('email_verified').default(false).notNull(),
+	publicEmail: text('public_email'),
+	publicEmailVerified: boolean('public_email_verified').default(false).notNull(),
 	username: text('username').unique(),
 	firstName: text('first_name'),
 	middleName: text('middle_name'),
 	lastName: text('last_name'),
 });
 
+export type SelectUser = InferSelectModel<typeof users>;
+
 export const usersOccupations = authSchema.table('users_occupations', {
-	userId: varchar('user_id').references(() => users.id, {
-		onDelete: 'cascade',
-		onUpdate: 'cascade',
-	}),
-	occupationId: serial('occupation_id').references(() => userOccupations.id, {
-		onDelete: 'set null',
-		onUpdate: 'cascade',
-	}),
+	userId: varchar('user_id')
+		.references(() => users.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
+	occupationId: serial('occupation_id')
+		.references(() => userOccupations.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
 });
+
+/**
+ * Tracking email confirmations and their expiry.
+ *
+ * @see https://lucia-auth.com/guidebook/email-verification-links
+ */
+export const emailVerificationTokens = authSchema.table('email_verification_tokens', {
+	id: text('id').notNull().unique(),
+	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
+	userId: varchar('user_id')
+		.references(() => users.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
+});
+
+export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerificationTokens>;
 
 /**
  * Sessions to track auth-oriented user requests.

@@ -62,6 +62,7 @@
 		"@sveltejs/adapter-vercel": "^3.0.3",
 		"@sveltejs/kit": "^1.23.0",
 		"@types/js-cookie": "^3.0.3",
+		"@types/nodemailer": "^6.4.9",
 		"@typescript-eslint/eslint-plugin": "^6.4.1",
 		"@typescript-eslint/parser": "^6.4.1",
 		"autoprefixer": "^10.4.15",
@@ -96,6 +97,8 @@
 		"drizzle-orm": "^0.28.5",
 		"drizzle-zod": "^0.5.1",
 		"js-cookie": "^3.0.5",
-		"lucia": "^2.4.0"
+		"lucia": "^2.4.0",
+		"nodemailer": "^6.9.4",
+		"svelte-email": "^0.0.4"
 	}
 }

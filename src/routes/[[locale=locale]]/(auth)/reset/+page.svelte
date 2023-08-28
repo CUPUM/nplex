@@ -1,29 +1,19 @@
 <script lang="ts">
-	import { i18nlink } from '$lib/i18n/link.js';
+	import { enhance } from '$app/forms';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { superForm } from 'sveltekit-superforms/client';
 
 	const t = createTranslations({
 		fr: {
-			title: 'Créer un compte',
-			email: 'Courriel',
-			password: 'Mot de passe',
-			confirmPassword: 'Confirmez le mot de passe',
-			button: 'M’inscrire!',
-			login: 'J’ai déjà un compte',
+			title: 'Réinitialisez votre mot de passe',
+			name: 'Nom d’uilisateur ou courriel',
+			button: 'Réinitialiser',
 		},
 		en: {
-			title: 'Create an account',
-			email: 'Email',
-			password: 'Password',
-			confirmPassword: 'Confirm password',
-			button: 'Signup!',
-			login: 'I already have an account',
+			title: 'Reset your password',
+			name: 'Username or email',
+			button: 'Reset',
 		},
 	});
-
-	export let data;
-	const { form, enhance, constraints, errors } = superForm(data.form);
 </script>
 
 <form use:enhance method="POST">
@@ -31,13 +21,13 @@
 
 	<fieldset>
 		<label>
-			{$t.email}
+			{$t.name}
 			<input
 				type="text"
 				name="username"
-				aria-invalid={$errors.email ? true : undefined}
-				bind:value={$form.email}
-				{...$constraints.email}
+				aria-invalid={$errors.username ? true : undefined}
+				bind:value={$form.username}
+				{...$constraints.username}
 			/>
 		</label>
 	</fieldset>
@@ -65,7 +55,9 @@
 		</label>
 	</fieldset>
 
-	<button type="submit">{$t.button}</button>
+	<button type="submit">
+		{$t.button}
+	</button>
 
 	<a {...$i18nlink('/login')}>{$t.login}</a>
 </form>

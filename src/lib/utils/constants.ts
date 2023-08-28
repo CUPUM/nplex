@@ -3,7 +3,7 @@ import type { ValueOf } from 'type-fest';
 /**
  * Css cursor names.
  */
-export const CURSOR = {
+export const CURSORS = {
 	ADD: 'add',
 	ALIAS: 'alias',
 	AUTO: 'auto',
@@ -46,12 +46,12 @@ export const CURSOR = {
 	ZOOM_OUT: 'zoom-out',
 } as const;
 
-export type Cursor = ValueOf<typeof CURSOR>;
+export type Cursor = ValueOf<typeof CURSORS>;
 
 /**
  * Http response status codes.
  */
-export const STATUS_CODE = {
+export const STATUS_CODES = {
 	OK: 200,
 	CREATED: 201,
 	ACCEPTED: 202,
@@ -106,4 +106,57 @@ export const STATUS_CODE = {
 	NETWORK_AUTHENTICATION_REQUIRED: 511,
 } as const;
 
-export type StatusCode = ValueOf<typeof STATUS_CODE>;
+export type StatusCode = ValueOf<typeof STATUS_CODES>;
+
+export const KEYS = {
+	UNDEFINED: 'Undefined',
+	SPACE: ' ',
+	ALT: 'Alt',
+	ALT_GRAPH: 'AltGraph',
+	CAPS_LOCK: 'CapsLock',
+	CONTROL: 'Control',
+	FN: 'Fn',
+	FN_LOCK: 'FnLock',
+	HYPER: 'Hyper',
+	META: 'Meta',
+	NUM_LOCK: 'NumLock',
+	SCROLL_LOCK: 'ScrollLock',
+	SHIFT: 'Shift',
+	SUPER: 'Super',
+	SYMBOL: 'Symbol',
+	SYMBOL_LOCK: 'SymbolLock',
+	ENTER: 'Enter',
+	TAB: 'Tab',
+	ARROW_UP: 'ArrowUp',
+	ARROW_RIGHT: 'ArrowRight',
+	ARROW_DOWN: 'ArrowDown',
+	ARROW_LEFT: 'ArrowLeft',
+	END: 'End',
+	HOME: 'Home',
+	PAGE_UP: 'PageUp',
+	PAGE_DOWN: 'PageDown',
+	BACKSPACE: 'Backspace',
+	CLEAR: 'Clear',
+	COPY: 'Copy',
+	CR_SEL: 'CrSel',
+	CUT: 'Cut',
+	DELETE: 'Delete',
+	ERASE_EOF: 'EraseEof',
+	EX_SEL: 'ExSel',
+	INSERT: 'Insert',
+	PASTE: 'Paste',
+	REDO: 'Redo',
+	UNDO: 'Undo',
+	CANCEL: 'Cancel',
+	CONTEXT_MENU: 'ContextMenu',
+	ESCAPE: 'Escape',
+	EXECUTE: 'Execute',
+	FIND: 'Find',
+	HELP: 'Help',
+	FINISH: 'Finish',
+	PAUSE: 'Pause',
+	PLAY: 'Play',
+	SELECT: 'Select',
+	ZOOM_IN: 'ZoomIn',
+	ZOOM_OUT: 'ZoomOut',
+} as const;

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { USER_ROLES_ARR, type UserRole } from './constants';
+import { AUTH_PROVIDERS_ARR, USER_ROLES_ARR, type AuthProvider, type UserRole } from './constants';
 
 /**
  * Validate a given input user role.
@@ -24,7 +24,36 @@ export const userRoleSchema = z.custom<UserRole>(
 			console.error(error);
 			return {
 				message:
-					'A parsing error occured during the userRoleSchema error message preparation. Either-way, the given role is not valid. See console for logs',
+					'A parsing error occured within the userRoleSchema error message preparation. Either-way, the given role is not valid. See console for logs.',
+			};
+		}
+	}
+);
+
+const joinedProviders = AUTH_PROVIDERS_ARR.join(', ');
+
+/**
+ * Confirm that a given value is a member of the app's expected providers enum.
+ */
+export function isAuthProvider(maybeAuthProvider: unknown): maybeAuthProvider is AuthProvider {
+	return AUTH_PROVIDERS_ARR.indexOf(maybeAuthProvider as AuthProvider) > -1;
+}
+
+export const authProviderSchema = z.custom<AuthProvider>(
+	(data) => {
+		return isAuthProvider(data);
+	},
+	(d) => {
+		try {
+			const str = typeof d === 'string' ? d : JSON.stringify(d);
+			return {
+				message: `Given auth provider key "${str}" is not valid. Auth providers must be one of ${joinedProviders}.`,
+			};
+		} catch (error) {
+			console.error(error);
+			return {
+				message:
+					'A parsing error occured within the authProviderSchema error message preparation. Either-way, the given auth provider is not valid. See console for logs.',
 			};
 		}
 	}

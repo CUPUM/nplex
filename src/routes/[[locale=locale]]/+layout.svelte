@@ -17,9 +17,5 @@
 		flex-wrap: nowrap;
 		padding: 0;
 		margin: 0;
-
-		@include dark {
-			color: red;
-		}
 	}
 </style>

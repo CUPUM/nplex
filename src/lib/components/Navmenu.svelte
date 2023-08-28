@@ -6,10 +6,12 @@
 	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
 	import { ripple } from '$lib/ripple/action';
+	import { transform } from '$lib/transitions/transform';
+	import { KEYS } from '$lib/utils/constants';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
 	import { IconLanguage, IconUser } from '@tabler/icons-svelte';
 	import { expoOut } from 'svelte/easing';
-	import { fly, scale } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 
 	const t = createTranslations({
 		fr: {
@@ -42,13 +44,13 @@
 	</nav>
 	<!-- User nav -->
 	<nav class="group">
-		<a class="button square" {...$i18nlink('/signup')}>
-			<IconUser size="1.5em" class="button-icon" />
+		<a class="button square" use:ripple {...$i18nlink('/signup')}>
+			<IconUser size="1.5em" style="button-icon" />
 		</a>
 	</nav>
 	<!-- User settings -->
 	<menu class="group">
-		<button class="button" use:melt={$localeTrigger}>
+		<button class="button" use:ripple use:melt={$localeTrigger}>
 			<IconLanguage size="1.5em" />
 			<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
 		</button>
@@ -61,9 +63,22 @@
 				{/each}
 			</menu>
 		{/if}
-		<button class="button square" use:ripple on:pointerdown={mode.toggle}>
+		<button
+			class="button square"
+			use:ripple
+			on:pointerdown={mode.toggle}
+			on:keydown={(e) => {
+				if (e.key === KEYS.SPACE || e.key === KEYS.ENTER) {
+					mode.toggle();
+				}
+			}}
+		>
 			{#key $mode}
-				<div transition:scale={{ start: 0, duration: 350, easing: expoOut }} class="button-icon">
+				<div
+					in:transform={{ scale: 0.75, rotate: [0, 0, 90], duration: 500, easing: expoOut }}
+					out:transform={{ scale: 0.75, rotate: [0, 0, -90], duration: 750, easing: expoOut }}
+					class="button-icon mode-icon"
+				>
 					<svelte:component this={MODES_DETAILS[$mode].icon} size="1.5em" />
 				</div>
 			{/key}
@@ -88,7 +103,7 @@
 		position: relative;
 		display: flex;
 		flex-direction: row;
-		gap: var(--space-3xs);
+		gap: var(--space-2xs);
 		align-items: center;
 		justify-content: center;
 		height: var(--space-2xl);
@@ -121,29 +136,27 @@
 		&.square {
 			aspect-ratio: 1;
 			padding: 0;
-			:global(.button-icon) {
+			overflow: hidden;
+
+			& :global(.button-icon) {
 				position: absolute;
 			}
 		}
-
-		&:hover :global(.button-icon) {
-			// scale: 1.1;
-		}
 	}
 
-	:global(.button-icon) {
-		// transition: scale 0.25s ease-out;
+	.mode-icon {
+		transform-origin: center 200%;
 	}
 
 	#locale-label {
 		display: flex;
 		align-items: center;
 		font-size: var(--size-xs);
-		padding: 0.5rem 0.75rem;
-		background-color: rgba(0, 0, 0, 0.1);
+		padding: 0.35rem 0.5rem;
 		opacity: 0.75;
 		border-radius: var(--radius-full);
-		font-weight: 500;
+		border: 1px solid color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+		font-weight: 400;
 	}
 
 	.dropdown {

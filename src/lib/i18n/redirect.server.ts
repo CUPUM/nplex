@@ -1,7 +1,7 @@
 import { redirect, type RequestEvent } from '@sveltejs/kit';
 import { localize } from './href';
 
-export function createI18nRedirect(event: RequestEvent) {
+export function eventI18nRedirect(event: RequestEvent) {
 	/**
 	 * Pre-localized redirect helper.
 	 *

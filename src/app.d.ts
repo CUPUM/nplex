@@ -3,7 +3,9 @@
 import type { Auth as LuciaAuth } from '$lib/auth/auth.server';
 import type { users } from '$lib/db/schema/auth';
 import type { Locale } from '$lib/i18n/constants';
-import type { createI18nRedirect } from '$lib/i18n/redirect.server';
+import type { eventLocalize } from '$lib/i18n/localize.server';
+import type { eventI18nRedirect } from '$lib/i18n/redirect.server';
+import type { eventCreateTranslations } from '$lib/i18n/translate';
 import type { Mode } from '$lib/modes/constants';
 import type { InferSelectModel } from 'drizzle-orm';
 import type { AuthRequest } from 'lucia';
@@ -12,9 +14,12 @@ import type { AuthRequest } from 'lucia';
 declare global {
 	namespace Lucia {
 		type Auth = LuciaAuth;
-		type DatabaseUserAttributes = InferSelectModel<typeof users>;
+		type DatabaseUserAttributes = Pick<
+			InferSelectModel<typeof users>,
+			'email' | 'emailVerified' | 'role'
+		>;
 		type DatabaseSessionAttributes = {
-			//
+			// to do
 		};
 	}
 }
@@ -34,7 +39,15 @@ declare global {
 			/**
 			 * Pre-localized redirect helper.
 			 */
-			redirect: ReturnType<typeof createI18nRedirect>;
+			redirect: ReturnType<typeof eventI18nRedirect>;
+			/**
+			 * Event-scoped location formatter.
+			 */
+			localize: ReturnType<typeof eventLocalize>;
+			/**
+			 * Event-localized translations helper.
+			 */
+			createTranslations: ReturnType<typeof eventCreateTranslations>;
 			/**
 			 * Private theme_mode value for handle hook.
 			 */

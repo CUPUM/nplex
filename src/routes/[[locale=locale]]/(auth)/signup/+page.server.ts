@@ -1,11 +1,14 @@
-import { STATUS_CODE } from '$lib/utils/constants.js';
-import type { Actions } from '@sveltejs/kit';
+import { auth } from '$lib/auth/auth.server.js';
+import { AUTH_PROVIDERS, USER_ROLES } from '$lib/auth/constants.js';
+import { sendEmailVerificationLink } from '$lib/auth/emails.server.js';
+import { STATUS_CODES } from '$lib/utils/constants.js';
+import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
-const credentialsSchema = z
+const emailPasswordSignupSchema = z
 	.object({
-		username: z.string(),
+		email: z.string().email(),
 		password: z.string(),
 		confirmPassword: z.string(),
 	})
@@ -23,16 +26,44 @@ const credentialsSchema = z
 export const load = async (event) => {
 	const session = await event.locals.auth.validate();
 	if (session) {
-		throw event.locals.redirect(STATUS_CODE.MOVED_TEMPORARILY, '/i');
+		if (session.user.email && !session.user.emailVerified) {
+			throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/signup/verify-email');
+		}
+		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
-	const form = await superValidate(credentialsSchema);
+	const form = await superValidate(emailPasswordSignupSchema);
 	return { form };
 };
 
 export const actions = {
-	emailPassword: async (event) => {
-		const form = await superValidate(event, credentialsSchema);
-		console.log(form);
-		return { form };
+	default: async (event) => {
+		const form = await superValidate(event, emailPasswordSignupSchema);
+		if (!form.valid) {
+			return fail(STATUS_CODES.BAD_REQUEST, { form });
+		}
+		try {
+			const user = await auth.createUser({
+				key: {
+					providerId: AUTH_PROVIDERS.EMAIL,
+					providerUserId: form.data.email.toLocaleLowerCase(),
+					password: form.data.password,
+				},
+				attributes: {
+					role: USER_ROLES.VISITOR,
+					email: form.data.email,
+					emailVerified: false,
+				},
+			});
+			const session = await auth.createSession({
+				userId: user.userId,
+				attributes: {},
+			});
+			event.locals.auth.setSession(session);
+			await sendEmailVerificationLink(user, event);
+		} catch (err) {
+			console.error(err);
+			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });
+		}
+		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/signup/verify-email');
 	},
-} satisfies Actions;
+};

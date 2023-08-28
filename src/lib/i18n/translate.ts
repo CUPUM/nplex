@@ -76,3 +76,42 @@ export function createTranslations<T, C extends RequestEvent | ServerLoadEvent |
 	// Else, if in client environnement.
 	return createDerivedTranslations(translations);
 }
+
+export function eventCreateTranslations(event: RequestEvent | ServerLoadEvent | LoadEvent) {
+	/**
+	 * Event-localized translations dictionnary.
+	 *
+	 * @see {@link createTranslations}
+	 */
+	return function createEventTranslations<T>(translations: Translations<T>) {
+		return createTranslations(translations, event);
+	};
+}
+
+// Attempt using bindable this, but generic type T is lost when context is bound...
+// export function t<T>(translations: Translations<T>): Readable<T>
+// export function t<T>(this: RequestEvent | ServerLoadEvent | LoadEvent, translations: Translations<T>): T
+// export function t<T>(
+// 	/**
+// 	 * Context establishing the locale to use.
+// 	 */
+// 	this: RequestEvent | ServerLoadEvent | LoadEvent,
+// 	/**
+// 	 * Dictionnaries for each locales, must abide by the shape of the default locale's dictionnary.
+// 	 */
+// 	translations: Translations<T>
+// ) {
+// 	if (this !== undefined && typeof this === 'object') {
+// 		// If in a server event environement.
+// 		if ('locals' in this) {
+// 			return translations[this.locals.locale];
+// 		}
+// 		// If in universal environment.
+// 		if ('params' in this) {
+// 			const locale = getEventLocale(this);
+// 			return translations[locale];
+// 		}
+// 	}
+// 	// Else, if in client environnement.
+// 	return createDerivedTranslations(translations);
+// }

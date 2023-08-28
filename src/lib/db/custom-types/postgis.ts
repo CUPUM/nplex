@@ -5,3 +5,7 @@
 // 		return 'geometry';
 // 	},
 // });
+
+// export const point = customType<{data: P}>({
+// 	// data
+// })
