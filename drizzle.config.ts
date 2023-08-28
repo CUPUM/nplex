@@ -1,5 +1,5 @@
 import type { Config } from 'drizzle-kit';
-import { DB_MIGRATIONS_FOLDER, ENV } from './scripts/constants';
+import { DB_MIGRATIONS_FOLDER, ENV } from './scripts/common';
 
 export default {
 	schema: './src/lib/db/schema/*',
