@@ -6,10 +6,13 @@ import { locales } from './i18n';
 /**
  * Universal project descriptors.
  *
- * @note Differentiated form projects metadata by naming with singular form
+ * @note Differentiated from projects metadata by naming with singular form
  * of "project".
  */
 
+/**
+ * Top-most categories of projects.
+ */
 export const projectTypes = pgTable('project_types', {
 	id: serial('id').primaryKey(),
 });

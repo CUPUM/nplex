@@ -34,7 +34,7 @@
 			{$t.email}
 			<input
 				type="text"
-				name="username"
+				name="email"
 				aria-invalid={$errors.email ? true : undefined}
 				bind:value={$form.email}
 				{...$constraints.email}

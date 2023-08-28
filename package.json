@@ -83,7 +83,7 @@
 		"sveltekit-superforms": "^1.6.1",
 		"tslib": "^2.6.2",
 		"tsx": "^3.12.7",
-		"type-fest": "^4.3.0",
+		"type-fest": "^4.3.1",
 		"typescript": "^5.2.2",
 		"vite": "^4.4.9",
 		"zod": "^3.22.2"
@@ -91,7 +91,7 @@
 	"type": "module",
 	"dependencies": {
 		"@lucia-auth/adapter-postgresql": "^2.0.1",
-		"@melt-ui/svelte": "^0.39.1",
+		"@melt-ui/svelte": "^0.39.4",
 		"@neondatabase/serverless": "^0.6.0",
 		"@tabler/icons-svelte": "^2.32.0",
 		"drizzle-orm": "^0.28.5",

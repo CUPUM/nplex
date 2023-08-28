@@ -2,6 +2,13 @@ CREATE SCHEMA "auth";
 --> statement-breakpoint
 CREATE SCHEMA "i18n";
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "auth"."email_verification_tokens" (
+	"id" text NOT NULL,
+	"expires" bigint PRIMARY KEY NOT NULL,
+	"user_id" varchar NOT NULL,
+	CONSTRAINT "email_verification_tokens_id_unique" UNIQUE("id")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "auth"."auth_keys" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"user_id" varchar(15) NOT NULL,
@@ -44,7 +51,10 @@ CREATE TABLE IF NOT EXISTS "auth"."users" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"role" text DEFAULT 'visitor' NOT NULL,
-	"email" text,
+	"email" text NOT NULL,
+	"email_verified" boolean DEFAULT false NOT NULL,
+	"public_email" text,
+	"public_email_verified" boolean DEFAULT false NOT NULL,
 	"username" text,
 	"first_name" text,
 	"middle_name" text,
@@ -54,7 +64,7 @@ CREATE TABLE IF NOT EXISTS "auth"."users" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "auth"."users_occupations" (
-	"user_id" varchar,
+	"user_id" varchar NOT NULL,
 	"occupation_id" serial NOT NULL
 );
 --> statement-breakpoint
@@ -138,6 +148,12 @@ CREATE TABLE IF NOT EXISTS "projects_users" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "auth"."email_verification_tokens" ADD CONSTRAINT "email_verification_tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "auth"."auth_keys" ADD CONSTRAINT "auth_keys_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -186,7 +202,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."users_occupations" ADD CONSTRAINT "users_occupations_occupation_id_user_occupations_id_fk" FOREIGN KEY ("occupation_id") REFERENCES "auth"."user_occupations"("id") ON DELETE set null ON UPDATE cascade;
+ ALTER TABLE "auth"."users_occupations" ADD CONSTRAINT "users_occupations_occupation_id_user_occupations_id_fk" FOREIGN KEY ("occupation_id") REFERENCES "auth"."user_occupations"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
