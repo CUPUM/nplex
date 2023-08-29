@@ -1,5 +1,5 @@
 import { createTranslations } from '$lib/i18n/translate';
-import { IconMoon, IconSun, type Icon } from '@tabler/icons-svelte';
+import { MoonStar, Sun, type Icon } from 'lucide-svelte';
 import type { ComponentType } from 'svelte';
 import type { ValueOf } from 'type-fest';
 
@@ -16,10 +16,10 @@ export const MODE_DEFAULT = MODES.LIGHT;
 
 export const MODES_DETAILS = {
 	[MODES.LIGHT]: {
-		icon: IconSun,
+		icon: Sun,
 	},
 	[MODES.DARK]: {
-		icon: IconMoon,
+		icon: MoonStar,
 	},
 } as const satisfies Record<Mode, { icon: ComponentType<Icon> }>;
 

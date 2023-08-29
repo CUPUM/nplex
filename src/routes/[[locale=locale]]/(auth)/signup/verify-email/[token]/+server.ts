@@ -9,7 +9,7 @@ export const GET: RequestHandler = async (event) => {
 		const user = await auth.getUser(userId);
 		await auth.invalidateAllUserSessions(user.userId);
 		await auth.updateUserAttributes(user.userId, {
-			emailVerified: true,
+			email_verified: true,
 		});
 		const session = await auth.createSession({
 			userId: user.userId,

@@ -1,4 +1,4 @@
-import { db } from '$lib/db/db.server';
+import { dbpool } from '$lib/db/db.server';
 import {
 	emailVerificationTokens,
 	type SelectEmailVerificationToken,
@@ -21,7 +21,7 @@ const TOKEN_MIN_EXPIRY = 3_600_000; // 1hour
  * @see https://lucia-auth.com/guidebook/email-verification-links/sveltekit
  */
 export async function generateEmailVerificationToken(userId: SelectUser['id']) {
-	const storedUserTokens = await db
+	const storedUserTokens = await dbpool
 		.select()
 		.from(emailVerificationTokens)
 		.where(eq(emailVerificationTokens.userId, userId));
@@ -34,7 +34,7 @@ export async function generateEmailVerificationToken(userId: SelectUser['id']) {
 		}
 	}
 	const newToken = generateRandomString(63);
-	await db
+	await dbpool
 		.insert(emailVerificationTokens)
 		.values({ id: newToken, expires: BigInt(Date.now() + TOKEN_EXPIRY), userId });
 	return newToken;
@@ -51,7 +51,7 @@ export async function generateEmailVerificationToken(userId: SelectUser['id']) {
  * @see https://lucia-auth.com/guidebook/email-verification-links/sveltekit
  */
 export async function validateEmailVerificationToken(token: SelectEmailVerificationToken['id']) {
-	const storedToken = await db.transaction(async (tx) => {
+	const storedToken = await dbpool.transaction(async (tx) => {
 		const [storedToken] = await tx
 			.select()
 			.from(emailVerificationTokens)

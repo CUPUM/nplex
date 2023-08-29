@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { SOCIAL_PROVIDERS_ARR, SOCIAL_PROVIDERS_DETAILS } from '$lib/auth/constants.js';
 	import { i18nlink } from '$lib/i18n/link.js';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -23,10 +24,11 @@
 	});
 
 	export let data;
+
 	const { form, enhance, constraints, errors } = superForm(data.form);
 </script>
 
-<form use:enhance method="POST">
+<form action="?/email" use:enhance method="POST">
 	<h1>{$t.title}</h1>
 
 	<fieldset>
@@ -66,6 +68,15 @@
 	</fieldset>
 
 	<button type="submit">{$t.button}</button>
+
+	<fieldset>
+		{#each SOCIAL_PROVIDERS_ARR as provider}
+			<button type="submit">
+				{SOCIAL_PROVIDERS_DETAILS[provider].name}
+				<svelte:component this={SOCIAL_PROVIDERS_DETAILS[provider].icon} />
+			</button>
+		{/each}
+	</fieldset>
 
 	<a {...$i18nlink('/login')}>{$t.login}</a>
 </form>

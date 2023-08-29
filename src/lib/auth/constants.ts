@@ -1,10 +1,7 @@
-import {
-	IconBrandFacebook,
-	IconBrandGithub,
-	IconBrandGoogle,
-	IconBrandLinkedin,
-	type Icon,
-} from '@tabler/icons-svelte';
+import IconFacebook from '$lib/components/SocialIcons/IconFacebook.svelte';
+import IconGithub from '$lib/components/SocialIcons/IconGithub.svelte';
+import IconGoogle from '$lib/components/SocialIcons/IconGoogle.svelte';
+import IconLinkedin from '$lib/components/SocialIcons/IconLinkedin.svelte';
 import type { ComponentType } from 'svelte';
 import type { ValueOf } from 'type-fest';
 
@@ -29,18 +26,20 @@ export const CREDENTIALS_PROVIDERS = {
 
 export type CredentialsProvider = ValueOf<typeof CREDENTIALS_PROVIDERS>;
 
-export const SOCIALS_PROVIDERS = {
+export const SOCIAL_PROVIDERS = {
 	GITHUB: 'github',
 	FACEBOOK: 'facebook',
 	LINKEDIN: 'linkedin',
 	GOOGLE: 'google',
 } as const;
 
-export type SocialProvider = ValueOf<typeof SOCIALS_PROVIDERS>;
+export type SocialProvider = ValueOf<typeof SOCIAL_PROVIDERS>;
+
+export const SOCIAL_PROVIDERS_ARR = Object.values(SOCIAL_PROVIDERS);
 
 export const AUTH_PROVIDERS = {
 	...CREDENTIALS_PROVIDERS,
-	...SOCIALS_PROVIDERS,
+	...SOCIAL_PROVIDERS,
 } as const;
 
 export type AuthProvider = ValueOf<typeof AUTH_PROVIDERS>;
@@ -50,21 +49,21 @@ export const AUTH_PROVIDERS_ARR = Object.values(AUTH_PROVIDERS);
 export const SOCIAL_PROVIDERS_DETAILS = {
 	[AUTH_PROVIDERS.GITHUB]: {
 		name: 'GitHub',
-		icon: IconBrandGithub,
+		icon: IconGithub,
 	},
 	[AUTH_PROVIDERS.FACEBOOK]: {
 		name: 'Facebook',
-		icon: IconBrandFacebook,
+		icon: IconFacebook,
 	},
 	[AUTH_PROVIDERS.LINKEDIN]: {
 		name: 'LinkedIn',
-		icon: IconBrandLinkedin,
+		icon: IconLinkedin,
 	},
 	[AUTH_PROVIDERS.GOOGLE]: {
 		name: 'Google',
-		icon: IconBrandGoogle,
+		icon: IconGoogle,
 	},
-} satisfies Record<SocialProvider, { name: string; icon: ComponentType<Icon> }>;
+} satisfies Record<SocialProvider, { name: string; icon: ComponentType }>;
 
 export const AUTH_TOKEN_ERRORS = {
 	EXPIRED: 'expired',

@@ -36,7 +36,7 @@ export const load = async (event) => {
 };
 
 export const actions = {
-	default: async (event) => {
+	email: async (event) => {
 		const form = await superValidate(event, emailPasswordSignupSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
@@ -51,7 +51,7 @@ export const actions = {
 				attributes: {
 					role: USER_ROLES.VISITOR,
 					email: form.data.email,
-					emailVerified: false,
+					email_verified: false,
 				},
 			});
 			const session = await auth.createSession({
@@ -65,5 +65,8 @@ export const actions = {
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });
 		}
 		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/signup/verify-email');
+	},
+	social: async (event) => {
+		console.log(event);
 	},
 };

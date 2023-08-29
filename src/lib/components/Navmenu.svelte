@@ -9,7 +9,7 @@
 	import { transform } from '$lib/transitions/transform';
 	import { KEYS } from '$lib/utils/constants';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
-	import { IconLanguage, IconUser } from '@tabler/icons-svelte';
+	import { Languages, User2 } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
@@ -45,13 +45,13 @@
 	<!-- User nav -->
 	<nav class="group">
 		<a class="button square" use:ripple {...$i18nlink('/signup')}>
-			<IconUser size="1.5em" style="button-icon" />
+			<User2 size="1.5em" style="button-icon" />
 		</a>
 	</nav>
 	<!-- User settings -->
 	<menu class="group">
 		<button class="button" use:ripple use:melt={$localeTrigger}>
-			<IconLanguage size="1.5em" />
+			<Languages size="1.5em" />
 			<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
 		</button>
 		{#if $localeOpen}

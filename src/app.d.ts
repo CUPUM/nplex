@@ -15,8 +15,8 @@ declare global {
 	namespace Lucia {
 		type Auth = LuciaAuth;
 		type DatabaseUserAttributes = Pick<
-			InferSelectModel<typeof users>,
-			'email' | 'emailVerified' | 'role'
+			InferSelectModel<typeof users, { dbColumnNames: true }>,
+			'email' | 'email_verified' | 'role'
 		>;
 		type DatabaseSessionAttributes = {
 			// to do
@@ -30,8 +30,10 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			auth: AuthRequest;
-			user: Lucia.DatabaseUserAttributes;
-			session: Lucia.DatabaseSessionAttributes;
+			/**
+			 * Private theme_mode value for handle hook.
+			 */
+			mode: Mode;
 			/**
 			 * Client's language as determined by the i18n middleware.
 			 */
@@ -48,10 +50,6 @@ declare global {
 			 * Event-localized translations helper.
 			 */
 			createTranslations: ReturnType<typeof eventCreateTranslations>;
-			/**
-			 * Private theme_mode value for handle hook.
-			 */
-			mode: Mode;
 		}
 		interface PageData {
 			/**
