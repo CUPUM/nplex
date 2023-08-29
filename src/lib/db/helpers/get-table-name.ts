@@ -1,14 +1,8 @@
-import {
-	PgTable,
-	getTableName as getSchemalessTableName,
-	getTableConfig,
-} from 'drizzle-orm/pg-core';
+import { PgTable, getTableConfig } from 'drizzle-orm/pg-core';
 
 /**
  * Updated version of drizzle-orm's getTableName with config to allow preprending table's schema
  * name for cross-schema relations.
- *
- * @see {@link getSchemalessTableName}
  */
 export function getTableName<T extends PgTable>(
 	table: T,

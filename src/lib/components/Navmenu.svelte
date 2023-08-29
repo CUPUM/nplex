@@ -9,7 +9,7 @@
 	import { transform } from '$lib/transitions/transform';
 	import { KEYS } from '$lib/utils/constants';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
-	import { Languages, User2 } from 'lucide-svelte';
+	import { Languages, LogIn, User } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
@@ -18,12 +18,14 @@
 			about: 'À propos',
 			guides: 'Guides',
 			projects: 'Projets',
+			organizations: 'Organisations',
 			login: 'Me connecter',
 		},
 		en: {
 			about: 'About',
 			guides: 'Guides',
 			projects: 'Projects',
+			organizations: 'Organizations',
 			login: 'Login',
 		},
 	});
@@ -32,24 +34,32 @@
 		elements: { menu: localeMenu, item: localeItem, trigger: localeTrigger, arrow: localeArrow },
 		states: { open: localeOpen },
 	} = createDropdownMenu({ forceVisible: true });
+
+	$page.data;
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
 <header>
-	<nav class="group">
+	<!-- General nav -->
+	<nav id="general-group" class="group">
 		<a class="button" use:ripple {...$i18nlink('/')}>N</a>
 		<a class="button" use:ripple {...$i18nlink('/about')}>{$t.about}</a>
 		<a class="button" use:ripple {...$i18nlink('/guides')}>{$t.guides}</a>
+	</nav>
+	<!-- Exploration nav -->
+	<nav id="exploration-group" class="group">
 		<a class="button" use:ripple {...$i18nlink('/projects')}>{$t.projects}</a>
+		<a class="button" use:ripple {...$i18nlink('/organizations')}>{$t.organizations}</a>
 	</nav>
 	<!-- User nav -->
-	<nav class="group">
+	<menu id="user-group" class="group">
 		<a class="button square" use:ripple {...$i18nlink('/signup')}>
-			<User2 size="1.5em" style="button-icon" />
+			{#if $page.data.user}
+				<User size="1.5em" style="button-icon" />
+			{:else}
+				<LogIn size="1.5em" style="button-icon" />
+			{/if}
 		</a>
-	</nav>
-	<!-- User settings -->
-	<menu class="group">
 		<button class="button" use:ripple use:melt={$localeTrigger}>
 			<Languages size="1.5em" />
 			<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
@@ -88,7 +98,11 @@
 
 <style lang="scss">
 	header {
-		display: flex;
+		position: sticky;
+		top: 0;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		align-self: stretch;
 		flex-direction: row;
 		padding: var(--space-sm);
 	}
@@ -120,6 +134,7 @@
 			outline-offset 0.25s ease-out;
 
 		&:hover {
+			color: var(--color-primary-500);
 			background-color: color-mix(in hsl, var(--color-primary-500) 20%, transparent);
 		}
 
@@ -142,6 +157,17 @@
 				position: absolute;
 			}
 		}
+	}
+
+	#general-group {
+	}
+
+	#exploration-group {
+		justify-content: center;
+	}
+
+	#user-group {
+		justify-content: flex-end;
 	}
 
 	.mode-icon {

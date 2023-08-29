@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { DOMAIN_NAME } from '$env/static/private';
 	import type { RequestEvent } from '@sveltejs/kit';
-	import { Heading, Html, Link, Text } from 'svelte-email';
+	import { Button, Heading, Hr, Html, Text } from 'svelte-email';
+	import { ACCENT, ACCENT_DIM, fontFamily } from './constants';
 
 	export let event: RequestEvent;
 	export let token: string;
@@ -10,27 +11,33 @@
 
 	const t = event.locals.createTranslations({
 		fr: {
-			title: 'Confirmez qu’il s’agit bien de votre adresse courriel',
-			body: 'Avant de continuer, nous avons besoin de vérifier l’authenticité de votre courriel. Si vous n’avez pas créé de compte sur le site Nplex.design dernièrement, merci d’ignorer ce message.',
-			link: 'Confirmer mon adresse courriel!',
+			title: 'Confirmez votre adresse courriel',
+			body: 'Avant de continuer, nous avons besoin de vérifier l’authenticité de votre courriel. Continuez en cliquant sur le bouton ci-dessous.',
+			link: 'Confirmer mon adresse courriel',
+			footnote:
+				'Si vous n’avez pas créé de compte sur le site Nplex.design dernièrement, merci d’ignorer ce message.',
 		},
 		en: {
-			title: 'Confirm this email address is yours',
-			body: 'Before going forward, we need to quickly verify the authenticity of your email. If you haven’t signed up to Nplex.com recently, please ignore this message.',
-			link: 'Verify my email address!',
+			title: 'Confirm your email address',
+			body: 'Before going forward, we need to quickly verify the authenticity of your email. To continue, please click the button below.',
+			link: 'Verify my email address',
+			footnote:
+				'If you haven’t signed up to Nplex.com recently or believe this email was wrongly sent to you, please ignore.',
 		},
 	});
-
-	const fontFamily = "'Outfit', sans-serif";
 </script>
 
 <Html lang={event.locals.locale}>
-	<!-- <Head>
-		{@html `<style>
-			@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;550&display=swap');
-			</style>`}
-	</Head> -->
-	<Heading style={{ fontFamily, fontWeight: 500, textAlign: 'center' }}>
+	<Heading
+		style={{
+			fontFamily,
+			fontWeight: 600,
+			fontSize: '1.8rem',
+			textAlign: 'center',
+			color: ACCENT,
+			margin: '3rem 3rem 2rem',
+		}}
+	>
 		{t.title}
 	</Heading>
 	<Text
@@ -45,21 +52,36 @@
 	>
 		{t.body}
 	</Text>
-	<p style="text-align: center;">
-		<Link
+	<p style="text-align: center; margin-bottom: 2rem;">
+		<Button
 			href={url}
 			style={{
 				fontFamily,
-				fontWeight: 500,
+				fontWeight: 550,
 				display: 'inline-block',
-				color: 'hsl(147, 33%, 40%)',
-				padding: '12px 20px 16px',
-				backgroundColor: 'hsla(147, 33%, 40%, .1)',
-				borderRadius: '1em',
+				color: 'white',
+				fontSize: '0.8rem',
+				backgroundColor: ACCENT,
+				padding: '18px 24px 22px',
+				borderRadius: '1rem',
 				textDecoration: 'none',
 			}}
 		>
 			{t.link}
-		</Link>
+		</Button>
 	</p>
+	<Hr style={{ height: '1px', backgroundColor: ACCENT_DIM }} />
+	<Text
+		style={{
+			fontFamily,
+			fontWeight: 400,
+			textAlign: 'center',
+			maxWidth: '65ch',
+			fontSize: '0.8rem',
+			margin: '2em auto',
+			opacity: 0.5,
+		}}
+	>
+		{t.footnote}
+	</Text>
 </Html>

@@ -8,11 +8,13 @@ import {
 	serial,
 	text,
 	timestamp,
+	uuid,
 	varchar,
 } from 'drizzle-orm/pg-core';
 import { locale } from '../custom-types/locale';
 import { userRole } from '../custom-types/user-role';
 import { locales } from './i18n';
+import { projects } from './projects';
 
 /**
  * Managing everything auth oriented and related to lucia and users' metadata.
@@ -31,6 +33,9 @@ export const userRoles = authSchema.table('user_roles', {
 	role: userRole('role').primaryKey(),
 });
 
+/**
+ * @see {@link userRoles}
+ */
 export const userRolesTranslations = authSchema.table(
 	'user_roles_t',
 	{
@@ -47,29 +52,6 @@ export const userRolesTranslations = authSchema.table(
 	},
 	(table) => {
 		return { pk: primaryKey(table.role, table.locale) };
-	}
-);
-
-export const userOccupations = authSchema.table('user_occupations', {
-	id: serial('id').primaryKey(),
-});
-
-export const userOccupationsTranslations = authSchema.table(
-	'user_occupations_t',
-	{
-		id: serial('id').references(() => userOccupations.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		title: text('title'),
-		description: text('description'),
-	},
-	(table) => {
-		return { pk: primaryKey(table.id, table.locale) };
 	}
 );
 
@@ -93,28 +75,12 @@ export const users = authSchema.table('users', {
 	emailVerified: boolean('email_verified').default(false).notNull(),
 	publicEmail: text('public_email'),
 	publicEmailVerified: boolean('public_email_verified').default(false).notNull(),
-	username: text('username').unique(),
 	firstName: text('first_name'),
 	middleName: text('middle_name'),
 	lastName: text('last_name'),
 });
 
 export type SelectUser = InferSelectModel<typeof users>;
-
-export const usersOccupations = authSchema.table('users_occupations', {
-	userId: varchar('user_id')
-		.references(() => users.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		})
-		.notNull(),
-	occupationId: serial('occupation_id')
-		.references(() => userOccupations.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		})
-		.notNull(),
-});
 
 /**
  * Tracking email confirmations and their expiry.
@@ -160,3 +126,92 @@ export const keys = authSchema.table('auth_keys', {
 		.references(() => users.id),
 	hashedPassword: varchar('hashed_password', { length: 255 }),
 });
+
+export const usersRolesRequests = authSchema.table('users_roles_requests', {
+	userId: uuid('user_id')
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+		.primaryKey(),
+	requestedRole: userRole('requested_role').references(() => userRoles.role, {
+		onDelete: 'cascade',
+		onUpdate: 'cascade',
+	}),
+	requestAt: timestamp('requested_at', { withTimezone: true }).defaultNow(),
+});
+
+/**
+ * Occupations or professions of registered users.
+ */
+export const userOccupations = authSchema.table('user_occupations', {
+	id: serial('id').primaryKey(),
+});
+
+/**
+ * @see {@link userOccupations}
+ */
+export const userOccupationsTranslations = authSchema.table(
+	'user_occupations_t',
+	{
+		id: serial('id').references(() => userOccupations.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		locale: locale('locale').references(() => locales.locale, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		title: text('title'),
+		description: text('description'),
+	},
+	(table) => {
+		return { pk: primaryKey(table.id, table.locale) };
+	}
+);
+
+export const usersOccupations = authSchema.table(
+	'users_occupations',
+	{
+		userId: varchar('user_id')
+			.references(() => users.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		occupationId: serial('occupation_id')
+			.references(() => userOccupations.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.occupationId, table.userId),
+		};
+	}
+);
+
+export const usersProjectsCollections = authSchema.table('users_collections', {
+	id: uuid('id').defaultRandom().primaryKey(),
+	title: text('title').notNull(),
+	description: text('description'),
+});
+
+export const usersProjectsCollectionsItems = authSchema.table(
+	'users_collections_items',
+	{
+		collectionId: uuid('collection_id').references(() => usersProjectsCollections.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		projectId: uuid('project_id').references(() => projects.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		note: text('note'),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.collectionId, table.projectId),
+		};
+	}
+);

@@ -11,12 +11,12 @@ export const mode = (function () {
 	const init = getModeCookie();
 
 	// Keep an internal state
-	const store = writable(init, function start() {
+	const store = writable(init, function start(_set) {
 		// Keeping track of server-side initiated mode change (who knows).
 		const unsub = page.subscribe((d) => {
-			store.set(d.data.mode);
+			_set(d.data.mode);
 		});
-		store.set(getModeCookie());
+		_set(getModeCookie());
 		return function stop() {
 			unsub();
 		};

@@ -1,8 +1,10 @@
 <script lang="ts">
-	export let size: number | string;
+	import { ICON_SIZE_DEFAULT } from '$lib/auth/socials';
+
+	export let size: number | string = ICON_SIZE_DEFAULT;
 </script>
 
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width={size} height={size} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 	<path
 		d="M47.5321 24.5528C47.5321 22.9214 47.3998 21.2811 47.1176 19.6761H24.48V28.9181H37.4435C36.9055 31.8988 35.1771 34.5356 32.6461 36.2111V42.2078H40.3801C44.9217 38.0278 47.5321 31.8547 47.5321 24.5528Z"
 		fill="#4285F4"

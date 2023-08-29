@@ -8,7 +8,7 @@ import type { eventI18nRedirect } from '$lib/i18n/redirect.server';
 import type { eventCreateTranslations } from '$lib/i18n/translate';
 import type { Mode } from '$lib/modes/constants';
 import type { InferSelectModel } from 'drizzle-orm';
-import type { AuthRequest } from 'lucia';
+import type { AuthRequest, User } from 'lucia';
 
 // See https://lucia-auth.com/getting-started
 declare global {
@@ -16,7 +16,7 @@ declare global {
 		type Auth = LuciaAuth;
 		type DatabaseUserAttributes = Pick<
 			InferSelectModel<typeof users, { dbColumnNames: true }>,
-			'email' | 'email_verified' | 'role'
+			'email' | 'email_verified' | 'role' | 'id'
 		>;
 		type DatabaseSessionAttributes = {
 			// to do
@@ -34,6 +34,7 @@ declare global {
 			 * Private theme_mode value for handle hook.
 			 */
 			mode: Mode;
+
 			/**
 			 * Client's language as determined by the i18n middleware.
 			 */
@@ -60,6 +61,14 @@ declare global {
 			 * Client-forwarded locals.theme.
 			 */
 			mode: App.Locals['mode'];
+			/**
+			 * Populating the client $page.data store with a minimal user for simple UI checks.
+			 */
+			user?: Omit<User, 'userId'>;
+			/**
+			 * Granular server and client setable layout type.
+			 */
+			setout: Setout;
 		}
 		// interface Platform {}
 	}

@@ -83,7 +83,7 @@ export function eventCreateTranslations(event: RequestEvent | ServerLoadEvent | 
 	 *
 	 * @see {@link createTranslations}
 	 */
-	return function createEventTranslations<T>(translations: Translations<T>) {
+	return function eventTranslations<T>(translations: Translations<T>) {
 		return createTranslations(translations, event);
 	};
 }

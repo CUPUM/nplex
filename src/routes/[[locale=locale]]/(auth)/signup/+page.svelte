@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { SOCIAL_PROVIDERS_ARR, SOCIAL_PROVIDERS_DETAILS } from '$lib/auth/constants.js';
+	import { SOCIAL_PROVIDERS_ARR } from '$lib/auth/constants.js';
+	import { SOCIAL_PROVIDERS_DETAILS } from '$lib/auth/socials.js';
 	import { i18nlink } from '$lib/i18n/link.js';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { superForm } from 'sveltekit-superforms/client';

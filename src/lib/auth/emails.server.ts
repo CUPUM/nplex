@@ -1,5 +1,5 @@
-import { EMAIL_USER } from '$env/static/private';
 import VerifyEmail from '$lib/emails/VerifyEmail.svelte';
+import { EMAIL_SENDERS } from '$lib/emails/constants';
 import { transporter } from '$lib/emails/transporter.server';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { User } from 'lucia';
@@ -24,7 +24,7 @@ export async function sendEmailVerificationLink(user: User, event: RequestEvent)
 		},
 	});
 	await transporter.sendMail({
-		from: `"Nplex" <${EMAIL_USER}>`,
+		from: EMAIL_SENDERS.NPLEX,
 		to: user.email,
 		subject: t.subject,
 		html,

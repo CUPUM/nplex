@@ -16,14 +16,11 @@ export const auth = lucia({
 	}),
 	getUserAttributes(databaseUser) {
 		return {
-			// id: databaseUser.id,
+			id: databaseUser.id,
 			role: databaseUser.role,
 			email: databaseUser.email,
 			emailVerified: databaseUser.email_verified,
-			// username: databaseUser.lastName,
-			// firstName: databaseUser.firstName,
-			// middleName: databaseUser.middleName,
-			// lastName: databaseUser.lastName,
+			// avatarUrl: databaseUser.avatar_url,
 		};
 	},
 	// getSessionAttributes(databaseSession) {

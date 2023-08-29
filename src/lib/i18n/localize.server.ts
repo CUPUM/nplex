@@ -1,14 +1,14 @@
 import type { RequestEvent } from '@sveltejs/kit';
-import { localize as agnosticLocalize } from './href';
+import { localize } from './href';
 
 export function eventLocalize(event: RequestEvent) {
 	/**
 	 * Event-locale-aware location localizer. (also known by some as
 	 * LocLocLocLocLoCloCloCloCloClOAlakADa7yAIFOAIS)
 	 *
-	 * @see {@link agnosticLocalize}
+	 * @see {@link localize}
 	 */
-	return function localize(location: Parameters<typeof agnosticLocalize>[0]) {
-		return agnosticLocalize(location, event.locals.locale);
+	return function localized(location: Parameters<typeof localize>[0]) {
+		return localize(location, event.locals.locale);
 	};
 }
