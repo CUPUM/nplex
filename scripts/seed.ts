@@ -2,7 +2,7 @@ import { exit } from 'process';
 import { USER_ROLES, USER_ROLES_ARR } from '../src/lib/auth/constants';
 import { userRoles, userRolesTranslations } from '../src/lib/db/schema/auth';
 import { locales } from '../src/lib/db/schema/i18n';
-import { projectTypes, projectTypesTranslations } from '../src/lib/db/schema/projects';
+import { projectTypes, projectTypesTranslations } from '../src/lib/db/schema/project-descriptors';
 import { LOCALES, LOCALES_ARR, LOCALES_DETAILS, type Locale } from '../src/lib/i18n/constants';
 import { createDrizzle } from './common';
 
