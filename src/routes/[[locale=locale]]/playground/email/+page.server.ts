@@ -1,5 +1,5 @@
 import { EMAIL_USER } from '$env/static/private';
-import VerifyEmail from '$lib/emails/VerifyEmail.svelte';
+import VerifyEmail from '$lib/emails/templates/VerifyEmail.svelte';
 import { transporter } from '$lib/emails/transporter.server.js';
 import { STATUS_CODES } from '$lib/utils/constants.js';
 import { fail } from '@sveltejs/kit';

@@ -1,25 +1,21 @@
-import { pgTable, primaryKey, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
-import { locale } from '../custom-types/locale';
-import { users } from './auth';
-import { locales } from './i18n';
+import { pgTable, primaryKey, serial, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
+import { localefk } from '../helpers/i18n';
+import { useridfk } from '../helpers/user-id';
+import { organizationExpertises, organizationTypes } from './organization-descriptors';
 
 /**
  * Design offices, municipal offices, communities, etc.
  */
 export const organizations = pgTable('organizations', {
 	id: uuid('id').defaultRandom().primaryKey(),
-	createdById: uuid('created_by_id')
-		.references(() => users.id, {
-			onDelete: 'restrict',
-			onUpdate: 'cascade',
-		})
-		.notNull(),
+	createdById: useridfk('created_by_id', { onDelete: 'restrict', onUpdate: 'cascade' }).notNull(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-	updatedById: uuid('updated_by_id').references(() => users.id, {
+	updatedById: useridfk('updated_by_id', { onDelete: 'set null', onUpdate: 'cascade' }),
+	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+	typeId: serial('type_id').references(() => organizationTypes.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
-	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 });
 
 /**
@@ -32,11 +28,8 @@ export const organizationsTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		name: text('name'),
+		locale: localefk(),
+		name: text('name').notNull(),
 		summary: text('summary'),
 		description: text('description'),
 	},
@@ -55,14 +48,30 @@ export const organizationsUsers = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		userId: uuid('user_id').references(() => users.id, {
+		userId: useridfk('user_id'),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.organizationId, table.userId),
+		};
+	}
+);
+
+export const organizationsExpertises = pgTable(
+	'organizations_expertises',
+	{
+		organizationId: uuid('organization_id').references(() => organizations.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		expertiseId: serial('expertise_id').references(() => organizationExpertises.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.organizationId),
+			pk: primaryKey(table.expertiseId, table.organizationId),
 		};
 	}
 );

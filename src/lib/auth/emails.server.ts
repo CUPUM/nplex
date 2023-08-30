@@ -1,5 +1,5 @@
-import VerifyEmail from '$lib/emails/VerifyEmail.svelte';
 import { EMAIL_SENDERS } from '$lib/emails/constants';
+import VerifyEmail from '$lib/emails/templates/VerifyEmail.svelte';
 import { transporter } from '$lib/emails/transporter.server';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { User } from 'lucia';

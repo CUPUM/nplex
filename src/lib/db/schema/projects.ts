@@ -9,14 +9,18 @@ import {
 	timestamp,
 	unique,
 	uuid,
-	varchar,
 } from 'drizzle-orm/pg-core';
-import { locale } from '../custom-types/locale';
+import { intrange } from '../custom-types/range';
 import { userRole } from '../custom-types/user-role';
-import { userRoles, users } from './auth';
-import { locales } from './i18n';
+import { localefk } from '../helpers/i18n';
+import { useridfk } from '../helpers/user-id';
+import { userRoles } from './auth';
 import { organizations } from './organizations';
 import {
+	projectExemplarityIndicators,
+	projectImageTemporalities,
+	projectImageTypes,
+	projectImplantationTypes,
 	projectInterventionTypes,
 	projectSiteOwnerships,
 	projectTypes,
@@ -29,23 +33,25 @@ export const projects = pgTable('projects', {
 	id: uuid('id').defaultRandom().primaryKey(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-	createdById: varchar('created_by_id')
-		.references(() => users.id, { onDelete: 'restrict', onUpdate: 'cascade' })
-		.notNull(),
-	updatedById: varchar('updated_by_id')
-		.references(() => users.id, { onDelete: 'restrict', onUpdate: 'cascade' })
-		.notNull(),
+	createdById: useridfk('created_by_id', { onDelete: 'restrict', onUpdate: 'cascade' }).notNull(),
+	updatedById: useridfk('updated_by_id', { onDelete: 'set null', onUpdate: 'cascade' }),
+	publishedAt: timestamp('published_at', { withTimezone: true }),
+	likesCount: integer('likes_count').notNull().default(0),
 	typeId: serial('type_id').references(() => projectTypes.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
-	publishedAt: timestamp('published_at', { withTimezone: true }),
-	likesCount: integer('likes_count').notNull().default(0),
 	siteOwnershipId: serial('site_ownership_id').references(() => projectSiteOwnerships.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
-	// costRange: integer(),
+	implantationTypeId: serial('implantation_type_id').references(() => projectImplantationTypes.id, {
+		onDelete: 'set null',
+		onUpdate: 'cascade',
+	}),
+	adjacentStreets: integer('adjacent_streets'),
+	adjacentAlleys: integer('adjacent_alleys'),
+	costRange: intrange('cost_range'),
 	// location: postgis(),
 });
 
@@ -59,11 +65,8 @@ export const projectsTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		title: text('title'),
+		locale: localefk(),
+		title: text('title').notNull(),
 		summary: text('summary'),
 		description: text('description'),
 	},
@@ -104,26 +107,52 @@ export const projectsInterventions = pgTable(
 	}
 );
 
+export const projectsExemplarityIndicators = pgTable(
+	'projects_exemplarity_indicators',
+	{
+		projectId: uuid('project_id').references(() => projects.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		exemplarityIndicatorId: serial('exemplarity_indicator_id').references(
+			() => projectExemplarityIndicators.id,
+			{ onDelete: 'cascade', onUpdate: 'cascade' }
+		),
+	},
+	(table) => {
+		return {
+			fk: primaryKey(table.projectId, table.exemplarityIndicatorId),
+		};
+	}
+);
+
 export const projectsImages = pgTable(
 	'projects_images',
 	{
-		id: uuid('id').defaultRandom(),
+		id: uuid('id').defaultRandom().primaryKey(),
 		projectId: uuid('project_id').references(() => projects.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
 		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 		updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-		createdById: uuid('created_by_id')
-			.references(() => users.id, { onDelete: 'restrict', onUpdate: 'cascade' })
-			.notNull(),
-		updatedById: uuid('updated_by_id')
-			.references(() => users.id, { onDelete: 'restrict', onUpdate: 'cascade' })
-			.notNull(),
+		createdById: useridfk('created_by_id', { onDelete: 'restrict', onUpdate: 'cascade' }).notNull(),
+		updatedById: useridfk('updated_by_id', { onDelete: 'restrict', onUpdate: 'cascade' }),
+		index: integer('index').notNull(),
+		publicUrl: text('public_url').notNull(),
+		storageName: text('storage_name').notNull(),
+		typeId: serial('type_id').references(() => projectImageTypes.id, {
+			onDelete: 'set null',
+			onUpdate: 'cascade',
+		}),
+		temporalityId: serial('temporality_id').references(() => projectImageTemporalities.id, {
+			onDelete: 'set null',
+			onUpdate: 'cascade',
+		}),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.projectId),
+			unq: unique().on(table.projectId, table.index),
 		};
 	}
 );
@@ -135,10 +164,8 @@ export const projectsImagesTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		locale: localefk(),
+		description: text('description'),
 	},
 	(table) => {
 		return {
@@ -147,11 +174,9 @@ export const projectsImagesTranslations = pgTable(
 	}
 );
 
-// export const projectsImagesCredits = pgTable();
-
-// export const projectsImagesCredits = pgTable();
-
-// export const projectsRandomImages = pgView('projects_random_images');
+export const projectsImagesCredits = pgTable('projects_images_credits', {
+	imageId: uuid('image_id'),
+});
 
 /**
  * Keeping track of publication requests.
@@ -161,10 +186,7 @@ export const projectsPublicationRequests = pgTable('projects_publication_request
 		.references(() => projects.id, { onDelete: 'cascade', onUpdate: 'cascade' })
 		.primaryKey(),
 	requestedAt: timestamp('requested_at', { withTimezone: true }).defaultNow().notNull(),
-	requestedBy: uuid('requested_by').references(() => users.id, {
-		onDelete: 'cascade',
-		onUpdate: 'cascade',
-	}),
+	requestedById: useridfk('requested_by_id').notNull(),
 });
 
 /**
@@ -173,10 +195,7 @@ export const projectsPublicationRequests = pgTable('projects_publication_request
 export const projectsUsers = pgTable(
 	'projects_users',
 	{
-		userId: varchar('user_id').references(() => users.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		userId: useridfk('user_id'),
 		projectId: uuid('project_id').references(() => projects.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
@@ -223,10 +242,7 @@ export const projectsOrganizations = pgTable(
 export const projectsLikes = pgTable(
 	'projects_likes',
 	{
-		userId: varchar('user_id').references(() => users.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		userId: useridfk('user_id'),
 		projectId: uuid('project_id').references(() => projects.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',

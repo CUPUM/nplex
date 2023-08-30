@@ -1,7 +1,7 @@
-import IconFacebook from '$lib/components/SocialIcons/IconFacebook.svelte';
-import IconGithub from '$lib/components/SocialIcons/IconGithub.svelte';
-import IconGoogle from '$lib/components/SocialIcons/IconGoogle.svelte';
-import IconLinkedin from '$lib/components/SocialIcons/IconLinkedin.svelte';
+import IconFacebook from '$lib/components/social-icons/IconFacebook.svelte';
+import IconGithub from '$lib/components/social-icons/IconGithub.svelte';
+import IconGoogle from '$lib/components/social-icons/IconGoogle.svelte';
+import IconLinkedin from '$lib/components/social-icons/IconLinkedin.svelte';
 import type { ComponentType } from 'svelte';
 import { AUTH_PROVIDERS, type SocialProvider } from './constants';
 

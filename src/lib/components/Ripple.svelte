@@ -4,7 +4,7 @@
 	Adds a visual ripple effect on interactive elements.
 -->
 <script lang="ts" context="module">
-	export const RIPPLE_ATTRIBUTE = 'data-ripple-host';
+	const HOST_ATTRIBUTE = 'data-ripple-host';
 	const N_ANIMATIONS = 3;
 </script>
 
@@ -53,7 +53,7 @@
 			containerRef.parentElement &&
 			// Catching only the directly descending events, prevents conflict between nested ripple triggers.
 			e.target instanceof Element &&
-			e.target.closest(`[${RIPPLE_ATTRIBUTE}]`) === containerRef.parentElement
+			e.target.closest(`[${HOST_ATTRIBUTE}]`) === containerRef.parentElement
 		) {
 			// We use bounding client rect, even if a bit more computationally expensive, to account for
 			// child element event targets that steal the offsetX and offsetY value referentials.
@@ -85,6 +85,7 @@
 	}
 
 	function end(e: AnimationEvent, ripple: (typeof ripples)[number]) {
+		// Sadly we can't use a k-v check instead of a simple count since we cannot know the hashed scope name of the css animations.
 		ripple.animations--;
 		if (!ripple.animations) {
 			ripples.splice(ripples.indexOf(ripple), 1);
@@ -98,10 +99,10 @@
 		}
 		if (element) {
 			element.addEventListener('pointerdown', add);
-			element.setAttribute(RIPPLE_ATTRIBUTE, '');
+			element.setAttribute(HOST_ATTRIBUTE, '');
 			destructor = () => {
 				element.removeEventListener('pointerdown', add);
-				element.removeAttribute(RIPPLE_ATTRIBUTE);
+				element.removeAttribute(HOST_ATTRIBUTE);
 			};
 		}
 	}

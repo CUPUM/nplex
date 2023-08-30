@@ -1,5 +1,9 @@
 // export type InferColumn<C extends PgColumn> = C extends PgColumn<infer T> ? T : never;
 
+import type { ReferenceConfig } from 'drizzle-orm/pg-core';
+import { locale } from '../custom-types/locale';
+import { locales } from '../schema/i18n';
+
 // /**
 //  * Streamline definition of translations tables' columns and constriants.
 //  */
@@ -30,4 +34,10 @@
  */
 export function getTranslation(autoFallback?: boolean) {
 	console.log(autoFallback);
+}
+
+export function localefk(
+	config: ReferenceConfig['actions'] = { onDelete: 'cascade', onUpdate: 'cascade' }
+) {
+	return locale('locale').references(() => locales.locale, config);
 }

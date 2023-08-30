@@ -1,5 +1,5 @@
+import Ripple from '$lib/components/Ripple.svelte';
 import type { ComponentProps } from 'svelte';
-import Ripple from './ripple.svelte';
 
 export function ripple(node: HTMLElement, options?: ComponentProps<Ripple>) {
 	const comp = new Ripple({

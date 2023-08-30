@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { ripple } from '$lib/actions/ripple';
 	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
 	import { i18nlink, i18nswitch } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
-	import { ripple } from '$lib/ripple/action';
 	import { transform } from '$lib/transitions/transform';
 	import { KEYS } from '$lib/utils/constants';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';

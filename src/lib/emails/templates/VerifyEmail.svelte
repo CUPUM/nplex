@@ -2,7 +2,7 @@
 	import { DOMAIN_NAME } from '$env/static/private';
 	import type { RequestEvent } from '@sveltejs/kit';
 	import { Button, Heading, Hr, Html, Text } from 'svelte-email';
-	import { ACCENT, ACCENT_DIM, fontFamily } from './constants';
+	import { ACCENT, ACCENT_DIM, fontFamily } from '../constants';
 
 	export let event: RequestEvent;
 	export let token: string;

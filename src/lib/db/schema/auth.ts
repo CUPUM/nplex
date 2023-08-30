@@ -8,12 +8,13 @@ import {
 	serial,
 	text,
 	timestamp,
+	unique,
 	uuid,
 	varchar,
 } from 'drizzle-orm/pg-core';
-import { locale } from '../custom-types/locale';
 import { userRole } from '../custom-types/user-role';
-import { locales } from './i18n';
+import { localefk } from '../helpers/i18n';
+import { useridfk } from '../helpers/user-id';
 import { projects } from './projects';
 
 /**
@@ -43,15 +44,15 @@ export const userRolesTranslations = authSchema.table(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		name: text('title'),
+		locale: localefk(),
+		name: text('title').notNull(),
 		description: text('description'),
 	},
 	(table) => {
-		return { pk: primaryKey(table.role, table.locale) };
+		return {
+			pk: primaryKey(table.role, table.locale),
+			unq: unique().on(table.locale, table.name),
+		};
 	}
 );
 
@@ -61,7 +62,7 @@ export const userRolesTranslations = authSchema.table(
  * @see https://lucia-auth.com/basics/users
  */
 export const users = authSchema.table('users', {
-	id: varchar('id', { length: 15 }).primaryKey(),
+	id: varchar('id', { length: 15 }).primaryKey(), // Exceptionnally defining the column manually to avoid circularity with userid()
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 	role: userRole('role')
@@ -90,12 +91,7 @@ export type SelectUser = InferSelectModel<typeof users>;
 export const emailVerificationTokens = authSchema.table('email_verification_tokens', {
 	id: text('id').notNull().unique(),
 	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
-	userId: varchar('user_id')
-		.references(() => users.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		})
-		.notNull(),
+	userId: useridfk('user_id').notNull(),
 });
 
 export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerificationTokens>;
@@ -107,9 +103,7 @@ export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerifica
  */
 export const sessions = authSchema.table('auth_sessions', {
 	id: varchar('id', { length: 128 }).primaryKey(),
-	userId: varchar('user_id', { length: 15 })
-		.notNull()
-		.references(() => users.id),
+	userId: useridfk('user_id').notNull(),
 	activeExpires: bigint('active_expires', { mode: 'number' }).notNull(),
 	idleExpires: bigint('idle_expires', { mode: 'number' }).notNull(),
 });
@@ -121,16 +115,12 @@ export const sessions = authSchema.table('auth_sessions', {
  */
 export const keys = authSchema.table('auth_keys', {
 	id: varchar('id', { length: 255 }).primaryKey(),
-	userId: varchar('user_id', { length: 15 })
-		.notNull()
-		.references(() => users.id),
+	userId: useridfk('user_id').notNull(),
 	hashedPassword: varchar('hashed_password', { length: 255 }),
 });
 
 export const usersRolesRequests = authSchema.table('users_roles_requests', {
-	userId: uuid('user_id')
-		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
-		.primaryKey(),
+	userId: useridfk('user_id').primaryKey(),
 	requestedRole: userRole('requested_role').references(() => userRoles.role, {
 		onDelete: 'cascade',
 		onUpdate: 'cascade',
@@ -155,11 +145,8 @@ export const userOccupationsTranslations = authSchema.table(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		title: text('title'),
+		locale: localefk(),
+		title: text('title').notNull(),
 		description: text('description'),
 	},
 	(table) => {
@@ -170,12 +157,7 @@ export const userOccupationsTranslations = authSchema.table(
 export const usersOccupations = authSchema.table(
 	'users_occupations',
 	{
-		userId: varchar('user_id')
-			.references(() => users.id, {
-				onDelete: 'cascade',
-				onUpdate: 'cascade',
-			})
-			.notNull(),
+		userId: useridfk('user_id').notNull(),
 		occupationId: serial('occupation_id')
 			.references(() => userOccupations.id, {
 				onDelete: 'cascade',
@@ -190,11 +172,20 @@ export const usersOccupations = authSchema.table(
 	}
 );
 
-export const usersProjectsCollections = authSchema.table('users_collections', {
-	id: uuid('id').defaultRandom().primaryKey(),
-	title: text('title').notNull(),
-	description: text('description'),
-});
+export const usersProjectsCollections = authSchema.table(
+	'users_projects_collections',
+	{
+		id: uuid('id').defaultRandom().primaryKey(),
+		userId: useridfk('user_id').notNull(),
+		title: text('title').notNull(),
+		description: text('description'),
+	},
+	(table) => {
+		return {
+			unq: unique().on(table.title, table.userId),
+		};
+	}
+);
 
 export const usersProjectsCollectionsItems = authSchema.table(
 	'users_collections_items',

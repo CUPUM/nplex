@@ -1,6 +1,5 @@
 import { pgTable, primaryKey, serial, text } from 'drizzle-orm/pg-core';
-import { locale } from '../custom-types/locale';
-import { locales } from './i18n';
+import { localefk } from '../helpers/i18n';
 
 /**
  * Top-most categories of projects.
@@ -19,11 +18,8 @@ export const projectTypesTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		title: text('title'),
+		locale: localefk(),
+		title: text('title').notNull(),
 		description: text('description'),
 	},
 	(table) => {
@@ -50,11 +46,8 @@ export const projectInterventionCategoriesTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		title: text('title'),
+		locale: localefk(),
+		title: text('title').notNull(),
 		description: text('description'),
 	},
 	(table) => {
@@ -81,11 +74,8 @@ export const projectInterventionTypesTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		title: text('title'),
+		locale: localefk(),
+		title: text('title').notNull(),
 		description: text('description'),
 	},
 	(table) => {
@@ -112,11 +102,8 @@ export const projectSiteOwnershipsTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		title: text('title'),
+		locale: localefk(),
+		title: text('title').notNull(),
 		description: text('description'),
 	},
 	(table) => {
@@ -126,6 +113,12 @@ export const projectSiteOwnershipsTranslations = pgTable(
 	}
 );
 
+/**
+ * Restricting intervention types based on project types.
+ *
+ * @see {@link projectTypes}
+ * @see {@link projectInterventionTypes}
+ */
 export const projectTypesToInterventionTypes = pgTable(
 	'project_types_to_intervention_types',
 	{
@@ -145,12 +138,143 @@ export const projectTypesToInterventionTypes = pgTable(
 	}
 );
 
-export const projectEventTypes = pgTable('project_event_types', {});
+/**
+ * How is the project's building integrated amongst the surrounding constructions.
+ */
+export const projectImplantationTypes = pgTable('project_implantation_types', {
+	id: serial('id').primaryKey(),
+});
 
-export const projectExemplarityCategories = pgTable('project_exemplarity_categories', {});
+/**
+ * @see {@link projectImplantationTypes}
+ */
+export const projectImplantationTypesTranslations = pgTable(
+	'project_implantation_types_t',
+	{
+		id: serial('id').references(() => projectImplantationTypes.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		locale: localefk(),
+		title: text('title').notNull(),
+		description: text('description'),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.id, table.locale),
+		};
+	}
+);
 
-export const projectExemplarityTypes = pgTable('project_exemplarity_types', {});
+/**
+ * Groupings of exemplarity indicators. Inspired by the City of Montreal's Design Agenda 2030.
+ */
+export const projectExemplarityCategories = pgTable('project_exemplarity_categories', {
+	id: serial('id').primaryKey(),
+});
 
-export const projectImageTypes = pgTable('project_image_types', {});
+/**
+ * @see {@link projectExemplarityCategories}
+ */
+export const projectExemplarityCategoriesTranslations = pgTable(
+	'project_exemplarity_categories_t',
+	{
+		id: serial('id').references(() => projectExemplarityCategories.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		locale: localefk(),
+		title: text('title').notNull(),
+		description: text('description'),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.id, table.locale),
+		};
+	}
+);
 
-export const projectImplantationTypes = pgTable('project_implantation_types', {});
+export const projectExemplarityIndicators = pgTable('project_exemplarity_indicators', {
+	id: serial('id').primaryKey(),
+	categoryId: serial('category_id')
+		.references(() => projectExemplarityCategories.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
+});
+
+export const projectExemplarityIndicatorsTranslations = pgTable(
+	'project_exemplarity_indicators_t',
+	{
+		id: serial('id').references(() => projectExemplarityIndicators.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		locale: localefk(),
+		title: text('title').notNull(),
+		shortTitle: text('short_title').notNull(),
+		description: text('description'),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.id, table.locale),
+		};
+	}
+);
+
+/**
+ * Various types of items that can be added to project galleries.
+ */
+export const projectImageTypes = pgTable('project_image_types', {
+	id: serial('id').primaryKey(),
+});
+
+/**
+ * @see {@link projectImageTypes}
+ */
+export const projectImageTypesTranslations = pgTable(
+	'project_image_types_t',
+	{
+		id: serial('id').references(() => projectImageTypes.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		locale: localefk(),
+		title: text('title').notNull(),
+		description: text('description'),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.id, table.locale),
+		};
+	}
+);
+
+/**
+ * How does the image relate to the project's unfolding?
+ */
+export const projectImageTemporalities = pgTable('project_image_temporalities', {
+	id: serial('id').primaryKey(),
+});
+
+/**
+ * @see {@link projectImageTemporalities}
+ */
+export const projectImageTemporalitiesTranslations = pgTable(
+	'project_image_temporalities_t',
+	{
+		id: serial('id').references(() => projectImageTemporalities.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		locale: localefk(),
+		title: text('title').notNull(),
+		description: text('description'),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.id, table.locale),
+		};
+	}
+);
