@@ -53,17 +53,17 @@ export async function generateEmailVerificationToken(userId: SelectUser['id']) {
  */
 export async function validateEmailVerificationToken(token: SelectEmailVerificationToken['id']) {
 	const storedToken = await dbpool.transaction(async (tx) => {
-		const [storedToken] = await tx
+		const [stored] = await tx
 			.select()
 			.from(emailVerificationTokens)
 			.where(eq(emailVerificationTokens.id, token));
-		if (!storedToken) {
+		if (!stored) {
 			throw new Error(AUTH_TOKEN_ERRORS.INVALID);
 		}
 		await tx
 			.delete(emailVerificationTokens)
-			.where(eq(emailVerificationTokens.userId, storedToken.userId));
-		return storedToken;
+			.where(eq(emailVerificationTokens.userId, stored.userId));
+		return stored;
 	});
 	const tokenExpires = Number(storedToken.expires);
 	if (!isWithinExpiration(tokenExpires)) {
@@ -75,7 +75,7 @@ export async function validateEmailVerificationToken(token: SelectEmailVerificat
 /**
  * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
  */
-export const generatePasswordResetToken = async (userId: string) => {
+export async function generatePasswordResetToken(userId: string) {
 	const storedUserTokens = await dbpool
 		.select()
 		.from(passwordResetTokens)
@@ -88,14 +88,33 @@ export const generatePasswordResetToken = async (userId: string) => {
 			return reusableStoredToken.id;
 		}
 	}
-	const token = generateRandomString(63);
-	await dbpool
-		.insert(passwordResetTokens)
-		.values({
-			id: token,
-			expires: BigInt(Date.now() + TOKEN_EXPIRY),
-			userId,
-		})
-		.executeTakeFirst();
-	return token;
-};
+	const newToken = generateRandomString(63);
+	await dbpool.insert(passwordResetTokens).values({
+		id: newToken,
+		expires: BigInt(Date.now() + TOKEN_EXPIRY),
+		userId,
+	});
+	return newToken;
+}
+
+/**
+ * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
+ */
+export async function validatePasswordResetToken(token: string) {
+	const storedToken = await dbpool.transaction(async (tx) => {
+		const [stored] = await tx
+			.select()
+			.from(passwordResetTokens)
+			.where(eq(passwordResetTokens.id, token));
+		if (!stored) {
+			throw new Error('Invalid token');
+		}
+		await tx.delete(passwordResetTokens).where(eq(emailVerificationTokens.id, stored.id));
+		return stored;
+	});
+	const tokenExpires = Number(storedToken.expires);
+	if (!isWithinExpiration(tokenExpires)) {
+		throw new Error('Expired token');
+	}
+	return storedToken.userId;
+}

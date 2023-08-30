@@ -215,8 +215,22 @@
 		padding: 0.35rem 0.5rem;
 		opacity: 0.75;
 		border-radius: var(--radius-full);
-		border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+		box-shadow: 0 0 2px -0.5px currentColor;
 		font-weight: 400;
+		transition: all 0.1s ease-out;
+
+		.button:hover &,
+		.button[data-state='open'] & {
+			color: var(--color-neutral-100);
+			background-color: var(--color-primary-600);
+			box-shadow: 0 0 0 -0.5px currentColor;
+			opacity: 1;
+
+			@include dark {
+				color: var(--color-neutral-900);
+				background-color: var(--color-primary-400);
+			}
+		}
 	}
 
 	.dropdown {
