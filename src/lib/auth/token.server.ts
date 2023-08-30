@@ -1,6 +1,7 @@
 import { dbpool } from '$lib/db/db.server';
 import {
 	emailVerificationTokens,
+	passwordResetTokens,
 	type SelectEmailVerificationToken,
 	type SelectUser,
 } from '$lib/db/schema/auth';
@@ -70,3 +71,31 @@ export async function validateEmailVerificationToken(token: SelectEmailVerificat
 	}
 	return storedToken.userId;
 }
+
+/**
+ * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
+ */
+export const generatePasswordResetToken = async (userId: string) => {
+	const storedUserTokens = await dbpool
+		.select()
+		.from(passwordResetTokens)
+		.where(eq(passwordResetTokens.id, userId));
+	if (storedUserTokens.length) {
+		const reusableStoredToken = storedUserTokens.find((tkn) => {
+			return isWithinExpiration(Number(tkn.expires) - TOKEN_MIN_EXPIRY);
+		});
+		if (reusableStoredToken) {
+			return reusableStoredToken.id;
+		}
+	}
+	const token = generateRandomString(63);
+	await dbpool
+		.insert(passwordResetTokens)
+		.values({
+			id: token,
+			expires: BigInt(Date.now() + TOKEN_EXPIRY),
+			userId,
+		})
+		.executeTakeFirst();
+	return token;
+};

@@ -97,6 +97,15 @@ export const emailVerificationTokens = authSchema.table('email_verification_toke
 export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerificationTokens>;
 
 /**
+ * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
+ */
+export const passwordResetTokens = authSchema.table('password_reset_tokens', {
+	id: text('id').notNull().unique(),
+	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
+	userId: useridfk('user_id').notNull(),
+});
+
+/**
  * Sessions to track auth-oriented user requests.
  *
  * @see https://lucia-auth.com/basics/sessions
