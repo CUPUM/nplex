@@ -9,9 +9,9 @@
 	import { transform } from '$lib/transitions/transform';
 	import { KEYS } from '$lib/utils/constants';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
-	import { Languages, LogIn, User } from 'lucide-svelte';
-	import { expoOut } from 'svelte/easing';
-	import { fly } from 'svelte/transition';
+	import { Languages, User } from 'lucide-svelte';
+	import { expoIn, expoOut } from 'svelte/easing';
+	import { scale } from 'svelte/transition';
 
 	const t = createTranslations({
 		fr: {
@@ -35,7 +35,20 @@
 		states: { open: localeOpen },
 	} = createDropdownMenu({ forceVisible: true });
 
-	$page.data;
+	const {
+		elements: { menu: userMenu, item: userItem, trigger: userTrigger, arrow: userArrow },
+		states: { open: userOpen },
+	} = createDropdownMenu({ forceVisible: true });
+
+	const {
+		elements: {
+			menu: settingsMenu,
+			item: settingsItem,
+			trigger: settingsTrigger,
+			arrow: settingsArrow,
+		},
+		states: { open: settingsOpen },
+	} = createDropdownMenu({ forceVisible: true });
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
@@ -53,19 +66,35 @@
 	</nav>
 	<!-- User nav -->
 	<menu id="user-group" class="group">
-		<a class="button square" use:ripple {...$i18nlink('/signup')}>
-			{#if $page.data.user}
-				<User size="1.5em" style="button-icon" />
-			{:else}
-				<LogIn size="1.5em" style="button-icon" />
+		{#if $page.data.user}
+			<button class="button avatar" use:ripple use:melt={$userTrigger}>
+				{$page.data.user.email.slice(0, 1)}
+			</button>
+			{#if $userOpen}
+				<menu
+					class="dropdown"
+					use:melt={$userMenu}
+					transition:transform={{ scale: 0.5, translate: [0, -5] }}
+				>
+					User yé! :D
+				</menu>
 			{/if}
-		</a>
+		{:else}
+			<a class="button square" use:ripple {...$i18nlink('/signup')}>
+				<User size="1.5em" style="button-icon" />
+			</a>
+		{/if}
 		<button class="button" use:ripple use:melt={$localeTrigger}>
 			<Languages size="1.5em" />
 			<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
 		</button>
 		{#if $localeOpen}
-			<menu class="dropdown" use:melt={$localeMenu} transition:fly={{ y: -5 }}>
+			<menu
+				class="dropdown"
+				use:melt={$localeMenu}
+				in:scale={{ duration: 150, start: 0.9, easing: expoOut }}
+				out:scale={{ duration: 100, start: 0.9, easing: expoIn }}
+			>
 				{#each LOCALES_ARR as locale}
 					<a class="dropdown-item" {...$i18nswitch(locale)} use:melt={$localeItem}>
 						{LOCALES_DETAILS[locale].name}
@@ -125,7 +154,7 @@
 		font-weight: 450;
 		letter-spacing: 0.02em;
 		padding-inline: var(--size-lg);
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-md);
 		outline: 1px solid transparent;
 		outline-offset: 4px;
 		transition:
@@ -133,9 +162,14 @@
 			outline 0.25s ease-out,
 			outline-offset 0.25s ease-out;
 
-		&:hover {
+		&:hover,
+		&[data-state='open'] {
 			color: var(--color-primary-500);
-			background-color: color-mix(in hsl, var(--color-primary-500) 20%, transparent);
+			background-color: color-mix(in hsl, var(--color-primary-300) 20%, transparent);
+
+			@include dark {
+				background-color: color-mix(in hsl, var(--color-primary-800) 20%, transparent);
+			}
 		}
 
 		&:focus-visible {
@@ -181,7 +215,7 @@
 		padding: 0.35rem 0.5rem;
 		opacity: 0.75;
 		border-radius: var(--radius-full);
-		border: 1px solid color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+		border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
 		font-weight: 400;
 	}
 
@@ -189,9 +223,14 @@
 		display: flex;
 		flex-direction: column;
 		background-color: white;
-		box-shadow: 0 1rem 2rem -1rem rgba(0, 0, 0, 0.2);
-		padding: var(--space-sm);
-		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-xs);
+		padding: var(--space-2xs);
+		border-radius: var(--radius-md);
+		transform-origin: top center;
+
+		@include dark {
+			background-color: var(--color-neutral-800);
+		}
 	}
 
 	.dropdown-item {
@@ -199,7 +238,18 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		padding: 0.25rem;
+		padding: var(--space-sm) var(--space-md);
 		gap: var(--space-2xs);
+		border-radius: var(--radius-sm);
+		transition: all 0.2s ease-out;
+
+		&:hover,
+		&:focus-visible {
+			background-color: var(--color-neutral-200);
+
+			@include dark {
+				background-color: var(--color-neutral-700);
+			}
+		}
 	}
 </style>

@@ -102,11 +102,19 @@
 	--radius-3xl: 72px;
 	--radius-full: 999px;
 	// Content sizes.
-	--main-max-width: 960px;
+	--width-main: 960px;
+	--width-col: 480px;
 	// Easings
 	--ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
 	--ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+	// Shadows
+	--shadow-xs: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
+	--shadow-sm: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
+	--shadow-md: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
+	--shadow-lg: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
+	--shadow-xl: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
+	--shadow-2xl: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
 }
 
 :root {

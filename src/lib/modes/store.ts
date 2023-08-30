@@ -1,22 +1,24 @@
 import { page } from '$app/stores';
-import { writable, type Updater } from 'svelte/store';
+import { derived, writable, type Updater } from 'svelte/store';
 import { MODES, MODE_ATTRIBUTE, type Mode } from './constants';
 import { getModeCookie, setModeCookie } from './cookie';
 
-/**
- * Client-side store to keep track of and update cookie value.
- */
-export const mode = (function () {
-	// Init with page.data.mode value
+function createMode() {
 	const init = getModeCookie();
+
+	const dataMode = derived(page, ($page) => {
+		return $page.data.mode;
+	});
 
 	// Keep an internal state
 	const store = writable(init, function start(_set) {
-		// Keeping track of server-side initiated mode change (who knows).
-		const unsub = page.subscribe((d) => {
-			_set(d.data.mode);
+		const start = getModeCookie();
+		_set(start);
+		// Listening to page data (upstream) to keep track of server-side
+		// (or universal load function) initiated mode change (who knows).
+		const unsub = dataMode.subscribe((v) => {
+			_set(v);
 		});
-		_set(getModeCookie());
 		return function stop() {
 			unsub();
 		};
@@ -38,7 +40,6 @@ export const mode = (function () {
 	}
 
 	function toggle() {
-		console.log('toggle mode!');
 		update((v) => (v === MODES.DARK ? MODES.LIGHT : MODES.DARK));
 	}
 
@@ -48,4 +49,6 @@ export const mode = (function () {
 		update,
 		toggle,
 	};
-})();
+}
+
+export const mode = createMode();

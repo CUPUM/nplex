@@ -136,6 +136,12 @@ try {
 				.onConflictDoNothing()
 		);
 	});
+
+	// Seed project image types
+
+	// Seed project image temporalities
+
+	// Seed...
 } catch (error) {
 	console.error('❌ Database seed failed (see error below).');
 	throw error;

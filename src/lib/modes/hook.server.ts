@@ -6,6 +6,7 @@ import { getModeCookie } from './cookie';
  */
 const handle = (async ({ event, resolve }) => {
 	const mode = getModeCookie(event);
+	console.log('hook', mode);
 	event.locals.mode = mode;
 
 	// Set html attribute using event.locals to account for

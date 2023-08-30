@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { ICON_SIZE_DEFAULT } from '$lib/auth/socials';
+	import { useMode } from '$lib/modes/ModeProvider.svelte';
 	import { MODES, type Mode } from '$lib/modes/constants';
-	import { mode as rootMode } from '$lib/modes/store';
 
 	export let size: number | string = ICON_SIZE_DEFAULT;
 	export let mode: Mode | undefined = undefined;
 
-	$: _mode = mode ?? $rootMode;
+	const ctxMode = useMode();
+	$: _mode = mode ?? $ctxMode;
 </script>
 
 <svg width={size} height={size} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">

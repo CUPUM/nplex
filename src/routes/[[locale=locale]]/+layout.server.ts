@@ -1,3 +1,4 @@
+import { SETOUTS } from '$lib/setout/constants.js';
 import type { Session } from 'lucia';
 
 export async function load(event) {
@@ -6,6 +7,7 @@ export async function load(event) {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { user, userId } = session;
 	return {
+		setout: SETOUTS.NORMAL,
 		mode,
 		user,
 	};

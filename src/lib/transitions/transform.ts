@@ -1,4 +1,4 @@
-import { cubicOut } from 'svelte/easing';
+import { expoOut } from 'svelte/easing';
 import type { EasingFunction } from 'svelte/transition';
 
 /**
@@ -30,7 +30,7 @@ function cs(scaleDelta: number | undefined, u: number) {
 }
 
 function ct(translateDelta: number | undefined, u: number) {
-	return u * (translateDelta ?? 0);
+	return 1 - (translateDelta ?? 1) * u;
 }
 
 function cr(rotateDelta: number | undefined, u: number) {
@@ -44,8 +44,8 @@ export function transform(
 	element: Element,
 	{
 		delay = 0,
-		duration = 350,
-		easing = cubicOut,
+		duration = 250,
+		easing = expoOut,
 		opacity = 0,
 		scale = 1,
 		translate = 0,
