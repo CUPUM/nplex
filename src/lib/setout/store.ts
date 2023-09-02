@@ -10,21 +10,15 @@ function createSetout() {
 	/**
 	 * Last value set by upstream page.data update (load function).
 	 */
-	let last = SETOUT_DEFAULT;
+	const last = SETOUT_DEFAULT;
 
 	const dataSetout = derived(page, ($page) => {
-		return $page.data.setout;
+		return $page.data?.setout ?? SETOUT_DEFAULT;
 	});
 
 	const store = writable<Setout>(SETOUT_DEFAULT, function start(_set) {
-		// let key: string | null;
-
-		const unsub = dataSetout.subscribe((p) => {
-			// if (key == null || p.route.id !== key) {
-			_set(p.data.setout);
-			last = p.data.setout;
-			// }
-			// key = p.route.id;
+		const unsub = dataSetout.subscribe((v) => {
+			_set(v);
 			return function stop() {
 				unsub();
 			};

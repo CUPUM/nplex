@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createLoading } from '$lib/actions/loading.js';
 	import { SOCIAL_PROVIDERS_ARR } from '$lib/auth/constants.js';
 	import { SOCIAL_PROVIDERS_DETAILS } from '$lib/auth/socials.js';
 	import { i18nlink } from '$lib/i18n/link.js';
@@ -28,7 +29,13 @@
 
 	export let data;
 
-	const { form, enhance, constraints, errors } = superForm(data.form);
+	const { form, enhance, constraints, errors, delayed } = superForm(data.form, {
+		taintedMessage: null,
+	});
+
+	const { state: loadingState, element: loadingElement, action: loadingAction } = createLoading();
+
+	$: $loadingState = $delayed;
 </script>
 
 <form action="?/email" use:enhance method="POST">

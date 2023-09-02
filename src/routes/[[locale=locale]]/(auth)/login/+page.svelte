@@ -24,18 +24,17 @@
 	});
 
 	export let data;
-	const { form, enhance, constraints, errors } = superForm(data.form);
+
+	const { form, enhance, constraints, errors, delayed } = superForm(data.form, {
+		taintedMessage: null,
+	});
+
 	const { action: loadingAction, element: loadingElement, state: loadingState } = createLoading();
+
+	$: $loadingState = $delayed;
 </script>
 
-<form
-	method="POST"
-	use:enhance={{
-		onSubmit(input) {
-			loadingState.set(true);
-		},
-	}}
->
+<form method="POST" use:enhance>
 	<div class="box">
 		<h1>{$t.title}</h1>
 		<fieldset>

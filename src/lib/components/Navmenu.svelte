@@ -7,6 +7,8 @@
 	import { createTranslations } from '$lib/i18n/translate';
 	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
+	import { SETOUTS } from '$lib/setout/constants';
+	import { setout } from '$lib/setout/store';
 	import { transform } from '$lib/transitions/transform';
 	import { KEYS } from '$lib/utils/constants';
 	import { createDropdownMenu, melt } from '@melt-ui/svelte';
@@ -54,111 +56,125 @@
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<header>
-	<!-- General nav -->
-	<nav id="general-group" class="group">
-		<a id="logobutton" class="navbutton" use:navripple {...$i18nlink('/')}>
-			<LogoSvg id="navbutton-logo" />
-		</a>
-		<a class="navbutton" use:navripple {...$i18nlink('/about')}>{$t.about}</a>
-		<a class="navbutton" use:navripple {...$i18nlink('/guides')}>{$t.guides}</a>
-	</nav>
-	<!-- Exploration nav -->
-	<nav id="exploration-group" class="group">
-		<a class="navbutton" use:navripple {...$i18nlink('/projects')}>{$t.projects}</a>
-		<a class="navbutton" use:navripple {...$i18nlink('/organizations')}>{$t.organizations}</a>
-	</nav>
-	<!-- User nav -->
-	<menu id="user-group" class="group">
-		{#if $page.data.user}
-			<button class="navbutton avatar" use:navripple use:melt={$userTrigger}>
-				{$page.data.user.email.slice(0, 1)}
+<header
+	style:--width-setout={$setout === SETOUTS.FULL_SCREEN || $setout === SETOUTS.FULL_WIDTH
+		? '100%'
+		: undefined}
+>
+	<div class="inner">
+		<!-- General nav -->
+		<nav id="general-group" class="group">
+			<a id="logobutton" class="navbutton" use:navripple {...$i18nlink('/')}>
+				<LogoSvg id="navbutton-logo" />
+			</a>
+			<a class="navbutton" use:navripple {...$i18nlink('/about')}>{$t.about}</a>
+			<a class="navbutton" use:navripple {...$i18nlink('/guides')}>{$t.guides}</a>
+		</nav>
+		<!-- Exploration nav -->
+		<nav id="exploration-group" class="group">
+			<a class="navbutton" use:navripple {...$i18nlink('/projects')}>{$t.projects}</a>
+			<a class="navbutton" use:navripple {...$i18nlink('/organizations')}>{$t.organizations}</a>
+		</nav>
+		<!-- User nav -->
+		<menu id="user-group" class="group">
+			{#if $page.data.user}
+				<button class="navbutton avatar" use:navripple use:melt={$userTrigger}>
+					{$page.data.user.email.slice(0, 1)}
+				</button>
+				{#if $userOpen}
+					<menu
+						class="dropdown"
+						use:melt={$userMenu}
+						in:scale={{ duration: 150, start: 0.9, easing: expoOut }}
+						out:scale={{ duration: 100, start: 0.9, easing: expoIn }}
+					>
+						<form use:enhance method="POST" action="/?/logout" id="logout-form" hidden />
+						<button class="dropdown-item" type="submit" form="logout-form">
+							<LogOut size="1.5em" class="navbutton-icon" />
+							{$t.logout}
+						</button>
+					</menu>
+				{/if}
+			{:else}
+				<Tooltip>
+					<a class="navbutton square" use:navripple {...$i18nlink('/login')}>
+						<User size="1.5em" class="navbutton-icon" />
+					</a>
+					<svelte:fragment slot="content"></svelte:fragment>
+				</Tooltip>
+			{/if}
+			<button class="navbutton" use:navripple use:melt={$localeTrigger}>
+				<Languages size="1.5em" />
+				<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
 			</button>
-			{#if $userOpen}
+			{#if $localeOpen}
 				<menu
 					class="dropdown"
-					use:melt={$userMenu}
+					use:melt={$localeMenu}
 					in:scale={{ duration: 150, start: 0.9, easing: expoOut }}
 					out:scale={{ duration: 100, start: 0.9, easing: expoIn }}
 				>
-					<form use:enhance method="POST" action="/?/logout" id="logout-form" hidden />
-					<button class="dropdown-item" type="submit" form="logout-form">
-						<LogOut size="1.5em" class="navbutton-icon" />
-						{$t.logout}
-					</button>
+					{#each LOCALES_ARR as locale}
+						<a
+							class="dropdown-item"
+							{...$i18nswitch(locale)}
+							use:melt={$localeItem}
+							use:navripple
+							data-current={$page.data.locale === locale ? true : undefined}
+						>
+							{LOCALES_DETAILS[locale].name}
+						</a>
+					{/each}
 				</menu>
 			{/if}
-		{:else}
-			<Tooltip>
-				<a class="navbutton square" use:navripple {...$i18nlink('/login')}>
-					<User size="1.5em" class="navbutton-icon" />
-				</a>
-				<svelte:fragment slot="content"></svelte:fragment>
-			</Tooltip>
-		{/if}
-		<button class="navbutton" use:navripple use:melt={$localeTrigger}>
-			<Languages size="1.5em" />
-			<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
-		</button>
-		{#if $localeOpen}
-			<menu
-				class="dropdown"
-				use:melt={$localeMenu}
-				in:scale={{ duration: 150, start: 0.9, easing: expoOut }}
-				out:scale={{ duration: 100, start: 0.9, easing: expoIn }}
+			<button
+				class="navbutton square"
+				use:navripple
+				on:pointerdown={mode.toggle}
+				on:keydown={(e) => {
+					if (e.key === KEYS.SPACE || e.key === KEYS.ENTER) {
+						mode.toggle();
+					}
+				}}
 			>
-				{#each LOCALES_ARR as locale}
-					<a
-						class="dropdown-item"
-						{...$i18nswitch(locale)}
-						use:melt={$localeItem}
-						use:navripple
-						data-current={$page.data.locale === locale ? true : undefined}
+				{#key $mode}
+					<div
+						in:transform={{
+							scale: 0.75,
+							rotate: [0, 0, -90],
+							duration: 500,
+							delay: 200,
+							easing: expoOut,
+						}}
+						out:transform={{ scale: 0.5, rotate: [0, 0, 90], duration: 350, easing: cubicIn }}
+						class="navbutton-icon mode-icon"
 					>
-						{LOCALES_DETAILS[locale].name}
-					</a>
-				{/each}
-			</menu>
-		{/if}
-		<button
-			class="navbutton square"
-			use:navripple
-			on:pointerdown={mode.toggle}
-			on:keydown={(e) => {
-				if (e.key === KEYS.SPACE || e.key === KEYS.ENTER) {
-					mode.toggle();
-				}
-			}}
-		>
-			{#key $mode}
-				<div
-					in:transform={{
-						scale: 0.75,
-						rotate: [0, 0, -90],
-						duration: 500,
-						delay: 200,
-						easing: expoOut,
-					}}
-					out:transform={{ scale: 0.5, rotate: [0, 0, 90], duration: 350, easing: cubicIn }}
-					class="navbutton-icon mode-icon"
-				>
-					<svelte:component this={MODES_DETAILS[$mode].icon} size="1.5em" />
-				</div>
-			{/key}
-		</button>
-	</menu>
+						<svelte:component this={MODES_DETAILS[$mode].icon} size="1.5em" />
+					</div>
+				{/key}
+			</button>
+		</menu>
+	</div>
 </header>
 
 <style lang="scss">
 	header {
 		position: sticky;
 		top: 0;
+		align-self: stretch;
+		padding: var(--space-sm);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.inner {
+		font-weight: 500;
+		flex-direction: row;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
-		align-self: stretch;
-		flex-direction: row;
-		padding: var(--space-sm);
-		font-weight: 500;
+		width: 100%;
+		max-width: var(--width-setout, var(--width-main));
 	}
 
 	.group {
