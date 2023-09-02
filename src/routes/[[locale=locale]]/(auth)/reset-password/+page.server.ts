@@ -24,6 +24,7 @@ export const load = async (event) => {
 
 export const actions = {
 	default: async (event) => {
+		console.log('resetting');
 		const form = await superValidate(event, passwordResetSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
@@ -54,6 +55,7 @@ export const actions = {
 			await sendPasswordResetLink(user, event);
 			return message(form, t.success);
 		} catch (error) {
+			console.error(error);
 			return message(form, t.error, { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
 	},

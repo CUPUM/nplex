@@ -18,7 +18,6 @@ const MODE_COOKIE_OPTIONS = {
  * mode cookie.
  */
 export function setModeCookie(value: Mode, event?: RequestEvent) {
-	console.log('setting mode', value);
 	if (event) {
 		event.cookies.set(MODE_COOKIE_NAME, value, { ...MODE_COOKIE_OPTIONS, httpOnly: false });
 	}
@@ -32,7 +31,6 @@ export function setModeCookie(value: Mode, event?: RequestEvent) {
  */
 export function getModeCookie(event?: RequestEvent) {
 	const cookie = event ? event.cookies.get(MODE_COOKIE_NAME) : cookies.get(MODE_COOKIE_NAME);
-	console.log(cookie);
 	if (isMode(cookie)) {
 		return cookie;
 	}

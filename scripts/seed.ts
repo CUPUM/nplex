@@ -138,13 +138,18 @@ try {
 	});
 
 	// Seed project image types
+	// await db.transaction();
 
 	// Seed project image temporalities
+	// await db.transaction();
 
 	// Seed...
 } catch (error) {
 	console.error('❌ Database seed failed (see error below).');
 	throw error;
+} finally {
+	// Make sure to close pool.
+	// await db.end()
 }
 console.info('🚀 Database seeded successfully!');
 console.info(seeded);

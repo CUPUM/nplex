@@ -22,13 +22,13 @@
 	--color-primary-100: hsl(149, 80%, 90%);
 	--color-primary-200: hsl(152, 76%, 80%);
 	--color-primary-300: hsl(156, 72%, 67%);
-	--color-primary-400: hsl(158, 64%, 52%);
-	--color-primary-500: hsl(160, 84%, 39%);
-	--color-primary-600: hsl(161, 94%, 30%);
-	--color-primary-700: hsl(163, 94%, 24%);
-	--color-primary-800: hsl(163, 88%, 20%);
-	--color-primary-900: hsl(164, 86%, 15%);
-	--color-primary-950: hsl(166, 91%, 9%);
+	--color-primary-400: hsl(158, 65%, 52%);
+	--color-primary-500: hsl(160, 88%, 39%);
+	--color-primary-600: hsl(161, 95%, 30%);
+	--color-primary-700: hsl(162, 95%, 23%);
+	--color-primary-800: hsl(163, 93%, 17%);
+	--color-primary-900: hsl(164, 91%, 12%);
+	--color-primary-950: hsl(165, 91%, 8%);
 	--color-secondary-50: hsl(33, 84%, 80%);
 	--color-secondary-100: hsl(34, 84%, 80%);
 	--color-secondary-200: hsl(35, 83%, 74%);
@@ -96,10 +96,10 @@
 	--radius-xs: 8px;
 	--radius-sm: 12px;
 	--radius-md: 16px;
-	--radius-lg: 24px;
-	--radius-xl: 32px;
-	--radius-2xl: 48px;
-	--radius-3xl: 72px;
+	--radius-lg: 21px;
+	--radius-xl: 28px;
+	--radius-2xl: 36px;
+	--radius-3xl: 48px;
 	--radius-full: 999px;
 	// Content sizes.
 	--width-main: 960px;
@@ -109,15 +109,13 @@
 	--ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 	// Shadows
-	--shadow-xs: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
-	--shadow-sm: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
-	--shadow-md: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
-	--shadow-lg: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
-	--shadow-xl: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
-	--shadow-2xl: box-shadow 0px 3px -1px rgba(0, 0, 0, 0.2);
-}
-
-:root {
+	--shadow-xs: 0 1px 3px -1px rgba(0, 0, 0, 0.2);
+	--shadow-sm: 0 3px 6px -3px rgba(0, 0, 0, 0.22);
+	--shadow-md: 0 5px 12px -6px rgba(0, 0, 0, 0.25);
+	--shadow-lg: 0 9px 24px -10px rgba(0, 0, 0, 0.28);
+	--shadow-xl: 0 16px 48px -15px rgba(0, 0, 0, 0.3);
+	--shadow-2xl: 0 28px 96px -21px rgba(0, 0, 0, 0.35);
+	// Root style
 	position: relative;
 	font-size: 100%;
 	font-family: var(--font-main);
@@ -132,9 +130,117 @@
 	}
 }
 
+*:focus-visible {
+	outline: 2px solid rgba(0, 0, 0, 0.8);
+	outline-offset: 2px;
+
+	@include dark {
+		outline: 2px solid rgba(255, 255, 255, 0.8);
+	}
+}
+
 body {
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	min-height: 100svh;
 }
+
+/*
+Button
+*/
+.button {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1em;
+	padding: var(--space-md);
+	border-radius: var(--radius-md);
+	color: var(--color-neutral-700);
+	background-color: color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
+
+	@include dark {
+		color: var(--color-neutral-300);
+	}
+
+	&[data-loading] {
+		color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+		transform: scale(0.9);
+		pointer-events: none;
+	}
+}
+
+.button-group {
+}
+
+/*
+Links
+*/
+.link {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	font-weight: 400;
+	justify-content: space-between;
+	gap: 1em;
+	padding: var(--space-md);
+	border-radius: var(--radius-md);
+	color: var(--color-primary-500);
+	text-decoration: underline;
+	text-underline-offset: -2px;
+	text-decoration-thickness: 1.75px;
+	text-decoration-color: transparent;
+	text-decoration-skip-ink: all;
+	text-decoration-line: underline;
+	transition: all 0.1s ease-out;
+
+	@include dark {
+		// color: var(--color-neutral-100);
+	}
+
+	&.inline {
+		display: inline;
+		padding: 0.25em;
+	}
+
+	&:hover,
+	&:focus {
+		text-underline-offset: 2px;
+		text-decoration-color: var(--color-primary-500);
+		color: var(--color-primary-600);
+		// background-color: color-mix(in srgb, var(--color-primary-300) 15%, transparent);
+
+		@include dark {
+			color: var(--color-primary-400);
+			// background-color: color-mix(in srgb, var(--color-primary-700) 15%, transparent);
+		}
+	}
+}
+
+/*
+Text input
+*/
+.input {
+	padding: 1em;
+	border-radius: var(--radius-md);
+	background-color: color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
+}
+
+.input-group {
+}
+
+// input[type='text'],
+// input[type='email'],
+// input[type='password'],
+// input[type='search'] {
+// 	padding: 1em;
+// 	border-radius: var(--radius-md);
+// 	color: var(--color-neutral-700);
+// 	background-color: var(--color-neutral-200);
+
+// 	[data-mode='dark'] & {
+// 		color: var(--color-neutral-400);
+// 		background-color: var(--color-neutral-950);
+// 	}
+// }

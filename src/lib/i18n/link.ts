@@ -9,9 +9,12 @@ import { delocalizeCurrent, localize } from './href';
  */
 export const i18nlink = derived(page, ($page) => {
 	return <H extends string>(href: H, locale: Locale = $page.data.locale) => {
+		const localized = localize(href, locale);
+		const current = $page.url.pathname === localized || undefined;
 		return {
-			href: localize(href, locale),
-			hreflang: locale,
+			'href': localized,
+			'hreflang': locale,
+			'data-current': current,
 			// Add more attributes if relevant.
 		} satisfies Partial<HTMLAnchorAttributes>;
 	};

@@ -25,16 +25,8 @@ function d(
 	return dimensions;
 }
 
-function cs(scaleDelta: number | undefined, u: number) {
-	return 1 - (scaleDelta ?? 1) * u;
-}
-
-function ct(translateDelta: number | undefined, u: number) {
-	return 1 - (translateDelta ?? 1) * u;
-}
-
-function cr(rotateDelta: number | undefined, u: number) {
-	return u * (rotateDelta ?? 0);
+function tr(v: number | undefined, u: number, base = 0) {
+	return base - (v ?? 1) * u;
 }
 
 /**
@@ -71,10 +63,10 @@ export function transform(
 		duration,
 		easing,
 		css: (t, u) => {
-			const ns = `scale(${cs(sd[0], u)}${sd[1] == undefined ? '' : `,${cs(sd[1], u)}`})`;
-			const nt = `translate3d(${ct(td[0], u)}px,${ct(td[1], u)}px,${ct(td[2], u)}px)`;
+			const ns = `scale(${tr(sd[0], u, 1)}${sd[1] == null ? '' : `,${tr(sd[1], u, 1)}`})`;
+			const nt = `translate3d(${tr(td[0], u)}px,${tr(td[1], u)}px,${tr(td[2], u)}px)`;
 			// prettier-ignore
-			const nr = `rotateX(${cr(rd[0], u)}deg) rotateY(${cr(rd[1], u)}deg) rotateZ(${cr(rd[2], u)}deg)`;
+			const nr = `rotateX(${tr(rd[0], u)}deg) rotateY(${tr(rd[1], u)}deg) rotateZ(${tr(rd[2], u)}deg)`;
 			return `
 			opacity: ${target_opacity - od * u};
 			transform: ${transform} ${ns} ${nt} ${nr};

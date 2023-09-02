@@ -15,6 +15,13 @@
       "when": 1693379020388,
       "tag": "0001_secret_captain_midlands",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1693483132944,
+      "tag": "0002_adorable_shard",
+      "breakpoints": true
     }
   ]
 }

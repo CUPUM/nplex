@@ -17,7 +17,9 @@
 
 	export let data;
 
-	const { form, enhance, constraints, errors } = superForm(data.form);
+	const { form, enhance, constraints, errors, message } = superForm(data.form);
+
+	$: console.log($message);
 </script>
 
 <form use:enhance method="POST">

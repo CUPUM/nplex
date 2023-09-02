@@ -6,12 +6,13 @@
 	import { transform } from '$lib/transitions/transform';
 	import { expoIn, expoOut } from 'svelte/easing';
 
-	export let style: string | undefined = undefined;
-	let className: string | undefined = undefined;
-	export { className as class };
+	// export let style: string | undefined = undefined;
+	// let className: string | undefined = undefined;
+	// export { className as class };
+	export let color: string | undefined = undefined;
 </script>
 
-<div class="loading {className}" {style}>
+<div class="loading" style:--color={color}>
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
@@ -85,7 +86,10 @@
 	.v {
 		opacity: 0;
 		fill: none;
-		stroke: currentColor;
+		stroke: var(--color, var(--color-primary-800));
+		@include dark {
+			stroke: var(--color, var(--color-primary-200));
+		}
 		stroke-width: 12px;
 		stroke-linejoin: round;
 		stroke-linecap: round;

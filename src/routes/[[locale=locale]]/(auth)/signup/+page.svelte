@@ -13,6 +13,7 @@
 			confirmPassword: 'Confirmez le mot de passe',
 			button: 'M’inscrire!',
 			login: 'J’ai déjà un compte',
+			forgot: 'J’ai oublié mon mot de passe',
 		},
 		en: {
 			title: 'Create an account',
@@ -21,6 +22,7 @@
 			confirmPassword: 'Confirm password',
 			button: 'Signup!',
 			login: 'I already have an account',
+			forgot: 'I forgot my password',
 		},
 	});
 
@@ -80,6 +82,7 @@
 	</fieldset>
 
 	<a {...$i18nlink('/login')}>{$t.login}</a>
+	<a {...$i18nlink('/reset-password')}>{$t.forgot}</a>
 </form>
 
 <style lang="scss">
