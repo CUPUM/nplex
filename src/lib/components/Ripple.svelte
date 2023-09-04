@@ -36,7 +36,7 @@
 	export let colorSpeed = speed;
 	export let colorDuration = duration;
 	export let colorDelay = delay;
-	export let blur: number = 8;
+	export let blur: number = 0;
 
 	let containerRef: HTMLDivElement;
 	let destructor: () => void;
@@ -174,7 +174,7 @@
 		aspect-ratio: 1 / 1;
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
-		// filter: blur(var(--blur));
+		filter: blur(var(--blur));
 		box-shadow: 0 0 var(--blur) currentColor;
 		animation:
 			var(--spread-duration) var(--spread-easing) var(--spread-delay) 1 forwards spread,

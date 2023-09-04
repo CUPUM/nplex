@@ -5,14 +5,14 @@
 <script lang="ts">
 	import { transform } from '$lib/transitions/transform';
 	import { expoIn, expoOut } from 'svelte/easing';
+	import type { SVGAttributes } from 'svelte/elements';
 
-	// export let style: string | undefined = undefined;
-	// let className: string | undefined = undefined;
-	// export { className as class };
 	export let color: string | undefined = undefined;
+	export let thickness: SVGAttributes<SVGPathElement>['stroke-width'] = 12;
+	export let linecap: SVGAttributes<SVGPathElement>['stroke-linecap'] = 'square';
 </script>
 
-<div class="loading" style:--color={color}>
+<div class="loading" style:--color={color} style:--thickness={thickness} style:--linecap={linecap}>
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
@@ -90,9 +90,9 @@
 		@include dark {
 			stroke: var(--color, var(--color-primary-200));
 		}
-		stroke-width: 12px;
+		stroke-width: var(--thickness);
 		stroke-linejoin: round;
-		stroke-linecap: round;
+		stroke-linecap: var(--linecap);
 		animation-duration: calc(var(--draw-s) * var(--shapes-n));
 		stroke-dashoffset: 0;
 		animation-delay: calc(var(--i) * var(--draw-s));

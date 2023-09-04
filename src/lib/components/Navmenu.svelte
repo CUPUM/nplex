@@ -1,24 +1,12 @@
-<script lang="ts">
-	import { enhance } from '$app/forms';
-	import { page } from '$app/stores';
-	import { ripple } from '$lib/actions/ripple';
-	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
-	import { i18nlink, i18nswitch } from '$lib/i18n/link';
-	import { createTranslations } from '$lib/i18n/translate';
-	import { MODES_DETAILS } from '$lib/modes/constants';
-	import { mode } from '$lib/modes/store';
-	import { SETOUTS } from '$lib/setout/constants';
-	import { setout } from '$lib/setout/store';
-	import { transform } from '$lib/transitions/transform';
-	import { KEYS } from '$lib/utils/constants';
-	import { createDropdownMenu, melt } from '@melt-ui/svelte';
-	import { Languages, LogOut, User } from 'lucide-svelte';
-	import { cubicIn, expoIn, expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
-	import LogoSvg from './LogoSvg.svelte';
-	import Tooltip from './Tooltip.svelte';
+<script lang="ts" context="module">
+	export function navripple(node: HTMLElement) {
+		return ripple(node, {
+			color: 'var(--color-primary-500)',
+			opacityStart: 0.2,
+		});
+	}
 
-	const t = createTranslations({
+	export const t = createTranslations({
 		fr: {
 			about: 'À propos',
 			guides: 'Guides',
@@ -26,6 +14,15 @@
 			organizations: 'Organisations',
 			login: 'Me connecter',
 			logout: 'Me déconnecter',
+			language: 'Langue',
+			edit: {
+				projects: 'Modifier un projet',
+				organizations: 'Modifier un organisme',
+			},
+			new: {
+				project: 'Créer un nouveau projet',
+				organization: 'Créer un nouvel organisme',
+			},
 		},
 		en: {
 			about: 'About',
@@ -34,15 +31,38 @@
 			organizations: 'Organizations',
 			login: 'Log in',
 			logout: 'Log out',
+			language: 'Language',
+			edit: {
+				projects: 'Edit a project',
+				organizations: 'Edit an organization',
+			},
+			new: {
+				project: 'Create a new project',
+				organization: 'Create a new organization',
+			},
 		},
 	});
+</script>
 
-	function navripple(node: HTMLElement) {
-		return ripple(node, {
-			color: 'var(--color-primary-500)',
-			opacityStart: 0.2,
-		});
-	}
+<script lang="ts">
+	import { enhance } from '$app/forms';
+	import { page } from '$app/stores';
+	import { ripple } from '$lib/actions/ripple';
+	import { breakpoint } from '$lib/breakpoints/breakpoints';
+	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
+	import { i18nlink, i18nswitch } from '$lib/i18n/link';
+	import { createTranslations } from '$lib/i18n/translate';
+	import { MODES_DETAILS } from '$lib/modes/constants';
+	import { mode } from '$lib/modes/store';
+	import { setout } from '$lib/setout/store';
+	import { transform } from '$lib/transitions/transform';
+	import { KEYS } from '$lib/utils/constants';
+	import { createDialog, createDropdownMenu, melt } from '@melt-ui/svelte';
+	import { FilePlus, Languages, LogOut, MoreHorizontal, Pencil, User } from 'lucide-svelte';
+	import { cubicIn, expoIn, expoOut } from 'svelte/easing';
+	import { scale } from 'svelte/transition';
+	import LogoSvg from './LogoSvg.svelte';
+	import NavmenuDrawer from './NavmenuDrawer.svelte';
 
 	const {
 		elements: { menu: localeMenu, item: localeItem, trigger: localeTrigger, arrow: localeArrow },
@@ -50,31 +70,60 @@
 	} = createDropdownMenu({ forceVisible: true });
 
 	const {
-		elements: { menu: userMenu, item: userItem, trigger: userTrigger, arrow: userArrow },
+		elements: { menu: siteMenu, item: siteItem, trigger: siteTrigger, arrow: siteArrow },
+		states: { open: siteOpen },
+	} = createDropdownMenu({ forceVisible: true });
+
+	const {
+		elements: {
+			menu: userMenu,
+			item: userItem,
+			trigger: userTrigger,
+			arrow: userArrow,
+			separator: userSeparator,
+		},
 		states: { open: userOpen },
 	} = createDropdownMenu({ forceVisible: true });
+
+	const {
+		elements: { trigger: drawerTrigger, portalled: drawerPortalled, ...drawerElements },
+		states: { open: drawerOpen },
+	} = createDialog();
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<header
-	style:--width-setout={$setout === SETOUTS.FULL_SCREEN || $setout === SETOUTS.FULL_WIDTH
-		? '100%'
-		: undefined}
->
+<header class={$setout}>
 	<div class="inner">
 		<!-- General nav -->
-		<nav id="general-group" class="group">
-			<a id="logobutton" class="navbutton" use:navripple {...$i18nlink('/')}>
-				<LogoSvg id="navbutton-logo" />
+		<nav id="site-group" class="group">
+			<a
+				id="logobutton"
+				class="navbutton"
+				class:square={!$breakpoint.lg}
+				use:navripple
+				{...$i18nlink('/')}
+			>
+				<LogoSvg mono={!$breakpoint.lg} />
 			</a>
-			<a class="navbutton" use:navripple {...$i18nlink('/about')}>{$t.about}</a>
-			<a class="navbutton" use:navripple {...$i18nlink('/guides')}>{$t.guides}</a>
+			{#if $breakpoint.lg}
+				<a class="navbutton" use:navripple {...$i18nlink('/about')}>{$t.about}</a>
+				<a class="navbutton" use:navripple {...$i18nlink('/guides')}>{$t.guides}</a>
+			{:else}
+				<button class="navbutton square" use:melt={$drawerTrigger}>
+					<MoreHorizontal size="1.5em" />
+				</button>
+				<div use:melt={$drawerPortalled}>
+					<NavmenuDrawer {...drawerElements} open={drawerOpen} />
+				</div>
+			{/if}
 		</nav>
 		<!-- Exploration nav -->
-		<nav id="exploration-group" class="group">
-			<a class="navbutton" use:navripple {...$i18nlink('/projects')}>{$t.projects}</a>
-			<a class="navbutton" use:navripple {...$i18nlink('/organizations')}>{$t.organizations}</a>
-		</nav>
+		{#if $breakpoint.md}
+			<nav id="explore-group" class="group">
+				<a class="navbutton" use:navripple {...$i18nlink('/projects')}>{$t.projects}</a>
+				<a class="navbutton" use:navripple {...$i18nlink('/organizations')}>{$t.organizations}</a>
+			</nav>
+		{/if}
 		<!-- User nav -->
 		<menu id="user-group" class="group">
 			{#if $page.data.user}
@@ -88,71 +137,89 @@
 						in:scale={{ duration: 150, start: 0.9, easing: expoOut }}
 						out:scale={{ duration: 100, start: 0.9, easing: expoIn }}
 					>
+						<section>
+							<nav class="dropdown-subgroup">
+								<a {...$i18nlink('/edit/projects')} class="dropdown-item" use:melt={$userItem}>
+									<Pencil size="1.5em" />{$t.edit.projects}
+								</a>
+								<a {...$i18nlink('/new/project')} class="dropdown-item" use:melt={$userItem}>
+									<FilePlus size="1.5em" />{$t.new.project}
+								</a>
+							</nav>
+							<nav class="dropdown-subgroup">
+								<a {...$i18nlink('/edit/organizations')} class="dropdown-item" use:melt={$userItem}>
+									<Pencil size="1.5em" />{$t.edit.organizations}
+								</a>
+								<a {...$i18nlink('/new/organization')} class="dropdown-item" use:melt={$userItem}>
+									<FilePlus size="1.5em" />{$t.new.organization}
+								</a>
+							</nav>
+						</section>
+						<hr {...$userSeparator} />
 						<form use:enhance method="POST" action="/?/logout" id="logout-form" hidden />
-						<button class="dropdown-item" type="submit" form="logout-form">
+						<button class="dropdown-item" type="submit" form="logout-form" use:melt={$userItem}>
 							<LogOut size="1.5em" class="navbutton-icon" />
 							{$t.logout}
 						</button>
 					</menu>
 				{/if}
 			{:else}
-				<Tooltip>
-					<a class="navbutton square" use:navripple {...$i18nlink('/login')}>
-						<User size="1.5em" class="navbutton-icon" />
-					</a>
-					<svelte:fragment slot="content"></svelte:fragment>
-				</Tooltip>
+				<a class="navbutton square" use:navripple {...$i18nlink('/login')}>
+					<User size="1.5em" class="navbutton-icon" />
+				</a>
 			{/if}
-			<button class="navbutton" use:navripple use:melt={$localeTrigger}>
-				<Languages size="1.5em" />
-				<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
-			</button>
-			{#if $localeOpen}
-				<menu
-					class="dropdown"
-					use:melt={$localeMenu}
-					in:scale={{ duration: 150, start: 0.9, easing: expoOut }}
-					out:scale={{ duration: 100, start: 0.9, easing: expoIn }}
-				>
-					{#each LOCALES_ARR as locale}
-						<a
-							class="dropdown-item"
-							{...$i18nswitch(locale)}
-							use:melt={$localeItem}
-							use:navripple
-							data-current={$page.data.locale === locale ? true : undefined}
-						>
-							{LOCALES_DETAILS[locale].name}
-						</a>
-					{/each}
-				</menu>
-			{/if}
-			<button
-				class="navbutton square"
-				use:navripple
-				on:pointerdown={mode.toggle}
-				on:keydown={(e) => {
-					if (e.key === KEYS.SPACE || e.key === KEYS.ENTER) {
-						mode.toggle();
-					}
-				}}
-			>
-				{#key $mode}
-					<div
-						in:transform={{
-							scale: 0.75,
-							rotate: [0, 0, -90],
-							duration: 500,
-							delay: 200,
-							easing: expoOut,
-						}}
-						out:transform={{ scale: 0.5, rotate: [0, 0, 90], duration: 350, easing: cubicIn }}
-						class="navbutton-icon mode-icon"
+			{#if $breakpoint.lg}
+				<button class="navbutton" use:navripple use:melt={$localeTrigger}>
+					<Languages size="1.5em" />
+					<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
+				</button>
+				{#if $localeOpen}
+					<menu
+						class="dropdown"
+						use:melt={$localeMenu}
+						in:scale={{ duration: 150, start: 0.9, easing: expoOut }}
+						out:scale={{ duration: 100, start: 0.9, easing: expoIn }}
 					>
-						<svelte:component this={MODES_DETAILS[$mode].icon} size="1.5em" />
-					</div>
-				{/key}
-			</button>
+						{#each LOCALES_ARR as locale}
+							<a
+								class="dropdown-item"
+								{...$i18nswitch(locale)}
+								use:melt={$localeItem}
+								use:navripple
+								data-current={$page.data.locale === locale ? true : undefined}
+							>
+								{LOCALES_DETAILS[locale].name}
+							</a>
+						{/each}
+					</menu>
+				{/if}
+				<button
+					class="navbutton square"
+					use:navripple
+					on:pointerdown={mode.toggle}
+					on:keydown={(e) => {
+						if (e.key === KEYS.SPACE || e.key === KEYS.ENTER) {
+							mode.toggle();
+						}
+					}}
+				>
+					{#key $mode}
+						<div
+							in:transform={{
+								scale: 0.75,
+								rotate: [0, 0, -90],
+								duration: 500,
+								delay: 200,
+								easing: expoOut,
+							}}
+							out:transform={{ scale: 0.5, rotate: [0, 0, 90], duration: 350, easing: cubicIn }}
+							class="navbutton-icon mode-icon"
+						>
+							<svelte:component this={MODES_DETAILS[$mode].icon} size="1.5em" />
+						</div>
+					{/key}
+				</button>
+			{/if}
 		</menu>
 	</div>
 </header>
@@ -162,17 +229,28 @@
 		position: sticky;
 		top: 0;
 		align-self: stretch;
-		padding: var(--space-sm);
+		padding: var(--space-xs);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+
+		@include lg {
+			padding: var(--space-sm);
+		}
 	}
 
 	.inner {
 		font-weight: 500;
 		flex-direction: row;
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns:
+			[full-start site-start]
+			1fr
+			[site-end explore-start]
+			auto
+			[explore-end user-start]
+			1fr
+			[user-end full-end];
 		width: 100%;
 		max-width: var(--width-setout, var(--width-main));
 	}
@@ -180,27 +258,37 @@
 	.group {
 		display: flex;
 		flex-direction: row;
-		gap: var(--space-2xs);
+		gap: var(--space-3xs);
 	}
 
 	.navbutton {
 		position: relative;
 		display: flex;
+		white-space: nowrap;
 		flex-direction: row;
 		gap: var(--space-2xs);
 		align-items: center;
 		justify-content: center;
-		height: var(--space-2xl);
 		font-size: var(--size-sm);
+		height: var(--space-2xl);
+		padding-inline: var(--size-md);
+		border-radius: var(--radius-full);
 		letter-spacing: 0.02em;
-		padding-inline: var(--size-lg);
-		border-radius: var(--radius-md);
 		outline: 1px solid transparent;
 		outline-offset: 4px;
 		transition:
 			all 0.1s ease-out,
-			outline 0.25s ease-out,
-			outline-offset 0.25s ease-out;
+			outline 0.2s ease-out,
+			outline-offset 0.2s ease-out;
+
+		.dropdown & {
+			border-radius: var(--radius-sm);
+		}
+
+		@include lg {
+			padding-inline: var(--size-lg);
+			border-radius: var(--radius-md);
+		}
 
 		&:hover:not([data-current]),
 		&[data-state='open'] {
@@ -245,27 +333,25 @@
 
 		&#logobutton {
 			box-shadow: none;
-		}
 
-		:global(#navbutton-logo) {
-			height: 50%;
-			width: auto;
-			// position: absolute;
-			// top: 25%;
-			// left: 25%;
-			// width: 50%;
-			// height: 50%;
+			@include lg {
+				font-size: 1.5em;
+			}
 		}
 	}
 
-	#general-group {
+	#site-group {
+		grid-column: site;
+		justify-content: flex-start;
 	}
 
-	#exploration-group {
+	#explore-group {
+		grid-column: explore;
 		justify-content: center;
 	}
 
 	#user-group {
+		grid-column: user;
 		justify-content: flex-end;
 	}
 
@@ -303,14 +389,26 @@
 		gap: 3px;
 		font-weight: 500;
 		background-color: var(--color-neutral-50);
-		border: 1px solid var(--color-neutral-200);
+		// border: 1px solid var(--color-neutral-200);
+		box-shadow: var(--shadow-md);
 		padding: var(--space-2xs);
 		border-radius: var(--radius-md);
 		transform-origin: top center;
+		z-index: 1;
 
 		@include dark {
 			background-color: var(--color-neutral-800);
-			border: 1px solid var(--color-neutral-700);
+			// border: 1px solid var(--color-neutral-700);
+		}
+
+		hr {
+			border-color: black;
+			opacity: 0.1;
+			margin: var(--space-2xs);
+
+			@include dark {
+				border-color: white;
+			}
 		}
 	}
 
@@ -354,7 +452,6 @@
 		&:focus-visible:not([data-current]) {
 			color: var(--color-primary-600);
 			background-color: color-mix(in srgb, var(--color-primary-400) 15%, transparent);
-
 			@include dark {
 				color: var(--color-primary-400);
 				background-color: color-mix(in srgb, var(--color-primary-700) 15%, transparent);

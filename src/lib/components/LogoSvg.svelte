@@ -3,8 +3,10 @@
 
 	type $$Props = {
 		mono?: boolean;
+		size?: string | number;
 	} & Omit<SVGAttributes<SVGElement>, 'viewBox'>;
 
+	export let size: $$Props['size'] = '1em';
 	/**
 	 * Single glyph logo (n)
 	 */
@@ -14,7 +16,7 @@
 	$: width = mono ? '100' : '530';
 </script>
 
-<svg xmlns="http://www.w3.org/2000/svg" {viewBox} {width} fill="none" {...$$restProps}>
+<svg xmlns="http://www.w3.org/2000/svg" {viewBox} height={size} fill="none" {...$$restProps}>
 	<path
 		id="logo-n"
 		d="M0 100C0 72.3858 22.3858 50 50 50V50C77.6142 50 100 72.3858 100 100V150H0V100Z"
