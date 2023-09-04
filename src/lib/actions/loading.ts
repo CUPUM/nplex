@@ -1,11 +1,11 @@
 import Loading from '$lib/components/Loading.svelte';
 import type { ComponentProps } from 'svelte';
-import { derived, get, writable } from 'svelte/store';
+import { derived, get, writable, type Readable } from 'svelte/store';
 
 export function loading(
 	node: HTMLElement,
 	options?: ComponentProps<Loading> & {
-		loading: boolean;
+		state: boolean;
 	}
 ) {
 	let comp: Loading | undefined = new Loading({
@@ -14,10 +14,10 @@ export function loading(
 	});
 	return {
 		update(args) {
-			if (comp && !args.loading) {
+			if (comp && !args.state) {
 				comp.$destroy();
 				comp = undefined;
-			} else if (!comp && args.loading) {
+			} else if (!comp && args.state) {
 				comp = new Loading({
 					target: node,
 					props: args,
@@ -35,34 +35,50 @@ export function loading(
  * host and sets [data-lodaing] correspondingly.
  */
 export function createLoading({
-	init = false,
+	state = false,
 	...props
 }: {
-	init?: boolean;
+	state?: boolean | Readable<boolean> | Readable<boolean>[];
 } & ComponentProps<Loading> = {}) {
-	const state = writable(init);
+	const aggregatedState = Array.isArray(state)
+		? derived(state, ($state) => {
+				return $state.every((s) => s);
+		  })
+		: state;
 
-	const element = derived(state, ($state) => {
+	const init = typeof aggregatedState === 'boolean' ? aggregatedState : get(aggregatedState);
+
+	const _state = writable(init);
+
+	const unsubCreate =
+		typeof aggregatedState === 'boolean'
+			? undefined
+			: aggregatedState.subscribe((v) => {
+					_state.set(v);
+			  });
+
+	const element = derived(_state, ($state) => {
 		return {
 			'data-loading': $state || undefined,
 		};
 	});
 
 	function action(node: HTMLElement) {
-		const a = loading(node, { ...props, loading: get(state) });
-		const unsub = state.subscribe((v) => {
+		const a = loading(node, { ...props, state: get(_state) });
+		const unsub = _state.subscribe((v) => {
 			a.update({ ...props, loading: v });
 		});
 		return {
 			destroy() {
 				unsub();
+				unsubCreate && unsubCreate();
 				a.destroy();
 			},
 		} satisfies SvelteActionReturnType;
 	}
 
 	return {
-		state,
+		state: _state,
 		element,
 		action,
 	};
