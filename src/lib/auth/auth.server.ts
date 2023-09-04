@@ -1,8 +1,10 @@
 import { dev } from '$app/environment';
+import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
 import { pool } from '$lib/db/db.server';
 import { getTableName } from '$lib/db/helpers/get-table-name';
 import { keys, sessions, users } from '$lib/db/schema/auth';
 import { pg } from '@lucia-auth/adapter-postgresql';
+import { github } from '@lucia-auth/oauth/providers';
 import { lucia } from 'lucia';
 import { sveltekit } from 'lucia/middleware';
 
@@ -14,17 +16,23 @@ export const auth = lucia({
 		session: getTableName(sessions, { quotes: 'inner', schema: true }),
 		key: getTableName(keys, { quotes: 'inner', schema: true }),
 	}),
-	getUserAttributes(databaseUser) {
+	getUserAttributes(data) {
 		return {
-			id: databaseUser.id,
-			role: databaseUser.role,
-			email: databaseUser.email,
-			emailVerified: databaseUser.email_verified,
+			id: data.id,
+			role: data.role,
+			email: data.email,
+			emailVerified: data.email_verified,
+			githubUsername: data.github_username,
 			// avatarUrl: databaseUser.avatar_url,
 		};
 	},
 	// getSessionAttributes(databaseSession) {
 	// },
+});
+
+export const githubAuth = github(auth, {
+	clientId: GITHUB_CLIENT_ID,
+	clientSecret: GITHUB_CLIENT_SECRET,
 });
 
 export type Auth = typeof auth;

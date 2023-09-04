@@ -7,8 +7,10 @@ import type { User } from 'lucia';
 import { render } from 'svelte-email';
 import { generateEmailVerificationToken, generatePasswordResetToken } from './token.server';
 
-export async function sendEmailVerificationLink(user: User, event: RequestEvent) {
-	const token = await generateEmailVerificationToken(user.userId);
+type EmailUser = Pick<User, 'id' | 'email'>;
+
+export async function sendEmailVerificationLink(user: EmailUser, event: RequestEvent) {
+	const token = await generateEmailVerificationToken(user.id);
 	const t = event.locals.createTranslations({
 		fr: {
 			subject: 'Une dernière petite étape: confirmez votre courriel.',
@@ -32,7 +34,7 @@ export async function sendEmailVerificationLink(user: User, event: RequestEvent)
 	});
 }
 
-export async function sendPasswordResetLink(user: Omit<User, 'userId'>, event: RequestEvent) {
+export async function sendPasswordResetLink(user: EmailUser, event: RequestEvent) {
 	const token = await generatePasswordResetToken(user.id);
 	const t = event.locals.createTranslations({
 		fr: {
