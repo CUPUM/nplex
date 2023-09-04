@@ -16,7 +16,7 @@ declare global {
 		type Auth = LuciaAuth;
 		type DatabaseUserAttributes = Pick<
 			InferSelectModel<typeof users, { dbColumnNames: true }>,
-			'email' | 'email_verified' | 'role'
+			'email' | 'email_verified' | 'role' | 'github_username'
 		>;
 		type DatabaseSessionAttributes = {
 			// to do

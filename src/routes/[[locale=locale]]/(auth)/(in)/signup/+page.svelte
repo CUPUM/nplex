@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { createLoading } from '$lib/actions/loading.js';
-	import { SOCIAL_PROVIDERS_ARR } from '$lib/auth/constants.js';
-	import { SOCIAL_PROVIDERS_DETAILS } from '$lib/auth/socials.js';
 	import { i18nlink } from '$lib/i18n/link.js';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -33,14 +31,15 @@
 		taintedMessage: null,
 	});
 
-	const { state: loadingState, element: loadingElement, action: loadingAction } = createLoading();
-
-	$: $loadingState = $delayed;
+	const {
+		state: loadingState,
+		element: loadingElement,
+		action: loadingAction,
+	} = createLoading({ state: delayed });
 </script>
 
-<form action="?/email" use:enhance method="POST">
+<form use:enhance method="POST">
 	<h1>{$t.title}</h1>
-
 	<fieldset>
 		<label>
 			{$t.email}
@@ -53,7 +52,6 @@
 			/>
 		</label>
 	</fieldset>
-
 	<fieldset>
 		<label>
 			{$t.password}
@@ -76,27 +74,39 @@
 			/>
 		</label>
 	</fieldset>
-
-	<button type="submit">{$t.button}</button>
-
-	<fieldset>
-		{#each SOCIAL_PROVIDERS_ARR as provider}
-			<button type="submit">
-				{SOCIAL_PROVIDERS_DETAILS[provider].name}
-				<svelte:component this={SOCIAL_PROVIDERS_DETAILS[provider].icon} />
-			</button>
-		{/each}
-	</fieldset>
-
-	<a {...$i18nlink('/login')}>{$t.login}</a>
-	<a {...$i18nlink('/reset-password')}>{$t.forgot}</a>
+	<button
+		class="button"
+		type="submit"
+		{...$loadingElement}
+		disabled={$loadingState}
+		use:loadingAction
+	>
+		{$t.button}
+	</button>
 </form>
+<div class="links">
+	<!-- svelte-ignore a11y-missing-attribute -->
+	<a class="link" {...$i18nlink('/login')}>{$t.login}</a>
+	<!-- svelte-ignore a11y-missing-attribute -->
+	<a class="link" {...$i18nlink('/reset-password')}>{$t.forgot}</a>
+</div>
 
 <style lang="scss">
 	form {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
-		padding: 4rem;
+		align-items: center;
+		justify-content: center;
+		flex: 1;
+	}
+
+	.formcontent {
+		padding: var(--space-2xl);
+	}
+
+	.links {
+		display: flex;
+		flex-direction: column;
+		font-size: var(--size-sm);
 	}
 </style>

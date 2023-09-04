@@ -109,12 +109,14 @@
 	--ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 	// Shadows
-	--shadow-xs: 0 1px 3px -1px rgba(0, 0, 0, 0.2);
-	--shadow-sm: 0 3px 6px -3px rgba(0, 0, 0, 0.22);
-	--shadow-md: 0 5px 12px -6px rgba(0, 0, 0, 0.25);
-	--shadow-lg: 0 9px 24px -10px rgba(0, 0, 0, 0.28);
-	--shadow-xl: 0 16px 48px -15px rgba(0, 0, 0, 0.3);
-	--shadow-2xl: 0 28px 96px -21px rgba(0, 0, 0, 0.35);
+	--shadow-xs: 0 1px 3px -1px rgba(0, 8, 24, 0.15);
+	--shadow-sm: 0 3px 6px -4px rgba(0, 8, 24, 0.175);
+	--shadow-md: 0 5px 12px -8px rgba(0, 8, 24, 0.2);
+	--shadow-lg: 0 9px 24px -12px rgba(0, 8, 24, 0.225);
+	--shadow-xl: 0 16px 48px -20px rgba(0, 8, 24, 0.25);
+	--shadow-2xl: 0 28px 96px -48px rgba(0, 8, 24, 0.275);
+	// Border size
+	--border-size: 1.5px;
 	// Root style
 	position: relative;
 	font-size: 100%;
@@ -131,11 +133,13 @@
 }
 
 *:focus-visible {
-	outline: 2px solid rgba(0, 0, 0, 0.8);
-	outline-offset: 2px;
+	outline: 3px solid color-mix(in srgb, var(--color-primary-300) 50%, transparent);
+	// outline: 2px solid rgba(0, 0, 0, 0.8);
+	// outline-offset: 2px;
 
-	@include dark {
-		outline: 2px solid rgba(255, 255, 255, 0.8);
+	@include global-dark {
+		outline: 3px solid color-mix(in srgb, var(--color-primary-700) 50%, transparent);
+		// outline: 2px solid rgba(255, 255, 255, 0.8);
 	}
 }
 
@@ -160,15 +164,19 @@ Buttons
 	border-radius: var(--radius-md);
 	color: var(--color-neutral-700);
 	background-color: color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
-
-	@include dark {
+	@include global-dark {
 		color: var(--color-neutral-300);
 	}
-
 	&[data-loading] {
 		color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
-		transform: scale(0.9);
+		transform: scale(0.95);
 		pointer-events: none;
+	}
+
+	&.outlined {
+	}
+
+	&.cta {
 	}
 }
 
@@ -196,23 +204,20 @@ Links
 	text-decoration-skip-ink: all;
 	text-decoration-line: underline;
 	transition: all 0.1s ease-out;
-
-	@include dark {
+	@include global-dark {
 		color: var(--color-neutral-100);
 	}
-
 	&.inline {
 		display: inline;
 		padding: 0.25em;
 	}
-
 	&:hover,
 	&:focus {
 		text-underline-offset: 2px;
 		text-decoration-color: var(--color-primary-500);
 		color: var(--color-primary-600);
 
-		@include dark {
+		@include global-dark {
 			color: var(--color-primary-400);
 		}
 	}
@@ -223,10 +228,40 @@ Text input
 */
 
 .input {
-	padding: 1em;
+	padding: 1.25em 1.35em;
 	border-radius: var(--radius-md);
-	background-color: color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
+	background-color: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+	transition: all 0.15s ease-out;
+	&:focus {
+		background-color: rgba(255, 255, 255, 0.5);
+		@include global-dark {
+			background-color: rgba(0, 0, 0, 0.5);
+		}
+	}
+	&[data-loading] {
+		color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+		transform: scale(0.95);
+		pointer-events: none;
+	}
+
+	&.outlined {
+		position: relative;
+		background-color: transparent;
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			border-radius: inherit;
+			border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+		}
+	}
 }
 
+/*
+Text input groups (input with nested buttons, tags, etc.)
+*/
 .input-group {
+	.input {
+	}
 }

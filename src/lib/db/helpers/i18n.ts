@@ -1,6 +1,8 @@
 // export type InferColumn<C extends PgColumn> = C extends PgColumn<infer T> ? T : never;
 
+import { localeSchema } from '$lib/i18n/constants';
 import type { ReferenceConfig } from 'drizzle-orm/pg-core';
+import { z, type ZodType } from 'zod';
 import { locale } from '../custom-types/locale';
 import { locales } from '../schema/i18n';
 
@@ -28,11 +30,18 @@ import { locales } from '../schema/i18n';
 // }
 
 /**
+ * Schema for translations contents.
+ */
+export function tinsert<S extends ZodType>(schema: S) {
+	return z.record(localeSchema, schema);
+}
+
+/**
  * Try to get the contextually accurate translation, i.e. the translation of the current locale.
  * Optionally automatically fallback to the first found translataion for the same text content id,
  * regardless of its locale.
  */
-export function getTranslation(autoFallback?: boolean) {
+export function tselect(autoFallback?: boolean) {
 	console.log(autoFallback);
 }
 

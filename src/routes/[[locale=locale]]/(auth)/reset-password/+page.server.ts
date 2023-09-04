@@ -45,7 +45,7 @@ export const actions = {
 		});
 		try {
 			const [user] = await dbpool
-				.select()
+				.select({ id: users.id, email: users.email })
 				.from(users)
 				.where(eq(users.email, form.data.email.toLowerCase()))
 				.limit(1);

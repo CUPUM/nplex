@@ -7,7 +7,7 @@
 	export let event: RequestEvent;
 	export let token: string;
 
-	const url = `${DOMAIN_NAME}/signup/verify-email/${token}`;
+	const url = `${DOMAIN_NAME}/verify-email/${token}`;
 
 	const t = event.locals.createTranslations({
 		fr: {

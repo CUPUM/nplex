@@ -10,6 +10,7 @@ import {
 	unique,
 	uuid,
 } from 'drizzle-orm/pg-core';
+import { createInsertSchema } from 'drizzle-zod';
 import { intrange } from '../custom-types/range';
 import { userRole } from '../custom-types/user-role';
 import { localefk } from '../helpers/i18n';
@@ -55,6 +56,8 @@ export const projects = pgTable('projects', {
 	// location: postgis(),
 });
 
+export const insertProjectSchema = createInsertSchema(projects);
+
 /**
  * @see {@link projects}
  */
@@ -77,6 +80,8 @@ export const projectsTranslations = pgTable(
 		};
 	}
 );
+
+export const insertProjectsTranslationsSchema = createInsertSchema(projectsTranslations);
 
 /**
  * Always use this location for public viewing.

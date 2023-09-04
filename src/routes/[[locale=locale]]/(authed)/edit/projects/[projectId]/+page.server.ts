@@ -1,9 +1,5 @@
-export const load = async (event) => {
-	console.log(event);
-};
+export const load = async () => {};
 
 export const actions = {
-	default: async (event) => {
-		console.log(event);
-	},
+	default: async () => {},
 };

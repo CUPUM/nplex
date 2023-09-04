@@ -2,8 +2,7 @@ import { auth } from '$lib/auth/auth.server.js';
 import { STATUS_CODES } from '$lib/utils/constants.js';
 import { fail } from '@sveltejs/kit';
 
-export const load = async (event) => {
-	console.log(event);
+export const load = async () => {
 	// get projects showcase
 	// get random images for header
 };

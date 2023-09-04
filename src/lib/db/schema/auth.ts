@@ -76,6 +76,7 @@ export const users = authSchema.table('users', {
 	emailVerified: boolean('email_verified').default(false).notNull(),
 	publicEmail: text('public_email'),
 	publicEmailVerified: boolean('public_email_verified').default(false).notNull(),
+	githubUsername: text('github_username').unique(),
 	firstName: text('first_name'),
 	middleName: text('middle_name'),
 	lastName: text('last_name'),
