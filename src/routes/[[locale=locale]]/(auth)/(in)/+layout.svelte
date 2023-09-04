@@ -24,7 +24,7 @@
 			</span>
 		</div>
 		<section class="social">
-			<h2>{$t.social}:</h2>
+			<h2>{$t.social}&thinsp;:</h2>
 			<fieldset class="providers">
 				{#each SOCIAL_PROVIDERS_ARR as provider}
 					<SocialProviderButton {provider} />

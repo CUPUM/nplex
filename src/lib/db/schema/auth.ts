@@ -72,7 +72,7 @@ export const users = authSchema.table('users', {
 		})
 		.default(USER_ROLES.VISITOR)
 		.notNull(),
-	email: text('email').unique().notNull(),
+	email: text('email').unique(),
 	emailVerified: boolean('email_verified').default(false).notNull(),
 	publicEmail: text('public_email'),
 	publicEmailVerified: boolean('public_email_verified').default(false).notNull(),

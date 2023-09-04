@@ -57,19 +57,21 @@
 
 <style lang="scss">
 	.provider-button {
-		font-size: var(--size-lg);
+		font-size: var(--size-xl);
 		position: relative;
 		display: flex;
 		flex-grow: 1;
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		padding: 1.25rem;
+		padding: 1rem;
 		border-radius: var(--radius-md);
 		border: 1px solid color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
 		transition: all 0.15s ease-out;
 
-		&:hover {
+		&:hover,
+		&:focus-visible {
+			border: 1px solid transparent;
 			background-color: var(--color-neutral-50);
 			box-shadow: var(--shadow-lg);
 			@include dark {
