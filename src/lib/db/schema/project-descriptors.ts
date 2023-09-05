@@ -1,4 +1,4 @@
-import { pgTable, primaryKey, serial, text } from 'drizzle-orm/pg-core';
+import { integer, pgTable, primaryKey, serial, text } from 'drizzle-orm/pg-core';
 import { localefk } from '../helpers/i18n';
 
 /**
@@ -14,7 +14,7 @@ export const projectTypes = pgTable('project_types', {
 export const projectTypesTranslations = pgTable(
 	'project_types_t',
 	{
-		id: serial('id').references(() => projectTypes.id, {
+		id: integer('id').references(() => projectTypes.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -42,7 +42,7 @@ export const projectInterventionCategories = pgTable('project_intervention_categ
 export const projectInterventionCategoriesTranslations = pgTable(
 	'project_intervention_categories_t',
 	{
-		id: serial('id').references(() => projectInterventionCategories.id, {
+		id: integer('id').references(() => projectInterventionCategories.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -70,7 +70,7 @@ export const projectInterventionTypes = pgTable('project_intervention_types', {
 export const projectInterventionTypesTranslations = pgTable(
 	'project_intervention_types_t',
 	{
-		id: serial('id').references(() => projectInterventionTypes.id, {
+		id: integer('id').references(() => projectInterventionTypes.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -98,7 +98,7 @@ export const projectSiteOwnerships = pgTable('project_site_ownerships', {
 export const projectSiteOwnershipsTranslations = pgTable(
 	'project_site_ownerships_t',
 	{
-		id: serial('id').references(() => projectSiteOwnerships.id, {
+		id: integer('id').references(() => projectSiteOwnerships.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -122,11 +122,11 @@ export const projectSiteOwnershipsTranslations = pgTable(
 export const projectTypesToInterventionTypes = pgTable(
 	'project_types_to_intervention_types',
 	{
-		typeId: serial('type_id').references(() => projectTypes.id, {
+		typeId: integer('type_id').references(() => projectTypes.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		interventionTypeId: serial('intervention_type_id').references(() => projectTypes.id, {
+		interventionTypeId: integer('intervention_type_id').references(() => projectTypes.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -151,7 +151,7 @@ export const projectImplantationTypes = pgTable('project_implantation_types', {
 export const projectImplantationTypesTranslations = pgTable(
 	'project_implantation_types_t',
 	{
-		id: serial('id').references(() => projectImplantationTypes.id, {
+		id: integer('id').references(() => projectImplantationTypes.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -179,7 +179,7 @@ export const projectExemplarityCategories = pgTable('project_exemplarity_categor
 export const projectExemplarityCategoriesTranslations = pgTable(
 	'project_exemplarity_categories_t',
 	{
-		id: serial('id').references(() => projectExemplarityCategories.id, {
+		id: integer('id').references(() => projectExemplarityCategories.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -196,7 +196,7 @@ export const projectExemplarityCategoriesTranslations = pgTable(
 
 export const projectExemplarityIndicators = pgTable('project_exemplarity_indicators', {
 	id: serial('id').primaryKey(),
-	categoryId: serial('category_id')
+	categoryId: integer('category_id')
 		.references(() => projectExemplarityCategories.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
@@ -207,7 +207,7 @@ export const projectExemplarityIndicators = pgTable('project_exemplarity_indicat
 export const projectExemplarityIndicatorsTranslations = pgTable(
 	'project_exemplarity_indicators_t',
 	{
-		id: serial('id').references(() => projectExemplarityIndicators.id, {
+		id: integer('id').references(() => projectExemplarityIndicators.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -236,7 +236,7 @@ export const projectImageTypes = pgTable('project_image_types', {
 export const projectImageTypesTranslations = pgTable(
 	'project_image_types_t',
 	{
-		id: serial('id').references(() => projectImageTypes.id, {
+		id: integer('id').references(() => projectImageTypes.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -264,7 +264,7 @@ export const projectImageTemporalities = pgTable('project_image_temporalities', 
 export const projectImageTemporalitiesTranslations = pgTable(
 	'project_image_temporalities_t',
 	{
-		id: serial('id').references(() => projectImageTemporalities.id, {
+		id: integer('id').references(() => projectImageTemporalities.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),

@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "3d2412d2-feb5-4c65-90ff-a9a5a37718fb",
+  "id": "0733ce15-0a1a-4656-87cf-9be7553fa984",
   "prevId": "0949420f-ca2c-4593-bcd1-5403f51c5c78",
   "tables": {
     "email_verification_tokens": {
@@ -96,6 +96,56 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "password_reset_tokens": {
+      "name": "password_reset_tokens",
+      "schema": "auth",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires": {
+          "name": "expires",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "password_reset_tokens_user_id_users_id_fk": {
+          "name": "password_reset_tokens_user_id_users_id_fk",
+          "tableFrom": "password_reset_tokens",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "password_reset_tokens_id_unique": {
+          "name": "password_reset_tokens_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id"
+          ]
+        }
+      }
+    },
     "auth_sessions": {
       "name": "auth_sessions",
       "schema": "auth",
@@ -166,9 +216,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -358,7 +408,7 @@
           "name": "email",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "email_verified": {
           "name": "email_verified",
@@ -379,6 +429,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": false
+        },
+        "github_username": {
+          "name": "github_username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "first_name": {
           "name": "first_name",
@@ -423,6 +479,13 @@
           "columns": [
             "email"
           ]
+        },
+        "users_github_username_unique": {
+          "name": "users_github_username_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "github_username"
+          ]
         }
       }
     },
@@ -438,7 +501,7 @@
         },
         "occupation_id": {
           "name": "occupation_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         }
@@ -712,9 +775,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -797,9 +860,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -882,9 +945,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -984,9 +1047,9 @@
         },
         "type_id": {
           "name": "type_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
@@ -1046,9 +1109,9 @@
         },
         "expertise_id": {
           "name": "expertise_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
@@ -1254,9 +1317,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -1329,7 +1392,7 @@
         },
         "category_id": {
           "name": "category_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         }
@@ -1359,9 +1422,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -1450,9 +1513,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -1535,9 +1598,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -1620,9 +1683,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -1705,9 +1768,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -1790,9 +1853,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -1875,9 +1938,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -1960,15 +2023,15 @@
       "columns": {
         "type_id": {
           "name": "type_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "intervention_type_id": {
           "name": "intervention_type_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
@@ -2017,9 +2080,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "locale": {
           "name": "locale",
@@ -2132,21 +2195,21 @@
         },
         "type_id": {
           "name": "type_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "site_ownership_id": {
           "name": "site_ownership_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "implantation_type_id": {
           "name": "implantation_type_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "adjacent_streets": {
           "name": "adjacent_streets",
@@ -2250,9 +2313,9 @@
         },
         "exemplarity_indicator_id": {
           "name": "exemplarity_indicator_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
@@ -2358,15 +2421,15 @@
         },
         "type_id": {
           "name": "type_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "temporality_id": {
           "name": "temporality_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
@@ -2540,9 +2603,9 @@
         },
         "intervention_type_id": {
           "name": "intervention_type_id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},

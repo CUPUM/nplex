@@ -1,4 +1,4 @@
-import { pgTable, primaryKey, serial, text } from 'drizzle-orm/pg-core';
+import { integer, pgTable, primaryKey, serial, text } from 'drizzle-orm/pg-core';
 import { localefk } from '../helpers/i18n';
 
 /**
@@ -14,7 +14,7 @@ export const organizationTypes = pgTable('organization_types', {
 export const organizationTypesTranslations = pgTable(
 	'organization_types_t',
 	{
-		id: serial('id').references(() => organizationTypes.id, {
+		id: integer('id').references(() => organizationTypes.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -42,7 +42,7 @@ export const organizationExpertises = pgTable('organization_expertises', {
 export const organizationExpertisesTranslations = pgTable(
 	'organization_expertises_t',
 	{
-		id: serial('id').references(() => organizationExpertises.id, {
+		id: integer('id').references(() => organizationExpertises.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -70,7 +70,7 @@ export const organizationDuties = pgTable('organization_duties', {
 export const organizationDutiesTranslations = pgTable(
 	'organization_duties_t',
 	{
-		id: serial('id').references(() => organizationDuties.id, {
+		id: integer('id').references(() => organizationDuties.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),

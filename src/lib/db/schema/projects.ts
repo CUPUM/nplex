@@ -4,7 +4,6 @@ import {
 	pgTable,
 	pgView,
 	primaryKey,
-	serial,
 	text,
 	timestamp,
 	unique,
@@ -38,18 +37,21 @@ export const projects = pgTable('projects', {
 	updatedById: useridfk('updated_by_id', { onDelete: 'set null', onUpdate: 'cascade' }),
 	publishedAt: timestamp('published_at', { withTimezone: true }),
 	likesCount: integer('likes_count').notNull().default(0),
-	typeId: serial('type_id').references(() => projectTypes.id, {
+	typeId: integer('type_id').references(() => projectTypes.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
-	siteOwnershipId: serial('site_ownership_id').references(() => projectSiteOwnerships.id, {
+	siteOwnershipId: integer('site_ownership_id').references(() => projectSiteOwnerships.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
-	implantationTypeId: serial('implantation_type_id').references(() => projectImplantationTypes.id, {
-		onDelete: 'set null',
-		onUpdate: 'cascade',
-	}),
+	implantationTypeId: integer('implantation_type_id').references(
+		() => projectImplantationTypes.id,
+		{
+			onDelete: 'set null',
+			onUpdate: 'cascade',
+		}
+	),
 	adjacentStreets: integer('adjacent_streets'),
 	adjacentAlleys: integer('adjacent_alleys'),
 	costRange: intrange('cost_range'),
@@ -100,7 +102,7 @@ export const projectsInterventions = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		interventionTypeId: serial('intervention_type_id').references(
+		interventionTypeId: integer('intervention_type_id').references(
 			() => projectInterventionTypes.id,
 			{ onDelete: 'cascade', onUpdate: 'cascade' }
 		),
@@ -119,7 +121,7 @@ export const projectsExemplarityIndicators = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		exemplarityIndicatorId: serial('exemplarity_indicator_id').references(
+		exemplarityIndicatorId: integer('exemplarity_indicator_id').references(
 			() => projectExemplarityIndicators.id,
 			{ onDelete: 'cascade', onUpdate: 'cascade' }
 		),
@@ -146,11 +148,11 @@ export const projectsImages = pgTable(
 		index: integer('index').notNull(),
 		publicUrl: text('public_url').notNull(),
 		storageName: text('storage_name').notNull(),
-		typeId: serial('type_id').references(() => projectImageTypes.id, {
+		typeId: integer('type_id').references(() => projectImageTypes.id, {
 			onDelete: 'set null',
 			onUpdate: 'cascade',
 		}),
-		temporalityId: serial('temporality_id').references(() => projectImageTemporalities.id, {
+		temporalityId: integer('temporality_id').references(() => projectImageTemporalities.id, {
 			onDelete: 'set null',
 			onUpdate: 'cascade',
 		}),

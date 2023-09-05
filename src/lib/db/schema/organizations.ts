@@ -1,4 +1,4 @@
-import { pgTable, primaryKey, serial, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
+import { integer, pgTable, primaryKey, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
 import { localefk } from '../helpers/i18n';
 import { useridfk } from '../helpers/user-id';
 import { organizationExpertises, organizationTypes } from './organization-descriptors';
@@ -12,7 +12,7 @@ export const organizations = pgTable('organizations', {
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedById: useridfk('updated_by_id', { onDelete: 'set null', onUpdate: 'cascade' }),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-	typeId: serial('type_id').references(() => organizationTypes.id, {
+	typeId: integer('type_id').references(() => organizationTypes.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
@@ -64,7 +64,7 @@ export const organizationsExpertises = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		expertiseId: serial('expertise_id').references(() => organizationExpertises.id, {
+		expertiseId: integer('expertise_id').references(() => organizationExpertises.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),

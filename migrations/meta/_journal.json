@@ -12,22 +12,8 @@
     {
       "idx": 1,
       "version": "5",
-      "when": 1693379020388,
-      "tag": "0001_secret_captain_midlands",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1693483132944,
-      "tag": "0002_adorable_shard",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1693867820244,
-      "tag": "0003_gigantic_the_liberteens",
+      "when": 1693878414254,
+      "tag": "0001_stormy_omega_red",
       "breakpoints": true
     }
   ]

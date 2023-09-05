@@ -3,6 +3,7 @@ import type { InferSelectModel } from 'drizzle-orm';
 import {
 	bigint,
 	boolean,
+	integer,
 	pgSchema,
 	primaryKey,
 	serial,
@@ -63,6 +64,7 @@ export const userRolesTranslations = authSchema.table(
  */
 export const users = authSchema.table('users', {
 	id: varchar('id', { length: 15 }).primaryKey(), // Exceptionnally defining the column manually to avoid circularity with userid()
+	// id: nanoid('id').defaultRandom().primaryKey(), // Implementing drizzle-level nanoid would avoid having to generateId manually for lucia...
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 	role: userRole('role')
@@ -151,7 +153,7 @@ export const userOccupations = authSchema.table('user_occupations', {
 export const userOccupationsTranslations = authSchema.table(
 	'user_occupations_t',
 	{
-		id: serial('id').references(() => userOccupations.id, {
+		id: integer('id').references(() => userOccupations.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -168,7 +170,7 @@ export const usersOccupations = authSchema.table(
 	'users_occupations',
 	{
 		userId: useridfk('user_id').notNull(),
-		occupationId: serial('occupation_id')
+		occupationId: integer('occupation_id')
 			.references(() => userOccupations.id, {
 				onDelete: 'cascade',
 				onUpdate: 'cascade',

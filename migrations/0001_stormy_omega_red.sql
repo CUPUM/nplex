@@ -15,6 +15,13 @@ CREATE TABLE IF NOT EXISTS "auth"."auth_keys" (
 	"hashed_password" varchar(255)
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "auth"."password_reset_tokens" (
+	"id" text NOT NULL,
+	"expires" bigint PRIMARY KEY NOT NULL,
+	"user_id" varchar(15) NOT NULL,
+	CONSTRAINT "password_reset_tokens_id_unique" UNIQUE("id")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "auth"."auth_sessions" (
 	"id" varchar(128) PRIMARY KEY NOT NULL,
 	"user_id" varchar(15) NOT NULL,
@@ -27,7 +34,7 @@ CREATE TABLE IF NOT EXISTS "auth"."user_occupations" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "auth"."user_occupations_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -52,19 +59,21 @@ CREATE TABLE IF NOT EXISTS "auth"."users" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"role" text DEFAULT 'visitor' NOT NULL,
-	"email" text NOT NULL,
+	"email" text,
 	"email_verified" boolean DEFAULT false NOT NULL,
 	"public_email" text,
 	"public_email_verified" boolean DEFAULT false NOT NULL,
+	"github_username" text,
 	"first_name" text,
 	"middle_name" text,
 	"last_name" text,
-	CONSTRAINT "users_email_unique" UNIQUE("email")
+	CONSTRAINT "users_email_unique" UNIQUE("email"),
+	CONSTRAINT "users_github_username_unique" UNIQUE("github_username")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "auth"."users_occupations" (
 	"user_id" varchar(15) NOT NULL,
-	"occupation_id" serial NOT NULL,
+	"occupation_id" integer NOT NULL,
 	CONSTRAINT users_occupations_occupation_id_user_id PRIMARY KEY("occupation_id","user_id")
 );
 --> statement-breakpoint
@@ -100,7 +109,7 @@ CREATE TABLE IF NOT EXISTS "organization_duties" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organization_duties_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -112,7 +121,7 @@ CREATE TABLE IF NOT EXISTS "organization_expertises" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organization_expertises_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -124,7 +133,7 @@ CREATE TABLE IF NOT EXISTS "organization_types" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organization_types_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -137,12 +146,12 @@ CREATE TABLE IF NOT EXISTS "organizations" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_by_id" varchar(15),
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
-	"type_id" serial NOT NULL
+	"type_id" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organizations_expertises" (
 	"organization_id" uuid,
-	"expertise_id" serial NOT NULL,
+	"expertise_id" integer,
 	CONSTRAINT organizations_expertises_expertise_id_organization_id PRIMARY KEY("expertise_id","organization_id")
 );
 --> statement-breakpoint
@@ -167,7 +176,7 @@ CREATE TABLE IF NOT EXISTS "project_exemplarity_categories" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_exemplarity_categories_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -176,11 +185,11 @@ CREATE TABLE IF NOT EXISTS "project_exemplarity_categories_t" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_exemplarity_indicators" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"category_id" serial NOT NULL
+	"category_id" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_exemplarity_indicators_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"short_title" text NOT NULL,
@@ -193,7 +202,7 @@ CREATE TABLE IF NOT EXISTS "project_image_temporalities" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_image_temporalities_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -205,7 +214,7 @@ CREATE TABLE IF NOT EXISTS "project_image_types" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_image_types_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -217,7 +226,7 @@ CREATE TABLE IF NOT EXISTS "project_implantation_types" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_implantation_types_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -229,7 +238,7 @@ CREATE TABLE IF NOT EXISTS "project_intervention_categories" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_intervention_categories_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -241,7 +250,7 @@ CREATE TABLE IF NOT EXISTS "project_intervention_types" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_intervention_types_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -253,7 +262,7 @@ CREATE TABLE IF NOT EXISTS "project_site_ownerships" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_site_ownerships_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -265,13 +274,13 @@ CREATE TABLE IF NOT EXISTS "project_types" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_types_to_intervention_types" (
-	"type_id" serial NOT NULL,
-	"intervention_type_id" serial NOT NULL,
+	"type_id" integer,
+	"intervention_type_id" integer,
 	CONSTRAINT project_types_to_intervention_types_type_id_intervention_type_id PRIMARY KEY("type_id","intervention_type_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "project_types_t" (
-	"id" serial NOT NULL,
+	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
 	"description" text,
@@ -286,9 +295,9 @@ CREATE TABLE IF NOT EXISTS "projects" (
 	"updated_by_id" varchar(15),
 	"published_at" timestamp with time zone,
 	"likes_count" integer DEFAULT 0 NOT NULL,
-	"type_id" serial NOT NULL,
-	"site_ownership_id" serial NOT NULL,
-	"implantation_type_id" serial NOT NULL,
+	"type_id" integer,
+	"site_ownership_id" integer,
+	"implantation_type_id" integer,
 	"adjacent_streets" integer,
 	"adjacent_alleys" integer,
 	"cost_range" "int4"
@@ -296,7 +305,7 @@ CREATE TABLE IF NOT EXISTS "projects" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_exemplarity_indicators" (
 	"project_id" uuid,
-	"exemplarity_indicator_id" serial NOT NULL,
+	"exemplarity_indicator_id" integer,
 	CONSTRAINT projects_exemplarity_indicators_project_id_exemplarity_indicator_id PRIMARY KEY("project_id","exemplarity_indicator_id")
 );
 --> statement-breakpoint
@@ -310,8 +319,8 @@ CREATE TABLE IF NOT EXISTS "projects_images" (
 	"index" integer NOT NULL,
 	"public_url" text NOT NULL,
 	"storage_name" text NOT NULL,
-	"type_id" serial NOT NULL,
-	"temporality_id" serial NOT NULL,
+	"type_id" integer,
+	"temporality_id" integer,
 	CONSTRAINT "projects_images_project_id_index_unique" UNIQUE("project_id","index")
 );
 --> statement-breakpoint
@@ -328,7 +337,7 @@ CREATE TABLE IF NOT EXISTS "projects_images_t" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_interventions" (
 	"project_id" uuid,
-	"intervention_type_id" serial NOT NULL,
+	"intervention_type_id" integer,
 	CONSTRAINT projects_interventions_project_id_intervention_type_id PRIMARY KEY("project_id","intervention_type_id")
 );
 --> statement-breakpoint
@@ -375,6 +384,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "auth"."auth_keys" ADD CONSTRAINT "auth_keys_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "auth"."password_reset_tokens" ADD CONSTRAINT "password_reset_tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
