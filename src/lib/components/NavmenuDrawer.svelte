@@ -48,7 +48,7 @@
 			in:scale={{ start: 0.9, duration: 250, easing: expoOut }}
 			out:scale={{ start: 0.9, duration: 100, easing: expoIn }}
 		>
-			<h2><Scroll size="1.5em" />Sections</h2>
+			<h2><Scroll size="2em" />Sections</h2>
 			<div class="inner">
 				<a use:melt={$close} class="drawerbutton" use:navripple {...$i18nlink('/about')}>
 					{$t.about}
@@ -73,7 +73,7 @@
 			out:scale={{ start: 0.9, duration: 100, delay: 50, easing: expoIn }}
 		>
 			<h2>
-				<Languages size="1.5em" />
+				<Languages size="2em" />
 				{$t.language}
 			</h2>
 			<div class="inner">
@@ -97,7 +97,7 @@
 			out:scale={{ start: 0.9, duration: 100, delay: 100, easing: expoIn }}
 		>
 			<h2>
-				<SunMoon size="1.5em" />
+				<SunMoon size="2em" />
 				{$MODES_TRANSLATIONS.label}
 			</h2>
 			<div class="inner">
@@ -250,12 +250,13 @@
 	}
 
 	h2 {
+		text-transform: uppercase;
 		padding: 2rem;
 		border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
 		opacity: 0.5;
-		font-size: var(--size-xs);
-		letter-spacing: 0.02em;
-		font-weight: 450;
+		font-size: var(--size-2xs);
+		letter-spacing: 0.1em;
+		font-weight: 500;
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
@@ -265,7 +266,7 @@
 	.drawerbutton {
 		display: flex;
 		flex-direction: row;
-		gap: 1rem;
+		gap: 1.5em;
 		align-items: center;
 		justify-content: flex-start;
 		position: relative;

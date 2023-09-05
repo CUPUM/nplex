@@ -58,21 +58,22 @@
 	import { transform } from '$lib/transitions/transform';
 	import { KEYS } from '$lib/utils/constants';
 	import { createDialog, createDropdownMenu, melt } from '@melt-ui/svelte';
-	import { FilePlus, Languages, LogOut, MoreHorizontal, Pencil, User } from 'lucide-svelte';
+	import { FilePlus2, Languages, LogOut, MoreHorizontal, Pencil, User } from 'lucide-svelte';
 	import { cubicIn, expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
+	import Avatar from './Avatar.svelte';
 	import LogoSvg from './LogoSvg.svelte';
 	import NavmenuDrawer from './NavmenuDrawer.svelte';
 
 	const {
 		elements: { menu: localeMenu, item: localeItem, trigger: localeTrigger, arrow: localeArrow },
 		states: { open: localeOpen },
-	} = createDropdownMenu({ forceVisible: true });
+	} = createDropdownMenu({ forceVisible: true, positioning: { overflowPadding: 16, gutter: 10 } });
 
 	const {
 		elements: { menu: siteMenu, item: siteItem, trigger: siteTrigger, arrow: siteArrow },
 		states: { open: siteOpen },
-	} = createDropdownMenu({ forceVisible: true });
+	} = createDropdownMenu({ forceVisible: true, positioning: { overflowPadding: 16, gutter: 10 } });
 
 	const {
 		elements: {
@@ -83,7 +84,7 @@
 			separator: userSeparator,
 		},
 		states: { open: userOpen },
-	} = createDropdownMenu({ forceVisible: true });
+	} = createDropdownMenu({ forceVisible: true, positioning: { overflowPadding: 16, gutter: 10 } });
 
 	const {
 		elements: { trigger: drawerTrigger, portalled: drawerPortalled, ...drawerElements },
@@ -127,8 +128,8 @@
 		<!-- User nav -->
 		<menu id="user-group" class="group">
 			{#if $page.data.user}
-				<button class="navbutton avatar" use:navripple use:melt={$userTrigger}>
-					{$page.data.user.email.slice(0, 1)}
+				<button class="navbutton square" use:navripple use:melt={$userTrigger}>
+					<Avatar {...$page.data.user} />
 				</button>
 				{#if $userOpen}
 					<menu
@@ -137,25 +138,25 @@
 						in:scale={{ duration: 150, start: 0.9, easing: expoOut }}
 						out:scale={{ duration: 100, start: 0.9, easing: expoIn }}
 					>
-						<section>
-							<nav class="dropdown-subgroup">
-								<a {...$i18nlink('/edit/projects')} class="dropdown-item" use:melt={$userItem}>
-									<Pencil size="1.5em" />{$t.edit.projects}
-								</a>
-								<a {...$i18nlink('/new/project')} class="dropdown-item" use:melt={$userItem}>
-									<FilePlus size="1.5em" />{$t.new.project}
-								</a>
-							</nav>
-							<nav class="dropdown-subgroup">
-								<a {...$i18nlink('/edit/organizations')} class="dropdown-item" use:melt={$userItem}>
-									<Pencil size="1.5em" />{$t.edit.organizations}
-								</a>
-								<a {...$i18nlink('/new/organization')} class="dropdown-item" use:melt={$userItem}>
-									<FilePlus size="1.5em" />{$t.new.organization}
-								</a>
-							</nav>
+						<span class="legend">{$t.projects}</span>
+						<section class="dropdown-subgroup">
+							<a {...$i18nlink('/edit/projects')} class="dropdown-item" use:melt={$userItem}>
+								<Pencil size="1.5em" />{$t.edit.projects}
+							</a>
+							<a {...$i18nlink('/new/project')} class="dropdown-item" use:melt={$userItem}>
+								<FilePlus2 size="1.5em" />{$t.new.project}
+							</a>
 						</section>
-						<hr {...$userSeparator} />
+						<span class="legend">{$t.organizations}</span>
+						<section class="dropdown-subgroup">
+							<a {...$i18nlink('/edit/organizations')} class="dropdown-item" use:melt={$userItem}>
+								<Pencil size="1.5em" />{$t.edit.organizations}
+							</a>
+							<a {...$i18nlink('/new/organization')} class="dropdown-item" use:melt={$userItem}>
+								<FilePlus2 size="1.5em" />{$t.new.organization}
+							</a>
+						</section>
+						<!-- <hr {...$userSeparator} /> -->
 						<form use:enhance method="POST" action="/?/logout" id="logout-form" hidden />
 						<button class="dropdown-item" type="submit" form="logout-form" use:melt={$userItem}>
 							<LogOut size="1.5em" class="navbutton-icon" />
@@ -390,9 +391,9 @@
 		font-weight: 500;
 		background-color: var(--color-neutral-50);
 		// border: 1px solid var(--color-neutral-200);
-		box-shadow: var(--shadow-md);
-		padding: var(--space-2xs);
-		border-radius: var(--radius-md);
+		// box-shadow: var(--shadow-md);
+		padding: var(--space-xs);
+		border-radius: var(--radius-lg);
 		transform-origin: top center;
 		z-index: 1;
 
@@ -401,15 +402,36 @@
 			// border: 1px solid var(--color-neutral-700);
 		}
 
-		hr {
-			border-color: black;
-			opacity: 0.1;
-			margin: var(--space-2xs);
+		// hr {
+		// 	border-color: black;
+		// 	opacity: 0.1;
+		// 	margin: var(--space-2xs);
+		// 	@include dark {
+		// 		border-color: white;
+		// 	}
+		// }
+	}
 
-			@include dark {
-				border-color: white;
-			}
+	.legend {
+		align-self: stretch;
+		font-size: var(--size-xs);
+		font-weight: 450;
+		opacity: 0.5;
+		padding: var(--size-xs) var(--space-sm);
+	}
+
+	.dropdown-subgroup {
+		display: flex;
+		flex-direction: column;
+		padding: var(--space-2xs);
+		gap: var(--space-2xs);
+		border-radius: var(--radius-md);
+		margin-bottom: var(--space-2xs);
+		background-color: white;
+		@include dark {
+			background-color: var(--color-neutral-700);
 		}
+		// border: 1px solid color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
 	}
 
 	.dropdown-item {

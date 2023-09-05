@@ -1,7 +1,7 @@
 <script lang="ts">
 </script>
 
-<article>Some project</article>
+<article>Some org</article>
 
 <style lang="scss">
 </style>
