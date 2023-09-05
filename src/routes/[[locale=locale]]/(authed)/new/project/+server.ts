@@ -8,26 +8,18 @@ export const GET = async (event) => {
 	if (!session) {
 		throw error(STATUS_CODES.UNAUTHORIZED);
 	}
-	// const [project] = await dbhttp
-	// 	.insert(projects)
-	// 	.values({
-	// 		createdById: session.user.id,
-	// 		updatedById: session.user.id,
-	// 	})
-	// 	.returning({ id: projects.id });
-	const q = dbhttp
+	const [project] = await dbhttp
 		.insert(projects)
 		.values({
 			createdById: session.user.id,
 			updatedById: session.user.id,
 		})
-		.toSQL();
-	console.log(q);
+		.returning({ id: projects.id });
 	// return new Response(null, {
 	// 	status: STATUS_CODES.MOVED_TEMPORARILY,
 	// 	headers: {
 	// 		Location: `/edit/projects/${project.id}`,
 	// 	},
 	// });
-	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/'); // `/edit/projects/${project.id}`);
+	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, `/edit/projects/${project.id}`);
 };

@@ -141,19 +141,19 @@
 						<span class="legend">{$t.projects}</span>
 						<section class="dropdown-subgroup">
 							<a {...$i18nlink('/edit/projects')} class="dropdown-item" use:melt={$userItem}>
-								<Pencil size="1.5em" />{$t.edit.projects}
+								<Pencil size="1.25em" />{$t.edit.projects}
 							</a>
 							<a {...$i18nlink('/new/project')} class="dropdown-item" use:melt={$userItem}>
-								<FilePlus2 size="1.5em" />{$t.new.project}
+								<FilePlus2 size="1.25em" />{$t.new.project}
 							</a>
 						</section>
 						<span class="legend">{$t.organizations}</span>
 						<section class="dropdown-subgroup">
 							<a {...$i18nlink('/edit/organizations')} class="dropdown-item" use:melt={$userItem}>
-								<Pencil size="1.5em" />{$t.edit.organizations}
+								<Pencil size="1.25em" />{$t.edit.organizations}
 							</a>
 							<a {...$i18nlink('/new/organization')} class="dropdown-item" use:melt={$userItem}>
-								<FilePlus2 size="1.5em" />{$t.new.organization}
+								<FilePlus2 size="1.25em" />{$t.new.organization}
 							</a>
 						</section>
 						<!-- <hr {...$userSeparator} /> -->
@@ -424,14 +424,15 @@
 		display: flex;
 		flex-direction: column;
 		padding: var(--space-2xs);
-		gap: var(--space-2xs);
+		// gap: var(--space-2xs);
 		border-radius: var(--radius-md);
 		margin-bottom: var(--space-2xs);
 		background-color: white;
+		border: var(--border-size) solid transparent;
 		@include dark {
-			background-color: var(--color-neutral-700);
+			background-color: transparent;
+			border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 		}
-		// border: 1px solid color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
 	}
 
 	.dropdown-item {
@@ -441,7 +442,7 @@
 		flex-direction: row;
 		align-items: center;
 		padding: 1em 1.25em;
-		gap: var(--space-2xs);
+		gap: var(--space-sm);
 		border-radius: var(--radius-sm);
 		transition: all 0.1s ease-out;
 
