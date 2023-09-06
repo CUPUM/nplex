@@ -1,4 +1,4 @@
-import { NEON_DB_URL } from '$env/static/private';
+import { NEON_DB_URL, NEON_POOL_DB_URL } from '$env/static/private';
 import { Pool, neon, neonConfig } from '@neondatabase/serverless';
 import { drizzle as httpdrizzle } from 'drizzle-orm/neon-http';
 import { drizzle as wsdrizzle } from 'drizzle-orm/neon-serverless';
@@ -14,7 +14,7 @@ const sqlhttp = neon(NEON_DB_URL);
 export const dbhttp = httpdrizzle(sqlhttp);
 
 neonConfig.webSocketConstructor = ws;
-export const pool = new Pool({ connectionString: NEON_DB_URL });
+export const pool = new Pool({ connectionString: NEON_POOL_DB_URL });
 /**
  * Web-socket pooled database connection.
  *

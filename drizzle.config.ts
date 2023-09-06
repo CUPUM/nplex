@@ -7,6 +7,6 @@ export default {
 	driver: 'pg',
 	breakpoints: true,
 	dbCredentials: {
-		connectionString: ENV.NEON_DB_URL,
+		connectionString: ENV.NEON_POOL_DB_URL,
 	},
 } satisfies Config;
