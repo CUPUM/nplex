@@ -4,7 +4,7 @@
  -->
 <script lang="ts">
 	import { transform } from '$lib/transitions/transform';
-	import { expoIn, expoOut } from 'svelte/easing';
+	import { cubicIn, expoOut } from 'svelte/easing';
 	import type { SVGAttributes } from 'svelte/elements';
 
 	export let color: string | undefined = undefined;
@@ -12,12 +12,29 @@
 	export let linecap: SVGAttributes<SVGPathElement>['stroke-linecap'] = 'square';
 </script>
 
-<div class="loading" style:--color={color} style:--thickness={thickness} style:--linecap={linecap}>
+<div
+	class="loading"
+	style:--loading-color={color}
+	style:--thickness={thickness}
+	style:--linecap={linecap}
+>
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
-		in:transform={{ duration: 750, scale: 0.6, rotate: [0, 0, 180], opacity: 1, easing: expoOut }}
-		out:transform={{ duration: 250, scale: 0.8, rotate: [0, 0, -90], opacity: 0, easing: expoIn }}
+		in:transform|global={{
+			duration: 750,
+			scale: 0.5,
+			rotate: [0, 0, -180],
+			opacity: 1,
+			easing: expoOut,
+		}}
+		out:transform|global={{
+			duration: 200,
+			scale: 1.1,
+			rotate: [0, 0, 90],
+			opacity: 0,
+			easing: cubicIn,
+		}}
 		width="1em"
 		height="1em"
 	>
@@ -86,9 +103,9 @@
 	.v {
 		opacity: 0;
 		fill: none;
-		stroke: var(--color, var(--color-primary-800));
+		stroke: var(--loading-color, var(--color-primary-800));
 		@include dark {
-			stroke: var(--color, var(--color-primary-200));
+			stroke: var(--loading-color, var(--color-primary-200));
 		}
 		stroke-width: var(--thickness);
 		stroke-linejoin: round;

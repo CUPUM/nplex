@@ -15,13 +15,14 @@
 			login: 'Me connecter',
 			logout: 'Me déconnecter',
 			language: 'Langue',
+			account: 'Mon compte',
 			edit: {
 				projects: 'Modifier un projet',
-				organizations: 'Modifier un organisme',
+				organizations: 'Modifier une organisation',
 			},
 			new: {
 				project: 'Créer un nouveau projet',
-				organization: 'Créer un nouvel organisme',
+				organization: 'Créer une nouvelle organisation',
 			},
 		},
 		en: {
@@ -32,6 +33,7 @@
 			login: 'Log in',
 			logout: 'Log out',
 			language: 'Language',
+			account: 'My account',
 			edit: {
 				projects: 'Edit a project',
 				organizations: 'Edit an organization',
@@ -58,7 +60,7 @@
 	import { transform } from '$lib/transitions/transform';
 	import { KEYS } from '$lib/utils/constants';
 	import { createDialog, createDropdownMenu, melt } from '@melt-ui/svelte';
-	import { FilePlus2, Languages, LogOut, MoreHorizontal, Pencil, User } from 'lucide-svelte';
+	import { FilePlus2, Languages, LogOut, MoreHorizontal, Pencil, User2 } from 'lucide-svelte';
 	import { cubicIn, expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import Avatar from './Avatar.svelte';
@@ -157,16 +159,20 @@
 							</a>
 						</section>
 						<!-- <hr {...$userSeparator} /> -->
+						<a {...$i18nlink('/i')} class="dropdown-item" use:melt={$userItem}>
+							<User2 size="1.25em" />
+							{$t.account}
+						</a>
 						<form use:enhance method="POST" action="/?/logout" id="logout-form" hidden />
 						<button class="dropdown-item" type="submit" form="logout-form" use:melt={$userItem}>
-							<LogOut size="1.5em" class="navbutton-icon" />
+							<LogOut size="1.25em" class="navbutton-icon" />
 							{$t.logout}
 						</button>
 					</menu>
 				{/if}
 			{:else}
 				<a class="navbutton square" use:navripple {...$i18nlink('/login')}>
-					<User size="1.5em" class="navbutton-icon" />
+					<User2 size="1.5em" class="navbutton-icon" />
 				</a>
 			{/if}
 			{#if $breakpoint.lg}
@@ -430,8 +436,8 @@
 		background-color: white;
 		border: var(--border-size) solid transparent;
 		@include dark {
-			background-color: transparent;
-			border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
+			background-color: rgba(255, 255, 255, 0.025);
+			// border: var(--border-size) solid rgba(0, 0, 0, 0.1);
 		}
 	}
 

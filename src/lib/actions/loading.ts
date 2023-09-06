@@ -1,4 +1,5 @@
 import Loading from '$lib/components/Loading.svelte';
+import { outroAndDestroy } from '$lib/utils/outro-and-destroy';
 import type { ComponentProps } from 'svelte';
 import { derived, get, writable, type Readable } from 'svelte/store';
 
@@ -13,12 +14,14 @@ export function loading(
 		props: options,
 	});
 	return {
-		update(args) {
-			if (comp && !args.state) {
-				comp.$destroy();
+		update(args: typeof options) {
+			if (comp && !args?.state) {
+				// comp.$destroy();
+				outroAndDestroy(comp);
 				comp = undefined;
-			} else if (!comp && args.state) {
+			} else if (!comp && args?.state) {
 				comp = new Loading({
+					intro: true,
 					target: node,
 					props: args,
 				});
@@ -36,9 +39,11 @@ export function loading(
  */
 export function createLoading({
 	state = false,
+	// disable = true,
 	...props
 }: {
 	state?: boolean | Readable<boolean> | Readable<boolean>[];
+	// disable?: boolean
 } & ComponentProps<Loading> = {}) {
 	const aggregatedState = Array.isArray(state)
 		? derived(state, ($state) => {
@@ -60,13 +65,15 @@ export function createLoading({
 	const element = derived(_state, ($state) => {
 		return {
 			'data-loading': $state || undefined,
+			// 'data-disabled': (disable && $state) || undefined,
+			// 'disabled': (disable && $state) || undefined
 		};
 	});
 
 	function action(node: HTMLElement) {
 		const a = loading(node, { ...props, state: get(_state) });
 		const unsub = _state.subscribe((v) => {
-			a.update({ ...props, loading: v });
+			a.update({ ...props, state: v });
 		});
 		return {
 			destroy() {
