@@ -59,23 +59,36 @@
 	import { setout } from '$lib/setout/store';
 	import { transform } from '$lib/transitions/transform';
 	import { KEYS } from '$lib/utils/constants';
-	import { createDialog, createDropdownMenu, melt } from '@melt-ui/svelte';
+	import {
+		createDialog,
+		createDropdownMenu,
+		melt,
+		type CreateDropdownMenuProps,
+	} from '@melt-ui/svelte';
 	import { FilePlus2, Languages, LogOut, MoreHorizontal, Pencil, User2 } from 'lucide-svelte';
 	import { cubicIn, expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
+	import {
+		getLoadingNewOrg,
+		getLoadingNewProject,
+	} from '../../routes/[[locale=locale]]/Contexts.svelte';
 	import Avatar from './Avatar.svelte';
 	import LogoSvg from './LogoSvg.svelte';
 	import NavmenuDrawer from './NavmenuDrawer.svelte';
 
-	const {
-		elements: { menu: localeMenu, item: localeItem, trigger: localeTrigger, arrow: localeArrow },
-		states: { open: localeOpen },
-	} = createDropdownMenu({ forceVisible: true, positioning: { overflowPadding: 16, gutter: 10 } });
+	const MENU_OPTIONS = {
+		forceVisible: true,
+		positioning: {
+			overflowPadding: 16,
+			gutter: 6,
+			placement: 'bottom',
+		},
+	} satisfies CreateDropdownMenuProps;
 
 	const {
-		elements: { menu: siteMenu, item: siteItem, trigger: siteTrigger, arrow: siteArrow },
-		states: { open: siteOpen },
-	} = createDropdownMenu({ forceVisible: true, positioning: { overflowPadding: 16, gutter: 10 } });
+		elements: { menu: localeMenu, item: localeItem, trigger: localeTrigger },
+		states: { open: localeOpen },
+	} = createDropdownMenu(MENU_OPTIONS);
 
 	const {
 		elements: {
@@ -86,12 +99,16 @@
 			separator: userSeparator,
 		},
 		states: { open: userOpen },
-	} = createDropdownMenu({ forceVisible: true, positioning: { overflowPadding: 16, gutter: 10 } });
+	} = createDropdownMenu(MENU_OPTIONS);
 
 	const {
 		elements: { trigger: drawerTrigger, portalled: drawerPortalled, ...drawerElements },
 		states: { open: drawerOpen },
-	} = createDialog();
+	} = createDialog({ forceVisible: true });
+
+	const { element: newProjectElement, action: newProjectAction } = getLoadingNewProject();
+
+	const { element: newOrgElement, action: newOrgAction } = getLoadingNewOrg();
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
@@ -145,7 +162,13 @@
 							<a {...$i18nlink('/edit/projects')} class="dropdown-item" use:melt={$userItem}>
 								<Pencil size="1.25em" />{$t.edit.projects}
 							</a>
-							<a {...$i18nlink('/new/project')} class="dropdown-item" use:melt={$userItem}>
+							<a
+								{...$i18nlink('/new/project')}
+								class="dropdown-item"
+								use:melt={$userItem}
+								{...$newProjectElement}
+								use:newProjectAction
+							>
 								<FilePlus2 size="1.25em" />{$t.new.project}
 							</a>
 						</section>
@@ -154,7 +177,13 @@
 							<a {...$i18nlink('/edit/organizations')} class="dropdown-item" use:melt={$userItem}>
 								<Pencil size="1.25em" />{$t.edit.organizations}
 							</a>
-							<a {...$i18nlink('/new/organization')} class="dropdown-item" use:melt={$userItem}>
+							<a
+								{...$i18nlink('/new/organization')}
+								class="dropdown-item"
+								use:melt={$userItem}
+								{...$newOrgElement}
+								use:newOrgAction
+							>
 								<FilePlus2 size="1.25em" />{$t.new.organization}
 							</a>
 						</section>
@@ -216,10 +245,17 @@
 								scale: 0.75,
 								rotate: [0, 0, -90],
 								duration: 500,
-								delay: 200,
+								delay: 150,
 								easing: expoOut,
+								opacity: 1,
 							}}
-							out:transform={{ scale: 0.5, rotate: [0, 0, 90], duration: 350, easing: cubicIn }}
+							out:transform={{
+								scale: 0.5,
+								rotate: [0, 0, 90],
+								duration: 250,
+								easing: cubicIn,
+								opacity: 1,
+							}}
 							class="navbutton-icon mode-icon"
 						>
 							<svelte:component this={MODES_DETAILS[$mode].icon} size="1.5em" />
