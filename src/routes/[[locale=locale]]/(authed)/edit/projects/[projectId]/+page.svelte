@@ -1,6 +1,5 @@
 <script lang="ts">
 	import TranslationsTabs from '$lib/components/TranslationsTabs.svelte';
-	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { superForm } from 'sveltekit-superforms/client';
 
@@ -31,36 +30,36 @@
 <h1>Général</h1>
 <form method="POST" use:enhance>
 	<TranslationsTabs let:locale>
+		<svelte:fragment slot="legend">
+			{$t.title}
+		</svelte:fragment>
 		{@const id = `project-title-${locale}`}
-		<input type="text" {id} name="{locale}.title" />
+		<input class="input" type="text" {id} name="{locale}.title" />
 	</TranslationsTabs>
-	<fieldset>
-		<legend>
+	<TranslationsTabs let:locale>
+		<svelte:fragment slot="legend">
 			{$t.summary}
-		</legend>
-		{#each LOCALES_ARR as locale}
-			{@const id = `project-summary-${locale}`}
-			<label for={id}>{LOCALES_DETAILS[locale].label}</label>
-			<input type="text" {id} name="summary.{locale}" />
-		{/each}
-	</fieldset>
-	<fieldset>
-		<legend>
+		</svelte:fragment>
+		{@const id = `project-summary-${locale}`}
+		<input class="input" type="text" {id} name="{locale}.summary" />
+	</TranslationsTabs>
+	<TranslationsTabs let:locale>
+		<svelte:fragment slot="legend">
 			{$t.description}
-		</legend>
-		{#each LOCALES_ARR as locale}
-			{@const id = `project-description-${locale}`}
-			<label for={id}>{LOCALES_DETAILS[locale].label}</label>
-			<input type="text" {id} name="description.{locale}" />
-		{/each}
-	</fieldset>
+		</svelte:fragment>
+		{@const id = `project-description-${locale}`}
+		<input class="input" type="text" {id} name="{locale}.description" />
+	</TranslationsTabs>
 	<fieldset>
 		<legend>
 			{$t.type}
 		</legend>
-		<select name="" id=""></select>
+		<select class="input" name="" id=""></select>
 	</fieldset>
 </form>
 
 <style lang="scss">
+	form {
+		font-size: var(--size-sm);
+	}
 </style>

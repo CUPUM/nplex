@@ -38,7 +38,7 @@
 				in:scale={{ start: 0.75, delay: 225, duration: 250, easing: expoOut }}
 				out:scale={{ start: 0.9, delay: 0, duration: 100, easing: expoIn }}
 			>
-				<X size="1.5em" />
+				<X size="1.5em" strokeWidth="2.5" />
 			</button>
 		</div>
 		<!-- svelte-ignore a11y-missing-attribute -->
@@ -209,19 +209,22 @@
 		border-radius: var(--radius-full);
 		color: var(--color-error-500);
 		background-color: var(--color-neutral-50);
-		transition: all 0.1s ease-out;
+		transition: all 0.15s ease-out;
 		@include dark {
 			background-color: var(--color-neutral-900);
 		}
-
 		&:hover,
 		&:focus-visible {
 			color: var(--color-error-950);
 			background-color: var(--color-error-300);
+			transform: rotateZ(90deg);
 			@include dark {
 				color: var(--color-error-50);
 				background-color: var(--color-error-700);
 			}
+		}
+		&:active {
+			transform: rotateZ(-90deg) scale(0.9);
 		}
 	}
 

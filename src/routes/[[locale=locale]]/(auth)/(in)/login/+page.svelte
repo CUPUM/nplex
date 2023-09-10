@@ -4,6 +4,7 @@
 	import { i18nlink } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
+	import { fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	const t = createTranslations({
@@ -42,8 +43,9 @@
 	<h1>{$t.title}</h1>
 	<fieldset>
 		<label>
-			<span>{$t.email}</span>
+			<span in:fly={{ y: 6 }}>{$t.email}</span>
 			<input
+				in:fly={{ y: -6 }}
 				class="input"
 				type="email"
 				name="email"
@@ -55,8 +57,9 @@
 	</fieldset>
 	<fieldset>
 		<label>
-			<span>{$t.password}</span>
+			<span in:fly={{ y: 6 }}>{$t.password}</span>
 			<input
+				in:fly={{ y: -6 }}
 				class="input"
 				type="password"
 				name="password"
@@ -66,7 +69,14 @@
 			/>
 		</label>
 	</fieldset>
-	<button class="button cta" type="submit" {...$loadingElement} use:loadingAction use:ripple>
+	<button
+		in:scale={{ start: 0.9 }}
+		class="button cta"
+		type="submit"
+		{...$loadingElement}
+		use:loadingAction
+		use:ripple
+	>
 		<LogIn class="button-icon" />
 		{$t.button}
 	</button>
