@@ -103,9 +103,9 @@
 	.v {
 		opacity: 0;
 		fill: none;
-		stroke: var(--loading-color, var(--color-primary-800));
+		stroke: var(--loading-color, var(--color-primary-600));
 		@include dark {
-			stroke: var(--loading-color, var(--color-primary-200));
+			stroke: var(--loading-color, var(--color-primary-400));
 		}
 		stroke-width: var(--thickness);
 		stroke-linejoin: round;

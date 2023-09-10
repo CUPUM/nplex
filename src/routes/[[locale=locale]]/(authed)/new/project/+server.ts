@@ -1,6 +1,6 @@
-import { dbhttp } from '$lib/db/db.server.js';
-import { projects } from '$lib/db/schema/projects.js';
-import { STATUS_CODES } from '$lib/utils/constants.js';
+import { dbhttp } from '$lib/db/db.server';
+import { projects } from '$lib/db/schema/public';
+import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 
 export const GET = async (event) => {
@@ -15,11 +15,5 @@ export const GET = async (event) => {
 			updatedById: session.user.id,
 		})
 		.returning({ id: projects.id });
-	// return new Response(null, {
-	// 	status: STATUS_CODES.MOVED_TEMPORARILY,
-	// 	headers: {
-	// 		Location: `/edit/projects/${project.id}`,
-	// 	},
-	// });
 	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, `/edit/projects/${project.id}`);
 };

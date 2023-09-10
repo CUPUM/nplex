@@ -44,7 +44,7 @@
 
 	h2 {
 		text-align: center;
-		font-weight: 500;
+		font-size: var(--size-sm);
 	}
 
 	.inner {
@@ -67,7 +67,6 @@
 		flex-direction: row;
 		gap: 1rem;
 		font-size: var(--size-xs);
-		font-weight: 450;
 		align-items: center;
 		opacity: 0.5;
 

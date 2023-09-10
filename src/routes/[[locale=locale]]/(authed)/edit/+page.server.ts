@@ -1,7 +1,6 @@
-import { dbhttp } from '$lib/db/db.server.js';
-import { organizations } from '$lib/db/schema/organizations.js';
-import { projects } from '$lib/db/schema/projects.js';
-import { STATUS_CODES } from '$lib/utils/constants.js';
+import { dbhttp } from '$lib/db/db.server';
+import { organizations, projects } from '$lib/db/schema/public';
+import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 
 export const load = async () => {};

@@ -1,5 +1,5 @@
 import { pgSchema, text } from 'drizzle-orm/pg-core';
-import { locale } from '../custom-types/locale';
+import { locale } from './custom-types';
 
 /**
  * Locales core to managing everything i18n oriented. Opting for a per-entity-type storage of

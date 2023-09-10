@@ -96,8 +96,8 @@
 		max-width: 100%;
 		align-items: center;
 		justify-content: space-between;
-		gap: var(--space-sm);
-		padding: var(--space-md);
+		gap: 1rem;
+		padding: 1.25rem;
 	}
 
 	.title {

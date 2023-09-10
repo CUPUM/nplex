@@ -10,13 +10,14 @@ import {
 	text,
 	timestamp,
 	unique,
-	uuid,
 	varchar,
 } from 'drizzle-orm/pg-core';
-import { userRole } from '../custom-types/user-role';
-import { localefk } from '../helpers/i18n';
-import { useridfk } from '../helpers/user-id';
-import { projects } from './projects';
+import { createInsertSchema } from 'drizzle-zod';
+import { generateUserId, userId, userIdForeignKey } from '../references/personal';
+import { generateNanoid } from '../sql';
+import { locale, nanoid, userRole } from './custom-types';
+import { locales } from './i18n';
+import { projects } from './public';
 
 /**
  * Managing everything auth oriented and related to lucia and users' metadata.
@@ -25,27 +26,30 @@ import { projects } from './projects';
  * @see https://lucia-auth.com/database-adapters/postgres
  */
 
-export const authSchema = pgSchema('auth');
+export const personalSchema = pgSchema('personal');
 
 /**
  * Base user roles. More granular control for RBAC on certain entities can be refined at said
  * entities' level (ex: projectsUsers.role, ...).
  */
-export const userRoles = authSchema.table('user_roles', {
+export const userRoles = personalSchema.table('user_roles', {
 	role: userRole('role').primaryKey(),
 });
 
 /**
  * @see {@link userRoles}
  */
-export const userRolesTranslations = authSchema.table(
+export const userRolesTranslations = personalSchema.table(
 	'user_roles_t',
 	{
 		role: userRole('role').references(() => userRoles.role, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: localefk(),
+		locale: locale('locale').references(() => locales.locale, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
 		name: text('title').notNull(),
 		description: text('description'),
 	},
@@ -62,9 +66,8 @@ export const userRolesTranslations = authSchema.table(
  *
  * @see https://lucia-auth.com/basics/users
  */
-export const users = authSchema.table('users', {
-	id: varchar('id', { length: 15 }).primaryKey(), // Exceptionnally defining the column manually to avoid circularity with userid()
-	// id: nanoid('id').defaultRandom().primaryKey(), // Implementing drizzle-level nanoid would avoid having to generateId manually for lucia...
+export const users = personalSchema.table('users', {
+	id: userId('id').default(generateUserId()).primaryKey(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 	role: userRole('role')
@@ -86,15 +89,20 @@ export const users = authSchema.table('users', {
 
 export type SelectUser = InferSelectModel<typeof users>;
 
+export const usersInsertSchema = createInsertSchema(users, {
+	email: (s) => s.email.email(),
+	publicEmail: (s) => s.publicEmail.email(),
+});
+
 /**
  * Tracking email confirmations and their expiry.
  *
  * @see https://lucia-auth.com/guidebook/email-verification-links
  */
-export const emailVerificationTokens = authSchema.table('email_verification_tokens', {
+export const emailVerificationTokens = personalSchema.table('email_verification_tokens', {
 	id: text('id').notNull().unique(),
 	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
-	userId: useridfk('user_id').notNull(),
+	userId: userIdForeignKey('user_id').notNull(),
 });
 
 export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerificationTokens>;
@@ -102,10 +110,10 @@ export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerifica
 /**
  * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
  */
-export const passwordResetTokens = authSchema.table('password_reset_tokens', {
+export const passwordResetTokens = personalSchema.table('password_reset_tokens', {
 	id: text('id').notNull().unique(),
 	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
-	userId: useridfk('user_id').notNull(),
+	userId: userIdForeignKey('user_id').notNull(),
 });
 
 /**
@@ -113,9 +121,9 @@ export const passwordResetTokens = authSchema.table('password_reset_tokens', {
  *
  * @see https://lucia-auth.com/basics/sessions
  */
-export const sessions = authSchema.table('auth_sessions', {
+export const sessions = personalSchema.table('auth_sessions', {
 	id: varchar('id', { length: 128 }).primaryKey(),
-	userId: useridfk('user_id').notNull(),
+	userId: userIdForeignKey('user_id').notNull(),
 	activeExpires: bigint('active_expires', { mode: 'number' }).notNull(),
 	idleExpires: bigint('idle_expires', { mode: 'number' }).notNull(),
 });
@@ -125,14 +133,14 @@ export const sessions = authSchema.table('auth_sessions', {
  *
  * @see https://lucia-auth.com/basics/keys
  */
-export const keys = authSchema.table('auth_keys', {
+export const keys = personalSchema.table('auth_keys', {
 	id: varchar('id', { length: 255 }).primaryKey(),
-	userId: useridfk('user_id').notNull(),
+	userId: userIdForeignKey('user_id').notNull(),
 	hashedPassword: varchar('hashed_password', { length: 255 }),
 });
 
-export const usersRolesRequests = authSchema.table('users_roles_requests', {
-	userId: useridfk('user_id').primaryKey(),
+export const usersRolesRequests = personalSchema.table('users_roles_requests', {
+	userId: userIdForeignKey('user_id').primaryKey(),
 	requestedRole: userRole('requested_role').references(() => userRoles.role, {
 		onDelete: 'cascade',
 		onUpdate: 'cascade',
@@ -143,21 +151,24 @@ export const usersRolesRequests = authSchema.table('users_roles_requests', {
 /**
  * Occupations or professions of registered users.
  */
-export const userOccupations = authSchema.table('user_occupations', {
+export const userOccupations = personalSchema.table('user_occupations', {
 	id: serial('id').primaryKey(),
 });
 
 /**
  * @see {@link userOccupations}
  */
-export const userOccupationsTranslations = authSchema.table(
+export const userOccupationsTranslations = personalSchema.table(
 	'user_occupations_t',
 	{
 		id: integer('id').references(() => userOccupations.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: localefk(),
+		locale: locale('locale').references(() => locales.locale, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
 		title: text('title').notNull(),
 		description: text('description'),
 	},
@@ -166,16 +177,14 @@ export const userOccupationsTranslations = authSchema.table(
 	}
 );
 
-export const usersOccupations = authSchema.table(
+export const usersOccupations = personalSchema.table(
 	'users_occupations',
 	{
-		userId: useridfk('user_id').notNull(),
-		occupationId: integer('occupation_id')
-			.references(() => userOccupations.id, {
-				onDelete: 'cascade',
-				onUpdate: 'cascade',
-			})
-			.notNull(),
+		userId: userIdForeignKey('user_id'),
+		occupationId: integer('occupation_id').references(() => userOccupations.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
 	},
 	(table) => {
 		return {
@@ -184,11 +193,11 @@ export const usersOccupations = authSchema.table(
 	}
 );
 
-export const usersProjectsCollections = authSchema.table(
+export const usersProjectsCollections = personalSchema.table(
 	'users_projects_collections',
 	{
-		id: uuid('id').defaultRandom().primaryKey(),
-		userId: useridfk('user_id').notNull(),
+		id: nanoid('id').default(generateNanoid()).primaryKey(),
+		userId: userIdForeignKey('user_id').notNull(),
 		title: text('title').notNull(),
 		description: text('description'),
 	},
@@ -199,14 +208,14 @@ export const usersProjectsCollections = authSchema.table(
 	}
 );
 
-export const usersProjectsCollectionsItems = authSchema.table(
+export const usersProjectsCollectionsItems = personalSchema.table(
 	'users_collections_items',
 	{
-		collectionId: uuid('collection_id').references(() => usersProjectsCollections.id, {
+		collectionId: nanoid('collection_id').references(() => usersProjectsCollections.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		projectId: uuid('project_id').references(() => projects.id, {
+		projectId: nanoid('project_id').references(() => projects.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),

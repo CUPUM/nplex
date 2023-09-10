@@ -1,4 +1,4 @@
-import { SETOUTS } from '$lib/setout/constants.js';
+import { SETOUTS } from '$lib/setout/constants';
 import type { Session } from 'lucia';
 
 export async function load(event) {

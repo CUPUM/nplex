@@ -26,6 +26,7 @@
 			gutter: 10,
 		},
 		forceVisible: true,
+		openDelay: 350,
 	});
 
 	beforeNavigate((nav) => {
@@ -43,10 +44,12 @@
 <a
 	{...$i18nlink(url)}
 	class="provider-button"
-	data-disabled={details.disabled || undefined}
 	use:ripple
 	use:loadingAction
-	{...$loadingElement}
+	{...{
+		...$loadingElement,
+		'data-disabled': $loadingElement['data-disabled'] || details.disabled || undefined,
+	}}
 	use:melt={$trigger}
 >
 	<svelte:component this={details.icon} />
@@ -64,16 +67,16 @@
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
-		padding: 1rem;
-		border-radius: var(--radius-md);
-		border: 1px solid color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
-		transition: all 0.15s ease-out;
+		padding: 1em;
+		border-radius: var(--input-radius);
+		border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
+		transition: all 0.1s ease-out;
 
 		&:hover,
 		&:focus-visible {
-			border: 1px solid transparent;
+			border: var(--border-size) solid transparent;
 			background-color: var(--color-neutral-50);
-			box-shadow: var(--shadow-lg);
+			// box-shadow: var(--shadow-lg);
 			@include dark {
 				background-color: var(--color-neutral-800);
 			}

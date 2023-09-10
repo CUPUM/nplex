@@ -119,14 +119,16 @@
 									scale: 0.75,
 									rotate: [0, 0, -90],
 									duration: 500,
-									delay: 200,
+									delay: 150,
 									easing: expoOut,
+									opacity: 1,
 								}}
 								out:transform={{
 									scale: 0.5,
 									rotate: [0, 0, 90],
-									duration: 350,
+									duration: 250,
 									easing: cubicIn,
+									opacity: 1,
 								}}
 							>
 								<svelte:component this={MODES_DETAILS[$mode].icon} size="1.5em" />
@@ -145,12 +147,10 @@
 		position: fixed;
 		inset: 0;
 		z-index: 99;
-		opacity: 0.95;
-		background: linear-gradient(180deg, var(--color-neutral-100) 25%, transparent 100%);
-		// background-color: color-mix(in srgb, var(--color-neutral-100) 90%, transparent);
+		opacity: 0.99;
+		background: linear-gradient(180deg, var(--color-neutral-100) 25%, transparent 125%);
 		@include dark {
-			background: linear-gradient(180deg, var(--color-neutral-950) 25%, transparent 100%);
-			// background-color: color-mix(in srgb, var(--color-neutral-950) 90%, transparent);
+			background: linear-gradient(180deg, var(--color-neutral-950) 25%, transparent 125%);
 		}
 	}
 
@@ -166,8 +166,8 @@
 		position: fixed;
 		inset: 0;
 		z-index: 99;
-		padding: var(--space-sm);
-		gap: var(--space-xs);
+		padding: 1rem;
+		gap: 0.75rem;
 		&:focus {
 			outline: none;
 		}
@@ -192,7 +192,7 @@
 	.inner {
 		display: flex;
 		flex-direction: column;
-		padding: var(--space-md);
+		padding: 1.25rem;
 		gap: 0.25rem;
 	}
 
@@ -205,7 +205,7 @@
 		align-items: center;
 		justify-content: center;
 		font-size: var(--size-sm);
-		padding: var(--space-md);
+		padding: 1.25rem;
 		border-radius: var(--radius-full);
 		color: var(--color-error-500);
 		background-color: var(--color-neutral-50);
@@ -270,7 +270,7 @@
 		align-items: center;
 		justify-content: flex-start;
 		position: relative;
-		padding: var(--space-lg);
+		padding: 1.625rem;
 		border-radius: var(--radius-full);
 		overflow: hidden;
 		text-overflow: ellipsis;

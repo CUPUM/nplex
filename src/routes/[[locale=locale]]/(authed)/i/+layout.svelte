@@ -3,7 +3,9 @@
 
 <div>
 	<nav>Some navbar</nav>
-	<article>current contents</article>
+	<article>
+		<slot />
+	</article>
 </div>
 
 <style lang="scss">

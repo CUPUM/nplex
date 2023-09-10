@@ -1,39 +1,45 @@
-CREATE SCHEMA "auth";
---> statement-breakpoint
 CREATE SCHEMA "i18n";
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."email_verification_tokens" (
+CREATE SCHEMA "personal";
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "i18n"."locales" (
+	"locale" text PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	CONSTRAINT "locales_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "personal"."email_verification_tokens" (
 	"id" text NOT NULL,
 	"expires" bigint PRIMARY KEY NOT NULL,
 	"user_id" varchar(15) NOT NULL,
 	CONSTRAINT "email_verification_tokens_id_unique" UNIQUE("id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."auth_keys" (
+CREATE TABLE IF NOT EXISTS "personal"."auth_keys" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
 	"user_id" varchar(15) NOT NULL,
 	"hashed_password" varchar(255)
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."password_reset_tokens" (
+CREATE TABLE IF NOT EXISTS "personal"."password_reset_tokens" (
 	"id" text NOT NULL,
 	"expires" bigint PRIMARY KEY NOT NULL,
 	"user_id" varchar(15) NOT NULL,
 	CONSTRAINT "password_reset_tokens_id_unique" UNIQUE("id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."auth_sessions" (
+CREATE TABLE IF NOT EXISTS "personal"."auth_sessions" (
 	"id" varchar(128) PRIMARY KEY NOT NULL,
 	"user_id" varchar(15) NOT NULL,
 	"active_expires" bigint NOT NULL,
 	"idle_expires" bigint NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."user_occupations" (
+CREATE TABLE IF NOT EXISTS "personal"."user_occupations" (
 	"id" serial PRIMARY KEY NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."user_occupations_t" (
+CREATE TABLE IF NOT EXISTS "personal"."user_occupations_t" (
 	"id" integer,
 	"locale" text,
 	"title" text NOT NULL,
@@ -41,11 +47,11 @@ CREATE TABLE IF NOT EXISTS "auth"."user_occupations_t" (
 	CONSTRAINT user_occupations_t_id_locale PRIMARY KEY("id","locale")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."user_roles" (
+CREATE TABLE IF NOT EXISTS "personal"."user_roles" (
 	"role" text PRIMARY KEY NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."user_roles_t" (
+CREATE TABLE IF NOT EXISTS "personal"."user_roles_t" (
 	"role" text,
 	"locale" text,
 	"title" text NOT NULL,
@@ -54,8 +60,8 @@ CREATE TABLE IF NOT EXISTS "auth"."user_roles_t" (
 	CONSTRAINT "user_roles_t_locale_title_unique" UNIQUE("locale","title")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."users" (
-	"id" varchar(15) PRIMARY KEY NOT NULL,
+CREATE TABLE IF NOT EXISTS "personal"."users" (
+	"id" varchar(15) PRIMARY KEY DEFAULT "extensions"."nanoid"(15) NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"role" text DEFAULT 'visitor' NOT NULL,
@@ -71,37 +77,31 @@ CREATE TABLE IF NOT EXISTS "auth"."users" (
 	CONSTRAINT "users_github_username_unique" UNIQUE("github_username")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."users_occupations" (
-	"user_id" varchar(15) NOT NULL,
-	"occupation_id" integer NOT NULL,
+CREATE TABLE IF NOT EXISTS "personal"."users_occupations" (
+	"user_id" varchar(15),
+	"occupation_id" integer,
 	CONSTRAINT users_occupations_occupation_id_user_id PRIMARY KEY("occupation_id","user_id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."users_projects_collections" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+CREATE TABLE IF NOT EXISTS "personal"."users_projects_collections" (
+	"id" varchar(21) PRIMARY KEY DEFAULT "extensions"."nanoid"(21) NOT NULL,
 	"user_id" varchar(15) NOT NULL,
 	"title" text NOT NULL,
 	"description" text,
 	CONSTRAINT "users_projects_collections_title_user_id_unique" UNIQUE("title","user_id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."users_collections_items" (
-	"collection_id" uuid,
-	"project_id" uuid,
+CREATE TABLE IF NOT EXISTS "personal"."users_collections_items" (
+	"collection_id" varchar(21),
+	"project_id" varchar(21),
 	"note" text,
 	CONSTRAINT users_collections_items_collection_id_project_id PRIMARY KEY("collection_id","project_id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "auth"."users_roles_requests" (
+CREATE TABLE IF NOT EXISTS "personal"."users_roles_requests" (
 	"user_id" varchar(15) PRIMARY KEY NOT NULL,
 	"requested_role" text,
 	"requested_at" timestamp with time zone DEFAULT now()
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "i18n"."locales" (
-	"locale" text PRIMARY KEY NOT NULL,
-	"name" text NOT NULL,
-	CONSTRAINT "locales_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organization_duties" (
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS "organization_types_t" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organizations" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" varchar(21) PRIMARY KEY DEFAULT "extensions"."nanoid"(21) NOT NULL,
 	"created_by_id" varchar(15) NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_by_id" varchar(15),
@@ -150,13 +150,13 @@ CREATE TABLE IF NOT EXISTS "organizations" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organizations_expertises" (
-	"organization_id" uuid,
+	"organization_id" varchar(21),
 	"expertise_id" integer,
 	CONSTRAINT organizations_expertises_expertise_id_organization_id PRIMARY KEY("expertise_id","organization_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organizations_t" (
-	"id" uuid,
+	"id" varchar(21),
 	"locale" text,
 	"name" text NOT NULL,
 	"summary" text,
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS "organizations_t" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organizations_users" (
-	"organization_id" uuid,
+	"organization_id" varchar(21),
 	"user_id" varchar(15),
 	CONSTRAINT organizations_users_organization_id_user_id PRIMARY KEY("organization_id","user_id")
 );
@@ -288,13 +288,12 @@ CREATE TABLE IF NOT EXISTS "project_types_t" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"id" varchar(21) PRIMARY KEY DEFAULT "extensions"."nanoid"(21) NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"created_by_id" varchar(15) NOT NULL,
 	"updated_by_id" varchar(15),
 	"published_at" timestamp with time zone,
-	"likes_count" integer DEFAULT 0 NOT NULL,
 	"type_id" integer,
 	"site_ownership_id" integer,
 	"implantation_type_id" integer,
@@ -304,14 +303,14 @@ CREATE TABLE IF NOT EXISTS "projects" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_exemplarity_indicators" (
-	"project_id" uuid,
+	"project_id" varchar(21),
 	"exemplarity_indicator_id" integer,
 	CONSTRAINT projects_exemplarity_indicators_project_id_exemplarity_indicator_id PRIMARY KEY("project_id","exemplarity_indicator_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_images" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"project_id" uuid,
+	"id" varchar(21) PRIMARY KEY DEFAULT "extensions"."nanoid"(21) NOT NULL,
+	"project_id" varchar(21),
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"created_by_id" varchar(15) NOT NULL,
@@ -325,42 +324,42 @@ CREATE TABLE IF NOT EXISTS "projects_images" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_images_credits" (
-	"image_id" uuid
+	"image_id" varchar(21)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_images_t" (
-	"id" uuid,
+	"id" varchar(21),
 	"locale" text,
 	"description" text,
 	CONSTRAINT projects_images_t_id_locale PRIMARY KEY("id","locale")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_interventions" (
-	"project_id" uuid,
+	"project_id" varchar(21),
 	"intervention_type_id" integer,
 	CONSTRAINT projects_interventions_project_id_intervention_type_id PRIMARY KEY("project_id","intervention_type_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_likes" (
 	"user_id" varchar(15),
-	"project_id" uuid,
+	"project_id" varchar(21),
 	CONSTRAINT projects_likes_project_id_user_id PRIMARY KEY("project_id","user_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_organizations" (
-	"project_id" uuid,
-	"organization_id" uuid,
+	"project_id" varchar(21),
+	"organization_id" varchar(21),
 	CONSTRAINT projects_organizations_organization_id_project_id PRIMARY KEY("organization_id","project_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_publication_requests" (
-	"project_id" uuid PRIMARY KEY NOT NULL,
+	"project_id" varchar(21) PRIMARY KEY NOT NULL,
 	"requested_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"requested_by_id" varchar(15) NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_t" (
-	"id" uuid,
+	"id" varchar(21),
 	"locale" text,
 	"title" text NOT NULL,
 	"summary" text,
@@ -371,103 +370,103 @@ CREATE TABLE IF NOT EXISTS "projects_t" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "projects_users" (
 	"user_id" varchar(15),
-	"project_id" uuid,
+	"project_id" varchar(21),
 	"role" text DEFAULT 'visitor',
 	CONSTRAINT projects_users_project_id_user_id PRIMARY KEY("project_id","user_id")
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."email_verification_tokens" ADD CONSTRAINT "email_verification_tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."email_verification_tokens" ADD CONSTRAINT "email_verification_tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."auth_keys" ADD CONSTRAINT "auth_keys_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."auth_keys" ADD CONSTRAINT "auth_keys_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."password_reset_tokens" ADD CONSTRAINT "password_reset_tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."password_reset_tokens" ADD CONSTRAINT "password_reset_tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."auth_sessions" ADD CONSTRAINT "auth_sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."auth_sessions" ADD CONSTRAINT "auth_sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."user_occupations_t" ADD CONSTRAINT "user_occupations_t_id_user_occupations_id_fk" FOREIGN KEY ("id") REFERENCES "auth"."user_occupations"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."user_occupations_t" ADD CONSTRAINT "user_occupations_t_id_user_occupations_id_fk" FOREIGN KEY ("id") REFERENCES "personal"."user_occupations"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."user_occupations_t" ADD CONSTRAINT "user_occupations_t_locale_locales_locale_fk" FOREIGN KEY ("locale") REFERENCES "i18n"."locales"("locale") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."user_occupations_t" ADD CONSTRAINT "user_occupations_t_locale_locales_locale_fk" FOREIGN KEY ("locale") REFERENCES "i18n"."locales"("locale") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."user_roles_t" ADD CONSTRAINT "user_roles_t_role_user_roles_role_fk" FOREIGN KEY ("role") REFERENCES "auth"."user_roles"("role") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."user_roles_t" ADD CONSTRAINT "user_roles_t_role_user_roles_role_fk" FOREIGN KEY ("role") REFERENCES "personal"."user_roles"("role") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."user_roles_t" ADD CONSTRAINT "user_roles_t_locale_locales_locale_fk" FOREIGN KEY ("locale") REFERENCES "i18n"."locales"("locale") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."user_roles_t" ADD CONSTRAINT "user_roles_t_locale_locales_locale_fk" FOREIGN KEY ("locale") REFERENCES "i18n"."locales"("locale") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."users" ADD CONSTRAINT "users_role_user_roles_role_fk" FOREIGN KEY ("role") REFERENCES "auth"."user_roles"("role") ON DELETE set default ON UPDATE cascade;
+ ALTER TABLE "personal"."users" ADD CONSTRAINT "users_role_user_roles_role_fk" FOREIGN KEY ("role") REFERENCES "personal"."user_roles"("role") ON DELETE set default ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."users_occupations" ADD CONSTRAINT "users_occupations_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."users_occupations" ADD CONSTRAINT "users_occupations_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."users_occupations" ADD CONSTRAINT "users_occupations_occupation_id_user_occupations_id_fk" FOREIGN KEY ("occupation_id") REFERENCES "auth"."user_occupations"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."users_occupations" ADD CONSTRAINT "users_occupations_occupation_id_user_occupations_id_fk" FOREIGN KEY ("occupation_id") REFERENCES "personal"."user_occupations"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."users_projects_collections" ADD CONSTRAINT "users_projects_collections_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."users_projects_collections" ADD CONSTRAINT "users_projects_collections_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."users_collections_items" ADD CONSTRAINT "users_collections_items_collection_id_users_projects_collections_id_fk" FOREIGN KEY ("collection_id") REFERENCES "auth"."users_projects_collections"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."users_collections_items" ADD CONSTRAINT "users_collections_items_collection_id_users_projects_collections_id_fk" FOREIGN KEY ("collection_id") REFERENCES "personal"."users_projects_collections"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."users_collections_items" ADD CONSTRAINT "users_collections_items_project_id_projects_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."projects"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."users_collections_items" ADD CONSTRAINT "users_collections_items_project_id_projects_id_fk" FOREIGN KEY ("project_id") REFERENCES "projects"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."users_roles_requests" ADD CONSTRAINT "users_roles_requests_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."users_roles_requests" ADD CONSTRAINT "users_roles_requests_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "auth"."users_roles_requests" ADD CONSTRAINT "users_roles_requests_requested_role_user_roles_role_fk" FOREIGN KEY ("requested_role") REFERENCES "auth"."user_roles"("role") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "personal"."users_roles_requests" ADD CONSTRAINT "users_roles_requests_requested_role_user_roles_role_fk" FOREIGN KEY ("requested_role") REFERENCES "personal"."user_roles"("role") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -509,13 +508,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "organizations" ADD CONSTRAINT "organizations_created_by_id_users_id_fk" FOREIGN KEY ("created_by_id") REFERENCES "auth"."users"("id") ON DELETE restrict ON UPDATE cascade;
+ ALTER TABLE "organizations" ADD CONSTRAINT "organizations_created_by_id_users_id_fk" FOREIGN KEY ("created_by_id") REFERENCES "personal"."users"("id") ON DELETE restrict ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "organizations" ADD CONSTRAINT "organizations_updated_by_id_users_id_fk" FOREIGN KEY ("updated_by_id") REFERENCES "auth"."users"("id") ON DELETE set null ON UPDATE cascade;
+ ALTER TABLE "organizations" ADD CONSTRAINT "organizations_updated_by_id_users_id_fk" FOREIGN KEY ("updated_by_id") REFERENCES "personal"."users"("id") ON DELETE set null ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -557,7 +556,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "organizations_users" ADD CONSTRAINT "organizations_users_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "organizations_users" ADD CONSTRAINT "organizations_users_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -689,13 +688,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "projects" ADD CONSTRAINT "projects_created_by_id_users_id_fk" FOREIGN KEY ("created_by_id") REFERENCES "auth"."users"("id") ON DELETE restrict ON UPDATE cascade;
+ ALTER TABLE "projects" ADD CONSTRAINT "projects_created_by_id_users_id_fk" FOREIGN KEY ("created_by_id") REFERENCES "personal"."users"("id") ON DELETE restrict ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "projects" ADD CONSTRAINT "projects_updated_by_id_users_id_fk" FOREIGN KEY ("updated_by_id") REFERENCES "auth"."users"("id") ON DELETE set null ON UPDATE cascade;
+ ALTER TABLE "projects" ADD CONSTRAINT "projects_updated_by_id_users_id_fk" FOREIGN KEY ("updated_by_id") REFERENCES "personal"."users"("id") ON DELETE set null ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -737,13 +736,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "projects_images" ADD CONSTRAINT "projects_images_created_by_id_users_id_fk" FOREIGN KEY ("created_by_id") REFERENCES "auth"."users"("id") ON DELETE restrict ON UPDATE cascade;
+ ALTER TABLE "projects_images" ADD CONSTRAINT "projects_images_created_by_id_users_id_fk" FOREIGN KEY ("created_by_id") REFERENCES "personal"."users"("id") ON DELETE restrict ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "projects_images" ADD CONSTRAINT "projects_images_updated_by_id_users_id_fk" FOREIGN KEY ("updated_by_id") REFERENCES "auth"."users"("id") ON DELETE restrict ON UPDATE cascade;
+ ALTER TABLE "projects_images" ADD CONSTRAINT "projects_images_updated_by_id_users_id_fk" FOREIGN KEY ("updated_by_id") REFERENCES "personal"."users"("id") ON DELETE restrict ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -785,7 +784,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "projects_likes" ADD CONSTRAINT "projects_likes_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "projects_likes" ADD CONSTRAINT "projects_likes_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -815,7 +814,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "projects_publication_requests" ADD CONSTRAINT "projects_publication_requests_requested_by_id_users_id_fk" FOREIGN KEY ("requested_by_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "projects_publication_requests" ADD CONSTRAINT "projects_publication_requests_requested_by_id_users_id_fk" FOREIGN KEY ("requested_by_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -833,7 +832,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "projects_users" ADD CONSTRAINT "projects_users_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE cascade;
+ ALTER TABLE "projects_users" ADD CONSTRAINT "projects_users_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "personal"."users"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -845,7 +844,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "projects_users" ADD CONSTRAINT "projects_users_role_user_roles_role_fk" FOREIGN KEY ("role") REFERENCES "auth"."user_roles"("role") ON DELETE set default ON UPDATE cascade;
+ ALTER TABLE "projects_users" ADD CONSTRAINT "projects_users_role_user_roles_role_fk" FOREIGN KEY ("role") REFERENCES "personal"."user_roles"("role") ON DELETE set default ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

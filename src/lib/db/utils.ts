@@ -23,3 +23,10 @@ export function getTableName<T extends PgTable>(
 	const qi = quotes ? '"' : '';
 	return `${qo}${schema ? `${tableConfig.schema}${qi}.` : ''}${qi}${tableConfig.name}${qo}`;
 }
+
+// /**
+//  * Transform a translations record insert schema into database rows.
+//  */
+// export function transformTranslationsInsertSchema<
+// 	S extends ZodObject<Record<Locale, AnyZodObject>>,
+// >(schema: S) {}

@@ -3,7 +3,7 @@ import { getContext, setContext } from 'svelte';
 /**
  * Allows defining adequately typed and corresponding context setter & context getter.
  *
- * @returns A tuple of [Context setter, Context getter];
+ * @returns A tuple of [Context getter, Context setter];
  */
 export function defineContext<T>(key: unknown) {
 	function set(context: T) {
@@ -18,5 +18,5 @@ export function defineContext<T>(key: unknown) {
 		}
 		return getContext<T>(key);
 	}
-	return [set, get] as const as [setter: typeof set, getter: typeof get];
+	return [get, set] as const as [getter: typeof get, setter: typeof set];
 }

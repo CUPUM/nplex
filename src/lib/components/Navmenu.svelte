@@ -272,13 +272,13 @@
 		position: sticky;
 		top: 0;
 		align-self: stretch;
-		padding: var(--space-xs);
+		padding: 0.75rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
 		@include lg {
-			padding: var(--space-sm);
+			padding: 1rem;
 		}
 	}
 
@@ -301,7 +301,7 @@
 	.group {
 		display: flex;
 		flex-direction: row;
-		gap: var(--space-3xs);
+		gap: 0.25rem;
 	}
 
 	.navbutton {
@@ -309,12 +309,12 @@
 		display: flex;
 		white-space: nowrap;
 		flex-direction: row;
-		gap: var(--space-2xs);
+		gap: 0.5rem;
 		align-items: center;
 		justify-content: center;
 		font-size: var(--size-sm);
-		height: var(--space-2xl);
-		padding-inline: var(--size-md);
+		height: 3.25rem;
+		padding-inline: 1.25em;
 		border-radius: var(--radius-full);
 		letter-spacing: 0.02em;
 		outline: 1px solid transparent;
@@ -434,7 +434,7 @@
 		background-color: var(--color-neutral-50);
 		// border: 1px solid var(--color-neutral-200);
 		// box-shadow: var(--shadow-md);
-		padding: var(--space-xs);
+		padding: 0.75rem;
 		border-radius: var(--radius-lg);
 		transform-origin: top center;
 		z-index: 1;
@@ -443,15 +443,6 @@
 			background-color: var(--color-neutral-800);
 			// border: 1px solid var(--color-neutral-700);
 		}
-
-		// hr {
-		// 	border-color: black;
-		// 	opacity: 0.1;
-		// 	margin: var(--space-2xs);
-		// 	@include dark {
-		// 		border-color: white;
-		// 	}
-		// }
 	}
 
 	.legend {
@@ -459,21 +450,19 @@
 		font-size: var(--size-xs);
 		font-weight: 450;
 		opacity: 0.5;
-		padding: var(--size-xs) var(--space-sm);
+		padding: var(--size-xs) 1rem;
 	}
 
 	.dropdown-subgroup {
 		display: flex;
 		flex-direction: column;
-		padding: var(--space-2xs);
-		// gap: var(--space-2xs);
+		padding: 0.5rem;
 		border-radius: var(--radius-md);
-		margin-bottom: var(--space-2xs);
+		margin-bottom: 0.5rem;
 		background-color: white;
 		border: var(--border-size) solid transparent;
 		@include dark {
 			background-color: rgba(255, 255, 255, 0.025);
-			// border: var(--border-size) solid rgba(0, 0, 0, 0.1);
 		}
 	}
 
@@ -484,7 +473,7 @@
 		flex-direction: row;
 		align-items: center;
 		padding: 1em 1.25em;
-		gap: var(--space-sm);
+		gap: 1rem;
 		border-radius: var(--radius-sm);
 		transition: all 0.1s ease-out;
 

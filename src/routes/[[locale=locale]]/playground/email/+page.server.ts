@@ -1,7 +1,7 @@
 import { EMAIL_USER } from '$env/static/private';
 import VerifyEmail from '$lib/emails/templates/VerifyEmail.svelte';
-import { transporter } from '$lib/emails/transporter.server.js';
-import { STATUS_CODES } from '$lib/utils/constants.js';
+import { transporter } from '$lib/emails/transporter.server';
+import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { render } from 'svelte-email';
 import { superValidate } from 'sveltekit-superforms/server';

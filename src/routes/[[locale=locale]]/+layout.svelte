@@ -3,15 +3,18 @@
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
 	import Navmenu from '$lib/components/Navmenu.svelte';
 	import Toasts from '$lib/components/Toasts.svelte';
+	import Contexts from './Contexts.svelte';
 </script>
 
-<LoadingProgress />
-<Navmenu />
-<main>
-	<slot />
-</main>
-<Footer />
-<Toasts />
+<Contexts>
+	<LoadingProgress />
+	<Navmenu />
+	<main>
+		<slot />
+	</main>
+	<Footer />
+	<Toasts />
+</Contexts>
 
 <style lang="scss">
 	main {

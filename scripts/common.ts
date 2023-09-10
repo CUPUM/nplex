@@ -13,7 +13,7 @@ export const ENV = z
 	.object({
 		NEON_DB_PASSWORD: z.string(),
 		NEON_DB_URL: z.string(),
-		NEON_DB_URL_NOPOOL: z.string(),
+		NEON_POOL_DB_URL: z.string(),
 		GITHUB_CLIENT_ID: z.string(),
 		GITHUB_CLIENT_SECRET: z.string(),
 	})
@@ -22,7 +22,7 @@ export const ENV = z
 export const DB_MIGRATIONS_FOLDER = './migrations';
 
 export function createDrizzle() {
-	const client = pg(ENV.NEON_DB_URL_NOPOOL, { max: 1, ssl: 'require' });
+	const client = pg(ENV.NEON_DB_URL, { max: 1, ssl: 'require' });
 	const db = drizzle(client);
 	return db;
 }

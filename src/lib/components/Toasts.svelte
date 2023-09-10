@@ -69,8 +69,8 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
-		padding: var(--space-md);
-		gap: var(--space-xs);
+		padding: 1.25rem;
+		gap: 0.75rem;
 		pointer-events: none;
 	}
 </style>

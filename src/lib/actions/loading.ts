@@ -9,12 +9,18 @@ export function loading(
 		state: boolean;
 	}
 ) {
-	let comp: Loading | undefined = new Loading({
-		target: node,
-		props: options,
-	});
+	let comp: Loading | undefined;
+	if (options?.state) {
+		new Loading({
+			intro: false,
+			target: node,
+			props: options,
+		});
+	}
+
 	return {
 		update(args: typeof options) {
+			// console.log(args);
 			if (comp && !args?.state) {
 				// comp.$destroy();
 				outroAndDestroy(comp);
@@ -28,6 +34,7 @@ export function loading(
 			}
 		},
 		destroy() {
+			// We do not use outroAndDestroy here to avoid blocking navigations.
 			comp && comp.$destroy();
 		},
 	} satisfies SvelteActionReturnType;
@@ -39,11 +46,11 @@ export function loading(
  */
 export function createLoading({
 	state = false,
-	// disable = true,
+	disable = true,
 	...props
 }: {
 	state?: boolean | Readable<boolean> | Readable<boolean>[];
-	// disable?: boolean
+	disable?: boolean;
 } & ComponentProps<Loading> = {}) {
 	const aggregatedState = Array.isArray(state)
 		? derived(state, ($state) => {
@@ -65,8 +72,8 @@ export function createLoading({
 	const element = derived(_state, ($state) => {
 		return {
 			'data-loading': $state || undefined,
-			// 'data-disabled': (disable && $state) || undefined,
-			// 'disabled': (disable && $state) || undefined
+			'data-disabled': (disable && $state) || undefined,
+			'disabled': (disable && $state) || undefined,
 		};
 	});
 

@@ -1,3 +1,4 @@
+import type { User } from 'lucia';
 import { z } from 'zod';
 import { AUTH_PROVIDERS_ARR, USER_ROLES_ARR, type AuthProvider, type UserRole } from './constants';
 
@@ -58,3 +59,9 @@ export const authProviderSchema = z.custom<AuthProvider>(
 		}
 	}
 );
+
+export function isEmailUser<U extends Pick<User, 'id' | 'email'>>(
+	user: U
+): user is U & { email: NonNullable<User['email']> } {
+	return user.email != null;
+}

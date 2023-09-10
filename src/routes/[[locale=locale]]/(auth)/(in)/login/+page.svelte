@@ -66,14 +66,7 @@
 			/>
 		</label>
 	</fieldset>
-	<button
-		class="button cta"
-		type="submit"
-		{...$loadingElement}
-		disabled={$loadingState}
-		use:loadingAction
-		use:ripple
-	>
+	<button class="button cta" type="submit" {...$loadingElement} use:loadingAction use:ripple>
 		<LogIn class="button-icon" />
 		{$t.button}
 	</button>
@@ -127,7 +120,6 @@
 
 		span {
 			font-size: var(--size-xs);
-			font-weight: 500;
 			opacity: 0.8;
 		}
 	}

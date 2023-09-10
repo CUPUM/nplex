@@ -1,9 +1,42 @@
 <script lang="ts">
+	import { i18nlink } from '$lib/i18n/link';
+
+	export let data;
 </script>
 
 <slot />
-<section>My projects</section>
-<section>My orgs</section>
+<aside>
+	<section>
+		<h2>My projects</h2>
+		{#await data.editables.projects then ep}
+			<ul>
+				{#each ep as p}
+					<li>
+						<!-- svelte-ignore a11y-missing-attribute -->
+						<a {...$i18nlink(`/edit/projects/${p.id}`)}>
+							{p.id}
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{/await}
+	</section>
+	<section>
+		<h2>My organizaations</h2>
+		{#await data.editables.organizations then eo}
+			<ul>
+				{#each eo as o}
+					<li>
+						<!-- svelte-ignore a11y-missing-attribute -->
+						<a {...$i18nlink(`/edit/organizations/${o.id}`)}>
+							{o.id}
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{/await}
+	</section>
+</aside>
 
 <style lang="scss">
 </style>

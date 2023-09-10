@@ -77,14 +77,7 @@
 			/>
 		</label>
 	</fieldset>
-	<button
-		class="button cta"
-		type="submit"
-		{...$loadingElement}
-		disabled={$loadingState}
-		use:loadingAction
-		use:ripple
-	>
+	<button class="button cta" type="submit" {...$loadingElement} use:loadingAction use:ripple>
 		<UserPlus2 class="button-icon" />
 		{$t.button}
 	</button>

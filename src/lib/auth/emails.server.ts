@@ -5,9 +5,10 @@ import { transporter } from '$lib/emails/transporter.server';
 import type { RequestEvent } from '@sveltejs/kit';
 import type { User } from 'lucia';
 import { render } from 'svelte-email';
+import type { SetNonNullable } from 'type-fest';
 import { generateEmailVerificationToken, generatePasswordResetToken } from './token.server';
 
-type EmailUser = Pick<User, 'id' | 'email'>;
+type EmailUser = SetNonNullable<Pick<User, 'id' | 'email'>>;
 
 export async function sendEmailVerificationLink(user: EmailUser, event: RequestEvent) {
 	const token = await generateEmailVerificationToken(user.id);
