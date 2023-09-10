@@ -1,9 +1,8 @@
-import { auth, githubAuth } from '$lib/auth/auth.server.js';
-import { dbpool } from '$lib/db/db.server.js';
-import { users } from '$lib/db/schema/auth.js';
-import { STATUS_CODES } from '$lib/utils/constants.js';
+import { auth, githubAuth } from '$lib/auth/auth.server';
+import { dbpool } from '$lib/db/db.server';
+import { users } from '$lib/db/schema/personal';
+import { STATUS_CODES } from '$lib/utils/constants';
 import { OAuthRequestError } from '@lucia-auth/oauth';
-import { generateRandomString } from 'lucia/utils';
 
 export const GET = async (event) => {
 	const storedState = event.cookies.get('github_oauth_state');
@@ -25,15 +24,15 @@ export const GET = async (event) => {
 			// To do: safely check for exisitng user with same email.
 			// https://lucia-auth.com/guidebook/oauth-account-linking
 			return await dbpool.transaction(async (tx) => {
-				const id = generateRandomString(15);
+				// const id = generateRandomString(15);
 				const [user] = await tx
 					.insert(users)
 					.values({
-						id,
+						// id,
 						email: githubUser.email,
 						githubUsername: githubUser.login,
 					})
-					.returning();
+					.returning({ id: users.id });
 				return user;
 			});
 		}

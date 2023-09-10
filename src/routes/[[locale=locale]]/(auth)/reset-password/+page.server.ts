@@ -1,7 +1,8 @@
-import { sendPasswordResetLink } from '$lib/auth/emails.server.js';
-import { dbpool } from '$lib/db/db.server.js';
-import { users } from '$lib/db/schema/auth.js';
-import { STATUS_CODES } from '$lib/utils/constants.js';
+import { sendPasswordResetLink } from '$lib/auth/emails.server';
+import { isEmailUser } from '$lib/auth/validation';
+import { dbpool } from '$lib/db/db.server';
+import { users } from '$lib/db/schema/personal';
+import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms/server';
@@ -51,6 +52,9 @@ export const actions = {
 				.limit(1);
 			if (!user) {
 				return message(form, t.nouser, { status: STATUS_CODES.BAD_REQUEST });
+			}
+			if (!isEmailUser(user)) {
+				throw new Error('User email is null');
 			}
 			await sendPasswordResetLink(user, event);
 			return message(form, t.success);

@@ -1,12 +1,13 @@
-import { auth } from '$lib/auth/auth.server.js';
-import { AUTH_PROVIDERS } from '$lib/auth/constants.js';
-import { sendEmailVerificationLink } from '$lib/auth/emails.server.js';
-import { dbpool } from '$lib/db/db.server.js';
-import { keys, users } from '$lib/db/schema/auth.js';
-import { STATUS_CODES } from '$lib/utils/constants.js';
+import { auth } from '$lib/auth/auth.server';
+import { AUTH_PROVIDERS } from '$lib/auth/constants';
+import { sendEmailVerificationLink } from '$lib/auth/emails.server';
+import { isEmailUser } from '$lib/auth/validation';
+import { dbpool } from '$lib/db/db.server';
+import { keys, users } from '$lib/db/schema/personal';
+import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { createKeyId } from 'lucia';
-import { generateLuciaPasswordHash, generateRandomString } from 'lucia/utils';
+import { generateLuciaPasswordHash } from 'lucia/utils';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
@@ -65,11 +66,10 @@ export const actions = {
 			 * @see https://lucia-auth.com/basics/fallback-database-queries
 			 */
 			const user = await dbpool.transaction(async (tx) => {
-				const userId = generateRandomString(15);
+				// const userId = generateRandomString(15);
 				const [user] = await tx
 					.insert(users)
 					.values({
-						id: userId,
 						email: form.data.email,
 					})
 					.returning({ id: users.id, email: users.email });
@@ -77,7 +77,7 @@ export const actions = {
 				const hashedPassword = await generateLuciaPasswordHash(form.data.password);
 				await tx.insert(keys).values({
 					id: keyId,
-					userId,
+					userId: user.id,
 					hashedPassword,
 				});
 				return user;
@@ -87,6 +87,9 @@ export const actions = {
 				attributes: {},
 			});
 			event.locals.auth.setSession(session);
+			if (!isEmailUser(user)) {
+				throw new Error('User email is null');
+			}
 			await sendEmailVerificationLink(user, event);
 		} catch (err) {
 			console.error(err);

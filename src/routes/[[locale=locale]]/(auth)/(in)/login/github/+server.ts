@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
 import { githubAuth } from '$lib/auth/auth.server';
-import { STATUS_CODES } from '$lib/utils/constants.js';
+import { STATUS_CODES } from '$lib/utils/constants';
 
 export const GET = async (event) => {
 	const [url, state] = await githubAuth.getAuthorizationUrl();

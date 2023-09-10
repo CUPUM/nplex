@@ -1,7 +1,7 @@
-import { auth } from '$lib/auth/auth.server.js';
-import { AUTH_PROVIDERS } from '$lib/auth/constants.js';
-import { validatePasswordResetToken } from '$lib/auth/token.server.js';
-import { STATUS_CODES } from '$lib/utils/constants.js';
+import { auth } from '$lib/auth/auth.server';
+import { AUTH_PROVIDERS } from '$lib/auth/constants';
+import { validatePasswordResetToken } from '$lib/auth/token.server';
+import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';

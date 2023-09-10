@@ -1,6 +1,6 @@
-import { auth } from '$lib/auth/auth.server.js';
-import { AUTH_PROVIDERS } from '$lib/auth/constants.js';
-import { STATUS_CODES } from '$lib/utils/constants.js';
+import { auth } from '$lib/auth/auth.server';
+import { AUTH_PROVIDERS } from '$lib/auth/constants';
+import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { LuciaError } from 'lucia';
 import { superValidate } from 'sveltekit-superforms/server';

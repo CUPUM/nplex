@@ -1,16 +1,18 @@
 <script lang="ts">
-	import { createLoading } from '$lib/actions/loading.js';
-	import { i18nlink } from '$lib/i18n/link.js';
+	import { createLoading } from '$lib/actions/loading';
+	import { ripple } from '$lib/actions/ripple';
+	import { i18nlink } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
+	import { HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	const t = createTranslations({
 		fr: {
-			title: 'Créer un compte',
+			title: 'Créez-vous un compte',
 			email: 'Courriel',
 			password: 'Mot de passe',
 			confirmPassword: 'Confirmez le mot de passe',
-			button: 'M’inscrire!',
+			button: 'M’inscrire',
 			login: 'J’ai déjà un compte',
 			forgot: 'J’ai oublié mon mot de passe',
 		},
@@ -19,7 +21,7 @@
 			email: 'Email',
 			password: 'Password',
 			confirmPassword: 'Confirm password',
-			button: 'Signup!',
+			button: 'Signup',
 			login: 'I already have an account',
 			forgot: 'I forgot my password',
 		},
@@ -27,7 +29,7 @@
 
 	export let data;
 
-	const { form, enhance, constraints, errors, delayed } = superForm(data.form, {
+	const { form, enhance, constraints, errors, delayed, submitting } = superForm(data.form, {
 		taintedMessage: null,
 	});
 
@@ -38,24 +40,24 @@
 	} = createLoading({ state: delayed });
 </script>
 
-<form use:enhance method="POST">
+<form method="POST" use:enhance>
 	<h1>{$t.title}</h1>
-	<fieldset>
+	<label>
+		<span>{$t.email}</span>
+		<input
+			class="input"
+			type="email"
+			name="email"
+			aria-invalid={$errors.email ? true : undefined}
+			bind:value={$form.email}
+			{...$constraints.email}
+		/>
+	</label>
+	<fieldset class="pw">
 		<label>
-			{$t.email}
+			<span>{$t.password}</span>
 			<input
-				type="text"
-				name="email"
-				aria-invalid={$errors.email ? true : undefined}
-				bind:value={$form.email}
-				{...$constraints.email}
-			/>
-		</label>
-	</fieldset>
-	<fieldset>
-		<label>
-			{$t.password}
-			<input
+				class="input"
 				type="password"
 				name="password"
 				aria-invalid={$errors.password ? true : undefined}
@@ -64,8 +66,9 @@
 			/>
 		</label>
 		<label>
-			{$t.confirmPassword}
+			<span>{$t.confirmPassword}</span>
 			<input
+				class="input"
 				type="password"
 				name="confirmPassword"
 				aria-invalid={$errors.confirmPassword ? true : undefined}
@@ -75,38 +78,80 @@
 		</label>
 	</fieldset>
 	<button
-		class="button"
+		class="button cta"
 		type="submit"
 		{...$loadingElement}
 		disabled={$loadingState}
 		use:loadingAction
+		use:ripple
 	>
+		<UserPlus2 class="button-icon" />
 		{$t.button}
 	</button>
 </form>
 <div class="links">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="link" {...$i18nlink('/login')}>{$t.login}</a>
+	<a class="link" {...$i18nlink('/login')}>
+		<LogIn class="link-icon" />
+		{$t.login}
+	</a>
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="link" {...$i18nlink('/reset-password')}>{$t.forgot}</a>
+	<a class="link" {...$i18nlink('/reset-password')}>
+		<HelpCircle class="link-icon" />
+		{$t.forgot}
+	</a>
 </div>
 
 <style lang="scss">
 	form {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: stretch;
 		justify-content: center;
 		flex: 1;
+		gap: 2rem;
+	}
+
+	h1 {
+		font-size: var(--size-3xl);
+		font-weight: 550;
+		line-height: 1.15;
+	}
+
+	fieldset {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+	}
+
+	label {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+		text-indent: 0.5em;
+
+		&:focus-within {
+			span {
+				opacity: 1;
+			}
+		}
+
+		span {
+			font-size: var(--size-xs);
+			font-weight: 500;
+			opacity: 0.8;
+		}
 	}
 
 	.formcontent {
-		padding: var(--space-2xl);
+		padding: 2.25rem;
 	}
 
 	.links {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-between;
 		font-size: var(--size-sm);
 	}
 </style>

@@ -5,12 +5,12 @@
 
 	const t = createTranslations({
 		fr: {
-			or: 'Ou',
-			social: 'Conectez-vous via',
+			or: 'ou',
+			social: 'Continuer avec',
 		},
 		en: {
-			or: 'Or',
-			social: 'Sign in using',
+			or: 'or',
+			social: 'Continue using',
 		},
 	});
 </script>
@@ -24,7 +24,7 @@
 			</span>
 		</div>
 		<section class="social">
-			<h2>{$t.social}&thinsp;:</h2>
+			<h2>{$t.social}</h2>
 			<fieldset class="providers">
 				{#each SOCIAL_PROVIDERS_ARR as provider}
 					<SocialProviderButton {provider} />
@@ -44,6 +44,7 @@
 
 	h2 {
 		text-align: center;
+		font-weight: 500;
 	}
 
 	.inner {
@@ -52,13 +53,13 @@
 		align-items: stretch;
 		gap: 2rem;
 		width: 100%;
-		max-width: var(--width-col);
+		max-width: 420px;
 	}
 
 	.social {
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
+		gap: 1rem;
 	}
 
 	#or {
@@ -80,7 +81,7 @@
 			flex: 1;
 			height: 1px;
 			background-color: var(--color-neutral-500);
-			opacity: 0.5;
+			opacity: 0.25;
 		}
 	}
 
