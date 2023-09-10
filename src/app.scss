@@ -18,17 +18,17 @@
 	--color-neutral-800: hsl(32, 8%, 14%);
 	--color-neutral-900: hsl(34, 9%, 10%);
 	--color-neutral-950: hsl(30, 10%, 8%);
-	--color-primary-50: hsl(152, 81%, 96%);
-	--color-primary-100: hsl(149, 80%, 90%);
-	--color-primary-200: hsl(152, 76%, 80%);
-	--color-primary-300: hsl(156, 72%, 67%);
+	--color-primary-50: hsl(162, 81%, 96%);
+	--color-primary-100: hsl(161, 80%, 90%);
+	--color-primary-200: hsl(160, 76%, 80%);
+	--color-primary-300: hsl(159, 72%, 67%);
 	--color-primary-400: hsl(158, 65%, 52%);
-	--color-primary-500: hsl(160, 88%, 39%);
-	--color-primary-600: hsl(161, 95%, 30%);
-	--color-primary-700: hsl(162, 95%, 23%);
-	--color-primary-800: hsl(163, 93%, 17%);
-	--color-primary-900: hsl(164, 91%, 12%);
-	--color-primary-950: hsl(165, 91%, 8%);
+	--color-primary-500: hsl(157, 88%, 39%);
+	--color-primary-600: hsl(156, 95%, 30%);
+	--color-primary-700: hsl(155, 95%, 23%);
+	--color-primary-800: hsl(154, 93%, 17%);
+	--color-primary-900: hsl(153, 91%, 12%);
+	--color-primary-950: hsl(152, 91%, 8%);
 	--color-secondary-50: hsl(33, 84%, 80%);
 	--color-secondary-100: hsl(34, 84%, 80%);
 	--color-secondary-200: hsl(35, 83%, 74%);
@@ -62,7 +62,10 @@
 	--color-error-800: hsl(8, 84%, 37%);
 	--color-error-900: hsl(8, 86%, 29%);
 	--color-error-950: hsl(8, 89%, 20%);
-	// Text and block sizes.
+	// Text and misc absolute sizes.
+	--size-6xs: 0.125rem;
+	--size-5xs: 0.25rem;
+	--size-4xs: 0.35rem;
 	--size-3xs: 0.5rem;
 	--size-2xs: 0.65rem;
 	--size-xs: 0.75rem;
@@ -76,21 +79,7 @@
 	--size-5xl: 5rem;
 	--size-6xl: 7rem;
 	--size-7xl: 10rem;
-	// Layout spacings, paddings, and margins.
-	--space-4xs: 0.125rem;
-	--space-3xs: 0.25rem;
-	--space-2xs: 0.5rem;
-	--space-xs: 0.75rem;
-	--space-sm: 1rem;
-	--space-md: 1.25rem;
-	--space-lg: 1.625rem;
-	--space-xl: 2.25rem;
-	--space-2xl: 3rem;
-	--space-3xl: 3.825rem;
-	--space-4xl: 5rem;
-	--space-5xl: 7rem;
-	--space-6xl: 10rem;
-	--space-7xl: 15rem;
+	--size-8xl: 15rem;
 	// Rounded corners.
 	--radius-2xs: 6px;
 	--radius-xs: 8px;
@@ -115,8 +104,12 @@
 	--shadow-lg: 0 9px 24px -12px rgba(0, 8, 24, 0.225);
 	--shadow-xl: 0 16px 48px -20px rgba(0, 8, 24, 0.25);
 	--shadow-2xl: 0 28px 96px -48px rgba(0, 8, 24, 0.275);
-	// Border size
+	// Miscs
+	--input-size: 3.5em;
+	--input-padding: 1.25em;
+	--input-radius: var(--radius-md);
 	--border-size: 1.5px;
+	--group-inset: 5px;
 	// Root style
 	position: relative;
 	font-size: 100%;
@@ -134,13 +127,13 @@
 }
 
 *:focus-visible {
-	outline: 3px solid color-mix(in srgb, var(--color-primary-300) 50%, transparent);
-	// outline: 2px solid rgba(0, 0, 0, 0.8);
-	// outline-offset: 2px;
+	// outline: 3px solid color-mix(in srgb, var(--color-primary-300) 50%, transparent);
+	outline: 3px solid rgba(0, 0, 0, 0.8);
+	// outline-offset: 3px;
 
 	@include global-dark {
-		outline: 3px solid color-mix(in srgb, var(--color-primary-700) 50%, transparent);
-		// outline: 2px solid rgba(255, 255, 255, 0.8);
+		// outline: 3px solid color-mix(in srgb, var(--color-primary-700) 50%, transparent);
+		outline: 3px solid rgba(255, 255, 255, 0.8);
 	}
 }
 
@@ -156,21 +149,41 @@ Buttons
 */
 
 .button {
+	position: relative;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-between;
-	gap: 1em;
-	padding: var(--space-md);
-	border-radius: var(--radius-md);
-	color: var(--color-neutral-700);
+	justify-content: center;
+	gap: 0.75em;
+	font-weight: 450;
+	padding: 0 var(--input-padding);
+	height: var(--input-size);
+	border-radius: var(--input-radius);
+	color: var(--color-neutral-800);
 	background-color: color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
+	box-shadow: 0 0 0 0 transparent;
+	transition: all 0.1s;
 	@include global-dark {
-		color: var(--color-neutral-300);
+		color: var(--color-neutral-200);
 	}
-	&[data-loading] {
+	&:hover,
+	&:focus-visible {
+		color: black;
+		background-color: var(--color-primary-700);
+		@include global-dark {
+			color: black;
+			background-color: var(--color-neutral-100);
+		}
+		.button-icon {
+			opacity: 1;
+			transform: scale(0.95);
+		}
+	}
+
+	&[data-disabled],
+	&:disabled {
 		color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
-		transform: scale(0.95);
+		transform: scale(0.96);
 		pointer-events: none;
 	}
 
@@ -178,7 +191,34 @@ Buttons
 	}
 
 	&.cta {
+		color: var(--color-neutral-100);
+		background-color: var(--color-primary-950);
+		@include global-dark {
+			color: var(--color-neutral-900);
+			background-color: var(--color-primary-50);
+		}
+		&:hover,
+		&:focus-visible {
+			color: var(--color-primary-50);
+			background-color: var(--color-primary-600);
+			@include global-dark {
+				color: var(--color-primary-950);
+				background-color: var(--color-primary-500);
+			}
+		}
 	}
+}
+
+.button-icon,
+.link-icon {
+	width: 1.75em;
+	stroke-width: 2;
+	stroke-linecap: square;
+	opacity: 0.65;
+	transform: scale(1);
+	transition:
+		opacity 0.1s ease-out,
+		transform 0.1s ease-out;
 }
 
 .button-group {
@@ -189,39 +229,47 @@ Links
 */
 
 .link {
+	&.inline {
+		display: inline;
+		padding: 0.5em 0.75em;
+	}
 	display: flex;
 	flex-direction: row;
+	gap: 0.75em;
+	padding: 0 0.75em;
+	height: 3em;
 	align-items: center;
-	font-weight: 450;
-	justify-content: space-between;
-	gap: 1em;
-	padding: var(--space-md);
-	border-radius: var(--radius-md);
-	color: var(--color-neutral-900);
+	font-weight: 500;
+	border-radius: var(--radius-full);
+	color: var(--color-neutral-800);
 	text-decoration: underline;
-	text-underline-offset: -2px;
-	text-decoration-thickness: 1.75px;
+	text-underline-offset: 0.25em;
+	text-decoration-thickness: 0.125em;
 	text-decoration-color: transparent;
-	text-decoration-skip-ink: all;
+	text-decoration-skip-ink: none;
 	text-decoration-line: underline;
 	transition: all 0.1s ease-out;
 	@include global-dark {
-		color: var(--color-neutral-100);
-	}
-	&.inline {
-		display: inline;
-		padding: 0.25em;
+		color: var(--color-neutral-200);
 	}
 	&:hover,
 	&:focus {
-		text-underline-offset: 2px;
-		text-decoration-color: var(--color-primary-500);
 		color: var(--color-primary-600);
-
+		text-decoration-color: currentColor;
+		text-underline-offset: 0.5em;
 		@include global-dark {
 			color: var(--color-primary-400);
 		}
+		.link-icon {
+			transform: scale(0.95);
+			opacity: 1;
+		}
 	}
+}
+
+.link-icon {
+	stroke-width: 2;
+	width: 1.5em;
 }
 
 /*
@@ -229,12 +277,21 @@ Text input
 */
 
 .input {
-	padding: 1.25em 1.35em;
-	border-radius: var(--radius-md);
-	background-color: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
-	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-	transition: all 0.15s ease-out;
-	&:focus {
+	height: var(--input-size);
+	padding: 0 var(--input-padding);
+	border-radius: var(--input-radius);
+	background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+	transition: all 0.1s ease-out;
+	&:hover,
+	&:focus-visible {
+		box-shadow: 0 0 0 var(--border-size) rgba(0, 0, 0, 0.1);
+		@include global-dark {
+			box-shadow: 0 0 0 var(--border-size) rgba(255, 255, 255, 0.1);
+		}
+	}
+	&:focus,
+	&:has(input:focus),
+	&:has(textarea:focus) {
 		background-color: rgba(255, 255, 255, 0.5);
 		@include global-dark {
 			background-color: rgba(0, 0, 0, 0.5);
@@ -256,13 +313,5 @@ Text input
 			border-radius: inherit;
 			border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
 		}
-	}
-}
-
-/*
-Text input groups (input with nested buttons, tags, etc.)
-*/
-.input-group {
-	.input {
 	}
 }
