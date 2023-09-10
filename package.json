@@ -52,9 +52,11 @@
 		"format": "prettier --plugin-search-dir . --write .",
 		"db:run": "tsx --tsconfig ./.svelte-kit/tsconfig.json node_modules/drizzle-kit/index.cjs",
 		"db:gen": "pnpm db:run generate:pg",
+		"db:drop": "pnpm db:run drop",
 		"db:studio": "pnpm db:run studio",
 		"db:apply": "tsx --tsconfig ./.svelte-kit/tsconfig.json ./scripts/apply.ts",
-		"db:seed": "tsx --tsconfig ./.svelte-kit/tsconfig.json ./scripts/seed.ts"
+		"db:seed": "tsx --tsconfig ./.svelte-kit/tsconfig.json ./scripts/seed.ts",
+		"db:scaffold": "pnpm db:apply && pnpm db:seed"
 	},
 	"devDependencies": {
 		"@melt-ui/pp": "^0.1.2",
@@ -71,12 +73,12 @@
 		"dotenv": "^16.3.1",
 		"dotenv-expand": "^10.0.0",
 		"drizzle-kit": "^0.19.13",
-		"eslint": "^8.48.0",
+		"eslint": "^8.49.0",
 		"eslint-config-prettier": "^9.0.0",
-		"eslint-plugin-svelte": "^2.33.0",
+		"eslint-plugin-svelte": "^2.33.1",
 		"postgres": "^3.3.5",
 		"prettier": "^3.0.3",
-		"prettier-plugin-jsdoc": "^1.0.1",
+		"prettier-plugin-jsdoc": "^1.0.2",
 		"prettier-plugin-svelte": "^3.0.3",
 		"sass": "^1.66.1",
 		"svelte": "^4.2.0",
@@ -93,17 +95,18 @@
 	"type": "module",
 	"dependencies": {
 		"@lucia-auth/adapter-postgresql": "^2.0.1",
-		"@lucia-auth/oauth": "^3.0.0",
-		"@melt-ui/svelte": "^0.41.3",
+		"@lucia-auth/oauth": "^3.1.0",
+		"@melt-ui/svelte": "^0.47.6",
 		"@neondatabase/serverless": "^0.6.0",
-		"drizzle-orm": "^0.28.5",
+		"@turf/turf": "^6.5.0",
+		"drizzle-orm": "^0.28.6",
 		"drizzle-zod": "^0.5.1",
 		"js-cookie": "^3.0.5",
-		"lucia": "^2.4.2",
-		"lucide-svelte": "^0.269.0",
-		"nodemailer": "^6.9.4",
+		"lucia": "^2.5.0",
+		"lucide-svelte": "^0.276.0",
+		"nodemailer": "^6.9.5",
 		"seedrandom": "^3.0.5",
 		"svelte-email": "^0.0.4",
-		"ws": "^8.13.0"
+		"ws": "^8.14.1"
 	}
 }

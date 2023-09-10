@@ -1,4 +1,4 @@
-@import 'preflight.css';
+@import 'preflight.scss';
 
 :root {
 	// App fonts.
@@ -29,17 +29,17 @@
 	--color-primary-800: hsl(154, 93%, 17%);
 	--color-primary-900: hsl(153, 91%, 12%);
 	--color-primary-950: hsl(152, 91%, 8%);
-	--color-secondary-50: hsl(33, 84%, 80%);
-	--color-secondary-100: hsl(34, 84%, 80%);
-	--color-secondary-200: hsl(35, 83%, 74%);
-	--color-secondary-300: hsl(36, 82%, 69%);
-	--color-secondary-400: hsl(37, 81%, 65%);
-	--color-secondary-500: hsl(38, 80%, 61%);
-	--color-secondary-600: hsl(39, 79%, 57%);
-	--color-secondary-700: hsl(38, 78%, 52%);
-	--color-secondary-800: hsl(37, 77%, 46%);
-	--color-secondary-900: hsl(36, 76%, 39%);
-	--color-secondary-950: hsl(35, 76%, 39%);
+	--color-secondary-50: hsl(39, 75%, 90%);
+	--color-secondary-100: hsl(39, 74%, 84%);
+	--color-secondary-200: hsl(38, 73%, 77%);
+	--color-secondary-300: hsl(37, 72%, 70%);
+	--color-secondary-400: hsl(37, 73%, 62%);
+	--color-secondary-500: hsl(38, 70%, 54%);
+	--color-secondary-600: hsl(39, 69%, 45%);
+	--color-secondary-700: hsl(38, 68%, 39%);
+	--color-secondary-800: hsl(37, 67%, 30%);
+	--color-secondary-900: hsl(36, 66%, 21%);
+	--color-secondary-950: hsl(35, 65%, 12%);
 	--color-success-50: hsl(89, 86%, 88%);
 	--color-success-100: hsl(89, 84%, 83%);
 	--color-success-200: hsl(89, 72%, 75%);
@@ -191,6 +191,7 @@ Buttons
 	}
 
 	&.cta {
+		letter-spacing: 0.01em;
 		color: var(--color-neutral-100);
 		background-color: var(--color-primary-950);
 		@include global-dark {
@@ -206,13 +207,21 @@ Buttons
 				background-color: var(--color-primary-500);
 			}
 		}
+		&[data-disabled],
+		&:disabled {
+			color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+			background-color: var(--color-neutral-900);
+			@include dark {
+				background-color: var(--color-neutral-100);
+			}
+		}
 	}
 }
 
 .button-icon,
 .link-icon {
 	width: 1.75em;
-	stroke-width: 2;
+	stroke-width: 1.75;
 	stroke-linecap: square;
 	opacity: 0.65;
 	transform: scale(1);
