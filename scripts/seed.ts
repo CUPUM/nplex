@@ -144,13 +144,13 @@ try {
 	// await db.transaction();
 
 	// Seed...
+	console.info('🚀 Database seeded successfully!');
+	console.info(seeded);
 } catch (error) {
 	console.error('❌ Database seed failed (see error below).');
 	throw error;
 } finally {
 	// Make sure to close pool.
 	// await db.end()
+	exit();
 }
-console.info('🚀 Database seeded successfully!');
-console.info(seeded);
-exit();
