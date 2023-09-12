@@ -18,6 +18,7 @@
 			account: 'Mon compte',
 			edit: {
 				projects: 'Modifier un projet',
+				projectDescriptors: 'Gérer les descripteurs',
 				organizations: 'Modifier une organisation',
 			},
 			new: {
@@ -36,6 +37,7 @@
 			account: 'My account',
 			edit: {
 				projects: 'Edit a project',
+				projectDescriptors: 'Manage descriptors',
 				organizations: 'Edit an organization',
 			},
 			new: {
@@ -65,7 +67,15 @@
 		melt,
 		type CreateDropdownMenuProps,
 	} from '@melt-ui/svelte';
-	import { FilePlus2, Languages, LogOut, MoreHorizontal, Pencil, User2 } from 'lucide-svelte';
+	import {
+		FilePlus2,
+		Languages,
+		LogOut,
+		MoreHorizontal,
+		Pencil,
+		Sliders,
+		User2,
+	} from 'lucide-svelte';
 	import { cubicIn, expoIn, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import {
@@ -160,7 +170,7 @@
 						<span class="legend">{$t.projects}</span>
 						<section class="dropdown-subgroup">
 							<a {...$i18nlink('/edit/projects')} class="dropdown-item" use:melt={$userItem}>
-								<Pencil size="1.25em" />{$t.edit.projects}
+								<Pencil class="dropdown-icon" />{$t.edit.projects}
 							</a>
 							<a
 								{...$i18nlink('/new/project')}
@@ -169,13 +179,17 @@
 								{...$newProjectElement}
 								use:newProjectAction
 							>
-								<FilePlus2 size="1.25em" />{$t.new.project}
+								<FilePlus2 class="dropdown-icon" />{$t.new.project}
+							</a>
+							<a {...$i18nlink('/edit/projects/descriptors')} class="dropdown-item">
+								<Sliders class="dropdown-icon" />
+								{$t.edit.projectDescriptors}
 							</a>
 						</section>
 						<span class="legend">{$t.organizations}</span>
 						<section class="dropdown-subgroup">
 							<a {...$i18nlink('/edit/organizations')} class="dropdown-item" use:melt={$userItem}>
-								<Pencil size="1.25em" />{$t.edit.organizations}
+								<Pencil class="dropdown-icon" />{$t.edit.organizations}
 							</a>
 							<a
 								{...$i18nlink('/new/organization')}
@@ -184,24 +198,24 @@
 								{...$newOrgElement}
 								use:newOrgAction
 							>
-								<FilePlus2 size="1.25em" />{$t.new.organization}
+								<FilePlus2 class="dropdown-icon" />{$t.new.organization}
 							</a>
 						</section>
 						<!-- <hr {...$userSeparator} /> -->
 						<a {...$i18nlink('/i')} class="dropdown-item" use:melt={$userItem}>
-							<User2 size="1.25em" />
+							<User2 class="dropdown-icon" />
 							{$t.account}
 						</a>
 						<form use:enhance method="POST" action="/?/logout" id="logout-form" hidden />
 						<button class="dropdown-item" type="submit" form="logout-form" use:melt={$userItem}>
-							<LogOut size="1.25em" class="navbutton-icon" />
+							<LogOut class="navbutton-icon" />
 							{$t.logout}
 						</button>
 					</menu>
 				{/if}
 			{:else}
 				<a class="navbutton square" use:navripple {...$i18nlink('/login')}>
-					<User2 size="1.5em" class="navbutton-icon" />
+					<User2 class="navbutton-icon" />
 				</a>
 			{/if}
 			{#if $breakpoint.lg}
@@ -335,11 +349,12 @@
 
 		&:hover:not([data-current]),
 		&[data-state='open'] {
-			color: var(--color-primary-500);
-			background-color: color-mix(in srgb, var(--color-primary-300) 20%, transparent);
+			color: var(--color-primary-700);
+			background-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 
 			@include dark {
-				background-color: color-mix(in srgb, var(--color-primary-700) 20%, transparent);
+				color: var(--color-primary-500);
+				background-color: color-mix(in srgb, var(--color-primary-600) 10%, transparent);
 			}
 		}
 
@@ -431,9 +446,10 @@
 		flex-direction: column;
 		gap: 3px;
 		font-weight: 500;
-		background-color: var(--color-neutral-50);
+		background-color: white;
+		// background-color: var(--color-neutral-50);
 		// border: 1px solid var(--color-neutral-200);
-		// box-shadow: var(--shadow-md);
+		box-shadow: var(--shadow-sm);
 		padding: 0.75rem;
 		border-radius: var(--radius-lg);
 		transform-origin: top center;
@@ -459,7 +475,8 @@
 		padding: 0.5rem;
 		border-radius: var(--radius-md);
 		margin-bottom: 0.5rem;
-		background-color: white;
+		background-color: var(--color-neutral-50);
+		// background-color: white;
 		border: var(--border-size) solid transparent;
 		@include dark {
 			background-color: rgba(255, 255, 255, 0.025);
@@ -476,7 +493,6 @@
 		gap: 1rem;
 		border-radius: var(--radius-sm);
 		transition: all 0.1s ease-out;
-
 		&::after {
 			content: '';
 			position: absolute;
