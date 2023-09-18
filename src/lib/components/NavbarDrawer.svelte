@@ -12,7 +12,7 @@
 	import { Languages, Scroll, SunMoon, X } from 'lucide-svelte';
 	import { cubicIn, expoIn, expoOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
-	import { navripple, t } from './Navmenu.svelte';
+	import { navripple, t } from './Navbar.svelte';
 
 	export let overlay: DialogElements['overlay'];
 	export let content: DialogElements['content'];
@@ -224,7 +224,7 @@
 			}
 		}
 		&:active {
-			transform: rotateZ(-90deg) scale(0.9);
+			transform: rotateZ(180deg) scale(0.9);
 		}
 	}
 

@@ -66,6 +66,21 @@ export const nanoid = customType<{
 });
 
 /**
+ * @see https://github.com/drizzle-team/drizzle-orm/issues/295
+ */
+export const identity = customType<{
+	data: number;
+	driver: number;
+	driverData: number;
+	notNull: true;
+	default: true;
+}>({
+	dataType() {
+		return 'INTEGER GENERATED ALWAYS AS IDENTITY';
+	},
+});
+
+/**
  * Locale code custom type.
  */
 export const locale = customType<{ data: Locale }>({

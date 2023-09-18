@@ -1,32 +1,31 @@
 import { USER_ROLES } from '$lib/auth/constants';
 import { LOCALES } from '$lib/i18n/constants';
 import { strictRecord } from '$lib/utils/zod';
+import { relations } from 'drizzle-orm';
 import {
+	boolean,
 	integer,
 	pgTable,
 	pgView,
 	primaryKey,
-	serial,
 	text,
 	timestamp,
 	unique,
 } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
-import { userIdForeignKey } from '../references/personal';
+import { userIdForeignKey } from '../references/accounts';
+import { localeForeignKey } from '../references/i18n';
 import { generateNanoid } from '../sql';
-import { intrange, locale, nanoid, userRole } from './custom-types';
+import { userRoles } from './accounts';
+import { identity, intrange, locale, nanoid, userRole } from './custom-types';
 import { locales } from './i18n';
-import { userRoles } from './personal';
-
-//
-// Project descriptors
-//
 
 /**
  * Top-most categories of projects.
  */
 export const projectTypes = pgTable('project_types', {
-	id: serial('id').primaryKey(),
+	id: identity('id').primaryKey(),
+	index: integer('index').unique(),
 });
 
 /**
@@ -39,10 +38,7 @@ export const projectTypesTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		locale: localeForeignKey('locale'),
 		title: text('title').notNull(),
 		description: text('description'),
 	},
@@ -53,11 +49,28 @@ export const projectTypesTranslations = pgTable(
 	}
 );
 
+export const projectTypesToTranslationsRelations = relations(projectTypes, ({ many }) => {
+	return { translations: many(projectTypesTranslations) };
+});
+
+export const projectTranslationsToTypesRelations = relations(
+	projectTypesTranslations,
+	({ one }) => {
+		return {
+			type: one(projectTypes, {
+				fields: [projectTypesTranslations.id],
+				references: [projectTypes.id],
+			}),
+		};
+	}
+);
+
 /**
  * Grouping of project intervention types.
  */
 export const projectInterventionCategories = pgTable('project_intervention_categories', {
-	id: serial('id').primaryKey(),
+	id: identity('id').primaryKey(),
+	index: integer('index').unique(),
 });
 
 /**
@@ -84,20 +97,48 @@ export const projectInterventionCategoriesTranslations = pgTable(
 	}
 );
 
+export const projectInterventionCategoriesToTranslationsRelations = relations(
+	projectInterventionCategories,
+	({ many }) => {
+		return {
+			translations: many(projectInterventionCategoriesTranslations),
+		};
+	}
+);
+
+export const projectTranslationsToInterventionCategoriesRelations = relations(
+	projectInterventionCategoriesTranslations,
+	({ one }) => {
+		return {
+			interventionCategory: one(projectInterventionCategories, {
+				fields: [projectInterventionCategoriesTranslations.id],
+				references: [projectInterventionCategories.id],
+			}),
+		};
+	}
+);
+
 /**
  * Sub classification of projects by their intervention(s)
  */
-export const projectInterventionTypes = pgTable('project_intervention_types', {
-	id: serial('id').primaryKey(),
+export const projectInterventions = pgTable('project_interventions', {
+	id: identity('id').primaryKey(),
+	categoryId: integer('category_id')
+		.references(() => projectInterventionCategories.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
+	maybePermit: boolean('maybe_permit'),
 });
 
 /**
  * @see {@link projectInterventionTypes}
  */
-export const projectInterventionTypesTranslations = pgTable(
-	'project_intervention_types_t',
+export const projectInterventionsTranslations = pgTable(
+	'project_interventions_t',
 	{
-		id: integer('id').references(() => projectInterventionTypes.id, {
+		id: integer('id').references(() => projectInterventions.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -115,11 +156,58 @@ export const projectInterventionTypesTranslations = pgTable(
 	}
 );
 
+export const projectInterventionsToTranslationsRelations = relations(
+	projectInterventions,
+	({ many }) => {
+		return {
+			translations: many(projectInterventionsTranslations),
+		};
+	}
+);
+
+export const projectTranslationsToInterventionsRelations = relations(
+	projectInterventionsTranslations,
+	({ one }) => {
+		return {
+			interventionType: one(projectInterventions, {
+				fields: [projectInterventionsTranslations.id],
+				references: [projectInterventions.id],
+			}),
+		};
+	}
+);
+
 /**
- * The type of owner for the site where the projet occured.
+ * Restricting intervention types based on project types.
+ *
+ * @see {@link projectTypes}
+ * @see {@link projectInterventions}
+ */
+export const projectTypesToInterventions = pgTable(
+	'project_types_to_intervention',
+	{
+		typeId: integer('type_id').references(() => projectTypes.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		interventionId: integer('intervention_id').references(() => projectInterventions.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.typeId, table.interventionId),
+		};
+	}
+);
+
+/**
+ * The type of owner for the site where the projet is situated.
  */
 export const projectSiteOwnerships = pgTable('project_site_ownerships', {
-	id: serial('id').primaryKey(),
+	id: identity('id').primaryKey(),
+	index: integer('index').unique(),
 });
 
 /**
@@ -147,35 +235,11 @@ export const projectSiteOwnershipsTranslations = pgTable(
 );
 
 /**
- * Restricting intervention types based on project types.
- *
- * @see {@link projectTypes}
- * @see {@link projectInterventionTypes}
- */
-export const projectTypesToInterventionTypes = pgTable(
-	'project_types_to_intervention_types',
-	{
-		typeId: integer('type_id').references(() => projectTypes.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		interventionTypeId: integer('intervention_type_id').references(() => projectTypes.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-	},
-	(table) => {
-		return {
-			pk: primaryKey(table.typeId, table.interventionTypeId),
-		};
-	}
-);
-
-/**
  * How is the project's building integrated amongst the surrounding constructions.
  */
 export const projectImplantationTypes = pgTable('project_implantation_types', {
-	id: serial('id').primaryKey(),
+	id: identity('id').primaryKey(),
+	index: integer('index').unique(),
 });
 
 /**
@@ -206,7 +270,8 @@ export const projectImplantationTypesTranslations = pgTable(
  * Groupings of exemplarity indicators. Inspired by the City of Montreal's Design Agenda 2030.
  */
 export const projectExemplarityCategories = pgTable('project_exemplarity_categories', {
-	id: serial('id').primaryKey(),
+	id: identity('id').primaryKey(),
+	index: integer('index').unique(),
 });
 
 /**
@@ -234,7 +299,7 @@ export const projectExemplarityCategoriesTranslations = pgTable(
 );
 
 export const projectExemplarityIndicators = pgTable('project_exemplarity_indicators', {
-	id: serial('id').primaryKey(),
+	id: identity('id').primaryKey(),
 	categoryId: integer('category_id')
 		.references(() => projectExemplarityCategories.id, {
 			onDelete: 'cascade',
@@ -269,7 +334,7 @@ export const projectExemplarityIndicatorsTranslations = pgTable(
  * Various types of items that can be added to project galleries.
  */
 export const projectImageTypes = pgTable('project_image_types', {
-	id: serial('id').primaryKey(),
+	id: identity('id').primaryKey(),
 });
 
 /**
@@ -279,37 +344,6 @@ export const projectImageTypesTranslations = pgTable(
 	'project_image_types_t',
 	{
 		id: integer('id').references(() => projectImageTypes.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		title: text('title').notNull(),
-		description: text('description'),
-	},
-	(table) => {
-		return {
-			pk: primaryKey(table.id, table.locale),
-		};
-	}
-);
-
-/**
- * How does the image relate to the project's unfolding?
- */
-export const projectImageTemporalities = pgTable('project_image_temporalities', {
-	id: serial('id').primaryKey(),
-});
-
-/**
- * @see {@link projectImageTemporalities}
- */
-export const projectImageTemporalitiesTranslations = pgTable(
-	'project_image_temporalities_t',
-	{
-		id: integer('id').references(() => projectImageTemporalities.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -367,7 +401,11 @@ export const projects = pgTable('projects', {
 	// likesCount: integer('likes_count').notNull().default(0),
 });
 
-export const projectsInsertSchema = createInsertSchema(projects, {});
+export const projectsInsertSchema = createInsertSchema(projects, {
+	// Refine zod schema here
+	adjacentStreets: (s) => s.adjacentStreets.positive().max(5),
+	adjacentAlleys: (s) => s.adjacentAlleys.positive().max(5),
+});
 
 /**
  * @see {@link projects}
@@ -425,14 +463,14 @@ export const projectsInterventions = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		interventionTypeId: integer('intervention_type_id').references(
-			() => projectInterventionTypes.id,
-			{ onDelete: 'cascade', onUpdate: 'cascade' }
-		),
+		interventionId: integer('intervention_id').references(() => projectInterventions.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.projectId, table.interventionTypeId),
+			pk: primaryKey(table.projectId, table.interventionId),
 		};
 	}
 );
@@ -464,6 +502,7 @@ export const projectsImages = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
+		date: timestamp('date', { withTimezone: true }),
 		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 		updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 		createdById: userIdForeignKey('created_by_id', {
@@ -471,14 +510,10 @@ export const projectsImages = pgTable(
 			onUpdate: 'cascade',
 		}).notNull(),
 		updatedById: userIdForeignKey('updated_by_id', { onDelete: 'restrict', onUpdate: 'cascade' }),
-		index: integer('index').notNull(),
+		index: integer('index'),
 		publicUrl: text('public_url').notNull(),
 		storageName: text('storage_name').notNull(),
 		typeId: integer('type_id').references(() => projectImageTypes.id, {
-			onDelete: 'set null',
-			onUpdate: 'cascade',
-		}),
-		temporalityId: integer('temporality_id').references(() => projectImageTemporalities.id, {
 			onDelete: 'set null',
 			onUpdate: 'cascade',
 		}),
@@ -510,9 +545,48 @@ export const projectsImagesTranslations = pgTable(
 	}
 );
 
-export const projectsImagesCredits = pgTable('projects_images_credits', {
-	imageId: nanoid('image_id'),
+export const projectsImagesCreditDetails = pgTable('projects_images_credits_details', {
+	id: nanoid('id').default(generateNanoid()).primaryKey(),
+	projectId: nanoid('project_id')
+		.references(() => projects.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
+	firstName: text('first_name'),
+	middleName: text('middle_name'),
+	lastName: text('last_name'),
+	url: text('url'),
+	description: text('description'),
+	organizationId: nanoid('organization_id').references(() => organizations.id, {
+		onDelete: 'set null',
+		onUpdate: 'cascade',
+	}),
+	userId: userIdForeignKey('user_id', {
+		onDelete: 'set null',
+		onUpdate: 'cascade',
+	}),
 });
+
+export const projectsImagesCredits = pgTable(
+	'projects_images_credits',
+	{
+		imageId: nanoid('image_id').references(() => projectsImages.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		creditDetailsId: nanoid('credit_details_id').references(() => projectsImagesCreditDetails.id, {
+			onDelete: 'set null',
+			onUpdate: 'cascade',
+		}),
+		legend: text('legend'),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.imageId, table.creditDetailsId),
+		};
+	}
+);
 
 /**
  * Keeping track of publication requests.
@@ -599,7 +673,7 @@ export const projectsLikes = pgTable(
  * Formats or domains of operation that can caracterize registered organizations.
  */
 export const organizationTypes = pgTable('organization_types', {
-	id: serial('id').primaryKey(),
+	id: identity('id').primaryKey(),
 });
 
 /**
@@ -630,7 +704,7 @@ export const organizationTypesTranslations = pgTable(
  * Professions heralded by design offices or communities.
  */
 export const organizationExpertises = pgTable('organization_expertises', {
-	id: serial('id').primaryKey(),
+	id: identity('id').primaryKey(),
 });
 
 /**
@@ -661,7 +735,7 @@ export const organizationExpertisesTranslations = pgTable(
  * Roles organizations can assume in the context of projects.
  */
 export const organizationDuties = pgTable('organization_duties', {
-	id: serial('id').primaryKey(),
+	id: identity('id').primaryKey(),
 });
 
 /**

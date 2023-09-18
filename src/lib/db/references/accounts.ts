@@ -1,7 +1,7 @@
 import type { ReferenceConfig } from 'drizzle-orm/mysql-core';
-import { varchar } from 'drizzle-orm/pg-core';
 import { USER_ID_LENGTH } from '../constants';
-import { users } from '../schema/personal';
+import { users } from '../schema/accounts';
+import { nanoid } from '../schema/custom-types';
 import { generateNanoid } from '../sql';
 
 /**
@@ -11,7 +11,7 @@ import { generateNanoid } from '../sql';
  * @see https://lucia-auth.com/basics/users
  */
 export function userId<N extends string>(name: N) {
-	return varchar(name, { length: USER_ID_LENGTH });
+	return nanoid(name, { length: USER_ID_LENGTH });
 }
 
 /**

@@ -1,7 +1,7 @@
 import { sendPasswordResetLink } from '$lib/auth/emails.server';
 import { isEmailUser } from '$lib/auth/validation';
 import { dbpool } from '$lib/db/db.server';
-import { users } from '$lib/db/schema/personal';
+import { users } from '$lib/db/schema/accounts';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';

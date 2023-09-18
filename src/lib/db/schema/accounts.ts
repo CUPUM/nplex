@@ -6,16 +6,15 @@ import {
 	integer,
 	pgSchema,
 	primaryKey,
-	serial,
 	text,
 	timestamp,
 	unique,
 	varchar,
 } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
-import { generateUserId, userId, userIdForeignKey } from '../references/personal';
+import { generateUserId, userId, userIdForeignKey } from '../references/accounts';
 import { generateNanoid } from '../sql';
-import { locale, nanoid, userRole } from './custom-types';
+import { identity, locale, nanoid, userRole } from './custom-types';
 import { locales } from './i18n';
 import { projects } from './public';
 
@@ -26,20 +25,20 @@ import { projects } from './public';
  * @see https://lucia-auth.com/database-adapters/postgres
  */
 
-export const personalSchema = pgSchema('personal');
+export const accountsSchema = pgSchema('accounts');
 
 /**
  * Base user roles. More granular control for RBAC on certain entities can be refined at said
  * entities' level (ex: projectsUsers.role, ...).
  */
-export const userRoles = personalSchema.table('user_roles', {
+export const userRoles = accountsSchema.table('user_roles', {
 	role: userRole('role').primaryKey(),
 });
 
 /**
  * @see {@link userRoles}
  */
-export const userRolesTranslations = personalSchema.table(
+export const userRolesTranslations = accountsSchema.table(
 	'user_roles_t',
 	{
 		role: userRole('role').references(() => userRoles.role, {
@@ -66,7 +65,7 @@ export const userRolesTranslations = personalSchema.table(
  *
  * @see https://lucia-auth.com/basics/users
  */
-export const users = personalSchema.table('users', {
+export const users = accountsSchema.table('users', {
 	id: userId('id').default(generateUserId()).primaryKey(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
@@ -99,7 +98,7 @@ export const usersInsertSchema = createInsertSchema(users, {
  *
  * @see https://lucia-auth.com/guidebook/email-verification-links
  */
-export const emailVerificationTokens = personalSchema.table('email_verification_tokens', {
+export const emailVerificationTokens = accountsSchema.table('email_verification_tokens', {
 	id: text('id').notNull().unique(),
 	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
 	userId: userIdForeignKey('user_id').notNull(),
@@ -110,7 +109,7 @@ export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerifica
 /**
  * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
  */
-export const passwordResetTokens = personalSchema.table('password_reset_tokens', {
+export const passwordResetTokens = accountsSchema.table('password_reset_tokens', {
 	id: text('id').notNull().unique(),
 	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
 	userId: userIdForeignKey('user_id').notNull(),
@@ -121,7 +120,7 @@ export const passwordResetTokens = personalSchema.table('password_reset_tokens',
  *
  * @see https://lucia-auth.com/basics/sessions
  */
-export const sessions = personalSchema.table('auth_sessions', {
+export const sessions = accountsSchema.table('auth_sessions', {
 	id: varchar('id', { length: 128 }).primaryKey(),
 	userId: userIdForeignKey('user_id').notNull(),
 	activeExpires: bigint('active_expires', { mode: 'number' }).notNull(),
@@ -133,13 +132,13 @@ export const sessions = personalSchema.table('auth_sessions', {
  *
  * @see https://lucia-auth.com/basics/keys
  */
-export const keys = personalSchema.table('auth_keys', {
+export const keys = accountsSchema.table('auth_keys', {
 	id: varchar('id', { length: 255 }).primaryKey(),
 	userId: userIdForeignKey('user_id').notNull(),
 	hashedPassword: varchar('hashed_password', { length: 255 }),
 });
 
-export const usersRolesRequests = personalSchema.table('users_roles_requests', {
+export const usersRolesRequests = accountsSchema.table('users_roles_requests', {
 	userId: userIdForeignKey('user_id').primaryKey(),
 	requestedRole: userRole('requested_role').references(() => userRoles.role, {
 		onDelete: 'cascade',
@@ -151,14 +150,14 @@ export const usersRolesRequests = personalSchema.table('users_roles_requests', {
 /**
  * Occupations or professions of registered users.
  */
-export const userOccupations = personalSchema.table('user_occupations', {
-	id: serial('id').primaryKey(),
+export const userOccupations = accountsSchema.table('user_occupations', {
+	id: identity('id').primaryKey(),
 });
 
 /**
  * @see {@link userOccupations}
  */
-export const userOccupationsTranslations = personalSchema.table(
+export const userOccupationsTranslations = accountsSchema.table(
 	'user_occupations_t',
 	{
 		id: integer('id').references(() => userOccupations.id, {
@@ -177,7 +176,7 @@ export const userOccupationsTranslations = personalSchema.table(
 	}
 );
 
-export const usersOccupations = personalSchema.table(
+export const usersOccupations = accountsSchema.table(
 	'users_occupations',
 	{
 		userId: userIdForeignKey('user_id'),
@@ -193,7 +192,7 @@ export const usersOccupations = personalSchema.table(
 	}
 );
 
-export const usersProjectsCollections = personalSchema.table(
+export const usersProjectsCollections = accountsSchema.table(
 	'users_projects_collections',
 	{
 		id: nanoid('id').default(generateNanoid()).primaryKey(),
@@ -208,7 +207,7 @@ export const usersProjectsCollections = personalSchema.table(
 	}
 );
 
-export const usersProjectsCollectionsItems = personalSchema.table(
+export const usersProjectsCollectionsItems = accountsSchema.table(
 	'users_collections_items',
 	{
 		collectionId: nanoid('collection_id').references(() => usersProjectsCollections.id, {

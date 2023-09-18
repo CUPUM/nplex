@@ -3,7 +3,7 @@ import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { sendEmailVerificationLink } from '$lib/auth/emails.server';
 import { isEmailUser } from '$lib/auth/validation';
 import { dbpool } from '$lib/db/db.server';
-import { keys, users } from '$lib/db/schema/personal';
+import { keys, users } from '$lib/db/schema/accounts';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { createKeyId } from 'lucia';

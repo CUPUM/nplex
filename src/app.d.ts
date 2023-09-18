@@ -1,7 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 
 import type { Auth as LuciaAuth } from '$lib/auth/auth.server';
-import type { users } from '$lib/db/schema/personal';
+import type { users } from '$lib/db/schema/accounts';
 import type { Locale } from '$lib/i18n/constants';
 import type { eventLocalize } from '$lib/i18n/localize.server';
 import type { eventI18nRedirect } from '$lib/i18n/redirect.server';

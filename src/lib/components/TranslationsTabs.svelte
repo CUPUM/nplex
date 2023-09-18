@@ -45,9 +45,14 @@
 				<slot name="legend" />
 			</legend>
 		{/if}
-		<menu class="list" use:melt={$list}>
+		<menu class="tab-list" use:melt={$list}>
 			{#each locales as locale}
-				<button class="tab-button" use:ripple use:melt={$trigger(locale)} lang={locale}>
+				<button
+					class="tab-button"
+					use:ripple={{ colorStart: 'white', opacityStart: 0.25 }}
+					use:melt={$trigger(locale)}
+					lang={locale}
+				>
 					{LOCALES_DETAILS[locale].label}
 					{#if $value === locale}
 						<div in:send={{ key: 'needle' }} out:receive={{ key: 'needle' }} class="needle" />
@@ -79,19 +84,29 @@
 	}
 
 	legend {
-		font-size: var(--size-xl);
-		font-weight: 550;
-		padding-bottom: 0.5rem;
+		// font-size: var(--size-xl);
+		// font-weight: 550;
+		padding-bottom: 0.75rem;
+		text-indent: 0.5rem;
 	}
 
-	.list {
+	.tab-list {
+		--tab-list-padding: 3px;
+		--tab-button-radius: var(--radius-sm);
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-start;
 		font-size: var(--size-xs);
+		padding: var(--tab-list-padding);
+		border-radius: calc(var(--tab-button-radius) + var(--tab-list-padding));
+		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		@include dark {
+			background-color: transparent;
+		}
 	}
 
 	.tab-button {
+		z-index: 0;
 		position: relative;
 		height: 2.75em;
 		padding: 0 1em;
@@ -99,19 +114,21 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		border-radius: var(--radius-sm);
+		border-radius: var(--tab-button-radius);
 		color: var(--color-neutral-600);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 0%, transparent);
 		transition: all 0.1s ease-out;
 		@include dark {
+			background-color: color-mix(in srgb, var(--color-neutral-500) 0%, transparent);
 			color: var(--color-neutral-400);
 		}
 		&:hover,
 		&:focus-visible {
 			&:not(&[data-state='active']) {
 				color: var(--color-neutral-900);
-				background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+				background-color: color-mix(in srgb, var(--color-neutral-400) 10%, transparent);
 				@include dark {
+					background-color: color-mix(in srgb, var(--color-neutral-400) 10%, transparent);
 					color: var(--color-neutral-100);
 				}
 			}
@@ -130,7 +147,10 @@
 		position: absolute;
 		inset: 0;
 		border-radius: inherit;
-		background-color: color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
+		background-color: white;
+		@include dark {
+			background-color: color-mix(in srgb, var(--color-neutral-400) 20%, transparent);
+		}
 	}
 
 	.content {

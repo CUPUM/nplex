@@ -71,35 +71,35 @@
 <style lang="scss">
 	progress {
 		all: unset;
-		--color: var(--color-primary-500);
-		--br: 2px;
+		--progress-color: var(--color-primary-500);
+		--progress-size: 3px;
 		-webkit-appearance: none;
 		position: fixed;
 		top: 2px;
 		left: 2px;
 		right: 2px;
-		height: 2px;
-		border-radius: var(--br);
-		accent-color: var(--color);
+		height: var(--progress-size);
+		border-radius: var(--progress-size);
+		accent-color: var(--progress-color);
 		opacity: 0.75;
 
 		@include dark {
-			accent-color: var(--color);
+			accent-color: var(--progress-color);
 		}
 	}
 
 	::-webkit-progress-bar {
-		border-radius: var(--br);
+		border-radius: var(--progress-size);
 		background-color: transparent;
 	}
 
 	::-webkit-progress-value {
-		border-radius: var(--br);
-		background-color: var(--color);
+		border-radius: var(--progress-size);
+		background-color: var(--progress-color);
 	}
 
 	::-moz-progress-bar {
-		border-radius: var(--br);
-		background-color: var(--color);
+		border-radius: var(--progress-size);
+		background-color: var(--progress-color);
 	}
 </style>

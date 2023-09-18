@@ -1,14 +1,14 @@
 <script lang="ts">
 	import Footer from '$lib/components/Footer.svelte';
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
-	import Navmenu from '$lib/components/Navmenu.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 	import Toasts from '$lib/components/Toasts.svelte';
 	import Contexts from './Contexts.svelte';
 </script>
 
 <Contexts>
 	<LoadingProgress />
-	<Navmenu />
+	<Navbar />
 	<main>
 		<slot />
 	</main>

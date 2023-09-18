@@ -1,7 +1,7 @@
 import { dev } from '$app/environment';
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
 import { pool } from '$lib/db/db.server';
-import { keys, sessions, users } from '$lib/db/schema/personal';
+import { keys, sessions, users } from '$lib/db/schema/accounts';
 import { getTableName } from '$lib/db/utils';
 import { pg } from '@lucia-auth/adapter-postgresql';
 import { github } from '@lucia-auth/oauth/providers';

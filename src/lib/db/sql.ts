@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import type { PgColumn } from 'drizzle-orm/pg-core';
-import { NANOID_LENGTH_DEFAULT } from './constants';
+import { NANOID_DEFAULT_LENGTH } from './constants';
 
 /**
  * Implements sql random. Can be used to order:
@@ -29,7 +29,7 @@ export function excluded<C extends PgColumn>(column: C) {
  */
 export function generateNanoid({
 	optimized = false,
-	length = NANOID_LENGTH_DEFAULT,
+	length = NANOID_DEFAULT_LENGTH,
 	alphabet,
 }: {
 	optimized?: boolean;

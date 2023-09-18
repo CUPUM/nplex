@@ -4,8 +4,18 @@
 	export let data;
 
 	const t = createTranslations({
-		fr: {},
-		en: {},
+		fr: {
+			general: 'Général',
+			gallery: 'Galerie',
+			place: 'Lieu',
+			settings: 'Paramètres',
+		},
+		en: {
+			general: 'General',
+			gallery: 'Gallery',
+			place: 'Place',
+			settings: 'Settings',
+		},
 	});
 </script>
 
@@ -17,4 +27,6 @@
 </article>
 
 <style lang="scss">
+	nav {
+	}
 </style>

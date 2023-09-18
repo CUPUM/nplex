@@ -1,7 +1,7 @@
 import { and, eq, exists, or } from 'drizzle-orm';
 import type { Session } from 'lucia';
 import { dbhttp } from './db.server';
-import { users } from './schema/personal';
+import { users } from './schema/accounts';
 import { projects, projectsUsers } from './schema/public';
 
 export function authorizeUserUpdate(session: Session) {

@@ -1,5 +1,6 @@
-export const NANOID_LENGTH_DEFAULT = 21;
+/**
+ * Should reflect the default length defined in the db migration for nanoid.
+ */
+export const NANOID_DEFAULT_LENGTH = 21;
+
 export const USER_ID_LENGTH = 15;
-export const PROJECT_ID_LENGTH = NANOID_LENGTH_DEFAULT;
-export const ORGANIZATION_ID_LENGTH = NANOID_LENGTH_DEFAULT;
-export const USER_PROJECTS_COLLECTION_ID_LENGTH = NANOID_LENGTH_DEFAULT;

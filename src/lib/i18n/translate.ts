@@ -7,6 +7,22 @@ import { getEventLocale } from './event';
 type Translations<T> = Record<LocaleDefault, T> & Record<Locale, T & object>;
 
 /**
+ * To do: fix typing.
+ */
+type Dictionnary<T = unknown> = Record<string | number | symbol, T>;
+
+/**
+ * To do: fix typing.
+ */
+type Dictionnaries<D extends Dictionnary> = {
+	[K in keyof D]: D[K] extends Locale
+		? Translations<D[K]>
+		: D[K] extends Dictionnary
+		? Dictionnaries<D[K]>
+		: never;
+};
+
+/**
  * Get dictionnary by locale key, fall back to default locale if not available.
  */
 function safeGetLocaleDictionnary<T>(
@@ -88,30 +104,26 @@ export function eventCreateTranslations(event: RequestEvent | ServerLoadEvent | 
 	};
 }
 
-// Attempt using bindable this, but generic type T is lost when context is bound...
-// export function t<T>(translations: Translations<T>): Readable<T>
-// export function t<T>(this: RequestEvent | ServerLoadEvent | LoadEvent, translations: Translations<T>): T
-// export function t<T>(
-// 	/**
-// 	 * Context establishing the locale to use.
-// 	 */
-// 	this: RequestEvent | ServerLoadEvent | LoadEvent,
-// 	/**
-// 	 * Dictionnaries for each locales, must abide by the shape of the default locale's dictionnary.
-// 	 */
-// 	translations: Translations<T>
-// ) {
-// 	if (this !== undefined && typeof this === 'object') {
-// 		// If in a server event environement.
-// 		if ('locals' in this) {
-// 			return translations[this.locals.locale];
-// 		}
-// 		// If in universal environment.
-// 		if ('params' in this) {
-// 			const locale = getEventLocale(this);
-// 			return translations[locale];
-// 		}
-// 	}
-// 	// Else, if in client environnement.
-// 	return createDerivedTranslations(translations);
-// }
+/**
+ * Simple helper to define locale-isomorphic translations dictionnary without creating new stores or
+ * anything. Results should be feedable into the $t derived singleton store.
+ */
+export function defineTranslations<T extends Dictionnary>(dictionnaries: Dictionnaries<T>) {
+	return dictionnaries;
+}
+
+/**
+ * Alternative approach using a derived function that simply gets the locale from a Record<Locale,
+ * any> object. This looser approach enables easier sharing of translation messages across the app.
+ *
+ * @example
+ * 	<a ...>$t(home.nav.loginButton)</a>
+ */
+export const t = derived(page, ($page) => {
+	/**
+	 * Get contextually accurate translation.
+	 */
+	return function t<T>(translations: Translations<T>) {
+		return translations[$page.data.locale];
+	};
+});

@@ -84,7 +84,7 @@
 	} from '../../routes/[[locale=locale]]/Contexts.svelte';
 	import Avatar from './Avatar.svelte';
 	import LogoSvg from './LogoSvg.svelte';
-	import NavmenuDrawer from './NavmenuDrawer.svelte';
+	import NavbarDrawer from './NavbarDrawer.svelte';
 
 	const MENU_OPTIONS = {
 		forceVisible: true,
@@ -119,6 +119,13 @@
 	const { element: newProjectElement, action: newProjectAction } = getLoadingNewProject();
 
 	const { element: newOrgElement, action: newOrgAction } = getLoadingNewOrg();
+
+	// const links = {
+	// 	about: $i18nlink('/about'),
+	// 	guides: $i18nlink('/guides'),
+	// 	projects: $i18nlink('/projects'),
+	// 	organizations: $i18nlink('/organizations')
+	// };
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
@@ -127,8 +134,8 @@
 		<!-- General nav -->
 		<nav id="site-group" class="group">
 			<a
-				id="logobutton"
-				class="navbutton"
+				id="logo-button"
+				class="nav-button"
 				class:square={!$breakpoint.lg}
 				use:navripple
 				{...$i18nlink('/')}
@@ -136,28 +143,28 @@
 				<LogoSvg mono={!$breakpoint.lg} />
 			</a>
 			{#if $breakpoint.lg}
-				<a class="navbutton" use:navripple {...$i18nlink('/about')}>{$t.about}</a>
-				<a class="navbutton" use:navripple {...$i18nlink('/guides')}>{$t.guides}</a>
+				<a class="nav-button" use:navripple {...$i18nlink('/about')}>{$t.about}</a>
+				<a class="nav-button" use:navripple {...$i18nlink('/guides')}>{$t.guides}</a>
 			{:else}
-				<button class="navbutton square" use:melt={$drawerTrigger}>
+				<button class="nav-button square" use:melt={$drawerTrigger}>
 					<MoreHorizontal size="1.5em" />
 				</button>
 				<div use:melt={$drawerPortalled}>
-					<NavmenuDrawer {...drawerElements} open={drawerOpen} />
+					<NavbarDrawer {...drawerElements} open={drawerOpen} />
 				</div>
 			{/if}
 		</nav>
 		<!-- Exploration nav -->
 		{#if $breakpoint.md}
 			<nav id="explore-group" class="group">
-				<a class="navbutton" use:navripple {...$i18nlink('/projects')}>{$t.projects}</a>
-				<a class="navbutton" use:navripple {...$i18nlink('/organizations')}>{$t.organizations}</a>
+				<a class="nav-button" use:navripple {...$i18nlink('/projects')}>{$t.projects}</a>
+				<a class="nav-button" use:navripple {...$i18nlink('/organizations')}>{$t.organizations}</a>
 			</nav>
 		{/if}
 		<!-- User nav -->
 		<menu id="user-group" class="group">
 			{#if $page.data.user}
-				<button class="navbutton square" use:navripple use:melt={$userTrigger}>
+				<button class="nav-button square" use:navripple use:melt={$userTrigger}>
 					<Avatar {...$page.data.user} />
 				</button>
 				{#if $userOpen}
@@ -208,18 +215,18 @@
 						</a>
 						<form use:enhance method="POST" action="/?/logout" id="logout-form" hidden />
 						<button class="dropdown-item" type="submit" form="logout-form" use:melt={$userItem}>
-							<LogOut class="navbutton-icon" />
+							<LogOut class="nav-button-icon" />
 							{$t.logout}
 						</button>
 					</menu>
 				{/if}
 			{:else}
-				<a class="navbutton square" use:navripple {...$i18nlink('/login')}>
-					<User2 class="navbutton-icon" />
+				<a class="nav-button square" use:navripple {...$i18nlink('/login')}>
+					<User2 class="nav-button-icon" />
 				</a>
 			{/if}
 			{#if $breakpoint.lg}
-				<button class="navbutton" use:navripple use:melt={$localeTrigger}>
+				<button class="nav-button" use:navripple use:melt={$localeTrigger}>
 					<Languages size="1.5em" />
 					<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
 				</button>
@@ -244,7 +251,7 @@
 					</menu>
 				{/if}
 				<button
-					class="navbutton square"
+					class="nav-button square"
 					use:navripple
 					on:pointerdown={mode.toggle}
 					on:keydown={(e) => {
@@ -270,7 +277,7 @@
 								easing: cubicIn,
 								opacity: 1,
 							}}
-							class="navbutton-icon mode-icon"
+							class="nav-button-icon mode-icon"
 						>
 							<svelte:component this={MODES_DETAILS[$mode].icon} size="1.5em" />
 						</div>
@@ -283,6 +290,9 @@
 
 <style lang="scss">
 	header {
+		--button-size: 3.25rem;
+		--button-padding: 1.25em;
+		--button-radius: var(--radius-full);
 		position: sticky;
 		top: 0;
 		align-self: stretch;
@@ -292,7 +302,8 @@
 		justify-content: center;
 
 		@include lg {
-			padding: 1rem;
+			--button-radius: var(--input-radius);
+			padding: 0.75rem;
 		}
 	}
 
@@ -309,7 +320,12 @@
 			1fr
 			[user-end full-end];
 		width: 100%;
-		max-width: var(--width-setout, var(--width-main));
+		max-width: var(--width-main);
+		transition: max-width 0.35s var(--ease-expo);
+
+		.full-width & {
+			max-width: 100%;
+		}
 	}
 
 	.group {
@@ -318,7 +334,7 @@
 		gap: 0.25rem;
 	}
 
-	.navbutton {
+	.nav-button {
 		position: relative;
 		display: flex;
 		white-space: nowrap;
@@ -327,9 +343,9 @@
 		align-items: center;
 		justify-content: center;
 		font-size: var(--size-sm);
-		height: 3.25rem;
-		padding-inline: 1.25em;
-		border-radius: var(--radius-full);
+		height: calc(var(--button-size) - 2 * var(--button-inset, 0px));
+		padding-inline: calc(1.25em - var(--button-inset, 0px));
+		border-radius: calc(var(--button-radius) - var(--button-inset, 0px));
 		letter-spacing: 0.02em;
 		outline: 1px solid transparent;
 		outline-offset: 4px;
@@ -338,13 +354,8 @@
 			outline 0.2s ease-out,
 			outline-offset 0.2s ease-out;
 
-		.dropdown & {
-			border-radius: var(--radius-sm);
-		}
-
 		@include lg {
 			padding-inline: var(--size-lg);
-			border-radius: var(--radius-md);
 		}
 
 		&:hover:not([data-current]),
@@ -378,7 +389,7 @@
 			padding: 0;
 			overflow: hidden;
 
-			& :global(.navbutton-icon) {
+			& :global(.nav-button-icon) {
 				position: absolute;
 			}
 		}
@@ -389,9 +400,8 @@
 			box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
 		}
 
-		&#logobutton {
+		&#logo-button {
 			box-shadow: none;
-
 			@include lg {
 				font-size: 1.5em;
 			}
@@ -404,8 +414,24 @@
 	}
 
 	#explore-group {
+		--button-inset: 4px;
 		grid-column: explore;
 		justify-content: center;
+		background-color: rgba(0, 0, 0, 0.025);
+		border-radius: var(--button-radius);
+		padding: var(--button-inset);
+		@include dark {
+			background-color: rgba(255, 255, 255, 0.05);
+		}
+
+		.nav-button {
+			&[data-current] {
+				background-color: var(--color-neutral-100);
+				@include dark {
+					background-color: var(--color-neutral-900);
+				}
+			}
+		}
 	}
 
 	#user-group {
@@ -427,13 +453,12 @@
 		box-shadow: 0 0 2px -0.5px currentColor;
 		transition: all 0.1s ease-out;
 
-		.button:hover &,
-		.button[data-state='open'] & {
+		.nav-button:hover &,
+		.nav-button[data-state='open'] & {
 			color: var(--color-neutral-100);
 			background-color: var(--color-primary-600);
 			box-shadow: 0 0 0 -0.5px currentColor;
 			opacity: 1;
-
 			@include dark {
 				color: var(--color-neutral-900);
 				background-color: var(--color-primary-400);
@@ -442,22 +467,19 @@
 	}
 
 	.dropdown {
+		--button-radius: var(--radius-sm);
 		display: flex;
 		flex-direction: column;
 		gap: 3px;
 		font-weight: 500;
 		background-color: white;
-		// background-color: var(--color-neutral-50);
-		// border: 1px solid var(--color-neutral-200);
-		box-shadow: var(--shadow-sm);
+		box-shadow: var(--shadow-lg);
 		padding: 0.75rem;
 		border-radius: var(--radius-lg);
 		transform-origin: top center;
 		z-index: 1;
-
 		@include dark {
 			background-color: var(--color-neutral-800);
-			// border: 1px solid var(--color-neutral-700);
 		}
 	}
 
@@ -476,10 +498,9 @@
 		border-radius: var(--radius-md);
 		margin-bottom: 0.5rem;
 		background-color: var(--color-neutral-50);
-		// background-color: white;
 		border: var(--border-size) solid transparent;
 		@include dark {
-			background-color: rgba(255, 255, 255, 0.025);
+			background-color: var(--color-neutral-900);
 		}
 	}
 
@@ -493,23 +514,28 @@
 		gap: 1rem;
 		border-radius: var(--radius-sm);
 		transition: all 0.1s ease-out;
-		&::after {
+		&::before {
+			--needle-size: 10px;
 			content: '';
 			position: absolute;
 			opacity: 0;
-			width: 0;
-			border-radius: 50%;
-			background-color: var(--color-primary-500);
+			height: var(--needle-size);
 			aspect-ratio: 1;
-			left: 6px;
+			border-radius: 2px;
+			background-color: var(--color-primary-500);
+			left: 0;
 			top: 50%;
-			transform: translate(10px, -50%);
-			transition: all 0.35s var(--ease-out-expo);
+			transform: translate(3px, -50%);
+			transition: all 0.2s var(--ease-out-expo);
 		}
 
 		&[data-current] {
 			cursor: default;
 			color: var(--color-primary-600);
+			&::before {
+				opacity: 1;
+				transform: translate(0, -50%);
+			}
 			// background-color: var(--color-primary-600);
 
 			@include dark {

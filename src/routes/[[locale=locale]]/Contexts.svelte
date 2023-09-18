@@ -1,8 +1,8 @@
 <!--
 	@component
 	# Contexts
-	Any singleton store sohuld be provided app-wide or to component trees using the context API
-	to avoid SSR store instanciations and potential cross-request leaks.
+	Any singleton store should be provided app-wide or to component trees using the context API
+	to avoid SSR store instanciations and potential cross-request (cross-client) leaks.
 
 	@see https://github.com/sveltejs/kit/discussions/4339
 -->

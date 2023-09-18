@@ -1,5 +1,6 @@
 import { dbpool } from '$lib/db/db.server';
 import { organizations, organizationsUsers, projects } from '$lib/db/schema/public';
+import { SETOUTS } from '$lib/setout/constants';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { and, eq, exists, or } from 'drizzle-orm';
@@ -37,6 +38,7 @@ export const load = async (event) => {
 			);
 	});
 	return {
+		setout: SETOUTS.FULL_WIDTH,
 		editables: {
 			projects: p,
 			organizations: o,

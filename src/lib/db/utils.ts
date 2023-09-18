@@ -24,9 +24,20 @@ export function getTableName<T extends PgTable>(
 	return `${qo}${schema ? `${tableConfig.schema}${qi}.` : ''}${qi}${tableConfig.name}${qo}`;
 }
 
-// /**
-//  * Transform a translations record insert schema into database rows.
-//  */
-// export function transformTranslationsInsertSchema<
-// 	S extends ZodObject<Record<Locale, AnyZodObject>>,
-// >(schema: S) {}
+// export function translationsTable<
+// 	N extends string,
+// 	P extends PgTableWithColumns<TableConfig & {columns: {id: PgColumnBuilderBase}}>,
+// 	C extends Omit<
+// 		Record<string, PgColumnBuilderBase<ColumnBuilderBaseConfig<ColumnDataType, string>, object>>,
+// 		'locale' | 'id'
+// 	>,
+// >(name: N, parent: P, columns: C) {
+// 	return pgTable(name, {
+// 		...columns,
+// 		id: ,
+// 		locale: locale('locale').references(() => locales.locale, {
+// 			onDelete: 'cascade',
+// 			onUpdate: 'cascade',
+// 		}),
+// 	});
+// }

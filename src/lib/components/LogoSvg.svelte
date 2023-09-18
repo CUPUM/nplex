@@ -4,18 +4,31 @@
 	type $$Props = {
 		mono?: boolean;
 		size?: string | number;
+		className?: string;
+		style?: string;
 	} & Omit<SVGAttributes<SVGElement>, 'viewBox'>;
 
 	export let size: $$Props['size'] = '1em';
+	export let className: $$Props['className'] = '';
+	export { className as class };
+	export let style: $$Props['style'] = undefined;
 	/**
 	 * Single glyph logo (n)
 	 */
 	export let mono: $$Props['mono'] = false;
 
-	$: viewBox = mono ? '0 50 100 100' : '0 0 530 200';
+	$: viewBox = mono ? '0 50 100 100' : '0 0 520 200';
 </script>
 
-<svg xmlns="http://www.w3.org/2000/svg" {viewBox} height={size} fill="none" {...$$restProps}>
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	{viewBox}
+	height={size}
+	fill="none"
+	{...$$restProps}
+	class={className}
+	{style}
+>
 	<path
 		id="logo-n"
 		d="M0 100C0 72.3858 22.3858 50 50 50C77.6142 50 100 72.3858 100 100V150H0V100Z"

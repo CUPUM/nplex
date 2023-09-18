@@ -4,7 +4,7 @@ import {
 	passwordResetTokens,
 	type SelectEmailVerificationToken,
 	type SelectUser,
-} from '$lib/db/schema/personal';
+} from '$lib/db/schema/accounts';
 import { eq } from 'drizzle-orm';
 import { generateRandomString, isWithinExpiration } from 'lucia/utils';
 import { AUTH_TOKEN_ERRORS } from './constants';

@@ -10,11 +10,11 @@
 	--color-neutral-50: hsl(30, 10%, 98%);
 	--color-neutral-100: hsl(30, 9%, 92%);
 	--color-neutral-200: hsl(30, 8%, 85%);
-	--color-neutral-300: hsl(34, 7%, 76%);
-	--color-neutral-400: hsl(34, 6%, 64%);
+	--color-neutral-300: hsl(34, 7%, 77%);
+	--color-neutral-400: hsl(34, 6%, 68%);
 	--color-neutral-500: hsl(35, 5%, 45%);
-	--color-neutral-600: hsl(33, 6%, 28%);
-	--color-neutral-700: hsl(30, 7%, 19%);
+	--color-neutral-600: hsl(33, 6%, 24%);
+	--color-neutral-700: hsl(30, 7%, 17%);
 	--color-neutral-800: hsl(32, 8%, 14%);
 	--color-neutral-900: hsl(34, 9%, 10%);
 	--color-neutral-950: hsl(30, 10%, 8%);
@@ -105,12 +105,13 @@
 	--shadow-xl: 0 16px 48px -20px rgba(0, 8, 24, 0.25);
 	--shadow-2xl: 0 28px 96px -48px rgba(0, 8, 24, 0.275);
 	// Miscs
+	--fx-scale: 0.96;
+	--fx-duration-out: 0.15s;
 	--input-size: 3.5em;
 	--input-padding: 1.25em;
 	--input-radius: var(--radius-md);
 	--border-size: 1.25px;
 	--group-inset: 5px;
-	--input-duration-out: 0.25s;
 	// Root style
 	position: relative;
 	font-size: 100%;
@@ -143,10 +144,38 @@ body {
 }
 
 /*
-Buttons base and variants.
+Animations
 */
+
+@keyframes press {
+	0% {
+		transform: scale(1);
+	}
+	25% {
+		transform: scale(0.96);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes gradient-pulse {
+	0% {
+		background-position: 0% 0%;
+	}
+	100% {
+		background-position: -135% 0%;
+	}
+}
+
+/*
+Button.
+*/
+
+/* Unthemed base */
 .button {
 	--button-duration-out: 0.25s;
+	line-height: 1.2;
 	position: relative;
 	display: flex;
 	flex-direction: row;
@@ -159,24 +188,23 @@ Buttons base and variants.
 	border-radius: var(--input-radius);
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	// transition: all 0.1s;
+	transition: all var(--fx-duration-out) ease-out;
 	&:hover,
 	&:focus-visible {
-		transition: all var(--input-duration-out) ease-out;
+		transition: all 0s;
 		.button-icon {
 			opacity: 1;
 			transform: scale(0.9);
 		}
 	}
 	&:active {
-		transition: all var(--input-duration-out) ease-out;
+		animation: press 0.2s ease-out;
 		.button-icon {
 			transform: scale(1.05);
 		}
 	}
-	&[data-disabled]:not([data-loading]),
-	&:disabled:not([data-loading]) {
-		transition: all var(--input-duration-out) ease-out;
+	&[data-disabled],
+	&:disabled {
 		transform: scale(0.96);
 		pointer-events: none;
 		:not([data-loading]) {
@@ -185,8 +213,7 @@ Buttons base and variants.
 	}
 	&[data-loading] {
 		pointer-events: none;
-		transition: all var(--input-duration-out) ease-out;
-		color: color-mix(in srgb, var(--color-neutral-500) 35%, transparent);
+		color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 	}
 	&[data-current] {
 		pointer-events: none;
@@ -195,9 +222,7 @@ Buttons base and variants.
 		}
 	}
 
-	/*
-	Default variant
-	*/
+	/* Default variant */
 	&:not(.outlined):not(.ghost):not(.cta) {
 		color: var(--color-neutral-800);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
@@ -215,9 +240,7 @@ Buttons base and variants.
 		}
 	}
 
-	/*
-	Outlined variant
-	*/
+	/* Outlined variant */
 	&.outlined {
 		color: var(--color-neutral-800);
 		border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
@@ -237,36 +260,32 @@ Buttons base and variants.
 		}
 	}
 
-	/*
-	Ghost variant
-	*/
+	/* Ghost variant */
 	&.ghost {
 		:where(.button-icon) {
 			opacity: 0.35;
 		}
-		color: var(--color-neutral-600);
-		@include dark {
+		color: var(--color-neutral-500);
+		@include global-dark {
 			color: var(--color-neutral-400);
 		}
 		&[data-current] {
 			color: var(--color-primary-600);
-			@include dark {
-				color: var(--color-primary-400);
+			@include global-dark {
+				color: var(--color-primary-500);
 			}
 		}
 		&:hover,
 		&:focus-visible {
 			color: var(--color-neutral-950);
 			background-color: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
-			@include dark {
+			@include global-dark {
 				color: var(--color-neutral-50);
 			}
 		}
 	}
 
-	/*
-	Link variant (similar to Ghost variant, but with added underline)
-	*/
+	/* Link variant (similar to Ghost variant, but with added underline) */
 	&.link {
 		// display: flex;
 		// flex-direction: row;
@@ -291,7 +310,7 @@ Buttons base and variants.
 		// 	color: var(--color-primary-600);
 		// 	text-decoration-color: currentColor;
 		// 	text-underline-offset: 0.5em;
-		// 	transition: all var(--input-duration-out) ease-out;
+		// 	transition: all var(--fx-duration-out) ease-out;
 		// 	@include global-dark {
 		// 		color: var(--color-primary-400);
 		// 	}
@@ -322,11 +341,10 @@ Buttons base and variants.
 				background-color: var(--color-primary-500);
 			}
 		}
-		&[data-disabled],
-		&:disabled {
+		&[data-loading] {
 			color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
 			background-color: var(--color-neutral-900);
-			@include dark {
+			@include global-dark {
 				background-color: var(--color-neutral-100);
 			}
 		}
@@ -335,10 +353,12 @@ Buttons base and variants.
 
 .button-icon {
 	width: 1.25em;
+	margin-block: -50%;
 	stroke-width: 2;
 	stroke-linecap: butt;
 	opacity: 0.5;
 	transform: scale(1);
+	flex: none;
 	transition:
 		opacity 0.25s ease-out,
 		transform 0.25s ease-out;
@@ -384,7 +404,7 @@ Links
 		color: var(--color-primary-600);
 		text-decoration-color: currentColor;
 		text-underline-offset: 0.5em;
-		transition: all var(--input-duration-out) ease-out;
+		transition: all var(--fx-duration-out) ease-out;
 		@include global-dark {
 			color: var(--color-primary-400);
 		}
