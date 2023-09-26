@@ -92,18 +92,19 @@
 	--radius-full: 999px;
 	// Content sizes.
 	--width-main: 1200px;
-	--width-col: 540px;
+	--width-md: 760px;
+	--width-center: 420px;
 	// Easings
 	--ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
 	--ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 	// Shadows
-	--shadow-xs: 0 1px 3px -1px rgba(0, 8, 24, 0.15);
-	--shadow-sm: 0 3px 6px -4px rgba(0, 8, 24, 0.175);
-	--shadow-md: 0 5px 12px -8px rgba(0, 8, 24, 0.2);
-	--shadow-lg: 0 9px 24px -12px rgba(0, 8, 24, 0.225);
-	--shadow-xl: 0 16px 48px -20px rgba(0, 8, 24, 0.25);
-	--shadow-2xl: 0 28px 96px -48px rgba(0, 8, 24, 0.275);
+	--shadow-xs: 0 1px 3px -1px rgba(0, 6, 12, 0.15);
+	--shadow-sm: 0 5px 6px -4px rgba(0, 6, 12, 0.15);
+	--shadow-md: 0 9px 12px -8px rgba(0, 6, 12, 0.15);
+	--shadow-lg: 0 16px 24px -14px rgba(0, 6, 12, 0.15);
+	--shadow-xl: 0 24px 36px -20px rgba(0, 6, 12, 0.15);
+	--shadow-2xl: 0 32px 96px -48px rgba(0, 6, 12, 0.15);
 	// Miscs
 	--fx-scale: 0.96;
 	--fx-duration-out: 0.15s;
@@ -112,6 +113,8 @@
 	--input-radius: var(--radius-md);
 	--border-size: 1.25px;
 	--group-inset: 5px;
+	--navbar-height: 72px;
+	--sidebar-width: 175px;
 	// Root style
 	position: relative;
 	font-size: 100%;
@@ -194,7 +197,7 @@ Button.
 		transition: all 0s;
 		.button-icon {
 			opacity: 1;
-			transform: scale(0.9);
+			transform: var(--fx-scale);
 		}
 	}
 	&:active {
@@ -205,10 +208,15 @@ Button.
 	}
 	&[data-disabled],
 	&:disabled {
-		transform: scale(0.96);
+		transform: scale(var(--fx-scale));
 		pointer-events: none;
-		:not([data-loading]) {
-			opacity: 0.5;
+		&:not([data-loading]) {
+			opacity: 0.35;
+			color: var(--color-neutral-800);
+			background-color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+			@include dark {
+				color: var(--color-neutral-200);
+			}
 		}
 	}
 	&[data-loading] {
@@ -220,6 +228,20 @@ Button.
 		.button-icon {
 			opacity: 1;
 		}
+	}
+
+	&.center {
+		justify-content: center;
+	}
+
+	&.right {
+		justify-content: right;
+	}
+
+	&.square {
+		justify-content: center;
+		padding-inline: 0;
+		aspect-ratio: 1;
 	}
 
 	/* Default variant */
@@ -270,10 +292,10 @@ Button.
 			color: var(--color-neutral-400);
 		}
 		&[data-current] {
-			color: var(--color-primary-600);
-			@include global-dark {
-				color: var(--color-primary-500);
-			}
+			color: var(--color-primary-500);
+			// @include global-dark {
+			// 	color: var(--color-primary-500);
+			// }
 		}
 		&:hover,
 		&:focus-visible {
@@ -325,20 +347,19 @@ Button.
 	Call to action variant
 	*/
 	&.cta {
-		letter-spacing: 0.01em;
 		color: var(--color-neutral-100);
 		background-color: var(--color-primary-950);
 		@include global-dark {
-			color: var(--color-neutral-900);
-			background-color: var(--color-primary-50);
+			color: var(--color-neutral-800);
+			background-color: var(--color-primary-500);
 		}
 		&:hover,
 		&:focus-visible {
 			color: var(--color-primary-50);
-			background-color: var(--color-primary-600);
+			background-color: var(--color-primary-800);
 			@include global-dark {
-				color: var(--color-primary-950);
-				background-color: var(--color-primary-500);
+				color: var(--color-primary-900);
+				background-color: var(--color-primary-400);
 			}
 		}
 		&[data-loading] {
@@ -355,13 +376,14 @@ Button.
 	width: 1.25em;
 	margin-block: -50%;
 	stroke-width: 2;
-	stroke-linecap: butt;
+	stroke-linecap: square;
+	stroke-linejoin: round;
 	opacity: 0.5;
 	transform: scale(1);
 	flex: none;
 	transition:
-		opacity 0.25s ease-out,
-		transform 0.25s ease-out;
+		opacity 0.15s ease-out,
+		transform 0.2s ease-out;
 }
 
 .button-group {
@@ -430,6 +452,7 @@ Text input
 	padding: 0 var(--input-padding);
 	border-radius: var(--input-radius);
 	background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+
 	&:hover,
 	&:focus-visible {
 		box-shadow: 0 0 0 var(--border-size) rgba(0, 0, 0, 0.1);
@@ -443,7 +466,7 @@ Text input
 		background-color: rgba(255, 255, 255, 0.5);
 		transition: all var(--button-duration-out) ease-out;
 		@include global-dark {
-			background-color: rgba(0, 0, 0, 0.5);
+			background-color: rgba(0, 0, 0, 0.1);
 		}
 	}
 	&[data-loading] {
@@ -469,4 +492,9 @@ Text input
 			border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
 		}
 	}
+}
+
+textarea.input {
+	padding-block: calc(var(--input-padding) - 0.25em);
+	line-height: 1.5em;
 }

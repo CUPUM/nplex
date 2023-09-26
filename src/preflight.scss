@@ -312,7 +312,8 @@ Prevent resizing textareas horizontally by default.
 */
 
 textarea {
-	resize: vertical;
+	// resize: vertical;
+	resize: none;
 }
 
 /*
@@ -383,6 +384,8 @@ select {
 	&:-webkit-autofill:hover,
 	&:-webkit-autofill:focus,
 	&:-webkit-autofill:active {
-		transition: background-color 5000s ease-in-out 0s;
+		transition:
+			background-color 5000s ease-in 0s,
+			color 5000s ease-in 0s;
 	}
 }
