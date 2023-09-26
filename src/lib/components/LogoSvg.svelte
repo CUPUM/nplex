@@ -39,19 +39,19 @@
 			<path id="logo-p-descendant" d="M120 150H170V200H120V150Z" fill="currentColor" />
 			<path
 				id="logo-p-eye"
-				d="M230 100C230 127.614 207.614 150 180 150C152.386 150 130 127.614 130 100C130 72.3858 152.386 50 180 50C207.614 50 230 72.3858 230 100Z"
+				d="M220 100C220 127.614 197.614 150 170 150C142.386 150 120 127.614 120 100C120 72.3858 142.386 50 170 50C197.614 50 220 72.3858 220 100Z"
 				fill="currentColor"
 			/>
 		</g>
-		<path id="logo-l" d="M250 0H300V150H250V0Z" fill="currentColor" />
+		<path id="logo-l" d="M240 0H290V150H240V0Z" fill="currentColor" />
 		<path
 			id="logo-e"
-			d="M320 100C320 72.3858 342.386 50 370 50C397.614 50 420 72.3858 420 100H370V150C342.386 150 320 127.614 320 100Z"
+			d="M310 100C310 72.3858 332.386 50 360 50C387.614 50 410 72.3858 410 100H360V150C332.386 150 310 127.614 310 100Z"
 			fill="currentColor"
 		/>
 		<g id="logo-x">
-			<path id="logo-x-top" d="M530 100L480 100L480 50L530 50L530 100Z" fill="currentColor" />
-			<path id="logo-x-bottom" d="M480 150L430 150L430 100L480 100L480 150Z" fill="currentColor" />
+			<path id="logo-x-top" d="M520 100L470 100L470 50L520 50L520 100Z" fill="currentColor" />
+			<path id="logo-x-bottom" d="M470 150L420 150L420 100L470 100L470 150Z" fill="currentColor" />
 		</g>
 	{/if}
 </svg>
