@@ -31,7 +31,7 @@
 	export let spreadDelay = delay;
 	export let color = 'currentColor';
 	export let colorStart: string = color;
-	export let colorEnd: string = colorStart;
+	export let colorEnd: string = color;
 	export let colorEasing = easing;
 	export let colorSpeed = speed;
 	export let colorDuration = duration;
