@@ -25,16 +25,17 @@ const seeded: unknown[] = [];
 
 console.info('🥕 Seeding database with base data...');
 try {
-	// Seed locales
-	const ls = await db
-		.insert(locales)
-		.values(LOCALES_ARR.map((locale) => ({ locale, name: LOCALES_DETAILS[locale].name })))
-		.onConflictDoNothing()
-		.returning();
-	seeded.push(ls);
-
-	// Seed user roles
 	await db.transaction(async (tx) => {
+		// Seed locales
+		seeded.push(
+			await tx
+				.insert(locales)
+				.values(LOCALES_ARR.map((locale) => ({ locale, name: LOCALES_DETAILS[locale].name })))
+				.onConflictDoNothing()
+				.returning()
+		);
+
+		// Seed user roles
 		seeded.push(
 			await tx
 				.insert(userRoles)
@@ -87,10 +88,8 @@ try {
 				])
 				.onConflictDoNothing()
 		);
-	});
 
-	// Seed project types
-	await db.transaction(async (tx) => {
+		// Seed project types
 		const pt_t = [
 			{
 				fr: {
@@ -126,12 +125,12 @@ try {
 				},
 			},
 		] satisfies Record<Locale, InferInsertModel<typeof projectTypesTranslations>>[];
-		const inserted = await tx
+		const pt = await tx
 			.insert(projectTypes)
 			.values(pt_t.map((v, index) => ({ index })))
 			.returning();
 		seeded.push(
-			inserted,
+			pt,
 			await tx
 				.insert(projectTypesTranslations)
 				.values(
@@ -139,17 +138,15 @@ try {
 						LOCALES_ARR.map((locale) => ({
 							...v[locale],
 							locale,
-							id: inserted[i].id,
+							id: pt[i].id,
 						}))
 					)
 				)
 				.onConflictDoNothing()
 				.returning()
 		);
-	});
 
-	// Seed project intervention and categories
-	await db.transaction(async (tx) => {
+		// Seed project intervention and categories
 		const pic_t = [
 			{
 				fr: {
@@ -195,26 +192,24 @@ try {
 			Locale,
 			InferInsertModel<typeof projectInterventionCategoriesTranslations>
 		>[];
-		const inserted = await tx
+		const pic = await tx
 			.insert(projectInterventionCategories)
 			.values(pic_t.map((v, index) => ({ index })))
 			.returning();
 		seeded.push(
-			inserted,
+			pic,
 			await tx.insert(projectInterventionCategoriesTranslations).values(
 				pic_t.flatMap((v, i) =>
 					LOCALES_ARR.map((locale) => ({
 						...v[locale],
 						locale,
-						id: inserted[i].id,
+						id: pic[i].id,
 					}))
 				)
 			)
 		);
-	});
 
-	// Seed site ownerships
-	await db.transaction(async (tx) => {
+		// Seed site ownerships
 		const pso_t = [
 			{
 				fr: {
@@ -257,27 +252,25 @@ try {
 				},
 			},
 		] satisfies Record<Locale, InferInsertModel<typeof projectSiteOwnershipsTranslations>>[];
-		const inserted = await tx
+		const pso = await tx
 			.insert(projectSiteOwnerships)
 			.values(pso_t.map((v, index) => ({ index })))
 			.returning();
 		seeded.push(
-			inserted,
+			pso,
 			await tx.insert(projectSiteOwnershipsTranslations).values(
 				pso_t.flatMap((v, i) =>
 					LOCALES_ARR.map((locale) => ({
 						...v[locale],
 						locale,
-						id: inserted[i].id,
+						id: pso[i].id,
 					}))
 				)
 			)
 		);
-	});
 
-	// Seed project implantation types
-	await db.transaction(async (tx) => {
-		const pit_t = [
+		// Seed project implantation types
+		const pim_t = [
 			{
 				fr: {
 					title: 'Conitgüe',
@@ -309,25 +302,24 @@ try {
 				},
 			},
 		] satisfies Record<Locale, InferInsertModel<typeof projectImplantationTypesTranslations>>[];
-		const inserted = await tx
+		const pim = await tx
 			.insert(projectImplantationTypes)
-			.values(pit_t.map((v, index) => ({ index })))
+			.values(pim_t.map((v, index) => ({ index })))
 			.returning();
 		seeded.push(
+			pim,
 			await tx.insert(projectImplantationTypesTranslations).values(
-				pit_t.flatMap((v, i) =>
+				pim_t.flatMap((v, i) =>
 					LOCALES_ARR.map((locale) => ({
 						...v[locale],
 						locale,
-						id: inserted[i].id,
+						id: pim[i].id,
 					}))
 				)
 			)
 		);
-	});
 
-	// Seed project exemplarity categories
-	await db.transaction(async (tx) => {
+		// Seed project exemplarity categories
 		const pec_t = [
 			{
 				fr: {
@@ -400,27 +392,26 @@ try {
 				},
 			},
 		] satisfies Record<Locale, InferInsertModel<typeof projectExemplarityCategoriesTranslations>>[];
-		const inserted = await tx
+		const pec = await tx
 			.insert(projectExemplarityCategories)
 			.values(pec_t.map((v, index) => ({ index })))
 			.returning();
 		seeded.push(
+			pec,
 			await tx.insert(projectExemplarityCategoriesTranslations).values(
 				pec_t.flatMap((v, i) =>
 					LOCALES_ARR.map((locale) => ({
 						...v[locale],
 						locale,
-						id: inserted[i].id,
+						id: pec[i].id,
 					}))
 				)
 			)
 		);
-	});
 
-	// Seed project exemplarity indicators
+		// Seed project exemplarity indicators
 
-	// Seed project image types
-	await db.transaction(async (tx) => {
+		// Seed project image types
 		const pit_t = [
 			{
 				fr: {
@@ -463,90 +454,25 @@ try {
 				},
 			},
 		] satisfies Record<Locale, InferInsertModel<typeof projectImageTypesTranslations>>[];
-		const inserted = await tx
-			.insert(projectImageTypes)
-			.values(Array(pit_t.length).fill({}))
-			.returning();
+		const pit = await tx.insert(projectImageTypes).values(Array(pit_t.length).fill({})).returning();
 		seeded.push(
+			pit,
 			await tx.insert(projectImageTypesTranslations).values(
 				pit_t.flatMap((v, i) =>
 					LOCALES_ARR.map((locale) => ({
 						...v[locale],
 						locale,
-						id: inserted[i].id,
+						id: pit[i].id,
 					}))
 				)
 			)
 		);
 	});
-
-	// Seed project image temporalities
-	await db.transaction(async (tx) => {
-		const pit_t = [
-			{
-				fr: {
-					title: 'Photographie',
-					description: '',
-				},
-				en: {
-					title: 'Photograph',
-					description: '',
-				},
-			},
-			{
-				fr: {
-					title: 'Image de synthèse',
-					description: '',
-				},
-				en: {
-					title: 'Render',
-					description: '',
-				},
-			},
-			{
-				fr: {
-					title: 'Esquisse',
-					description: '',
-				},
-				en: {
-					title: 'Sketch',
-					description: '',
-				},
-			},
-			{
-				fr: {
-					title: 'Plan',
-					description: '',
-				},
-				en: {
-					title: 'Plan',
-					description: '',
-				},
-			},
-		] satisfies Record<Locale, InferInsertModel<typeof projectImageTypesTranslations>>[];
-		const inserted = await tx
-			.insert(projectImageTypes)
-			.values(Array(pit_t.length).fill({}))
-			.returning();
-		seeded.push(
-			await tx.insert(projectImageTypesTranslations).values(
-				pit_t.flatMap((v, i) =>
-					LOCALES_ARR.map((locale) => ({
-						...v[locale],
-						locale,
-						id: inserted[i].id,
-					}))
-				)
-			)
-		);
-	});
-
-	// Seed...
-	console.info('🚀 Database seeded successfully!');
 	console.info(seeded);
+	console.info('🚀 Database seeded successfully!');
 } catch (error) {
-	console.error('❌ Database seed failed (see error below).');
 	console.error(error);
+	console.error('❌ Database seed failed (see error above).');
 } finally {
 	// Make sure to close pool.
 	// await db.end()
