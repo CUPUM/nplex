@@ -1,1 +1,27 @@
-{"version":"5","dialect":"pg","entries":[{"idx":0,"version":"5","when":1693206478662,"tag":"0000_breezy_lily_hollister","breakpoints":true},{"idx":1,"version":"5","when":1694253113415,"tag":"0001_unknown_sabra","breakpoints":true}]}
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1693206478662,
+      "tag": "0000_breezy_lily_hollister",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1694253113415,
+      "tag": "0001_unknown_sabra",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1695762603438,
+      "tag": "0002_nice_whistler",
+      "breakpoints": true
+    }
+  ]
+}
