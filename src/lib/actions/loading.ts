@@ -10,11 +10,12 @@ export function loading(
 	}
 ) {
 	let comp: Loading | undefined;
-	if (options?.state) {
+	const { state, ...props } = options ?? {};
+	if (state) {
 		new Loading({
 			intro: false,
 			target: node,
-			props: options,
+			props,
 		});
 	}
 
