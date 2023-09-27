@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { createTranslations } from '$lib/i18n/translate';
+	import { Send } from 'lucide-svelte';
+	import { fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	const t = createTranslations({
@@ -24,21 +26,22 @@
 
 <form use:enhance method="POST">
 	<h1>{$t.title}</h1>
-
-	<fieldset>
-		<label>
+	<label>
+		<span in:fly={{ y: 6 }}>
 			{$t.name}
-			<input
-				type="text"
-				name="email"
-				aria-invalid={$errors.email ? true : undefined}
-				bind:value={$form.email}
-				{...$constraints.email}
-			/>
-		</label>
-	</fieldset>
-
-	<button type="submit">
+		</span>
+		<input
+			in:fly={{ y: -6 }}
+			class="input"
+			type="email"
+			name="email"
+			aria-invalid={$errors.email ? true : undefined}
+			bind:value={$form.email}
+			{...$constraints.email}
+		/>
+	</label>
+	<button in:fly={{ y: -6, delay: 75 }} class="button cta center" type="submit">
+		<Send class="button-icon" />
 		{$t.button}
 	</button>
 </form>
@@ -47,7 +50,36 @@
 	form {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
-		padding: 4rem;
+		align-items: stretch;
+		align-self: center;
+		justify-content: center;
+		flex: 1;
+		gap: 2rem;
+		max-width: var(--width-center);
+	}
+
+	h1 {
+		font-size: var(--size-3xl);
+		font-weight: 550;
+		line-height: 1.15;
+		text-align: center;
+	}
+
+	label {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+		text-indent: 0.75em;
+
+		&:focus-within {
+			span {
+				opacity: 1;
+			}
+		}
+
+		span {
+			font-size: var(--size-xs);
+			opacity: 0.8;
+		}
 	}
 </style>

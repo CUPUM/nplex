@@ -99,12 +99,12 @@
 	--ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 	// Shadows
-	--shadow-xs: 0 1px 3px -1px rgba(0, 6, 12, 0.15);
-	--shadow-sm: 0 5px 6px -4px rgba(0, 6, 12, 0.15);
-	--shadow-md: 0 9px 12px -8px rgba(0, 6, 12, 0.15);
-	--shadow-lg: 0 16px 24px -14px rgba(0, 6, 12, 0.15);
-	--shadow-xl: 0 24px 36px -20px rgba(0, 6, 12, 0.15);
-	--shadow-2xl: 0 32px 96px -48px rgba(0, 6, 12, 0.15);
+	--shadow-xs: 0 0.5px 3px -1px rgba(0, 6, 12, 0.15);
+	--shadow-sm: 0 3px 6px -4px rgba(0, 6, 12, 0.17);
+	--shadow-md: 0 6px 12px -8px rgba(0, 6, 12, 0.19);
+	--shadow-lg: 0 10px 24px -12px rgba(0, 6, 12, 0.2);
+	--shadow-xl: 0 18px 36px -20px rgba(0, 6, 12, 0.22);
+	--shadow-2xl: 0 32px 64px -36px rgba(0, 6, 12, 0.25);
 	// Miscs
 	--fx-scale: 0.96;
 	--fx-duration-out: 0.15s;
@@ -115,6 +115,8 @@
 	--group-inset: 5px;
 	--navbar-height: 72px;
 	--sidebar-width: 175px;
+	// Dashboard specific miscs
+	--dashboard-sidebar-width: 175px;
 	// Root style
 	position: relative;
 	font-size: 100%;
@@ -238,10 +240,15 @@ Button.
 		justify-content: right;
 	}
 
-	&.square {
+	&.square,
+	&.round {
 		justify-content: center;
 		padding-inline: 0;
 		aspect-ratio: 1;
+	}
+
+	&.round {
+		--input-radius: var(--radius-full);
 	}
 
 	/* Default variant */
@@ -284,18 +291,12 @@ Button.
 
 	/* Ghost variant */
 	&.ghost {
-		:where(.button-icon) {
-			opacity: 0.35;
-		}
-		color: var(--color-neutral-500);
+		color: var(--color-neutral-700);
 		@include global-dark {
-			color: var(--color-neutral-400);
+			color: var(--color-neutral-300);
 		}
 		&[data-current] {
 			color: var(--color-primary-500);
-			// @include global-dark {
-			// 	color: var(--color-primary-500);
-			// }
 		}
 		&:hover,
 		&:focus-visible {
@@ -304,6 +305,25 @@ Button.
 			@include global-dark {
 				color: var(--color-neutral-50);
 			}
+
+			&.danger {
+				color: var(--color-error-800);
+				background-color: color-mix(in srgb, var(--color-error-400) 10%, transparent);
+				@include global-dark {
+					color: var(--color-error-200);
+				}
+			}
+		}
+
+		&.danger {
+			color: var(--color-error-700);
+			@include global-dark {
+				color: var(--color-error-300);
+			}
+		}
+
+		:where(.button-icon) {
+			opacity: 0.35;
 		}
 	}
 
@@ -384,6 +404,11 @@ Button.
 	transition:
 		opacity 0.15s ease-out,
 		transform 0.2s ease-out;
+
+	.square &,
+	.round & {
+		opacity: 1;
+	}
 }
 
 .button-group {

@@ -4,8 +4,10 @@
 	import { i18nlink } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
-	import { fly, scale } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
+
+	const STAGGER = 75;
 
 	const t = createTranslations({
 		fr: {
@@ -57,9 +59,9 @@
 	</label>
 	<fieldset class="pw">
 		<label>
-			<span in:fly={{ y: 6 }}>{$t.password}</span>
+			<span in:fly={{ y: 6, delay: STAGGER }}>{$t.password}</span>
 			<input
-				in:fly={{ y: -6 }}
+				in:fly={{ y: -6, delay: STAGGER }}
 				class="input"
 				type="password"
 				name="password"
@@ -69,9 +71,9 @@
 			/>
 		</label>
 		<label>
-			<span in:fly={{ y: 6 }}>{$t.confirmPassword}</span>
+			<span in:fly={{ y: 6, delay: 2 * STAGGER }}>{$t.confirmPassword}</span>
 			<input
-				in:fly={{ y: -6 }}
+				in:fly={{ y: -6, delay: 2 * STAGGER }}
 				class="input"
 				type="password"
 				name="confirmPassword"
@@ -82,8 +84,8 @@
 		</label>
 	</fieldset>
 	<button
-		in:scale={{ start: 0.9 }}
-		class="button cta"
+		in:fly={{ y: -6, delay: 3 * STAGGER }}
+		class="button cta center"
 		type="submit"
 		{...$loadingElement}
 		use:loadingAction
@@ -120,6 +122,7 @@
 		font-size: var(--size-3xl);
 		font-weight: 550;
 		line-height: 1.15;
+		text-align: center;
 	}
 
 	fieldset {
@@ -132,7 +135,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5em;
-		text-indent: 0.5em;
+		text-indent: 0.75em;
 
 		&:focus-within {
 			span {

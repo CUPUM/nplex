@@ -9,6 +9,7 @@ import type { eventCreateTranslations } from '$lib/i18n/translate';
 import type { Mode } from '$lib/modes/constants';
 import type { InferSelectModel } from 'drizzle-orm';
 import type { AuthRequest, User } from 'lucia';
+import type { ComponentType } from 'svelte';
 
 // See https://lucia-auth.com/getting-started
 declare global {
@@ -69,6 +70,15 @@ declare global {
 			 * Granular server and client setable layout type.
 			 */
 			setout: Setout;
+			/**
+			 * Dashboard ((private) route group) compositional components and data.
+			 */
+			dashboard?: {
+				header?: ComponentType;
+				sidebar?: ComponentType;
+				breadcrumbs?: ComponentType;
+				footer?: ComponentType;
+			};
 		}
 		// interface Platform {}
 	}

@@ -49,6 +49,7 @@
 	import { cubicOut } from 'svelte/easing';
 	import { tweened, type Tweened } from 'svelte/motion';
 	import { get } from 'svelte/store';
+	import { fade } from 'svelte/transition';
 
 	export let indeterminate = false;
 	export let progress: number | undefined = undefined;
@@ -65,7 +66,7 @@
 </script>
 
 {#if value}
-	<progress {value} max={100} />
+	<progress {value} max={100} out:fade={{ duration: 200 }} />
 {/if}
 
 <style lang="scss">

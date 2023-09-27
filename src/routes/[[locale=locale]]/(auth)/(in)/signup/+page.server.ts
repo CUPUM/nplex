@@ -47,19 +47,6 @@ export const actions = {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
 		try {
-			// const user = await auth.createUser({
-			// 	key: {
-			// 		providerId: AUTH_PROVIDERS.EMAIL,
-			// 		providerUserId: form.data.email.toLowerCase(),
-			// 		password: form.data.password,
-			// 	},
-			// 	attributes: {
-			// 		role: USER_ROLES.VISITOR,
-			// 		email: form.data.email,
-			// 		email_verified: false,
-			// 		github_username: null,
-			// 	},
-			// });
 			/**
 			 * Falling back to drizzle queries to benefit from defaults and other schema behaviors.
 			 *

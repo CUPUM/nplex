@@ -7,6 +7,7 @@ import { z } from 'zod';
 export const LOCALES = {
 	FRENCH: 'fr',
 	ENGLISH: 'en',
+	// SPANISH: 'es',
 } as const;
 
 export type Locale = ValueOf<typeof LOCALES>;
@@ -28,6 +29,10 @@ export const LOCALES_DETAILS = {
 		name: 'Français',
 		label: 'Fr',
 	},
+	// [LOCALES.SPANISH]: {
+	// 	name: 'Espanol',
+	// 	label: 'Es',
+	// },
 } satisfies { [L in Locale]: { name: string; label: string } };
 
 export const LOCALE_PARAM = 'locale';

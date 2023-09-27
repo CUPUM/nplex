@@ -1,6 +1,5 @@
 import { dbpool } from '$lib/db/db.server';
 import { organizations, organizationsUsers, projects } from '$lib/db/schema/public';
-import { SETOUTS } from '$lib/setout/constants';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { and, eq, exists, or } from 'drizzle-orm';
@@ -11,12 +10,12 @@ export const load = async (event) => {
 		throw error(STATUS_CODES.UNAUTHORIZED, { message: 'No session found' });
 	}
 
-	const p = dbpool.transaction(async (tx) => {
+	const editableProjects = dbpool.transaction(async (tx) => {
 		return tx.select().from(projects);
 		// .where(authorizeProjectUpdate(projects.createdById, session.user.id));
 	});
 
-	const o = dbpool.transaction(async (tx) => {
+	const editableOrganizations = dbpool.transaction(async (tx) => {
 		return tx
 			.select()
 			.from(organizations)
@@ -38,10 +37,9 @@ export const load = async (event) => {
 			);
 	});
 	return {
-		setout: SETOUTS.FULL_WIDTH,
-		editables: {
-			projects: p,
-			organizations: o,
+		streamed: {
+			editableProjects,
+			editableOrganizations,
 		},
 	};
 };

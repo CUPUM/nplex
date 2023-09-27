@@ -4,8 +4,10 @@
 	import { i18nlink } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
-	import { fly, scale } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
+
+	const STAGGER = 75;
 
 	const t = createTranslations({
 		fr: {
@@ -43,9 +45,9 @@
 	<h1>{$t.title}</h1>
 	<fieldset>
 		<label>
-			<span in:fly={{ y: 6 }}>{$t.email}</span>
+			<span in:fly|global={{ y: 6 }}>{$t.email}</span>
 			<input
-				in:fly={{ y: -6 }}
+				in:fly|global={{ y: -6 }}
 				class="input"
 				type="email"
 				name="email"
@@ -57,9 +59,9 @@
 	</fieldset>
 	<fieldset>
 		<label>
-			<span in:fly={{ y: 6 }}>{$t.password}</span>
+			<span in:fly|global={{ y: 6, delay: STAGGER }}>{$t.password}</span>
 			<input
-				in:fly={{ y: -6 }}
+				in:fly|global={{ y: -6, delay: STAGGER }}
 				class="input"
 				type="password"
 				name="password"
@@ -70,8 +72,8 @@
 		</label>
 	</fieldset>
 	<button
-		in:scale={{ start: 0.9 }}
-		class="button cta"
+		in:fly|global={{ y: -6, delay: 2 * STAGGER }}
+		class="button cta center"
 		type="submit"
 		{...$loadingElement}
 		use:loadingAction
@@ -83,12 +85,12 @@
 </form>
 <div class="links">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="link" {...$i18nlink('/signup')}>
+	<a class="link" {...$i18nlink('/signup')} in:fade|global>
 		<UserPlus2 class="link-icon" />
 		{$t.signup}
 	</a>
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="link" {...$i18nlink('/reset-password')}>
+	<a class="link" {...$i18nlink('/reset-password')} in:fade|global>
 		<HelpCircle class="link-icon" />
 		{$t.forgot}
 	</a>
@@ -105,9 +107,14 @@
 	}
 
 	h1 {
-		font-size: var(--size-3xl);
 		font-weight: 550;
+		text-align: center;
 		line-height: 1.15;
+		font-size: var(--size-2xl);
+
+		@include md {
+			font-size: var(--size-3xl);
+		}
 	}
 
 	fieldset {
@@ -120,7 +127,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5em;
-		text-indent: 0.5em;
+		text-indent: 0.75em;
 
 		&:focus-within {
 			span {

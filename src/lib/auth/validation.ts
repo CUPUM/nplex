@@ -1,6 +1,15 @@
 import type { User } from 'lucia';
 import { z } from 'zod';
-import { AUTH_PROVIDERS_ARR, USER_ROLES_ARR, type AuthProvider, type UserRole } from './constants';
+import {
+	AUTH_PROVIDERS_ARR,
+	OAUTH_PROVIDERS_ARR,
+	SUPPORTED_OAUTH_PROVIDERS_ARR,
+	USER_ROLES_ARR,
+	type AuthProvider,
+	type OAuthProvider,
+	type SupportedOAtuhProvider,
+	type UserRole,
+} from './constants';
 
 /**
  * Validate a given input user role.
@@ -30,6 +39,25 @@ export const userRoleSchema = z.custom<UserRole>(
 		}
 	}
 );
+
+/**
+ * Is OAuth provider that is either already supported or awaiting implementation.
+ */
+export function isOAuthProvider(maybeOAuthProvider: unknown): maybeOAuthProvider is OAuthProvider {
+	return OAUTH_PROVIDERS_ARR.indexOf(maybeOAuthProvider as OAuthProvider) > -1;
+}
+
+/**
+ * Is OAuth provider with supported implementation.
+ */
+export function isSupportedOAuthProvider(
+	maybeSupportedOAuthProvider: unknown
+): maybeSupportedOAuthProvider is SupportedOAtuhProvider {
+	return (
+		SUPPORTED_OAUTH_PROVIDERS_ARR.indexOf(maybeSupportedOAuthProvider as SupportedOAtuhProvider) >
+		-1
+	);
+}
 
 const joinedProviders = AUTH_PROVIDERS_ARR.join(', ');
 

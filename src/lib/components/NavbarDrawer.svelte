@@ -146,7 +146,7 @@
 	#navdrawer-overlay {
 		position: fixed;
 		inset: 0;
-		z-index: 99;
+		z-index: 101;
 		opacity: 0.99;
 		background: linear-gradient(180deg, var(--color-neutral-100) 25%, transparent 125%);
 		@include dark {
@@ -165,7 +165,7 @@
 		justify-content: flex-start;
 		position: fixed;
 		inset: 0;
-		z-index: 99;
+		z-index: 101;
 		padding: 1rem;
 		gap: 0.75rem;
 		&:focus {

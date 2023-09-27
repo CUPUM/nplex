@@ -3,7 +3,6 @@ import type { InferSelectModel } from 'drizzle-orm';
 import {
 	bigint,
 	boolean,
-	integer,
 	pgSchema,
 	primaryKey,
 	text,
@@ -13,9 +12,9 @@ import {
 } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 import { generateUserId, userId, userIdForeignKey } from '../references/accounts';
+import { localeForeignKey } from '../references/i18n';
 import { generateNanoid } from '../sql';
-import { identity, locale, nanoid, userRole } from './custom-types';
-import { locales } from './i18n';
+import { nanoid, userRole } from './custom-types';
 import { projects } from './public';
 
 /**
@@ -45,10 +44,7 @@ export const userRolesTranslations = accountsSchema.table(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		locale: localeForeignKey('locale'),
 		name: text('title').notNull(),
 		description: text('description'),
 	},
@@ -65,26 +61,35 @@ export const userRolesTranslations = accountsSchema.table(
  *
  * @see https://lucia-auth.com/basics/users
  */
-export const users = accountsSchema.table('users', {
-	id: userId('id').default(generateUserId()).primaryKey(),
-	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-	role: userRole('role')
-		.references(() => userRoles.role, {
-			onDelete: 'set default',
-			onUpdate: 'cascade',
-		})
-		.default(USER_ROLES.VISITOR)
-		.notNull(),
-	email: text('email').unique(),
-	emailVerified: boolean('email_verified').default(false).notNull(),
-	publicEmail: text('public_email'),
-	publicEmailVerified: boolean('public_email_verified').default(false).notNull(),
-	githubUsername: text('github_username').unique(),
-	firstName: text('first_name'),
-	middleName: text('middle_name'),
-	lastName: text('last_name'),
-});
+export const users = accountsSchema.table(
+	'users',
+	{
+		id: userId('id').default(generateUserId()).primaryKey(),
+		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+		updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+		role: userRole('role')
+			.references(() => userRoles.role, {
+				onDelete: 'set default',
+				onUpdate: 'cascade',
+			})
+			.default(USER_ROLES.VISITOR)
+			.notNull(),
+		email: text('email').unique(),
+		emailVerified: boolean('email_verified').default(false).notNull(),
+		publicEmail: text('public_email'),
+		publicEmailVerified: boolean('public_email_verified').default(false).notNull(),
+		githubUsername: text('github_username'),
+		googleUsername: text('google_username'),
+		firstName: text('first_name'),
+		middleName: text('middle_name'),
+		lastName: text('last_name'),
+	}
+	// (table) => {
+	// 	return {
+	// 		unq1: unique().on(table.email, table.emailVerified),
+	// 	};
+	// }
+);
 
 export type SelectUser = InferSelectModel<typeof users>;
 
@@ -151,7 +156,9 @@ export const usersRolesRequests = accountsSchema.table('users_roles_requests', {
  * Occupations or professions of registered users.
  */
 export const userOccupations = accountsSchema.table('user_occupations', {
-	id: identity('id').primaryKey(),
+	id: text('id')
+		.default(generateNanoid({ length: 6 }))
+		.primaryKey(),
 });
 
 /**
@@ -160,14 +167,11 @@ export const userOccupations = accountsSchema.table('user_occupations', {
 export const userOccupationsTranslations = accountsSchema.table(
 	'user_occupations_t',
 	{
-		id: integer('id').references(() => userOccupations.id, {
+		id: text('id').references(() => userOccupations.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: locale('locale').references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		locale: localeForeignKey('locale'),
 		title: text('title').notNull(),
 		description: text('description'),
 	},
@@ -180,7 +184,7 @@ export const usersOccupations = accountsSchema.table(
 	'users_occupations',
 	{
 		userId: userIdForeignKey('user_id'),
-		occupationId: integer('occupation_id').references(() => userOccupations.id, {
+		occupationId: text('occupation_id').references(() => userOccupations.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
@@ -226,3 +230,31 @@ export const usersProjectsCollectionsItems = accountsSchema.table(
 		};
 	}
 );
+
+export const notificationTypes = accountsSchema.table('notification_types', {
+	id: text('id')
+		.default(generateNanoid({ length: 6 }))
+		.primaryKey(),
+});
+
+export const notificationTypesTranslations = accountsSchema.table('notification_types_t', {
+	id: text('id').references(() => notificationTypes.id, {
+		onDelete: 'cascade',
+		onUpdate: 'cascade',
+	}),
+	locale: localeForeignKey('locale'),
+	title: text('title'),
+	body: text('body'),
+});
+
+export const usersNotifications = accountsSchema.table('users_notifications', {
+	id: nanoid('id').default(generateNanoid()).primaryKey(),
+	typeId: text('type_id').references(() => notificationTypes.id, {
+		onDelete: 'cascade',
+		onUpdate: 'cascade',
+	}),
+	userId: userIdForeignKey('user_id'),
+	readAt: timestamp('read_at', { withTimezone: true }),
+	sentById: userIdForeignKey('sent_by_id'),
+	sentAt: timestamp('sent_at', { withTimezone: true }).defaultNow(),
+});

@@ -3,12 +3,15 @@ import IconGithub from '$lib/components/social-icons/Github.svelte';
 import IconGoogle from '$lib/components/social-icons/Google.svelte';
 import IconLinkedin from '$lib/components/social-icons/Linkedin.svelte';
 import type { ComponentType } from 'svelte';
-import { AUTH_PROVIDERS, type SocialProvider } from './constants';
+import { AUTH_PROVIDERS, type OAuthProvider } from './constants';
 
 export type SocialProviderDetails = { name: string; icon: ComponentType; disabled: boolean };
 
-// Isolate from constants to avoid interfering with drizzle-kit (scripts can't resolve svelte files).
-export const SOCIAL_PROVIDERS_DETAILS = {
+/**
+ * Isolate from constants to avoid interfering with drizzle-kit (scripts can't resolve svelte
+ * files).
+ */
+export const OAUTH_PROVIDERS_DETAILS = {
 	[AUTH_PROVIDERS.GITHUB]: {
 		name: 'GitHub',
 		icon: IconGithub,
@@ -29,6 +32,6 @@ export const SOCIAL_PROVIDERS_DETAILS = {
 		icon: IconGoogle,
 		disabled: true,
 	},
-} satisfies Record<SocialProvider, SocialProviderDetails>;
+} satisfies Record<OAuthProvider, SocialProviderDetails>;
 
 export const ICON_SIZE_DEFAULT = '1em';

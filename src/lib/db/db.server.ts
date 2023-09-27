@@ -6,8 +6,9 @@ import ws from 'ws';
 import * as accountsSchema from './schema/accounts';
 import * as i18nSchema from './schema/i18n';
 import * as publicSchema from './schema/public';
+import * as relations from './schema/relations';
 
-const schema = { ...publicSchema, ...accountsSchema, ...i18nSchema };
+const schema = { ...publicSchema, ...accountsSchema, ...i18nSchema, ...relations };
 
 neonConfig.fetchConnectionCache = true;
 const sqlhttp = neon(NEON_DB_URL);

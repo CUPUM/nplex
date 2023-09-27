@@ -2,15 +2,17 @@
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { createLoading } from '$lib/actions/loading';
 	import { ripple } from '$lib/actions/ripple';
-	import type { SocialProvider } from '$lib/auth/constants';
-	import { SOCIAL_PROVIDERS_DETAILS } from '$lib/auth/socials';
+	import type { OAuthProvider } from '$lib/auth/constants';
+	import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
 	import { i18nlink } from '$lib/i18n/link';
 	import { createTooltip, melt } from '@melt-ui/svelte';
+	import { scale } from 'svelte/transition';
 	import TooltipContent from '../TooltipContent.svelte';
 
-	export let provider: SocialProvider;
+	export let provider: OAuthProvider;
+	export let i: number | undefined = undefined;
 
-	const details = SOCIAL_PROVIDERS_DETAILS[provider];
+	const details = OAUTH_PROVIDERS_DETAILS[provider];
 
 	const url = `/login/${provider}`;
 
@@ -51,8 +53,11 @@
 		'data-disabled': $loadingElement['data-disabled'] || details.disabled || undefined,
 	}}
 	use:melt={$trigger}
+	in:scale|global={{ start: 0.95, delay: (i ?? 0) * 75, duration: 750 }}
 >
-	<svelte:component this={details.icon} />
+	<div class="provider-icon">
+		<svelte:component this={details.icon} />
+	</div>
 </a>
 <TooltipContent {content} {positioning} {open}>
 	{details.name}
@@ -60,10 +65,8 @@
 
 <style lang="scss">
 	.provider-button {
-		font-size: var(--size-xl);
 		position: relative;
 		display: flex;
-		flex-grow: 1;
 		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
@@ -84,8 +87,11 @@
 
 		&[data-disabled] {
 			pointer-events: none;
-			opacity: 0.5;
 			background-color: transparent;
+
+			.provider-icon {
+				opacity: 0.5;
+			}
 		}
 	}
 </style>

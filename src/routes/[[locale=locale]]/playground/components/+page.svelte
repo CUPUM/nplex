@@ -20,6 +20,11 @@
 </section>
 
 <style lang="scss">
+	section {
+		margin-top: 10rem;
+		align-self: center;
+	}
+
 	button {
 		padding: 1rem;
 		background-color: rgba(0, 0, 0, 0.2);
@@ -28,5 +33,6 @@
 		width: 100px;
 		height: 100px;
 		position: relative;
+		font-size: var(--size-2xl);
 	}
 </style>

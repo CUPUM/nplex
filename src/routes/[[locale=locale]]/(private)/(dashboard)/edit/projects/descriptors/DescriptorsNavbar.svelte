@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Dashboard from '$lib/components/Dashboard.svelte';
 	import DashboardNav, { type DashboardNavLink } from '$lib/components/DashboardNav.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import type { Icon } from 'lucide-svelte';
@@ -31,17 +30,14 @@
 	] as const satisfies Readonly<(DashboardNavLink & { icon?: ComponentType<Icon> })[]>;
 </script>
 
-<Dashboard>
-	<DashboardNav slot="nav" {links}>
-		<svelte:fragment slot="heading">
-			{$t.heading}
-		</svelte:fragment>
-		<svelte:fragment slot="link" let:link let:i>
-			{$t.nav[link.key]}
-		</svelte:fragment>
-	</DashboardNav>
-	<slot />
-</Dashboard>
+<DashboardNav {links}>
+	<svelte:fragment slot="heading">
+		{$t.heading}
+	</svelte:fragment>
+	<svelte:fragment slot="link" let:link let:i>
+		{$t.nav[link.key]}
+	</svelte:fragment>
+</DashboardNav>
 
 <style lang="scss">
 </style>

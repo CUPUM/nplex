@@ -49,7 +49,7 @@
 </script>
 
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { ripple } from '$lib/actions/ripple';
 	import { breakpoint } from '$lib/breakpoints/breakpoints';
@@ -71,13 +71,14 @@
 		FilePlus2,
 		Languages,
 		LogOut,
+		MailWarning,
 		MoreHorizontal,
 		Pencil,
 		Sliders,
 		User2,
 	} from 'lucide-svelte';
-	import { cubicIn, expoIn, expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
+	import { cubicIn, expoIn, expoOut, quadInOut } from 'svelte/easing';
+	import { crossfade, scale } from 'svelte/transition';
 	import {
 		getLoadingNewOrg,
 		getLoadingNewProject,
@@ -86,19 +87,23 @@
 	import LogoSvg from './LogoSvg.svelte';
 	import NavbarDrawer from './NavbarDrawer.svelte';
 
-	const MENU_OPTIONS = {
+	const dropdownMenuOptions = {
 		forceVisible: true,
 		positioning: {
 			overflowPadding: 16,
 			gutter: 6,
 			placement: 'bottom',
 		},
+		preventScroll: false,
+		portal: '#navbar',
 	} satisfies CreateDropdownMenuProps;
+
+	const exploreSections = ['projects', 'organizations'] as const;
 
 	const {
 		elements: { menu: localeMenu, item: localeItem, trigger: localeTrigger },
 		states: { open: localeOpen },
-	} = createDropdownMenu(MENU_OPTIONS);
+	} = createDropdownMenu(dropdownMenuOptions);
 
 	const {
 		elements: {
@@ -109,7 +114,7 @@
 			separator: userSeparator,
 		},
 		states: { open: userOpen },
-	} = createDropdownMenu(MENU_OPTIONS);
+	} = createDropdownMenu(dropdownMenuOptions);
 
 	const {
 		elements: { trigger: drawerTrigger, portalled: drawerPortalled, ...drawerElements },
@@ -120,16 +125,25 @@
 
 	const { element: newOrgElement, action: newOrgAction } = getLoadingNewOrg();
 
-	// const links = {
-	// 	about: $i18nlink('/about'),
-	// 	guides: $i18nlink('/guides'),
-	// 	projects: $i18nlink('/projects'),
-	// 	organizations: $i18nlink('/organizations')
-	// };
+	const [sendExplore, receiveExplore] = crossfade({
+		duration: 150,
+		easing: quadInOut,
+		fallback(node, params, intro) {
+			return scale(node, { start: 0.9 });
+		},
+	});
+
+	let scrollY = 0;
+
+	onNavigate(() => {
+		userOpen.set(false);
+	});
 </script>
 
+<svelte:window bind:scrollY />
+
 <!-- svelte-ignore a11y-missing-attribute -->
-<header class={$setout}>
+<header id="navbar" class={$setout} class:over={scrollY > 10}>
 	<div class="inner">
 		<!-- General nav -->
 		<nav id="site-group" class="group">
@@ -147,7 +161,7 @@
 				<a class="nav-button" use:navripple {...$i18nlink('/guides')}>{$t.guides}</a>
 			{:else}
 				<button class="nav-button square" use:melt={$drawerTrigger}>
-					<MoreHorizontal size="1.5em" />
+					<MoreHorizontal class="nav-button-icon" />
 				</button>
 				<div use:melt={$drawerPortalled}>
 					<NavbarDrawer {...drawerElements} open={drawerOpen} />
@@ -157,8 +171,18 @@
 		<!-- Exploration nav -->
 		{#if $breakpoint.md}
 			<nav id="explore-group" class="group">
-				<a class="nav-button" use:navripple {...$i18nlink('/projects')}>{$t.projects}</a>
-				<a class="nav-button" use:navripple {...$i18nlink('/organizations')}>{$t.organizations}</a>
+				{#each exploreSections as es}
+					<a class="nav-button" use:navripple {...$i18nlink(`/${es}`)}>
+						{#if $page.url.pathname.replace('/', '').startsWith(es)}
+							<div
+								class="needle"
+								in:receiveExplore={{ key: 'explore' }}
+								out:sendExplore={{ key: 'explore' }}
+							/>
+						{/if}
+						{$t[es]}
+					</a>
+				{/each}
 			</nav>
 		{/if}
 		<!-- User nav -->
@@ -166,6 +190,11 @@
 			{#if $page.data.user}
 				<button class="nav-button square" use:navripple use:melt={$userTrigger}>
 					<Avatar {...$page.data.user} />
+					{#if !$page.data.user.emailVerified}
+						<div class="badge">
+							<MailWarning />
+						</div>
+					{/if}
 				</button>
 				{#if $userOpen}
 					<menu
@@ -213,7 +242,7 @@
 							<User2 class="dropdown-icon" />
 							{$t.account}
 						</a>
-						<form use:enhance method="POST" action="/?/logout" id="logout-form" hidden />
+						<form method="POST" action="/logout" id="logout-form" hidden />
 						<button class="dropdown-item" type="submit" form="logout-form" use:melt={$userItem}>
 							<LogOut class="nav-button-icon" />
 							{$t.logout}
@@ -221,13 +250,22 @@
 					</menu>
 				{/if}
 			{:else}
-				<a class="nav-button square" use:navripple {...$i18nlink('/login')}>
+				{@const attrs = $i18nlink('/login')}
+				<a
+					class="nav-button square"
+					use:navripple
+					{...attrs}
+					data-current={attrs['data-current'] ||
+						$page.url.pathname.startsWith('/signup') ||
+						$page.url.pathname.startsWith('/reset-password') ||
+						undefined}
+				>
 					<User2 class="nav-button-icon" />
 				</a>
 			{/if}
 			{#if $breakpoint.lg}
 				<button class="nav-button" use:navripple use:melt={$localeTrigger}>
-					<Languages size="1.5em" />
+					<Languages class="nav-button-icon" />
 					<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
 				</button>
 				{#if $localeOpen}
@@ -277,9 +315,10 @@
 								easing: cubicIn,
 								opacity: 1,
 							}}
-							class="nav-button-icon mode-icon"
+							style:position="absolute"
+							style:transform-origin="center 200%"
 						>
-							<svelte:component this={MODES_DETAILS[$mode].icon} size="1.5em" />
+							<svelte:component this={MODES_DETAILS[$mode].icon} class="nav-button-icon" />
 						</div>
 					{/key}
 				</button>
@@ -290,9 +329,10 @@
 
 <style lang="scss">
 	header {
-		--button-size: 3.25rem;
-		--button-padding: 1.25em;
+		--button-size: 3rem;
+		--button-padding: 1.125em;
 		--button-radius: var(--radius-full);
+		z-index: 99;
 		position: sticky;
 		top: 0;
 		align-self: stretch;
@@ -300,10 +340,31 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		// backdrop-filter: blur(6px);
 
 		@include lg {
 			--button-radius: var(--input-radius);
 			padding: 0.75rem;
+		}
+
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			opacity: 0;
+			transition: opacity 0.5s;
+		}
+
+		&.over {
+			&::before {
+				opacity: 1;
+				background: linear-gradient(var(--color-neutral-100), transparent);
+				// background-color: var(--color-neutral-100);
+				@include dark {
+					background: linear-gradient(var(--color-neutral-900), transparent);
+					// background-color: var(--color-neutral-900);
+				}
+			}
 		}
 	}
 
@@ -349,6 +410,7 @@
 		letter-spacing: 0.02em;
 		outline: 1px solid transparent;
 		outline-offset: 4px;
+		backdrop-filter: blur(8px);
 		transition:
 			all 0.1s ease-out,
 			outline 0.2s ease-out,
@@ -362,10 +424,13 @@
 		&[data-state='open'] {
 			color: var(--color-primary-700);
 			background-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
-
 			@include dark {
 				color: var(--color-primary-500);
 				background-color: color-mix(in srgb, var(--color-primary-600) 10%, transparent);
+			}
+
+			:global(.nav-button-icon) {
+				stroke-width: 2.75;
 			}
 		}
 
@@ -376,8 +441,8 @@
 
 		&:focus-visible:not([data-current]) {
 			z-index: 1;
-			outline: 3px solid color-mix(in hsl, var(--color-primary-500) 50%, transparent);
-			outline-offset: 0;
+			outline: 2px solid color-mix(in hsl, var(--color-primary-500) 50%, transparent);
+			outline-offset: 2px;
 		}
 
 		&[data-state='open'] {
@@ -388,23 +453,29 @@
 			aspect-ratio: 1;
 			padding: 0;
 			overflow: hidden;
-
-			& :global(.nav-button-icon) {
-				position: absolute;
-			}
 		}
 
-		&[data-current] {
+		&[data-current]:not(#logo-button) {
 			cursor: default;
 			color: var(--color-primary-500);
-			box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary-500) 25%, transparent);
+			outline: 3px solid color-mix(in hsl, var(--color-primary-500) 50%, transparent);
+			outline-offset: 0;
+
+			:global(.nav-button-icon) {
+				stroke-width: 3;
+			}
 		}
 
 		&#logo-button {
-			box-shadow: none;
 			@include lg {
 				font-size: 1.5em;
 			}
+		}
+
+		& :global(.nav-button-icon) {
+			stroke-width: 2.5;
+			height: 1.25em;
+			transition: stroke-width 0.25s ease-out;
 		}
 	}
 
@@ -414,22 +485,40 @@
 	}
 
 	#explore-group {
+		z-index: 1;
 		--button-inset: 4px;
 		grid-column: explore;
 		justify-content: center;
-		background-color: rgba(0, 0, 0, 0.025);
+		background-color: rgba(0, 0, 0, 0.035);
 		border-radius: var(--button-radius);
 		padding: var(--button-inset);
+		backdrop-filter: blur(8px);
 		@include dark {
 			background-color: rgba(255, 255, 255, 0.05);
 		}
 
 		.nav-button {
-			&[data-current] {
-				background-color: var(--color-neutral-100);
-				@include dark {
-					background-color: var(--color-neutral-900);
-				}
+			backdrop-filter: unset;
+			span {
+				position: relative;
+			}
+			// &[data-current] {
+			// 	background-color: var(--color-neutral-100);
+			// 	@include dark {
+			// 		background-color: var(--color-neutral-900);
+			// 	}
+			// }
+		}
+
+		.needle {
+			position: absolute;
+			z-index: -1;
+			inset: 0;
+			border-radius: inherit;
+			background-color: var(--color-neutral-50);
+			// border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
+			@include dark {
+				background-color: var(--color-neutral-900);
 			}
 		}
 	}
@@ -437,10 +526,6 @@
 	#user-group {
 		grid-column: user;
 		justify-content: flex-end;
-	}
-
-	.mode-icon {
-		transform-origin: center 200%;
 	}
 
 	#locale-label {
@@ -468,18 +553,21 @@
 
 	.dropdown {
 		--button-radius: var(--radius-sm);
+		--dropdown-inset: 0.5rem;
 		display: flex;
 		flex-direction: column;
 		gap: 3px;
 		font-weight: 500;
-		background-color: white;
+		background-color: var(--color-neutral-50);
 		box-shadow: var(--shadow-lg);
-		padding: 0.75rem;
-		border-radius: var(--radius-lg);
+		padding: var(--dropdown-inset);
+		border-radius: calc(var(--button-radius) + var(--dropdown-inset));
 		transform-origin: top center;
 		z-index: 1;
+		border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-50) 20%, transparent);
 		@include dark {
-			background-color: var(--color-neutral-800);
+			background-color: var(--color-neutral-700);
+			border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-950) 20%, transparent);
 		}
 	}
 
@@ -494,13 +582,13 @@
 	.dropdown-subgroup {
 		display: flex;
 		flex-direction: column;
-		padding: 0.5rem;
+		padding: 0.25rem;
 		border-radius: var(--radius-md);
 		margin-bottom: 0.5rem;
 		background-color: var(--color-neutral-50);
 		border: var(--border-size) solid transparent;
 		@include dark {
-			background-color: var(--color-neutral-900);
+			background-color: var(--color-neutral-800);
 		}
 	}
 
@@ -514,33 +602,12 @@
 		gap: 1rem;
 		border-radius: var(--radius-sm);
 		transition: all 0.1s ease-out;
-		&::before {
-			--needle-size: 10px;
-			content: '';
-			position: absolute;
-			opacity: 0;
-			height: var(--needle-size);
-			aspect-ratio: 1;
-			border-radius: 2px;
-			background-color: var(--color-primary-500);
-			left: 0;
-			top: 50%;
-			transform: translate(3px, -50%);
-			transition: all 0.2s var(--ease-out-expo);
-		}
 
 		&[data-current] {
 			cursor: default;
 			color: var(--color-primary-600);
-			&::before {
-				opacity: 1;
-				transform: translate(0, -50%);
-			}
-			// background-color: var(--color-primary-600);
-
 			@include dark {
 				color: var(--color-primary-400);
-				// background-color: var(--color-primary-400);
 			}
 		}
 

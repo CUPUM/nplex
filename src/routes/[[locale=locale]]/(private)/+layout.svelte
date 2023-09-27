@@ -1,8 +1,7 @@
 <script lang="ts">
 </script>
 
-<!-- Template -->
-<!-- End template -->
+<slot />
 
 <style lang="scss">
 </style>

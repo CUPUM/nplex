@@ -1,6 +1,6 @@
-import { isLocale } from '$lib/i18n/validation';
+import { isSupportedOAuthProvider } from '$lib/auth/validation';
 import type { ParamMatcher } from '@sveltejs/kit';
 
 export const match = ((param) => {
-	return isLocale(param);
+	return isSupportedOAuthProvider(param);
 }) satisfies ParamMatcher;

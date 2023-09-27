@@ -2,6 +2,11 @@
 </script>
 
 <div class="dashboard">
+	{#if $$slots.header}
+		<header>
+			<slot name="header" />
+		</header>
+	{/if}
 	<nav>
 		<slot name="nav" />
 	</nav>
@@ -15,10 +20,10 @@
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-		gap: 0.5rem;
+		min-height: 200vh;
 		@include md {
 			flex-direction: row;
-			padding: 0.75rem;
+			padding-top: 0;
 		}
 	}
 
@@ -28,21 +33,24 @@
 		align-self: stretch;
 		overflow-x: auto;
 		@include md {
+			align-self: flex-start;
+			position: sticky;
+			top: var(--navbar-height);
 			overflow-x: hidden;
 			overflow-y: auto;
-			width: 150px;
-			padding: 1.5rem 0;
+			width: var(--sidebar-width);
+			// padding: 1.5rem 0;
 			flex-direction: column;
 		}
 	}
 
 	article {
 		flex: 1;
-		border-radius: var(--radius-lg);
-		padding: 2rem;
-		background-color: var(--color-neutral-50);
+		border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+		background: radial-gradient(at left top, var(--color-neutral-50), transparent);
 		@include dark {
-			background-color: var(--color-neutral-700);
+			// background-color: var(--color-neutral-800);
+			background: radial-gradient(at left top, var(--color-neutral-800), transparent);
 		}
 	}
 </style>

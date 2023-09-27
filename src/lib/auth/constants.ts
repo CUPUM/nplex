@@ -21,20 +21,34 @@ export const CREDENTIALS_PROVIDERS = {
 
 export type CredentialsProvider = ValueOf<typeof CREDENTIALS_PROVIDERS>;
 
-export const SOCIAL_PROVIDERS = {
+export const OAUTH_PROVIDERS = {
 	GITHUB: 'github',
 	FACEBOOK: 'facebook',
 	LINKEDIN: 'linkedin',
 	GOOGLE: 'google',
 } as const;
 
-export type SocialProvider = ValueOf<typeof SOCIAL_PROVIDERS>;
+export type OAuthProvider = ValueOf<typeof OAUTH_PROVIDERS>;
 
-export const SOCIAL_PROVIDERS_ARR = Object.values(SOCIAL_PROVIDERS);
+export const OAUTH_PROVIDERS_ARR = Object.values(OAUTH_PROVIDERS);
+
+/**
+ * Should contain only supported providers.
+ */
+export const OAUTH_PROVIDERS_STATE_COOKIE = {
+	[OAUTH_PROVIDERS.GITHUB]: 'github_oauth_state',
+	[OAUTH_PROVIDERS.GOOGLE]: 'google_oauth_state',
+} as const satisfies Partial<Record<OAuthProvider, string>>;
+
+export type SupportedOAtuhProvider = keyof typeof OAUTH_PROVIDERS_STATE_COOKIE;
+
+export const SUPPORTED_OAUTH_PROVIDERS_ARR = Object.keys(
+	OAUTH_PROVIDERS_STATE_COOKIE
+) as SupportedOAtuhProvider[];
 
 export const AUTH_PROVIDERS = {
 	...CREDENTIALS_PROVIDERS,
-	...SOCIAL_PROVIDERS,
+	...OAUTH_PROVIDERS,
 } as const;
 
 export type AuthProvider = ValueOf<typeof AUTH_PROVIDERS>;

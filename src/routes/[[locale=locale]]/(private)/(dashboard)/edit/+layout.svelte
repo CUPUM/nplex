@@ -8,7 +8,7 @@
 <aside>
 	<section>
 		<h2>My projects</h2>
-		{#await data.editables.projects then ep}
+		{#await data.streamed.editableProjects then ep}
 			<ul>
 				{#each ep as p}
 					<li>
@@ -23,7 +23,7 @@
 	</section>
 	<section>
 		<h2>My organizaations</h2>
-		{#await data.editables.organizations then eo}
+		{#await data.streamed.editableOrganizations then eo}
 			<ul>
 				{#each eo as o}
 					<li>

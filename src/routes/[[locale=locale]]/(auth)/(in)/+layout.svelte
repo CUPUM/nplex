@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SOCIAL_PROVIDERS_ARR } from '$lib/auth/constants';
+	import { OAUTH_PROVIDERS_ARR } from '$lib/auth/constants';
 	import SocialProviderButton from '$lib/components/social-icons/SocialProviderButton.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 
@@ -26,8 +26,8 @@
 		<section class="social">
 			<h2>{$t.social}</h2>
 			<fieldset class="providers">
-				{#each SOCIAL_PROVIDERS_ARR as provider}
-					<SocialProviderButton {provider} />
+				{#each OAUTH_PROVIDERS_ARR as provider, i}
+					<SocialProviderButton {provider} {i} />
 				{/each}
 			</fieldset>
 		</section>
@@ -53,7 +53,7 @@
 		align-items: stretch;
 		gap: 2rem;
 		width: 100%;
-		max-width: 420px;
+		max-width: var(--width-center);
 	}
 
 	.social {
@@ -88,6 +88,8 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		gap: 1rem;
+		gap: 1em;
+		font-size: var(--size-lg);
+		justify-content: center;
 	}
 </style>
