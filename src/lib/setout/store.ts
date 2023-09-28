@@ -13,10 +13,10 @@ function createSetout() {
 	const last = SETOUT_DEFAULT;
 
 	const dataSetout = derived(page, ($page) => {
-		return $page.data?.setout ?? SETOUT_DEFAULT;
+		return $page.data?.setout ?? undefined;
 	});
 
-	const store = writable<Setout>(SETOUT_DEFAULT, function start(_set) {
+	const store = writable<Setout | undefined>(undefined, function start(_set) {
 		const unsub = dataSetout.subscribe((v) => {
 			_set(v);
 			return function stop() {

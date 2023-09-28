@@ -21,39 +21,54 @@ export function createBreakpointQuery(breakpoint: Breakpoint) {
 		: undefined;
 }
 
-const init = BREAKPOINTS_ARR.reduce(
-	(acc, bp) => {
-		const q = createBreakpointQuery(bp);
-		acc[bp] = q?.matches ?? false;
-		return acc;
-	},
-	{} as Record<Breakpoint, boolean>
-);
+// const init = BREAKPOINTS_ARR.reduce(
+// 	(acc, bp) => {
+// 		const q = createBreakpointQuery(bp);
+// 		acc[bp] = q?.matches ?? false;
+// 		return acc;
+// 	},
+// 	{} as Record<Breakpoint, boolean>
+// );
 
 /**
  * Non-exclusive breapoint media query matches. Non-exclusive means that multiple conditions can be
  * matched, so be sure to use exclusionary if/elseif statements to avoid conflicting co-valid
  * conditions.
  */
-export const breakpoint = readable(init, function start(set, update) {
-	const stoppers = BREAKPOINTS_ARR.map((bp) => {
-		const q = createBreakpointQuery(bp);
-		if (!q) {
-			return false;
-		}
-		function handleChange(e: MediaQueryList | MediaQueryListEvent) {
-			update((prev) => ({ ...prev, [bp]: e.matches }));
-		}
-		function stop() {
-			q?.removeEventListener('change', handleChange);
-		}
-		q.addEventListener('change', handleChange);
-		handleChange(q);
-		return stop;
-	});
-	return function stop() {
-		stoppers.forEach((s) => {
-			s && s();
+export const breakpoint = readable<Record<Breakpoint, boolean> | undefined>(
+	undefined,
+	function start(set, update) {
+		const stoppers = BREAKPOINTS_ARR.map((bp) => {
+			const q = createBreakpointQuery(bp);
+			if (!q) {
+				return false;
+			}
+			function handleChange(e: MediaQueryList | MediaQueryListEvent) {
+				update((prev) => {
+					if (!prev) {
+						prev = BREAKPOINTS_ARR.reduce(
+							(acc, bp) => {
+								const q = createBreakpointQuery(bp);
+								acc[bp] = q?.matches ?? false;
+								return acc;
+							},
+							{} as Record<Breakpoint, boolean>
+						);
+					}
+					return { ...prev, [bp]: e.matches };
+				});
+			}
+			function stop() {
+				q?.removeEventListener('change', handleChange);
+			}
+			q.addEventListener('change', handleChange);
+			handleChange(q);
+			return stop;
 		});
-	};
-});
+		return function stop() {
+			stoppers.forEach((s) => {
+				s && s();
+			});
+		};
+	}
+);
