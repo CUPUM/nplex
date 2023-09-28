@@ -9,9 +9,9 @@ export function defineContext<T>(key: unknown) {
 	function set(context: T) {
 		return setContext<T>(key, context);
 	}
-	function get() {
+	function get<R extends boolean>(required?: R): R extends true ? T : T | undefined {
 		const ctx = getContext<T>(key);
-		if (!ctx) {
+		if (!ctx && required) {
 			throw new Error(
 				`No context found for key ${key}. Please make sure you are calling getContext inside a children of a component that uses setContext with that key.`
 			);

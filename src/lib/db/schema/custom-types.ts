@@ -83,19 +83,21 @@ export const identity = customType<{
 /**
  * Locale code custom type.
  */
-export const locale = customType<{ data: Locale }>({
+export const locale = customType<{ data: Locale; driverData: string }>({
 	dataType() {
 		return 'text';
 	},
 	fromDriver(value) {
-		// return value as Locale;
 		if (isLocale(value)) {
 			return value;
 		}
 		throw new Error(`Value returned by database driver (${value}) is not a valid locale`);
 	},
 	toDriver(value) {
-		return value;
+		if (isLocale(value)) {
+			return value;
+		}
+		throw new Error(`Tried to input wrong value for Locale (${value}).`);
 	},
 });
 

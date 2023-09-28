@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { i18nlink } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link';
 
 	export let data;
 </script>
@@ -13,7 +13,7 @@
 				{#each ep as p}
 					<li>
 						<!-- svelte-ignore a11y-missing-attribute -->
-						<a {...$i18nlink(`/edit/projects/${p.id}`)}>
+						<a {...$link(`/edit/projects/${p.id}`)}>
 							{p.id}
 						</a>
 					</li>
@@ -28,7 +28,7 @@
 				{#each eo as o}
 					<li>
 						<!-- svelte-ignore a11y-missing-attribute -->
-						<a {...$i18nlink(`/edit/organizations/${o.id}`)}>
+						<a {...$link(`/edit/organizations/${o.id}`)}>
 							{o.id}
 						</a>
 					</li>

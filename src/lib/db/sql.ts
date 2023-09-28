@@ -77,6 +77,10 @@ export function jsonAgg<T extends SQL>(raw: T) {
 	return sql<InferSQLDataType<T>[]>`json_agg(${raw})`;
 }
 
+export function arrayAgg<T extends SQL | InferSelectModel<AnyTable>>(raw: T) {
+	return sql<T extends SQL ? InferSQLDataType<T>[] : T[]>`array_agg(${raw})`;
+}
+
 /**
  * Since it is a json method, it should return an unwrapped (raw) type instead of an SQL wrapped
  * type.

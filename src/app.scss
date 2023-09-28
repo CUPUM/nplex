@@ -105,27 +105,27 @@
 	--shadow-lg: 0 10px 24px -12px rgba(0, 6, 12, 0.2);
 	--shadow-xl: 0 18px 36px -20px rgba(0, 6, 12, 0.22);
 	--shadow-2xl: 0 32px 64px -36px rgba(0, 6, 12, 0.25);
-	// Miscs
+	// Effects (transitions and transforms)
 	--fx-scale: 0.96;
 	--fx-duration-out: 0.15s;
-	--input-size: 3.5em;
-	--input-padding: 1.25em;
-	--input-radius: var(--radius-md);
-	--border-size: 1.25px;
-	--group-inset: 5px;
+	// Base values for io elements and others
+	--base-size: 3.5em;
+	--base-padding: 1.25em;
+	--base-radius: var(--radius-md);
+	--base-border-size: 1.25px;
+	--base-inset: 3px;
+	// Component-specific
 	--navbar-height: 72px;
-	--sidebar-width: 175px;
-	// Dashboard specific miscs
 	--dashboard-sidebar-width: 175px;
 	// Root style
 	position: relative;
 	font-size: 100%;
 	font-family: var(--font-main);
 	overflow-x: hidden;
-	color: var(--color-neutral-700);
-	background-color: var(--color-neutral-100);
-	transition: all 0.1s ease-out;
 	accent-color: var(--color-primary-500);
+	color: var(--color-neutral-700);
+	background-color: var(--color-neutral-50);
+	transition: all 0.1s ease-out;
 
 	&[data-mode='dark'] {
 		color: var(--color-neutral-300);
@@ -188,9 +188,9 @@ Button.
 	justify-content: flex-start;
 	gap: 0.75em;
 	font-weight: 450;
-	padding: 0 var(--input-padding);
-	height: var(--input-size);
-	border-radius: var(--input-radius);
+	padding: 0 var(--base-padding);
+	height: var(--base-size);
+	border-radius: var(--base-radius);
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	transition: all var(--fx-duration-out) ease-out;
@@ -248,7 +248,7 @@ Button.
 	}
 
 	&.round {
-		--input-radius: var(--radius-full);
+		--base-radius: var(--radius-full);
 	}
 
 	/* Default variant */
@@ -272,7 +272,8 @@ Button.
 	/* Outlined variant */
 	&.outlined {
 		color: var(--color-neutral-800);
-		border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+		border: var(--base-border-size) solid
+			color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 		@include global-dark {
 			color: var(--color-neutral-200);
 		}
@@ -280,11 +281,11 @@ Button.
 		&:focus-visible {
 			color: var(--color-neutral-950);
 			background-color: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
-			border: var(--border-size) solid transparent;
+			border: var(--base-border-size) solid transparent;
 			@include global-dark {
 				color: var(--color-neutral-50);
 				background-color: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
-				border: var(--border-size) solid transparent;
+				border: var(--base-border-size) solid transparent;
 			}
 		}
 	}
@@ -473,16 +474,16 @@ Text input
 */
 
 .input {
-	height: var(--input-size);
-	padding: 0 var(--input-padding);
-	border-radius: var(--input-radius);
+	height: var(--base-size);
+	padding: 0 var(--base-padding);
+	border-radius: var(--base-radius);
 	background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 
 	&:hover,
 	&:focus-visible {
-		box-shadow: 0 0 0 var(--border-size) rgba(0, 0, 0, 0.1);
+		box-shadow: 0 0 0 var(--base-border-size) rgba(0, 0, 0, 0.1);
 		@include global-dark {
-			box-shadow: 0 0 0 var(--border-size) rgba(255, 255, 255, 0.1);
+			box-shadow: 0 0 0 var(--base-border-size) rgba(255, 255, 255, 0.1);
 		}
 	}
 	&:focus,
@@ -514,12 +515,13 @@ Text input
 			position: absolute;
 			inset: 0;
 			border-radius: inherit;
-			border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+			border: var(--base-border-size) solid
+				color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
 		}
 	}
 }
 
 textarea.input {
-	padding-block: calc(var(--input-padding) - 0.25em);
+	padding-block: calc(var(--base-padding) - 0.25em);
 	line-height: 1.5em;
 }

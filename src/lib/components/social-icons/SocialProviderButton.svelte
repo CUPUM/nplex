@@ -4,7 +4,7 @@
 	import { ripple } from '$lib/actions/ripple';
 	import type { OAuthProvider } from '$lib/auth/constants';
 	import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
-	import { i18nlink } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link';
 	import { createTooltip, melt } from '@melt-ui/svelte';
 	import { scale } from 'svelte/transition';
 	import TooltipContent from '../TooltipContent.svelte';
@@ -44,7 +44,7 @@
 
 <!-- svelte-ignore a11y-missing-attribute -->
 <a
-	{...$i18nlink(url)}
+	{...$link(url)}
 	class="provider-button"
 	use:ripple
 	use:loadingAction
@@ -71,13 +71,14 @@
 		align-items: center;
 		justify-content: center;
 		padding: 1em;
-		border-radius: var(--input-radius);
-		border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
+		border-radius: var(--base-radius);
+		border: var(--base-border-size) solid
+			color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
 		transition: all 0.1s ease-out;
 
 		&:hover,
 		&:focus-visible {
-			border: var(--border-size) solid transparent;
+			border: var(--base-border-size) solid transparent;
 			background-color: var(--color-neutral-50);
 			// box-shadow: var(--shadow-lg);
 			@include dark {

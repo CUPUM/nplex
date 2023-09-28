@@ -46,7 +46,7 @@
 			top: var(--navbar-height);
 			overflow-x: hidden;
 			overflow-y: auto;
-			width: var(--sidebar-width);
+			width: var(--dashboard-sidebar-width);
 			// padding: 1.5rem 0;
 			flex-direction: column;
 		}
@@ -58,7 +58,7 @@
 		border-radius: var(--radius-lg) 0 0 var(--radius-lg);
 		// border-color: var(--color-neutral-200);
 		// border-style: solid;
-		// border-width: var(--border-size);
+		// border-width: var(--base-border-size);
 		// border-right: none;
 		// background: radial-gradient(at 25% 0%, var(--db-bg) 0%, transparent),
 		// 	radial-gradient(at 0% 100%, var(--db-bg) 0%, transparent 50%);

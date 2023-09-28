@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
-	import { i18nlink } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { Folders, Home, Settings2, UserSquare2, type Icon } from 'lucide-svelte';
 	import type { ComponentType } from 'svelte';
@@ -44,7 +44,7 @@
 	<nav>
 		{#each accountLinks as section, i (section.key)}
 			<!-- svelte-ignore a11y-missing-attribute -->
-			{@const linkAttributes = $i18nlink(`/i/${section.subpath}`)}
+			{@const linkAttributes = $link(`/i/${section.subpath}`)}
 			<a
 				class="button ghost"
 				{...linkAttributes}

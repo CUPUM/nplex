@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { createLoading } from '$lib/actions/loading';
 	import TranslationsTabs from '$lib/components/TranslationsTabs.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { Check, Plus, X } from 'lucide-svelte';
+	import { Check, Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { crossfade, fly, scale } from 'svelte/transition';
@@ -24,9 +25,20 @@
 
 	export let data;
 
-	const { form, enhance, submitting, delayed, constraints, tainted } = superForm(data.form, {
+	const { form, enhance, submitting, constraints, tainted } = superForm(data.form, {
 		dataType: 'json',
 	});
+
+	const {
+		action: submittingAction,
+		state: submittingState,
+		element: submittingElement,
+	} = createLoading({
+		state: submitting,
+	});
+
+	$: console.log($submitting);
+	$: console.log($submitting);
 
 	const [sendType, receiveType] = crossfade({
 		duration: 150,
@@ -45,19 +57,7 @@
 				out:sendType={{ key: type.id }}
 				animate:flip={{ duration: (l) => 150 + l / 10 }}
 			>
-				<TranslationsTabs let:locale>
-					<svelte:fragment slot="legend">
-						{type.id}
-					</svelte:fragment>
-					<svelte:fragment slot="menu">
-						<button
-							class="button ghost round danger"
-							type="submit"
-							formaction="?/delete&type_id={type.id}"
-						>
-							<X class="button-icon" />
-						</button>
-					</svelte:fragment>
+				<TranslationsTabs legend={type.id} deleteFormaction="?/delete&typeId={type.id}" let:locale>
 					<label>
 						<span>
 							{$t.title}
@@ -66,7 +66,6 @@
 							class="input"
 							type="text"
 							bind:value={$form.types[i].translations[locale].title}
-							name="{type.id}.{locale}.title"
 						/>
 					</label>
 					<label>
@@ -85,7 +84,7 @@
 			{$t.create}
 		</button>
 		{#if $tainted}
-			<button class="button cta" in:fly={{ y: 6 }}>
+			<button class="button cta" in:fly={{ y: 6 }} {...submittingElement} use:submittingAction>
 				<Check class="button-icon" />
 				{$t.save}
 			</button>
@@ -108,7 +107,7 @@
 		container-type: inline-size;
 		max-width: var(--width-md);
 		padding: 3rem 1rem;
-		gap: 3rem;
+		gap: 1rem;
 		align-self: center;
 		width: 100%;
 	}
@@ -133,6 +132,8 @@
 	}
 
 	menu {
+		position: sticky;
+		bottom: 2rem;
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
@@ -140,5 +141,10 @@
 		align-self: stretch;
 		gap: 0.5rem;
 		font-size: var(--size-sm);
+
+		.button {
+			backdrop-filter: blur(8px);
+			// box-shadow: var(--shadow-md);
+		}
 	}
 </style>

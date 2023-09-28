@@ -14,17 +14,17 @@
 	import { LOCALES_ARR, LOCALES_DETAILS, type Locale } from '$lib/i18n/constants';
 	import { defineContext } from '$lib/utils/context';
 	import { createTabs, melt } from '@melt-ui/svelte';
+	import { X } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import type { Writable } from 'svelte/store';
 	import { crossfade } from 'svelte/transition';
 
 	export let locales: Locale[] = LOCALES_ARR;
+	export let legend: string;
+	export let deleteFormaction: string | undefined = undefined;
 
 	let defaultValue = $page.data.locale;
-	let ctxLocale: ReturnType<typeof getTranslationsTabsLocale> | undefined = undefined;
-	try {
-		ctxLocale = getTranslationsTabsLocale();
-	} catch (error) {}
+	let ctxLocale = getTranslationsTabsLocale();
 
 	if (ctxLocale && $ctxLocale && locales.indexOf($ctxLocale) > -1) {
 		defaultValue = $ctxLocale;
@@ -40,11 +40,7 @@
 
 <fieldset use:melt={$root}>
 	<div class="header">
-		{#if $$slots.legend}
-			<legend>
-				<slot name="legend" />
-			</legend>
-		{/if}
+		<legend>{legend}</legend>
 		<menu class="locale-switch" use:melt={$list}>
 			{#each locales as locale}
 				<button
@@ -60,11 +56,13 @@
 				</button>
 			{/each}
 		</menu>
-		{#if $$slots.menu}
-			<menu class="menu">
-				<slot name="menu" />
-			</menu>
-		{/if}
+		<menu class="menu">
+			{#if deleteFormaction}
+				<button class="button ghost round danger" type="submit" formaction={deleteFormaction}>
+					<X class="button-icon" />
+				</button>
+			{/if}
+		</menu>
 	</div>
 	{#each locales as locale}
 		<section class="content" lang={locale} use:melt={$content(locale)}>
@@ -80,34 +78,49 @@
 		gap: 0.75rem;
 		padding: 1rem;
 		background-color: var(--color-neutral-50);
-		transition: box-shadow 0.25s;
-		border-radius: var(--radius-xl);
+		transition: all 0.1s;
+		border-radius: var(--radius-lg);
 		@include dark {
 			background-color: var(--color-neutral-800);
 		}
-		&:hover,
+		&:hover {
+			@include light {
+				box-shadow: var(--shadow-sm);
+			}
+			@include dark {
+				background-color: var(--color-neutral-900);
+			}
+		}
 		&:focus-within {
-			box-shadow:
-				// 0 0 0 1px color-mix(in srgb, var(--color-neutral-500) 10%, transparent),
-				var(--shadow-md);
+			background-color: white;
+			@include dark {
+				background-color: var(--color-neutral-950);
+			}
 		}
 	}
 
 	.header {
-		--input-size: 2.75em;
+		--base-size: 2.75em;
 		display: flex;
 		flex-direction: row;
-		gap: 1rem;
+		gap: 0.5rem;
 		align-items: flex-end;
 		justify-content: stretch;
 		font-size: var(--size-xs);
 	}
 
 	legend {
-		padding-bottom: 0.6rem;
-		text-indent: 1em;
+		align-self: stretch;
+		display: flex;
+		align-items: center;
+		padding-inline: 1em;
 		font-size: var(--size-sm);
 		font-weight: 500;
+		border-radius: var(--radius-full);
+		background-color: var(--color-neutral-200);
+		@include dark {
+			background-color: var(--color-neutral-700);
+		}
 	}
 
 	.menu {
@@ -137,7 +150,7 @@
 	.locale-button {
 		z-index: 0;
 		position: relative;
-		height: calc(var(--input-size) - 2 * var(--tab-list-padding));
+		height: calc(var(--base-size) - 2 * var(--tab-list-padding));
 		padding: 0 1em;
 		font-weight: 500;
 		display: flex;

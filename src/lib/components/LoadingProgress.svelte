@@ -46,10 +46,10 @@
 
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
-	import { cubicOut } from 'svelte/easing';
+	import { circOut, cubicOut } from 'svelte/easing';
 	import { tweened, type Tweened } from 'svelte/motion';
 	import { get } from 'svelte/store';
-	import { fade } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 
 	export let indeterminate = false;
 	export let progress: number | undefined = undefined;
@@ -66,7 +66,7 @@
 </script>
 
 {#if value}
-	<progress {value} max={100} out:fade={{ duration: 200 }} />
+	<progress {value} max={100} out:slide={{ axis: 'x', duration: 350, easing: circOut }} />
 {/if}
 
 <style lang="scss">
@@ -77,8 +77,8 @@
 		-webkit-appearance: none;
 		position: fixed;
 		top: 2px;
-		left: 2px;
 		right: 2px;
+		width: calc(100% - 4px);
 		height: var(--progress-size);
 		border-radius: var(--progress-size);
 		accent-color: var(--progress-color);

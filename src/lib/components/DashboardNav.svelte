@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import { ripple } from '$lib/actions/ripple';
-	import { i18nlink } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link';
 	import type { Icon } from 'lucide-svelte';
 	import type { ComponentType } from 'svelte';
 	import { expoInOut, expoOut } from 'svelte/easing';
@@ -28,9 +28,9 @@
 		</span>
 	{/if}
 	<div class="links">
-		{#each links as link, i (link.key)}
+		{#each links as l, i (l.key)}
 			<!-- svelte-ignore a11y-missing-attribute -->
-			{@const attr = $i18nlink(link.path)}
+			{@const attr = $link(l.path)}
 			<a
 				class="dashboard-link"
 				{...attr}
@@ -41,10 +41,10 @@
 				}}
 				in:scale|global={{ start: 0.95, opacity: 0, delay: i * 75, duration: 750 }}
 			>
-				{#if link.icon}
-					<svelte:component this={link.icon} class="dashboard-icon" />
+				{#if l.icon}
+					<svelte:component this={l.icon} class="dashboard-icon" />
 				{/if}
-				<slot name="link" {link} {i} />
+				<slot name="link" link={l} {i} />
 				{#if attr['data-current']}
 					<div class="needle" in:receive={{ key: 'needle' }} out:send={{ key: 'needle' }} />
 				{/if}

@@ -1,6 +1,6 @@
 import Loading from '$lib/components/Loading.svelte';
 import { outroAndDestroy } from '$lib/utils/outro-and-destroy';
-import type { ComponentProps } from 'svelte';
+import { onDestroy, type ComponentProps } from 'svelte';
 import { derived, get, writable, type Readable } from 'svelte/store';
 
 export function loading(
@@ -12,8 +12,9 @@ export function loading(
 	let comp: Loading | undefined;
 	const { state, ...props } = options ?? {};
 	if (state) {
+		console.log('State is true!');
 		new Loading({
-			intro: false,
+			intro: true,
 			target: node,
 			props,
 		});
@@ -35,8 +36,11 @@ export function loading(
 			}
 		},
 		destroy() {
-			// We do not use outroAndDestroy here to avoid blocking navigations.
-			comp && comp.$destroy();
+			if (comp) {
+				outroAndDestroy(comp);
+				// We do not use outroAndDestroy here to avoid blocking navigations.
+				// comp.$destroy();
+			}
 		},
 	} satisfies SvelteActionReturnType;
 }
@@ -53,20 +57,18 @@ export function createLoading({
 	state?: boolean | Readable<boolean> | Readable<boolean>[];
 	disable?: boolean;
 } & ComponentProps<Loading> = {}) {
-	const aggregatedState = Array.isArray(state)
+	const optionsState = Array.isArray(state)
 		? derived(state, ($state) => {
 				return $state.every((s) => s);
 		  })
 		: state;
 
-	const init = typeof aggregatedState === 'boolean' ? aggregatedState : get(aggregatedState);
+	const _state = writable(typeof optionsState === 'boolean' ? optionsState : get(optionsState));
 
-	const _state = writable(init);
-
-	const unsubCreate =
-		typeof aggregatedState === 'boolean'
+	const unsubOptionsState =
+		typeof optionsState === 'boolean'
 			? undefined
-			: aggregatedState.subscribe((v) => {
+			: optionsState.subscribe((v) => {
 					_state.set(v);
 			  });
 
@@ -79,18 +81,21 @@ export function createLoading({
 	});
 
 	function action(node: HTMLElement) {
-		const a = loading(node, { ...props, state: get(_state) });
-		const unsub = _state.subscribe((v) => {
-			a.update({ ...props, state: v });
+		const loadingAction = loading(node, { ...props, state: get(_state) });
+		const unsub = _state.subscribe((state) => {
+			loadingAction.update({ ...props, state });
 		});
 		return {
 			destroy() {
 				unsub();
-				unsubCreate && unsubCreate();
-				a.destroy();
+				loadingAction.destroy();
 			},
 		} satisfies SvelteActionReturnType;
 	}
+
+	onDestroy(() => {
+		unsubOptionsState && unsubOptionsState();
+	});
 
 	return {
 		state: _state,

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createLoading } from '$lib/actions/loading';
 	import { ripple } from '$lib/actions/ripple';
-	import { i18nlink } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -85,12 +85,12 @@
 </form>
 <div class="links">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="link" {...$i18nlink('/signup')} in:fade|global>
+	<a class="link" {...$link('/signup')} in:fade|global>
 		<UserPlus2 class="link-icon" />
 		{$t.signup}
 	</a>
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="link" {...$i18nlink('/reset-password')} in:fade|global>
+	<a class="link" {...$link('/reset-password')} in:fade|global>
 		<HelpCircle class="link-icon" />
 		{$t.forgot}
 	</a>

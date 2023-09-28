@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
-	import { i18nlink } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 
 	const t = createTranslations({
@@ -16,10 +16,10 @@
 </script>
 
 <article>
-	<a class="create" {...$i18nlink('/new/project')} use:ripple>
+	<a class="create" {...$link('/new/project')} use:ripple>
 		{$t.createProject}
 	</a>
-	<a class="create" {...$i18nlink('/new/organization')} use:ripple>
+	<a class="create" {...$link('/new/organization')} use:ripple>
 		{$t.createOrganization}
 	</a>
 </article>

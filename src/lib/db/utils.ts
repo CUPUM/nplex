@@ -1,4 +1,4 @@
-import { LOCALES } from '$lib/i18n/constants';
+import { LOCALES, LOCALES_ARR, type Locale } from '$lib/i18n/constants';
 import { strictRecord } from '$lib/utils/zod';
 import type { AnyColumn, AnyTable, SQL } from 'drizzle-orm';
 import { PgTable, getTableConfig } from 'drizzle-orm/pg-core';
@@ -56,16 +56,6 @@ export function getTableName<T extends PgTable>(
 	return `${qo}${withSchema ? `${tableConfig.schema}${qi}.` : ''}${qi}${tableConfig.name}${qo}`;
 }
 
-// /**
-//  * Helper to seamlessly combine the functionalities of `row_to_json` and `json_build_object`in a
-//  * manner similar to drizzle's SelectBuilder.
-//  */
-// export function jsonFromFields<T extends AnyTable>(fields: T): SQL<InferSelectModel<T>>;
-// export function jsonFromFields<T extends FieldSelectRecord>(fields: T): InferRecordDataTypes<T>;
-// export function jsonFromFields(fields: AnyTable | FieldSelectRecord) {
-// 	return fields instanceof Table ? rowToJson(fields) : jsonBuildObject(fields);
-// }
-
 /**
  * Create a translations dictionnary.
  */
@@ -96,13 +86,19 @@ export function withTranslationsSchema<
 	return schema.merge(z.object({ translations: translationsSchema(translationSchema) }));
 }
 
-// /**
-//  * Extend a given ressource table's relations with its corresponding translations table. The
-//  * established relations should be mapped isomorphically in {@link withTranslationsSchema}.
-//  */
-// export function withTranslationsRelations<R extends Parameters<typeof relations>[1]>(
-// 	relationsConfig: R
-// ) {
-// 	const defineRelations: Parameters<typeof relations>[1] = relationHelpers;
-// 	return;
-// }
+/**
+ * Function to reduce a given array of entries augmented with translations records into two arrays.
+ */
+export function extractTranslations<T, D extends Omit<Record<string, unknown>, 'translations'>>(
+	data: (D & { translations: Record<Locale, T> })[]
+) {
+	return data.reduce(
+		(acc, curr) => {
+			const { translations, ...rest } = curr;
+			LOCALES_ARR.forEach((t) => acc[1].push(translations[t]));
+			acc[0].push(rest as unknown as D);
+			return acc;
+		},
+		<[D[], T[]]>[[], []]
+	);
+}

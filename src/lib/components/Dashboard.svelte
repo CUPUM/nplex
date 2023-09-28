@@ -38,7 +38,7 @@
 			top: var(--navbar-height);
 			overflow-x: hidden;
 			overflow-y: auto;
-			width: var(--sidebar-width);
+			width: var(--dashboard-sidebar-width);
 			// padding: 1.5rem 0;
 			flex-direction: column;
 		}

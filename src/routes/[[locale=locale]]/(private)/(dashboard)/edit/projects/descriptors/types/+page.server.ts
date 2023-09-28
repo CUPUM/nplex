@@ -1,23 +1,15 @@
 import { USER_ROLES } from '$lib/auth/constants';
 import { withRole } from '$lib/auth/guard.server';
-import { projectTypeInsertSchema, projectTypeTranslationInsertSchema } from '$lib/db/crud';
+import { projectTypesUpdateSchema } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
 import { locales } from '$lib/db/schema/i18n';
 import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public';
 import { boolean, excluded } from '$lib/db/sql';
-import { translationsAgg, withTranslationsSchema } from '$lib/db/utils';
-import { LOCALES_ARR } from '$lib/i18n/constants';
+import { extractTranslations, translationsAgg } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import { and, eq, getTableColumns } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
-import { z } from 'zod';
-
-const typesUpdateSchema = z.object({
-	types: z.array(
-		withTranslationsSchema(projectTypeInsertSchema, projectTypeTranslationInsertSchema)
-	),
-});
 
 export const load = async (event) => {
 	await withRole(event, USER_ROLES.ADMIN);
@@ -39,9 +31,7 @@ export const load = async (event) => {
 		.groupBy(projectTypes.id)
 		.orderBy(projectTypes.index);
 
-	const form = await superValidate({ types }, typesUpdateSchema);
-
-	// console.log(JSON.stringify(form.data, undefined, 2));
+	const form = await superValidate({ types }, projectTypesUpdateSchema);
 
 	return { form, types };
 };
@@ -58,7 +48,7 @@ export const actions = {
 	},
 	delete: async (event) => {
 		await withRole(event, USER_ROLES.ADMIN);
-		const id = event.url.searchParams.get('type_id');
+		const id = event.url.searchParams.get('typeId');
 		if (!id) {
 			return fail(STATUS_CODES.BAD_REQUEST);
 		}
@@ -71,15 +61,14 @@ export const actions = {
 	},
 	update: async (event) => {
 		await withRole(event, USER_ROLES.ADMIN);
-		const form = await superValidate(event, typesUpdateSchema);
-		console.log(form);
+		const form = await superValidate(event, projectTypesUpdateSchema);
 		if (!form.valid) {
+			console.info(form);
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
 		try {
 			await dbpool.transaction(async (tx) => {
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
-				const pt = form.data.types.map(({ translations, ...t }, index) => ({ ...t, index }));
+				const [pt, ptt] = extractTranslations(form.data.types);
 				await tx
 					.insert(projectTypes)
 					.values(pt)
@@ -90,12 +79,9 @@ export const actions = {
 							index: excluded(projectTypes.index),
 						},
 					});
-				const tt = form.data.types.flatMap((t) =>
-					LOCALES_ARR.map((locale) => ({ ...t.translations[locale], id: t.id, locale }))
-				);
 				await tx
 					.insert(projectTypesTranslations)
-					.values(tt)
+					.values(ptt)
 					.onConflictDoUpdate({
 						target: [projectTypesTranslations.id, projectTypesTranslations.locale],
 						set: {
@@ -107,7 +93,7 @@ export const actions = {
 			return { form };
 		} catch (e) {
 			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });
+			throw error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur serveur' });
 		}
 	},
 };

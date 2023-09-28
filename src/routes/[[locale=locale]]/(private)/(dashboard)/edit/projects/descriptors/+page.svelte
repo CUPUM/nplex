@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { i18nlink } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import type { StoresValues } from 'svelte/store';
 
@@ -36,7 +36,7 @@
 	{#each descriptors as d}
 		<li>
 			<!-- svelte-ignore a11y-missing-attribute -->
-			<a {...$i18nlink(d.path)}>{$t[d.titleKey]}</a>
+			<a {...$link(d.path)}>{$t[d.titleKey]}</a>
 		</li>
 	{/each}
 </ul>
@@ -52,6 +52,7 @@
 	li {
 		padding: 2rem;
 		border-radius: var(--radius-sm);
-		border: var(--border-size) solid color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
+		border: var(--base-border-size) solid
+			color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
 	}
 </style>
