@@ -191,6 +191,58 @@
 			{/if}
 			<!-- User nav -->
 			<menu id="user-group" class="group" in:flyin|global={2}>
+				{#if $breakpoint.lg}
+					<NavbarButton melt={localeTrigger}>
+						<Languages class="button-icon" />
+						<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
+					</NavbarButton>
+					{#if $localeOpen}
+						<NavbarMenu melt={localeMenu}>
+							{#each LOCALES_ARR as locale}
+								<NavbarMenuButton
+									{...$i18nswitch(locale)}
+									melt={localeItem}
+									data-current={$page.data.locale === locale ? true : undefined}
+								>
+									{LOCALES_DETAILS[locale].name}
+								</NavbarMenuButton>
+							{/each}
+						</NavbarMenu>
+					{/if}
+					<NavbarButton
+						square
+						on:pointerdown={mode.toggle}
+						on:keydown={(e) => {
+							if (e.key === KEYS.SPACE || e.key === KEYS.ENTER) {
+								mode.toggle();
+							}
+						}}
+					>
+						{#key $mode}
+							<div
+								in:transform={{
+									scale: 0.75,
+									rotate: [0, 0, -90],
+									duration: 500,
+									delay: 150,
+									easing: expoOut,
+									opacity: 1,
+								}}
+								out:transform={{
+									scale: 0.5,
+									rotate: [0, 0, 90],
+									duration: 250,
+									easing: cubicIn,
+									opacity: 1,
+								}}
+								style:position="absolute"
+								style:transform-origin="center 200%"
+							>
+								<svelte:component this={MODES_DETAILS[$mode].icon} class="button-icon" />
+							</div>
+						{/key}
+					</NavbarButton>
+				{/if}
 				{#if $page.data.user}
 					<NavbarButton square melt={userTrigger}>
 						<Avatar {...$page.data.user} />
@@ -248,58 +300,6 @@
 						square
 					>
 						<User2 class="button-icon" />
-					</NavbarButton>
-				{/if}
-				{#if $breakpoint.lg}
-					<NavbarButton melt={localeTrigger}>
-						<Languages class="button-icon" />
-						<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
-					</NavbarButton>
-					{#if $localeOpen}
-						<NavbarMenu melt={localeMenu}>
-							{#each LOCALES_ARR as locale}
-								<NavbarMenuButton
-									{...$i18nswitch(locale)}
-									melt={localeItem}
-									data-current={$page.data.locale === locale ? true : undefined}
-								>
-									{LOCALES_DETAILS[locale].name}
-								</NavbarMenuButton>
-							{/each}
-						</NavbarMenu>
-					{/if}
-					<NavbarButton
-						square
-						on:pointerdown={mode.toggle}
-						on:keydown={(e) => {
-							if (e.key === KEYS.SPACE || e.key === KEYS.ENTER) {
-								mode.toggle();
-							}
-						}}
-					>
-						{#key $mode}
-							<div
-								in:transform={{
-									scale: 0.75,
-									rotate: [0, 0, -90],
-									duration: 500,
-									delay: 150,
-									easing: expoOut,
-									opacity: 1,
-								}}
-								out:transform={{
-									scale: 0.5,
-									rotate: [0, 0, 90],
-									duration: 250,
-									easing: cubicIn,
-									opacity: 1,
-								}}
-								style:position="absolute"
-								style:transform-origin="center 200%"
-							>
-								<svelte:component this={MODES_DETAILS[$mode].icon} class="button-icon" />
-							</div>
-						{/key}
 					</NavbarButton>
 				{/if}
 			</menu>

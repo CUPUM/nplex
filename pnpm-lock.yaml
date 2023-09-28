@@ -124,8 +124,8 @@ devDependencies:
     specifier: ^2.0.1
     version: 2.0.1
   sveltekit-superforms:
-    specifier: ^1.7.2
-    version: 1.7.2(@sveltejs/kit@1.25.1)(svelte@4.2.1)(zod@3.22.2)
+    specifier: ^1.7.3
+    version: 1.7.3(@sveltejs/kit@1.25.1)(svelte@4.2.1)(zod@3.22.2)
   tslib:
     specifier: ^2.6.2
     version: 2.6.2
@@ -2072,7 +2072,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001541
-      electron-to-chromium: 1.4.532
+      electron-to-chromium: 1.4.534
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.0)
     dev: true
@@ -2548,8 +2548,8 @@ packages:
       semver: 7.5.4
     dev: false
 
-  /electron-to-chromium@1.4.532:
-    resolution: {integrity: sha512-piIR0QFdIGKmOJTSNg5AwxZRNWQSXlRYycqDB9Srstx4lip8KpcmRxVP6zuFWExWziHYZpJ0acX7TxqX95KBpg==}
+  /electron-to-chromium@1.4.534:
+    resolution: {integrity: sha512-ikY7wAMtMt3jTnHsHG0YLl4MKJiKz2tgidenGSNgwUX2StBLNZ8VCxflD9tZK/ceTs4j8gDC9+6LQQ6iGkK04g==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -4468,8 +4468,8 @@ packages:
       magic-string: 0.30.3
       periscopic: 3.1.0
 
-  /sveltekit-superforms@1.7.2(@sveltejs/kit@1.25.1)(svelte@4.2.1)(zod@3.22.2):
-    resolution: {integrity: sha512-3zhMynkNWCQF+af2NlsVhi5n03+NEnPy0jzL7EVO3aiYDlJ/9LY1GNI09Mac5UVlJDPS00oB8q3qQUhZSX/gSg==}
+  /sveltekit-superforms@1.7.3(@sveltejs/kit@1.25.1)(svelte@4.2.1)(zod@3.22.2):
+    resolution: {integrity: sha512-Wl7Sz3aO9qGZrMXNucRjrMdQGjZWqGbnSoAfPa2eWZe9oBo3cCcLm7PkeDOJHpO5RoCLiO78OYKO7smUQtjnMg==}
     peerDependencies:
       '@sveltejs/kit': 1.x
       svelte: 3.x || 4.x
