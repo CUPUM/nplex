@@ -41,7 +41,7 @@ export const breakpoint = readable<Record<Breakpoint, boolean> | undefined>(
 		const stoppers = BREAKPOINTS_ARR.map((bp) => {
 			const q = createBreakpointQuery(bp);
 			if (!q) {
-				return false;
+				return q;
 			}
 			function handleChange(e: MediaQueryList | MediaQueryListEvent) {
 				update((prev) => {

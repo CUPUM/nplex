@@ -42,6 +42,7 @@
 </script>
 
 <script lang="ts">
+	import { applyAction, enhance } from '$app/forms';
 	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { breakpoint } from '$lib/breakpoints/breakpoints';
@@ -139,13 +140,16 @@
 		return fly(node, { y: '-25%', duration: 750, easing: expoOut, delay: i * 50 });
 	}
 
+	onNavigate(() => {
+		userOpen.set(false);
+	});
+
 	onMount(() => {
 		mounted = true;
 	});
 
-	onNavigate(() => {
-		userOpen.set(false);
-	});
+	$: console.log($setout);
+	$: console.log($breakpoint);
 </script>
 
 <svelte:window bind:scrollY />
@@ -282,7 +286,17 @@
 								{$t.account}
 								<User2 class="button-icon" />
 							</NavbarMenuButton>
-							<form method="POST" action="/logout" id="logout-form" hidden />
+							<form
+								method="POST"
+								action="/?/logout"
+								id="logout-form"
+								hidden
+								use:enhance={({ formElement, formData, action, cancel }) => {
+									return async ({ result }) => {
+										await applyAction(result);
+									};
+								}}
+							/>
 							<NavbarMenuButton type="submit" form="logout-form" melt={userItem}>
 								{$t.logout}
 								<LogOut class="button-icon" />

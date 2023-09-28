@@ -1,6 +1,10 @@
+import { auth } from '$lib/auth/auth.server';
 import { dbpool } from '$lib/db/db.server';
 import { organizations, projects, projectsImages } from '$lib/db/schema/public';
 import { random } from '$lib/db/sql';
+import { createTranslations } from '$lib/i18n/translate';
+import { STATUS_CODES } from '$lib/utils/constants';
+import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
 export const load = async (event) => {
@@ -27,4 +31,27 @@ export const load = async (event) => {
 			organizations: editableOrganizations,
 		},
 	};
+};
+
+export const actions = {
+	logout: async (event) => {
+		const session = await event.locals.auth.validate();
+		const t = createTranslations(
+			{
+				fr: {
+					noSession: 'Aucune session trouvée.',
+				},
+				en: {
+					noSession: 'No session found.',
+				},
+			},
+			event
+		);
+		if (!session) {
+			return fail(STATUS_CODES.UNAUTHORIZED, { message: t.noSession });
+		}
+		await auth.invalidateSession(session.sessionId);
+		event.locals.auth.setSession(null);
+		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
+	},
 };
