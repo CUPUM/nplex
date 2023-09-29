@@ -35,8 +35,6 @@ export const load = async (event) => {
 		)
 		.groupBy(projectInterventionCategories.id);
 
-	// console.log(interventionCategories);
-
 	const interventions = await dbpool
 		.select({
 			...getTableColumns(projectInterventions),
@@ -52,8 +50,6 @@ export const load = async (event) => {
 			)
 		)
 		.groupBy(projectInterventions.id);
-
-	// console.log(interventions);
 
 	const form = await superValidate(
 		{ interventionCategories, interventions },

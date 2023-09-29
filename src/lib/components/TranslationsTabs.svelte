@@ -78,23 +78,25 @@
 		gap: 0.75rem;
 		padding: 1rem;
 		background-color: var(--color-neutral-50);
-		transition: all 0.1s;
+		transition:
+			all 0.1s,
+			background-color 0.25s;
 		border-radius: var(--radius-lg);
 		@include dark {
 			background-color: var(--color-neutral-800);
 		}
 		&:hover {
 			@include light {
-				box-shadow: var(--shadow-sm);
+				box-shadow: var(--shadow-md);
 			}
 			@include dark {
-				background-color: var(--color-neutral-900);
+				background-color: var(--color-neutral-950);
 			}
 		}
 		&:focus-within {
 			background-color: white;
 			@include dark {
-				background-color: var(--color-neutral-950);
+				background-color: var(--color-neutral-900);
 			}
 		}
 	}
@@ -117,7 +119,7 @@
 		font-size: var(--size-sm);
 		font-weight: 500;
 		border-radius: var(--radius-full);
-		background-color: var(--color-neutral-200);
+		background-color: var(--color-neutral-100);
 		@include dark {
 			background-color: var(--color-neutral-700);
 		}

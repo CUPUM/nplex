@@ -24,6 +24,9 @@
 	article {
 		display: grid;
 		grid-template-columns: fit-content(var(--dashboard-sidebar-width)) 1fr;
+		@include lg {
+			padding-inline: 1rem;
+		}
 	}
 
 	header {
@@ -40,32 +43,23 @@
 		flex-direction: row;
 		align-self: stretch;
 		overflow-x: auto;
+		top: var(--navbar-height);
+		position: sticky;
+		gap: 0.5rem;
 		@include md {
 			align-self: flex-start;
-			position: sticky;
-			top: var(--navbar-height);
 			overflow-x: hidden;
 			overflow-y: auto;
 			width: var(--dashboard-sidebar-width);
-			// padding: 1.5rem 0;
 			flex-direction: column;
 		}
 	}
 
 	section {
-		// --db-bg: var(--color-neutral-50);
 		grid-column: 2;
-		border-radius: var(--radius-lg) 0 0 var(--radius-lg);
-		// border-color: var(--color-neutral-200);
-		// border-style: solid;
-		// border-width: var(--base-border-size);
-		// border-right: none;
-		// background: radial-gradient(at 25% 0%, var(--db-bg) 0%, transparent),
-		// 	radial-gradient(at 0% 100%, var(--db-bg) 0%, transparent 50%);
+		border-radius: var(--radius-lg);
 		background-color: var(--color-neutral-50);
 		@include dark {
-			// --db-bg: var(--color-neutral-800);
-			// border-color: var(--color-neutral-800);
 			background-color: var(--color-neutral-800);
 		}
 	}

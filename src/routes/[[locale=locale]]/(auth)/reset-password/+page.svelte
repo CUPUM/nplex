@@ -7,12 +7,12 @@
 	const t = createTranslations({
 		fr: {
 			title: 'Réinitialisez votre mot de passe',
-			name: 'Nom d’uilisateur ou courriel',
+			name: 'Courriel',
 			button: 'Réinitialiser',
 		},
 		en: {
 			title: 'Reset your password',
-			name: 'Username or email',
+			name: 'Email',
 			button: 'Reset',
 		},
 	});
@@ -25,9 +25,9 @@
 </script>
 
 <form use:enhance method="POST">
-	<h1>{$t.title}</h1>
-	<label>
-		<span in:fly={{ y: 6 }}>
+	<h1 class="heading lg center">{$t.title}</h1>
+	<label class="labeled-input">
+		<span class="input-label" in:fly={{ y: 6 }}>
 			{$t.name}
 		</span>
 		<input
@@ -54,32 +54,7 @@
 		align-self: center;
 		justify-content: center;
 		flex: 1;
-		gap: 2rem;
+		gap: 1rem;
 		max-width: var(--width-center);
-	}
-
-	h1 {
-		font-size: var(--size-3xl);
-		font-weight: 550;
-		line-height: 1.15;
-		text-align: center;
-	}
-
-	label {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5em;
-		text-indent: 0.75em;
-
-		&:focus-within {
-			span {
-				opacity: 1;
-			}
-		}
-
-		span {
-			font-size: var(--size-xs);
-			opacity: 0.8;
-		}
 	}
 </style>

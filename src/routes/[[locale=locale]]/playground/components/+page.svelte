@@ -1,11 +1,34 @@
 <script lang="ts">
 	import Loading from '$lib/components/Loading.svelte';
+	import { TOAST_TYPES, addToast } from '$lib/components/Toasts.svelte';
 
 	let loading = true;
+
+	function sendToast() {
+		addToast({
+			data: {
+				type: TOAST_TYPES.ERROR,
+				title: toastTitle,
+				description: toastDescription,
+				body: toastBody,
+			},
+		});
+		if (resetToast) {
+			toastTitle = '';
+			toastDescription = '';
+			toastBody = '';
+		}
+	}
+
+	let resetToast = false;
+	let toastTitle = '';
+	let toastDescription = '';
+	let toastBody = '';
 </script>
 
 <section>
 	<button
+		class="button"
 		on:pointerdown={() => {
 			loading = !loading;
 		}}
@@ -18,11 +41,31 @@
 		</div>
 	{/if}
 </section>
+<section>
+	<label class="labeled-input">
+		<span class="label">Toast title</span>
+		<input type="text" class="input" bind:value={toastTitle} />
+	</label>
+	<label class="labeled-input">
+		<span class="label">Toast description</span>
+		<input type="text" class="input" bind:value={toastDescription} />
+	</label>
+	<label class="labeled-input">
+		<span class="label">Toast content</span>
+		<input type="text" class="input" bind:value={toastBody} />
+	</label>
+	<label>
+		Reset on submit
+		<input type="checkbox" bind:checked={resetToast} />
+	</label>
+	<button class="button" on:click={sendToast}>Send toast</button>
+</section>
 
 <style lang="scss">
 	section {
 		margin-top: 10rem;
 		align-self: center;
+		font-size: var(--size-sm);
 	}
 
 	button {

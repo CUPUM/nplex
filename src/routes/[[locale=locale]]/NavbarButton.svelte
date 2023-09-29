@@ -49,7 +49,7 @@
 <style lang="scss">
 	.navbar-button {
 		--button-size: 3rem;
-		--button-padding: 1.25em;
+		--button-padding: 1.1em;
 		--button-radius: var(--base-radius);
 		position: relative;
 		display: flex;

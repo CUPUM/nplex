@@ -1,41 +1,51 @@
 <script lang="ts">
-	import DashboardNav, { type DashboardNavLink } from '$lib/components/DashboardNav.svelte';
+	import DashboardNav from '$lib/components/DashboardNav.svelte';
+	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
+	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
-	import type { Icon } from 'lucide-svelte';
-	import type { ComponentType } from 'svelte';
 
 	const t = createTranslations({
 		fr: {
 			heading: 'Descripteurs',
-			nav: {
+			items: {
 				types: 'Types de projet',
 				interventions: 'Interventions',
 				images: 'Images',
 			},
+			othersHeading: 'Autres',
 		},
 		en: {
-			heading: 'Descripteurs',
-			nav: {
+			heading: 'Descriptors',
+			items: {
 				types: 'Project types',
 				interventions: 'Interventions',
 				images: 'Images',
 			},
+			othersHeading: 'Others',
 		},
 	});
 
-	const links = [
-		{ key: 'types', path: '/edit/projects/descriptors/types' },
-		{ key: 'interventions', path: '/edit/projects/descriptors/interventions' },
-		{ key: 'images', path: '/edit/projects/descriptors/images' },
-	] as const satisfies Readonly<(DashboardNavLink & { icon?: ComponentType<Icon> })[]>;
+	// const links = [
+	// 	{ key: 'types', path: '/edit/projects/descriptors/types' },
+	// 	{ key: 'interventions', path: '/edit/projects/descriptors/interventions' },
+	// 	{ key: 'images', path: '/edit/projects/descriptors/images' },
+	// ] as const satisfies Readonly<(DashboardNavLink & { icon?: ComponentType<Icon> })[]>;
 </script>
 
-<DashboardNav {links}>
+<DashboardNav>
 	<svelte:fragment slot="heading">
 		{$t.heading}
 	</svelte:fragment>
-	<svelte:fragment slot="link" let:link let:i>
-		{$t.nav[link.key]}
+	<svelte:fragment slot="items">
+		<DashboardNavItem {...$link('/edit/projects/descriptors/types')}>
+			{$t.items.types}
+		</DashboardNavItem>
+		<DashboardNavItem {...$link('/edit/projects/descriptors/interventions')}>
+			{$t.items.interventions}
+		</DashboardNavItem>
+		<DashboardNavItem {...$link('/edit/projects/descriptors/images')}>
+			{$t.items.images}
+		</DashboardNavItem>
 	</svelte:fragment>
 </DashboardNav>
 

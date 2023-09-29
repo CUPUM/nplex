@@ -1,23 +1,23 @@
 @import 'preflight.scss';
 
 :root {
-	// App fonts.
+	/* App fonts. */
 	--font-main: 'Outfit', sans-serif;
 	--font-misc: 'Fraunces', serif;
-	// --font-misc: 'Newsreader', serif;
+	/* --font-misc: 'Newsreader', serif; */
 	--font-mono: 'Martian Mono', monospace;
-	// Color palettes.
-	--color-neutral-50: hsl(30, 10%, 98%);
+	/* Color palettes. */
+	--color-neutral-50: hsl(30, 10%, 97%);
 	--color-neutral-100: hsl(30, 9%, 92%);
-	--color-neutral-200: hsl(30, 8%, 85%);
-	--color-neutral-300: hsl(34, 7%, 77%);
-	--color-neutral-400: hsl(34, 6%, 68%);
+	--color-neutral-200: hsl(30, 8%, 88%);
+	--color-neutral-300: hsl(34, 7%, 81%);
+	--color-neutral-400: hsl(34, 6%, 72%);
 	--color-neutral-500: hsl(35, 5%, 45%);
 	--color-neutral-600: hsl(33, 6%, 24%);
 	--color-neutral-700: hsl(30, 7%, 17%);
-	--color-neutral-800: hsl(32, 8%, 14%);
+	--color-neutral-800: hsl(32, 8%, 13%);
 	--color-neutral-900: hsl(34, 9%, 10%);
-	--color-neutral-950: hsl(30, 10%, 8%);
+	--color-neutral-950: hsl(30, 10%, 7%);
 	--color-primary-50: hsl(162, 81%, 96%);
 	--color-primary-100: hsl(161, 80%, 90%);
 	--color-primary-200: hsl(160, 76%, 80%);
@@ -62,7 +62,7 @@
 	--color-error-800: hsl(8, 84%, 37%);
 	--color-error-900: hsl(8, 86%, 29%);
 	--color-error-950: hsl(8, 89%, 20%);
-	// Text and misc absolute sizes.
+	/* Text and misc absolute sizes. */
 	--size-6xs: 0.125rem;
 	--size-5xs: 0.25rem;
 	--size-4xs: 0.35rem;
@@ -80,7 +80,7 @@
 	--size-6xl: 7rem;
 	--size-7xl: 10rem;
 	--size-8xl: 15rem;
-	// Rounded corners.
+	/* Rounded corners. */
 	--radius-2xs: 6px;
 	--radius-xs: 8px;
 	--radius-sm: 12px;
@@ -90,54 +90,45 @@
 	--radius-2xl: 36px;
 	--radius-3xl: 48px;
 	--radius-full: 999px;
-	// Content sizes.
+	/* Content sizes. */
 	--width-main: 1200px;
 	--width-md: 760px;
 	--width-center: 420px;
-	// Easings
+	/* Easings */
 	--ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
 	--ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-	// Shadows
-	--shadow-xs: 0 0.5px 3px -1px rgba(0, 6, 12, 0.15);
-	--shadow-sm: 0 3px 6px -4px rgba(0, 6, 12, 0.17);
-	--shadow-md: 0 6px 12px -8px rgba(0, 6, 12, 0.19);
-	--shadow-lg: 0 10px 24px -12px rgba(0, 6, 12, 0.2);
-	--shadow-xl: 0 18px 36px -20px rgba(0, 6, 12, 0.22);
-	--shadow-2xl: 0 32px 64px -36px rgba(0, 6, 12, 0.25);
-	// Effects (transitions and transforms)
+	/* Shadows (based on tailwind) */
+	--shadow-xs: 0 1px 2px -1px rgb(0, 0, 0, 0.05);
+	--shadow-sm: 0 3px 3px -2px rgb(0, 0, 0, 0.1), 0 1px 2px -1px rgb(0, 0, 0, 0.025);
+	--shadow-md: 0 5px 8px -3px rgb(0, 0, 0, 0.1), 0 2px 4px -2px rgb(0, 0, 0, 0.05);
+	--shadow-lg: 0 10px 16px -4px rgb(0, 0, 0, 0.1), 0 4px 6px -4px rgb(0, 0, 0, 0.1);
+	--shadow-xl: 0 16px 24px -10px rgb(0, 0, 0, 0.1), 0 8px 10px -6px rgb(0, 0, 0, 0.1);
+	--shadow-2xl: 0 24px 48px -16px rgb(0, 0, 0, 0.25);
+	/* Effects (transitions and transforms) */
 	--fx-scale: 0.96;
 	--fx-duration-out: 0.15s;
-	// Base values for io elements and others
+	/* Base values for io elements and others */
 	--base-size: 3.5em;
 	--base-padding: 1.25em;
 	--base-radius: var(--radius-md);
 	--base-border-size: 1.25px;
-	--base-inset: 3px;
-	// Component-specific
+	--base-inset: 6px;
+	/* Component-specific */
 	--navbar-height: 72px;
 	--dashboard-sidebar-width: 175px;
-	// Root style
+	/* Root style */
 	position: relative;
 	font-size: 100%;
 	font-family: var(--font-main);
 	overflow-x: hidden;
 	accent-color: var(--color-primary-500);
 	color: var(--color-neutral-700);
-	background-color: var(--color-neutral-50);
+	background-color: var(--color-neutral-100);
 	transition: all 0.1s ease-out;
-
 	&[data-mode='dark'] {
 		color: var(--color-neutral-300);
 		background-color: var(--color-neutral-900);
-	}
-}
-
-*:focus-visible {
-	outline: 3px solid rgba(0, 0, 0, 0.8);
-
-	@include global-dark {
-		outline: 3px solid rgba(255, 255, 255, 0.8);
 	}
 }
 
@@ -146,6 +137,20 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100svh;
+}
+
+@mixin focus-outline {
+	outline: 3px solid var(--color-primary-800);
+	@include global-dark {
+		outline: 3px solid var(--color-primary-500);
+	}
+}
+
+/*
+Reset default outlines
+*/
+*:focus-visible {
+	@include focus-outline;
 }
 
 /*
@@ -174,10 +179,164 @@ Animations
 }
 
 /*
-Button.
+Headings
 */
+.heading {
+	margin-block: 1em;
+	color: var(--color-neutral-800);
+	font-optical-sizing: auto;
+	@include global-dark {
+		color: var(--color-neutral-200);
+	}
+	/*
+	Extra large heading
+	*/
+	&.xl {
+		line-height: 1.1;
+		font-weight: 532;
+		font-size: var(--size-4xl);
+	}
 
-/* Unthemed base */
+	/*
+	Large heading
+	*/
+	&.lg {
+		line-height: 1.15;
+		font-weight: 550;
+		font-size: var(--size-3xl);
+	}
+
+	/*
+	Medium heading
+	*/
+	&.md {
+		line-height: 1.2;
+		font-weight: 625;
+		font-size: var(--size-2xl);
+	}
+
+	/*
+	Small heading
+	*/
+	&.sm {
+		line-height: 1.275;
+		font-weight: 632;
+		font-size: var(--size-xl);
+	}
+
+	/*
+	Extra small heading
+	*/
+	&.xs {
+		line-height: 1.35;
+		font-weight: 632;
+		font-size: var(--size-lg);
+	}
+}
+
+/*
+Prose (text_
+*/
+.prose {
+	color: var(--color-neutral-700);
+	font-optical-sizing: auto;
+	margin-block: 1.25em;
+	width: 65ch;
+
+	&.dim {
+		color: var(--color-neutral-600);
+		@include global-dark {
+			color: var(--color-neutral-400);
+		}
+	}
+
+	&.dimmer {
+		color: var(--color-neutral-500);
+		@include global-dark {
+			color: var(--color-neutral-500);
+		}
+	}
+
+	@include global-dark {
+		color: var(--color-neutral-300);
+	}
+
+	/*
+	Extra large text
+	*/
+	&.xl {
+		font-size: var(--size-xl);
+		font-weight: 300;
+		line-height: 1.3em;
+	}
+
+	/*
+	Large text
+	*/
+	&.lg {
+		font-size: var(--size-lg);
+		font-weight: 325;
+		line-height: 1.35em;
+	}
+
+	/*
+	Regular text
+	*/
+	&.md {
+		font-size: var(--size-md);
+		font-weight: 350;
+		line-height: 1.4em;
+	}
+
+	/*
+	Small text
+	*/
+	&.sm {
+		font-size: var(--size-sm);
+		font-weight: 360;
+		line-height: 1.45em;
+	}
+
+	/*
+	Extra small text
+	*/
+	&.xs {
+		font-size: var(--size-xs);
+		font-weight: 375;
+		line-height: 1.5em;
+	}
+}
+
+/*
+Normal emphasis
+*/
+em {
+}
+
+/*
+Strong emphasis
+*/
+strong {
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+/*
+Button styles
+
+Variants:
+- default (no variant class)
+- outlined
+- cta
+- ghost
+- link
+*/
 .button {
 	--button-duration-out: 0.25s;
 	line-height: 1.2;
@@ -215,7 +374,7 @@ Button.
 		&:not([data-loading]) {
 			opacity: 0.35;
 			color: var(--color-neutral-800);
-			background-color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+			// background-color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
 			@include dark {
 				color: var(--color-neutral-200);
 			}
@@ -248,11 +407,13 @@ Button.
 	}
 
 	&.round {
-		--base-radius: var(--radius-full);
+		border-radius: var(--radius-full);
 	}
 
-	/* Default variant */
-	&:not(.outlined):not(.ghost):not(.cta) {
+	/*
+	Default variant
+	*/
+	&:not(.outlined):not(.ghost):not(.cta):not(.link):not(.danger) {
 		color: var(--color-neutral-800);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 		@include global-dark {
@@ -269,7 +430,9 @@ Button.
 		}
 	}
 
-	/* Outlined variant */
+	/*
+	Outlined variant
+	*/
 	&.outlined {
 		color: var(--color-neutral-800);
 		border: var(--base-border-size) solid
@@ -290,7 +453,9 @@ Button.
 		}
 	}
 
-	/* Ghost variant */
+	/*
+	Ghost variant
+	*/
 	&.ghost {
 		color: var(--color-neutral-700);
 		@include global-dark {
@@ -328,40 +493,31 @@ Button.
 		}
 	}
 
-	/* Link variant (similar to Ghost variant, but with added underline) */
+	/*
+	Link variant (similar to Ghost variant, but with added underline)
+	*/
 	&.link {
-		// display: flex;
-		// flex-direction: row;
-		// gap: 0.75em;
-		// padding: 0 0.75em;
-		// height: 3em;
-		// align-items: center;
-		// font-weight: 500;
-		// border-radius: var(--radius-full);
-		// color: var(--color-neutral-800);
-		// text-decoration: underline;
-		// text-underline-offset: 0.25em;
-		// text-decoration-thickness: 0.125em;
-		// text-decoration-color: transparent;
-		// text-decoration-skip-ink: none;
-		// text-decoration-line: underline;
-		// @include global-dark {
-		// 	color: var(--color-neutral-200);
-		// }
-		// &:hover,
-		// &:focus {
-		// 	color: var(--color-primary-600);
-		// 	text-decoration-color: currentColor;
-		// 	text-underline-offset: 0.5em;
-		// 	transition: all var(--fx-duration-out) ease-out;
-		// 	@include global-dark {
-		// 		color: var(--color-primary-400);
-		// 	}
-		// 	.link-icon {
-		// 		transform: scale(0.95);
-		// 		opacity: 1;
-		// 	}
-		// }
+		padding: 0 calc(var(--base-padding) * 0.75);
+		font-weight: 425;
+		color: var(--color-neutral-800);
+		text-decoration: underline;
+		text-underline-offset: 0.25em;
+		text-decoration-thickness: 0.125em;
+		text-decoration-color: transparent;
+		text-decoration-skip-ink: none;
+		text-decoration-line: underline;
+		@include global-dark {
+			color: var(--color-neutral-200);
+		}
+		&:hover,
+		&:focus {
+			color: var(--color-primary-600);
+			text-decoration-color: currentColor;
+			text-underline-offset: 0.5em;
+			@include global-dark {
+				color: var(--color-primary-400);
+			}
+		}
 	}
 
 	/*
@@ -393,6 +549,9 @@ Button.
 	}
 }
 
+/*
+Button icon
+*/
 .button-icon {
 	width: 1.25em;
 	margin-block: -50%;
@@ -421,107 +580,133 @@ Button.
 }
 
 /*
-Links
+Wrapper for inputs with a legend
 */
-
-.link {
-	&.inline {
-		display: inline;
-		padding: 0.5em 0.75em;
-	}
+.labeled-input {
 	display: flex;
-	flex-direction: row;
-	gap: 0.75em;
-	padding: 0 0.75em;
-	height: 3em;
-	align-items: center;
-	font-weight: 500;
-	border-radius: var(--radius-full);
-	color: var(--color-neutral-800);
-	text-decoration: underline;
-	text-underline-offset: 0.25em;
-	text-decoration-thickness: 0.125em;
-	text-decoration-color: transparent;
-	text-decoration-skip-ink: none;
-	text-decoration-line: underline;
-	@include global-dark {
-		color: var(--color-neutral-200);
-	}
-	&:hover,
-	&:focus {
-		color: var(--color-primary-600);
-		text-decoration-color: currentColor;
-		text-underline-offset: 0.5em;
-		transition: all var(--fx-duration-out) ease-out;
-		@include global-dark {
-			color: var(--color-primary-400);
-		}
-		.link-icon {
-			transform: scale(0.95);
-			opacity: 1;
-		}
-	}
-}
+	flex-direction: column;
+	gap: 0.5em;
 
-.link-icon {
-	stroke-width: 2;
-	width: 1.5em;
-	transition: all 0.25s ease-out;
+	.input-label {
+		display: flex;
+		flex-direction: row;
+		gap: 0.75em;
+		align-items: center;
+		font-weight: 400;
+		font-size: clamp(var(--size-xs), 0.5em, var(--size-sm));
+		padding-inline: 0.75em;
+		color: var(--color-neutral-500);
+		transition: all 0.2s var(--ease-out-expo);
+		@include global-dark {
+			color: var(--color-neutral-500);
+		}
+
+		&.with-hover {
+			opacity: 0;
+			transform: translateY(50%);
+		}
+	}
+
+	&:hover,
+	&:focus-within {
+		.input-label {
+			color: var(--color-neutral-900);
+			@include global-dark {
+				color: var(--color-neutral-100);
+			}
+
+			&.with-hover {
+				opacity: 1;
+				transform: translateY(0%);
+			}
+		}
+	}
 }
 
 /*
-Text input
+Generic grouping with inset
 */
+.group {
+	--group-inset: var(--base-inset);
+	--group-size: var(--base-size);
+	--group-radius: var(--base-radius);
+	padding: var(--group-inset);
 
+	/*
+	Applying inset to nested elements
+	*/
+	> * {
+		--base-size: calc(var(--group-size) - 2 * var(--group-inset));
+		--base-radius: calc(var(--group-radius) - var(--group-inset));
+	}
+}
+
+/*
+Input (fields)
+
+Use either directly on a desired input element or on a wrapping fieldset, label, or other element
+to which you plan to nest buttons and other elements.
+
+Variants:
+- default (no variant class)
+- outlined
+*/
 .input {
-	height: var(--base-size);
 	padding: 0 var(--base-padding);
+	text-overflow: ellipsis;
+	@at-root {
+		textarea#{&} {
+			padding: var(--base-padding);
+		}
+	}
+}
+.input-group {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	.input {
+		border-radius: inherit;
+		align-self: stretch;
+		flex: 1;
+		background: transparent;
+		outline: unset;
+	}
+}
+.input:not(.input-group .input),
+.input-group {
 	border-radius: var(--base-radius);
-	background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
-
-	&:hover,
-	&:focus-visible {
-		box-shadow: 0 0 0 var(--base-border-size) rgba(0, 0, 0, 0.1);
-		@include global-dark {
-			box-shadow: 0 0 0 var(--base-border-size) rgba(255, 255, 255, 0.1);
-		}
-	}
-	&:focus,
-	&:has(input:focus),
-	&:has(textarea:focus) {
-		background-color: rgba(255, 255, 255, 0.5);
-		transition: all var(--button-duration-out) ease-out;
-		@include global-dark {
-			background-color: rgba(0, 0, 0, 0.1);
-		}
-	}
-	&[data-loading] {
-		color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
-		transform: scale(0.95);
-		pointer-events: none;
-		transition: all var(--button-duration-out) ease-out;
+	&:not(textarea) {
+		height: var(--base-size);
 	}
 
-	// Default variant
+	/*
+	Default variant
+	*/
 	&:not(.outlined) {
-	}
-
-	// Outlined variant
-	&.outlined {
-		position: relative;
-		background-color: transparent;
-		&::after {
-			content: '';
-			position: absolute;
-			inset: 0;
-			border-radius: inherit;
-			border: var(--base-border-size) solid
-				color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		&:hover,
+		&:focus-visible {
+			box-shadow: 0 0 0 var(--base-border-size) rgba(0, 0, 0, 0.1);
+			@include global-dark {
+				box-shadow: 0 0 0 var(--base-border-size) rgba(255, 255, 255, 0.1);
+			}
+		}
+		&:focus,
+		&:has(.input:focus) {
+			@include focus-outline;
+			background-color: white;
+			@include global-dark {
+				background-color: color-mix(in srgb, var(--color-neutral-950) 25%, transparent);
+			}
+		}
+		&[data-loading] {
+			color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+			transform: scale(0.95);
+			pointer-events: none;
+			transition: all var(--button-duration-out) ease-out;
 		}
 	}
 }
 
-textarea.input {
-	padding-block: calc(var(--base-padding) - 0.25em);
-	line-height: 1.5em;
+.input-icon {
 }

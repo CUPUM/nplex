@@ -25,17 +25,14 @@
 		flex-direction: column;
 		gap: 0;
 		font-weight: 500;
-		background-color: var(--color-neutral-50);
 		box-shadow: var(--shadow-lg);
 		padding: var(--menu-inset);
 		border-radius: var(--base-radius);
 		transform-origin: top center;
+		background-color: var(--color-neutral-50);
 		z-index: 1;
-		border: var(--base-border-size) solid
-			color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 		@include dark {
 			background-color: var(--color-neutral-800);
-			border-color: transparent;
 		}
 	}
 </style>

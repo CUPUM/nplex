@@ -10,20 +10,22 @@
 		ERROR: 'error',
 		NOTIFICATION: 'notification',
 		DEFAULT: '',
-	};
+	} as const;
 
 	export type ToastType = ValueOf<typeof TOAST_TYPES>;
 
-	export type ToastData<C = ComponentType | undefined> = {
+	export type ToastData<T extends ComponentType | undefined> = {
 		title: string;
 		description: string;
 		type?: ToastType;
 	} & (
 		| {
-				comp: C;
-				props: C extends ComponentType ? ComponentProps<SvelteComponent<C>> : never;
+				comp: T extends ComponentType ? SvelteComponent<T> : undefined;
+				props: T extends ComponentType ? ComponentProps<SvelteComponent<T>> : never;
 		  }
-		| {}
+		| {
+				body: string;
+		  }
 	);
 
 	const {
@@ -31,21 +33,25 @@
 		helpers,
 		states: { toasts },
 		actions: { portal },
-	} = createToaster<ToastData>();
+	} = createToaster<ToastData<ComponentType | undefined>>();
 
-	export const addToast = helpers.addToast;
+	function addToast<T extends ComponentType | undefined>(props: AddToastProps<ToastData<T>>) {
+		return helpers.addToast(props);
+	}
 
-	export const addSuccessToast = function (props: AddToastProps<Omit<ToastData, 'type'>>) {
-		return addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.SUCCESS } });
-	};
+	// export const addSuccessToast = function (props: AddToastProps<Omit<ToastData, 'type'>>) {
+	// 	return addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.SUCCESS } });
+	// };
 
-	export const addErrorToast = function (props: AddToastProps<Omit<ToastData, 'type'>>) {
+	export function addErrorToast<T extends ComponentType | never>(
+		props: AddToastProps<Omit<ToastData<T>, 'type'>>
+	) {
 		return addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.ERROR } });
-	};
+	}
 
-	export const addNotificationToast = function (props: AddToastProps<Omit<ToastData, 'type'>>) {
-		return addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.NOTIFICATION } });
-	};
+	// export const addNotificationToast = function (props: AddToastProps<Omit<ToastData, 'type'>>) {
+	// 	return addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.NOTIFICATION } });
+	// };
 </script>
 
 <script>

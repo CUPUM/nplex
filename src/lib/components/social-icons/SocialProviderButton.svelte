@@ -45,7 +45,7 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <a
 	{...$link(url)}
-	class="provider-button"
+	class="button outlined"
 	use:ripple
 	use:loadingAction
 	{...{
@@ -64,35 +64,4 @@
 </TooltipContent>
 
 <style lang="scss">
-	.provider-button {
-		position: relative;
-		display: flex;
-		flex-shrink: 0;
-		align-items: center;
-		justify-content: center;
-		padding: 1em;
-		border-radius: var(--base-radius);
-		border: var(--base-border-size) solid
-			color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
-		transition: all 0.1s ease-out;
-
-		&:hover,
-		&:focus-visible {
-			border: var(--base-border-size) solid transparent;
-			background-color: var(--color-neutral-50);
-			// box-shadow: var(--shadow-lg);
-			@include dark {
-				background-color: var(--color-neutral-800);
-			}
-		}
-
-		&[data-disabled] {
-			pointer-events: none;
-			background-color: transparent;
-
-			.provider-icon {
-				opacity: 0.5;
-			}
-		}
-	}
 </style>

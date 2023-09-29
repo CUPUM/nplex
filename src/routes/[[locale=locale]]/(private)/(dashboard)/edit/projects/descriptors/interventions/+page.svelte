@@ -1,70 +1,102 @@
 <script lang="ts">
+	import { createLoading } from '$lib/actions/loading';
+	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import TranslationsTabs from '$lib/components/TranslationsTabs.svelte';
-	import { Check, Plus, X } from 'lucide-svelte';
+	import { createTranslations } from '$lib/i18n/translate';
+	import { Check, Pen, Plus } from 'lucide-svelte';
 	import { fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
+
+	const t = createTranslations({
+		fr: {
+			heading: 'Catégories d’intervention & types d’intervention',
+			category: {
+				title: 'Titre de la catégorie',
+				description: 'Description de la catégorie',
+			},
+		},
+		en: {
+			heading: 'Intervention categories & intervention types',
+			category: {
+				title: 'Category title',
+				description: 'Category description',
+			},
+		},
+	});
 
 	export let data;
 
 	const { form, submitting, constraints, errors, enhance, tainted } = superForm(data.form, {
 		dataType: 'json',
 	});
+
+	const {
+		action: updatingAction,
+		element: updatingElement,
+		state: updatingState,
+	} = createLoading({ state: submitting });
 </script>
 
 <form method="POST" use:enhance>
+	<header>
+		<h2 class="heading lg">{$t.heading}</h2>
+		<p class="prose sm dim">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis eius enim error sit fugit
+			dolores unde, nulla odio nam ducimus.
+		</p>
+	</header>
 	<ol>
 		{#each $form.interventionCategories as category, i (category.id)}
 			<li class="category">
-				<TranslationsTabs let:locale>
-					<svelte:fragment slot="legend">
-						{category.id}
-					</svelte:fragment>
-					<input
-						class="input"
-						type="text"
-						bind:value={$form.interventionCategories[i].translations[locale].title}
-					/>
-					<textarea
-						class="input"
-						bind:value={$form.interventionCategories[i].translations[locale].description}
-					/>
+				<TranslationsTabs let:locale legend={category.id}>
+					<label class="labeled-input">
+						<span class="input-label">{$t.category.title}</span>
+						<input
+							class="input"
+							type="text"
+							bind:value={$form.interventionCategories[i].translations[locale].title}
+						/>
+					</label>
+					<label class="labeled-input">
+						<span class="input-label">{$t.category.description}</span>
+						<textarea
+							class="input"
+							bind:value={$form.interventionCategories[i].translations[locale].description}
+						/>
+					</label>
 				</TranslationsTabs>
 				<ol>
 					{#each $form.interventions as intervention, ii (intervention.id)}
 						{#if intervention.categoryId === category.id}
 							<li class="intervention">
-								<TranslationsTabs let:locale>
-									<svelte:fragment slot="legend">
-										<div contenteditable="true">
-											{intervention.id}
-										</div>
-									</svelte:fragment>
-									<svetle:fragment slot="menu">
-										<button
-											class="button ghost round danger"
-											type="submit"
-											formaction="?/deleteIntervention&interventionId={intervention.id}"
-										>
-											<X class="button-icon" />
-										</button>
-									</svetle:fragment>
-									<input
-										class="input"
-										type="text"
-										bind:value={$form.interventions[ii].translations[locale].title}
-									/>
-									<textarea
-										class="input"
-										bind:value={$form.interventions[ii].translations[locale].description}
-									/>
+								<TranslationsTabs
+									let:locale
+									legend={intervention.id}
+									deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
+								>
+									<label class="labeled-input">
+										<span class="input-label with-hover">test label</span>
+										<input
+											class="input"
+											type="text"
+											bind:value={$form.interventions[ii].translations[locale].title}
+										/>
+									</label>
+									<label class="labeled-input">
+										<span class="input-label with-hover">test label</span>
+										<textarea
+											class="input"
+											bind:value={$form.interventions[ii].translations[locale].description}
+										/>
+									</label>
 								</TranslationsTabs>
 							</li>
 						{/if}
 					{/each}
 				</ol>
-				<menu>
+				<menu class="intervention-menu">
 					<button
-						class="button"
+						class="button outlined"
 						type="submit"
 						formaction="?/createIntervention&categoryId={category.id}"
 					>
@@ -75,19 +107,31 @@
 			</li>
 		{/each}
 	</ol>
-	<menu class="bottom-menu">
+	<DashboardMenu>
+		<button class="button outlined" formaction="?/createCategory" type="submit" disabled>
+			<Pen class="button-icon" />
+			Create
+		</button>
 		{#if $tainted}
-			<button class="button cta" in:fly={{ y: 6 }}>
+			<button class="button cta" in:fly={{ y: 6 }} type="submit" formaction="?/update">
 				<Check class="button-icon" />
 				Save
 			</button>
 		{/if}
-	</menu>
+	</DashboardMenu>
 </form>
 
 <style lang="scss">
 	form {
 		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		container-type: inline-size;
+	}
+
+	header {
+		padding: 1rem 2rem;
+		padding-top: 0;
 	}
 
 	ol {
@@ -95,31 +139,26 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		padding: 1rem;
 	}
 
 	.category {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
 		padding: 1rem;
-		border: var(--base-border-size) solid var(--color-neutral-100);
-		@include dark {
-			border: var(--base-border-size) solid var(--color-neutral-700);
+
+		ol {
+			border: var(--base-border-size) solid var(--color-neutral-200);
+			border-radius: var(--radius-xl);
+			@include dark {
+				border-color: transparent;
+				background-color: var(--color-neutral-900);
+			}
 		}
 	}
 
-	.interventions {
-	}
-
-	menu {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-		align-self: stretch;
-		gap: 0.5rem;
+	.intervention-menu {
 		font-size: var(--size-sm);
-	}
-
-	.bottom-menu {
-		position: sticky;
-		bottom: 2rem;
 	}
 </style>

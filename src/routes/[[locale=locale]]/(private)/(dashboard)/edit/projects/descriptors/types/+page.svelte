@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createLoading } from '$lib/actions/loading';
+	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import TranslationsTabs from '$lib/components/TranslationsTabs.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { Check, Plus } from 'lucide-svelte';
@@ -10,12 +11,14 @@
 
 	const t = createTranslations({
 		fr: {
+			heading: 'Types de projet',
 			save: 'Enregistrer',
 			create: 'Ajouter un type de projet',
 			title: 'Titre',
 			description: 'Description',
 		},
 		en: {
+			heading: 'Project types',
 			save: 'Save',
 			create: 'Create a new project type',
 			title: 'Title',
@@ -30,15 +33,12 @@
 	});
 
 	const {
-		action: submittingAction,
-		state: submittingState,
-		element: submittingElement,
+		action: updatingAction,
+		state: updatingState,
+		element: updatingElement,
 	} = createLoading({
 		state: submitting,
 	});
-
-	$: console.log($submitting);
-	$: console.log($submitting);
 
 	const [sendType, receiveType] = crossfade({
 		duration: 150,
@@ -50,6 +50,13 @@
 </script>
 
 <form action="?/update" use:enhance method="POST">
+	<header>
+		<h2 class="heading lg">{$t.heading}</h2>
+		<p class="prose md dimmer">
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur magni quo accusantium
+			perferendis quis, minus iste commodi error nostrum tempora?
+		</p>
+	</header>
 	<ul>
 		{#each $form.types as type, i (type.id)}
 			<li
@@ -58,8 +65,8 @@
 				animate:flip={{ duration: (l) => 150 + l / 10 }}
 			>
 				<TranslationsTabs legend={type.id} deleteFormaction="?/delete&typeId={type.id}" let:locale>
-					<label>
-						<span>
+					<label class="labeled-input">
+						<span class="input-label">
 							{$t.title}
 						</span>
 						<input
@@ -68,8 +75,8 @@
 							bind:value={$form.types[i].translations[locale].title}
 						/>
 					</label>
-					<label>
-						<span>
+					<label class="labeled-input">
+						<span class="input-label">
 							{$t.description}
 						</span>
 						<textarea class="input" bind:value={$form.types[i].translations[locale].description} />
@@ -78,26 +85,38 @@
 			</li>
 		{/each}
 	</ul>
-	<menu>
-		<button class="button" type="submit" formaction="?/create">
+	<DashboardMenu>
+		<button
+			class="button outlined"
+			{...updatingElement}
+			use:updatingAction
+			type="submit"
+			formaction="?/create"
+		>
 			<Plus class="button-icon" />
 			{$t.create}
 		</button>
 		{#if $tainted}
-			<button class="button cta" in:fly={{ y: 6 }} {...submittingElement} use:submittingAction>
+			<button class="button cta" in:fly={{ y: 6 }} {...updatingElement} use:updatingAction>
 				<Check class="button-icon" />
 				{$t.save}
 			</button>
 		{/if}
-	</menu>
+	</DashboardMenu>
 </form>
 
 <style lang="scss">
 	form {
-		align-self: center;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
+		align-items: flex-start;
+		container-type: inline-size;
+	}
+
+	header {
+		padding: 1rem 2rem;
+		padding-top: 0;
 	}
 
 	ul {
@@ -106,45 +125,13 @@
 		flex-direction: column;
 		container-type: inline-size;
 		max-width: var(--width-md);
-		padding: 3rem 1rem;
+		padding: 1rem;
 		gap: 1rem;
-		align-self: center;
 		width: 100%;
-	}
 
-	li {
-	}
-
-	textarea {
-		min-height: 6em;
-	}
-
-	label {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5em;
-
-		span {
-			font-size: var(--size-xs);
-			text-indent: 1em;
-			opacity: 0.5;
-		}
-	}
-
-	menu {
-		position: sticky;
-		bottom: 2rem;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-		align-self: stretch;
-		gap: 0.5rem;
-		font-size: var(--size-sm);
-
-		.button {
-			backdrop-filter: blur(8px);
-			// box-shadow: var(--shadow-md);
+		@container (width > 1000px) {
+			align-self: center;
+			margin-right: var(--dashboard-sidebar-width);
 		}
 	}
 </style>

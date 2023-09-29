@@ -1,20 +1,29 @@
 <script lang="ts">
-	const texts = ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'];
-	const sizes = ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'];
-	const spaces = ['3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'];
-	const radiuses = ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full'];
+	const sizes = ['xs', 'sm', 'md', 'lg', 'xl'].reverse();
 </script>
 
 <section>
 	<h1>Text sizes</h1>
-	<ol class="text">
-		{#each texts as ts}
-			<li style:font-size="var(--text-{ts})">Text size {ts}</li>
+	<ol>
+		{#each sizes as s}
+			<p class="heading {s}">
+				Heading {s} Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque perspiciatis consectetur
+				at debitis quibusdam asperiores voluptatum aliquid quasi totam quos!
+			</p>
 		{/each}
 	</ol>
-	<ol class="graph">
-		{#each texts as ts}
-			<li style:--size="var(--text-{ts})">{ts}</li>
+	<ol>
+		{#each sizes as s}
+			<p class="prose {s}">
+				Prose {s} Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugit debitis quibusdam soluta,
+				voluptates nisi veritatis sint impedit, facere quaerat atque maiores cum dolores sunt eligendi
+				porro culpa fugiat eaque tempore. Blanditiis excepturi sapiente dolor at fuga iure rerum. Eos
+				reiciendis eveniet ea. Aliquid doloribus accusamus sint laboriosam est aspernatur error, sapiente
+				voluptas eum nemo optio. Repellat illum optio libero accusamus ipsa aliquid consectetur, asperiores
+				adipisci, corrupti possimus quod est ut sint eaque perspiciatis dolorum veritatis eveniet dolore
+				ad recusandae cumque tempore neque necessitatibus consequatur. Nesciunt atque ipsa non omnis
+				unde assumenda? Autem officia delectus cupiditate sequi repellendus aliquam at mollitia.
+			</p>
 		{/each}
 	</ol>
 </section>

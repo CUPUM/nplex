@@ -42,35 +42,32 @@
 </script>
 
 <form method="POST" use:enhance>
-	<h1>{$t.title}</h1>
-	<fieldset>
-		<label>
-			<span in:fly|global={{ y: 6 }}>{$t.email}</span>
-			<input
-				in:fly|global={{ y: -6 }}
-				class="input"
-				type="email"
-				name="email"
-				aria-invalid={$errors.email ? true : undefined}
-				bind:value={$form.email}
-				{...$constraints.email}
-			/>
-		</label>
-	</fieldset>
-	<fieldset>
-		<label>
-			<span in:fly|global={{ y: 6, delay: STAGGER }}>{$t.password}</span>
-			<input
-				in:fly|global={{ y: -6, delay: STAGGER }}
-				class="input"
-				type="password"
-				name="password"
-				aria-invalid={$errors.password ? true : undefined}
-				bind:value={$form.password}
-				{...$constraints.password}
-			/>
-		</label>
-	</fieldset>
+	<h1 class="heading lg center">{$t.title}</h1>
+	<label class="labeled-input">
+		<span class="input-label" in:fly|global={{ y: 6 }}>{$t.email}</span>
+		<input
+			in:fly|global={{ y: -6 }}
+			class="input"
+			type="email"
+			name="email"
+			placeholder="{$t.email.toLowerCase()}@..."
+			aria-invalid={$errors.email ? true : undefined}
+			bind:value={$form.email}
+			{...$constraints.email}
+		/>
+	</label>
+	<label class="labeled-input">
+		<span class="input-label" in:fly|global={{ y: 6, delay: STAGGER }}>{$t.password}</span>
+		<input
+			in:fly|global={{ y: -6, delay: STAGGER }}
+			class="input"
+			type="password"
+			name="password"
+			aria-invalid={$errors.password ? true : undefined}
+			bind:value={$form.password}
+			{...$constraints.password}
+		/>
+	</label>
 	<button
 		in:fly|global={{ y: -6, delay: 2 * STAGGER }}
 		class="button cta center"
@@ -85,13 +82,13 @@
 </form>
 <div class="links">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="link" {...$link('/signup')} in:fade|global>
-		<UserPlus2 class="link-icon" />
+	<a class="button link" {...$link('/signup')} in:fade|global>
+		<UserPlus2 class="button-icon" />
 		{$t.signup}
 	</a>
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="link" {...$link('/reset-password')} in:fade|global>
-		<HelpCircle class="link-icon" />
+	<a class="button link" {...$link('/reset-password')} in:fade|global>
+		<HelpCircle class="button-icon" />
 		{$t.forgot}
 	</a>
 </div>
@@ -103,42 +100,7 @@
 		align-items: stretch;
 		justify-content: center;
 		flex: 1;
-		gap: 2rem;
-	}
-
-	h1 {
-		font-weight: 550;
-		text-align: center;
-		line-height: 1.15;
-		font-size: var(--size-2xl);
-
-		@include md {
-			font-size: var(--size-3xl);
-		}
-	}
-
-	fieldset {
-		display: flex;
-		flex-direction: column;
-		gap: 1em;
-	}
-
-	label {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5em;
-		text-indent: 0.75em;
-
-		&:focus-within {
-			span {
-				opacity: 1;
-			}
-		}
-
-		span {
-			font-size: var(--size-xs);
-			opacity: 0.8;
-		}
+		gap: 1rem;
 	}
 
 	.formcontent {

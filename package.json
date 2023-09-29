@@ -84,7 +84,7 @@
 		"svelte": "^4.2.1",
 		"svelte-check": "^3.5.2",
 		"svelte-sequential-preprocessor": "^2.0.1",
-		"sveltekit-superforms": "^1.7.3",
+		"sveltekit-superforms": "^1.7.4",
 		"tslib": "^2.6.2",
 		"tsx": "^3.13.0",
 		"type-fest": "^4.3.2",
@@ -106,6 +106,7 @@
 		"lucide-svelte": "^0.279.0",
 		"nodemailer": "^6.9.5",
 		"svelte-email": "^0.0.4",
+		"sveltekit-flash-message": "^2.2.1",
 		"ws": "^8.14.2"
 	},
 	"pnpm": {

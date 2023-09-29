@@ -44,45 +44,44 @@
 </script>
 
 <form method="POST" use:enhance>
-	<h1>{$t.title}</h1>
-	<label>
-		<span in:fly={{ y: 6 }}>{$t.email}</span>
+	<h1 class="heading lg center">{$t.title}</h1>
+	<label class="labeled-input">
+		<span class="input-label" in:fly={{ y: 6 }}>{$t.email}</span>
 		<input
 			in:fly={{ y: -6 }}
 			class="input"
 			type="email"
 			name="email"
+			placeholder="{$t.email.toLowerCase()}@..."
 			aria-invalid={$errors.email ? true : undefined}
 			bind:value={$form.email}
 			{...$constraints.email}
 		/>
 	</label>
-	<fieldset class="pw">
-		<label>
-			<span in:fly={{ y: 6, delay: STAGGER }}>{$t.password}</span>
-			<input
-				in:fly={{ y: -6, delay: STAGGER }}
-				class="input"
-				type="password"
-				name="password"
-				aria-invalid={$errors.password ? true : undefined}
-				bind:value={$form.password}
-				{...$constraints.password}
-			/>
-		</label>
-		<label>
-			<span in:fly={{ y: 6, delay: 2 * STAGGER }}>{$t.confirmPassword}</span>
-			<input
-				in:fly={{ y: -6, delay: 2 * STAGGER }}
-				class="input"
-				type="password"
-				name="confirmPassword"
-				aria-invalid={$errors.confirmPassword ? true : undefined}
-				bind:value={$form.confirmPassword}
-				{...$constraints.confirmPassword}
-			/>
-		</label>
-	</fieldset>
+	<label class="labeled-input">
+		<span class="input-label" in:fly={{ y: 6, delay: STAGGER }}>{$t.password}</span>
+		<input
+			in:fly={{ y: -6, delay: STAGGER }}
+			class="input"
+			type="password"
+			name="password"
+			aria-invalid={$errors.password ? true : undefined}
+			bind:value={$form.password}
+			{...$constraints.password}
+		/>
+	</label>
+	<label class="labeled-input">
+		<span class="input-label" in:fly={{ y: 6, delay: 2 * STAGGER }}>{$t.confirmPassword}</span>
+		<input
+			in:fly={{ y: -6, delay: 2 * STAGGER }}
+			class="input"
+			type="password"
+			name="confirmPassword"
+			aria-invalid={$errors.confirmPassword ? true : undefined}
+			bind:value={$form.confirmPassword}
+			{...$constraints.confirmPassword}
+		/>
+	</label>
 	<button
 		in:fly={{ y: -6, delay: 3 * STAGGER }}
 		class="button cta center"
@@ -97,13 +96,13 @@
 </form>
 <div class="links">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="link" {...$link('/login')}>
-		<LogIn class="link-icon" />
+	<a class="button link" {...$link('/login')}>
+		<LogIn class="button-icon" />
 		{$t.login}
 	</a>
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="link" {...$link('/reset-password')}>
-		<HelpCircle class="link-icon" />
+	<a class="button link" {...$link('/reset-password')}>
+		<HelpCircle class="button-icon" />
 		{$t.forgot}
 	</a>
 </div>
@@ -115,39 +114,7 @@
 		align-items: stretch;
 		justify-content: center;
 		flex: 1;
-		gap: 2rem;
-	}
-
-	h1 {
-		font-size: var(--size-3xl);
-		font-weight: 550;
-		line-height: 1.15;
-		text-align: center;
-	}
-
-	fieldset {
-		display: flex;
-		flex-direction: column;
-		gap: 1em;
-	}
-
-	label {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5em;
-		text-indent: 0.75em;
-
-		&:focus-within {
-			span {
-				opacity: 1;
-			}
-		}
-
-		span {
-			font-size: var(--size-xs);
-			font-weight: 500;
-			opacity: 0.8;
-		}
+		gap: 1rem;
 	}
 
 	.formcontent {

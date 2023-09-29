@@ -137,7 +137,7 @@
 	let mounted = false;
 
 	function flyin(node: HTMLElement, i: number) {
-		return fly(node, { y: '-25%', duration: 750, easing: expoOut, delay: i * 50 });
+		return fly(node, { y: '25%', duration: 750, easing: expoOut, delay: i * 75 });
 	}
 
 	onNavigate(() => {
@@ -147,9 +147,6 @@
 	onMount(() => {
 		mounted = true;
 	});
-
-	$: console.log($setout);
-	$: console.log($breakpoint);
 </script>
 
 <svelte:window bind:scrollY />
@@ -159,7 +156,7 @@
 	<header id="navbar" bind:this={navbar} class={$setout} class:over={scrollY > 10}>
 		<div class="inner">
 			<!-- General nav -->
-			<nav id="site-group" class="group" in:flyin|global={0}>
+			<nav id="site-group" class="navbar-group" in:flyin|global={0}>
 				<NavbarButton square={!$breakpoint.md} {...$link('/')} outline={false}>
 					<Logo mono={!$breakpoint.md} size={$breakpoint.md ? '1.75em' : '1em'} />
 				</NavbarButton>
@@ -177,7 +174,7 @@
 			</nav>
 			<!-- Exploration nav -->
 			{#if $breakpoint.md}
-				<nav id="explore-group" class="group" in:flyin|global={1}>
+				<nav id="explore-group" class="navbar-group" in:flyin|global={1}>
 					{#each exploreSections as exp}
 						{@const link = $link(`/${exp}`)}
 						<NavbarButton {...link} outline={false}>
@@ -194,7 +191,7 @@
 				</nav>
 			{/if}
 			<!-- User nav -->
-			<menu id="user-group" class="group" in:flyin|global={2}>
+			<menu id="user-group" class="navbar-group" in:flyin|global={2}>
 				{#if $breakpoint.lg}
 					<NavbarButton melt={localeTrigger}>
 						<Languages class="button-icon" />
@@ -319,9 +316,17 @@
 			</menu>
 		</div>
 	</header>
+{:else}
+	<div class="placeholder"></div>
 {/if}
 
 <style lang="scss">
+	.placeholder {
+		position: sticky;
+		top: 0;
+		height: var(--navbar-height);
+	}
+
 	header {
 		z-index: 99;
 		position: sticky;
@@ -376,7 +381,7 @@
 		}
 	}
 
-	.group {
+	.navbar-group {
 		display: flex;
 		flex-direction: row;
 		gap: 0.25rem;
@@ -405,7 +410,7 @@
 			z-index: -1;
 			inset: 0;
 			border-radius: inherit;
-			background-color: color-mix(in srgb, var(--color-primary-200) 25%, transparent);
+			background-color: var(--color-neutral-50);
 			outline: 3px solid color-mix(in hsl, var(--color-primary-600) 75%, transparent);
 			@include dark {
 				background-color: var(--color-neutral-900);
