@@ -39,6 +39,18 @@ export function boolean<T extends boolean>(value: T) {
 	return sql<T>`${value ? 'true' : 'false'}`;
 }
 
+export function TRUE() {
+	return sql<true>`true`;
+}
+
+export function FALSE() {
+	return sql<false>`false`;
+}
+
+export function NULL() {
+	return sql<null>`null`;
+}
+
 /**
  * Generate a nanoid using postgres-nanoid.
  *
@@ -86,7 +98,7 @@ export function arrayAgg<T extends SQL | InferSelectModel<AnyTable>>(raw: T) {
  * type.
  */
 export function rowToJson<T extends AnyTable>(row: T) {
-	return sql<InferSelectModel<T>>`row_to_json(${row})`;
+	return sql<InferSelectModel<T> | null>`row_to_json(${row})`;
 }
 
 /**
@@ -158,6 +170,7 @@ export function jsonObjectAgg<
  * SQL coalesce.
  */
 export function coalesce<V extends SQL[]>(...values: V) {
+	type T = V extends SQL<infer T>[] ? T : never;
 	return sql.join([
 		sql.raw('coalesce('),
 		sql.join(
@@ -165,6 +178,5 @@ export function coalesce<V extends SQL[]>(...values: V) {
 			sql.raw(', ')
 		),
 		sql.raw(')'),
-	]) as V[number];
-	// as V[number] extends SQL<infer U> ? SQL<NonNullable<U>> : V[number];
+	]) as NonNullable<T> extends never ? SQL<null> : SQL<NonNullable<T>>;
 }
