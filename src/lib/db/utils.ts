@@ -1,10 +1,10 @@
 import { LOCALES, LOCALES_ARR, type Locale } from '$lib/i18n/constants';
 import { strictRecord } from '$lib/utils/zod';
-import type { AnyColumn, AnyTable, SQL } from 'drizzle-orm';
+import { getTableColumns, type AnyColumn, type AnyTable, type SQL } from 'drizzle-orm';
 import { PgTable, getTableConfig } from 'drizzle-orm/pg-core';
-import { z, type ZodObject, type ZodRawShape } from 'zod';
+import type { ZodObject, ZodRawShape } from 'zod';
 import { locales } from './schema/i18n';
-import { coalesce, emptyJsonObject, jsonObjectAgg, rowToJson } from './sql';
+import { NULL, coalesce, jsonBuildObject, jsonObjectAgg, rowToJson } from './sql';
 
 export type FieldSelectRecord = Record<string, AnyColumn | SQL>;
 
@@ -61,9 +61,15 @@ export function getTableName<T extends PgTable>(
  */
 export function translationsAgg<T extends AnyTable>(translations: T) {
 	const json = rowToJson(translations);
-	// const defaultJson = jsonBuildObject();
+	// return jsonObjectAgg(locales.locale, coalesce(json, emptyJsonObject()));
 	// return jsonObjectAgg(locales.locale, json);
-	return jsonObjectAgg(locales.locale, coalesce(json, emptyJsonObject()));
+	const cols = getTableColumns(translations);
+	const empty = Object.fromEntries(Object.keys(cols).map((col) => [col, NULL()])) as Record<
+		// keyof InferSelectModel<T>,
+		keyof typeof cols,
+		SQL<null>
+	>;
+	return jsonObjectAgg(locales.locale, coalesce(json, jsonBuildObject(empty)));
 }
 
 /**
@@ -79,11 +85,13 @@ export function translationsSchema<T extends ZodRawShape>(schema: ZodObject<T>) 
  */
 export function withTranslationsSchema<
 	T extends ZodRawShape,
-	// UKP extends UnknownKeysParam,
-	// CA extends ZodTypeAny,
+	// TK extends UnknownKeysParam,
+	// TC extends ZodTypeAny,
 	TT extends ZodRawShape,
+	// TTK extends UnknownKeysParam,
+	// TTC extends ZodTypeAny,
 >(schema: ZodObject<T>, translationSchema: ZodObject<TT>) {
-	return schema.merge(z.object({ translations: translationsSchema(translationSchema) }));
+	return schema.extend({ translations: translationsSchema(translationSchema) });
 }
 
 /**

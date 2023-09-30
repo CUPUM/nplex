@@ -244,17 +244,19 @@ Prose (text_
 	width: 65ch;
 
 	&.dim {
-		color: var(--color-neutral-600);
-		@include global-dark {
-			color: var(--color-neutral-400);
-		}
+		opacity: 0.75;
+		// color: var(--color-neutral-600);
+		// @include global-dark {
+		// color: var(--color-neutral-400);
+		// }
 	}
 
 	&.dimmer {
-		color: var(--color-neutral-500);
-		@include global-dark {
-			color: var(--color-neutral-500);
-		}
+		opacity: 0.5;
+		// color: var(--color-neutral-500);
+		// @include global-dark {
+		// 	color: var(--color-neutral-500);
+		// }
 	}
 
 	@include global-dark {
@@ -595,11 +597,12 @@ Wrapper for inputs with a legend
 		font-weight: 400;
 		font-size: clamp(var(--size-xs), 0.5em, var(--size-sm));
 		padding-inline: 0.75em;
-		color: var(--color-neutral-500);
+		opacity: 0.65;
+		// color: var(--color-neutral-500);
 		transition: all 0.2s var(--ease-out-expo);
-		@include global-dark {
-			color: var(--color-neutral-500);
-		}
+		// @include global-dark {
+		// 	color: var(--color-neutral-500);
+		// }
 
 		&.with-hover {
 			opacity: 0;
@@ -610,13 +613,13 @@ Wrapper for inputs with a legend
 	&:hover,
 	&:focus-within {
 		.input-label {
-			color: var(--color-neutral-900);
-			@include global-dark {
-				color: var(--color-neutral-100);
-			}
+			opacity: 1;
+			// color: var(--color-neutral-900);
+			// @include global-dark {
+			// 	color: var(--color-neutral-100);
+			// }
 
 			&.with-hover {
-				opacity: 1;
 				transform: translateY(0%);
 			}
 		}

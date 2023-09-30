@@ -4,6 +4,7 @@
 	import TranslationsTabs from '$lib/components/TranslationsTabs.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { Check, Pen, Plus } from 'lucide-svelte';
+	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
 
@@ -66,32 +67,30 @@
 					</label>
 				</TranslationsTabs>
 				<ol>
-					{#each $form.interventions as intervention, ii (intervention.id)}
-						{#if intervention.categoryId === category.id}
-							<li class="intervention">
-								<TranslationsTabs
-									let:locale
-									legend={intervention.id}
-									deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
-								>
-									<label class="labeled-input">
-										<span class="input-label with-hover">test label</span>
-										<input
-											class="input"
-											type="text"
-											bind:value={$form.interventions[ii].translations[locale].title}
-										/>
-									</label>
-									<label class="labeled-input">
-										<span class="input-label with-hover">test label</span>
-										<textarea
-											class="input"
-											bind:value={$form.interventions[ii].translations[locale].description}
-										/>
-									</label>
-								</TranslationsTabs>
-							</li>
-						{/if}
+					{#each $form.interventions.filter((pi) => pi.categoryId === category.id) as intervention, ii (intervention.id)}
+						<li class="intervention" animate:flip>
+							<TranslationsTabs
+								let:locale
+								legend={intervention.id}
+								deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
+							>
+								<label class="labeled-input">
+									<span class="input-label with-hover">test label</span>
+									<input
+										class="input"
+										type="text"
+										bind:value={$form.interventions[ii].translations[locale].title}
+									/>
+								</label>
+								<label class="labeled-input">
+									<span class="input-label with-hover">test label</span>
+									<textarea
+										class="input"
+										bind:value={$form.interventions[ii].translations[locale].description}
+									/>
+								</label>
+							</TranslationsTabs>
+						</li>
 					{/each}
 				</ol>
 				<menu class="intervention-menu">
@@ -139,7 +138,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-		padding: 1rem;
+		// padding: 1rem;
 	}
 
 	.category {
@@ -149,8 +148,10 @@
 		padding: 1rem;
 
 		ol {
+			max-width: var(--width-md);
+			padding: 2rem;
 			border: var(--base-border-size) solid var(--color-neutral-200);
-			border-radius: var(--radius-xl);
+			border-radius: var(--radius-2xl);
 			@include dark {
 				border-color: transparent;
 				background-color: var(--color-neutral-900);

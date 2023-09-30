@@ -44,16 +44,18 @@
 		display: flex;
 		flex-direction: column;
 		border-radius: var(--radius-lg);
-		border: var(--base-border-size) solid var(--color-neutral-200);
+		// border: var(--base-border-size) solid var(--color-neutral-200);
+		background-color: var(--color-neutral-200);
 		padding: 0.5rem;
 		margin-bottom: 0.5rem;
 		@include dark {
-			border-color: var(--color-neutral-800);
+			background-color: var(--color-neutral-800);
+			// border-color: var(--color-neutral-800);
 		}
 
 		@include lg {
 			margin-bottom: 0;
-			margin-right: 0.5rem;
+			// margin-right: 0.5rem;
 		}
 	}
 

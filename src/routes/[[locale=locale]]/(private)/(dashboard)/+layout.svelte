@@ -47,6 +47,7 @@
 		position: sticky;
 		gap: 0.5rem;
 		@include md {
+			margin-right: 0.5rem;
 			align-self: flex-start;
 			overflow-x: hidden;
 			overflow-y: auto;

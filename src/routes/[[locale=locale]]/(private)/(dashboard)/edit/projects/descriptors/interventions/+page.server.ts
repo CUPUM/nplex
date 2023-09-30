@@ -60,38 +60,38 @@ export const load = async (event) => {
 };
 
 export const actions = {
-	createCategory: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-	},
-	deleteCategory: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-	},
-	createIntervention: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-		const categoryId = event.url.searchParams.get('categoryId');
-		if (!categoryId) {
-			return fail(STATUS_CODES.BAD_REQUEST);
-		}
-		try {
-			await dbpool.insert(projectInterventions).values({ categoryId });
-		} catch (e) {
-			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
-	},
-	deleteIntervention: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-		const interventionId = event.url.searchParams.get('interventionId');
-		if (!interventionId) {
-			return fail(STATUS_CODES.BAD_REQUEST);
-		}
-		try {
-			await dbpool.delete(projectInterventions).where(eq(projectInterventions.id, interventionId));
-		} catch (e) {
-			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
-	},
+	// createCategory: async (event) => {
+	// 	await withRole(event, USER_ROLES.ADMIN);
+	// },
+	// deleteCategory: async (event) => {
+	// 	await withRole(event, USER_ROLES.ADMIN);
+	// },
+	// createIntervention: async (event) => {
+	// 	await withRole(event, USER_ROLES.ADMIN);
+	// 	const categoryId = event.url.searchParams.get('categoryId');
+	// 	if (!categoryId) {
+	// 		return fail(STATUS_CODES.BAD_REQUEST);
+	// 	}
+	// 	try {
+	// 		await dbpool.insert(projectInterventions).values({ categoryId });
+	// 	} catch (e) {
+	// 		console.error(e);
+	// 		return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
+	// 	}
+	// },
+	// deleteIntervention: async (event) => {
+	// 	await withRole(event, USER_ROLES.ADMIN);
+	// 	const interventionId = event.url.searchParams.get('interventionId');
+	// 	if (!interventionId) {
+	// 		return fail(STATUS_CODES.BAD_REQUEST);
+	// 	}
+	// 	try {
+	// 		await dbpool.delete(projectInterventions).where(eq(projectInterventions.id, interventionId));
+	// 	} catch (e) {
+	// 		console.error(e);
+	// 		return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
+	// 	}
+	// },
 	update: async (event) => {
 		await withRole(event, USER_ROLES.ADMIN);
 		const form = await superValidate(
@@ -129,6 +129,7 @@ export const actions = {
 						},
 					});
 			});
+			return { form };
 		} catch (e) {
 			console.error(e);
 			throw error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur server' });

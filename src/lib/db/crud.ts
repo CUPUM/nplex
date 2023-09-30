@@ -17,9 +17,7 @@ import { withTranslationsSchema } from './utils';
 
 export const projectTypeInsertSchema = createInsertSchema(projectTypes, {});
 
-export const projectTypeTranslationInsertSchema = createInsertSchema(projectTypesTranslations, {
-	title: (s) => s.title.default(''),
-});
+export const projectTypeTranslationInsertSchema = createInsertSchema(projectTypesTranslations, {});
 
 export const projectTypesUpdateSchema = z.object({
 	types: z
@@ -27,7 +25,7 @@ export const projectTypesUpdateSchema = z.object({
 			withTranslationsSchema(projectTypeInsertSchema, projectTypeTranslationInsertSchema).transform(
 				(v) => {
 					const translations = LOCALES_ARR.reduce((acc, locale) => {
-						acc[locale].id = v.id;
+						acc[locale].id = v.id!;
 						acc[locale].locale = locale;
 						return acc;
 					}, v.translations);
@@ -42,6 +40,18 @@ export const projectTypesUpdateSchema = z.object({
 			return v;
 		}),
 });
+
+// export const projectTypesUpdateSchema = z.object({
+// 	types: z
+// 		.array(withTranslationsSchema(projectTypeInsertSchema, projectTypeTranslationInsertSchema))
+// 		.transform((v) => {
+// 			v.forEach((d, i) => {
+// 				// Automatically handling index
+// 				d.index ??= i;
+// 			});
+// 			return v;
+// 		}),
+// });
 
 export const projectInterventionCategoryInsertSchema = createInsertSchema(
 	projectInterventionCategories,

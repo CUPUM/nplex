@@ -20,6 +20,7 @@ import { intrange, nanoid, userRole } from './custom-types';
  */
 export const projectTypes = pgTable('project_types', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 	index: integer('index').unique(),
@@ -31,11 +32,13 @@ export const projectTypes = pgTable('project_types', {
 export const projectTypesTranslations = pgTable(
 	'project_types_t',
 	{
-		id: text('id').references(() => projectTypes.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
+		id: text('id')
+			.references(() => projectTypes.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		locale: localeForeignKey('locale').notNull(),
 		title: text('title').notNull(),
 		description: text('description'),
 	},
@@ -567,6 +570,30 @@ export const projectsLikes = pgTable(
 	(table) => {
 		return {
 			pk: primaryKey(table.projectId, table.userId),
+		};
+	}
+);
+
+/**
+ * Tracking project views with forced uniqueness on either user id or some common client identifier
+ * for non authed users.
+ */
+export const projectsViews = pgTable(
+	'projects_views',
+	{
+		id: nanoid('id').notNull().default(generateNanoid()).primaryKey(),
+		projectId: nanoid('project_id')
+			.references(() => projects.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+			.notNull(),
+		userId: userIdForeignKey('user_id'),
+		clientId: text('client_id'),
+		viewedAt: timestamp('viewed_at', { withTimezone: true }).notNull().defaultNow(),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.userId, table.projectId),
+			unqUser: unique().on(table.projectId, table.userId),
+			unqClient: unique().on(table.projectId, table.clientId),
 		};
 	}
 );

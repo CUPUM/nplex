@@ -1,10 +1,29 @@
+<script lang="ts" context="module">
+	export const TOAST_TYPES = {
+		SUCCESS: 'success',
+		ERROR: 'error',
+		NOTIFICATION: 'notification',
+		DEFAULT: '',
+	} as const;
+
+	export type ToastType = ValueOf<typeof TOAST_TYPES>;
+
+	export type ToastData<T extends Component = SvelteComponent> = {
+		title: string;
+		description: string;
+		type?: ToastType;
+		component?: ComponentType<T>;
+		props?: ComponentProps<T & object>;
+	};
+</script>
+
 <script lang="ts">
 	import { createProgress, melt, type Toast, type ToastsElements } from '@melt-ui/svelte';
-	import { X } from 'lucide-svelte';
-	import { onMount } from 'svelte';
+	import { Component, X } from 'lucide-svelte';
+	import { onMount, SvelteComponent, type ComponentProps, type ComponentType } from 'svelte';
 	import { writable } from 'svelte/store';
 	import { fly } from 'svelte/transition';
-	import { TOAST_TYPES, type ToastData } from './Toasts.svelte';
+	import type { ValueOf } from 'type-fest';
 
 	export let elements: ToastsElements;
 	$: ({ content, title, description, close } = elements);
@@ -29,7 +48,9 @@
 		};
 		frame = requestAnimationFrame(updatePercentage);
 
-		return () => cancelAnimationFrame(frame);
+		return function onUnmount() {
+			cancelAnimationFrame(frame);
+		};
 	});
 </script>
 
@@ -52,8 +73,8 @@
 				<span class={data.type} />
 			</h3>
 			<div use:melt={$description(id)}>
-				{#if 'comp' in data}
-					<svelte:component this={data.comp} {...data.props} />
+				{#if 'component' in data}
+					<svelte:component this={data.component} {...data.props} />
 				{:else}
 					{data.description}
 				{/if}

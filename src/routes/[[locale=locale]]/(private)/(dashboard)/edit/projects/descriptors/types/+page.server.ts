@@ -33,7 +33,7 @@ export const load = async (event) => {
 
 	const form = await superValidate({ types }, projectTypesUpdateSchema);
 
-	return { form, types };
+	return { form };
 };
 
 export const actions = {
@@ -63,7 +63,7 @@ export const actions = {
 		await withRole(event, USER_ROLES.ADMIN);
 		const form = await superValidate(event, projectTypesUpdateSchema);
 		if (!form.valid) {
-			console.info(form);
+			console.info(form.errors);
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
 		try {

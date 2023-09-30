@@ -76,10 +76,11 @@
 
 	.needle {
 		position: absolute;
-		top: 0.9em;
-		bottom: 0.9em;
-		right: 8px;
-		width: 3px;
+		top: 0.75em;
+		bottom: 0.75em;
+		left: 100%;
+		width: 0.25rem;
+		margin-left: 0.125rem;
 		border-radius: inherit;
 		z-index: -1;
 		background-color: var(--color-primary-700);

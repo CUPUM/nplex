@@ -1,16 +1,20 @@
 <script lang="ts">
 	import Loading from '$lib/components/Loading.svelte';
-	import { TOAST_TYPES, addToast } from '$lib/components/Toasts.svelte';
+	import { addErrorToast, addToast } from '$lib/components/ToastsOutlet.svelte';
 
 	let loading = true;
 
 	function sendToast() {
 		addToast({
 			data: {
-				type: TOAST_TYPES.ERROR,
 				title: toastTitle,
 				description: toastDescription,
-				body: toastBody,
+			},
+		});
+		addErrorToast({
+			data: {
+				title: toastTitle,
+				description: toastDescription,
 			},
 		});
 		if (resetToast) {
