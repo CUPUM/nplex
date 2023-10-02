@@ -45,25 +45,25 @@ export const authProvider = customType<{ data: AuthProvider }>({
 	},
 });
 
-/**
- * Var char with nanoid defaults.
- */
-export const nanoid = customType<{
-	data: string;
-	config: { length?: number };
-	driver: string;
-	driverData: string;
-}>({
-	dataType({ length = 21 } = {}) {
-		return `varchar(${length})`;
-	},
-	fromDriver(value) {
-		return value;
-	},
-	toDriver(value) {
-		return value;
-	},
-});
+// /**
+//  * Var char with nanoid defaults.
+//  */
+// export const nanoid = customType<{
+// 	data: string;
+// 	config: { length?: number };
+// 	driver: string;
+// 	driverData: string;
+// }>({
+// 	dataType({ length = 21 } = {}) {
+// 		return `varchar(${length})`;
+// 	},
+// 	fromDriver(value) {
+// 		return value;
+// 	},
+// 	toDriver(value) {
+// 		return value;
+// 	},
+// });
 
 /**
  * @see https://github.com/drizzle-team/drizzle-orm/issues/295

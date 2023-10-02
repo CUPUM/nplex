@@ -240,23 +240,24 @@ Prose (text_
 .prose {
 	color: var(--color-neutral-700);
 	font-optical-sizing: auto;
-	margin-block: 1.25em;
 	width: 65ch;
+
+	p#{&},
+	h1#{&},
+	h2#{&},
+	h3#{&},
+	h4#{&},
+	h5#{&},
+	h6#{&} {
+		margin-block: 1.25em;
+	}
 
 	&.dim {
 		opacity: 0.75;
-		// color: var(--color-neutral-600);
-		// @include global-dark {
-		// color: var(--color-neutral-400);
-		// }
 	}
 
 	&.dimmer {
 		opacity: 0.5;
-		// color: var(--color-neutral-500);
-		// @include global-dark {
-		// 	color: var(--color-neutral-500);
-		// }
 	}
 
 	@include global-dark {

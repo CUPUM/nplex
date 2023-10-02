@@ -10,11 +10,10 @@ import {
 	unique,
 	varchar,
 } from 'drizzle-orm/pg-core';
-import { createInsertSchema } from 'drizzle-zod';
-import { generateUserId, userId, userIdForeignKey } from '../references/accounts';
-import { localeForeignKey } from '../references/i18n';
+import { USER_ID_LENGTH } from '../constants';
 import { generateNanoid } from '../sql';
-import { nanoid, userRole } from './custom-types';
+import { locale, userRole } from './custom-types';
+import { locales } from './i18n';
 import { projects } from './public';
 
 /**
@@ -31,7 +30,7 @@ export const accountsSchema = pgSchema('accounts');
  * entities' level (ex: projectsUsers.role, ...).
  */
 export const userRoles = accountsSchema.table('user_roles', {
-	role: userRole('role').primaryKey(),
+	role: userRole('role').primaryKey().notNull(),
 });
 
 /**
@@ -40,12 +39,19 @@ export const userRoles = accountsSchema.table('user_roles', {
 export const userRolesTranslations = accountsSchema.table(
 	'user_roles_t',
 	{
-		role: userRole('role').references(() => userRoles.role, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
-		name: text('title').notNull(),
+		role: userRole('role')
+			.notNull()
+			.references(() => userRoles.role, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		name: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -61,41 +67,29 @@ export const userRolesTranslations = accountsSchema.table(
  *
  * @see https://lucia-auth.com/basics/users
  */
-export const users = accountsSchema.table(
-	'users',
-	{
-		id: userId('id').default(generateUserId()).primaryKey(),
-		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-		updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-		role: userRole('role')
-			.references(() => userRoles.role, {
-				onDelete: 'set default',
-				onUpdate: 'cascade',
-			})
-			.default(USER_ROLES.VISITOR)
-			.notNull(),
-		email: text('email').unique(),
-		emailVerified: boolean('email_verified').default(false).notNull(),
-		publicEmail: text('public_email'),
-		publicEmailVerified: boolean('public_email_verified').default(false).notNull(),
-		githubUsername: text('github_username'),
-		googleUsername: text('google_username'),
-		firstName: text('first_name'),
-		middleName: text('middle_name'),
-		lastName: text('last_name'),
-	}
-	// (table) => {
-	// 	return {
-	// 		unq1: unique().on(table.email, table.emailVerified),
-	// 	};
-	// }
-);
-
-export type SelectUser = InferSelectModel<typeof users>;
-
-export const usersInsertSchema = createInsertSchema(users, {
-	email: (s) => s.email.email(),
-	publicEmail: (s) => s.publicEmail.email(),
+export const users = accountsSchema.table('users', {
+	id: text('id')
+		.default(generateNanoid({ length: USER_ID_LENGTH }))
+		.notNull()
+		.primaryKey(),
+	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+	role: userRole('role')
+		.references(() => userRoles.role, {
+			onDelete: 'set default',
+			onUpdate: 'cascade',
+		})
+		.default(USER_ROLES.VISITOR)
+		.notNull(),
+	email: text('email').unique(),
+	emailVerified: boolean('email_verified').default(false).notNull(),
+	publicEmail: text('public_email'),
+	publicEmailVerified: boolean('public_email_verified').default(false).notNull(),
+	githubUsername: text('github_username'),
+	googleUsername: text('google_username'),
+	firstName: text('first_name'),
+	middleName: text('middle_name'),
+	lastName: text('last_name'),
 });
 
 /**
@@ -106,7 +100,9 @@ export const usersInsertSchema = createInsertSchema(users, {
 export const emailVerificationTokens = accountsSchema.table('email_verification_tokens', {
 	id: text('id').notNull().unique(),
 	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
-	userId: userIdForeignKey('user_id').notNull(),
+	userId: text('user_id')
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+		.notNull(),
 });
 
 export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerificationTokens>;
@@ -117,7 +113,9 @@ export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerifica
 export const passwordResetTokens = accountsSchema.table('password_reset_tokens', {
 	id: text('id').notNull().unique(),
 	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
-	userId: userIdForeignKey('user_id').notNull(),
+	userId: text('user_id')
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+		.notNull(),
 });
 
 /**
@@ -127,7 +125,9 @@ export const passwordResetTokens = accountsSchema.table('password_reset_tokens',
  */
 export const sessions = accountsSchema.table('auth_sessions', {
 	id: varchar('id', { length: 128 }).primaryKey(),
-	userId: userIdForeignKey('user_id').notNull(),
+	userId: text('user_id')
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+		.notNull(),
 	activeExpires: bigint('active_expires', { mode: 'number' }).notNull(),
 	idleExpires: bigint('idle_expires', { mode: 'number' }).notNull(),
 });
@@ -139,12 +139,22 @@ export const sessions = accountsSchema.table('auth_sessions', {
  */
 export const keys = accountsSchema.table('auth_keys', {
 	id: varchar('id', { length: 255 }).primaryKey(),
-	userId: userIdForeignKey('user_id').notNull(),
+	userId: text('user_id')
+		.references(() => users.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
 	hashedPassword: varchar('hashed_password', { length: 255 }),
 });
 
 export const usersRolesRequests = accountsSchema.table('users_roles_requests', {
-	userId: userIdForeignKey('user_id').primaryKey(),
+	userId: text('user_id')
+		.references(() => users.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
 	requestedRole: userRole('requested_role').references(() => userRoles.role, {
 		onDelete: 'cascade',
 		onUpdate: 'cascade',
@@ -167,12 +177,19 @@ export const userOccupations = accountsSchema.table('user_occupations', {
 export const userOccupationsTranslations = accountsSchema.table(
 	'user_occupations_t',
 	{
-		id: text('id').references(() => userOccupations.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
-		title: text('title').notNull(),
+		id: text('id')
+			.references(() => userOccupations.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -183,11 +200,18 @@ export const userOccupationsTranslations = accountsSchema.table(
 export const usersOccupations = accountsSchema.table(
 	'users_occupations',
 	{
-		userId: userIdForeignKey('user_id'),
-		occupationId: text('occupation_id').references(() => userOccupations.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		userId: text('user_id')
+			.references(() => users.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		occupationId: text('occupation_id')
+			.references(() => userOccupations.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
 	},
 	(table) => {
 		return {
@@ -199,8 +223,13 @@ export const usersOccupations = accountsSchema.table(
 export const usersProjectsCollections = accountsSchema.table(
 	'users_projects_collections',
 	{
-		id: nanoid('id').default(generateNanoid()).primaryKey(),
-		userId: userIdForeignKey('user_id').notNull(),
+		id: text('id').default(generateNanoid()).primaryKey().notNull(),
+		userId: text('user_id')
+			.references(() => users.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
 		title: text('title').notNull(),
 		description: text('description'),
 	},
@@ -214,14 +243,18 @@ export const usersProjectsCollections = accountsSchema.table(
 export const usersProjectsCollectionsItems = accountsSchema.table(
 	'users_collections_items',
 	{
-		collectionId: nanoid('collection_id').references(() => usersProjectsCollections.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		projectId: nanoid('project_id').references(() => projects.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		collectionId: text('collection_id')
+			.references(() => usersProjectsCollections.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		projectId: text('project_id')
+			.references(() => projects.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
 		note: text('note'),
 	},
 	(table) => {
@@ -233,28 +266,48 @@ export const usersProjectsCollectionsItems = accountsSchema.table(
 
 export const notificationTypes = accountsSchema.table('notification_types', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 });
 
 export const notificationTypesTranslations = accountsSchema.table('notification_types_t', {
-	id: text('id').references(() => notificationTypes.id, {
-		onDelete: 'cascade',
-		onUpdate: 'cascade',
-	}),
-	locale: localeForeignKey('locale'),
+	id: text('id')
+		.references(() => notificationTypes.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
+	locale: locale('locale')
+		.references(() => locales.locale, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
 	title: text('title'),
 	body: text('body'),
 });
 
 export const usersNotifications = accountsSchema.table('users_notifications', {
-	id: nanoid('id').default(generateNanoid()).primaryKey(),
-	typeId: text('type_id').references(() => notificationTypes.id, {
-		onDelete: 'cascade',
-		onUpdate: 'cascade',
-	}),
-	userId: userIdForeignKey('user_id'),
+	id: text('id').default(generateNanoid()).notNull().primaryKey(),
+	typeId: text('type_id')
+		.references(() => notificationTypes.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => users.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
 	readAt: timestamp('read_at', { withTimezone: true }),
-	sentById: userIdForeignKey('sent_by_id'),
+	sentById: text('sent_by_id')
+		.notNull()
+		.references(() => users.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
 	sentAt: timestamp('sent_at', { withTimezone: true }).defaultNow(),
 });

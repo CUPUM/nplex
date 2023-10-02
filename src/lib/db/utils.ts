@@ -1,10 +1,9 @@
-import { LOCALES, LOCALES_ARR, type Locale } from '$lib/i18n/constants';
+import { LOCALES, LOCALES_ARR, localeSchema, type Locale } from '$lib/i18n/constants';
 import { strictRecord } from '$lib/utils/zod';
 import { getTableColumns, type AnyColumn, type AnyTable, type SQL } from 'drizzle-orm';
 import { PgTable, getTableConfig } from 'drizzle-orm/pg-core';
-import type { ZodObject, ZodRawShape } from 'zod';
-import { locales } from './schema/i18n';
-import { NULL, coalesce, jsonBuildObject, jsonObjectAgg, rowToJson } from './sql';
+import type { ZodObject, ZodString, ZodTypeAny } from 'zod';
+import { excluded } from './sql';
 
 export type FieldSelectRecord = Record<string, AnyColumn | SQL>;
 
@@ -56,26 +55,22 @@ export function getTableName<T extends PgTable>(
 	return `${qo}${withSchema ? `${tableConfig.schema}${qi}.` : ''}${qi}${tableConfig.name}${qo}`;
 }
 
-/**
- * Create a translations dictionnary.
- */
-export function translationsAgg<T extends AnyTable>(translations: T) {
-	const json = rowToJson(translations);
-	// return jsonObjectAgg(locales.locale, coalesce(json, emptyJsonObject()));
-	// return jsonObjectAgg(locales.locale, json);
-	const cols = getTableColumns(translations);
-	const empty = Object.fromEntries(Object.keys(cols).map((col) => [col, NULL()])) as Record<
-		// keyof InferSelectModel<T>,
-		keyof typeof cols,
-		SQL<null>
-	>;
-	return jsonObjectAgg(locales.locale, coalesce(json, jsonBuildObject(empty)));
+export function getAllExcluded<T extends AnyTable>(table: T) {
+	const cols = getTableColumns(table);
+	type C = keyof typeof cols;
+	return (Object.keys(cols) as C[]).reduce(
+		(acc, curr) => {
+			acc[curr] = excluded(cols[curr]);
+			return acc;
+		},
+		<{ [K in C]: ReturnType<typeof excluded<(typeof cols)[K]>> }>{}
+	);
 }
 
 /**
  * Schema for translations record.
  */
-export function translationsSchema<T extends ZodRawShape>(schema: ZodObject<T>) {
+export function translationsSchema<T extends ZodTypeAny>(schema: T) {
 	return strictRecord(LOCALES, schema);
 }
 
@@ -84,12 +79,8 @@ export function translationsSchema<T extends ZodRawShape>(schema: ZodObject<T>) 
  * resulting schema should be isomorphic with {@link withTranslationsRelations}.
  */
 export function withTranslationsSchema<
-	T extends ZodRawShape,
-	// TK extends UnknownKeysParam,
-	// TC extends ZodTypeAny,
-	TT extends ZodRawShape,
-	// TTK extends UnknownKeysParam,
-	// TTC extends ZodTypeAny,
+	T extends { id: ZodString },
+	TT extends { locale: typeof localeSchema },
 >(schema: ZodObject<T>, translationSchema: ZodObject<TT>) {
 	return schema.extend({ translations: translationsSchema(translationSchema) });
 }
@@ -98,15 +89,57 @@ export function withTranslationsSchema<
  * Function to reduce a given array of entries augmented with translations records into two arrays.
  */
 export function extractTranslations<T, D extends Omit<Record<string, unknown>, 'translations'>>(
-	data: (D & { translations: Record<Locale, T> })[]
+	data: (D & { translations: Partial<Record<Locale, T>> })[]
 ) {
 	return data.reduce(
 		(acc, curr) => {
 			const { translations, ...rest } = curr;
-			LOCALES_ARR.forEach((t) => acc[1].push(translations[t]));
+			acc[1].push(...Object.values(translations));
 			acc[0].push(rest as unknown as D);
 			return acc;
 		},
 		<[D[], T[]]>[[], []]
 	);
+}
+
+export function reduceTranslations<T extends { locale: Locale }>(translations: T[]) {
+	return translations.reduce(
+		(acc, curr) => {
+			acc[curr.locale] = curr;
+			return acc;
+		},
+		<Partial<Record<Locale, T>>>{}
+	);
+}
+
+/**
+ * Map translations array to a record of translations. Also automatically populate / update index
+ * field if present.
+ */
+export function mapReduceTranslations<
+	T extends { locale: Locale; id: string },
+	D extends { id: string; index?: number | null },
+>(row: D & { translations: T[] }, index: number) {
+	const { translations, ...cols } = row;
+	if ('index' in cols) {
+		cols.index = index;
+	}
+	// Building a base empty translations dictionnary to handle cases where no rows are defined.
+	const translationsBase = LOCALES_ARR.reduce(
+		(acc, locale) => {
+			acc[locale] = {
+				id: cols.id,
+				locale,
+			};
+			return acc;
+		},
+		<Record<Locale, T | { locale: Locale; id: string }>>{}
+	);
+	return {
+		...cols,
+		translations: translations.reduce((acc, curr) => {
+			acc[curr.locale] = curr;
+			return acc;
+		}, translationsBase),
+	};
 }

@@ -1,7 +1,8 @@
 import { withAuth } from '$lib/auth/guard.server';
 import { authorizeUserUpdate } from '$lib/db/authorizations';
+import { usersInsertSchema } from '$lib/db/crud';
 import { dbhttp } from '$lib/db/db.server';
-import { users, usersInsertSchema } from '$lib/db/schema/accounts';
+import { users } from '$lib/db/schema/accounts';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';

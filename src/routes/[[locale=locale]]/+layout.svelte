@@ -16,7 +16,7 @@
 
 <Contexts>
 	{#if loading}
-		<div class="overlay">
+		<div class="loading">
 			<Loading />
 		</div>
 	{/if}
@@ -39,8 +39,8 @@
 		margin: 0;
 	}
 
-	.overlay {
-		// z-index: 999;
+	.loading {
+		z-index: 999;
 		position: fixed;
 		inset: 0;
 		pointer-events: none;

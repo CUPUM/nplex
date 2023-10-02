@@ -1,6 +1,7 @@
 import { USER_ROLES } from '$lib/auth/constants';
 import {
 	boolean,
+	date,
 	integer,
 	pgTable,
 	pgView,
@@ -9,11 +10,10 @@ import {
 	timestamp,
 	unique,
 } from 'drizzle-orm/pg-core';
-import { userIdForeignKey } from '../references/accounts';
-import { localeForeignKey } from '../references/i18n';
 import { generateNanoid } from '../sql';
-import { userRoles } from './accounts';
-import { intrange, nanoid, userRole } from './custom-types';
+import { userRoles, users } from './accounts';
+import { intrange, locale, userRole } from './custom-types';
+import { locales } from './i18n';
 
 /**
  * Top-most categories of projects.
@@ -23,12 +23,8 @@ export const projectTypes = pgTable('project_types', {
 		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
-	index: integer('index').unique(),
+	index: integer('index'),
 });
-
-/**
- * @see {@link projectTypes}
- */
 export const projectTypesTranslations = pgTable(
 	'project_types_t',
 	{
@@ -38,8 +34,13 @@ export const projectTypesTranslations = pgTable(
 				onUpdate: 'cascade',
 			})
 			.notNull(),
-		locale: localeForeignKey('locale').notNull(),
-		title: text('title').notNull(),
+		locale: locale('locale')
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -54,23 +55,27 @@ export const projectTypesTranslations = pgTable(
  */
 export const projectInterventionCategories = pgTable('project_intervention_categories', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
-	index: integer('index').unique(),
+	index: integer('index'),
 });
-
-/**
- * @see {@link projectInterventionCategories}
- */
 export const projectInterventionCategoriesTranslations = pgTable(
 	'project_intervention_categories_t',
 	{
-		id: text('id').references(() => projectInterventionCategories.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
-		title: text('title').notNull(),
+		id: text('id')
+			.notNull()
+			.references(() => projectInterventionCategories.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -85,29 +90,33 @@ export const projectInterventionCategoriesTranslations = pgTable(
  */
 export const projectInterventions = pgTable('project_interventions', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 	categoryId: text('category_id')
+		.notNull()
 		.references(() => projectInterventionCategories.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
-		})
-		.notNull(),
+		}),
 	maybePermit: boolean('maybe_permit'),
 });
-
-/**
- * @see {@link projectInterventionTypes}
- */
 export const projectInterventionsTranslations = pgTable(
 	'project_interventions_t',
 	{
-		id: text('id').references(() => projectInterventions.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
-		title: text('title').notNull(),
+		id: text('id')
+			.notNull()
+			.references(() => projectInterventions.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -126,14 +135,18 @@ export const projectInterventionsTranslations = pgTable(
 export const projectTypesToInterventions = pgTable(
 	'project_types_to_intervention',
 	{
-		typeId: text('type_id').references(() => projectTypes.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		interventionId: text('intervention_id').references(() => projectInterventions.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		typeId: text('type_id')
+			.notNull()
+			.references(() => projectTypes.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		interventionId: text('intervention_id')
+			.notNull()
+			.references(() => projectInterventions.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 	},
 	(table) => {
 		return {
@@ -147,23 +160,27 @@ export const projectTypesToInterventions = pgTable(
  */
 export const projectSiteOwnerships = pgTable('project_site_ownerships', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
-	index: integer('index').unique(),
+	index: integer('index'),
 });
-
-/**
- * @see {@link projectSiteOwnerships}
- */
 export const projectSiteOwnershipsTranslations = pgTable(
 	'project_site_ownerships_t',
 	{
-		id: text('id').references(() => projectSiteOwnerships.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
-		title: text('title').notNull(),
+		id: text('id')
+			.notNull()
+			.references(() => projectSiteOwnerships.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -178,23 +195,27 @@ export const projectSiteOwnershipsTranslations = pgTable(
  */
 export const projectImplantationTypes = pgTable('project_implantation_types', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
-	index: integer('index').unique(),
+	index: integer('index'),
 });
-
-/**
- * @see {@link projectImplantationTypes}
- */
 export const projectImplantationTypesTranslations = pgTable(
 	'project_implantation_types_t',
 	{
-		id: text('id').references(() => projectImplantationTypes.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
-		title: text('title').notNull(),
+		id: text('id')
+			.notNull()
+			.references(() => projectImplantationTypes.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -209,23 +230,27 @@ export const projectImplantationTypesTranslations = pgTable(
  */
 export const projectExemplarityCategories = pgTable('project_exemplarity_categories', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
-	index: integer('index').unique(),
+	index: integer('index'),
 });
-
-/**
- * @see {@link projectExemplarityCategories}
- */
 export const projectExemplarityCategoriesTranslations = pgTable(
 	'project_exemplarity_categories_t',
 	{
-		id: text('id').references(() => projectExemplarityCategories.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
-		title: text('title').notNull(),
+		id: text('id')
+			.notNull()
+			.references(() => projectExemplarityCategories.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -237,26 +262,34 @@ export const projectExemplarityCategoriesTranslations = pgTable(
 
 export const projectExemplarityIndicators = pgTable('project_exemplarity_indicators', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 	categoryId: text('category_id')
+		.notNull()
 		.references(() => projectExemplarityCategories.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		})
 		.notNull(),
 });
-
 export const projectExemplarityIndicatorsTranslations = pgTable(
 	'project_exemplarity_indicators_t',
 	{
-		id: text('id').references(() => projectExemplarityIndicators.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
-		title: text('title').notNull(),
-		shortTitle: text('short_title').notNull(),
+		id: text('id')
+			.notNull()
+			.references(() => projectExemplarityIndicators.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
+		shortTitle: text('short_title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -271,22 +304,57 @@ export const projectExemplarityIndicatorsTranslations = pgTable(
  */
 export const projectImageTypes = pgTable('project_image_types', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 });
-
-/**
- * @see {@link projectImageTypes}
- */
 export const projectImageTypesTranslations = pgTable(
 	'project_image_types_t',
 	{
-		id: text('id').references(() => projectImageTypes.id, {
+		id: text('id')
+			.notNull()
+			.references(() => projectImageTypes.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
+		description: text('description'),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.id, table.locale),
+		};
+	}
+);
+
+export const projectBuildingLevelTypes = pgTable('project_building_level_type', {
+	id: text('id')
+		.notNull()
+		.primaryKey()
+		.default(generateNanoid({ length: 6 })),
+	verticalIndex: integer('vertical_index').notNull(),
+	isGroundLevel: boolean('is_ground_level').unique(),
+});
+export const projectBuildingLevelTypesTranslations = pgTable(
+	'project_building_level_types_t',
+	{
+		id: text('id').references(() => projectBuildingLevelTypes.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: localeForeignKey('locale'),
-		title: text('title').notNull(),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -304,14 +372,19 @@ export const projectImageTypesTranslations = pgTable(
  * Core projects table.
  */
 export const projects = pgTable('projects', {
-	id: nanoid('id').default(generateNanoid()).primaryKey(),
+	id: text('id').default(generateNanoid()).primaryKey(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-	createdById: userIdForeignKey('created_by_id', {
-		onDelete: 'restrict',
+	createdById: text('created_by_id')
+		.references(() => users.id, {
+			onDelete: 'restrict',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
+	updatedById: text('updated_by_id').references(() => users.id, {
+		onDelete: 'set null',
 		onUpdate: 'cascade',
-	}).notNull(),
-	updatedById: userIdForeignKey('updated_by_id', { onDelete: 'set null', onUpdate: 'cascade' }),
+	}),
 	publishedAt: timestamp('published_at', { withTimezone: true }),
 	typeId: text('type_id').references(() => projectTypes.id, {
 		onDelete: 'set null',
@@ -328,23 +401,28 @@ export const projects = pgTable('projects', {
 	adjacentStreets: integer('adjacent_streets'),
 	adjacentAlleys: integer('adjacent_alleys'),
 	costRange: intrange('cost_range'),
+	siteArea: integer('site_area'),
+	interventionsArea: integer('interventions_area'),
+	buildingArea: integer('building_area'),
+	buildingConstructionDate: date('building_construction_date', { mode: 'date' }),
 	// location: postgis(),
-	// obfuscatedLocation: postgist(),
-	// likesCount: integer('likes_count').notNull().default(0),
 });
-
-/**
- * @see {@link projects}
- */
 export const projectsTranslations = pgTable(
 	'projects_t',
 	{
-		id: nanoid('id').references(() => projects.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
-		title: text('title').notNull(),
+		id: text('id')
+			.notNull()
+			.references(() => projects.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
 		summary: text('summary'),
 		description: text('description'),
 	},
@@ -362,23 +440,53 @@ export const projectsTranslations = pgTable(
  * @see {@link projects}
  */
 export const projectsObfuscatedLocations = pgView('projects_obfuscated_locations', {
-	projectId: nanoid('project_id')
-		.references(() => projects.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+	projectId: text('project_id')
+		.notNull()
+		.references(() => projects.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
 		.primaryKey(),
 	// point: postgis...
 });
 
+export const projectsBuildingLevels = pgTable(
+	'projects_building_levels',
+	{
+		id: text('id').notNull().primaryKey().default(generateNanoid()),
+		projectId: text('project_id').references(() => projects.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		levelTypeId: text('level_type_id').references(() => projectBuildingLevelTypes.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+		verticalIndex: integer('vertical_index').notNull(),
+		height: integer('height'),
+	},
+	(table) => {
+		return {
+			unq: unique().on(table.verticalIndex, table.projectId),
+		};
+	}
+);
+
 export const projectsInterventions = pgTable(
 	'projects_interventions',
 	{
-		projectId: nanoid('project_id').references(() => projects.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		interventionId: text('intervention_id').references(() => projectInterventions.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		projectId: text('project_id')
+			.notNull()
+			.references(() => projects.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		interventionId: text('intervention_id')
+			.notNull()
+			.references(() => projectInterventions.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 	},
 	(table) => {
 		return {
@@ -390,14 +498,18 @@ export const projectsInterventions = pgTable(
 export const projectsExemplarityIndicators = pgTable(
 	'projects_exemplarity_indicators',
 	{
-		projectId: nanoid('project_id').references(() => projects.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		exemplarityIndicatorId: text('exemplarity_indicator_id').references(
-			() => projectExemplarityIndicators.id,
-			{ onDelete: 'cascade', onUpdate: 'cascade' }
-		),
+		projectId: text('project_id')
+			.notNull()
+			.references(() => projects.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		exemplarityIndicatorId: text('exemplarity_indicator_id')
+			.notNull()
+			.references(() => projectExemplarityIndicators.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 	},
 	(table) => {
 		return {
@@ -409,19 +521,24 @@ export const projectsExemplarityIndicators = pgTable(
 export const projectsImages = pgTable(
 	'projects_images',
 	{
-		id: nanoid('id').default(generateNanoid()).primaryKey(),
-		projectId: nanoid('project_id').references(() => projects.id, {
+		id: text('id').notNull().default(generateNanoid()).primaryKey(),
+		projectId: text('project_id').references(() => projects.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
 		date: timestamp('date', { withTimezone: true }),
 		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 		updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-		createdById: userIdForeignKey('created_by_id', {
+		createdById: text('created_by_id')
+			.references(() => users.id, {
+				onDelete: 'restrict',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		updatedById: text('updated_by_id').references(() => users.id, {
 			onDelete: 'restrict',
 			onUpdate: 'cascade',
-		}).notNull(),
-		updatedById: userIdForeignKey('updated_by_id', { onDelete: 'restrict', onUpdate: 'cascade' }),
+		}),
 		index: integer('index'),
 		publicUrl: text('public_url').notNull(),
 		storageName: text('storage_name').notNull(),
@@ -429,22 +546,30 @@ export const projectsImages = pgTable(
 			onDelete: 'set null',
 			onUpdate: 'cascade',
 		}),
+		isBanner: boolean('is_banner'),
 	},
 	(table) => {
 		return {
-			unq: unique().on(table.projectId, table.index),
+			unqIndex: unique().on(table.projectId, table.index),
+			unqBanner: unique().on(table.projectId, table.isBanner),
 		};
 	}
 );
-
 export const projectsImagesTranslations = pgTable(
 	'projects_images_t',
 	{
-		id: nanoid('id').references(() => projectsImages.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
+		id: text('id')
+			.notNull()
+			.references(() => projectsImages.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 		description: text('description'),
 	},
 	(table) => {
@@ -455,8 +580,8 @@ export const projectsImagesTranslations = pgTable(
 );
 
 export const projectsImagesCreditDetails = pgTable('projects_images_credits_details', {
-	id: nanoid('id').default(generateNanoid()).primaryKey(),
-	projectId: nanoid('project_id')
+	id: text('id').default(generateNanoid()).notNull().primaryKey(),
+	projectId: text('project_id')
 		.references(() => projects.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
@@ -467,11 +592,11 @@ export const projectsImagesCreditDetails = pgTable('projects_images_credits_deta
 	lastName: text('last_name'),
 	url: text('url'),
 	description: text('description'),
-	organizationId: nanoid('organization_id').references(() => organizations.id, {
+	organizationId: text('organization_id').references(() => organizations.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
-	userId: userIdForeignKey('user_id', {
+	userId: text('user_id').references(() => users.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
@@ -480,11 +605,13 @@ export const projectsImagesCreditDetails = pgTable('projects_images_credits_deta
 export const projectsImagesCredits = pgTable(
 	'projects_images_credits',
 	{
-		imageId: nanoid('image_id').references(() => projectsImages.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		creditDetailsId: nanoid('credit_details_id').references(() => projectsImagesCreditDetails.id, {
+		imageId: text('image_id')
+			.notNull()
+			.references(() => projectsImages.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		creditDetailsId: text('credit_details_id').references(() => projectsImagesCreditDetails.id, {
 			onDelete: 'set null',
 			onUpdate: 'cascade',
 		}),
@@ -501,11 +628,19 @@ export const projectsImagesCredits = pgTable(
  * Keeping track of publication requests.
  */
 export const projectsPublicationRequests = pgTable('projects_publication_requests', {
-	projectId: nanoid('project_id')
-		.references(() => projects.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+	projectId: text('project_id')
+		.references(() => projects.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
 		.primaryKey(),
 	requestedAt: timestamp('requested_at', { withTimezone: true }).defaultNow().notNull(),
-	requestedById: userIdForeignKey('requested_by_id').notNull(),
+	requestedById: text('requested_by_id')
+		.references(() => users.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
 });
 
 /**
@@ -514,11 +649,18 @@ export const projectsPublicationRequests = pgTable('projects_publication_request
 export const projectsUsers = pgTable(
 	'projects_users',
 	{
-		userId: userIdForeignKey('user_id'),
-		projectId: nanoid('project_id').references(() => projects.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		userId: text('user_id')
+			.references(() => users.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		projectId: text('project_id')
+			.references(() => projects.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
 		role: userRole('role')
 			.references(() => userRoles.role, {
 				onDelete: 'set default',
@@ -539,14 +681,18 @@ export const projectsUsers = pgTable(
 export const projectsOrganizations = pgTable(
 	'projects_organizations',
 	{
-		projectId: nanoid('project_id').references(() => projects.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		organizationId: nanoid('organization_id').references(() => organizations.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		projectId: text('project_id')
+			.references(() => projects.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		organizationId: text('organization_id')
+			.references(() => organizations.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
 	},
 	(table) => {
 		return {
@@ -561,11 +707,18 @@ export const projectsOrganizations = pgTable(
 export const projectsLikes = pgTable(
 	'projects_likes',
 	{
-		userId: userIdForeignKey('user_id'),
-		projectId: nanoid('project_id').references(() => projects.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		userId: text('user_id')
+			.references(() => users.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		projectId: text('project_id')
+			.references(() => projects.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
 	},
 	(table) => {
 		return {
@@ -581,11 +734,17 @@ export const projectsLikes = pgTable(
 export const projectsViews = pgTable(
 	'projects_views',
 	{
-		id: nanoid('id').notNull().default(generateNanoid()).primaryKey(),
-		projectId: nanoid('project_id')
-			.references(() => projects.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+		id: text('id').notNull().default(generateNanoid()).primaryKey(),
+		projectId: text('project_id')
+			.references(() => projects.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
 			.notNull(),
-		userId: userIdForeignKey('user_id'),
+		userId: text('user_id').references(() => users.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
 		clientId: text('client_id'),
 		viewedAt: timestamp('viewed_at', { withTimezone: true }).notNull().defaultNow(),
 	},
@@ -610,10 +769,6 @@ export const organizationTypes = pgTable('organization_types', {
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 });
-
-/**
- * @see {@link organizationTypes}
- */
 export const organizationTypesTranslations = pgTable(
 	'organization_types_t',
 	{
@@ -621,7 +776,12 @@ export const organizationTypesTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: localeForeignKey('locale'),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 		title: text('title').notNull(),
 		description: text('description'),
 	},
@@ -640,10 +800,6 @@ export const organizationExpertises = pgTable('organization_expertises', {
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 });
-
-/**
- * @see {@link organizationExpertises}
- */
 export const organizationExpertisesTranslations = pgTable(
 	'organization_expertises_t',
 	{
@@ -651,7 +807,12 @@ export const organizationExpertisesTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: localeForeignKey('locale'),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 		title: text('title').notNull(),
 		description: text('description'),
 	},
@@ -670,10 +831,6 @@ export const organizationDuties = pgTable('organization_duties', {
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 });
-
-/**
- * @see {@link organizationDuties}
- */
 export const organizationDutiesTranslations = pgTable(
 	'organization_duties_t',
 	{
@@ -681,7 +838,12 @@ export const organizationDutiesTranslations = pgTable(
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),
-		locale: localeForeignKey('locale'),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 		title: text('title').notNull(),
 		description: text('description'),
 	},
@@ -700,31 +862,39 @@ export const organizationDutiesTranslations = pgTable(
  * Design offices, municipal offices, communities, etc.
  */
 export const organizations = pgTable('organizations', {
-	id: nanoid('id').default(generateNanoid()).primaryKey(),
-	createdById: userIdForeignKey('created_by_id', {
-		onDelete: 'restrict',
-		onUpdate: 'cascade',
-	}).notNull(),
+	id: text('id').notNull().default(generateNanoid()).primaryKey(),
+	createdById: text('created_by_id')
+		.references(() => users.id, {
+			onDelete: 'restrict',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-	updatedById: userIdForeignKey('updated_by_id', { onDelete: 'set null', onUpdate: 'cascade' }),
+	updatedById: text('updated_by_id').references(() => users.id, {
+		onDelete: 'set null',
+		onUpdate: 'cascade',
+	}),
 	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 	typeId: text('type_id').references(() => organizationTypes.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
 });
-
-/**
- * @see {@link organizations}
- */
 export const organizationsTranslations = pgTable(
 	'organizations_t',
 	{
-		id: nanoid('id').references(() => organizations.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		locale: localeForeignKey('locale'),
+		id: text('id')
+			.references(() => organizations.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 		name: text('name').notNull(),
 		summary: text('summary'),
 		description: text('description'),
@@ -740,11 +910,18 @@ export const organizationsTranslations = pgTable(
 export const organizationsUsers = pgTable(
 	'organizations_users',
 	{
-		organizationId: nanoid('organization_id').references(() => organizations.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		userId: userIdForeignKey('user_id'),
+		organizationId: text('organization_id')
+			.references(() => organizations.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		userId: text('user_id')
+			.references(() => users.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
 	},
 	(table) => {
 		return {
@@ -756,14 +933,18 @@ export const organizationsUsers = pgTable(
 export const organizationsExpertises = pgTable(
 	'organizations_expertises',
 	{
-		organizationId: nanoid('organization_id').references(() => organizations.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		expertiseId: text('expertise_id').references(() => organizationExpertises.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		organizationId: text('organization_id')
+			.references(() => organizations.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
+		expertiseId: text('expertise_id')
+			.references(() => organizationExpertises.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
 	},
 	(table) => {
 		return {

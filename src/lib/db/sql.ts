@@ -1,5 +1,14 @@
-import { SQL, sql, type AnyColumn, type AnyTable, type InferSelectModel } from 'drizzle-orm';
+import {
+	SQL,
+	sql,
+	type AnyColumn,
+	type AnyTable,
+	type InferColumnsDataTypes,
+	type InferSelectModel,
+	type TableConfig,
+} from 'drizzle-orm';
 import type { PgColumn } from 'drizzle-orm/pg-core';
+import type { SetNonNullable } from 'type-fest';
 import { NANOID_DEFAULT_LENGTH } from './constants';
 import type {
 	FieldSelectRecord,
@@ -17,38 +26,6 @@ import type {
  */
 export function random() {
 	return sql`random()`;
-}
-
-/**
- * Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
- */
-export function excluded<C extends PgColumn>(column: C) {
-	// return sql`excluded.${column}`;
-	return sql.raw(`excluded.${column.name}`);
-}
-
-export function emptyJsonObject() {
-	return sql<object>`'{}'::json`;
-}
-
-export function emptyJsonArray() {
-	return sql<never[]>`'[]'::json`;
-}
-
-export function boolean<T extends boolean>(value: T) {
-	return sql<T>`${value ? 'true' : 'false'}`;
-}
-
-export function TRUE() {
-	return sql<true>`true`;
-}
-
-export function FALSE() {
-	return sql<false>`false`;
-}
-
-export function NULL() {
-	return sql<null>`null`;
 }
 
 /**
@@ -82,11 +59,68 @@ export function generateNanoid({
 }
 
 /**
+ * Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
+ */
+export function excluded<C extends PgColumn>(column: C) {
+	// return sql`excluded.${column}`;
+	return sql.raw(`excluded.${column.name}`);
+}
+
+export function emptyJsonObject() {
+	return sql<object>`'{}'::json`;
+}
+
+export function emptyJsonArray() {
+	return sql<never[]>`'[]'::json`;
+}
+
+export function BOOL<T extends boolean>(value: T) {
+	return sql<T>`${value ? 'true' : 'false'}`;
+}
+
+export function TRUE() {
+	return BOOL(true);
+}
+
+export function FALSE() {
+	return BOOL(false);
+}
+
+export function NULL() {
+	return sql<null>`null`;
+}
+
+export function jsonStripNulls<T>(json: SQL<T>) {
+	return sql<SetNonNullable<T>>`json_strip_nulls(${json})`;
+}
+
+// export function UNDEF() {
+// 	return sql<undefined>`undef`;
+// }
+
+// export function DEFAULT<C extends AnyColumn>(col: C) {
+// 	return sql<InferColumnDataType<C>>`${}`
+// }
+
+/**
  * Aggregate values to json array `json_agg()`. Since it is a json method, it should return an
  * unwrapped (raw) type instead of an SQL wrapped type.
  */
-export function jsonAgg<T extends SQL>(raw: T) {
-	return sql<InferSQLDataType<T>[]>`json_agg(${raw})`;
+// export function jsonAgg<T extends SQL | AnyTable>(raw: T) {
+// 	return sql<
+// 		(T extends SQL ? InferSQLDataType<T> : T extends AnyTable ? InferSelectModel<T> : never)[]
+// 	>`json_agg(${raw})`;
+// }
+export function jsonAgg<Table extends AnyTable<TableConfig>>(
+	table: Table,
+	{ notNull = true }: { notNull?: boolean } = {}
+) {
+	if (notNull) {
+		return sql<
+			InferSelectModel<Table>[]
+		>`coalesce(json_agg(${table}) filter (where ${table} is not null), '[]')`;
+	}
+	return sql<InferSelectModel<Table>[]>`coalesce(json_agg(${table}), '[]')`;
 }
 
 export function arrayAgg<T extends SQL | InferSelectModel<AnyTable>>(raw: T) {
@@ -118,6 +152,20 @@ export function jsonBuildObject<T extends FieldSelectRecord>(shape: T) {
 	});
 	// return sql<InferColumnsDataTypes<T>>`json_build_object(${sql.join(chunks)})`;
 	return sql<InferRecordDataTypes<T>>`json_build_object(${sql.join(chunks)})`;
+}
+
+export function jsonAggBuildObject<T extends Record<string, AnyColumn>>(shape: T) {
+	const chunks: SQL[] = [];
+	Object.entries(shape).forEach(([key, value]) => {
+		if (chunks.length > 0) {
+			chunks.push(sql.raw(`,`));
+		}
+		chunks.push(sql.raw(`'${key}',`));
+		chunks.push(sql`${value}`);
+	});
+	return sql<InferColumnsDataTypes<T>[]>`coalesce(json_agg(distinct jsonb_build_object(${sql.join(
+		chunks
+	)})), '[]')`;
 }
 
 /**
@@ -166,11 +214,31 @@ export function jsonObjectAgg<
 	return sql<Record<TK, TV>>`json_object_agg(${key}, ${value})`;
 }
 
+type Coalesce<T extends unknown[], N extends boolean = true, R = never> = T extends [
+	infer H,
+	...infer T,
+]
+	? Coalesce<T, null extends H ? true : false, R | NonNullable<H>>
+	: N extends true
+	? R | null
+	: R;
+
+type CoalesceSQL<T extends SQL[], N extends boolean = true, R = never> = T extends [
+	infer H,
+	...infer T,
+]
+	? Coalesce<T, SQL<null> extends H ? true : false, R | H extends SQL<null> ? never : H>
+	: N extends true
+	? R | null
+	: R;
+
 /**
  * SQL coalesce.
+ *
+ * @see https://www.typescriptlang.org/play?#code/C4TwDgpgBAcg9sGBXANigPAFShAHsCAOwBMBnKJQga0LgHdCBtAXQD4oBeKAbwCgoBURgGkoAS0JRCSALYAjCACcoAMihUIIOADMomZgC49I5jnxEyU1CigB+KRABuSqEcwmA3LwC+X3tsoAY2AxOElAuABDFAhSQIh0ADUzAhJyShp6JjYACgA6AsdopFijRIBKHl4ASFBIPU4hArzE0zxUywltF2x7bCNCJyUvATroAGFG7kYASXFJDS1dbDVpeSVDYxm28zSrNDsHZ2U3WeZffigxqAAxRvHGRZ0oceYRqAjCUmAobTEUAiKCDERpFFAlUh5P4ApQ5RycdjwgCEXGkaHK7yBwCQikkOWhgOBeRihAA5sAABaHAlKYGMAAMpgG1kqkXINy83l4vGumFiwHQAEEUhZ0tRaAwWOwuIxmoKdh1yF0eod+kdhtzPt8oJFFIoAIyNRholAAGigAFlIpS8opIiQ4DIcpV2HkAKyHADkwrBJU9OvIWp+zLQzF4QZ1eoATEaTearTa7Q6nS6oO6vT7ihB-WyPmFtUZvbRKS5fdmA3mvsAw9dxoauHzvugxs9dQbWDzwBMYw3+c2u63ox3w-mfgRvvW89FYvEcnHLdaKbb7cRHc6oK6PfZvVAyznA6PXPsUBioAB6M-HqAAHygO73I6rV35PanMTiEDn1nji+XyfXm4ZruWb7pWBZ3oKxYUqWIEVkGp4XhBwHguWt5Fgg0HKHuQA
+ * @todo Figure out mapped array typing to exclude exclusively null array members.
  */
-export function coalesce<V extends SQL[]>(...values: V) {
-	type T = V extends SQL<infer T>[] ? T : never;
+export function coalesce<T extends SQL[]>(...values: T) {
 	return sql.join([
 		sql.raw('coalesce('),
 		sql.join(
@@ -178,5 +246,5 @@ export function coalesce<V extends SQL[]>(...values: V) {
 			sql.raw(', ')
 		),
 		sql.raw(')'),
-	]) as NonNullable<T> extends never ? SQL<null> : SQL<NonNullable<T>>;
+	]) as CoalesceSQL<T>;
 }

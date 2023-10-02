@@ -2,34 +2,23 @@ import { USER_ROLES } from '$lib/auth/constants';
 import { withRole } from '$lib/auth/guard.server';
 import { projectTypesUpdateSchema } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
-import { locales } from '$lib/db/schema/i18n';
 import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public';
-import { boolean, excluded } from '$lib/db/sql';
-import { extractTranslations, translationsAgg } from '$lib/db/utils';
+import { extractTranslations, getAllExcluded, mapReduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
-import { and, eq, getTableColumns } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withRole(event, USER_ROLES.ADMIN);
 
-	const types = await dbpool
-		.select({
-			...getTableColumns(projectTypes),
-			translations: translationsAgg(projectTypesTranslations),
+	const types = (
+		await dbpool.query.projectTypes.findMany({
+			with: {
+				translations: true,
+			},
 		})
-		.from(projectTypes)
-		.leftJoin(locales, boolean(true))
-		.leftJoin(
-			projectTypesTranslations,
-			and(
-				eq(projectTypes.id, projectTypesTranslations.id),
-				eq(locales.locale, projectTypesTranslations.locale)
-			)
-		)
-		.groupBy(projectTypes.id)
-		.orderBy(projectTypes.index);
+	).map(mapReduceTranslations);
 
 	const form = await superValidate({ types }, projectTypesUpdateSchema);
 
@@ -69,25 +58,20 @@ export const actions = {
 		try {
 			await dbpool.transaction(async (tx) => {
 				const [pt, ptt] = extractTranslations(form.data.types);
+				console.log(pt);
 				await tx
 					.insert(projectTypes)
 					.values(pt)
 					.onConflictDoUpdate({
 						target: projectTypes.id,
-						set: {
-							id: excluded(projectTypes.id),
-							index: excluded(projectTypes.index),
-						},
+						set: getAllExcluded(projectTypes),
 					});
 				await tx
 					.insert(projectTypesTranslations)
 					.values(ptt)
 					.onConflictDoUpdate({
 						target: [projectTypesTranslations.id, projectTypesTranslations.locale],
-						set: {
-							title: excluded(projectTypesTranslations.title),
-							description: excluded(projectTypesTranslations.description),
-						},
+						set: getAllExcluded(projectTypesTranslations),
 					});
 			});
 			return { form };
