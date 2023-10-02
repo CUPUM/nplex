@@ -14,17 +14,20 @@
 	import { LOCALES_ARR, LOCALES_DETAILS, type Locale } from '$lib/i18n/constants';
 	import { defineContext } from '$lib/utils/context';
 	import { createTabs, melt } from '@melt-ui/svelte';
-	import { X } from 'lucide-svelte';
+	import { ChevronDown, Trash } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import type { Writable } from 'svelte/store';
-	import { crossfade } from 'svelte/transition';
+	import { crossfade, fly, slide } from 'svelte/transition';
 
 	export let locales: Locale[] = LOCALES_ARR;
 	export let legend: string;
+	export let legendMinimized: string | undefined | null = undefined;
 	export let deleteFormaction: string | undefined = undefined;
+	export let minimized = true;
 
 	let defaultValue = $page.data.locale;
 	let ctxLocale = getTranslationsTabsLocale();
+	$: legendCoalesced = minimized ? legendMinimized ?? legend : legend;
 
 	if (ctxLocale && $ctxLocale && locales.indexOf($ctxLocale) > -1) {
 		defaultValue = $ctxLocale;
@@ -39,43 +42,77 @@
 </script>
 
 <fieldset use:melt={$root}>
+	<!-- {#if minimized} -->
+	<button
+		class="fill-button"
+		type="button"
+		on:click={() => {
+			minimized = !minimized;
+		}}
+	/>
+	<!-- {/if} -->
 	<div class="header">
-		<legend>{legend}</legend>
-		<menu class="locale-switch" use:melt={$list}>
-			{#each locales as locale}
-				<button
-					class="locale-button"
-					use:ripple={{ color: 'white', opacityStart: 0.25 }}
-					use:melt={$trigger(locale)}
-					lang={locale}
-				>
-					{LOCALES_DETAILS[locale].label}
-					{#if $value === locale}
-						<div in:send={{ key: 'needle' }} out:receive={{ key: 'needle' }} class="needle" />
-					{/if}
-				</button>
-			{/each}
-		</menu>
+		<button
+			class="legend"
+			type="button"
+			on:click={() => {
+				minimized = !minimized;
+			}}
+		>
+			{#key legendCoalesced}
+				<span in:fly={{ y: 4, easing: expoOut }}>
+					{legendCoalesced}
+				</span>
+			{/key}
+			<div style:transform="rotate({minimized ? 0 : 180}deg)" style:transition="all .2s ease-out">
+				<ChevronDown class="legend-icon" />
+			</div>
+		</button>
+		{#if !minimized}
+			<menu
+				class="locale-switch"
+				transition:fly={{ y: 6, duration: 250, easing: expoOut }}
+				use:melt={$list}
+			>
+				{#each locales as locale}
+					<button
+						class="locale-button"
+						use:ripple={{ color: 'white', opacityStart: 0.25 }}
+						use:melt={$trigger(locale)}
+						lang={locale}
+					>
+						{LOCALES_DETAILS[locale].label}
+						{#if $value === locale}
+							<div in:send={{ key: 'needle' }} out:receive={{ key: 'needle' }} class="needle" />
+						{/if}
+					</button>
+				{/each}
+			</menu>
+		{/if}
 		<menu class="menu">
 			{#if deleteFormaction}
 				<button class="button ghost round danger" type="submit" formaction={deleteFormaction}>
-					<X class="button-icon" />
+					<Trash class="button-icon" />
 				</button>
 			{/if}
 		</menu>
 	</div>
-	{#each locales as locale}
-		<section class="content" lang={locale} use:melt={$content(locale)}>
-			<slot {locale} value={$value} current={$value === locale} />
-		</section>
-	{/each}
+	{#if !minimized}
+		<div class="content-wrap" transition:slide={{ easing: expoOut, duration: 350 }}>
+			{#each locales as locale}
+				<section class="content" lang={locale} use:melt={$content(locale)}>
+					<slot {locale} {minimized} value={$value} current={$value === locale} />
+				</section>
+			{/each}
+		</div>
+	{/if}
 </fieldset>
 
 <style lang="scss">
 	fieldset {
+		position: relative;
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
 		padding: 0.75rem;
 		background-color: var(--color-neutral-50);
 		transition:
@@ -102,6 +139,14 @@
 		}
 	}
 
+	.fill-button {
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		opacity: 0;
+		z-index: 0;
+	}
+
 	.header {
 		--base-size: 2.75em;
 		display: flex;
@@ -110,19 +155,42 @@
 		align-items: flex-end;
 		justify-content: stretch;
 		font-size: var(--size-xs);
+		pointer-events: none;
+		z-index: 1;
+		& > * {
+			pointer-events: initial;
+		}
 	}
 
-	legend {
+	.legend {
 		align-self: stretch;
 		display: flex;
+		flex-direction: row;
+		gap: 0.5em;
+		padding-inline: 1.25em 0.75em;
 		align-items: center;
-		padding-inline: 1em;
-		font-size: var(--size-sm);
+		height: var(--base-size);
 		font-weight: 500;
 		border-radius: var(--radius-full);
 		background-color: var(--color-neutral-100);
+		transition: all 0.1s;
 		@include dark {
 			background-color: var(--color-neutral-700);
+		}
+
+		&:hover,
+		&:focus-visible {
+			background-color: var(--color-neutral-200);
+			@include dark {
+				background-color: var(--color-neutral-600);
+			}
+		}
+
+		:global(.legend-icon) {
+			height: 1.25em;
+			stroke-width: 2.5;
+			opacity: 0.35;
+			transition: all 0.25s ease-out;
 		}
 	}
 
@@ -133,6 +201,10 @@
 		gap: 0.5rem;
 		align-items: center;
 		justify-content: flex-end;
+		pointer-events: none;
+		& > * {
+			pointer-events: initial;
+		}
 	}
 
 	.locale-switch {
@@ -198,10 +270,15 @@
 		}
 	}
 
+	.content-wrap {
+		z-index: 1;
+	}
+
 	.content:not([hidden]) {
 		display: flex;
 		flex-direction: column;
 		gap: 0.5em;
+		margin-top: 1rem;
 		font-size: var(--size-sm);
 	}
 </style>

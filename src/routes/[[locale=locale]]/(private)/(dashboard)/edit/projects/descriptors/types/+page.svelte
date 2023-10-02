@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { createLoading } from '$lib/actions/loading';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import TranslationsTabs from '$lib/components/TranslationsTabs.svelte';
@@ -64,7 +65,13 @@
 				out:sendType={{ key: type.id }}
 				animate:flip={{ duration: (l) => 150 + l / 10 }}
 			>
-				<TranslationsTabs legend={type.id} deleteFormaction="?/delete&typeId={type.id}" let:locale>
+				<TranslationsTabs
+					legend={type.id}
+					minimized={false}
+					legendMinimized={type.translations[$page.data.locale].title}
+					deleteFormaction="?/delete&typeId={type.id}"
+					let:locale
+				>
 					<label class="labeled-input">
 						<span class="input-label">
 							{$t.title}

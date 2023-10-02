@@ -1,16 +1,18 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { createLoading } from '$lib/actions/loading';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import TranslationsTabs from '$lib/components/TranslationsTabs.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { Check, Pen, Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
-	import { fly } from 'svelte/transition';
+	import { expoOut } from 'svelte/easing';
+	import { fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
 
 	const t = createTranslations({
 		fr: {
-			heading: 'Catégories d’intervention & types d’intervention',
+			heading: ['Catégories d’intervention', 'types d’intervention'],
 			category: {
 				title: 'Titre de la catégorie',
 				description: 'Description de la catégorie',
@@ -18,10 +20,11 @@
 			intervention: {
 				title: 'Titre d’intervention',
 				description: 'Description de l’intervention',
+				none: 'Aucune intervention ajoutée',
 			},
 		},
 		en: {
-			heading: 'Intervention categories & intervention types',
+			heading: ['Intervention categories', 'intervention types'],
 			category: {
 				title: 'Category title',
 				description: 'Category description',
@@ -29,6 +32,7 @@
 			intervention: {
 				title: 'Intervention title',
 				description: 'Intervention description',
+				none: 'No interventions added yet',
 			},
 		},
 	});
@@ -41,14 +45,26 @@
 
 	const {
 		action: updatingAction,
-		element: updatingElement,
 		state: updatingState,
-	} = createLoading({ state: submitting });
+		element: updatingElement,
+	} = createLoading({
+		state: submitting,
+	});
+
+	console.log($updatingElement);
 </script>
 
 <form method="POST" use:enhance>
 	<header>
-		<h2 class="heading lg">{$t.heading}</h2>
+		<h2 class="heading lg">
+			{#each $t.heading as segment, i}
+				{segment}
+				{#if i < $t.heading.length - 1}
+					<span class="prose dimmer">&</span>
+					{' '}
+				{/if}
+			{/each}
+		</h2>
 		<p class="prose sm dim">
 			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis eius enim error sit fugit
 			dolores unde, nulla odio nam ducimus.
@@ -56,54 +72,66 @@
 	</header>
 	<ol>
 		{#each $form.interventionCategories as category, i (category.id)}
+			{@const filtered = $form.interventions.filter((pi) => pi.categoryId === category.id)}
 			<li class="category">
-				<TranslationsTabs let:locale legend={category.id}>
-					<label class="labeled-input">
-						<span class="input-label">{$t.category.title}</span>
-						<input
-							class="input"
-							type="text"
-							bind:value={$form.interventionCategories[i].translations[locale].title}
-						/>
-					</label>
-					<label class="labeled-input">
-						<span class="input-label">{$t.category.description}</span>
-						<textarea
-							class="input"
-							bind:value={$form.interventionCategories[i].translations[locale].description}
-						/>
-					</label>
-				</TranslationsTabs>
-				<ol>
-					{#each $form.interventions.filter((pi) => pi.categoryId === category.id) as intervention, ii (intervention.id)}
-						<li class="intervention" animate:flip>
-							<TranslationsTabs
-								let:locale
-								legend={intervention.id}
-								deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
+				<div class="top">
+					<TranslationsTabs let:locale legend={category.id}>
+						<label class="labeled-input">
+							<span class="input-label">{$t.category.title}</span>
+							<input
+								class="input"
+								type="text"
+								bind:value={$form.interventionCategories[i].translations[locale].title}
+							/>
+						</label>
+						<label class="labeled-input">
+							<span class="input-label">{$t.category.description}</span>
+							<textarea
+								class="input"
+								bind:value={$form.interventionCategories[i].translations[locale].description}
+							/>
+						</label>
+					</TranslationsTabs>
+				</div>
+				<ol class="interventions">
+					{#if filtered.length}
+						{#each filtered as intervention, ii (intervention.id)}
+							<li
+								class="intervention"
+								animate:flip={{ duration: 150 }}
+								transition:scale={{ start: 0.95, duration: 250, easing: expoOut }}
 							>
-								<label class="labeled-input">
-									<span class="input-label with-hover">{$t.intervention.title}</span>
-									<input
-										class="input"
-										type="text"
-										bind:value={$form.interventions[ii].translations[locale].title}
-									/>
-								</label>
-								<label class="labeled-input">
-									<span class="input-label with-hover">{$t.intervention.description}</span>
-									<textarea
-										class="input"
-										bind:value={$form.interventions[ii].translations[locale].description}
-									/>
-								</label>
-							</TranslationsTabs>
-						</li>
-					{/each}
+								<TranslationsTabs
+									let:locale
+									legend={intervention.id}
+									legendMinimized={intervention.translations[$page.data.locale].title}
+									deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
+								>
+									<label class="labeled-input">
+										<span class="input-label with-hover">{$t.intervention.title}</span>
+										<input
+											class="input"
+											type="text"
+											bind:value={$form.interventions[ii].translations[locale].title}
+										/>
+									</label>
+									<label class="labeled-input">
+										<span class="input-label with-hover">{$t.intervention.description}</span>
+										<textarea
+											class="input"
+											bind:value={$form.interventions[ii].translations[locale].description}
+										/>
+									</label>
+								</TranslationsTabs>
+							</li>
+						{/each}
+					{:else}
+						<p class="sm prose dimmer">{$t.intervention.none}</p>
+					{/if}
 				</ol>
 				<menu class="intervention-menu">
 					<button
-						class="button outlined"
+						class="button ghost"
 						type="submit"
 						formaction="?/createIntervention&categoryId={category.id}"
 					>
@@ -115,12 +143,26 @@
 		{/each}
 	</ol>
 	<DashboardMenu>
-		<button class="button outlined" formaction="?/createCategory" type="submit" disabled>
+		<button
+			class="button outlined"
+			formaction="?/createCategory"
+			{...$updatingElement}
+			use:updatingAction
+			type="submit"
+			disabled
+		>
 			<Pen class="button-icon" />
 			Create
 		</button>
 		{#if $tainted}
-			<button class="button cta" in:fly={{ y: 6 }} type="submit" formaction="?/update">
+			<button
+				class="button cta"
+				in:fly={{ y: 6 }}
+				type="submit"
+				{...$updatingElement}
+				use:updatingAction
+				formaction="?/update"
+			>
 				<Check class="button-icon" />
 				Save
 			</button>
@@ -130,9 +172,10 @@
 
 <style lang="scss">
 	form {
-		padding: 1rem;
 		display: flex;
 		flex-direction: column;
+		gap: 1rem;
+		align-items: flex-start;
 		container-type: inline-size;
 	}
 
@@ -145,8 +188,15 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
+		container-type: inline-size;
+		max-width: var(--width-md);
 		gap: 1rem;
-		// padding: 1rem;
+		width: 100%;
+
+		@container (width > 1000px) {
+			align-self: center;
+			margin-right: var(--dashboard-sidebar-width);
+		}
 	}
 
 	.category {
@@ -154,23 +204,31 @@
 		flex-direction: column;
 		gap: 1rem;
 		padding: 1rem;
-		border: var(--base-border-size) solid var(--color-neutral-200);
-		border-radius: var(--radius-2xl);
+		border-radius: var(--radius-xl);
+		background-color: var(--color-neutral-100);
 		@include dark {
-			border-color: transparent;
-			background-color: var(--color-neutral-900);
+			background-color: var(--color-neutral-700);
 		}
+	}
 
-		ol {
-			max-width: var(--width-md);
-			margin: 1rem;
-			padding: 1rem;
-			border-left: var(--base-border-size) dashed
-				color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-		}
+	.top {
+		position: sticky;
+		z-index: 1;
+		top: var(--navbar-height);
+	}
+
+	.interventions {
+		max-width: var(--width-md);
+		margin: 1rem 0.5rem;
+		padding-inline: 1rem;
+		border-left: var(--base-border-size) dashed
+			color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 	}
 
 	.intervention-menu {
 		font-size: var(--size-sm);
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
 	}
 </style>

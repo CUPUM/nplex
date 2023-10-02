@@ -6,9 +6,9 @@ import {
 	projectInterventionCategories,
 	projectInterventionCategoriesTranslations,
 	projectInterventions,
+	projectInterventionsTranslations,
 } from '$lib/db/schema/public';
-import { excluded } from '$lib/db/sql';
-import { extractTranslations, mapReduceTranslations } from '$lib/db/utils';
+import { extractTranslations, getAllExcluded, mapReduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -44,12 +44,12 @@ export const load = async (event) => {
 };
 
 export const actions = {
-	createCategory: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-	},
-	deleteCategory: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-	},
+	// createCategory: async (event) => {
+	// 	await withRole(event, USER_ROLES.ADMIN);
+	// },
+	// deleteCategory: async (event) => {
+	// 	await withRole(event, USER_ROLES.ADMIN);
+	// },
 	createIntervention: async (event) => {
 		await withRole(event, USER_ROLES.ADMIN);
 		const categoryId = event.url.searchParams.get('categoryId');
@@ -89,15 +89,13 @@ export const actions = {
 		try {
 			await dbpool.transaction(async (tx) => {
 				const [pic, pict] = extractTranslations(form.data.interventionCategories);
+				// Categories
 				await tx
 					.insert(projectInterventionCategories)
 					.values(pic)
 					.onConflictDoUpdate({
 						target: projectInterventionCategories.id,
-						set: {
-							id: excluded(projectInterventionCategories.id),
-							index: excluded(projectInterventionCategories.index),
-						},
+						set: getAllExcluded(projectInterventionCategories),
 					});
 				await tx
 					.insert(projectInterventionCategoriesTranslations)
@@ -107,10 +105,23 @@ export const actions = {
 							projectInterventionCategoriesTranslations.id,
 							projectInterventionCategoriesTranslations.locale,
 						],
-						set: {
-							title: excluded(projectInterventionCategoriesTranslations.title),
-							description: excluded(projectInterventionCategoriesTranslations.description),
-						},
+						set: getAllExcluded(projectInterventionCategoriesTranslations),
+					});
+				// Interventions
+				const [pi, pit] = extractTranslations(form.data.interventions);
+				await tx
+					.insert(projectInterventions)
+					.values(pi)
+					.onConflictDoUpdate({
+						target: projectInterventions.id,
+						set: getAllExcluded(projectInterventions),
+					});
+				await tx
+					.insert(projectInterventionsTranslations)
+					.values(pit)
+					.onConflictDoUpdate({
+						target: [projectInterventionsTranslations.id, projectInterventionsTranslations.locale],
+						set: getAllExcluded(projectInterventionsTranslations),
 					});
 			});
 			return { form };

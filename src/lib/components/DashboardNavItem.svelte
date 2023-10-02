@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
+	import { expoOut } from 'svelte/easing';
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
+	import { fly } from 'svelte/transition';
 	import { dashboardReceive, dashboardSend, getDashboardNav } from './DashboardNav.svelte';
 
 	type $$Props =
@@ -14,7 +16,14 @@
 	$: current = $$restProps['data-current'];
 </script>
 
-<svelte:element this={href ? 'a' : 'button'} class="item" {...$$restProps} {href} use:ripple>
+<svelte:element
+	this={href ? 'a' : 'button'}
+	class="item"
+	{...$$restProps}
+	{href}
+	use:ripple
+	in:fly={{ x: -6, delay: index * 50, duration: 750, easing: expoOut }}
+>
 	<slot />
 	{#if current}
 		<div

@@ -28,7 +28,7 @@
 	});
 </script>
 
-<section>
+<section in:scale={{ start: 0.95, duration: 500, easing: expoOut }}>
 	{#if $$slots.heading}
 		<span class="heading">
 			<slot name="heading" />
@@ -50,12 +50,10 @@
 		margin-bottom: 0.5rem;
 		@include dark {
 			background-color: var(--color-neutral-800);
-			// border-color: var(--color-neutral-800);
 		}
 
 		@include lg {
 			margin-bottom: 0;
-			// margin-right: 0.5rem;
 		}
 	}
 

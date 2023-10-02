@@ -384,6 +384,7 @@ Variants:
 	font-weight: 450;
 	padding: 0 var(--base-padding);
 	height: var(--base-size);
+	min-width: var(--base-size);
 	border-radius: var(--base-radius);
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -409,15 +410,19 @@ Variants:
 		&:not([data-loading]) {
 			opacity: 0.35;
 			color: var(--color-neutral-800);
-			// background-color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
 			@include dark {
 				color: var(--color-neutral-200);
 			}
 		}
 	}
 	&[data-loading] {
-		pointer-events: none;
-		color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+		color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent) !important;
+		.loading {
+			color: var(--color-neutral-800);
+			@include global-dark {
+				color: var(--color-neutral-200);
+			}
+		}
 	}
 	&[data-current] {
 		pointer-events: none;
@@ -515,14 +520,12 @@ Variants:
 				}
 			}
 		}
-
 		&.danger {
 			color: var(--color-error-700);
 			@include global-dark {
 				color: var(--color-error-300);
 			}
 		}
-
 		:where(.button-icon) {
 			opacity: 0.35;
 		}
@@ -575,10 +578,18 @@ Variants:
 			}
 		}
 		&[data-loading] {
-			color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
-			background-color: var(--color-neutral-900);
+			color: var(--color-primary-700) !important;
+			background-color: var(--color-primary-900);
 			@include global-dark {
-				background-color: var(--color-neutral-100);
+				color: var(--color-primary-800) !important;
+				background-color: var(--color-primary-600);
+			}
+
+			.loading {
+				color: var(--color-neutral-50);
+				@include global-dark {
+					color: var(--color-neutral-950);
+				}
 			}
 		}
 	}
