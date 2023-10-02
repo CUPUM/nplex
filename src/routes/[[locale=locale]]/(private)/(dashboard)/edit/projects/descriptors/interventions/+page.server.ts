@@ -2,59 +2,43 @@ import { USER_ROLES } from '$lib/auth/constants';
 import { withRole } from '$lib/auth/guard.server';
 import { projectInterventionCategoriesAndInterventionsUpdateSchema } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
-import { locales } from '$lib/db/schema/i18n';
 import {
 	projectInterventionCategories,
 	projectInterventionCategoriesTranslations,
 	projectInterventions,
-	projectInterventionsTranslations,
 } from '$lib/db/schema/public';
-import { BOOL, excluded } from '$lib/db/sql';
-import { extractTranslations, translationsAgg } from '$lib/db/utils';
+import { excluded } from '$lib/db/sql';
+import { extractTranslations, mapReduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
-import { and, eq, getTableColumns } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withRole(event, USER_ROLES.ADMIN);
 
-	const interventionCategories = await dbpool
-		.select({
-			...getTableColumns(projectInterventionCategories),
-			translations: translationsAgg(projectInterventionCategoriesTranslations),
-		})
-		.from(projectInterventionCategories)
-		.leftJoin(locales, BOOL(true))
-		.leftJoin(
-			projectInterventionCategoriesTranslations,
-			and(
-				eq(projectInterventionCategories.id, projectInterventionCategoriesTranslations.id),
-				eq(locales.locale, projectInterventionCategoriesTranslations.locale)
-			)
-		)
-		.groupBy(projectInterventionCategories.id);
+	const data = await dbpool.transaction(async (tx) => {
+		const interventionCategories = (
+			await tx.query.projectInterventionCategories.findMany({
+				with: {
+					translations: true,
+				},
+			})
+		).map(mapReduceTranslations);
+		const interventions = (
+			await tx.query.projectInterventions.findMany({
+				with: {
+					translations: true,
+				},
+			})
+		).map(mapReduceTranslations);
+		return {
+			interventionCategories,
+			interventions,
+		};
+	});
 
-	const interventions = await dbpool
-		.select({
-			...getTableColumns(projectInterventions),
-			translations: translationsAgg(projectInterventionsTranslations),
-		})
-		.from(projectInterventions)
-		.leftJoin(locales, BOOL(true))
-		.leftJoin(
-			projectInterventionsTranslations,
-			and(
-				eq(projectInterventions.id, projectInterventionsTranslations.id),
-				eq(locales.locale, projectInterventionsTranslations.locale)
-			)
-		)
-		.groupBy(projectInterventions.id);
-
-	const form = await superValidate(
-		{ interventionCategories, interventions },
-		projectInterventionCategoriesAndInterventionsUpdateSchema
-	);
+	const form = await superValidate(data, projectInterventionCategoriesAndInterventionsUpdateSchema);
 
 	return { form };
 };

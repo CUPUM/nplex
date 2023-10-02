@@ -38,8 +38,8 @@ dependencies:
     specifier: ^2.7.1
     version: 2.7.1
   lucide-svelte:
-    specifier: ^0.281.0
-    version: 0.281.0(svelte@4.2.1)
+    specifier: ^0.282.0
+    version: 0.282.0(svelte@4.2.1)
   nodemailer:
     specifier: ^6.9.5
     version: 6.9.5
@@ -2049,7 +2049,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001542
-      electron-to-chromium: 1.4.537
+      electron-to-chromium: 1.4.538
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
     dev: true
@@ -2514,8 +2514,8 @@ packages:
       semver: 7.5.4
     dev: false
 
-  /electron-to-chromium@1.4.537:
-    resolution: {integrity: sha512-W1+g9qs9hviII0HAwOdehGYkr+zt7KKdmCcJcjH0mYg6oL8+ioT3Skjmt7BLoAQqXhjf40AXd+HlR4oAWMlXjA==}
+  /electron-to-chromium@1.4.538:
+    resolution: {integrity: sha512-1a2m63NEookb1beNFTGDihgF3CKL7ksZ7PSA0VloON5DpTEhnOVgaDes8xkrDhkXRxlcN8JymQDGnv+Nn+uvhg==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -3310,8 +3310,8 @@ packages:
     resolution: {integrity: sha512-EHDTajS1YWA7Q37jd29Far1l4nfZgsWLp4hDQeaQhVpJd2WKQqA3626kJYmOj1CTweVMkE54xFi5JIph+agZkQ==}
     dev: false
 
-  /lucide-svelte@0.281.0(svelte@4.2.1):
-    resolution: {integrity: sha512-iTLekwcVy2TUPWqzrLYb5EDNRx01OJPg+q9XSN+aeO9dP1db99PXRFY2Zvprsxit9emdwuKpuIB/D9TjpfJ0rQ==}
+  /lucide-svelte@0.282.0(svelte@4.2.1):
+    resolution: {integrity: sha512-ItsvEOny3OtbSXDHna3zJrTSCyIyGSHCdsWUbuUHL9/a8Yxc/9LfjeJ7a9oGgsJATIOQpeyCA6mjAbHHGRICrA==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:

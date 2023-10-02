@@ -1,9 +1,9 @@
-import DescriptorsNavbar from './DescriptorsNavbar.svelte';
+import ProjectDescriptorsNav from './ProjectDescriptorsNav.svelte';
 
 export const load = async () => {
 	return {
 		dashboard: {
-			sidebar: DescriptorsNavbar,
+			sidebar: ProjectDescriptorsNav,
 		},
 	};
 };

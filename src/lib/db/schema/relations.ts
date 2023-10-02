@@ -61,6 +61,10 @@ export const projectInterventionCategoriesTranslationsRelations = relations(
 				fields: [projectInterventionCategoriesTranslations.locale],
 				references: [locales.locale],
 			}),
+			category: one(projectInterventionCategories, {
+				fields: [projectInterventionCategoriesTranslations.id],
+				references: [projectInterventionCategories.id],
+			}),
 		};
 	}
 );

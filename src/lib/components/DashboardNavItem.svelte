@@ -29,19 +29,20 @@
 	.item {
 		display: flex;
 		flex-direction: row;
+		justify-content: space-between;
 		position: relative;
 		z-index: 1;
 		font-weight: 450;
 		border-radius: var(--radius-sm);
-		padding: 1.25rem;
-		white-space: wrap;
+		padding: 1rem 1.25rem;
 		font-size: var(--size-md);
 		white-space: nowrap;
+		line-height: 1.5em;
 		transition: all 0.15s ease-out;
 		@include md {
-			white-space: unset;
+			white-space: wrap;
 			font-weight: 400;
-			padding: 1em 1.25em;
+			padding: 0.8em 1.25em;
 			font-size: var(--size-sm);
 		}
 
@@ -57,7 +58,7 @@
 		}
 
 		&[data-current] {
-			color: var(--color-primary-700);
+			color: var(--color-primary-600);
 			@include dark {
 				color: var(--color-primary-500);
 			}
@@ -68,9 +69,9 @@
 		}
 
 		:global(.button-icon) {
-			opacity: unset;
-			stroke-width: 2.5;
-			width: 1.125em;
+			// opacity: unset;
+			// stroke-width: 2.5;
+			// width: 1.125em;
 		}
 	}
 
@@ -83,7 +84,7 @@
 		margin-left: 0.125rem;
 		border-radius: inherit;
 		z-index: -1;
-		background-color: var(--color-primary-700);
+		background-color: var(--color-primary-600);
 		@include dark {
 			background-color: var(--color-primary-500);
 		}

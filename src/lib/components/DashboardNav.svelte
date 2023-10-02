@@ -35,7 +35,7 @@
 		</span>
 	{/if}
 	<div class="items">
-		<slot name="items" />
+		<slot />
 	</div>
 </section>
 
@@ -66,6 +66,7 @@
 		font-size: 0.8em;
 		font-weight: 350;
 		letter-spacing: 0.01em;
+		line-height: 1.5;
 		color: var(--color-neutral-500);
 		@include dark {
 			color: var(--color-neutral-600);

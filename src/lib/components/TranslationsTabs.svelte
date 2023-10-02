@@ -75,8 +75,8 @@
 	fieldset {
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
-		padding: 1rem;
+		gap: 0.5rem;
+		padding: 0.75rem;
 		background-color: var(--color-neutral-50);
 		transition:
 			all 0.1s,
@@ -96,7 +96,8 @@
 		&:focus-within {
 			background-color: white;
 			@include dark {
-				background-color: var(--color-neutral-900);
+				background-color: var(--color-neutral-950);
+				box-shadow: var(--shadow-lg);
 			}
 		}
 	}
@@ -200,6 +201,7 @@
 	.content:not([hidden]) {
 		display: flex;
 		flex-direction: column;
-		gap: inherit;
+		gap: 0.5em;
+		font-size: var(--size-sm);
 	}
 </style>

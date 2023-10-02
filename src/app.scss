@@ -178,6 +178,43 @@ Animations
 	}
 }
 
+.xxxxl {
+	font-size: var(--size-4xl);
+}
+.xxxl {
+	font-size: var(--size-3xl);
+}
+.xxl {
+	font-size: var(--size-2xl);
+}
+.xl {
+	font-size: var(--size-xl);
+}
+.lg {
+	font-size: var(--size-lg);
+}
+.md {
+	font-size: var(--size-md);
+}
+.sm {
+	font-size: var(--size-sm);
+}
+.xs {
+	font-size: var(--size-xs);
+	font-weight: 375;
+	line-height: 1.5em;
+}
+.xxs {
+	font-size: var(--size-2xs);
+	font-weight: 375;
+	line-height: 1.5em;
+}
+.xxxs {
+	font-size: var(--size-3xs);
+	font-weight: 375;
+	line-height: 1.5em;
+}
+
 /*
 Headings
 */
@@ -268,7 +305,6 @@ Prose (text_
 	Extra large text
 	*/
 	&.xl {
-		font-size: var(--size-xl);
 		font-weight: 300;
 		line-height: 1.3em;
 	}
@@ -277,7 +313,6 @@ Prose (text_
 	Large text
 	*/
 	&.lg {
-		font-size: var(--size-lg);
 		font-weight: 325;
 		line-height: 1.35em;
 	}
@@ -286,7 +321,6 @@ Prose (text_
 	Regular text
 	*/
 	&.md {
-		font-size: var(--size-md);
 		font-weight: 350;
 		line-height: 1.4em;
 	}
@@ -295,7 +329,6 @@ Prose (text_
 	Small text
 	*/
 	&.sm {
-		font-size: var(--size-sm);
 		font-weight: 360;
 		line-height: 1.45em;
 	}
@@ -304,7 +337,6 @@ Prose (text_
 	Extra small text
 	*/
 	&.xs {
-		font-size: var(--size-xs);
 		font-weight: 375;
 		line-height: 1.5em;
 	}
@@ -557,7 +589,6 @@ Button icon
 */
 .button-icon {
 	width: 1.25em;
-	margin-block: -50%;
 	stroke-width: 2;
 	stroke-linecap: square;
 	stroke-linejoin: round;
@@ -660,7 +691,8 @@ Variants:
 	text-overflow: ellipsis;
 	@at-root {
 		textarea#{&} {
-			padding: var(--base-padding);
+			line-height: 1.5em;
+			padding: calc(var(--base-padding) - 0.25em) var(--base-padding);
 		}
 	}
 }

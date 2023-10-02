@@ -15,12 +15,20 @@
 				title: 'Titre de la catégorie',
 				description: 'Description de la catégorie',
 			},
+			intervention: {
+				title: 'Titre d’intervention',
+				description: 'Description de l’intervention',
+			},
 		},
 		en: {
 			heading: 'Intervention categories & intervention types',
 			category: {
 				title: 'Category title',
 				description: 'Category description',
+			},
+			intervention: {
+				title: 'Intervention title',
+				description: 'Intervention description',
 			},
 		},
 	});
@@ -75,7 +83,7 @@
 								deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
 							>
 								<label class="labeled-input">
-									<span class="input-label with-hover">test label</span>
+									<span class="input-label with-hover">{$t.intervention.title}</span>
 									<input
 										class="input"
 										type="text"
@@ -83,7 +91,7 @@
 									/>
 								</label>
 								<label class="labeled-input">
-									<span class="input-label with-hover">test label</span>
+									<span class="input-label with-hover">{$t.intervention.description}</span>
 									<textarea
 										class="input"
 										bind:value={$form.interventions[ii].translations[locale].description}
@@ -146,16 +154,19 @@
 		flex-direction: column;
 		gap: 1rem;
 		padding: 1rem;
+		border: var(--base-border-size) solid var(--color-neutral-200);
+		border-radius: var(--radius-2xl);
+		@include dark {
+			border-color: transparent;
+			background-color: var(--color-neutral-900);
+		}
 
 		ol {
 			max-width: var(--width-md);
-			padding: 2rem;
-			border: var(--base-border-size) solid var(--color-neutral-200);
-			border-radius: var(--radius-2xl);
-			@include dark {
-				border-color: transparent;
-				background-color: var(--color-neutral-900);
-			}
+			margin: 1rem;
+			padding: 1rem;
+			border-left: var(--base-border-size) dashed
+				color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 		}
 	}
 
