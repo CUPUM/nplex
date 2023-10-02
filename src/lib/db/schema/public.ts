@@ -750,7 +750,6 @@ export const projectsViews = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.userId, table.projectId),
 			unqUser: unique().on(table.projectId, table.userId),
 			unqClient: unique().on(table.projectId, table.clientId),
 		};
