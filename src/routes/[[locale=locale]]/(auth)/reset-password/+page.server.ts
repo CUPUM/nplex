@@ -25,7 +25,6 @@ export const load = async (event) => {
 
 export const actions = {
 	default: async (event) => {
-		console.log('resetting');
 		const form = await superValidate(event, passwordResetSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });

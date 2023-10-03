@@ -2,8 +2,10 @@ import { USER_ROLE_DEFAULT, type AuthProvider, type UserRole } from '$lib/auth/c
 import { isAuthProvider, isUserRole } from '$lib/auth/validation';
 import type { Locale } from '$lib/i18n/constants';
 import { isLocale } from '$lib/i18n/validation';
-import type { LineString, Point, Polygon } from '@turf/turf';
+import { GEOMETRY_TYPES, SRIDS, type SRID } from '$lib/utils/constants';
+import type { Coordinate } from '$lib/utils/gis';
 import { customType } from 'drizzle-orm/pg-core';
+import type { ReadonlyTuple } from 'type-fest';
 
 /**
  * Implementing our own db-level role type in sync with UserRole in lieu of using a pgEnum to avoid
@@ -179,34 +181,80 @@ export const daterange = customType<{ data: [Date, Date] }>({
 	},
 });
 
+type Cube<L extends number> = L extends 1
+	? number
+	: L extends 2
+	? [x: number, y: number]
+	: L extends 3
+	? [x: number, y: number, z: number]
+	: ReadonlyTuple<number, L>;
+
 /**
- * Implements postgis geometry type.
+ * Implements cube extension type for 3d vectors.
+ */
+export const cube = customType<{ data: Cube<3>; driverData: number[] }>({
+	dataType() {
+		return 'cube';
+	},
+	fromDriver(value) {
+		if (value.length !== 3) {
+			throw new Error(
+				'Expected a cube value, but value is not a properly dimensioned array of numbers.'
+			);
+		}
+		return [value[0], value[1], value[2]];
+	},
+	toDriver(value) {
+		return value;
+	},
+});
+
+/**
+ * Implements postgis point geometry type.
  *
  * @see https://github.com/drizzle-team/drizzle-orm/issues/671
  * @see https://github.com/drizzle-team/drizzle-orm/issues/337#issuecomment-1600854417.
  */
-export const geometry = customType<{
-	data: Point | LineString | Polygon;
-	driverData: string;
-}>({
-	dataType() {
-		return 'geometry';
-	},
-	// toDriver(value: GeoJsonType): string {
-	// 	if (!value) {
-	// 		return 'null';
-	// 	}
-	// 	// parse geoJson
-	// 	const geom = wkx.Geometry.parseGeoJSON(value);
-	// 	const bufWithSrid = Buffer.alloc(4);
-	// 	bufWithSrid.writeUInt32LE(4326, 0);
-	// 	const finalBuffer = Buffer.concat([bufWithSrid, geom.toWkb()]);
-	// 	return sql`UNHEX(${finalBuffer.toString('hex')})`;
-	// },
-	// fromDriver(value: string): GeoJsonType {
-	// 	const buffer = Buffer.from(value.slice(4), 'binary');
-	// 	const geom = wkx.Geometry.parse(buffer);
-	// 	const geoJson = geom.toGeoJSON();
-	// 	return geoJson as GeoJsonType;
-	// },
-});
+export const point = <C extends { srid?: SRID; z?: boolean; m?: boolean }, N extends string>(
+	name: N,
+	config?: C
+) => {
+	const extraDimensions = `${config?.z ? 'Z' : ''}${config?.m ? 'M' : ''}`;
+	return customType<{
+		data: { type: typeof GEOMETRY_TYPES.Point; coordinates: Coordinate<C> };
+		driverData: string;
+		config: C;
+	}>({
+		dataType(config) {
+			return `extensions.geometry(Point${extraDimensions},${config?.srid ?? SRIDS.WGS84})`;
+		},
+		toDriver(value) {
+			const zd = config?.z ? `,${config.z}` : '';
+			const md = config?.m ? `,${config.m}` : '';
+			return `Point${extraDimensions}(${value.coordinates[0]},${value.coordinates[1]}${zd}${md})`;
+		},
+		fromDriver(value) {
+			const matches = value.match(
+				/POINT(?<z>Z?)(?<m>M?)\((?<coordinateString>(\d+(?:\.\d*)?,? *?)*)\)/
+			);
+			if (!matches?.groups) {
+				throw new Error(`Point geometry value (${value}) does not match the expected pattern.`);
+			}
+			const { z, m, coordinateString } = matches.groups;
+			if ((config?.z && !z) || (config?.m && !m)) {
+				throw new Error(
+					`Missing dimension(s) expected according to Point column config. Value has ${JSON.stringify(
+						{
+							z: !!config?.z,
+							m: !!config?.m,
+						}
+					)} but column is supposed to be typed ${JSON.stringify({ z, m })}.`
+				);
+			}
+			const coordinates = coordinateString
+				.split(',')
+				.map((d) => parseFloat(d.trim())) as Coordinate<C>;
+			return { type: GEOMETRY_TYPES.Point, coordinates };
+		},
+	})(name, config);
+};

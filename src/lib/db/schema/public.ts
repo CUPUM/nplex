@@ -12,7 +12,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { generateNanoid } from '../sql';
 import { userRoles, users } from './accounts';
-import { intrange, locale, userRole } from './custom-types';
+import { intrange, locale, point, userRole } from './custom-types';
 import { locales } from './i18n';
 
 /**
@@ -405,7 +405,7 @@ export const projects = pgTable('projects', {
 	interventionsArea: integer('interventions_area'),
 	buildingArea: integer('building_area'),
 	buildingConstructionDate: date('building_construction_date', { mode: 'date' }),
-	// location: postgis(),
+	location: point('location'),
 });
 export const projectsTranslations = pgTable(
 	'projects_t',

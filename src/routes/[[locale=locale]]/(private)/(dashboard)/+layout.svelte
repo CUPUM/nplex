@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { fade, slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 </script>
 
 <article>
@@ -11,7 +11,7 @@
 		<div class="dashboard-breadcrumbs">Breadcrumbs</div>
 	{/if}
 	{#if $page.data.dashboard?.sidebar}
-		<div class="dashboard-sidebar" in:slide={{ axis: 'x' }}>
+		<div class="dashboard-sidebar">
 			<svelte:component this={$page.data.dashboard.sidebar} />
 		</div>
 	{/if}

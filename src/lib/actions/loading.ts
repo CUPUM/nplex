@@ -12,7 +12,6 @@ export function loading(
 	let comp: Loading | undefined;
 	const { state, ...props } = options ?? {};
 	if (state) {
-		console.log('State is true!');
 		new Loading({
 			intro: true,
 			target: node,
@@ -22,7 +21,6 @@ export function loading(
 
 	return {
 		update(args: typeof options) {
-			// console.log(args);
 			if (comp && !args?.state) {
 				// comp.$destroy();
 				outroAndDestroy(comp);

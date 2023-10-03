@@ -10,6 +10,8 @@ import {
 	projectInterventionsTranslations,
 	projectTypes,
 	projectTypesTranslations,
+	projects,
+	projectsTranslations,
 } from './schema/public';
 import { withTranslationsSchema } from './utils';
 
@@ -64,21 +66,21 @@ export const projectInterventionCategoriesAndInterventionsUpdateSchema =
 
 // Projects
 
-// export const projectInsertSchema = createInsertSchema(projects, {
-// 	adjacentStreets: (s) => s.adjacentStreets.positive().max(5),
-// 	adjacentAlleys: (s) => s.adjacentAlleys.positive().max(5),
-// });
+export const projectInsertSchema = createInsertSchema(projects, {
+	adjacentStreets: (s) => s.adjacentStreets.positive().max(5),
+	adjacentAlleys: (s) => s.adjacentAlleys.positive().max(5),
+}).required({ id: true });
+export const projectTranslationsInsertSchema = createInsertSchema(projectsTranslations, {
+	title: (s) => s.title.max(250),
+	summary: (s) => s.summary.max(1500),
+	description: (s) => s.description.max(5000),
+	locale: localeSchema,
+});
 
-// export const projectTranslationInsertSchema = createInsertSchema(projectsTranslations, {
-// 	title: (s) => s.title.max(250),
-// 	summary: (s) => s.summary.max(1500),
-// 	description: (s) => s.description.max(5000),
-// });
-
-// export const projectUpdateSchema = withTranslationsSchema(
-// 	projectInsertSchema,
-// 	projectTranslationInsertSchema
-// );
+export const projectUpdateSchema = withTranslationsSchema(
+	projectInsertSchema,
+	projectTranslationsInsertSchema
+);
 
 // Organizations
 

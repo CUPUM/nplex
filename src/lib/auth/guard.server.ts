@@ -1,4 +1,3 @@
-import { createTranslations } from '$lib/i18n/translate';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit';
 import type { UserRole } from './constants';
@@ -9,19 +8,16 @@ import type { UserRole } from './constants';
 export async function withAuth(event: RequestEvent | ServerLoadEvent) {
 	const session = await event.locals.auth.validate();
 	if (!session) {
-		const t = createTranslations(
-			{
-				fr: {
-					message:
-						'Aucune session valide trouvée. Vous devez être authentifié avec un compte pour poursuivre.',
-				},
-				en: {
-					message:
-						'No valid session was found. You must authenticate with an account if you wish to proceed.',
-				},
+		const t = event.locals.createTranslations({
+			fr: {
+				message:
+					'Aucune session valide trouvée. Vous devez être authentifié avec un compte pour poursuivre.',
 			},
-			event
-		);
+			en: {
+				message:
+					'No valid session was found. You must authenticate with an account if you wish to proceed.',
+			},
+		});
 		throw error(STATUS_CODES.UNAUTHORIZED, t.message);
 	}
 	return session;

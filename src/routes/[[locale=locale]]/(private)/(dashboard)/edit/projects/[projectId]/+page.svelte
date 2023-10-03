@@ -1,5 +1,4 @@
 <script lang="ts">
-	import TranslationsTabs from '$lib/components/TranslationsTabs.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { superForm } from 'sveltekit-superforms/client';
 
@@ -29,7 +28,7 @@
 
 <h1>Général</h1>
 <form method="POST" use:enhance>
-	<TranslationsTabs let:locale>
+	<!-- <TranslationsTabs let:locale>
 		<svelte:fragment slot="legend">
 			{$t.title}
 		</svelte:fragment>
@@ -49,7 +48,7 @@
 		</svelte:fragment>
 		{@const id = `project-description-${locale}`}
 		<input class="input" type="text" {id} name="{locale}.description" />
-	</TranslationsTabs>
+	</TranslationsTabs> -->
 	<fieldset>
 		<legend>
 			{$t.type}

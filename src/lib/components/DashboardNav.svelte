@@ -11,24 +11,42 @@
 		},
 	});
 
+	/**
+	 * Parent dashboard context.
+	 */
+	const [getDashboard, setDashboardCtx] = defineContext<{ pushIndex: () => number }>({});
+	export function setDashboard() {
+		let index = 0;
+		function pushIndex() {
+			return index++;
+		}
+		setDashboardCtx({
+			pushIndex,
+		});
+	}
+
+	/**
+	 * Dashboard nav context for items.
+	 */
 	const [getDashboardNav, setDashboardNav] = defineContext<{ pushIndex: () => number }>({});
 
 	export { getDashboardNav };
 </script>
 
 <script lang="ts">
+	const ctx = getDashboard();
+	const navIndex = ctx?.pushIndex() ?? 0;
+
 	let index = 0;
-
 	function pushIndex() {
-		return ++index;
+		return index++;
 	}
-
 	setDashboardNav({
 		pushIndex,
 	});
 </script>
 
-<section in:scale={{ start: 0.95, duration: 500, easing: expoOut }}>
+<section in:scale={{ start: 0.95, duration: 750, easing: expoOut, delay: navIndex * 150 }}>
 	{#if $$slots.heading}
 		<span class="heading">
 			<slot name="heading" />

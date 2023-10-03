@@ -36,8 +36,11 @@ export const actions = {
 		try {
 			const userId = await validatePasswordResetToken(event.params.token);
 			let user = await auth.getUser(userId);
-			await auth.invalidateAllUserSessions(user.userId),
-				await auth.updateKeyPassword(AUTH_PROVIDERS.EMAIL, user.email, form.data.newPassword);
+			if (!user.email) {
+				return fail(STATUS_CODES.METHOD_NOT_ALLOWED, { form });
+			}
+			await auth.invalidateAllUserSessions(user.userId);
+			await auth.updateKeyPassword(AUTH_PROVIDERS.EMAIL, user.email, form.data.newPassword);
 			if (!user.emailVerified) {
 				user = await auth.updateUserAttributes(user.userId, {
 					email_verified: true,

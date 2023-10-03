@@ -1,9 +1,11 @@
 <script lang="ts">
-	import DashboardNav from '$lib/components/DashboardNav.svelte';
+	import DashboardNav, { setDashboard } from '$lib/components/DashboardNav.svelte';
 	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { ArrowRight } from 'lucide-svelte';
+
+	setDashboard();
 
 	const t = createTranslations({
 		fr: {

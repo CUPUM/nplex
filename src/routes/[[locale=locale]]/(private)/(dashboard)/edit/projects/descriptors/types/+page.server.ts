@@ -3,7 +3,7 @@ import { withRole } from '$lib/auth/guard.server';
 import { projectTypesUpdateSchema } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
 import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public';
-import { extractTranslations, getAllExcluded, mapReduceTranslations } from '$lib/db/utils';
+import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -18,7 +18,7 @@ export const load = async (event) => {
 				translations: true,
 			},
 		})
-	).map(mapReduceTranslations);
+	).map(reduceTranslations);
 
 	const form = await superValidate({ types }, projectTypesUpdateSchema);
 

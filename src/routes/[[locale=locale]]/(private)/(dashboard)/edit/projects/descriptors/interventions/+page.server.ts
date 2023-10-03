@@ -8,7 +8,7 @@ import {
 	projectInterventions,
 	projectInterventionsTranslations,
 } from '$lib/db/schema/public';
-import { extractTranslations, getAllExcluded, mapReduceTranslations } from '$lib/db/utils';
+import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -24,14 +24,14 @@ export const load = async (event) => {
 					translations: true,
 				},
 			})
-		).map(mapReduceTranslations);
+		).map(reduceTranslations);
 		const interventions = (
 			await tx.query.projectInterventions.findMany({
 				with: {
 					translations: true,
 				},
 			})
-		).map(mapReduceTranslations);
+		).map(reduceTranslations);
 		return {
 			interventionCategories,
 			interventions,
@@ -44,12 +44,6 @@ export const load = async (event) => {
 };
 
 export const actions = {
-	// createCategory: async (event) => {
-	// 	await withRole(event, USER_ROLES.ADMIN);
-	// },
-	// deleteCategory: async (event) => {
-	// 	await withRole(event, USER_ROLES.ADMIN);
-	// },
 	createIntervention: async (event) => {
 		await withRole(event, USER_ROLES.ADMIN);
 		const categoryId = event.url.searchParams.get('categoryId');

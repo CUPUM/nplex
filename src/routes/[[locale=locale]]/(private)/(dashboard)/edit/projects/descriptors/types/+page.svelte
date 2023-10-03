@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { createLoading } from '$lib/actions/loading';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
-	import TranslationsTabs from '$lib/components/TranslationsTabs.svelte';
+	import TranslationsCard from '$lib/components/TranslationsCard.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { Check, Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
@@ -65,7 +65,7 @@
 				out:sendType={{ key: type.id }}
 				animate:flip={{ duration: (l) => 150 + l / 10 }}
 			>
-				<TranslationsTabs
+				<TranslationsCard
 					legend={type.id}
 					minimized={false}
 					legendMinimized={type.translations[$page.data.locale].title}
@@ -88,7 +88,7 @@
 						</span>
 						<textarea class="input" bind:value={$form.types[i].translations[locale].description} />
 					</label>
-				</TranslationsTabs>
+				</TranslationsCard>
 			</li>
 		{/each}
 	</ul>

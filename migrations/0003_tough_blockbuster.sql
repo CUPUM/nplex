@@ -1,0 +1,1 @@
+ALTER TABLE "projects" ADD COLUMN "location" extensions.geometry(Point,4326);

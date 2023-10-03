@@ -1,3 +1,4 @@
+import type { Feature } from '@turf/turf';
 import {
 	SQL,
 	sql,
@@ -169,6 +170,13 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn>>(shape: T
 }
 
 /**
+ * Get a PostGIS column value as geojson.
+ */
+export function asGeoJson<T extends Feature = Feature>(geom: string) {
+	return sql<T>`st_asgeojson(${geom})::json`;
+}
+
+/**
  * Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped
  * type instead of an SQL wrapped type.
  *
@@ -214,37 +222,37 @@ export function jsonObjectAgg<
 	return sql<Record<TK, TV>>`json_object_agg(${key}, ${value})`;
 }
 
-type Coalesce<T extends unknown[], N extends boolean = true, R = never> = T extends [
-	infer H,
-	...infer T,
-]
-	? Coalesce<T, null extends H ? true : false, R | NonNullable<H>>
-	: N extends true
-	? R | null
-	: R;
+// type Coalesce<T extends unknown[], N extends boolean = true, R = never> = T extends [
+// 	infer H,
+// 	...infer T,
+// ]
+// 	? Coalesce<T, null extends H ? true : false, R | NonNullable<H>>
+// 	: N extends true
+// 	? R | null
+// 	: R;
 
-type CoalesceSQL<T extends SQL[], N extends boolean = true, R = never> = T extends [
-	infer H,
-	...infer T,
-]
-	? Coalesce<T, SQL<null> extends H ? true : false, R | H extends SQL<null> ? never : H>
-	: N extends true
-	? R | null
-	: R;
+// type CoalesceSQL<T extends SQL[], N extends boolean = true, R = never> = T extends [
+// 	infer H,
+// 	...infer T,
+// ]
+// 	? Coalesce<T, SQL<null> extends H ? true : false, R | H extends SQL<null> ? never : H>
+// 	: N extends true
+// 	? R | null
+// 	: R;
 
-/**
- * SQL coalesce.
- *
- * @see https://www.typescriptlang.org/play?#code/C4TwDgpgBAcg9sGBXANigPAFShAHsCAOwBMBnKJQga0LgHdCBtAXQD4oBeKAbwCgoBURgGkoAS0JRCSALYAjCACcoAMihUIIOADMomZgC49I5jnxEyU1CigB+KRABuSqEcwmA3LwC+X3tsoAY2AxOElAuABDFAhSQIh0ADUzAhJyShp6JjYACgA6AsdopFijRIBKHl4ASFBIPU4hArzE0zxUywltF2x7bCNCJyUvATroAGFG7kYASXFJDS1dbDVpeSVDYxm28zSrNDsHZ2U3WeZffigxqAAxRvHGRZ0oceYRqAjCUmAobTEUAiKCDERpFFAlUh5P4ApQ5RycdjwgCEXGkaHK7yBwCQikkOWhgOBeRihAA5sAABaHAlKYGMAAMpgG1kqkXINy83l4vGumFiwHQAEEUhZ0tRaAwWOwuIxmoKdh1yF0eod+kdhtzPt8oJFFIoAIyNRholAAGigAFlIpS8opIiQ4DIcpV2HkAKyHADkwrBJU9OvIWp+zLQzF4QZ1eoATEaTearTa7Q6nS6oO6vT7ihB-WyPmFtUZvbRKS5fdmA3mvsAw9dxoauHzvugxs9dQbWDzwBMYw3+c2u63ox3w-mfgRvvW89FYvEcnHLdaKbb7cRHc6oK6PfZvVAyznA6PXPsUBioAB6M-HqAAHygO73I6rV35PanMTiEDn1nji+XyfXm4ZruWb7pWBZ3oKxYUqWIEVkGp4XhBwHguWt5Fgg0HKHuQA
- * @todo Figure out mapped array typing to exclude exclusively null array members.
- */
-export function coalesce<T extends SQL[]>(...values: T) {
-	return sql.join([
-		sql.raw('coalesce('),
-		sql.join(
-			values.map((v) => sql`${v}`),
-			sql.raw(', ')
-		),
-		sql.raw(')'),
-	]) as CoalesceSQL<T>;
-}
+// /**
+//  * SQL coalesce.
+//  *
+//  * @see https://www.typescriptlang.org/play?#code/C4TwDgpgBAcg9sGBXANigPAFShAHsCAOwBMBnKJQga0LgHdCBtAXQD4oBeKAbwCgoBURgGkoAS0JRCSALYAjCACcoAMihUIIOADMomZgC49I5jnxEyU1CigB+KRABuSqEcwmA3LwC+X3tsoAY2AxOElAuABDFAhSQIh0ADUzAhJyShp6JjYACgA6AsdopFijRIBKHl4ASFBIPU4hArzE0zxUywltF2x7bCNCJyUvATroAGFG7kYASXFJDS1dbDVpeSVDYxm28zSrNDsHZ2U3WeZffigxqAAxRvHGRZ0oceYRqAjCUmAobTEUAiKCDERpFFAlUh5P4ApQ5RycdjwgCEXGkaHK7yBwCQikkOWhgOBeRihAA5sAABaHAlKYGMAAMpgG1kqkXINy83l4vGumFiwHQAEEUhZ0tRaAwWOwuIxmoKdh1yF0eod+kdhtzPt8oJFFIoAIyNRholAAGigAFlIpS8opIiQ4DIcpV2HkAKyHADkwrBJU9OvIWp+zLQzF4QZ1eoATEaTearTa7Q6nS6oO6vT7ihB-WyPmFtUZvbRKS5fdmA3mvsAw9dxoauHzvugxs9dQbWDzwBMYw3+c2u63ox3w-mfgRvvW89FYvEcnHLdaKbb7cRHc6oK6PfZvVAyznA6PXPsUBioAB6M-HqAAHygO73I6rV35PanMTiEDn1nji+XyfXm4ZruWb7pWBZ3oKxYUqWIEVkGp4XhBwHguWt5Fgg0HKHuQA
+//  * @todo Figure out mapped array typing to exclude exclusively null array members.
+//  */
+// export function coalesce<T extends SQL[]>(...values: T) {
+// 	return sql.join([
+// 		sql.raw('coalesce('),
+// 		sql.join(
+// 			values.map((v) => sql`${v}`),
+// 			sql.raw(', ')
+// 		),
+// 		sql.raw(')'),
+// 	]) as CoalesceSQL<T>;
+// }

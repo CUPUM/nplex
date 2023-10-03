@@ -1,5 +1,7 @@
 import type { ValueOf } from 'type-fest';
 
+export const SEARCH_PARAMS = {} as const;
+
 /**
  * Css cursor names.
  */
@@ -160,3 +162,32 @@ export const KEYS = {
 	ZOOM_IN: 'ZoomIn',
 	ZOOM_OUT: 'ZoomOut',
 } as const;
+
+export type Key = ValueOf<typeof KEYS>;
+
+/**
+ * Common coordinate projection systems and their Spatial Reference System ID.
+ */
+export const SRIDS = {
+	/**
+	 * Lat/Lon globe-based coordinate system. Uses degrees to represent spheroid position.
+	 */
+	WGS84: 4326,
+	/**
+	 * Lat/Lon flat-map coordinates in meters. Generally the default system used for web apps.
+	 */
+	WebMercator: 3857,
+} as const;
+
+export type SRID = ValueOf<typeof SRIDS> | `${ValueOf<typeof SRIDS>}`;
+
+export const GEOMETRY_TYPES = {
+	Point: 'Point',
+	LineString: 'LineString',
+	Polygon: 'Polygon',
+	MultiPoint: 'MultiPoint',
+	MultiLineString: 'MultiLineString',
+	MultiPolygon: 'MultiPolygon',
+};
+
+export type GeometryType = ValueOf<typeof GEOMETRY_TYPES>;

@@ -4,7 +4,6 @@ import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
 import { isSupportedOAuthProvider } from '$lib/auth/validation';
 import { dbpool } from '$lib/db/db.server';
 import { users } from '$lib/db/schema/accounts';
-import { createTranslations } from '$lib/i18n/translate';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { OAuthRequestError } from '@lucia-auth/oauth';
 import { HttpError_1, error } from '@sveltejs/kit';
@@ -14,24 +13,20 @@ import { eq } from 'drizzle-orm';
  * @todo Extract provider user data getters into helpers instead of ternary ops.
  */
 export const GET = async (event) => {
-	const t = createTranslations(
-		{
-			fr: {
-				notSupported: 'Le fournisseur OAuth demandé n’est pas supporté.',
-				incorrectState: (provider: string) => `La réponse de ${provider} ne convient pas.`,
-				unverifiedEmail: (email: string) =>
-					`Un utilisateur a déjà été enregistré avec l’adresse courriel «${email}». Pour lier les deux comptes veuillez d’abord authentifier votre adresse courriel sur le compte existant.`,
-			},
-			en: {
-				notSupported: 'The requested OAuth provider is not supported.',
-				incorrectState: (provider: string) =>
-					`The state provided by ${provider} is not compatible.`,
-				unverifiedEmail: (email: string) =>
-					`A user with the email «${email}» is already registered. To proceed and link both accounts, please first confirm your email adress on the existing account.`,
-			},
+	const t = event.locals.createTranslations({
+		fr: {
+			notSupported: 'Le fournisseur OAuth demandé n’est pas supporté.',
+			incorrectState: (provider: string) => `La réponse de ${provider} ne convient pas.`,
+			unverifiedEmail: (email: string) =>
+				`Un utilisateur a déjà été enregistré avec l’adresse courriel «${email}». Pour lier les deux comptes veuillez d’abord authentifier votre adresse courriel sur le compte existant.`,
 		},
-		event
-	);
+		en: {
+			notSupported: 'The requested OAuth provider is not supported.',
+			incorrectState: (provider: string) => `The state provided by ${provider} is not compatible.`,
+			unverifiedEmail: (email: string) =>
+				`A user with the email «${email}» is already registered. To proceed and link both accounts, please first confirm your email adress on the existing account.`,
+		},
+	});
 
 	if (!isSupportedOAuthProvider(event.params.provider)) {
 		throw error(STATUS_CODES.BAD_REQUEST, { message: t.notSupported });

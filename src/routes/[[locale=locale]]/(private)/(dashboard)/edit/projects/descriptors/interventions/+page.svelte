@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { createLoading } from '$lib/actions/loading';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
-	import TranslationsTabs from '$lib/components/TranslationsTabs.svelte';
+	import { default as TranslationsCard } from '$lib/components/TranslationsCard.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { Check, Pen, Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
@@ -50,8 +50,6 @@
 	} = createLoading({
 		state: submitting,
 	});
-
-	console.log($updatingElement);
 </script>
 
 <form method="POST" use:enhance>
@@ -75,7 +73,7 @@
 			{@const filtered = $form.interventions.filter((pi) => pi.categoryId === category.id)}
 			<li class="category">
 				<div class="top">
-					<TranslationsTabs let:locale legend={category.id}>
+					<TranslationsCard let:locale legend={category.id}>
 						<label class="labeled-input">
 							<span class="input-label">{$t.category.title}</span>
 							<input
@@ -91,7 +89,7 @@
 								bind:value={$form.interventionCategories[i].translations[locale].description}
 							/>
 						</label>
-					</TranslationsTabs>
+					</TranslationsCard>
 				</div>
 				<ol class="interventions">
 					{#if filtered.length}
@@ -101,7 +99,7 @@
 								animate:flip={{ duration: 150 }}
 								transition:scale={{ start: 0.95, duration: 250, easing: expoOut }}
 							>
-								<TranslationsTabs
+								<TranslationsCard
 									let:locale
 									legend={intervention.id}
 									legendMinimized={intervention.translations[$page.data.locale].title}
@@ -122,7 +120,7 @@
 											bind:value={$form.interventions[ii].translations[locale].description}
 										/>
 									</label>
-								</TranslationsTabs>
+								</TranslationsCard>
 							</li>
 						{/each}
 					{:else}

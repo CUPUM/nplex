@@ -1,6 +1,7 @@
 import { LOCALES, LOCALES_ARR, localeSchema, type Locale } from '$lib/i18n/constants';
+import { SRIDS, type SRID } from '$lib/utils/constants';
 import { strictRecord } from '$lib/utils/zod';
-import { getTableColumns, type AnyColumn, type AnyTable, type SQL } from 'drizzle-orm';
+import { getTableColumns, sql, type AnyColumn, type AnyTable, type SQL } from 'drizzle-orm';
 import { PgTable, getTableConfig } from 'drizzle-orm/pg-core';
 import type { ZodObject, ZodString, ZodTypeAny } from 'zod';
 import { excluded } from './sql';
@@ -102,26 +103,16 @@ export function extractTranslations<T, D extends Omit<Record<string, unknown>, '
 	);
 }
 
-export function reduceTranslations<T extends { locale: Locale }>(translations: T[]) {
-	return translations.reduce(
-		(acc, curr) => {
-			acc[curr.locale] = curr;
-			return acc;
-		},
-		<Partial<Record<Locale, T>>>{}
-	);
-}
-
 /**
  * Map translations array to a record of translations. Also automatically populate / update index
  * field if present.
  */
-export function mapReduceTranslations<
+export function reduceTranslations<
 	T extends { locale: Locale; id: string },
 	D extends { id: string; index?: number | null },
->(row: D & { translations: T[] }, index: number) {
+>(row: D & { translations: T[] }, index?: number) {
 	const { translations, ...cols } = row;
-	if ('index' in cols) {
+	if (index != null && 'index' in cols) {
 		cols.index = index;
 	}
 	// Building a base empty translations dictionnary to handle cases where no rows are defined.
@@ -142,4 +133,29 @@ export function mapReduceTranslations<
 			return acc;
 		}, translationsBase),
 	};
+}
+
+/**
+ * Obfuscating a point geometry's location within a circle of configurable radius.
+ *
+ * @example
+ * 	st_geometryn(
+ * 	st_generatepoints(
+ * 	st_buffer(
+ * 	st_setsrid(location, 4326)::geography, coalesce(location_radius, 1000::real)::double precision, 'quad_segs=8'::text)::geometry,
+ * 	1,
+ * 	1992
+ * 	), 1
+ * 	)
+ */
+export function obfuscatePoint<T extends AnyColumn | SQL>(
+	point: T,
+	{ radius = 500, srid = SRIDS.WGS84 }: { radius?: number; srid?: SRID } = {}
+) {
+	type D = T extends AnyColumn
+		? InferColumnDataType<T>
+		: T extends SQL
+		? InferSQLDataType<T>
+		: never;
+	return sql<D>``;
 }
