@@ -63,7 +63,7 @@
 		flex-direction: column;
 		border-radius: var(--radius-lg);
 		// border: var(--base-border-size) solid var(--color-neutral-200);
-		background-color: var(--color-neutral-200);
+		background-color: var(--color-neutral-50);
 		padding: 0.5rem;
 		margin-bottom: 0.5rem;
 		@include dark {
@@ -78,7 +78,7 @@
 	.heading {
 		position: sticky;
 		left: 0;
-		padding: 0.25rem 1rem;
+		padding: 0 1rem 0.25rem 1rem;
 		font-size: 0.8em;
 		font-weight: 350;
 		letter-spacing: 0.01em;

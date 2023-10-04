@@ -1,12 +1,10 @@
-<script lang="ts" generics="L extends Locale[]">
-	import { expoOut } from 'svelte/easing';
-
+<script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
-	import { LOCALES_ARR, LOCALES_DETAILS, type Locale } from '$lib/i18n/constants';
+	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
 	import { melt, type TabsElements, type TabsStates } from '@melt-ui/svelte';
+	import { expoOut } from 'svelte/easing';
 	import { crossfade } from 'svelte/transition';
 
-	export let locales: L = LOCALES_ARR;
 	export let list: TabsElements['list'];
 	export let trigger: TabsElements['trigger'];
 	export let value: TabsStates['value'];
@@ -15,7 +13,7 @@
 </script>
 
 <menu use:melt={$list}>
-	{#each locales as locale}
+	{#each LOCALES_ARR as locale}
 		<button
 			use:ripple={{ color: 'white', opacityStart: 0.25 }}
 			use:melt={$trigger(locale)}

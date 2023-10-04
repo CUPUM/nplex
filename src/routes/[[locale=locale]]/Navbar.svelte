@@ -13,6 +13,7 @@
 				projects: 'Modifier un projet',
 				projectDescriptors: 'Gérer les descripteurs',
 				organizations: 'Modifier une organisation',
+				organizationsDescriptors: 'Gérer les descripteurs',
 			},
 			new: {
 				project: 'Créer un nouveau projet',
@@ -32,6 +33,7 @@
 				projects: 'Edit a project',
 				projectDescriptors: 'Manage descriptors',
 				organizations: 'Edit an organization',
+				organizationsDescriptors: 'Manage descriptors',
 			},
 			new: {
 				project: 'Create a new project',
@@ -277,6 +279,14 @@
 								<NavbarMenuButton {...$link('/new/organization')} melt={userItem}>
 									{$t.new.organization}
 									<FilePlus2 class="button-icon" />
+								</NavbarMenuButton>
+								<NavbarMenuButton
+									{...$link('/edit/organizations/descriptors')}
+									data-disabled
+									melt={userItem}
+								>
+									{$t.edit.organizationsDescriptors}
+									<Sliders class="button-icon" />
 								</NavbarMenuButton>
 							</NavbarMenuGroup>
 							<NavbarMenuButton {...$link('/i')} melt={userItem}>

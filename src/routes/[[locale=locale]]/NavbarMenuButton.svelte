@@ -39,6 +39,7 @@
 
 <style lang="scss">
 	.navbar-menu-button {
+		user-select: none;
 		position: relative;
 		font-size: var(--size-sm);
 		display: flex;
@@ -49,6 +50,13 @@
 		gap: 1em;
 		border-radius: var(--radius-sm);
 		transition: all 0.1s ease-out;
+
+		&:disabled,
+		&[data-disabled] {
+			pointer-events: none;
+			opacity: 0.35;
+			filter: blur(1px);
+		}
 
 		&[data-current] {
 			cursor: default;
