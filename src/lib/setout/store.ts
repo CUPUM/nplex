@@ -1,41 +1,45 @@
 import { page } from '$app/stores';
-import { derived, writable } from 'svelte/store';
-import { SETOUT_DEFAULT, type Setout } from './constants';
+import { derived } from 'svelte/store';
+import { SETOUT_DEFAULT } from './constants';
 
 /**
  * A contextual store to help manage different types of layouts. Types of setouts can be applied by
  * load functions and modified client-side, for example on scroll.
  */
-function createSetout() {
-	/**
-	 * Last value set by upstream page.data update (load function).
-	 */
-	const last = SETOUT_DEFAULT;
+export const setout = derived(page, ($page) => {
+	return $page.data.setout ?? SETOUT_DEFAULT;
+});
 
-	const dataSetout = derived(page, ($page) => {
-		return $page.data?.setout ?? undefined;
-	});
+// function createSetout() {
+// 	/**
+// 	 * Last value set by upstream page.data update (load function).
+// 	 */
+// 	const last = SETOUT_DEFAULT;
 
-	const store = writable<Setout | undefined>(undefined, function start(_set) {
-		const unsub = dataSetout.subscribe((v) => {
-			_set(v);
-			return function stop() {
-				unsub();
-			};
-		});
-	});
+// 	const dataSetout = derived(page, ($page) => {
+// 		return $page.data?.setout ?? undefined;
+// 	});
 
-	/**
-	 * Set to the last given page.data value.
-	 */
-	function reset() {
-		store.set(last);
-	}
+// 	const store = writable<Setout | undefined>(undefined, function start(_set) {
+// 		const unsub = dataSetout.subscribe((v) => {
+// 			_set(v);
+// 			return function stop() {
+// 				unsub();
+// 			};
+// 		});
+// 	});
 
-	return {
-		...store,
-		reset,
-	};
-}
+// 	/**
+// 	 * Set to the last given page.data value.
+// 	 */
+// 	function reset() {
+// 		store.set(last);
+// 	}
 
-export const setout = createSetout();
+// 	return {
+// 		...store,
+// 		reset,
+// 	};
+// }
+
+// export const setout = createSetout();

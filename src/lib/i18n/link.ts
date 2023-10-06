@@ -16,6 +16,7 @@ export const link = derived(page, ($page) => {
 			'href': _href,
 			'hreflang': locale || undefined,
 			'data-current': current,
+			'aria-current': current && 'page',
 			// Add more attributes if relevant.
 		} satisfies Partial<HTMLAnchorAttributes>;
 	};

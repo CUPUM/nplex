@@ -12,6 +12,16 @@ const config = {
 	preprocess: sequence([vitePreprocess(), preprocessMeltUI()]),
 	kit: {
 		adapter: adapter(),
+		alias: {
+			'styled-system': './styled-system/*',
+		},
+		// typescript: {
+		// 	config: (config) => {
+		// 		// https://panda-css.com/docs/installation/svelte#troubleshooting
+		// 		config.include.push('../styled-system');
+		// 		return config;
+		// 	},
+		// },
 	},
 	compilerOptions: {
 		cssHash: (styles) => `nplex-${styles.hash(styles.css)}`, // Only applies to prod.

@@ -8,10 +8,11 @@
 	import type { SVGAttributes } from 'svelte/elements';
 	import { scale } from 'svelte/transition';
 
-	export let color: string | undefined = undefined;
 	export let thickness: SVGAttributes<SVGPathElement>['stroke-width'] = 12;
 	export let linecap: SVGAttributes<SVGPathElement>['stroke-linecap'] = 'round';
 	export let linejoin: SVGAttributes<SVGPathElement>['stroke-linejoin'] = 'round';
+	let className: string = '';
+	export { className as class };
 
 	const origin = '50,95';
 	const circle = 'A 45,45 0,1,1 50.1,95';
@@ -27,7 +28,7 @@
 	// }
 </script>
 
-<div class="loading" style:color style:--speed={1}>
+<div class="loading {className}" style:--speed={1}>
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
