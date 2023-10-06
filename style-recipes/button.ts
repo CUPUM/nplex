@@ -16,9 +16,9 @@ export const buttonRecipe = defineSlotRecipe({
 			gap: '0.75em',
 			fontWeight: '450',
 			paddingBlock: '0',
-			paddingInline: 'padding.inline.base',
-			height: 'block.base',
-			minWidth: 'block.base',
+			paddingInline: 'blockpad',
+			height: 'block',
+			minWidth: 'block',
 			borderRadius: 'base',
 			whiteSpace: 'nowrap',
 			textOverflow: 'ellipsis',
@@ -53,9 +53,7 @@ export const buttonRecipe = defineSlotRecipe({
 	},
 	variants: {
 		special: {
-			danger: {
-				root: {},
-			},
+			danger: {},
 		},
 		align: {
 			start: {
@@ -79,18 +77,13 @@ export const buttonRecipe = defineSlotRecipe({
 				},
 			},
 		},
-		aspect: {
-			square: {
+		shape: {
+			round: {
 				root: {
-					padding: '0',
-					justifyContent: 'center',
-					aspectRatio: '1',
-				},
-				icon: {
-					width: '1.35em',
-					opacity: '1',
+					borderRadius: 'full',
 				},
 			},
+			square: {},
 		},
 		type: {
 			default: {
@@ -239,7 +232,42 @@ export const buttonRecipe = defineSlotRecipe({
 		align: 'center',
 		type: 'default',
 	},
-	// compoundVariants: {}
+	compoundVariants: [
+		{
+			shape: ['round', 'square'],
+			css: {
+				root: {
+					padding: '0',
+					justifyContent: 'center',
+					aspectRatio: '1',
+				},
+				icon: {
+					width: '1.35em',
+					opacity: '1',
+				},
+			},
+		},
+		// {special: 'danger', type: },
+		{
+			special: 'danger',
+			type: ['default', 'ghost', 'link', 'outlined'],
+			css: {
+				root: {
+					color: 'error.700',
+					_dark: {
+						color: 'error.300',
+					},
+					_hoverOrFocusVisible: {
+						color: 'error.800',
+						backgroundColor: 'error.400/.1',
+						_dark: {
+							color: 'error.200',
+						},
+					},
+				},
+			},
+		},
+	],
 });
 
 export const segmentedButtonRecipe = defineSlotRecipe({

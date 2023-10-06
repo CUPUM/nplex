@@ -44,6 +44,10 @@ declare global {
 			 */
 			setout: Setout;
 			/**
+			 * Set a new setout and return the value to pass it down through event data.
+			 */
+			setSetout: <S extends Setout>(setout: S) => S;
+			/**
 			 * Client's language as determined by the i18n middleware.
 			 */
 			locale: Locale;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import DashboardNav, { setDashboard } from '$lib/components/DashboardNav.svelte';
-	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
+	import DashboardNavItem, { dashboardButtonIcon } from '$lib/components/DashboardNavItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { AlertTriangle, Shield, Users2 } from 'lucide-svelte';
@@ -93,15 +93,15 @@
 	</svelte:fragment>
 	<DashboardNavItem {...$link(`/edit/projects/${projectId}/sharing`)}>
 		{$t.settings.sharing}
-		<Users2 class="button-icon" />
+		<Users2 class={dashboardButtonIcon} />
 	</DashboardNavItem>
 	<DashboardNavItem {...$link(`/edit/projects/${projectId}/visibility`)}>
 		{$t.settings.visibility}
-		<Shield class="button-icon" />
+		<Shield class={dashboardButtonIcon} />
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/danger`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/danger`)} special="danger">
 		{$t.settings.danger}
-		<AlertTriangle class="button-icon" />
+		<AlertTriangle class={dashboardButtonIcon} />
 	</DashboardNavItem>
 </DashboardNav>
 

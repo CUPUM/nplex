@@ -1,7 +1,7 @@
 import { SETOUTS } from '$lib/setout/constants';
 
-export const load = async () => {
+export const load = async (event) => {
 	return {
-		setout: SETOUTS.FULL_WIDTH,
+		setout: event.locals.setSetout(SETOUTS.FULL_WIDTH),
 	};
 };

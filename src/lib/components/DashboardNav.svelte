@@ -1,7 +1,6 @@
 <script lang="ts" context="module">
 	import { defineContext } from '$lib/utils/context';
 	import { css } from 'styled-system/css';
-	import { flex } from 'styled-system/patterns';
 	import { expoInOut, expoOut } from 'svelte/easing';
 	import { crossfade, scale } from 'svelte/transition';
 
@@ -39,8 +38,8 @@
 		flexDirection: 'column',
 		borderRadius: 'lg',
 		backgroundColor: 'neutral.50',
-		padding: '0.5rem',
-		marginBottom: '0.5rem',
+		padding: '0.75rem',
+		marginBottom: '0.75rem',
 		_dark: {
 			backgroundColor: 'neutral.800',
 		},
@@ -52,8 +51,8 @@
 	const heading = css({
 		position: 'sticky',
 		left: '0',
-		padding: '0 1rem 0.25rem 1rem',
-		fontSize: '0.8em',
+		padding: '.75rem 1.1rem',
+		fontSize: '0.8rem',
 		fontWeight: '350',
 		letterSpacing: '0.01em',
 		lineHeight: '1.5',
@@ -66,10 +65,11 @@
 		},
 	});
 
-	const items = flex({
-		direction: 'row',
+	const items = css({
+		display: 'flex',
+		flexDirection: 'row',
 		md: {
-			direction: 'column',
+			flexDirection: 'column',
 		},
 	});
 </script>

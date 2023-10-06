@@ -47,7 +47,7 @@
 		'position': 'sticky',
 		'top': '0',
 		'alignSelf': 'stretch',
-		'padding': '.75rem',
+		'padding': '.75rem 1rem',
 		'alignItems': 'center',
 		'justify': 'center',
 		'_before': {
@@ -498,7 +498,7 @@
 
 <!-- svelte-ignore a11y-missing-attribute -->
 {#if mounted && $setout && $breakpoint}
-	<header class={header} data-over={scrollY > 10 || undefined}>
+	<header id="navbar" class={header} data-over={scrollY > 10 || undefined}>
 		<div class={inner}>
 			<!-- General nav -->
 			<nav class={group({ group: 'site' })} in:flyin|global={0}>

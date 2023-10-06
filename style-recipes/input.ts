@@ -4,9 +4,9 @@ export const inputRecipe = defineRecipe({
 	className: 'input',
 	base: {
 		'--inset': '3px',
-		'paddingInline': 'padding.inline.base',
-		'height': 'block.base',
-		'minWidth': 'block.base',
+		'paddingInline': 'blockpad',
+		'height': 'block',
+		'minWidth': 'block',
 		'borderRadius': 'base',
 		'textOverflow': 'e',
 		'transitionProperty': 'all',
