@@ -1,7 +1,5 @@
 <script lang="ts" context="module">
 	import { defineContext } from '$lib/utils/context';
-	import { css } from 'styled-system/css';
-	import { flex } from 'styled-system/patterns';
 	import { expoInOut, expoOut } from 'svelte/easing';
 	import { crossfade, scale } from 'svelte/transition';
 
@@ -33,45 +31,6 @@
 	const [getDashboardNav, setDashboardNav] = defineContext<{ pushIndex: () => number }>({});
 
 	export { getDashboardNav };
-
-	const nav = css({
-		display: 'flex',
-		flexDirection: 'column',
-		borderRadius: 'lg',
-		backgroundColor: 'neutral.50',
-		padding: '0.5rem',
-		marginBottom: '0.5rem',
-		_dark: {
-			backgroundColor: 'neutral.800',
-		},
-		lg: {
-			marginBottom: '0',
-		},
-	});
-
-	const heading = css({
-		position: 'sticky',
-		left: '0',
-		padding: '0 1rem 0.25rem 1rem',
-		fontSize: '0.8em',
-		fontWeight: '350',
-		letterSpacing: '0.01em',
-		lineHeight: '1.5',
-		color: 'neutral.500',
-		_dark: {
-			color: 'neutral.600',
-		},
-		md: {
-			position: 'relative',
-		},
-	});
-
-	const items = flex({
-		direction: 'row',
-		md: {
-			direction: 'column',
-		},
-	});
 </script>
 
 <script lang="ts">
@@ -87,16 +46,57 @@
 	});
 </script>
 
-<section
-	in:scale={{ start: 0.95, duration: 750, easing: expoOut, delay: navIndex * 150 }}
-	class={nav}
->
+<section in:scale={{ start: 0.95, duration: 750, easing: expoOut, delay: navIndex * 150 }}>
 	{#if $$slots.heading}
-		<span class={heading}>
+		<span class="heading">
 			<slot name="heading" />
 		</span>
 	{/if}
-	<div class={items}>
+	<div class="items">
 		<slot />
 	</div>
 </section>
+
+<style lang="scss">
+	section {
+		display: flex;
+		flex-direction: column;
+		border-radius: var(--radius-lg);
+		// border: var(--base-border-size) solid var(--color-neutral-200);
+		background-color: var(--color-neutral-50);
+		padding: 0.5rem;
+		margin-bottom: 0.5rem;
+		@include dark {
+			background-color: var(--color-neutral-800);
+		}
+
+		@include lg {
+			margin-bottom: 0;
+		}
+	}
+
+	.heading {
+		position: sticky;
+		left: 0;
+		padding: 0 1rem 0.25rem 1rem;
+		font-size: 0.8em;
+		font-weight: 350;
+		letter-spacing: 0.01em;
+		line-height: 1.5;
+		color: var(--color-neutral-500);
+		@include dark {
+			color: var(--color-neutral-600);
+		}
+		@include md {
+			position: relative;
+		}
+	}
+
+	.items {
+		display: flex;
+		flex-direction: row;
+		@include md {
+			flex-direction: column;
+		}
+	}
+</style>

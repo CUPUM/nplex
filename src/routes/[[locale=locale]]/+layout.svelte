@@ -3,8 +3,6 @@
 	import Loading from '$lib/components/Loading.svelte';
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
 	import ToastsOutlet from '$lib/components/ToastsOutlet.svelte';
-	import { css } from 'styled-system/css';
-	import { flex } from 'styled-system/patterns';
 	import { onMount } from 'svelte';
 	import Contexts from './Contexts.svelte';
 	import Navbar from './Navbar.svelte';
@@ -18,23 +16,34 @@
 
 <Contexts>
 	{#if loading}
-		<div
-			class={css({
-				zIndex: '999',
-				position: 'fixed',
-				inset: '0',
-				pointerEvents: 'none',
-				userSelect: 'none',
-			})}
-		>
+		<div class="loading">
 			<Loading />
 		</div>
 	{/if}
 	<LoadingProgress />
 	<Navbar />
-	<main class={flex({ direction: 'column', flex: '1', flexWrap: 'nowrap' })}>
+	<main>
 		<slot />
 	</main>
 	<Footer />
 	<ToastsOutlet />
 </Contexts>
+
+<style lang="scss">
+	main {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		flex-wrap: nowrap;
+		padding: 0;
+		margin: 0;
+	}
+
+	.loading {
+		z-index: 999;
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		user-select: none;
+	}
+</style>

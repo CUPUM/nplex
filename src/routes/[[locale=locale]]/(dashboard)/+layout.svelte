@@ -1,61 +1,67 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { css } from 'styled-system/css';
-	import { flex } from 'styled-system/patterns';
-	import { token } from 'styled-system/tokens';
 	import { fade } from 'svelte/transition';
 </script>
 
-<article
-	class={css({
-		'--w': 'sizes.dashboard.navbar',
-		'display': 'grid',
-		'gridTemplateColumns': `fit-content(var(--w)) 1fr`,
-		'lg': {
-			paddingInline: '1rem',
-		},
-	})}
->
+<article>
 	{#if $page.data.dashboard?.header}
-		<header class={css({ gridColumn: '1 / -1' })}>Header</header>
+		<header>Header</header>
 	{/if}
 	{#if $page.data.dashboard?.breadcrumbs}
-		<div class={css({ gridColumn: '1 / -1' })}>Breadcrumbs</div>
+		<div class="dashboard-breadcrumbs">Breadcrumbs</div>
 	{/if}
 	{#if $page.data.dashboard?.sidebar}
-		<div
-			class={flex({
-				gridColumn: '1',
-				direction: 'row',
-				alignSelf: 'stretch',
-				overflowX: 'auto',
-				top: token('sizes.navbar'),
-				position: 'sticky',
-				gap: '0.5rem',
-				md: {
-					width: 'dashboard.navbar',
-					marginRight: '0.5rem',
-					alignSelf: 'flex-start',
-					overflowX: 'hidden',
-					overflowY: 'auto',
-					flexDirection: 'column',
-				},
-			})}
-		>
+		<div class="dashboard-sidebar">
 			<svelte:component this={$page.data.dashboard.sidebar} />
 		</div>
 	{/if}
-	<section
-		in:fade
-		class={css({
-			gridColumn: '2 / 3',
-			borderRadius: 'lg',
-			backgroundColor: 'neutral.50',
-			_dark: {
-				backgroundColor: 'neutral.800',
-			},
-		})}
-	>
+	<section in:fade>
 		<slot />
 	</section>
 </article>
+
+<style lang="scss">
+	article {
+		display: grid;
+		grid-template-columns: fit-content(var(--dashboard-sidebar-width)) 1fr;
+		@include lg {
+			padding-inline: 1rem;
+		}
+	}
+
+	header {
+		grid-column: 1 / -1;
+	}
+
+	.dashboard-breadcrumbs {
+		grid-column: 1 / -1;
+	}
+
+	.dashboard-sidebar {
+		width: var(--dashboard-sidebar-width);
+		display: flex;
+		flex-direction: row;
+		align-self: stretch;
+		overflow-x: auto;
+		top: var(--navbar-height);
+		position: sticky;
+		gap: 0.5rem;
+		@include md {
+			margin-right: 0.5rem;
+			align-self: flex-start;
+			overflow-x: hidden;
+			overflow-y: auto;
+			width: var(--dashboard-sidebar-width);
+			flex-direction: column;
+		}
+	}
+
+	section {
+		grid-column: 2;
+		border-radius: var(--radius-lg);
+		background-color: var(--color-neutral-50);
+		@include dark {
+			background-color: var(--color-neutral-800);
+		}
+	}
+</style>

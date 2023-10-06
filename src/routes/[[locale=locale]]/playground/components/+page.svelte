@@ -1,8 +1,6 @@
 <script lang="ts">
 	import Loading from '$lib/components/Loading.svelte';
 	import { addErrorToast, addToast } from '$lib/components/ToastsOutlet.svelte';
-	import { vstack } from 'styled-system/patterns';
-	import { button, input, inputGroup } from 'styled-system/recipes';
 
 	let loading = true;
 
@@ -30,22 +28,16 @@
 	let toastTitle = '';
 	let toastDescription = '';
 	let toastBody = '';
-
-	const outlined = button({ type: 'outlined' });
 </script>
 
 <section>
 	<button
-		class={outlined.root}
+		class="button"
 		on:pointerdown={() => {
 			loading = !loading;
 		}}
-		data-loading={loading ?? undefined}
 	>
 		Show loading? ({loading})
-		{#if loading}
-			<Loading class={outlined.loading} />
-		{/if}
 	</button>
 	{#if loading}
 		<div>
@@ -53,13 +45,24 @@
 		</div>
 	{/if}
 </section>
-<section class={vstack()}>
-	<input type="text" class={input()} />
-	<textarea placeholder="textarea" class={input()} />
-	<fieldset class={inputGroup().root}>
-		<input type="text" class={inputGroup().input} />
-		<button class={button().root}>Hello</button>
-	</fieldset>
+<section>
+	<label class="labeled-input">
+		<span class="label">Toast title</span>
+		<input type="text" class="input" bind:value={toastTitle} />
+	</label>
+	<label class="labeled-input">
+		<span class="label">Toast description</span>
+		<input type="text" class="input" bind:value={toastDescription} />
+	</label>
+	<label class="labeled-input">
+		<span class="label">Toast content</span>
+		<input type="text" class="input" bind:value={toastBody} />
+	</label>
+	<label>
+		Reset on submit
+		<input type="checkbox" bind:checked={resetToast} />
+	</label>
+	<button class="button" on:click={sendToast}>Send toast</button>
 </section>
 
 <style lang="scss">
@@ -69,6 +72,10 @@
 		font-size: var(--size-sm);
 	}
 
+	button {
+		padding: 1rem;
+		background-color: rgba(0, 0, 0, 0.2);
+	}
 	div {
 		width: 100px;
 		height: 100px;

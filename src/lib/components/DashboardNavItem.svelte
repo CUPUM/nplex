@@ -1,40 +1,5 @@
-<script lang="ts" context="module">
-	const button = css({
-		position: 'relative',
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		zIndex: '1',
-		fontWeight: '450',
-		borderRadius: 'sm',
-		padding: '1em 1.25em',
-		fontSize: 'md',
-		whiteSpace: 'nowrap',
-		lineHeight: '1.5',
-		transitionProperty: 'all',
-		transitionDuration: 'fast',
-		transitionTimingFunction: 'ease-out',
-		md: {
-			whiteSpace: 'wrap',
-			fontWeight: '400',
-			padding: '0.8em 1.25em',
-			fontSize: 'sm',
-		},
-		_hoverOrFocusVisible: {
-			backgroundColor: 'neutral.500/.1',
-			color: 'neutral.950',
-			_dark: {
-				color: 'neutral.50',
-			},
-		},
-	});
-
-	const needle = css({});
-</script>
-
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
-	import { css } from 'styled-system/css';
 	import { expoOut } from 'svelte/easing';
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 	import { fly } from 'svelte/transition';
