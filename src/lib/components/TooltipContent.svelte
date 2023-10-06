@@ -6,7 +6,6 @@
 		type TooltipOptions,
 		type TooltipStates,
 	} from '@melt-ui/svelte';
-	import { css } from 'styled-system/css';
 	import { cubicOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import Tip from './Tip.svelte';
@@ -18,22 +17,7 @@
 
 {#if $open}
 	<div
-		class={css({
-			'--tip-color': 'colors.neutral.100/.95',
-			'fontWeight': '400',
-			'fontSize': 'x-small',
-			'letterSpacing': '0.02em',
-			'padding': '0.75rem',
-			'borderRadius': 'sm',
-			'boxShadow': 'lg',
-			'color': 'neutral.200',
-			'backgroundColor': 'var(--tip-color)',
-			'backdropFilter': 'blur(8px)',
-			'_dark': {
-				'--tip-color': 'colors.neutral.950/.95',
-				'color': 'neutral.300',
-			},
-		})}
+		class="content"
 		use:melt={$content}
 		style:transform-origin={getTransformOrigin($positioning)}
 		in:fly={{ ...getDistances($positioning, -4), easing: cubicOut, duration: 100 }}
@@ -43,3 +27,23 @@
 		<slot />
 	</div>
 {/if}
+
+<style lang="scss">
+	.content {
+		--tip-color: color-mix(in srgb, var(--color-neutral-800) 95%, transparent);
+		font-weight: 400;
+		font-size: var(--size-xs);
+		letter-spacing: 0.02em;
+		padding: 0.75rem;
+		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-lg);
+		color: var(--color-neutral-200);
+		background-color: var(--tip-color);
+		backdrop-filter: blur(8px);
+
+		@include dark {
+			--tip-color: color-mix(in srgb, var(--color-neutral-950) 95%, transparent);
+			color: var(--color-neutral-300);
+		}
+	}
+</style>

@@ -1,32 +1,35 @@
 <script lang="ts">
-	import { css } from 'styled-system/css';
 </script>
 
-<menu
-	class={css({
-		'position': 'sticky',
-		'bottom': '2rem',
-		'display': 'flex',
-		'flexDirection': 'row',
-		'alignSelf': 'center',
-		'padding': 'inset.base',
-		'borderRadius': 'calc({radii.base} + {spacing.inset.base})',
-		'marginInline': '2rem',
-		'alignItems': 'flex-start',
-		'justifyContent': 'flex-start',
-		'gap': '0.5rem',
-		'fontSize': 'small',
-		'backgroundColor': 'neutral.50/.5',
-		'backdropFilter': 'blur(8px)',
-		'_dark': {
-			backgroundColor: 'neutral.800/.5',
-		},
-		'@container (width > 1000px)': {
-			justifyContent: 'center',
-			marginLeft: '0',
-			marginRight: 'dashboard.navbar',
-		},
-	})}
->
+<menu>
 	<slot />
 </menu>
+
+<style lang="scss">
+	menu {
+		position: sticky;
+		bottom: 2rem;
+		display: flex;
+		flex-direction: row;
+		align-self: center;
+		padding: var(--base-inset);
+		border-radius: calc(var(--base-radius) + var(--base-inset));
+		margin-inline: 2rem;
+		align-items: flex-start;
+		justify-content: flex-start;
+		gap: 0.5rem;
+		font-size: var(--size-sm);
+		background-color: color-mix(in srgb, var(--color-neutral-50) 50%, transparent);
+		backdrop-filter: blur(8px);
+
+		@include dark {
+			background-color: color-mix(in srgb, var(--color-neutral-800) 50%, transparent);
+		}
+
+		@container (width > 1000px) {
+			justify-content: center;
+			margin-inline: 0;
+			margin-right: var(--dashboard-sidebar-width);
+		}
+	}
+</style>

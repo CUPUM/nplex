@@ -8,9 +8,10 @@
 
 <article
 	class={css({
-		display: 'grid',
-		gridTemplateColumns: `fit-content(token(sizes.dashboard.navbar)) 1fr`,
-		lg: {
+		'--w': 'sizes.dashboard.navbar',
+		'display': 'grid',
+		'gridTemplateColumns': `fit-content(var(--w)) 1fr`,
+		'lg': {
 			paddingInline: '1rem',
 		},
 	})}
@@ -25,7 +26,7 @@
 		<div
 			class={flex({
 				gridColumn: '1',
-				flexDirection: 'row',
+				direction: 'row',
 				alignSelf: 'stretch',
 				overflowX: 'auto',
 				top: token('sizes.navbar'),

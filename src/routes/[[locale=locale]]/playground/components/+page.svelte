@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { ripple } from '$lib/actions/ripple';
+	import Loading from '$lib/components/Loading.svelte';
 	import { addErrorToast, addToast } from '$lib/components/ToastsOutlet.svelte';
-	import { createTabs, melt } from '@melt-ui/svelte';
 	import { vstack } from 'styled-system/patterns';
-	import { button, switchGroup } from 'styled-system/recipes';
-	import { crossfade } from 'svelte/transition';
+	import { button, input, inputGroup } from 'styled-system/recipes';
 
 	let loading = true;
 
@@ -34,23 +32,9 @@
 	let toastBody = '';
 
 	const outlined = button({ type: 'outlined' });
-
-	const options = ['a', 'b', 'une autre option'];
-
-	const [send, receive] = crossfade({});
-
-	const {
-		elements: { trigger, list },
-		states: { value },
-	} = createTabs({ defaultValue: options[0] });
-
-	const {
-		elements: { trigger: trigger2, list: list2 },
-		states: { value: value2 },
-	} = createTabs({ defaultValue: options[0] });
 </script>
 
-<!-- <section>
+<section>
 	<button
 		class={outlined.root}
 		on:pointerdown={() => {
@@ -76,31 +60,19 @@
 		<input type="text" class={inputGroup().input} />
 		<button class={button().root}>Hello</button>
 	</fieldset>
-</section> -->
-
-<section class={vstack({ gap: '1rem', padding: '2rem' })}>
-	<menu class={switchGroup().root} use:melt={$list}>
-		{#each options as o}
-			<button class={switchGroup().trigger} use:melt={$trigger(o)}>
-				Option: {o}
-				{#if o === $value}
-					<div
-						class={switchGroup().thumb}
-						in:receive={{ key: 'thumb' }}
-						out:send={{ key: 'thumb' }}
-					></div>
-				{/if}
-			</button>
-		{/each}
-	</menu>
-	<menu class={switchGroup().root} use:melt={$list2}>
-		{#each options as o}
-			<button class={switchGroup().trigger} use:melt={$trigger2(o)} use:ripple>
-				Option: {o}
-				{#if o === $value2}
-					<div class={switchGroup().thumb} in:receive={{ key: '2' }} out:send={{ key: '2' }}></div>
-				{/if}
-			</button>
-		{/each}
-	</menu>
 </section>
+
+<style lang="scss">
+	section {
+		margin-top: 10rem;
+		align-self: center;
+		font-size: var(--size-sm);
+	}
+
+	div {
+		width: 100px;
+		height: 100px;
+		position: relative;
+		font-size: var(--size-2xl);
+	}
+</style>

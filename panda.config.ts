@@ -3,7 +3,6 @@ import { BREAKPOINTS } from './src/lib/breakpoints/constants';
 import { SETOUTS } from './src/lib/setout/constants';
 import { buttonRecipe, segmentedButtonRecipe } from './style-recipes/button';
 import { inputGroupRecipe, inputRecipe } from './style-recipes/input';
-import { switchGroupRecipe } from './style-recipes/switch-group';
 
 function transparentize<T>(
 	value: T,
@@ -76,13 +75,9 @@ export default defineConfig({
 		extend: {
 			light: '[data-mode=light]&, [data-mode=light] &',
 			dark: '[data-mode=dark]&, [data-mode=dark] &',
-			compact: '&:is(.compact, [data-compact]), .compact &, [data-compact] &',
-			active: '&:is(:active, [data-active], [data-state=active])',
 			hoverOrFocusVisible: '&:is(:hover, [data-hover], :focus-visible, [data-focus-visible])',
 			current: '&:is([aria-current=page], [aria-current=step], [data-current])',
 			notCurrent: '&:not([aria-current=page], [aria-current=step], [data-current])',
-			hidden: '&:is([hidden], [data-hidden])',
-			notHidden: '&:not([hidden], [data-hidden])',
 			groupOpen: '.group:is([open], [data-open], [data-state="open"]) &',
 			...Object.fromEntries(
 				Object.keys(SETOUTS).map((s) => [
@@ -129,17 +124,24 @@ export default defineConfig({
 							value: '175px',
 						},
 					},
+					block: {
+						base: {
+							description:
+								'Base block size (relative) for inputs & various elements.Use of "em" allows for sizing relative to element font-size.',
+							value: '3.5em',
+						},
+					},
 					border: {
 						base: { value: '1.5px' },
 					},
 				},
 				spacing: {
-					navbar: {
-						value: '{sizes.navbar}',
+					inset: {
+						base: { value: '6px' },
 					},
-					dashboard: {
-						navbar: {
-							value: '{sizes.dashboard.navbar}',
+					padding: {
+						inline: {
+							base: { value: '1.25em' },
 						},
 					},
 				},
@@ -220,6 +222,9 @@ export default defineConfig({
 					dim: { value: '0.75' },
 					dimmer: { value: '0.4' },
 				},
+				// assets: {
+				// 	polkadot: {value: ''}
+				// },
 				borders: {
 					base: {
 						value:
@@ -241,30 +246,6 @@ export default defineConfig({
 				},
 			},
 			semanticTokens: {
-				sizes: {
-					block: {
-						description:
-							'Base block size (relative) for inputs & various elements.Use of "em" allows for sizing relative to element font-size.',
-						value: {
-							base: '3.5em',
-							_compact: '2.75em',
-						},
-					},
-				},
-				spacing: {
-					inset: {
-						value: {
-							base: '6px',
-							_compact: '1px',
-						},
-					},
-					blockpad: {
-						value: {
-							base: '1.25em',
-							_compact: '1.1em',
-						},
-					},
-				},
 				colors: {
 					bg: {
 						value: {
@@ -320,7 +301,6 @@ export default defineConfig({
 			button: buttonRecipe,
 			segmentedButton: segmentedButtonRecipe,
 			inputGroup: inputGroupRecipe,
-			switchGroup: switchGroupRecipe,
 		},
 		recipes: {
 			input: inputRecipe,

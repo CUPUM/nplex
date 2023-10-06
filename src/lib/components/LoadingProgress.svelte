@@ -46,7 +46,6 @@
 
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
-	import { css } from 'styled-system/css';
 	import { circOut, cubicOut } from 'svelte/easing';
 	import { tweened, type Tweened } from 'svelte/motion';
 	import { get } from 'svelte/store';
@@ -67,31 +66,41 @@
 </script>
 
 {#if value}
-	<progress
-		{value}
-		max={100}
-		out:slide={{ axis: 'x', duration: 350, easing: circOut }}
-		class={css({
-			'all': 'unset',
-			'--progress-color': 'colors.primary.500',
-			'--progress-size': '3px',
-			'--inset': '2px',
-			'WebkitAppearance': 'none',
-			'position': 'fixed',
-			'top': 'var(--inset)',
-			'right': 'var(--inset)',
-			'width': 'calc(100% - 2 * var(--inset))',
-			'height': 'var(--progress-size)',
-			'accentColor': 'var(--progress-color)',
-			'opacity': '0.75',
-			'&::-webkit-progress-bar': {
-				borderRadius: 'var(--progress-size)',
-				backgroundColor: 'transparent',
-			},
-			'&::-webkit-progress-value, &::moz-progress-bar': {
-				borderRadius: 'var(--progress-size)',
-				backgroundColor: 'var(--progress-color)',
-			},
-		})}
-	/>
+	<progress {value} max={100} out:slide={{ axis: 'x', duration: 350, easing: circOut }} />
 {/if}
+
+<style lang="scss">
+	progress {
+		all: unset;
+		--progress-color: var(--color-primary-500);
+		--progress-size: 3px;
+		-webkit-appearance: none;
+		position: fixed;
+		top: 2px;
+		right: 2px;
+		width: calc(100% - 4px);
+		height: var(--progress-size);
+		border-radius: var(--progress-size);
+		accent-color: var(--progress-color);
+		opacity: 0.75;
+
+		@include dark {
+			accent-color: var(--progress-color);
+		}
+	}
+
+	::-webkit-progress-bar {
+		border-radius: var(--progress-size);
+		background-color: transparent;
+	}
+
+	::-webkit-progress-value {
+		border-radius: var(--progress-size);
+		background-color: var(--progress-color);
+	}
+
+	::-moz-progress-bar {
+		border-radius: var(--progress-size);
+		background-color: var(--progress-color);
+	}
+</style>

@@ -21,5 +21,3 @@ export const SETOUTS = {
 export type Setout = ValueOf<typeof SETOUTS>;
 
 export const SETOUT_DEFAULT = SETOUTS.NORMAL;
-
-export const SETOUT_ATTRIBUTE = 'data-setout';

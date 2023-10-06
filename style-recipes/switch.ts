@@ -1,7 +1,7 @@
 import { defineSlotRecipe } from '@pandacss/dev';
 
-export const toggleRecipe = defineSlotRecipe({
-	slots: ['root', 'trigger', 'thumb', 'label'],
+export const switchRecipe = defineSlotRecipe({
+	slots: ['root', 'trigger', 'thumb'],
 	className: 'switch',
 	base: {},
 	variants: {},

@@ -32,7 +32,7 @@
 	{/if}
 	<LoadingProgress />
 	<Navbar />
-	<main class={flex({ flexDirection: 'column', flex: '1', flexWrap: 'nowrap' })}>
+	<main class={flex({ direction: 'column', flex: '1', flexWrap: 'nowrap' })}>
 		<slot />
 	</main>
 	<Footer />
