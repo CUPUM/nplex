@@ -18,7 +18,6 @@ backend is currently being ported to Neondb for greater schema agnosticity.
 - Lucia (auth)
 - Melt-UI (headless ui components)
 - SvelteKit Superforms (form handling)
-- Panda CSS (styling)
 
 ## Hosting
 

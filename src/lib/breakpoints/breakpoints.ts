@@ -1,24 +1,13 @@
 import { browser } from '$app/environment';
 import { readable } from 'svelte/store';
-
-/**
- * Min-width pixel values used for media queries. Keep in sync with breakpoints defined in sibling
- * scss.
- */
-export const BREAKPOINTS = {
-	sm: 480,
-	md: 800,
-	lg: 1024,
-} as const;
-
-export type Breakpoint = keyof typeof BREAKPOINTS;
-
-const BREAKPOINTS_ARR = Object.keys(BREAKPOINTS) as Breakpoint[];
+import { BREAKPOINTS, BREAKPOINTS_ARR, type Breakpoint } from './constants';
 
 export function createBreakpointQuery(breakpoint: Breakpoint) {
-	return browser
-		? window.matchMedia(`screen and (min-width: ${BREAKPOINTS[breakpoint]}px)`)
-		: undefined;
+	// const width = `${BREAKPOINTS[breakpoint]}px`;
+
+	// Using a relative breakpoint to map 1:1 with pandacss's handling of breakpoints.
+	const width = `${BREAKPOINTS[breakpoint] / 16}em`;
+	return browser ? window.matchMedia(`screen and (min-width: ${width}`) : undefined;
 }
 
 // const init = BREAKPOINTS_ARR.reduce(

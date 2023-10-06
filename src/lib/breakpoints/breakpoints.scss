@@ -1,17 +1,24 @@
 @use 'sass:map';
 
+$root-size: 16;
+
 $breakpoints: (
-	sm: 480px,
-	md: 800px,
-	lg: 1024px,
+	sm: 480,
+	md: 768,
+	lg: 1024,
+	xl: 1280,
 );
+
+@function rel($px) {
+	@return $px / $root-size * 1em;
+}
 
 /*
 Small-first (mobile-first) breakpoints media queries.
 */
 @mixin breakpoint($breakpoint) {
 	$px: map.get($breakpoints, $breakpoint);
-	@media screen and (min-width: $px) {
+	@media screen and (min-width: rel($px)) {
 		@content;
 	}
 }
@@ -29,6 +36,12 @@ Small-first (mobile-first) breakpoints media queries.
 }
 
 @mixin lg {
+	@include breakpoint(lg) {
+		@content;
+	}
+}
+
+@mixin xl {
 	@include breakpoint(lg) {
 		@content;
 	}

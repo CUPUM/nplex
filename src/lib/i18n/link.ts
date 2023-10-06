@@ -11,11 +11,13 @@ import { delocalizeCurrent, localize } from './href';
 export const link = derived(page, ($page) => {
 	return <H extends string>(href: H, locale: Locale | false = $page.data.locale) => {
 		const _href = locale ? localize(href, locale) : href;
-		const current = $page.url.pathname === _href || undefined;
+		const currentPage = $page.url.pathname === _href || undefined;
+		const currentHash = _href.indexOf('#') > -1 && currentPage;
 		return {
 			'href': _href,
 			'hreflang': locale || undefined,
-			'data-current': current,
+			'data-current': currentHash ? 'step' : currentPage ? 'page' : undefined,
+			'aria-current': currentHash ? 'step' : currentPage ? 'page' : undefined,
 			// Add more attributes if relevant.
 		} satisfies Partial<HTMLAnchorAttributes>;
 	};

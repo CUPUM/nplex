@@ -7,6 +7,7 @@ import type { eventLocalize } from '$lib/i18n/localize.server';
 import type { eventI18nRedirect } from '$lib/i18n/redirect.server';
 import type { eventCreateTranslations } from '$lib/i18n/translate';
 import type { Mode } from '$lib/modes/constants';
+import type { createSetEventSetout } from '$lib/setout/event';
 import type { InferSelectModel } from 'drizzle-orm';
 import type { AuthRequest, User } from 'lucia';
 import type { ComponentType } from 'svelte';
@@ -38,7 +39,14 @@ declare global {
 			 * Private theme_mode value for handle hook.
 			 */
 			mode: Mode;
-
+			/**
+			 * Layout types that can then be used for conditional styling such as navbar's max width.
+			 */
+			setout: Setout;
+			/**
+			 * Set a new setout and return the value to pass it down through event data.
+			 */
+			setSetout: ReturnType<typeof createSetEventSetout>;
 			/**
 			 * Client's language as determined by the i18n middleware.
 			 */
