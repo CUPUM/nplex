@@ -1,0 +1,318 @@
+/*
+Primitive button style component.
+*/
+.button {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 0.75em;
+	font-weight: 450;
+	padding: 0 var(--base-padding);
+	height: var(--base-size);
+	min-width: var(--base-size);
+	border-radius: var(--base-radius);
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	transition: all var(--duration-medium) ease-out;
+	&:hover,
+	&:focus-visible {
+		transition:
+			all 0s,
+			outline var(--duration-fast) ease-out;
+		.button-icon {
+			opacity: 1;
+			transform: scale(0.95);
+		}
+	}
+	&:focus-visible {
+		outline: var(--base-focus-ring);
+	}
+	&:disabled,
+	&[data-disabled] {
+		cursor: default;
+		opacity: 0.5;
+	}
+	&:active,
+	&[data-active] {
+		animation: var(--animation-press);
+		.button-icon {
+			transform: scale(0.9);
+		}
+	}
+	&[data-disabled],
+	&:disabled {
+		transform: scale(0.95);
+		pointer-events: none;
+	}
+	&[data-current] {
+		pointer-events: none;
+		.button-icon {
+			opacity: 1;
+		}
+	}
+	&.center {
+		justify-content: center;
+	}
+	&.right {
+		justify-content: right;
+	}
+	&.square,
+	&.round {
+		justify-content: center;
+		padding-inline: 0;
+		aspect-ratio: 1;
+		.button-icon {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+	&.round {
+		border-radius: var(--radius-full);
+	}
+
+	/*
+	Default variant
+	*/
+	&:not(.outlined, .ghost, .cta, .link) {
+		color: var(--color-neutral-800);
+		background-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+		:--dark & {
+			color: var(--color-neutral-200);
+		}
+		&:hover,
+		&:focus-visible {
+			color: var(--color-neutral-950);
+			background-color: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
+			:--dark & {
+				color: var(--color-neutral-50);
+				background-color: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+			}
+		}
+		&.danger {
+			color: var(--color-error-800);
+			background-color: color-mix(in srgb, var(--color-error-500) 25%, transparent);
+			:--dark & {
+				color: var(--color-error-100);
+				background-color: color-mix(in srgb, var(--color-error-900) 25%, transparent);
+			}
+			&:hover,
+			&:focus-visible {
+				color: var(--color-error-900);
+				background-color: color-mix(in srgb, var(--color-error-600) 25%, transparent);
+				:--dark & {
+					color: var(--color-error-50);
+					background-color: color-mix(in srgb, var(--color-error-800) 25%, transparent);
+				}
+			}
+		}
+	}
+
+	/*
+	Outlined variant
+	*/
+	&.outlined {
+		color: var(--color-neutral-800);
+		border: var(--base-border);
+		:--dark & {
+			color: var(--color-neutral-200);
+		}
+		&:hover,
+		&:focus-visible {
+			color: var(--color-neutral-950);
+			background-color: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
+			border-color: transparent;
+			:--dark & {
+				color: var(--color-neutral-50);
+				background-color: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+				border-color: transparent;
+			}
+		}
+		&.danger {
+			color: var(--color-error-800);
+			border-color: color-mix(in srgb, var(--color-error-500) 25%, transparent);
+			:--dark & {
+				color: var(--color-error-100);
+				border-color: color-mix(in srgb, var(--color-error-900) 25%, transparent);
+			}
+			&:hover,
+			&:focus-visible {
+				color: var(--color-error-900);
+				background-color: color-mix(in srgb, var(--color-error-600) 25%, transparent);
+				border-color: transparent;
+				:--dark & {
+					color: var(--color-error-50);
+					background-color: color-mix(in srgb, var(--color-error-800) 25%, transparent);
+					border-color: transparent;
+				}
+			}
+		}
+	}
+
+	/*
+	Ghost variant
+	*/
+	&.ghost {
+		color: var(--color-neutral-700);
+		:--dark & {
+			color: var(--color-neutral-300);
+		}
+		&[data-current] {
+			color: var(--color-primary-500);
+		}
+		&:hover,
+		&:focus-visible {
+			color: var(--color-neutral-950);
+			background-color: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
+			:--dark & {
+				color: var(--color-neutral-50);
+			}
+			&.danger {
+				color: var(--color-error-800);
+				background-color: color-mix(in srgb, var(--color-error-400) 10%, transparent);
+				:--dark & {
+					color: var(--color-error-200);
+				}
+			}
+		}
+		&.danger {
+			color: var(--color-error-800);
+			:--dark & {
+				color: var(--color-error-100);
+			}
+			&:hover,
+			&:focus-visible {
+				color: var(--color-error-900);
+				background-color: color-mix(in srgb, var(--color-error-600) 25%, transparent);
+				:--dark & {
+					color: var(--color-error-50);
+					background-color: color-mix(in srgb, var(--color-error-800) 25%, transparent);
+				}
+			}
+		}
+	}
+
+	/*
+	Link variant (similar to Ghost variant, but with added underline)
+	*/
+	&.link {
+		padding: 0 calc(var(--base-padding) * 0.75);
+		font-weight: 500;
+		color: var(--color-neutral-800);
+		text-decoration: underline;
+		text-underline-offset: 0.25em;
+		text-decoration-thickness: 0.125em;
+		text-decoration-color: transparent;
+		text-decoration-skip-ink: none;
+		text-decoration-line: underline;
+		transition: all var(--duration-medium) var(--ease-out-expo);
+		:--dark & {
+			color: var(--color-neutral-200);
+		}
+		.button-icon {
+			stroke-width: 2.5;
+		}
+		&:hover,
+		&:focus {
+			color: var(--color-primary-600);
+			text-decoration-color: currentColor;
+			text-underline-offset: 0.5em;
+			:--dark & {
+				color: var(--color-primary-400);
+			}
+		}
+		&.danger {
+			color: var(--color-error-800);
+			:--dark & {
+				color: var(--color-error-100);
+			}
+			&:hover,
+			&:focus-visible {
+				color: var(--color-error-500);
+				:--dark & {
+					color: var(--color-error-500);
+				}
+			}
+		}
+	}
+
+	/*
+	Call to action variant
+	*/
+	&.cta {
+		color: var(--color-neutral-100);
+		background-color: var(--color-primary-950);
+		:--dark & {
+			color: var(--color-neutral-800);
+			background-color: var(--color-primary-500);
+		}
+		&:hover,
+		&:focus-visible {
+			color: var(--color-primary-50);
+			background-color: var(--color-primary-800);
+			:--dark & {
+				color: var(--color-primary-900);
+				background-color: var(--color-primary-400);
+			}
+		}
+		&[data-loading] {
+			color: var(--color-primary-700);
+			background-color: var(--color-primary-900);
+			:--dark & {
+				color: var(--color-primary-800);
+				background-color: var(--color-primary-600);
+			}
+			.loading {
+				color: var(--color-neutral-50);
+				:--dark & {
+					color: var(--color-neutral-950);
+				}
+			}
+		}
+		&.danger {
+			color: var(--color-neutral-50);
+			background-color: var(--color-error-900);
+			:--dark & {
+				color: var(--color-error-950);
+				background-color: var(--color-error-600);
+			}
+			&:hover,
+			&:focus-visible {
+				color: var(--color-error-50);
+				background-color: var(--color-error-800);
+				:--dark & {
+					color: var(--color-error-900);
+					background-color: var(--color-error-400);
+				}
+			}
+		}
+	}
+
+	/*
+	Universally handle icons nested inside buttons.
+	(Important: keep nested inside button class.)
+	*/
+	.button-icon {
+		width: 1.25em;
+		stroke-width: 2;
+		stroke-linecap: square;
+		stroke-linejoin: round;
+		opacity: 0.5;
+		transform: scale(1);
+		flex: none;
+		transition:
+			opacity var(--duration-medium) ease-out,
+			transform var(--duration-fast) ease-out;
+		.square &,
+		.round & {
+			opacity: 1;
+		}
+	}
+}
+
+/*
+Wrap multiple buttons into a single visual unit.
+*/
+.segmented-button {
+}

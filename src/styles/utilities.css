@@ -1,0 +1,11 @@
+@custom-media --sm (min-width: 30em);
+@custom-media --md (min-width: 48em);
+@custom-media --lg (min-width: 64em);
+@custom-media --xl (min-width: 80em);
+
+@custom-selector :--dark [data-mode='dark'];
+@custom-selector :--light [data-mode='light'];
+
+@custom-selector :--setout-normal [data-setout='normal'];
+@custom-selector :--setout-full-width [data-setout='full-width'];
+@custom-selector :--setout-full-screen [data-setout='full-screen'];

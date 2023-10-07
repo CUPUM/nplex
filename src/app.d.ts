@@ -35,55 +35,31 @@ declare global {
 		}
 		interface Locals {
 			auth: AuthRequest;
-			/**
-			 * Private theme_mode value for handle hook.
-			 */
+			/** Private theme_mode value for handle hook. */
 			mode: Mode;
-			/**
-			 * Layout types that can then be used for conditional styling such as navbar's max width.
-			 */
-			setout: Setout;
-			/**
-			 * Set a new setout and return the value to pass it down through event data.
-			 */
+			/** Layout types that can then be used for conditional styling such as navbar's max width. */
+			setout?: Setout;
+			/** Set a new setout and return the value to pass it down through event data. */
 			setSetout: ReturnType<typeof createSetEventSetout>;
-			/**
-			 * Client's language as determined by the i18n middleware.
-			 */
+			/** Client's language as determined by the i18n middleware. */
 			locale: Locale;
-			/**
-			 * Pre-localized redirect helper.
-			 */
+			/** Pre-localized redirect helper. */
 			redirect: ReturnType<typeof eventI18nRedirect>;
-			/**
-			 * Event-scoped location formatter.
-			 */
+			/** Event-scoped location formatter. */
 			localize: ReturnType<typeof eventLocalize>;
-			/**
-			 * Event-localized translations helper.
-			 */
+			/** Event-localized translations helper. */
 			createTranslations: ReturnType<typeof eventCreateTranslations>;
 		}
 		interface PageData {
-			/**
-			 * Client-forwarded locals.locale.
-			 */
+			/** Client-forwarded locals.locale. */
 			locale: App.Locals['locale'];
-			/**
-			 * Client-forwarded locals.theme.
-			 */
+			/** Client-forwarded locals.theme. */
 			mode: App.Locals['mode'];
-			/**
-			 * Populating the client $page.data store with a minimal user for simple UI checks.
-			 */
+			/** Populating the client $page.data store with a minimal user for simple UI checks. */
 			user?: Omit<User, 'userId'>;
-			/**
-			 * Granular server and client setable layout type.
-			 */
-			setout: Setout;
-			/**
-			 * Dashboard ((private) route group) compositional components and data.
-			 */
+			/** Granular server and client setable layout type. */
+			setout?: Setout;
+			/** Dashboard ((private) route group) compositional components and data. */
 			dashboard?: {
 				header?: ComponentType;
 				sidebar?: ComponentType;

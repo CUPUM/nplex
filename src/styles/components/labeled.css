@@ -1,0 +1,13 @@
+/*
+Labeled groups of element
+*/
+.labeled {
+	.label {
+	}
+
+	&:focus-within,
+	&:hover {
+		.label {
+		}
+	}
+}

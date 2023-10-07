@@ -1,5 +1,6 @@
+import postcssglobal from '@csstools/postcss-global-data';
 import { sveltekit } from '@sveltejs/kit/vite';
-import autoprefixer from 'autoprefixer';
+import presetenv from 'postcss-preset-env';
 import { defineConfig } from 'vite';
 
 const port = process.env.PORT ? +process.env.PORT : 3000;
@@ -10,13 +11,22 @@ export default defineConfig({
 	},
 	plugins: [sveltekit()],
 	css: {
-		preprocessorOptions: {
-			scss: {
-				additionalData: `@use '$lib/breakpoints/breakpoints.scss' as *; @use '$lib/modes/modes.scss' as *;`,
-			},
-		},
 		postcss: {
-			plugins: [autoprefixer()],
+			plugins: [
+				// https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-custom-media#modular-css-processing
+				postcssglobal({ files: ['./src/styles/utilities.css'] }),
+				presetenv({
+					stage: 2,
+					features: {
+						'cascade-layers': true,
+						'nesting-rules': true,
+						'custom-media-queries': true,
+						'media-query-ranges': true,
+						'color-mix': true,
+						'custom-selectors': { preserve: true },
+					},
+				}),
+			],
 		},
 	},
 });
