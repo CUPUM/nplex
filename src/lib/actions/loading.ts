@@ -21,15 +21,16 @@ export function loading(
 
 	return {
 		update(args: typeof options) {
-			if (comp && !args?.state) {
+			const { state, ...props } = args ?? {};
+			if (comp && !state) {
 				// comp.$destroy();
 				outroAndDestroy(comp);
 				comp = undefined;
-			} else if (!comp && args?.state) {
+			} else if (!comp && state) {
 				comp = new Loading({
 					intro: true,
 					target: node,
-					props: args,
+					props,
 				});
 			}
 		},
@@ -102,20 +103,72 @@ export function createLoading({
 	};
 }
 
-// export function createFormActionLoading(submitting: Readable<boolean>) {
-// 	const action = writable<null | URL>(null);
+export function createFormActionLoading() {
+	const input = writable<null | { action: URL; formElement: HTMLFormElement }>(null);
 
-// 	function elementAction(node: HTMLElement, formAction?: string) {
-// 		const state = derived([submitting, action], ([$submitting, $action]) => {
-// 			const attr = node.getAttribute('formaction');
+	const element = derived<
+		typeof input,
+		<A extends string | undefined>(
+			formaction?: A,
+			disable?: boolean
+		) => {
+			'data-loading': true | undefined;
+			'data-disabled': true | undefined;
+			'disabled': true | undefined;
+			'formaction': A extends string ? A : undefined;
+		}
+	>(input, ($current) => {
+		return function loadingElement(
+			/**
+			 * The formaction to compare. Undefined means the form's action attribute value should be
+			 * used.
+			 */
+			formaction?: string,
+			/** Should the element be disabled when submitting? */
+			disable = true
+		) {
+			const refaction =
+				formaction ?? ($current && $current.formElement.getAttribute('action')) ?? '';
+			const state = $current?.action.search === refaction;
+			return {
+				'data-loading': state || undefined,
+				'data-disabled': (disable && state) || undefined,
+				'disabled': (disable && state) || undefined,
+				'formaction': formaction ?? undefined,
+			};
+		};
+	});
 
-// 			return attr ?? formAction ??
-// 		})
-// 		const loadingAction = loading(node, { ...props, state: get(_state) });
-// 	}
+	function loadingAction(
+		node: HTMLElement,
+		/**
+		 * The formaction to compare the current aciton to. If none is given, element's formaction
+		 * attribute value will be used.
+		 */
+		formaction?: string
+	) {
+		const loadingAction = loading(node);
+		const unsub = input.subscribe((current) => {
+			const refaction =
+				formaction ??
+				node.getAttribute('formaction') ??
+				current?.formElement.getAttribute('action') ??
+				'';
+			loadingAction.update({ state: current?.action.search === refaction });
+			return {
+				destroy() {
+					unsub();
+					loadingAction.destroy();
+				},
+			} satisfies SvelteActionReturnType;
+		});
+	}
 
-// 	return {
-// 		state: action,
-// 		element
-// 	}
-// }
+	return {
+		state: { input },
+		element,
+		action: {
+			loading: loadingAction,
+		},
+	};
+}

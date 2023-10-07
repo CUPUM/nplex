@@ -330,10 +330,12 @@ export const projectBuildingLevelTypes = pgTable('project_building_level_type', 
 export const projectBuildingLevelTypesTranslations = pgTable(
 	'project_building_level_types_t',
 	{
-		id: text('id').references(() => projectBuildingLevelTypes.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		id: text('id')
+			.references(() => projectBuildingLevelTypes.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
 		locale: locale('locale')
 			.notNull()
 			.references(() => locales.locale, {

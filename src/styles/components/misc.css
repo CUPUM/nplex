@@ -1,13 +1,32 @@
-.dim {
-	opacity: 0.7;
-}
-
 textarea.resize {
 	resize: vertical;
 }
 
+.dim {
+	opacity: 0.7;
+}
+
 .dimmer {
 	opacity: 0.4;
+}
+
+/*
+Update base tokens to make things more compact where needed
+*/
+.compact {
+	--base-size: 3em;
+	--base-padding: 1em;
+	--base-radius: var(--radius-sm);
+	--base-inset: 2px;
+}
+
+/*
+Opposite of compact, makes base sizes larger for when attention is needed.
+*/
+.big {
+	--base-size: 5em;
+	--base-padding: 2em;
+	--base-inset: 0.25em;
 }
 
 .left {

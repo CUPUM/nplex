@@ -33,6 +33,7 @@
 		z-index: 1;
 		:global(:--dark) & {
 			background-color: var(--color-neutral-800);
+			box-shadow: var(--shadow-xl), var(--shadow-md);
 		}
 	}
 </style>

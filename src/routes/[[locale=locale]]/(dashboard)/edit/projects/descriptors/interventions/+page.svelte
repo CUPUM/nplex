@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { createLoading } from '$lib/actions/loading';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
+	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
+	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
 	import { default as TranslationsCard } from '$lib/components/TranslationsCard.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { Check, Pen, Plus } from 'lucide-svelte';
@@ -42,18 +43,10 @@
 	const { form, submitting, constraints, errors, enhance, tainted } = superForm(data.form, {
 		dataType: 'json',
 	});
-
-	const {
-		action: updatingAction,
-		state: updatingState,
-		element: updatingElement,
-	} = createLoading({
-		state: submitting,
-	});
 </script>
 
-<form method="POST" use:enhance>
-	<header>
+<DescriptorsForm action="?/update" {enhance} let:element let:loading>
+	<svelte:fragment slot="header">
 		<h2 class="heading lg">
 			{#each $t.heading as segment, i}
 				{segment}
@@ -67,7 +60,7 @@
 			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis eius enim error sit fugit
 			dolores unde, nulla odio nam ducimus.
 		</p>
-	</header>
+	</svelte:fragment>
 	<ol>
 		{#each $form.interventionCategories as category, i (category.id)}
 			{@const filtered = $form.interventions.filter((pi) => pi.categoryId === category.id)}
@@ -96,13 +89,14 @@
 						</label>
 					</TranslationsCard>
 				</div>
-				<ol class="interventions">
+				<DescriptorsCardsList sublist>
 					{#if filtered.length}
 						{#each filtered as intervention, ii (intervention.id)}
 							<li
 								class="intervention"
 								animate:flip={{ duration: 150 }}
-								transition:scale={{ start: 0.95, duration: 250, easing: expoOut }}
+								in:fly|global={{ y: -6, delay: ii * 25, easing: expoOut, duration: 350 }}
+								out:scale={{ start: 0.95, duration: 250, easing: expoOut }}
 							>
 								<TranslationsCard
 									let:locale
@@ -132,12 +126,12 @@
 					{:else}
 						<p class="sm prose dimmer">{$t.intervention.none}</p>
 					{/if}
-				</ol>
+				</DescriptorsCardsList>
 				<menu class="intervention-menu">
 					<button
 						class="button ghost"
 						type="submit"
-						formaction="?/createIntervention&categoryId={category.id}"
+						{...element(`?/createIntervention&categoryId=${category.id}`)}
 					>
 						<Plus class="button-icon" />
 						Create intervention
@@ -149,9 +143,8 @@
 	<DashboardMenu>
 		<button
 			class="button outlined"
-			formaction="?/createCategory"
-			{...$updatingElement}
-			use:updatingAction
+			{...element('?/createCategory')}
+			use:loading
 			type="submit"
 			disabled
 		>
@@ -159,36 +152,15 @@
 			Create
 		</button>
 		{#if $tainted}
-			<button
-				class="button cta"
-				in:fly={{ y: 6 }}
-				type="submit"
-				{...$updatingElement}
-				use:updatingAction
-				formaction="?/update"
-			>
+			<button class="button cta" in:fly={{ y: 6 }} type="submit" {...element()} use:loading>
 				<Check class="button-icon" />
 				Save
 			</button>
 		{/if}
 	</DashboardMenu>
-</form>
+</DescriptorsForm>
 
 <style lang="postcss">
-	form {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		align-items: flex-start;
-		container-type: inline-size;
-		padding-bottom: 2rem;
-	}
-
-	header {
-		padding: 1rem 2rem;
-		padding-top: 0;
-	}
-
 	ol {
 		position: relative;
 		display: flex;
@@ -210,11 +182,9 @@
 		gap: 1rem;
 		padding: 1rem;
 		border-radius: var(--radius-xl);
-		border: 5px solid var(--color-neutral-100);
-		/* background-color: var(--color-neutral-100); */
+		border: 2px solid var(--color-neutral-100);
 		:global(:--dark) & {
-			border-color: var(--color-neutral-900);
-			/* background-color: var(--color-neutral-700); */
+			border-color: var(--color-neutral-700);
 		}
 	}
 
@@ -222,14 +192,6 @@
 		position: sticky;
 		z-index: 1;
 		top: var(--navbar-height);
-	}
-
-	.interventions {
-		max-width: var(--width-md);
-		margin: 1rem 0.5rem;
-		padding-inline: 1rem;
-		border-left: var(--base-border-size) dashed
-			color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 	}
 
 	.intervention-menu {

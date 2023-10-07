@@ -119,7 +119,7 @@
 	--base-border-size: 1.25px;
 	--base-border: var(--base-border-size) solid
 		color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-	--base-inset: 6px;
+	--base-inset: 5px;
 	--base-focus-ring: 3px solid var(--color-primary-800);
 	--base-bg: var(--color-neutral-100);
 	/* Component-specific */

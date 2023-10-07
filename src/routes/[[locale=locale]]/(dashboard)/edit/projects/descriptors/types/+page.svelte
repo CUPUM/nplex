@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { createLoading } from '$lib/actions/loading';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
+	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
+	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
 	import TranslationsCard from '$lib/components/TranslationsCard.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { Check, Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
-	import { cubicOut, expoOut } from 'svelte/easing';
-	import { crossfade, fly, scale } from 'svelte/transition';
+	import { expoOut } from 'svelte/easing';
+	import { fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
 	import { dt } from '../translations';
 
@@ -23,53 +24,29 @@
 	});
 
 	export let data;
-	let action: string | null = null;
 
 	const { form, enhance, submitting, constraints, tainted } = superForm(data.form, {
 		dataType: 'json',
-		onSubmit(input) {
-			action = input.action.search;
-		},
-		onResult(event) {
-			action = null;
-		},
-	});
-
-	const {
-		action: updatingAction,
-		state: updatingState,
-		element: updatingElement,
-	} = createLoading({
-		state: submitting,
-	});
-
-	const [sendType, receiveType] = crossfade({
-		duration: 150,
-		easing: expoOut,
-		fallback(node, params, intro) {
-			return scale(node, { start: 0.9, duration: 150, easing: cubicOut });
-		},
 	});
 </script>
 
-<form action="?/update" use:enhance method="POST">
-	<header>
+<DescriptorsForm action="?/update" {enhance} let:element let:loading>
+	<svellte:fragment slot="header">
 		<h2 class="heading lg">{$t.heading}</h2>
 		<p class="prose md dimmer">
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur magni quo accusantium
 			perferendis quis, minus iste commodi error nostrum tempora?
 		</p>
-	</header>
-	<ul>
+	</svellte:fragment>
+	<DescriptorsCardsList>
 		{#each $form.types as type, i (type.id)}
 			<li
-				in:receiveType={{ key: type.id }}
-				out:sendType={{ key: type.id }}
+				in:fly|global={{ y: -6, delay: i * 25, easing: expoOut, duration: 350 }}
+				out:scale={{ start: 0.95, duration: 250, easing: expoOut }}
 				animate:flip={{ duration: (l) => 150 + l / 10 }}
 			>
 				<TranslationsCard
 					legend={type.id}
-					minimized={false}
 					legendMinimized={type.translations[$page.data.locale].title}
 					deleteFormaction="?/delete&typeId={type.id}"
 					let:locale
@@ -93,55 +70,20 @@
 				</TranslationsCard>
 			</li>
 		{/each}
-	</ul>
+	</DescriptorsCardsList>
 	<DashboardMenu>
-		<button
-			class="button outlined"
-			{...$updatingElement}
-			use:updatingAction
-			type="submit"
-			formaction="?/create"
-		>
+		<button class="button outlined" {...element('?/create')} use:loading type="submit">
 			<Plus class="button-icon" />
 			{$dt.create($t.entity)}
 		</button>
 		{#if $tainted}
-			<button class="button cta" in:fly={{ y: 6 }} {...$updatingElement} use:updatingAction>
+			<button class="button cta" in:fly={{ y: 6 }} {...element()} use:loading>
 				<Check class="button-icon" />
 				{$dt.save}
 			</button>
 		{/if}
 	</DashboardMenu>
-</form>
+</DescriptorsForm>
 
 <style lang="postcss">
-	form {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		align-items: flex-start;
-		container-type: inline-size;
-		padding-bottom: 2rem;
-	}
-
-	header {
-		padding: 1rem 2rem;
-		padding-top: 0;
-	}
-
-	ul {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		container-type: inline-size;
-		max-width: var(--width-md);
-		padding: 1rem;
-		gap: 1rem;
-		width: 100%;
-
-		@container (width > 1000px) {
-			align-self: center;
-			margin-right: var(--dashboard-navbar);
-		}
-	}
 </style>

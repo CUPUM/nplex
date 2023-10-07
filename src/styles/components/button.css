@@ -192,13 +192,6 @@ Primitive button style component.
 			:--dark & {
 				color: var(--color-neutral-50);
 			}
-			&.danger {
-				color: var(--color-error-800);
-				background-color: color-mix(in srgb, var(--color-error-400) 10%, transparent);
-				:--dark & {
-					color: var(--color-error-200);
-				}
-			}
 		}
 		&[data-loading] {
 			color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
@@ -215,14 +208,14 @@ Primitive button style component.
 		&.danger {
 			color: var(--color-error-800);
 			:--dark & {
-				color: var(--color-error-100);
+				color: var(--color-error-300);
 			}
 			&:hover,
 			&:focus-visible {
 				color: var(--color-error-900);
 				background-color: color-mix(in srgb, var(--color-error-600) 25%, transparent);
 				:--dark & {
-					color: var(--color-error-50);
+					color: var(--color-error-200);
 					background-color: color-mix(in srgb, var(--color-error-800) 25%, transparent);
 				}
 			}
