@@ -39,4 +39,8 @@
 </aside>
 
 <style lang="postcss">
+	aside {
+		border-top: var(--base-border);
+		padding: 1rem;
+	}
 </style>

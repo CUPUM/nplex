@@ -98,17 +98,18 @@
 		display: flex;
 		flex-direction: column;
 		padding: 0.75rem;
-		background-color: var(--color-neutral-50);
+		background-color: var(--color-neutral-100);
 		transition:
 			all 0.1s,
 			background-color 0.25s;
 		border-radius: var(--radius-lg);
 		:global(:--dark) & {
-			background-color: var(--color-neutral-800);
+			background-color: var(--color-neutral-900);
 		}
 		&:hover {
 			:global(:--light) & {
-				box-shadow: var(--shadow-md);
+				background-color: white;
+				/* box-shadow: var(--shadow-md); */
 			}
 			:global(:--dark) & {
 				background-color: var(--color-neutral-950);
@@ -156,7 +157,7 @@
 		height: var(--base-size);
 		font-weight: 500;
 		border-radius: var(--radius-full);
-		background-color: var(--color-neutral-100);
+		background-color: var(--color-neutral-200);
 		transition: all 0.1s;
 		:global(:--dark) & {
 			background-color: var(--color-neutral-700);

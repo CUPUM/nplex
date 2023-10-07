@@ -41,11 +41,11 @@
 		align-self: flex-start;
 		font-size: var(--size-xs);
 		font-weight: 400;
-		opacity: 0.4;
+		opacity: 0.5;
 		padding: 0.5em 0.75em;
 		margin-inline: 0.5rem;
 		margin-bottom: 1em;
 		border-radius: var(--radius-full);
-		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		background-color: color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
 	}
 </style>

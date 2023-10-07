@@ -58,7 +58,6 @@ export const actions = {
 		try {
 			await dbpool.transaction(async (tx) => {
 				const [pt, ptt] = extractTranslations(form.data.types);
-				console.log(pt);
 				await tx
 					.insert(projectTypes)
 					.values(pt)

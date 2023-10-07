@@ -9,28 +9,30 @@
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { crossfade, fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
+	import { dt } from '../translations';
 
 	const t = createTranslations({
 		fr: {
 			heading: 'Types de projet',
-			save: 'Enregistrer',
-			create: 'Ajouter un type de projet',
-			title: 'Titre',
-			description: 'Description',
+			entity: 'type de projet',
 		},
 		en: {
 			heading: 'Project types',
-			save: 'Save',
-			create: 'Create a new project type',
-			title: 'Title',
-			description: 'Description',
+			entity: 'project type',
 		},
 	});
 
 	export let data;
+	let action: string | null = null;
 
 	const { form, enhance, submitting, constraints, tainted } = superForm(data.form, {
 		dataType: 'json',
+		onSubmit(input) {
+			action = input.action.search;
+		},
+		onResult(event) {
+			action = null;
+		},
 	});
 
 	const {
@@ -72,9 +74,9 @@
 					deleteFormaction="?/delete&typeId={type.id}"
 					let:locale
 				>
-					<label class="labeled-input">
-						<span class="input-label">
-							{$t.title}
+					<label class="labeled-group">
+						<span class="label with-hover">
+							{$dt.title}
 						</span>
 						<input
 							class="input"
@@ -82,9 +84,9 @@
 							bind:value={$form.types[i].translations[locale].title}
 						/>
 					</label>
-					<label class="labeled-input">
-						<span class="input-label">
-							{$t.description}
+					<label class="labeled-group">
+						<span class="label with-hover">
+							{$dt.description}
 						</span>
 						<textarea class="input" bind:value={$form.types[i].translations[locale].description} />
 					</label>
@@ -101,12 +103,12 @@
 			formaction="?/create"
 		>
 			<Plus class="button-icon" />
-			{$t.create}
+			{$dt.create($t.entity)}
 		</button>
 		{#if $tainted}
 			<button class="button cta" in:fly={{ y: 6 }} {...$updatingElement} use:updatingAction>
 				<Check class="button-icon" />
-				{$t.save}
+				{$dt.save}
 			</button>
 		{/if}
 	</DashboardMenu>
@@ -119,6 +121,7 @@
 		gap: 1rem;
 		align-items: flex-start;
 		container-type: inline-size;
+		padding-bottom: 2rem;
 	}
 
 	header {

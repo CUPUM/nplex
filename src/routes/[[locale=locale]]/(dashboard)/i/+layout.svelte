@@ -1,108 +1,34 @@
 <script lang="ts">
-	import { ripple } from '$lib/actions/ripple';
-	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { Folders, Home, Settings2, UserSquare2, type Icon } from 'lucide-svelte';
-	import type { ComponentType } from 'svelte';
-	import type { StoresValues } from 'svelte/store';
-	import { crossfade, scale } from 'svelte/transition';
+	import { composeMeshgradient } from '$lib/utils/mesh-gradient';
 
 	const t = createTranslations({
 		fr: {
-			nav: {
-				home: 'Mon accueil',
-				profile: 'Profil',
-				collections: 'Collections',
-				settings: 'Paramètres',
-			},
+			heading: 'Mon compte',
 		},
 		en: {
-			nav: {
-				home: 'My home',
-				profile: 'Profile',
-				collections: 'Collections',
-				settings: 'Settings',
-			},
+			heading: 'My account',
 		},
 	});
-
-	const accountLinks = [
-		{ key: 'home', subpath: '', icon: Home },
-		{ key: 'profile', subpath: 'profile', icon: UserSquare2 },
-		{ key: 'collections', subpath: 'collections', icon: Folders },
-		{ key: 'settings', subpath: 'settings', icon: Settings2 },
-	] satisfies {
-		key: keyof StoresValues<typeof t>['nav'];
-		subpath: string;
-		icon: ComponentType<Icon>;
-	}[];
-
-	const [send, receive] = crossfade({ duration: 250 });
 </script>
 
 <article>
-	<nav>
-		{#each accountLinks as section, i (section.key)}
-			<!-- svelte-ignore a11y-missing-attribute -->
-			{@const linkAttributes = $link(`/i/${section.subpath}`)}
-			<a
-				class="button ghost"
-				{...linkAttributes}
-				in:scale|global={{ start: 0.95, opacity: 0, delay: i * 75, duration: 750 }}
-				use:ripple
-			>
-				<svelte:component this={section.icon} class="button-icon" />{$t.nav[section.key]}
-				{#if linkAttributes['data-current']}
-					<div class="needle" in:receive={{ key: 'needle' }} out:send={{ key: 'needle' }} />
-				{/if}
-			</a>
-		{/each}
-	</nav>
-	<section>
-		<slot />
-	</section>
+	<header style:background={composeMeshgradient({ opacity: [0.25, 0.5], nodes: [5, 7] })}>
+		<h1 class="heading lg">{$t.heading}</h1>
+	</header>
+	<slot />
 </article>
 
 <style lang="postcss">
 	article {
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		flex-grow: 1;
 	}
 
-	nav {
-		display: flex;
-		flex-direction: column;
-		padding: 1.5rem 0.5rem;
-		font-size: var(--size-sm);
-	}
-
-	.button {
-		border-radius: var(--radius-sm);
-
-		:global(.button-icon) {
-			stroke-width: 2.5;
-			width: 1.1em;
-		}
-	}
-
-	.needle {
-		position: absolute;
-		width: 3px;
-		top: 1em;
-		bottom: 1em;
-		right: 0;
-		background-color: var(--color-primary-500);
-		border-radius: var(--radius-full);
-	}
-
-	section {
-		flex: 1;
-		border-top-left-radius: var(--radius-2xl);
-		border-bottom-left-radius: var(--radius-2xl);
-		background-color: var(--color-neutral-50);
-		:global(:--dark) & {
-			background-color: var(--color-neutral-700);
-		}
+	header {
+		padding: 2rem;
+		margin: 1rem;
+		border-radius: var(--radius-xl);
 	}
 </style>

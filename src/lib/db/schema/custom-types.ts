@@ -28,9 +28,7 @@ export const userRole = customType<{ data: UserRole }>({
 	},
 });
 
-/**
- * Auth provider custom type.
- */
+/** Auth provider custom type. */
 export const authProvider = customType<{ data: AuthProvider }>({
 	dataType() {
 		return 'text';
@@ -67,9 +65,7 @@ export const authProvider = customType<{ data: AuthProvider }>({
 // 	},
 // });
 
-/**
- * @see https://github.com/drizzle-team/drizzle-orm/issues/295
- */
+/** @see https://github.com/drizzle-team/drizzle-orm/issues/295 */
 export const identity = customType<{
 	data: number;
 	driver: number;
@@ -82,9 +78,7 @@ export const identity = customType<{
 	},
 });
 
-/**
- * Locale code custom type.
- */
+/** Locale code custom type. */
 export const locale = customType<{ data: Locale; driverData: string }>({
 	dataType() {
 		return 'text';
@@ -189,9 +183,7 @@ type Cube<L extends number> = L extends 1
 	? [x: number, y: number, z: number]
 	: ReadonlyTuple<number, L>;
 
-/**
- * Implements cube extension type for 3d vectors.
- */
+/** Implements cube extension type for 3d vectors. */
 export const cube = customType<{ data: Cube<3>; driverData: number[] }>({
 	dataType() {
 		return 'cube';

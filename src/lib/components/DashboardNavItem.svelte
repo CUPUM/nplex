@@ -88,6 +88,9 @@
 			@media (--md) {
 				font-weight: 650;
 			}
+			:global(.button-icon) {
+				opacity: 1;
+			}
 		}
 
 		&.danger {
@@ -99,10 +102,10 @@
 
 		:global(.button-icon) {
 			flex: none;
-			opacity: 0.5;
+			opacity: 0.35;
 			transition: all var(--duration-fast) ease-out;
-			width: 1.2em;
-			stroke-width: 2.25;
+			width: 1.25em;
+			stroke-width: 2;
 			transform: translateX(0);
 		}
 	}
@@ -119,6 +122,12 @@
 		background-color: var(--color-primary-600);
 		:global(:--dark) & {
 			background-color: var(--color-primary-500);
+		}
+		.danger & {
+			background-color: var(--color-error-800);
+			:global(:--dark) & {
+				background-color: var(--color-error-300);
+			}
 		}
 	}
 </style>

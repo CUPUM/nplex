@@ -355,10 +355,10 @@
 			position: absolute;
 			inset: 0;
 			opacity: 0;
-			transition: all 1s ease-out;
-			background: linear-gradient(var(--color-neutral-100), transparent);
+			transition: all 0.75s ease-out;
+			background: linear-gradient(var(--color-neutral-50), transparent);
 			:global(:--dark) & {
-				background: linear-gradient(var(--color-neutral-900), transparent);
+				background: linear-gradient(var(--color-neutral-950), transparent);
 			}
 		}
 

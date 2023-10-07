@@ -1,16 +1,16 @@
-/**
- * Compose a CSS background's string value for mesh gradients simulation.
- */
+/** Compose a CSS background's string value for mesh gradients simulation. */
 export function composeMeshgradient({
-	colors = 'accentColor',
-	nodes = [2, 5],
+	colors = 'var(--color-primary-500)',
+	nodes = [3, 7],
 	spread = [40, 110],
 	padding = -20,
 	random = Math.random,
+	opacity = 1,
 }: {
 	colors?: string | string[];
 	nodes?: number | [min: number, max: number];
 	spread?: number | [min: number, max: number];
+	opacity?: number | [min: number, max: number];
 	padding?: number;
 	random?: typeof Math.random;
 } = {}) {
@@ -27,10 +27,15 @@ export function composeMeshgradient({
 	const area = 100 + -2 * padding;
 	return colors
 		.map((c) => {
+			const o =
+				typeof opacity === 'number'
+					? opacity
+					: Math.min(Math.max(opacity[0], Math.random()), opacity[1]);
+			const faded = opacity === 1 ? c : `color-mix(in srgb, ${c} ${o * 100}%, transparent)`;
 			const x = (random() * area + padding).toFixed(1);
 			const y = (random() * area + padding).toFixed(1);
 			const spread = (spreadMin + random() * spreadD).toFixed(1);
-			return `radial-gradient(circle at ${x}% ${y}%, ${c} 0px, transparent ${spread}%)`;
+			return `radial-gradient(circle at ${x}% ${y}%, ${faded} 0px, transparent ${spread}%)`;
 		})
-		.join(',');
+		.join(', ');
 }

@@ -15,9 +15,7 @@ import { userRoles, users } from './accounts';
 import { intrange, locale, point, userRole } from './custom-types';
 import { locales } from './i18n';
 
-/**
- * Top-most categories of projects.
- */
+/** Top-most categories of projects. */
 export const projectTypes = pgTable('project_types', {
 	id: text('id')
 		.notNull()
@@ -50,9 +48,7 @@ export const projectTypesTranslations = pgTable(
 	}
 );
 
-/**
- * Grouping of project intervention types.
- */
+/** Grouping of project intervention types. */
 export const projectInterventionCategories = pgTable('project_intervention_categories', {
 	id: text('id')
 		.notNull()
@@ -85,9 +81,7 @@ export const projectInterventionCategoriesTranslations = pgTable(
 	}
 );
 
-/**
- * Sub classification of projects by their intervention(s)
- */
+/** Sub classification of projects by their intervention(s) */
 export const projectInterventions = pgTable('project_interventions', {
 	id: text('id')
 		.notNull()
@@ -155,9 +149,7 @@ export const projectTypesToInterventions = pgTable(
 	}
 );
 
-/**
- * The type of owner for the site where the projet is situated.
- */
+/** The type of owner for the site where the projet is situated. */
 export const projectSiteOwnerships = pgTable('project_site_ownerships', {
 	id: text('id')
 		.notNull()
@@ -190,9 +182,7 @@ export const projectSiteOwnershipsTranslations = pgTable(
 	}
 );
 
-/**
- * How is the project's building integrated amongst the surrounding constructions.
- */
+/** How is the project's building integrated amongst the surrounding constructions. */
 export const projectImplantationTypes = pgTable('project_implantation_types', {
 	id: text('id')
 		.notNull()
@@ -225,9 +215,7 @@ export const projectImplantationTypesTranslations = pgTable(
 	}
 );
 
-/**
- * Groupings of exemplarity indicators. Inspired by the City of Montreal's Design Agenda 2030.
- */
+/** Groupings of exemplarity indicators. Inspired by the City of Montreal's Design Agenda 2030. */
 export const projectExemplarityCategories = pgTable('project_exemplarity_categories', {
 	id: text('id')
 		.notNull()
@@ -299,9 +287,7 @@ export const projectExemplarityIndicatorsTranslations = pgTable(
 	}
 );
 
-/**
- * Various types of items that can be added to project galleries.
- */
+/** Various types of items that can be added to project galleries. */
 export const projectImageTypes = pgTable('project_image_types', {
 	id: text('id')
 		.notNull()
@@ -368,9 +354,7 @@ export const projectBuildingLevelTypesTranslations = pgTable(
 // Projects
 //
 
-/**
- * Core projects table.
- */
+/** Core projects table. */
 export const projects = pgTable('projects', {
 	id: text('id').default(generateNanoid()).primaryKey(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
@@ -624,9 +608,7 @@ export const projectsImagesCredits = pgTable(
 	}
 );
 
-/**
- * Keeping track of publication requests.
- */
+/** Keeping track of publication requests. */
 export const projectsPublicationRequests = pgTable('projects_publication_requests', {
 	projectId: text('project_id')
 		.references(() => projects.id, {
@@ -643,9 +625,7 @@ export const projectsPublicationRequests = pgTable('projects_publication_request
 		.notNull(),
 });
 
-/**
- * Sharing projects access to non-creator users.
- */
+/** Sharing projects access to non-creator users. */
 export const projectsUsers = pgTable(
 	'projects_users',
 	{
@@ -675,9 +655,7 @@ export const projectsUsers = pgTable(
 	}
 );
 
-/**
- * Organizations credited as partakers in projects.
- */
+/** Organizations credited as partakers in projects. */
 export const projectsOrganizations = pgTable(
 	'projects_organizations',
 	{
@@ -701,9 +679,7 @@ export const projectsOrganizations = pgTable(
 	}
 );
 
-/**
- * Global tally of projects likes.
- */
+/** Global tally of projects likes. */
 export const projectsLikes = pgTable(
 	'projects_likes',
 	{
@@ -760,9 +736,7 @@ export const projectsViews = pgTable(
 // Organization descriptors
 //
 
-/**
- * Formats or domains of operation that can caracterize registered organizations.
- */
+/** Formats or domains of operation that can caracterize registered organizations. */
 export const organizationTypes = pgTable('organization_types', {
 	id: text('id')
 		.default(generateNanoid({ length: 6 }))
@@ -791,9 +765,7 @@ export const organizationTypesTranslations = pgTable(
 	}
 );
 
-/**
- * Professions heralded by design offices or communities.
- */
+/** Professions heralded by design offices or communities. */
 export const organizationExpertises = pgTable('organization_expertises', {
 	id: text('id')
 		.default(generateNanoid({ length: 6 }))
@@ -822,9 +794,7 @@ export const organizationExpertisesTranslations = pgTable(
 	}
 );
 
-/**
- * Roles organizations can assume in the context of projects.
- */
+/** Roles organizations can assume in the context of projects. */
 export const organizationDuties = pgTable('organization_duties', {
 	id: text('id')
 		.default(generateNanoid({ length: 6 }))
@@ -857,9 +827,7 @@ export const organizationDutiesTranslations = pgTable(
 // Organizations
 //
 
-/**
- * Design offices, municipal offices, communities, etc.
- */
+/** Design offices, municipal offices, communities, etc. */
 export const organizations = pgTable('organizations', {
 	id: text('id').notNull().default(generateNanoid()).primaryKey(),
 	createdById: text('created_by_id')

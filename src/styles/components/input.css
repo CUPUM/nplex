@@ -8,6 +8,11 @@ Primitive input component
 		padding-left: calc(var(--base-padding) - var(--base-inset));
 	}
 }
+textarea.input {
+	padding-block: calc(var(--base-padding) - 0.3em);
+	line-height: 1.6em;
+	min-height: var(--base-size);
+}
 .input-group {
 	.input {
 		background-color: transparent;
@@ -20,11 +25,13 @@ Primitive input component
 .input-group {
 	--nested-base-size: calc(var(--base-size) - 2 * var(--base-inset));
 	--nested-base-radius: calc(var(--base-radius) - var(--base-inset));
-	height: var(--base-size);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	border-radius: var(--base-radius);
+	&:not(textarea) {
+		height: var(--base-size);
+	}
 
 	&:hover {
 		.input-icon {
@@ -83,18 +90,26 @@ Primitive input component
 	Default variant
 	*/
 	&:not(.outlined) {
+		font-weight: 350;
+		color: var(--color-neutral-700);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		:--dark & {
+			color: var(--color-neutral-300);
+		}
 		&:hover {
+			color: var(--color-neutral-800);
 			box-shadow: 0 0 0 var(--base-border-size) rgba(0, 0, 0, 0.1);
 			:--dark & {
+				color: var(--color-neutral-200);
 				box-shadow: 0 0 0 var(--base-border-size) rgba(255, 255, 255, 0.1);
 			}
 		}
 		&:focus,
 		&:has(.input:focus) {
-			@include focus-outline;
+			color: var(--color-neutral-800);
 			background-color: white;
 			:--dark & {
+				color: var(--color-neutral-200);
 				background-color: color-mix(in srgb, var(--color-neutral-950) 25%, transparent);
 			}
 		}

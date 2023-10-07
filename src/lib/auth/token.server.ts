@@ -1,9 +1,9 @@
+import type { SelectUser } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
 import {
 	emailVerificationTokens,
 	passwordResetTokens,
 	type SelectEmailVerificationToken,
-	type SelectUser,
 } from '$lib/db/schema/accounts';
 import { eq } from 'drizzle-orm';
 import { generateRandomString, isWithinExpiration } from 'lucia/utils';
@@ -72,9 +72,7 @@ export async function validateEmailVerificationToken(token: SelectEmailVerificat
 	return storedToken.userId;
 }
 
-/**
- * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
- */
+/** @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit */
 export async function generatePasswordResetToken(userId: string) {
 	const storedUserTokens = await dbpool
 		.select()
@@ -97,9 +95,7 @@ export async function generatePasswordResetToken(userId: string) {
 	return newToken;
 }
 
-/**
- * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
- */
+/** @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit */
 export async function validatePasswordResetToken(token: string) {
 	const storedToken = await dbpool.transaction(async (tx) => {
 		const [stored] = await tx

@@ -82,8 +82,8 @@ export const actions = {
 		}
 		try {
 			await dbpool.transaction(async (tx) => {
-				const [pic, pict] = extractTranslations(form.data.interventionCategories);
 				// Categories
+				const [pic, pict] = extractTranslations(form.data.interventionCategories);
 				await tx
 					.insert(projectInterventionCategories)
 					.values(pic)
@@ -121,7 +121,7 @@ export const actions = {
 			return { form };
 		} catch (e) {
 			console.error(e);
-			throw error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur server' });
+			throw error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur serveur' });
 		}
 	},
 };

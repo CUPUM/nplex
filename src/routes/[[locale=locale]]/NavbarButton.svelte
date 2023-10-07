@@ -64,7 +64,7 @@
 		border-radius: calc(var(--button-radius) - var(--group-inset, 0px));
 		letter-spacing: 0.02em;
 		outline: 1px solid transparent;
-		outline-offset: 4px;
+		outline-offset: -2px;
 		backdrop-filter: blur(8px);
 		transition:
 			all 0.1s ease-out,

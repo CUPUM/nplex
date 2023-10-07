@@ -101,3 +101,21 @@ export function createLoading({
 		action,
 	};
 }
+
+// export function createFormActionLoading(submitting: Readable<boolean>) {
+// 	const action = writable<null | URL>(null);
+
+// 	function elementAction(node: HTMLElement, formAction?: string) {
+// 		const state = derived([submitting, action], ([$submitting, $action]) => {
+// 			const attr = node.getAttribute('formaction');
+
+// 			return attr ?? formAction ??
+// 		})
+// 		const loadingAction = loading(node, { ...props, state: get(_state) });
+// 	}
+
+// 	return {
+// 		state: action,
+// 		element
+// 	}
+// }

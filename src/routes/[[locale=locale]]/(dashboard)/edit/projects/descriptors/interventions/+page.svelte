@@ -73,19 +73,24 @@
 			{@const filtered = $form.interventions.filter((pi) => pi.categoryId === category.id)}
 			<li class="category">
 				<div class="top">
-					<TranslationsCard let:locale legend={category.id}>
-						<label class="labeled-input">
-							<span class="input-label">{$t.category.title}</span>
+					<TranslationsCard
+						let:locale
+						legend={category.id}
+						legendMinimized={category.translations[$page.data.locale].title}
+					>
+						<label class="labeled-group">
+							<span class="label with-hover">{$t.category.title}</span>
 							<input
 								class="input"
 								type="text"
 								bind:value={$form.interventionCategories[i].translations[locale].title}
 							/>
 						</label>
-						<label class="labeled-input">
-							<span class="input-label">{$t.category.description}</span>
+						<label class="labeled-group">
+							<span class="label with-hover">{$t.category.description}</span>
 							<textarea
-								class="input"
+								class="input resize"
+								rows="3"
 								bind:value={$form.interventionCategories[i].translations[locale].description}
 							/>
 						</label>
@@ -105,18 +110,19 @@
 									legendMinimized={intervention.translations[$page.data.locale].title}
 									deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
 								>
-									<label class="labeled-input">
-										<span class="input-label with-hover">{$t.intervention.title}</span>
+									<label class="labeled-group">
+										<span class="label with-hover">{$t.intervention.title}</span>
 										<input
 											class="input"
 											type="text"
 											bind:value={$form.interventions[ii].translations[locale].title}
 										/>
 									</label>
-									<label class="labeled-input">
-										<span class="input-label with-hover">{$t.intervention.description}</span>
+									<label class="labeled-group">
+										<span class="label with-hover">{$t.intervention.description}</span>
 										<textarea
-											class="input"
+											class="input resize"
+											rows="2"
 											bind:value={$form.interventions[ii].translations[locale].description}
 										/>
 									</label>
@@ -175,6 +181,7 @@
 		gap: 1rem;
 		align-items: flex-start;
 		container-type: inline-size;
+		padding-bottom: 2rem;
 	}
 
 	header {
@@ -203,9 +210,11 @@
 		gap: 1rem;
 		padding: 1rem;
 		border-radius: var(--radius-xl);
-		background-color: var(--color-neutral-100);
+		border: 5px solid var(--color-neutral-100);
+		/* background-color: var(--color-neutral-100); */
 		:global(:--dark) & {
-			background-color: var(--color-neutral-700);
+			border-color: var(--color-neutral-900);
+			/* background-color: var(--color-neutral-700); */
 		}
 	}
 
