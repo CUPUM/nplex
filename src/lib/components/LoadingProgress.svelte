@@ -69,7 +69,7 @@
 	<progress {value} max={100} out:slide={{ axis: 'x', duration: 350, easing: circOut }} />
 {/if}
 
-<style lang="scss">
+<style lang="postcss">
 	progress {
 		all: unset;
 		--progress-color: var(--color-primary-500);
@@ -84,7 +84,7 @@
 		accent-color: var(--progress-color);
 		opacity: 0.75;
 
-		@include dark {
+		:global(:--dark) & {
 			accent-color: var(--progress-color);
 		}
 	}

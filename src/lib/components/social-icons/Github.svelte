@@ -18,7 +18,7 @@
 	/>
 </svg>
 
-<style lang="scss">
+<style lang="postcss">
 	path {
 		transition: fill 0.1s;
 	}

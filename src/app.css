@@ -1,7 +1,9 @@
 @import './styles/preflight.css' layer(preflight);
 @import './styles/base.css' layer(base);
-@import './styles/components/prose.css' layer(components);
+@import './styles/components/typography.css' layer(components);
+@import './styles/components/misc.css' layer(components);
 @import './styles/components/input.css' layer(components);
+@import './styles/components/labeled.css' layer(components);
 @import './styles/components/button.css' layer(components);
 @import './styles/components/switch.css' layer(components);
 @import './styles/components/toggle.css' layer(components);

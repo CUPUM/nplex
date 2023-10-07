@@ -20,12 +20,12 @@
 	</section>
 </article>
 
-<style lang="scss">
+<style lang="postcss">
 	article {
 		display: grid;
-		grid-template-columns: fit-content(var(--dashboard-sidebar-width)) 1fr;
-		@include lg {
-			padding-inline: 1rem;
+		grid-template-columns: fit-content(var(--dashboard-navbar)) 1fr;
+		@media (--lg) {
+			padding-inline: 0.75rem;
 		}
 	}
 
@@ -38,7 +38,7 @@
 	}
 
 	.dashboard-sidebar {
-		width: var(--dashboard-sidebar-width);
+		width: var(--dashboard-navbar);
 		display: flex;
 		flex-direction: row;
 		align-self: stretch;
@@ -46,12 +46,12 @@
 		top: var(--navbar-height);
 		position: sticky;
 		gap: 0.5rem;
-		@include md {
+		@media (--md) {
 			margin-right: 0.5rem;
 			align-self: flex-start;
 			overflow-x: hidden;
 			overflow-y: auto;
-			width: var(--dashboard-sidebar-width);
+			width: var(--dashboard-navbar);
 			flex-direction: column;
 		}
 	}
@@ -60,7 +60,7 @@
 		grid-column: 2;
 		border-radius: var(--radius-lg);
 		background-color: var(--color-neutral-50);
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-neutral-800);
 		}
 	}

@@ -28,7 +28,7 @@
 	</div>
 {/if}
 
-<style lang="scss">
+<style lang="postcss">
 	.content {
 		--tip-color: color-mix(in srgb, var(--color-neutral-800) 95%, transparent);
 		font-weight: 400;
@@ -41,7 +41,7 @@
 		background-color: var(--tip-color);
 		backdrop-filter: blur(8px);
 
-		@include dark {
+		:global(:--dark) & {
 			--tip-color: color-mix(in srgb, var(--color-neutral-950) 95%, transparent);
 			color: var(--color-neutral-300);
 		}

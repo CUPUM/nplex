@@ -41,7 +41,7 @@
 	{/each}
 </ul>
 
-<style lang="scss">
+<style lang="postcss">
 	ul {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);

@@ -2,7 +2,9 @@
 	export let data;
 </script>
 
-<header></header>
+<h1>nplex</h1>
+
+<!-- <header></header>
 <article>
 	<h2>Projects</h2>
 	<section>
@@ -32,7 +34,22 @@
 			<ul></ul>
 		</section>
 	{/await}
-</article>
+</article> -->
 
-<style lang="scss">
+<style lang="postcss">
+	/* @custom-selector: --dark [data-mode='dark']; */
+
+	h1 {
+		color: var(--color-primary-400);
+	}
+
+	:global(:--dark) h1 {
+		color: green !important;
+	}
+
+	@media (--md) {
+		h1 {
+			color: red;
+		}
+	}
 </style>

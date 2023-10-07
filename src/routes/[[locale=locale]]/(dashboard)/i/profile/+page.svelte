@@ -93,7 +93,7 @@
 	{/if}
 </form>
 
-<style lang="scss">
+<style lang="postcss">
 	form {
 		padding: 2rem;
 		display: flex;

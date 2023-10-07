@@ -28,11 +28,11 @@
 	</form>
 </article>
 
-<style lang="scss">
+<style lang="postcss">
 	article {
 		align-self: center;
 		gap: 1rem;
-		max-width: var(--width-center);
+		max-width: var(--width-sm);
 		padding: 1rem;
 		text-align: center;
 		display: flex;

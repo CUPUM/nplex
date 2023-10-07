@@ -28,7 +28,7 @@
 	</ol>
 </section>
 
-<style lang="scss">
+<style lang="postcss">
 	section {
 		padding: 2rem;
 		display: flex;

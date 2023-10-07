@@ -3,5 +3,5 @@
 
 <h1>Collections</h1>
 
-<style lang="scss">
+<style lang="postcss">
 </style>

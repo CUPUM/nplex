@@ -5,7 +5,7 @@
 	<slot />
 </menu>
 
-<style lang="scss">
+<style lang="postcss">
 	menu {
 		position: sticky;
 		bottom: 2rem;
@@ -22,14 +22,14 @@
 		background-color: color-mix(in srgb, var(--color-neutral-50) 50%, transparent);
 		backdrop-filter: blur(8px);
 
-		@include dark {
+		:global(:--dark) & {
 			background-color: color-mix(in srgb, var(--color-neutral-800) 50%, transparent);
 		}
 
 		@container (width > 1000px) {
 			justify-content: center;
 			margin-inline: 0;
-			margin-right: var(--dashboard-sidebar-width);
+			margin-right: var(--dashboard-navbar);
 		}
 	}
 </style>

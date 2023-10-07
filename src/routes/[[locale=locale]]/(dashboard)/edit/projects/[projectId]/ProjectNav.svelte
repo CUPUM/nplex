@@ -99,11 +99,11 @@
 		{$t.settings.visibility}
 		<Shield class="button-icon" />
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/danger`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/danger`)} danger>
 		{$t.settings.danger}
 		<AlertTriangle class="button-icon" />
 	</DashboardNavItem>
 </DashboardNav>
 
-<style lang="scss">
+<style lang="postcss">
 </style>

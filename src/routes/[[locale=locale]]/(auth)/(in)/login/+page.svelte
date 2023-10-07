@@ -43,8 +43,8 @@
 
 <form method="POST" use:enhance>
 	<h1 class="heading lg center">{$t.title}</h1>
-	<label class="labeled-input">
-		<span class="input-label" in:fly|global={{ y: 6 }}>{$t.email}</span>
+	<label class="labeled-group">
+		<span class="label" in:fly|global={{ y: 6 }}>{$t.email}</span>
 		<input
 			in:fly|global={{ y: -6 }}
 			class="input"
@@ -56,8 +56,8 @@
 			{...$constraints.email}
 		/>
 	</label>
-	<label class="labeled-input">
-		<span class="input-label" in:fly|global={{ y: 6, delay: STAGGER }}>{$t.password}</span>
+	<label class="labeled-group">
+		<span class="label" in:fly|global={{ y: 6, delay: STAGGER }}>{$t.password}</span>
 		<input
 			in:fly|global={{ y: -6, delay: STAGGER }}
 			class="input"
@@ -93,7 +93,7 @@
 	</a>
 </div>
 
-<style lang="scss">
+<style lang="postcss">
 	form {
 		display: flex;
 		flex-direction: column;

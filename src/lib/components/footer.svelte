@@ -3,7 +3,7 @@
 
 <footer>footer goes vroom.</footer>
 
-<style lang="scss">
+<style lang="postcss">
 	footer {
 		padding: 2rem;
 	}

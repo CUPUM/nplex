@@ -37,7 +37,7 @@
 	<slot />
 </svelte:element>
 
-<style lang="scss">
+<style lang="postcss">
 	.navbar-menu-button {
 		user-select: none;
 		position: relative;
@@ -61,7 +61,7 @@
 		&[data-current] {
 			cursor: default;
 			color: var(--color-primary-600);
-			@include dark {
+			:global(:--dark) & {
 				color: var(--color-primary-400);
 			}
 
@@ -74,7 +74,7 @@
 		&:focus-visible:not([data-current]) {
 			color: var(--color-primary-700);
 			background-color: color-mix(in srgb, var(--color-primary-700) 10%, transparent);
-			@include dark {
+			:global(:--dark) & {
 				color: var(--color-primary-500);
 				background-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 			}

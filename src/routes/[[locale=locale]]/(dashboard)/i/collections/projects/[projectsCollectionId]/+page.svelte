@@ -4,5 +4,5 @@
 
 <h1>Project collection</h1>
 
-<style lang="scss">
+<style lang="postcss">
 </style>

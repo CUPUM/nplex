@@ -26,7 +26,7 @@
 	{/each}
 </fieldset>
 
-<style lang="scss">
+<style lang="postcss">
 	.content:not([hidden]) {
 		display: flex;
 		flex-direction: column;

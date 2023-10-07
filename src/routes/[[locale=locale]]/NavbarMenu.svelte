@@ -18,7 +18,7 @@
 	<slot groupClass="navbar-menu-group" legendClass="navbar-menu-legend" />
 </svelte:element>
 
-<style lang="scss">
+<style lang="postcss">
 	.navbar-menu {
 		--menu-inset: 0.5rem;
 		display: flex;
@@ -31,7 +31,7 @@
 		transform-origin: top center;
 		background-color: var(--color-neutral-50);
 		z-index: 1;
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-neutral-800);
 		}
 	}

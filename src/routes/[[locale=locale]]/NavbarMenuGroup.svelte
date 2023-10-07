@@ -9,7 +9,7 @@
 	<slot />
 </section>
 
-<style lang="scss">
+<style lang="postcss">
 	.navbar-menu-group {
 		position: relative;
 		display: flex;
@@ -17,7 +17,7 @@
 		padding-bottom: calc(2 * var(--menu-inset));
 		padding-inline: var(--menu-inset);
 		margin-block: var(--menu-inset);
-		@include dark {
+		:global(:--dark) & {
 		}
 
 		&:not(:last-child) {
@@ -29,7 +29,7 @@
 				bottom: 0;
 				opacity: 0.1;
 				border-bottom: var(--base-border-size) solid var(--color-neutral-500);
-				@include dark {
+				:global(:--dark) & {
 					opacity: 0.5;
 					border-bottom: var(--base-border-size) solid var(--color-neutral-900);
 				}

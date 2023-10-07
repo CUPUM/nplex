@@ -63,7 +63,7 @@
 	</section>
 </article>
 
-<style lang="scss">
+<style lang="postcss">
 	article {
 		display: flex;
 		flex-direction: row;
@@ -101,7 +101,7 @@
 		border-top-left-radius: var(--radius-2xl);
 		border-bottom-left-radius: var(--radius-2xl);
 		background-color: var(--color-neutral-50);
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-neutral-700);
 		}
 	}

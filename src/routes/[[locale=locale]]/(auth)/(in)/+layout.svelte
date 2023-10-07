@@ -34,7 +34,7 @@
 	</div>
 </article>
 
-<style lang="scss">
+<style lang="postcss">
 	article {
 		display: flex;
 		align-items: center;
@@ -53,7 +53,7 @@
 		align-items: stretch;
 		gap: 2rem;
 		width: 100%;
-		max-width: var(--width-center);
+		max-width: var(--width-sm);
 	}
 
 	.social {

@@ -11,9 +11,7 @@
 		},
 	});
 
-	/**
-	 * Parent dashboard context.
-	 */
+	/** Parent dashboard context. */
 	const [getDashboard, setDashboardCtx] = defineContext<{ pushIndex: () => number }>({});
 	export function setDashboard() {
 		let index = 0;
@@ -25,9 +23,7 @@
 		});
 	}
 
-	/**
-	 * Dashboard nav context for items.
-	 */
+	/** Dashboard nav context for items. */
 	const [getDashboardNav, setDashboardNav] = defineContext<{ pushIndex: () => number }>({});
 
 	export { getDashboardNav };
@@ -48,46 +44,45 @@
 
 <section in:scale={{ start: 0.95, duration: 750, easing: expoOut, delay: navIndex * 150 }}>
 	{#if $$slots.heading}
-		<span class="heading">
+		<h2>
 			<slot name="heading" />
-		</span>
+		</h2>
 	{/if}
 	<div class="items">
 		<slot />
 	</div>
 </section>
 
-<style lang="scss">
+<style lang="postcss">
 	section {
 		display: flex;
 		flex-direction: column;
 		border-radius: var(--radius-lg);
-		// border: var(--base-border-size) solid var(--color-neutral-200);
 		background-color: var(--color-neutral-50);
 		padding: 0.5rem;
 		margin-bottom: 0.5rem;
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-neutral-800);
 		}
 
-		@include lg {
+		@media (--lg) {
 			margin-bottom: 0;
 		}
 	}
 
-	.heading {
+	h2 {
 		position: sticky;
 		left: 0;
-		padding: 0 1rem 0.25rem 1rem;
-		font-size: 0.8em;
+		padding: 0.75rem 1rem;
+		font-size: var(--size-xs);
 		font-weight: 350;
 		letter-spacing: 0.01em;
 		line-height: 1.5;
-		color: var(--color-neutral-500);
-		@include dark {
+		color: var(--color-neutral-400);
+		:global(:--dark) & {
 			color: var(--color-neutral-600);
 		}
-		@include md {
+		@media (--md) {
 			position: relative;
 		}
 	}
@@ -95,7 +90,7 @@
 	.items {
 		display: flex;
 		flex-direction: row;
-		@include md {
+		@media (--md) {
 			flex-direction: column;
 		}
 	}

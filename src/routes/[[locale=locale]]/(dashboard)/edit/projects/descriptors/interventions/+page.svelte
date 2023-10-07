@@ -168,7 +168,7 @@
 	</DashboardMenu>
 </form>
 
-<style lang="scss">
+<style lang="postcss">
 	form {
 		display: flex;
 		flex-direction: column;
@@ -193,7 +193,7 @@
 
 		@container (width > 1000px) {
 			align-self: center;
-			margin-right: var(--dashboard-sidebar-width);
+			margin-right: var(--dashboard-navbar);
 		}
 	}
 
@@ -204,7 +204,7 @@
 		padding: 1rem;
 		border-radius: var(--radius-xl);
 		background-color: var(--color-neutral-100);
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-neutral-700);
 		}
 	}

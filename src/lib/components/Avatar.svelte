@@ -25,7 +25,7 @@
 	</span>
 </div>
 
-<style lang="scss">
+<style lang="postcss">
 	div {
 		position: absolute;
 		inset: 0;

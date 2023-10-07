@@ -95,7 +95,7 @@
 	<DashboardMenu>
 		<button
 			class="button outlined"
-			{...updatingElement}
+			{...$updatingElement}
 			use:updatingAction
 			type="submit"
 			formaction="?/create"
@@ -104,7 +104,7 @@
 			{$t.create}
 		</button>
 		{#if $tainted}
-			<button class="button cta" in:fly={{ y: 6 }} {...updatingElement} use:updatingAction>
+			<button class="button cta" in:fly={{ y: 6 }} {...$updatingElement} use:updatingAction>
 				<Check class="button-icon" />
 				{$t.save}
 			</button>
@@ -112,7 +112,7 @@
 	</DashboardMenu>
 </form>
 
-<style lang="scss">
+<style lang="postcss">
 	form {
 		display: flex;
 		flex-direction: column;
@@ -138,7 +138,7 @@
 
 		@container (width > 1000px) {
 			align-self: center;
-			margin-right: var(--dashboard-sidebar-width);
+			margin-right: var(--dashboard-navbar);
 		}
 	}
 </style>

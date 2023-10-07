@@ -1,0 +1,95 @@
+/*
+Headings
+*/
+.heading {
+	color: var(--color-neutral-800);
+	font-optical-sizing: auto;
+	:--dark & {
+		color: var(--color-neutral-200);
+	}
+	&:is(h1, h2, h3, h4, h5, h6) {
+		margin-block: 1em;
+	}
+	/* Extra large heading */
+	&.xl {
+		line-height: 1.1;
+		font-weight: 532;
+		font-size: var(--size-4xl);
+	}
+	/* Large heading */
+	&.lg {
+		line-height: 1.15;
+		font-weight: 550;
+		font-size: var(--size-3xl);
+	}
+	/* Medium heading */
+	&.md {
+		line-height: 1.2;
+		font-weight: 625;
+		font-size: var(--size-2xl);
+	}
+	/* Small heading */
+	&.sm {
+		line-height: 1.275;
+		font-weight: 632;
+		font-size: var(--size-xl);
+	}
+	/* Extra small heading */
+	&.xs {
+		line-height: 1.35;
+		font-weight: 632;
+		font-size: var(--size-lg);
+	}
+}
+
+/*
+Prose
+*/
+.prose {
+	color: var(--color-neutral-700);
+	font-optical-sizing: auto;
+	:--dark & {
+		color: var(--color-neutral-300);
+	}
+	/* Semantic elements */
+	&:is(p, h1, h2, h3, h4, h5, h6) {
+		margin-block: 1.25em;
+	}
+	/* Extra large text */
+	&.xl {
+		font-weight: 300;
+		line-height: 1.3em;
+	}
+	/* Large text */
+	&.lg {
+		font-weight: 325;
+		line-height: 1.35em;
+	}
+	/* Regular text */
+	&.md {
+		font-weight: 350;
+		line-height: 1.4em;
+	}
+	/* Small text */
+	&.sm {
+		font-weight: 360;
+		line-height: 1.45em;
+	}
+	/* Extra small text */
+	&.xs {
+		font-weight: 375;
+		line-height: 1.5em;
+	}
+}
+
+/*
+Normal emphasis
+*/
+em {
+}
+
+/*
+Strong emphasis
+*/
+strong {
+}

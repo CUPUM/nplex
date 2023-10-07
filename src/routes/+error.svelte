@@ -21,7 +21,7 @@
 	</code>
 </article>
 
-<style lang="scss">
+<style lang="postcss">
 	article {
 		display: flex;
 		flex-direction: column;

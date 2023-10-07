@@ -3,10 +3,14 @@
  * scss.
  */
 export const BREAKPOINTS = {
-	sm: 480,
-	md: 768,
-	lg: 1024,
-	xl: 1280,
+	sm: '30em',
+	md: '48em',
+	lg: '64em',
+	xl: '80em',
+	// sm: 480,
+	// md: 768,
+	// lg: 1024,
+	// xl: 1280,
 } as const;
 
 export type Breakpoint = keyof typeof BREAKPOINTS;

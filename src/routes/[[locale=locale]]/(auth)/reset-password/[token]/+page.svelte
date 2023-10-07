@@ -30,5 +30,5 @@
 	<button type="submit">Set new password</button>
 </form>
 
-<style lang="scss">
+<style lang="postcss">
 </style>

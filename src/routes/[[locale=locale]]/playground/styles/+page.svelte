@@ -112,7 +112,7 @@
 	</ul>
 </section>
 
-<style lang="scss">
+<style lang="postcss">
 	section {
 		display: flex;
 		flex-direction: column;

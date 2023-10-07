@@ -3,11 +3,12 @@ import { readable } from 'svelte/store';
 import { BREAKPOINTS, BREAKPOINTS_ARR, type Breakpoint } from './constants';
 
 export function createBreakpointQuery(breakpoint: Breakpoint) {
-	// const width = `${BREAKPOINTS[breakpoint]}px`;
-
+	// const px = `${BREAKPOINTS[breakpoint]}px`;
 	// Using a relative breakpoint to map 1:1 with pandacss's handling of breakpoints.
-	const width = `${BREAKPOINTS[breakpoint] / 16}em`;
-	return browser ? window.matchMedia(`screen and (min-width: ${width}`) : undefined;
+	// const em = `${BREAKPOINTS[breakpoint] / 16}em`;
+	return browser
+		? window.matchMedia(`screen and (min-width: ${BREAKPOINTS[breakpoint]}`)
+		: undefined;
 }
 
 // const init = BREAKPOINTS_ARR.reduce(

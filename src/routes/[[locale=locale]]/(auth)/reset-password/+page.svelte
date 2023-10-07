@@ -24,8 +24,8 @@
 
 <form use:enhance method="POST">
 	<h1 class="heading lg center">{$t.title}</h1>
-	<label class="labeled-input">
-		<span class="input-label" in:fly={{ y: 6 }}>
+	<label class="labeled-group">
+		<span class="label" in:fly={{ y: 6 }}>
 			{$t.name}
 		</span>
 		<input
@@ -44,7 +44,7 @@
 	</button>
 </form>
 
-<style lang="scss">
+<style lang="postcss">
 	form {
 		display: flex;
 		flex-direction: column;
@@ -53,6 +53,6 @@
 		justify-content: center;
 		flex: 1;
 		gap: 1rem;
-		max-width: var(--width-center);
+		max-width: var(--width-sm);
 	}
 </style>

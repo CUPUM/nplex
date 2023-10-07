@@ -3,7 +3,7 @@
 -->
 
 <script lang="ts">
-	import '../app.scss';
+	import '../app.css';
 </script>
 
 <slot />

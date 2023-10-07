@@ -8,9 +8,7 @@
 		style?: string;
 	} & Omit<SVGAttributes<SVGElement>, 'viewBox'>;
 
-	/**
-	 * Single glyph logo (n)
-	 */
+	/** Single glyph logo (n) */
 	export let mono: $$Props['mono'] = false;
 	export let size: $$Props['size'] = '1em';
 	export let className: $$Props['className'] = '';
@@ -56,7 +54,7 @@
 	{/if}
 </svg>
 
-<style lang="scss">
+<style lang="postcss">
 	svg {
 		position: relative;
 	}

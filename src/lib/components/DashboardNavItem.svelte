@@ -5,11 +5,13 @@
 	import { fly } from 'svelte/transition';
 	import { dashboardReceive, dashboardSend, getDashboardNav } from './DashboardNav.svelte';
 
-	type $$Props =
+	type $$Props = { danger?: boolean } & (
 		| ({ href: string } & HTMLAnchorAttributes)
-		| ({ href?: undefined } & HTMLButtonAttributes);
+		| ({ href?: undefined } & HTMLButtonAttributes)
+	);
 
 	export let href: $$Props['href'] = undefined;
+	export let danger: $$Props['danger'] = undefined;
 
 	const navCtx = getDashboardNav(true);
 	const index = navCtx.pushIndex();
@@ -19,6 +21,7 @@
 <svelte:element
 	this={href ? 'a' : 'button'}
 	class="item"
+	class:danger
 	{...$$restProps}
 	{href}
 	use:ripple
@@ -34,7 +37,7 @@
 	{/if}
 </svelte:element>
 
-<style lang="scss">
+<style lang="postcss">
 	.item {
 		display: flex;
 		flex-direction: row;
@@ -48,7 +51,7 @@
 		white-space: nowrap;
 		line-height: 1.5em;
 		transition: all 0.15s ease-out;
-		@include md {
+		@media (--md) {
 			white-space: wrap;
 			font-weight: 400;
 			padding: 0.8em 1.25em;
@@ -58,29 +61,49 @@
 		&:hover,
 		&:focus-visible {
 			&:not([data-current]) {
-				background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 				color: var(--color-neutral-950);
-				@include dark {
+				background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+				:global(:--dark) & {
 					color: var(--color-neutral-50);
+				}
+				&.danger {
+					color: var(--color-error-600);
+					background-color: color-mix(in srgb, var(--color-error-500) 10%, transparent);
+					:global(:--dark) & {
+						color: var(--color-error-400);
+					}
+				}
+				:global(.button-icon) {
+					opacity: 1;
+					transform: translateX(0.2em);
 				}
 			}
 		}
 
 		&[data-current] {
 			color: var(--color-primary-600);
-			@include dark {
+			:global(:--dark) & {
 				color: var(--color-primary-500);
 			}
-
-			@include md {
+			@media (--md) {
 				font-weight: 650;
 			}
 		}
 
+		&.danger {
+			color: var(--color-error-800);
+			:global(:--dark) & {
+				color: var(--color-error-300);
+			}
+		}
+
 		:global(.button-icon) {
-			// opacity: unset;
-			// stroke-width: 2.5;
-			// width: 1.125em;
+			flex: none;
+			opacity: 0.5;
+			transition: all var(--duration-fast) ease-out;
+			width: 1.2em;
+			stroke-width: 2.25;
+			transform: translateX(0);
 		}
 	}
 
@@ -94,7 +117,7 @@
 		border-radius: inherit;
 		z-index: -1;
 		background-color: var(--color-primary-600);
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-primary-500);
 		}
 	}

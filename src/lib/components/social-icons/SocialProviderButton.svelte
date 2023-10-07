@@ -63,5 +63,5 @@
 	{details.name}
 </TooltipContent>
 
-<style lang="scss">
+<style lang="postcss">
 </style>

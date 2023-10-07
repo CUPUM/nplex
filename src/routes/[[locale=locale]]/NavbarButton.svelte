@@ -46,7 +46,7 @@
 	<slot />
 </svelte:element>
 
-<style lang="scss">
+<style lang="postcss">
 	.navbar-button {
 		--button-size: 3rem;
 		--button-padding: 1.1em;
@@ -75,12 +75,12 @@
 		&[data-state='open'] {
 			color: var(--color-primary-700);
 			background-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
-			@include dark {
+			:global(:--dark) & {
 				color: var(--color-primary-500);
 				background-color: color-mix(in srgb, var(--color-primary-600) 10%, transparent);
 			}
 
-			:global(.button-icon) {
+			& :global(.button-icon) {
 				stroke-width: 2.75;
 				transform: scale(0.92);
 			}
@@ -117,12 +117,12 @@
 			color: var(--color-primary-600);
 			outline-offset: 0;
 			outline: 3px solid color-mix(in hsl, var(--color-primary-600) 75%, transparent);
-			@include dark {
+			:global(:--dark) & {
 				color: var(--color-primary-500);
 				outline: 3px solid color-mix(in hsl, var(--color-primary-500) 50%, transparent);
 			}
 
-			:global(.button-icon) {
+			& :global(.button-icon) {
 				stroke-width: 3;
 			}
 		}

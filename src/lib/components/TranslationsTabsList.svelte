@@ -27,7 +27,7 @@
 	{/each}
 </menu>
 
-<style lang="scss">
+<style lang="postcss">
 	menu {
 		--tab-list-padding: 3px;
 		--tab-button-radius: var(--radius-full);
@@ -38,7 +38,7 @@
 		padding: var(--tab-list-padding);
 		border-radius: calc(var(--tab-button-radius) + var(--tab-list-padding));
 		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
-		@include dark {
+		:global(:--dark) & {
 			background-color: color-mix(in srgb, var(--color-neutral-900) 50%, transparent);
 		}
 	}
@@ -56,7 +56,7 @@
 		color: var(--color-neutral-600);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 0%, transparent);
 		transition: all 0.1s ease-out;
-		@include dark {
+		:global(:--dark) & {
 			background-color: color-mix(in srgb, var(--color-neutral-500) 0%, transparent);
 			color: var(--color-neutral-400);
 		}
@@ -65,7 +65,7 @@
 			&:not(&[data-state='active']) {
 				color: var(--color-neutral-900);
 				background-color: color-mix(in srgb, var(--color-neutral-400) 10%, transparent);
-				@include dark {
+				:global(:--dark) & {
 					background-color: color-mix(in srgb, var(--color-neutral-400) 10%, transparent);
 					color: var(--color-neutral-100);
 				}
@@ -74,7 +74,7 @@
 		&[data-state='active'] {
 			cursor: default;
 			color: var(--color-neutral-950);
-			@include dark {
+			:global(:--dark) & {
 				color: var(--color-neutral-50);
 			}
 		}
@@ -86,7 +86,7 @@
 		inset: 0;
 		border-radius: inherit;
 		background-color: white;
-		@include dark {
+		:global(:--dark) & {
 			background-color: color-mix(in srgb, var(--color-neutral-400) 20%, transparent);
 		}
 	}

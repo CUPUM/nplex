@@ -6,5 +6,5 @@
 
 <h1>Guides</h1>
 
-<style lang="scss">
+<style lang="postcss">
 </style>

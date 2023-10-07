@@ -24,7 +24,7 @@
 	</a>
 </article>
 
-<style lang="scss">
+<style lang="postcss">
 	.create {
 		padding: 3rem;
 	}

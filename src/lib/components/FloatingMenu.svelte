@@ -17,13 +17,13 @@
 	<slot />
 </svelte:element>
 
-<style lang="scss">
+<style lang="postcss">
 	.menu {
 		border-radius: var(--radius-md);
 		background-color: var(--color-neutral-50);
 		display: flex;
 		flex-direction: column;
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-neutral-800);
 		}
 	}

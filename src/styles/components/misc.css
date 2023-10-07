@@ -1,0 +1,19 @@
+.dim {
+	opacity: 0.7;
+}
+
+.dimmer {
+	opacity: 0.4;
+}
+
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}

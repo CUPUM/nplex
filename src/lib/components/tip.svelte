@@ -43,7 +43,7 @@
 	<path {d} />
 </svg>
 
-<style lang="scss">
+<style lang="postcss">
 	.tip {
 		pointer-events: none;
 		user-select: none;

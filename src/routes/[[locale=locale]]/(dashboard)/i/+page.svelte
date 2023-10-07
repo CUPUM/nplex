@@ -4,5 +4,5 @@
 
 <article>Hello world</article>
 
-<style lang="scss">
+<style lang="postcss">
 </style>

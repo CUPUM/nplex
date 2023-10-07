@@ -54,7 +54,7 @@
 	</svg>
 </div>
 
-<style lang="scss">
+<style lang="postcss">
 	.loading {
 		user-select: none;
 		pointer-events: none;

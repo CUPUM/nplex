@@ -142,14 +142,14 @@
 	</menu>
 {/if}
 
-<style lang="scss">
+<style lang="postcss">
 	#navdrawer-overlay {
 		position: fixed;
 		inset: 0;
 		z-index: 101;
 		opacity: 0.98;
 		background: linear-gradient(180deg, var(--color-neutral-100) 25%, transparent 125%);
-		@include dark {
+		:global(:--dark) & {
 			background: linear-gradient(180deg, var(--color-neutral-950) 25%, transparent 125%);
 		}
 	}
@@ -172,7 +172,7 @@
 			outline: none;
 		}
 
-		@include md {
+		@media (--md) {
 			grid-template-columns: 1fr 1fr 1fr 1fr;
 		}
 	}
@@ -184,7 +184,7 @@
 		pointer-events: initial;
 		border-radius: var(--radius-3xl);
 		background-color: var(--color-neutral-50);
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-neutral-900);
 		}
 	}
@@ -210,7 +210,7 @@
 		color: var(--color-error-500);
 		background-color: var(--color-neutral-50);
 		transition: all 0.15s ease-out;
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-neutral-900);
 		}
 		&:hover,
@@ -218,7 +218,7 @@
 			color: var(--color-error-950);
 			background-color: var(--color-error-300);
 			transform: rotateZ(90deg);
-			@include dark {
+			:global(:--dark) & {
 				color: var(--color-error-50);
 				background-color: var(--color-error-700);
 			}
@@ -289,7 +289,7 @@
 		&:focus-visible:not([data-current]) {
 			color: var(--color-primary-500);
 			background-color: color-mix(in srgb, var(--color-primary-300) 20%, transparent);
-			@include dark {
+			:global(:--dark) & {
 				background-color: color-mix(in srgb, var(--color-primary-700) 20%, transparent);
 			}
 		}

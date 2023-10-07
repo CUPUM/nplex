@@ -36,7 +36,7 @@
 	</article>
 {/if}
 
-<style lang="scss">
+<style lang="postcss">
 	article {
 		flex: 1;
 		display: flex;
@@ -54,7 +54,7 @@
 	}
 
 	div {
-		max-width: var(--width-center);
+		max-width: var(--width-sm);
 	}
 
 	h1 {
@@ -63,7 +63,7 @@
 		color: var(--color-error-400);
 		line-height: 1.1;
 		margin-bottom: 1em;
-		@include dark {
+		:global(:--dark) & {
 			color: var(--color-error-200);
 		}
 

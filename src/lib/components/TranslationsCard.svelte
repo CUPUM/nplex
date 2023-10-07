@@ -92,7 +92,7 @@
 	{/if}
 </fieldset>
 
-<style lang="scss">
+<style lang="postcss">
 	fieldset {
 		position: relative;
 		display: flex;
@@ -103,20 +103,20 @@
 			all 0.1s,
 			background-color 0.25s;
 		border-radius: var(--radius-lg);
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-neutral-800);
 		}
 		&:hover {
-			@include light {
+			:global(:--light) & {
 				box-shadow: var(--shadow-md);
 			}
-			@include dark {
+			:global(:--dark) & {
 				background-color: var(--color-neutral-950);
 			}
 		}
 		&:focus-within {
 			background-color: white;
-			@include dark {
+			:global(:--dark) & {
 				background-color: var(--color-neutral-950);
 				box-shadow: var(--shadow-lg);
 			}
@@ -158,14 +158,14 @@
 		border-radius: var(--radius-full);
 		background-color: var(--color-neutral-100);
 		transition: all 0.1s;
-		@include dark {
+		:global(:--dark) & {
 			background-color: var(--color-neutral-700);
 		}
 
 		&:hover,
 		&:focus-visible {
 			background-color: var(--color-neutral-200);
-			@include dark {
+			:global(:--dark) & {
 				background-color: var(--color-neutral-600);
 			}
 		}

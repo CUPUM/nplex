@@ -107,6 +107,18 @@ Primitive button style component.
 				}
 			}
 		}
+		&[data-loading] {
+			color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+			:--dark & {
+				color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+			}
+			.loading {
+				color: var(--color-neutral-800);
+				:--dark & {
+					color: var(--color-neutral-200);
+				}
+			}
+		}
 	}
 
 	/*
@@ -148,6 +160,18 @@ Primitive button style component.
 				}
 			}
 		}
+		&[data-loading] {
+			color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+			:--dark & {
+				color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+			}
+			.loading {
+				color: var(--color-neutral-800);
+				:--dark & {
+					color: var(--color-neutral-200);
+				}
+			}
+		}
 	}
 
 	/*
@@ -173,6 +197,18 @@ Primitive button style component.
 				background-color: color-mix(in srgb, var(--color-error-400) 10%, transparent);
 				:--dark & {
 					color: var(--color-error-200);
+				}
+			}
+		}
+		&[data-loading] {
+			color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+			:--dark & {
+				color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+			}
+			.loading {
+				color: var(--color-neutral-800);
+				:--dark & {
+					color: var(--color-neutral-200);
 				}
 			}
 		}
@@ -220,6 +256,18 @@ Primitive button style component.
 			text-underline-offset: 0.5em;
 			:--dark & {
 				color: var(--color-primary-400);
+			}
+		}
+		&[data-loading] {
+			color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+			:--dark & {
+				color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+			}
+			.loading {
+				color: var(--color-neutral-800);
+				:--dark & {
+					color: var(--color-neutral-200);
+				}
 			}
 		}
 		&.danger {

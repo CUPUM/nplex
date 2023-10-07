@@ -83,7 +83,6 @@
 		getLoadingNewProject,
 	} from '../../routes/[[locale=locale]]/Contexts.svelte';
 	import NavbarButton from './NavbarButton.svelte';
-	import NavbarDrawer from './NavbarDrawer.svelte';
 	import NavbarMenu from './NavbarMenu.svelte';
 	import NavbarMenuButton from './NavbarMenuButton.svelte';
 	import NavbarMenuGroup from './NavbarMenuGroup.svelte';
@@ -170,7 +169,7 @@
 						<MoreHorizontal class="button-icon" />
 					</NavbarButton>
 					<div use:melt={$drawerPortalled}>
-						<NavbarDrawer {...drawerElements} open={drawerOpen} />
+						<!-- <NavbarDrawer {...drawerElements} open={drawerOpen} /> -->
 					</div>
 				{/if}
 			</nav>
@@ -330,7 +329,7 @@
 	<div class="placeholder"></div>
 {/if}
 
-<style lang="scss">
+<style lang="postcss">
 	.placeholder {
 		position: sticky;
 		top: 0;
@@ -347,7 +346,7 @@
 		align-items: center;
 		justify-content: center;
 
-		@include lg {
+		@media (--lg) {
 			padding: 0.75rem;
 		}
 
@@ -358,7 +357,7 @@
 			opacity: 0;
 			transition: all 1s ease-out;
 			background: linear-gradient(var(--color-neutral-100), transparent);
-			@include dark {
+			:global(:--dark) & {
 				background: linear-gradient(var(--color-neutral-900), transparent);
 			}
 		}
@@ -371,9 +370,9 @@
 	}
 
 	.inner {
+		display: grid;
 		font-weight: 500;
 		flex-direction: row;
-		display: grid;
 		grid-template-columns:
 			[full-start site-start]
 			1fr
@@ -383,10 +382,10 @@
 			1fr
 			[user-end full-end];
 		width: 100%;
-		max-width: var(--width-main);
+		max-width: var(--width-lg);
 		transition: max-width 0.35s var(--ease-expo);
 
-		.full-width & {
+		:global(:--setout-full-width) & {
 			max-width: 100%;
 		}
 	}
@@ -411,18 +410,18 @@
 		border-radius: var(--base-radius);
 		padding: var(--group-inset);
 		backdrop-filter: blur(8px);
-		@include dark {
+		:global(:--dark) & {
 			background-color: rgba(255, 255, 255, 0.05);
 		}
 
-		.needle {
+		& .needle {
 			position: absolute;
 			z-index: -1;
 			inset: 0;
 			border-radius: inherit;
 			background-color: var(--color-neutral-50);
 			outline: 3px solid color-mix(in hsl, var(--color-primary-600) 75%, transparent);
-			@include dark {
+			:global(:--dark) & {
 				background-color: var(--color-neutral-900);
 			}
 		}
@@ -449,7 +448,7 @@
 			background-color: var(--color-primary-700);
 			box-shadow: 0 0 0 -0.5px currentColor;
 			opacity: 1;
-			@include dark {
+			:global(:--dark) & {
 				color: var(--color-neutral-900);
 				background-color: var(--color-primary-400);
 			}

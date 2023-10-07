@@ -57,7 +57,7 @@
 	</fieldset>
 </form>
 
-<style lang="scss">
+<style lang="postcss">
 	form {
 		font-size: var(--size-sm);
 	}

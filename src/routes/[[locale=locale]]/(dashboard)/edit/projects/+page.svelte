@@ -5,5 +5,5 @@
 <section>Create new</section>
 <section>Find existing</section>
 
-<style lang="scss">
+<style lang="postcss">
 </style>

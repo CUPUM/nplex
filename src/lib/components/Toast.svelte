@@ -86,7 +86,7 @@
 	</div>
 </div>
 
-<style lang="scss">
+<style lang="postcss">
 	.container {
 		// rounded-lg bg-neutral-700 text-white shadow-md
 		pointer-events: initial;
@@ -95,7 +95,7 @@
 		background-color: var(--color-neutral-50);
 		box-shadow: var(--shadow-lg);
 
-		@include dark {
+		:global(:--dark) & {
 			color: var(--color-neutral-100);
 			background-color: var(--color-neutral-800);
 		}
