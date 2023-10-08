@@ -1,8 +1,7 @@
 <script lang="ts">
-	export let data;
 </script>
 
-<h1>Org</h1>
+<form action="">Org form goes here</form>
 
 <style lang="postcss">
 </style>

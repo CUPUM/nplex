@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { createFormActionLoading } from '$lib/actions/loading';
-
 	import type { ZodValidation } from 'sveltekit-superforms';
 	import type { SuperForm } from 'sveltekit-superforms/client';
 	import type { AnyZodObject } from 'zod';
@@ -34,14 +33,32 @@
 			<slot name="header" currentAction={$input?.action} />
 		</header>
 	{/if}
-	<slot currentAction={$input?.action} element={$element} {loading} />
+	<div class="content">
+		<slot currentAction={$input?.action} element={$element} {loading} />
+	</div>
 </form>
 
 <style lang="postcss">
 	form {
-		padding: 1rem;
+		border-radius: inherit;
+		border-bottom-left-radius: 0px;
+		border-bottom-right-radius: 0px;
 	}
 
 	header {
+		padding: 3rem;
+		padding-top: 1rem;
+		background-color: rgba(255, 255, 255, 0.5);
+		border-radius: inherit;
+		:global(:--dark) & {
+			background-color: color-mix(in srgb, var(--color-neutral-950) 20%, transparent);
+		}
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+		container-type: inline-size;
 	}
 </style>

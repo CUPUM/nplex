@@ -1,8 +1,8 @@
 import { USER_ROLES } from '$lib/auth/constants';
 import { withRole } from '$lib/auth/guard.server';
-import { organizationTypesUpdateSchema, projectTypesUpdateSchema } from '$lib/db/crud';
+import { organizationTypesUpdateSchema } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
-import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public';
+import { organizationTypes, organizationTypesTranslations } from '$lib/db/schema/public';
 import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
@@ -11,7 +11,6 @@ import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withRole(event, USER_ROLES.ADMIN);
-
 	const types = (
 		await dbpool.query.organizationTypes.findMany({
 			with: {
@@ -19,9 +18,7 @@ export const load = async (event) => {
 			},
 		})
 	).map(reduceTranslations);
-
 	const form = await superValidate({ types }, organizationTypesUpdateSchema);
-
 	return { form };
 };
 
@@ -29,7 +26,7 @@ export const actions = {
 	create: async (event) => {
 		await withRole(event, USER_ROLES.ADMIN);
 		try {
-			await dbpool.insert(projectTypes).values({});
+			await dbpool.insert(organizationTypes).values({});
 		} catch (e) {
 			console.error(e);
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
@@ -42,7 +39,7 @@ export const actions = {
 			return fail(STATUS_CODES.BAD_REQUEST);
 		}
 		try {
-			await dbpool.delete(projectTypes).where(eq(projectTypes.id, id));
+			await dbpool.delete(organizationTypes).where(eq(organizationTypes.id, id));
 		} catch (e) {
 			console.error(e);
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
@@ -50,27 +47,27 @@ export const actions = {
 	},
 	update: async (event) => {
 		await withRole(event, USER_ROLES.ADMIN);
-		const form = await superValidate(event, projectTypesUpdateSchema);
+		const form = await superValidate(event, organizationTypesUpdateSchema);
 		if (!form.valid) {
 			console.info(form.errors);
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
 		try {
 			await dbpool.transaction(async (tx) => {
-				const [pt, ptt] = extractTranslations(form.data.types);
+				const [ot, ott] = extractTranslations(form.data.types);
 				await tx
-					.insert(projectTypes)
-					.values(pt)
+					.insert(organizationTypes)
+					.values(ot)
 					.onConflictDoUpdate({
-						target: projectTypes.id,
-						set: getAllExcluded(projectTypes),
+						target: organizationTypes.id,
+						set: getAllExcluded(organizationTypes),
 					});
 				await tx
-					.insert(projectTypesTranslations)
-					.values(ptt)
+					.insert(organizationTypesTranslations)
+					.values(ott)
 					.onConflictDoUpdate({
-						target: [projectTypesTranslations.id, projectTypesTranslations.locale],
-						set: getAllExcluded(projectTypesTranslations),
+						target: [organizationTypesTranslations.id, organizationTypesTranslations.locale],
+						set: getAllExcluded(organizationTypesTranslations),
 					});
 			});
 			return { form };

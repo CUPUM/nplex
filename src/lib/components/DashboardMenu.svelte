@@ -21,9 +21,17 @@
 		font-size: var(--size-sm);
 		background-color: color-mix(in srgb, var(--color-neutral-50) 50%, transparent);
 		backdrop-filter: blur(8px);
+		transition: all var(--duration-medium) var(--ease-out-expo);
 
 		:global(:--dark) & {
 			background-color: color-mix(in srgb, var(--color-neutral-800) 50%, transparent);
+		}
+
+		&:empty {
+			opacity: 0;
+			transform: translateY(0.5em);
+			pointer-events: none;
+			transition: all var(--duration-fast) var(--ease-in-expo);
 		}
 
 		@container (width > 1200px) {

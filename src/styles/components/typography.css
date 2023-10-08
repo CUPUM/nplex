@@ -29,11 +29,9 @@ Headings
 		font-size: var(--size-3xl);
 	}
 	/* Medium heading */
-	&.md {
-		line-height: 1.2;
-		font-weight: 625;
-		font-size: var(--size-2xl);
-	}
+	line-height: 1.2;
+	font-weight: 625;
+	font-size: var(--size-2xl);
 	/* Small heading */
 	&.sm {
 		line-height: 1.275;
@@ -75,11 +73,9 @@ Prose
 		line-height: 1.35em;
 	}
 	/* Regular text */
-	&.md {
-		/* font-weight: 350; */
-		font-size: var(--size-md);
-		line-height: 1.4em;
-	}
+	/* font-weight: 350; */
+	font-size: var(--size-md);
+	line-height: 1.4em;
 	/* Small text */
 	&.sm {
 		/* font-weight: 360; */

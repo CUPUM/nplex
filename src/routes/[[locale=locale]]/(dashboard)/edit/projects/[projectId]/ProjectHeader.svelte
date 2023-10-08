@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { composeMeshgradient } from '$lib/utils/mesh-gradient';
 	import type { PageData } from './$types';
 
 	$: title = ($page.data as PageData).form?.data?.translations?.[$page.data.locale]?.title;
 	$: console.log($page.data.form);
 </script>
 
-<header style:background={composeMeshgradient({ opacity: [0.25, 0.5] })}>
+<!-- <header style:background={composeMeshgradient({ opacity: [0.25, 0.5] })}> -->
+<header>
 	<hgroup>
 		<h1 class="heading xl">{title}</h1>
 	</hgroup>

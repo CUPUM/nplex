@@ -3,13 +3,21 @@
 	import { slide } from '$lib/transitions/slide';
 	import { expoOut } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
+
+	let scrollY = 0;
+	let headerHeight = 0;
 </script>
+
+<svelte:window bind:scrollY />
 
 <article>
 	{#if $page.data.dashboard?.header}
 		<header
 			in:slide={{ duration: 750, easing: expoOut, opacity: 0 }}
 			out:slide={{ easing: expoOut, duration: 500, opacity: 0 }}
+			class:detached={scrollY > headerHeight}
+			class:scrolled={scrollY > 0}
+			bind:clientHeight={headerHeight}
 		>
 			<svelte:component this={$page.data.dashboard.header} />
 		</header>
@@ -41,6 +49,22 @@
 		margin-bottom: 0.5rem;
 		border-radius: var(--radius-xl);
 		overflow: hidden;
+		position: sticky;
+		top: var(--navbar-height);
+		z-index: -1;
+		transform: scale(1);
+		transition: all var(--duration-medium) var(--ease-out-expo);
+
+		&.detached {
+			opacity: 0;
+			pointer-events: none;
+			transition: all var(--duration-medium) ease-out;
+		}
+
+		&.scrolled {
+			transform: scale(0.98);
+			transition: all var(--duration-2xslow) var(--ease-out-expo);
+		}
 	}
 
 	.dashboard-breadcrumbs {

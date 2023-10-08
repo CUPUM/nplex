@@ -1,5 +1,11 @@
-export const load = async () => {};
+import { withAuth } from '$lib/auth/guard.server';
+
+export const load = async (event) => {
+	await withAuth(event);
+};
 
 export const actions = {
-	default: async () => {},
+	update: async (event) => {
+		await withAuth(event);
+	},
 };

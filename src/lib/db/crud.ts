@@ -219,10 +219,11 @@ export const projectTranslationsInsertSchema = createInsertSchema(projectsTransl
 	description: (s) => s.description.max(5000),
 	locale: localeSchema,
 });
-export const projectUpdateSchema = withTranslationsSchema(
-	projectInsertSchema,
+export const projectGeneralUpdateSchema = withTranslationsSchema(
+	projectInsertSchema.pick({ id: true, typeId: true }),
 	projectTranslationsInsertSchema
 );
+// export const projectPlaceUpdateSchema =
 
 /** Projects interventions. */
 

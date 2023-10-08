@@ -1,4 +1,3 @@
-import { withAuth } from '$lib/auth/guard.server';
 import { dbpool } from '$lib/db/db.server';
 import {
 	projectExemplarityCategories,
@@ -11,8 +10,7 @@ import {
 	projectTypes,
 } from '$lib/db/schema/public';
 
-export const load = async (event) => {
-	await withAuth(event);
+export const load = async () => {
 	const descriptors = await dbpool.transaction(async (tx) => {
 		const types = await tx.select().from(projectTypes);
 		const interventionCategories = await tx.select().from(projectInterventionCategories);
@@ -34,5 +32,8 @@ export const load = async (event) => {
 			imageTypes,
 		};
 	});
-	return { descriptors };
+	return {
+		descriptors,
+		test: 'asdas',
+	};
 };
