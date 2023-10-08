@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Footer from '$lib/components/Footer.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
+	import Footer from '$lib/components/_footer.svelte';
 	import { onMount } from 'svelte';
 	import Contexts from './Contexts.svelte';
 	import Navbar from './Navbar.svelte';
