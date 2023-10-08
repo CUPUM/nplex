@@ -10,7 +10,7 @@
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
-	import { dt } from '../translations';
+	import { dt } from '../../../translations';
 
 	const t = createTranslations({
 		fr: {

@@ -4,6 +4,8 @@ import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { users } from './schema/accounts';
 import {
+	organizationTypes,
+	organizationTypesTranslations,
 	organizations,
 	organizationsTranslations,
 	projectBuildingLevelTypes,
@@ -206,6 +208,20 @@ export const projectUpdateSchema = withTranslationsSchema(
 /** Projects exemplarity indicators. */
 
 /** Projects images credits. */
+
+/** Organization types. */
+export const organizationTypeInsertSchema = createInsertSchema(organizationTypes).required({
+	id: true,
+});
+export const organizationTypeTranslationInsertSchema = createInsertSchema(
+	organizationTypesTranslations,
+	{ locale: localeSchema }
+);
+export const organizationTypesUpdateSchema = z.object({
+	types: z.array(
+		withTranslationsSchema(organizationTypeInsertSchema, organizationTypeTranslationInsertSchema)
+	),
+});
 
 /** Organizations. */
 export const organizationInsertSchema = createInsertSchema(organizations).required({

@@ -14,12 +14,12 @@
 
 	const t = createTranslations({
 		fr: {
-			heading: 'Types de projet',
-			entity: 'type de projet',
+			heading: 'Modes d’implantation',
+			entity: 'mode d’implantation',
 		},
 		en: {
-			heading: 'Project types',
-			entity: 'project type',
+			heading: 'Implantation modes',
+			entity: 'implantation mode',
 		},
 	});
 
@@ -30,25 +30,25 @@
 	});
 </script>
 
-<DescriptorsForm action="?/update" {enhance} let:element let:loading>
-	<svellte:fragment slot="header">
+<DescriptorsForm action="?/update" {enhance} let:loading let:element>
+	<svelte:fragment slot="header">
 		<h2 class="heading lg">{$t.heading}</h2>
 		<p class="prose md dimmer">
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur magni quo accusantium
 			perferendis quis, minus iste commodi error nostrum tempora?
 		</p>
-	</svellte:fragment>
+	</svelte:fragment>
 	<DescriptorsCardsList>
-		{#each $form.types as type, i (type.id)}
+		{#each $form.implantationTypes as implantation, i (implantation.id)}
 			<li
 				in:fly|global={{ y: -6, delay: i * 25, easing: expoOut, duration: 350 }}
 				out:scale={{ start: 0.95, duration: 250, easing: expoOut }}
 				animate:flip={{ duration: (l) => 150 + l / 10 }}
 			>
 				<TranslationsCard
-					legend={type.id}
-					legendMinimized={type.translations[$page.data.locale].title}
-					deleteFormaction="?/delete&typeId={type.id}"
+					legend={implantation.id}
+					legendMinimized={implantation.translations[$page.data.locale].title}
+					deleteFormaction="?/delete&implantationTypeId={implantation.id}"
 					let:locale
 				>
 					<label class="labeled-group">
@@ -58,21 +58,29 @@
 						<input
 							class="input"
 							type="text"
-							bind:value={$form.types[i].translations[locale].title}
+							bind:value={$form.implantationTypes[i].translations[locale].title}
 						/>
 					</label>
 					<label class="labeled-group">
 						<span class="label with-hover">
 							{$dt.description}
 						</span>
-						<textarea class="input" bind:value={$form.types[i].translations[locale].description} />
+						<textarea
+							class="input"
+							bind:value={$form.implantationTypes[i].translations[locale].description}
+						/>
 					</label>
 				</TranslationsCard>
 			</li>
 		{/each}
 	</DescriptorsCardsList>
 	<DashboardMenu>
-		<button class="button outlined" {...element('?/create')} use:loading type="submit">
+		<button
+			class="button outlined"
+			{...element(`?/create&verticalIndex=${$form.implantationTypes.length}`)}
+			use:loading
+			type="submit"
+		>
 			<Plus class="button-icon" />
 			{$dt.create($t.entity)}
 		</button>

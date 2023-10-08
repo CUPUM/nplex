@@ -9,7 +9,7 @@
 
 	const t = createTranslations({
 		fr: {
-			heading: 'Descripteurs',
+			heading: 'Descripteurs de projet',
 			items: {
 				types: 'Types de projet',
 				interventions: 'Intervention',
@@ -25,7 +25,7 @@
 			},
 		},
 		en: {
-			heading: 'Descriptors',
+			heading: 'Project descriptors',
 			items: {
 				types: 'Project types',
 				interventions: 'Interventions',
@@ -59,7 +59,7 @@
 	<DashboardNavItem {...$link('/edit/projects/descriptors/ownerships')}>
 		{$t.items.ownerships}
 	</DashboardNavItem>
-	<DashboardNavItem {...$link('/edit/projects/descriptors/implantation')}>
+	<DashboardNavItem {...$link('/edit/projects/descriptors/implantations')}>
 		{$t.items.implantation}
 	</DashboardNavItem>
 	<DashboardNavItem {...$link('/edit/projects/descriptors/levels')}>

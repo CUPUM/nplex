@@ -1,6 +1,9 @@
 import { relations } from 'drizzle-orm';
 import { locales } from './i18n';
 import {
+	organizationTypes,
+	organizationTypesTranslations,
+	organizations,
 	projectBuildingLevelTypes,
 	projectBuildingLevelTypesTranslations,
 	projectExemplarityCategories,
@@ -272,3 +275,25 @@ export const projectsTranslationsRelations = relations(projectsTranslations, ({ 
 		}),
 	};
 });
+
+export const organizationTypesRelations = relations(organizationTypes, ({ many }) => {
+	return {
+		organizations: many(organizations),
+		translations: many(organizationTypesTranslations),
+	};
+});
+export const organizationTypesTranslationsRelations = relations(
+	organizationTypesTranslations,
+	({ one }) => {
+		return {
+			locale: one(locales, {
+				fields: [organizationTypesTranslations.locale],
+				references: [locales.locale],
+			}),
+			type: one(organizationTypes, {
+				fields: [organizationTypesTranslations.id],
+				references: [organizationTypes.id],
+			}),
+		};
+	}
+);

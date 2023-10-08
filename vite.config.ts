@@ -18,7 +18,7 @@ export default defineConfig({
 				presetenv({
 					stage: 2,
 					features: {
-						'cascade-layers': true,
+						'cascade-layers': false, // This polyfill doesnt work properly with svelte-scoped styles as it can't analyze them.
 						'nesting-rules': true,
 						'custom-media-queries': true,
 						'media-query-ranges': true,

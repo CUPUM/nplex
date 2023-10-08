@@ -3,7 +3,7 @@
 	import { ripple } from '$lib/actions/ripple';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
+	import { Eye, EyeOff, HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
 
@@ -29,6 +29,8 @@
 	});
 
 	export let data;
+
+	let showPassword = false;
 
 	const { form, enhance, constraints, errors, delayed, submitting } = superForm(data.form, {
 		taintedMessage: null,
@@ -56,18 +58,42 @@
 			{...$constraints.email}
 		/>
 	</label>
-	<label class="labeled-group">
-		<span class="label" in:fly|global={{ y: 6, delay: STAGGER }}>{$t.password}</span>
-		<input
-			in:fly|global={{ y: -6, delay: STAGGER }}
-			class="input"
-			type="password"
-			name="password"
-			aria-invalid={$errors.password ? true : undefined}
-			bind:value={$form.password}
-			{...$constraints.password}
-		/>
-	</label>
+	<fieldset class="labeled-group">
+		<legend class="label" in:fly|global={{ y: 6, delay: STAGGER }}>{$t.password}</legend>
+		<div class="input-group">
+			<input
+				in:fly|global={{ y: -6, delay: STAGGER }}
+				class="input"
+				type={showPassword ? 'text' : 'password'}
+				name="password"
+				aria-invalid={$errors.password ? true : undefined}
+				on:input={(e) => {
+					if (e.target instanceof HTMLElement && 'value' in e.target) {
+						$form.password = String(e.target.value);
+					}
+				}}
+				value={$form.password}
+				{...$constraints.password}
+			/>
+			<div class="input-peer">
+				<button
+					class="button square ghost"
+					type="button"
+					on:click={() => (showPassword = !showPassword)}
+				>
+					{#if showPassword}
+						<div in:fly={{ x: -8 }}>
+							<EyeOff class="button-icon" />
+						</div>
+					{:else}
+						<div in:fly={{ x: 8 }}>
+							<Eye class="button-icon" />
+						</div>
+					{/if}
+				</button>
+			</div>
+		</div>
+	</fieldset>
 	<button
 		in:fly|global={{ y: -6, delay: 2 * STAGGER }}
 		class="button cta center"

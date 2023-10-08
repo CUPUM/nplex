@@ -14,12 +14,12 @@
 
 	const t = createTranslations({
 		fr: {
-			heading: 'Types de projet',
-			entity: 'type de projet',
+			heading: 'Types d’organisation',
+			entity: 'type d’organisation',
 		},
 		en: {
-			heading: 'Project types',
-			entity: 'project type',
+			heading: 'Organization types',
+			entity: 'organization type',
 		},
 	});
 

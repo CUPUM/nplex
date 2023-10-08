@@ -1,8 +1,31 @@
 <script lang="ts">
+	import Loading from '$lib/components/Loading.svelte';
+	import { createTranslations } from '$lib/i18n/translate';
+
 	export let data;
+
+	const t = createTranslations({
+		fr: {
+			heading: 'Bientôt disponible',
+			subheading:
+				'Nous vous dévoilerons bientôt la plateforme Nplex et ses projets! Restez à l’affut.',
+		},
+		en: {
+			heading: 'Coming soon',
+			subheading: 'We will soon publish the Nplex app and its projects! Stay tuned.',
+		},
+	});
 </script>
 
-<h1>nplex</h1>
+<article>
+	<div class="anim">
+		<Loading thickness=".5" speed={0.025} trail={false} outro={false} />
+	</div>
+	<header>
+		<h1 class="heading xl center">{$t.heading}</h1>
+		<p class="prose sm center">{$t.subheading}</p>
+	</header>
+</article>
 
 <!-- <header></header>
 <article>
@@ -37,19 +60,50 @@
 </article> -->
 
 <style lang="postcss">
-	/* @custom-selector: --dark [data-mode='dark']; */
-
-	h1 {
-		color: var(--color-primary-400);
+	article {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		position: relative;
 	}
 
-	:global(:--dark) h1 {
-		color: green !important;
-	}
-
-	@media (--md) {
-		h1 {
-			color: red;
+	header {
+		position: relative;
+		max-width: var(--width-sm);
+		padding: 2rem;
+		&::after {
+			z-index: -1;
+			content: '';
+			position: absolute;
+			width: 100%;
+			aspect-ratio: 1;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-radius: 50%;
+			filter: blur(50px);
+			opacity: 0.75;
+			background-color: var(--base-bg);
+			transition: all var(--duration-fast) ease-out;
 		}
+
+		h1 {
+			margin: 0;
+		}
+
+		p {
+			color: var(--color-neutral-500);
+		}
+	}
+
+	.anim {
+		/* opacity: 0.5; */
+		position: absolute;
+		inset: 0;
+		font-size: 25em;
+		color: var(--color-primary-500);
+		z-index: -2;
 	}
 </style>

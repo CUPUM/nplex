@@ -2,10 +2,10 @@
 Headings
 */
 .heading {
-	color: var(--color-neutral-800);
+	/* color: var(--color-neutral-800); */
 	font-optical-sizing: auto;
 	:--dark & {
-		color: var(--color-neutral-200);
+		/* color: var(--color-neutral-200); */
 	}
 	&:is(h1, h2, h3, h4, h5, h6) {
 		margin-block: 1em;
@@ -48,6 +48,7 @@ Prose
 .prose {
 	color: var(--color-neutral-700);
 	font-optical-sizing: auto;
+	font-weight: 300;
 	:--dark & {
 		color: var(--color-neutral-300);
 	}
@@ -57,27 +58,27 @@ Prose
 	}
 	/* Extra large text */
 	&.xl {
-		font-weight: 300;
+		/* font-weight: 300; */
 		line-height: 1.3em;
 	}
 	/* Large text */
 	&.lg {
-		font-weight: 325;
+		/* font-weight: 325; */
 		line-height: 1.35em;
 	}
 	/* Regular text */
 	&.md {
-		font-weight: 350;
+		/* font-weight: 350; */
 		line-height: 1.4em;
 	}
 	/* Small text */
 	&.sm {
-		font-weight: 360;
+		/* font-weight: 360; */
 		line-height: 1.45em;
 	}
 	/* Extra small text */
 	&.xs {
-		font-weight: 375;
+		/* font-weight: 375; */
 		line-height: 1.5em;
 	}
 }

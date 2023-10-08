@@ -19,6 +19,7 @@ textarea.input {
 		align-self: stretch;
 		border-radius: inherit;
 		outline: none;
+		flex: 1;
 	}
 }
 .input:not(.input-group *),

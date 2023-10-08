@@ -9,7 +9,7 @@
 
 	const t = createTranslations({
 		fr: {
-			heading: 'Descripteurs',
+			heading: 'Descripteurs d’organisation',
 			items: {
 				types: 'Types d’organisation',
 			},
@@ -19,7 +19,7 @@
 			},
 		},
 		en: {
-			heading: 'Descriptors',
+			heading: 'Organization descriptors',
 			items: {
 				types: 'Organization types',
 			},
@@ -35,7 +35,7 @@
 	<svelte:fragment slot="heading">
 		{$t.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link('/edit/projects/descriptors/types')}>
+	<DashboardNavItem {...$link('/edit/organizations/descriptors/types')}>
 		{$t.items.types}
 	</DashboardNavItem>
 </DashboardNav>

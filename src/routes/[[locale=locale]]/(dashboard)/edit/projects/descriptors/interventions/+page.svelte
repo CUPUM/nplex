@@ -168,10 +168,10 @@
 		container-type: inline-size;
 		max-width: var(--width-md);
 		gap: 1rem;
+		align-self: center;
 		width: 100%;
 
-		@container (width > 1000px) {
-			align-self: center;
+		@container (width > 1200px) {
 			margin-right: var(--dashboard-navbar);
 		}
 	}

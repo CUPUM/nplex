@@ -20,7 +20,6 @@
 		width: 100%;
 
 		@container (width > 1200px) {
-			align-self: center;
 			margin-right: var(--dashboard-navbar);
 		}
 

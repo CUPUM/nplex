@@ -285,7 +285,7 @@ Primitive button style component.
 		color: var(--color-neutral-100);
 		background-color: var(--color-primary-950);
 		:--dark & {
-			color: var(--color-neutral-800);
+			color: var(--color-neutral-900);
 			background-color: var(--color-primary-500);
 		}
 		&:hover,
@@ -293,7 +293,7 @@ Primitive button style component.
 			color: var(--color-primary-50);
 			background-color: var(--color-primary-800);
 			:--dark & {
-				color: var(--color-primary-900);
+				color: var(--color-primary-950);
 				background-color: var(--color-primary-400);
 			}
 		}

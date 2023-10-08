@@ -1,3 +1,5 @@
+@layer preflight, base, components;
+
 @import './styles/preflight.css' layer(preflight);
 @import './styles/base.css' layer(base);
 @import './styles/components/typography.css' layer(components);

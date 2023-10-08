@@ -200,7 +200,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5em;
-		margin-top: 1rem;
+		margin-top: 0.5rem;
 		font-size: var(--size-sm);
 	}
 </style>

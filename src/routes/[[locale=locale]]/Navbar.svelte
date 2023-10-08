@@ -279,11 +279,7 @@
 									{$t.new.organization}
 									<FilePlus2 class="button-icon" />
 								</NavbarMenuButton>
-								<NavbarMenuButton
-									{...$link('/edit/organizations/descriptors')}
-									data-disabled
-									melt={userItem}
-								>
+								<NavbarMenuButton {...$link('/edit/organizations/descriptors')} melt={userItem}>
 									{$t.edit.organizationsDescriptors}
 									<Sliders class="button-icon" />
 								</NavbarMenuButton>

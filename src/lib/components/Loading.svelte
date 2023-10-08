@@ -12,6 +12,10 @@
 	export let thickness: SVGAttributes<SVGPathElement>['stroke-width'] = 12;
 	export let linecap: SVGAttributes<SVGPathElement>['stroke-linecap'] = 'round';
 	export let linejoin: SVGAttributes<SVGPathElement>['stroke-linejoin'] = 'round';
+	export let speed: number = 1;
+	export let trail: boolean = true;
+	export let intro: boolean = true;
+	export let outro: boolean = true;
 
 	const origin = '50,95';
 	const circle = 'A 45,45 0,1,1 50.1,95';
@@ -21,25 +25,24 @@
 	const d = `M ${origin} ${circle} ${square} ${arc} ${triangle} Z`;
 
 	// let path: SVGPathElement | undefined;
-
 	// $: if (path) {
 	// 	console.log(path.getTotalLength());
 	// }
 </script>
 
-<div class="loading" style:color style:--speed={1}>
+<div class="loading" style:color style:--speed={speed}>
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
 		in:transform|global={{
-			duration: 750,
+			duration: intro ? 750 : 0,
 			scale: 0.5,
 			rotate: [0, 0, -180],
 			opacity: 1,
 			easing: expoOut,
 		}}
 		out:scale|global={{
-			duration: 150,
+			duration: outro ? 150 : 0,
 			start: 0.9,
 			easing: quadIn,
 		}}
@@ -50,7 +53,9 @@
 		style:--linejoin={linejoin}
 	>
 		<path {d} />
-		<path class="secondary" {d} />
+		{#if trail}
+			<path class="secondary" {d} />
+		{/if}
 	</svg>
 </div>
 
@@ -98,7 +103,7 @@
 	}
 
 	.secondary {
-		animation-delay: 0.1s;
+		animation-delay: calc(var(--total-duration) / 40);
 		opacity: 0.35;
 		stroke-dasharray: var(--tail) calc(var(--length) + var(--trace) - var(--tail));
 	}

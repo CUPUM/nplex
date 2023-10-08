@@ -741,23 +741,26 @@ export const projectsViews = pgTable(
 /** Formats or domains of operation that can caracterize registered organizations. */
 export const organizationTypes = pgTable('organization_types', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 });
 export const organizationTypesTranslations = pgTable(
 	'organization_types_t',
 	{
-		id: text('id').references(() => organizationTypes.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		id: text('id')
+			.notNull()
+			.references(() => organizationTypes.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 		locale: locale('locale')
 			.notNull()
 			.references(() => locales.locale, {
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			}),
-		title: text('title').notNull(),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -770,23 +773,26 @@ export const organizationTypesTranslations = pgTable(
 /** Professions heralded by design offices or communities. */
 export const organizationExpertises = pgTable('organization_expertises', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 });
 export const organizationExpertisesTranslations = pgTable(
 	'organization_expertises_t',
 	{
-		id: text('id').references(() => organizationExpertises.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		id: text('id')
+			.notNull()
+			.references(() => organizationExpertises.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 		locale: locale('locale')
 			.notNull()
 			.references(() => locales.locale, {
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			}),
-		title: text('title').notNull(),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -799,23 +805,26 @@ export const organizationExpertisesTranslations = pgTable(
 /** Roles organizations can assume in the context of projects. */
 export const organizationDuties = pgTable('organization_duties', {
 	id: text('id')
+		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 });
 export const organizationDutiesTranslations = pgTable(
 	'organization_duties_t',
 	{
-		id: text('id').references(() => organizationDuties.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		id: text('id')
+			.notNull()
+			.references(() => organizationDuties.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 		locale: locale('locale')
 			.notNull()
 			.references(() => locales.locale, {
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			}),
-		title: text('title').notNull(),
+		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
@@ -853,6 +862,7 @@ export const organizationsTranslations = pgTable(
 	'organizations_t',
 	{
 		id: text('id')
+			.notNull()
 			.references(() => organizations.id, {
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
@@ -864,7 +874,7 @@ export const organizationsTranslations = pgTable(
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			}),
-		name: text('name').notNull(),
+		name: text('name'),
 		summary: text('summary'),
 		description: text('description'),
 	},
