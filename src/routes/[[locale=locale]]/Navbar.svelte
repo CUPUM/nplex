@@ -350,17 +350,25 @@
 			content: '';
 			position: absolute;
 			inset: 0;
+			bottom: 100%;
 			opacity: 0;
-			transition: all 0.75s ease-out;
-			background: linear-gradient(var(--color-neutral-50), transparent);
+			/* bottom: -1rem; */
+			/* transition: all 0.75s ease-out; */
+			/* background: linear-gradient(var(--color-neutral-100), transparent); */
+			transition:
+				all 0.2s ease-out,
+				bottom 0.5s var(--ease-out-expo);
+			background-color: var(--color-neutral-100);
 			:global(:--dark) & {
-				background: linear-gradient(var(--color-neutral-900), transparent);
+				background-color: var(--color-neutral-900);
+				/* background: linear-gradient(var(--color-neutral-900), transparent); */
 			}
 		}
 
 		&.over {
 			&::before {
 				opacity: 1;
+				bottom: 0;
 			}
 		}
 	}
