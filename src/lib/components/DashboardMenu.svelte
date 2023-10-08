@@ -16,7 +16,7 @@
 		border-radius: calc(var(--base-radius) + var(--base-inset));
 		margin-inline: 2rem;
 		align-items: flex-start;
-		justify-content: flex-start;
+		justify-content: center;
 		gap: 0.5rem;
 		font-size: var(--size-sm);
 		background-color: color-mix(in srgb, var(--color-neutral-50) 50%, transparent);
@@ -26,8 +26,7 @@
 			background-color: color-mix(in srgb, var(--color-neutral-800) 50%, transparent);
 		}
 
-		@container (width > 1000px) {
-			justify-content: center;
+		@container (width > 1200px) {
 			margin-inline: 0;
 			margin-right: var(--dashboard-navbar);
 		}

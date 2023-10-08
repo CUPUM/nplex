@@ -10,6 +10,7 @@
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
+	import { dt } from '../../../translations';
 
 	const t = createTranslations({
 		fr: {
@@ -19,6 +20,7 @@
 				description: 'Description de la catégorie',
 			},
 			intervention: {
+				entity: 'type d’intervention',
 				title: 'Titre d’intervention',
 				description: 'Description de l’intervention',
 				none: 'Aucune intervention ajoutée',
@@ -31,6 +33,7 @@
 				description: 'Category description',
 			},
 			intervention: {
+				entity: 'intervention type',
 				title: 'Intervention title',
 				description: 'Intervention description',
 				none: 'No interventions added yet',
@@ -134,7 +137,7 @@
 						{...element(`?/createIntervention&categoryId=${category.id}`)}
 					>
 						<Plus class="button-icon" />
-						Create intervention
+						{$dt.create($t.intervention.entity)}
 					</button>
 				</menu>
 			</li>
