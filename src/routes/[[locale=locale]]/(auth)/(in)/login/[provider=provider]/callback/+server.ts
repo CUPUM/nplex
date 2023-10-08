@@ -6,12 +6,10 @@ import { dbpool } from '$lib/db/db.server';
 import { users } from '$lib/db/schema/accounts';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { OAuthRequestError } from '@lucia-auth/oauth';
-import { HttpError_1, error } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
-/**
- * @todo Extract provider user data getters into helpers instead of ternary ops.
- */
+/** @todo Extract provider user data getters into helpers instead of ternary ops. */
 export const GET = async (event) => {
 	const t = event.locals.createTranslations({
 		fr: {
@@ -42,9 +40,7 @@ export const GET = async (event) => {
 		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
 	}
 
-	/**
-	 * Retrieve provider's state cookie.
-	 */
+	/** Retrieve provider's state cookie. */
 	const storedState = event.cookies.get(OAUTH_PROVIDERS_STATE_COOKIE[event.params.provider]);
 	const state = event.url.searchParams.get('state');
 	const code = event.url.searchParams.get('code');
@@ -101,10 +97,8 @@ export const GET = async (event) => {
 	} catch (e) {
 		console.error(e);
 		if (e instanceof OAuthRequestError) {
+			// Handle differently?
 			throw error(STATUS_CODES.BAD_REQUEST, { message: e.message });
-		}
-		if (e instanceof HttpError_1) {
-			throw e;
 		}
 		throw error(STATUS_CODES.INTERNAL_SERVER_ERROR, {
 			message: e instanceof Error ? e.message : '',
