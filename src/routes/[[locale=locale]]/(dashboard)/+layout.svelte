@@ -1,11 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { slide } from '$lib/transitions/slide';
+	import { expoOut } from 'svelte/easing';
 	import { fade } from 'svelte/transition';
 </script>
 
 <article>
 	{#if $page.data.dashboard?.header}
-		<header>Header</header>
+		<header
+			in:slide={{ duration: 750, easing: expoOut, opacity: 0 }}
+			out:slide={{ easing: expoOut, duration: 500, opacity: 0 }}
+		>
+			<svelte:component this={$page.data.dashboard.header} />
+		</header>
 	{/if}
 	{#if $page.data.dashboard?.breadcrumbs}
 		<div class="dashboard-breadcrumbs">Breadcrumbs</div>
@@ -31,6 +38,9 @@
 
 	header {
 		grid-column: 1 / -1;
+		margin-bottom: 0.5rem;
+		border-radius: var(--radius-xl);
+		overflow: hidden;
 	}
 
 	.dashboard-breadcrumbs {

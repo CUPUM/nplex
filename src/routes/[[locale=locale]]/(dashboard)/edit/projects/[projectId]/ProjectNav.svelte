@@ -95,11 +95,11 @@
 		{$t.settings.sharing}
 		<Users2 class="button-icon" />
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/visibility`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/publishing`)}>
 		{$t.settings.visibility}
 		<Shield class="button-icon" />
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/danger`)} danger>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/security`)} danger>
 		{$t.settings.danger}
 		<AlertTriangle class="button-icon" />
 	</DashboardNavItem>

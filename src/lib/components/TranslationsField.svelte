@@ -12,8 +12,8 @@
 	} = createTabs({ defaultValue, loop: true });
 </script>
 
-<fieldset>
-	<legend>
+<fieldset class="labeled-group">
+	<legend class="label compact">
 		<div class="legend-slot">
 			<slot name="legend" />
 		</div>
@@ -30,8 +30,10 @@
 	.content:not([hidden]) {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5em;
-		margin-top: 1rem;
+		font-size: var(--size-sm);
+	}
+
+	.label {
 		font-size: var(--size-sm);
 	}
 </style>

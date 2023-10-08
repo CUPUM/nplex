@@ -1,6 +1,9 @@
 <script lang="ts">
+	import TranslationsField from '$lib/components/TranslationsField.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { superForm } from 'sveltekit-superforms/client';
+	import ProjectForm from './ProjectForm.svelte';
+	import ProjectFormGroup from './ProjectFormGroup.svelte';
 
 	export let data;
 
@@ -26,39 +29,19 @@
 	});
 </script>
 
-<h1>Général</h1>
-<form method="POST" use:enhance>
-	<!-- <TranslationsTabs let:locale>
-		<svelte:fragment slot="legend">
-			{$t.title}
-		</svelte:fragment>
-		{@const id = `project-title-${locale}`}
-		<input class="input" type="text" {id} name="{locale}.title" />
-	</TranslationsTabs>
-	<TranslationsTabs let:locale>
-		<svelte:fragment slot="legend">
-			{$t.summary}
-		</svelte:fragment>
-		{@const id = `project-summary-${locale}`}
-		<input class="input" type="text" {id} name="{locale}.summary" />
-	</TranslationsTabs>
-	<TranslationsTabs let:locale>
-		<svelte:fragment slot="legend">
-			{$t.description}
-		</svelte:fragment>
-		{@const id = `project-description-${locale}`}
-		<input class="input" type="text" {id} name="{locale}.description" />
-	</TranslationsTabs> -->
-	<fieldset>
-		<legend>
-			{$t.type}
-		</legend>
-		<select class="input" name="" id=""></select>
-	</fieldset>
-</form>
+<ProjectForm {enhance} let:element let:loading>
+	<svelte:fragment slot="header">General</svelte:fragment>
+	<ProjectFormGroup>
+		<TranslationsField let:locale>
+			<svelte:fragment slot="legend">{$t.title}</svelte:fragment>
+			<input type="text" class="input" bind:value={$form.translations[locale].title} />
+		</TranslationsField>
+		<TranslationsField let:locale>
+			<svelte:fragment slot="legend">{$t.description}</svelte:fragment>
+			<textarea class="input" bind:value={$form.translations[locale].description} />
+		</TranslationsField>
+	</ProjectFormGroup>
+</ProjectForm>
 
 <style lang="postcss">
-	form {
-		font-size: var(--size-sm);
-	}
 </style>

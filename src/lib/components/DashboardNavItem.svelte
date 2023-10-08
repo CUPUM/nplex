@@ -58,6 +58,10 @@
 			font-size: var(--size-sm);
 		}
 
+		&:active {
+			animation: var(--animation-press);
+		}
+
 		&:hover,
 		&:focus-visible {
 			&:not([data-current]) {

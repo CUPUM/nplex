@@ -7,19 +7,18 @@
 	const t = createTranslations({
 		fr: {
 			heading: 'Bientôt disponible',
-			subheading:
-				'Nous vous dévoilerons bientôt la plateforme Nplex et ses projets! Restez à l’affut.',
+			subheading: 'Nous dévoilerons bientôt la plateforme Nplex et ses projets. Restez à l’affut!',
 		},
 		en: {
 			heading: 'Coming soon',
-			subheading: 'We will soon publish the Nplex app and its projects! Stay tuned.',
+			subheading: 'We will soon publish the Nplex app and its projects. Stay tuned!',
 		},
 	});
 </script>
 
 <article>
 	<div class="anim">
-		<Loading thickness=".5" speed={0.025} trail={false} outro={false} />
+		<Loading thickness="1" speed={0.025} trail={false} outro={false} />
 	</div>
 	<header>
 		<h1 class="heading xl center">{$t.heading}</h1>
@@ -102,7 +101,7 @@
 		/* opacity: 0.5; */
 		position: absolute;
 		inset: 0;
-		font-size: 25em;
+		font-size: 22em;
 		color: var(--color-primary-500);
 		z-index: -2;
 	}

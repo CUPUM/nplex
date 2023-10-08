@@ -11,6 +11,12 @@ Headings
 		margin-block: 1em;
 	}
 	/* Extra large heading */
+	&.xxl {
+		line-height: 1.1;
+		font-weight: 532;
+		font-size: var(--size-5xl);
+	}
+	/* Extra large heading */
 	&.xl {
 		line-height: 1.1;
 		font-weight: 532;
@@ -59,26 +65,31 @@ Prose
 	/* Extra large text */
 	&.xl {
 		/* font-weight: 300; */
+		font-size: var(--size-xl);
 		line-height: 1.3em;
 	}
 	/* Large text */
 	&.lg {
 		/* font-weight: 325; */
+		font-size: var(--size-lg);
 		line-height: 1.35em;
 	}
 	/* Regular text */
 	&.md {
 		/* font-weight: 350; */
+		font-size: var(--size-md);
 		line-height: 1.4em;
 	}
 	/* Small text */
 	&.sm {
 		/* font-weight: 360; */
+		font-size: var(--size-sm);
 		line-height: 1.45em;
 	}
 	/* Extra small text */
 	&.xs {
 		/* font-weight: 375; */
+		font-size: var(--size-xs);
 		line-height: 1.5em;
 	}
 }

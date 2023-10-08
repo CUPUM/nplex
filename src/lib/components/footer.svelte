@@ -36,8 +36,8 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+		background-color: var(--color-neutral-50);
 		:global(:--dark) & {
 			background-color: var(--color-neutral-950);
 		}

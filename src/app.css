@@ -10,3 +10,5 @@
 @import './styles/components/switch.css' layer(components);
 @import './styles/components/toggle.css' layer(components);
 @import './styles/components/range.css' layer(components);
+@import './styles/components/badge.css' layer(components);
+@import './styles/components/token.css' layer(components);

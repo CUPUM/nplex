@@ -1,14 +1,12 @@
 import { withAuth } from '$lib/auth/guard.server';
 import { projectUpdateSchema } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
-import { projects } from '$lib/db/schema/public';
 import { reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { error, fail } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { error } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 
-const projectUpdateGeneralSchema = projectUpdateSchema.pick({ typeId: true });
+const projectUpdateGeneralSchema = projectUpdateSchema.pick({ typeId: true, translations: true });
 
 export const load = async (event) => {
 	await withAuth(event);
@@ -43,43 +41,7 @@ export const load = async (event) => {
 };
 
 export const actions = {
-	default: async (event) => {
-		const session = await withAuth(event);
-		const form = await superValidate(event, projectUpdateGeneralSchema);
-		if (!form.valid) {
-			return fail(STATUS_CODES.BAD_REQUEST, { form });
-		}
-		const update = dbpool.transaction(async (tx) => {
-			await tx.update(projects).set(form.data).where(eq(projects.id, event.params.projectId));
-		});
-		// 	const { translations, ...projectFields } = form.data;
-		// 	await dbpool.transaction(async (tx) => {
-		// 		await tx
-		// 			.update(projects)
-		// 			.set(projectFields)
-		// 			.where(
-		// 				and(
-		// 					// authorizeProjectUpdate(),
-		// 					eq(projects.id, event.params.projectId)
-		// 				)
-		// 			);
-		// 		const tvalues = LOCALES_ARR.map((locale) => ({
-		// 			...translations[locale],
-		// 			id: event.params.projectId,
-		// 			locale,
-		// 		}));
-		// 		await tx
-		// 			.insert(projectsTranslations)
-		// 			.values(tvalues)
-		// 			.onConflictDoUpdate({
-		// 				target: [projectsTranslations.id, projectsTranslations.locale],
-		// 				set: {
-		// 					title: excluded(projectsTranslations.title),
-		// 					description: excluded(projectsTranslations.title),
-		// 					summary: excluded(projectsTranslations.title),
-		// 				},
-		// 				// where: authorizeProjectUpdate(session.user),
-		// 			});
-		// 	});
+	update: async (event) => {
+		await withAuth(event);
 	},
 };
