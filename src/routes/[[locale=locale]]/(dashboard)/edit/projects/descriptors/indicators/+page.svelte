@@ -63,7 +63,7 @@
 	</svelte:fragment>
 	<ol>
 		{#each $form.exemplarityCategories as category, i (category.id)}
-			{@const filtered = $form.exemplarityIndicators.filter((pi) => pi.categoryId === category.id)}
+			{@const notEmpty = $form.exemplarityIndicators.some((pi) => pi.categoryId === category.id)}
 			<li class="category" in:fly|global={{ y: -6, delay: i * 25, easing: expoOut, duration: 350 }}>
 				<div class="top">
 					<TranslationsCard
@@ -89,35 +89,40 @@
 					</TranslationsCard>
 				</div>
 				<DescriptorsCardsList sublist>
-					{#if filtered.length}
-						{#each filtered as indicator, ii (indicator.id)}
+					{#if notEmpty}
+						<!-- Stupid temporary workaround for https://github.com/sveltejs/svelte/issues/7209 -->
+						{#each $form.exemplarityIndicators as indicator, ii (indicator.id)}
+							{@const isMember = indicator.categoryId === category.id}
 							<li
 								animate:flip={{ duration: 150 }}
 								in:fly|global={{ y: -6, delay: ii * 25, easing: expoOut, duration: 350 }}
 								out:scale={{ start: 0.95, duration: 250, easing: expoOut }}
+								hidden={!isMember || undefined}
 							>
-								<TranslationsCard
-									let:locale
-									legend={indicator.id}
-									legendMinimized={indicator.translations[$page.data.locale].title}
-									deleteFormaction="?/deleteIndicator&indicatorId={indicator.id}"
-								>
-									<label class="labeled-group">
-										<span class="label with-hover">{$t.indicator.title}</span>
-										<input
-											class="input"
-											type="text"
-											bind:value={$form.exemplarityIndicators[ii].translations[locale].title}
-										/>
-									</label>
-									<label class="labeled-group">
-										<span class="label with-hover">{$t.indicator.description}</span>
-										<textarea
-											class="input"
-											bind:value={$form.exemplarityIndicators[ii].translations[locale].description}
-										/>
-									</label>
-								</TranslationsCard>
+								{#if isMember}
+									<TranslationsCard
+										let:locale
+										legend={indicator.id}
+										legendMinimized={indicator.translations[$page.data.locale].title}
+										deleteFormaction="?/deleteIndicator&indicatorId={indicator.id}"
+									>
+										<label class="labeled-group">
+											<span class="label with-hover">{$t.indicator.title}</span>
+											<input
+												class="input"
+												type="text"
+												bind:value={indicator.translations[locale].title}
+											/>
+										</label>
+										<label class="labeled-group">
+											<span class="label with-hover">{$t.indicator.description}</span>
+											<textarea
+												class="input"
+												bind:value={indicator.translations[locale].description}
+											/>
+										</label>
+									</TranslationsCard>
+								{/if}
 							</li>
 						{/each}
 					{:else}

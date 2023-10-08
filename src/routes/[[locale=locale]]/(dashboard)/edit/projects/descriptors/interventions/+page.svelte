@@ -66,7 +66,7 @@
 	</svelte:fragment>
 	<ol>
 		{#each $form.interventionCategories as category, i (category.id)}
-			{@const filtered = $form.interventions.filter((pi) => pi.categoryId === category.id)}
+			{@const notEmpty = $form.interventions.some((pi) => pi.categoryId === category.id)}
 			<li class="category">
 				<div class="top">
 					<TranslationsCard
@@ -93,37 +93,41 @@
 					</TranslationsCard>
 				</div>
 				<DescriptorsCardsList sublist>
-					{#if filtered.length}
-						{#each filtered as intervention, ii (intervention.id)}
+					{#if notEmpty}
+						{#each $form.interventions as intervention, ii (intervention.id)}
+							{@const isMember = intervention.categoryId === category.id}
 							<li
 								class="intervention"
 								animate:flip={{ duration: 150 }}
 								in:fly|global={{ y: -6, delay: ii * 25, easing: expoOut, duration: 350 }}
 								out:scale={{ start: 0.95, duration: 250, easing: expoOut }}
+								hidden={!isMember || undefined}
 							>
-								<TranslationsCard
-									let:locale
-									legend={intervention.id}
-									legendMinimized={intervention.translations[$page.data.locale].title}
-									deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
-								>
-									<label class="labeled-group">
-										<span class="label with-hover">{$t.intervention.title}</span>
-										<input
-											class="input"
-											type="text"
-											bind:value={$form.interventions[ii].translations[locale].title}
-										/>
-									</label>
-									<label class="labeled-group">
-										<span class="label with-hover">{$t.intervention.description}</span>
-										<textarea
-											class="input resize"
-											rows="2"
-											bind:value={$form.interventions[ii].translations[locale].description}
-										/>
-									</label>
-								</TranslationsCard>
+								{#if isMember}
+									<TranslationsCard
+										let:locale
+										legend={intervention.id}
+										legendMinimized={intervention.translations[$page.data.locale].title}
+										deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
+									>
+										<label class="labeled-group">
+											<span class="label with-hover">{$t.intervention.title}</span>
+											<input
+												class="input"
+												type="text"
+												bind:value={$form.interventions[ii].translations[locale].title}
+											/>
+										</label>
+										<label class="labeled-group">
+											<span class="label with-hover">{$t.intervention.description}</span>
+											<textarea
+												class="input resize"
+												rows="2"
+												bind:value={$form.interventions[ii].translations[locale].description}
+											/>
+										</label>
+									</TranslationsCard>
+								{/if}
 							</li>
 						{/each}
 					{:else}
