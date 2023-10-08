@@ -36,6 +36,9 @@
 		flex-wrap: nowrap;
 		padding: 0;
 		margin: 0;
+		min-height: calc(100vh - var(--navbar-height));
+		min-height: calc(100svh - var(--navbar-height));
+		min-height: calc(100dvh - var(--navbar-height));
 	}
 
 	.loading {

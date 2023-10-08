@@ -16,6 +16,7 @@
 	export let trail: boolean = true;
 	export let intro: boolean = true;
 	export let outro: boolean = true;
+	export let offset: string = '0s';
 
 	const origin = '50,95';
 	const circle = 'A 45,45 0,1,1 50.1,95';
@@ -30,7 +31,7 @@
 	// }
 </script>
 
-<div class="loading" style:color style:--speed={speed}>
+<div class="loading" style:color style:--speed={speed} style:--offset={offset}>
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
@@ -99,7 +100,7 @@
 		animation-fill-mode: forwards;
 		animation-iteration-count: infinite;
 		animation-timing-function: linear;
-		animation-delay: var(--delay, 0s);
+		animation-delay: calc(var(--offset) + var(--delay, 0s));
 	}
 
 	.secondary {

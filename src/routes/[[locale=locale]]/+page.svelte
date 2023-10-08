@@ -1,6 +1,9 @@
 <script lang="ts">
 	import Loading from '$lib/components/Loading.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
+	import { onMount } from 'svelte';
+	import { expoOut } from 'svelte/easing';
+	import { fade, fly } from 'svelte/transition';
 
 	export let data;
 
@@ -14,15 +17,34 @@
 			subheading: 'We will soon publish the Nplex app and its projects. Stay tuned!',
 		},
 	});
+
+	let mounted = false;
+
+	onMount(() => {
+		mounted = true;
+	});
 </script>
 
 <article>
-	<div class="anim">
-		<Loading thickness="1" speed={0.025} trail={false} outro={false} />
-	</div>
+	{#if mounted}
+		<div class="anim" in:fade={{ duration: 1500, easing: expoOut }}>
+			<Loading
+				thickness="1"
+				speed={0.025}
+				trail={false}
+				outro={false}
+				intro={false}
+				offset="-{Math.random() * 50}s"
+			/>
+		</div>
+	{/if}
 	<header>
-		<h1 class="heading xl center">{$t.heading}</h1>
-		<p class="prose sm center">{$t.subheading}</p>
+		<h1 class="heading xl center" in:fly={{ y: 4, duration: 750, easing: expoOut }}>
+			{$t.heading}
+		</h1>
+		<p class="prose sm center" in:fly={{ y: -4, duration: 750, delay: 100, easing: expoOut }}>
+			{$t.subheading}
+		</p>
 	</header>
 </article>
 
@@ -82,8 +104,8 @@
 			left: 50%;
 			transform: translate(-50%, -50%);
 			border-radius: 50%;
-			filter: blur(50px);
-			opacity: 0.75;
+			filter: blur(40px);
+			opacity: 0.8;
 			background-color: var(--base-bg);
 			transition: all var(--duration-fast) ease-out;
 		}
@@ -101,7 +123,7 @@
 		/* opacity: 0.5; */
 		position: absolute;
 		inset: 0;
-		font-size: 22em;
+		font-size: 24em;
 		color: var(--color-primary-500);
 		z-index: -2;
 	}
