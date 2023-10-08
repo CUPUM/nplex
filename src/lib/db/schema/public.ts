@@ -319,6 +319,40 @@ export const projectImageTypesTranslations = pgTable(
 	}
 );
 
+/** Various types of items that can be added to project galleries. */
+export const projectImageTemporalities = pgTable('project_image_temporalities', {
+	id: text('id')
+		.notNull()
+		.default(generateNanoid({ length: 6 }))
+		.primaryKey(),
+	timeIndex: integer('time_index').notNull().default(0),
+});
+export const projectImageTemporalitiesTranslations = pgTable(
+	'project_image_temporalities_t',
+	{
+		id: text('id')
+			.notNull()
+			.references(() => projectImageTypes.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		locale: locale('locale')
+			.notNull()
+			.references(() => locales.locale, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
+		title: text('title'),
+		description: text('description'),
+	},
+	(table) => {
+		return {
+			pk: primaryKey(table.id, table.locale),
+		};
+	}
+);
+
+/** Types of building levels. (mezzanine, basement, etc.) */
 export const projectBuildingLevelTypes = pgTable('project_building_level_type', {
 	id: text('id')
 		.notNull()

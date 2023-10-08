@@ -14,6 +14,8 @@ import {
 	projectExemplarityCategoriesTranslations,
 	projectExemplarityIndicators,
 	projectExemplarityIndicatorsTranslations,
+	projectImageTemporalities,
+	projectImageTemporalitiesTranslations,
 	projectImageTypes,
 	projectImageTypesTranslations,
 	projectImplantationTypes,
@@ -165,6 +167,25 @@ export const projectImageTypeTranslationInsertSchema = createInsertSchema(
 export const projectImageTypesUpdateSchema = z.object({
 	imageTypes: z.array(
 		withTranslationsSchema(projectImageTypeInsertSchema, projectImageTypeTranslationInsertSchema)
+	),
+});
+
+/** Project image type. */
+export const projectImageTemporalityInsertSchema = createInsertSchema(
+	projectImageTemporalities
+).required({
+	id: true,
+});
+export const projectImageTemporalityTranslationInsertSchema = createInsertSchema(
+	projectImageTemporalitiesTranslations,
+	{ locale: localeSchema }
+);
+export const projectImageTemporalitiesUpdateSchema = z.object({
+	imageTemporalities: z.array(
+		withTranslationsSchema(
+			projectImageTemporalityInsertSchema,
+			projectImageTemporalityTranslationInsertSchema
+		)
 	),
 });
 

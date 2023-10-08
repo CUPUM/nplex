@@ -2,7 +2,7 @@
 	import Loading from '$lib/components/Loading.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { onMount } from 'svelte';
-	import { expoOut } from 'svelte/easing';
+	import { circInOut, expoOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
 
 	export let data;
@@ -27,7 +27,7 @@
 
 <article>
 	{#if mounted}
-		<div class="anim" in:fade={{ duration: 1500, easing: expoOut }}>
+		<div class="anim" in:fade={{ duration: 1500, easing: circInOut, delay: 500 }}>
 			<Loading
 				thickness="1"
 				speed={0.025}
@@ -37,15 +37,15 @@
 				offset="-{Math.random() * 50}s"
 			/>
 		</div>
+		<header>
+			<h1 class="heading xl center" in:fly={{ y: 4, duration: 750, easing: expoOut }}>
+				{$t.heading}
+			</h1>
+			<p class="prose sm center" in:fly={{ y: -4, duration: 750, delay: 100, easing: expoOut }}>
+				{$t.subheading}
+			</p>
+		</header>
 	{/if}
-	<header>
-		<h1 class="heading xl center" in:fly={{ y: 4, duration: 750, easing: expoOut }}>
-			{$t.heading}
-		</h1>
-		<p class="prose sm center" in:fly={{ y: -4, duration: 750, delay: 100, easing: expoOut }}>
-			{$t.subheading}
-		</p>
-	</header>
 </article>
 
 <!-- <header></header>

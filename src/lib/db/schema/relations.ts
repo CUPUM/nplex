@@ -10,6 +10,8 @@ import {
 	projectExemplarityCategoriesTranslations,
 	projectExemplarityIndicators,
 	projectExemplarityIndicatorsTranslations,
+	projectImageTemporalities,
+	projectImageTemporalitiesTranslations,
 	projectImageTypes,
 	projectImageTypesTranslations,
 	projectImplantationTypes,
@@ -225,6 +227,30 @@ export const projectImageTypesTranslationsRelations = relations(
 			siteOwnership: one(projectImageTypes, {
 				fields: [projectImageTypesTranslations.id],
 				references: [projectImageTypes.id],
+			}),
+		};
+	}
+);
+
+export const projectImageTemporalitiesRelations = relations(
+	projectImageTemporalities,
+	({ many }) => {
+		return {
+			translations: many(projectImageTemporalitiesTranslations),
+		};
+	}
+);
+export const projectImageTemporalitiesTranslationsRelations = relations(
+	projectImageTemporalitiesTranslations,
+	({ one }) => {
+		return {
+			locale: one(locales, {
+				fields: [projectImageTemporalitiesTranslations.locale],
+				references: [locales.locale],
+			}),
+			siteOwnership: one(projectImageTemporalities, {
+				fields: [projectImageTemporalitiesTranslations.id],
+				references: [projectImageTemporalities.id],
 			}),
 		};
 	}

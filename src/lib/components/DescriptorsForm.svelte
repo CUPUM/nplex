@@ -12,6 +12,7 @@
 	export let action: string | undefined = undefined;
 	export let enhance: SuperForm<T>['enhance'];
 	export let method: string = 'POST';
+	export let id: string | undefined = undefined;
 
 	const {
 		state: { input },
@@ -31,6 +32,7 @@
 		},
 	}}
 	{method}
+	{id}
 >
 	{#if $$slots.header}
 		<header>

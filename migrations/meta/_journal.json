@@ -43,6 +43,13 @@
       "when": 1696718059881,
       "tag": "0005_new_bucky",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1696781061366,
+      "tag": "0006_sloppy_venus",
+      "breakpoints": true
     }
   ]
 }

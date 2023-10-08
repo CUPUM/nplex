@@ -2624,8 +2624,8 @@ packages:
       mdn-data: 2.0.30
       source-map-js: 1.0.2
 
-  /cssdb@7.7.3:
-    resolution: {integrity: sha512-QPbpOl+jR13quGTIvwCavognmtpr6T9ra6G9S++scJek7BY4xdkJpB3slU1JkjQmzKmpDHnPB+wkz+mxoT/h4w==}
+  /cssdb@7.8.0:
+    resolution: {integrity: sha512-SkeezZOQr5AHt9MgJgSFNyiuJwg1p8AwoVln6JwaQJsyxduRW9QJ+HP/gAQzbsz8SIqINtYvpJKjxTRI67zxLg==}
     dev: true
 
   /cssesc@3.0.0:
@@ -4546,7 +4546,7 @@ packages:
       css-blank-pseudo: 6.0.0(postcss@8.4.31)
       css-has-pseudo: 6.0.0(postcss@8.4.31)
       css-prefers-color-scheme: 9.0.0(postcss@8.4.31)
-      cssdb: 7.7.3
+      cssdb: 7.8.0
       postcss: 8.4.31
       postcss-attribute-case-insensitive: 6.0.2(postcss@8.4.31)
       postcss-clamp: 4.1.0(postcss@8.4.31)

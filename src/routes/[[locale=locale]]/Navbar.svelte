@@ -354,7 +354,7 @@
 			transition: all 0.75s ease-out;
 			background: linear-gradient(var(--color-neutral-50), transparent);
 			:global(:--dark) & {
-				background: linear-gradient(var(--color-neutral-950), transparent);
+				background: linear-gradient(var(--color-neutral-900), transparent);
 			}
 		}
 
