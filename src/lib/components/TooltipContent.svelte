@@ -8,7 +8,7 @@
 	} from '@melt-ui/svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-	import Tip from './_tip.svelte';
+	import Tip from './Tip.svelte';
 
 	export let open: TooltipStates['open'];
 	export let content: TooltipElements['content'];
