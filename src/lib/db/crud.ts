@@ -245,7 +245,9 @@ export const projectGeneralUpdateSchema = withTranslationsSchema(
 	projectInsertSchema.pick({ id: true, typeId: true, costRange: true, siteOwnershipId: true }),
 	projectTranslationsInsertSchema
 ).merge(
-	z.object({ interventionIds: z.array(projectsInterventionInsertSchema.shape.interventionId) })
+	z.object({
+		interventionIds: z.array(projectsInterventionInsertSchema.shape.interventionId),
+	})
 );
 // export const projectPlaceUpdateSchema =
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { dev } from '$app/environment';
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import TranslationsField from '$lib/components/TranslationsField.svelte';
@@ -96,31 +95,29 @@
 				</label>
 			{/each}
 		</fieldset>
-		{#if dev}
-			<h3>{$t.interventions}</h3>
-			<fieldset>
-				{#each data.descriptors.interventionCategories as category, i (category.id)}
-					<h4>{category.title}</h4>
-					<ul>
-						{#if category.interventions}
-							{#each category.interventions as intervention}
-								<label class="token" use:ripple>
-									<input
-										type="checkbox"
-										class="token-input"
-										value={intervention.id}
-										bind:group={$form.interventionIds}
-									/>
-									<span class="token-label">
-										{intervention.title}
-									</span>
-								</label>
-							{/each}
-						{/if}
-					</ul>
-				{/each}
-			</fieldset>
-		{/if}
+		<h3>{$t.interventions}</h3>
+		<fieldset>
+			{#each data.descriptors.interventionCategories as category, i (category.id)}
+				<h4 class="prose sm dim">{category.title}</h4>
+				<ul id="interventions">
+					{#if category.interventions}
+						{#each category.interventions as intervention}
+							<label class="token" use:ripple>
+								<input
+									type="checkbox"
+									class="token-input"
+									bind:group={$form.interventionIds}
+									value={intervention.id}
+								/>
+								<span class="token-label">
+									{intervention.title}
+								</span>
+							</label>
+						{/each}
+					{/if}
+				</ul>
+			{/each}
+		</fieldset>
 	</ProjectFormGroup>
 	<ProjectFormGroup centered>
 		<h3>{$t.costRange}</h3>
@@ -171,6 +168,14 @@
 
 	.subhead {
 		max-width: 65ch;
+	}
+
+	#interventions {
+		display: flex;
+		flex-direction: row;
+		gap: 0.5em;
+		font-size: var(--size-sm);
+		flex-wrap: wrap;
 	}
 
 	#cost {

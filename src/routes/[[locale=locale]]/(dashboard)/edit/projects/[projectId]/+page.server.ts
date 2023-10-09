@@ -5,7 +5,7 @@ import { projects, projectsInterventions, projectsTranslations } from '$lib/db/s
 import { getAllExcluded, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { and, eq, notInArray } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
@@ -63,6 +63,14 @@ export const actions = {
 						target: [projectsTranslations.id, projectsTranslations.locale],
 						set: getAllExcluded(projectsTranslations),
 					});
+				await tx
+					.delete(projectsInterventions)
+					.where(
+						and(
+							eq(projectsInterventions.projectId, event.params.projectId),
+							notInArray(projectsInterventions.interventionId, interventionIds)
+						)
+					);
 				await tx
 					.insert(projectsInterventions)
 					.values(
