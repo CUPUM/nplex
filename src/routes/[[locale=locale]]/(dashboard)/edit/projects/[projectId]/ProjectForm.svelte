@@ -62,5 +62,6 @@
 		/* padding: 1rem; */
 		container-type: inline-size;
 		gap: 0;
+		padding-bottom: 2rem;
 	}
 </style>

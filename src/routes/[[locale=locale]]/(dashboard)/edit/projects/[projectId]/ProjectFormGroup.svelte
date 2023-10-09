@@ -13,8 +13,10 @@
 		flex-direction: column;
 		gap: 2rem;
 		align-self: stretch;
-		border-bottom: var(--base-border-size) solid
-			color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
+		:not(:last-of-type) {
+			border-bottom: var(--base-border-size) solid
+				color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
+		}
 	}
 
 	.centered {
