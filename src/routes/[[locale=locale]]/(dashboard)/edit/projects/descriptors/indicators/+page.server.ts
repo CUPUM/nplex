@@ -16,7 +16,6 @@ import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withRole(event, USER_ROLES.ADMIN);
-
 	const exemplarityCategories = (
 		await dbpool.query.projectExemplarityCategories.findMany({
 			with: {
@@ -34,13 +33,12 @@ export const load = async (event) => {
 			indicators: ec.indicators.map(reduceTranslations),
 		};
 	});
-
+	// console.log(JSON.stringify(exemplarityCategories, undefined, 2));
 	const form = await superValidate(
 		{ exemplarityCategories },
 		projectExemplarityCategoriesWithIndicatorsUpdateSchema,
 		{ id: 'exemplarity-form' }
 	);
-
 	return { form };
 };
 

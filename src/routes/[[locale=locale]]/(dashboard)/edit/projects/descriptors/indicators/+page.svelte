@@ -42,6 +42,7 @@
 
 	const { form, submitting, constraints, errors, enhance, tainted } = superForm(data.form, {
 		dataType: 'json',
+		jsonChunkSize: 100000,
 	});
 </script>
 
@@ -99,7 +100,9 @@
 								<TranslationsCard
 									let:locale
 									legend={indicator.id}
-									legendMinimized={indicator.translations[$page.data.locale].title}
+									legendMinimized={$form.exemplarityCategories[i].indicators[ii].translations[
+										$page.data.locale
+									].title}
 									deleteFormaction="?/deleteIndicator&indicatorId={indicator.id}"
 								>
 									<label class="labeled-group">
@@ -142,10 +145,10 @@
 	<DashboardMenu>
 		<button
 			class="button outlined"
-			{...element('?/createCategory')}
-			use:loading
 			type="submit"
+			{...element('?/createCategory')}
 			disabled
+			use:loading
 		>
 			<Pen class="button-icon" />
 			Create

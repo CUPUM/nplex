@@ -104,5 +104,5 @@ export const GET = async (event) => {
 			message: e instanceof Error ? e.message : '',
 		});
 	}
-	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
+	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 };

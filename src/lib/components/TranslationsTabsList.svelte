@@ -18,6 +18,7 @@
 			use:ripple={{ color: 'white', opacityStart: 0.25 }}
 			use:melt={$trigger(locale)}
 			lang={locale}
+			type="button"
 		>
 			{LOCALES_DETAILS[locale].label}
 			{#if $value === locale}
