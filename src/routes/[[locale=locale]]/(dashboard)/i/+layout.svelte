@@ -29,6 +29,6 @@
 	header {
 		padding: 2rem;
 		margin: 1rem;
-		border-radius: var(--radius-xl);
+		border-radius: var(--radius-xs);
 	}
 </style>

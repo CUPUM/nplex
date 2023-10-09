@@ -44,24 +44,6 @@ export const projectTypesUpdateSchema = z.object({
 	),
 });
 
-/** Project intervention category. */
-export const projectInterventionCategoryInsertSchema = createInsertSchema(
-	projectInterventionCategories,
-	{}
-).required({ id: true });
-export const projectInterventionCategoryTranslationInsertSchema = createInsertSchema(
-	projectInterventionCategoriesTranslations,
-	{ locale: localeSchema }
-);
-export const projectInterventionCategoriesUpdateSchema = z.object({
-	interventionCategories: z.array(
-		withTranslationsSchema(
-			projectInterventionCategoryInsertSchema,
-			projectInterventionCategoryTranslationInsertSchema
-		)
-	),
-});
-
 /** Project intervention. */
 export const projectInterventionInsertSchema = createInsertSchema(
 	projectInterventions,
@@ -80,8 +62,35 @@ export const projectInterventionsUpdateSchema = z.object({
 	),
 });
 
-export const projectInterventionCategoriesAndInterventionsUpdateSchema =
-	projectInterventionCategoriesUpdateSchema.merge(projectInterventionsUpdateSchema);
+/** Project intervention category. */
+export const projectInterventionCategoryInsertSchema = createInsertSchema(
+	projectInterventionCategories,
+	{}
+).required({ id: true });
+export const projectInterventionCategoryTranslationInsertSchema = createInsertSchema(
+	projectInterventionCategoriesTranslations,
+	{ locale: localeSchema }
+);
+export const projectInterventionCategoriesUpdateSchema = z.object({
+	interventionCategories: z.array(
+		withTranslationsSchema(
+			projectInterventionCategoryInsertSchema,
+			projectInterventionCategoryTranslationInsertSchema
+		)
+	),
+});
+
+export const projectInterventionCategoriesWithInterventionsUpdateSchema = z.object({
+	interventionCategories: z.array(
+		withTranslationsSchema(
+			projectInterventionCategoryInsertSchema,
+			projectInterventionCategoryTranslationInsertSchema
+		).merge(projectInterventionsUpdateSchema)
+	),
+});
+
+// export const projectInterventionCategoriesAndInterventionsUpdateSchema =
+// 	projectInterventionCategoriesUpdateSchema.merge(projectInterventionsUpdateSchema);
 
 /** Project exemplarity category. */
 export const projectExemplarityCategoryInsertSchema = createInsertSchema(
@@ -109,7 +118,7 @@ export const projectExemplarityIndicatorTranslationInsertSchema = createInsertSc
 	{ locale: localeSchema }
 );
 export const projectExemplarityIndicatorsUpdateSchema = z.object({
-	exemplarityIndicators: z.array(
+	indicators: z.array(
 		withTranslationsSchema(
 			projectExemplarityIndicatorInsertSchema,
 			projectExemplarityIndicatorTranslationInsertSchema
@@ -117,8 +126,17 @@ export const projectExemplarityIndicatorsUpdateSchema = z.object({
 	),
 });
 
-export const projectExemplarityCategoriesAndIndicatorsUpdateSchema =
-	projectExemplarityCategoriesUpdateSchema.merge(projectExemplarityIndicatorsUpdateSchema);
+// export const projectExemplarityCategoriesAndIndicatorsUpdateSchema =
+// 	projectExemplarityCategoriesUpdateSchema.merge(projectExemplarityIndicatorsUpdateSchema);
+
+export const projectExemplarityCategoriesWithIndicatorsUpdateSchema = z.object({
+	exemplarityCategories: z.array(
+		withTranslationsSchema(
+			projectExemplarityCategoryInsertSchema,
+			projectExemplarityCategoryTranslationInsertSchema
+		).merge(projectExemplarityIndicatorsUpdateSchema)
+	),
+});
 
 /** Project site ownership. */
 export const projectSiteOwnershipInsertSchema = createInsertSchema(projectSiteOwnerships).required({

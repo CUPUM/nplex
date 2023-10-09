@@ -8,16 +8,12 @@ import { excluded } from './sql';
 
 export type FieldSelectRecord = Record<string, AnyColumn | SQL>;
 
-/**
- * Single column variant of drizzle's InferColumnsDataTypes.
- */
+/** Single column variant of drizzle's InferColumnsDataTypes. */
 export type InferColumnDataType<T extends AnyColumn> = T['_']['notNull'] extends true
 	? T['_']['data']
 	: T['_']['data'] | null;
 
-/**
- * Extract the generic type of an SQL type.
- */
+/** Extract the generic type of an SQL type. */
 export type InferSQLDataType<T extends SQL, Fallback = never> = T extends SQL<infer U>
 	? U
 	: Fallback;
@@ -68,9 +64,7 @@ export function getAllExcluded<T extends AnyTable>(table: T) {
 	);
 }
 
-/**
- * Schema for translations record.
- */
+/** Schema for translations record. */
 export function translationsSchema<T extends ZodTypeAny>(schema: T) {
 	return strictRecord(LOCALES, schema);
 }
@@ -86,9 +80,7 @@ export function withTranslationsSchema<
 	return schema.extend({ translations: translationsSchema(translationSchema) });
 }
 
-/**
- * Function to reduce a given array of entries augmented with translations records into two arrays.
- */
+/** Function to reduce a given array of entries augmented with translations records into two arrays. */
 export function extractTranslations<T, D extends Omit<Record<string, unknown>, 'translations'>>(
 	data: (D & { translations: Partial<Record<Locale, T>> })[]
 ) {
@@ -157,5 +149,6 @@ export function obfuscatePoint<T extends AnyColumn | SQL>(
 		: T extends SQL
 		? InferSQLDataType<T>
 		: never;
+	// See previous implementation in sql schema
 	return sql<D>``;
 }

@@ -11,5 +11,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
+		align-self: stretch;
 	}
 </style>

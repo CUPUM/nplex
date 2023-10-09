@@ -21,6 +21,7 @@
 		font-size: var(--size-sm);
 		background-color: color-mix(in srgb, var(--color-neutral-50) 50%, transparent);
 		backdrop-filter: blur(8px);
+		min-height: calc(var(--base-size) + 2 * var(--base-inset));
 		transition: all var(--duration-medium) var(--ease-out-expo);
 
 		:global(:--dark) & {
@@ -31,6 +32,7 @@
 			opacity: 0;
 			transform: translateY(0.5em);
 			pointer-events: none;
+			min-height: 0;
 			transition: all var(--duration-fast) var(--ease-in-expo);
 		}
 

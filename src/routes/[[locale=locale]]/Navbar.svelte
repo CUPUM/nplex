@@ -83,6 +83,7 @@
 		getLoadingNewProject,
 	} from '../../routes/[[locale=locale]]/Contexts.svelte';
 	import NavbarButton from './NavbarButton.svelte';
+	import NavbarDrawer from './NavbarDrawer.svelte';
 	import NavbarMenu from './NavbarMenu.svelte';
 	import NavbarMenuButton from './NavbarMenuButton.svelte';
 	import NavbarMenuGroup from './NavbarMenuGroup.svelte';
@@ -169,7 +170,7 @@
 						<MoreHorizontal class="button-icon" />
 					</NavbarButton>
 					<div use:melt={$drawerPortalled}>
-						<!-- <NavbarDrawer {...drawerElements} open={drawerOpen} /> -->
+						<NavbarDrawer {...drawerElements} open={drawerOpen} />
 					</div>
 				{/if}
 			</nav>

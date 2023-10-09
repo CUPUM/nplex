@@ -1,6 +1,6 @@
 import { USER_ROLES } from '$lib/auth/constants';
 import { withRole } from '$lib/auth/guard.server';
-import { projectInterventionCategoriesAndInterventionsUpdateSchema } from '$lib/db/crud';
+import { projectInterventionCategoriesWithInterventionsUpdateSchema } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
 import {
 	projectInterventionCategories,
@@ -17,28 +17,50 @@ import { superValidate } from 'sveltekit-superforms/server';
 export const load = async (event) => {
 	await withRole(event, USER_ROLES.ADMIN);
 
-	const data = await dbpool.transaction(async (tx) => {
-		const interventionCategories = (
-			await tx.query.projectInterventionCategories.findMany({
-				with: {
-					translations: true,
+	// const data = await dbpool.transaction(async (tx) => {
+	// 	const interventionCategories = (
+	// 		await tx.query.projectInterventionCategories.findMany({
+	// 			with: {
+	// 				translations: true,
+	// 			},
+	// 		})
+	// 	).map(reduceTranslations);
+	// 	const interventions = (
+	// 		await tx.query.projectInterventions.findMany({
+	// 			with: {
+	// 				translations: true,
+	// 			},
+	// 		})
+	// 	).map(reduceTranslations);
+	// 	return {
+	// 		interventionCategories,
+	// 		interventions,
+	// 	};
+	// });
+
+	const interventionCategories = (
+		await dbpool.query.projectInterventionCategories.findMany({
+			with: {
+				translations: true,
+				interventions: {
+					with: {
+						translations: true,
+					},
 				},
-			})
-		).map(reduceTranslations);
-		const interventions = (
-			await tx.query.projectInterventions.findMany({
-				with: {
-					translations: true,
-				},
-			})
-		).map(reduceTranslations);
+			},
+		})
+	).map((ic, i) => {
 		return {
-			interventionCategories,
-			interventions,
+			...reduceTranslations(ic, i),
+			interventions: ic.interventions.map(reduceTranslations),
 		};
 	});
 
-	const form = await superValidate(data, projectInterventionCategoriesAndInterventionsUpdateSchema);
+	// const form = await superValidate(data, projectInterventionCategoriesAndInterventionsUpdateSchema);
+	const form = await superValidate(
+		{ interventionCategories },
+		projectInterventionCategoriesWithInterventionsUpdateSchema
+	);
 
 	return { form };
 };
@@ -74,7 +96,7 @@ export const actions = {
 		await withRole(event, USER_ROLES.ADMIN);
 		const form = await superValidate(
 			event,
-			projectInterventionCategoriesAndInterventionsUpdateSchema
+			projectInterventionCategoriesWithInterventionsUpdateSchema
 		);
 		if (!form.valid) {
 			console.info(form);
@@ -102,7 +124,9 @@ export const actions = {
 						set: getAllExcluded(projectInterventionCategoriesTranslations),
 					});
 				// Interventions
-				const [pi, pit] = extractTranslations(form.data.interventions);
+				const [pi, pit] = extractTranslations(
+					form.data.interventionCategories.flatMap((ic) => ic.interventions)
+				);
 				await tx
 					.insert(projectInterventions)
 					.values(pi)

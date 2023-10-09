@@ -65,7 +65,10 @@
 						<span class="label with-hover">
 							{$dt.description}
 						</span>
-						<textarea class="input" bind:value={$form.types[i].translations[locale].description} />
+						<textarea
+							class="input resize"
+							bind:value={$form.types[i].translations[locale].description}
+						/>
 					</label>
 				</TranslationsCard>
 			</li>

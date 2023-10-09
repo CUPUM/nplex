@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { ripple } from '$lib/actions/ripple';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import TranslationsField from '$lib/components/TranslationsField.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
@@ -17,6 +18,7 @@
 		data.form,
 		{
 			dataType: 'json',
+			taintedMessage: null,
 		}
 	);
 
@@ -57,26 +59,39 @@
 		</TranslationsField>
 		<TranslationsField centered let:locale>
 			<svelte:fragment slot="legend">{$t.summary}</svelte:fragment>
-			<textarea rows="5" class="input" bind:value={$form.translations[locale].summary} />
+			<textarea rows="5" class="input resize" bind:value={$form.translations[locale].summary} />
 		</TranslationsField>
 		<TranslationsField centered let:locale>
 			<svelte:fragment slot="legend">{$t.description}</svelte:fragment>
-			<textarea rows="10" class="input" bind:value={$form.translations[locale].description} />
+			<textarea
+				rows="10"
+				class="input resize"
+				bind:value={$form.translations[locale].description}
+			/>
 		</TranslationsField>
-		<section>
-			<div>
-				{$t.type}
-			</div>
-			<fieldset class="switch">
-				{#each data.descriptors.types as pt}
-					<label class="switch-item">
-						<input type="radio" name="typeId" bind:group={$form.typeId} value={pt.id} hidden />
-						{pt.id}
-					</label>
-				{/each}
-			</fieldset>
-		</section>
 	</ProjectFormGroup>
+	<section class="formgroup">
+		<h3>
+			{$t.type}
+		</h3>
+		<fieldset class="switch" use:ripple>
+			{#each data.descriptors.types as pt}
+				<label class="switch-item">
+					<input
+						type="radio"
+						name="typeId"
+						bind:group={$form.typeId}
+						value={pt.id}
+						class="switch-input"
+					/>
+					{#if $form.typeId === pt.id}
+						<div class="switch-thumb" in:receive={{ key: 'type' }} out:send={{ key: 'type' }} />
+					{/if}
+					{pt.id}
+				</label>
+			{/each}
+		</fieldset>
+	</section>
 	<DashboardMenu>
 		{#if $tainted}
 			<button
@@ -99,5 +114,9 @@
 
 	.subhead {
 		max-width: 65ch;
+	}
+
+	.formgroup {
+		align-self: center;
 	}
 </style>

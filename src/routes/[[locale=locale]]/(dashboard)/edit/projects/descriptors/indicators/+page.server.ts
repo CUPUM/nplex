@@ -1,6 +1,6 @@
 import { USER_ROLES } from '$lib/auth/constants';
 import { withRole } from '$lib/auth/guard.server';
-import { projectExemplarityCategoriesAndIndicatorsUpdateSchema } from '$lib/db/crud';
+import { projectExemplarityCategoriesWithIndicatorsUpdateSchema } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
 import {
 	projectExemplarityCategories,
@@ -17,20 +17,28 @@ import { superValidate } from 'sveltekit-superforms/server';
 export const load = async (event) => {
 	await withRole(event, USER_ROLES.ADMIN);
 
-	const data = await dbpool.transaction(async (tx) => {
-		const exemplarityCategories = (
-			await tx.query.projectExemplarityCategories.findMany({ with: { translations: true } })
-		).map(reduceTranslations);
-		const exemplarityIndicators = (
-			await tx.query.projectExemplarityIndicators.findMany({ with: { translations: true } })
-		).map(reduceTranslations);
+	const exemplarityCategories = (
+		await dbpool.query.projectExemplarityCategories.findMany({
+			with: {
+				translations: true,
+				indicators: {
+					with: {
+						translations: true,
+					},
+				},
+			},
+		})
+	).map((ec, i) => {
 		return {
-			exemplarityCategories,
-			exemplarityIndicators,
+			...reduceTranslations(ec, i),
+			indicators: ec.indicators.map(reduceTranslations),
 		};
 	});
 
-	const form = await superValidate(data, projectExemplarityCategoriesAndIndicatorsUpdateSchema);
+	const form = await superValidate(
+		{ exemplarityCategories },
+		projectExemplarityCategoriesWithIndicatorsUpdateSchema
+	);
 
 	return { form };
 };
@@ -86,7 +94,7 @@ export const actions = {
 	},
 	update: async (event) => {
 		await withRole(event, USER_ROLES.ADMIN);
-		const form = await superValidate(event, projectExemplarityCategoriesAndIndicatorsUpdateSchema);
+		const form = await superValidate(event, projectExemplarityCategoriesWithIndicatorsUpdateSchema);
 		if (!form.valid) {
 			console.info(form.errors);
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
@@ -113,7 +121,9 @@ export const actions = {
 						set: getAllExcluded(projectExemplarityCategoriesTranslations),
 					});
 				// Indicators
-				const [pei, peit] = extractTranslations(form.data.exemplarityIndicators);
+				const [pei, peit] = extractTranslations(
+					form.data.exemplarityCategories.flatMap((ec) => ec.indicators)
+				);
 				await tx
 					.insert(projectExemplarityIndicators)
 					.values(pei)

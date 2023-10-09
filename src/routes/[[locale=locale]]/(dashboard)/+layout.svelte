@@ -37,9 +37,11 @@
 
 <style lang="postcss">
 	article {
-		display: grid;
-		grid-template-columns: fit-content(var(--dashboard-navbar)) 1fr;
-		@media (--lg) {
+		display: flex;
+		flex-direction: column;
+		@media (--md) {
+			display: grid;
+			grid-template-columns: fit-content(var(--dashboard-navbar)) 1fr;
 			padding-inline: 0.75rem;
 		}
 	}
@@ -72,7 +74,6 @@
 	}
 
 	.dashboard-sidebar {
-		width: var(--dashboard-navbar);
 		display: flex;
 		flex-direction: row;
 		align-self: stretch;
@@ -80,6 +81,8 @@
 		top: var(--navbar-height);
 		position: sticky;
 		gap: 0.5rem;
+		z-index: 1;
+
 		@media (--md) {
 			margin-right: 0.5rem;
 			align-self: flex-start;
@@ -91,6 +94,7 @@
 	}
 
 	section {
+		/* box-shadow: 0 0 0.5rem var(--base-bg); */
 		grid-column: 2;
 		border-radius: var(--radius-lg);
 		background-color: var(--color-neutral-50);

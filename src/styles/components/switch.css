@@ -1,4 +1,5 @@
 .switch {
+	position: relative;
 	display: flex;
 	flex-direction: row;
 	padding: var(--base-inset);
@@ -15,11 +16,25 @@
 		flex: none;
 	}
 
+	&:focus-within,
+	&:has(:active) {
+		outline: var(--base-focus-ring);
+	}
+
+	.switch-input {
+		position: absolute;
+		width: 0;
+		height: 0;
+		opacity: 0;
+		pointer-events: none;
+	}
+
 	.switch-thumb {
 		position: absolute;
 		inset: 0;
 		border-radius: inherit;
 		z-index: -1;
+		pointer-events: none;
 	}
 
 	.switch-item {
@@ -32,24 +47,48 @@
 		height: calc(var(--base-size) - 2 * var(--base-inset));
 		border-radius: calc(var(--base-radius) - var(--base-inset));
 		padding-inline: var(--base-padding);
+		opacity: 0.75;
+		transform: translate3d(0);
+		transition: all var(--duration-fast) ease-out;
+
+		&:hover,
+		&:focus-visible {
+			opacity: 1;
+		}
+
+		&:active {
+			animation: var(--animation-press);
+		}
 	}
 
-	.switch-item-icon {
+	.switch-icon {
 	}
 
 	/*
 	Default variant
 	*/
 	&:not(.outlined) {
-		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		/* background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent); */
 
 		.switch-thumb {
-			background-color: red;
+			background-color: var(--color-neutral-900);
+			:--dark & {
+				background-color: var(--color-neutral-100);
+			}
 		}
 
 		.switch-item {
 			&:hover {
 				background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+			}
+
+			&[data-state='checked'],
+			&:has(:checked) {
+				pointer-events: none;
+				color: var(--color-neutral-300);
+				:--dark & {
+					color: var(--color-neutral-700);
+				}
 			}
 		}
 	}
