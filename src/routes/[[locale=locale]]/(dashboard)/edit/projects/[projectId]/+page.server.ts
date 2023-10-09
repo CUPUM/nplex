@@ -2,6 +2,7 @@ import { withAuth } from '$lib/auth/guard.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
+import { TRUE } from '$lib/db/sql';
 import { getAllExcluded, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
@@ -68,10 +69,9 @@ export const actions = {
 					.where(
 						and(
 							eq(projectsInterventions.projectId, event.params.projectId),
-							notInArray(
-								projectsInterventions.interventionId,
-								interventionIds.length ? interventionIds : ['fallback']
-							)
+							interventionIds.length
+								? notInArray(projectsInterventions.interventionId, interventionIds)
+								: TRUE()
 						)
 					);
 				if (interventionIds.length) {
