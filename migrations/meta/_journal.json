@@ -50,6 +50,20 @@
       "when": 1696781061366,
       "tag": "0006_sloppy_venus",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1696827821152,
+      "tag": "0007_sticky_victor_mancha",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1696828049220,
+      "tag": "0008_spicy_blue_blade",
+      "breakpoints": true
     }
   ]
 }

@@ -55,7 +55,7 @@
 		border-radius: var(--tab-button-radius);
 		color: var(--color-neutral-600);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 0%, transparent);
-		transition: all 0.1s ease-out;
+		transition: all var(--duration-fast) ease-out;
 		:global(:--dark) & {
 			background-color: color-mix(in srgb, var(--color-neutral-500) 0%, transparent);
 			color: var(--color-neutral-400);
@@ -70,6 +70,9 @@
 					color: var(--color-neutral-100);
 				}
 			}
+		}
+		&:focus {
+			outline: var(--base-focus-ring);
 		}
 		&[data-state='active'] {
 			cursor: default;

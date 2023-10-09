@@ -9,12 +9,12 @@ export const switchCrossfade = crossfade({
 	},
 	easing: cubicInOut,
 	fallback(node /* params, intro */) {
-		return scale(node, { duration: 250, easing: elasticOut, start: 0.95 });
+		return scale(node, { duration: 500, easing: elasticOut, start: 0.95 });
 	},
 });
 
 export const toggleCrossfade = crossfade({
 	fallback(node /*params, intro */) {
-		return scale(node, { start: 0.5, duration: 350, easing: elasticOut });
+		return scale(node, { start: 0.5, duration: 500, easing: elasticOut });
 	},
 });

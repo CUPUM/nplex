@@ -70,8 +70,8 @@
 			/>
 		</TranslationsField>
 	</ProjectFormGroup>
-	<section class="formgroup">
-		<h3>
+	<ProjectFormGroup centered>
+		<h3 class="label">
 			{$t.type}
 		</h3>
 		<fieldset class="switch" use:ripple>
@@ -87,11 +87,23 @@
 					{#if $form.typeId === pt.id}
 						<div class="switch-thumb" in:receive={{ key: 'type' }} out:send={{ key: 'type' }} />
 					{/if}
-					{pt.id}
+					{pt.title}
 				</label>
 			{/each}
 		</fieldset>
-	</section>
+	</ProjectFormGroup>
+	<ProjectFormGroup centered>
+		<div id="cost">
+			<label class="labeled-group">
+				<span class="label">Min$</span>
+				<input type="number" class="input" bind:value={$form.costRange[0]} />
+			</label>
+			<label class="labeled-group">
+				<span class="label">Max$</span>
+				<input type="number" class="input" bind:value={$form.costRange[1]} />
+			</label>
+		</div>
+	</ProjectFormGroup>
 	<DashboardMenu>
 		{#if $tainted}
 			<button
@@ -116,7 +128,9 @@
 		max-width: 65ch;
 	}
 
-	.formgroup {
-		align-self: center;
+	#cost {
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
 	}
 </style>

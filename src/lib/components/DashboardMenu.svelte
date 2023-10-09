@@ -32,7 +32,6 @@
 			opacity: 0;
 			transform: translateY(0.5em);
 			pointer-events: none;
-			min-height: 0;
 			transition: all var(--duration-fast) var(--ease-in-expo);
 		}
 

@@ -104,15 +104,24 @@ export const locale = customType<{ data: Locale; driverData: string }>({
  *
  * @todo Add multiranges if needed.
  */
-export const intrange = customType<{ data: [number, number]; config: { size: 4 | 8 } }>({
+export const intrange = customType<{
+	data: [number, number];
+	driverData: string;
+	config: { size: 4 | 8 };
+}>({
 	dataType(config) {
-		return `int${config?.size ?? 4}`;
+		return `int${config?.size ?? 4}range`;
 	},
 	fromDriver(value) {
-		return value as [number, number];
+		const matches = value.match(/(?<nums>(\d*\.?\d* *, *\d*\.?\d*))/);
+		if (!matches?.groups) {
+			throw new Error('Expected range string, got wrongly formatted data.');
+		}
+		const range = matches.groups['nums'].split(',').map((num) => Number(num));
+		return [range[0], range[1]];
 	},
 	toDriver(value) {
-		return value;
+		return `[${value[0]},${value[1]}]`;
 	},
 });
 

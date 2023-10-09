@@ -32,6 +32,7 @@ export const load = async (event) => {
 			throw error(STATUS_CODES.NOT_FOUND, t.notFound);
 		}
 		const project = reduceTranslations(rawProject);
+		console.log(project);
 		const form = superValidate(project, projectGeneralUpdateSchema);
 		return { form };
 	} catch (e) {

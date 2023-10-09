@@ -15,7 +15,7 @@
 		<header
 			in:slide={{ duration: 750, easing: expoOut, opacity: 0 }}
 			out:slide={{ easing: expoOut, duration: 500, opacity: 0 }}
-			class:detached={scrollY > headerHeight}
+			class:detached={scrollY > headerHeight / 2}
 			class:scrolled={scrollY > 0}
 			bind:clientHeight={headerHeight}
 		>

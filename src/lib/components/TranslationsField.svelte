@@ -10,7 +10,7 @@
 	const {
 		elements: { root, trigger, list, content },
 		states: { value },
-	} = createTabs({ defaultValue, loop: true });
+	} = createTabs({ defaultValue, loop: true, activateOnFocus: true });
 </script>
 
 <fieldset class="labeled-group" class:centered>

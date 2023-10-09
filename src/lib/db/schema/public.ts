@@ -420,7 +420,7 @@ export const projects = pgTable('projects', {
 	}),
 	adjacentStreets: integer('adjacent_streets'),
 	adjacentAlleys: integer('adjacent_alleys'),
-	costRange: intrange('cost_range'),
+	costRange: intrange('cost_range').notNull().default([0, 0]),
 	siteArea: integer('site_area'),
 	interventionsArea: integer('interventions_area'),
 	buildingArea: integer('building_area'),
