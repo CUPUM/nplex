@@ -73,16 +73,7 @@ export const load = async (event) => {
 				)
 			)
 			.leftJoin(interventionSq, eq(projectInterventionCategories.id, interventionSq.categoryId));
-		// const interventionCategories = await tx.query.projectInterventionCategories.findMany({
-		// 	with: {
-		// 		translations: {
-		// 			where(f, o) {
-		// 				return o.eq(f.locale, event.locals.locale);
-		// 			},
-		// 		},
-		// 	},
-		// });
-		// console.log(JSON.stringify(interventionCategories, undefined, 2));
+
 		const interventions = await tx
 			.select({
 				...getTableColumns(projectInterventionsTranslations),
@@ -96,6 +87,7 @@ export const load = async (event) => {
 					eq(projectInterventionsTranslations.locale, event.locals.locale)
 				)
 			);
+
 		const siteOwnerships = await tx
 			.select({
 				...getTableColumns(projectSiteOwnershipsTranslations),
@@ -109,6 +101,7 @@ export const load = async (event) => {
 					eq(projectSiteOwnershipsTranslations.locale, event.locals.locale)
 				)
 			);
+
 		const implantationTypes = await tx
 			.select({
 				...getTableColumns(projectImplantationTypesTranslations),
@@ -122,10 +115,32 @@ export const load = async (event) => {
 					eq(projectImplantationTypesTranslations.locale, event.locals.locale)
 				)
 			);
+
+		const indicatorsSq = tx
+			.select({
+				categoryId: projectExemplarityIndicators.categoryId,
+				agg: arrayAgg(
+					jsonBuildObject({
+						...getTableColumns(projectExemplarityIndicators),
+						...getTableColumns(projectExemplarityIndicatorsTranslations),
+					})
+				).as('agg'),
+			})
+			.from(projectExemplarityIndicators)
+			.groupBy(projectExemplarityIndicators.categoryId)
+			.leftJoin(
+				projectExemplarityIndicatorsTranslations,
+				and(
+					eq(projectExemplarityIndicatorsTranslations.id, projectExemplarityIndicators.id),
+					eq(projectExemplarityIndicatorsTranslations.locale, event.locals.locale)
+				)
+			)
+			.as('indicators');
 		const exemplarityCategories = await tx
 			.select({
 				...getTableColumns(projectExemplarityCategoriesTranslations),
 				...getTableColumns(projectExemplarityCategories),
+				indicators: indicatorsSq.agg,
 			})
 			.from(projectExemplarityCategories)
 			.leftJoin(
@@ -134,7 +149,9 @@ export const load = async (event) => {
 					eq(projectExemplarityCategories.id, projectExemplarityCategoriesTranslations.id),
 					eq(projectExemplarityCategoriesTranslations.locale, event.locals.locale)
 				)
-			);
+			)
+			.leftJoin(indicatorsSq, eq(projectExemplarityCategories.id, indicatorsSq.categoryId));
+
 		const exemplarityIndicators = await tx
 			.select({
 				...getTableColumns(projectExemplarityIndicatorsTranslations),
@@ -148,6 +165,7 @@ export const load = async (event) => {
 					eq(projectExemplarityIndicatorsTranslations.locale, event.locals.locale)
 				)
 			);
+
 		const imageTypes = await tx
 			.select({
 				...getTableColumns(projectImageTypesTranslations),
@@ -161,6 +179,7 @@ export const load = async (event) => {
 					eq(projectImageTypesTranslations.locale, event.locals.locale)
 				)
 			);
+
 		const imageTemporalities = await tx
 			.select({
 				...getTableColumns(projectImageTemporalitiesTranslations),

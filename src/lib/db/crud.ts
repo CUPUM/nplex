@@ -1,6 +1,6 @@
 import { localeSchema } from '$lib/i18n/constants';
 import type { InferSelectModel } from 'drizzle-orm';
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { users } from './schema/accounts';
 import {
@@ -29,6 +29,7 @@ import {
 	projectTypes,
 	projectTypesTranslations,
 	projects,
+	projectsExemplarityIndicators,
 	projectsInterventions,
 	projectsTranslations,
 } from './schema/public';
@@ -239,7 +240,7 @@ export const projectTranslationsInsertSchema = createInsertSchema(projectsTransl
 	locale: localeSchema,
 });
 
-export const projectsInterventionInsertSchema = createSelectSchema(projectsInterventions);
+export const projectsInterventionInsertSchema = createInsertSchema(projectsInterventions);
 
 export const projectGeneralUpdateSchema = withTranslationsSchema(
 	projectInsertSchema.pick({ id: true, typeId: true, costRange: true, siteOwnershipId: true }),
@@ -252,6 +253,12 @@ export const projectGeneralUpdateSchema = withTranslationsSchema(
 // export const projectPlaceUpdateSchema =
 
 /** Projects exemplarity indicators. */
+export const projectsExemplarityIndicatorInsertSchema = createInsertSchema(
+	projectsExemplarityIndicators
+);
+export const projectsExemplarityIndicatorsUpdateSchema = z.object({
+	indicatorIds: z.array(projectsExemplarityIndicatorInsertSchema.shape.exemplarityIndicatorId),
+});
 
 /** Projects images credits. */
 
