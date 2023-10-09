@@ -199,7 +199,7 @@
 	.top {
 		position: sticky;
 		z-index: 1;
-		top: var(--navbar-height);
+		top: calc(var(--navbar-height) + 0.5rem);
 	}
 
 	.intervention-menu {

@@ -55,7 +55,7 @@ export const projectInterventionCategoriesRelations = relations(
 	({ many }) => {
 		return {
 			translations: many(projectInterventionCategoriesTranslations),
-			interventions: many(projectsInterventions),
+			interventions: many(projectInterventions),
 		};
 	}
 );
