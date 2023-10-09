@@ -172,6 +172,16 @@ Primitive button style component.
 				}
 			}
 		}
+		&[data-current] {
+			color: var(--color-neutral-900);
+			background-color: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
+			border-color: transparent;
+			:--dark & {
+				color: var(--color-neutral-100);
+				background-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+				border-color: transparent;
+			}
+		}
 	}
 
 	/*

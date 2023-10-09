@@ -57,16 +57,25 @@
 <style lang="postcss">
 	aside {
 		border-top: var(--base-border);
+		padding: 0;
+		align-self: stretch;
+		display: flex;
+		flex-direction: column;
+	}
+
+	h2 {
 		padding: 1rem 2rem;
-		overflow: hidden;
 	}
 
 	ul {
+		position: relative;
 		font-size: var(--size-sm);
 		display: flex;
 		flex-direction: row;
-		overflow-x: scroll;
+		flex-wrap: nowrap;
+		overflow-x: auto;
 		gap: 1em;
-		max-width: 100%;
+		padding: 0 2rem;
+		padding-bottom: 1rem;
 	}
 </style>
