@@ -37,7 +37,8 @@ export const load = async (event) => {
 
 	const form = await superValidate(
 		{ exemplarityCategories },
-		projectExemplarityCategoriesWithIndicatorsUpdateSchema
+		projectExemplarityCategoriesWithIndicatorsUpdateSchema,
+		{ id: 'exemplarity-form' }
 	);
 
 	return { form };
@@ -145,7 +146,7 @@ export const actions = {
 			return { form };
 		} catch (e) {
 			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur serveur' });
+			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });
 		}
 	},
 };

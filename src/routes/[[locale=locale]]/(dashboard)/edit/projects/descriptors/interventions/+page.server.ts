@@ -10,33 +10,12 @@ import {
 } from '$lib/db/schema/public';
 import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { error, fail } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withRole(event, USER_ROLES.ADMIN);
-
-	// const data = await dbpool.transaction(async (tx) => {
-	// 	const interventionCategories = (
-	// 		await tx.query.projectInterventionCategories.findMany({
-	// 			with: {
-	// 				translations: true,
-	// 			},
-	// 		})
-	// 	).map(reduceTranslations);
-	// 	const interventions = (
-	// 		await tx.query.projectInterventions.findMany({
-	// 			with: {
-	// 				translations: true,
-	// 			},
-	// 		})
-	// 	).map(reduceTranslations);
-	// 	return {
-	// 		interventionCategories,
-	// 		interventions,
-	// 	};
-	// });
 
 	const interventionCategories = (
 		await dbpool.query.projectInterventionCategories.findMany({
@@ -145,7 +124,7 @@ export const actions = {
 			return { form };
 		} catch (e) {
 			console.error(e);
-			throw error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur serveur' });
+			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });
 		}
 	},
 };
