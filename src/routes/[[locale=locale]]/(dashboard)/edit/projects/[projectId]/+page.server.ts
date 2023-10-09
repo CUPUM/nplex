@@ -1,7 +1,7 @@
 import { withAuth } from '$lib/auth/guard.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud';
 import { dbpool } from '$lib/db/db.server';
-import { projects, projectsTranslations } from '$lib/db/schema/public';
+import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
 import { getAllExcluded, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
@@ -26,12 +26,17 @@ export const load = async (event) => {
 			},
 			with: {
 				translations: true,
+				interventions: { columns: { interventionId: true } },
 			},
 		});
 		if (!rawProject) {
 			throw error(STATUS_CODES.NOT_FOUND, t.notFound);
 		}
-		const project = reduceTranslations(rawProject);
+		const { interventions, ...restProject } = rawProject;
+		const project = reduceTranslations({
+			...restProject,
+			interventionIds: interventions.map((pi) => pi.interventionId),
+		});
 		const form = superValidate(project, projectGeneralUpdateSchema);
 		return { form };
 	} catch (e) {
@@ -48,7 +53,7 @@ export const actions = {
 			return fail(STATUS_CODES.BAD_REQUEST);
 		}
 		try {
-			const { translations, ...project } = form.data;
+			const { translations, interventionIds, ...project } = form.data;
 			await dbpool.transaction(async (tx) => {
 				await tx.update(projects).set(project).where(eq(projects.id, event.params.projectId));
 				await tx
@@ -57,6 +62,17 @@ export const actions = {
 					.onConflictDoUpdate({
 						target: [projectsTranslations.id, projectsTranslations.locale],
 						set: getAllExcluded(projectsTranslations),
+					});
+				await tx
+					.insert(projectsInterventions)
+					.values(
+						interventionIds.map((interventionId) => ({
+							interventionId,
+							projectId: event.params.projectId,
+						}))
+					)
+					.onConflictDoNothing({
+						target: [projectsInterventions.projectId, projectsInterventions.interventionId],
 					});
 			});
 		} catch (e) {

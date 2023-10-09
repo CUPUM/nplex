@@ -82,7 +82,7 @@ export const load = async (event) => {
 		// 		},
 		// 	},
 		// });
-		console.log(JSON.stringify(interventionCategories, undefined, 2));
+		// console.log(JSON.stringify(interventionCategories, undefined, 2));
 		const interventions = await tx
 			.select({
 				...getTableColumns(projectInterventionsTranslations),

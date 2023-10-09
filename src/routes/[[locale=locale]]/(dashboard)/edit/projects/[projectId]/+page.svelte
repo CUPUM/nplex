@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { dev } from '$app/environment';
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import TranslationsField from '$lib/components/TranslationsField.svelte';
@@ -95,35 +96,48 @@
 				</label>
 			{/each}
 		</fieldset>
-		<h3>{$t.interventions}</h3>
-		<fieldset>
-			{#each data.descriptors.interventionCategories as category, i (category.id)}
-				<h4>{category.title}</h4>
-				<ul>
-					{#if category.interventions}
-						{#each category.interventions as intervention}
-							<label class="token" use:ripple>
-								<input type="checkbox" class="token-input" value={intervention.id} />
-								<span class="token-label">
-									{intervention.title}
-								</span>
-							</label>
-						{/each}
-					{/if}
-				</ul>
-			{/each}
-		</fieldset>
+		{#if dev}
+			<h3>{$t.interventions}</h3>
+			<fieldset>
+				{#each data.descriptors.interventionCategories as category, i (category.id)}
+					<h4>{category.title}</h4>
+					<ul>
+						{#if category.interventions}
+							{#each category.interventions as intervention}
+								<label class="token" use:ripple>
+									<input
+										type="checkbox"
+										class="token-input"
+										value={intervention.id}
+										bind:group={$form.interventionIds}
+									/>
+									<span class="token-label">
+										{intervention.title}
+									</span>
+								</label>
+							{/each}
+						{/if}
+					</ul>
+				{/each}
+			</fieldset>
+		{/if}
 	</ProjectFormGroup>
 	<ProjectFormGroup centered>
 		<h3>{$t.costRange}</h3>
 		<div id="cost">
 			<label class="labeled-group">
-				<span class="label">Min$</span>
-				<input type="number" class="input" bind:value={$form.costRange[0]} />
+				<span class="label">Min</span>
+				<div class="input-group">
+					<span class="input-affix">CA$</span>
+					<input type="number" class="input" bind:value={$form.costRange[0]} />
+				</div>
 			</label>
 			<label class="labeled-group">
-				<span class="label">Max$</span>
-				<input type="number" class="input" bind:value={$form.costRange[1]} />
+				<span class="label">Max</span>
+				<div class="input-group">
+					<span class="input-affix">CA$</span>
+					<input type="number" class="input" bind:value={$form.costRange[1]} />
+				</div>
 			</label>
 		</div>
 	</ProjectFormGroup>

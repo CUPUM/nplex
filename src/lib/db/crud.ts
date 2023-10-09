@@ -1,6 +1,6 @@
 import { localeSchema } from '$lib/i18n/constants';
 import type { InferSelectModel } from 'drizzle-orm';
-import { createInsertSchema } from 'drizzle-zod';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { users } from './schema/accounts';
 import {
@@ -29,6 +29,7 @@ import {
 	projectTypes,
 	projectTypesTranslations,
 	projects,
+	projectsInterventions,
 	projectsTranslations,
 } from './schema/public';
 import { withTranslationsSchema } from './utils';
@@ -238,13 +239,15 @@ export const projectTranslationsInsertSchema = createInsertSchema(projectsTransl
 	locale: localeSchema,
 });
 
+export const projectsInterventionInsertSchema = createSelectSchema(projectsInterventions);
+
 export const projectGeneralUpdateSchema = withTranslationsSchema(
 	projectInsertSchema.pick({ id: true, typeId: true, costRange: true, siteOwnershipId: true }),
 	projectTranslationsInsertSchema
+).merge(
+	z.object({ interventionIds: z.array(projectsInterventionInsertSchema.shape.interventionId) })
 );
 // export const projectPlaceUpdateSchema =
-
-/** Projects interventions. */
 
 /** Projects exemplarity indicators. */
 

@@ -26,6 +26,7 @@ import {
 	projectTypesToInterventions,
 	projectTypesTranslations,
 	projects,
+	projectsInterventions,
 	projectsTranslations,
 } from './public';
 
@@ -54,7 +55,7 @@ export const projectInterventionCategoriesRelations = relations(
 	({ many }) => {
 		return {
 			translations: many(projectInterventionCategoriesTranslations),
-			interventions: many(projectInterventions),
+			interventions: many(projectsInterventions),
 		};
 	}
 );
@@ -82,6 +83,7 @@ export const projectInterventionsRelations = relations(projectInterventions, ({ 
 			references: [projectInterventionCategories.id],
 		}),
 		types: many(projectTypes),
+		projects: many(projects),
 	};
 });
 export const projectInterventionsTranslationsRelations = relations(
@@ -287,6 +289,7 @@ export const projectsRelations = relations(projects, ({ one, many }) => {
 			fields: [projects.typeId],
 			references: [projectTypes.id],
 		}),
+		interventions: many(projectsInterventions),
 	};
 });
 export const projectsTranslationsRelations = relations(projectsTranslations, ({ one }) => {
@@ -298,6 +301,19 @@ export const projectsTranslationsRelations = relations(projectsTranslations, ({ 
 		project: one(projects, {
 			fields: [projectsTranslations.id],
 			references: [projects.id],
+		}),
+	};
+});
+
+export const projectsInterventionsRelations = relations(projectsInterventions, ({ one }) => {
+	return {
+		project: one(projects, {
+			fields: [projectsInterventions.projectId],
+			references: [projects.id],
+		}),
+		intervention: one(projectInterventions, {
+			fields: [projectsInterventions.interventionId],
+			references: [projectInterventions.id],
 		}),
 	};
 });
