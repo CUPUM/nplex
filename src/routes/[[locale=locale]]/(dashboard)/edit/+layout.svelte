@@ -58,6 +58,7 @@
 	aside {
 		border-top: var(--base-border);
 		padding: 1rem 2rem;
+		overflow: hidden;
 	}
 
 	ul {
@@ -66,5 +67,6 @@
 		flex-direction: row;
 		overflow-x: scroll;
 		gap: 1em;
+		max-width: 100%;
 	}
 </style>

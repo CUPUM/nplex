@@ -63,27 +63,30 @@ export const actions = {
 						target: [projectsTranslations.id, projectsTranslations.locale],
 						set: getAllExcluded(projectsTranslations),
 					});
+				await tx
+					.delete(projectsInterventions)
+					.where(
+						and(
+							eq(projectsInterventions.projectId, event.params.projectId),
+							notInArray(
+								projectsInterventions.interventionId,
+								interventionIds.length ? interventionIds : ['fallback']
+							)
+						)
+					);
 				if (interventionIds.length) {
 					await tx
-						.delete(projectsInterventions)
-						.where(
-							and(
-								eq(projectsInterventions.projectId, event.params.projectId),
-								notInArray(projectsInterventions.interventionId, interventionIds)
-							)
-						);
+						.insert(projectsInterventions)
+						.values(
+							interventionIds.map((interventionId) => ({
+								interventionId,
+								projectId: event.params.projectId,
+							}))
+						)
+						.onConflictDoNothing({
+							target: [projectsInterventions.projectId, projectsInterventions.interventionId],
+						});
 				}
-				await tx
-					.insert(projectsInterventions)
-					.values(
-						interventionIds.map((interventionId) => ({
-							interventionId,
-							projectId: event.params.projectId,
-						}))
-					)
-					.onConflictDoNothing({
-						target: [projectsInterventions.projectId, projectsInterventions.interventionId],
-					});
 			});
 		} catch (e) {
 			console.error(e);

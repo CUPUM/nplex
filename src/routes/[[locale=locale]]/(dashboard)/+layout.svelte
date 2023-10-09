@@ -39,9 +39,10 @@
 	article {
 		display: flex;
 		flex-direction: column;
+		max-width: 100%;
 		@media (--md) {
 			display: grid;
-			grid-template-columns: fit-content(var(--dashboard-navbar)) 1fr;
+			grid-template-columns: fit-content(var(--dashboard-navbar)) minmax(0, 1fr);
 			padding-inline: 0.75rem;
 		}
 	}
@@ -95,8 +96,7 @@
 	}
 
 	section {
-		/* box-shadow: 0 0 0.5rem var(--base-bg); */
-		grid-column: 2;
+		grid-column: 2 / 3;
 		border-radius: var(--radius-lg);
 		background-color: var(--color-neutral-50);
 		:global(:--dark) & {
