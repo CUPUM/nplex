@@ -44,8 +44,8 @@
 			0 -2px 3px -4px rgba(0, 0, 0, 0.2);
 		/* background-color: var(--color-neutral-50); */
 		:global(:--dark) & {
-			box-shadow: none;
-			background-color: var(--color-neutral-950);
+			/* box-shadow: none; */
+			/* background-color: var(--color-neutral-950); */
 		}
 	}
 

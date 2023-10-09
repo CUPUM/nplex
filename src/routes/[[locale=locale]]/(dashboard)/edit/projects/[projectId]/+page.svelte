@@ -29,7 +29,9 @@
 			summary: 'Sommaire',
 			description: 'Description',
 			type: 'Type de projet',
-			interventions: 'Intervention',
+			interventions: 'Interventions',
+			costRange: 'Fourchette de coûts',
+			ownership: 'Type de propriétaire',
 		},
 		en: {
 			heading: 'General information',
@@ -37,7 +39,9 @@
 			summary: 'Summary',
 			description: 'Description',
 			type: 'Project type',
-			interventions: 'Intervention',
+			interventions: 'Interventions',
+			costRange: 'Cost range',
+			ownership: 'Ownership',
 		},
 	});
 
@@ -91,8 +95,27 @@
 				</label>
 			{/each}
 		</fieldset>
+		<h3>{$t.interventions}</h3>
+		<fieldset>
+			{#each data.descriptors.interventionCategories as category, i (category.id)}
+				<h4>{category.title}</h4>
+				<ul>
+					{#if category.interventions}
+						{#each category.interventions as intervention}
+							<label class="token" use:ripple>
+								<input type="checkbox" class="token-input" value={intervention.id} />
+								<span class="token-label">
+									{intervention.title}
+								</span>
+							</label>
+						{/each}
+					{/if}
+				</ul>
+			{/each}
+		</fieldset>
 	</ProjectFormGroup>
 	<ProjectFormGroup centered>
+		<h3>{$t.costRange}</h3>
 		<div id="cost">
 			<label class="labeled-group">
 				<span class="label">Min$</span>
@@ -103,6 +126,14 @@
 				<input type="number" class="input" bind:value={$form.costRange[1]} />
 			</label>
 		</div>
+	</ProjectFormGroup>
+	<ProjectFormGroup centered>
+		<h3>{$t.ownership}</h3>
+		<select bind:value={$form.siteOwnershipId} class="input">
+			{#each data.descriptors.siteOwnerships as ownership}
+				<option value={ownership.id}>{ownership.title}</option>
+			{/each}
+		</select>
 	</ProjectFormGroup>
 	<DashboardMenu>
 		{#if $tainted}

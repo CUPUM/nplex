@@ -97,6 +97,7 @@
 	--ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 	/* Durations */
+	--duration-xfast: 75ms;
 	--duration-fast: 120ms;
 	--duration-medium: 250ms;
 	--duration-slow: 350ms;

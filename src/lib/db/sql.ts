@@ -42,13 +42,9 @@ export function generateNanoid({
 	alphabet,
 }: {
 	optimized?: boolean;
-	/**
-	 * Defaults to @link NANOID_LENGTH_DEFAULT.
-	 */
+	/** Defaults to @link NANOID_LENGTH_DEFAULT. */
 	length?: number;
-	/**
-	 * Defaults to '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-	 */
+	/** Defaults to '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' */
 	alphabet?: string;
 } = {}) {
 	const opts: (string | number)[] = [length];
@@ -59,9 +55,7 @@ export function generateNanoid({
 	// return sql`extensions.nanoid${optimized ? '_optimized' : ''}(${opts.join(',')})`;
 }
 
-/**
- * Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
- */
+/** Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set. */
 export function excluded<C extends PgColumn>(column: C) {
 	// return sql`excluded.${column}`;
 	return sql.raw(`excluded.${column.name}`);
@@ -125,7 +119,7 @@ export function jsonAgg<Table extends AnyTable<TableConfig>>(
 }
 
 export function arrayAgg<T extends SQL | InferSelectModel<AnyTable>>(raw: T) {
-	return sql<T extends SQL ? InferSQLDataType<T>[] : T[]>`array_agg(${raw})`;
+	return sql<(T extends SQL ? InferSQLDataType<T>[] : T[]) | null>`array_agg(${raw})`;
 }
 
 /**
@@ -169,9 +163,7 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn>>(shape: T
 	)})), '[]')`;
 }
 
-/**
- * Get a PostGIS column value as geojson.
- */
+/** Get a PostGIS column value as geojson. */
 export function asGeoJson<T extends Feature = Feature>(geom: string) {
 	return sql<T>`st_asgeojson(${geom})::json`;
 }
@@ -222,37 +214,64 @@ export function jsonObjectAgg<
 	return sql<Record<TK, TV>>`json_object_agg(${key}, ${value})`;
 }
 
-// type Coalesce<T extends unknown[], N extends boolean = true, R = never> = T extends [
-// 	infer H,
-// 	...infer T,
-// ]
-// 	? Coalesce<T, null extends H ? true : false, R | NonNullable<H>>
-// 	: N extends true
-// 	? R | null
-// 	: R;
+// // type Coalesce<T extends unknown[], N extends boolean = true, R = never> = T extends [
+// 	type RemoveNull<T> = T extends null ? never : T
 
-// type CoalesceSQL<T extends SQL[], N extends boolean = true, R = never> = T extends [
-// 	infer H,
-// 	...infer T,
-// ]
-// 	? Coalesce<T, SQL<null> extends H ? true : false, R | H extends SQL<null> ? never : H>
-// 	: N extends true
-// 	? R | null
-// 	: R;
+// 	type Coalesce<T extends unknown[], N extends boolean = true, R = never> = T extends [
+// 			infer H,
+// 			...infer T,
+// 	]
+// 			? Coalesce<T, null extends H ? true : false, R | RemoveNull<H>>
+// 			: N extends true
+// 			? R | null
+// 			: R
 
-// /**
-//  * SQL coalesce.
-//  *
-//  * @see https://www.typescriptlang.org/play?#code/C4TwDgpgBAcg9sGBXANigPAFShAHsCAOwBMBnKJQga0LgHdCBtAXQD4oBeKAbwCgoBURgGkoAS0JRCSALYAjCACcoAMihUIIOADMomZgC49I5jnxEyU1CigB+KRABuSqEcwmA3LwC+X3tsoAY2AxOElAuABDFAhSQIh0ADUzAhJyShp6JjYACgA6AsdopFijRIBKHl4ASFBIPU4hArzE0zxUywltF2x7bCNCJyUvATroAGFG7kYASXFJDS1dbDVpeSVDYxm28zSrNDsHZ2U3WeZffigxqAAxRvHGRZ0oceYRqAjCUmAobTEUAiKCDERpFFAlUh5P4ApQ5RycdjwgCEXGkaHK7yBwCQikkOWhgOBeRihAA5sAABaHAlKYGMAAMpgG1kqkXINy83l4vGumFiwHQAEEUhZ0tRaAwWOwuIxmoKdh1yF0eod+kdhtzPt8oJFFIoAIyNRholAAGigAFlIpS8opIiQ4DIcpV2HkAKyHADkwrBJU9OvIWp+zLQzF4QZ1eoATEaTearTa7Q6nS6oO6vT7ihB-WyPmFtUZvbRKS5fdmA3mvsAw9dxoauHzvugxs9dQbWDzwBMYw3+c2u63ox3w-mfgRvvW89FYvEcnHLdaKbb7cRHc6oK6PfZvVAyznA6PXPsUBioAB6M-HqAAHygO73I6rV35PanMTiEDn1nji+XyfXm4ZruWb7pWBZ3oKxYUqWIEVkGp4XhBwHguWt5Fgg0HKHuQA
-//  * @todo Figure out mapped array typing to exclude exclusively null array members.
-//  */
-// export function coalesce<T extends SQL[]>(...values: T) {
-// 	return sql.join([
-// 		sql.raw('coalesce('),
-// 		sql.join(
-// 			values.map((v) => sql`${v}`),
-// 			sql.raw(', ')
-// 		),
-// 		sql.raw(')'),
-// 	]) as CoalesceSQL<T>;
-// }
+// 	type Test1 = Coalesce<[]>
+// 	//   ^?
+// 	type Test2 = Coalesce<[null]>
+// 	//   ^?
+// 	type Test3 = Coalesce<[null, number | null]>
+// 	//   ^?
+// 	type Test4 = Coalesce<[null, number | null, string | null]>
+// 	//   ^?
+// 	type Test5 = Coalesce<[null, number | null, string | null, boolean]>
+// 	//   ^?
+
+type RemoveNullSQL<T> = T extends SQL<null> ? never : T;
+
+type CoalesceSQL<T extends SQL[], N extends boolean = true, R = never> = T extends [
+	infer H,
+	...infer T,
+]
+	? CoalesceSQL<T, SQL<null> extends H ? true : false, R | RemoveNullSQL<H>>
+	: N extends true
+	? R | SQL<null>
+	: R;
+
+// type Test1 = CoalesceSQL<[]>
+// //   ^?
+// type Test2 = CoalesceSQL<[SQL<null>]>
+// //   ^?
+// type Test3 = CoalesceSQL<[SQL<null>, SQL<number | null>]>
+// //   ^?
+// type Test4 = CoalesceSQL<[SQL<null>, SQL<number | null>, SQL<string | null>]>
+// //   ^?
+// type Test5 = CoalesceSQL<[SQL<null>, SQL<number | null>, SQL<string | null>, SQL<boolean>]>
+// //   ^?
+
+/**
+ * SQL coalesce.
+ *
+ * @see https://www.typescriptlang.org/play?#code/C4TwDgpgBAcg9sGBXANigPAFShAHsCAOwBMBnKJQga0LgHdCBtAXQD4oBeKAbwCgoBURgGkoAS0JRCSALYAjCACcoAMihUIIOADMomZgC49I5jnxEyU1CigB+KRABuSqEcwmA3LwC+X3tsoAY2AxOElAuABDFAhSQIh0ADUzAhJyShp6JjYACgA6AsdopFijRIBKHl4ASFBIPU4hArzE0zxUywltF2x7bCNCJyUvATroAGFG7kYASXFJDS1dbDVpeSVDYxm28zSrNDsHZ2U3WeZffigxqAAxRvHGRZ0oceYRqAjCUmAobTEUAiKCDERpFFAlUh5P4ApQ5RycdjwgCEXGkaHK7yBwCQikkOWhgOBeRihAA5sAABaHAlKYGMAAMpgG1kqkXINy83l4vGumFiwHQAEEUhZ0tRaAwWOwuIxmoKdh1yF0eod+kdhtzPt8oJFFIoAIyNRholAAGigAFlIpS8opIiQ4DIcpV2HkAKyHADkwrBJU9OvIWp+zLQzF4QZ1eoATEaTearTa7Q6nS6oO6vT7ihB-WyPmFtUZvbRKS5fdmA3mvsAw9dxoauHzvugxs9dQbWDzwBMYw3+c2u63ox3w-mfgRvvW89FYvEcnHLdaKbb7cRHc6oK6PfZvVAyznA6PXPsUBioAB6M-HqAAHygO73I6rV35PanMTiEDn1nji+XyfXm4ZruWb7pWBZ3oKxYUqWIEVkGp4XhBwHguWt5Fgg0HKHuQA
+ * @todo Figure out mapped array typing to exclude exclusively null array members.
+ */
+export function coalesce<T extends SQL[]>(...values: T) {
+	return sql.join([
+		sql.raw('coalesce('),
+		sql.join(
+			values.map((v) => sql`${v}`),
+			sql.raw(', ')
+		),
+		sql.raw(')'),
+	]) as CoalesceSQL<T>;
+}

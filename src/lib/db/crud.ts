@@ -237,8 +237,9 @@ export const projectTranslationsInsertSchema = createInsertSchema(projectsTransl
 	description: (s) => s.description.max(5000),
 	locale: localeSchema,
 });
+
 export const projectGeneralUpdateSchema = withTranslationsSchema(
-	projectInsertSchema.pick({ id: true, typeId: true, costRange: true }),
+	projectInsertSchema.pick({ id: true, typeId: true, costRange: true, siteOwnershipId: true }),
 	projectTranslationsInsertSchema
 );
 // export const projectPlaceUpdateSchema =

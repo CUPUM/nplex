@@ -26,7 +26,7 @@ textarea.input {
 .input-group {
 	--nested-base-size: calc(var(--base-size) - 2 * var(--base-inset));
 	--nested-base-radius: calc(var(--base-radius) - var(--base-inset));
-	display: flex;
+	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
 	border-radius: var(--base-radius);

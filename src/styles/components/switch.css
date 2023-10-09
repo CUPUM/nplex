@@ -1,6 +1,6 @@
 .switch {
 	position: relative;
-	display: flex;
+	display: inline-flex;
 	flex-direction: row;
 	padding: var(--base-inset);
 	border-radius: var(--base-radius);

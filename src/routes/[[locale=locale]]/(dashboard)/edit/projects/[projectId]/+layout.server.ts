@@ -19,6 +19,7 @@ import {
 	projectTypes,
 	projectTypesTranslations,
 } from '$lib/db/schema/public';
+import { arrayAgg, jsonBuildObject } from '$lib/db/sql';
 import { and, eq, getTableColumns } from 'drizzle-orm';
 
 export const load = async (event) => {
@@ -36,10 +37,32 @@ export const load = async (event) => {
 					eq(projectTypesTranslations.locale, event.locals.locale)
 				)
 			);
+
+		const interventionSq = tx
+			.select({
+				categoryId: projectInterventions.categoryId,
+				agg: arrayAgg(
+					jsonBuildObject({
+						...getTableColumns(projectInterventions),
+						...getTableColumns(projectInterventionsTranslations),
+					})
+				).as('agg'),
+			})
+			.from(projectInterventions)
+			.groupBy(projectInterventions.categoryId)
+			.leftJoin(
+				projectInterventionsTranslations,
+				and(
+					eq(projectInterventionsTranslations.id, projectInterventions.id),
+					eq(projectInterventionsTranslations.locale, event.locals.locale)
+				)
+			)
+			.as('interventions');
 		const interventionCategories = await tx
 			.select({
 				...getTableColumns(projectInterventionCategoriesTranslations),
 				...getTableColumns(projectInterventionCategories),
+				interventions: interventionSq.agg,
 			})
 			.from(projectInterventionCategories)
 			.leftJoin(
@@ -48,7 +71,18 @@ export const load = async (event) => {
 					eq(projectInterventionCategories.id, projectInterventionCategoriesTranslations.id),
 					eq(projectInterventionCategoriesTranslations.locale, event.locals.locale)
 				)
-			);
+			)
+			.leftJoin(interventionSq, eq(projectInterventionCategories.id, interventionSq.categoryId));
+		// const interventionCategories = await tx.query.projectInterventionCategories.findMany({
+		// 	with: {
+		// 		translations: {
+		// 			where(f, o) {
+		// 				return o.eq(f.locale, event.locals.locale);
+		// 			},
+		// 		},
+		// 	},
+		// });
+		console.log(JSON.stringify(interventionCategories, undefined, 2));
 		const interventions = await tx
 			.select({
 				...getTableColumns(projectInterventionsTranslations),
