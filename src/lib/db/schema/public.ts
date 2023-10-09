@@ -611,7 +611,6 @@ export const projectsImagesCreditDetails = pgTable('projects_images_credits_deta
 	middleName: text('middle_name'),
 	lastName: text('last_name'),
 	url: text('url'),
-	description: text('description'),
 	organizationId: text('organization_id').references(() => organizations.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',

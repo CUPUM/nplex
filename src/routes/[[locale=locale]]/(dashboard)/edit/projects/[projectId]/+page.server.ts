@@ -63,14 +63,16 @@ export const actions = {
 						target: [projectsTranslations.id, projectsTranslations.locale],
 						set: getAllExcluded(projectsTranslations),
 					});
-				await tx
-					.delete(projectsInterventions)
-					.where(
-						and(
-							eq(projectsInterventions.projectId, event.params.projectId),
-							notInArray(projectsInterventions.interventionId, interventionIds)
-						)
-					);
+				if (interventionIds.length) {
+					await tx
+						.delete(projectsInterventions)
+						.where(
+							and(
+								eq(projectsInterventions.projectId, event.params.projectId),
+								notInArray(projectsInterventions.interventionId, interventionIds)
+							)
+						);
+				}
 				await tx
 					.insert(projectsInterventions)
 					.values(

@@ -26,6 +26,8 @@ import {
 	projectTypesToInterventions,
 	projectTypesTranslations,
 	projects,
+	projectsImages,
+	projectsImagesTranslations,
 	projectsInterventions,
 	projectsTranslations,
 } from './public';
@@ -290,6 +292,7 @@ export const projectsRelations = relations(projects, ({ one, many }) => {
 			references: [projectTypes.id],
 		}),
 		interventions: many(projectsInterventions),
+		images: many(projectsImages),
 	};
 });
 export const projectsTranslationsRelations = relations(projectsTranslations, ({ one }) => {
@@ -317,6 +320,32 @@ export const projectsInterventionsRelations = relations(projectsInterventions, (
 		}),
 	};
 });
+
+export const projectsImagesRelations = relations(projectsImages, ({ one, many }) => {
+	return {
+		translations: many(projectsImagesTranslations),
+		project: one(projects, {
+			fields: [projectsImages.projectId],
+			references: [projects.id],
+		}),
+	};
+});
+export const projectsImagesTranslationsRelations = relations(
+	projectsImagesTranslations,
+	({ one }) => {
+		return {
+			image: one(projectsImages, {
+				fields: [projectsImagesTranslations.id],
+				references: [projectsImages.id],
+			}),
+		};
+	}
+);
+
+// export const projectsImagesCreditsRelations = relations(projectsImagesCredits, ({one}) => {
+
+// })
+// export const projectsImagesCreditsDetails
 
 export const organizationTypesRelations = relations(organizationTypes, ({ many }) => {
 	return {

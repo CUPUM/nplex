@@ -55,6 +55,7 @@
 		top: var(--navbar-height);
 		z-index: -1;
 		transform: scale(1);
+		transform-origin: top center;
 		transition: all var(--duration-medium) var(--ease-out-expo);
 
 		&.detached {

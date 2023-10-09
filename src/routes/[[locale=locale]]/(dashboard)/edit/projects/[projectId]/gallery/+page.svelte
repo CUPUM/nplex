@@ -1,7 +1,12 @@
 <script lang="ts">
+	export let data;
+
+	// const {form, enhance} = superForm(data.form);
 </script>
 
-<h1>gallery</h1>
+<!-- <ProjectForm>
+
+</ProjectForm> -->
 
 <style lang="postcss">
 </style>
