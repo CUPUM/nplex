@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { slide } from '$lib/transitions/slide';
 	import { expoOut } from 'svelte/easing';
-	import { fade } from 'svelte/transition';
+	import { scale } from 'svelte/transition';
 
 	let scrollY = 0;
 	let headerHeight = 0;
@@ -30,7 +30,7 @@
 			<svelte:component this={$page.data.dashboard.sidebar} />
 		</div>
 	{/if}
-	<section in:fade>
+	<section in:scale={{ start: 0.98, duration: 350, easing: expoOut }}>
 		<slot />
 	</section>
 </article>

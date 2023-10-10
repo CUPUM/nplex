@@ -209,6 +209,5 @@ export const load = async (event) => {
 
 	return {
 		descriptors,
-		test: 'asdas',
 	};
 };

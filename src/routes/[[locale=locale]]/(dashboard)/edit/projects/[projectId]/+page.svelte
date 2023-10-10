@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
+	import DashboardForm from '$lib/components/DashboardForm.svelte';
+	import DashboardFormGroup from '$lib/components/DashboardFormGroup.svelte';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import TranslationsField from '$lib/components/TranslationsField.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
@@ -8,8 +10,6 @@
 	import { expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
-	import ProjectForm from './ProjectForm.svelte';
-	import ProjectFormGroup from './ProjectFormGroup.svelte';
 	import { projectT } from './translations';
 
 	export let data;
@@ -48,7 +48,7 @@
 	const [send, receive] = switchCrossfade;
 </script>
 
-<ProjectForm {enhance} let:element let:loading action="?/update">
+<DashboardForm {enhance} let:element let:loading action="?/update">
 	<svelte:fragment slot="header">
 		<h1 class="heading lg">{$t.heading}</h1>
 		<p class="prose dim subhead">
@@ -56,7 +56,7 @@
 			tenetur voluptatibus ducimus harum itaque praesentium qui cupiditate!
 		</p>
 	</svelte:fragment>
-	<ProjectFormGroup>
+	<DashboardFormGroup>
 		<TranslationsField centered let:locale>
 			<svelte:fragment slot="legend">{$t.title}</svelte:fragment>
 			<input type="text" class="input title" bind:value={$form.translations[locale].title} />
@@ -73,8 +73,8 @@
 				bind:value={$form.translations[locale].description}
 			/>
 		</TranslationsField>
-	</ProjectFormGroup>
-	<ProjectFormGroup centered>
+	</DashboardFormGroup>
+	<DashboardFormGroup centered>
 		<h3 class="label">
 			{$t.type}
 		</h3>
@@ -118,8 +118,8 @@
 				</ul>
 			{/each}
 		</fieldset>
-	</ProjectFormGroup>
-	<ProjectFormGroup centered>
+	</DashboardFormGroup>
+	<DashboardFormGroup centered>
 		<h3>{$t.costRange}</h3>
 		<div id="cost">
 			<label class="labeled-group">
@@ -137,15 +137,15 @@
 				</div>
 			</label>
 		</div>
-	</ProjectFormGroup>
-	<ProjectFormGroup centered>
+	</DashboardFormGroup>
+	<DashboardFormGroup centered>
 		<h3>{$t.ownership}</h3>
 		<select bind:value={$form.siteOwnershipId} class="input">
 			{#each data.descriptors.siteOwnerships as ownership}
 				<option value={ownership.id}>{ownership.title}</option>
 			{/each}
 		</select>
-	</ProjectFormGroup>
+	</DashboardFormGroup>
 	<DashboardMenu>
 		{#if $tainted}
 			<button
@@ -159,7 +159,7 @@
 			</button>
 		{/if}
 	</DashboardMenu>
-</ProjectForm>
+</DashboardForm>
 
 <style lang="postcss">
 	.title {

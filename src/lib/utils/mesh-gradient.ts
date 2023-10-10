@@ -39,3 +39,5 @@ export function composeMeshgradient({
 		})
 		.join(', ');
 }
+
+export type MeshGradientParams = Parameters<typeof composeMeshgradient>[0];

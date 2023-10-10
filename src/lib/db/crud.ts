@@ -31,6 +31,7 @@ import {
 	projects,
 	projectsExemplarityIndicators,
 	projectsInterventions,
+	projectsOrganizations,
 	projectsTranslations,
 } from './schema/public';
 import { withTranslationsSchema } from './utils';
@@ -262,6 +263,13 @@ export const projectsExemplarityIndicatorsUpdateSchema = z.object({
 
 /** Projects images credits. */
 
+/** Projects organizations. */
+export const projectsOrganizationInsertSchema = createInsertSchema(projectsOrganizations);
+// export const projectsUsersInsertSchema = createInsertSchema(projectsUsers);
+export const projectsContributionsUpdateSchema = z.object({
+	organizationIds: z.array(projectsOrganizationInsertSchema.shape.organizationId),
+});
+
 /** Organization types. */
 export const organizationTypeInsertSchema = createInsertSchema(organizationTypes).required({
 	id: true,
@@ -283,7 +291,7 @@ export const organizationInsertSchema = createInsertSchema(organizations).requir
 export const organizationTranslationInsertSchema = createInsertSchema(organizationsTranslations, {
 	locale: localeSchema,
 });
-export const organizationsUpdateSchema = withTranslationsSchema(
+export const organizationGeneralUpdateSchema = withTranslationsSchema(
 	organizationInsertSchema,
 	organizationTranslationInsertSchema
 );

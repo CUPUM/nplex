@@ -1,12 +1,16 @@
 <script lang="ts">
-	export let data;
+	import { enhance } from '$app/forms';
+	import ImageInput from './ImageInput.svelte';
 
-	// const {form, enhance} = superForm(data.form);
+	export let data;
 </script>
 
-<!-- <ProjectForm>
-
-</ProjectForm> -->
+<form action="?/update" method="POST" use:enhance enctype="multipart/form-data">
+	<ImageInput />
+</form>
 
 <style lang="postcss">
+	form {
+		padding: 2rem;
+	}
 </style>

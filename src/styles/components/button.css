@@ -2,6 +2,7 @@
 Primitive button style component.
 */
 .button {
+	cursor: pointer;
 	position: relative;
 	display: inline-flex;
 	flex-direction: row;

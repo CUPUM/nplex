@@ -14,10 +14,14 @@ export const load = async (event) => {
 };
 
 export const actions = {
-	addImage: async (event) => {
+	upload: async (event) => {
 		await withAuth(event);
+		console.log('Uploading!');
+		const formData = await event.request.formData();
+		console.log(formData);
+		return {};
 	},
-	deleteImage: async (event) => {
+	delete: async (event) => {
 		await withAuth(event);
 		const id = event.url.searchParams.get('id');
 		if (!id) {

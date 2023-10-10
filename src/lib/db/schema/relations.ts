@@ -4,6 +4,7 @@ import {
 	organizationTypes,
 	organizationTypesTranslations,
 	organizations,
+	organizationsTranslations,
 	projectBuildingLevelTypes,
 	projectBuildingLevelTypesTranslations,
 	projectExemplarityCategories,
@@ -29,6 +30,7 @@ import {
 	projectsImages,
 	projectsImagesTranslations,
 	projectsInterventions,
+	projectsOrganizations,
 	projectsTranslations,
 } from './public';
 
@@ -287,12 +289,13 @@ export const projectBuildingLevelTypesTranslationsRelations = relations(
 export const projectsRelations = relations(projects, ({ one, many }) => {
 	return {
 		translations: many(projectsTranslations),
+		interventions: many(projectsInterventions),
+		images: many(projectsImages),
+		organizations: many(projectsOrganizations),
 		type: one(projectTypes, {
 			fields: [projects.typeId],
 			references: [projectTypes.id],
 		}),
-		interventions: many(projectsInterventions),
-		images: many(projectsImages),
 	};
 });
 export const projectsTranslationsRelations = relations(projectsTranslations, ({ one }) => {
@@ -347,6 +350,19 @@ export const projectsImagesTranslationsRelations = relations(
 // })
 // export const projectsImagesCreditsDetails
 
+export const projectsOrganizationsRelations = relations(projectsOrganizations, ({ one }) => {
+	return {
+		project: one(projects, {
+			fields: [projectsOrganizations.projectId],
+			references: [projects.id],
+		}),
+		organization: one(organizations, {
+			fields: [projectsOrganizations.organizationId],
+			references: [organizations.id],
+		}),
+	};
+});
+
 export const organizationTypesRelations = relations(organizationTypes, ({ many }) => {
 	return {
 		organizations: many(organizations),
@@ -364,6 +380,28 @@ export const organizationTypesTranslationsRelations = relations(
 			type: one(organizationTypes, {
 				fields: [organizationTypesTranslations.id],
 				references: [organizationTypes.id],
+			}),
+		};
+	}
+);
+
+export const organizationsRelations = relations(organizations, ({ many, one }) => {
+	return {
+		translations: many(organizationsTranslations),
+		projects: many(projectsOrganizations),
+		type: one(organizationTypes, {
+			fields: [organizations.typeId],
+			references: [organizationTypes.id],
+		}),
+	};
+});
+export const organizationsTranslationsRelations = relations(
+	organizationsTranslations,
+	({ one }) => {
+		return {
+			organization: one(organizations, {
+				fields: [organizationsTranslations.id],
+				references: [organizations.id],
 			}),
 		};
 	}

@@ -91,7 +91,7 @@
 	const dropdownMenuOptions = {
 		forceVisible: true,
 		positioning: {
-			overflowPadding: 16,
+			overflowPadding: 12,
 			gutter: 6,
 			placement: 'bottom',
 		},
