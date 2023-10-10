@@ -1,6 +1,6 @@
 import { USER_ROLES } from '$lib/auth/constants';
 import { withRole } from '$lib/auth/guard.server';
-import { organizationTypesUpdateSchema } from '$lib/db/crud';
+import { organizationTypesUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { organizationTypes, organizationTypesTranslations } from '$lib/db/schema/public';
 import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';

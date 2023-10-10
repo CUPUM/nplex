@@ -1,4 +1,4 @@
-import type { SelectUser } from '$lib/db/crud';
+import type { SelectUser } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import {
 	emailVerificationTokens,

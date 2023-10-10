@@ -19,7 +19,7 @@ export const load = async (event) => {
 				)
 			)
 			.limit(1);
-		return { ...base };
+		return base;
 	});
 	return {
 		project,

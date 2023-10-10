@@ -4,7 +4,7 @@ import type { Session } from 'lucia';
 import { dbpool } from './db.server';
 import { users } from './schema/accounts';
 import { projects, projectsUsers } from './schema/public';
-import { TRUE } from './sql';
+import { TRUE } from './sql.server';
 
 export function authorizeUserUpdate(session: Session) {
 	return eq(users.id, session.user.id);

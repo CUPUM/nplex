@@ -4,7 +4,7 @@ import { strictRecord } from '$lib/utils/zod';
 import { getTableColumns, sql, type AnyColumn, type AnyTable, type SQL } from 'drizzle-orm';
 import { PgTable, getTableConfig } from 'drizzle-orm/pg-core';
 import type { ZodObject, ZodString, ZodTypeAny } from 'zod';
-import { excluded } from './sql';
+import { excluded } from './sql.server';
 
 export type FieldSelectRecord = Record<string, AnyColumn | SQL>;
 

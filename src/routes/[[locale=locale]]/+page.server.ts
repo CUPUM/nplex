@@ -1,7 +1,7 @@
 import { auth } from '$lib/auth/auth.server';
 import { dbpool } from '$lib/db/db.server';
 import { organizations, projects, projectsImages } from '$lib/db/schema/public';
-import { random } from '$lib/db/sql';
+import { random } from '$lib/db/sql.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';

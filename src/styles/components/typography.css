@@ -7,41 +7,41 @@ Headings
 	:--dark & {
 		/* color: var(--color-neutral-200); */
 	}
-	&:is(h1, h2, h3, h4, h5, h6) {
+	&.prose:is(h1, h2, h3, h4, h5, h6) {
 		margin-block: 1em;
 	}
 	/* Extra large heading */
 	&.xxl {
-		line-height: 1.1;
-		font-weight: 532;
+		font-weight: 410;
 		font-size: var(--size-5xl);
+		line-height: 1.1;
 	}
 	/* Extra large heading */
 	&.xl {
 		line-height: 1.1;
-		font-weight: 532;
+		font-weight: 420;
 		font-size: var(--size-4xl);
 	}
 	/* Large heading */
 	&.lg {
 		line-height: 1.15;
-		font-weight: 550;
+		font-weight: 4300;
 		font-size: var(--size-3xl);
 	}
 	/* Medium heading */
 	line-height: 1.2;
-	font-weight: 625;
+	font-weight: 440;
 	font-size: var(--size-2xl);
 	/* Small heading */
 	&.sm {
 		line-height: 1.275;
-		font-weight: 632;
+		font-weight: 450;
 		font-size: var(--size-xl);
 	}
 	/* Extra small heading */
 	&.xs {
 		line-height: 1.35;
-		font-weight: 632;
+		font-weight: 460;
 		font-size: var(--size-lg);
 	}
 }
@@ -49,7 +49,8 @@ Headings
 /*
 Prose
 */
-.prose {
+.prose:not(.heading),
+.text {
 	color: var(--color-neutral-700);
 	font-optical-sizing: auto;
 	font-weight: 300;
@@ -57,7 +58,7 @@ Prose
 		color: var(--color-neutral-300);
 	}
 	/* Semantic elements */
-	&:is(p, h1, h2, h3, h4, h5, h6) {
+	&:not(.text):is(p, h1, h2, h3, h4, h5, h6) {
 		margin-block: 1.25em;
 	}
 	/* Extra large text */

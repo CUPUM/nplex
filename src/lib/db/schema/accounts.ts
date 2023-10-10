@@ -11,7 +11,7 @@ import {
 	varchar,
 } from 'drizzle-orm/pg-core';
 import { USER_ID_LENGTH } from '../constants';
-import { generateNanoid } from '../sql';
+import { generateNanoid } from '../sql.server';
 import { locale, userRole } from './custom-types';
 import { locales } from './i18n';
 import { projects } from './public';
@@ -33,9 +33,7 @@ export const userRoles = accountsSchema.table('user_roles', {
 	role: userRole('role').primaryKey().notNull(),
 });
 
-/**
- * @see {@link userRoles}
- */
+/** @see {@link userRoles} */
 export const userRolesTranslations = accountsSchema.table(
 	'user_roles_t',
 	{
@@ -107,9 +105,7 @@ export const emailVerificationTokens = accountsSchema.table('email_verification_
 
 export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerificationTokens>;
 
-/**
- * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
- */
+/** @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit */
 export const passwordResetTokens = accountsSchema.table('password_reset_tokens', {
 	id: text('id').notNull().unique(),
 	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
@@ -162,18 +158,14 @@ export const usersRolesRequests = accountsSchema.table('users_roles_requests', {
 	requestAt: timestamp('requested_at', { withTimezone: true }).defaultNow(),
 });
 
-/**
- * Occupations or professions of registered users.
- */
+/** Occupations or professions of registered users. */
 export const userOccupations = accountsSchema.table('user_occupations', {
 	id: text('id')
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 });
 
-/**
- * @see {@link userOccupations}
- */
+/** @see {@link userOccupations} */
 export const userOccupationsTranslations = accountsSchema.table(
 	'user_occupations_t',
 	{

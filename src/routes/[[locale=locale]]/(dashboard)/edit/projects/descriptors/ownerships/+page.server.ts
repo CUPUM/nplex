@@ -1,6 +1,6 @@
 import { USER_ROLES } from '$lib/auth/constants';
 import { withRole } from '$lib/auth/guard.server';
-import { projectSiteOwnershipsUpdateSchema } from '$lib/db/crud';
+import { projectSiteOwnershipsUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { projectSiteOwnerships, projectSiteOwnershipsTranslations } from '$lib/db/schema/public';
 import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';

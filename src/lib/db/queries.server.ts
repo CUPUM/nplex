@@ -1,0 +1,188 @@
+import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
+import { and, eq, getTableColumns } from 'drizzle-orm';
+import { dbpool } from './db.server';
+import {
+	projectInterventionCategories,
+	projectInterventionCategoriesTranslations,
+	projectInterventions,
+	projectInterventionsTranslations,
+	projectTypes,
+	projectTypesTranslations,
+} from './schema/public';
+import { arrayAgg, jsonBuildObject } from './sql.server';
+
+export function typesQ(event: RequestEvent | ServerLoadEvent) {
+	return dbpool
+		.select({
+			...getTableColumns(projectTypesTranslations),
+			...getTableColumns(projectTypes),
+		})
+		.from(projectTypes)
+		.leftJoin(
+			projectTypesTranslations,
+			and(
+				eq(projectTypes.id, projectTypesTranslations.id),
+				eq(projectTypesTranslations.locale, event.locals.locale)
+			)
+		)
+		.as('types_q');
+}
+
+export function interventionCategoriesQ(event: RequestEvent | ServerLoadEvent) {
+	const interventionSq = dbpool
+		.select({
+			categoryId: projectInterventions.categoryId,
+			agg: arrayAgg(
+				jsonBuildObject({
+					...getTableColumns(projectInterventions),
+					...getTableColumns(projectInterventionsTranslations),
+				})
+			).as('agg'),
+		})
+		.from(projectInterventions)
+		.groupBy(projectInterventions.categoryId)
+		.leftJoin(
+			projectInterventionsTranslations,
+			and(
+				eq(projectInterventionsTranslations.id, projectInterventions.id),
+				eq(projectInterventionsTranslations.locale, event.locals.locale)
+			)
+		)
+		.as('interventions_sq');
+	return dbpool
+		.select({
+			...getTableColumns(projectInterventionCategoriesTranslations),
+			...getTableColumns(projectInterventionCategories),
+			interventions: interventionSq.agg,
+		})
+		.from(projectInterventionCategories)
+		.leftJoin(
+			projectInterventionCategoriesTranslations,
+			and(
+				eq(projectInterventionCategories.id, projectInterventionCategoriesTranslations.id),
+				eq(projectInterventionCategoriesTranslations.locale, event.locals.locale)
+			)
+		)
+		.leftJoin(interventionSq, eq(projectInterventionCategories.id, interventionSq.categoryId))
+		.as('intervention_categories_q');
+}
+
+// export const interventionsQ = await tx
+// 	.select({
+// 		...getTableColumns(projectInterventionsTranslations),
+// 		...getTableColumns(projectInterventions),
+// 	})
+// 	.from(projectInterventions)
+// 	.leftJoin(
+// 		projectInterventionsTranslations,
+// 		and(
+// 			eq(projectInterventions.id, projectInterventionsTranslations.id),
+// 			eq(projectInterventionsTranslations.locale, event.locals.locale)
+// 		)
+// 	);
+
+// const siteOwnerships = await tx
+// 	.select({
+// 		...getTableColumns(projectSiteOwnershipsTranslations),
+// 		...getTableColumns(projectSiteOwnerships),
+// 	})
+// 	.from(projectSiteOwnerships)
+// 	.leftJoin(
+// 		projectSiteOwnershipsTranslations,
+// 		and(
+// 			eq(projectSiteOwnerships.id, projectSiteOwnershipsTranslations.id),
+// 			eq(projectSiteOwnershipsTranslations.locale, event.locals.locale)
+// 		)
+// 	);
+
+// const implantationTypes = await tx
+// 	.select({
+// 		...getTableColumns(projectImplantationTypesTranslations),
+// 		...getTableColumns(projectImplantationTypes),
+// 	})
+// 	.from(projectImplantationTypes)
+// 	.leftJoin(
+// 		projectImplantationTypesTranslations,
+// 		and(
+// 			eq(projectImplantationTypes.id, projectImplantationTypesTranslations.id),
+// 			eq(projectImplantationTypesTranslations.locale, event.locals.locale)
+// 		)
+// 	);
+
+// const indicatorsSq = tx
+// 	.select({
+// 		categoryId: projectExemplarityIndicators.categoryId,
+// 		agg: arrayAgg(
+// 			jsonBuildObject({
+// 				...getTableColumns(projectExemplarityIndicators),
+// 				...getTableColumns(projectExemplarityIndicatorsTranslations),
+// 			})
+// 		).as('agg'),
+// 	})
+// 	.from(projectExemplarityIndicators)
+// 	.groupBy(projectExemplarityIndicators.categoryId)
+// 	.leftJoin(
+// 		projectExemplarityIndicatorsTranslations,
+// 		and(
+// 			eq(projectExemplarityIndicatorsTranslations.id, projectExemplarityIndicators.id),
+// 			eq(projectExemplarityIndicatorsTranslations.locale, event.locals.locale)
+// 		)
+// 	)
+// 	.as('indicators');
+// const exemplarityCategories = await tx
+// 	.select({
+// 		...getTableColumns(projectExemplarityCategoriesTranslations),
+// 		...getTableColumns(projectExemplarityCategories),
+// 		indicators: indicatorsSq.agg,
+// 	})
+// 	.from(projectExemplarityCategories)
+// 	.leftJoin(
+// 		projectExemplarityCategoriesTranslations,
+// 		and(
+// 			eq(projectExemplarityCategories.id, projectExemplarityCategoriesTranslations.id),
+// 			eq(projectExemplarityCategoriesTranslations.locale, event.locals.locale)
+// 		)
+// 	)
+// 	.leftJoin(indicatorsSq, eq(projectExemplarityCategories.id, indicatorsSq.categoryId));
+
+// const exemplarityIndicators = await tx
+// 	.select({
+// 		...getTableColumns(projectExemplarityIndicatorsTranslations),
+// 		...getTableColumns(projectExemplarityIndicators),
+// 	})
+// 	.from(projectExemplarityIndicators)
+// 	.leftJoin(
+// 		projectExemplarityIndicatorsTranslations,
+// 		and(
+// 			eq(projectExemplarityIndicators.id, projectExemplarityIndicatorsTranslations.id),
+// 			eq(projectExemplarityIndicatorsTranslations.locale, event.locals.locale)
+// 		)
+// 	);
+
+// const imageTypes = await tx
+// 	.select({
+// 		...getTableColumns(projectImageTypesTranslations),
+// 		...getTableColumns(projectImageTypes),
+// 	})
+// 	.from(projectImageTypes)
+// 	.leftJoin(
+// 		projectImageTypesTranslations,
+// 		and(
+// 			eq(projectImageTypes.id, projectImageTypesTranslations.id),
+// 			eq(projectImageTypesTranslations.locale, event.locals.locale)
+// 		)
+// 	);
+
+// const imageTemporalities = await tx
+// 	.select({
+// 		...getTableColumns(projectImageTemporalitiesTranslations),
+// 		...getTableColumns(projectImageTemporalities),
+// 	})
+// 	.from(projectImageTemporalities)
+// 	.leftJoin(
+// 		projectImageTemporalitiesTranslations,
+// 		and(
+// 			eq(projectImageTemporalities.id, projectImageTemporalitiesTranslations.id),
+// 			eq(projectImageTemporalitiesTranslations.locale, event.locals.locale)
+// 		)
+// 	);

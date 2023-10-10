@@ -1,8 +1,8 @@
 import { withAuth } from '$lib/auth/guard.server';
-import { projectGeneralUpdateSchema } from '$lib/db/crud';
+import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
-import { TRUE } from '$lib/db/sql';
+import { TRUE } from '$lib/db/sql.server';
 import { getAllExcluded, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';

@@ -61,6 +61,10 @@ export function excluded<C extends PgColumn>(column: C) {
 	return sql.raw(`excluded.${column.name}`);
 }
 
+// export function limit<T extends AnyTable, C extends number>(table: T, count: C) {
+// 	return sql
+// }
+
 export function emptyJsonObject() {
 	return sql<object>`'{}'::json`;
 }

@@ -1,6 +1,9 @@
 import { USER_ROLES } from '$lib/auth/constants';
 import { withRole } from '$lib/auth/guard.server';
-import { projectImageTemporalitiesUpdateSchema, projectImageTypesUpdateSchema } from '$lib/db/crud';
+import {
+	projectImageTemporalitiesUpdateSchema,
+	projectImageTypesUpdateSchema,
+} from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import {
 	projectImageTemporalities,

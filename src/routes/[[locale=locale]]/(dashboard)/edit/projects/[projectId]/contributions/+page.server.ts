@@ -1,12 +1,12 @@
 import { withAuth } from '$lib/auth/guard.server';
-import { projectsContributionsUpdateSchema } from '$lib/db/crud';
+import { projectsContributionsUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import {
 	organizations,
 	organizationsTranslations,
 	projectsOrganizations,
 } from '$lib/db/schema/public';
-import { TRUE } from '$lib/db/sql';
+import { TRUE } from '$lib/db/sql.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { and, eq, getTableColumns, notInArray } from 'drizzle-orm';

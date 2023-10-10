@@ -1,6 +1,6 @@
 import { USER_ROLES } from '$lib/auth/constants';
 import { withRole } from '$lib/auth/guard.server';
-import { projectBuildingLevelTypesUpdateSchema } from '$lib/db/crud';
+import { projectBuildingLevelTypesUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import {
 	projectBuildingLevelTypes,

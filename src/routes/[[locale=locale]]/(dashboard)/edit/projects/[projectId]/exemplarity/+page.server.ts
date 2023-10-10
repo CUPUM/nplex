@@ -1,5 +1,5 @@
 import { withAuth } from '$lib/auth/guard.server';
-import { projectsExemplarityIndicatorsUpdateSchema } from '$lib/db/crud';
+import { projectsExemplarityIndicatorsUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { projectsExemplarityIndicators } from '$lib/db/schema/public';
 import { STATUS_CODES } from '$lib/utils/constants';

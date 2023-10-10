@@ -1,15 +1,32 @@
 <script lang="ts">
 	import Loading from '$lib/components/Loading.svelte';
 	import Logo from '$lib/components/Logo.svelte';
-	import { expoOut } from 'svelte/easing';
-	import { fade } from 'svelte/transition';
+	import { onMount } from 'svelte';
+	import { cubicOut } from 'svelte/easing';
+	import { fade, scale } from 'svelte/transition';
+
+	let mounted = false;
+	onMount(() => {
+		mounted = true;
+	});
 </script>
 
 <article>
-	<div id="loop" in:fade={{ duration: 2500, easing: expoOut, delay: 500 }}>
-		<Loading thickness="1" speed={0.01} trail={false} outro={false} intro={false} linecap="butt" />
-	</div>
-	<Logo id="logo" />
+	{#if mounted}
+		<div id="loop" in:scale|global={{ start: 0.98, duration: 5000, easing: cubicOut, delay: 1000 }}>
+			<Loading
+				thickness="2"
+				speed={0.01}
+				trail={false}
+				outro={false}
+				intro={false}
+				linecap="butt"
+			/>
+		</div>
+		<div in:fade|global={{ delay: 500, duration: 750 }}>
+			<Logo id="logo" />
+		</div>
+	{/if}
 </article>
 
 <style lang="postcss">
@@ -35,6 +52,8 @@
 	}
 
 	#loop {
+		position: absolute;
+		inset: 0;
 		font-size: 30em;
 		color: var(--color-primary-600);
 		opacity: 0.25;

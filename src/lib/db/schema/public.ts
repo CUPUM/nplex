@@ -10,7 +10,7 @@ import {
 	timestamp,
 	unique,
 } from 'drizzle-orm/pg-core';
-import { generateNanoid } from '../sql';
+import { generateNanoid } from '../sql.server';
 import { userRoles, users } from './accounts';
 import { intrange, locale, point, userRole } from './custom-types';
 import { locales } from './i18n';

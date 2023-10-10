@@ -20,7 +20,7 @@ import {
 	projectTypesTranslations,
 	projectsTranslations,
 } from '$lib/db/schema/public';
-import { arrayAgg, jsonBuildObject } from '$lib/db/sql';
+import { arrayAgg, jsonBuildObject } from '$lib/db/sql.server';
 import { and, eq, getTableColumns } from 'drizzle-orm';
 
 export const load = async (event) => {

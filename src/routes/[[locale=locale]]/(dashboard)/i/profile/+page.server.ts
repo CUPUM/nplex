@@ -1,6 +1,6 @@
 import { withAuth } from '$lib/auth/guard.server';
 import { authorizeUserUpdate } from '$lib/db/authorizations';
-import { usersInsertSchema } from '$lib/db/crud';
+import { usersInsertSchema } from '$lib/db/crud.server';
 import { dbhttp } from '$lib/db/db.server';
 import { users } from '$lib/db/schema/accounts';
 import { STATUS_CODES } from '$lib/utils/constants';

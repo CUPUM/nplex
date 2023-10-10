@@ -18,7 +18,7 @@ dependencies:
     version: 3.427.0
   '@lucia-auth/adapter-postgresql':
     specifier: ^2.0.1
-    version: 2.0.1(lucia@2.7.1)(postgres@3.3.5)
+    version: 2.0.1(lucia@2.7.1)(postgres@3.4.0)
   '@lucia-auth/oauth':
     specifier: ^3.3.1
     version: 3.3.1(lucia@2.7.1)
@@ -36,7 +36,7 @@ dependencies:
     version: 2.4.0
   drizzle-orm:
     specifier: ^0.28.6
-    version: 0.28.6(@neondatabase/serverless@0.6.0)(postgres@3.3.5)
+    version: 0.28.6(@neondatabase/serverless@0.6.0)(postgres@3.4.0)
   drizzle-zod:
     specifier: ^0.5.1
     version: 0.5.1(drizzle-orm@0.28.6)(zod@3.22.4)
@@ -124,8 +124,8 @@ devDependencies:
     specifier: ^9.2.0
     version: 9.2.0(postcss@8.4.31)
   postgres:
-    specifier: ^3.3.5
-    version: 3.3.5
+    specifier: ^3.4.0
+    version: 3.4.0
   prettier:
     specifier: ^3.0.3
     version: 3.0.3
@@ -1445,7 +1445,7 @@ packages:
     resolution: {integrity: sha512-4KBSyaMj65d8A+2vnzLxtHFu4OmBU4IKO0yLxZ171Itdf9jGV4w+WbG7VsKts2jUdRkFSzsZqpZOz6hTB3qGAw==}
     dev: false
 
-  /@lucia-auth/adapter-postgresql@2.0.1(lucia@2.7.1)(postgres@3.3.5):
+  /@lucia-auth/adapter-postgresql@2.0.1(lucia@2.7.1)(postgres@3.4.0):
     resolution: {integrity: sha512-HrgyCsHXEWMD3oF2vSzbqucwGR9zCNvsV5MTV/J3EkiTHskjJXRoVqIoOONeLsdBTy+nIciyoWNMAYe9LJj3tA==}
     peerDependencies:
       lucia: ^2.0.0
@@ -1458,7 +1458,7 @@ packages:
         optional: true
     dependencies:
       lucia: 2.7.1
-      postgres: 3.3.5
+      postgres: 3.4.0
     dev: false
 
   /@lucia-auth/oauth@3.3.1(lucia@2.7.1):
@@ -3593,7 +3593,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001547
-      electron-to-chromium: 1.4.548
+      electron-to-chromium: 1.4.549
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
     dev: true
@@ -4057,7 +4057,7 @@ packages:
     dev: true
     patched: true
 
-  /drizzle-orm@0.28.6(@neondatabase/serverless@0.6.0)(postgres@3.3.5):
+  /drizzle-orm@0.28.6(@neondatabase/serverless@0.6.0)(postgres@3.4.0):
     resolution: {integrity: sha512-yBe+F9htrlYER7uXgDJUQsTHFoIrI5yMm5A0bg0GiZ/kY5jNXTWoEy4KQtg35cE27sw1VbgzoMWHAgCckUUUww==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -4120,7 +4120,7 @@ packages:
         optional: true
     dependencies:
       '@neondatabase/serverless': 0.6.0
-      postgres: 3.3.5
+      postgres: 3.4.0
     dev: false
 
   /drizzle-zod@0.5.1(drizzle-orm@0.28.6)(zod@3.22.4):
@@ -4129,7 +4129,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.28.6(@neondatabase/serverless@0.6.0)(postgres@3.3.5)
+      drizzle-orm: 0.28.6(@neondatabase/serverless@0.6.0)(postgres@3.4.0)
       zod: 3.22.4
     dev: false
 
@@ -4155,8 +4155,8 @@ packages:
       semver: 7.5.4
     dev: false
 
-  /electron-to-chromium@1.4.548:
-    resolution: {integrity: sha512-R77KD6mXv37DOyKLN/eW1rGS61N6yHOfapNSX9w+y9DdPG83l9Gkuv7qkCFZ4Ta4JPhrjgQfYbv4Y3TnM1Hi2Q==}
+  /electron-to-chromium@1.4.549:
+    resolution: {integrity: sha512-gpXfJslSi4hYDkA0mTLEpYKRv9siAgSUgZ+UWyk+J5Cttpd1ThCVwdclzIwQSclz3hYn049+M2fgrP1WpvF8xg==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -6119,8 +6119,8 @@ packages:
       xtend: 4.0.2
     dev: false
 
-  /postgres@3.3.5:
-    resolution: {integrity: sha512-+JD93VELV9gHkqpV5gdL5/70HdGtEw4/XE1S4BC8f1mcPmdib3K5XsKVbnR1XcAyC41zOnifJ+9YRKxdIsXiUw==}
+  /postgres@3.4.0:
+    resolution: {integrity: sha512-d7UtSoCg4hUtzxM9aRi3J8BrM6t0h4bQmgAHG96cDCNpP9CnnWQRdRl7WWNvKs0oOaQU2InGoOi1jETmdZK02g==}
 
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}

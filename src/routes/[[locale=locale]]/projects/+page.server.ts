@@ -1,12 +1,22 @@
 import { dbpool } from '$lib/db/db.server';
-import { projects, projectsTranslations } from '$lib/db/schema/public';
-import { and, eq } from 'drizzle-orm';
+import { projects, projectsImages, projectsTranslations } from '$lib/db/schema/public';
+import { random } from '$lib/db/sql.server';
+import { and, eq, getTableColumns, isNotNull } from 'drizzle-orm';
 
 export const load = async (event) => {
+	const images = dbpool
+		.selectDistinctOn([projectsImages.projectId], {
+			url: projectsImages.urlMd,
+			projectId: projectsImages.projectId,
+		})
+		.from(projectsImages)
+		.as('images_sq');
+
 	const qProjects = await dbpool
 		.select({
-			id: projects.id,
-			title: projectsTranslations.title,
+			imageUrl: images.url,
+			...getTableColumns(projectsTranslations),
+			...getTableColumns(projects),
 		})
 		.from(projects)
 		.leftJoin(
@@ -15,7 +25,10 @@ export const load = async (event) => {
 				eq(projectsTranslations.id, projects.id),
 				eq(projectsTranslations.locale, event.locals.locale)
 			)
-		);
+		)
+		.where(isNotNull(projectsTranslations.title))
+		.leftJoin(images, eq(images.projectId, projects.id))
+		.orderBy(random());
 	return {
 		qProjects,
 	};

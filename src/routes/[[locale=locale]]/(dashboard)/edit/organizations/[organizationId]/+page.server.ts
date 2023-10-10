@@ -1,5 +1,5 @@
 import { withAuth } from '$lib/auth/guard.server';
-import { organizationGeneralUpdateSchema } from '$lib/db/crud';
+import { organizationGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { organizations, organizationsTranslations } from '$lib/db/schema/public';
 import { getAllExcluded, reduceTranslations } from '$lib/db/utils';
