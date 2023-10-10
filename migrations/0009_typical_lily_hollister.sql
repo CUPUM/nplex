@@ -1,0 +1,1 @@
+ALTER TABLE "projects_images_credits_details" DROP COLUMN IF EXISTS "description";
