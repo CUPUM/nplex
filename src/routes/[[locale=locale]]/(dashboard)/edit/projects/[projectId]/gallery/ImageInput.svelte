@@ -1,10 +1,11 @@
 <script lang="ts" context="module">
 	export const IMAGE_SIZES = {
-		LG: 1200,
-		MD: 800,
-		SM: 250,
+		LG: 1280,
+		MD: 720,
+		SM: 350,
 	} as const;
 	const IMAGE_SIZES_KEY = Object.keys(IMAGE_SIZES) as (keyof typeof IMAGE_SIZES)[];
+	const FORMAT = 'webp';
 </script>
 
 <script lang="ts">
@@ -58,6 +59,7 @@
 							filename: `${filename}-${size}`,
 							max: IMAGE_SIZES[size],
 							quality: 0.9,
+							format: FORMAT,
 						});
 						return {
 							size,
@@ -88,7 +90,7 @@
 							// Get a presigned url
 							const pres = (await (
 								await fetch(
-									`/edit/projects/${$page.params.projectId}/gallery/presigned?&ext=webp`,
+									`/edit/projects/${$page.params.projectId}/gallery/presigned?&ext=${FORMAT}`,
 									{
 										method: 'GET',
 									}
@@ -172,7 +174,6 @@
 
 <style lang="postcss">
 	fieldset {
-		--card-height: 240px;
 		position: relative;
 		display: flex;
 		flex-direction: row;
@@ -192,11 +193,13 @@
 		height: var(--card-height);
 		aspect-ratio: 3 / 4;
 		border-radius: var(--radius-sm);
+		/* border: var(--base-border); */
+		border-color: transparent;
 		color: var(--color-neutral-700);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 		transition:
 			all var(--duration-fast) ease-out,
-			box-shadow var(--duration-slow) ease-out;
+			box-shadow var(--duration-medium) ease-out;
 		:global(:--dark) & {
 			color: var(--color-neutral-400);
 		}
@@ -204,13 +207,16 @@
 			animation: var(--animation-press);
 		}
 		&:hover {
+			border-color: var(--color-neutral-200);
 			background-color: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 			box-shadow:
-				inset 0 0 5rem white,
+				inset 0 0 5rem rgba(255, 255, 255, 0.5),
 				var(--shadow-lg);
 			color: var(--color-primary-700);
 			:global(:--dark) & {
+				border-color: var(--color-neutral-700);
 				color: var(--color-primary-400);
+				box-shadow: inset 0 0 5rem rgba(255, 255, 255, 0.01);
 			}
 		}
 	}
