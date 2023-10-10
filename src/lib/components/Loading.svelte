@@ -100,7 +100,8 @@
 		animation-fill-mode: forwards;
 		animation-iteration-count: infinite;
 		animation-timing-function: linear;
-		animation-delay: calc(var(--offset) + var(--delay, 0s));
+		animation-delay: var(--delay);
+		/* animation-delay: calc(var(--offset) + var(--delay, 0s)); */
 	}
 
 	.secondary {
