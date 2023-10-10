@@ -10,7 +10,7 @@ import { and, eq, notInArray } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await withAuth(event);
+	const session = await withAuth(event);
 	const t = event.locals.createTranslations({
 		fr: {
 			notFound: `Aucun projet trouvé avec l’identifiant ${event.params.projectId}.`,

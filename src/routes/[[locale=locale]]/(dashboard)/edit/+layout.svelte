@@ -93,7 +93,7 @@
 
 <style lang="postcss">
 	aside {
-		border-top: var(--base-border);
+		/* border-top: var(--base-border); */
 		padding: 0;
 		align-self: stretch;
 		display: flex;

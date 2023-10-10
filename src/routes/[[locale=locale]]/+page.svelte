@@ -29,7 +29,7 @@
 	{#if mounted}
 		<div class="anim" in:fade={{ duration: 1500, easing: circInOut, delay: 500 }}>
 			<Loading
-				thickness="1"
+				thickness=".75"
 				speed={0.025}
 				trail={false}
 				outro={false}
@@ -82,12 +82,14 @@
 
 <style lang="postcss">
 	article {
+		--voffset: calc(var(--navbar-height) / 2);
 		flex: 1;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		position: relative;
+		padding-bottom: var(--voffset);
 	}
 
 	header {
@@ -126,5 +128,6 @@
 		font-size: 24em;
 		color: var(--color-primary-500);
 		z-index: -2;
+		margin-top: calc(-1 * var(--voffset));
 	}
 </style>

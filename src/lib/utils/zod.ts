@@ -24,3 +24,23 @@ export const strictRecord = <
 		)
 	);
 };
+
+export const strictRecordKeys = <
+	T extends Record<string, unknown>,
+	K extends keyof T,
+	S extends ZodTypeAny,
+>(
+	keysEnum: T,
+	valueSchema: S
+) => {
+	const keys = Object.keys(keysEnum);
+	return z.object(
+		keys.reduce(
+			(agg, k) => ({
+				...agg,
+				[k]: valueSchema,
+			}),
+			{} as Record<K, S>
+		)
+	);
+};

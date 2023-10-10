@@ -542,10 +542,12 @@ export const projectsImages = pgTable(
 	'projects_images',
 	{
 		id: text('id').notNull().default(generateNanoid()).primaryKey(),
-		projectId: text('project_id').references(() => projects.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
+		projectId: text('project_id')
+			.notNull()
+			.references(() => projects.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			}),
 		date: timestamp('date', { withTimezone: true }),
 		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 		updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
@@ -560,8 +562,12 @@ export const projectsImages = pgTable(
 			onUpdate: 'cascade',
 		}),
 		index: integer('index'),
-		publicUrl: text('public_url').notNull(),
-		storageName: text('storage_name').notNull(),
+		nameSm: text('name_sm').notNull(),
+		nameMd: text('name_md').notNull(),
+		nameLg: text('name_lg').notNull(),
+		urlSm: text('url_sm').notNull(),
+		urlMd: text('url_md').notNull(),
+		urlLg: text('url_lg').notNull(),
 		typeId: text('type_id').references(() => projectImageTypes.id, {
 			onDelete: 'set null',
 			onUpdate: 'cascade',

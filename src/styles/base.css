@@ -150,6 +150,23 @@ body {
 	min-height: 100svh;
 }
 
+::selection {
+	color: var(--color-neutral-800);
+	background: var(--color-primary-400);
+	:--dark & {
+		color: var(--color-neutral-200);
+		background: var(--color-primary-600);
+	}
+}
+::-moz-selection {
+	color: var(--color-neutral-800);
+	background: var(--color-primary-400);
+	:--dark & {
+		color: var(--color-neutral-200);
+		background: var(--color-primary-600);
+	}
+}
+
 @keyframes press {
 	0% {
 		transform: scale(1);

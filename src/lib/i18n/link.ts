@@ -11,8 +11,9 @@ import { delocalizeCurrent, localize } from './href';
 export const link = derived(page, ($page) => {
 	return <H extends string>(href: H, locale: Locale | false = $page.data.locale) => {
 		const _href = locale ? localize(href, locale) : href;
-		const currentPage = $page.url.pathname === _href || undefined;
-		const currentHash = _href.indexOf('#') > -1 && currentPage;
+		const [path, hash] = _href.split('#');
+		const currentPage = $page.url.pathname === path || undefined;
+		const currentHash = currentPage && '#' + hash === $page.url.hash;
 		return {
 			'href': _href,
 			'hreflang': locale || undefined,
@@ -23,9 +24,7 @@ export const link = derived(page, ($page) => {
 	};
 });
 
-/**
- * Derived store to compose href string that switches locale while staying on the current page.
- */
+/** Derived store to compose href string that switches locale while staying on the current page. */
 export const i18nswitch = derived([delocalizeCurrent, link], ([$delocalizedCurrent, $link]) => {
 	return (locale: Locale) => $link($delocalizedCurrent, locale);
 });

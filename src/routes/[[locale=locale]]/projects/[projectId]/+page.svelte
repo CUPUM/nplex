@@ -1,7 +1,10 @@
 <script lang="ts">
+	export let data;
 </script>
 
-<article>Some project</article>
+<article>
+	<header><h1>{data.project.title}</h1></header>
+</article>
 
 <style lang="postcss">
 </style>
