@@ -7,9 +7,8 @@
 
 <article>
 	<div id="loop" in:fade={{ duration: 2500, easing: expoOut, delay: 500 }}>
-		<Loading thickness="10" speed={0.01} trail={false} outro={false} intro={false} linecap="butt" />
+		<Loading thickness="1" speed={0.01} trail={false} outro={false} intro={false} linecap="butt" />
 	</div>
-
 	<Logo id="logo" />
 </article>
 
@@ -23,11 +22,15 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: linear-gradient(270deg, var(--color-neutral-100), var(--color-neutral-200));
+		background: linear-gradient(
+			270deg,
+			var(--color-neutral-100),
+			color-mix(in srgb, var(--color-primary-900) 5%, transparent)
+		);
 
 		:global(#logo) {
 			font-size: 15rem;
-			color: var(--color-primary-700);
+			color: var(--color-primary-800);
 		}
 	}
 
