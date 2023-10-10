@@ -125,6 +125,7 @@
 	--base-bg: var(--color-neutral-100);
 	/* Component-specific */
 	--navbar-height: 72px;
+	--navbar-sticky: calc(var(--navbar-height) + 0.5rem);
 	--dashboard-navbar: 175px;
 	/* Root style */
 	position: relative;

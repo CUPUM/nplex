@@ -80,7 +80,7 @@
 		flex-direction: row;
 		align-self: stretch;
 		overflow-x: auto;
-		top: var(--navbar-height);
+		top: var(--navbar-sticky);
 		position: sticky;
 		gap: 0.5rem;
 		z-index: 1;

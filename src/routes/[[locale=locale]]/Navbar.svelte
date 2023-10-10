@@ -353,6 +353,7 @@
 			inset: 0;
 			bottom: 100%;
 			opacity: 0;
+			border-bottom: var(--base-border-size) solid transparent;
 			/* bottom: -1rem; */
 			/* transition: all 0.75s ease-out; */
 			/* background: linear-gradient(var(--color-neutral-100), transparent); */
@@ -368,6 +369,7 @@
 
 		&.over {
 			&::before {
+				border-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 				opacity: 1;
 				bottom: 0;
 			}
