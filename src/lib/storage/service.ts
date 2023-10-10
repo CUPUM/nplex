@@ -1,1 +1,1 @@
-export const s3 = new AWS();
+// export const s3 = new AWS();
