@@ -138,6 +138,7 @@
 <fieldset>
 	<label id="image-placeholder" use:ripple>
 		<input
+			form=""
 			hidden
 			type="file"
 			name="images"
@@ -179,7 +180,7 @@
 		flex-direction: row;
 		align-items: center;
 		align-self: flex-start;
-		gap: 0.75rem;
+		gap: inherit;
 	}
 
 	#image-placeholder {

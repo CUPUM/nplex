@@ -7,6 +7,6 @@ export const load = async (event) => {
 			sidebar: ProjectNav,
 			header: ProjectHeader,
 		},
-		descriptors: event.data.descriptors,
+		...event.data,
 	};
 };

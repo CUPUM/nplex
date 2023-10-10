@@ -25,6 +25,7 @@
 
 	const preset: MeshGradientParams = {
 		colors: ['var(--color-neutral-500)', 'var(--color-neutral-700)', 'var(--color-primary-700)'],
+		nodes: [2, 5],
 		opacity: [0.1, 0.3],
 		spread: [70, 200],
 	};

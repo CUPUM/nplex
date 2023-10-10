@@ -18,6 +18,7 @@ import {
 	projectSiteOwnershipsTranslations,
 	projectTypes,
 	projectTypesTranslations,
+	projectsTranslations,
 } from '$lib/db/schema/public';
 import { arrayAgg, jsonBuildObject } from '$lib/db/sql';
 import { and, eq, getTableColumns } from 'drizzle-orm';
@@ -207,7 +208,19 @@ export const load = async (event) => {
 		};
 	});
 
+	const title = dbpool
+		.select({ title: projectsTranslations.title })
+		.from(projectsTranslations)
+		.where(
+			and(
+				eq(projectsTranslations.id, event.params.projectId),
+				eq(projectsTranslations.locale, event.locals.locale)
+			)
+		)
+		.limit(1)
+		.then((res) => res[0].title ?? null);
 	return {
 		descriptors,
+		title,
 	};
 };

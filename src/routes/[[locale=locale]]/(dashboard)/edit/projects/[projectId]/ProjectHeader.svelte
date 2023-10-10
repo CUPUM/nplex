@@ -12,7 +12,9 @@
 		},
 	});
 
-	$: title = ($page.data as PageData).form?.data?.translations?.[$page.data.locale]?.title;
+	$: title =
+		($page.data as PageData).form?.data?.translations?.[$page.data.locale]?.title ??
+		$page.data.title;
 </script>
 
 <!-- <header style:background={composeMeshgradient({ opacity: [0.25, 0.5] })}> -->
