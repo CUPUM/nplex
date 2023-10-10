@@ -92,7 +92,7 @@
 		forceVisible: true,
 		positioning: {
 			overflowPadding: 12,
-			gutter: 6,
+			gutter: 10.5, // navbar padding - border-base-size
 			placement: 'bottom',
 		},
 		preventScroll: false,
@@ -351,8 +351,8 @@
 			content: '';
 			position: absolute;
 			inset: 0;
-			bottom: 100%;
-			opacity: 0;
+			bottom: 101%;
+			/* opacity: 0; */
 			border-bottom: var(--base-border-size) solid transparent;
 			/* bottom: -1rem; */
 			/* transition: all 0.75s ease-out; */

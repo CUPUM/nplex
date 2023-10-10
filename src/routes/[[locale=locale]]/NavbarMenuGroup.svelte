@@ -31,7 +31,7 @@
 				border-bottom: var(--base-border-size) solid var(--color-neutral-500);
 				:global(:--dark) & {
 					opacity: 0.5;
-					border-bottom: var(--base-border-size) solid var(--color-neutral-900);
+					border-bottom: var(--base-border-size) solid var(--color-neutral-800);
 				}
 			}
 		}

@@ -25,15 +25,17 @@
 		flex-direction: column;
 		gap: 0;
 		font-weight: 500;
-		box-shadow: var(--shadow-lg);
+		box-shadow: var(--shadow-xl);
 		padding: var(--menu-inset);
 		border-radius: var(--base-radius);
 		transform-origin: top center;
-		background-color: var(--color-neutral-50);
+		background-color: var(--color-neutral-100);
+		border: var(--base-border-size) solid
+			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 		z-index: 1;
 		:global(:--dark) & {
-			background-color: var(--color-neutral-800);
-			box-shadow: var(--shadow-xl), var(--shadow-md);
+			background-color: var(--color-neutral-900);
+			/* box-shadow: var(--shadow-xl), var(--shadow-md); */
 		}
 	}
 </style>

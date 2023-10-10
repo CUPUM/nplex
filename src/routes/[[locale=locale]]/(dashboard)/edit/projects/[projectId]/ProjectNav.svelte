@@ -63,13 +63,13 @@
 	<DashboardNavItem {...$link(`/edit/projects/${projectId}`)}>
 		{$t.essentials.general}
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/place`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/place#dashboard-content`)}>
 		{$t.essentials.place}
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/exemplarity`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/exemplarity#dashboard-content`)}>
 		{$t.essentials.exemplarity}
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/gallery`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/gallery#dashboard-content`)}>
 		{$t.essentials.gallery}
 	</DashboardNavItem>
 </DashboardNav>
@@ -77,13 +77,13 @@
 	<svelte:fragment slot="heading">
 		{$t.complementaries.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/contributions`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/contributions#dashboard-content`)}>
 		{$t.complementaries.contributions}
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/materials`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/materials#dashboard-content`)}>
 		{$t.complementaries.materials}
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/timeline`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/timeline#dashboard-content`)}>
 		{$t.complementaries.timeline}
 	</DashboardNavItem>
 </DashboardNav>
@@ -91,15 +91,15 @@
 	<svelte:fragment slot="heading">
 		{$t.settings.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/sharing`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/sharing#dashboard-content`)}>
 		{$t.settings.sharing}
 		<Users2 class="button-icon" />
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/publishing`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/publishing#dashboard-content`)}>
 		{$t.settings.visibility}
 		<Shield class="button-icon" />
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/security`)} danger>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/security#dashboard-content`)} danger>
 		{$t.settings.danger}
 		<AlertTriangle class="button-icon" />
 	</DashboardNavItem>

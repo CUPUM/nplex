@@ -13,6 +13,7 @@
 <article>
 	{#if $page.data.dashboard?.header}
 		<header
+			id="dashboard-header"
 			in:slide={{ duration: 750, easing: expoOut, opacity: 0 }}
 			out:slide={{ easing: expoOut, duration: 500, opacity: 0 }}
 			class:detached={scrollY > headerHeight / 2}
@@ -23,14 +24,14 @@
 		</header>
 	{/if}
 	{#if $page.data.dashboard?.breadcrumbs}
-		<div class="dashboard-breadcrumbs">Breadcrumbs</div>
+		<div id="dashboard-breadcrumbs">Breadcrumbs</div>
 	{/if}
 	{#if $page.data.dashboard?.sidebar}
-		<div class="dashboard-sidebar">
+		<div id="dashboard-sidebar">
 			<svelte:component this={$page.data.dashboard.sidebar} />
 		</div>
 	{/if}
-	<section in:scale={{ start: 0.98, duration: 350, easing: expoOut }}>
+	<section in:scale={{ start: 0.98, duration: 350, easing: expoOut }} id="dashboard-content">
 		<slot />
 	</section>
 </article>
@@ -47,7 +48,7 @@
 		}
 	}
 
-	header {
+	#dashboard-header {
 		grid-column: 1 / -1;
 		margin-bottom: 0.5rem;
 		border-radius: var(--radius-xl);
@@ -56,7 +57,7 @@
 		top: var(--navbar-height);
 		z-index: -1;
 		transform: scale(1);
-		transform-origin: top center;
+		transform-origin: bottom center;
 		transition: all var(--duration-medium) var(--ease-out-expo);
 
 		&.detached {
@@ -71,11 +72,11 @@
 		}
 	}
 
-	.dashboard-breadcrumbs {
+	#dashboard-breadcrumbs {
 		grid-column: 1 / -1;
 	}
 
-	.dashboard-sidebar {
+	#dashboard-sidebar {
 		display: flex;
 		flex-direction: row;
 		align-self: stretch;
@@ -95,7 +96,8 @@
 		}
 	}
 
-	section {
+	#dashboard-content {
+		scroll-margin-block-start: var(--navbar-sticky);
 		grid-column: 2 / 3;
 		border-radius: var(--radius-lg);
 		background-color: var(--color-neutral-50);
