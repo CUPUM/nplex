@@ -66,6 +66,12 @@
 			transform: scale(1.02);
 			box-shadow: var(--shadow-xl);
 
+			.info {
+				&::after {
+					opacity: 1;
+				}
+			}
+
 			span {
 				transform: translateY(0px);
 				opacity: 1;
@@ -100,15 +106,25 @@
 	}
 
 	.info {
+		position: relative;
 		oapcity: 0;
-		transition: all var(--duration-medium) ease-out;
-		background: linear-gradient(transparent, var(--base-bg));
 		padding: 2rem;
 		gap: 0.5rem;
 		height: 200px;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
+		z-index: 1;
+
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			z-index: -1;
+			opacity: 0;
+			background: linear-gradient(transparent, var(--base-bg));
+			transition: all var(--duration-medium);
+		}
 
 		span {
 			transform: translateY(6px);
