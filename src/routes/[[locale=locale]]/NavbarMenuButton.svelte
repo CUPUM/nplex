@@ -51,6 +51,10 @@
 		border-radius: var(--radius-sm);
 		transition: all 0.1s ease-out;
 
+		&:active {
+			animation: var(--animation-press);
+		}
+
 		&:disabled,
 		&[data-disabled] {
 			pointer-events: none;
@@ -83,6 +87,10 @@
 				opacity: 1;
 				transform: translateX(0.1em);
 			}
+		}
+
+		&:focus-visible {
+			outline: var(--base-focus-ring);
 		}
 
 		& :global(.button-icon) {

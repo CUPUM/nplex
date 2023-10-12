@@ -29,10 +29,6 @@
 				bottom: 0;
 				opacity: 0.1;
 				border-bottom: var(--base-border-size) solid var(--color-neutral-500);
-				:global(:--dark) & {
-					opacity: 0.5;
-					border-bottom: var(--base-border-size) solid var(--color-neutral-800);
-				}
 			}
 		}
 	}
@@ -40,7 +36,8 @@
 	.navbar-menu-legend {
 		align-self: flex-start;
 		font-size: var(--size-xs);
-		font-weight: 400;
+		font-weight: 350;
+		letter-spacing: 0.05em;
 		opacity: 0.5;
 		padding: 0.5em 0.75em;
 		margin-inline: 0.5rem;

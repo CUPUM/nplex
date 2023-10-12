@@ -11,11 +11,11 @@
 	--color-neutral-300: hsl(34, 7%, 81%);
 	--color-neutral-400: hsl(34, 6%, 72%);
 	--color-neutral-500: hsl(35, 5%, 45%);
-	--color-neutral-600: hsl(33, 6%, 24%);
-	--color-neutral-700: hsl(30, 7%, 17%);
-	--color-neutral-800: hsl(32, 8%, 13%);
-	--color-neutral-900: hsl(34, 9%, 10%);
-	--color-neutral-950: hsl(30, 10%, 7%);
+	--color-neutral-600: hsl(33, 6%, 22%);
+	--color-neutral-700: hsl(30, 7%, 16%);
+	--color-neutral-800: hsl(32, 8%, 12%);
+	--color-neutral-900: hsl(34, 9%, 9%);
+	--color-neutral-950: hsl(30, 10%, 6%);
 	--color-primary-50: hsl(162, 81%, 96%);
 	--color-primary-100: hsl(161, 80%, 90%);
 	--color-primary-200: hsl(160, 76%, 80%);
@@ -121,7 +121,7 @@
 	--base-border: var(--base-border-size) solid
 		color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 	--base-inset: 5px;
-	--base-focus-ring: 3px solid var(--color-primary-800);
+	--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-800), 75% transparent);
 	--base-bg: var(--color-neutral-100);
 	/* Component-specific */
 	--navbar-height: 72px;
@@ -137,7 +137,7 @@
 	background-color: var(--base-bg);
 	transition: all var(--duration-fast) ease-out;
 	&:--dark {
-		--base-focus-ring: 3px solid var(--color-primary-500);
+		--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-500), 75% transparent);
 		--base-bg: var(--color-neutral-900);
 		color: var(--color-neutral-300);
 	}

@@ -1,4 +1,5 @@
 import { withAuth } from '$lib/auth/guard.server';
+import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
@@ -23,7 +24,7 @@ export const load = async (event) => {
 		const rawProject = await dbpool.query.projects.findFirst({
 			where(fields, op) {
 				// To do: add some authorization check related to session.user.id.
-				return op.eq(fields.id, event.params.projectId);
+				return op.and(authorizeProjectUpdate(session), op.eq(fields.id, event.params.projectId));
 			},
 			with: {
 				translations: true,

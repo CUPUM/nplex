@@ -82,11 +82,6 @@
 		border-radius: inherit;
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
-		border: var(--base-border-size) solid var(--color-neutral-200);
-		border-bottom: none;
-		:global(:--dark) & {
-			border: var(--base-border-size) solid var(--color-neutral-800);
-		}
 	}
 
 	header {

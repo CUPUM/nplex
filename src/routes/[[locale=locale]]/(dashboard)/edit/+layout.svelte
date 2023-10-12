@@ -94,11 +94,15 @@
 
 <style lang="postcss">
 	aside {
-		/* border-top: var(--base-border); */
-		padding: 0;
+		padding-block: 2rem;
 		align-self: stretch;
 		display: flex;
 		flex-direction: column;
+		border-radius: inherit;
+		background-color: var(--color-neutral-50);
+		:global(:--dark) & {
+			background-color: var(--color-neutral-800);
+		}
 	}
 
 	h2 {

@@ -17,8 +17,7 @@
 		$page.data.title;
 </script>
 
-<!-- <header style:background={composeMeshgradient({ opacity: [0.25, 0.5] })}> -->
-<header>
+<header class="pattern-cross">
 	<hgroup>
 		<h1 class="heading xl">
 			{#if title}
@@ -35,15 +34,11 @@
 		position: relative;
 		padding: 2rem;
 		min-height: 200px;
-		&::after {
-			content: '';
-			z-index: -1;
-			position: absolute;
-			inset: 0;
-			background-color: var(--color-neutral-50);
-			:global(:--dark) & {
-				background-color: var(--color-neutral-950);
-			}
+		opacity: 1;
+		border-radius: inherit;
+		background-color: var(--color-neutral-200);
+		:global(:--dark) & {
+			background-color: var(--color-neutral-800);
 		}
 	}
 

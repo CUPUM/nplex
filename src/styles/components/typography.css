@@ -1,104 +1,125 @@
-/*
-Headings
-*/
-.heading {
-	/* color: var(--color-neutral-800); */
+.heading,
+.prose :is(h1, h2, h3, h4, h5, h6) {
 	font-optical-sizing: auto;
-	:--dark & {
-		/* color: var(--color-neutral-200); */
-	}
-	&.prose:is(h1, h2, h3, h4, h5, h6) {
-		margin-block: 1em;
-	}
-	/* Extra large heading */
-	&.xxl {
-		font-weight: 410;
-		font-size: var(--size-5xl);
-		line-height: 1.1;
-	}
-	/* Extra large heading */
-	&.xl {
-		line-height: 1.1;
-		font-weight: 420;
-		font-size: var(--size-4xl);
-	}
-	/* Large heading */
-	&.lg {
-		line-height: 1.15;
-		font-weight: 4300;
-		font-size: var(--size-3xl);
-	}
-	/* Medium heading */
+}
+
+.heading.xxl,
+.prose h1 {
+	font-weight: 410;
+	font-size: var(--size-5xl);
+	line-height: 1.1;
+}
+
+.heading.xl,
+.prose h2 {
+	line-height: 1.1;
+	font-weight: 420;
+	font-size: var(--size-4xl);
+}
+
+.heading.lg,
+.prose h3 {
+	line-height: 1.15;
+	font-weight: 4300;
+	font-size: var(--size-3xl);
+}
+
+.heading,
+.prose h4 {
 	line-height: 1.2;
 	font-weight: 440;
 	font-size: var(--size-2xl);
-	/* Small heading */
-	&.sm {
-		line-height: 1.275;
-		font-weight: 450;
-		font-size: var(--size-xl);
-	}
-	/* Extra small heading */
-	&.xs {
-		line-height: 1.35;
-		font-weight: 460;
-		font-size: var(--size-lg);
-	}
 }
 
-/*
-Prose
-*/
-.prose:not(.heading),
-.text {
-	color: var(--color-neutral-700);
-	font-optical-sizing: auto;
-	font-weight: 300;
-	:--dark & {
-		color: var(--color-neutral-300);
-	}
-	/* Semantic elements */
-	&:not(.text):is(p, h1, h2, h3, h4, h5, h6) {
-		margin-block: 1.25em;
-	}
-	/* Extra large text */
+.heading.sm,
+.prose h5 {
+	line-height: 1.275;
+	font-weight: 450;
+	font-size: var(--size-xl);
+}
+
+.heading.xs,
+.prose h6 {
+	line-height: 1.35;
+	font-weight: 460;
+	font-size: var(--size-lg);
+}
+
+.text,
+.prose {
 	&.xl {
-		/* font-weight: 300; */
+		font-weight: 300;
 		font-size: var(--size-xl);
 		line-height: 1.3em;
 	}
-	/* Large text */
 	&.lg {
-		/* font-weight: 325; */
+		font-weight: 300;
 		font-size: var(--size-lg);
 		line-height: 1.35em;
 	}
-	/* Regular text */
-	/* font-weight: 350; */
-	font-size: var(--size-md);
-	line-height: 1.4em;
-	/* Small text */
+	&,
+	&.md {
+		font-weight: 350;
+		font-size: var(--size-md);
+		line-height: 1.4em;
+	}
 	&.sm {
-		/* font-weight: 360; */
 		font-size: var(--size-sm);
 		line-height: 1.45em;
 	}
-	/* Extra small text */
 	&.xs {
-		/* font-weight: 375; */
 		font-size: var(--size-xs);
 		line-height: 1.5em;
 	}
 }
 
-/*
-Normal emphasis
-*/
-em {
-}
+.prose {
+	max-width: 65ch;
 
-/*
-Strong emphasis
-*/
-strong {
+	&:is(.heading),
+	.heading {
+		margin-block: 1em;
+		max-width: 65ch;
+	}
+
+	&:is(p),
+	p {
+		margin-block: 1.25em;
+	}
+
+	&:is(em),
+	em {
+	}
+
+	&:is(strong),
+	strong {
+	}
+
+	&:is(i),
+	i {
+	}
+
+	&:is(small),
+	small {
+	}
+
+	&:is(q),
+	q {
+	}
+
+	&:is(blockquote),
+	blockquote {
+	}
+
+	&:is(code),
+	code {
+	}
+
+	&:is(ul),
+	ul {
+	}
+
+	&:is(ol),
+	ol {
+	}
 }

@@ -34,19 +34,11 @@
 		position: relative;
 		padding: 0.75rem;
 		margin-top: 0.5rem;
-		margin-inline: 0.5rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-		box-shadow:
-			0 0 6rem -2rem rgba(0, 0, 0, 0.1),
-			0 -2px 3px -4px rgba(0, 0, 0, 0.2);
-		/* background-color: var(--color-neutral-50); */
-		:global(:--dark) & {
-			/* box-shadow: none; */
-			/* background-color: var(--color-neutral-950); */
-		}
+		border-top: var(--base-border-size) solid
+			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 	}
 
 	.inner {

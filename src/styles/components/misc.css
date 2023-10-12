@@ -40,3 +40,19 @@ Opposite of compact, makes base sizes larger for when attention is needed.
 .right {
 	text-align: right;
 }
+
+.pattern-cross {
+	--pattern-color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
+	--pattern-size: 4rem;
+	background: radial-gradient(circle at 50% 50%, var(--pattern-color) 2%, transparent 3%),
+		radial-gradient(circle at 50% 45%, var(--pattern-color) 1%, transparent 2%),
+		radial-gradient(circle at 50% 47.5%, var(--pattern-color) 1%, transparent 2%),
+		radial-gradient(circle at 45% 50%, var(--pattern-color) 1%, transparent 2%),
+		radial-gradient(circle at 47.5% 50%, var(--pattern-color) 1%, transparent 2%),
+		radial-gradient(circle at 50% 52.5%, var(--pattern-color) 1%, transparent 2%),
+		radial-gradient(circle at 50% 55%, var(--pattern-color) 1%, transparent 2%),
+		radial-gradient(circle at 52.5% 50%, var(--pattern-color) 1%, transparent 2%),
+		radial-gradient(circle at 55% 50%, var(--pattern-color) 1%, transparent 2%);
+	background-size: var(--pattern-size) var(--pattern-size);
+	background-repeat: repeat;
+}

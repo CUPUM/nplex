@@ -16,8 +16,7 @@
 			id="dashboard-header"
 			in:slide={{ duration: 750, easing: expoOut, opacity: 0 }}
 			out:slide={{ easing: expoOut, duration: 500, opacity: 0 }}
-			class:detached={scrollY > headerHeight / 2}
-			class:scrolled={scrollY > 0}
+			class:scrolled={scrollY > 20}
 			bind:clientHeight={headerHeight}
 		>
 			<svelte:component this={$page.data.dashboard.header} />
@@ -41,6 +40,7 @@
 		display: flex;
 		flex-direction: column;
 		max-width: 100%;
+		perspective: 1500px;
 		@media (--md) {
 			display: grid;
 			grid-template-columns: fit-content(var(--dashboard-navbar)) minmax(0, 1fr);
@@ -52,23 +52,15 @@
 		grid-column: 1 / -1;
 		margin-bottom: 0.5rem;
 		border-radius: var(--radius-xl);
-		overflow: hidden;
-		position: sticky;
-		top: var(--navbar-height);
+		/* position: sticky;
+		top: var(--navbar-height); */
 		z-index: -1;
-		transform: scale(1);
 		transform-origin: bottom center;
-		transition: all var(--duration-medium) var(--ease-out-expo);
-
-		&.detached {
-			opacity: 0;
-			pointer-events: none;
-			transition: all var(--duration-medium) ease-out;
-		}
+		transition: all var(--duration-2xslow) var(--ease-out-expo);
 
 		&.scrolled {
-			transform: scale(0.98);
-			transition: all var(--duration-2xslow) var(--ease-out-expo);
+			transform: rotateX(45deg);
+			opacity: 0;
 		}
 	}
 
@@ -100,9 +92,9 @@
 		scroll-margin-block-start: var(--navbar-sticky);
 		grid-column: 2 / 3;
 		border-radius: var(--radius-lg);
-		background-color: var(--color-neutral-50);
+		/* background-color: var(--color-neutral-50); */
 		:global(:--dark) & {
-			background-color: var(--color-neutral-800);
+			/* background-color: var(--color-neutral-800); */
 		}
 	}
 </style>

@@ -95,6 +95,9 @@
 			z-index: 1;
 			outline-offset: 2px;
 			outline: 2px solid color-mix(in hsl, var(--color-primary-500) 50%, transparent);
+			&.no-outline {
+				background-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+			}
 		}
 
 		&.no-outline {
@@ -116,10 +119,9 @@
 			cursor: default;
 			color: var(--color-primary-600);
 			outline-offset: 0;
-			outline: 3px solid color-mix(in hsl, var(--color-primary-600) 75%, transparent);
+			outline: var(--base-focus-ring);
 			:global(:--dark) & {
 				color: var(--color-primary-500);
-				outline: 3px solid color-mix(in hsl, var(--color-primary-500) 50%, transparent);
 			}
 
 			& :global(.button-icon) {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { melt, type DropdownMenuElements } from '@melt-ui/svelte';
 	import { expoIn, expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
+	import { fly, scale } from 'svelte/transition';
 
 	let _melt: DropdownMenuElements['menu'];
 	export { _melt as melt };
@@ -12,7 +12,7 @@
 	this={as}
 	class="navbar-menu"
 	use:melt={$_melt}
-	in:scale|global={{ duration: 150, start: 0.9, easing: expoOut }}
+	in:fly|global={{ duration: 150, y: -6, easing: expoOut }}
 	out:scale|global={{ duration: 100, start: 0.9, easing: expoIn }}
 >
 	<slot groupClass="navbar-menu-group" legendClass="navbar-menu-legend" />
@@ -28,7 +28,7 @@
 		box-shadow: var(--shadow-xl);
 		padding: var(--menu-inset);
 		border-radius: var(--base-radius);
-		transform-origin: top center;
+		transform-origin: center center;
 		background-color: var(--color-neutral-100);
 		border: var(--base-border-size) solid
 			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);

@@ -40,7 +40,6 @@ textarea.input {
 	&:hover {
 		.input-icon {
 			opacity: 1;
-			transform: scale(1);
 		}
 	}
 
@@ -49,8 +48,7 @@ textarea.input {
 		outline: var(--base-focus-ring);
 
 		.input-icon {
-			opacity: 1;
-			transform: scale(0.95);
+			opacity: 0.9;
 		}
 	}
 
@@ -83,10 +81,9 @@ textarea.input {
 
 	.input-icon {
 		flex: none;
-		width: 1.25em;
-		stroke-width: 2.5;
+		width: 1.1em;
+		stroke-width: 2.25;
 		opacity: 0.5;
-		transform: scale(0.95);
 		transition:
 			opacity var(--duration-medium) ease-out,
 			transform var(--duration-fast) ease-out;

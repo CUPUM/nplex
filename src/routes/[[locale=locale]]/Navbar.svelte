@@ -422,7 +422,7 @@
 			inset: 0;
 			border-radius: inherit;
 			background-color: var(--color-neutral-50);
-			outline: 3px solid color-mix(in hsl, var(--color-primary-600) 75%, transparent);
+			outline: var(--base-focus-ring);
 			:global(:--dark) & {
 				background-color: var(--color-neutral-900);
 			}
