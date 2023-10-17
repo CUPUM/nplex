@@ -1,17 +1,19 @@
 import { S3_BUCKET_NAME } from '$env/static/private';
 import { withAuth } from '$lib/auth/guard.server';
+import { projectsImagesInsertSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { projectsImages } from '$lib/db/schema/public';
 import { reduceTranslations } from '$lib/db/utils';
 import { s3 } from '$lib/storage/s3.server';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { DeleteObjectsCommand } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { error, fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
+import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withAuth(event);
-	event.depends('project-editor:gallery');
+	event.depends('projects:edit:gallery');
 	const images = (
 		await dbpool.query.projectsImages.findMany({
 			where(f, o) {
@@ -22,10 +24,32 @@ export const load = async (event) => {
 			},
 		})
 	).map(reduceTranslations);
-	return { images };
+
+	const addImagesForm = superValidate(projectsImagesInsertSchema);
+	return { images, addImagesForm };
 };
 
 export const actions = {
+	add: async (event) => {
+		const session = await withAuth(event);
+		const addImagesForm = await superValidate(event, projectsImagesInsertSchema);
+		if (!addImagesForm.valid) {
+			console.error(addImagesForm.errors);
+			return fail(STATUS_CODES.BAD_REQUEST, { addImagesForm });
+		}
+		try {
+			await dbpool.insert(projectsImages).values(
+				addImagesForm.data.images.map((imageData) => ({
+					...imageData,
+					createdById: session.user.id,
+					projectId: event.params.projectId,
+				}))
+			);
+		} catch (e) {
+			console.error(e);
+			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { addImagesForm });
+		}
+	},
 	delete: async (event) => {
 		await withAuth(event);
 		const id = event.url.searchParams.get('id');
@@ -43,16 +67,14 @@ export const actions = {
 				if (!deleted) {
 					return;
 				}
-				const cmd = new DeleteObjectsCommand({
+				const cmd = new DeleteObjectCommand({
 					Bucket: S3_BUCKET_NAME,
-					Delete: {
-						Objects: [{ Key: deleted.nameLg }, { Key: deleted.nameMd }, { Key: deleted.nameSm }],
-					},
+					Key: deleted.storageName,
 				});
 				const data = await s3.send(cmd);
-				if (data.Errors) {
+				if (data.$metadata.httpStatusCode && data.$metadata.httpStatusCode >= 400) {
 					tx.rollback();
-					console.error(data.Errors);
+					console.error(data.$metadata);
 					throw error(STATUS_CODES.INTERNAL_SERVER_ERROR);
 				}
 			});

@@ -20,15 +20,17 @@ export async function transformImage(
 	source: File | string,
 	{
 		filename,
-		quality = 1,
 		max,
+		quality = 1,
 		format = 'webp',
 	}: {
-		/** New file's name (escluding its extension) */
+		/**
+		 * New file's name (escluding its extension)
+		 */
 		filename: string;
+		max: Parameters<typeof getResizeRatio>[1];
 		quality?: number;
 		format?: 'webp' | 'jpeg' | 'jpg';
-		max: Parameters<typeof getResizeRatio>[1];
 	}
 ) {
 	const src = source instanceof File ? URL.createObjectURL(source) : source;

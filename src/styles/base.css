@@ -105,15 +105,17 @@
 	--duration-2xslow: 750ms;
 	--duration-3xslow: 1250ms;
 	/* Animations */
-	--animation-press: press var(--duration-fast) ease-out;
+	--animation-press: press var(--duration-medium) var(--ease-out-expo);
 	/* Shadows (based on tailwind) */
 	--shadow-xs: 0 1px 2px -1px rgb(0, 0, 0, 0.05);
-	--shadow-sm: 0 3px 3px -2px rgb(0, 0, 0, 0.1), 0 1px 2px -1px rgb(0, 0, 0, 0.025);
+	--shadow-sm: 0 2px 3px -2px rgb(0, 0, 0, 0.1), 0 1px 2px -1px rgb(0, 0, 0, 0.025);
 	--shadow-md: 0 5px 8px -3px rgb(0, 0, 0, 0.1), 0 2px 4px -2px rgb(0, 0, 0, 0.05);
 	--shadow-lg: 0 10px 16px -4px rgb(0, 0, 0, 0.1), 0 4px 6px -4px rgb(0, 0, 0, 0.1);
 	--shadow-xl: 0 16px 24px -10px rgb(0, 0, 0, 0.1), 0 8px 10px -6px rgb(0, 0, 0, 0.1);
 	--shadow-2xl: 0 24px 48px -16px rgb(0, 0, 0, 0.25);
 	/* Base values for io elements and others */
+	--base-gutter: 0.75rem; /* Outer gutters */
+	--base-gap: 0.5rem; /* Inside gutters (for grids within the ui) */
 	--base-size: 3.5em;
 	--base-padding: 1.25em;
 	--base-radius: var(--radius-md);
@@ -121,7 +123,7 @@
 	--base-border: var(--base-border-size) solid
 		color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 	--base-inset: 5px;
-	--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-800), 75% transparent);
+	--base-focus-ring: 2.5px solid color-mix(in srgb, var(--color-primary-700) 50%, transparent);
 	--base-bg: var(--color-neutral-100);
 	/* Component-specific */
 	--navbar-height: 72px;
@@ -137,7 +139,7 @@
 	background-color: var(--base-bg);
 	transition: all var(--duration-fast) ease-out;
 	&:--dark {
-		--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-500), 75% transparent);
+		--base-focus-ring: 2.5px solid color-mix(in srgb, var(--color-primary-400) 50%, transparent);
 		--base-bg: var(--color-neutral-900);
 		color: var(--color-neutral-300);
 	}

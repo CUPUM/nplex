@@ -30,13 +30,17 @@ import {
 	projectTypesTranslations,
 	projects,
 	projectsExemplarityIndicators,
+	projectsImages,
+	projectsImagesTranslations,
 	projectsInterventions,
 	projectsOrganizations,
 	projectsTranslations,
 } from './schema/public';
 import { withTranslationsSchema } from './utils';
 
-/** Project type. */
+/**
+ * Project type.
+ */
 export const projectTypeInsertSchema = createInsertSchema(projectTypes).required({ id: true });
 export const projectTypeTranslationInsertSchema = createInsertSchema(projectTypesTranslations, {
 	locale: localeSchema,
@@ -47,7 +51,9 @@ export const projectTypesUpdateSchema = z.object({
 	),
 });
 
-/** Project intervention. */
+/**
+ * Project intervention.
+ */
 export const projectInterventionInsertSchema = createInsertSchema(
 	projectInterventions,
 	{}
@@ -65,7 +71,9 @@ export const projectInterventionsUpdateSchema = z.object({
 	),
 });
 
-/** Project intervention category. */
+/**
+ * Project intervention category.
+ */
 export const projectInterventionCategoryInsertSchema = createInsertSchema(
 	projectInterventionCategories,
 	{}
@@ -95,7 +103,9 @@ export const projectInterventionCategoriesWithInterventionsUpdateSchema = z.obje
 // export const projectInterventionCategoriesAndInterventionsUpdateSchema =
 // 	projectInterventionCategoriesUpdateSchema.merge(projectInterventionsUpdateSchema);
 
-/** Project exemplarity category. */
+/**
+ * Project exemplarity category.
+ */
 export const projectExemplarityCategoryInsertSchema = createInsertSchema(
 	projectExemplarityCategories
 ).required({ id: true });
@@ -112,7 +122,9 @@ export const projectExemplarityCategoriesUpdateSchema = z.object({
 	),
 });
 
-/** Project Exemplarity indicator. */
+/**
+ * Project Exemplarity indicator.
+ */
 export const projectExemplarityIndicatorInsertSchema = createInsertSchema(
 	projectExemplarityIndicators
 ).required({ id: true, categoryId: true });
@@ -141,7 +153,9 @@ export const projectExemplarityCategoriesWithIndicatorsUpdateSchema = z.object({
 	),
 });
 
-/** Project site ownership. */
+/**
+ * Project site ownership.
+ */
 export const projectSiteOwnershipInsertSchema = createInsertSchema(projectSiteOwnerships).required({
 	id: true,
 });
@@ -158,7 +172,9 @@ export const projectSiteOwnershipsUpdateSchema = z.object({
 	),
 });
 
-/** Project building implantation. */
+/**
+ * Project building implantation.
+ */
 export const projectImplantationTypeInsertSchema = createInsertSchema(
 	projectImplantationTypes
 ).required({
@@ -177,7 +193,9 @@ export const projectImplantationTypesUpdateSchema = z.object({
 	),
 });
 
-/** Project image type. */
+/**
+ * Project image type.
+ */
 export const projectImageTypeInsertSchema = createInsertSchema(projectImageTypes).required({
 	id: true,
 });
@@ -191,7 +209,9 @@ export const projectImageTypesUpdateSchema = z.object({
 	),
 });
 
-/** Project image type. */
+/**
+ * Project image type.
+ */
 export const projectImageTemporalityInsertSchema = createInsertSchema(
 	projectImageTemporalities
 ).required({
@@ -210,7 +230,9 @@ export const projectImageTemporalitiesUpdateSchema = z.object({
 	),
 });
 
-/** Project building level type. */
+/**
+ * Project building level type.
+ */
 export const projectBuildingLevelTypeInsertSchema = createInsertSchema(
 	projectBuildingLevelTypes
 ).required({
@@ -229,7 +251,9 @@ export const projectBuildingLevelTypesUpdateSchema = z.object({
 	),
 });
 
-/** Projects. */
+/**
+ * Projects.
+ */
 export const projectInsertSchema = createInsertSchema(projects, {
 	adjacentStreets: (s) => s.adjacentStreets.positive().max(5),
 	adjacentAlleys: (s) => s.adjacentAlleys.positive().max(5),
@@ -253,7 +277,9 @@ export const projectGeneralUpdateSchema = withTranslationsSchema(
 );
 // export const projectPlaceUpdateSchema =
 
-/** Projects exemplarity indicators. */
+/**
+ * Projects exemplarity indicators.
+ */
 export const projectsExemplarityIndicatorInsertSchema = createInsertSchema(
 	projectsExemplarityIndicators
 );
@@ -261,16 +287,39 @@ export const projectsExemplarityIndicatorsUpdateSchema = z.object({
 	indicatorIds: z.array(projectsExemplarityIndicatorInsertSchema.shape.exemplarityIndicatorId),
 });
 
-/** Projects images credits. */
+/**
+ * Projects images.
+ */
+export const projectsImageInsertSchema = createInsertSchema(projectsImages).required({ id: true });
+export const projectsImageTranslationInsertSchema = createInsertSchema(projectsImagesTranslations, {
+	locale: localeSchema,
+});
+export const projectsImagesUpdateSchema = z.object({
+	images: z.array(
+		withTranslationsSchema(projectsImageInsertSchema, projectsImageTranslationInsertSchema)
+	),
+});
 
-/** Projects organizations. */
+/**
+ * Appending new project images.
+ */
+export const projectsImagesInsertSchema = z.object({
+	images: z.array(projectsImageInsertSchema.pick({ storageName: true })),
+});
+export type ProjectsImagesInsertSchema = typeof projectsImagesInsertSchema;
+
+/**
+ * Projects organizations.
+ */
 export const projectsOrganizationInsertSchema = createInsertSchema(projectsOrganizations);
 // export const projectsUsersInsertSchema = createInsertSchema(projectsUsers);
 export const projectsContributionsUpdateSchema = z.object({
 	organizationIds: z.array(projectsOrganizationInsertSchema.shape.organizationId),
 });
 
-/** Organization types. */
+/**
+ * Organization types.
+ */
 export const organizationTypeInsertSchema = createInsertSchema(organizationTypes).required({
 	id: true,
 });
@@ -284,7 +333,9 @@ export const organizationTypesUpdateSchema = z.object({
 	),
 });
 
-/** Organizations. */
+/**
+ * Organizations.
+ */
 export const organizationInsertSchema = createInsertSchema(organizations).required({
 	id: true,
 });
@@ -296,7 +347,9 @@ export const organizationGeneralUpdateSchema = withTranslationsSchema(
 	organizationTranslationInsertSchema
 );
 
-/** User. */
+/**
+ * User.
+ */
 export const usersInsertSchema = createInsertSchema(users, {
 	email: (s) => s.email.email(),
 	publicEmail: (s) => s.publicEmail.email(),

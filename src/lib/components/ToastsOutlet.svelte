@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	import { createToaster, type AddToastProps } from '@melt-ui/svelte';
-	import type { Component } from 'lucide-svelte';
+	import type { SvelteComponent } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import Toast, { TOAST_TYPES, type ToastData } from './Toast.svelte';
 
@@ -11,23 +11,24 @@
 		actions: { portal },
 	} = createToaster<ToastData>();
 
-	export function addToast<T extends Component>(props: AddToastProps<ToastData<T>>) {
+	export function addToast<T extends SvelteComponent>(props: AddToastProps<ToastData<T>>) {
 		return helpers.addToast(props);
 	}
 
-	export function addErrorToast<T extends Component>(
+	export function addErrorToast<T extends SvelteComponent>(
 		props: AddToastProps<Omit<ToastData, 'type'>>
 	) {
+		console.log('dispatching toast!');
 		return helpers.addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.ERROR } });
 	}
 
-	export function addSuccessToast<T extends Component>(
+	export function addSuccessToast<T extends SvelteComponent>(
 		props: AddToastProps<Omit<ToastData, 'type'>>
 	) {
 		return helpers.addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.SUCCESS } });
 	}
 
-	export function addNotificationToast<T extends Component>(
+	export function addNotificationToast<T extends SvelteComponent>(
 		props: AddToastProps<Omit<ToastData, 'type'>>
 	) {
 		return helpers.addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.NOTIFICATION } });
@@ -47,7 +48,7 @@
 
 <style lang="postcss">
 	#toast-portal {
-		// fixed bottom-0 right-0 z-50 m-4 flex flex-col items-end gap-2
+		perspective: 500px;
 		position: fixed;
 		bottom: 0;
 		right: 0;
@@ -55,8 +56,16 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
+		justify-content: flex-end;
 		padding: 1.25rem;
 		gap: 0.75rem;
 		pointer-events: none;
+		> * {
+			pointer-events: initial;
+		}
+	}
+
+	div {
+		transform-style: preserve-3d;
 	}
 </style>

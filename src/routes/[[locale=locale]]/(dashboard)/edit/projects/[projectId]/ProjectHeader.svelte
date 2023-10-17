@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { createTranslations } from '$lib/i18n/translate';
-	import type { PageData } from './$types';
 
 	const t = createTranslations({
 		fr: {
@@ -12,9 +10,7 @@
 		},
 	});
 
-	$: title =
-		($page.data as PageData).form?.data?.translations?.[$page.data.locale]?.title ??
-		$page.data.title;
+	let title = 'No title';
 </script>
 
 <header class="pattern-cross">

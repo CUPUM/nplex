@@ -72,35 +72,35 @@
 <style lang="postcss">
 	progress {
 		all: unset;
-		--progress-color: var(--color-primary-500);
-		--progress-size: 3px;
+		--progress-color: var(--color-primary-600);
+		--progress-size: 4px;
+		--progress-inset: 0px;
 		-webkit-appearance: none;
 		position: fixed;
-		top: 2px;
-		right: 2px;
-		width: calc(100% - 4px);
+		top: var(--progress-inset);
+		right: var(--progress-inset);
+		width: calc(100% - 2 * var(--progress-inset));
 		height: var(--progress-size);
-		border-radius: var(--progress-size);
 		accent-color: var(--progress-color);
 		opacity: 0.75;
 
 		:global(:--dark) & {
-			accent-color: var(--progress-color);
+			--progress-color: var(--color-primary-400);
 		}
 	}
 
 	::-webkit-progress-bar {
-		border-radius: var(--progress-size);
+		/* border-radius: var(--progress-size); */
 		background-color: transparent;
 	}
 
 	::-webkit-progress-value {
-		border-radius: var(--progress-size);
+		/* border-radius: var(--progress-size); */
 		background-color: var(--progress-color);
 	}
 
 	::-moz-progress-bar {
-		border-radius: var(--progress-size);
+		/* border-radius: var(--progress-size); */
 		background-color: var(--progress-color);
 	}
 </style>

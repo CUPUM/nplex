@@ -5,7 +5,7 @@ Primitive input component
 	padding: 0 var(--base-padding);
 	text-overflow: ellipsis;
 	.input-peer + & {
-		padding-left: calc(var(--base-padding) - var(--base-inset));
+		padding-left: calc(var(--base-padding) - var(--input-inset));
 	}
 	.input-affix + & {
 		padding-left: 0;
@@ -27,13 +27,26 @@ textarea.input {
 }
 .input:not(.input-group *),
 .input-group {
-	--nested-base-size: calc(var(--base-size) - 2 * var(--base-inset));
-	--nested-base-radius: calc(var(--base-radius) - var(--base-inset));
+	--input-inset: var(--base-inset);
+	--input-radius: var(--base-radius);
+	--_base-size: calc(var(--base-size) - 2 * var(--input-inset));
+	--_base-radius: calc(var(--input-radius) - var(--input-inset));
 	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
-	border-radius: var(--base-radius);
-	&:not(textarea) {
+	border-radius: var(--input-radius);
+
+	&:has(textarea) {
+		flex-direction: column;
+		height: auto;
+		align-items: stretch;
+
+		.input-peer {
+			justify-content: flex-end;
+		}
+	}
+
+	&:not(textarea):not(:has(textarea)) {
 		height: var(--base-size);
 	}
 
@@ -53,19 +66,20 @@ textarea.input {
 	}
 
 	.input-peer {
-		--base-size: var(--nested-base-size);
-		--base-radius: var(--nested-base-radius);
+		--base-size: var(--_base-size);
+		--base-radius: var(--_base-radius);
 		display: flex;
-		gap: var(--base-inset);
+		gap: var(--input-inset);
 		flex-direction: row;
-		padding: var(--base-inset);
+		margin: var(--input-inset);
 	}
-	.input-icon + .input-peer {
-		margin-left: var(--base-padding);
-		padding-left: 0;
-	}
-	.input + .input-peer {
-		padding-left: 0;
+	:not(:has(textarea)) {
+		.input-icon + .input-peer {
+			margin-left: 0;
+		}
+		.input + .input-peer {
+			margin-left: 0;
+		}
 	}
 
 	.input-affix {
@@ -92,7 +106,7 @@ textarea.input {
 		}
 	}
 	.input-peer + .input-icon {
-		margin-left: calc(var(--base-padding) - var(--base-inset));
+		margin-left: calc(var(--base-padding) - var(--input-inset));
 	}
 	.input-icon:first-child {
 		margin-left: var(--base-padding);

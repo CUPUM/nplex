@@ -218,7 +218,7 @@ export const load = async (event) => {
 			)
 		)
 		.limit(1)
-		.then((res) => res[0].title ?? null);
+		.then((res) => res[0]?.title ?? null);
 	return {
 		descriptors,
 		title,

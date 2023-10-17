@@ -1,10 +1,19 @@
+/*
+Multiple-choice labeled switch.
+*/
 .switch {
+	--size: var(--base-size);
+	--radius: var(--base-radius);
+	--inset: var(--base-inset);
+	--_base-size: calc(var(--size) - 2 * var(--inset));
+	--_base-radius: calc(var(--radius) - var(--inset));
+	--_base-padding: calc(var(--base-padding) - var(--inset));
 	position: relative;
 	display: inline-flex;
 	flex-direction: row;
-	padding: var(--base-inset);
-	border-radius: var(--base-radius);
-	height: var(--base-size);
+	padding: var(--inset);
+	border-radius: var(--radius);
+	height: var(--size);
 	flex: none;
 	gap: 0;
 	align-items: stretch;
@@ -13,7 +22,7 @@
 
 	&:not[data-orientation='vertical'] {
 		&.round {
-			--base-radius: var(--radius-full);
+			--radius: var(--radius-full);
 		}
 	}
 
@@ -26,7 +35,7 @@
 	&:focus-within,
 	&:focus,
 	&:focus-visible {
-		outline: var(--base-focus-ring);
+		outline: var(--focus-ring);
 	}
 
 	.switch-input {
@@ -52,9 +61,9 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		height: calc(var(--base-size) - 2 * var(--base-inset));
-		border-radius: calc(var(--base-radius) - var(--base-inset));
-		padding-inline: var(--base-padding);
+		height: var(--_base-size);
+		border-radius: var(--_base-radius);
+		padding-inline: var(--_base-padding);
 		transform: translate3d(0);
 		transition: all var(--duration-fast) ease-out;
 
@@ -112,7 +121,7 @@
 	Outlined variant
 	*/
 	&.outlined {
-		border: var(--base-border);
+		border: var(--border);
 
 		&:hover {
 			background-color: color-mix(in srgb, var(--color-neutral-400) 20%, transparent);

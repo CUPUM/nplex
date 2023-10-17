@@ -2,6 +2,7 @@
 	import Footer from '$lib/components/Footer.svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
+	import ToastsOutlet from '$lib/components/ToastsOutlet.svelte';
 	import { onMount } from 'svelte';
 	import Contexts from './Contexts.svelte';
 	import Navbar from './Navbar.svelte';
@@ -24,8 +25,8 @@
 	<main>
 		<slot />
 	</main>
+	<ToastsOutlet />
 	<Footer />
-	<!-- <ToastsOutlet /> -->
 </Contexts>
 
 <style lang="postcss">

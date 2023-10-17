@@ -6,14 +6,17 @@ import { onDestroy, type ComponentProps } from 'svelte';
 import type { Action } from 'svelte/action';
 import { derived, get, readable, writable, type Readable } from 'svelte/store';
 
+type LoadingActionProps<T = { state?: boolean }> = ComponentProps<Loading> & {
+	disable?: boolean;
+} & T;
 /**
  * Apply a loading state to the host node through data attributes and insert/remove a loading
  * component accordingly.
  */
-export const loading2: Action<
-	HTMLElement,
-	ComponentProps<Loading> & { state?: boolean; disable?: boolean }
-> = (node: HTMLElement, { state, disable, ...props } = {}) => {
+export const loading2: Action<HTMLElement, LoadingActionProps> = (
+	node,
+	{ state, disable, ...props } = {}
+) => {
 	let owner = false;
 	let comp: Loading | undefined;
 	if (state) {
@@ -70,10 +73,12 @@ export const loading2: Action<
 	};
 };
 
-/** Apply loading state based on if the host node is the current form submitter node. */
+/**
+ * Apply loading state based on if the host node is the current form submitter node.
+ */
 export const loadingSubmitter: Action<
 	HTMLElement,
-	ComponentProps<Loading> & { submitter?: Element | null }
+	LoadingActionProps<{ submitter?: Element | null }>
 > = (node, { submitter, ...props } = {}) => {
 	const _loading = loading2(node, { ...props, state: submitter === node });
 	return {
@@ -95,20 +100,31 @@ function getNodeFormaction(node: HTMLElement) {
 	return formAttr || undefined;
 }
 
+function getFormactionString(formaction?: URL | string | null) {
+	if (formaction instanceof URL) {
+		return formaction.search;
+	}
+	return formaction;
+}
+
 /**
  * Apply loading state based on weather the host node's related form action corresponds to the
  * current loading formaction.
  */
 export const loadingFormaction: Action<
 	HTMLElement,
-	ComponentProps<Loading> & { formaction?: string | null; disable?: boolean }
+	LoadingActionProps<{ formaction?: URL | string | null }>
 > = (node, { formaction, ...props } = {}) => {
 	const nodeaction = getNodeFormaction(node);
-	const _loading = loading2(node, { ...props, state: nodeaction === formaction });
+	const _loading = loading2(node, {
+		...props,
+		state: nodeaction === getFormactionString(formaction),
+	});
 	return {
 		update({ formaction, ...props }) {
 			const nodeaction = getNodeFormaction(node);
-			_loading?.update && _loading.update({ ...props, state: nodeaction === formaction });
+			_loading?.update &&
+				_loading.update({ ...props, state: nodeaction === getFormactionString(formaction) });
 		},
 		destroy() {
 			_loading?.destroy && _loading.destroy();
@@ -122,7 +138,7 @@ export const loadingFormaction: Action<
  */
 export const loadingLink: Action<
 	HTMLAnchorElement,
-	ComponentProps<Loading> & { disable?: boolean; matcher?: (url: URL) => boolean }
+	LoadingActionProps<{ matcher?: (url: URL) => boolean }>
 > = (node, { matcher = (url) => url.pathname === node.href, ...props } = {}) => {
 	const _matcher = writable(matcher);
 	const isto = browser
@@ -275,7 +291,9 @@ export function createFormActionLoading() {
 			 * used.
 			 */
 			formaction?: string,
-			/** Should the element be disabled when submitting? */
+			/**
+			 * Should the element be disabled when submitting?
+			 */
 			disable = true
 		) {
 			const refaction =

@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { Lock, Share, Shield } from 'lucide-svelte';
+	import { addErrorToast } from '$lib/components/ToastsOutlet.svelte';
+	import { Lock, Send, Share, Shield } from 'lucide-svelte';
 
 	const buttonVariants = ['default', 'outlined', 'ghost', 'link', 'cta'];
 	const buttonStates = ['normal', 'danger'];
 	let buttonState = buttonStates[0];
 
 	const inputVariants = ['default', 'outlined'];
+
+	let toastMessage: string | null = null;
 </script>
 
 <article>
@@ -41,6 +44,29 @@
 				<Lock class="input-icon" />
 			</fieldset>
 		{/each}
+	</section>
+</article>
+<article>
+	<h1>Toast</h1>
+	<section>
+		<fieldset class="input-group">
+			<textarea
+				class="input"
+				placeholder="Message to dispatch"
+				rows="10"
+				bind:value={toastMessage}
+			></textarea>
+			<div class="input-peer">
+				<button
+					class="button ghost"
+					on:click={(e) => {
+						addErrorToast({ data: { title: 'A test', description: toastMessage ?? '' } });
+					}}
+				>
+					Dispatch <Send class="button-icon" />
+				</button>
+			</div>
+		</fieldset>
 	</section>
 </article>
 <article>

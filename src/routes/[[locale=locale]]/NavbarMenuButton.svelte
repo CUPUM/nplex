@@ -85,7 +85,7 @@
 
 			& :global(.button-icon) {
 				opacity: 1;
-				transform: translateX(0.1em);
+				transform: translateX(0.2em);
 			}
 		}
 

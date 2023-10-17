@@ -15,7 +15,9 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 	border-radius: var(--base-radius);
 	gap: 0.5em;
 	font-weight: 450;
-	transition: all var(--duration-xfast) ease-out;
+	transition:
+		all var(--duration-xfast) ease-out,
+		transform var(--duration-xslow) var(--ease-out-expo);
 
 	&:focus-visible {
 		outline: var(--base-focus-ring);
@@ -63,6 +65,7 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 		&[data-state='checked'] {
 			color: var(--color-neutral-200);
 			background-color: var(--color-neutral-800);
+			transform: rotateX(360deg);
 			:--dark & {
 				color: var(--color-neutral-800);
 				background-color: var(--color-neutral-200);

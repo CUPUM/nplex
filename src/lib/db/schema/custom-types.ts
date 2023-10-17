@@ -28,7 +28,11 @@ export const userRole = customType<{ data: UserRole }>({
 	},
 });
 
-/** Auth provider custom type. */
+/**
+ * Auth provider custom type.
+ *
+ * @see {@link AuthProvider}
+ */
 export const authProvider = customType<{ data: AuthProvider }>({
 	dataType() {
 		return 'text';
@@ -65,7 +69,11 @@ export const authProvider = customType<{ data: AuthProvider }>({
 // 	},
 // });
 
-/** @see https://github.com/drizzle-team/drizzle-orm/issues/295 */
+/**
+ * Implements postgres identity column.
+ *
+ * @see https://github.com/drizzle-team/drizzle-orm/issues/295
+ */
 export const identity = customType<{
 	data: number;
 	driver: number;
@@ -78,7 +86,11 @@ export const identity = customType<{
 	},
 });
 
-/** Locale code custom type. */
+/**
+ * Locale code custom type.
+ *
+ * @see {@link Locale}
+ */
 export const locale = customType<{ data: Locale; driverData: string }>({
 	dataType() {
 		return 'text';
@@ -127,27 +139,9 @@ export const intrange = customType<{
 		if (value[0] == null && value[1] == null) {
 			return 'empty';
 		}
+		// Use coalesce('[...]','[...)')
 		const diff = value[0] == null || value[1] == null ? 0 : value[1] - value[0];
 		return `[${value[0] ?? value[1]},${value[1] ?? value[0]}${diff ? ')' : ']'}`;
-	},
-});
-
-/**
- * Implements postgres numeric range.
- *
- * @see https://www.postgresql.org/docs/current/rangetypes.html
- *
- * @todo Add multiranges if needed.
- */
-export const numrange = customType<{ data: [number, number] }>({
-	dataType() {
-		return 'numrange';
-	},
-	fromDriver(value) {
-		return value as [number, number];
-	},
-	toDriver(value) {
-		return value;
 	},
 });
 
@@ -199,7 +193,11 @@ type Cube<L extends number> = L extends 1
 	? [x: number, y: number, z: number]
 	: ReadonlyTuple<number, L>;
 
-/** Implements cube extension type for 3d vectors. */
+/**
+ * Implements cube extension type for 3d vectors.
+ *
+ * @see https://www.postgresql.org/docs/current/cube.html
+ */
 export const cube = customType<{ data: Cube<3>; driverData: number[] }>({
 	dataType() {
 		return 'cube';

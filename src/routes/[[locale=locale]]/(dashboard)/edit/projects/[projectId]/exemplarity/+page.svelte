@@ -2,7 +2,7 @@
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { switchCrossfade } from '$lib/transitions/crossfades';
+	import { switchCrossfade } from '$lib/transitions/presets';
 	import { Save } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';

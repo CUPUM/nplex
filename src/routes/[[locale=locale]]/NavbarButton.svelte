@@ -117,7 +117,7 @@
 
 		&[data-current] {
 			cursor: default;
-			color: var(--color-primary-600);
+			color: var(--color-primary-700);
 			outline-offset: 0;
 			outline: var(--base-focus-ring);
 			:global(:--dark) & {

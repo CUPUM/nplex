@@ -1,39 +1,46 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { LOCALES } from '$lib/i18n/constants';
+	import { SETOUTS } from '$lib/setout/constants';
+	import { slide } from 'svelte/transition';
 	import CupumUdem from './partners-logos/CupumUdem.svelte';
 	import Montreal from './partners-logos/Montreal.svelte';
 </script>
 
-<footer>
-	<div class="inner">
-		<ul class="logos">
-			<li>
-				<a href="https://www.unesco-paysage.umontreal.ca/{$page.data.locale}/" class="footer-link">
-					<CupumUdem style="width: 10em; height: auto" />
-				</a>
-			</li>
-			<hr class="hr" />
-			<li>
-				<a
-					href="https://montreal.ca/unites/bureau-du-design{$page.data.locale === LOCALES.ENGLISH
-						? '/en'
-						: ''}"
-					class="footer-link"
-				>
-					<Montreal style="width: 10em; height: auto" />
-				</a>
-			</li>
-		</ul>
-		<ul class="links"></ul>
-	</div>
-</footer>
+{#if $page.data.setout !== SETOUTS.FULL_SCREEN}
+	<footer transition:slide>
+		<div class="inner">
+			<ul class="logos">
+				<li>
+					<a
+						href="https://www.unesco-paysage.umontreal.ca/{$page.data.locale}/"
+						class="footer-link"
+					>
+						<CupumUdem style="width: 10em; height: auto" />
+					</a>
+				</li>
+				<hr class="hr" />
+				<li>
+					<a
+						href="https://montreal.ca/unites/bureau-du-design{$page.data.locale === LOCALES.ENGLISH
+							? '/en'
+							: ''}"
+						class="footer-link"
+					>
+						<Montreal style="width: 10em; height: auto" />
+					</a>
+				</li>
+			</ul>
+			<ul class="links"></ul>
+		</div>
+	</footer>
+{/if}
 
 <style lang="postcss">
 	footer {
 		position: relative;
 		padding: 0.75rem;
-		margin-top: 0.5rem;
+		margin-top: var(--base-gutter);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
