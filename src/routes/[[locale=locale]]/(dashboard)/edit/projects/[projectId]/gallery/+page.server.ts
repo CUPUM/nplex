@@ -2,8 +2,12 @@ import { S3_BUCKET_NAME } from '$env/static/private';
 import { withAuth } from '$lib/auth/guard.server';
 import { projectsImagesInsertSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
-import { projectsImages } from '$lib/db/schema/public';
-import { reduceTranslations } from '$lib/db/utils';
+import {
+	projectImageTypes,
+	projectImageTypesTranslations,
+	projectsImages,
+} from '$lib/db/schema/public';
+import { reduceTranslations, withTranslation } from '$lib/db/utils';
 import { s3 } from '$lib/storage/s3.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { DeleteObjectCommand } from '@aws-sdk/client-s3';
@@ -25,11 +29,29 @@ export const load = async (event) => {
 		})
 	).map(reduceTranslations);
 
+	const itt = withTranslation(event, projectImageTypes, projectImageTypesTranslations, (t, tt) => ({
+		field: t.id,
+		reference: tt.id,
+	})).as('tt');
+	const imageTypes = await dbpool.select().from(itt);
+
+	console.log(imageTypes);
+
 	const addImagesForm = superValidate(projectsImagesInsertSchema);
-	return { images, addImagesForm };
+	return {
+		images,
+		addImagesForm,
+		streamed: {
+			imageTypes,
+		},
+	};
 };
 
 export const actions = {
+	/**
+	 * Add new image to project gallery. This action should occur after the file was uploaded to s3
+	 * using a presigned url on the client's side.
+	 */
 	add: async (event) => {
 		const session = await withAuth(event);
 		const addImagesForm = await superValidate(event, projectsImagesInsertSchema);
@@ -50,6 +72,9 @@ export const actions = {
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { addImagesForm });
 		}
 	},
+	/**
+	 * Delete an image in the database and its corresponding object in s3.
+	 */
 	delete: async (event) => {
 		await withAuth(event);
 		const id = event.url.searchParams.get('id');
@@ -83,12 +108,25 @@ export const actions = {
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
 		}
 	},
+	/**
+	 * Update image translations.
+	 */
 	update: async (event) => {
 		await withAuth(event);
 	},
+	// addCredit: async (event) => {},
+	// removeCredit: async (event) => {},
+	// createCredit: async (event) => {},
+	// deleteCredit: async (event) => {},
+	/**
+	 * Assign the image as the project's banner.
+	 */
 	promote: async (event) => {
 		await withAuth(event);
 	},
+	/**
+	 * Unassign project banner status.
+	 */
 	demote: async (event) => {
 		await withAuth(event);
 	},

@@ -6,7 +6,8 @@ import {
 	projectBuildingLevelTypes,
 	projectBuildingLevelTypesTranslations,
 } from '$lib/db/schema/public';
-import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
+import { excluded } from '$lib/db/sql.server';
+import { extractTranslations, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -58,7 +59,7 @@ export const actions = {
 					.values(pso)
 					.onConflictDoUpdate({
 						target: projectBuildingLevelTypes.id,
-						set: getAllExcluded(projectBuildingLevelTypes),
+						set: excluded(projectBuildingLevelTypes),
 					});
 				await tx
 					.insert(projectBuildingLevelTypesTranslations)
@@ -68,7 +69,7 @@ export const actions = {
 							projectBuildingLevelTypesTranslations.id,
 							projectBuildingLevelTypesTranslations.locale,
 						],
-						set: getAllExcluded(projectBuildingLevelTypesTranslations),
+						set: excluded(projectBuildingLevelTypesTranslations),
 					});
 			});
 			return { form };

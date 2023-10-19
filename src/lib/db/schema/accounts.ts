@@ -12,8 +12,8 @@ import {
 } from 'drizzle-orm/pg-core';
 import { USER_ID_LENGTH } from '../constants';
 import { generateNanoid } from '../sql.server';
-import { locale, userRole } from './custom-types';
-import { locales } from './i18n';
+import { userRole } from './custom-types';
+import { translationLocaleColumn, translationReferenceColumn } from './i18n';
 import { projects } from './public';
 
 /**
@@ -33,19 +33,16 @@ export const userRoles = accountsSchema.table('user_roles', {
 	role: userRole('role').primaryKey().notNull(),
 });
 
-/** @see {@link userRoles} */
+/**
+ * @see {@link userRoles}
+ */
 export const userRolesTranslations = accountsSchema.table(
 	'user_roles_t',
 	{
+		...translationLocaleColumn,
 		role: userRole('role')
 			.notNull()
 			.references(() => userRoles.role, {
-				onDelete: 'cascade',
-				onUpdate: 'cascade',
-			}),
-		locale: locale('locale')
-			.notNull()
-			.references(() => locales.locale, {
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			}),
@@ -105,7 +102,9 @@ export const emailVerificationTokens = accountsSchema.table('email_verification_
 
 export type SelectEmailVerificationToken = InferSelectModel<typeof emailVerificationTokens>;
 
-/** @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit */
+/**
+ * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
+ */
 export const passwordResetTokens = accountsSchema.table('password_reset_tokens', {
 	id: text('id').notNull().unique(),
 	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
@@ -158,29 +157,23 @@ export const usersRolesRequests = accountsSchema.table('users_roles_requests', {
 	requestAt: timestamp('requested_at', { withTimezone: true }).defaultNow(),
 });
 
-/** Occupations or professions of registered users. */
+/**
+ * Occupations or professions of registered users.
+ */
 export const userOccupations = accountsSchema.table('user_occupations', {
 	id: text('id')
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 });
 
-/** @see {@link userOccupations} */
+/**
+ * @see {@link userOccupations}
+ */
 export const userOccupationsTranslations = accountsSchema.table(
 	'user_occupations_t',
 	{
-		id: text('id')
-			.references(() => userOccupations.id, {
-				onDelete: 'cascade',
-				onUpdate: 'cascade',
-			})
-			.notNull(),
-		locale: locale('locale')
-			.notNull()
-			.references(() => locales.locale, {
-				onDelete: 'cascade',
-				onUpdate: 'cascade',
-			}),
+		...translationReferenceColumn(userOccupations.id),
+		...translationLocaleColumn,
 		title: text('title'),
 		description: text('description'),
 	},
@@ -264,18 +257,8 @@ export const notificationTypes = accountsSchema.table('notification_types', {
 });
 
 export const notificationTypesTranslations = accountsSchema.table('notification_types_t', {
-	id: text('id')
-		.references(() => notificationTypes.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		})
-		.notNull(),
-	locale: locale('locale')
-		.references(() => locales.locale, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		})
-		.notNull(),
+	...translationReferenceColumn(notificationTypes.id),
+	...translationLocaleColumn,
 	title: text('title'),
 	body: text('body'),
 });

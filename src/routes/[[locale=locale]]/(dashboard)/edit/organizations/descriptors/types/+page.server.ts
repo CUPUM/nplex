@@ -3,7 +3,8 @@ import { withRole } from '$lib/auth/guard.server';
 import { organizationTypesUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { organizationTypes, organizationTypesTranslations } from '$lib/db/schema/public';
-import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
+import { excluded } from '$lib/db/sql.server';
+import { extractTranslations, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -60,14 +61,14 @@ export const actions = {
 					.values(ot)
 					.onConflictDoUpdate({
 						target: organizationTypes.id,
-						set: getAllExcluded(organizationTypes),
+						set: excluded(organizationTypes),
 					});
 				await tx
 					.insert(organizationTypesTranslations)
 					.values(ott)
 					.onConflictDoUpdate({
 						target: [organizationTypesTranslations.id, organizationTypesTranslations.locale],
-						set: getAllExcluded(organizationTypesTranslations),
+						set: excluded(organizationTypesTranslations),
 					});
 			});
 			return { form };

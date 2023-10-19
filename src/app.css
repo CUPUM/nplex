@@ -10,9 +10,4 @@
 @import './styles/components/switch.css' layer(components);
 @import './styles/components/toolbar.css' layer(components);
 @import './styles/components/patterns.css' layer(components);
-@import './styles/components/toggle.css' layer(components);
-@import './styles/components/slider.css' layer(components);
-@import './styles/components/dropdown.css' layer(components);
-@import './styles/components/dialog.css' layer(components);
-@import './styles/components/badge.css' layer(components);
 @import './styles/components/token.css' layer(components);

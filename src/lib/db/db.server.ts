@@ -11,13 +11,13 @@ import * as relations from './schema/relations';
 const schema = { ...publicSchema, ...accountsSchema, ...i18nSchema, ...relations };
 
 neonConfig.fetchConnectionCache = true;
-const sqlhttp = neon(NEON_DB_URL);
+const pghttp = neon(NEON_DB_URL);
 /**
  * Http database connection.
  *
  * @see https://orm.drizzle.team/docs/installation-and-db-connection/postgresql/neon
  */
-export const dbhttp = httpdrizzle(sqlhttp, { schema });
+export const dbhttp = httpdrizzle(pghttp, { schema });
 
 export type DbHttp = typeof dbhttp;
 

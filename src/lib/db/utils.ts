@@ -1,32 +1,10 @@
-import { LOCALES, LOCALES_ARR, localeSchema, type Locale } from '$lib/i18n/constants';
-import { SRIDS, type SRID } from '$lib/utils/constants';
-import { strictRecord } from '$lib/utils/zod';
-import { getTableColumns, sql, type AnyColumn, type AnyTable, type SQL } from 'drizzle-orm';
+import { LOCALES_ARR, type Locale } from '$lib/i18n/constants';
+import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
+import { and, eq, getTableColumns, type AnyColumn, type AnyTable } from 'drizzle-orm';
 import { PgTable, getTableConfig } from 'drizzle-orm/pg-core';
-import type { ZodObject, ZodString, ZodTypeAny } from 'zod';
-import { excluded } from './sql.server';
-
-export type FieldSelectRecord = Record<string, AnyColumn | SQL>;
-
-/** Single column variant of drizzle's InferColumnsDataTypes. */
-export type InferColumnDataType<T extends AnyColumn> = T['_']['notNull'] extends true
-	? T['_']['data']
-	: T['_']['data'] | null;
-
-/** Extract the generic type of an SQL type. */
-export type InferSQLDataType<T extends SQL, Fallback = never> = T extends SQL<infer U>
-	? U
-	: Fallback;
-
-export type InferRecordDataTypes<T extends FieldSelectRecord> = {
-	[K in keyof T]: T[K] extends SQL
-		? InferSQLDataType<T[K]>
-		: T[K] extends AnyColumn
-		? InferColumnDataType<T[K]>
-		: never;
-};
-
-// export type InferFieldsDataType<T extends Table | Record<string,
+import type { ValueOf } from 'type-fest';
+import { dbpool, type DbHttp, type DbPool } from './db.server';
+import type { TranslationLocaleColumn } from './schema/i18n';
 
 /**
  * Updated version of drizzle-orm's getTableName with config to allow preprending table's schema
@@ -52,35 +30,56 @@ export function getTableName<T extends PgTable>(
 	return `${qo}${withSchema ? `${tableConfig.schema}${qi}.` : ''}${qi}${tableConfig.name}${qo}`;
 }
 
-export function getAllExcluded<T extends AnyTable>(table: T) {
-	const cols = getTableColumns(table);
-	type C = keyof typeof cols;
-	return (Object.keys(cols) as C[]).reduce(
-		(acc, curr) => {
-			acc[curr] = excluded(cols[curr]);
-			return acc;
-		},
-		<{ [K in C]: ReturnType<typeof excluded<(typeof cols)[K]>> }>{}
-	);
-}
+// /**
+//  * Obfuscating a point geometry's location within a circle of configurable radius.
+//  *
+//  * @example St_geometryn( st_generatepoints( st_buffer( st_setsrid(location, 4326)::geography,
+//  * coalesce(location_radius, 1000::real)::double precision, 'quad_segs=8'::text)::geometry, 1, 1992
+//  * ), 1 )
+//  */
+// export function obfuscatePoint<T extends AnyColumn | SQL>(
+// 	point: T,
+// 	{ radius = 500, srid = SRIDS.WGS84 }: { radius?: number; srid?: SRID } = {}
+// ) {
+// 	type D = T extends AnyColumn
+// 		? InferColumnDataType<T>
+// 		: T extends SQL
+// 		? InferSQLDataType<T>
+// 		: never;
+// 	// See previous implementation in sql schema
+// 	return sql<D>``;
+// }
 
-/** Schema for translations record. */
-export function translationsSchema<T extends ZodTypeAny>(schema: T) {
-	return strictRecord(LOCALES, schema);
+/**
+ * Query helper to get rows with translations corresponding to request event's locale.
+ */
+export function withTranslation<
+	T extends AnyTable,
+	TT extends AnyTable & { [K in keyof TranslationLocaleColumn]: AnyColumn },
+	J extends { field: ValueOf<T['_']['columns']>; reference: ValueOf<TT['_']['columns']> },
+>(
+	event: RequestEvent | ServerLoadEvent,
+	table: T,
+	translationsTable: TT,
+	join: J | ((table: T, translationsTable: TT) => J),
+	db: DbHttp | DbPool = dbpool
+) {
+	const { field, reference } = join instanceof Function ? join(table, translationsTable) : join;
+	return db
+		.select({
+			...getTableColumns(table),
+			...getTableColumns(translationsTable),
+		})
+		.from(table)
+		.leftJoin(
+			translationsTable,
+			and(eq(translationsTable.locale, event.locals.locale), eq(field, reference))
+		);
 }
 
 /**
- * Extend the insert schema of a given ressource table with its corresponding translations. The
- * resulting schema should be isomorphic with {@link withTranslationsRelations}.
+ * Function to reduce a given array of entries augmented with translations records into two arrays.
  */
-export function withTranslationsSchema<
-	T extends { id: ZodString },
-	TT extends { locale: typeof localeSchema },
->(schema: ZodObject<T>, translationSchema: ZodObject<TT>) {
-	return schema.extend({ translations: translationsSchema(translationSchema) });
-}
-
-/** Function to reduce a given array of entries augmented with translations records into two arrays. */
 export function extractTranslations<T, D extends Omit<Record<string, unknown>, 'translations'>>(
 	data: (D & { translations: Partial<Record<Locale, T>> })[]
 ) {
@@ -125,30 +124,4 @@ export function reduceTranslations<
 			return acc;
 		}, translationsBase),
 	};
-}
-
-/**
- * Obfuscating a point geometry's location within a circle of configurable radius.
- *
- * @example
- * 	st_geometryn(
- * 	st_generatepoints(
- * 	st_buffer(
- * 	st_setsrid(location, 4326)::geography, coalesce(location_radius, 1000::real)::double precision, 'quad_segs=8'::text)::geometry,
- * 	1,
- * 	1992
- * 	), 1
- * 	)
- */
-export function obfuscatePoint<T extends AnyColumn | SQL>(
-	point: T,
-	{ radius = 500, srid = SRIDS.WGS84 }: { radius?: number; srid?: SRID } = {}
-) {
-	type D = T extends AnyColumn
-		? InferColumnDataType<T>
-		: T extends SQL
-		? InferSQLDataType<T>
-		: never;
-	// See previous implementation in sql schema
-	return sql<D>``;
 }

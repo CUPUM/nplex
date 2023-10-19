@@ -11,7 +11,8 @@ import {
 	projectImageTypes,
 	projectImageTypesTranslations,
 } from '$lib/db/schema/public';
-import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
+import { excluded } from '$lib/db/sql.server';
+import { extractTranslations, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -81,14 +82,14 @@ export const actions = {
 					.values(pit)
 					.onConflictDoUpdate({
 						target: projectImageTypes.id,
-						set: getAllExcluded(projectImageTypes),
+						set: excluded(projectImageTypes),
 					});
 				await tx
 					.insert(projectImageTypesTranslations)
 					.values(pitt)
 					.onConflictDoUpdate({
 						target: [projectImageTypesTranslations.id, projectImageTypesTranslations.locale],
-						set: getAllExcluded(projectImageTypesTranslations),
+						set: excluded(projectImageTypesTranslations),
 					});
 			});
 		} catch (e) {
@@ -132,7 +133,7 @@ export const actions = {
 					.values(pit)
 					.onConflictDoUpdate({
 						target: projectImageTemporalities.id,
-						set: getAllExcluded(projectImageTemporalities),
+						set: excluded(projectImageTemporalities),
 					});
 				await tx
 					.insert(projectImageTemporalitiesTranslations)
@@ -142,7 +143,7 @@ export const actions = {
 							projectImageTemporalitiesTranslations.id,
 							projectImageTemporalitiesTranslations.locale,
 						],
-						set: getAllExcluded(projectImageTemporalitiesTranslations),
+						set: excluded(projectImageTemporalitiesTranslations),
 					});
 			});
 		} catch (e) {

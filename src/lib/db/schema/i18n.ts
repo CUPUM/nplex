@@ -1,4 +1,5 @@
-import { pgSchema, text } from 'drizzle-orm/pg-core';
+import type { ColumnBaseConfig } from 'drizzle-orm';
+import { PgColumn, pgSchema, text } from 'drizzle-orm/pg-core';
 import { locale } from './custom-types';
 
 /**
@@ -20,3 +21,30 @@ export const locales = i18nSchema.table('locales', {
 	locale: locale('locale').primaryKey(),
 	name: text('name').notNull().unique(),
 });
+
+/**
+ * Common locale column template.
+ */
+export const translationLocaleColumn = {
+	locale: locale('locale')
+		.references(() => locales.locale, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
+};
+
+export type TranslationLocaleColumn = typeof translationLocaleColumn;
+
+/**
+ * Common translations reference column template.
+ */
+export function translationReferenceColumn<T extends ColumnBaseConfig<'string', 'PgText'>>(
+	reference: PgColumn<T>
+) {
+	return {
+		id: text('id')
+			.references(() => reference, { onDelete: 'cascade', onUpdate: 'cascade' })
+			.notNull(),
+	};
+}

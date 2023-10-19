@@ -1,6 +1,9 @@
 import type { Feature } from '@turf/turf';
 import {
+	Column,
 	SQL,
+	Table,
+	getTableColumns,
 	sql,
 	type AnyColumn,
 	type AnyTable,
@@ -8,15 +11,32 @@ import {
 	type InferSelectModel,
 	type TableConfig,
 } from 'drizzle-orm';
-import type { PgColumn } from 'drizzle-orm/pg-core';
 import type { SetNonNullable } from 'type-fest';
 import { NANOID_DEFAULT_LENGTH } from './constants';
-import type {
-	FieldSelectRecord,
-	InferColumnDataType,
-	InferRecordDataTypes,
-	InferSQLDataType,
-} from './utils';
+
+export type FieldSelectRecord = Record<string, AnyColumn | SQL>;
+
+/**
+ * Single column variant of drizzle's InferColumnsDataTypes.
+ */
+export type InferColumnDataType<T extends AnyColumn> = T['_']['notNull'] extends true
+	? T['_']['data']
+	: T['_']['data'] | null;
+
+/**
+ * Extract the generic type of an SQL type.
+ */
+export type InferSQLDataType<T extends SQL, Fallback = never> = T extends SQL<infer U>
+	? U
+	: Fallback;
+
+export type InferRecordDataTypes<T extends FieldSelectRecord> = {
+	[K in keyof T]: T[K] extends SQL
+		? InferSQLDataType<T[K]>
+		: T[K] extends AnyColumn
+		? InferColumnDataType<T[K]>
+		: never;
+};
 
 /**
  * Implements sql random. Can be used to order:
@@ -42,9 +62,13 @@ export function generateNanoid({
 	alphabet,
 }: {
 	optimized?: boolean;
-	/** Defaults to @link NANOID_LENGTH_DEFAULT. */
+	/**
+	 * Defaults to @link NANOID_LENGTH_DEFAULT.
+	 */
 	length?: number;
-	/** Defaults to '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' */
+	/**
+	 * Defaults to '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+	 */
 	alphabet?: string;
 } = {}) {
 	const opts: (string | number)[] = [length];
@@ -55,10 +79,29 @@ export function generateNanoid({
 	// return sql`extensions.nanoid${optimized ? '_optimized' : ''}(${opts.join(',')})`;
 }
 
-/** Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set. */
-export function excluded<C extends PgColumn>(column: C) {
-	// return sql`excluded.${column}`;
-	return sql.raw(`excluded.${column.name}`);
+/**
+ * Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
+ *
+ * Function is overloaded to handle both full table and single column references.
+ */
+export function excluded<T extends AnyColumn>(columnOrTable: T): SQL<T>;
+export function excluded<T extends AnyTable, C = T['_']['columns']>(
+	columnOrTable: T
+): { [K in keyof C]: SQL<C[K]> };
+export function excluded<T extends Column | Table>(columnOrTable: T) {
+	if (columnOrTable instanceof Column) {
+		// return sql<T>`excluded.${columnOrTable}`;
+		return sql.raw(`excluded.${columnOrTable}`);
+	}
+	const cols = getTableColumns(columnOrTable);
+	type C = typeof cols;
+	return (Object.keys(cols) as (keyof C)[]).reduce(
+		(acc, curr) => {
+			acc[curr] = excluded(cols[curr]);
+			return acc;
+		},
+		<{ [K in keyof C]: SQL<C[K]> }>{}
+	);
 }
 
 // export function limit<T extends AnyTable, C extends number>(table: T, count: C) {
@@ -167,7 +210,9 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn>>(shape: T
 	)})), '[]')`;
 }
 
-/** Get a PostGIS column value as geojson. */
+/**
+ * Get a PostGIS column value as geojson.
+ */
 export function asGeoJson<T extends Feature = Feature>(geom: string) {
 	return sql<T>`st_asgeojson(${geom})::json`;
 }
@@ -176,17 +221,9 @@ export function asGeoJson<T extends Feature = Feature>(geom: string) {
  * Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped
  * type instead of an SQL wrapped type.
  *
- * @example
- * 	select t.*, json_object_agg(ttl.locale, ttl) as translations
- * 	from project_types as t
- * 	left join (
- * 	select tt.*
- * 	from project_types_t as tt
- * 	right join i18n.locales as l
- * 	on tt.locale = l.locale
- * 	) as ttl
- * 	on t.id = ttl.id
- * 	group by t.id
+ * @example Select t._, json_object_agg(ttl.locale, ttl) as translations from project_types as t
+ * left join ( select tt._ from project_types_t as tt right join i18n.locales as l on tt.locale =
+ * l.locale ) as ttl on t.id = ttl.id group by t.id.
  */
 // export function jsonObjectAgg<
 // 	K extends AnyColumn,
@@ -242,8 +279,8 @@ export function jsonObjectAgg<
 // 	//   ^?
 
 type RemoveNullSQL<T> = T extends SQL<null> ? never : T;
-
-type CoalesceSQL<T extends SQL[], N extends boolean = true, R = never> = T extends [
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type CoalesceSQL<T extends unknown[], N extends boolean = true, R = never> = T extends [
 	infer H,
 	...infer T,
 ]

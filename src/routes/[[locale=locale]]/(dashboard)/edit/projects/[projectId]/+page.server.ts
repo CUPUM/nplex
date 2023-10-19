@@ -3,8 +3,8 @@ import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
-import { TRUE } from '$lib/db/sql.server';
-import { getAllExcluded, reduceTranslations } from '$lib/db/utils';
+import { TRUE, excluded } from '$lib/db/sql.server';
+import { reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
@@ -63,7 +63,7 @@ export const actions = {
 					.values(Object.values(translations))
 					.onConflictDoUpdate({
 						target: [projectsTranslations.id, projectsTranslations.locale],
-						set: getAllExcluded(projectsTranslations),
+						set: excluded(projectsTranslations),
 					});
 				await tx
 					.delete(projectsInterventions)

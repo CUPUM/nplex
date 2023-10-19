@@ -8,7 +8,8 @@ import {
 	projectExemplarityIndicators,
 	projectExemplarityIndicatorsTranslations,
 } from '$lib/db/schema/public';
-import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
+import { excluded } from '$lib/db/sql.server';
+import { extractTranslations, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -107,7 +108,7 @@ export const actions = {
 					.values(pec)
 					.onConflictDoUpdate({
 						target: projectExemplarityCategories.id,
-						set: getAllExcluded(projectExemplarityCategories),
+						set: excluded(projectExemplarityCategories),
 					});
 				await tx
 					.insert(projectExemplarityCategoriesTranslations)
@@ -117,7 +118,7 @@ export const actions = {
 							projectExemplarityCategoriesTranslations.id,
 							projectExemplarityCategoriesTranslations.locale,
 						],
-						set: getAllExcluded(projectExemplarityCategoriesTranslations),
+						set: excluded(projectExemplarityCategoriesTranslations),
 					});
 				// Indicators
 				const [pei, peit] = extractTranslations(
@@ -128,7 +129,7 @@ export const actions = {
 					.values(pei)
 					.onConflictDoUpdate({
 						target: projectExemplarityIndicators.id,
-						set: getAllExcluded(projectExemplarityIndicators),
+						set: excluded(projectExemplarityIndicators),
 					});
 				await tx
 					.insert(projectExemplarityIndicatorsTranslations)
@@ -138,7 +139,7 @@ export const actions = {
 							projectExemplarityIndicatorsTranslations.id,
 							projectExemplarityIndicatorsTranslations.locale,
 						],
-						set: getAllExcluded(projectExemplarityIndicatorsTranslations),
+						set: excluded(projectExemplarityIndicatorsTranslations),
 					});
 			});
 			return { form };

@@ -1,5 +1,15 @@
 import type { Config } from 'drizzle-kit';
-import { DB_MIGRATIONS_FOLDER, ENV } from './scripts/common';
+import { register } from 'tsconfig-paths';
+import tsConfig from './.svelte-kit/tsconfig.json';
+import { DB_MIGRATIONS_FOLDER } from './scripts/common';
+
+/**
+ * @see https://discord.com/channels/1043890932593987624/1125147482364584007/1154633287805976606
+ */
+register({
+	baseUrl: './.svelte-kit',
+	paths: { ...tsConfig.compilerOptions.paths, '$env/*': ['../drizzle.config.ts'] },
+});
 
 export default {
 	schema: ['./src/lib/db/schema/*'],
@@ -7,6 +17,10 @@ export default {
 	driver: 'pg',
 	breakpoints: true,
 	dbCredentials: {
-		connectionString: ENV.NEON_POOL_DB_URL,
+		connectionString: process.env.NEON_POOL_DB_URL!,
 	},
+	introspect: {
+		casing: 'camel',
+	},
+	verbose: true,
 } satisfies Config;

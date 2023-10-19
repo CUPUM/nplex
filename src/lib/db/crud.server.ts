@@ -36,7 +36,7 @@ import {
 	projectsOrganizations,
 	projectsTranslations,
 } from './schema/public';
-import { withTranslationsSchema } from './utils';
+import { withTranslationsSchema } from './validation.server';
 
 /**
  * Project type.

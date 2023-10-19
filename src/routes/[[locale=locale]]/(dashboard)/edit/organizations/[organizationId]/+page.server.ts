@@ -2,7 +2,8 @@ import { withAuth } from '$lib/auth/guard.server';
 import { organizationGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { organizations, organizationsTranslations } from '$lib/db/schema/public';
-import { getAllExcluded, reduceTranslations } from '$lib/db/utils';
+import { excluded } from '$lib/db/sql.server';
+import { reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -53,7 +54,7 @@ export const actions = {
 					.values(Object.values(translations))
 					.onConflictDoUpdate({
 						target: [organizationsTranslations.id, organizationsTranslations.locale],
-						set: getAllExcluded(organizationsTranslations),
+						set: excluded(organizationsTranslations),
 					});
 			});
 			return { form };

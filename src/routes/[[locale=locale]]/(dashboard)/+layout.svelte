@@ -6,7 +6,7 @@
 	import { createTranslations } from '$lib/i18n/translate';
 	import { slide } from '$lib/transitions/slide';
 	import { Paintbrush, Users } from 'lucide-svelte';
-	import { expoOut } from 'svelte/easing';
+	import { cubicOut, expoOut } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
 	import { scale } from 'svelte/transition';
 
@@ -27,13 +27,13 @@
 		},
 	});
 
-	const angleThreshold = 45;
+	const angleThreshold = 70;
 
 	export let data;
 
 	let scrollY = 0;
 	let headerHeight = 0;
-	const angle = tweened(Math.min(angleThreshold, scrollY), { easing: expoOut, duration: 150 });
+	const angle = tweened(Math.min(angleThreshold, scrollY / 2), { easing: cubicOut, duration: 50 });
 	$: $angle = Math.min(angleThreshold, scrollY);
 </script>
 

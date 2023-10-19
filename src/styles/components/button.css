@@ -32,6 +32,7 @@ Primitive button style component.
 	}
 	&:disabled,
 	&[data-disabled] {
+		/* pointer-events: none; */
 		cursor: default;
 		opacity: 0.5;
 	}
@@ -42,13 +43,9 @@ Primitive button style component.
 			transform: scale(0.9);
 		}
 	}
-	&[data-disabled],
-	&:disabled {
-		transform: scale(0.95);
-		pointer-events: none;
-	}
-	&[data-current] {
-		pointer-events: none;
+	&[data-current],
+	&[aria-expanded='true'] {
+		/* pointer-events: none; */
 		.button-icon {
 			opacity: 1;
 		}
@@ -82,8 +79,8 @@ Primitive button style component.
 		:--dark & {
 			color: var(--color-neutral-200);
 		}
-		&:hover,
-		&:focus-visible {
+		&:hover:not(:disabled):not([data-disabled]),
+		&:focus-visible:not(:disabled):not([data-disabled]) {
 			color: var(--color-neutral-950);
 			background-color: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
 			:--dark & {
@@ -98,8 +95,8 @@ Primitive button style component.
 				color: var(--color-error-100);
 				background-color: color-mix(in srgb, var(--color-error-900) 25%, transparent);
 			}
-			&:hover,
-			&:focus-visible {
+			&:hover:not(:disabled):not([data-disabled]),
+			&:focus-visible:not(:disabled):not([data-disabled]) {
 				color: var(--color-error-900);
 				background-color: color-mix(in srgb, var(--color-error-600) 25%, transparent);
 				:--dark & {
@@ -131,8 +128,8 @@ Primitive button style component.
 		:--dark & {
 			color: var(--color-neutral-200);
 		}
-		&:hover,
-		&:focus-visible {
+		&:hover:not(:disabled):not([data-disabled]),
+		&:focus-visible:not(:disabled):not([data-disabled]) {
 			color: var(--color-neutral-950);
 			background-color: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
 			border-color: transparent;
@@ -149,8 +146,8 @@ Primitive button style component.
 				color: var(--color-error-100);
 				border-color: color-mix(in srgb, var(--color-error-900) 25%, transparent);
 			}
-			&:hover,
-			&:focus-visible {
+			&:hover:not(:disabled):not([data-disabled]),
+			&:focus-visible:not(:disabled):not([data-disabled]) {
 				color: var(--color-error-900);
 				background-color: color-mix(in srgb, var(--color-error-600) 25%, transparent);
 				border-color: transparent;
@@ -173,7 +170,8 @@ Primitive button style component.
 				}
 			}
 		}
-		&[data-current] {
+		&[data-current],
+		&[aria-expanded='true'] {
 			color: var(--color-neutral-900);
 			background-color: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
 			border-color: transparent;
@@ -193,11 +191,12 @@ Primitive button style component.
 		:--dark & {
 			color: var(--color-neutral-300);
 		}
-		&[data-current] {
+		&[data-current],
+		&[aria-expanded='true'] {
 			color: var(--color-primary-500);
 		}
-		&:hover,
-		&:focus-visible {
+		&:hover:not(:disabled):not([data-disabled]),
+		&:focus-visible:not(:disabled):not([data-disabled]) {
 			color: var(--color-neutral-950);
 			background-color: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 			:--dark & {
@@ -221,8 +220,8 @@ Primitive button style component.
 			:--dark & {
 				color: var(--color-error-300);
 			}
-			&:hover,
-			&:focus-visible {
+			&:hover:not(:disabled):not([data-disabled]),
+			&:focus-visible:not(:disabled):not([data-disabled]) {
 				color: var(--color-error-900);
 				background-color: color-mix(in srgb, var(--color-error-600) 25%, transparent);
 				:--dark & {
@@ -253,8 +252,8 @@ Primitive button style component.
 		.button-icon {
 			stroke-width: 2.5;
 		}
-		&:hover,
-		&:focus {
+		&:hover:not(:disabled):not([data-disabled]),
+		&:focus-visible:not(:disabled):not([data-disabled]) {
 			color: var(--color-primary-600);
 			text-decoration-color: currentColor;
 			text-underline-offset: 0.5em;
@@ -279,8 +278,8 @@ Primitive button style component.
 			:--dark & {
 				color: var(--color-error-100);
 			}
-			&:hover,
-			&:focus-visible {
+			&:hover:not(:disabled):not([data-disabled]),
+			&:focus-visible:not(:disabled):not([data-disabled]) {
 				color: var(--color-error-500);
 				:--dark & {
 					color: var(--color-error-500);
@@ -299,8 +298,8 @@ Primitive button style component.
 			color: var(--color-neutral-900);
 			background-color: var(--color-primary-500);
 		}
-		&:hover,
-		&:focus-visible {
+		&:hover:not(:disabled):not([data-disabled]),
+		&:focus-visible:not(:disabled):not([data-disabled]) {
 			color: var(--color-primary-50);
 			background-color: var(--color-primary-800);
 			:--dark & {
@@ -329,8 +328,8 @@ Primitive button style component.
 				color: var(--color-error-950);
 				background-color: var(--color-error-600);
 			}
-			&:hover,
-			&:focus-visible {
+			&:hover:not(:disabled):not([data-disabled]),
+			&:focus-visible:not(:disabled):not([data-disabled]) {
 				color: var(--color-error-50);
 				background-color: var(--color-error-800);
 				:--dark & {
@@ -366,5 +365,14 @@ Primitive button style component.
 /*
 Wrap multiple buttons into a single visual unit.
 */
-.segmented-button {
+.button-group {
+	display: flex;
+	flex-direction: row;
+	gap: 0;
+	padding: 0;
+	align-items: stretch;
+
+	&[data-orientation='vertical'] {
+		flex-direction: column;
+	}
 }

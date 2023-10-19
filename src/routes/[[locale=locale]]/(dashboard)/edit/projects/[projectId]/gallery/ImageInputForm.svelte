@@ -125,7 +125,7 @@
 				on:change={parseInput}
 			/>
 			<ImagePlus class="button-icon" />
-			<span class="text sm dimmer">
+			<span class="text center sm dimmer">
 				{$t.prompt}
 			</span>
 		</label>
@@ -141,7 +141,7 @@
 				in:scale={{ start: 0.9, duration: 500, easing: elasticOut }}
 			>
 				<img src={image.url} alt="Preview image for {image.url}" />
-				<menu class="toolbar">
+				<menu class="toolbar" data-mode="dark">
 					<button
 						class="button square danger ghost"
 						type="button"
@@ -206,7 +206,7 @@
 		display: flex;
 		flex-direction: column;
 		padding: 2rem;
-		border-radius: var(--radius-xs);
+		border-radius: var(--radius-sm);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 		aspect-ratio: 1;
 		width: 175px;
@@ -218,7 +218,8 @@
 			margin: 0.5rem;
 			font-size: var(--size-xs);
 			backdrop-filter: blur(6px);
-			background-color: color-mix(in srgb, var(--base-bg) 80%, transparent);
+			/* background-color: color-mix(in srgb, var(--base-bg) 80%, transparent); */
+			background-color: color-mix(in srgb, var(--color-neutral-950) 85%, transparent);
 		}
 	}
 

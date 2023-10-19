@@ -6,7 +6,8 @@ import {
 	projectImplantationTypes,
 	projectImplantationTypesTranslations,
 } from '$lib/db/schema/public';
-import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
+import { excluded } from '$lib/db/sql.server';
+import { extractTranslations, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -57,7 +58,7 @@ export const actions = {
 					.values(pso)
 					.onConflictDoUpdate({
 						target: projectImplantationTypes.id,
-						set: getAllExcluded(projectImplantationTypes),
+						set: excluded(projectImplantationTypes),
 					});
 				await tx
 					.insert(projectImplantationTypesTranslations)
@@ -67,7 +68,7 @@ export const actions = {
 							projectImplantationTypesTranslations.id,
 							projectImplantationTypesTranslations.locale,
 						],
-						set: getAllExcluded(projectImplantationTypesTranslations),
+						set: excluded(projectImplantationTypesTranslations),
 					});
 			});
 			return { form };

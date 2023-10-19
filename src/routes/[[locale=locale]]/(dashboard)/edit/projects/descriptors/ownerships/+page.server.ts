@@ -3,7 +3,8 @@ import { withRole } from '$lib/auth/guard.server';
 import { projectSiteOwnershipsUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { projectSiteOwnerships, projectSiteOwnershipsTranslations } from '$lib/db/schema/public';
-import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
+import { excluded } from '$lib/db/sql.server';
+import { extractTranslations, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -54,7 +55,7 @@ export const actions = {
 					.values(pso)
 					.onConflictDoUpdate({
 						target: projectSiteOwnerships.id,
-						set: getAllExcluded(projectSiteOwnerships),
+						set: excluded(projectSiteOwnerships),
 					});
 				await tx
 					.insert(projectSiteOwnershipsTranslations)
@@ -64,7 +65,7 @@ export const actions = {
 							projectSiteOwnershipsTranslations.id,
 							projectSiteOwnershipsTranslations.locale,
 						],
-						set: getAllExcluded(projectSiteOwnershipsTranslations),
+						set: excluded(projectSiteOwnershipsTranslations),
 					});
 			});
 			return { form };

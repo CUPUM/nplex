@@ -5,6 +5,7 @@ Toolbar preset to nest inputs with proper inset and consequentially updated base
 	--toolbar-inset: var(--base-inset);
 	--toolbar-radius: var(--base-radius);
 	--toolbar-size: var(--base-size);
+	--toolbar-gap: calc(var(--toolbar-inset) / 2);
 	--_base-size: calc(var(--toolbar-size) - 2 * var(--toolbar-inset));
 	--_base-radius: calc(var(--toolbar-radius) - var(--toolbar-inset));
 	padding: var(--toolbar-inset);
@@ -12,12 +13,31 @@ Toolbar preset to nest inputs with proper inset and consequentially updated base
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	gap: 3px;
+	gap: var(--toolbar-gap);
 	flex: none;
 
 	&[data-orientation='vertical'] {
 		flex-direction: column;
 		align-items: stretch;
+
+		hr,
+		.toolbar-separator {
+			margin-inline: 0;
+			margin-block: var(--toolbar-inset);
+			width: auto;
+			height: var(--base-border-size);
+		}
+	}
+
+	hr,
+	.toolbar-separator {
+		width: var(--base-border-size);
+		height: auto;
+		align-self: stretch;
+		opacity: 0.15;
+		margin-block: 0;
+		margin-inline: var(--toolbar-inset);
+		background-color: var(--color-neutral-500);
 	}
 
 	& > * {

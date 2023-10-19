@@ -1,4 +1,4 @@
-const s = 1.1; // 1.70158;
+const s = 1.15; // 1.70158;
 
 export function springInOut(t: number) {
 	const _s = s * 1.525;

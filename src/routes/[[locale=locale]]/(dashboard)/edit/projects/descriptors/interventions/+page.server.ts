@@ -8,7 +8,8 @@ import {
 	projectInterventions,
 	projectInterventionsTranslations,
 } from '$lib/db/schema/public';
-import { extractTranslations, getAllExcluded, reduceTranslations } from '$lib/db/utils';
+import { excluded } from '$lib/db/sql.server';
+import { extractTranslations, reduceTranslations } from '$lib/db/utils';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -90,7 +91,7 @@ export const actions = {
 					.values(pic)
 					.onConflictDoUpdate({
 						target: projectInterventionCategories.id,
-						set: getAllExcluded(projectInterventionCategories),
+						set: excluded(projectInterventionCategories),
 					});
 				await tx
 					.insert(projectInterventionCategoriesTranslations)
@@ -100,7 +101,7 @@ export const actions = {
 							projectInterventionCategoriesTranslations.id,
 							projectInterventionCategoriesTranslations.locale,
 						],
-						set: getAllExcluded(projectInterventionCategoriesTranslations),
+						set: excluded(projectInterventionCategoriesTranslations),
 					});
 				// Interventions
 				const [pi, pit] = extractTranslations(
@@ -111,14 +112,14 @@ export const actions = {
 					.values(pi)
 					.onConflictDoUpdate({
 						target: projectInterventions.id,
-						set: getAllExcluded(projectInterventions),
+						set: excluded(projectInterventions),
 					});
 				await tx
 					.insert(projectInterventionsTranslations)
 					.values(pit)
 					.onConflictDoUpdate({
 						target: [projectInterventionsTranslations.id, projectInterventionsTranslations.locale],
-						set: getAllExcluded(projectInterventionsTranslations),
+						set: excluded(projectInterventionsTranslations),
 					});
 			});
 			return { form };
