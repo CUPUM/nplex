@@ -2,12 +2,13 @@ import { S3_BUCKET_NAME } from '$env/static/private';
 import { withAuth } from '$lib/auth/guard.server';
 import { projectsImagesInsertSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
+import { selectProjectImageTemporalities, selectProjectImageTypes } from '$lib/db/queries.server';
 import {
 	projectImageTypes,
 	projectImageTypesTranslations,
 	projectsImages,
 } from '$lib/db/schema/public';
-import { reduceTranslations, withTranslation } from '$lib/db/utils';
+import { reduceTranslations, withTranslations } from '$lib/db/utils';
 import { s3 } from '$lib/storage/s3.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { DeleteObjectCommand } from '@aws-sdk/client-s3';
@@ -29,20 +30,44 @@ export const load = async (event) => {
 		})
 	).map(reduceTranslations);
 
-	const itt = withTranslation(event, projectImageTypes, projectImageTypesTranslations, (t, tt) => ({
-		field: t.id,
-		reference: tt.id,
-	})).as('tt');
-	const imageTypes = await dbpool.select().from(itt);
+	// const test = await dbpool
+	// 	.select({
+	// 		...getTableColumns(projectImageTypes),
+	// 		translations: jsonObjectAgg(
+	// 			locales.locale,
+	// 			coalesce(rowToJson(projectImageTypesTranslations), emptyJsonObject())
+	// 		),
+	// 	})
+	// 	.from(projectImageTypes)
+	// 	.leftJoin(locales, TRUE())
+	// 	.leftJoin(
+	// 		projectImageTypesTranslations,
+	// 		and(
+	// 			eq(projectImageTypesTranslations.id, projectImageTypes.id),
+	// 			eq(projectImageTypesTranslations.locale, locales.locale)
+	// 		)
+	// 	)
+	// 	.groupBy(projectImageTypes.id);
 
-	console.log(imageTypes);
+	const test = await withTranslations(
+		projectImageTypes,
+		projectImageTypesTranslations,
+		(t, tt) => ({ field: t.id, reference: tt.id })
+	);
+
+	console.log(JSON.stringify(test, undefined, 2));
+
+	const imageTypes = selectProjectImageTypes(event);
+	const imageTemporalities = selectProjectImageTemporalities(event);
 
 	const addImagesForm = superValidate(projectsImagesInsertSchema);
+
 	return {
 		images,
 		addImagesForm,
 		streamed: {
 			imageTypes,
+			imageTemporalities,
 		},
 	};
 };

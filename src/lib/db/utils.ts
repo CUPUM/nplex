@@ -4,7 +4,8 @@ import { and, eq, getTableColumns, type AnyColumn, type AnyTable } from 'drizzle
 import { PgTable, getTableConfig } from 'drizzle-orm/pg-core';
 import type { ValueOf } from 'type-fest';
 import { dbpool, type DbHttp, type DbPool } from './db.server';
-import type { TranslationLocaleColumn } from './schema/i18n';
+import { locales, type TranslationLocaleColumn } from './schema/i18n';
+import { TRUE, coalesce, emptyJsonObject, jsonObjectAgg, rowToJson } from './sql.server';
 
 /**
  * Updated version of drizzle-orm's getTableName with config to allow preprending table's schema
@@ -75,6 +76,37 @@ export function withTranslation<
 			translationsTable,
 			and(eq(translationsTable.locale, event.locals.locale), eq(field, reference))
 		);
+}
+
+/**
+ * Aggregate an entity's translations into a `translations` record field.
+ */
+export function withTranslations<
+	T extends AnyTable,
+	TT extends AnyTable & { [K in keyof TranslationLocaleColumn]: AnyColumn },
+	J extends { field: ValueOf<T['_']['columns']>; reference: ValueOf<TT['_']['columns']> },
+>(
+	table: T,
+	translationsTable: TT,
+	join: J | ((table: T, translationsTable: TT) => J),
+	db: DbHttp | DbPool = dbpool
+) {
+	const { field, reference } = join instanceof Function ? join(table, translationsTable) : join;
+	return db
+		.select({
+			...getTableColumns(table),
+			translations: jsonObjectAgg(
+				locales.locale,
+				coalesce(rowToJson(translationsTable), emptyJsonObject())
+			),
+		})
+		.from(table)
+		.leftJoin(locales, TRUE())
+		.leftJoin(
+			translationsTable,
+			and(eq(field, reference), eq(locales.locale, translationsTable.locale))
+		)
+		.groupBy(field);
 }
 
 /**
