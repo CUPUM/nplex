@@ -2,10 +2,10 @@ import { LOCALES_ARR, type Locale } from '$lib/i18n/constants';
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { and, eq, getTableColumns, type AnyColumn, type AnyTable } from 'drizzle-orm';
 import { PgTable, getTableConfig } from 'drizzle-orm/pg-core';
-import type { ValueOf } from 'type-fest';
+import type { Entries, ValueOf } from 'type-fest';
 import { dbpool, type DbHttp, type DbPool } from './db.server';
 import { locales, type TranslationLocaleColumn } from './schema/i18n';
-import { TRUE, coalesce, emptyJsonObject, jsonObjectAgg, rowToJson } from './sql.server';
+import { TRUE, coalesce, jsonBuildObject, jsonObjectAgg, rowToJson } from './sql.server';
 
 /**
  * Updated version of drizzle-orm's getTableName with config to allow preprending table's schema
@@ -79,7 +79,8 @@ export function withTranslation<
 }
 
 /**
- * Aggregate an entity's translations into a `translations` record field.
+ * Aggregate an entity's translations into a `translations` record field. Also automatically
+ * coalesces missing translation rows to records with pre-populated locale and foreign key columns.
  */
 export function withTranslations<
 	T extends AnyTable,
@@ -92,12 +93,20 @@ export function withTranslations<
 	db: DbHttp | DbPool = dbpool
 ) {
 	const { field, reference } = join instanceof Function ? join(table, translationsTable) : join;
+	const tcolumns = getTableColumns(translationsTable);
+	const tentries = Object.entries(tcolumns) as Entries<typeof tcolumns>;
+	const tkey =
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		tentries.find(([k, v]) => v === reference)![0];
 	return db
 		.select({
 			...getTableColumns(table),
 			translations: jsonObjectAgg(
 				locales.locale,
-				coalesce(rowToJson(translationsTable), emptyJsonObject())
+				coalesce(
+					rowToJson(translationsTable),
+					jsonBuildObject({ ...tcolumns, locale: locales.locale, [tkey]: field })
+				)
 			),
 		})
 		.from(table)

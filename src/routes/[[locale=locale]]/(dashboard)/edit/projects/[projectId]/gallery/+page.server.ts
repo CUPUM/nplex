@@ -1,14 +1,14 @@
 import { S3_BUCKET_NAME } from '$env/static/private';
 import { withAuth } from '$lib/auth/guard.server';
-import { projectsImagesInsertSchema } from '$lib/db/crud.server';
+import { projectsImageUpdateSchema, projectsImagesInsertSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { selectProjectImageTemporalities, selectProjectImageTypes } from '$lib/db/queries.server';
 import {
-	projectImageTypes,
-	projectImageTypesTranslations,
 	projectsImages,
+	projectsImagesCredits,
+	projectsImagesTranslations,
 } from '$lib/db/schema/public';
-import { reduceTranslations, withTranslations } from '$lib/db/utils';
+import { withTranslations } from '$lib/db/utils';
 import { s3 } from '$lib/storage/s3.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { DeleteObjectCommand } from '@aws-sdk/client-s3';
@@ -18,53 +18,24 @@ import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withAuth(event);
-	event.depends('projects:edit:gallery');
-	const images = (
-		await dbpool.query.projectsImages.findMany({
-			where(f, o) {
-				return o.eq(f.projectId, event.params.projectId);
-			},
-			with: {
-				translations: true,
-			},
-		})
-	).map(reduceTranslations);
-
-	// const test = await dbpool
-	// 	.select({
-	// 		...getTableColumns(projectImageTypes),
-	// 		translations: jsonObjectAgg(
-	// 			locales.locale,
-	// 			coalesce(rowToJson(projectImageTypesTranslations), emptyJsonObject())
-	// 		),
-	// 	})
-	// 	.from(projectImageTypes)
-	// 	.leftJoin(locales, TRUE())
-	// 	.leftJoin(
-	// 		projectImageTypesTranslations,
-	// 		and(
-	// 			eq(projectImageTypesTranslations.id, projectImageTypes.id),
-	// 			eq(projectImageTypesTranslations.locale, locales.locale)
-	// 		)
-	// 	)
-	// 	.groupBy(projectImageTypes.id);
-
-	const test = await withTranslations(
-		projectImageTypes,
-		projectImageTypesTranslations,
-		(t, tt) => ({ field: t.id, reference: tt.id })
-	);
-
-	console.log(JSON.stringify(test, undefined, 2));
-
+	const images = await withTranslations(projectsImages, projectsImagesTranslations, (t, tt) => ({
+		field: t.id,
+		reference: tt.id,
+	}))
+		.where(eq(projectsImages.projectId, event.params.projectId))
+		.leftJoin(projectsImagesCredits, eq(projectsImagesCredits.imageId, projectsImages.id));
 	const imageTypes = selectProjectImageTypes(event);
 	const imageTemporalities = selectProjectImageTemporalities(event);
 
 	const addImagesForm = superValidate(projectsImagesInsertSchema);
+	const updateImageForms = Promise.all(
+		images.map((image) => superValidate(image, projectsImageUpdateSchema, { id: image.id }))
+	);
 
 	return {
 		images,
 		addImagesForm,
+		updateImageForms,
 		streamed: {
 			imageTypes,
 			imageTemporalities,

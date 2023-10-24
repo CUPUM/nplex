@@ -4,7 +4,7 @@
 	import { transform } from '$lib/transitions/transform';
 	import { melt, type DialogElements, type DialogStates } from '@melt-ui/svelte';
 	import { X } from 'lucide-svelte';
-	import { expoIn } from 'svelte/easing';
+	import { expoOut } from 'svelte/easing';
 	import { fade, scale, type TransitionConfig } from 'svelte/transition';
 
 	export let portalled: DialogElements['portalled'];
@@ -21,8 +21,8 @@
 		transform(node, {
 			translate: [0, 8, -200],
 			rotate: [-15, 0, 0],
-			duration: 150,
-			easing: expoIn,
+			duration: 125,
+			easing: expoOut,
 		});
 </script>
 
@@ -37,7 +37,12 @@
 							<slot name="header" />
 						{/if}
 					</hgroup>
-					<button use:ripple class="button danger square ghost" type="button" use:melt={$close}>
+					<button
+						use:ripple
+						class="button danger round ghost compact"
+						type="button"
+						use:melt={$close}
+					>
 						<X class="button-icon" />
 					</button>
 				</header>
@@ -120,12 +125,15 @@
 		gap: 1em;
 		position: relative;
 		padding-bottom: 1rem;
-		/* margin-bottom: 1rem; */
+		margin-bottom: 1rem;
 		justify-content: space-between;
-		/* border-bottom: var(--base-border); */
 
 		button {
 			font-size: var(--size-xs);
+		}
+
+		hgroup {
+			margin-left: 0.5em;
 		}
 	}
 

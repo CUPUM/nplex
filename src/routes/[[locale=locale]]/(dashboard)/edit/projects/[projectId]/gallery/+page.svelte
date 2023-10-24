@@ -12,9 +12,9 @@
 <ImageInputForm data={data.addImagesForm} />
 <form action="?/update" method="POST" use:enhance>
 	<ul>
-		{#each data.images as image, i (image.id)}
+		{#each data.updateImageForms as datum, i (datum.id)}
 			<li animate:flip={{ duration: 250, easing: expoInOut }} in:fly={{ y: 6, easing: expoOut }}>
-				<ImageCard {image} />
+				<ImageCard {datum} imageTypes={data.streamed.imageTypes} />
 			</li>
 		{/each}
 	</ul>

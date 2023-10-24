@@ -29,5 +29,7 @@ module.exports = {
 	],
 	rules: {
 		curly: ['error', 'all'],
+		// 'require-await': 'off',
+		// '@typescript-eslint/require-await': 'error',
 	},
 };

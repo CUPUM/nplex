@@ -1,5 +1,20 @@
 import type { ValueOf } from 'type-fest';
 
+/**
+ * Dict of custom load dependency tracking (using event.depends method) for granular invalidation.
+ * For consistency, values should be defined as colon-separated scoping tree. Using colons instead
+ * of slashes mainly avoids confusion with route paths.
+ *
+ * @example ScopeSubScope: 'scope:sub-scope'
+ */
+export const LOAD_DEPENDENCIES = {
+	ProjectGallery: 'project:gallery',
+} as const;
+
+/**
+ * Dict of search params used across app. Please use rigorously across event the app's query parsing
+ * to avoid unexpected param name collisions.
+ */
 export const SEARCH_PARAMS = {} as const;
 
 /**

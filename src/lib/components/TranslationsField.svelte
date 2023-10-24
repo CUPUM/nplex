@@ -13,8 +13,8 @@
 	} = createTabs({ defaultValue, loop: true, activateOnFocus: true });
 </script>
 
-<fieldset class="labeled-group" class:centered>
-	<legend class="label compact">
+<fieldset class="labeled-group" class:centered use:melt={$root}>
+	<legend class="label">
 		<div class="legend-slot">
 			<slot name="legend" />
 		</div>
@@ -46,6 +46,7 @@
 	}
 
 	.content[hidden] {
+		pointer-events: none;
 		visibility: collapse;
 		transform: translateY(-0.5em);
 		opacity: 0;

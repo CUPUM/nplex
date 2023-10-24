@@ -14,9 +14,8 @@ textarea.resize {
 Update base tokens to make things more compact where needed
 */
 .compact {
-	--base-size: 3em;
+	--base-size: 2.75em;
 	--base-padding: 1em;
-	--base-radius: var(--radius-sm);
 	--base-inset: 2px;
 }
 

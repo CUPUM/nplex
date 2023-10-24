@@ -1,5 +1,7 @@
 import { loadingFormaction, loadingSubmitter } from '$lib/actions/loading';
-import { derived, readonly, writable } from 'svelte/store';
+import { createDialog, type CreateDialogProps } from '@melt-ui/svelte';
+import type { ChangeFn } from '@melt-ui/svelte/internal/helpers';
+import { derived, get, readonly, writable } from 'svelte/store';
 import type { SuperValidated, UnwrapEffects, ZodValidation } from 'sveltekit-superforms';
 import { superForm as _superForm, type FormOptions } from 'sveltekit-superforms/client';
 import type { AnyZodObject } from 'zod';
@@ -53,5 +55,37 @@ export function superForm<
 			submitter: _loadingSubmitter,
 			formaction: _loadingFormaction,
 		},
+	};
+}
+
+/**
+ * Create a superform embeded in a dialog window. This helper allows preventing dataloss or
+ * unwarranted tainted messages by using the dialog's state rather than navigation events to prompt
+ * for user confirmation and to reset the form's data.
+ */
+export function superFormDialog<
+	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
+	M = unknown,
+>(form: SuperValidated<T, M>, options?: FormOptions<UnwrapEffects<T>, M> & CreateDialogProps) {
+	const superform = superForm(form, options);
+	// Prompt for confirmation.
+	const onOpenChange: ChangeFn<boolean> = (state) => {
+		if (!state.next && get(superform.tainted)) {
+			const confirmed = confirm('Are you certain?');
+			if (confirmed) {
+				superform.reset();
+			}
+			return !confirmed;
+		}
+		return options?.onOpenChange ? options.onOpenChange(state) : state.next;
+	};
+	const dialog = createDialog({ ...options, onOpenChange });
+	return {
+		...superform,
+		...dialog,
+		// elements: {
+		// 	...dialog.elements,
+		// 	close,
+		// },
 	};
 }

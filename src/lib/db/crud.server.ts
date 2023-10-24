@@ -46,9 +46,10 @@ export const projectTypeTranslationInsertSchema = createInsertSchema(projectType
 	locale: localeSchema,
 });
 export const projectTypesUpdateSchema = z.object({
-	types: z.array(
-		withTranslationsSchema(projectTypeInsertSchema, projectTypeTranslationInsertSchema)
-	),
+	types: withTranslationsSchema(
+		projectTypeInsertSchema,
+		projectTypeTranslationInsertSchema
+	).array(),
 });
 
 /**
@@ -63,12 +64,10 @@ export const projectInterventionTranslationInsertSchema = createInsertSchema(
 	{ locale: localeSchema }
 );
 export const projectInterventionsUpdateSchema = z.object({
-	interventions: z.array(
-		withTranslationsSchema(
-			projectInterventionInsertSchema,
-			projectInterventionTranslationInsertSchema
-		)
-	),
+	interventions: withTranslationsSchema(
+		projectInterventionInsertSchema,
+		projectInterventionTranslationInsertSchema
+	).array(),
 });
 
 /**
@@ -83,21 +82,19 @@ export const projectInterventionCategoryTranslationInsertSchema = createInsertSc
 	{ locale: localeSchema }
 );
 export const projectInterventionCategoriesUpdateSchema = z.object({
-	interventionCategories: z.array(
-		withTranslationsSchema(
-			projectInterventionCategoryInsertSchema,
-			projectInterventionCategoryTranslationInsertSchema
-		)
-	),
+	interventionCategories: withTranslationsSchema(
+		projectInterventionCategoryInsertSchema,
+		projectInterventionCategoryTranslationInsertSchema
+	).array(),
 });
 
 export const projectInterventionCategoriesWithInterventionsUpdateSchema = z.object({
-	interventionCategories: z.array(
-		withTranslationsSchema(
-			projectInterventionCategoryInsertSchema,
-			projectInterventionCategoryTranslationInsertSchema
-		).merge(projectInterventionsUpdateSchema)
-	),
+	interventionCategories: withTranslationsSchema(
+		projectInterventionCategoryInsertSchema,
+		projectInterventionCategoryTranslationInsertSchema
+	)
+		.merge(projectInterventionsUpdateSchema)
+		.array(),
 });
 
 // export const projectInterventionCategoriesAndInterventionsUpdateSchema =
@@ -114,12 +111,10 @@ export const projectExemplarityCategoryTranslationInsertSchema = createInsertSch
 	{ locale: localeSchema }
 );
 export const projectExemplarityCategoriesUpdateSchema = z.object({
-	exemplarityCategories: z.array(
-		withTranslationsSchema(
-			projectExemplarityCategoryInsertSchema,
-			projectExemplarityCategoryTranslationInsertSchema
-		)
-	),
+	exemplarityCategories: withTranslationsSchema(
+		projectExemplarityCategoryInsertSchema,
+		projectExemplarityCategoryTranslationInsertSchema
+	).array(),
 });
 
 /**
@@ -133,24 +128,22 @@ export const projectExemplarityIndicatorTranslationInsertSchema = createInsertSc
 	{ locale: localeSchema }
 );
 export const projectExemplarityIndicatorsUpdateSchema = z.object({
-	indicators: z.array(
-		withTranslationsSchema(
-			projectExemplarityIndicatorInsertSchema,
-			projectExemplarityIndicatorTranslationInsertSchema
-		)
-	),
+	indicators: withTranslationsSchema(
+		projectExemplarityIndicatorInsertSchema,
+		projectExemplarityIndicatorTranslationInsertSchema
+	).array(),
 });
 
 // export const projectExemplarityCategoriesAndIndicatorsUpdateSchema =
 // 	projectExemplarityCategoriesUpdateSchema.merge(projectExemplarityIndicatorsUpdateSchema);
 
 export const projectExemplarityCategoriesWithIndicatorsUpdateSchema = z.object({
-	exemplarityCategories: z.array(
-		withTranslationsSchema(
-			projectExemplarityCategoryInsertSchema,
-			projectExemplarityCategoryTranslationInsertSchema
-		).merge(projectExemplarityIndicatorsUpdateSchema)
-	),
+	exemplarityCategories: withTranslationsSchema(
+		projectExemplarityCategoryInsertSchema,
+		projectExemplarityCategoryTranslationInsertSchema
+	)
+		.merge(projectExemplarityIndicatorsUpdateSchema)
+		.array(),
 });
 
 /**
@@ -164,12 +157,10 @@ export const projectSiteOwnershipTranslationInsertSchema = createInsertSchema(
 	{ locale: localeSchema }
 );
 export const projectSiteOwnershipsUpdateSchema = z.object({
-	siteOwnerships: z.array(
-		withTranslationsSchema(
-			projectSiteOwnershipInsertSchema,
-			projectSiteOwnershipTranslationInsertSchema
-		)
-	),
+	siteOwnerships: withTranslationsSchema(
+		projectSiteOwnershipInsertSchema,
+		projectSiteOwnershipTranslationInsertSchema
+	).array(),
 });
 
 /**
@@ -185,12 +176,10 @@ export const projectImplantationTypeTranslationInsertSchema = createInsertSchema
 	{ locale: localeSchema }
 );
 export const projectImplantationTypesUpdateSchema = z.object({
-	implantationTypes: z.array(
-		withTranslationsSchema(
-			projectImplantationTypeInsertSchema,
-			projectImplantationTypeTranslationInsertSchema
-		)
-	),
+	implantationTypes: withTranslationsSchema(
+		projectImplantationTypeInsertSchema,
+		projectImplantationTypeTranslationInsertSchema
+	).array(),
 });
 
 /**
@@ -204,9 +193,10 @@ export const projectImageTypeTranslationInsertSchema = createInsertSchema(
 	{ locale: localeSchema }
 );
 export const projectImageTypesUpdateSchema = z.object({
-	imageTypes: z.array(
-		withTranslationsSchema(projectImageTypeInsertSchema, projectImageTypeTranslationInsertSchema)
-	),
+	imageTypes: withTranslationsSchema(
+		projectImageTypeInsertSchema,
+		projectImageTypeTranslationInsertSchema
+	).array(),
 });
 
 /**
@@ -222,12 +212,10 @@ export const projectImageTemporalityTranslationInsertSchema = createInsertSchema
 	{ locale: localeSchema }
 );
 export const projectImageTemporalitiesUpdateSchema = z.object({
-	imageTemporalities: z.array(
-		withTranslationsSchema(
-			projectImageTemporalityInsertSchema,
-			projectImageTemporalityTranslationInsertSchema
-		)
-	),
+	imageTemporalities: withTranslationsSchema(
+		projectImageTemporalityInsertSchema,
+		projectImageTemporalityTranslationInsertSchema
+	).array(),
 });
 
 /**
@@ -243,12 +231,10 @@ export const projectBuildingLevelTypeTranslationInsertSchema = createInsertSchem
 	{ locale: localeSchema }
 );
 export const projectBuildingLevelTypesUpdateSchema = z.object({
-	buildingLevelTypes: z.array(
-		withTranslationsSchema(
-			projectBuildingLevelTypeInsertSchema,
-			projectBuildingLevelTypeTranslationInsertSchema
-		)
-	),
+	buildingLevelTypes: withTranslationsSchema(
+		projectBuildingLevelTypeInsertSchema,
+		projectBuildingLevelTypeTranslationInsertSchema
+	).array(),
 });
 
 /**
@@ -272,7 +258,7 @@ export const projectGeneralUpdateSchema = withTranslationsSchema(
 	projectTranslationsInsertSchema
 ).merge(
 	z.object({
-		interventionIds: z.array(projectsInterventionInsertSchema.shape.interventionId),
+		interventionIds: projectsInterventionInsertSchema.shape.interventionId.array(),
 	})
 );
 // export const projectPlaceUpdateSchema =
@@ -284,27 +270,26 @@ export const projectsExemplarityIndicatorInsertSchema = createInsertSchema(
 	projectsExemplarityIndicators
 );
 export const projectsExemplarityIndicatorsUpdateSchema = z.object({
-	indicatorIds: z.array(projectsExemplarityIndicatorInsertSchema.shape.exemplarityIndicatorId),
+	indicatorIds: projectsExemplarityIndicatorInsertSchema.shape.exemplarityIndicatorId.array(),
 });
 
 /**
  * Projects images.
  */
-export const projectsImageInsertSchema = createInsertSchema(projectsImages).required({ id: true });
+export const projectsImageInsertSchema = createInsertSchema(projectsImages);
 export const projectsImageTranslationInsertSchema = createInsertSchema(projectsImagesTranslations, {
 	locale: localeSchema,
 });
-export const projectsImagesUpdateSchema = z.object({
-	images: z.array(
-		withTranslationsSchema(projectsImageInsertSchema, projectsImageTranslationInsertSchema)
-	),
-});
+export const projectsImageUpdateSchema = withTranslationsSchema(
+	projectsImageInsertSchema,
+	projectsImageTranslationInsertSchema
+);
 
 /**
  * Appending new project images.
  */
 export const projectsImagesInsertSchema = z.object({
-	images: z.array(projectsImageInsertSchema.pick({ storageName: true })),
+	images: projectsImageInsertSchema.pick({ storageName: true }).array(),
 });
 export type ProjectsImagesInsertSchema = typeof projectsImagesInsertSchema;
 
@@ -314,7 +299,7 @@ export type ProjectsImagesInsertSchema = typeof projectsImagesInsertSchema;
 export const projectsOrganizationInsertSchema = createInsertSchema(projectsOrganizations);
 // export const projectsUsersInsertSchema = createInsertSchema(projectsUsers);
 export const projectsContributionsUpdateSchema = z.object({
-	organizationIds: z.array(projectsOrganizationInsertSchema.shape.organizationId),
+	organizationIds: projectsOrganizationInsertSchema.shape.organizationId.array(),
 });
 
 /**

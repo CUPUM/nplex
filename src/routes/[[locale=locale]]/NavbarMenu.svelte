@@ -30,6 +30,7 @@
 		border-radius: var(--base-radius);
 		transform-origin: center center;
 		background-color: var(--color-neutral-100);
+		outline: none;
 		border: var(--base-border-size) solid
 			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 		z-index: 1;

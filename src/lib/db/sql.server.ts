@@ -26,9 +26,7 @@ export type InferColumnDataType<T extends AnyColumn> = T['_']['notNull'] extends
 /**
  * Extract the generic type of an SQL type.
  */
-export type InferSQLDataType<T extends SQL, Fallback = never> = T extends SQL<infer U>
-	? U
-	: Fallback;
+export type InferSQLDataType<T, Fallback = never> = T extends SQL<infer U> ? U : Fallback;
 
 export type InferRecordDataTypes<T extends FieldSelectRecord> = {
 	[K in keyof T]: T[K] extends SQL
@@ -255,50 +253,20 @@ export function jsonObjectAgg<
 	return sql<Record<TK, TV>>`json_object_agg(${key}, ${value})`;
 }
 
-// // type Coalesce<T extends unknown[], N extends boolean = true, R = never> = T extends [
-// 	type RemoveNull<T> = T extends null ? never : T
-
-// 	type Coalesce<T extends unknown[], N extends boolean = true, R = never> = T extends [
-// 			infer H,
-// 			...infer T,
-// 	]
-// 			? Coalesce<T, null extends H ? true : false, R | RemoveNull<H>>
-// 			: N extends true
-// 			? R | null
-// 			: R
-
-// 	type Test1 = Coalesce<[]>
-// 	//   ^?
-// 	type Test2 = Coalesce<[null]>
-// 	//   ^?
-// 	type Test3 = Coalesce<[null, number | null]>
-// 	//   ^?
-// 	type Test4 = Coalesce<[null, number | null, string | null]>
-// 	//   ^?
-// 	type Test5 = Coalesce<[null, number | null, string | null, boolean]>
-// 	//   ^?
-
-type RemoveNullSQL<T> = T extends SQL<null> ? never : T;
+type RemoveNull<T> = T extends null ? never : T;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type CoalesceSQL<T extends unknown[], N extends boolean = true, R = never> = T extends [
 	infer H,
 	...infer T,
 ]
-	? CoalesceSQL<T, SQL<null> extends H ? true : false, R | RemoveNullSQL<H>>
+	? CoalesceSQL<
+			T,
+			null extends InferSQLDataType<H> ? true : false,
+			R | RemoveNull<InferSQLDataType<H>>
+	  >
 	: N extends true
-	? R | SQL<null>
-	: R;
-
-// type Test1 = CoalesceSQL<[]>
-// //   ^?
-// type Test2 = CoalesceSQL<[SQL<null>]>
-// //   ^?
-// type Test3 = CoalesceSQL<[SQL<null>, SQL<number | null>]>
-// //   ^?
-// type Test4 = CoalesceSQL<[SQL<null>, SQL<number | null>, SQL<string | null>]>
-// //   ^?
-// type Test5 = CoalesceSQL<[SQL<null>, SQL<number | null>, SQL<string | null>, SQL<boolean>]>
-// //   ^?
+	? SQL<R | null>
+	: SQL<R>;
 
 /**
  * SQL coalesce.

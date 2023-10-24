@@ -11,14 +11,14 @@ export const strictRecord = <
 	S extends ZodTypeAny,
 >(
 	keysEnum: T,
-	valueSchema: S
+	valueSchema: S | ((k: K) => S)
 ) => {
-	const keys = Object.values(keysEnum);
+	const keys = Object.values(keysEnum) as K[];
 	return z.object(
 		keys.reduce(
 			(agg, k) => ({
 				...agg,
-				[k]: valueSchema,
+				[k]: valueSchema instanceof Function ? valueSchema(k) : valueSchema,
 			}),
 			{} as Record<K, S>
 		)
