@@ -1,7 +1,9 @@
 <script lang="ts" context="module">
+	import { page } from '$app/stores';
 	import { createToaster, type AddToastProps } from '@melt-ui/svelte';
 	import type { SvelteComponent } from 'svelte';
 	import { flip } from 'svelte/animate';
+	import { getFlash } from 'sveltekit-flash-message/client';
 	import Toast, { TOAST_TYPES, type ToastData } from './Toast.svelte';
 
 	const {
@@ -11,8 +13,11 @@
 		actions: { portal },
 	} = createToaster<ToastData>();
 
-	export function addToast<T extends SvelteComponent>(props: AddToastProps<ToastData<T>>) {
-		return helpers.addToast(props);
+	export function addToast<T extends SvelteComponent>({
+		closeDelay,
+		...props
+	}: AddToastProps<ToastData<T>>) {
+		return helpers.addToast({ closeDelay: closeDelay ?? 5000, ...props });
 	}
 
 	export function addErrorToast<T extends SvelteComponent>(
@@ -35,7 +40,19 @@
 	}
 </script>
 
-<script>
+<script lang="ts">
+	const flash = getFlash(page);
+
+	$: if ($flash) {
+		$flash.forEach((m) => {
+			const { closeDelay, ...data } = m;
+			addToast({
+				closeDelay,
+				data,
+			});
+		});
+		flash.set(undefined);
+	}
 </script>
 
 <div id="toast-portal" use:portal>

@@ -47,9 +47,14 @@
 					</button>
 				</header>
 				<slot>Content</slot>
-				{#if $$slots.footer}
-					<footer class="heading lg">
+				{#if $$slots.footer || $$slots.actions}
+					<footer>
 						<slot name="footer" />
+						{#if $$slots.actions}
+							<menu>
+								<slot name="actions" />
+							</menu>
+						{/if}
 					</footer>
 				{/if}
 			</article>

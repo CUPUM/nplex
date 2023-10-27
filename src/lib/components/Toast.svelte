@@ -59,7 +59,7 @@
 <div
 	use:melt={$content(id)}
 	in:transform|global={{ rotate: [90, 0, 0], easing: cubicOut, duration: 350 }}
-	out:scale|global={{ start: 0.9, duration: 150, easing: expoOut, opacity: 0 }}
+	out:scale|global={{ start: 0.9, duration: 200, easing: expoOut, opacity: 0 }}
 	class="container {data.type ?? TOAST_TYPES.DEFAULT}"
 >
 	<div use:melt={$progress} class="toast-progress">
@@ -91,6 +91,7 @@
 <style lang="postcss">
 	.container {
 		/* rounded-lg bg-neutral-700 text-white shadow-md */
+		--toast-progress-color: var(--color-primary-500);
 		pointer-events: initial;
 		border-radius: var(--radius-sm);
 		color: var(--color-neutral-700);
@@ -98,9 +99,31 @@
 		box-shadow: var(--shadow-md), var(--shadow-2xl);
 		transform-origin: bottom center;
 
+		&.error {
+			color: red;
+		}
+
+		&.success {
+			background-color: green;
+		}
+
+		&.notification {
+		}
+
 		:global(:--dark) & {
 			color: var(--color-neutral-300);
 			background-color: var(--color-neutral-800);
+
+			&.error {
+				color: red;
+			}
+
+			&.success {
+				background-color: green;
+			}
+
+			&.notification {
+			}
 		}
 	}
 
@@ -118,7 +141,7 @@
 		/* h-full w-full bg-magnum-500 */
 		heigth: 100%;
 		width: 100%;
-		background-color: var(--color-primary-500);
+		background-color: var(--toast-progress-color);
 	}
 
 	.inner {

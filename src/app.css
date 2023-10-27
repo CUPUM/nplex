@@ -8,6 +8,7 @@
 @import './styles/components/labeled.css' layer(components);
 @import './styles/components/button.css' layer(components);
 @import './styles/components/switch.css' layer(components);
+@import './styles/components/toggle.css' layer(components);
 @import './styles/components/toolbar.css' layer(components);
 @import './styles/components/patterns.css' layer(components);
 @import './styles/components/token.css' layer(components);

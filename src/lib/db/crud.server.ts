@@ -240,58 +240,71 @@ export const projectBuildingLevelTypesUpdateSchema = z.object({
 /**
  * Projects.
  */
-export const projectInsertSchema = createInsertSchema(projects, {
+export const projectsInsertSchema = createInsertSchema(projects, {
 	adjacentStreets: (s) => s.adjacentStreets.positive().max(5),
 	adjacentAlleys: (s) => s.adjacentAlleys.positive().max(5),
 }).required({ id: true });
-export const projectTranslationsInsertSchema = createInsertSchema(projectsTranslations, {
+export const projectsTranslationsInsertSchema = createInsertSchema(projectsTranslations, {
 	title: (s) => s.title.max(250),
 	summary: (s) => s.summary.max(1500),
 	description: (s) => s.description.max(5000),
 	locale: localeSchema,
 });
-
-export const projectsInterventionInsertSchema = createInsertSchema(projectsInterventions);
-
-export const projectGeneralUpdateSchema = withTranslationsSchema(
-	projectInsertSchema.pick({ id: true, typeId: true, costRange: true, siteOwnershipId: true }),
-	projectTranslationsInsertSchema
-).merge(
-	z.object({
-		interventionIds: projectsInterventionInsertSchema.shape.interventionId.array(),
-	})
+export const projectsUpdateSchema = withTranslationsSchema(
+	projectsInsertSchema,
+	projectsTranslationsInsertSchema
 );
-// export const projectPlaceUpdateSchema =
+
+export const projectsInterventionsInsertSchema = createInsertSchema(projectsInterventions);
+
+export const projectGeneralUpdateSchema = projectsUpdateSchema
+	.pick({ id: true, typeId: true, costRange: true, siteOwnershipId: true, translations: true })
+	.extend({ interventionIds: projectsInterventionsInsertSchema.shape.interventionId.array() });
 
 /**
  * Projects exemplarity indicators.
  */
-export const projectsExemplarityIndicatorInsertSchema = createInsertSchema(
+export const projectsExemplarityIndicatorsInsertSchema = createInsertSchema(
 	projectsExemplarityIndicators
 );
 export const projectsExemplarityIndicatorsUpdateSchema = z.object({
-	indicatorIds: projectsExemplarityIndicatorInsertSchema.shape.exemplarityIndicatorId.array(),
+	indicatorIds: projectsExemplarityIndicatorsInsertSchema.shape.exemplarityIndicatorId.array(),
 });
 
 /**
  * Projects images.
  */
-export const projectsImageInsertSchema = createInsertSchema(projectsImages);
-export const projectsImageTranslationInsertSchema = createInsertSchema(projectsImagesTranslations, {
-	locale: localeSchema,
-});
-export const projectsImageUpdateSchema = withTranslationsSchema(
-	projectsImageInsertSchema,
-	projectsImageTranslationInsertSchema
+export const projectsImagesInsertSchema = createInsertSchema(projectsImages);
+export const projectsImagesTranslationInsertSchema = createInsertSchema(
+	projectsImagesTranslations,
+	{
+		locale: localeSchema,
+	}
+);
+export const projectsImagesUpdateSchema = withTranslationsSchema(
+	projectsImagesInsertSchema,
+	projectsImagesTranslationInsertSchema
 );
 
 /**
  * Appending new project images.
  */
-export const projectsImagesInsertSchema = z.object({
-	images: projectsImageInsertSchema.pick({ storageName: true }).array(),
+export const projectsImagesInsertManySchema = z.object({
+	images: projectsImagesInsertSchema.pick({ storageName: true }).array().min(1),
 });
-export type ProjectsImagesInsertSchema = typeof projectsImagesInsertSchema;
+
+/**
+ * Updating general project gallery.
+ *
+ * - Toggle image as project banner.
+ * - Delete image(s).
+ * - ...add as needed.
+ */
+export const projectsGalleryUpdateSchema = z.object({
+	deleteId: projectsImagesUpdateSchema.shape.id.optional(),
+	bannerId: projectsUpdateSchema.shape.bannerId.optional(),
+});
+export type ProjectsGalleryUpdateSchema = typeof projectsGalleryUpdateSchema;
 
 /**
  * Projects organizations.

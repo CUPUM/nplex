@@ -9,6 +9,7 @@ import {
 	text,
 	timestamp,
 	unique,
+	type AnyPgColumn,
 } from 'drizzle-orm/pg-core';
 import { generateNanoid } from '../sql.server';
 import { userRoles, users } from './accounts';
@@ -338,6 +339,12 @@ export const projects = pgTable('projects', {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
+	// Type-casting to AnyPgColumn is a fix for typescript incompatible circular inference.
+	// @see https://discord.com/channels/1043890932593987624/1146405082062135326/1146405496891383859
+	bannerId: text('banner_id').references((): AnyPgColumn => projectsImages.id, {
+		onDelete: 'set null',
+		onUpdate: 'cascade',
+	}),
 	adjacentStreets: integer('adjacent_streets'),
 	adjacentAlleys: integer('adjacent_alleys'),
 	costRange: intrange('cost_range').notNull().default([0, 0]),
@@ -477,12 +484,10 @@ export const projectsImages = pgTable(
 			onDelete: 'set null',
 			onUpdate: 'cascade',
 		}),
-		isBanner: boolean('is_banner'),
 	},
 	(table) => {
 		return {
 			unqIndex: unique().on(table.projectId, table.index),
-			unqBanner: unique().on(table.projectId, table.isBanner),
 		};
 	}
 );

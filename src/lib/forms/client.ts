@@ -1,4 +1,6 @@
 import { loadingFormaction, loadingSubmitter } from '$lib/actions/loading';
+import { TOAST_TYPES } from '$lib/components/Toast.svelte';
+import { addToast } from '$lib/components/ToastsOutlet.svelte';
 import { createDialog, type CreateDialogProps } from '@melt-ui/svelte';
 import type { ChangeFn } from '@melt-ui/svelte/internal/helpers';
 import { derived, get, readonly, writable } from 'svelte/store';
@@ -12,7 +14,7 @@ import type { AnyZodObject } from 'zod';
  */
 export function superForm<
 	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
-	M = unknown,
+	M extends App.PageData['flash'] = App.PageData['flash'],
 >(form: SuperValidated<T, M>, options?: FormOptions<UnwrapEffects<T>, M>) {
 	const submitter = writable<HTMLElement | null | undefined>(undefined);
 	const _loadingSubmitter = derived(submitter, ($s) => {
@@ -35,15 +37,27 @@ export function superForm<
 
 	const sf = _superForm(form, {
 		...options,
-		onSubmit(input) {
+		async onSubmit(input) {
 			submitter.set(input.submitter);
 			formaction.set(input.action);
-			options?.onSubmit && options.onSubmit(input);
+			options?.onSubmit && (await options.onSubmit(input));
 		},
-		onResult(event) {
+		async onResult(event) {
 			submitter.set(undefined);
 			formaction.set(undefined);
-			options?.onResult && options.onResult(event);
+			options?.onResult && (await options.onResult(event));
+		},
+		onUpdated(event) {
+			if (event.form.message) {
+				event.form.message.forEach(({ closeDelay, ...data }) => {
+					console.log('Should dispatch');
+					data.type = event.form.valid ? TOAST_TYPES.SUCCESS : TOAST_TYPES.ERROR;
+					addToast({
+						closeDelay,
+						data,
+					});
+				});
+			}
 		},
 	});
 
@@ -58,6 +72,11 @@ export function superForm<
 	};
 }
 
+export type SuperForm<
+	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
+	M extends App.PageData['flash'] = App.PageData['flash'],
+> = ReturnType<typeof superForm<T, M>>;
+
 /**
  * Create a superform embeded in a dialog window. This helper allows preventing dataloss or
  * unwarranted tainted messages by using the dialog's state rather than navigation events to prompt
@@ -65,7 +84,7 @@ export function superForm<
  */
 export function superFormDialog<
 	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
-	M = unknown,
+	M extends App.PageData['flash'] = App.PageData['flash'],
 >(form: SuperValidated<T, M>, options?: FormOptions<UnwrapEffects<T>, M> & CreateDialogProps) {
 	const superform = superForm(form, options);
 	// Prompt for confirmation.
@@ -89,3 +108,8 @@ export function superFormDialog<
 		// },
 	};
 }
+
+export type SuperFormDialog<
+	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
+	M extends App.PageData['flash'] = App.PageData['flash'],
+> = ReturnType<typeof superFormDialog<T, M>>;

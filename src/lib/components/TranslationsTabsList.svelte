@@ -12,15 +12,9 @@
 	const key = {};
 </script>
 
-<menu use:melt={$list} class="switch compact">
+<menu use:melt={$list} class="switch compact" use:ripple>
 	{#each LOCALES_ARR as locale}
-		<button
-			class="switch-item"
-			use:ripple={{ color: 'white', opacityStart: 0.25 }}
-			use:melt={$trigger(locale)}
-			lang={locale}
-			type="button"
-		>
+		<button class="switch-item" use:melt={$trigger(locale)} lang={locale} type="button">
 			{LOCALES_DETAILS[locale].label}
 			{#if $value === locale}
 				<div in:send={{ key }} out:receive={{ key }} class="switch-thumb" />

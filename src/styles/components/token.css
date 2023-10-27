@@ -22,10 +22,37 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 	&:focus-visible {
 		outline: var(--base-focus-ring);
 	}
+	&:disabled,
+	&[data-disabled] {
+		cursor: default;
+		opacity: 0.5;
+	}
+
+	&.square,
+	&.round {
+		justify-content: center;
+		padding-inline: 0;
+		aspect-ratio: 1;
+		.button-icon {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+	&.round {
+		border-radius: var(--radius-full);
+	}
 
 	&:active,
 	[data-active] {
 		animation: var(--animation-press);
+	}
+
+	.token-icon {
+		width: 1.25em;
+		stroke-width: 2;
+		stroke-linecap: square;
+		stroke-linejoin: round;
+		flex: none;
 	}
 
 	.token-input {
@@ -33,7 +60,6 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 		width: 0;
 		height: 0;
 		opacity: 0;
-		pointer-events: none;
 	}
 
 	& > * {
@@ -65,7 +91,6 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 		&[data-state='checked'] {
 			color: var(--color-neutral-200);
 			background-color: var(--color-neutral-800);
-			transform: rotateX(360deg);
 			:--dark & {
 				color: var(--color-neutral-800);
 				background-color: var(--color-neutral-200);

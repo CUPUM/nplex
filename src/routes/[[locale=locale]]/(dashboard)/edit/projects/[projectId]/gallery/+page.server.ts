@@ -1,9 +1,9 @@
 import { S3_BUCKET_NAME } from '$env/static/private';
 import { withAuth } from '$lib/auth/guard.server';
-import { projectsImageUpdateSchema, projectsImagesInsertSchema } from '$lib/db/crud.server';
+import { projectsGalleryUpdateSchema, projectsImagesInsertManySchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
-import { selectProjectImageTemporalities, selectProjectImageTypes } from '$lib/db/queries.server';
 import {
+	projects,
 	projectsImages,
 	projectsImagesCredits,
 	projectsImagesTranslations,
@@ -11,35 +11,30 @@ import {
 import { withTranslations } from '$lib/db/utils';
 import { s3 } from '$lib/storage/s3.server';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { DeleteObjectCommand } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, DeleteObjectsCommand } from '@aws-sdk/client-s3';
 import { error, fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withAuth(event);
-	const images = await withTranslations(projectsImages, projectsImagesTranslations, (t, tt) => ({
+	const images = withTranslations(projectsImages, projectsImagesTranslations, (t, tt) => ({
 		field: t.id,
 		reference: tt.id,
 	}))
 		.where(eq(projectsImages.projectId, event.params.projectId))
 		.leftJoin(projectsImagesCredits, eq(projectsImagesCredits.imageId, projectsImages.id));
-	const imageTypes = selectProjectImageTypes(event);
-	const imageTemporalities = selectProjectImageTemporalities(event);
-
-	const addImagesForm = superValidate(projectsImagesInsertSchema);
-	const updateImageForms = Promise.all(
-		images.map((image) => superValidate(image, projectsImageUpdateSchema, { id: image.id }))
-	);
-
+	const [project] = await dbpool
+		.select({ bannerId: projects.bannerId })
+		.from(projects)
+		.where(eq(projects.id, event.params.projectId))
+		.limit(1);
+	const insertImagesForm = superValidate(projectsImagesInsertManySchema);
+	const updateGalleryForm = superValidate(project, projectsGalleryUpdateSchema);
 	return {
 		images,
-		addImagesForm,
-		updateImageForms,
-		streamed: {
-			imageTypes,
-			imageTemporalities,
-		},
+		insertImagesForm,
+		updateGalleryForm,
 	};
 };
 
@@ -48,16 +43,17 @@ export const actions = {
 	 * Add new image to project gallery. This action should occur after the file was uploaded to s3
 	 * using a presigned url on the client's side.
 	 */
-	add: async (event) => {
+	insert: async (event) => {
 		const session = await withAuth(event);
-		const addImagesForm = await superValidate(event, projectsImagesInsertSchema);
-		if (!addImagesForm.valid) {
-			console.error(addImagesForm.errors);
-			return fail(STATUS_CODES.BAD_REQUEST, { addImagesForm });
+		const insertImagesForm = await superValidate(event, projectsImagesInsertManySchema);
+		console.log(insertImagesForm.data);
+		if (!insertImagesForm.valid) {
+			console.error(insertImagesForm.errors);
+			return fail(STATUS_CODES.BAD_REQUEST, { insertImagesForm });
 		}
 		try {
 			await dbpool.insert(projectsImages).values(
-				addImagesForm.data.images.map((imageData) => ({
+				insertImagesForm.data.images.map((imageData) => ({
 					...imageData,
 					createdById: session.user.id,
 					projectId: event.params.projectId,
@@ -65,24 +61,39 @@ export const actions = {
 			);
 		} catch (e) {
 			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { addImagesForm });
+			// Rollback s3 uploads
+			const cmd = new DeleteObjectsCommand({
+				Bucket: S3_BUCKET_NAME,
+				Delete: {
+					Objects: insertImagesForm.data.images.map((imageData) => ({
+						Key: imageData.storageName,
+					})),
+				},
+			});
+			await s3.send(cmd);
+			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { insertImagesForm });
 		}
 	},
 	/**
-	 * Delete an image in the database and its corresponding object in s3.
+	 * Delete a project image.
 	 */
 	delete: async (event) => {
 		await withAuth(event);
-		const id = event.url.searchParams.get('id');
-		if (!id) {
-			return fail(STATUS_CODES.BAD_REQUEST);
-		}
+		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
+		const { deleteId } = galleryUpdateForm.data;
 		try {
+			if (!deleteId) {
+				return fail(STATUS_CODES.BAD_REQUEST, { galleryUpdateForm });
+			}
+			// Delete image
 			await dbpool.transaction(async (tx) => {
 				const [deleted] = await dbpool
 					.delete(projectsImages)
 					.where(
-						and(eq(projectsImages.id, id), eq(projectsImages.projectId, event.params.projectId))
+						and(
+							eq(projectsImages.id, deleteId),
+							eq(projectsImages.projectId, event.params.projectId)
+						)
 					)
 					.returning();
 				if (!deleted) {
@@ -99,31 +110,50 @@ export const actions = {
 					throw error(STATUS_CODES.INTERNAL_SERVER_ERROR);
 				}
 			});
-			return {};
 		} catch (e) {
+			console.error(e);
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
 		}
 	},
 	/**
-	 * Update image translations.
-	 */
-	update: async (event) => {
-		await withAuth(event);
-	},
-	// addCredit: async (event) => {},
-	// removeCredit: async (event) => {},
-	// createCredit: async (event) => {},
-	// deleteCredit: async (event) => {},
-	/**
-	 * Assign the image as the project's banner.
+	 * Promote image to project banner.
 	 */
 	promote: async (event) => {
 		await withAuth(event);
+		console.log('promoting');
+		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
+		const { bannerId } = galleryUpdateForm.data;
+		try {
+			if (!bannerId) {
+				return fail(STATUS_CODES.BAD_REQUEST, { galleryUpdateForm });
+			}
+			await dbpool
+				.update(projects)
+				.set({ bannerId })
+				.where(eq(projects.id, event.params.projectId));
+		} catch (e) {
+			console.error(e);
+			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
+		}
 	},
 	/**
-	 * Unassign project banner status.
+	 * Demote image from project banner.
 	 */
 	demote: async (event) => {
 		await withAuth(event);
+		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
+		const { bannerId } = galleryUpdateForm.data;
+		try {
+			if (!bannerId) {
+				return fail(STATUS_CODES.BAD_REQUEST, { galleryUpdateForm });
+			}
+			await dbpool
+				.update(projects)
+				.set({ bannerId: null })
+				.where(and(eq(projects.id, event.params.projectId), eq(projects.bannerId, bannerId)));
+		} catch (e) {
+			console.error(e);
+			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
+		}
 	},
 };

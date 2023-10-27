@@ -29,6 +29,10 @@ Toolbar preset to nest inputs with proper inset and consequentially updated base
 		}
 	}
 
+	&.round {
+		--toolbar-radius: var(--radius-full);
+	}
+
 	hr,
 	.toolbar-separator {
 		width: var(--base-border-size);

@@ -1,5 +1,5 @@
 import { withAuth } from '$lib/auth/guard.server';
-import { projectsExemplarityIndicatorsUpdateSchema } from '$lib/db/crud.server';
+import { projectExemplarityIndicatorsUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { projectsExemplarityIndicators } from '$lib/db/schema/public';
 import { STATUS_CODES } from '$lib/utils/constants';
@@ -16,14 +16,14 @@ export const load = async (event) => {
 			.where(eq(projectsExemplarityIndicators.projectId, event.params.projectId))
 	).map((pei) => pei.exemplarityIndicatorId);
 
-	const form = await superValidate({ indicatorIds }, projectsExemplarityIndicatorsUpdateSchema);
+	const form = await superValidate({ indicatorIds }, projectExemplarityIndicatorsUpdateSchema);
 	return { form };
 };
 
 export const actions = {
 	update: async (event) => {
 		await withAuth(event);
-		const form = await superValidate(event, projectsExemplarityIndicatorsUpdateSchema);
+		const form = await superValidate(event, projectExemplarityIndicatorsUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}

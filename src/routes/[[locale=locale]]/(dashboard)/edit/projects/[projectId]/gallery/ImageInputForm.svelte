@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { ripple } from '$lib/actions/ripple';
-	import type { ProjectsImagesInsertSchema } from '$lib/db/crud.server';
+	import { superForm } from '$lib/forms/client';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { IMAGE_FILE_TYPES_ARR } from '$lib/media/constants';
 	import { transformImage } from '$lib/media/utils';
@@ -10,8 +10,7 @@
 	import { elasticOut, expoInOut, expoOut } from 'svelte/easing';
 	import type { ChangeEventHandler } from 'svelte/elements';
 	import { fly, scale } from 'svelte/transition';
-	import type { SuperValidated } from 'sveltekit-superforms';
-	import { superForm } from 'sveltekit-superforms/client';
+	import type { PageData } from './$types';
 	import type { PresignedResponse } from './presigned/types';
 
 	const t = createTranslations({
@@ -67,39 +66,38 @@
 		inmemory = inmemory;
 	}
 
-	export let data: SuperValidated<ProjectsImagesInsertSchema>;
+	export let data: PageData['insertImagesForm'];
 
 	const { form, errors, enhance } = superForm(data, {
 		dataType: 'json',
 		resetForm: true,
 		async onSubmit(input) {
-			if (input.action.search === '?/add') {
-				await Promise.allSettled(
-					inmemory.map(async (preview) => {
-						// Get a presigned url
-						const presignedRes = await fetch(
-							`/edit/projects/${$page.params.projectId}/gallery/presigned`,
-							{ method: 'GET' }
-						);
-						const presignedJson = (await presignedRes.json()) as PresignedResponse;
-						// Upload to s3
-						const s3Data = new FormData();
-						Object.keys(presignedJson.post.fields).forEach((key) => {
-							s3Data.append(key, presignedJson.post.fields[key]);
-						});
-						s3Data.append('file', preview.file);
-						const uploadRes = await fetch(presignedJson.post.url, {
-							method: 'POST',
-							body: s3Data,
-						});
-						if (!uploadRes.ok) {
-							input.cancel();
-						} else {
-							$form.images.push({ storageName: presignedJson.name });
-						}
-					})
-				);
-			}
+			await Promise.allSettled(
+				inmemory.map(async (preview) => {
+					// Get a presigned url
+					const presignedRes = await fetch(
+						`/edit/projects/${$page.params.projectId}/gallery/presigned`,
+						{ method: 'GET' }
+					);
+					const presignedJson = (await presignedRes.json()) as PresignedResponse;
+					// Upload to s3
+					const s3Data = new FormData();
+					Object.keys(presignedJson.post.fields).forEach((key) => {
+						s3Data.append(key, presignedJson.post.fields[key]);
+					});
+					s3Data.append('file', preview.file);
+					const uploadRes = await fetch(presignedJson.post.url, {
+						method: 'POST',
+						body: s3Data,
+					});
+					if (!uploadRes.ok) {
+						input.cancel();
+					} else {
+						// To do: extract and add color palette.
+						$form.images.push({ storageName: presignedJson.name });
+					}
+				})
+			);
 		},
 		onResult(event) {
 			if (event.result.type === 'success') {
@@ -112,7 +110,7 @@
 	});
 </script>
 
-<form action="?/add" method="POST" class:has-images={inmemory.length} use:enhance>
+<form action="?/insert" method="POST" class:has-images={inmemory.length} use:enhance>
 	<ul>
 		<label id="input-label" class="preview-card" use:ripple>
 			<input
@@ -158,6 +156,7 @@
 			id="upload"
 			class="button cta"
 			type="submit"
+			use:ripple
 			in:fly={{ y: 8, easing: expoOut, duration: 750 }}
 		>
 			{$t.upload}

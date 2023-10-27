@@ -72,7 +72,7 @@
 <style lang="postcss">
 	progress {
 		all: unset;
-		--progress-color: var(--color-primary-600);
+		--progress-color: var(--color-primary-700);
 		--progress-size: 4px;
 		--progress-inset: 0px;
 		-webkit-appearance: none;
@@ -82,10 +82,9 @@
 		width: calc(100% - 2 * var(--progress-inset));
 		height: var(--progress-size);
 		accent-color: var(--progress-color);
-		opacity: 0.75;
 
 		:global(:--dark) & {
-			--progress-color: var(--color-primary-400);
+			--progress-color: var(--color-primary-600);
 		}
 	}
 
