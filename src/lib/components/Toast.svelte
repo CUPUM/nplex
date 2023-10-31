@@ -18,13 +18,12 @@
 </script>
 
 <script lang="ts">
-	import { transform } from '$lib/transitions/transform';
 	import { createProgress, melt, type Toast, type ToastsElements } from '@melt-ui/svelte';
 	import { Component, X } from 'lucide-svelte';
 	import { onMount, SvelteComponent, type ComponentProps, type ComponentType } from 'svelte';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { writable } from 'svelte/store';
-	import { scale } from 'svelte/transition';
+	import { fly, scale } from 'svelte/transition';
 	import type { ValueOf } from 'type-fest';
 
 	export let elements: ToastsElements;
@@ -58,8 +57,8 @@
 
 <div
 	use:melt={$content(id)}
-	in:transform|global={{ rotate: [90, 0, 0], easing: cubicOut, duration: 350 }}
-	out:scale|global={{ start: 0.9, duration: 200, easing: expoOut, opacity: 0 }}
+	in:fly|global={{ y: '100%', easing: expoOut, duration: 300 }}
+	out:scale|global={{ start: 0.9, duration: 150, easing: cubicOut, opacity: 0 }}
 	class="container {data.type ?? TOAST_TYPES.DEFAULT}"
 >
 	<div use:melt={$progress} class="toast-progress">
@@ -82,22 +81,23 @@
 				{/if}
 			</div>
 		</div>
-		<button use:melt={$close(id)} class="close">
-			<X />
+		<button use:melt={$close(id)} class="button ghost danger round close compact">
+			<X class="button-icon" />
 		</button>
 	</div>
 </div>
 
 <style lang="postcss">
 	.container {
-		/* rounded-lg bg-neutral-700 text-white shadow-md */
+		--toast-inset: 6px;
 		--toast-progress-color: var(--color-primary-500);
 		pointer-events: initial;
+		font-size: var(--size-sm);
 		border-radius: var(--radius-sm);
 		color: var(--color-neutral-700);
 		background-color: var(--color-neutral-50);
-		box-shadow: var(--shadow-md), var(--shadow-2xl);
-		transform-origin: bottom center;
+		box-shadow: var(--shadow-md);
+		transform-origin: center;
 
 		&.error {
 			color: red;
@@ -128,24 +128,24 @@
 	}
 
 	.toast-progress {
-		/* absolute left-5 top-2 h-1 w-[10%] overflow-hidden rounded-full bg-black/40 */
 		position: absolute;
-		inset: var(--base-inset);
-		bottom: unset;
+		top: var(--toast-inset);
+		left: var(--toast-inset);
+		right: var(--toast-inset);
 		height: 3px;
 		overflow: hidden;
 		border-radius: var(--radius-full);
 	}
 
 	.toast-percent {
-		/* h-full w-full bg-magnum-500 */
-		heigth: 100%;
+		position: absolute;
+		height: 100%;
 		width: 100%;
+		border-radius: var(--radius-full);
 		background-color: var(--toast-progress-color);
 	}
 
 	.inner {
-		/* relative flex w-[24rem] max-w-[calc(100vw-2rem)] items-center justify-between gap-4 p-5 */
 		position: relative;
 		display: flex;
 		width: 24rem;
@@ -157,10 +157,12 @@
 	}
 
 	.title {
-		/* flex items-center gap-2 font-semibold */
 	}
 
 	.close {
-		/* absolute right-4 top-4 grid place-items-center rounded-full text-magnum-500 square-6 hover:bg-magnum-900/50 */
+		position: absolute;
+		top: var(--toast-inset);
+		right: var(--toast-inset);
+		font-size: var(--size-xs);
 	}
 </style>

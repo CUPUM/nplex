@@ -3,6 +3,7 @@
 	import { createToaster, type AddToastProps } from '@melt-ui/svelte';
 	import type { SvelteComponent } from 'svelte';
 	import { flip } from 'svelte/animate';
+	import { cubicOut } from 'svelte/easing';
 	import { getFlash } from 'sveltekit-flash-message/client';
 	import Toast, { TOAST_TYPES, type ToastData } from './Toast.svelte';
 
@@ -17,7 +18,7 @@
 		closeDelay,
 		...props
 	}: AddToastProps<ToastData<T>>) {
-		return helpers.addToast({ closeDelay: closeDelay ?? 5000, ...props });
+		return helpers.addToast({ closeDelay: closeDelay ?? 50000, ...props });
 	}
 
 	export function addErrorToast<T extends SvelteComponent>(
@@ -57,7 +58,7 @@
 
 <div id="toast-portal" use:portal>
 	{#each $toasts as toast (toast.id)}
-		<div animate:flip={{ duration: 450 }}>
+		<div animate:flip={{ duration: 200, easing: cubicOut }}>
 			<Toast {toast} {elements} />
 		</div>
 	{/each}
@@ -65,7 +66,6 @@
 
 <style lang="postcss">
 	#toast-portal {
-		perspective: 500px;
 		position: fixed;
 		bottom: 0;
 		right: 0;
