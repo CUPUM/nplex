@@ -3,9 +3,15 @@ import Loading from '$lib/components/Loading.svelte';
 import { deriveLink } from '$lib/i18n/link';
 import { outroAndDestroy } from '$lib/utils/outro-and-destroy';
 import type { Navigation, NavigationTarget } from '@sveltejs/kit';
-import { onDestroy, type ComponentProps } from 'svelte';
+import type { ComponentProps } from 'svelte';
 import type { Action } from 'svelte/action';
 import { derived, writable, type Readable } from 'svelte/store';
+
+// Here is a colleciton of custom builders following the basic principles of melt-ui to improve DX
+// by ensuring minimal compatibility with melt's preprocessor.
+//
+// Some particularities include referencing the builder's action inside returned element stores when they are callable functions.
+// See https://github.com/melt-ui/melt-ui/issues/100
 
 type LoadableProps<T = { state?: boolean }> = ComponentProps<Loading> & { disable?: boolean } & T;
 
@@ -67,7 +73,7 @@ export const createLoadable = ({ state, disable, ...props }: LoadableProps = {})
 	const action = createLoadableAction(_state, props);
 	return {
 		state: _state,
-		element: {
+		elements: {
 			...element,
 			action,
 		},
@@ -75,34 +81,40 @@ export const createLoadable = ({ state, disable, ...props }: LoadableProps = {})
 };
 
 /**
- * Loadable node based on a given form event submitter.
+ * Loadable node based on a given form event submitter. Requires passing a ref to the current node
+ * for the attributes. This allows using a single builder per form rather than a single builder per
+ * button.
  *
- * Each instance should only be used with a single node.
+ * @example <button bind:this={someButtonRef} {...$element(someButtonRef)} use:element.action />
  */
 export function createLoadableSubmitter({
 	submitter,
+	disable,
 	...props
-}: LoadableProps<{ submitter?: Element | null }> = {}) {
-	const _submitter = writable(submitter);
-	let _node: HTMLElement | undefined;
-	const { state, ...loadable } = createLoadable(props);
-	const unsub = _submitter.subscribe(($submitter) => {
-		state.set($submitter === _node);
-	});
+}: LoadableProps<{ submitter?: Element }> = {}) {
+	const _submitter = writable<Element | undefined>(submitter);
 	const action: Action<HTMLElement, ComponentProps<Loading> | undefined> = (node, actionProps) => {
-		_node = node;
-		return loadable.element.action(node, actionProps);
+		const _state = derived(_submitter, ($submitter) => {
+			return $submitter === node;
+		});
+		const _action = createLoadableAction(_state, props);
+		return _action(node, actionProps);
 	};
-	onDestroy(() => {
-		unsub && unsub();
+	const element = derived(_submitter, ($submitter) => {
+		return function (ref: Element) {
+			const _state = ref && $submitter === ref;
+			return {
+				action,
+				...deriveLoadable(_state, disable),
+			};
+		};
 	});
 	return {
-		...loadable,
-		element: {
-			...loadable.element,
+		submitter: _submitter,
+		elements: {
+			...element,
 			action,
 		},
-		submitter: _submitter,
 	};
 }
 
@@ -131,24 +143,15 @@ function matchFormactionString(formaction?: string | null, nodeFormaction?: stri
  * Apply loading state based on weather the host node's declared formaction corresponds to the
  * current loading formaction.
  *
- * @example <button type="submit" {...$attributes('?/deleteImage)} use:action />
+ * @example <button type="submit" {...$element('?/deleteImage)} use:element.action />
  */
 export function createLoadableFormaction({
 	formaction,
 	disable,
 	...props
-}: LoadableProps<{ formaction?: URL | string | null }> = {}) {
-	const _formaction = writable(formaction);
+}: LoadableProps<{ formaction?: URL | string }> = {}) {
+	const _formaction = writable<URL | string | undefined>(formaction);
 	const _formactionString = derived(_formaction, ($formaction) => getFormactionString($formaction));
-	const element = derived(_formactionString, ($formactionString) => {
-		return function (nodeFormaction: string) {
-			const _state = matchFormactionString($formactionString, nodeFormaction);
-			return {
-				formaction,
-				...deriveLoadable(_state, disable),
-			};
-		};
-	});
 	const action: Action<HTMLElement, ComponentProps<Loading> | undefined> = (node, actionProps) => {
 		const _state = derived(_formactionString, ($formactionString) => {
 			const nodeFormaction = getNodeFormaction(node);
@@ -157,12 +160,22 @@ export function createLoadableFormaction({
 		const _action = createLoadableAction(_state, props);
 		return _action(node, actionProps);
 	};
+	const element = derived(_formactionString, ($formactionString) => {
+		return function (nodeFormaction: string) {
+			const _state = matchFormactionString($formactionString, nodeFormaction);
+			return {
+				action,
+				formaction,
+				...deriveLoadable(_state, disable),
+			};
+		};
+	});
 	return {
-		element: {
+		formaction: _formaction,
+		elements: {
 			...element,
 			action,
 		},
-		formaction: _formaction,
 	};
 }
 
@@ -190,16 +203,6 @@ export function createLoadableLink({
 	disable,
 	...props
 }: LoadableProps<{ matcher?: LoadableLinkMatcher }> = {}) {
-	const element = derived([navigating, page], ([$navigating, $page]) => {
-		const _link = deriveLink($page);
-		return function <H extends string>(...params: Parameters<typeof _link<H>>) {
-			const _state = matchLink($navigating, matcher, params[0]);
-			return {
-				..._link(...params),
-				...deriveLoadable(_state, disable),
-			};
-		};
-	});
 	const action: Action<HTMLAnchorElement, ComponentProps<Loading> | undefined> = (
 		node,
 		actionProps
@@ -210,8 +213,19 @@ export function createLoadableLink({
 		const _action = createLoadableAction(_state, props);
 		return _action(node, actionProps);
 	};
+	const element = derived([navigating, page], ([$navigating, $page]) => {
+		const _link = deriveLink($page);
+		return function <H extends string>(...params: Parameters<typeof _link<H>>) {
+			const _state = matchLink($navigating, matcher, params[0]);
+			return {
+				action,
+				..._link(...params),
+				...deriveLoadable(_state, disable),
+			};
+		};
+	});
 	return {
-		element: {
+		elements: {
 			...element,
 			action,
 		},

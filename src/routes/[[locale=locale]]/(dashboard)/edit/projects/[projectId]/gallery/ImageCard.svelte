@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
 	import type { ProjectsGalleryUpdateSchema } from '$lib/db/crud.server';
-	import type { SuperForm } from '$lib/forms/client';
+	import type { SuperForm } from '$lib/forms/super-form';
 	import { link } from '$lib/i18n/link';
 	import { imageUrl } from '$lib/media/url';
 	import { Pen, Presentation, Trash } from 'lucide-svelte';

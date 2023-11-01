@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { addToast } from '$lib/components/ToastsOutlet.svelte';
-	import { superForm } from '$lib/forms/client.js';
+	import { superForm } from '$lib/forms/super-form.js';
+	import { createLabel, melt } from '@melt-ui/svelte';
 	import { Send } from 'lucide-svelte';
 
 	export let data;
@@ -9,16 +10,37 @@
 		message,
 		constraints,
 		enhance,
-		loading: { submitter },
+		loadable: { submitter, formaction },
 	} = superForm(data.form);
+
+	let button1: HTMLButtonElement;
+	let button2: HTMLButtonElement;
+
+	const {
+		elements: { root },
+	} = createLabel();
 </script>
 
 <form use:enhance method="POST">
 	<label class="input-group">
 		<input type="text" name="text" class="input" />
 		<div class="input-peer">
-			<button class="button square" type="submit"><Send class="button-icon" /></button>
-			<button class="button square" type="submit"><Send class="button-icon" /></button>
+			<button
+				class="button square"
+				type="submit"
+				bind:this={button1}
+				use:melt={$submitter(button1)}
+			>
+				<Send class="button-icon" />
+			</button>
+			<button
+				class="button square"
+				type="submit"
+				bind:this={button2}
+				use:melt={$submitter(button2)}
+			>
+				<Send class="button-icon" />
+			</button>
 		</div>
 	</label>
 

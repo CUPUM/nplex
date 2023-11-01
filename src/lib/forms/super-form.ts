@@ -1,9 +1,10 @@
-import { loadingFormaction, loadingSubmitter } from '$lib/actions/loading';
+import { createLoadableFormaction, createLoadableSubmitter } from '$lib/builders/loading';
 import { TOAST_TYPES } from '$lib/components/Toast.svelte';
 import { addToast } from '$lib/components/ToastsOutlet.svelte';
 import { createDialog, type CreateDialogProps } from '@melt-ui/svelte';
 import type { ChangeFn } from '@melt-ui/svelte/internal/helpers';
-import { derived, get, readonly, writable } from 'svelte/store';
+import { onDestroy } from 'svelte';
+import { get, readonly, writable } from 'svelte/store';
 import type { SuperValidated, UnwrapEffects, ZodValidation } from 'sveltekit-superforms';
 import { superForm as _superForm, type FormOptions } from 'sveltekit-superforms/client';
 import type { AnyZodObject } from 'zod';
@@ -14,31 +15,23 @@ import type { AnyZodObject } from 'zod';
  */
 export function superForm<
 	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
-	M extends App.PageData['flash'] = App.PageData['flash'],
+	M extends App.Superforms.Message = App.Superforms.Message,
 >(form: SuperValidated<T, M>, options?: FormOptions<UnwrapEffects<T>, M>) {
-	const submitter = writable<HTMLElement | null | undefined>(undefined);
-	const _loadingSubmitter = derived(submitter, ($s) => {
-		return function (
-			node: HTMLElement,
-			props: Omit<Parameters<typeof loadingSubmitter>, 'submitter'>
-		) {
-			return loadingSubmitter(node, { ...props, submitter: $s });
-		};
+	const submitter = writable<HTMLElement | undefined>(undefined);
+	const loadableSubmitter = createLoadableSubmitter({ disable: true });
+	const unsubSubmitter = submitter.subscribe((value) => {
+		loadableSubmitter.submitter.set(value);
 	});
 	const formaction = writable<URL | undefined>(undefined);
-	const _loadingFormaction = derived(formaction, ($fa) => {
-		return function (
-			node: HTMLElement,
-			props: Omit<Parameters<typeof loadingFormaction>, 'formaction'>
-		) {
-			return loadingFormaction(node, { ...props, formaction: $fa });
-		};
+	const loadableFormaction = createLoadableFormaction({ disable: true });
+	const unsubFormaction = formaction.subscribe((value) => {
+		loadableFormaction.formaction.set(value);
 	});
 
 	const sf = _superForm(form, {
 		...options,
 		async onSubmit(input) {
-			submitter.set(input.submitter);
+			submitter.set(input.submitter ?? undefined);
 			formaction.set(input.action);
 			options?.onSubmit && (await options.onSubmit(input));
 		},
@@ -61,20 +54,25 @@ export function superForm<
 		},
 	});
 
+	onDestroy(() => {
+		unsubSubmitter && unsubSubmitter();
+		unsubFormaction && unsubFormaction();
+	});
+
 	return {
 		...sf,
 		submitter: readonly(submitter),
 		formaction: readonly(formaction),
-		loading: {
-			submitter: _loadingSubmitter,
-			formaction: _loadingFormaction,
+		loadable: {
+			submitter: loadableSubmitter.elements,
+			formaction: loadableFormaction.elements,
 		},
 	};
 }
 
 export type SuperForm<
 	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
-	M extends App.PageData['flash'] = App.PageData['flash'],
+	M extends App.Superforms.Message = App.Superforms.Message,
 > = ReturnType<typeof superForm<T, M>>;
 
 /**
@@ -84,7 +82,7 @@ export type SuperForm<
  */
 export function superFormDialog<
 	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
-	M extends App.PageData['flash'] = App.PageData['flash'],
+	M extends App.Superforms.Message = App.Superforms.Message,
 >(form: SuperValidated<T, M>, options?: FormOptions<UnwrapEffects<T>, M> & CreateDialogProps) {
 	const superform = superForm(form, options);
 	// Prompt for confirmation.
@@ -111,5 +109,5 @@ export function superFormDialog<
 
 export type SuperFormDialog<
 	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
-	M extends App.PageData['flash'] = App.PageData['flash'],
+	M extends App.Superforms.Message = App.Superforms.Message,
 > = ReturnType<typeof superFormDialog<T, M>>;

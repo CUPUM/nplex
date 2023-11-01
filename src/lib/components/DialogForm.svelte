@@ -5,7 +5,7 @@
 </script>
 
 <script lang="ts" generics="T extends TBase, M extends App.PageData['flash']">
-	import type { SuperFormDialog } from '$lib/forms/client';
+	import type { SuperFormDialog } from '$lib/forms/super-form';
 	import type { DialogElements, DialogStates } from '@melt-ui/svelte';
 	import type { ZodValidation } from 'sveltekit-superforms';
 	import Dialog from './Dialog.svelte';

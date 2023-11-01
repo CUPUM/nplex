@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { superForm } from '$lib/forms/client';
+	import { superForm } from '$lib/forms/super-form';
 	import { flip } from 'svelte/animate';
 	import { expoInOut, expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';

@@ -51,7 +51,7 @@
 	import { get } from 'svelte/store';
 	import { slide } from 'svelte/transition';
 
-	export let indeterminate = false;
+	// export let indeterminate = false;
 	export let progress: number | undefined = undefined;
 
 	$: value = progress != undefined ? progress : $rootProgress;
