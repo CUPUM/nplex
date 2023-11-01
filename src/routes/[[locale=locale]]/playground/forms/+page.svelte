@@ -10,6 +10,8 @@
 		message,
 		constraints,
 		enhance,
+		errors,
+		states,
 		loadable: { submitter, formaction },
 	} = superForm(data.form);
 
@@ -23,7 +25,7 @@
 
 <form use:enhance method="POST">
 	<label class="input-group">
-		<input type="text" name="text" class="input" />
+		<input type="text" name="text" class="input" {...$states.text} />
 		<div class="input-peer">
 			<button
 				class="button square"

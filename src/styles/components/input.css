@@ -132,6 +132,22 @@ textarea.input {
 			.input-affix {
 				opacity: 0.5;
 			}
+			&[data-invalid],
+			&:has([data-invalid]) {
+				box-shadow: none;
+				:--dark & {
+					box-shadow: none;
+				}
+			}
+		}
+		&[data-invalid],
+		&:has([data-invalid]) {
+			color: var(--color-error-600);
+			background-color: color-mix(in srgb, var(--color-error-500) 10%, transparent);
+			outline-color: var(--color-error-500);
+			:--dark & {
+				color: var(--color-error-400);
+			}
 		}
 		&:focus,
 		&:has(.input:focus) {
@@ -143,6 +159,15 @@ textarea.input {
 			}
 			.input-affix {
 				opacity: 0.75;
+			}
+			&[data-invalid],
+			&:has([data-invalid]) {
+				color: var(--color-error-700);
+				background-color: color-mix(in srgb, var(--color-error-100) 25%, transparent);
+				:--dark & {
+					color: var(--color-error-300);
+					background-color: color-mix(in srgb, var(--color-error-900) 25%, transparent);
+				}
 			}
 		}
 		&[data-loading] {

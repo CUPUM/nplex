@@ -4,10 +4,10 @@ import { addToast } from '$lib/components/ToastsOutlet.svelte';
 import { createDialog, type CreateDialogProps } from '@melt-ui/svelte';
 import type { ChangeFn } from '@melt-ui/svelte/internal/helpers';
 import { onDestroy } from 'svelte';
-import { get, readonly, writable } from 'svelte/store';
+import { derived, get, readonly, writable } from 'svelte/store';
 import type { SuperValidated, UnwrapEffects, ZodValidation } from 'sveltekit-superforms';
 import { superForm as _superForm, type FormOptions } from 'sveltekit-superforms/client';
-import type { AnyZodObject } from 'zod';
+import type { AnyZodObject, z } from 'zod';
 
 /**
  * Extend superform's client-side function by additioanlly returning actions to handle loading state
@@ -54,6 +54,20 @@ export function superForm<
 		},
 	});
 
+	const states = derived(sf.errors, ($errors) => {
+		type FormKey = keyof z.infer<T>;
+		return (Object.keys($errors) as FormKey[]).reduce(
+			(acc, curr) => {
+				acc[curr] = {
+					'aria-invalid': $errors[curr] ? true : undefined,
+					'data-invalid': $errors[curr] ? true : undefined,
+				};
+				return acc;
+			},
+			{} as Record<FormKey, { 'aria-invalid'?: boolean; 'data-invalid'?: boolean }>
+		);
+	});
+
 	onDestroy(() => {
 		unsubSubmitter && unsubSubmitter();
 		unsubFormaction && unsubFormaction();
@@ -63,6 +77,7 @@ export function superForm<
 		...sf,
 		submitter: readonly(submitter),
 		formaction: readonly(formaction),
+		states,
 		loadable: {
 			submitter: loadableSubmitter.elements,
 			formaction: loadableFormaction.elements,

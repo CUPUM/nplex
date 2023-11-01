@@ -49,12 +49,12 @@
 	--color-success-800: hsl(89, 80%, 24%);
 	--color-success-900: hsl(89, 83%, 18%);
 	--color-success-950: hsl(89, 82%, 12%);
-	--color-error-50: hsl(8, 84%, 88%);
-	--color-error-100: hsl(8, 79%, 80%);
-	--color-error-200: hsl(8, 78%, 72%);
-	--color-error-300: hsl(8, 78%, 66%);
-	--color-error-400: hsl(8, 79%, 60%);
-	--color-error-500: hsl(8, 80%, 54%);
+	--color-error-50: hsl(8, 84%, 89%);
+	--color-error-100: hsl(8, 79%, 82%);
+	--color-error-200: hsl(8, 78%, 74%);
+	--color-error-300: hsl(8, 78%, 65%);
+	--color-error-400: hsl(8, 79%, 59%);
+	--color-error-500: hsl(8, 80%, 50%);
 	--color-error-600: hsl(8, 80%, 47%);
 	--color-error-700: hsl(8, 84%, 41%);
 	--color-error-800: hsl(8, 84%, 34%);
