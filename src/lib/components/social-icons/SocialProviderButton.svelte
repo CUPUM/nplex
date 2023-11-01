@@ -4,8 +4,9 @@
 	import { ripple } from '$lib/actions/ripple';
 	import type { OAuthProvider } from '$lib/auth/constants';
 	import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
+	import { createTooltip } from '$lib/builders/tooltip';
 	import { link } from '$lib/i18n/link';
-	import { createTooltip, melt } from '@melt-ui/svelte';
+	import { melt } from '@melt-ui/svelte';
 	import { scale } from 'svelte/transition';
 	import TooltipContent from '../TooltipContent.svelte';
 
@@ -22,14 +23,7 @@
 		elements: { trigger, content },
 		states: { open },
 		options: { positioning },
-	} = createTooltip({
-		positioning: {
-			placement: 'top',
-			gutter: 10,
-		},
-		forceVisible: true,
-		openDelay: 350,
-	});
+	} = createTooltip();
 
 	beforeNavigate((nav) => {
 		if (nav.to && nav.to.url.pathname.indexOf(url) > -1) {

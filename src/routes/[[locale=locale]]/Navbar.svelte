@@ -78,10 +78,6 @@
 	import { onMount } from 'svelte';
 	import { circInOut, cubicIn, expoOut } from 'svelte/easing';
 	import { crossfade, fly, scale } from 'svelte/transition';
-	import {
-		getLoadingNewOrg,
-		getLoadingNewProject,
-	} from '../../routes/[[locale=locale]]/Contexts.svelte';
 	import NavbarButton from './NavbarButton.svelte';
 	import NavbarDrawer from './NavbarDrawer.svelte';
 	import NavbarMenu from './NavbarMenu.svelte';
@@ -121,10 +117,6 @@
 		elements: { trigger: drawerTrigger, portalled: drawerPortalled, ...drawerElements },
 		states: { open: drawerOpen },
 	} = createDialog({ forceVisible: true });
-
-	const { element: newProjectElement, action: newProjectAction } = getLoadingNewProject(true);
-
-	const { element: newOrgElement, action: newOrgAction } = getLoadingNewOrg(true);
 
 	const [sendExplore, receiveExplore] = crossfade({
 		duration: 175,

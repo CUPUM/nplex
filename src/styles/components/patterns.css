@@ -16,43 +16,74 @@
 	--pattern-color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
 	--pattern-thickness: 2px;
 	--pattern-size: 4rem;
-	background: radial-gradient(circle at 50% 50%, var(--pattern-color) 2%, transparent 3%),
-		radial-gradient(circle at 50% 45%, var(--pattern-color) 1%, transparent 2%),
-		radial-gradient(circle at 50% 47.5%, var(--pattern-color) 1%, transparent 2%),
-		radial-gradient(circle at 45% 50%, var(--pattern-color) 1%, transparent 2%),
-		radial-gradient(circle at 47.5% 50%, var(--pattern-color) 1%, transparent 2%),
-		radial-gradient(circle at 50% 52.5%, var(--pattern-color) 1%, transparent 2%),
-		radial-gradient(circle at 50% 55%, var(--pattern-color) 1%, transparent 2%),
-		radial-gradient(circle at 52.5% 50%, var(--pattern-color) 1%, transparent 2%),
-		radial-gradient(circle at 55% 50%, var(--pattern-color) 1%, transparent 2%);
-	background-size: var(--pattern-size) var(--pattern-size);
-	background-repeat: repeat;
-}
-
-/* .pattern-cross {
-	--background-color: var(--color-neutral-100);
-	--cross-color: var(--color-neutral-300);
-	--cross-size: 2rem;
-	background-color: var(--background-color);
-	background:
-		radial-gradient(
-			circle,
-			transparent 20%,
-			var(--background-color) 20%,
-			var(--background-color) 80%,
-			transparent 80%,
-			transparent
+	--_thickness: calc(var(--pattern-thickness) / 2);
+	--_offset: var(--pattern-thickness);
+	background: radial-gradient(
+			circle at 50% 50%,
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
 		),
 		radial-gradient(
-				circle,
-				transparent 20%,
-				var(--background-color) 20%,
-				var(--background-color) 80%,
-				transparent 80%,
-				transparent
-			)
-			25px 25px,
-		linear-gradient(var(--cross-color) 2px, transparent 2px) 0 -1px,
-		linear-gradient(90deg, var(--cross-color) 2px, var(--background-color) 2px) -1px 0;
-	background-size: var(--cross-size) var(--cross-size);
-} */
+			circle at 50% calc(50% - var(--_offset)),
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at calc(50% - var(--_offset)) 50%,
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at 50% calc(50% + var(--_offset)),
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at calc(50% + var(--_offset)) 50%,
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at 50% calc(50% - 2 * var(--_offset)),
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at calc(50% - 2 * var(--_offset)) 50%,
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at 50% calc(50% + 2 * var(--_offset)),
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at calc(50% + 2 * var(--_offset)) 50%,
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at 50% calc(50% - 3 * var(--_offset)),
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at calc(50% - 3 * var(--_offset)) 50%,
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at 50% calc(50% + 3 * var(--_offset)),
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		),
+		radial-gradient(
+			circle at calc(50% + 3 * var(--_offset)) 50%,
+			var(--pattern-color) var(--_thickness),
+			transparent calc(var(--_thickness) + 1%)
+		);
+	background-size: var(--pattern-size) var(--pattern-size);
+	background-repeat: repeat;
+	background-position: center;
+}

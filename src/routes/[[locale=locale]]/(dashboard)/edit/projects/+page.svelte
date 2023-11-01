@@ -2,71 +2,55 @@
 	import { enhance } from '$app/forms';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { Search, Sparkle } from 'lucide-svelte';
+	import { FilePlus, Search } from 'lucide-svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
-	import { getLoadingNewProject } from '../../../Contexts.svelte';
 
 	const t = createTranslations({
 		fr: {
-			edit: {
-				heading: 'Éditez des projets',
-				create: 'Créez un nouveau projet!',
-				or: 'ou',
-				find: 'Trouvez un de vos projets',
-			},
+			heading: 'Éditez des projets',
+			create: 'Créez un nouveau projet&nbsp;!',
+			or: 'ou',
+			find: 'Trouvez un de vos projets',
 		},
 		en: {
-			edit: {
-				heading: 'Start editing projects',
-				create: 'Create a brand new project!',
-				or: 'or',
-				find: "Let's find one of your projects",
-			},
+			heading: 'Start editing projects',
+			create: 'Create a brand new project!',
+			or: 'or',
+			find: "Let's find one of your projects",
 		},
 	});
-
-	const {
-		state: creating,
-		element: creatingAttributes,
-		action: creatingAction,
-	} = getLoadingNewProject(true);
 </script>
 
-<div id="projects">
+<form class="pattern-cross" use:enhance method="POST" action="?/search">
 	<header>
-		<h1 class="heading xxl">{$t.edit.heading}</h1>
+		<h1 class="heading xxl">{$t.heading}</h1>
 	</header>
 	<section id="projects-actions">
 		<!-- svelte-ignore a11y-missing-attribute -->
 		<a
 			{...$link(`/new/project`)}
 			class="button cta"
-			use:creatingAction
-			{...$creatingAttributes}
 			in:fly|global={{ x: 8, easing: cubicOut, duration: 450, delay: 250 }}
 		>
-			{$t.edit.create}
-			<Sparkle class="button-icon" />
+			{@html $t.create}
+			<FilePlus class="button-icon" />
 		</a>
-		<span class="prose dimmer" in:fade|global={{ delay: 500, duration: 1000 }}>{$t.edit.or}</span>
-		<form
+		<span class="prose dimmer" in:fade|global={{ delay: 500, duration: 1000 }}>{$t.or}</span>
+		<fieldset
 			class="input-group outlined"
-			use:enhance
-			method="POST"
-			action="?/search"
 			in:fly|global={{ x: -8, easing: cubicOut, duration: 450, delay: 250 }}
 		>
-			<input type="search" name="q" placeholder={$t.edit.find} class="input" />
+			<input type="search" name="q" placeholder={$t.find} class="input" />
 			<div class="input-peer">
 				<button class="button cta square"><Search class="button-icon" /></button>
 			</div>
-		</form>
+		</fieldset>
 	</section>
-</div>
+</form>
 
 <style lang="postcss">
-	#projects {
+	form {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
@@ -82,10 +66,6 @@
 		border-radius: inherit;
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
-	}
-
-	header {
-		/* padding:; */
 	}
 
 	#projects-actions {

@@ -4,7 +4,7 @@
 	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { Folders, Home, UserCog2, UserSquare2 } from 'lucide-svelte';
+	import { ArrowRight, Folders, Home, UserCog2, UserSquare2 } from 'lucide-svelte';
 
 	setDashboard();
 
@@ -15,6 +15,11 @@
 			profile: 'Mon profil',
 			collections: 'Collections',
 			settings: 'Paramètres',
+			editor: {
+				heading: 'Éditeur',
+				projects: 'Projets',
+				organizations: 'Organisations',
+			},
 		},
 		en: {
 			heading: 'Mon compte',
@@ -22,6 +27,11 @@
 			profile: 'My profile',
 			collections: 'Collections',
 			settings: 'Settings',
+			editor: {
+				heading: 'Editor',
+				projects: 'Projects',
+				organizations: 'Organizations',
+			},
 		},
 	});
 </script>
@@ -42,6 +52,19 @@
 	<DashboardNavItem {...$link(`/i/settings`)} danger>
 		{$t.settings}
 		<UserCog2 class="button-icon" />
+	</DashboardNavItem>
+</DashboardNav>
+<DashboardNav>
+	<svelte:fragment slot="heading">
+		{$t.editor.heading}
+	</svelte:fragment>
+	<DashboardNavItem {...$link(`/edit/projects`)}>
+		{$t.editor.projects}
+		<ArrowRight class="button-icon" />
+	</DashboardNavItem>
+	<DashboardNavItem {...$link(`/edit/organizations`)}>
+		{$t.editor.organizations}
+		<ArrowRight class="button-icon" />
 	</DashboardNavItem>
 </DashboardNav>
 

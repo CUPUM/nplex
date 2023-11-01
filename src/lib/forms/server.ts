@@ -26,7 +26,14 @@ export function superValidate<
 	schema: T,
 	options?: SuperValidateOptions<UnwrapEffects<T>>
 ): Promise<SuperValidated<UnwrapEffects<T>, M>>;
-export function superValidate(...args: unknown[]) {
+export function superValidate(...params: unknown[]) {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	return sv(...(args as [any]));
+	return sv(...(params as [any]));
 }
+
+// export function superValidate<
+// 	T extends ZodValidation<AnyZodObject>,
+// 	M extends App.PageData['flash'] = App.PageData['flash'],
+// >(...params: Parameters<typeof sv<T, M>>) {
+// 	return sv<T, M>(...params);
+// }

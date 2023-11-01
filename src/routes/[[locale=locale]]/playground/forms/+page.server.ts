@@ -13,7 +13,7 @@ export const actions = {
 	default: async (event) => {
 		console.log('awaiting artificial delay');
 		await new Promise((res) => {
-			setTimeout(res, 1000);
+			setTimeout(res, 250);
 		});
 		const form = await superValidate(event, schema);
 		console.log(form.data);

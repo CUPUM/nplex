@@ -9,6 +9,8 @@
 	const inputVariants = ['default', 'outlined'];
 
 	let toastMessage: string | null = null;
+
+	let loading = false;
 </script>
 
 <article>

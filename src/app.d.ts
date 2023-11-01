@@ -13,8 +13,9 @@ import type { InferSelectModel } from 'drizzle-orm';
 import type { AuthRequest, User } from 'lucia';
 import type { ComponentType } from 'svelte';
 
-// See https://lucia-auth.com/getting-started
+// for information about these interfaces
 declare global {
+	// See https://lucia-auth.com/getting-started
 	namespace Lucia {
 		type Auth = LuciaAuth;
 		type DatabaseUserAttributes = Pick<
@@ -25,13 +26,17 @@ declare global {
 			// to do
 		};
 	}
-}
-
-// for information about these interfaces
-declare global {
 	namespace App {
+		// See https://github.com/ciscoheat/sveltekit-superforms/issues/261
+		namespace Superforms {
+			type Message = (Pick<ToastData, 'title' | 'description' | 'type'> & {
+				closeDelay?: number;
+			})[];
+		}
+		// Svelte-kit related types.
 		interface Error {
-			code: number;
+			code?: number;
+			title?: string;
 			message: string;
 		}
 		interface Locals {
@@ -91,9 +96,7 @@ declare global {
 				breadcrumbs?: ComponentType;
 				footer?: ComponentType;
 			};
-			flash?: (Pick<ToastData, 'title' | 'description' | 'type'> & {
-				closeDelay?: number;
-			})[];
+			flash?: App.Superforms.Message;
 		}
 		// interface Platform {}
 	}

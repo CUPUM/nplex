@@ -8,7 +8,9 @@
 		style?: string;
 	} & Omit<SVGAttributes<SVGElement>, 'viewBox'>;
 
-	/** Single glyph logo (n) */
+	/**
+	 * Single glyph logo (n)
+	 */
 	export let mono: $$Props['mono'] = false;
 	export let size: $$Props['size'] = '1em';
 	export let className: $$Props['className'] = '';
@@ -35,16 +37,17 @@
 	{#if !mono}
 		<g id="logo-p">
 			<path id="logo-p-descendant" d="M120 150H170V200H120V150Z" fill="currentColor" />
-			<path
+			<circle id="logo-p-eye" cx="170" cy="100" r="50" fill="currentColor" />
+			<!-- <path
 				id="logo-p-eye"
 				d="M220 100C220 127.614 197.614 150 170 150C142.386 150 120 127.614 120 100C120 72.3858 142.386 50 170 50C197.614 50 220 72.3858 220 100Z"
 				fill="currentColor"
-			/>
+			/> -->
 		</g>
 		<path id="logo-l" d="M240 0H290V150H240V0Z" fill="currentColor" />
 		<path
 			id="logo-e"
-			d="M310 100C310 72.3858 332.386 50 360 50C387.614 50 410 72.3858 410 100H360V150C332.386 150 310 127.614 310 100Z"
+			d="M405 100C405 72.3858 382.614 50 355 50C327.386 50 305 72.3858 305 100C305 127.614 327.386 150 355 150V100H405Z"
 			fill="currentColor"
 		/>
 		<g id="logo-x">
