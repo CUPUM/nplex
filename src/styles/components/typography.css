@@ -53,7 +53,7 @@
 	font-size: var(--size-3xl);
 }
 
-.heading,
+.heading.md,
 .prose h4 {
 	line-height: 1.2;
 	font-weight: 440;

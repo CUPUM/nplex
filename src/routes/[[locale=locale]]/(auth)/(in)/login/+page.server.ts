@@ -1,9 +1,8 @@
 import { auth } from '$lib/auth/auth.server';
 import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
 import { LuciaError } from 'lucia';
-import { superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
 const emailPasswordLoginSchema = z.object({
@@ -25,9 +24,43 @@ export const load = async (event) => {
 
 export const actions = {
 	default: async (event) => {
+		const t = event.locals.createTranslations({
+			fr: {
+				invalid: {
+					title: 'Informations non valides',
+					description: 'Les informations de connexion ne sont pas valides.',
+				},
+				notFound: {
+					title: 'Aucun compte trouvé',
+					description:
+						'Vérifiez que vous utilisez la bonne adresse courriel et le bon mot de passe.',
+				},
+				error: {
+					title: 'Erreur interne',
+					description:
+						'Nous avons eu un problème lors du traitement de votre requête, veuillez essayer à nouveau. Désolé pour cet inconvénient.',
+				},
+			},
+			en: {
+				invalid: {
+					title: 'Invalid credentials',
+					description: 'Provided login credentials are not valid.',
+				},
+				notFound: {
+					title: 'No account found',
+					description:
+						'Please make sure you are using the proper email address and a valid password.',
+				},
+				error: {
+					title: 'Internal error',
+					description:
+						'Our server has encountered an error, please try again. Sorry for the inconvenience.',
+				},
+			},
+		});
 		const form = await superValidate(event, emailPasswordLoginSchema);
 		if (!form.valid) {
-			return fail(STATUS_CODES.BAD_REQUEST, { form });
+			return message(form, [t.invalid]);
 		}
 		try {
 			const key = await auth.useKey(
@@ -42,15 +75,9 @@ export const actions = {
 				err instanceof LuciaError &&
 				(err.message === 'AUTH_INVALID_KEY_ID' || err.message === 'AUTH_INVALID_PASSWORD')
 			) {
-				return fail(STATUS_CODES.BAD_REQUEST, {
-					form,
-					message: 'Incorrect email or password',
-				});
+				return message(form, [t.notFound], { status: STATUS_CODES.BAD_REQUEST });
 			}
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, {
-				form,
-				message: 'An unknown error occurred',
-			});
+			return message(form, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
 		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	},

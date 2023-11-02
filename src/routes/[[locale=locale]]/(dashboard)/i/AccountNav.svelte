@@ -4,31 +4,33 @@
 	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { ArrowRight, Folders, Home, UserCog2, UserSquare2 } from 'lucide-svelte';
+	import { ArrowRight, FolderHeart, Folders, Home, Settings, UserSquare2 } from 'lucide-svelte';
 
 	setDashboard();
 
 	const t = createTranslations({
 		fr: {
 			heading: 'Mon compte',
-			home: 'Mon accueil',
-			profile: 'Mon profil',
+			home: 'Accueil',
+			profile: 'Profil',
 			collections: 'Collections',
+			likes: 'Favoris',
 			settings: 'Paramètres',
 			editor: {
-				heading: 'Éditeur',
+				heading: 'Gestion de fiches',
 				projects: 'Projets',
 				organizations: 'Organisations',
 			},
 		},
 		en: {
 			heading: 'Mon compte',
-			home: 'My home',
-			profile: 'My profile',
+			home: 'Home',
+			profile: 'Profile',
 			collections: 'Collections',
+			likes: 'Likes',
 			settings: 'Settings',
 			editor: {
-				heading: 'Editor',
+				heading: 'Manage content',
 				projects: 'Projects',
 				organizations: 'Organizations',
 			},
@@ -49,9 +51,12 @@
 	<DashboardNavItem {...$link(`/i/collections`)}>
 		{$t.collections}<Folders class="button-icon" />
 	</DashboardNavItem>
+	<DashboardNavItem {...$link(`/i/likes`)}>
+		{$t.likes}<FolderHeart class="button-icon" />
+	</DashboardNavItem>
 	<DashboardNavItem {...$link(`/i/settings`)} danger>
 		{$t.settings}
-		<UserCog2 class="button-icon" />
+		<Settings class="button-icon" />
 	</DashboardNavItem>
 </DashboardNav>
 <DashboardNav>

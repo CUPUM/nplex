@@ -1,7 +1,20 @@
 import { LOCALES_ARR, type Locale } from '$lib/i18n/constants';
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
-import { and, eq, getTableColumns, type AnyColumn, type AnyTable } from 'drizzle-orm';
-import { PgTable, getTableConfig } from 'drizzle-orm/pg-core';
+import {
+	SubqueryConfig,
+	and,
+	eq,
+	getTableColumns,
+	type AnyColumn,
+	type AnyTable,
+	type ColumnsSelection,
+} from 'drizzle-orm';
+import {
+	PgTable,
+	getTableConfig,
+	type SubqueryWithSelection,
+	type WithSubqueryWithSelection,
+} from 'drizzle-orm/pg-core';
 import type { Entries, ValueOf } from 'type-fest';
 import { dbpool, type DbHttp, type DbPool } from './db.server';
 import { locales, type TranslationLocaleColumn } from './schema/i18n';
@@ -29,6 +42,16 @@ export function getTableName<T extends PgTable>(
 	const qo = quotes && quotes !== 'inner' ? '"' : '';
 	const qi = quotes ? '"' : '';
 	return `${qo}${withSchema ? `${tableConfig.schema}${qi}.` : ''}${qi}${tableConfig.name}${qo}`;
+}
+
+/**
+ * Get any query's columns info.
+ */
+export function getSubqueryColumns<S extends ColumnsSelection, A extends string>(
+	query: WithSubqueryWithSelection<S, A> | SubqueryWithSelection<S, A>
+): (typeof query)['_']['selectedFields'] {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	return (query[SubqueryConfig as unknown as string] as any).selection;
 }
 
 // /**

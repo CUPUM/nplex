@@ -98,7 +98,7 @@
 		}
 
 		&.danger {
-			color: var(--color-error-800);
+			color: var(--color-error-700);
 			:global(:--dark) & {
 				color: var(--color-error-300);
 			}

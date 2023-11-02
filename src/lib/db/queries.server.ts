@@ -12,6 +12,8 @@ import {
 	projectInterventionsTranslations,
 	projectTypes,
 	projectTypesTranslations,
+	projects,
+	projectsTranslations,
 } from './schema/public';
 import { arrayAgg, jsonBuildObject } from './sql.server';
 import { withTranslation } from './utils';
@@ -55,6 +57,9 @@ export function selectProjectImageTemporalities(
 	);
 }
 
+/**
+ * Deprecated??? tbd.
+ */
 export function interventionCategoriesQ(event: RequestEvent | ServerLoadEvent) {
 	const interventionSq = dbpool
 		.select({
@@ -92,4 +97,14 @@ export function interventionCategoriesQ(event: RequestEvent | ServerLoadEvent) {
 		)
 		.leftJoin(interventionSq, eq(projectInterventionCategories.id, interventionSq.categoryId))
 		.as('intervention_categories_q');
+}
+
+export function selectProjects(event: RequestEvent | ServerLoadEvent, db?: DbHttp | DbPool) {
+	return withTranslation(
+		event,
+		projects,
+		projectsTranslations,
+		(t, tt) => ({ field: t.id, reference: tt.id }),
+		db
+	);
 }

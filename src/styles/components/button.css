@@ -34,7 +34,10 @@ Primitive button style component.
 	&[data-disabled] {
 		/* pointer-events: none; */
 		cursor: default;
-		opacity: 0.5;
+		color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
+		:--dark & {
+			color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
+		}
 	}
 	&:active,
 	&[data-active] {
@@ -45,7 +48,6 @@ Primitive button style component.
 	}
 	&[data-current],
 	&[aria-expanded='true'] {
-		/* pointer-events: none; */
 		.button-icon {
 			opacity: 1;
 		}
@@ -297,6 +299,13 @@ Primitive button style component.
 		:--dark & {
 			color: var(--color-neutral-900);
 			background-color: var(--color-primary-500);
+		}
+		&:disabled,
+		&[data-disabled] {
+			color: color-mix(in srgb, var(--color-neutral-100) 25%, transparent);
+			:--dark & {
+				color: color-mix(in srgb, var(--color-neutral-900) 25%, transparent);
+			}
 		}
 		&:hover:not(:disabled):not([data-disabled]),
 		&:focus-visible:not(:disabled):not([data-disabled]) {

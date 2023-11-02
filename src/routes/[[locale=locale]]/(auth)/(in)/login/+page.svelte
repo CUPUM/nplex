@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { createLoading } from '$lib/actions/loading';
 	import { ripple } from '$lib/actions/ripple';
+	import { superForm } from '$lib/forms/super-form';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
+	import { melt } from '@melt-ui/svelte';
 	import { Eye, EyeOff, HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
 	import { fade, fly } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms/client';
 
 	const STAGGER = 75;
 
@@ -31,16 +31,19 @@
 	export let data;
 
 	let showPassword = false;
-
-	const { form, enhance, constraints, errors, delayed, submitting } = superForm(data.form, {
-		taintedMessage: null,
-	});
+	let loginRef: HTMLButtonElement;
 
 	const {
-		action: loadingAction,
-		element: loadingElement,
-		state: loadingState,
-	} = createLoading({ state: delayed });
+		form,
+		enhance,
+		constraints,
+		errors,
+		loadable: {
+			submitter: { root: submitter },
+		},
+	} = superForm(data.form, {
+		taintedMessage: null,
+	});
 </script>
 
 <form method="POST" use:enhance>
@@ -98,9 +101,9 @@
 		in:fly|global={{ y: -6, delay: 2 * STAGGER }}
 		class="button cta center"
 		type="submit"
-		{...$loadingElement}
-		use:loadingAction
 		use:ripple
+		bind:this={loginRef}
+		use:melt={$submitter(loginRef)}
 	>
 		<LogIn class="button-icon" />
 		{$t.button}

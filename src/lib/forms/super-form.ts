@@ -54,6 +54,9 @@ export function superForm<
 		},
 	});
 
+	/**
+	 * Attribute records for validation feedback states.
+	 */
 	const states = derived(sf.errors, ($errors) => {
 		type FormKey = keyof z.infer<T>;
 		return (Object.keys($errors) as FormKey[]).reduce(

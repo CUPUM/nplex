@@ -19,3 +19,14 @@ Opposite of compact, makes base sizes larger for when attention is needed.
 	--base-padding: 2em;
 	--base-inset: 0.25em;
 }
+
+.noscrollbar {
+	/* Chrome, Safari, Opera */
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* IE, Edge, Firefox */
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}

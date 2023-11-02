@@ -62,20 +62,19 @@ function deriveLoadable($state: boolean, disable?: boolean) {
  * Apply a loading state to the host node through data attributes and insert/remove a loading
  * component accordingly.
  */
-export const createLoadable = ({ state, disable, ...props }: LoadableProps = {}) => {
+export const createLoadable = ({ state, disable = true, ...props }: LoadableProps = {}) => {
 	const _state = writable(state);
-	/**
-	 * Element attributes.
-	 */
-	const element = derived(_state, ($state) => {
-		return deriveLoadable($state, disable);
-	});
 	const action = createLoadableAction(_state, props);
+	const element = derived(_state, ($state) => {
+		return { action, ...deriveLoadable($state, disable) };
+	});
 	return {
 		state: _state,
 		elements: {
-			...element,
-			action,
+			root: {
+				...element,
+				action,
+			},
 		},
 	};
 };
@@ -89,7 +88,7 @@ export const createLoadable = ({ state, disable, ...props }: LoadableProps = {})
  */
 export function createLoadableSubmitter({
 	submitter,
-	disable,
+	disable = true,
 	...props
 }: LoadableProps<{ submitter?: Element }> = {}) {
 	const _submitter = writable<Element | undefined>(submitter);
@@ -112,8 +111,10 @@ export function createLoadableSubmitter({
 	return {
 		submitter: _submitter,
 		elements: {
-			...element,
-			action,
+			root: {
+				...element,
+				action,
+			},
 		},
 	};
 }
@@ -147,7 +148,7 @@ function matchFormactionString(formaction?: string | null, nodeFormaction?: stri
  */
 export function createLoadableFormaction({
 	formaction,
-	disable,
+	disable = true,
 	...props
 }: LoadableProps<{ formaction?: URL | string }> = {}) {
 	const _formaction = writable<URL | string | undefined>(formaction);
@@ -173,8 +174,10 @@ export function createLoadableFormaction({
 	return {
 		formaction: _formaction,
 		elements: {
-			...element,
-			action,
+			root: {
+				...element,
+				action,
+			},
 		},
 	};
 }
@@ -200,7 +203,7 @@ function matchLink(
  */
 export function createLoadableLink({
 	matcher = ({ href, to }) => to.url.pathname === href,
-	disable,
+	disable = true,
 	...props
 }: LoadableProps<{ matcher?: LoadableLinkMatcher }> = {}) {
 	const action: Action<HTMLAnchorElement, ComponentProps<Loading> | undefined> = (
@@ -226,8 +229,10 @@ export function createLoadableLink({
 	});
 	return {
 		elements: {
-			...element,
-			action,
+			link: {
+				...element,
+				action,
+			},
 		},
 	};
 }

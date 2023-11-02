@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { createLoading } from '$lib/actions/loading';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { Check, CheckCircle, ShieldX } from 'lucide-svelte';
 	import { fly, scale } from 'svelte/transition';
@@ -25,8 +24,6 @@
 	export let data;
 
 	const { form, constraints, enhance, submitting, delayed, tainted } = superForm(data.form);
-
-	const { element: updateElement, action: updateAction } = createLoading({ state: delayed });
 </script>
 
 <form method="POST" use:enhance action="?/update">
@@ -83,8 +80,6 @@
 			in:fly={{ y: 6, duration: 250 }}
 			out:scale={{ start: 0.95, duration: 250 }}
 			class="button outlined"
-			use:updateAction
-			{...$updateElement}
 			disabled={$submitting ?? undefined}
 		>
 			<Check class="button-icon" />

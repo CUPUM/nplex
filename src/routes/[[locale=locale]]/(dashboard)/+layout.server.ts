@@ -3,6 +3,7 @@ import {
 	organizations,
 	organizationsTranslations,
 	projects,
+	projectsImages,
 	projectsTranslations,
 } from '$lib/db/schema/public';
 import { SETOUTS } from '$lib/setout/constants';
@@ -20,6 +21,7 @@ export const load = async (event) => {
 		.select({
 			...getTableColumns(projectsTranslations),
 			...getTableColumns(projects),
+			bannerStorageName: projectsImages.storageName,
 		})
 		.from(projects)
 		.leftJoin(
@@ -28,7 +30,8 @@ export const load = async (event) => {
 				eq(projectsTranslations.id, projects.id),
 				eq(projectsTranslations.locale, event.locals.locale)
 			)
-		);
+		)
+		.leftJoin(projectsImages, eq(projects.bannerId, projectsImages.id));
 
 	const editableOrganizations = dbpool
 		.select({

@@ -1,28 +1,25 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { ripple } from '$lib/actions/ripple';
 	import Loading from '$lib/components/Loading.svelte';
-	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { slide } from '$lib/transitions/slide';
-	import { Paintbrush, Users } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { tweened } from 'svelte/motion';
 	import { scale } from 'svelte/transition';
+	import OrganizationCard from './OrganizationCard.svelte';
+	import ProjectCard from './ProjectCard.svelte';
 
 	const t = createTranslations({
 		fr: {
 			editables: {
 				projects: 'Mes projets',
 				organizations: 'Mes organisations',
-				noname: 'Sans nom',
 			},
 		},
 		en: {
 			editables: {
 				projects: 'My projects',
 				organizations: 'My organizations',
-				noname: 'No name',
 			},
 		},
 	});
@@ -68,44 +65,30 @@
 	</section>
 </article>
 <aside>
-	<section>
-		<h2 class="heading md">{$t.editables.projects}</h2>
-		<ul>
+	<section class="editables">
+		<h2 class="heading lg">{$t.editables.projects}</h2>
+		<ul class="cards">
 			{#await data.streamed.editableProjects}
 				<Loading />
 			{:then ep}
-				{#each ep as p}
+				{#each ep as project}
 					<li>
-						<!-- svelte-ignore a11y-missing-attribute -->
-						<a {...$link(`/edit/projects/${p.id}`)} class="card" use:ripple>
-							<Paintbrush class="card-icon" />
-							{#if p.title}
-								{p.title}
-							{:else}
-								<span class="dimmer">{$t.editables.noname}</span>
-							{/if}
-						</a>
+						<ProjectCard {project} />
 					</li>
 				{/each}
 			{/await}
 		</ul>
 	</section>
-	<section>
-		<h2 class="heading md">{$t.editables.organizations}</h2>
-		<ul>
+	<section class="editables">
+		<h2 class="heading lg">{$t.editables.organizations}</h2>
+		<ul class="cards">
 			{#await data.streamed.editableOrganizations}
 				<Loading />
 			{:then eo}
-				{#each eo as o}
-					<!-- svelte-ignore a11y-missing-attribute -->
-					<a {...$link(`/edit/organizations/${o.id}`)} class="card" use:ripple>
-						<Users class="card-icon" />
-						{#if o.name}
-							{o.name}
-						{:else}
-							<span class="dimmer">{$t.editables.noname}</span>
-						{/if}
-					</a>
+				{#each eo as organization}
+					<li>
+						<OrganizationCard {organization} />
+					</li>
 				{/each}
 			{/await}
 		</ul>
@@ -135,12 +118,6 @@
 		z-index: -1;
 		transform-origin: bottom center;
 		transition: all var(--duration-2xslow) var(--ease-out-expo);
-
-		&.scrolled {
-			transform: rotateX(30deg);
-			opacity: 0;
-			transition: all var(--duration-medium) ease-in;
-		}
 	}
 
 	#dashboard-breadcrumbs {
@@ -175,5 +152,19 @@
 		:global(:--dark) & {
 			/* background-color: var(--color-neutral-800); */
 		}
+	}
+
+	.editables {
+		h2 {
+			margin: 2rem;
+		}
+	}
+
+	.cards {
+		padding: var(--base-gutter);
+		display: flex;
+		flex-direction: row;
+		gap: var(--base-gutter);
+		overflow-x: auto;
 	}
 </style>

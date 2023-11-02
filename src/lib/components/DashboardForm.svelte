@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { createFormActionLoading } from '$lib/actions/loading';
+	import type { SuperForm } from '$lib/forms/super-form';
+
 	import type { ZodValidation } from 'sveltekit-superforms';
-	import type { SuperForm } from 'sveltekit-superforms/client';
 	import type { AnyZodObject } from 'zod';
 
 	type T = $$Generic<ZodValidation<AnyZodObject>>;
@@ -9,32 +9,16 @@
 	export let enhance: SuperForm<T>['enhance'];
 	export let action: string | undefined = undefined;
 	export let method = 'POST';
-	const {
-		state: { input },
-		element,
-		action: { loading },
-	} = createFormActionLoading();
 </script>
 
-<form
-	{action}
-	use:enhance={{
-		onSubmit(ipt) {
-			input.set(ipt);
-		},
-		onResult(event) {
-			input.set(null);
-		},
-	}}
-	{method}
->
+<form {action} use:enhance {method}>
 	{#if $$slots.header}
 		<header>
-			<slot name="header" currentAction={$input?.action} />
+			<slot name="header" />
 		</header>
 	{/if}
 	<div class="content">
-		<slot currentAction={$input?.action} element={$element} {loading} />
+		<slot />
 	</div>
 </form>
 

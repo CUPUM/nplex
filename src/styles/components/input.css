@@ -153,6 +153,7 @@ textarea.input {
 		&:has(.input:focus) {
 			color: var(--color-neutral-800);
 			background-color: white;
+			box-shadow: none;
 			:--dark & {
 				color: var(--color-neutral-200);
 				background-color: color-mix(in srgb, var(--color-neutral-950) 25%, transparent);
@@ -163,10 +164,9 @@ textarea.input {
 			&[data-invalid],
 			&:has([data-invalid]) {
 				color: var(--color-error-700);
-				background-color: color-mix(in srgb, var(--color-error-100) 25%, transparent);
+				background-color: color-mix(in srgb, var(--color-error-500) 10%, transparent);
 				:--dark & {
 					color: var(--color-error-300);
-					background-color: color-mix(in srgb, var(--color-error-900) 25%, transparent);
 				}
 			}
 		}

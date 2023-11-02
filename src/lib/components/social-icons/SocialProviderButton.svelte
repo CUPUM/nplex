@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
-	import { createLoading } from '$lib/actions/loading';
 	import { ripple } from '$lib/actions/ripple';
 	import type { OAuthProvider } from '$lib/auth/constants';
 	import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
+	import { createLoadable } from '$lib/builders/loading';
 	import { createTooltip } from '$lib/builders/tooltip';
 	import { link } from '$lib/i18n/link';
 	import { melt } from '@melt-ui/svelte';
@@ -17,7 +17,10 @@
 
 	const url = `/login/${provider}`;
 
-	const { element: loadingElement, action: loadingAction, state: loadingState } = createLoading();
+	const {
+		elements: { root },
+		state,
+	} = createLoadable();
 
 	const {
 		elements: { trigger, content },
@@ -27,12 +30,12 @@
 
 	beforeNavigate((nav) => {
 		if (nav.to && nav.to.url.pathname.indexOf(url) > -1) {
-			loadingState.set(true);
+			state.set(true);
 		}
 	});
 
 	afterNavigate(() => {
-		loadingState.set(false);
+		state.set(false);
 	});
 </script>
 
@@ -41,10 +44,11 @@
 	{...$link(url)}
 	class="button outlined"
 	use:ripple
-	use:loadingAction
+	use:melt={$root}
 	{...{
-		...$loadingElement,
-		'data-disabled': $loadingElement['data-disabled'] || details.disabled || undefined,
+		...$root,
+		'action': undefined,
+		'data-disabled': $root['data-disabled'] || details.disabled || undefined,
 	}}
 	use:melt={$trigger}
 	in:scale|global={{ start: 0.95, delay: (i ?? 0) * 75, duration: 750 }}

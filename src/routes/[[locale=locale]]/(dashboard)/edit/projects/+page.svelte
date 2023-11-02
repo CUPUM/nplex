@@ -38,7 +38,7 @@
 		</a>
 		<span class="prose dimmer" in:fade|global={{ delay: 500, duration: 1000 }}>{$t.or}</span>
 		<fieldset
-			class="input-group outlined"
+			class="input-group"
 			in:fly|global={{ x: -8, easing: cubicOut, duration: 450, delay: 250 }}
 		>
 			<input type="search" name="q" placeholder={$t.find} class="input" />
@@ -51,21 +51,26 @@
 
 <style lang="postcss">
 	form {
+		--pattern-size: 5rem;
+		--pattern-thickness: 1.5px;
 		flex: 1;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		align-self: stretch;
-		min-height: calc(100vh - var(--navbar-height));
-		min-height: calc(100svh - var(--navbar-height));
-		min-height: calc(100dvh - var(--navbar-height));
+		min-height: calc(100vh - var(--navbar-height) - var(--base-gutter));
+		min-height: calc(100svh - var(--navbar-height) - var(--base-gutter));
+		min-height: calc(100dvh - var(--navbar-height) - var(--base-gutter));
 		padding-bottom: var(--navbar-height);
 		gap: 1rem;
-		background-color: var(--base-bg);
 		border-radius: inherit;
-		border-bottom-left-radius: 0;
-		border-bottom-right-radius: 0;
+		--pattern-color: var(--color-neutral-300);
+		background-color: color-mix(in srgb, var(--color-neutral-500) 5%, transparent);
+		:global(:--dark) & {
+			--pattern-color: var(--color-neutral-800);
+			background-color: color-mix(in srgb, var(--color-neutral-950) 50%, transparent);
+		}
 	}
 
 	#projects-actions {

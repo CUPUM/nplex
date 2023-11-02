@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { createLoading } from '$lib/actions/loading';
 	import { ripple } from '$lib/actions/ripple';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
@@ -35,12 +34,6 @@
 	const { form, enhance, constraints, errors, delayed, submitting } = superForm(data.form, {
 		taintedMessage: null,
 	});
-
-	const {
-		state: loadingState,
-		element: loadingElement,
-		action: loadingAction,
-	} = createLoading({ state: delayed });
 </script>
 
 <form method="POST" use:enhance>
@@ -82,14 +75,7 @@
 			{...$constraints.confirmPassword}
 		/>
 	</label>
-	<button
-		in:fly={{ y: -6, delay: 3 * STAGGER }}
-		class="button cta center"
-		type="submit"
-		{...$loadingElement}
-		use:loadingAction
-		use:ripple
-	>
+	<button in:fly={{ y: -6, delay: 3 * STAGGER }} class="button cta center" type="submit" use:ripple>
 		<UserPlus2 class="button-icon" />
 		{$t.button}
 	</button>
