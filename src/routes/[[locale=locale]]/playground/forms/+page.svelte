@@ -12,7 +12,9 @@
 		enhance,
 		errors,
 		states,
-		loadable: { submitter, formaction },
+		loadable: {
+			submitter: { root: submitter },
+		},
 	} = superForm(data.form);
 
 	let button1: HTMLButtonElement;

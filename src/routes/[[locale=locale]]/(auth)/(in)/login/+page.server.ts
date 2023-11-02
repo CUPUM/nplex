@@ -40,6 +40,10 @@ export const actions = {
 					description:
 						'Nous avons eu un problème lors du traitement de votre requête, veuillez essayer à nouveau. Désolé pour cet inconvénient.',
 				},
+				success: {
+					title: 'Connecté avec succès',
+					description: '',
+				},
 			},
 			en: {
 				invalid: {
@@ -55,6 +59,10 @@ export const actions = {
 					title: 'Internal error',
 					description:
 						'Our server has encountered an error, please try again. Sorry for the inconvenience.',
+				},
+				success: {
+					title: 'Successfully logged in',
+					description: '',
 				},
 			},
 		});
@@ -79,6 +87,6 @@ export const actions = {
 			}
 			return message(form, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', [t.success]);
 	},
 };

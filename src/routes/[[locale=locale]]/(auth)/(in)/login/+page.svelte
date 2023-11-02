@@ -46,7 +46,7 @@
 	});
 </script>
 
-<form method="POST" use:enhance>
+<form method="POST" use:enhance autocomplete="off">
 	<h1 class="heading lg center">{$t.title}</h1>
 	<label class="labeled-group">
 		<span class="label" in:fly|global={{ y: 6 }}>{$t.email}</span>

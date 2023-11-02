@@ -2103,7 +2103,7 @@ packages:
       '@sveltejs/kit': ^1.0.0
     dependencies:
       '@sveltejs/kit': 1.27.2(svelte@4.2.2)(vite@4.5.0)
-      import-meta-resolve: 3.0.0
+      import-meta-resolve: 3.1.0
     dev: true
 
   /@sveltejs/adapter-node@1.3.1(@sveltejs/kit@1.27.2):
@@ -4935,8 +4935,8 @@ packages:
       resolve-from: 4.0.0
     dev: true
 
-  /import-meta-resolve@3.0.0:
-    resolution: {integrity: sha512-4IwhLhNNA8yy445rPjD/lWh++7hMDOml2eHtd58eG7h+qK3EryMuuRbsHGPikCoAgIkkDnckKfWSk2iDla/ejg==}
+  /import-meta-resolve@3.1.0:
+    resolution: {integrity: sha512-Vc30SCKXMGwNUY57H6a7sZA0SRK6SylVYQNuDmnpS6Hg9kUj1+H/H8a1z8vM0c8fqZS7qmBHtTbKNWnaNRgpvQ==}
     dev: true
 
   /imurmurhash@0.1.4:

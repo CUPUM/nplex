@@ -2,7 +2,6 @@
 	export const TOAST_TYPES = {
 		SUCCESS: 'success',
 		ERROR: 'error',
-		NOTIFICATION: 'notification',
 		DEFAULT: '',
 	} as const;
 
@@ -64,7 +63,7 @@
 	<div use:melt={$progress} class="toast-progress">
 		<div
 			class="toast-percent"
-			style:transform={`translateX(-${100 - (100 * ($percentage ?? 0)) / ($max ?? 1)}%)`}
+			style:transform={`translateX(${(100 * ($percentage ?? 0)) / ($max ?? 1)}%)`}
 		/>
 	</div>
 	<div class="inner">
@@ -73,7 +72,7 @@
 				{data.title}
 				<span class={data.type} />
 			</h3>
-			<div use:melt={$description(id)}>
+			<div use:melt={$description(id)} class="description">
 				{#if 'component' in data}
 					<svelte:component this={data.component} {...data.props} />
 				{:else}
@@ -81,7 +80,7 @@
 				{/if}
 			</div>
 		</div>
-		<button use:melt={$close(id)} class="button ghost danger round close compact">
+		<button use:melt={$close(id)} class="button ghost round close compact">
 			<X class="button-icon" />
 		</button>
 	</div>
@@ -89,49 +88,47 @@
 
 <style lang="postcss">
 	.container {
-		--toast-inset: 6px;
 		--toast-progress-color: var(--color-primary-500);
+		--toast-title-color: var(--color-neutral-900);
+		--toast-description-color: var(--color-neutral-600);
+		--toast-background-color: var(--color-neutral-50);
 		pointer-events: initial;
 		font-size: var(--size-sm);
 		border-radius: var(--radius-sm);
-		color: var(--color-neutral-700);
-		background-color: var(--color-neutral-50);
 		box-shadow: var(--shadow-md);
 		transform-origin: center;
+		color: var(--toast-description-color);
+		background-color: var(--toast-background-color);
+		:global(:--dark) & {
+			--toast-title-color: var(--color-neutral-100);
+			--toast-description-color: var(--color-neutral-400);
+			--toast-background-color: var(--color-neutral-800);
+		}
 
 		&.error {
-			color: red;
+			--toast-progress-color: var(--color-error-600);
+			--toast-title-color: var(--color-error-700);
+			:global(:--dark) & {
+				--toast-progress-color: var(--color-error-600);
+				--toast-title-color: var(--color-error-400);
+			}
 		}
 
 		&.success {
-			background-color: green;
-		}
-
-		&.notification {
-		}
-
-		:global(:--dark) & {
-			color: var(--color-neutral-300);
-			background-color: var(--color-neutral-800);
-
-			&.error {
-				color: red;
-			}
-
-			&.success {
-				background-color: green;
-			}
-
-			&.notification {
+			--toast-progress-color: var(--color-success-500);
+			--toast-title-color: var(--color-success-600);
+			:global(:--dark) & {
+				--toast-progress-color: var(--color-success-500);
+				--toast-title-color: var(--color-success-400);
 			}
 		}
 	}
 
 	.toast-progress {
 		position: absolute;
-		top: var(--toast-inset);
-		left: var(--toast-inset);
-		right: var(--toast-inset);
+		top: 0;
+		left: var(--radius-sm);
+		right: var(--radius-sm);
 		height: 3px;
 		overflow: hidden;
 		border-radius: var(--radius-full);
@@ -157,12 +154,19 @@
 	}
 
 	.title {
+		color: var(--toast-title-color);
+		font-size: var(--size-md);
+		font-weight: 450;
+	}
+
+	.description {
+		margin-top: 1em;
 	}
 
 	.close {
 		position: absolute;
-		top: var(--toast-inset);
-		right: var(--toast-inset);
+		top: 0.5em;
+		right: 0.5em;
 		font-size: var(--size-xs);
 	}
 </style>
