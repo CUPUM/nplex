@@ -145,8 +145,7 @@
 	.inner {
 		position: relative;
 		display: flex;
-		width: 24rem;
-		max-width: 100%;
+		max-width: min(60ch, 100%);
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
@@ -157,10 +156,11 @@
 		color: var(--toast-title-color);
 		font-size: var(--size-md);
 		font-weight: 450;
+		margin-bottom: 1em;
 	}
 
 	.description {
-		margin-top: 1em;
+		line-height: 1.5;
 	}
 
 	.close {

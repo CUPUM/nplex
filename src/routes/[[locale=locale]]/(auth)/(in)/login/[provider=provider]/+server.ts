@@ -31,7 +31,9 @@ export const GET = async (event) => {
 		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
 	}
 
-	/** Get the corresponding integration and its helpers. */
+	/**
+	 * Get the corresponding integration and its helpers.
+	 */
 	const [url, state] = await integrations[event.params.provider].getAuthorizationUrl();
 
 	/**

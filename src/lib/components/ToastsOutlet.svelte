@@ -18,7 +18,7 @@
 		closeDelay,
 		...props
 	}: AddToastProps<ToastData<T>>) {
-		return helpers.addToast({ closeDelay: closeDelay ?? 50000, ...props });
+		return helpers.addToast({ closeDelay: closeDelay ?? 5000, ...props });
 	}
 
 	export function addErrorToast<T extends SvelteComponent>(
@@ -32,12 +32,6 @@
 		props: AddToastProps<Omit<ToastData, 'type'>>
 	) {
 		return helpers.addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.SUCCESS } });
-	}
-
-	export function addNotificationToast<T extends SvelteComponent>(
-		props: AddToastProps<Omit<ToastData, 'type'>>
-	) {
-		return helpers.addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.NOTIFICATION } });
 	}
 </script>
 

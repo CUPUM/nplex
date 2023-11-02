@@ -9,7 +9,11 @@ import { OAuthRequestError } from '@lucia-auth/oauth';
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
-/** @todo Extract provider user data getters into helpers instead of ternary ops. */
+/**
+ * @todo Extract provider user data getters into helpers instead of ternary ops.
+ *
+ * @todo Add flash messages for errors.
+ */
 export const GET = async (event) => {
 	const t = event.locals.createTranslations({
 		fr: {
@@ -17,12 +21,20 @@ export const GET = async (event) => {
 			incorrectState: (provider: string) => `La réponse de ${provider} ne convient pas.`,
 			unverifiedEmail: (email: string) =>
 				`Un utilisateur a déjà été enregistré avec l’adresse courriel «${email}». Pour lier les deux comptes veuillez d’abord authentifier votre adresse courriel sur le compte existant.`,
+			success: {
+				title: 'Connecté avec succès',
+				description: '',
+			},
 		},
 		en: {
 			notSupported: 'The requested OAuth provider is not supported.',
 			incorrectState: (provider: string) => `The state provided by ${provider} is not compatible.`,
 			unverifiedEmail: (email: string) =>
 				`A user with the email «${email}» is already registered. To proceed and link both accounts, please first confirm your email adress on the existing account.`,
+			success: {
+				title: 'Successfully logged in',
+				description: '',
+			},
 		},
 	});
 
@@ -40,7 +52,9 @@ export const GET = async (event) => {
 		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
 	}
 
-	/** Retrieve provider's state cookie. */
+	/**
+	 * Retrieve provider's state cookie.
+	 */
 	const storedState = event.cookies.get(OAUTH_PROVIDERS_STATE_COOKIE[event.params.provider]);
 	const state = event.url.searchParams.get('state');
 	const code = event.url.searchParams.get('code');
@@ -104,5 +118,5 @@ export const GET = async (event) => {
 			message: e instanceof Error ? e.message : '',
 		});
 	}
-	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', [t.success]);
 };
