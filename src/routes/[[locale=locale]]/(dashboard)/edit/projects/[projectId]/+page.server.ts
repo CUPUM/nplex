@@ -1,12 +1,14 @@
 import { withAuth } from '$lib/auth/guard.server';
+import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { selectProjectSiteOwnerships, selectProjectTypes } from '$lib/db/queries.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
 import { TRUE, excluded } from '$lib/db/sql.server';
-import { withTranslation, withTranslations } from '$lib/db/utils';
+import { withTranslations } from '$lib/db/utils';
 import { tt } from '$lib/i18n/translations';
 import { STATUS_CODES } from '$lib/utils/constants';
+import { error } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
@@ -21,47 +23,27 @@ export const load = async (event) => {
 		},
 	});
 
-	// const p = dbpool.select({ id: projects.id }).from(projects).as('p');
-
-	// type C = (typeof p)['_']['selectedFields']['']
-
-	const [test] = await withTranslations(projects, projectsTranslations, {
+	const [project] = await withTranslations(projects, projectsTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
-		translationsSelection: ({ title }) => ({ title }),
-	});
-
-	console.log(test.translations);
-
-	const [test2] = await withTranslation(event, projects, projectsTranslations, {
-		field: (t) => t.id,
-		reference: (tt) => tt.id,
-		selection: ({ id, title }) => ({ id, title }),
-	});
-
-	console.log(test2);
-
-	// const [project] = await withTranslations(projects, projectsTranslations, (t, tt) => ({
-	// 	field: t.id,
-	// 	reference: tt.id,
-	// }))
-	// 	.where(and(authorizeProjectUpdate(session), eq(projects.id, event.params.projectId)))
-	// 	.limit(1);
-	// if (!project) {
-	// 	throw error(STATUS_CODES.NOT_FOUND, t.notFound);
-	// }
-	// const interventions = await dbpool
-	// 	.select({
-	// 		interventionId: projectsInterventions.interventionId,
-	// 	})
-	// 	.from(projectsInterventions)
-	// 	.where(eq(projectsInterventions.projectId, event.params.projectId));
-	// const form = superValidate(
-	// 	{ ...project, interventionIds: interventions.map((i) => i.interventionId) },
-	// 	projectGeneralUpdateSchema
-	// );
+	})
+		.where(and(authorizeProjectUpdate(session), eq(projects.id, event.params.projectId)))
+		.limit(1);
+	if (!project) {
+		throw error(STATUS_CODES.NOT_FOUND, t.notFound);
+	}
+	const interventions = await dbpool
+		.select({
+			interventionId: projectsInterventions.interventionId,
+		})
+		.from(projectsInterventions)
+		.where(eq(projectsInterventions.projectId, event.params.projectId));
+	const form = superValidate(
+		{ ...project, interventionIds: interventions.map((i) => i.interventionId) },
+		projectGeneralUpdateSchema
+	);
 	return {
-		// form,
+		form,
 		descriptors: {
 			types: selectProjectTypes(event),
 			siteOwnerships: selectProjectSiteOwnerships(event),

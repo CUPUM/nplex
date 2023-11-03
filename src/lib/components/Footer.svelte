@@ -4,7 +4,7 @@
 	import { SETOUTS } from '$lib/setout/constants';
 	import { slide } from 'svelte/transition';
 	import CupumUdem from './partners-logos/CupumUdem.svelte';
-	import Montreal from './partners-logos/Montreal.svelte';
+	import MontrealQuebec from './partners-logos/MontrealQuebec.svelte';
 </script>
 
 {#if $page.data.setout !== SETOUTS.FULL_SCREEN}
@@ -16,7 +16,7 @@
 						href="https://www.unesco-paysage.umontreal.ca/{$page.data.locale}/"
 						class="footer-link"
 					>
-						<CupumUdem style="width: 10em; height: auto" />
+						<CupumUdem class="footer-logo" />
 					</a>
 				</li>
 				<hr class="hr" />
@@ -27,7 +27,7 @@
 							: ''}"
 						class="footer-link"
 					>
-						<Montreal style="width: 10em; height: auto" />
+						<MontrealQuebec class="footer-logo" />
 					</a>
 				</li>
 			</ul>
@@ -46,6 +46,11 @@
 		align-items: center;
 		border-top: var(--base-border-size) solid
 			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+
+		:global(.footer-logo) {
+			width: auto;
+			height: 4.5rem;
+		}
 	}
 
 	.inner {
