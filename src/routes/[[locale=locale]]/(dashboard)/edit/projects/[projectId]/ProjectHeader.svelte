@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { createTranslations } from '$lib/i18n/translate';
 
 	const t = createTranslations({
@@ -9,15 +10,13 @@
 			noTitle: 'No title defined',
 		},
 	});
-
-	let title = 'No title';
 </script>
 
-<header class="pattern-cross">
+<header>
 	<hgroup>
 		<h1 class="heading xl">
-			{#if title}
-				{title}
+			{#if $page.data.title}
+				{$page.data.title}
 			{:else}
 				<span class="fallback">{$t.noTitle}</span>
 			{/if}
@@ -32,10 +31,7 @@
 		min-height: 200px;
 		opacity: 1;
 		border-radius: inherit;
-		background-color: var(--color-neutral-200);
-		:global(:--dark) & {
-			background-color: var(--color-neutral-800);
-		}
+		background-color: color-mix(in srgb, var(--color-neutral-500) 5%, transparent);
 	}
 
 	.fallback {

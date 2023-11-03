@@ -1,6 +1,6 @@
 import { createTranslations } from '$lib/i18n/translate';
 
-export const projectT = createTranslations({
+export const pt = createTranslations({
 	fr: {
 		save: 'Sauvegarder le projet',
 	},

@@ -54,7 +54,7 @@
 	<DashboardNavItem {...$link(`/i/likes`)}>
 		{$t.likes}<FolderHeart class="button-icon" />
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/i/settings`)} danger>
+	<DashboardNavItem {...$link(`/i/settings`)}>
 		{$t.settings}
 		<Settings class="button-icon" />
 	</DashboardNavItem>

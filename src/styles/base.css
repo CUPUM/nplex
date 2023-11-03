@@ -129,6 +129,7 @@
 	--navbar-height: 72px;
 	--navbar-sticky: calc(var(--navbar-height) + 0.5rem);
 	--dashboard-navbar: 175px;
+	--dashboard-base-bg: var(--color-neutral-50);
 	/* Root style */
 	position: relative;
 	font-size: 100%;
@@ -141,6 +142,7 @@
 	&:--dark {
 		--base-focus-ring: 2.5px solid color-mix(in srgb, var(--color-primary-400) 50%, transparent);
 		--base-bg: var(--color-neutral-900);
+		--dashboard-base-bg: var(--color-neutral-800);
 		color: var(--color-neutral-300);
 	}
 }

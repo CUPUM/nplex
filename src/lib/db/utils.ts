@@ -1,6 +1,8 @@
 import { LOCALES_ARR, type Locale } from '$lib/i18n/constants';
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import {
+	Column,
+	SQL,
 	SubqueryConfig,
 	and,
 	eq,
@@ -18,7 +20,13 @@ import {
 import type { Entries, ValueOf } from 'type-fest';
 import { dbpool, type DbHttp, type DbPool } from './db.server';
 import { locales, type TranslationLocaleColumn } from './schema/i18n';
-import { TRUE, coalesce, jsonBuildObject, jsonObjectAgg, rowToJson } from './sql.server';
+import {
+	TRUE,
+	coalesce,
+	jsonBuildObject,
+	jsonObjectAgg,
+	type FieldSelectRecord,
+} from './sql.server';
 
 /**
  * Updated version of drizzle-orm's getTableName with config to allow preprending table's schema
@@ -52,6 +60,17 @@ export function getSubqueryColumns<S extends ColumnsSelection, A extends string>
 ): (typeof query)['_']['selectedFields'] {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	return (query[SubqueryConfig as unknown as string] as any).selection;
+}
+
+/**
+ * Get individually localized columns.
+ */
+export function getLocalizedField<F extends SQL | Column>(field: F) {
+	const shape = Object.fromEntries(LOCALES_ARR.map((locale) => [locale, field])) as Record<
+		Locale,
+		F
+	>;
+	return jsonBuildObject(shape);
 }
 
 // /**
@@ -108,29 +127,53 @@ export function withTranslation<
 export function withTranslations<
 	T extends AnyTable,
 	TT extends AnyTable & { [K in keyof TranslationLocaleColumn]: AnyColumn },
-	J extends { field: ValueOf<T['_']['columns']>; reference: ValueOf<TT['_']['columns']> },
+	F extends ValueOf<T['_']['columns']>,
+	R extends ValueOf<TT['_']['columns']>,
+	TS = T['_']['columns'],
+	TTS extends FieldSelectRecord = TT['_']['columns'],
 >(
 	table: T,
 	translationsTable: TT,
-	join: J | ((table: T, translationsTable: TT) => J),
-	db: DbHttp | DbPool = dbpool
+	{
+		field: f,
+		reference: r,
+		selection: ts = (t) => t as TS,
+		translationsSelection: tts = (tt) => tt as TTS,
+	}: {
+		field: F | ((selection: T) => F);
+		reference: R | ((translationsSelection: TT) => R);
+		selection?: TS | ((columns: T['_']['columns']) => TS);
+		translationsSelection?: TTS | ((columns: TT['_']['columns']) => TTS);
+	}
 ) {
-	const { field, reference } = join instanceof Function ? join(table, translationsTable) : join;
-	const tcolumns = getTableColumns(translationsTable);
-	const tentries = Object.entries(tcolumns) as Entries<typeof tcolumns>;
-	const tkey =
+	const field = f instanceof Function ? f(table) : f;
+	const reference = r instanceof Function ? r(translationsTable) : r;
+	const selection = ts instanceof Function ? ts(getTableColumns(table)) : ts;
+	const { name: translationsTableName } = getTableConfig(translationsTable);
+	const translationsColumns = getTableColumns(translationsTable);
+	const translationsSelection = tts instanceof Function ? tts(translationsColumns) : tts;
+	const translationsEntries = Object.entries(translationsColumns) as Entries<
+		typeof translationsColumns
+	>;
+	const translationsKey =
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		tentries.find(([k, v]) => v === reference)![0];
-	return db
+		translationsEntries.find(([k, v]) => v === reference)![0];
+
+	return dbpool
 		.select({
-			...getTableColumns(table),
+			...selection,
 			translations: jsonObjectAgg(
 				locales.locale,
 				coalesce(
-					rowToJson(translationsTable),
-					jsonBuildObject({ ...tcolumns, locale: locales.locale, [tkey]: field })
+					jsonBuildObject(translationsSelection),
+					// rowToJson(translationsTable),
+					jsonBuildObject({
+						...translationsSelection,
+						locale: locales.locale,
+						[translationsKey]: field,
+					})
 				)
-			),
+			).as(`${translationsTableName}_alias`),
 		})
 		.from(table)
 		.leftJoin(locales, TRUE())

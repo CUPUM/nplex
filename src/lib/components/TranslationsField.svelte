@@ -5,7 +5,6 @@
 	import TranslationsTabsList from './TranslationsTabsList.svelte';
 
 	export let defaultValue: Locale = $page.data.locale;
-	export let centered: boolean = false;
 
 	const {
 		elements: { root, trigger, list, content },
@@ -13,7 +12,7 @@
 	} = createTabs({ defaultValue, loop: true, activateOnFocus: true });
 </script>
 
-<fieldset class="labeled-group" class:centered use:melt={$root}>
+<fieldset class="labeled-group" use:melt={$root}>
 	<legend class="label">
 		<div class="legend-slot">
 			<slot name="legend" />
@@ -29,7 +28,10 @@
 
 <style lang="postcss">
 	.labeled-group {
+		position: relative;
 		gap: 0;
+		width: 65ch;
+		max-width: 100%;
 	}
 
 	/* .content:not([hidden]) { */

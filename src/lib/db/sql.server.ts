@@ -88,8 +88,7 @@ export function excluded<T extends AnyTable, C = T['_']['columns']>(
 ): { [K in keyof C]: SQL<C[K]> };
 export function excluded<T extends Column | Table>(columnOrTable: T) {
 	if (columnOrTable instanceof Column) {
-		// return sql<T>`excluded.${columnOrTable}`;
-		return sql.raw(`excluded.${columnOrTable}`);
+		return sql.raw(`excluded.${columnOrTable.name}`);
 	}
 	const cols = getTableColumns(columnOrTable);
 	type C = typeof cols;
@@ -218,10 +217,6 @@ export function asGeoJson<T extends Feature = Feature>(geom: string) {
 /**
  * Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped
  * type instead of an SQL wrapped type.
- *
- * @example Select t._, json_object_agg(ttl.locale, ttl) as translations from project_types as t
- * left join ( select tt._ from project_types_t as tt right join i18n.locales as l on tt.locale =
- * l.locale ) as ttl on t.id = ttl.id group by t.id.
  */
 // export function jsonObjectAgg<
 // 	K extends AnyColumn,

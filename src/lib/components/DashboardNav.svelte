@@ -11,7 +11,9 @@
 		},
 	});
 
-	/** Parent dashboard context. */
+	/**
+	 * Parent dashboard context.
+	 */
 	const [getDashboard, setDashboardCtx] = defineContext<{ pushIndex: () => number }>({});
 	export function setDashboard() {
 		let index = 0;
@@ -23,7 +25,9 @@
 		});
 	}
 
-	/** Dashboard nav context for items. */
+	/**
+	 * Dashboard nav context for items.
+	 */
 	const [getDashboardNav, setDashboardNav] = defineContext<{ pushIndex: () => number }>({});
 
 	export { getDashboardNav };
@@ -58,12 +62,9 @@
 		display: flex;
 		flex-direction: column;
 		border-radius: var(--radius-lg);
-		background-color: var(--color-neutral-50);
+		background-color: var(--dashboard-base-bg);
 		padding: 0.5rem;
 		margin-bottom: 0.5rem;
-		:global(:--dark) & {
-			background-color: var(--color-neutral-800);
-		}
 
 		@media (--lg) {
 			margin-bottom: 0;

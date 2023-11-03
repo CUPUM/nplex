@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { FilePlus, Search } from 'lucide-svelte';
@@ -22,7 +21,7 @@
 	});
 </script>
 
-<form class="pattern-cross" use:enhance method="POST" action="?/search">
+<form class="pattern-cross" method="GET">
 	<header>
 		<h1 class="heading xxl">{$t.heading}</h1>
 	</header>
@@ -40,10 +39,13 @@
 		<fieldset
 			class="input-group"
 			in:fly|global={{ x: -8, easing: cubicOut, duration: 450, delay: 250 }}
+			disabled
 		>
 			<input type="search" name="q" placeholder={$t.find} class="input" />
 			<div class="input-peer">
-				<button class="button cta square"><Search class="button-icon" /></button>
+				<button class="button cta square">
+					<Search class="button-icon" />
+				</button>
 			</div>
 		</fieldset>
 	</section>
@@ -51,8 +53,6 @@
 
 <style lang="postcss">
 	form {
-		--pattern-size: 5rem;
-		--pattern-thickness: 1.5px;
 		flex: 1;
 		display: flex;
 		flex-direction: column;
@@ -63,7 +63,7 @@
 		min-height: calc(100svh - var(--navbar-height) - var(--base-gutter));
 		min-height: calc(100dvh - var(--navbar-height) - var(--base-gutter));
 		padding-bottom: var(--navbar-height);
-		gap: 1rem;
+		gap: 5rem;
 		border-radius: inherit;
 		--pattern-color: var(--color-neutral-300);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 5%, transparent);

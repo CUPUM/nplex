@@ -9,7 +9,7 @@ import type { ValueOf } from 'type-fest';
  */
 export const LOAD_DEPENDENCIES = {
 	ProjectEditorGallery: 'project:editor:gallery',
-	ProjectEditorTitle: 'project:editor:title',
+	ProjectEditorBase: 'project:editor:base',
 } as const;
 
 /**

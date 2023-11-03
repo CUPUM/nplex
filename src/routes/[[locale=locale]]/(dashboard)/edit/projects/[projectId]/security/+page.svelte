@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ProjectFormGroup from '../../../../../../../lib/components/DashboardFormGroup.svelte';
+	import ProjectFormGroup from '../../../../../../../lib/components/DashboardFormSection.svelte';
 </script>
 
 <!-- <ProjectForm {enhance}> -->

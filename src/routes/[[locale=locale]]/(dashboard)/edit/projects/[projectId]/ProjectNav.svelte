@@ -4,7 +4,7 @@
 	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { AlertTriangle, Shield, Users2 } from 'lucide-svelte';
+	import { AlertTriangle, Eye, Users2 } from 'lucide-svelte';
 
 	$: projectId = $page.params.projectId;
 
@@ -28,7 +28,7 @@
 			settings: {
 				heading: 'Paramètres',
 				sharing: 'Partage des permissions',
-				visibility: 'Visibilité et diffusion',
+				visibility: 'Visibilité & diffusion',
 				danger: 'Zone à risque',
 			},
 		},
@@ -48,8 +48,8 @@
 			},
 			settings: {
 				heading: 'Settings',
-				sharing: 'Partage des permissions',
-				visibility: 'Visibilité et diffusion',
+				sharing: 'Sharing & permissions',
+				visibility: 'Visibility & publication',
 				danger: 'Danger zone',
 			},
 		},
@@ -97,7 +97,7 @@
 	</DashboardNavItem>
 	<DashboardNavItem {...$link(`/edit/projects/${projectId}/publishing#dashboard-content`)}>
 		{$t.settings.visibility}
-		<Shield class="button-icon" />
+		<Eye class="button-icon" />
 	</DashboardNavItem>
 	<DashboardNavItem {...$link(`/edit/projects/${projectId}/security#dashboard-content`)} danger>
 		{$t.settings.danger}

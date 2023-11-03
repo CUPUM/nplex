@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { createTranslations } from '$lib/i18n/translate';
-	import { composeMeshgradient } from '$lib/utils/mesh-gradient';
 
 	const t = createTranslations({
 		fr: {
@@ -13,7 +12,7 @@
 </script>
 
 <article>
-	<header style:background={composeMeshgradient({ opacity: [0.25, 0.5], nodes: [5, 7] })}>
+	<header>
 		<h1 class="heading lg">{$t.heading}</h1>
 	</header>
 	<slot />
@@ -24,6 +23,8 @@
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
+		border-radius: inherit;
+		background-color: var(--dashboard-base-bg);
 	}
 
 	header {

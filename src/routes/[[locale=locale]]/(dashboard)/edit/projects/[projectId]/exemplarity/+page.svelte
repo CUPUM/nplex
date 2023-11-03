@@ -8,7 +8,7 @@
 	import { scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
 	import ProjectForm from '../../../../../../../lib/components/DashboardForm.svelte';
-	import ProjectFormGroup from '../../../../../../../lib/components/DashboardFormGroup.svelte';
+	import ProjectFormGroup from '../../../../../../../lib/components/DashboardFormSection.svelte';
 	import { projectT } from '../translations';
 
 	export let data;

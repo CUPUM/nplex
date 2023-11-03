@@ -6,21 +6,21 @@ import { getEventLocale } from './event';
 
 type Translations<T> = Record<LocaleDefault, T> & Record<Locale, T & object>;
 
-/**
- * To do: fix typing.
- */
-type Dictionnary<T = unknown> = Record<string | number | symbol, T>;
+// /**
+//  * To do: fix typing.
+//  */
+// type Dictionnary<T = unknown> = Record<string | number | symbol, T>;
 
-/**
- * To do: fix typing.
- */
-type Dictionnaries<D extends Dictionnary> = {
-	[K in keyof D]: D[K] extends Locale
-		? Translations<D[K]>
-		: D[K] extends Dictionnary
-		? Dictionnaries<D[K]>
-		: never;
-};
+// /**
+//  * To do: fix typing.
+//  */
+// type Dictionnaries<D extends Dictionnary> = {
+// 	[K in keyof D]: D[K] extends Locale
+// 		? Translations<D[K]>
+// 		: D[K] extends Dictionnary
+// 		? Dictionnaries<D[K]>
+// 		: never;
+// };
 
 /**
  * Get dictionnary by locale key, fall back to default locale if not available.
@@ -55,10 +55,7 @@ function createDerivedTranslations<T>(translations: Translations<T>) {
  * Note that the `& object` in the second record type of the intersection prevents further inference
  * of `T` and instead allows the default locale's dictionnary to serve as the source of truth.
  *
- * @example
- * 	const t = createTranslation(translationsObject)
- * 	...
- * 	<h1>{$t('header.title')}</h1>
+ * @example Const t = createTranslation(translationsObject) ... <h1>{$t('header.title')}</h1>
  *
  * @warning Ugly function overloading is only way to narrow generic type in returned value.
  * @see https://github.com/microsoft/TypeScript/issues/33014
@@ -105,25 +102,9 @@ export function eventCreateTranslations(event: RequestEvent | ServerLoadEvent | 
 }
 
 /**
- * Simple helper to define locale-isomorphic translations dictionnary without creating new stores or
- * anything. Results should be feedable into the $t derived singleton store.
+ * Simple typed helper to define locale-isomorphic translations dictionnary without creating new
+ * stores or anything.
  */
-export function defineTranslations<T extends Dictionnary>(dictionnaries: Dictionnaries<T>) {
-	return dictionnaries;
+export function defineTranslations<T>(translations: Translations<T>) {
+	return translations;
 }
-
-/**
- * Alternative approach using a derived function that simply gets the locale from a Record<Locale,
- * any> object. This looser approach enables easier sharing of translation messages across the app.
- *
- * @example
- * 	<a ...>$t(home.nav.loginButton)</a>
- */
-export const t = derived(page, ($page) => {
-	/**
-	 * Get contextually accurate translation.
-	 */
-	return function t<T>(translations: Translations<T>) {
-		return translations[$page.data.locale];
-	};
-});

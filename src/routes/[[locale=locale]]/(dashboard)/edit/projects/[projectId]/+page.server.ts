@@ -1,14 +1,14 @@
 import { withAuth } from '$lib/auth/guard.server';
-import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
+import { selectProjectSiteOwnerships, selectProjectTypes } from '$lib/db/queries.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
 import { TRUE, excluded } from '$lib/db/sql.server';
-import { reduceTranslations } from '$lib/db/utils';
+import { withTranslations } from '$lib/db/utils';
+import { tt } from '$lib/i18n/translations';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { error, fail } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
-import { superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	const session = await withAuth(event);
@@ -20,39 +20,57 @@ export const load = async (event) => {
 			notFound: `No project found for id ${event.params.projectId}.`,
 		},
 	});
-	try {
-		const rawProject = await dbpool.query.projects.findFirst({
-			where(fields, op) {
-				// To do: add some authorization check related to session.user.id.
-				return op.and(authorizeProjectUpdate(session), op.eq(fields.id, event.params.projectId));
-			},
-			with: {
-				translations: true,
-				interventions: { columns: { interventionId: true } },
-			},
-		});
-		if (!rawProject) {
-			throw error(STATUS_CODES.NOT_FOUND, t.notFound);
-		}
-		const { interventions, ...restProject } = rawProject;
-		const project = reduceTranslations({
-			...restProject,
-			interventionIds: interventions.map((pi) => pi.interventionId),
-		});
-		const form = superValidate(project, projectGeneralUpdateSchema);
-		return { form };
-	} catch (e) {
-		console.error(e);
-		throw error(STATUS_CODES.INTERNAL_SERVER_ERROR);
-	}
+
+	// const p = dbpool.select({ id: projects.id }).from(projects).as('p');
+
+	// type C = (typeof p)['_']['selectedFields']['']
+
+	const [test] = await withTranslations(projects, projectsTranslations, {
+		field: (t) => t.id,
+		reference: (tt) => tt.id,
+		translationsSelection: ({ title }) => ({ title }),
+	});
+
+	console.log(test.translations);
+
+	// const [project] = await withTranslations(projects, projectsTranslations, (t, tt) => ({
+	// 	field: t.id,
+	// 	reference: tt.id,
+	// }))
+	// 	.where(and(authorizeProjectUpdate(session), eq(projects.id, event.params.projectId)))
+	// 	.limit(1);
+	// if (!project) {
+	// 	throw error(STATUS_CODES.NOT_FOUND, t.notFound);
+	// }
+	// const interventions = await dbpool
+	// 	.select({
+	// 		interventionId: projectsInterventions.interventionId,
+	// 	})
+	// 	.from(projectsInterventions)
+	// 	.where(eq(projectsInterventions.projectId, event.params.projectId));
+	// const form = superValidate(
+	// 	{ ...project, interventionIds: interventions.map((i) => i.interventionId) },
+	// 	projectGeneralUpdateSchema
+	// );
+	return {
+		// form,
+		descriptors: {
+			types: selectProjectTypes(event),
+			siteOwnerships: selectProjectSiteOwnerships(event),
+		},
+	};
 };
 
 export const actions = {
 	update: async (event) => {
 		await withAuth(event);
+		const t = event.locals.createTranslations({
+			fr: tt.fr.editor,
+			en: tt.en.editor,
+		});
 		const form = await superValidate(event, projectGeneralUpdateSchema);
 		if (!form.valid) {
-			return fail(STATUS_CODES.BAD_REQUEST);
+			return message(form, [t.invalid]);
 		}
 		try {
 			const { translations, interventionIds, ...project } = form.data;
@@ -89,9 +107,10 @@ export const actions = {
 						});
 				}
 			});
+			return message(form, [t.success]);
 		} catch (e) {
 			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });
+			return message(form, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
 	},
 };

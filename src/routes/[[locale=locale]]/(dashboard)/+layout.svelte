@@ -60,9 +60,9 @@
 			<svelte:component this={$page.data.dashboard.sidebar} />
 		</div>
 	{/if}
-	<section in:scale={{ start: 0.98, duration: 350, easing: expoOut }} id="dashboard-content">
+	<div in:scale={{ start: 0.98, duration: 350, easing: expoOut }} id="dashboard-content">
 		<slot />
-	</section>
+	</div>
 </article>
 <aside>
 	<section class="editables">
@@ -148,10 +148,6 @@
 		scroll-margin-block-start: var(--navbar-sticky);
 		grid-column: 2 / 3;
 		border-radius: var(--radius-lg);
-		/* background-color: var(--color-neutral-50); */
-		:global(:--dark) & {
-			/* background-color: var(--color-neutral-800); */
-		}
 	}
 
 	.editables {

@@ -196,6 +196,7 @@
 							{#each LOCALES_ARR as locale}
 								<NavbarMenuButton
 									{...$i18nswitch(locale)}
+									data-sveltekit-reload
 									melt={localeItem}
 									data-current={$page.data.locale === locale ? true : undefined}
 								>

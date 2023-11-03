@@ -2,7 +2,12 @@
 	export let data;
 </script>
 
-<article>Hello world</article>
+<section>
+	<span class="text sm dimmer">To come</span>
+</section>
 
 <style lang="postcss">
+	section {
+		padding: 2rem;
+	}
 </style>

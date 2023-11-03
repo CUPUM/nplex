@@ -18,7 +18,9 @@ export function authorizePublicProjectSelect(session?: Session, db: Db = dbpool)
 	return TRUE();
 }
 
-/** Authorization framing for project updates. */
+/**
+ * Authorization framing for project updates.
+ */
 export function authorizeProjectUpdate(session: Session, db: Db = dbpool) {
 	if (session.user.role === USER_ROLES.ADMIN) {
 		return TRUE();
@@ -37,7 +39,9 @@ export function authorizeProjectUpdate(session: Session, db: Db = dbpool) {
 	);
 }
 
-/** Authorization to control updatability of a project's collaborators listing. */
+/**
+ * Authorization to control updatability of a project's collaborators listing.
+ */
 export function authorizeProjectUsersUpdate(session: Session, db: Db = dbpool) {
 	if (session.user.role === USER_ROLES.ADMIN) {
 		return TRUE();
@@ -45,7 +49,9 @@ export function authorizeProjectUsersUpdate(session: Session, db: Db = dbpool) {
 	return eq(projects.createdById, session.user.id);
 }
 
-/** Authorization for project publication status update. */
+/**
+ * Authorization for project publication status update.
+ */
 export function authorizeProjectPublicationUpdate(session: Session) {
 	if (session.user.role === USER_ROLES.ADMIN) {
 		return TRUE();

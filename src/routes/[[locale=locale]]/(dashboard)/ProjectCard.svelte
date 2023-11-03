@@ -84,7 +84,6 @@
 	}
 
 	.banner-placeholder {
-		background-color: var(--color-neutral-300);
 		opacity: 0.25;
 		display: flex;
 		align-items: center;
@@ -92,6 +91,11 @@
 		padding: 2rem;
 		gap: 0.5em;
 		flex-direction: row;
+		background-color: var(--color-neutral-300);
+		:global(:--dark) & {
+			background-color: var(--color-neutral-700);
+		}
+
 		:global(svg) {
 			stroke-width: 2;
 			width: 1em;
@@ -112,6 +116,9 @@
 		border-radius: inherit;
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
-		background-color: white;
+		background-color: var(--color-neutral-50);
+		:global(:--dark) & {
+			background-color: var(--color-neutral-950);
+		}
 	}
 </style>

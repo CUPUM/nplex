@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { SuperForm } from '$lib/forms/super-form';
-
 	import type { ZodValidation } from 'sveltekit-superforms';
 	import type { AnyZodObject } from 'zod';
 
@@ -24,19 +23,16 @@
 
 <style lang="postcss">
 	form {
-		border-radius: inherit;
-		border-bottom-left-radius: 0px;
-		border-bottom-right-radius: 0px;
+		background-color: var(--dashboard-base-bg);
+		border-radius: var(--radius-lg);
+		display: flex;
+		flex-direction: column;
+		gap: var(--base-gutter);
 	}
 
 	header {
 		padding: 3rem;
-		padding-top: 1rem;
-		background-color: rgba(255, 255, 255, 0.5);
-		border-radius: inherit;
-		:global(:--dark) & {
-			background-color: color-mix(in srgb, var(--color-neutral-950) 20%, transparent);
-		}
+		border-bottom: var(--base-border);
 	}
 
 	.content {

@@ -36,6 +36,14 @@ textarea.input {
 	align-items: center;
 	border-radius: var(--input-radius);
 
+	&:disabled,
+	&[data-disabled],
+	&[aria-disabled] {
+		opacity: 0.75;
+		cursor: default;
+		pointer-events: none;
+	}
+
 	&:has(textarea) {
 		flex-direction: column;
 		height: auto;
@@ -98,6 +106,8 @@ textarea.input {
 		width: 1.1em;
 		stroke-width: 2.25;
 		opacity: 0.5;
+		user-select: none;
+		pointer-events: none;
 		transition:
 			opacity var(--duration-medium) ease-out,
 			transform var(--duration-fast) ease-out;

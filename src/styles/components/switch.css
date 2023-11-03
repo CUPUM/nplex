@@ -84,9 +84,9 @@ Multiple-choice labeled switch.
 		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 
 		.switch-thumb {
-			background-color: var(--color-neutral-900);
+			background-color: var(--color-neutral-50);
 			:--dark & {
-				background-color: var(--color-neutral-100);
+				background-color: var(--color-neutral-900);
 			}
 		}
 
@@ -110,9 +110,11 @@ Multiple-choice labeled switch.
 			&[data-state='active'],
 			&:has(:checked) {
 				pointer-events: none;
-				color: var(--color-neutral-300);
+				color: var(--color-neutral-900);
+				box-shadow: var(--shadow-md);
 				:--dark & {
-					color: var(--color-neutral-700);
+					box-shadow: none;
+					color: var(--color-neutral-100);
 				}
 			}
 		}
