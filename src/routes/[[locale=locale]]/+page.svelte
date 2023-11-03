@@ -1,20 +1,24 @@
 <script lang="ts">
-	import Loading from '$lib/components/Loading.svelte';
+	import { page } from '$app/stores';
+	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
+	import { User2 } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { circInOut, expoOut } from 'svelte/easing';
-	import { fade, fly } from 'svelte/transition';
 
 	export let data;
 
 	const t = createTranslations({
 		fr: {
-			heading: 'Bientôt disponible',
-			subheading: 'Nous dévoilerons bientôt la plateforme Nplex et ses projets. Restez à l’affut!',
+			title: 'Bienvenue sur Nplex',
+			createAccount: 'Créez votre compte dès maintenant !',
+			browseProjects: 'Explorez les projets récents',
+			browseOrgs: 'Explorez les organisations',
 		},
 		en: {
-			heading: 'Coming soon',
-			subheading: 'We will soon publish the Nplex app and its projects. Stay tuned!',
+			title: 'Welcome to Nplex',
+			createAccount: 'Create your account now!',
+			browseProjects: 'Browse recent projects',
+			browseOrgs: 'Browse organizations',
 		},
 	});
 
@@ -26,30 +30,25 @@
 </script>
 
 <article>
-	{#if mounted}
-		<div class="anim" in:fade={{ duration: 1500, easing: circInOut, delay: 500 }}>
-			<Loading
-				thickness=".75"
-				speed={0.025}
-				trail={false}
-				outro={false}
-				intro={false}
-				offset="-{Math.random() * 50}s"
-			/>
-		</div>
-		<header>
-			<h1 class="heading xl center" in:fly={{ y: 4, duration: 750, easing: expoOut }}>
-				{$t.heading}
-			</h1>
-			<p class="prose sm center" in:fly={{ y: -4, duration: 750, delay: 100, easing: expoOut }}>
-				{$t.subheading}
-			</p>
-		</header>
+	<header>
+		<h1>{$t.title}</h1>
+	</header>
+	{#if !$page.data.user}
+		<section class="hero">
+			<!-- svelte-ignore a11y-missing-attribute -->
+			<a class="button cta" {...$link('/signup')}>
+				{$t.createAccount}
+				<User2 class="button-icon" />
+			</a>
+		</section>
 	{/if}
+	<section class="hero">
+		<a class="button" {...$link('/projects')}>{$t.browseProjects}</a>
+		<a class="button" {...$link('/organizations')} aria-disabled>{$t.browseOrgs}</a>
+	</section>
 </article>
 
-<!-- <header></header>
-<article>
+<!-- <article>
 	<h2>Projects</h2>
 	<section>
 		<h3>Featured</h3>
@@ -82,52 +81,31 @@
 
 <style lang="postcss">
 	article {
-		--voffset: calc(var(--navbar-height) / 2);
-		flex: 1;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		position: relative;
-		padding-bottom: var(--voffset);
+		min-height: calc(100vh - var(--navbar-height));
+		padding-bottom: var(--navbar-height);
 	}
 
 	header {
-		position: relative;
-		max-width: var(--width-sm);
 		padding: 2rem;
-		&::after {
-			z-index: -1;
-			content: '';
-			position: absolute;
-			width: 100%;
-			aspect-ratio: 1;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			border-radius: 50%;
-			filter: blur(40px);
-			opacity: 0.8;
-			background-color: var(--base-bg);
-			transition: all var(--duration-fast) ease-out;
-		}
-
-		h1 {
-			margin: 0;
-		}
-
-		p {
-			color: var(--color-neutral-500);
-		}
 	}
 
-	.anim {
-		/* opacity: 0.5; */
-		position: absolute;
-		inset: 0;
-		font-size: 24em;
-		color: var(--color-primary-500);
-		z-index: -2;
-		margin-top: calc(-1 * var(--voffset));
+	h1 {
+		font-size: var(--size-4xl);
+		font-weight: 500;
+	}
+
+	.hero {
+		font-size: var(--size-sm);
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem;
+		gap: var(--base-gutter);
 	}
 </style>

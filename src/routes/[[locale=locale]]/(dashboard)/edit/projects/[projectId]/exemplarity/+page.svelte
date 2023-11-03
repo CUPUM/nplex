@@ -9,7 +9,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import ProjectForm from '../../../../../../../lib/components/DashboardForm.svelte';
 	import ProjectFormGroup from '../../../../../../../lib/components/DashboardFormSection.svelte';
-	import { projectT } from '../translations';
+	import { pt } from '../translations';
 
 	export let data;
 
@@ -75,7 +75,7 @@
 				use:loading
 				transition:scale={{ start: 0.95, opacity: 0, easing: expoOut, duration: 150 }}
 			>
-				<Save class="button-icon" />{$projectT.save}
+				<Save class="button-icon" />{$pt.save}
 			</button>
 		{/if}
 	</DashboardMenu>

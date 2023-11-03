@@ -14,8 +14,8 @@
 
 .pattern-cross {
 	--pattern-color: color-mix(in srgb, var(--color-neutral-500) 50%, transparent);
-	--pattern-thickness: 1px;
-	--pattern-size: 4.5rem;
+	--pattern-thickness: 0.8px;
+	--pattern-size: 3rem;
 	--_thickness: calc(var(--pattern-thickness) / 2);
 	--_offset: var(--pattern-thickness);
 	background: radial-gradient(
