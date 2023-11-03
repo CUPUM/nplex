@@ -95,7 +95,7 @@
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.441.0",
 		"@aws-sdk/s3-presigned-post": "^3.441.0",
-		"@lucia-auth/adapter-postgresql": "^2.0.1",
+		"@lucia-auth/adapter-postgresql": "^2.0.2",
 		"@lucia-auth/oauth": "^3.4.0",
 		"@melt-ui/svelte": "^0.57.3",
 		"@neondatabase/serverless": "^0.6.0",
@@ -105,7 +105,7 @@
 		"drizzle-zod": "^0.5.1",
 		"js-cookie": "^3.0.5",
 		"lucia": "^2.7.3",
-		"lucide-svelte": "^0.291.0",
+		"lucide-svelte": "^0.292.0",
 		"nodemailer": "^6.9.7",
 		"svelte-email": "^0.0.4",
 		"sveltekit-flash-message": "^2.2.1",

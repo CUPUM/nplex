@@ -19,9 +19,9 @@ export const auth = lucia({
 	env: dev ? 'DEV' : 'PROD',
 	middleware: sveltekit(),
 	adapter: pg(pool, {
-		user: getTableName(users, { quotes: 'inner', withSchema: true }),
-		session: getTableName(sessions, { quotes: 'inner', withSchema: true }),
-		key: getTableName(keys, { quotes: 'inner', withSchema: true }),
+		user: getTableName(users, { withSchema: true }),
+		session: getTableName(sessions, { withSchema: true }),
+		key: getTableName(keys, { withSchema: true }),
 	}),
 	getUserAttributes(data) {
 		return {

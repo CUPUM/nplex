@@ -17,8 +17,8 @@ dependencies:
     specifier: ^3.441.0
     version: 3.441.0
   '@lucia-auth/adapter-postgresql':
-    specifier: ^2.0.1
-    version: 2.0.1(lucia@2.7.3)(postgres@3.4.3)
+    specifier: ^2.0.2
+    version: 2.0.2(lucia@2.7.3)(postgres@3.4.3)
   '@lucia-auth/oauth':
     specifier: ^3.4.0
     version: 3.4.0(lucia@2.7.3)
@@ -47,8 +47,8 @@ dependencies:
     specifier: ^2.7.3
     version: 2.7.3
   lucide-svelte:
-    specifier: ^0.291.0
-    version: 0.291.0(svelte@4.2.2)
+    specifier: ^0.292.0
+    version: 0.292.0(svelte@4.2.2)
   nodemailer:
     specifier: ^6.9.7
     version: 6.9.7
@@ -1481,8 +1481,8 @@ packages:
     resolution: {integrity: sha512-4KBSyaMj65d8A+2vnzLxtHFu4OmBU4IKO0yLxZ171Itdf9jGV4w+WbG7VsKts2jUdRkFSzsZqpZOz6hTB3qGAw==}
     dev: false
 
-  /@lucia-auth/adapter-postgresql@2.0.1(lucia@2.7.3)(postgres@3.4.3):
-    resolution: {integrity: sha512-HrgyCsHXEWMD3oF2vSzbqucwGR9zCNvsV5MTV/J3EkiTHskjJXRoVqIoOONeLsdBTy+nIciyoWNMAYe9LJj3tA==}
+  /@lucia-auth/adapter-postgresql@2.0.2(lucia@2.7.3)(postgres@3.4.3):
+    resolution: {integrity: sha512-gQ7SlFu+gxQj2IX2J8ZVivcLBbdnf9SbNQOVWkJxZOdY1uaaIQGeNfEDld2Awy02VrXmA4sjHsbkJx1JPVw2+A==}
     peerDependencies:
       lucia: ^2.0.0
       pg: ^8.8.0
@@ -5234,8 +5234,8 @@ packages:
       nanoid: 5.0.1
     dev: false
 
-  /lucide-svelte@0.291.0(svelte@4.2.2):
-    resolution: {integrity: sha512-35POz2Prh1K7I3q35wjpVvyDN4ofhPKl3q9SCZMeNhZpcAOY0Ay66OAEOUTj0IZyM7QyynJr7J4vgUedhXv5fw==}
+  /lucide-svelte@0.292.0(svelte@4.2.2):
+    resolution: {integrity: sha512-bnTpg9pbm6pQDc+YiLK2yxtRFk2Cc+hbzwjAPaV85k56x10CJ9LsXjon6wRrlNTSdxJR7GOsRjz0A5ZNu3Z7dg==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
