@@ -4,7 +4,7 @@ import { dbpool } from '$lib/db/db.server';
 import { selectProjectSiteOwnerships, selectProjectTypes } from '$lib/db/queries.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
 import { TRUE, excluded } from '$lib/db/sql.server';
-import { withTranslations } from '$lib/db/utils';
+import { withTranslation, withTranslations } from '$lib/db/utils';
 import { tt } from '$lib/i18n/translations';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { and, eq, notInArray } from 'drizzle-orm';
@@ -32,6 +32,14 @@ export const load = async (event) => {
 	});
 
 	console.log(test.translations);
+
+	const [test2] = await withTranslation(event, projects, projectsTranslations, {
+		field: (t) => t.id,
+		reference: (tt) => tt.id,
+		selection: ({ id, title }) => ({ id, title }),
+	});
+
+	console.log(test2);
 
 	// const [project] = await withTranslations(projects, projectsTranslations, (t, tt) => ({
 	// 	field: t.id,

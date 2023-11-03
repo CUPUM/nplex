@@ -1,5 +1,5 @@
 import { LOCALES_ARR, type Locale } from '$lib/i18n/constants';
-import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
+import type { RequestEvent } from '@sveltejs/kit';
 import {
 	Column,
 	SQL,
@@ -14,11 +14,12 @@ import {
 import {
 	PgTable,
 	getTableConfig,
+	type SelectedFields,
 	type SubqueryWithSelection,
 	type WithSubqueryWithSelection,
 } from 'drizzle-orm/pg-core';
-import type { Entries, ValueOf } from 'type-fest';
-import { dbpool, type DbHttp, type DbPool } from './db.server';
+import type { Entries, Merge, ValueOf } from 'type-fest';
+import { dbpool } from './db.server';
 import { locales, type TranslationLocaleColumn } from './schema/i18n';
 import {
 	TRUE,
@@ -99,20 +100,31 @@ export function getLocalizedField<F extends SQL | Column>(field: F) {
 export function withTranslation<
 	T extends AnyTable,
 	TT extends AnyTable & { [K in keyof TranslationLocaleColumn]: AnyColumn },
-	J extends { field: ValueOf<T['_']['columns']>; reference: ValueOf<TT['_']['columns']> },
+	F extends ValueOf<T['_']['columns']>,
+	R extends ValueOf<TT['_']['columns']>,
+	M = Merge<TT['_']['columns'], T['_']['columns']>,
+	S extends SelectedFields = Merge<TT['_']['columns'], T['_']['columns']>,
 >(
-	event: RequestEvent | ServerLoadEvent,
+	event: RequestEvent,
 	table: T,
 	translationsTable: TT,
-	join: J | ((table: T, translationsTable: TT) => J),
-	db: DbHttp | DbPool = dbpool
+	{
+		field: f,
+		reference: r,
+		selection: s = (f) => f as unknown as S,
+	}: {
+		field: F | ((selection: T) => F);
+		reference: R | ((translationsSelection: TT) => R);
+		selection?: S | ((columns: M) => S);
+	}
 ) {
-	const { field, reference } = join instanceof Function ? join(table, translationsTable) : join;
-	return db
-		.select({
-			...getTableColumns(table),
-			...getTableColumns(translationsTable),
-		})
+	const field = f instanceof Function ? f(table) : f;
+	const reference = r instanceof Function ? r(translationsTable) : r;
+	const columns = getTableColumns(table);
+	const translationColumns = getTableColumns(translationsTable);
+	const selection = s instanceof Function ? s({ ...translationColumns, ...columns } as M) : s;
+	return dbpool
+		.select(selection)
 		.from(table)
 		.leftJoin(
 			translationsTable,
@@ -158,7 +170,6 @@ export function withTranslations<
 	const translationsKey =
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		translationsEntries.find(([k, v]) => v === reference)![0];
-
 	return dbpool
 		.select({
 			...selection,
