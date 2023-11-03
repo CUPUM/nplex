@@ -40,17 +40,12 @@ export function getTableName<T extends PgTable>(
 		quotes = true,
 	}: {
 		withSchema?: boolean;
-		/**
-		 * Should the table name be returned with quotes? 'inner' means outside quotes are omitted,
-		 * useful for when passing values to libraries that naively quote the given table name,
-		 */
-		quotes?: boolean | 'inner';
+		quotes?: boolean;
 	} = {}
 ) {
 	const tableConfig = getTableConfig(table);
-	const qo = quotes && quotes !== 'inner' ? '"' : '';
-	const qi = quotes ? '"' : '';
-	return `${qo}${withSchema ? `${tableConfig.schema}${qi}.` : ''}${qi}${tableConfig.name}${qo}`;
+	const q = quotes ? '"' : '';
+	return `${withSchema ? `${q}${tableConfig.schema}${q}.` : ''}${q}${tableConfig.name}${q}`;
 }
 
 /**
