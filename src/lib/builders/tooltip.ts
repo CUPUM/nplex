@@ -12,10 +12,11 @@ export function createTooltip(props?: CreateTooltipProps) {
 			gutter: 10,
 			...positioning,
 		},
-		group: TOOLTIP_GROUPS.ROOT,
+		// group: TOOLTIP_GROUPS.ROOT,
 		forceVisible: true,
-		openDelay: 350,
-		closeDelay: 250,
+		openDelay: 150,
+		closeDelay: 0,
+		closeOnPointerDown: true,
 		...tooltipProps,
 	});
 }

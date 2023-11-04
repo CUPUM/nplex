@@ -113,7 +113,6 @@
 
 	#dashboard-header {
 		grid-column: 1 / -1;
-		margin-bottom: var(--base-gap);
 		border-radius: var(--radius-xl);
 		z-index: -1;
 		transform-origin: bottom center;
@@ -145,9 +144,15 @@
 	}
 
 	#dashboard-content {
+		margin-top: var(--base-gap);
 		scroll-margin-block-start: var(--navbar-sticky);
 		grid-column: 2 / 3;
 		border-radius: var(--radius-lg);
+		display: flex;
+		flex-direction: column;
+		gap: var(--base-gap);
+		min-height: calc(100vh - var(--navbar-sticky));
+		min-height: calc(100svh - var(--navbar-sticky));
 	}
 
 	.editables {

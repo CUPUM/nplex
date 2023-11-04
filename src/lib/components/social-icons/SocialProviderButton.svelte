@@ -62,4 +62,7 @@
 </TooltipContent>
 
 <style lang="postcss">
+	[data-disabled] .provider-icon {
+		opacity: 0.35;
+	}
 </style>

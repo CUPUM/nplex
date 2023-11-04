@@ -3,6 +3,7 @@
 </script>
 
 <section>
+	<p class="text dimmer sm">To come</p>
 	<ul>
 		{#each data.likedProjects as project}
 			{project.id}
@@ -11,4 +12,7 @@
 </section>
 
 <style lang="postcss">
+	section {
+		padding: 2rem;
+	}
 </style>

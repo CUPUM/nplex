@@ -1,7 +1,50 @@
-<script lang="ts">
+<script lang="ts" generics="T extends AnyZodObject">
+	import type { LoadableSubmitter } from '$lib/builders/loading';
+	import { createTranslations } from '$lib/i18n/translate';
+	import { tt } from '$lib/i18n/translations';
+	import { melt } from '@melt-ui/svelte';
+	import { SaveAll } from 'lucide-svelte';
+	import { cubicOut, expoOut } from 'svelte/easing';
+	import type { Writable } from 'svelte/store';
+	import { fly, scale } from 'svelte/transition';
+	import type { TaintedFields } from 'sveltekit-superforms';
+	import type { AnyZodObject } from 'zod';
+
+	const t = createTranslations({
+		fr: {
+			save: tt.fr.editor.client.save,
+		},
+		en: {
+			save: tt.en.editor.client.save,
+		},
+	});
+
+	export let tainted: Writable<TaintedFields<T> | undefined>;
+	export let submitter: LoadableSubmitter['elements']['root'];
+	export let formaction: string | undefined = undefined;
+	export let form: string | undefined = undefined;
+	export let disabled: boolean | null | undefined = undefined;
+
+	let submitRef: HTMLButtonElement;
 </script>
 
 <menu>
+	{#if $tainted}
+		<button
+			class="button cta"
+			type="submit"
+			{formaction}
+			{form}
+			disabled={disabled || undefined}
+			in:fly={{ y: 6, duration: 250, easing: expoOut }}
+			out:scale={{ start: 0.95, duration: 200, easing: cubicOut }}
+			bind:this={submitRef}
+			use:melt={$submitter(submitRef)}
+		>
+			{$t.save}
+			<SaveAll class="button-icon" />
+		</button>
+	{/if}
 	<slot />
 </menu>
 

@@ -1,10 +1,20 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { LOCALES } from '$lib/i18n/constants';
+	import { createTranslations } from '$lib/i18n/translate';
 	import { SETOUTS } from '$lib/setout/constants';
 	import { slide } from 'svelte/transition';
 	import CupumUdem from './partners-logos/CupumUdem.svelte';
 	import MontrealQuebec from './partners-logos/MontrealQuebec.svelte';
+
+	const t = createTranslations({
+		fr: {
+			cc: 'Chaire UNESCO en paysage urbain',
+		},
+		en: {
+			cc: 'UNESCO Chaire in Urban Landscape',
+		},
+	});
 </script>
 
 {#if $page.data.setout !== SETOUTS.FULL_SCREEN}
@@ -19,7 +29,7 @@
 						<CupumUdem class="footer-logo" />
 					</a>
 				</li>
-				<hr class="hr" />
+				<!-- <hr class="hr" /> -->
 				<li>
 					<a
 						href="https://montreal.ca/unites/bureau-du-design{$page.data.locale === LOCALES.ENGLISH
@@ -33,6 +43,9 @@
 			</ul>
 			<ul class="links"></ul>
 		</div>
+		<section id="footer-cc">
+			<span>© {$t.cc}</span>
+		</section>
 	</footer>
 {/if}
 
@@ -66,7 +79,7 @@
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		gap: 3rem;
+		gap: 5rem;
 		font-size: var(--size-xs);
 
 		hr {
@@ -87,5 +100,11 @@
 				color: var(--color-primary-500);
 			}
 		}
+	}
+
+	#footer-cc {
+		font-size: var(--size-xs);
+		opacity: 0.35;
+		margin-top: 2rem;
 	}
 </style>

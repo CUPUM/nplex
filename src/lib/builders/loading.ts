@@ -78,6 +78,7 @@ export const createLoadable = ({ state, disable = true, ...props }: LoadableProp
 		},
 	};
 };
+export type Loadable = ReturnType<typeof createLoadable>;
 
 /**
  * Loadable node based on a given form event submitter. Requires passing a ref to the current node
@@ -118,6 +119,7 @@ export function createLoadableSubmitter({
 		},
 	};
 }
+export type LoadableSubmitter = ReturnType<typeof createLoadableSubmitter>;
 
 function getNodeFormaction(node: HTMLElement) {
 	if ('formaction' in node && node.formaction != null) {
@@ -128,14 +130,12 @@ function getNodeFormaction(node: HTMLElement) {
 	}
 	return node.form.action;
 }
-
 function getFormactionString(formaction?: URL | string | null) {
 	if (formaction instanceof URL) {
 		return formaction.toString();
 	}
 	return formaction;
 }
-
 function matchFormactionString(formaction?: string | null, nodeFormaction?: string) {
 	return nodeFormaction && formaction ? formaction.endsWith(nodeFormaction) : false;
 }
@@ -181,9 +181,9 @@ export function createLoadableFormaction({
 		},
 	};
 }
+export type LoadableFormaction = ReturnType<typeof createLoadableFormaction>;
 
 type LoadableLinkMatcher = ({ href, to }: { href: string; to: NavigationTarget }) => boolean;
-
 function matchLink(
 	navigating: Navigation | null,
 	matcher: LoadableLinkMatcher,
@@ -236,3 +236,4 @@ export function createLoadableLink({
 		},
 	};
 }
+export type LoadableLink = ReturnType<typeof createLoadableLink>;

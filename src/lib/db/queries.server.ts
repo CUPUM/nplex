@@ -1,6 +1,7 @@
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { dbpool } from './db.server';
+import { userRoles, userRolesTranslations } from './schema/accounts';
 import {
 	projectExemplarityCategories,
 	projectExemplarityCategoriesTranslations,
@@ -116,5 +117,12 @@ export function selectProjectImageTemporalities(event: RequestEvent | ServerLoad
 	return withTranslation(event, projectImageTemporalities, projectImageTemporalitiesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
+	});
+}
+
+export function selectUserRoles(event: RequestEvent | ServerLoadEvent) {
+	return withTranslation(event, userRoles, userRolesTranslations, {
+		field: (t) => t.role,
+		reference: (tt) => tt.role,
 	});
 }

@@ -8,6 +8,7 @@
 			login: 'Me connecter',
 			logout: 'Me déconnecter',
 			language: 'Langue',
+			theme: 'Mode d’écran',
 			account: 'Mon compte',
 			edit: {
 				projects: 'Modifier un projet',
@@ -28,6 +29,7 @@
 			login: 'Log in',
 			logout: 'Log out',
 			language: 'Language',
+			theme: 'Screen mode',
 			account: 'My account',
 			edit: {
 				projects: 'Edit a project',
@@ -45,7 +47,7 @@
 
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { onNavigate } from '$app/navigation';
+	import { invalidateAll, onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { breakpoint } from '$lib/breakpoints/breakpoints';
 	import Avatar from '$lib/components/Avatar.svelte';
@@ -158,7 +160,7 @@
 					<NavbarButton {...$link('/about')}>{$t.about}</NavbarButton>
 					<NavbarButton {...$link('/guides')}>{$t.guides}</NavbarButton>
 				{:else}
-					<NavbarButton square melt={drawerTrigger}>
+					<NavbarButton square dialog={drawerTrigger}>
 						<MoreHorizontal class="button-icon" />
 					</NavbarButton>
 					<div use:melt={$drawerPortalled}>
@@ -187,7 +189,7 @@
 			<!-- User nav -->
 			<menu id="user-group" class="navbar-group" in:flyin|global={2}>
 				{#if $breakpoint.lg}
-					<NavbarButton melt={localeTrigger}>
+					<NavbarButton menu={localeTrigger}>
 						<Languages class="button-icon" />
 						<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
 					</NavbarButton>
@@ -196,7 +198,13 @@
 							{#each LOCALES_ARR as locale}
 								<NavbarMenuButton
 									{...$i18nswitch(locale)}
-									data-sveltekit-reload
+									data-sveltekit-noscroll
+									data-sveltekit-replacestate
+									on:click={() => {
+										if ($page.data.locale !== locale) {
+											invalidateAll();
+										}
+									}}
 									melt={localeItem}
 									data-current={$page.data.locale === locale ? true : undefined}
 								>
@@ -240,7 +248,7 @@
 					</NavbarButton>
 				{/if}
 				{#if $page.data.user}
-					<NavbarButton square melt={userTrigger}>
+					<NavbarButton square menu={userTrigger}>
 						<Avatar {...$page.data.user} />
 						{#if !$page.data.user.emailVerified}
 							<div class="badge">

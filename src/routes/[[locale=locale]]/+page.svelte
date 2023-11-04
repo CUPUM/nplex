@@ -31,7 +31,7 @@
 
 <article>
 	<header>
-		<h1>{$t.title}</h1>
+		<h1 class="heading xxl">{$t.title}</h1>
 	</header>
 	{#if !$page.data.user}
 		<section class="hero">
@@ -91,11 +91,6 @@
 
 	header {
 		padding: 2rem;
-	}
-
-	h1 {
-		font-size: var(--size-4xl);
-		font-weight: 500;
 	}
 
 	.hero {

@@ -25,10 +25,12 @@
 	$: action = $melt?.action ?? (() => {});
 </script>
 
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <svelte:element
 	this={href ? 'a' : 'button'}
 	class="navbar-menu-button"
 	use:buttonripple
+	on:click
 	{href}
 	use:action
 	{...$melt}

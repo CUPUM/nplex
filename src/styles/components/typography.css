@@ -34,7 +34,7 @@
 
 .heading.xxl,
 .prose h1 {
-	font-weight: 410;
+	font-weight: 500;
 	font-size: var(--size-5xl);
 	line-height: 1.1;
 }
@@ -42,35 +42,35 @@
 .heading.xl,
 .prose h2 {
 	line-height: 1.1;
-	font-weight: 420;
+	font-weight: 490;
 	font-size: var(--size-4xl);
 }
 
 .heading.lg,
 .prose h3 {
 	line-height: 1.15;
-	font-weight: 4300;
+	font-weight: 480;
 	font-size: var(--size-3xl);
 }
 
 .heading.md,
 .prose h4 {
 	line-height: 1.2;
-	font-weight: 440;
+	font-weight: 470;
 	font-size: var(--size-2xl);
 }
 
 .heading.sm,
 .prose h5 {
 	line-height: 1.275;
-	font-weight: 450;
+	font-weight: 460;
 	font-size: var(--size-xl);
 }
 
 .heading.xs,
 .prose h6 {
 	line-height: 1.35;
-	font-weight: 460;
+	font-weight: 450;
 	font-size: var(--size-lg);
 }
 

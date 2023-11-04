@@ -2,7 +2,7 @@ import { localeSchema } from '$lib/i18n/constants';
 import type { InferSelectModel } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
-import { users } from './schema/accounts';
+import { users, usersRolesRequests } from './schema/accounts';
 import {
 	organizationTypes,
 	organizationTypesTranslations,
@@ -353,3 +353,18 @@ export const usersInsertSchema = createInsertSchema(users, {
 	publicEmail: (s) => s.publicEmail.email(),
 });
 export type SelectUser = InferSelectModel<typeof users>;
+
+export const userGeneralUpdateSchema = usersInsertSchema.pick({
+	firstName: true,
+	middleName: true,
+	lastName: true,
+	publicEmail: true,
+});
+
+export const usersRolesRequestInsertSchema = createInsertSchema(usersRolesRequests);
+
+export const userPermissionsUpdate = z.object({
+	role: usersInsertSchema.shape.role,
+	requestedAt: usersRolesRequestInsertSchema.shape.requestAt.nullable(),
+	requestedRole: usersRolesRequestInsertSchema.shape.requestedRole.nullable(),
+});

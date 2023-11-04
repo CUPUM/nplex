@@ -2,8 +2,9 @@
 	import { ripple } from '$lib/actions/ripple';
 	import { MODES } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
-	import type { DialogElements, DropdownMenuElements } from '@melt-ui/svelte';
+	import type { DialogElements, DropdownMenuElements, TooltipElements } from '@melt-ui/svelte';
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
+	import type { StoresValues } from 'svelte/store';
 
 	type $$Props = (
 		| ({ href: string } & HTMLButtonAttributes)
@@ -11,13 +12,17 @@
 	) & {
 		outline?: boolean;
 		square?: boolean;
-		melt?: DropdownMenuElements['trigger'] | DialogElements['trigger'];
+		tooltip?: StoresValues<TooltipElements['trigger']>;
+		menu?: DropdownMenuElements['trigger'];
+		dialog?: DialogElements['trigger'];
 	};
 
 	export let href: $$Props['href'] = undefined;
 	export let square: $$Props['square'] = undefined;
-	export let melt: $$Props['melt'] = undefined;
 	export let outline: $$Props['outline'] = true;
+	export let tooltip: StoresValues<TooltipElements['trigger']> | undefined = undefined;
+	export let menu: DropdownMenuElements['trigger'] | undefined = undefined;
+	export let dialog: DialogElements['trigger'] | undefined = undefined;
 
 	function navripple(node: HTMLElement) {
 		return ripple(node, {
@@ -26,7 +31,9 @@
 		});
 	}
 
-	$: action = $melt?.action ?? (() => {});
+	$: menuaction = $menu?.action ?? (() => ({}));
+	$: tooltipaction = tooltip?.action ?? (() => ({}));
+	$: dialogaction = $dialog?.action ?? (() => ({}));
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -37,11 +44,15 @@
 	class:no-outline={!outline}
 	{href}
 	use:navripple
-	use:action
-	{...$melt}
-	{...$$restProps}
 	on:pointerdown
 	on:keydown
+	{...$$restProps}
+	use:menuaction
+	{...$menu}
+	use:dialogaction
+	{...$dialog}
+	use:tooltipaction
+	{...tooltip}
 >
 	<slot />
 </svelte:element>

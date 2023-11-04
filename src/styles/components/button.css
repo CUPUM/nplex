@@ -35,10 +35,7 @@ Primitive button style component.
 	&[aria-disabled] {
 		pointer-events: none;
 		cursor: default;
-		color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
-		:--dark & {
-			color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
-		}
+		user-select: none;
 	}
 	&:active,
 	&[data-active] {
@@ -81,6 +78,14 @@ Primitive button style component.
 		background-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 		:--dark & {
 			color: var(--color-neutral-200);
+		}
+		&:disabled,
+		&[data-disabled],
+		&[aria-disabled] {
+			color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
+			:--dark & {
+				color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
+			}
 		}
 		&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
 		&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
@@ -130,6 +135,14 @@ Primitive button style component.
 		border: var(--base-border);
 		:--dark & {
 			color: var(--color-neutral-200);
+		}
+		&:disabled,
+		&[data-disabled],
+		&[aria-disabled] {
+			color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
+			:--dark & {
+				color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
+			}
 		}
 		&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
 		&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
@@ -193,6 +206,14 @@ Primitive button style component.
 		color: var(--color-neutral-700);
 		:--dark & {
 			color: var(--color-neutral-300);
+		}
+		&:disabled,
+		&[data-disabled],
+		&[aria-disabled] {
+			color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
+			:--dark & {
+				color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
+			}
 		}
 		&[data-current],
 		&[aria-expanded='true'] {
