@@ -1,4 +1,8 @@
-import { createLoadableFormaction, createLoadableSubmitter } from '$lib/builders/loading';
+import {
+	createLoadable,
+	createLoadableFormaction,
+	createLoadableSubmitter,
+} from '$lib/builders/loading';
 import { TOAST_TYPES } from '$lib/components/Toast.svelte';
 import { addToast } from '$lib/components/ToastsOutlet.svelte';
 import { createDialog, type CreateDialogProps } from '@melt-ui/svelte';
@@ -17,6 +21,7 @@ export function superForm<
 	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
 	M extends App.Superforms.Message = App.Superforms.Message,
 >(form: SuperValidated<T, M>, options?: FormOptions<UnwrapEffects<T>, M>) {
+	const loading = createLoadable({ disable: true });
 	const submitter = writable<HTMLElement | undefined>(undefined);
 	const loadableSubmitter = createLoadableSubmitter({ disable: true });
 	const unsubSubmitter = submitter.subscribe((value) => {
@@ -31,11 +36,13 @@ export function superForm<
 	const sf = _superForm(form, {
 		...options,
 		async onSubmit(input) {
+			loading.state.set(true);
 			submitter.set(input.submitter ?? undefined);
 			formaction.set(input.action);
 			options?.onSubmit && (await options.onSubmit(input));
 		},
 		async onResult(event) {
+			loading.state.set(false);
 			submitter.set(undefined);
 			formaction.set(undefined);
 			options?.onResult && (await options.onResult(event));
@@ -83,6 +90,7 @@ export function superForm<
 		loadable: {
 			submitter: loadableSubmitter.elements,
 			formaction: loadableFormaction.elements,
+			loading: loading.elements,
 		},
 	};
 }

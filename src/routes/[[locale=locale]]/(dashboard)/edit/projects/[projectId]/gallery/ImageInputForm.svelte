@@ -5,6 +5,7 @@
 	import { createTranslations } from '$lib/i18n/translate';
 	import { IMAGE_FILE_TYPES_ARR } from '$lib/media/constants';
 	import { transformImage } from '$lib/media/utils';
+	import { melt } from '@melt-ui/svelte';
 	import { rgb } from 'color-convert';
 	import { prominent } from 'color.js';
 	import { ImagePlus, Send, X } from 'lucide-svelte';
@@ -92,7 +93,15 @@
 
 	export let data: PageData['insertImagesForm'];
 
-	const { form, errors, enhance } = superForm(data, {
+	const {
+		form,
+		errors,
+		enhance,
+		loadable: {
+			submitter: { root: submitter },
+			loading: { root: loading },
+		},
+	} = superForm(data, {
 		dataType: 'json',
 		resetForm: true,
 		async onSubmit(input) {
@@ -186,6 +195,7 @@
 			class="button cta"
 			type="submit"
 			use:ripple
+			use:melt={$loading}
 			in:fly={{ y: 8, easing: expoOut, duration: 750 }}
 		>
 			{$t.upload}

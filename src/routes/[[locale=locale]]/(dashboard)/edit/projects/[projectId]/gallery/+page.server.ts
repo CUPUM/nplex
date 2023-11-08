@@ -9,12 +9,13 @@ import {
 	projectsImagesTranslations,
 } from '$lib/db/schema/public';
 import { withTranslations } from '$lib/db/utils';
+import { tt } from '$lib/i18n/translations';
 import { s3 } from '$lib/storage/s3.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { DeleteObjectCommand, DeleteObjectsCommand } from '@aws-sdk/client-s3';
 import { error, fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
-import { superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withAuth(event);
@@ -46,10 +47,13 @@ export const actions = {
 	insert: async (event) => {
 		const session = await withAuth(event);
 		const insertImagesForm = await superValidate(event, projectsImagesInsertManySchema);
-		console.log(insertImagesForm.data);
+		const t = event.locals.createTranslations({
+			fr: tt.fr.editor.server,
+			en: tt.en.editor.server,
+		});
 		if (!insertImagesForm.valid) {
 			console.error(insertImagesForm.errors);
-			return fail(STATUS_CODES.BAD_REQUEST, { insertImagesForm });
+			return message(insertImagesForm, [t.invalid]);
 		}
 		try {
 			await dbpool.insert(projectsImages).values(
@@ -120,20 +124,22 @@ export const actions = {
 	 */
 	promote: async (event) => {
 		await withAuth(event);
-		console.log('promoting');
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { bannerId } = galleryUpdateForm.data;
+		const t = event.locals.createTranslations({
+			fr: tt.fr.editor.server,
+			en: tt.en.editor.server,
+		});
 		try {
 			if (!bannerId) {
-				return fail(STATUS_CODES.BAD_REQUEST, { galleryUpdateForm });
+				return message(galleryUpdateForm, [t.invalid], { status: STATUS_CODES.BAD_REQUEST });
 			}
 			await dbpool
 				.update(projects)
 				.set({ bannerId })
 				.where(eq(projects.id, event.params.projectId));
 		} catch (e) {
-			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
+			return message(galleryUpdateForm, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
 	},
 	/**
@@ -143,17 +149,20 @@ export const actions = {
 		await withAuth(event);
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { bannerId } = galleryUpdateForm.data;
+		const t = event.locals.createTranslations({
+			fr: tt.fr.editor.server,
+			en: tt.en.editor.server,
+		});
 		try {
 			if (!bannerId) {
-				return fail(STATUS_CODES.BAD_REQUEST, { galleryUpdateForm });
+				return message(galleryUpdateForm, [t.invalid], { status: STATUS_CODES.BAD_REQUEST });
 			}
 			await dbpool
 				.update(projects)
 				.set({ bannerId: null })
 				.where(and(eq(projects.id, event.params.projectId), eq(projects.bannerId, bannerId)));
 		} catch (e) {
-			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
+			return message(galleryUpdateForm, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
 	},
 };
