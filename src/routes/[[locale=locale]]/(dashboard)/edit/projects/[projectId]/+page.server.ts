@@ -36,6 +36,7 @@ export const load = async (event) => {
 	if (!project) {
 		throw error(STATUS_CODES.NOT_FOUND, t.notFound);
 	}
+	console.log(project);
 	const interventions = await dbpool
 		.select({
 			interventionId: projectsInterventions.interventionId,
@@ -65,6 +66,7 @@ export const actions = {
 		});
 		const form = await superValidate(event, projectGeneralUpdateSchema);
 		if (!form.valid) {
+			console.error(JSON.stringify(form.errors));
 			return message(form, [t.server.invalid]);
 		}
 		try {

@@ -21,13 +21,7 @@ import {
 import type { Entries, Merge, ValueOf } from 'type-fest';
 import { dbpool } from './db.server';
 import { locales, type TranslationLocaleColumn } from './schema/i18n';
-import {
-	TRUE,
-	coalesce,
-	jsonBuildObject,
-	jsonObjectAgg,
-	type FieldSelectRecord,
-} from './sql.server';
+import { TRUE, jsonBuildObject, jsonObjectAgg, type FieldSelectRecord } from './sql.server';
 
 /**
  * Updated version of drizzle-orm's getTableName with config to allow preprending table's schema
@@ -170,15 +164,11 @@ export function withTranslations<
 			...selection,
 			translations: jsonObjectAgg(
 				locales.locale,
-				coalesce(
-					jsonBuildObject(translationsSelection),
-					// rowToJson(translationsTable),
-					jsonBuildObject({
-						...translationsSelection,
-						locale: locales.locale,
-						[translationsKey]: field,
-					})
-				)
+				jsonBuildObject({
+					...translationsSelection,
+					locale: locales.locale,
+					[translationsKey]: field,
+				})
 			).as(`${translationsTableName}_alias`),
 		})
 		.from(table)

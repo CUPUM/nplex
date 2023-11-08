@@ -133,7 +133,7 @@ export const intrange = customType<{
 		return `int${config?.size ?? 4}range`;
 	},
 	fromDriver(value) {
-		if (value === "'empty'") {
+		if (value === 'empty') {
 			return [null, null];
 		}
 		const matches = value.match(/(?<nums>(\d*\.?\d* *, *\d*\.?\d*))/);

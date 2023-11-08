@@ -20,6 +20,9 @@ Primitive input component
 		flex-direction: row;
 		align-items: center;
 		gap: 0.75em;
+		&:active {
+			animation: var(--animation-press);
+		}
 
 		.input-icon {
 			margin: 0;
