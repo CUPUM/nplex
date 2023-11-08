@@ -27,6 +27,10 @@ Multiple-choice labeled switch.
 		}
 	}
 
+	&.rounded {
+		--radius: var(--radius-full);
+	}
+
 	&[data-orientation='vertical'] {
 		flex-direction: column;
 		height: auto;
@@ -82,18 +86,21 @@ Multiple-choice labeled switch.
 	*/
 	&:not(.outlined, .ghost) {
 		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		/* :--dark & {
+			background-color: color-mix(in srgb, var(--color-neutral-950) 50%, transparent);
+		} */
 
 		.switch-thumb {
-			background-color: var(--color-neutral-50);
+			background-color: var(--color-neutral-700);
 			:--dark & {
-				background-color: var(--color-neutral-900);
+				background-color: var(--color-neutral-300);
 			}
 		}
 
 		.switch-item {
-			color: color-mix(in srgb, var(--color-neutral-800) 75%, transparent);
+			color: color-mix(in srgb, var(--color-neutral-700) 75%, transparent);
 			:--dark & {
-				color: color-mix(in srgb, var(--color-neutral-200) 75%, transparent);
+				color: color-mix(in srgb, var(--color-neutral-300) 75%, transparent);
 			}
 			&:hover,
 			&:focus-visible {
@@ -110,11 +117,11 @@ Multiple-choice labeled switch.
 			&[data-state='active'],
 			&:has(:checked) {
 				pointer-events: none;
-				color: var(--color-neutral-900);
-				box-shadow: var(--shadow-md);
+				color: var(--color-neutral-300);
+				/* box-shadow: var(--shadow-md); */
 				:--dark & {
 					box-shadow: none;
-					color: var(--color-neutral-100);
+					color: var(--color-neutral-700);
 				}
 			}
 		}

@@ -6,6 +6,7 @@ import { GEOMETRY_TYPES, SRIDS, type SRID } from '$lib/utils/constants';
 import type { Coordinate } from '$lib/utils/gis';
 import { customType } from 'drizzle-orm/pg-core';
 import type { ReadonlyTuple } from 'type-fest';
+import { z } from 'zod';
 
 /**
  * Implementing our own db-level role type in sync with UserRole in lieu of using a pgEnum to avoid
@@ -109,6 +110,13 @@ export const locale = customType<{ data: Locale; driverData: string }>({
 	},
 });
 
+export const intRangeSchema = z.union([
+	z.tuple([z.number(), z.number()]),
+	z.tuple([z.null(), z.null()]),
+]);
+
+export type IntRangeData = z.infer<typeof intRangeSchema>;
+
 /**
  * Implements postgres int4 / int8 range type.
  *
@@ -117,7 +125,7 @@ export const locale = customType<{ data: Locale; driverData: string }>({
  * @todo Add multiranges if needed.
  */
 export const intrange = customType<{
-	data: [number, number] | [null, null];
+	data: IntRangeData;
 	driverData: string;
 	config: { size: 4 | 8 };
 }>({
@@ -125,7 +133,7 @@ export const intrange = customType<{
 		return `int${config?.size ?? 4}range`;
 	},
 	fromDriver(value) {
-		if (value === 'empty') {
+		if (value === "'empty'") {
 			return [null, null];
 		}
 		const matches = value.match(/(?<nums>(\d*\.?\d* *, *\d*\.?\d*))/);
@@ -137,9 +145,8 @@ export const intrange = customType<{
 	},
 	toDriver(value) {
 		if (value[0] == null && value[1] == null) {
-			return 'empty';
+			return "'empty'";
 		}
-		// Use coalesce('[...]','[...)')
 		const diff = value[0] == null || value[1] == null ? 0 : value[1] - value[0];
 		return `[${value[0] ?? value[1]},${value[1] ?? value[0]}${diff ? ')' : ']'}`;
 	},

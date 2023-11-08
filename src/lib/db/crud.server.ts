@@ -3,6 +3,7 @@ import type { InferSelectModel } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { users, usersRolesRequests } from './schema/accounts';
+import { intRangeSchema } from './schema/custom-types';
 import {
 	organizationTypes,
 	organizationTypesTranslations,
@@ -243,7 +244,8 @@ export const projectBuildingLevelTypesUpdateSchema = z.object({
 export const projectsInsertSchema = createInsertSchema(projects, {
 	adjacentStreets: (s) => s.adjacentStreets.positive().max(5),
 	adjacentAlleys: (s) => s.adjacentAlleys.positive().max(5),
-}).required({ id: true });
+	costRange: () => intRangeSchema.default([null, null]),
+}).required({ id: true, costRange: true });
 export const projectsTranslationsInsertSchema = createInsertSchema(projectsTranslations, {
 	title: (s) => s.title.max(250),
 	summary: (s) => s.summary.max(1500),

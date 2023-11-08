@@ -1,12 +1,14 @@
+import { USER_ROLES } from '$lib/auth/constants';
 import { withAuth } from '$lib/auth/guard.server';
 import { userGeneralUpdateSchema, userPermissionsUpdate } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
-import { selectUserRoles } from '$lib/db/queries.server';
+import { getUserRolesList } from '$lib/db/queries.server';
 import { users, usersRolesRequests } from '$lib/db/schema/accounts';
+import { TRUE } from '$lib/db/sql.server';
 import { tt } from '$lib/i18n/translations';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
-import { eq, getTableColumns } from 'drizzle-orm';
+import { eq, getTableColumns, sql } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms/client';
 
 export const load = async (event) => {
@@ -19,7 +21,7 @@ export const load = async (event) => {
 		},
 	});
 	const session = await withAuth(event);
-	const { firstName, middleName, lastName, role, publicEmail, emailVerified } =
+	const { firstName, middleName, lastName, role, publicEmail, publicEmailVerified } =
 		getTableColumns(users);
 	const [{ permissions, ...user }] = await dbpool
 		.select({
@@ -27,7 +29,7 @@ export const load = async (event) => {
 			middleName,
 			lastName,
 			publicEmail,
-			emailVerified,
+			publicEmailVerified,
 			permissions: {
 				role,
 				requestedAt: usersRolesRequests.requestAt,
@@ -48,7 +50,8 @@ export const load = async (event) => {
 	return {
 		generalForm,
 		permissionsForm,
-		roles: selectUserRoles(event),
+		publicEmailVerified: user.publicEmailVerified,
+		roles: getUserRolesList(event),
 	};
 };
 
@@ -65,13 +68,22 @@ export const actions = {
 		});
 		const generalForm = await superValidate(event, userGeneralUpdateSchema);
 		if (!generalForm.valid) {
-			message(generalForm, [t.invalid]);
+			return message(generalForm, [t.invalid]);
 		}
 		try {
-			await dbpool.update(users).set(generalForm.data).where(eq(users.id, session.user.id));
+			await dbpool
+				.update(users)
+				.set({
+					...generalForm.data,
+					publicEmailVerified:
+						session.user.role === USER_ROLES.ADMIN && generalForm.data.publicEmail != null
+							? TRUE()
+							: sql`case when ${users.publicEmail} = ${generalForm.data.publicEmail} then true else false end`,
+				})
+				.where(eq(users.id, session.user.id));
 			return message(generalForm, [t.success]);
 		} catch (e) {
-			return message(generalForm, [t.error]);
+			return message(generalForm, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
 	},
 	uploadAvatar: async () => {

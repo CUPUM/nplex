@@ -5,6 +5,7 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 	--base-radius: var(--radius-full);
 	--token-size: calc(var(--base-size) - 0.75em);
 	position: relative;
+	user-select: none;
 	cursor: pointer;
 	display: inline-flex;
 	flex-direction: row;

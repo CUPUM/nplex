@@ -1,19 +1,21 @@
 <script lang="ts">
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { FileUp, ShieldX } from 'lucide-svelte';
+	import { FileUp, Mail, Shield, ShieldX } from 'lucide-svelte';
 	import type { PageData } from './$types';
 
 	const t = createTranslations({
 		fr: {
 			title: 'Paramètres de compte',
-			uploadAvatar: 'Importer un avatar',
+			name: 'Nom',
 			firstName: 'Prénom',
 			middleName: 'Surnom',
 			lastName: 'Nom de famille',
+			avatar: 'Avatar',
+			uploadAvatar: 'Importer une image',
 			publicEmail: 'Courriel public',
 			verify: 'Authentifier',
 			verifiedPublicEmail: (verified: boolean) =>
@@ -21,10 +23,12 @@
 		},
 		en: {
 			title: 'Account settings',
-			uploadAvatar: 'Import an avatar image',
+			name: 'Name',
 			firstName: 'First name',
 			middleName: 'Middle name',
 			lastName: 'Last name',
+			avatar: 'Avatar',
+			uploadAvatar: 'Import an image',
 			publicEmail: 'Public email',
 			verify: 'Verify',
 			verifiedPublicEmail: (verified: boolean) =>
@@ -33,6 +37,7 @@
 	});
 
 	export let data: PageData['generalForm'];
+	export let publicEmailVerified: PageData['publicEmailVerified'];
 
 	const {
 		form,
@@ -49,13 +54,8 @@
 	<svelte:fragment slot="header">
 		<h1 class="heading lg">{$t.title}</h1>
 	</svelte:fragment>
-	<DashboardFormSection>
-		<button class="button outlined" disabled type="submit" formaction="?/uploadAvatar">
-			{$t.uploadAvatar}<FileUp class="button-icon" />
-		</button>
-	</DashboardFormSection>
-	<DashboardFormSection>
-		<label class="labeled-input">
+	<DashboardFormField title={$t.name} centered>
+		<fieldset id="user-name">
 			<input
 				type="text"
 				name="firstName"
@@ -64,8 +64,6 @@
 				{...$states.firstName}
 				placeholder={$t.firstName}
 			/>
-		</label>
-		<label class="labeled-input">
 			<input
 				type="text"
 				name="middleName"
@@ -74,21 +72,34 @@
 				{...$states.middleName}
 				placeholder={$t.middleName}
 			/>
-		</label>
-		<label class="labeled-input">
-			<input
-				type="text"
-				name="lastName"
-				class="input"
-				bind:value={$form.lastName}
-				{...$states.lastName}
-				placeholder={$t.lastName}
-			/>
-		</label>
-	</DashboardFormSection>
-	<DashboardFormSection>
+		</fieldset>
+		<input
+			type="text"
+			name="lastName"
+			class="input"
+			bind:value={$form.lastName}
+			{...$states.lastName}
+			placeholder={$t.lastName}
+		/>
+	</DashboardFormField>
+	<DashboardFormField centered title={$t.avatar}>
+		<button
+			class="button outlined"
+			id="avatar-button"
+			disabled
+			type="submit"
+			formaction="?/uploadAvatar"
+		>
+			{$t.uploadAvatar}<FileUp class="button-icon" />
+		</button>
+	</DashboardFormField>
+	<DashboardFormField title={$t.publicEmail} centered>
 		<label class="input-group">
-			<ShieldX class="input-icon" />
+			{#if publicEmailVerified}
+				<Shield class="input-icon" style="color: var(--color-success-500)" />
+			{:else}
+				<ShieldX class="input-icon" style="color: var(--color-error-500)" />
+			{/if}
 			<input
 				type="email"
 				name="publicEmail"
@@ -98,13 +109,27 @@
 			/>
 			<div class="input-peer">
 				<button class="button" formaction="?/verifyEmail" disabled>
+					<Mail class="button-icon" />
 					{$t.verify}
 				</button>
 			</div>
 		</label>
-	</DashboardFormSection>
+	</DashboardFormField>
 	<DashboardMenu {tainted} {submitter}></DashboardMenu>
 </DashboardForm>
 
 <style lang="postcss">
+	#user-name {
+		display: flex;
+		flex-direction: row;
+		gap: 2rem;
+		flex-wrap: wrap;
+		.input {
+			flex: 1;
+		}
+	}
+
+	#avatar-button {
+		align-self: center;
+	}
 </style>

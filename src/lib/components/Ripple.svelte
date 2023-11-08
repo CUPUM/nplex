@@ -12,7 +12,9 @@
 	import { onDestroy, onMount } from 'svelte';
 
 	export let easing: string = 'cubic-bezier(0, 0, .5, 1)';
-	/** R multiplier where duration = d * speed. */
+	/**
+	 * R multiplier where duration = d * speed.
+	 */
 	export let speed: number = 1;
 	export let duration: number | undefined = undefined;
 	export let delay = 0;
@@ -27,9 +29,9 @@
 	export let spreadSpeed = speed;
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
-	export let color = 'currentColor';
-	export let colorStart: string = color;
-	export let colorEnd: string = color;
+	export let color: string | undefined = undefined;
+	export let colorStart: typeof color = color;
+	export let colorEnd: typeof color = color;
 	export let colorEasing = easing;
 	export let colorSpeed = speed;
 	export let colorDuration = duration;
@@ -150,6 +152,8 @@
 
 <style lang="postcss">
 	.container {
+		--_color-start: var(--ripple-color-start, var(--ripple-color, currentColor));
+		--_color-end: var(--ripple-color-end, var(--ripple-color, currentColor));
 		pointer-events: none;
 		position: absolute;
 		top: 0;
@@ -167,7 +171,7 @@
 		top: var(--y);
 		opacity: var(--opacity-start);
 		width: calc(var(--d) * var(--spread-start));
-		color: var(--color-start);
+		color: var(--_color-start);
 		background: currentColor;
 		aspect-ratio: 1 / 1;
 		border-radius: 50%;
@@ -200,7 +204,7 @@
 
 	@keyframes color {
 		to {
-			color: var(--color-end);
+			color: var(--_color-end);
 		}
 	}
 </style>

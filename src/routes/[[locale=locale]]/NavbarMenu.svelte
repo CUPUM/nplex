@@ -25,7 +25,7 @@
 		flex-direction: column;
 		gap: 0;
 		font-weight: 500;
-		box-shadow: var(--shadow-xl);
+		box-shadow: 0 12px 48px -18px rgba(10, 0, 20, 0.2);
 		padding: var(--menu-inset);
 		border-radius: var(--base-radius);
 		transform-origin: center center;

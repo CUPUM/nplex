@@ -31,7 +31,7 @@
 	export let data;
 </script>
 
-<GeneralSettings data={data.generalForm} />
+<GeneralSettings data={data.generalForm} publicEmailVerified={data.publicEmailVerified} />
 <PermissionsSettings data={data.permissionsForm} roles={data.roles} />
 
 <!-- 
@@ -39,13 +39,13 @@
 	<svelte:fragment slot="header">
 		<h1 class="heading lg">{$t.dangerZone.title}</h1>
 	</svelte:fragment>
-	<DashboardFormSection>
+	<DashboardFormField>
 		<button class="button" disabled>Reset password</button>
 		<button class="button" disabled>Change email</button>
 		<button class="button danger" type="submit" formaction="?/delete">
 			<UserX2 class="button-icon" />{$t.dangerZone.delete}
 		</button>
-	</DashboardFormSection>
+	</DashboardFormField>
 </DashboardForm> -->
 
 <style lang="postcss">

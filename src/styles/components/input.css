@@ -4,18 +4,35 @@ Primitive input component
 .input {
 	padding: 0 var(--base-padding);
 	text-overflow: ellipsis;
-	.input-peer + & {
+
+	.input-peer + &,
+	.input-icon + & {
 		padding-left: calc(var(--base-padding) - var(--input-inset));
 	}
+
 	.input-affix + & {
 		padding-left: 0;
 	}
+
+	&.select {
+		cursor: pointer;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 0.75em;
+
+		.input-icon {
+			margin: 0;
+		}
+	}
 }
+
 textarea.input {
 	padding-block: calc(var(--base-padding) - 0.3em);
 	line-height: 1.6em;
 	min-height: var(--base-size);
 }
+
 .input-group {
 	.input {
 		background-color: transparent;
@@ -24,7 +41,29 @@ textarea.input {
 		outline: none;
 		flex: 1;
 	}
+	.input-icon:last-child:not(.input .input-icon) {
+		margin-right: var(--base-padding);
+	}
+	.input-peer + .input-icon {
+		margin-left: calc(var(--base-padding) - var(--input-inset));
+	}
+	.input-icon:first-child:not(.input .input-icon) {
+		margin-left: var(--base-padding);
+	}
 }
+
+.input-icon {
+	flex: none;
+	width: 1.1em;
+	stroke-width: 2.25;
+	opacity: 0.5;
+	user-select: none;
+	pointer-events: none;
+	transition:
+		opacity var(--duration-medium) ease-out,
+		transform var(--duration-fast) ease-out;
+}
+
 .input:not(.input-group *),
 .input-group {
 	--input-inset: var(--base-inset);
@@ -101,27 +140,6 @@ textarea.input {
 		}
 	}
 
-	.input-icon {
-		flex: none;
-		width: 1.1em;
-		stroke-width: 2.25;
-		opacity: 0.5;
-		user-select: none;
-		pointer-events: none;
-		transition:
-			opacity var(--duration-medium) ease-out,
-			transform var(--duration-fast) ease-out;
-		&:last-child {
-			margin-right: var(--base-padding);
-		}
-	}
-	.input-peer + .input-icon {
-		margin-left: calc(var(--base-padding) - var(--input-inset));
-	}
-	.input-icon:first-child {
-		margin-left: var(--base-padding);
-	}
-
 	/*
 	Default variant
 	*/
@@ -162,11 +180,12 @@ textarea.input {
 		&:focus,
 		&:has(.input:focus) {
 			color: var(--color-neutral-800);
-			background-color: white;
+			/* background-color: white; */
+			background-color: color-mix(in srgb, var(--color-neutral-100) 10%, transparent);
 			box-shadow: none;
 			:--dark & {
 				color: var(--color-neutral-200);
-				background-color: color-mix(in srgb, var(--color-neutral-950) 25%, transparent);
+				background-color: color-mix(in srgb, var(--color-neutral-950) 15%, transparent);
 			}
 			.input-affix {
 				opacity: 0.75;

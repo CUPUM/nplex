@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormGroup from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormGroup from '$lib/components/DashboardFormField.svelte';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { Save } from 'lucide-svelte';

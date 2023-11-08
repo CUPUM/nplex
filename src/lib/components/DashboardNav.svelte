@@ -79,9 +79,8 @@
 		font-weight: 350;
 		letter-spacing: 0.01em;
 		line-height: 1.5;
-		color: var(--color-neutral-400);
+		color: var(--color-neutral-500);
 		:global(:--dark) & {
-			color: var(--color-neutral-600);
 		}
 		@media (--md) {
 			position: relative;

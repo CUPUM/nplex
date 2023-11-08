@@ -1,4 +1,4 @@
-import { derived, get, type Updater, type Writable } from 'svelte/store';
+import { get, writable, type Writable } from 'svelte/store';
 import type { FormPath } from 'sveltekit-superforms';
 import { fieldProxy } from 'sveltekit-superforms/client';
 import type { FormPathType } from 'sveltekit-superforms/dist/stringPath';
@@ -12,7 +12,13 @@ export function customProxy<T extends Record<string, unknown>, F extends FormPat
 	form: Writable<T>,
 	path: F,
 	{
+		/**
+		 * Transformer to convert the value from its form shape to the custom shape.
+		 */
 		to,
+		/**
+		 * Transformer to convert the custom shaped store's value to the form's value.
+		 */
 		from,
 	}: {
 		to: (value: FormPathType<T, F>) => V;
@@ -20,18 +26,13 @@ export function customProxy<T extends Record<string, unknown>, F extends FormPat
 	}
 ) {
 	const proxied = fieldProxy(form, path);
-	const transformed = derived(proxied, (v) => to(v));
-	const set = (v: V) => {
+	const init = to(get(proxied));
+	const transformed = writable<V>(init);
+	proxied.subscribe((v) => {
+		transformed.set(to(v));
+	});
+	transformed.subscribe((v) => {
 		proxied.set(from(v));
-	};
-	const update = (u: Updater<V>) => {
-		const v = get(transformed);
-		u(v);
-	};
-	return {
-		...proxied,
-		set,
-		update,
-		subscribe: transformed.subscribe,
-	};
+	});
+	return transformed;
 }

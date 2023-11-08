@@ -1,5 +1,5 @@
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { dbpool } from './db.server';
 import { userRoles, userRolesTranslations } from './schema/accounts';
 import {
@@ -20,28 +20,27 @@ import {
 	projectSiteOwnerships,
 	projectSiteOwnershipsTranslations,
 	projectTypes,
+	projectTypesToInterventions,
 	projectTypesTranslations,
 } from './schema/public';
-import { arrayAgg, coalesce, emptyJsonArray } from './sql.server';
+import { arrayAgg, coalesce, emptyJsonArray, jsonAggBuildObject } from './sql.server';
 import { getSubqueryColumns, withTranslation } from './utils';
 
-// Project descriptors
-
-export function selectProjectTypes(event: RequestEvent | ServerLoadEvent) {
+export function getProjectTypesList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(event, projectTypes, projectTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
-export function selectProjectInterventions(event: RequestEvent | ServerLoadEvent) {
+export function getProjectInterventionsList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(event, projectInterventions, projectInterventionsTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
-export function selectProjectInterventionCategories(event: RequestEvent | ServerLoadEvent) {
+export function getProjectInterventionCategoriesList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(
 		event,
 		projectInterventionCategories,
@@ -50,33 +49,48 @@ export function selectProjectInterventionCategories(event: RequestEvent | Server
 	);
 }
 
-export async function selectProjectCategorizedInterventions(event: RequestEvent | ServerLoadEvent) {
-	const interventions = selectProjectInterventions(event).as('interventions');
-	const categories = selectProjectInterventionCategories(event).as('categories');
-	return await dbpool
+export async function getProjectCategorizedInterventionsList(
+	event: RequestEvent | ServerLoadEvent
+) {
+	const interventions = getProjectInterventionsList(event).as('interventions');
+	const interventionsColumns = getSubqueryColumns(interventions);
+	const categories = getProjectInterventionCategoriesList(event).as('categories');
+	const categoriesColumns = getSubqueryColumns(categories);
+	return dbpool
 		.select({
-			...getSubqueryColumns(categories),
-			interventions: coalesce(arrayAgg(getSubqueryColumns(interventions)), emptyJsonArray()),
+			...categoriesColumns,
+			interventions: jsonAggBuildObject({
+				...interventionsColumns,
+				projectTypes: projectTypesToInterventions.typeId,
+			}),
 		})
 		.from(categories)
-		.leftJoin(interventions, eq(categories.id, interventions.categoryId));
+		.groupBy(...Object.values(categoriesColumns))
+		.leftJoin(
+			interventions,
+			and(eq(categories.id, interventions.categoryId), eq(categories.locale, interventions.locale))
+		)
+		.leftJoin(
+			projectTypesToInterventions,
+			eq(projectTypesToInterventions.interventionId, interventions.id)
+		);
 }
 
-export function selectProjectSiteOwnerships(event: RequestEvent | ServerLoadEvent) {
+export function getProjectSiteOwnershipsList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(event, projectSiteOwnerships, projectSiteOwnershipsTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
-export function selectProjectImplantationTypes(event: RequestEvent | ServerLoadEvent) {
+export function getProjectImplantationTypesList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(event, projectImplantationTypes, projectImplantationTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
-export function selectProjectExemplarityCategories(event: RequestEvent | ServerLoadEvent) {
+export function getProjectExemplarityCategoriesList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(
 		event,
 		projectExemplarityCategories,
@@ -85,7 +99,7 @@ export function selectProjectExemplarityCategories(event: RequestEvent | ServerL
 	);
 }
 
-export function selectProjectExemplarityIndicators(event: RequestEvent | ServerLoadEvent) {
+export function getProjectExemplarityIndicatorsList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(
 		event,
 		projectExemplarityIndicators,
@@ -94,9 +108,9 @@ export function selectProjectExemplarityIndicators(event: RequestEvent | ServerL
 	);
 }
 
-export function selectProjectCategorizedIndicators(event: RequestEvent | ServerLoadEvent) {
-	const indicators = selectProjectExemplarityIndicators(event).as('indicators');
-	const categories = selectProjectExemplarityCategories(event).as('categories');
+export function getProjectCategorizedIndicatorsList(event: RequestEvent | ServerLoadEvent) {
+	const indicators = getProjectExemplarityIndicatorsList(event).as('indicators');
+	const categories = getProjectExemplarityCategoriesList(event).as('categories');
 	return dbpool
 		.select({
 			...getSubqueryColumns(categories),
@@ -106,21 +120,21 @@ export function selectProjectCategorizedIndicators(event: RequestEvent | ServerL
 		.leftJoin(indicators, eq(categories.id, indicators.categoryId));
 }
 
-export function selectProjectImageTypes(event: RequestEvent | ServerLoadEvent) {
+export function getProjectImageTypesList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(event, projectImageTypes, projectImageTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
-export function selectProjectImageTemporalities(event: RequestEvent | ServerLoadEvent) {
+export function getProjectImageTemporalitiesList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(event, projectImageTemporalities, projectImageTemporalitiesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
-export function selectUserRoles(event: RequestEvent | ServerLoadEvent) {
+export function getUserRolesList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(event, userRoles, userRolesTranslations, {
 		field: (t) => t.role,
 		reference: (tt) => tt.role,

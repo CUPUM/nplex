@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
-	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
-	import Loading from '$lib/components/Loading.svelte';
+	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { switchCrossfade } from '$lib/transitions/presets';
@@ -19,32 +18,31 @@
 	const [send, receive] = switchCrossfade;
 
 	export let form: SuperFormPageData<PageData['form']>['form'];
-	export let types: PageData['descriptors']['types'];
+	export let types: PageData['types'];
 </script>
 
-<DashboardFormSection title={$t.type}>
+<DashboardFormField title={$t.type} centered>
 	<fieldset class="switch" use:ripple>
-		{#await types}
-			<Loading />
-		{:then _types}
-			{#each _types as pt}
-				<label class="switch-item">
-					<input
-						type="radio"
-						name="typeId"
-						bind:group={$form.typeId}
-						value={pt.id}
-						class="switch-input"
-					/>
-					{#if $form.typeId === pt.id}
-						<div class="switch-thumb" in:receive={{ key: 'type' }} out:send={{ key: 'type' }} />
-					{/if}
-					{pt.title}
-				</label>
-			{/each}
-		{/await}
+		{#each types as pt}
+			<label class="switch-item">
+				<input
+					type="radio"
+					name="typeId"
+					bind:group={$form.typeId}
+					value={pt.id}
+					class="switch-input"
+				/>
+				{#if $form.typeId === pt.id}
+					<div class="switch-thumb" in:receive={{ key: 'type' }} out:send={{ key: 'type' }} />
+				{/if}
+				{pt.title}
+			</label>
+		{/each}
 	</fieldset>
-</DashboardFormSection>
+</DashboardFormField>
 
 <style lang="postcss">
+	.switch {
+		align-self: center;
+	}
 </style>

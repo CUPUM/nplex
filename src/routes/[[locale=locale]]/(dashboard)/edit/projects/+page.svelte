@@ -21,7 +21,7 @@
 	});
 </script>
 
-<form class="pattern-cross" method="GET">
+<form method="GET">
 	<header>
 		<h1 class="heading xxl">{$t.heading}</h1>
 	</header>
@@ -53,6 +53,8 @@
 
 <style lang="postcss">
 	form {
+		--pattern-color: var(--color-neutral-400);
+		position: relative;
 		flex: 1;
 		display: flex;
 		flex-direction: column;
@@ -65,11 +67,12 @@
 		padding-bottom: var(--navbar-height);
 		gap: 5rem;
 		border-radius: inherit;
-		--pattern-color: var(--color-neutral-300);
-		background-color: color-mix(in srgb, var(--color-neutral-500) 5%, transparent);
+		background: radial-gradient(circle, var(--pattern-color) 1px, transparent 1.1px);
+		background-position: center;
+		background-size: var(--size-xl) var(--size-xl);
+		background-repeat: repeat;
 		:global(:--dark) & {
-			--pattern-color: var(--color-neutral-800);
-			background-color: color-mix(in srgb, var(--color-neutral-950) 50%, transparent);
+			--pattern-color: var(--color-neutral-700);
 		}
 	}
 

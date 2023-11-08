@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { LOCALES_ARR, type Locale } from '$lib/i18n/constants';
 	import { createTabs, melt } from '@melt-ui/svelte';
-	import TranslationsTabsList from './TranslationsTabsList.svelte';
+	import LocaleSwitch from './LocaleSwitch.svelte';
 
 	export let defaultValue: Locale = $page.data.locale;
 
@@ -17,7 +17,7 @@
 		<div class="legend-slot">
 			<slot name="legend" />
 		</div>
-		<TranslationsTabsList {trigger} {list} {value} />
+		<LocaleSwitch {trigger} {list} locale={value} />
 	</legend>
 	{#each LOCALES_ARR as locale}
 		<div class="content" lang={locale} use:melt={$content(locale)}>

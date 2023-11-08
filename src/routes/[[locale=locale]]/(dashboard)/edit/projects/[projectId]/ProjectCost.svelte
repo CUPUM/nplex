@@ -1,7 +1,10 @@
 <script lang="ts">
-	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
+	import Slider from '$lib/components/Slider.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
 	import { createTranslations } from '$lib/i18n/translate';
+	import { Minus, Plus, X } from 'lucide-svelte';
+	import { fieldProxy } from 'sveltekit-superforms/client';
 	import type { PageData } from './$types';
 
 	const t = createTranslations({
@@ -14,26 +17,45 @@
 	});
 
 	export let form: SuperFormPageData<PageData['form']>['form'];
+
+	const costProxy = fieldProxy(form, 'costRange');
+
+	$: console.log($costProxy);
 </script>
 
-<DashboardFormSection title={$t.title}>
-	<div id="cost">
-		<label class="labeled-group">
-			<span class="label">Min</span>
-			<div class="input-group">
-				<span class="input-affix">CA$</span>
-				<input type="number" class="input" bind:value={$form.costRange[0]} />
+<DashboardFormField title={$t.title} centered>
+	<Slider min={0} max={2_500_000} step={500} />
+	<div id="project-cost">
+		<div class="input-group">
+			<div class="input-peer">
+				<button class="button square ghost"><Minus class="button-icon" /></button>
 			</div>
-		</label>
-		<label class="labeled-group">
-			<span class="label">Max</span>
-			<div class="input-group">
-				<span class="input-affix">CA$</span>
-				<input type="number" class="input" bind:value={$form.costRange[1]} />
+			<span class="input-affix">$ CAD</span>
+			<input type="number" name="" id="" class="input" />
+			<div class="input-peer">
+				<button class="button square ghost"><Plus class="button-icon" /></button>
 			</div>
-		</label>
+		</div>
+		<div class="input-group">
+			<div class="input-peer">
+				<button class="button square ghost" type="button" on:click={(e) => console.log(e)}>
+					<Minus class="button-icon" />
+				</button>
+			</div>
+			<span class="input-affix">$ CAD</span>
+			<input type="number" name="" id="" class="input" />
+			<div class="input-peer">
+				<button class="button square ghost"><Plus class="button-icon" /></button>
+			</div>
+		</div>
+		<button class="button danger" type="button"><X class="button-icon" /></button>
 	</div>
-</DashboardFormSection>
+</DashboardFormField>
 
 <style lang="postcss">
+	#project-cost {
+		display: flex;
+		flex-direction: row;
+		gap: 0.5rem;
+	}
 </style>

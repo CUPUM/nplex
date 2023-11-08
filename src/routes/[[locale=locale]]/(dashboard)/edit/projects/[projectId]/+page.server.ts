@@ -2,7 +2,11 @@ import { withAuth } from '$lib/auth/guard.server';
 import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
-import { selectProjectSiteOwnerships, selectProjectTypes } from '$lib/db/queries.server';
+import {
+	getProjectCategorizedInterventionsList,
+	getProjectSiteOwnershipsList,
+	getProjectTypesList,
+} from '$lib/db/queries.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
 import { TRUE, excluded } from '$lib/db/sql.server';
 import { withTranslations } from '$lib/db/utils';
@@ -42,12 +46,13 @@ export const load = async (event) => {
 		{ ...project, interventionIds: interventions.map((i) => i.interventionId) },
 		projectGeneralUpdateSchema
 	);
+	// const pci = await getProjectCategorizedInterventionsList(event);
+	// console.log(JSON.stringify(pci, undefined, 2));
 	return {
 		form,
-		descriptors: {
-			types: selectProjectTypes(event),
-			siteOwnerships: selectProjectSiteOwnerships(event),
-		},
+		types: getProjectTypesList(event),
+		siteOwnerships: getProjectSiteOwnershipsList(event),
+		categorizedInterventions: getProjectCategorizedInterventionsList(event),
 	};
 };
 
@@ -60,7 +65,7 @@ export const actions = {
 		});
 		const form = await superValidate(event, projectGeneralUpdateSchema);
 		if (!form.valid) {
-			return message(form, [t.invalid]);
+			return message(form, [t.server.invalid]);
 		}
 		try {
 			const { translations, interventionIds, ...project } = form.data;
@@ -97,10 +102,10 @@ export const actions = {
 						});
 				}
 			});
-			return message(form, [t.success]);
+			return message(form, [t.server.success]);
 		} catch (e) {
 			console.error(e);
-			return message(form, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return message(form, [t.server.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
 	},
 };

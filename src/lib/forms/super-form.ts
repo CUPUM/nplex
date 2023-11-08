@@ -43,7 +43,6 @@ export function superForm<
 		onUpdated(event) {
 			if (event.form.message) {
 				event.form.message.forEach(({ closeDelay, ...data }) => {
-					console.log('Should dispatch');
 					data.type = event.form.valid ? TOAST_TYPES.SUCCESS : TOAST_TYPES.ERROR;
 					addToast({
 						closeDelay,

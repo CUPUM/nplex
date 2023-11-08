@@ -28,7 +28,7 @@
 	let submitRef: HTMLButtonElement;
 </script>
 
-<menu>
+<menu class:hidden={!$tainted && !$$slots.default}>
 	{#if $tainted}
 		<button
 			class="button cta"
@@ -44,8 +44,7 @@
 			{$t.save}
 			<SaveAll class="button-icon" />
 		</button>
-	{/if}
-	<slot />
+	{/if}<slot />
 </menu>
 
 <style lang="postcss">
@@ -71,7 +70,8 @@
 			background-color: color-mix(in srgb, var(--color-neutral-800) 50%, transparent);
 		}
 
-		&:empty {
+		&:empty,
+		&.hidden {
 			opacity: 0;
 			transform: translateY(0.5em);
 			pointer-events: none;

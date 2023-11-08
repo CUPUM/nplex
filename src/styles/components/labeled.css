@@ -14,7 +14,7 @@ Labeled groups of element
 		font-weight: 400;
 		font-size: clamp(var(--size-xs), 0.5em, var(--size-sm));
 		padding-inline: 0.75em;
-		opacity: 0.65;
+		/* opacity: 0.65; */
 		transition: all var(--duration-medium) var(--ease-out-expo);
 
 		&.with-hover {
@@ -26,7 +26,7 @@ Labeled groups of element
 	&:hover,
 	&:focus-within {
 		.label {
-			opacity: 1;
+			/* opacity: 1; */
 
 			&.with-hover {
 				transform: translateY(0%);

@@ -122,8 +122,10 @@
 	--base-border-size: 1.25px;
 	--base-border: var(--base-border-size) solid
 		color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+	--base-border-dim: var(--base-border-size) solid
+		color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 	--base-inset: 5px;
-	--base-focus-ring: 2.5px solid color-mix(in srgb, var(--color-primary-700) 50%, transparent);
+	--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-800) 75%, transparent);
 	--base-bg: var(--color-neutral-100);
 	/* Component-specific */
 	--navbar-height: 72px;
@@ -140,7 +142,7 @@
 	background-color: var(--base-bg);
 	transition: all var(--duration-fast) ease-out;
 	&:--dark {
-		--base-focus-ring: 2.5px solid color-mix(in srgb, var(--color-primary-400) 50%, transparent);
+		--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-500) 75%, transparent);
 		--base-bg: var(--color-neutral-900);
 		--dashboard-base-bg: var(--color-neutral-800);
 		color: var(--color-neutral-300);

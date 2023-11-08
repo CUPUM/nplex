@@ -1,6 +1,7 @@
 <script lang="ts">
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
+	import SelectChevron from '$lib/components/SelectChevron.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
 	import { superForm } from '$lib/forms/super-form';
@@ -12,13 +13,17 @@
 	const t = createTranslations({
 		fr: {
 			title: 'Rôle & permissions',
+			role: 'Rôle actuel',
 			changeRole: 'Changer de rôle',
 			requestRole: 'Envoyer la requête',
+			permissions: 'Permissions partagées',
 		},
 		en: {
 			title: 'Role & permissions',
+			role: 'Current role',
 			changeRole: 'Change role',
 			requestRole: 'Send request',
+			permissions: 'Shared permissions',
 		},
 	});
 
@@ -49,11 +54,12 @@
 	<svelte:fragment slot="header">
 		<h1 class="heading lg">{$t.title}</h1>
 	</svelte:fragment>
-	<DashboardFormSection>
-		<fieldset class="input-group" use:melt={$trigger}>
-			<Crown class="input-icon" />
-			<button class="input" type="button">
+	<DashboardFormField title={$t.role} centered>
+		<fieldset class="input-group" disabled>
+			<button class="input select" type="button" use:melt={$trigger}>
+				<Crown class="input-icon" />
 				{$t.changeRole}
+				<SelectChevron open={$open} />
 			</button>
 			<div class="input-peer">
 				<button class="button" type="submit" formaction="?/requestRole" on:click|stopPropagation>
@@ -68,15 +74,19 @@
 				</SelectOption>
 			{/each}
 		</SelectMenu>
-		<h2>Current permissions</h2>
+	</DashboardFormField>
+	<DashboardFormField title={$t.permissions}>
 		<section>
 			<h3>Projects</h3>
 		</section>
 		<section>
 			<h3>Organizations</h3>
 		</section>
-	</DashboardFormSection>
+	</DashboardFormField>
 </DashboardForm>
 
 <style lang="postcss">
+	.input-group {
+		align-self: center;
+	}
 </style>

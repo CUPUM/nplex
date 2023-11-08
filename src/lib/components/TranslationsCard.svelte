@@ -17,7 +17,7 @@
 	import { expoOut } from 'svelte/easing';
 	import type { Writable } from 'svelte/store';
 	import { crossfade, fly, slide } from 'svelte/transition';
-	import TranslationsTabsList from './TranslationsTabsList.svelte';
+	import TranslationsTabsList from './LocaleTabsList.svelte';
 
 	export let locales: Locale[] = LOCALES_ARR;
 	export let legend: string;

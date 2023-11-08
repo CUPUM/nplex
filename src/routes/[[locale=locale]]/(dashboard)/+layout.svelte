@@ -30,11 +30,11 @@
 
 	let scrollY = 0;
 	let headerHeight = 0;
-	const angle = tweened(Math.min(angleThreshold, scrollY * 0.5), {
+	const angle = tweened(0, {
 		easing: expoOut,
 		duration: 250,
 	});
-	$: $angle = Math.min(angleThreshold, scrollY * 0.75);
+	$: $angle = Math.min(angleThreshold, scrollY * 0.35);
 </script>
 
 <svelte:window bind:scrollY />
@@ -46,7 +46,6 @@
 			in:slide={{ duration: 750, easing: expoOut, opacity: 0 }}
 			out:slide={{ easing: expoOut, duration: 500, opacity: 0 }}
 			style:transform="rotateX({$angle}deg)"
-			style:opacity={Math.max(0, 1 - $angle / angleThreshold)}
 			bind:clientHeight={headerHeight}
 		>
 			<svelte:component this={$page.data.dashboard.header} />
@@ -115,7 +114,7 @@
 		grid-column: 1 / -1;
 		border-radius: var(--radius-xl);
 		z-index: -1;
-		transform-origin: bottom center;
+		transform-origin: center bottom;
 		transition: all var(--duration-2xslow) var(--ease-out-expo);
 	}
 
@@ -124,6 +123,7 @@
 	}
 
 	#dashboard-sidebar {
+		margin-top: var(--base-gap);
 		display: flex;
 		flex-direction: row;
 		align-self: stretch;

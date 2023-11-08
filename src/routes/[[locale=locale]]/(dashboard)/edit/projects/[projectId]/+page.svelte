@@ -3,22 +3,21 @@
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { melt } from '@melt-ui/svelte';
-	import { Save } from 'lucide-svelte';
-	import { expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
+	import { tt } from '$lib/i18n/translations';
 	import ProjectCost from './ProjectCost.svelte';
+	import ProjectInterventions from './ProjectInterventions.svelte';
 	import ProjectOwnership from './ProjectOwnership.svelte';
 	import ProjectTextDetails from './ProjectTextDetails.svelte';
 	import ProjectType from './ProjectType.svelte';
-	import { pt } from './translations';
 
 	const t = createTranslations({
 		fr: {
 			heading: 'Information générale',
+			save: tt.fr.editor.client.save,
 		},
 		en: {
 			heading: 'General information',
+			save: tt.en.editor.client.save,
 		},
 	});
 
@@ -49,45 +48,12 @@
 		</p>
 	</svelte:fragment>
 	<ProjectTextDetails {form} />
-	<ProjectType {form} types={data.descriptors.types} />
-	<ProjectOwnership {form} siteOwnerships={data.descriptors.siteOwnerships} />
-	<!-- <ProjectInterventions {form} /> -->
+	<ProjectType {form} types={data.types} />
+	<ProjectInterventions {form} categorizedInterventions={data.categorizedInterventions} />
+	<ProjectOwnership {form} siteOwnerships={data.siteOwnerships} />
 	<ProjectCost {form} />
-	<DashboardMenu>
-		{#if $tainted}
-			<button
-				class="button cta"
-				type="submit"
-				bind:this={submitRef}
-				use:melt={$submitter(submitRef)}
-				transition:scale={{ start: 0.95, opacity: 0, easing: expoOut, duration: 150 }}
-			>
-				<Save class="button-icon" />{$pt.save}
-			</button>
-		{/if}
-	</DashboardMenu>
+	<DashboardMenu {tainted} {submitter}></DashboardMenu>
 </DashboardForm>
 
 <style lang="postcss">
-	.title {
-		font-size: var(--size-lg);
-	}
-
-	.subhead {
-		max-width: 65ch;
-	}
-
-	#interventions {
-		display: flex;
-		flex-direction: row;
-		gap: 0.5em;
-		font-size: var(--size-sm);
-		flex-wrap: wrap;
-	}
-
-	#cost {
-		display: flex;
-		flex-direction: row;
-		gap: 1rem;
-	}
 </style>

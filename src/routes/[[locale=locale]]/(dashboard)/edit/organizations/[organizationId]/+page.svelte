@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormGroup from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormGroup from '$lib/components/DashboardFormField.svelte';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
 	import TranslationsField from '$lib/components/TranslationsField.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
