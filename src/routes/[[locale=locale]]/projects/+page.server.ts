@@ -6,7 +6,7 @@ import { and, eq, getTableColumns, isNotNull } from 'drizzle-orm';
 export const load = async (event) => {
 	const images = dbpool
 		.selectDistinctOn([projectsImages.projectId], {
-			url: projectsImages.urlMd,
+			storageName: projectsImages.storageName,
 			projectId: projectsImages.projectId,
 		})
 		.from(projectsImages)
@@ -14,7 +14,7 @@ export const load = async (event) => {
 
 	const qProjects = await dbpool
 		.select({
-			imageUrl: images.url,
+			storageName: images.storageName,
 			...getTableColumns(projectsTranslations),
 			...getTableColumns(projects),
 		})

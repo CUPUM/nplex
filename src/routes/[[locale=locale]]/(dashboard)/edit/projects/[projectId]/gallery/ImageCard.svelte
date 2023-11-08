@@ -11,7 +11,11 @@
 	export let image: PageData['images'][number];
 	export let form: SuperForm<ProjectsGalleryUpdateSchema>['form'];
 
-	$: isBanner = image.id === $form.bannerId;
+	let isBanner = image.id === $form.bannerId;
+	function syncIsBanner(trigger: any) {
+		isBanner = image.id === $form.bannerId;
+	}
+	$: syncIsBanner($form.bannerId);
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -48,11 +52,14 @@
 				use:ripple
 				class="toggle"
 				type="submit"
-				formaction="?/{isBanner ? 'demote' : 'promote'}"
+				formaction="?/{image.id === $form.bannerId ? 'demote' : 'promote'}"
 				name="bannerId"
 				value={image.id}
 				data-state={isBanner ? 'checked' : 'unchecked'}
-				on:click={() => ($form.bannerId = isBanner ? null : image.id)}
+				on:click={(e) => {
+					isBanner = $form.bannerId !== image.id;
+					return e;
+				}}
 			>
 				<span class="toggle-thumb">
 					<Presentation class="toggle-icon" />
@@ -97,7 +104,7 @@
 		padding: 0.75rem;
 		pointer-events: none;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-start;
 		font-size: var(--size-xs);
 
 		> * {

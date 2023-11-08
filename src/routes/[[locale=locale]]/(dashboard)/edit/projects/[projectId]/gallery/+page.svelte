@@ -8,7 +8,13 @@
 
 	export let data;
 
-	const { form, enhance } = superForm(data.updateGalleryForm);
+	const {
+		form,
+		enhance,
+		loadable: {
+			submitter: { root: submitter },
+		},
+	} = superForm(data.updateGalleryForm);
 </script>
 
 <ImageInputForm data={data.insertImagesForm} />

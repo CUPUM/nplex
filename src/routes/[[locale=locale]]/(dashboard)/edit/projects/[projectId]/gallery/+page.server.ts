@@ -124,6 +124,7 @@ export const actions = {
 	 */
 	promote: async (event) => {
 		await withAuth(event);
+		console.log('promoting');
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { bannerId } = galleryUpdateForm.data;
 		const t = event.locals.createTranslations({
@@ -138,6 +139,7 @@ export const actions = {
 				.update(projects)
 				.set({ bannerId })
 				.where(eq(projects.id, event.params.projectId));
+			return message(galleryUpdateForm, [t.success]);
 		} catch (e) {
 			return message(galleryUpdateForm, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
@@ -161,6 +163,7 @@ export const actions = {
 				.update(projects)
 				.set({ bannerId: null })
 				.where(and(eq(projects.id, event.params.projectId), eq(projects.bannerId, bannerId)));
+			return message(galleryUpdateForm, [t.success]);
 		} catch (e) {
 			return message(galleryUpdateForm, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
