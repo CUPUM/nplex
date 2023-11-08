@@ -32,7 +32,7 @@
 						target="_blank"
 						class="footer-logo"
 					>
-						<MontrealQuebec preserveAspectRatio="xMidYMid" width="100%" height="4.5rem" />
+						<MontrealQuebec preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
 					</a>
 				</li>
 				<li>
@@ -42,7 +42,7 @@
 						target="_blank"
 						class="footer-logo"
 					>
-						<UnescoUnitwin preserveAspectRatio="xMidYMid" width="100%" height="5rem" />
+						<UnescoUnitwin preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
 					</a>
 				</li>
 				<li>
@@ -50,7 +50,7 @@
 						href="https://www.unesco-paysage.umontreal.ca/{$page.data.locale}/"
 						class="footer-logo"
 					>
-						<CupumUdem preserveAspectRatio="xMidYMid" width="100%" height="5rem" />
+						<CupumUdem preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
 					</a>
 				</li>
 			</ul>
