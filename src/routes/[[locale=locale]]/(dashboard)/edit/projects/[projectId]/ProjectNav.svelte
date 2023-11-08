@@ -77,13 +77,22 @@
 	<svelte:fragment slot="heading">
 		{$t.complementaries.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/contributions#dashboard-content`)}>
+	<DashboardNavItem
+		{...$link(`/edit/projects/${projectId}/contributions#dashboard-content`)}
+		aria-disabled
+	>
 		{$t.complementaries.contributions}
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/materials#dashboard-content`)}>
+	<DashboardNavItem
+		{...$link(`/edit/projects/${projectId}/materials#dashboard-content`)}
+		aria-disabled
+	>
 		{$t.complementaries.materials}
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/timeline#dashboard-content`)}>
+	<DashboardNavItem
+		{...$link(`/edit/projects/${projectId}/timeline#dashboard-content`)}
+		aria-disabled
+	>
 		{$t.complementaries.timeline}
 	</DashboardNavItem>
 </DashboardNav>
@@ -91,15 +100,25 @@
 	<svelte:fragment slot="heading">
 		{$t.settings.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/sharing#dashboard-content`)}>
+	<DashboardNavItem
+		{...$link(`/edit/projects/${projectId}/sharing#dashboard-content`)}
+		aria-disabled
+	>
 		{$t.settings.sharing}
 		<Users2 class="button-icon" />
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/publishing#dashboard-content`)}>
+	<DashboardNavItem
+		{...$link(`/edit/projects/${projectId}/publishing#dashboard-content`)}
+		aria-disabled
+	>
 		{$t.settings.visibility}
 		<Eye class="button-icon" />
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/security#dashboard-content`)} danger>
+	<DashboardNavItem
+		{...$link(`/edit/projects/${projectId}/security#dashboard-content`)}
+		danger
+		aria-disabled
+	>
 		{$t.settings.danger}
 		<AlertTriangle class="button-icon" />
 	</DashboardNavItem>

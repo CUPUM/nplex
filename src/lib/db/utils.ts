@@ -156,9 +156,8 @@ export function withTranslations<
 	const translationsEntries = Object.entries(translationsColumns) as Entries<
 		typeof translationsColumns
 	>;
-	const translationsKey =
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		translationsEntries.find(([k, v]) => v === reference)![0];
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const translationsKey = translationsEntries.find(([k, v]) => v === reference)![0];
 	return dbpool
 		.select({
 			...selection,

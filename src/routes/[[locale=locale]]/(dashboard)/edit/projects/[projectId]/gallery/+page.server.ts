@@ -18,10 +18,10 @@ import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withAuth(event);
-	const images = withTranslations(projectsImages, projectsImagesTranslations, (t, tt) => ({
-		field: t.id,
-		reference: tt.id,
-	}))
+	const images = withTranslations(projectsImages, projectsImagesTranslations, {
+		field: (t) => t.id,
+		reference: (tt) => tt.id,
+	})
 		.where(eq(projectsImages.projectId, event.params.projectId))
 		.leftJoin(projectsImagesCredits, eq(projectsImagesCredits.imageId, projectsImages.id));
 	const [project] = await dbpool

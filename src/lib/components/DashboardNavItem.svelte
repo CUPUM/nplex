@@ -58,6 +58,12 @@
 			font-size: var(--size-sm);
 		}
 
+		&:disabled,
+		&[aria-disabled] {
+			opacity: 0.25;
+			pointer-events: none;
+		}
+
 		&:active {
 			animation: var(--animation-press);
 		}

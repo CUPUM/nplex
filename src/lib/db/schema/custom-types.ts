@@ -145,10 +145,13 @@ export const intrange = customType<{
 	},
 	toDriver(value) {
 		if (value[0] == null && value[1] == null) {
-			return "'empty'";
+			return 'empty';
 		}
-		const diff = value[0] == null || value[1] == null ? 0 : value[1] - value[0];
-		return `[${value[0] ?? value[1]},${value[1] ?? value[0]}${diff ? ')' : ']'}`;
+		// Using canonical form of included lower bound and excluded upper bound.
+		// See https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE
+		return `[${value[0]},${value[1]}})`;
+		// const diff = value[0] == null || value[1] == null ? 0 : value[1] - value[0];
+		// return `[${value[0] ?? value[1]},${value[1] ?? value[0]}${diff ? ')' : ']'}`;
 	},
 });
 

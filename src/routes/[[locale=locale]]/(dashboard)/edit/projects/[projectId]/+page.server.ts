@@ -36,7 +36,6 @@ export const load = async (event) => {
 	if (!project) {
 		throw error(STATUS_CODES.NOT_FOUND, t.notFound);
 	}
-	console.log(project);
 	const interventions = await dbpool
 		.select({
 			interventionId: projectsInterventions.interventionId,
