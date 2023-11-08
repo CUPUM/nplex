@@ -4,33 +4,44 @@
 	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
 	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
 	import TranslationsCard from '$lib/components/TranslationsCard.svelte';
+	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { Check, Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms/client';
-	import { dt } from '../../../translations';
 
 	const t = createTranslations({
 		fr: {
 			heading: 'Types d’organisation',
 			entity: 'type d’organisation',
+			title: 'Titre',
+			description: 'Description',
 		},
 		en: {
 			heading: 'Organization types',
 			entity: 'organization type',
+			title: 'Titre',
+			description: 'Description',
 		},
 	});
 
 	export let data;
 
-	const { form, enhance, submitting, constraints, tainted } = superForm(data.form, {
+	const {
+		form,
+		enhance,
+		submitting,
+		constraints,
+		tainted,
+		loadable: {
+			submitter: { root: submitter },
+		},
+	} = superForm(data.form, {
 		dataType: 'json',
 	});
 </script>
 
-<DescriptorsForm action="?/update" {enhance} let:element let:loading>
+<DescriptorsForm action="?/update" {enhance}>
 	<svellte:fragment slot="header">
 		<h2 class="heading lg">{$t.heading}</h2>
 		<p class="prose md dimmer">
@@ -53,7 +64,7 @@
 				>
 					<label class="labeled-group">
 						<span class="label with-hover">
-							{$dt.title}
+							{$t.title}
 						</span>
 						<input
 							class="input"
@@ -63,7 +74,7 @@
 					</label>
 					<label class="labeled-group">
 						<span class="label with-hover">
-							{$dt.description}
+							{$t.description}
 						</span>
 						<textarea
 							class="input resize"
@@ -74,18 +85,7 @@
 			</li>
 		{/each}
 	</DescriptorsCardsList>
-	<DashboardMenu>
-		<button class="button outlined" {...element('?/create')} use:loading type="submit">
-			<Plus class="button-icon" />
-			{$dt.create($t.entity)}
-		</button>
-		{#if $tainted}
-			<button class="button cta" in:fly={{ y: 6 }} {...element()} use:loading>
-				<Check class="button-icon" />
-				{$dt.save}
-			</button>
-		{/if}
-	</DashboardMenu>
+	<DashboardMenu {submitter} {tainted}></DashboardMenu>
 </DescriptorsForm>
 
 <style lang="postcss">

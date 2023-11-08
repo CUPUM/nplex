@@ -17,7 +17,7 @@
 	import { expoOut } from 'svelte/easing';
 	import type { Writable } from 'svelte/store';
 	import { crossfade, fly, slide } from 'svelte/transition';
-	import TranslationsTabsList from './LocaleTabsList.svelte';
+	import LocaleSwitch from './LocaleSwitch.svelte';
 
 	export let locales: Locale[] = LOCALES_ARR;
 	export let legend: string;
@@ -70,7 +70,7 @@
 		</button>
 		{#if !minimized}
 			<div class="locales" transition:fly={{ y: 6, duration: 250, easing: expoOut }}>
-				<TranslationsTabsList {list} {trigger} {value} />
+				<LocaleSwitch {list} {trigger} locale={value} />
 			</div>
 		{/if}
 		<menu class="menu">

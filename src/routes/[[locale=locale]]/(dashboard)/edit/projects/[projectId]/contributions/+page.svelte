@@ -3,12 +3,8 @@
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormGroup from '$lib/components/DashboardFormField.svelte';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
+	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { Save } from 'lucide-svelte';
-	import { expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms/client';
-	import { dt } from '../../../translations';
 
 	const t = createTranslations({
 		fr: {
@@ -23,10 +19,17 @@
 
 	export let data;
 
-	const { form, enhance, tainted } = superForm(data.form, { dataType: 'json' });
+	const {
+		form,
+		enhance,
+		tainted,
+		loadable: {
+			submitter: { root: submitter },
+		},
+	} = superForm(data.form, { dataType: 'json' });
 </script>
 
-<DashboardForm action="?/update" {enhance} let:element let:loading>
+<DashboardForm action="?/update" {enhance}>
 	<svelte:fragment slot="header">
 		<h2 class="heading lg">{$t.heading}</h2>
 	</svelte:fragment>
@@ -46,19 +49,7 @@
 			{/each}
 		</div>
 	</DashboardFormGroup>
-	<DashboardMenu>
-		{#if $tainted}
-			<button
-				class="button cta"
-				type="submit"
-				{...element()}
-				use:loading
-				transition:scale={{ start: 0.95, opacity: 0, easing: expoOut, duration: 150 }}
-			>
-				<Save class="button-icon" />{$dt.save}
-			</button>
-		{/if}
-	</DashboardMenu>
+	<DashboardMenu {tainted} {submitter}></DashboardMenu>
 </DashboardForm>
 
 <style lang="postcss">

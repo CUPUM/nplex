@@ -1,14 +1,10 @@
 <script lang="ts">
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormGroup from '$lib/components/DashboardFormField.svelte';
+	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
-	import TranslationsField from '$lib/components/TranslationsField.svelte';
+	import LocaleInput from '$lib/components/LocaleInput.svelte';
+	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { Save } from 'lucide-svelte';
-	import { expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms/client';
-	import { dt } from '../../translations';
 
 	const t = createTranslations({
 		fr: {
@@ -29,10 +25,17 @@
 
 	export let data;
 
-	const { form, tainted, enhance } = superForm(data.form, { dataType: 'json' });
+	const {
+		form,
+		tainted,
+		enhance,
+		loadable: {
+			submitter: { root: submitter },
+		},
+	} = superForm(data.form, { dataType: 'json' });
 </script>
 
-<DashboardForm action="?/update" {enhance} let:element let:loading>
+<DashboardForm action="?/update" {enhance}>
 	<svelte:fragment slot="header">
 		<h1 class="heading lg">{$t.heading}</h1>
 		<p class="prose dim">
@@ -42,44 +45,33 @@
 			cumque corporis aliquid ab ducimus a ut perspiciatis quam autem deserunt doloremque.
 		</p>
 	</svelte:fragment>
-	<DashboardFormGroup>
-		<TranslationsField centered let:locale>
-			<svelte:fragment slot="legend">{$t.name}</svelte:fragment>
+	<DashboardFormField title={$t.name} centered>
+		<LocaleInput let:locale>
 			<input type="text" class="input title" bind:value={$form.translations[locale].name} />
-		</TranslationsField>
-		<TranslationsField centered let:locale>
-			<svelte:fragment slot="legend">{$t.summary}</svelte:fragment>
+		</LocaleInput>
+	</DashboardFormField>
+	<DashboardFormField title={$t.summary} centered>
+		<LocaleInput let:locale>
 			<textarea rows="5" class="input resize" bind:value={$form.translations[locale].summary} />
-		</TranslationsField>
-		<TranslationsField centered let:locale>
-			<svelte:fragment slot="legend">{$t.description}</svelte:fragment>
+		</LocaleInput>
+	</DashboardFormField>
+	<DashboardFormField title={$t.description} centered>
+		<LocaleInput let:locale>
 			<textarea
 				rows="10"
 				class="input resize"
 				bind:value={$form.translations[locale].description}
 			/>
-		</TranslationsField>
-	</DashboardFormGroup>
-	<DashboardFormGroup centered>
+		</LocaleInput>
+	</DashboardFormField>
+	<DashboardFormField centered>
 		<select class="button" bind:value={$form.typeId}>
 			{#each data.descriptors.types as type}
 				<option value={type.id}>{type.title}</option>
 			{/each}
 		</select>
-	</DashboardFormGroup>
-	<DashboardMenu>
-		{#if $tainted}
-			<button
-				class="button cta"
-				type="submit"
-				{...element()}
-				use:loading
-				transition:scale={{ start: 0.95, opacity: 0, easing: expoOut, duration: 150 }}
-			>
-				<Save class="button-icon" />{$dt.save}
-			</button>
-		{/if}
-	</DashboardMenu>
+	</DashboardFormField>
+	<DashboardMenu {submitter} {tainted}></DashboardMenu>
 </DashboardForm>
 
 <style lang="postcss">

@@ -4,16 +4,18 @@
 	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
 	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
 	import { default as TranslationsCard } from '$lib/components/TranslationsCard.svelte';
+	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { Check, Pen, Plus } from 'lucide-svelte';
+	import { tt } from '$lib/i18n/translations';
+	import { melt } from '@melt-ui/svelte';
+	import { Pen, Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms/client';
-	import { dt } from '../../../translations';
 
 	const t = createTranslations({
 		fr: {
+			...tt.fr.editor.client,
 			heading: ['Catégories d’intervention', 'types d’intervention'],
 			category: {
 				title: 'Titre de la catégorie',
@@ -27,6 +29,7 @@
 			},
 		},
 		en: {
+			...tt.en.editor.client,
 			heading: ['Intervention categories', 'intervention types'],
 			category: {
 				title: 'Category title',
@@ -43,12 +46,23 @@
 
 	export let data;
 
-	const { form, submitting, constraints, errors, enhance, tainted } = superForm(data.form, {
+	const {
+		form,
+		submitting,
+		constraints,
+		errors,
+		enhance,
+		tainted,
+		loadable: {
+			submitter: { root: submitter },
+			formaction: { root: formaction },
+		},
+	} = superForm(data.form, {
 		dataType: 'json',
 	});
 </script>
 
-<DescriptorsForm action="?/update" {enhance} let:element let:loading>
+<DescriptorsForm action="?/update" {enhance}>
 	<svelte:fragment slot="header">
 		<h2 class="heading lg">
 			{#each $t.heading as segment, i}
@@ -139,32 +153,25 @@
 					<button
 						class="button ghost"
 						type="submit"
-						{...element(`?/createIntervention&categoryId=${category.id}`)}
+						use:melt={$formaction(`?/createIntervention&categoryId=${category.id}`)}
 					>
 						<Plus class="button-icon" />
-						{$dt.create($t.intervention.entity)}
+						{$t.create($t.intervention.entity)}
 					</button>
 				</menu>
 			</li>
 		{/each}
 	</ol>
-	<DashboardMenu>
+	<DashboardMenu {tainted} {submitter}>
 		<button
 			class="button outlined"
-			{...element('?/createCategory')}
-			use:loading
+			use:melt={$formaction('?/createCategory')}
 			type="submit"
 			disabled
 		>
 			<Pen class="button-icon" />
-			Create
+			t.
 		</button>
-		{#if $tainted}
-			<button class="button cta" in:fly={{ y: 6 }} type="submit" {...element()} use:loading>
-				<Check class="button-icon" />
-				Save
-			</button>
-		{/if}
 	</DashboardMenu>
 </DescriptorsForm>
 
