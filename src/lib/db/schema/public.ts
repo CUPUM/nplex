@@ -13,7 +13,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { generateNanoid } from '../sql.server';
 import { userRoles, users } from './accounts';
-import { intrange, point, userRole } from './custom-types';
+import { cube, intrange, point, userRole } from './custom-types';
 import { translationLocaleColumn, translationReferenceColumn } from './i18n';
 
 /**
@@ -484,6 +484,7 @@ export const projectsImages = pgTable(
 			onDelete: 'set null',
 			onUpdate: 'cascade',
 		}),
+		palette: cube('palette').array(5).notNull(),
 	},
 	(table) => {
 		return {

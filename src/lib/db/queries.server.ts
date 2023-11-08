@@ -23,7 +23,7 @@ import {
 	projectTypesToInterventions,
 	projectTypesTranslations,
 } from './schema/public';
-import { arrayAgg, coalesce, emptyJsonArray, jsonAggBuildObject } from './sql.server';
+import { jsonAggBuildObject } from './sql.server';
 import { getSubqueryColumns, withTranslation } from './utils';
 
 export function getProjectTypesList(event: RequestEvent | ServerLoadEvent) {
@@ -110,14 +110,20 @@ export function getProjectExemplarityIndicatorsList(event: RequestEvent | Server
 
 export function getProjectCategorizedIndicatorsList(event: RequestEvent | ServerLoadEvent) {
 	const indicators = getProjectExemplarityIndicatorsList(event).as('indicators');
+	const indicatorsColumns = getSubqueryColumns(indicators);
 	const categories = getProjectExemplarityCategoriesList(event).as('categories');
+	const categoriesColumns = getSubqueryColumns(categories);
 	return dbpool
 		.select({
-			...getSubqueryColumns(categories),
-			indicators: coalesce(arrayAgg(getSubqueryColumns(indicators)), emptyJsonArray()),
+			...categoriesColumns,
+			indicators: jsonAggBuildObject(indicatorsColumns),
 		})
 		.from(categories)
-		.leftJoin(indicators, eq(categories.id, indicators.categoryId));
+		.groupBy(...Object.values(categoriesColumns))
+		.leftJoin(
+			indicators,
+			and(eq(categories.id, indicators.categoryId), eq(categories.locale, indicators.locale))
+		);
 }
 
 export function getProjectImageTypesList(event: RequestEvent | ServerLoadEvent) {

@@ -210,7 +210,7 @@ type Cube<L extends number> = L extends 1
  */
 export const cube = customType<{ data: Cube<3>; driverData: number[] }>({
 	dataType() {
-		return 'cube';
+		return 'extensions.cube';
 	},
 	fromDriver(value) {
 		if (value.length !== 3) {

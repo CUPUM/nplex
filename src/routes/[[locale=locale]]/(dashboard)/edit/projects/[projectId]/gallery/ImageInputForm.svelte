@@ -5,6 +5,8 @@
 	import { createTranslations } from '$lib/i18n/translate';
 	import { IMAGE_FILE_TYPES_ARR } from '$lib/media/constants';
 	import { transformImage } from '$lib/media/utils';
+	import { rgb } from 'color-convert';
+	import { prominent } from 'color.js';
 	import { ImagePlus, Send, X } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { elasticOut, expoInOut, expoOut } from 'svelte/easing';
@@ -26,7 +28,14 @@
 		},
 	});
 
-	let inmemory: { url: string; file: File }[] = [];
+	let inmemory: {
+		url: string;
+		file: File;
+		hex: string[];
+		lab: [number, number, number][];
+	}[] = [];
+
+	type ParsedPalettes = Pick<(typeof inmemory)[number], 'hex' | 'lab'>;
 
 	async function parseInput(e: Parameters<ChangeEventHandler<HTMLInputElement>>[0]) {
 		if (
@@ -40,7 +49,7 @@
 		}
 		await Promise.all(
 			[...e.target.files].map(async (file) => {
-				const [parsed, preview] = await Promise.all([
+				const [parsed, preview, palettes] = await Promise.all([
 					transformImage(file, {
 						filename: `parsed-${file.name}.webp`,
 						max: 1500,
@@ -52,9 +61,24 @@
 						quality: 0.8,
 						format: 'webp',
 					}),
+					new Promise<ParsedPalettes>(async (res) => {
+						const item = URL.createObjectURL(file);
+						const extracted = await prominent(item, { amount: 5, group: 40 });
+						const palettes = {
+							lab: [],
+							hex: [],
+						} as ParsedPalettes;
+						URL.revokeObjectURL(item);
+						(extracted as [number, number, number][]).forEach((col) => {
+							palettes.lab.push(rgb.lab(col));
+							palettes.hex.push(rgb.hex(col));
+						});
+						res(palettes);
+					}),
 				]);
 				const url = URL.createObjectURL(preview);
-				inmemory = [...inmemory, { file: parsed, url }];
+				inmemory.push({ file: parsed, url, ...palettes });
+				inmemory = inmemory;
 			})
 		);
 		e.target.value = '';
@@ -94,7 +118,7 @@
 						input.cancel();
 					} else {
 						// To do: extract and add color palette.
-						$form.images.push({ storageName: presignedJson.name });
+						$form.images.push({ storageName: presignedJson.name, palette: preview.lab });
 					}
 				})
 			);
@@ -139,6 +163,11 @@
 				in:scale={{ start: 0.9, duration: 500, easing: elasticOut }}
 			>
 				<img src={image.url} alt="Preview image for {image.url}" />
+				<div class="palette">
+					{#each image.hex as color}
+						<div class="swatch" style:background-color="#{color}"></div>
+					{/each}
+				</div>
 				<menu class="toolbar" data-mode="dark">
 					<button
 						class="button square danger ghost"
@@ -172,12 +201,12 @@
 		padding: 1rem;
 		flex-direction: column;
 		border-radius: inherit;
-		margin-bottom: var(--base-gap);
 		border: var(--base-border-size) dashed
 			color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 		transition: all var(--duration-fast) ease-out;
 
 		&.has-images {
+			border-style: solid;
 			border-color: color-mix(in srgb, var(--color-primary-700) 20%, transparent);
 			&:hover {
 				border-color: color-mix(in srgb, var(--color-primary-700) 75%, transparent);
@@ -219,6 +248,24 @@
 			backdrop-filter: blur(6px);
 			/* background-color: color-mix(in srgb, var(--base-bg) 80%, transparent); */
 			background-color: color-mix(in srgb, var(--color-neutral-950) 85%, transparent);
+		}
+
+		.palette {
+			position: absolute;
+			z-index: 1;
+			top: 0;
+			left: 0;
+			width: 100%;
+			pointer-events: none;
+			dispaly: flex;
+			flex-direction: row;
+		}
+
+		.swatch {
+			aspect-ratio: 1;
+			flex: none;
+			height: 1em;
+			border-radius: 50%;
 		}
 	}
 

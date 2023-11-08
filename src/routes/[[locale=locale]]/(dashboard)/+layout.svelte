@@ -115,6 +115,7 @@
 		border-radius: var(--radius-xl);
 		z-index: -1;
 		transform-origin: center bottom;
+		backface-visibility: hidden;
 		transition: all var(--duration-2xslow) var(--ease-out-expo);
 	}
 

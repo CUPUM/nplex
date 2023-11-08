@@ -292,7 +292,7 @@ export const projectsImagesUpdateSchema = withTranslationsSchema(
  * Appending new project images.
  */
 export const projectsImagesInsertManySchema = z.object({
-	images: projectsImagesInsertSchema.pick({ storageName: true }).array().min(1),
+	images: projectsImagesInsertSchema.pick({ storageName: true, palette: true }).array().min(1),
 });
 
 /**

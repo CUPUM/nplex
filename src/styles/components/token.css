@@ -78,6 +78,7 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 	Default variant
 	*/
 	&:not(.outlined, .ghost) {
+		border: var(--base-border-dim);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 		:--dark & {
 		}
@@ -91,10 +92,12 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 		&:has(:checked),
 		&[data-state='checked'] {
 			color: var(--color-neutral-200);
-			background-color: var(--color-neutral-800);
+			border-color: var(--color-neutral-900);
+			background-color: color-mix(in srgb, var(--color-neutral-800) 90%, transparent);
 			:--dark & {
 				color: var(--color-neutral-800);
-				background-color: var(--color-neutral-200);
+				border-color: var(--color-neutral-100);
+				background-color: color-mix(in srgb, var(--color-neutral-200) 90%, transparent);
 			}
 		}
 	}
@@ -103,6 +106,7 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 	Outlined variant
 	*/
 	&.outlined {
+		border: var(--base-border);
 	}
 
 	/*

@@ -9,7 +9,6 @@ import {
 	type AnyTable,
 	type InferColumnsDataTypes,
 	type InferSelectModel,
-	type TableConfig,
 } from 'drizzle-orm';
 import type { SetNonNullable } from 'type-fest';
 import { NANOID_DEFAULT_LENGTH } from './constants';
@@ -150,16 +149,19 @@ export function jsonStripNulls<T>(json: SQL<T>) {
 // 		(T extends SQL ? InferSQLDataType<T> : T extends AnyTable ? InferSelectModel<T> : never)[]
 // 	>`json_agg(${raw})`;
 // }
-export function jsonAgg<Table extends AnyTable<TableConfig>>(
-	table: Table,
+export function jsonAgg<T extends AnyTable | AnyColumn>(
+	selection: T,
 	{ notNull = true }: { notNull?: boolean } = {}
 ) {
+	type R = T extends AnyTable
+		? InferSelectModel<T>
+		: T extends AnyColumn
+		? InferColumnDataType<T>
+		: T;
 	if (notNull) {
-		return sql<
-			InferSelectModel<Table>[]
-		>`coalesce(json_agg(${table}) filter (where ${table} is not null), '[]')`;
+		return sql<R[] | null>`json_agg(${selection}) filter (where ${selection} is not null)`;
 	}
-	return sql<InferSelectModel<Table>[]>`coalesce(json_agg(${table}), '[]')`;
+	return sql<R[] | null>`json_agg(${selection})`;
 }
 
 export function arrayAgg<T extends SQL | InferSelectModel<AnyTable>>(raw: T) {

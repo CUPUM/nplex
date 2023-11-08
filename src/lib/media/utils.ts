@@ -51,6 +51,9 @@ export async function transformImage(
 						throw new Error('No blob returned inside image onload callback of transform.');
 					}
 					const resized = new File([blob], `${filename}.${format}`, { type });
+					if (source instanceof File) {
+						URL.revokeObjectURL(src);
+					}
 					res(resized);
 				},
 				type,

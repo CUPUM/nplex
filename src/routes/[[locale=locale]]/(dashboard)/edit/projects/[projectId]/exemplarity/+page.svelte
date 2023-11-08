@@ -1,25 +1,25 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
+	import DashboardForm from '$lib/components/DashboardForm.svelte';
+	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
 	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
+	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { switchCrossfade } from '$lib/transitions/presets';
-	import { Save } from 'lucide-svelte';
-	import { expoOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms/client';
-	import ProjectForm from '../../../../../../../lib/components/DashboardForm.svelte';
-	import ProjectFormGroup from '../../../../../../../lib/components/DashboardFormField.svelte';
-	import { pt } from '../translations';
 
 	export let data;
 
-	const { form, enhance, constraints, errors, delayed, submitting, tainted } = superForm(
-		data.form,
-		{
-			dataType: 'json',
-			taintedMessage: null,
-		}
-	);
+	const {
+		form,
+		enhance,
+		tainted,
+		loadable: {
+			submitter: { root: submitter },
+		},
+	} = superForm(data.form, {
+		dataType: 'json',
+		taintedMessage: null,
+	});
 
 	const t = createTranslations({
 		fr: {
@@ -30,10 +30,12 @@
 		},
 	});
 
+	$: console.log(data.categorizedIndicators);
+
 	const [send, receive] = switchCrossfade;
 </script>
 
-<ProjectForm {enhance} let:element let:loading action="?/update">
+<DashboardForm {enhance} action="?/update">
 	<svelte:fragment slot="header">
 		<h1 class="heading lg">{$t.heading}</h1>
 		<p class="prose dim subhead">
@@ -44,9 +46,8 @@
 			dignissimos omnis rem.
 		</p>
 	</svelte:fragment>
-	<ProjectFormGroup>
-		{#each data.descriptors.exemplarityCategories as category, i (category.id)}
-			<h4 class="prose sm dim">{category.title}</h4>
+	{#each data.categorizedIndicators as category, i (category.id)}
+		<DashboardFormField title={category.title ?? undefined}>
 			<ul id="interventions">
 				{#if category.indicators}
 					{#each category.indicators as indicator}
@@ -64,22 +65,10 @@
 					{/each}
 				{/if}
 			</ul>
-		{/each}
-	</ProjectFormGroup>
-	<DashboardMenu>
-		{#if $tainted}
-			<button
-				class="button cta"
-				type="submit"
-				{...element()}
-				use:loading
-				transition:scale={{ start: 0.95, opacity: 0, easing: expoOut, duration: 150 }}
-			>
-				<Save class="button-icon" />{$pt.save}
-			</button>
-		{/if}
-	</DashboardMenu>
-</ProjectForm>
+		</DashboardFormField>
+	{/each}
+	<DashboardMenu {tainted} {submitter}></DashboardMenu>
+</DashboardForm>
 
 <style lang="postcss">
 	.title {

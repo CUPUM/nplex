@@ -1,7 +1,9 @@
 import { withAuth } from '$lib/auth/guard.server';
-import { projectExemplarityIndicatorsUpdateSchema } from '$lib/db/crud.server';
+import { projectsExemplarityIndicatorsUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
+import { getProjectCategorizedIndicatorsList } from '$lib/db/queries.server';
 import { projectsExemplarityIndicators } from '$lib/db/schema/public';
+import { coalesce, emptyJsonArray, jsonAgg } from '$lib/db/sql.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
@@ -9,21 +11,27 @@ import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withAuth(event);
-	const indicatorIds = (
-		await dbpool
-			.select()
-			.from(projectsExemplarityIndicators)
-			.where(eq(projectsExemplarityIndicators.projectId, event.params.projectId))
-	).map((pei) => pei.exemplarityIndicatorId);
-
-	const form = await superValidate({ indicatorIds }, projectExemplarityIndicatorsUpdateSchema);
-	return { form };
+	const [indicators] = await dbpool
+		.select({
+			indicatorIds: coalesce(
+				jsonAgg(projectsExemplarityIndicators.exemplarityIndicatorId),
+				emptyJsonArray()
+			),
+		})
+		.from(projectsExemplarityIndicators)
+		.where(eq(projectsExemplarityIndicators.projectId, event.params.projectId));
+	console.log(indicators);
+	const form = await superValidate(indicators, projectsExemplarityIndicatorsUpdateSchema);
+	return {
+		form,
+		categorizedIndicators: await getProjectCategorizedIndicatorsList(event),
+	};
 };
 
 export const actions = {
 	update: async (event) => {
 		await withAuth(event);
-		const form = await superValidate(event, projectExemplarityIndicatorsUpdateSchema);
+		const form = await superValidate(event, projectsExemplarityIndicatorsUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}

@@ -31,14 +31,14 @@
 		min-height: 200px;
 		opacity: 1;
 		border-radius: inherit;
-		--pattern-color: color-mix(in srgb, var(--color-primary-600) 20%, transparent);
+		--pattern-color: var(--color-neutral-400);
 		color: var(--color-primary-800);
 		background: radial-gradient(circle, var(--pattern-color) 1px, transparent 1.1px);
+		background-position: center;
 		background-size: var(--size-xl) var(--size-xl);
 		background-repeat: repeat;
-		background-position: center;
-		background-color: color-mix(in srgb, var(--color-primary-700) 5%, transparent);
 		:global(:--dark) & {
+			--pattern-color: var(--color-neutral-700);
 			color: var(--color-primary-400);
 			/* --pattern-color: var(--color-primary-700); */
 		}

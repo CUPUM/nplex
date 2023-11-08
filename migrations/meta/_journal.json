@@ -120,6 +120,20 @@
       "when": 1699412501600,
       "tag": "0016_purple_ender_wiggin",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "5",
+      "when": 1699436463191,
+      "tag": "0017_same_stone_men",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "5",
+      "when": 1699442207299,
+      "tag": "0018_white_stingray",
+      "breakpoints": true
     }
   ]
 }

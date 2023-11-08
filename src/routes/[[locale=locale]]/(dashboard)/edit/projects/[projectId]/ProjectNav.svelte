@@ -63,7 +63,7 @@
 	<DashboardNavItem {...$link(`/edit/projects/${projectId}`)}>
 		{$t.essentials.general}
 	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/place#dashboard-content`)}>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/place#dashboard-content`)} aria-disabled>
 		{$t.essentials.place}
 	</DashboardNavItem>
 	<DashboardNavItem {...$link(`/edit/projects/${projectId}/exemplarity#dashboard-content`)}>
@@ -114,11 +114,7 @@
 		{$t.settings.visibility}
 		<Eye class="button-icon" />
 	</DashboardNavItem>
-	<DashboardNavItem
-		{...$link(`/edit/projects/${projectId}/security#dashboard-content`)}
-		danger
-		aria-disabled
-	>
+	<DashboardNavItem {...$link(`/edit/projects/${projectId}/security#dashboard-content`)} danger>
 		{$t.settings.danger}
 		<AlertTriangle class="button-icon" />
 	</DashboardNavItem>

@@ -3,7 +3,7 @@
 	import Slider from '$lib/components/Slider.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
 	import { createTranslations } from '$lib/i18n/translate';
-	import { Minus, Plus, X } from 'lucide-svelte';
+	import { CircleOff, Minus, Plus } from 'lucide-svelte';
 	import { fieldProxy } from 'sveltekit-superforms/client';
 	import type { PageData } from './$types';
 
@@ -28,12 +28,12 @@
 	<div id="project-cost">
 		<div class="input-group">
 			<div class="input-peer">
-				<button class="button square ghost"><Minus class="button-icon" /></button>
+				<button class="button square ghost" type="button"><Minus class="button-icon" /></button>
 			</div>
-			<span class="input-affix">$ CAD</span>
+			<span class="input-affix">$CA</span>
 			<input type="number" name="" id="" class="input" />
 			<div class="input-peer">
-				<button class="button square ghost"><Plus class="button-icon" /></button>
+				<button class="button square ghost" type="button"><Plus class="button-icon" /></button>
 			</div>
 		</div>
 		<div class="input-group">
@@ -42,13 +42,13 @@
 					<Minus class="button-icon" />
 				</button>
 			</div>
-			<span class="input-affix">$ CAD</span>
+			<span class="input-affix">$CA</span>
 			<input type="number" name="" id="" class="input" />
 			<div class="input-peer">
-				<button class="button square ghost"><Plus class="button-icon" /></button>
+				<button class="button square ghost" type="button"><Plus class="button-icon" /></button>
 			</div>
 		</div>
-		<button class="button danger" type="button"><X class="button-icon" /></button>
+		<button class="button danger ghost" type="button"><CircleOff class="button-icon" /></button>
 	</div>
 </DashboardFormField>
 
@@ -57,5 +57,6 @@
 		display: flex;
 		flex-direction: row;
 		gap: 0.5rem;
+		font-size: var(--size-sm);
 	}
 </style>

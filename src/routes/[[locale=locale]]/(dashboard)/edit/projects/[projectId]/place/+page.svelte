@@ -1,8 +1,9 @@
 <script lang="ts">
-	import Map from '$lib/components/Map.svelte';
 </script>
 
-<Map />
+<article>To come</article>
 
 <style lang="postcss">
+	article {
+	}
 </style>
