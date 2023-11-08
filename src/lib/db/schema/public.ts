@@ -480,6 +480,8 @@ export const projectsImages = pgTable(
 		}),
 		index: integer('index'),
 		storageName: text('storage_name').notNull().unique(),
+		width: integer('width').notNull(),
+		height: integer('height').notNull(),
 		typeId: text('type_id').references(() => projectImageTypes.id, {
 			onDelete: 'set null',
 			onUpdate: 'cascade',

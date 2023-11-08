@@ -82,6 +82,10 @@
 		align-items: center;
 		border-top: var(--base-border-size) solid
 			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		color: var(--color-neutral-700);
+		:global(:--dark) & {
+			color: var(--color-neutral-300);
+		}
 	}
 
 	#footer-inner {
@@ -105,10 +109,11 @@
 	}
 
 	.footer-logo {
+		display: block;
 		position: relative;
-		transition: all var(--duration-medium) ease-out;
 		width: 100%;
-		opacity: 0.5;
+		opacity: 0.85;
+		transition: all var(--duration-medium) ease-in-out;
 		footer:hover & {
 			opacity: 1;
 		}
@@ -132,11 +137,15 @@
 
 	#footer-cc {
 		font-size: var(--size-xs);
-		opacity: 0.35;
+		opacity: 0.85;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 2rem;
 		margin-block: 2rem 1rem;
+		transition: opacity var(--duration-slow) var(--duration-slow);
+		footer:hover & {
+			opacity: 1;
+		}
 	}
 </style>

@@ -76,7 +76,7 @@
 		flex: none;
 		align-items: center;
 		justify-content: center;
-		border-radius: var(--radius-md);
+		border-radius: var(--radius-sm);
 		box-shadow: 0 0 0 var(--base-border-size)
 			color-mix(in srgb, var(--color-neutral-500) 5%, transparent);
 

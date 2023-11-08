@@ -169,7 +169,7 @@
 					},
 					easing: expoInOut,
 				}}
-				in:scale={{ start: 0.9, duration: 500, easing: elasticOut }}
+				in:scale={{ start: 0.9, duration: 500, easing: elasticOut, delay: i * 50 }}
 			>
 				<img src={image.url} alt="Preview image for {image.url}" />
 				<div class="palette">
@@ -265,17 +265,28 @@
 			z-index: 1;
 			top: 0;
 			left: 0;
-			width: 100%;
+			max-with: 50%;
 			pointer-events: none;
-			dispaly: flex;
+			display: flex;
 			flex-direction: row;
+			padding: 1px;
+			margin: var(--base-inset);
+			border-radius: var(--radius-full);
+			pointer-events: none;
+			transition: all var(--duration-medium) ease-out;
+			backdrop-filter: blur(8px);
 		}
 
 		.swatch {
 			aspect-ratio: 1;
 			flex: none;
-			height: 1em;
+			height: 1.25em;
 			border-radius: 50%;
+			box-shadow: var(--shadow-xs);
+			border: var(--base-border-dim);
+			&:not(:first-child) {
+				margin-left: -0.25em;
+			}
 		}
 	}
 

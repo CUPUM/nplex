@@ -5,7 +5,7 @@
 	export let href: string | undefined;
 </script>
 
-<div>
+<div class="card">
 	{#if href}
 		<a {href} class="card-link" />
 	{/if}
@@ -22,4 +22,7 @@
 </div>
 
 <style lang="postcss">
+	.card {
+		border-radius: var(--radius-lg);
+	}
 </style>
