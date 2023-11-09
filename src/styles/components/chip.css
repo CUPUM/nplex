@@ -1,17 +1,17 @@
 /*
 Pill-shaped or chip-like elements for list of tags and other uses.
 */
-.token {
+.chip {
 	--base-radius: var(--radius-full);
-	--token-size: calc(var(--base-size) - 0.75em);
+	--chip-size: calc(var(--base-size) - 0.75em);
 	position: relative;
 	user-select: none;
 	cursor: pointer;
 	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
-	height: var(--token-size);
-	min-width: var(--token-size);
+	height: var(--chip-size);
+	min-width: var(--chip-size);
 	padding: var(--base-inset);
 	border-radius: var(--base-radius);
 	gap: 0.5em;
@@ -48,7 +48,7 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 		animation: var(--animation-press);
 	}
 
-	.token-icon {
+	.chip-icon {
 		width: 1.25em;
 		stroke-width: 2;
 		stroke-linecap: square;
@@ -56,7 +56,7 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 		flex: none;
 	}
 
-	.token-input {
+	.chip-input {
 		position: absolute;
 		width: 0;
 		height: 0;
@@ -64,10 +64,10 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 	}
 
 	& > * {
-		--base-size: calc(var(--token-size) - 2 * var(--token-inset));
+		--base-size: calc(var(--chip-size) - 2 * var(--chip-inset));
 	}
 
-	.token-label {
+	.chip-label {
 		display: flex;
 		flex-direction: row;
 		align-items: center;

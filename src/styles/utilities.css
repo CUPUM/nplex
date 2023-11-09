@@ -1,11 +1,29 @@
+/* Breakpoints */
 @custom-media --sm (min-width: 30em);
 @custom-media --md (min-width: 48em);
 @custom-media --lg (min-width: 64em);
 @custom-media --xl (min-width: 80em);
 
+/* Mode selectors */
 @custom-selector :--dark [data-mode='dark'];
 @custom-selector :--light [data-mode='light'];
 
+/* Setout (screen layout) */
 @custom-selector :--setout-normal [data-setout='normal'];
 @custom-selector :--setout-full-width [data-setout='full-width'];
 @custom-selector :--setout-full-screen [data-setout='full-screen'];
+
+/* Disabled state */
+@custom-selector :--disabled :disabled, [data-disabled], [aria-disabled];
+/* Open / expanded state */
+@custom-selector :--open [aria-exepanded='true'], [data-state='open'];
+/* Error or invalid field */
+@custom-selector :--error [aria-invalid], [data-error];
+/* Danger / destructive */
+@custom-selector :--danger .danger;
+/* Loading state */
+@custom-selector :--loading [data-loading];
+/* Loading spinner element */
+@custom-selector :--loader [data-loader], .loading;
+/* Checked state */
+@custom-selector :--checked [data-state='checked'], :checked, :has(:checked);

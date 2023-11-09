@@ -39,7 +39,7 @@ export async function transformImage(
 	const ctx = canvas.getContext('2d');
 	const img = new Image();
 	img.src = src;
-	return new Promise<File>((res) => {
+	return new Promise<{ file: File; width: number; height: number }>((res) => {
 		img.onload = function () {
 			const ratio = getResizeRatio(img, max);
 			canvas.width = ratio * img.width;
@@ -54,7 +54,7 @@ export async function transformImage(
 					if (source instanceof File) {
 						URL.revokeObjectURL(src);
 					}
-					res(resized);
+					res({ file: resized, width: img.width, height: img.height });
 				},
 				type,
 				quality

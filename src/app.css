@@ -9,5 +9,5 @@
 @import './styles/components/button.css' layer(components);
 @import './styles/components/switch.css' layer(components);
 @import './styles/components/toggle.css' layer(components);
-@import './styles/components/toolbar.css' layer(components);
-@import './styles/components/token.css' layer(components);
+@import './styles/components/chip.css' layer(components);
+@import './styles/toolbar.css' layer(components);

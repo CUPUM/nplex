@@ -37,14 +37,14 @@
 		<h3>{$t.orgs}</h3>
 		<div id="orgs">
 			{#each data.allOrgs as org}
-				<label class="token" use:ripple>
+				<label class="chip" use:ripple>
 					<input
-						class="token-input"
+						class="chip-input"
 						type="checkbox"
 						value={org.id}
 						bind:group={$form.organizationIds}
 					/>
-					<span class="token-label">{org.name}</span>
+					<span class="chip-label">{org.name}</span>
 				</label>
 			{/each}
 		</div>

@@ -17,5 +17,8 @@
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.preferences.quoteStyle": "single",
 	"svelte.enable-ts-plugin": true,
-	"svelte.plugin.css.globals": "src/*.css,src/styles/*.css,src/styles/**/*.css"
+	"svelte.plugin.css.globals": "src/*.css,src/styles/*.css,src/styles/**/*.css",
+	"svelte.plugin.svelte.compilerWarnings": {
+		"a11y-missing-attribute": "ignore"
+	}
 }

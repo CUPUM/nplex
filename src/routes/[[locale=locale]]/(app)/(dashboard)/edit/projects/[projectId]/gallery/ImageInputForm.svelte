@@ -77,8 +77,8 @@
 						res(palettes);
 					}),
 				]);
-				const url = URL.createObjectURL(preview);
-				inmemory.push({ file: parsed, url, ...palettes });
+				const url = URL.createObjectURL(preview.file);
+				inmemory.push({ ...parsed, url, ...palettes });
 				inmemory = inmemory;
 			})
 		);

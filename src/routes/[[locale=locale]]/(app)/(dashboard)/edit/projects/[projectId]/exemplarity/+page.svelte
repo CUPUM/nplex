@@ -51,14 +51,14 @@
 			<ul id="interventions">
 				{#if category.indicators}
 					{#each category.indicators as indicator}
-						<label class="token" use:ripple>
+						<label class="chip" use:ripple>
 							<input
 								type="checkbox"
-								class="token-input"
+								class="chip-input"
 								bind:group={$form.indicatorIds}
 								value={indicator.id}
 							/>
-							<span class="token-label">
+							<span class="chip-label">
 								{indicator.title}
 							</span>
 						</label>

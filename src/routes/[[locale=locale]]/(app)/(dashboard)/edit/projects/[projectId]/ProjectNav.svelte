@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import DashboardNav, { setDashboard } from '$lib/components/DashboardNav.svelte';
-	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
+	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
+	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { AlertTriangle, Eye, Users2 } from 'lucide-svelte';
 
 	$: projectId = $page.params.projectId;
-
-	setDashboard();
 
 	const t = createTranslations({
 		fr: {
@@ -56,69 +54,57 @@
 	});
 </script>
 
-<DashboardNav>
+<SidebarGroup>
 	<svelte:fragment slot="heading">
 		{$t.essentials.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}`)}>
+	<SidebarItem {...$link(`/edit/projects/${projectId}`)}>
 		{$t.essentials.general}
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/place#dashboard-content`)} aria-disabled>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/place#dashboard-content`)} aria-disabled>
 		{$t.essentials.place}
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/exemplarity#dashboard-content`)}>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/exemplarity#dashboard-content`)}>
 		{$t.essentials.exemplarity}
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/gallery#dashboard-content`)}>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/gallery#dashboard-content`)}>
 		{$t.essentials.gallery}
-	</DashboardNavItem>
-</DashboardNav>
-<DashboardNav>
+	</SidebarItem>
+</SidebarGroup>
+<SidebarGroup>
 	<svelte:fragment slot="heading">
 		{$t.complementaries.heading}
 	</svelte:fragment>
-	<DashboardNavItem
+	<SidebarItem
 		{...$link(`/edit/projects/${projectId}/contributions#dashboard-content`)}
 		aria-disabled
 	>
 		{$t.complementaries.contributions}
-	</DashboardNavItem>
-	<DashboardNavItem
-		{...$link(`/edit/projects/${projectId}/materials#dashboard-content`)}
-		aria-disabled
-	>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/materials#dashboard-content`)} aria-disabled>
 		{$t.complementaries.materials}
-	</DashboardNavItem>
-	<DashboardNavItem
-		{...$link(`/edit/projects/${projectId}/timeline#dashboard-content`)}
-		aria-disabled
-	>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/timeline#dashboard-content`)} aria-disabled>
 		{$t.complementaries.timeline}
-	</DashboardNavItem>
-</DashboardNav>
-<DashboardNav>
+	</SidebarItem>
+</SidebarGroup>
+<SidebarGroup>
 	<svelte:fragment slot="heading">
 		{$t.settings.heading}
 	</svelte:fragment>
-	<DashboardNavItem
-		{...$link(`/edit/projects/${projectId}/sharing#dashboard-content`)}
-		aria-disabled
-	>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/sharing#dashboard-content`)} aria-disabled>
 		{$t.settings.sharing}
 		<Users2 class="button-icon" />
-	</DashboardNavItem>
-	<DashboardNavItem
-		{...$link(`/edit/projects/${projectId}/publishing#dashboard-content`)}
-		aria-disabled
-	>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/publishing#dashboard-content`)} aria-disabled>
 		{$t.settings.visibility}
 		<Eye class="button-icon" />
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/projects/${projectId}/security#dashboard-content`)} danger>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/security#dashboard-content`)} danger>
 		{$t.settings.danger}
 		<AlertTriangle class="button-icon" />
-	</DashboardNavItem>
-</DashboardNav>
+	</SidebarItem>
+</SidebarGroup>
 
 <style lang="postcss">
 </style>

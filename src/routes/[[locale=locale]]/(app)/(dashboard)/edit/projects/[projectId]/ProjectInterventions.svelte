@@ -24,14 +24,14 @@
 		<ul id="interventions">
 			<!-- {@const typeInterventions = category.interventions.filter(pi => pi.projectTypes && pi.projectTypes.includes($form.typeId))} -->
 			{#each category.interventions as intervention}
-				<label class="token" use:ripple>
+				<label class="chip" use:ripple>
 					<input
 						type="checkbox"
-						class="token-input"
+						class="chip-input"
 						bind:group={$form.interventionIds}
 						value={intervention.id}
 					/>
-					<span class="token-label">
+					<span class="chip-label">
 						{intervention.title}
 					</span>
 				</label>

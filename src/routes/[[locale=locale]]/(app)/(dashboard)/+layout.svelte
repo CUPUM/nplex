@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Loading from '$lib/components/Loading.svelte';
+	import Sidebar from '$lib/components/Sidebar.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { slide } from '$lib/transitions/slide';
 	import { expoOut } from 'svelte/easing';
@@ -55,9 +56,9 @@
 		<div id="dashboard-breadcrumbs">Breadcrumbs</div>
 	{/if}
 	{#if $page.data.dashboard?.sidebar}
-		<div id="dashboard-sidebar">
+		<Sidebar>
 			<svelte:component this={$page.data.dashboard.sidebar} />
-		</div>
+		</Sidebar>
 	{/if}
 	<div in:scale={{ start: 0.98, duration: 350, easing: expoOut }} id="dashboard-content">
 		<slot />
@@ -106,6 +107,7 @@
 		@media (--md) {
 			display: grid;
 			grid-template-columns: fit-content(var(--dashboard-navbar)) minmax(0, 1fr);
+			gap: var(--gap);
 			padding-inline: 0.75rem;
 		}
 	}
@@ -123,29 +125,7 @@
 		grid-column: 1 / -1;
 	}
 
-	#dashboard-sidebar {
-		margin-top: var(--base-gap);
-		display: flex;
-		flex-direction: row;
-		align-self: stretch;
-		overflow-x: auto;
-		top: var(--navbar-sticky);
-		position: sticky;
-		gap: var(--base-gap);
-		z-index: 1;
-
-		@media (--md) {
-			margin-right: var(--base-gap);
-			align-self: flex-start;
-			overflow-x: hidden;
-			overflow-y: auto;
-			width: var(--dashboard-navbar);
-			flex-direction: column;
-		}
-	}
-
 	#dashboard-content {
-		margin-top: var(--base-gap);
 		scroll-margin-block-start: var(--navbar-sticky);
 		grid-column: 2 / 3;
 		border-radius: var(--radius-lg);
