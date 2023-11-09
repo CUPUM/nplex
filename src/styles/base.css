@@ -151,30 +151,30 @@
 
 /* v2 */
 :root {
-	--bg: var(--color-neutral-100);
-	--color: var(--color-neutral-700);
+	--base-bg: var(--color-neutral-100);
+	--base-color: var(--color-neutral-700);
 	/* --ripple-color: red; */
-	--nesting: 5px;
-	--block-size: 3.5em;
-	--inline-padding: 1.25em;
-	--border-size: 1.25px;
-	--gutter: 0.75rem;
-	--gap: 0.5rem;
-	--radius: var(--radius-md);
-	--sticky-top: var(--navbar-height);
+	--base-nesting: 5px;
+	--base-block-size: 3.5em;
+	--base-inline-padding: 1.25em;
+	--base-border-size: 1.25px;
+	--base-gutter: 0.75rem;
+	--base-gap: 0.5rem;
+	--base-radius: var(--radius-md);
+	--base-sticky-top: var(--navbar-height);
 	/* Composed properties */
-	--border: var(--base-border-size) solid
+	--base-border: var(--base-border-size) solid
 		color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-	--border-dim: var(--base-border-size) solid
+	--base-border-dim: var(--base-border-size) solid
 		color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
-	--focus-ring: 2.5px solid color-mix(in srgb, var(--color-primary-800) 75%, transparent);
+	--base-focus-ring: 2.5px solid color-mix(in srgb, var(--color-primary-800) 75%, transparent);
 	/* Component-specific properties */
-	--sidebar-width: 175px;
+	--base-sidebar-width: 175px;
 
 	&:--dark {
-		--bg: var(--color-neutral-900);
-		--color: var(--color-neutral-300);
-		--focus-ring: 2px solid color-mix(in srgb, var(--color-primary-500) 75%, transparent);
+		--base-bg: var(--color-neutral-900);
+		--base-color: var(--color-neutral-300);
+		--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-500) 75%, transparent);
 	}
 }
 

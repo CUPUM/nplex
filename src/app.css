@@ -1,7 +1,15 @@
 @layer preflight, base, components;
 
+/* Reset */
 @import './styles/preflight.css' layer(preflight);
+
+/* Core design tokens and shared props */
 @import './styles/base.css' layer(base);
+
+/* Components */
+@import './styles/chip.css' layer(components);
+@import './styles/toolbar.css' layer(components);
+
 @import './styles/components/typography.css' layer(components);
 @import './styles/components/misc.css' layer(components);
 @import './styles/components/input.css' layer(components);
@@ -9,5 +17,3 @@
 @import './styles/components/button.css' layer(components);
 @import './styles/components/switch.css' layer(components);
 @import './styles/components/toggle.css' layer(components);
-@import './styles/components/chip.css' layer(components);
-@import './styles/toolbar.css' layer(components);

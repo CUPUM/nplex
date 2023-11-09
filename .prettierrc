@@ -21,7 +21,11 @@
 			}
 		},
 		{
-			"files": "*.md",
+			"files": [
+				".md",
+				".mdx",
+				".svx"
+			],
 			"options": {
 				"useTabs": false,
 				"tabWidth": 2

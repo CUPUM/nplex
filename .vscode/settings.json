@@ -9,6 +9,7 @@
 	},
 	"files.associations": {
 		"*.svx": "markdown",
+		"*.mdx": "markdown",
 		"*.json": "jsonc"
 	},
 	"[svelte]": {
