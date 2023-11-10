@@ -107,7 +107,7 @@
 		@media (--md) {
 			display: grid;
 			grid-template-columns: fit-content(var(--dashboard-navbar)) minmax(0, 1fr);
-			gap: var(--gap);
+			gap: var(--base-gap);
 			padding-inline: 0.75rem;
 		}
 	}

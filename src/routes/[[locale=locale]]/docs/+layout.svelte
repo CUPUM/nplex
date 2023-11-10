@@ -1,21 +1,38 @@
 <script lang="ts">
 	import Logo from '$lib/components/Logo.svelte';
+	import Sidebar from '$lib/components/Sidebar.svelte';
+	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
+	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { ArrowLeft, ArrowRight } from 'lucide-svelte';
+
+	export let data;
 </script>
 
 <main id="docs">
-	<menu class="sidebar">
+	<Sidebar>
 		<header>
-			<Logo />
+			<Logo size="1.5em" />
 			<hr />
-			<a class="header" {...$link('/docs')}>Documentation</a>
+			<a class="header" {...$link('/docs')}>Docs</a>
 		</header>
-		<span class="sidebar-legend">Styles</span>
-		<nav class="sidebar-group">Test</nav>
-	</menu>
+		{#each Object.keys(data.docs) as type}
+			<SidebarGroup>
+				<svelte:fragment slot="heading">
+					<span class="type-title">
+						{type}
+					</span>
+				</svelte:fragment>
+				{#each data.docs[type] as doc}
+					<SidebarItem href="/docs/{doc.slug}">
+						{doc.title}
+					</SidebarItem>
+				{/each}
+			</SidebarGroup>
+		{/each}
+	</Sidebar>
 	<div class="content">
-		<article>
+		<article class="prose">
 			<slot />
 		</article>
 		<footer>
@@ -29,15 +46,18 @@
 	#docs {
 		display: flex;
 		flex-direction: row;
+		gap: var(--base-gap);
+		padding: var(--base-gutter);
+		padding-top: 0;
 	}
 
 	header {
 		display: flex;
 		flex-direction: row;
-		align-items: stretch;
+		align-items: center;
 		gap: 1rem;
 		padding: 1rem;
-		font-size: var(--size-lg);
+		margin-block: 1rem;
 		font-weight: 500;
 
 		hr {
@@ -46,8 +66,13 @@
 			border-color: currentColor;
 			opacity: 0.25;
 			display: block;
+			align-self: stretch;
 			height: unset;
 		}
+	}
+
+	.type-title {
+		text-transform: capitalize;
 	}
 
 	.content {
@@ -60,8 +85,6 @@
 
 	article {
 		flex: 1;
-		display: flex;
-		flex-direction: column;
 	}
 
 	footer {

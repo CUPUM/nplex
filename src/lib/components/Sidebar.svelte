@@ -16,14 +16,15 @@
 
 <style lang="postcss">
 	.sidebar {
+		--sidebar-width: var(--base-sidebar-width);
 		position: sticky;
-		top: calc(var(--sticky-top) + var(--gap));
+		top: calc(var(--sticky-top) + var(--base-gap));
 		display: flex;
 		flex-direction: column;
 		align-self: flex-start;
 		overflow-x: hidden;
 		overflow-y: auto;
-		gap: var(--gap);
+		gap: var(--base-gap);
 		width: var(--sidebar-width);
 	}
 </style>
