@@ -351,8 +351,9 @@
 		&::before {
 			content: '';
 			position: absolute;
-			inset: 0;
-			bottom: 101%;
+			height: 100%;
+			width: 100%;
+			bottom: calc(100% + var(--base-border-size));
 			border-bottom: var(--base-border-size) solid transparent;
 			transition:
 				all 0.2s ease-out,

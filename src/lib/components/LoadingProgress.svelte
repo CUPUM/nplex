@@ -82,6 +82,7 @@
 		width: calc(100% - 2 * var(--progress-inset));
 		height: var(--progress-size);
 		accent-color: var(--progress-color);
+		z-index: 999;
 
 		:global(:--dark) & {
 			--progress-color: var(--color-primary-600);
