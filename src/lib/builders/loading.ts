@@ -1,5 +1,5 @@
 import { navigating, page } from '$app/stores';
-import Loading from '$lib/components/Loading.svelte';
+import Loading from '$lib/components/Spinner.svelte';
 import { deriveLink } from '$lib/i18n/link';
 import { outroAndDestroy } from '$lib/utils/outro-and-destroy';
 import type { Navigation, NavigationTarget } from '@sveltejs/kit';

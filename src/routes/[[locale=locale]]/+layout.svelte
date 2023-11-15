@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Loading from '$lib/components/Loading.svelte';
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
+	import Loading from '$lib/components/Spinner.svelte';
 	import ToastsOutlet from '$lib/components/ToastsOutlet.svelte';
 	import { onMount } from 'svelte';
 

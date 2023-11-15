@@ -4,6 +4,7 @@
 	--font-misc: 'Fraunces', serif;
 	/* --font-misc: 'Newsreader', serif; */
 	--font-mono: 'Martian Mono', monospace;
+
 	/* Color palettes. */
 	--color-neutral-50: hsl(30, 10%, 96%);
 	--color-neutral-100: hsl(30, 9%, 92%);
@@ -60,7 +61,8 @@
 	--color-error-800: hsl(8, 84%, 34%);
 	--color-error-900: hsl(8, 86%, 26%);
 	--color-error-950: hsl(8, 89%, 18%);
-	/* Text and misc absolute sizes. */
+
+	/* Text and absolute sizes. */
 	--size-6xs: 0.125rem;
 	--size-5xs: 0.25rem;
 	--size-4xs: 0.35rem;
@@ -78,104 +80,82 @@
 	--size-6xl: 7rem;
 	--size-7xl: 10rem;
 	--size-8xl: 15rem;
+
 	/* Rounded corners. */
 	--radius-2xs: 6px;
 	--radius-xs: 8px;
-	--radius-sm: 12px;
-	--radius-md: 16px;
-	--radius-lg: 21px;
-	--radius-xl: 28px;
-	--radius-2xl: 36px;
-	--radius-3xl: 48px;
+	--radius-sm: 11px;
+	--radius-md: 15px;
+	--radius-lg: 20px;
+	--radius-xl: 26px;
+	--radius-2xl: 34px;
+	--radius-3xl: 45px;
 	--radius-full: 999px;
-	/* Content sizes. */
+
+	/* Content widths. */
 	--width-lg: 1200px;
 	--width-md: 760px;
 	--width-sm: 420px;
+
 	/* Easings */
 	--ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
 	--ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
 	/* Durations */
 	--duration-xfast: 75ms;
 	--duration-fast: 120ms;
 	--duration-medium: 250ms;
-	--duration-slow: 350ms;
-	--duration-xslow: 550ms;
-	--duration-2xslow: 750ms;
-	--duration-3xslow: 1250ms;
+	--duration-slow: 400ms;
+	--duration-xslow: 750ms;
+
 	/* Animations */
 	--animation-press: press var(--duration-medium) var(--ease-out-expo);
+
 	/* Shadows (based on tailwind) */
 	--shadow-xs: 0 1px 2px -1px rgb(0, 0, 0, 0.05);
 	--shadow-sm: 0 2px 3px -2px rgb(0, 0, 0, 0.1), 0 1px 2px -1px rgb(0, 0, 0, 0.025);
 	--shadow-md: 0 5px 8px -3px rgb(0, 0, 0, 0.1), 0 2px 4px -2px rgb(0, 0, 0, 0.05);
 	--shadow-lg: 0 10px 16px -4px rgb(0, 0, 0, 0.1), 0 4px 6px -4px rgb(0, 0, 0, 0.1);
 	--shadow-xl: 0 16px 24px -10px rgb(0, 0, 0, 0.1), 0 8px 10px -6px rgb(0, 0, 0, 0.1);
-	--shadow-2xl: 0 24px 48px -16px rgb(0, 0, 0, 0.25);
+
 	/* Base values for io elements and others */
 	--base-gutter: 0.75rem; /* Outer gutters */
 	--base-gap: 0.5rem; /* Inside gutters (for grids within the ui) */
-	--base-size: 3.5em;
-	--base-padding: 1.25em;
+	--base-block-size: 3.5em;
+	--base-inline-padding: 1.25em;
 	--base-radius: var(--radius-md);
 	--base-border-size: 1.25px;
-	--base-border: var(--base-border-size) solid
-		color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-	--base-border-dim: var(--base-border-size) solid
-		color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
-	--base-inset: 5px;
+	--base-border-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+	--base-nesting: 5px;
 	--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-800) 75%, transparent);
+	--base-error-ring: 2px solid var(--color-error-600);
+	--base-color: var(--color-neutral-700);
 	--base-bg: var(--color-neutral-100);
-	/* Component-specific */
+
+	/* Misc and component-specific */
+	--sticky-top: calc(var(--navbar-height) + 0.5rem);
 	--navbar-height: 72px;
-	--navbar-sticky: calc(var(--navbar-height) + 0.5rem);
-	--dashboard-navbar: 175px;
-	--dashboard-base-bg: var(--color-neutral-50);
+	--sidebar-width: 175px;
+	--sidebar-bg: var(--color-neutral-50);
+
+	&:--dark {
+		--base-color: var(--color-neutral-300);
+		--base-bg: var(--color-neutral-900);
+		--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-500) 75%, transparent);
+		--base-error-ring: 2px solid var(--color-error-400);
+		--sidebar-bg: var(--color-neutral-800);
+	}
+
 	/* Root style */
 	position: relative;
 	font-size: 100%;
 	font-family: var(--font-main);
 	overflow-x: hidden;
 	accent-color: var(--color-primary-500);
-	color: var(--color-neutral-700);
+	color: var(--base-color);
 	background-color: var(--base-bg);
 	transition: all var(--duration-fast) ease-out;
-	&:--dark {
-		--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-500) 75%, transparent);
-		--base-bg: var(--color-neutral-900);
-		--dashboard-base-bg: var(--color-neutral-800);
-		color: var(--color-neutral-300);
-	}
-}
-
-/* v2 */
-:root {
-	--base-bg: var(--color-neutral-100);
-	--base-color: var(--color-neutral-700);
-	/* --ripple-color: red; */
-	--base-nesting: 5px;
-	--base-block-size: 3.5em;
-	--base-inline-padding: 1.25em;
-	--base-border-size: 1.25px;
-	--base-gutter: 0.75rem;
-	--base-gap: 0.5rem;
-	--base-radius: var(--radius-md);
-	--base-sticky-top: var(--navbar-height);
-	/* Composed properties */
-	--base-border: var(--base-border-size) solid
-		color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-	--base-border-dim: var(--base-border-size) solid
-		color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
-	--base-focus-ring: 2.5px solid color-mix(in srgb, var(--color-primary-800) 75%, transparent);
-	/* Component-specific properties */
-	--base-sidebar-width: 175px;
-
-	&:--dark {
-		--base-bg: var(--color-neutral-900);
-		--base-color: var(--color-neutral-300);
-		--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-500) 75%, transparent);
-	}
 }
 
 body {
@@ -183,6 +163,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100svh;
+	font-stretch: 105%; /* Should only apply to stretch-variant mono font */
 }
 
 ::selection {
@@ -199,17 +180,5 @@ body {
 	:--dark & {
 		color: var(--color-neutral-200);
 		background: var(--color-primary-600);
-	}
-}
-
-@keyframes press {
-	0% {
-		transform: scale(1);
-	}
-	25% {
-		transform: scale(0.96);
-	}
-	100% {
-		transform: scale(1);
 	}
 }

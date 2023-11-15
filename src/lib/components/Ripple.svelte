@@ -2,6 +2,11 @@
 	@component
 	# Ripple
 	Adds a visual ripple effect on interactive elements.
+
+	Customizable CSS properties:
+	- `--ripple-color`: Color form start to end;
+	- `--ripple-color-start`: Color origin, at the start of the ripple animation, overwrites `--ripple-color` if used.
+	- `--ripple-color-end`: Color target, at the end of the ripple animation, overwrites `--ripple-color` if used.
 -->
 <script lang="ts" context="module">
 	const HOST_ATTRIBUTE = 'data-ripple-host';
@@ -30,8 +35,8 @@
 	export let spreadDuration = duration;
 	export let spreadDelay = delay;
 	export let color: string | undefined = undefined;
-	export let colorStart: typeof color = color;
-	export let colorEnd: typeof color = color;
+	export let colorStart: typeof color = undefined;
+	export let colorEnd: typeof color = undefined;
 	export let colorEasing = easing;
 	export let colorSpeed = speed;
 	export let colorDuration = duration;
@@ -121,6 +126,9 @@
 <div
 	bind:this={containerRef}
 	class="container"
+	style:--ripple-color={color}
+	style:--ripple-color-start={colorStart}
+	style:--ripple-color-end={colorEnd}
 	style:--opacity-start={opacityStart}
 	style:--opacity-end={opacityEnd}
 	style:--opacity-easing={opacityEasing}
@@ -129,8 +137,6 @@
 	style:--spread-end={spreadEnd}
 	style:--spread-easing={spreadEasing}
 	style:--spread-delay="{spreadDelay}ms"
-	style:--color-start={colorStart}
-	style:--color-end={colorEnd}
 	style:--color-easing={colorEasing}
 	style:--color-delay="{colorDelay}ms"
 	style:--blur="{blur}px"

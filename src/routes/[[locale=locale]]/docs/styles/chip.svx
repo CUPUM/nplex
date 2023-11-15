@@ -2,14 +2,18 @@
 title: Chip
 ---
 
-# Button
+# {title} <span class="dimmer">(token)</span>
 
-The button style encompasses both functional buttons and navigation buttons (links).
+The button style encompasses both functional buttons and navigation buttons (i.e. links that are not
+inlined inside prose).
 
 This style should not be used for elements where nested buttons are expected. An example case would
 be a `select` element with sibling buttons: this could be implemented as a `button-group` or an
 `input-group` depending on the desired outcome.
 
-```ts
-export const test = '';
+```svelte example
+<script>
+</script>
+
+<button class="button">Button</button>
 ```

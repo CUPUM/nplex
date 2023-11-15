@@ -5,8 +5,11 @@
 
 /* Core design tokens and shared props */
 @import './styles/base.css' layer(base);
+@import './styles/keyframes.css' layer(base);
 
-/* Components */
+/* Bases */
+@import './styles/button.css' layer(components);
+/* @import './styles/toggle.css' layer(components); */
 @import './styles/chip.css' layer(components);
 @import './styles/toolbar.css' layer(components);
 
@@ -14,6 +17,5 @@
 @import './styles/components/misc.css' layer(components);
 @import './styles/components/input.css' layer(components);
 @import './styles/components/labeled.css' layer(components);
-@import './styles/components/button.css' layer(components);
 @import './styles/components/switch.css' layer(components);
 @import './styles/components/toggle.css' layer(components);

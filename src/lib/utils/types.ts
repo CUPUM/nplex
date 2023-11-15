@@ -9,6 +9,9 @@
 // 			? never
 // 			: U
 // 		: never
+
+import type { Readable } from 'svelte/store';
+
 // 	: never;
 export type ExtractLiteral<T> = T extends `${infer L}` ? L : never;
 
@@ -35,3 +38,7 @@ export type StrictHTMLInputTypeAttribute =
 	| 'time'
 	| 'url'
 	| 'week';
+
+export type StoresValues<T> = T extends Readable<infer U>
+	? U
+	: { [K in keyof T]: T[K] extends Readable<infer U> ? U : never };

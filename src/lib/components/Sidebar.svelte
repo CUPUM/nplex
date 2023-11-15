@@ -1,13 +1,16 @@
 <script lang="ts" context="module">
+	import { defineContext } from '$lib/utils/context';
 	import { defineChildIndexContext } from '$lib/utils/index-context';
 
 	const [getSidebarIndex, setSidebarIndex] = defineChildIndexContext({});
+	const [getSidebarKey, setSidebarKey] = defineContext({});
 
-	export { getSidebarIndex };
+	export { getSidebarIndex, getSidebarKey };
 </script>
 
 <script lang="ts">
 	setSidebarIndex();
+	setSidebarKey({});
 </script>
 
 <div class="sidebar">
@@ -16,7 +19,7 @@
 
 <style lang="postcss">
 	.sidebar {
-		--sidebar-width: var(--base-sidebar-width);
+		--_sidebar-needle-right: 0;
 		position: sticky;
 		top: calc(var(--sticky-top) + var(--base-gap));
 		display: flex;

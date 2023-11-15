@@ -13,17 +13,17 @@
 @custom-selector :--setout-full-width [data-setout='full-width'];
 @custom-selector :--setout-full-screen [data-setout='full-screen'];
 
+/* Icon element (update according to used icon library) */
+@custom-selector :--icon svg.lucide-icon;
 /* Disabled state */
-@custom-selector :--disabled :disabled, [data-disabled], [aria-disabled];
+@custom-selector :--disabled :disabled, [aria-disabled='true'];
 /* Open / expanded state */
 @custom-selector :--open [aria-exepanded='true'], [data-state='open'];
 /* Error or invalid field */
-@custom-selector :--error [aria-invalid], [data-error];
-/* Danger / destructive */
-@custom-selector :--danger .danger;
+@custom-selector :--error [aria-invalid], [data-error='true'];
 /* Loading state */
-@custom-selector :--loading [data-loading];
-/* Loading spinner element */
-@custom-selector :--loader [data-loader], .loading;
+@custom-selector :--loading [data-loading='true'];
 /* Checked state */
 @custom-selector :--checked [data-state='checked'], :checked, :has(:checked);
+/* Vertical element layout */
+@custom-selector :--vertical [data-orientation='vertical'];

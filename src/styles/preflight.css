@@ -14,7 +14,6 @@ Taken from tailwind and adapted (removed and/or replaced --tw variables)
 	border-width: 0; /* 2 */
 	border-style: solid; /* 2 */
 	border-color: currentColor; /* 2 */
-	line-height: 1;
 }
 
 /*
@@ -101,7 +100,6 @@ strong {
 2. Correct the odd `em` font sizing in all browsers.
 */
 
-code,
 kbd,
 samp,
 pre {
@@ -109,12 +107,9 @@ pre {
 	font-size: 1em; /* 2 */
 }
 
-/*
-Add the correct font size in all browsers.
-*/
-
-small {
-	font-size: 80%;
+code {
+	font-family: var(--font-mono); /* 1 */
+	font-size: 0.775em; /* Try matching x height of main font */
 }
 
 /*

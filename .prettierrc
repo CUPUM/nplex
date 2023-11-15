@@ -22,9 +22,9 @@
 		},
 		{
 			"files": [
-				".md",
-				".mdx",
-				".svx"
+				"*.md",
+				"*.mdx",
+				"*.svx"
 			],
 			"options": {
 				"useTabs": false,

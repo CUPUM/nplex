@@ -15,7 +15,7 @@
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 	import { crossfade, fly, scale } from 'svelte/transition';
 	import { dashboardReceive, dashboardSend } from './DashboardNav.svelte';
-	import { getSidebarIndex } from './Sidebar.svelte';
+	import { getSidebarIndex, getSidebarKey } from './Sidebar.svelte';
 	import { getGroupDelay, getGroupIndex } from './SidebarGroup.svelte';
 
 	type $$Props = { danger?: boolean } & (
@@ -30,7 +30,7 @@
 	const index = indexCtx?.add() ?? 0;
 	const groupDelay = getGroupDelay() ?? 0;
 	const delay = groupDelay + index * 100;
-	const needleKey = indexCtx ?? 'sidebar';
+	const needleKey = getSidebarKey();
 
 	$: current = $$restProps['data-current'];
 
@@ -107,7 +107,7 @@
 
 		&[data-current] {
 			color: var(--color-primary-600);
-			font-weight: 650;
+			font-weight: 550;
 			:global(:--dark) & {
 				color: var(--color-primary-500);
 			}
@@ -137,9 +137,8 @@
 		position: absolute;
 		top: 0.75em;
 		bottom: 0.75em;
-		left: 100%;
-		width: 0.25rem;
-		margin-left: 0.125rem;
+		right: var(--_sidebar-needle-right);
+		width: 2.5px;
 		border-radius: inherit;
 		z-index: -1;
 		background-color: var(--color-primary-600);

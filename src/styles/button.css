@@ -1,0 +1,440 @@
+.button {
+	position: relative;
+	cursor: pointer;
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 0.75em;
+	font-weight: 450;
+	padding: 0 var(--base-inline-padding);
+	height: var(--base-block-size);
+	border-radius: var(--base-radius);
+	border-color: var(--_button-border-color);
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: var(--_button-color);
+	background: var(--_button-bg);
+	user-select: none;
+	transition: all var(--duration-medium) ease-out;
+
+	/* Layout */
+
+	&:--vertical {
+		flex-direction: column;
+	}
+
+	&.center {
+		justify-content: center;
+	}
+
+	&.right {
+		justify-content: right;
+	}
+
+	&.space-between {
+		justify-content: space-between;
+	}
+
+	&.square {
+		justify-content: center;
+		padding-inline: 0;
+		aspect-ratio: 1;
+
+		& > :--icon,
+		.button-icon {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	&.rounded {
+		--base-radius: var(--radius-full);
+	}
+
+	/* States */
+
+	&:hover:not(:active) {
+		color: var(--_button-hover-color, var(--_button-color));
+		background: var(--_button-hover-bg, var(--_button-bg));
+		border-color: var(--_button-hover-border-color, var(--_button-border-color));
+		transition: all 0s;
+
+		& > :--icon,
+		.button-icon {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	&:focus-visible:not(:--disabled) {
+		outline: var(--base-focus-ring);
+
+		& > :--icon,
+		.button-icon {
+			opacity: 1;
+			transform: scale(1);
+		}
+
+		&.danger {
+			outline: var(--base-error-ring);
+		}
+	}
+
+	&:--error {
+		outline: var(--base-error-ring);
+	}
+
+	&:--disabled {
+		pointer-events: none;
+		color: var(--_button-disabled-color, var(--_button-color));
+		background: var(--_button-disabled-bg, var(--_button-bg));
+		border-color: var(--_button-disabled-border-color, var(--_button-border-color));
+	}
+
+	&:active {
+		color: var(--_button-active-color, var(--_button-color));
+		background: var(--_button-active-bg, var(--_button-bg));
+		border-color: var(--_button-active-border-color, var(--_button-border-color));
+		animation: var(--animation-press);
+		transition: all var(--duration-fast);
+	}
+
+	&:--open {
+		color: var(--_button-open-color, var(--_button-color));
+		background: var(--_button-open-bg, var(--_button-bg));
+		border-color: var(--_button-open-border-color, var(--_button-border-color));
+	}
+
+	&:--checked {
+		color: var(--_button-checked-color, var(--_button-color));
+		background: var(--_button-checked-bg, var(--_button-bg));
+		border-color: var(--_button-checked-border-color, var(--_button-border-color));
+	}
+
+	&:--loading {
+		color: var(--_button-loading-color, var(--_button-color));
+		background: var(--_button-loading-bg, var(--_button-bg));
+	}
+
+	&:--current {
+		color: var(--_button-current-color, var(--_button-color));
+		background: var(--_button-current-bg, var(--_button-bg));
+		border-color: var(--_button-current-border-color, var(--_button-border-color));
+	}
+
+	/* Default variant */
+
+	&:not(.outlined, .ghost, .cta, .link) {
+		--ripple-color: var(--color-neutral-500);
+		--spinner-color: var(--color-neutral-800);
+		--_button-color: var(--color-neutral-800);
+		--_button-bg: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+		--_button-hover-color: var(--color-neutral-950);
+		--_button-hover-bg: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
+		--_button-active-color: var(--color-neutral-700);
+		--_button-active-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
+		--_button-disabled-bg: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
+		--_button-open-color: var(--color-neutral-900);
+		--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
+		--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+
+		:--dark & {
+			--ripple-color: var(--color-neutral-400);
+			--spinner-color: var(--color-neutral-200);
+			--_button-color: var(--color-neutral-200);
+			--_button-bg: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+			--_button-hover-color: var(--color-neutral-50);
+			--_button-hover-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+			--_button-active-color: var(--color-neutral-300);
+			--_button-active-bg: color-mix(in srgb, var(--color-neutral-700) 25%, transparent);
+			--_button-disabled-color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
+			--_button-open-color: var(--color-neutral-900);
+			--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
+			--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+		}
+
+		&.danger {
+			--_button-color: var(--color-error-800);
+			--_button-bg: color-mix(in srgb, var(--color-error-500) 25%, transparent);
+			--_button-hover-color: var(--color-error-800);
+			--_button-hover-bg: color-mix(in srgb, var(--color-error-500) 25%, transparent);
+
+			:--dark & {
+				--_button-color: var(--color-error-200);
+				--_button-bg: color-mix(in srgb, var(--color-error-900) 20%, transparent);
+				--_button-hover-color: var(--color-error-50);
+				--_button-hover-bg: color-mix(in srgb, var(--color-error-800) 25%, transparent);
+			}
+		}
+	}
+
+	/* Outlined variant */
+
+	&.outlined {
+		border-width: var(--base-border-size);
+		border-style: solid;
+		--ripple-color: var(--color-neutral-500);
+		--spinner-color: var(--color-neutral-800);
+		--_button-color: var(--color-neutral-800);
+		--_button-bg: transparent;
+		--_button-border-color: var(--base-border-color);
+		--_button-hover-color: var(--color-neutral-950);
+		--_button-hover-bg: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
+		--_button-hover-border-color: transparent;
+		--_button-active-color: var(--color-neutral-700);
+		--_button-active-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+		--_button-active-border-color: transparent;
+		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
+		--_button-disabled-border-color: color-mix(in srgb, var(--base-border-color) 50%, transparent);
+		--_button-open-color: var(--color-neutral-900);
+		--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
+		--_button-open-border-color:;
+		--_button-checked-color:;
+		--_button-checked-bg:;
+		--_button-checked-border:;
+		--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+		--_button-current-color:;
+		--_button-current-bg:;
+
+		:--dark & {
+			--ripple-color: var(--color-neutral-400);
+			--spinner-color: var(--color-neutral-200);
+			--_button-color: var(--color-neutral-200);
+			--_button-border-color: var(--base-border-color);
+			--_button-hover-color: var(--color-neutral-50);
+			--_button-hover-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+			--_button-active-color: var(--color-neutral-300);
+			--_button-active-bg: color-mix(in srgb, var(--color-neutral-700) 25%, transparent);
+			--_button-disabled-color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
+			--_button-open-color: var(--color-neutral-900);
+			--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
+			--_button-open-border-color:;
+			--_button-checked-color:;
+			--_button-checked-bg:;
+			--_button-checked-border-color:;
+			--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+			--_button-current-color:;
+			--_button-current-bg:;
+		}
+
+		&.danger {
+			--_button-color: var(--color-error-700);
+			--_button-border-color: color-mix(in srgb, var(--color-error-500) 25%, transparent);
+			--_button-hover-color: var(--color-error-800);
+			--_button-hover-bg: color-mix(in srgb, var(--color-error-500) 25%, transparent);
+
+			:--dark & {
+				--_button-color: var(--color-error-400);
+				--_button-border-color: color-mix(in srgb, var(--color-error-900) 25%, transparent);
+				--_button-hover-color: var(--color-error-50);
+				--_button-hover-bg: color-mix(in srgb, var(--color-error-800) 25%, transparent);
+			}
+		}
+	}
+
+	/* Ghost variant */
+
+	&.ghost {
+		--ripple-color: var(--color-neutral-500);
+		--spinner-color: var(--color-neutral-800);
+		--_button-color: var(--color-neutral-700);
+		--_button-bg: transparent;
+		--_button-hover-color: var(--color-neutral-950);
+		--_button-hover-bg: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
+		--_button-active-color: var(--color-neutral-700);
+		--_button-active-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
+		--_button-open-color: var(--color-neutral-900);
+		--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
+		--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+
+		:--dark & {
+			--ripple-color: var(--color-neutral-400);
+			--spinner-color: var(--color-neutral-200);
+			--_button-color: var(--color-neutral-300);
+			--_button-hover-color: var(--color-neutral-50);
+			--_button-hover-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+			--_button-active-color: var(--color-neutral-300);
+			--_button-active-bg: color-mix(in srgb, var(--color-neutral-700) 25%, transparent);
+			--_button-disabled-color: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
+			--_button-open-color: var(--color-neutral-900);
+			--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
+			--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+		}
+
+		&.danger {
+			--_button-color: var(--color-error-800);
+			--_button-hover-color: var(--color-error-700);
+			--_button-hover-bg: color-mix(in srgb, var(--color-error-500) 25%, transparent);
+
+			:--dark & {
+				--_button-color: var(--color-error-400);
+				--_button-hover-color: var(--color-error-50);
+				--_button-hover-bg: color-mix(in srgb, var(--color-error-800) 25%, transparent);
+			}
+		}
+	}
+
+	/* Call-to-action variant */
+
+	&.cta {
+		--ripple-color: var(--color-primary-500);
+		--spinner-color: var(--color-neutral-50);
+		--_button-color: var(--color-neutral-100);
+		--_button-bg: var(--color-primary-950);
+		--_button-hover-color: var(--color-primary-50);
+		--_button-hover-bg: var(--color-primary-800);
+		--_button-active-color: var(--color-neutral-200);
+		--_button-active-bg: var(--color-primary-900);
+		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-100) 25%, transparent);
+		--_button-open-color: ;
+		--_button-open-bg: ;
+		--_button-loading-color: var(--color-primary-700);
+		--_button-loading-bg: var(--color-primary-900);
+
+		:--dark & {
+			--ripple-color: var(--color-primary-400);
+			--spinner-color: var(--color-neutral-950);
+			--_button-color: var(--color-neutral-900);
+			--_button-bg: var(--color-primary-500);
+			--_button-hover-color: var(--color-primary-950);
+			--_button-hover-bg: var(--color-primary-400);
+			--_button-active-color: var(--color-neutral-900);
+			--_button-active-bg: var(--color-primary-600);
+			--_button-disabled-color: color-mix(in srgb, var(--color-neutral-900) 25%, transparent);
+			--_button-disabled-bg: var(--color-primary-600);
+			--_button-open-color:;
+			--_button-open-bg:;
+			--_button-loading-color: var(--color-primary-800);
+			--_button-loading-bg: var(--color-primary-600);
+		}
+
+		&.danger {
+			--_button-color: var(--color-neutral-100);
+			--_button-bg: var(--color-error-900);
+			--_button-hover-color: var(--color-error-50);
+			--_button-hover-bg: var(--color-error-800);
+			--_button-active-color: var(--color-neutral-50);
+			--_button-active-bg: var(--color-error-700);
+
+			:--dark & {
+				--_button-color: var(--color-error-100);
+				--_button-bg: var(--color-error-700);
+				--_button-hover-color: var(--color-error-50);
+				--_button-hover-bg: var(--color-error-800);
+				--_button-active-color: var(--color-error-100);
+				--_button-active-bg: var(--color-error-900);
+			}
+		}
+	}
+
+	/* Link variant */
+
+	&.link {
+		text-decoration: underline;
+		text-underline-offset: 0.25em;
+		text-decoration-thickness: 0.125em;
+		text-decoration-color: transparent;
+		text-decoration-skip-ink: none;
+		text-decoration-line: underline;
+		--ripple-color: var(--color-neutral-500);
+		--spinner-color: var(--color-neutral-800);
+		--_button-color: var(--color-neutral-700);
+		--_button-bg: transparent;
+		--_button-hover-color: var(--color-neutral-950);
+		--_button-hover-bg: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
+		--_button-active-color: var(--color-neutral-700);
+		--_button-active-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
+		--_button-open-color: var(--color-neutral-900);
+		--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
+		--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+
+		:--dark & {
+			--ripple-color: var(--color-neutral-400);
+			--spinner-color: var(--color-neutral-200);
+			--_button-color: var(--color-neutral-300);
+			--_button-hover-color: var(--color-neutral-50);
+			--_button-hover-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+			--_button-active-color: var(--color-neutral-300);
+			--_button-active-bg: color-mix(in srgb, var(--color-neutral-700) 25%, transparent);
+			--_button-disabled-color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
+			--_button-open-color: var(--color-neutral-900);
+			--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
+			--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+		}
+
+		&.danger {
+			--_button-color: var(--color-error-800);
+			--_button-hover-color: var(--color-error-800);
+			--_button-hover-bg: color-mix(in srgb, var(--color-error-500) 25%, transparent);
+
+			:--dark & {
+				--_button-color: var(--color-error-100);
+				--_button-hover-color: var(--color-error-50);
+				--_button-hover-bg: color-mix(in srgb, var(--color-error-800) 25%, transparent);
+			}
+		}
+	}
+
+	/* Compositions */
+
+	/* Icon children */
+	& > :--icon,
+	.button-icon {
+		width: 1.125em;
+		stroke-width: 2;
+		stroke-linecap: square;
+		stroke-linejoin: round;
+		opacity: 0.5;
+		transform: scale(1);
+		flex: none;
+		user-select: none;
+		pointer-events: none;
+		transition:
+			opacity var(--duration-medium) ease-out,
+			transform var(--duration-fast) ease-out;
+		.square &,
+		.round & {
+			opacity: 1;
+		}
+	}
+}
+
+.button-group {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: stretch;
+	gap: 0;
+	border-radius: var(--base-radius);
+
+	.button {
+		border-radius: inherit;
+		&:not(:first-child) {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+		&:not(:last-child) {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+	}
+
+	&[data-orientation='vertical'] {
+		flex-direction: column;
+
+		.button {
+			border-radius: inherit;
+			&:not(:first-child) {
+				border-top-left-radius: 0;
+				border-top-right-radius: 0;
+			}
+			&:not(:last-child) {
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+		}
+	}
+}

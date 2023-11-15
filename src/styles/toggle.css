@@ -14,7 +14,10 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	transition: all var(--duration-medium) ease-out;
-	&:hover,
+
+	&:hover {
+	}
+
 	&:focus-visible {
 		transition:
 			all 0s,
@@ -24,16 +27,17 @@
 			transform: scale(0.95);
 		}
 	}
+
 	&:focus-visible {
 		outline: var(--base-focus-ring);
 	}
-	&:disabled,
-	&[data-disabled],
-	&[aria-disabled] {
+
+	&:--disabled {
 		pointer-events: none;
 		cursor: default;
 		user-select: none;
 	}
+
 	&:active,
 	&[data-active] {
 		animation: var(--animation-press);
@@ -76,16 +80,14 @@
 		:--dark & {
 			color: var(--color-neutral-200);
 		}
-		&:disabled,
-		&[data-disabled],
-		&[aria-disabled] {
+		&:--disabled {
 			color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
 			:--dark & {
 				color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
 			}
 		}
-		&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
-		&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
+		&:hover:not(:--disabled),
+		&:focus-visible:not(:--disabled) {
 			color: var(--color-neutral-950);
 			background-color: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
 			:--dark & {
@@ -100,8 +102,8 @@
 				color: var(--color-error-100);
 				background-color: color-mix(in srgb, var(--color-error-900) 25%, transparent);
 			}
-			&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
-			&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
+			&:hover:not(:--disabled),
+			&:focus-visible:not(:--disabled) {
 				color: var(--color-error-900);
 				background-color: color-mix(in srgb, var(--color-error-600) 25%, transparent);
 				:--dark & {
@@ -133,16 +135,14 @@
 		:--dark & {
 			color: var(--color-neutral-200);
 		}
-		&:disabled,
-		&[data-disabled],
-		&[aria-disabled] {
+		&:--disabled {
 			color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
 			:--dark & {
 				color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
 			}
 		}
-		&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
-		&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
+		&:hover:not(:--disabled),
+		&:focus-visible:not(:--disabled) {
 			color: var(--color-neutral-950);
 			background-color: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
 			border-color: transparent;
@@ -159,8 +159,8 @@
 				color: var(--color-error-100);
 				border-color: color-mix(in srgb, var(--color-error-900) 25%, transparent);
 			}
-			&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
-			&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
+			&:hover:not(:--disabled),
+			&:focus-visible:not(:--disabled) {
 				color: var(--color-error-900);
 				background-color: color-mix(in srgb, var(--color-error-600) 25%, transparent);
 				border-color: transparent;
@@ -204,9 +204,7 @@
 		:--dark & {
 			color: var(--color-neutral-300);
 		}
-		&:disabled,
-		&[data-disabled],
-		&[aria-disabled] {
+		&:--disabled {
 			color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
 			:--dark & {
 				color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
@@ -216,8 +214,8 @@
 		&[aria-expanded='true'] {
 			color: var(--color-primary-500);
 		}
-		&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
-		&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
+		&:hover:not(:--disabled),
+		&:focus-visible:not(:--disabled) {
 			color: var(--color-neutral-950);
 			background-color: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 			:--dark & {
@@ -241,8 +239,8 @@
 			:--dark & {
 				color: var(--color-error-300);
 			}
-			&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
-			&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
+			&:hover:not(:--disabled),
+			&:focus-visible:not(:--disabled) {
 				color: var(--color-error-900);
 				background-color: color-mix(in srgb, var(--color-error-600) 25%, transparent);
 				:--dark & {
@@ -273,8 +271,8 @@
 		.button-icon {
 			stroke-width: 2.5;
 		}
-		&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
-		&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
+		&:hover:not(:--disabled),
+		&:focus-visible:not(:--disabled) {
 			color: var(--color-primary-600);
 			text-decoration-color: currentColor;
 			text-underline-offset: 0.5em;
@@ -299,8 +297,8 @@
 			:--dark & {
 				color: var(--color-error-100);
 			}
-			&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
-			&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
+			&:hover:not(:--disabled),
+			&:focus-visible:not(:--disabled) {
 				color: var(--color-error-500);
 				:--dark & {
 					color: var(--color-error-500);
@@ -319,16 +317,14 @@
 			color: var(--color-neutral-900);
 			background-color: var(--color-primary-500);
 		}
-		&:disabled,
-		&[data-disabled],
-		&[aria-disabled] {
+		&:--disabled {
 			color: color-mix(in srgb, var(--color-neutral-100) 25%, transparent);
 			:--dark & {
 				color: color-mix(in srgb, var(--color-neutral-900) 25%, transparent);
 			}
 		}
-		&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
-		&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
+		&:hover:not(:--disabled),
+		&:focus-visible:not(:--disabled) {
 			color: var(--color-primary-50);
 			background-color: var(--color-primary-800);
 			:--dark & {
@@ -357,8 +353,8 @@
 				color: var(--color-error-950);
 				background-color: var(--color-error-600);
 			}
-			&:hover:not(:disabled):not([data-disabled]):not([aria-disabled]),
-			&:focus-visible:not(:disabled):not([data-disabled]):not([aria-disabled]) {
+			&:hover:not(:--disabled),
+			&:focus-visible:not(:--disabled) {
 				color: var(--color-error-50);
 				background-color: var(--color-error-800);
 				:--dark & {

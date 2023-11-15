@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Loading from '$lib/components/Loading.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
+	import Loading from '$lib/components/Spinner.svelte';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { slide } from '$lib/transitions/slide';
 	import { expoOut } from 'svelte/easing';
@@ -126,14 +126,14 @@
 	}
 
 	#dashboard-content {
-		scroll-margin-block-start: var(--navbar-sticky);
+		scroll-margin-block-start: var(--sticky-top);
 		grid-column: 2 / 3;
 		border-radius: var(--radius-lg);
 		display: flex;
 		flex-direction: column;
 		gap: var(--base-gap);
-		min-height: calc(100vh - var(--navbar-sticky));
-		min-height: calc(100svh - var(--navbar-sticky));
+		min-height: calc(100vh - var(--sticky-top));
+		min-height: calc(100svh - var(--sticky-top));
 	}
 
 	.editables {

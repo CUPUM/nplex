@@ -1,5 +1,6 @@
 import postcssglobal from '@csstools/postcss-global-data';
 import { sveltekit } from '@sveltejs/kit/vite';
+import examples from 'mdsvexamples/vite';
 import presetenv from 'postcss-preset-env';
 import { defineConfig } from 'vite';
 
@@ -9,7 +10,7 @@ export default defineConfig({
 	server: {
 		port,
 	},
-	plugins: [sveltekit()],
+	plugins: [sveltekit(), examples],
 	css: {
 		postcss: {
 			plugins: [

@@ -2,13 +2,13 @@
 	import { ripple } from '$lib/actions/ripple';
 	import { MODES } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
+	import type { StoresValues } from '$lib/utils/types';
 	import type { DialogElements, DropdownMenuElements, TooltipElements } from '@melt-ui/svelte';
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
-	import type { StoresValues } from 'svelte/store';
 
 	type $$Props = (
-		| ({ href: string } & HTMLButtonAttributes)
-		| ({ href?: undefined } & HTMLAnchorAttributes)
+		| ({ href: string } & HTMLAnchorAttributes)
+		| ({ href?: undefined } & HTMLButtonAttributes)
 	) & {
 		outline?: boolean;
 		square?: boolean;

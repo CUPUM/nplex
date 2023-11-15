@@ -62,7 +62,7 @@
 		display: flex;
 		flex-direction: column;
 		border-radius: var(--radius-lg);
-		background-color: var(--dashboard-base-bg);
+		background-color: var(--sidebar-bg);
 		padding: 0.5rem;
 		margin-bottom: 0.5rem;
 

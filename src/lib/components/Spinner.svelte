@@ -1,6 +1,9 @@
 <!-- 
 	@component
 	Use this component to add loading spinner overlay to any element/container.
+	
+	CSS properties:
+	- `--spinner-color`: Spinner's stroke color.
  -->
 <script lang="ts">
 	import { transform } from '$lib/transitions/transform';
@@ -31,7 +34,7 @@
 	// }
 </script>
 
-<div class="loading" style:color style:--speed={speed} style:--offset={offset}>
+<div class="spinner" style:color style:--speed={speed} style:--offset={offset}>
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
@@ -61,7 +64,7 @@
 </div>
 
 <style lang="postcss">
-	.loading {
+	.spinner {
 		user-select: none;
 		pointer-events: none;
 		position: absolute;
@@ -90,7 +93,7 @@
 		--trace: 100px;
 		--tail: 15px;
 		fill: none;
-		stroke: currentColor;
+		stroke: var(--spinner-color, currentColor);
 		animation-duration: var(--total-duration);
 		stroke-dasharray: var(--trace) var(--length);
 		stroke-width: var(--thickness);
