@@ -26,7 +26,7 @@ Taken from tailwind and adapted (removed and/or replaced --tw variables)
 */
 
 html {
-	line-height: 1.5; /* 1 */
+	line-height: 1.333; /* 1 */
 	-webkit-text-size-adjust: 100%; /* 2 */
 	-moz-tab-size: 4; /* 3 */
 	tab-size: 4; /* 3 */
@@ -229,7 +229,8 @@ Correct the cursor style of increment and decrement buttons in Safari.
 
 [type='search'] {
 	-webkit-appearance: textfield; /* 1 */
-	outline-offset: -2px; /* 2 */
+	/* outline-offset: -2px; */
+	outline-offset: 0; /* 2 */
 }
 
 /*

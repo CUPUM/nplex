@@ -4,7 +4,9 @@
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
+	import SwitchThumb from '$lib/components/SwitchThumb.svelte';
 	import { link } from '$lib/i18n/link';
+	import { MODES } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
 	import { ArrowLeft, ArrowRight, MoonStar, Sun } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
@@ -12,7 +14,19 @@
 
 	export let data;
 
-	const flat = Object.values(data.docs).flatMap((d) => d);
+	const flat = Object.entries(data.docs).flatMap(([section, d]) => {
+		if (data.indexes[section]) {
+			return [
+				{
+					slug: section,
+					title: section,
+					section,
+				},
+				...d,
+			];
+		}
+		return d;
+	});
 
 	$: current = flat.findIndex((d) => d.slug === $page.url.pathname.split('/docs/')[1]);
 	$: next = flat[current + 1] ?? undefined;
@@ -29,6 +43,20 @@
 				<hr />
 				<a {...$link('/docs')}>Docs</a>
 			</header>
+			{#each Object.keys(data.docs) as section}
+				<SidebarGroup {...$link(`/docs/${section}`)}>
+					<svelte:fragment slot="heading">
+						<span class="section-title">
+							{section}
+						</span>
+					</svelte:fragment>
+					{#each data.docs[section] as doc}
+						<SidebarItem {...$link(`/docs/${doc.slug}`)}>
+							{doc.title}
+						</SidebarItem>
+					{/each}
+				</SidebarGroup>
+			{/each}
 			<menu>
 				<button
 					class="switch rounded"
@@ -36,34 +64,25 @@
 						mode.toggle();
 					}}
 				>
-					<div class="switch-item square">
-						<Sun class="switch-icon" />
+					<div
+						class="switch-item square"
+						data-state={$mode === MODES.LIGHT ? 'checked' : undefined}
+					>
+						<Sun />
+						<SwitchThumb current={$mode === MODES.LIGHT} />
 					</div>
-					<div class="switch-item square">
-						<MoonStar class="switch-icon" />
+					<div class="switch-item square" data-state={$mode === MODES.DARK ? 'checked' : undefined}>
+						<MoonStar />
+						<SwitchThumb current={$mode === MODES.DARK} />
 					</div>
 				</button>
 			</menu>
-			{#each Object.keys(data.docs) as type}
-				<SidebarGroup>
-					<svelte:fragment slot="heading">
-						<span class="type-title">
-							{type}
-						</span>
-					</svelte:fragment>
-					{#each data.docs[type] as doc}
-						<SidebarItem {...$link(`/docs/${doc.slug}`)}>
-							{doc.title}
-						</SidebarItem>
-					{/each}
-				</SidebarGroup>
-			{/each}
 		</Sidebar>
 	</div>
 	<article class="prose">
 		<slot />
 	</article>
-	<footer>
+	<footer class="small">
 		{#if prev}
 			<a
 				class="button outlined"
@@ -74,11 +93,8 @@
 				<ArrowLeft class="button-icon" />
 				{prev.title}
 			</a>
-			<div
-				style="width: var(--base-gap)"
-				transition:slide={{ axis: 'x', duration: 250, easing: expoOut }}
-			></div>
 		{/if}
+		<div style="width: var(--base-gutter)" />
 		{#if next}
 			<a
 				class="button outlined"
@@ -97,13 +113,13 @@
 	#docs {
 		--sticky-top: 0px;
 		display: grid;
-		grid-template-columns: 1fr minmax(auto, 75ch) minmax(0px, 1fr);
+		grid-template-columns: 1fr minmax(auto, 80ch) minmax(0px, 1fr);
 		grid-template-rows: 1fr auto;
 		grid-template-areas:
 			'sidebar content pad'
-			'sidebar footer footer';
+			'sidebar footer pad';
 		flex-direction: row;
-		gap: var(--base-gap);
+		gap: var(--base-gutter);
 		padding: var(--base-gutter);
 		padding-top: 0;
 		min-height: 100vh;
@@ -112,7 +128,7 @@
 	}
 
 	.sidebar {
-		grid-area: 'sidebar';
+		grid-area: sidebar;
 	}
 
 	header {
@@ -132,21 +148,24 @@
 			align-self: stretch;
 			height: unset;
 		}
-
-		menu {
-			font-size: var(--size-sm);
-		}
 	}
 
-	.type-title {
+	menu {
+		font-size: var(--size-sm);
+	}
+
+	.section-title {
 		text-transform: capitalize;
 	}
 
 	article {
 		flex: 1;
-		padding: 4rem 1rem;
-		margin: 0 auto;
+		padding: 2rem;
+		padding-top: 0;
+		border-radius: var(--radius-lg);
 		width: 100%;
+		max-width: 80ch;
+		/* background: red; */
 
 		:global(code:not(.code)) {
 			background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
@@ -157,9 +176,9 @@
 
 	footer {
 		grid-area: footer;
-		font-size: var(--size-sm);
-		padding: 1rem;
+		padding: 2rem;
 		display: flex;
 		flex-direction: row;
+		justify-content: space-between;
 	}
 </style>

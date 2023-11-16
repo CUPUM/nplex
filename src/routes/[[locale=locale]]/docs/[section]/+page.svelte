@@ -1,18 +1,24 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
 	export let data;
 </script>
 
-{#key data.metadata.title}
-	<div class="bg" in:fly={{ y: 12, duration: 500, easing: expoOut }}>{data.metadata.title}</div>
-	<h1 in:fly={{ x: '-0.2em', duration: 350, easing: cubicOut }}>{data.metadata.title}</h1>
+{#key $page.params.section}
+	<div class="bg" in:fly={{ y: 12, duration: 500, easing: expoOut }}>{$page.params.section}</div>
+	<h1 in:fly={{ x: '-0.2em', duration: 350, easing: cubicOut }}>{$page.params.section}</h1>
 {/key}
 <svelte:component this={data.doc} />
 
 <style lang="postcss">
+	h1 {
+		text-transform: capitalize;
+	}
+
 	.bg {
+		text-transform: capitalize;
 		color: var(--color-neutral-200);
 		font-weight: 900;
 		line-height: 1;

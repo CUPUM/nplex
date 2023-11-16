@@ -17,7 +17,9 @@ function createMode() {
 		// Listening to page data (upstream) to keep track of server-side
 		// (or universal load function) initiated mode change (who knows).
 		const unsub = dataMode.subscribe((v) => {
-			_set(v);
+			if (v) {
+				_set(v);
+			}
 		});
 		return function stop() {
 			unsub();

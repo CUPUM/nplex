@@ -7,7 +7,7 @@ Primitive input component
 
 	.input-peer + &,
 	.input-icon + & {
-		padding-left: calc(var(--base-padding) - var(--input-inset));
+		padding-left: calc(var(--base-padding) - var(--input-nesting));
 	}
 
 	.input-affix + & {
@@ -48,7 +48,7 @@ textarea.input {
 		margin-right: var(--base-padding);
 	}
 	.input-peer + .input-icon {
-		margin-left: calc(var(--base-padding) - var(--input-inset));
+		margin-left: calc(var(--base-padding) - var(--input-nesting));
 	}
 	.input-icon:first-child:not(.input .input-icon) {
 		margin-left: var(--base-padding);
@@ -69,10 +69,10 @@ textarea.input {
 
 .input:not(.input-group *),
 .input-group {
-	--input-inset: var(--base-inset);
+	--input-nesting: var(--base-nesting);
 	--input-radius: var(--base-radius);
-	--_base-size: calc(var(--base-size) - 2 * var(--input-inset));
-	--_base-radius: calc(var(--input-radius) - var(--input-inset));
+	--_base-size: calc(var(--base-size) - 2 * var(--input-nesting));
+	--_base-radius: calc(var(--input-radius) - var(--input-nesting));
 	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
@@ -119,9 +119,9 @@ textarea.input {
 		--base-size: var(--_base-size);
 		--base-radius: var(--_base-radius);
 		display: flex;
-		gap: var(--input-inset);
+		gap: var(--input-nesting);
 		flex-direction: row;
-		margin: var(--input-inset);
+		margin: var(--input-nesting);
 	}
 	:not(:has(textarea)) {
 		.input-icon + .input-peer {
@@ -155,10 +155,10 @@ textarea.input {
 		}
 		&:hover {
 			color: var(--color-neutral-800);
-			box-shadow: 0 0 0 var(--base-border-size) rgba(0, 0, 0, 0.1);
+			box-shadow: 0 0 0 var(--base-border-width) rgba(0, 0, 0, 0.1);
 			:--dark & {
 				color: var(--color-neutral-200);
-				box-shadow: 0 0 0 var(--base-border-size) rgba(255, 255, 255, 0.1);
+				box-shadow: 0 0 0 var(--base-border-width) rgba(255, 255, 255, 0.1);
 			}
 			.input-affix {
 				opacity: 0.5;

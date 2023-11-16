@@ -20,18 +20,18 @@
 
 <style lang="postcss">
 	.navbar-menu {
-		--menu-inset: 0.5rem;
+		--menu-nesting: 0.5rem;
 		display: flex;
 		flex-direction: column;
 		gap: 0;
 		font-weight: 500;
 		box-shadow: 0 12px 48px -18px rgba(10, 0, 20, 0.2);
-		padding: var(--menu-inset);
+		padding: var(--menu-nesting);
 		border-radius: var(--base-radius);
 		transform-origin: center center;
 		background-color: var(--color-neutral-100);
 		outline: none;
-		border: var(--base-border-size) solid
+		border: var(--base-border-width) solid
 			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 		z-index: 1;
 		:global(:--dark) & {

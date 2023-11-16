@@ -32,7 +32,7 @@
 
 	header {
 		padding: 3rem;
-		border-bottom: var(--base-border-size) solid
+		border-bottom: var(--base-border-width) solid
 			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 	}
 

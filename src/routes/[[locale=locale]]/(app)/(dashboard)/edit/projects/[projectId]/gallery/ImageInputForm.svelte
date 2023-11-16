@@ -211,7 +211,7 @@
 		padding: 1rem;
 		flex-direction: column;
 		border-radius: inherit;
-		border: var(--base-border-size) dashed
+		border: var(--base-border-width) dashed
 			color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 		transition: all var(--duration-fast) ease-out;
 
@@ -270,7 +270,7 @@
 			display: flex;
 			flex-direction: row;
 			padding: 1px;
-			margin: var(--base-inset);
+			margin: var(--base-nesting);
 			border-radius: var(--radius-full);
 			pointer-events: none;
 			transition: all var(--duration-medium) ease-out;

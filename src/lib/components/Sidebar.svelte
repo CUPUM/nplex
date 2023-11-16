@@ -19,15 +19,15 @@
 
 <style lang="postcss">
 	.sidebar {
-		--_sidebar-needle-right: 0;
+		font-size: var(--size-md);
 		position: sticky;
-		top: calc(var(--sticky-top) + var(--base-gap));
+		top: calc(var(--sticky-top) + var(--base-gutter));
 		display: flex;
 		flex-direction: column;
 		align-self: flex-start;
 		overflow-x: hidden;
 		overflow-y: auto;
-		gap: var(--base-gap);
+		gap: var(--base-gutter);
 		width: var(--sidebar-width);
 	}
 </style>

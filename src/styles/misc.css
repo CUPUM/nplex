@@ -1,0 +1,46 @@
+textarea.resize {
+	resize: vertical;
+}
+
+.small,
+small {
+	font-size: var(--small);
+}
+
+/* Update base tokens to make things more compact where needed */
+
+.compact {
+	--base-block-size: 2.5em;
+	--base-inline-padding: 1em;
+	--base-nesting: 1px;
+}
+
+/* Opposite of compact, makes base sizes larger for when attention is needed. */
+
+.big {
+	--base-block-size: 5em;
+	--base-inline-padding: 2em;
+	--base-nesting: 0.25em;
+}
+
+/* Hide native scrollbar */
+
+.no-scrollbar {
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+/* See https://www.a11yproject.com/posts/how-to-hide-content */
+
+.visually-hidden {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}

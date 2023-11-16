@@ -107,7 +107,7 @@
 		@media (--md) {
 			display: grid;
 			grid-template-columns: fit-content(var(--dashboard-navbar)) minmax(0, 1fr);
-			gap: var(--base-gap);
+			gap: var(--base-gutter);
 			padding-inline: 0.75rem;
 		}
 	}
@@ -131,7 +131,7 @@
 		border-radius: var(--radius-lg);
 		display: flex;
 		flex-direction: column;
-		gap: var(--base-gap);
+		gap: var(--base-gutter);
 		min-height: calc(100vh - var(--sticky-top));
 		min-height: calc(100svh - var(--sticky-top));
 	}

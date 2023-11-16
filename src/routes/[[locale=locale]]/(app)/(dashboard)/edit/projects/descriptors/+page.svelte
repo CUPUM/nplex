@@ -51,7 +51,7 @@
 	li {
 		padding: 2rem;
 		border-radius: var(--radius-sm);
-		border: var(--base-border-size) solid
+		border: var(--base-border-width) solid
 			color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
 	} */
 </style>

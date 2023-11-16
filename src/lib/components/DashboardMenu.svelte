@@ -54,8 +54,8 @@
 		display: flex;
 		flex-direction: row;
 		align-self: center;
-		padding: var(--base-inset);
-		border-radius: calc(var(--base-radius) + var(--base-inset));
+		padding: var(--base-nesting);
+		border-radius: calc(var(--base-radius) + var(--base-nesting));
 		margin-inline: 2rem;
 		align-items: flex-start;
 		justify-content: center;
@@ -63,7 +63,7 @@
 		font-size: var(--size-sm);
 		background-color: color-mix(in srgb, var(--color-neutral-50) 50%, transparent);
 		backdrop-filter: blur(8px);
-		min-height: calc(var(--base-size) + 2 * var(--base-inset));
+		min-height: calc(var(--base-size) + 2 * var(--base-nesting));
 		transition: all var(--duration-medium) var(--ease-out-expo);
 
 		:global(:--dark) & {

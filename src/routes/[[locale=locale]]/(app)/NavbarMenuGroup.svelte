@@ -14,9 +14,9 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		padding-bottom: calc(2 * var(--menu-inset));
-		padding-inline: var(--menu-inset);
-		margin-block: var(--menu-inset);
+		padding-bottom: calc(2 * var(--menu-nesting));
+		padding-inline: var(--menu-nesting);
+		margin-block: var(--menu-nesting);
 		:global(:--dark) & {
 		}
 
@@ -24,11 +24,11 @@
 			&::after {
 				content: '';
 				position: absolute;
-				left: calc(-1 * var(--menu-inset));
-				right: calc(-1 * var(--menu-inset));
+				left: calc(-1 * var(--menu-nesting));
+				right: calc(-1 * var(--menu-nesting));
 				bottom: 0;
 				opacity: 0.1;
-				border-bottom: var(--base-border-size) solid var(--color-neutral-500);
+				border-bottom: var(--base-border-width) solid var(--color-neutral-500);
 			}
 		}
 	}

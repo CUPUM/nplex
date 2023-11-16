@@ -74,12 +74,12 @@
 		all: unset;
 		--progress-color: var(--color-primary-700);
 		--progress-size: 4px;
-		--progress-inset: 0px;
+		--progress-nesting: 0px;
 		-webkit-appearance: none;
 		position: fixed;
-		top: var(--progress-inset);
-		right: var(--progress-inset);
-		width: calc(100% - 2 * var(--progress-inset));
+		top: var(--progress-nesting);
+		right: var(--progress-nesting);
+		width: calc(100% - 2 * var(--progress-nesting));
 		height: var(--progress-size);
 		accent-color: var(--progress-color);
 		z-index: 999;

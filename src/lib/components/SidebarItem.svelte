@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	export const [currentSend, currentReceive] = crossfade({
-		duration: 200,
+		duration: 250,
 		easing: expoInOut,
 		fallback(node, params, intro) {
 			return scale(node, { start: 0.9, duration: 250, easing: expoOut });
@@ -14,7 +14,6 @@
 	import { expoInOut, expoOut } from 'svelte/easing';
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 	import { crossfade, fly, scale } from 'svelte/transition';
-	import { dashboardReceive, dashboardSend } from './DashboardNav.svelte';
 	import { getSidebarIndex, getSidebarKey } from './Sidebar.svelte';
 	import { getGroupDelay, getGroupIndex } from './SidebarGroup.svelte';
 
@@ -52,8 +51,8 @@
 	{#if current}
 		<div
 			class="needle"
-			in:dashboardReceive={{ key: needleKey }}
-			out:dashboardSend={{ key: needleKey }}
+			in:currentReceive={{ key: needleKey }}
+			out:currentSend={{ key: needleKey }}
 		></div>
 	{/if}
 </svelte:element>
@@ -71,11 +70,12 @@
 		white-space: wrap;
 		font-weight: 400;
 		padding: 0.8em 1.25em;
-		font-size: var(--size-sm);
+		font-size: 0.9rem;
+		opacity: 0.9;
 
 		&:disabled,
 		&[aria-disabled] {
-			opacity: 0.25;
+			opacity: 0.2;
 			pointer-events: none;
 		}
 
@@ -86,6 +86,7 @@
 		&:hover,
 		&:focus-visible {
 			&:not([data-current]) {
+				opacity: 1;
 				color: var(--color-neutral-950);
 				background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 				:global(:--dark) & {
@@ -106,6 +107,7 @@
 		}
 
 		&[data-current] {
+			opacity: 1;
 			color: var(--color-primary-600);
 			font-weight: 550;
 			:global(:--dark) & {
@@ -135,12 +137,12 @@
 
 	.needle {
 		position: absolute;
+		transform-origin: right;
 		top: 0.75em;
 		bottom: 0.75em;
-		right: var(--_sidebar-needle-right);
-		width: 2.5px;
+		right: calc(-1 * var(--sidebar-group-nesting));
+		width: var(--sidebar-needle-size);
 		border-radius: inherit;
-		z-index: -1;
 		background-color: var(--color-primary-600);
 		:global(:--dark) & {
 			background-color: var(--color-primary-500);

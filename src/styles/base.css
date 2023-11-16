@@ -17,10 +17,10 @@
 	--color-neutral-800: hsl(32, 8%, 12%);
 	--color-neutral-900: hsl(34, 9%, 9%);
 	--color-neutral-950: hsl(30, 10%, 6%);
-	--color-primary-50: hsl(162, 81%, 96%);
-	--color-primary-100: hsl(161, 80%, 90%);
-	--color-primary-200: hsl(160, 76%, 80%);
-	--color-primary-300: hsl(159, 72%, 67%);
+	--color-primary-50: hsl(161, 78%, 95%);
+	--color-primary-100: hsl(161, 75%, 90%);
+	--color-primary-200: hsl(160, 72%, 80%);
+	--color-primary-300: hsl(159, 70%, 66%);
 	--color-primary-400: hsl(158, 69%, 51%);
 	--color-primary-500: hsl(157, 92%, 38%);
 	--color-primary-600: hsl(156, 94%, 31%);
@@ -62,40 +62,31 @@
 	--color-error-900: hsl(8, 86%, 26%);
 	--color-error-950: hsl(8, 89%, 18%);
 
-	/* Text and absolute sizes. */
-	--size-6xs: 0.125rem;
-	--size-5xs: 0.25rem;
-	--size-4xs: 0.35rem;
-	--size-3xs: 0.5rem;
-	--size-2xs: 0.65rem;
-	--size-xs: 0.75rem;
-	--size-sm: 0.875rem;
+	/* Text and absolute sizes, based on ratio=1.333 type scale. */
+	--size-xs: 0.563rem;
+	--size-sm: 0.75rem;
 	--size-md: 1rem;
-	--size-lg: 1.125rem;
-	--size-xl: 1.35rem;
-	--size-2xl: 1.75rem;
-	--size-3xl: 2.5rem;
-	--size-4xl: 3.5rem;
-	--size-5xl: 5rem;
-	--size-6xl: 7rem;
-	--size-7xl: 10rem;
-	--size-8xl: 15rem;
+	--size-lg: 1.333rem;
+	--size-xl: 1.777rem;
+	--size-2xl: 2.369rem;
+	--size-3xl: 3.157rem;
+	--size-4xl: 4.209rem;
+	--size-5xl: 5.61rem;
 
 	/* Rounded corners. */
-	--radius-2xs: 6px;
-	--radius-xs: 8px;
-	--radius-sm: 11px;
+	--radius-xs: 6px;
+	--radius-sm: 10px;
 	--radius-md: 15px;
-	--radius-lg: 20px;
-	--radius-xl: 26px;
-	--radius-2xl: 34px;
+	--radius-lg: 21px;
+	--radius-xl: 28px;
+	--radius-2xl: 36px;
 	--radius-3xl: 45px;
 	--radius-full: 999px;
 
 	/* Content widths. */
-	--width-lg: 1200px;
-	--width-md: 760px;
 	--width-sm: 420px;
+	--width-md: 760px;
+	--width-lg: 1200px;
 
 	/* Easings */
 	--ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
@@ -120,36 +111,42 @@
 	--shadow-xl: 0 16px 24px -10px rgb(0, 0, 0, 0.1), 0 8px 10px -6px rgb(0, 0, 0, 0.1);
 
 	/* Base values for io elements and others */
-	--base-gutter: 0.75rem; /* Outer gutters */
-	--base-gap: 0.5rem; /* Inside gutters (for grids within the ui) */
+	--base-gutter: 0.5rem;
 	--base-block-size: 3.5em;
 	--base-inline-padding: 1.25em;
 	--base-radius: var(--radius-md);
-	--base-border-size: 1.25px;
+	--base-border-width: 1.25px;
 	--base-border-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 	--base-nesting: 5px;
-	--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-800) 75%, transparent);
-	--base-error-ring: 2px solid var(--color-error-600);
+	--base-focus-ring: 3px solid var(--color-primary-900);
+	--base-error-ring: 3px solid var(--color-error-600);
 	--base-color: var(--color-neutral-700);
 	--base-bg: var(--color-neutral-100);
 
 	/* Misc and component-specific */
+	--ripple-color: currentColor;
+	--spinner-color: currentColor;
+	--small: 0.85em;
 	--sticky-top: calc(var(--navbar-height) + 0.5rem);
 	--navbar-height: 72px;
+	--dashboard-bg: var(--color-neutral-50);
 	--sidebar-width: 175px;
-	--sidebar-bg: var(--color-neutral-50);
+	--sidebar-needle-size: 2.5px;
+	--sidebar-group-radius: var(--radius-lg);
+	--sidebar-group-nesting: 0.5rem;
 
 	&:--dark {
 		--base-color: var(--color-neutral-300);
 		--base-bg: var(--color-neutral-900);
 		--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-500) 75%, transparent);
 		--base-error-ring: 2px solid var(--color-error-400);
-		--sidebar-bg: var(--color-neutral-800);
+		--dashboard-bg: var(--color-neutral-800);
 	}
 
 	/* Root style */
 	position: relative;
 	font-size: 100%;
+	font-weight: 350;
 	font-family: var(--font-main);
 	overflow-x: hidden;
 	accent-color: var(--color-primary-500);

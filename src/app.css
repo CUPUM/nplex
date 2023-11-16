@@ -8,14 +8,11 @@
 @import './styles/keyframes.css' layer(base);
 
 /* Bases */
+@import './styles/misc.css' layer(components);
 @import './styles/button.css' layer(components);
-/* @import './styles/toggle.css' layer(components); */
-@import './styles/chip.css' layer(components);
-@import './styles/toolbar.css' layer(components);
+@import './styles/switch.css' layer(components);
 
+/* To do */
 @import './styles/components/typography.css' layer(components);
-@import './styles/components/misc.css' layer(components);
 @import './styles/components/input.css' layer(components);
-@import './styles/components/labeled.css' layer(components);
-@import './styles/components/switch.css' layer(components);
 @import './styles/components/toggle.css' layer(components);

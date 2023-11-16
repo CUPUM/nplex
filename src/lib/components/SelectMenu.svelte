@@ -31,18 +31,18 @@
 
 <style lang="postcss">
 	.select-menu {
-		--menu-inset: var(--base-inset);
+		--menu-nesting: var(--base-nesting);
 		--menu-radius: var(--base-radius);
-		--_base-radius: calc(var(--menu-radius) - var(--menu-inset));
-		--_base-padding: calc(var(--base-padding) - var(--menu-inset));
-		--_base-size: calc(var(--base-size) - var(--menu-inset));
+		--_base-radius: calc(var(--menu-radius) - var(--menu-nesting));
+		--_base-padding: calc(var(--base-padding) - var(--menu-nesting));
+		--_base-size: calc(var(--base-size) - var(--menu-nesting));
 		position: relative;
 		flex: none;
 		align-self: unset;
 		border-radius: var(--menu-radius);
-		border: var(--base-border-size) solid
+		border: var(--base-border-width) solid
 			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
-		padding: var(--menu-inset);
+		padding: var(--menu-nesting);
 		background-color: white;
 		overflow-y: auto;
 		display: flex;

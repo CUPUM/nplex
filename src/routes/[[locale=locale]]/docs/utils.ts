@@ -3,7 +3,7 @@ import { error } from '@sveltejs/kit';
 import { z } from 'zod';
 
 export function globDocs() {
-	return import.meta.glob('./**/*.svx|mdx', { eager: true });
+	return import.meta.glob('./**/!(index).svx|mdx', { eager: true });
 }
 
 export const docMetadataSchema = z
@@ -21,7 +21,7 @@ export const docImportSchema = z
 	})
 	.passthrough();
 
-type Doc = DocMetadata & { slug: string; type: string };
+type Doc = DocMetadata & { slug: string; section: string };
 
 export async function getDocs() {
 	try {
@@ -32,23 +32,55 @@ export async function getDocs() {
 			if (!doc.success) {
 				continue;
 			}
-			const tail = path.replace('./', '').split('/+page')[0];
-			const split = tail.split('/');
+			const trimmed = path.replace('./', '');
+			const split = trimmed.split('/');
 			if (split.length !== 2) {
 				continue;
 			}
-			const type = split[0];
-			const slug = tail.split('.')[0];
-			if (!docs[type]) {
-				docs[type] = [];
+			const section = split[0];
+			const slug = trimmed.split('.')[0];
+			if (!docs[section]) {
+				docs[section] = [];
 			}
-			docs[type].push({
+			docs[section].push({
 				...doc.data.metadata,
 				slug,
-				type,
+				section,
 			});
 		}
 		return docs;
+	} catch (e) {
+		throw error(STATUS_CODES.INTERNAL_SERVER_ERROR);
+	}
+}
+
+export function globIndexes() {
+	return import.meta.glob('./**/index.svx|mdx', { eager: true });
+}
+
+export const indexImportSchema = z
+	.object({
+		default: z.any(),
+	})
+	.passthrough();
+
+type Index = { section: string };
+
+export async function getIndexes() {
+	try {
+		const indexes: Record<string, Index> = {};
+		const paths = globIndexes();
+		for (const path in paths) {
+			const index = indexImportSchema.safeParse(paths[path]);
+			if (!index.success) {
+				continue;
+			}
+			const section = path.replace('./', '').split('/index')[0];
+			indexes[section] = {
+				section,
+			};
+		}
+		return indexes;
 	} catch (e) {
 		throw error(STATUS_CODES.INTERNAL_SERVER_ERROR);
 	}

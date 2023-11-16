@@ -17,13 +17,13 @@ Primitive toggle styles. Akin to button with checked state.
 	transition: all var(--duration-medium) var(--ease-out-expo);
 
 	&::before {
-		--_toggle-bar-inset: calc(var(--toggle-size) * 0.5 - var(--toggle-bar-size));
+		--_toggle-bar-nesting: calc(var(--toggle-size) * 0.5 - var(--toggle-bar-size));
 		content: '';
 		position: absolute;
 		border-radius: var(--radius-full);
 		height: var(--toggle-bar-size);
-		left: var(--_toggle-bar-inset);
-		right: var(--_toggle-bar-inset);
+		left: var(--_toggle-bar-nesting);
+		right: var(--_toggle-bar-nesting);
 		transition: all var(--duration-medium) ease-out;
 	}
 

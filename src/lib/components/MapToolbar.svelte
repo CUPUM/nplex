@@ -20,14 +20,14 @@
 
 <style lang="scss">
 	.toolbar {
-		--inset: var(--ui-inset-md);
+		--nesting: var(--ui-nesting-md);
 		--x: 0;
 		--y: 0;
 		font-size: 1rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		padding: var(--inset);
+		padding: var(--nesting);
 		background: col(bg, 100);
 		border-radius: var(--ui-radius-md);
 		max-width: 100%;
@@ -39,7 +39,7 @@
 		transition: all 0.25s var(--ui-ease-out);
 		:global(hr) {
 			border: none;
-			margin: var(--inset);
+			margin: var(--nesting);
 			height: 0;
 			border-bottom: var(--ui-border-size) solid col(fg, 100, 0.1);
 			align-self: stretch;

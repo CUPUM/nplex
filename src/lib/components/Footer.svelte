@@ -80,7 +80,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		border-top: var(--base-border-size) solid
+		border-top: var(--base-border-width) solid
 			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 		color: var(--color-neutral-700);
 		:global(:--dark) & {
@@ -95,7 +95,7 @@
 		max-width: var(--width-lg);
 		display: flex;
 		flex-direction: column;
-		gap: var(--base-gap);
+		gap: var(--base-gutter);
 	}
 
 	#footer-logos {

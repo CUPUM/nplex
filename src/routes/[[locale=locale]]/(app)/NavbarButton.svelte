@@ -70,9 +70,9 @@
 		align-items: center;
 		justify-content: center;
 		font-size: var(--size-sm);
-		height: calc(var(--button-size) - 2 * var(--group-inset, 0px));
-		padding-inline: calc(var(--button-padding) - var(--group-inset, 0px));
-		border-radius: calc(var(--button-radius) - var(--group-inset, 0px));
+		height: calc(var(--button-size) - 2 * var(--group-nesting, 0px));
+		padding-inline: calc(var(--button-padding) - var(--group-nesting, 0px));
+		border-radius: calc(var(--button-radius) - var(--group-nesting, 0px));
 		letter-spacing: 0.02em;
 		outline: 1px solid transparent;
 		outline-offset: -2px;

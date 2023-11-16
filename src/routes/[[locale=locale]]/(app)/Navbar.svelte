@@ -353,8 +353,8 @@
 			position: absolute;
 			height: 100%;
 			width: 100%;
-			bottom: calc(100% + var(--base-border-size));
-			border-bottom: var(--base-border-size) solid transparent;
+			bottom: calc(100% + var(--base-border-width));
+			border-bottom: var(--base-border-width) solid transparent;
 			transition:
 				all 0.2s ease-out,
 				bottom 0.5s var(--ease-out-expo);
@@ -407,12 +407,12 @@
 
 	#explore-group {
 		z-index: 1;
-		--group-inset: 3px;
+		--group-nesting: 3px;
 		grid-column: explore;
 		justify-content: center;
 		background-color: rgba(0, 0, 0, 0.035);
 		border-radius: var(--base-radius);
-		padding: var(--group-inset);
+		padding: var(--group-nesting);
 		backdrop-filter: blur(8px);
 		:global(:--dark) & {
 			background-color: rgba(255, 255, 255, 0.05);
@@ -440,7 +440,7 @@
 		display: flex;
 		align-items: center;
 		font-size: var(--size-xs);
-		padding: 0.3rem 0.45rem;
+		padding: 0.2rem 0.5rem;
 		opacity: 0.75;
 		border-radius: var(--radius-full);
 		box-shadow: 0 0 2px -0.5px currentColor;

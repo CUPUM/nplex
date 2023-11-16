@@ -11,7 +11,6 @@
 	import type { SVGAttributes } from 'svelte/elements';
 	import { scale } from 'svelte/transition';
 
-	export let color: string | undefined = undefined;
 	export let thickness: SVGAttributes<SVGPathElement>['stroke-width'] = 12;
 	export let linecap: SVGAttributes<SVGPathElement>['stroke-linecap'] = 'round';
 	export let linejoin: SVGAttributes<SVGPathElement>['stroke-linejoin'] = 'round';
@@ -34,7 +33,7 @@
 	// }
 </script>
 
-<div class="spinner" style:color style:--speed={speed} style:--offset={offset}>
+<div class="spinner" style:--speed={speed} style:--offset={offset}>
 	<svg
 		viewBox="0 0 100 100"
 		preserveAspectRatio="xMidYMid"
@@ -78,6 +77,7 @@
 		background: transparent;
 		background: transparent;
 		font-size: 1.25em;
+		color: var(--spinner-color);
 	}
 
 	svg {

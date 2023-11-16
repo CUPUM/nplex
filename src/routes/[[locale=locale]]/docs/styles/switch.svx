@@ -2,18 +2,130 @@
 title: Switch
 ---
 
-# Button
+The `switch` style provides a way to present selectable options as an array of buttons with a
+sliding thumb. In some cases, two-choice switches can also be presented as a boolean toggle instead.
+For this, refer to the [`toggle`](/docs/styles/toggle) style.
 
-The button style encompasses both functional buttons and navigation buttons (i.e. links that are not
-inlined inside prose).
-
-This style should not be used for elements where nested buttons are expected. An example case would
-be a `select` element with sibling buttons: this could be implemented as a `button-group` or an
-`input-group` depending on the desired outcome.
+The style is implemented by composition, meaning it contains a collection of related classes that
+span the root and its children. (Look into components for pre-componentized parts that strive to
+simplify the markup required to use this style.)
 
 ```svelte example
 <script>
+  import { switchThumbCrossfade } from '$lib/components/SwitchThumb.svelte';
+
+  const key = {};
+  let current = '1';
+  const [send, receive] = switchThumbCrossfade;
 </script>
 
-<button class="button">Button</button>
+<div class="switch">
+  <label class="switch-item">
+    <input type="radio" bind:group={current} value="1" class="visually-hidden" />
+    Item 1
+    {#if current === '1'}
+      <div class="switch-thumb" in:receive={{ key }} out:send={{ key }} />
+    {/if}
+  </label>
+  <label class="switch-item">
+    <input type="radio" bind:group={current} value="2" class="visually-hidden" />
+    Item 2
+    {#if current === '2'}
+      <div class="switch-thumb" in:receive={{ key }} out:send={{ key }} />
+    {/if}
+  </label>
+</div>
 ```
+
+## Variants
+
+### Default
+
+```svelte example hideScript
+<script>
+  import { switchThumbCrossfade } from '$lib/components/SwitchThumb.svelte';
+
+  const key = {};
+  let current = '1';
+  const [send, receive] = switchThumbCrossfade;
+</script>
+
+<div class="switch">
+  <label class="switch-item">
+    <input type="radio" bind:group={current} value="1" class="visually-hidden" />
+    Item 1
+    {#if current === '1'}
+      <div class="switch-thumb" in:receive={{ key }} out:send={{ key }} />
+    {/if}
+  </label>
+  <label class="switch-item">
+    <input type="radio" bind:group={current} value="2" class="visually-hidden" />
+    Item 2
+    {#if current === '2'}
+      <div class="switch-thumb" in:receive={{ key }} out:send={{ key }} />
+    {/if}
+  </label>
+</div>
+```
+
+### Outlined
+
+```svelte example hideScript
+<script>
+  import { switchThumbCrossfade } from '$lib/components/SwitchThumb.svelte';
+
+  const key = {};
+  let current = '1';
+  const [send, receive] = switchThumbCrossfade;
+</script>
+
+<div class="switch outlined">
+  <label class="switch-item">
+    <input type="radio" bind:group={current} value="1" class="visually-hidden" />
+    Item 1
+    {#if current === '1'}
+      <div class="switch-thumb" in:receive={{ key }} out:send={{ key }} />
+    {/if}
+  </label>
+  <label class="switch-item">
+    <input type="radio" bind:group={current} value="2" class="visually-hidden" />
+    Item 2
+    {#if current === '2'}
+      <div class="switch-thumb" in:receive={{ key }} out:send={{ key }} />
+    {/if}
+  </label>
+</div>
+```
+
+### Ghost
+
+```svelte example hideScript
+<script>
+  import { switchThumbCrossfade } from '$lib/components/SwitchThumb.svelte';
+
+  const key = {};
+  let current = '1';
+  const [send, receive] = switchThumbCrossfade;
+</script>
+
+<div class="switch ghost">
+  <label class="switch-item">
+    <input type="radio" bind:group={current} value="1" class="visually-hidden" />
+    Item 1
+    {#if current === '1'}
+      <div class="switch-thumb" in:receive={{ key }} out:send={{ key }} />
+    {/if}
+  </label>
+  <label class="switch-item">
+    <input type="radio" bind:group={current} value="2" class="visually-hidden" />
+    Item 2
+    {#if current === '2'}
+      <div class="switch-thumb" in:receive={{ key }} out:send={{ key }} />
+    {/if}
+  </label>
+</div>
+```
+
+## States
+
+### Disabled

@@ -22,7 +22,7 @@
 	import { onMount, SvelteComponent, type ComponentProps, type ComponentType } from 'svelte';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { writable } from 'svelte/store';
-	import { fly, scale } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import type { ValueOf } from 'type-fest';
 
 	export let elements: ToastsElements;
@@ -56,8 +56,8 @@
 
 <div
 	use:melt={$content(id)}
-	in:fly|global={{ y: '100%', easing: expoOut, duration: 300 }}
-	out:scale|global={{ start: 0.9, duration: 150, easing: cubicOut, opacity: 0 }}
+	in:fly|global={{ y: '100%', easing: expoOut, duration: 300, opacity: 0 }}
+	out:fly|global={{ x: '100%', easing: cubicOut, duration: 150, opacity: 0 }}
 	class="container {data.type ?? TOAST_TYPES.DEFAULT}"
 >
 	<div use:melt={$progress} class="toast-progress">

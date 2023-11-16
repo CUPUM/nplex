@@ -38,6 +38,9 @@ const config = {
 	kit: {
 		adapter: adapter(),
 	},
+	vitePlugin: {
+		inspector: true,
+	},
 	compilerOptions: {
 		cssHash: (styles) => `nplex-${styles.hash(styles.css)}`, // Only applies to prod.
 	},

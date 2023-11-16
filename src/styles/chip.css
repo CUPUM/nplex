@@ -1,9 +1,6 @@
-/*
-Pill-shaped or chip-like elements for list of tags and other uses.
-*/
 .chip {
 	--base-radius: var(--radius-full);
-	--chip-size: calc(var(--base-size) - 0.75em);
+	--_chip-size: calc(var(--base-size) - 0.75em);
 	position: relative;
 	user-select: none;
 	cursor: pointer;
@@ -12,36 +9,13 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 	align-items: center;
 	height: var(--chip-size);
 	min-width: var(--chip-size);
-	padding: var(--base-inset);
+	padding: var(--base-nesting);
 	border-radius: var(--base-radius);
 	gap: 0.5em;
 	font-weight: 450;
 	transition:
 		all var(--duration-xfast) ease-out,
 		transform var(--duration-xslow) var(--ease-out-expo);
-
-	&:focus-visible {
-		outline: var(--base-focus-ring);
-	}
-	&:disabled,
-	&[data-disabled] {
-		cursor: default;
-		opacity: 0.5;
-	}
-
-	&.square,
-	&.round {
-		justify-content: center;
-		padding-inline: 0;
-		aspect-ratio: 1;
-		.button-icon {
-			opacity: 1;
-			transform: scale(1);
-		}
-	}
-	&.round {
-		border-radius: var(--radius-full);
-	}
 
 	&:active,
 	[data-active] {
@@ -64,14 +38,14 @@ Pill-shaped or chip-like elements for list of tags and other uses.
 	}
 
 	& > * {
-		--base-size: calc(var(--chip-size) - 2 * var(--chip-inset));
+		--base-size: calc(var(--chip-size) - 2 * var(--chip-nesting));
 	}
 
 	.chip-label {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		padding: 0 calc(var(--base-padding) - var(--base-inset));
+		padding: 0 calc(var(--base-padding) - var(--base-nesting));
 	}
 
 	/*

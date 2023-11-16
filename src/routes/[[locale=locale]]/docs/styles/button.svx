@@ -19,7 +19,7 @@ Use the `button` class to style interactive elements as buttons.
 <label class="button">
   File input label
   <File class="button-icon" />
-  <input type="file" style="display:none" />
+  <input type="file" class="visually-hidden" />
 </label>
 ```
 
@@ -80,9 +80,82 @@ Self-explanatory. Incite a user's action.
 <button disabled class="button link">Default button</button>
 ```
 
-## Special
+## Fine-tune
+
+Appearance styles are provided for non-exclusive style fine-tunings. These include layout and
+colorization declinations.
+
+### Rounded
+
+```svelte example hideScript
+<script>
+  import { Settings } from 'lucide-svelte';
+</script>
+
+<button class="button rounded">Rounded button</button>
+<button class="button square rounded">
+  <Settings />
+</button>
+```
+
+### Content alignement
+
+```svelte example hideScript
+<script>
+  import { Settings } from 'lucide-svelte';
+</script>
+
+<div class="container">
+  <button class="button">
+    <Settings />
+    Settings
+  </button>
+  <button class="button center">
+    <Settings />
+    Settings
+  </button>
+  <button class="button right">
+    <Settings />
+    Settings
+  </button>
+  <button class="button space-between">
+    <Settings />
+    Settings
+  </button>
+  <button class="button space-between">
+    <Settings />
+    Settings
+    <span class="button-icon" />
+  </button>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    gap: var(--base-gutter);
+    flex-direction: column;
+    align-items: stretch;
+  }
+</style>
+```
+
+### Aspect ratio
+
+```svelte example hideScript
+<script>
+  import { Settings } from 'lucide-svelte';
+</script>
+
+<button class="button square">Hi</button>
+<button class="button square">
+  <Settings />
+</button>
+```
 
 ### Danger
+
+The danger appearance is a special compound variant that allows highlighting a button that handles
+critical cases, such as destructive actions or sensitive contents.
 
 ```svelte example
 <button class="button danger">Danger button</button>
@@ -97,6 +170,9 @@ Self-explanatory. Incite a user's action.
 ```
 
 ## States
+
+Various semantic states the button can have, usually in relation to form submission or user
+interaction related feedback.
 
 ### Disabled
 
