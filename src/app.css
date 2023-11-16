@@ -11,8 +11,8 @@
 @import './styles/misc.css' layer(components);
 @import './styles/button.css' layer(components);
 @import './styles/switch.css' layer(components);
+@import './styles/input.css' layer(components);
 
 /* To do */
 @import './styles/components/typography.css' layer(components);
-@import './styles/components/input.css' layer(components);
 @import './styles/components/toggle.css' layer(components);

@@ -2,4 +2,15 @@
 title: Toggle
 ---
 
-# {title}
+Toggles are boolean switches that typically embody the state of a checkbox. A toggle element should
+generally accompany a text label describing what state or functionality is being toggled. Though,
+they can also sometimes contain icons or very brief content to communicate that information. Note
+that their content, if any, should be **very** limited in length (e.g. a single icon or a single
+character).
+
+```svelte example
+<label class="toggle">
+  <div class="toggle-thumb" />
+  <input type="checkbox" class="visually-hidden" />
+</label>
+```

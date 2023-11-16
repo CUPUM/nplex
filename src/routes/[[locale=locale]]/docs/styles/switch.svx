@@ -37,6 +37,18 @@ simplify the markup required to use this style.)
 </div>
 ```
 
+## Structure
+
+```svelte
+<... class="switch">
+  <... class="switch-item">
+    {#if checked}
+     <... class="switch-thumb" in:receive out:send />
+    {current}
+  </...>
+</...>
+```
+
 ## Variants
 
 ### Default

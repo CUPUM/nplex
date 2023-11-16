@@ -2,18 +2,34 @@
 title: Input
 ---
 
-# {title}
-
-The button style encompasses both functional buttons and navigation buttons (i.e. links that are not
-inlined inside prose).
-
-This style should not be used for elements where nested buttons are expected. An example case would
-be a `select` element with sibling buttons: this could be implemented as a `button-group` or an
-`input-group` depending on the desired outcome.
+The input style designs data entry fields.
 
 ```svelte example
-<script>
-</script>
+<!-- Can be used for standalone inputs... -->
+<input type="text" placeholder="Add some text here..." class="input" />
 
-<button class="button">Button</button>
+<!-- Or, alternatively, it can also handle compositions to group buttons or other items -->
+<fieldset class="input-group">
+  <input type="text" placeholder="Add some text here..." class="input" />
+</fieldset>
 ```
+
+## Structure
+
+```svelte
+<!-- Standalone input -->
+<input class="input" />
+
+<!-- Inpout group -->
+<... class="input-group">
+  <... class="input-peer">
+  </...>
+<input />
+</...>
+```
+
+## Variants
+
+## Fine-tuning
+
+## States

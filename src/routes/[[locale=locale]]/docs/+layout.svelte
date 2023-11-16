@@ -165,13 +165,6 @@
 		border-radius: var(--radius-lg);
 		width: 100%;
 		max-width: 80ch;
-		/* background: red; */
-
-		:global(code:not(.code)) {
-			background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
-			padding: 0.3em 0.5em;
-			border-radius: var(--radius-xs);
-		}
 	}
 
 	footer {

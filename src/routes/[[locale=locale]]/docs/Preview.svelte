@@ -58,14 +58,14 @@
 			<button class="button ghost square" on:click={copy}>
 				{#if $copied === key}
 					<div
-						transition:scale={{ start: 0.8, duration: 350, easing: expoOut }}
+						transition:scale={{ start: 0.25, duration: 350, easing: expoOut }}
 						style="position: absolute;"
 					>
 						<Check class="button-icon" />
 					</div>
 				{:else}
 					<div
-						transition:scale={{ start: 1.2, duration: 350, easing: expoOut }}
+						transition:scale={{ start: 0.25, duration: 350, easing: expoOut }}
 						style="position: absolute;"
 					>
 						<Copy class="button-icon" />
@@ -108,7 +108,7 @@
 
 		menu {
 			opacity: 0.25;
-			font-size: var(--size-xs);
+			font-size: var(--size-sm);
 			position: absolute;
 			top: var(--base-nesting);
 			right: var(--base-nesting);

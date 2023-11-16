@@ -154,6 +154,12 @@ pre[class*='language-'] {
 	white-space: normal;
 }
 
+:not(pre) > code:not(.code) {
+	background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+	padding: 0.3em 0.5em;
+	border-radius: var(--radius-xs);
+}
+
 code {
 	.token.comment,
 	.token.prolog,

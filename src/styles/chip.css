@@ -1,6 +1,8 @@
 .chip {
-	--base-radius: var(--radius-full);
-	--_chip-size: calc(var(--base-size) - 0.75em);
+	/* Public customizable props */
+	--chip-radius: var(--radius-full);
+	--chip-nesting: var(--base-nesting);
+
 	position: relative;
 	user-select: none;
 	cursor: pointer;
@@ -48,9 +50,9 @@
 		padding: 0 calc(var(--base-padding) - var(--base-nesting));
 	}
 
-	/*
-	Default variant
-	*/
+	/* Variants */
+
+	/* Default */
 	&:not(.outlined, .ghost) {
 		border: var(--base-border-dim);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
@@ -76,16 +78,12 @@
 		}
 	}
 
-	/*
-	Outlined variant
-	*/
+	/* Outlined */
 	&.outlined {
 		border: var(--base-border);
 	}
 
-	/*
-	Ghost variant
-	*/
+	/* Ghost */
 	&.ghost {
 	}
 }

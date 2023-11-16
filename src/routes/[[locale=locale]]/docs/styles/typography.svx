@@ -2,10 +2,8 @@
 title: Typography
 ---
 
-# {title}
-
-## Text
+Lorem ipsum
 
 ## Prose
 
-Test
+Lorem gypsum
