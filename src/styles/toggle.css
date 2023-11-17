@@ -1,0 +1,135 @@
+.toggle {
+	/* Public customizable props */
+	--toggle-radius: var(--radius-full);
+
+	/* Private props */
+	--_toggle-thumb-expansion: 10%;
+	--_toggle-block-size: calc(var(--base-block-size) - 2 * var(--base-nesting));
+	--_toggle-width: calc(1.75 * var(--_toggle-block-size));
+	--_toggle-bar-size: clamp(12px, 25%, 3px);
+
+	/* Base */
+	cursor: pointer;
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	flex-direction: row;
+	block-size: var(--_toggle-block-size);
+	inline-size: var(--_toggle-width);
+	border-radius: var(--toggle-radius);
+	color: var(--_toggle-color);
+	user-select: none;
+	transition: all var(--duration-medium) var(--ease-out-expo);
+
+	/* Composition */
+
+	/* Bar */
+	&::before {
+		--_toggle-bar-nesting: calc(var(--_toggle-block-size) * 0.5 - var(--_toggle-bar-size));
+		content: '';
+		position: absolute;
+		border-radius: var(--toggle-radius);
+		block-size: var(--_toggle-bar-size);
+		inset-inline-start: var(--_toggle-bar-nesting);
+		inset-inline-end: var(--_toggle-bar-nesting);
+		background: var(--_toggle-bar-bg);
+		transition: all var(--duration-medium) ease-out;
+	}
+
+	/* Thumb */
+	.toggle-thumb {
+		position: absolute;
+		transform-origin: left;
+		block-size: var(--_toggle-block-size);
+		inline-size: var(--_toggle-block-size);
+		border-radius: var(--radius-full);
+		box-shadow: var(--_toggle-thumb-shadow);
+		background: var(--_toggle-thumb-bg);
+		flex: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		left: 0;
+		transition: all var(--duration-medium) var(--ease-out-expo);
+	}
+
+	/* Children icons */
+	:--icon {
+		width: 1.25em;
+		stroke-width: 2;
+		stroke-linecap: square;
+		stroke-linejoin: round;
+		opacity: 0.5;
+		transform: scale(1);
+		flex: none;
+		transition:
+			opacity var(--duration-medium) ease-out,
+			transform var(--duration-fast) ease-out;
+	}
+
+	/* States */
+
+	/* Disabled */
+	&:--disabled,
+	&:has(:--disabled) {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	/* Focused */
+	&:focus-visible {
+		.toggle-thumb {
+			outline: var(--base-focus-ring);
+		}
+	}
+
+	/* Pointerdown */
+	&:active {
+		.toggle-thumb {
+			inline-size: calc(var(--_toggle-block-size) + var(--_toggle-thumb-expansion));
+		}
+	}
+
+	&:--checked {
+		&::before {
+			background: var(--_toggle-checked-bar-bg);
+		}
+
+		.toggle-thumb {
+			inset-inline-start: calc(100% - var(--_toggle-block-size));
+			background: var(--_toggle-checked-thumb-bg);
+			box-shadow: var(--_toggle-checked-thumb-shadow);
+
+			:--icon {
+				opacity: 1;
+			}
+		}
+
+		&:active {
+			.toggle-thumb {
+				inset-inline-start: calc(100% - var(--_toggle-block-size) - var(--_toggle-thumb-expansion));
+			}
+		}
+	}
+
+	/* Variants */
+
+	/* Default */
+	--_toggle-color: var(--color-neutral-300);
+	--_toggle-bar-bg: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+	--_toggle-thumb-bg: var(--color-neutral-600);
+	--_toggle-thumb-shadow: var(--shadow-sm);
+	--_toggle-color: var(--color-neutral-300);
+	--_toggle-checked-color: var(--color-neutral-100);
+	--_toggle-checked-thumb-shadow: var(--shadow-md);
+	--_toggle-checked-thumb-bg: var(--color-primary-600);
+	--_toggle-checked-bar-bg: var(--color-primary-800);
+
+	:--dark & {
+		--_toggle-color: var(--color-neutral-700);
+		--_toggle-thumb-bg: var(--color-neutral-400);
+		--_toggle-checked-thumb-bg: var(--color-primary-500);
+		--_toggle-checked-color: var(--color-neutral-100);
+		--_toggle-checked-bar-bg: var(--color-primary-700);
+	}
+}

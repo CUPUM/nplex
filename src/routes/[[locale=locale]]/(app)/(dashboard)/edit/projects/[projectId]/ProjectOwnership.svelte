@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
-	import SelectChevron from '$lib/components/SelectChevron.svelte';
+	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
 	import { customProxy } from '$lib/forms/proxy';
@@ -51,7 +51,7 @@
 	<input type="text" name="siteOwnershipId" use:melt={$hiddenInput} />
 	<button type="button" class="input select" use:melt={$trigger}>
 		{$selectedLabel || $t.placeholder}
-		<SelectChevron open={$open} />
+		<SelectIcon open={$open} />
 	</button>
 	<SelectMenu {menu} {open}>
 		{#each siteOwnerships as ownership}

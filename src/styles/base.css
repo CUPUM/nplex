@@ -116,10 +116,11 @@
 	--base-inline-padding: 1.25em;
 	--base-radius: var(--radius-md);
 	--base-border-width: 1.25px;
+	--base-outline-width: 2.5px;
 	--base-border-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 	--base-nesting: 5px;
-	--base-focus-ring: 3px solid var(--color-primary-900);
-	--base-error-ring: 3px solid var(--color-error-600);
+	--base-focus-ring: var(--base-outline-width) solid var(--color-primary-800);
+	--base-error-ring: var(--base-outline-width) solid var(--color-error-600);
 	--base-color: var(--color-neutral-700);
 	--base-bg: var(--color-neutral-100);
 
@@ -138,8 +139,9 @@
 	&:--dark {
 		--base-color: var(--color-neutral-300);
 		--base-bg: var(--color-neutral-900);
-		--base-focus-ring: 2px solid color-mix(in srgb, var(--color-primary-500) 75%, transparent);
-		--base-error-ring: 2px solid var(--color-error-400);
+		--base-focus-ring: var(--base-outline-width) solid
+			color-mix(in srgb, var(--color-primary-500) 75%, transparent);
+		--base-error-ring: var(--base-outline-width) solid var(--color-error-400);
 		--dashboard-bg: var(--color-neutral-800);
 	}
 

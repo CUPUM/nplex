@@ -47,7 +47,7 @@
 		stroke-linecap: square;
 		stroke-linejoin: round;
 		opacity: 0.5;
-		transform: scale(1);
+		transform: scale(0.95);
 		flex: none;
 		user-select: none;
 		pointer-events: none;
@@ -167,9 +167,9 @@
 		background: var(--_button-open-bg, var(--_button-bg));
 
 		&::after {
-			border-width: var(--_button-active-border-width, var(--_button-border-width));
-			border-style: var(--_button-active-border-style, var(--_button-border-style));
-			border-color: var(--_button-active-border-color, var(--_button-border-color));
+			border-width: var(--_button-open-border-width, var(--_button-border-width));
+			border-style: var(--_button-open-border-style, var(--_button-border-style));
+			border-color: var(--_button-open-border-color, var(--_button-border-color));
 		}
 	}
 
@@ -212,10 +212,10 @@
 		--spinner-color: var(--color-neutral-800);
 		--_button-color: var(--color-neutral-800);
 		--_button-bg: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-		--_button-hover-color: var(--color-neutral-950);
-		--_button-hover-bg: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
-		--_button-active-color: var(--color-neutral-700);
-		--_button-active-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+		--_button-hover-color: var(--color-neutral-700);
+		--_button-hover-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+		--_button-active-color: var(--color-neutral-600);
+		--_button-active-bg: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
 		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
 		--_button-disabled-bg: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 		--_button-open-color: var(--color-neutral-900);
@@ -227,7 +227,7 @@
 			--spinner-color: var(--color-neutral-200);
 			--_button-color: var(--color-neutral-200);
 			--_button-bg: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-			--_button-hover-color: var(--color-neutral-50);
+			--_button-hover-color: var(--color-neutral-400);
 			--_button-hover-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
 			--_button-active-color: var(--color-neutral-300);
 			--_button-active-bg: color-mix(in srgb, var(--color-neutral-700) 25%, transparent);

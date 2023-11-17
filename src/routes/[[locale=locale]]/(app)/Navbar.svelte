@@ -133,7 +133,7 @@
 	let mounted = false;
 
 	function flyin(node: HTMLElement, i: number) {
-		return fly(node, { y: '25%', duration: 750, easing: expoOut, delay: i * 75 });
+		return fly(node, { y: '-25%', duration: 750, easing: expoOut, delay: i * 75 });
 	}
 
 	onNavigate(() => {

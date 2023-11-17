@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
-	import SelectChevron from '$lib/components/SelectChevron.svelte';
+	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
 	import { superForm } from '$lib/forms/super-form';
@@ -59,7 +59,7 @@
 			<button class="input select" type="button" use:melt={$trigger}>
 				<Crown class="input-icon" />
 				{$t.changeRole}
-				<SelectChevron open={$open} />
+				<SelectIcon open={$open} />
 			</button>
 			<div class="input-peer">
 				<button class="button" type="submit" formaction="?/requestRole" on:click|stopPropagation>

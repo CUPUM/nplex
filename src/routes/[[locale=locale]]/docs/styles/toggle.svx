@@ -8,9 +8,20 @@ they can also sometimes contain icons or very brief content to communicate that 
 that their content, if any, should be **very** limited in length (e.g. a single icon or a single
 character).
 
-```svelte example
+```svelte example hideScript
+<script>
+  let checked = false;
+</script>
+
+<!-- Basic -->
 <label class="toggle">
   <div class="toggle-thumb" />
-  <input type="checkbox" class="visually-hidden" />
+  <input type="checkbox" class="visually-hidden" bind:checked />
+</label>
+
+<!-- With icon -->
+<label class="toggle">
+  <div class="toggle-thumb">Hi</div>
+  <input type="checkbox" class="visually-hidden" bind:checked />
 </label>
 ```

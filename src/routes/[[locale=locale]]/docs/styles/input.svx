@@ -2,7 +2,7 @@
 title: Input
 ---
 
-The input style designs data entry fields.
+The input style is designed for single-line and multi-line data entry fields.
 
 ```svelte example
 <!-- Can be used for standalone inputs... -->
@@ -11,7 +11,14 @@ The input style designs data entry fields.
 <!-- Or, alternatively, it can also handle compositions to group buttons or other items -->
 <fieldset class="input-group">
   <input type="text" placeholder="Add some text here..." class="input" />
+  <div class="input-peer">
+    <button class="button">Button</button>
+    <button class="button">Button</button>
+  </div>
 </fieldset>
+
+<!-- Simple text area -->
+<textarea class="input" rows="10" />
 ```
 
 ## Structure
@@ -20,15 +27,60 @@ The input style designs data entry fields.
 <!-- Standalone input -->
 <input class="input" />
 
-<!-- Inpout group -->
+<!-- Input group -->
 <... class="input-group">
   <... class="input-peer">
+   <!-- Nested button(s), chips, etc. -->
   </...>
-<input />
+  <... class="input-icon">
+  <input />
+  <... class="input-affix">
+   <!-- Suffix / prefix text -->
+ </...>
 </...>
 ```
 
+Some examples of possible compositions or fine-tuned use-cases include:
+
+```svelte example
+<!-- Select button or combo-box input -->
+<button class="input">
+  Select an option
+  <!-- <SelectIcon /> -->
+</button>
+```
+
 ## Variants
+
+### Default
+
+```svelte example
+<!-- Can be used for standalone inputs... -->
+<input type="text" placeholder="Add some text here..." class="input" />
+
+<!-- Or, alternatively, it can also handle compositions to group buttons or other items -->
+<fieldset class="input-group">
+  <input type="text" placeholder="Add some text here..." class="input" />
+  <div class="input-peer">
+    <button class="button">Button</button>
+  </div>
+</fieldset>
+```
+
+### Outlined
+
+```svelte example
+<!-- Can be used for standalone inputs... -->
+<input type="text" placeholder="Add some text here..." class="input outlined" />
+
+<!-- Or, alternatively, it can also handle compositions to group buttons or other items -->
+<fieldset class="input-group outlined">
+  <input type="text" placeholder="Add some text here..." class="input" />
+  <div class="input-peer">
+    <button class="button">Button</button>
+  </div>
+</fieldset>
+```
 
 ## Fine-tuning
 
