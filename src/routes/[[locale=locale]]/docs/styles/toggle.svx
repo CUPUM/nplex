@@ -19,9 +19,31 @@ character).
   <input type="checkbox" class="visually-hidden" bind:checked />
 </label>
 
-<!-- With icon -->
+<!-- With content -->
 <label class="toggle">
   <div class="toggle-thumb">Hi</div>
+  <input type="checkbox" class="visually-hidden" bind:checked />
+</label>
+```
+
+## Fine-tuning
+
+### Orientation
+
+```svelte example hideScript
+<script>
+  let checked = false;
+</script>
+
+<!-- Basic -->
+<label class="toggle">
+  <div class="toggle-thumb" />
+  <input type="checkbox" class="visually-hidden" bind:checked />
+</label>
+
+<!-- With content -->
+<label class="toggle" data-orientation="vertical">
+  <div class="toggle-thumb" />
   <input type="checkbox" class="visually-hidden" bind:checked />
 </label>
 ```

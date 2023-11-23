@@ -66,7 +66,7 @@
 		position: relative;
 		left: 0;
 		padding: 0.75rem 1rem;
-		font-size: var(--size-sm);
+		font-size: var(--size-xs);
 		font-weight: 350;
 		letter-spacing: 0.01em;
 		line-height: 1.5;

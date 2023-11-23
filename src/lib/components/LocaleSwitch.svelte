@@ -19,10 +19,10 @@
 <menu use:melt={$list} class="switch compact" use:ripple>
 	{#each LOCALES_ARR as _locale}
 		<button class="switch-item" use:melt={$trigger(_locale)} lang={_locale} type="button">
-			{LOCALES_DETAILS[_locale].label}
 			{#if $locale === _locale}
 				<div in:send={{ key }} out:receive={{ key }} class="switch-thumb" />
 			{/if}
+			{LOCALES_DETAILS[_locale].label}
 		</button>
 	{/each}
 </menu>

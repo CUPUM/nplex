@@ -1,6 +1,6 @@
 <script lang="ts">
-	import DashboardNav, { setDashboard } from '$lib/components/DashboardNav.svelte';
-	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
+	import Sidebar, { setDashboard } from '$lib/components/Sidebar.svelte';
+	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { ArrowRight } from 'lucide-svelte';
@@ -31,23 +31,23 @@
 	});
 </script>
 
-<DashboardNav>
+<Sidebar>
 	<svelte:fragment slot="heading">
 		{$t.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link('/edit/organizations/descriptors/types')}>
+	<SidebarItem {...$link('/edit/organizations/descriptors/types')}>
 		{$t.items.types}
-	</DashboardNavItem>
-</DashboardNav>
-<DashboardNav>
+	</SidebarItem>
+</Sidebar>
+<Sidebar>
 	<svelte:fragment slot="heading">
 		{$t.projects.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link('/edit/projects/descriptors')}>
+	<SidebarItem {...$link('/edit/projects/descriptors')}>
 		{$t.projects.button}
 		<ArrowRight class="button-icon" />
-	</DashboardNavItem>
-</DashboardNav>
+	</SidebarItem>
+</Sidebar>
 
 <style lang="postcss">
 </style>

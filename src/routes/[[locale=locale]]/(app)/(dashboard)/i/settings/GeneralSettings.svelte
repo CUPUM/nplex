@@ -1,7 +1,7 @@
 <script lang="ts">
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
-	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
+	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
+	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
 	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { FileUp, Mail, Shield, ShieldX } from 'lucide-svelte';

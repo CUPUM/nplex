@@ -207,15 +207,15 @@
 	/* Variants */
 
 	/* Default */
-	&:not(.outlined, .ghost, .cta, .link) {
+	&:not(.outlined, .dashed, .ghost, .cta, .link) {
 		--ripple-color: var(--color-neutral-500);
 		--spinner-color: var(--color-neutral-800);
 		--_button-color: var(--color-neutral-800);
 		--_button-bg: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 		--_button-hover-color: var(--color-neutral-700);
-		--_button-hover-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
+		--_button-hover-bg: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
 		--_button-active-color: var(--color-neutral-600);
-		--_button-active-bg: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
+		--_button-active-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
 		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
 		--_button-disabled-bg: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 		--_button-open-color: var(--color-neutral-900);
@@ -254,12 +254,17 @@
 
 	/* Outlined */
 	&.outlined {
+		--_button-border-style: solid;
+	}
+	&.dashed {
+		--_button-border-style: dashed;
+	}
+	&.outlined, &.dashed {
 		--ripple-color: var(--color-neutral-500);
 		--spinner-color: var(--color-neutral-800);
 		--_button-color: var(--color-neutral-800);
 		--_button-bg: transparent;
 		--_button-border-width: var(--base-border-width);
-		--_button-border-style: solid;
 		--_button-border-color: var(--base-border-color);
 		--_button-hover-color: var(--color-neutral-950);
 		--_button-hover-bg: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);

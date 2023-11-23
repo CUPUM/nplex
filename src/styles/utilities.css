@@ -24,7 +24,7 @@
 /* Loading state */
 @custom-selector :--loading [data-loading='true'];
 /* Checked state */
-@custom-selector :--checked [data-state='checked'], :checked, :has(:checked);
+@custom-selector :--checked [data-state='checked'], [data-state='active'], :checked, :has(:checked);
 /* When element contains focus-visible'd child */
 @custom-selector :--focus-visible-within :has(:focus-visible);
 /* Vertical element layout */

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
+	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import LocaleInput from '$lib/components/LocaleInput.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
 	import { createTranslations } from '$lib/i18n/translate';
@@ -7,6 +7,7 @@
 
 	const t = createTranslations({
 		fr: {
+			presentation: 'Présentation',
 			title: 'Titre',
 			titlePlaceholder: 'Aucun titre',
 			summary: 'Sommaire',
@@ -15,6 +16,7 @@
 			descriptionPlaceholder: 'Aucune description',
 		},
 		en: {
+			presentation: 'Presentation',
 			title: 'Title',
 			titlePlaceholder: 'No title',
 			summary: 'Summary',
@@ -27,7 +29,8 @@
 	export let form: SuperFormPageData<PageData['form']>['form'];
 </script>
 
-<DashboardFormField title={$t.title} centered>
+<DashboardFormSection title={$t.presentation}>
+	<h4 class="h6">{$t.title}</h4>
 	<LocaleInput let:locale>
 		<input
 			type="text"
@@ -36,8 +39,7 @@
 			placeholder={$t.titlePlaceholder}
 		/>
 	</LocaleInput>
-</DashboardFormField>
-<DashboardFormField title={$t.summary} centered>
+	<h4 class="h6">{$t.summary}</h4>
 	<LocaleInput let:locale>
 		<textarea
 			rows="5"
@@ -46,8 +48,7 @@
 			placeholder={$t.summaryPlaceholder}
 		/>
 	</LocaleInput>
-</DashboardFormField>
-<DashboardFormField title={$t.description} centered>
+	<h4 class="h6">{$t.description}</h4>
 	<LocaleInput let:locale>
 		<textarea
 			rows="10"
@@ -56,7 +57,7 @@
 			placeholder={$t.descriptionPlaceholder}
 		/>
 	</LocaleInput>
-</DashboardFormField>
+</DashboardFormSection>
 
 <style lang="postcss">
 </style>

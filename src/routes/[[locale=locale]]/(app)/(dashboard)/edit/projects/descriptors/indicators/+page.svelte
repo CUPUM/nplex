@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
+	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
 	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
 	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
 	import { default as TranslationsCard } from '$lib/components/TranslationsCard.svelte';

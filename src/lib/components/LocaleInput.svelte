@@ -69,7 +69,7 @@
 	}
 
 	.input-peer {
-		height: var(--base-size);
+		height: var(--base-block-size);
 		align-items: center;
 		padding-right: 0.35em;
 		flex: none;

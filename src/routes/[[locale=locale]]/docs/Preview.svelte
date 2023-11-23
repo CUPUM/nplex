@@ -108,7 +108,7 @@
 
 		menu {
 			opacity: 0.25;
-			font-size: var(--size-sm);
+			font-size: var(--size-xs);
 			position: absolute;
 			top: var(--base-nesting);
 			right: var(--base-nesting);

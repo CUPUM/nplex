@@ -1,14 +1,14 @@
 textarea.resize {
 	resize: vertical;
+	&::after {
+	}
 }
 
-.small,
-small {
-	font-size: var(--small);
+.bg-blur {
+	backdrop-filter: blur(8px);
 }
 
 /* Update base tokens to make things more compact where needed */
-
 .compact {
 	--base-block-size: 2.5em;
 	--base-inline-padding: 1em;
@@ -16,7 +16,6 @@ small {
 }
 
 /* Opposite of compact, makes base sizes larger for when attention is needed. */
-
 .big {
 	--base-block-size: 5em;
 	--base-inline-padding: 2em;
@@ -24,17 +23,24 @@ small {
 }
 
 /* Hide native scrollbar */
-
 .no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+
 	&::-webkit-scrollbar {
 		display: none;
 	}
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
+}
+
+/* Prevent content selectability */
+.no-select {
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 
 /* See https://www.a11yproject.com/posts/how-to-hide-content */
-
 .visually-hidden {
 	clip: rect(0 0 0 0);
 	clip-path: inset(50%);

@@ -3,11 +3,14 @@
 	 * Card link destination.
 	 */
 	export let href: string | undefined;
+	export let hreflang: string | undefined;
+	export let disabled: boolean | undefined = undefined;
 </script>
 
 <div class="card">
 	{#if href}
-		<a {href} class="card-link" />
+		<!-- svelte-ignore a11y-missing-content -->
+		<a {href} {hreflang} class="card-link" aria-hidden="true" />
 	{/if}
 	{#if $$slots.image}
 		<figure class="card-image">

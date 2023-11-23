@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
+	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
 	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';

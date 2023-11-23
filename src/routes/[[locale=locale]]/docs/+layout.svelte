@@ -57,26 +57,22 @@
 					{/each}
 				</SidebarGroup>
 			{/each}
-			<menu>
-				<button
-					class="switch rounded"
-					on:click={() => {
-						mode.toggle();
-					}}
-				>
-					<div
-						class="switch-item square"
-						data-state={$mode === MODES.LIGHT ? 'checked' : undefined}
-					>
-						<Sun />
-						<SwitchThumb current={$mode === MODES.LIGHT} />
-					</div>
-					<div class="switch-item square" data-state={$mode === MODES.DARK ? 'checked' : undefined}>
-						<MoonStar />
-						<SwitchThumb current={$mode === MODES.DARK} />
-					</div>
-				</button>
-			</menu>
+			<button
+				id="mode-switch"
+				class="switch outlined rounded"
+				on:click={() => {
+					mode.toggle();
+				}}
+			>
+				<div class="switch-item square" data-state={$mode === MODES.LIGHT ? 'checked' : undefined}>
+					<Sun />
+					<SwitchThumb current={$mode === MODES.LIGHT} />
+				</div>
+				<div class="switch-item square" data-state={$mode === MODES.DARK ? 'checked' : undefined}>
+					<MoonStar />
+					<SwitchThumb current={$mode === MODES.DARK} />
+				</div>
+			</button>
 		</Sidebar>
 	</div>
 	<article class="prose">
@@ -113,15 +109,14 @@
 	#docs {
 		--sticky-top: 0px;
 		display: grid;
-		grid-template-columns: 1fr minmax(auto, 80ch) minmax(0px, 1fr);
+		grid-template-columns: 1fr minmax(auto, var(--content-width)) minmax(0px, 1fr);
 		grid-template-rows: 1fr auto;
 		grid-template-areas:
 			'sidebar content pad'
 			'sidebar footer pad';
 		flex-direction: row;
 		gap: var(--base-gutter);
-		padding: var(--base-gutter);
-		padding-top: 0;
+		padding-inline: var(--base-gutter);
 		min-height: 100vh;
 		min-height: 100svh;
 		min-height: 100dvh;
@@ -150,8 +145,9 @@
 		}
 	}
 
-	menu {
-		font-size: var(--size-sm);
+	#mode-switch {
+		font-size: var(--size-xs);
+		align-self: flex-start;
 	}
 
 	.section-title {
@@ -168,10 +164,29 @@
 	}
 
 	footer {
+		position: sticky;
+		bottom: 0;
 		grid-area: footer;
-		padding: 2rem;
+		padding: var(--base-gutter) 2rem;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		text-transform: capitalize;
+		background: var(--base-bg);
+		font-size: var(--size-sm);
+
+		/* &::before {
+			content: '';
+			pointer-events: none;
+			position: absolute;
+			bottom: 0;
+			top: -100%;
+			width: 100%;
+			background: linear-gradient(to top, var(--base-bg), transparent);
+		} */
+
+		.button {
+			backdrop-filter: blur(6px);
+		}
 	}
 </style>

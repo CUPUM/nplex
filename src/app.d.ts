@@ -93,7 +93,6 @@ declare global {
 			dashboard?: {
 				header?: ComponentType;
 				sidebar?: ComponentType;
-				breadcrumbs?: ComponentType;
 				footer?: ComponentType;
 			};
 			flash?: App.Superforms.Message;

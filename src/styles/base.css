@@ -17,28 +17,28 @@
 	--color-neutral-800: hsl(32, 8%, 12%);
 	--color-neutral-900: hsl(34, 9%, 9%);
 	--color-neutral-950: hsl(30, 10%, 6%);
-	--color-primary-50: hsl(161, 78%, 95%);
-	--color-primary-100: hsl(161, 75%, 90%);
+	--color-primary-50: hsl(161, 80%, 92%);
+	--color-primary-100: hsl(161, 76%, 88%);
 	--color-primary-200: hsl(160, 72%, 80%);
-	--color-primary-300: hsl(159, 70%, 66%);
-	--color-primary-400: hsl(158, 69%, 51%);
-	--color-primary-500: hsl(157, 92%, 38%);
-	--color-primary-600: hsl(156, 94%, 31%);
+	--color-primary-300: hsl(159, 69%, 65%);
+	--color-primary-400: hsl(158, 65%, 50%);
+	--color-primary-500: hsl(157, 90%, 38%);
+	--color-primary-600: hsl(156, 92%, 31%);
 	--color-primary-700: hsl(155, 96%, 23%);
 	--color-primary-800: hsl(154, 93%, 17%);
 	--color-primary-900: hsl(153, 91%, 12%);
 	--color-primary-950: hsl(152, 91%, 8%);
-	--color-secondary-50: hsl(39, 75%, 90%);
-	--color-secondary-100: hsl(39, 74%, 84%);
-	--color-secondary-200: hsl(38, 73%, 77%);
-	--color-secondary-300: hsl(37, 72%, 70%);
-	--color-secondary-400: hsl(37, 73%, 62%);
-	--color-secondary-500: hsl(38, 70%, 54%);
-	--color-secondary-600: hsl(39, 69%, 45%);
-	--color-secondary-700: hsl(38, 68%, 39%);
-	--color-secondary-800: hsl(37, 67%, 30%);
-	--color-secondary-900: hsl(36, 66%, 21%);
-	--color-secondary-950: hsl(35, 65%, 12%);
+	--color-secondary-50: hsl(49, 75%, 90%);
+	--color-secondary-100: hsl(49, 74%, 84%);
+	--color-secondary-200: hsl(48, 73%, 77%);
+	--color-secondary-300: hsl(47, 72%, 70%);
+	--color-secondary-400: hsl(47, 73%, 62%);
+	--color-secondary-500: hsl(48, 70%, 54%);
+	--color-secondary-600: hsl(49, 69%, 45%);
+	--color-secondary-700: hsl(48, 68%, 39%);
+	--color-secondary-800: hsl(47, 67%, 30%);
+	--color-secondary-900: hsl(46, 66%, 21%);
+	--color-secondary-950: hsl(45, 65%, 12%);
 	--color-success-50: hsl(89, 86%, 88%);
 	--color-success-100: hsl(89, 84%, 83%);
 	--color-success-200: hsl(89, 72%, 75%);
@@ -63,8 +63,9 @@
 	--color-error-950: hsl(8, 89%, 18%);
 
 	/* Text and absolute sizes, based on ratio=1.333 type scale. */
-	--size-xs: 0.563rem;
-	--size-sm: 0.75rem;
+	--size-2xs: 0.563rem;
+	--size-xs: 0.75rem;
+	--size-sm: 0.875rem;
 	--size-md: 1rem;
 	--size-lg: 1.333rem;
 	--size-xl: 1.777rem;
@@ -72,6 +73,10 @@
 	--size-3xl: 3.157rem;
 	--size-4xl: 4.209rem;
 	--size-5xl: 5.61rem;
+
+	/* Line heights */
+	--line-dense: 1.333;
+	--line-sparse: 1.777;
 
 	/* Rounded corners. */
 	--radius-xs: 6px;
@@ -125,10 +130,13 @@
 	--base-bg: var(--color-neutral-100);
 
 	/* Misc and component-specific */
+	--opacity-dim: 0.6;
+	--opacity-dimmer: 0.3;
 	--ripple-color: currentColor;
 	--spinner-color: currentColor;
-	--small: 0.85em;
-	--sticky-top: calc(var(--navbar-height) + 0.5rem);
+	--ratio-small: 0.875em;
+	--content-width: 75ch;
+	--sticky-top: calc(var(--navbar-height) + var(--base-gutter));
 	--navbar-height: 72px;
 	--dashboard-bg: var(--color-neutral-50);
 	--sidebar-width: 175px;

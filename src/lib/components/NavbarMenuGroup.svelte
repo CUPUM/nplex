@@ -6,7 +6,9 @@
 	{#if legend}
 		<span class="navbar-menu-legend">{legend}</span>
 	{/if}
-	<slot />
+	<ul>
+		<slot />
+	</ul>
 </section>
 
 <style lang="postcss">
@@ -15,7 +17,6 @@
 		display: flex;
 		flex-direction: column;
 		padding-bottom: calc(2 * var(--menu-nesting));
-		padding-inline: var(--menu-nesting);
 		margin-block: var(--menu-nesting);
 		:global(:--dark) & {
 		}
@@ -40,9 +41,24 @@
 		letter-spacing: 0.05em;
 		opacity: 0.5;
 		padding: 0.5em 0.75em;
-		/* margin-inline: 0.5rem; */
+		margin-inline: var(--menu-nesting);
 		margin-bottom: 1em;
 		border-radius: var(--radius-full);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 20%, transparent);
+	}
+
+	ul {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding-inline: var(--menu-nesting);
+
+		&::before {
+			content: '';
+			opacity: 0.1;
+			position: absolute;
+			inset: 0.5em 0;
+			border-left: var(--base-border-width) dashed var(--color-neutral-500);
+		}
 	}
 </style>

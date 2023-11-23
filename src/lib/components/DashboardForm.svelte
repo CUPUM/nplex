@@ -13,36 +13,29 @@
 <form {action} use:enhance {method}>
 	{#if $$slots.header}
 		<header>
-			<slot name="header" />
+			<hgroup class="prose">
+				<slot name="header" />
+			</hgroup>
 		</header>
 	{/if}
-	<div class="content">
-		<slot />
-	</div>
+	<slot />
 </form>
 
 <style lang="postcss">
 	form {
-		background-color: var(--dashboard-base-bg);
-		border-radius: var(--radius-lg);
-		display: flex;
-		flex-direction: column;
-		gap: var(--base-gutter);
+		grid-column: 1 / -1;
+		display: inherit;
+		grid-template-columns: inherit;
+		gap: inherit;
+		border-radius: inherit;
+		background-color: var(--dashboard-bg);
 	}
 
 	header {
+		grid-column: 1 / -1;
 		padding: 3rem;
+		padding-top: 0;
 		border-bottom: var(--base-border-width) solid
-			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
-	}
-
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		/* padding: 1rem; */
-		container-type: inline-size;
-		gap: 0;
-		padding-bottom: 2rem;
+			color-mix(in srgb, var(--base-border-color) 50%, transparent);
 	}
 </style>

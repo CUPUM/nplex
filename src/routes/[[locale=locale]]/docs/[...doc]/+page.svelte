@@ -24,7 +24,7 @@
 		opacity: 0.35;
 		width: 100%;
 		height: 0;
-		transform: rotateZ(90deg);
+		transform: rotate(90deg);
 		/* background: linear-gradient(30deg, transparent -25%, currentColor 90%); */
 		:global(:--dark) & {
 			color: var(--color-neutral-950);

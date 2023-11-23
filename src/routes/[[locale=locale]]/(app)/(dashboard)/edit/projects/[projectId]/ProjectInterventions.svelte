@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
-	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
+	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
 	import { createTranslations } from '$lib/i18n/translate';
 	import type { PageData } from './$types';

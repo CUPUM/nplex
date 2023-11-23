@@ -42,7 +42,7 @@
 			use:melt={$submitter(submitRef)}
 		>
 			{$t.save}
-			<SaveAll class="button-icon" />
+			<SaveAll />
 		</button>
 	{/if}<slot />
 </menu>
@@ -50,7 +50,11 @@
 <style lang="postcss">
 	menu {
 		position: sticky;
+		grid-column: center;
+		align-self: center;
+		justify-self: center;
 		bottom: 2rem;
+		margin-bottom: 2rem;
 		display: flex;
 		flex-direction: row;
 		align-self: center;
@@ -76,11 +80,6 @@
 			transform: translateY(0.5em);
 			pointer-events: none;
 			transition: all var(--duration-fast) var(--ease-in-expo);
-		}
-
-		@container (width > 1200px) {
-			margin-inline: 0;
-			margin-right: var(--dashboard-navbar);
 		}
 	}
 </style>

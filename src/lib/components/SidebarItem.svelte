@@ -68,9 +68,9 @@
 		line-height: 1.5em;
 		transition: all 0.15s ease-out;
 		white-space: wrap;
-		font-weight: 400;
+		font-weight: 425;
 		padding: 0.8em 1.25em;
-		font-size: 0.9rem;
+		font-size: var(--size-sm);
 		opacity: 0.9;
 
 		&:disabled,

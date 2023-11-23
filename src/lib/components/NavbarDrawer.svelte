@@ -217,14 +217,14 @@
 		&:focus-visible {
 			color: var(--color-error-950);
 			background-color: var(--color-error-300);
-			transform: rotateZ(90deg);
+			transform: rotate(90deg);
 			:global(:--dark) & {
 				color: var(--color-error-50);
 				background-color: var(--color-error-700);
 			}
 		}
 		&:active {
-			transform: rotateZ(180deg) scale(0.9);
+			transform: rotate(180deg) scale(0.9);
 		}
 	}
 

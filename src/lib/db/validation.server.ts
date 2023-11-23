@@ -22,5 +22,3 @@ export function withTranslationsSchema<
 >(schema: ZodObject<T>, translationSchema: ZodObject<TT>) {
 	return schema.extend({ translations: translationsSchema(translationSchema) });
 }
-
-export function createTranslationInsertSchema() {}

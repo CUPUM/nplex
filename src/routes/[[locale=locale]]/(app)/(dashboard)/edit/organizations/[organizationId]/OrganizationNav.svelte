@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import DashboardNav, { setDashboard } from '$lib/components/DashboardNav.svelte';
-	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
+	import Sidebar, { setDashboard } from '$lib/components/Sidebar.svelte';
+	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { AlertTriangle, Shield, Users2 } from 'lucide-svelte';
@@ -48,42 +48,42 @@
 	});
 </script>
 
-<DashboardNav>
+<Sidebar>
 	<svelte:fragment slot="heading">
 		{$t.essentials.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link(`/edit/organizations/${orgId}`)}>
+	<SidebarItem {...$link(`/edit/organizations/${orgId}`)}>
 		{$t.essentials.general}
-	</DashboardNavItem>
-</DashboardNav>
-<DashboardNav>
+	</SidebarItem>
+</Sidebar>
+<Sidebar>
 	<svelte:fragment slot="heading">
 		{$t.complementaries.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link(`/edit/organizations/${orgId}/members`)}>
+	<SidebarItem {...$link(`/edit/organizations/${orgId}/members`)}>
 		{$t.complementaries.members}
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/organizations/${orgId}/projects`)}>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/organizations/${orgId}/projects`)}>
 		{$t.complementaries.projects}
-	</DashboardNavItem>
-</DashboardNav>
-<DashboardNav>
+	</SidebarItem>
+</Sidebar>
+<Sidebar>
 	<svelte:fragment slot="heading">
 		{$t.settings.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link(`/edit/organizations/${orgId}/sharing`)}>
+	<SidebarItem {...$link(`/edit/organizations/${orgId}/sharing`)}>
 		{$t.settings.sharing}
 		<Users2 class="button-icon" />
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/organizations/${orgId}/visibility`)}>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/organizations/${orgId}/visibility`)}>
 		{$t.settings.visibility}
 		<Shield class="button-icon" />
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/organizations/${orgId}/security`)} danger>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/organizations/${orgId}/security`)} danger>
 		{$t.settings.danger}
 		<AlertTriangle class="button-icon" />
-	</DashboardNavItem>
-</DashboardNav>
+	</SidebarItem>
+</Sidebar>
 
 <style lang="postcss">
 </style>

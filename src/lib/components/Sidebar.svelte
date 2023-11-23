@@ -19,9 +19,11 @@
 
 <style lang="postcss">
 	.sidebar {
+		grid-column: sidebar;
+		grid-column: sidebar;
 		font-size: var(--size-md);
 		position: sticky;
-		top: calc(var(--sticky-top) + var(--base-gutter));
+		top: var(--sticky-top);
 		display: flex;
 		flex-direction: column;
 		align-self: flex-start;

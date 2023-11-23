@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormGroup from '$lib/components/DashboardFormField.svelte';
-	import DashboardMenu from '$lib/components/DashboardMenu.svelte';
+	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
+	import DashboardFormGroup from '$lib/components/DashboardFormSection.svelte';
 	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
 

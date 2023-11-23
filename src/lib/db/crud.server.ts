@@ -2,8 +2,15 @@ import { localeSchema } from '$lib/i18n/constants';
 import type { InferSelectModel } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
+import {
+	PROJECT_COST_MAX,
+	PROJECT_COST_MIN,
+	PROJECT_DESCRIPTION_MAX,
+	PROJECT_SUMMARY_MAX,
+	PROJECT_TITLE_MAX,
+} from './constants';
 import { users, usersRolesRequests } from './schema/accounts';
-import { intRangeSchema } from './schema/custom-types';
+import { rangeSchema } from './schema/custom-types';
 import {
 	organizationTypes,
 	organizationTypesTranslations,
@@ -244,12 +251,16 @@ export const projectBuildingLevelTypesUpdateSchema = z.object({
 export const projectsInsertSchema = createInsertSchema(projects, {
 	adjacentStreets: (s) => s.adjacentStreets.positive().max(5),
 	adjacentAlleys: (s) => s.adjacentAlleys.positive().max(5),
-	costRange: () => intRangeSchema.default([null, null]),
+	costRange: () =>
+		rangeSchema({ min: PROJECT_COST_MIN, max: PROJECT_COST_MAX, ordered: true }).default([
+			null,
+			null,
+		]),
 }).required({ id: true, costRange: true });
 export const projectsTranslationsInsertSchema = createInsertSchema(projectsTranslations, {
-	title: (s) => s.title.max(250),
-	summary: (s) => s.summary.max(1500),
-	description: (s) => s.description.max(5000),
+	title: (s) => s.title.max(PROJECT_TITLE_MAX),
+	summary: (s) => s.summary.max(PROJECT_SUMMARY_MAX),
+	description: (s) => s.description.max(PROJECT_DESCRIPTION_MAX),
 	locale: localeSchema,
 });
 export const projectsUpdateSchema = withTranslationsSchema(

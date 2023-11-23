@@ -20,6 +20,7 @@
 		all var(--duration-medium) ease-out,
 		outline var(--duration-fast);
 
+	/* Single-line input and input-groups */
 	&:not(textarea):not(:has(textarea)) {
 		padding-block: 0;
 		height: var(--base-block-size);
@@ -215,7 +216,9 @@
 		height: var(--base-block-size);
 		display: flex;
 		align-items: center;
-		padding: 0 var(--base-inline-padding);
+		opacity: 0.35;
+		white-space: nowrap;
+		padding: 0 calc(var(--base-inline-padding) / 2);
 		transition: all var(--duration-medium) ease-out;
 		.input + & {
 			padding-left: 0;
@@ -286,10 +289,11 @@
 	font-weight: 350;
 	padding-inline: var(--base-inline-padding);
 	text-overflow: ellipsis;
+	min-width: var(--base-block-size);
 
 	&:is(textarea) {
-		--_input-line-height: 1.777em;
-		padding-block: calc(var(--base-inline-padding) - (var(--_input-line-height) - 1em) / 2);
+		--_input-line-height: var(--line-sparse);
+		padding-block: calc(var(--base-block-size) / 2 - var(--_input-line-height) * 1em / 2);
 		line-height: var(--_input-line-height);
 		min-height: var(--base-block-size);
 	}
@@ -335,12 +339,12 @@
 		border-radius: inherit;
 		outline: none;
 		flex: 1;
+		width: 100%;
 	}
 
 	/* Multiline group */
 	&:has(textarea) {
 		flex-direction: column;
-		height: auto;
 		align-items: stretch;
 
 		.input-peer {

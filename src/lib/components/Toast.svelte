@@ -80,7 +80,7 @@
 				{/if}
 			</div>
 		</div>
-		<button use:melt={$close(id)} class="button ghost round close compact">
+		<button use:melt={$close(id)} class="button ghost square rounded close compact">
 			<X class="button-icon" />
 		</button>
 	</div>
@@ -95,7 +95,9 @@
 		pointer-events: initial;
 		font-size: var(--size-sm);
 		border-radius: var(--radius-sm);
-		box-shadow: var(--shadow-md);
+		/* border: var(--base-border-width) solid
+			color-mix(in srgb, var(--base-border-color) 50%, transparent); */
+		box-shadow: var(--shadow-lg), var(--shadow-sm);
 		transform-origin: center;
 		color: var(--toast-description-color);
 		background-color: var(--toast-background-color);
@@ -167,6 +169,6 @@
 		position: absolute;
 		top: 0.5em;
 		right: 0.5em;
-		font-size: var(--size-xs);
+		font-size: var(--size-sm);
 	}
 </style>

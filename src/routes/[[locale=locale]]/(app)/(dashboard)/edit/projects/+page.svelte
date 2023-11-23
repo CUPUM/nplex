@@ -54,6 +54,7 @@
 <style lang="postcss">
 	form {
 		--pattern-color: var(--color-neutral-400);
+		grid-column: 1 / -1;
 		position: relative;
 		flex: 1;
 		display: flex;

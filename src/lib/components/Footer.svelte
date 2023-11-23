@@ -80,8 +80,8 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		border-top: var(--base-border-width) solid
-			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		/* border-top: var(--base-border-width) solid
+			color-mix(in srgb, var(--color-neutral-500) 10%, transparent); */
 		color: var(--color-neutral-700);
 		:global(:--dark) & {
 			color: var(--color-neutral-300);
@@ -136,7 +136,7 @@
 	}
 
 	#footer-cc {
-		font-size: var(--size-xs);
+		font-size: var(--size-sm);
 		opacity: 0.85;
 		display: flex;
 		flex-direction: column;

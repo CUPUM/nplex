@@ -1,22 +1,35 @@
-<script lang="ts">
-	import { createSlider, melt, type CreateSliderProps } from '@melt-ui/svelte';
+<script lang="ts" generics="T extends number[]">
+	import { createSlider, melt } from '@melt-ui/svelte';
 
-	export let value: CreateSliderProps['value'] = undefined;
-	export let min: CreateSliderProps['max'] = 0;
-	export let max: CreateSliderProps['max'] = 100;
-	export let step: CreateSliderProps['step'] = 1;
-	export let defaultValue: CreateSliderProps['defaultValue'] = [];
+	// export let defaultValue: FixedLengthArray<number, T['length']>;
+	export let value: T | undefined = undefined;
+	export let min: number = 0;
+	export let max: number = 100;
+	export let step: number = 1;
 
 	const {
 		elements: { root, range, thumb },
+		options: { step: _step, min: _min, max: _max },
 		states: { value: _value },
 	} = createSlider({
 		min,
 		max,
 		step,
-		defaultValue,
-		value,
+		onValueChange: ({ curr, next }) => {
+			value = next as T;
+			return next;
+		},
+		defaultValue: value,
 	});
+
+	$: if (value && value != $_value) {
+		if (value?.some((v, i) => v !== $_value[i])) {
+			_value.set(value);
+		}
+	}
+	$: _step.set(step);
+	$: _min.set(min);
+	$: _max.set(max);
 </script>
 
 <span class="slider">
@@ -34,8 +47,8 @@
 
 <style lang="postcss">
 	.slider {
-		--slider-size: var(--base-size);
-		--slider-thumb-size: calc(var(--base-size) / 2.5);
+		--slider-block-size: var(--base-block-size);
+		--slider-thumb-size: calc(var(--base-block-size) / 2.5);
 		--slider-track-thickness: 5px;
 		--_slider-padding: calc(var(--slider-thumb-size) / 2);
 		padding: 0 var(--_slider-padding);
@@ -46,7 +59,7 @@
 	.slider-root {
 		position: relative;
 		display: flex;
-		height: var(--slider-size);
+		height: var(--slider-block-size);
 		align-items: center;
 	}
 
@@ -64,6 +77,13 @@
 		height: 100%;
 		border-radius: inherit;
 		background-color: var(--color-neutral-600);
+		transition:
+			all var(--duration-fast) ease-out,
+			left 0s,
+			right 0s,
+			top 0s,
+			width 0s,
+			height 0s;
 		:global(:--dark) & {
 			background-color: var(--color-neutral-400);
 		}
@@ -83,6 +103,10 @@
 		background-color: var(--color-neutral-700);
 		:global(:--dark) & {
 			background-color: var(--color-neutral-300);
+		}
+
+		&:focus {
+			outline: var(--base-focus-ring);
 		}
 	}
 </style>

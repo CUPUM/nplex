@@ -110,12 +110,44 @@ export const locale = customType<{ data: Locale; driverData: string }>({
 	},
 });
 
-export const intRangeSchema = z.union([
-	z.tuple([z.number(), z.number()]),
-	z.tuple([z.null(), z.null()]),
-]);
+/**
+ * Generic range zod schema.
+ */
+export function rangeSchema({
+	min,
+	max,
+	ordered = true,
+}: {
+	min?: number;
+	max?: number;
+	/**
+	 * Should min and max order be forced?
+	 */
+	ordered?: boolean;
+} = {}) {
+	const boundSchema =
+		min != null && max != null
+			? z.number().min(min).max(max)
+			: min != null
+			  ? z.number().min(min)
+			  : max != null
+			    ? z.number().max(max)
+			    : z.number();
+	return z.union([
+		z.tuple([boundSchema, boundSchema]).refine(
+			(v) => {
+				if (ordered) {
+					return v[0] <= v[1];
+				}
+				return true;
+			},
+			{ message: 'Min/max members of an ordered range need to be in increasing order.' }
+		),
+		z.tuple([z.null(), z.null()]),
+	]);
+}
 
-export type IntRangeData = z.infer<typeof intRangeSchema>;
+export type IntRangeData = z.infer<ReturnType<typeof rangeSchema>>;
 
 /**
  * Implements postgres int4 / int8 range type.
@@ -149,7 +181,7 @@ export const intrange = customType<{
 		}
 		// Using canonical form of included lower bound and excluded upper bound.
 		// See https://www.postgresql.org/docs/current/rangetypes.html#RANGETYPES-DISCRETE
-		return `[${value[0]},${value[1]}})`;
+		return `[${value[0]},${value[1]})`;
 		// const diff = value[0] == null || value[1] == null ? 0 : value[1] - value[0];
 		// return `[${value[0] ?? value[1]},${value[1] ?? value[0]}${diff ? ')' : ']'}`;
 	},
@@ -198,10 +230,10 @@ export const daterange = customType<{ data: [Date, Date] }>({
 type Cube<L extends number> = L extends 1
 	? number
 	: L extends 2
-	? [x: number, y: number]
-	: L extends 3
-	? [x: number, y: number, z: number]
-	: ReadonlyTuple<number, L>;
+	  ? [x: number, y: number]
+	  : L extends 3
+	    ? [x: number, y: number, z: number]
+	    : ReadonlyTuple<number, L>;
 
 /**
  * Implements cube extension type for 3d vectors.

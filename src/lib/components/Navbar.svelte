@@ -133,7 +133,7 @@
 	let mounted = false;
 
 	function flyin(node: HTMLElement, i: number) {
-		return fly(node, { y: '-25%', duration: 750, easing: expoOut, delay: i * 75 });
+		return fly(node, { y: '25%', duration: 750, easing: expoOut, delay: i * 75 });
 	}
 
 	onNavigate(() => {
@@ -215,11 +215,15 @@
 					{/if}
 					<NavbarButton
 						square
-						on:pointerdown={mode.toggle}
+						on:pointerdown={(e) => {
+							mode.toggle();
+							return e;
+						}}
 						on:keydown={(e) => {
 							if (e.key === KEYS.SPACE || e.key === KEYS.ENTER) {
 								mode.toggle();
 							}
+							return e;
 						}}
 					>
 						{#key $mode}
@@ -239,8 +243,7 @@
 									easing: cubicIn,
 									opacity: 1,
 								}}
-								style:position="absolute"
-								style:transform-origin="center 200%"
+								id="mode-icon"
 							>
 								<svelte:component this={MODES_DETAILS[$mode].icon} class="button-icon" />
 							</div>
@@ -335,6 +338,7 @@
 	}
 
 	header {
+		font-size: var(--size-sm);
 		z-index: 99;
 		position: sticky;
 		top: 0;
@@ -457,5 +461,11 @@
 				background-color: var(--color-primary-400);
 			}
 		}
+	}
+
+	#mode-icon {
+		position: absolute;
+		transform-origin: center 200%;
+		line-height: 1em;
 	}
 </style>

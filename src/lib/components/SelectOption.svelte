@@ -38,7 +38,7 @@
 <style lang="postcss">
 	.option {
 		cursor: pointer;
-		padding: calc(var(--base-padding) - 0.25em) var(--base-padding);
+		padding: calc(var(--base-inline-padding) - 0.25em) var(--base-inline-padding);
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -67,10 +67,11 @@
 		:global(.option-icon) {
 			width: 0.9em;
 			height: 0.9em;
-			stroke-width: 3;
+			stroke-width: 3.5;
 			stroke-linejoin: round;
-			color: var(--color-neutral-500);
+			color: var(--color-neutral-700);
 			:global(:--dark) & {
+				color: var(--color-neutral-300);
 			}
 		}
 	}

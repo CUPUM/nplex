@@ -33,9 +33,9 @@
 	.select-menu {
 		--menu-nesting: var(--base-nesting);
 		--menu-radius: var(--base-radius);
-		--_base-radius: calc(var(--menu-radius) - var(--menu-nesting));
-		--_base-padding: calc(var(--base-padding) - var(--menu-nesting));
-		--_base-size: calc(var(--base-size) - var(--menu-nesting));
+		--_nested-radius: calc(var(--menu-radius) - var(--menu-nesting));
+		--_nested-padding: calc(var(--base-padding) - var(--menu-nesting));
+		--_nested-block-size: calc(var(--base-block-size) - var(--menu-nesting));
 		position: relative;
 		flex: none;
 		align-self: unset;
@@ -53,9 +53,9 @@
 		}
 
 		.select-menu-content {
-			--base-radius: var(--_base-radius);
-			--base-size: var(--_base-size);
-			--base-padding: var(--_base-padding);
+			--base-radius: var(--_nested-radius);
+			--base-block-size: var(--_nested-block-size);
+			--base-padding: var(--_nested-padding);
 			max-width: 65ch;
 		}
 	}

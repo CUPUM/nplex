@@ -6,5 +6,18 @@ Chips, also sometimes referred to as tokens, are typically used as badges or as 
 as in the case of composable filter queries.
 
 ```svelte example
-<span class="chip">Button</span>
+<!-- Basic chip -->
+<span class="chip">Chip</span>
+
+<!-- Stateful / interactive chip -->
+<label class="chip">
+  Chip
+  <input type="checkbox" class="visually-hidden" />
+</label>
 ```
+
+## Variants
+
+### Default
+
+### Outlined

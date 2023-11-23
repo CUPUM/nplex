@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
-	import DashboardFormField from '$lib/components/DashboardFormField.svelte';
+	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { switchCrossfade } from '$lib/transitions/presets';
@@ -21,7 +21,7 @@
 	export let types: PageData['types'];
 </script>
 
-<DashboardFormField title={$t.type} centered>
+<DashboardFormField title={$t.type}>
 	<fieldset class="switch" use:ripple>
 		{#each types as pt}
 			<label class="switch-item">
@@ -30,7 +30,7 @@
 					name="typeId"
 					bind:group={$form.typeId}
 					value={pt.id}
-					class="switch-input"
+					class="visually-hidden"
 				/>
 				{#if $form.typeId === pt.id}
 					<div class="switch-thumb" in:receive={{ key: 'type' }} out:send={{ key: 'type' }} />

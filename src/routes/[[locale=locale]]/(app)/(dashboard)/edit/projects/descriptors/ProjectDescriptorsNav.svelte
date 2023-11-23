@@ -1,6 +1,6 @@
 <script lang="ts">
-	import DashboardNav, { setDashboard } from '$lib/components/DashboardNav.svelte';
-	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
+	import Sidebar, { setDashboard } from '$lib/components/Sidebar.svelte';
+	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { ArrowRight } from 'lucide-svelte';
@@ -43,41 +43,41 @@
 	});
 </script>
 
-<DashboardNav>
+<Sidebar>
 	<svelte:fragment slot="heading">
 		{$t.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link('/edit/projects/descriptors/types')}>
+	<SidebarItem {...$link('/edit/projects/descriptors/types')}>
 		{$t.items.types}
-	</DashboardNavItem>
-	<DashboardNavItem {...$link('/edit/projects/descriptors/interventions')}>
+	</SidebarItem>
+	<SidebarItem {...$link('/edit/projects/descriptors/interventions')}>
 		{$t.items.interventions}
-	</DashboardNavItem>
-	<DashboardNavItem {...$link('/edit/projects/descriptors/indicators')}>
+	</SidebarItem>
+	<SidebarItem {...$link('/edit/projects/descriptors/indicators')}>
 		{$t.items.indicators}
-	</DashboardNavItem>
-	<DashboardNavItem {...$link('/edit/projects/descriptors/ownerships')}>
+	</SidebarItem>
+	<SidebarItem {...$link('/edit/projects/descriptors/ownerships')}>
 		{$t.items.ownerships}
-	</DashboardNavItem>
-	<DashboardNavItem {...$link('/edit/projects/descriptors/implantations')}>
+	</SidebarItem>
+	<SidebarItem {...$link('/edit/projects/descriptors/implantations')}>
 		{$t.items.implantation}
-	</DashboardNavItem>
-	<DashboardNavItem {...$link('/edit/projects/descriptors/levels')}>
+	</SidebarItem>
+	<SidebarItem {...$link('/edit/projects/descriptors/levels')}>
 		{$t.items.levels}
-	</DashboardNavItem>
-	<DashboardNavItem {...$link('/edit/projects/descriptors/images')}>
+	</SidebarItem>
+	<SidebarItem {...$link('/edit/projects/descriptors/images')}>
 		{$t.items.images}
-	</DashboardNavItem>
-</DashboardNav>
-<DashboardNav>
+	</SidebarItem>
+</Sidebar>
+<Sidebar>
 	<svelte:fragment slot="heading">
 		{$t.organizations.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link('/edit/organizations/descriptors')}>
+	<SidebarItem {...$link('/edit/organizations/descriptors')}>
 		{$t.organizations.button}
 		<ArrowRight class="button-icon" />
-	</DashboardNavItem>
-</DashboardNav>
+	</SidebarItem>
+</Sidebar>
 
 <style lang="postcss">
 </style>

@@ -49,6 +49,37 @@ simplify the markup required to use this style.)
 </...>
 ```
 
+## Fine-tuning
+
+### Orientation
+
+```svelte example hideScript
+<script>
+  import { switchThumbCrossfade } from '$lib/components/SwitchThumb.svelte';
+
+  const key = {};
+  let current = '1';
+  const [send, receive] = switchThumbCrossfade;
+</script>
+
+<div class="switch" data-orientation="vertical">
+  <label class="switch-item">
+    <input type="radio" bind:group={current} value="1" class="visually-hidden" />
+    Item 1
+    {#if current === '1'}
+      <div class="switch-thumb" in:receive={{ key }} out:send={{ key }} />
+    {/if}
+  </label>
+  <label class="switch-item">
+    <input type="radio" bind:group={current} value="2" class="visually-hidden" />
+    Item 2
+    {#if current === '2'}
+      <div class="switch-thumb" in:receive={{ key }} out:send={{ key }} />
+    {/if}
+  </label>
+</div>
+```
+
 ## Variants
 
 ### Default

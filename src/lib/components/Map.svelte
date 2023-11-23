@@ -33,7 +33,6 @@
 <script lang="ts">
 	import resize from '$actions/resize';
 	import { browser } from '$app/environment';
-	import Loading from '$components/Loading.svelte';
 	import { defineContext } from '$utils/context';
 	import { MAP_DRAW_EVENTS, type Cursor, type MapDrawMode } from '$utils/enums';
 	import { LOCATIONS } from '$utils/map/locations';
@@ -305,7 +304,7 @@
 	{:else}
 		<div class="loading">
 			<slot name="loading">
-				<Loading />
+				<Spinner />
 			</slot>
 		</div>
 	{/if}

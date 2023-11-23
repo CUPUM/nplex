@@ -28,7 +28,7 @@
 		box-shadow: 0 12px 48px -18px rgba(10, 0, 20, 0.2);
 		padding: var(--menu-nesting);
 		border-radius: var(--base-radius);
-		transform-origin: center center;
+		transform-origin: top;
 		background-color: var(--color-neutral-100);
 		outline: none;
 		border: var(--base-border-width) solid

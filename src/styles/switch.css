@@ -12,10 +12,9 @@
 	isolation: isolate;
 	position: relative;
 	display: inline-flex;
-	flex-direction: row;
 	padding: var(--switch-nesting);
 	border-radius: var(--switch-radius);
-	height: var(--base-block-size);
+	user-select: none;
 	flex: none;
 	gap: 0;
 	align-items: stretch;
@@ -44,7 +43,11 @@
 
 	/* Fine-tuning */
 
-	/* Vertical layout */
+	/* Orientation */
+	&:not(:--vertical) {
+		flex-direction: row;
+		height: var(--base-block-size);
+	}
 	&:--vertical {
 		flex-direction: column;
 	}
@@ -52,17 +55,12 @@
 	/* Rounded */
 	&.rounded {
 		--base-radius: var(--radius-full);
-
-		&:--vertical {
-			height: auto;
-			width: var(--base-block-size);
-		}
 	}
 
 	/* States */
 
 	&:hover {
-		background: var(--_switch-hover-bg);
+		background: var(--_switch-hover-bg, var(--_switch-bg));
 
 		&::after {
 			border-width: var(--_switch-hover-border-width, var(--_switch-border-width));
@@ -72,6 +70,7 @@
 	}
 
 	/* Focused */
+	&:focus-visible,
 	&:--focus-visible-within {
 		outline: var(--base-focus-ring);
 	}
@@ -171,13 +170,17 @@
 		&:hover {
 			color: var(--_switch-item-hover-color);
 			background: var(--_switch-item-hover-bg);
+
+			&::after {
+				border-color: transparent;
+			}
 		}
 
 		/* Pointerdown */
 		&:active {
 			color: var(--_switch-item-active-color);
 			background: var(--_switch-item-active-bg);
-			animation: var(--animation-press);
+			/* animation: var(--animation-press); */
 		}
 	}
 

@@ -18,7 +18,7 @@ The input style is designed for single-line and multi-line data entry fields.
 </fieldset>
 
 <!-- Simple text area -->
-<textarea class="input" rows="10" />
+<textarea class="input resize" rows="1" />
 ```
 
 ## Structure

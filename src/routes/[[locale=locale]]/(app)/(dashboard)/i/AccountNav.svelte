@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import DashboardNav, { setDashboard } from '$lib/components/DashboardNav.svelte';
-	import DashboardNavItem from '$lib/components/DashboardNavItem.svelte';
+	import Sidebar, { setDashboard } from '$lib/components/Sidebar.svelte';
+	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { ArrowRight, FolderHeart, Folders, Home, Settings, UserSquare2 } from 'lucide-svelte';
@@ -38,40 +38,40 @@
 	});
 </script>
 
-<DashboardNav>
+<Sidebar>
 	<svelte:fragment slot="heading">
 		{$t.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link(`/i`)}>
+	<SidebarItem {...$link(`/i`)}>
 		{$t.home}<Home class="button-icon" />
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/users/${$page.data?.user?.id}`)}>
+	</SidebarItem>
+	<SidebarItem {...$link(`/users/${$page.data?.user?.id}`)}>
 		{$t.profile}<UserSquare2 class="button-icon" />
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/i/collections`)}>
+	</SidebarItem>
+	<SidebarItem {...$link(`/i/collections`)}>
 		{$t.collections}<Folders class="button-icon" />
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/i/likes`)}>
+	</SidebarItem>
+	<SidebarItem {...$link(`/i/likes`)}>
 		{$t.likes}<FolderHeart class="button-icon" />
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/i/settings`)}>
+	</SidebarItem>
+	<SidebarItem {...$link(`/i/settings`)}>
 		{$t.settings}
 		<Settings class="button-icon" />
-	</DashboardNavItem>
-</DashboardNav>
-<DashboardNav>
+	</SidebarItem>
+</Sidebar>
+<Sidebar>
 	<svelte:fragment slot="heading">
 		{$t.editor.heading}
 	</svelte:fragment>
-	<DashboardNavItem {...$link(`/edit/projects`)}>
+	<SidebarItem {...$link(`/edit/projects`)}>
 		{$t.editor.projects}
 		<ArrowRight class="button-icon" />
-	</DashboardNavItem>
-	<DashboardNavItem {...$link(`/edit/organizations`)}>
+	</SidebarItem>
+	<SidebarItem {...$link(`/edit/organizations`)}>
 		{$t.editor.organizations}
 		<ArrowRight class="button-icon" />
-	</DashboardNavItem>
-</DashboardNav>
+	</SidebarItem>
+</Sidebar>
 
 <style lang="postcss">
 </style>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
-	import Loading from '$lib/components/Spinner.svelte';
+	import Spinner from '$lib/components/Spinner.svelte';
 	import ToastsOutlet from '$lib/components/ToastsOutlet.svelte';
 	import { onMount } from 'svelte';
 
@@ -13,7 +13,7 @@
 
 {#if loading}
 	<div class="loading">
-		<Loading />
+		<Spinner />
 	</div>
 {/if}
 <LoadingProgress />
@@ -21,4 +21,9 @@
 <ToastsOutlet />
 
 <style lang="postcss">
+	.loading {
+		position: fixed;
+		inset: 0;
+		z-index: 9999;
+	}
 </style>
