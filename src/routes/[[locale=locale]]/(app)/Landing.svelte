@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { debounce } from '@melt-ui/svelte/internal/helpers';
 	import { ArrowRight, Edit } from 'lucide-svelte';
@@ -12,7 +14,7 @@
 			welcome: 'Bienvenue sur Nplex!',
 			sub: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi provident ratione aspernatur qui fuga dignissimos sed nesciunt, dolorum voluptas neque!',
 			explore: 'Explorez les projets',
-			start: 'Commencez à créer vos projets dès maintenant',
+			start: 'Montez vos projets dès maintenant',
 		},
 		en: {
 			welcome: 'Welcome to Nplex!',
@@ -83,18 +85,20 @@
 			</h1>
 			<p in:fly={{ y: '0.25em', duration: 1000, delay: 350, easing: expoOut }}>{$t.sub}</p>
 			<div>
-				<button
+				<a
+					{...$link('/projects')}
 					in:fly={{ y: '-0.25em', duration: 750, delay: 500, easing: expoOut }}
 					class="button big cta"
 				>
 					{$t.explore}<ArrowRight />
-				</button>
-				<button
+				</a>
+				<a
+					{...$link($page.data.user ? '/edit/projects' : '/login')}
 					in:fly={{ y: '-0.25em', duration: 750, delay: 750, easing: expoOut }}
 					class="button big dashed bg-blur"
 				>
 					{$t.start}<Edit />
-				</button>
+				</a>
 			</div>
 		</header>
 	{/if}
@@ -113,7 +117,7 @@
 	}
 
 	grid {
-		position: fixed;
+		position: absolute;
 		display: grid;
 		width: 125vmax;
 		height: 125vmax;

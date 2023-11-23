@@ -12,7 +12,7 @@ textarea.resize {
 .compact {
 	--base-block-size: 2.5em;
 	--base-inline-padding: 1em;
-	--base-nesting: 1px;
+	--base-nesting: 2px;
 }
 
 /* Opposite of compact, makes base sizes larger for when attention is needed. */

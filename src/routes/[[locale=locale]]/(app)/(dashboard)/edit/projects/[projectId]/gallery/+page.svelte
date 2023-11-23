@@ -18,29 +18,32 @@
 </script>
 
 <ImageInputForm data={data.insertImagesForm} />
-<form method="POST" use:enhance>
-	<ul>
-		{#each data.images as image, i (image.id)}
-			<li
-				animate:flip={{ duration: 250, easing: expoInOut }}
-				in:fly={{ y: 6, easing: expoOut }}
-				out:scale={{ duration: 50, start: 0.95 }}
-			>
-				<ImageCard
-					{image}
-					{form}
-					on:delete={() => {
-						data.images.splice(i, 1);
-						data.images = data.images;
-					}}
-				/>
-			</li>
-		{/each}
-	</ul>
-</form>
+{#if data.images.length}
+	<form method="POST" use:enhance>
+		<ul>
+			{#each data.images as image, i (image.id)}
+				<li
+					animate:flip={{ duration: 250, easing: expoInOut }}
+					in:fly={{ y: 6, easing: expoOut }}
+					out:scale={{ duration: 50, start: 0.95 }}
+				>
+					<ImageCard
+						{image}
+						{form}
+						on:delete={() => {
+							data.images.splice(i, 1);
+							data.images = data.images;
+						}}
+					/>
+				</li>
+			{/each}
+		</ul>
+	</form>
+{/if}
 
 <style lang="postcss">
 	form {
+		grid-column: full;
 		padding: 2rem;
 		gap: 1rem;
 		display: flex;

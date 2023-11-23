@@ -4,6 +4,8 @@
 	import type { SuperForm } from '$lib/forms/super-form';
 	import { link } from '$lib/i18n/link';
 	import { imageUrl } from '$lib/media/url';
+	import { MODES } from '$lib/modes/constants';
+	import { checked } from '$lib/utils/attributes';
 	import { Pen, Presentation, Trash } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import type { PageData } from './$types';
@@ -27,7 +29,7 @@
 		alt="image-{image.id}"
 	/>
 	<div class="card-footer">
-		<menu class="card-menu toolbar round" data-mode="dark">
+		<menu class="card-menu toolbar rounded" data-mode={MODES.DARK}>
 			<button
 				use:ripple
 				class="button ghost danger square"
@@ -55,7 +57,7 @@
 				formaction="?/{image.id === $form.bannerId ? 'demote' : 'promote'}"
 				name="bannerId"
 				value={image.id}
-				data-state={isBanner ? 'checked' : 'unchecked'}
+				{...checked(isBanner)}
 				on:click={(e) => {
 					isBanner = $form.bannerId !== image.id;
 					return e;
@@ -79,11 +81,6 @@
 		border-radius: var(--radius-sm);
 		box-shadow: 0 0 0 var(--base-border-width)
 			color-mix(in srgb, var(--color-neutral-500) 5%, transparent);
-
-		&:hover .card-menu {
-			transform: scale(1);
-			background-color: color-mix(in srgb, var(--color-neutral-950) 85%, transparent);
-		}
 	}
 
 	.card-img {
@@ -112,11 +109,7 @@
 		}
 	}
 
-	.card-menu {
-		backdrop-filter: blur(6px);
-		background-color: color-mix(in srgb, var(--color-neutral-950) 25%, transparent);
-		transition: all var(--duration-medium) var(--ease-out-expo);
-		overflow-x: auto;
-		max-width: 100%;
+	.toggle {
+		margin-right: 0.5em;
 	}
 </style>

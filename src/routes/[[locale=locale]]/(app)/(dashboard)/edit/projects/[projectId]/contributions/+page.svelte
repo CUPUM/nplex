@@ -39,7 +39,7 @@
 			{#each data.allOrgs as org}
 				<label class="chip" use:ripple>
 					<input
-						class="chip-input"
+						class="visually-hidden"
 						type="checkbox"
 						value={org.id}
 						bind:group={$form.organizationIds}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { DASHBOARD_MAIN_ID } from '$lib/components/Dashboard.svelte';
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
@@ -61,13 +62,13 @@
 	<SidebarItem {...$link(`/edit/projects/${projectId}`)}>
 		{$t.essentials.general}
 	</SidebarItem>
-	<SidebarItem {...$link(`/edit/projects/${projectId}/place#dashboard-content`)} aria-disabled>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/place#${DASHBOARD_MAIN_ID}`)} aria-disabled>
 		{$t.essentials.place}
 	</SidebarItem>
-	<SidebarItem {...$link(`/edit/projects/${projectId}/exemplarity#dashboard-content`)}>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/exemplarity#${DASHBOARD_MAIN_ID}`)}>
 		{$t.essentials.exemplarity}
 	</SidebarItem>
-	<SidebarItem {...$link(`/edit/projects/${projectId}/gallery#dashboard-content`)}>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/gallery#${DASHBOARD_MAIN_ID}`)}>
 		{$t.essentials.gallery}
 	</SidebarItem>
 </SidebarGroup>
@@ -76,15 +77,21 @@
 		{$t.complementaries.heading}
 	</svelte:fragment>
 	<SidebarItem
-		{...$link(`/edit/projects/${projectId}/contributions#dashboard-content`)}
+		{...$link(`/edit/projects/${projectId}/contributions#${DASHBOARD_MAIN_ID}`)}
 		aria-disabled
 	>
 		{$t.complementaries.contributions}
 	</SidebarItem>
-	<SidebarItem {...$link(`/edit/projects/${projectId}/materials#dashboard-content`)} aria-disabled>
+	<SidebarItem
+		{...$link(`/edit/projects/${projectId}/materials#${DASHBOARD_MAIN_ID}`)}
+		aria-disabled
+	>
 		{$t.complementaries.materials}
 	</SidebarItem>
-	<SidebarItem {...$link(`/edit/projects/${projectId}/timeline#dashboard-content`)} aria-disabled>
+	<SidebarItem
+		{...$link(`/edit/projects/${projectId}/timeline#${DASHBOARD_MAIN_ID}`)}
+		aria-disabled
+	>
 		{$t.complementaries.timeline}
 	</SidebarItem>
 </SidebarGroup>
@@ -92,15 +99,18 @@
 	<svelte:fragment slot="heading">
 		{$t.settings.heading}
 	</svelte:fragment>
-	<SidebarItem {...$link(`/edit/projects/${projectId}/sharing#dashboard-content`)} aria-disabled>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/sharing#${DASHBOARD_MAIN_ID}`)} aria-disabled>
 		{$t.settings.sharing}
 		<Users2 class="button-icon" />
 	</SidebarItem>
-	<SidebarItem {...$link(`/edit/projects/${projectId}/publishing#dashboard-content`)} aria-disabled>
+	<SidebarItem
+		{...$link(`/edit/projects/${projectId}/publishing#${DASHBOARD_MAIN_ID}`)}
+		aria-disabled
+	>
 		{$t.settings.visibility}
 		<Eye class="button-icon" />
 	</SidebarItem>
-	<SidebarItem {...$link(`/edit/projects/${projectId}/security#dashboard-content`)} danger>
+	<SidebarItem {...$link(`/edit/projects/${projectId}/security#${DASHBOARD_MAIN_ID}`)} danger>
 		{$t.settings.danger}
 		<AlertTriangle class="button-icon" />
 	</SidebarItem>

@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
-	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { switchCrossfade } from '$lib/transitions/presets';
@@ -35,10 +34,10 @@
 	const [send, receive] = switchCrossfade;
 </script>
 
-<DashboardForm {enhance} action="?/update">
+<DashboardForm {enhance} action="?/update" {tainted} {submitter}>
 	<svelte:fragment slot="header">
-		<h1 class="heading lg">{$t.heading}</h1>
-		<p class="prose dim subhead">
+		<h2>{$t.heading}</h2>
+		<p>
 			Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt nam facilis ipsum pariatur
 			voluptas placeat veniam quod. Voluptates, pariatur nemo. Voluptas voluptates molestias
 			molestiae quia at voluptate, doloribus neque quasi obcaecati inventore. Cum, sunt aliquam?
@@ -47,14 +46,14 @@
 		</p>
 	</svelte:fragment>
 	{#each data.categorizedIndicators as category, i (category.id)}
-		<DashboardFormField title={category.title ?? undefined}>
+		<DashboardFormSection title={category.title ?? undefined}>
 			<ul id="interventions">
 				{#if category.indicators}
 					{#each category.indicators as indicator}
 						<label class="chip" use:ripple>
 							<input
 								type="checkbox"
-								class="chip-input"
+								class="visually-hidden"
 								bind:group={$form.indicatorIds}
 								value={indicator.id}
 							/>
@@ -65,9 +64,8 @@
 					{/each}
 				{/if}
 			</ul>
-		</DashboardFormField>
+		</DashboardFormSection>
 	{/each}
-	<DashboardMenu {tainted} {submitter}></DashboardMenu>
 </DashboardForm>
 
 <style lang="postcss">

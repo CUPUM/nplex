@@ -291,6 +291,20 @@
 	text-overflow: ellipsis;
 	min-width: var(--base-block-size);
 
+	/* Fine tuning */
+
+	/* Content alignement */
+	&.left {
+		text-align: left;
+	}
+	&.center {
+		text-align: center;
+	}
+	&.right {
+		text-align: right;
+	}
+
+	/* Multiline */
 	&:is(textarea) {
 		--_input-line-height: var(--line-sparse);
 		padding-block: calc(var(--base-block-size) / 2 - var(--_input-line-height) * 1em / 2);

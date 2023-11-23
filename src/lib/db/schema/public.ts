@@ -365,8 +365,7 @@ export const projectsTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
-			unq: unique().on(table.locale, table.title),
+			pk: primaryKey({ columns: [table.id, table.locale] }),
 		};
 	}
 );

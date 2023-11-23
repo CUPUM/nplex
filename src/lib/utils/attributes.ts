@@ -3,6 +3,6 @@
  */
 export function checked(state: boolean | null | undefined) {
 	return {
-		['data-state']: state ? 'checked' : 'unchecked',
+		'data-state': state ? 'checked' : 'unchecked',
 	} as const;
 }

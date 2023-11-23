@@ -12,36 +12,20 @@
 	});
 </script>
 
-<header>
-	<hgroup>
-		<h1 class="heading xl">
-			{#if $page.data.title}
-				{$page.data.title}
-			{:else}
-				<span class="fallback">{$t.noTitle}</span>
-			{/if}
-		</h1>
-	</hgroup>
-</header>
+<hgroup>
+	<h1 class="heading xl">
+		{#if $page.data.title}
+			{$page.data.title}
+		{:else}
+			<span class="fallback">{$t.noTitle}</span>
+		{/if}
+	</h1>
+</hgroup>
 
 <style lang="postcss">
-	header {
-		position: relative;
+	hgroup {
 		padding: 2rem;
-		min-height: 200px;
-		opacity: 1;
-		border-radius: inherit;
-		--pattern-color: var(--color-neutral-400);
-		color: var(--color-primary-800);
-		background: radial-gradient(circle, var(--pattern-color) 1px, transparent 1.1px);
-		background-position: center;
-		background-size: var(--size-xl) var(--size-xl);
-		background-repeat: repeat;
-		:global(:--dark) & {
-			--pattern-color: var(--color-neutral-700);
-			color: var(--color-primary-400);
-			/* --pattern-color: var(--color-primary-700); */
-		}
+		min-height: 25vh;
 	}
 
 	.fallback {

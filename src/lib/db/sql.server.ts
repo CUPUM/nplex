@@ -9,6 +9,7 @@ import {
 	type AnyTable,
 	type InferColumnsDataTypes,
 	type InferSelectModel,
+	type TableConfig,
 } from 'drizzle-orm';
 import type { SetNonNullable } from 'type-fest';
 import { NANOID_DEFAULT_LENGTH } from './constants';
@@ -31,8 +32,8 @@ export type InferRecordDataTypes<T extends FieldSelectRecord> = {
 	[K in keyof T]: T[K] extends SQL
 		? InferSQLDataType<T[K]>
 		: T[K] extends AnyColumn
-		? InferColumnDataType<T[K]>
-		: never;
+		  ? InferColumnDataType<T[K]>
+		  : never;
 };
 
 /**
@@ -82,7 +83,7 @@ export function generateNanoid({
  * Function is overloaded to handle both full table and single column references.
  */
 export function excluded<T extends AnyColumn>(columnOrTable: T): SQL<T>;
-export function excluded<T extends AnyTable, C = T['_']['columns']>(
+export function excluded<T extends AnyTable<TableConfig>, C = T['_']['columns']>(
 	columnOrTable: T
 ): { [K in keyof C]: SQL<C[K]> };
 export function excluded<T extends Column | Table>(columnOrTable: T) {
@@ -149,22 +150,22 @@ export function jsonStripNulls<T>(json: SQL<T>) {
 // 		(T extends SQL ? InferSQLDataType<T> : T extends AnyTable ? InferSelectModel<T> : never)[]
 // 	>`json_agg(${raw})`;
 // }
-export function jsonAgg<T extends AnyTable | AnyColumn>(
+export function jsonAgg<T extends AnyTable<TableConfig> | AnyColumn>(
 	selection: T,
 	{ notNull = true }: { notNull?: boolean } = {}
 ) {
-	type R = T extends AnyTable
+	type R = T extends AnyTable<TableConfig>
 		? InferSelectModel<T>
 		: T extends AnyColumn
-		? InferColumnDataType<T>
-		: T;
+		  ? InferColumnDataType<T>
+		  : T;
 	if (notNull) {
 		return sql<R[] | null>`json_agg(${selection}) filter (where ${selection} is not null)`;
 	}
 	return sql<R[] | null>`json_agg(${selection})`;
 }
 
-export function arrayAgg<T extends SQL | InferSelectModel<AnyTable>>(raw: T) {
+export function arrayAgg<T extends SQL | InferSelectModel<AnyTable<TableConfig>>>(raw: T) {
 	return sql<(T extends SQL ? InferSQLDataType<T>[] : T[]) | null>`array_agg(${raw})`;
 }
 
@@ -172,7 +173,7 @@ export function arrayAgg<T extends SQL | InferSelectModel<AnyTable>>(raw: T) {
  * Since it is a json method, it should return an unwrapped (raw) type instead of an SQL wrapped
  * type.
  */
-export function rowToJson<T extends AnyTable>(row: T) {
+export function rowToJson<T extends AnyTable<TableConfig>>(row: T) {
 	return sql<InferSelectModel<T> | null>`row_to_json(${row})`;
 }
 
@@ -239,13 +240,17 @@ export function asGeoJson<T extends Feature = Feature>(geom: string) {
 // }
 export function jsonObjectAgg<
 	K extends AnyColumn,
-	V extends SQL | AnyTable,
+	V extends SQL | AnyTable<TableConfig>,
 	TK extends string | number = null extends InferColumnDataType<K>
 		? never
 		: InferColumnDataType<K> extends string | number
-		? InferColumnDataType<K>
-		: never,
-	TV = V extends AnyTable ? InferSelectModel<V> : V extends SQL ? InferSQLDataType<V> : never,
+		  ? InferColumnDataType<K>
+		  : never,
+	TV = V extends AnyTable<TableConfig>
+		? InferSelectModel<V>
+		: V extends SQL
+		  ? InferSQLDataType<V>
+		  : never,
 >(key: K, value: V) {
 	return sql<Record<TK, TV>>`json_object_agg(${key}, ${value})`;
 }
@@ -262,8 +267,8 @@ type CoalesceSQL<T extends unknown[], N extends boolean = true, R = never> = T e
 			R | RemoveNull<InferSQLDataType<H>>
 	  >
 	: N extends true
-	? SQL<R | null>
-	: SQL<R>;
+	  ? SQL<R | null>
+	  : SQL<R>;
 
 /**
  * SQL coalesce.

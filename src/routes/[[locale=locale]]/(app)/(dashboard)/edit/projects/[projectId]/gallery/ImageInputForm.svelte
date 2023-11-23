@@ -5,6 +5,7 @@
 	import { createTranslations } from '$lib/i18n/translate';
 	import { IMAGE_FILE_TYPES_ARR } from '$lib/media/constants';
 	import { transformImage } from '$lib/media/utils';
+	import { MODES } from '$lib/modes/constants';
 	import { melt } from '@melt-ui/svelte';
 	import { rgb } from 'color-convert';
 	import { prominent } from 'color.js';
@@ -32,6 +33,8 @@
 	let inmemory: {
 		url: string;
 		file: File;
+		width: number;
+		height: number;
 		hex: string[];
 		lab: [number, number, number][];
 	}[] = [];
@@ -126,8 +129,12 @@
 					if (!uploadRes.ok) {
 						input.cancel();
 					} else {
-						// To do: extract and add color palette.
-						$form.images.push({ storageName: presignedJson.name, palette: preview.lab });
+						$form.images.push({
+							storageName: presignedJson.name,
+							palette: preview.lab,
+							height: preview.height,
+							width: preview.width,
+						});
 					}
 				})
 			);
@@ -156,7 +163,7 @@
 				on:change={parseInput}
 			/>
 			<ImagePlus class="button-icon" />
-			<span class="text center sm dimmer">
+			<span>
 				{$t.prompt}
 			</span>
 		</label>
@@ -177,13 +184,13 @@
 						<div class="swatch" style:background-color="#{color}"></div>
 					{/each}
 				</div>
-				<menu class="toolbar" data-mode="dark">
+				<menu class="toolbar" data-mode={MODES.DARK}>
 					<button
 						class="button square danger ghost"
 						type="button"
 						on:click={() => deletePreview(i)}
 					>
-						<X class="button-icon" />
+						<X />
 					</button>
 				</menu>
 			</div>
@@ -206,6 +213,7 @@
 
 <style lang="postcss">
 	form {
+		grid-column: 1/-1;
 		position: relative;
 		display: flex;
 		padding: 1rem;
@@ -244,7 +252,7 @@
 		display: flex;
 		flex-direction: column;
 		padding: 2rem;
-		border-radius: var(--radius-sm);
+		border-radius: var(--radius-md);
 		background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 		aspect-ratio: 1;
 		width: 175px;
@@ -281,7 +289,7 @@
 			aspect-ratio: 1;
 			flex: none;
 			height: 1.25em;
-			border-radius: 50%;
+			border-radius: var(--radius-full);
 			box-shadow: var(--shadow-xs);
 			border: var(--base-border-dim);
 			&:not(:first-child) {
@@ -298,6 +306,12 @@
 		position: relative;
 		&:active {
 			animation: var(--animation-press);
+		}
+
+		span {
+			opacity: var(--opacity-dimmer);
+			font-size: var(--size-sm);
+			text-align: center;
 		}
 	}
 

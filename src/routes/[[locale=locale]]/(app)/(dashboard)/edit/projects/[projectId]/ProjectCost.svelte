@@ -71,23 +71,27 @@
 
 <DashboardFormField title={$t.title}>
 	{#if $form.costRange[0] == null}
-		<div id="project-cost-placeholder" in:slide={{ easing: expoOut, duration: 250 }}>
-			<div>
+		<button
+			id="project-cost-placeholder"
+			in:slide={{ easing: expoOut, duration: 250 }}
+			type="button"
+			on:click={() => {
+				$form.costRange = [min, max];
+			}}
+		>
+			<skeleton>
 				<div class="input"></div>
 				<div class="input"></div>
 				<div class="input"></div>
-			</div>
-			<button
+			</skeleton>
+			<div
+				id="project-cost-init"
 				class="button dashed bg-blur"
-				type="button"
-				on:click={() => {
-					$form.costRange = [min, max];
-				}}
 				in:scale={{ easing: expoOut, start: 0.9, duration: 250, delay: 250 }}
 			>
 				{$t.init}<Pencil />
-			</button>
-		</div>
+			</div>
+		</button>
 	{:else}
 		<div id="project-cost" in:slide={{ easing: expoOut, duration: 250 }}>
 			<Slider {min} {max} {step} bind:value={$form.costRange} />
@@ -154,11 +158,12 @@
 			</div>
 			<button
 				class="button dashed"
-				id="reset-cost"
+				id="project-cost-reset"
 				type="button"
 				on:click={() => {
 					$form.costRange = [null, null];
 				}}
+				in:fly={{ y: -6, delay: 500, easing: expoOut, duration: 250 }}
 			>
 				{$t.reset}<RotateCcw />
 			</button>
@@ -166,7 +171,7 @@
 				<h3 class="h6">{$t.scale.title}</h3>
 				<div id="cost-scale-content">
 					<p>{$t.scale.description}</p>
-					<menu class="switch rounded">
+					<menu class="switch outlined rounded">
 						<button
 							type="button"
 							class="switch-item"
@@ -198,6 +203,8 @@
 
 <style lang="postcss">
 	#project-cost-placeholder {
+		cursor: pointer;
+		position: relative;
 		align-self: stretch;
 		display: flex;
 		flex-direction: column;
@@ -205,7 +212,7 @@
 		justify-content: center;
 		gap: inherit;
 
-		> div {
+		skeleton {
 			opacity: 0.5;
 			pointer-events: none;
 			align-self: stretch;
@@ -218,8 +225,9 @@
 			}
 		}
 
-		.button {
+		#project-cost-init {
 			position: absolute;
+			box-shadow: 0 0.5em 3em var(--base-bg);
 		}
 	}
 
@@ -233,6 +241,7 @@
 	#cost-scale {
 		display: flex;
 		flex-direction: column;
+		align-self: stretch;
 		align-items: flex-start;
 		padding: 2rem;
 		background: color-mix(in srgb, var(--color-neutral-500) 5%, transparent);
@@ -240,15 +249,19 @@
 
 		#cost-scale-content {
 			display: flex;
+			align-self: stretch;
 			flex-direction: row;
-			gap: 2rem;
+			gap: 1rem;
 			align-items: center;
+			justify-content: space-between;
 		}
 
 		p {
+			line-height: var(--line-sparse);
 			opacity: var(--opacity-dim);
-			font-size: var(--size-);
-			margin-block: 1rem 2rem;
+			font-size: var(--size-sm);
+			margin-top: var(--size-sm);
+			max-width: 45ch;
 		}
 
 		.switch {
@@ -273,7 +286,7 @@
 		}
 	}
 
-	#reset-cost {
+	#project-cost-reset {
 		font-size: var(--size-sm);
 	}
 </style>

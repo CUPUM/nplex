@@ -26,6 +26,12 @@ declare global {
 			// to do
 		};
 	}
+	namespace svelteHTML {
+		interface HTMLAttributes {
+			// In-markup narrowing is not happening.
+			['data-mode']?: Mode;
+		}
+	}
 	namespace App {
 		// See https://github.com/ciscoheat/sveltekit-superforms/issues/261
 		namespace Superforms {

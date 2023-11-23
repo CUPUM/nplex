@@ -1,6 +1,5 @@
 <script lang="ts">
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormMenu from '$lib/components/DashboardFormMenu.svelte';
 	import { superForm } from '$lib/forms/super-form';
 	import { createTranslations } from '$lib/i18n/translate';
 	import { tt } from '$lib/i18n/translations';
@@ -50,7 +49,7 @@
 	});
 </script>
 
-<DashboardForm {enhance} action="?/update" method="POST">
+<DashboardForm {enhance} action="?/update" method="POST" {tainted} {submitter}>
 	<svelte:fragment slot="header">
 		<h2>{$t.heading}</h2>
 		<p>
@@ -63,7 +62,6 @@
 	<ProjectInterventions {form} categorizedInterventions={data.categorizedInterventions} />
 	<ProjectOwnership {form} siteOwnerships={data.siteOwnerships} />
 	<ProjectCost {form} bind:smallScale />
-	<DashboardFormMenu {tainted} {submitter}></DashboardFormMenu>
 </DashboardForm>
 
 <style lang="postcss">

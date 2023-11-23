@@ -47,8 +47,8 @@
 
 	/* Children icons */
 	:--icon {
-		width: 1.25em;
-		stroke-width: 2;
+		width: calc(0.6 * var(--_toggle-block-size));
+		stroke-width: 2.5;
 		stroke-linecap: square;
 		stroke-linejoin: round;
 		opacity: 0.5;

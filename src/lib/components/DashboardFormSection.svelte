@@ -18,9 +18,14 @@
 </script>
 
 <section>
-	{#if title}
+	{#if title || $$slots.description}
 		<header>
-			<h3 class="h4">{title}</h3>
+			{#if title}
+				<h3 class="h4">{title}</h3>
+			{/if}
+			{#if $$slots.description}
+				<div class="description"><slot name="description" /></div>
+			{/if}
 		</header>
 	{/if}
 	<div class="content" style:grid-column={align}>
@@ -45,6 +50,14 @@
 	header {
 		padding: 1rem 2rem;
 		grid-column: full;
+
+		.description {
+			margin-top: 1rem;
+			line-height: var(--line-sparse);
+			font-size: var(--size-sm);
+			max-width: var(--content-width);
+			opacity: var(--opacity-dim);
+		}
 	}
 
 	.content {

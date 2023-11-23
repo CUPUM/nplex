@@ -10,6 +10,7 @@ import {
 	type AnyColumn,
 	type AnyTable,
 	type ColumnsSelection,
+	type TableConfig,
 } from 'drizzle-orm';
 import {
 	PgTable,
@@ -87,8 +88,8 @@ export function getLocalizedField<F extends SQL | Column>(field: F) {
  * Query helper to get rows with translations corresponding to request event's locale.
  */
 export function withTranslation<
-	T extends AnyTable,
-	TT extends AnyTable & { [K in keyof TranslationLocaleColumn]: AnyColumn },
+	T extends AnyTable<TableConfig>,
+	TT extends AnyTable<TableConfig> & { [K in keyof TranslationLocaleColumn]: AnyColumn },
 	F extends ValueOf<T['_']['columns']>,
 	R extends ValueOf<TT['_']['columns']>,
 	M = Merge<TT['_']['columns'], T['_']['columns']>,
@@ -126,8 +127,8 @@ export function withTranslation<
  * coalesces missing translation rows to records with pre-populated locale and foreign key columns.
  */
 export function withTranslations<
-	T extends AnyTable,
-	TT extends AnyTable & { [K in keyof TranslationLocaleColumn]: AnyColumn },
+	T extends AnyTable<TableConfig>,
+	TT extends AnyTable<TableConfig> & { [K in keyof TranslationLocaleColumn]: AnyColumn },
 	F extends ValueOf<T['_']['columns']>,
 	R extends ValueOf<TT['_']['columns']>,
 	TS = T['_']['columns'],
