@@ -47,8 +47,8 @@
 </script>
 
 <form method="POST" use:enhance autocomplete="off">
-	<h1 class="heading lg center">{$t.title}</h1>
-	<label class="labeled-group">
+	<h1 class="h4">{$t.title}</h1>
+	<label class="label-group">
 		<span class="label" in:fly|global={{ y: 6 }}>{$t.email}</span>
 		<input
 			in:fly|global={{ y: -6 }}
@@ -61,8 +61,8 @@
 			{...$constraints.email}
 		/>
 	</label>
-	<fieldset class="labeled-group">
-		<legend class="label" in:fly|global={{ y: 6, delay: STAGGER }}>{$t.password}</legend>
+	<label class="label-group">
+		<span class="label" in:fly|global={{ y: 6, delay: STAGGER }}>{$t.password}</span>
 		<div class="input-group">
 			<input
 				in:fly|global={{ y: -6, delay: STAGGER }}
@@ -96,7 +96,7 @@
 				</button>
 			</div>
 		</div>
-	</fieldset>
+	</label>
 	<button
 		in:fly|global={{ y: -6, delay: 2 * STAGGER }}
 		class="button cta center"
@@ -111,12 +111,12 @@
 </form>
 <div class="links">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="button link" {...$link('/signup')} in:fade|global>
+	<a class="button link center" {...$link('/signup')} in:fade|global>
 		<UserPlus2 class="button-icon" />
 		{$t.signup}
 	</a>
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="button link" {...$link('/reset-password')} in:fade|global>
+	<a class="button link center" {...$link('/reset-password')} in:fade|global>
 		<HelpCircle class="button-icon" />
 		{$t.forgot}
 	</a>
@@ -130,17 +130,22 @@
 		justify-content: center;
 		flex: 1;
 		gap: 1rem;
-	}
 
-	.formcontent {
-		padding: 2.25rem;
+		h1 {
+			text-align: center;
+		}
 	}
 
 	.links {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
+		gap: var(--base-gutter);
 		justify-content: space-between;
 		font-size: var(--size-sm);
+
+		.button {
+			flex: 1;
+		}
 	}
 </style>

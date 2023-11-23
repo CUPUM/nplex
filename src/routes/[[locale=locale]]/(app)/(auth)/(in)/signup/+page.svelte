@@ -37,8 +37,8 @@
 </script>
 
 <form method="POST" use:enhance>
-	<h1 class="heading lg center">{$t.title}</h1>
-	<label class="labeled-group">
+	<h1 class="h4">{$t.title}</h1>
+	<label class="label-group">
 		<span class="label" in:fly={{ y: 6 }}>{$t.email}</span>
 		<input
 			in:fly={{ y: -6 }}
@@ -51,7 +51,7 @@
 			{...$constraints.email}
 		/>
 	</label>
-	<label class="labeled-group">
+	<label class="label-group">
 		<span class="label" in:fly={{ y: 6, delay: STAGGER }}>{$t.password}</span>
 		<input
 			in:fly={{ y: -6, delay: STAGGER }}
@@ -63,7 +63,7 @@
 			{...$constraints.password}
 		/>
 	</label>
-	<label class="labeled-group">
+	<label class="label-group">
 		<span class="label" in:fly={{ y: 6, delay: 2 * STAGGER }}>{$t.confirmPassword}</span>
 		<input
 			in:fly={{ y: -6, delay: 2 * STAGGER }}
@@ -82,12 +82,12 @@
 </form>
 <div class="links">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="button link" {...$link('/login')}>
+	<a class="button link center" {...$link('/login')}>
 		<LogIn class="button-icon" />
 		{$t.login}
 	</a>
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="button link" {...$link('/reset-password')}>
+	<a class="button link center" {...$link('/reset-password')}>
 		<HelpCircle class="button-icon" />
 		{$t.forgot}
 	</a>
@@ -101,6 +101,10 @@
 		justify-content: center;
 		flex: 1;
 		gap: 1rem;
+
+		h1 {
+			text-align: center;
+		}
 	}
 
 	.formcontent {

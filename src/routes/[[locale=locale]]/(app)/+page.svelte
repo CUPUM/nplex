@@ -13,7 +13,7 @@
 	$: console.log(data.randomImages);
 </script>
 
-<Landing />
+<Landing images={data.randomImages} />
 
 <style lang="postcss">
 </style>

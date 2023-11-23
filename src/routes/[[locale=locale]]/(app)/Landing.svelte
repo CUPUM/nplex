@@ -2,12 +2,15 @@
 	import { page } from '$app/stores';
 	import { link } from '$lib/i18n/link';
 	import { createTranslations } from '$lib/i18n/translate';
+	import { transform } from '$lib/transitions/transform';
 	import { debounce } from '@melt-ui/svelte/internal/helpers';
 	import { ArrowRight, Edit } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { expoOut } from 'svelte/easing';
+	import { flip } from 'svelte/animate';
+	import { expoInOut, expoOut } from 'svelte/easing';
 	import { spring, tweened } from 'svelte/motion';
 	import { fly } from 'svelte/transition';
+	import type { PageData } from './$types';
 
 	const t = createTranslations({
 		fr: {
@@ -24,18 +27,33 @@
 		},
 	});
 
+	export let images: PageData['randomImages'];
+
+	function randomArea(...triggers: unknown[]) {
+		const cspan = Math.round(Math.random() * 7 + 3);
+		const rspan = Math.round(Math.random() * 7 + 3);
+		const col = `${Math.round(Math.random() * (n - cspan))} / span ${cspan}`;
+		const row = `${Math.round(Math.random() * (n - rspan))} / span ${rspan}`;
+		return {
+			col,
+			row,
+		};
+	}
+
+	$: placedImages = n ? images.map((image) => ({ ...image, ...randomArea() })) : [];
+	$: console.log(placedImages);
+
 	const factor = 0.1;
 	const ax0 = 35;
 	const ay0 = -15;
 	const az0 = 35;
-	let innerWidth = 0;
-	let innerHeight = 0;
+	let clientWidth = 0;
+	let clientHeight = 0;
 	let n = 0;
-	$: nhalf = n / 2;
 	const ncalc = debounce((...triggers) => {
-		n = Math.round(Math.max(innerWidth, innerHeight) / 75);
+		n = Math.round(Math.max(clientWidth, clientHeight) / 75);
 	}, 500);
-	$: ncalc(innerHeight, innerWidth);
+	$: ncalc(clientHeight, clientWidth);
 	let y = tweened(0);
 	let ax = spring(ax0);
 	let ay = spring(ay0);
@@ -48,8 +66,6 @@
 </script>
 
 <svelte:window
-	bind:innerHeight
-	bind:innerWidth
 	on:scroll={() => {
 		y.set(window.scrollY);
 		ax.set(Math.max(0, ax0 - window.scrollY * factor));
@@ -65,12 +81,33 @@
 	style:--ay="{$ay}deg"
 	style:--az="{$az}deg"
 >
-	<grid>
+	<grid bind:clientWidth bind:clientHeight>
+		{#each placedImages as image, i (image.id)}
+			<figure
+				style:grid-column={image.col}
+				style:grid-row={image.row}
+				animate:flip={{
+					duration(len) {
+						return len / 2 + 350;
+					},
+					easing: expoInOut,
+				}}
+				in:transform={{
+					translate: [0, 0, -50],
+					opacity: 0,
+					duration: 2000,
+					easing: expoOut,
+					delay: i * Math.random() * 350,
+				}}
+			>
+				<img />
+			</figure>
+		{/each}
 		<surface>
 			{#each { length: n } as row, irow}
 				{#each { length: n } as col, icol}
 					<cell
-						style:--d="{Math.round(Math.random() * 1000)}ms"
+						style:--d="{Math.round(Math.random() * 2000)}ms"
 						style:--row={irow}
 						style:--col={icol}
 					/>
@@ -117,10 +154,11 @@
 	}
 
 	grid {
+		z-index: -1;
 		position: absolute;
 		display: grid;
-		width: 125vmax;
-		height: 125vmax;
+		width: 150vmax;
+		height: 150vmax;
 		top: 50%;
 		left: 50%;
 		transform-origin: center;
@@ -128,6 +166,16 @@
 			rotateZ(var(--az));
 		grid-template-columns: repeat(calc(2 * var(--n)), 1fr);
 		grid-template-rows: repeat(calc(2 * var(--n)), 1fr);
+		transform-style: preserve-3d;
+	}
+
+	figure {
+		z-index: 1;
+		/* box-shadow: 1.5em 2.5em 4em -1.5em var(--base-bg); */
+		position: relative;
+		opacity: 0.5;
+		background: var(--color-neutral-500);
+		border-radius: var(--radius-md);
 	}
 
 	surface {
@@ -136,10 +184,7 @@
 		grid-template-rows: inherit;
 		gap: inherit;
 		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
+		inset: 0;
 		z-index: 0;
 	}
 

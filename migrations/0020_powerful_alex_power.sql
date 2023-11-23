@@ -1,0 +1,1 @@
+ALTER TABLE "projects_t" DROP CONSTRAINT "projects_t_locale_title_unique";

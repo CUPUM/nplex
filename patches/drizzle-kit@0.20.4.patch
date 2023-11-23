@@ -1,0 +1,69 @@
+diff --git a/bin.cjs b/bin.cjs
+index 34640897b90e8d95d756993806442c2a2eda3c39..8cdcc892f87d03760540491599e2edc933ef6e03 100755
+--- a/bin.cjs
++++ b/bin.cjs
+@@ -4906,6 +4906,7 @@ var init_pgSchema = __esm({
+       name: stringType(),
+       tableFrom: stringType(),
+       columnsFrom: stringType().array(),
++			schemaTo: stringType().optional(),
+       tableTo: stringType(),
+       columnsTo: stringType().array(),
+       onUpdate: stringType().optional(),
+@@ -5064,7 +5065,7 @@ var init_pgSchema = __esm({
+         return result;
+       },
+       squashFK: (fk4) => {
+-        return `${fk4.name};${fk4.tableFrom};${fk4.columnsFrom.join(",")};${fk4.tableTo};${fk4.columnsTo.join(",")};${fk4.onUpdate ?? ""};${fk4.onDelete ?? ""}`;
++				return `${fk4.name};${fk4.tableFrom};${fk4.columnsFrom.join(",")};${fk4.schemaTo || ""};${fk4.tableTo};${fk4.columnsTo.join(",")};${fk4.onUpdate ?? ""};${fk4.onDelete ?? ""}`;
+       },
+       squashPK: (pk) => {
+         return `${pk.columns.join(",")}`;
+@@ -5088,6 +5089,7 @@ var init_pgSchema = __esm({
+           name,
+           tableFrom,
+           columnsFromStr,
++					schemaTo,
+           tableTo,
+           columnsToStr,
+           onUpdate,
+@@ -5097,6 +5099,7 @@ var init_pgSchema = __esm({
+           name,
+           tableFrom,
+           columnsFrom: columnsFromStr.split(","),
++					schemaTo,
+           tableTo,
+           columnsTo: columnsToStr.split(","),
+           onUpdate,
+@@ -12228,12 +12231,14 @@ ${withStyle.errorWarning(`We've found duplicated unique constraint names in ${so
+           const onUpdate = fk4.onUpdate;
+           const reference = fk4.reference();
+           const tableTo = (0, import_drizzle_orm5.getTableName)(reference.foreignTable);
++					const schemaTo = reference.foreignTable[Symbol.for("drizzle:Schema")];
+           const columnsFrom = reference.columns.map((it) => it.name);
+           const columnsTo = reference.foreignColumns.map((it) => it.name);
+           return {
+             name,
+             tableFrom,
+             tableTo,
++						schemaTo,
+             columnsFrom,
+             columnsTo,
+             onDelete,
+@@ -16167,6 +16172,7 @@ ${BREAKPOINT}ALTER TABLE ${tableNameWithSchema} ADD CONSTRAINT ${statement.newCo
+           name,
+           tableFrom,
+           tableTo,
++					schemaTo,
+           columnsFrom,
+           columnsTo,
+           onDelete,
+@@ -16177,7 +16183,7 @@ ${BREAKPOINT}ALTER TABLE ${tableNameWithSchema} ADD CONSTRAINT ${statement.newCo
+         const fromColumnsString = columnsFrom.map((it) => `"${it}"`).join(",");
+         const toColumnsString = columnsTo.map((it) => `"${it}"`).join(",");
+         const tableNameWithSchema = statement.schema ? `"${statement.schema}"."${tableFrom}"` : `"${tableFrom}"`;
+-        const tableToNameWithSchema = statement.schema ? `"${statement.schema}"."${tableTo}"` : `"${tableTo}"`;
++        const tableToNameWithSchema = schemaTo ? `"${schemaTo}"."${tableTo}"` : `"${tableTo}"`;
+         const alterStatement = `ALTER TABLE ${tableNameWithSchema} ADD CONSTRAINT "${name}" FOREIGN KEY (${fromColumnsString}) REFERENCES ${tableToNameWithSchema}(${toColumnsString})${onDeleteStatement}${onUpdateStatement}`;
+         let sql2 = "DO $$ BEGIN\n";
+         sql2 += " " + alterStatement + ";\n";

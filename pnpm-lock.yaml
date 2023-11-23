@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  drizzle-kit@0.20.4:
+    hash: hmty25rheujkxee2k535iuvroa
+    path: patches/drizzle-kit@0.20.4.patch
+
 dependencies:
   '@aws-sdk/client-s3':
     specifier: ^3.456.0
@@ -54,8 +59,8 @@ dependencies:
     specifier: ^0.292.0
     version: 0.292.0(svelte@4.2.7)
   maplibre-gl:
-    specifier: ^3.6.1
-    version: 3.6.1
+    specifier: ^3.6.2
+    version: 3.6.2
   mdsvexamples:
     specifier: ^0.4.1
     version: 0.4.1(svelte@4.2.7)
@@ -126,7 +131,7 @@ devDependencies:
     version: 10.0.0
   drizzle-kit:
     specifier: ^0.20.4
-    version: 0.20.4
+    version: 0.20.4(patch_hash=hmty25rheujkxee2k535iuvroa)
   eslint:
     specifier: ^8.54.0
     version: 8.54.0
@@ -176,8 +181,8 @@ devDependencies:
     specifier: ^2.6.2
     version: 2.6.2
   tsx:
-    specifier: ^4.3.0
-    version: 4.3.0
+    specifier: ^4.4.0
+    version: 4.4.0
   type-fest:
     specifier: ^4.8.2
     version: 4.8.2
@@ -4904,7 +4909,7 @@ packages:
       wordwrap: 1.0.0
     dev: true
 
-  /drizzle-kit@0.20.4:
+  /drizzle-kit@0.20.4(patch_hash=hmty25rheujkxee2k535iuvroa):
     resolution: {integrity: sha512-pfaryOMS4jtQ6PNIanggsXqZnl34nMeoFd6Mmc9mZA+amSym0izLTuOO3xnivPT2BDsDVOoPhrC47QzKij7fRA==}
     hasBin: true
     dependencies:
@@ -4926,6 +4931,7 @@ packages:
       - supports-color
       - utf-8-validate
     dev: true
+    patched: true
 
   /drizzle-orm@0.29.0(@neondatabase/serverless@0.6.0)(postgres@3.4.3):
     resolution: {integrity: sha512-AC+CuW4GezVjsZDGU9u9B4HyikudOyYVhjm6he3Xn1D6Kky7bHGKob97MMX2piO+t9b6UuajLzlii/T/lu1qwA==}
@@ -6135,8 +6141,8 @@ packages:
       semver: 6.3.1
     dev: true
 
-  /maplibre-gl@3.6.1:
-    resolution: {integrity: sha512-XQpLkNTD6WYJXqF7vTxgHbAyShoZMm5o8fohXCn9PC/S/g3zBk92m7GUsN6KfuECh2rO01uiYbSNCSURkOODyQ==}
+  /maplibre-gl@3.6.2:
+    resolution: {integrity: sha512-krg2KFIdOpLPngONDhP6ixCoWl5kbdMINP0moMSJFVX7wX1Clm2M9hlNKXS8vBGlVWwR5R3ZfI6IPrYz7c+aCQ==}
     engines: {node: '>=16.14.0', npm: '>=8.1.0'}
     dependencies:
       '@mapbox/geojson-rewind': 0.5.2
@@ -8158,8 +8164,8 @@ packages:
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
 
-  /tsx@4.3.0:
-    resolution: {integrity: sha512-zalfbBdr7tvYok5sSbnsv4uL+DhT1wRZwbWwuOXjhH8YtJxN2bpl6lpXMxuPThMAKzZ2qgrhuf5ckq/uSsm3CA==}
+  /tsx@4.4.0:
+    resolution: {integrity: sha512-4fwcEjRUxW20ciSaMB8zkpGwCPxuRGnadDuj/pBk5S9uT29zvWz15PK36GrKJo45mSJomDxVejZ73c6lr3811Q==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     dependencies:

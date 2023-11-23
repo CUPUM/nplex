@@ -87,7 +87,7 @@
 		"sveltekit-superforms": "^1.10.2",
 		"tsconfig-paths": "^4.2.0",
 		"tslib": "^2.6.2",
-		"tsx": "^4.3.0",
+		"tsx": "^4.4.0",
 		"type-fest": "^4.8.2",
 		"typescript": "^5.3.2",
 		"vite": "^5.0.2",
@@ -111,7 +111,7 @@
 		"js-cookie": "^3.0.5",
 		"lucia": "^2.7.4",
 		"lucide-svelte": "^0.292.0",
-		"maplibre-gl": "^3.6.1",
+		"maplibre-gl": "^3.6.2",
 		"mdsvexamples": "^0.4.1",
 		"nodemailer": "^6.9.7",
 		"rehype-slug": "^6.0.0",
@@ -120,5 +120,10 @@
 		"svelte-email": "^0.0.4",
 		"sveltekit-flash-message": "^2.2.2",
 		"ws": "^8.14.2"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"drizzle-kit@0.20.4": "patches/drizzle-kit@0.20.4.patch"
+		}
 	}
 }

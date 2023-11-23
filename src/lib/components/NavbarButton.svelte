@@ -75,7 +75,7 @@
 		letter-spacing: 0.02em;
 		outline: 1px solid transparent;
 		outline-offset: -2px;
-		backdrop-filter: blur(8px);
+		backdrop-filter: blur(16px);
 		transition:
 			all 0.1s ease-out,
 			outline 0.2s ease-out,

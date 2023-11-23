@@ -12,7 +12,7 @@
 	} = createTabs({ defaultValue, loop: true, activateOnFocus: true });
 </script>
 
-<fieldset class="labeled-group" use:melt={$root}>
+<fieldset class="label-group" use:melt={$root}>
 	<legend class="label">
 		<div class="legend-slot">
 			<slot name="legend" />
@@ -27,7 +27,7 @@
 </fieldset>
 
 <style lang="postcss">
-	.labeled-group {
+	.label-group {
 		position: relative;
 		gap: 0;
 		width: 65ch;

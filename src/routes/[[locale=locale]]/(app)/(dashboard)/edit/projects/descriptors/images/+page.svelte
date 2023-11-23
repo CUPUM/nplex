@@ -84,11 +84,11 @@
 					let:locale
 					deleteFormaction="?/deleteImageType&imageTypeId={type.id}"
 				>
-					<label class="labeled-group">
+					<label class="label-group">
 						<span class="label with-hover">{$t.title}</span>
 						<input type="text" class="input" bind:value={type.translations[locale].title} />
 					</label>
-					<label class="labeled-group">
+					<label class="label-group">
 						<span class="label with-hover">{$t.description}</span>
 						<textarea class="input" bind:value={type.translations[locale].description} />
 					</label>
@@ -124,11 +124,11 @@
 					let:locale
 					deleteFormaction="?/deleteImageType&imageTypeId={temporality.id}"
 				>
-					<label class="labeled-group">
+					<label class="label-group">
 						<span class="label with-hover">{$t.title}</span>
 						<input type="text" class="input" bind:value={temporality.translations[locale].title} />
 					</label>
-					<label class="labeled-group">
+					<label class="label-group">
 						<span class="label with-hover">{$t.description}</span>
 						<textarea class="input" bind:value={temporality.translations[locale].description} />
 					</label>

@@ -44,29 +44,28 @@
 
 	h2 {
 		text-align: center;
-		font-size: var(--size-sm);
 	}
 
 	.inner {
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
-		gap: 2rem;
+		gap: 1rem;
 		width: 100%;
-		max-width: var(--width-sm);
+		max-width: 45ch;
 	}
 
 	.social {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 1.5rem;
 	}
 
 	#or {
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
-		font-size: var(--size-xs);
+		font-size: var(--size-sm);
 		align-items: center;
 		opacity: 0.5;
 
@@ -88,7 +87,7 @@
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
-		gap: 1em;
+		gap: var(--base-gutter);
 		font-size: var(--size-lg);
 		justify-content: center;
 	}

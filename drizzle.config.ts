@@ -1,4 +1,4 @@
-import type { Config } from 'drizzle-kit';
+import { defineConfig } from 'drizzle-kit';
 import { register } from 'tsconfig-paths';
 import tsConfig from './.svelte-kit/tsconfig.json';
 import { DB_MIGRATIONS_FOLDER } from './scripts/common';
@@ -11,7 +11,7 @@ register({
 	paths: { ...tsConfig.compilerOptions.paths, '$env/*': ['../drizzle.config.ts'] },
 });
 
-export default {
+export default defineConfig({
 	schema: ['./src/lib/db/schema/*'],
 	out: DB_MIGRATIONS_FOLDER,
 	driver: 'pg',
@@ -23,4 +23,5 @@ export default {
 		casing: 'camel',
 	},
 	verbose: true,
-} satisfies Config;
+	strict: true,
+});

@@ -64,7 +64,7 @@
 					deleteFormaction="?/delete&levelTypeId={levelType.id}"
 					let:locale
 				>
-					<label class="labeled-group">
+					<label class="label-group">
 						<span class="label with-hover">
 							{$t.title}
 						</span>
@@ -74,7 +74,7 @@
 							bind:value={$form.buildingLevelTypes[i].translations[locale].title}
 						/>
 					</label>
-					<label class="labeled-group">
+					<label class="label-group">
 						<span class="label with-hover">
 							{$t.description}
 						</span>

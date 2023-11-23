@@ -7,13 +7,12 @@
 		type TooltipStates,
 	} from '@melt-ui/svelte';
 	import { cubicOut } from 'svelte/easing';
-	import type { StoresValues } from 'svelte/store';
 	import { fly, scale } from 'svelte/transition';
 	import Tip from './Tip.svelte';
 
 	export let open: TooltipStates['open'];
 	export let content: TooltipElements['content'];
-	export let arrow: StoresValues<TooltipElements['arrow']>;
+	export let arrow: TooltipElements['arrow'];
 	export let positioning: TooltipOptions['positioning'];
 </script>
 
@@ -25,7 +24,7 @@
 		in:fly={{ ...getDistances($positioning, -4), easing: cubicOut, duration: 100 }}
 		out:scale={{ start: 0.8, duration: 100 }}
 	>
-		<Tip {positioning} {arrow} />
+		<Tip {positioning} arrow={$arrow} />
 		<slot />
 	</div>
 {/if}

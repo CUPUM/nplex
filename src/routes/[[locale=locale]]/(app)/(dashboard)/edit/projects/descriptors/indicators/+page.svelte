@@ -71,7 +71,7 @@
 						legend={category.id}
 						legendMinimized={category.translations[$page.data.locale].title}
 					>
-						<label class="labeled-group">
+						<label class="label-group">
 							<span class="label with-hover">{$t.category.title}</span>
 							<input
 								class="input"
@@ -79,7 +79,7 @@
 								bind:value={$form.exemplarityCategories[i].translations[locale].title}
 							/>
 						</label>
-						<label class="labeled-group">
+						<label class="label-group">
 							<span class="label with-hover">{$t.category.description}</span>
 							<textarea
 								class="input resize"
@@ -105,7 +105,7 @@
 									].title}
 									deleteFormaction="?/deleteIndicator&indicatorId={indicator.id}"
 								>
-									<label class="labeled-group">
+									<label class="label-group">
 										<span class="label with-hover">{$t.indicator.title}</span>
 										<input
 											class="input"
@@ -114,7 +114,7 @@
 												.title}
 										/>
 									</label>
-									<label class="labeled-group">
+									<label class="label-group">
 										<span class="label with-hover">{$t.indicator.description}</span>
 										<textarea
 											class="input resize"

@@ -62,7 +62,7 @@
 					deleteFormaction="?/delete&typeId={type.id}"
 					let:locale
 				>
-					<label class="labeled-group">
+					<label class="label-group">
 						<span class="label with-hover">
 							{$t.title}
 						</span>
@@ -72,7 +72,7 @@
 							bind:value={$form.types[i].translations[locale].title}
 						/>
 					</label>
-					<label class="labeled-group">
+					<label class="label-group">
 						<span class="label with-hover">
 							{$t.description}
 						</span>

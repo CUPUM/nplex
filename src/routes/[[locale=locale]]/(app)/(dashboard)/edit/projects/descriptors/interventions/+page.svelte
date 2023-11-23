@@ -87,7 +87,7 @@
 						legend={category.id}
 						legendMinimized={category.translations[$page.data.locale].title}
 					>
-						<label class="labeled-group">
+						<label class="label-group">
 							<span class="label with-hover">{$t.category.title}</span>
 							<input
 								class="input"
@@ -95,7 +95,7 @@
 								bind:value={$form.interventionCategories[i].translations[locale].title}
 							/>
 						</label>
-						<label class="labeled-group">
+						<label class="label-group">
 							<span class="label with-hover">{$t.category.description}</span>
 							<textarea
 								class="input resize"
@@ -122,7 +122,7 @@
 									].title}
 									deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
 								>
-									<label class="labeled-group">
+									<label class="label-group">
 										<span class="label with-hover">{$t.intervention.title}</span>
 										<input
 											class="input"
@@ -132,7 +132,7 @@
 											].title}
 										/>
 									</label>
-									<label class="labeled-group">
+									<label class="label-group">
 										<span class="label with-hover">{$t.intervention.description}</span>
 										<textarea
 											class="input resize"

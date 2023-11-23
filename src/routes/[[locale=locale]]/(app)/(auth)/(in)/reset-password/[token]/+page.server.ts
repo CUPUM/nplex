@@ -1,6 +1,7 @@
 import { auth } from '$lib/auth/auth.server';
 import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { validatePasswordResetToken } from '$lib/auth/token.server';
+import { tt } from '$lib/i18n/translations';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
@@ -60,7 +61,7 @@ export const actions = {
 					error: 'An unknown error occured on our end',
 				},
 			});
-			return message(form, t.error, { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return message(form, tt.error, { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
 		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	},

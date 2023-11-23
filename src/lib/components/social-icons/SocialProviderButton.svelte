@@ -23,7 +23,7 @@
 	} = createLoadable();
 
 	const {
-		elements: { trigger, content },
+		elements: { trigger, content, arrow },
 		states: { open },
 		options: { positioning },
 	} = createTooltip();
@@ -42,7 +42,7 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <a
 	{...$link(url)}
-	class="button outlined"
+	class="button outlined square"
 	use:ripple
 	use:melt={$root}
 	{...{
@@ -57,7 +57,7 @@
 		<svelte:component this={details.icon} />
 	</div>
 </a>
-<TooltipContent {content} {positioning} {open}>
+<TooltipContent {content} {positioning} {arrow} {open}>
 	{details.name}
 </TooltipContent>
 

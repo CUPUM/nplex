@@ -16,3 +16,4 @@
 @import './styles/typography.css' layer(components);
 @import './styles/toggle.css' layer(components);
 @import './styles/chip.css' layer(components);
+@import './styles/label.css' layer(components);
