@@ -37,7 +37,7 @@
 	import { MAP_DRAW_EVENTS, type Cursor, type MapDrawMode } from '$utils/enums';
 	import { LOCATIONS } from '$utils/map/locations';
 	import light from '$utils/map/styles/light';
-	import { MAP_GESTURES_TEXT, MAP_LOCALES, type MapLocale } from '$utils/map/ui';
+	import { MAP_GESTURES_TEXT, MAP_LOCALES, type MapAvailableLanguageTag } from '$utils/map/ui';
 	import { debounce } from '$utils/modifiers';
 	import type { DrawModeChangeEvent } from '@mapbox/mapbox-gl-draw';
 	import { Map, type MapEventType, type MapOptions } from 'maplibre-gl';
@@ -76,7 +76,7 @@
 	export let renderWorldCopies: MapOptions['renderWorldCopies'] = true;
 	export let maxTileCacheSize: MapOptions['maxTileCacheSize'] = undefined;
 	export let transformRequest: MapOptions['transformRequest'] = undefined;
-	export let locale: MapLocale = MAP_LOCALES.french;
+	export let locale: MapAvailableLanguageTag = MAP_LOCALES.french;
 	export let fadeDuration: MapOptions['fadeDuration'] = 150;
 	export let crossSourceCollisions: MapOptions['crossSourceCollisions'] = undefined;
 	export let collectResourceTiming: MapOptions['collectResourceTiming'] = undefined;

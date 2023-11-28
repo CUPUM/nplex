@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import { LOCALES } from '$lib/i18n/constants';
 	import { SETOUTS } from '$lib/setout/constants';
 	import { slide } from 'svelte/transition';
 	import Logo from './Logo.svelte';
@@ -16,7 +15,7 @@
 			<ul id="footer-logos">
 				<li>
 					<a
-						href="https://montreal.ca{$page.data.locale === LOCALES.ENGLISH
+						href="https://montreal.ca{$page.data.locale === 'en'
 							? '/en'
 							: ''}/unites/bureau-du-design"
 						rel="external"

@@ -68,7 +68,7 @@ export async function getProjectCategorizedInterventionsList(
 		.groupBy(...Object.values(categoriesColumns))
 		.leftJoin(
 			interventions,
-			and(eq(categories.id, interventions.categoryId), eq(categories.locale, interventions.locale))
+			and(eq(categories.id, interventions.categoryId), eq(categories.lang, interventions.lang))
 		)
 		.leftJoin(
 			projectTypesToInterventions,
@@ -122,7 +122,7 @@ export function getProjectCategorizedIndicatorsList(event: RequestEvent | Server
 		.groupBy(...Object.values(categoriesColumns))
 		.leftJoin(
 			indicators,
-			and(eq(categories.id, indicators.categoryId), eq(categories.locale, indicators.locale))
+			and(eq(categories.id, indicators.categoryId), eq(categories.lang, indicators.lang))
 		);
 }
 

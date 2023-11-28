@@ -3,7 +3,7 @@
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import { breakpoint } from '$lib/breakpoints/breakpoints';
-	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
+	import { LANG_DETAILS, availableLanguageTags } from '$lib/i18n/constants';
 	import { i18nswitch, link } from '$lib/i18n/link';
 	import { MODES_DETAILS, MODES_TRANSLATIONS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
@@ -88,7 +88,7 @@
 				</LangKey>
 			</h2>
 			<div class="inner">
-				{#each LOCALES_ARR as locale}
+				{#each availableLanguageTags as locale}
 					<!-- svelte-ignore a11y-missing-attribute -->
 					<a
 						class="drawerbutton"
@@ -98,7 +98,7 @@
 						data-sveltekit-noscroll
 						data-sveltekit-replacestate
 					>
-						{LOCALES_DETAILS[locale].name}
+						{LANG_DETAILS[locale].name}
 					</a>
 				{/each}
 			</div>

@@ -13,7 +13,7 @@ import {
 import { USER_ID_LENGTH } from '../constants';
 import { generateNanoid } from '../sql.server';
 import { userRole } from './custom-types';
-import { translationLocaleColumn, translationReferenceColumn } from './i18n';
+import { translationLangColumn, translationReferenceColumn } from './i18n';
 import { projects } from './public';
 
 /**
@@ -39,7 +39,7 @@ export const userRoles = accountsSchema.table('user_roles', {
 export const userRolesTranslations = accountsSchema.table(
 	'user_roles_t',
 	{
-		...translationLocaleColumn,
+		...translationLangColumn,
 		role: userRole('role')
 			.notNull()
 			.references(() => userRoles.role, {
@@ -51,8 +51,8 @@ export const userRolesTranslations = accountsSchema.table(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.role, table.locale),
-			unq: unique().on(table.locale, table.name),
+			pk: primaryKey(table.role, table.lang),
+			unq: unique().on(table.lang, table.name),
 		};
 	}
 );
@@ -173,12 +173,12 @@ export const userOccupationsTranslations = accountsSchema.table(
 	'user_occupations_t',
 	{
 		...translationReferenceColumn(userOccupations.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
-		return { pk: primaryKey(table.id, table.locale) };
+		return { pk: primaryKey(table.id, table.lang) };
 	}
 );
 
@@ -258,7 +258,7 @@ export const notificationTypes = accountsSchema.table('notification_types', {
 
 export const notificationTypesTranslations = accountsSchema.table('notification_types_t', {
 	...translationReferenceColumn(notificationTypes.id),
-	...translationLocaleColumn,
+	...translationLangColumn,
 	title: text('title'),
 	body: text('body'),
 });

@@ -148,6 +148,20 @@
       "when": 1700757167547,
       "tag": "0020_powerful_alex_power",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1701210184778,
+      "tag": "0021_famous_captain_universe",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "5",
+      "when": 1701210304638,
+      "tag": "0022_wild_beast",
+      "breakpoints": true
     }
   ]
 }

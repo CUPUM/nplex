@@ -25,7 +25,7 @@ const config = {
 					mdsvexamples,
 					{
 						defaults: {
-							Wrapper: '/src/routes/[[locale=locale]]/docs/Preview.svelte',
+							Wrapper: '/src/routes/[[lang=lang]]/docs/Preview.svelte',
 						},
 					},
 				],

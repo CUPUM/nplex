@@ -1,4 +1,4 @@
-import { LOCALES } from '$lib/i18n/constants';
+import { availableLanguageTags } from '$i18n/runtime';
 import { strictRecord } from '$lib/utils/zod';
 import type { ZodObject, ZodTypeAny } from 'zod';
 
@@ -6,7 +6,7 @@ import type { ZodObject, ZodTypeAny } from 'zod';
  * Schema for translations record.
  */
 export function translationsSchema<T extends ZodTypeAny>(schema: T) {
-	return strictRecord(LOCALES, schema);
+	return strictRecord(availableLanguageTags, schema);
 	// return z.record(localeSchema, schema);
 }
 

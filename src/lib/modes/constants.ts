@@ -1,4 +1,4 @@
-import { createTranslations } from '$lib/i18n/translate';
+import * as m from '$i18n/messages';
 import { MoonStar, Sun, type Icon } from 'lucide-svelte';
 import type { ComponentType } from 'svelte';
 import type { ValueOf } from 'type-fest';
@@ -17,24 +17,13 @@ export const MODE_DEFAULT = MODES.LIGHT;
 export const MODES_DETAILS = {
 	[MODES.LIGHT]: {
 		icon: Sun,
+		title: m.mode_light,
 	},
 	[MODES.DARK]: {
 		icon: MoonStar,
+		title: m.mode_dark,
 	},
-} as const satisfies Record<Mode, { icon: ComponentType<Icon> }>;
-
-export const MODES_TRANSLATIONS = createTranslations({
-	fr: {
-		label: 'Thème',
-		[MODES.LIGHT]: 'Clair',
-		[MODES.DARK]: 'Sombre',
-	},
-	en: {
-		label: 'Theme',
-		[MODES.LIGHT]: 'Light',
-		[MODES.DARK]: 'Dark',
-	},
-});
+} as const satisfies Record<Mode, { icon: ComponentType<Icon>; title: () => string }>;
 
 export const MODE_COOKIE_NAME = 'mode';
 

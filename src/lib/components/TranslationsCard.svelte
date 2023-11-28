@@ -4,33 +4,34 @@
 -->
 <script lang="ts" context="module">
 	const CTX_KEY = {};
-	const [getTranslationsTabsLocale, setTranslationsTabsLocale] =
-		defineContext<Writable<Locale>>(CTX_KEY);
+	const [getTranslationsTabsLang, setTranslationsTabsLang] =
+		defineContext<Writable<AvailableLanguageTag>>(CTX_KEY);
 </script>
 
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { LOCALES_ARR, type Locale } from '$lib/i18n/constants';
+	import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
 	import { defineContext } from '$lib/utils/context';
 	import { createTabs, melt } from '@melt-ui/svelte';
 	import { ChevronDown, Trash } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import type { Writable } from 'svelte/store';
 	import { crossfade, fly, slide } from 'svelte/transition';
-	import LocaleSwitch from './LocaleSwitch.svelte';
+	import LangSwitch from './LangSwitch.svelte';
 
-	export let locales: Locale[] = LOCALES_ARR;
+	export let langs: AvailableLanguageTag[] | Readonly<AvailableLanguageTag[]> =
+		availableLanguageTags;
 	export let legend: string;
 	export let legendMinimized: string | undefined | null = undefined;
 	export let deleteFormaction: string | undefined = undefined;
 	export let minimized = true;
 
-	let defaultValue = $page.data.locale;
-	let ctxLocale = getTranslationsTabsLocale();
+	let defaultValue = $page.data.lang;
+	let ctxLang = getTranslationsTabsLang();
 	$: legendCoalesced = minimized ? legendMinimized ?? legend : legend;
 
-	if (ctxLocale && $ctxLocale && locales.indexOf($ctxLocale) > -1) {
-		defaultValue = $ctxLocale;
+	if (ctxLang && $ctxLang && langs.indexOf($ctxLang) > -1) {
+		defaultValue = $ctxLang;
 	}
 
 	const {
@@ -69,8 +70,8 @@
 			</div>
 		</button>
 		{#if !minimized}
-			<div class="locales" transition:fly={{ y: 6, duration: 250, easing: expoOut }}>
-				<LocaleSwitch {list} {trigger} locale={value} />
+			<div class="langs" transition:fly={{ y: 6, duration: 250, easing: expoOut }}>
+				<LangSwitch {list} {trigger} lang={value} />
 			</div>
 		{/if}
 		<menu class="menu">
@@ -83,9 +84,9 @@
 	</div>
 	{#if !minimized}
 		<div class="content-wrap" transition:slide={{ easing: expoOut, duration: 350 }}>
-			{#each locales as locale}
-				<section class="content" lang={locale} use:melt={$content(locale)}>
-					<slot {locale} {minimized} value={$value} current={$value === locale} />
+			{#each langs as lang}
+				<section class="content" {lang} use:melt={$content(lang)}>
+					<slot {lang} {minimized} value={$value} current={$value === lang} />
 				</section>
 			{/each}
 		</div>

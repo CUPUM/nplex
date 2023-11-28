@@ -1,8 +1,9 @@
 import { InferInsertModel } from 'drizzle-orm';
 import { exit } from 'process';
+import { AvailableLanguageTag, availableLanguageTags } from '../src/i18n/runtime';
 import { USER_ROLES, USER_ROLES_ARR } from '../src/lib/auth/constants';
 import { userRoles, userRolesTranslations } from '../src/lib/db/schema/accounts';
-import { locales } from '../src/lib/db/schema/i18n';
+import { langs } from '../src/lib/db/schema/i18n';
 import {
 	projectExemplarityCategories,
 	projectExemplarityCategoriesTranslations,
@@ -17,7 +18,7 @@ import {
 	projectTypes,
 	projectTypesTranslations,
 } from '../src/lib/db/schema/public';
-import { LOCALES, LOCALES_ARR, LOCALES_DETAILS, type Locale } from '../src/lib/i18n/constants';
+import { LANG_DETAILS } from '../src/lib/i18n/constants';
 import { createDrizzle } from './common';
 
 const db = createDrizzle();
@@ -29,8 +30,10 @@ try {
 		// Seed locales
 		seeded.push(
 			await tx
-				.insert(locales)
-				.values(LOCALES_ARR.map((locale) => ({ locale, name: LOCALES_DETAILS[locale].name })))
+				.insert(langs)
+				.values(
+					availableLanguageTags.map((lang) => ({ lang: lang, name: LANG_DETAILS[lang].name }))
+				)
 				.onConflictDoNothing()
 				.returning()
 		);
@@ -49,39 +52,39 @@ try {
 				.values([
 					{
 						role: USER_ROLES.VISITOR,
-						locale: LOCALES.FRENCH,
+						lang: 'fr',
 						name: 'Visiteur',
 						description: 'Rôle de base pour tout utilisateur avec un compte.',
 					},
 					{
 						role: USER_ROLES.VISITOR,
-						locale: LOCALES.ENGLISH,
+						lang: 'en',
 						name: 'Visitor',
 						description: 'Default role for every registered user.',
 					},
 					{
 						role: USER_ROLES.EDITOR,
-						locale: LOCALES.FRENCH,
+						lang: 'fr',
 						name: 'Éditeur',
 						description:
 							'Collaborateur ayant les droits de base pour la gestion et la publication de contenu.',
 					},
 					{
 						role: USER_ROLES.EDITOR,
-						locale: LOCALES.ENGLISH,
+						lang: 'en',
 						name: 'Editor',
 						description: '',
 					},
 					{
 						role: USER_ROLES.ADMIN,
-						locale: LOCALES.FRENCH,
+						lang: 'fr',
 						name: 'Administrateur',
 						description:
 							'Administrateur avec accès et permissions permettant de gérer les droits des éditeurs et visiteurs.',
 					},
 					{
 						role: USER_ROLES.ADMIN,
-						locale: LOCALES.ENGLISH,
+						lang: 'en',
 						name: 'Administrator',
 						description: '',
 					},
@@ -124,7 +127,10 @@ try {
 					description: '',
 				},
 			},
-		] satisfies Record<Locale, InferInsertModel<typeof projectTypesTranslations>>[];
+		] satisfies Record<
+			AvailableLanguageTag,
+			Omit<InferInsertModel<typeof projectTypesTranslations>, 'lang' | 'id'>
+		>[];
 		const pt = await tx
 			.insert(projectTypes)
 			.values(pt_t.map((v, index) => ({ index })))
@@ -135,9 +141,9 @@ try {
 				.insert(projectTypesTranslations)
 				.values(
 					pt_t.flatMap((v, i) =>
-						LOCALES_ARR.map((locale) => ({
-							...v[locale],
-							locale,
+						availableLanguageTags.map((lang) => ({
+							...v[lang],
+							lang,
 							id: pt[i].id,
 						}))
 					)
@@ -189,8 +195,8 @@ try {
 				},
 			},
 		] satisfies Record<
-			Locale,
-			InferInsertModel<typeof projectInterventionCategoriesTranslations>
+			AvailableLanguageTag,
+			Omit<InferInsertModel<typeof projectInterventionCategoriesTranslations>, 'lang' | 'id'>
 		>[];
 		const pic = await tx
 			.insert(projectInterventionCategories)
@@ -200,9 +206,9 @@ try {
 			pic,
 			await tx.insert(projectInterventionCategoriesTranslations).values(
 				pic_t.flatMap((v, i) =>
-					LOCALES_ARR.map((locale) => ({
-						...v[locale],
-						locale,
+					availableLanguageTags.map((lang) => ({
+						...v[lang],
+						lang,
 						id: pic[i].id,
 					}))
 				)
@@ -251,7 +257,10 @@ try {
 					description: '',
 				},
 			},
-		] satisfies Record<Locale, InferInsertModel<typeof projectSiteOwnershipsTranslations>>[];
+		] satisfies Record<
+			AvailableLanguageTag,
+			Omit<InferInsertModel<typeof projectSiteOwnershipsTranslations>, 'lang' | 'id'>
+		>[];
 		const pso = await tx
 			.insert(projectSiteOwnerships)
 			.values(pso_t.map((v, index) => ({ index })))
@@ -260,9 +269,9 @@ try {
 			pso,
 			await tx.insert(projectSiteOwnershipsTranslations).values(
 				pso_t.flatMap((v, i) =>
-					LOCALES_ARR.map((locale) => ({
-						...v[locale],
-						locale,
+					availableLanguageTags.map((lang) => ({
+						...v[lang],
+						lang,
 						id: pso[i].id,
 					}))
 				)
@@ -301,7 +310,10 @@ try {
 					description: '',
 				},
 			},
-		] satisfies Record<Locale, InferInsertModel<typeof projectImplantationTypesTranslations>>[];
+		] satisfies Record<
+			AvailableLanguageTag,
+			Omit<InferInsertModel<typeof projectImplantationTypesTranslations>, 'lang' | 'id'>
+		>[];
 		const pim = await tx
 			.insert(projectImplantationTypes)
 			.values(pim_t.map((v, index) => ({ index })))
@@ -310,9 +322,9 @@ try {
 			pim,
 			await tx.insert(projectImplantationTypesTranslations).values(
 				pim_t.flatMap((v, i) =>
-					LOCALES_ARR.map((locale) => ({
-						...v[locale],
-						locale,
+					availableLanguageTags.map((lang) => ({
+						...v[lang],
+						lang,
 						id: pim[i].id,
 					}))
 				)
@@ -391,7 +403,10 @@ try {
 					description: '',
 				},
 			},
-		] satisfies Record<Locale, InferInsertModel<typeof projectExemplarityCategoriesTranslations>>[];
+		] satisfies Record<
+			AvailableLanguageTag,
+			Omit<InferInsertModel<typeof projectExemplarityCategoriesTranslations>, 'lang' | 'id'>
+		>[];
 		const pec = await tx
 			.insert(projectExemplarityCategories)
 			.values(pec_t.map((v, index) => ({ index })))
@@ -400,9 +415,9 @@ try {
 			pec,
 			await tx.insert(projectExemplarityCategoriesTranslations).values(
 				pec_t.flatMap((v, i) =>
-					LOCALES_ARR.map((locale) => ({
-						...v[locale],
-						locale,
+					availableLanguageTags.map((lang) => ({
+						...v[lang],
+						lang,
 						id: pec[i].id,
 					}))
 				)
@@ -453,15 +468,18 @@ try {
 					description: '',
 				},
 			},
-		] satisfies Record<Locale, InferInsertModel<typeof projectImageTypesTranslations>>[];
+		] satisfies Record<
+			AvailableLanguageTag,
+			Omit<InferInsertModel<typeof projectImageTypesTranslations>, 'lang' | 'id'>
+		>[];
 		const pit = await tx.insert(projectImageTypes).values(Array(pit_t.length).fill({})).returning();
 		seeded.push(
 			pit,
 			await tx.insert(projectImageTypesTranslations).values(
 				pit_t.flatMap((v, i) =>
-					LOCALES_ARR.map((locale) => ({
-						...v[locale],
-						locale,
+					availableLanguageTags.map((lang) => ({
+						...v[lang],
+						lang,
 						id: pit[i].id,
 					}))
 				)

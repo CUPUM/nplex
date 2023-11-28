@@ -8,7 +8,7 @@ import type { ValueOf } from 'type-fest';
  * @example ScopeSubScope: 'scope:sub-scope'
  */
 export const LOAD_DEPENDENCIES = {
-	Locale: 'locale',
+	Lang: 'lang',
 	ProjectEditorGallery: 'project:editor:gallery',
 	ProjectEditorBase: 'project:editor:base',
 } as const;

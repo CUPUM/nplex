@@ -4,10 +4,8 @@ import type { AvailableLanguageTag } from '$i18n/runtime';
 import type { Auth as LuciaAuth } from '$lib/auth/auth.server';
 import type { ToastData } from '$lib/components/Toast.svelte';
 import type { users } from '$lib/db/schema/accounts';
-import type { Locale } from '$lib/i18n/constants';
 import type { eventLocalize } from '$lib/i18n/localize.server';
 import type { eventI18nRedirect } from '$lib/i18n/redirect.server';
-import type { eventCreateTranslations } from '$lib/i18n/translate';
 import type { Mode } from '$lib/modes/constants';
 import type { createSetEventSetout } from '$lib/setout/event';
 import type { InferSelectModel } from 'drizzle-orm';
@@ -30,7 +28,7 @@ declare global {
 	namespace svelteHTML {
 		interface HTMLAttributes {
 			// In-markup narrowing is not happening.
-			['data-mode']?: Mode;
+			'data-mode'?: Mode;
 		}
 	}
 	namespace App {
@@ -63,7 +61,6 @@ declare global {
 			/**
 			 * Client's language as determined by the i18n middleware.
 			 */
-			locale: Locale;
 			lang: AvailableLanguageTag;
 			/**
 			 * Pre-localized redirect helper.
@@ -73,16 +70,11 @@ declare global {
 			 * Event-scoped location formatter.
 			 */
 			localize: ReturnType<typeof eventLocalize>;
-			/**
-			 * Event-localized translations helper.
-			 */
-			createTranslations: ReturnType<typeof eventCreateTranslations>;
 		}
 		interface PageData {
 			/**
-			 * Client-forwarded locals.locale.
+			 * Client-forwarded locals.lang.
 			 */
-			locale: App.Locals['locale'];
 			lang: App.Locals['lang'];
 			/**
 			 * Client-forwarded locals.theme.

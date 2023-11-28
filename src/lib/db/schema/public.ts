@@ -14,7 +14,7 @@ import {
 import { generateNanoid } from '../sql.server';
 import { userRoles, users } from './accounts';
 import { cube, intrange, point, userRole } from './custom-types';
-import { translationLocaleColumn, translationReferenceColumn } from './i18n';
+import { translationLangColumn, translationReferenceColumn } from './i18n';
 
 /**
  * Top-most categories of projects.
@@ -30,13 +30,13 @@ export const projectTypesTranslations = pgTable(
 	'project_types_t',
 	{
 		...translationReferenceColumn(projectTypes.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -55,13 +55,13 @@ export const projectInterventionCategoriesTranslations = pgTable(
 	'project_intervention_categories_t',
 	{
 		...translationReferenceColumn(projectInterventionCategories.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -86,13 +86,13 @@ export const projectInterventionsTranslations = pgTable(
 	'project_interventions_t',
 	{
 		...translationReferenceColumn(projectInterventions.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -140,13 +140,13 @@ export const projectSiteOwnershipsTranslations = pgTable(
 	'project_site_ownerships_t',
 	{
 		...translationReferenceColumn(projectSiteOwnerships.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -165,13 +165,13 @@ export const projectImplantationTypesTranslations = pgTable(
 	'project_implantation_types_t',
 	{
 		...translationReferenceColumn(projectImplantationTypes.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -190,13 +190,13 @@ export const projectExemplarityCategoriesTranslations = pgTable(
 	'project_exemplarity_categories_t',
 	{
 		...translationReferenceColumn(projectExemplarityCategories.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -218,14 +218,14 @@ export const projectExemplarityIndicatorsTranslations = pgTable(
 	'project_exemplarity_indicators_t',
 	{
 		...translationReferenceColumn(projectExemplarityIndicators.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		shortTitle: text('short_title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -243,13 +243,13 @@ export const projectImageTypesTranslations = pgTable(
 	'project_image_types_t',
 	{
 		...translationReferenceColumn(projectImageTypes.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -268,13 +268,13 @@ export const projectImageTemporalitiesTranslations = pgTable(
 	'project_image_temporalities_t',
 	{
 		...translationReferenceColumn(projectImageTemporalities.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -294,13 +294,13 @@ export const projectBuildingLevelTypesTranslations = pgTable(
 	'project_building_level_types_t',
 	{
 		...translationReferenceColumn(projectBuildingLevelTypes.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -358,14 +358,14 @@ export const projectsTranslations = pgTable(
 	'projects_t',
 	{
 		...translationReferenceColumn(projects.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		summary: text('summary'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.locale] }),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -497,12 +497,12 @@ export const projectsImagesTranslations = pgTable(
 	'projects_images_t',
 	{
 		...translationReferenceColumn(projectsImages.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -701,13 +701,13 @@ export const organizationTypesTranslations = pgTable(
 	'organization_types_t',
 	{
 		...translationReferenceColumn(organizationTypes.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -725,13 +725,13 @@ export const organizationExpertisesTranslations = pgTable(
 	'organization_expertises_t',
 	{
 		...translationReferenceColumn(organizationExpertises.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -749,13 +749,13 @@ export const organizationDutiesTranslations = pgTable(
 	'organization_duties_t',
 	{
 		...translationReferenceColumn(organizationDuties.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
+			pk: primaryKey(table.id, table.lang),
 		};
 	}
 );
@@ -790,15 +790,15 @@ export const organizationsTranslations = pgTable(
 	'organizations_t',
 	{
 		...translationReferenceColumn(organizations.id),
-		...translationLocaleColumn,
+		...translationLangColumn,
 		name: text('name'),
 		summary: text('summary'),
 		description: text('description'),
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.locale),
-			unq: unique().on(table.name, table.locale),
+			pk: primaryKey(table.id, table.lang),
+			unq: unique().on(table.name, table.lang),
 		};
 	}
 );

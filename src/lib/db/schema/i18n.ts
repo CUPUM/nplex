@@ -1,9 +1,9 @@
 import type { ColumnBaseConfig } from 'drizzle-orm';
 import { PgColumn, pgSchema, text } from 'drizzle-orm/pg-core';
-import { locale } from './custom-types';
+import { lang } from './custom-types';
 
 /**
- * Locales core to managing everything i18n oriented. Opting for a per-entity-type storage of
+ * Langs core to managing everything i18n oriented. Opting for a per-entity-type storage of
  * translations to avoid bloating a universal table and to facilitate cascading control.
  *
  * (previously based on: https://vertabelo.com/blog/multi-language-database-design/ for basis of
@@ -15,26 +15,26 @@ import { locale } from './custom-types';
 export const i18nSchema = pgSchema('i18n');
 
 /**
- * Table for db-level locales.
+ * Table for db-level langs.
  */
-export const locales = i18nSchema.table('locales', {
-	locale: locale('locale').primaryKey(),
+export const langs = i18nSchema.table('langs', {
+	lang: lang('lang').primaryKey(),
 	name: text('name').notNull().unique(),
 });
 
 /**
- * Common locale column template.
+ * Common lang column template.
  */
-export const translationLocaleColumn = {
-	locale: locale('locale')
-		.references(() => locales.locale, {
+export const translationLangColumn = {
+	lang: lang('lang')
+		.references(() => langs.lang, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		})
 		.notNull(),
 };
 
-export type TranslationLocaleColumn = typeof translationLocaleColumn;
+export type TranslationLangColumn = typeof translationLangColumn;
 
 /**
  * Common translations reference column template.

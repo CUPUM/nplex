@@ -1,7 +1,7 @@
+import type { AvailableLanguageTag } from '$i18n/runtime';
 import { USER_ROLE_DEFAULT, type AuthProvider, type UserRole } from '$lib/auth/constants';
 import { isAuthProvider, isUserRole } from '$lib/auth/validation';
-import type { Locale } from '$lib/i18n/constants';
-import { isLocale } from '$lib/i18n/validation';
+import { isAvailableLang } from '$lib/i18n/validation';
 import { GEOMETRY_TYPES, SRIDS, type SRID } from '$lib/utils/constants';
 import type { Coordinate } from '$lib/utils/gis';
 import { customType } from 'drizzle-orm/pg-core';
@@ -39,7 +39,7 @@ export const authProvider = customType<{ data: AuthProvider }>({
 		return 'text';
 	},
 	fromDriver(value) {
-		// return value as Locale;
+		// return value as AvailableLanguageTag;
 		if (isAuthProvider(value)) {
 			return value;
 		}
@@ -88,25 +88,25 @@ export const identity = customType<{
 });
 
 /**
- * Locale code custom type.
+ * AvailableLanguageTag code custom type.
  *
- * @see {@link Locale}
+ * @see {@link AvailableLanguageTag}
  */
-export const locale = customType<{ data: Locale; driverData: string }>({
+export const lang = customType<{ data: AvailableLanguageTag; driverData: string }>({
 	dataType() {
 		return 'text';
 	},
 	fromDriver(value) {
-		if (isLocale(value)) {
+		if (isAvailableLang(value)) {
 			return value;
 		}
-		throw new Error(`Value returned by database driver (${value}) is not a valid locale`);
+		throw new Error(`Value returned by database driver (${value}) is not a valid lang`);
 	},
 	toDriver(value) {
-		if (isLocale(value)) {
+		if (isAvailableLang(value)) {
 			return value;
 		}
-		throw new Error(`Tried to input wrong value for Locale (${value}).`);
+		throw new Error(`Tried to input wrong value for AvailableLanguageTag (${value}).`);
 	},
 });
 

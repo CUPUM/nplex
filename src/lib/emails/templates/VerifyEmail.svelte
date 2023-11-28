@@ -11,7 +11,7 @@
 	const url = `${DOMAIN_NAME}/verify-email/${token}`;
 </script>
 
-<Html lang={event.locals.locale}>
+<Html lang={event.locals.lang}>
 	<Heading
 		style={{
 			fontFamily,

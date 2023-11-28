@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { locales } from './i18n';
+import { langs } from './i18n';
 import {
 	organizationTypes,
 	organizationTypesTranslations,
@@ -43,9 +43,9 @@ export const projectTypesRelations = relations(projectTypes, ({ many }) => {
 });
 export const projectTypesTranslationsRelations = relations(projectTypesTranslations, ({ one }) => {
 	return {
-		locale: one(locales, {
-			fields: [projectTypesTranslations.locale],
-			references: [locales.locale],
+		locale: one(langs, {
+			fields: [projectTypesTranslations.lang],
+			references: [langs.lang],
 		}),
 		type: one(projectTypes, {
 			fields: [projectTypesTranslations.id],
@@ -67,9 +67,9 @@ export const projectInterventionCategoriesTranslationsRelations = relations(
 	projectInterventionCategoriesTranslations,
 	({ one }) => {
 		return {
-			locale: one(locales, {
-				fields: [projectInterventionCategoriesTranslations.locale],
-				references: [locales.locale],
+			locale: one(langs, {
+				fields: [projectInterventionCategoriesTranslations.lang],
+				references: [langs.lang],
 			}),
 			category: one(projectInterventionCategories, {
 				fields: [projectInterventionCategoriesTranslations.id],
@@ -94,9 +94,9 @@ export const projectInterventionsTranslationsRelations = relations(
 	projectInterventionsTranslations,
 	({ one }) => {
 		return {
-			locale: one(locales, {
-				fields: [projectInterventionsTranslations.locale],
-				references: [locales.locale],
+			locale: one(langs, {
+				fields: [projectInterventionsTranslations.lang],
+				references: [langs.lang],
 			}),
 			intervention: one(projectInterventions, {
 				fields: [projectInterventionsTranslations.id],
@@ -131,9 +131,9 @@ export const projectSiteOwnershipsTranslationsRelations = relations(
 	projectSiteOwnershipsTranslations,
 	({ one }) => {
 		return {
-			locale: one(locales, {
-				fields: [projectSiteOwnershipsTranslations.locale],
-				references: [locales.locale],
+			locale: one(langs, {
+				fields: [projectSiteOwnershipsTranslations.lang],
+				references: [langs.lang],
 			}),
 			siteOwnership: one(projectSiteOwnerships, {
 				fields: [projectSiteOwnershipsTranslations.id],
@@ -152,9 +152,9 @@ export const projectImplantationTypesTranslationsRelations = relations(
 	projectImplantationTypesTranslations,
 	({ one }) => {
 		return {
-			locale: one(locales, {
-				fields: [projectImplantationTypesTranslations.locale],
-				references: [locales.locale],
+			locale: one(langs, {
+				fields: [projectImplantationTypesTranslations.lang],
+				references: [langs.lang],
 			}),
 			siteOwnership: one(projectImplantationTypes, {
 				fields: [projectImplantationTypesTranslations.id],
@@ -177,9 +177,9 @@ export const projectExemplarityCategoriesTranslationsRelations = relations(
 	projectExemplarityCategoriesTranslations,
 	({ one }) => {
 		return {
-			locale: one(locales, {
-				fields: [projectExemplarityCategoriesTranslations.locale],
-				references: [locales.locale],
+			locale: one(langs, {
+				fields: [projectExemplarityCategoriesTranslations.lang],
+				references: [langs.lang],
 			}),
 			siteOwnership: one(projectExemplarityCategories, {
 				fields: [projectExemplarityCategoriesTranslations.id],
@@ -205,9 +205,9 @@ export const projectExemplarityIndicatorsTranslationsRelations = relations(
 	projectExemplarityIndicatorsTranslations,
 	({ one }) => {
 		return {
-			locale: one(locales, {
-				fields: [projectExemplarityIndicatorsTranslations.locale],
-				references: [locales.locale],
+			locale: one(langs, {
+				fields: [projectExemplarityIndicatorsTranslations.lang],
+				references: [langs.lang],
 			}),
 			siteOwnership: one(projectExemplarityIndicators, {
 				fields: [projectExemplarityIndicatorsTranslations.id],
@@ -226,9 +226,9 @@ export const projectImageTypesTranslationsRelations = relations(
 	projectImageTypesTranslations,
 	({ one }) => {
 		return {
-			locale: one(locales, {
-				fields: [projectImageTypesTranslations.locale],
-				references: [locales.locale],
+			locale: one(langs, {
+				fields: [projectImageTypesTranslations.lang],
+				references: [langs.lang],
 			}),
 			siteOwnership: one(projectImageTypes, {
 				fields: [projectImageTypesTranslations.id],
@@ -250,9 +250,9 @@ export const projectImageTemporalitiesTranslationsRelations = relations(
 	projectImageTemporalitiesTranslations,
 	({ one }) => {
 		return {
-			locale: one(locales, {
-				fields: [projectImageTemporalitiesTranslations.locale],
-				references: [locales.locale],
+			locale: one(langs, {
+				fields: [projectImageTemporalitiesTranslations.lang],
+				references: [langs.lang],
 			}),
 			siteOwnership: one(projectImageTemporalities, {
 				fields: [projectImageTemporalitiesTranslations.id],
@@ -274,9 +274,9 @@ export const projectBuildingLevelTypesTranslationsRelations = relations(
 	projectBuildingLevelTypesTranslations,
 	({ one }) => {
 		return {
-			locale: one(locales, {
-				fields: [projectBuildingLevelTypesTranslations.locale],
-				references: [locales.locale],
+			locale: one(langs, {
+				fields: [projectBuildingLevelTypesTranslations.lang],
+				references: [langs.lang],
 			}),
 			siteOwnership: one(projectBuildingLevelTypes, {
 				fields: [projectBuildingLevelTypesTranslations.id],
@@ -300,9 +300,9 @@ export const projectsRelations = relations(projects, ({ one, many }) => {
 });
 export const projectsTranslationsRelations = relations(projectsTranslations, ({ one }) => {
 	return {
-		locale: one(locales, {
-			fields: [projectsTranslations.locale],
-			references: [locales.locale],
+		locale: one(langs, {
+			fields: [projectsTranslations.lang],
+			references: [langs.lang],
 		}),
 		project: one(projects, {
 			fields: [projectsTranslations.id],
@@ -373,9 +373,9 @@ export const organizationTypesTranslationsRelations = relations(
 	organizationTypesTranslations,
 	({ one }) => {
 		return {
-			locale: one(locales, {
-				fields: [organizationTypesTranslations.locale],
-				references: [locales.locale],
+			locale: one(langs, {
+				fields: [organizationTypesTranslations.lang],
+				references: [langs.lang],
 			}),
 			type: one(organizationTypes, {
 				fields: [organizationTypesTranslations.id],

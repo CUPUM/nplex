@@ -1,4 +1,4 @@
-import { LOCALES_ARR, type Locale } from '$lib/i18n/constants';
+import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
 import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
 import type { ServerLoadEvent } from '@sveltejs/kit';
 import {
@@ -22,7 +22,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import type { Entries, Merge, ValueOf } from 'type-fest';
 import { dbpool } from './db.server';
-import { locales, type TranslationLocaleColumn } from './schema/i18n';
+import { langs, type TranslationLangColumn } from './schema/i18n';
 import { TRUE, jsonBuildObject, jsonObjectAgg, type FieldSelectRecord } from './sql.server';
 
 /**
@@ -58,10 +58,9 @@ export function getSubqueryColumns<S extends ColumnsSelection, A extends string>
  * Get individually localized columns.
  */
 export function getLocalizedField<F extends SQL | Column>(field: F) {
-	const shape = Object.fromEntries(LOCALES_ARR.map((locale) => [locale, field])) as Record<
-		Locale,
-		F
-	>;
+	const shape = Object.fromEntries(
+		availableLanguageTags.map((locale) => [locale, field])
+	) as Record<AvailableLanguageTag, F>;
 	return jsonBuildObject(shape);
 }
 
@@ -90,7 +89,7 @@ export function getLocalizedField<F extends SQL | Column>(field: F) {
  */
 export function withTranslation<
 	T extends AnyTable<TableConfig>,
-	TT extends AnyTable<TableConfig> & { [K in keyof TranslationLocaleColumn]: AnyColumn },
+	TT extends AnyTable<TableConfig> & { [K in keyof TranslationLangColumn]: AnyColumn },
 	F extends ValueOf<T['_']['columns']>,
 	R extends ValueOf<TT['_']['columns']>,
 	M = Merge<TT['_']['columns'], T['_']['columns']>,
@@ -110,7 +109,7 @@ export function withTranslation<
 	}
 ) {
 	// Attraching a load dependency to re-run when locale changes.
-	event.depends(LOAD_DEPENDENCIES.Locale);
+	event.depends(LOAD_DEPENDENCIES.Lang);
 	const field = f instanceof Function ? f(table) : f;
 	const reference = r instanceof Function ? r(translationsTable) : r;
 	const columns = getTableColumns(table);
@@ -121,7 +120,7 @@ export function withTranslation<
 		.from(table)
 		.leftJoin(
 			translationsTable,
-			and(eq(translationsTable.locale, event.locals.locale), eq(field, reference))
+			and(eq(translationsTable.lang, event.locals.lang), eq(field, reference))
 		);
 }
 
@@ -131,7 +130,7 @@ export function withTranslation<
  */
 export function withTranslations<
 	T extends AnyTable<TableConfig>,
-	TT extends AnyTable<TableConfig> & { [K in keyof TranslationLocaleColumn]: AnyColumn },
+	TT extends AnyTable<TableConfig> & { [K in keyof TranslationLangColumn]: AnyColumn },
 	F extends ValueOf<T['_']['columns']>,
 	R extends ValueOf<TT['_']['columns']>,
 	TS = T['_']['columns'],
@@ -166,20 +165,17 @@ export function withTranslations<
 		.select({
 			...selection,
 			translations: jsonObjectAgg(
-				locales.locale,
+				langs.lang,
 				jsonBuildObject({
 					...translationsSelection,
-					locale: locales.locale,
+					locale: langs.lang,
 					[translationsKey]: field,
 				})
 			).as(`${translationsTableName}_alias`),
 		})
 		.from(table)
-		.leftJoin(locales, TRUE())
-		.leftJoin(
-			translationsTable,
-			and(eq(field, reference), eq(locales.locale, translationsTable.locale))
-		)
+		.leftJoin(langs, TRUE())
+		.leftJoin(translationsTable, and(eq(field, reference), eq(langs.lang, translationsTable.lang)))
 		.groupBy(field);
 }
 
@@ -187,7 +183,7 @@ export function withTranslations<
  * Function to reduce a given array of entries augmented with translations records into two arrays.
  */
 export function extractTranslations<T, D extends Omit<Record<string, unknown>, 'translations'>>(
-	data: (D & { translations: Partial<Record<Locale, T>> })[]
+	data: (D & { translations: Partial<Record<AvailableLanguageTag, T>> })[]
 ) {
 	return data.reduce(
 		(acc, curr) => {
@@ -205,7 +201,7 @@ export function extractTranslations<T, D extends Omit<Record<string, unknown>, '
  * field if present.
  */
 export function reduceTranslations<
-	T extends { locale: Locale; id: string },
+	T extends { lang: AvailableLanguageTag; id: string },
 	D extends { id: string; index?: number | null },
 >(row: D & { translations: T[] }, index?: number) {
 	const { translations, ...cols } = row;
@@ -213,20 +209,20 @@ export function reduceTranslations<
 		cols.index = index;
 	}
 	// Building a base empty translations dictionnary to handle cases where no rows are defined.
-	const translationsBase = LOCALES_ARR.reduce(
-		(acc, locale) => {
-			acc[locale] = {
+	const translationsBase = availableLanguageTags.reduce(
+		(acc, lang) => {
+			acc[lang] = {
 				id: cols.id,
-				locale,
+				lang,
 			};
 			return acc;
 		},
-		<Record<Locale, T | { locale: Locale; id: string }>>{}
+		<Record<AvailableLanguageTag, T | { lang: AvailableLanguageTag; id: string }>>{}
 	);
 	return {
 		...cols,
 		translations: translations.reduce((acc, curr) => {
-			acc[curr.locale] = curr;
+			acc[curr.lang] = curr;
 			return acc;
 		}, translationsBase),
 	};

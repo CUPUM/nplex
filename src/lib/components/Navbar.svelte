@@ -3,12 +3,12 @@
 	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import { availableLanguageTags } from '$i18n/runtime';
 	import { breakpoint } from '$lib/breakpoints/breakpoints';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import Logo from '$lib/components/Logo.svelte';
-	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
-	import { i18nhref } from '$lib/i18n/href';
-	import { i18nswitch, link } from '$lib/i18n/link';
+	import { LANG_DETAILS } from '$lib/i18n/constants';
+	import { langHref, langSwitch, link } from '$lib/i18n/link';
 	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
 	import { setout } from '$lib/setout/store';
@@ -158,19 +158,19 @@
 				{#if $breakpoint.lg}
 					<NavbarButton menu={localeTrigger}>
 						<Languages class="button-icon" />
-						<span id="locale-label">{LOCALES_DETAILS[$page.data.locale].label}</span>
+						<span id="locale-label">{LANG_DETAILS[$page.data.lang].label}</span>
 					</NavbarButton>
 					{#if $localeOpen}
 						<NavbarMenu melt={localeMenu}>
-							{#each LOCALES_ARR as locale}
+							{#each availableLanguageTags as locale}
 								<NavbarMenuButton
-									{...$i18nswitch(locale)}
+									{...$langSwitch(locale)}
 									data-sveltekit-noscroll
 									data-sveltekit-replacestate
 									data-current={$page.data.locale === locale ? true : undefined}
 									melt={localeItem}
 								>
-									{LOCALES_DETAILS[locale].name}
+									{LANG_DETAILS[locale].name}
 								</NavbarMenuButton>
 							{/each}
 						</NavbarMenu>
@@ -282,8 +282,8 @@
 					{@const link = $link('/login')}
 					<NavbarButton
 						{...link}
-						data-current={$page.url.pathname.startsWith($i18nhref('/signup')) ||
-							$page.url.pathname.startsWith($i18nhref('/reset-password')) ||
+						data-current={$page.url.pathname.startsWith($langHref('/signup')) ||
+							$page.url.pathname.startsWith($langHref('/reset-password')) ||
 							link['data-current'] ||
 							undefined}
 						square

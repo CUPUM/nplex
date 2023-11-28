@@ -1,6 +1,6 @@
 import type { GestureOptions } from 'maplibre-gl';
 
-export type MapLocale = Partial<{
+export type MapAvailableLanguageTag = Partial<{
 	'AttributionControl.ToggleAttribution': string;
 	'AttributionControl.MapFeedback': string;
 	'FullscreenControl.Enter': string;
@@ -22,7 +22,7 @@ export const MAP_LOCALES = {
 		'ScrollZoomBlocker.CtrlMessage': 'Utilisez ctrl + ↕ pour zoomer',
 		'ScrollZoomBlocker.CmdMessage': 'Utilisez ⌘ + ↕ pour zoomer',
 	},
-} as const satisfies Record<string, MapLocale>;
+} as const satisfies Record<string, MapAvailableLanguageTag>;
 
 export const MAP_GESTURES_TEXT = {
 	french: {

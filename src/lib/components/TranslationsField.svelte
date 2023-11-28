@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { LOCALES_ARR, type Locale } from '$lib/i18n/constants';
+	import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
 	import { createTabs, melt } from '@melt-ui/svelte';
-	import LocaleSwitch from './LocaleSwitch.svelte';
+	import LangSwitch from './LangSwitch.svelte';
 
-	export let defaultValue: Locale = $page.data.locale;
+	export let defaultValue: AvailableLanguageTag = $page.data.lang;
 
 	const {
 		elements: { root, trigger, list, content },
@@ -17,11 +17,11 @@
 		<div class="legend-slot">
 			<slot name="legend" />
 		</div>
-		<LocaleSwitch {trigger} {list} locale={value} />
+		<LangSwitch {trigger} {list} lang={value} />
 	</legend>
-	{#each LOCALES_ARR as locale}
-		<div class="content" lang={locale} use:melt={$content(locale)}>
-			<slot {locale} {value} current={$value === locale} />
+	{#each availableLanguageTags as lang}
+		<div class="content" {lang} use:melt={$content(lang)}>
+			<slot {lang} {value} current={$value === lang} />
 		</div>
 	{/each}
 </fieldset>
