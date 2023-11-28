@@ -1,5 +1,8 @@
 {
 	"unescoChair": "Chaire UNESCO en paysage urbain",
+	"mode": "Mode d’écran",
+	"mode_dark": "Sombre",
+	"mode_light": "Clair",
 	"about": "À propos",
 	"guides": "Guides",
 	"projects": "Projets",
@@ -85,7 +88,6 @@
 	"logout": "Me déconnecter",
 	"account": "Mon compte",
 	"lang": "Langue",
-	"mode": "Mode d’écran",
 	"nav_editProjects": "Modifier un projet",
 	"nav_editProjectDescriptors": "Gérer les descripteurs",
 	"nav_editOrgs": "Modifier une organisation",

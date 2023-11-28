@@ -1,5 +1,8 @@
 {
 	"unescoChair": "UNESCO Chair in Urban Landscape",
+	"mode": "Screen mode",
+	"mode_dark": "Dark",
+	"mode_light": "Light",
 	"about": "About",
 	"guides": "Guides",
 	"projects": "Projects",
@@ -85,7 +88,6 @@
 	"logout": "Log out",
 	"account": "My account",
 	"lang": "Language",
-	"mode": "Screen mode",
 	"nav_editProjects": "Edit a project",
 	"nav_editProjectDescriptors": "Manage descriptors",
 	"nav_editOrgs": "Edit an organization",
