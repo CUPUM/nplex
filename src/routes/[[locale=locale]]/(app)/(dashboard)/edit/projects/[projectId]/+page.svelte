@@ -1,25 +1,14 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { createTranslations } from '$lib/i18n/translate';
-	import { tt } from '$lib/i18n/translations';
 	import type { Snapshot } from './$types.js';
 	import ProjectCost from './ProjectCost.svelte';
 	import ProjectInterventions from './ProjectInterventions.svelte';
 	import ProjectOwnership from './ProjectOwnership.svelte';
 	import ProjectTextDetails from './ProjectTextDetails.svelte';
 	import ProjectType from './ProjectType.svelte';
-
-	const t = createTranslations({
-		fr: {
-			heading: 'Information générale',
-			save: tt.fr.editor.client.save,
-		},
-		en: {
-			heading: 'General information',
-			save: tt.en.editor.client.save,
-		},
-	});
 
 	export let data;
 
@@ -51,7 +40,9 @@
 
 <DashboardForm {enhance} action="?/update" method="POST" {tainted} {submitter}>
 	<svelte:fragment slot="header">
-		<h2>{$t.heading}</h2>
+		<h2>
+			<LangKey>{m.project_general()}</LangKey>
+		</h2>
 		<p>
 			Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis accusantium, eius vero
 			tenetur voluptatibus ducimus harum itaque praesentium qui cupiditate!

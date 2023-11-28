@@ -1,5 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 
+import type { AvailableLanguageTag } from '$i18n/runtime';
 import type { Auth as LuciaAuth } from '$lib/auth/auth.server';
 import type { ToastData } from '$lib/components/Toast.svelte';
 import type { users } from '$lib/db/schema/accounts';
@@ -35,9 +36,9 @@ declare global {
 	namespace App {
 		// See https://github.com/ciscoheat/sveltekit-superforms/issues/261
 		namespace Superforms {
-			type Message = (Pick<ToastData, 'title' | 'description' | 'type'> & {
+			type Message = Pick<ToastData, 'title' | 'description' | 'type'> & {
 				closeDelay?: number;
-			})[];
+			};
 		}
 		// Svelte-kit related types.
 		interface Error {
@@ -63,6 +64,7 @@ declare global {
 			 * Client's language as determined by the i18n middleware.
 			 */
 			locale: Locale;
+			lang: AvailableLanguageTag;
 			/**
 			 * Pre-localized redirect helper.
 			 */
@@ -81,6 +83,7 @@ declare global {
 			 * Client-forwarded locals.locale.
 			 */
 			locale: App.Locals['locale'];
+			lang: App.Locals['lang'];
 			/**
 			 * Client-forwarded locals.theme.
 			 */
@@ -101,6 +104,9 @@ declare global {
 				sidebar?: ComponentType;
 				footer?: ComponentType;
 			};
+			/**
+			 * Short-life cookie-persisted flash message.
+			 */
 			flash?: App.Superforms.Message;
 		}
 		// interface Platform {}

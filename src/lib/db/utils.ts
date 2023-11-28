@@ -1,5 +1,6 @@
 import { LOCALES_ARR, type Locale } from '$lib/i18n/constants';
-import type { RequestEvent } from '@sveltejs/kit';
+import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
+import type { ServerLoadEvent } from '@sveltejs/kit';
 import {
 	Column,
 	SQL,
@@ -95,7 +96,7 @@ export function withTranslation<
 	M = Merge<TT['_']['columns'], T['_']['columns']>,
 	S extends SelectedFields = Merge<TT['_']['columns'], T['_']['columns']>,
 >(
-	event: RequestEvent,
+	event: ServerLoadEvent,
 	table: T,
 	translationsTable: TT,
 	{
@@ -108,6 +109,8 @@ export function withTranslation<
 		selection?: S | ((columns: M) => S);
 	}
 ) {
+	// Attraching a load dependency to re-run when locale changes.
+	event.depends(LOAD_DEPENDENCIES.Locale);
 	const field = f instanceof Function ? f(table) : f;
 	const reference = r instanceof Function ? r(translationsTable) : r;
 	const columns = getTableColumns(table);

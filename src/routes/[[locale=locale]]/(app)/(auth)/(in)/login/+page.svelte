@@ -1,32 +1,15 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/forms/super-form';
 	import { link } from '$lib/i18n/link';
-	import { createTranslations } from '$lib/i18n/translate';
+	import { langKey } from '$lib/i18n/translate';
 	import { melt } from '@melt-ui/svelte';
 	import { Eye, EyeOff, HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
 	import { fade, fly } from 'svelte/transition';
 
 	const STAGGER = 75;
-
-	const t = createTranslations({
-		fr: {
-			title: 'Connectez-vous à votre compte',
-			email: 'Courriel',
-			password: 'Mot de passe',
-			button: 'Me connecter',
-			signup: 'Je n’ai pas de compte',
-			forgot: 'J’ai oublié mon mot de passe',
-		},
-		en: {
-			title: 'Login to your account',
-			email: 'Email',
-			password: 'Password',
-			button: 'Log me in',
-			signup: 'I don’t have an account',
-			forgot: 'I forgot my password',
-		},
-	});
 
 	export let data;
 
@@ -47,22 +30,34 @@
 </script>
 
 <form method="POST" use:enhance autocomplete="off">
-	<h1 class="h4">{$t.title}</h1>
+	<h1 class="h4">
+		<LangKey>
+			{m.auth_loginTitle()}
+		</LangKey>
+	</h1>
 	<label class="label-group">
-		<span class="label" in:fly|global={{ y: 6 }}>{$t.email}</span>
+		<span class="label" in:fly|global={{ y: 6 }}>
+			<LangKey>
+				{m.email()}
+			</LangKey>
+		</span>
 		<input
 			in:fly|global={{ y: -6 }}
 			class="input"
 			type="email"
 			name="email"
-			placeholder="{$t.email.toLowerCase()}@..."
+			placeholder="{$langKey(m.email().toLowerCase())}@..."
 			aria-invalid={$errors.email ? true : undefined}
 			bind:value={$form.email}
 			{...$constraints.email}
 		/>
 	</label>
 	<label class="label-group">
-		<span class="label" in:fly|global={{ y: 6, delay: STAGGER }}>{$t.password}</span>
+		<span class="label" in:fly|global={{ y: 6, delay: STAGGER }}>
+			<LangKey>
+				{m.password()}
+			</LangKey>
+		</span>
 		<div class="input-group">
 			<input
 				in:fly|global={{ y: -6, delay: STAGGER }}
@@ -106,19 +101,25 @@
 		use:melt={$submitter(loginRef)}
 	>
 		<LogIn class="button-icon" />
-		{$t.button}
+		<LangKey>
+			{m.login()}
+		</LangKey>
 	</button>
 </form>
 <div class="links">
 	<!-- svelte-ignore a11y-missing-attribute -->
 	<a class="button link center" {...$link('/signup')} in:fade|global>
 		<UserPlus2 class="button-icon" />
-		{$t.signup}
+		<LangKey>
+			{m.auth_signupPrompt()}
+		</LangKey>
 	</a>
 	<!-- svelte-ignore a11y-missing-attribute -->
 	<a class="button link center" {...$link('/reset-password')} in:fade|global>
 		<HelpCircle class="button-icon" />
-		{$t.forgot}
+		<LangKey>
+			{m.auth_forgotPasswordPrompt()}
+		</LangKey>
 	</a>
 </div>
 

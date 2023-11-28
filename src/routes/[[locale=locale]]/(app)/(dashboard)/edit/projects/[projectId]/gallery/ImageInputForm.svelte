@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { IMAGE_FILE_TYPES_ARR } from '$lib/media/constants';
 	import { transformImage } from '$lib/media/utils';
 	import { MODES } from '$lib/modes/constants';
@@ -16,19 +17,6 @@
 	import { fly, scale } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import type { PresignedResponse } from './presigned/types';
-
-	const t = createTranslations({
-		fr: {
-			prompt: 'Ajoutez des images',
-			upload: 'Téléverser',
-			badFormat: 'Format d’image non supporté',
-		},
-		en: {
-			prompt: 'Add images',
-			upload: 'Upload',
-			badFormat: 'Unsupported file format',
-		},
-	});
 
 	let inmemory: {
 		url: string;
@@ -164,7 +152,7 @@
 			/>
 			<ImagePlus class="button-icon" />
 			<span>
-				{$t.prompt}
+				<LangKey>{m.project_gallery_addPrompt()}</LangKey>
 			</span>
 		</label>
 		{#each inmemory as image, i (image.url)}
@@ -205,7 +193,7 @@
 			use:melt={$loading}
 			in:fly={{ y: 8, easing: expoOut, duration: 750 }}
 		>
-			{$t.upload}
+			<LangKey>{m.project_gallery_upload()}</LangKey>
 			<Send class="button-icon" />
 		</button>
 	{/if}

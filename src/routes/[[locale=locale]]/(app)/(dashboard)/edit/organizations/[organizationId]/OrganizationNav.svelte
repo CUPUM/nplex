@@ -1,89 +1,51 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Sidebar, { setDashboard } from '$lib/components/Sidebar.svelte';
+	import * as m from '$i18n/messages';
+	import LangKey from '$lib/components/LangKey.svelte';
+	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { AlertTriangle, Shield, Users2 } from 'lucide-svelte';
 
 	$: orgId = $page.params.organizationId;
-
-	setDashboard();
-
-	const t = createTranslations({
-		fr: {
-			essentials: {
-				heading: 'Essentiels',
-				general: 'Général',
-			},
-			complementaries: {
-				heading: 'Compléments',
-				members: 'Membres',
-				projects: 'Projets',
-			},
-			settings: {
-				heading: 'Paramètres',
-				sharing: 'Partage des permissions',
-				visibility: 'Visibilité et diffusion',
-				danger: 'Zone à risque',
-			},
-		},
-		en: {
-			essentials: {
-				heading: 'Essentials',
-				general: 'Général',
-			},
-			complementaries: {
-				heading: 'Complementaries',
-				members: 'Members',
-				projects: 'Projects',
-			},
-			settings: {
-				heading: 'Settings',
-				sharing: 'Partage des permissions',
-				visibility: 'Visibilité et diffusion',
-				danger: 'Danger zone',
-			},
-		},
-	});
 </script>
 
-<Sidebar>
+<SidebarGroup>
 	<svelte:fragment slot="heading">
-		{$t.essentials.heading}
+		<LangKey>{m.org_essentials()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}`)}>
-		{$t.essentials.general}
+		<LangKey>{m.org_general()}</LangKey>
 	</SidebarItem>
-</Sidebar>
-<Sidebar>
+</SidebarGroup>
+<SidebarGroup>
 	<svelte:fragment slot="heading">
-		{$t.complementaries.heading}
+		<LangKey>{m.org_complements()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/members`)}>
-		{$t.complementaries.members}
+		<LangKey>{m.org_members()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/projects`)}>
-		{$t.complementaries.projects}
+		<LangKey>{m.org_projects()}</LangKey>
 	</SidebarItem>
-</Sidebar>
-<Sidebar>
+</SidebarGroup>
+<SidebarGroup>
 	<svelte:fragment slot="heading">
-		{$t.settings.heading}
+		<LangKey>{m.org_settings()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/sharing`)}>
-		{$t.settings.sharing}
+		<LangKey>{m.org_sharing()}</LangKey>
 		<Users2 class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/visibility`)}>
-		{$t.settings.visibility}
+		<LangKey>{m.org_visibility()}</LangKey>
 		<Shield class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/security`)} danger>
-		{$t.settings.danger}
+		<LangKey>{m.org_danger()}</LangKey>
 		<AlertTriangle class="button-icon" />
 	</SidebarItem>
-</Sidebar>
+</SidebarGroup>
 
 <style lang="postcss">
 </style>

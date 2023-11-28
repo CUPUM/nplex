@@ -1,3 +1,4 @@
+import * as m from '$i18n/messages';
 import { withAuth } from '$lib/auth/guard.server';
 import { organizationGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
@@ -11,14 +12,6 @@ import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await withAuth(event);
-	const t = event.locals.createTranslations({
-		fr: {
-			notFound: `Aucune organisation trouvée avec l’identifiant ${event.params.organizationId}.`,
-		},
-		en: {
-			notFound: `No organization found for id ${event.params.organizationId}.`,
-		},
-	});
 	const rawOrg = await dbpool.query.organizations.findFirst({
 		where(f, o) {
 			return o.eq(f.id, event.params.organizationId);
@@ -28,7 +21,7 @@ export const load = async (event) => {
 		},
 	});
 	if (!rawOrg) {
-		throw error(STATUS_CODES.NOT_FOUND, t.notFound);
+		throw error(STATUS_CODES.NOT_FOUND, m.org_notFound());
 	}
 	const org = reduceTranslations(rawOrg);
 	const form = await superValidate(org, organizationGeneralUpdateSchema);

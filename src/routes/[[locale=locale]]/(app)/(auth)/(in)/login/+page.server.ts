@@ -1,3 +1,4 @@
+import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
 import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { STATUS_CODES } from '$lib/utils/constants';
@@ -24,51 +25,14 @@ export const load = async (event) => {
 
 export const actions = {
 	default: async (event) => {
-		const t = event.locals.createTranslations({
-			fr: {
-				invalid: {
-					title: 'Informations non valides',
-					description: 'Les informations de connexion ne sont pas valides.',
-				},
-				notFound: {
-					title: 'Aucun compte trouvé',
-					description:
-						'Vérifiez que vous utilisez la bonne adresse courriel et le bon mot de passe.',
-				},
-				error: {
-					title: 'Erreur interne',
-					description:
-						'Nous avons eu un problème lors du traitement de votre requête, veuillez essayer à nouveau. Désolé pour cet inconvénient.',
-				},
-				success: {
-					title: 'Connecté avec succès',
-					description: '',
-				},
-			},
-			en: {
-				invalid: {
-					title: 'Invalid credentials',
-					description: 'Provided login credentials are not valid.',
-				},
-				notFound: {
-					title: 'No account found',
-					description:
-						'Please make sure you are using the proper email address and a valid password.',
-				},
-				error: {
-					title: 'Internal error',
-					description:
-						'Our server has encountered an error, please try again. Sorry for the inconvenience.',
-				},
-				success: {
-					title: 'Successfully logged in',
-					description: '',
-				},
-			},
-		});
 		const form = await superValidate(event, emailPasswordLoginSchema);
 		if (!form.valid) {
-			return message(form, [t.invalid]);
+			return message(form, [
+				{
+					title: m.auth_invalid(),
+					description: m.auth_invalidDescription(),
+				},
+			]);
 		}
 		try {
 			const key = await auth.useKey(
@@ -83,10 +47,33 @@ export const actions = {
 				err instanceof LuciaError &&
 				(err.message === 'AUTH_INVALID_KEY_ID' || err.message === 'AUTH_INVALID_PASSWORD')
 			) {
-				return message(form, [t.notFound], { status: STATUS_CODES.BAD_REQUEST });
+				return message(
+					form,
+					[
+						{
+							title: m.auth_notFound(),
+							description: m.auth_notFoundDescription(),
+						},
+					],
+					{ status: STATUS_CODES.BAD_REQUEST }
+				);
 			}
-			return message(form, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return message(
+				form,
+				[
+					{
+						title: m.auth_error(),
+						description: m.auth_errorDescription(),
+					},
+				],
+				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
+			);
 		}
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', [t.success]);
+		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', [
+			{
+				title: m.auth_success(),
+				description: m.auth_successDescription(),
+			},
+		]);
 	},
 };

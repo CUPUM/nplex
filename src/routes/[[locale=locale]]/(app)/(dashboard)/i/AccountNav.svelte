@@ -1,77 +1,51 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Sidebar, { setDashboard } from '$lib/components/Sidebar.svelte';
+	import * as m from '$i18n/messages';
+	import LangKey from '$lib/components/LangKey.svelte';
+	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { ArrowRight, FolderHeart, Folders, Home, Settings, UserSquare2 } from 'lucide-svelte';
-
-	setDashboard();
-
-	const t = createTranslations({
-		fr: {
-			heading: 'Mon compte',
-			home: 'Accueil',
-			profile: 'Profil',
-			collections: 'Collections',
-			likes: 'Favoris',
-			settings: 'Paramètres',
-			editor: {
-				heading: 'Gestion de fiches',
-				projects: 'Projets',
-				organizations: 'Organisations',
-			},
-		},
-		en: {
-			heading: 'Mon compte',
-			home: 'Home',
-			profile: 'Profile',
-			collections: 'Collections',
-			likes: 'Likes',
-			settings: 'Settings',
-			editor: {
-				heading: 'Manage content',
-				projects: 'Projects',
-				organizations: 'Organizations',
-			},
-		},
-	});
 </script>
 
-<Sidebar>
+<SidebarGroup>
 	<svelte:fragment slot="heading">
-		{$t.heading}
+		<LangKey>{m.account_nav_title()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link(`/i`)}>
-		{$t.home}<Home class="button-icon" />
+		<LangKey>{m.account_nav_home()}</LangKey>
+		<Home class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/users/${$page.data?.user?.id}`)}>
-		{$t.profile}<UserSquare2 class="button-icon" />
+		<LangKey>{m.account_nav_profile()}</LangKey>
+		<UserSquare2 class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/i/collections`)}>
-		{$t.collections}<Folders class="button-icon" />
+		<LangKey>{m.account_nav_collections()}</LangKey>
+		<Folders class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/i/likes`)}>
-		{$t.likes}<FolderHeart class="button-icon" />
+		<LangKey>{m.account_nav_likes()}</LangKey>
+		<FolderHeart class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/i/settings`)}>
-		{$t.settings}
+		<LangKey>{m.account_nav_settings()}</LangKey>
 		<Settings class="button-icon" />
 	</SidebarItem>
-</Sidebar>
-<Sidebar>
+</SidebarGroup>
+<SidebarGroup>
 	<svelte:fragment slot="heading">
-		{$t.editor.heading}
+		<LangKey>{m.account_nav_editor_title()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/projects`)}>
-		{$t.editor.projects}
+		<LangKey>{m.projects()}</LangKey>
 		<ArrowRight class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/organizations`)}>
-		{$t.editor.organizations}
+		<LangKey>{m.orgs()}</LangKey>
 		<ArrowRight class="button-icon" />
 	</SidebarItem>
-</Sidebar>
+</SidebarGroup>
 
 <style lang="postcss">
 </style>

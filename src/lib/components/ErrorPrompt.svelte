@@ -1,19 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { createTranslations } from '$lib/i18n/translate';
+	import * as m from '$i18n/messages';
 	import { Frown } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
-
-	const t = createTranslations({
-		fr: {
-			heading: 'Oops, une petite erreur est survenue',
-		},
-		en: {
-			heading: 'Error, a small error occurred',
-		},
-	});
+	import LangKey from './LangKey.svelte';
 
 	let mounted = false;
 
@@ -27,7 +19,9 @@
 		<div>
 			<h1 in:fly|global={{ y: 6 }}>
 				<Frown strokeWidth="3" size="1em" class="icon" />
-				{$t.heading}
+				Oops, <LangKey>
+					{m.errorDetails}
+				</LangKey>
 			</h1>
 			<p in:fly={{ y: -6, delay: 75 }}>
 				{$page.error?.message}

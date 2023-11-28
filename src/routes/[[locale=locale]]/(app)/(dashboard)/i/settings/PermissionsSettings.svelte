@@ -1,31 +1,16 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { createTranslations } from '$lib/i18n/translate';
+	import { langKey } from '$lib/i18n/translate';
 	import { createSelect, melt } from '@melt-ui/svelte';
 	import { Crown, Send } from 'lucide-svelte';
 	import type { PageData } from './$types';
-
-	const t = createTranslations({
-		fr: {
-			title: 'Rôle & permissions',
-			role: 'Rôle actuel',
-			changeRole: 'Changer de rôle',
-			requestRole: 'Envoyer la requête',
-			permissions: 'Permissions partagées',
-		},
-		en: {
-			title: 'Role & permissions',
-			role: 'Current role',
-			changeRole: 'Change role',
-			requestRole: 'Send request',
-			permissions: 'Shared permissions',
-		},
-	});
 
 	export let data: PageData['permissionsForm'];
 	export let roles: PageData['roles'];
@@ -50,20 +35,21 @@
 	});
 </script>
 
-<DashboardForm {enhance} action="?/update">
+<DashboardForm {enhance} action="?/update" {tainted} {submitter}>
 	<svelte:fragment slot="header">
-		<h1 class="heading lg">{$t.title}</h1>
+		<h2><LangKey>{m.user_roleAndPermissions()}</LangKey></h2>
 	</svelte:fragment>
-	<DashboardFormField title={$t.role} centered>
+	<DashboardFormSection title={$langKey(m.user_currentRole())}>
 		<fieldset class="input-group" disabled>
 			<button class="input select" type="button" use:melt={$trigger}>
 				<Crown class="input-icon" />
-				{$t.changeRole}
+				<LangKey>{m.user_changeRole()}</LangKey>
 				<SelectIcon open={$open} />
 			</button>
 			<div class="input-peer">
 				<button class="button" type="submit" formaction="?/requestRole" on:click|stopPropagation>
-					<Send class="button-icon" />{$t.requestRole}
+					<Send class="button-icon" />
+					<LangKey>{m.user_requestRole()}</LangKey>
 				</button>
 			</div>
 		</fieldset>
@@ -74,15 +60,15 @@
 				</SelectOption>
 			{/each}
 		</SelectMenu>
-	</DashboardFormField>
-	<DashboardFormField title={$t.permissions}>
+	</DashboardFormSection>
+	<DashboardFormSection title={$langKey(m.user_sharedPermissions())}>
 		<section>
-			<h3>Projects</h3>
+			<h3><LangKey>{m.projects()}</LangKey></h3>
 		</section>
 		<section>
-			<h3>Organizations</h3>
+			<h3><LangKey>{m.orgs()}</LangKey></h3>
 		</section>
-	</DashboardFormField>
+	</DashboardFormSection>
 </DashboardForm>
 
 <style lang="postcss">

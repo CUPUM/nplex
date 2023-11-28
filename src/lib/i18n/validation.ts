@@ -1,3 +1,4 @@
+import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
 import { z } from 'zod';
 import { LOCALES_ARR, type Locale } from './constants';
 
@@ -9,3 +10,9 @@ export function isLocale(maybeLocale: unknown): maybeLocale is Locale {
 }
 
 export const localeSchema = z.custom<Locale>((val) => isLocale(val));
+
+export function isLang(maybeLang: unknown): maybeLang is AvailableLanguageTag {
+	return availableLanguageTags.indexOf(maybeLang as AvailableLanguageTag) > -1;
+}
+
+export const langSchema = z.custom<AvailableLanguageTag>((val) => isLang(val));

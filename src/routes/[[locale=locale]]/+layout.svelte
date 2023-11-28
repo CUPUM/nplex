@@ -25,5 +25,7 @@
 		position: fixed;
 		inset: 0;
 		z-index: 9999;
+		pointer-events: none;
+		user-select: none;
 	}
 </style>

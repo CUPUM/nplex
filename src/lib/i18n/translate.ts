@@ -4,6 +4,10 @@ import { derived, type Readable } from 'svelte/store';
 import { LOCALE_DEFAULT, type Locale, type LocaleDefault } from './constants';
 import { getEventLocale } from './event';
 
+export const localized = derived(page, ($page) => <T>(message: T, locale = $page.data.locale) => {
+	return message;
+});
+
 type Translations<T> = Record<LocaleDefault, T> & Record<Locale, T & object>;
 
 // /**
@@ -108,3 +112,15 @@ export function eventCreateTranslations(event: RequestEvent | ServerLoadEvent | 
 export function defineTranslations<T>(translations: Translations<T>) {
 	return translations;
 }
+
+/**
+ * Narrowing reactivity scope.
+ */
+export const lang = derived(page, ($page) => $page.data.lang);
+
+/**
+ * Inline equivalent of LangKey to reactively trigger translation message updates.
+ */
+export const langKey = derived<typeof lang, <T>(message: T) => T>(lang, () => <T>(message: T) => {
+	return message;
+});

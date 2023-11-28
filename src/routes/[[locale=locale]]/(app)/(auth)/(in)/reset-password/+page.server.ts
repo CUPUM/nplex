@@ -1,3 +1,4 @@
+import * as m from '$i18n/messages';
 import { sendPasswordResetLink } from '$lib/auth/emails.server';
 import { isEmailUser } from '$lib/auth/validation';
 import { dbpool } from '$lib/db/db.server';
@@ -29,20 +30,6 @@ export const actions = {
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		const t = event.locals.createTranslations({
-			fr: {
-				nouser: 'Aucun utilisateur trouvé pour ce courriel',
-				error: 'Une erreur est survenue',
-				success:
-					'Un courriel vous a été envoyé pour compléter la démarche. Veuillez consulter votre boîte de réception.',
-			},
-			en: {
-				nouser: 'We could not find a user for the given email',
-				error: 'An unknown error occured on our end',
-				success:
-					'An email was sent to you in order to complete the procedure. Please go see your mailbox.',
-			},
-		});
 		try {
 			const [user] = await dbpool
 				.select({ id: users.id, email: users.email })
@@ -50,16 +37,28 @@ export const actions = {
 				.where(eq(users.email, form.data.email.toLowerCase()))
 				.limit(1);
 			if (!user) {
-				return message(form, t.nouser, { status: STATUS_CODES.BAD_REQUEST });
+				return message(
+					form,
+					{ title: m.auth_error(), description: m.auth_noUserFound() },
+					{
+						status: STATUS_CODES.BAD_REQUEST,
+					}
+				);
 			}
 			if (!isEmailUser(user)) {
 				throw new Error('User email is null');
 			}
 			await sendPasswordResetLink(user, event);
-			return message(form, t.success);
+			return message(form, { title: m.success(), description: m.auth_verifyEmailSent() });
 		} catch (error) {
 			console.error(error);
-			return message(form, t.error, { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return message(
+				form,
+				{ title: m.error(), description: m.errorDetails() },
+				{
+					status: STATUS_CODES.INTERNAL_SERVER_ERROR,
+				}
+			);
 		}
 	},
 };

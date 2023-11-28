@@ -1,61 +1,14 @@
-<script lang="ts" context="module">
-	export const t = createTranslations({
-		fr: {
-			about: 'À propos',
-			guides: 'Guides',
-			projects: 'Projets',
-			organizations: 'Organisations',
-			login: 'Me connecter',
-			logout: 'Me déconnecter',
-			language: 'Langue',
-			theme: 'Mode d’écran',
-			account: 'Mon compte',
-			edit: {
-				projects: 'Modifier un projet',
-				projectDescriptors: 'Gérer les descripteurs',
-				organizations: 'Modifier une organisation',
-				organizationsDescriptors: 'Gérer les descripteurs',
-			},
-			new: {
-				project: 'Créer un nouveau projet',
-				organization: 'Créer une nouvelle organisation',
-			},
-		},
-		en: {
-			about: 'About',
-			guides: 'Guides',
-			projects: 'Projects',
-			organizations: 'Organizations',
-			login: 'Log in',
-			logout: 'Log out',
-			language: 'Language',
-			theme: 'Screen mode',
-			account: 'My account',
-			edit: {
-				projects: 'Edit a project',
-				projectDescriptors: 'Manage descriptors',
-				organizations: 'Edit an organization',
-				organizationsDescriptors: 'Manage descriptors',
-			},
-			new: {
-				project: 'Create a new project',
-				organization: 'Create a new organization',
-			},
-		},
-	});
-</script>
-
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { invalidateAll, onNavigate } from '$app/navigation';
+	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
+	import * as m from '$i18n/messages';
 	import { breakpoint } from '$lib/breakpoints/breakpoints';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
 	import { i18nhref } from '$lib/i18n/href';
 	import { i18nswitch, link } from '$lib/i18n/link';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
 	import { setout } from '$lib/setout/store';
@@ -80,6 +33,7 @@
 	import { onMount } from 'svelte';
 	import { circInOut, cubicIn, expoOut } from 'svelte/easing';
 	import { crossfade, fly, scale } from 'svelte/transition';
+	import LangKey from './LangKey.svelte';
 	import NavbarButton from './NavbarButton.svelte';
 	import NavbarDrawer from './NavbarDrawer.svelte';
 	import NavbarMenu from './NavbarMenu.svelte';
@@ -97,7 +51,10 @@
 		portal: '#navbar',
 	} satisfies CreateDropdownMenuProps;
 
-	const exploreSections = ['projects', 'organizations'] as const;
+	const explore = [
+		{ key: 'projects', title: m.projects },
+		{ key: 'organizations', title: m.orgs },
+	] satisfies { key: string; title: () => string }[];
 
 	const {
 		elements: { menu: localeMenu, item: localeItem, trigger: localeTrigger },
@@ -157,8 +114,16 @@
 					<Logo mono={!$breakpoint.md} size={$breakpoint.md ? '1.75em' : '1em'} />
 				</NavbarButton>
 				{#if $breakpoint.lg}
-					<NavbarButton {...$link('/about')}>{$t.about}</NavbarButton>
-					<NavbarButton {...$link('/guides')}>{$t.guides}</NavbarButton>
+					<NavbarButton {...$link('/about')}>
+						<LangKey>
+							{m.about()}
+						</LangKey>
+					</NavbarButton>
+					<NavbarButton {...$link('/guides')}>
+						<LangKey>
+							{m.guides()}
+						</LangKey>
+					</NavbarButton>
 				{:else}
 					<NavbarButton square dialog={drawerTrigger}>
 						<MoreHorizontal class="button-icon" />
@@ -171,8 +136,8 @@
 			<!-- Exploration nav -->
 			{#if $breakpoint.md}
 				<nav id="explore-group" class="navbar-group" in:flyin|global={1}>
-					{#each exploreSections as exp}
-						{@const link = $link(`/${exp}`)}
+					{#each explore as ex}
+						{@const link = $link(`/${ex.key}`)}
 						<NavbarButton {...link} outline={false}>
 							{#if link['data-current']}
 								<div
@@ -181,7 +146,9 @@
 									out:sendExplore={{ key: 'explore' }}
 								/>
 							{/if}
-							{$t[exp]}
+							<LangKey>
+								{ex.title()}
+							</LangKey>
 						</NavbarButton>
 					{/each}
 				</nav>
@@ -200,13 +167,8 @@
 									{...$i18nswitch(locale)}
 									data-sveltekit-noscroll
 									data-sveltekit-replacestate
-									on:click={() => {
-										if ($page.data.locale !== locale) {
-											invalidateAll();
-										}
-									}}
-									melt={localeItem}
 									data-current={$page.data.locale === locale ? true : undefined}
+									melt={localeItem}
 								>
 									{LOCALES_DETAILS[locale].name}
 								</NavbarMenuButton>
@@ -261,36 +223,42 @@
 					</NavbarButton>
 					{#if $userOpen}
 						<NavbarMenu melt={userMenu}>
-							<NavbarMenuGroup legend={$t.projects}>
+							<NavbarMenuGroup>
+								<svelte:fragment slot="legend">
+									<LangKey>{m.projects()}</LangKey>
+								</svelte:fragment>
 								<NavbarMenuButton {...$link('/edit/projects')} melt={userItem}>
-									{$t.edit.projects}
+									<LangKey>{m.nav_editProjects()}</LangKey>
 									<Pencil class="button-icon" />
 								</NavbarMenuButton>
 								<NavbarMenuButton {...$link('/new/project')} melt={userItem}>
-									{$t.new.project}
+									<LangKey>{m.nav_newProject()}</LangKey>
 									<FilePlus2 class="button-icon" />
 								</NavbarMenuButton>
 								<NavbarMenuButton {...$link('/edit/projects/descriptors')} melt={userItem}>
-									{$t.edit.projectDescriptors}
+									<LangKey>{m.nav_editProjectDescriptors()}</LangKey>
 									<Sliders class="button-icon" />
 								</NavbarMenuButton>
 							</NavbarMenuGroup>
-							<NavbarMenuGroup legend={$t.organizations}>
+							<NavbarMenuGroup>
+								<svelte:fragment slot="legend">
+									<LangKey>{m.orgs()}</LangKey>
+								</svelte:fragment>
 								<NavbarMenuButton {...$link('/edit/organizations')} melt={userItem}>
-									{$t.edit.organizations}
+									<LangKey>{m.nav_editOrgs()}</LangKey>
 									<Pencil class="button-icon" />
 								</NavbarMenuButton>
 								<NavbarMenuButton {...$link('/new/organization')} melt={userItem}>
-									{$t.new.organization}
+									<LangKey>{m.nav_newOrg()}</LangKey>
 									<FilePlus2 class="button-icon" />
 								</NavbarMenuButton>
 								<NavbarMenuButton {...$link('/edit/organizations/descriptors')} melt={userItem}>
-									{$t.edit.organizationsDescriptors}
+									<LangKey>{m.nav_editOrgsDescriptors()}</LangKey>
 									<Sliders class="button-icon" />
 								</NavbarMenuButton>
 							</NavbarMenuGroup>
 							<NavbarMenuButton {...$link('/i')} melt={userItem}>
-								{$t.account}
+								<LangKey>{m.account()}</LangKey>
 								<User2 class="button-icon" />
 							</NavbarMenuButton>
 							<form
@@ -305,7 +273,7 @@
 								}}
 							/>
 							<NavbarMenuButton type="submit" form="logout-form" melt={userItem}>
-								{$t.logout}
+								<LangKey>{m.logout()}</LangKey>
 								<LogOut class="button-icon" />
 							</NavbarMenuButton>
 						</NavbarMenu>

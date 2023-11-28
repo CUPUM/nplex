@@ -1,7 +1,7 @@
+import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
 import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { validatePasswordResetToken } from '$lib/auth/token.server';
-import { tt } from '$lib/i18n/translations';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
@@ -53,15 +53,13 @@ export const actions = {
 			});
 			event.locals.auth.setSession(session);
 		} catch (err) {
-			const t = event.locals.createTranslations({
-				fr: {
-					error: 'Une erreur est survenue',
-				},
-				en: {
-					error: 'An unknown error occured on our end',
-				},
-			});
-			return message(form, tt.error, { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return message(
+				form,
+				{ title: m.error(), description: m.errorDetails() },
+				{
+					status: STATUS_CODES.INTERNAL_SERVER_ERROR,
+				}
+			);
 		}
 		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	},

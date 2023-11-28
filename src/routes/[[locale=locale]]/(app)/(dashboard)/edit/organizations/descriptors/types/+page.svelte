@@ -1,29 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
+	import * as m from '$i18n/messages';
+	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
-	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import TranslationsCard from '$lib/components/TranslationsCard.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-
-	const t = createTranslations({
-		fr: {
-			heading: 'Types d’organisation',
-			entity: 'type d’organisation',
-			title: 'Titre',
-			description: 'Description',
-		},
-		en: {
-			heading: 'Organization types',
-			entity: 'organization type',
-			title: 'Titre',
-			description: 'Description',
-		},
-	});
 
 	export let data;
 
@@ -41,9 +26,11 @@
 	});
 </script>
 
-<DescriptorsForm action="?/update" {enhance}>
+<DashboardForm action="?/update" {enhance} {submitter} {tainted}>
 	<svellte:fragment slot="header">
-		<h2 class="heading lg">{$t.heading}</h2>
+		<h2 class="heading lg">
+			<LangKey>{m.org_types()}</LangKey>
+		</h2>
 		<p class="prose md dimmer">
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur magni quo accusantium
 			perferendis quis, minus iste commodi error nostrum tempora?
@@ -64,7 +51,7 @@
 				>
 					<label class="label-group">
 						<span class="label with-hover">
-							{$t.title}
+							<LangKey>{m.title()}</LangKey>
 						</span>
 						<input
 							class="input"
@@ -74,7 +61,7 @@
 					</label>
 					<label class="label-group">
 						<span class="label with-hover">
-							{$t.description}
+							<LangKey>{m.description()}</LangKey>
 						</span>
 						<textarea
 							class="input resize"
@@ -85,8 +72,7 @@
 			</li>
 		{/each}
 	</DescriptorsCardsList>
-	<DashboardMenu {submitter} {tainted}></DashboardMenu>
-</DescriptorsForm>
+</DashboardForm>
 
 <style lang="postcss">
 </style>

@@ -1,48 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
+	import * as m from '$i18n/messages';
 	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
 	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { default as TranslationsCard } from '$lib/components/TranslationsCard.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { createTranslations } from '$lib/i18n/translate';
-	import { tt } from '$lib/i18n/translations';
 	import { melt } from '@melt-ui/svelte';
-	import { Pen, Plus } from 'lucide-svelte';
+	import { Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-
-	const t = createTranslations({
-		fr: {
-			...tt.fr.editor.client,
-			heading: ['Catégories d’intervention', 'types d’intervention'],
-			category: {
-				title: 'Titre de la catégorie',
-				description: 'Description de la catégorie',
-			},
-			intervention: {
-				entity: 'type d’intervention',
-				title: 'Titre d’intervention',
-				description: 'Description de l’intervention',
-				none: 'Aucune intervention ajoutée',
-			},
-		},
-		en: {
-			...tt.en.editor.client,
-			heading: ['Intervention categories', 'intervention types'],
-			category: {
-				title: 'Category title',
-				description: 'Category description',
-			},
-			intervention: {
-				entity: 'intervention type',
-				title: 'Intervention title',
-				description: 'Intervention description',
-				none: 'No interventions added yet',
-			},
-		},
-	});
 
 	export let data;
 
@@ -65,13 +33,11 @@
 <DescriptorsForm action="?/update" {enhance}>
 	<svelte:fragment slot="header">
 		<h2 class="heading lg">
-			{#each $t.heading as segment, i}
-				{segment}
-				{#if i < $t.heading.length - 1}
-					<span class="prose dimmer">&</span>
-					{' '}
-				{/if}
-			{/each}
+			<LangKey>
+				{m.project_descriptors_interventionCategories()}
+				<span class="dim">&</span>
+				{m.project_descriptors_interventionTypes()}
+			</LangKey>
 		</h2>
 		<p class="prose sm dim">
 			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis eius enim error sit fugit
@@ -88,7 +54,9 @@
 						legendMinimized={category.translations[$page.data.locale].title}
 					>
 						<label class="label-group">
-							<span class="label with-hover">{$t.category.title}</span>
+							<span class="label with-hover">
+								<LangKey>{m.project_descriptors_interventionCategoryTitle()}</LangKey>
+							</span>
 							<input
 								class="input"
 								type="text"
@@ -96,7 +64,9 @@
 							/>
 						</label>
 						<label class="label-group">
-							<span class="label with-hover">{$t.category.description}</span>
+							<span class="label with-hover">
+								<LangKey>{m.project_descriptors_interventionCategoryDescription()}</LangKey>
+							</span>
 							<textarea
 								class="input resize"
 								rows="3"
@@ -123,7 +93,9 @@
 									deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
 								>
 									<label class="label-group">
-										<span class="label with-hover">{$t.intervention.title}</span>
+										<span class="label with-hover">
+											<LangKey>{m.title()}</LangKey>
+										</span>
 										<input
 											class="input"
 											type="text"
@@ -133,7 +105,9 @@
 										/>
 									</label>
 									<label class="label-group">
-										<span class="label with-hover">{$t.intervention.description}</span>
+										<span class="label with-hover">
+											<LangKey>{m.description()}</LangKey>
+										</span>
 										<textarea
 											class="input resize"
 											rows="2"
@@ -146,7 +120,9 @@
 							</li>
 						{/each}
 					{:else}
-						<p class="sm prose dimmer">{$t.intervention.none}</p>
+						<p class="sm prose dimmer">
+							<LangKey>{m.project_descriptors_interventionCategoryDescription()}</LangKey>
+						</p>
 					{/if}
 				</DescriptorsCardsList>
 				<menu class="intervention-menu">
@@ -156,13 +132,13 @@
 						use:melt={$formaction(`?/createIntervention&categoryId=${category.id}`)}
 					>
 						<Plus class="button-icon" />
-						{$t.create($t.intervention.entity)}
+						<LangKey>{m.project_descriptors_createInterventionType()}</LangKey>
 					</button>
 				</menu>
 			</li>
 		{/each}
 	</ol>
-	<DashboardMenu {tainted} {submitter}>
+	<!-- <DashboardMenu {tainted} {submitter}>
 		<button
 			class="button outlined"
 			use:melt={$formaction('?/createCategory')}
@@ -172,7 +148,7 @@
 			<Pen class="button-icon" />
 			t.
 		</button>
-	</DashboardMenu>
+	</DashboardMenu> -->
 </DescriptorsForm>
 
 <style lang="postcss">

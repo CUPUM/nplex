@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { DOMAIN_NAME } from '$env/static/private';
+	import * as m from '$i18n/messages';
 	import type { RequestEvent } from '@sveltejs/kit';
 	import { Button, Heading, Hr, Html, Text } from 'svelte-email';
 	import { ACCENT, ACCENT_DIM, fontFamily } from '../constants';
@@ -8,23 +9,6 @@
 	export let token: string;
 
 	const url = `${DOMAIN_NAME}/verify-email/${token}`;
-
-	const t = event.locals.createTranslations({
-		fr: {
-			title: 'Confirmez votre adresse courriel',
-			body: 'Avant de continuer, nous avons besoin de vérifier l’authenticité de votre courriel. Continuez en cliquant sur le bouton ci-dessous.',
-			link: 'Confirmer mon adresse courriel',
-			footnote:
-				'Si vous n’avez pas créé de compte sur le site Nplex.design dernièrement, merci d’ignorer ce message.',
-		},
-		en: {
-			title: 'Confirm your email address',
-			body: 'Before going forward, we need to quickly verify the authenticity of your email. To continue, please click the button below.',
-			link: 'Verify my email address',
-			footnote:
-				'If you haven’t signed up to Nplex.com recently or believe this email was wrongly sent to you, please ignore.',
-		},
-	});
 </script>
 
 <Html lang={event.locals.locale}>
@@ -38,7 +22,7 @@
 			margin: '3rem 3rem 2rem',
 		}}
 	>
-		{t.title}
+		{m.email_verifyEmail_title}
 	</Heading>
 	<Text
 		style={{
@@ -50,7 +34,7 @@
 			opacity: 0.8,
 		}}
 	>
-		{t.body}
+		{m.email_verifyEmail_body}
 	</Text>
 	<p style="text-align: center; margin-bottom: 2rem;">
 		<Button
@@ -67,7 +51,7 @@
 				textDecoration: 'none',
 			}}
 		>
-			{t.link}
+			{m.email_verifyEmail_button}
 		</Button>
 	</p>
 	<Hr style={{ height: '1px', backgroundColor: ACCENT_DIM }} />
@@ -82,6 +66,6 @@
 			opacity: 0.5,
 		}}
 	>
-		{t.footnote}
+		{m.email_verifyEmail_note}
 	</Text>
 </Html>

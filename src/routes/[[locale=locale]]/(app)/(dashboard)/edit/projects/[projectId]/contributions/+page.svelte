@@ -1,21 +1,10 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
-	import DashboardFormGroup from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { createTranslations } from '$lib/i18n/translate';
-
-	const t = createTranslations({
-		fr: {
-			heading: 'Participants professionnels & contributeurs au projet',
-			orgs: 'Organisations',
-		},
-		en: {
-			heading: 'Professional participants and contributors to the project',
-			orgs: 'Organizations',
-		},
-	});
 
 	export let data;
 
@@ -29,12 +18,20 @@
 	} = superForm(data.form, { dataType: 'json' });
 </script>
 
-<DashboardForm action="?/update" {enhance}>
+<DashboardForm action="?/update" {enhance} {tainted} {submitter}>
 	<svelte:fragment slot="header">
-		<h2 class="heading lg">{$t.heading}</h2>
+		<h2 class="heading lg">
+			<LangKey>
+				{m.project_contributors}
+			</LangKey>
+		</h2>
 	</svelte:fragment>
-	<DashboardFormGroup>
-		<h3>{$t.orgs}</h3>
+	<DashboardFormSection>
+		<h3>
+			<LangKey>
+				{m.orgs}
+			</LangKey>
+		</h3>
 		<div id="orgs">
 			{#each data.allOrgs as org}
 				<label class="chip" use:ripple>
@@ -48,8 +45,7 @@
 				</label>
 			{/each}
 		</div>
-	</DashboardFormGroup>
-	<DashboardMenu {tainted} {submitter}></DashboardMenu>
+	</DashboardFormSection>
 </DashboardForm>
 
 <style lang="postcss">

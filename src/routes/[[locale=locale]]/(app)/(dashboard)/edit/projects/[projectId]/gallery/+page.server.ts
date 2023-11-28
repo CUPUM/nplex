@@ -1,4 +1,5 @@
 import { S3_BUCKET_NAME } from '$env/static/private';
+import * as m from '$i18n/messages';
 import { withAuth } from '$lib/auth/guard.server';
 import { projectsGalleryUpdateSchema, projectsImagesInsertManySchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
@@ -9,7 +10,6 @@ import {
 	projectsImagesTranslations,
 } from '$lib/db/schema/public';
 import { withTranslations } from '$lib/db/utils';
-import { tt } from '$lib/i18n/translations';
 import { s3 } from '$lib/storage/s3.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { DeleteObjectCommand, DeleteObjectsCommand } from '@aws-sdk/client-s3';
@@ -47,13 +47,9 @@ export const actions = {
 	insert: async (event) => {
 		const session = await withAuth(event);
 		const insertImagesForm = await superValidate(event, projectsImagesInsertManySchema);
-		const t = event.locals.createTranslations({
-			fr: tt.fr.editor.server,
-			en: tt.en.editor.server,
-		});
 		if (!insertImagesForm.valid) {
 			console.error(insertImagesForm.errors);
-			return message(insertImagesForm, [t.invalid]);
+			return message(insertImagesForm, { title: m.invalid(), description: m.invalidDataDetails() });
 		}
 		try {
 			await dbpool.insert(projectsImages).values(
@@ -127,21 +123,25 @@ export const actions = {
 		console.log('promoting');
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { bannerId } = galleryUpdateForm.data;
-		const t = event.locals.createTranslations({
-			fr: tt.fr.editor.server,
-			en: tt.en.editor.server,
-		});
 		try {
 			if (!bannerId) {
-				return message(galleryUpdateForm, [t.invalid], { status: STATUS_CODES.BAD_REQUEST });
+				return message(
+					galleryUpdateForm,
+					{ title: m.invalid(), description: m.invalidDataDetails() },
+					{ status: STATUS_CODES.BAD_REQUEST }
+				);
 			}
 			await dbpool
 				.update(projects)
 				.set({ bannerId })
 				.where(eq(projects.id, event.params.projectId));
-			return message(galleryUpdateForm, [t.success]);
+			return message(galleryUpdateForm, { title: m.success(), description: m.successSavedData() });
 		} catch (e) {
-			return message(galleryUpdateForm, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return message(
+				galleryUpdateForm,
+				{ title: m.error(), description: m.errorDetails() },
+				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
+			);
 		}
 	},
 	/**
@@ -151,21 +151,25 @@ export const actions = {
 		await withAuth(event);
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { bannerId } = galleryUpdateForm.data;
-		const t = event.locals.createTranslations({
-			fr: tt.fr.editor.server,
-			en: tt.en.editor.server,
-		});
 		try {
 			if (!bannerId) {
-				return message(galleryUpdateForm, [t.invalid], { status: STATUS_CODES.BAD_REQUEST });
+				return message(
+					galleryUpdateForm,
+					{ title: m.invalid(), description: m.invalidDataDetails() },
+					{ status: STATUS_CODES.BAD_REQUEST }
+				);
 			}
 			await dbpool
 				.update(projects)
 				.set({ bannerId: null })
 				.where(and(eq(projects.id, event.params.projectId), eq(projects.bannerId, bannerId)));
-			return message(galleryUpdateForm, [t.success]);
+			return message(galleryUpdateForm, { title: m.success(), description: m.successSavedData() });
 		} catch (e) {
-			return message(galleryUpdateForm, [t.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return message(
+				galleryUpdateForm,
+				{ title: m.error(), description: m.errorDetails() },
+				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
+			);
 		}
 	},
 };

@@ -39,12 +39,10 @@
 	const flash = getFlash(page);
 
 	$: if ($flash) {
-		$flash.forEach((m) => {
-			const { closeDelay, ...data } = m;
-			addToast({
-				closeDelay,
-				data,
-			});
+		const { closeDelay, ...data } = $flash;
+		addToast({
+			closeDelay,
+			data,
 		});
 		flash.set(undefined);
 	}

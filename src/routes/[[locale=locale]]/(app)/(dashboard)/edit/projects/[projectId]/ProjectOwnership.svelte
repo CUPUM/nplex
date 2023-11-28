@@ -1,24 +1,14 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
 	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
 	import { customProxy } from '$lib/forms/proxy';
 	import type { SuperFormPageData } from '$lib/forms/types';
-	import { createTranslations } from '$lib/i18n/translate';
+	import { langKey } from '$lib/i18n/translate';
 	import { createSelect, melt } from '@melt-ui/svelte';
 	import type { PageData } from './$types';
-
-	const t = createTranslations({
-		fr: {
-			ownership: 'Type de propriétaire',
-			placeholder: 'Sélectionnez un type de propriétaire',
-		},
-		en: {
-			ownership: 'Ownership',
-			placeholder: 'Select a type of owner',
-		},
-	});
 
 	export let form: SuperFormPageData<PageData['form']>['form'];
 	export let siteOwnerships: PageData['siteOwnerships'];
@@ -47,10 +37,10 @@
 	});
 </script>
 
-<DashboardFormField title={$t.ownership}>
+<DashboardFormField title={$langKey(m.project_ownershipType())}>
 	<input type="text" name="siteOwnershipId" use:melt={$hiddenInput} />
 	<button type="button" class="input select" use:melt={$trigger}>
-		{$selectedLabel || $t.placeholder}
+		{$selectedLabel || $langKey(m.project_ownershipTypePlaceholder())}
 		<SelectIcon open={$open} />
 	</button>
 	<SelectMenu {menu} {open}>

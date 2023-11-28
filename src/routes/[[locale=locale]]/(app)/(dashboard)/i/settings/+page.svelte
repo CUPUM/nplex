@@ -1,32 +1,6 @@
 <script lang="ts">
-	import { createTranslations } from '$lib/i18n/translate';
 	import GeneralSettings from './GeneralSettings.svelte';
 	import PermissionsSettings from './PermissionsSettings.svelte';
-
-	const t = createTranslations({
-		fr: {
-			permissions: {
-				title: 'Rôle & permissions',
-				changeRole: 'Changer de rôle',
-				requestRole: 'Envoyer la requête',
-			},
-			dangerZone: {
-				title: 'Zone à risque',
-				delete: 'Supprimer mon compte',
-			},
-		},
-		en: {
-			permissions: {
-				title: 'Role & permissions',
-				changeRole: 'Change role',
-				requestRole: 'Send request',
-			},
-			dangerZone: {
-				title: 'Danger zone',
-				delete: 'Delete account',
-			},
-		},
-	});
 
 	export let data;
 </script>

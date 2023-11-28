@@ -1,10 +1,8 @@
-<script lang="ts">
-	export let legend: string | undefined = undefined;
-</script>
-
 <section class="navbar-menu-group">
-	{#if legend}
-		<span class="navbar-menu-legend">{legend}</span>
+	{#if $$slots.legend}
+		<span class="navbar-menu-legend">
+			<slot name="legend" />
+		</span>
 	{/if}
 	<ul>
 		<slot />

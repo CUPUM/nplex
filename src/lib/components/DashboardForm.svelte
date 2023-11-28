@@ -1,8 +1,9 @@
 <script lang="ts" generics="T extends AnyZodObject">
+	import LangKey from './LangKey.svelte';
+
+	import * as m from '$i18n/messages';
 	import type { LoadableSubmitter } from '$lib/builders/loading';
 	import type { SuperForm } from '$lib/forms/super-form';
-	import { createTranslations } from '$lib/i18n/translate';
-	import { tt } from '$lib/i18n/translations';
 	import { melt } from '@melt-ui/svelte';
 	import { SaveAll } from 'lucide-svelte';
 	import { cubicOut, expoOut } from 'svelte/easing';
@@ -10,15 +11,6 @@
 	import { fly, scale } from 'svelte/transition';
 	import type { TaintedFields, ZodValidation } from 'sveltekit-superforms';
 	import type { AnyZodObject } from 'zod';
-
-	const t = createTranslations({
-		fr: {
-			save: tt.fr.editor.client.save,
-		},
-		en: {
-			save: tt.en.editor.client.save,
-		},
-	});
 
 	export let enhance: SuperForm<ZodValidation<T>>['enhance'];
 	export let action: string | undefined = undefined;
@@ -56,7 +48,9 @@
 				bind:this={submitRef}
 				use:melt={$submitter(submitRef)}
 			>
-				{$t.save}
+				<LangKey>
+					{m.save}
+				</LangKey>
 				<SaveAll />
 			</button>
 		{/if}

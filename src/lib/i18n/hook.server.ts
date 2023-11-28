@@ -1,5 +1,6 @@
+import { setLanguageTag } from '$i18n/runtime';
 import type { Handle } from '@sveltejs/kit';
-import { getEventLocale } from './event';
+import { getEventLang, getEventLocale } from './event';
 import { eventLocalize } from './localize.server';
 import { eventI18nRedirect } from './redirect.server';
 import { eventCreateTranslations } from './translate';
@@ -11,13 +12,15 @@ import { eventCreateTranslations } from './translate';
 const handle = (async ({ event, resolve }) => {
 	const locale = getEventLocale(event);
 	event.locals.locale = locale;
+	event.locals.lang = getEventLang(event);
+	setLanguageTag(() => event.locals.lang);
 	event.locals.redirect = eventI18nRedirect(event);
 	event.locals.createTranslations = eventCreateTranslations(event);
 	event.locals.localize = eventLocalize(event);
 
 	const res = resolve(event, {
 		transformPageChunk(input) {
-			return input.html.replace('%lang%', event.locals.locale);
+			return input.html.replace('%lang%', event.locals.lang);
 		},
 	});
 	return res;

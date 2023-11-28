@@ -1,35 +1,25 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardFormSection, {
 		DASHBOARD_CONTENT_ALIGN,
 	} from '$lib/components/DashboardFormSection.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
-	import { createTranslations } from '$lib/i18n/translate';
+	import { langKey } from '$lib/i18n/translate';
 	import type { PageData } from './$types';
-
-	const t = createTranslations({
-		fr: {
-			interventions: 'Interventions du projet',
-			selectType: 'Sélectionnez d’abord un type de projet',
-			description:
-				'Sélectionnez une ou plusieurs intervention réalisées dans le cadre du projet. Assurez-vous de lister uniquement les interventions prises en compte par les autres méta-données de la fiche (e.g.: la fourchette de prix, le calendrier des travaux, la galerie des images, etc.).',
-		},
-		en: {
-			interventions: 'Project interventions',
-			selectType: 'Start by selecting a project type',
-			description:
-				"Select one or more interventions completed in the scope of the project. Make sure to only list interventions accounted for across the rest of this sheet's metadata (ex.: cost range, project timeline, image gallery, etc.).",
-		},
-	});
 
 	export let form: SuperFormPageData<PageData['form']>['form'];
 	export let categorizedInterventions: PageData['categorizedInterventions'];
-
-	console.log(categorizedInterventions);
 </script>
 
-<DashboardFormSection title={$t.interventions} align={DASHBOARD_CONTENT_ALIGN.FULL}>
-	<svelte:fragment slot="description">{$t.description}</svelte:fragment>
+<DashboardFormSection
+	title={$langKey(m.project_interventions_title())}
+	align={DASHBOARD_CONTENT_ALIGN.FULL}
+>
+	<svelte:fragment slot="description">
+		<LangKey>{m.project_interventions_description()}</LangKey>
+	</svelte:fragment>
 	{#if $form.typeId != null}
 		{#each categorizedInterventions as category, i (category.id)}
 			{@const filtered = category.interventions.filter(
@@ -55,12 +45,12 @@
 						{/each}
 					</ul>
 				{:else}
-					<small>No interventions found</small>
+					<small><LangKey>{m.project_interventions_none()}</LangKey></small>
 				{/if}
 			</section>
 		{/each}
 	{:else}
-		<small>{$t.selectType}</small>
+		<small><LangKey>{m.project_interventions_missingType()}</LangKey></small>
 	{/if}
 </DashboardFormSection>
 

@@ -1,42 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
+	import * as m from '$i18n/messages';
 	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
 	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import TranslationsCard from '$lib/components/TranslationsCard.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { createTranslations } from '$lib/i18n/translate';
-	import { tt } from '$lib/i18n/translations';
 	import { melt } from '@melt-ui/svelte';
 	import { Pen } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-
-	const t = createTranslations({
-		fr: {
-			...tt.fr.editor.client,
-			types: {
-				heading: 'Types d’image',
-				entity: 'un type d’image',
-			},
-			temporalities: {
-				heading: 'Temporalitées d’image',
-				entity: 'une temporalité d’image',
-			},
-		},
-		en: {
-			...tt.en.editor.client,
-			types: {
-				heading: 'Image types',
-				entity: 'an image type',
-			},
-			temporalities: {
-				heading: 'Image temporalities',
-				entity: 'an image temporality',
-			},
-		},
-	});
 
 	export let data;
 
@@ -65,7 +39,9 @@
 
 <DescriptorsForm enhance={typesEnhance}>
 	<svelte:fragment slot="header">
-		<h2 class="heading lg">{$t.types.heading}</h2>
+		<h2 class="heading lg">
+			<LangKey>{m.project_descriptors_imageTypes()}</LangKey>
+		</h2>
 		<p class="prose md dimmer">
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur magni quo accusantium
 			perferendis quis, minus iste commodi error nostrum tempora?
@@ -85,11 +61,15 @@
 					deleteFormaction="?/deleteImageType&imageTypeId={type.id}"
 				>
 					<label class="label-group">
-						<span class="label with-hover">{$t.title}</span>
+						<span class="label with-hover">
+							<LangKey>{m.title()}</LangKey>
+						</span>
 						<input type="text" class="input" bind:value={type.translations[locale].title} />
 					</label>
 					<label class="label-group">
-						<span class="label with-hover">{$t.description}</span>
+						<span class="label with-hover">
+							<LangKey>{m.description()}</LangKey>
+						</span>
 						<textarea class="input" bind:value={type.translations[locale].description} />
 					</label>
 				</TranslationsCard>
@@ -99,13 +79,15 @@
 	<DashboardMenu tainted={typesTainted} submitter={typesSubmitter}>
 		<button class="button outlined" use:melt={$typesFormaction('?/createImageType')} type="submit">
 			<Pen class="button-icon" />
-			{$t.create($t.types.entity)}
+			<LangKey>{m.project_descriptors_createImageType()}</LangKey>
 		</button>
 	</DashboardMenu>
 </DescriptorsForm>
 <DescriptorsForm enhance={temporalitiesEnhance}>
 	<svelte:fragment slot="header">
-		<h2 class="heading lg">{$t.temporalities.heading}</h2>
+		<h2 class="heading lg">
+			<LangKey>{m.project_descriptors_imageTemporalities()}</LangKey>
+		</h2>
 		<p class="prose md dimmer">
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur magni quo accusantium
 			perferendis quis, minus iste commodi error nostrum tempora?
@@ -125,11 +107,15 @@
 					deleteFormaction="?/deleteImageType&imageTypeId={temporality.id}"
 				>
 					<label class="label-group">
-						<span class="label with-hover">{$t.title}</span>
+						<span class="label with-hover">
+							<LangKey>{m.title()}</LangKey>
+						</span>
 						<input type="text" class="input" bind:value={temporality.translations[locale].title} />
 					</label>
 					<label class="label-group">
-						<span class="label with-hover">{$t.description}</span>
+						<span class="label with-hover">
+							<LangKey>{m.description()}</LangKey>
+						</span>
 						<textarea class="input" bind:value={temporality.translations[locale].description} />
 					</label>
 				</TranslationsCard>
@@ -143,7 +129,7 @@
 			type="submit"
 		>
 			<Pen class="button-icon" />
-			{$t.create($t.temporalities.entity)}
+			<LangKey>{m.project_descriptors_createImageTemporality()}</LangKey>
 		</button>
 	</DashboardMenu>
 </DescriptorsForm>

@@ -1,3 +1,4 @@
+import * as m from '$i18n/messages';
 import { withAuth } from '$lib/auth/guard.server';
 import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
@@ -10,7 +11,6 @@ import {
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
 import { TRUE, excluded } from '$lib/db/sql.server';
 import { withTranslations } from '$lib/db/utils';
-import { tt } from '$lib/i18n/translations';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
@@ -18,14 +18,6 @@ import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	const session = await withAuth(event);
-	const t = event.locals.createTranslations({
-		fr: {
-			notFound: `Aucun projet trouvé avec l’identifiant ${event.params.projectId}.`,
-		},
-		en: {
-			notFound: `No project found for id ${event.params.projectId}.`,
-		},
-	});
 
 	const [project] = await withTranslations(projects, projectsTranslations, {
 		field: (t) => t.id,
@@ -34,7 +26,7 @@ export const load = async (event) => {
 		.where(and(authorizeProjectUpdate(session), eq(projects.id, event.params.projectId)))
 		.limit(1);
 	if (!project) {
-		throw error(STATUS_CODES.NOT_FOUND, t.notFound);
+		throw error(STATUS_CODES.NOT_FOUND, m.project_notFound());
 	}
 	const interventions = await dbpool
 		.select({
@@ -59,14 +51,10 @@ export const load = async (event) => {
 export const actions = {
 	update: async (event) => {
 		await withAuth(event);
-		const t = event.locals.createTranslations({
-			fr: tt.fr.editor,
-			en: tt.en.editor,
-		});
 		const form = await superValidate(event, projectGeneralUpdateSchema);
 		if (!form.valid) {
 			console.error(JSON.stringify(form.errors));
-			return message(form, [t.server.invalid]);
+			return message(form, { title: m.invalid(), description: m.invalidDataDetails() });
 		}
 		try {
 			const { translations, interventionIds, ...project } = form.data;
@@ -103,10 +91,14 @@ export const actions = {
 						});
 				}
 			});
-			return message(form, [t.server.success]);
+			return message(form, { title: m.success(), description: m.successSavedData() });
 		} catch (e) {
 			console.error(e);
-			return message(form, [t.server.error], { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return message(
+				form,
+				{ title: m.error(), description: m.errorDetails() },
+				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
+			);
 		}
 	},
 };

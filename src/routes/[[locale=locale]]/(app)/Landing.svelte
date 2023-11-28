@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import * as m from '$i18n/messages';
+	import LangKey from '$lib/components/LangKey.svelte';
+	import Logo from '$lib/components/Logo.svelte';
 	import { link } from '$lib/i18n/link';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { transform } from '$lib/transitions/transform';
 	import { debounce } from '@melt-ui/svelte/internal/helpers';
 	import { ArrowRight, Edit } from 'lucide-svelte';
@@ -11,21 +13,6 @@
 	import { spring, tweened } from 'svelte/motion';
 	import { fly } from 'svelte/transition';
 	import type { PageData } from './$types';
-
-	const t = createTranslations({
-		fr: {
-			welcome: 'Bienvenue sur Nplex!',
-			sub: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi provident ratione aspernatur qui fuga dignissimos sed nesciunt, dolorum voluptas neque!',
-			explore: 'Explorez les projets',
-			start: 'Montez vos projets dès maintenant',
-		},
-		en: {
-			welcome: 'Welcome to Nplex!',
-			sub: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi provident ratione aspernatur qui fuga dignissimos sed nesciunt, dolorum voluptas neque!',
-			explore: 'Explore projects',
-			start: 'Start editing your own projects now',
-		},
-	});
 
 	export let images: PageData['randomImages'];
 
@@ -117,24 +104,33 @@
 	</grid>
 	{#if mounted}
 		<header>
-			<h1 class="h1" in:fly={{ y: '0.25em', duration: 1000, delay: 250, easing: expoOut }}>
-				{$t.welcome}
-			</h1>
-			<p in:fly={{ y: '0.25em', duration: 1000, delay: 350, easing: expoOut }}>{$t.sub}</p>
+			<hgroup in:fly={{ y: 8, duration: 1000, delay: 250, easing: expoOut }}>
+				<Logo />
+			</hgroup>
+			<!-- <LangKey>
+				<h1 class="h1" in:fly={{ y: '0.25em', duration: 1000, delay: 250, easing: expoOut }}>
+					{m.landing_title()}
+				</h1>
+			</LangKey>
+			<LangKey>
+				<p in:fly={{ y: '0.25em', duration: 1000, delay: 350, easing: expoOut }}>
+					{m.landing_sub()}
+				</p>
+			</LangKey> -->
 			<div>
 				<a
 					{...$link('/projects')}
 					in:fly={{ y: '-0.25em', duration: 750, delay: 500, easing: expoOut }}
 					class="button big cta"
 				>
-					{$t.explore}<ArrowRight />
+					<LangKey>{m.landing_explore()}</LangKey><ArrowRight />
 				</a>
 				<a
 					{...$link($page.data.user ? '/edit/projects' : '/login')}
 					in:fly={{ y: '-0.25em', duration: 750, delay: 750, easing: expoOut }}
 					class="button big dashed bg-blur"
 				>
-					{$t.start}<Edit />
+					<LangKey>{m.landing_create()}</LangKey><Edit />
 				</a>
 			</div>
 		</header>
@@ -238,9 +234,17 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 1rem;
+		gap: 2rem;
 		max-width: var(--width-md);
 		text-align: center;
+
+		hgroup {
+			font-size: 10rem;
+			color: var(--color-neutral-900);
+			:global(:--dark) & {
+				color: var(--color-neutral-200);
+			}
+		}
 
 		p {
 			opacity: 0.75;

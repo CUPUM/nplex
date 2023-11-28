@@ -1,83 +1,47 @@
 <script lang="ts">
-	import Sidebar, { setDashboard } from '$lib/components/Sidebar.svelte';
+	import * as m from '$i18n/messages';
+	import LangKey from '$lib/components/LangKey.svelte';
+	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { ArrowRight } from 'lucide-svelte';
-
-	setDashboard();
-
-	const t = createTranslations({
-		fr: {
-			heading: 'Descripteurs de projet',
-			items: {
-				types: 'Types de projet',
-				interventions: 'Intervention',
-				indicators: 'Indicateurs d’exemplarité',
-				ownerships: 'Propriétaires',
-				implantation: 'Modes d’implantation',
-				levels: 'Étages de bâtiment',
-				images: 'Images',
-			},
-			organizations: {
-				heading: 'Descripteurs d’organisation',
-				button: 'Organisations',
-			},
-		},
-		en: {
-			heading: 'Project descriptors',
-			items: {
-				types: 'Project types',
-				interventions: 'Interventions',
-				indicators: 'Exemplarity indicators',
-				ownerships: 'Ownerships',
-				implantation: 'Implantation modes',
-				levels: 'Building levels',
-				images: 'Images',
-			},
-			organizations: {
-				heading: 'Organization descriptors',
-				button: 'Organizations',
-			},
-		},
-	});
 </script>
 
-<Sidebar>
+<SidebarGroup>
 	<svelte:fragment slot="heading">
-		{$t.heading}
+		<LangKey>{m.project_descriptors()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/projects/descriptors/types')}>
-		{$t.items.types}
+		<LangKey>{m.project_descriptors_types()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/interventions')}>
-		{$t.items.interventions}
+		<LangKey>{m.project_descriptors_interventions()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/indicators')}>
-		{$t.items.indicators}
+		<LangKey>{m.project_descriptors_indicators()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/ownerships')}>
-		{$t.items.ownerships}
+		<LangKey>{m.project_descriptors_ownerships()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/implantations')}>
-		{$t.items.implantation}
+		<LangKey>{m.project_descriptors_implantations()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/levels')}>
-		{$t.items.levels}
+		<LangKey>{m.project_descriptors_levels()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/images')}>
-		{$t.items.images}
+		<LangKey>{m.project_descriptors_images()}</LangKey>
 	</SidebarItem>
-</Sidebar>
-<Sidebar>
+</SidebarGroup>
+<SidebarGroup>
 	<svelte:fragment slot="heading">
-		{$t.organizations.heading}
+		<LangKey>{m.orgs()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/organizations/descriptors')}>
-		{$t.organizations.button}
+		<LangKey>{m.org_descriptors()}</LangKey>
 		<ArrowRight class="button-icon" />
 	</SidebarItem>
-</Sidebar>
+</SidebarGroup>
 
 <style lang="postcss">
 </style>

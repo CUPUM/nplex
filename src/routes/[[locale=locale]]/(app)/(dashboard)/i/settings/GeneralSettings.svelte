@@ -1,40 +1,12 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
-	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { createTranslations } from '$lib/i18n/translate';
+	import { langKey } from '$lib/i18n/translate';
 	import { FileUp, Mail, Shield, ShieldX } from 'lucide-svelte';
 	import type { PageData } from './$types';
-
-	const t = createTranslations({
-		fr: {
-			title: 'Paramètres de compte',
-			name: 'Nom',
-			firstName: 'Prénom',
-			middleName: 'Surnom',
-			lastName: 'Nom de famille',
-			avatar: 'Avatar',
-			uploadAvatar: 'Importer une image',
-			publicEmail: 'Courriel public',
-			verify: 'Authentifier',
-			verifiedPublicEmail: (verified: boolean) =>
-				`Courriel public ${verified ? 'vérifié' : 'non-vérifié'}`,
-		},
-		en: {
-			title: 'Account settings',
-			name: 'Name',
-			firstName: 'First name',
-			middleName: 'Middle name',
-			lastName: 'Last name',
-			avatar: 'Avatar',
-			uploadAvatar: 'Import an image',
-			publicEmail: 'Public email',
-			verify: 'Verify',
-			verifiedPublicEmail: (verified: boolean) =>
-				`${verified ? 'Verified' : 'Unverified'} public email`,
-		},
-	});
 
 	export let data: PageData['generalForm'];
 	export let publicEmailVerified: PageData['publicEmailVerified'];
@@ -50,11 +22,13 @@
 	} = superForm(data);
 </script>
 
-<DashboardForm {enhance} action="?/update">
+<DashboardForm {enhance} action="?/update" {tainted} {submitter}>
 	<svelte:fragment slot="header">
-		<h1 class="heading lg">{$t.title}</h1>
+		<h2>
+			<LangKey>{m.user_settings()}</LangKey>
+		</h2>
 	</svelte:fragment>
-	<DashboardFormField title={$t.name} centered>
+	<DashboardFormSection title={$langKey(m.user_name())}>
 		<fieldset id="user-name">
 			<input
 				type="text"
@@ -62,7 +36,7 @@
 				class="input"
 				bind:value={$form.firstName}
 				{...$states.firstName}
-				placeholder={$t.firstName}
+				placeholder={$langKey(m.user_firstName())}
 			/>
 			<input
 				type="text"
@@ -70,7 +44,7 @@
 				class="input"
 				bind:value={$form.middleName}
 				{...$states.middleName}
-				placeholder={$t.middleName}
+				placeholder={$langKey(m.user_middleName())}
 			/>
 		</fieldset>
 		<input
@@ -79,10 +53,10 @@
 			class="input"
 			bind:value={$form.lastName}
 			{...$states.lastName}
-			placeholder={$t.lastName}
+			placeholder={$langKey(m.user_lastName())}
 		/>
-	</DashboardFormField>
-	<DashboardFormField centered title={$t.avatar}>
+	</DashboardFormSection>
+	<DashboardFormSection title={$langKey(m.user_avatar())}>
 		<button
 			class="button outlined"
 			id="avatar-button"
@@ -90,10 +64,11 @@
 			type="submit"
 			formaction="?/uploadAvatar"
 		>
-			{$t.uploadAvatar}<FileUp class="button-icon" />
+			<LangKey>{m.user_uploadAvatar()}</LangKey>
+			<FileUp class="button-icon" />
 		</button>
-	</DashboardFormField>
-	<DashboardFormField title={$t.publicEmail} centered>
+	</DashboardFormSection>
+	<DashboardFormSection title={$langKey(m.user_publicEmail())}>
 		<label class="input-group">
 			{#if publicEmailVerified}
 				<Shield class="input-icon" style="color: var(--color-success-500)" />
@@ -105,17 +80,16 @@
 				name="publicEmail"
 				class="input"
 				bind:value={$form.publicEmail}
-				placeholder={$t.publicEmail}
+				placeholder={$langKey(m.user_publicEmail())}
 			/>
 			<div class="input-peer">
 				<button class="button" formaction="?/verifyEmail" disabled>
 					<Mail class="button-icon" />
-					{$t.verify}
+					<LangKey>{m.user_verify()}</LangKey>
 				</button>
 			</div>
 		</label>
-	</DashboardFormField>
-	<DashboardMenu {tainted} {submitter}></DashboardMenu>
+	</DashboardFormSection>
 </DashboardForm>
 
 <style lang="postcss">

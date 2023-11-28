@@ -1,15 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { createTranslations } from '$lib/i18n/translate';
-
-	const t = createTranslations({
-		fr: {
-			noTitle: 'Aucun titre défini',
-		},
-		en: {
-			noTitle: 'No title defined',
-		},
-	});
+	import * as m from '$i18n/messages';
+	import LangKey from '$lib/components/LangKey.svelte';
 </script>
 
 <hgroup>
@@ -17,7 +9,11 @@
 		{#if $page.data.title}
 			{$page.data.title}
 		{:else}
-			<span class="fallback">{$t.noTitle}</span>
+			<span class="fallback">
+				<LangKey>
+					{m.project_untitled()}
+				</LangKey>
+			</span>
 		{/if}
 	</h1>
 </hgroup>

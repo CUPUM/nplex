@@ -1,42 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
+	import * as m from '$i18n/messages';
 	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
 	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { default as TranslationsCard } from '$lib/components/TranslationsCard.svelte';
-	import { createTranslations } from '$lib/i18n/translate';
-	import { Check, Pen, Plus } from 'lucide-svelte';
+	import { Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';
-
-	const t = createTranslations({
-		fr: {
-			heading: ['Catégories d’exemplarité', 'indicateurs d’exemplarité'],
-			category: {
-				title: 'Titre de la catégorie',
-				description: 'Description de la catégorie',
-			},
-			indicator: {
-				title: 'Titre d’indicateur',
-				description: 'Description de l’indicateur',
-				none: 'Aucun indicateur ajouté',
-			},
-		},
-		en: {
-			heading: ['Exemplarity categories', 'exemplarity indicators'],
-			category: {
-				title: 'Category title',
-				description: 'Category description',
-			},
-			indicator: {
-				title: 'Indicator title',
-				description: 'Indicator description',
-				none: 'No indicator added yet',
-			},
-		},
-	});
 
 	export let data;
 
@@ -46,16 +19,14 @@
 	});
 </script>
 
-<DescriptorsForm action="?/update" {enhance} let:element let:loading>
+<DescriptorsForm action="?/update" {enhance}>
 	<svelte:fragment slot="header">
 		<h2 class="heading lg">
-			{#each $t.heading as segment, i}
-				{segment}
-				{#if i < $t.heading.length - 1}
-					<span class="prose dimmer">&</span>
-					{' '}
-				{/if}
-			{/each}
+			<LangKey>
+				{m.project_descriptors_examplarityCategories()}
+				<span class="dim">&</span>
+				{m.project_exemplarityIndicators()}
+			</LangKey>
 		</h2>
 		<p class="prose sm dim">
 			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis eius enim error sit fugit
@@ -72,7 +43,9 @@
 						legendMinimized={category.translations[$page.data.locale].title}
 					>
 						<label class="label-group">
-							<span class="label with-hover">{$t.category.title}</span>
+							<span class="label with-hover">
+								<LangKey>{m.project_descriptors_examplarityCategoryTitle()}</LangKey>
+							</span>
 							<input
 								class="input"
 								type="text"
@@ -80,7 +53,9 @@
 							/>
 						</label>
 						<label class="label-group">
-							<span class="label with-hover">{$t.category.description}</span>
+							<span class="label with-hover">
+								<LangKey>{m.project_descriptors_examplarityCategoryDescription()}</LangKey>
+							</span>
 							<textarea
 								class="input resize"
 								bind:value={$form.exemplarityCategories[i].translations[locale].description}
@@ -106,7 +81,9 @@
 									deleteFormaction="?/deleteIndicator&indicatorId={indicator.id}"
 								>
 									<label class="label-group">
-										<span class="label with-hover">{$t.indicator.title}</span>
+										<span class="label with-hover">
+											<LangKey>{m.project_descriptors_examplarityIndicatorTitle()}</LangKey>
+										</span>
 										<input
 											class="input"
 											type="text"
@@ -115,7 +92,9 @@
 										/>
 									</label>
 									<label class="label-group">
-										<span class="label with-hover">{$t.indicator.description}</span>
+										<span class="label with-hover">
+											<LangKey>{m.project_descriptors_examplarityIndicatorDescription()}</LangKey>
+										</span>
 										<textarea
 											class="input resize"
 											bind:value={$form.exemplarityCategories[i].indicators[ii].translations[locale]
@@ -126,7 +105,9 @@
 							</li>
 						{/each}
 					{:else}
-						<p class="sm prose dimmer">{$t.indicator.none}</p>
+						<p class="sm prose dimmer">
+							<LangKey>{m.project_descriptors_noExamplarityIndicator()}</LangKey>
+						</p>
 					{/if}
 				</DescriptorsCardsList>
 				<menu class="indicator-menu">
@@ -142,7 +123,7 @@
 			</li>
 		{/each}
 	</ol>
-	<DashboardMenu>
+	<!-- <DashboardMenu>
 		<button
 			class="button outlined"
 			type="submit"
@@ -159,7 +140,7 @@
 				Save
 			</button>
 		{/if}
-	</DashboardMenu>
+	</DashboardMenu> -->
 </DescriptorsForm>
 
 <style lang="postcss">

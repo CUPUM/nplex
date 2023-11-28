@@ -21,12 +21,4 @@
 		min-height: calc(100svh - var(--navbar-height));
 		min-height: calc(100dvh - var(--navbar-height));
 	}
-
-	.loading {
-		z-index: 999;
-		position: fixed;
-		inset: 0;
-		pointer-events: none;
-		user-select: none;
-	}
 </style>

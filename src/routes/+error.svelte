@@ -1,23 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { createTranslations } from '$lib/i18n/translate';
-
-	const t = createTranslations({
-		fr: {
-			title: 'Oops, une petite erreur est survenue!',
-			noError: 'Aucun message d’erreur.',
-		},
-		en: {
-			title: 'Oops, a small error occurred!',
-			noError: 'No error message.',
-		},
-	});
+	import * as m from '$i18n/messages';
+	import LangKey from '$lib/components/LangKey.svelte';
 </script>
 
 <article>
-	<h1>{$t.title}</h1>
+	<LangKey>
+		<h1>Oops! {m.errorDetails()}</h1>
+	</LangKey>
 	<code>
-		{$page.error?.message ?? $t.noError}
+		{#if $page.error?.message}
+			{$page.error.message}
+		{:else}
+			<LangKey>{m.errorNoMessage()}</LangKey>
+		{/if}
 	</code>
 </article>
 

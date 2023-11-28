@@ -21,7 +21,7 @@
 	{#if title || $$slots.description}
 		<header>
 			{#if title}
-				<h3 class="h4">{title}</h3>
+				<h3 class="h5">{title}</h3>
 			{/if}
 			{#if $$slots.description}
 				<div class="description"><slot name="description" /></div>

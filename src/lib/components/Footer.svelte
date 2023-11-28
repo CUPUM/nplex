@@ -1,22 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import * as m from '$i18n/messages';
 	import { LOCALES } from '$lib/i18n/constants';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { SETOUTS } from '$lib/setout/constants';
 	import { slide } from 'svelte/transition';
 	import Logo from './Logo.svelte';
 	import CupumUdem from './partners-logos/CupumUdem.svelte';
 	import MontrealQuebec from './partners-logos/MontrealQuebec.svelte';
 	import UnescoUnitwin from './partners-logos/UnescoUnitwin.svelte';
-
-	const t = createTranslations({
-		fr: {
-			cc: 'Chaire UNESCO en paysage urbain',
-		},
-		en: {
-			cc: 'UNESCO Chaire in Urban Landscape',
-		},
-	});
 </script>
 
 {#if $page.data.setout !== SETOUTS.FULL_SCREEN}
@@ -66,7 +57,7 @@
 				rel="external"
 				target="_blank"
 			>
-				© {$t.cc}
+				© {m.unescoChair()}
 			</a>
 		</section>
 	</footer>

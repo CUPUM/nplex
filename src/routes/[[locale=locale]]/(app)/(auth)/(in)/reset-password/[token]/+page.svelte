@@ -1,17 +1,7 @@
 <script lang="ts">
-	import { createTranslations } from '$lib/i18n/translate';
+	import * as m from '$i18n/messages';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
-
-	const t = createTranslations({
-		fr: {
-			newPassword: 'Nouveau mot de passe',
-			confirmPassword: 'Confirmation du nouveau mot de passe',
-		},
-		en: {
-			newPassword: 'New password',
-			confirmPassword: 'Confirm new password',
-		},
-	});
 
 	export let data;
 
@@ -20,14 +10,20 @@
 
 <form use:enhance method="POST">
 	<fieldset>
-		<label for="">{$t.newPassword}</label>
+		<label for="">
+			<LangKey>{m.newPassword()}</LangKey>
+		</label>
 		<input type="password" name="newPassword" id="" />
 	</fieldset>
 	<fieldset>
-		<label for="">{$t.confirmPassword}</label>
+		<label for="">
+			<LangKey>{m.newPasswordConfirmation()}</LangKey>
+		</label>
 		<input type="password" name="confirmPassword" id="" />
 	</fieldset>
-	<button type="submit">Set new password</button>
+	<button type="submit">
+		<LangKey>{m.save()}</LangKey>
+	</button>
 </form>
 
 <style lang="postcss">

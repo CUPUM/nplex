@@ -1,25 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import * as m from '$i18n/messages';
 	import Dashboard from '$lib/components/Dashboard.svelte';
-	import { createTranslations } from '$lib/i18n/translate';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import EditableProjects from './EditableProjects.svelte';
 
-	const t = createTranslations({
-		fr: {
-			editables: {
-				projects: 'Mes projets',
-				organizations: 'Mes organisations',
-			},
-		},
-		en: {
-			editables: {
-				projects: 'My projects',
-				organizations: 'My organizations',
-			},
-		},
-	});
-
 	export let data;
+m.
 </script>
 
 <Dashboard
@@ -31,11 +18,15 @@
 </Dashboard>
 <aside>
 	<section class="editables">
-		<h2 class="heading lg">{$t.editables.projects}</h2>
+		<h2 class="heading lg">
+			<LangKey>{m.myProjects()}</LangKey>
+		</h2>
 		<EditableProjects projects={data.streamed.editableProjects} />
 	</section>
 	<section class="editables">
-		<h2 class="heading lg">{$t.editables.organizations}</h2>
+		<h2 class="heading lg">
+			<LangKey>{m.myOrgs()}</LangKey>
+		</h2>
 	</section>
 </aside>
 

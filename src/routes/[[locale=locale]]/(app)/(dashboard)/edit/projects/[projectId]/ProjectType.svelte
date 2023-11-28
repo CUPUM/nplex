@@ -1,19 +1,11 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
-	import { createTranslations } from '$lib/i18n/translate';
+	import { langKey } from '$lib/i18n/translate';
 	import { switchCrossfade } from '$lib/transitions/presets';
 	import type { PageData } from './$types';
-
-	const t = createTranslations({
-		fr: {
-			type: 'Type de projet',
-		},
-		en: {
-			type: 'Project type',
-		},
-	});
 
 	const [send, receive] = switchCrossfade;
 
@@ -21,7 +13,7 @@
 	export let types: PageData['types'];
 </script>
 
-<DashboardFormField title={$t.type}>
+<DashboardFormField title={$langKey(m.project_type())}>
 	<fieldset class="switch" use:ripple>
 		{#each types as pt}
 			<label class="switch-item">

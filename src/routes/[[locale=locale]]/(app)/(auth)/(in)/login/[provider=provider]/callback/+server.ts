@@ -1,3 +1,4 @@
+import * as m from '$i18n/messages';
 import { auth, integrations } from '$lib/auth/auth.server';
 import { OAUTH_PROVIDERS_STATE_COOKIE } from '$lib/auth/constants';
 import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
@@ -15,31 +16,8 @@ import { eq } from 'drizzle-orm';
  * @todo Add flash messages for errors.
  */
 export const GET = async (event) => {
-	const t = event.locals.createTranslations({
-		fr: {
-			notSupported: 'Le fournisseur OAuth demandé n’est pas supporté.',
-			incorrectState: (provider: string) => `La réponse de ${provider} ne convient pas.`,
-			unverifiedEmail: (email: string) =>
-				`Un utilisateur a déjà été enregistré avec l’adresse courriel «${email}». Pour lier les deux comptes veuillez d’abord authentifier votre adresse courriel sur le compte existant.`,
-			success: {
-				title: 'Connecté avec succès',
-				description: '',
-			},
-		},
-		en: {
-			notSupported: 'The requested OAuth provider is not supported.',
-			incorrectState: (provider: string) => `The state provided by ${provider} is not compatible.`,
-			unverifiedEmail: (email: string) =>
-				`A user with the email «${email}» is already registered. To proceed and link both accounts, please first confirm your email adress on the existing account.`,
-			success: {
-				title: 'Successfully logged in',
-				description: '',
-			},
-		},
-	});
-
 	if (!isSupportedOAuthProvider(event.params.provider)) {
-		throw error(STATUS_CODES.BAD_REQUEST, { message: t.notSupported });
+		throw error(STATUS_CODES.BAD_REQUEST, { message: m.auth_unsupportedProvider() });
 	}
 
 	/**
@@ -60,7 +38,9 @@ export const GET = async (event) => {
 	const code = event.url.searchParams.get('code');
 	if (!storedState || !state || storedState !== state || !code) {
 		throw error(STATUS_CODES.BAD_REQUEST, {
-			message: t.incorrectState(OAUTH_PROVIDERS_DETAILS[event.params.provider].name),
+			message: m.auth_incorrectProviderState({
+				provider: OAUTH_PROVIDERS_DETAILS[event.params.provider].name,
+			}),
 		});
 	}
 
@@ -75,8 +55,8 @@ export const GET = async (event) => {
 				'githubUser' in validated
 					? validated.githubUser.email
 					: 'googleUser' in validated && validated.googleUser.email_verified
-					? validated.googleUser.email
-					: null;
+					  ? validated.googleUser.email
+					  : null;
 			if (verifiedOAuthEmail) {
 				const [existingEmailUser] = await tx
 					.select()
@@ -85,7 +65,9 @@ export const GET = async (event) => {
 					.limit(1);
 				if (existingEmailUser) {
 					if (!existingEmailUser.emailVerified) {
-						throw error(STATUS_CODES.CONFLICT, { message: t.unverifiedEmail(verifiedOAuthEmail) });
+						throw error(STATUS_CODES.CONFLICT, {
+							message: m.auth_emailAlreadyUsedAndUnverified({ email: verifiedOAuthEmail }),
+						});
 					}
 					return existingEmailUser;
 				}
@@ -118,5 +100,10 @@ export const GET = async (event) => {
 			message: e instanceof Error ? e.message : '',
 		});
 	}
-	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', [t.success]);
+	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', [
+		{
+			title: m.auth_success(),
+			description: m.auth_successDescription(),
+		},
+	]);
 };

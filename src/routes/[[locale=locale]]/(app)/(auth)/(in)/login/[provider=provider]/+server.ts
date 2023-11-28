@@ -1,4 +1,5 @@
 import { dev } from '$app/environment';
+import * as m from '$i18n/messages';
 import { integrations } from '$lib/auth/auth.server';
 import { OAUTH_PROVIDERS_STATE_COOKIE } from '$lib/auth/constants';
 import { isSupportedOAuthProvider } from '$lib/auth/validation';
@@ -6,18 +7,9 @@ import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 
 export const GET = async (event) => {
-	const t = event.locals.createTranslations({
-		fr: {
-			notSupported: 'Le fournisseur OAuth demandé n’est pas supporté.',
-		},
-		en: {
-			notSupported: 'The requested OAuth provider is not supported.',
-		},
-	});
-
 	if (!isSupportedOAuthProvider(event.params.provider)) {
 		throw error(STATUS_CODES.BAD_REQUEST, {
-			message: t.notSupported,
+			message: m.auth_unsupportedProvider(),
 		});
 	}
 

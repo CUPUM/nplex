@@ -37,22 +37,10 @@ export const LOCALES_DETAILS = {
 
 export const LOCALE_PARAM = 'locale';
 
-// export const PLURAL_THRESHOLDS = {
-// 	Few: 'few',
-// 	Many: 'many',
-// 	Other: 'other',
-// } as const;
+// V2
 
-// export type PluralThreshold = ValueOf<typeof PLURAL_THRESHOLDS>;
+// export const LANGS_DETAILS = {
 
-// export const PLURAL_THRESHOLDS_ARR = Object.values(PLURAL_THRESHOLDS);
+// } as const satisfies { [L in AvailableLan]: { name: string; label: string } };
 
-// export type PluralThresholdNumerable = Exclude<PluralThreshold, 'many' | 'other'>;
-
-// export const PLURAL_THRESHOLDS_DEFAULT = {
-// 	[PLURAL_THRESHOLDS.Few]: 7,
-// } as const satisfies { [P in PluralThresholdNumerable]: number };
-
-// export const PLURAL_THRESHOLDS_NUMERABLE_ARR = Object.keys(
-// 	PLURAL_THRESHOLDS_DEFAULT
-// ) as PluralThresholdNumerable[];
+export const LANG_PARAM = 'lang';

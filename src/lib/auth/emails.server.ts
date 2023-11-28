@@ -1,3 +1,4 @@
+import * as m from '$i18n/messages';
 import { EMAIL_SENDERS } from '$lib/emails/constants';
 import ResetPassword from '$lib/emails/templates/ResetPassword.svelte';
 import VerifyEmail from '$lib/emails/templates/VerifyEmail.svelte';
@@ -12,14 +13,6 @@ type EmailUser = SetNonNullable<Pick<User, 'id' | 'email'>>;
 
 export async function sendEmailVerificationLink(user: EmailUser, event: RequestEvent) {
 	const token = await generateEmailVerificationToken(user.id);
-	const t = event.locals.createTranslations({
-		fr: {
-			subject: 'Une dernière petite étape: confirmez votre courriel.',
-		},
-		en: {
-			subject: 'One last step: verify your email',
-		},
-	});
 	const html = render({
 		template: VerifyEmail,
 		props: {
@@ -30,21 +23,13 @@ export async function sendEmailVerificationLink(user: EmailUser, event: RequestE
 	await transporter.sendMail({
 		from: EMAIL_SENDERS.NPLEX,
 		to: user.email,
-		subject: t.subject,
+		subject: m.email_verifyEmail_subject(),
 		html,
 	});
 }
 
 export async function sendPasswordResetLink(user: EmailUser, event: RequestEvent) {
 	const token = await generatePasswordResetToken(user.id);
-	const t = event.locals.createTranslations({
-		fr: {
-			subject: 'Réinitialisez votre mot de passe.',
-		},
-		en: {
-			subject: 'Reset your password.',
-		},
-	});
 	const html = render({
 		template: ResetPassword,
 		props: {
@@ -55,7 +40,7 @@ export async function sendPasswordResetLink(user: EmailUser, event: RequestEvent
 	await transporter.sendMail({
 		from: EMAIL_SENDERS.NPLEX,
 		to: user.email,
-		subject: t.subject,
+		subject: m.email_resetPassword_subject(),
 		html,
 	});
 }

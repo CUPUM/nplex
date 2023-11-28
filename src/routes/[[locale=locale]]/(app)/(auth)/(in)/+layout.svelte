@@ -1,18 +1,8 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import { OAUTH_PROVIDERS_ARR } from '$lib/auth/constants';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import SocialProviderButton from '$lib/components/social-icons/SocialProviderButton.svelte';
-	import { createTranslations } from '$lib/i18n/translate';
-
-	const t = createTranslations({
-		fr: {
-			or: 'ou',
-			social: 'Continuer avec',
-		},
-		en: {
-			or: 'or',
-			social: 'Continue using',
-		},
-	});
 </script>
 
 <article>
@@ -20,11 +10,13 @@
 		<slot />
 		<div id="or">
 			<span>
-				{$t.or}
+				<LangKey>{m.or()}</LangKey>
 			</span>
 		</div>
 		<section class="social">
-			<h2>{$t.social}</h2>
+			<h2>
+				<LangKey>{m.auth_continueWith()}</LangKey>
+			</h2>
 			<fieldset class="providers">
 				{#each OAUTH_PROVIDERS_ARR as provider, i}
 					<SocialProviderButton {provider} {i} />

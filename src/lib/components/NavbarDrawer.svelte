@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import { breakpoint } from '$lib/breakpoints/breakpoints';
 	import { LOCALES_ARR, LOCALES_DETAILS } from '$lib/i18n/constants';
@@ -12,7 +13,7 @@
 	import { Languages, Scroll, SunMoon, X } from 'lucide-svelte';
 	import { cubicIn, expoIn, expoOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
-	import { t } from './Navbar.svelte';
+	import LangKey from './LangKey.svelte';
 
 	export let overlay: DialogElements['overlay'];
 	export let content: DialogElements['content'];
@@ -51,17 +52,25 @@
 			<h2><Scroll size="2em" />Sections</h2>
 			<div class="inner">
 				<a use:melt={$close} class="drawerbutton" use:ripple {...$link('/about')}>
-					{$t.about}
+					<LangKey>
+						{m.about()}
+					</LangKey>
 				</a>
 				<a use:melt={$close} class="drawerbutton" use:ripple {...$link('/guides')}>
-					{$t.guides}
+					<LangKey>
+						{m.guides()}
+					</LangKey>
 				</a>
 				{#if !$breakpoint?.md}
 					<a use:melt={$close} class="drawerbutton" use:ripple {...$link('/projects')}>
-						{$t.projects}
+						<LangKey>
+							{m.projects()}
+						</LangKey>
 					</a>
 					<a use:melt={$close} class="drawerbutton" use:ripple {...$link('/organizations')}>
-						{$t.organizations}
+						<LangKey>
+							{m.orgs()}
+						</LangKey>
 					</a>
 				{/if}
 			</div>
@@ -74,7 +83,9 @@
 		>
 			<h2>
 				<Languages size="2em" />
-				{$t.language}
+				<LangKey>
+					{m.lang()}
+				</LangKey>
 			</h2>
 			<div class="inner">
 				{#each LOCALES_ARR as locale}
@@ -84,6 +95,8 @@
 						{...$i18nswitch(locale)}
 						use:ripple
 						data-current={$page.data.locale === locale ? true : undefined}
+						data-sveltekit-noscroll
+						data-sveltekit-replacestate
 					>
 						{LOCALES_DETAILS[locale].name}
 					</a>

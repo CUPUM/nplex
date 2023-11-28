@@ -1,9 +1,10 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { switchCrossfade } from '$lib/transitions/presets';
 
 	export let data;
@@ -20,23 +21,16 @@
 		taintedMessage: null,
 	});
 
-	const t = createTranslations({
-		fr: {
-			heading: 'Indicateurs d’exemplarité',
-		},
-		en: {
-			heading: 'Exemplarity indicators',
-		},
-	});
-
-	$: console.log(data.categorizedIndicators);
-
 	const [send, receive] = switchCrossfade;
 </script>
 
 <DashboardForm {enhance} action="?/update" {tainted} {submitter}>
 	<svelte:fragment slot="header">
-		<h2>{$t.heading}</h2>
+		<h2>
+			<LangKey>
+				{m.project_exemplarityIndicators}
+			</LangKey>
+		</h2>
 		<p>
 			Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt nam facilis ipsum pariatur
 			voluptas placeat veniam quod. Voluptates, pariatur nemo. Voluptas voluptates molestias

@@ -1,23 +1,17 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { link } from '$lib/i18n/link';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { imageUrl } from '$lib/media/url';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 
-	const t = createTranslations({
-		fr: {
-			recents: 'Projets récents',
-		},
-		en: {
-			recents: 'Recent projects',
-		},
-	});
-
 	export let data;
 </script>
 
-<h2 class="heading lg">{$t.recents}</h2>
+<h2 class="heading lg">
+	<LangKey>{m.recentProjects()}</LangKey>
+</h2>
 <ul>
 	{#each data.qProjects as p, i (p.id)}
 		<li animate:flip in:fly|global={{ y: -6, duration: 350, delay: 100 + i * 20 }}>

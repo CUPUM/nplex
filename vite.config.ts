@@ -1,4 +1,5 @@
 import postcssglobal from '@csstools/postcss-global-data';
+import { paraglide } from '@inlang/paraglide-js-adapter-vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import examples from 'mdsvexamples/vite';
 import presetenv from 'postcss-preset-env';
@@ -10,11 +11,18 @@ export default defineConfig({
 	server: {
 		port,
 	},
-	plugins: [sveltekit(), examples],
+	plugins: [
+		sveltekit(),
+		paraglide({
+			project: './i18n.config.json',
+			outdir: './src/i18n',
+		}),
+		examples,
+	],
 	css: {
 		postcss: {
 			plugins: [
-				// https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-custom-media#modular-css-processing
+				// See: https://github.com/csstools/postcss-plugins/tree/main/plugins/postcss-custom-media#modular-css-processing
 				postcssglobal({ files: ['./src/styles/utilities.css'] }),
 				presetenv({
 					stage: 2,

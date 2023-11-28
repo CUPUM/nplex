@@ -1,117 +1,73 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import * as m from '$i18n/messages';
 	import { DASHBOARD_MAIN_ID } from '$lib/components/Dashboard.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
-	import { createTranslations } from '$lib/i18n/translate';
 	import { AlertTriangle, Eye, Users2 } from 'lucide-svelte';
 
 	$: projectId = $page.params.projectId;
-
-	const t = createTranslations({
-		fr: {
-			essentials: {
-				heading: 'Essentiels',
-				general: 'Général',
-				gallery: 'Galerie',
-				place: 'Lieu',
-				exemplarity: 'Exemplarité',
-			},
-			complementaries: {
-				heading: 'Compléments',
-				timeline: 'Calendrier général',
-				materials: 'Matériaux',
-				contributions: 'Contributions',
-			},
-			settings: {
-				heading: 'Paramètres',
-				sharing: 'Partage des permissions',
-				visibility: 'Visibilité & diffusion',
-				danger: 'Zone à risque',
-			},
-		},
-		en: {
-			essentials: {
-				heading: 'Essentials',
-				general: 'Général',
-				gallery: 'Gallery',
-				place: 'Place',
-				exemplarity: 'Exemplarity',
-			},
-			complementaries: {
-				heading: 'Complementaries',
-				timeline: 'Calendrier général',
-				materials: 'Materials',
-				contributions: 'Contributions',
-			},
-			settings: {
-				heading: 'Settings',
-				sharing: 'Sharing & permissions',
-				visibility: 'Visibility & publication',
-				danger: 'Danger zone',
-			},
-		},
-	});
 </script>
 
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		{$t.essentials.heading}
+		<LangKey>{m.project_essentials()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/projects/${projectId}`)}>
-		{$t.essentials.general}
+		<LangKey>{m.project_general()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/place#${DASHBOARD_MAIN_ID}`)} aria-disabled>
-		{$t.essentials.place}
+		<LangKey>{m.project_place()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/exemplarity#${DASHBOARD_MAIN_ID}`)}>
-		{$t.essentials.exemplarity}
+		<LangKey>{m.project_examplarity()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/gallery#${DASHBOARD_MAIN_ID}`)}>
-		{$t.essentials.gallery}
+		<LangKey>{m.project_gallery()}</LangKey>
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		{$t.complementaries.heading}
+		<LangKey>{m.project_complements()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem
 		{...$link(`/edit/projects/${projectId}/contributions#${DASHBOARD_MAIN_ID}`)}
 		aria-disabled
 	>
-		{$t.complementaries.contributions}
+		<LangKey>{m.project_contributions()}</LangKey>
 	</SidebarItem>
 	<SidebarItem
 		{...$link(`/edit/projects/${projectId}/materials#${DASHBOARD_MAIN_ID}`)}
 		aria-disabled
 	>
-		{$t.complementaries.materials}
+		<LangKey>{m.project_materials()}</LangKey>
 	</SidebarItem>
 	<SidebarItem
 		{...$link(`/edit/projects/${projectId}/timeline#${DASHBOARD_MAIN_ID}`)}
 		aria-disabled
 	>
-		{$t.complementaries.timeline}
+		<LangKey>{m.project_timeline()}</LangKey>
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		{$t.settings.heading}
+		<LangKey>{m.project_settings()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/sharing#${DASHBOARD_MAIN_ID}`)} aria-disabled>
-		{$t.settings.sharing}
+		<LangKey>{m.project_sharing()}</LangKey>
 		<Users2 class="button-icon" />
 	</SidebarItem>
 	<SidebarItem
 		{...$link(`/edit/projects/${projectId}/publishing#${DASHBOARD_MAIN_ID}`)}
 		aria-disabled
 	>
-		{$t.settings.visibility}
+		<LangKey>{m.project_visibility()}</LangKey>
 		<Eye class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/security#${DASHBOARD_MAIN_ID}`)} danger>
-		{$t.settings.danger}
+		<LangKey>{m.project_dangerZone()}</LangKey>
 		<AlertTriangle class="button-icon" />
 	</SidebarItem>
 </SidebarGroup>

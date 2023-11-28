@@ -1,29 +1,18 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import { link } from '$lib/i18n/link';
-	import { createTranslations } from '$lib/i18n/translate';
+	import { langKey } from '$lib/i18n/translate';
 	import { FilePlus, Search } from 'lucide-svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
-
-	const t = createTranslations({
-		fr: {
-			heading: 'Éditez des projets',
-			create: 'Créez un nouveau projet&nbsp;!',
-			or: 'ou',
-			find: 'Trouvez un de vos projets',
-		},
-		en: {
-			heading: 'Start editing projects',
-			create: 'Create a brand new project!',
-			or: 'or',
-			find: "Let's find one of your projects",
-		},
-	});
 </script>
 
 <form method="GET">
 	<header>
-		<h1 class="heading xxl">{$t.heading}</h1>
+		<h1 class="heading xxl">
+			<LangKey>{m.project_edit()}</LangKey>
+		</h1>
 	</header>
 	<section id="projects-actions">
 		<!-- svelte-ignore a11y-missing-attribute -->
@@ -32,16 +21,18 @@
 			class="button cta"
 			in:fly|global={{ x: 8, easing: cubicOut, duration: 450, delay: 250 }}
 		>
-			{@html $t.create}
+			<LangKey>{@html m.project_create()}</LangKey>
 			<FilePlus class="button-icon" />
 		</a>
-		<span class="prose dimmer" in:fade|global={{ delay: 500, duration: 1000 }}>{$t.or}</span>
+		<span class="prose dimmer" in:fade|global={{ delay: 500, duration: 1000 }}>
+			<LangKey>{m.or()}</LangKey>
+		</span>
 		<fieldset
 			class="input-group"
 			in:fly|global={{ x: -8, easing: cubicOut, duration: 450, delay: 250 }}
 			disabled
 		>
-			<input type="search" name="q" placeholder={$t.find} class="input" />
+			<input type="search" name="q" placeholder={$langKey(m.project_find())} class="input" />
 			<div class="input-peer">
 				<button class="button cta square">
 					<Search class="button-icon" />

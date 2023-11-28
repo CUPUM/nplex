@@ -37,6 +37,9 @@ const config = {
 	extensions: ['.svelte', ...md],
 	kit: {
 		adapter: adapter(),
+		alias: {
+			$i18n: 'src/i18n',
+		},
 	},
 	vitePlugin: {
 		inspector: true,

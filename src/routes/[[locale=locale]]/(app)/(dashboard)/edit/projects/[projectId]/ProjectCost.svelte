@@ -1,44 +1,18 @@
 <script lang="ts">
+	import * as m from '$i18n/messages';
 	import { decrement, increment } from '$lib/actions/increment';
 	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import Slider from '$lib/components/Slider.svelte';
 	import SwitchThumb from '$lib/components/SwitchThumb.svelte';
 	import { PROJECT_COST_MAX, PROJECT_COST_MIN } from '$lib/db/constants';
 	import type { SuperFormPageData } from '$lib/forms/types';
-	import { createTranslations } from '$lib/i18n/translate';
+	import { langKey } from '$lib/i18n/translate';
 	import { checked } from '$lib/utils/attributes';
 	import { Minus, Pencil, Plus, RotateCcw } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale, slide } from 'svelte/transition';
 	import type { PageData } from './$types';
-
-	const t = createTranslations({
-		fr: {
-			scale: {
-				title: 'Mode de l’échelle',
-				description:
-					'Aidez-vous en spécifiant l’échelle de coût qui caractérise mieux votre projet.',
-				normal: 'Normale',
-				small: 'Modeste',
-			},
-			title: 'Fourchette de coûts',
-			init: 'Initialiser',
-			reset: 'Effacer',
-			to: 'à',
-		},
-		en: {
-			scale: {
-				title: 'Scale mode',
-				description: 'Help yourself by choosing the cost scale that best fits your project.',
-				normal: 'Normal',
-				small: 'Modest',
-			},
-			title: 'Cost range',
-			init: 'Initialize',
-			reset: 'Erase',
-			to: 'to',
-		},
-	});
 
 	type Form = SuperFormPageData<PageData['form']>;
 
@@ -69,7 +43,7 @@
 
 <svelte:window on:keydown={handleKeydown} on:keyup={handleKeyup} />
 
-<DashboardFormField title={$t.title}>
+<DashboardFormField title={$langKey(m.project_cost_title())}>
 	{#if $form.costRange[0] == null}
 		<button
 			id="project-cost-placeholder"
@@ -89,7 +63,8 @@
 				class="button dashed bg-blur"
 				in:scale={{ easing: expoOut, start: 0.9, duration: 250, delay: 250 }}
 			>
-				{$t.init}<Pencil />
+				<LangKey>{m.project_cost_init()}</LangKey>
+				<Pencil />
 			</div>
 		</button>
 	{:else}
@@ -125,7 +100,7 @@
 						</button>
 					</div>
 				</div>
-				{$t.to}
+				<LangKey>{m.to()}</LangKey>
 				<div class="input-group">
 					<div class="input-peer">
 						<button
@@ -165,12 +140,17 @@
 				}}
 				in:fly={{ y: -6, delay: 500, easing: expoOut, duration: 250 }}
 			>
-				{$t.reset}<RotateCcw />
+				<LangKey>{m.project_cost_reset()}</LangKey>
+				<RotateCcw />
 			</button>
 			<section id="cost-scale">
-				<h3 class="h6">{$t.scale.title}</h3>
+				<h3 class="h6">
+					<LangKey>{m.project_cost_scaleTitle()}</LangKey>
+				</h3>
 				<div id="cost-scale-content">
-					<p>{$t.scale.description}</p>
+					<p>
+						<LangKey>{m.project_cost_scaleDescription()}</LangKey>
+					</p>
 					<menu class="switch outlined rounded">
 						<button
 							type="button"
@@ -180,7 +160,7 @@
 								smallScale = false;
 							}}
 						>
-							{$t.scale.normal}
+							<LangKey>{m.project_cost_scaleNormal()}</LangKey>
 							<SwitchThumb current={!smallScale} />
 						</button>
 						<button
@@ -191,7 +171,7 @@
 								smallScale = true;
 							}}
 						>
-							{$t.scale.small}
+							<LangKey>{m.project_cost_scaleSmall()}</LangKey>
 							<SwitchThumb current={smallScale} />
 						</button>
 					</menu>
