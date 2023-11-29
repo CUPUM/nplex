@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import { link } from '$lib/i18n/link';
-	import { imageUrl } from '$lib/media/url';
+	import { imageSrc } from '$lib/media/url';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 
@@ -16,7 +16,7 @@
 	{#each data.qProjects as p, i (p.id)}
 		<li animate:flip in:fly|global={{ y: -6, duration: 350, delay: 100 + i * 20 }}>
 			{#if p.storageName}
-				<img src={imageUrl(p.storageName, { resize: { width: 350 } })} />
+				<img src={imageSrc(p.storageName, { resize: { width: 350 } })} />
 			{/if}
 			<!-- svelte-ignore a11y-missing-attribute -->
 			<div class="inner">

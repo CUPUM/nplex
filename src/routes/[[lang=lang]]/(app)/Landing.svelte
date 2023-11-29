@@ -4,7 +4,6 @@
 	import LangKey from '$lib/components/LangKey.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import { link } from '$lib/i18n/link';
-	import { transform } from '$lib/transitions/transform';
 	import { debounce } from '@melt-ui/svelte/internal/helpers';
 	import { ArrowRight, Edit } from 'lucide-svelte';
 	import { onMount } from 'svelte';
@@ -13,14 +12,15 @@
 	import { spring, tweened } from 'svelte/motion';
 	import { fly } from 'svelte/transition';
 	import type { PageData } from './$types';
+	import LandingImage from './LandingImage.svelte';
 
 	export let images: PageData['randomImages'];
 
-	function randomArea(...triggers: unknown[]) {
-		const cspan = Math.round(Math.random() * 7 + 3);
-		const rspan = Math.round(Math.random() * 7 + 3);
-		const col = `${Math.round(Math.random() * (n - cspan))} / span ${cspan}`;
-		const row = `${Math.round(Math.random() * (n - rspan))} / span ${rspan}`;
+	function randomArea() {
+		const cspan = Math.round(Math.random() * 4 + 2) * 2;
+		const rspan = Math.round(Math.random() * 4 + 2) * 2;
+		const col = `${Math.round((Math.random() * n) / 2) * 2} / span ${cspan}`;
+		const row = `${Math.round((Math.random() * n) / 2) * 2} / span ${rspan}`;
 		return {
 			col,
 			row,
@@ -28,9 +28,8 @@
 	}
 
 	$: placedImages = n ? images.map((image) => ({ ...image, ...randomArea() })) : [];
-	$: console.log(placedImages);
 
-	const factor = 0.1;
+	const factor = 0.05;
 	const ax0 = 35;
 	const ay0 = -15;
 	const az0 = 35;
@@ -38,13 +37,11 @@
 	let clientHeight = 0;
 	let n = 0;
 	const ncalc = debounce((...triggers) => {
-		n = Math.round(Math.max(clientWidth, clientHeight) / 75);
-	}, 500);
+		n = Math.round(Math.max(clientWidth, clientHeight) / 100);
+	}, 1000);
 	$: ncalc(clientHeight, clientWidth);
 	let y = tweened(0);
-	let ax = spring(ax0);
-	let ay = spring(ay0);
-	let az = spring(az0);
+	const a = spring({ x: ax0, y: ay0, z: az0 });
 	let mounted = false;
 
 	onMount(() => {
@@ -55,18 +52,20 @@
 <svelte:window
 	on:scroll={() => {
 		y.set(window.scrollY);
-		ax.set(Math.max(0, ax0 - window.scrollY * factor));
-		ay.set(Math.min(0, ay0 + window.scrollY * factor));
-		az.set(Math.max(0, az0 - window.scrollY * factor));
+		a.set({
+			x: Math.max(0, ax0 + window.scrollY * factor),
+			y: Math.min(0, ay0 + window.scrollY * factor),
+			z: Math.max(0, az0 - window.scrollY * factor),
+		});
 	}}
 />
 
 <section
 	id="landing"
 	style:--n={n}
-	style:--ax="{$ax}deg"
-	style:--ay="{$ay}deg"
-	style:--az="{$az}deg"
+	style:--ax="{$a.x}deg"
+	style:--ay="{$a.y}deg"
+	style:--az="{$a.z}deg"
 >
 	<grid bind:clientWidth bind:clientHeight>
 		{#each placedImages as image, i (image.id)}
@@ -79,15 +78,8 @@
 					},
 					easing: expoInOut,
 				}}
-				in:transform={{
-					translate: [0, 0, -50],
-					opacity: 0,
-					duration: 2000,
-					easing: expoOut,
-					delay: i * Math.random() * 350,
-				}}
 			>
-				<img />
+				<LandingImage {image} {i} />
 			</figure>
 		{/each}
 		<surface>
@@ -167,11 +159,8 @@
 
 	figure {
 		z-index: 1;
-		/* box-shadow: 1.5em 2.5em 4em -1.5em var(--base-bg); */
 		position: relative;
-		opacity: 0.5;
-		background: var(--color-neutral-500);
-		border-radius: var(--radius-md);
+		transform-style: preserve-3d;
 	}
 
 	surface {
@@ -240,7 +229,7 @@
 
 		hgroup {
 			font-size: 10rem;
-			color: var(--color-neutral-900);
+			color: var(--color-primary-900);
 			:global(:--dark) & {
 				color: var(--color-neutral-200);
 			}

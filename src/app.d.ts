@@ -7,6 +7,7 @@ import type { users } from '$lib/db/schema/accounts';
 import type { eventLocalize } from '$lib/i18n/localize.server';
 import type { eventI18nRedirect } from '$lib/i18n/redirect.server';
 import type { Mode } from '$lib/modes/constants';
+import type { Setout } from '$lib/setout/constants';
 import type { createSetEventSetout } from '$lib/setout/event';
 import type { InferSelectModel } from 'drizzle-orm';
 import type { AuthRequest, User } from 'lucia';
@@ -88,6 +89,12 @@ declare global {
 			 * Granular server and client setable layout type.
 			 */
 			setout?: Setout;
+			/**
+			 * Optionally hide navbar's scrolled bg.
+			 */
+			navbar?: {
+				noBackground?: boolean;
+			};
 			/**
 			 * Dashboard ((private) route group) compositional components and data.
 			 */

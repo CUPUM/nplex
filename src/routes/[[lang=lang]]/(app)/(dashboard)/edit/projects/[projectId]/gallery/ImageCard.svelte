@@ -3,7 +3,7 @@
 	import type { ProjectsGalleryUpdateSchema } from '$lib/db/crud.server';
 	import type { SuperForm } from '$lib/forms/super-form';
 	import { link } from '$lib/i18n/link';
-	import { imageUrl } from '$lib/media/url';
+	import { imageSrc } from '$lib/media/url';
 	import { MODES } from '$lib/modes/constants';
 	import { checked } from '$lib/utils/attributes';
 	import { Pen, Presentation, Trash } from 'lucide-svelte';
@@ -25,7 +25,7 @@
 <figure class="card">
 	<img
 		class="card-img"
-		src={imageUrl(image.storageName, { resize: { fit: 'inside', height: 250 }, quality: 0.8 })}
+		src={imageSrc(image.storageName, { resize: { fit: 'inside', height: 250 }, quality: 0.8 })}
 		alt="image-{image.id}"
 	/>
 	<div class="card-footer">

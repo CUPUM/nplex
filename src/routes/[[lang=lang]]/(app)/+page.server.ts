@@ -30,6 +30,9 @@ export const load = async (event) => {
 			projects: editableProjects,
 			organizations: editableOrganizations,
 		},
+		navbar: {
+			noBackground: true,
+		},
 	};
 };
 

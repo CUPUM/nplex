@@ -106,7 +106,12 @@
 
 <!-- svelte-ignore a11y-missing-attribute -->
 {#if mounted && $setout && $breakpoint}
-	<header id="navbar" bind:this={navbar} class={$setout} class:over={scrollY > 10}>
+	<header
+		id="navbar"
+		bind:this={navbar}
+		class={$setout}
+		class:over={scrollY > 10 && !$page.data.navbar?.noBackground}
+	>
 		<div class="inner">
 			<!-- General nav -->
 			<nav id="site-group" class="navbar-group" in:flyin|global={0}>

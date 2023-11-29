@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import { availableLanguageTags } from '$i18n/runtime';
 	import { ripple } from '$lib/actions/ripple';
 	import { breakpoint } from '$lib/breakpoints/breakpoints';
-	import { LANG_DETAILS, availableLanguageTags } from '$lib/i18n/constants';
-	import { i18nswitch, link } from '$lib/i18n/link';
-	import { MODES_DETAILS, MODES_TRANSLATIONS } from '$lib/modes/constants';
+	import { LANG_DETAILS } from '$lib/i18n/constants';
+	import { langSwitch, link } from '$lib/i18n/link';
+	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
 	import { transform } from '$lib/transitions/transform';
 	import { KEYS } from '$lib/utils/constants';
@@ -92,7 +93,7 @@
 					<!-- svelte-ignore a11y-missing-attribute -->
 					<a
 						class="drawerbutton"
-						{...$i18nswitch(locale)}
+						{...$langSwitch(locale)}
 						use:ripple
 						data-current={$page.data.locale === locale ? true : undefined}
 						data-sveltekit-noscroll
@@ -111,7 +112,7 @@
 		>
 			<h2>
 				<SunMoon size="2em" />
-				{$MODES_TRANSLATIONS.label}
+				<LangKey>{m.mode()}</LangKey>
 			</h2>
 			<div class="inner">
 				<button
@@ -148,7 +149,7 @@
 							</div>
 						{/key}
 					</div>
-					{$MODES_TRANSLATIONS[$mode]}
+					<LangKey>{MODES_DETAILS[$mode].title()}</LangKey>
 				</button>
 			</div>
 		</section>

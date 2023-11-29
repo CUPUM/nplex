@@ -1,8 +1,5 @@
-import { browser } from '$app/environment';
-import { invalidate } from '$app/navigation';
-import { setLanguageTag, sourceLanguageTag, type AvailableLanguageTag } from '$i18n/runtime';
-import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
-import type { Load, LoadEvent, Redirect, RequestEvent } from '@sveltejs/kit';
+import { sourceLanguageTag } from '$i18n/runtime';
+import type { LoadEvent, Redirect, RequestEvent } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
 import { LANG_PARAM } from './constants';
 import { localize } from './link';
@@ -39,20 +36,4 @@ export function getEventLang<E extends RequestEvent | LoadEvent>(event: E) {
 		return param;
 	}
 	return sourceLanguageTag;
-}
-
-export function loadLang<T, E>(load: Load) {
-	let prevLang: AvailableLanguageTag | undefined;
-	return async (event: E) => {
-		const data = await load(event);
-		const lang = getEventLang(event);
-		if (browser && lang !== prevLang) {
-			setLanguageTag(lang);
-			invalidate(LOAD_DEPENDENCIES.Lang);
-		}
-		return {
-			...data,
-			lang,
-		};
-	};
 }

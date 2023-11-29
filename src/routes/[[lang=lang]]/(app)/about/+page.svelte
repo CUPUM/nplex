@@ -1,10 +1,17 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
+	import * as m from '$i18n/messages';
+	import LangKey from '$lib/components/LangKey.svelte';
 </script>
 
-<h1>About</h1>
+<article>
+	<h1 class="h2"><LangKey>{m.comingSoon()}</LangKey></h1>
+</article>
 
 <style lang="postcss">
+	article {
+		display: flex;
+		flex: 1;
+		align-items: center;
+		justify-content: center;
+	}
 </style>

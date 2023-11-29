@@ -43,7 +43,7 @@ export const projectTypesRelations = relations(projectTypes, ({ many }) => {
 });
 export const projectTypesTranslationsRelations = relations(projectTypesTranslations, ({ one }) => {
 	return {
-		locale: one(langs, {
+		lang: one(langs, {
 			fields: [projectTypesTranslations.lang],
 			references: [langs.lang],
 		}),
@@ -67,7 +67,7 @@ export const projectInterventionCategoriesTranslationsRelations = relations(
 	projectInterventionCategoriesTranslations,
 	({ one }) => {
 		return {
-			locale: one(langs, {
+			lang: one(langs, {
 				fields: [projectInterventionCategoriesTranslations.lang],
 				references: [langs.lang],
 			}),
@@ -94,7 +94,7 @@ export const projectInterventionsTranslationsRelations = relations(
 	projectInterventionsTranslations,
 	({ one }) => {
 		return {
-			locale: one(langs, {
+			lang: one(langs, {
 				fields: [projectInterventionsTranslations.lang],
 				references: [langs.lang],
 			}),
@@ -131,7 +131,7 @@ export const projectSiteOwnershipsTranslationsRelations = relations(
 	projectSiteOwnershipsTranslations,
 	({ one }) => {
 		return {
-			locale: one(langs, {
+			lang: one(langs, {
 				fields: [projectSiteOwnershipsTranslations.lang],
 				references: [langs.lang],
 			}),
@@ -152,7 +152,7 @@ export const projectImplantationTypesTranslationsRelations = relations(
 	projectImplantationTypesTranslations,
 	({ one }) => {
 		return {
-			locale: one(langs, {
+			lang: one(langs, {
 				fields: [projectImplantationTypesTranslations.lang],
 				references: [langs.lang],
 			}),
@@ -177,7 +177,7 @@ export const projectExemplarityCategoriesTranslationsRelations = relations(
 	projectExemplarityCategoriesTranslations,
 	({ one }) => {
 		return {
-			locale: one(langs, {
+			lang: one(langs, {
 				fields: [projectExemplarityCategoriesTranslations.lang],
 				references: [langs.lang],
 			}),
@@ -205,7 +205,7 @@ export const projectExemplarityIndicatorsTranslationsRelations = relations(
 	projectExemplarityIndicatorsTranslations,
 	({ one }) => {
 		return {
-			locale: one(langs, {
+			lang: one(langs, {
 				fields: [projectExemplarityIndicatorsTranslations.lang],
 				references: [langs.lang],
 			}),
@@ -226,7 +226,7 @@ export const projectImageTypesTranslationsRelations = relations(
 	projectImageTypesTranslations,
 	({ one }) => {
 		return {
-			locale: one(langs, {
+			lang: one(langs, {
 				fields: [projectImageTypesTranslations.lang],
 				references: [langs.lang],
 			}),
@@ -250,7 +250,7 @@ export const projectImageTemporalitiesTranslationsRelations = relations(
 	projectImageTemporalitiesTranslations,
 	({ one }) => {
 		return {
-			locale: one(langs, {
+			lang: one(langs, {
 				fields: [projectImageTemporalitiesTranslations.lang],
 				references: [langs.lang],
 			}),
@@ -274,7 +274,7 @@ export const projectBuildingLevelTypesTranslationsRelations = relations(
 	projectBuildingLevelTypesTranslations,
 	({ one }) => {
 		return {
-			locale: one(langs, {
+			lang: one(langs, {
 				fields: [projectBuildingLevelTypesTranslations.lang],
 				references: [langs.lang],
 			}),
@@ -300,7 +300,7 @@ export const projectsRelations = relations(projects, ({ one, many }) => {
 });
 export const projectsTranslationsRelations = relations(projectsTranslations, ({ one }) => {
 	return {
-		locale: one(langs, {
+		lang: one(langs, {
 			fields: [projectsTranslations.lang],
 			references: [langs.lang],
 		}),
@@ -373,7 +373,7 @@ export const organizationTypesTranslationsRelations = relations(
 	organizationTypesTranslations,
 	({ one }) => {
 		return {
-			locale: one(langs, {
+			lang: one(langs, {
 				fields: [organizationTypesTranslations.lang],
 				references: [langs.lang],
 			}),
