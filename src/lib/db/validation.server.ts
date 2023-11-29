@@ -15,8 +15,6 @@ export function translationsSchema<T extends ZodTypeAny>(schema: T) {
  * resulting schema should be isomorphic with {@link withTranslationsRelations}.
  */
 export function withTranslationsSchema<
-	// T extends { id: ZodString },
-	// TT extends { locale: typeof localeSchema },
 	T extends Record<string, ZodTypeAny>,
 	TT extends Record<string, ZodTypeAny>,
 >(schema: ZodObject<T>, translationSchema: ZodObject<TT>) {

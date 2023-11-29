@@ -1,10 +1,9 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import AvailableLanguageTagInput from '$lib/components/AvailableLanguageTagInput.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
+	import TranslationsInput from '$lib/components/TranslationsInput.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
-	import { langKey } from '$lib/i18n/translate';
 	import type { PageData } from './$types';
 
 	export let form: SuperFormPageData<PageData['form']>['form'];
@@ -14,36 +13,36 @@
 	<h4 class="h6">
 		<LangKey>{m.title()}</LangKey>
 	</h4>
-	<AvailableLanguageTagInput let:locale>
+	<TranslationsInput let:lang>
 		<input
 			type="text"
 			class="input"
-			bind:value={$form.translations[locale].title}
+			bind:value={$form.translations[lang].title}
 			placeholder={$langKey(m.noTitle())}
 		/>
-	</AvailableLanguageTagInput>
+	</TranslationsInput>
 	<h4 class="h6">
 		<LangKey>{m.summary()}</LangKey>
 	</h4>
-	<AvailableLanguageTagInput let:locale>
+	<TranslationsInput let:lang>
 		<textarea
 			rows="5"
 			class="input resize"
-			bind:value={$form.translations[locale].summary}
+			bind:value={$form.translations[lang].summary}
 			placeholder={$langKey(m.noSummary())}
 		/>
-	</AvailableLanguageTagInput>
+	</TranslationsInput>
 	<h4 class="h6">
 		<LangKey>{m.description()}</LangKey>
 	</h4>
-	<AvailableLanguageTagInput let:locale>
+	<TranslationsInput let:lang>
 		<textarea
 			rows="10"
 			class="input resize"
-			bind:value={$form.translations[locale].description}
+			bind:value={$form.translations[lang].description}
 			placeholder={$langKey(m.noDescription())}
 		/>
-	</AvailableLanguageTagInput>
+	</TranslationsInput>
 </DashboardFormSection>
 
 <style lang="postcss">

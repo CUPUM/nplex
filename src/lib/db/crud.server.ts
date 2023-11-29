@@ -1,4 +1,3 @@
-import { localeSchema } from '$lib/i18n/constants';
 import type { InferSelectModel } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
@@ -11,6 +10,7 @@ import {
 } from './constants';
 import { users, usersRolesRequests } from './schema/accounts';
 import { rangeSchema } from './schema/custom-types';
+import { translationLangColumnSchema } from './schema/i18n';
 import {
 	organizationTypes,
 	organizationTypesTranslations,
@@ -51,7 +51,7 @@ import { withTranslationsSchema } from './validation.server';
  */
 export const projectTypeInsertSchema = createInsertSchema(projectTypes).required({ id: true });
 export const projectTypeTranslationInsertSchema = createInsertSchema(projectTypesTranslations, {
-	locale: localeSchema,
+	...translationLangColumnSchema,
 });
 export const projectTypesUpdateSchema = z.object({
 	types: withTranslationsSchema(
@@ -69,7 +69,7 @@ export const projectInterventionInsertSchema = createInsertSchema(
 ).required({ id: true, categoryId: true });
 export const projectInterventionTranslationInsertSchema = createInsertSchema(
 	projectInterventionsTranslations,
-	{ locale: localeSchema }
+	{ ...translationLangColumnSchema }
 );
 export const projectInterventionsUpdateSchema = z.object({
 	interventions: withTranslationsSchema(
@@ -87,7 +87,7 @@ export const projectInterventionCategoryInsertSchema = createInsertSchema(
 ).required({ id: true });
 export const projectInterventionCategoryTranslationInsertSchema = createInsertSchema(
 	projectInterventionCategoriesTranslations,
-	{ locale: localeSchema }
+	{ ...translationLangColumnSchema }
 );
 export const projectInterventionCategoriesUpdateSchema = z.object({
 	interventionCategories: withTranslationsSchema(
@@ -116,7 +116,7 @@ export const projectExemplarityCategoryInsertSchema = createInsertSchema(
 ).required({ id: true });
 export const projectExemplarityCategoryTranslationInsertSchema = createInsertSchema(
 	projectExemplarityCategoriesTranslations,
-	{ locale: localeSchema }
+	{ ...translationLangColumnSchema }
 );
 export const projectExemplarityCategoriesUpdateSchema = z.object({
 	exemplarityCategories: withTranslationsSchema(
@@ -133,7 +133,7 @@ export const projectExemplarityIndicatorInsertSchema = createInsertSchema(
 ).required({ id: true, categoryId: true });
 export const projectExemplarityIndicatorTranslationInsertSchema = createInsertSchema(
 	projectExemplarityIndicatorsTranslations,
-	{ locale: localeSchema }
+	{ ...translationLangColumnSchema }
 );
 export const projectExemplarityIndicatorsUpdateSchema = z.object({
 	indicators: withTranslationsSchema(
@@ -162,7 +162,7 @@ export const projectSiteOwnershipInsertSchema = createInsertSchema(projectSiteOw
 });
 export const projectSiteOwnershipTranslationInsertSchema = createInsertSchema(
 	projectSiteOwnershipsTranslations,
-	{ locale: localeSchema }
+	{ ...translationLangColumnSchema }
 );
 export const projectSiteOwnershipsUpdateSchema = z.object({
 	siteOwnerships: withTranslationsSchema(
@@ -181,7 +181,7 @@ export const projectImplantationTypeInsertSchema = createInsertSchema(
 });
 export const projectImplantationTypeTranslationInsertSchema = createInsertSchema(
 	projectImplantationTypesTranslations,
-	{ locale: localeSchema }
+	{ ...translationLangColumnSchema }
 );
 export const projectImplantationTypesUpdateSchema = z.object({
 	implantationTypes: withTranslationsSchema(
@@ -198,7 +198,7 @@ export const projectImageTypeInsertSchema = createInsertSchema(projectImageTypes
 });
 export const projectImageTypeTranslationInsertSchema = createInsertSchema(
 	projectImageTypesTranslations,
-	{ locale: localeSchema }
+	{ ...translationLangColumnSchema }
 );
 export const projectImageTypesUpdateSchema = z.object({
 	imageTypes: withTranslationsSchema(
@@ -217,7 +217,7 @@ export const projectImageTemporalityInsertSchema = createInsertSchema(
 });
 export const projectImageTemporalityTranslationInsertSchema = createInsertSchema(
 	projectImageTemporalitiesTranslations,
-	{ locale: localeSchema }
+	{ ...translationLangColumnSchema }
 );
 export const projectImageTemporalitiesUpdateSchema = z.object({
 	imageTemporalities: withTranslationsSchema(
@@ -236,7 +236,7 @@ export const projectBuildingLevelTypeInsertSchema = createInsertSchema(
 });
 export const projectBuildingLevelTypeTranslationInsertSchema = createInsertSchema(
 	projectBuildingLevelTypesTranslations,
-	{ locale: localeSchema }
+	{ ...translationLangColumnSchema }
 );
 export const projectBuildingLevelTypesUpdateSchema = z.object({
 	buildingLevelTypes: withTranslationsSchema(
@@ -261,7 +261,7 @@ export const projectsTranslationsInsertSchema = createInsertSchema(projectsTrans
 	title: (s) => s.title.max(PROJECT_TITLE_MAX),
 	summary: (s) => s.summary.max(PROJECT_SUMMARY_MAX),
 	description: (s) => s.description.max(PROJECT_DESCRIPTION_MAX),
-	locale: localeSchema,
+	...translationLangColumnSchema,
 });
 export const projectsUpdateSchema = withTranslationsSchema(
 	projectsInsertSchema,
@@ -291,7 +291,7 @@ export const projectsImagesInsertSchema = createInsertSchema(projectsImages);
 export const projectsImagesTranslationInsertSchema = createInsertSchema(
 	projectsImagesTranslations,
 	{
-		locale: localeSchema,
+		...translationLangColumnSchema,
 	}
 );
 export const projectsImagesUpdateSchema = withTranslationsSchema(
@@ -344,7 +344,7 @@ export const organizationTypeInsertSchema = createInsertSchema(organizationTypes
 });
 export const organizationTypeTranslationInsertSchema = createInsertSchema(
 	organizationTypesTranslations,
-	{ locale: localeSchema }
+	{ ...translationLangColumnSchema }
 );
 export const organizationTypesUpdateSchema = z.object({
 	types: z.array(
@@ -359,7 +359,7 @@ export const organizationInsertSchema = createInsertSchema(organizations).requir
 	id: true,
 });
 export const organizationTranslationInsertSchema = createInsertSchema(organizationsTranslations, {
-	locale: localeSchema,
+	...translationLangColumnSchema,
 });
 export const organizationGeneralUpdateSchema = withTranslationsSchema(
 	organizationInsertSchema,

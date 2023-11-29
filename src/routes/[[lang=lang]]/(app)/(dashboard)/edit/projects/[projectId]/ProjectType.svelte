@@ -2,8 +2,8 @@
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
+	import { langKey } from '$lib/components/LangKey.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
-	import { langKey } from '$lib/i18n/translate';
 	import { switchCrossfade } from '$lib/transitions/presets';
 	import type { PageData } from './$types';
 

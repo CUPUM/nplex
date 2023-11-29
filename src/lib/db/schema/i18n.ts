@@ -1,3 +1,4 @@
+import { langSchema } from '$lib/i18n/validation';
 import type { ColumnBaseConfig } from 'drizzle-orm';
 import { PgColumn, pgSchema, text } from 'drizzle-orm/pg-core';
 import { lang } from './custom-types';
@@ -32,6 +33,10 @@ export const translationLangColumn = {
 			onUpdate: 'cascade',
 		})
 		.notNull(),
+};
+
+export const translationLangColumnSchema = {
+	lang: langSchema,
 };
 
 export type TranslationLangColumn = typeof translationLangColumn;

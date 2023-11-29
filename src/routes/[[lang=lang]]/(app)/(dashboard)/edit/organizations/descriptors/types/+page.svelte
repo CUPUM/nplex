@@ -45,19 +45,15 @@
 			>
 				<TranslationsCard
 					legend={type.id}
-					legendMinimized={type.translations[$page.data.locale].title}
+					legendMinimized={type.translations[$page.data.lang].title}
 					deleteFormaction="?/delete&typeId={type.id}"
-					let:locale
+					let:lang
 				>
 					<label class="label-group">
 						<span class="label with-hover">
 							<LangKey>{m.title()}</LangKey>
 						</span>
-						<input
-							class="input"
-							type="text"
-							bind:value={$form.types[i].translations[locale].title}
-						/>
+						<input class="input" type="text" bind:value={$form.types[i].translations[lang].title} />
 					</label>
 					<label class="label-group">
 						<span class="label with-hover">
@@ -65,7 +61,7 @@
 						</span>
 						<textarea
 							class="input resize"
-							bind:value={$form.types[i].translations[locale].description}
+							bind:value={$form.types[i].translations[lang].description}
 						/>
 					</label>
 				</TranslationsCard>

@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import ButtonIconArrowRight from '$lib/components/ButtonIconArrowRight.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import { link } from '$lib/i18n/link';
 	import { debounce } from '@melt-ui/svelte/internal/helpers';
-	import { ArrowRight, Edit } from 'lucide-svelte';
+	import { Edit } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { expoInOut, expoOut } from 'svelte/easing';
@@ -115,7 +116,7 @@
 					in:fly={{ y: '-0.25em', duration: 750, delay: 500, easing: expoOut }}
 					class="button big cta"
 				>
-					<LangKey>{m.landing_explore()}</LangKey><ArrowRight />
+					<LangKey>{m.landing_explore()}</LangKey><ButtonIconArrowRight />
 				</a>
 				<a
 					{...$link($page.data.user ? '/edit/projects' : '/login')}

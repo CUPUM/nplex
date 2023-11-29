@@ -1,12 +1,12 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
+	import { langKey } from '$lib/components/LangKey.svelte';
 	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
 	import { customProxy } from '$lib/forms/proxy';
 	import type { SuperFormPageData } from '$lib/forms/types';
-	import { langKey } from '$lib/i18n/translate';
 	import { createSelect, melt } from '@melt-ui/svelte';
 	import type { PageData } from './$types';
 

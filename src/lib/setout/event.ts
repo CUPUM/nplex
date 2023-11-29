@@ -1,5 +1,4 @@
-import type { ServerLoadEvent } from '@sveltejs/kit';
-import type { RequestEvent } from '../../routes/[[locale=locale]]/$types';
+import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import type { Setout } from './constants';
 
 export function createSetEventSetout(event: ServerLoadEvent | RequestEvent) {

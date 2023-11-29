@@ -4,9 +4,8 @@
 	import DashboardFormSection, {
 		DASHBOARD_CONTENT_ALIGN,
 	} from '$lib/components/DashboardFormSection.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
-	import { langKey } from '$lib/i18n/translate';
 	import type { PageData } from './$types';
 
 	export let form: SuperFormPageData<PageData['form']>['form'];

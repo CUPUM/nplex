@@ -89,17 +89,17 @@
 				</LangKey>
 			</h2>
 			<div class="inner">
-				{#each availableLanguageTags as locale}
+				{#each availableLanguageTags as lang}
 					<!-- svelte-ignore a11y-missing-attribute -->
 					<a
 						class="drawerbutton"
-						{...$langSwitch(locale)}
+						{...$langSwitch(lang)}
 						use:ripple
-						data-current={$page.data.locale === locale ? true : undefined}
+						data-current={$page.data.lang === lang ? true : undefined}
 						data-sveltekit-noscroll
 						data-sveltekit-replacestate
 					>
-						{LANG_DETAILS[locale].name}
+						{LANG_DETAILS[lang].name}
 					</a>
 				{/each}
 			</div>

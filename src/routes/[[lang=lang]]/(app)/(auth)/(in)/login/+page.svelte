@@ -1,10 +1,9 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/forms/super-form';
 	import { link } from '$lib/i18n/link';
-	import { langKey } from '$lib/i18n/translate';
 	import { melt } from '@melt-ui/svelte';
 	import { Eye, EyeOff, HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
 	import { fade, fly } from 'svelte/transition';

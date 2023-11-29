@@ -23,7 +23,7 @@ export const load = async (event) => {
 			projectsTranslations,
 			and(
 				eq(projectsTranslations.id, projects.id),
-				eq(projectsTranslations.lang, event.locals.locale)
+				eq(projectsTranslations.lang, event.locals.lang)
 			)
 		)
 		.where(isNotNull(projectsTranslations.title))

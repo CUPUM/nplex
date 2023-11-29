@@ -48,9 +48,9 @@
 			>
 				<TranslationsCard
 					legend={levelType.id}
-					legendMinimized={levelType.translations[$page.data.locale].title}
+					legendMinimized={levelType.translations[$page.data.lang].title}
 					deleteFormaction="?/delete&levelTypeId={levelType.id}"
-					let:locale
+					let:lang
 				>
 					<label class="label-group">
 						<span class="label with-hover">
@@ -59,7 +59,7 @@
 						<input
 							class="input"
 							type="text"
-							bind:value={$form.buildingLevelTypes[i].translations[locale].title}
+							bind:value={$form.buildingLevelTypes[i].translations[lang].title}
 						/>
 					</label>
 					<label class="label-group">
@@ -68,7 +68,7 @@
 						</span>
 						<textarea
 							class="input"
-							bind:value={$form.buildingLevelTypes[i].translations[locale].description}
+							bind:value={$form.buildingLevelTypes[i].translations[lang].description}
 						/>
 					</label>
 				</TranslationsCard>

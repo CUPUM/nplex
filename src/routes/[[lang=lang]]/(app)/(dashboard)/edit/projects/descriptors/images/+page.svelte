@@ -56,21 +56,21 @@
 			>
 				<TranslationsCard
 					legend={type.id}
-					legendMinimized={type.translations[$page.data.locale].title}
-					let:locale
+					legendMinimized={type.translations[$page.data.lang].title}
+					let:lang
 					deleteFormaction="?/deleteImageType&imageTypeId={type.id}"
 				>
 					<label class="label-group">
 						<span class="label with-hover">
 							<LangKey>{m.title()}</LangKey>
 						</span>
-						<input type="text" class="input" bind:value={type.translations[locale].title} />
+						<input type="text" class="input" bind:value={type.translations[lang].title} />
 					</label>
 					<label class="label-group">
 						<span class="label with-hover">
 							<LangKey>{m.description()}</LangKey>
 						</span>
-						<textarea class="input" bind:value={type.translations[locale].description} />
+						<textarea class="input" bind:value={type.translations[lang].description} />
 					</label>
 				</TranslationsCard>
 			</li>
@@ -102,21 +102,21 @@
 			>
 				<TranslationsCard
 					legend={temporality.id}
-					legendMinimized={temporality.translations[$page.data.locale].title}
-					let:locale
+					legendMinimized={temporality.translations[$page.data.lang].title}
+					let:lang
 					deleteFormaction="?/deleteImageType&imageTypeId={temporality.id}"
 				>
 					<label class="label-group">
 						<span class="label with-hover">
 							<LangKey>{m.title()}</LangKey>
 						</span>
-						<input type="text" class="input" bind:value={temporality.translations[locale].title} />
+						<input type="text" class="input" bind:value={temporality.translations[lang].title} />
 					</label>
 					<label class="label-group">
 						<span class="label with-hover">
 							<LangKey>{m.description()}</LangKey>
 						</span>
-						<textarea class="input" bind:value={temporality.translations[locale].description} />
+						<textarea class="input" bind:value={temporality.translations[lang].description} />
 					</label>
 				</TranslationsCard>
 			</li>

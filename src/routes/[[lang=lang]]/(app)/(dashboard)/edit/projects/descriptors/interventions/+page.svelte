@@ -49,9 +49,9 @@
 			<li class="category">
 				<div class="top">
 					<TranslationsCard
-						let:locale
+						let:lang
 						legend={category.id}
-						legendMinimized={category.translations[$page.data.locale].title}
+						legendMinimized={category.translations[$page.data.lang].title}
 					>
 						<label class="label-group">
 							<span class="label with-hover">
@@ -60,7 +60,7 @@
 							<input
 								class="input"
 								type="text"
-								bind:value={$form.interventionCategories[i].translations[locale].title}
+								bind:value={$form.interventionCategories[i].translations[lang].title}
 							/>
 						</label>
 						<label class="label-group">
@@ -70,7 +70,7 @@
 							<textarea
 								class="input resize"
 								rows="3"
-								bind:value={$form.interventionCategories[i].translations[locale].description}
+								bind:value={$form.interventionCategories[i].translations[lang].description}
 							/>
 						</label>
 					</TranslationsCard>
@@ -85,10 +85,10 @@
 								out:scale={{ start: 0.95, duration: 250, easing: expoOut }}
 							>
 								<TranslationsCard
-									let:locale
+									let:lang
 									legend={$form.interventionCategories[i].interventions[ii].id}
 									legendMinimized={$form.interventionCategories[i].interventions[ii].translations[
-										$page.data.locale
+										$page.data.lang
 									].title}
 									deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
 								>
@@ -100,7 +100,7 @@
 											class="input"
 											type="text"
 											bind:value={$form.interventionCategories[i].interventions[ii].translations[
-												locale
+												lang
 											].title}
 										/>
 									</label>
@@ -112,7 +112,7 @@
 											class="input resize"
 											rows="2"
 											bind:value={$form.interventionCategories[i].interventions[ii].translations[
-												locale
+												lang
 											].description}
 										/>
 									</label>

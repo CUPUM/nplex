@@ -1,11 +1,10 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import AvailableLanguageTagInput from '$lib/components/AvailableLanguageTagInput.svelte';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
+	import TranslationsInput from '$lib/components/TranslationsInput.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { langKey } from '$lib/i18n/translate';
 
 	export let data;
 
@@ -34,23 +33,19 @@
 		</p>
 	</svelte:fragment>
 	<DashboardFormField title={$langKey(m.org_name())}>
-		<AvailableLanguageTagInput let:locale>
-			<input type="text" class="input title" bind:value={$form.translations[locale].name} />
-		</AvailableLanguageTagInput>
+		<TranslationsInput let:lang>
+			<input type="text" class="input title" bind:value={$form.translations[lang].name} />
+		</TranslationsInput>
 	</DashboardFormField>
 	<DashboardFormField title={$langKey(m.summary())}>
-		<AvailableLanguageTagInput let:locale>
-			<textarea rows="5" class="input resize" bind:value={$form.translations[locale].summary} />
-		</AvailableLanguageTagInput>
+		<TranslationsInput let:lang>
+			<textarea rows="5" class="input resize" bind:value={$form.translations[lang].summary} />
+		</TranslationsInput>
 	</DashboardFormField>
 	<DashboardFormField title={$langKey(m.description())}>
-		<AvailableLanguageTagInput let:locale>
-			<textarea
-				rows="10"
-				class="input resize"
-				bind:value={$form.translations[locale].description}
-			/>
-		</AvailableLanguageTagInput>
+		<TranslationsInput let:lang>
+			<textarea rows="10" class="input resize" bind:value={$form.translations[lang].description} />
+		</TranslationsInput>
 	</DashboardFormField>
 	<DashboardFormField>
 		<select class="button" bind:value={$form.typeId}>

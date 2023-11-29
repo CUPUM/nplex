@@ -57,10 +57,11 @@ export function getSubqueryColumns<S extends ColumnsSelection, A extends string>
 /**
  * Get individually localized columns.
  */
-export function getLocalizedField<F extends SQL | Column>(field: F) {
-	const shape = Object.fromEntries(
-		availableLanguageTags.map((locale) => [locale, field])
-	) as Record<AvailableLanguageTag, F>;
+export function getLangField<F extends SQL | Column>(field: F) {
+	const shape = Object.fromEntries(availableLanguageTags.map((lang) => [lang, field])) as Record<
+		AvailableLanguageTag,
+		F
+	>;
 	return jsonBuildObject(shape);
 }
 
@@ -168,7 +169,7 @@ export function withTranslations<
 				langs.lang,
 				jsonBuildObject({
 					...translationsSelection,
-					locale: langs.lang,
+					lang: langs.lang,
 					[translationsKey]: field,
 				})
 			).as(`${translationsTableName}_alias`),

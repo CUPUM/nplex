@@ -2,12 +2,11 @@
 	import * as m from '$i18n/messages';
 	import { decrement, increment } from '$lib/actions/increment';
 	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import Slider from '$lib/components/Slider.svelte';
 	import SwitchThumb from '$lib/components/SwitchThumb.svelte';
 	import { PROJECT_COST_MAX, PROJECT_COST_MIN } from '$lib/db/constants';
 	import type { SuperFormPageData } from '$lib/forms/types';
-	import { langKey } from '$lib/i18n/translate';
 	import { checked } from '$lib/utils/attributes';
 	import { Minus, Pencil, Plus, RotateCcw } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';

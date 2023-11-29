@@ -38,9 +38,9 @@
 			<li class="category" in:fly|global={{ y: -6, delay: i * 25, easing: expoOut, duration: 350 }}>
 				<div class="top">
 					<TranslationsCard
-						let:locale
+						let:lang
 						legend={category.id}
-						legendMinimized={category.translations[$page.data.locale].title}
+						legendMinimized={category.translations[$page.data.lang].title}
 					>
 						<label class="label-group">
 							<span class="label with-hover">
@@ -49,7 +49,7 @@
 							<input
 								class="input"
 								type="text"
-								bind:value={$form.exemplarityCategories[i].translations[locale].title}
+								bind:value={$form.exemplarityCategories[i].translations[lang].title}
 							/>
 						</label>
 						<label class="label-group">
@@ -58,7 +58,7 @@
 							</span>
 							<textarea
 								class="input resize"
-								bind:value={$form.exemplarityCategories[i].translations[locale].description}
+								bind:value={$form.exemplarityCategories[i].translations[lang].description}
 							/>
 						</label>
 					</TranslationsCard>
@@ -73,10 +73,10 @@
 								out:scale={{ start: 0.95, duration: 250, easing: expoOut }}
 							>
 								<TranslationsCard
-									let:locale
+									let:lang
 									legend={indicator.id}
 									legendMinimized={$form.exemplarityCategories[i].indicators[ii].translations[
-										$page.data.locale
+										$page.data.lang
 									].title}
 									deleteFormaction="?/deleteIndicator&indicatorId={indicator.id}"
 								>
@@ -87,7 +87,7 @@
 										<input
 											class="input"
 											type="text"
-											bind:value={$form.exemplarityCategories[i].indicators[ii].translations[locale]
+											bind:value={$form.exemplarityCategories[i].indicators[ii].translations[lang]
 												.title}
 										/>
 									</label>
@@ -97,7 +97,7 @@
 										</span>
 										<textarea
 											class="input resize"
-											bind:value={$form.exemplarityCategories[i].indicators[ii].translations[locale]
+											bind:value={$form.exemplarityCategories[i].indicators[ii].translations[lang]
 												.description}
 										/>
 									</label>

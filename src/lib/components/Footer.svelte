@@ -15,7 +15,7 @@
 			<ul id="footer-logos">
 				<li>
 					<a
-						href="https://montreal.ca{$page.data.locale === 'en'
+						href="https://montreal.ca{$page.data.lang === 'en'
 							? '/en'
 							: ''}/unites/bureau-du-design"
 						rel="external"
@@ -27,7 +27,7 @@
 				</li>
 				<li>
 					<a
-						href="https://www.unesco.org/{$page.data.locale}/unitwin"
+						href="https://www.unesco.org/{$page.data.lang}/unitwin"
 						rel="external"
 						target="_blank"
 						class="footer-logo"
@@ -36,10 +36,7 @@
 					</a>
 				</li>
 				<li>
-					<a
-						href="https://www.unesco-paysage.umontreal.ca/{$page.data.locale}/"
-						class="footer-logo"
-					>
+					<a href="https://www.unesco-paysage.umontreal.ca/{$page.data.lang}/" class="footer-logo">
 						<CupumUdem preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
 					</a>
 				</li>
@@ -52,7 +49,7 @@
 		<section id="footer-cc">
 			<Logo size="2em" />
 			<a
-				href="https://www.unesco-paysage.umontreal.ca/{$page.data.locale}/"
+				href="https://www.unesco-paysage.umontreal.ca/{$page.data.lang}/"
 				rel="external"
 				target="_blank"
 			>

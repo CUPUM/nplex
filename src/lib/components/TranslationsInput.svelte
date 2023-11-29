@@ -1,15 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
 	import { ripple } from '$lib/actions/ripple';
-	import {
-		LANG_DETAILS,
-		availableLanguageTags,
-		type AvailableLanguageTag,
-	} from '$lib/i18n/constants';
+	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import { switchCrossfade } from '$lib/transitions/presets';
 	import { createTabs, melt } from '@melt-ui/svelte';
 
-	export let defaultValue: AvailableLanguageTag = $page.data.locale;
+	export let defaultValue: AvailableLanguageTag = $page.data.lang;
 
 	const {
 		elements: { root, trigger, list, content },
@@ -22,17 +19,17 @@
 </script>
 
 <div class="input-group" use:melt={$root}>
-	{#each availableLanguageTags as locale}
-		<div class="locale-content" lang={locale} use:melt={$content(locale)}>
-			<slot {locale} {value} current={$value === locale} />
+	{#each availableLanguageTags as lang}
+		<div class="lang-content" {lang} use:melt={$content(lang)}>
+			<slot {lang} {value} current={$value === lang} />
 		</div>
 	{/each}
 	<div class="input-peer">
 		<menu use:melt={$list} class="switch compact rounded" use:ripple>
-			{#each availableLanguageTags as locale}
-				<button class="switch-item" use:melt={$trigger(locale)} lang={locale} type="button">
-					{LANG_DETAILS[locale].label}
-					{#if $value === locale}
+			{#each availableLanguageTags as lang}
+				<button class="switch-item" use:melt={$trigger(lang)} {lang} type="button">
+					{LANG_DETAILS[lang].label}
+					{#if $value === lang}
 						<div in:send={{ key }} out:receive={{ key }} class="switch-thumb" />
 					{/if}
 				</button>
@@ -46,7 +43,7 @@
 		align-self: stretch;
 	}
 
-	.locale-content {
+	.lang-content {
 		display: flex;
 		flex-direction: row;
 		flex: 1;
@@ -60,7 +57,7 @@
 			margin 0s;
 	}
 
-	.locale-content[hidden] {
+	.lang-content[hidden] {
 		flex: none;
 		pointer-events: none;
 		visibility: collapse;

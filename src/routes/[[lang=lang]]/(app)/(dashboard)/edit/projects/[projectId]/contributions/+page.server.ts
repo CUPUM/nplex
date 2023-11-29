@@ -25,7 +25,7 @@ export const load = async (event) => {
 				organizationsTranslations,
 				and(
 					eq(organizations.id, organizationsTranslations.id),
-					eq(organizationsTranslations.lang, event.locals.locale)
+					eq(organizationsTranslations.lang, event.locals.lang)
 				)
 			);
 		const organizationIds = (

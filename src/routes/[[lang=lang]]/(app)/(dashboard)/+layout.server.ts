@@ -28,7 +28,7 @@ export const load = async (event) => {
 			projectsTranslations,
 			and(
 				eq(projectsTranslations.id, projects.id),
-				eq(projectsTranslations.lang, event.locals.locale)
+				eq(projectsTranslations.lang, event.locals.lang)
 			)
 		)
 		.leftJoin(projectsImages, eq(projects.bannerId, projectsImages.id));
@@ -43,7 +43,7 @@ export const load = async (event) => {
 			organizationsTranslations,
 			and(
 				eq(organizationsTranslations.id, organizations.id),
-				eq(organizationsTranslations.lang, event.locals.locale)
+				eq(organizationsTranslations.lang, event.locals.lang)
 			)
 		);
 

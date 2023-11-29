@@ -57,8 +57,8 @@
 	] satisfies { key: string; title: () => string }[];
 
 	const {
-		elements: { menu: localeMenu, item: localeItem, trigger: localeTrigger },
-		states: { open: localeOpen },
+		elements: { menu: langMenu, item: langItem, trigger: langTrigger },
+		states: { open: langOpen },
 	} = createDropdownMenu(dropdownMenuOptions);
 
 	const {
@@ -161,21 +161,21 @@
 			<!-- User nav -->
 			<menu id="user-group" class="navbar-group" in:flyin|global={2}>
 				{#if $breakpoint.lg}
-					<NavbarButton menu={localeTrigger}>
+					<NavbarButton menu={langTrigger}>
 						<Languages class="button-icon" />
-						<span id="locale-label">{LANG_DETAILS[$page.data.lang].label}</span>
+						<span id="lang-label">{LANG_DETAILS[$page.data.lang].label}</span>
 					</NavbarButton>
-					{#if $localeOpen}
-						<NavbarMenu melt={localeMenu}>
-							{#each availableLanguageTags as locale}
+					{#if $langOpen}
+						<NavbarMenu melt={langMenu}>
+							{#each availableLanguageTags as lang}
 								<NavbarMenuButton
-									{...$langSwitch(locale)}
+									{...$langSwitch(lang)}
 									data-sveltekit-noscroll
 									data-sveltekit-replacestate
-									data-current={$page.data.locale === locale ? true : undefined}
-									melt={localeItem}
+									data-current={$page.data.lang === lang ? true : undefined}
+									melt={langItem}
 								>
-									{LANG_DETAILS[locale].name}
+									{LANG_DETAILS[lang].name}
 								</NavbarMenuButton>
 							{/each}
 						</NavbarMenu>
@@ -413,7 +413,7 @@
 		justify-content: flex-end;
 	}
 
-	#locale-label {
+	#lang-label {
 		display: flex;
 		align-items: center;
 		font-size: var(--size-xs);

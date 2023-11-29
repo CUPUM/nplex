@@ -1,8 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import { link } from '$lib/i18n/link';
-	import { langKey } from '$lib/i18n/translate';
 	import { FilePlus, Search } from 'lucide-svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
