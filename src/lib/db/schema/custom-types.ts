@@ -112,6 +112,7 @@ function language(languageTag: string) {
  */
 export const tsvector = customType<{
 	data: string;
+	configRequired: true;
 	config: {
 		// sources: () => AnyColumn[];
 		// language: PgLanguage | SQL<PgLanguage> | (() => AnyLangColumn);
@@ -121,20 +122,16 @@ export const tsvector = customType<{
 	};
 }>({
 	dataType(config) {
-		if (config) {
-			const pglang = language(config.lang);
-			if (config.weighted) {
-				const weighted = config.sources.map((input, index) => {
-					const weight = String.fromCharCode(index + 65);
-					return `setweight(to_tsvector(${pglang}, coalesce(${input}, '')), '${weight}')`;
-				});
-				return `tsvector generated always as (${weighted.join(' || ')}) stored`;
-			} else {
-				const source = config.sources.join(" || ' ' || ");
-				return `tsvector generated always as (to_tsvector(${pglang}, ${source})) stored`;
-			}
+		const pglang = language(config.lang);
+		if (config.weighted) {
+			const weighted = config.sources.map((input, index) => {
+				const weight = String.fromCharCode(index + 65);
+				return `setweight(to_tsvector(${pglang}, coalesce(${input}, '')), '${weight}')`;
+			});
+			return `tsvector generated always as (${weighted.join(' || ')}) stored`;
 		} else {
-			return `tsvector`;
+			const source = config.sources.join(" || ' ' || ");
+			return `tsvector generated always as (to_tsvector(${pglang}, ${source})) stored`;
 		}
 	},
 });

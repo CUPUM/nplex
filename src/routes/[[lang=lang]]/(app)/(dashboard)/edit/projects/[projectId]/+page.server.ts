@@ -60,12 +60,13 @@ export const actions = {
 			const { translations, interventionIds, ...project } = form.data;
 			await dbpool.transaction(async (tx) => {
 				await tx.update(projects).set(project).where(eq(projects.id, event.params.projectId));
+				const { ts, ...set } = excluded(projectsTranslations);
 				await tx
 					.insert(projectsTranslations)
 					.values(Object.values(translations))
 					.onConflictDoUpdate({
 						target: [projectsTranslations.id, projectsTranslations.lang],
-						set: excluded(projectsTranslations),
+						set,
 					});
 				await tx
 					.delete(projectsInterventions)

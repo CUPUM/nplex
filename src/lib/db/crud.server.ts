@@ -262,7 +262,7 @@ export const projectsTranslationsInsertSchema = createInsertSchema(projectsTrans
 	summary: (s) => s.summary.max(PROJECT_SUMMARY_MAX),
 	description: (s) => s.description.max(PROJECT_DESCRIPTION_MAX),
 	...translationLangColumnSchema,
-});
+}).omit({ ts: true });
 export const projectsUpdateSchema = withTranslationsSchema(
 	projectsInsertSchema,
 	projectsTranslationsInsertSchema
