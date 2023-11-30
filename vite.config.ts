@@ -14,7 +14,7 @@ export default defineConfig({
 	plugins: [
 		sveltekit(),
 		paraglide({
-			project: './i18n.config.json',
+			project: './project.inlang',
 			outdir: './src/i18n',
 		}),
 		examples,

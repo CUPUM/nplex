@@ -12,6 +12,6 @@
 		"https://cdn.jsdelivr.net/npm/@inlang/message-lint-rule-snake-case-id@latest/dist/index.js"
 	],
 	"plugin.inlang.messageFormat": {
-		"pathPattern": "./messages/{languageTag}.json"
+		"pathPattern": "./project.inlang/{languageTag}.json"
 	}
 }
