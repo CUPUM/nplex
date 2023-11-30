@@ -15,13 +15,13 @@
 		<LangKey>{m.project_descriptors_types()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/interventions')}>
-		<LangKey>{m.project_descriptors_interventions()}</LangKey>
+		<LangKey>{m.project_descriptors_interventionTypes()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/indicators')}>
 		<LangKey>{m.project_descriptors_indicators()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/ownerships')}>
-		<LangKey>{m.project_descriptors_ownerships()}</LangKey>
+		<LangKey>{m.project_descriptors_ownershipTypes()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/implantations')}>
 		<LangKey>{m.project_descriptors_implantations()}</LangKey>
