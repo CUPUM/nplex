@@ -60,7 +60,7 @@ export function deriveLink($page: Page) {
 		 * Customizable locale, if should differ from current client's locale. Setting to false will
 		 * prevent any automatic localization.
 		 */
-		lang: AvailableLanguageTag | false = $page.data.locale
+		lang: AvailableLanguageTag | false = $page.data.lang
 	) => {
 		const _href = lang ? localize(href, lang) : href;
 		const [path, hash] = _href.split('#');
