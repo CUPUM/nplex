@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
-	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import { langKey } from '$lib/components/LangKey.svelte';
 	import type { SuperFormPageData } from '$lib/forms/types';
 	import { switchCrossfade } from '$lib/transitions/presets';
@@ -13,7 +13,7 @@
 	export let types: PageData['types'];
 </script>
 
-<DashboardFormField title={$langKey(m.project_type())}>
+<DashboardFormSection title={$langKey(m.project_type())}>
 	<fieldset class="switch" use:ripple>
 		{#each types as pt}
 			<label class="switch-item">
@@ -31,7 +31,7 @@
 			</label>
 		{/each}
 	</fieldset>
-</DashboardFormField>
+</DashboardFormSection>
 
 <style lang="postcss">
 	.switch {

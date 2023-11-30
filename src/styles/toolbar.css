@@ -27,7 +27,8 @@ Toolbar preset to nest inputs with proper inset and consequentially updated base
 	transition: all var(--duration-fast) var(--ease-out-expo);
 	background-color: color-mix(in srgb, var(--color-neutral-50) 90%, transparent);
 
-	:--dark & {
+	:--dark &,
+	&:--dark {
 		background-color: color-mix(in srgb, var(--color-neutral-950) 90%, transparent);
 	}
 

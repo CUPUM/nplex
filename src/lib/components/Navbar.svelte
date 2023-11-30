@@ -115,7 +115,7 @@
 		<div class="inner">
 			<!-- General nav -->
 			<nav id="site-group" class="navbar-group" in:flyin|global={0}>
-				<NavbarButton square={!$breakpoint.md} {...$link('/')} outline={false}>
+				<NavbarButton square={!$breakpoint.md} {...$link('/')} ghost>
 					<Logo mono={!$breakpoint.md} size={$breakpoint.md ? '1.75em' : '1em'} />
 				</NavbarButton>
 				{#if $breakpoint.lg}
@@ -143,7 +143,7 @@
 				<nav id="explore-group" class="navbar-group" in:flyin|global={1}>
 					{#each explore as ex}
 						{@const link = $link(`/${ex.key}`)}
-						<NavbarButton {...link} outline={false}>
+						<NavbarButton {...link} ghost>
 							{#if link['data-current']}
 								<div
 									class="needle"
@@ -240,7 +240,11 @@
 									<LangKey>{m.nav_newProject()}</LangKey>
 									<FilePlus2 class="button-icon" />
 								</NavbarMenuButton>
-								<NavbarMenuButton {...$link('/edit/projects/descriptors')} melt={userItem}>
+								<NavbarMenuButton
+									{...$link('/edit/projects/descriptors')}
+									melt={userItem}
+									aria-disabled
+								>
 									<LangKey>{m.nav_editProjectDescriptors()}</LangKey>
 									<Sliders class="button-icon" />
 								</NavbarMenuButton>
@@ -387,12 +391,12 @@
 		--group-nesting: 3px;
 		grid-column: explore;
 		justify-content: center;
-		background-color: rgba(0, 0, 0, 0.035);
+		background: color-mix(in srgb, var(--color-neutral-300) 50%, transparent);
 		border-radius: var(--base-radius);
 		padding: var(--group-nesting);
 		backdrop-filter: blur(8px);
 		:global(:--dark) & {
-			background-color: rgba(255, 255, 255, 0.05);
+			background: color-mix(in srgb, var(--color-neutral-700) 50%, transparent);
 		}
 
 		& .needle {

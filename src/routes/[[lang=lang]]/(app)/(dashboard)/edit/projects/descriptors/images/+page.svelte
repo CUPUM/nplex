@@ -6,8 +6,6 @@
 	import LangKey from '$lib/components/LangKey.svelte';
 	import TranslationsCard from '$lib/components/TranslationsCard.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { melt } from '@melt-ui/svelte';
-	import { Pen } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
@@ -76,12 +74,12 @@
 			</li>
 		{/each}
 	</DescriptorsCardsList>
-	<DashboardMenu tainted={typesTainted} submitter={typesSubmitter}>
+	<!-- <DashboardMenu tainted={typesTainted} submitter={typesSubmitter}>
 		<button class="button outlined" use:melt={$typesFormaction('?/createImageType')} type="submit">
 			<Pen class="button-icon" />
 			<LangKey>{m.project_descriptors_createImageType()}</LangKey>
 		</button>
-	</DashboardMenu>
+	</DashboardMenu> -->
 </DescriptorsForm>
 <DescriptorsForm enhance={temporalitiesEnhance}>
 	<svelte:fragment slot="header">
@@ -122,7 +120,7 @@
 			</li>
 		{/each}
 	</DescriptorsCardsList>
-	<DashboardMenu tainted={temporalitiesTainted} submitter={temporalitiesSubmitter}>
+	<!-- <DashboardMenu tainted={temporalitiesTainted} submitter={temporalitiesSubmitter}>
 		<button
 			class="button outlined"
 			use:melt={$temporalitiesFormaction('?/createImageType')}
@@ -131,7 +129,7 @@
 			<Pen class="button-icon" />
 			<LangKey>{m.project_descriptors_createImageTemporality()}</LangKey>
 		</button>
-	</DashboardMenu>
+	</DashboardMenu> -->
 </DescriptorsForm>
 
 <style lang="postcss">

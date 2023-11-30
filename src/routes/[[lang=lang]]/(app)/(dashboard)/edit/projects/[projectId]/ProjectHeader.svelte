@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import LangKey from '$lib/components/LangKey.svelte';
+	import { link } from '$lib/i18n/link';
 </script>
 
 <hgroup>
@@ -17,6 +18,11 @@
 		{/if}
 	</h1>
 </hgroup>
+<menu>
+	<a {...$link('/edit/projects')} class="button ghost compact">
+		<LangKey>{m.projects()}</LangKey>
+	</a>
+</menu>
 
 <style lang="postcss">
 	hgroup {
@@ -27,5 +33,9 @@
 	.fallback {
 		opacity: 0.5;
 		font-weight: 500;
+	}
+
+	menu {
+		padding: 1rem;
 	}
 </style>

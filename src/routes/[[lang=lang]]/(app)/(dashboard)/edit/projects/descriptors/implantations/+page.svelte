@@ -6,8 +6,6 @@
 	import LangKey from '$lib/components/LangKey.svelte';
 	import TranslationsCard from '$lib/components/TranslationsCard.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { melt } from '@melt-ui/svelte';
-	import { Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
@@ -75,7 +73,7 @@
 			</li>
 		{/each}
 	</DescriptorsCardsList>
-	<DashboardMenu {submitter} {tainted}>
+	<!-- <DashboardMenu {submitter} {tainted}>
 		<button
 			class="button outlined"
 			use:melt={$formaction(`?/create&verticalIndex=${$form.implantationTypes.length}`)}
@@ -84,7 +82,7 @@
 			<Plus class="button-icon" />
 			<LangKey>{m.project_descriptors_createImplantationMode()}</LangKey>
 		</button>
-	</DashboardMenu>
+	</DashboardMenu> -->
 </DescriptorsForm>
 
 <style lang="postcss">

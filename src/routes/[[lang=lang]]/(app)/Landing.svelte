@@ -143,7 +143,7 @@
 	}
 
 	grid {
-		z-index: -1;
+		/* z-index: -1; */
 		position: absolute;
 		display: grid;
 		width: 150vmax;
@@ -159,12 +159,12 @@
 	}
 
 	figure {
-		z-index: 1;
 		position: relative;
 		transform-style: preserve-3d;
 	}
 
 	surface {
+		pointer-events: none;
 		display: inherit;
 		grid-template-columns: inherit;
 		grid-template-rows: inherit;

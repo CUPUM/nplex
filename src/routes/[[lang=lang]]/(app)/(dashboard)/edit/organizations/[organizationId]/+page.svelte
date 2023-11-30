@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import TranslationsInput from '$lib/components/TranslationsInput.svelte';
 	import { superForm } from '$lib/forms/super-form';
@@ -32,28 +32,28 @@
 			cumque corporis aliquid ab ducimus a ut perspiciatis quam autem deserunt doloremque.
 		</p>
 	</svelte:fragment>
-	<DashboardFormField title={$langKey(m.org_name())}>
+	<DashboardFormSection title={$langKey(m.org_name())}>
 		<TranslationsInput let:lang>
 			<input type="text" class="input title" bind:value={$form.translations[lang].name} />
 		</TranslationsInput>
-	</DashboardFormField>
-	<DashboardFormField title={$langKey(m.summary())}>
+	</DashboardFormSection>
+	<DashboardFormSection title={$langKey(m.summary())}>
 		<TranslationsInput let:lang>
 			<textarea rows="5" class="input resize" bind:value={$form.translations[lang].summary} />
 		</TranslationsInput>
-	</DashboardFormField>
-	<DashboardFormField title={$langKey(m.description())}>
+	</DashboardFormSection>
+	<DashboardFormSection title={$langKey(m.description())}>
 		<TranslationsInput let:lang>
 			<textarea rows="10" class="input resize" bind:value={$form.translations[lang].description} />
 		</TranslationsInput>
-	</DashboardFormField>
-	<DashboardFormField>
+	</DashboardFormSection>
+	<DashboardFormSection>
 		<select class="button" bind:value={$form.typeId}>
 			{#each data.descriptors.types as type}
 				<option value={type.id}>{type.title}</option>
 			{/each}
 		</select>
-	</DashboardFormField>
+	</DashboardFormSection>
 </DashboardForm>
 
 <style lang="postcss">

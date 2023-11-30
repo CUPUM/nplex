@@ -1,10 +1,10 @@
 <script lang="ts" generics="T extends AnyZodObject">
 	import LangKey from './LangKey.svelte';
 
+	import type { enhance as regularEnhance } from '$app/forms';
 	import * as m from '$i18n/messages';
 	import type { LoadableSubmitter } from '$lib/builders/loading';
 	import type { SuperForm } from '$lib/forms/super-form';
-	import { melt } from '@melt-ui/svelte';
 	import { SaveAll } from 'lucide-svelte';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import type { Writable } from 'svelte/store';
@@ -12,21 +12,37 @@
 	import type { TaintedFields, ZodValidation } from 'sveltekit-superforms';
 	import type { AnyZodObject } from 'zod';
 
-	export let enhance: SuperForm<ZodValidation<T>>['enhance'];
-	export let action: string | undefined = undefined;
-	export let method = 'POST';
-	export let tainted: Writable<TaintedFields<T> | undefined>;
-	export let submitter: LoadableSubmitter['elements']['root'];
-	export let formaction: string | undefined = undefined;
-	export let form: string | undefined = undefined;
-	export let disabled: boolean | null | undefined = undefined;
+	type $$Props = {
+		action?: string;
+		method?: string;
+		formaction?: string;
+		form?: string;
+		disabled?: boolean | null;
+	} & (
+		| { enhance?: typeof regularEnhance; tainted?: undefined; submitter?: undefined }
+		| {
+				enhance: SuperForm<ZodValidation<T>>['enhance'];
+				tainted: Writable<TaintedFields<T> | undefined>;
+				submitter: LoadableSubmitter['elements']['root'];
+		  }
+	);
+
+	export let enhance: $$Props['enhance'] = undefined;
+	export let action: $$Props['action'] = undefined;
+	export let method: $$Props['method'] = 'POST';
+	export let tainted: $$Props['tainted'] = undefined;
+	export let submitter: $$Props['submitter'] = undefined;
+	export let formaction: $$Props['formaction'] = undefined;
+	export let form: $$Props['form'] = undefined;
+	export let disabled: $$Props['disabled'] = undefined;
 
 	let submitRef: HTMLButtonElement;
 
 	$: hideMenu = !$tainted && !$$slots.menu;
+	$: _enhance = enhance ?? (() => {});
 </script>
 
-<form {action} use:enhance {method}>
+<form {action} use:_enhance {method}>
 	{#if $$slots.header}
 		<header>
 			<hgroup class="prose">
@@ -36,17 +52,17 @@
 	{/if}
 	<slot />
 	<menu data-hidden={hideMenu || undefined}>
-		{#if $tainted}
+		{#if submitter && $submitter && tainted && $tainted}
 			<button
 				class="button cta"
 				type="submit"
 				{formaction}
 				{form}
-				disabled={disabled || undefined}
 				in:fly={{ y: 6, duration: 250, easing: expoOut }}
 				out:scale={{ start: 0.95, duration: 200, easing: cubicOut }}
 				bind:this={submitRef}
-				use:melt={$submitter(submitRef)}
+				use:submitter.action
+				{...$submitter(submitRef)}
 			>
 				<LangKey>
 					{m.save()}
@@ -74,6 +90,10 @@
 		padding-top: 0;
 		border-bottom: var(--base-border-width) solid
 			color-mix(in srgb, var(--base-border-color) 50%, transparent);
+	}
+
+	hgroup :global(p) {
+		opacity: var(--opacity-dim);
 	}
 
 	menu {

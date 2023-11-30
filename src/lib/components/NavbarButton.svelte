@@ -10,7 +10,7 @@
 		| ({ href: string } & HTMLAnchorAttributes)
 		| ({ href?: undefined } & HTMLButtonAttributes)
 	) & {
-		outline?: boolean;
+		ghost?: boolean;
 		square?: boolean;
 		tooltip?: StoresValues<TooltipElements['trigger']>;
 		menu?: DropdownMenuElements['trigger'];
@@ -19,7 +19,7 @@
 
 	export let href: $$Props['href'] = undefined;
 	export let square: $$Props['square'] = undefined;
-	export let outline: $$Props['outline'] = true;
+	export let ghost: $$Props['ghost'] = false;
 	export let tooltip: StoresValues<TooltipElements['trigger']> | undefined = undefined;
 	export let menu: DropdownMenuElements['trigger'] | undefined = undefined;
 	export let dialog: DialogElements['trigger'] | undefined = undefined;
@@ -41,7 +41,7 @@
 	this={href ? 'a' : 'button'}
 	class="navbar-button"
 	class:square
-	class:no-outline={!outline}
+	class:ghost
 	{href}
 	use:navripple
 	on:pointerdown
@@ -76,6 +76,7 @@
 		outline: 1px solid transparent;
 		outline-offset: -2px;
 		backdrop-filter: blur(16px);
+		background: color-mix(in srgb, var(--base-bg) 50%, transparent);
 		transition:
 			all 0.1s ease-out,
 			outline 0.2s ease-out,
@@ -84,10 +85,10 @@
 		&:hover:not([data-current]),
 		&[data-state='open'] {
 			color: var(--color-primary-700);
-			background-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+			background: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 			:global(:--dark) & {
 				color: var(--color-primary-500);
-				background-color: color-mix(in srgb, var(--color-primary-600) 10%, transparent);
+				background: color-mix(in srgb, var(--color-primary-600) 10%, transparent);
 			}
 
 			& :global(.button-icon) {
@@ -106,12 +107,13 @@
 			outline-offset: 2px;
 			outline: 2px solid color-mix(in hsl, var(--color-primary-500) 50%, transparent);
 			&.no-outline {
-				background-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+				background: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 			}
 		}
 
-		&.no-outline {
+		&.ghost {
 			outline-width: 0 !important;
+			background: none;
 			backdrop-filter: none;
 		}
 

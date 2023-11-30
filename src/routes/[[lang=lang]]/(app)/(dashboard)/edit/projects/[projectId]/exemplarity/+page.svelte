@@ -28,7 +28,7 @@
 	<svelte:fragment slot="header">
 		<h2>
 			<LangKey>
-				{m.project_exemplarityIndicators}
+				{m.project_exemplarityIndicators()}
 			</LangKey>
 		</h2>
 		<p>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { decrement, increment } from '$lib/actions/increment';
-	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import Slider from '$lib/components/Slider.svelte';
 	import SwitchThumb from '$lib/components/SwitchThumb.svelte';
@@ -42,7 +42,7 @@
 
 <svelte:window on:keydown={handleKeydown} on:keyup={handleKeyup} />
 
-<DashboardFormField title={$langKey(m.project_cost_title())}>
+<DashboardFormSection title={$langKey(m.project_cost_title())}>
 	{#if $form.costRange[0] == null}
 		<button
 			id="project-cost-placeholder"
@@ -178,7 +178,7 @@
 			</section>
 		</div>
 	{/if}
-</DashboardFormField>
+</DashboardFormSection>
 
 <style lang="postcss">
 	#project-cost-placeholder {

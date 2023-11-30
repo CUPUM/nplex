@@ -92,6 +92,7 @@
 			[sidebar-end main-start] 1fr
 			[main-end full-end footer-end];
 		flex-direction: column;
+		align-content: flex-start;
 		gap: var(--base-gutter);
 		border-radius: var(--radius-lg);
 		perspective: 999px;
@@ -99,7 +100,9 @@
 		container-type: inline-size;
 		row-gap: 0;
 		column-gap: 0;
-		transition: all var(--duration-fast) ease-out;
+		min-height: calc(100vh - var(--navbar-height));
+		min-height: calc(100svh - var(--navbar-height));
+		transition: all var(--duration-fast) var(--ease-out-expo);
 
 		&.has-sidebar {
 			column-gap: var(--base-gutter);
@@ -135,6 +138,7 @@
 		position: relative;
 		display: grid;
 		grid-column: main;
+		grid-template-rows: minmax(auto, 1fr);
 		grid-template-columns:
 			[full-start] 1fr
 			[center-start] minmax(0, var(--content-width))
@@ -144,8 +148,6 @@
 		align-content: start;
 		scroll-margin-block-start: var(--sticky-top);
 		border-radius: inherit;
-		min-height: calc(100vh - var(--sticky-top));
-		min-height: calc(100svh - var(--sticky-top));
 
 		@media (--lg) {
 			grid-template-columns:

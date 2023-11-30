@@ -29,15 +29,21 @@
 	img {
 		border-radius: var(--radius-sm);
 		opacity: 0;
+		transform: translateZ(-20px);
 		height: 100%;
 		width: 100%;
 		object-fit: cover;
-		transform: translateZ(-20px);
-		transition: all 2s var(--d) var(--ease-out-expo);
+		transition: all var(--duration-medium) ease-out;
+	}
+
+	@keyframes intro {
+		to {
+			opacity: 1;
+			transform: translateZ(0);
+		}
 	}
 
 	.loaded {
-		opacity: 0.5;
-		transform: translateZ(0);
+		animation: intro 2s var(--ease-out-expo) var(--d) forwards;
 	}
 </style>

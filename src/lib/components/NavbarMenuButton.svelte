@@ -60,8 +60,8 @@
 		&:disabled,
 		&[data-disabled] {
 			pointer-events: none;
-			opacity: 0.35;
-			filter: blur(1px);
+			opacity: 0.25;
+			/* filter: blur(1px); */
 		}
 
 		&[data-current] {

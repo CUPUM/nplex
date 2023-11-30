@@ -81,11 +81,11 @@
 	/* Rounded corners. */
 	--radius-xs: 6px;
 	--radius-sm: 10px;
-	--radius-md: 15px;
-	--radius-lg: 21px;
-	--radius-xl: 28px;
-	--radius-2xl: 36px;
-	--radius-3xl: 45px;
+	--radius-md: 14px;
+	--radius-lg: 18px;
+	--radius-xl: 26px;
+	--radius-2xl: 34px;
+	--radius-3xl: 42px;
 	--radius-full: 999px;
 
 	/* Content widths. */

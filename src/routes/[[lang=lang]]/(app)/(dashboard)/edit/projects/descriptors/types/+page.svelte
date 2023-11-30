@@ -1,14 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import DashboardMenu from '$lib/components/DashboardFormMenu.svelte';
+	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
-	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import TranslationsCard from '$lib/components/TranslationsCard.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { melt } from '@melt-ui/svelte';
-	import { Plus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
@@ -30,10 +27,10 @@
 	});
 </script>
 
-<DescriptorsForm action="?/update" {enhance}>
+<DashboardForm action="?/update" {enhance} {submitter} {tainted}>
 	<svellte:fragment slot="header">
-		<h2 class="heading lg"><LangKey>{m.project_descriptors_types()}</LangKey></h2>
-		<p class="prose md dimmer">
+		<h2><LangKey>{m.project_descriptors_types()}</LangKey></h2>
+		<p>
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur magni quo accusantium
 			perferendis quis, minus iste commodi error nostrum tempora?
 		</p>
@@ -67,13 +64,13 @@
 			</li>
 		{/each}
 	</DescriptorsCardsList>
-	<DashboardMenu {tainted} {submitter}>
+	<!-- <DashboardMenu {tainted} {submitter}>
 		<button class="button outlined" use:melt={$formaction('?/create')} type="submit">
 			<Plus class="button-icon" />
 			<LangKey>{m.create()}</LangKey>
 		</button>
-	</DashboardMenu>
-</DescriptorsForm>
+	</DashboardMenu> -->
+</DashboardForm>
 
 <style lang="postcss">
 </style>

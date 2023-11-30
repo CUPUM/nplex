@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import DashboardFormField from '$lib/components/DashboardFormSection.svelte';
+	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import { langKey } from '$lib/components/LangKey.svelte';
 	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
@@ -37,7 +37,7 @@
 	});
 </script>
 
-<DashboardFormField title={$langKey(m.project_ownershipType())}>
+<DashboardFormSection title={$langKey(m.project_ownershipType())}>
 	<input type="text" name="siteOwnershipId" use:melt={$hiddenInput} />
 	<button type="button" class="input select" use:melt={$trigger}>
 		{$selectedLabel || $langKey(m.project_ownershipTypePlaceholder())}
@@ -59,7 +59,7 @@
 			</SelectOption>
 		{/each}
 	</SelectMenu>
-</DashboardFormField>
+</DashboardFormSection>
 
 <style lang="postcss">
 	.select {

@@ -277,13 +277,13 @@
 		--_button-disabled-border-color: color-mix(in srgb, var(--base-border-color) 50%, transparent);
 		--_button-open-color: var(--color-neutral-900);
 		--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
-		--_button-open-border-color:;
-		--_button-checked-color:;
-		--_button-checked-bg:;
-		--_button-checked-border:;
+		/* --_button-open-border-color:; */
+		/* --_button-checked-color:; */
+		/* --_button-checked-bg:; */
+		/* --_button-checked-border:; */
 		--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-		--_button-current-color:;
-		--_button-current-bg:;
+		/* --_button-current-color:; */
+		/* --_button-current-bg:; */
 
 		:--dark & {
 			--ripple-color: var(--color-neutral-400);
@@ -297,13 +297,13 @@
 			--_button-disabled-color: color-mix(in srgb, var(--color-neutral-200) 25%, transparent);
 			--_button-open-color: var(--color-neutral-900);
 			--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
-			--_button-open-border-color:;
-			--_button-checked-color:;
-			--_button-checked-bg:;
-			--_button-checked-border-color:;
+			/* --_button-open-border-color:; */
+			/* --_button-checked-color:; */
+			/* --_button-checked-bg:; */
+			/* --_button-checked-border-color:; */
 			--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-			--_button-current-color:;
-			--_button-current-bg:;
+			/* --_button-current-color:; */
+			/* --_button-current-bg:; */
 		}
 
 		&.danger {
@@ -374,8 +374,8 @@
 		--_button-active-color: var(--color-neutral-200);
 		--_button-active-bg: var(--color-primary-800);
 		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-100) 25%, transparent);
-		--_button-open-color: ;
-		--_button-open-bg: ;
+		/* --_button-open-color: ; */
+		/* --_button-open-bg: ; */
 		--_button-loading-color: var(--color-primary-700);
 		--_button-loading-bg: var(--color-primary-900);
 
@@ -390,18 +390,18 @@
 			--_button-active-bg: var(--color-primary-600);
 			--_button-disabled-color: color-mix(in srgb, var(--color-neutral-900) 25%, transparent);
 			--_button-disabled-bg: var(--color-primary-600);
-			--_button-open-color:;
-			--_button-open-bg:;
+			/* --_button-open-color:; */
+			/* --_button-open-bg:; */
 			--_button-loading-color: var(--color-primary-800);
 			--_button-loading-bg: var(--color-primary-600);
 		}
 
 		&.danger {
-			--_button-color: var(--color-neutral-100);
-			--_button-bg: var(--color-error-900);
-			--_button-hover-color: var(--color-error-50);
-			--_button-hover-bg: var(--color-error-800);
-			--_button-active-color: var(--color-neutral-50);
+			--_button-color: var(--color-neutral-50);
+			--_button-bg: var(--color-error-800);
+			--_button-hover-color: var(--color-error-100);
+			--_button-hover-bg: var(--color-error-900);
+			--_button-active-color: var(--color-error-50);
 			--_button-active-bg: var(--color-error-700);
 
 			:--dark & {

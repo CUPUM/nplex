@@ -41,23 +41,30 @@ export const actions = {
 				.where(
 					and(
 						eq(projectsExemplarityIndicators.projectId, event.params.projectId),
-						notInArray(projectsExemplarityIndicators.exemplarityIndicatorId, form.data.indicatorIds)
+						form.data.indicatorIds.length
+							? notInArray(
+									projectsExemplarityIndicators.exemplarityIndicatorId,
+									form.data.indicatorIds
+							  )
+							: undefined
 					)
 				);
-			await tx
-				.insert(projectsExemplarityIndicators)
-				.values(
-					form.data.indicatorIds.map((exemplarityIndicatorId) => ({
-						exemplarityIndicatorId,
-						projectId: event.params.projectId,
-					}))
-				)
-				.onConflictDoNothing({
-					target: [
-						projectsExemplarityIndicators.projectId,
-						projectsExemplarityIndicators.exemplarityIndicatorId,
-					],
-				});
+			if (form.data.indicatorIds.length) {
+				await tx
+					.insert(projectsExemplarityIndicators)
+					.values(
+						form.data.indicatorIds.map((exemplarityIndicatorId) => ({
+							exemplarityIndicatorId,
+							projectId: event.params.projectId,
+						}))
+					)
+					.onConflictDoNothing({
+						target: [
+							projectsExemplarityIndicators.projectId,
+							projectsExemplarityIndicators.exemplarityIndicatorId,
+						],
+					});
+			}
 		});
 	},
 };

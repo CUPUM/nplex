@@ -4,8 +4,8 @@ import type { AvailableLanguageTag } from '$i18n/runtime';
 import type { Auth as LuciaAuth } from '$lib/auth/auth.server';
 import type { ToastData } from '$lib/components/Toast.svelte';
 import type { users } from '$lib/db/schema/accounts';
+import type { createEventRedirect } from '$lib/i18n/event';
 import type { eventLocalize } from '$lib/i18n/localize.server';
-import type { eventI18nRedirect } from '$lib/i18n/redirect.server';
 import type { Mode } from '$lib/modes/constants';
 import type { Setout } from '$lib/setout/constants';
 import type { createSetEventSetout } from '$lib/setout/event';
@@ -41,7 +41,6 @@ declare global {
 		}
 		// Svelte-kit related types.
 		interface Error {
-			code?: number;
 			title?: string;
 			message: string;
 		}
@@ -66,7 +65,7 @@ declare global {
 			/**
 			 * Pre-localized redirect helper.
 			 */
-			redirect: ReturnType<typeof eventI18nRedirect>;
+			redirect: ReturnType<typeof createEventRedirect>;
 			/**
 			 * Event-scoped location formatter.
 			 */
