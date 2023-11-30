@@ -259,7 +259,8 @@
 	&.dashed {
 		--_button-border-style: dashed;
 	}
-	&.outlined, &.dashed {
+	&.outlined,
+	&.dashed {
 		--ripple-color: var(--color-neutral-500);
 		--spinner-color: var(--color-neutral-800);
 		--_button-color: var(--color-neutral-800);
@@ -367,11 +368,11 @@
 		--ripple-color: var(--color-primary-500);
 		--spinner-color: var(--color-neutral-50);
 		--_button-color: var(--color-neutral-100);
-		--_button-bg: var(--color-primary-950);
-		--_button-hover-color: var(--color-primary-50);
-		--_button-hover-bg: var(--color-primary-800);
+		--_button-bg: var(--color-primary-900);
+		--_button-hover-color: var(--color-neutral-200);
+		--_button-hover-bg: var(--color-primary-950);
 		--_button-active-color: var(--color-neutral-200);
-		--_button-active-bg: var(--color-primary-900);
+		--_button-active-bg: var(--color-primary-800);
 		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-100) 25%, transparent);
 		--_button-open-color: ;
 		--_button-open-bg: ;
@@ -418,16 +419,16 @@
 	&.link {
 		text-decoration: underline;
 		text-underline-offset: 0.25em;
-		text-decoration-thickness: 0.125em;
-		text-decoration-color: transparent;
-		text-decoration-skip-ink: none;
+		text-decoration-thickness: 0.12em;
+		text-decoration-color: currentColor;
+		text-decoration-skip-ink: all;
 		text-decoration-line: underline;
 		--ripple-color: var(--color-neutral-500);
 		--spinner-color: var(--color-neutral-800);
-		--_button-color: var(--color-neutral-700);
+		--_button-color: var(--color-primary-800);
 		--_button-bg: transparent;
-		--_button-hover-color: var(--color-neutral-950);
-		--_button-hover-bg: color-mix(in srgb, var(--color-neutral-400) 25%, transparent);
+		--_button-hover-color: var(--color-primary-700);
+		--_button-hover-bg: color-mix(in srgb, var(--color-primary-700) 10%, transparent);
 		--_button-active-color: var(--color-neutral-700);
 		--_button-active-bg: color-mix(in srgb, var(--color-neutral-600) 25%, transparent);
 		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-800) 25%, transparent);
@@ -447,6 +448,11 @@
 			--_button-open-color: var(--color-neutral-900);
 			--_button-open-bg: color-mix(in srgb, var(--color-neutral-300) 25%, transparent);
 			--_button-loading-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+		}
+
+		&:hover {
+			text-underline-offset: 0.35em;
+			transition: all var(--duration-fast) ease-out;
 		}
 
 		&.danger {

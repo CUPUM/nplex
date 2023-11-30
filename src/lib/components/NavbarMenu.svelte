@@ -25,7 +25,7 @@
 		flex-direction: column;
 		gap: 0;
 		font-weight: 500;
-		box-shadow: 0 12px 48px -18px rgba(10, 0, 20, 0.2);
+		box-shadow: 0 12px 56px -12px rgba(0, 10, 20, 0.1);
 		padding: var(--menu-nesting);
 		border-radius: var(--base-radius);
 		transform-origin: top;

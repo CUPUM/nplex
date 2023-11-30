@@ -7,7 +7,7 @@ import {
 	projectBuildingLevelTypesTranslations,
 } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { extractTranslations, reduceTranslations } from '$lib/db/utils';
+import { extractTranslations, reduceTranslations } from '$lib/db/utils.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';

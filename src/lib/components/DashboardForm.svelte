@@ -49,7 +49,7 @@
 				use:melt={$submitter(submitRef)}
 			>
 				<LangKey>
-					{m.save}
+					{m.save()}
 				</LangKey>
 				<SaveAll />
 			</button>

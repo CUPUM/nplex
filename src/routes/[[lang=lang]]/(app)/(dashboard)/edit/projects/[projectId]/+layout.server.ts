@@ -11,7 +11,7 @@ export const load = async (event) => {
 		.where(
 			and(
 				eq(projectsTranslations.id, event.params.projectId),
-				eq(projectsTranslations.lang, event.locals.locale)
+				eq(projectsTranslations.lang, event.locals.lang)
 			)
 		)
 		.limit(1);

@@ -1,7 +1,7 @@
 import { withAuth } from '$lib/auth/guard.server';
 import { dbpool } from '$lib/db/db.server';
 import { projects, projectsLikes, projectsTranslations } from '$lib/db/schema/public';
-import { getSubqueryColumns, withTranslation } from '$lib/db/utils';
+import { getSubqueryColumns, withTranslation } from '$lib/db/utils.server';
 import { eq } from 'drizzle-orm';
 
 export const load = async (event) => {

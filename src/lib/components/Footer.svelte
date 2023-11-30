@@ -53,7 +53,7 @@
 				rel="external"
 				target="_blank"
 			>
-				© {m.unescoChair()}
+				© {m.unescoChairLong()}
 			</a>
 		</section>
 	</footer>
@@ -100,7 +100,7 @@
 		position: relative;
 		width: 100%;
 		opacity: 0.85;
-		transition: all var(--duration-medium) ease-in-out;
+		transition: all var(--duration-fast) ease-in-out;
 		footer:hover & {
 			opacity: 1;
 		}
@@ -130,7 +130,7 @@
 		align-items: center;
 		gap: 2rem;
 		margin-block: 2rem 1rem;
-		transition: opacity var(--duration-slow) var(--duration-slow);
+		transition: opacity var(--duration-fast);
 		footer:hover & {
 			opacity: 1;
 		}

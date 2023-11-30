@@ -1,9 +1,12 @@
 {
 	"unescoChair": "UNESCO Chair in Urban Landscape",
+	"unescoChairLong": "UNESCO Chair in Urban Landscape of the University of Montreal",
 	"mode": "Screen mode",
 	"mode_dark": "Dark",
 	"mode_light": "Light",
 	"comingSoon": "Coming soon",
+	"account_home_comingSoon": "This section is under developement. In the meantime, you can",
+	"account_home_comingSoonButton": "manage your account's settings here",
 	"about": "About",
 	"guides": "Guides",
 	"projects": "Projects",

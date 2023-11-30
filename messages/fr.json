@@ -1,9 +1,12 @@
 {
 	"unescoChair": "Chaire UNESCO en paysage urbain",
+	"unescoChairLong": "Chaire UNESCO en paysage urbain de l’Université de montréal",
 	"mode": "Mode d’écran",
 	"mode_dark": "Sombre",
 	"mode_light": "Clair",
 	"comingSoon": "À venir prochainement",
+	"account_home_comingSoon": "Cette section est en développement. En attendant, vous pouvez",
+	"account_home_comingSoonButton": "gérer vos paramètres de compte ici",
 	"about": "À propos",
 	"guides": "Guides",
 	"projects": "Projets",

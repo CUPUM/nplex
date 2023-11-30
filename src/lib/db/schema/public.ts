@@ -13,7 +13,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { generateNanoid } from '../sql.server';
 import { userRoles, users } from './accounts';
-import { cube, intrange, point, userRole } from './custom-types';
+import { cube, intrange, point, tsvector, userRole } from './custom-types';
 import { translationLangColumn, translationReferenceColumn } from './i18n';
 
 /**
@@ -36,7 +36,7 @@ export const projectTypesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -61,7 +61,7 @@ export const projectInterventionCategoriesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -92,7 +92,7 @@ export const projectInterventionsTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -121,7 +121,7 @@ export const projectTypesToInterventions = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.typeId, table.interventionId),
+			pk: primaryKey({ columns: [table.typeId, table.interventionId] }),
 		};
 	}
 );
@@ -146,7 +146,7 @@ export const projectSiteOwnershipsTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -171,7 +171,7 @@ export const projectImplantationTypesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -196,7 +196,7 @@ export const projectExemplarityCategoriesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -225,7 +225,7 @@ export const projectExemplarityIndicatorsTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -249,7 +249,7 @@ export const projectImageTypesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -274,7 +274,7 @@ export const projectImageTemporalitiesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -300,7 +300,7 @@ export const projectBuildingLevelTypesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -362,6 +362,11 @@ export const projectsTranslations = pgTable(
 		title: text('title'),
 		summary: text('summary'),
 		description: text('description'),
+		ts: tsvector('ts', {
+			sources: ['title', 'summary', 'description'],
+			lang: 'lang',
+			weighted: true,
+		}),
 	},
 	(table) => {
 		return {
@@ -426,7 +431,7 @@ export const projectsInterventions = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.projectId, table.interventionId),
+			pk: primaryKey({ columns: [table.projectId, table.interventionId] }),
 		};
 	}
 );
@@ -449,7 +454,7 @@ export const projectsExemplarityIndicators = pgTable(
 	},
 	(table) => {
 		return {
-			fk: primaryKey(table.projectId, table.exemplarityIndicatorId),
+			fk: primaryKey({ columns: [table.projectId, table.exemplarityIndicatorId] }),
 		};
 	}
 );
@@ -546,7 +551,7 @@ export const projectsImagesCredits = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.imageId, table.creditDetailsId),
+			pk: primaryKey({ columns: [table.imageId, table.creditDetailsId] }),
 		};
 	}
 );
@@ -598,7 +603,7 @@ export const projectsUsers = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.projectId, table.userId),
+			pk: primaryKey({ columns: [table.projectId, table.userId] }),
 		};
 	}
 );
@@ -624,7 +629,7 @@ export const projectsOrganizations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.organizationId, table.projectId),
+			pk: primaryKey({ columns: [table.organizationId, table.projectId] }),
 		};
 	}
 );
@@ -650,7 +655,7 @@ export const projectsLikes = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.projectId, table.userId),
+			pk: primaryKey({ columns: [table.projectId, table.userId] }),
 		};
 	}
 );
@@ -707,7 +712,7 @@ export const organizationTypesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -731,7 +736,7 @@ export const organizationExpertisesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -755,7 +760,7 @@ export const organizationDutiesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -797,7 +802,7 @@ export const organizationsTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 			unq: unique().on(table.name, table.lang),
 		};
 	}
@@ -821,7 +826,7 @@ export const organizationsUsers = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.organizationId, table.userId),
+			pk: primaryKey({ columns: [table.organizationId, table.userId] }),
 		};
 	}
 );
@@ -844,7 +849,7 @@ export const organizationsExpertises = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.expertiseId, table.organizationId),
+			pk: primaryKey({ columns: [table.expertiseId, table.organizationId] }),
 		};
 	}
 );

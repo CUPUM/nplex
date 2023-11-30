@@ -24,7 +24,7 @@ import {
 	projectTypesTranslations,
 } from './schema/public';
 import { jsonAggBuildObject } from './sql.server';
-import { getSubqueryColumns, withTranslation } from './utils';
+import { getSubqueryColumns, withTranslation } from './utils.server';
 
 export function getProjectTypesList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(event, projectTypes, projectTypesTranslations, {

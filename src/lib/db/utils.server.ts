@@ -1,6 +1,6 @@
 import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
 import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
-import type { ServerLoadEvent } from '@sveltejs/kit';
+import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import {
 	Column,
 	SQL,
@@ -23,7 +23,7 @@ import {
 import type { Entries, Merge, ValueOf } from 'type-fest';
 import { dbpool } from './db.server';
 import { langs, type TranslationLangColumn } from './schema/i18n';
-import { TRUE, jsonBuildObject, jsonObjectAgg, type FieldSelectRecord } from './sql.server';
+import { TRUE, jsonBuildObject, jsonObjectAgg } from './sql.server';
 
 /**
  * Updated version of drizzle-orm's getTableName with config to allow preprending table's schema
@@ -96,7 +96,7 @@ export function withTranslation<
 	M = Merge<TT['_']['columns'], T['_']['columns']>,
 	S extends SelectedFields = Merge<TT['_']['columns'], T['_']['columns']>,
 >(
-	event: ServerLoadEvent,
+	event: ServerLoadEvent | RequestEvent,
 	table: T,
 	translationsTable: TT,
 	{
@@ -109,8 +109,10 @@ export function withTranslation<
 		selection?: S | ((columns: M) => S);
 	}
 ) {
-	// Attraching a load dependency to re-run when locale changes.
-	event.depends(LOAD_DEPENDENCIES.Lang);
+	// Attaching a load dependency to re-run when locale changes.
+	if ('depends' in event) {
+		event.depends(LOAD_DEPENDENCIES.Lang);
+	}
 	const field = f instanceof Function ? f(table) : f;
 	const reference = r instanceof Function ? r(translationsTable) : r;
 	const columns = getTableColumns(table);
@@ -135,7 +137,7 @@ export function withTranslations<
 	F extends ValueOf<T['_']['columns']>,
 	R extends ValueOf<TT['_']['columns']>,
 	TS = T['_']['columns'],
-	TTS extends FieldSelectRecord = TT['_']['columns'],
+	TTS extends Record<string, AnyColumn | SQL> = TT['_']['columns'],
 >(
 	table: T,
 	translationsTable: TT,

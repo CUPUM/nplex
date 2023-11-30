@@ -16,6 +16,10 @@
 	let scrollY = 0;
 	let meshGradient: string;
 
+	$: hasHeader = $$slots.header || header;
+	$: hasSidebar = $$slots.sidebar || sidebar;
+	$: hasFooter = $$slots.footer || footer;
+
 	onMount(() => {
 		meshGradient = composeMeshgradient({
 			colors: [
@@ -34,8 +38,13 @@
 
 <svelte:window bind:scrollY />
 
-<article id="dashboard">
-	{#if $$slots.header || header}
+<article
+	id="dashboard"
+	class:has-header={hasHeader}
+	class:has-sidebar={hasSidebar}
+	class:has-footer={hasFooter}
+>
+	{#if hasHeader}
 		<header
 			id="dashboard-header"
 			in:slide={{ duration: 750, easing: expoOut, opacity: 0 }}
@@ -51,7 +60,7 @@
 			{/if}
 		</header>
 	{/if}
-	{#if $$slots.sidebar || sidebar}
+	{#if hasSidebar}
 		<Sidebar>
 			{#if $$slots.header}
 				<slot name="sidebar" />
@@ -63,7 +72,7 @@
 	<section id={DASHBOARD_MAIN_ID}>
 		<slot />
 	</section>
-	{#if $$slots.footer || footer}
+	{#if hasFooter}
 		<footer id="dashboard-footer">
 			{#if $$slots.footer}
 				<slot name="footer" />
@@ -79,15 +88,31 @@
 		position: relative;
 		display: grid;
 		grid-template-columns:
-			[dashboard-start sidebar-start footer-start] var(--sidebar-width)
-			[sidebar-end content-start] 1fr
-			[content-end dashboard-end footer-end];
+			[full-start sidebar-start footer-start] 0px
+			[sidebar-end main-start] 1fr
+			[main-end full-end footer-end];
 		flex-direction: column;
 		gap: var(--base-gutter);
 		border-radius: var(--radius-lg);
 		perspective: 999px;
 		padding-inline: 0.75rem;
 		container-type: inline-size;
+		row-gap: 0;
+		column-gap: 0;
+		transition: all var(--duration-fast) ease-out;
+
+		&.has-sidebar {
+			column-gap: var(--base-gutter);
+			grid-template-columns:
+				[full-start sidebar-start footer-start] var(--sidebar-width)
+				[sidebar-end main-start] 1fr
+				[main-end full-end footer-end];
+		}
+
+		&.has-header,
+		.has-footer {
+			row-gap: var(--base-gutter);
+		}
 	}
 
 	#dashboard-header {
@@ -109,6 +134,7 @@
 	#dashboard-main {
 		position: relative;
 		display: grid;
+		grid-column: main;
 		grid-template-columns:
 			[full-start] 1fr
 			[center-start] minmax(0, var(--content-width))

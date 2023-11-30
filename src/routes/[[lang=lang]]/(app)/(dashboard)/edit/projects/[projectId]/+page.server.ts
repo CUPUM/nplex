@@ -10,7 +10,7 @@ import {
 } from '$lib/db/queries.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
 import { TRUE, excluded } from '$lib/db/sql.server';
-import { withTranslations } from '$lib/db/utils';
+import { withTranslations } from '$lib/db/utils.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';

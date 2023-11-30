@@ -5,72 +5,88 @@
 	import { FilePlus, Search } from 'lucide-svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
+
+	export let data;
 </script>
 
-<form method="GET">
-	<header>
-		<h1 class="heading xxl">
-			<LangKey>{m.project_edit()}</LangKey>
-		</h1>
-	</header>
+<form method="GET" data-sveltekit-keepfocus data-sveltekit-replacestate data-sveltekit-noscroll>
 	<section id="projects-actions">
+		<!-- <header>
+			<h1 class="h2">
+				<LangKey>{m.project_edit()}</LangKey>
+			</h1>
+		</header> -->
 		<!-- svelte-ignore a11y-missing-attribute -->
 		<a
 			{...$link(`/new/project`)}
 			class="button cta"
-			in:fly|global={{ x: 8, easing: cubicOut, duration: 450, delay: 250 }}
+			in:fly|global={{ y: 8, easing: cubicOut, duration: 450, delay: 250 }}
 		>
 			<LangKey>{@html m.project_create()}</LangKey>
 			<FilePlus class="button-icon" />
 		</a>
-		<span class="prose dimmer" in:fade|global={{ delay: 500, duration: 1000 }}>
+		<span class="dim" in:fade|global={{ delay: 500, duration: 1000 }}>
 			<LangKey>{m.or()}</LangKey>
 		</span>
 		<fieldset
-			class="input-group"
-			in:fly|global={{ x: -8, easing: cubicOut, duration: 450, delay: 250 }}
-			disabled
+			class="input-group bg-blur"
+			in:fly|global={{ y: -8, easing: cubicOut, duration: 450, delay: 250 }}
 		>
-			<input type="search" name="q" placeholder={$langKey(m.project_find())} class="input" />
+			<input type="search" name="search" placeholder={$langKey(m.project_find())} class="input" />
 			<div class="input-peer">
-				<button class="button cta square">
+				<button class="button cta square" type="submit">
 					<Search class="button-icon" />
 				</button>
 			</div>
 		</fieldset>
 	</section>
+	<ul>
+		<!-- {#each data.filteredProjects as project}
+			<li>
+				<a {...$link(`/edit/projects/${project.id}`)}>
+					{project.title}
+				</a>
+			</li>
+		{/each} -->
+	</ul>
 </form>
 
 <style lang="postcss">
 	form {
-		--pattern-color: var(--color-neutral-400);
-		grid-column: 1 / -1;
+		grid-column: 1/-1;
 		position: relative;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		align-self: stretch;
-		min-height: calc(100vh - var(--navbar-height) - var(--base-gutter));
-		min-height: calc(100svh - var(--navbar-height) - var(--base-gutter));
-		min-height: calc(100dvh - var(--navbar-height) - var(--base-gutter));
-		padding-bottom: var(--navbar-height);
-		gap: 5rem;
-		border-radius: inherit;
-		background: radial-gradient(circle, var(--pattern-color) 1px, transparent 1.1px);
-		background-position: center;
-		background-size: var(--size-xl) var(--size-xl);
-		background-repeat: repeat;
-		:global(:--dark) & {
-			--pattern-color: var(--color-neutral-700);
-		}
+		width: 100%;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		min-height: calc(100vh - var(--navbar-height) - 2 * var(--base-gutter));
+		min-height: calc(100svh - var(--navbar-height) - 2 * var(--base-gutter));
+	}
+
+	.dim {
+		font-size: var(--size-sm);
+		opacity: var(--opacity-dim);
+	}
+
+	header {
+		padding: 2rem;
 	}
 
 	#projects-actions {
+		grid-column: 1;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		align-items: center;
-		gap: 1rem;
+		justify-content: center;
+		gap: var(--base-gutter);
+		/* border: var(--base-border-width) dashed var(--base-border-color); */
+		border-radius: var(--radius-md);
+		padding: 2rem;
+	}
+
+	#projects-search {
+		grid-column: 2;
+		display: flex;
+		flex-direction: column;
+		gap: 0;
 	}
 </style>

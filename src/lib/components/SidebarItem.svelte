@@ -106,7 +106,8 @@
 			}
 		}
 
-		&[data-current] {
+		&[data-current='page'] {
+			pointer-events: none;
 			opacity: 1;
 			color: var(--color-primary-600);
 			font-weight: 550;

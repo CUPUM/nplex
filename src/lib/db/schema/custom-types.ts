@@ -1,4 +1,4 @@
-import type { AvailableLanguageTag } from '$i18n/runtime';
+import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
 import { USER_ROLE_DEFAULT, type AuthProvider, type UserRole } from '$lib/auth/constants';
 import { isAuthProvider, isUserRole } from '$lib/auth/validation';
 import { isAvailableLang } from '$lib/i18n/validation';
@@ -7,6 +7,8 @@ import type { Coordinate } from '$lib/utils/gis';
 import { customType } from 'drizzle-orm/pg-core';
 import type { ReadonlyTuple } from 'type-fest';
 import { z } from 'zod';
+import { SQL_LANGUAGES } from '../constants';
+import type { InferColumnType } from '../sql.server';
 
 /**
  * Implementing our own db-level role type in sync with UserRole in lieu of using a pgEnum to avoid
@@ -50,26 +52,6 @@ export const authProvider = customType<{ data: AuthProvider }>({
 	},
 });
 
-// /**
-//  * Var char with nanoid defaults.
-//  */
-// export const nanoid = customType<{
-// 	data: string;
-// 	config: { length?: number };
-// 	driver: string;
-// 	driverData: string;
-// }>({
-// 	dataType({ length = 21 } = {}) {
-// 		return `varchar(${length})`;
-// 	},
-// 	fromDriver(value) {
-// 		return value;
-// 	},
-// 	toDriver(value) {
-// 		return value;
-// 	},
-// });
-
 /**
  * Implements postgres identity column.
  *
@@ -107,6 +89,53 @@ export const lang = customType<{ data: AvailableLanguageTag; driverData: string 
 			return value;
 		}
 		throw new Error(`Tried to input wrong value for AvailableLanguageTag (${value}).`);
+	},
+});
+export type AnyLangColumn = InferColumnType<typeof lang>;
+
+/**
+ * Translation's language is stored a language tags (locales), but Postgres text-related functions
+ * expect a full language name. Use this sql switch to retrieve a lang column's corresponding
+ * language name.
+ */
+function language(languageTag: string) {
+	const cases = availableLanguageTags.map(
+		(tag) => `when ${languageTag} = '${tag}' then '${SQL_LANGUAGES[tag]}'::regconfig`
+	);
+	return `(case ${cases.join(' ')} end)`;
+}
+
+/**
+ * Tsvector type for generated columns used notably for fuzzy string search.
+ *
+ * @see https://github.com/drizzle-team/drizzle-orm/issues/247
+ */
+export const tsvector = customType<{
+	data: string;
+	config: {
+		// sources: () => AnyColumn[];
+		// language: PgLanguage | SQL<PgLanguage> | (() => AnyLangColumn);
+		sources: string[];
+		lang: string;
+		weighted?: boolean;
+	};
+}>({
+	dataType(config) {
+		if (config) {
+			const pglang = language(config.lang);
+			if (config.weighted) {
+				const weighted = config.sources.map((input, index) => {
+					const weight = String.fromCharCode(index + 65);
+					return `setweight(to_tsvector(${pglang}, coalesce(${input}, '')), '${weight}')`;
+				});
+				return `tsvector generated always as (${weighted.join(' || ')}) stored`;
+			} else {
+				const source = config.sources.join(" || ' ' || ");
+				return `tsvector generated always as (to_tsvector(${pglang}, ${source})) stored`;
+			}
+		} else {
+			return `tsvector`;
+		}
 	},
 });
 

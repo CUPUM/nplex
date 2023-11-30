@@ -1,4 +1,3 @@
-import type { Feature } from '@turf/turf';
 import {
 	Column,
 	SQL,
@@ -7,14 +6,13 @@ import {
 	sql,
 	type AnyColumn,
 	type AnyTable,
+	type ColumnBuilderBase,
 	type InferColumnsDataTypes,
 	type InferSelectModel,
 	type TableConfig,
 } from 'drizzle-orm';
 import type { SetNonNullable } from 'type-fest';
 import { NANOID_DEFAULT_LENGTH } from './constants';
-
-export type FieldSelectRecord = Record<string, AnyColumn | SQL>;
 
 /**
  * Single column variant of drizzle's InferColumnsDataTypes.
@@ -28,13 +26,20 @@ export type InferColumnDataType<T extends AnyColumn> = T['_']['notNull'] extends
  */
 export type InferSQLDataType<T, Fallback = never> = T extends SQL<infer U> ? U : Fallback;
 
-export type InferRecordDataTypes<T extends FieldSelectRecord> = {
+/**
+ * Extract returned data type of SQL-originating json object.
+ */
+export type InferRecordDataTypes<T extends Record<string, AnyColumn | SQL>> = {
 	[K in keyof T]: T[K] extends SQL
 		? InferSQLDataType<T[K]>
 		: T[K] extends AnyColumn
 		  ? InferColumnDataType<T[K]>
 		  : never;
 };
+
+export type InferColumnType<T extends (...config: never[]) => ColumnBuilderBase> = AnyColumn<
+	Pick<ReturnType<T>['_'], 'data' | 'dataType'>
+>;
 
 /**
  * Implements sql random. Can be used to order:
@@ -44,7 +49,7 @@ export type InferRecordDataTypes<T extends FieldSelectRecord> = {
  * ```
  */
 export function random() {
-	return sql`random()`;
+	return sql<number>`random()`;
 }
 
 /**
@@ -183,7 +188,7 @@ export function rowToJson<T extends AnyTable<TableConfig>>(row: T) {
  *
  * ⚠️ Vulnerable to SQL injections if used with user-input ⚠️
  */
-export function jsonBuildObject<T extends FieldSelectRecord>(shape: T) {
+export function jsonBuildObject<T extends Record<string, AnyColumn | SQL>>(shape: T) {
 	const chunks: SQL[] = [];
 	Object.entries(shape).forEach(([key, value]) => {
 		if (chunks.length > 0) {
@@ -213,31 +218,14 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn>>(shape: T
 /**
  * Get a PostGIS column value as geojson.
  */
-export function asGeoJson<T extends Feature = Feature>(geom: string) {
-	return sql<T>`st_asgeojson(${geom})::json`;
-}
+// export function asGeoJson<T extends Feature = Feature>(geom: string) {
+// 	return sql<T>`st_asgeojson(${geom})::json`;
+// }
 
 /**
  * Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped
  * type instead of an SQL wrapped type.
  */
-// export function jsonObjectAgg<
-// 	K extends AnyColumn,
-// 	V extends AnyTable | Record<string, AnyColumn>,
-// 	TK extends string | number = null extends InferColumnDataType<K>
-// 		? never
-// 		: InferColumnDataType<K> extends string | number
-// 		? InferColumnDataType<K>
-// 		: never,
-// 	TV = V extends AnyTable
-// 		? InferSelectModel<V>
-// 		: V extends Record<string, AnyColumn>
-// 		? InferColumnsDataTypes<V>
-// 		: never,
-// >(key: K, value: V) {
-// 	const v = value instanceof Table ? value : jsonBuildObject(value).getSQL();
-// 	return sql<Record<TK, TV>>`json_object_agg(${key}, ${v})`;
-// }
 export function jsonObjectAgg<
 	K extends AnyColumn,
 	V extends SQL | AnyTable<TableConfig>,

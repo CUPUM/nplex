@@ -16,15 +16,15 @@
 		<LangKey>{m.account_nav_home()}</LangKey>
 		<Home class="button-icon" />
 	</SidebarItem>
-	<SidebarItem {...$link(`/users/${$page.data?.user?.id}`)}>
+	<SidebarItem {...$link(`/users/${$page.data?.user?.id}`)} aria-disabled>
 		<LangKey>{m.account_nav_profile()}</LangKey>
 		<UserSquare2 class="button-icon" />
 	</SidebarItem>
-	<SidebarItem {...$link(`/i/collections`)}>
+	<SidebarItem {...$link(`/i/collections`)} aria-disabled>
 		<LangKey>{m.account_nav_collections()}</LangKey>
 		<Folders class="button-icon" />
 	</SidebarItem>
-	<SidebarItem {...$link(`/i/likes`)}>
+	<SidebarItem {...$link(`/i/likes`)} aria-disabled>
 		<LangKey>{m.account_nav_likes()}</LangKey>
 		<FolderHeart class="button-icon" />
 	</SidebarItem>

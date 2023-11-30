@@ -8,7 +8,7 @@ import {
 } from '$env/static/private';
 import { pool } from '$lib/db/db.server';
 import { keys, sessions, users } from '$lib/db/schema/accounts';
-import { getTableName } from '$lib/db/utils';
+import { getTableName } from '$lib/db/utils.server';
 import { pg } from '@lucia-auth/adapter-postgresql';
 import { github, google } from '@lucia-auth/oauth/providers';
 import { lucia } from 'lucia';

@@ -9,7 +9,7 @@ import {
 	projectsImagesCredits,
 	projectsImagesTranslations,
 } from '$lib/db/schema/public';
-import { withTranslations } from '$lib/db/utils';
+import { withTranslations } from '$lib/db/utils.server';
 import { s3 } from '$lib/storage/s3.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { DeleteObjectCommand, DeleteObjectsCommand } from '@aws-sdk/client-s3';

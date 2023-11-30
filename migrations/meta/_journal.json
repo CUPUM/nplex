@@ -162,6 +162,13 @@
       "when": 1701210304638,
       "tag": "0022_wild_beast",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "5",
+      "when": 1701320756858,
+      "tag": "0023_wet_tattoo",
+      "breakpoints": true
     }
   ]
 }
