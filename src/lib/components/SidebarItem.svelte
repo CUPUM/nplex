@@ -106,7 +106,7 @@
 			}
 		}
 
-		&[data-current='page'] {
+		&[data-current] {
 			pointer-events: none;
 			opacity: 1;
 			color: var(--color-primary-600);
