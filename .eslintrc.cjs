@@ -28,7 +28,8 @@ module.exports = {
 		},
 	],
 	rules: {
-		curly: ['error', 'all'],
+		'curly': ['error', 'all'],
+		'@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
 		// 'require-await': 'off',
 		// '@typescript-eslint/require-await': 'error',
 	},
