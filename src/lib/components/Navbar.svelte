@@ -437,8 +437,8 @@
 	}
 
 	#mode-icon {
+		line-height: 0;
 		position: absolute;
 		transform-origin: center 200%;
-		line-height: 1em;
 	}
 </style>
