@@ -49,12 +49,11 @@ export function superForm<
 		},
 		onUpdated(event) {
 			if (event.form.message) {
-				event.form.message.forEach(({ closeDelay, ...data }) => {
-					data.type = event.form.valid ? TOAST_TYPES.SUCCESS : TOAST_TYPES.ERROR;
-					addToast({
-						closeDelay,
-						data,
-					});
+				const { closeDelay, ...data } = event.form.message;
+				data.type = event.form.valid ? TOAST_TYPES.SUCCESS : TOAST_TYPES.ERROR;
+				addToast({
+					closeDelay,
+					data,
 				});
 			}
 		},
