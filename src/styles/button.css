@@ -367,10 +367,10 @@
 	&.cta {
 		--ripple-color: var(--color-primary-500);
 		--spinner-color: var(--color-neutral-50);
-		--_button-color: var(--color-neutral-100);
-		--_button-bg: var(--color-primary-900);
-		--_button-hover-color: var(--color-neutral-200);
-		--_button-hover-bg: var(--color-primary-950);
+		--_button-color: var(--color-neutral-200);
+		--_button-bg: var(--color-primary-950);
+		--_button-hover-color: var(--color-neutral-100);
+		--_button-hover-bg: var(--color-primary-900);
 		--_button-active-color: var(--color-neutral-200);
 		--_button-active-bg: var(--color-primary-800);
 		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-100) 25%, transparent);
