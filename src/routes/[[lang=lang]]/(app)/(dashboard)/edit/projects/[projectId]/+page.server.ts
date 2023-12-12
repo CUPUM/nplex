@@ -54,7 +54,7 @@ export const actions = {
 		const form = await superValidate(event, projectGeneralUpdateSchema);
 		if (!form.valid) {
 			console.error(JSON.stringify(form.errors));
-			return message(form, { title: m.invalid(), description: m.invalidDataDetails() });
+			return message(form, { title: m.invalid(), description: m.invalid_data_details() });
 		}
 		try {
 			const { translations, interventionIds, ...project } = form.data;
@@ -92,12 +92,12 @@ export const actions = {
 						});
 				}
 			});
-			return message(form, { title: m.success(), description: m.successSavedData() });
+			return message(form, { title: m.success(), description: m.success_saved_data() });
 		} catch (e) {
 			console.error(e);
 			return message(
 				form,
-				{ title: m.error(), description: m.errorDetails() },
+				{ title: m.error(), description: m.error_details() },
 				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
 			);
 		}

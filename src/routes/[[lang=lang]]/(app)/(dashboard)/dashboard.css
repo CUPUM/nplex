@@ -1,0 +1,191 @@
+.dashboard {
+	position: relative;
+	display: grid;
+	grid-template-columns:
+		[full-start sidebar-start footer-start] 0px
+		[sidebar-end main-start] 1fr
+		[main-end full-end footer-end];
+	flex-direction: column;
+	align-content: flex-start;
+	border-radius: var(--dashboard-radius);
+	perspective: 999px;
+	padding-inline: 0.75rem;
+	container-type: inline-size;
+	row-gap: 0;
+	column-gap: 0;
+	min-height: calc(100vh - var(--navbar-height));
+	min-height: calc(100svh - var(--navbar-height));
+	transition: all var(--duration-medium) var(--ease-out-expo);
+
+	/* With sidebar */
+	&:has(:is(.sidebar)) {
+		column-gap: var(--dashboard-gutter);
+		grid-template-columns:
+			[full-start sidebar-start footer-start] var(--sidebar-width)
+			[sidebar-end main-start] 1fr
+			[main-end full-end footer-end];
+	}
+
+	/* With header and/or footer */
+	&:has(:is(.dashboard-header, .dashboard-footer)) {
+		row-gap: var(--dashboard-gutter);
+	}
+}
+
+/* Header */
+.dashboard-header {
+	z-index: 0;
+	position: relative;
+	grid-column: 1 / -1;
+	border-radius: inherit;
+	transform-origin: center bottom;
+	backface-visibility: hidden;
+	overflow: hidden;
+	perspective: 999px;
+	transition: all 1s var(--ease-out-expo);
+}
+
+/* Content / slot */
+.dashboard-main {
+	position: relative;
+	display: grid;
+	grid-column: main;
+	/* grid-template-rows: minmax(auto, 1fr); */
+	grid-template-columns:
+		[full-start] 1fr
+		[center-start] minmax(0, var(--content-width))
+		[center-end] 1fr
+		[full-end];
+	gap: var(--base-gutter);
+	align-content: start;
+	scroll-margin-block-start: var(--sticky-top);
+	border-radius: inherit;
+
+	@media (--lg) {
+		grid-template-columns:
+			[full-start] 1fr
+			[center-start] var(--content-width)
+			[center-end] 1fr
+			minmax(auto, var(--sidebar-width))
+			[full-end];
+	}
+}
+
+/* Content section / form */
+.dashboard-section {
+	grid-column: full;
+	display: inherit;
+	grid-template-columns: inherit;
+	gap: inherit;
+	border-radius: inherit;
+	background: var(--dashboard-bg);
+	/* box-shadow: var(--shadow-md); */
+	/* border: var(--base-border-width) solid var(--base-border-color-dim); */
+
+	:global(:--dark) & {
+		/* border: none; */
+	}
+}
+
+/* Content section  top-header */
+.dashboard-section-header {
+	grid-column: full;
+	padding: 2rem 2.5rem;
+	padding-top: 0;
+}
+
+/* Section floating menu */
+.dashboard-section-menu {
+	position: sticky;
+	grid-column: center;
+	align-self: center;
+	justify-self: center;
+	bottom: 2rem;
+	margin-bottom: 2rem;
+	display: flex;
+	flex-direction: row;
+	margin-inline: 2rem;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	font-size: var(--size-sm);
+	min-height: calc(var(--base-block-size) + 2 * var(--base-nesting));
+	transition: all var(--duration-medium) var(--ease-out-expo);
+
+	/* Menu elements' bg for improved readability */
+	& > *::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		background: var(--dashboard-bg);
+		opacity: 0.25;
+		z-index: -1;
+	}
+
+	/* Hidden or empty menu */
+	&:empty,
+	&[data-hidden] {
+		opacity: 0;
+		transform: translateY(0.5em);
+		pointer-events: none;
+		transition: all var(--duration-fast) var(--ease-in-expo);
+	}
+}
+
+/* Content subsection / form fields group */
+.dashboard-subsection {
+	position: relative;
+	display: inherit;
+	grid-template-columns: inherit;
+	gap: inherit;
+	grid-column: full;
+
+	&:not(:first-child) {
+		/* border-top: var(--base-border-width) solid
+			color-mix(in srgb, var(--base-border-color) 25%, transparent); */
+		border-top: var(--base-border-width) solid var(--base-bg);
+	}
+}
+
+/* Subsection header */
+.dashboard-subsection-header {
+	padding: 1.5rem 2.5rem;
+	grid-column: full;
+}
+
+.dashboard-subsection-description {
+	margin-top: 1rem;
+	line-height: var(--line-sparse);
+	font-size: var(--size-sm);
+	max-width: var(--content-width);
+	opacity: var(--opacity-dim);
+}
+
+/* Subsection aligned content */
+.dashboard-subsection-content,
+.dashboard-subsection-content-full {
+	grid-column: center;
+	position: relative;
+	display: flex;
+	gap: 1.5rem;
+	flex-direction: column;
+
+	@media (--md) {
+		gap: 1rem;
+		padding: 1rem;
+	}
+
+	@media (--lg) {
+		gap: 1rem;
+		padding: 2rem;
+	}
+}
+.dashboard-subsection-content-full {
+	grid-column: full;
+}
+
+/* Footer */
+.dashboard-footer {
+	grid-column: footer;
+}

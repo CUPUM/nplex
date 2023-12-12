@@ -1,12 +1,14 @@
 <script lang="ts">
-	import GeneralSettings from './GeneralSettings.svelte';
-	import PermissionsSettings from './PermissionsSettings.svelte';
+	import SettingsGeneral from './SettingsGeneral.svelte';
+	import SettingsDelete from './SettingsManage.svelte';
+	import SettingsPermissions from './SettingsPermissions.svelte';
 
 	export let data;
 </script>
 
-<GeneralSettings data={data.generalForm} publicEmailVerified={data.publicEmailVerified} />
-<PermissionsSettings data={data.permissionsForm} roles={data.roles} />
+<SettingsGeneral data={data.generalForm} publicEmailVerified={data.publicEmailVerified} />
+<SettingsPermissions data={data.permissionsForm} roles={data.roles} />
+<SettingsDelete data={data.manageForm} />
 
 <!-- 
 <DashboardForm {enhance} action="?/update">

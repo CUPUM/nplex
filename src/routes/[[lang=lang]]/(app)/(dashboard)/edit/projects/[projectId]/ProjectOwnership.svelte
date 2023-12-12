@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
-	import { langKey } from '$lib/components/LangKey.svelte';
+	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
@@ -37,31 +36,38 @@
 	});
 </script>
 
-<DashboardFormSection title={$langKey(m.project_ownershipType())}>
-	<input type="text" name="siteOwnershipId" use:melt={$hiddenInput} />
-	<button type="button" class="input select" use:melt={$trigger}>
-		{$selectedLabel || $langKey(m.project_ownershipTypePlaceholder())}
-		<SelectIcon open={$open} />
-	</button>
-	<SelectMenu {menu} {open}>
-		{#each siteOwnerships as ownership}
-			<SelectOption
-				{isSelected}
-				{option}
-				value={ownership.id}
-				label={ownership.title}
-				hasDescription={ownership.description}
-			>
-				{ownership.title}
-				<svelte:fragment slot="description">
-					{ownership.description}
-				</svelte:fragment>
-			</SelectOption>
-		{/each}
-	</SelectMenu>
-</DashboardFormSection>
+<fieldset class="dashboard-subsection">
+	<legend class="dashboard-subsection-header h5">
+		<LangKey>{m.project_ownership_type()}</LangKey>
+	</legend>
+	<div class="dashboard-subsection-content">
+		<input type="text" name="siteOwnershipId" use:melt={$hiddenInput} />
+		<button type="button" class="input select" use:melt={$trigger}>
+			{$selectedLabel || $langKey(m.project_ownership_type_placeholder())}
+			<SelectIcon open={$open} />
+		</button>
+		<SelectMenu {menu} {open}>
+			{#each siteOwnerships as ownership}
+				<SelectOption
+					{isSelected}
+					{option}
+					value={ownership.id}
+					label={ownership.title}
+					hasDescription={ownership.description}
+				>
+					{ownership.title}
+					<svelte:fragment slot="description">
+						{ownership.description}
+					</svelte:fragment>
+				</SelectOption>
+			{/each}
+		</SelectMenu>
+	</div>
+</fieldset>
 
 <style lang="postcss">
+	@import '../../../dashboard.css';
+
 	.select {
 		align-self: center;
 	}

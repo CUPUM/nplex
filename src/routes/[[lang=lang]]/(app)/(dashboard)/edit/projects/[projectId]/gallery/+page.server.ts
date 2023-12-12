@@ -49,7 +49,10 @@ export const actions = {
 		const insertImagesForm = await superValidate(event, projectsImagesInsertManySchema);
 		if (!insertImagesForm.valid) {
 			console.error(insertImagesForm.errors);
-			return message(insertImagesForm, { title: m.invalid(), description: m.invalidDataDetails() });
+			return message(insertImagesForm, {
+				title: m.invalid(),
+				description: m.invalid_data_details(),
+			});
 		}
 		try {
 			await dbpool.insert(projectsImages).values(
@@ -127,7 +130,7 @@ export const actions = {
 			if (!bannerId) {
 				return message(
 					galleryUpdateForm,
-					{ title: m.invalid(), description: m.invalidDataDetails() },
+					{ title: m.invalid(), description: m.invalid_data_details() },
 					{ status: STATUS_CODES.BAD_REQUEST }
 				);
 			}
@@ -135,11 +138,14 @@ export const actions = {
 				.update(projects)
 				.set({ bannerId })
 				.where(eq(projects.id, event.params.projectId));
-			return message(galleryUpdateForm, { title: m.success(), description: m.successSavedData() });
+			return message(galleryUpdateForm, {
+				title: m.success(),
+				description: m.success_saved_data(),
+			});
 		} catch (e) {
 			return message(
 				galleryUpdateForm,
-				{ title: m.error(), description: m.errorDetails() },
+				{ title: m.error(), description: m.error_details() },
 				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
 			);
 		}
@@ -155,7 +161,7 @@ export const actions = {
 			if (!bannerId) {
 				return message(
 					galleryUpdateForm,
-					{ title: m.invalid(), description: m.invalidDataDetails() },
+					{ title: m.invalid(), description: m.invalid_data_details() },
 					{ status: STATUS_CODES.BAD_REQUEST }
 				);
 			}
@@ -163,11 +169,14 @@ export const actions = {
 				.update(projects)
 				.set({ bannerId: null })
 				.where(and(eq(projects.id, event.params.projectId), eq(projects.bannerId, bannerId)));
-			return message(galleryUpdateForm, { title: m.success(), description: m.successSavedData() });
+			return message(galleryUpdateForm, {
+				title: m.success(),
+				description: m.success_saved_data(),
+			});
 		} catch (e) {
 			return message(
 				galleryUpdateForm,
-				{ title: m.error(), description: m.errorDetails() },
+				{ title: m.error(), description: m.error_details() },
 				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
 			);
 		}

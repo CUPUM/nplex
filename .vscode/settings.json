@@ -4,8 +4,8 @@
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.codeActionsOnSave": {
-		"source.organizeImports": true,
-		"source.fixAll": true
+		"source.organizeImports": "explicit",
+		"source.fixAll": "explicit"
 	},
 	"files.associations": {
 		"*.svx": "markdown",
@@ -18,7 +18,7 @@
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.preferences.quoteStyle": "single",
 	"svelte.enable-ts-plugin": true,
-	"svelte.plugin.css.globals": "src/*.css,src/styles/*.css,src/styles/**/*.css",
+	"svelte.plugin.css.globals": "src/**/*.css",
 	"svelte.plugin.svelte.compilerWarnings": {
 		"a11y-missing-attribute": "ignore"
 	}

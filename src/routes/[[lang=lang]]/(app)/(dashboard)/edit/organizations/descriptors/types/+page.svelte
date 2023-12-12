@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import DescriptorsCardsList from '$lib/components/DashboardDescriptorsList.svelte';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import TranslationsCard from '$lib/components/TranslationsCard.svelte';
 	import { superForm } from '$lib/forms/super-form';

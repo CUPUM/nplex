@@ -174,6 +174,7 @@
 		text-transform: capitalize;
 		background: var(--base-bg);
 		font-size: var(--size-sm);
+		transition: all var(--duration-fast) ease-out;
 
 		/* &::before {
 			content: '';

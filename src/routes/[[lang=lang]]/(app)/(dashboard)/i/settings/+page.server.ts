@@ -1,7 +1,7 @@
 import * as m from '$i18n/messages';
 import { USER_ROLES } from '$lib/auth/constants';
 import { withAuth } from '$lib/auth/guard.server';
-import { userGeneralUpdateSchema, userPermissionsUpdate } from '$lib/db/crud.server';
+import { usersRolesRequestSchema, usersSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { getUserRolesList } from '$lib/db/queries.server';
 import { users, usersRolesRequests } from '$lib/db/schema/accounts';
@@ -10,6 +10,22 @@ import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { eq, getTableColumns, sql } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms/client';
+import { z } from 'zod';
+
+const generalSchema = usersSchema.pick({
+	firstName: true,
+	middleName: true,
+	lastName: true,
+	publicEmail: true,
+});
+
+const permissionSchema = z.object({
+	role: usersSchema.shape.role,
+	requestedAt: usersRolesRequestSchema.shape.requestAt.nullable(),
+	requestedRole: usersRolesRequestSchema.shape.requestedRole.nullable(),
+});
+
+const manageSchema = z.object({});
 
 export const load = async (event) => {
 	const session = await withAuth(event);
@@ -35,12 +51,13 @@ export const load = async (event) => {
 	if (!user) {
 		throw error(STATUS_CODES.NOT_FOUND, m.auth_noUserFound());
 	}
-	console.log(permissions);
-	const generalForm = superValidate(user, userGeneralUpdateSchema);
-	const permissionsForm = superValidate(permissions, userPermissionsUpdate);
+	const generalForm = superValidate(user, generalSchema);
+	const permissionsForm = superValidate(permissions, permissionSchema);
+	const manageForm = superValidate(manageSchema);
 	return {
 		generalForm,
 		permissionsForm,
+		manageForm,
 		publicEmailVerified: user.publicEmailVerified,
 		roles: getUserRolesList(event),
 	};
@@ -49,9 +66,12 @@ export const load = async (event) => {
 export const actions = {
 	update: async (event) => {
 		const session = await withAuth(event);
-		const generalForm = await superValidate(event, userGeneralUpdateSchema);
+		const generalForm = await superValidate(event, generalSchema);
 		if (!generalForm.valid) {
-			return message(generalForm, { title: m.invalidData(), description: m.invalidDataDetails() });
+			return message(generalForm, {
+				title: m.invalidData(),
+				description: m.invalid_data_details(),
+			});
 		}
 		try {
 			await dbpool
@@ -64,14 +84,38 @@ export const actions = {
 							: sql`case when ${users.publicEmail} = ${generalForm.data.publicEmail} then true else false end`,
 				})
 				.where(eq(users.id, session.user.id));
-			return message(generalForm, { title: m.success(), description: m.successSavedData() });
+			return message(generalForm, { title: m.success(), description: m.success_saved_data() });
 		} catch (e) {
 			return message(
 				generalForm,
-				{ title: m.error(), description: m.errorDetails() },
+				{
+					title: m.error(),
+					description: m.error_details(),
+				},
 				{
 					status: STATUS_CODES.INTERNAL_SERVER_ERROR,
 				}
+			);
+		}
+	},
+	delete: async (event) => {
+		const session = await withAuth(event);
+		const manageForm = await superValidate(event, manageSchema);
+		try {
+			await dbpool.delete(users).where(eq(users.id, session.user.id));
+			return message(manageForm, {
+				title: m.success(),
+				description: m.success_saved_data(),
+			});
+		} catch (e) {
+			console.error(e);
+			return message(
+				manageForm,
+				{
+					title: m.error(),
+					description: m.error_details(),
+				},
+				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
 			);
 		}
 	},

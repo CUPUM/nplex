@@ -1,14 +1,14 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { decrement, increment } from '$lib/actions/increment';
-	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
-	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
+	import ButtonIconPencil from '$lib/components/ButtonIconPencil.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
 	import Slider from '$lib/components/Slider.svelte';
 	import SwitchThumb from '$lib/components/SwitchThumb.svelte';
 	import { PROJECT_COST_MAX, PROJECT_COST_MIN } from '$lib/db/constants';
 	import type { SuperFormPageData } from '$lib/forms/types';
 	import { checked } from '$lib/utils/attributes';
-	import { Minus, Pencil, Plus, RotateCcw } from 'lucide-svelte';
+	import { Minus, Plus, RotateCcw } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale, slide } from 'svelte/transition';
 	import type { PageData } from './$types';
@@ -42,145 +42,152 @@
 
 <svelte:window on:keydown={handleKeydown} on:keyup={handleKeyup} />
 
-<DashboardFormSection title={$langKey(m.project_cost_title())}>
-	{#if $form.costRange[0] == null}
-		<button
-			id="project-cost-placeholder"
-			in:slide={{ easing: expoOut, duration: 250 }}
-			type="button"
-			on:click={() => {
-				$form.costRange = [min, max];
-			}}
-		>
-			<skeleton>
-				<div class="input"></div>
-				<div class="input"></div>
-				<div class="input"></div>
-			</skeleton>
-			<div
-				id="project-cost-init"
-				class="button dashed bg-blur"
-				in:scale={{ easing: expoOut, start: 0.9, duration: 250, delay: 250 }}
-			>
-				<LangKey>{m.project_cost_init()}</LangKey>
-				<Pencil />
-			</div>
-		</button>
-	{:else}
-		<div id="project-cost" in:slide={{ easing: expoOut, duration: 250 }}>
-			<Slider {min} {max} {step} bind:value={$form.costRange} />
-			<div id="project-cost-inputs" in:fly={{ y: -6, easing: expoOut, duration: 350 }}>
-				<div class="input-group">
-					<div class="input-peer">
-						<button
-							class="button square ghost"
-							type="button"
-							use:decrement={{ target: minRef, step }}
-						>
-							<Minus class="button-icon" />
-						</button>
-					</div>
-					<input
-						type="number"
-						class="input"
-						{min}
-						{max}
-						bind:this={minRef}
-						bind:value={$form.costRange[0]}
-					/>
-					<span class="input-affix">$CA</span>
-					<div class="input-peer">
-						<button
-							class="button square ghost"
-							type="button"
-							use:increment={{ target: minRef, step }}
-						>
-							<Plus class="button-icon" />
-						</button>
-					</div>
-				</div>
-				<LangKey>{m.to()}</LangKey>
-				<div class="input-group">
-					<div class="input-peer">
-						<button
-							class="button square ghost"
-							type="button"
-							use:decrement={{ target: maxRef, step }}
-						>
-							<Minus class="button-icon" />
-						</button>
-					</div>
-					<input
-						type="number"
-						class="input"
-						{min}
-						{max}
-						bind:this={maxRef}
-						bind:value={$form.costRange[1]}
-					/>
-					<span class="input-affix">$CA</span>
-					<div class="input-peer">
-						<button
-							class="button square ghost"
-							type="button"
-							use:increment={{ target: maxRef, step }}
-						>
-							<Plus class="button-icon" />
-						</button>
-					</div>
-				</div>
-			</div>
+<fieldet class="dashboard-subsection">
+	<legend class="dashboard-subsection-header h5">
+		<LangKey>{m.project_cost_title()}</LangKey>
+	</legend>
+	<div class="dashboard-subsection-content">
+		{#if $form.costRange[0] == null}
 			<button
-				class="button dashed"
-				id="project-cost-reset"
+				id="project-cost-placeholder"
+				in:slide={{ easing: expoOut, duration: 250 }}
 				type="button"
 				on:click={() => {
-					$form.costRange = [null, null];
+					$form.costRange = [min, max];
 				}}
-				in:fly={{ y: -6, delay: 500, easing: expoOut, duration: 250 }}
 			>
-				<LangKey>{m.project_cost_reset()}</LangKey>
-				<RotateCcw />
-			</button>
-			<section id="cost-scale">
-				<h3 class="h6">
-					<LangKey>{m.project_cost_scaleTitle()}</LangKey>
-				</h3>
-				<div id="cost-scale-content">
-					<p>
-						<LangKey>{m.project_cost_scaleDescription()}</LangKey>
-					</p>
-					<menu class="switch outlined rounded">
-						<button
-							type="button"
-							class="switch-item"
-							{...checked(!smallScale)}
-							on:click={() => {
-								smallScale = false;
-							}}
-						>
-							<LangKey>{m.project_cost_scaleNormal()}</LangKey>
-							<SwitchThumb current={!smallScale} />
-						</button>
-						<button
-							type="button"
-							class="switch-item"
-							{...checked(smallScale)}
-							on:click={() => {
-								smallScale = true;
-							}}
-						>
-							<LangKey>{m.project_cost_scaleSmall()}</LangKey>
-							<SwitchThumb current={smallScale} />
-						</button>
-					</menu>
+				<skeleton>
+					<div class="input"></div>
+					<div class="input"></div>
+					<div class="input"></div>
+				</skeleton>
+				<div
+					id="project-cost-init"
+					class="button dashed bg-blur"
+					in:scale={{ easing: expoOut, start: 0.9, duration: 250, delay: 250 }}
+				>
+					<LangKey>{m.project_cost_init()}</LangKey>
+					<ButtonIconPencil />
 				</div>
-			</section>
-		</div>
-	{/if}
-</DashboardFormSection>
+			</button>
+		{:else}
+			<div id="project-cost" in:slide={{ easing: expoOut, duration: 250 }}>
+				<Slider {min} {max} {step} bind:value={$form.costRange} />
+				<div id="project-cost-inputs" in:fly={{ y: -6, easing: expoOut, duration: 350 }}>
+					<div class="input-group">
+						<div class="input-peer">
+							<button
+								class="button square ghost"
+								type="button"
+								use:decrement={{ target: minRef, step }}
+							>
+								<Minus class="button-icon" />
+							</button>
+						</div>
+						<input
+							type="number"
+							class="input"
+							{min}
+							{max}
+							bind:this={minRef}
+							bind:value={$form.costRange[0]}
+						/>
+						<span class="input-affix">$CA</span>
+						<div class="input-peer">
+							<button
+								class="button square ghost"
+								type="button"
+								use:increment={{ target: minRef, step }}
+							>
+								<Plus class="button-icon" />
+							</button>
+						</div>
+					</div>
+					<LangKey>{m.to()}</LangKey>
+					<div class="input-group">
+						<div class="input-peer">
+							<button
+								class="button square ghost"
+								type="button"
+								use:decrement={{ target: maxRef, step }}
+							>
+								<Minus class="button-icon" />
+							</button>
+						</div>
+						<input
+							type="number"
+							class="input"
+							{min}
+							{max}
+							bind:this={maxRef}
+							bind:value={$form.costRange[1]}
+						/>
+						<span class="input-affix">$CA</span>
+						<div class="input-peer">
+							<button
+								class="button square ghost"
+								type="button"
+								use:increment={{ target: maxRef, step }}
+							>
+								<Plus class="button-icon" />
+							</button>
+						</div>
+					</div>
+				</div>
+				<button
+					class="button dashed"
+					id="project-cost-reset"
+					type="button"
+					on:click={() => {
+						$form.costRange = [null, null];
+					}}
+					in:fly={{ y: -6, delay: 500, easing: expoOut, duration: 250 }}
+				>
+					<LangKey>{m.project_cost_reset()}</LangKey>
+					<RotateCcw />
+				</button>
+				<section id="cost-scale">
+					<h3 class="h6">
+						<LangKey>{m.project_cost_scale_title()}</LangKey>
+					</h3>
+					<div id="cost-scale-content">
+						<p>
+							<LangKey>{m.project_cost_scale_description()}</LangKey>
+						</p>
+						<menu class="switch outlined rounded">
+							<button
+								type="button"
+								class="switch-item"
+								{...checked(!smallScale)}
+								on:click={() => {
+									smallScale = false;
+								}}
+							>
+								<LangKey>{m.project_cost_scale_normal()}</LangKey>
+								<SwitchThumb current={!smallScale} />
+							</button>
+							<button
+								type="button"
+								class="switch-item"
+								{...checked(smallScale)}
+								on:click={() => {
+									smallScale = true;
+								}}
+							>
+								<LangKey>{m.project_cost_scale_small()}</LangKey>
+								<SwitchThumb current={smallScale} />
+							</button>
+						</menu>
+					</div>
+				</section>
+			</div>
+		{/if}
+	</div>
+</fieldet>
 
 <style lang="postcss">
+	@import '../../../dashboard.css';
+
 	#project-cost-placeholder {
 		cursor: pointer;
 		position: relative;

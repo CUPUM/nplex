@@ -1,7 +1,7 @@
+import { resolveRoute } from '$app/paths';
 import { page } from '$app/stores';
 import { sourceLanguageTag, type AvailableLanguageTag } from '$i18n/runtime';
 import type { Page } from '@sveltejs/kit';
-import { resolvePath } from '@sveltejs/kit';
 import type { HTMLAnchorAttributes } from 'svelte/elements';
 import { derived } from 'svelte/store';
 import { LANG_PARAM } from './constants';
@@ -21,7 +21,7 @@ export function localize<T extends string | URL>(location: T, lang: AvailableLan
 	// This is where the locale segment persistence is determined.
 	// As it is, the locale param is prepended whenever the href points to a non-default-locale.
 	// This could be fine-tuned to, for example, account for user's preferences in localstorage / cookies / page.data.
-	return resolvePath(`/[[${LANG_PARAM}]]${str}`, {
+	return resolveRoute(`/[[${LANG_PARAM}]]${str}`, {
 		[LANG_PARAM]: lang === sourceLanguageTag ? '' : lang,
 	});
 }

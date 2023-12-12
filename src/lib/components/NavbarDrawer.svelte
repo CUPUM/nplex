@@ -8,7 +8,7 @@
 	import { langSwitch, link } from '$lib/i18n/link';
 	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
-	import { transform } from '$lib/transitions/transform';
+	import { transform } from '$lib/motion/transform';
 	import { KEYS } from '$lib/utils/constants';
 	import { melt, type DialogElements, type DialogStates } from '@melt-ui/svelte';
 	import { Languages, Scroll, SunMoon, X } from 'lucide-svelte';

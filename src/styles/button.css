@@ -39,6 +39,13 @@
 		transition: inherit;
 	}
 
+	&.inline {
+		height: auto;
+		padding: 0.75em 1em;
+		margin: -0.75em -0.5em;
+		white-space: initial;
+	}
+
 	/* Icon children */
 	& > :--icon,
 	.button-icon {
@@ -469,6 +476,13 @@
 	}
 }
 
+/* Fill button for visually nested buttons */
+.button-fill {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+}
+
 /* Segmented */
 .button-group {
 	display: inline-flex;
@@ -503,5 +517,9 @@
 				border-bottom-right-radius: 0;
 			}
 		}
+	}
+
+	&.rounded {
+		--base-radius: var(--radius-full);
 	}
 }

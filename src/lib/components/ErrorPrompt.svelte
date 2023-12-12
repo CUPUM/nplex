@@ -20,7 +20,7 @@
 			<h1 in:fly|global={{ y: 6 }}>
 				<Frown strokeWidth="3" size="1em" class="icon" />
 				Oops, <LangKey>
-					{m.errorDetails()}
+					{m.error_details()}
 				</LangKey>
 			</h1>
 			<p in:fly={{ y: -6, delay: 75 }}>

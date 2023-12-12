@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
 	import { defineContext } from '$lib/utils/context';
 	import { defineChildIndexContext } from '$lib/utils/index-context';
+	import { fade } from 'svelte/transition';
 
 	const [getSidebarIndex, setSidebarIndex] = defineChildIndexContext({});
 	const [getSidebarKey, setSidebarKey] = defineContext({});
@@ -13,7 +14,7 @@
 	setSidebarKey({});
 </script>
 
-<div class="sidebar">
+<div class="sidebar" in:fade|global>
 	<slot />
 </div>
 
@@ -23,13 +24,13 @@
 		grid-column: sidebar;
 		font-size: var(--size-md);
 		position: sticky;
-		top: var(--sticky-top);
+		top: calc(var(--navbar-height) + var(--dashboard-gutter));
 		display: flex;
 		flex-direction: column;
 		align-self: flex-start;
-		overflow-x: hidden;
+		overflow-x: visible;
 		overflow-y: auto;
-		gap: var(--base-gutter);
+		gap: var(--dashboard-gutter);
 		width: var(--sidebar-width);
 	}
 </style>

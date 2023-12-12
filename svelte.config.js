@@ -17,21 +17,23 @@ const config = {
 	// for more information about preprocessors
 	preprocess: sequence([
 		vitePreprocess(),
-		mdsvex({
-			extensions: md,
-			remarkPlugins: [
-				// remarkToc,
-				[
-					mdsvexamples,
-					{
-						defaults: {
-							Wrapper: '/src/routes/[[lang=lang]]/docs/Preview.svelte',
-						},
-					},
-				],
-			],
-			rehypePlugins: [rehypeSlug],
-		}),
+		process.env.SKIP_MD
+			? undefined
+			: mdsvex({
+					extensions: md,
+					remarkPlugins: [
+						// remarkToc,
+						[
+							mdsvexamples,
+							{
+								defaults: {
+									Wrapper: '/src/routes/[[lang=lang]]/docs/Preview.svelte',
+								},
+							},
+						],
+					],
+					rehypePlugins: [rehypeSlug],
+			  }),
 		preprocessMeltUI(),
 	]),
 	extensions: ['.svelte', ...md],

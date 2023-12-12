@@ -4,6 +4,7 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { availableLanguageTags } from '$i18n/runtime';
+	import { ripple } from '$lib/actions/ripple';
 	import { breakpoint } from '$lib/breakpoints/breakpoints';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import Logo from '$lib/components/Logo.svelte';
@@ -11,8 +12,8 @@
 	import { langHref, langSwitch, link } from '$lib/i18n/link';
 	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
+	import { transform } from '$lib/motion/transform';
 	import { setout } from '$lib/setout/store';
-	import { transform } from '$lib/transitions/transform';
 	import { KEYS } from '$lib/utils/constants';
 	import {
 		createDialog,
@@ -81,7 +82,7 @@
 		duration: 175,
 		easing: circInOut,
 		fallback(node, params, intro) {
-			return scale(node, { start: 0.9, duration: 150, easing: expoOut });
+			return scale(node, { start: 0.5, duration: 150, easing: expoOut, opacity: 0 });
 		},
 	});
 
@@ -115,7 +116,7 @@
 		<div class="inner">
 			<!-- General nav -->
 			<nav id="site-group" class="navbar-group" in:flyin|global={0}>
-				<NavbarButton square={!$breakpoint.md} {...$link('/')} ghost>
+				<NavbarButton square={!$breakpoint.md} {...$link('/')} rounded ghost>
 					<Logo mono={!$breakpoint.md} size={$breakpoint.md ? '1.75em' : '1em'} />
 				</NavbarButton>
 				{#if $breakpoint.lg}
@@ -140,13 +141,13 @@
 			</nav>
 			<!-- Exploration nav -->
 			{#if $breakpoint.md}
-				<nav id="explore-group" class="navbar-group" in:flyin|global={1}>
+				<nav id="explore-group" in:flyin|global={1}>
 					{#each explore as ex}
 						{@const link = $link(`/${ex.key}`)}
-						<NavbarButton {...link} ghost>
+						<a class="explore-link" {...link} use:ripple>
 							{#if link['data-current']}
 								<div
-									class="needle"
+									class="explore-thumb"
 									in:receiveExplore={{ key: 'explore' }}
 									out:sendExplore={{ key: 'explore' }}
 								/>
@@ -154,7 +155,7 @@
 							<LangKey>
 								{ex.title()}
 							</LangKey>
-						</NavbarButton>
+						</a>
 					{/each}
 				</nav>
 			{/if}
@@ -201,14 +202,14 @@
 									duration: 500,
 									delay: 150,
 									easing: expoOut,
-									opacity: 1,
+									opacity: 0,
 								}}
 								out:transform={{
 									scale: 0.5,
 									rotate: [0, 0, 90],
 									duration: 250,
 									easing: cubicIn,
-									opacity: 1,
+									opacity: 0,
 								}}
 								id="mode-icon"
 							>
@@ -218,7 +219,7 @@
 					</NavbarButton>
 				{/if}
 				{#if $page.data.user}
-					<NavbarButton square menu={userTrigger}>
+					<NavbarButton square rounded menu={userTrigger}>
 						<Avatar {...$page.data.user} />
 						{#if !$page.data.user.emailVerified}
 							<div class="badge">
@@ -233,19 +234,15 @@
 									<LangKey>{m.projects()}</LangKey>
 								</svelte:fragment>
 								<NavbarMenuButton {...$link('/edit/projects')} melt={userItem}>
-									<LangKey>{m.nav_editProjects()}</LangKey>
+									<LangKey>{m.nav_edit_projects()}</LangKey>
 									<Pencil class="button-icon" />
 								</NavbarMenuButton>
 								<NavbarMenuButton {...$link('/new/project')} melt={userItem}>
-									<LangKey>{m.nav_newProject()}</LangKey>
+									<LangKey>{m.nav_new_project()}</LangKey>
 									<FilePlus2 class="button-icon" />
 								</NavbarMenuButton>
-								<NavbarMenuButton
-									{...$link('/edit/projects/descriptors')}
-									melt={userItem}
-									aria-disabled
-								>
-									<LangKey>{m.nav_editProjectDescriptors()}</LangKey>
+								<NavbarMenuButton {...$link('/edit/projects/descriptors')} melt={userItem}>
+									<LangKey>{m.nav_edit_project_descriptors()}</LangKey>
 									<Sliders class="button-icon" />
 								</NavbarMenuButton>
 							</NavbarMenuGroup>
@@ -254,15 +251,15 @@
 									<LangKey>{m.orgs()}</LangKey>
 								</svelte:fragment>
 								<NavbarMenuButton {...$link('/edit/organizations')} melt={userItem}>
-									<LangKey>{m.nav_editOrgs()}</LangKey>
+									<LangKey>{m.nav_edit_orgs()}</LangKey>
 									<Pencil class="button-icon" />
 								</NavbarMenuButton>
 								<NavbarMenuButton {...$link('/new/organization')} melt={userItem}>
-									<LangKey>{m.nav_newOrg()}</LangKey>
+									<LangKey>{m.nav_new_org()}</LangKey>
 									<FilePlus2 class="button-icon" />
 								</NavbarMenuButton>
 								<NavbarMenuButton {...$link('/edit/organizations/descriptors')} melt={userItem}>
-									<LangKey>{m.nav_editOrgsDescriptors()}</LangKey>
+									<LangKey>{m.nav_edit_orgs_descriptors()}</LangKey>
 									<Sliders class="button-icon" />
 								</NavbarMenuButton>
 							</NavbarMenuGroup>
@@ -347,7 +344,7 @@
 
 		&.over {
 			&::before {
-				border-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+				border-color: var(--base-border-color-dim);
 				opacity: 1;
 				bottom: 0;
 			}
@@ -387,28 +384,68 @@
 	}
 
 	#explore-group {
-		z-index: 1;
 		--group-nesting: 3px;
+		/* --group-radius: calc(var(--base-radius) + var(--group-nesting)); */
+		--group-radius: var(--base-radius);
+		--_nested-radius: calc(var(--group-radius) - var(--group-nesting));
+		--_nested-inline-padding: calc(var(--base-inline-padding) - var(--group-nesting));
+		display: flex;
+		flex-direction: row;
+		z-index: 1;
 		grid-column: explore;
 		justify-content: center;
-		background: color-mix(in srgb, var(--color-neutral-300) 50%, transparent);
-		border-radius: var(--base-radius);
+		border-radius: var(--group-radius);
 		padding: var(--group-nesting);
 		backdrop-filter: blur(8px);
+		gap: 0;
+		background: color-mix(in srgb, var(--base-bg) 50%, transparent);
+		box-shadow: inset 0 0 0 var(--base-border-width)
+			color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 		:global(:--dark) & {
 			background: color-mix(in srgb, var(--color-neutral-700) 50%, transparent);
+			box-shadow: none;
 		}
 
-		& .needle {
-			position: absolute;
-			z-index: -1;
-			inset: 0;
-			border-radius: inherit;
-			background-color: var(--color-neutral-50);
+		> * {
+			--base-radius: var(--_nested-radius);
+			--base-inline-padding: var(--_nested-inline-padding);
+		}
+	}
+
+	.explore-link {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		line-height: 0;
+		padding-inline: var(--base-inline-padding);
+		border-radius: var(--base-radius);
+		position: relative;
+		transition: all var(--duration-fast) ease-out;
+
+		&:hover {
+			background: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		}
+
+		&:focus-visible {
 			outline: var(--base-focus-ring);
+		}
+
+		&[data-current] {
+			color: var(--color-neutral-100);
 			:global(:--dark) & {
-				background-color: var(--color-neutral-900);
+				color: var(--color-primary-900);
 			}
+		}
+	}
+
+	.explore-thumb {
+		position: absolute;
+		z-index: -1;
+		inset: 0;
+		border-radius: inherit;
+		background-color: var(--color-primary-950);
+		:global(:--dark) & {
+			background-color: var(--color-neutral-200);
 		}
 	}
 

@@ -1,6 +1,6 @@
+import { resolveRoute } from '$app/paths';
 import { navigating } from '$app/stores';
-import { LOCALE_PARAM } from '$lib/i18n/constants';
-import { resolvePath } from '@sveltejs/kit';
+import { LANG_PARAM } from '$lib/i18n/constants';
 import { derived } from 'svelte/store';
 
 /**
@@ -29,7 +29,7 @@ export function createLoadingLocation(
 			return false;
 		}
 		const to = $nav.to.route.id
-			? resolvePath($nav.to.route.id, { ...$nav.to.params, [LOCALE_PARAM]: undefined })
+			? resolveRoute($nav.to.route.id, { ...$nav.to.params, [LANG_PARAM]: undefined })
 			: $nav.to.url.href;
 		const target =
 			location instanceof URL ? ($nav.to.route.id ? location.pathname : location.href) : location;

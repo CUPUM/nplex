@@ -8,7 +8,7 @@
 	import { transformImage } from '$lib/media/utils';
 	import { MODES } from '$lib/modes/constants';
 	import { melt } from '@melt-ui/svelte';
-	import { rgb } from 'color-convert';
+	import convert from 'color-convert';
 	import { prominent } from 'color.js';
 	import { ImagePlus, Send, X } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
@@ -62,8 +62,8 @@
 						} as ParsedPalettes;
 						URL.revokeObjectURL(item);
 						(extracted as [number, number, number][]).forEach((col) => {
-							palettes.lab.push(rgb.lab(col));
-							palettes.hex.push(rgb.hex(col));
+							palettes.lab.push(convert.rgb.lab(col));
+							palettes.hex.push(convert.rgb.hex(col));
 						});
 						res(palettes);
 					}),
@@ -152,7 +152,7 @@
 			/>
 			<ImagePlus class="button-icon" />
 			<span>
-				<LangKey>{m.project_gallery_addPrompt()}</LangKey>
+				<LangKey>{m.project_gallery_add_prompt()}</LangKey>
 			</span>
 		</label>
 		{#each inmemory as image, i (image.url)}

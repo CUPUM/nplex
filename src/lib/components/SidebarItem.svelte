@@ -59,19 +59,26 @@
 
 <style lang="postcss">
 	.item {
+		--sidebar-item-radius: calc(var(--sidebar-group-radius) - var(--sidebar-group-nesting));
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		align-items: center;
 		position: relative;
 		z-index: 1;
-		border-radius: var(--radius-sm);
-		line-height: 1.5em;
+		border-radius: var(--sidebar-item-radius);
+		line-height: var(--line-dense);
 		transition: all 0.15s ease-out;
 		white-space: wrap;
 		font-weight: 425;
 		padding: 0.8em 1.25em;
 		font-size: var(--size-sm);
 		opacity: 0.9;
+
+		/* Child icons */
+		:global(:--icon) {
+			align-self: flex-start;
+		}
 
 		&:disabled,
 		&[aria-disabled] {
@@ -109,7 +116,7 @@
 		&[data-current] {
 			pointer-events: none;
 			opacity: 1;
-			color: var(--color-primary-600);
+			color: var(--color-primary-700);
 			font-weight: 550;
 			:global(:--dark) & {
 				color: var(--color-primary-500);
@@ -144,7 +151,7 @@
 		right: calc(-1 * var(--sidebar-group-nesting));
 		width: var(--sidebar-needle-size);
 		border-radius: inherit;
-		background-color: var(--color-primary-600);
+		background-color: var(--color-primary-700);
 		:global(:--dark) & {
 			background-color: var(--color-primary-500);
 		}

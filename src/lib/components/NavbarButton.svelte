@@ -12,6 +12,7 @@
 	) & {
 		ghost?: boolean;
 		square?: boolean;
+		rounded?: boolean;
 		tooltip?: StoresValues<TooltipElements['trigger']>;
 		menu?: DropdownMenuElements['trigger'];
 		dialog?: DialogElements['trigger'];
@@ -19,6 +20,7 @@
 
 	export let href: $$Props['href'] = undefined;
 	export let square: $$Props['square'] = undefined;
+	export let rounded: $$Props['rounded'] = undefined;
 	export let ghost: $$Props['ghost'] = false;
 	export let tooltip: StoresValues<TooltipElements['trigger']> | undefined = undefined;
 	export let menu: DropdownMenuElements['trigger'] | undefined = undefined;
@@ -42,6 +44,7 @@
 	class="navbar-button"
 	class:square
 	class:ghost
+	class:rounded
 	{href}
 	use:navripple
 	on:pointerdown
@@ -119,6 +122,10 @@
 
 		&[data-state='open'] {
 			z-index: 1;
+		}
+
+		&.rounded {
+			--button-radius: var(--radius-full);
 		}
 
 		&.square {

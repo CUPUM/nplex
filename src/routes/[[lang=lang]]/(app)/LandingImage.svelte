@@ -30,8 +30,8 @@
 		border-radius: var(--radius-sm);
 		opacity: 0;
 		transform: translateZ(-20px);
-		height: 100%;
 		width: 100%;
+		height: 100%;
 		object-fit: cover;
 		transition: all var(--duration-medium) ease-out;
 	}

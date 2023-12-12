@@ -9,10 +9,10 @@
 
 <article>
 	{#if $page.status === STATUS_CODES.NOT_FOUND}
-		<h1 class="h2">
+		<h1 class="h4">
 			<LangKey>{m.project_notFound()}</LangKey>
 		</h1>
-		<a {...$link('/edit/projects')} class="button ghost">
+		<a {...$link('/edit/projects')} class="button link">
 			<ButtonIconArrowLeft />
 			<LangKey>{m.project_notFound_browse()}</LangKey>
 		</a>
@@ -21,6 +21,7 @@
 
 <style lang="postcss">
 	article {
+		grid-column: full;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -31,5 +32,9 @@
 		grid-column: 1/-1;
 		padding: 2rem;
 		gap: 2rem;
+	}
+
+	a {
+		font-size: var(--size-sm);
 	}
 </style>

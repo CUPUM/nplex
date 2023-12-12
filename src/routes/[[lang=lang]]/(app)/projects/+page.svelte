@@ -10,7 +10,7 @@
 </script>
 
 <h2 class="heading lg">
-	<LangKey>{m.recentProjects()}</LangKey>
+	<LangKey>{m.recent_projects()}</LangKey>
 </h2>
 <ul>
 	{#each data.qProjects as p, i (p.id)}

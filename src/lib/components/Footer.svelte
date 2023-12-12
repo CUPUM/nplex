@@ -53,7 +53,7 @@
 				rel="external"
 				target="_blank"
 			>
-				© {m.unescoChairLong()}
+				© {m.unesco_chair_long()}
 			</a>
 		</section>
 	</footer>

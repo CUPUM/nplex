@@ -48,7 +48,7 @@
 	}
 
 	header {
-		padding: 1rem 2rem;
+		padding: 1.5rem 2.5rem;
 		grid-column: full;
 
 		.description {

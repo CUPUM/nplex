@@ -6,12 +6,13 @@
 .h6,
 .prose :is(h1, h2, h3, h4, h5, h6) {
 	font-optical-sizing: auto;
+	/* font-family: var(--font-misc); */
 }
 
 .h1,
 .prose h1 {
 	font-weight: 550;
-	font-size: var(--size-5xl);
+	font-size: var(--size-4xl);
 	line-height: 1.1;
 }
 .h2,
@@ -19,35 +20,35 @@
 	line-height: 1.125;
 	font-weight: 525;
 	/* letter-spacing: 0.005em; */
-	font-size: var(--size-4xl);
+	font-size: var(--size-3xl);
 }
 .h3,
 .prose h3 {
 	line-height: 1.15;
 	font-weight: 500;
 	/* letter-spacing: 0.01em; */
-	font-size: var(--size-3xl);
+	font-size: var(--size-2xl);
 }
 .h4,
 .prose h4 {
 	line-height: 1.225;
 	font-weight: 475;
 	/* letter-spacing: 0.015em; */
-	font-size: var(--size-2xl);
+	font-size: var(--size-xl);
 }
 .h5,
 .prose h5 {
 	line-height: 1.25;
 	font-weight: 450;
 	/* letter-spacing: 0.02em; */
-	font-size: var(--size-xl);
+	font-size: var(--size-lg);
 }
 .h6,
 .prose h6 {
 	line-height: 1.275;
 	font-weight: 425;
 	/* letter-spacing: 0.025em; */
-	font-size: var(--size-lg);
+	font-size: var(--size-md);
 }
 
 small {

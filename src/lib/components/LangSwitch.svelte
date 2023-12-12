@@ -6,7 +6,7 @@
 	import { availableLanguageTags } from '$i18n/runtime';
 	import { ripple } from '$lib/actions/ripple';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
-	import { switchCrossfade } from '$lib/transitions/presets';
+	import { switchCrossfade } from '$lib/motion/presets';
 	import { melt, type TabsElements, type TabsStates } from '@melt-ui/svelte';
 
 	export let list: TabsElements['list'];

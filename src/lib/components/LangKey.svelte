@@ -1,6 +1,7 @@
 <!--
 	@component
-	Until svelte 5 drops and runes allow for reactivity with paraglide's message funcitons.
+	# Lang reactive block
+	Required for reactive message updates until svelte 5 drops and runes allow for reactivity with paraglide's message funcitons.
  -->
 <script context="module" lang="ts">
 	/**

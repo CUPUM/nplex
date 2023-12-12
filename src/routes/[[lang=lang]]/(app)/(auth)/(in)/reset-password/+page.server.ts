@@ -54,7 +54,7 @@ export const actions = {
 			console.error(error);
 			return message(
 				form,
-				{ title: m.error(), description: m.errorDetails() },
+				{ title: m.error(), description: m.error_details() },
 				{
 					status: STATUS_CODES.INTERNAL_SERVER_ERROR,
 				}

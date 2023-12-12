@@ -1,7 +1,8 @@
 :root {
 	/* Fonts. */
 	--font-main: 'Outfit', sans-serif;
-	--font-misc: 'Fraunces', serif;
+	/* --font-misc: 'Fraunces', serif; */
+	--font-misc: 'Bricolage Grotesque', sans-serif;
 	/* --font-misc: 'Newsreader', serif; */
 	--font-mono: 'Martian Mono', monospace;
 
@@ -17,17 +18,17 @@
 	--color-neutral-800: hsl(32, 8%, 12%);
 	--color-neutral-900: hsl(34, 9%, 9%);
 	--color-neutral-950: hsl(30, 10%, 6%);
-	--color-primary-50: hsl(161, 80%, 92%);
-	--color-primary-100: hsl(161, 76%, 88%);
-	--color-primary-200: hsl(160, 72%, 80%);
-	--color-primary-300: hsl(159, 69%, 65%);
-	--color-primary-400: hsl(158, 65%, 50%);
-	--color-primary-500: hsl(157, 90%, 38%);
-	--color-primary-600: hsl(156, 92%, 31%);
-	--color-primary-700: hsl(155, 96%, 23%);
-	--color-primary-800: hsl(154, 93%, 17%);
-	--color-primary-900: hsl(153, 91%, 12%);
-	--color-primary-950: hsl(152, 91%, 8%);
+	--color-primary-50: hsl(151, 80%, 92%);
+	--color-primary-100: hsl(151, 76%, 88%);
+	--color-primary-200: hsl(150, 72%, 80%);
+	--color-primary-300: hsl(149, 69%, 65%);
+	--color-primary-400: hsl(148, 65%, 50%);
+	--color-primary-500: hsl(147, 90%, 38%);
+	--color-primary-600: hsl(146, 92%, 31%);
+	--color-primary-700: hsl(145, 96%, 23%);
+	--color-primary-800: hsl(144, 93%, 17%);
+	--color-primary-900: hsl(143, 91%, 12%);
+	--color-primary-950: hsl(142, 91%, 8%);
 	--color-secondary-50: hsl(49, 75%, 90%);
 	--color-secondary-100: hsl(49, 74%, 84%);
 	--color-secondary-200: hsl(48, 73%, 77%);
@@ -123,6 +124,7 @@
 	--base-border-width: 1.25px;
 	--base-outline-width: 2.5px;
 	--base-border-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
+	--base-border-color-dim: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 	--base-nesting: 5px;
 	--base-focus-ring: var(--base-outline-width) solid var(--color-primary-800);
 	--base-error-ring: var(--base-outline-width) solid var(--color-error-600);
@@ -138,11 +140,13 @@
 	--content-width: 75ch;
 	--sticky-top: calc(var(--navbar-height) + var(--base-gutter));
 	--navbar-height: 72px;
-	--dashboard-bg: var(--color-neutral-50);
-	--sidebar-width: 175px;
+	--dashboard-bg: white;
+	--dashboard-gutter: 3px;
+	--dashboard-radius: var(--radius-xl);
+	--sidebar-width: 200px;
 	--sidebar-needle-size: 2.5px;
-	--sidebar-group-radius: var(--radius-lg);
-	--sidebar-group-nesting: 0.5rem;
+	--sidebar-group-radius: var(--dashboard-radius);
+	--sidebar-group-nesting: 1rem;
 
 	&:--dark {
 		--base-color: var(--color-neutral-300);

@@ -4,7 +4,7 @@
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
-	import { ArrowRight } from 'lucide-svelte';
+	import ProjectsSidebarGroup from '../../../ProjectsSidebarGroup.svelte';
 </script>
 
 <SidebarGroup>
@@ -15,15 +15,7 @@
 		<LangKey>{m.org_types()}</LangKey>
 	</SidebarItem>
 </SidebarGroup>
-<SidebarGroup>
-	<svelte:fragment slot="heading">
-		<LangKey>{m.project_descriptors()}</LangKey>
-	</svelte:fragment>
-	<SidebarItem {...$link('/edit/projects/descriptors')}>
-		<LangKey>{m.projects()}</LangKey>
-		<ArrowRight class="button-icon" />
-	</SidebarItem>
-</SidebarGroup>
+<ProjectsSidebarGroup />
 
 <style lang="postcss">
 </style>

@@ -34,8 +34,6 @@ import {
 	projectInterventionsTranslations,
 	projectSiteOwnerships,
 	projectSiteOwnershipsTranslations,
-	projectTypes,
-	projectTypesTranslations,
 	projects,
 	projectsExemplarityIndicators,
 	projectsImages,
@@ -45,20 +43,6 @@ import {
 	projectsTranslations,
 } from './schema/public';
 import { withTranslationsSchema } from './validation.server';
-
-/**
- * Project type.
- */
-export const projectTypeInsertSchema = createInsertSchema(projectTypes).required({ id: true });
-export const projectTypeTranslationInsertSchema = createInsertSchema(projectTypesTranslations, {
-	...translationLangColumnSchema,
-});
-export const projectTypesUpdateSchema = z.object({
-	types: withTranslationsSchema(
-		projectTypeInsertSchema,
-		projectTypeTranslationInsertSchema
-	).array(),
-});
 
 /**
  * Project intervention.
@@ -366,26 +350,14 @@ export const organizationGeneralUpdateSchema = withTranslationsSchema(
 	organizationTranslationInsertSchema
 );
 
-/**
- * User.
- */
-export const usersInsertSchema = createInsertSchema(users, {
+export const usersSchema = createInsertSchema(users, {
+	firstName: (s) => s.firstName.trim(),
+	middleName: (s) => s.middleName.trim(),
+	lastName: (s) => s.lastName.trim(),
 	email: (s) => s.email.email(),
 	publicEmail: (s) => s.publicEmail.email(),
 });
+
 export type SelectUser = InferSelectModel<typeof users>;
 
-export const userGeneralUpdateSchema = usersInsertSchema.pick({
-	firstName: true,
-	middleName: true,
-	lastName: true,
-	publicEmail: true,
-});
-
-export const usersRolesRequestInsertSchema = createInsertSchema(usersRolesRequests);
-
-export const userPermissionsUpdate = z.object({
-	role: usersInsertSchema.shape.role,
-	requestedAt: usersRolesRequestInsertSchema.shape.requestAt.nullable(),
-	requestedRole: usersRolesRequestInsertSchema.shape.requestedRole.nullable(),
-});
+export const usersRolesRequestSchema = createInsertSchema(usersRolesRequests);

@@ -56,10 +56,14 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		background-color: var(--dashboard-bg);
+		background: var(--dashboard-bg);
 		border-radius: var(--sidebar-group-radius);
 		padding: var(--sidebar-group-nesting);
 		margin-bottom: 0;
+
+		:global(:--dark) & {
+			/* border: none; */
+		}
 	}
 
 	.sidebar-group-heading {

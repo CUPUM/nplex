@@ -9,6 +9,7 @@ import type { ValueOf } from 'type-fest';
  */
 export const LOAD_DEPENDENCIES = {
 	Lang: 'lang',
+	ProjectTypesList: 'project-descriptors:types',
 	ProjectEditorGallery: 'project:editor:gallery',
 	ProjectEditorBase: 'project:editor:base',
 } as const;

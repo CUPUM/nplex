@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import DashboardForm from '$lib/components/DashboardForm.svelte';
+	import ButtonSaveAll from '$lib/components/ButtonSaveAll.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/forms/super-form';
 	import type { Snapshot } from './$types.js';
@@ -36,24 +36,34 @@
 		dataType: 'json',
 		taintedMessage: null,
 	});
+
+	let submitRef: HTMLButtonElement;
 </script>
 
-<DashboardForm {enhance} action="?/update" method="POST" {tainted} {submitter}>
-	<svelte:fragment slot="header">
-		<h2>
-			<LangKey>{m.project_general()}</LangKey>
-		</h2>
-		<p>
-			Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis accusantium, eius vero
-			tenetur voluptatibus ducimus harum itaque praesentium qui cupiditate!
-		</p>
-	</svelte:fragment>
+<form use:enhance action="?/update" method="POST" class="dashboard-section">
+	<header class="dashboard-section-header">
+		<hgroup class="prose">
+			<h2>
+				<LangKey>{m.project_general()}</LangKey>
+			</h2>
+			<p class="dim">
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis accusantium, eius vero
+				tenetur voluptatibus ducimus harum itaque praesentium qui cupiditate!
+			</p>
+		</hgroup>
+	</header>
 	<ProjectTextDetails {form} />
 	<ProjectType {form} types={data.types} />
 	<ProjectInterventions {form} categorizedInterventions={data.categorizedInterventions} />
 	<ProjectOwnership {form} siteOwnerships={data.siteOwnerships} />
 	<ProjectCost {form} bind:smallScale />
-</DashboardForm>
+	<menu class="dashboard-section-menu">
+		{#if $tainted}
+			<ButtonSaveAll {submitter} />
+		{/if}
+	</menu>
+</form>
 
 <style lang="postcss">
+	@import './../../../dashboard.css';
 </style>

@@ -17,18 +17,18 @@
 
 	export let images: PageData['randomImages'];
 
-	function randomArea() {
+	function randomArea(i: number) {
 		const cspan = Math.round(Math.random() * 4 + 2) * 2;
 		const rspan = Math.round(Math.random() * 4 + 2) * 2;
-		const col = `${Math.round((Math.random() * n) / 2) * 2} / span ${cspan}`;
-		const row = `${Math.round((Math.random() * n) / 2) * 2} / span ${rspan}`;
+		const col = `${i ? 'auto' : Math.round((Math.random() * n) / 2) * 2} / span ${cspan}`;
+		const row = `${i ? 'auto' : Math.round((Math.random() * n) / 2) * 2} / span ${rspan}`;
 		return {
 			col,
 			row,
 		};
 	}
 
-	$: placedImages = n ? images.map((image) => ({ ...image, ...randomArea() })) : [];
+	$: placedImages = n ? images.map((image, i) => ({ ...image, ...randomArea(i) })) : [];
 
 	const factor = 0.05;
 	const ax0 = 35;
@@ -112,18 +112,18 @@
 			</LangKey> -->
 			<div>
 				<a
-					{...$link('/projects')}
-					in:fly={{ y: '-0.25em', duration: 750, delay: 500, easing: expoOut }}
-					class="button big cta"
-				>
-					<LangKey>{m.landing_explore()}</LangKey><ButtonIconArrowRight />
-				</a>
-				<a
 					{...$link($page.data.user ? '/edit/projects' : '/login')}
-					in:fly={{ y: '-0.25em', duration: 750, delay: 750, easing: expoOut }}
+					in:fly={{ y: '-0.25em', duration: 750, delay: 500, easing: expoOut }}
 					class="button big dashed bg-blur"
 				>
 					<LangKey>{m.landing_create()}</LangKey><Edit />
+				</a>
+				<a
+					{...$link('/projects')}
+					in:fly={{ y: '-0.25em', duration: 750, delay: 750, easing: expoOut }}
+					class="button big cta"
+				>
+					<LangKey>{m.landing_explore()}</LangKey><ButtonIconArrowRight />
 				</a>
 			</div>
 		</header>
@@ -161,6 +161,11 @@
 	figure {
 		position: relative;
 		transform-style: preserve-3d;
+		padding: calc(var(--base-gutter) / 1);
+		box-shadow: 0 0 0 var(--base-border-width) var(--base-border-color);
+		display: flex;
+		align-items: stretch;
+		justify-content: stretch;
 	}
 
 	surface {
@@ -224,9 +229,10 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		gap: 2rem;
+		gap: 4rem;
 		max-width: var(--width-md);
 		text-align: center;
+		font-size: var(--size-sm);
 
 		hgroup {
 			font-size: 10rem;
@@ -236,23 +242,12 @@
 			}
 		}
 
-		p {
-			opacity: 0.75;
-			font-size: var(--size-lg);
-			margin-block: 1rem;
-			line-height: var(--line-sparse);
-		}
-
 		div {
 			display: flex;
 			flex-direction: row;
 			align-items: center;
 			justify-content: center;
 			gap: var(--base-gutter);
-
-			.button {
-				box-shadow: 0 1.5em 4em -2em rgba(0, 0, 0, 0.25);
-			}
 		}
 	}
 </style>

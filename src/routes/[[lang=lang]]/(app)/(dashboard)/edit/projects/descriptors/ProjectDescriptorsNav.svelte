@@ -4,7 +4,7 @@
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/link';
-	import { ArrowRight } from 'lucide-svelte';
+	import { Files, Tags } from 'lucide-svelte';
 </script>
 
 <SidebarGroup>
@@ -15,13 +15,13 @@
 		<LangKey>{m.project_descriptors_types()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/interventions')}>
-		<LangKey>{m.project_descriptors_interventionTypes()}</LangKey>
+		<LangKey>{m.project_descriptors_intervention_types()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/indicators')}>
 		<LangKey>{m.project_descriptors_indicators()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/ownerships')}>
-		<LangKey>{m.project_descriptors_ownershipTypes()}</LangKey>
+		<LangKey>{m.project_descriptors_ownership_types()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/implantations')}>
 		<LangKey>{m.project_descriptors_implantations()}</LangKey>
@@ -35,11 +35,24 @@
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
+		<LangKey>{m.projects()}</LangKey>
+	</svelte:fragment>
+	<SidebarItem {...$link('/edit/projects')}>
+		<LangKey>{m.my_projects()}</LangKey>
+		<Files class="button-icon" />
+	</SidebarItem>
+</SidebarGroup>
+<SidebarGroup>
+	<svelte:fragment slot="heading">
 		<LangKey>{m.orgs()}</LangKey>
 	</svelte:fragment>
+	<SidebarItem {...$link('/edit/organizations')}>
+		<LangKey>{m.my_orgs()}</LangKey>
+		<Files class="button-icon" />
+	</SidebarItem>
 	<SidebarItem {...$link('/edit/organizations/descriptors')}>
 		<LangKey>{m.org_descriptors()}</LangKey>
-		<ArrowRight class="button-icon" />
+		<Tags class="button-icon" />
 	</SidebarItem>
 </SidebarGroup>
 

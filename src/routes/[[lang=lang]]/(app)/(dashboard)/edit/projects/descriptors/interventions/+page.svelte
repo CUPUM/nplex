@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import DescriptorsCardsList from '$lib/components/DescriptorsCardsList.svelte';
+	import DescriptorsCardsList from '$lib/components/DashboardDescriptorsList.svelte';
 	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import { default as TranslationsCard } from '$lib/components/TranslationsCard.svelte';

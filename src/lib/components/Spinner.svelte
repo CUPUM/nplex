@@ -6,7 +6,7 @@
 	- `--spinner-color`: Spinner's stroke color.
  -->
 <script lang="ts">
-	import { transform } from '$lib/transitions/transform';
+	import { transform } from '$lib/motion/transform';
 	import { expoOut, quadIn } from 'svelte/easing';
 	import type { SVGAttributes } from 'svelte/elements';
 	import { scale } from 'svelte/transition';

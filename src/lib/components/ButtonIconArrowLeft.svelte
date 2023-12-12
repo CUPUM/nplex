@@ -2,10 +2,10 @@
 	import { ArrowLeft } from 'lucide-svelte';
 </script>
 
-<ArrowLeft class="button-icon-arrow-right" />
+<ArrowLeft class="button-icon arrow-right" />
 
 <style lang="postcss">
-	:global(.button-icon-arrow-right) {
+	:global(.button-icon.arrow-right) {
 		translate: 0px;
 		transition: all var(--duration-fast) ease-out;
 
