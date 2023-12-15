@@ -1,5 +1,7 @@
 import type { ValueOf } from 'type-fest';
 
+// User roles
+
 export const USER_ROLES = {
 	ADMIN: 'admin',
 	EDITOR: 'editor',
@@ -13,6 +15,10 @@ export const USER_ROLES_ARR = Object.values(USER_ROLES);
 export const USER_ROLE_DEFAULT = USER_ROLES.VISITOR;
 
 export type UserRoleDefault = typeof USER_ROLE_DEFAULT;
+
+export const USER_ROLES_CONTENT_MANAGEMENT = [USER_ROLES.EDITOR, USER_ROLES.ADMIN];
+
+// Credential/OAuth providers
 
 export const CREDENTIALS_PROVIDERS = {
 	EMAIL: 'email',

@@ -79,12 +79,11 @@
 	gap: inherit;
 	border-radius: inherit;
 	background: var(--dashboard-bg);
-	/* box-shadow: var(--shadow-md); */
-	/* border: var(--base-border-width) solid var(--base-border-color-dim); */
+	/* border: var(--base-border-width) solid var(--base-border-color); */
 
-	:global(:--dark) & {
-		/* border: none; */
-	}
+	/* :global(:--dark) & {
+		border-color: var(--dashboard-bg);
+	} */
 }
 
 /* Content section  top-header */

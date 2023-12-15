@@ -1,74 +1,87 @@
-import { USER_ROLES } from '$lib/auth/constants';
-import { withRole } from '$lib/auth/guard.server';
-import { projectSiteOwnershipsUpdateSchema } from '$lib/db/crud.server';
+import * as m from '$i18n/messages';
+import { withContentManagementRole } from '$lib/auth/guard.server';
+import {
+	projectSiteOwnershipsSchema,
+	projectSiteOwnershipsTranslationsSchema,
+} from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { projectSiteOwnerships, projectSiteOwnershipsTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { extractTranslations, reduceTranslations } from '$lib/db/utils.server';
+import { withTranslations } from '$lib/db/utils.server';
+import { withTranslationsSchema } from '$lib/db/validation.server';
+import {
+	messageInvalidProjectDescriptor,
+	messageServerError,
+	messageServerSuccess,
+} from '$lib/forms/messages';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { superValidate } from 'sveltekit-superforms/client';
+import { message, superValidate } from 'sveltekit-superforms/server';
+import { z } from 'zod';
+
+const updateSchema = withTranslationsSchema(
+	projectSiteOwnershipsSchema,
+	projectSiteOwnershipsTranslationsSchema
+);
+
+const deleteSchema = z.object({ del: z.string() });
 
 export const load = async (event) => {
-	await withRole(event, USER_ROLES.ADMIN);
-	const siteOwnerships = (
-		await dbpool.query.projectSiteOwnerships.findMany({ with: { translations: true } })
-	).map(reduceTranslations);
-	const form = await superValidate({ siteOwnerships }, projectSiteOwnershipsUpdateSchema);
-	return { form };
+	await withContentManagementRole(event);
+	const [ownership] = await withTranslations(
+		projectSiteOwnerships,
+		projectSiteOwnershipsTranslations,
+		{ field: (t) => t.id, reference: (tt) => tt.id }
+	)
+		.where(eq(projectSiteOwnerships.id, event.params.ownershipId))
+		.limit(1);
+	if (!ownership) {
+		throw error(STATUS_CODES.NOT_FOUND);
+	}
+	const form = await superValidate(ownership, updateSchema);
+	const del = await superValidate(deleteSchema);
+	return { form, del };
 };
 
 export const actions = {
-	create: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-		try {
-			await dbpool.insert(projectSiteOwnerships).values({});
-		} catch (e) {
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
-	},
-	delete: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-		const id = event.url.searchParams.get('siteOwnershipId');
-		if (!id) {
-			return fail(STATUS_CODES.BAD_REQUEST);
-		}
-		try {
-			await dbpool.delete(projectSiteOwnerships).where(eq(projectSiteOwnerships.id, id));
-		} catch (e) {
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
-	},
 	update: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-		const form = await superValidate(event, projectSiteOwnershipsUpdateSchema);
+		await withContentManagementRole(event);
+		const form = await superValidate(event, updateSchema);
 		if (!form.valid) {
-			console.error(form.errors);
-			return fail(STATUS_CODES.BAD_REQUEST, { form });
+			return message(
+				form,
+				messageInvalidProjectDescriptor(m.project_ownership_type().toLowerCase())
+			);
 		}
+		const { translations, ...pso } = form.data;
 		try {
 			await dbpool.transaction(async (tx) => {
-				const [pso, psot] = extractTranslations(form.data.siteOwnerships);
 				await tx
-					.insert(projectSiteOwnerships)
-					.values(pso)
-					.onConflictDoUpdate({
-						target: projectSiteOwnerships.id,
-						set: excluded(projectSiteOwnerships),
-					});
+					.update(projectSiteOwnerships)
+					.set(pso)
+					.where(eq(projectSiteOwnerships.id, event.params.ownershipId));
 				await tx
 					.insert(projectSiteOwnershipsTranslations)
-					.values(psot)
+					.values(Object.values(translations))
 					.onConflictDoUpdate({
 						target: [projectSiteOwnershipsTranslations.id, projectSiteOwnershipsTranslations.lang],
 						set: excluded(projectSiteOwnershipsTranslations),
 					});
 			});
-			return { form };
 		} catch (e) {
-			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
+			return message(form, messageServerError());
 		}
+		return message(form, messageServerSuccess());
+	},
+	delete: async (event) => {
+		await withContentManagementRole(event);
+		const del = await superValidate(event, deleteSchema);
+		if (!del.valid) {
+			return message(del, messageInvalidProjectDescriptor('id'));
+		}
+		try {
+			await dbpool.delete(projectSiteOwnerships).where(del);
+		} catch (e) {}
 	},
 };

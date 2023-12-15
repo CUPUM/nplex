@@ -88,7 +88,7 @@
 		form,
 		errors,
 		enhance,
-		loadable: {
+		elements: {
 			submitter: { root: submitter },
 			loading: { root: loading },
 		},

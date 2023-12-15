@@ -60,10 +60,11 @@
 		border-radius: var(--sidebar-group-radius);
 		padding: var(--sidebar-group-nesting);
 		margin-bottom: 0;
+		/* border: var(--base-border-width) solid var(--base-border-color-dim); */
 
-		:global(:--dark) & {
-			/* border: none; */
-		}
+		/* :global(:--dark) & {
+			border-color: var(--dashboard-bg);
+		} */
 	}
 
 	.sidebar-group-heading {

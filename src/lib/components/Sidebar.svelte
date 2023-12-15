@@ -24,7 +24,8 @@
 		grid-column: sidebar;
 		font-size: var(--size-md);
 		position: sticky;
-		top: calc(var(--navbar-height) + var(--dashboard-gutter));
+		/* top: calc(var(--navbar-height) + var(--dashboard-gutter)); */
+		top: var(--navbar-height);
 		display: flex;
 		flex-direction: column;
 		align-self: flex-start;

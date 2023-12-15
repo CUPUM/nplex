@@ -20,7 +20,7 @@
 			{/if}
 			<!-- svelte-ignore a11y-missing-attribute -->
 			<div class="inner">
-				<a class="fill-link" {...$link(`/projects/${p.id}`)} />
+				<a class="fill-parent" {...$link(`/projects/${p.id}`)} />
 				<div class="info">
 					<span class="heading sm">{p.title}</span>
 					{#if p.summary}
@@ -92,12 +92,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
-	}
-
-	.fill-link {
-		position: absolute;
-		inset: 0;
-		border-radius: inherit;
 	}
 
 	.info {

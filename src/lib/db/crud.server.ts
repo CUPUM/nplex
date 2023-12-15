@@ -138,22 +138,14 @@ export const projectExemplarityCategoriesWithIndicatorsUpdateSchema = z.object({
 		.array(),
 });
 
-/**
- * Project site ownership.
- */
-export const projectSiteOwnershipInsertSchema = createInsertSchema(projectSiteOwnerships).required({
+export const projectSiteOwnershipsSchema = createInsertSchema(projectSiteOwnerships).required({
 	id: true,
 });
-export const projectSiteOwnershipTranslationInsertSchema = createInsertSchema(
+
+export const projectSiteOwnershipsTranslationsSchema = createInsertSchema(
 	projectSiteOwnershipsTranslations,
 	{ ...translationLangColumnSchema }
 );
-export const projectSiteOwnershipsUpdateSchema = z.object({
-	siteOwnerships: withTranslationsSchema(
-		projectSiteOwnershipInsertSchema,
-		projectSiteOwnershipTranslationInsertSchema
-	).array(),
-});
 
 /**
  * Project building implantation.

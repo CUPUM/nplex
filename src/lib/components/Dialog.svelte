@@ -1,15 +1,26 @@
 <script context="module" lang="ts">
-	type Transition = (node: HTMLElement) => TransitionConfig;
+	export const dialogIn: TransitionFunction = (node) =>
+		scale(node, { start: 0.9, duration: 100, easing: springOut });
+	export const dialogOut: TransitionFunction = (node) =>
+		transform(node, {
+			translate: [0, 8, -200],
+			rotate: [-15, 0, 0],
+			duration: 100,
+			easing: expoIn,
+		});
+	export const dialogOverlayTransition: TransitionFunction = (node) =>
+		fade(node, { duration: 250 });
 </script>
 
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
 	import { springOut } from '$lib/easings/spring';
 	import { transform } from '$lib/motion/transform';
+	import type { TransitionFunction } from '$lib/utils/types';
 	import { melt, type DialogElements, type DialogStates } from '@melt-ui/svelte';
 	import { X } from 'lucide-svelte';
-	import { expoOut } from 'svelte/easing';
-	import { fade, scale, type TransitionConfig } from 'svelte/transition';
+	import { expoIn } from 'svelte/easing';
+	import { fade, scale } from 'svelte/transition';
 
 	export let portalled: DialogElements['portalled'];
 	export let overlay: DialogElements['overlay'];
@@ -19,21 +30,15 @@
 	export let close: DialogElements['close'];
 	export let open: DialogStates['open'];
 
-	let _in: Transition = (node) => scale(node, { start: 0.8, duration: 150, easing: springOut });
+	let _in: TransitionFunction = dialogIn;
 	export { _in as in };
 
-	export let out: Transition = (node) =>
-		transform(node, {
-			translate: [0, 8, -200],
-			rotate: [-15, 0, 0],
-			duration: 125,
-			easing: expoOut,
-		});
+	export let out: TransitionFunction = dialogOut;
 </script>
 
 <div use:melt={$portalled}>
 	{#if $open}
-		<div class="dialog-overlay" use:melt={$overlay} transition:fade={{ duration: 250 }} />
+		<div class="dialog-overlay" use:melt={$overlay} transition:dialogOverlayTransition />
 		<div class="dialog-wrap">
 			<article class="dialog-content" use:melt={$content} in:_in out:out>
 				<header>
@@ -70,4 +75,5 @@
 </div>
 
 <style lang="postcss">
+	@import '$styles/scoped/dialog.css';
 </style>

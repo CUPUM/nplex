@@ -380,7 +380,8 @@
 		--_button-hover-bg: var(--color-primary-900);
 		--_button-active-color: var(--color-neutral-200);
 		--_button-active-bg: var(--color-primary-800);
-		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-100) 25%, transparent);
+		--_button-disabled-color: color-mix(in srgb, var(--color-neutral-100) 50%, transparent);
+		--_button-disabled-bg: var(--color-neutral-800);
 		/* --_button-open-color: ; */
 		/* --_button-open-bg: ; */
 		--_button-loading-color: var(--color-primary-700);
@@ -395,8 +396,8 @@
 			--_button-hover-bg: var(--color-primary-400);
 			--_button-active-color: var(--color-neutral-900);
 			--_button-active-bg: var(--color-primary-600);
-			--_button-disabled-color: color-mix(in srgb, var(--color-neutral-900) 25%, transparent);
-			--_button-disabled-bg: var(--color-primary-600);
+			--_button-disabled-color: color-mix(in srgb, var(--color-neutral-900) 50%, transparent);
+			--_button-disabled-bg: var(--color-neutral-600);
 			/* --_button-open-color:; */
 			/* --_button-open-bg:; */
 			--_button-loading-color: var(--color-primary-800);
@@ -474,13 +475,6 @@
 			}
 		}
 	}
-}
-
-/* Fill button for visually nested buttons */
-.button-fill {
-	position: absolute;
-	inset: 0;
-	border-radius: inherit;
 }
 
 /* Segmented */

@@ -1,7 +1,7 @@
 import * as m from '$i18n/messages';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit';
-import type { UserRole } from './constants';
+import { USER_ROLES_CONTENT_MANAGEMENT, type UserRole } from './constants';
 
 /**
  * Helper to require auth inside server load functions and actions.
@@ -9,7 +9,7 @@ import type { UserRole } from './constants';
 export async function withAuth(event: RequestEvent | ServerLoadEvent) {
 	const session = await event.locals.auth.validate();
 	if (!session) {
-		throw error(STATUS_CODES.UNAUTHORIZED, m.auth_noSession());
+		throw error(STATUS_CODES.UNAUTHORIZED, m.auth_no_session());
 	}
 	return session;
 }
@@ -29,7 +29,11 @@ export async function withRole<R extends UserRole>(
 	// 	return role.indexOf(maybeRole as R) > -1;
 	// }
 	// if (!isRequiredRole(session.user.role) && !dev) {
-	// 	throw error(STATUS_CODES.UNAUTHORIZED, m.auth_insufficientRole());
+	// 	throw error(STATUS_CODES.UNAUTHORIZED, m.auth_insufficient_role());
 	// }
 	return session;
+}
+
+export async function withContentManagementRole(event: RequestEvent | ServerLoadEvent) {
+	return withRole(event, ...USER_ROLES_CONTENT_MANAGEMENT);
 }

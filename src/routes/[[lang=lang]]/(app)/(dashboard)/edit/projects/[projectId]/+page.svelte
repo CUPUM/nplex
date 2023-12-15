@@ -29,7 +29,7 @@
 		tainted,
 		constraints,
 		states,
-		loadable: {
+		elements: {
 			submitter: { root: submitter },
 		},
 	} = superForm(data.form, {
@@ -65,5 +65,5 @@
 </form>
 
 <style lang="postcss">
-	@import './../../../dashboard.css';
+	@import '$styles/scoped/dashboard.css';
 </style>

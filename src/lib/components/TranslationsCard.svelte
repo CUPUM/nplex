@@ -45,7 +45,7 @@
 <fieldset use:melt={$root}>
 	<!-- {#if minimized} -->
 	<button
-		class="fill-button"
+		class="fill-parent"
 		type="button"
 		on:click={() => {
 			minimized = !minimized;
@@ -123,14 +123,6 @@
 				box-shadow: var(--shadow-lg);
 			}
 		}
-	}
-
-	.fill-button {
-		position: absolute;
-		inset: 0;
-		border-radius: inherit;
-		opacity: 0;
-		z-index: 0;
 	}
 
 	.header {

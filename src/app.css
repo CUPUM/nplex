@@ -4,17 +4,16 @@
 @import './styles/preflight.css' layer(preflight);
 
 /* Core design tokens and shared props */
+@import './styles/utilities.css' layer(base);
 @import './styles/base.css' layer(base);
 @import './styles/keyframes.css' layer(base);
 
 /* Bases */
 @import './styles/button.css' layer(components);
 @import './styles/chip.css' layer(components);
-@import './styles/dialog.css' layer(components);
 @import './styles/input.css' layer(components);
 @import './styles/label.css' layer(components);
 @import './styles/misc.css' layer(components);
 @import './styles/switch.css' layer(components);
 @import './styles/toggle.css' layer(components);
-@import './styles/toolbar.css' layer(components);
 @import './styles/typography.css' layer(components);

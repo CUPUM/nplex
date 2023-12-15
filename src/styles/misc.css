@@ -16,22 +16,10 @@ textarea.resize {
 	backdrop-filter: blur(8px);
 }
 
-/* Update base tokens to make things more compact where needed */
-@define-mixin compact {
-	--base-block-size: 2.5em;
-	--base-inline-padding: 1em;
-	--base-nesting: 2px;
-}
 .compact {
 	@mixin compact;
 }
 
-/* Opposite of compact, makes base sizes larger for when attention is needed. */
-@define-mixin big {
-	--base-block-size: 4.5em;
-	--base-inline-padding: 1.8em;
-	--base-nesting: max(5px, 0.5em);
-}
 .big {
 	@mixin big;
 }
@@ -68,4 +56,13 @@ textarea.resize {
 	position: absolute;
 	white-space: nowrap;
 	width: 1px;
+}
+
+/* Fill a parent element. Useful for creating visually nested links or buttons */
+.fill-parent {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	border-radius: inherit;
+	user-select: none;
 }

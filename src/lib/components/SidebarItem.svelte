@@ -74,6 +74,7 @@
 		padding: 0.8em 1.25em;
 		font-size: var(--size-sm);
 		opacity: 0.9;
+		gap: 1em;
 
 		/* Child icons */
 		:global(:--icon) {

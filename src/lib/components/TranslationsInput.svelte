@@ -6,12 +6,25 @@
 	import { switchCrossfade } from '$lib/motion/presets';
 	import { createTabs, melt } from '@melt-ui/svelte';
 
-	export let defaultValue: AvailableLanguageTag = $page.data.lang;
+	export let defaultLang: AvailableLanguageTag = $page.data.lang;
+	export let lang: AvailableLanguageTag | undefined = undefined;
 
 	const {
 		elements: { root, trigger, list, content },
-		states: { value },
-	} = createTabs({ defaultValue, loop: true, activateOnFocus: true });
+		states: { value: _value },
+	} = createTabs({
+		defaultValue: lang ?? defaultLang,
+		loop: true,
+		activateOnFocus: true,
+		onValueChange: ({ curr, next }) => {
+			lang = next as AvailableLanguageTag;
+			return next;
+		},
+	});
+
+	$: if (lang) {
+		_value.set(lang);
+	}
 
 	const [send, receive] = switchCrossfade;
 
@@ -21,7 +34,7 @@
 <div class="input-group" use:melt={$root}>
 	{#each availableLanguageTags as lang}
 		<div class="lang-content" {lang} use:melt={$content(lang)}>
-			<slot {lang} {value} current={$value === lang} />
+			<slot {lang} value={$_value} current={$_value === lang} />
 		</div>
 	{/each}
 	<div class="input-peer">
@@ -29,7 +42,7 @@
 			{#each availableLanguageTags as lang}
 				<button class="switch-item" use:melt={$trigger(lang)} {lang} type="button">
 					{LANG_DETAILS[lang].label}
-					{#if $value === lang}
+					{#if $_value === lang}
 						<div in:send={{ key }} out:receive={{ key }} class="switch-thumb" />
 					{/if}
 				</button>

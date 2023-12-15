@@ -1,89 +1,47 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import DescriptorsCardsList from '$lib/components/DashboardDescriptorsList.svelte';
-	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import TranslationsCard from '$lib/components/TranslationsCard.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { flip } from 'svelte/animate';
-	import { expoOut } from 'svelte/easing';
-	import { fly, scale } from 'svelte/transition';
+	import DescriptorList from '../DescriptorList.svelte';
+	import { descriptorFlip, descriptorIn, descriptorOut } from '../motion';
+	import NewProjectType from './NewProjectType.svelte';
+	import ProjectType from './ProjectType.svelte';
 
 	export let data;
 
 	const {
-		form,
 		enhance,
-		submitting,
-		constraints,
-		tainted,
-		loadable: {
+		elements: {
 			submitter: { root: submitter },
-			formaction: { root: formaction },
 		},
-	} = superForm(data.form, {
-		dataType: 'json',
-	});
+	} = superForm(data.deleteForm);
 </script>
 
-<DescriptorsForm action="?/update" {enhance}>
-	<svelte:fragment slot="header">
-		<h2 class="heading lg">
-			<LangKey>{m.project_descriptors_implantationModes()}</LangKey>
-		</h2>
-		<p class="prose md dimmer">
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur magni quo accusantium
-			perferendis quis, minus iste commodi error nostrum tempora?
-		</p>
-	</svelte:fragment>
-	<DescriptorsCardsList>
-		{#each $form.implantationTypes as implantation, i (implantation.id)}
-			<li
-				in:fly|global={{ y: -6, delay: i * 25, easing: expoOut, duration: 350 }}
-				out:scale={{ start: 0.95, duration: 250, easing: expoOut }}
-				animate:flip={{ duration: (l) => 150 + l / 10 }}
-			>
-				<TranslationsCard
-					legend={implantation.id}
-					legendMinimized={implantation.translations[$page.data.lang].title}
-					deleteFormaction="?/delete&implantationTypeId={implantation.id}"
-					let:lang
-				>
-					<label class="label-group">
-						<span class="label with-hover">
-							<LangKey>{m.title()}</LangKey>
-						</span>
-						<input
-							class="input"
-							type="text"
-							bind:value={$form.implantationTypes[i].translations[lang].title}
-						/>
-					</label>
-					<label class="label-group">
-						<span class="label with-hover">
-							<LangKey>{m.description()}</LangKey>
-						</span>
-						<textarea
-							class="input"
-							bind:value={$form.implantationTypes[i].translations[lang].description}
-						/>
-					</label>
-				</TranslationsCard>
+<form class="dashboard-section" use:enhance method="POST">
+	<header class="dashboard-section-header">
+		<hgroup class="prose">
+			<h2><LangKey>{m.project_descriptors_implantations()}</LangKey></h2>
+			<p class="dim">
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
+				consequatur amet blanditiis sed alias. Eum, numquam magnam!
+			</p>
+		</hgroup>
+	</header>
+	<div class="dashboard-subsection">
+		<DescriptorList>
+			<li>
+				<NewProjectType data={data.newForm} {submitter} />
 			</li>
-		{/each}
-	</DescriptorsCardsList>
-	<!-- <DashboardMenu {submitter} {tainted}>
-		<button
-			class="button outlined"
-			use:melt={$formaction(`?/create&verticalIndex=${$form.implantationTypes.length}`)}
-			type="submit"
-		>
-			<Plus class="button-icon" />
-			<LangKey>{m.project_descriptors_createImplantationMode()}</LangKey>
-		</button>
-	</DashboardMenu> -->
-</DescriptorsForm>
+			{#each data.forms as form, i (form.id)}
+				<li in:descriptorIn|global={{ i }} out:descriptorOut animate:descriptorFlip>
+					<ProjectType data={form} {submitter} />
+				</li>
+			{/each}
+		</DescriptorList>
+	</div>
+</form>
+<slot />
 
 <style lang="postcss">
+	@import '$styles/scoped/dashboard';
 </style>

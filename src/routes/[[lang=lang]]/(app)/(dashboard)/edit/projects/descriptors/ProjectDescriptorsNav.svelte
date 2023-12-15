@@ -20,7 +20,7 @@
 	<SidebarItem {...$link('/edit/projects/descriptors/indicators')}>
 		<LangKey>{m.project_descriptors_indicators()}</LangKey>
 	</SidebarItem>
-	<SidebarItem {...$link('/edit/projects/descriptors/ownerships')}>
+	<SidebarItem {...$link('/edit/projects/descriptors/ownerships', { currentComparison: 'loose' })}>
 		<LangKey>{m.project_descriptors_ownership_types()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/implantations')}>

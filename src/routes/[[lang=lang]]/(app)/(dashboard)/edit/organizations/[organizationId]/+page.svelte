@@ -12,7 +12,7 @@
 		form,
 		tainted,
 		enhance,
-		loadable: {
+		elements: {
 			submitter: { root: submitter },
 		},
 	} = superForm(data.form, { dataType: 'json' });

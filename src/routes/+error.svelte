@@ -12,7 +12,7 @@
 		{#if $page.error?.message}
 			{$page.error.message}
 		{:else}
-			<LangKey>{m.errorNoMessage()}</LangKey>
+			<LangKey>{m.error_no_message()}</LangKey>
 		{/if}
 	</code>
 </article>

@@ -332,7 +332,7 @@
 			height: 100%;
 			width: 100%;
 			bottom: calc(100% + var(--base-border-width));
-			border-bottom: var(--base-border-width) solid transparent;
+			/* border-bottom: var(--base-border-width) solid transparent; */
 			transition:
 				all 0.2s ease-out,
 				bottom 0.5s var(--ease-out-expo);
@@ -384,7 +384,7 @@
 	}
 
 	#explore-group {
-		--group-nesting: 3px;
+		--group-nesting: 4px;
 		/* --group-radius: calc(var(--base-radius) + var(--group-nesting)); */
 		--group-radius: var(--base-radius);
 		--_nested-radius: calc(var(--group-radius) - var(--group-nesting));
@@ -398,9 +398,9 @@
 		padding: var(--group-nesting);
 		backdrop-filter: blur(8px);
 		gap: 0;
-		background: color-mix(in srgb, var(--base-bg) 50%, transparent);
-		box-shadow: inset 0 0 0 var(--base-border-width)
-			color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
+		background: rgba(255, 255, 255, 0.5);
+		/* box-shadow: inset 0 0 0 var(--base-border-width)
+			color-mix(in srgb, var(--color-neutral-500) 15%, transparent); */
 		:global(:--dark) & {
 			background: color-mix(in srgb, var(--color-neutral-700) 50%, transparent);
 			box-shadow: none;
@@ -423,7 +423,12 @@
 		transition: all var(--duration-fast) ease-out;
 
 		&:hover {
-			background: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+			color: var(--color-primary-700);
+			background: color-mix(in srgb, var(--color-primary-700) 10%, transparent);
+			:global(:--dark) & {
+				color: var(--color-primary-400);
+				background: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+			}
 		}
 
 		&:focus-visible {

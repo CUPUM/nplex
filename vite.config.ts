@@ -27,7 +27,7 @@ export default defineConfig({
 				postcssglobal({
 					files: ['./src/styles/utilities.css'],
 				}),
-				mixins({ mixinsFiles: '/src/styles/*.css' }),
+				mixins({ mixinsFiles: '/src/styles/utilities.css' }),
 				presetenv({
 					stage: 2,
 					features: {

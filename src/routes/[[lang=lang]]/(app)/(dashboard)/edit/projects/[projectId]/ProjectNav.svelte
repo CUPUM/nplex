@@ -61,10 +61,10 @@
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.projects()}</LangKey>
+		<LangKey>{m.my_documents()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/projects')}>
-		<LangKey>{m.my_projects()}</LangKey>
+		<LangKey>{m.projects()}</LangKey>
 		<Files class="button-icon" />
 	</SidebarItem>
 	{#if $page.data.user?.role === USER_ROLES.ADMIN || $page.data.user?.role === USER_ROLES.EDITOR}
@@ -73,13 +73,8 @@
 			<Tags class="button-icon" />
 		</SidebarItem>
 	{/if}
-</SidebarGroup>
-<SidebarGroup>
-	<svelte:fragment slot="heading">
-		<LangKey>{m.orgs()}</LangKey>
-	</svelte:fragment>
 	<SidebarItem {...$link('/edit/organizations')}>
-		<LangKey>{m.my_orgs()}</LangKey>
+		<LangKey>{m.orgs()}</LangKey>
 		<Files class="button-icon" />
 	</SidebarItem>
 	{#if $page.data.user?.role === USER_ROLES.ADMIN || $page.data.user?.role === USER_ROLES.EDITOR}

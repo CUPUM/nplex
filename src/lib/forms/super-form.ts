@@ -1,3 +1,4 @@
+import * as m from '$i18n/messages';
 import {
 	createLoadable,
 	createLoadableFormaction,
@@ -6,7 +7,6 @@ import {
 import { TOAST_TYPES } from '$lib/components/Toast.svelte';
 import { addToast } from '$lib/components/ToastsOutlet.svelte';
 import { createDialog, type CreateDialogProps } from '@melt-ui/svelte';
-import type { ChangeFn } from '@melt-ui/svelte/internal/helpers';
 import { onDestroy } from 'svelte';
 import { derived, get, readonly, writable } from 'svelte/store';
 import type { SuperValidated, UnwrapEffects, ZodValidation } from 'sveltekit-superforms';
@@ -86,7 +86,7 @@ export function superForm<
 		submitter: readonly(submitter),
 		formaction: readonly(formaction),
 		states,
-		loadable: {
+		elements: {
 			submitter: loadableSubmitter.elements,
 			formaction: loadableFormaction.elements,
 			loading: loading.elements,
@@ -107,27 +107,55 @@ export type SuperForm<
 export function superFormDialog<
 	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
 	M extends App.Superforms.Message = App.Superforms.Message,
->(form: SuperValidated<T, M>, options?: FormOptions<UnwrapEffects<T>, M> & CreateDialogProps) {
-	const superform = superForm(form, options);
-	// Prompt for confirmation.
-	const onOpenChange: ChangeFn<boolean> = (state) => {
-		if (!state.next && get(superform.tainted)) {
-			const confirmed = confirm('Are you certain?');
-			if (confirmed) {
-				superform.reset();
+>(
+	form: SuperValidated<T, M>,
+	{
+		closeOnSuccess = false,
+		taintedMessage = m.confirm_unsaved_data(),
+		...options
+	}: FormOptions<UnwrapEffects<T>, M> & CreateDialogProps & { closeOnSuccess?: boolean }
+) {
+	// Controlled state
+	const open = options.open ?? writable(options.defaultOpen ?? false);
+
+	// Superform with base augmented behaviors
+	const superform = superForm(form, {
+		taintedMessage,
+		...options,
+		onResult(event) {
+			options.onResult && options.onResult(event);
+			if (event.result.type === 'success') {
+				if (closeOnSuccess) {
+					open.set(false);
+				}
 			}
-			return !confirmed;
-		}
-		return options?.onOpenChange ? options.onOpenChange(state) : state.next;
-	};
-	const dialog = createDialog({ ...options, onOpenChange });
+		},
+	});
+
+	// Dialog instance with augmented behaviors linked to superform
+	const dialog = createDialog({
+		...options,
+		open,
+		onOpenChange(state) {
+			if (taintedMessage && !state.next && get(superform.tainted)) {
+				const confirmed = confirm(taintedMessage);
+				if (confirmed) {
+					superform.reset();
+				}
+				return !confirmed;
+			}
+			return options?.onOpenChange ? options.onOpenChange(state) : state.next;
+		},
+	});
+
 	return {
 		...superform,
 		...dialog,
-		// elements: {
-		// 	...dialog.elements,
-		// 	close,
-		// },
+		elements: {
+			...dialog.elements,
+			...superform.elements,
+			// close,
+		},
 	};
 }
 

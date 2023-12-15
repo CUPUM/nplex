@@ -11,7 +11,7 @@
 	const {
 		form,
 		enhance,
-		loadable: {
+		elements: {
 			submitter: { root: submitter },
 		},
 	} = superForm(data.updateGalleryForm);

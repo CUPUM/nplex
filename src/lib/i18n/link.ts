@@ -56,15 +56,27 @@ export function deriveLink($page: Page) {
 		 * Unlocalized href, i.e. path without root [locale] segment.
 		 */
 		href: H,
-		/**
-		 * Customizable locale, if should differ from current client's locale. Setting to false will
-		 * prevent any automatic localization.
-		 */
-		lang: AvailableLanguageTag | false = $page.data.lang
+		{
+			lang = $page.data.lang,
+			currentComparison,
+		}: {
+			/**
+			 * Customizable locale, if should differ from current client's locale. Setting to false will
+			 * prevent any automatic localization.
+			 */
+			lang?: AvailableLanguageTag | false;
+			/**
+			 * Comparison strategy used to determine if the constructed link is current page or not.
+			 */
+			currentComparison?: 'loose';
+		} = {}
 	) => {
 		const _href = lang ? localize(href, lang) : href;
 		const [path, hash] = _href.split('#');
-		const currentPage = $page.url.pathname === path || undefined;
+		const currentPage =
+			currentComparison === 'loose'
+				? $page.url.pathname.startsWith(path)
+				: $page.url.pathname === path || undefined;
 		const currentHash = currentPage && '#' + hash === $page.url.hash;
 		return {
 			'href': _href,
@@ -90,5 +102,5 @@ export const link = derived(page, deriveLink);
  * Derived store to compose href string that switches locale while staying on the current page.
  */
 export const langSwitch = derived([delangCurrentLocation, link], ([$delocalizedCurrent, $link]) => {
-	return (lang: AvailableLanguageTag) => $link($delocalizedCurrent, lang);
+	return (lang: AvailableLanguageTag) => $link($delocalizedCurrent, { lang });
 });

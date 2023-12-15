@@ -1,80 +1,105 @@
-import { USER_ROLES } from '$lib/auth/constants';
-import { withRole } from '$lib/auth/guard.server';
-import { projectImplantationTypesUpdateSchema } from '$lib/db/crud.server';
+import * as m from '$i18n/messages';
+import { withContentManagementRole } from '$lib/auth/guard.server';
 import { dbpool } from '$lib/db/db.server';
-import {
-	projectImplantationTypes,
-	projectImplantationTypesTranslations,
-} from '$lib/db/schema/public';
+import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { extractTranslations, reduceTranslations } from '$lib/db/utils.server';
+import { withTranslations } from '$lib/db/utils.server';
+import { withTranslationsSchema } from '$lib/db/validation.server';
+import {
+	messageInvalidProjectDescriptor,
+	messageServerError,
+	messageServerSuccess,
+} from '$lib/forms/messages';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { superValidate } from 'sveltekit-superforms/client';
+import { createInsertSchema } from 'drizzle-zod';
+import { message, superValidate } from 'sveltekit-superforms/server';
+import { z } from 'zod';
+
+const updateSchema = withTranslationsSchema(
+	createInsertSchema(projectBuilding).required({ id: true }),
+	createInsertSchema(projectTypesTranslations)
+);
+
+const createSchema = updateSchema.omit({ id: true });
+
+const deleteSchema = z.object({ ownershipId: z.string() });
 
 export const load = async (event) => {
-	await withRole(event, USER_ROLES.ADMIN);
-	const implantationTypes = (
-		await dbpool.query.projectImplantationTypes.findMany({ with: { translations: true } })
-	).map(reduceTranslations);
-	const form = await superValidate({ implantationTypes }, projectImplantationTypesUpdateSchema);
-	return { form };
+	await withContentManagementRole(event);
+	const types = await withTranslations(projectTypes, projectTypesTranslations, {
+		field: (t) => t.id,
+		reference: (tt) => tt.id,
+	});
+	const forms = Promise.all([
+		...types.map((type) => superValidate(type, updateSchema, { id: type.id })),
+	]);
+	const newForm = superValidate(createSchema);
+	const deleteForm = superValidate(deleteSchema);
+	return { forms, deleteForm, newForm };
 };
 
 export const actions = {
 	create: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-		try {
-			await dbpool.insert(projectImplantationTypes).values({});
-		} catch (e) {
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
-	},
-	delete: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-		const id = event.url.searchParams.get('implantationTypeId');
-		if (!id) {
-			return fail(STATUS_CODES.BAD_REQUEST);
-		}
-		try {
-			await dbpool.delete(projectImplantationTypes).where(eq(projectImplantationTypes.id, id));
-		} catch (e) {
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
-	},
-	update: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
-		const form = await superValidate(event, projectImplantationTypesUpdateSchema);
+		await withContentManagementRole(event);
+		const form = await superValidate(event, createSchema);
 		if (!form.valid) {
-			console.error(form.errors);
-			return fail(STATUS_CODES.BAD_REQUEST, { form });
+			return message(form, messageInvalidProjectDescriptor(m.project_type()));
 		}
 		try {
+			const { translations, ...pt } = form.data;
 			await dbpool.transaction(async (tx) => {
-				const [pso, psot] = extractTranslations(form.data.implantationTypes);
+				const [{ id }] = await tx
+					.insert(projectTypes)
+					.values(pt)
+					.returning({ id: projectTypes.id });
 				await tx
-					.insert(projectImplantationTypes)
-					.values(pso)
-					.onConflictDoUpdate({
-						target: projectImplantationTypes.id,
-						set: excluded(projectImplantationTypes),
-					});
-				await tx
-					.insert(projectImplantationTypesTranslations)
-					.values(psot)
-					.onConflictDoUpdate({
-						target: [
-							projectImplantationTypesTranslations.id,
-							projectImplantationTypesTranslations.lang,
-						],
-						set: excluded(projectImplantationTypesTranslations),
-					});
+					.insert(projectTypesTranslations)
+					.values(Object.values(translations).map((tt) => ({ ...tt, id })));
 			});
-			return { form };
 		} catch (e) {
 			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
+			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
+		return message(form, messageServerSuccess());
+	},
+	update: async (event) => {
+		await withContentManagementRole(event);
+		const form = await superValidate(event, updateSchema);
+		if (!form.valid) {
+			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+		}
+		try {
+			const { translations, id, ...pt } = form.data;
+			await dbpool.transaction(async (tx) => {
+				await Promise.all([
+					tx.update(projectTypes).set(pt).where(eq(projectTypes.id, id)),
+					tx
+						.insert(projectTypesTranslations)
+						.values(Object.values(translations))
+						.onConflictDoUpdate({
+							target: [projectTypesTranslations.id, projectTypesTranslations.lang],
+							set: excluded(projectTypesTranslations),
+						}),
+				]);
+			});
+		} catch (e) {
+			console.error(e);
+			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+		}
+		return message(form, messageServerSuccess());
+	},
+	delete: async (event) => {
+		await withContentManagementRole(event);
+		const form = await superValidate(event, deleteSchema);
+		if (!form.valid) {
+			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+		}
+		try {
+			await dbpool.delete(projectTypes).where(eq(projectTypes.id, form.data.ownershipId));
+		} catch (e) {
+			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+		}
+		return message(form, messageServerSuccess());
 	},
 };

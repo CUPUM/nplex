@@ -13,7 +13,9 @@ import { derived, writable, type Readable } from 'svelte/store';
 // Some particularities include referencing the builder's action inside returned element stores when they are callable functions.
 // See https://github.com/melt-ui/melt-ui/issues/100
 
-type LoadableProps<T = { state?: boolean }> = ComponentProps<Loading> & { disable?: boolean } & T;
+type LoadableProps<T = { state?: boolean }> = ComponentProps<Loading> & {
+	disable?: boolean;
+} & T;
 
 function createLoadableAction(state: Readable<boolean>, props: ComponentProps<Loading>) {
 	const action: Action<HTMLElement, ComponentProps<Loading> | undefined> = (node, actionProps) => {
@@ -50,11 +52,14 @@ function createLoadableAction(state: Readable<boolean>, props: ComponentProps<Lo
 	return action;
 }
 
-function deriveLoadable($state: boolean, disable?: boolean) {
+function deriveLoadable(
+	$state: boolean,
+	{ disable = true, disabled }: { disable?: boolean; disabled?: boolean } = {}
+) {
 	return {
 		'data-loading': $state || undefined,
-		'disabled': (disable && $state) || undefined,
-		'data-disabled': (disable && $state) || undefined,
+		'disabled': disabled || (disable && $state) || undefined,
+		'data-disabled': disabled || (disable && $state) || undefined,
 	};
 }
 
@@ -62,11 +67,11 @@ function deriveLoadable($state: boolean, disable?: boolean) {
  * Apply a loading state to the host node through data attributes and insert/remove a loading
  * component accordingly.
  */
-export const createLoadable = ({ state, disable = true, ...props }: LoadableProps = {}) => {
+export const createLoadable = ({ state, disable, ...props }: LoadableProps = {}) => {
 	const _state = writable(state);
 	const action = createLoadableAction(_state, props);
 	const element = derived(_state, ($state) => {
-		return { action, ...deriveLoadable($state, disable) };
+		return { action, ...deriveLoadable($state, { disable }) };
 	});
 	return {
 		state: _state,
@@ -89,7 +94,7 @@ export type Loadable = ReturnType<typeof createLoadable>;
  */
 export function createLoadableSubmitter({
 	submitter,
-	disable = true,
+	disable,
 	...props
 }: LoadableProps<{ submitter?: Element }> = {}) {
 	const _submitter = writable<Element | undefined>(submitter);
@@ -101,11 +106,11 @@ export function createLoadableSubmitter({
 		return _action(node, actionProps);
 	};
 	const element = derived(_submitter, ($submitter) => {
-		return function (ref: Element) {
+		return function (ref: Element, { disabled }: { disabled?: boolean } = {}) {
 			const _state = ref && $submitter === ref;
 			return {
 				action,
-				...deriveLoadable(_state, disable),
+				...deriveLoadable(_state, { disable, disabled }),
 			};
 		};
 	});
@@ -148,7 +153,7 @@ function matchFormactionString(formaction?: string | null, nodeFormaction?: stri
  */
 export function createLoadableFormaction({
 	formaction,
-	disable = true,
+	disable,
 	...props
 }: LoadableProps<{ formaction?: URL | string }> = {}) {
 	const _formaction = writable<URL | string | undefined>(formaction);
@@ -162,12 +167,12 @@ export function createLoadableFormaction({
 		return _action(node, actionProps);
 	};
 	const element = derived(_formactionString, ($formactionString) => {
-		return function (nodeFormaction: string) {
+		return function (nodeFormaction: string, { disabled }: { disabled?: boolean } = {}) {
 			const _state = matchFormactionString($formactionString, nodeFormaction);
 			return {
 				action,
 				formaction,
-				...deriveLoadable(_state, disable),
+				...deriveLoadable(_state, { disable, disabled }),
 			};
 		};
 	});
@@ -203,7 +208,7 @@ function matchLink(
  */
 export function createLoadableLink({
 	matcher = ({ href, to }) => to.url.pathname === href,
-	disable = true,
+	disable,
 	...props
 }: LoadableProps<{ matcher?: LoadableLinkMatcher }> = {}) {
 	const action: Action<HTMLAnchorElement, ComponentProps<Loading> | undefined> = (
@@ -223,7 +228,7 @@ export function createLoadableLink({
 			return {
 				action,
 				..._link(...params),
-				...deriveLoadable(_state, disable),
+				...deriveLoadable(_state, { disable }),
 			};
 		};
 	});

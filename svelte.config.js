@@ -33,7 +33,7 @@ const config = {
 						],
 					],
 					rehypePlugins: [rehypeSlug],
-			  }),
+				}),
 		preprocessMeltUI(),
 	]),
 	extensions: ['.svelte', ...md],
@@ -41,6 +41,7 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$i18n: 'src/i18n',
+			$styles: 'src/styles',
 		},
 	},
 	vitePlugin: {

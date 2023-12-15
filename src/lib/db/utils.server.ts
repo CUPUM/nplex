@@ -121,6 +121,7 @@ export function withTranslation<
 	return dbpool
 		.select(selection)
 		.from(table)
+		.$dynamic()
 		.leftJoin(
 			translationsTable,
 			and(eq(translationsTable.lang, event.locals.lang), eq(field, reference))
@@ -179,7 +180,8 @@ export function withTranslations<
 		.from(table)
 		.leftJoin(langs, TRUE())
 		.leftJoin(translationsTable, and(eq(field, reference), eq(langs.lang, translationsTable.lang)))
-		.groupBy(field);
+		.groupBy(field)
+		.$dynamic();
 }
 
 /**

@@ -99,11 +99,7 @@
 		display: block;
 		position: relative;
 		width: 100%;
-		opacity: 0.85;
 		transition: all var(--duration-fast) ease-in-out;
-		footer:hover & {
-			opacity: 1;
-		}
 		&:hover {
 			color: var(--color-primary-700);
 			:global(:--dark) & {
@@ -124,15 +120,11 @@
 
 	#footer-cc {
 		font-size: var(--size-sm);
-		opacity: 0.85;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 2rem;
 		margin-block: 2rem 1rem;
 		transition: opacity var(--duration-fast);
-		footer:hover & {
-			opacity: 1;
-		}
 	}
 </style>

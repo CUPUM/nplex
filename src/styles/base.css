@@ -140,7 +140,8 @@
 	--content-width: 75ch;
 	--sticky-top: calc(var(--navbar-height) + var(--base-gutter));
 	--navbar-height: 72px;
-	--dashboard-bg: white;
+	--dashboard-bg: var(--color-neutral-50);
+	/* --dashboard-bg: var(--color-neutral-100); */
 	--dashboard-gutter: 3px;
 	--dashboard-radius: var(--radius-xl);
 	--sidebar-width: 200px;
@@ -174,7 +175,6 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100svh;
-	font-stretch: 105%; /* Should only apply to stretch-variant mono font */
 }
 
 ::selection {
