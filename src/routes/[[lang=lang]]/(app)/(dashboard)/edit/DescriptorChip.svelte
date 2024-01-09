@@ -87,13 +87,16 @@
 
 		:global(:--icon) {
 			pointer-events: none;
-			opacity: 0.5;
-			width: 1.1em;
-			stroke-width: 2.25;
+			opacity: var(--opacity-dimmer);
+			width: 1em;
+			stroke-width: 2.2;
 			transition: all var(--duration-fast) ease-out;
 		}
 
-		:global(:--icon.lucide-plus) {
+		:global(:--icon.lucide-plus),
+		:global(:--icon.lucide-x) {
+			width: 1.1;
+			opacity: var(--opacity-dim);
 			transform: rotate(0deg);
 		}
 

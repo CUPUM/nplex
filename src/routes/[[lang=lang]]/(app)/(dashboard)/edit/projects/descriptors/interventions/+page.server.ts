@@ -1,5 +1,5 @@
 import { USER_ROLES } from '$lib/auth/constants';
-import { withRole } from '$lib/auth/guard.server';
+import { guardRole } from '$lib/auth/guard.server';
 import { projectInterventionCategoriesWithInterventionsUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import {
@@ -16,7 +16,7 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await withRole(event, USER_ROLES.ADMIN);
+	await guardRole(event, USER_ROLES.ADMIN);
 
 	const interventionCategories = (
 		await dbpool.query.projectInterventionCategories.findMany({
@@ -47,7 +47,7 @@ export const load = async (event) => {
 
 export const actions = {
 	createIntervention: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const categoryId = event.url.searchParams.get('categoryId');
 		if (!categoryId) {
 			return fail(STATUS_CODES.BAD_REQUEST);
@@ -60,7 +60,7 @@ export const actions = {
 		}
 	},
 	deleteIntervention: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const interventionId = event.url.searchParams.get('interventionId');
 		if (!interventionId) {
 			return fail(STATUS_CODES.BAD_REQUEST);
@@ -73,7 +73,7 @@ export const actions = {
 		}
 	},
 	update: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const form = await superValidate(
 			event,
 			projectInterventionCategoriesWithInterventionsUpdateSchema

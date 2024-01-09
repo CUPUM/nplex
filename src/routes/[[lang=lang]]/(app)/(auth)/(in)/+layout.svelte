@@ -15,7 +15,7 @@
 		</div>
 		<section class="social">
 			<h2>
-				<LangKey>{m.auth_continueWith()}</LangKey>
+				<LangKey>{m.auth_continue_with()}</LangKey>
 			</h2>
 			<fieldset class="providers">
 				{#each OAUTH_PROVIDERS_ARR as provider, i}

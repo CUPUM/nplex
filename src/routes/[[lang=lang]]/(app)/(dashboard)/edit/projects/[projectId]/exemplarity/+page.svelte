@@ -74,7 +74,7 @@
 </form>
 
 <style lang="postcss">
-	@import '../../../../dashboard.css';
+	@import '$styles/scoped/dashboard.css';
 
 	.title {
 		font-size: var(--size-lg);

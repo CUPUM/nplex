@@ -4,7 +4,6 @@ import {
 	date,
 	integer,
 	pgTable,
-	pgView,
 	primaryKey,
 	text,
 	timestamp,
@@ -353,6 +352,7 @@ export const projects = pgTable('projects', {
 	buildingArea: integer('building_area'),
 	buildingConstructionDate: date('building_construction_date', { mode: 'date' }),
 	location: point('location'),
+	// obfuscatedLocation: point('obfuscated_location')
 });
 export const projectsTranslations = pgTable(
 	'projects_t',
@@ -374,22 +374,6 @@ export const projectsTranslations = pgTable(
 		};
 	}
 );
-
-/**
- * Always use this location for public viewing.
- *
- * @see {@link projects}
- */
-export const projectsObfuscatedLocations = pgView('projects_obfuscated_locations', {
-	projectId: text('project_id')
-		.notNull()
-		.references(() => projects.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		})
-		.primaryKey(),
-	// point: postgis...
-});
 
 export const projectsBuildingLevels = pgTable(
 	'projects_building_levels',

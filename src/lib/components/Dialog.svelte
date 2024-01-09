@@ -1,72 +1,99 @@
-<script context="module" lang="ts">
-	export const dialogIn: TransitionFunction = (node) =>
-		scale(node, { start: 0.9, duration: 100, easing: springOut });
-	export const dialogOut: TransitionFunction = (node) =>
-		transform(node, {
-			translate: [0, 8, -200],
-			rotate: [-15, 0, 0],
-			duration: 100,
-			easing: expoIn,
+<script lang="ts" context="module">
+	import { page } from '$app/stores';
+
+	export type CreateStateDialogProps = Omit<CreateDialogProps, 'open' | 'defaultOpen'> & {
+		getOpen: <P extends Page>(page: P) => boolean;
+	};
+
+	/**
+	 * INCOMPLETE.
+	 */
+	export function createStateDialog({
+		getOpen,
+		onOpenChange,
+		...restProps
+	}: CreateStateDialogProps) {
+		const stateOpen = derived(page, ($p) => getOpen($p));
+		const dialog = createDialog({
+			...restProps,
+			defaultOpen: get(stateOpen),
+			onOpenChange: (e) => {
+				const next = onOpenChange ? onOpenChange(e) : e.next;
+				tick().then(() => {
+					if (e.curr && !next && get(stateOpen)) {
+						history.back();
+					}
+				});
+				return next;
+			},
 		});
-	export const dialogOverlayTransition: TransitionFunction = (node) =>
-		fade(node, { duration: 250 });
+		stateOpen.subscribe((o) => {
+			dialog.states.open.set(o);
+		});
+		return dialog;
+	}
 </script>
 
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
 	import { springOut } from '$lib/easings/spring';
 	import { transform } from '$lib/motion/transform';
-	import type { TransitionFunction } from '$lib/utils/types';
-	import { melt, type DialogElements, type DialogStates } from '@melt-ui/svelte';
+	import {
+		createDialog,
+		melt,
+		type CreateDialogProps,
+		type DialogElements,
+		type DialogStates,
+	} from '@melt-ui/svelte';
+	import type { Page } from '@sveltejs/kit';
 	import { X } from 'lucide-svelte';
+	import { tick } from 'svelte';
 	import { expoIn } from 'svelte/easing';
+	import { derived, get } from 'svelte/store';
 	import { fade, scale } from 'svelte/transition';
 
 	export let portalled: DialogElements['portalled'];
 	export let overlay: DialogElements['overlay'];
 	export let content: DialogElements['content'];
 	export let title: DialogElements['title'];
-	// export let description: DialogElements['description'];
 	export let close: DialogElements['close'];
 	export let open: DialogStates['open'];
-
-	let _in: TransitionFunction = dialogIn;
-	export { _in as in };
-
-	export let out: TransitionFunction = dialogOut;
+	export let closeButton: boolean = true;
 </script>
 
 <div use:melt={$portalled}>
 	{#if $open}
-		<div class="dialog-overlay" use:melt={$overlay} transition:dialogOverlayTransition />
+		<div class="dialog-overlay" use:melt={$overlay} transition:fade={{ duration: 250 }} />
 		<div class="dialog-wrap">
-			<article class="dialog-content" use:melt={$content} in:_in out:out>
-				<header>
-					<hgroup use:melt={$title}>
+			<article
+				class="dialog-content"
+				use:melt={$content}
+				in:scale={{ start: 0.9, duration: 100, easing: springOut }}
+				out:transform={{
+					translate: [0, 8, -200],
+					rotate: [-15, 0, 0],
+					duration: 100,
+					easing: expoIn,
+				}}
+			>
+				<header class="dialog-header">
+					<hgroup class="dialog-header-text" use:melt={$title}>
 						{#if $$slots.header}
 							<slot name="header" />
 						{/if}
 					</hgroup>
-					<menu>
-						<button
-							use:ripple
-							class="button danger square rounded ghost"
-							type="button"
-							use:melt={$close}
-						>
-							<X class="button-icon" />
-						</button>
+					<menu class="dialog-header-menu">
+						{#if closeButton}
+							<button use:ripple class="dialog-close" type="button" use:melt={$close}>
+								<X />
+							</button>
+						{/if}
 					</menu>
 				</header>
 				<slot>Content</slot>
-				{#if $$slots.footer || $$slots.actions}
-					<footer>
+				{#if $$slots.footer}
+					<footer class="dialog-footer">
 						<slot name="footer" />
-						{#if $$slots.actions}
-							<menu>
-								<slot name="actions" />
-							</menu>
-						{/if}
 					</footer>
 				{/if}
 			</article>
@@ -75,5 +102,128 @@
 </div>
 
 <style lang="postcss">
-	@import '$styles/scoped/dialog.css';
+	@use '../misc.css';
+
+	.dialog-overlay {
+		--dialog-overlay-bg: radial-gradient(
+			circle,
+			var(--color-neutral-200),
+			var(--color-neutral-50) 100%
+		);
+		position: fixed;
+		inset: 0;
+		z-index: 99;
+		background: var(--dialog-overlay-bg);
+		opacity: 0.88;
+
+		:global(:--dark) & {
+			--dialog-overlay-bg: radial-gradient(circle, var(--color-neutral-950), var(--base-bg) 120%);
+		}
+	}
+
+	.dialog-wrap {
+		--dialog-radius: var(--radius-xl);
+		--dialog-bg: var(--color-neutral-50);
+		--dialog-padding: 2.5rem;
+		perspective: 900px;
+		position: fixed;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		justify-content: flex-end;
+		pointer-events: none;
+		z-index: 99;
+
+		:global(:--dark) & {
+			--dialog-bg: var(--color-neutral-900);
+		}
+
+		@media (--md) {
+			align-items: center;
+			padding: 2rem;
+			justify-content: center;
+		}
+	}
+
+	.dialog-close {
+		position: relative;
+		color: var(--color-error-800);
+		font-size: var(--size-sm);
+		aspect-ratio: 1;
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		height: var(--base-block-size);
+		border-radius: var(--radius-full);
+		transition: all var(--duration-fast) ease-out;
+
+		:global(:--dark) & {
+			color: var(--color-error-300);
+		}
+
+		&:hover {
+			color: var(--color-error-500);
+			background: color-mix(in srgb, var(--color-error-400) 10%, transparent);
+			:global(:--dark) & {
+				color: var(--color-error-400);
+				background: color-mix(in srgb, var(--color-error-600) 10%, transparent);
+			}
+		}
+
+		:global(:--icon) {
+			width: 1.5em;
+			position: absolute;
+			stroke-width: 2.5;
+		}
+	}
+
+	.dialog-content {
+		position: relative;
+		transform-origin: bottom center;
+		outline: none;
+		pointer-events: initial;
+		padding: var(--dialog-padding);
+		display: flex;
+		flex-direction: column;
+		border-radius: var(--dialog-radius) var(--dialog-radius) 0 0;
+		/* border: var(--base-border-width) solid var(--base-border-color-dim); */
+		overflow-y: auto;
+		max-width: 100%;
+		background-color: var(--dialog-bg);
+
+		@media (--md) {
+			transform-origin: center center;
+			border-radius: var(--dialog-radius);
+			justify-content: center;
+		}
+	}
+
+	.dialog-header {
+		display: flex;
+		flex-direction: row;
+		gap: 2em;
+		position: relative;
+		margin-bottom: var(--dialog-padding);
+		justify-content: space-between;
+
+		.dialog-header-text {
+			@mixin h4;
+		}
+
+		.dialog-header-menu {
+			@mixin compact;
+			display: flex;
+			flex-direction: row;
+			gap: var(--base-gutter);
+			font-size: var(--size-sm);
+		}
+	}
+
+	.dialog-footer {
+		position: relative;
+		font-size: var(--size-sm);
+		margin-top: var(--dialog-padding);
+	}
 </style>

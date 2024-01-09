@@ -6,10 +6,10 @@ import { fail } from '@sveltejs/kit';
 export const load = async (event) => {
 	const session = await event.locals.auth.validate();
 	if (!session) {
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/login');
+		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/login');
 	}
 	if (session.user.emailVerified) {
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
 	return {};
 };
@@ -18,10 +18,10 @@ export const actions = {
 	default: async (event) => {
 		const session = await event.locals.auth.validate();
 		if (!session) {
-			throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/login');
+			event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/login');
 		}
 		if (session.user.emailVerified) {
-			throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+			event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 		}
 		try {
 			if (!isEmailUser(session.user)) {

@@ -1,6 +1,6 @@
 import * as m from '$i18n/messages';
 import { USER_ROLES } from '$lib/auth/constants';
-import { withAuth } from '$lib/auth/guard.server';
+import { guardAuth } from '$lib/auth/guard.server';
 import { usersRolesRequestSchema, usersSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { getUserRolesList } from '$lib/db/queries.server';
@@ -28,7 +28,7 @@ const permissionSchema = z.object({
 const manageSchema = z.object({});
 
 export const load = async (event) => {
-	const session = await withAuth(event);
+	const session = await guardAuth(event);
 	const { firstName, middleName, lastName, role, publicEmail, publicEmailVerified } =
 		getTableColumns(users);
 	const [{ permissions, ...user }] = await dbpool
@@ -49,7 +49,7 @@ export const load = async (event) => {
 		.leftJoin(usersRolesRequests, eq(users.id, usersRolesRequests.userId))
 		.limit(1);
 	if (!user) {
-		throw error(STATUS_CODES.NOT_FOUND, m.auth_noUserFound());
+		error(STATUS_CODES.NOT_FOUND, m.auth_noUserFound());
 	}
 	const generalForm = superValidate(user, generalSchema);
 	const permissionsForm = superValidate(permissions, permissionSchema);
@@ -65,7 +65,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		const session = await withAuth(event);
+		const session = await guardAuth(event);
 		const generalForm = await superValidate(event, generalSchema);
 		if (!generalForm.valid) {
 			return message(generalForm, {
@@ -99,7 +99,7 @@ export const actions = {
 		}
 	},
 	delete: async (event) => {
-		const session = await withAuth(event);
+		const session = await guardAuth(event);
 		const manageForm = await superValidate(event, manageSchema);
 		try {
 			await dbpool.delete(users).where(eq(users.id, session.user.id));

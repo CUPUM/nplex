@@ -8,7 +8,7 @@ import { error } from '@sveltejs/kit';
 
 export const GET = async (event) => {
 	if (!isSupportedOAuthProvider(event.params.provider)) {
-		throw error(STATUS_CODES.BAD_REQUEST, {
+		error(STATUS_CODES.BAD_REQUEST, {
 			message: m.auth_unsupportedProvider(),
 		});
 	}
@@ -20,7 +20,7 @@ export const GET = async (event) => {
 	 */
 	const session = await event.locals.auth.validate();
 	if (session) {
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
+		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
 	}
 
 	/**

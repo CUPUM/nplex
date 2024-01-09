@@ -1,19 +1,32 @@
 import { setLanguageTag } from '$i18n/runtime';
-import type { Handle } from '@sveltejs/kit';
-import { createEventLocalize, createEventRedirect, getEventLang } from './event';
+import { isRedirect, type Handle } from '@sveltejs/kit';
+import { getEventLang } from './event';
+import { useLang } from './link';
 
+/**
+ * Handle hook for:
+ *
+ * - Setting SSR lang.
+ * - Transforming html lang attribute placeholder.
+ * - Rewriting unlocalized SSR redirects lang segment in location.
+ */
 const handle = (async ({ event, resolve }) => {
 	event.locals.lang = getEventLang(event);
 	setLanguageTag(() => event.locals.lang);
-	event.locals.redirect = createEventRedirect(event);
-	event.locals.localize = createEventLocalize(event);
-
-	const res = resolve(event, {
+	const response = await resolve(event, {
 		transformPageChunk(input) {
 			return input.html.replace('%lang%', event.locals.lang);
 		},
 	});
-	return res;
+	if (!isRedirect(response)) {
+		return response;
+	}
+	const location = response.headers.get('location');
+	if (!location || !location.startsWith('/')) {
+		return response;
+	}
+	response.headers.set('location', useLang(location, event.locals.lang));
+	return response;
 }) satisfies Handle;
 
 export default handle;

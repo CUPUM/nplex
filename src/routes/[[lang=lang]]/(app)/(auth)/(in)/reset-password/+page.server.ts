@@ -18,7 +18,7 @@ export const load = async (event) => {
 	if (session) {
 		// Redirect authed user to their account's settings page
 		// where they can update password without using a link.
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
 	const form = superValidate(passwordResetSchema);
 	return { form };

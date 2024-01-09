@@ -186,7 +186,7 @@
 </fieldet>
 
 <style lang="postcss">
-	@import '../../../dashboard.css';
+	@import '$styles/scoped/dashboard.css';
 
 	#project-cost-placeholder {
 		cursor: pointer;

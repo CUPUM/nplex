@@ -1,8 +1,5 @@
-import { navigating, page } from '$app/stores';
 import Loading from '$lib/components/Spinner.svelte';
-import { deriveLink } from '$lib/i18n/link';
 import { outroAndDestroy } from '$lib/utils/outro-and-destroy';
-import type { Navigation, NavigationTarget } from '@sveltejs/kit';
 import type { ComponentProps } from 'svelte';
 import type { Action } from 'svelte/action';
 import { derived, writable, type Readable } from 'svelte/store';
@@ -187,58 +184,3 @@ export function createLoadableFormaction({
 	};
 }
 export type LoadableFormaction = ReturnType<typeof createLoadableFormaction>;
-
-type LoadableLinkMatcher = ({ href, to }: { href: string; to: NavigationTarget }) => boolean;
-function matchLink(
-	navigating: Navigation | null,
-	matcher: LoadableLinkMatcher,
-	href: Parameters<LoadableLinkMatcher>[0]['href']
-) {
-	if (!navigating?.to) {
-		return false;
-	}
-	return matcher({ href, to: navigating.to });
-}
-
-/**
- * Apply loading state based on weather the host node's declared formaction corresponds to the
- * current loading formaction.
- *
- * @example <a {...$attributes('/about')} use:action />
- */
-export function createLoadableLink({
-	matcher = ({ href, to }) => to.url.pathname === href,
-	disable,
-	...props
-}: LoadableProps<{ matcher?: LoadableLinkMatcher }> = {}) {
-	const action: Action<HTMLAnchorElement, ComponentProps<Loading> | undefined> = (
-		node,
-		actionProps
-	) => {
-		const _state = derived(navigating, ($navigating) => {
-			return matchLink($navigating, matcher, node.href);
-		});
-		const _action = createLoadableAction(_state, props);
-		return _action(node, actionProps);
-	};
-	const element = derived([navigating, page], ([$navigating, $page]) => {
-		const _link = deriveLink($page);
-		return function <H extends string>(...params: Parameters<typeof _link<H>>) {
-			const _state = matchLink($navigating, matcher, params[0]);
-			return {
-				action,
-				..._link(...params),
-				...deriveLoadable(_state, { disable }),
-			};
-		};
-	});
-	return {
-		elements: {
-			link: {
-				...element,
-				action,
-			},
-		},
-	};
-}
-export type LoadableLink = ReturnType<typeof createLoadableLink>;

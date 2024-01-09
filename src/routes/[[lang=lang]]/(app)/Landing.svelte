@@ -28,8 +28,6 @@
 		};
 	}
 
-	$: placedImages = n ? images.map((image, i) => ({ ...image, ...randomArea(i) })) : [];
-
 	const factor = 0.05;
 	const ax0 = 35;
 	const ay0 = -15;
@@ -69,20 +67,22 @@
 	style:--az="{$a.z}deg"
 >
 	<grid bind:clientWidth bind:clientHeight>
-		{#each placedImages as image, i (image.id)}
-			<figure
-				style:grid-column={image.col}
-				style:grid-row={image.row}
-				animate:flip={{
-					duration(len) {
-						return len / 2 + 350;
-					},
-					easing: expoInOut,
-				}}
-			>
-				<LandingImage {image} {i} />
-			</figure>
-		{/each}
+		{#await images.then( (resolvedImages) => (n ? resolvedImages.map( (image, i) => ({ ...image, ...randomArea(i) }) ) : []) ) then placedImages}
+			{#each placedImages as image, i (image.id)}
+				<figure
+					style:grid-column={image.col}
+					style:grid-row={image.row}
+					animate:flip={{
+						duration(len) {
+							return len / 2 + 350;
+						},
+						easing: expoInOut,
+					}}
+				>
+					<LandingImage {image} {i} />
+				</figure>
+			{/each}
+		{/await}
 		<surface>
 			{#each { length: n } as row, irow}
 				{#each { length: n } as col, icol}

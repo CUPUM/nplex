@@ -1,61 +1,62 @@
 <script lang="ts">
-	import { createTooltip } from '$lib/builders/tooltip';
+	import { getDistances, getTransformOrigin } from '$lib/utils/positioning';
+	import { createTooltip, melt } from '@melt-ui/svelte';
 	import type { FloatingConfig } from '@melt-ui/svelte/internal/actions';
-	import type { ChangeFn } from '@melt-ui/svelte/internal/helpers';
-	import type { Writable } from 'svelte/store';
-	import TooltipContent from './TooltipContent.svelte';
+	import { cubicOut } from 'svelte/easing';
+	import { fly, scale } from 'svelte/transition';
+	import Tip from './Tip.svelte';
 
-	export let positioning: FloatingConfig | undefined = undefined;
-	export let arrowSize: number | undefined = undefined;
-	export let defaultOpen: boolean | undefined = undefined;
-	export let open: Writable<boolean> | undefined = undefined;
-	export let onOpenChange: ChangeFn<boolean> | undefined = undefined;
-	export let closeOnPointerDown: boolean | undefined = true;
-	export let openDelay: number | undefined = undefined;
-	export let closeDelay: number | undefined = undefined;
-	export let forceVisible: boolean | undefined = undefined;
-	export let closeOnEscape: boolean | undefined = undefined;
-	export let disableHoverableContent: boolean | undefined = true;
-	/**
-	 * If set to `true`, whenever you open this tooltip, all other tooltips with `group` also set to
-	 * `true` will close. If you pass in a string instead, only tooltips with the same `group` value
-	 * will be closed.
-	 */
-	export let group: boolean | string | undefined = undefined;
-	/**
-	 * If not undefined, the tooltip will be rendered within the provided element or selector.
-	 *
-	 * @default 'body'
-	 */
-	export let portal: HTMLElement | string | null | undefined = undefined;
+	export let placement: NonNullable<FloatingConfig>['placement'] = 'top';
+	export let disabled = false;
+	export let closeOnPointerDown = false;
 
 	const {
 		elements: { trigger, content, arrow },
-		states,
-		options,
+		options: { positioning },
+		states: { open },
 	} = createTooltip({
-		positioning,
-		arrowSize,
-		defaultOpen,
-		open,
-		onOpenChange,
+		positioning: {
+			placement,
+			gutter: 10,
+		},
+		openDelay: 150,
+		closeDelay: 0,
+		forceVisible: true,
 		closeOnPointerDown,
-		openDelay,
-		closeDelay,
-		forceVisible,
-		closeOnEscape,
-		disableHoverableContent,
-		group,
-		portal,
 	});
 </script>
 
 <slot trigger={$trigger} />
-{#if $$slots.content}
-	<TooltipContent {content} {...options} {...states} arrow={$arrow}>
+
+{#if $open && !disabled}
+	<div
+		use:melt={$content}
+		class="tooltip-content"
+		style:transform-origin={getTransformOrigin($positioning)}
+		in:fly={{ ...getDistances($positioning, -4), easing: cubicOut, duration: 100 }}
+		out:scale={{ start: 0.8, duration: 100 }}
+	>
+		<Tip positioning={$positioning} arrow={$arrow} />
 		<slot name="content" />
-	</TooltipContent>
+	</div>
 {/if}
 
 <style lang="postcss">
+	.tooltip-content {
+		--tip-color: color-mix(in srgb, var(--color-neutral-800) 95%, transparent);
+		font-weight: 400;
+		font-size: var(--size-xs);
+		letter-spacing: 0.02em;
+		padding: 0.75rem;
+		border-radius: var(--radius-sm);
+		/* box-shadow: var(--shadow-lg); */
+		color: var(--color-neutral-200);
+		background-color: var(--tip-color);
+		backdrop-filter: blur(8px);
+
+		:global(:--dark) & {
+			--tip-color: color-mix(in srgb, var(--color-neutral-950) 95%, transparent);
+			color: var(--color-neutral-300);
+		}
+	}
 </style>

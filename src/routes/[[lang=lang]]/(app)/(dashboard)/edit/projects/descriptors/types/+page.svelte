@@ -2,8 +2,8 @@
 	import * as m from '$i18n/messages';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import DescriptorList from '../DescriptorList.svelte';
-	import { descriptorFlip, descriptorIn, descriptorOut } from '../motion';
+	import DescriptorList from '../../../DescriptorList.svelte';
+	import { descriptorFlip, descriptorIn, descriptorOut } from '../../../motion';
 	import NewProjectType from './NewProjectType.svelte';
 	import ProjectType from './ProjectType.svelte';
 
@@ -12,9 +12,9 @@
 	const {
 		enhance,
 		elements: {
-			submitter: { root: submitter },
+			submitter: { root: listSubmitter },
 		},
-	} = superForm(data.deleteForm);
+	} = superForm(data.listForm);
 </script>
 
 <form class="dashboard-section" use:enhance method="POST">
@@ -30,17 +30,16 @@
 	<div class="dashboard-subsection">
 		<DescriptorList>
 			<li>
-				<NewProjectType data={data.newForm} {submitter} />
+				<NewProjectType data={data.newForm} />
 			</li>
-			{#each data.forms as form, i (form.id)}
+			{#each data.updateForms as form, i (form.id)}
 				<li in:descriptorIn|global={{ i }} out:descriptorOut animate:descriptorFlip>
-					<ProjectType data={form} {submitter} />
+					<ProjectType data={form} {listSubmitter} />
 				</li>
 			{/each}
 		</DescriptorList>
 	</div>
 </form>
-<slot />
 
 <style lang="postcss">
 	@import '$styles/scoped/dashboard';

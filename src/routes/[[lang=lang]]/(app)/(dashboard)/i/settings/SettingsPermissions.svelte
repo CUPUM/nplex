@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import ComingSoon from '$lib/components/ComingSoon.svelte';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
@@ -62,7 +61,7 @@
 		</SelectMenu>
 	</DashboardFormSection>
 	<DashboardFormSection title={$langKey(m.user_sharedPermissions())}>
-		<ComingSoon></ComingSoon>
+		<coming_soon></coming_soon>
 		<!-- <section>
 			<h3><LangKey>{m.projects()}</LangKey></h3>
 		</section>

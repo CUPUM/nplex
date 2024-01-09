@@ -1,18 +1,17 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import ComingSoon from '$lib/components/ComingSoon.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import { link } from '$lib/i18n/link';
 
 	export let data;
 </script>
 
-<ComingSoon>
-	<LangKey>{@html m.account_home_comingSoon()}</LangKey>
+<coming_soon>
+	<LangKey>{@html m.account_home_coming_soon()}</LangKey>
 	<a {...$link('/i/settings')} class="button link inline">
-		<LangKey>{m.account_home_comingSoonButton()}</LangKey>
+		<LangKey>{m.account_home_coming_soonButton()}</LangKey>
 	</a>
-</ComingSoon>
+</coming_soon>
 
 <style lang="postcss">
 	section {

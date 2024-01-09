@@ -61,6 +61,6 @@ export const actions = {
 				}
 			);
 		}
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	},
 };

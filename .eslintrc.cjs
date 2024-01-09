@@ -29,7 +29,10 @@ module.exports = {
 	],
 	rules: {
 		'curly': ['error', 'all'],
-		'@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+		'@typescript-eslint/no-unused-vars': [
+			'error',
+			{ ignoreRestSiblings: true, destructuredArrayIgnorePattern: '^_' },
+		],
 		// 'require-await': 'off',
 		// '@typescript-eslint/require-await': 'error',
 	},

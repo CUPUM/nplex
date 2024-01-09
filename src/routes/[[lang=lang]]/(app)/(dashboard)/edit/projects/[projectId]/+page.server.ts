@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { withAuth } from '$lib/auth/guard.server';
+import { guardAuth } from '$lib/auth/guard.server';
 import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
@@ -16,30 +16,32 @@ import { error } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
-export const load = async (event) => {
-	const session = await withAuth(event);
+// const updateSchema = proejct
 
-	const [project] = await withTranslations(projects, projectsTranslations, {
-		field: (t) => t.id,
-		reference: (tt) => tt.id,
-	})
-		.where(and(authorizeProjectUpdate(session), eq(projects.id, event.params.projectId)))
-		.limit(1);
-	if (!project) {
-		throw error(STATUS_CODES.NOT_FOUND, m.project_notFound());
-	}
-	const interventions = await dbpool
-		.select({
-			interventionId: projectsInterventions.interventionId,
+export const load = async (event) => {
+	const session = await guardAuth(event);
+
+	const [[project], interventions] = await Promise.all([
+		withTranslations(projects, projectsTranslations, {
+			field: (t) => t.id,
+			reference: (tt) => tt.id,
 		})
-		.from(projectsInterventions)
-		.where(eq(projectsInterventions.projectId, event.params.projectId));
-	const form = superValidate(
+			.where(and(authorizeProjectUpdate(session), eq(projects.id, event.params.projectId)))
+			.limit(1),
+		dbpool
+			.select({
+				interventionId: projectsInterventions.interventionId,
+			})
+			.from(projectsInterventions)
+			.where(eq(projectsInterventions.projectId, event.params.projectId)),
+	]);
+	const form = await superValidate(
 		{ ...project, interventionIds: interventions.map((i) => i.interventionId) },
 		projectGeneralUpdateSchema
 	);
-	// const pci = await getProjectCategorizedInterventionsList(event);
-	// console.log(JSON.stringify(pci, undefined, 2));
+	if (!project) {
+		error(STATUS_CODES.NOT_FOUND, m.project_not_found());
+	}
 	return {
 		form,
 		types: getProjectTypesList(event),
@@ -50,7 +52,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await withAuth(event);
+		await guardAuth(event);
 		const form = await superValidate(event, projectGeneralUpdateSchema);
 		if (!form.valid) {
 			console.error(JSON.stringify(form.errors));

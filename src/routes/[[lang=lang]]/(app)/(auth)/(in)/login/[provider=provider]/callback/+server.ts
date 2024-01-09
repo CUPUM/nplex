@@ -17,7 +17,7 @@ import { eq } from 'drizzle-orm';
  */
 export const GET = async (event) => {
 	if (!isSupportedOAuthProvider(event.params.provider)) {
-		throw error(STATUS_CODES.BAD_REQUEST, { message: m.auth_unsupportedProvider() });
+		error(STATUS_CODES.BAD_REQUEST, { message: m.auth_unsupportedProvider() });
 	}
 
 	/**
@@ -27,7 +27,7 @@ export const GET = async (event) => {
 	 */
 	const session = await event.locals.auth.validate();
 	if (session) {
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
+		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
 	}
 
 	/**
@@ -37,7 +37,7 @@ export const GET = async (event) => {
 	const state = event.url.searchParams.get('state');
 	const code = event.url.searchParams.get('code');
 	if (!storedState || !state || storedState !== state || !code) {
-		throw error(STATUS_CODES.BAD_REQUEST, {
+		error(STATUS_CODES.BAD_REQUEST, {
 			message: m.auth_incorrectProviderState({
 				provider: OAUTH_PROVIDERS_DETAILS[event.params.provider].name,
 			}),
@@ -55,8 +55,8 @@ export const GET = async (event) => {
 				'githubUser' in validated
 					? validated.githubUser.email
 					: 'googleUser' in validated && validated.googleUser.email_verified
-					  ? validated.googleUser.email
-					  : null;
+						? validated.googleUser.email
+						: null;
 			if (verifiedOAuthEmail) {
 				const [existingEmailUser] = await tx
 					.select()
@@ -65,7 +65,7 @@ export const GET = async (event) => {
 					.limit(1);
 				if (existingEmailUser) {
 					if (!existingEmailUser.emailVerified) {
-						throw error(STATUS_CODES.CONFLICT, {
+						error(STATUS_CODES.CONFLICT, {
 							message: m.auth_emailAlreadyUsedAndUnverified({ email: verifiedOAuthEmail }),
 						});
 					}
@@ -94,13 +94,13 @@ export const GET = async (event) => {
 		console.error(e);
 		if (e instanceof OAuthRequestError) {
 			// Handle differently?
-			throw error(STATUS_CODES.BAD_REQUEST, { message: e.message });
+			error(STATUS_CODES.BAD_REQUEST, { message: e.message });
 		}
-		throw error(STATUS_CODES.INTERNAL_SERVER_ERROR, {
+		error(STATUS_CODES.INTERNAL_SERVER_ERROR, {
 			message: e instanceof Error ? e.message : '',
 		});
 	}
-	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', [
+	event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', [
 		{
 			title: m.auth_success(),
 			description: m.auth_successDescription(),

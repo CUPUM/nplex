@@ -37,7 +37,7 @@
 </fieldset>
 
 <style lang="postcss">
-	@import '../../../dashboard.css';
+	@import '$styles/scoped/dashboard.css';
 
 	.switch {
 		align-self: center;

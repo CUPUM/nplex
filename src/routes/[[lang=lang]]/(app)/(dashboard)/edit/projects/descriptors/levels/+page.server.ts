@@ -1,5 +1,5 @@
 import { USER_ROLES } from '$lib/auth/constants';
-import { withRole } from '$lib/auth/guard.server';
+import { guardRole } from '$lib/auth/guard.server';
 import { projectBuildingLevelTypesUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import {
@@ -14,7 +14,7 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/client';
 
 export const load = async (event) => {
-	await withRole(event, USER_ROLES.ADMIN);
+	await guardRole(event, USER_ROLES.ADMIN);
 	const buildingLevelTypes = (
 		await dbpool.query.projectBuildingLevelTypes.findMany({ with: { translations: true } })
 	).map(reduceTranslations);
@@ -24,7 +24,7 @@ export const load = async (event) => {
 
 export const actions = {
 	create: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		try {
 			const verticalIndex = Number(event.url.searchParams.get('verticalIndex')) ?? 0;
 			await dbpool.insert(projectBuildingLevelTypes).values({ verticalIndex });
@@ -33,7 +33,7 @@ export const actions = {
 		}
 	},
 	delete: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const id = event.url.searchParams.get('levelTypeId');
 		if (!id) {
 			return fail(STATUS_CODES.BAD_REQUEST);
@@ -45,7 +45,7 @@ export const actions = {
 		}
 	},
 	update: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const form = await superValidate(event, projectBuildingLevelTypesUpdateSchema);
 		if (!form.valid) {
 			console.error(form.errors);

@@ -25,18 +25,17 @@
 		flex-direction: column;
 		gap: 0;
 		font-weight: 500;
-		box-shadow: 0 12px 56px -12px rgba(0, 10, 20, 0.1);
+		box-shadow: 0 15px 50px -10px rgba(0, 10, 20, 0.1);
 		padding: var(--menu-nesting);
 		border-radius: var(--base-radius);
 		transform-origin: top;
-		background-color: var(--color-neutral-100);
+		background-color: var(--color-neutral-50);
 		outline: none;
-		border: var(--base-border-width) solid
-			color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		border: var(--base-border-width) solid var(--base-border-color-dim);
 		z-index: 1;
 		:global(:--dark) & {
 			background-color: var(--color-neutral-900);
-			/* box-shadow: var(--shadow-xl), var(--shadow-md); */
+			box-shadow: none;
 		}
 	}
 </style>

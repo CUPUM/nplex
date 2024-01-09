@@ -44,17 +44,27 @@ import {
 } from './schema/public';
 import { withTranslationsSchema } from './validation.server';
 
+// TO DO: progressively deprecate in favor of validation.server.ts
+
 /**
  * Project intervention.
+ *
+ * @deprecated
  */
 export const projectInterventionInsertSchema = createInsertSchema(
 	projectInterventions,
 	{}
 ).required({ id: true, categoryId: true });
+/**
+ * @deprecated
+ */
 export const projectInterventionTranslationInsertSchema = createInsertSchema(
 	projectInterventionsTranslations,
 	{ ...translationLangColumnSchema }
 );
+/**
+ * @deprecated
+ */
 export const projectInterventionsUpdateSchema = z.object({
 	interventions: withTranslationsSchema(
 		projectInterventionInsertSchema,
@@ -69,10 +79,16 @@ export const projectInterventionCategoryInsertSchema = createInsertSchema(
 	projectInterventionCategories,
 	{}
 ).required({ id: true });
+/**
+ * @deprecated
+ */
 export const projectInterventionCategoryTranslationInsertSchema = createInsertSchema(
 	projectInterventionCategoriesTranslations,
 	{ ...translationLangColumnSchema }
 );
+/**
+ * @deprecated
+ */
 export const projectInterventionCategoriesUpdateSchema = z.object({
 	interventionCategories: withTranslationsSchema(
 		projectInterventionCategoryInsertSchema,
@@ -80,6 +96,9 @@ export const projectInterventionCategoriesUpdateSchema = z.object({
 	).array(),
 });
 
+/**
+ * @deprecated
+ */
 export const projectInterventionCategoriesWithInterventionsUpdateSchema = z.object({
 	interventionCategories: withTranslationsSchema(
 		projectInterventionCategoryInsertSchema,
@@ -98,10 +117,16 @@ export const projectInterventionCategoriesWithInterventionsUpdateSchema = z.obje
 export const projectExemplarityCategoryInsertSchema = createInsertSchema(
 	projectExemplarityCategories
 ).required({ id: true });
+/**
+ * @deprecated
+ */
 export const projectExemplarityCategoryTranslationInsertSchema = createInsertSchema(
 	projectExemplarityCategoriesTranslations,
 	{ ...translationLangColumnSchema }
 );
+/**
+ * @deprecated
+ */
 export const projectExemplarityCategoriesUpdateSchema = z.object({
 	exemplarityCategories: withTranslationsSchema(
 		projectExemplarityCategoryInsertSchema,
@@ -115,10 +140,16 @@ export const projectExemplarityCategoriesUpdateSchema = z.object({
 export const projectExemplarityIndicatorInsertSchema = createInsertSchema(
 	projectExemplarityIndicators
 ).required({ id: true, categoryId: true });
+/**
+ * @deprecated
+ */
 export const projectExemplarityIndicatorTranslationInsertSchema = createInsertSchema(
 	projectExemplarityIndicatorsTranslations,
 	{ ...translationLangColumnSchema }
 );
+/**
+ * @deprecated
+ */
 export const projectExemplarityIndicatorsUpdateSchema = z.object({
 	indicators: withTranslationsSchema(
 		projectExemplarityIndicatorInsertSchema,
@@ -129,6 +160,9 @@ export const projectExemplarityIndicatorsUpdateSchema = z.object({
 // export const projectExemplarityCategoriesAndIndicatorsUpdateSchema =
 // 	projectExemplarityCategoriesUpdateSchema.merge(projectExemplarityIndicatorsUpdateSchema);
 
+/**
+ * @deprecated
+ */
 export const projectExemplarityCategoriesWithIndicatorsUpdateSchema = z.object({
 	exemplarityCategories: withTranslationsSchema(
 		projectExemplarityCategoryInsertSchema,
@@ -138,10 +172,16 @@ export const projectExemplarityCategoriesWithIndicatorsUpdateSchema = z.object({
 		.array(),
 });
 
+/**
+ * @deprecated
+ */
 export const projectSiteOwnershipsSchema = createInsertSchema(projectSiteOwnerships).required({
 	id: true,
 });
 
+/**
+ * @deprecated
+ */
 export const projectSiteOwnershipsTranslationsSchema = createInsertSchema(
 	projectSiteOwnershipsTranslations,
 	{ ...translationLangColumnSchema }
@@ -155,10 +195,16 @@ export const projectImplantationTypeInsertSchema = createInsertSchema(
 ).required({
 	id: true,
 });
+/**
+ * @deprecated
+ */
 export const projectImplantationTypeTranslationInsertSchema = createInsertSchema(
 	projectImplantationTypesTranslations,
 	{ ...translationLangColumnSchema }
 );
+/**
+ * @deprecated
+ */
 export const projectImplantationTypesUpdateSchema = z.object({
 	implantationTypes: withTranslationsSchema(
 		projectImplantationTypeInsertSchema,
@@ -172,10 +218,16 @@ export const projectImplantationTypesUpdateSchema = z.object({
 export const projectImageTypeInsertSchema = createInsertSchema(projectImageTypes).required({
 	id: true,
 });
+/**
+ * @deprecated
+ */
 export const projectImageTypeTranslationInsertSchema = createInsertSchema(
 	projectImageTypesTranslations,
 	{ ...translationLangColumnSchema }
 );
+/**
+ * @deprecated
+ */
 export const projectImageTypesUpdateSchema = z.object({
 	imageTypes: withTranslationsSchema(
 		projectImageTypeInsertSchema,
@@ -191,10 +243,16 @@ export const projectImageTemporalityInsertSchema = createInsertSchema(
 ).required({
 	id: true,
 });
+/**
+ * @deprecated
+ */
 export const projectImageTemporalityTranslationInsertSchema = createInsertSchema(
 	projectImageTemporalitiesTranslations,
 	{ ...translationLangColumnSchema }
 );
+/**
+ * @deprecated
+ */
 export const projectImageTemporalitiesUpdateSchema = z.object({
 	imageTemporalities: withTranslationsSchema(
 		projectImageTemporalityInsertSchema,
@@ -210,10 +268,16 @@ export const projectBuildingLevelTypeInsertSchema = createInsertSchema(
 ).required({
 	id: true,
 });
+/**
+ * @deprecated
+ */
 export const projectBuildingLevelTypeTranslationInsertSchema = createInsertSchema(
 	projectBuildingLevelTypesTranslations,
 	{ ...translationLangColumnSchema }
 );
+/**
+ * @deprecated
+ */
 export const projectBuildingLevelTypesUpdateSchema = z.object({
 	buildingLevelTypes: withTranslationsSchema(
 		projectBuildingLevelTypeInsertSchema,
@@ -233,19 +297,31 @@ export const projectsInsertSchema = createInsertSchema(projects, {
 			null,
 		]),
 }).required({ id: true, costRange: true });
+/**
+ * @deprecated
+ */
 export const projectsTranslationsInsertSchema = createInsertSchema(projectsTranslations, {
 	title: (s) => s.title.max(PROJECT_TITLE_MAX),
 	summary: (s) => s.summary.max(PROJECT_SUMMARY_MAX),
 	description: (s) => s.description.max(PROJECT_DESCRIPTION_MAX),
 	...translationLangColumnSchema,
 }).omit({ ts: true });
+/**
+ * @deprecated
+ */
 export const projectsUpdateSchema = withTranslationsSchema(
 	projectsInsertSchema,
 	projectsTranslationsInsertSchema
 );
 
+/**
+ * @deprecated
+ */
 export const projectsInterventionsInsertSchema = createInsertSchema(projectsInterventions);
 
+/**
+ * @deprecated
+ */
 export const projectGeneralUpdateSchema = projectsUpdateSchema
 	.pick({ id: true, typeId: true, costRange: true, siteOwnershipId: true, translations: true })
 	.extend({ interventionIds: projectsInterventionsInsertSchema.shape.interventionId.array() });
@@ -256,6 +332,9 @@ export const projectGeneralUpdateSchema = projectsUpdateSchema
 export const projectsExemplarityIndicatorsInsertSchema = createInsertSchema(
 	projectsExemplarityIndicators
 );
+/**
+ * @deprecated
+ */
 export const projectsExemplarityIndicatorsUpdateSchema = z.object({
 	indicatorIds: projectsExemplarityIndicatorsInsertSchema.shape.exemplarityIndicatorId.array(),
 });
@@ -264,12 +343,18 @@ export const projectsExemplarityIndicatorsUpdateSchema = z.object({
  * Projects images.
  */
 export const projectsImagesInsertSchema = createInsertSchema(projectsImages);
+/**
+ * @deprecated
+ */
 export const projectsImagesTranslationInsertSchema = createInsertSchema(
 	projectsImagesTranslations,
 	{
 		...translationLangColumnSchema,
 	}
 );
+/**
+ * @deprecated
+ */
 export const projectsImagesUpdateSchema = withTranslationsSchema(
 	projectsImagesInsertSchema,
 	projectsImagesTranslationInsertSchema
@@ -301,6 +386,9 @@ export const projectsGalleryUpdateSchema = z.object({
 	deleteId: projectsImagesUpdateSchema.shape.id.optional(),
 	bannerId: projectsUpdateSchema.shape.bannerId.optional(),
 });
+/**
+ * @deprecated
+ */
 export type ProjectsGalleryUpdateSchema = typeof projectsGalleryUpdateSchema;
 
 /**
@@ -308,6 +396,9 @@ export type ProjectsGalleryUpdateSchema = typeof projectsGalleryUpdateSchema;
  */
 export const projectsOrganizationInsertSchema = createInsertSchema(projectsOrganizations);
 // export const projectsUsersInsertSchema = createInsertSchema(projectsUsers);
+/**
+ * @deprecated
+ */
 export const projectsContributionsUpdateSchema = z.object({
 	organizationIds: projectsOrganizationInsertSchema.shape.organizationId.array(),
 });
@@ -318,10 +409,16 @@ export const projectsContributionsUpdateSchema = z.object({
 export const organizationTypeInsertSchema = createInsertSchema(organizationTypes).required({
 	id: true,
 });
+/**
+ * @deprecated
+ */
 export const organizationTypeTranslationInsertSchema = createInsertSchema(
 	organizationTypesTranslations,
 	{ ...translationLangColumnSchema }
 );
+/**
+ * @deprecated
+ */
 export const organizationTypesUpdateSchema = z.object({
 	types: z.array(
 		withTranslationsSchema(organizationTypeInsertSchema, organizationTypeTranslationInsertSchema)
@@ -334,14 +431,23 @@ export const organizationTypesUpdateSchema = z.object({
 export const organizationInsertSchema = createInsertSchema(organizations).required({
 	id: true,
 });
+/**
+ * @deprecated
+ */
 export const organizationTranslationInsertSchema = createInsertSchema(organizationsTranslations, {
 	...translationLangColumnSchema,
 });
+/**
+ * @deprecated
+ */
 export const organizationGeneralUpdateSchema = withTranslationsSchema(
 	organizationInsertSchema,
 	organizationTranslationInsertSchema
 );
 
+/**
+ * @deprecated
+ */
 export const usersSchema = createInsertSchema(users, {
 	firstName: (s) => s.firstName.trim(),
 	middleName: (s) => s.middleName.trim(),

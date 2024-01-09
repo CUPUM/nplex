@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { availableLanguageTags } from '$i18n/runtime';
@@ -9,12 +8,11 @@
 	import Avatar from '$lib/components/Avatar.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
-	import { langHref, langSwitch, link } from '$lib/i18n/link';
+	import { langSwitch, link, noLang } from '$lib/i18n/link';
 	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
 	import { transform } from '$lib/motion/transform';
 	import { setout } from '$lib/setout/store';
-	import { KEYS } from '$lib/utils/constants';
 	import {
 		createDialog,
 		createDropdownMenu,
@@ -45,7 +43,7 @@
 		forceVisible: true,
 		positioning: {
 			overflowPadding: 12,
-			gutter: 10.5, // navbar padding - border-base-size
+			gutter: 12,
 			placement: 'bottom',
 		},
 		preventScroll: false,
@@ -63,13 +61,7 @@
 	} = createDropdownMenu(dropdownMenuOptions);
 
 	const {
-		elements: {
-			menu: userMenu,
-			item: userItem,
-			trigger: userTrigger,
-			arrow: userArrow,
-			separator: userSeparator,
-		},
+		elements: { menu: userMenu, item: userItem, trigger: userTrigger },
 		states: { open: userOpen },
 	} = createDropdownMenu(dropdownMenuOptions);
 
@@ -87,16 +79,11 @@
 	});
 
 	let scrollY = 0;
-	let navbar: HTMLElement;
 	let mounted = false;
 
 	function flyin(node: HTMLElement, i: number) {
 		return fly(node, { y: '25%', duration: 750, easing: expoOut, delay: i * 75 });
 	}
-
-	onNavigate(() => {
-		userOpen.set(false);
-	});
 
 	onMount(() => {
 		mounted = true;
@@ -107,12 +94,7 @@
 
 <!-- svelte-ignore a11y-missing-attribute -->
 {#if mounted && $setout && $breakpoint}
-	<header
-		id="navbar"
-		bind:this={navbar}
-		class={$setout}
-		class:over={scrollY > 10 && !$page.data.navbar?.noBackground}
-	>
+	<header id="navbar" class={$setout} class:over={scrollY > 10 && !$page.data.navbar?.noBackground}>
 		<div class="inner">
 			<!-- General nav -->
 			<nav id="site-group" class="navbar-group" in:flyin|global={0}>
@@ -183,14 +165,8 @@
 					{/if}
 					<NavbarButton
 						square
-						on:pointerdown={(e) => {
+						on:click={(e) => {
 							mode.toggle();
-							return e;
-						}}
-						on:keydown={(e) => {
-							if (e.key === KEYS.SPACE || e.key === KEYS.ENTER) {
-								mode.toggle();
-							}
 							return e;
 						}}
 					>
@@ -288,8 +264,8 @@
 					{@const link = $link('/login')}
 					<NavbarButton
 						{...link}
-						data-current={$page.url.pathname.startsWith($langHref('/signup')) ||
-							$page.url.pathname.startsWith($langHref('/reset-password')) ||
+						data-current={$noLang.startsWith('/signup') ||
+							$noLang.startsWith('/reset-password') ||
 							link['data-current'] ||
 							undefined}
 						square
@@ -313,7 +289,7 @@
 
 	header {
 		font-size: var(--size-sm);
-		z-index: 99;
+		z-index: 90;
 		position: sticky;
 		top: 0;
 		align-self: stretch;
@@ -327,26 +303,24 @@
 		}
 
 		&::before {
+			pointer-events: none;
 			content: '';
 			position: absolute;
-			height: 100%;
-			width: 100%;
-			bottom: calc(100% + var(--base-border-width));
-			/* border-bottom: var(--base-border-width) solid transparent; */
+			inset: 0;
+			bottom: calc(-1 * var(--base-gutter));
+			transform: translateY(-100%);
+			background: linear-gradient(var(--base-bg) 10%, transparent);
 			transition:
-				all 0.2s ease-out,
-				bottom 0.5s var(--ease-out-expo);
-			background-color: var(--color-neutral-100);
-			:global(:--dark) & {
-				background-color: var(--color-neutral-900);
-			}
+				all 0.35s ease-in,
+				transform 0.5s var(--ease-in-expo);
 		}
 
 		&.over {
 			&::before {
-				border-color: var(--base-border-color-dim);
-				opacity: 1;
-				bottom: 0;
+				transform: translateY(0%);
+				transition:
+					all 0.2s ease-out,
+					transform 0.5s var(--ease-out-expo);
 			}
 		}
 	}

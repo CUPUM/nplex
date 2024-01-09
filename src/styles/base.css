@@ -141,10 +141,10 @@
 	--sticky-top: calc(var(--navbar-height) + var(--base-gutter));
 	--navbar-height: 72px;
 	--dashboard-bg: var(--color-neutral-50);
-	/* --dashboard-bg: var(--color-neutral-100); */
 	--dashboard-gutter: 3px;
 	--dashboard-radius: var(--radius-xl);
 	--sidebar-width: 200px;
+	--sidebar-needle-bg: var(--color-primary-700);
 	--sidebar-needle-size: 2.5px;
 	--sidebar-group-radius: var(--dashboard-radius);
 	--sidebar-group-nesting: 1rem;
@@ -156,6 +156,7 @@
 			color-mix(in srgb, var(--color-primary-500) 75%, transparent);
 		--base-error-ring: var(--base-outline-width) solid var(--color-error-400);
 		--dashboard-bg: var(--color-neutral-800);
+		--sidebar-needle-bg: var(--color-primary-500);
 	}
 
 	/* Root style */

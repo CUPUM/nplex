@@ -32,9 +32,9 @@ export const load = async (event) => {
 	const session = await event.locals.auth.validate();
 	if (session) {
 		if (session.user.email && !session.user.emailVerified) {
-			throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
+			event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
 		}
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
 	const form = await superValidate(emailPasswordSignupSchema);
 	return { form };
@@ -82,6 +82,6 @@ export const actions = {
 			console.error(err);
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });
 		}
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
+		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
 	},
 };

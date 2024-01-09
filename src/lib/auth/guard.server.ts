@@ -1,15 +1,15 @@
 import * as m from '$i18n/messages';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit';
-import { USER_ROLES_CONTENT_MANAGEMENT, type UserRole } from './constants';
+import { USER_ROLES, USER_ROLES_CONTENT_MANAGEMENT, type UserRole } from './constants';
 
 /**
  * Helper to require auth inside server load functions and actions.
  */
-export async function withAuth(event: RequestEvent | ServerLoadEvent) {
+export async function guardAuth(event: RequestEvent | ServerLoadEvent) {
 	const session = await event.locals.auth.validate();
 	if (!session) {
-		throw error(STATUS_CODES.UNAUTHORIZED, m.auth_no_session());
+		error(STATUS_CODES.UNAUTHORIZED, m.auth_no_session());
 	}
 	return session;
 }
@@ -17,11 +17,11 @@ export async function withAuth(event: RequestEvent | ServerLoadEvent) {
 /**
  * Role guard to protect endpoints, actions, or server load functions.
  */
-export async function withRole<R extends UserRole>(
+export async function guardRole<R extends UserRole>(
 	event: RequestEvent | ServerLoadEvent,
 	...role: R[]
 ) {
-	const session = await withAuth(event);
+	const session = await guardAuth(event);
 	// /**
 	//  * Event-specific guard.
 	//  */
@@ -34,6 +34,16 @@ export async function withRole<R extends UserRole>(
 	return session;
 }
 
-export async function withContentManagementRole(event: RequestEvent | ServerLoadEvent) {
-	return withRole(event, ...USER_ROLES_CONTENT_MANAGEMENT);
+/**
+ * Role guard helper preset for editors and admins RBAC.
+ */
+export async function guardRoleContentManagement(event: RequestEvent | ServerLoadEvent) {
+	return guardRole(event, ...USER_ROLES_CONTENT_MANAGEMENT);
+}
+
+/**
+ * Role guard helper for admin RBAC.
+ */
+export async function guardRoleAdmin(event: RequestEvent | ServerLoadEvent) {
+	return guardRole(event, USER_ROLES.ADMIN);
 }

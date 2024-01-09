@@ -3,7 +3,7 @@
 	import ButtonSave from '$lib/components/ButtonSave.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import { superFormDialog, type SuperForm } from '$lib/forms/super-form';
-	import DescriptorChip2 from '../DescriptorChip2.svelte';
+	import DescriptorChip2 from '../DescriptorChip.svelte';
 	import DescriptorForm from '../DescriptorForm.svelte';
 	import type { PageData } from './$types';
 

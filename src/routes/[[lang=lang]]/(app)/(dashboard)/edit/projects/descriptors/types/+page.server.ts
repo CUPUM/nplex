@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { withContentManagementRole } from '$lib/auth/guard.server';
+import { guardRoleContentManagement } from '$lib/auth/guard.server';
 import { dbpool } from '$lib/db/db.server';
 import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
@@ -23,25 +23,25 @@ const updateSchema = withTranslationsSchema(
 
 const createSchema = updateSchema.omit({ id: true });
 
-const deleteSchema = z.object({ ownershipId: z.string() });
+const listSchema = z.object({ id: z.string() });
 
 export const load = async (event) => {
-	await withContentManagementRole(event);
+	await guardRoleContentManagement(event);
 	const types = await withTranslations(projectTypes, projectTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
-	const forms = Promise.all([
+	const [newForm, listForm, ...updateForms] = await Promise.all([
+		superValidate(createSchema),
+		superValidate(listSchema),
 		...types.map((type) => superValidate(type, updateSchema, { id: type.id })),
 	]);
-	const newForm = superValidate(createSchema);
-	const deleteForm = superValidate(deleteSchema);
-	return { forms, deleteForm, newForm };
+	return { updateForms, listForm, newForm };
 };
 
 export const actions = {
 	create: async (event) => {
-		await withContentManagementRole(event);
+		await guardRoleContentManagement(event);
 		const form = await superValidate(event, createSchema);
 		if (!form.valid) {
 			return message(form, messageInvalidProjectDescriptor(m.project_type()));
@@ -64,7 +64,7 @@ export const actions = {
 		return message(form, messageServerSuccess());
 	},
 	update: async (event) => {
-		await withContentManagementRole(event);
+		await guardRoleContentManagement(event);
 		const form = await superValidate(event, updateSchema);
 		if (!form.valid) {
 			return message(form, messageInvalidProjectDescriptor(m.project_type()));
@@ -90,13 +90,13 @@ export const actions = {
 		return message(form, messageServerSuccess());
 	},
 	delete: async (event) => {
-		await withContentManagementRole(event);
-		const form = await superValidate(event, deleteSchema);
+		await guardRoleContentManagement(event);
+		const form = await superValidate(event, listSchema);
 		if (!form.valid) {
 			return message(form, messageInvalidProjectDescriptor(m.project_type()));
 		}
 		try {
-			await dbpool.delete(projectTypes).where(eq(projectTypes.id, form.data.ownershipId));
+			await dbpool.delete(projectTypes).where(eq(projectTypes.id, form.data.id));
 		} catch (e) {
 			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}

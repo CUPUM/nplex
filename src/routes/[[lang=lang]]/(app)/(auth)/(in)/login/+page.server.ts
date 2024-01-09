@@ -15,9 +15,9 @@ export const load = async (event) => {
 	const session = await event.locals.auth.validate();
 	if (session) {
 		if (session.user.email && !session.user.emailVerified) {
-			throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
+			event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
 		}
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
 	const form = await superValidate(emailPasswordLoginSchema);
 	return { form };
@@ -27,12 +27,10 @@ export const actions = {
 	default: async (event) => {
 		const form = await superValidate(event, emailPasswordLoginSchema);
 		if (!form.valid) {
-			return message(form, [
-				{
-					title: m.auth_invalid(),
-					description: m.auth_invalidDescription(),
-				},
-			]);
+			return message(form, {
+				title: m.auth_invalid(),
+				description: m.auth_invalid_description(),
+			});
 		}
 		try {
 			const key = await auth.useKey(
@@ -49,31 +47,25 @@ export const actions = {
 			) {
 				return message(
 					form,
-					[
-						{
-							title: m.auth_notFound(),
-							description: m.auth_notFoundDescription(),
-						},
-					],
+					{
+						title: m.auth_not_found(),
+						description: m.auth_not_found_description(),
+					},
 					{ status: STATUS_CODES.BAD_REQUEST }
 				);
 			}
 			return message(
 				form,
-				[
-					{
-						title: m.auth_error(),
-						description: m.auth_errorDescription(),
-					},
-				],
+				{
+					title: m.auth_error(),
+					description: m.auth_error_description(),
+				},
 				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
 			);
 		}
-		throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', [
-			{
-				title: m.auth_success(),
-				description: m.auth_successDescription(),
-			},
-		]);
+		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', {
+			title: m.auth_success(),
+			description: m.auth_success_description(),
+		});
 	},
 };

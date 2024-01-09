@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { withContentManagementRole } from '$lib/auth/guard.server';
+import { guardRoleContentManagement } from '$lib/auth/guard.server';
 import {
 	projectSiteOwnershipsSchema,
 	projectSiteOwnershipsTranslationsSchema,
@@ -28,7 +28,7 @@ const updateSchema = withTranslationsSchema(
 const deleteSchema = z.object({ del: z.string() });
 
 export const load = async (event) => {
-	await withContentManagementRole(event);
+	await guardRoleContentManagement(event);
 	const [ownership] = await withTranslations(
 		projectSiteOwnerships,
 		projectSiteOwnershipsTranslations,
@@ -37,7 +37,7 @@ export const load = async (event) => {
 		.where(eq(projectSiteOwnerships.id, event.params.ownershipId))
 		.limit(1);
 	if (!ownership) {
-		throw error(STATUS_CODES.NOT_FOUND);
+		error(STATUS_CODES.NOT_FOUND);
 	}
 	const form = await superValidate(ownership, updateSchema);
 	const del = await superValidate(deleteSchema);
@@ -46,7 +46,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await withContentManagementRole(event);
+		await guardRoleContentManagement(event);
 		const form = await superValidate(event, updateSchema);
 		if (!form.valid) {
 			return message(
@@ -75,7 +75,7 @@ export const actions = {
 		return message(form, messageServerSuccess());
 	},
 	delete: async (event) => {
-		await withContentManagementRole(event);
+		await guardRoleContentManagement(event);
 		const del = await superValidate(event, deleteSchema);
 		if (!del.valid) {
 			return message(del, messageInvalidProjectDescriptor('id'));

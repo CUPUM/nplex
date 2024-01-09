@@ -9,8 +9,6 @@
 	onMount(() => {
 		mounted = true;
 	});
-
-	$: console.log(data.randomImages);
 </script>
 
 <Landing images={data.randomImages} />

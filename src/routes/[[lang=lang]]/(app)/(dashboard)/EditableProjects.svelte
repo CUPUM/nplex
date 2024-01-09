@@ -3,7 +3,7 @@
 	import { link } from '$lib/i18n/link';
 	import type { LayoutData } from './$types';
 
-	export let projects: LayoutData['streamed']['editableProjects'];
+	export let projects: LayoutData['editableProjects'];
 </script>
 
 <ul>

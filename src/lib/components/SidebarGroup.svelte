@@ -60,11 +60,6 @@
 		border-radius: var(--sidebar-group-radius);
 		padding: var(--sidebar-group-nesting);
 		margin-bottom: 0;
-		/* border: var(--base-border-width) solid var(--base-border-color-dim); */
-
-		/* :global(:--dark) & {
-			border-color: var(--dashboard-bg);
-		} */
 	}
 
 	.sidebar-group-heading {
@@ -105,10 +100,7 @@
 		right: 0;
 		width: var(--sidebar-needle-size);
 		border-radius: inherit;
-		background-color: var(--color-primary-600);
-		:global(:--dark) & {
-			background-color: var(--color-primary-500);
-		}
+		background-color: var(--sidebar-needle-bg);
 	}
 
 	.items {

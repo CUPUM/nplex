@@ -68,7 +68,7 @@
 		<h2 class="heading lg">
 			<LangKey>{m.my_projects()}</LangKey>
 		</h2>
-		<EditableProjects projects={data.streamed.editableProjects} />
+		<EditableProjects projects={data.editableProjects} />
 	</section>
 	<section class="editables">
 		<h2 class="heading lg">

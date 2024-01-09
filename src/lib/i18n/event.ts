@@ -1,39 +1,12 @@
-import { sourceLanguageTag } from '$i18n/runtime';
-import type { LoadEvent, Redirect, RequestEvent } from '@sveltejs/kit';
-import { redirect } from 'sveltekit-flash-message/server';
-import { LANG_PARAM } from './constants';
-import { localize } from './link';
-import { isAvailableLang } from './validation';
+import { isAvailableLanguageTag, sourceLanguageTag } from '$i18n/runtime';
+import type { LoadEvent, RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 
-export function createEventRedirect(event: RequestEvent) {
-	/**
-	 * Pre-localized redirect helper.
-	 *
-	 * @see {@link redirect}
-	 */
-	return (status: Redirect['status'], location: URL | string, message?: App.PageData['flash']) => {
-		if (!message) {
-			return redirect(status, localize(location, event.locals.lang));
-		}
-		return redirect(status, localize(location, event.locals.lang), message, event);
-	};
-}
-
-export function createEventLocalize(event: RequestEvent) {
-	/**
-	 * Event-locale-aware location localizer. (also known by some as Loccolocaloca)
-	 *
-	 * @see {@link localize}
-	 */
-	return (location: Parameters<typeof localize>[0]) => {
-		return localize(location, event.locals.lang);
-	};
-}
-
-export function getEventLang<E extends RequestEvent | LoadEvent>(event: E) {
-	const param = event.params[LANG_PARAM];
-	if (param && isAvailableLang(param)) {
-		return param;
+/**
+ * Consistently retrieve an event's lang to ensure symmetrical percolation across SSR and client.
+ */
+export function getEventLang<E extends RequestEvent | LoadEvent | ServerLoadEvent>(event: E) {
+	if (isAvailableLanguageTag(event.params.lang)) {
+		return event.params.lang;
 	}
 	return sourceLanguageTag;
 }

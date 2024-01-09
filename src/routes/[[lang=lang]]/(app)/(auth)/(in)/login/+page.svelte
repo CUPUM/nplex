@@ -31,7 +31,7 @@
 <form method="POST" use:enhance autocomplete="off">
 	<h1 class="h4">
 		<LangKey>
-			{m.auth_loginTitle()}
+			{m.auth_login_title()}
 		</LangKey>
 	</h1>
 	<label class="label-group">
@@ -110,14 +110,14 @@
 	<a class="button link center" {...$link('/signup')} in:fade|global>
 		<UserPlus2 class="button-icon" />
 		<LangKey>
-			{m.auth_signupPrompt()}
+			{m.auth_signup_prompt()}
 		</LangKey>
 	</a>
 	<!-- svelte-ignore a11y-missing-attribute -->
 	<a class="button link center" {...$link('/reset-password')} in:fade|global>
 		<HelpCircle class="button-icon" />
 		<LangKey>
-			{m.auth_forgotPasswordPrompt()}
+			{m.auth_forgot_password_prompt()}
 		</LangKey>
 	</a>
 </div>

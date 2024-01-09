@@ -3,14 +3,22 @@
 	import LangKey from '$lib/components/LangKey.svelte';
 </script>
 
-<section>
-	<h1 class="h2">
-		<LangKey>{m.project_descriptors()}</LangKey>
-	</h1>
+<section class="dashboard-section">
+	<hgroup>
+		<h1 class="h2">
+			<LangKey>{m.project_descriptors()}</LangKey>
+		</h1>
+	</hgroup>
 </section>
 
 <style lang="postcss">
+	@import '$styles/scoped/dashboard.css';
+
 	section {
+		flex: 1;
+	}
+
+	hgroup {
 		padding: 2rem;
 	}
 </style>

@@ -4,7 +4,7 @@
 </script>
 
 <article>
-	<h1 class="h2"><LangKey>{m.comingSoon()}</LangKey></h1>
+	<h1 class="h2"><LangKey>{m.coming_soon()}</LangKey></h1>
 </article>
 
 <style lang="postcss">

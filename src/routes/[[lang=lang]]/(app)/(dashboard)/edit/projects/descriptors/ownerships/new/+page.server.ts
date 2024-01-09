@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { withContentManagementRole } from '$lib/auth/guard.server';
+import { guardRoleContentManagement } from '$lib/auth/guard.server';
 import {
 	projectSiteOwnershipsSchema,
 	projectSiteOwnershipsTranslationsSchema,
@@ -21,14 +21,14 @@ const createSchema = withTranslationsSchema(
 );
 
 export const load = async (event) => {
-	await withContentManagementRole(event);
+	await guardRoleContentManagement(event);
 	const form = await superValidate(createSchema);
 	return { form };
 };
 
 export const actions = {
 	default: async (event) => {
-		await withContentManagementRole(event);
+		await guardRoleContentManagement(event);
 		const form = await superValidate(event, createSchema);
 		if (!form.valid) {
 			console.log(JSON.stringify(form));
@@ -51,7 +51,7 @@ export const actions = {
 		} catch (e) {
 			return message(form, messageServerError());
 		}
-		throw event.locals.redirect(
+		event.locals.redirect(
 			STATUS_CODES.MOVED_TEMPORARILY,
 			'/edit/projects/descriptors/ownerships',
 			messageServerSuccess()

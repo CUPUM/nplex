@@ -23,9 +23,9 @@
 	<svelte:fragment slot="header">
 		<h2 class="heading lg">
 			<LangKey>
-				{m.project_descriptors_examplarityCategories()}
+				{m.project_descriptors_examplarity_categories()}
 				<span class="dim">&</span>
-				{m.project_exemplarityIndicators()}
+				{m.project_exemplarity_indicators()}
 			</LangKey>
 		</h2>
 		<p class="prose sm dim">
@@ -44,7 +44,7 @@
 					>
 						<label class="label-group">
 							<span class="label with-hover">
-								<LangKey>{m.project_descriptors_examplarityCategoryTitle()}</LangKey>
+								<LangKey>{m.project_descriptors_examplarity_category_title()}</LangKey>
 							</span>
 							<input
 								class="input"
@@ -54,7 +54,7 @@
 						</label>
 						<label class="label-group">
 							<span class="label with-hover">
-								<LangKey>{m.project_descriptors_examplarityCategoryDescription()}</LangKey>
+								<LangKey>{m.project_descriptors_examplarity_category_description()}</LangKey>
 							</span>
 							<textarea
 								class="input resize"

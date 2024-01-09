@@ -152,10 +152,7 @@
 		right: calc(-1 * var(--sidebar-group-nesting));
 		width: var(--sidebar-needle-size);
 		border-radius: inherit;
-		background-color: var(--color-primary-700);
-		:global(:--dark) & {
-			background-color: var(--color-primary-500);
-		}
+		background-color: var(--sidebar-needle-bg);
 		.danger & {
 			background-color: var(--color-error-800);
 			:global(:--dark) & {

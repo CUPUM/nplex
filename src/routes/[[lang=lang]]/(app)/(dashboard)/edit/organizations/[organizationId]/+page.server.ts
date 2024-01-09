@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { withAuth } from '$lib/auth/guard.server';
+import { guardAuth } from '$lib/auth/guard.server';
 import { organizationGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { organizations, organizationsTranslations } from '$lib/db/schema/public';
@@ -11,7 +11,7 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await withAuth(event);
+	await guardAuth(event);
 	const rawOrg = await dbpool.query.organizations.findFirst({
 		where(f, o) {
 			return o.eq(f.id, event.params.organizationId);
@@ -21,7 +21,7 @@ export const load = async (event) => {
 		},
 	});
 	if (!rawOrg) {
-		throw error(STATUS_CODES.NOT_FOUND, m.org_notFound());
+		error(STATUS_CODES.NOT_FOUND, m.org_notFound());
 	}
 	const org = reduceTranslations(rawOrg);
 	const form = await superValidate(org, organizationGeneralUpdateSchema);
@@ -30,7 +30,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await withAuth(event);
+		await guardAuth(event);
 		const form = await superValidate(event, organizationGeneralUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });

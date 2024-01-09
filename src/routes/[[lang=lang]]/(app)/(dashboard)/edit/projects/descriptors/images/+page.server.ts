@@ -1,5 +1,5 @@
 import { USER_ROLES } from '$lib/auth/constants';
-import { withRole } from '$lib/auth/guard.server';
+import { guardRole } from '$lib/auth/guard.server';
 import {
 	projectImageTemporalitiesUpdateSchema,
 	projectImageTypesUpdateSchema,
@@ -19,7 +19,7 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/client';
 
 export const load = async (event) => {
-	await withRole(event, USER_ROLES.ADMIN);
+	await guardRole(event, USER_ROLES.ADMIN);
 	const data = await dbpool.transaction(async (tx) => {
 		const imageTypes = (
 			await tx.query.projectImageTypes.findMany({
@@ -47,7 +47,7 @@ export const load = async (event) => {
 
 export const actions = {
 	createImageType: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		try {
 			await dbpool.insert(projectImageTypes).values({});
 		} catch (e) {
@@ -56,7 +56,7 @@ export const actions = {
 		}
 	},
 	deleteImageType: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const id = event.url.searchParams.get('imageTypeId');
 		if (!id) {
 			throw fail(STATUS_CODES.BAD_REQUEST);
@@ -69,7 +69,7 @@ export const actions = {
 		}
 	},
 	updateImageTypes: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const form = await superValidate(event, projectImageTypesUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
@@ -94,11 +94,11 @@ export const actions = {
 			});
 		} catch (e) {
 			console.error(e);
-			throw error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur serveur' });
+			error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur serveur' });
 		}
 	},
 	createImageTemporalities: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		try {
 			await dbpool.insert(projectImageTemporalities).values({});
 		} catch (e) {
@@ -107,7 +107,7 @@ export const actions = {
 		}
 	},
 	deleteImageTemporalities: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const id = event.url.searchParams.get('imageTemporalityId');
 		if (!id) {
 			throw fail(STATUS_CODES.BAD_REQUEST);
@@ -120,7 +120,7 @@ export const actions = {
 		}
 	},
 	updateImageTemporalities: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const form = await superValidate(event, projectImageTemporalitiesUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
@@ -148,7 +148,7 @@ export const actions = {
 			});
 		} catch (e) {
 			console.error(e);
-			throw error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur serveur' });
+			error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur serveur' });
 		}
 	},
 };

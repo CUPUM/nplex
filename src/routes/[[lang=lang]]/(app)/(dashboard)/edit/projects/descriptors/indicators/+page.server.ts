@@ -1,5 +1,5 @@
 import { USER_ROLES } from '$lib/auth/constants';
-import { withRole } from '$lib/auth/guard.server';
+import { guardRole } from '$lib/auth/guard.server';
 import { projectExemplarityCategoriesWithIndicatorsUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import {
@@ -16,7 +16,7 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await withRole(event, USER_ROLES.ADMIN);
+	await guardRole(event, USER_ROLES.ADMIN);
 	const exemplarityCategories = (
 		await dbpool.query.projectExemplarityCategories.findMany({
 			with: {
@@ -45,7 +45,7 @@ export const load = async (event) => {
 
 export const actions = {
 	createCategory: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		try {
 			await dbpool.insert(projectExemplarityCategories).values({});
 		} catch (e) {
@@ -53,7 +53,7 @@ export const actions = {
 		}
 	},
 	deleteCategory: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const id = event.url.searchParams.get('categoryId');
 		if (!id) {
 			return fail(STATUS_CODES.BAD_REQUEST);
@@ -67,7 +67,7 @@ export const actions = {
 		}
 	},
 	createIndicator: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const categoryId = event.url.searchParams.get('categoryId');
 		if (!categoryId) {
 			return fail(STATUS_CODES.BAD_REQUEST);
@@ -79,7 +79,7 @@ export const actions = {
 		}
 	},
 	deleteIndicator: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const id = event.url.searchParams.get('indicatorId');
 		if (!id) {
 			return fail(STATUS_CODES.BAD_REQUEST);
@@ -93,7 +93,7 @@ export const actions = {
 		}
 	},
 	update: async (event) => {
-		await withRole(event, USER_ROLES.ADMIN);
+		await guardRole(event, USER_ROLES.ADMIN);
 		const form = await superValidate(event, projectExemplarityCategoriesWithIndicatorsUpdateSchema);
 		if (!form.valid) {
 			console.info(form.errors);

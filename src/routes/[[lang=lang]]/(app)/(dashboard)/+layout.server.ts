@@ -14,7 +14,7 @@ import { and, eq, getTableColumns } from 'drizzle-orm';
 export const load = async (event) => {
 	const session = await event.locals.auth.validate();
 	if (!session) {
-		throw error(STATUS_CODES.UNAUTHORIZED, { message: 'No session found' });
+		error(STATUS_CODES.UNAUTHORIZED, { message: 'No session found' });
 	}
 
 	const editableProjects = dbpool
@@ -49,9 +49,7 @@ export const load = async (event) => {
 
 	return {
 		setout: event.locals.setSetout(SETOUTS.FULL_WIDTH),
-		streamed: {
-			editableProjects,
-			editableOrganizations,
-		},
+		editableProjects,
+		editableOrganizations,
 	};
 };

@@ -46,5 +46,5 @@
 </form>
 
 <style lang="postcss">
-	@import '../../../../dashboard.css';
+	@import '$styles/scoped/dashboard.css';
 </style>

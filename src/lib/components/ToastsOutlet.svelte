@@ -24,7 +24,6 @@
 	export function addErrorToast<T extends SvelteComponent>(
 		props: AddToastProps<Omit<ToastData, 'type'>>
 	) {
-		console.log('dispatching toast!');
 		return helpers.addToast({ ...props, data: { ...props.data, type: TOAST_TYPES.ERROR } });
 	}
 

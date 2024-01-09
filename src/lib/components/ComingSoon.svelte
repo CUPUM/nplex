@@ -5,7 +5,7 @@
 
 <article>
 	<div class="inner">
-		<h1 class="h6"><LangKey>{m.comingSoon()}</LangKey></h1>
+		<h1 class="h6"><LangKey>{m.coming_soon()}</LangKey></h1>
 		<section>
 			<slot />
 		</section>

@@ -47,8 +47,7 @@
 	class:rounded
 	{href}
 	use:navripple
-	on:pointerdown
-	on:keydown
+	on:click
 	{...$$restProps}
 	use:menuaction
 	{...$menu}

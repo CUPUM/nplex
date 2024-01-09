@@ -1,91 +1,40 @@
-import { resolveRoute } from '$app/paths';
 import { page } from '$app/stores';
-import { sourceLanguageTag, type AvailableLanguageTag } from '$i18n/runtime';
+import { availableLanguageTags, sourceLanguageTag, type AvailableLanguageTag } from '$i18n/runtime';
 import type { Page } from '@sveltejs/kit';
 import type { HTMLAnchorAttributes } from 'svelte/elements';
 import { derived } from 'svelte/store';
-import { LANG_PARAM } from './constants';
-/**
- * Extract the localizable part of a given in-app url, i.e. the url parts after the origin.
- */
-function getTail(url: URL) {
-	const str = url.toString();
-	return str.split(url.origin)[1];
-}
 
 /**
- * Create a localizer for un-localized in-app hrefs.
+ * Remove an app-oriented href's lang param.
  */
-export function localize<T extends string | URL>(location: T, lang: AvailableLanguageTag) {
-	const str = typeof location === 'string' ? location : getTail(location);
-	// This is where the locale segment persistence is determined.
-	// As it is, the locale param is prepended whenever the href points to a non-default-locale.
-	// This could be fine-tuned to, for example, account for user's preferences in localstorage / cookies / page.data.
-	return resolveRoute(`/[[${LANG_PARAM}]]${str}`, {
-		[LANG_PARAM]: lang === sourceLanguageTag ? '' : lang,
-	});
-}
-
-/**
- * Remove the locale segment form the current route url.
- */
-export const delangCurrentLocation = derived(page, ($page) => {
-	let tail = $page.url.href.replace($page.url.origin, '');
-	const p = $page.params[LANG_PARAM];
-	if (p) {
-		tail = tail.replace(`/${p}`, '');
+export function removeLang<H extends string>(href: H) {
+	const [_, maybeLang, ...rest] = href.split('/');
+	if (availableLanguageTags.includes(maybeLang as AvailableLanguageTag)) {
+		return `/${rest.join('/')}`;
 	}
-	return tail;
-});
+	return href;
+}
 
 /**
- * Derived store to compose locale-specific url strings.
+ * Apply a lang param to an app-oriented href.
+ *
+ * **Attention**: If a lang param is included in the passed location string, it will be replaced.
  */
-export const langHref = derived(page, ($page) => {
-	return <H extends string>(href: H, lang: AvailableLanguageTag = $page.data.lang) => {
-		return localize(href, lang);
-	};
-});
-
-/**
- * Extracted link deriving logic for use in custom builders (e.g.: loadableLink).
- */
-export function deriveLink($page: Page) {
-	return <H extends string>(
-		/**
-		 * Unlocalized href, i.e. path without root [locale] segment.
-		 */
-		href: H,
-		{
-			lang = $page.data.lang,
-			currentComparison,
-		}: {
-			/**
-			 * Customizable locale, if should differ from current client's locale. Setting to false will
-			 * prevent any automatic localization.
-			 */
-			lang?: AvailableLanguageTag | false;
-			/**
-			 * Comparison strategy used to determine if the constructed link is current page or not.
-			 */
-			currentComparison?: 'loose';
-		} = {}
-	) => {
-		const _href = lang ? localize(href, lang) : href;
-		const [path, hash] = _href.split('#');
-		const currentPage =
-			currentComparison === 'loose'
-				? $page.url.pathname.startsWith(path)
-				: $page.url.pathname === path || undefined;
-		const currentHash = currentPage && '#' + hash === $page.url.hash;
-		return {
-			'href': _href,
-			'hreflang': lang || undefined,
-			'data-current': currentHash ? 'step' : currentPage ? 'page' : undefined,
-			'aria-current': currentHash ? 'step' : currentPage ? 'page' : undefined,
-			// Add more attributes if relevant.
-		} satisfies Partial<HTMLAnchorAttributes>;
-	};
+export function useLang<H extends string>(
+	/**
+	 * Route location agnostic of lang segment.
+	 */
+	href: H,
+	/**
+	 * Custom lang to apply when wishing to target a lang different than the current one.
+	 */
+	lang: AvailableLanguageTag
+) {
+	const noLang = removeLang(href);
+	if (lang === sourceLanguageTag) {
+		return noLang;
+	}
+	return `/${lang}${href}`;
 }
 
 /**
@@ -94,13 +43,51 @@ export function deriveLink($page: Page) {
  *
  * @example <a {...$link('/about')}>About</a>
  *
- * Becomes <a href="..." hreflang="..." data-current="..." .../>
+ * Becomes <a href="..." hreflang="..." aria-current="..." .../>
  */
-export const link = derived(page, deriveLink);
+export const link = derived(page, ($p) => {
+	return <H extends string>(
+		/**
+		 * Location string agnostic of lang segment.
+		 */
+		href: H,
+		{
+			lang = $p.data.lang,
+			current = (p, h) => (p.url.pathname === h ? 'page' : undefined),
+		}: {
+			/**
+			 * Customizable locale, if should differ from current client's locale. Setting to false will
+			 * prevent any automatic localization.
+			 */
+			lang?: AvailableLanguageTag;
+			/**
+			 * Comparison strategy used to determine if the constructed link is current page or not.
+			 */
+			current?: (page: Page, href: H) => 'page' | 'step' | undefined;
+		} = {}
+	) => {
+		const _href = useLang(href, lang);
+		const _current = current($p, href);
+		return {
+			'href': _href,
+			'hreflang': lang || undefined,
+			'data-current': _current,
+			'aria-current': _current,
+			// Add more attributes if relevant.
+		} satisfies Partial<HTMLAnchorAttributes>;
+	};
+});
+
+/**
+ * Get the current href string without lang param.
+ */
+export const noLang = derived(page, ($page) => {
+	return removeLang($page.url.href.replace($page.url.origin, ''));
+});
 
 /**
  * Derived store to compose href string that switches locale while staying on the current page.
  */
-export const langSwitch = derived([delangCurrentLocation, link], ([$delocalizedCurrent, $link]) => {
-	return (lang: AvailableLanguageTag) => $link($delocalizedCurrent, { lang });
+export const langSwitch = derived([noLang, link], ([$noLang, $link]) => {
+	return (lang: AvailableLanguageTag) => $link($noLang, { lang });
 });

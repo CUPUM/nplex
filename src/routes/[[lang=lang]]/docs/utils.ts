@@ -50,7 +50,7 @@ export async function getDocs() {
 		}
 		return docs;
 	} catch (e) {
-		throw error(STATUS_CODES.INTERNAL_SERVER_ERROR);
+		error(STATUS_CODES.INTERNAL_SERVER_ERROR);
 	}
 }
 
@@ -82,6 +82,6 @@ export async function getIndexes() {
 		}
 		return indexes;
 	} catch (e) {
-		throw error(STATUS_CODES.INTERNAL_SERVER_ERROR);
+		error(STATUS_CODES.INTERNAL_SERVER_ERROR);
 	}
 }

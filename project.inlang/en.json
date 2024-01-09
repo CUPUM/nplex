@@ -1,4 +1,5 @@
 {
+	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"unesco_chair": "UNESCO Chair in Urban Landscape",
 	"unesco_chair_long": "UNESCO Chair in Urban Landscape of the University of Montreal",
 	"mode": "Screen mode",
@@ -62,7 +63,7 @@
 	"auth_error": "Internal error",
 	"auth_error_description": "Our server has encountered an error, please try again. Sorry for the inconvenience.",
 	"auth_success": "Successfully logged in",
-	"auth_success_description": "",
+	"auth_success_description": "You are now logged in.",
 	"auth_no_session": "No valid session was found. You must authenticate with an account if you wish to proceed.",
 	"auth_insufficient_role": "Your current user role does not fulfil the requirements to proceed.",
 	"auth_login_title": "Login to your account",
@@ -161,7 +162,7 @@
 	"project_descriptors_create_ownership_type": "Create a new ownership type",
 	"project_descriptors_implantations": "Implantation modes",
 	"project_descriptors_levels": "Building levels",
-	"project_descriptors_images": "Images",
+	"project_descriptors_images": "Image metadata",
 	"project_descriptors_image_types": "Image types",
 	"project_descriptors_create_image_type": "Create an image type",
 	"project_descriptors_image_temporalities": "Image temporalities",
@@ -213,5 +214,8 @@
 	"account_nav_likes": "Likes",
 	"account_nav_settings": "Settings",
 	"account_nav_editor_title": "Manage content",
-	"account_manage": "Manage my account"
+	"account_manage": "Manage my account",
+	"project_descriptors_type_create": "Create a new project type",
+	"project_descriptors_type_title": "Project type title",
+	"project_descriptors_type_description": "Project type description"
 }

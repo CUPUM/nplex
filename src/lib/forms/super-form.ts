@@ -48,6 +48,7 @@ export function superForm<
 			options?.onResult && (await options.onResult(event));
 		},
 		onUpdated(event) {
+			options?.onUpdated && options.onUpdated(event);
 			if (event.form.message) {
 				const { closeDelay, ...data } = event.form.message;
 				data.type = event.form.valid ? TOAST_TYPES.SUCCESS : TOAST_TYPES.ERROR;
@@ -100,9 +101,9 @@ export type SuperForm<
 > = ReturnType<typeof superForm<T, M>>;
 
 /**
- * Create a superform embeded in a dialog window. This helper allows preventing dataloss or
- * unwarranted tainted messages by using the dialog's state rather than navigation events to prompt
- * for user confirmation and to reset the form's data.
+ * Creates a superform to embed in a dialog window. Aims to prevent dataloss or unwarranted tainted
+ * messages by using the dialog's state rather than navigation events to prompt for user
+ * confirmation and to reset the form's data.
  */
 export function superFormDialog<
 	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
@@ -111,17 +112,30 @@ export function superFormDialog<
 	form: SuperValidated<T, M>,
 	{
 		closeOnSuccess = false,
-		taintedMessage = m.confirm_unsaved_data(),
+		taintedMessage,
 		...options
 	}: FormOptions<UnwrapEffects<T>, M> & CreateDialogProps & { closeOnSuccess?: boolean }
 ) {
-	// Controlled state
+	/**
+	 * Controlled state.
+	 */
 	const open = options.open ?? writable(options.defaultOpen ?? false);
+
+	/**
+	 * Saved last successful submission for 1-back reset.
+	 *
+	 * @see https://github.com/ciscoheat/sveltekit-superforms/issues/105
+	 */
+	let saved: SuperValidated<T, M>['data'] | undefined;
 
 	// Superform with base augmented behaviors
 	const superform = superForm(form, {
 		taintedMessage,
 		...options,
+		onUpdated(event) {
+			saved = structuredClone(event.form.data);
+			console.log('saving', saved);
+		},
 		onResult(event) {
 			options.onResult && options.onResult(event);
 			if (event.result.type === 'success') {
@@ -137,10 +151,21 @@ export function superFormDialog<
 		...options,
 		open,
 		onOpenChange(state) {
-			if (taintedMessage && !state.next && get(superform.tainted)) {
-				const confirmed = confirm(taintedMessage);
+			if (
+				taintedMessage !== false &&
+				taintedMessage !== null &&
+				!state.next &&
+				get(superform.tainted)
+			) {
+				const confirmed = confirm(taintedMessage ?? m.confirm_unsaved_data());
 				if (confirmed) {
-					superform.reset();
+					if (saved) {
+						console.log('restoring saved prev');
+						superform.form.set(saved, { taint: 'untaint-all' });
+					} else {
+						console.log('resetting');
+						superform.reset();
+					}
 				}
 				return !confirmed;
 			}
@@ -151,10 +176,13 @@ export function superFormDialog<
 	return {
 		...superform,
 		...dialog,
+		states: {
+			...dialog.states,
+			fields: superform.states,
+		},
 		elements: {
 			...dialog.elements,
 			...superform.elements,
-			// close,
 		},
 	};
 }

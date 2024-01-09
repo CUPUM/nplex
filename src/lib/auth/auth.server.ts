@@ -37,20 +37,16 @@ export const auth = lucia({
 	// },
 });
 
-export const githubAuth = github(auth, {
-	clientId: GITHUB_CLIENT_ID,
-	clientSecret: GITHUB_CLIENT_SECRET,
-});
-
-export const googleAuth = google(auth, {
-	clientId: GOOGLE_CLIENT_ID,
-	clientSecret: GOOGLE_CLIENT_SECRET,
-	redirectUri: `${DOMAIN_NAME}/login/google/callback`,
-});
-
 export const integrations = {
-	[OAUTH_PROVIDERS.GITHUB]: githubAuth,
-	[OAUTH_PROVIDERS.GOOGLE]: googleAuth,
+	[OAUTH_PROVIDERS.GITHUB]: github(auth, {
+		clientId: GITHUB_CLIENT_ID,
+		clientSecret: GITHUB_CLIENT_SECRET,
+	}),
+	[OAUTH_PROVIDERS.GOOGLE]: google(auth, {
+		clientId: GOOGLE_CLIENT_ID,
+		clientSecret: GOOGLE_CLIENT_SECRET,
+		redirectUri: `${DOMAIN_NAME}/login/google/callback`,
+	}),
 } as const;
 
 export type Auth = typeof auth;

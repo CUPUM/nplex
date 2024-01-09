@@ -7,7 +7,7 @@
 	import { Files, Tags } from 'lucide-svelte';
 </script>
 
-<SidebarGroup>
+<SidebarGroup {...$link('/edit/projects/descriptors')}>
 	<svelte:fragment slot="heading">
 		<LangKey>{m.project_descriptors()}</LangKey>
 	</svelte:fragment>
@@ -20,7 +20,7 @@
 	<SidebarItem {...$link('/edit/projects/descriptors/indicators')}>
 		<LangKey>{m.project_descriptors_indicators()}</LangKey>
 	</SidebarItem>
-	<SidebarItem {...$link('/edit/projects/descriptors/ownerships', { currentComparison: 'loose' })}>
+	<SidebarItem {...$link('/edit/projects/descriptors/ownerships')}>
 		<LangKey>{m.project_descriptors_ownership_types()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/implantations')}>

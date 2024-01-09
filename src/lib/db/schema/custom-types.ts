@@ -4,7 +4,7 @@ import { isAuthProvider, isUserRole } from '$lib/auth/validation';
 import { isAvailableLang } from '$lib/i18n/validation';
 import { GEOMETRY_TYPES, SRIDS, type SRID } from '$lib/utils/constants';
 import type { Coordinate } from '$lib/utils/gis';
-import { customType } from 'drizzle-orm/pg-core';
+import { PgColumnBuilder, customType } from 'drizzle-orm/pg-core';
 import type { ReadonlyTuple } from 'type-fest';
 import { z } from 'zod';
 import { SQL_LANGUAGES } from '../constants';
@@ -137,6 +137,22 @@ export const tsvector = customType<{
 });
 
 /**
+ * DB type wrapper for generated columns.
+ *
+ * @see
+ * @see https://github.com/drizzle-team/drizzle-orm/pull/1509
+ */
+export function generated<T extends PgColumnBuilder>(type: T) {
+	// const {dataType} = type._;
+	// return customType<{
+	// 	data: typeof dataType;
+
+	// }>()
+
+	return type;
+}
+
+/**
  * Generic range zod schema.
  */
 export function rangeSchema({
@@ -148,6 +164,8 @@ export function rangeSchema({
 	max?: number;
 	/**
 	 * Should min and max order be forced?
+	 *
+	 * @default true
 	 */
 	ordered?: boolean;
 } = {}) {
@@ -155,10 +173,10 @@ export function rangeSchema({
 		min != null && max != null
 			? z.number().min(min).max(max)
 			: min != null
-			  ? z.number().min(min)
-			  : max != null
-			    ? z.number().max(max)
-			    : z.number();
+				? z.number().min(min)
+				: max != null
+					? z.number().max(max)
+					: z.number();
 	return z.union([
 		z.tuple([boundSchema, boundSchema]).refine(
 			(v) => {
@@ -256,10 +274,10 @@ export const daterange = customType<{ data: [Date, Date] }>({
 type Cube<L extends number> = L extends 1
 	? number
 	: L extends 2
-	  ? [x: number, y: number]
-	  : L extends 3
-	    ? [x: number, y: number, z: number]
-	    : ReadonlyTuple<number, L>;
+		? [x: number, y: number]
+		: L extends 3
+			? [x: number, y: number, z: number]
+			: ReadonlyTuple<number, L>;
 
 /**
  * Implements cube extension type for 3d vectors.

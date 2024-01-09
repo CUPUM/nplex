@@ -1,6 +1,6 @@
 import { S3_BUCKET_NAME } from '$env/static/private';
 import * as m from '$i18n/messages';
-import { withAuth } from '$lib/auth/guard.server';
+import { guardAuth } from '$lib/auth/guard.server';
 import { projectsGalleryUpdateSchema, projectsImagesInsertManySchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import {
@@ -18,7 +18,7 @@ import { and, eq } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await withAuth(event);
+	await guardAuth(event);
 	const images = withTranslations(projectsImages, projectsImagesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
@@ -45,7 +45,7 @@ export const actions = {
 	 * using a presigned url on the client's side.
 	 */
 	insert: async (event) => {
-		const session = await withAuth(event);
+		const session = await guardAuth(event);
 		const insertImagesForm = await superValidate(event, projectsImagesInsertManySchema);
 		if (!insertImagesForm.valid) {
 			console.error(insertImagesForm.errors);
@@ -81,7 +81,7 @@ export const actions = {
 	 * Delete a project image.
 	 */
 	delete: async (event) => {
-		await withAuth(event);
+		await guardAuth(event);
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { deleteId } = galleryUpdateForm.data;
 		try {
@@ -110,7 +110,7 @@ export const actions = {
 				if (data.$metadata.httpStatusCode && data.$metadata.httpStatusCode >= 400) {
 					tx.rollback();
 					console.error(data.$metadata);
-					throw error(STATUS_CODES.INTERNAL_SERVER_ERROR);
+					error(STATUS_CODES.INTERNAL_SERVER_ERROR);
 				}
 			});
 		} catch (e) {
@@ -122,7 +122,7 @@ export const actions = {
 	 * Promote image to project banner.
 	 */
 	promote: async (event) => {
-		await withAuth(event);
+		await guardAuth(event);
 		console.log('promoting');
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { bannerId } = galleryUpdateForm.data;
@@ -154,7 +154,7 @@ export const actions = {
 	 * Demote image from project banner.
 	 */
 	demote: async (event) => {
-		await withAuth(event);
+		await guardAuth(event);
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { bannerId } = galleryUpdateForm.data;
 		try {

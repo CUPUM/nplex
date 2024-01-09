@@ -1,7 +1,12 @@
 import * as m from '$i18n/messages';
-import { withContentManagementRole } from '$lib/auth/guard.server';
+import { guardRoleContentManagement } from '$lib/auth/guard.server';
 import { dbpool } from '$lib/db/db.server';
-import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public';
+import {
+	projectImplantationTypes,
+	projectImplantationTypesTranslations,
+	projectTypes,
+	projectTypesTranslations,
+} from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
 import { withTranslations } from '$lib/db/utils.server';
 import { withTranslationsSchema } from '$lib/db/validation.server';
@@ -17,8 +22,8 @@ import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
 const updateSchema = withTranslationsSchema(
-	createInsertSchema(projectBuilding).required({ id: true }),
-	createInsertSchema(projectTypesTranslations)
+	createInsertSchema(projectImplantationTypes).required({ id: true }),
+	createInsertSchema(projectImplantationTypesTranslations)
 );
 
 const createSchema = updateSchema.omit({ id: true });
@@ -26,7 +31,7 @@ const createSchema = updateSchema.omit({ id: true });
 const deleteSchema = z.object({ ownershipId: z.string() });
 
 export const load = async (event) => {
-	await withContentManagementRole(event);
+	await guardRoleContentManagement(event);
 	const types = await withTranslations(projectTypes, projectTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
@@ -41,7 +46,7 @@ export const load = async (event) => {
 
 export const actions = {
 	create: async (event) => {
-		await withContentManagementRole(event);
+		await guardRoleContentManagement(event);
 		const form = await superValidate(event, createSchema);
 		if (!form.valid) {
 			return message(form, messageInvalidProjectDescriptor(m.project_type()));
@@ -64,7 +69,7 @@ export const actions = {
 		return message(form, messageServerSuccess());
 	},
 	update: async (event) => {
-		await withContentManagementRole(event);
+		await guardRoleContentManagement(event);
 		const form = await superValidate(event, updateSchema);
 		if (!form.valid) {
 			return message(form, messageInvalidProjectDescriptor(m.project_type()));
@@ -90,7 +95,7 @@ export const actions = {
 		return message(form, messageServerSuccess());
 	},
 	delete: async (event) => {
-		await withContentManagementRole(event);
+		await guardRoleContentManagement(event);
 		const form = await superValidate(event, deleteSchema);
 		if (!form.valid) {
 			return message(form, messageInvalidProjectDescriptor(m.project_type()));

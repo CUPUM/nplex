@@ -1,4 +1,5 @@
 {
+	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"unesco_chair": "Chaire UNESCO en paysage urbain",
 	"unesco_chair_long": "Chaire UNESCO en paysage urbain de l’Université de Montréal",
 	"mode": "Mode d’écran",
@@ -62,7 +63,7 @@
 	"auth_error": "Erreur lors de l'authentification",
 	"auth_error_description": "Nous avons eu un problème lors du traitement de votre requête, veuillez essayer à nouveau. Désolé pour cet inconvénient.",
 	"auth_success": "Connecté avec succès",
-	"auth_success_description": "",
+	"auth_success_description": "Vous êtes maintenant connecté à votre compte.",
 	"auth_no_session": "Aucune session valide trouvée. Vous devez être authentifié avec un compte pour poursuivre.",
 	"auth_insufficient_role": "Votre rôle d’utilisateur ne vous permet pas de continuer.",
 	"auth_login_title": "Connectez-vous à votre compte",
@@ -161,7 +162,7 @@
 	"project_descriptors_create_ownership_type": "Créer un type de propriétaires",
 	"project_descriptors_implantations": "Modes d’implantation",
 	"project_descriptors_levels": "Étages de bâtiment",
-	"project_descriptors_images": "Images",
+	"project_descriptors_images": "Métadonnées d'image",
 	"project_descriptors_image_types": "Types d’images",
 	"project_descriptors_create_image_type": "Créer un type d’image",
 	"project_descriptors_image_temporalities": "Temporalitées d’image",
@@ -213,5 +214,8 @@
 	"account_nav_likes": "Favoris",
 	"account_nav_settings": "Paramètres",
 	"account_nav_editor_title": "Gestion de fiches",
-	"account_manage": "Gestion de mon compte"
+	"account_manage": "Gestion de mon compte",
+	"project_descriptors_type_create": "Créer un type de projet",
+	"project_descriptors_type_title": "Titre du type de projet",
+	"project_descriptors_type_description": "Description du type de projet"
 }

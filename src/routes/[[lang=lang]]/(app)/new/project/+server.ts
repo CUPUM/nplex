@@ -6,7 +6,7 @@ import { error } from '@sveltejs/kit';
 export const GET = async (event) => {
 	const session = await event.locals.auth.validate();
 	if (!session) {
-		throw error(STATUS_CODES.UNAUTHORIZED);
+		error(STATUS_CODES.UNAUTHORIZED);
 	}
 	const [project] = await dbhttp
 		.insert(projects)
@@ -15,5 +15,5 @@ export const GET = async (event) => {
 			updatedById: session.user.id,
 		})
 		.returning({ id: projects.id });
-	throw event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, `/edit/projects/${project.id}`);
+	event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, `/edit/projects/${project.id}`);
 };
