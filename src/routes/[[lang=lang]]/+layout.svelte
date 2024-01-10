@@ -1,29 +1,30 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { invalidate } from '$app/navigation';
 	import { setLanguageTag } from '$i18n/runtime';
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import ToastsOutlet from '$lib/components/ToastsOutlet.svelte';
-	import { lang } from '$lib/i18n/store';
 	import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
 	import { onMount } from 'svelte';
 
-	let loading = true;
+	export let data;
+
+	let mounted = false;
+	let prevLang = data.lang;
 
 	onMount(() => {
-		loading = false;
+		mounted = true;
 	});
 
-	if (browser) {
-		lang.subscribe((v) => {
-			setLanguageTag(v);
-			invalidate(LOAD_DEPENDENCIES.Lang);
-		});
+	setLanguageTag(data.lang);
+	$: if (data.lang !== prevLang) {
+		prevLang = data.lang;
+		setLanguageTag(data.lang);
+		invalidate(LOAD_DEPENDENCIES.Lang);
 	}
 </script>
 
-{#if loading}
+{#if !mounted}
 	<div class="loading">
 		<Spinner />
 	</div>

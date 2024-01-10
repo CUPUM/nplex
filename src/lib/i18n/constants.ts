@@ -10,5 +10,3 @@ export const LANG_DETAILS = {
 		label: 'Fr',
 	},
 } satisfies { [L in AvailableLanguageTag]: { name: string; label: string } };
-
-export const LANG_PARAM = 'lang';
