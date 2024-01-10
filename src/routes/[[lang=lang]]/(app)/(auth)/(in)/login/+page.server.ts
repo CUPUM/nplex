@@ -3,6 +3,7 @@ import { auth } from '$lib/auth/auth.server';
 import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { LuciaError } from 'lucia';
+import { redirect } from 'sveltekit-flash-message/server';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
@@ -15,9 +16,9 @@ export const load = async (event) => {
 	const session = await event.locals.auth.validate();
 	if (session) {
 		if (session.user.email && !session.user.emailVerified) {
-			event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
+			redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
 		}
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
 	const form = await superValidate(emailPasswordLoginSchema);
 	return { form };
@@ -63,9 +64,14 @@ export const actions = {
 				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
 			);
 		}
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', {
-			title: m.auth_success(),
-			description: m.auth_success_description(),
-		});
+		redirect(
+			STATUS_CODES.MOVED_TEMPORARILY,
+			'/i',
+			{
+				title: m.auth_success(),
+				description: m.auth_success_description(),
+			},
+			event
+		);
 	},
 };

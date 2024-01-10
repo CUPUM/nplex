@@ -4,7 +4,7 @@ import { isEmailUser } from '$lib/auth/validation';
 import { dbpool } from '$lib/db/db.server';
 import { users } from '$lib/db/schema/accounts';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
@@ -18,7 +18,7 @@ export const load = async (event) => {
 	if (session) {
 		// Redirect authed user to their account's settings page
 		// where they can update password without using a link.
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
 	const form = superValidate(passwordResetSchema);
 	return { form };
@@ -39,7 +39,7 @@ export const actions = {
 			if (!user) {
 				return message(
 					form,
-					{ title: m.auth_error(), description: m.auth_noUserFound() },
+					{ title: m.auth_error(), description: m.auth_no_user_found() },
 					{
 						status: STATUS_CODES.BAD_REQUEST,
 					}
@@ -49,7 +49,7 @@ export const actions = {
 				throw new Error('User email is null');
 			}
 			await sendPasswordResetLink(user, event);
-			return message(form, { title: m.success(), description: m.auth_verifyEmailSent() });
+			return message(form, { title: m.success(), description: m.auth_verify_email_sent() });
 		} catch (error) {
 			console.error(error);
 			return message(

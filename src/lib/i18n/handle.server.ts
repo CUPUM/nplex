@@ -7,8 +7,8 @@ import { useLang } from './link';
  * Handle hook for:
  *
  * - Setting SSR lang.
- * - Transforming html lang attribute placeholder.
- * - Rewriting unlocalized SSR redirects lang segment in location.
+ * - Transforming html element lang attribute placeholder.
+ * - Rewriting unlocalized SSR redirects with adequate lang segment in location.
  */
 const handle = (async ({ event, resolve }) => {
 	event.locals.lang = getEventLang(event);

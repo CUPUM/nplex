@@ -13,6 +13,7 @@ import {
 	messageServerSuccess,
 } from '$lib/forms/messages';
 import { STATUS_CODES } from '$lib/utils/constants';
+import { redirect } from 'sveltekit-flash-message/server';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
 const createSchema = withTranslationsSchema(
@@ -51,10 +52,11 @@ export const actions = {
 		} catch (e) {
 			return message(form, messageServerError());
 		}
-		event.locals.redirect(
+		redirect(
 			STATUS_CODES.MOVED_TEMPORARILY,
 			'/edit/projects/descriptors/ownerships',
-			messageServerSuccess()
+			messageServerSuccess(),
+			event
 		);
 	},
 };

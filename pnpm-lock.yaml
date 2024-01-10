@@ -24,8 +24,8 @@ dependencies:
     specifier: ^0.68.0
     version: 0.68.0(svelte@4.2.8)
   '@neondatabase/serverless':
-    specifier: ^0.6.1
-    version: 0.6.1
+    specifier: ^0.7.2
+    version: 0.7.2
   '@turf/turf':
     specifier: ^6.5.0
     version: 6.5.0
@@ -40,7 +40,7 @@ dependencies:
     version: 1.2.0
   drizzle-orm:
     specifier: ^0.29.3
-    version: 0.29.3(@neondatabase/serverless@0.6.1)(postgres@3.4.3)
+    version: 0.29.3(@neondatabase/serverless@0.7.2)(postgres@3.4.3)
   drizzle-zod:
     specifier: ^0.5.1
     version: 0.5.1(drizzle-orm@0.29.3)(zod@3.22.4)
@@ -51,8 +51,8 @@ dependencies:
     specifier: ^2.7.6
     version: 2.7.6
   lucide-svelte:
-    specifier: ^0.308.0
-    version: 0.308.0(svelte@4.2.8)
+    specifier: ^0.309.0
+    version: 0.309.0(svelte@4.2.8)
   maplibre-gl:
     specifier: ^3.6.2
     version: 3.6.2
@@ -76,7 +76,7 @@ dependencies:
     version: 0.0.4
   sveltekit-flash-message:
     specifier: ^2.3.1
-    version: 2.3.1(@sveltejs/kit@2.1.2)(svelte@4.2.8)
+    version: 2.3.1(@sveltejs/kit@2.2.0)(svelte@4.2.8)
   vite-plugin-watch:
     specifier: ^0.2.0
     version: 0.2.0
@@ -102,16 +102,16 @@ devDependencies:
     version: 0.3.0(@melt-ui/svelte@0.68.0)(svelte@4.2.8)
   '@sveltejs/adapter-auto':
     specifier: ^3.1.0
-    version: 3.1.0(@sveltejs/kit@2.1.2)
+    version: 3.1.0(@sveltejs/kit@2.2.0)
   '@sveltejs/adapter-node':
     specifier: ^2.1.0
-    version: 2.1.0(@sveltejs/kit@2.1.2)
+    version: 2.1.0(@sveltejs/kit@2.2.0)
   '@sveltejs/adapter-vercel':
     specifier: ^4.0.4
-    version: 4.0.4(@sveltejs/kit@2.1.2)
+    version: 4.0.4(@sveltejs/kit@2.2.0)
   '@sveltejs/kit':
-    specifier: ^2.1.2
-    version: 2.1.2(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
+    specifier: ^2.2.0
+    version: 2.2.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
   '@sveltejs/vite-plugin-svelte':
     specifier: ^3.0.1
     version: 3.0.1(svelte@4.2.8)(vite@5.0.11)
@@ -192,7 +192,7 @@ devDependencies:
     version: 2.0.1
   sveltekit-superforms:
     specifier: ^1.13.2
-    version: 1.13.2(@sveltejs/kit@2.1.2)(svelte@4.2.8)(zod@3.22.4)
+    version: 1.13.2(@sveltejs/kit@2.2.0)(svelte@4.2.8)(zod@3.22.4)
   tsconfig-paths:
     specifier: ^4.2.0
     version: 4.2.0
@@ -2285,8 +2285,8 @@ packages:
       nanoid: 5.0.4
       svelte: 4.2.8
 
-  /@neondatabase/serverless@0.6.1:
-    resolution: {integrity: sha512-rZIyWf27WxH4eW0ZRDQT2PxUJH3AphNVEnO4x1AGjBW6XrguH3ChLokup0gNGrX8cxDbP0UyduI7qdy4OLos+A==}
+  /@neondatabase/serverless@0.7.2:
+    resolution: {integrity: sha512-wU3WA2uTyNO7wjPs3Mg0G01jztAxUxzd9/mskMmtPwPTjf7JKWi9AW5/puOGXLxmZ9PVgRFeBVRVYq5nBPhsCg==}
     dependencies:
       '@types/pg': 8.6.6
     dev: false
@@ -3191,16 +3191,16 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@sveltejs/adapter-auto@3.1.0(@sveltejs/kit@2.1.2):
+  /@sveltejs/adapter-auto@3.1.0(@sveltejs/kit@2.2.0):
     resolution: {integrity: sha512-igS5hqCwdiXWb8NoWzThKCVQQj9tKgUkbTtzfxBPgSLOyFjkiGNDX0SgCoY2QIUWBqOkfGTOqGlrW5Ynw9oUvw==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
     dependencies:
-      '@sveltejs/kit': 2.1.2(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
+      '@sveltejs/kit': 2.2.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
       import-meta-resolve: 4.0.0
     dev: true
 
-  /@sveltejs/adapter-node@2.1.0(@sveltejs/kit@2.1.2):
+  /@sveltejs/adapter-node@2.1.0(@sveltejs/kit@2.2.0):
     resolution: {integrity: sha512-6R4TyCtyfxbxqxjab/18TwpPlqMmPP9i+SE+9xdQFmJ0/rKRtFuNs/lwm2nx4qzKxgRA+cjN8KPKsXQuFPbGbQ==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
@@ -3208,16 +3208,16 @@ packages:
       '@rollup/plugin-commonjs': 25.0.7(rollup@4.9.4)
       '@rollup/plugin-json': 6.1.0(rollup@4.9.4)
       '@rollup/plugin-node-resolve': 15.2.3(rollup@4.9.4)
-      '@sveltejs/kit': 2.1.2(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
+      '@sveltejs/kit': 2.2.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
       rollup: 4.9.4
     dev: true
 
-  /@sveltejs/adapter-vercel@4.0.4(@sveltejs/kit@2.1.2):
+  /@sveltejs/adapter-vercel@4.0.4(@sveltejs/kit@2.2.0):
     resolution: {integrity: sha512-2MMThT6eROTqAGmx81Xv+tafhpetQfRUDIsboFiGgkFoaxcmoTzW4t9GyXZdMY8xl1YOdvAnZXcCgacYzmVWVw==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
     dependencies:
-      '@sveltejs/kit': 2.1.2(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
+      '@sveltejs/kit': 2.2.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
       '@vercel/nft': 0.26.2
       esbuild: 0.19.11
     transitivePeerDependencies:
@@ -3225,8 +3225,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit@2.1.2(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11):
-    resolution: {integrity: sha512-xVzjhJwEhUN7qHQY3rqPZ3OZmTmCav6Dwl/QYgTSjkljOl7HC/G0UWyfEc83YvDT0YW5E8k5m+Rnc5KjLmTKnQ==}
+  /@sveltejs/kit@2.2.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11):
+    resolution: {integrity: sha512-A5VvfynqKBVWib/k/g1+6TIRgq6EsHQe7Xte8QgLssk79DZDGHWn3IB1McHFzGbPVkcC4dhf43CfzB20y4dUEA==}
     engines: {node: '>=18.13'}
     hasBin: true
     requiresBuild: true
@@ -4868,7 +4868,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001576
-      electron-to-chromium: 1.4.625
+      electron-to-chromium: 1.4.626
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.22.2)
     dev: true
@@ -5409,7 +5409,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.29.3(@neondatabase/serverless@0.6.1)(postgres@3.4.3):
+  /drizzle-orm@0.29.3(@neondatabase/serverless@0.7.2)(postgres@3.4.3):
     resolution: {integrity: sha512-uSE027csliGSGYD0pqtM+SAQATMREb3eSM/U8s6r+Y0RFwTKwftnwwSkqx3oS65UBgqDOM0gMTl5UGNpt6lW0A==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -5480,7 +5480,7 @@ packages:
       sqlite3:
         optional: true
     dependencies:
-      '@neondatabase/serverless': 0.6.1
+      '@neondatabase/serverless': 0.7.2
       postgres: 3.4.3
     dev: false
 
@@ -5490,7 +5490,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.29.3(@neondatabase/serverless@0.6.1)(postgres@3.4.3)
+      drizzle-orm: 0.29.3(@neondatabase/serverless@0.7.2)(postgres@3.4.3)
       zod: 3.22.4
     dev: false
 
@@ -5519,8 +5519,8 @@ packages:
       semver: 7.5.4
     dev: false
 
-  /electron-to-chromium@1.4.625:
-    resolution: {integrity: sha512-DENMhh3MFgaPDoXWrVIqSPInQoLImywfCwrSmVl3cf9QHzoZSiutHwGaB/Ql3VkqcQV30rzgdM+BjKqBAJxo5Q==}
+  /electron-to-chromium@1.4.626:
+    resolution: {integrity: sha512-f7/be56VjRRQk+Ric6PmIrEtPcIqsn3tElyAu9Sh6egha2VLJ82qwkcOdcnT06W+Pb6RUulV1ckzrGbKzVcTHg==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -6673,8 +6673,8 @@ packages:
     resolution: {integrity: sha512-xyRkNtevf0DUM4nGC6F2nCFFNphZ1qqBrfWwAgPa9zkpQsVJ/hN32I8zAY+pm+ZKWPPS/C/Sqqmo2LreSCzg7w==}
     dev: false
 
-  /lucide-svelte@0.308.0(svelte@4.2.8):
-    resolution: {integrity: sha512-REknOvkuvSYAmNYFtMvqD96K8AHtE7J8MUIMJ/SxkrryGNcYmnUQt4GlNBk/+MGgAh+MePGRQR86aw+z6U5JvA==}
+  /lucide-svelte@0.309.0(svelte@4.2.8):
+    resolution: {integrity: sha512-+t85+5Y696FVDoJHiiMhJGalv+UiWUX46gMudOQfYrVGjsyC2MGSZRNAGAHkdykA4RJSh/wUtSgnTgCmd0Swvw==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
@@ -8551,24 +8551,24 @@ packages:
       magic-string: 0.30.5
       periscopic: 3.1.0
 
-  /sveltekit-flash-message@2.3.1(@sveltejs/kit@2.1.2)(svelte@4.2.8):
+  /sveltekit-flash-message@2.3.1(@sveltejs/kit@2.2.0)(svelte@4.2.8):
     resolution: {integrity: sha512-QQ48a1kh8Qj8b6mkqzFOtU91KqxCidqP2kgD7OdIO/hZ+YZ+3lJJC9qeSpCX8jsyQ2wp0whnXXTlYfWjxOclhg==}
     peerDependencies:
       '@sveltejs/kit': 1.x || 2.x
       svelte: 3.x || 4.x
     dependencies:
-      '@sveltejs/kit': 2.1.2(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
+      '@sveltejs/kit': 2.2.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
       svelte: 4.2.8
     dev: false
 
-  /sveltekit-superforms@1.13.2(@sveltejs/kit@2.1.2)(svelte@4.2.8)(zod@3.22.4):
+  /sveltekit-superforms@1.13.2(@sveltejs/kit@2.2.0)(svelte@4.2.8)(zod@3.22.4):
     resolution: {integrity: sha512-5PKnL1v+9P3G6HPissMlAyV7bNjvrPAkfkAEgJcrCH5lSkaw23Wf8obUMD4EDwLp3b5d6J7JPQCR6hYUsi2BLg==}
     peerDependencies:
       '@sveltejs/kit': 1.x || 2.x
       svelte: 3.x || 4.x
       zod: 3.x
     dependencies:
-      '@sveltejs/kit': 2.1.2(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
+      '@sveltejs/kit': 2.2.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.11)
       svelte: 4.2.8
       zod: 3.22.4
     dev: true

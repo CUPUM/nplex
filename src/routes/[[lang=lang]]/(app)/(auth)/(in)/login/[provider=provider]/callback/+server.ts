@@ -9,6 +9,7 @@ import { STATUS_CODES } from '$lib/utils/constants';
 import { OAuthRequestError } from '@lucia-auth/oauth';
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
+import { redirect } from 'sveltekit-flash-message/server';
 
 /**
  * @todo Extract provider user data getters into helpers instead of ternary ops.
@@ -17,7 +18,7 @@ import { eq } from 'drizzle-orm';
  */
 export const GET = async (event) => {
 	if (!isSupportedOAuthProvider(event.params.provider)) {
-		error(STATUS_CODES.BAD_REQUEST, { message: m.auth_unsupportedProvider() });
+		error(STATUS_CODES.BAD_REQUEST, { message: m.auth_unsupported_provider() });
 	}
 
 	/**
@@ -27,7 +28,7 @@ export const GET = async (event) => {
 	 */
 	const session = await event.locals.auth.validate();
 	if (session) {
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
+		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
 	}
 
 	/**
@@ -38,7 +39,7 @@ export const GET = async (event) => {
 	const code = event.url.searchParams.get('code');
 	if (!storedState || !state || storedState !== state || !code) {
 		error(STATUS_CODES.BAD_REQUEST, {
-			message: m.auth_incorrectProviderState({
+			message: m.auth_incorrect_provider_state({
 				provider: OAUTH_PROVIDERS_DETAILS[event.params.provider].name,
 			}),
 		});
@@ -66,7 +67,7 @@ export const GET = async (event) => {
 				if (existingEmailUser) {
 					if (!existingEmailUser.emailVerified) {
 						error(STATUS_CODES.CONFLICT, {
-							message: m.auth_emailAlreadyUsedAndUnverified({ email: verifiedOAuthEmail }),
+							message: m.auth_email_already_used_and_unverified({ email: verifiedOAuthEmail }),
 						});
 					}
 					return existingEmailUser;
@@ -100,10 +101,13 @@ export const GET = async (event) => {
 			message: e instanceof Error ? e.message : '',
 		});
 	}
-	event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i', [
+	redirect(
+		STATUS_CODES.MOVED_TEMPORARILY,
+		'/i',
 		{
 			title: m.auth_success(),
-			description: m.auth_successDescription(),
+			description: m.auth_success_description(),
 		},
-	]);
+		event
+	);
 };

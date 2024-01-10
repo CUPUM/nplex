@@ -4,7 +4,7 @@ import { dbpool } from '$lib/db/db.server';
 import { organizations, projects, projectsImages } from '$lib/db/schema/public';
 import { random } from '$lib/db/sql.server';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 
 export const load = async () => {
 	const randomImages = dbpool.select().from(projectsImages).orderBy(random()).limit(10);
@@ -28,6 +28,6 @@ export const actions = {
 		}
 		await auth.invalidateSession(session.sessionId);
 		event.locals.auth.setSession(null);
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
+		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
 	},
 };

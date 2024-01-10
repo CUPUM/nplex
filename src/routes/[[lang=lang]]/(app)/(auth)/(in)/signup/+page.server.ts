@@ -5,7 +5,7 @@ import { isEmailUser } from '$lib/auth/validation';
 import { dbpool } from '$lib/db/db.server';
 import { keys, users } from '$lib/db/schema/accounts';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { createKeyId } from 'lucia';
 import { generateLuciaPasswordHash } from 'lucia/utils';
 import { superValidate } from 'sveltekit-superforms/server';
@@ -32,9 +32,9 @@ export const load = async (event) => {
 	const session = await event.locals.auth.validate();
 	if (session) {
 		if (session.user.email && !session.user.emailVerified) {
-			event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
+			redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
 		}
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
 	const form = await superValidate(emailPasswordSignupSchema);
 	return { form };
@@ -82,6 +82,6 @@ export const actions = {
 			console.error(err);
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });
 		}
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
+		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
 	},
 };

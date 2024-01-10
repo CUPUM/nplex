@@ -1,15 +1,15 @@
 import { sendEmailVerificationLink } from '$lib/auth/emails.server';
 import { isEmailUser } from '$lib/auth/validation';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 
 export const load = async (event) => {
 	const session = await event.locals.auth.validate();
 	if (!session) {
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/login');
+		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/login');
 	}
 	if (session.user.emailVerified) {
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
 	return {};
 };
@@ -18,10 +18,10 @@ export const actions = {
 	default: async (event) => {
 		const session = await event.locals.auth.validate();
 		if (!session) {
-			event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/login');
+			redirect(STATUS_CODES.MOVED_TEMPORARILY, '/login');
 		}
 		if (session.user.emailVerified) {
-			event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+			redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 		}
 		try {
 			if (!isEmailUser(session.user)) {

@@ -4,12 +4,12 @@ import { integrations } from '$lib/auth/auth.server';
 import { OAUTH_PROVIDERS_STATE_COOKIE } from '$lib/auth/constants';
 import { isSupportedOAuthProvider } from '$lib/auth/validation';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 
 export const GET = async (event) => {
 	if (!isSupportedOAuthProvider(event.params.provider)) {
 		error(STATUS_CODES.BAD_REQUEST, {
-			message: m.auth_unsupportedProvider(),
+			message: m.auth_unsupported_provider(),
 		});
 	}
 
@@ -20,7 +20,7 @@ export const GET = async (event) => {
 	 */
 	const session = await event.locals.auth.validate();
 	if (session) {
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
+		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
 	}
 
 	/**

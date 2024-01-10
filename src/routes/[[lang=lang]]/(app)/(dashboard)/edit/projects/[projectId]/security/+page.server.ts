@@ -3,7 +3,7 @@ import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { dbpool } from '$lib/db/db.server';
 import { projects } from '$lib/db/schema/public';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 
 export const load = async (event) => {
@@ -29,6 +29,6 @@ export const actions = {
 		} catch (e) {
 			error(STATUS_CODES.INTERNAL_SERVER_ERROR);
 		}
-		event.locals.redirect(STATUS_CODES.MOVED_PERMANENTLY, '/edit/projects');
+		redirect(STATUS_CODES.MOVED_PERMANENTLY, '/edit/projects');
 	},
 };

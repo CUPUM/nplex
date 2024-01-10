@@ -3,7 +3,7 @@ import { auth } from '$lib/auth/auth.server';
 import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { validatePasswordResetToken } from '$lib/auth/token.server';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
@@ -61,6 +61,6 @@ export const actions = {
 				}
 			);
 		}
-		event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
+		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	},
 };

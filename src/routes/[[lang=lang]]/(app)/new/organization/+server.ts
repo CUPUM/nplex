@@ -1,7 +1,7 @@
 import { dbhttp } from '$lib/db/db.server';
 import { organizations } from '$lib/db/schema/public';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 
 export const GET = async (event) => {
 	const session = await event.locals.auth.validate();
@@ -15,5 +15,5 @@ export const GET = async (event) => {
 			updatedById: session.user.id,
 		})
 		.returning({ id: organizations.id });
-	event.locals.redirect(STATUS_CODES.MOVED_TEMPORARILY, `/edit/organizations/${org.id}`);
+	redirect(STATUS_CODES.MOVED_TEMPORARILY, `/edit/organizations/${org.id}`);
 };
