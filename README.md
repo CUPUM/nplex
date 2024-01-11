@@ -1,16 +1,12 @@
-<h1 align="center">Nplex</h1>
+<h1 align="center">
+  <img width="250" height="auto" src="/static/logo.svg" alt="Nplex">
+</h1>
 
 <p align="center">
-  <img width="250" height="auto" src="/static/logo.svg" alt="nplex">
+  See it live at <a href="www.nplex.design"><b>nplex.design</b></a>
 </p>
 
-<p align="center">
-  <a href="www.nplex.design"><b>Explore</b></a>
-</p>
-<p align="center">
-  <small>:copyright: UNESCO Chair in Landscape and Environement</small>
-</p>
-
+<!-- 
 ## Stack & hosting
 
 The app is built using:
@@ -29,9 +25,9 @@ The app is built using:
 The production instance is deployed using:
 
 | Environement | Use                    |
-| :----------- | :--------------------- |
+| :----------- | :--------------------- | --- |
 | Vercel       | Serverless app hosting |
-| Neon         | Postgres database      |
+| Neon         | Postgres database      | --> |
 
 ## Getting started
 
@@ -106,3 +102,10 @@ with data-agnostic permissions (associated with tables, rows, etc.).
 These constraints take the form of fine-grained \_meta_data queries. They are generally used after
 RBAC step(s) have been passed, and are layered within database CRUD queries to reduce
 back-and-forths as well as limit query scopes in an app-side RLS-esque fashion.
+
+---
+
+<p align="center">
+  <sub>:copyright: UNESCO Chair in Landscape and Environement</sub>
+</p>
+</footer>
