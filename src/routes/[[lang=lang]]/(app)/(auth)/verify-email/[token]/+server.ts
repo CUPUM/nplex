@@ -1,4 +1,4 @@
-import { auth } from '$lib/auth/auth.server';
+import { auth } from '$lib/auth/authentication.server';
 import { validateEmailVerificationToken } from '$lib/auth/token.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import type { RequestHandler } from './$types';

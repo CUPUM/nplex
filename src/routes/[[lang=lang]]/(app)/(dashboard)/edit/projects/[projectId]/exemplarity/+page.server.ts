@@ -1,4 +1,4 @@
-import { guardAuth } from '$lib/auth/guard.server';
+import { authorizeSession } from '$lib/auth/authorization.server';
 import { projectsExemplarityIndicatorsUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import { getProjectCategorizedIndicatorsList } from '$lib/db/queries.server';
@@ -10,7 +10,7 @@ import { and, eq, notInArray } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await guardAuth(event);
+	await authorizeSession(event);
 	const [indicators] = await dbpool
 		.select({
 			indicatorIds: coalesce(
@@ -30,7 +30,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await guardAuth(event);
+		await authorizeSession(event);
 		const form = await superValidate(event, projectsExemplarityIndicatorsUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });

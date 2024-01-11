@@ -9,7 +9,7 @@
 <coming_soon>
 	<LangKey>{@html m.account_home_coming_soon()}</LangKey>
 	<a {...$link('/i/settings')} class="button link inline">
-		<LangKey>{m.account_home_coming_soonButton()}</LangKey>
+		<LangKey>{m.account_home_coming_soon_button()}</LangKey>
 	</a>
 </coming_soon>
 

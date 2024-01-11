@@ -1,28 +1,37 @@
-<h1 align="center">
-  <img width="300" height="auto" src="frontend/static/logo/nplex-color.svg" alt="nplex">
-</h1>
-<p align="center">
+<h1 align="center">Nplex</h1>
 
+<p align="center">
+  <img width="250" height="auto" src="/static/logo.svg" alt="nplex">
 </p>
 
-## See it live
+<p align="center">
+  <a href="www.nplex.design"><b>Explore</b></a>
+</p>
+<p align="center">
+  <small>:copyright: UNESCO Chair in Landscape and Environement</small>
+</p>
 
-The app's frontend is deployed on Vercel and is available at [nplex.design](www.nplex.design). The
-backend is currently being ported to Neondb for greater schema agnosticity.
+## Stack & hosting
 
-## Stack
+The app is built using:
 
-- SvelteKit
-- Drizzle-ORM (database orm)
-- Drizzle-Kit (database manager)
-- Lucia (auth)
-- Melt-UI (headless ui components)
-- SvelteKit Superforms (form handling)
+| Main techs           | Use                                                        |
+| :------------------- | :--------------------------------------------------------- |
+| Svelte               | Frontend framework                                         |
+| SvelteKit            | Routing, SSR, and other full-stack related functionalities |
+| Drizzle-ORM          | Type-safe database ORM                                     |
+| Drizzle-Kit          | Database manager                                           |
+| Lucia                | Authentication                                             |
+| Melt-UI              | Headless UI components                                     |
+| SvelteKit Superforms | Form handling                                              |
+| Zod                  | Form data validation                                       |
 
-## Hosting
+The production instance is deployed using:
 
-- Vercel (frontend)
-- Neon (database)
+| Environement | Use                    |
+| :----------- | :--------------------- |
+| Vercel       | Serverless app hosting |
+| Neon         | Postgres database      |
 
 ## Getting started
 
@@ -78,3 +87,5 @@ pnpm db:apply
 # Scaffold a full new db, using both gen and apply. Used notably during quick testing.
 pnpm db:scaffold
 ```
+
+## The a

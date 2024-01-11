@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { auth } from '$lib/auth/auth.server';
+import { auth } from '$lib/auth/authentication.server';
 import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { LuciaError } from 'lucia';

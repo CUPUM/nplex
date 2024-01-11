@@ -4,8 +4,8 @@
 	import { superForm } from '$lib/forms/super-form';
 	import DescriptorList from '../../../DescriptorList.svelte';
 	import { descriptorFlip, descriptorIn, descriptorOut } from '../../../motion';
-	import NewProjectType from './NewProjectType.svelte';
-	import ProjectType from './ProjectType.svelte';
+	import NewType from './NewType.svelte';
+	import Type from './Type.svelte';
 
 	export let data;
 
@@ -14,7 +14,7 @@
 		elements: {
 			submitter: { root: listSubmitter },
 		},
-	} = superForm(data.listForm);
+	} = superForm(data.typesForm);
 </script>
 
 <form class="dashboard-section" use:enhance method="POST">
@@ -30,11 +30,11 @@
 	<div class="dashboard-subsection">
 		<DescriptorList>
 			<li>
-				<NewProjectType data={data.newForm} />
+				<NewType data={data.newTypeForm} />
 			</li>
-			{#each data.updateForms as form, i (form.id)}
+			{#each data.typeForms as form, i (form.id)}
 				<li in:descriptorIn|global={{ i }} out:descriptorOut animate:descriptorFlip>
-					<ProjectType data={form} {listSubmitter} />
+					<Type data={form} {listSubmitter} />
 				</li>
 			{/each}
 		</DescriptorList>

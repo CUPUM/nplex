@@ -6,7 +6,7 @@ import { USER_ROLES, USER_ROLES_CONTENT_MANAGEMENT, type UserRole } from './cons
 /**
  * Helper to require auth inside server load functions and actions.
  */
-export async function guardAuth(event: RequestEvent | ServerLoadEvent) {
+export async function authorizeSession(event: RequestEvent | ServerLoadEvent) {
 	const session = await event.locals.auth.validate();
 	if (!session) {
 		error(STATUS_CODES.UNAUTHORIZED, m.auth_no_session());
@@ -17,11 +17,11 @@ export async function guardAuth(event: RequestEvent | ServerLoadEvent) {
 /**
  * Role guard to protect endpoints, actions, or server load functions.
  */
-export async function guardRole<R extends UserRole>(
+export async function authorizeRole<R extends UserRole>(
 	event: RequestEvent | ServerLoadEvent,
 	...role: R[]
 ) {
-	const session = await guardAuth(event);
+	const session = await authorizeSession(event);
 	// /**
 	//  * Event-specific guard.
 	//  */
@@ -35,15 +35,20 @@ export async function guardRole<R extends UserRole>(
 }
 
 /**
+ * Test.
+ */
+export function authorize(key: PermissionKey) {}
+
+/**
  * Role guard helper preset for editors and admins RBAC.
  */
 export async function guardRoleContentManagement(event: RequestEvent | ServerLoadEvent) {
-	return guardRole(event, ...USER_ROLES_CONTENT_MANAGEMENT);
+	return authorizeRole(event, ...USER_ROLES_CONTENT_MANAGEMENT);
 }
 
 /**
  * Role guard helper for admin RBAC.
  */
 export async function guardRoleAdmin(event: RequestEvent | ServerLoadEvent) {
-	return guardRole(event, USER_ROLES.ADMIN);
+	return authorizeRole(event, USER_ROLES.ADMIN);
 }

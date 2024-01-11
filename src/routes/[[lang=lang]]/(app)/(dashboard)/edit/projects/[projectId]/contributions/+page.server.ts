@@ -1,4 +1,4 @@
-import { guardAuth } from '$lib/auth/guard.server';
+import { authorizeSession } from '$lib/auth/authorization.server';
 import { projectsContributionsUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
 import {
@@ -13,7 +13,7 @@ import { and, eq, getTableColumns, notInArray } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await guardAuth(event);
+	await authorizeSession(event);
 	const data = await dbpool.transaction(async (tx) => {
 		const allOrgs = await tx
 			.select({
@@ -49,7 +49,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await guardAuth(event);
+		await authorizeSession(event);
 		const form = await superValidate(event, projectsContributionsUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });

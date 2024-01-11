@@ -70,7 +70,7 @@
 		line-height: var(--line-dense);
 		transition: all 0.15s ease-out;
 		white-space: wrap;
-		font-weight: 425;
+		font-weight: 450;
 		padding: 0.8em 1.25em;
 		font-size: var(--size-sm);
 		opacity: 0.9;
@@ -96,13 +96,13 @@
 			&:not([data-current]) {
 				opacity: 1;
 				color: var(--color-neutral-950);
-				background-color: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+				background: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 				:global(:--dark) & {
 					color: var(--color-neutral-50);
 				}
 				&.danger {
 					color: var(--color-error-600);
-					background-color: color-mix(in srgb, var(--color-error-500) 10%, transparent);
+					background: color-mix(in srgb, var(--color-error-500) 10%, transparent);
 					:global(:--dark) & {
 						color: var(--color-error-400);
 					}
@@ -118,8 +118,10 @@
 			pointer-events: none;
 			opacity: 1;
 			color: var(--color-primary-700);
+			background: color-mix(in srgb, var(--color-primary-700) 5%, transparent);
 			font-weight: 550;
 			:global(:--dark) & {
+				background: color-mix(in srgb, var(--color-primary-400) 5%, transparent);
 				color: var(--color-primary-500);
 			}
 			:global(.button-icon) {
@@ -152,11 +154,11 @@
 		right: calc(-1 * var(--sidebar-group-nesting));
 		width: var(--sidebar-needle-size);
 		border-radius: inherit;
-		background-color: var(--sidebar-needle-bg);
+		background: var(--sidebar-needle-bg);
 		.danger & {
-			background-color: var(--color-error-800);
+			background: var(--color-error-800);
 			:global(:--dark) & {
-				background-color: var(--color-error-300);
+				background: var(--color-error-300);
 			}
 		}
 	}

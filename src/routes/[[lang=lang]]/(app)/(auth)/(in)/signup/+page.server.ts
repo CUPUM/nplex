@@ -1,4 +1,4 @@
-import { auth } from '$lib/auth/auth.server';
+import { auth } from '$lib/auth/authentication.server';
 import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { sendEmailVerificationLink } from '$lib/auth/emails.server';
 import { isEmailUser } from '$lib/auth/validation';

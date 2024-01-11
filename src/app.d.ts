@@ -1,15 +1,16 @@
 // See https://kit.svelte.dev/docs/types#app
 
 import type { AvailableLanguageTag } from '$i18n/runtime';
-import type { Auth as LuciaAuth } from '$lib/auth/auth.server';
+import type { Auth as LuciaAuth } from '$lib/auth/authentication.server';
 import type { ToastData } from '$lib/components/Toast.svelte';
 import type { users } from '$lib/db/schema/accounts';
 import type { Mode } from '$lib/modes/constants';
 import type { Setout } from '$lib/setout/constants';
 import type { createSetEventSetout } from '$lib/setout/event';
 import type { InferSelectModel } from 'drizzle-orm';
-import type { AuthRequest, User } from 'lucia';
+import type { AuthRequest } from 'lucia';
 import type { ComponentType } from 'svelte';
+import type { LayoutData } from './routes/[[lang=lang]]/$types';
 
 // for information about these interfaces
 declare global {
@@ -66,19 +67,7 @@ declare global {
 			 */
 			lang: AvailableLanguageTag;
 		}
-		interface PageData {
-			/**
-			 * Client-forwarded locals.lang.
-			 */
-			lang: App.Locals['lang'];
-			/**
-			 * Client-forwarded locals.theme.
-			 */
-			mode: App.Locals['mode'];
-			/**
-			 * Populating the client $page.data store with a minimal user for simple UI checks.
-			 */
-			user?: Omit<User, 'userId'>;
+		interface PageData extends LayoutData {
 			/**
 			 * Granular server and client setable layout type.
 			 */

@@ -1,4 +1,4 @@
-import { guardAuth } from '$lib/auth/guard.server';
+import { authorizeSession } from '$lib/auth/authorization.server';
 import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { dbpool } from '$lib/db/db.server';
 import { projects } from '$lib/db/schema/public';
@@ -7,7 +7,7 @@ import { error, redirect } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 
 export const load = async (event) => {
-	const session = await guardAuth(event);
+	const session = await authorizeSession(event);
 	const [project] = await dbpool
 		.select({ id: projects.id })
 		.from(projects)
@@ -21,7 +21,7 @@ export const load = async (event) => {
 export const actions = {
 	delete: async (event) => {
 		console.log('Deleting');
-		const session = await guardAuth(event);
+		const session = await authorizeSession(event);
 		try {
 			await dbpool
 				.delete(projects)

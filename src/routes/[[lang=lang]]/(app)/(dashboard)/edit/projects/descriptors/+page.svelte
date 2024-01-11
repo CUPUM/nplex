@@ -12,7 +12,7 @@
 </section>
 
 <style lang="postcss">
-	@import '$styles/scoped/dashboard.css';
+	@import '$styles/scoped/dashboard';
 
 	section {
 		flex: 1;

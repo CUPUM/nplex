@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { auth } from '$lib/auth/auth.server';
+import { auth } from '$lib/auth/authentication.server';
 import { dbpool } from '$lib/db/db.server';
 import { organizations, projects, projectsImages } from '$lib/db/schema/public';
 import { random } from '$lib/db/sql.server';

@@ -14,7 +14,7 @@ const handle = (async ({ event, resolve }) => {
 	// possible different value set by downstream action resolve.
 	const res = resolve(event, {
 		transformPageChunk(input) {
-			return input.html.replace('%setout%', event.locals.setout);
+			return input.html.replace('%setout%', event.locals.setout ?? SETOUT_DEFAULT);
 		},
 	});
 

@@ -19,6 +19,11 @@
 		:global(:--dark) & {
 		}
 
+		&:last-child {
+			margin-bottom: 0;
+			padding-bottom: var(--menu-nesting);
+		}
+
 		&:not(:last-child) {
 			&::after {
 				content: '';

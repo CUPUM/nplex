@@ -1,5 +1,5 @@
 import { S3_BUCKET_NAME } from '$env/static/private';
-import { guardAuth } from '$lib/auth/guard.server';
+import { authorizeSession } from '$lib/auth/authorization.server';
 import { s3 } from '$lib/storage/s3.server';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
 import { json } from '@sveltejs/kit';
@@ -9,7 +9,7 @@ import type { PresignedResponse } from './types';
  * Securely prepare a group of presigned post url for client-side project image variants upload.
  */
 export const GET = async (event) => {
-	await guardAuth(event);
+	await authorizeSession(event);
 	const name = `projects/${event.params.projectId}/gallery/${crypto
 		.randomUUID()
 		.replaceAll('-', '')}`;

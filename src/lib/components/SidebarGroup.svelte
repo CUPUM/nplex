@@ -67,7 +67,7 @@
 		left: 0;
 		padding: 0.75rem 1rem;
 		font-size: var(--size-xs);
-		font-weight: 350;
+		font-weight: 300;
 		letter-spacing: 0.01em;
 		line-height: 1.5;
 		color: var(--color-neutral-500);

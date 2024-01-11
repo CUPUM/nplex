@@ -43,17 +43,17 @@ export const projectTypesTranslations = pgTable(
 /**
  * Grouping of project intervention types.
  */
-export const projectInterventionCategories = pgTable('project_intervention_categories', {
+export const projectInterventionsCategories = pgTable('project_intervention_categories', {
 	id: text('id')
 		.notNull()
 		.default(generateNanoid({ length: 6 }))
 		.primaryKey(),
 	index: integer('index'),
 });
-export const projectInterventionCategoriesTranslations = pgTable(
+export const projectInterventionsCategoriesTranslations = pgTable(
 	'project_intervention_categories_t',
 	{
-		...translationReferenceColumn(projectInterventionCategories.id),
+		...translationReferenceColumn(projectInterventionsCategories.id),
 		...translationLangColumn,
 		title: text('title'),
 		description: text('description'),
@@ -75,7 +75,7 @@ export const projectInterventions = pgTable('project_interventions', {
 		.primaryKey(),
 	categoryId: text('category_id')
 		.notNull()
-		.references(() => projectInterventionCategories.id, {
+		.references(() => projectInterventionsCategories.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		}),

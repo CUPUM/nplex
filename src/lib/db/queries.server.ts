@@ -13,9 +13,9 @@ import {
 	projectImageTypesTranslations,
 	projectImplantationTypes,
 	projectImplantationTypesTranslations,
-	projectInterventionCategories,
-	projectInterventionCategoriesTranslations,
 	projectInterventions,
+	projectInterventionsCategories,
+	projectInterventionsCategoriesTranslations,
 	projectInterventionsTranslations,
 	projectSiteOwnerships,
 	projectSiteOwnershipsTranslations,
@@ -43,8 +43,8 @@ export function getProjectInterventionsList(event: RequestEvent | ServerLoadEven
 export function getProjectInterventionCategoriesList(event: RequestEvent | ServerLoadEvent) {
 	return withTranslation(
 		event,
-		projectInterventionCategories,
-		projectInterventionCategoriesTranslations,
+		projectInterventionsCategories,
+		projectInterventionsCategoriesTranslations,
 		{ field: (t) => t.id, reference: (tt) => tt.id }
 	);
 }

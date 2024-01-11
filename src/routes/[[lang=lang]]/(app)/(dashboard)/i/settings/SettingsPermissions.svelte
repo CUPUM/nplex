@@ -36,19 +36,19 @@
 
 <DashboardForm {enhance} action="?/update" {tainted} {submitter}>
 	<svelte:fragment slot="header">
-		<h2><LangKey>{m.user_roleAndPermissions()}</LangKey></h2>
+		<h2><LangKey>{m.user_role_and_permissions()}</LangKey></h2>
 	</svelte:fragment>
-	<DashboardFormSection title={$langKey(m.user_currentRole())}>
+	<DashboardFormSection title={$langKey(m.user_current_role())}>
 		<fieldset class="input-group" disabled>
 			<button class="input select" type="button" use:melt={$trigger}>
 				<Crown class="input-icon" />
-				<LangKey>{m.user_changeRole()}</LangKey>
+				<LangKey>{m.user_change_role()}</LangKey>
 				<SelectIcon open={$open} />
 			</button>
 			<div class="input-peer">
 				<button class="button" type="submit" formaction="?/requestRole" on:click|stopPropagation>
 					<Send class="button-icon" />
-					<LangKey>{m.user_requestRole()}</LangKey>
+					<LangKey>{m.user_request_role()}</LangKey>
 				</button>
 			</div>
 		</fieldset>
@@ -60,7 +60,7 @@
 			{/each}
 		</SelectMenu>
 	</DashboardFormSection>
-	<DashboardFormSection title={$langKey(m.user_sharedPermissions())}>
+	<DashboardFormSection title={$langKey(m.user_shared_permissions())}>
 		<coming_soon></coming_soon>
 		<!-- <section>
 			<h3><LangKey>{m.projects()}</LangKey></h3>

@@ -51,7 +51,7 @@ export const userRolesTranslations = accountsSchema.table(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.role, table.lang),
+			pk: primaryKey({ columns: [table.role, table.lang] }),
 			unq: unique().on(table.lang, table.name),
 		};
 	}

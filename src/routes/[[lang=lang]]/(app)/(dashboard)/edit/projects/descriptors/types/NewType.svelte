@@ -1,10 +1,10 @@
-<script lang="ts" generics="T extends PageData['newForm']">
+<script lang="ts" generics="T extends PageData['newTypeForm']">
 	import * as m from '$i18n/messages';
 	import ButtonCreate from '$lib/components/ButtonCreate.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import { superFormDialog } from '$lib/forms/super-form';
-	import DescriptorChip from '../../../DescriptorChip.svelte';
+	import Descriptor from '../../../Descriptor.svelte';
 	import DescriptorForm from '../../../DescriptorForm.svelte';
 	import type { PageData } from './$types';
 
@@ -29,7 +29,7 @@
 	});
 </script>
 
-<DescriptorChip {trigger} {submitter} variant="new" />
+<Descriptor {trigger} {submitter} variant="new" />
 <Dialog {open} {...restElements}>
 	<svelte:fragment slot="header">
 		<LangKey>{m.project_descriptors_type_create()}</LangKey>

@@ -1,4 +1,4 @@
-import { guardAuth } from '$lib/auth/guard.server';
+import { authorizeSession } from '$lib/auth/authorization.server';
 import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { dbpool } from '$lib/db/db.server';
 import { projects, projectsTranslations } from '$lib/db/schema/public';
@@ -7,7 +7,7 @@ import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
 import { and, eq, getTableColumns, ilike } from 'drizzle-orm';
 
 export const load = async (event) => {
-	const session = await guardAuth(event);
+	const session = await authorizeSession(event);
 	event.depends(LOAD_DEPENDENCIES.Lang);
 	const search = event.url.searchParams.get('search') ?? '';
 	const match = dbpool

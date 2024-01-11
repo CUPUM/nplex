@@ -1,8 +1,8 @@
-import { guardAuth } from '$lib/auth/guard.server';
+import { authorizeSession } from '$lib/auth/authorization.server';
 import { getProjectImageTemporalitiesList, getProjectImageTypesList } from '$lib/db/queries.server';
 
 export const load = async (event) => {
-	await guardAuth(event);
+	await authorizeSession(event);
 	const imageTypes = getProjectImageTypesList(event);
 	const imageTemporalities = getProjectImageTemporalitiesList(event);
 	return {

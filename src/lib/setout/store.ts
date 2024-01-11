@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import { page } from '$app/stores';
 import { derived } from 'svelte/store';
-import { SETOUT_ATTRIBUTE, SETOUT_DEFAULT } from './constants';
+import { SETOUT_DEFAULT } from './constants';
 
 /**
  * A contextual store to help manage different types of layouts. Types of setouts can be applied by
@@ -10,7 +10,7 @@ import { SETOUT_ATTRIBUTE, SETOUT_DEFAULT } from './constants';
 export const setout = derived(page, ($page) => {
 	const v = $page.data.setout ?? SETOUT_DEFAULT;
 	if (browser) {
-		document.documentElement.setAttribute(SETOUT_ATTRIBUTE, v);
+		document.documentElement.setAttribute('data-setout', v);
 	}
 	return $page.data.setout ?? SETOUT_DEFAULT;
 });

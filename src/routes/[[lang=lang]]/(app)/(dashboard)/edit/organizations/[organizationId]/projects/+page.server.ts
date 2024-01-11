@@ -1,11 +1,11 @@
-import { guardAuth } from '$lib/auth/guard.server';
+import { authorizeSession } from '$lib/auth/authorization.server';
 
 export const load = async (event) => {
-	await guardAuth(event);
+	await authorizeSession(event);
 };
 
 export const actions = {
 	update: async (event) => {
-		await guardAuth(event);
+		await authorizeSession(event);
 	},
 };

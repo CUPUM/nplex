@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { guardAuth } from '$lib/auth/guard.server';
+import { authorizeSession } from '$lib/auth/authorization.server';
 import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
 import { dbpool } from '$lib/db/db.server';
@@ -19,7 +19,7 @@ import { message, superValidate } from 'sveltekit-superforms/server';
 // const updateSchema = proejct
 
 export const load = async (event) => {
-	const session = await guardAuth(event);
+	const session = await authorizeSession(event);
 
 	const [[project], interventions] = await Promise.all([
 		withTranslations(projects, projectsTranslations, {
@@ -52,7 +52,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await guardAuth(event);
+		await authorizeSession(event);
 		const form = await superValidate(event, projectGeneralUpdateSchema);
 		if (!form.valid) {
 			console.error(JSON.stringify(form.errors));

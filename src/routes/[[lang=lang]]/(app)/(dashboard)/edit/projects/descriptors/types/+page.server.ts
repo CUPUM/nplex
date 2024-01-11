@@ -1,10 +1,10 @@
 import * as m from '$i18n/messages';
-import { guardRoleContentManagement } from '$lib/auth/guard.server';
+import { guardRoleContentManagement } from '$lib/auth/authorization.server';
 import { dbpool } from '$lib/db/db.server';
 import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
 import { withTranslations } from '$lib/db/utils.server';
-import { withTranslationsSchema } from '$lib/db/validation.server';
+import { projectTypesWithTranslationsSchema } from '$lib/db/validation.server';
 import {
 	messageInvalidProjectDescriptor,
 	messageServerError,
@@ -12,18 +12,10 @@ import {
 } from '$lib/forms/messages';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { eq } from 'drizzle-orm';
-import { createInsertSchema } from 'drizzle-zod';
 import { message, superValidate } from 'sveltekit-superforms/server';
-import { z } from 'zod';
 
-const updateSchema = withTranslationsSchema(
-	createInsertSchema(projectTypes).required({ id: true }),
-	createInsertSchema(projectTypesTranslations)
-);
-
-const createSchema = updateSchema.omit({ id: true });
-
-const listSchema = z.object({ id: z.string() });
+const newTypeSchema = projectTypesWithTranslationsSchema.omit({ id: true });
+const typesSchema = projectTypesWithTranslationsSchema.pick({ id: true });
 
 export const load = async (event) => {
 	await guardRoleContentManagement(event);
@@ -31,18 +23,20 @@ export const load = async (event) => {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
-	const [newForm, listForm, ...updateForms] = await Promise.all([
-		superValidate(createSchema),
-		superValidate(listSchema),
-		...types.map((type) => superValidate(type, updateSchema, { id: type.id })),
+	const [newTypeForm, typesForm, ...typeForms] = await Promise.all([
+		superValidate(newTypeSchema),
+		superValidate(typesSchema),
+		...types.map((type) =>
+			superValidate(type, projectTypesWithTranslationsSchema, { id: type.id })
+		),
 	]);
-	return { updateForms, listForm, newForm };
+	return { typeForms, typesForm, newTypeForm };
 };
 
 export const actions = {
 	create: async (event) => {
 		await guardRoleContentManagement(event);
-		const form = await superValidate(event, createSchema);
+		const form = await superValidate(event, newTypeSchema);
 		if (!form.valid) {
 			return message(form, messageInvalidProjectDescriptor(m.project_type()));
 		}
@@ -65,7 +59,7 @@ export const actions = {
 	},
 	update: async (event) => {
 		await guardRoleContentManagement(event);
-		const form = await superValidate(event, updateSchema);
+		const form = await superValidate(event, projectTypesWithTranslationsSchema);
 		if (!form.valid) {
 			return message(form, messageInvalidProjectDescriptor(m.project_type()));
 		}
@@ -91,7 +85,7 @@ export const actions = {
 	},
 	delete: async (event) => {
 		await guardRoleContentManagement(event);
-		const form = await superValidate(event, listSchema);
+		const form = await superValidate(event, typesSchema);
 		if (!form.valid) {
 			return message(form, messageInvalidProjectDescriptor(m.project_type()));
 		}

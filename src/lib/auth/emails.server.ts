@@ -23,7 +23,7 @@ export async function sendEmailVerificationLink(user: EmailUser, event: RequestE
 	await transporter.sendMail({
 		from: EMAIL_SENDERS.NPLEX,
 		to: user.email,
-		subject: m.email_verifyEmail_subject(),
+		subject: m.email_verify_email_subject(),
 		html,
 	});
 }
@@ -40,7 +40,7 @@ export async function sendPasswordResetLink(user: EmailUser, event: RequestEvent
 	await transporter.sendMail({
 		from: EMAIL_SENDERS.NPLEX,
 		to: user.email,
-		subject: m.email_resetPassword_subject(),
+		subject: m.email_reset_password_subject(),
 		html,
 	});
 }

@@ -192,6 +192,7 @@
 	"org_sharing": "Partage des permissions",
 	"org_visibility": "Visibilité et diffusion",
 	"org_danger": "Zone à risque",
+	"user_role": "Rôle",
 	"user_role_and_permissions": "Rôle et permissions",
 	"user_current_role": "Rôle actuel",
 	"user_change_role": "Changer de rôle",

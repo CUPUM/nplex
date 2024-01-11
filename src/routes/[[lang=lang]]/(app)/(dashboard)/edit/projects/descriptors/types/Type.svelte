@@ -1,9 +1,9 @@
-<script lang="ts" generics="T extends PageData['updateForms'][number]">
+<script lang="ts" generics="T extends PageData['typeForms'][number]">
 	import { page } from '$app/stores';
 	import ButtonSave from '$lib/components/ButtonSave.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import { superFormDialog, type SuperForm } from '$lib/forms/super-form';
-	import DescriptorChip from '../../../DescriptorChip.svelte';
+	import Descriptor from '../../../Descriptor.svelte';
 	import DescriptorForm from '../../../DescriptorForm.svelte';
 	import type { PageData } from './$types';
 
@@ -24,7 +24,7 @@
 	} = superFormDialog(data, { dataType: 'json', preventScroll: true });
 </script>
 
-<DescriptorChip
+<Descriptor
 	{trigger}
 	submitter={listSubmitter}
 	deleteButton={{

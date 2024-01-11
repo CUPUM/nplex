@@ -16,6 +16,12 @@ import {
 } from './constants';
 import { rangeSchema } from './schema/custom-types';
 import {
+	projectInterventions,
+	projectInterventionsCategories,
+	projectInterventionsCategoriesTranslations,
+	projectInterventionsTranslations,
+	projectTypes,
+	projectTypesTranslations,
 	projects,
 	projectsBuildingLevels,
 	projectsExemplarityIndicators,
@@ -23,8 +29,6 @@ import {
 	projectsInterventions,
 	projectsTranslations,
 	projectsUsers,
-	projectTypes,
-	projectTypesTranslations,
 } from './schema/public';
 
 /**
@@ -47,15 +51,33 @@ export function withTranslationsSchema<
 // Project descriptors
 
 export const projectTypesSchema = createInsertSchema(projectTypes).required({ id: true });
-
 export const projectTypesTranslationsSchema = createInsertSchema(projectTypesTranslations);
-
 export const projectTypesWithTranslationsSchema = withTranslationsSchema(
 	projectTypesSchema,
 	projectTypesTranslationsSchema
 );
 
-// export const projectInterventionTypesSchema = createInsertSchema();
+export const projectInterventionsSchema = createInsertSchema(projectInterventions).required({
+	id: true,
+});
+export const projectInterventionsTranslationsSchema = createInsertSchema(
+	projectInterventionsTranslations
+);
+export const projectInterventionsWithTranslationsSchema = withTranslationsSchema(
+	projectInterventionsSchema,
+	projectInterventionsTranslationsSchema
+);
+
+export const projectInterventionsCategoriesSchema = createInsertSchema(
+	projectInterventionsCategories
+).required({ id: true });
+export const projectInterventionsCategoriesTranslationsSchema = createInsertSchema(
+	projectInterventionsCategoriesTranslations
+);
+export const projectInterventionsCategoriesWithTranslationsSchema = withTranslationsSchema(
+	projectInterventionsCategoriesSchema,
+	projectInterventionsCategoriesTranslationsSchema
+);
 
 // Projects
 

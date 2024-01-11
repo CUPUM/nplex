@@ -43,7 +43,7 @@
 		forceVisible: true,
 		positioning: {
 			overflowPadding: 12,
-			gutter: 12,
+			gutter: 6,
 			placement: 'bottom',
 		},
 		preventScroll: false,
@@ -206,6 +206,35 @@
 					{#if $userOpen}
 						<NavbarMenu melt={userMenu}>
 							<NavbarMenuGroup>
+								<div>
+									<LangKey>{m.user_role()}</LangKey>:
+									{#await $page.data.roleName}
+										'...'
+									{:then roleName}
+										{roleName}
+									{/await}
+								</div>
+								<NavbarMenuButton {...$link('/i')} melt={userItem}>
+									<LangKey>{m.account()}</LangKey>
+									<User2 class="button-icon" />
+								</NavbarMenuButton>
+								<form
+									method="POST"
+									action="/?/logout"
+									id="logout-form"
+									hidden
+									use:enhance={({ formElement, formData, action, cancel }) => {
+										return async ({ result }) => {
+											await applyAction(result);
+										};
+									}}
+								/>
+								<NavbarMenuButton type="submit" form="logout-form" melt={userItem}>
+									<LangKey>{m.logout()}</LangKey>
+									<LogOut class="button-icon" />
+								</NavbarMenuButton>
+							</NavbarMenuGroup>
+							<NavbarMenuGroup>
 								<svelte:fragment slot="legend">
 									<LangKey>{m.projects()}</LangKey>
 								</svelte:fragment>
@@ -239,25 +268,6 @@
 									<Sliders class="button-icon" />
 								</NavbarMenuButton>
 							</NavbarMenuGroup>
-							<NavbarMenuButton {...$link('/i')} melt={userItem}>
-								<LangKey>{m.account()}</LangKey>
-								<User2 class="button-icon" />
-							</NavbarMenuButton>
-							<form
-								method="POST"
-								action="/?/logout"
-								id="logout-form"
-								hidden
-								use:enhance={({ formElement, formData, action, cancel }) => {
-									return async ({ result }) => {
-										await applyAction(result);
-									};
-								}}
-							/>
-							<NavbarMenuButton type="submit" form="logout-form" melt={userItem}>
-								<LangKey>{m.logout()}</LangKey>
-								<LogOut class="button-icon" />
-							</NavbarMenuButton>
 						</NavbarMenu>
 					{/if}
 				{:else}

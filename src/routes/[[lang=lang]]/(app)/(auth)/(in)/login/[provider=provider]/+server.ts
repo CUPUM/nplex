@@ -1,6 +1,6 @@
 import { dev } from '$app/environment';
 import * as m from '$i18n/messages';
-import { integrations } from '$lib/auth/auth.server';
+import { integrations } from '$lib/auth/authentication.server';
 import { OAUTH_PROVIDERS_STATE_COOKIE } from '$lib/auth/constants';
 import { isSupportedOAuthProvider } from '$lib/auth/validation';
 import { STATUS_CODES } from '$lib/utils/constants';

@@ -192,6 +192,7 @@
 	"org_sharing": "Permissions and sharing",
 	"org_visibility": "Visibility and publishing",
 	"org_danger": "Danger zone",
+	"user_role": "Role",
 	"user_role_and_permissions": "Role & permissions",
 	"user_current_role": "Current role",
 	"user_change_role": "Change role",

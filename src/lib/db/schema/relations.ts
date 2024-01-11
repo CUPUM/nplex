@@ -17,9 +17,9 @@ import {
 	projectImageTypesTranslations,
 	projectImplantationTypes,
 	projectImplantationTypesTranslations,
-	projectInterventionCategories,
-	projectInterventionCategoriesTranslations,
 	projectInterventions,
+	projectInterventionsCategories,
+	projectInterventionsCategoriesTranslations,
 	projectInterventionsTranslations,
 	projectSiteOwnerships,
 	projectSiteOwnershipsTranslations,
@@ -55,25 +55,25 @@ export const projectTypesTranslationsRelations = relations(projectTypesTranslati
 });
 
 export const projectInterventionCategoriesRelations = relations(
-	projectInterventionCategories,
+	projectInterventionsCategories,
 	({ many }) => {
 		return {
-			translations: many(projectInterventionCategoriesTranslations),
+			translations: many(projectInterventionsCategoriesTranslations),
 			interventions: many(projectInterventions),
 		};
 	}
 );
 export const projectInterventionCategoriesTranslationsRelations = relations(
-	projectInterventionCategoriesTranslations,
+	projectInterventionsCategoriesTranslations,
 	({ one }) => {
 		return {
 			lang: one(langs, {
-				fields: [projectInterventionCategoriesTranslations.lang],
+				fields: [projectInterventionsCategoriesTranslations.lang],
 				references: [langs.lang],
 			}),
-			category: one(projectInterventionCategories, {
-				fields: [projectInterventionCategoriesTranslations.id],
-				references: [projectInterventionCategories.id],
+			category: one(projectInterventionsCategories, {
+				fields: [projectInterventionsCategoriesTranslations.id],
+				references: [projectInterventionsCategories.id],
 			}),
 		};
 	}
@@ -82,9 +82,9 @@ export const projectInterventionCategoriesTranslationsRelations = relations(
 export const projectInterventionsRelations = relations(projectInterventions, ({ many, one }) => {
 	return {
 		translations: many(projectInterventionsTranslations),
-		category: one(projectInterventionCategories, {
+		category: one(projectInterventionsCategories, {
 			fields: [projectInterventions.categoryId],
-			references: [projectInterventionCategories.id],
+			references: [projectInterventionsCategories.id],
 		}),
 		types: many(projectTypes),
 		projects: many(projects),

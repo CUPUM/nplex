@@ -1,131 +1,200 @@
-import { USER_ROLES } from '$lib/auth/constants';
-import { guardRole } from '$lib/auth/guard.server';
-import { projectInterventionCategoriesWithInterventionsUpdateSchema } from '$lib/db/crud.server';
+import * as m from '$i18n/messages';
+import { guardRoleAdmin, guardRoleContentManagement } from '$lib/auth/authorization.server';
 import { dbpool } from '$lib/db/db.server';
 import {
-	projectInterventionCategories,
-	projectInterventionCategoriesTranslations,
 	projectInterventions,
+	projectInterventionsCategories,
+	projectInterventionsCategoriesTranslations,
 	projectInterventionsTranslations,
 } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { extractTranslations, reduceTranslations } from '$lib/db/utils.server';
+import { withTranslations } from '$lib/db/utils.server';
+import {
+	projectInterventionsCategoriesWithTranslationsSchema,
+	projectInterventionsWithTranslationsSchema,
+} from '$lib/db/validation.server';
+import {
+	messageInvalidProjectDescriptor,
+	messageServerError,
+	messageServerSuccess,
+} from '$lib/forms/messages';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
-import { superValidate } from 'sveltekit-superforms/server';
+import { message, superValidate } from 'sveltekit-superforms/server';
+
+const rootSchema = projectInterventionsWithTranslationsSchema.pick({ id: true });
+const newInterventionSchema = projectInterventionsWithTranslationsSchema.omit({ id: true });
+const newCategorySchema = projectInterventionsCategoriesWithTranslationsSchema.omit({
+	id: true,
+});
 
 export const load = async (event) => {
-	await guardRole(event, USER_ROLES.ADMIN);
-
-	const interventionCategories = (
-		await dbpool.query.projectInterventionCategories.findMany({
-			with: {
-				translations: true,
-				interventions: {
-					with: {
-						translations: true,
-					},
-				},
-			},
-		})
-	).map((ic, i) => {
-		return {
-			...reduceTranslations(ic, i),
-			interventions: ic.interventions.map(reduceTranslations),
-		};
+	await guardRoleContentManagement(event);
+	const interventions = withTranslations(projectInterventions, projectInterventionsTranslations, {
+		field: (t) => t.id,
+		reference: (tt) => tt.id,
 	});
-
-	// const form = await superValidate(data, projectInterventionCategoriesAndInterventionsUpdateSchema);
-	const form = await superValidate(
-		{ interventionCategories },
-		projectInterventionCategoriesWithInterventionsUpdateSchema
+	const categories = withTranslations(
+		projectInterventionsCategories,
+		projectInterventionsCategoriesTranslations,
+		{ field: (t) => t.id, reference: (tt) => tt.id }
 	);
-
-	return { form };
+	const [rootForm, newCategoryForm, categoryForms, newInterventionForm, interventionForms] =
+		await Promise.all([
+			superValidate(rootSchema),
+			superValidate(newCategorySchema),
+			Promise.all(
+				await categories.then((data) =>
+					data.map((category) =>
+						superValidate(category, projectInterventionsCategoriesWithTranslationsSchema, {
+							id: category.id,
+						})
+					)
+				)
+			),
+			superValidate(newInterventionSchema),
+			Promise.all(
+				await interventions.then((data) =>
+					data.map((intervention) =>
+						superValidate(intervention, projectInterventionsWithTranslationsSchema, {
+							id: intervention.id,
+						})
+					)
+				)
+			),
+		]);
+	return {
+		rootForm,
+		newCategoryForm,
+		categoryForms,
+		newInterventionForm,
+		interventionForms,
+	};
 };
 
 export const actions = {
 	createIntervention: async (event) => {
-		await guardRole(event, USER_ROLES.ADMIN);
-		const categoryId = event.url.searchParams.get('categoryId');
-		if (!categoryId) {
-			return fail(STATUS_CODES.BAD_REQUEST);
-		}
-		try {
-			await dbpool.insert(projectInterventions).values({ categoryId });
-		} catch (e) {
-			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
-	},
-	deleteIntervention: async (event) => {
-		await guardRole(event, USER_ROLES.ADMIN);
-		const interventionId = event.url.searchParams.get('interventionId');
-		if (!interventionId) {
-			return fail(STATUS_CODES.BAD_REQUEST);
-		}
-		try {
-			await dbpool.delete(projectInterventions).where(eq(projectInterventions.id, interventionId));
-		} catch (e) {
-			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
-	},
-	update: async (event) => {
-		await guardRole(event, USER_ROLES.ADMIN);
-		const form = await superValidate(
-			event,
-			projectInterventionCategoriesWithInterventionsUpdateSchema
-		);
+		await guardRoleContentManagement(event);
+		const form = await superValidate(event, newInterventionSchema);
 		if (!form.valid) {
-			console.info(form);
-			return fail(STATUS_CODES.BAD_REQUEST, { form });
+			return message(form, messageInvalidProjectDescriptor(m.project_type()));
 		}
 		try {
+			const { translations, ...pt } = form.data;
 			await dbpool.transaction(async (tx) => {
-				// Categories
-				const [pic, pict] = extractTranslations(form.data.interventionCategories);
-				await tx
-					.insert(projectInterventionCategories)
-					.values(pic)
-					.onConflictDoUpdate({
-						target: projectInterventionCategories.id,
-						set: excluded(projectInterventionCategories),
-					});
-				await tx
-					.insert(projectInterventionCategoriesTranslations)
-					.values(pict)
-					.onConflictDoUpdate({
-						target: [
-							projectInterventionCategoriesTranslations.id,
-							projectInterventionCategoriesTranslations.lang,
-						],
-						set: excluded(projectInterventionCategoriesTranslations),
-					});
-				// Interventions
-				const [pi, pit] = extractTranslations(
-					form.data.interventionCategories.flatMap((ic) => ic.interventions)
-				);
-				await tx
+				const [{ id }] = await tx
 					.insert(projectInterventions)
-					.values(pi)
-					.onConflictDoUpdate({
-						target: projectInterventions.id,
-						set: excluded(projectInterventions),
-					});
+					.values(pt)
+					.returning({ id: projectInterventions.id });
 				await tx
 					.insert(projectInterventionsTranslations)
-					.values(pit)
-					.onConflictDoUpdate({
-						target: [projectInterventionsTranslations.id, projectInterventionsTranslations.lang],
-						set: excluded(projectInterventionsTranslations),
-					});
+					.values(Object.values(translations).map((tt) => ({ ...tt, id })));
 			});
-			return { form };
 		} catch (e) {
 			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });
+			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
 		}
+		return message(form, messageServerSuccess());
+	},
+	updateIntervention: async (event) => {
+		await guardRoleContentManagement(event);
+		const form = await superValidate(event, projectInterventionsWithTranslationsSchema);
+		if (!form.valid) {
+			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+		}
+		try {
+			const { translations, id, ...pt } = form.data;
+			await dbpool.transaction(async (tx) => {
+				await Promise.all([
+					tx.update(projectInterventions).set(pt).where(eq(projectInterventions.id, id)),
+					tx
+						.insert(projectInterventionsTranslations)
+						.values(Object.values(translations))
+						.onConflictDoUpdate({
+							target: [projectInterventionsTranslations.id, projectInterventionsTranslations.lang],
+							set: excluded(projectInterventionsTranslations),
+						}),
+				]);
+			});
+		} catch (e) {
+			console.error(e);
+			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+		}
+		return message(form, messageServerSuccess());
+	},
+	deleteIntervention: async (event) => {
+		await guardRoleContentManagement(event);
+		const form = await superValidate(event, rootSchema);
+		if (!form.valid) {
+			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+		}
+		try {
+			await dbpool.delete(projectInterventions).where(eq(projectInterventions.id, form.data.id));
+		} catch (e) {
+			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+		}
+		return message(form, messageServerSuccess());
+	},
+	createInterventionCategory: async (event) => {
+		await guardRoleAdmin(event);
+		const form = await superValidate(event, newInterventionSchema);
+		if (!form.valid) {
+			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+		}
+		try {
+			const { translations, ...pt } = form.data;
+			await dbpool.transaction(async (tx) => {
+				const [{ id }] = await tx
+					.insert(projectInterventions)
+					.values(pt)
+					.returning({ id: projectInterventions.id });
+				await tx
+					.insert(projectInterventionsTranslations)
+					.values(Object.values(translations).map((tt) => ({ ...tt, id })));
+			});
+		} catch (e) {
+			console.error(e);
+			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+		}
+		return message(form, messageServerSuccess());
+	},
+	updateInterventionCategory: async (event) => {
+		await guardRoleAdmin(event);
+		const form = await superValidate(event, projectInterventionsWithTranslationsSchema);
+		if (!form.valid) {
+			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+		}
+		try {
+			const { translations, id, ...pt } = form.data;
+			await dbpool.transaction(async (tx) => {
+				await Promise.all([
+					tx.update(projectInterventions).set(pt).where(eq(projectInterventions.id, id)),
+					tx
+						.insert(projectInterventionsTranslations)
+						.values(Object.values(translations))
+						.onConflictDoUpdate({
+							target: [projectInterventionsTranslations.id, projectInterventionsTranslations.lang],
+							set: excluded(projectInterventionsTranslations),
+						}),
+				]);
+			});
+		} catch (e) {
+			console.error(e);
+			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+		}
+		return message(form, messageServerSuccess());
+	},
+	deleteInterventionCategory: async (event) => {
+		await guardRoleAdmin(event);
+		const form = await superValidate(event, rootSchema);
+		if (!form.valid) {
+			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+		}
+		try {
+			await dbpool.delete(projectInterventions).where(eq(projectInterventions.id, form.data.id));
+		} catch (e) {
+			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+		}
+		return message(form, messageServerSuccess());
 	},
 };

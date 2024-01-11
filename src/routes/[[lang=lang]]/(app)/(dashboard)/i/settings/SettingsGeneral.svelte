@@ -35,7 +35,7 @@
 				class="input"
 				bind:value={$form.firstName}
 				{...$states.firstName}
-				placeholder={$langKey(m.user_firstName())}
+				placeholder={$langKey(m.user_first_name())}
 			/>
 			<input
 				type="text"
@@ -43,7 +43,7 @@
 				class="input"
 				bind:value={$form.middleName}
 				{...$states.middleName}
-				placeholder={$langKey(m.user_middleName())}
+				placeholder={$langKey(m.user_middle_name())}
 			/>
 		</fieldset>
 		<input
@@ -52,7 +52,7 @@
 			class="input"
 			bind:value={$form.lastName}
 			{...$states.lastName}
-			placeholder={$langKey(m.user_lastName())}
+			placeholder={$langKey(m.user_last_name())}
 		/>
 	</DashboardFormSection>
 	<DashboardFormSection title={$langKey(m.user_avatar())}>
@@ -63,11 +63,11 @@
 			type="submit"
 			formaction="?/uploadAvatar"
 		>
-			<LangKey>{m.user_uploadAvatar()}</LangKey>
+			<LangKey>{m.user_upload_avatar()}</LangKey>
 			<FileUp class="button-icon" />
 		</button>
 	</DashboardFormSection>
-	<DashboardFormSection title={$langKey(m.user_publicEmail())}>
+	<DashboardFormSection title={$langKey(m.user_public_email())}>
 		<label class="input-group">
 			{#if publicEmailVerified}
 				<Shield class="input-icon" style="color: var(--color-success-500)" />
@@ -79,7 +79,7 @@
 				name="publicEmail"
 				class="input"
 				bind:value={$form.publicEmail}
-				placeholder={$langKey(m.user_publicEmail())}
+				placeholder={$langKey(m.user_public_email())}
 			/>
 			<div class="input-peer">
 				<button class="button" formaction="?/verifyEmail" disabled>

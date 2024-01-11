@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { auth, integrations } from '$lib/auth/auth.server';
+import { auth, integrations } from '$lib/auth/authentication.server';
 import { OAUTH_PROVIDERS_STATE_COOKIE } from '$lib/auth/constants';
 import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
 import { isSupportedOAuthProvider } from '$lib/auth/validation';

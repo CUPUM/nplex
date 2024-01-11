@@ -7,6 +7,10 @@
 		"source.organizeImports": "explicit",
 		"source.fixAll": "explicit"
 	},
+	"markdownlint.config": {
+		"default": true,
+		"MD033": false
+	},
 	"files.associations": {
 		"*.svx": "markdown",
 		"*.mdx": "markdown",

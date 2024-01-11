@@ -1,0 +1,43 @@
+diff --git a/dist/internal/helpers/scroll.js b/dist/internal/helpers/scroll.js
+index 92ba28c4e798f4d5d67d8af5dc476eb11b55e106..2c1850747f46bd04363d24dc2cec0bcd06efd7ee 100644
+--- a/dist/internal/helpers/scroll.js
++++ b/dist/internal/helpers/scroll.js
+@@ -37,15 +37,15 @@ export function removeScroll(_document) {
+     const doc = _document ?? document;
+     const win = doc.defaultView ?? window;
+     const { documentElement, body } = doc;
+-    const locked = body.hasAttribute(LOCK_CLASSNAME);
++    const locked = documentElement.hasAttribute(LOCK_CLASSNAME);
+     if (locked)
+         return noop;
+-    body.setAttribute(LOCK_CLASSNAME, '');
++    documentElement.setAttribute(LOCK_CLASSNAME, '');
+     const scrollbarWidth = win.innerWidth - documentElement.clientWidth;
+     const setScrollbarWidthProperty = () => setCSSProperty(documentElement, '--scrollbar-width', `${scrollbarWidth}px`);
+     const paddingProperty = getPaddingProperty(documentElement);
+-    const scrollbarSidePadding = win.getComputedStyle(body)[paddingProperty];
+-    const setStyle = () => assignStyle(body, {
++    const scrollbarSidePadding = win.getComputedStyle(documentElement)[paddingProperty];
++    const setStyle = () => assignStyle(documentElement, {
+         overflow: 'hidden',
+         [paddingProperty]: `calc(${scrollbarSidePadding} + ${scrollbarWidth}px)`,
+     });
+@@ -55,8 +55,8 @@ export function removeScroll(_document) {
+         // iOS 12 does not support `visuaViewport`.
+         const offsetLeft = visualViewport?.offsetLeft ?? 0;
+         const offsetTop = visualViewport?.offsetTop ?? 0;
+-        const restoreStyle = assignStyle(body, {
+-            position: 'fixed',
++        const restoreStyle = assignStyle(documentElement, {
++            // position: 'fixed',
+             overflow: 'hidden',
+             top: `${-(scrollY - Math.floor(offsetTop))}px`,
+             left: `${-(scrollX - Math.floor(offsetLeft))}px`,
+@@ -71,6 +71,6 @@ export function removeScroll(_document) {
+     const cleanups = [setScrollbarWidthProperty(), isIos() ? setIOSStyle() : setStyle()];
+     return () => {
+         cleanups.forEach((fn) => fn?.());
+-        body.removeAttribute(LOCK_CLASSNAME);
++        documentElement.removeAttribute(LOCK_CLASSNAME);
+     };
+ }

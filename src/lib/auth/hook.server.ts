@@ -1,5 +1,5 @@
 import type { Handle } from '@sveltejs/kit';
-import { auth } from './auth.server';
+import { auth } from './authentication.server';
 
 const handle = (async ({ event, resolve }) => {
 	event.locals.auth = auth.handleRequest(event);

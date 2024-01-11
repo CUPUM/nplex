@@ -1,194 +1,48 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import DescriptorsCardsList from '$lib/components/DashboardDescriptorsList.svelte';
-	import DescriptorsForm from '$lib/components/DescriptorsForm.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { default as TranslationsCard } from '$lib/components/TranslationsCard.svelte';
 	import { superForm } from '$lib/forms/super-form';
-	import { melt } from '@melt-ui/svelte';
-	import { Plus } from 'lucide-svelte';
-	import { flip } from 'svelte/animate';
-	import { expoOut } from 'svelte/easing';
-	import { fly, scale } from 'svelte/transition';
+	import Category from './Category.svelte';
 
 	export let data;
 
 	const {
-		form,
-		submitting,
-		constraints,
-		errors,
 		enhance,
-		tainted,
 		elements: {
-			submitter: { root: submitter },
-			formaction: { root: formaction },
+			submitter: { root: listSubmitter },
 		},
-	} = superForm(data.form, {
+	} = superForm(data.rootForm, {
 		dataType: 'json',
 	});
 </script>
 
-<DescriptorsForm action="?/update" {enhance}>
-	<svelte:fragment slot="header">
-		<h2 class="heading lg">
-			<LangKey>
-				{m.project_descriptors_interventionCategories()}
-				<span class="dim">&</span>
-				{m.project_descriptors_interventionTypes()}
-			</LangKey>
-		</h2>
-		<p class="prose sm dim">
-			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis eius enim error sit fugit
-			dolores unde, nulla odio nam ducimus.
-		</p>
-	</svelte:fragment>
-	<ol>
-		{#each $form.interventionCategories as category, i (category.id)}
-			<li class="category">
-				<div class="top">
-					<TranslationsCard
-						let:lang
-						legend={category.id}
-						legendMinimized={category.translations[$page.data.lang].title}
-					>
-						<label class="label-group">
-							<span class="label with-hover">
-								<LangKey>{m.project_descriptors_interventionCategoryTitle()}</LangKey>
-							</span>
-							<input
-								class="input"
-								type="text"
-								bind:value={$form.interventionCategories[i].translations[lang].title}
-							/>
-						</label>
-						<label class="label-group">
-							<span class="label with-hover">
-								<LangKey>{m.project_descriptors_interventionCategoryDescription()}</LangKey>
-							</span>
-							<textarea
-								class="input resize"
-								rows="3"
-								bind:value={$form.interventionCategories[i].translations[lang].description}
-							/>
-						</label>
-					</TranslationsCard>
-				</div>
-				<DescriptorsCardsList sublist>
-					{#if category.interventions.length}
-						{#each category.interventions as intervention, ii (intervention.id)}
-							<li
-								class="intervention"
-								animate:flip={{ duration: 150 }}
-								in:fly|global={{ y: -6, delay: ii * 25, easing: expoOut, duration: 350 }}
-								out:scale={{ start: 0.95, duration: 250, easing: expoOut }}
-							>
-								<TranslationsCard
-									let:lang
-									legend={$form.interventionCategories[i].interventions[ii].id}
-									legendMinimized={$form.interventionCategories[i].interventions[ii].translations[
-										$page.data.lang
-									].title}
-									deleteFormaction="?/deleteIntervention&interventionId={intervention.id}"
-								>
-									<label class="label-group">
-										<span class="label with-hover">
-											<LangKey>{m.title()}</LangKey>
-										</span>
-										<input
-											class="input"
-											type="text"
-											bind:value={$form.interventionCategories[i].interventions[ii].translations[
-												lang
-											].title}
-										/>
-									</label>
-									<label class="label-group">
-										<span class="label with-hover">
-											<LangKey>{m.description()}</LangKey>
-										</span>
-										<textarea
-											class="input resize"
-											rows="2"
-											bind:value={$form.interventionCategories[i].interventions[ii].translations[
-												lang
-											].description}
-										/>
-									</label>
-								</TranslationsCard>
-							</li>
-						{/each}
-					{:else}
-						<p class="sm prose dimmer">
-							<LangKey>{m.project_descriptors_interventionCategoryDescription()}</LangKey>
-						</p>
-					{/if}
-				</DescriptorsCardsList>
-				<menu class="intervention-menu">
-					<button
-						class="button ghost"
-						type="submit"
-						use:melt={$formaction(`?/createIntervention&categoryId=${category.id}`)}
-					>
-						<Plus class="button-icon" />
-						<LangKey>{m.project_descriptors_createInterventionType()}</LangKey>
-					</button>
-				</menu>
-			</li>
-		{/each}
-	</ol>
-	<!-- <DashboardMenu {tainted} {submitter}>
-		<button
-			class="button outlined"
-			use:melt={$formaction('?/createCategory')}
-			type="submit"
-			disabled
-		>
-			<Pen class="button-icon" />
-			t.
-		</button>
-	</DashboardMenu> -->
-</DescriptorsForm>
+<form class="dashboard-section" use:enhance method="POST">
+	<header class="dashboard-section-header">
+		<hgroup class="prose">
+			<h2>
+				<LangKey>
+					{m.project_descriptors_intervention_categories()} & {m.project_descriptors_intervention_types()}
+				</LangKey>
+			</h2>
+			<p class="dim">
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
+				consequatur amet blanditiis sed alias. Eum, numquam magnam!
+			</p>
+		</hgroup>
+	</header>
+	{#each data.categoryForms as category}
+		<Category
+			{category}
+			{listSubmitter}
+			newInterventionForm={data.newInterventionForm}
+			interventionForms={data.interventionForms.filter(
+				(f) => f.data.categoryId === category.data.id
+			)}
+		/>
+	{/each}
+	<!-- <NewCategory data={data.newCategoryForm} /> -->
+</form>
 
 <style lang="postcss">
-	ol {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		container-type: inline-size;
-		max-width: var(--width-md);
-		gap: 1rem;
-		align-self: center;
-		width: 100%;
-
-		@container (width > 1200px) {
-			margin-right: var(--dashboard-navbar);
-		}
-	}
-
-	.category {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		padding: 1rem;
-		border-radius: var(--radius-xl);
-		border: 2px solid var(--color-neutral-100);
-		:global(:--dark) & {
-			border-color: var(--color-neutral-700);
-		}
-	}
-
-	.top {
-		position: sticky;
-		z-index: 1;
-		top: calc(var(--navbar-height) + 0.5rem);
-	}
-
-	.intervention-menu {
-		font-size: var(--size-sm);
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-	}
+	@import '$styles/scoped/dashboard';
 </style>

@@ -28,9 +28,9 @@ import {
 	projectImageTypesTranslations,
 	projectImplantationTypes,
 	projectImplantationTypesTranslations,
-	projectInterventionCategories,
-	projectInterventionCategoriesTranslations,
 	projectInterventions,
+	projectInterventionsCategories,
+	projectInterventionsCategoriesTranslations,
 	projectInterventionsTranslations,
 	projectSiteOwnerships,
 	projectSiteOwnershipsTranslations,
@@ -76,14 +76,14 @@ export const projectInterventionsUpdateSchema = z.object({
  * Project intervention category.
  */
 export const projectInterventionCategoryInsertSchema = createInsertSchema(
-	projectInterventionCategories,
+	projectInterventionsCategories,
 	{}
 ).required({ id: true });
 /**
  * @deprecated
  */
 export const projectInterventionCategoryTranslationInsertSchema = createInsertSchema(
-	projectInterventionCategoriesTranslations,
+	projectInterventionsCategoriesTranslations,
 	{ ...translationLangColumnSchema }
 );
 /**
