@@ -6,7 +6,7 @@
   See it live at <a href="www.nplex.design"><b>nplex.design</b></a>
 </p>
 
-<!-- 
+<!--
 ## Stack & hosting
 
 The app is built using:
@@ -27,7 +27,7 @@ The production instance is deployed using:
 | Environement | Use                    |
 | :----------- | :--------------------- | --- |
 | Vercel       | Serverless app hosting |
-| Neon         | Postgres database      | --> |
+| Neon         | Postgres database      | -->
 
 ## Getting started
 
