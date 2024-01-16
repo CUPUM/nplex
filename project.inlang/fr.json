@@ -232,5 +232,7 @@
 	"project_descriptors_exemplarity_categories": "Catégories d’exemplarité",
 	"project_descriptors_exemplarity_category": "Catégorie d’exemplarité",
 	"potentially_requires_permit": "Peut nécessiter un permis.",
-	"project_descriptors_ownership_types": "Types de propriétaire"
+	"project_descriptors_ownership_types": "Types de propriétaire",
+	"project_descriptors_level_type": "Type d’étage de bâtiment",
+	"project_descriptors_image_type": "Type d’image"
 }

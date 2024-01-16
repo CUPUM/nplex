@@ -16,10 +16,14 @@ import {
 } from './constants';
 import { rangeSchema } from './schema/custom-types';
 import {
+	projectBuildingLevelTypes,
+	projectBuildingLevelTypesTranslations,
 	projectExemplarityCategories,
 	projectExemplarityCategoriesTranslations,
 	projectExemplarityIndicators,
 	projectExemplarityIndicatorsTranslations,
+	projectImageTypes,
+	projectImageTypesTranslations,
 	projectImplantationTypes,
 	projectImplantationTypesTranslations,
 	projectInterventions,
@@ -55,6 +59,10 @@ export function withTranslationsSchema<
 		),
 	});
 }
+
+//
+// Project descriptors
+//
 
 export const projectTypesSchema = createInsertSchema(projectTypes).required({ id: true });
 export const projectTypesTranslationsSchema = createInsertSchema(projectTypesTranslations);
@@ -150,6 +158,33 @@ export const projectImplantationTypesWithTranslationsSchema = withTranslationsSc
 export const newProjectImplantationTypeSchema = projectImplantationTypesWithTranslationsSchema.omit(
 	{ id: true }
 );
+
+export const projectBuildingLevelTypesSchema = createInsertSchema(
+	projectBuildingLevelTypes
+).required({ id: true });
+export const projectBuildingLevelTypesTranslationsSchema = createInsertSchema(
+	projectBuildingLevelTypesTranslations
+);
+export const projectBuildingLevelTypesWithTranslationsSchema = withTranslationsSchema(
+	projectBuildingLevelTypesSchema,
+	projectBuildingLevelTypesTranslationsSchema.omit({ id: true })
+);
+export const newProjectBuildingLevelTypeSchema =
+	projectBuildingLevelTypesWithTranslationsSchema.omit({ id: true });
+
+export const projectImageTypesSchema = createInsertSchema(projectImageTypes).required({ id: true });
+export const projectImageTypesTranslationsSchema = createInsertSchema(
+	projectImageTypesTranslations
+);
+export const projectImageTypesWithTranslationsSchema = withTranslationsSchema(
+	projectImageTypesSchema,
+	projectImageTypesTranslationsSchema.omit({ id: true })
+);
+export const newProjectImageTypeSchema = projectImageTypesWithTranslationsSchema.omit({ id: true });
+
+//
+// Projects
+//
 
 export const projectsSchema = createInsertSchema(projects, {
 	costRange: () => rangeSchema({ min: PROJECT_COST_MIN, max: PROJECT_COST_MAX, ordered: true }),

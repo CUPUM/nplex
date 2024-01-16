@@ -10,6 +10,7 @@
 	export type ToastData<T extends Component = SvelteComponent> = {
 		title: string;
 		description: string;
+		icon?: ComponentType;
 		type?: ToastType;
 		component?: ComponentType<T>;
 		props?: ComponentProps<T & object>;

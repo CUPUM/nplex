@@ -48,9 +48,9 @@
 	import type { Page } from '@sveltejs/kit';
 	import { X } from 'lucide-svelte';
 	import { tick } from 'svelte';
-	import { expoIn } from 'svelte/easing';
+	import { cubicOut } from 'svelte/easing';
 	import { derived, get } from 'svelte/store';
-	import { fade, scale } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 
 	export let portalled: DialogElements['portalled'];
 	export let overlay: DialogElements['overlay'];
@@ -64,17 +64,22 @@
 
 <div use:melt={$portalled}>
 	{#if $open}
-		<div class="dialog-overlay" use:melt={$overlay} transition:fade={{ duration: 75 }} />
+		<div
+			class="dialog-overlay"
+			use:melt={$overlay}
+			in:fade={{ duration: 75 }}
+			out:fade={{ duration: 150 }}
+		/>
 		<div class="dialog-wrap">
 			<article
 				class="dialog-content"
 				use:melt={$content}
-				in:scale={{ start: 0.9, duration: 100, easing: springOut }}
+				in:fly={{ y: 6, duration: 300, easing: springOut }}
 				out:transform={{
 					translate: [0, 8, -200],
 					rotate: [-15, 0, 0],
 					duration: 100,
-					easing: expoIn,
+					easing: cubicOut,
 				}}
 			>
 				<header class="dialog-header">
@@ -115,8 +120,8 @@
 	.dialog-overlay {
 		--dialog-overlay-bg: radial-gradient(
 			circle,
-			color-mix(in srgb, var(--color-neutral-200) 95%, transparent),
-			color-mix(in srgb, var(--base-bg) 80%, transparent) 100%
+			color-mix(in srgb, var(--color-neutral-200) 95%, transparent) 25%,
+			color-mix(in srgb, var(--color-neutral-50) 80%, transparent) 100%
 		);
 		position: fixed;
 		inset: 0;
@@ -127,7 +132,7 @@
 		:global(:--dark) & {
 			--dialog-overlay-bg: radial-gradient(
 				circle,
-				color-mix(in srgb, var(--color-neutral-950) 90%, transparent),
+				color-mix(in srgb, var(--color-neutral-950) 90%, transparent) 25%,
 				color-mix(in srgb, var(--base-bg) 90%, transparent) 120%
 			);
 		}

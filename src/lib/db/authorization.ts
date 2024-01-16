@@ -32,6 +32,15 @@ export const PERMISSIONS = {
 	'projects.descriptors.exemplarityCategories.create': [USER_ROLES.ADMIN],
 	'projects.descriptors.exemplarityCategories.update': [USER_ROLES.EDITOR, USER_ROLES.ADMIN],
 	'projects.descriptors.exemplarityCategories.delete': [USER_ROLES.ADMIN],
+	'projects.descriptors.implantationTypes.create': [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
+	'projects.descriptors.implantationTypes.update': [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
+	'projects.descriptors.implantationTypes.delete': [USER_ROLES.ADMIN],
+	'projects.descriptors.buildingLevelTypes.create': [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
+	'projects.descriptors.buildingLevelTypes.update': [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
+	'projects.descriptors.buildingLevelTypes.delete': [USER_ROLES.ADMIN],
+	'projects.descriptors.imageTypes.create': [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
+	'projects.descriptors.imageTypes.update': [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
+	'projects.descriptors.imageTypes.delete': [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
 } as const satisfies Record<`${string}.${Operation}`, UserRole[]>;
 
 export type PermissionKey = keyof typeof PERMISSIONS;

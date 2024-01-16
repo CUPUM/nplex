@@ -132,8 +132,8 @@
 	--base-bg: var(--color-neutral-100);
 
 	/* Misc and component-specific */
-	--opacity-dim: 0.6;
-	--opacity-dimmer: 0.3;
+	--opacity-dim: 60%;
+	--opacity-dimmer: 30%;
 	--ripple-color: currentColor;
 	--spinner-color: currentColor;
 	--ratio-small: 0.875em;

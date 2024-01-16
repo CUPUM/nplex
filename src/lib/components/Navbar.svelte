@@ -44,7 +44,7 @@
 		forceVisible: true,
 		positioning: {
 			overflowPadding: 12,
-			gutter: 6,
+			gutter: 12,
 			placement: 'bottom',
 		},
 		preventScroll: false,
@@ -316,7 +316,7 @@
 			inset: 0;
 			transform: translateY(-100%);
 			/* background: var(--base-bg); */
-			background: linear-gradient(var(--base-bg) 0%, transparent 100%);
+			background: linear-gradient(var(--base-bg) 50%, transparent 100%);
 			transition:
 				all 0.35s ease-in,
 				transform 0.5s var(--ease-in-expo);
@@ -379,12 +379,10 @@
 		padding: var(--group-nesting);
 		backdrop-filter: blur(8px);
 		gap: 0;
-		background: rgba(255, 255, 255, 0.5);
-		/* box-shadow: inset 0 0 0 var(--base-border-width)
-			color-mix(in srgb, var(--color-neutral-500) 15%, transparent); */
+		background: var(--base-bg);
+		box-shadow: 0 0 0 var(--base-border-width) var(--base-border-color-dim);
 		:global(:--dark) & {
-			background: color-mix(in srgb, var(--color-neutral-700) 50%, transparent);
-			box-shadow: none;
+			/* background: var(--base-bg); */
 		}
 
 		> * {

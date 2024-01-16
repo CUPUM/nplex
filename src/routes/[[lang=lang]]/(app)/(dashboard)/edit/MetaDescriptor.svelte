@@ -27,7 +27,7 @@
 	let deleteRef: HTMLButtonElement;
 </script>
 
-<section class="meta-descriptor" in:fly|global={{ y: -6, opacity: 0, delay: i * 50 }}>
+<section class="dashboard-subsection" in:fly|global={{ y: -6, opacity: 0, delay: i * 50 }}>
 	{#if variant === 'new'}
 		<button use:melt={$trigger} class="new">
 			<div class="button dashed">
@@ -82,13 +82,11 @@
 </section>
 
 <style lang="postcss">
-	.meta-descriptor {
+	@import '$styles/scoped/dashboard';
+
+	.dashboard-subsection {
 		display: flex;
 		flex-direction: column;
-		grid-column: full;
-		&:not(:last-child) {
-			border-top: var(--base-border-width) solid var(--base-bg);
-		}
 	}
 
 	header {

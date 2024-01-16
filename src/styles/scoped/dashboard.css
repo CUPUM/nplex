@@ -149,8 +149,6 @@
 	grid-column: full;
 
 	&:not(:first-child) {
-		/* border-top: var(--base-border-width) solid
-			color-mix(in srgb, var(--base-border-color) 25%, transparent); */
 		border-top: var(--base-border-width) solid var(--base-bg);
 	}
 }

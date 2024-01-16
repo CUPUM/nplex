@@ -229,5 +229,7 @@
 	"project_descriptors_exemplarity_categories": "Exemplarity categories",
 	"project_descriptors_exemplarity_category": "Exemplarity category",
 	"potentially_requires_permit": "Can require a permit.",
-	"project_descriptors_ownership_types": "Ownership types"
+	"project_descriptors_ownership_types": "Ownership types",
+	"project_descriptors_level_type": "Building level type",
+	"project_descriptors_image_type": "Image type"
 }
