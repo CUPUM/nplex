@@ -13,6 +13,7 @@
 	import { mode } from '$lib/modes/store';
 	import { transform } from '$lib/motion/transform';
 	import { setout } from '$lib/setout/store';
+	import type { MessageFunction } from '$lib/utils/types';
 	import {
 		createDialog,
 		createDropdownMenu,
@@ -53,7 +54,7 @@
 	const explore = [
 		{ key: 'projects', title: m.projects },
 		{ key: 'organizations', title: m.orgs },
-	] satisfies { key: string; title: () => string }[];
+	] satisfies { key: string; title: MessageFunction }[];
 
 	const {
 		elements: { menu: langMenu, item: langItem, trigger: langTrigger },
@@ -94,7 +95,7 @@
 
 <!-- svelte-ignore a11y-missing-attribute -->
 {#if mounted && $setout && $breakpoint}
-	<header id="navbar" class={$setout} class:over={scrollY > 10 && !$page.data.navbar?.noBackground}>
+	<header id="navbar" class={$setout} class:over={scrollY > 14 && !$page.data.navbar?.noBackground}>
 		<div class="inner">
 			<!-- General nav -->
 			<nav id="site-group" class="navbar-group" in:flyin|global={0}>
@@ -303,23 +304,19 @@
 		position: sticky;
 		top: 0;
 		align-self: stretch;
-		padding: 0.75rem;
+		padding: var(--base-gutter);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-
-		@media (--lg) {
-			padding: 0.75rem;
-		}
 
 		&::before {
 			pointer-events: none;
 			content: '';
 			position: absolute;
 			inset: 0;
-			bottom: calc(-1 * var(--base-gutter));
 			transform: translateY(-100%);
-			background: linear-gradient(var(--base-bg) 10%, transparent);
+			/* background: var(--base-bg); */
+			background: linear-gradient(var(--base-bg) 0%, transparent 100%);
 			transition:
 				all 0.35s ease-in,
 				transform 0.5s var(--ease-in-expo);

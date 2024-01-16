@@ -1,4 +1,4 @@
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { userRolesTranslations } from '$lib/db/schema/accounts';
 import { getEventLang } from '$lib/i18n/event';
 import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
@@ -11,7 +11,7 @@ export const load = loadFlash(async (event) => {
 	const { user } = (await event.locals.auth.validate()) || {};
 	event.depends(LOAD_DEPENDENCIES.Lang);
 	const roleName = user
-		? dbpool
+		? db
 				.select({ name: userRolesTranslations.name })
 				.from(userRolesTranslations)
 				.where(

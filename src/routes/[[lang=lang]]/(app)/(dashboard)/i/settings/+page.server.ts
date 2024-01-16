@@ -1,8 +1,7 @@
 import * as m from '$i18n/messages';
-import { authorizeSession } from '$lib/auth/authorization.server';
 import { USER_ROLES } from '$lib/auth/constants';
 import { usersRolesRequestSchema, usersSchema } from '$lib/db/crud.server';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { getUserRolesList } from '$lib/db/queries.server';
 import { users, usersRolesRequests } from '$lib/db/schema/accounts';
 import { TRUE } from '$lib/db/sql.server';
@@ -28,10 +27,10 @@ const permissionSchema = z.object({
 const manageSchema = z.object({});
 
 export const load = async (event) => {
-	const session = await authorizeSession(event);
+	const session = await event.locals.authorize();
 	const { firstName, middleName, lastName, role, publicEmail, publicEmailVerified } =
 		getTableColumns(users);
-	const [{ permissions, ...user }] = await dbpool
+	const [{ permissions, ...user }] = await db
 		.select({
 			firstName,
 			middleName,
@@ -67,7 +66,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		const session = await authorizeSession(event);
+		const session = await event.locals.authorize();
 		const generalForm = await superValidate(event, generalSchema);
 		if (!generalForm.valid) {
 			return message(generalForm, {
@@ -76,7 +75,7 @@ export const actions = {
 			});
 		}
 		try {
-			await dbpool
+			await db
 				.update(users)
 				.set({
 					...generalForm.data,
@@ -101,10 +100,10 @@ export const actions = {
 		}
 	},
 	delete: async (event) => {
-		const session = await authorizeSession(event);
+		const session = await event.locals.authorize();
 		const manageForm = await superValidate(event, manageSchema);
 		try {
-			await dbpool.delete(users).where(eq(users.id, session.user.id));
+			await db.delete(users).where(eq(users.id, session.user.id));
 			return message(manageForm, {
 				title: m.success(),
 				description: m.success_saved_data(),

@@ -1,5 +1,5 @@
 import type { SelectUser } from '$lib/db/crud.server';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import {
 	emailVerificationTokens,
 	passwordResetTokens,
@@ -22,7 +22,7 @@ const TOKEN_MIN_EXPIRY = 3_600_000; // 1hour
  * @see https://lucia-auth.com/guidebook/email-verification-links/sveltekit
  */
 export async function generateEmailVerificationToken(userId: SelectUser['id']) {
-	const storedUserTokens = await dbpool
+	const storedUserTokens = await db
 		.select()
 		.from(emailVerificationTokens)
 		.where(eq(emailVerificationTokens.userId, userId));
@@ -35,7 +35,7 @@ export async function generateEmailVerificationToken(userId: SelectUser['id']) {
 		}
 	}
 	const newToken = generateRandomString(63);
-	await dbpool
+	await db
 		.insert(emailVerificationTokens)
 		.values({ id: newToken, expires: BigInt(Date.now() + TOKEN_EXPIRY), userId });
 	return newToken;
@@ -52,7 +52,7 @@ export async function generateEmailVerificationToken(userId: SelectUser['id']) {
  * @see https://lucia-auth.com/guidebook/email-verification-links/sveltekit
  */
 export async function validateEmailVerificationToken(token: SelectEmailVerificationToken['id']) {
-	const storedToken = await dbpool.transaction(async (tx) => {
+	const storedToken = await db.transaction(async (tx) => {
 		const [stored] = await tx
 			.select()
 			.from(emailVerificationTokens)
@@ -72,9 +72,11 @@ export async function validateEmailVerificationToken(token: SelectEmailVerificat
 	return storedToken.userId;
 }
 
-/** @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit */
+/**
+ * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
+ */
 export async function generatePasswordResetToken(userId: string) {
-	const storedUserTokens = await dbpool
+	const storedUserTokens = await db
 		.select()
 		.from(passwordResetTokens)
 		.where(eq(passwordResetTokens.id, userId));
@@ -87,7 +89,7 @@ export async function generatePasswordResetToken(userId: string) {
 		}
 	}
 	const newToken = generateRandomString(63);
-	await dbpool.insert(passwordResetTokens).values({
+	await db.insert(passwordResetTokens).values({
 		id: newToken,
 		expires: BigInt(Date.now() + TOKEN_EXPIRY),
 		userId,
@@ -95,9 +97,11 @@ export async function generatePasswordResetToken(userId: string) {
 	return newToken;
 }
 
-/** @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit */
+/**
+ * @see https://lucia-auth.com/guidebook/password-reset-link/sveltekit
+ */
 export async function validatePasswordResetToken(token: string) {
-	const storedToken = await dbpool.transaction(async (tx) => {
+	const storedToken = await db.transaction(async (tx) => {
 		const [stored] = await tx
 			.select()
 			.from(passwordResetTokens)

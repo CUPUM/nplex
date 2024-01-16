@@ -3,6 +3,7 @@
 import type { AvailableLanguageTag } from '$i18n/runtime';
 import type { Auth as LuciaAuth } from '$lib/auth/authentication.server';
 import type { ToastData } from '$lib/components/Toast.svelte';
+import type { AuthorizeRequest } from '$lib/db/handle.server';
 import type { users } from '$lib/db/schema/accounts';
 import type { Mode } from '$lib/modes/constants';
 import type { Setout } from '$lib/setout/constants';
@@ -50,6 +51,7 @@ declare global {
 		}
 		interface Locals {
 			auth: AuthRequest;
+			authorize: AuthorizeRequest;
 			/**
 			 * Private theme_mode value for handle hook.
 			 */
@@ -68,6 +70,12 @@ declare global {
 			lang: AvailableLanguageTag;
 		}
 		interface PageData extends LayoutData {
+			// /**
+			//  * Authorization policy boolean values.
+			//  *
+			//  * @todo Strictly type record keys.
+			//  */
+			// authorize: Record<string, boolean>;
 			/**
 			 * Granular server and client setable layout type.
 			 */

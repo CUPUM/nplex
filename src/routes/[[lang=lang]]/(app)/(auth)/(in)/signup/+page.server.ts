@@ -2,7 +2,7 @@ import { auth } from '$lib/auth/authentication.server';
 import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { sendEmailVerificationLink } from '$lib/auth/emails.server';
 import { isEmailUser } from '$lib/auth/validation';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { keys, users } from '$lib/db/schema/accounts';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
@@ -52,7 +52,7 @@ export const actions = {
 			 *
 			 * @see https://lucia-auth.com/basics/fallback-database-queries
 			 */
-			const user = await dbpool.transaction(async (tx) => {
+			const user = await db.transaction(async (tx) => {
 				// const userId = generateRandomString(15);
 				const [user] = await tx
 					.insert(users)

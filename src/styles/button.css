@@ -315,14 +315,14 @@
 
 		&.danger {
 			--_button-color: var(--color-error-700);
-			--_button-border-color: color-mix(in srgb, var(--color-error-500) 25%, transparent);
+			/* --_button-border-color: color-mix(in srgb, var(--color-error-500) 25%, transparent); */
 			--_button-hover-color: var(--color-error-800);
-			--_button-hover-bg: color-mix(in srgb, var(--color-error-500) 25%, transparent);
+			--_button-hover-bg: color-mix(in srgb, var(--color-error-400) 25%, transparent);
 
 			:--dark & {
 				--_button-color: var(--color-error-400);
-				--_button-border-color: color-mix(in srgb, var(--color-error-900) 25%, transparent);
-				--_button-hover-color: var(--color-error-50);
+				/* --_button-border-color: color-mix(in srgb, var(--color-error-900) 25%, transparent); */
+				--_button-hover-color: var(--color-error-100);
 				--_button-hover-bg: color-mix(in srgb, var(--color-error-800) 25%, transparent);
 			}
 		}

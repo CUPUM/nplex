@@ -1,13 +1,13 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
-	import type { SuperFormPageData } from '$lib/forms/types';
+	import type { SuperFormData } from '$lib/forms/types';
 	import { switchCrossfade } from '$lib/motion/presets';
 	import type { PageData } from './$types';
 
 	const [send, receive] = switchCrossfade;
 
-	export let form: SuperFormPageData<PageData['form']>['form'];
+	export let form: SuperFormData<PageData['form']>['form'];
 	export let types: PageData['types'];
 </script>
 

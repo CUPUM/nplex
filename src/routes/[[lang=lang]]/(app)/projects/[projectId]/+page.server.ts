@@ -1,9 +1,9 @@
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { projects, projectsTranslations } from '$lib/db/schema/public';
 import { and, eq, getTableColumns } from 'drizzle-orm';
 
 export const load = async (event) => {
-	const project = await dbpool.transaction(async (tx) => {
+	const project = await db.transaction(async (tx) => {
 		const [base] = await tx
 			.select({
 				...getTableColumns(projectsTranslations),

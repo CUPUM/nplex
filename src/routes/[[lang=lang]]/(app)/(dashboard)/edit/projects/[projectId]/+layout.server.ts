@@ -1,11 +1,11 @@
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { projectsTranslations } from '$lib/db/schema/public';
 import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
 import { and, eq } from 'drizzle-orm';
 
 export const load = async (event) => {
 	event.depends(LOAD_DEPENDENCIES.ProjectEditorBase);
-	const [tt] = await dbpool
+	const [tt] = await db
 		.select({ title: projectsTranslations.title })
 		.from(projectsTranslations)
 		.where(

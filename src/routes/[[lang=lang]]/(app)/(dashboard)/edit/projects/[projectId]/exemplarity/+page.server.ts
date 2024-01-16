@@ -1,6 +1,5 @@
-import { authorizeSession } from '$lib/auth/authorization.server';
 import { projectsExemplarityIndicatorsUpdateSchema } from '$lib/db/crud.server';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { getProjectCategorizedIndicatorsList } from '$lib/db/queries.server';
 import { projectsExemplarityIndicators } from '$lib/db/schema/public';
 import { coalesce, emptyJsonArray, jsonAgg } from '$lib/db/sql.server';
@@ -10,8 +9,8 @@ import { and, eq, notInArray } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await authorizeSession(event);
-	const [indicators] = await dbpool
+	await event.locals.authorize();
+	const [indicators] = await db
 		.select({
 			indicatorIds: coalesce(
 				jsonAgg(projectsExemplarityIndicators.exemplarityIndicatorId),
@@ -30,12 +29,12 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await authorizeSession(event);
+		await event.locals.authorize();
 		const form = await superValidate(event, projectsExemplarityIndicatorsUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		await dbpool.transaction(async (tx) => {
+		await db.transaction(async (tx) => {
 			await tx
 				.delete(projectsExemplarityIndicators)
 				.where(

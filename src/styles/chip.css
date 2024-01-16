@@ -29,6 +29,12 @@
 		--base-radius: var(--_nested-radius);
 	}
 
+	.chip-button {
+	}
+
+	.chip-content {
+	}
+
 	/* Children icons */
 	& > :--icon,
 	.chip-icon {

@@ -1,6 +1,5 @@
-import type { SuperValidated, ZodValidation } from 'sveltekit-superforms';
-import type { AnyZodObject } from 'zod';
+import type { Infer, SuperValidated } from 'sveltekit-superforms';
 import type { SuperForm } from './super-form';
 
-export type SuperFormPageData<T extends SuperValidated<ZodValidation<AnyZodObject>>> =
-	T extends SuperValidated<ZodValidation<infer U>> ? SuperForm<U> : never;
+export type SuperFormData<T extends SuperValidated<Infer<Record<string, unknown>>>> =
+	T extends SuperValidated<infer U> ? SuperForm<U> : never;

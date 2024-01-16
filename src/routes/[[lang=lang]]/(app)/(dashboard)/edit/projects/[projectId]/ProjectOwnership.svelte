@@ -5,11 +5,11 @@
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
 	import { customProxy } from '$lib/forms/proxy';
-	import type { SuperFormPageData } from '$lib/forms/types';
+	import type { SuperFormData } from '$lib/forms/types';
 	import { createSelect, melt } from '@melt-ui/svelte';
 	import type { PageData } from './$types';
 
-	export let form: SuperFormPageData<PageData['form']>['form'];
+	export let form: SuperFormData<PageData['form']>['form'];
 	export let siteOwnerships: PageData['siteOwnerships'];
 
 	const ownershipProxy = customProxy(form, 'siteOwnershipId', {

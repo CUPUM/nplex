@@ -12,13 +12,13 @@
 </script>
 
 <form {...$$restProps} use:enhance method="POST">
+	<slot />
 	{#each availableLanguageTags as lang}
 		<fieldset>
 			<legend class="h6">{LANG_DETAILS[lang].name}</legend>
 			<slot name="translation" {lang} />
 		</fieldset>
 	{/each}
-	<slot />
 </form>
 
 <style lang="postcss">

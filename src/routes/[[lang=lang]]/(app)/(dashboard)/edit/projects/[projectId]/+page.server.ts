@@ -1,8 +1,7 @@
 import * as m from '$i18n/messages';
-import { authorizeSession } from '$lib/auth/authorization.server';
 import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import {
 	getProjectCategorizedInterventionsList,
 	getProjectSiteOwnershipsList,
@@ -10,7 +9,7 @@ import {
 } from '$lib/db/queries.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
 import { TRUE, excluded } from '$lib/db/sql.server';
-import { withTranslations } from '$lib/db/utils.server';
+import { joinTranslations } from '$lib/db/utils.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
@@ -19,16 +18,16 @@ import { message, superValidate } from 'sveltekit-superforms/server';
 // const updateSchema = proejct
 
 export const load = async (event) => {
-	const session = await authorizeSession(event);
+	const session = await event.locals.authorize();
 
 	const [[project], interventions] = await Promise.all([
-		withTranslations(projects, projectsTranslations, {
+		joinTranslations(projects, projectsTranslations, {
 			field: (t) => t.id,
 			reference: (tt) => tt.id,
 		})
 			.where(and(authorizeProjectUpdate(session), eq(projects.id, event.params.projectId)))
 			.limit(1),
-		dbpool
+		db
 			.select({
 				interventionId: projectsInterventions.interventionId,
 			})
@@ -52,7 +51,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await authorizeSession(event);
+		await event.locals.authorize();
 		const form = await superValidate(event, projectGeneralUpdateSchema);
 		if (!form.valid) {
 			console.error(JSON.stringify(form.errors));
@@ -60,7 +59,7 @@ export const actions = {
 		}
 		try {
 			const { translations, interventionIds, ...project } = form.data;
-			await dbpool.transaction(async (tx) => {
+			await db.transaction(async (tx) => {
 				await tx.update(projects).set(project).where(eq(projects.id, event.params.projectId));
 				const { ts, ...set } = excluded(projectsTranslations);
 				await tx

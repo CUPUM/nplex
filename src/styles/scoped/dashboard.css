@@ -1,4 +1,6 @@
 .dashboard {
+	--dashboard-padding: var(--base-gutter);
+	--dashboard-outer-radius: calc(var(--dashboard-padding) + var(--dashboard-radius));
 	position: relative;
 	display: grid;
 	grid-template-columns:
@@ -7,12 +9,17 @@
 		[main-end full-end footer-end];
 	flex-direction: column;
 	align-content: flex-start;
-	border-radius: var(--dashboard-radius);
+	border-radius: 0 0 var(--dashboard-outer-radius) var(--dashboard-outer-radius);
 	perspective: 999px;
-	padding-inline: var(--dashboard-gutter);
+	padding-inline: var(--dashboard-padding);
+	padding-bottom: var(--dashboard-padding);
 	container-type: inline-size;
 	row-gap: 0;
 	column-gap: 0;
+	/* background: linear-gradient(
+		transparent 50%,
+		color-mix(in srgb, var(--color-neutral-500) 5%, transparent)
+	); */
 	min-height: calc(100vh - var(--navbar-height));
 	min-height: calc(100svh - var(--navbar-height));
 	transition: all var(--duration-medium) var(--ease-out-expo);
@@ -78,7 +85,7 @@
 	grid-template-columns: inherit;
 	gap: inherit;
 	/* flex: 1; */
-	border-radius: inherit;
+	border-radius: var(--dashboard-radius);
 	background: var(--dashboard-bg);
 	/* border: var(--base-border-width) solid var(--base-border-color); */
 

@@ -1,7 +1,7 @@
 import { authorizeRole } from '$lib/auth/authorization.server';
 import { USER_ROLES } from '$lib/auth/constants';
 import { organizationTypesUpdateSchema } from '$lib/db/crud.server';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { organizationTypes, organizationTypesTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
 import { extractTranslations, reduceTranslations } from '$lib/db/utils.server';
@@ -13,7 +13,7 @@ import { superValidate } from 'sveltekit-superforms/server';
 export const load = async (event) => {
 	await authorizeRole(event, USER_ROLES.ADMIN);
 	const types = (
-		await dbpool.query.organizationTypes.findMany({
+		await db.query.organizationTypes.findMany({
 			with: {
 				translations: true,
 			},
@@ -27,7 +27,7 @@ export const actions = {
 	create: async (event) => {
 		await authorizeRole(event, USER_ROLES.ADMIN);
 		try {
-			await dbpool.insert(organizationTypes).values({});
+			await db.insert(organizationTypes).values({});
 		} catch (e) {
 			console.error(e);
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
@@ -40,7 +40,7 @@ export const actions = {
 			return fail(STATUS_CODES.BAD_REQUEST);
 		}
 		try {
-			await dbpool.delete(organizationTypes).where(eq(organizationTypes.id, id));
+			await db.delete(organizationTypes).where(eq(organizationTypes.id, id));
 		} catch (e) {
 			console.error(e);
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
@@ -54,7 +54,7 @@ export const actions = {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
 		try {
-			await dbpool.transaction(async (tx) => {
+			await db.transaction(async (tx) => {
 				const [ot, ott] = extractTranslations(form.data.types);
 				await tx
 					.insert(organizationTypes)

@@ -3,7 +3,7 @@ import { auth, integrations } from '$lib/auth/authentication.server';
 import { OAUTH_PROVIDERS_STATE_COOKIE } from '$lib/auth/constants';
 import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
 import { isSupportedOAuthProvider } from '$lib/auth/validation';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { users } from '$lib/db/schema/accounts';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { OAuthRequestError } from '@lucia-auth/oauth';
@@ -47,7 +47,7 @@ export const GET = async (event) => {
 
 	try {
 		const validated = await integrations[event.params.provider].validateCallback(code);
-		const user = await dbpool.transaction(async (tx) => {
+		const user = await db.transaction(async (tx) => {
 			const existingUser = await validated.getExistingUser();
 			if (existingUser) {
 				return existingUser;

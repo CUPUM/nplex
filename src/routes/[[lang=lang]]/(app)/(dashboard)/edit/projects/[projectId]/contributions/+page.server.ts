@@ -1,6 +1,5 @@
-import { authorizeSession } from '$lib/auth/authorization.server';
 import { projectsContributionsUpdateSchema } from '$lib/db/crud.server';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import {
 	organizations,
 	organizationsTranslations,
@@ -13,8 +12,8 @@ import { and, eq, getTableColumns, notInArray } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await authorizeSession(event);
-	const data = await dbpool.transaction(async (tx) => {
+	await event.locals.authorize();
+	const data = await db.transaction(async (tx) => {
 		const allOrgs = await tx
 			.select({
 				...getTableColumns(organizationsTranslations),
@@ -49,13 +48,13 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await authorizeSession(event);
+		await event.locals.authorize();
 		const form = await superValidate(event, projectsContributionsUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
 		try {
-			await dbpool.transaction(async (tx) => {
+			await db.transaction(async (tx) => {
 				await tx
 					.delete(projectsOrganizations)
 					.where(

@@ -18,11 +18,11 @@
 	--color-neutral-800: hsl(32, 8%, 12%);
 	--color-neutral-900: hsl(34, 9%, 9%);
 	--color-neutral-950: hsl(30, 10%, 6%);
-	--color-primary-50: hsl(151, 80%, 92%);
-	--color-primary-100: hsl(151, 76%, 88%);
-	--color-primary-200: hsl(150, 72%, 80%);
-	--color-primary-300: hsl(149, 69%, 65%);
-	--color-primary-400: hsl(148, 65%, 50%);
+	--color-primary-50: hsl(142, 80%, 92%);
+	--color-primary-100: hsl(143, 76%, 88%);
+	--color-primary-200: hsl(144, 72%, 80%);
+	--color-primary-300: hsl(145, 69%, 65%);
+	--color-primary-400: hsl(146, 65%, 50%);
 	--color-primary-500: hsl(147, 90%, 38%);
 	--color-primary-600: hsl(146, 92%, 31%);
 	--color-primary-700: hsl(145, 96%, 23%);
@@ -117,7 +117,7 @@
 	--shadow-xl: 0 16px 24px -10px rgb(0, 0, 0, 0.1), 0 8px 10px -6px rgb(0, 0, 0, 0.1);
 
 	/* Base values for io elements and others */
-	--base-gutter: 0.5rem;
+	--base-gutter: 0.75rem;
 	--base-block-size: 3.5em;
 	--base-inline-padding: 1.25em;
 	--base-radius: var(--radius-md);

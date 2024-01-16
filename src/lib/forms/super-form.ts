@@ -6,21 +6,25 @@ import {
 } from '$lib/builders/loading';
 import { TOAST_TYPES } from '$lib/components/Toast.svelte';
 import { addToast } from '$lib/components/ToastsOutlet.svelte';
+import { debounce } from '$lib/utils/throttle-debounce';
 import { createDialog, type CreateDialogProps } from '@melt-ui/svelte';
 import { onDestroy } from 'svelte';
-import { derived, get, readonly, writable } from 'svelte/store';
-import type { SuperValidated, UnwrapEffects, ZodValidation } from 'sveltekit-superforms';
-import { superForm as _superForm, type FormOptions } from 'sveltekit-superforms/client';
-import type { AnyZodObject, z } from 'zod';
+import { derived, get, readable, readonly, writable } from 'svelte/store';
+import {
+	superForm as originalSuperForm,
+	type FormOptions,
+	type Infer,
+	type SuperValidated,
+} from 'sveltekit-superforms';
 
 /**
  * Extend superform's client-side function by additioanlly returning actions to handle loading state
  * on elements in relation to the form's submitter and the submitted form action.
  */
 export function superForm<
-	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
+	T extends Infer<Record<string, unknown>> = Infer<Record<string, unknown>>,
 	M extends App.Superforms.Message = App.Superforms.Message,
->(form: SuperValidated<T, M>, options?: FormOptions<UnwrapEffects<T>, M>) {
+>(form: SuperValidated<T, M>, options?: FormOptions<T, M>) {
 	const loading = createLoadable({ disable: true });
 	const submitter = writable<HTMLElement | undefined>(undefined);
 	const loadableSubmitter = createLoadableSubmitter({ disable: true });
@@ -33,7 +37,7 @@ export function superForm<
 		loadableFormaction.formaction.set(value);
 	});
 
-	const sf = _superForm(form, {
+	const instance = originalSuperForm(form, {
 		...options,
 		async onSubmit(input) {
 			loading.state.set(true);
@@ -61,10 +65,24 @@ export function superForm<
 	});
 
 	/**
+	 * Debounced global form tainted state check.
+	 */
+	const formTainted = readable(instance.isTainted(), (set) => {
+		const checkTainted = debounce(() => {
+			set(instance.isTainted());
+		}, 100);
+		const unsub = instance.form.subscribe(checkTainted);
+		return () => {
+			unsub();
+			checkTainted.cancel();
+		};
+	});
+
+	/**
 	 * Attribute records for validation feedback states.
 	 */
-	const states = derived(sf.errors, ($errors) => {
-		type FormKey = keyof z.infer<T>;
+	const states = derived(instance.errors, ($errors) => {
+		type FormKey = keyof T;
 		return (Object.keys($errors) as FormKey[]).reduce(
 			(acc, curr) => {
 				acc[curr] = {
@@ -83,7 +101,8 @@ export function superForm<
 	});
 
 	return {
-		...sf,
+		...instance,
+		formTainted,
 		submitter: readonly(submitter),
 		formaction: readonly(formaction),
 		states,
@@ -96,7 +115,7 @@ export function superForm<
 }
 
 export type SuperForm<
-	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
+	T extends Infer<Record<string, unknown>> = Infer<Record<string, unknown>>,
 	M extends App.Superforms.Message = App.Superforms.Message,
 > = ReturnType<typeof superForm<T, M>>;
 
@@ -106,7 +125,7 @@ export type SuperForm<
  * confirmation and to reset the form's data.
  */
 export function superFormDialog<
-	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
+	T extends Infer<Record<string, unknown>> = Infer<Record<string, unknown>>,
 	M extends App.Superforms.Message = App.Superforms.Message,
 >(
 	form: SuperValidated<T, M>,
@@ -114,7 +133,7 @@ export function superFormDialog<
 		closeOnSuccess = false,
 		taintedMessage,
 		...options
-	}: FormOptions<UnwrapEffects<T>, M> & CreateDialogProps & { closeOnSuccess?: boolean }
+	}: FormOptions<T, M> & CreateDialogProps & { closeOnSuccess?: boolean }
 ) {
 	/**
 	 * Controlled state.
@@ -129,12 +148,13 @@ export function superFormDialog<
 	let saved: SuperValidated<T, M>['data'] | undefined;
 
 	// Superform with base augmented behaviors
-	const superform = superForm(form, {
+	const instance = superForm(form, {
 		taintedMessage,
 		...options,
 		onUpdated(event) {
-			saved = structuredClone(event.form.data);
-			console.log('saving', saved);
+			if (!event.form.valid && !event.form.errors) {
+				saved = structuredClone(event.form.data);
+			}
 		},
 		onResult(event) {
 			options.onResult && options.onResult(event);
@@ -155,16 +175,16 @@ export function superFormDialog<
 				taintedMessage !== false &&
 				taintedMessage !== null &&
 				!state.next &&
-				get(superform.tainted)
+				get(instance.tainted)
 			) {
-				const confirmed = confirm(taintedMessage ?? m.confirm_unsaved_data());
+				const confirmed = confirm(
+					typeof taintedMessage === 'string' ? taintedMessage : m.confirm_unsaved_data()
+				);
 				if (confirmed) {
 					if (saved) {
-						console.log('restoring saved prev');
-						superform.form.set(saved, { taint: 'untaint-all' });
+						instance.form.set(saved, { taint: 'untaint-all' });
 					} else {
-						console.log('resetting');
-						superform.reset();
+						instance.reset();
 					}
 				}
 				return !confirmed;
@@ -174,20 +194,20 @@ export function superFormDialog<
 	});
 
 	return {
-		...superform,
+		...instance,
 		...dialog,
 		states: {
 			...dialog.states,
-			fields: superform.states,
+			fields: instance.states,
 		},
 		elements: {
 			...dialog.elements,
-			...superform.elements,
+			...instance.elements,
 		},
 	};
 }
 
 export type SuperFormDialog<
-	T extends ZodValidation<AnyZodObject> = ZodValidation<AnyZodObject>,
+	T extends Infer<Record<string, unknown>> = Infer<Record<string, unknown>>,
 	M extends App.Superforms.Message = App.Superforms.Message,
 > = ReturnType<typeof superFormDialog<T, M>>;

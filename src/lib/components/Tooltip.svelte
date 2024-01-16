@@ -53,6 +53,7 @@
 		color: var(--color-neutral-200);
 		background-color: var(--tip-color);
 		backdrop-filter: blur(8px);
+		z-index: 9999;
 
 		:global(:--dark) & {
 			--tip-color: color-mix(in srgb, var(--color-neutral-950) 95%, transparent);

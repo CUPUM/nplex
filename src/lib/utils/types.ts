@@ -13,6 +13,8 @@
 import type { Readable } from 'svelte/store';
 import type { TransitionConfig } from 'svelte/transition';
 
+export type MessageFunction = ((...args: unknown[]) => string) | (() => string);
+
 // 	: never;
 export type ExtractLiteral<T> = T extends `${infer L}` ? L : never;
 
@@ -40,9 +42,8 @@ export type StrictHTMLInputTypeAttribute =
 	| 'url'
 	| 'week';
 
-export type StoresValues<T> = T extends Readable<infer U>
-	? U
-	: { [K in keyof T]: T[K] extends Readable<infer U> ? U : never };
+export type StoresValues<T> =
+	T extends Readable<infer U> ? U : { [K in keyof T]: T[K] extends Readable<infer U> ? U : never };
 
 export type TransitionFunction<T = undefined> = T extends undefined
 	? (node: HTMLElement) => TransitionConfig

@@ -1,33 +1,135 @@
 <script lang="ts">
-	// type $$Props = HTMLButtonAttributes & {
-	// 	deleteButton?: HTMLButtonAttributes;
-	// 	variant?: 'new' | 'pending';
-	// 	trigger: DialogElements['trigger'];
-	// 	submitter: SuperForm['elements']['submitter']['root'];
-	// 	label?: string | null;
-	// };
+	import * as m from '$i18n/messages';
+	import ButtonIconPencil from '$lib/components/ButtonIconPencil.svelte';
+	import ButtonIconPlus from '$lib/components/ButtonIconPlus.svelte';
+	import LangKey from '$lib/components/LangKey.svelte';
+	import Tooltip from '$lib/components/Tooltip.svelte';
+	import type { SuperForm } from '$lib/forms/super-form';
+	import { melt, type DialogElements } from '@melt-ui/svelte';
+	import { Trash2 } from 'lucide-svelte';
+	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import { fly } from 'svelte/transition';
 
-	// export let deleteButton: $$Props['deleteButton'] = undefined;
-	// export let variant: $$Props['variant'] = undefined;
-	// export let label: $$Props['label'] = undefined;
-	// export let trigger: $$Props['trigger'];
-	// export let submitter: $$Props['submitter'];
+	type $$Props = HTMLButtonAttributes & {
+		i: number;
+		trigger: DialogElements['trigger'];
+		submitter: SuperForm['elements']['submitter']['root'];
+		variant?: 'new' | 'pending';
+		deleteButton?: HTMLButtonAttributes;
+	};
 
-	// let deleteRef: HTMLButtonElement;
+	export let i: $$Props['i'];
+	export let trigger: $$Props['trigger'];
+	export let submitter: $$Props['submitter'];
+	export let variant: $$Props['variant'] = undefined;
+	export let deleteButton: $$Props['deleteButton'] = undefined;
+
+	let deleteRef: HTMLButtonElement;
 </script>
 
-<section class="dashboard-subsection">
-	<header class="dashboard-subsection-header">
-		<h1 class="h4">
-			<slot name="title" />
-		</h1>
-		<p class="dashboard-subsection-description">
-			<slot name="description" />
-		</p>
-	</header>
-	<slot />
+<section class="meta-descriptor" in:fly|global={{ y: -6, opacity: 0, delay: i * 50 }}>
+	{#if variant === 'new'}
+		<button use:melt={$trigger} class="new">
+			<div class="button dashed">
+				<slot />
+				<ButtonIconPlus />
+			</div>
+		</button>
+	{:else}
+		<header>
+			<hgroup>
+				<h2 class="h4" use:melt={$trigger}>
+					<slot name="title" />
+				</h2>
+				<menu class="compact">
+					<Tooltip let:trigger={tooltipTrigger}>
+						<svelte:fragment slot="content">
+							<LangKey>
+								{m.edit()}
+							</LangKey>
+						</svelte:fragment>
+						<button class="button outlined square" use:melt={$trigger} use:melt={tooltipTrigger}>
+							<ButtonIconPencil />
+						</button>
+					</Tooltip>
+					{#if deleteButton}
+						<Tooltip let:trigger={tooltipTrigger}>
+							<svelte:fragment slot="content">
+								<LangKey>
+									{m.del()}
+								</LangKey>
+							</svelte:fragment>
+							<button
+								{...deleteButton}
+								type="submit"
+								class="delete button outlined square danger"
+								bind:this={deleteRef}
+								use:melt={$submitter(deleteRef)}
+								use:melt={tooltipTrigger}
+							>
+								<Trash2 />
+							</button>
+						</Tooltip>
+					{/if}
+				</menu>
+			</hgroup>
+			<section class="description" use:melt={$trigger}>
+				<slot name="description" />
+			</section>
+		</header>
+		<slot />
+	{/if}
 </section>
 
 <style lang="postcss">
-	@import '$styles/scoped/dashboard';
+	.meta-descriptor {
+		display: flex;
+		flex-direction: column;
+		grid-column: full;
+		&:not(:last-child) {
+			border-top: var(--base-border-width) solid var(--base-bg);
+		}
+	}
+
+	header {
+		padding: 1.5rem;
+		margin: 1rem;
+		margin-bottom: 0;
+		line-height: var(--line-sparse);
+		border-radius: calc(var(--dashboard-radius) - 1rem);
+		background: color-mix(in srgb, var(--color-neutral-600) 5%, transparent);
+		:global(:--dark) & {
+			background: color-mix(in srgb, var(--color-neutral-500) 5%, transparent);
+		}
+	}
+
+	[data-melt-dialog-trigger] {
+		cursor: pointer;
+	}
+
+	.description {
+		margin-top: 1rem;
+		max-width: 65ch;
+		opacity: var(--opacity-dim);
+		font-size: var(--size-sm);
+	}
+
+	hgroup {
+		display: flex;
+		flex-direction: row;
+		gap: 1em;
+	}
+
+	.new {
+		grid-column: full;
+		font-size: var(--size-sm);
+		padding: 2rem;
+	}
+
+	menu {
+		font-size: var(--size-sm);
+		display: flex;
+		flex-direction: row;
+		gap: 3px;
+	}
 </style>

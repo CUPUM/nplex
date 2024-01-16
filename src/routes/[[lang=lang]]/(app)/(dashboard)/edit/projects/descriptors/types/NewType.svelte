@@ -31,7 +31,7 @@
 
 <Descriptor {trigger} {submitter} variant="new" />
 <Dialog {open} {...restElements}>
-	<svelte:fragment slot="header">
+	<svelte:fragment slot="title">
 		<LangKey>{m.project_descriptors_type_create()}</LangKey>
 	</svelte:fragment>
 	<DescriptorForm {enhance} id={data.id} action="?/create">

@@ -16,10 +16,18 @@ import {
 } from './constants';
 import { rangeSchema } from './schema/custom-types';
 import {
+	projectExemplarityCategories,
+	projectExemplarityCategoriesTranslations,
+	projectExemplarityIndicators,
+	projectExemplarityIndicatorsTranslations,
+	projectImplantationTypes,
+	projectImplantationTypesTranslations,
 	projectInterventions,
 	projectInterventionsCategories,
 	projectInterventionsCategoriesTranslations,
 	projectInterventionsTranslations,
+	projectSiteOwnerships,
+	projectSiteOwnershipsTranslations,
 	projectTypes,
 	projectTypesTranslations,
 	projects,
@@ -48,14 +56,13 @@ export function withTranslationsSchema<
 	});
 }
 
-// Project descriptors
-
 export const projectTypesSchema = createInsertSchema(projectTypes).required({ id: true });
 export const projectTypesTranslationsSchema = createInsertSchema(projectTypesTranslations);
 export const projectTypesWithTranslationsSchema = withTranslationsSchema(
 	projectTypesSchema,
-	projectTypesTranslationsSchema
+	projectTypesTranslationsSchema.omit({ id: true })
 );
+export const newProjectTypeSchema = projectTypesWithTranslationsSchema.omit({ id: true });
 
 export const projectInterventionsSchema = createInsertSchema(projectInterventions).required({
 	id: true,
@@ -65,8 +72,13 @@ export const projectInterventionsTranslationsSchema = createInsertSchema(
 );
 export const projectInterventionsWithTranslationsSchema = withTranslationsSchema(
 	projectInterventionsSchema,
-	projectInterventionsTranslationsSchema
-);
+	projectInterventionsTranslationsSchema.omit({ id: true })
+).extend({
+	projectTypesIds: projectTypesSchema.shape.id.array(),
+});
+export const newProjectInterventionSchema = projectInterventionsWithTranslationsSchema.omit({
+	id: true,
+});
 
 export const projectInterventionsCategoriesSchema = createInsertSchema(
 	projectInterventionsCategories
@@ -76,24 +88,80 @@ export const projectInterventionsCategoriesTranslationsSchema = createInsertSche
 );
 export const projectInterventionsCategoriesWithTranslationsSchema = withTranslationsSchema(
 	projectInterventionsCategoriesSchema,
-	projectInterventionsCategoriesTranslationsSchema
+	projectInterventionsCategoriesTranslationsSchema.omit({ id: true })
 );
+export const newProjectInterventionCategorySchema =
+	projectInterventionsCategoriesWithTranslationsSchema.omit({
+		id: true,
+	});
 
-// Projects
+export const projectExemplarityIndicatorsSchema = createInsertSchema(
+	projectExemplarityIndicators
+).required({ id: true });
+export const projectExemplarityIndicatorsTranslationsSchema = createInsertSchema(
+	projectExemplarityIndicatorsTranslations
+);
+export const projectExemplarityIndicatorsWithTranslationsSchema = withTranslationsSchema(
+	projectExemplarityIndicatorsSchema,
+	projectExemplarityIndicatorsTranslationsSchema.omit({ id: true })
+);
+export const newProjectExemplarityIndicatorSchema =
+	projectExemplarityIndicatorsWithTranslationsSchema.omit({ id: true });
+
+export const projectExemplarityCategoriesSchema = createInsertSchema(
+	projectExemplarityCategories
+).required({ id: true });
+export const projectExemplarityCategoriesTranslationsSchema = createInsertSchema(
+	projectExemplarityCategoriesTranslations
+);
+export const projectExemplarityCategoriesWithTranslationsSchema = withTranslationsSchema(
+	projectExemplarityCategoriesSchema,
+	projectExemplarityCategoriesTranslationsSchema.omit({ id: true })
+);
+export const newProjectExemplarityCategorySchema =
+	projectExemplarityCategoriesWithTranslationsSchema.omit({
+		id: true,
+	});
+
+export const projectSiteOwnershipsSchema = createInsertSchema(projectSiteOwnerships).required({
+	id: true,
+});
+export const projectSiteOwnershipsTranslationsSchema = createInsertSchema(
+	projectSiteOwnershipsTranslations
+);
+export const projectSiteOwnershipsWithTranslationsSchema = withTranslationsSchema(
+	projectSiteOwnershipsSchema,
+	projectSiteOwnershipsTranslationsSchema.omit({ id: true })
+);
+export const newProjectSiteOwnershipSchema = projectSiteOwnershipsWithTranslationsSchema.omit({
+	id: true,
+});
+
+export const projectImplantationTypesSchema = createInsertSchema(projectImplantationTypes).required(
+	{ id: true }
+);
+export const projectImplantationTypesTranslationsSchema = createInsertSchema(
+	projectImplantationTypesTranslations
+);
+export const projectImplantationTypesWithTranslationsSchema = withTranslationsSchema(
+	projectImplantationTypesSchema,
+	projectImplantationTypesTranslationsSchema.omit({ id: true })
+);
+export const newProjectImplantationTypeSchema = projectImplantationTypesWithTranslationsSchema.omit(
+	{ id: true }
+);
 
 export const projectsSchema = createInsertSchema(projects, {
 	costRange: () => rangeSchema({ min: PROJECT_COST_MIN, max: PROJECT_COST_MAX, ordered: true }),
 });
-
 export const projectsTranslationsSchema = createInsertSchema(projectsTranslations, {
 	title: (s) => s.title.max(PROJECT_TITLE_MAX),
 	summary: (s) => s.summary.max(PROJECT_SUMMARY_MAX),
 	description: (s) => s.description.max(PROJECT_DESCRIPTION_MAX),
 });
-
 export const projectsWithTranslationsSchema = withTranslationsSchema(
 	projectsSchema,
-	projectsTranslationsSchema
+	projectsTranslationsSchema.omit({ id: true })
 );
 
 export const projectsInterventionsSchema = createInsertSchema(projectsInterventions);

@@ -56,6 +56,7 @@
 	export let overlay: DialogElements['overlay'];
 	export let content: DialogElements['content'];
 	export let title: DialogElements['title'];
+	export let description: DialogElements['description'];
 	export let close: DialogElements['close'];
 	export let open: DialogStates['open'];
 	export let closeButton: boolean = true;
@@ -63,7 +64,7 @@
 
 <div use:melt={$portalled}>
 	{#if $open}
-		<div class="dialog-overlay" use:melt={$overlay} transition:fade={{ duration: 250 }} />
+		<div class="dialog-overlay" use:melt={$overlay} transition:fade={{ duration: 75 }} />
 		<div class="dialog-wrap">
 			<article
 				class="dialog-content"
@@ -77,18 +78,25 @@
 				}}
 			>
 				<header class="dialog-header">
-					<hgroup class="dialog-header-text" use:melt={$title}>
-						{#if $$slots.header}
-							<slot name="header" />
+					<hgroup class="dialog-title" use:melt={$title}>
+						{#if $$slots.title}
+							<h1 class="h4">
+								<slot name="title" />
+							</h1>
 						{/if}
+						<menu class="dialog-header-menu">
+							{#if closeButton}
+								<button use:ripple class="dialog-close" type="button" use:melt={$close}>
+									<X />
+								</button>
+							{/if}
+						</menu>
 					</hgroup>
-					<menu class="dialog-header-menu">
-						{#if closeButton}
-							<button use:ripple class="dialog-close" type="button" use:melt={$close}>
-								<X />
-							</button>
-						{/if}
-					</menu>
+					{#if $$slots.description}
+						<div class="dialog-description" use:melt={$description}>
+							<slot name="description" />
+						</div>
+					{/if}
 				</header>
 				<slot>Content</slot>
 				{#if $$slots.footer}
@@ -107,17 +115,21 @@
 	.dialog-overlay {
 		--dialog-overlay-bg: radial-gradient(
 			circle,
-			var(--color-neutral-200),
-			var(--color-neutral-50) 100%
+			color-mix(in srgb, var(--color-neutral-200) 95%, transparent),
+			color-mix(in srgb, var(--base-bg) 80%, transparent) 100%
 		);
 		position: fixed;
 		inset: 0;
 		z-index: 99;
 		background: var(--dialog-overlay-bg);
-		opacity: 0.88;
+		backdrop-filter: blur(1px);
 
 		:global(:--dark) & {
-			--dialog-overlay-bg: radial-gradient(circle, var(--color-neutral-950), var(--base-bg) 120%);
+			--dialog-overlay-bg: radial-gradient(
+				circle,
+				color-mix(in srgb, var(--color-neutral-950) 90%, transparent),
+				color-mix(in srgb, var(--base-bg) 90%, transparent) 120%
+			);
 		}
 	}
 
@@ -158,6 +170,11 @@
 		height: var(--base-block-size);
 		border-radius: var(--radius-full);
 		transition: all var(--duration-fast) ease-out;
+
+		&:focus-visible {
+			outline: var(--base-focus-ring);
+			outline-color: currentColor;
+		}
 
 		:global(:--dark) & {
 			color: var(--color-error-300);
@@ -202,14 +219,20 @@
 
 	.dialog-header {
 		display: flex;
-		flex-direction: row;
-		gap: 2em;
-		position: relative;
+		flex-direction: column;
+		gap: calc(1em * var(--line-sparse));
 		margin-bottom: var(--dialog-padding);
-		justify-content: space-between;
 
-		.dialog-header-text {
-			@mixin h4;
+		.dialog-title {
+			display: flex;
+			flex-direction: row;
+			gap: 2em;
+			position: relative;
+			justify-content: space-between;
+		}
+
+		.dialog-description {
+			opacity: var(--opacity-dim);
 		}
 
 		.dialog-header-menu {

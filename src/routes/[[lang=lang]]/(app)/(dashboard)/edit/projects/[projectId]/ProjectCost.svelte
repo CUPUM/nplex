@@ -6,14 +6,14 @@
 	import Slider from '$lib/components/Slider.svelte';
 	import SwitchThumb from '$lib/components/SwitchThumb.svelte';
 	import { PROJECT_COST_MAX, PROJECT_COST_MIN } from '$lib/db/constants';
-	import type { SuperFormPageData } from '$lib/forms/types';
+	import type { SuperFormData } from '$lib/forms/types';
 	import { checked } from '$lib/utils/attributes';
 	import { Minus, Plus, RotateCcw } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale, slide } from 'svelte/transition';
 	import type { PageData } from './$types';
 
-	type Form = SuperFormPageData<PageData['form']>;
+	type Form = SuperFormData<PageData['form']>;
 
 	export let form: Form['form'];
 	export let smallScale: boolean;

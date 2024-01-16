@@ -1,69 +1,94 @@
 import * as m from '$i18n/messages';
-import { guardRoleAdmin, guardRoleContentManagement } from '$lib/auth/authorization.server';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import {
 	projectInterventions,
 	projectInterventionsCategories,
 	projectInterventionsCategoriesTranslations,
 	projectInterventionsTranslations,
+	projectTypes,
+	projectTypesToInterventions,
+	projectTypesTranslations,
 } from '$lib/db/schema/public';
-import { excluded } from '$lib/db/sql.server';
-import { withTranslations } from '$lib/db/utils.server';
+import { coalesce, emptyJsonArray, excluded, jsonAgg } from '$lib/db/sql.server';
+import { getSubqueryColumns, joinTranslations } from '$lib/db/utils.server';
 import {
+	newProjectInterventionCategorySchema,
+	newProjectInterventionSchema,
 	projectInterventionsCategoriesWithTranslationsSchema,
 	projectInterventionsWithTranslationsSchema,
 } from '$lib/db/validation.server';
 import {
-	messageInvalidProjectDescriptor,
-	messageServerError,
-	messageServerSuccess,
+	messageError,
+	messageInvalid,
+	messageNoRowsDeleted,
+	messageSuccess,
 } from '$lib/forms/messages';
-import { STATUS_CODES } from '$lib/utils/constants';
-import { eq } from 'drizzle-orm';
-import { message, superValidate } from 'sveltekit-superforms/server';
+import { eq, notInArray } from 'drizzle-orm';
+import { zod } from 'sveltekit-superforms/adapters';
+import { superValidate } from 'sveltekit-superforms/server';
+import { z } from 'zod';
 
-const rootSchema = projectInterventionsWithTranslationsSchema.pick({ id: true });
-const newInterventionSchema = projectInterventionsWithTranslationsSchema.omit({ id: true });
-const newCategorySchema = projectInterventionsCategoriesWithTranslationsSchema.omit({
-	id: true,
-});
+const rootSchema = z.object({ id: z.string() });
 
 export const load = async (event) => {
-	await guardRoleContentManagement(event);
-	const interventions = withTranslations(projectInterventions, projectInterventionsTranslations, {
+	await event.locals.authorize('projects.descriptors.interventions.update');
+	const pit = db
+		.select({
+			interventionId: projectInterventions.id,
+			projectTypeIds: coalesce(jsonAgg(projectTypesToInterventions.typeId), emptyJsonArray()).as(
+				'types'
+			),
+		})
+		.from(projectInterventions)
+		.leftJoin(
+			projectTypesToInterventions,
+			eq(projectTypesToInterventions.interventionId, projectInterventions.id)
+		)
+		.groupBy(projectInterventions.id)
+		.as('pit');
+	const pi = joinTranslations(projectInterventions, projectInterventionsTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
-	});
-	const categories = withTranslations(
+	}).as('pi');
+	const interventionsWithTypes = db
+		.select({ ...getSubqueryColumns(pi), projectTypeIds: pit.projectTypeIds })
+		.from(pi)
+		.leftJoin(pit, eq(pit.interventionId, pi.id));
+	const categories = joinTranslations(
 		projectInterventionsCategories,
 		projectInterventionsCategoriesTranslations,
 		{ field: (t) => t.id, reference: (tt) => tt.id }
 	);
-	const [rootForm, newCategoryForm, categoryForms, newInterventionForm, interventionForms] =
+	const [types, rootForm, newCategoryForm, categoryForms, newInterventionForm, interventionForms] =
 		await Promise.all([
-			superValidate(rootSchema),
-			superValidate(newCategorySchema),
+			joinTranslations(projectTypes, projectTypesTranslations, {
+				field: (t) => t.id,
+				reference: (tt) => tt.id,
+			}),
+			superValidate(zod(rootSchema)),
+			superValidate(zod(newProjectInterventionCategorySchema)),
 			Promise.all(
 				await categories.then((data) =>
-					data.map((category) =>
-						superValidate(category, projectInterventionsCategoriesWithTranslationsSchema, {
-							id: category.id,
+					data.map((defaults) =>
+						superValidate(zod(projectInterventionsCategoriesWithTranslationsSchema, { defaults }), {
+							id: defaults.id,
 						})
 					)
 				)
 			),
-			superValidate(newInterventionSchema),
+			superValidate(zod(newProjectInterventionSchema)),
 			Promise.all(
-				await interventions.then((data) =>
-					data.map((intervention) =>
-						superValidate(intervention, projectInterventionsWithTranslationsSchema, {
-							id: intervention.id,
+				await interventionsWithTypes.then((data) =>
+					data.map((defaults) =>
+						superValidate(zod(projectInterventionsWithTranslationsSchema, { defaults }), {
+							id: defaults.id,
 						})
 					)
 				)
 			),
 		]);
 	return {
+		types,
 		rootForm,
 		newCategoryForm,
 		categoryForms,
@@ -74,14 +99,14 @@ export const load = async (event) => {
 
 export const actions = {
 	createIntervention: async (event) => {
-		await guardRoleContentManagement(event);
-		const form = await superValidate(event, newInterventionSchema);
+		await event.locals.authorize('projects.descriptors.interventions.create');
+		const form = await superValidate(event, zod(newProjectInterventionSchema));
 		if (!form.valid) {
-			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+			return messageInvalid(form, m.project_descriptors_intervention());
 		}
 		try {
-			const { translations, ...pt } = form.data;
-			await dbpool.transaction(async (tx) => {
+			const { translations, projectTypesIds, ...pt } = form.data;
+			await db.transaction(async (tx) => {
 				const [{ id }] = await tx
 					.insert(projectInterventions)
 					.values(pt)
@@ -91,110 +116,134 @@ export const actions = {
 					.values(Object.values(translations).map((tt) => ({ ...tt, id })));
 			});
 		} catch (e) {
-			console.error(e);
-			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return messageError(form);
 		}
-		return message(form, messageServerSuccess());
+		return messageSuccess(form);
 	},
 	updateIntervention: async (event) => {
-		await guardRoleContentManagement(event);
-		const form = await superValidate(event, projectInterventionsWithTranslationsSchema);
+		await event.locals.authorize('projects.descriptors.interventions.update');
+		const form = await superValidate(event, zod(projectInterventionsWithTranslationsSchema));
 		if (!form.valid) {
-			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+			return messageInvalid(form, m.project_descriptors_intervention());
 		}
 		try {
-			const { translations, id, ...pt } = form.data;
-			await dbpool.transaction(async (tx) => {
+			const { translations, id, projectTypesIds, ...pt } = form.data;
+			await db.transaction(async (tx) => {
 				await Promise.all([
 					tx.update(projectInterventions).set(pt).where(eq(projectInterventions.id, id)),
 					tx
 						.insert(projectInterventionsTranslations)
-						.values(Object.values(translations))
+						.values(Object.values(translations).map((d) => ({ ...d, id })))
 						.onConflictDoUpdate({
 							target: [projectInterventionsTranslations.id, projectInterventionsTranslations.lang],
 							set: excluded(projectInterventionsTranslations),
 						}),
+					tx
+						.delete(projectTypesToInterventions)
+						.where(notInArray(projectTypesToInterventions.typeId, projectTypesIds)),
+					tx
+						.insert(projectTypesToInterventions)
+						.values(projectTypesIds.map((d) => ({ interventionId: id, typeId: d })))
+						.onConflictDoNothing(),
 				]);
 			});
 		} catch (e) {
-			console.error(e);
-			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return messageError(form);
 		}
-		return message(form, messageServerSuccess());
+		return messageSuccess(form);
 	},
 	deleteIntervention: async (event) => {
-		await guardRoleContentManagement(event);
-		const form = await superValidate(event, rootSchema);
+		await event.locals.authorize('projects.descriptors.interventions.delete');
+		const form = await superValidate(event, zod(rootSchema));
 		if (!form.valid) {
-			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+			return messageInvalid(form, m.project_descriptors_intervention());
 		}
 		try {
-			await dbpool.delete(projectInterventions).where(eq(projectInterventions.id, form.data.id));
+			const deleted = await db
+				.delete(projectInterventions)
+				.where(eq(projectInterventions.id, form.data.id))
+				.returning();
+			if (!deleted.length) {
+				return messageNoRowsDeleted(form);
+			}
 		} catch (e) {
-			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return messageError(form);
 		}
-		return message(form, messageServerSuccess());
+		return messageSuccess(form);
 	},
-	createInterventionCategory: async (event) => {
-		await guardRoleAdmin(event);
-		const form = await superValidate(event, newInterventionSchema);
+	createCategory: async (event) => {
+		await event.locals.authorize('projects.descriptors.interventionCategories.create');
+		const form = await superValidate(event, zod(newProjectInterventionCategorySchema));
 		if (!form.valid) {
-			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+			return messageInvalid(form, m.project_descriptors_intervention());
 		}
 		try {
-			const { translations, ...pt } = form.data;
-			await dbpool.transaction(async (tx) => {
+			const { translations, ...category } = form.data;
+			await db.transaction(async (tx) => {
 				const [{ id }] = await tx
-					.insert(projectInterventions)
-					.values(pt)
-					.returning({ id: projectInterventions.id });
+					.insert(projectInterventionsCategories)
+					.values(category)
+					.returning({ id: projectInterventionsCategories.id });
 				await tx
-					.insert(projectInterventionsTranslations)
-					.values(Object.values(translations).map((tt) => ({ ...tt, id })));
+					.insert(projectInterventionsCategoriesTranslations)
+					.values(Object.values(translations).map((d) => ({ ...d, id })));
 			});
 		} catch (e) {
-			console.error(e);
-			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return messageError(form);
 		}
-		return message(form, messageServerSuccess());
+		return messageSuccess(form);
 	},
-	updateInterventionCategory: async (event) => {
-		await guardRoleAdmin(event);
-		const form = await superValidate(event, projectInterventionsWithTranslationsSchema);
+	updateCategory: async (event) => {
+		await event.locals.authorize('projects.descriptors.interventionCategories.update');
+		const form = await superValidate(
+			event,
+			zod(projectInterventionsCategoriesWithTranslationsSchema)
+		);
 		if (!form.valid) {
-			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+			return messageInvalid(form, m.project_descriptors_intervention());
 		}
 		try {
 			const { translations, id, ...pt } = form.data;
-			await dbpool.transaction(async (tx) => {
+			await db.transaction(async (tx) => {
 				await Promise.all([
-					tx.update(projectInterventions).set(pt).where(eq(projectInterventions.id, id)),
 					tx
-						.insert(projectInterventionsTranslations)
-						.values(Object.values(translations))
+						.update(projectInterventionsCategories)
+						.set(pt)
+						.where(eq(projectInterventionsCategories.id, id)),
+					tx
+						.insert(projectInterventionsCategoriesTranslations)
+						.values(Object.values(translations).map((d) => ({ ...d, id })))
 						.onConflictDoUpdate({
-							target: [projectInterventionsTranslations.id, projectInterventionsTranslations.lang],
-							set: excluded(projectInterventionsTranslations),
+							target: [
+								projectInterventionsCategoriesTranslations.id,
+								projectInterventionsCategoriesTranslations.lang,
+							],
+							set: excluded(projectInterventionsCategoriesTranslations),
 						}),
 				]);
 			});
 		} catch (e) {
-			console.error(e);
-			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return messageError(form);
 		}
-		return message(form, messageServerSuccess());
+		return messageSuccess(form);
 	},
-	deleteInterventionCategory: async (event) => {
-		await guardRoleAdmin(event);
-		const form = await superValidate(event, rootSchema);
+	deleteCategory: async (event) => {
+		await event.locals.authorize('projects.descriptors.interventionCategories.delete');
+		const form = await superValidate(event, zod(rootSchema));
 		if (!form.valid) {
-			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+			return messageInvalid(form, m.project_descriptors_intervention());
 		}
 		try {
-			await dbpool.delete(projectInterventions).where(eq(projectInterventions.id, form.data.id));
+			const deleted = await db
+				.delete(projectInterventionsCategories)
+				.where(eq(projectInterventionsCategories.id, form.data.id))
+				.returning();
+			if (!deleted.length) {
+				return messageNoRowsDeleted(form);
+			}
 		} catch (e) {
-			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return messageError(form);
 		}
-		return message(form, messageServerSuccess());
+		return messageSuccess(form);
 	},
 };

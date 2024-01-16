@@ -1,33 +1,35 @@
 import * as m from '$i18n/messages';
-import { guardRoleContentManagement } from '$lib/auth/authorization.server';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { withTranslations } from '$lib/db/utils.server';
-import { projectTypesWithTranslationsSchema } from '$lib/db/validation.server';
+import { joinTranslations } from '$lib/db/utils.server';
 import {
-	messageInvalidProjectDescriptor,
-	messageServerError,
-	messageServerSuccess,
+	newProjectTypeSchema,
+	projectTypesWithTranslationsSchema,
+} from '$lib/db/validation.server';
+import {
+	messageError,
+	messageInvalid,
+	messageNoRowsDeleted,
+	messageSuccess,
 } from '$lib/forms/messages';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { eq } from 'drizzle-orm';
-import { message, superValidate } from 'sveltekit-superforms/server';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 
-const newTypeSchema = projectTypesWithTranslationsSchema.omit({ id: true });
 const typesSchema = projectTypesWithTranslationsSchema.pick({ id: true });
 
 export const load = async (event) => {
-	await guardRoleContentManagement(event);
-	const types = await withTranslations(projectTypes, projectTypesTranslations, {
+	await event.locals.authorize('projects.descriptors.types.update');
+	const types = await joinTranslations(projectTypes, projectTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 	const [newTypeForm, typesForm, ...typeForms] = await Promise.all([
-		superValidate(newTypeSchema),
-		superValidate(typesSchema),
-		...types.map((type) =>
-			superValidate(type, projectTypesWithTranslationsSchema, { id: type.id })
+		superValidate(zod(newProjectTypeSchema)),
+		superValidate(zod(typesSchema)),
+		...types.map((defaults) =>
+			superValidate(zod(projectTypesWithTranslationsSchema, { defaults }), { id: defaults.id })
 		),
 	]);
 	return { typeForms, typesForm, newTypeForm };
@@ -35,14 +37,14 @@ export const load = async (event) => {
 
 export const actions = {
 	create: async (event) => {
-		await guardRoleContentManagement(event);
-		const form = await superValidate(event, newTypeSchema);
+		await event.locals.authorize('projects.descriptors.types.create');
+		const form = await superValidate(event, zod(newProjectTypeSchema));
 		if (!form.valid) {
-			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+			return messageInvalid(form, m.project_type());
 		}
 		try {
-			const { translations, ...pt } = form.data;
-			await dbpool.transaction(async (tx) => {
+			await db.transaction(async (tx) => {
+				const { translations, ...pt } = form.data;
 				const [{ id }] = await tx
 					.insert(projectTypes)
 					.values(pt)
@@ -52,25 +54,24 @@ export const actions = {
 					.values(Object.values(translations).map((tt) => ({ ...tt, id })));
 			});
 		} catch (e) {
-			console.error(e);
-			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return messageError(form);
 		}
-		return message(form, messageServerSuccess());
+		return messageSuccess(form);
 	},
 	update: async (event) => {
-		await guardRoleContentManagement(event);
-		const form = await superValidate(event, projectTypesWithTranslationsSchema);
+		await event.locals.authorize('projects.descriptors.types.update');
+		const form = await superValidate(event, zod(projectTypesWithTranslationsSchema));
 		if (!form.valid) {
-			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+			return messageInvalid(form, m.project_type());
 		}
 		try {
-			const { translations, id, ...pt } = form.data;
-			await dbpool.transaction(async (tx) => {
+			await db.transaction(async (tx) => {
+				const { translations, id, ...pt } = form.data;
 				await Promise.all([
 					tx.update(projectTypes).set(pt).where(eq(projectTypes.id, id)),
 					tx
 						.insert(projectTypesTranslations)
-						.values(Object.values(translations))
+						.values(Object.values(translations).map((d) => ({ ...d, id })))
 						.onConflictDoUpdate({
 							target: [projectTypesTranslations.id, projectTypesTranslations.lang],
 							set: excluded(projectTypesTranslations),
@@ -78,22 +79,27 @@ export const actions = {
 				]);
 			});
 		} catch (e) {
-			console.error(e);
-			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return messageError(form);
 		}
-		return message(form, messageServerSuccess());
+		return messageSuccess(form);
 	},
 	delete: async (event) => {
-		await guardRoleContentManagement(event);
-		const form = await superValidate(event, typesSchema);
+		await event.locals.authorize('projects.descriptors.types.delete');
+		const form = await superValidate(event, zod(typesSchema));
 		if (!form.valid) {
-			return message(form, messageInvalidProjectDescriptor(m.project_type()));
+			return messageInvalid(form, m.project_type());
 		}
 		try {
-			await dbpool.delete(projectTypes).where(eq(projectTypes.id, form.data.id));
+			const deleted = await db
+				.delete(projectTypes)
+				.where(eq(projectTypes.id, form.data.id))
+				.returning();
+			if (!deleted.length) {
+				return messageNoRowsDeleted(form);
+			}
 		} catch (e) {
-			return message(form, messageServerError(), { status: STATUS_CODES.INTERNAL_SERVER_ERROR });
+			return messageError(form);
 		}
-		return message(form, messageServerSuccess());
+		return messageSuccess(form);
 	},
 };

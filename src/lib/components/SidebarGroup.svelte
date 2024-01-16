@@ -72,8 +72,6 @@
 		line-height: 1.5;
 		color: var(--color-neutral-500);
 		transition: all var(--duration-fast) ease-out;
-		:global(:--dark) & {
-		}
 
 		&a {
 			&:hover {
@@ -84,11 +82,8 @@
 			}
 
 			&[data-current] {
-				color: var(--color-primary-600);
+				color: var(--sidebar-needle-bg);
 				font-weight: 400;
-				:global(:--dark) & {
-					color: var(--color-primary-500);
-				}
 			}
 		}
 	}

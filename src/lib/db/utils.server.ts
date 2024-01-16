@@ -21,7 +21,7 @@ import {
 	type WithSubqueryWithSelection,
 } from 'drizzle-orm/pg-core';
 import type { Entries, Merge, ValueOf } from 'type-fest';
-import { dbpool } from './db.server';
+import { db } from './db.server';
 import { langs, type TranslationLangColumn } from './schema/i18n';
 import { TRUE, jsonBuildObject, jsonObjectAgg } from './sql.server';
 
@@ -88,7 +88,7 @@ export function getLangField<F extends SQL | Column>(field: F) {
 /**
  * Query helper to get rows with translations corresponding to request event's locale.
  */
-export function withTranslation<
+export function joinTranslation<
 	T extends AnyTable<TableConfig>,
 	TT extends AnyTable<TableConfig> & { [K in keyof TranslationLangColumn]: AnyColumn },
 	F extends ValueOf<T['_']['columns']>,
@@ -118,7 +118,7 @@ export function withTranslation<
 	const columns = getTableColumns(table);
 	const translationColumns = getTableColumns(translationsTable);
 	const selection = s instanceof Function ? s({ ...translationColumns, ...columns } as M) : s;
-	return dbpool
+	return db
 		.select(selection)
 		.from(table)
 		.$dynamic()
@@ -132,7 +132,7 @@ export function withTranslation<
  * Aggregate an entity's translations into a `translations` record field. Also automatically
  * coalesces missing translation rows to records with pre-populated locale and foreign key columns.
  */
-export function withTranslations<
+export function joinTranslations<
 	T extends AnyTable<TableConfig>,
 	TT extends AnyTable<TableConfig> & { [K in keyof TranslationLangColumn]: AnyColumn },
 	F extends ValueOf<T['_']['columns']>,
@@ -165,7 +165,7 @@ export function withTranslations<
 	>;
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const translationsKey = translationsEntries.find(([k, v]) => v === reference)![0];
-	return dbpool
+	return db
 		.select({
 			...selection,
 			translations: jsonObjectAgg(

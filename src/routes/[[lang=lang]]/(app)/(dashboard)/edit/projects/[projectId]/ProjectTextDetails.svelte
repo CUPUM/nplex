@@ -2,10 +2,10 @@
 	import * as m from '$i18n/messages';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import TranslationsInput from '$lib/components/TranslationsInput.svelte';
-	import type { SuperFormPageData } from '$lib/forms/types';
+	import type { SuperFormData } from '$lib/forms/types';
 	import type { PageData } from './$types';
 
-	export let form: SuperFormPageData<PageData['form']>['form'];
+	export let form: SuperFormData<PageData['form']>['form'];
 </script>
 
 <fieldset class="dashboard-subsection">

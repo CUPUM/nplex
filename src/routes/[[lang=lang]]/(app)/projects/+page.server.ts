@@ -1,10 +1,10 @@
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { projects, projectsImages, projectsTranslations } from '$lib/db/schema/public';
 import { random } from '$lib/db/sql.server';
 import { and, eq, getTableColumns, isNotNull } from 'drizzle-orm';
 
 export const load = async (event) => {
-	const images = dbpool
+	const images = db
 		.selectDistinctOn([projectsImages.projectId], {
 			storageName: projectsImages.storageName,
 			projectId: projectsImages.projectId,
@@ -12,7 +12,7 @@ export const load = async (event) => {
 		.from(projectsImages)
 		.as('images_sq');
 
-	const qProjects = await dbpool
+	const qProjects = await db
 		.select({
 			storageName: images.storageName,
 			...getTableColumns(projectsTranslations),

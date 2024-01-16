@@ -1,4 +1,4 @@
-<script lang="ts" generics="T extends PageData['interventionForms'][number]">
+<script lang="ts">
 	import { page } from '$app/stores';
 	import ButtonSave from '$lib/components/ButtonSave.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
@@ -6,9 +6,11 @@
 	import Descriptor from '../../../Descriptor.svelte';
 	import DescriptorForm from '../../../DescriptorForm.svelte';
 	import type { PageData } from './$types';
+	import InterventionBase from './InterventionBase.svelte';
 
-	export let data: T;
+	export let data: PageData['interventionForms'][number];
 	export let listSubmitter: SuperForm['elements']['submitter']['root'];
+	export let types: PageData['types'];
 
 	const {
 		elements: {
@@ -21,22 +23,23 @@
 		errors,
 		tainted,
 		enhance,
-	} = superFormDialog(data, { dataType: 'json', preventScroll: true });
+	} = superFormDialog(data, { dataType: 'json', resetForm: false });
 </script>
 
 <Descriptor
 	{trigger}
 	submitter={listSubmitter}
 	deleteButton={{
-		formaction: '?/delete',
+		formaction: '?/deleteIntervention',
 		value: $form.id,
-		name: 'ownershipId',
+		name: 'id',
 	}}
 	label={$form.translations[$page.data.lang].title}
 />
 <Dialog {open} {...restElements}>
-	<svelte:fragment slot="header">Type</svelte:fragment>
-	<DescriptorForm {enhance} id={data.id} action="?/update">
+	<svelte:fragment slot="title">Type</svelte:fragment>
+	<DescriptorForm {enhance} id={data.id} action="?/updateIntervention">
+		<InterventionBase {types} {form} />
 		<svelte:fragment slot="translation" let:lang>
 			<input type="text" class="input" bind:value={$form.translations[lang].title} />
 			<textarea class="input" bind:value={$form.translations[lang].description} />

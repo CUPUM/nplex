@@ -1,7 +1,7 @@
 import * as m from '$i18n/messages';
 import { sendPasswordResetLink } from '$lib/auth/emails.server';
 import { isEmailUser } from '$lib/auth/validation';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { users } from '$lib/db/schema/accounts';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
@@ -31,7 +31,7 @@ export const actions = {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
 		try {
-			const [user] = await dbpool
+			const [user] = await db
 				.select({ id: users.id, email: users.email })
 				.from(users)
 				.where(eq(users.email, form.data.email.toLowerCase()))

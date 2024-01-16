@@ -1,15 +1,14 @@
 import { S3_BUCKET_NAME } from '$env/static/private';
 import * as m from '$i18n/messages';
-import { authorizeSession } from '$lib/auth/authorization.server';
 import { projectsGalleryUpdateSchema, projectsImagesInsertManySchema } from '$lib/db/crud.server';
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import {
 	projects,
 	projectsImages,
 	projectsImagesCredits,
 	projectsImagesTranslations,
 } from '$lib/db/schema/public';
-import { withTranslations } from '$lib/db/utils.server';
+import { joinTranslations } from '$lib/db/utils.server';
 import { s3 } from '$lib/storage/s3.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { DeleteObjectCommand, DeleteObjectsCommand } from '@aws-sdk/client-s3';
@@ -18,14 +17,14 @@ import { and, eq } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await authorizeSession(event);
-	const images = withTranslations(projectsImages, projectsImagesTranslations, {
+	await event.locals.authorize();
+	const images = joinTranslations(projectsImages, projectsImagesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	})
 		.where(eq(projectsImages.projectId, event.params.projectId))
 		.leftJoin(projectsImagesCredits, eq(projectsImagesCredits.imageId, projectsImages.id));
-	const [project] = await dbpool
+	const [project] = await db
 		.select({ bannerId: projects.bannerId })
 		.from(projects)
 		.where(eq(projects.id, event.params.projectId))
@@ -45,7 +44,7 @@ export const actions = {
 	 * using a presigned url on the client's side.
 	 */
 	insert: async (event) => {
-		const session = await authorizeSession(event);
+		const session = await event.locals.authorize();
 		const insertImagesForm = await superValidate(event, projectsImagesInsertManySchema);
 		if (!insertImagesForm.valid) {
 			console.error(insertImagesForm.errors);
@@ -55,7 +54,7 @@ export const actions = {
 			});
 		}
 		try {
-			await dbpool.insert(projectsImages).values(
+			await db.insert(projectsImages).values(
 				insertImagesForm.data.images.map((imageData) => ({
 					...imageData,
 					createdById: session.user.id,
@@ -81,7 +80,7 @@ export const actions = {
 	 * Delete a project image.
 	 */
 	delete: async (event) => {
-		await authorizeSession(event);
+		await event.locals.authorize();
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { deleteId } = galleryUpdateForm.data;
 		try {
@@ -89,8 +88,8 @@ export const actions = {
 				return fail(STATUS_CODES.BAD_REQUEST, { galleryUpdateForm });
 			}
 			// Delete image
-			await dbpool.transaction(async (tx) => {
-				const [deleted] = await dbpool
+			await db.transaction(async (tx) => {
+				const [deleted] = await db
 					.delete(projectsImages)
 					.where(
 						and(
@@ -122,7 +121,7 @@ export const actions = {
 	 * Promote image to project banner.
 	 */
 	promote: async (event) => {
-		await authorizeSession(event);
+		await event.locals.authorize();
 		console.log('promoting');
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { bannerId } = galleryUpdateForm.data;
@@ -134,10 +133,7 @@ export const actions = {
 					{ status: STATUS_CODES.BAD_REQUEST }
 				);
 			}
-			await dbpool
-				.update(projects)
-				.set({ bannerId })
-				.where(eq(projects.id, event.params.projectId));
+			await db.update(projects).set({ bannerId }).where(eq(projects.id, event.params.projectId));
 			return message(galleryUpdateForm, {
 				title: m.success(),
 				description: m.success_saved_data(),
@@ -154,7 +150,7 @@ export const actions = {
 	 * Demote image from project banner.
 	 */
 	demote: async (event) => {
-		await authorizeSession(event);
+		await event.locals.authorize();
 		const galleryUpdateForm = await superValidate(event, projectsGalleryUpdateSchema);
 		const { bannerId } = galleryUpdateForm.data;
 		try {
@@ -165,7 +161,7 @@ export const actions = {
 					{ status: STATUS_CODES.BAD_REQUEST }
 				);
 			}
-			await dbpool
+			await db
 				.update(projects)
 				.set({ bannerId: null })
 				.where(and(eq(projects.id, event.params.projectId), eq(projects.bannerId, bannerId)));

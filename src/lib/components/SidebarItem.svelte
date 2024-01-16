@@ -70,10 +70,9 @@
 		line-height: var(--line-dense);
 		transition: all 0.15s ease-out;
 		white-space: wrap;
-		font-weight: 450;
+		font-weight: 350;
 		padding: 0.8em 1.25em;
 		font-size: var(--size-sm);
-		opacity: 0.9;
 		gap: 1em;
 
 		/* Child icons */
@@ -117,22 +116,18 @@
 		&[data-current] {
 			pointer-events: none;
 			opacity: 1;
-			color: var(--color-primary-700);
-			background: color-mix(in srgb, var(--color-primary-700) 5%, transparent);
+			color: var(--sidebar-needle-bg);
+			/* background: color-mix(in srgb, var(--color-primary-700) 5%, transparent); */
 			font-weight: 550;
-			:global(:--dark) & {
-				background: color-mix(in srgb, var(--color-primary-400) 5%, transparent);
-				color: var(--color-primary-500);
-			}
 			:global(.button-icon) {
 				opacity: 1;
 			}
 		}
 
 		&.danger {
-			color: var(--color-error-700);
+			--sidebar-needle-bg: var(--color-error-700);
 			:global(:--dark) & {
-				color: var(--color-error-300);
+				--sidebar-needle-bg: var(--color-error-300);
 			}
 		}
 
@@ -155,11 +150,5 @@
 		width: var(--sidebar-needle-size);
 		border-radius: inherit;
 		background: var(--sidebar-needle-bg);
-		.danger & {
-			background: var(--color-error-800);
-			:global(:--dark) & {
-				background: var(--color-error-300);
-			}
-		}
 	}
 </style>

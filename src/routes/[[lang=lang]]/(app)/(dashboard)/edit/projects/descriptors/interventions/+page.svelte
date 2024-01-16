@@ -3,6 +3,7 @@
 	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/forms/super-form';
 	import Category from './Category.svelte';
+	import NewCategory from './NewCategory.svelte';
 
 	export let data;
 
@@ -12,7 +13,7 @@
 			submitter: { root: listSubmitter },
 		},
 	} = superForm(data.rootForm, {
-		dataType: 'json',
+		resetForm: true,
 	});
 </script>
 
@@ -21,7 +22,9 @@
 		<hgroup class="prose">
 			<h2>
 				<LangKey>
-					{m.project_descriptors_intervention_categories()} & {m.project_descriptors_intervention_types()}
+					{m.project_descriptors_intervention_categories()} & {m
+						.project_descriptors_intervention_types()
+						.toLocaleLowerCase()}
 				</LangKey>
 			</h2>
 			<p class="dim">
@@ -30,17 +33,19 @@
 			</p>
 		</hgroup>
 	</header>
-	{#each data.categoryForms as category}
+	{#each data.categoryForms as categoryForm, i (categoryForm.id)}
 		<Category
-			{category}
+			{i}
+			data={categoryForm}
 			{listSubmitter}
+			types={data.types}
 			newInterventionForm={data.newInterventionForm}
 			interventionForms={data.interventionForms.filter(
-				(f) => f.data.categoryId === category.data.id
+				(f) => f.data.categoryId === categoryForm.data.id
 			)}
 		/>
 	{/each}
-	<!-- <NewCategory data={data.newCategoryForm} /> -->
+	<NewCategory data={data.newCategoryForm} />
 </form>
 
 <style lang="postcss">

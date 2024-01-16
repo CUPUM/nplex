@@ -21,7 +21,7 @@
 		errors,
 		tainted,
 		enhance,
-	} = superFormDialog(data, { dataType: 'json', preventScroll: true });
+	} = superFormDialog(data, { dataType: 'json', resetForm: false });
 </script>
 
 <Descriptor
@@ -30,12 +30,12 @@
 	deleteButton={{
 		formaction: '?/delete',
 		value: $form.id,
-		name: 'ownershipId',
+		name: 'id',
 	}}
 	label={$form.translations[$page.data.lang].title}
 />
 <Dialog {open} {...restElements}>
-	<svelte:fragment slot="header">Type</svelte:fragment>
+	<svelte:fragment slot="title">Type</svelte:fragment>
 	<DescriptorForm {enhance} id={data.id} action="?/update">
 		<svelte:fragment slot="translation" let:lang>
 			<input type="text" class="input" bind:value={$form.translations[lang].title} />

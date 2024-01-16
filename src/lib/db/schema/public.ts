@@ -97,7 +97,7 @@ export const projectInterventionsTranslations = pgTable(
 );
 
 /**
- * Restricting intervention types based on project types.
+ * Relation table used for constraining intervention types based on project types.
  *
  * @see {@link projectTypes}
  * @see {@link projectInterventions}

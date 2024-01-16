@@ -1,9 +1,11 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import { ripple } from '$lib/actions/ripple';
 	import LangKey from '$lib/components/LangKey.svelte';
+	import Tooltip from '$lib/components/Tooltip.svelte';
 	import type { SuperForm } from '$lib/forms/super-form';
 	import { melt, type DialogElements } from '@melt-ui/svelte';
-	import { Pencil, Plus, X } from 'lucide-svelte';
+	import { Pencil, Plus, Trash2 } from 'lucide-svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 
 	type $$Props = HTMLButtonAttributes & {
@@ -14,17 +16,23 @@
 		label?: string | null;
 	};
 
-	export let deleteButton: $$Props['deleteButton'] = undefined;
 	export let variant: $$Props['variant'] = undefined;
 	export let label: $$Props['label'] = undefined;
 	export let trigger: $$Props['trigger'];
 	export let submitter: $$Props['submitter'];
+	export let deleteButton: $$Props['deleteButton'] = undefined;
 
 	let deleteRef: HTMLButtonElement;
 </script>
 
 <div class="descriptor {variant ?? ''}">
-	<button class="fill-parent" type="button" {...$$restProps} use:melt={$trigger}></button>
+	<button
+		class="fill-parent"
+		type="button"
+		use:ripple
+		{...$$restProps}
+		use:melt={$trigger}
+	></button>
 	<span class="descriptor-label">
 		{#if variant === 'new'}
 			<LangKey>{m.create()}</LangKey>
@@ -39,14 +47,20 @@
 		{/if}
 	</span>
 	{#if deleteButton}
-		<button
-			{...deleteButton}
-			class="descriptor-delete"
-			bind:this={deleteRef}
-			use:melt={$submitter(deleteRef)}
-		>
-			<X />
-		</button>
+		<Tooltip let:trigger={tooltipTrigger}>
+			<svelte:fragment slot="content">
+				<LangKey>{m.del()}</LangKey>
+			</svelte:fragment>
+			<button
+				{...deleteButton}
+				class="descriptor-delete"
+				bind:this={deleteRef}
+				use:melt={tooltipTrigger}
+				use:melt={$submitter(deleteRef)}
+			>
+				<Trash2 />
+			</button>
+		</Tooltip>
 	{/if}
 </div>
 
@@ -74,7 +88,7 @@
 		--descriptor-radius: var(--radius-full);
 		position: relative;
 		display: flex;
-		font-weight: 500;
+		font-weight: 450;
 		flex-direction: row;
 		align-items: center;
 		padding: var(--descriptor-nesting);
@@ -144,7 +158,7 @@
 		flex: 1;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-		padding-inline: 1em;
+		padding-inline: 0.9em;
 
 		span.dim {
 			font-style: italic;

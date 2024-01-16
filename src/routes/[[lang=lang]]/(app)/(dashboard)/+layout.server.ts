@@ -1,4 +1,4 @@
-import { dbpool } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import {
 	organizations,
 	organizationsTranslations,
@@ -17,7 +17,7 @@ export const load = async (event) => {
 		error(STATUS_CODES.UNAUTHORIZED, { message: 'No session found' });
 	}
 
-	const editableProjects = dbpool
+	const editableProjects = db
 		.select({
 			...getTableColumns(projectsTranslations),
 			...getTableColumns(projects),
@@ -33,7 +33,7 @@ export const load = async (event) => {
 		)
 		.leftJoin(projectsImages, eq(projects.bannerId, projectsImages.id));
 
-	const editableOrganizations = dbpool
+	const editableOrganizations = db
 		.select({
 			...getTableColumns(organizationsTranslations),
 			...getTableColumns(organizations),

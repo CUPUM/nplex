@@ -2,10 +2,10 @@
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import type { SuperFormPageData } from '$lib/forms/types';
+	import type { SuperFormData } from '$lib/forms/types';
 	import type { PageData } from './$types';
 
-	export let form: SuperFormPageData<PageData['form']>['form'];
+	export let form: SuperFormData<PageData['form']>['form'];
 	export let categorizedInterventions: PageData['categorizedInterventions'];
 </script>
 

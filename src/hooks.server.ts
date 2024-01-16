@@ -1,5 +1,5 @@
 import handleAuth from '$lib/auth/hook.server';
-import handleDb from '$lib/db/hook.server';
+import handleDb from '$lib/db/handle.server';
 import handleAvailableLanguageTag from '$lib/i18n/handle.server';
 import handleMode from '$lib/modes/handle.server';
 import handleSetout from '$lib/setout/hook.server';

@@ -1,6 +1,6 @@
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
-import { dbpool } from './db.server';
+import { db } from './db.server';
 import { userRoles, userRolesTranslations } from './schema/accounts';
 import {
 	projectExemplarityCategories,
@@ -24,24 +24,24 @@ import {
 	projectTypesTranslations,
 } from './schema/public';
 import { jsonAggBuildObject } from './sql.server';
-import { getSubqueryColumns, withTranslation } from './utils.server';
+import { getSubqueryColumns, joinTranslation } from './utils.server';
 
 export function getProjectTypesList(event: RequestEvent | ServerLoadEvent) {
-	return withTranslation(event, projectTypes, projectTypesTranslations, {
+	return joinTranslation(event, projectTypes, projectTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getProjectInterventionsList(event: RequestEvent | ServerLoadEvent) {
-	return withTranslation(event, projectInterventions, projectInterventionsTranslations, {
+	return joinTranslation(event, projectInterventions, projectInterventionsTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getProjectInterventionCategoriesList(event: RequestEvent | ServerLoadEvent) {
-	return withTranslation(
+	return joinTranslation(
 		event,
 		projectInterventionsCategories,
 		projectInterventionsCategoriesTranslations,
@@ -56,7 +56,7 @@ export async function getProjectCategorizedInterventionsList(
 	const interventionsColumns = getSubqueryColumns(interventions);
 	const categories = getProjectInterventionCategoriesList(event).as('categories');
 	const categoriesColumns = getSubqueryColumns(categories);
-	return dbpool
+	return db
 		.select({
 			...categoriesColumns,
 			interventions: jsonAggBuildObject({
@@ -77,21 +77,21 @@ export async function getProjectCategorizedInterventionsList(
 }
 
 export function getProjectSiteOwnershipsList(event: RequestEvent | ServerLoadEvent) {
-	return withTranslation(event, projectSiteOwnerships, projectSiteOwnershipsTranslations, {
+	return joinTranslation(event, projectSiteOwnerships, projectSiteOwnershipsTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getProjectImplantationTypesList(event: RequestEvent | ServerLoadEvent) {
-	return withTranslation(event, projectImplantationTypes, projectImplantationTypesTranslations, {
+	return joinTranslation(event, projectImplantationTypes, projectImplantationTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getProjectExemplarityCategoriesList(event: RequestEvent | ServerLoadEvent) {
-	return withTranslation(
+	return joinTranslation(
 		event,
 		projectExemplarityCategories,
 		projectExemplarityCategoriesTranslations,
@@ -100,7 +100,7 @@ export function getProjectExemplarityCategoriesList(event: RequestEvent | Server
 }
 
 export function getProjectExemplarityIndicatorsList(event: RequestEvent | ServerLoadEvent) {
-	return withTranslation(
+	return joinTranslation(
 		event,
 		projectExemplarityIndicators,
 		projectExemplarityIndicatorsTranslations,
@@ -113,7 +113,7 @@ export function getProjectCategorizedIndicatorsList(event: RequestEvent | Server
 	const indicatorsColumns = getSubqueryColumns(indicators);
 	const categories = getProjectExemplarityCategoriesList(event).as('categories');
 	const categoriesColumns = getSubqueryColumns(categories);
-	return dbpool
+	return db
 		.select({
 			...categoriesColumns,
 			indicators: jsonAggBuildObject(indicatorsColumns),
@@ -127,21 +127,21 @@ export function getProjectCategorizedIndicatorsList(event: RequestEvent | Server
 }
 
 export function getProjectImageTypesList(event: RequestEvent | ServerLoadEvent) {
-	return withTranslation(event, projectImageTypes, projectImageTypesTranslations, {
+	return joinTranslation(event, projectImageTypes, projectImageTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getProjectImageTemporalitiesList(event: RequestEvent | ServerLoadEvent) {
-	return withTranslation(event, projectImageTemporalities, projectImageTemporalitiesTranslations, {
+	return joinTranslation(event, projectImageTemporalities, projectImageTemporalitiesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getUserRolesList(event: RequestEvent | ServerLoadEvent) {
-	return withTranslation(event, userRoles, userRolesTranslations, {
+	return joinTranslation(event, userRoles, userRolesTranslations, {
 		field: (t) => t.role,
 		reference: (tt) => tt.role,
 	});
