@@ -74,6 +74,8 @@
 		padding: 0.8em 1.25em;
 		font-size: var(--size-sm);
 		gap: 1em;
+		outline-color: transparent;
+		outline-offset: 0px;
 
 		/* Child icons */
 		:global(:--icon) {
@@ -111,6 +113,10 @@
 					transform: translateX(0.2em);
 				}
 			}
+		}
+
+		&:focus-visible {
+			outline: var(--base-focus-ring);
 		}
 
 		&[data-current] {

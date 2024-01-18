@@ -76,8 +76,8 @@
 				use:melt={$content}
 				in:fly={{ y: 6, duration: 300, easing: springOut }}
 				out:transform={{
-					translate: [0, 8, -200],
-					rotate: [-15, 0, 0],
+					translate: [0, 12, -100],
+					rotate: [-20, 0, 0],
 					duration: 100,
 					easing: cubicOut,
 				}}
@@ -91,7 +91,12 @@
 						{/if}
 						<menu class="dialog-header-menu">
 							{#if closeButton}
-								<button use:ripple class="dialog-close" type="button" use:melt={$close}>
+								<button
+									use:ripple
+									class="button rounded square danger ghost"
+									type="button"
+									use:melt={$close}
+								>
 									<X />
 								</button>
 							{/if}
@@ -158,46 +163,8 @@
 
 		@media (--md) {
 			align-items: center;
-			padding: 2rem;
+			padding: var(--navbar-height);
 			justify-content: center;
-		}
-	}
-
-	.dialog-close {
-		position: relative;
-		color: var(--color-error-800);
-		font-size: var(--size-sm);
-		aspect-ratio: 1;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-		height: var(--base-block-size);
-		border-radius: var(--radius-full);
-		transition: all var(--duration-fast) ease-out;
-
-		&:focus-visible {
-			outline: var(--base-focus-ring);
-			outline-color: currentColor;
-		}
-
-		:global(:--dark) & {
-			color: var(--color-error-300);
-		}
-
-		&:hover {
-			color: var(--color-error-500);
-			background: color-mix(in srgb, var(--color-error-400) 10%, transparent);
-			:global(:--dark) & {
-				color: var(--color-error-400);
-				background: color-mix(in srgb, var(--color-error-600) 10%, transparent);
-			}
-		}
-
-		:global(:--icon) {
-			width: 1.5em;
-			position: absolute;
-			stroke-width: 2.5;
 		}
 	}
 
@@ -207,6 +174,7 @@
 		outline: none;
 		pointer-events: initial;
 		padding: var(--dialog-padding);
+		padding-top: calc(var(--dialog-padding) - 0.5rem);
 		display: flex;
 		flex-direction: column;
 		border-radius: var(--dialog-radius) var(--dialog-radius) 0 0;
@@ -218,7 +186,6 @@
 		@media (--md) {
 			transform-origin: center center;
 			border-radius: var(--dialog-radius);
-			justify-content: center;
 		}
 	}
 

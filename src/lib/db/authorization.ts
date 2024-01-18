@@ -41,6 +41,10 @@ export const PERMISSIONS = {
 	'projects.descriptors.imageTypes.create': [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
 	'projects.descriptors.imageTypes.update': [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
 	'projects.descriptors.imageTypes.delete': [USER_ROLES.ADMIN, USER_ROLES.EDITOR],
+	'organizations.descriptors.update': [USER_ROLES.EDITOR, USER_ROLES.ADMIN],
+	'organizations.descriptors.types.create': [USER_ROLES.ADMIN],
+	'organizations.descriptors.types.update': [USER_ROLES.EDITOR, USER_ROLES.ADMIN],
+	'organizations.descriptors.types.delete': [USER_ROLES.ADMIN],
 } as const satisfies Record<`${string}.${Operation}`, UserRole[]>;
 
 export type PermissionKey = keyof typeof PERMISSIONS;

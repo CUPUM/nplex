@@ -93,11 +93,15 @@
 		align-items: center;
 		padding: var(--descriptor-nesting);
 		border-radius: var(--descriptor-radius);
-		background: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		border: var(--base-border-width) solid var(--base-border-color-dim);
+		background: white;
 		flex: none;
 		height: 3em;
-		border: var(--base-border-width) solid var(--base-border-color-dim);
 		transition: all var(--duration-fast) ease-out;
+
+		:global(:--dark) & {
+			background: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
+		}
 
 		:global(:--icon) {
 			pointer-events: none;

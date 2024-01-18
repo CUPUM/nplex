@@ -16,6 +16,8 @@ import {
 } from './constants';
 import { rangeSchema } from './schema/custom-types';
 import {
+	organizationTypes,
+	organizationTypesTranslations,
 	projectBuildingLevelTypes,
 	projectBuildingLevelTypesTranslations,
 	projectExemplarityCategories,
@@ -61,7 +63,7 @@ export function withTranslationsSchema<
 }
 
 //
-// Project descriptors
+// Projects descriptors
 //
 
 export const projectTypesSchema = createInsertSchema(projectTypes).required({ id: true });
@@ -219,3 +221,17 @@ export const projectsImagesSchema = createInsertSchema(projectsImages, {
 });
 
 export const projectsUsersSchema = createInsertSchema(projectsUsers);
+
+// Organizations descriptors
+
+export const organizationTypesSchema = createInsertSchema(organizationTypes).required({ id: true });
+export const organizationTypesTranslationsSchema = createInsertSchema(
+	organizationTypesTranslations
+);
+export const organizationTypesWithTranslationsSchema = withTranslationsSchema(
+	organizationTypesSchema,
+	organizationTypesTranslationsSchema.omit({ id: true })
+);
+export const newOrganizationTypeSchema = organizationTypesWithTranslationsSchema.omit({ id: true });
+
+// Organizations

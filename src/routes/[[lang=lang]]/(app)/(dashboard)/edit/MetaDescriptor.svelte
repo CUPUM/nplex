@@ -95,9 +95,10 @@
 		margin-bottom: 0;
 		line-height: var(--line-sparse);
 		border-radius: calc(var(--dashboard-radius) - 1rem);
-		background: color-mix(in srgb, var(--color-neutral-600) 5%, transparent);
+		border: var(--base-border-width) solid var(--base-border-color-dim);
+		background: white;
 		:global(:--dark) & {
-			background: color-mix(in srgb, var(--color-neutral-500) 5%, transparent);
+			background: color-mix(in srgb, var(--color-neutral-500) 10%, transparent);
 		}
 	}
 

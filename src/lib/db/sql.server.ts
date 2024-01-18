@@ -33,8 +33,8 @@ export type InferRecordDataTypes<T extends Record<string, AnyColumn | SQL>> = {
 	[K in keyof T]: T[K] extends SQL
 		? InferSQLDataType<T[K]>
 		: T[K] extends AnyColumn
-		  ? InferColumnDataType<T[K]>
-		  : never;
+			? InferColumnDataType<T[K]>
+			: never;
 };
 
 export type InferColumnType<T extends (...config: never[]) => ColumnBuilderBase> = AnyColumn<
@@ -118,6 +118,8 @@ export function emptyJsonArray() {
 	return sql<never[]>`'[]'::json`;
 }
 
+export const emptyArray = sql<SQL<[]>>`{}`;
+
 export function BOOL<T extends boolean>(value: T) {
 	return sql<T>`${value ? 'true' : 'false'}`;
 }
@@ -159,17 +161,21 @@ export function jsonAgg<T extends AnyTable<TableConfig> | AnyColumn>(
 	selection: T,
 	{ notNull = true }: { notNull?: boolean } = {}
 ) {
-	type R = T extends AnyTable<TableConfig>
-		? InferSelectModel<T>
-		: T extends AnyColumn
-		  ? InferColumnDataType<T>
-		  : T;
+	type R =
+		T extends AnyTable<TableConfig>
+			? InferSelectModel<T>
+			: T extends AnyColumn
+				? InferColumnDataType<T>
+				: T;
 	if (notNull) {
 		return sql<R[] | null>`json_agg(${selection}) filter (where ${selection} is not null)`;
 	}
 	return sql<R[] | null>`json_agg(${selection})`;
 }
 
+/**
+ * Aggregate sql values into an sql array.
+ */
 export function arrayAgg<T extends SQL | InferSelectModel<AnyTable<TableConfig>>>(raw: T) {
 	return sql<(T extends SQL ? InferSQLDataType<T>[] : T[]) | null>`array_agg(${raw})`;
 }
@@ -201,6 +207,9 @@ export function jsonBuildObject<T extends Record<string, AnyColumn | SQL>>(shape
 	return sql<InferRecordDataTypes<T>>`json_build_object(${sql.join(chunks)})`;
 }
 
+/**
+ * Aggregate sql values into a json object.
+ */
 export function jsonAggBuildObject<T extends Record<string, AnyColumn>>(shape: T) {
 	const chunks: SQL[] = [];
 	Object.entries(shape).forEach(([key, value]) => {
@@ -232,13 +241,13 @@ export function jsonObjectAgg<
 	TK extends string | number = null extends InferColumnDataType<K>
 		? never
 		: InferColumnDataType<K> extends string | number
-		  ? InferColumnDataType<K>
-		  : never,
+			? InferColumnDataType<K>
+			: never,
 	TV = V extends AnyTable<TableConfig>
 		? InferSelectModel<V>
 		: V extends SQL
-		  ? InferSQLDataType<V>
-		  : never,
+			? InferSQLDataType<V>
+			: never,
 >(key: K, value: V) {
 	return sql<Record<TK, TV>>`json_object_agg(${key}, ${value})`;
 }
@@ -253,10 +262,10 @@ type CoalesceSQL<T extends unknown[], N extends boolean = true, R = never> = T e
 			T,
 			null extends InferSQLDataType<H> ? true : false,
 			R | RemoveNull<InferSQLDataType<H>>
-	  >
+		>
 	: N extends true
-	  ? SQL<R | null>
-	  : SQL<R>;
+		? SQL<R | null>
+		: SQL<R>;
 
 /**
  * SQL coalesce.

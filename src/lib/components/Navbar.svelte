@@ -316,7 +316,7 @@
 			inset: 0;
 			transform: translateY(-100%);
 			/* background: var(--base-bg); */
-			background: linear-gradient(var(--base-bg) 50%, transparent 100%);
+			background: linear-gradient(var(--base-bg) 25%, transparent 100%);
 			transition:
 				all 0.35s ease-in,
 				transform 0.5s var(--ease-in-expo);

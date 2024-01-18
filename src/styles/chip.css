@@ -98,4 +98,7 @@
 	&.outlined {
 		border: var(--base-border);
 	}
+
+	&.ghost {
+	}
 }

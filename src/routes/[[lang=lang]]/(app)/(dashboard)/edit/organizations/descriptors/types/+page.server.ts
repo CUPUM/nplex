@@ -1,80 +1,105 @@
-import { authorizeRole } from '$lib/auth/authorization.server';
-import { USER_ROLES } from '$lib/auth/constants';
-import { organizationTypesUpdateSchema } from '$lib/db/crud.server';
+import * as m from '$i18n/messages';
 import { db } from '$lib/db/db.server';
 import { organizationTypes, organizationTypesTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { extractTranslations, reduceTranslations } from '$lib/db/utils.server';
-import { STATUS_CODES } from '$lib/utils/constants';
-import { error, fail } from '@sveltejs/kit';
+import { joinTranslations } from '$lib/db/utils.server';
+import {
+	newOrganizationTypeSchema,
+	organizationTypesWithTranslationsSchema,
+} from '$lib/db/validation.server';
+import {
+	messageError,
+	messageInvalid,
+	messageNoRowsDeleted,
+	messageSuccess,
+} from '$lib/forms/messages';
 import { eq } from 'drizzle-orm';
-import { superValidate } from 'sveltekit-superforms/server';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+
+const typesSchema = organizationTypesWithTranslationsSchema.pick({ id: true });
 
 export const load = async (event) => {
-	await authorizeRole(event, USER_ROLES.ADMIN);
-	const types = (
-		await db.query.organizationTypes.findMany({
-			with: {
-				translations: true,
-			},
-		})
-	).map(reduceTranslations);
-	const form = await superValidate({ types }, organizationTypesUpdateSchema);
-	return { form };
+	await event.locals.authorize('organizations.descriptors.types.update');
+	const types = await joinTranslations(organizationTypes, organizationTypesTranslations, {
+		field: (t) => t.id,
+		reference: (tt) => tt.id,
+	});
+	const [newTypeForm, typesForm, ...typeForms] = await Promise.all([
+		superValidate(zod(newOrganizationTypeSchema)),
+		superValidate(zod(typesSchema)),
+		...types.map((defaults) =>
+			superValidate(zod(organizationTypesWithTranslationsSchema, { defaults }), { id: defaults.id })
+		),
+	]);
+	return { typeForms, typesForm, newTypeForm };
 };
 
 export const actions = {
 	create: async (event) => {
-		await authorizeRole(event, USER_ROLES.ADMIN);
-		try {
-			await db.insert(organizationTypes).values({});
-		} catch (e) {
-			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
-	},
-	delete: async (event) => {
-		await authorizeRole(event, USER_ROLES.ADMIN);
-		const id = event.url.searchParams.get('typeId');
-		if (!id) {
-			return fail(STATUS_CODES.BAD_REQUEST);
-		}
-		try {
-			await db.delete(organizationTypes).where(eq(organizationTypes.id, id));
-		} catch (e) {
-			console.error(e);
-			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
-	},
-	update: async (event) => {
-		await authorizeRole(event, USER_ROLES.ADMIN);
-		const form = await superValidate(event, organizationTypesUpdateSchema);
+		await event.locals.authorize('organizations.descriptors.types.create');
+		const form = await superValidate(event, zod(newOrganizationTypeSchema));
 		if (!form.valid) {
-			console.info(form.errors);
-			return fail(STATUS_CODES.BAD_REQUEST, { form });
+			return messageInvalid(form, m.organization_type());
 		}
 		try {
 			await db.transaction(async (tx) => {
-				const [ot, ott] = extractTranslations(form.data.types);
-				await tx
+				const { translations, ...pt } = form.data;
+				const [{ id }] = await tx
 					.insert(organizationTypes)
-					.values(ot)
-					.onConflictDoUpdate({
-						target: organizationTypes.id,
-						set: excluded(organizationTypes),
-					});
+					.values(pt)
+					.returning({ id: organizationTypes.id });
 				await tx
 					.insert(organizationTypesTranslations)
-					.values(ott)
-					.onConflictDoUpdate({
-						target: [organizationTypesTranslations.id, organizationTypesTranslations.lang],
-						set: excluded(organizationTypesTranslations),
-					});
+					.values(Object.values(translations).map((tt) => ({ ...tt, id })));
 			});
-			return { form };
 		} catch (e) {
-			console.error(e);
-			error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: 'Erreur serveur' });
+			return messageError(form);
 		}
+		return messageSuccess(form);
+	},
+	update: async (event) => {
+		await event.locals.authorize('organizations.descriptors.types.update');
+		const form = await superValidate(event, zod(organizationTypesWithTranslationsSchema));
+		if (!form.valid) {
+			return messageInvalid(form, m.organization_type());
+		}
+		try {
+			await db.transaction(async (tx) => {
+				const { translations, id, ...pt } = form.data;
+				await Promise.all([
+					tx.update(organizationTypes).set(pt).where(eq(organizationTypes.id, id)),
+					tx
+						.insert(organizationTypesTranslations)
+						.values(Object.values(translations).map((d) => ({ ...d, id })))
+						.onConflictDoUpdate({
+							target: [organizationTypesTranslations.id, organizationTypesTranslations.lang],
+							set: excluded(organizationTypesTranslations),
+						}),
+				]);
+			});
+		} catch (e) {
+			return messageError(form);
+		}
+		return messageSuccess(form);
+	},
+	delete: async (event) => {
+		await event.locals.authorize('organizations.descriptors.types.delete');
+		const form = await superValidate(event, zod(typesSchema));
+		if (!form.valid) {
+			return messageInvalid(form, m.organization_type());
+		}
+		try {
+			const deleted = await db
+				.delete(organizationTypes)
+				.where(eq(organizationTypes.id, form.data.id))
+				.returning();
+			if (!deleted.length) {
+				return messageNoRowsDeleted(form);
+			}
+		} catch (e) {
+			return messageError(form);
+		}
+		return messageSuccess(form);
 	},
 };

@@ -234,5 +234,7 @@
 	"potentially_requires_permit": "Peut nécessiter un permis.",
 	"project_descriptors_ownership_types": "Types de propriétaire",
 	"project_descriptors_level_type": "Type d’étage de bâtiment",
-	"project_descriptors_image_type": "Type d’image"
+	"project_descriptors_image_type": "Type d’image",
+	"organization_type": "Type d’organisation",
+	"organization_types": "Types d’organisations"
 }

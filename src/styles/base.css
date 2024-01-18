@@ -7,17 +7,17 @@
 	--font-mono: 'Martian Mono', monospace;
 
 	/* Color palettes. */
-	--color-neutral-50: hsl(30, 10%, 96%);
-	--color-neutral-100: hsl(30, 9%, 92%);
-	--color-neutral-200: hsl(30, 8%, 88%);
-	--color-neutral-300: hsl(34, 7%, 81%);
-	--color-neutral-400: hsl(34, 6%, 72%);
-	--color-neutral-500: hsl(35, 5%, 45%);
-	--color-neutral-600: hsl(33, 6%, 22%);
-	--color-neutral-700: hsl(30, 7%, 16%);
-	--color-neutral-800: hsl(32, 8%, 12%);
-	--color-neutral-900: hsl(34, 9%, 9%);
-	--color-neutral-950: hsl(30, 10%, 6%);
+	--color-neutral-50: hsl(110, 10%, 97%);
+	--color-neutral-100: hsl(100, 9%, 92%);
+	--color-neutral-200: hsl(90, 8%, 88%);
+	--color-neutral-300: hsl(80, 7%, 81%);
+	--color-neutral-400: hsl(70, 6%, 72%);
+	--color-neutral-500: hsl(60, 5%, 45%);
+	--color-neutral-600: hsl(50, 6%, 22%);
+	--color-neutral-700: hsl(40, 7%, 16%);
+	--color-neutral-800: hsl(30, 8%, 12%);
+	--color-neutral-900: hsl(20, 9%, 9%);
+	--color-neutral-950: hsl(10, 10%, 6%);
 	--color-primary-50: hsl(142, 80%, 92%);
 	--color-primary-100: hsl(143, 76%, 88%);
 	--color-primary-200: hsl(144, 72%, 80%);
@@ -122,11 +122,12 @@
 	--base-inline-padding: 1.25em;
 	--base-radius: var(--radius-md);
 	--base-border-width: 1.25px;
-	--base-outline-width: 2.5px;
+	--base-outline-width: 3px;
 	--base-border-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 	--base-border-color-dim: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 	--base-nesting: 5px;
-	--base-focus-ring: var(--base-outline-width) solid var(--color-primary-800);
+	--base-focus-ring: var(--base-outline-width) solid
+		color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 	--base-error-ring: var(--base-outline-width) solid var(--color-error-600);
 	--base-color: var(--color-neutral-700);
 	--base-bg: var(--color-neutral-100);
@@ -141,7 +142,7 @@
 	--sticky-top: calc(var(--navbar-height) + var(--base-gutter));
 	--navbar-height: 72px;
 	--dashboard-bg: var(--color-neutral-50);
-	--dashboard-gutter: 3px;
+	--dashboard-gutter: 0.5rem;
 	--dashboard-radius: var(--radius-xl);
 	--sidebar-width: 200px;
 	--sidebar-needle-bg: var(--color-primary-700);
@@ -153,7 +154,7 @@
 		--base-color: var(--color-neutral-300);
 		--base-bg: var(--color-neutral-900);
 		--base-focus-ring: var(--base-outline-width) solid
-			color-mix(in srgb, var(--color-primary-500) 75%, transparent);
+			color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 		--base-error-ring: var(--base-outline-width) solid var(--color-error-400);
 		--dashboard-bg: var(--color-neutral-800);
 		--sidebar-needle-bg: var(--color-primary-500);
