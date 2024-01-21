@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	import { page } from '$app/stores';
 	import { createToaster, type AddToastProps } from '@melt-ui/svelte';
-	import type { SvelteComponent } from 'svelte';
+	import { onMount, type SvelteComponent } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { cubicOut } from 'svelte/easing';
 	import { getFlash } from 'sveltekit-flash-message/client';
@@ -35,16 +35,17 @@
 </script>
 
 <script lang="ts">
-	const flash = getFlash(page);
-
-	$: if ($flash) {
-		const { closeDelay, ...data } = $flash;
-		addToast({
-			closeDelay,
-			data,
+	onMount(() => {
+		const flash = getFlash(page);
+		const unsub = flash.subscribe((v) => {
+			if (v) {
+				const { closeDelay, ...data } = v;
+				addToast({ closeDelay, data });
+				flash.set(undefined);
+			}
 		});
-		flash.set(undefined);
-	}
+		return unsub;
+	});
 </script>
 
 <div id="toast-portal" use:portal>
