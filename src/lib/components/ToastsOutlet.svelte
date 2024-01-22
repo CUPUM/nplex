@@ -35,8 +35,9 @@
 </script>
 
 <script lang="ts">
+	const flash = getFlash(page);
+
 	onMount(() => {
-		const flash = getFlash(page);
 		const unsub = flash.subscribe((v) => {
 			if (v) {
 				const { closeDelay, ...data } = v;
