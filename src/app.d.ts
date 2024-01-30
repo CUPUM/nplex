@@ -87,6 +87,12 @@ declare global {
 				noBackground?: boolean;
 			};
 			/**
+			 * Optionally control display of footer.
+			 */
+			footer?: {
+				hide?: boolean;
+			};
+			/**
 			 * Dashboard ((private) route group) compositional components and data.
 			 */
 			dashboard?: {

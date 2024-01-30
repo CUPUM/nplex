@@ -1,3 +1,3 @@
-import { isAvailableLang } from '$lib/i18n/validation';
+import { isAvailableLanguageTag } from '$i18n/runtime';
 
-export const match = isAvailableLang;
+export const match = isAvailableLanguageTag;

@@ -9,7 +9,7 @@ textarea.resize {
 }
 
 .dimmer {
-	opacity: var(--opacity-dimmer);
+	opacity: var(--opacity-muted);
 }
 
 .bg-blur {

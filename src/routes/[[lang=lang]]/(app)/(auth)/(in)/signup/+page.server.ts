@@ -8,6 +8,7 @@ import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
 import { createKeyId } from 'lucia';
 import { generateLuciaPasswordHash } from 'lucia/utils';
+import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
@@ -36,13 +37,13 @@ export const load = async (event) => {
 		}
 		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
-	const form = await superValidate(emailPasswordSignupSchema);
+	const form = await superValidate(zod(emailPasswordSignupSchema));
 	return { form };
 };
 
 export const actions = {
 	default: async (event) => {
-		const form = await superValidate(event, emailPasswordSignupSchema);
+		const form = await superValidate(event, zod(emailPasswordSignupSchema));
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}

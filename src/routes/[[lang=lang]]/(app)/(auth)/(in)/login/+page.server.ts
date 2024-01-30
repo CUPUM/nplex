@@ -4,6 +4,7 @@ import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { LuciaError } from 'lucia';
 import { redirect } from 'sveltekit-flash-message/server';
+import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
@@ -20,13 +21,13 @@ export const load = async (event) => {
 		}
 		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
-	const form = await superValidate(emailPasswordLoginSchema);
+	const form = await superValidate(zod(emailPasswordLoginSchema));
 	return { form };
 };
 
 export const actions = {
 	default: async (event) => {
-		const form = await superValidate(event, emailPasswordLoginSchema);
+		const form = await superValidate(event, zod(emailPasswordLoginSchema));
 		if (!form.valid) {
 			return message(form, {
 				title: m.auth_invalid(),

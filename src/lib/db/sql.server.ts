@@ -16,6 +16,8 @@ import { NANOID_DEFAULT_LENGTH } from './constants';
 
 /**
  * Single column variant of drizzle's InferColumnsDataTypes.
+ *
+ * @deprecated Move to utils.
  */
 export type InferColumnDataType<T extends AnyColumn> = T['_']['notNull'] extends true
 	? T['_']['data']
@@ -23,11 +25,15 @@ export type InferColumnDataType<T extends AnyColumn> = T['_']['notNull'] extends
 
 /**
  * Extract the generic type of an SQL type.
+ *
+ * @deprecated Move to utils.
  */
 export type InferSQLDataType<T, Fallback = never> = T extends SQL<infer U> ? U : Fallback;
 
 /**
  * Extract returned data type of SQL-originating json object.
+ *
+ * @deprecated Move to utils.
  */
 export type InferRecordDataTypes<T extends Record<string, AnyColumn | SQL>> = {
 	[K in keyof T]: T[K] extends SQL
@@ -44,9 +50,11 @@ export type InferColumnType<T extends (...config: never[]) => ColumnBuilderBase>
 /**
  * Implements sql random. Can be used to order:
  *
- * ```ts
- * const randomItem = await db.select().from(items).orderBy(random()).limit(1);
- * ```
+ * @deprecated Move to utils.
+ *
+ *   ```ts
+ *   const randomItem = await db.select().from(items).orderBy(random()).limit(1);
+ *   ```
  */
 export function random() {
 	return sql<number>`random()`;
@@ -55,6 +63,7 @@ export function random() {
 /**
  * Generate a nanoid using postgres-nanoid.
  *
+ * @deprecated Move to utils.
  * @see https://discord.com/channels/1043890932593987624/1093946807911989369/1100459226087825571
  * @todo Stay up to date when default values will accept 'sql' without having to pass param to
  *   sql.raw()
@@ -86,6 +95,8 @@ export function generateNanoid({
  * Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
  *
  * Function is overloaded to handle both full table and single column references.
+ *
+ * @deprecated
  */
 export function excluded<T extends AnyColumn>(columnOrTable: T): SQL<T>;
 export function excluded<T extends AnyTable<TableConfig>, C = T['_']['columns']>(
@@ -110,32 +121,56 @@ export function excluded<T extends Column | Table>(columnOrTable: T) {
 // 	return sql
 // }
 
+/**
+ * @deprecated Moved to utils.
+ */
 export function emptyJsonObject() {
 	return sql<object>`'{}'::json`;
 }
 
+/**
+ * @deprecated Moved to utils.
+ */
 export function emptyJsonArray() {
 	return sql<never[]>`'[]'::json`;
 }
 
+/**
+ * @deprecated Moved to utils.
+ */
 export const emptyArray = sql<SQL<[]>>`{}`;
 
+/**
+ * @deprecated Moved to utils.
+ */
 export function BOOL<T extends boolean>(value: T) {
 	return sql<T>`${value ? 'true' : 'false'}`;
 }
 
+/**
+ * @deprecated Moved to utils.
+ */
 export function TRUE() {
 	return BOOL(true);
 }
 
+/**
+ * @deprecated Moved to utils.
+ */
 export function FALSE() {
 	return BOOL(false);
 }
 
+/**
+ * @deprecated Moved to utils.
+ */
 export function NULL() {
 	return sql<null>`null`;
 }
 
+/**
+ * @deprecated Moved to utils.
+ */
 export function jsonStripNulls<T>(json: SQL<T>) {
 	return sql<SetNonNullable<T>>`json_strip_nulls(${json})`;
 }
@@ -151,12 +186,9 @@ export function jsonStripNulls<T>(json: SQL<T>) {
 /**
  * Aggregate values to json array `json_agg()`. Since it is a json method, it should return an
  * unwrapped (raw) type instead of an SQL wrapped type.
+ *
+ * @deprecated Moved to utils.
  */
-// export function jsonAgg<T extends SQL | AnyTable>(raw: T) {
-// 	return sql<
-// 		(T extends SQL ? InferSQLDataType<T> : T extends AnyTable ? InferSelectModel<T> : never)[]
-// 	>`json_agg(${raw})`;
-// }
 export function jsonAgg<T extends AnyTable<TableConfig> | AnyColumn>(
 	selection: T,
 	{ notNull = true }: { notNull?: boolean } = {}
@@ -175,6 +207,8 @@ export function jsonAgg<T extends AnyTable<TableConfig> | AnyColumn>(
 
 /**
  * Aggregate sql values into an sql array.
+ *
+ * @deprecated Moved to utils.
  */
 export function arrayAgg<T extends SQL | InferSelectModel<AnyTable<TableConfig>>>(raw: T) {
 	return sql<(T extends SQL ? InferSQLDataType<T>[] : T[]) | null>`array_agg(${raw})`;
@@ -183,6 +217,8 @@ export function arrayAgg<T extends SQL | InferSelectModel<AnyTable<TableConfig>>
 /**
  * Since it is a json method, it should return an unwrapped (raw) type instead of an SQL wrapped
  * type.
+ *
+ * @deprecated
  */
 export function rowToJson<T extends AnyTable<TableConfig>>(row: T) {
 	return sql<InferSelectModel<T> | null>`row_to_json(${row})`;
@@ -193,6 +229,8 @@ export function rowToJson<T extends AnyTable<TableConfig>>(row: T) {
  * return an object with unwrapped value types instead of SQL wrapped types.
  *
  * ⚠️ Vulnerable to SQL injections if used with user-input ⚠️
+ *
+ * @deprecated Moved to utils.
  */
 export function jsonBuildObject<T extends Record<string, AnyColumn | SQL>>(shape: T) {
 	const chunks: SQL[] = [];
@@ -209,6 +247,8 @@ export function jsonBuildObject<T extends Record<string, AnyColumn | SQL>>(shape
 
 /**
  * Aggregate sql values into a json object.
+ *
+ * @deprecated
  */
 export function jsonAggBuildObject<T extends Record<string, AnyColumn>>(shape: T) {
 	const chunks: SQL[] = [];
@@ -225,15 +265,10 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn>>(shape: T
 }
 
 /**
- * Get a PostGIS column value as geojson.
- */
-// export function asGeoJson<T extends Feature = Feature>(geom: string) {
-// 	return sql<T>`st_asgeojson(${geom})::json`;
-// }
-
-/**
  * Build object using `json_object_agg`. Since it is a json method, it should return an unwrapped
  * type instead of an SQL wrapped type.
+ *
+ * @deprecated Move to utils.
  */
 export function jsonObjectAgg<
 	K extends AnyColumn,
@@ -270,6 +305,7 @@ type CoalesceSQL<T extends unknown[], N extends boolean = true, R = never> = T e
 /**
  * SQL coalesce.
  *
+ * @deprecated Move to utils.
  * @see https://www.typescriptlang.org/play?#code/C4TwDgpgBAcg9sGBXANigPAFShAHsCAOwBMBnKJQga0LgHdCBtAXQD4oBeKAbwCgoBURgGkoAS0JRCSALYAjCACcoAMihUIIOADMomZgC49I5jnxEyU1CigB+KRABuSqEcwmA3LwC+X3tsoAY2AxOElAuABDFAhSQIh0ADUzAhJyShp6JjYACgA6AsdopFijRIBKHl4ASFBIPU4hArzE0zxUywltF2x7bCNCJyUvATroAGFG7kYASXFJDS1dbDVpeSVDYxm28zSrNDsHZ2U3WeZffigxqAAxRvHGRZ0oceYRqAjCUmAobTEUAiKCDERpFFAlUh5P4ApQ5RycdjwgCEXGkaHK7yBwCQikkOWhgOBeRihAA5sAABaHAlKYGMAAMpgG1kqkXINy83l4vGumFiwHQAEEUhZ0tRaAwWOwuIxmoKdh1yF0eod+kdhtzPt8oJFFIoAIyNRholAAGigAFlIpS8opIiQ4DIcpV2HkAKyHADkwrBJU9OvIWp+zLQzF4QZ1eoATEaTearTa7Q6nS6oO6vT7ihB-WyPmFtUZvbRKS5fdmA3mvsAw9dxoauHzvugxs9dQbWDzwBMYw3+c2u63ox3w-mfgRvvW89FYvEcnHLdaKbb7cRHc6oK6PfZvVAyznA6PXPsUBioAB6M-HqAAHygO73I6rV35PanMTiEDn1nji+XyfXm4ZruWb7pWBZ3oKxYUqWIEVkGp4XhBwHguWt5Fgg0HKHuQA
  * @todo Figure out mapped array typing to exclude exclusively null array members.
  */

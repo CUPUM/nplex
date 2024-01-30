@@ -9,10 +9,10 @@
 
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.org_descriptors()}</LangKey>
+		<LangKey>{m.organization_descriptors()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/organizations/descriptors/types')}>
-		<LangKey>{m.org_types()}</LangKey>
+		<LangKey>{m.organization_types()}</LangKey>
 	</SidebarItem>
 </SidebarGroup>
 <ProjectsSidebarGroup />

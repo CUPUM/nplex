@@ -22,9 +22,7 @@
 		<hgroup class="prose">
 			<h2>
 				<LangKey>
-					{m.project_descriptors_exemplarity_indicators()} & {m
-						.project_descriptors_exemplarity_categories()
-						.toLowerCase()}
+					{m.project_exemplarity_indicators()} & {m.project_exemplarity_categories().toLowerCase()}
 				</LangKey>
 			</h2>
 			<p class="dim">

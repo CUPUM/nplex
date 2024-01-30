@@ -7,7 +7,7 @@ import {
 	projectExemplarityIndicatorsTranslations,
 } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { joinTranslations } from '$lib/db/utils.server';
+import { withTranslations } from '$lib/db/utils.server';
 import {
 	newProjectExemplarityCategorySchema,
 	newProjectExemplarityIndicatorSchema,
@@ -29,7 +29,7 @@ const rootSchema = z.object({ id: z.string() });
 
 export const load = async (event) => {
 	await event.locals.authorize('projects.descriptors.exemplarityIndicators.update');
-	const indicators = joinTranslations(
+	const indicators = withTranslations(
 		projectExemplarityIndicators,
 		projectExemplarityIndicatorsTranslations,
 		{
@@ -37,7 +37,7 @@ export const load = async (event) => {
 			reference: (tt) => tt.id,
 		}
 	);
-	const categories = joinTranslations(
+	const categories = withTranslations(
 		projectExemplarityCategories,
 		projectExemplarityCategoriesTranslations,
 		{ field: (t) => t.id, reference: (tt) => tt.id }
@@ -80,7 +80,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.exemplarityIndicators.create');
 		const form = await superValidate(event, zod(newProjectExemplarityIndicatorSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_exemplarity_indicator());
+			return messageInvalid(form, m.project_exemplarity_indicator());
 		}
 		try {
 			const { translations, ...pt } = form.data;
@@ -105,7 +105,7 @@ export const actions = {
 			zod(projectExemplarityIndicatorsWithTranslationsSchema)
 		);
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_exemplarity_indicator());
+			return messageInvalid(form, m.project_exemplarity_indicator());
 		}
 		try {
 			const { translations, id, ...pt } = form.data;
@@ -136,7 +136,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.exemplarityIndicators.delete');
 		const form = await superValidate(event, zod(rootSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_exemplarity_indicator());
+			return messageInvalid(form, m.project_exemplarity_indicator());
 		}
 		try {
 			const deleted = await db
@@ -155,7 +155,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.exemplarityCategories.create');
 		const form = await superValidate(event, zod(newProjectExemplarityCategorySchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_exemplarity_category());
+			return messageInvalid(form, m.project_exemplarity_category());
 		}
 		try {
 			const { translations, ...category } = form.data;
@@ -180,7 +180,7 @@ export const actions = {
 			zod(projectExemplarityCategoriesWithTranslationsSchema)
 		);
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_exemplarity_category());
+			return messageInvalid(form, m.project_exemplarity_category());
 		}
 		try {
 			const { translations, id, ...pt } = form.data;
@@ -211,7 +211,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.exemplarityCategories.delete');
 		const form = await superValidate(event, zod(rootSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_exemplarity_category());
+			return messageInvalid(form, m.project_exemplarity_category());
 		}
 		try {
 			const deleted = await db

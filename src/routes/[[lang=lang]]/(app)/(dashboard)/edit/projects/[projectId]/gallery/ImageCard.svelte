@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
-	import type { ProjectsGalleryUpdateSchema } from '$lib/db/crud.server';
-	import type { SuperForm } from '$lib/forms/super-form';
+	import type { SuperFormData } from '$lib/forms/types';
 	import { link } from '$lib/i18n/link';
 	import { imageSrc } from '$lib/media/url';
 	import { MODES } from '$lib/modes/constants';
@@ -11,7 +10,7 @@
 	import type { PageData } from './$types';
 
 	export let image: PageData['images'][number];
-	export let form: SuperForm<ProjectsGalleryUpdateSchema>['form'];
+	export let form: SuperFormData<PageData['galleryForm']>['form'];
 
 	let isBanner = image.id === $form.bannerId;
 	function syncIsBanner(trigger: any) {

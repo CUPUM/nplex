@@ -18,6 +18,7 @@
 	} = superForm(data.form, {
 		dataType: 'json',
 		taintedMessage: null,
+		resetForm: false,
 	});
 
 	const [send, receive] = switchCrossfade;
@@ -53,7 +54,7 @@
 								<input
 									type="checkbox"
 									class="visually-hidden"
-									bind:group={$form.indicatorIds}
+									bind:group={$form.indicatorsIds}
 									value={indicator.id}
 								/>
 								<span class="chip-label">

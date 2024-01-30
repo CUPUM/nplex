@@ -2,7 +2,7 @@ import * as m from '$i18n/messages';
 import { db } from '$lib/db/db.server';
 import { projectImageTypes, projectImageTypesTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { joinTranslations } from '$lib/db/utils.server';
+import { withTranslations } from '$lib/db/utils.server';
 import {
 	newProjectImageTypeSchema,
 	projectImageTypesSchema,
@@ -22,7 +22,7 @@ const rootSchema = projectImageTypesSchema.pick({ id: true });
 
 export const load = async (event) => {
 	await event.locals.authorize('projects.descriptors.imageTypes.update');
-	const imageTypes = await joinTranslations(projectImageTypes, projectImageTypesTranslations, {
+	const imageTypes = await withTranslations(projectImageTypes, projectImageTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
@@ -43,7 +43,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.imageTypes.create');
 		const form = await superValidate(event, zod(newProjectImageTypeSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_image_type());
+			return messageInvalid(form, m.project_image_type());
 		}
 		try {
 			await db.transaction(async (tx) => {
@@ -65,7 +65,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.imageTypes.update');
 		const form = await superValidate(event, zod(projectImageTypesWithTranslationsSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_image_type());
+			return messageInvalid(form, m.project_image_type());
 		}
 		try {
 			await db.transaction(async (tx) => {
@@ -90,7 +90,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.imageTypes.delete');
 		const form = await superValidate(event, zod(rootSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_image_type());
+			return messageInvalid(form, m.project_image_type());
 		}
 		try {
 			const deleted = await db

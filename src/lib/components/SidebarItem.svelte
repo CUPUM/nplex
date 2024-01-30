@@ -70,7 +70,7 @@
 		line-height: var(--line-dense);
 		transition: all 0.15s ease-out;
 		white-space: wrap;
-		font-weight: 350;
+		font-weight: 300;
 		padding: 0.8em 1.25em;
 		font-size: var(--size-sm);
 		gap: 1em;

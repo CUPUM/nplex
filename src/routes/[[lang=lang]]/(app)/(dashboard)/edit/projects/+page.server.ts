@@ -1,27 +1,45 @@
-import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { db } from '$lib/db/db.server';
+import { isEditableProject } from '$lib/db/queries.server';
 import { projects, projectsTranslations } from '$lib/db/schema/public';
-import { getSubqueryColumns } from '$lib/db/utils.server';
+import { getColumns } from '$lib/db/utils.server';
 import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
-import { and, eq, getTableColumns, ilike } from 'drizzle-orm';
+import { and, eq, exists, sql } from 'drizzle-orm';
 
 export const load = async (event) => {
 	const session = await event.locals.authorize();
-	event.depends(LOAD_DEPENDENCIES.Lang);
 	const search = event.url.searchParams.get('search') ?? '';
-	const match = db
-		.select()
-		.from(projectsTranslations)
-		.where(search ? ilike(projectsTranslations.title, `%${search}%`) : undefined)
-		.as('match');
-	const { title, summary } = getSubqueryColumns(match);
-	const { id, bannerId } = getTableColumns(projects);
-	const searchProjects = db
+	const { title, summary } = getColumns(projectsTranslations);
+	const { id, bannerId } = getColumns(projects);
+	event.depends(LOAD_DEPENDENCIES.Lang);
+	const matchProjects = db
 		.select({ id, bannerId, title, summary })
 		.from(projects)
-		.rightJoin(match, eq(projects.id, match.id))
-		.where(and(authorizeProjectUpdate(session), eq(match.lang, event.locals.lang)));
-	return { searchProjects, search };
+		.where(
+			and(
+				isEditableProject(session),
+				search
+					? exists(
+							db
+								.select({ id: projectsTranslations.id })
+								.from(projectsTranslations)
+								.where(
+									and(
+										eq(projectsTranslations.id, projects.id),
+										// ilike(projectsTranslations.title, `%${search}%`)
+										sql`${projectsTranslations.ts} @@ to_tsquery(${search})`
+									)
+								)
+						)
+					: undefined
+			)
+		)
+		.leftJoin(
+			projectsTranslations,
+			and(
+				eq(projects.id, projectsTranslations.id),
+				eq(projectsTranslations.lang, event.locals.lang)
+			)
+		);
+	console.log(matchProjects.getSQL());
+	return { matchProjects: await matchProjects, search };
 };
-
-export const actions = {};

@@ -38,7 +38,7 @@
 <Descriptor {trigger} {submitter} variant="new" />
 <Dialog {open} {...restElements}>
 	<svelte:fragment slot="title">
-		<LangKey>{m.project_descriptors_type_create()}</LangKey>
+		<LangKey>{m.project_type_create()}</LangKey>
 	</svelte:fragment>
 	<DescriptorForm {enhance} id={data.id} action="?/createIndicator">
 		<svelte:fragment slot="translation" let:lang>
@@ -46,13 +46,13 @@
 				type="text"
 				class="input"
 				bind:value={$form.translations[lang].title}
-				placeholder={$langKey(m.project_descriptors_type_title())}
+				placeholder={$langKey(m.project_type_title())}
 				{...$errors?.translations?.[lang]?.title}
 			/>
 			<textarea
 				class="input"
 				bind:value={$form.translations[lang].description}
-				placeholder={$langKey(m.project_descriptors_type_description())}
+				placeholder={$langKey(m.project_type_description())}
 				{...$errors?.translations?.[lang]?.description}
 			/>
 		</svelte:fragment>

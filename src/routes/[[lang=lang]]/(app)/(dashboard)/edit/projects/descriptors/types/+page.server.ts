@@ -2,7 +2,7 @@ import * as m from '$i18n/messages';
 import { db } from '$lib/db/db.server';
 import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { joinTranslations } from '$lib/db/utils.server';
+import { withTranslations } from '$lib/db/utils.server';
 import {
 	newProjectTypeSchema,
 	projectTypesWithTranslationsSchema,
@@ -21,10 +21,11 @@ const typesSchema = projectTypesWithTranslationsSchema.pick({ id: true });
 
 export const load = async (event) => {
 	await event.locals.authorize('projects.descriptors.types.update');
-	const types = await joinTranslations(projectTypes, projectTypesTranslations, {
+	const types = await withTranslations(projectTypes, projectTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
+
 	const [newTypeForm, typesForm, ...typeForms] = await Promise.all([
 		superValidate(zod(newProjectTypeSchema)),
 		superValidate(zod(typesSchema)),

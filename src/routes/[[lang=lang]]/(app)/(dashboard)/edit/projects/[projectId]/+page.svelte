@@ -35,6 +35,7 @@
 	} = superForm(data.form, {
 		dataType: 'json',
 		taintedMessage: null,
+		resetForm: false,
 	});
 
 	let submitRef: HTMLButtonElement;

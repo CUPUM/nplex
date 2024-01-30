@@ -48,7 +48,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0.9em 1em;
+		padding: 0.8em 1em;
 		gap: 1em;
 		border-radius: var(--radius-sm);
 		transition: all 0.1s ease-out;
@@ -79,10 +79,10 @@
 		&:hover:not([data-current]),
 		&:focus-visible:not([data-current]) {
 			color: var(--color-primary-700);
-			background-color: color-mix(in srgb, var(--color-primary-700) 10%, transparent);
+			background: color-mix(in srgb, var(--color-primary-700) 10%, transparent);
 			:global(:--dark) & {
 				color: var(--color-primary-500);
-				background-color: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
+				background: color-mix(in srgb, var(--color-primary-500) 10%, transparent);
 			}
 
 			& :global(.button-icon) {

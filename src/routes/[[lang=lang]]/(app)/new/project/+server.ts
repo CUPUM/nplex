@@ -1,19 +1,19 @@
-import { dbhttp } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { projects } from '$lib/db/schema/public';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, redirect } from '@sveltejs/kit';
 
 export const GET = async (event) => {
-	const session = await event.locals.auth.validate();
-	if (!session) {
-		error(STATUS_CODES.UNAUTHORIZED);
-	}
-	const [project] = await dbhttp
+	const session = await event.locals.authorize();
+	const [project] = await db
 		.insert(projects)
 		.values({
 			createdById: session.user.id,
 			updatedById: session.user.id,
 		})
 		.returning({ id: projects.id });
+	if (!project) {
+		error(STATUS_CODES.INTERNAL_SERVER_ERROR);
+	}
 	redirect(STATUS_CODES.MOVED_TEMPORARILY, `/edit/projects/${project.id}`);
 };

@@ -69,7 +69,7 @@
 		font-size: var(--size-xs);
 		font-weight: 300;
 		letter-spacing: 0.01em;
-		line-height: 1.5;
+		line-height: var(--line-dense);
 		color: var(--color-neutral-500);
 		transition: all var(--duration-fast) ease-out;
 

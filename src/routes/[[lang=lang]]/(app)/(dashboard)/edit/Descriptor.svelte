@@ -105,7 +105,7 @@
 
 		:global(:--icon) {
 			pointer-events: none;
-			opacity: var(--opacity-dimmer);
+			opacity: var(--opacity-muted);
 			width: 1em;
 			stroke-width: 2.2;
 			transition: all var(--duration-fast) ease-out;

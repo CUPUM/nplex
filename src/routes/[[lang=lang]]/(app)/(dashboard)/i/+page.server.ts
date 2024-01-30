@@ -1,3 +1,3 @@
-export const load = async (event) => {};
+export const load = async () => {};
 
 export const actions = {};

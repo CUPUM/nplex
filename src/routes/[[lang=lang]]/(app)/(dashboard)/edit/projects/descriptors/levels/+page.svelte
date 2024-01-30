@@ -20,7 +20,7 @@
 <form class="dashboard-section" use:enhance method="POST">
 	<header class="dashboard-section-header">
 		<hgroup class="prose">
-			<h2><LangKey>{m.project_descriptors_level_types()}</LangKey></h2>
+			<h2><LangKey>{m.project_level_types()}</LangKey></h2>
 			<p class="dim">
 				Quas blanditiis sit sed asperiores, sapiente neque atque harum vel fugit. Hic.
 			</p>

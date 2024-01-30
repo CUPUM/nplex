@@ -2,8 +2,8 @@ import * as m from '$i18n/messages';
 import type { UserRole } from '$lib/auth/constants';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, type Handle, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit';
-import type { StoresValues } from 'svelte/store';
-import { authorize, PERMISSIONS, type PermissionKey } from './authorization';
+import type { Session } from 'lucia';
+import { PERMISSIONS, type PermissionKey } from './authorization';
 
 /**
  * Helper to require auth inside server load functions and actions.
@@ -42,7 +42,7 @@ function createEventAuthorization<E extends RequestEvent | ServerLoadEvent>(even
 			return withAuth(event);
 		}
 		return await withRole(event, PERMISSIONS[key]);
-	}) satisfies StoresValues<typeof authorize>;
+	}) satisfies (key?: PermissionKey) => Promise<Session>;
 }
 
 export type AuthorizeRequest = ReturnType<typeof createEventAuthorization>;

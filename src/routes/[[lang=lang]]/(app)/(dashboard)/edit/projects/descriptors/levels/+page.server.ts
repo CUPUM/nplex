@@ -5,7 +5,7 @@ import {
 	projectBuildingLevelTypesTranslations,
 } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { joinTranslations } from '$lib/db/utils.server';
+import { withTranslations } from '$lib/db/utils.server';
 import {
 	newProjectBuildingLevelTypeSchema,
 	projectBuildingLevelTypesSchema,
@@ -25,7 +25,7 @@ const rootSchema = projectBuildingLevelTypesSchema.pick({ id: true });
 
 export const load = async (event) => {
 	await event.locals.authorize('projects.descriptors.buildingLevelTypes.update');
-	const levelTypes = await joinTranslations(
+	const levelTypes = await withTranslations(
 		projectBuildingLevelTypes,
 		projectBuildingLevelTypesTranslations,
 		{
@@ -50,7 +50,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.buildingLevelTypes.create');
 		const form = await superValidate(event, zod(newProjectBuildingLevelTypeSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_level_type());
+			return messageInvalid(form, m.project_level_type());
 		}
 		try {
 			await db.transaction(async (tx) => {
@@ -72,7 +72,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.buildingLevelTypes.update');
 		const form = await superValidate(event, zod(projectBuildingLevelTypesWithTranslationsSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_level_type());
+			return messageInvalid(form, m.project_level_type());
 		}
 		try {
 			await db.transaction(async (tx) => {
@@ -100,7 +100,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.buildingLevelTypes.delete');
 		const form = await superValidate(event, zod(rootSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_level_type());
+			return messageInvalid(form, m.project_level_type());
 		}
 		try {
 			const deleted = await db

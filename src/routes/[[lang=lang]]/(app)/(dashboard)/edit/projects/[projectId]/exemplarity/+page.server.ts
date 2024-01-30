@@ -1,36 +1,53 @@
-import { projectsExemplarityIndicatorsUpdateSchema } from '$lib/db/crud.server';
+import * as m from '$i18n/messages';
 import { db } from '$lib/db/db.server';
-import { getProjectCategorizedIndicatorsList } from '$lib/db/queries.server';
-import { projectsExemplarityIndicators } from '$lib/db/schema/public';
-import { coalesce, emptyJsonArray, jsonAgg } from '$lib/db/sql.server';
+import { getProjectCategorizedIndicatorsList, isEditableProject } from '$lib/db/queries.server';
+import { projects, projectsExemplarityIndicators } from '$lib/db/schema/public';
+import { coalesce, emptyJsonArray, jsonAgg } from '$lib/db/utils.server';
+import { projectsExemplarityIndicatorsSchema } from '$lib/db/validation.server';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { fail } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
+import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms/server';
+import { z } from 'zod';
+
+const schema = z.object({
+	indicatorsIds: projectsExemplarityIndicatorsSchema.shape.exemplarityIndicatorId.array(),
+});
 
 export const load = async (event) => {
-	await event.locals.authorize();
-	const [indicators] = await db
-		.select({
-			indicatorIds: coalesce(
-				jsonAgg(projectsExemplarityIndicators.exemplarityIndicatorId),
-				emptyJsonArray()
+	const session = await event.locals.authorize();
+	const [[defaults], categorizedIndicators] = await Promise.all([
+		db
+			.select({
+				indicatorsIds: coalesce(
+					jsonAgg(projectsExemplarityIndicators.exemplarityIndicatorId),
+					emptyJsonArray
+				),
+			})
+			.from(projects)
+			.where(and(isEditableProject(session), eq(projects.id, event.params.projectId)))
+			.limit(1)
+			.leftJoin(
+				projectsExemplarityIndicators,
+				eq(projects.id, projectsExemplarityIndicators.projectId)
 			),
-		})
-		.from(projectsExemplarityIndicators)
-		.where(eq(projectsExemplarityIndicators.projectId, event.params.projectId));
-	console.log(indicators);
-	const form = await superValidate(indicators, projectsExemplarityIndicatorsUpdateSchema);
+		getProjectCategorizedIndicatorsList(event),
+	]);
+	if (!defaults) {
+		error(STATUS_CODES.NOT_FOUND, m.project_not_found());
+	}
+	const form = await superValidate(zod(schema, { defaults }));
 	return {
 		form,
-		categorizedIndicators: await getProjectCategorizedIndicatorsList(event),
+		categorizedIndicators,
 	};
 };
 
 export const actions = {
 	update: async (event) => {
 		await event.locals.authorize();
-		const form = await superValidate(event, projectsExemplarityIndicatorsUpdateSchema);
+		const form = await superValidate(event, zod(schema));
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
@@ -40,19 +57,19 @@ export const actions = {
 				.where(
 					and(
 						eq(projectsExemplarityIndicators.projectId, event.params.projectId),
-						form.data.indicatorIds.length
+						form.data.indicatorsIds.length
 							? notInArray(
 									projectsExemplarityIndicators.exemplarityIndicatorId,
-									form.data.indicatorIds
+									form.data.indicatorsIds
 								)
 							: undefined
 					)
 				);
-			if (form.data.indicatorIds.length) {
+			if (form.data.indicatorsIds.length) {
 				await tx
 					.insert(projectsExemplarityIndicators)
 					.values(
-						form.data.indicatorIds.map((exemplarityIndicatorId) => ({
+						form.data.indicatorsIds.map((exemplarityIndicatorId) => ({
 							exemplarityIndicatorId,
 							projectId: event.params.projectId,
 						}))

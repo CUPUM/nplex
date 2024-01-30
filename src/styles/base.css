@@ -1,10 +1,8 @@
 :root {
 	/* Fonts. */
 	--font-main: 'Outfit', sans-serif;
-	/* --font-misc: 'Fraunces', serif; */
-	--font-misc: 'Bricolage Grotesque', sans-serif;
-	/* --font-misc: 'Newsreader', serif; */
-	--font-mono: 'Martian Mono', monospace;
+	--font-display: 'Bricolage Grotesque', sans-serif;
+	--font-misc: 'Martian Mono', monospace;
 
 	/* Color palettes. */
 	--color-neutral-50: hsl(110, 10%, 97%);
@@ -134,13 +132,13 @@
 
 	/* Misc and component-specific */
 	--opacity-dim: 60%;
-	--opacity-dimmer: 30%;
+	--opacity-muted: 30%;
 	--ripple-color: currentColor;
 	--spinner-color: currentColor;
 	--ratio-small: 0.875em;
 	--content-width: 75ch;
 	--sticky-top: calc(var(--navbar-height) + var(--base-gutter));
-	--navbar-height: 72px;
+	--navbar-height: 68.8px;
 	--dashboard-bg: var(--color-neutral-50);
 	--dashboard-gutter: 0.5rem;
 	--dashboard-radius: var(--radius-xl);
@@ -158,6 +156,49 @@
 		--base-error-ring: var(--base-outline-width) solid var(--color-error-400);
 		--dashboard-bg: var(--color-neutral-800);
 		--sidebar-needle-bg: var(--color-primary-500);
+	}
+
+	/* V2 */
+	--radius: 14px;
+	--rounded: 999px;
+	--inlay: 5px;
+	--block-size: 3.25em;
+	--inline-padding: 1.1em;
+	--gutter: 8px;
+	--bg: ;
+	--fg: ;
+	--accent-bg: ;
+	--accent-fg: ;
+	--muted-bg: ;
+	--muted-fg: ;
+	/* Danger variants */
+	--danger-bg: ;
+	--danger-fg: ;
+	/* Success variants or indications */
+	--success-bg: ;
+	--success-fg: ;
+	/* Call to action or primary theme color variant */
+	--primary-bg: ;
+	--primary-fg: ;
+	/* Focus outline */
+	--ring-width: 4px;
+	--ring-color: purple;
+	--ring: var(--ring-width) solid var(--ring-color);
+	/* Blocks, popovers, or separating border */
+	--border-width: 1.25px;
+	--border-color: black;
+	--border: var(--border-width) solid var(--border-color);
+	/* Floating elements */
+	--floating-bg: ;
+	--floating-fg: ;
+	/* Tooltips */
+	--tooltip-bg: ;
+	--tooltip-fg: ;
+	/* Standout blocks, cards, etc. */
+	--block-bg: ;
+	--block-fg: ;
+
+	&:--dark {
 	}
 
 	/* Root style */

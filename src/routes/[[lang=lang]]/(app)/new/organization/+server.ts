@@ -1,4 +1,4 @@
-import { dbhttp } from '$lib/db/db.server';
+import { db } from '$lib/db/db.server';
 import { organizations } from '$lib/db/schema/public';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, redirect } from '@sveltejs/kit';
@@ -8,7 +8,7 @@ export const GET = async (event) => {
 	if (!session) {
 		error(STATUS_CODES.UNAUTHORIZED);
 	}
-	const [org] = await dbhttp
+	const [org] = await db
 		.insert(organizations)
 		.values({
 			createdById: session.user.id,

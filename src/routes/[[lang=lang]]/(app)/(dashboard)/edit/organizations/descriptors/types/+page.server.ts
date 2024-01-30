@@ -2,7 +2,7 @@ import * as m from '$i18n/messages';
 import { db } from '$lib/db/db.server';
 import { organizationTypes, organizationTypesTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { joinTranslations } from '$lib/db/utils.server';
+import { withTranslations } from '$lib/db/utils.server';
 import {
 	newOrganizationTypeSchema,
 	organizationTypesWithTranslationsSchema,
@@ -21,7 +21,7 @@ const typesSchema = organizationTypesWithTranslationsSchema.pick({ id: true });
 
 export const load = async (event) => {
 	await event.locals.authorize('organizations.descriptors.types.update');
-	const types = await joinTranslations(organizationTypes, organizationTypesTranslations, {
+	const types = await withTranslations(organizationTypes, organizationTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});

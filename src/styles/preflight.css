@@ -104,12 +104,12 @@ strong {
 kbd,
 samp,
 pre {
-	font-family: var(--font-mono); /* 1 */
+	font-family: var(--font-misc); /* 1 */
 	font-size: 1em; /* 2 */
 }
 
 code {
-	font-family: var(--font-mono); /* 1 */
+	font-family: var(--font-misc); /* 1 */
 	font-size: 0.775em; /* Try matching x height of main font */
 }
 

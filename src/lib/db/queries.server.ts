@@ -1,8 +1,12 @@
+import { USER_ROLES } from '$lib/auth/constants';
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, exists, getTableColumns, or } from 'drizzle-orm';
+import type { Session } from 'lucia';
 import { db } from './db.server';
 import { userRoles, userRolesTranslations } from './schema/accounts';
 import {
+	organizations,
+	organizationsUsers,
 	projectExemplarityCategories,
 	projectExemplarityCategoriesTranslations,
 	projectExemplarityIndicators,
@@ -22,26 +26,99 @@ import {
 	projectTypes,
 	projectTypesToInterventions,
 	projectTypesTranslations,
+	projects,
+	projectsUsers,
 } from './schema/public';
-import { jsonAggBuildObject } from './sql.server';
-import { getSubqueryColumns, joinTranslation } from './utils.server';
+import {
+	coalesce,
+	emptyJsonArray,
+	getColumns,
+	jsonAgg,
+	jsonAggBuildObject,
+	sqlBool,
+	withTranslation,
+} from './utils.server';
+
+/**
+ * Filter for projects created by session user.
+ */
+export function isCreatedProject(session: Session) {
+	return eq(projects.createdById, session.user.id);
+}
+
+/**
+ * Helper getter for projects created by session user.
+ *
+ * @see isCreatedProject
+ */
+export function getCreatedProjects(session: Session) {
+	return db.select().from(projects).where(isCreatedProject(session));
+}
+
+/**
+ * Filter for projects editable by session user based on role, authorship, and collaboration status.
+ * (add more conditions if needed).
+ */
+export function isEditableProject(session: Session) {
+	return or(
+		sqlBool(session.user.role === USER_ROLES.ADMIN),
+		isCreatedProject(session),
+		exists(
+			db
+				.select()
+				.from(projectsUsers)
+				.where(
+					and(eq(projectsUsers.projectId, projects.id), eq(projectsUsers.userId, session.user.id))
+				)
+		)
+	);
+}
+
+export function getCreatedOrganizations(session: Session) {
+	return db.select().from(organizations).where(eq(organizations.createdById, session.user.id));
+}
+
+export function getEditableOrganizations(session: Session) {
+	return db
+		.select({
+			...getTableColumns(organizations),
+		})
+		.from(organizations)
+		.where(
+			or(
+				sqlBool(session.user.role === USER_ROLES.ADMIN),
+				eq(organizations.createdById, session.user.id),
+				exists(
+					db
+						.select()
+						.from(organizationsUsers)
+						.where(
+							and(
+								eq(organizationsUsers.organizationId, organizations.id),
+								eq(organizationsUsers.userId, session.user.id)
+							)
+						)
+				)
+			)
+		);
+}
 
 export function getProjectTypesList(event: RequestEvent | ServerLoadEvent) {
-	return joinTranslation(event, projectTypes, projectTypesTranslations, {
+	return withTranslation(event, projectTypes, projectTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getProjectInterventionsList(event: RequestEvent | ServerLoadEvent) {
-	return joinTranslation(event, projectInterventions, projectInterventionsTranslations, {
+	return withTranslation(event, projectInterventions, projectInterventionsTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getProjectInterventionCategoriesList(event: RequestEvent | ServerLoadEvent) {
-	return joinTranslation(
+	return withTranslation(
 		event,
 		projectInterventionsCategories,
 		projectInterventionsCategoriesTranslations,
@@ -53,45 +130,56 @@ export async function getProjectCategorizedInterventionsList(
 	event: RequestEvent | ServerLoadEvent
 ) {
 	const interventions = getProjectInterventionsList(event).as('interventions');
-	const interventionsColumns = getSubqueryColumns(interventions);
+	const interventionsColumns = getColumns(interventions);
+	const interventionsWithTypes = db
+		.select({
+			...getColumns(interventions),
+			typesIds: coalesce(jsonAgg(projectTypesToInterventions.typeId), emptyJsonArray).as(
+				'types_ids'
+			),
+		})
+		.from(interventions)
+		.leftJoin(
+			projectTypesToInterventions,
+			eq(interventions.id, projectTypesToInterventions.interventionId)
+		)
+		.groupBy(...Object.values(interventionsColumns))
+		.as('interventions_with_types');
+	const interventionsWithTypesColumns = getColumns(interventionsWithTypes);
 	const categories = getProjectInterventionCategoriesList(event).as('categories');
-	const categoriesColumns = getSubqueryColumns(categories);
+	const categoriesColumns = getColumns(categories);
 	return db
 		.select({
 			...categoriesColumns,
-			interventions: jsonAggBuildObject({
-				...interventionsColumns,
-				projectTypes: projectTypesToInterventions.typeId,
-			}),
+			interventions: jsonAggBuildObject(interventionsWithTypesColumns),
 		})
 		.from(categories)
 		.groupBy(...Object.values(categoriesColumns))
 		.leftJoin(
-			interventions,
-			and(eq(categories.id, interventions.categoryId), eq(categories.lang, interventions.lang))
-		)
-		.leftJoin(
-			projectTypesToInterventions,
-			eq(projectTypesToInterventions.interventionId, interventions.id)
+			interventionsWithTypes,
+			and(
+				eq(categories.id, interventionsWithTypes.categoryId),
+				eq(categories.lang, interventionsWithTypes.lang)
+			)
 		);
 }
 
 export function getProjectSiteOwnershipsList(event: RequestEvent | ServerLoadEvent) {
-	return joinTranslation(event, projectSiteOwnerships, projectSiteOwnershipsTranslations, {
+	return withTranslation(event, projectSiteOwnerships, projectSiteOwnershipsTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getProjectImplantationTypesList(event: RequestEvent | ServerLoadEvent) {
-	return joinTranslation(event, projectImplantationTypes, projectImplantationTypesTranslations, {
+	return withTranslation(event, projectImplantationTypes, projectImplantationTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getProjectExemplarityCategoriesList(event: RequestEvent | ServerLoadEvent) {
-	return joinTranslation(
+	return withTranslation(
 		event,
 		projectExemplarityCategories,
 		projectExemplarityCategoriesTranslations,
@@ -100,7 +188,7 @@ export function getProjectExemplarityCategoriesList(event: RequestEvent | Server
 }
 
 export function getProjectExemplarityIndicatorsList(event: RequestEvent | ServerLoadEvent) {
-	return joinTranslation(
+	return withTranslation(
 		event,
 		projectExemplarityIndicators,
 		projectExemplarityIndicatorsTranslations,
@@ -110,9 +198,9 @@ export function getProjectExemplarityIndicatorsList(event: RequestEvent | Server
 
 export function getProjectCategorizedIndicatorsList(event: RequestEvent | ServerLoadEvent) {
 	const indicators = getProjectExemplarityIndicatorsList(event).as('indicators');
-	const indicatorsColumns = getSubqueryColumns(indicators);
+	const indicatorsColumns = getColumns(indicators);
 	const categories = getProjectExemplarityCategoriesList(event).as('categories');
-	const categoriesColumns = getSubqueryColumns(categories);
+	const categoriesColumns = getColumns(categories);
 	return db
 		.select({
 			...categoriesColumns,
@@ -127,21 +215,21 @@ export function getProjectCategorizedIndicatorsList(event: RequestEvent | Server
 }
 
 export function getProjectImageTypesList(event: RequestEvent | ServerLoadEvent) {
-	return joinTranslation(event, projectImageTypes, projectImageTypesTranslations, {
+	return withTranslation(event, projectImageTypes, projectImageTypesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getProjectImageTemporalitiesList(event: RequestEvent | ServerLoadEvent) {
-	return joinTranslation(event, projectImageTemporalities, projectImageTemporalitiesTranslations, {
+	return withTranslation(event, projectImageTemporalities, projectImageTemporalitiesTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	});
 }
 
 export function getUserRolesList(event: RequestEvent | ServerLoadEvent) {
-	return joinTranslation(event, userRoles, userRolesTranslations, {
+	return withTranslation(event, userRoles, userRolesTranslations, {
 		field: (t) => t.role,
 		reference: (tt) => tt.role,
 	});

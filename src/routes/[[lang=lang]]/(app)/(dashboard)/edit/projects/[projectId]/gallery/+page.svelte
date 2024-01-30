@@ -14,10 +14,10 @@
 		elements: {
 			submitter: { root: submitter },
 		},
-	} = superForm(data.updateGalleryForm);
+	} = superForm(data.galleryForm, {});
 </script>
 
-<ImageInputForm data={data.insertImagesForm} />
+<ImageInputForm data={data.newImageForm} />
 {#if data.images.length}
 	<form method="POST" use:enhance>
 		<ul>
@@ -48,7 +48,7 @@
 		gap: 1rem;
 		display: flex;
 		flex-direction: column;
-		border-radius: inherit;
+		border-radius: var(--dashboard-radius);
 		background-color: var(--color-neutral-50);
 		:global(:--dark) & {
 			background-color: var(--color-neutral-800);

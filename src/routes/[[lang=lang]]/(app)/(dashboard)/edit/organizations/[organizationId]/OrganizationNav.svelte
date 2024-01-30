@@ -12,37 +12,37 @@
 
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.org_essentials()}</LangKey>
+		<LangKey>{m.organization_essentials()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}`)}>
-		<LangKey>{m.org_general()}</LangKey>
+		<LangKey>{m.organization_general()}</LangKey>
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.org_complements()}</LangKey>
+		<LangKey>{m.organization_complements()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/members`)}>
-		<LangKey>{m.org_members()}</LangKey>
+		<LangKey>{m.organization_members()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/projects`)}>
-		<LangKey>{m.org_projects()}</LangKey>
+		<LangKey>{m.organization_projects()}</LangKey>
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.org_settings()}</LangKey>
+		<LangKey>{m.organization_settings()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/sharing`)}>
-		<LangKey>{m.org_sharing()}</LangKey>
+		<LangKey>{m.organization_sharing()}</LangKey>
 		<Users2 class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/visibility`)}>
-		<LangKey>{m.org_visibility()}</LangKey>
+		<LangKey>{m.organization_visibility()}</LangKey>
 		<Shield class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/security`)} danger>
-		<LangKey>{m.org_danger()}</LangKey>
+		<LangKey>{m.organization_danger()}</LangKey>
 		<AlertTriangle class="button-icon" />
 	</SidebarItem>
 </SidebarGroup>

@@ -1,58 +1,73 @@
 import * as m from '$i18n/messages';
-import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { projectGeneralUpdateSchema } from '$lib/db/crud.server';
 import { db } from '$lib/db/db.server';
 import {
 	getProjectCategorizedInterventionsList,
 	getProjectSiteOwnershipsList,
 	getProjectTypesList,
+	isEditableProject,
 } from '$lib/db/queries.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
 import { TRUE, excluded } from '$lib/db/sql.server';
-import { joinTranslations } from '$lib/db/utils.server';
+import {
+	coalesce,
+	emptyJsonArray,
+	getColumns,
+	jsonAgg,
+	withTranslations,
+} from '$lib/db/utils.server';
+import {
+	projectsInterventionsSchema,
+	projectsWithTranslationsSchema,
+} from '$lib/db/validation.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
+import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
-// const updateSchema = proejct
+const schema = projectsWithTranslationsSchema
+	.pick({ id: true, typeId: true, costRange: true, siteOwnershipId: true, translations: true })
+	.extend({ interventionIds: projectsInterventionsSchema.shape.interventionId.array() });
 
 export const load = async (event) => {
 	const session = await event.locals.authorize();
-
-	const [[project], interventions] = await Promise.all([
-		joinTranslations(projects, projectsTranslations, {
+	const [[defaults], types, siteOwnerships, categorizedInterventions] = await Promise.all([
+		withTranslations(projects, projectsTranslations, {
 			field: (t) => t.id,
 			reference: (tt) => tt.id,
+			selection: {
+				...getColumns(projects),
+				interventionIds: coalesce(jsonAgg(projectsInterventions.interventionId), emptyJsonArray),
+			},
 		})
-			.where(and(authorizeProjectUpdate(session), eq(projects.id, event.params.projectId)))
-			.limit(1),
-		db
-			.select({
-				interventionId: projectsInterventions.interventionId,
-			})
-			.from(projectsInterventions)
-			.where(eq(projectsInterventions.projectId, event.params.projectId)),
+			.where(and(isEditableProject(session), eq(projects.id, event.params.projectId)))
+			.limit(1)
+			.leftJoin(projectsInterventions, eq(projects.id, projectsInterventions.projectId)),
+		getProjectTypesList(event),
+		getProjectSiteOwnershipsList(event),
+		getProjectCategorizedInterventionsList(event),
 	]);
-	const form = await superValidate(
-		{ ...project, interventionIds: interventions.map((i) => i.interventionId) },
-		projectGeneralUpdateSchema
-	);
-	if (!project) {
+	if (!defaults) {
 		error(STATUS_CODES.NOT_FOUND, m.project_not_found());
 	}
+	const form = await superValidate(
+		zod(schema, {
+			defaults,
+		})
+	);
 	return {
 		form,
-		types: getProjectTypesList(event),
-		siteOwnerships: getProjectSiteOwnershipsList(event),
-		categorizedInterventions: getProjectCategorizedInterventionsList(event),
+		types,
+		siteOwnerships,
+		categorizedInterventions,
 	};
 };
 
 export const actions = {
 	update: async (event) => {
 		await event.locals.authorize();
-		const form = await superValidate(event, projectGeneralUpdateSchema);
+		const form = await superValidate(event, zod(projectGeneralUpdateSchema));
 		if (!form.valid) {
 			console.error(JSON.stringify(form.errors));
 			return message(form, { title: m.invalid(), description: m.invalid_data_details() });

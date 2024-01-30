@@ -29,12 +29,12 @@
 		padding: var(--menu-nesting);
 		border-radius: var(--base-radius);
 		transform-origin: top;
-		background-color: var(--color-neutral-50);
+		background: var(--color-neutral-100);
 		outline: none;
 		border: var(--base-border-width) solid var(--base-border-color-dim);
 		z-index: 1;
 		:global(:--dark) & {
-			background-color: var(--color-neutral-900);
+			background: var(--color-neutral-900);
 			box-shadow: none;
 		}
 	}

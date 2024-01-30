@@ -5,7 +5,7 @@ import {
 	projectImplantationTypesTranslations,
 } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { joinTranslations } from '$lib/db/utils.server';
+import { withTranslations } from '$lib/db/utils.server';
 import {
 	newProjectImplantationTypeSchema,
 	projectImplantationTypesSchema,
@@ -25,7 +25,7 @@ const rootSchema = projectImplantationTypesSchema.pick({ id: true });
 
 export const load = async (event) => {
 	await event.locals.authorize('projects.descriptors.implantationTypes.update');
-	const implantationTypes = await joinTranslations(
+	const implantationTypes = await withTranslations(
 		projectImplantationTypes,
 		projectImplantationTypesTranslations,
 		{

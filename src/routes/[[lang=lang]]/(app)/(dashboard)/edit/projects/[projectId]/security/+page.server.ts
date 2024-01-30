@@ -1,5 +1,5 @@
-import { authorizeProjectUpdate } from '$lib/db/authorization.server';
 import { db } from '$lib/db/db.server';
+import { isEditableProject } from '$lib/db/queries.server';
 import { projects } from '$lib/db/schema/public';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, redirect } from '@sveltejs/kit';
@@ -10,7 +10,7 @@ export const load = async (event) => {
 	const [project] = await db
 		.select({ id: projects.id })
 		.from(projects)
-		.where(and(authorizeProjectUpdate(session), eq(projects.id, event.params.projectId)))
+		.where(and(isEditableProject(session), eq(projects.id, event.params.projectId)))
 		.limit(1);
 	if (!project) {
 		error(STATUS_CODES.NOT_FOUND, { title: 'Not found', message: 'Project not found' });
@@ -24,7 +24,7 @@ export const actions = {
 		try {
 			await db
 				.delete(projects)
-				.where(and(authorizeProjectUpdate(session), eq(projects.id, event.params.projectId)));
+				.where(and(isEditableProject(session), eq(projects.id, event.params.projectId)));
 		} catch (e) {
 			error(STATUS_CODES.INTERNAL_SERVER_ERROR);
 		}

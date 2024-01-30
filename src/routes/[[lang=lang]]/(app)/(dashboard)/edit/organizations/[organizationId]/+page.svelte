@@ -23,7 +23,7 @@
 <DashboardForm action="?/update" {enhance} {submitter} {tainted}>
 	<svelte:fragment slot="header">
 		<h1 class="heading lg">
-			<LangKey>{m.org_general()}</LangKey>
+			<LangKey>{m.organization_general()}</LangKey>
 		</h1>
 		<p class="prose dim">
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum dolorem, obcaecati error
@@ -32,7 +32,7 @@
 			cumque corporis aliquid ab ducimus a ut perspiciatis quam autem deserunt doloremque.
 		</p>
 	</svelte:fragment>
-	<DashboardFormSection title={$langKey(m.org_name())}>
+	<DashboardFormSection title={$langKey(m.organization_name())}>
 		<TranslationsInput let:lang>
 			<input type="text" class="input title" bind:value={$form.translations[lang].name} />
 		</TranslationsInput>

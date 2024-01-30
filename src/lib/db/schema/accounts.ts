@@ -1,4 +1,4 @@
-import { USER_ROLES } from '$lib/auth/constants';
+import { USER_ROLE_DEFAULT } from '$lib/auth/constants';
 import type { InferSelectModel } from 'drizzle-orm';
 import {
 	bigint,
@@ -74,7 +74,7 @@ export const users = accountsSchema.table('users', {
 			onDelete: 'set default',
 			onUpdate: 'cascade',
 		})
-		.default(USER_ROLES.VISITOR)
+		.default(USER_ROLE_DEFAULT)
 		.notNull(),
 	email: text('email').unique(),
 	emailVerified: boolean('email_verified').default(false).notNull(),

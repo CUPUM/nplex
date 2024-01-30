@@ -15,7 +15,7 @@
 
 <fieldset class="types">
 	<legend>
-		<LangKey>{m.project_descriptors_types()}</LangKey>
+		<LangKey>{m.project_types()}</LangKey>
 	</legend>
 	<ul>
 		{#each types as pt, i}

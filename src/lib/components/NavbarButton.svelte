@@ -61,8 +61,8 @@
 
 <style lang="postcss">
 	.navbar-button {
-		--button-size: 3rem;
-		--button-padding: 1.1em;
+		--button-size: 3.2em;
+		--button-padding: 1em;
 		--button-radius: var(--base-radius);
 		position: relative;
 		display: flex;
@@ -136,8 +136,6 @@
 		&[data-current] {
 			cursor: default;
 			color: var(--color-primary-700);
-			outline-offset: 0;
-			outline: var(--base-focus-ring);
 			:global(:--dark) & {
 				color: var(--color-primary-500);
 			}

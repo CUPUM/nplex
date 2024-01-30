@@ -82,7 +82,7 @@
 		inmemory = inmemory;
 	}
 
-	export let data: PageData['insertImagesForm'];
+	export let data: PageData['newImageForm'];
 
 	const {
 		form,
@@ -206,7 +206,8 @@
 		display: flex;
 		padding: 1rem;
 		flex-direction: column;
-		border-radius: inherit;
+		border-radius: var(--dashboard-radius);
+		background: var(--base-bg);
 		border: var(--base-border-width) dashed
 			color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
 		transition: all var(--duration-fast) ease-out;
@@ -297,7 +298,7 @@
 		}
 
 		span {
-			opacity: var(--opacity-dimmer);
+			opacity: var(--opacity-muted);
 			font-size: var(--size-sm);
 			text-align: center;
 		}

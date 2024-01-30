@@ -1,28 +1,26 @@
-import * as m from '$i18n/messages';
 import { organizationGeneralUpdateSchema } from '$lib/db/crud.server';
 import { db } from '$lib/db/db.server';
 import { organizations, organizationsTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { reduceTranslations } from '$lib/db/utils.server';
 import { STATUS_CODES } from '$lib/utils/constants';
-import { error, fail } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	await event.locals.authorize();
-	const rawOrg = await db.query.organizations.findFirst({
-		where(f, o) {
-			return o.eq(f.id, event.params.organizationId);
-		},
-		with: {
-			translations: true,
-		},
-	});
-	if (!rawOrg) {
-		error(STATUS_CODES.NOT_FOUND, m.org_notFound());
-	}
-	const org = reduceTranslations(rawOrg);
+	// const rawOrg = await db.query.organizations.findFirst({
+	// 	where(f, o) {
+	// 		return o.eq(f.id, event.params.organizationId);
+	// 	},
+	// 	with: {
+	// 		translations: true,
+	// 	},
+	// });
+	// if (!rawOrg) {
+	// 	error(STATUS_CODES.NOT_FOUND, m.organization_notFound());
+	// }
+	// const org = reduceTranslations(rawOrg);
 	const form = await superValidate(org, organizationGeneralUpdateSchema);
 	return { form };
 };

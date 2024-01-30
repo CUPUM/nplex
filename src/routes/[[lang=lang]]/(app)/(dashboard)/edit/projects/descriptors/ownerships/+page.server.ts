@@ -2,7 +2,7 @@ import * as m from '$i18n/messages';
 import { db } from '$lib/db/db.server';
 import { projectSiteOwnerships, projectSiteOwnershipsTranslations } from '$lib/db/schema/public';
 import { excluded } from '$lib/db/sql.server';
-import { joinTranslations } from '$lib/db/utils.server';
+import { withTranslations } from '$lib/db/utils.server';
 import {
 	newProjectSiteOwnershipSchema,
 	projectSiteOwnershipsSchema,
@@ -22,7 +22,7 @@ const rootSchema = projectSiteOwnershipsSchema.pick({ id: true });
 
 export const load = async (event) => {
 	await event.locals.authorize('projects.descriptors.siteOwnerships.update');
-	const siteOwnerships = await joinTranslations(
+	const siteOwnerships = await withTranslations(
 		projectSiteOwnerships,
 		projectSiteOwnershipsTranslations,
 		{

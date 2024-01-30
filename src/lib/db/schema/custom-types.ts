@@ -1,14 +1,17 @@
-import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
+import {
+	availableLanguageTags,
+	isAvailableLanguageTag,
+	type AvailableLanguageTag,
+} from '$i18n/runtime';
 import { USER_ROLE_DEFAULT, type AuthProvider, type UserRole } from '$lib/auth/constants';
 import { isAuthProvider, isUserRole } from '$lib/auth/validation';
-import { isAvailableLang } from '$lib/i18n/validation';
 import { GEOMETRY_TYPES, SRIDS, type SRID } from '$lib/utils/constants';
 import type { Coordinate } from '$lib/utils/gis';
-import { PgColumnBuilder, customType } from 'drizzle-orm/pg-core';
+import { customType } from 'drizzle-orm/pg-core';
 import type { ReadonlyTuple } from 'type-fest';
 import { z } from 'zod';
 import { SQL_LANGUAGES } from '../constants';
-import type { InferColumnType } from '../sql.server';
+import type { InferColumnType } from '../utils.server';
 
 /**
  * Implementing our own db-level role type in sync with UserRole in lieu of using a pgEnum to avoid
@@ -79,13 +82,13 @@ export const lang = customType<{ data: AvailableLanguageTag; driverData: string 
 		return 'text';
 	},
 	fromDriver(value) {
-		if (isAvailableLang(value)) {
+		if (isAvailableLanguageTag(value)) {
 			return value;
 		}
 		throw new Error(`Value returned by database driver (${value}) is not a valid lang`);
 	},
 	toDriver(value) {
-		if (isAvailableLang(value)) {
+		if (isAvailableLanguageTag(value)) {
 			return value;
 		}
 		throw new Error(`Tried to input wrong value for AvailableLanguageTag (${value}).`);
@@ -98,7 +101,7 @@ export type AnyLangColumn = InferColumnType<typeof lang>;
  * expect a full language name. Use this sql switch to retrieve a lang column's corresponding
  * language name.
  */
-function language(languageTag: string) {
+export function sqlLang(languageTag: string) {
 	const cases = availableLanguageTags.map(
 		(tag) => `when ${languageTag} = '${tag}' then '${SQL_LANGUAGES[tag]}'::regconfig`
 	);
@@ -122,35 +125,19 @@ export const tsvector = customType<{
 	};
 }>({
 	dataType(config) {
-		const pglang = language(config.lang);
+		const langString = sqlLang(config.lang);
 		if (config.weighted) {
 			const weighted = config.sources.map((input, index) => {
 				const weight = String.fromCharCode(index + 65);
-				return `setweight(to_tsvector(${pglang}, coalesce(${input}, '')), '${weight}')`;
+				return `setweight(to_tsvector(${langString}, coalesce(${input}, '')), '${weight}')`;
 			});
 			return `tsvector generated always as (${weighted.join(' || ')}) stored`;
 		} else {
 			const source = config.sources.join(" || ' ' || ");
-			return `tsvector generated always as (to_tsvector(${pglang}, ${source})) stored`;
+			return `tsvector generated always as (to_tsvector(${langString}, ${source})) stored`;
 		}
 	},
 });
-
-/**
- * DB type wrapper for generated columns.
- *
- * @see
- * @see https://github.com/drizzle-team/drizzle-orm/pull/1509
- */
-export function generated<T extends PgColumnBuilder>(type: T) {
-	// const {dataType} = type._;
-	// return customType<{
-	// 	data: typeof dataType;
-
-	// }>()
-
-	return type;
-}
 
 /**
  * Generic range zod schema.

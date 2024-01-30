@@ -31,7 +31,7 @@
 					<h4 class="h6">{category.title}</h4>
 					{#if filtered.length}
 						<ul>
-							{#each filtered as intervention, i (intervention.id)}
+							{#each filtered as intervention, i (`${category.id}-${intervention.id}`)}
 								<label class="chip" use:ripple>
 									<input
 										type="checkbox"
@@ -77,6 +77,6 @@
 	}
 
 	small {
-		opacity: var(--opacity-dimmer);
+		opacity: var(--opacity-muted);
 	}
 </style>

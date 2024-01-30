@@ -22,8 +22,8 @@
 		<hgroup class="prose">
 			<h2>
 				<LangKey>
-					{m.project_descriptors_intervention_categories()} & {m
-						.project_descriptors_intervention_types()
+					{m.project_intervention_categories()} & {m
+						.project_intervention_types()
 						.toLocaleLowerCase()}
 				</LangKey>
 			</h2>

@@ -328,6 +328,8 @@ export const projectGeneralUpdateSchema = projectsUpdateSchema
 
 /**
  * Projects exemplarity indicators.
+ *
+ * @deprecated
  */
 export const projectsExemplarityIndicatorsInsertSchema = createInsertSchema(
 	projectsExemplarityIndicators

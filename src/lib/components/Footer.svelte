@@ -9,7 +9,7 @@
 	import UnescoUnitwin from './partners-logos/UnescoUnitwin.svelte';
 </script>
 
-{#if $page.data.setout !== SETOUTS.FULL_SCREEN}
+{#if $page.data.setout !== SETOUTS.FULL_SCREEN && !$page.data.footer?.hide}
 	<footer transition:slide>
 		<div id="footer-inner">
 			<ul id="footer-logos">

@@ -43,7 +43,7 @@
 			in:slide={{ duration: 350, easing: expoOut, opacity: 0 }}
 			out:slide={{ easing: expoOut, duration: 250, opacity: 0 }}
 			style:background={meshGradient}
-			style:transform="rotateX({Math.min(90, scrollY * 0.25)}deg)"
+			style:transform="scale({Math.max(0.95, 1 - scrollY * 0.00035)})"
 			style:opacity={Math.max(0, 1 - scrollY * 0.005)}
 		>
 			<svelte:component this={$page.data.dashboard.header} />
@@ -84,5 +84,11 @@
 		h2 {
 			margin: 2rem;
 		}
+	}
+
+	.dashboard-header {
+		position: sticky;
+		top: var(--navbar-height);
+		transition: all 0.25s var(--ease-out-expo);
 	}
 </style>

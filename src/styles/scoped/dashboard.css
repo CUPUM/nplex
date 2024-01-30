@@ -44,12 +44,11 @@
 	z-index: 0;
 	position: relative;
 	grid-column: 1 / -1;
-	border-radius: inherit;
+	border-radius: var(--dashboard-radius);
 	transform-origin: center bottom;
 	backface-visibility: hidden;
 	overflow: hidden;
 	perspective: 999px;
-	transition: all 1s var(--ease-out-expo);
 }
 
 /* Content / slot */

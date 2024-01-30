@@ -79,7 +79,7 @@
 	</SidebarItem>
 	{#if $page.data.user?.role === USER_ROLES.ADMIN || $page.data.user?.role === USER_ROLES.EDITOR}
 		<SidebarItem {...$link('/edit/organizations/descriptors')}>
-			<LangKey>{m.org_descriptors()}</LangKey>
+			<LangKey>{m.organization_descriptors()}</LangKey>
 			<Tags class="button-icon" />
 		</SidebarItem>
 	{/if}

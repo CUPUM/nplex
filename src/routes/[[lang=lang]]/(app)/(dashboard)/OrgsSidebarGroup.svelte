@@ -12,7 +12,7 @@
 		<LangKey>{m.orgs()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/projects/descriptors')}>
-		<LangKey>{m.org_descriptors()}</LangKey>
+		<LangKey>{m.organization_descriptors()}</LangKey>
 		<ArrowRight class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects')}>

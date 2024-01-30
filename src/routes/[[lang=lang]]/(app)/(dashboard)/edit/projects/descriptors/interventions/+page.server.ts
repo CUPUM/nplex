@@ -10,7 +10,7 @@ import {
 	projectTypesTranslations,
 } from '$lib/db/schema/public';
 import { coalesce, emptyJsonArray, excluded, jsonAgg } from '$lib/db/sql.server';
-import { getSubqueryColumns, joinTranslations } from '$lib/db/utils.server';
+import { getColumns, withTranslations } from '$lib/db/utils.server';
 import {
 	newProjectInterventionCategorySchema,
 	newProjectInterventionSchema,
@@ -46,22 +46,22 @@ export const load = async (event) => {
 		)
 		.groupBy(projectInterventions.id)
 		.as('pit');
-	const pi = joinTranslations(projectInterventions, projectInterventionsTranslations, {
+	const pi = withTranslations(projectInterventions, projectInterventionsTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
 	}).as('pi');
 	const interventionsWithTypes = db
-		.select({ ...getSubqueryColumns(pi), projectTypeIds: pit.projectTypeIds })
+		.select({ ...getColumns(pi), projectTypeIds: pit.projectTypeIds })
 		.from(pi)
 		.leftJoin(pit, eq(pit.interventionId, pi.id));
-	const categories = joinTranslations(
+	const categories = withTranslations(
 		projectInterventionsCategories,
 		projectInterventionsCategoriesTranslations,
 		{ field: (t) => t.id, reference: (tt) => tt.id }
 	);
 	const [types, rootForm, newCategoryForm, categoryForms, newInterventionForm, interventionForms] =
 		await Promise.all([
-			joinTranslations(projectTypes, projectTypesTranslations, {
+			withTranslations(projectTypes, projectTypesTranslations, {
 				field: (t) => t.id,
 				reference: (tt) => tt.id,
 			}),
@@ -102,7 +102,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.interventions.create');
 		const form = await superValidate(event, zod(newProjectInterventionSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_intervention());
+			return messageInvalid(form, m.project_intervention());
 		}
 		try {
 			const { translations, projectTypesIds, ...pt } = form.data;
@@ -124,7 +124,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.interventions.update');
 		const form = await superValidate(event, zod(projectInterventionsWithTranslationsSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_intervention());
+			return messageInvalid(form, m.project_intervention());
 		}
 		try {
 			const { translations, id, projectTypesIds, ...pt } = form.data;
@@ -156,7 +156,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.interventions.delete');
 		const form = await superValidate(event, zod(rootSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_intervention());
+			return messageInvalid(form, m.project_intervention());
 		}
 		try {
 			const deleted = await db
@@ -175,7 +175,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.interventionCategories.create');
 		const form = await superValidate(event, zod(newProjectInterventionCategorySchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_intervention());
+			return messageInvalid(form, m.project_intervention());
 		}
 		try {
 			const { translations, ...category } = form.data;
@@ -200,7 +200,7 @@ export const actions = {
 			zod(projectInterventionsCategoriesWithTranslationsSchema)
 		);
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_intervention());
+			return messageInvalid(form, m.project_intervention());
 		}
 		try {
 			const { translations, id, ...pt } = form.data;
@@ -231,7 +231,7 @@ export const actions = {
 		await event.locals.authorize('projects.descriptors.interventionCategories.delete');
 		const form = await superValidate(event, zod(rootSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_descriptors_intervention());
+			return messageInvalid(form, m.project_intervention());
 		}
 		try {
 			const deleted = await db

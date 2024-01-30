@@ -29,7 +29,7 @@
 				</div>
 			</a>
 		</li>
-		{#each data.searchProjects as project, i (project.id)}
+		{#each data.matchProjects as project, i (project.id)}
 			<li
 				animate:flip={{ duration: (l) => 150 + l / 100 }}
 				in:fly|global={{ y: -6, duration: 350, easing: expoOut, delay: i * 25, opacity: 0 }}
@@ -111,7 +111,7 @@
 		}
 
 		.no-title {
-			opacity: var(--opacity-dimmer);
+			opacity: var(--opacity-muted);
 			font-style: italic;
 			font-weight: 300;
 		}

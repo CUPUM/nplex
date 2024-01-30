@@ -37,6 +37,16 @@ export function useLang<H extends string>(
 	return `/${lang}${href}`;
 }
 
+function isCurrent(page: Page, href: string) {
+	if (page.url.pathname === href) {
+		return 'page';
+	}
+	if (`${page.url.pathname}${page.url.hash}` === href) {
+		return 'step';
+	}
+	return undefined;
+}
+
 /**
  * Internationalized link attributes builder. Also tracks if the href corresponds to the client's
  * current page.
@@ -53,7 +63,7 @@ export const link = derived(page, ($p) => {
 		href: H,
 		{
 			lang = $p.data.lang,
-			current = (p, h) => (p.url.pathname === h ? 'page' : undefined),
+			current = isCurrent,
 		}: {
 			/**
 			 * Customizable locale, if should differ from current client's locale. Setting to false will

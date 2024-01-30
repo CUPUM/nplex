@@ -12,25 +12,25 @@
 		<LangKey>{m.project_descriptors()}</LangKey>
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/projects/descriptors/types')}>
-		<LangKey>{m.project_descriptors_types()}</LangKey>
+		<LangKey>{m.project_types()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/interventions')}>
-		<LangKey>{m.project_descriptors_intervention_types()}</LangKey>
+		<LangKey>{m.project_intervention_types()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/indicators')}>
-		<LangKey>{m.project_descriptors_indicators()}</LangKey>
+		<LangKey>{m.project_indicators()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/ownerships')}>
-		<LangKey>{m.project_descriptors_ownership_types()}</LangKey>
+		<LangKey>{m.project_ownership_types()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/implantations')}>
-		<LangKey>{m.project_descriptors_implantations()}</LangKey>
+		<LangKey>{m.project_implantations()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/levels')}>
-		<LangKey>{m.project_descriptors_levels()}</LangKey>
+		<LangKey>{m.project_levels()}</LangKey>
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/images')}>
-		<LangKey>{m.project_descriptors_images()}</LangKey>
+		<LangKey>{m.project_images()}</LangKey>
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
@@ -51,7 +51,7 @@
 		<Files class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/organizations/descriptors')}>
-		<LangKey>{m.org_descriptors()}</LangKey>
+		<LangKey>{m.organization_descriptors()}</LangKey>
 		<Tags class="button-icon" />
 	</SidebarItem>
 </SidebarGroup>
