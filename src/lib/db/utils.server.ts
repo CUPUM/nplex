@@ -9,14 +9,12 @@ import {
 	View,
 	ViewBaseConfig,
 	and,
-	bindIfParam,
 	eq,
 	getTableColumns,
 	is,
 	sql,
 	type AnyColumn,
 	type AnyTable,
-	type BinaryOperator,
 	type ColumnBuilderBase,
 	type InferSelectModel,
 	type SQLWrapper,
@@ -32,31 +30,47 @@ import {
 } from 'drizzle-orm/pg-core';
 import type { AnySQLiteSelect, SQLiteSelect } from 'drizzle-orm/sqlite-core';
 import type { Entries, Merge, SetNonNullable, ValueOf } from 'type-fest';
+import { NANOID_DEFAULT_LENGTH } from './constants';
 import { db } from './db.server';
 import { langs, type TranslationLangColumn } from './schema/i18n';
 
+/**
+ * Dialect agnostic select.
+ *
+ * @see PgSelect.
+ * @see MySqlSelect
+ * @see SQLiteSelect
+ */
 type Select = Omit<PgSelect | MySqlSelect | SQLiteSelect, 'where'>;
 
+/**
+ * Dialect agnostic AnySelect.
+ *
+ * @see AnyPgSelect
+ * @see AnyMySqlSelect
+ * @see AnySQLiteSelect
+ */
 type AnySelect = Omit<AnyPgSelect | AnyMySqlSelect | AnySQLiteSelect, 'where'>;
 
+/**
+ * Infer type of table column.
+ */
 export type InferColumnType<T extends (...config: never[]) => ColumnBuilderBase> = AnyColumn<
 	Pick<ReturnType<T>['_'], 'data' | 'dataType'>
 >;
 
-type InferSQLDataType<T extends SQL | SQL.Aliased> =
-	T extends SQL<infer U> ? U : T extends SQL.Aliased<infer U> ? U : never;
-
-type InferColumnDataType<T extends Column> = T['_']['notNull'] extends true
-	? T['_']['data']
-	: T['_']['data'] | null;
-
-type InferRecordDataTypes<T extends Record<string, Column | SQL | SQL.Aliased>> = {
-	[K in keyof T]: T[K] extends SQL | SQL.Aliased
-		? InferSQLDataType<T[K]>
-		: T[K] extends Column
-			? InferColumnDataType<T[K]>
+/**
+ * Infer SQL template or column data type.
+ */
+type InferDataType<T extends Column | SQL | SQL.Aliased> = T extends Column
+	? T['_']['notNull'] extends true
+		? T['_']['dataType']
+		: T['_']['dataType'] | null
+	: T extends SQL<infer U>
+		? U
+		: T extends SQL.Aliased<infer U>
+			? U
 			: never;
-};
 
 export const emptyJsonObject = sql<object>`'{}'::json`;
 
@@ -87,6 +101,36 @@ export function random() {
 }
 
 /**
+ * Generate a nanoid using postgres-nanoid.
+ *
+ * @see https://discord.com/channels/1043890932593987624/1093946807911989369/1100459226087825571
+ * @todo Stay up to date when default values will accept 'sql' without having to pass param to
+ *   sql.raw()
+ */
+export function generateNanoid({
+	optimized = false,
+	length = NANOID_DEFAULT_LENGTH,
+	alphabet,
+}: {
+	optimized?: boolean;
+	/**
+	 * Defaults to @link NANOID_LENGTH_DEFAULT.
+	 */
+	length?: number;
+	/**
+	 * Defaults to '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+	 */
+	alphabet?: string;
+} = {}) {
+	const opts: (string | number)[] = [length];
+	if (alphabet) {
+		opts.push(alphabet);
+	}
+	return sql.raw(`"extensions"."nanoid${optimized ? '_optimized' : ''}"(${opts.join(',')})`);
+	// return sql`extensions.nanoid${optimized ? '_optimized' : ''}(${opts.join(',')})`;
+}
+
+/**
  * Get excluded column values in conflict cases. Useful for onConflictDoUpdate's set.
  *
  * Function is overloaded to handle both full table and single column references.
@@ -114,7 +158,7 @@ export function excluded<T extends Column | Table>(columnOrTable: T) {
  * Aggregate sql values into an sql array.
  */
 export function arrayAgg<T extends SQL | InferSelectModel<AnyTable<TableConfig>>>(raw: T) {
-	return sql<(T extends SQL ? InferSQLDataType<T>[] : T[]) | null>`array_agg(${raw})`;
+	return sql<(T extends SQL ? InferDataType<T>[] : T[]) | null>`array_agg(${raw})`;
 }
 
 /**
@@ -125,16 +169,27 @@ export function rowToJson<T extends AnyTable<TableConfig>>(row: T) {
 	return sql<InferSelectModel<T> | null>`row_to_json(${row})`;
 }
 
-export function toTsvector() {}
+export function toTsvector(query: string) {}
 
-export function toTsquery() {}
+export function toTsquery(query: string) {
+	return sql`to_tsquery(${query})`;
+}
+
+export function plaintoTsquery(query: string) {
+	return sql`plainto_tsquery(${query})`;
+}
 
 /**
  * Test a text search query against a ts_vector value.
  */
-export const ts: BinaryOperator = (left: SQLWrapper, right: unknown): SQL => {
-	return sql`${left} @@ ${bindIfParam(right, left)}`;
-};
+export function ts(
+	vector: SQLWrapper,
+	queryString: string,
+	{ plain = true }: { plain?: boolean } = {}
+) {
+	const query = plain ? plaintoTsquery(queryString) : toTsquery(queryString);
+	return sql`${vector} @@ ${query}`;
+}
 
 /**
  * Json_agg.
@@ -146,9 +201,9 @@ export function jsonAgg<T extends Table | Column | Subquery | AnySelect>(
 	T extends Table
 		? InferSelectModel<T>
 		: T extends Column
-			? InferColumnDataType<T>[]
+			? InferDataType<T>[]
 			: T extends Subquery
-				? InferRecordDataTypes<T['_']['selectedFields']>[]
+				? { [K in keyof T['_']['selectedFields']]: InferDataType<T['_']['selectedFields'][K]> }[]
 				: T extends AnySelect
 					? Awaited<T>
 					: never
@@ -172,8 +227,7 @@ export function jsonBuildObject<T extends Record<string, AnyColumn | SQL>>(shape
 		chunks.push(sql.raw(`'${key}',`));
 		chunks.push(sql`${value}`);
 	});
-	// return sql<InferColumnsDataTypes<T>>`json_build_object(${sql.join(chunks)})`;
-	return sql<InferRecordDataTypes<T>>`json_build_object(${sql.join(chunks)})`;
+	return sql<{ [K in keyof T]: InferDataType<T[K]> }>`json_build_object(${sql.join(chunks)})`;
 }
 
 /**
@@ -183,13 +237,7 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn | SQL | SQ
 	shape: T
 ): SQL<
 	{
-		[K in keyof T]: T[K] extends AnyColumn
-			? InferColumnDataType<T[K]>
-			: T[K] extends SQL
-				? InferSQLDataType<T[K]>
-				: T[K] extends SQL.Aliased
-					? InferSQLDataType<T[K]>
-					: T;
+		[K in keyof T]: InferDataType<T[K]> extends never ? T : InferDataType<T[K]>;
 	}[]
 > {
 	const chunks: SQL[] = [];
@@ -210,15 +258,15 @@ export function jsonAggBuildObject<T extends Record<string, AnyColumn | SQL | SQ
 export function jsonObjectAgg<
 	K extends AnyColumn,
 	V extends SQL | AnyTable<TableConfig>,
-	TK extends string | number = null extends InferColumnDataType<K>
+	TK extends string | number = null extends InferDataType<K>
 		? never
-		: InferColumnDataType<K> extends string | number
-			? InferColumnDataType<K>
+		: InferDataType<K> extends string | number
+			? InferDataType<K>
 			: never,
 	TV = V extends AnyTable<TableConfig>
 		? InferSelectModel<V>
 		: V extends SQL
-			? InferSQLDataType<V>
+			? InferDataType<V>
 			: never,
 >(key: K, value: V) {
 	return sql<Record<TK, TV>>`json_object_agg(${key}, ${value})`;
@@ -248,8 +296,8 @@ type CoalesceSQL<T extends unknown[], N extends boolean = true, R = never> = T e
 ]
 	? CoalesceSQL<
 			T,
-			H extends SQL | SQL.Aliased ? (null extends InferSQLDataType<H> ? true : false) : never,
-			R | RemoveNull<H extends SQL | SQL.Aliased ? InferSQLDataType<H> : never>
+			H extends SQL | SQL.Aliased ? (null extends InferDataType<H> ? true : false) : never,
+			R | RemoveNull<H extends SQL | SQL.Aliased ? InferDataType<H> : never>
 		>
 	: N extends true
 		? SQL<R | null>

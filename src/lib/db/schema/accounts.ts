@@ -11,7 +11,7 @@ import {
 	varchar,
 } from 'drizzle-orm/pg-core';
 import { USER_ID_LENGTH } from '../constants';
-import { generateNanoid } from '../sql.server';
+import { generateNanoid } from '../utils.server';
 import { userRole } from './custom-types';
 import { translationLangColumn, translationReferenceColumn } from './i18n';
 import { projects } from './public';

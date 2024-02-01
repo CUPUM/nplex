@@ -56,6 +56,17 @@ export const authProvider = customType<{ data: AuthProvider }>({
 });
 
 /**
+ * Ci-text postgres column type.
+ *
+ * @see https://www.postgresql.org/docs/current/citext.html
+ */
+export const citext = customType<{ data: string }>({
+	dataType() {
+		return 'citext';
+	},
+});
+
+/**
  * Implements postgres identity column.
  *
  * @see https://github.com/drizzle-team/drizzle-orm/issues/295

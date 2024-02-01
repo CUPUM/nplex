@@ -10,7 +10,7 @@ import {
 	unique,
 	type AnyPgColumn,
 } from 'drizzle-orm/pg-core';
-import { generateNanoid } from '../sql.server';
+import { generateNanoid } from '../utils.server';
 import { userRoles, users } from './accounts';
 import { cube, intrange, point, tsvector, userRole } from './custom-types';
 import { translationLangColumn, translationReferenceColumn } from './i18n';
@@ -325,6 +325,9 @@ export const projects = pgTable('projects', {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
+	/**
+	 * Null if projet is.
+	 */
 	publishedAt: timestamp('published_at', { withTimezone: true }),
 	typeId: text('type_id').references(() => projectTypes.id, {
 		onDelete: 'set null',
@@ -338,8 +341,11 @@ export const projects = pgTable('projects', {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
-	// Type-casting to AnyPgColumn is a fix for typescript incompatible circular inference.
-	// @see https://discord.com/channels/1043890932593987624/1146405082062135326/1146405496891383859
+	/**
+	 * Type-casting to AnyPgColumn is a fix for typescript incompatible circular inference.
+	 *
+	 * @see https://discord.com/channels/1043890932593987624/1146405082062135326/1146405496891383859
+	 */
 	bannerId: text('banner_id').references((): AnyPgColumn => projectsImages.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
@@ -541,7 +547,7 @@ export const projectsImagesCredits = pgTable(
 );
 
 /**
- * Keeping track of publication requests.
+ * Keeping track of pending publication requests.
  */
 export const projectsPublicationRequests = pgTable('projects_publication_requests', {
 	projectId: text('project_id')
