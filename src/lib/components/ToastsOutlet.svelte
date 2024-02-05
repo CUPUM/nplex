@@ -60,6 +60,7 @@
 <style lang="postcss">
 	#toast-portal {
 		position: fixed;
+		flex: none;
 		bottom: 0;
 		right: 0;
 		z-index: 999;

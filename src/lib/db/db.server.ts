@@ -3,17 +3,6 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from 'ws';
 
-// neonConfig.fetchConnectionCache = true;
-// const pghttp = neon(NEON_DB_URL);
-// /**
-//  * Http database connection.
-//  *
-//  * @see https://orm.drizzle.team/docs/installation-and-db-connection/postgresql/neon
-//  */
-// export const db = httpdrizzle(pghttp, { schema });
-
-// export type Db = typeof dbhttp;
-
 neonConfig.webSocketConstructor = ws;
 export const pool = new Pool({ connectionString: NEON_POOL_DB_URL });
 /**

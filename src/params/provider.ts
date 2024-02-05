@@ -1,3 +1,3 @@
-import { isSupportedOAuthProvider } from '$lib/auth/validation';
+import { isOAuthProvider } from '$lib/auth/validation';
 
-export const match = isSupportedOAuthProvider;
+export const match = isOAuthProvider;

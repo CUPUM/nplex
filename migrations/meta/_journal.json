@@ -169,6 +169,27 @@
       "when": 1701320756858,
       "tag": "0023_wet_tattoo",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "5",
+      "when": 1706986386243,
+      "tag": "0024_purple_mordo",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "5",
+      "when": 1706999079801,
+      "tag": "0025_faithful_wraith",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1707086070915,
+      "tag": "0026_hot_vertigo",
+      "breakpoints": true
     }
   ]
 }

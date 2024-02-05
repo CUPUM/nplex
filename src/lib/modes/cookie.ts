@@ -8,7 +8,7 @@ const MODE_COOKIE_LIFETIME = 34_560_000; // 400 days, maximum allowed;
 const MODE_COOKIE_OPTIONS = {
 	sameSite: 'strict',
 	secure: true,
-	path: '/',
+	path: '.',
 	expires: new Date(Date.now() + MODE_COOKIE_LIFETIME),
 	httpOnly: false,
 } satisfies Partial<Cookies.CookieAttributes>;

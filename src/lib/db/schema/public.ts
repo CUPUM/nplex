@@ -10,9 +10,8 @@ import {
 	unique,
 	type AnyPgColumn,
 } from 'drizzle-orm/pg-core';
-import { generateNanoid } from '../utils.server';
-import { userRoles, users } from './accounts';
-import { cube, intrange, point, tsvector, userRole } from './custom-types';
+import { cube, generateNanoid, intrange, point, tsvector, userRole } from '../sql.server';
+import { userRoles, users } from './auth';
 import { translationLangColumn, translationReferenceColumn } from './i18n';
 
 /**

@@ -5,7 +5,7 @@
 	--font-misc: 'Martian Mono', monospace;
 
 	/* Color palettes. */
-	--color-neutral-50: hsl(110, 10%, 97%);
+	/* --color-neutral-50: hsl(110, 10%, 97%);
 	--color-neutral-100: hsl(100, 9%, 92%);
 	--color-neutral-200: hsl(90, 8%, 88%);
 	--color-neutral-300: hsl(80, 7%, 81%);
@@ -59,10 +59,10 @@
 	--color-error-700: hsl(8, 84%, 41%);
 	--color-error-800: hsl(8, 84%, 34%);
 	--color-error-900: hsl(8, 86%, 26%);
-	--color-error-950: hsl(8, 89%, 18%);
+	--color-error-950: hsl(8, 89%, 18%); */
 
 	/* Text and absolute sizes, based on ratio=1.333 type scale. */
-	--size-2xs: 0.563rem;
+	/* --size-2xs: 0.563rem;
 	--size-xs: 0.75rem;
 	--size-sm: 0.875rem;
 	--size-md: 1rem;
@@ -71,21 +71,21 @@
 	--size-2xl: 2.369rem;
 	--size-3xl: 3.157rem;
 	--size-4xl: 4.209rem;
-	--size-5xl: 5.61rem;
+	--size-5xl: 5.61rem; */
 
 	/* Line heights */
-	--line-dense: 1.333;
-	--line-sparse: 1.777;
+	/* --line-dense: 1.333;
+	--line-sparse: 1.777; */
 
 	/* Rounded corners. */
-	--radius-xs: 6px;
+	/* --radius-xs: 6px;
 	--radius-sm: 10px;
 	--radius-md: 14px;
 	--radius-lg: 18px;
 	--radius-xl: 26px;
 	--radius-2xl: 34px;
 	--radius-3xl: 42px;
-	--radius-full: 999px;
+	--radius-full: 999px; */
 
 	/* Content widths. */
 	--width-sm: 420px;
@@ -108,14 +108,14 @@
 	--animation-press: press var(--duration-medium) var(--ease-out-expo);
 
 	/* Shadows (based on tailwind) */
-	--shadow-xs: 0 1px 2px -1px rgb(0, 0, 0, 0.05);
+	/* --shadow-xs: 0 1px 2px -1px rgb(0, 0, 0, 0.05);
 	--shadow-sm: 0 2px 3px -2px rgb(0, 0, 0, 0.1), 0 1px 2px -1px rgb(0, 0, 0, 0.025);
 	--shadow-md: 0 5px 8px -3px rgb(0, 0, 0, 0.1), 0 2px 4px -2px rgb(0, 0, 0, 0.05);
 	--shadow-lg: 0 10px 16px -4px rgb(0, 0, 0, 0.1), 0 4px 6px -4px rgb(0, 0, 0, 0.1);
-	--shadow-xl: 0 16px 24px -10px rgb(0, 0, 0, 0.1), 0 8px 10px -6px rgb(0, 0, 0, 0.1);
+	--shadow-xl: 0 16px 24px -10px rgb(0, 0, 0, 0.1), 0 8px 10px -6px rgb(0, 0, 0, 0.1); */
 
 	/* Base values for io elements and others */
-	--base-gutter: 0.75rem;
+	/* --base-gutter: 0.75rem;
 	--base-block-size: 3.5em;
 	--base-inline-padding: 1.25em;
 	--base-radius: var(--radius-md);
@@ -128,10 +128,10 @@
 		color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
 	--base-error-ring: var(--base-outline-width) solid var(--color-error-600);
 	--base-color: var(--color-neutral-700);
-	--base-bg: var(--color-neutral-100);
+	--base-bg: var(--color-neutral-100); */
 
 	/* Misc and component-specific */
-	--opacity-dim: 60%;
+	/* --opacity-dim: 60%;
 	--opacity-muted: 30%;
 	--ripple-color: currentColor;
 	--spinner-color: currentColor;
@@ -146,9 +146,9 @@
 	--sidebar-needle-bg: var(--color-primary-700);
 	--sidebar-needle-size: 2.5px;
 	--sidebar-group-radius: var(--dashboard-radius);
-	--sidebar-group-nesting: 1rem;
+	--sidebar-group-nesting: 1rem; */
 
-	&:--dark {
+	/* &:--dark {
 		--base-color: var(--color-neutral-300);
 		--base-bg: var(--color-neutral-900);
 		--base-focus-ring: var(--base-outline-width) solid
@@ -156,47 +156,57 @@
 		--base-error-ring: var(--base-outline-width) solid var(--color-error-400);
 		--dashboard-bg: var(--color-neutral-800);
 		--sidebar-needle-bg: var(--color-primary-500);
-	}
+	} */
 
 	/* V2 */
+	--text-xs: 0.75rem;
+	--text-sm: 0.875rem;
+	--text-md: 1rem;
+	--text-lg: 1.333rem;
+	--text-xl: 1.777rem;
+	--text-2xl: 2.369rem;
+	--text-3xl: 3.157rem;
+	--sticky-top: 0px;
+	--thin: 300;
+	--bold: 550;
+	--bolder: 700;
 	--radius: 14px;
 	--rounded: 999px;
 	--inlay: 5px;
-	--block-size: 3.25em;
-	--inline-padding: 1.1em;
 	--gutter: 8px;
+	--block-size: 3em;
+	--padding-inline: 1em;
 	--bg: ;
 	--fg: ;
-	--accent-bg: ;
-	--accent-fg: ;
-	--muted-bg: ;
-	--muted-fg: ;
-	/* Danger variants */
+	--bg-stress: ;
+	--fg-stress: ;
+	--bg-muted: ;
+	--fg-muted: ;
 	--danger-bg: ;
 	--danger-fg: ;
-	/* Success variants or indications */
+	--danger-bg-stress: ;
+	--danger-fg-stress: ;
 	--success-bg: ;
 	--success-fg: ;
-	/* Call to action or primary theme color variant */
+	--success-bg-stress: ;
+	--success-fg-stress: ;
 	--primary-bg: ;
 	--primary-fg: ;
-	/* Focus outline */
+	--primary-bg-stress: ;
+	--primary-fg-stress: ;
 	--ring-width: 4px;
 	--ring-color: purple;
 	--ring: var(--ring-width) solid var(--ring-color);
-	/* Blocks, popovers, or separating border */
 	--border-width: 1.25px;
 	--border-color: black;
 	--border: var(--border-width) solid var(--border-color);
-	/* Floating elements */
 	--floating-bg: ;
 	--floating-fg: ;
-	/* Tooltips */
 	--tooltip-bg: ;
 	--tooltip-fg: ;
-	/* Standout blocks, cards, etc. */
-	--block-bg: ;
-	--block-fg: ;
+	--card-bg: ;
+	--card-fg: ;
+	--sidebar-width: 200px;
 
 	&:--dark {
 	}

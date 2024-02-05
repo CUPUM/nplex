@@ -1,9 +1,12 @@
 import { availableLanguageTags } from '$i18n/runtime';
+import { EMAIL_VERIFICATION_CODE_LENGTH } from '$lib/auth/constants';
 import type { langSchema } from '$lib/i18n/validation';
 import { strictRecord } from '$lib/utils/zod';
 import { createInsertSchema } from 'drizzle-zod';
 import { type ZodObject, type ZodTypeAny } from 'zod';
 import {
+	PROJECT_ADJACENT_ALLEYS_MAX,
+	PROJECT_ADJACENT_STREETS_MAX,
 	PROJECT_BUILDING_LEVELS_HEIGHT_MAX,
 	PROJECT_BUILDING_LEVELS_HEIGHT_MIN,
 	PROJECT_BUILDING_LEVELS_VERTICAL_INDEX_MAX,
@@ -14,10 +17,12 @@ import {
 	PROJECT_SUMMARY_MAX,
 	PROJECT_TITLE_MAX,
 } from './constants';
-import { rangeSchema } from './schema/custom-types';
+import { emailVerificationCodes, users } from './schema/auth';
 import {
 	organizationTypes,
 	organizationTypesTranslations,
+	organizations,
+	organizationsTranslations,
 	projectBuildingLevelTypes,
 	projectBuildingLevelTypesTranslations,
 	projectExemplarityCategories,
@@ -44,10 +49,11 @@ import {
 	projectsTranslations,
 	projectsUsers,
 } from './schema/public';
+import { rangeSchema } from './sql.server';
 
 /**
  * Extend the insert schema of a given ressource table with its corresponding translations. The
- * resulting schema should be isomorphic with {@link withTranslationsRelations}.
+ * resulting schema should be isomorphic with {@link withTranslations}.
  */
 export function withTranslationsSchema<
 	T extends Record<string, ZodTypeAny>,
@@ -62,12 +68,13 @@ export function withTranslationsSchema<
 	});
 }
 
-//
 // Projects descriptors
-//
 
 export const projectTypesSchema = createInsertSchema(projectTypes).required({ id: true });
-export const projectTypesTranslationsSchema = createInsertSchema(projectTypesTranslations);
+export const projectTypesTranslationsSchema = createInsertSchema(projectTypesTranslations, {
+	title: (s) => s.title.trim(),
+	description: (s) => s.description.trim(),
+});
 export const projectTypesWithTranslationsSchema = withTranslationsSchema(
 	projectTypesSchema,
 	projectTypesTranslationsSchema.omit({ id: true })
@@ -78,7 +85,11 @@ export const projectInterventionsSchema = createInsertSchema(projectIntervention
 	id: true,
 });
 export const projectInterventionsTranslationsSchema = createInsertSchema(
-	projectInterventionsTranslations
+	projectInterventionsTranslations,
+	{
+		title: (s) => s.title.trim(),
+		description: (s) => s.description.trim(),
+	}
 );
 export const projectInterventionsWithTranslationsSchema = withTranslationsSchema(
 	projectInterventionsSchema,
@@ -94,7 +105,11 @@ export const projectInterventionsCategoriesSchema = createInsertSchema(
 	projectInterventionsCategories
 ).required({ id: true });
 export const projectInterventionsCategoriesTranslationsSchema = createInsertSchema(
-	projectInterventionsCategoriesTranslations
+	projectInterventionsCategoriesTranslations,
+	{
+		title: (s) => s.title.trim(),
+		description: (s) => s.description.trim(),
+	}
 );
 export const projectInterventionsCategoriesWithTranslationsSchema = withTranslationsSchema(
 	projectInterventionsCategoriesSchema,
@@ -109,7 +124,11 @@ export const projectExemplarityIndicatorsSchema = createInsertSchema(
 	projectExemplarityIndicators
 ).required({ id: true });
 export const projectExemplarityIndicatorsTranslationsSchema = createInsertSchema(
-	projectExemplarityIndicatorsTranslations
+	projectExemplarityIndicatorsTranslations,
+	{
+		title: (s) => s.title.trim(),
+		description: (s) => s.description.trim(),
+	}
 );
 export const projectExemplarityIndicatorsWithTranslationsSchema = withTranslationsSchema(
 	projectExemplarityIndicatorsSchema,
@@ -122,7 +141,11 @@ export const projectExemplarityCategoriesSchema = createInsertSchema(
 	projectExemplarityCategories
 ).required({ id: true });
 export const projectExemplarityCategoriesTranslationsSchema = createInsertSchema(
-	projectExemplarityCategoriesTranslations
+	projectExemplarityCategoriesTranslations,
+	{
+		title: (s) => s.title.trim(),
+		description: (s) => s.description.trim(),
+	}
 );
 export const projectExemplarityCategoriesWithTranslationsSchema = withTranslationsSchema(
 	projectExemplarityCategoriesSchema,
@@ -137,7 +160,11 @@ export const projectSiteOwnershipsSchema = createInsertSchema(projectSiteOwnersh
 	id: true,
 });
 export const projectSiteOwnershipsTranslationsSchema = createInsertSchema(
-	projectSiteOwnershipsTranslations
+	projectSiteOwnershipsTranslations,
+	{
+		title: (s) => s.title.trim(),
+		description: (s) => s.description.trim(),
+	}
 );
 export const projectSiteOwnershipsWithTranslationsSchema = withTranslationsSchema(
 	projectSiteOwnershipsSchema,
@@ -151,7 +178,11 @@ export const projectImplantationTypesSchema = createInsertSchema(projectImplanta
 	{ id: true }
 );
 export const projectImplantationTypesTranslationsSchema = createInsertSchema(
-	projectImplantationTypesTranslations
+	projectImplantationTypesTranslations,
+	{
+		title: (s) => s.title.trim(),
+		description: (s) => s.description.trim(),
+	}
 );
 export const projectImplantationTypesWithTranslationsSchema = withTranslationsSchema(
 	projectImplantationTypesSchema,
@@ -165,7 +196,11 @@ export const projectBuildingLevelTypesSchema = createInsertSchema(
 	projectBuildingLevelTypes
 ).required({ id: true });
 export const projectBuildingLevelTypesTranslationsSchema = createInsertSchema(
-	projectBuildingLevelTypesTranslations
+	projectBuildingLevelTypesTranslations,
+	{
+		title: (s) => s.title.trim(),
+		description: (s) => s.description.trim(),
+	}
 );
 export const projectBuildingLevelTypesWithTranslationsSchema = withTranslationsSchema(
 	projectBuildingLevelTypesSchema,
@@ -176,7 +211,11 @@ export const newProjectBuildingLevelTypeSchema =
 
 export const projectImageTypesSchema = createInsertSchema(projectImageTypes).required({ id: true });
 export const projectImageTypesTranslationsSchema = createInsertSchema(
-	projectImageTypesTranslations
+	projectImageTypesTranslations,
+	{
+		title: (s) => s.title.trim(),
+		description: (s) => s.description.trim(),
+	}
 );
 export const projectImageTypesWithTranslationsSchema = withTranslationsSchema(
 	projectImageTypesSchema,
@@ -184,17 +223,17 @@ export const projectImageTypesWithTranslationsSchema = withTranslationsSchema(
 );
 export const newProjectImageTypeSchema = projectImageTypesWithTranslationsSchema.omit({ id: true });
 
-//
 // Projects
-//
 
 export const projectsSchema = createInsertSchema(projects, {
+	adjacentStreets: (s) => s.adjacentStreets.positive().max(PROJECT_ADJACENT_STREETS_MAX),
+	adjacentAlleys: (s) => s.adjacentAlleys.positive().max(PROJECT_ADJACENT_ALLEYS_MAX),
 	costRange: () => rangeSchema({ min: PROJECT_COST_MIN, max: PROJECT_COST_MAX, ordered: true }),
 });
 export const projectsTranslationsSchema = createInsertSchema(projectsTranslations, {
-	title: (s) => s.title.max(PROJECT_TITLE_MAX),
-	summary: (s) => s.summary.max(PROJECT_SUMMARY_MAX),
-	description: (s) => s.description.max(PROJECT_DESCRIPTION_MAX),
+	title: (s) => s.title.trim().max(PROJECT_TITLE_MAX),
+	summary: (s) => s.summary.trim().max(PROJECT_SUMMARY_MAX),
+	description: (s) => s.description.trim().max(PROJECT_DESCRIPTION_MAX),
 });
 export const projectsWithTranslationsSchema = withTranslationsSchema(
 	projectsSchema,
@@ -226,7 +265,11 @@ export const projectsUsersSchema = createInsertSchema(projectsUsers);
 
 export const organizationTypesSchema = createInsertSchema(organizationTypes).required({ id: true });
 export const organizationTypesTranslationsSchema = createInsertSchema(
-	organizationTypesTranslations
+	organizationTypesTranslations,
+	{
+		title: (s) => s.title.trim(),
+		description: (s) => s.description.trim(),
+	}
 );
 export const organizationTypesWithTranslationsSchema = withTranslationsSchema(
 	organizationTypesSchema,
@@ -235,3 +278,30 @@ export const organizationTypesWithTranslationsSchema = withTranslationsSchema(
 export const newOrganizationTypeSchema = organizationTypesWithTranslationsSchema.omit({ id: true });
 
 // Organizations
+
+export const organizationsSchema = createInsertSchema(organizations).required({ id: true });
+export const organizationsTranslationsSchema = createInsertSchema(organizationsTranslations, {
+	name: (s) => s.name.trim(),
+	summary: (s) => s.summary.trim(),
+	description: (s) => s.description.trim(),
+});
+export const organizationsWithTranslationsSchema = withTranslationsSchema(
+	organizationsSchema,
+	organizationsTranslationsSchema.omit({ id: true })
+);
+
+// Users
+
+export const usersSchema = createInsertSchema(users, {
+	firstName: (s) => s.firstName.trim(),
+	middleName: (s) => s.middleName.trim(),
+	lastName: (s) => s.lastName.trim(),
+	email: (s) => s.email.trim().email(),
+	publicEmail: (s) => s.publicEmail.trim().email(),
+});
+
+// Authentication
+
+export const emailVerificationCodesSchema = createInsertSchema(emailVerificationCodes, {
+	code: (s) => s.code.trim().length(EMAIL_VERIFICATION_CODE_LENGTH),
+});

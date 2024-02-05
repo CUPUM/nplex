@@ -293,7 +293,8 @@
 
 <style lang="postcss">
 	.placeholder {
-		position: sticky;
+		/* position: sticky; */
+		position: relative;
 		top: 0;
 		height: var(--navbar-height);
 	}
@@ -301,7 +302,8 @@
 	header {
 		font-size: var(--size-sm);
 		z-index: 90;
-		position: sticky;
+		/* position: sticky; */
+		position: relative;
 		top: 0;
 		align-self: stretch;
 		padding: var(--base-gutter);

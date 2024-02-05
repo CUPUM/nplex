@@ -4,18 +4,6 @@ textarea.resize {
 	}
 }
 
-.dim {
-	opacity: var(--opacity-dim);
-}
-
-.dimmer {
-	opacity: var(--opacity-muted);
-}
-
-.bg-blur {
-	backdrop-filter: blur(8px);
-}
-
 .compact {
 	@mixin compact;
 }
@@ -32,11 +20,6 @@ textarea.resize {
 	&::-webkit-scrollbar {
 		display: none;
 	}
-}
-
-.note {
-	opacity: var(--opacity-dim);
-	font-style: italic;
 }
 
 /* Prevent content selectability */

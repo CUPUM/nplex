@@ -1,7 +1,7 @@
 import { langSchema } from '$lib/i18n/validation';
 import type { ColumnBaseConfig } from 'drizzle-orm';
 import { PgColumn, pgSchema, text } from 'drizzle-orm/pg-core';
-import { lang } from './custom-types';
+import { lang } from '../sql.server';
 
 /**
  * Langs core to managing everything i18n oriented. Opting for a per-entity-type storage of

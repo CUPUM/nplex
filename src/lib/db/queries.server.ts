@@ -1,9 +1,23 @@
 import { USER_ROLES } from '$lib/auth/constants';
+import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
-import { and, eq, exists, getTableColumns, or } from 'drizzle-orm';
-import type { Session } from 'lucia';
+import {
+	SQL,
+	and,
+	eq,
+	exists,
+	getTableColumns,
+	or,
+	type AnyColumn,
+	type AnyTable,
+	type TableConfig,
+} from 'drizzle-orm';
+import { getTableConfig, type SelectedFields } from 'drizzle-orm/pg-core';
+import type { User } from 'lucia';
+import type { Entries, Merge, ValueOf } from 'type-fest';
 import { db } from './db.server';
-import { userRoles, userRolesTranslations } from './schema/accounts';
+import { userRoles, userRolesTranslations } from './schema/auth';
+import { langs, type TranslationLangColumn } from './schema/i18n';
 import {
 	organizations,
 	organizationsUsers,
@@ -35,50 +49,156 @@ import {
 	getColumns,
 	jsonAgg,
 	jsonAggBuildObject,
+	jsonBuildObject,
+	jsonObjectAgg,
 	sqlBool,
-	withTranslation,
-} from './utils.server';
+	sqlTrue,
+	type Select,
+} from './sql.server';
 
 /**
- * Filter for projects created by session user.
+ * Paginate a query.
  */
-export function isCreatedProject(session: Session) {
-	return eq(projects.createdById, session.user.id);
+export function withPagination<T extends Select>(qb: T, page: number, pageSize: number = 10) {
+	return qb.limit(pageSize).offset(page * pageSize);
 }
 
 /**
- * Helper getter for projects created by session user.
+ * Query helper to get rows with translations corresponding to request event's locale.
+ */
+export function withTranslation<
+	T extends AnyTable<TableConfig>,
+	TT extends AnyTable<TableConfig> & { [K in keyof TranslationLangColumn]: AnyColumn },
+	F extends ValueOf<T['_']['columns']>,
+	R extends ValueOf<TT['_']['columns']>,
+	M = Merge<TT['_']['columns'], T['_']['columns']>,
+	S extends SelectedFields = Merge<TT['_']['columns'], T['_']['columns']>,
+>(
+	event: ServerLoadEvent | RequestEvent,
+	table: T,
+	translationsTable: TT,
+	{
+		field: f,
+		reference: r,
+		selection: s = (f) => f as unknown as S,
+	}: {
+		field: F | ((selection: T) => F);
+		reference: R | ((translationsSelection: TT) => R);
+		selection?: S | ((columns: M) => S);
+	}
+) {
+	// Attaching a load dependency to re-run when locale changes.
+	if ('depends' in event) {
+		event.depends(LOAD_DEPENDENCIES.Lang);
+	}
+	const field = f instanceof Function ? f(table) : f;
+	const reference = r instanceof Function ? r(translationsTable) : r;
+	const columns = getTableColumns(table);
+	const translationColumns = getTableColumns(translationsTable);
+	const selection = s instanceof Function ? s({ ...translationColumns, ...columns } as M) : s;
+	return db
+		.select(selection)
+		.from(table)
+		.$dynamic()
+		.leftJoin(
+			translationsTable,
+			and(eq(translationsTable.lang, event.locals.lang), eq(field, reference))
+		);
+}
+
+/**
+ * Aggregate an entity's translations into a `translations` record field. Also automatically
+ * coalesces missing translation rows to records with pre-populated locale and foreign key columns.
+ */
+export function withTranslations<
+	T extends AnyTable<TableConfig>,
+	TT extends AnyTable<TableConfig> & { [K in keyof TranslationLangColumn]: AnyColumn },
+	F extends ValueOf<T['_']['columns']>,
+	R extends ValueOf<TT['_']['columns']>,
+	TS = T['_']['columns'],
+	TTS extends Record<string, AnyColumn | SQL | SQL.Aliased> = TT['_']['columns'],
+>(
+	table: T,
+	translationsTable: TT,
+	{
+		field: f,
+		reference: r,
+		selection: ts = (t) => t as TS,
+		translationsSelection: tts = (tt) => tt as TTS,
+	}: {
+		field: F | ((selection: T) => F);
+		reference: R | ((translationsSelection: TT) => R);
+		selection?: TS | ((columns: T['_']['columns']) => TS);
+		translationsSelection?: TTS | ((columns: TT['_']['columns']) => TTS);
+	}
+) {
+	const field = f instanceof Function ? f(table) : f;
+	const reference = r instanceof Function ? r(translationsTable) : r;
+	const selection = ts instanceof Function ? ts(getTableColumns(table)) : ts;
+	const { name: translationsTableName } = getTableConfig(translationsTable);
+	const translationsColumns = getTableColumns(translationsTable);
+	const translationsSelection = tts instanceof Function ? tts(translationsColumns) : tts;
+	const translationsEntries = Object.entries(translationsColumns) as Entries<
+		typeof translationsColumns
+	>;
+	const translationsKey = translationsEntries.find(([_k, v]) => v === reference)![0];
+	return db
+		.select({
+			...selection,
+			translations: jsonObjectAgg(
+				langs.lang,
+				jsonBuildObject({
+					...translationsSelection,
+					lang: langs.lang,
+					[translationsKey]: field,
+				})
+			).as(`${translationsTableName}_alias`),
+		})
+		.from(table)
+		.leftJoin(langs, sqlTrue)
+		.leftJoin(translationsTable, and(eq(field, reference), eq(langs.lang, translationsTable.lang)))
+		.groupBy(field)
+		.$dynamic();
+}
+
+/**
+ * Filter for projects created by user.
+ */
+export function isCreatedProject(user: User) {
+	return eq(projects.createdById, user.id);
+}
+
+/**
+ * Helper getter for projects created by user.
  *
  * @see isCreatedProject
  */
-export function getCreatedProjects(session: Session) {
-	return db.select().from(projects).where(isCreatedProject(session));
+export function getCreatedProjects(user: User) {
+	return db.select().from(projects).where(isCreatedProject(user));
 }
 
 /**
- * Filter for projects editable by session user based on role, authorship, and collaboration status.
- * (add more conditions if needed).
+ * Filter for projects editable by user based on role, authorship, and collaboration status. (add
+ * more conditions if needed).
  */
-export function isEditableProject(session: Session) {
+export function isEditableProject(user: User) {
 	return or(
-		sqlBool(session.user.role === USER_ROLES.ADMIN),
-		isCreatedProject(session),
+		sqlBool(user.role === USER_ROLES.ADMIN),
+		isCreatedProject(user),
 		exists(
 			db
 				.select()
 				.from(projectsUsers)
-				.where(
-					and(eq(projectsUsers.projectId, projects.id), eq(projectsUsers.userId, session.user.id))
-				)
+				.where(and(eq(projectsUsers.projectId, projects.id), eq(projectsUsers.userId, user.id)))
 		)
 	);
 }
 
-export function getCreatedOrganizations(session: Session) {
-	return db.select().from(organizations).where(eq(organizations.createdById, session.user.id));
+export function getCreatedOrganizations(user: User) {
+	return db.select().from(organizations).where(eq(organizations.createdById, user.id));
 }
 
-export function getEditableOrganizations(session: Session) {
+export function getEditableOrganizations(user: User) {
 	return db
 		.select({
 			...getTableColumns(organizations),
@@ -86,8 +206,8 @@ export function getEditableOrganizations(session: Session) {
 		.from(organizations)
 		.where(
 			or(
-				sqlBool(session.user.role === USER_ROLES.ADMIN),
-				eq(organizations.createdById, session.user.id),
+				sqlBool(user.role === USER_ROLES.ADMIN),
+				eq(organizations.createdById, user.id),
 				exists(
 					db
 						.select()
@@ -95,7 +215,7 @@ export function getEditableOrganizations(session: Session) {
 						.where(
 							and(
 								eq(organizationsUsers.organizationId, organizations.id),
-								eq(organizationsUsers.userId, session.user.id)
+								eq(organizationsUsers.userId, user.id)
 							)
 						)
 				)

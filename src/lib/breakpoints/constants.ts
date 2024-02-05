@@ -3,10 +3,10 @@
  * scss.
  */
 export const BREAKPOINTS = {
-	sm: '30em',
+	// sm: '30em',
 	md: '48em',
-	lg: '64em',
-	xl: '80em',
+	// lg: '64em',
+	// xl: '80em',
 	// sm: 480,
 	// md: 768,
 	// lg: 1024,
