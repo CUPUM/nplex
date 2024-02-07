@@ -10,14 +10,6 @@ import {
 } from '$lib/db/queries.server';
 import { projects, projectsInterventions, projectsTranslations } from '$lib/db/schema/public';
 import {
-	coalesce,
-	emptyJsonArray,
-	excluded,
-	getColumns,
-	jsonAgg,
-	sqlTrue,
-} from '$lib/db/sql.server';
-import {
 	projectsInterventionsSchema,
 	projectsWithTranslationsSchema,
 } from '$lib/db/validation.server';
@@ -25,6 +17,7 @@ import { messageInvalid } from '$lib/forms/messages';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
+import { coalesce, emptyJsonArray, excluded, getColumns, jsonAgg, tru } from 'drizzle-orm-helpers';
 import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
@@ -94,7 +87,7 @@ export const actions = {
 							eq(projectsInterventions.projectId, event.params.projectId),
 							interventionIds.length
 								? notInArray(projectsInterventions.interventionId, interventionIds)
-								: sqlTrue
+								: tru
 						)
 					);
 				if (interventionIds.length) {

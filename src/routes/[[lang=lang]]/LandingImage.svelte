@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
-	export let image: PageData['randomImages'][number];
+	export let image: Awaited<PageData['randomImages']>[number];
 	export let i: number;
 
 	let loaded = false;

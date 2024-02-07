@@ -9,11 +9,11 @@ import {
 } from '$lib/auth/utils.server';
 import { db } from '$lib/db/db.server';
 import { oauthUsers, users } from '$lib/db/schema/auth';
-import { excluded, getColumns } from '$lib/db/sql.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { OAuth2RequestError } from 'arctic';
 import { and, eq, or, type InferInsertModel } from 'drizzle-orm';
+import { excluded, getColumns } from 'drizzle-orm-helpers';
 import { redirect } from 'sveltekit-flash-message/server';
 
 export const GET = async (event) => {

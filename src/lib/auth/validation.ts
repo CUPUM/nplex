@@ -23,7 +23,7 @@ export const userRoleSchema = z.custom<UserRole>(
 		try {
 			const str = typeof d === 'string' ? d : JSON.stringify(d);
 			return {
-				message: `Given role "${str}" is not valid. Roles must be one of ${joinedRoles}.`,
+				message: `Given role "${str}" is not valid. USER_ROLES must be one of ${joinedRoles}.`,
 			};
 		} catch (error) {
 			console.error(error);

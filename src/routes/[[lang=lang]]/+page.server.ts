@@ -2,14 +2,16 @@ import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
 import { db } from '$lib/db/db.server';
 import { organizations, projects, projectsImages } from '$lib/db/schema/public';
-import { random } from '$lib/db/sql.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
+import { random } from 'drizzle-orm-helpers';
 
 export const load = async () => {
+	const [featuredProjects, featuredOrganizations] = await Promise.all([
+		db.select().from(projects).limit(10),
+		db.select().from(organizations).limit(10),
+	]);
 	const randomImages = db.select().from(projectsImages).orderBy(random()).limit(10);
-	const featuredProjects = db.select().from(projects).limit(10);
-	const featuredOrganizations = db.select().from(organizations).limit(10);
 	return {
 		randomImages,
 		featuredProjects,

@@ -3,7 +3,6 @@ import { authorize } from '$lib/auth/rbac.server';
 import { db } from '$lib/db/db.server';
 import { withTranslations } from '$lib/db/queries.server';
 import { projectImageTypes, projectImageTypesTranslations } from '$lib/db/schema/public';
-import { excluded } from '$lib/db/sql.server';
 import {
 	newProjectImageTypeSchema,
 	projectImageTypesSchema,
@@ -16,6 +15,7 @@ import {
 	messageSuccess,
 } from '$lib/forms/messages';
 import { eq } from 'drizzle-orm';
+import { excluded } from 'drizzle-orm-helpers';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 

@@ -38,7 +38,7 @@ try {
 				.returning()
 		);
 
-		// Seed user roles
+		// Seed user USER_ROLES
 		seeded.push(
 			await tx
 				.insert(userRoles)

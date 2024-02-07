@@ -50,7 +50,7 @@ export const userRolesTranslations = authSchema.table(
 
 export const users = authSchema.table('users', {
 	id: text('id')
-		.default(generateNanoid({ length: USER_ID_LENGTH }))
+		.default(generateNanoid({ size: USER_ID_LENGTH }))
 		.notNull()
 		.primaryKey(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
@@ -100,7 +100,7 @@ export const emailVerificationCodes = authSchema.table('email_verification_codes
 		})
 		.primaryKey(),
 	code: text('code')
-		.default(generateNanoid({ length: 6, alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' }))
+		.default(generateNanoid({ size: 6, alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' }))
 		.notNull(),
 	email: text('email').notNull(),
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
@@ -144,7 +144,7 @@ export const usersRolesRequests = authSchema.table('users_roles_requests', {
 
 export const userOccupations = authSchema.table('user_occupations', {
 	id: text('id')
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 });
 
@@ -231,7 +231,7 @@ export const usersProjectsCollectionsItems = authSchema.table(
 export const notificationTypes = authSchema.table('notification_types', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 });
 

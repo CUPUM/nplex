@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
 	import { setLanguageTag } from '$i18n/runtime';
-	import Footer from '$lib/components/Footer.svelte';
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
-	import Navbar from '$lib/components/Navbar.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import ToastsOutlet from '$lib/components/ToastsOutlet.svelte';
 	import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
 	import { onMount } from 'svelte';
+	import Footer from './Footer.svelte';
+	import Navbar from './Navbar.svelte';
 
 	export let data;
 

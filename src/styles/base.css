@@ -1,164 +1,17 @@
 :root {
-	/* Fonts. */
 	--font-main: 'Outfit', sans-serif;
 	--font-display: 'Bricolage Grotesque', sans-serif;
 	--font-misc: 'Martian Mono', monospace;
-
-	/* Color palettes. */
-	/* --color-neutral-50: hsl(110, 10%, 97%);
-	--color-neutral-100: hsl(100, 9%, 92%);
-	--color-neutral-200: hsl(90, 8%, 88%);
-	--color-neutral-300: hsl(80, 7%, 81%);
-	--color-neutral-400: hsl(70, 6%, 72%);
-	--color-neutral-500: hsl(60, 5%, 45%);
-	--color-neutral-600: hsl(50, 6%, 22%);
-	--color-neutral-700: hsl(40, 7%, 16%);
-	--color-neutral-800: hsl(30, 8%, 12%);
-	--color-neutral-900: hsl(20, 9%, 9%);
-	--color-neutral-950: hsl(10, 10%, 6%);
-	--color-primary-50: hsl(142, 80%, 92%);
-	--color-primary-100: hsl(143, 76%, 88%);
-	--color-primary-200: hsl(144, 72%, 80%);
-	--color-primary-300: hsl(145, 69%, 65%);
-	--color-primary-400: hsl(146, 65%, 50%);
-	--color-primary-500: hsl(147, 90%, 38%);
-	--color-primary-600: hsl(146, 92%, 31%);
-	--color-primary-700: hsl(145, 96%, 23%);
-	--color-primary-800: hsl(144, 93%, 17%);
-	--color-primary-900: hsl(143, 91%, 12%);
-	--color-primary-950: hsl(142, 91%, 8%);
-	--color-secondary-50: hsl(49, 75%, 90%);
-	--color-secondary-100: hsl(49, 74%, 84%);
-	--color-secondary-200: hsl(48, 73%, 77%);
-	--color-secondary-300: hsl(47, 72%, 70%);
-	--color-secondary-400: hsl(47, 73%, 62%);
-	--color-secondary-500: hsl(48, 70%, 54%);
-	--color-secondary-600: hsl(49, 69%, 45%);
-	--color-secondary-700: hsl(48, 68%, 39%);
-	--color-secondary-800: hsl(47, 67%, 30%);
-	--color-secondary-900: hsl(46, 66%, 21%);
-	--color-secondary-950: hsl(45, 65%, 12%);
-	--color-success-50: hsl(89, 86%, 88%);
-	--color-success-100: hsl(89, 84%, 83%);
-	--color-success-200: hsl(89, 72%, 75%);
-	--color-success-300: hsl(89, 68%, 64%);
-	--color-success-400: hsl(89, 68%, 52%);
-	--color-success-500: hsl(89, 75%, 43%);
-	--color-success-600: hsl(89, 78%, 35%);
-	--color-success-700: hsl(89, 79%, 30%);
-	--color-success-800: hsl(89, 80%, 24%);
-	--color-success-900: hsl(89, 83%, 18%);
-	--color-success-950: hsl(89, 82%, 12%);
-	--color-error-50: hsl(8, 84%, 89%);
-	--color-error-100: hsl(8, 79%, 82%);
-	--color-error-200: hsl(8, 78%, 74%);
-	--color-error-300: hsl(8, 78%, 65%);
-	--color-error-400: hsl(8, 79%, 59%);
-	--color-error-500: hsl(8, 80%, 50%);
-	--color-error-600: hsl(8, 80%, 47%);
-	--color-error-700: hsl(8, 84%, 41%);
-	--color-error-800: hsl(8, 84%, 34%);
-	--color-error-900: hsl(8, 86%, 26%);
-	--color-error-950: hsl(8, 89%, 18%); */
-
-	/* Text and absolute sizes, based on ratio=1.333 type scale. */
-	/* --size-2xs: 0.563rem;
-	--size-xs: 0.75rem;
-	--size-sm: 0.875rem;
-	--size-md: 1rem;
-	--size-lg: 1.333rem;
-	--size-xl: 1.777rem;
-	--size-2xl: 2.369rem;
-	--size-3xl: 3.157rem;
-	--size-4xl: 4.209rem;
-	--size-5xl: 5.61rem; */
-
-	/* Line heights */
-	/* --line-dense: 1.333;
-	--line-sparse: 1.777; */
-
-	/* Rounded corners. */
-	/* --radius-xs: 6px;
-	--radius-sm: 10px;
-	--radius-md: 14px;
-	--radius-lg: 18px;
-	--radius-xl: 26px;
-	--radius-2xl: 34px;
-	--radius-3xl: 42px;
-	--radius-full: 999px; */
-
-	/* Content widths. */
 	--width-sm: 420px;
 	--width-md: 760px;
 	--width-lg: 1200px;
-
-	/* Easings */
 	--ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
 	--ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-
-	/* Durations */
-	--duration-xfast: 75ms;
-	--duration-fast: 120ms;
-	--duration-medium: 250ms;
-	--duration-slow: 400ms;
-	--duration-xslow: 750ms;
-
-	/* Animations */
+	--duration-fast: 100ms;
+	--duration-medium: 325ms;
+	--duration-slow: 750ms;
 	--animation-press: press var(--duration-medium) var(--ease-out-expo);
-
-	/* Shadows (based on tailwind) */
-	/* --shadow-xs: 0 1px 2px -1px rgb(0, 0, 0, 0.05);
-	--shadow-sm: 0 2px 3px -2px rgb(0, 0, 0, 0.1), 0 1px 2px -1px rgb(0, 0, 0, 0.025);
-	--shadow-md: 0 5px 8px -3px rgb(0, 0, 0, 0.1), 0 2px 4px -2px rgb(0, 0, 0, 0.05);
-	--shadow-lg: 0 10px 16px -4px rgb(0, 0, 0, 0.1), 0 4px 6px -4px rgb(0, 0, 0, 0.1);
-	--shadow-xl: 0 16px 24px -10px rgb(0, 0, 0, 0.1), 0 8px 10px -6px rgb(0, 0, 0, 0.1); */
-
-	/* Base values for io elements and others */
-	/* --base-gutter: 0.75rem;
-	--base-block-size: 3.5em;
-	--base-inline-padding: 1.25em;
-	--base-radius: var(--radius-md);
-	--base-border-width: 1.25px;
-	--base-outline-width: 3px;
-	--base-border-color: color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-	--base-border-color-dim: color-mix(in srgb, var(--color-neutral-500) 15%, transparent);
-	--base-nesting: 5px;
-	--base-focus-ring: var(--base-outline-width) solid
-		color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-	--base-error-ring: var(--base-outline-width) solid var(--color-error-600);
-	--base-color: var(--color-neutral-700);
-	--base-bg: var(--color-neutral-100); */
-
-	/* Misc and component-specific */
-	/* --opacity-dim: 60%;
-	--opacity-muted: 30%;
-	--ripple-color: currentColor;
-	--spinner-color: currentColor;
-	--ratio-small: 0.875em;
-	--content-width: 75ch;
-	--sticky-top: calc(var(--navbar-height) + var(--base-gutter));
-	--navbar-height: 68.8px;
-	--dashboard-bg: var(--color-neutral-50);
-	--dashboard-gutter: 0.5rem;
-	--dashboard-radius: var(--radius-xl);
-	--sidebar-width: 200px;
-	--sidebar-needle-bg: var(--color-primary-700);
-	--sidebar-needle-size: 2.5px;
-	--sidebar-group-radius: var(--dashboard-radius);
-	--sidebar-group-nesting: 1rem; */
-
-	/* &:--dark {
-		--base-color: var(--color-neutral-300);
-		--base-bg: var(--color-neutral-900);
-		--base-focus-ring: var(--base-outline-width) solid
-			color-mix(in srgb, var(--color-neutral-500) 25%, transparent);
-		--base-error-ring: var(--base-outline-width) solid var(--color-error-400);
-		--dashboard-bg: var(--color-neutral-800);
-		--sidebar-needle-bg: var(--color-primary-500);
-	} */
-
-	/* V2 */
 	--text-xs: 0.75rem;
 	--text-sm: 0.875rem;
 	--text-md: 1rem;
@@ -166,18 +19,23 @@
 	--text-xl: 1.777rem;
 	--text-2xl: 2.369rem;
 	--text-3xl: 3.157rem;
-	--sticky-top: 0px;
-	--thin: 300;
-	--bold: 550;
-	--bolder: 700;
+	--weight-thin: 300;
+	--weight-bold: 550;
+	--weight-bolder: 700;
 	--radius: 14px;
 	--rounded: 999px;
 	--inlay: 5px;
 	--gutter: 8px;
-	--block-size: 3em;
-	--padding-inline: 1em;
-	--bg: ;
-	--fg: ;
+	--block-size: 3.125em;
+	--padding-block: calc((var(--block-size) - 1em) / 2);
+	--padding-inline: 1.125em;
+	--sidebar-width: 200px;
+	--navbar-height: 59.75px;
+	--sticky-top: 0px;
+	--alpha-muted: 65%;
+	--alpha-muted-2x: 35%;
+	--bg: white;
+	--fg: black;
 	--bg-stress: ;
 	--fg-stress: ;
 	--bg-muted: ;
@@ -199,35 +57,82 @@
 	--ring: var(--ring-width) solid var(--ring-color);
 	--border-width: 1.25px;
 	--border-color: black;
+	--border-color-muted: black;
 	--border: var(--border-width) solid var(--border-color);
-	--floating-bg: ;
-	--floating-fg: ;
-	--tooltip-bg: ;
-	--tooltip-fg: ;
+	--border-muted: var(--border-width) solid var(--border-color-muted);
+	--floating-bg: white;
+	--floating-fg: black;
+	--tooltip-bg: black;
+	--tooltip-fg: white;
 	--card-bg: ;
 	--card-fg: ;
-	--sidebar-width: 200px;
+	--ripple-color: green;
+	--ripple-color-start: var(--ripple-color);
+	--ripple-color-end: var(--ripple-color);
+	--overlay-bg: rgba(0, 0, 0, 0.9);
 
 	&:--dark {
+		--bg: ;
+		--fg: ;
+		--bg-stress: ;
+		--fg-stress: ;
+		--bg-muted: ;
+		--fg-muted: ;
+		--danger-bg: ;
+		--danger-fg: ;
+		--danger-bg-stress: ;
+		--danger-fg-stress: ;
+		--success-bg: ;
+		--success-fg: ;
+		--success-bg-stress: ;
+		--success-fg-stress: ;
+		--primary-bg: ;
+		--primary-fg: ;
+		--primary-bg-stress: ;
+		--primary-fg-stress: ;
+		--ring-color: purple;
+		--border-color: black;
+		--floating-bg: ;
+		--floating-fg: ;
+		--tooltip-bg: ;
+		--tooltip-fg: ;
+		--card-bg: ;
+		--card-fg: ;
+		--ripple-color: green;
+		--ripple-color-start: var(--ripple-color);
+		--ripple-color-end: var(--ripple-color);
 	}
 
-	/* Root style */
 	position: relative;
 	font-size: 100%;
 	font-weight: 350;
 	font-family: var(--font-main);
 	overflow-x: hidden;
-	accent-color: var(--color-primary-500);
-	color: var(--base-color);
-	background-color: var(--base-bg);
+	accent-color: var(--ring-color);
+	color: var(--fg);
+	background: black;
 	transition: all var(--duration-fast) ease-out;
+
+	&[data-melt-scroll-lock]:has([data-melt-dialog-portalled] *) {
+		#app {
+			scale: 0.96;
+			border-radius: var(--radius);
+			/* box-shadow: 0 0 3em -1em black; */
+		}
+	}
 }
 
-body {
+#app {
+	overflow-x: hidden;
+	background: var(--bg);
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	min-height: 100svh;
+	scale: 1;
+	transition:
+		scale var(--duration-slow) var(--ease-out-expo),
+		border-radius var(--duration-slow) var(--ease-out-expo);
 }
 
 ::selection {

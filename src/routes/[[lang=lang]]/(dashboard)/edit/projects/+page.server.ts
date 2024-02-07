@@ -2,9 +2,9 @@ import { authorize } from '$lib/auth/rbac.server';
 import { db } from '$lib/db/db.server';
 import { isEditableProject } from '$lib/db/queries.server';
 import { projects, projectsTranslations } from '$lib/db/schema/public';
-import { getColumns } from '$lib/db/sql.server';
 import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
 import { and, eq, exists, sql } from 'drizzle-orm';
+import { getColumns } from 'drizzle-orm-helpers';
 
 export const load = async (event) => {
 	authorize(event);

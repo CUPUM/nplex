@@ -1,4 +1,5 @@
 import { USER_ROLES } from '$lib/auth/constants';
+import { cube, intrange, point, tsvector } from 'drizzle-orm-helpers';
 import {
 	boolean,
 	date,
@@ -10,7 +11,8 @@ import {
 	unique,
 	type AnyPgColumn,
 } from 'drizzle-orm/pg-core';
-import { cube, generateNanoid, intrange, point, tsvector, userRole } from '../sql.server';
+import { PROJECT_IMAGE_PALETTE_LENGTH } from '../constants';
+import { generateNanoid, userRole } from '../sql.server';
 import { userRoles, users } from './auth';
 import { translationLangColumn, translationReferenceColumn } from './i18n';
 
@@ -20,7 +22,7 @@ import { translationLangColumn, translationReferenceColumn } from './i18n';
 export const projectTypes = pgTable('project_types', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 	index: integer('index'),
 });
@@ -45,7 +47,7 @@ export const projectTypesTranslations = pgTable(
 export const projectInterventionsCategories = pgTable('project_intervention_categories', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 	index: integer('index'),
 });
@@ -70,7 +72,7 @@ export const projectInterventionsCategoriesTranslations = pgTable(
 export const projectInterventions = pgTable('project_interventions', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 	categoryId: text('category_id')
 		.notNull()
@@ -130,7 +132,7 @@ export const projectTypesToInterventions = pgTable(
 export const projectSiteOwnerships = pgTable('project_site_ownerships', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 	index: integer('index'),
 });
@@ -155,7 +157,7 @@ export const projectSiteOwnershipsTranslations = pgTable(
 export const projectImplantationTypes = pgTable('project_implantation_types', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 	index: integer('index'),
 });
@@ -180,7 +182,7 @@ export const projectImplantationTypesTranslations = pgTable(
 export const projectExemplarityCategories = pgTable('project_exemplarity_categories', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 	index: integer('index'),
 });
@@ -202,7 +204,7 @@ export const projectExemplarityCategoriesTranslations = pgTable(
 export const projectExemplarityIndicators = pgTable('project_exemplarity_indicators', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 	categoryId: text('category_id')
 		.notNull()
@@ -234,7 +236,7 @@ export const projectExemplarityIndicatorsTranslations = pgTable(
 export const projectImageTypes = pgTable('project_image_types', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 });
 export const projectImageTypesTranslations = pgTable(
@@ -258,7 +260,7 @@ export const projectImageTypesTranslations = pgTable(
 export const projectImageTemporalities = pgTable('project_image_temporalities', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 	timeIndex: integer('time_index').notNull().default(0),
 });
@@ -284,7 +286,7 @@ export const projectBuildingLevelTypes = pgTable('project_building_level_type', 
 	id: text('id')
 		.notNull()
 		.primaryKey()
-		.default(generateNanoid({ length: 6 })),
+		.default(generateNanoid({ size: 6 })),
 	verticalIndex: integer('vertical_index').notNull(),
 	isGroundLevel: boolean('is_ground_level').unique(),
 });
@@ -369,7 +371,7 @@ export const projectsTranslations = pgTable(
 		description: text('description'),
 		ts: tsvector('ts', {
 			sources: ['title', 'summary', 'description'],
-			lang: 'lang',
+			language: 'lang',
 			weighted: true,
 		}),
 	},
@@ -479,7 +481,7 @@ export const projectsImages = pgTable(
 			onDelete: 'set null',
 			onUpdate: 'cascade',
 		}),
-		palette: cube('palette').array(5).notNull(),
+		palette: cube('palette').array(PROJECT_IMAGE_PALETTE_LENGTH).notNull(),
 	},
 	(table) => {
 		return {
@@ -496,7 +498,7 @@ export const projectsImagesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey(table.id, table.lang),
+			pk: primaryKey({ columns: [table.id, table.lang] }),
 		};
 	}
 );
@@ -688,7 +690,7 @@ export const projectsViews = pgTable(
 export const organizationTypes = pgTable('organization_types', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 });
 export const organizationTypesTranslations = pgTable(
@@ -712,7 +714,7 @@ export const organizationTypesTranslations = pgTable(
 export const organizationExpertises = pgTable('organization_expertises', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 });
 export const organizationExpertisesTranslations = pgTable(
@@ -731,12 +733,12 @@ export const organizationExpertisesTranslations = pgTable(
 );
 
 /**
- * Roles organizations can assume in the context of projects.
+ * USER_ROLES organizations can assume in the context of projects.
  */
 export const organizationDuties = pgTable('organization_duties', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ length: 6 }))
+		.default(generateNanoid({ size: 6 }))
 		.primaryKey(),
 });
 export const organizationDutiesTranslations = pgTable(

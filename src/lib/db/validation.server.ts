@@ -2,8 +2,9 @@ import { availableLanguageTags } from '$i18n/runtime';
 import { EMAIL_VERIFICATION_CODE_LENGTH } from '$lib/auth/constants';
 import type { langSchema } from '$lib/i18n/validation';
 import { strictRecord } from '$lib/utils/zod';
+import { isRange } from 'drizzle-orm-helpers';
 import { createInsertSchema } from 'drizzle-zod';
-import { type ZodObject, type ZodTypeAny } from 'zod';
+import { z, type ZodObject, type ZodTypeAny } from 'zod';
 import {
 	PROJECT_ADJACENT_ALLEYS_MAX,
 	PROJECT_ADJACENT_STREETS_MAX,
@@ -19,10 +20,10 @@ import {
 } from './constants';
 import { emailVerificationCodes, users } from './schema/auth';
 import {
-	organizationTypes,
-	organizationTypesTranslations,
 	organizations,
 	organizationsTranslations,
+	organizationTypes,
+	organizationTypesTranslations,
 	projectBuildingLevelTypes,
 	projectBuildingLevelTypesTranslations,
 	projectExemplarityCategories,
@@ -37,19 +38,18 @@ import {
 	projectInterventionsCategories,
 	projectInterventionsCategoriesTranslations,
 	projectInterventionsTranslations,
-	projectSiteOwnerships,
-	projectSiteOwnershipsTranslations,
-	projectTypes,
-	projectTypesTranslations,
 	projects,
 	projectsBuildingLevels,
 	projectsExemplarityIndicators,
 	projectsImages,
 	projectsInterventions,
+	projectSiteOwnerships,
+	projectSiteOwnershipsTranslations,
 	projectsTranslations,
 	projectsUsers,
+	projectTypes,
+	projectTypesTranslations,
 } from './schema/public';
-import { rangeSchema } from './sql.server';
 
 /**
  * Extend the insert schema of a given ressource table with its corresponding translations. The
@@ -228,7 +228,8 @@ export const newProjectImageTypeSchema = projectImageTypesWithTranslationsSchema
 export const projectsSchema = createInsertSchema(projects, {
 	adjacentStreets: (s) => s.adjacentStreets.positive().max(PROJECT_ADJACENT_STREETS_MAX),
 	adjacentAlleys: (s) => s.adjacentAlleys.positive().max(PROJECT_ADJACENT_ALLEYS_MAX),
-	costRange: () => rangeSchema({ min: PROJECT_COST_MIN, max: PROJECT_COST_MAX, ordered: true }),
+	costRange: () =>
+		z.custom<Range>((v) => isRange(v, { min: PROJECT_COST_MIN, max: PROJECT_COST_MAX })),
 });
 export const projectsTranslationsSchema = createInsertSchema(projectsTranslations, {
 	title: (s) => s.title.trim().max(PROJECT_TITLE_MAX),

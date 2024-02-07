@@ -3,10 +3,10 @@
 	import * as m from '$i18n/messages';
 	import { SETOUTS } from '$lib/setout/constants';
 	import { slide } from 'svelte/transition';
-	import Logo from './Logo.svelte';
-	import CupumUdem from './partners-logos/CupumUdem.svelte';
-	import MontrealQuebec from './partners-logos/MontrealQuebec.svelte';
-	import UnescoUnitwin from './partners-logos/UnescoUnitwin.svelte';
+	import Logo from '../../lib/components/Logo.svelte';
+	import CupumUdem from '../../lib/components/partners-logos/CupumUdem.svelte';
+	import MontrealQuebec from '../../lib/components/partners-logos/MontrealQuebec.svelte';
+	import UnescoUnitwin from '../../lib/components/partners-logos/UnescoUnitwin.svelte';
 </script>
 
 {#if $page.data.setout !== SETOUTS.FULL_SCREEN && !$page.data.footer?.hide}

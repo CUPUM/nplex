@@ -9,6 +9,7 @@
 @import './styles/keyframes.css' layer(base);
 
 /* Bases */
+@import './styles/dropdown.css' layer(components);
 @import './styles/button.css' layer(components);
 @import './styles/chip.css' layer(components);
 @import './styles/input.css' layer(components);

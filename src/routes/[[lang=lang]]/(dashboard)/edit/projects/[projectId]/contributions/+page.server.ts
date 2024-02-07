@@ -1,3 +1,4 @@
+import { authorize } from '$lib/auth/rbac.server';
 import { projectsContributionsUpdateSchema } from '$lib/db/crud.server';
 import { db } from '$lib/db/db.server';
 import {
@@ -5,14 +6,14 @@ import {
 	organizationsTranslations,
 	projectsOrganizations,
 } from '$lib/db/schema/public';
-import { TRUE } from '$lib/db/sql.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail } from '@sveltejs/kit';
 import { and, eq, getTableColumns, notInArray } from 'drizzle-orm';
+import { tru } from 'drizzle-orm-helpers';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await event.locals.authorize();
+	authorize(event);
 	const data = await db.transaction(async (tx) => {
 		const allOrgs = await tx
 			.select({
@@ -62,7 +63,7 @@ export const actions = {
 							eq(projectsOrganizations.projectId, event.params.projectId),
 							form.data.organizationIds.length
 								? notInArray(projectsOrganizations.organizationId, form.data.organizationIds)
-								: TRUE()
+								: tru()
 						)
 					);
 				if (form.data.organizationIds.length) {

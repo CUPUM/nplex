@@ -1,8 +1,5 @@
-/* Breakpoints */
-/* @custom-media --sm (min-width: 30em); */
-@custom-media --md (min-width: 48em);
-/* @custom-media --lg (min-width: 64em); */
-/* @custom-media --xl (min-width: 80em); */
+/* Desktop-first breakpoints */
+@custom-media --md (max-width: 48em);
 
 /* Mode selectors */
 @custom-selector :--dark [data-mode='dark'];

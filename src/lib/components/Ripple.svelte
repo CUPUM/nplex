@@ -158,8 +158,8 @@
 
 <style lang="postcss">
 	.container {
-		--_color-start: var(--ripple-color-start, var(--ripple-color, currentColor));
-		--_color-end: var(--ripple-color-end, var(--ripple-color, currentColor));
+		--_color-start: var(--ripple-color-start, var(--ripple-color));
+		--_color-end: var(--ripple-color-end, var(--ripple-color));
 		pointer-events: none;
 		position: absolute;
 		top: 0;

@@ -1,11 +1,13 @@
 import type { AvailableLanguageTag } from '$i18n/runtime';
 import type { ValueOf } from 'type-fest';
 
-export const SQL_LANGUAGES = {
+export const REGCONFIGS = {
 	fr: 'french',
 	en: 'english',
 } as const satisfies Record<AvailableLanguageTag, string>;
-export type SQLLanguage = ValueOf<typeof SQL_LANGUAGES>;
+export type Regconfig = ValueOf<typeof REGCONFIGS>;
+
+export const PROJECT_IMAGE_PALETTE_LENGTH = 5;
 
 /**
  * Should reflect the default length defined in the db migration for nanoid.

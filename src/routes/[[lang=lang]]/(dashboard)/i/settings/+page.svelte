@@ -7,7 +7,7 @@
 </script>
 
 <SettingsGeneral data={data.generalForm} publicEmailVerified={data.publicEmailVerified} />
-<SettingsPermissions data={data.permissionsForm} roles={data.roles} />
+<SettingsPermissions data={data.permissionsForm} USER_ROLES={data.USER_ROLES} />
 <SettingsDelete data={data.manageForm} />
 
 <!-- 

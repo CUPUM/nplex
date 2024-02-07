@@ -12,6 +12,17 @@ import {
 	type AnyTable,
 	type TableConfig,
 } from 'drizzle-orm';
+import {
+	bool,
+	coalesce,
+	emptyJsonArray,
+	getColumns,
+	jsonAgg,
+	jsonAggBuildObject,
+	jsonBuildObject,
+	jsonObjectAgg,
+	tru,
+} from 'drizzle-orm-helpers';
 import { getTableConfig, type SelectedFields } from 'drizzle-orm/pg-core';
 import type { User } from 'lucia';
 import type { Entries, Merge, ValueOf } from 'type-fest';
@@ -43,25 +54,6 @@ import {
 	projects,
 	projectsUsers,
 } from './schema/public';
-import {
-	coalesce,
-	emptyJsonArray,
-	getColumns,
-	jsonAgg,
-	jsonAggBuildObject,
-	jsonBuildObject,
-	jsonObjectAgg,
-	sqlBool,
-	sqlTrue,
-	type Select,
-} from './sql.server';
-
-/**
- * Paginate a query.
- */
-export function withPagination<T extends Select>(qb: T, page: number, pageSize: number = 10) {
-	return qb.limit(pageSize).offset(page * pageSize);
-}
 
 /**
  * Query helper to get rows with translations corresponding to request event's locale.
@@ -155,7 +147,7 @@ export function withTranslations<
 			).as(`${translationsTableName}_alias`),
 		})
 		.from(table)
-		.leftJoin(langs, sqlTrue)
+		.leftJoin(langs, tru)
 		.leftJoin(translationsTable, and(eq(field, reference), eq(langs.lang, translationsTable.lang)))
 		.groupBy(field)
 		.$dynamic();
@@ -183,7 +175,7 @@ export function getCreatedProjects(user: User) {
  */
 export function isEditableProject(user: User) {
 	return or(
-		sqlBool(user.role === USER_ROLES.ADMIN),
+		bool(user.role === USER_ROLES.ADMIN),
 		isCreatedProject(user),
 		exists(
 			db
@@ -206,7 +198,7 @@ export function getEditableOrganizations(user: User) {
 		.from(organizations)
 		.where(
 			or(
-				sqlBool(user.role === USER_ROLES.ADMIN),
+				bool(user.role === USER_ROLES.ADMIN),
 				eq(organizations.createdById, user.id),
 				exists(
 					db

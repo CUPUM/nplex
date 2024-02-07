@@ -60,7 +60,7 @@ export const load = async (event) => {
 		permissionsForm,
 		manageForm,
 		publicEmailVerified: user.publicEmailVerified,
-		roles: getUserRolesList(event),
+		USER_ROLES: getUserRolesList(event),
 	};
 };
 

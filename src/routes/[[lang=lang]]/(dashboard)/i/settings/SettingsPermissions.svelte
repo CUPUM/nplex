@@ -12,7 +12,7 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData['permissionsForm'];
-	export let roles: PageData['roles'];
+	export let USER_ROLES: PageData['USER_ROLES'];
 
 	const {
 		form,
@@ -53,7 +53,7 @@
 			</div>
 		</fieldset>
 		<SelectMenu {menu} {open}>
-			{#each roles as role}
+			{#each USER_ROLES as role}
 				<SelectOption {option} value={role.role} label={role.name} {isSelected}>
 					{role.name}
 				</SelectOption>
