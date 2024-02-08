@@ -1,12 +1,13 @@
 import * as m from '$i18n/messages';
+import { authorize } from '$lib/auth/rbac.server';
 import { db } from '$lib/db/db.server';
 import { getProjectCategorizedIndicatorsList, isEditableProject } from '$lib/db/queries.server';
 import { projects, projectsExemplarityIndicators } from '$lib/db/schema/public';
-import { coalesce, emptyJsonArray, jsonAgg } from '$lib/db/sql.server';
 import { projectsExemplarityIndicatorsSchema } from '$lib/db/validation.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
+import { coalesce, emptyJsonArray, jsonAgg } from 'drizzle-orm-helpers';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
@@ -16,7 +17,7 @@ const schema = z.object({
 });
 
 export const load = async (event) => {
-	const session = await event.locals.authorize();
+	authorize(event);
 	const [[defaults], categorizedIndicators] = await Promise.all([
 		db
 			.select({
@@ -26,7 +27,7 @@ export const load = async (event) => {
 				),
 			})
 			.from(projects)
-			.where(and(isEditableProject(session), eq(projects.id, event.params.projectId)))
+			.where(and(isEditableProject(event.locals.user), eq(projects.id, event.params.projectId)))
 			.limit(1)
 			.leftJoin(
 				projectsExemplarityIndicators,
@@ -46,7 +47,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await event.locals.authorize();
+		authorize(event);
 		const form = await superValidate(event, zod(schema));
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });

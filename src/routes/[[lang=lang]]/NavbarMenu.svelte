@@ -17,13 +17,13 @@
 			use:melt={$overlay}
 			transition:fade={{ duration: 250, easing: cubicOut }}
 		/>
-		<div
+		<menu
 			class="menu-content"
 			use:melt={$content}
-			transition:fly={{ y: '-25%', opacity: 0, easing: expoOut, duration: 350 }}
+			transition:fly={{ x: '100%', opacity: 0, easing: expoOut, duration: 400 }}
 		>
-			<slot name="content" />
-		</div>
+			<slot name="content" close={$close} title={$title} description={$description} />
+		</menu>
 	{/if}
 </div>
 
@@ -38,15 +38,9 @@
 	.menu-content {
 		position: fixed;
 		top: 0;
-		left: 0;
 		right: 0;
-		background: var(--floating-bg);
+		bottom: 0;
 		z-index: 99;
-		/* border-radius: var(--radius); */
-		border-radius: 0 0 var(--radius) var(--radius);
-		border: var(--border);
-
-		@media (--md) {
-		}
+		pointer-events: none;
 	}
 </style>

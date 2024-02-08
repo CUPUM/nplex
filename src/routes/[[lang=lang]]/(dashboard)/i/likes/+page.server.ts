@@ -1,10 +1,12 @@
+import { authorize } from '$lib/auth/rbac.server';
 import { db } from '$lib/db/db.server';
+import { withTranslation } from '$lib/db/queries.server';
 import { projects, projectsLikes, projectsTranslations } from '$lib/db/schema/public';
-import { getColumns, withTranslation } from '$lib/db/sql.server';
 import { eq } from 'drizzle-orm';
+import { getColumns } from 'drizzle-orm-helpers';
 
 export const load = async (event) => {
-	const session = await event.locals.authorize();
+	authorize(event);
 	const pt = withTranslation(event, projects, projectsTranslations, {
 		field: (t) => t.id,
 		reference: (tt) => tt.id,
@@ -13,7 +15,7 @@ export const load = async (event) => {
 	const likedProjects = await db
 		.select({ ...ptColumns })
 		.from(projectsLikes)
-		.where(eq(projectsLikes.userId, session.user.id))
+		.where(eq(projectsLikes.userId, event.locals.user.id))
 		.leftJoin(pt, eq(projectsLikes.projectId, pt.id));
 	return {
 		likedProjects,

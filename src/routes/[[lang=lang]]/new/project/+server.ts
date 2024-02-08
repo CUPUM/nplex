@@ -1,15 +1,16 @@
+import { authorize } from '$lib/auth/rbac.server';
 import { db } from '$lib/db/db.server';
 import { projects } from '$lib/db/schema/public';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { error, redirect } from '@sveltejs/kit';
 
 export const GET = async (event) => {
-	const session = await event.locals.authorize();
+	authorize(event);
 	const [project] = await db
 		.insert(projects)
 		.values({
-			createdById: session.user.id,
-			updatedById: session.user.id,
+			createdById: event.locals.user.id,
+			updatedById: event.locals.user.id,
 		})
 		.returning({ id: projects.id });
 	if (!project) {

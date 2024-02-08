@@ -1,5 +1,5 @@
 .dropdown-menu {
-	--_radius: calc(var(--radius) - var(--inlay));
+	--_radius: calc(var(--radius-md) - var(--inlay));
 	--_block-size: calc(var(--block-size) - 2 * var(--inlay));
 	--_padding-inline: calc(var(--padding-inline) - var(--inlay));
 	--_padding-block: calc(var(--padding-block) - var(--inlay));
@@ -7,7 +7,7 @@
 	gap: var(--ring-width);
 	flex-direction: column;
 	padding: var(--inlay);
-	border-radius: var(--radius);
+	border-radius: var(--radius-md);
 	transform-origin: top;
 	border: var(--border-muted);
 	color: var(--floating-fg);

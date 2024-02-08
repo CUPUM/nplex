@@ -3,18 +3,38 @@
 	import * as m from '$i18n/messages';
 	import { availableLanguageTags } from '$i18n/runtime';
 	import { ripple } from '$lib/actions/ripple';
+	import Avatar from '$lib/components/Avatar.svelte';
 	import Dropdown from '$lib/components/DropdownMenu.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
-	import { langSwitch, link } from '$lib/i18n/link';
+	import { langSwitch, link, noLang } from '$lib/i18n/link';
 	import { mode } from '$lib/modes/store';
+	import { setout } from '$lib/setout/store';
 	import { melt } from '@melt-ui/svelte';
-	import { Languages } from 'lucide-svelte';
+	import { Languages, MailWarning, User2 } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+	import { circInOut, expoOut } from 'svelte/easing';
+	import { crossfade, scale } from 'svelte/transition';
 	import NavbarMenu from './NavbarMenu.svelte';
+	import NavbarMenuUser from './NavbarMenuUser.svelte';
 	import NavbarModeIcon from './NavbarModeIcon.svelte';
+
+	const [sendThumb, receiveThumb] = crossfade({
+		duration: 175,
+		easing: circInOut,
+		fallback(node, params, intro) {
+			return scale(node, { start: 0.5, duration: 150, easing: expoOut, opacity: 0 });
+		},
+	});
+
+	let mounted = false;
+
+	onMount(() => {
+		mounted = true;
+	});
 </script>
 
-<header id="navbar" class={$page.data.setout}>
+<header id="navbar" class={$setout}>
 	<nav class="navbar-group site">
 		<a class="navbar-button" {...$link('/')} use:ripple>
 			<Logo size="1.5em" />
@@ -27,11 +47,11 @@
 		</a>
 	</nav>
 	<nav class="md navbar-group explore">
-		<a class="navbar-button" {...$link('/')} use:ripple>
+		<a class="navbar-button" {...$link('/projects')} use:ripple>
 			<div class="-navbar-button-thumb" />
 			{m.projects()}
 		</a>
-		<a class="navbar-button" {...$link('/')} use:ripple>
+		<a class="navbar-button" {...$link('/organizations')} use:ripple>
 			<div class="-navbar-button-thumb" />
 			{m.organizations()}
 		</a>
@@ -40,7 +60,7 @@
 		<Dropdown let:trigger>
 			<button class="navbar-button" use:ripple use:melt={trigger}>
 				<Languages />
-				<span id="navbar-button-label">{LANG_DETAILS[$page.data.lang].label}</span>
+				<span class="navbar-button-label">{LANG_DETAILS[$page.data.lang].label}</span>
 			</button>
 			<svelte:fragment slot="content" let:item>
 				{#each availableLanguageTags as lang}
@@ -67,10 +87,39 @@
 		>
 			<NavbarModeIcon />
 		</button>
-		<NavbarMenu let:trigger>
-			<button class="navbar-button" use:ripple use:melt={trigger}>test</button>
-			<svelte:fragment slot="content"></svelte:fragment>
-		</NavbarMenu>
+		{#if $page.data.user}
+			<NavbarMenu let:trigger>
+				<button class="navbar-button square" use:ripple use:melt={trigger}>
+					<Avatar {...$page.data.user} />
+					{#if !$page.data.user.emailVerified}
+						<div class="badge">
+							<MailWarning />
+						</div>
+					{/if}
+				</button>
+				<NavbarMenuUser
+					slot="content"
+					let:close
+					let:title
+					let:description
+					{close}
+					{title}
+					{description}
+				/>
+			</NavbarMenu>
+		{:else}
+			{@const link = $link('/login')}
+			<a
+				class="navbar-button square"
+				{...link}
+				data-current={$noLang.startsWith('/signup') ||
+					$noLang.startsWith('/reset-password') ||
+					link['data-current'] ||
+					undefined}
+			>
+				<User2 />
+			</a>
+		{/if}
 	</nav>
 </header>
 
@@ -127,7 +176,7 @@
 	.navbar-button {
 		position: relative;
 		font-weight: var(--weight-bold);
-		border-radius: var(--radius);
+		border-radius: var(--radius-md);
 		font-size: var(--text-sm);
 		block-size: var(--block-size);
 		padding-inline: var(--padding-inline);
@@ -163,10 +212,10 @@
 	.navbar-button-label {
 		display: flex;
 		align-items: center;
-		font-size: var(--size-xs);
+		font-size: var(--text-xs);
 		padding: 0.2rem 0.5rem;
 		opacity: 0.75;
-		border-radius: var(--radius-full);
+		border-radius: var(--rounded);
 		box-shadow: 0 0 2px -0.5px currentColor;
 		transition: all 0.1s ease-out;
 
@@ -176,10 +225,6 @@
 			background: var(--color-primary-700);
 			box-shadow: 0 0 0 -0.5px currentColor;
 			opacity: 1;
-			:global(:--dark) & {
-				color: var(--color-neutral-900);
-				background: var(--color-primary-400);
-			}
 		}
 	}
 </style>

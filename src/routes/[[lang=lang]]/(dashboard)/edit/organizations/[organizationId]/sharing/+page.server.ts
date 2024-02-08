@@ -1,9 +1,11 @@
+import { authorize } from '$lib/auth/rbac.server';
+
 export const load = async (event) => {
-	await event.locals.authorize();
+	authorize(event);
 };
 
 export const actions = {
 	update: async (event) => {
-		await event.locals.authorize();
+		authorize(event);
 	},
 };

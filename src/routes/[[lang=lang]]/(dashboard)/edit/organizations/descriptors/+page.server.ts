@@ -1,3 +1,5 @@
+import { authorize } from '$lib/auth/rbac.server';
+
 export const load = async (event) => {
-	await event.locals.authorize('organizations.descriptors.update');
+	authorize(event, 'organizations.descriptors.update');
 };

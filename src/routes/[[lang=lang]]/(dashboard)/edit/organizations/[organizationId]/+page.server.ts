@@ -9,7 +9,7 @@ import { excluded } from 'drizzle-orm-helpers';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	await authorize(event);
+	authorize(event);
 	// const rawOrg = await db.query.organizations.findFirst({
 	// 	where(f, o) {
 	// 		return o.eq(f.id, event.params.organizationId);
@@ -28,7 +28,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await event.locals.authorize();
+		authorize(event);
 		const form = await superValidate(event, organizationGeneralUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });

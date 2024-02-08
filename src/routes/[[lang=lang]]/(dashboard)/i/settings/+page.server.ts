@@ -1,5 +1,6 @@
 import * as m from '$i18n/messages';
 import { USER_ROLES } from '$lib/auth/constants';
+import { authorize } from '$lib/auth/rbac.server';
 import { usersRolesRequestSchema, usersSchema } from '$lib/db/crud.server';
 import { db } from '$lib/db/db.server';
 import { getUserRolesList } from '$lib/db/queries.server';
@@ -27,7 +28,7 @@ const permissionSchema = z.object({
 const manageSchema = z.object({});
 
 export const load = async (event) => {
-	const session = await event.locals.authorize();
+	authorize(event);
 	const { firstName, middleName, lastName, role, publicEmail, publicEmailVerified } =
 		getTableColumns(users);
 	const [{ permissions, ...user }] = await db
@@ -44,7 +45,7 @@ export const load = async (event) => {
 			},
 		})
 		.from(users)
-		.where(eq(users.id, session.user.id))
+		.where(eq(users.id, event.locals.user.id))
 		.leftJoin(usersRolesRequests, eq(users.id, usersRolesRequests.userId))
 		.limit(1);
 	if (!user) {
@@ -66,7 +67,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		const session = await event.locals.authorize();
+		authorize(event);
 		const generalForm = await superValidate(event, generalSchema);
 		if (!generalForm.valid) {
 			return message(generalForm, {
@@ -80,11 +81,11 @@ export const actions = {
 				.set({
 					...generalForm.data,
 					publicEmailVerified:
-						session.user.role === USER_ROLES.ADMIN && generalForm.data.publicEmail != null
+						event.locals.user.role === USER_ROLES.ADMIN && generalForm.data.publicEmail != null
 							? TRUE()
 							: sql`case when ${users.publicEmail} = ${generalForm.data.publicEmail} then true else false end`,
 				})
-				.where(eq(users.id, session.user.id));
+				.where(eq(users.id, event.locals.user.id));
 			return message(generalForm, { title: m.success(), description: m.success_saved_data() });
 		} catch (e) {
 			return message(
@@ -100,10 +101,10 @@ export const actions = {
 		}
 	},
 	delete: async (event) => {
-		const session = await event.locals.authorize();
+		authorize(event);
 		const manageForm = await superValidate(event, manageSchema);
 		try {
-			await db.delete(users).where(eq(users.id, session.user.id));
+			await db.delete(users).where(eq(users.id, event.locals.user.id));
 			return message(manageForm, {
 				title: m.success(),
 				description: m.success_saved_data(),

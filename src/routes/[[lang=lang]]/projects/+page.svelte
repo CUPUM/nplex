@@ -103,7 +103,7 @@
 	.filter-block {
 		padding: 1rem;
 		background: red;
-		border-radius: var(--radius);
+		border-radius: var(--radius-md);
 	}
 
 	.results {
@@ -119,7 +119,7 @@
 			aspect-ratio: 3 / 4;
 			width: 100%;
 			background: red;
-			border-radius: var(--radius);
+			border-radius: var(--radius-md);
 		}
 	}
 

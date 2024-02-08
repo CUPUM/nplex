@@ -1,7 +1,8 @@
+import { authorize } from '$lib/auth/rbac.server';
 import { getProjectImageTemporalitiesList, getProjectImageTypesList } from '$lib/db/queries.server';
 
 export const load = async (event) => {
-	await event.locals.authorize();
+	authorize(event);
 	const imageTypes = getProjectImageTypesList(event);
 	const imageTemporalities = getProjectImageTemporalitiesList(event);
 	return {

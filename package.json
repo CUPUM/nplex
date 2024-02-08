@@ -60,7 +60,7 @@
 	},
 	"devDependencies": {
 		"@csstools/postcss-global-data": "^2.1.1",
-		"@inlang/cli": "^2.11.0",
+		"@inlang/cli": "^2.12.0",
 		"@inlang/paraglide-js": "1.2.3",
 		"@inlang/paraglide-js-adapter-vite": "1.2.12",
 		"@melt-ui/pp": "^0.3.0",

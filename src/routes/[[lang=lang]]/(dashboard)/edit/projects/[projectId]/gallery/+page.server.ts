@@ -1,4 +1,5 @@
 import * as m from '$i18n/messages';
+import { authorize } from '$lib/auth/rbac.server';
 import { projectsGalleryUpdateSchema, projectsImagesInsertManySchema } from '$lib/db/crud.server';
 import { db } from '$lib/db/db.server';
 import { isEditableProject, withTranslations } from '$lib/db/queries.server';
@@ -15,11 +16,11 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	const session = await event.locals.authorize();
+	authorize(event);
 	const project = db
 		.select({ bannerId: projects.bannerId })
 		.from(projects)
-		.where(and(isEditableProject(session), eq(projects.id, event.params.projectId)))
+		.where(and(isEditableProject(event.locals.user), eq(projects.id, event.params.projectId)))
 		.limit(1);
 	const [images, newImageForm, galleryForm] = await Promise.all([
 		withTranslations(projectsImages, projectsImagesTranslations, {
@@ -27,7 +28,7 @@ export const load = async (event) => {
 			reference: (tt) => tt.id,
 		})
 			.innerJoin(projects, eq(projects.id, projectsImages.projectId))
-			.where(and(isEditableProject(session), eq(projects.id, event.params.projectId)))
+			.where(and(isEditableProject(event.locals.user), eq(projects.id, event.params.projectId)))
 			.leftJoin(projectsImagesCredits, eq(projectsImagesCredits.imageId, projectsImages.id)),
 		superValidate(zod(projectsImagesInsertManySchema)),
 		project.then(([defaults]) => {

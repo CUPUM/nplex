@@ -49,7 +49,7 @@ export const load = async (event) => {
 
 export const actions = {
 	update: async (event) => {
-		await event.locals.authorize();
+		authorize(event);
 		const form = await superValidate(event, projectsContributionsUpdateSchema);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
@@ -63,7 +63,7 @@ export const actions = {
 							eq(projectsOrganizations.projectId, event.params.projectId),
 							form.data.organizationIds.length
 								? notInArray(projectsOrganizations.organizationId, form.data.organizationIds)
-								: tru()
+								: tru
 						)
 					);
 				if (form.data.organizationIds.length) {
