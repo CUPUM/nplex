@@ -5,12 +5,12 @@ Pour chaque section, expliquer pourquoi nous demandons ces informations, comment
 
 
 # General
-Ajoutez une fiche projet! Dans cette section, vous serez amenés à décrire le projet sous tous ses angles! Les informations que vous fournissez à propos du projet permettront aux utilisateurs de Nplex de filtrer leur recherche. Même lorsque le projet sera publié, vous pourrez ajouter ou modifier des informations. 
+Ajoutez une fiche projet! Dans cette section, vous serez amenés à décrire le projet sous tous ses angles! Les informations que vous fournissez à propos du projet permettront aux utilisateurs de Nplex de filtrer leur recherche. Elles permettent de documenter de manière précise le projet, comprendre sa dynamique et le contextualiser. Même lorsque le projet sera publié, vous pourrez ajouter ou modifier des informations. En remplissant de manière exhaustive chaque section de la fiche projet, vous contribuez à enrichir la base de données de Nplex. Vous fournissez ainsi des informations précieuses et inspirantes aux professionnels en design et  aux citoyens désireux d'entreprendre des travaux de construction ou rénovation. 
 
 ## Types de projets
 <!-- Un choix entre nouvelle construction, transformation, restauration. ? -->
 
-Sélectionnez le type de projet.
+Sélectionnez le type de projet. Choisissez le type qui correspond le mieux à la nature de votre projet parmi les options suivantes.
 
 ## Interventions
 
