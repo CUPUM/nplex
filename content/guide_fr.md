@@ -1,10 +1,20 @@
 ## Introduction 
 
-L’exemplarité d’un projet, en matière de design, est complexe à évaluer en raison du chevauchement de plusieurs enjeux, problématiques et besoins dans les villes comme Montréal. Plusieurs guides, comme le [Système Davos de qualité pour la culture du bâti](https://www.bak.admin.ch/bak/fr/home/baukultur/qualitaet/davos-qualitaetssystem-baukultur.html) et l’[Agenda Montréalais 2030 pour la qualité et l’exemplarité en design et en architecture](https://designmontreal.com/sites/designmontreal.com/files/publications/agenda_mtl_2030_v1.12-19_fr_lr.pdf), ont été produits afin de guider professionnels, citoyens et élus vers des projets plus positifs pour la communauté, et ont inspiré la rédaction du Guide d’exemplarité des projets de Nplex, qui vise à fournir au lecteur des balises spécifiques au territoire montréalais et au type de projet visé par la plateforme. Le présent guide explore l’exemplarité des projets en huit volets : la durabilité, la résilience, la modération de la consommation énergétique, l’optimisation économique, l’attractivité et la valorisation culturelle, l’innovation, l’équité et l’inclusivité, et le bien-être. 
+L’exemplarité d’un projet, en matière de design, est complexe à évaluer en raison du chevauchement de plusieurs enjeux, problématiques et besoins dans les villes comme Montréal. Plusieurs guides, comme le [Système Davos de qualité pour la culture du bâti](https://www.bak.admin.ch/bak/fr/home/baukultur/qualitaet/davos-qualitaetssystem-baukultur.html) et l’[Agenda Montréalais 2030 pour la qualité et l’exemplarité en design et en architecture](https://designmontreal.com/sites/designmontreal.com/files/publications/agenda_mtl_2030_v1.12-19_fr_lr.pdf), ont été produits afin de guider professionnels, citoyens et élus vers des projets plus positifs pour la communauté, et ont inspiré la rédaction du Guide d’exemplarité des projets de Nplex, qui vise à fournir au lecteur des balises spécifiques au territoire montréalais et au type de projet visé par la plateforme. Le présent guide explore l’exemplarité des projets en huit volets : 
+ - la durabilité
+ - la résilience
+ - la modération de la consommation énergétique
+ - l’optimisation économique
+ - l’attractivité et la valorisation culturelle
+ - l’innovation
+ - l’équité et l’inclusivité
+ - le bien-être
 
 ## Durabilité 
 
-Un projet durable prend en compte, simultanément, les dimensions sociales, environnementales et économiques de celui-ci. Un projet qui dure dans le temps permet une réduction de la consommation des ressources et de l’émission des gaz à effet de serre (DAVOS 8 critères, p. 32). La rénovation, plutôt que la reconstruction, d’environnements bâtis de qualité, permet également de conserver la valeur affective, culturelle et patrimoniale d’un lieu (DAVOS 8 critères, p. 26). Les déchets de construction et de déconstruction peuvent être réutilisés ou recyclés (DAVOS 8 critères, p. 32).   
+Un projet durable prend en compte, simultanément, les dimensions sociales, environnementales et économiques de celui-ci. 
+
+Un projet qui dure dans le temps permet une réduction de la consommation des ressources et de l’émission des gaz à effet de serre (DAVOS 8 critères, p. 32). La rénovation, la réutilisation ou le recyclage d’environnements bâtis de qualité permet également de conserver la valeur affective, culturelle et patrimoniale d’un lieu (DAVOS 8 critères, pp. 26–32).   
 
 Ensuite, un projet durable est flexible, c’est-à-dire qu’il est facilement adaptable à plusieurs fonctions, plusieurs publics et plusieurs conditions climatiques (DAVOS 8 critères, p. 25). La flexibilité du projet peut se déployer au quotidien, au travers des saisons ou sur plusieurs années.  
 
@@ -24,15 +34,19 @@ Ensuite, l’énergie nécessaire pour l'entretien et pour rendre le lieu confor
 
 ## Optimisation économique 
 
-La contribution à l’économie régionale, mesurée par la création de logements, d’emplois ou de services, doit être secondée par la réduction du cout de construction et d’entretien, en prenant en compte le cycle de vie du projet (DAVOS 8 critères, p. 35). La croissance engendrée par l’investissement doit tenir en compte des enjeux comme la gentrification et la croissance du cout de la vie, afin de favoriser une viabilité économique à long terme du projet (DAVOS 8 critères, p. 35). Il faut également viser à remplir les besoins actuels et projetés et promouvoir une culture de la suffisance (DAVOS 8 critères, p. 36). Finalement, l’utilisation de programmes de subvention est un acteur d’optimisation économique à considérer dans l’évaluation des projets. 
+La contribution à l’économie régionale, mesurée par la création de logements, d’emplois ou de services, doit être secondée par la réduction du coût de construction et d’entretien, en prenant en compte le cycle de vie du projet (DAVOS 8 critères, p. 35). 
+
+La croissance engendrée par l’investissement doit tenir en compte des enjeux comme la gentrification et la croissance du cout de la vie, afin de favoriser une viabilité économique à long terme du projet (DAVOS 8 critères, p. 35). Il faut également viser à remplir les besoins actuels et projetés et promouvoir une culture de la suffisance (DAVOS 8 critères, p. 36). Finalement, l’utilisation de programmes de subvention est un acteur d’optimisation économique à considérer dans l’évaluation des projets. 
 
 ## Attractivité et valorisation culturelle 
 
-L’attractivité d’un projet est influencée par des facteurs d’esthétisme, d’identité culturelle, d’histoire et d’ambiance, qui sont subjectives (Agenda Mtl, p. 43). De plus, l’intégration au paysage urbain, naturel et culturel du projet lui permet d’être en dialogue avec ses environs, et la cohérence spatiale qui en résulte ajoute de la valeur au projet (DAVOS 8 critères, p. 42). Un projet attractif est un projet qui met en valeur l’histoire du lieu, en permettant une reconnaissance et une conservation des traces de son passé, afin de faire perdurer la valeur identitaire liée au lieu (DAVOS 8 critères, p. 44).  
+L’attractivité d’un projet est influencée par des facteurs d’esthétisme, de représentation culturelle, d’histoire et d’ambiance, qui sont subjectives (Agenda Mtl, p. 43). De plus, l’intégration au paysage urbain, naturel et culturel du projet lui permet d’être en dialogue avec ses environs, et la cohérence spatiale qui en résulte ajoute de la valeur au projet (DAVOS 8 critères, p. 42). 
+
+Un projet attractif est un projet qui met en valeur l’histoire du lieu, en permettant une reconnaissance et une conservation des traces de son passé, afin de faire perdurer la valeur identitaire liée au lieu (DAVOS 8 critères, p. 44).  
 
 ## Innovation 
 
-L’innovation permet à la créativité de s’exprimer à travers le design, encourageant ainsi le partage des connaissances et des idées (Agenda Mtl, p. 31). Des pratiques novatrices de gouvernance et de nouvelles technologies peuvent être  intégrées de manière significative dans le projet. Finalement, l’implication de la relève dans le projet permet de stimuler l’innovation.  
+L’innovation permet à la créativité de s’exprimer à travers le design, la construction ou la fabrication de solutions techniques. Elle encourage ainsi le partage des connaissances et des idées (Agenda Mtl, p. 31). Avec sobriété, les pratiques novatrices de coordination et lesnouvelles technologies peuvent être intégrées de manière significative dans le projet. Finalement, l’implication de la relève dans le projet permet de stimuler l’innovation par la tranmission et le renouvellement des savoirs.  
 
 ## Équité et inclusivité 
 
@@ -44,4 +58,4 @@ Le bien-être est une composante large, englobant des notions de santé, sécuri
 
 ## Conclusion 
 
-Ce guide rend compte de la diversité des façons dont un projet peut être exemplaire. Huit aspects ont été explorés ; la durabilité, la résilience, la modération de la consommation énergétique, l’optimisation économique, l’attractivité et la valorisation culturelle, l’innovation, l’équité et l’inclusivité, et le bien-être. L’exemplarité d’un projet ne se juge pas par le nombre de critères qu’il coche, mais par la manière dont ces critères interagissent pour former un tout cohérent. Les nombreux exemples présentés sont également un rappel du caractère unique de chaque projet. C’est grâce à la compréhension approfondie de ces aspects qu’un projet peut tendre à l’exemplarité. 
+Ce guide rend compte de la diversité des façons dont un projet peut être exemplaire. Huit aspects ont été explorés ; la durabilité, la résilience, la modération de la consommation énergétique, l’optimisation économique, l’attractivité et la valorisation culturelle, l’innovation, l’équité et l’inclusivité, et le bien-être. L’exemplarité d’un projet ne se juge pas par le nombre de critères auquel il souscrit, mais par la manière dont ces critères interagissent pour former un tout cohérent. Les nombreux exemples présentés sont également un rappel du caractère unique de chaque projet. C’est grâce à la compréhension approfondie de ces aspects qu’un projet peut tendre à l’exemplarité. 
