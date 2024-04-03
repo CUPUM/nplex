@@ -5,21 +5,29 @@ Pour chaque section, expliquer pourquoi nous demandons ces informations, comment
 
 
 # General
-Ajoutez une fiche projet! Dans cette section, vous serez amenés à décrire le projet sous tous ses angles! Les informations que vous fournissez à propos du projet permettront aux utilisateurs de Nplex de filtrer leur recherche. Elles permettent de documenter de manière précise le projet, comprendre sa dynamique et le contextualiser. Même lorsque le projet sera publié, vous pourrez ajouter ou modifier des informations. En remplissant de manière exhaustive chaque section de la fiche projet, vous contribuez à enrichir la base de données de Nplex. Vous fournissez ainsi des informations précieuses et inspirantes aux professionnels en design et  aux citoyens désireux d'entreprendre des travaux de construction ou rénovation. 
+Pour faire connaître votre projet, il vous suffit de compléter cette fiche !
+
+Les informations que vous fournissez ici permettent aux utilisateurs de Nplex trouver votre projet plus facilement.
+
+Une fois votre fiche soumise, le projet sera évalué par nos experts sur la base de son exemplarité. S’il est retenu, il sera publié sur Nplex. Vous aurez ainsi contribué à construire une culture de l’exemplarité à partir de réalisations concrètes et modestes.
+
+Il est donc bien important de vous assurer de leur exactitude. Il vous est possible de modifier/retirer ces informations en tout temps.
+
 
 ## Types de projets
 <!-- Un choix entre nouvelle construction, transformation, restauration. ? -->
 
-Sélectionnez le type de projet. Choisissez le type qui correspond le mieux à la nature de votre projet parmi les options suivantes.
+Pour commencer, dites-nous de quel type de projet il s’agit. Ceci guidera les utilisateurs selon leur intérêt. Il suffit de choisir l’option qui corresponde le mieux à la nature de votre projet parmi les options suivantes. 
 
 ## Interventions
 
-Sélectionnez une ou plusieurs intervention réalisées dans le cadre du projet. Assurez-vous de lister uniquement les interventions prises en compte par les autres méta-données de la fiche (e.g.: la fourchette de prix, le calendrier des travaux, la galerie des images, etc.). 
+Présicez quelles sont les interventions réalisées dans le cadre du projet. Ceci facilitera la recherche des utilisateurs. Vous pouvez sélectionnez toutes les interventions qui ont été conçues et réalisées ensemble.
 
 ## Type de propriétaire
-<!-- Un choix entre communauté, entreprise, particulier, institution publique. ? -->
+<!-- Un choix entre particulier, entreprise, organisme à but non-lucratif, institution publique ? -->
 
-Sélectionnez le type de propriétaire du projet au moment de sa réalisation.
+Indiquez le type de propriétaire du projet au moment de sa réalisation. Ceci donnera une meilleure compréhension du projet. Une seule option est possible.
 
 ## Coût du projet
-Indiquez approximativement les coûts totaux du projet, selon un niveau de précision avec lequel vous êtes confortable. Prenez en compte tout ce qui est décrit et présenté dans la fiche. Si besoin, n'hésitez pas à fournir des précisions concernant le coût du projet dans la section description du projet. 
+<!-- Echelle à deux extrémités --> 
+Approximez le coût total du projet. Ceci aidera les utilisateurs à mieux comprendre à quoi s'attendre. Donnez un échelle avec laquelle vous êtes confortable.
