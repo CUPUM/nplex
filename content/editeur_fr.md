@@ -1,9 +1,3 @@
-<!-- 
-Pour chaque section, expliquer pourquoi nous demandons ces informations, comment elles seront utilisées, et comment l’utilisateur peut les renseigner
-
- -->
-
-
 # General
 Pour faire connaître votre projet, il vous suffit de remplir cette fiche !
 
