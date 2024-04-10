@@ -12,6 +12,7 @@ import { and, eq, getTableColumns } from 'drizzle-orm';
 
 export const load = async (event) => {
 	authorize(event);
+
 	const editableProjects = db
 		.select({
 			...getTableColumns(projectsTranslations),

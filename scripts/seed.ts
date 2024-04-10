@@ -1,6 +1,7 @@
-import { InferInsertModel } from 'drizzle-orm';
+import type { InferInsertModel } from 'drizzle-orm';
 import { exit } from 'process';
-import { AvailableLanguageTag, availableLanguageTags } from '../src/i18n/runtime';
+import type { AvailableLanguageTag } from '../src/i18n/runtime';
+import { availableLanguageTags } from '../src/i18n/runtime';
 import { USER_ROLES, USER_ROLES_ARR } from '../src/lib/auth/constants';
 import { userRoles, userRolesTranslations } from '../src/lib/db/schema/accounts';
 import { langs } from '../src/lib/db/schema/i18n';
@@ -19,78 +20,67 @@ import {
 	projectTypesTranslations,
 } from '../src/lib/db/schema/public';
 import { LANG_DETAILS } from '../src/lib/i18n/constants';
-import { createDrizzle } from './common';
+import { scriptDb } from './common';
 
-const db = createDrizzle();
-const seeded: unknown[] = [];
-
-console.info('🥕 Seeding database with base data...');
 try {
-	await db.transaction(async (tx) => {
+	console.info('🥕 Seeding database...');
+	await scriptDb.transaction(async (tx) => {
 		// Seed locales
-		seeded.push(
-			await tx
-				.insert(langs)
-				.values(
-					availableLanguageTags.map((lang) => ({ lang: lang, name: LANG_DETAILS[lang].name }))
-				)
-				.onConflictDoNothing()
-				.returning()
-		);
+		await tx
+			.insert(langs)
+			.values(availableLanguageTags.map((lang) => ({ lang: lang, name: LANG_DETAILS[lang].name })))
+			.onConflictDoNothing()
+			.returning();
 
 		// Seed user USER_ROLES
-		seeded.push(
-			await tx
-				.insert(userRoles)
-				.values(USER_ROLES_ARR.map((role) => ({ role })))
-				.onConflictDoNothing()
-				.returning()
-		);
-		seeded.push(
-			await tx
-				.insert(userRolesTranslations)
-				.values([
-					{
-						role: USER_ROLES.VISITOR,
-						lang: 'fr',
-						name: 'Visiteur',
-						description: 'Rôle de base pour tout utilisateur avec un compte.',
-					},
-					{
-						role: USER_ROLES.VISITOR,
-						lang: 'en',
-						name: 'Visitor',
-						description: 'Default role for every registered user.',
-					},
-					{
-						role: USER_ROLES.EDITOR,
-						lang: 'fr',
-						name: 'Éditeur',
-						description:
-							'Collaborateur ayant les droits de base pour la gestion et la publication de contenu.',
-					},
-					{
-						role: USER_ROLES.EDITOR,
-						lang: 'en',
-						name: 'Editor',
-						description: '',
-					},
-					{
-						role: USER_ROLES.ADMIN,
-						lang: 'fr',
-						name: 'Administrateur',
-						description:
-							'Administrateur avec accès et permissions permettant de gérer les droits des éditeurs et visiteurs.',
-					},
-					{
-						role: USER_ROLES.ADMIN,
-						lang: 'en',
-						name: 'Administrator',
-						description: '',
-					},
-				])
-				.onConflictDoNothing()
-		);
+		await tx
+			.insert(userRoles)
+			.values(USER_ROLES_ARR.map((role) => ({ role })))
+			.onConflictDoNothing()
+			.returning();
+		await tx
+			.insert(userRolesTranslations)
+			.values([
+				{
+					role: USER_ROLES.VISITOR,
+					lang: 'fr',
+					name: 'Visiteur',
+					description: 'Rôle de base pour tout utilisateur avec un compte.',
+				},
+				{
+					role: USER_ROLES.VISITOR,
+					lang: 'en',
+					name: 'Visitor',
+					description: 'Default role for every registered user.',
+				},
+				{
+					role: USER_ROLES.EDITOR,
+					lang: 'fr',
+					name: 'Éditeur',
+					description:
+						'Collaborateur ayant les droits de base pour la gestion et la publication de contenu.',
+				},
+				{
+					role: USER_ROLES.EDITOR,
+					lang: 'en',
+					name: 'Editor',
+					description: '',
+				},
+				{
+					role: USER_ROLES.ADMIN,
+					lang: 'fr',
+					name: 'Administrateur',
+					description:
+						'Administrateur avec accès et permissions permettant de gérer les droits des éditeurs et visiteurs.',
+				},
+				{
+					role: USER_ROLES.ADMIN,
+					lang: 'en',
+					name: 'Administrator',
+					description: '',
+				},
+			])
+			.onConflictDoNothing();
 
 		// Seed project types
 		const pt_t = [
@@ -135,22 +125,19 @@ try {
 			.insert(projectTypes)
 			.values(pt_t.map((v, index) => ({ index })))
 			.returning();
-		seeded.push(
-			pt,
-			await tx
-				.insert(projectTypesTranslations)
-				.values(
-					pt_t.flatMap((v, i) =>
-						availableLanguageTags.map((lang) => ({
-							...v[lang],
-							lang,
-							id: pt[i].id,
-						}))
-					)
+		await tx
+			.insert(projectTypesTranslations)
+			.values(
+				pt_t.flatMap((v, i) =>
+					availableLanguageTags.map((lang) => ({
+						...v[lang],
+						lang,
+						id: pt[i].id,
+					}))
 				)
-				.onConflictDoNothing()
-				.returning()
-		);
+			)
+			.onConflictDoNothing()
+			.returning();
 
 		// Seed project intervention and categories
 		const pic_t = [
@@ -202,16 +189,13 @@ try {
 			.insert(projectInterventionCategories)
 			.values(pic_t.map((v, index) => ({ index })))
 			.returning();
-		seeded.push(
-			pic,
-			await tx.insert(projectInterventionCategoriesTranslations).values(
-				pic_t.flatMap((v, i) =>
-					availableLanguageTags.map((lang) => ({
-						...v[lang],
-						lang,
-						id: pic[i].id,
-					}))
-				)
+		await tx.insert(projectInterventionCategoriesTranslations).values(
+			pic_t.flatMap((v, i) =>
+				availableLanguageTags.map((lang) => ({
+					...v[lang],
+					lang,
+					id: pic[i].id,
+				}))
 			)
 		);
 
@@ -265,16 +249,13 @@ try {
 			.insert(projectSiteOwnerships)
 			.values(pso_t.map((v, index) => ({ index })))
 			.returning();
-		seeded.push(
-			pso,
-			await tx.insert(projectSiteOwnershipsTranslations).values(
-				pso_t.flatMap((v, i) =>
-					availableLanguageTags.map((lang) => ({
-						...v[lang],
-						lang,
-						id: pso[i].id,
-					}))
-				)
+		await tx.insert(projectSiteOwnershipsTranslations).values(
+			pso_t.flatMap((v, i) =>
+				availableLanguageTags.map((lang) => ({
+					...v[lang],
+					lang,
+					id: pso[i].id,
+				}))
 			)
 		);
 
@@ -318,16 +299,13 @@ try {
 			.insert(projectImplantationTypes)
 			.values(pim_t.map((v, index) => ({ index })))
 			.returning();
-		seeded.push(
-			pim,
-			await tx.insert(projectImplantationTypesTranslations).values(
-				pim_t.flatMap((v, i) =>
-					availableLanguageTags.map((lang) => ({
-						...v[lang],
-						lang,
-						id: pim[i].id,
-					}))
-				)
+		await tx.insert(projectImplantationTypesTranslations).values(
+			pim_t.flatMap((v, i) =>
+				availableLanguageTags.map((lang) => ({
+					...v[lang],
+					lang,
+					id: pim[i].id,
+				}))
 			)
 		);
 
@@ -411,16 +389,13 @@ try {
 			.insert(projectExemplarityCategories)
 			.values(pec_t.map((v, index) => ({ index })))
 			.returning();
-		seeded.push(
-			pec,
-			await tx.insert(projectExemplarityCategoriesTranslations).values(
-				pec_t.flatMap((v, i) =>
-					availableLanguageTags.map((lang) => ({
-						...v[lang],
-						lang,
-						id: pec[i].id,
-					}))
-				)
+		await tx.insert(projectExemplarityCategoriesTranslations).values(
+			pec_t.flatMap((v, i) =>
+				availableLanguageTags.map((lang) => ({
+					...v[lang],
+					lang,
+					id: pec[i].id,
+				}))
 			)
 		);
 
@@ -473,26 +448,20 @@ try {
 			Omit<InferInsertModel<typeof projectImageTypesTranslations>, 'lang' | 'id'>
 		>[];
 		const pit = await tx.insert(projectImageTypes).values(Array(pit_t.length).fill({})).returning();
-		seeded.push(
-			pit,
-			await tx.insert(projectImageTypesTranslations).values(
-				pit_t.flatMap((v, i) =>
-					availableLanguageTags.map((lang) => ({
-						...v[lang],
-						lang,
-						id: pit[i].id,
-					}))
-				)
+		await tx.insert(projectImageTypesTranslations).values(
+			pit_t.flatMap((v, i) =>
+				availableLanguageTags.map((lang) => ({
+					...v[lang],
+					lang,
+					id: pit[i].id,
+				}))
 			)
 		);
 	});
-	console.info(seeded);
 	console.info('🚀 Database seeded successfully!');
 } catch (error) {
 	console.error(error);
 	console.error('❌ Database seed failed (see error above).');
 } finally {
-	// Make sure to close pool.
-	// await db.end()
 	exit();
 }

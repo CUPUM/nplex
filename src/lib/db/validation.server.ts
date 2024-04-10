@@ -1,11 +1,14 @@
+import * as m from '$i18n/messages';
 import { availableLanguageTags } from '$i18n/runtime';
 import { EMAIL_VERIFICATION_CODE_LENGTH } from '$lib/auth/constants';
-import type { langSchema } from '$lib/i18n/validation';
+import type { LangSchema } from '$lib/i18n/validation';
 import { strictRecord } from '$lib/utils/zod';
-import { isRange } from 'drizzle-orm-helpers';
+import { intrangeSchema } from 'drizzle-orm-helpers/pg';
 import { createInsertSchema } from 'drizzle-zod';
-import { z, type ZodObject, type ZodTypeAny } from 'zod';
+import type { ZodObject, ZodTypeAny } from 'zod';
+import { z } from 'zod';
 import {
+	LANG_COLUMN_NAME,
 	PROJECT_ADJACENT_ALLEYS_MAX,
 	PROJECT_ADJACENT_STREETS_MAX,
 	PROJECT_BUILDING_LEVELS_HEIGHT_MAX,
@@ -17,13 +20,14 @@ import {
 	PROJECT_DESCRIPTION_MAX,
 	PROJECT_SUMMARY_MAX,
 	PROJECT_TITLE_MAX,
+	USER_PASSWORD_MIN,
 } from './constants';
 import { emailVerificationCodes, users } from './schema/auth';
 import {
-	organizations,
-	organizationsTranslations,
 	organizationTypes,
 	organizationTypesTranslations,
+	organizations,
+	organizationsTranslations,
 	projectBuildingLevelTypes,
 	projectBuildingLevelTypesTranslations,
 	projectExemplarityCategories,
@@ -38,17 +42,17 @@ import {
 	projectInterventionsCategories,
 	projectInterventionsCategoriesTranslations,
 	projectInterventionsTranslations,
+	projectSiteOwnerships,
+	projectSiteOwnershipsTranslations,
+	projectTypes,
+	projectTypesTranslations,
 	projects,
 	projectsBuildingLevels,
 	projectsExemplarityIndicators,
 	projectsImages,
 	projectsInterventions,
-	projectSiteOwnerships,
-	projectSiteOwnershipsTranslations,
 	projectsTranslations,
 	projectsUsers,
-	projectTypes,
-	projectTypesTranslations,
 } from './schema/public';
 
 /**
@@ -57,13 +61,13 @@ import {
  */
 export function withTranslationsSchema<
 	T extends Record<string, ZodTypeAny>,
-	TT extends Record<string, ZodTypeAny> & { lang: typeof langSchema },
+	TT extends Record<string, ZodTypeAny> & { lang: LangSchema },
 >(schema: ZodObject<T>, translationSchema: ZodObject<TT>) {
 	return schema.extend({
-		translations: strictRecord(availableLanguageTags, (l) =>
+		translations: strictRecord(availableLanguageTags, (lang) =>
 			translationSchema
-				.omit({ lang: true })
-				.extend({ lang: translationSchema.shape.lang.default(l) })
+				.omit({ [LANG_COLUMN_NAME]: true })
+				.extend({ [LANG_COLUMN_NAME]: translationSchema.shape[LANG_COLUMN_NAME].default(lang) })
 		),
 	});
 }
@@ -228,8 +232,7 @@ export const newProjectImageTypeSchema = projectImageTypesWithTranslationsSchema
 export const projectsSchema = createInsertSchema(projects, {
 	adjacentStreets: (s) => s.adjacentStreets.positive().max(PROJECT_ADJACENT_STREETS_MAX),
 	adjacentAlleys: (s) => s.adjacentAlleys.positive().max(PROJECT_ADJACENT_ALLEYS_MAX),
-	costRange: () =>
-		z.custom<Range>((v) => isRange(v, { min: PROJECT_COST_MIN, max: PROJECT_COST_MAX })),
+	costRange: () => intrangeSchema({ min: PROJECT_COST_MIN, max: PROJECT_COST_MAX }),
 });
 export const projectsTranslationsSchema = createInsertSchema(projectsTranslations, {
 	title: (s) => s.title.trim().max(PROJECT_TITLE_MAX),
@@ -259,6 +262,7 @@ export const projectsExemplarityIndicatorsSchema = createInsertSchema(
 export const projectsImagesSchema = createInsertSchema(projectsImages, {
 	index: (s) => s.index.positive(),
 });
+// export const newProjectsImagesSchema = projects
 
 export const projectsUsersSchema = createInsertSchema(projectsUsers);
 
@@ -302,6 +306,23 @@ export const usersSchema = createInsertSchema(users, {
 });
 
 // Authentication
+
+export const emailPasswordSignupSchema = z
+	.object({
+		email: z.string().trim().email(),
+		password: z.string().min(USER_PASSWORD_MIN, 'Eh! Password too short!'),
+		confirmPassword: z.string(),
+	})
+	.superRefine((d, ctx) => {
+		if (d.confirmPassword !== d.password) {
+			ctx.addIssue({
+				fatal: true,
+				code: z.ZodIssueCode.custom,
+				message: m.auth_password_confirmation_error(),
+			});
+			return z.NEVER;
+		}
+	});
 
 export const emailVerificationCodesSchema = createInsertSchema(emailVerificationCodes, {
 	code: (s) => s.code.trim().length(EMAIL_VERIFICATION_CODE_LENGTH),

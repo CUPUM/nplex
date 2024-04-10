@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { setLanguageTag } from '$i18n/runtime';
 	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
 	import Spinner from '$lib/components/Spinner.svelte';
 	import ToastsOutlet from '$lib/components/ToastsOutlet.svelte';
+	import { SETOUT_DEFAULT } from '$lib/setout/constants';
 	import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
 	import { onMount } from 'svelte';
 	import Footer from './Footer.svelte';
@@ -15,6 +17,10 @@
 	let prevLang = data.lang;
 
 	onMount(() => {
+		page.subscribe((p) => {
+			const setout = p.data.setout ?? SETOUT_DEFAULT;
+			document.documentElement.setAttribute('data-setout', setout);
+		});
 		mounted = true;
 	});
 

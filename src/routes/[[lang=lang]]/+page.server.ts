@@ -4,7 +4,7 @@ import { db } from '$lib/db/db.server';
 import { organizations, projects, projectsImages } from '$lib/db/schema/public';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
-import { random } from 'drizzle-orm-helpers';
+import { random } from 'drizzle-orm-helpers/pg';
 
 export const load = async () => {
 	const [featuredProjects, featuredOrganizations] = await Promise.all([

@@ -3,16 +3,15 @@
 
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import { exit } from 'process';
-import { DB_MIGRATIONS_FOLDER, createDrizzle } from './common';
+import { DB_MIGRATIONS_FOLDER, scriptDb } from './common';
 
-const db = createDrizzle();
-
-console.info('🚧 Applying database migration(s)...');
 try {
-	await migrate(db, { migrationsFolder: DB_MIGRATIONS_FOLDER });
+	console.info('🚧 Applying database migration(s)...');
+	await migrate(scriptDb, { migrationsFolder: DB_MIGRATIONS_FOLDER });
+	console.info('🚀 Database migration(s) applied successfully!');
 } catch (error) {
 	console.error('❌ Database migration(s) failed (see error below).');
 	throw error;
+} finally {
+	exit();
 }
-console.info('🚀 Database migration(s) applied successfully!');
-exit();

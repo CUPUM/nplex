@@ -1,11 +1,11 @@
 import * as m from '$i18n/messages';
 import { sendPasswordResetLink } from '$lib/auth/emails.server';
-import { isEmailUser } from '$lib/auth/validation';
 import { db } from '$lib/db/db.server';
 import { users } from '$lib/db/schema/auth';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
+import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 
@@ -14,13 +14,12 @@ const passwordResetSchema = z.object({
 });
 
 export const load = async (event) => {
-	const session = await event.locals.auth.validate();
-	if (session) {
+	if (event.locals.user) {
 		// Redirect authed user to their account's settings page
 		// where they can update password without using a link.
 		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
-	const form = superValidate(passwordResetSchema);
+	const form = superValidate(zod(passwordResetSchema));
 	return { form };
 };
 
@@ -45,7 +44,7 @@ export const actions = {
 					}
 				);
 			}
-			if (!isEmailUser(user)) {
+			if (!user.email) {
 				throw new Error('User email is null');
 			}
 			await sendPasswordResetLink(user, event);

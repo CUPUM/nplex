@@ -1,5 +1,12 @@
 import * as m from '$i18n/messages';
 import { authorize } from '$lib/auth/rbac.server';
+import {
+	coalesce,
+	emptyJsonArray,
+	excluded,
+	getColumns,
+	jsonAgg,
+} from '$lib/db/custom-types.server';
 import { db } from '$lib/db/db.server';
 import { withTranslations } from '$lib/db/queries.server';
 import {
@@ -11,7 +18,6 @@ import {
 	projectTypesToInterventions,
 	projectTypesTranslations,
 } from '$lib/db/schema/public';
-import { coalesce, emptyJsonArray, excluded, getColumns, jsonAgg } from '$lib/db/sql.server';
 import {
 	newProjectInterventionCategorySchema,
 	newProjectInterventionSchema,

@@ -7,12 +7,12 @@ import { derived } from 'svelte/store';
 /**
  * Remove an app-oriented href's lang param.
  */
-export function removeLang<H extends string>(href: H) {
+export function removeLang<H extends string>(href: `/${AvailableLanguageTag}${H}` | H) {
 	const [_, maybeLang, ...rest] = href.split('/');
 	if (availableLanguageTags.includes(maybeLang as AvailableLanguageTag)) {
-		return `/${rest.join('/')}`;
+		return `/${rest.join('/')}` as H;
 	}
-	return href;
+	return href as H;
 }
 
 /**
@@ -20,7 +20,7 @@ export function removeLang<H extends string>(href: H) {
  *
  * **Attention**: If a lang param is included in the passed location string, it will be replaced.
  */
-export function useLang<H extends string>(
+export function withLang<H extends string, L extends AvailableLanguageTag>(
 	/**
 	 * Route location agnostic of lang segment.
 	 */
@@ -28,13 +28,12 @@ export function useLang<H extends string>(
 	/**
 	 * Custom lang to apply when wishing to target a lang different than the current one.
 	 */
-	lang: AvailableLanguageTag
+	lang: L
 ) {
 	const noLang = removeLang(href);
-	if (lang === sourceLanguageTag) {
-		return noLang;
-	}
-	return `/${lang}${href}`;
+	type LangParam = L extends typeof sourceLanguageTag ? '' : `/${L}`;
+	const langParam = (lang === sourceLanguageTag ? '' : '/' + lang) as LangParam;
+	return `${langParam}${noLang}` as const;
 }
 
 function isCurrent(page: Page, href: string) {
@@ -76,7 +75,7 @@ export const link = derived(page, ($p) => {
 			current?: (page: Page, href: H) => 'page' | 'step' | undefined;
 		} = {}
 	) => {
-		const _href = useLang(href, lang);
+		const _href = withLang(href, lang);
 		const _current = current($p, href);
 		return {
 			'href': _href,

@@ -1,10 +1,6 @@
 import { preprocessMeltUI } from '@melt-ui/pp';
 import adapter from '@sveltejs/adapter-vercel';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-import { mdsvex } from 'mdsvex';
-import mdsvexamples from 'mdsvexamples';
-import rehypeSlug from 'rehype-slug';
-// import remarkToc from 'remark-toc';
 import sequence from 'svelte-sequential-preprocessor';
 
 const md = ['.svx', '.mdx'];
@@ -17,23 +13,21 @@ const config = {
 	// for more information about preprocessors
 	preprocess: sequence([
 		vitePreprocess(),
-		process.env.SKIP_MD
-			? undefined
-			: mdsvex({
-					extensions: md,
-					remarkPlugins: [
-						// remarkToc,
-						[
-							mdsvexamples,
-							{
-								defaults: {
-									Wrapper: '/src/routes/[[lang=lang]]/docs/Preview.svelte',
-								},
-							},
-						],
-					],
-					rehypePlugins: [rehypeSlug],
-				}),
+		// mdsvex({
+		// 	extensions: md,
+		// 	remarkPlugins: [
+		// 		// remarkToc,
+		// 		[
+		// 			mdsvexamples,
+		// 			{
+		// 				defaults: {
+		// 					Wrapper: '/src/routes/[[lang=lang]]/docs/Preview.svelte',
+		// 				},
+		// 			},
+		// 		],
+		// 	],
+		// 	rehypePlugins: [rehypeSlug],
+		// }),
 		preprocessMeltUI(),
 	]),
 	extensions: ['.svelte', ...md],

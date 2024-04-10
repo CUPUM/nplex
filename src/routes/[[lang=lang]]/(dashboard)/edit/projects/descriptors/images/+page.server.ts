@@ -15,7 +15,7 @@ import {
 	messageSuccess,
 } from '$lib/forms/messages';
 import { eq } from 'drizzle-orm';
-import { excluded } from 'drizzle-orm-helpers';
+import { excluded } from 'drizzle-orm-helpers/pg';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 

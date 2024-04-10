@@ -9,7 +9,6 @@
 	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import { langSwitch, link, noLang } from '$lib/i18n/link';
 	import { mode } from '$lib/modes/store';
-	import { setout } from '$lib/setout/store';
 	import { melt } from '@melt-ui/svelte';
 	import { Languages, MailWarning, User2 } from 'lucide-svelte';
 	import { onMount } from 'svelte';
@@ -34,7 +33,7 @@
 	});
 </script>
 
-<header id="navbar" class={$setout}>
+<header id="navbar" class={$page.data.setout}>
 	<nav class="navbar-group site">
 		<a class="navbar-button" {...$link('/')} use:ripple>
 			<Logo size="1.5em" />

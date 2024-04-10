@@ -8,8 +8,8 @@ import { getColumns } from 'drizzle-orm-helpers';
 export const load = async (event) => {
 	authorize(event);
 	const pt = withTranslation(event, projects, projectsTranslations, {
-		field: (t) => t.id,
-		reference: (tt) => tt.id,
+		fields: (t) => t.id,
+		references: (tt) => tt.id,
 	}).as('pt');
 	const ptColumns = getColumns(pt);
 	const likedProjects = await db

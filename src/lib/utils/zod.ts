@@ -1,4 +1,5 @@
-import { z, type ZodTypeAny } from 'zod';
+import type { ZodTypeAny } from 'zod';
+import { z } from 'zod';
 
 /**
  * Similar to zod's RecordType, but where indexed keys are required instead of optional.

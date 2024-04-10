@@ -27,7 +27,6 @@ export const auth = new Lucia(adapter, {
 			role: attributes.role,
 			email: attributes.email,
 			emailVerified: attributes.email_verified,
-			githubUsername: attributes.github_username,
 		};
 	},
 });
@@ -37,7 +36,7 @@ declare module 'lucia' {
 		Lucia: typeof auth;
 		DatabaseUserAttributes: Pick<
 			InferSelectModel<typeof users, { dbColumnNames: true }>,
-			'id' | 'email' | 'email_verified' | 'role' | 'github_username'
+			'id' | 'email' | 'email_verified' | 'role'
 		>;
 	}
 }

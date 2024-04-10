@@ -56,7 +56,7 @@
 	});
 </script>
 
-<Button
+S<Button
 	equi={!$$slots.default || typedProps.equi}
 	variant="ghost"
 	active={tracking}

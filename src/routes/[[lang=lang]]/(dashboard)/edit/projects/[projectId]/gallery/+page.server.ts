@@ -1,6 +1,5 @@
 import * as m from '$i18n/messages';
 import { authorize } from '$lib/auth/rbac.server';
-import { projectsGalleryUpdateSchema, projectsImagesInsertManySchema } from '$lib/db/crud.server';
 import { db } from '$lib/db/db.server';
 import { isEditableProject, withTranslations } from '$lib/db/queries.server';
 import {
@@ -43,4 +42,8 @@ export const load = async (event) => {
 		newImageForm,
 		galleryForm,
 	};
+};
+
+export const actions = {
+	upload: async (event) => {},
 };

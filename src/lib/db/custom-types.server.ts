@@ -1,13 +1,9 @@
-import { isAvailableLanguageTag, type AvailableLanguageTag } from '$i18n/runtime';
-import { USER_ROLE_DEFAULT, type UserRole } from '$lib/auth/constants';
+import type { AvailableLanguageTag } from '$i18n/runtime';
+import { isAvailableLanguageTag } from '$i18n/runtime';
+import type { UserRole } from '$lib/auth/constants';
+import { USER_ROLE_DEFAULT } from '$lib/auth/constants';
 import { isUserRole } from '$lib/auth/validation';
-import { createGenerateNanoid, createRegconfig } from 'drizzle-orm-helpers';
 import { customType } from 'drizzle-orm/pg-core';
-import { NANOID_DEFAULT_LENGTH, REGCONFIGS } from './constants';
-
-export const generateNanoid = createGenerateNanoid({ defaultLength: NANOID_DEFAULT_LENGTH });
-
-export const regconfig = createRegconfig(REGCONFIGS);
 
 /**
  * Implementing our own db-level role type in sync with UserRole in lieu of using a pgEnum to avoid
@@ -18,26 +14,16 @@ export const userRole = customType<{ data: UserRole }>({
 		return 'text';
 	},
 	fromDriver(value) {
-		// return value as UserRole;
-		if (isUserRole(value)) {
-			return value;
+		if (!isUserRole(value)) {
+			// Fallback to lowest role in case of mismatch.
+			console.error(`Invalid role ("${value}") retrieved from database.`);
+			return USER_ROLE_DEFAULT;
 		}
-		// Fallback to lowest role in case of mismatch.
-		return USER_ROLE_DEFAULT;
+		// return value as UserRole;
+		return value;
 	},
 	toDriver(value) {
 		return value;
-	},
-});
-
-/**
- * Ci-text postgres column type.
- *
- * @see https://www.postgresql.org/docs/current/citext.html
- */
-export const citext = customType<{ data: string }>({
-	dataType() {
-		return 'citext';
 	},
 });
 

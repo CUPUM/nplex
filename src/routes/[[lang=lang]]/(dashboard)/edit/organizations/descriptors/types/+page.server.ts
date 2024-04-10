@@ -22,10 +22,14 @@ const typesSchema = organizationTypesWithTranslationsSchema.pick({ id: true });
 
 export const load = async (event) => {
 	authorize(event, 'organizations.descriptors.types.update');
-	const types = await withTranslations(organizationTypes, organizationTypesTranslations, {
-		field: (t) => t.id,
-		reference: (tt) => tt.id,
-	});
+	const types = await withTranslations(
+		organizationTypes,
+		organizationTypesTranslations,
+		(t, tt) => ({
+			field: t.id,
+			reference: tt.id,
+		})
+	);
 	const [newTypeForm, typesForm, ...typeForms] = await Promise.all([
 		superValidate(zod(newOrganizationTypeSchema)),
 		superValidate(zod(typesSchema)),

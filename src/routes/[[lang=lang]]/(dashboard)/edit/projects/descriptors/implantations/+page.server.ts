@@ -1,12 +1,12 @@
 import * as m from '$i18n/messages';
 import { authorize } from '$lib/auth/rbac.server';
+import { excluded } from '$lib/db/custom-types.server';
 import { db } from '$lib/db/db.server';
 import { withTranslations } from '$lib/db/queries.server';
 import {
 	projectImplantationTypes,
 	projectImplantationTypesTranslations,
 } from '$lib/db/schema/public';
-import { excluded } from '$lib/db/sql.server';
 import {
 	newProjectImplantationTypeSchema,
 	projectImplantationTypesSchema,

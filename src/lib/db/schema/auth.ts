@@ -1,4 +1,5 @@
 import { USER_ROLE_DEFAULT } from '$lib/auth/constants';
+import { nanoid } from 'drizzle-orm-helpers/pg';
 import {
 	bigint,
 	boolean,
@@ -9,9 +10,8 @@ import {
 	unique,
 	varchar,
 } from 'drizzle-orm/pg-core';
-import { USER_ID_LENGTH } from '../constants';
-import { generateNanoid, userRole } from '../sql.server';
-import { translationLangColumn, translationReferenceColumn } from './i18n';
+import { LANG_COLUMN, USER_ID_LENGTH } from '../constants';
+import { userRole } from '../custom-types.server';
 import { projects } from './public';
 
 /**
@@ -20,7 +20,6 @@ import { projects } from './public';
  * @see https://lucia-auth.com/guidebook/drizzle-orm
  * @see https://lucia-auth.com/database-adapters/postgres
  */
-
 export const authSchema = pgSchema('auth');
 
 export const userRoles = authSchema.table('user_roles', {
@@ -30,7 +29,7 @@ export const userRoles = authSchema.table('user_roles', {
 export const userRolesTranslations = authSchema.table(
 	'user_roles_t',
 	{
-		...translationLangColumn,
+		...LANG_COLUMN,
 		role: userRole('role')
 			.notNull()
 			.references(() => userRoles.role, {
@@ -50,7 +49,7 @@ export const userRolesTranslations = authSchema.table(
 
 export const users = authSchema.table('users', {
 	id: text('id')
-		.default(generateNanoid({ size: USER_ID_LENGTH }))
+		.default(nanoid({ size: USER_ID_LENGTH }))
 		.notNull()
 		.primaryKey(),
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
@@ -100,7 +99,7 @@ export const emailVerificationCodes = authSchema.table('email_verification_codes
 		})
 		.primaryKey(),
 	code: text('code')
-		.default(generateNanoid({ size: 6, alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' }))
+		.default(nanoid({ size: 6, alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' }))
 		.notNull(),
 	email: text('email').notNull(),
 	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
@@ -144,15 +143,19 @@ export const usersRolesRequests = authSchema.table('users_roles_requests', {
 
 export const userOccupations = authSchema.table('user_occupations', {
 	id: text('id')
-		.default(generateNanoid({ size: 6 }))
+		.default(nanoid({ size: 6 }))
 		.primaryKey(),
 });
-
 export const userOccupationsTranslations = authSchema.table(
 	'user_occupations_t',
 	{
-		...translationReferenceColumn(userOccupations.id),
-		...translationLangColumn,
+		...LANG_COLUMN,
+		id: text('id')
+			.references(() => userOccupations.id, {
+				onDelete: 'cascade',
+				onUpdate: 'cascade',
+			})
+			.notNull(),
 		title: text('title'),
 		description: text('description'),
 	},
@@ -187,7 +190,7 @@ export const usersOccupations = authSchema.table(
 export const usersProjectsCollections = authSchema.table(
 	'users_projects_collections',
 	{
-		id: text('id').default(generateNanoid()).primaryKey().notNull(),
+		id: text('id').default(nanoid()).primaryKey().notNull(),
 		userId: text('user_id')
 			.references(() => users.id, {
 				onDelete: 'cascade',
@@ -231,19 +234,23 @@ export const usersProjectsCollectionsItems = authSchema.table(
 export const notificationTypes = authSchema.table('notification_types', {
 	id: text('id')
 		.notNull()
-		.default(generateNanoid({ size: 6 }))
+		.default(nanoid({ size: 6 }))
 		.primaryKey(),
 });
-
 export const notificationTypesTranslations = authSchema.table('notification_types_t', {
-	...translationReferenceColumn(notificationTypes.id),
-	...translationLangColumn,
+	...LANG_COLUMN,
+	id: text('id')
+		.references(() => notificationTypes.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
 	title: text('title'),
 	body: text('body'),
 });
 
 export const usersNotifications = authSchema.table('users_notifications', {
-	id: text('id').default(generateNanoid()).notNull().primaryKey(),
+	id: text('id').default(nanoid()).notNull().primaryKey(),
 	typeId: text('type_id')
 		.references(() => notificationTypes.id, {
 			onDelete: 'cascade',

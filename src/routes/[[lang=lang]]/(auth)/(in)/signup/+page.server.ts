@@ -1,32 +1,14 @@
-import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
 import { sendEmailVerificationCode } from '$lib/auth/utils.server';
 import { db } from '$lib/db/db.server';
 import { emailVerificationCodes, users } from '$lib/db/schema/auth';
-import { usersSchema } from '$lib/db/validation.server';
+import { emailPasswordSignupSchema } from '$lib/db/validation.server';
 import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
+import { eq } from 'drizzle-orm';
 import { Argon2id } from 'oslo/password';
 import { zod } from 'sveltekit-superforms/adapters';
-import { superValidate } from 'sveltekit-superforms/server';
-import { z } from 'zod';
-
-const emailPasswordSignupSchema = z
-	.object({
-		email: usersSchema.shape.email,
-		password: z.string(),
-		confirmPassword: z.string(),
-	})
-	.superRefine((d, ctx) => {
-		if (d.confirmPassword !== d.password) {
-			ctx.addIssue({
-				fatal: true,
-				code: z.ZodIssueCode.custom,
-				message: m.auth_password_confirmation_error(),
-			});
-			return z.NEVER;
-		}
-	});
+import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	if (event.locals.user) {
@@ -46,39 +28,47 @@ export const actions = {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
 		try {
+			const [existingUser] = await db
+				.select({ id: users.id })
+				.from(users)
+				.where(eq(users.email, form.data.email))
+				.limit(1);
+			if (existingUser) {
+				return message(
+					form,
+					{ title: 'User already exists', description: 'The email is already used' },
+					{ status: STATUS_CODES.BAD_REQUEST }
+				);
+			}
 			const hashedPassword = await new Argon2id().hash(form.data.password);
-			const user = await db.transaction(async (tx) => {
-				const [{ email, id }] = await tx
+			const { id, code } = await db.transaction(async (tx) => {
+				const [{ id }] = await tx
 					.insert(users)
 					.values({
 						email: form.data.email,
 						emailVerified: false,
 						hashedPassword,
 					})
-					.returning({ id: users.id, email: users.email });
-				if (email == null) {
-					tx.rollback();
-					throw new Error('User email is null');
-				}
+					.returning({ id: users.id });
 				const expiresAt = new Date();
 				expiresAt.setMinutes(expiresAt.getMinutes() + 5);
 				const [{ code }] = await tx
 					.insert(emailVerificationCodes)
 					.values({
 						userId: id,
-						email,
+						email: form.data.email,
 						expiresAt,
 					})
 					.returning({ code: emailVerificationCodes.code });
-				return { email, id, code };
+				return { id, code };
 			});
-			const session = await auth.createSession(user.id, {});
+			const session = await auth.createSession(id, {});
 			const sessionCookie = auth.createSessionCookie(session.id);
 			event.cookies.set(sessionCookie.name, sessionCookie.value, {
 				path: '.',
 				...sessionCookie.attributes,
 			});
-			await sendEmailVerificationCode(user.email, user.code);
+			await sendEmailVerificationCode(form.data.email, code);
 		} catch (err) {
 			console.error(err);
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });

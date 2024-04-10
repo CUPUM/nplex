@@ -7,7 +7,7 @@ module.exports = {
 		'prettier',
 	],
 	parser: '@typescript-eslint/parser',
-	plugins: ['@typescript-eslint', 'eslint-plugin-drizzle'],
+	plugins: ['@typescript-eslint', 'eslint-plugin-import', 'eslint-plugin-drizzle'],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2020,
@@ -28,12 +28,13 @@ module.exports = {
 		},
 	],
 	rules: {
+		'@typescript-eslint/consistent-type-imports': 'error',
+		'import/consistent-type-specifier-style': ['error', 'prefer-top-level'],
+		'import/no-duplicates': 'error',
 		'curly': ['error', 'all'],
 		'@typescript-eslint/no-unused-vars': [
 			'error',
 			{ ignoreRestSiblings: true, destructuredArrayIgnorePattern: '^_' },
 		],
-		// 'require-await': 'off',
-		// '@typescript-eslint/require-await': 'error',
 	},
 };

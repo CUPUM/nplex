@@ -1,10 +1,6 @@
 import { z } from 'zod';
-import {
-	OAUTH_PROVIDERS_ARR,
-	USER_ROLES_ARR,
-	type OAuthProvider,
-	type UserRole,
-} from './constants';
+import type { OAuthProvider, UserRole } from './constants';
+import { OAUTH_PROVIDERS_ARR, USER_ROLES_ARR } from './constants';
 
 /**
  * Validate a given input user role.
@@ -38,3 +34,5 @@ export const userRoleSchema = z.custom<UserRole>(
 export function isOAuthProvider(maybeOAuthProvider: unknown): maybeOAuthProvider is OAuthProvider {
 	return OAUTH_PROVIDERS_ARR.indexOf(maybeOAuthProvider as OAuthProvider) > -1;
 }
+
+// export const emailPasswordSignupSchema = z.object({});

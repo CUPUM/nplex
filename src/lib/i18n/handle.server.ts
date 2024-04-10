@@ -1,7 +1,8 @@
 import { setLanguageTag } from '$i18n/runtime';
-import { isRedirect, type Handle } from '@sveltejs/kit';
+import type { Handle } from '@sveltejs/kit';
+import { isRedirect } from '@sveltejs/kit';
 import { getEventLang } from './event';
-import { useLang } from './link';
+import { withLang } from './link';
 
 /**
  * Handle hook for:
@@ -25,7 +26,7 @@ const handle = (async ({ event, resolve }) => {
 	if (!location || !location.startsWith('/')) {
 		return response;
 	}
-	response.headers.set('location', useLang(location, event.locals.lang));
+	response.headers.set('location', withLang(location, event.locals.lang));
 	return response;
 }) satisfies Handle;
 
