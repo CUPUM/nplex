@@ -1,9 +1,9 @@
 import { auth } from '$lib/auth/auth.server';
 import { sendEmailVerificationCode } from '$lib/auth/utils.server';
+import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { emailVerificationCodes, users } from '$lib/db/schema/auth';
 import { emailPasswordSignupSchema } from '$lib/db/validation.server';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { Argon2id } from 'oslo/password';

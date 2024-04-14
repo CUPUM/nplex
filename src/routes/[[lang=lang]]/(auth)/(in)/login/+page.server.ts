@@ -1,8 +1,8 @@
 import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
+import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { users } from '$lib/db/schema/auth';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { and, eq, isNotNull } from 'drizzle-orm';
 import { LegacyScrypt } from 'lucia';
 import { Argon2id } from 'oslo/password';

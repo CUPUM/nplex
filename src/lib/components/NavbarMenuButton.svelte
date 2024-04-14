@@ -39,7 +39,7 @@
 	<slot />
 </svelte:element>
 
-<style lang="postcss">
+<style>
 	.navbar-menu-button {
 		user-select: none;
 		position: relative;

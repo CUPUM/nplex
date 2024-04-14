@@ -1,8 +1,8 @@
 import * as m from '$i18n/messages';
+import { STATUS_CODES } from '$lib/common/constants';
 import VerifyEmail from '$lib/emails/VerifyEmail.svelte';
 import { EMAIL_SENDERS } from '$lib/emails/constants';
 import { transporter } from '$lib/emails/transporter.server';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { render } from 'svelte-email';
 import { github } from './auth.server';

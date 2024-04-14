@@ -72,7 +72,7 @@
 	</ul>
 </div>
 
-<style lang="postcss">
+<style>
 	.header {
 		/* position: stickt; */
 	}

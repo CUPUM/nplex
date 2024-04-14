@@ -3,10 +3,10 @@
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { superForm } from '$lib/forms/super-form';
-	import { IMAGE_FILE_TYPES_ARR } from '$lib/media/constants';
-	import { transformImage } from '$lib/media/utils';
+	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import { MODES } from '$lib/modes/constants';
+	import { IMAGE_FILE_TYPES_ARR } from '$lib/storage/media/constants';
+	import { transformImage } from '$lib/storage/media/utils';
 	import { melt } from '@melt-ui/svelte';
 	import convert from 'color-convert';
 	import { prominent } from 'color.js';
@@ -199,7 +199,7 @@
 	{/if}
 </form>
 
-<style lang="postcss">
+<style>
 	form {
 		grid-column: 1/-1;
 		position: relative;

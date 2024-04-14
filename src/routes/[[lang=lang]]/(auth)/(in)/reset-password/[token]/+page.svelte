@@ -26,5 +26,5 @@
 	</button>
 </form>
 
-<style lang="postcss">
+<style>
 </style>

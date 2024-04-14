@@ -42,7 +42,7 @@
 	{/if}
 </svelte:element>
 
-<style lang="postcss">
+<style>
 	.badge {
 		position: absolute;
 		top: 0;

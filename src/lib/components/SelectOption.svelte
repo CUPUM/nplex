@@ -35,7 +35,7 @@
 	{/if}
 </div>
 
-<style lang="postcss">
+<style>
 	.option {
 		cursor: pointer;
 		padding: calc(var(--base-inline-padding) - 0.25em) var(--base-inline-padding);

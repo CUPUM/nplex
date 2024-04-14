@@ -5,7 +5,7 @@
 	import { page } from '$app/stores';
 	import ButtonSave from '$lib/components/ButtonSave.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
-	import { superFormDialog, type SuperForm } from '$lib/forms/super-form';
+	import { superFormDialog, type SuperForm } from '$lib/crud/validation/forms/super-form';
 	import DescriptorForm from '../../../DescriptorForm.svelte';
 	import DescriptorList from '../../../DescriptorList.svelte';
 	import MetaDescriptor from '../../../MetaDescriptor.svelte';
@@ -73,5 +73,5 @@
 	</svelte:fragment>
 </Dialog>
 
-<style lang="postcss">
+<style>
 </style>

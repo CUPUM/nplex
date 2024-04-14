@@ -23,7 +23,7 @@
 	</div>
 </div>
 
-<style lang="postcss">
+<style>
 	.card {
 		border-radius: var(--radius-lg);
 		display: flex;

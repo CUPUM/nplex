@@ -6,5 +6,5 @@
 
 <ChevronDown class="input-icon" style="transform: rotate({open ? 180 : 0}deg)" />
 
-<style lang="postcss">
+<style>
 </style>

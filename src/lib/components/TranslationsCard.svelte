@@ -11,7 +11,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
-	import { defineContext } from '$lib/utils/context';
+	import { defineContext } from '$lib/common/context';
 	import { createTabs, melt } from '@melt-ui/svelte';
 	import { ChevronDown, Trash } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
@@ -93,7 +93,7 @@
 	{/if}
 </fieldset>
 
-<style lang="postcss">
+<style>
 	fieldset {
 		position: relative;
 		display: flex;

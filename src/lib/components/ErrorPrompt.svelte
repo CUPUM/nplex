@@ -30,7 +30,7 @@
 	</article>
 {/if}
 
-<style lang="postcss">
+<style>
 	article {
 		flex: 1;
 		display: flex;

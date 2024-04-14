@@ -18,7 +18,7 @@
 	<slot groupClass="navbar-menu-group" legendClass="navbar-menu-legend" />
 </svelte:element>
 
-<style lang="postcss">
+<style>
 	.navbar-menu {
 		--menu-nesting: 0.5rem;
 		display: flex;

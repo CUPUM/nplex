@@ -156,7 +156,7 @@
 	{/each}
 </div>
 
-<style lang="postcss">
+<style>
 	.container {
 		--_color-start: var(--ripple-color-start, var(--ripple-color));
 		--_color-end: var(--ripple-color-end, var(--ripple-color));

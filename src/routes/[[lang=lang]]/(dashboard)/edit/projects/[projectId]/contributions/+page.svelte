@@ -4,7 +4,7 @@
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { superForm } from '$lib/forms/super-form';
+	import { superForm } from '$lib/crud/validation/forms/super-form.js';
 
 	export let data;
 
@@ -48,7 +48,7 @@
 	</DashboardFormSection>
 </DashboardForm>
 
-<style lang="postcss">
+<style>
 	#orgs {
 		display: flex;
 		flex-direction: row;

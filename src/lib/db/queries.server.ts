@@ -1,5 +1,5 @@
 import { USER_ROLES } from '$lib/auth/constants';
-import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
+import { LOAD_DEPENDENCIES } from '$lib/common/constants';
 import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import type { AnyTable, ColumnsSelection, TableConfig } from 'drizzle-orm';
 import { and, eq, exists, or } from 'drizzle-orm';
@@ -65,7 +65,7 @@ export function withTranslation<
 ) {
 	// Attaching a load dependency to re-run when locale changes.
 	if ('depends' in event) {
-		event.depends(LOAD_DEPENDENCIES.Lang);
+		event.depends(LOAD_DEPENDENCIES.LANG);
 	}
 	const { field, reference } = config instanceof Function ? config(base, translations) : config;
 	const baseColumns = getColumns(base);
@@ -124,9 +124,15 @@ export function withTranslations<
 		.$dynamic();
 }
 
-const sq = db.select({id: projectsTranslations.id, title: projectsTranslations.id}).from(projectsTranslations).as('sq')
-const t = await withTranslations(projects, projectsTranslations, (t,tt) => ({field: t.id, reference: tt.id}))
-const tt = t[0]?.translations
+const sq = db
+	.select({ id: projectsTranslations.id, title: projectsTranslations.id })
+	.from(projectsTranslations)
+	.as('sq');
+const t = await withTranslations(projects, projectsTranslations, (t, tt) => ({
+	field: t.id,
+	reference: tt.id,
+}));
+const tt = t[0]?.translations;
 
 /**
  * Filter for projects created by user.

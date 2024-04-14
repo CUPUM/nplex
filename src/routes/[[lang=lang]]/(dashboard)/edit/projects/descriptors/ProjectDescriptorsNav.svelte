@@ -56,5 +56,5 @@
 	</SidebarItem>
 </SidebarGroup>
 
-<style lang="postcss">
+<style>
 </style>

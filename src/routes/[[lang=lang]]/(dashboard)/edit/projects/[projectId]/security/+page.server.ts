@@ -1,8 +1,8 @@
 import { authorize } from '$lib/auth/rbac.server';
+import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { isEditableProject } from '$lib/db/queries.server';
 import { projects } from '$lib/db/schema/public';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { error, redirect } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 

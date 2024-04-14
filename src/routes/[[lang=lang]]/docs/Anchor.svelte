@@ -3,5 +3,5 @@
 
 <a><slot /></a>
 
-<style lang="postcss">
+<style>
 </style>

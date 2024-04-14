@@ -3,7 +3,7 @@
 	import ButtonCreate from '$lib/components/ButtonCreate.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
-	import { superFormDialog } from '$lib/forms/super-form';
+	import { superFormDialog } from '$lib/crud/validation/forms/super-form';
 	import Descriptor from '../../../Descriptor.svelte';
 	import DescriptorForm from '../../../DescriptorForm.svelte';
 	import type { PageData } from './$types';
@@ -62,5 +62,5 @@
 	</svelte:fragment>
 </Dialog>
 
-<style lang="postcss">
+<style>
 </style>

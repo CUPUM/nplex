@@ -1,8 +1,8 @@
 import * as m from '$i18n/messages';
 import { sendPasswordResetLink } from '$lib/auth/emails.server';
+import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { users } from '$lib/db/schema/auth';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { zod } from 'sveltekit-superforms/adapters';

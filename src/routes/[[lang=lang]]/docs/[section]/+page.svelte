@@ -12,7 +12,7 @@
 {/key}
 <svelte:component this={data.doc} />
 
-<style lang="postcss">
+<style>
 	h1 {
 		text-transform: capitalize;
 	}

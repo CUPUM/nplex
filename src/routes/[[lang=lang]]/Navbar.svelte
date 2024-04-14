@@ -122,7 +122,7 @@
 	</nav>
 </header>
 
-<style lang="postcss">
+<style>
 	#navbar {
 		z-index: 999;
 		display: grid;

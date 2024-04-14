@@ -4,5 +4,5 @@
 
 <form action=""></form>
 
-<style lang="postcss">
+<style>
 </style>

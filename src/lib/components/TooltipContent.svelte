@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getDistances, getTransformOrigin } from '$lib/utils/positioning';
+	import { getDistances, getTransformOrigin } from '$lib/common/positioning';
 	import {
 		melt,
 		type TooltipElements,
@@ -29,7 +29,7 @@
 	</div>
 {/if}
 
-<style lang="postcss">
+<style>
 	.content {
 		--tip-color: color-mix(in srgb, var(--color-neutral-800) 95%, transparent);
 		font-weight: 400;

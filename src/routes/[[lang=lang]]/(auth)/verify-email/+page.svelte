@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import { EMAIL_VERIFICATION_CODE_LENGTH } from '$lib/auth/constants';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { superForm } from '$lib/forms/super-form';
+	import { superForm } from '$lib/crud/validation/forms/super-form.js';
 	import { createPinInput, melt } from '@melt-ui/svelte';
 	import { MailWarning } from 'lucide-svelte';
 
@@ -49,7 +49,7 @@
 	</button>
 </form>
 
-<style lang="postcss">
+<style>
 	form {
 		align-self: center;
 		gap: 1rem;

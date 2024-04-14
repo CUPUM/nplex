@@ -5,7 +5,7 @@
 	<p class="text dimmer sm">To come</p>
 </section>
 
-<style lang="postcss">
+<style>
 	section {
 		padding: 2rem;
 	}

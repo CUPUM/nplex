@@ -29,7 +29,7 @@
 	</svelte:element>
 {/if}
 
-<style lang="postcss">
+<style>
 	.select-menu {
 		--menu-nesting: var(--base-nesting);
 		--menu-radius: var(--base-radius);

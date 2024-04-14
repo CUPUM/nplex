@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { availableLanguageTags } from '$i18n/runtime';
-	import type { SuperForm } from '$lib/forms/super-form';
+	import type { SuperForm } from '$lib/crud/validation/forms/super-form';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import type { HTMLFormAttributes } from 'svelte/elements';
 
@@ -21,7 +21,7 @@
 	{/each}
 </form>
 
-<style lang="postcss">
+<style>
 	form {
 		display: flex;
 		flex-direction: column;

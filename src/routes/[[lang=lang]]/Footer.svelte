@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import { SETOUTS } from '$lib/setout/constants';
+	import { ARRANAGEMENTS } from '$lib/arrangement/constants';
 	import { slide } from 'svelte/transition';
 	import Logo from '../../lib/components/Logo.svelte';
-	import CupumUdem from '../../lib/components/partners-logos/CupumUdem.svelte';
 	import MontrealQuebec from '../../lib/components/partners-logos/MontrealQuebec.svelte';
 	import UnescoUnitwin from '../../lib/components/partners-logos/UnescoUnitwin.svelte';
+	import CupumUdem from '../../lib/components/primitives/logo-cupum-umontreal.svelte';
 </script>
 
-{#if $page.data.setout !== SETOUTS.FULL_SCREEN && !$page.data.footer?.hide}
+{#if $page.data.setout !== ARRANAGEMENTS.FULL_SCREEN && !$page.data.footer?.hide}
 	<footer transition:slide>
 		<div id="footer-inner">
 			<ul id="footer-logos">
@@ -59,7 +59,7 @@
 	</footer>
 {/if}
 
-<style lang="postcss">
+<style>
 	footer {
 		position: relative;
 		padding: 0.75rem;

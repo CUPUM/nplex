@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import type { SuperFormData } from '$lib/forms/types';
+	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import type { PageData } from './$types';
 
 	export let form: SuperFormData<PageData['form']>['form'];
@@ -56,7 +56,7 @@
 	</div>
 </fieldset>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 
 	section {

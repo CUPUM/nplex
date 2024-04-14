@@ -5,8 +5,8 @@
 	import LangKey from '$lib/components/LangKey.svelte';
 	import Slider from '$lib/components/Slider.svelte';
 	import SwitchThumb from '$lib/components/SwitchThumb.svelte';
+	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import { PROJECT_COST_MAX, PROJECT_COST_MIN } from '$lib/db/constants';
-	import type { SuperFormData } from '$lib/forms/types';
 	import { checked } from '$lib/utils/attributes';
 	import { Minus, Plus, RotateCcw } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
@@ -185,7 +185,7 @@
 	</div>
 </fieldet>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 
 	#project-cost-placeholder {

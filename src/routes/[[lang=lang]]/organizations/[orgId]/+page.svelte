@@ -3,5 +3,5 @@
 
 <article>Some org</article>
 
-<style lang="postcss">
+<style>
 </style>

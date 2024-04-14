@@ -46,7 +46,7 @@
 	</ul>
 </article>
 
-<style lang="postcss">
+<style>
 	article {
 		grid-column: 1/-1;
 		position: relative;

@@ -3,7 +3,7 @@
 
 <div class="menu-group"></div>
 
-<style lang="postcss">
+<style>
 	.menu-group {
 	}
 </style>

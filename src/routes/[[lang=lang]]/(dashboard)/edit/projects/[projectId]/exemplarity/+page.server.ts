@@ -1,10 +1,10 @@
 import * as m from '$i18n/messages';
 import { authorize } from '$lib/auth/rbac.server';
+import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { getProjectCategorizedIndicatorsList, isEditableProject } from '$lib/db/queries.server';
 import { projects, projectsExemplarityIndicators } from '$lib/db/schema/public';
 import { projectsExemplarityIndicatorsSchema } from '$lib/db/validation.server';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { error, fail } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
 import { coalesce, emptyJsonArray, jsonAgg } from 'drizzle-orm-helpers';

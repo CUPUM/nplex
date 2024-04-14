@@ -5,7 +5,7 @@
 @custom-selector :--dark [data-mode='dark'];
 @custom-selector :--light [data-mode='light'];
 
-/* Setout (screen layout) */
+/* Arrangement (screen layout) */
 @custom-selector :--setout-normal [data-setout='normal'];
 @custom-selector :--setout-full-width [data-setout='full-width'];
 @custom-selector :--setout-full-screen [data-setout='full-screen'];

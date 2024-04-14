@@ -4,8 +4,8 @@
 	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
-	import { customProxy } from '$lib/forms/proxy';
-	import type { SuperFormData } from '$lib/forms/types';
+	import { customProxy } from '$lib/crud/validation/forms/proxy';
+	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import { createSelect, melt } from '@melt-ui/svelte';
 	import type { PageData } from './$types';
 
@@ -65,7 +65,7 @@
 	</div>
 </fieldset>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 
 	.select {

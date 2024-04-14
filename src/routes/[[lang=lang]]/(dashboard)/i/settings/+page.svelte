@@ -24,5 +24,5 @@
 	</DashboardFormField>
 </DashboardForm> -->
 
-<style lang="postcss">
+<style>
 </style>

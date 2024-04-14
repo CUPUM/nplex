@@ -22,7 +22,7 @@
 	{/each}
 </svelte:element>
 
-<style lang="postcss">
+<style>
 	.list {
 		grid-column: full;
 		position: relative;

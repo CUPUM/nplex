@@ -3,7 +3,7 @@
 	import * as m from '$i18n/messages';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
-	import type { SuperFormData } from '$lib/forms/types';
+	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import { melt } from '@melt-ui/svelte';
 	import { expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
@@ -50,7 +50,7 @@
 	</span>
 </label>
 
-<style lang="postcss">
+<style>
 	.types {
 		display: flex;
 		flex-direction: column;

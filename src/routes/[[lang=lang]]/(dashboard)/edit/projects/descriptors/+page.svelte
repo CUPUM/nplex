@@ -18,7 +18,7 @@
 	</p>
 </section>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 
 	.prose {

@@ -1,8 +1,8 @@
 import * as m from '$i18n/messages';
 import { availableLanguageTags } from '$i18n/runtime';
 import { EMAIL_VERIFICATION_CODE_LENGTH } from '$lib/auth/constants';
+import { strictRecord } from '$lib/common/zod';
 import type { LangSchema } from '$lib/i18n/validation';
-import { strictRecord } from '$lib/utils/zod';
 import { intrangeSchema } from 'drizzle-orm-helpers/pg';
 import { createInsertSchema } from 'drizzle-zod';
 import type { ZodObject, ZodTypeAny } from 'zod';

@@ -77,7 +77,7 @@
 	</code>
 </div>
 
-<style lang="postcss">
+<style>
 	.preview {
 		--_base-radius: calc(var(--base-radius) - var(--base-nesting));
 		position: relative;

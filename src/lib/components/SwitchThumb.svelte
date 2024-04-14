@@ -36,5 +36,5 @@ Handles conditional rendering of switch thumb based on a condition and a key for
 	<div class="switch-thumb" in:receive={{ key }} out:send={{ key }} use:parentSwitch />
 {/if}
 
-<style lang="postcss">
+<style>
 </style>

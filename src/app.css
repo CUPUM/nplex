@@ -1,20 +1,181 @@
-@layer preflight, base, components;
+/* @import 'tailwindcss'; */
+@import 'tailwindcss/preflight';
+@import 'tailwindcss/utilities';
 
-/* Reset */
-@import './styles/preflight.css' layer(preflight);
+@theme {
+	--font-family-sans: 'Outfit', sans serif;
+	--font-family-serif: 'Fraunces', serif;
+	--font-family-mono: 'JetBrains Mono', monospace;
 
-/* Core design tokens and shared props */
-@import './styles/utilities.css' layer(base);
-@import './styles/base.css' layer(base);
-@import './styles/keyframes.css' layer(base);
+	--font-size-xs: 0.75rem;
+	--font-size-xs--line-height: 1rem;
+	--font-size-sm: 0.875rem;
+	--font-size-sm--line-height: 1.25rem;
+	--font-size-md: 1rem;
+	--font-size-md--line-height: 1.5rem;
+	--font-size-lg: 1.25rem;
+	--font-size-lg--line-height: 1.75rem;
+	--font-size-xl: 1.875rem;
+	--font-size-xl--line-height: 2.25rem;
+	--font-size-2xl: 3rem;
+	--font-size-2xl--line-height: 1;
+	--font-size-3xl: 6rem;
+	--font-size-3xl--line-height: 1;
 
-/* Bases */
-@import './styles/dropdown.css' layer(components);
-@import './styles/button.css' layer(components);
-@import './styles/chip.css' layer(components);
-@import './styles/input.css' layer(components);
-@import './styles/label.css' layer(components);
-@import './styles/misc.css' layer(components);
-@import './styles/switch.css' layer(components);
-@import './styles/toggle.css' layer(components);
-@import './styles/typography.css' layer(components);
+	--blur-sm: 3px;
+	--blur-md: 8px;
+	--blur-lg: 18px;
+	--blur-xl: 48px;
+
+	--letter-spacing-tighter: -0.05em;
+	--letter-spacing-tight: -0.025em;
+	--letter-spacing-normal: 0em;
+	--letter-spacing-wide: 0.025em;
+	--letter-spacing-wider: 0.05em;
+	--letter-spacing-widest: 0.1em;
+
+	--line-height-none: 1;
+	--line-height-tight: 1.25;
+	--line-height-snug: 1.375;
+	--line-height-normal: 1.5;
+	--line-height-relaxed: 1.625;
+	--line-height-loose: 2;
+	--line-height-3: 0.75rem;
+	--line-height-4: 1rem;
+	--line-height-5: 1.25rem;
+	--line-height-6: 1.5rem;
+	--line-height-7: 1.75rem;
+	--line-height-8: 2rem;
+	--line-height-9: 2.25rem;
+	--line-height-10: 2.5rem;
+
+	--breakpoint-sm: 40rem;
+	--breakpoint-md: 64rem;
+	--breakpoint-lg: 80rem;
+
+	--font-weight-thin: 275;
+	--font-weight-normal: 350;
+	--font-weight-bold: 550;
+	--font-weight-bolder: 700;
+
+	--width-xs: 240px;
+	--width-sm: 420px;
+	--width-md: 760px;
+	--width-lg: 960px;
+	--width-xl: 1000px;
+
+	--radius-xs: 0.25rem;
+	--radius-sm: 0.5rem;
+	--radius-md: 1rem;
+	--radius-lg: 3rem;
+	--radius-full: 999px;
+
+	--transition-timing-function-linear: linear;
+	--transition-timing-function-in: cubic-bezier(0.4, 0, 1, 1);
+	--transition-timing-function-out: cubic-bezier(0, 0, 0.2, 1);
+	--transition-timing-function-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+	--color-fg: black;
+	--color-fg-mute: ;
+	--color-fg-highlight: ;
+	--color-bg: white;
+	--color-bg-mute: white;
+	--color-bg-highlight: ;
+	--color-success-fg: ;
+	--color-success-fg-mute: ;
+	--color-success-fg-highlight: ;
+	--color-success-bg: ;
+	--color-success-bg-mute: ;
+	--color-success-bg-highlight: ;
+	--color-error-fg: ;
+	--color-error-fg-mute: ;
+	--color-error-fg-highlight: ;
+	--color-error-bg: ;
+	--color-error-bg-mute: ;
+	--color-error-bg-highlight: ;
+	--color-danger-fg: ;
+	--color-danger-fg-mute: ;
+	--color-danger-fg-highlight: ;
+	--color-danger-bg: ;
+	--color-danger-bg-mute: ;
+	--color-danger-bg-highlight: ;
+	--color-primary-fg: ;
+	--color-primary-fg-mute: ;
+	--color-primary-fg-highlight: ;
+	--color-primary-bg: ;
+	--color-primary-bg-mute: ;
+	--color-primary-bg-highlight: ;
+	--color-card-fg: black;
+	--color-card-bg: yellow;
+	--color-floating-fg: brown;
+	--color-floating-bg: wheat;
+	--color-overlay-fg: white;
+	--color-overlay-bg: black;
+	--color-selection-fg: ;
+	--color-selection-bg: ;
+	--color-ripple: ;
+	--color-ripple-start: ;
+	--color-ripple-end: ;
+
+	--outline-color: purple;
+	--outline-width: 4px;
+	--outline-offset: 0px;
+
+	--border-width-sm: 0.75px;
+	--border-width-md: 1.25px;
+	--border-width-lg: 2.25px;
+	--default-border-width: var(--border-width-md);
+
+	--border-color-strong: black;
+	--border-color: rgba(0, 0, 0, 0.35);
+	--border-color-mute: rgba(0, 0, 0, 0.125);
+}
+
+:root[data-mode='dark'] {
+}
+
+::selection {
+	color: var(--color-selection-fg);
+	background: var(--color-selection-bg);
+}
+
+::-moz-selection {
+	color: var(--color-selection-fg);
+	background: var(--color-selection-bg);
+}
+
+:root {
+	position: relative;
+	font-size: 15px;
+	font-weight: --font-weight;
+	font-family: var(--font-family-sans);
+	overflow-x: hidden;
+	accent-color: var(--color-outline);
+}
+
+:root&[data-melt-scroll-lock]:has([data-melt-dialog-portalled] *) {
+	background: black;
+	transition:
+		all var(--duration-fast) ease-out,
+		background 0s;
+
+	#container {
+		scale: 0.96;
+		border-radius: var(--radius-lg);
+		/* box-shadow: 0 0 3em -1em black; */
+	}
+}
+
+#container {
+	overflow-x: hidden;
+	background: var(--bg);
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-height: 100svh;
+	scale: 1;
+	transition:
+		background var(--duration-fast) ease-out,
+		scale var(--duration-slow) var(--ease-out-expo),
+		border-radius var(--duration-slow) var(--ease-out-expo);
+}

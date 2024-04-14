@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { STATUS_CODES } from '$lib/utils/constants';
+import { STATUS_CODES } from '$lib/common/constants';
 import { error, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit';
 import type { SetNonNullable } from 'type-fest';
 import type { UserRole } from './constants';

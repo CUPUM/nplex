@@ -1,8 +1,8 @@
 import { authorize } from '$lib/auth/rbac.server';
+import { LOAD_DEPENDENCIES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { isEditableProject } from '$lib/db/queries.server';
 import { projects, projectsTranslations } from '$lib/db/schema/public';
-import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
 import { and, eq, exists, sql } from 'drizzle-orm';
 import { getColumns } from 'drizzle-orm-helpers';
 
@@ -11,7 +11,7 @@ export const load = async (event) => {
 	const search = event.url.searchParams.get('search') ?? '';
 	const { title, summary } = getColumns(projectsTranslations);
 	const { id, bannerId } = getColumns(projects);
-	event.depends(LOAD_DEPENDENCIES.Lang);
+	event.depends(LOAD_DEPENDENCIES.LANG);
 	const matchProjects = db
 		.select({ id, bannerId, title, summary })
 		.from(projects)

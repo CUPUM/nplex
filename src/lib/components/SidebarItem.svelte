@@ -57,7 +57,7 @@
 	{/if}
 </svelte:element>
 
-<style lang="postcss">
+<style>
 	.item {
 		--sidebar-item-radius: calc(var(--sidebar-group-radius) - var(--sidebar-group-nesting));
 		display: flex;

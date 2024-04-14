@@ -3,8 +3,8 @@
 import type { AvailableLanguageTag } from '$i18n/runtime';
 import type { ToastData } from '$lib/components/Toast.svelte';
 import type { Mode } from '$lib/modes/constants';
-import type { Setout } from '$lib/setout/constants';
-import type { createSetEventSetout } from '$lib/setout/event';
+import type { Arrangement } from '$lib/arrangement/constants';
+import type { createSetEventArrangement } from '$lib/arrangement/event';
 import type { Session, User } from 'lucia';
 import type { ComponentType } from 'svelte';
 import type { LayoutData } from './routes/[[lang=lang]]/$types';
@@ -43,11 +43,11 @@ declare global {
 			/**
 			 * Layout types that can then be used for conditional styling such as navbar's max width.
 			 */
-			setout?: Setout;
+			setout?: Arrangement;
 			/**
 			 * Set a new setout and return the value to pass it down through event data.
 			 */
-			setSetout: ReturnType<typeof createSetEventSetout>;
+			setArrangement: ReturnType<typeof createSetEventArrangement>;
 			/**
 			 * Client's language as determined by the i18n middleware.
 			 */
@@ -57,7 +57,7 @@ declare global {
 			/**
 			 * Granular server and client setable layout type.
 			 */
-			setout?: Setout;
+			setout?: Arrangement;
 			/**
 			 * Optionally hide navbar's scrolled bg.
 			 */

@@ -4,7 +4,7 @@
 
 <Plus class="button-icon plus" />
 
-<style lang="postcss">
+<style>
 	:global(.button-icon.plus) {
 		:global(.button:hover) & {
 			animation: spin 1s infinite var(--ease-out-expo);

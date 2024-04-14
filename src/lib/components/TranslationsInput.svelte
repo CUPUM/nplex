@@ -51,7 +51,7 @@
 	</div>
 </div>
 
-<style lang="postcss">
+<style>
 	.input-group {
 		align-self: stretch;
 	}

@@ -1,7 +1,7 @@
+import { LOAD_DEPENDENCIES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { isCreatedProject } from '$lib/db/queries.server';
 import { projects, projectsImages, projectsTranslations } from '$lib/db/schema/public';
-import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
 import { and, eq, exists, isNotNull, or, sql } from 'drizzle-orm';
 import { fal, getColumns } from 'drizzle-orm-helpers';
 
@@ -9,7 +9,7 @@ export const load = async (event) => {
 	const search = event.url.searchParams.get('search');
 	const { title, summary } = getColumns(projectsTranslations);
 	const { id } = getColumns(projects);
-	event.depends(LOAD_DEPENDENCIES.Lang);
+	event.depends(LOAD_DEPENDENCIES.LANG);
 	const filtered = db
 		.select({
 			id,

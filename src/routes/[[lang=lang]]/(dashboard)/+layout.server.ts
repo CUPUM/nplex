@@ -7,7 +7,7 @@ import {
 	projectsImages,
 	projectsTranslations,
 } from '$lib/db/schema/public';
-import { SETOUTS } from '$lib/setout/constants';
+import { ARRANGEMENTS } from '$lib/arrangement/constants';
 import { and, eq, getTableColumns } from 'drizzle-orm';
 
 export const load = async (event) => {
@@ -44,7 +44,7 @@ export const load = async (event) => {
 		);
 
 	return {
-		setout: event.locals.setSetout(SETOUTS.FULL_WIDTH),
+		setout: event.locals.setArrangement(ARRANGEMENTS.FULL_WIDTH),
 		editableProjects,
 		editableOrganizations,
 	};

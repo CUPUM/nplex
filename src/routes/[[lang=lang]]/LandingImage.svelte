@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { imageSrc } from '$lib/media/url';
+	import { imageSrc } from '$lib/storage/media/url';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
 
@@ -25,7 +25,7 @@
 	class:loaded={loaded && mounted}
 />
 
-<style lang="postcss">
+<style>
 	img {
 		border-radius: var(--radius-sm);
 		opacity: 0;

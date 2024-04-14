@@ -105,7 +105,7 @@
 	</footer>
 </main>
 
-<style lang="postcss">
+<style>
 	#docs {
 		--sticky-top: 0px;
 		display: grid;

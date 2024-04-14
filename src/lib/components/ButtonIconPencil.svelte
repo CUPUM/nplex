@@ -4,7 +4,7 @@
 
 <Pencil class="button-icon pencil" />
 
-<style lang="postcss">
+<style>
 	:global(.button-icon.pencil) {
 		:global(.button:hover) & {
 			animation: wiggle 1s ease-out;

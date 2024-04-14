@@ -3,5 +3,5 @@
 
 <h1>timeline</h1>
 
-<style lang="postcss">
+<style>
 </style>

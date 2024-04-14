@@ -3,5 +3,5 @@
 
 To come
 
-<style lang="postcss">
+<style>
 </style>

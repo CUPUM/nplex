@@ -2,7 +2,7 @@ import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
 import { AUTH_PROVIDERS } from '$lib/auth/constants';
 import { validatePasswordResetToken } from '$lib/auth/utils.server';
-import { STATUS_CODES } from '$lib/utils/constants';
+import { STATUS_CODES } from '$lib/common/constants';
 import { fail, redirect } from '@sveltejs/kit';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';

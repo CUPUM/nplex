@@ -3,5 +3,5 @@
 
 <h1>User</h1>
 
-<style lang="postcss">
+<style>
 </style>

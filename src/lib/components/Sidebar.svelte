@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
-	import { defineContext } from '$lib/utils/context';
-	import { defineChildIndexContext } from '$lib/utils/index-context';
+	import { defineContext } from '$lib/common/context';
+	import { defineChildIndexContext } from '$lib/common/index-context';
 	import { fade } from 'svelte/transition';
 
 	const [getSidebarIndex, setSidebarIndex] = defineChildIndexContext({});
@@ -18,7 +18,7 @@
 	<slot />
 </div>
 
-<style lang="postcss">
+<style>
 	.sidebar {
 		grid-column: sidebar;
 		grid-column: sidebar;

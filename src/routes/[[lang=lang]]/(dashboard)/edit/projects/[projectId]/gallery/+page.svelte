@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { superForm } from '$lib/forms/super-form';
+	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import { flip } from 'svelte/animate';
 	import { expoInOut, expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
@@ -41,7 +41,7 @@
 	</form>
 {/if}
 
-<style lang="postcss">
+<style>
 	form {
 		grid-column: full;
 		padding: 2rem;

@@ -57,7 +57,7 @@
 	{/each}
 </div>
 
-<style lang="postcss">
+<style>
 	#toast-portal {
 		position: fixed;
 		flex: none;

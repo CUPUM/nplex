@@ -1,6 +1,6 @@
 import { S3_BUCKET_NAME } from '$env/static/private';
 import { authorize } from '$lib/auth/rbac.server';
-import { s3 } from '$lib/storage/s3.server';
+import { storage } from '$lib/storage/storage.server';
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post';
 import { json } from '@sveltejs/kit';
 import type { PresignedResponse } from './types';
@@ -13,7 +13,7 @@ export const GET = async (event) => {
 	const name = `projects/${event.params.projectId}/gallery/${crypto
 		.randomUUID()
 		.replaceAll('-', '')}`;
-	const post = await createPresignedPost(s3, {
+	const post = await createPresignedPost(storage, {
 		Bucket: S3_BUCKET_NAME,
 		Key: name,
 		// Conditions: [{ acl: 'public-read' }],

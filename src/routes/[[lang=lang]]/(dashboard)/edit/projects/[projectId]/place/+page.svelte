@@ -3,7 +3,7 @@
 
 <article>To come</article>
 
-<style lang="postcss">
+<style>
 	article {
 	}
 </style>

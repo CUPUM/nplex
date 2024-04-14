@@ -9,7 +9,7 @@
 	</ul>
 </section>
 
-<style lang="postcss">
+<style>
 	.navbar-menu-group {
 		position: relative;
 		display: flex;

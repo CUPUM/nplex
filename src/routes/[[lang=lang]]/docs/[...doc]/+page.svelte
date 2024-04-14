@@ -11,7 +11,7 @@
 {/key}
 <svelte:component this={data.doc} />
 
-<style lang="postcss">
+<style>
 	.bg {
 		color: var(--color-neutral-200);
 		font-weight: 900;

@@ -2,7 +2,7 @@
 	<slot />
 </main>
 
-<style lang="postcss">
+<style>
 	main {
 		all: reset !important;
 		font-size: 16px;

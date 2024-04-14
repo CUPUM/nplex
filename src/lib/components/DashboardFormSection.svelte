@@ -33,7 +33,7 @@
 	</div>
 </section>
 
-<style lang="postcss">
+<style>
 	section {
 		position: relative;
 		display: inherit;

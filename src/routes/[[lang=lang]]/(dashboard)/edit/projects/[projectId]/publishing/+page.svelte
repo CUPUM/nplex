@@ -3,5 +3,5 @@
 
 <h1>publishing</h1>
 
-<style lang="postcss">
+<style>
 </style>

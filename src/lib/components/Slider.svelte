@@ -45,7 +45,7 @@
 	</span>
 </span>
 
-<style lang="postcss">
+<style>
 	.slider {
 		--slider-block-size: var(--base-block-size);
 		--slider-thumb-size: calc(var(--base-block-size) / 2.5);

@@ -24,7 +24,7 @@
 	</a>
 </menu>
 
-<style lang="postcss">
+<style>
 	hgroup {
 		padding: 2rem;
 		min-height: 25vh;

@@ -1,7 +1,7 @@
 import { dev } from '$app/environment';
 import { OAUTH_PROVIDERS_STATE_COOKIE_NAME } from '$lib/auth/constants';
 import { getOAuthProviderIntegration } from '$lib/auth/utils.server';
-import { STATUS_CODES } from '$lib/utils/constants';
+import { STATUS_CODES } from '$lib/common/constants';
 import { redirect } from '@sveltejs/kit';
 import { generateState } from 'arctic';
 

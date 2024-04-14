@@ -1,6 +1,12 @@
 import * as m from '$i18n/messages';
 import { authorize } from '$lib/auth/rbac.server';
 import {
+	messageError,
+	messageInvalid,
+	messageNoRowsDeleted,
+	messageSuccess,
+} from '$lib/crud/validation/messages';
+import {
 	coalesce,
 	emptyJsonArray,
 	excluded,
@@ -24,12 +30,6 @@ import {
 	projectInterventionsCategoriesWithTranslationsSchema,
 	projectInterventionsWithTranslationsSchema,
 } from '$lib/db/validation.server';
-import {
-	messageError,
-	messageInvalid,
-	messageNoRowsDeleted,
-	messageSuccess,
-} from '$lib/forms/messages';
 import { eq, notInArray } from 'drizzle-orm';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms/server';

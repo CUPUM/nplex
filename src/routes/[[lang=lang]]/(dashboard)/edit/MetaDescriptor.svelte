@@ -4,7 +4,7 @@
 	import ButtonIconPlus from '$lib/components/ButtonIconPlus.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
-	import type { SuperForm } from '$lib/forms/super-form';
+	import type { SuperForm } from '$lib/crud/validation/forms/super-form';
 	import { melt, type DialogElements } from '@melt-ui/svelte';
 	import { Trash2 } from 'lucide-svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
@@ -81,7 +81,7 @@
 	{/if}
 </section>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 
 	.dashboard-subsection {

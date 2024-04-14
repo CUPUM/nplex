@@ -28,7 +28,7 @@
 	</div>
 {/key}
 
-<style lang="postcss">
+<style>
 	#mode-icon {
 		line-height: 0;
 		position: absolute;

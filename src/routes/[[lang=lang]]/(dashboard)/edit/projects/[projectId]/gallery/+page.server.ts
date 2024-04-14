@@ -1,5 +1,6 @@
 import * as m from '$i18n/messages';
 import { authorize } from '$lib/auth/rbac.server';
+import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { isEditableProject, withTranslations } from '$lib/db/queries.server';
 import {
@@ -8,7 +9,6 @@ import {
 	projectsImagesCredits,
 	projectsImagesTranslations,
 } from '$lib/db/schema/public';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { zod } from 'sveltekit-superforms/adapters';

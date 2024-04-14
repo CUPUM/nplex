@@ -35,5 +35,5 @@
 	<Save />
 </button>
 
-<style lang="postcss">
+<style>
 </style>

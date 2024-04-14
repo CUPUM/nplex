@@ -1,6 +1,6 @@
+import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { organizations } from '$lib/db/schema/public';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { error, redirect } from '@sveltejs/kit';
 
 export const GET = async (event) => {

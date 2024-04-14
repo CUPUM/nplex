@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
-	import type { SuperFormData } from '$lib/forms/types';
+	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import { link } from '$lib/i18n/link';
-	import { imageSrc } from '$lib/media/url';
 	import { MODES } from '$lib/modes/constants';
+	import { imageSrc } from '$lib/storage/media/url';
 	import { checked } from '$lib/utils/attributes';
 	import { Pen, Presentation, Trash } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -70,7 +70,7 @@
 	</div>
 </figure>
 
-<style lang="postcss">
+<style>
 	.card {
 		position: relative;
 		height: 250px;

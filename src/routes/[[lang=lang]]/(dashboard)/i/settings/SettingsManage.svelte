@@ -3,7 +3,7 @@
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
-	import { superForm } from '$lib/forms/super-form';
+	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import { melt } from '@melt-ui/svelte';
 	import { AlertTriangle } from 'lucide-svelte';
 	import type { PageData } from './$types';

@@ -87,7 +87,7 @@
 	</div>
 </div>
 
-<style lang="postcss">
+<style>
 	.container {
 		--toast-progress-color: var(--color-neutral-500);
 		--toast-title-color: var(--color-neutral-900);

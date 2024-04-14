@@ -27,7 +27,7 @@
 	{/if}
 </div>
 
-<style lang="postcss">
+<style>
 	.menu-overlay {
 		position: fixed;
 		inset: 0;

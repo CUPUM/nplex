@@ -1,4 +1,4 @@
-import IconFacebook from '$lib/components/social-icons/Facebook.svelte';
+import IconFacebook from '$lib/components/primitives/icon-facebook.svelte';
 import IconGithub from '$lib/components/social-icons/Github.svelte';
 import IconGoogle from '$lib/components/social-icons/Google.svelte';
 import IconLinkedin from '$lib/components/social-icons/Linkedin.svelte';

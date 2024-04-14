@@ -26,7 +26,7 @@
 	{/if}
 </svelte:element>
 
-<style lang="postcss">
+<style>
 	.token {
 		position: relative;
 		padding: 1em;

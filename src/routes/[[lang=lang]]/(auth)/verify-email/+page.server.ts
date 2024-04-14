@@ -1,6 +1,6 @@
 import { authorize } from '$lib/auth/rbac.server';
+import { STATUS_CODES } from '$lib/common/constants';
 import { emailVerificationCodesSchema } from '$lib/db/validation.server';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';

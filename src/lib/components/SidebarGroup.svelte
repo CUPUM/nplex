@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
-	import { defineContext } from '$lib/utils/context';
-	import { defineChildIndexContext } from '$lib/utils/index-context';
+	import { defineContext } from '$lib/common/context';
+	import { defineChildIndexContext } from '$lib/common/index-context';
 	import { onDestroy } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
@@ -51,7 +51,7 @@
 	</div>
 </section>
 
-<style lang="postcss">
+<style>
 	section {
 		position: relative;
 		display: flex;

@@ -85,5 +85,5 @@
 	{/if}
 </SidebarGroup>
 
-<style lang="postcss">
+<style>
 </style>

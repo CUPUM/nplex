@@ -4,5 +4,5 @@
 
 <VerifyEmail code={'12315'} />
 
-<style lang="postcss">
+<style>
 </style>

@@ -6,7 +6,7 @@
 	<slot />
 </svelte:element>
 
-<style lang="postcss">
+<style>
 	.descriptor-list {
 		display: flex;
 		flex-direction: row;

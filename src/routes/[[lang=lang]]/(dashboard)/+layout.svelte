@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import { composeMeshgradient } from '$lib/common/mesh-gradient';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import { slide } from '$lib/motion/slide';
-	import { composeMeshgradient } from '$lib/utils/mesh-gradient';
 	import { onMount } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import EditableProjects from './EditableProjects.svelte';
@@ -77,7 +77,7 @@
 	</section>
 </aside>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 
 	.editables {

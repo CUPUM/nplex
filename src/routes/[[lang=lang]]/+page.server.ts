@@ -1,8 +1,8 @@
 import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
+import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { organizations, projects, projectsImages } from '$lib/db/schema/public';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { fail, redirect } from '@sveltejs/kit';
 import { random } from 'drizzle-orm-helpers/pg';
 

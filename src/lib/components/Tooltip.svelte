@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getDistances, getTransformOrigin } from '$lib/utils/positioning';
+	import { getDistances, getTransformOrigin } from '$lib/common/positioning';
 	import { createTooltip, melt } from '@melt-ui/svelte';
 	import type { FloatingConfig } from '@melt-ui/svelte/internal/actions';
 	import { cubicOut } from 'svelte/easing';
@@ -41,7 +41,7 @@
 	</div>
 {/if}
 
-<style lang="postcss">
+<style>
 	.tooltip-content {
 		--tip-color: color-mix(in srgb, var(--color-neutral-800) 95%, transparent);
 		font-weight: 400;

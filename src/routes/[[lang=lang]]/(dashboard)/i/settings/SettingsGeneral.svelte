@@ -3,7 +3,7 @@
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
-	import { superForm } from '$lib/forms/super-form';
+	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import { FileUp, Mail, Shield, ShieldX } from 'lucide-svelte';
 	import type { PageData } from './$types';
 
@@ -91,7 +91,7 @@
 	</DashboardFormSection>
 </DashboardForm>
 
-<style lang="postcss">
+<style>
 	#user-name {
 		display: flex;
 		flex-direction: row;

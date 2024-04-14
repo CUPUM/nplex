@@ -5,7 +5,7 @@
 	<h1 class="heading xl">Org descriptors</h1>
 </section>
 
-<style lang="postcss">
+<style>
 	section {
 		padding: 2rem;
 	}

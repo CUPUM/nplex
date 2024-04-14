@@ -4,20 +4,6 @@ import pg from 'postgres';
 
 export const DB_MIGRATIONS_FOLDER = './migrations';
 
-// /**
-//  * @see https://discord.com/channels/1043890932593987624/1125147482364584007/1154633287805976606
-//  */
-// export function registerTsConfig() {
-// 	console.log('Registering sveltekit generated tsconfig');
-// 	return register({
-// 		baseUrl: './.svelte-kit',
-// 		paths: {
-// 			...tsConfig.compilerOptions.paths,
-// 		},
-// 	});
-// }
-// registerTsConfig();
-
 // Sourcing env vars for scripts that run outside of vite/sveltekit.
 config({ path: '.env' });
 

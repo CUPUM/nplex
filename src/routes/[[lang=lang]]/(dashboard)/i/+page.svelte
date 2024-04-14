@@ -13,7 +13,7 @@
 	</a>
 </coming_soon>
 
-<style lang="postcss">
+<style>
 	section {
 		padding: 2rem;
 	}

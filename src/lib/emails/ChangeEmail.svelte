@@ -4,5 +4,5 @@
 <!-- Template -->
 <!-- End template -->
 
-<style lang="postcss">
+<style>
 </style>

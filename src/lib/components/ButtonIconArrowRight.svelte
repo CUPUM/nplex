@@ -4,7 +4,7 @@
 
 <ArrowRight class="button-icon arrow-right" />
 
-<style lang="postcss">
+<style>
 	:global(.button-icon.arrow-right) {
 		translate: 0px;
 		transition: all var(--duration-fast) ease-out;

@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
-	import { superForm } from '$lib/forms/super-form';
+	import { superForm } from '$lib/crud/validation/forms/super-form.js';
 	import { link } from '$lib/i18n/link';
 	import { melt } from '@melt-ui/svelte';
 	import { Eye, EyeOff, HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
@@ -122,7 +122,7 @@
 	</a>
 </div>
 
-<style lang="postcss">
+<style>
 	form {
 		display: flex;
 		flex-direction: column;

@@ -1,4 +1,4 @@
-import { STATUS_CODES } from '$lib/utils/constants';
+import { STATUS_CODES } from '$lib/common/constants';
 import { error } from '@sveltejs/kit';
 import { z } from 'zod';
 

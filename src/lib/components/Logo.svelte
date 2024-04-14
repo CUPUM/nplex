@@ -57,7 +57,7 @@
 	{/if}
 </svg>
 
-<style lang="postcss">
+<style>
 	svg {
 		position: relative;
 	}

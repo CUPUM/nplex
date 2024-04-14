@@ -119,7 +119,7 @@
 	{/if}
 </div>
 
-<style lang="postcss">
+<style>
 	@use '../misc.css';
 
 	.dialog-overlay {

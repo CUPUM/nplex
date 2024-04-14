@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import { OAUTH_PROVIDERS_ARR } from '$lib/auth/constants';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import SocialProviderButton from '$lib/components/social-icons/SocialProviderButton.svelte';
+	import SocialProviderButton from '$lib/components/complexes/button-social-provider.svelte';
 </script>
 
 <article>
@@ -26,7 +26,7 @@
 	</div>
 </article>
 
-<style lang="postcss">
+<style>
 	article {
 		display: flex;
 		align-items: center;

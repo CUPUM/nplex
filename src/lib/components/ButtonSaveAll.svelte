@@ -35,5 +35,5 @@
 	<SaveAll />
 </button>
 
-<style lang="postcss">
+<style>
 </style>

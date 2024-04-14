@@ -6,7 +6,7 @@
 	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
-	import { superForm } from '$lib/forms/super-form';
+	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import { createSelect, melt } from '@melt-ui/svelte';
 	import { Crown, Send } from 'lucide-svelte';
 	import type { PageData } from './$types';
@@ -71,7 +71,7 @@
 	</DashboardFormSection>
 </DashboardForm>
 
-<style lang="postcss">
+<style>
 	.input-group {
 		align-self: center;
 	}

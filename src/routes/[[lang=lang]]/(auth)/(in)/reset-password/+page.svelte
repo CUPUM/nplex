@@ -57,7 +57,7 @@
 	</a>
 </div>
 
-<style lang="postcss">
+<style>
 	form {
 		display: flex;
 		flex-direction: column;

@@ -6,5 +6,5 @@
 	<header><h1>{data.project.title}</h1></header>
 </article>
 
-<style lang="postcss">
+<style>
 </style>

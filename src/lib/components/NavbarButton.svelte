@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
+	import type { StoresValues } from '$lib/common/types';
 	import { MODES } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
-	import type { StoresValues } from '$lib/utils/types';
 	import type { DialogElements, DropdownMenuElements, TooltipElements } from '@melt-ui/svelte';
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 
@@ -59,7 +59,7 @@
 	<slot />
 </svelte:element>
 
-<style lang="postcss">
+<style>
 	.navbar-button {
 		--button-size: 3.2em;
 		--button-padding: 1em;

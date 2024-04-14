@@ -1,12 +1,12 @@
 import * as m from '$i18n/messages';
 import { USER_ROLES } from '$lib/auth/constants';
 import { authorize } from '$lib/auth/rbac.server';
+import { STATUS_CODES } from '$lib/common/constants';
 import { usersRolesRequestSchema, usersSchema } from '$lib/db/crud.server';
 import { TRUE } from '$lib/db/custom-types.server';
 import { db } from '$lib/db/db.server';
 import { getUserRolesList } from '$lib/db/queries.server';
 import { users, usersRolesRequests } from '$lib/db/schema/auth';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { eq, getTableColumns, sql } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms/client';

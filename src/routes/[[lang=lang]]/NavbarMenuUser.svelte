@@ -86,7 +86,7 @@
 	</section>
 </div>
 
-<style lang="postcss">
+<style>
 	#navbar-menu-user-grid {
 		padding: var(--inlay);
 		gap: var(--inlay);

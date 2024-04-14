@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import TranslationsInput from '$lib/components/TranslationsInput.svelte';
-	import type { SuperFormData } from '$lib/forms/types';
+	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import type { PageData } from './$types';
 
 	export let form: SuperFormData<PageData['form']>['form'];
@@ -49,6 +49,6 @@
 	</div>
 </fieldset>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 </style>

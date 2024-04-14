@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
-	import type { SuperFormData } from '$lib/forms/types';
+	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import { switchCrossfade } from '$lib/motion/presets';
 	import type { PageData } from './$types';
 
@@ -36,7 +36,7 @@
 	</div>
 </fieldset>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 
 	.switch {

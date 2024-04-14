@@ -4,12 +4,12 @@
 	import { availableLanguageTags } from '$i18n/runtime';
 	import { ripple } from '$lib/actions/ripple';
 	import { breakpoint } from '$lib/breakpoints/breakpoints';
+	import { KEYS } from '$lib/common/constants';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import { langSwitch, link } from '$lib/i18n/link';
 	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
 	import { transform } from '$lib/motion/transform';
-	import { KEYS } from '$lib/utils/constants';
 	import { melt, type DialogElements, type DialogStates } from '@melt-ui/svelte';
 	import { Languages, Scroll, SunMoon, X } from 'lucide-svelte';
 	import { cubicIn, expoIn, expoOut } from 'svelte/easing';
@@ -156,7 +156,7 @@
 	</menu>
 {/if}
 
-<style lang="postcss">
+<style>
 	#navdrawer-overlay {
 		position: fixed;
 		inset: 0;

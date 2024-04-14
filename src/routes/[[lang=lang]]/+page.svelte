@@ -6,12 +6,14 @@
 
 	let mounted = false;
 
-	onMount(() => {
-		mounted = true;
-	});
+	// onMount(() => {
+	// 	mounted = true;
+	// });
 </script>
 
-<Landing images={data.randomImages} />
+Hello
 
-<style lang="postcss">
+<!-- <Landing images={data.randomImages} /> -->
+
+<style>
 </style>

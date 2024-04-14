@@ -1,5 +1,11 @@
 import * as m from '$i18n/messages';
 import { authorize } from '$lib/auth/rbac.server';
+import {
+	messageError,
+	messageInvalid,
+	messageNoRowsDeleted,
+	messageSuccess,
+} from '$lib/crud/validation/messages';
 import { excluded } from '$lib/db/custom-types.server';
 import { db } from '$lib/db/db.server';
 import { withTranslations } from '$lib/db/queries.server';
@@ -15,12 +21,6 @@ import {
 	projectExemplarityCategoriesWithTranslationsSchema,
 	projectExemplarityIndicatorsWithTranslationsSchema,
 } from '$lib/db/validation.server';
-import {
-	messageError,
-	messageInvalid,
-	messageNoRowsDeleted,
-	messageSuccess,
-} from '$lib/forms/messages';
 import { eq } from 'drizzle-orm';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms/server';

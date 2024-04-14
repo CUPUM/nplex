@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { superForm } from '$lib/forms/super-form';
+	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import Category from './Category.svelte';
 	import NewCategory from './NewCategory.svelte';
 
@@ -43,6 +43,6 @@
 	<NewCategory data={data.newCategoryForm} />
 </form>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 </style>

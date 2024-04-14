@@ -1,5 +1,5 @@
-import Loading from '$lib/components/Spinner.svelte';
-import { outroAndDestroy } from '$lib/utils/outro-and-destroy';
+import { outroAndDestroy } from '$lib/common/outro-and-destroy';
+import Loading from '$lib/components/primitives/spinner.svelte';
 import type { ComponentProps } from 'svelte';
 import type { Action } from 'svelte/action';
 import { derived, writable, type Readable } from 'svelte/store';

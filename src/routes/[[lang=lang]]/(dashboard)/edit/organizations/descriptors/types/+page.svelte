@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { superForm } from '$lib/forms/super-form';
+	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import DescriptorList from '../../../DescriptorList.svelte';
 	import { descriptorFlip, descriptorIn, descriptorOut } from '../../../motion';
 	import NewType from './NewType.svelte';
@@ -41,6 +41,6 @@
 	</div>
 </form>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 </style>

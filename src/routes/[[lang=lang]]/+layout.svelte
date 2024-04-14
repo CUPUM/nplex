@@ -1,68 +1,37 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation';
-	import { page } from '$app/stores';
 	import { setLanguageTag } from '$i18n/runtime';
-	import LoadingProgress from '$lib/components/LoadingProgress.svelte';
-	import Spinner from '$lib/components/Spinner.svelte';
-	import ToastsOutlet from '$lib/components/ToastsOutlet.svelte';
-	import { SETOUT_DEFAULT } from '$lib/setout/constants';
-	import { LOAD_DEPENDENCIES } from '$lib/utils/constants';
-	import { onMount } from 'svelte';
-	import Footer from './Footer.svelte';
-	import Navbar from './Navbar.svelte';
+	import Spinner from '$lib/components/primitives/spinner.svelte';
+	import RootFooter from '$lib/components/singletons/root-footer.svelte';
+	import RootNavbar from '$lib/components/singletons/root-navbar.svelte';
+	import RootProgress from '$lib/components/singletons/root-progress.svelte';
+	import RootToastContainer from '$lib/components/singletons/root-toast-container.svelte';
+	import { untrack } from 'svelte';
 
-	export let data;
+	let { data, children } = $props();
 
-	let mounted = false;
-	let prevLang = data.lang;
+	let mounted = $state(false);
 
-	onMount(() => {
-		page.subscribe((p) => {
-			const setout = p.data.setout ?? SETOUT_DEFAULT;
-			document.documentElement.setAttribute('data-setout', setout);
+	$effect(() => {
+		untrack(() => {
+			mounted = true;
 		});
-		mounted = true;
 	});
 
-	setLanguageTag(data.lang);
-	$: if (data.lang !== prevLang) {
-		prevLang = data.lang;
-		setLanguageTag(data.lang);
-		invalidate(LOAD_DEPENDENCIES.Lang);
-	}
+	const lang = $derived(data.lang);
+	setLanguageTag(() => lang);
 </script>
 
 {#if !mounted}
-	<div class="loading">
+	<div class="fixed inset-0 z-[999] pointer-events-none">
 		<Spinner />
 	</div>
 {/if}
-<LoadingProgress />
-<Navbar />
-<main>
-	<slot />
+<RootProgress />
+<RootNavbar />
+<main
+	class="flex font- flex-col flex-1 flex-nowrap min-h-[calc(100dvh - var(--root-navbar-height))]"
+>
+	{@render children()}
 </main>
-<Footer />
-<ToastsOutlet />
-
-<style lang="postcss">
-	.loading {
-		position: fixed;
-		inset: 0;
-		z-index: 9999;
-		pointer-events: none;
-		user-select: none;
-	}
-
-	main {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		flex-wrap: nowrap;
-		padding: 0;
-		margin: 0;
-		min-height: calc(100vh - var(--navbar-height));
-		min-height: calc(100svh - var(--navbar-height));
-		min-height: calc(100dvh - var(--navbar-height));
-	}
-</style>
+<RootFooter />
+<RootToastContainer />

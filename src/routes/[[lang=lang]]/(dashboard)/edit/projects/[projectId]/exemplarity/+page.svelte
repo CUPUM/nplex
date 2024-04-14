@@ -3,7 +3,7 @@
 	import { ripple } from '$lib/actions/ripple';
 	import ButtonSaveAll from '$lib/components/ButtonSaveAll.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { superForm } from '$lib/forms/super-form';
+	import { superForm } from '$lib/crud/validation/forms/super-form.js';
 	import { switchCrossfade } from '$lib/motion/presets.js';
 
 	export let data;
@@ -74,7 +74,7 @@
 	</menu>
 </form>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 
 	.title {

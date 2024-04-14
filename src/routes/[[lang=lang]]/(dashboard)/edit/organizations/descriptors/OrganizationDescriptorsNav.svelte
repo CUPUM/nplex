@@ -17,5 +17,5 @@
 </SidebarGroup>
 <ProjectsSidebarGroup />
 
-<style lang="postcss">
+<style>
 </style>

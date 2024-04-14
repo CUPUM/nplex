@@ -17,7 +17,7 @@
 	</code>
 </article>
 
-<style lang="postcss">
+<style>
 	article {
 		grid-column: full;
 		display: flex;

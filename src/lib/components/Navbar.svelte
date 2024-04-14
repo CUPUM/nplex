@@ -4,7 +4,8 @@
 	import * as m from '$i18n/messages';
 	import { availableLanguageTags } from '$i18n/runtime';
 	import { ripple } from '$lib/actions/ripple';
-	import { breakpoint } from '$lib/breakpoints/breakpoints';
+	import { setout } from '$lib/arrangement/store';
+	import type { MessageFunction } from '$lib/common/types';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
@@ -12,8 +13,6 @@
 	import { MODES_DETAILS } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
 	import { transform } from '$lib/motion/transform';
-	import { setout } from '$lib/setout/store';
-	import type { MessageFunction } from '$lib/utils/types';
 	import {
 		createDialog,
 		createDropdownMenu,
@@ -291,7 +290,7 @@
 	<div class="placeholder"></div>
 {/if}
 
-<style lang="postcss">
+<style>
 	.placeholder {
 		/* position: sticky; */
 		position: relative;

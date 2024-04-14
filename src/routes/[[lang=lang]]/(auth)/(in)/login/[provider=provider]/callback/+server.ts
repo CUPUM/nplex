@@ -7,9 +7,9 @@ import {
 	getOAuthProviderUser,
 	getOAuthProviderUserEmail,
 } from '$lib/auth/utils.server';
+import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { oauthUsers, users } from '$lib/db/schema/auth';
-import { STATUS_CODES } from '$lib/utils/constants';
 import { error } from '@sveltejs/kit';
 import { OAuth2RequestError } from 'arctic';
 import { and, eq, or, type InferInsertModel } from 'drizzle-orm';

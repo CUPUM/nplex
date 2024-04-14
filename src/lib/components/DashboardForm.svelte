@@ -2,7 +2,7 @@
 	import type { enhance as regularEnhance } from '$app/forms';
 	import * as m from '$i18n/messages';
 	import type { LoadableSubmitter } from '$lib/builders/loading';
-	import type { SuperForm } from '$lib/forms/super-form';
+	import type { SuperForm } from '$lib/crud/validation/forms/super-form';
 	import { SaveAll } from 'lucide-svelte';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import type { Writable } from 'svelte/store';
@@ -74,5 +74,5 @@
 	</menu>
 </form>
 
-<style lang="postcss">
+<style>
 </style>

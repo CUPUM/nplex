@@ -45,6 +45,6 @@
 	</fieldset>
 </form>
 
-<style lang="postcss">
+<style>
 	@import '$styles/scoped/dashboard';
 </style>

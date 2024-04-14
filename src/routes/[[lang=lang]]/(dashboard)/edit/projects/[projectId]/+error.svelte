@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import { STATUS_CODES } from '$lib/common/constants';
 	import ButtonIconArrowLeft from '$lib/components/ButtonIconArrowLeft.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import { link } from '$lib/i18n/link';
-	import { STATUS_CODES } from '$lib/utils/constants';
 </script>
 
 <article>
@@ -19,7 +19,7 @@
 	{/if}
 </article>
 
-<style lang="postcss">
+<style>
 	article {
 		grid-column: full;
 		display: flex;

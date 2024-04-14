@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { composeMeshgradient } from '$lib/utils/mesh-gradient';
+	import { composeMeshgradient } from '$lib/common/mesh-gradient';
 	import type { User } from 'lucia';
 
 	export let id: User['id'];
@@ -25,7 +25,7 @@
 	</span>
 </div>
 
-<style lang="postcss">
+<style>
 	div {
 		position: absolute;
 		inset: 0;

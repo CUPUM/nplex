@@ -23,7 +23,7 @@
 	{/each}
 </menu>
 
-<style lang="postcss">
+<style>
 	menu {
 		font-size: var(--size-sm);
 	}

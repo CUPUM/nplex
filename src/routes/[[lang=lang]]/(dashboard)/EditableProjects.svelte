@@ -20,7 +20,7 @@
 	{/await}
 </ul>
 
-<style lang="postcss">
+<style>
 	ul {
 		position: relative;
 		display: flex;
