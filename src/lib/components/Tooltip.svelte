@@ -4,7 +4,7 @@
 	import type { FloatingConfig } from '@melt-ui/svelte/internal/actions';
 	import { cubicOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-	import Tip from './Tip.svelte';
+	import Tip from './primitives/tip.svelte';
 
 	export let placement: NonNullable<FloatingConfig>['placement'] = 'top';
 	export let disabled = false;

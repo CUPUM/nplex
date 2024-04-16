@@ -1,21 +1,15 @@
 // See https://kit.svelte.dev/docs/types#app
 
 import type { AvailableLanguageTag } from '$i18n/runtime';
-import type { ToastData } from '$lib/components/Toast.svelte';
-import type { Mode } from '$lib/modes/constants';
 import type { Arrangement } from '$lib/arrangement/constants';
 import type { createSetEventArrangement } from '$lib/arrangement/event';
+import type { ToastData } from '$lib/components/Toast.svelte';
+import type { Mode } from '$lib/modes/constants';
 import type { Session, User } from 'lucia';
 import type { ComponentType } from 'svelte';
 import type { LayoutData } from './routes/[[lang=lang]]/$types';
 
 declare global {
-	namespace svelteHTML {
-		interface HTMLAttributes {
-			// In-markup narrowing is not happening.
-			'data-mode'?: Mode;
-		}
-	}
 	namespace App {
 		// See https://github.com/ciscoheat/sveltekit-superforms/issues/261
 		namespace Superforms {
@@ -34,7 +28,13 @@ declare global {
 			editor?: unknown;
 		}
 		interface Locals {
+			/**
+			 * Authenticated user.
+			 */
 			user: User | null;
+			/**
+			 * Authentication session.
+			 */
 			session: Session | null;
 			/**
 			 * Private theme_mode value for handle hook.
@@ -54,36 +54,18 @@ declare global {
 			lang: AvailableLanguageTag;
 		}
 		interface PageData extends LayoutData {
-			/**
-			 * Granular server and client setable layout type.
-			 */
 			setout?: Arrangement;
-			/**
-			 * Optionally hide navbar's scrolled bg.
-			 */
-			navbar?: {
-				noBackground?: boolean;
-			};
-			/**
-			 * Optionally control display of footer.
-			 */
+			navbar?: {};
 			footer?: {
 				hide?: boolean;
 			};
-			/**
-			 * Dashboard ((private) route group) compositional components and data.
-			 */
 			dashboard?: {
 				header?: ComponentType;
 				sidebar?: ComponentType;
 				footer?: ComponentType;
 			};
-			/**
-			 * Short-life cookie-persisted flash message.
-			 */
 			flash?: App.Superforms.Message;
 		}
-		// interface Platform {}
 	}
 }
 

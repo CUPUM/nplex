@@ -1,4 +1,10 @@
-<script lang="ts" context="module">
+<script lang="ts">
+	// import { afterNavigate, beforeNavigate } from '$app/navigation';
+	// import { circOut, cubicOut } from 'svelte/easing';
+	// import { tweened, type Tweened } from 'svelte/motion';
+	// import { get } from 'svelte/store';
+	// import { slide } from 'svelte/transition';
+
 	// const rootProgress: Tweened<number> = tweened(0, {
 	// 	duration: 250,
 	// 	easing: cubicOut,
@@ -37,14 +43,6 @@
 	// export function resetProgress() {
 	// 	completeProgress(0);
 	// }
-</script>
-
-<script lang="ts">
-	// import { afterNavigate, beforeNavigate } from '$app/navigation';
-	// import { circOut, cubicOut } from 'svelte/easing';
-	// import { tweened, type Tweened } from 'svelte/motion';
-	// import { get } from 'svelte/store';
-	// import { slide } from 'svelte/transition';
 
 	// // export let indeterminate = false;
 	// export let progress: number | undefined = undefined;

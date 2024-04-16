@@ -1,4 +1,3 @@
-import postcssglobal from '@csstools/postcss-global-data';
 import { paraglide } from '@inlang/paraglide-js-adapter-vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
@@ -13,7 +12,7 @@ export default defineConfig({
 		tailwindcss(),
 		paraglide({
 			project: './project.inlang',
-			outdir: './src/i18n',
+			outdir: './src/lib/i18n/generated',
 		}),
 	],
 });

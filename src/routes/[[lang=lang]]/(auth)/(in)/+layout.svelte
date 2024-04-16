@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import { OAUTH_PROVIDERS_ARR } from '$lib/auth/constants';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import SocialProviderButton from '$lib/components/complexes/button-social-provider.svelte';
+	import SocialProviderButton from '$lib/components/patterns/button-social-provider.svelte';
 </script>
 
 <article>

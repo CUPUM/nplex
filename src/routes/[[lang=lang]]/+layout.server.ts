@@ -1,4 +1,3 @@
-import { LOAD_DEPENDENCIES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import { userRolesTranslations } from '$lib/db/schema/auth';
 import { getEventLang } from '$lib/i18n/event';
@@ -8,7 +7,6 @@ import { loadFlash } from 'sveltekit-flash-message/server';
 export const load = loadFlash(async (event) => {
 	const lang = getEventLang(event);
 	const mode = event.locals.mode;
-	event.depends(LOAD_DEPENDENCIES.LANG);
 	const roleName = event.locals.user
 		? db
 				.select({ name: userRolesTranslations.name })

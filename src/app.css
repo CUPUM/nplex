@@ -1,32 +1,42 @@
 /* @import 'tailwindcss'; */
-@import 'tailwindcss/preflight';
-@import 'tailwindcss/utilities';
+@import 'tailwindcss/preflight' layer(base);
+@import 'tailwindcss/utilities' layer(utilities);
 
 @theme {
-	--font-family-sans: 'Outfit', sans serif;
-	--font-family-serif: 'Fraunces', serif;
+	/* Fonts */
+	--font-family-main: 'Plus Jakarta Sans', sans serif;
+	--font-family-auxiliary: 'Fraunces', serif;
 	--font-family-mono: 'JetBrains Mono', monospace;
+	--default-font-family: var(--font-family-main);
+	--default-mono-font-family: var(--font-family-mono);
 
+	/* Text sizes */
 	--font-size-xs: 0.75rem;
 	--font-size-xs--line-height: 1rem;
 	--font-size-sm: 0.875rem;
 	--font-size-sm--line-height: 1.25rem;
 	--font-size-md: 1rem;
 	--font-size-md--line-height: 1.5rem;
-	--font-size-lg: 1.25rem;
-	--font-size-lg--line-height: 1.75rem;
-	--font-size-xl: 1.875rem;
-	--font-size-xl--line-height: 2.25rem;
-	--font-size-2xl: 3rem;
-	--font-size-2xl--line-height: 1;
-	--font-size-3xl: 6rem;
-	--font-size-3xl--line-height: 1;
+	/* h6 */
+	--font-size-lg: 1.333rem;
+	--font-size-lg--line-height: 2rem;
+	/* h5 */
+	--font-size-xl: 1.777rem;
+	--font-size-xl--line-height: 2.5rem;
+	/* h4 */
+	--font-size-2xl: 2.369rem;
+	--font-size-2xl--line-height: 3.25rem;
+	/* h3 */
+	--font-size-3xl: 3.157rem;
+	--font-size-3xl--line-height: 4.25rem;
+	/* h2 */
+	--font-size-4xl: 4.209rem;
+	--font-size-4xl--line-height: 5.25rem;
+	/* h1 */
+	--font-size-5xl: 5.61rem;
+	--font-size-5xl--line-height: 6.25rem;
 
-	--blur-sm: 3px;
-	--blur-md: 8px;
-	--blur-lg: 18px;
-	--blur-xl: 48px;
-
+	/* Trackings */
 	--letter-spacing-tighter: -0.05em;
 	--letter-spacing-tight: -0.025em;
 	--letter-spacing-normal: 0em;
@@ -34,79 +44,137 @@
 	--letter-spacing-wider: 0.05em;
 	--letter-spacing-widest: 0.1em;
 
-	--line-height-none: 1;
-	--line-height-tight: 1.25;
-	--line-height-snug: 1.375;
-	--line-height-normal: 1.5;
-	--line-height-relaxed: 1.625;
-	--line-height-loose: 2;
-	--line-height-3: 0.75rem;
-	--line-height-4: 1rem;
-	--line-height-5: 1.25rem;
-	--line-height-6: 1.5rem;
-	--line-height-7: 1.75rem;
-	--line-height-8: 2rem;
-	--line-height-9: 2.25rem;
-	--line-height-10: 2.5rem;
+	/* Leadings */
+	--line-height-single: 1;
+	--line-height-xs: 1.25;
+	--line-height-sm: 1.375;
+	--line-height-md: 1.5;
+	--line-height-lg: 1.625;
+	--line-height-xl: 2;
 
-	--breakpoint-sm: 40rem;
-	--breakpoint-md: 64rem;
-	--breakpoint-lg: 80rem;
-
+	/* Font weights */
 	--font-weight-thin: 275;
 	--font-weight-normal: 350;
 	--font-weight-bold: 550;
 	--font-weight-bolder: 700;
 
-	--width-xs: 240px;
-	--width-sm: 420px;
-	--width-md: 760px;
-	--width-lg: 960px;
-	--width-xl: 1000px;
+	/* Breakpoints */
+	--breakpoint-sm: 40rem;
+	--breakpoint-md: 64rem;
+	--breakpoint-lg: 80rem;
 
-	--radius-xs: 0.25rem;
-	--radius-sm: 0.5rem;
+	/* Sizes */
+	--width-xs: 16rem;
+	--width-sm: 28rem;
+	--width-md: 48rem;
+	--width-lg: 64rem;
+	--width-xl: 72rem;
+	--width-sidebar: 16rem;
+	--width-brick: 3em;
+
+	/* Define manually according to actual height. Avoids layout shifts inherent to getting value at runtime. */
+	--height-navbar: 4.8rem;
+
+	/* Spaces */
+	--spacing-gutter: 0.75rem;
+	--spacing-brick-x: 1.25em;
+	--spacing-nesting: 0.25rem;
+	--spacing-dashboard-gutter: 0.35rem;
+
+	/* Radii */
+	--radius-xs: 0.35rem;
+	--radius-sm: 0.75rem;
 	--radius-md: 1rem;
-	--radius-lg: 3rem;
+	--radius-lg: 2rem;
+	--radius-xl: 3rem;
 	--radius-full: 999px;
+	--radius-brick: var(--radius-md);
+	--radius-dashboard: var(--radius-xl);
 
+	/* Effects */
+	--blur-sm: 3px;
+	--blur-md: 8px;
+	--blur-lg: 18px;
+	--blur-xl: 48px;
+
+	/* Fades */
+	--opacity-soft: 60%;
+	--opacity-softer: 30%;
+
+	/* Easings */
 	--transition-timing-function-linear: linear;
-	--transition-timing-function-in: cubic-bezier(0.4, 0, 1, 1);
-	--transition-timing-function-out: cubic-bezier(0, 0, 0.2, 1);
-	--transition-timing-function-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+	--transition-timing-function-in: cubic-bezier(0.64, 0, 0.78, 0);
+	--transition-timing-function-out: cubic-bezier(0.22, 1, 0.36, 1);
+	--transition-timing-function-in-out: cubic-bezier(0.83, 0, 0.17, 1);
 
-	--color-fg: black;
-	--color-fg-mute: ;
-	--color-fg-highlight: ;
-	--color-bg: white;
-	--color-bg-mute: white;
-	--color-bg-highlight: ;
-	--color-success-fg: ;
-	--color-success-fg-mute: ;
-	--color-success-fg-highlight: ;
-	--color-success-bg: ;
-	--color-success-bg-mute: ;
-	--color-success-bg-highlight: ;
+	/* Durations */
+	--transition-duration-xfast: 75ms;
+	--transition-duration-fast: 125ms;
+	--transition-duration-medium: 250ms;
+	--transition-duration-slow: 400ms;
+	--transition-duration-xslow: 750ms;
+
+	/* Animations */
+	--animate-pulse: pulse linear var(--transition-timing-function-in-out) infinite both;
+	--animate-press: press var(--transition-duration-medium) var(--transition-timing-function-out)
+		both;
+
+	/* Shadows */
+	--shadow-xs: 0 1px 2px -1px rgb(0 0 0 / 0.05);
+	--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	--shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+	--shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+	--shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+	/* Colors */
+	--text-color: black;
+	--text-color-soft: black;
+	--text-color-strong: ;
+	--text-color-primary: black;
+	--text-color-primary-soft: black;
+	--text-color-primary-strong: ;
+
+	--background-color: lightgrey;
+	--background-color-soft: lightgrey;
+	--background-color-strong: lightgrey;
+	--background-color-primary: lightgrey;
+	--background-color-primary-soft: lightgrey;
+	--background-color-primary-strong: lightgrey;
+
+	/* --text-color-success: ;
 	--color-error-fg: ;
-	--color-error-fg-mute: ;
-	--color-error-fg-highlight: ;
+	--color-error-fg-soft: ;
+	--color-error-fg-strong: ;
 	--color-error-bg: ;
-	--color-error-bg-mute: ;
-	--color-error-bg-highlight: ;
+	--color-error-bg-soft: ;
+	--color-error-bg-strong: ;
 	--color-danger-fg: ;
-	--color-danger-fg-mute: ;
-	--color-danger-fg-highlight: ;
+	--color-danger-fg-soft: ;
+	--color-danger-fg-strong: ;
 	--color-danger-bg: ;
-	--color-danger-bg-mute: ;
-	--color-danger-bg-highlight: ;
+	--color-danger-bg-soft: ;
+	--color-danger-bg-strong: ;
 	--color-primary-fg: ;
-	--color-primary-fg-mute: ;
-	--color-primary-fg-highlight: ;
+	--color-primary-fg-soft: ;
+	--color-primary-fg-strong: ;
 	--color-primary-bg: ;
-	--color-primary-bg-mute: ;
-	--color-primary-bg-highlight: ;
+	--color-primary-bg-soft: ;
+	--color-primary-bg-strong: ;
+	--color-like-fg: lightpink;
+	--color-like-fg-strong: ;
+	--color-like-bg: pink;
+	--color-like-bg-strong: ;
+	--color-award-fg: lightyellow;
+	--color-award-fg-strong: ;
+	--color-award-bg: gold;
+	--color-award-bg-strong: ;
 	--color-card-fg: black;
+	--color-card-fg-soft: black;
+	--color-card-fg-strong: black;
 	--color-card-bg: yellow;
+	--color-card-bg-soft: yellow;
+	--color-card-bg-strong: yellow;
 	--color-floating-fg: brown;
 	--color-floating-bg: wheat;
 	--color-overlay-fg: white;
@@ -115,23 +183,52 @@
 	--color-selection-bg: ;
 	--color-ripple: ;
 	--color-ripple-start: ;
-	--color-ripple-end: ;
+	--color-ripple-end: ; 
+*/
 
+	/* Outlines */
 	--outline-color: purple;
 	--outline-width: 4px;
 	--outline-offset: 0px;
 
-	--border-width-sm: 0.75px;
-	--border-width-md: 1.25px;
-	--border-width-lg: 2.25px;
+	/* Borders */
+	--border-width-sm: 0.5px;
+	--border-width-md: 1.5px;
+	--border-width-lg: 2.5px;
 	--default-border-width: var(--border-width-md);
-
-	--border-color-strong: black;
 	--border-color: rgba(0, 0, 0, 0.35);
-	--border-color-mute: rgba(0, 0, 0, 0.125);
+	--border-color-strong: black;
+	--border-color-soft: rgba(0, 0, 0, 0.125);
+
+	--animation-opacity-pulse: 25%;
+
+	@keyframes pulse {
+		50% {
+			opacity: var(--animation-opacity-pulse);
+		}
+	}
+
+	@keyframes press {
+		20% {
+			transform: scale(0.96);
+		}
+		50% {
+			transform: scale(1.02);
+		}
+		100% {
+			transform: scale(1);
+		}
+	}
 }
 
 :root[data-mode='dark'] {
+	/* dark mode colors */
+}
+
+@variant {
+	.test {
+		text: red;
+	}
 }
 
 ::selection {
@@ -146,7 +243,8 @@
 
 :root {
 	position: relative;
-	font-size: 15px;
+	/* 15px for default root of 16px */
+	font-size: 93.75%;
 	font-weight: --font-weight;
 	font-family: var(--font-family-sans);
 	overflow-x: hidden;
@@ -179,3 +277,22 @@
 		scale var(--duration-slow) var(--ease-out-expo),
 		border-radius var(--duration-slow) var(--ease-out-expo);
 }
+
+/* Button */
+
+.button {
+}
+
+.button:is(.wide) {
+}
+
+.button:is(.compact) {
+}
+
+/* Input */
+
+/* Input group */
+
+/* Switch */
+
+/* Toggle */

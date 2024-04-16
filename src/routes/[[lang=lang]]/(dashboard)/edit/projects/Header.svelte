@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
-	import { link } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link.svelte';
 	import { Search, X } from 'lucide-svelte';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';

@@ -5,7 +5,7 @@
 	import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
 	import { createLoadable } from '$lib/builders/loading';
 	import { createTooltip } from '$lib/builders/tooltip';
-	import { link } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link.svelte';
 	import { melt } from '@melt-ui/svelte';
 	import { scale } from 'svelte/transition';
 	import TooltipContent from '../TooltipContent.svelte';

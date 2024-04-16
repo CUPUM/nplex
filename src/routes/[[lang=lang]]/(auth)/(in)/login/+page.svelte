@@ -3,7 +3,7 @@
 	import { ripple } from '$lib/actions/ripple';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form.js';
-	import { link } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link.svelte.js';
 	import { melt } from '@melt-ui/svelte';
 	import { Eye, EyeOff, HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
 	import { fade, fly } from 'svelte/transition';

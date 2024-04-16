@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { link } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link.svelte';
 </script>
 
 <hgroup>

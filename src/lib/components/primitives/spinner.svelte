@@ -19,60 +19,38 @@
 	const arc = 'L 5,95 5,50 A 45,45 0,0,1 95,50 L 95,95 5,95';
 	const triangle = 'L 0,95 50,0 100,95';
 	const d = `M ${origin} ${circle} ${square} ${arc} ${triangle} Z`;
-
-	// let path: SVGPathElement | undefined;
-	// $: if (path) {
-	// 	console.log(path.getTotalLength());
-	// }
 </script>
 
-<div class="spinner" style:--speed={speed} style:--offset={offset}>
-	<svg
-		viewBox="0 0 100 100"
-		preserveAspectRatio="xMidYMid"
-		in:transform|global={{
-			duration: intro ? 750 : 0,
-			scale: 0.5,
-			rotate: [0, 0, -180],
-			opacity: 1,
-			easing: expoOut,
-		}}
-		out:scale|global={{
-			duration: outro ? 150 : 0,
-			start: 0.9,
-			easing: quadIn,
-		}}
-		width="1em"
-		height="1em"
-		style:--linecap={linecap}
-		style:--thickness="{thickness}px"
-		style:--linejoin={linejoin}
-	>
-		<path {d} />
-		{#if trail}
-			<path class="secondary" {d} />
-		{/if}
-	</svg>
-</div>
+<svg
+	width="1em"
+	height="1em"
+	style:--linecap={linecap}
+	style:--thickness="{thickness}px"
+	style:--linejoin={linejoin}
+	style:--speed={speed}
+	style:--offset={offset}
+	viewBox="0 0 100 100"
+	preserveAspectRatio="xMidYMid"
+	in:transform|global={{
+		duration: intro ? 750 : 0,
+		scale: 0.5,
+		rotate: [0, 0, -180],
+		opacity: 1,
+		easing: expoOut,
+	}}
+	out:scale|global={{
+		duration: outro ? 150 : 0,
+		start: 0.9,
+		easing: quadIn,
+	}}
+>
+	<path {d} />
+	{#if trail}
+		<path class="secondary" {d} />
+	{/if}
+</svg>
 
 <style>
-	.spinner {
-		user-select: none;
-		pointer-events: none;
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background: transparent;
-		background: transparent;
-		font-size: 1.25em;
-		color: var(--spinner-color);
-	}
-
 	svg {
 		--count: 4;
 		--duration: calc(1s / var(--speed));

@@ -2,7 +2,7 @@ import { setLanguageTag } from '$i18n/runtime';
 import type { Handle } from '@sveltejs/kit';
 import { isRedirect } from '@sveltejs/kit';
 import { getEventLang } from './event';
-import { withLang } from './link';
+import { splitLang, withLang } from './link.svelte';
 
 /**
  * Handle hook for:
@@ -26,7 +26,10 @@ const handle = (async ({ event, resolve }) => {
 	if (!location || !location.startsWith('/')) {
 		return response;
 	}
-	response.headers.set('location', withLang(location, event.locals.lang));
+	const { lang, tail } = splitLang(location);
+	if (!lang) {
+		response.headers.set('location', withLang(tail, event.locals.lang));
+	}
 	return response;
 }) satisfies Handle;
 

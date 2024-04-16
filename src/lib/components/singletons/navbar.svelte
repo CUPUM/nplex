@@ -5,18 +5,18 @@
 	import { ripple } from '$lib/actions/ripple';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import Dropdown from '$lib/components/DropdownMenu.svelte';
-	import Logo from '$lib/components/Logo.svelte';
+	import Logo from '$lib/components/primitives/logo.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
-	import { langSwitch, link, noLang } from '$lib/i18n/link';
+	import { link, removeLang, withLang } from '$lib/i18n/link.svelte';
 	import { mode } from '$lib/modes/store';
 	import { melt } from '@melt-ui/svelte';
 	import { Languages, MailWarning, User2 } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { circInOut, expoOut } from 'svelte/easing';
 	import { crossfade, scale } from 'svelte/transition';
-	import NavbarMenu from './NavbarMenu.svelte';
-	import NavbarMenuUser from './NavbarMenuUser.svelte';
-	import NavbarModeIcon from './NavbarModeIcon.svelte';
+	import NavbarMenuUser from './navbar-menu-user.svelte';
+	import NavbarMenu from './navbar-menu.svelte';
+	import NavbarModeIcon from './navbar-mode-icon.svelte';
 
 	const [sendThumb, receiveThumb] = crossfade({
 		duration: 175,
@@ -26,31 +26,33 @@
 		},
 	});
 
-	let mounted = false;
+	let mounted = $state(false);
+	let withoutLang = $derived(removeLang($page.url.href.replace($page.url.origin, '')));
 
 	onMount(() => {
 		mounted = true;
 	});
 </script>
 
-<header id="navbar" class={$page.data.setout}>
+<!-- <header id="navbar" class={$page.data.setout}> -->
+<header id="navbar">
 	<nav class="navbar-group site">
-		<a class="navbar-button" {...$link('/')} use:ripple>
+		<a class="navbar-button" {...link('/')} use:ripple>
 			<Logo size="1.5em" />
 		</a>
-		<a class="navbar-button" {...$link('/about')} use:ripple>
+		<a class="navbar-button" {...link('/about')} use:ripple>
 			{m.about()}
 		</a>
-		<a class="navbar-button" {...$link('/guides')} use:ripple>
+		<a class="navbar-button" {...link('/guides')} use:ripple>
 			{m.guides()}
 		</a>
 	</nav>
 	<nav class="md navbar-group explore">
-		<a class="navbar-button" {...$link('/projects')} use:ripple>
+		<a class="navbar-button" {...link('/projects')} use:ripple>
 			<div class="-navbar-button-thumb" />
 			{m.projects()}
 		</a>
-		<a class="navbar-button" {...$link('/organizations')} use:ripple>
+		<a class="navbar-button" {...link('/organizations')} use:ripple>
 			<div class="-navbar-button-thumb" />
 			{m.organizations()}
 		</a>
@@ -66,7 +68,8 @@
 					<a
 						class="dropdown-item"
 						use:melt={item}
-						{...$langSwitch(lang)}
+						href={withLang(withoutLang, lang)}
+						hreflang={lang}
 						data-sveltekit-noscroll
 						data-sveltekit-replacestate
 						data-current={$page.data.lang === lang ? true : undefined}
@@ -86,7 +89,7 @@
 		>
 			<NavbarModeIcon />
 		</button>
-		{#if $page.data.user}
+		n {#if $page.data.user}
 			<NavbarMenu let:trigger>
 				<button class="navbar-button square" use:ripple use:melt={trigger}>
 					<Avatar {...$page.data.user} />
@@ -107,14 +110,12 @@
 				/>
 			</NavbarMenu>
 		{:else}
-			{@const link = $link('/login')}
 			<a
 				class="navbar-button square"
-				{...link}
-				data-current={$noLang.startsWith('/signup') ||
-					$noLang.startsWith('/reset-password') ||
-					link['data-current'] ||
-					undefined}
+				href={withLang('/login')}
+				aria-current={['/login', '/signup', '/reset-password'].some((authRoute) =>
+					withoutLang.startsWith(authRoute)
+				) || undefined}
 			>
 				<User2 />
 			</a>
@@ -122,7 +123,7 @@
 	</nav>
 </header>
 
-<style>
+<!-- <style>
 	#navbar {
 		z-index: 999;
 		display: grid;
@@ -226,4 +227,4 @@
 			opacity: 1;
 		}
 	}
-</style>
+</style> -->

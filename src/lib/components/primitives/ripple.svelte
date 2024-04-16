@@ -17,9 +17,6 @@
 	import { onDestroy, onMount } from 'svelte';
 
 	export let easing: string = 'cubic-bezier(0, 0, .5, 1)';
-	/**
-	 * R multiplier where duration = d * speed.
-	 */
 	export let speed: number = 1;
 	export let duration: number | undefined = undefined;
 	export let delay = 0;

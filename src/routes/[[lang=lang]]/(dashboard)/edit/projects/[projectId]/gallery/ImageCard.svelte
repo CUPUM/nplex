@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
 	import type { SuperFormData } from '$lib/crud/validation/forms/types';
-	import { link } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link.svelte';
 	import { MODES } from '$lib/modes/constants';
 	import { imageSrc } from '$lib/storage/media/url';
 	import { checked } from '$lib/utils/attributes';

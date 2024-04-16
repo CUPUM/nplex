@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
-	import TranslationsInput from '$lib/components/TranslationsInput.svelte';
+	import TranslationsInput from '$lib/components/patterns/TranslationsInput.svelte';
 	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import type { PageData } from './$types';
 

@@ -3,7 +3,7 @@
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
-	import TranslationsInput from '$lib/components/TranslationsInput.svelte';
+	import TranslationsInput from '$lib/components/patterns/TranslationsInput.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form.js';
 
 	export let data;

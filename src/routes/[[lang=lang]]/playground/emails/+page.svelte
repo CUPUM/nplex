@@ -1,5 +1,5 @@
 <script lang="ts">
-	import VerifyEmail from '$lib/emails/VerifyEmail.svelte';
+	import VerifyEmail from '$lib/email/VerifyEmail.svelte';
 </script>
 
 <VerifyEmail code={'12315'} />

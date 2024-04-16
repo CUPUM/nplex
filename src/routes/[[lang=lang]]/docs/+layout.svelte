@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Logo from '$lib/components/Logo.svelte';
+	import Logo from '$lib/components/primitives/logo.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import SwitchThumb from '$lib/components/SwitchThumb.svelte';
-	import { link } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link.svelte.js';
 	import { MODES } from '$lib/modes/constants';
 	import { mode } from '$lib/modes/store';
 	import { ArrowLeft, ArrowRight, MoonStar, Sun } from 'lucide-svelte';

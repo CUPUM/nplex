@@ -1,8 +1,8 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import ButtonCreate from '$lib/components/ButtonCreate.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
+	import ButtonCreate from '$lib/components/patterns/ButtonCreate.svelte';
 	import { superFormDialog } from '$lib/crud/validation/forms/super-form';
 	import Descriptor from '../../../Descriptor.svelte';
 	import DescriptorForm from '../../../DescriptorForm.svelte';

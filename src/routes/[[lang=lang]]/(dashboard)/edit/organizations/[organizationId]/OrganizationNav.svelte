@@ -4,7 +4,7 @@
 	import LangKey from '$lib/components/LangKey.svelte';
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
-	import { link } from '$lib/i18n/link';
+	import { link } from '$lib/i18n/link.svelte';
 	import { AlertTriangle, Shield, Users2 } from 'lucide-svelte';
 
 	$: orgId = $page.params.organizationId;

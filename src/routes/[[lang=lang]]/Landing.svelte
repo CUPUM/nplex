@@ -3,8 +3,8 @@
 	import * as m from '$i18n/messages';
 	import ButtonIconArrowRight from '$lib/components/ButtonIconArrowRight.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import Logo from '$lib/components/Logo.svelte';
-	import { link } from '$lib/i18n/link';
+	import Logo from '$lib/components/primitives/logo.svelte';
+	import { link } from '$lib/i18n/link.svelte';
 	import { debounce } from '@melt-ui/svelte/internal/helpers';
 	import { Edit } from 'lucide-svelte';
 	import { onMount } from 'svelte';
