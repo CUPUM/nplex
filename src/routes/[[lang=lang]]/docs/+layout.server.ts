@@ -1,4 +1,4 @@
-import { ARRANGEMENTS } from '$lib/arrangement/constants';
+import { PRESENTATIONS } from '$lib/presentation/constants';
 import { getDocs, getIndexes } from './utils';
 
 export const load = async (event) => {
@@ -8,6 +8,6 @@ export const load = async (event) => {
 		docs,
 		indexes,
 		mode: event.locals.mode,
-		setout: event.locals.setArrangement(ARRANGEMENTS.FULL_WIDTH),
+		setout: event.locals.setArrangement(PRESENTATIONS.FULL_WIDTH),
 	};
 };

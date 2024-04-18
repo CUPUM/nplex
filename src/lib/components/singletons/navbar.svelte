@@ -1,22 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import { availableLanguageTags } from '$i18n/runtime';
-	import { ripple } from '$lib/actions/ripple';
-	import Avatar from '$lib/components/Avatar.svelte';
-	import Dropdown from '$lib/components/DropdownMenu.svelte';
 	import Logo from '$lib/components/primitives/logo.svelte';
-	import { LANG_DETAILS } from '$lib/i18n/constants';
-	import { link, removeLang, withLang } from '$lib/i18n/link.svelte';
-	import { mode } from '$lib/modes/store';
-	import { melt } from '@melt-ui/svelte';
-	import { Languages, MailWarning, User2 } from 'lucide-svelte';
+	import { link, removeLang } from '$lib/i18n/link.svelte';
 	import { onMount } from 'svelte';
 	import { circInOut, expoOut } from 'svelte/easing';
 	import { crossfade, scale } from 'svelte/transition';
-	import NavbarMenuUser from './navbar-menu-user.svelte';
-	import NavbarMenu from './navbar-menu.svelte';
-	import NavbarModeIcon from './navbar-mode-icon.svelte';
+	import NavbarButton from '../patterns/navbar-button.svelte';
+
+	let mounted = $state(false);
+	let withoutLang = $derived(removeLang($page.url.href.replace($page.url.origin, '')));
 
 	const [sendThumb, receiveThumb] = crossfade({
 		duration: 175,
@@ -26,38 +19,38 @@
 		},
 	});
 
-	let mounted = $state(false);
-	let withoutLang = $derived(removeLang($page.url.href.replace($page.url.origin, '')));
-
 	onMount(() => {
 		mounted = true;
 	});
 </script>
 
 <!-- <header id="navbar" class={$page.data.setout}> -->
-<header id="navbar">
-	<nav class="navbar-group site">
-		<a class="navbar-button" {...link('/')} use:ripple>
+<header
+	class="p-gutter z-50 grid grid w-full max-w-xl grid-flow-dense [grid-template-columns:[site-start]1fr[site-end_explore-start]auto[explore-end_user-start]1fr[user-end]] grid-rows-1 self-center"
+>
+	<nav class="gap-outline-focus col-[site] flex flex-row">
+		<NavbarButton {...link('/')} data-square>
 			<Logo size="1.5em" />
-		</a>
-		<a class="navbar-button" {...link('/about')} use:ripple>
+		</NavbarButton>
+		<NavbarButton {...link('/about')}>
 			{m.about()}
-		</a>
-		<a class="navbar-button" {...link('/guides')} use:ripple>
+		</NavbarButton>
+		<NavbarButton {...link('/guides')}>
 			{m.guides()}
-		</a>
+		</NavbarButton>
 	</nav>
-	<nav class="md navbar-group explore">
-		<a class="navbar-button" {...link('/projects')} use:ripple>
-			<div class="-navbar-button-thumb" />
+	<nav class="gap-outline-focus col-[explore] flex flex-row">
+		<NavbarButton {...link('/projects')}>
+			<div class="" />
 			{m.projects()}
-		</a>
-		<a class="navbar-button" {...link('/organizations')} use:ripple>
-			<div class="-navbar-button-thumb" />
+		</NavbarButton>
+		<NavbarButton {...link('/organizations')}>
+			<div class="" />
 			{m.organizations()}
-		</a>
+		</NavbarButton>
 	</nav>
-	<nav class="navbar-group user">
+	<nav class="gap-outline-focus col-[user] flex flex-row"></nav>
+	<!-- <nav class="navbar-group user">
 		<Dropdown let:trigger>
 			<button class="navbar-button" use:ripple use:melt={trigger}>
 				<Languages />
@@ -120,7 +113,7 @@
 				<User2 />
 			</a>
 		{/if}
-	</nav>
+	</nav> -->
 </header>
 
 <!-- <style>

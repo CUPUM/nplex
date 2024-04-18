@@ -1,14 +1,46 @@
 /* @import 'tailwindcss'; */
 @import 'tailwindcss/preflight' layer(base);
+@import './components.css' layer(components);
 @import 'tailwindcss/utilities' layer(utilities);
 
+@layer base {
+	::selection {
+		color: var(--color-selection-fg);
+		background: var(--color-selection-bg);
+	}
+
+	::-moz-selection {
+		color: var(--color-selection-fg);
+		background: var(--color-selection-bg);
+	}
+
+	* {
+		outline-style: solid;
+		outline-color: transparent;
+		outline-width: 0;
+		outline-offset: 0;
+	}
+
+	:focus-visible {
+		outline-style: solid;
+		outline-color: var(--outline-color);
+		outline-offset: var(--outline-offset-focus);
+		outline-width: var(--outline-width-focus);
+	}
+}
+
 @theme {
+	/* Defaults */
+	--default-transition-duration: var(--transition-duration-fast);
+	--default-transition-timing-function: var(--transition-timing-function-out);
+	--default-border-width: var(--border-width-md);
+	--default-ring-color: var(--outline-color);
+	--default-ring-width: var(--outline-width-focus);
+
 	/* Fonts */
 	--font-family-main: 'Plus Jakarta Sans', sans serif;
-	--font-family-auxiliary: 'Fraunces', serif;
+	--font-family-accessory: 'Fraunces', serif;
 	--font-family-mono: 'JetBrains Mono', monospace;
-	--default-font-family: var(--font-family-main);
-	--default-mono-font-family: var(--font-family-mono);
 
 	/* Text sizes */
 	--font-size-xs: 0.75rem;
@@ -17,23 +49,17 @@
 	--font-size-sm--line-height: 1.25rem;
 	--font-size-md: 1rem;
 	--font-size-md--line-height: 1.5rem;
-	/* h6 */
-	--font-size-lg: 1.333rem;
+	--font-size-lg: 1.333rem; /* h6 */
 	--font-size-lg--line-height: 2rem;
-	/* h5 */
-	--font-size-xl: 1.777rem;
+	--font-size-xl: 1.777rem; /* h5 */
 	--font-size-xl--line-height: 2.5rem;
-	/* h4 */
-	--font-size-2xl: 2.369rem;
+	--font-size-2xl: 2.369rem; /* h4 */
 	--font-size-2xl--line-height: 3.25rem;
-	/* h3 */
-	--font-size-3xl: 3.157rem;
+	--font-size-3xl: 3.157rem; /* h3 */
 	--font-size-3xl--line-height: 4.25rem;
-	/* h2 */
-	--font-size-4xl: 4.209rem;
+	--font-size-4xl: 4.209rem; /* h2 */
 	--font-size-4xl--line-height: 5.25rem;
-	/* h1 */
-	--font-size-5xl: 5.61rem;
+	--font-size-5xl: 5.61rem; /* h1 */
 	--font-size-5xl--line-height: 6.25rem;
 
 	/* Trackings */
@@ -45,7 +71,7 @@
 	--letter-spacing-widest: 0.1em;
 
 	/* Leadings */
-	--line-height-single: 1;
+	--line-height-none: 1;
 	--line-height-xs: 1.25;
 	--line-height-sm: 1.375;
 	--line-height-md: 1.5;
@@ -53,33 +79,37 @@
 	--line-height-xl: 2;
 
 	/* Font weights */
-	--font-weight-thin: 275;
-	--font-weight-normal: 350;
-	--font-weight-bold: 550;
-	--font-weight-bolder: 700;
+	--font-weight-thin: 350;
+	--font-weight-normal: 450;
+	--font-weight-bold: 650;
+	--font-weight-bolder: 750;
 
 	/* Breakpoints */
 	--breakpoint-sm: 40rem;
 	--breakpoint-md: 64rem;
 	--breakpoint-lg: 80rem;
 
-	/* Sizes */
+	/* Widths */
 	--width-xs: 16rem;
 	--width-sm: 28rem;
 	--width-md: 48rem;
 	--width-lg: 64rem;
-	--width-xl: 72rem;
-	--width-sidebar: 16rem;
-	--width-brick: 3em;
-
-	/* Define manually according to actual height. Avoids layout shifts inherent to getting value at runtime. */
-	--height-navbar: 4.8rem;
+	--width-xl: 76rem;
 
 	/* Spaces */
-	--spacing-gutter: 0.75rem;
-	--spacing-brick-x: 1.25em;
+	--spacing-0: 0px;
+	--spacing-xs: 0.5rem;
+	--spacing-sm: 0.75rem;
+	--spacing-md: 1rem;
+	--spacing-lg: 3rem;
+	--spacing-xl: 7rem;
+	--spacing-gutter: var(--spacing-sm);
+	--spacing-outline-focus: var(--outline-width-focus);
+	--spacing-brick: 3em;
+	--spacing-brick-padding-x: 1.25em;
 	--spacing-nesting: 0.25rem;
-	--spacing-dashboard-gutter: 0.35rem;
+	--spacing-sidebar-width: 16rem;
+	--spacing-navbar-height: 4.8rem; /* Define manually according to actual height. Avoids layout shifts inherent to getting value at runtime. */
 
 	/* Radii */
 	--radius-xs: 0.35rem;
@@ -88,8 +118,8 @@
 	--radius-lg: 2rem;
 	--radius-xl: 3rem;
 	--radius-full: 999px;
-	--radius-brick: var(--radius-md);
-	--radius-dashboard: var(--radius-xl);
+	--radius-dashboard-section: var(--radius-xl);
+	--radius-card: var(--radius-sm);
 
 	/* Effects */
 	--blur-sm: 3px;
@@ -97,9 +127,30 @@
 	--blur-lg: 18px;
 	--blur-xl: 48px;
 
+	/* Z indices */
+	--z-index-frontmost: 999;
+	--z-index-front: 500;
+
 	/* Fades */
 	--opacity-soft: 60%;
 	--opacity-softer: 30%;
+
+	/* Shadows */
+	--shadow-xs: 0 1px 2px -1px rgb(0 0 0 / 0.05);
+	--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	--shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+	--shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+	--shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+	/* Outlines */
+	--outline-width-focus: var(--border-width-lg);
+	--outline-offset-focus: 0px;
+
+	/* Borders */
+	--border-width-sm: 0.5px;
+	--border-width-md: 1.5px;
+	--border-width-lg: 3px;
 
 	/* Easings */
 	--transition-timing-function-linear: linear;
@@ -119,89 +170,6 @@
 	--animate-press: press var(--transition-duration-medium) var(--transition-timing-function-out)
 		both;
 
-	/* Shadows */
-	--shadow-xs: 0 1px 2px -1px rgb(0 0 0 / 0.05);
-	--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-	--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-	--shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-	--shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-	--shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-
-	/* Colors */
-	--text-color: black;
-	--text-color-soft: black;
-	--text-color-strong: ;
-	--text-color-primary: black;
-	--text-color-primary-soft: black;
-	--text-color-primary-strong: ;
-
-	--background-color: lightgrey;
-	--background-color-soft: lightgrey;
-	--background-color-strong: lightgrey;
-	--background-color-primary: lightgrey;
-	--background-color-primary-soft: lightgrey;
-	--background-color-primary-strong: lightgrey;
-
-	/* --text-color-success: ;
-	--color-error-fg: ;
-	--color-error-fg-soft: ;
-	--color-error-fg-strong: ;
-	--color-error-bg: ;
-	--color-error-bg-soft: ;
-	--color-error-bg-strong: ;
-	--color-danger-fg: ;
-	--color-danger-fg-soft: ;
-	--color-danger-fg-strong: ;
-	--color-danger-bg: ;
-	--color-danger-bg-soft: ;
-	--color-danger-bg-strong: ;
-	--color-primary-fg: ;
-	--color-primary-fg-soft: ;
-	--color-primary-fg-strong: ;
-	--color-primary-bg: ;
-	--color-primary-bg-soft: ;
-	--color-primary-bg-strong: ;
-	--color-like-fg: lightpink;
-	--color-like-fg-strong: ;
-	--color-like-bg: pink;
-	--color-like-bg-strong: ;
-	--color-award-fg: lightyellow;
-	--color-award-fg-strong: ;
-	--color-award-bg: gold;
-	--color-award-bg-strong: ;
-	--color-card-fg: black;
-	--color-card-fg-soft: black;
-	--color-card-fg-strong: black;
-	--color-card-bg: yellow;
-	--color-card-bg-soft: yellow;
-	--color-card-bg-strong: yellow;
-	--color-floating-fg: brown;
-	--color-floating-bg: wheat;
-	--color-overlay-fg: white;
-	--color-overlay-bg: black;
-	--color-selection-fg: ;
-	--color-selection-bg: ;
-	--color-ripple: ;
-	--color-ripple-start: ;
-	--color-ripple-end: ; 
-*/
-
-	/* Outlines */
-	--outline-color: purple;
-	--outline-width: 4px;
-	--outline-offset: 0px;
-
-	/* Borders */
-	--border-width-sm: 0.5px;
-	--border-width-md: 1.5px;
-	--border-width-lg: 2.5px;
-	--default-border-width: var(--border-width-md);
-	--border-color: rgba(0, 0, 0, 0.35);
-	--border-color-strong: black;
-	--border-color-soft: rgba(0, 0, 0, 0.125);
-
-	--animation-opacity-pulse: 25%;
-
 	@keyframes pulse {
 		50% {
 			opacity: var(--animation-opacity-pulse);
@@ -209,49 +177,87 @@
 	}
 
 	@keyframes press {
-		20% {
-			transform: scale(0.96);
+		10% {
+			transform: scale(0.94);
 		}
-		50% {
-			transform: scale(1.02);
+		30% {
+			transform: scale(1.04);
+		}
+		60% {
+			transform: scale(0.98);
 		}
 		100% {
 			transform: scale(1);
 		}
 	}
+
+	/* Colors */
+	--color-fg-soft: hsl(34, 9%, 9%);
+	--color-fg: hsl(30, 7%, 16%);
+	--color-fg-strong: hsl(34, 9%, 9%);
+	--color-fg-accent: var(--color-fg-strong);
+	--color-primary-soft: hsl(152, 90%, 32%);
+	--color-primary: hsl(154, 94%, 24%);
+	--color-primary-strong: hsl(156, 98%, 16%);
+	--color-primary-accent: var(--color-primary-strong);
+	--color-success-soft: hsl(152, 92%, 12%);
+	--color-success: hsl(154, 94%, 24%);
+	--color-success-strong: hsl(152, 92%, 12%);
+	--color-success-accent: hsl(154, 94%, 24%);
+	--color-error-soft: hsl(152, 92%, 12%);
+	--color-error: hsl(154, 94%, 24%);
+	--color-error-strong: hsl(152, 92%, 12%);
+	--color-error-accent: hsl(154, 94%, 24%);
+	/* Foregrounds */
+	--text-color-over-primary: ;
+	--text-color-over-primary-accent: ;
+	--text-color-over-secondary: ;
+	--text-color-over-secondary-accent: ;
+	--text-color-over-success: ;
+	--text-color-over-success-accent: ;
+	--text-color-over-error: ;
+	--text-color-over-error-accent: ;
+	--text-color-over-input: ;
+	--text-color-over-input-accent: ;
+	--text-color-over-hint: ;
+	--text-color-over-hint-accent: ;
+	/* Backgrounds */
+	--background-color-bg: hsl(30, 9%, 92%);
+	--background-color-bg-accent: hsl(30, 10%, 96%);
+	--background-color-card: ;
+	--background-color-card-accent: ;
+	--background-color-input: ;
+	--background-color-input-accent: ;
+	--background-color-hint: ;
+	--background-color-hint-accent: ;
+	--background-color-overlay: ;
+	--background-color-popover: ;
+	/* Oultine colors */
+	--outline-color: var(--color-primary-soft);
+	/* Border colors */
+	--border-color: color-mix(in srgb, currentColor 40%, transparent);
+	--border-color-soft: color-mix(in srgb, currentColor 20%, transparent);
+	--border-color-strong: color-mix(in srgb, currentColor 60%, transparent);
+	--border-color-input: var(--background-color-input);
+	--border-color-input-accent: var(--background-color-input-accent);
 }
 
 :root[data-mode='dark'] {
-	/* dark mode colors */
-}
-
-@variant {
-	.test {
-		text: red;
-	}
-}
-
-::selection {
-	color: var(--color-selection-fg);
-	background: var(--color-selection-bg);
-}
-
-::-moz-selection {
-	color: var(--color-selection-fg);
-	background: var(--color-selection-bg);
+	/* Add colors adjusted for dark mode */
 }
 
 :root {
+	--animation-opacity-pulse: 25%;
 	position: relative;
-	/* 15px for default root of 16px */
-	font-size: 93.75%;
-	font-weight: --font-weight;
-	font-family: var(--font-family-sans);
+	font-size: 93.75%; /* 15px for default root of 16px */
+	font-weight: var(--font-weight-normal);
+	font-family: var(--font-family-main);
+	color: var(--color-fg);
 	overflow-x: hidden;
 	accent-color: var(--color-outline);
 }
 
-:root&[data-melt-scroll-lock]:has([data-melt-dialog-portalled] *) {
+:root:is([data-melt-scroll-lock]):has([data-melt-dialog-portalled] *) {
 	background: black;
 	transition:
 		all var(--duration-fast) ease-out,
@@ -277,22 +283,3 @@
 		scale var(--duration-slow) var(--ease-out-expo),
 		border-radius var(--duration-slow) var(--ease-out-expo);
 }
-
-/* Button */
-
-.button {
-}
-
-.button:is(.wide) {
-}
-
-.button:is(.compact) {
-}
-
-/* Input */
-
-/* Input group */
-
-/* Switch */
-
-/* Toggle */

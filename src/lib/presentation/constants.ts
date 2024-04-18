@@ -1,6 +1,6 @@
 import type { ValueOf } from 'type-fest';
 
-export const ARRANGEMENTS = {
+export const PRESENTATIONS = {
 	/**
 	 * Default layouts, generally with a centered content column such as in articles or projects
 	 * pages. Caracterized by a centered Navbar.
@@ -18,6 +18,6 @@ export const ARRANGEMENTS = {
 	FULL_SCREEN: 'full-screen',
 } as const;
 
-export type Arrangement = ValueOf<typeof ARRANGEMENTS>;
+export type Arrangement = ValueOf<typeof PRESENTATIONS>;
 
-export const ARRANGEMENT_DEFAULT = ARRANGEMENTS.NORMAL;
+export const ARRANGEMENT_DEFAULT = PRESENTATIONS.NORMAL;

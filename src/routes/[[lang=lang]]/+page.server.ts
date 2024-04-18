@@ -2,23 +2,24 @@ import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
 import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
-import { organizations, projects, projectsImages } from '$lib/db/schema/public';
+import { organizations, projects } from '$lib/db/schema/public';
 import { fail, redirect } from '@sveltejs/kit';
-import { random } from 'drizzle-orm-helpers/pg';
+import { desc } from 'drizzle-orm';
 
 export const load = async () => {
-	const [featuredProjects, featuredOrganizations] = await Promise.all([
-		db.select().from(projects).limit(10),
-		db.select().from(organizations).limit(10),
-	]);
-	const randomImages = db.select().from(projectsImages).orderBy(random()).limit(10);
+	const featuredProjects = await db
+		.select()
+		.from(projects)
+		.limit(10)
+		.orderBy(desc(projects.createdAt));
+	const featuredOrganizations = await db
+		.select()
+		.from(organizations)
+		.limit(10)
+		.orderBy(desc(organizations.createdAt));
 	return {
-		randomImages,
 		featuredProjects,
 		featuredOrganizations,
-		navbar: {
-			noBackground: true,
-		},
 	};
 };
 
