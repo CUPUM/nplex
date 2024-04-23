@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CardProject from '$lib/components/CardProject.svelte';
-	import { link } from '$lib/i18n/link.svelte';
+	import { link } from '$lib/i18n/location';
 	import type { LayoutData } from './$types';
 
 	export let projects: LayoutData['editableProjects'];

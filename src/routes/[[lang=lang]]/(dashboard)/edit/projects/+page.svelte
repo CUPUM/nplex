@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/actions/ripple';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { link } from '$lib/i18n/link.svelte';
+	import { link } from '$lib/i18n/location';
 	import { FilePlus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { cubicOut, expoOut } from 'svelte/easing';

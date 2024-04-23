@@ -1,27 +1,34 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import { ripple } from '$lib/actions/ripple';
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
+	import { linkAttributes } from '../primitives/link.svelte';
+	import { cn } from '../utilities';
 
 	let {
 		children,
+		href,
+		hreflang,
+		currentOnSubpath,
+		class: className,
 		...buttonProps
-	}: (
-		| ({
-				href: string;
-		  } & Omit<HTMLAnchorAttributes, 'class' | 'style'>)
-		| ({
+	}:
+		| (Parameters<typeof linkAttributes>[0] & HTMLAnchorAttributes)
+		| (HTMLButtonAttributes & {
 				href?: undefined;
-		  } & Omit<HTMLButtonAttributes, 'class' | 'style'>)
-	) & {
-		'children': Snippet;
-		'data-square'?: boolean;
-	} = $props();
+				hreflang?: undefined;
+				currentOnSubpath?: undefined;
+		  }) = $props();
 </script>
 
 <svelte:element
-	this={buttonProps.href ? 'a' : 'button'}
+	this={href ? 'a' : 'button'}
 	{...buttonProps}
-	class="px-brick-padding-x hover:text-primary relative inline-flex cursor-pointer items-center justify-center rounded-md text-sm font-bold transition-all data-[square]:aspect-square data-[square]:px-0"
+	{...href ? linkAttributes({ href, hreflang, currentOnSubpath }) : {}}
+	class={cn(
+		'px-brick-gutter h-brick rounded-brick hover:text-primary-accent aria-[current]:text-primary active:animate-press relative flex flex-row items-center justify-center text-sm font-bold transition-all',
+		className
+	)}
+	use:ripple
 >
-	{@render children()}
+	{@render children?.()}
 </svelte:element>

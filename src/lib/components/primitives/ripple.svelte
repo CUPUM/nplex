@@ -1,54 +1,81 @@
-<!--
-	@component
-	# Ripple
-	Adds a visual ripple effect on interactive elements.
-
-	Customizable CSS properties:
-	- `--ripple-color`: Color form start to end;
-	- `--ripple-color-start`: Color origin, at the start of the ripple animation, overwrites `--ripple-color` if used.
-	- `--ripple-color-end`: Color target, at the end of the ripple animation, overwrites `--ripple-color` if used.
--->
 <script lang="ts" context="module">
 	const HOST_ATTRIBUTE = 'data-ripple-host';
-	const N_ANIMATIONS = 3;
 </script>
 
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 
-	export let easing: string = 'cubic-bezier(0, 0, .5, 1)';
-	export let speed: number = 1;
-	export let duration: number | undefined = undefined;
-	export let delay = 0;
-	export let opacityStart = 0.1;
-	export let opacityEnd = 0;
-	export let opacityEasing = 'ease-out';
-	export let opacityDuration = 1000;
-	export let opacityDelay = 0;
-	export let spreadStart = 0;
-	export let spreadEnd = 1;
-	export let spreadEasing = easing;
-	export let spreadSpeed = speed;
-	export let spreadDuration = duration;
-	export let spreadDelay = delay;
-	export let color: string | undefined = undefined;
-	export let colorStart: typeof color = undefined;
-	export let colorEnd: typeof color = undefined;
-	export let colorEasing = easing;
-	export let colorSpeed = speed;
-	export let colorDuration = duration;
-	export let colorDelay = delay;
-	export let blur: number = 0;
+	let {
+		blur = 1,
+		speedSpread = 0.5,
+		durationSpread,
+		speedOutro,
+		durationOutro = 1_000,
+		easingSpread = 'var(--transition-timing-function-out)',
+		easingOutro = 'var(--transition-timing-function-out)',
+		opacity = 0.15,
+		opacityStart,
+		opacityEnd,
+		color = 'currentColor',
+		colorStart,
+		colorEnd,
+	}: {
+		blur?: string | number;
+		easingSpread?: string;
+		easingOutro?: string;
+	} & (
+		| {
+				opacity?: number | string;
+				opacityStart?: undefined;
+				opacityEnd?: undefined;
+		  }
+		| {
+				opacity?: undefined;
+				opacityStart?: string | number;
+				opacityEnd?: string | number;
+		  }
+	) &
+		(
+			| {
+					speedSpread?: number;
+					durationSpread?: undefined;
+			  }
+			| {
+					speedSpread?: undefined;
+					durationSpread?: number;
+			  }
+		) &
+		(
+			| {
+					speedOutro: number;
+					durationOutro?: undefined;
+			  }
+			| {
+					speedOutro?: undefined;
+					durationOutro?: number;
+			  }
+		) &
+		(
+			| {
+					color?: string;
+					colorStart?: undefined;
+					colorEnd?: undefined;
+			  }
+			| {
+					color?: undefined;
+					colorStart?: string;
+					colorEnd?: string;
+			  }
+		) = $props();
 
 	let containerRef: HTMLDivElement;
-	let destructor: () => void;
+	let hostRef: HTMLElement | null;
 	let ripples: {
 		x: number;
 		y: number;
 		d: number;
-		animations: number;
-		out: boolean;
-	}[] = [];
+		outro: boolean;
+	}[] = $state([]);
 
 	function add(e: PointerEvent) {
 		if (
@@ -57,7 +84,7 @@
 			e.target instanceof Element &&
 			e.target.closest(`[${HOST_ATTRIBUTE}]`) === containerRef.parentElement
 		) {
-			// We use bounding client rect, even if a bit more computationally expensive, to account for
+			// Using bounding client rect, even if a bit more computationally expensive, to account for
 			// child element event targets that steal the offsetX and offsetY value referentials.
 			const rect = containerRef.parentElement.getBoundingClientRect();
 			const x = e.clientX - rect.left;
@@ -65,18 +92,15 @@
 			const rx = Math.max(x, rect.right - e.clientX);
 			const ry = Math.max(y, rect.bottom - e.clientY);
 			const d = 2 * Math.hypot(rx, ry);
-			const ripple = {
+			const ripple = $state({
 				x,
 				y,
 				d,
-				animations: N_ANIMATIONS,
-				out: false,
-			};
+				outro: false,
+			});
 			ripples.push(ripple);
-			ripples = ripples;
 			function out() {
-				ripple.out = true;
-				ripples = ripples;
+				ripple.outro = true;
 				document.removeEventListener('pointerup', out);
 				document.removeEventListener('pointercancel', out);
 			}
@@ -87,127 +111,95 @@
 	}
 
 	function end(e: AnimationEvent, ripple: (typeof ripples)[number]) {
+		if (e.target !== e.currentTarget || !(e.target instanceof Element)) {
+			return;
+		}
 		// Sadly we can't use a k-v check instead of a simple count since we cannot know the hashed scope name of the css animations.
-		ripple.animations--;
-		if (!ripple.animations) {
+		if (!getComputedStyle(e.target).opacity) {
 			ripples.splice(ripples.indexOf(ripple), 1);
-			ripples = ripples;
-		}
-	}
-
-	function listen(element: HTMLElement | null) {
-		if (destructor) {
-			destructor();
-		}
-		if (element) {
-			element.addEventListener('pointerdown', add);
-			element.setAttribute(HOST_ATTRIBUTE, '');
-			destructor = () => {
-				element.removeEventListener('pointerdown', add);
-				element.removeAttribute(HOST_ATTRIBUTE);
-			};
 		}
 	}
 
 	onMount(() => {
-		listen(containerRef.parentElement);
+		if (containerRef) {
+			hostRef = containerRef.parentElement;
+		}
+		if (hostRef) {
+			hostRef.addEventListener('pointerdown', add);
+			hostRef.setAttribute(HOST_ATTRIBUTE, '');
+		}
 	});
 
 	onDestroy(() => {
-		if (destructor) {
-			destructor();
+		if (hostRef) {
+			hostRef.removeEventListener('pointerdown', add);
+			hostRef.removeAttribute(HOST_ATTRIBUTE);
 		}
 	});
 </script>
 
 <div
 	bind:this={containerRef}
-	class="container"
-	style:--ripple-color={color}
-	style:--ripple-color-start={colorStart}
-	style:--ripple-color-end={colorEnd}
-	style:--opacity-start={opacityStart}
-	style:--opacity-end={opacityEnd}
-	style:--opacity-easing={opacityEasing}
-	style:--opacity-delay="{opacityDelay}ms"
-	style:--spread-start={spreadStart}
-	style:--spread-end={spreadEnd}
-	style:--spread-easing={spreadEasing}
-	style:--spread-delay="{spreadDelay}ms"
-	style:--color-easing={colorEasing}
-	style:--color-delay="{colorDelay}ms"
-	style:--blur="{blur}px"
+	class="rounded-inherit pointer-events-none absolute inset-0 overflow-hidden"
+	style:--ripple-blur="{blur}px"
+	style:--ripple-color-start={color ?? colorStart}
+	style:--ripple-color-end={color ?? colorEnd}
+	style:--ripple-opacity-start={opacity ?? opacityStart}
+	style:--ripple-opacity-end={opacityEnd ?? 0}
+	style:--ripple-easing-spread={easingSpread}
+	style:--ripple-easing-outro={easingOutro}
 >
 	{#each ripples as r (r)}
 		<div
 			class="ripple"
-			class:out={r.out}
+			class:outroing={r.outro}
 			style:--x="{r.x}px"
 			style:--y="{r.y}px"
 			style:--d="{r.d}px"
-			style:--opacity-duration="{opacityDuration}ms"
-			style:--spread-duration="{spreadDuration ?? 100 + (0.5 * r.d) / spreadSpeed}ms"
-			style:--color-duration="{colorDuration ?? 100 + (0.5 * r.d) / colorSpeed}ms"
-			on:animationend|self={(e) => end(e, r)}
-		/>
+			style:--ripple-duration-spread="{durationSpread ?? Math.round(r.d / speedSpread)}ms"
+			style:--ripple-duration-outro="{speedOutro ? Math.round(r.d / speedOutro) : durationOutro}ms"
+			onanimationendcapture={(e) => end(e, r)}
+		>
+			{r.outro}
+		</div>
 	{/each}
 </div>
 
 <style>
-	.container {
-		--_color-start: var(--ripple-color-start, var(--ripple-color));
-		--_color-end: var(--ripple-color-end, var(--ripple-color));
-		pointer-events: none;
-		position: absolute;
-		top: 0;
-		left: 0;
-		bottom: 0;
-		right: 0;
-		border-radius: inherit;
-		overflow: hidden;
-		z-index: 10;
-	}
-
 	.ripple {
 		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		left: var(--x);
 		top: var(--y);
-		opacity: var(--opacity-start);
-		width: calc(var(--d) * var(--spread-start));
-		color: var(--_color-start);
-		background: currentColor;
+		width: 10px;
+		opacity: var(--ripple-opacity-start);
+		background: var(--ripple-color-start);
 		aspect-ratio: 1 / 1;
 		border-radius: 50%;
-		transform: translate(-50%, -50%);
-		filter: blur(var(--blur));
-		box-shadow: 0 0 var(--blur) currentColor;
-		animation:
-			var(--spread-duration) var(--spread-easing) var(--spread-delay) 1 forwards spread,
-			var(--color-duration) var(--color-easing) var(--color-delay) 1 forwards color;
+		translate: -50% -50%;
+		filter: blur(var(--ripple-blur));
+		animation: var(--ripple-duration-spread) var(--ripple-easing-spread) 0s 1 forwards spread;
 	}
 
-	.out {
+	.outroing {
 		animation:
-			var(--opacity-duration) var(--opacity-easing) var(--opacity-delay) 1 forwards fade,
-			var(--spread-duration) var(--spread-easing) var(--spread-delay) 1 forwards spread,
-			var(--color-duration) var(--color-easing) var(--color-delay) 1 forwards color;
+			var(--ripple-duration-outro) var(--ripple-easing-outro) var(--ripple-duration-spread) 1
+				forwards outro,
+			var(--ripple-duration-spread) var(--ripple-easing-spread) 0s 1 forwards spread;
 	}
 
-	@keyframes fade {
+	@keyframes outro {
 		to {
-			opacity: var(--opacity-end);
+			opacity: var(--ripple-opacity-end);
 		}
 	}
 
 	@keyframes spread {
 		to {
-			width: calc(var(--d) * var(--spread-end));
-		}
-	}
-
-	@keyframes color {
-		to {
-			color: var(--_color-end);
+			width: var(--d);
+			background: var(--ripple-color-end);
 		}
 	}
 </style>

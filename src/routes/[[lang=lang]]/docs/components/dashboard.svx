@@ -1,6 +1,0 @@
----
-title: Dashboard
----
-
-The `Dashboard` components are typically used in conjunction with `Sidebar`. They streamline the
-layouting of dashboard sections.

@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import { languageTag } from '$i18n/runtime';
 	import Logo from '$lib/components/primitives/logo.svelte';
-	import { link, removeLang } from '$lib/i18n/link.svelte';
+	import { LANG_DETAILS } from '$lib/i18n/constants';
+	import { removeLang } from '$lib/i18n/location';
+	import { Languages } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { circInOut, expoOut } from 'svelte/easing';
 	import { crossfade, scale } from 'svelte/transition';
@@ -29,27 +32,36 @@
 	class="p-gutter z-50 grid grid w-full max-w-xl grid-flow-dense [grid-template-columns:[site-start]1fr[site-end_explore-start]auto[explore-end_user-start]1fr[user-end]] grid-rows-1 self-center"
 >
 	<nav class="gap-outline-focus col-[site] flex flex-row">
-		<NavbarButton {...link('/')} data-square>
-			<Logo size="1.5em" />
+		<NavbarButton href="/">
+			<Logo height="1.5em" />
 		</NavbarButton>
-		<NavbarButton {...link('/about')}>
+		<NavbarButton href="/about">
 			{m.about()}
 		</NavbarButton>
-		<NavbarButton {...link('/guides')}>
+		<NavbarButton href="/guides">
 			{m.guides()}
 		</NavbarButton>
 	</nav>
 	<nav class="gap-outline-focus col-[explore] flex flex-row">
-		<NavbarButton {...link('/projects')}>
+		<NavbarButton href="/projects">
 			<div class="" />
 			{m.projects()}
 		</NavbarButton>
-		<NavbarButton {...link('/organizations')}>
+		<NavbarButton href="/organizations">
 			<div class="" />
 			{m.organizations()}
 		</NavbarButton>
 	</nav>
-	<nav class="gap-outline-focus col-[user] flex flex-row"></nav>
+	<nav class="gap-outline-focus col-[user] flex flex-row justify-self-end">
+		<NavbarButton class="group gap-brick-gap">
+			<Languages />
+			<span
+				class="opacity-soft flex items-center rounded-full border border-current py-[0.25rem] px-[0.5rem] text-xs transition-all group-hover:opacity-100"
+			>
+				{LANG_DETAILS[languageTag()].label}
+			</span>
+		</NavbarButton>
+	</nav>
 	<!-- <nav class="navbar-group user">
 		<Dropdown let:trigger>
 			<button class="navbar-button" use:ripple use:melt={trigger}>
@@ -117,91 +129,6 @@
 </header>
 
 <!-- <style>
-	#navbar {
-		z-index: 999;
-		display: grid;
-		position: relative;
-		align-self: center;
-		grid-template-columns: 1fr auto 1fr;
-		padding: var(--gutter);
-		width: 100%;
-		max-width: var(--width-lg);
-		transition: max-width 0.35s var(--ease-expo);
-
-		:global(:--setout-full-width) & {
-			max-width: 100%;
-		}
-
-		@media (--md) {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-		}
-	}
-
-	.navbar-group {
-		display: flex;
-		flex-direction: row;
-		gap: var(--ring-width);
-	}
-
-	.site {
-		justify-content: flex-start;
-	}
-
-	.explore {
-		justify-content: center;
-		/* backdrop-filter: blur(6px); */
-
-		.navbar-button {
-			backdrop-filter: unset;
-		}
-
-		@media (--md) {
-			display: none;
-		}
-	}
-
-	.user {
-		justify-content: flex-end;
-	}
-
-	.navbar-button {
-		position: relative;
-		font-weight: var(--weight-bold);
-		border-radius: var(--radius-md);
-		font-size: var(--text-sm);
-		block-size: var(--block-size);
-		padding-inline: var(--padding-inline);
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: center;
-		overflow: hidden;
-		transition: all var(--duration-xfast) ease-out;
-
-		&.square {
-			padding-inline: 0;
-			aspect-ratio: 1;
-		}
-
-		:global(:--icon) {
-			width: 1.25em;
-			stroke-width: 2.5;
-		}
-
-		&:hover {
-			color: var(--primary-fg);
-		}
-
-		&:focus-visible {
-			outline: var(--ring);
-		}
-
-		&[data-current] {
-		}
-	}
-
 	.navbar-button-label {
 		display: flex;
 		align-items: center;

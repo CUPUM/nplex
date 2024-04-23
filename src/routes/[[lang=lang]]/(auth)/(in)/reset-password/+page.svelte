@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { link } from '$lib/i18n/link.svelte.js';
+	import { link } from '$lib/i18n/location.js';
 	import { LogIn, Send, UserPlus2 } from 'lucide-svelte';
 	import { fade, fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms/client';

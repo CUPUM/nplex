@@ -4,7 +4,7 @@
 	import * as m from '$i18n/messages';
 	import { createLoadable } from '$lib/builders/loading';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { link } from '$lib/i18n/link.svelte';
+	import { link } from '$lib/i18n/location';
 	import { melt, type DialogElements } from '@melt-ui/svelte';
 	import { FilePlus2, LogOut, Pencil, Sliders, User2 } from 'lucide-svelte';
 	import type { StoresValues } from 'svelte/store';

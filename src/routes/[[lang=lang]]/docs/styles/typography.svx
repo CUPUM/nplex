@@ -1,9 +1,0 @@
----
-title: Typography
----
-
-Lorem ipsum
-
-## Prose
-
-Lorem gypsum

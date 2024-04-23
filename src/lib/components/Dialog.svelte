@@ -36,7 +36,7 @@
 
 <script lang="ts">
 	import { ripple } from '$lib/actions/ripple';
-	import { springOut } from '$lib/easings/spring';
+	import { springOut } from '$lib/easing/spring';
 	import { transform } from '$lib/motion/transform';
 	import {
 		createDialog,
@@ -93,7 +93,7 @@
 							{#if closeButton}
 								<button
 									use:ripple
-									class="button rounded square danger ghost"
+									class="button square danger ghost rounded"
 									type="button"
 									use:melt={$close}
 								>

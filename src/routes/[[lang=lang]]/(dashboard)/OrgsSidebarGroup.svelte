@@ -3,7 +3,7 @@
 	import LangKey from '$lib/components/LangKey.svelte';
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
-	import { link } from '$lib/i18n/link.svelte';
+	import { link } from '$lib/i18n/location';
 	import { ArrowRight } from 'lucide-svelte';
 </script>
 

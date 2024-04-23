@@ -1,33 +1,26 @@
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements';
+	import { cn } from '../utilities';
 
-	type $$Props = {
+	let {
+		mono,
+		height = '1em',
+		class: className,
+		...svgProps
+	}: {
 		mono?: boolean;
-		size?: string | number;
-		className?: string;
-		style?: string;
-	} & Omit<SVGAttributes<SVGElement>, 'viewBox'>;
+	} & Omit<SVGAttributes<SVGElement>, 'viewBox' | 'fill' | 'xmlns'> = $props();
 
-	/**
-	 * Single glyph logo (n)
-	 */
-	export let mono: $$Props['mono'] = false;
-	export let size: $$Props['size'] = '1em';
-	export let className: $$Props['className'] = '';
-	export { className as class };
-	export let style: $$Props['style'] = undefined;
-
-	$: viewBox = mono ? '0 50 100 100' : '0 0 520 200';
+	let viewBox = $derived(mono ? '0 50 100 100' : '0 0 520 200');
 </script>
 
 <svg
 	xmlns="http://www.w3.org/2000/svg"
-	{viewBox}
-	height={size}
 	fill="none"
-	{...$$restProps}
-	class={className}
-	{style}
+	{viewBox}
+	{height}
+	{...svgProps}
+	class={cn('relative', className)}
 >
 	<path
 		id="logo-n"
@@ -56,9 +49,3 @@
 		</g>
 	{/if}
 </svg>
-
-<style>
-	svg {
-		position: relative;
-	}
-</style>

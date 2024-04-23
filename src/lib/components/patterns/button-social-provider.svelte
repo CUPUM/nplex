@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { ripple } from '$lib/actions/ripple';
-	import type { OAuthProvider } from '$lib/auth/constants';
+	import { type OAuthProvider } from '$lib/auth/constants';
 	import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
 	import { createLoadable } from '$lib/builders/loading';
 	import { createTooltip } from '$lib/builders/tooltip';
-	import { link } from '$lib/i18n/link.svelte';
+	import { link } from '$lib/i18n/location';
 	import { melt } from '@melt-ui/svelte';
 	import { scale } from 'svelte/transition';
 	import TooltipContent from '../TooltipContent.svelte';

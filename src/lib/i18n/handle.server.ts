@@ -2,7 +2,7 @@ import { setLanguageTag } from '$i18n/runtime';
 import type { Handle } from '@sveltejs/kit';
 import { isRedirect } from '@sveltejs/kit';
 import { getEventLang } from './event';
-import { splitLang, withLang } from './link.svelte';
+import { splitLang, withLang } from './location';
 
 /**
  * Handle hook for:

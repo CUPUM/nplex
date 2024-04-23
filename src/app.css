@@ -4,14 +4,19 @@
 @import 'tailwindcss/utilities' layer(utilities);
 
 @layer base {
+	a,
+	button {
+		cursor: pointer;
+	}
+
 	::selection {
-		color: var(--color-selection-fg);
-		background: var(--color-selection-bg);
+		color: var(--color-over-selection);
+		background: var(--background-color-selection);
 	}
 
 	::-moz-selection {
-		color: var(--color-selection-fg);
-		background: var(--color-selection-bg);
+		color: var(--color-over-selection);
+		background: var(--background-color-selection);
 	}
 
 	* {
@@ -27,11 +32,18 @@
 		outline-offset: var(--outline-offset-focus);
 		outline-width: var(--outline-width-focus);
 	}
+
+	.lucide-icon {
+		stroke-linejoin: round;
+		width: var(--spacing-brick-icon);
+		height: var(--spacing-brick-icon);
+		stroke-width: var(--stroke-width-brick-icon);
+	}
 }
 
 @theme {
 	/* Defaults */
-	--default-transition-duration: var(--transition-duration-fast);
+	--default-transition-duration: var(--transition-duration-medium);
 	--default-transition-timing-function: var(--transition-timing-function-out);
 	--default-border-width: var(--border-width-md);
 	--default-ring-color: var(--outline-color);
@@ -81,8 +93,10 @@
 	/* Font weights */
 	--font-weight-thin: 350;
 	--font-weight-normal: 450;
+	--font-weight-semibold: 550;
 	--font-weight-bold: 650;
 	--font-weight-bolder: 750;
+	--font-weight-brick: var(--font-weight-semibold);
 
 	/* Breakpoints */
 	--breakpoint-sm: 40rem;
@@ -100,13 +114,15 @@
 	--spacing-0: 0px;
 	--spacing-xs: 0.5rem;
 	--spacing-sm: 0.75rem;
-	--spacing-md: 1rem;
-	--spacing-lg: 3rem;
+	--spacing-md: 0.875rem;
+	--spacing-lg: 2.5rem;
 	--spacing-xl: 7rem;
 	--spacing-gutter: var(--spacing-sm);
 	--spacing-outline-focus: var(--outline-width-focus);
-	--spacing-brick: 3em;
-	--spacing-brick-padding-x: 1.25em;
+	--spacing-brick: 3.5em; /* Brick size */
+	--spacing-brick-icon: 1.25em; /* Brick icon size */
+	--spacing-brick-gutter: 1.25em; /* Brick padding inline */
+	--spacing-brick-gap: 0.5em; /* Brick gap between children */
 	--spacing-nesting: 0.25rem;
 	--spacing-sidebar-width: 16rem;
 	--spacing-navbar-height: 4.8rem; /* Define manually according to actual height. Avoids layout shifts inherent to getting value at runtime. */
@@ -118,6 +134,8 @@
 	--radius-lg: 2rem;
 	--radius-xl: 3rem;
 	--radius-full: 999px;
+	--radius-inherit: inherit;
+	--radius-brick: var(--radius-md);
 	--radius-dashboard-section: var(--radius-xl);
 	--radius-card: var(--radius-sm);
 
@@ -152,6 +170,9 @@
 	--border-width-md: 1.5px;
 	--border-width-lg: 3px;
 
+	/* Strokes */
+	--stroke-width-brick-icon: 2.5px;
+
 	/* Easings */
 	--transition-timing-function-linear: linear;
 	--transition-timing-function-in: cubic-bezier(0.64, 0, 0.78, 0);
@@ -177,14 +198,11 @@
 	}
 
 	@keyframes press {
-		10% {
-			transform: scale(0.94);
-		}
 		30% {
-			transform: scale(1.04);
+			transform: scale(0.96);
 		}
 		60% {
-			transform: scale(0.98);
+			transform: scale(1.02);
 		}
 		100% {
 			transform: scale(1);
@@ -192,10 +210,6 @@
 	}
 
 	/* Colors */
-	--color-fg-soft: hsl(34, 9%, 9%);
-	--color-fg: hsl(30, 7%, 16%);
-	--color-fg-strong: hsl(34, 9%, 9%);
-	--color-fg-accent: var(--color-fg-strong);
 	--color-primary-soft: hsl(152, 90%, 32%);
 	--color-primary: hsl(154, 94%, 24%);
 	--color-primary-strong: hsl(156, 98%, 16%);
@@ -209,29 +223,35 @@
 	--color-error-strong: hsl(152, 92%, 12%);
 	--color-error-accent: hsl(154, 94%, 24%);
 	/* Foregrounds */
-	--text-color-over-primary: ;
-	--text-color-over-primary-accent: ;
-	--text-color-over-secondary: ;
-	--text-color-over-secondary-accent: ;
-	--text-color-over-success: ;
-	--text-color-over-success-accent: ;
-	--text-color-over-error: ;
-	--text-color-over-error-accent: ;
-	--text-color-over-input: ;
-	--text-color-over-input-accent: ;
-	--text-color-over-hint: ;
-	--text-color-over-hint-accent: ;
+	--color-fg-soft: hsl(34, 9%, 9%);
+	--color-fg: hsl(30, 7%, 16%);
+	--color-fg-strong: hsl(34, 9%, 9%);
+	--color-fg-accent: var(--color-fg-strong);
+	--color-over-primary: white;
+	--color-over-primary-accent: ;
+	--color-over-secondary: ;
+	--color-over-secondary-accent: ;
+	--color-over-success: ;
+	--color-over-success-accent: ;
+	--color-over-error: ;
+	--color-over-error-accent: ;
+	--color-over-input: ;
+	--color-over-input-accent: ;
+	--color-over-hint: ;
+	--color-over-hint-accent: ;
+	--color-over-selection: var(--color-fg-soft);
 	/* Backgrounds */
-	--background-color-bg: hsl(30, 9%, 92%);
-	--background-color-bg-accent: hsl(30, 10%, 96%);
+	--color-bg: hsl(30, 9%, 92%);
+	--color-bg-accent: hsl(30, 10%, 96%);
 	--background-color-card: ;
 	--background-color-card-accent: ;
-	--background-color-input: ;
-	--background-color-input-accent: ;
+	--background-color-input: color-mix(in srgb, var(--color-fg) 5%, transparent);
+	--background-color-input-accent: color-mix(in srgb, var(--color-fg) 10%, transparent);
 	--background-color-hint: ;
 	--background-color-hint-accent: ;
 	--background-color-overlay: ;
 	--background-color-popover: ;
+	--background-color-selection: var(--color-primary-soft);
 	/* Oultine colors */
 	--outline-color: var(--color-primary-soft);
 	/* Border colors */
@@ -242,7 +262,7 @@
 	--border-color-input-accent: var(--background-color-input-accent);
 }
 
-:root[data-mode='dark'] {
+[data-mode='dark'] {
 	/* Add colors adjusted for dark mode */
 }
 
@@ -253,6 +273,7 @@
 	font-weight: var(--font-weight-normal);
 	font-family: var(--font-family-main);
 	color: var(--color-fg);
+	background: var(--color-bg);
 	overflow-x: hidden;
 	accent-color: var(--color-outline);
 }
@@ -272,7 +293,7 @@
 
 #container {
 	overflow-x: hidden;
-	background: var(--bg);
+	background: var(--color-bg);
 	position: relative;
 	display: flex;
 	flex-direction: column;

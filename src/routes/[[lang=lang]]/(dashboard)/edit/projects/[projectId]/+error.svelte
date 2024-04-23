@@ -4,7 +4,7 @@
 	import { STATUS_CODES } from '$lib/common/constants';
 	import ButtonIconArrowLeft from '$lib/components/ButtonIconArrowLeft.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
-	import { link } from '$lib/i18n/link.svelte';
+	import { link } from '$lib/i18n/location';
 </script>
 
 <article>
