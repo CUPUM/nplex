@@ -2,69 +2,58 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import { createLoadable } from '$lib/builders/loading';
-	import LangKey from '$lib/components/LangKey.svelte';
-	import { link } from '$lib/i18n/location';
-	import { melt, type DialogElements } from '@melt-ui/svelte';
 	import { FilePlus2, LogOut, Pencil, Sliders, User2 } from 'lucide-svelte';
-	import type { StoresValues } from 'svelte/store';
+	import { linkAttributes } from '../primitives/link.svelte';
 
-	export let close: StoresValues<DialogElements['close']>;
-	export let description: StoresValues<DialogElements['description']>;
-	export let title: StoresValues<DialogElements['title']>;
-
-	const {
-		elements: { root: loggingout },
-		state,
-	} = createLoadable();
+	let loggingOut = $state(false);
 </script>
 
 <div id="navbar-menu-user-grid">
 	<section class="navbar-menu-group">
 		<legend class="navbar-menu-group-label">
-			<LangKey>{m.projects()}</LangKey>
+			{m.projects()}
 		</legend>
-		<a class="navbar-menu-button" {...$link('/edit/projects')}>
-			<LangKey>{m.nav_edit_projects()}</LangKey>
+		<a class="navbar-menu-button" {...linkAttributes('/edit/projects')}>
+			{m.nav_edit_projects()}
 			<Pencil class="button-icon" />
 		</a>
-		<a class="navbar-menu-button" {...$link('/new/project')}>
-			<LangKey>{m.nav_new_project()}</LangKey>
+		<a class="navbar-menu-button" {...linkAttributes('/new/project')}>
+			{m.nav_new_project()}
 			<FilePlus2 class="button-icon" />
 		</a>
-		<a class="navbar-menu-button" {...$link('/edit/projects/descriptors')}>
-			<LangKey>{m.nav_edit_project_descriptors()}</LangKey>
+		<a class="navbar-menu-button" {...linkAttributes('/edit/projects/descriptors')}>
+			{m.nav_edit_project_descriptors()}
 			<Sliders class="button-icon" />
 		</a>
 	</section>
 	<section class="navbar-menu-group">
 		<legend class="navbar-menu-group-label">
-			<LangKey>{m.organizations()}</LangKey>
+			{m.organizations()}
 		</legend>
-		<a class="navbar-menu-button" {...$link('/edit/organizations')}>
-			<LangKey>{m.nav_edit_orgs()}</LangKey>
+		<a class="navbar-menu-button" {...linkAttributes('/edit/organizations')}>
+			{m.nav_edit_orgs()}
 			<Pencil class="button-icon" />
 		</a>
-		<a class="navbar-menu-button" {...$link('/new/organization')}>
-			<LangKey>{m.nav_new_org()}</LangKey>
+		<a class="navbar-menu-button" {...linkAttributes('/new/organization')}>
+			{m.nav_new_org()}
 			<FilePlus2 class="button-icon" />
 		</a>
-		<a class="navbar-menu-button" {...$link('/edit/organizations/descriptors')}>
-			<LangKey>{m.nav_edit_orgs_descriptors()}</LangKey>
+		<a class="navbar-menu-button" {...linkAttributes('/edit/organizations/descriptors')}>
+			{m.nav_edit_orgs_descriptors()}
 			<Sliders class="button-icon" />
 		</a>
 	</section>
 	<section class="navbar-menu-group" id="account-group">
 		<div>
-			<LangKey>{m.user_role()}</LangKey>:
+			{m.user_role()}:
 			{#await $page.data.roleName}
 				'...'
 			{:then roleName}
 				{roleName}
 			{/await}
 		</div>
-		<a class="navbar-menu-button" {...$link('/i')}>
-			<LangKey>{m.account()}</LangKey>
+		<a class="navbar-menu-button" {...linkAttributes('/i')}>
+			{m.account()}
 			<User2 class="button-icon" />
 		</a>
 		<form
@@ -72,15 +61,21 @@
 			id="logout-form"
 			hidden
 			use:enhance={({ formElement, formData, action, cancel }) => {
-				state.set(true);
+				loggingOut = true;
 				return async ({ result }) => {
 					await applyAction(result);
-					state.set(false);
+					loggingOut = false;
 				};
 			}}
 		/>
-		<button class="navbar-menu-button" type="submit" form="logout-form" use:melt={$loggingout}>
-			<LangKey>{m.logout()}</LangKey>
+		<button
+			class="navbar-menu-button"
+			type="submit"
+			form="logout-form"
+			disabled={loggingOut}
+			data-loading={loggingOut}
+		>
+			{m.logout()}
 			<LogOut />
 		</button>
 	</section>

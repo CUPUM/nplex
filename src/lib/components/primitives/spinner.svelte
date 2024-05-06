@@ -1,35 +1,51 @@
 <script lang="ts">
 	import { transform } from '$lib/motion/transform';
 	import { expoOut, quadIn } from 'svelte/easing';
-	import type { SVGAttributes } from 'svelte/elements';
 	import { scale } from 'svelte/transition';
 
-	export let thickness: SVGAttributes<SVGPathElement>['stroke-width'] = 12;
-	export let linecap: SVGAttributes<SVGPathElement>['stroke-linecap'] = 'round';
-	export let linejoin: SVGAttributes<SVGPathElement>['stroke-linejoin'] = 'round';
-	export let speed: number = 1;
-	export let trail: boolean = true;
-	export let intro: boolean = true;
-	export let outro: boolean = true;
-	export let offset: string = '0s';
+	let {
+		speed = 1,
+		tail = true,
+		intro = true,
+		outro = true,
+	}: {
+		speed?: number;
+		tail?: boolean;
+		intro?: boolean;
+		outro?: boolean;
+	} = $props();
 
-	const origin = '50,95';
-	const circle = 'A 45,45 0,1,1 50.1,95';
-	const square = 'L 5,95 5,5 95,5 95,95';
-	const arc = 'L 5,95 5,50 A 45,45 0,0,1 95,50 L 95,95 5,95';
-	const triangle = 'L 0,95 50,0 100,95';
+	const origin = '12,22';
+	const circle = 'A 10,10 90,1,1 12.01,22';
+	const square = 'L 2,22 2,2 22,2 22,22';
+	const arc = 'L 2,22 2,12 A 10,10 90,0,1 22,12 L 22,22 2,22';
+	const triangle = 'L 2,22 12,2 22,22';
 	const d = `M ${origin} ${circle} ${square} ${arc} ${triangle} Z`;
+
+	// let svgRef: SVGElement | undefined;
+
+	// onMount(() => {
+	// 	if (svgRef) {
+	// 		const path = svgRef.querySelector('path:not(.tail)');
+	// 		if (path instanceof SVGPathElement) {
+	// 			console.log(path.getTotalLength());
+	// 		}
+	// 	}
+	// });
 </script>
 
 <svg
-	width="1em"
-	height="1em"
-	style:--linecap={linecap}
-	style:--thickness="{thickness}px"
-	style:--linejoin={linejoin}
-	style:--speed={speed}
-	style:--offset={offset}
-	viewBox="0 0 100 100"
+	class="spinner"
+	width="24"
+	height="24"
+	viewBox="0 0 24 24"
+	fill="none"
+	overflow="visible"
+	stroke="currentColor"
+	stroke-width="2"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	style:--spinner-speed={speed}
 	preserveAspectRatio="xMidYMid"
 	in:transform|global={{
 		duration: intro ? 750 : 0,
@@ -44,52 +60,40 @@
 		easing: quadIn,
 	}}
 >
-	<path {d} />
-	{#if trail}
-		<path class="secondary" {d} />
+	<path class="path" {d} />
+	{#if tail}
+		<path class="path tail" {d} />
 	{/if}
 </svg>
 
 <style>
-	svg {
+	.spinner {
 		--count: 4;
-		--duration: calc(1s / var(--speed));
+		--duration: calc(1s / var(--spinner-speed));
 		--total-duration: calc(var(--count) * var(--duration));
-		background: transparent;
-		overflow: visible;
 	}
-
-	path {
-		--length: 1278px;
-		--trace: 100px;
-		--tail: 15px;
-		fill: none;
-		stroke: var(--spinner-color, currentColor);
+	.path {
+		--total-length: 279px;
+		--trace-length: 30px;
 		animation-duration: var(--total-duration);
-		stroke-dasharray: var(--trace) var(--length);
-		stroke-width: var(--thickness);
-		stroke-linecap: var(--linecap);
-		stroke-linejoin: var(--linejoin);
+		stroke-dasharray: var(--trace-length) var(--total-length);
 		animation-name: trace;
-		animation-fill-mode: forwards;
+		animation-fill-mode: both;
 		animation-iteration-count: infinite;
 		animation-timing-function: linear;
-		animation-delay: var(--delay);
-		/* animation-delay: calc(var(--offset) + var(--delay, 0s)); */
 	}
 
-	.secondary {
-		animation-delay: calc(var(--total-duration) / 40);
-		opacity: 0.35;
-		stroke-dasharray: var(--tail) calc(var(--length) + var(--trace) - var(--tail));
+	.tail {
+		opacity: var(--opacity-softer);
+		animation-delay: calc(var(--total-duration) * 0.04); /* manually tweaked factor */
 	}
 
 	@keyframes trace {
 		0% {
-			stroke-dashoffset: var(--length);
+			stroke-dashoffset: var(--total-length);
 		}
 		100% {
-			stroke-dashoffset: calc(-1 * var(--trace));
+			stroke-dashoffset: calc(-1 * var(--trace-length));
 		}
 	}
 </style>

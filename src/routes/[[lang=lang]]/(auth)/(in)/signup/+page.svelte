@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple';
+	import { ripple } from '$lib/actions/ripple.svelte.js';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import { link } from '$lib/i18n/location.js';
 	import { HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';

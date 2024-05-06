@@ -35,7 +35,7 @@
 </script>
 
 <script lang="ts">
-	import { ripple } from '$lib/actions/ripple';
+	import { ripple } from '$lib/actions/ripple.svelte';
 	import { springOut } from '$lib/easing/spring';
 	import { transform } from '$lib/motion/transform';
 	import {

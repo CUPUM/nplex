@@ -13,6 +13,15 @@
 	"pluginSearchDirs": [
 		"."
 	],
+	"overrides": [
+		{
+			"files": "*.css",
+			"options": {
+				"printWidth": 1000,
+				"proseWrap": "preserve"
+			}
+		}
+	],
 	"proseWrap": "always",
 	"bracketSpacing": true,
 	"bracketSameLine": false,

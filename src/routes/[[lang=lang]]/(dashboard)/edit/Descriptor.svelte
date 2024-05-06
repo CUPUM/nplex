@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple';
+	import { ripple } from '$lib/actions/ripple.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import type { SuperForm } from '$lib/crud/validation/forms/super-form';

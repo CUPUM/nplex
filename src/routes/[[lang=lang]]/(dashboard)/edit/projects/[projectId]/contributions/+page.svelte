@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple';
+	import { ripple } from '$lib/actions/ripple.svelte.js';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';

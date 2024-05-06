@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
-	import { ripple } from '$lib/actions/ripple';
+	import { ripple } from '$lib/actions/ripple.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import { switchCrossfade } from '$lib/motion/presets';
 	import { createTabs, melt } from '@melt-ui/svelte';

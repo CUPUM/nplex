@@ -3,6 +3,8 @@
 </script>
 
 <script lang="ts">
+	import { px } from '$lib/common/css';
+
 	import { onDestroy, onMount } from 'svelte';
 
 	let {
@@ -16,7 +18,7 @@
 		opacity = 0.15,
 		opacityStart,
 		opacityEnd,
-		color = 'currentColor',
+		color,
 		colorStart,
 		colorEnd,
 	}: {
@@ -141,11 +143,13 @@
 <div
 	bind:this={containerRef}
 	class="rounded-inherit pointer-events-none absolute inset-0 overflow-hidden"
-	style:--ripple-blur="{blur}px"
-	style:--ripple-color-start={color ?? colorStart}
-	style:--ripple-color-end={color ?? colorEnd}
-	style:--ripple-opacity-start={opacity ?? opacityStart}
-	style:--ripple-opacity-end={opacityEnd ?? 0}
+	style:--ripple-blur={px(blur)}
+	style:--ripple-color={color}
+	style:--ripple-color-start={colorStart}
+	style:--ripple-color-end={colorEnd}
+	style:--ripple-opacity={opacity}
+	style:--ripple-opacity-start={opacityStart}
+	style:--ripple-opacity-end={opacityEnd}
 	style:--ripple-easing-spread={easingSpread}
 	style:--ripple-easing-outro={easingOutro}
 >
@@ -159,9 +163,7 @@
 			style:--ripple-duration-spread="{durationSpread ?? Math.round(r.d / speedSpread)}ms"
 			style:--ripple-duration-outro="{speedOutro ? Math.round(r.d / speedOutro) : durationOutro}ms"
 			onanimationendcapture={(e) => end(e, r)}
-		>
-			{r.outro}
-		</div>
+		></div>
 	{/each}
 </div>
 
@@ -174,8 +176,8 @@
 		left: var(--x);
 		top: var(--y);
 		width: 10px;
-		opacity: var(--ripple-opacity-start);
-		background: var(--ripple-color-start);
+		opacity: var(--ripple-opacity-start, var(--ripple-opacity));
+		background: var(--ripple-color-start, var(--ripple-color));
 		aspect-ratio: 1 / 1;
 		border-radius: 50%;
 		translate: -50% -50%;
@@ -192,14 +194,14 @@
 
 	@keyframes outro {
 		to {
-			opacity: var(--ripple-opacity-end);
+			opacity: var(--ripple-opacity-end, 0);
 		}
 	}
 
 	@keyframes spread {
 		to {
 			width: var(--d);
-			background: var(--ripple-color-end);
+			background: var(--ripple-color-end, var(--ripple-color));
 		}
 	}
 </style>

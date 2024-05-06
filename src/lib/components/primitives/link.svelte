@@ -3,35 +3,47 @@
 	import { page } from '$app/stores';
 
 	let currentUrl = $state<URL>();
+	let currentUrlWithoutLang = $state<URL>();
 
 	if (browser) {
-		page.subscribe(({ url }) => (currentUrl = url));
+		page.subscribe(({ url }) => {
+			currentUrl = url;
+			currentUrlWithoutLang = url;
+			if (currentUrlWithoutLang) {
+				currentUrlWithoutLang.pathname = removeLang(url.pathname);
+				console.log(currentUrlWithoutLang.pathname);
+			}
+		});
 	}
 
-	export function linkAttributes(options: {
-		/**
-		 * Use `hreflang` to customize the destination language.
-		 */
-		href: string;
-		hreflang?: AvailableLanguageTag;
-		currentOnSubpath?: boolean;
-	}) {
-		let href = $derived(withLang(options.href, options.hreflang));
+	export function linkAttributes(
+		hrefWithoutLang: string,
+		options: {
+			lang?: AvailableLanguageTag;
+			currentOnSubpath?: boolean;
+		} = {}
+	) {
+		let href = $derived(withLang(hrefWithoutLang, options.lang));
+
 		let current = $derived.by(() => {
-			if (currentUrl) {
-				if (href.startsWith('#') && currentUrl.hash === href) {
+			if (currentUrlWithoutLang) {
+				if (hrefWithoutLang.startsWith('#') && currentUrlWithoutLang.hash === hrefWithoutLang) {
 					return 'step' as const;
 				}
-				if (currentUrl.pathname === href) {
+				if (currentUrlWithoutLang.pathname === hrefWithoutLang) {
 					return 'page' as const;
 				}
-				const relative = `${currentUrl.pathname}${currentUrl.hash}`;
-				if ((options.currentOnSubpath && relative.startsWith(href)) || relative === href) {
+				const pathWithHash = `${currentUrlWithoutLang.pathname}${currentUrlWithoutLang.hash}`;
+				if (
+					(options.currentOnSubpath && pathWithHash.startsWith(hrefWithoutLang)) ||
+					pathWithHash === hrefWithoutLang
+				) {
 					return 'page' as const;
 				}
 			}
 			return undefined;
 		});
+
 		return {
 			get 'href'() {
 				return href;
@@ -41,11 +53,13 @@
 			},
 		};
 	}
+
+	export function appUrl(relativeUrl: string) {}
 </script>
 
 <script lang="ts">
 	import type { AvailableLanguageTag } from '$i18n/runtime';
-	import { withLang } from '$lib/i18n/location';
+	import { removeLang, withLang } from '$lib/i18n/location';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 
 	let {
@@ -54,10 +68,14 @@
 		children,
 		currentOnSubpath,
 		...restProps
-	}: HTMLAnchorAttributes & Parameters<typeof linkAttributes>[0] = $props();
+	}: HTMLAnchorAttributes & {
+		href: string;
+		hreflang?: AvailableLanguageTag;
+		currentOnSubpath?: boolean;
+	} = $props();
 </script>
 
-<a {...restProps} {...linkAttributes({ href, hreflang, currentOnSubpath })}>
+<a {...restProps} {...linkAttributes(href, { lang: hreflang, currentOnSubpath })}>
 	{@render children?.()}
 </a>
 

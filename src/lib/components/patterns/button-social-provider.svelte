@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
-	import { ripple } from '$lib/actions/ripple';
+	import { ripple } from '$lib/actions/ripple.svelte';
 	import { type OAuthProvider } from '$lib/auth/constants';
 	import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
 	import { createLoadable } from '$lib/builders/loading';

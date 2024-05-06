@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import { languageTag } from '$i18n/runtime';
 	import Logo from '$lib/components/primitives/logo.svelte';
-	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import { removeLang } from '$lib/i18n/location';
-	import { Languages } from 'lucide-svelte';
+	import { Settings, User2 } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { circInOut, expoOut } from 'svelte/easing';
 	import { crossfade, scale } from 'svelte/transition';
 	import NavbarButton from '../patterns/navbar-button.svelte';
+	import NavbarMenu from '../patterns/navbar-menu.svelte';
 
 	let mounted = $state(false);
 	let withoutLang = $derived(removeLang($page.url.href.replace($page.url.origin, '')));
@@ -32,8 +31,8 @@
 	class="p-gutter z-50 grid grid w-full max-w-xl grid-flow-dense [grid-template-columns:[site-start]1fr[site-end_explore-start]auto[explore-end_user-start]1fr[user-end]] grid-rows-1 self-center"
 >
 	<nav class="gap-outline-focus col-[site] flex flex-row">
-		<NavbarButton href="/">
-			<Logo height="1.5em" />
+		<NavbarButton href="/" class="px-[0.75em]">
+			<Logo height="2em" />
 		</NavbarButton>
 		<NavbarButton href="/about">
 			{m.about()}
@@ -44,23 +43,71 @@
 	</nav>
 	<nav class="gap-outline-focus col-[explore] flex flex-row">
 		<NavbarButton href="/projects">
-			<div class="" />
+			{#if withoutLang.startsWith('/projects')}
+				<div
+					class="rounded-inherit bg-input absolute inset-0"
+					in:receiveThumb={{ key: 'explore' }}
+					out:sendThumb={{ key: 'explore' }}
+				/>
+			{/if}
 			{m.projects()}
 		</NavbarButton>
 		<NavbarButton href="/organizations">
-			<div class="" />
+			{#if withoutLang.startsWith('/organizations')}
+				<div
+					class="rounded-inherit bg-input absolute inset-0"
+					in:receiveThumb={{ key: 'explore' }}
+					out:sendThumb={{ key: 'explore' }}
+				/>
+			{/if}
 			{m.organizations()}
 		</NavbarButton>
 	</nav>
 	<nav class="gap-outline-focus col-[user] flex flex-row justify-self-end">
-		<NavbarButton class="group gap-brick-gap">
+		<NavbarButton data-square>
+			<Settings />
+		</NavbarButton>
+		{#if $page.data.user}
+			<NavbarMenu let:trigger>
+				<!-- <button class="navbar-button square" use:ripple use:melt={trigger}>
+					<Avatar {...$page.data.user} />
+					{#if !$page.data.user.emailVerified}
+						<div class="badge">
+							<MailWarning />
+						</div>
+					{/if}
+				</button>
+				<NavbarMenuUser
+					slot="content"
+					let:close
+					let:title
+					let:description
+					{close}
+					{title}
+					{description}
+				/> -->
+			</NavbarMenu>
+		{:else}
+			<NavbarButton
+				data-square
+				href="/login"
+				aria-current={['/login', '/signup', '/reset-password'].some((authRoute) =>
+					withoutLang.startsWith(authRoute)
+				)
+					? 'page'
+					: undefined}
+			>
+				<User2 />
+			</NavbarButton>
+		{/if}
+		<!-- <NavbarButton class="group gap-brick-gap">
 			<Languages />
 			<span
 				class="opacity-soft flex items-center rounded-full border border-current py-[0.25rem] px-[0.5rem] text-xs transition-all group-hover:opacity-100"
 			>
 				{LANG_DETAILS[languageTag()].label}
 			</span>
-		</NavbarButton>
+		</NavbarButton> -->
 	</nav>
 	<!-- <nav class="navbar-group user">
 		<Dropdown let:trigger>
@@ -94,57 +141,5 @@
 		>
 			<NavbarModeIcon />
 		</button>
-		n {#if $page.data.user}
-			<NavbarMenu let:trigger>
-				<button class="navbar-button square" use:ripple use:melt={trigger}>
-					<Avatar {...$page.data.user} />
-					{#if !$page.data.user.emailVerified}
-						<div class="badge">
-							<MailWarning />
-						</div>
-					{/if}
-				</button>
-				<NavbarMenuUser
-					slot="content"
-					let:close
-					let:title
-					let:description
-					{close}
-					{title}
-					{description}
-				/>
-			</NavbarMenu>
-		{:else}
-			<a
-				class="navbar-button square"
-				href={withLang('/login')}
-				aria-current={['/login', '/signup', '/reset-password'].some((authRoute) =>
-					withoutLang.startsWith(authRoute)
-				) || undefined}
-			>
-				<User2 />
-			</a>
-		{/if}
 	</nav> -->
 </header>
-
-<!-- <style>
-	.navbar-button-label {
-		display: flex;
-		align-items: center;
-		font-size: var(--text-xs);
-		padding: 0.2rem 0.5rem;
-		opacity: 0.75;
-		border-radius: var(--rounded);
-		box-shadow: 0 0 2px -0.5px currentColor;
-		transition: all 0.1s ease-out;
-
-		.navbar-button:hover &,
-		.navbar-button[data-state='open'] & {
-			color: var(--color-neutral-100);
-			background: var(--color-primary-700);
-			box-shadow: 0 0 0 -0.5px currentColor;
-			opacity: 1;
-		}
-	}
-</style> -->

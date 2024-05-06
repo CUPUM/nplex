@@ -1,9 +1,8 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple';
-	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
+	import { ripple } from '$lib/actions/ripple.svelte.js';
+	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form.js';
-	import { link } from '$lib/i18n/location.js';
 	import { melt } from '@melt-ui/svelte';
 	import { Eye, EyeOff, HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -30,22 +29,18 @@
 
 <form method="POST" use:enhance autocomplete="off">
 	<h1 class="h4">
-		<LangKey>
-			{m.auth_login_title()}
-		</LangKey>
+		{m.auth_login_title()}
 	</h1>
 	<label class="label-group">
 		<span class="label" in:fly|global={{ y: 6 }}>
-			<LangKey>
-				{m.email()}
-			</LangKey>
+			{m.email()}
 		</span>
 		<input
 			in:fly|global={{ y: -6 }}
 			class="input"
 			type="email"
 			name="email"
-			placeholder="{$langKey(m.email().toLowerCase())}@..."
+			placeholder="{m.email().toLowerCase()}@..."
 			aria-invalid={$errors.email ? true : undefined}
 			bind:value={$form.email}
 			{...$constraints.email}
@@ -53,9 +48,7 @@
 	</label>
 	<label class="label-group">
 		<span class="label" in:fly|global={{ y: 6, delay: STAGGER }}>
-			<LangKey>
-				{m.password()}
-			</LangKey>
+			{m.password()}
 		</span>
 		<div class="input-group">
 			<input
@@ -100,25 +93,22 @@
 		use:melt={$submitter(loginRef)}
 	>
 		<LogIn class="button-icon" />
-		<LangKey>
-			{m.login()}
-		</LangKey>
+
+		{m.login()}
 	</button>
 </form>
 <div class="links">
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="button link center" {...$link('/signup')} in:fade|global>
+	<a class="button button-link center" {...linkAttributes('/signup')} in:fade|global>
 		<UserPlus2 class="button-icon" />
-		<LangKey>
-			{m.auth_signup_prompt()}
-		</LangKey>
+
+		{m.auth_signup_prompt()}
 	</a>
 	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="button link center" {...$link('/reset-password')} in:fade|global>
+	<a class="button button-link center" {...linkAttributes('/reset-password')} in:fade|global>
 		<HelpCircle class="button-icon" />
-		<LangKey>
-			{m.auth_forgot_password_prompt()}
-		</LangKey>
+
+		{m.auth_forgot_password_prompt()}
 	</a>
 </div>
 

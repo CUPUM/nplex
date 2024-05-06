@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
-	import ButtonCreate from '$lib/components/patterns/ButtonCreate.svelte';
+	import ButtonCreate from '$lib/components/patterns/button-create.svelte';
 	import { superFormDialog } from '$lib/crud/validation/forms/super-form';
 	import Descriptor from '../../../Descriptor.svelte';
 	import DescriptorForm from '../../../DescriptorForm.svelte';

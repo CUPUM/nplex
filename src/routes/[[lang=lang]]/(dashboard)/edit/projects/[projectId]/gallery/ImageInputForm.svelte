@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple';
+	import { ripple } from '$lib/actions/ripple.svelte';
 	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import { MODES } from '$lib/modes/constants';

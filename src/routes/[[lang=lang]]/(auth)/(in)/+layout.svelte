@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { OAUTH_PROVIDERS_ARR } from '$lib/auth/constants';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import SocialProviderButton from '$lib/components/patterns/button-social-provider.svelte';
 </script>
 
@@ -10,12 +9,12 @@
 		<slot />
 		<div id="or">
 			<span>
-				<LangKey>{m.or()}</LangKey>
+				{m.or()}
 			</span>
 		</div>
 		<section class="social">
 			<h2>
-				<LangKey>{m.auth_continue_with()}</LangKey>
+				{m.auth_continue_with()}
 			</h2>
 			<fieldset class="providers">
 				{#each OAUTH_PROVIDERS_ARR as provider, i}

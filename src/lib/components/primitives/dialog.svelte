@@ -1,7 +1,8 @@
 <script lang="ts">
+	// let {close}: HTMLAttributes<HTMLDivElement> = $props();
 </script>
 
-<div></div>
+<div class=""></div>
 
 <style lang="postcss">
 </style>
