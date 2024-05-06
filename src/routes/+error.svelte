@@ -3,7 +3,7 @@
 	import * as m from '$i18n/messages';
 </script>
 
-<article class="flex-1 flex items-center justify-center">
+<article class="flex flex-1 items-center justify-center">
 	<div class="flex flex-col">
 		<span>{$page.error}</span>
 		<h1 class="h5">Oops! {m.error_details()}</h1>

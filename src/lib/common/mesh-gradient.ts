@@ -1,4 +1,6 @@
-/** Compose a CSS background's string value for mesh gradients simulation. */
+/**
+ * Compose a CSS background's string value for mesh gradients simulation.
+ */
 export function composeMeshgradient({
 	colors = 'var(--color-primary-500)',
 	nodes = [3, 7],

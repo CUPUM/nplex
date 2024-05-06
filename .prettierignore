@@ -11,3 +11,9 @@ node_modules
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+# Ignore database migrations
+/migrations
+
+# Ignore generated i18n messages
+**/i18n/generated

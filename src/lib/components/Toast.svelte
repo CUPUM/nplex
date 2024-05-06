@@ -81,7 +81,7 @@
 				{/if}
 			</div>
 		</div>
-		<button use:melt={$close(id)} class="button ghost square rounded close compact">
+		<button use:melt={$close(id)} class="button ghost square close compact rounded">
 			<X class="button-icon" />
 		</button>
 	</div>

@@ -4,7 +4,7 @@
 	"private": true,
 	"license": "ISC",
 	"homepage": "www.nplex.design",
-	"description": "Monorepo for the Nplex project app.",
+	"description": "A platform dedicated to promoting excellence in modest-scale architecture, interior design, urban design, and community projects across Montreal.",
 	"author": {
 		"name": "Emmanuel Beaudry Marchand",
 		"email": "emmanuel.beaudry.marchand@umontreal.ca"
@@ -49,8 +49,8 @@
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write .",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write .",
 		"db:run": "tsx --tsconfig ./.svelte-kit/tsconfig.json node_modules/drizzle-kit/bin.cjs",
 		"db:new": "pnpm db:run generate:pg --custom",
 		"db:generate": "pnpm db:run generate:pg",

@@ -23,7 +23,7 @@
 {/if} -->
 <!-- <Progress /> -->
 <Navbar />
-<main class="flex flex-col flex-1 flex-nowrap min-h-[calc(100svh-var(--height-navbar))]">
+<main class="flex min-h-[calc(100svh-var(--height-navbar))] flex-1 flex-col flex-nowrap">
 	{@render children()}
 </main>
 <Footer />

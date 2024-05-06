@@ -1,7 +1,9 @@
 import { expoOut } from 'svelte/easing';
 import type { EasingFunction } from 'svelte/transition';
 
-/** Pixels (to do: add support for strings such as percentages, turns, rems, etc.) */
+/**
+ * Pixels (to do: add support for strings such as percentages, turns, rems, etc.)
+ */
 type Dimension = number;
 
 export type TransformTransitionOptions = {
@@ -27,7 +29,9 @@ function tr(v: number | undefined, u: number, base = 0) {
 	return base - (v ?? 1) * u;
 }
 
-/** Custom transition similar to fly or scale, but with possibilities of combining transforms. */
+/**
+ * Custom transition similar to fly or scale, but with possibilities of combining transforms.
+ */
 export function transform(
 	element: Element,
 	{
