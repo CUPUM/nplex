@@ -11,7 +11,6 @@
 			currentUrlWithoutLang = url;
 			if (currentUrlWithoutLang) {
 				currentUrlWithoutLang.pathname = removeLang(url.pathname);
-				console.log(currentUrlWithoutLang.pathname);
 			}
 		});
 	}

@@ -8,11 +8,13 @@
 		tail = true,
 		intro = true,
 		outro = true,
+		overlay = false,
 	}: {
 		speed?: number;
 		tail?: boolean;
 		intro?: boolean;
 		outro?: boolean;
+		overlay?: boolean;
 	} = $props();
 
 	const origin = '12,22';
@@ -34,37 +36,49 @@
 	// });
 </script>
 
-<svg
-	class="spinner"
-	width="24"
-	height="24"
-	viewBox="0 0 24 24"
-	fill="none"
-	overflow="visible"
-	stroke="currentColor"
-	stroke-width="2"
-	stroke-linecap="round"
-	stroke-linejoin="round"
-	style:--spinner-speed={speed}
-	preserveAspectRatio="xMidYMid"
-	in:transform|global={{
-		duration: intro ? 750 : 0,
-		scale: 0.5,
-		rotate: [0, 0, -180],
-		opacity: 1,
-		easing: expoOut,
-	}}
-	out:scale|global={{
-		duration: outro ? 150 : 0,
-		start: 0.9,
-		easing: quadIn,
-	}}
->
-	<path class="path" {d} />
-	{#if tail}
-		<path class="path tail" {d} />
-	{/if}
-</svg>
+{#snippet spinner()}
+	<svg
+		class="spinner"
+		width="24"
+		height="24"
+		viewBox="0 0 24 24"
+		fill="none"
+		overflow="visible"
+		stroke="currentColor"
+		stroke-width="2"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		style:--spinner-speed={speed}
+		preserveAspectRatio="xMidYMid"
+		in:transform|global={{
+			duration: intro ? 750 : 0,
+			scale: 0.5,
+			rotate: [0, 0, -180],
+			opacity: 1,
+			easing: expoOut,
+		}}
+		out:scale|global={{
+			duration: outro ? 150 : 0,
+			start: 0.9,
+			easing: quadIn,
+		}}
+	>
+		<path class="path" {d} />
+		{#if tail}
+			<path class="path tail" {d} />
+		{/if}
+	</svg>
+{/snippet}
+
+{#if overlay}
+	<div
+		class="rounded-inherit pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
+	>
+		{@render spinner()}
+	</div>
+{:else}
+	{@render spinner()}
+{/if}
 
 <style>
 	.spinner {

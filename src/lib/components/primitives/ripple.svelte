@@ -4,7 +4,6 @@
 
 <script lang="ts">
 	import { px } from '$lib/common/css';
-
 	import { onDestroy, onMount } from 'svelte';
 
 	let {
@@ -77,6 +76,12 @@
 		y: number;
 		d: number;
 		outro: boolean;
+		canceled: boolean;
+		outside: boolean;
+		done: {
+			spread: boolean;
+			outro: boolean;
+		};
 	}[] = $state([]);
 
 	function add(e: PointerEvent) {
@@ -86,7 +91,7 @@
 			e.target instanceof Element &&
 			e.target.closest(`[${HOST_ATTRIBUTE}]`) === containerRef.parentElement
 		) {
-			// Using bounding client rect, even if a bit more computationally expensive, to account for
+			// Using bounding client rect, even if a bit more expensive, to account for
 			// child element event targets that steal the offsetX and offsetY value referentials.
 			const rect = containerRef.parentElement.getBoundingClientRect();
 			const x = e.clientX - rect.left;
@@ -99,25 +104,47 @@
 				y,
 				d,
 				outro: false,
+				canceled: false,
+				outside: false,
+				done: {
+					spread: false,
+					outro: false,
+				},
 			});
 			ripples.push(ripple);
-			function out() {
-				ripple.outro = true;
-				document.removeEventListener('pointerup', out);
-				document.removeEventListener('pointercancel', out);
+			function enter() {
+				ripple.outside = false;
 			}
-			// Listen on document to account for mouse drag that exit the target.
-			document.addEventListener('pointerup', out);
-			document.addEventListener('pointercancel', out);
+			function leave() {
+				ripple.outside = true;
+			}
+			function end(e: Event) {
+				document.removeEventListener('pointerup', end);
+				document.removeEventListener('pointercancel', end);
+				containerRef.parentElement?.removeEventListener('pointerenter', enter);
+				containerRef.parentElement?.removeEventListener('pointerleave', leave);
+				ripple.outro = true;
+				if (e.type === 'pointercancel' || ripple.outside) {
+					ripple.canceled = true;
+				}
+			}
+			document.addEventListener('pointerup', end);
+			document.addEventListener('pointercancel', end);
+			containerRef.parentElement.addEventListener('pointerenter', enter);
+			containerRef.parentElement.addEventListener('pointerleave', leave);
 		}
 	}
 
-	function end(e: AnimationEvent, ripple: (typeof ripples)[number]) {
+	function cleanup(e: AnimationEvent, ripple: (typeof ripples)[number]) {
 		if (e.target !== e.currentTarget || !(e.target instanceof Element)) {
 			return;
 		}
-		// Sadly we can't use a k-v check instead of a simple count since we cannot know the hashed scope name of the css animations.
-		if (!getComputedStyle(e.target).opacity) {
+		if (e.animationName === 'ripple-spread') {
+			ripple.done.spread = true;
+		} else if (e.animationName === 'ripple-outro') {
+			ripple.done.outro = true;
+		}
+		if (ripple.done.spread && ripple.done.outro) {
 			ripples.splice(ripples.indexOf(ripple), 1);
 		}
 	}
@@ -157,12 +184,14 @@
 		<div
 			class="ripple"
 			class:outroing={r.outro}
+			class:canceled={r.canceled}
+			class:outside={r.outside}
 			style:--x="{r.x}px"
 			style:--y="{r.y}px"
 			style:--d="{r.d}px"
 			style:--ripple-duration-spread="{durationSpread ?? Math.round(r.d / speedSpread)}ms"
 			style:--ripple-duration-outro="{speedOutro ? Math.round(r.d / speedOutro) : durationOutro}ms"
-			onanimationendcapture={(e) => end(e, r)}
+			onanimationendcapture={(e) => cleanup(e, r)}
 		></div>
 	{/each}
 </div>
@@ -182,23 +211,32 @@
 		border-radius: 50%;
 		translate: -50% -50%;
 		filter: blur(var(--ripple-blur));
-		animation: var(--ripple-duration-spread) var(--ripple-easing-spread) 0s 1 forwards spread;
+		transition: opacity var(--ripple-duration-outro) var(--ripple-easing-outro);
+		animation: var(--ripple-duration-spread) var(--ripple-easing-spread) 0s 1 forwards ripple-spread;
 	}
 
 	.outroing {
 		animation:
 			var(--ripple-duration-outro) var(--ripple-easing-outro) var(--ripple-duration-spread) 1
-				forwards outro,
-			var(--ripple-duration-spread) var(--ripple-easing-spread) 0s 1 forwards spread;
+				forwards ripple-outro,
+			var(--ripple-duration-spread) var(--ripple-easing-spread) 0s 1 forwards ripple-spread;
 	}
 
-	@keyframes outro {
+	.canceled {
+		animation-delay: 0s;
+	}
+
+	.outside {
+		opacity: 0;
+	}
+
+	@keyframes -global-ripple-outro {
 		to {
 			opacity: var(--ripple-opacity-end, 0);
 		}
 	}
 
-	@keyframes spread {
+	@keyframes -global-ripple-spread {
 		to {
 			width: var(--d);
 			background: var(--ripple-color-end, var(--ripple-color));

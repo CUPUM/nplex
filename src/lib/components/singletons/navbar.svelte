@@ -100,7 +100,7 @@
 				<User2 />
 			</NavbarButton>
 		{/if}
-		<!-- <NavbarButton class="group gap-brick-gap">
+		<!-- <NavbarButton class="group gap-input-gap">
 			<Languages />
 			<span
 				class="opacity-soft flex items-center rounded-full border border-current py-[0.25rem] px-[0.5rem] text-xs transition-all group-hover:opacity-100"

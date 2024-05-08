@@ -1,0 +1,163 @@
+:root {
+	--font-main: 'Outfit', sans-serif;
+	--font-display: 'Bricolage Grotesque', sans-serif;
+	--font-misc: 'Martian Mono', monospace;
+	--width-sm: 420px;
+	--width-md: 760px;
+	--width-lg: 1200px;
+	--ease-expo: cubic-bezier(0.87, 0, 0.13, 1);
+	--ease-in-expo: cubic-bezier(0.7, 0, 0.84, 0);
+	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+	--duration-fast: 100ms;
+	--duration-medium: 325ms;
+	--duration-slow: 750ms;
+	--animation-press: press var(--duration-medium) var(--ease-out-expo);
+	--text-xs: 0.75rem;
+	--text-sm: 0.875rem;
+	--text-md: 1rem;
+	--text-lg: 1.333rem;
+	--text-xl: 1.777rem;
+	--text-2xl: 2.369rem;
+	--text-3xl: 3.157rem;
+	--weight-thin: 300;
+	--weight-bold: 550;
+	--weight-bolder: 700;
+	--radius-sm: 6px;
+	--radius-md: 14px;
+	--radius-lg: 36px;
+	--rounded: 999px;
+	--inlay: 5px;
+	--gutter: 8px;
+	--block-size: 3.125em;
+	--padding-block: calc((var(--block-size) - 1em) / 2);
+	--padding-inline: 1.125em;
+	--sidebar-width: 200px;
+	--navbar-height: 59.75px;
+	--sticky-top: 0px;
+	--alpha-muted: 65%;
+	--alpha-muted-2x: 35%;
+	--bg: white;
+	--fg: black;
+	--bg-stress: ;
+	--fg-stress: ;
+	--bg-muted: ;
+	--fg-muted: ;
+	--danger-bg: ;
+	--danger-fg: ;
+	--danger-bg-stress: ;
+	--danger-fg-stress: ;
+	--success-bg: ;
+	--success-fg: ;
+	--success-bg-stress: ;
+	--success-fg-stress: ;
+	--primary-bg: ;
+	--primary-fg: ;
+	--primary-bg-stress: ;
+	--primary-fg-stress: ;
+	--ring-width: 4px;
+	--ring-color: purple;
+	--ring: var(--ring-width) solid var(--ring-color);
+	--border-width: 1.25px;
+	--border-color: black;
+	--border-color-muted: black;
+	--border: var(--border-width) solid var(--border-color);
+	--border-muted: var(--border-width) solid var(--border-color-muted);
+	--floating-bg: white;
+	--floating-fg: black;
+	--tooltip-bg: black;
+	--tooltip-fg: white;
+	--card-bg: ;
+	--card-fg: ;
+	--ripple-color: green;
+	--ripple-color-start: var(--ripple-color);
+	--ripple-color-end: var(--ripple-color);
+	--overlay-bg: rgba(0, 0, 0, 0.9);
+
+	&:--dark {
+		--bg: rgb(25, 25, 25);
+		--fg: white;
+		--bg-stress: ;
+		--fg-stress: ;
+		--bg-muted: ;
+		--fg-muted: ;
+		--danger-bg: ;
+		--danger-fg: ;
+		--danger-bg-stress: ;
+		--danger-fg-stress: ;
+		--success-bg: ;
+		--success-fg: ;
+		--success-bg-stress: ;
+		--success-fg-stress: ;
+		--primary-bg: ;
+		--primary-fg: ;
+		--primary-bg-stress: ;
+		--primary-fg-stress: ;
+		--ring-color: purple;
+		--border-color: black;
+		--floating-bg: ;
+		--floating-fg: ;
+		--tooltip-bg: ;
+		--tooltip-fg: ;
+		--card-bg: ;
+		--card-fg: ;
+		--ripple-color: green;
+		--ripple-color-start: var(--ripple-color);
+		--ripple-color-end: var(--ripple-color);
+	}
+
+	position: relative;
+	font-size: 100%;
+	font-weight: 350;
+	font-family: var(--font-main);
+	overflow-x: hidden;
+	accent-color: var(--ring-color);
+	color: var(--fg);
+	background: var(--bg);
+	transition:
+		all var(--duration-fast) ease-out,
+		background 0s var(--duration-slow);
+
+	&[data-melt-scroll-lock]:has([data-melt-dialog-portalled] *) {
+		background: black;
+		transition:
+			all var(--duration-fast) ease-out,
+			background 0s;
+
+		#container {
+			scale: 0.96;
+			border-radius: var(--radius-lg);
+			/* box-shadow: 0 0 3em -1em black; */
+		}
+	}
+}
+
+#container {
+	overflow-x: hidden;
+	background: var(--bg);
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-height: 100svh;
+	scale: 1;
+	transition:
+		background var(--duration-fast) ease-out,
+		scale var(--duration-slow) var(--ease-out-expo),
+		border-radius var(--duration-slow) var(--ease-out-expo);
+}
+
+::selection {
+	color: var(--color-neutral-800);
+	background: var(--color-primary-400);
+	:--dark & {
+		color: var(--color-neutral-200);
+		background: var(--color-primary-600);
+	}
+}
+::-moz-selection {
+	color: var(--color-neutral-800);
+	background: var(--color-primary-400);
+	:--dark & {
+		color: var(--color-neutral-200);
+		background: var(--color-primary-600);
+	}
+}

@@ -42,11 +42,11 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
-		gap: var(--spacing-brick-gap);
-		padding-left: var(--spacing-brick-gutter);
-		padding-right: var(--spacing-brick-gutter);
-		height: var(--spacing-brick);
-		border-radius: var(--radius-brick);
+		gap: var(--spacing-input-gap);
+		padding-left: var(--spacing-input-gutter);
+		padding-right: var(--spacing-input-gutter);
+		height: var(--spacing-input);
+		border-radius: var(--radius-input);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-fg);
 		font-size: var(--font-size-sm);
@@ -68,6 +68,10 @@
 
 		&[aria-current] {
 			color: var(--color-primary);
+		}
+
+		& :global(:is(.lucide-icon, .spinner)) {
+			stroke-width: 2.5px;
 		}
 	}
 </style>
