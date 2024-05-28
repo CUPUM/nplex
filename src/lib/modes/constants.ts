@@ -1,5 +1,5 @@
 import * as m from '$i18n/messages';
-import { MoonStar, Sun, type Icon } from 'lucide-svelte';
+import { Monitor, MoonStar, Sun } from 'lucide-svelte';
 import type { ComponentType } from 'svelte';
 import type { ValueOf } from 'type-fest';
 
@@ -12,19 +12,30 @@ export type Mode = ValueOf<typeof MODES>;
 
 export const MODES_ARR = Object.values(MODES);
 
-export const MODE_DEFAULT = MODES.LIGHT;
+export const MODE_SETTINGS = {
+	...MODES,
+	SYSTEM: 'system',
+} as const;
 
-export const MODES_DETAILS = {
-	[MODES.LIGHT]: {
+export type ModeSetting = ValueOf<typeof MODE_SETTINGS>;
+
+export const MODE_SETTINGS_DETAILS = {
+	[MODE_SETTINGS.LIGHT]: {
 		icon: Sun,
-		title: m.mode_light,
+		title: m.screen_mode_light,
 	},
-	[MODES.DARK]: {
+	[MODE_SETTINGS.DARK]: {
 		icon: MoonStar,
-		title: m.mode_dark,
+		title: m.screen_mode_dark,
 	},
-} as const satisfies Record<Mode, { icon: ComponentType<Icon>; title: () => string }>;
+	[MODE_SETTINGS.SYSTEM]: {
+		icon: Monitor,
+		title: m.screen_mode_system,
+	},
+} as const satisfies Record<ModeSetting, { icon: ComponentType; title: () => string }>;
 
-export const MODE_COOKIE_NAME = 'mode';
+export const MODE_SETTINGS_ARR = Object.values(MODE_SETTINGS);
 
-export const MODE_ATTRIBUTE = 'data-mode';
+export const MODE_SETTING_COOKIE_NAME = 'mode';
+
+export const MODE_SETTING_ATTRIBUTE = 'data-mode';

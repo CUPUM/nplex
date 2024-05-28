@@ -1,7 +1,7 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import cookies from 'js-cookie';
-import { MODE_COOKIE_NAME, MODE_DEFAULT, type Mode } from './constants';
-import { isMode } from './validation';
+import { MODE_SETTINGS, MODE_SETTING_COOKIE_NAME, type ModeSetting } from './constants';
+import { isModeSetting } from './validation';
 
 const MODE_COOKIE_LIFETIME = 34_560_000; // 400 days, maximum allowed;
 
@@ -14,14 +14,14 @@ const MODE_COOKIE_OPTIONS = {
 } satisfies Partial<Cookies.CookieAttributes>;
 
 /**
- * Sets event locals theme mode that could be updted by downstream action resolving and sets theme
+ * Sets event locals theme mode that can be updated by downstream action resolving and sets theme
  * mode cookie.
  */
-export function setModeCookie(value: Mode, event?: RequestEvent) {
+export function persistMode(value: ModeSetting, event?: RequestEvent) {
 	if (event) {
-		event.cookies.set(MODE_COOKIE_NAME, value, { ...MODE_COOKIE_OPTIONS, httpOnly: false });
+		event.cookies.set(MODE_SETTING_COOKIE_NAME, value, { ...MODE_COOKIE_OPTIONS, httpOnly: false });
 	}
-	cookies.set(MODE_COOKIE_NAME, value, MODE_COOKIE_OPTIONS);
+	cookies.set(MODE_SETTING_COOKIE_NAME, value, MODE_COOKIE_OPTIONS);
 }
 
 /**
@@ -29,18 +29,20 @@ export function setModeCookie(value: Mode, event?: RequestEvent) {
  * browser preferred color theme, else use app's default. Set to valid cookie when invalid values
  * are met.
  */
-export function getModeCookie(event?: RequestEvent) {
-	const cookie = event ? event.cookies.get(MODE_COOKIE_NAME) : cookies.get(MODE_COOKIE_NAME);
-	if (isMode(cookie)) {
+export function getPersistedMode(event?: RequestEvent) {
+	const cookie = event
+		? event.cookies.get(MODE_SETTING_COOKIE_NAME)
+		: cookies.get(MODE_SETTING_COOKIE_NAME);
+	if (isModeSetting(cookie)) {
 		return cookie;
 	}
 	if (event) {
 		const preference = event.request.headers.get('Sec-CH-Prefers-Color-Scheme') ?? undefined;
-		if (isMode(preference)) {
-			setModeCookie(preference, event);
+		if (isModeSetting(preference)) {
+			persistMode(preference, event);
 			return preference;
 		}
 	}
-	setModeCookie(MODE_DEFAULT, event);
-	return MODE_DEFAULT;
+	persistMode(MODE_SETTINGS.SYSTEM, event);
+	return MODE_SETTINGS.SYSTEM;
 }

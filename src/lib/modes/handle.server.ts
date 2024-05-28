@@ -1,12 +1,11 @@
 import type { Handle } from '@sveltejs/kit';
-import { getModeCookie } from './cookie';
+import { getPersistedMode } from './cookie';
 
 /**
  * Handle hook handler for SSR-capable client theme persistance.
  */
 const handle = (async ({ event, resolve }) => {
-	const mode = getModeCookie(event);
-	event.locals.mode = mode;
+	event.locals.mode = getPersistedMode(event);
 
 	// Set html attribute using event.locals to account for
 	// possible different value set by downstream action resolve.
