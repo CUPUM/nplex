@@ -2,30 +2,38 @@
 
 import type { AvailableLanguageTag } from '$i18n/runtime';
 import type { ToastData } from '$lib/components/Toast.svelte';
-import type { Mode } from '$lib/modes/constants';
+import type { ModeSetting } from '$lib/modes/constants';
+import type { Presentation } from '$lib/presentation/constants';
 import type { Session, User } from 'lucia';
 import type { ComponentType } from 'svelte';
-import type { LayoutData } from './routes/[[lang=lang]]/$types';
 
 declare global {
 	namespace App {
 		// See https://github.com/ciscoheat/sveltekit-superforms/issues/261
 		namespace Superforms {
-			type Message = Pick<ToastData, 'title' | 'description' | 'type'> & {
-				closeDelay?: number;
-			};
+			type Message =
+				| string
+				| (Pick<ToastData, 'title' | 'description' | 'type'> & {
+						closeDelay?: number;
+				  });
 		}
 		interface Error {
-			code: string;
+			code?: string;
 			message: string;
 		}
 		interface Locals {
-			user: User | null;
-			session: Session | null;
-			mode: Mode;
+			authed: {
+				user: User;
+				session: Session;
+			} | null;
+			mode: ModeSetting;
 			lang: AvailableLanguageTag;
+			presentation: Presentation;
 		}
-		interface PageData extends LayoutData {
+		interface PageData {
+			lang: AvailableLanguageTag;
+			user: User | null;
+			presentation: Presentation;
 			navbar?: {};
 			footer?: {
 				hidden?: boolean;
@@ -35,7 +43,6 @@ declare global {
 				sidebar?: ComponentType;
 				footer?: ComponentType;
 			};
-			flash?: App.Superforms.Message;
 		}
 	}
 }
