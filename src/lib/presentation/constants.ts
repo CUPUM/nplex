@@ -18,6 +18,6 @@ export const PRESENTATIONS = {
 	FULL_SCREEN: 'full-screen',
 } as const;
 
-export type Arrangement = ValueOf<typeof PRESENTATIONS>;
+export type Presentation = ValueOf<typeof PRESENTATIONS>;
 
-export const ARRANGEMENT_DEFAULT = PRESENTATIONS.NORMAL;
+export const PRESENTATION_DEFAULT = PRESENTATIONS.NORMAL as Presentation;

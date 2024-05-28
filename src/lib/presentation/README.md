@@ -1,3 +1,3 @@
 # Presentation
 
-Route-based control over ui disposition.
+Route-based control over general layout type.
