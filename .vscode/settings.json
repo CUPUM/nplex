@@ -28,8 +28,5 @@
 	"typescript.preferences.quoteStyle": "single",
 	"svelte.enable-ts-plugin": true,
 	"svelte.plugin.css.globals": "src/**/*.css",
-	"svelte.plugin.svelte.compilerWarnings": {
-		"a11y-missing-attribute": "ignore"
-	},
 	"tailwindCSS.rootFontSize": 15
 }

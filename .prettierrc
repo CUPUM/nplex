@@ -29,7 +29,7 @@
 	"jsdocPreferCodeFences": true,
 	"jsdocCommentLineStrategy": "multiline",
 	"tsdoc": true,
-	"quoteProps": "consistent",
+	"quoteProps": "as-needed",
 	"embeddedLanguageFormatting": "auto",
 	"htmlWhitespaceSensitivity": "ignore"
 }
