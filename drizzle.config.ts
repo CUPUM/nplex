@@ -4,7 +4,7 @@ import { DB_MIGRATIONS_FOLDER } from './scripts/common';
 export default defineConfig({
 	schema: ['./src/lib/db/schema/*'],
 	out: DB_MIGRATIONS_FOLDER,
-	driver: 'pg',
+	dialect: 'postgresql',
 	breakpoints: true,
 	dbCredentials: {
 		host: process.env.DB_HOST!,
