@@ -1,0 +1,467 @@
+/* Input
+
+	Aliased states
+		- default
+		- hover (:hover, :active)
+		- disabled (:disabled, [aria-disabled='true'], [data-disabled='true'])
+		- busy ([aria-busy='true'])
+		- open ([aria-expanded='true'], [data-state='open'])
+		- focus (:focus, :has(.input:focus))
+
+	Composition
+		- .input-group, .input:not(.input-group *) (Root element)
+		- .input-group .input (Input inside group)
+		- .input-peer
+		- .input-affix
+		- .input-icon, & > .lucide-icon, & >.spinner
+
+	Aliased properties
+	  - color
+		- background
+		- border-color
+		- border-style
+		- border-width
+		- icon-color
+
+	Custom properties pattern
+		"--input{-aliased_state}-{aliased_property}: value;"
+
+	Variants
+		- default
+		- bordered
+		- dashed
+		- ghost
+
+	Mods
+		- error ([aria-invalid='true'], [data-error='true'])
+		- success ([data-success='true'])
+	*/
+
+.input:not(.input-group *),
+.input-group {
+	/* Default */
+
+	&:not(.input-bordered, .input-dashed, .input-ghost) {
+		--input-color: var(--color-input-contrast-soft);
+		--input-background: var(--color-input-soft);
+		--input-icon-color: currentColor;
+		--input-border-style: none;
+		--input-hover-color: var(--color-input-contrast);
+		--input-hover-background: var(--color-input);
+		--input-focus-color: var(--color-input-contrast-strong);
+		--input-focus-background: var(--color-base);
+		--input-disabled-color: ;
+		--input-disabled-background: ;
+		--input-busy-color: ;
+		--input-busy-background: ;
+		--input-open-color: ;
+		--input-open-background: ;
+	}
+
+	/* Bordered & dashed */
+
+	&:is(.input-bordered) {
+		--input-border-style: solid;
+	}
+
+	&:is(.input-dashed) {
+		--input-border-style: dashed;
+	}
+
+	&:is(.input-bordered, .input-dashed) {
+		--input-color: var(--color-input-contrast);
+		--input-background: transparent;
+		--input-border-color: var(--border-color);
+		--input-icon-color: currentColor;
+		--input-hover-color: var(--color-input-contrast-strong);
+		--input-hover-background: var(--color-input);
+		--input-hover-border-color: transparent;
+		--input-focus-color: var(--color-input-contrast-strong);
+		--input-focus-background: var(--color-base);
+		--input-focus-border-color: transparent;
+		--input-disabled-color: var(--color-input-contrast-soft);
+		--input-disabled-background: ;
+		--input-disabled-border-color: var(--border-color-soft);
+		--input-busy-color: ;
+		--input-busy-background: ;
+		--input-busy-border-color: transparent;
+		--input-open-color: ;
+		--input-open-background: ;
+		--input-open-border-color: transparent;
+	}
+
+	/* Ghost */
+
+	&:is(.input-ghost) {
+		--input-border-style: none;
+		--input-color: var(--color-input-contrast);
+		--input-background: transparent;
+		--input-icon-color: currentColor;
+		--input-hover-color: var(--color-input-contrast-strong);
+		--input-hover-background: var(--color-input);
+		--input-focus-color: var(--color-input-contrast-strong);
+		--input-focus-background: var(--color-base);
+		--input-disabled-color: var(--color-input-contrast-soft);
+		--input-disabled-background: ;
+		--input-busy-color: ;
+		--input-busy-background: ;
+		--input-open-color: ;
+		--input-open-background: ;
+	}
+
+	/* Base */
+
+	--input-nest: var(--spacing-input-nest);
+	--input-radius: var(--radius-input);
+	--nest-spacing-input: calc(var(--spacing-input) - 2 * var(--input-nest));
+	--nest-radius: calc(var(--input-radius) - var(--input-nest));
+	position: relative;
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	border-radius: var(--input-radius);
+	transition:
+		all var(--transition-duration-medium) var(--transition-timing-function-out),
+		outline var(--transition-duration-fast);
+
+	/* Pseudo for border, when possible, fallback to element */
+
+	&:not(input, textarea) {
+		&::after {
+			content: '';
+			pointer-events: none;
+			position: absolute;
+			border-radius: inherit;
+			inset: 0;
+			transition: inherit;
+		}
+	}
+
+	/* Single-line input and input-groups */
+
+	&:not(textarea, :has(textarea)) {
+		padding-top: 0;
+		padding-bottom: 0;
+		height: var(--spacing-input);
+		min-height: var(--spacing-input);
+	}
+
+	/* Rounded */
+
+	&:is(.rounded-full) {
+		--input-radius: var(--radius-full);
+	}
+
+	/* Icon children */
+
+	.input-icon,
+	> .lucide-icon,
+	> .spinner {
+		stroke-width: var(--stroke-width-icon);
+		width: var(--spacing-input-icon);
+		height: var(--spacing-input);
+		transform: var(--scale-press);
+		flex: none;
+		user-select: none;
+		pointer-events: none;
+		transition:
+			opacity var(--transition-duration-medium) ease-out,
+			transform var(--transition-duration-fast) var(--transition-timing-function-out);
+	}
+
+	/* Derived variables for other nested inputs */
+
+	> :not(.input, .input-affix, .input-icon) {
+		--spacing-input: var(--nest-spacing-input);
+		--radius-input: var(--nest-radius);
+	}
+
+	/* Input-related peer group */
+
+	.input-peer {
+		display: flex;
+		gap: var(--input-nest);
+		flex-direction: row;
+		margin: var(--input-nest);
+	}
+
+	/* Input prefix or suffix */
+
+	.input-affix {
+		cursor: default;
+		user-select: none;
+		height: var(--spacing-input);
+		display: flex;
+		align-items: center;
+		opacity: var(--opacity-softer);
+		white-space: nowrap;
+		padding-block: 0;
+		padding-inline: calc(var(--spacing-input-gutter) / 2);
+		transition: all var(--transition-duration-medium) var(--transition-timing-function-out);
+	}
+
+	/* Base */
+
+	color: var(--input-color);
+	background: var(--input-background);
+
+	&:is(input, textarea) {
+		border-width: var(--input-border-width);
+		border-style: var(--input-border-style);
+		border-color: var(--input-border-color);
+	}
+
+	&:not(input, textarea) {
+		&::after {
+			border-width: var(--input-border-width);
+			border-style: var(--input-border-style);
+			border-color: var(--input-border-color);
+		}
+	}
+
+	.input-icon,
+	& > .lucide-icon,
+	& > .spinner {
+		opacity: var(--opacity-soft);
+		stroke: var(--input-icon-color);
+	}
+
+	.input-affix {
+		opacity: var(--opacity-softer);
+	}
+
+	/* Hover */
+
+	&:is(.input):hover:not(:focus),
+	&:is(.input-group):has(.input:hover:not(:focus)) {
+		color: var(--input-hover-color, var(--input-color));
+		background: var(--input-hover-background, var(--input-background));
+
+		&:is(input, textarea) {
+			border-width: var(--input-hover-border-width, var(--input-border-width));
+			border-style: var(--input-hover-border-style, var(--input-border-style));
+			border-color: var(--input-hover-border-color, var(--input-border-color));
+		}
+
+		&:not(input, textarea) {
+			&::after {
+				border-width: var(--input-hover-border-width, var(--input-border-width));
+				border-style: var(--input-hover-border-style, var(--input-border-style));
+				border-color: var(--input-hover-border-color, var(--input-border-color));
+			}
+		}
+
+		.input-icon,
+		& > .lucide-icon,
+		& > .spinner {
+			opacity: 1;
+			stroke: var(--input-hover-icon-color, var(--input-icon-color));
+		}
+
+		.input-affix {
+			opacity: var(--opacity-soft);
+		}
+	}
+
+	/* Disabled */
+
+	&:disabled,
+	&[aria-disabled='true'],
+	&[data-disabled='true'] {
+		color: var(--input-disabled-color, var(--input-color));
+		background: var(--input-disabled-background, var(--input-background));
+
+		&:is(input, textarea) {
+			border-width: var(--input-disabled-border-width, var(--input-border-width));
+			border-style: var(--input-disabled-border-style, var(--input-border-style));
+			border-color: var(--input-disabled-border-color, var(--input-border-color));
+		}
+
+		&:not(input, textarea) {
+			&::after {
+				border-width: var(--input-disabled-border-width, var(--input-border-width));
+				border-style: var(--input-disabled-border-style, var(--input-border-style));
+				border-color: var(--input-disabled-border-color, var(--input-border-color));
+			}
+		}
+
+		.input-icon,
+		& > .lucide-icon,
+		& > .spinner {
+			opacity: 1;
+			stroke: var(--input-disabled-icon-color, var(--input-icon-color));
+		}
+
+		.input-affix {
+			opacity: var(--opacity-soft);
+		}
+	}
+
+	/* Focus */
+
+	&:focus,
+	&:has(.input:focus) {
+		outline: var(--outline-width-focus) solid var(--outline-color);
+		color: var(--input-focus-color, var(--input-color));
+		background: var(--input-focus-background, var(--input-background));
+
+		&:is(input, textarea) {
+			border-width: var(--input-focus-border-width, var(--input-border-width));
+			border-style: var(--input-focus-border-style, var(--input-border-style));
+			border-color: var(--input-focus-border-color, var(--input-border-color));
+		}
+
+		&:not(input, textarea) {
+			&::after {
+				border-width: var(--input-focus-border-width, var(--input-border-width));
+				border-style: var(--input-focus-border-style, var(--input-border-style));
+				border-color: var(--input-focus-border-color, var(--input-border-color));
+			}
+		}
+
+		.input-icon,
+		& > .lucide-icon,
+		& > .spinner {
+			opacity: 1;
+			stroke: var(--input-focus-icon-color, var(--input-icon-color));
+		}
+
+		.input-affix {
+			opacity: var(--opacity-soft);
+		}
+	}
+
+	&:focus:is([aria-invalid='true'], [data-error='true']),
+	&:has(.input:focus:is([aria-invalid='true'], [data-error='true'])) {
+		outline-color: var(--outline-color-danger);
+	}
+
+	/* Open */
+
+	&[aria-expanded='true'],
+	&[data-state='open'] {
+		color: var(--input-open-color, var(--input-color));
+		background: var(--input-open-background, var(--input-background));
+
+		&:is(input, textarea) {
+			border-width: var(--input-open-border-width, var(--input-border-width));
+			border-style: var(--input-open-border-style, var(--input-border-style));
+			border-color: var(--input-open-border-color, var(--input-border-color));
+		}
+
+		&:not(input, textarea) {
+			&::after {
+				border-width: var(--input-open-border-width, var(--input-border-width));
+				border-style: var(--input-open-border-style, var(--input-border-style));
+				border-color: var(--input-open-border-color, var(--input-border-color));
+			}
+		}
+
+		.input-icon,
+		& > .lucide-icon,
+		& > .spinner {
+			stroke: var(--input-open-icon-color, var(--input-icon-color));
+		}
+	}
+
+	/* Busy */
+
+	&[aria-busy='true'] {
+		color: var(--input-busy-color, var(--input-color));
+		background: var(--input-busy-background, var(--input-background));
+
+		&:is(input, textarea) {
+			border-width: var(--input-busy-border-width, var(--input-border-width));
+			border-style: var(--input-busy-border-style, var(--input-border-style));
+			border-color: var(--input-busy-border-color, var(--input-border-color));
+		}
+
+		&:not(input, textarea) {
+			&::after {
+				border-width: var(--input-busy-border-width, var(--input-border-width));
+				border-style: var(--input-busy-border-style, var(--input-border-style));
+				border-color: var(--input-busy-border-color, var(--input-border-color));
+			}
+		}
+
+		.input-icon,
+		& > .lucide-icon,
+		& > .spinner {
+			stroke: var(--input-busy-icon-color, var(--input-icon-color));
+		}
+	}
+}
+
+/* Standalone input */
+
+.input {
+	padding-inline: var(--spacing-input-gutter);
+	text-overflow: ellipsis;
+	min-width: var(--spacing-input);
+
+	/* Multiline */
+
+	&:is(textarea) {
+		--input-line-height: var(--line-height-md);
+		padding-block: calc(var(--spacing-input) / 2 - var(--input-line-height) * 1em / 2);
+		line-height: var(--input-line-height);
+		min-height: var(--spacing-input);
+	}
+}
+
+/* Grouped input */
+
+.input-group {
+	.input {
+		background-color: transparent;
+		align-self: stretch;
+		border-radius: inherit;
+		outline: none;
+		flex: 1;
+		width: 100%;
+		border: none;
+	}
+
+	/* Multiline group */
+
+	&:has(textarea) {
+		flex-direction: column;
+		align-items: stretch;
+
+		textarea ~ .input-peer {
+			justify-content: flex-end;
+		}
+	}
+
+	&:not(:has(textarea)) {
+		.input-icon + .input-peer,
+		.input + .input-peer {
+			margin-left: 0;
+		}
+	}
+
+	.input-peer + .input,
+	.input-icon + .input {
+		padding-left: calc(var(--spacing-input-gutter) - var(--input-nest));
+	}
+
+	.input-affix + .input {
+		padding-left: 0;
+	}
+
+	.input + .input-affix {
+		padding-left: 0;
+	}
+
+	.input-icon:last-child:not(.input .input-icon) {
+		margin-right: var(--spacing-input-gutter);
+	}
+
+	.input-peer + .input-icon {
+		margin-left: calc(var(--spacing-input-gutter) - var(--input-nest));
+	}
+
+	.input-icon:first-child:not(.input .input-icon) {
+		margin-left: var(--spacing-input-gutter);
+	}
+}

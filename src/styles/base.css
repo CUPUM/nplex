@@ -13,6 +13,10 @@ button {
 	background: var(--color-selection);
 }
 
+hr {
+	border-top-width: var(--border-width-input);
+}
+
 * {
 	outline-style: solid;
 	outline-color: transparent;
@@ -27,11 +31,17 @@ button {
 	outline-width: var(--outline-width-focus);
 }
 
+dialog {
+	max-width: 100%;
+	max-height: 100%;
+}
+
 :focus-visible:is([data-danger='true'], [aria-invalid='true'], [data-error='true']) {
-	outline-color: var(--outline-color-danger);
+	--outline-color: var(--outline-color-danger);
 }
 
 .lucide-icon {
+	pointer-events: none; /* Else SVGs can trap or swallow mouse events */
 	stroke-linejoin: round;
 	stroke-linecap: round;
 	width: var(--spacing-input-icon);
@@ -40,6 +50,7 @@ button {
 }
 
 :root {
+	--scroll-y: 0px;
 	position: relative;
 	font-size: 93.75%; /* 15px for default root of 16px */
 	/* font-variant-alternates: styleset(aalt); */
@@ -49,31 +60,64 @@ button {
 	background: var(--color-base);
 	overflow-x: hidden;
 	accent-color: var(--color-outline);
-}
-
-:root:is([data-melt-scroll-lock]):has([data-melt-dialog-portalled] *) {
-	background: black;
 	transition:
-		all var(--duration-fast) ease-out,
-		background 0s;
-
-	#container {
-		scale: 0.96;
-		border-radius: var(--radius-lg);
-		/* box-shadow: 0 0 3em -1em black; */
-	}
+		all var(--transition-duration-fast) ease-out,
+		background 0s var(--transition-duration-slow);
 }
 
 #container {
-	overflow-x: hidden;
 	background: var(--color-base);
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	min-height: 100svh;
 	scale: 1;
+	transform-origin: 50% calc(var(--scroll-y) + 50vh);
 	transition:
-		background var(--duration-fast) ease-out,
-		scale var(--duration-slow) var(--ease-out-expo),
-		border-radius var(--duration-slow) var(--ease-out-expo);
+		background var(--transition-duration-fast) ease-out,
+		scale var(--transition-duration-slow) var(--transition-timing-function-out),
+		border-radius var(--transition-duration-slow) var(--transition-timing-function-out);
+}
+
+::backdrop {
+	opacity: 0;
+}
+
+/* Pseudo backdrop */
+
+:root::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-index-frontmost);
+	pointer-events: none;
+	user-select: none;
+	opacity: 0;
+	background: var(--color-overlay);
+	transition: all var(--transition-duration-slow) var(--transition-timing-function-out);
+}
+
+/* Scroll lock and pseudo backdrop transition */
+
+:root:has(:modal[open]:not([data-closing='true'])) {
+	overflow: hidden;
+
+	&::after {
+		pointer-events: all;
+		opacity: 1;
+	}
+}
+
+/* Root effect on special modal */
+
+:root:has(:modal[open]:not([data-closing='true'])[data-meta-modal]) {
+	background: black;
+	transition:
+		all var(--transition-duration-fast) ease-out,
+		background 0s;
+
+	#container {
+		scale: 0.96;
+		border-radius: var(--radius-lg);
+	}
 }

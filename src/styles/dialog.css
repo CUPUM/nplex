@@ -1,0 +1,61 @@
+/* Dialog
+
+	Composition
+		- .dialog
+		- .dialog-content (inner-wrapper
+		- hr
+		- .dialog-title
+		- .dialog-text
+		- .dialog-menu
+	*/
+
+.dialog {
+	margin: auto;
+	max-width: var(--width-md);
+	max-height: calc(100% - var(--spacing-gutter));
+	background: var(--color-popover);
+	border-radius: var(--radius-lg);
+	font-size: var(--font-size-md);
+	line-height: var(--line-height-md);
+	overflow: auto;
+
+	/* Backdrop is handled as pseudo element on :root to enable in-out transitions. */
+
+	&::backdrop {
+		opacity: 0;
+	}
+
+	.dialog-section {
+		align-self: stretch;
+		padding: 2.5rem;
+
+		+ .dialog-section {
+			border-top-width: var(--border-width);
+			border-top-color: var(--border-color-soft);
+			border-top-style: solid;
+		}
+
+		+ .dialog-menu {
+			padding-top: 0;
+		}
+	}
+
+	.dialog-title {
+		padding: 2.5rem 2.5rem 0;
+		color: var(--color-contrast);
+		font-weight: var(--font-weight-bold);
+		font-size: var(--font-size-lg);
+	}
+
+	.dialog-text {
+		color: var(--color-contrast);
+	}
+
+	.dialog-menu {
+		font-size: var(--font-size-sm);
+		align-self: stretch;
+		padding: 2.5rem;
+		display: flex;
+		gap: var(--spacing-menu-gutter);
+	}
+}

@@ -1,0 +1,291 @@
+/*
+	Switch
+
+	Aliased states
+		- default
+		- hover (:hover, :active)
+		- disabled (:disabled, [aria-disabled='true'], [data-disabled='true'])
+		- checked (:checked, [aria-checked='true'], [data-state='active'], [data-state='checked'], :has(:checked))
+
+	Aliased properties
+		- color
+		- background
+		- background-inset
+		- border-color
+		- border-style
+		- border-width
+		- icon-color
+
+	Custom properties pattern
+		"--button{-mod}{-aliased_state}-{aliased_property}: value;"
+
+	Variants
+		- default
+		- cta (call-to-action)
+		- bordered
+		- dashed
+		- ghost
+		- link
+
+	Compounds
+		- danger ([data-danger=true])
+	*/
+
+.switch {
+	/* Default */
+
+	&:not(.switch-bordered, .switch-dashed, .switch-ghost) {
+		--switch-color: var(--color-input-contrast);
+		--switch-background: var(--color-input);
+		--switch-background-inset: 0;
+		--switch-text-decoration: none;
+		--switch-icon-color: currentColor;
+		--switch-border-style: none;
+		--switch-hover-color: var(--color-input-contrast-strong);
+		--switch-hover-background: var(--color-input-strong);
+	}
+
+	/* Bordered & dashed */
+
+	&:is(.switch-bordered) {
+		--switch-border-style: solid;
+	}
+
+	&:is(.switch-dashed) {
+		--switch-border-style: dashed;
+	}
+
+	&:is(.switch-bordered, .switch-dashed) {
+		--switch-color: var(--color-input-input);
+		--switch-background: transparent;
+		--switch-border-color: var(--border-color);
+		--switch-icon-color: currentColor;
+		--switch-background-inset: 0.4em;
+		--switch-hover-background: var(--color-input-strong);
+		--switch-hover-border-color: transparent;
+		--switch-hover-background-inset: 0;
+	}
+
+	/* Ghost */
+
+	&:is(.switch-ghost) {
+		--switch-color: var(--color-input-contrast);
+		--switch-background: transparent;
+		--switch-background-inset: 0.4em;
+		--switch-text-decoration: none;
+		--switch-icon-color: currentColor;
+		--switch-border-style: none;
+		--switch-hover-color: var(--color-input-contrast-strong);
+		--switch-hover-background: var(--color-input-strong);
+		--switch-hover-background-inset: 0;
+	}
+
+	/* Public customizable props */
+	--switch-nesting: var(--base-nesting);
+	--switch-radius: var(--base-radius);
+
+	/* Props for switch child items */
+	--_nested-block-size: calc(var(--base-block-size) - 2 * var(--switch-nesting));
+	--_nested-inline-padding: calc(var(--base-inline-padding) - var(--switch-nesting));
+	--_nested-radius: calc(var(--switch-radius) - var(--switch-nesting));
+
+	/* Base style */
+	isolation: isolate;
+	position: relative;
+	display: inline-flex;
+	padding: var(--switch-nesting);
+	border-radius: var(--switch-radius);
+	user-select: none;
+	flex: none;
+	gap: 0;
+	align-items: stretch;
+	justify-content: stretch;
+	color: var(--_switch-color);
+	background: var(--_switch-bg);
+	transition: all var(--duration-fast) ease-out;
+
+	&::after {
+		content: '';
+		pointer-events: none;
+		position: absolute;
+		border-radius: inherit;
+		inset: 0;
+		border-width: var(--_switch-border-width);
+		border-style: var(--_switch-border-style);
+		border-color: var(--_switch-border-color);
+		transition: inherit;
+	}
+
+	> * {
+		--base-block-size: var(--_nested-block-size);
+		--base-inline-padding: var(--_nested-inline-padding);
+		--base-radius: var(--_nested-radius);
+	}
+
+	/* Fine-tuning */
+
+	/* Orientation */
+	&:not(:--vertical) {
+		flex-direction: row;
+		height: var(--base-block-size);
+	}
+	&:--vertical {
+		flex-direction: column;
+	}
+
+	/* Rounded */
+	&.rounded {
+		--base-radius: var(--radius-full);
+	}
+
+	/* States */
+
+	&:hover {
+		background: var(--_switch-hover-bg, var(--_switch-bg));
+
+		&::after {
+			border-width: var(--_switch-hover-border-width, var(--_switch-border-width));
+			border-style: var(--_switch-hover-border-style, var(--_switch-border-style));
+			border-color: var(--_switch-hover-border-color, var(--_switch-border-color));
+		}
+	}
+
+	/* Focused */
+	&:focus-visible,
+	&:--focus-visible-within {
+		outline: var(--base-focus-ring);
+	}
+
+	/* Disabled */
+	&:--disabled {
+		pointer-events: none;
+		color: var(--_switch-disabled-color);
+		background: var(--_switch-disabled-bg);
+
+		&::after {
+			border-width: var(--_switch-disabled-border-width, var(--_switch-border-width));
+			border-style: var(--_switch-disabled-border-style, var(--_switch-border-style));
+			border-color: var(--_switch-disabled-border-color, var(--_switch-border-color));
+		}
+	}
+
+	/* Indicator for current switch item */
+	.switch-thumb {
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		z-index: -1;
+		pointer-events: none;
+		background: var(--_switch-thumb-bg);
+	}
+
+	/* Switch trigger child */
+	.switch-item {
+		position: relative;
+		cursor: pointer;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		height: var(--base-block-size);
+		border-radius: var(--base-radius);
+		padding-inline: var(--base-inline-padding);
+		transition: all var(--duration-fast) ease-out;
+
+		/* Fine-tuning */
+
+		/* Aspect-ratio */
+		&.square {
+			aspect-ratio: 1;
+			padding-inline: 0;
+
+			& > :--icon,
+			.button-icon {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+
+		/* Icon children */
+		& > :--icon,
+		.switch-item-icon {
+			width: 1.125em;
+			stroke-width: 2;
+			stroke-linecap: square;
+			stroke-linejoin: round;
+			opacity: 0.5;
+			transform: scale(1);
+			flex: none;
+			user-select: none;
+			pointer-events: none;
+			transition:
+				opacity var(--duration-medium) ease-out,
+				transform var(--duration-fast) ease-out;
+		}
+
+		/* States */
+
+		/* Disabled */
+		&:--disabled {
+			color: var(--_switch-disabled-color, var(--_switch-color));
+			background: var(--_switch-disabled-bg, var(--_switch-bg));
+		}
+
+		/* Checked */
+		&:--checked {
+			animation: var(--animation-press);
+			color: var(--_switch-item-checked-color, var(--_switch-color));
+			background: var(--_switch-item-checked-bg, var(--_switch-bg));
+
+			& > :--icon,
+			.button-icon {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+	}
+
+	/* Toggle-like switch (aka interaction occurs on root rather than items) */
+	&:is(button, label) {
+		/* Hover */
+		&:hover {
+			color: var(--_switch-item-hover-color);
+			background: var(--_switch-item-hover-bg);
+
+			&::after {
+				border-color: transparent;
+			}
+		}
+
+		/* Pointerdown */
+		&:active {
+			color: var(--_switch-item-active-color);
+			background: var(--_switch-item-active-bg);
+			/* animation: var(--animation-press); */
+		}
+	}
+
+	&:not(button, label) .switch-item {
+		/* Hover */
+		&:hover:not(:active, :--checked) {
+			color: var(--_switch-item-hover-color, var(--_switch-color));
+			background: var(--_switch-item-hover-bg, var(--_switch-bg));
+
+			& > :--icon,
+			.button-icon {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+
+		/* Pointerdown */
+		&:active {
+			animation: var(--animation-press);
+
+			&:not(:--checked) {
+				color: var(--_switch-item-active-color, var(--_switch-color));
+				background: var(--_switch-item-active-bg, var(--_switch-bg));
+			}
+		}
+	}
+}
