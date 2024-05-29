@@ -48,7 +48,7 @@
 	"description": "Description",
 	"edit": "Éditer",
 	"email": "Courriel",
-	"email_reset_password_body": "",
+	"email_reset_password_body": "Nous avons reçu une demande de réinitialisation pour le mot de passe du compte associé à votre adresse courriel. Pour poursuivre la démarche, cliquez sur le bouton ci-contre.",
 	"email_reset_password_button": "Confirmer la réinitialisation",
 	"email_reset_password_note": "Si vous n’avez pas créé de compte sur le site Nplex.design dernièrement, merci d’ignorer ce message.",
 	"email_reset_password_subject": "Réinitialisez votre mot de passe",
@@ -246,5 +246,11 @@
 	"user_role_invalid": "Rôle d’utilisateur non valide",
 	"password_required": "Vous devez fournir un mot de passe.",
 	"password_too_short": "Mot de passe trop court.",
-	"auth_signup_error": "Impossible de créer le compte"
+	"auth_signup_error": "Impossible de créer le compte",
+	"role_admin": "Administrateur",
+	"role_editor": "Éditeur",
+	"role_visitor": "Visiteur",
+	"password_confirmation": "Confirmation du mot de passe",
+	"auth_email_missing": "Adresse courriel manquante",
+	"auth_reset_token_missing": "Code de réinitialisation manquant."
 }

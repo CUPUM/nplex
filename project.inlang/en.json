@@ -48,7 +48,7 @@
 	"description": "Description",
 	"edit": "Edit",
 	"email": "Email",
-	"email_reset_password_body": "",
+	"email_reset_password_body": "We've received a request to reinitialize the password for the account associated to your email address. Click the button below to continue.",
 	"email_reset_password_button": "Confirm password reset",
 	"email_reset_password_note": "If you haven’t signed up to Nplex.com recently or believe this email was wrongly sent to you, please ignore.",
 	"email_reset_password_subject": "Reset your password",
@@ -243,5 +243,11 @@
 	"user_role_invalid": "Invalid user role",
 	"password_required": "You must provide a password.",
 	"password_too_short": "Password too short.",
-	"auth_signup_error": "Unable to create account"
+	"auth_signup_error": "Unable to create account",
+	"role_admin": "Administrator",
+	"role_editor": "Editor",
+	"role_visitor": "Visitor",
+	"password_confirmation": "Password confirmation",
+	"auth_email_missing": "Missing email address",
+	"auth_reset_token_missing": "Missing reset code."
 }
