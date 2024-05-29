@@ -2,7 +2,7 @@ import type { AvailableLanguageTag } from '$i18n/runtime';
 import { isAvailableLanguageTag } from '$i18n/runtime';
 import type { UserRole } from '$lib/auth/constants';
 import { USER_ROLE_DEFAULT } from '$lib/auth/constants';
-import { isUserRole } from '$lib/auth/validation';
+import { isUserRole } from '$lib/crud/validation/auth';
 import { customType } from 'drizzle-orm/pg-core';
 
 /**
@@ -19,7 +19,6 @@ export const userRole = customType<{ data: UserRole }>({
 			console.error(`Invalid role ("${value}") retrieved from database.`);
 			return USER_ROLE_DEFAULT;
 		}
-		// return value as UserRole;
 		return value;
 	},
 	toDriver(value) {

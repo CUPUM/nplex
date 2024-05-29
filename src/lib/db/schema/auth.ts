@@ -1,7 +1,7 @@
 import { USER_ROLE_DEFAULT } from '$lib/auth/constants';
-import { nanoid } from 'drizzle-orm-helpers/pg';
+import { add } from 'drizzle-orm-helpers';
+import { nanoid, now, toInterval } from 'drizzle-orm-helpers/pg';
 import {
-	bigint,
 	boolean,
 	pgSchema,
 	primaryKey,
@@ -10,7 +10,7 @@ import {
 	unique,
 	varchar,
 } from 'drizzle-orm/pg-core';
-import { LANG_COLUMN, USER_ID_LENGTH } from '../constants';
+import { CREATED_AT_COLUMN, LANG_COLUMN, UPDATED_AT_COLUMN } from '../columns';
 import { userRole } from '../custom-types.server';
 import { projects } from './public';
 
@@ -26,34 +26,13 @@ export const userRoles = authSchema.table('user_roles', {
 	role: userRole('role').primaryKey().notNull(),
 });
 
-export const userRolesTranslations = authSchema.table(
-	'user_roles_t',
-	{
-		...LANG_COLUMN,
-		role: userRole('role')
-			.notNull()
-			.references(() => userRoles.role, {
-				onDelete: 'cascade',
-				onUpdate: 'cascade',
-			}),
-		name: text('title'),
-		description: text('description'),
-	},
-	(table) => {
-		return {
-			pk: primaryKey({ columns: [table.role, table.lang] }),
-			unq: unique().on(table.lang, table.name),
-		};
-	}
-);
-
 export const users = authSchema.table('users', {
+	...CREATED_AT_COLUMN,
+	...UPDATED_AT_COLUMN,
 	id: text('id')
-		.default(nanoid({ size: USER_ID_LENGTH }))
+		.default(nanoid({ size: 15 }))
 		.notNull()
 		.primaryKey(),
-	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 	role: userRole('role')
 		.references(() => userRoles.role, {
 			onDelete: 'set default',
@@ -99,32 +78,43 @@ export const emailVerificationCodes = authSchema.table('email_verification_codes
 		})
 		.primaryKey(),
 	code: text('code')
-		.default(nanoid({ size: 6, alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ' }))
+		.default(
+			nanoid({
+				size: 8,
+				alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+			})
+		)
 		.notNull(),
 	email: text('email').notNull(),
-	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
+	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' })
+		.notNull()
+		.default(add(now(), toInterval({ hours: 1 })).inlineParams()),
 });
 
 export const passwordResetTokens = authSchema.table('password_reset_tokens', {
-	id: text('id').notNull().unique(),
-	expires: bigint('expires', { mode: 'bigint' }).primaryKey(),
 	userId: text('user_id')
-		.references(() => users.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		})
-		.notNull(),
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+		.primaryKey(),
+	token: text('token')
+		.notNull()
+		.default(
+			nanoid({
+				size: 16,
+				alphabet:
+					'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789^çàèé.,ÉÀÈÙù!@#$%?&*()_+',
+			})
+		),
+	expiresAt: timestamp('expires_at', { withTimezone: true })
+		.notNull()
+		.default(add(now(), toInterval({ hours: 1 })).inlineParams()),
 });
 
-export const usersSessions = authSchema.table('users_sessions', {
-	id: varchar('id', { length: 128 }).primaryKey(),
+export const sessions = authSchema.table('sessions', {
+	id: text('id').primaryKey(),
 	userId: text('user_id')
-		.references(() => users.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		})
+		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
 		.notNull(),
-	expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
+	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
 });
 
 export const usersRolesRequests = authSchema.table('users_roles_requests', {
@@ -146,6 +136,7 @@ export const userOccupations = authSchema.table('user_occupations', {
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
 });
+
 export const userOccupationsTranslations = authSchema.table(
 	'user_occupations_t',
 	{
@@ -237,6 +228,7 @@ export const notificationTypes = authSchema.table('notification_types', {
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
 });
+
 export const notificationTypesTranslations = authSchema.table('notification_types_t', {
 	...LANG_COLUMN,
 	id: text('id')

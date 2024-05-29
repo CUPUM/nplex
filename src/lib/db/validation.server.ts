@@ -1,12 +1,9 @@
-import * as m from '$i18n/messages';
 import { availableLanguageTags } from '$i18n/runtime';
-import { EMAIL_VERIFICATION_CODE_LENGTH } from '$lib/auth/constants';
-import { strictRecord } from '$lib/common/zod';
-import type { LangSchema } from '$lib/i18n/validation';
+import type { LangSchema } from '$lib/crud/validation/i18n';
+import { strictRecord } from '$lib/crud/validation/utils';
 import { intrangeSchema } from 'drizzle-orm-helpers/pg';
 import { createInsertSchema } from 'drizzle-zod';
 import type { ZodObject, ZodTypeAny } from 'zod';
-import { z } from 'zod';
 import {
 	LANG_COLUMN_NAME,
 	PROJECT_ADJACENT_ALLEYS_MAX,
@@ -20,9 +17,8 @@ import {
 	PROJECT_DESCRIPTION_MAX,
 	PROJECT_SUMMARY_MAX,
 	PROJECT_TITLE_MAX,
-	USER_PASSWORD_MIN,
 } from './constants';
-import { emailVerificationCodes, users } from './schema/auth';
+import { users } from './schema/auth';
 import {
 	organizationTypes,
 	organizationTypesTranslations,
@@ -303,27 +299,4 @@ export const usersSchema = createInsertSchema(users, {
 	lastName: (s) => s.lastName.trim(),
 	email: (s) => s.email.trim().email(),
 	publicEmail: (s) => s.publicEmail.trim().email(),
-});
-
-// Authentication
-
-export const emailPasswordSignupSchema = z
-	.object({
-		email: z.string().trim().email(),
-		password: z.string().min(USER_PASSWORD_MIN, 'Eh! Password too short!'),
-		confirmPassword: z.string(),
-	})
-	.superRefine((d, ctx) => {
-		if (d.confirmPassword !== d.password) {
-			ctx.addIssue({
-				fatal: true,
-				code: z.ZodIssueCode.custom,
-				message: m.auth_password_confirmation_error(),
-			});
-			return z.NEVER;
-		}
-	});
-
-export const emailVerificationCodesSchema = createInsertSchema(emailVerificationCodes, {
-	code: (s) => s.code.trim().length(EMAIL_VERIFICATION_CODE_LENGTH),
 });

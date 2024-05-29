@@ -1,5 +1,6 @@
 import { USER_ROLES } from '$lib/auth/constants';
-import { cube, empty, geography, intrange, nanoid } from 'drizzle-orm-helpers/pg';
+import { sql } from 'drizzle-orm';
+import { cube, intrange, nanoid } from 'drizzle-orm-helpers/pg';
 import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import {
 	boolean,
@@ -11,7 +12,8 @@ import {
 	timestamp,
 	unique,
 } from 'drizzle-orm/pg-core';
-import { LANG_COLUMN, PROJECT_IMAGE_PALETTE_LENGTH } from '../constants';
+import { CREATED_AT_COLUMN, LANG_COLUMN, UPDATED_AT_COLUMN } from '../columns';
+import { PROJECT_IMAGE_PALETTE_LENGTH } from '../constants';
 import { userRole } from '../custom-types.server';
 import { userRoles, users } from './auth';
 
@@ -25,6 +27,7 @@ export const projectTypes = pgTable('project_types', {
 		.primaryKey(),
 	index: integer('index'),
 });
+
 export const projectTypesTranslations = pgTable(
 	'project_types_t',
 	{
@@ -55,6 +58,7 @@ export const projectInterventionsCategories = pgTable('project_intervention_cate
 		.primaryKey(),
 	index: integer('index'),
 });
+
 export const projectInterventionsCategoriesTranslations = pgTable(
 	'project_intervention_categories_t',
 	{
@@ -91,6 +95,7 @@ export const projectInterventions = pgTable('project_interventions', {
 		}),
 	maybePermit: boolean('maybe_permit'),
 });
+
 export const projectInterventionsTranslations = pgTable(
 	'project_interventions_t',
 	{
@@ -150,6 +155,7 @@ export const projectSiteOwnerships = pgTable('project_site_ownerships', {
 		.primaryKey(),
 	index: integer('index'),
 });
+
 export const projectSiteOwnershipsTranslations = pgTable(
 	'project_site_ownerships_t',
 	{
@@ -180,6 +186,7 @@ export const projectImplantationTypes = pgTable('project_implantation_types', {
 		.primaryKey(),
 	index: integer('index'),
 });
+
 export const projectImplantationTypesTranslations = pgTable(
 	'project_implantation_types_t',
 	{
@@ -210,6 +217,7 @@ export const projectExemplarityCategories = pgTable('project_exemplarity_categor
 		.primaryKey(),
 	index: integer('index'),
 });
+
 export const projectExemplarityCategoriesTranslations = pgTable(
 	'project_exemplarity_categories_t',
 	{
@@ -243,6 +251,7 @@ export const projectExemplarityIndicators = pgTable('project_exemplarity_indicat
 		})
 		.notNull(),
 });
+
 export const projectExemplarityIndicatorsTranslations = pgTable(
 	'project_exemplarity_indicators_t',
 	{
@@ -273,6 +282,7 @@ export const projectImageTypes = pgTable('project_image_types', {
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
 });
+
 export const projectImageTypesTranslations = pgTable(
 	'project_image_types_t',
 	{
@@ -303,6 +313,7 @@ export const projectImageTemporalities = pgTable('project_image_temporalities', 
 		.primaryKey(),
 	timeIndex: integer('time_index').notNull().default(0),
 });
+
 export const projectImageTemporalitiesTranslations = pgTable(
 	'project_image_temporalities_t',
 	{
@@ -334,6 +345,7 @@ export const projectBuildingLevelTypes = pgTable('project_building_level_type', 
 	verticalIndex: integer('vertical_index').notNull(),
 	isGroundLevel: boolean('is_ground_level').unique(),
 });
+
 export const projectBuildingLevelTypesTranslations = pgTable(
 	'project_building_level_types_t',
 	{
@@ -362,9 +374,9 @@ export const projectBuildingLevelTypesTranslations = pgTable(
  * Core projects table.
  */
 export const projects = pgTable('projects', {
+	...CREATED_AT_COLUMN,
+	...UPDATED_AT_COLUMN,
 	id: text('id').default(nanoid()).primaryKey(),
-	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 	createdById: text('created_by_id')
 		.references(() => users.id, {
 			onDelete: 'restrict',
@@ -375,10 +387,8 @@ export const projects = pgTable('projects', {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
-	/**
-	 * Null if projet is.
-	 */
 	publishedAt: timestamp('published_at', { withTimezone: true }),
+	views: integer('views').default(0),
 	typeId: text('type_id').references(() => projectTypes.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
@@ -391,25 +401,21 @@ export const projects = pgTable('projects', {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
-	/**
-	 * Type-casting to AnyPgColumn is a fix for typescript incompatible circular inference.
-	 *
-	 * @see https://discord.com/channels/1043890932593987624/1146405082062135326/1146405496891383859
-	 */
 	bannerId: text('banner_id').references((): AnyPgColumn => projectsImages.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
 	adjacentStreets: integer('adjacent_streets'),
 	adjacentAlleys: integer('adjacent_alleys'),
-	costRange: intrange('cost_range').notNull().default(empty),
+	costRange: intrange('cost_range')
+		.notNull()
+		.default(sql`'empty'`),
 	siteArea: integer('site_area'),
 	interventionsArea: integer('interventions_area'),
 	buildingArea: integer('building_area'),
 	buildingConstructionDate: date('building_construction_date', { mode: 'date' }),
-	location: geography('location', { type: 'Point' }),
-	// obfuscatedLocation: point('obfuscated_location')
 });
+
 export const projectsTranslations = pgTable(
 	'projects_t',
 	{
@@ -423,11 +429,6 @@ export const projectsTranslations = pgTable(
 		title: text('title'),
 		summary: text('summary'),
 		description: text('description'),
-		// ts: generatedTsvector('ts', {
-		// 	sources: ['title', 'summary', 'description'],
-		// 	language: sql<Regconfig>`test`,
-		// 	weighted: true,
-		// }),
 	},
 	(table) => {
 		return {
@@ -507,6 +508,8 @@ export const projectsExemplarityIndicators = pgTable(
 export const projectsImages = pgTable(
 	'projects_images',
 	{
+		...CREATED_AT_COLUMN,
+		...UPDATED_AT_COLUMN,
 		id: text('id').notNull().default(nanoid()).primaryKey(),
 		projectId: text('project_id')
 			.notNull()
@@ -515,8 +518,6 @@ export const projectsImages = pgTable(
 				onUpdate: 'cascade',
 			}),
 		date: timestamp('date', { withTimezone: true }),
-		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-		updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 		createdById: text('created_by_id')
 			.references(() => users.id, {
 				onDelete: 'restrict',
@@ -543,6 +544,7 @@ export const projectsImages = pgTable(
 		};
 	}
 );
+
 export const projectsImagesTranslations = pgTable(
 	'projects_images_t',
 	{
@@ -710,35 +712,6 @@ export const projectsLikes = pgTable(
 	}
 );
 
-/**
- * Tracking project views with forced uniqueness on either user id or some common client identifier
- * for non authed users.
- */
-export const projectsViews = pgTable(
-	'projects_views',
-	{
-		id: text('id').notNull().default(nanoid()).primaryKey(),
-		projectId: text('project_id')
-			.references(() => projects.id, {
-				onDelete: 'cascade',
-				onUpdate: 'cascade',
-			})
-			.notNull(),
-		userId: text('user_id').references(() => users.id, {
-			onDelete: 'cascade',
-			onUpdate: 'cascade',
-		}),
-		clientId: text('client_id'),
-		viewedAt: timestamp('viewed_at', { withTimezone: true }).notNull().defaultNow(),
-	},
-	(table) => {
-		return {
-			unqUser: unique().on(table.projectId, table.userId),
-			unqClient: unique().on(table.projectId, table.clientId),
-		};
-	}
-);
-
 //
 // Organization descriptors
 //
@@ -752,6 +725,7 @@ export const organizationTypes = pgTable('organization_types', {
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
 });
+
 export const organizationTypesTranslations = pgTable(
 	'organization_types_t',
 	{
@@ -781,6 +755,7 @@ export const organizationExpertises = pgTable('organization_expertises', {
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
 });
+
 export const organizationExpertisesTranslations = pgTable(
 	'organization_expertises_t',
 	{
@@ -810,6 +785,7 @@ export const organizationDuties = pgTable('organization_duties', {
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
 });
+
 export const organizationDutiesTranslations = pgTable(
 	'organization_duties_t',
 	{
@@ -838,6 +814,8 @@ export const organizationDutiesTranslations = pgTable(
  * Design offices, municipal offices, communities, etc.
  */
 export const organizations = pgTable('organizations', {
+	...CREATED_AT_COLUMN,
+	...UPDATED_AT_COLUMN,
 	id: text('id').notNull().default(nanoid()).primaryKey(),
 	createdById: text('created_by_id')
 		.references(() => users.id, {
@@ -845,17 +823,16 @@ export const organizations = pgTable('organizations', {
 			onUpdate: 'cascade',
 		})
 		.notNull(),
-	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	updatedById: text('updated_by_id').references(() => users.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
-	updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 	typeId: text('type_id').references(() => organizationTypes.id, {
 		onDelete: 'set null',
 		onUpdate: 'cascade',
 	}),
 });
+
 export const organizationsTranslations = pgTable(
 	'organizations_t',
 	{
