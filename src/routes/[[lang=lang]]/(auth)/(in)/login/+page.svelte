@@ -1,38 +1,28 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple.svelte.js';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
-	import { superForm } from '$lib/crud/validation/forms/super-form.js';
-	import { melt } from '@melt-ui/svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { Eye, EyeOff, HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { expoOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
+	import { superForm } from 'sveltekit-superforms';
 
-	const STAGGER = 75;
+	let { data } = $props();
 
-	export let data;
+	let showPassword = $state(false);
 
-	let showPassword = false;
-	let loginRef: HTMLButtonElement;
-
-	const {
-		form,
-		enhance,
-		constraints,
-		errors,
-		elements: {
-			submitter: { root: submitter },
-		},
-	} = superForm(data.form, {
+	const { form, enhance, constraints, errors, tainted, message } = superForm(data.form, {
 		taintedMessage: null,
 	});
 </script>
 
-<form method="POST" use:enhance autocomplete="off">
-	<h1 class="h4">
+<form method="POST" use:enhance autocomplete="off" class="gap-gutter flex flex-col">
+	<h1 class="pb-gutter text-xl font-bold">
 		{m.auth_login_title()}
 	</h1>
-	<label class="label-group">
-		<span class="label" in:fly|global={{ y: 6 }}>
+	<label class="field">
+		<span class="field-label" in:fly|global={{ y: 6 }}>
 			{m.email()}
 		</span>
 		<input
@@ -40,102 +30,70 @@
 			class="input"
 			type="email"
 			name="email"
-			placeholder="{m.email().toLowerCase()}@..."
-			aria-invalid={$errors.email ? true : undefined}
+			aria-invalid={$errors.email || ($page.status >= 400 && !$tainted?.email) ? true : undefined}
 			bind:value={$form.email}
 			{...$constraints.email}
 		/>
 	</label>
-	<label class="label-group">
-		<span class="label" in:fly|global={{ y: 6, delay: STAGGER }}>
+	<label class="field">
+		<span class="field-label" in:fly|global={{ y: 6, delay: 75 }}>
 			{m.password()}
 		</span>
 		<div class="input-group">
 			<input
-				in:fly|global={{ y: -6, delay: STAGGER }}
+				in:fly|global={{ y: -6, delay: 75 }}
 				class="input"
 				type={showPassword ? 'text' : 'password'}
 				name="password"
-				aria-invalid={$errors.password ? true : undefined}
-				on:input={(e) => {
-					if (e.target instanceof HTMLElement && 'value' in e.target) {
-						$form.password = String(e.target.value);
-					}
-				}}
-				value={$form.password}
+				aria-invalid={$errors.password || ($page.status >= 400 && !$tainted?.password)
+					? true
+					: undefined}
+				bind:value={$form.password}
 				{...$constraints.password}
 			/>
 			<div class="input-peer">
 				<button
-					class="button square ghost"
+					class="button button-ghost aspect-square overflow-hidden"
 					type="button"
-					on:click={() => (showPassword = !showPassword)}
+					use:ripple
+					onclick={(e) => {
+						showPassword = !showPassword;
+					}}
 				>
 					{#if showPassword}
-						<div in:fly={{ x: -8 }}>
-							<EyeOff class="button-icon" />
+						<div
+							class="pointer-events-none absolute"
+							transition:fly={{ y: 25, duration: 350, easing: expoOut }}
+						>
+							<EyeOff />
 						</div>
 					{:else}
-						<div in:fly={{ x: 8 }}>
-							<Eye class="button-icon" />
+						<div
+							class="pointer-events-none absolute"
+							transition:fly={{ y: -25, duration: 350, easing: expoOut }}
+						>
+							<Eye />
 						</div>
 					{/if}
 				</button>
 			</div>
 		</div>
 	</label>
-	<button
-		in:fly|global={{ y: -6, delay: 2 * STAGGER }}
-		class="button cta center"
-		type="submit"
-		use:ripple
-		bind:this={loginRef}
-		use:melt={$submitter(loginRef)}
-	>
+	<button in:fly|global={{ y: -6, delay: 150 }} class="button button-cta" type="submit" use:ripple>
 		<LogIn class="button-icon" />
-
 		{m.login()}
 	</button>
+	{#if typeof $message === 'string'}
+		<p class="text-base-soft text-sm" transition:fly={{ y: -8 }}>{$message}</p>
+	{/if}
 </form>
-<div class="links">
-	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="button button-link center" {...linkAttributes('/signup')} in:fade|global>
-		<UserPlus2 class="button-icon" />
-
+<nav class="gap-menu-gutter flex flex-row flex-wrap justify-between text-sm">
+	<a class="button button-link" {...linkAttributes('/signup')}>
+		<UserPlus2 />
 		{m.auth_signup_prompt()}
 	</a>
-	<!-- svelte-ignore a11y-missing-attribute -->
-	<a class="button button-link center" {...linkAttributes('/reset-password')} in:fade|global>
-		<HelpCircle class="button-icon" />
-
+	<a class="button button-link" {...linkAttributes('/reset-password')}>
+		<HelpCircle />
 		{m.auth_forgot_password_prompt()}
 	</a>
-</div>
-
-<style>
-	form {
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		justify-content: center;
-		flex: 1;
-		gap: 1rem;
-
-		h1 {
-			text-align: center;
-		}
-	}
-
-	.links {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		gap: var(--base-gutter);
-		justify-content: space-between;
-		font-size: var(--size-sm);
-
-		.button {
-			flex: 1;
-		}
-	}
-</style>
+</nav>

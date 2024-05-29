@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { EMAIL_VERIFICATION_CODE_LENGTH } from '$lib/auth/constants';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form.js';
 	import { createPinInput, melt } from '@melt-ui/svelte';
 	import { MailWarning } from 'lucide-svelte';
@@ -31,21 +30,21 @@
 
 <form use:enhance method="POST">
 	<h1>
-		<LangKey>{m.verify_email_title()}</LangKey>
+		{m.verify_email_title()}
 	</h1>
-	<p><LangKey>{m.verify_email_body()}</LangKey></p>
+	<p>{m.verify_email_body()}</p>
 	<fieldset class="pin" use:melt={$root}>
 		{#each { length: EMAIL_VERIFICATION_CODE_LENGTH } as _}
 			<input class="input center" type="text" use:melt={$input()} />
 		{/each}
 	</fieldset>
 	<button class="button cta" type="submit" formaction="">
-		<LangKey>{m.auth_verify_email()}</LangKey>
+		{m.auth_verify_email()}
 	</button>
 	<hr />
-	<p><LangKey>{m.verify_email_not_received()}</LangKey></p>
+	<p>{m.verify_email_not_received()}</p>
 	<button class="button" type="submit" formaction="">
-		<MailWarning class="button-icon" /><LangKey>{m.verify_email_resend()}</LangKey>
+		<MailWarning class="button-icon" />{m.verify_email_resend()}
 	</button>
 </form>
 

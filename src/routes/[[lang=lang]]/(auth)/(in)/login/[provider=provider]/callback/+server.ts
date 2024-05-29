@@ -1,7 +1,7 @@
 import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
 import { OAUTH_PROVIDERS_STATE_COOKIE_NAME } from '$lib/auth/constants';
-import { SOCIAL_PROVIDERS_DETAILS } from '$lib/auth/socials';
+import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
 import {
 	getOAuthProviderIntegration,
 	getOAuthProviderUser,
@@ -27,7 +27,7 @@ export const GET = async (event) => {
 	if (!storedState || !state || storedState !== state || !code) {
 		error(STATUS_CODES.BAD_REQUEST, {
 			message: m.auth_incorrect_provider_state({
-				provider: SOCIAL_PROVIDERS_DETAILS[event.params.provider].name,
+				provider: OAUTH_PROVIDERS_DETAILS[event.params.provider].name,
 			}),
 		});
 	}

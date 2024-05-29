@@ -1,63 +1,55 @@
 import * as m from '$i18n/messages';
-import { sendPasswordResetLink } from '$lib/auth/emails.server';
 import { STATUS_CODES } from '$lib/common/constants';
+import { emailPasswordResetSchema } from '$lib/crud/validation/auth';
 import { db } from '$lib/db/db.server';
-import { users } from '$lib/db/schema/auth';
-import { fail, redirect } from '@sveltejs/kit';
+import { passwordResetTokens, users } from '$lib/db/schema/auth';
+import { EMAIL_SENDERS } from '$lib/email/constants';
+import { mail, renderEmail } from '$lib/email/email.server';
+import EmailResetPassword from '$lib/email/templates/email-reset-password.svelte';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms/server';
-import { z } from 'zod';
-
-const passwordResetSchema = z.object({
-	email: z.string().email(),
-});
 
 export const load = async (event) => {
-	if (event.locals.user) {
-		// Redirect authed user to their account's settings page
-		// where they can update password without using a link.
+	if (event.locals.authed) {
 		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
-	const form = superValidate(zod(passwordResetSchema));
-	return { form };
+	const form = await superValidate(zod(emailPasswordResetSchema));
+	return {
+		form,
+	};
 };
 
 export const actions = {
 	default: async (event) => {
-		const form = await superValidate(event, passwordResetSchema);
+		const form = await superValidate(event, zod(emailPasswordResetSchema));
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		try {
-			const [user] = await db
-				.select({ id: users.id, email: users.email })
-				.from(users)
-				.where(eq(users.email, form.data.email.toLowerCase()))
-				.limit(1);
-			if (!user) {
-				return message(
-					form,
-					{ title: m.auth_error(), description: m.auth_no_user_found() },
-					{
-						status: STATUS_CODES.BAD_REQUEST,
-					}
-				);
-			}
-			if (!user.email) {
-				throw new Error('User email is null');
-			}
-			await sendPasswordResetLink(user, event);
-			return message(form, { title: m.success(), description: m.auth_verify_email_sent() });
-		} catch (error) {
-			console.error(error);
-			return message(
-				form,
-				{ title: m.error(), description: m.error_details() },
-				{
-					status: STATUS_CODES.INTERNAL_SERVER_ERROR,
-				}
-			);
+		const [matchingUser] = await db
+			.select({ id: users.id, email: users.email })
+			.from(users)
+			.where(eq(users.email, form.data.email))
+			.limit(1);
+		if (!matchingUser) {
+			return message(form, m.auth_no_user_found(), {
+				status: STATUS_CODES.BAD_REQUEST,
+			});
 		}
+		const [inserted] = await db
+			.insert(passwordResetTokens)
+			.values({ userId: matchingUser.id })
+			.returning({ token: passwordResetTokens.token });
+		if (!inserted) {
+			error(STATUS_CODES.INTERNAL_SERVER_ERROR, m.auth_reset_token_missing());
+		}
+		await mail.sendMail({
+			from: EMAIL_SENDERS.NPLEX,
+			to: form.data.email,
+			subject: m.email_reset_password_subject(),
+			html: renderEmail(EmailResetPassword, { props: inserted }),
+		});
+		return message(form, { title: m.success(), description: m.auth_verify_email_sent() });
 	},
 };

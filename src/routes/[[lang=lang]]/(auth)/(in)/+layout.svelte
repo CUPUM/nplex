@@ -1,85 +1,52 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { OAUTH_PROVIDERS_ARR } from '$lib/auth/constants';
-	import SocialProviderButton from '$lib/components/patterns/button-social-provider.svelte';
+	import {
+		OAUTH_PROVIDERS,
+		OAUTH_PROVIDERS_ARR,
+		OAUTH_PROVIDERS_DETAILS,
+		type OAuthProvider,
+	} from '$lib/auth/constants';
+	import IconFacebook from '$lib/components/primitives/icon-facebook.svelte';
+	import IconGithub from '$lib/components/primitives/icon-github.svelte';
+	import IconGoogle from '$lib/components/primitives/icon-google.svelte';
+	import IconLinkedin from '$lib/components/primitives/icon-linkedin.svelte';
+	import { linkAttributes } from '$lib/components/primitives/link.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
+
+	const logos = {
+		[OAUTH_PROVIDERS.GITHUB]: IconGithub,
+		[OAUTH_PROVIDERS.FACEBOOK]: IconFacebook,
+		[OAUTH_PROVIDERS.LINKEDIN]: IconLinkedin,
+		[OAUTH_PROVIDERS.GOOGLE]: IconGoogle,
+	} satisfies Record<OAuthProvider, unknown>;
 </script>
 
-<article>
-	<div class="inner">
+<article class="flex flex-1 items-center justify-center">
+	<div class="gap-gutter p-gutter flex w-full max-w-sm flex-col items-stretch">
 		<slot />
-		<div id="or">
-			<span>
-				{m.or()}
-			</span>
-		</div>
-		<section class="social">
-			<h2>
-				{m.auth_continue_with()}
-			</h2>
-			<fieldset class="providers">
+		<section class="gap-gutter flex flex-col">
+			<div class="gap-gutter px-gutter flex flex-row items-center">
+				<hr class="border-soft flex-1" />
+				<span
+					class="text-base-soft text-center text-sm font-semibold font-thin first-letter:uppercase"
+				>
+					{m.or()}
+					{m.auth_continue_with().toLowerCase()}
+				</span>
+				<hr class="border-soft flex-1" />
+			</div>
+			<fieldset class="gap-menu-gutter flex flex-row justify-center">
 				{#each OAUTH_PROVIDERS_ARR as provider, i}
-					<SocialProviderButton {provider} {i} />
+					<a
+						class="button button-bordered aspect-square"
+						{...linkAttributes(`/login/${provider}`)}
+						aria-disabled={OAUTH_PROVIDERS_DETAILS[provider].disabled}
+						use:ripple
+					>
+						<svelte:component this={logos[provider]} />
+					</a>
 				{/each}
 			</fieldset>
 		</section>
 	</div>
 </article>
-
-<style>
-	article {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex: 1;
-	}
-
-	h2 {
-		text-align: center;
-	}
-
-	.inner {
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
-		gap: 1rem;
-		width: 100%;
-		max-width: 45ch;
-	}
-
-	.social {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-	}
-
-	#or {
-		display: flex;
-		flex-direction: row;
-		gap: 1rem;
-		font-size: var(--size-sm);
-		align-items: center;
-		opacity: 0.5;
-
-		span {
-			text-align: center;
-		}
-
-		&::before,
-		&::after {
-			content: '';
-			flex: 1;
-			height: 1px;
-			background-color: var(--color-neutral-500);
-			opacity: 0.25;
-		}
-	}
-
-	.providers {
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		gap: var(--base-gutter);
-		font-size: var(--size-lg);
-		justify-content: center;
-	}
-</style>

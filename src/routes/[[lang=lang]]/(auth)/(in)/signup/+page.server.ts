@@ -1,29 +1,34 @@
+import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
-import { sendEmailVerificationCode } from '$lib/auth/utils.server';
 import { STATUS_CODES } from '$lib/common/constants';
+import { signupEmailPasswordSchema } from '$lib/crud/validation/auth';
 import { db } from '$lib/db/db.server';
 import { emailVerificationCodes, users } from '$lib/db/schema/auth';
-import { emailPasswordSignupSchema } from '$lib/db/validation.server';
-import { fail, redirect } from '@sveltejs/kit';
+import { EMAIL_SENDERS } from '$lib/email/constants';
+import { mail, renderEmail } from '$lib/email/email.server';
+import EmailVerifyEmail from '$lib/email/templates/email-verify-email.svelte';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { Argon2id } from 'oslo/password';
 import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	if (event.locals.user) {
-		if (event.locals.user.email && !event.locals.user.emailVerified) {
+	if (event.locals.authed) {
+		if (event.locals.authed.user.email && !event.locals.authed.user.emailVerified) {
 			redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
 		}
 		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
-	const form = await superValidate(zod(emailPasswordSignupSchema));
-	return { form };
+	const form = await superValidate(zod(signupEmailPasswordSchema));
+	return {
+		form,
+	};
 };
 
 export const actions = {
 	default: async (event) => {
-		const form = await superValidate(event, zod(emailPasswordSignupSchema));
+		const form = await superValidate(event, zod(signupEmailPasswordSchema));
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
@@ -41,8 +46,8 @@ export const actions = {
 				);
 			}
 			const hashedPassword = await new Argon2id().hash(form.data.password);
-			const { id, code } = await db.transaction(async (tx) => {
-				const [{ id }] = await tx
+			const inserted = await db.transaction(async (tx) => {
+				const [user] = await tx
 					.insert(users)
 					.values({
 						email: form.data.email,
@@ -50,25 +55,42 @@ export const actions = {
 						hashedPassword,
 					})
 					.returning({ id: users.id });
-				const expiresAt = new Date();
-				expiresAt.setMinutes(expiresAt.getMinutes() + 5);
-				const [{ code }] = await tx
+				if (!user) {
+					await tx.rollback();
+					return;
+				}
+				const [emailVerification] = await tx
 					.insert(emailVerificationCodes)
 					.values({
-						userId: id,
+						userId: user.id,
 						email: form.data.email,
-						expiresAt,
 					})
 					.returning({ code: emailVerificationCodes.code });
-				return { id, code };
+				if (!emailVerification) {
+					await tx.rollback();
+					return;
+				}
+				return { ...user, ...emailVerification };
 			});
-			const session = await auth.createSession(id, {});
+			if (!inserted) {
+				error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: m.auth_signup_error() });
+			}
+			const session = await auth.createSession(inserted.id, {});
 			const sessionCookie = auth.createSessionCookie(session.id);
 			event.cookies.set(sessionCookie.name, sessionCookie.value, {
 				path: '.',
 				...sessionCookie.attributes,
 			});
-			await sendEmailVerificationCode(form.data.email, code);
+			await mail.sendMail({
+				from: EMAIL_SENDERS.NPLEX,
+				to: form.data.email,
+				subject: m.email_verify_email_subject(),
+				html: renderEmail(EmailVerifyEmail, {
+					props: {
+						code: inserted.code,
+					},
+				}),
+			});
 		} catch (err) {
 			console.error(err);
 			return fail(STATUS_CODES.INTERNAL_SERVER_ERROR, { form });
