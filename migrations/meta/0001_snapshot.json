@@ -1,14 +1,14 @@
 {
-  "id": "0f5f8038-c038-48d5-a889-b0c33a85d639",
-  "prevId": "0949420f-ca2c-4593-bcd1-5403f51c5c78",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {},
   "enums": {},
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "0f5f8038-c038-48d5-a889-b0c33a85d639",
+  "prevId": "0949420f-ca2c-4593-bcd1-5403f51c5c78"
 }

@@ -1,10 +1,8 @@
 {
-  "id": "58cb07ae-5a79-4c2d-a2a5-d2782bb55a85",
-  "prevId": "1b541d18-bd34-4639-8ee7-8155b67db88b",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {
-    "email_verification_codes": {
+    "auth.email_verification_codes": {
       "name": "email_verification_codes",
       "schema": "auth",
       "columns": {
@@ -54,7 +52,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "notification_types": {
+    "auth.notification_types": {
       "name": "notification_types",
       "schema": "auth",
       "columns": {
@@ -71,7 +69,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "notification_types_t": {
+    "auth.notification_types_t": {
       "name": "notification_types_t",
       "schema": "auth",
       "columns": {
@@ -140,7 +138,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "oauth_users": {
+    "auth.oauth_users": {
       "name": "oauth_users",
       "schema": "auth",
       "columns": {
@@ -191,7 +189,7 @@
       },
       "uniqueConstraints": {}
     },
-    "password_reset_tokens": {
+    "auth.password_reset_tokens": {
       "name": "password_reset_tokens",
       "schema": "auth",
       "columns": {
@@ -242,7 +240,7 @@
         }
       }
     },
-    "user_occupations": {
+    "auth.user_occupations": {
       "name": "user_occupations",
       "schema": "auth",
       "columns": {
@@ -259,7 +257,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user_occupations_t": {
+    "auth.user_occupations_t": {
       "name": "user_occupations_t",
       "schema": "auth",
       "columns": {
@@ -336,7 +334,7 @@
       },
       "uniqueConstraints": {}
     },
-    "user_roles": {
+    "auth.user_roles": {
       "name": "user_roles",
       "schema": "auth",
       "columns": {
@@ -352,7 +350,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user_roles_t": {
+    "auth.user_roles_t": {
       "name": "user_roles_t",
       "schema": "auth",
       "columns": {
@@ -438,7 +436,7 @@
         }
       }
     },
-    "users": {
+    "auth.users": {
       "name": "users",
       "schema": "auth",
       "columns": {
@@ -555,7 +553,7 @@
         }
       }
     },
-    "users_notifications": {
+    "auth.users_notifications": {
       "name": "users_notifications",
       "schema": "auth",
       "columns": {
@@ -646,7 +644,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "users_occupations": {
+    "auth.users_occupations": {
       "name": "users_occupations",
       "schema": "auth",
       "columns": {
@@ -705,7 +703,7 @@
       },
       "uniqueConstraints": {}
     },
-    "users_projects_collections": {
+    "auth.users_projects_collections": {
       "name": "users_projects_collections",
       "schema": "auth",
       "columns": {
@@ -764,7 +762,7 @@
         }
       }
     },
-    "users_collections_items": {
+    "auth.users_collections_items": {
       "name": "users_collections_items",
       "schema": "auth",
       "columns": {
@@ -828,7 +826,7 @@
       },
       "uniqueConstraints": {}
     },
-    "users_roles_requests": {
+    "auth.users_roles_requests": {
       "name": "users_roles_requests",
       "schema": "auth",
       "columns": {
@@ -886,7 +884,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "users_sessions": {
+    "auth.users_sessions": {
       "name": "users_sessions",
       "schema": "auth",
       "columns": {
@@ -929,7 +927,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "langs": {
+    "i18n.langs": {
       "name": "langs",
       "schema": "i18n",
       "columns": {
@@ -959,7 +957,7 @@
         }
       }
     },
-    "organization_duties": {
+    "public.organization_duties": {
       "name": "organization_duties",
       "schema": "",
       "columns": {
@@ -976,7 +974,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "organization_duties_t": {
+    "public.organization_duties_t": {
       "name": "organization_duties_t",
       "schema": "",
       "columns": {
@@ -1052,7 +1050,7 @@
       },
       "uniqueConstraints": {}
     },
-    "organization_expertises": {
+    "public.organization_expertises": {
       "name": "organization_expertises",
       "schema": "",
       "columns": {
@@ -1069,7 +1067,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "organization_expertises_t": {
+    "public.organization_expertises_t": {
       "name": "organization_expertises_t",
       "schema": "",
       "columns": {
@@ -1145,7 +1143,7 @@
       },
       "uniqueConstraints": {}
     },
-    "organization_types": {
+    "public.organization_types": {
       "name": "organization_types",
       "schema": "",
       "columns": {
@@ -1162,7 +1160,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "organization_types_t": {
+    "public.organization_types_t": {
       "name": "organization_types_t",
       "schema": "",
       "columns": {
@@ -1238,7 +1236,7 @@
       },
       "uniqueConstraints": {}
     },
-    "organizations": {
+    "public.organizations": {
       "name": "organizations",
       "schema": "",
       "columns": {
@@ -1329,7 +1327,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "organizations_expertises": {
+    "public.organizations_expertises": {
       "name": "organizations_expertises",
       "schema": "",
       "columns": {
@@ -1386,7 +1384,7 @@
       },
       "uniqueConstraints": {}
     },
-    "organizations_t": {
+    "public.organizations_t": {
       "name": "organizations_t",
       "schema": "",
       "columns": {
@@ -1477,7 +1475,7 @@
         }
       }
     },
-    "organizations_users": {
+    "public.organizations_users": {
       "name": "organizations_users",
       "schema": "",
       "columns": {
@@ -1535,7 +1533,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_building_level_type": {
+    "public.project_building_level_type": {
       "name": "project_building_level_type",
       "schema": "",
       "columns": {
@@ -1572,7 +1570,7 @@
         }
       }
     },
-    "project_building_level_types_t": {
+    "public.project_building_level_types_t": {
       "name": "project_building_level_types_t",
       "schema": "",
       "columns": {
@@ -1648,7 +1646,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_exemplarity_categories": {
+    "public.project_exemplarity_categories": {
       "name": "project_exemplarity_categories",
       "schema": "",
       "columns": {
@@ -1671,7 +1669,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "project_exemplarity_categories_t": {
+    "public.project_exemplarity_categories_t": {
       "name": "project_exemplarity_categories_t",
       "schema": "",
       "columns": {
@@ -1747,7 +1745,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_exemplarity_indicators": {
+    "public.project_exemplarity_indicators": {
       "name": "project_exemplarity_indicators",
       "schema": "",
       "columns": {
@@ -1784,7 +1782,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "project_exemplarity_indicators_t": {
+    "public.project_exemplarity_indicators_t": {
       "name": "project_exemplarity_indicators_t",
       "schema": "",
       "columns": {
@@ -1866,7 +1864,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_image_temporalities": {
+    "public.project_image_temporalities": {
       "name": "project_image_temporalities",
       "schema": "",
       "columns": {
@@ -1890,7 +1888,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "project_image_temporalities_t": {
+    "public.project_image_temporalities_t": {
       "name": "project_image_temporalities_t",
       "schema": "",
       "columns": {
@@ -1966,7 +1964,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_image_types": {
+    "public.project_image_types": {
       "name": "project_image_types",
       "schema": "",
       "columns": {
@@ -1983,7 +1981,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "project_image_types_t": {
+    "public.project_image_types_t": {
       "name": "project_image_types_t",
       "schema": "",
       "columns": {
@@ -2059,7 +2057,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_implantation_types": {
+    "public.project_implantation_types": {
       "name": "project_implantation_types",
       "schema": "",
       "columns": {
@@ -2082,7 +2080,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "project_implantation_types_t": {
+    "public.project_implantation_types_t": {
       "name": "project_implantation_types_t",
       "schema": "",
       "columns": {
@@ -2158,7 +2156,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_interventions": {
+    "public.project_interventions": {
       "name": "project_interventions",
       "schema": "",
       "columns": {
@@ -2201,7 +2199,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "project_intervention_categories": {
+    "public.project_intervention_categories": {
       "name": "project_intervention_categories",
       "schema": "",
       "columns": {
@@ -2224,7 +2222,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "project_intervention_categories_t": {
+    "public.project_intervention_categories_t": {
       "name": "project_intervention_categories_t",
       "schema": "",
       "columns": {
@@ -2300,7 +2298,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_interventions_t": {
+    "public.project_interventions_t": {
       "name": "project_interventions_t",
       "schema": "",
       "columns": {
@@ -2376,7 +2374,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_site_ownerships": {
+    "public.project_site_ownerships": {
       "name": "project_site_ownerships",
       "schema": "",
       "columns": {
@@ -2399,7 +2397,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "project_site_ownerships_t": {
+    "public.project_site_ownerships_t": {
       "name": "project_site_ownerships_t",
       "schema": "",
       "columns": {
@@ -2475,7 +2473,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_types": {
+    "public.project_types": {
       "name": "project_types",
       "schema": "",
       "columns": {
@@ -2498,7 +2496,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "project_types_to_intervention": {
+    "public.project_types_to_intervention": {
       "name": "project_types_to_intervention",
       "schema": "",
       "columns": {
@@ -2555,7 +2553,7 @@
       },
       "uniqueConstraints": {}
     },
-    "project_types_t": {
+    "public.project_types_t": {
       "name": "project_types_t",
       "schema": "",
       "columns": {
@@ -2631,7 +2629,7 @@
       },
       "uniqueConstraints": {}
     },
-    "projects": {
+    "public.projects": {
       "name": "projects",
       "schema": "",
       "columns": {
@@ -2834,7 +2832,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "projects_building_levels": {
+    "public.projects_building_levels": {
       "name": "projects_building_levels",
       "schema": "",
       "columns": {
@@ -2911,7 +2909,7 @@
         }
       }
     },
-    "projects_exemplarity_indicators": {
+    "public.projects_exemplarity_indicators": {
       "name": "projects_exemplarity_indicators",
       "schema": "",
       "columns": {
@@ -2968,7 +2966,7 @@
       },
       "uniqueConstraints": {}
     },
-    "projects_gallery_credits": {
+    "public.projects_gallery_credits": {
       "name": "projects_gallery_credits",
       "schema": "",
       "columns": {
@@ -3068,7 +3066,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "projects_images": {
+    "public.projects_images": {
       "name": "projects_images",
       "schema": "",
       "columns": {
@@ -3230,7 +3228,7 @@
         }
       }
     },
-    "projects_images_credits": {
+    "public.projects_images_credits": {
       "name": "projects_images_credits",
       "schema": "",
       "columns": {
@@ -3293,7 +3291,7 @@
       },
       "uniqueConstraints": {}
     },
-    "projects_images_t": {
+    "public.projects_images_t": {
       "name": "projects_images_t",
       "schema": "",
       "columns": {
@@ -3363,7 +3361,7 @@
       },
       "uniqueConstraints": {}
     },
-    "projects_interventions": {
+    "public.projects_interventions": {
       "name": "projects_interventions",
       "schema": "",
       "columns": {
@@ -3420,7 +3418,7 @@
       },
       "uniqueConstraints": {}
     },
-    "projects_likes": {
+    "public.projects_likes": {
       "name": "projects_likes",
       "schema": "",
       "columns": {
@@ -3478,7 +3476,7 @@
       },
       "uniqueConstraints": {}
     },
-    "projects_organizations": {
+    "public.projects_organizations": {
       "name": "projects_organizations",
       "schema": "",
       "columns": {
@@ -3535,7 +3533,7 @@
       },
       "uniqueConstraints": {}
     },
-    "projects_publication_requests": {
+    "public.projects_publication_requests": {
       "name": "projects_publication_requests",
       "schema": "",
       "columns": {
@@ -3592,7 +3590,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "projects_t": {
+    "public.projects_t": {
       "name": "projects_t",
       "schema": "",
       "columns": {
@@ -3674,7 +3672,7 @@
       },
       "uniqueConstraints": {}
     },
-    "projects_users": {
+    "public.projects_users": {
       "name": "projects_users",
       "schema": "",
       "columns": {
@@ -3753,7 +3751,7 @@
       },
       "uniqueConstraints": {}
     },
-    "projects_views": {
+    "public.projects_views": {
       "name": "projects_views",
       "schema": "",
       "columns": {
@@ -3848,8 +3846,10 @@
     "i18n": "i18n"
   },
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "58cb07ae-5a79-4c2d-a2a5-d2782bb55a85",
+  "prevId": "1b541d18-bd34-4639-8ee7-8155b67db88b"
 }
