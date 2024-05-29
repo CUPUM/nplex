@@ -36,8 +36,8 @@ dialog {
 	max-height: 100%;
 }
 
-:focus-visible:is([data-danger='true'], [aria-invalid='true'], [data-error='true']) {
-	--outline-color: var(--outline-color-danger);
+:focus-visible:is([data-danger], [aria-invalid='true'], [data-error='true']) {
+	--outline-color: var(--outline-color-error);
 }
 
 .lucide-icon {
@@ -53,20 +53,19 @@ dialog {
 	--scroll-y: 0px;
 	position: relative;
 	font-size: 93.75%; /* 15px for default root of 16px */
-	/* font-variant-alternates: styleset(aalt); */
 	font-weight: var(--font-weight-normal);
 	font-family: var(--font-family-main);
-	color: var(--color-contrast);
-	background: var(--color-base);
+	color: var(--text-color-base);
+	background: var(--background-color-base);
 	overflow-x: hidden;
-	accent-color: var(--color-outline);
+	accent-color: var(--outline-color);
 	transition:
 		all var(--transition-duration-fast) ease-out,
 		background 0s var(--transition-duration-slow);
 }
 
 #container {
-	background: var(--color-base);
+	background: var(--background-color-base);
 	position: relative;
 	display: flex;
 	flex-direction: column;
@@ -93,7 +92,7 @@ dialog {
 	pointer-events: none;
 	user-select: none;
 	opacity: 0;
-	background: var(--color-overlay);
+	background: var(--background-color-overlay);
 	transition: all var(--transition-duration-slow) var(--transition-timing-function-out);
 }
 

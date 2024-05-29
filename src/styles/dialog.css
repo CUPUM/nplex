@@ -13,7 +13,7 @@
 	margin: auto;
 	max-width: var(--width-md);
 	max-height: calc(100% - var(--spacing-gutter));
-	background: var(--color-popover);
+	background: var(--background-color-popover);
 	border-radius: var(--radius-lg);
 	font-size: var(--font-size-md);
 	line-height: var(--line-height-md);
@@ -29,33 +29,46 @@
 		align-self: stretch;
 		padding: 2.5rem;
 
-		+ .dialog-section {
+		+ :is(.dialog-section, .dialog-menu) {
 			border-top-width: var(--border-width);
 			border-top-color: var(--border-color-soft);
 			border-top-style: solid;
 		}
 
-		+ .dialog-menu {
-			padding-top: 0;
+		.dialog-menu {
+			position: relative;
+			background: transparent;
+			padding-left: 0;
+			padding-right: 0;
+			padding-top: var(--spacing-gutter);
+			padding-bottom: var(--spacing-gutter);
+
+			&:last-child {
+				padding-bottom: 0;
+			}
 		}
 	}
 
 	.dialog-title {
 		padding: 2.5rem 2.5rem 0;
-		color: var(--color-contrast);
+		color: var(--text-color-base);
 		font-weight: var(--font-weight-bold);
 		font-size: var(--font-size-lg);
 	}
 
 	.dialog-text {
-		color: var(--color-contrast);
+		color: var(--text-color-base-soft);
 	}
 
 	.dialog-menu {
 		font-size: var(--font-size-sm);
 		align-self: stretch;
 		padding: 2.5rem;
+		padding-top: var(--spacing-gutter);
 		display: flex;
 		gap: var(--spacing-menu-gutter);
+		position: sticky;
+		bottom: 0;
+		background: inherit;
 	}
 }

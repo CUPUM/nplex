@@ -29,6 +29,7 @@
 	flex-direction: row;
 	gap: 1em;
 	align-items: flex-end;
+	color: var(--color-contrast-soft);
 	font-weight: var(--font-weight-semibold);
 	font-size: clamp(var(--font-size-xs), 0.5em, var(--font-size-md));
 	padding-inline: var(--spacing-field-gutter);
@@ -38,6 +39,13 @@
 		opacity: 0;
 		transform: translateY(var(--spacing-field-gutter));
 	}
+}
+
+.field-errors {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-field-gutter);
+	padding-block: var(--spacing-field-gutter);
 }
 
 .field-error {

@@ -1,7 +1,8 @@
 /* Small, compact variants */
-.compact:is(.button, .input) {
-	--spacing-input: 4.5em;
-	--spacing-input-gutter: 1.75em;
-	--spacing-input-icon: 1.5em;
-	--spacing-input-nest: 0.5rem;
+.compact {
+	--spacing-input: 2.5em;
+	--spacing-input-gutter: 1em;
+	--spacing-input-icon: 1em;
+	--spacing-input-nest: 0.25rem;
+	--radius-input: var(--radius-xs);
 }

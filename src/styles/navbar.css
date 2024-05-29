@@ -41,10 +41,10 @@
 }
 
 .navbar-menu-group {
-	color: var(--color-contrast);
+	color: var(--text-color-base);
 	position: relative;
 	padding: 1.75rem;
-	background: var(--color-popover);
+	background: var(--background-color-popover);
 	transform-origin: 100% 0%;
 	border-radius: var(--radius-lg);
 	display: flex;

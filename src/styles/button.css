@@ -7,6 +7,7 @@
 		- busy ([aria-busy='true'])
 		- checked (:checked, [aria-checked='true'], [data-state='active'], [data-state='checked'], :has(:checked))
 		- open ([aria-expanded='true'], [data-state='open'])
+		- current ([aria-current='page'])
 
 	Aliased properties
 		- color
@@ -31,6 +32,7 @@
 		- dashed
 		- ghost
 		- link
+		- nav
 
 	Compounds
 		- danger ([data-danger=true])
@@ -39,20 +41,20 @@
 .button {
 	/* Default */
 
-	&:not(.button-bordered, .button-dashed, .button-ghost, .button-cta, .button-link) {
-		--button-color: var(--color-input-contrast);
-		--button-background: var(--color-input);
+	&:not(.button-bordered, .button-dashed, .button-ghost, .button-cta, .button-link, .button-nav) {
+		--button-color: var(--text-color-input);
+		--button-background: var(--background-color-input);
 		--button-background-inset: 0;
 		--button-text-decoration: none;
 		--button-icon-color: currentColor;
 		--button-border-style: none;
-		--button-hover-color: var(--color-input-contrast-strong);
-		--button-hover-background: var(--color-input-strong);
-		&:is([data-danger='true'], [data-danger]:not([data-danger='*'])) {
-			--button-color: var(--color-input-error-contrast);
-			--button-background: var(--color-input-error);
-			--button-hover-color: var(--color-input-error-contrast-strong);
-			--button-hover-background: var(--color-input-error-strong);
+		--button-hover-color: var(--text-color-input-strong);
+		--button-hover-background: var(--background-color-input-strong);
+		&:is([data-danger]) {
+			--button-color: var(--text-color-input-error);
+			--button-background: var(--background-color-input-error);
+			--button-hover-color: var(--text-color-input-error-strong);
+			--button-hover-background: var(--background-color-input-error-strong);
 		}
 	}
 
@@ -61,11 +63,18 @@
 	&:is(.button-cta) {
 		--ripple-color: color-mix(in srgb, var(--color-primary-soft) 50%, transparent);
 		--button-background-inset: 0;
-		--button-color: var(--color-primary-contrast);
+		--button-color: var(--color-on-primary);
 		--button-icon-color: currentColor;
 		--button-background: var(--color-primary);
-		--button-hover-color: var(--color-primary-contrast-soft);
+		--button-hover-color: var(--color-on-primary-soft);
 		--button-hover-background: var(--color-primary-strong);
+		&:is([data-danger]) {
+			--ripple-color: color-mix(in srgb, var(--color-error-soft) 50%, transparent);
+			--button-color: var(--color-on-error);
+			--button-background: var(--color-error);
+			--button-hover-color: var(--color-on-error-strong);
+			--button-hover-background: var(--color-error-strong);
+		}
 	}
 
 	/* Bordered & dashed */
@@ -79,31 +88,44 @@
 	}
 
 	&:is(.button-bordered, .button-dashed) {
-		--button-color: var(--color-input-contrast);
+		--button-color: var(--text-color-input);
 		--button-background: transparent;
 		--button-border-color: var(--border-color);
 		--button-icon-color: currentColor;
 		--button-background-inset: 0.4em;
-		--button-hover-background: var(--color-input-strong);
+		--button-hover-color: var(--text-color-input-strong);
+		--button-hover-background: var(--background-color-input-strong);
 		--button-hover-border-color: transparent;
 		--button-hover-background-inset: 0;
+		&:is([data-danger]) {
+			--button-color: var(--text-color-input-error);
+			--button-border-color: var(--border-color-error);
+			--button-hover-color: var(--text-color-input-error-strong);
+			--button-hover-background: var(--background-color-input-error-strong);
+		}
 	}
 
 	/* Ghost */
 
 	&:is(.button-ghost) {
-		--button-color: var(--color-input-contrast);
+		--button-color: var(--text-color-input);
 		--button-background: transparent;
 		--button-background-inset: 0.4em;
 		--button-text-decoration: none;
 		--button-icon-color: currentColor;
 		--button-border-style: none;
-		--button-hover-color: var(--color-input-contrast-strong);
-		--button-hover-background: var(--color-input-strong);
+		--button-hover-color: var(--text-color-input-strong);
+		--button-hover-background: var(--background-color-input-strong);
 		--button-hover-background-inset: 0;
 		--button-checked-color: var(--color-primary);
 		--button-checked-background: color-mix(in srgb, var(--color-primary) 15%, transparent);
 		--button-checked-background-inset: 0;
+		--button-current-color: var(--color-primary-soft);
+		&:is([data-danger]) {
+			--button-color: var(--text-color-input-error);
+			--button-hover-color: var(--text-color-input-error-strong);
+			--button-hover-background: var(--background-color-input-error-strong);
+		}
 	}
 
 	/* Link */
@@ -123,6 +145,39 @@
 		--button-hover-background-inset: 0;
 		--button-hover-text-decoration-color: transparent;
 		--button-hover-text-underline-offset: 0.1em;
+		&:is([data-danger]) {
+			--button-color: var(--text-color-input-error);
+			--button-text-decoration-color: color-mix(in srgb, var(--color-error-soft) var(--opacity-softer), transparent);
+			--button-hover-color: var(--text-color-input-error-strong);
+			--button-hover-background: var(--background-color-input-error-strong);
+		}
+	}
+
+	/* Nav */
+
+	&:is(.button-nav) {
+		--ripple-color: color-mix(in srgb, var(--background-color-card) 25%, transparent);
+		--button-color: var(--text-color-input);
+		--button-background: transparent;
+		--button-background-inset: 0.4em;
+		--button-text-decoration: none;
+		--button-icon-color: currentColor;
+		--button-border-style: none;
+		--button-hover-color: var(--text-color-input-strong);
+		--button-hover-background: color-mix(in srgb, var(--background-color-card) 50%, transparent);
+		--button-hover-background-inset: 0;
+		--button-checked-color: var(--color-primary);
+		--button-checked-background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+		--button-checked-background-inset: 0;
+		--button-current-color: var(--color-primary-strong);
+		--button-current-background: var(--background-color-card);
+		--button-current-background-inset: 0;
+		&:is([data-danger]) {
+			--ripple-color: color-mix(in srgb, var(--background-error-soft) 50%, transparent);
+			--button-color: var(--text-color-input-error);
+			--button-hover-color: var(--text-color-input-error-strong);
+			--button-hover-background: var(--background-color-input-error-strong);
+		}
 	}
 
 	/* Base */
@@ -140,7 +195,6 @@
 	align-items: center;
 	justify-content: center;
 	gap: calc(var(--spacing-input-gutter) / 2);
-	/* font-weight: var(--font-weight-semibold); */
 	padding-top: 0;
 	padding-bottom: 0;
 	padding-left: var(--spacing-input-gutter);
@@ -255,7 +309,6 @@
 
 		.lucide-icon,
 		.spinner {
-			stroke-width: calc(1.25 * var(--stroke-width-icon));
 			opacity: 100%;
 			stroke: var(--button-hover-icon-color, var(--button-icon-color));
 		}
@@ -375,6 +428,33 @@
 		.spinner {
 			opacity: 100%;
 			stroke: var(--button-open-icon-color, var(--button-icon-color));
+		}
+	}
+
+	/* Current */
+
+	&[aria-current] {
+		color: var(--button-current-color, var(--button-color));
+		text-decoration: var(--button-current-text-decoration, var(--button-text-decoration));
+		text-decoration-color: var(--button-current-text-decoration-color, var(--button-text-decoration-color));
+		text-decoration-thickness: var(--button-current-text-decoration-thickness, var(--button-text-decoration-thickness));
+		text-underline-offset: var(--button-current-text-underline-offset, var(--button-text-underline-offset));
+
+		&::before {
+			background: var(--button-current-background, var(--button-background));
+			inset: var(--button-current-background-inset, var(--button-background-inset));
+		}
+
+		&::after {
+			border-color: var(--button-current-border-color, var(--button-border-color));
+			border-style: var(--button-current-border-style, var(--button-border-style));
+			border-width: var(--button-current-border-width, var(--button-border-width));
+		}
+
+		.lucide-icon,
+		.spinner {
+			opacity: 100%;
+			stroke: var(--button-current-icon-color, var(--button-icon-color));
 		}
 	}
 }

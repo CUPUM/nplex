@@ -2,11 +2,13 @@
 
 @import 'tailwindcss/preflight' layer(base);
 @import 'styles/base' layer(base);
-@import 'styles/button.css' layer(components);
 @import 'styles/navbar.css' layer(components);
 @import 'styles/field.css' layer(components);
+@import 'styles/button.css' layer(components);
 @import 'styles/input.css' layer(components);
 @import 'styles/dialog.css' layer(components);
+@import 'styles/compact.css' layer(components);
+@import 'styles/big.css' layer(components);
 @import 'tailwindcss/utilities' layer(utilities);
 
 @theme {
@@ -97,24 +99,24 @@
 	--spacing-2xl: 10rem;
 	--spacing-gutter: var(--spacing-md);
 	--spacing-outline-focus: var(--outline-width-focus);
-	--spacing-input: 3.25em;
+	--spacing-input: 3.5em;
 	--spacing-input-nest: 0.35rem;
 	--spacing-input-icon: 1.25em;
-	--spacing-input-gutter: 1.125em;
+	--spacing-input-gutter: 1.25em;
 	--spacing-field-gutter: 0.5em;
 	--spacing-menu-gutter: calc(2 * var(--outline-width-focus));
 	--spacing-sidebar-width: 14rem;
-	--spacing-navbar-height: calc(2 * var(--spacing-gutter) + 3.25 * var(--font-size-sm)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
+	--spacing-navbar-height: calc(2 * var(--spacing-gutter) + 3.5 * var(--font-size-sm)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
 	--spacing-main-full-height: calc(100svh - var(--spacing-navbar-height));
 
 	/* Radii */
 
 	--radius-2xs: 0.35rem;
 	--radius-xs: 0.75rem;
-	--radius-sm: 0.9rem;
-	--radius-md: 1.5rem;
-	--radius-lg: 2.25rem;
-	--radius-xl: 3.5rem;
+	--radius-sm: 0.925rem;
+	--radius-md: 1.25rem;
+	--radius-lg: 2rem;
+	--radius-xl: 3.25rem;
 	--radius-inherit: inherit;
 	--radius-input: var(--radius-sm);
 	--radius-dashboard-section: var(--radius-xl);
@@ -134,8 +136,8 @@
 
 	/* Fades */
 
-	--opacity-soft: 60%;
-	--opacity-softer: 30%;
+	--opacity-soft: 50%;
+	--opacity-softer: 25%;
 	--opacity-pulse: 50%;
 
 	/* Shadows */
@@ -187,79 +189,96 @@
 
 	--scale-press: 96%;
 
-	/* Color palette */
+	/* Colors
+		- Semantic color palettes are defined using a --color-[semantic] and --color-on-[semantic] pattern to provide versatility in their use as either background or foreground colors.
+		- Block-element color palettes are defined as --background-color-[element] and --text-color-[element] to enforce consistency in their use for backgrounds and foregrounds.
+	*/
 
-	/* Base colors */
-	--color-base-soft: hsl(160, 8%, 88%);
-	--color-base: hsl(160, 9%, 92%);
-	--color-base-strong: hsl(160, 10%, 96%);
-	--color-contrast-soft: hsl(35, 6%, 46%);
-	--color-contrast: hsl(35, 14%, 19%);
-	--color-contrast-strong: hsl(35, 24%, 4%);
-	/* Primary colors */
-	--color-primary-soft: hsl(150, 80%, 20%);
-	--color-primary: hsl(151, 90%, 13%);
-	--color-primary-strong: hsl(152, 98%, 9%);
-	--color-primary-contrast-soft: hsl(52, 14%, 82%);
-	--color-primary-contrast: hsl(52, 15%, 89%);
-	--color-primary-contrast-strong: hsl(52, 16%, 96%);
-	/* Success colors */
+	--color-primary-soft: hsl(151, 80%, 21%);
+	--color-primary: hsl(152, 90%, 12%);
+	--color-primary-strong: hsl(155, 100%, 8%);
+	--color-on-primary-soft: hsl(52, 14%, 82%);
+	--color-on-primary: hsl(52, 15%, 89%);
+	--color-on-primary-strong: hsl(52, 16%, 96%);
+
+	--color-gold-soft: lch(96 76 70);
+	--color-gold: lch(82 82 85);
+	--color-gold-strong: lch(62 90 84);
+	--color-on-gold-soft: white;
+	--color-on-gold: white;
+	--color-on-gold-strong: white;
+
+	--color-like-soft: pink;
+	--color-like: hotpink;
+	--color-like-strong: deeppink;
+	--color-on-like-soft: white;
+	--color-on-like: white;
+	--color-on-like-strong: white;
+
 	--color-success-soft: hsl(120, 46%, 42%);
 	--color-success: hsl(120, 90%, 25%);
 	--color-success-strong: hsl(120, 98%, 14%);
-	--color-success-contrast-soft: var(--color-primary-contrast-soft);
-	--color-success-contrast: var(--color-primary-contrast);
-	--color-success-contrast-strong: var(--color-primary-contrast-strong);
-	/* Error colors */
+	--color-on-success-soft: var(--color-primary-contrast-soft);
+	--color-on-success: var(--color-primary-contrast);
+	--color-on-success-strong: var(--color-primary-contrast-strong);
+
 	--color-error-soft: hsl(8, 72%, 50%);
 	--color-error: hsl(7, 85%, 36%);
 	--color-error-strong: hsl(6, 96%, 20%);
-	--color-error-contrast-soft: hsl(25, 20%, 82%);
-	--color-error-contrast: hsl(25, 40%, 92%);
-	--color-error-contrast-strong: hsl(25, 50%, 98%);
-	/* Input colors */
-	--color-input-soft: color-mix(in srgb, var(--color-contrast-soft) 4%, transparent);
-	--color-input: color-mix(in srgb, var(--color-contrast) 8%, transparent);
-	--color-input-strong: color-mix(in srgb, var(--color-contrast-strong) 12%, transparent);
-	--color-input-contrast-soft: hsl(100, 6%, 30%);
-	--color-input-contrast: hsl(100, 10%, 16%);
-	--color-input-contrast-strong: hsl(100, 22%, 8%);
-	--color-input-error-soft: color-mix(in srgb, var(--color-error-strong) 4%, transparent);
-	--color-input-error: color-mix(in srgb, var(--color-error) 8%, transparent);
-	--color-input-error-strong: color-mix(in srgb, var(--color-error-soft) 12%, transparent);
-	--color-input-error-contrast-soft: var(--color-error-soft);
-	--color-input-error-contrast: var(--color-error);
-	--color-input-error-contrast-strong: var(--color-error-strong);
-	--color-input-success-soft: color-mix(in srgb, var(--color-success-strong) 4%, transparent);
-	--color-input-success: color-mix(in srgb, var(--color-success) 8%, transparent);
-	--color-input-success-strong: color-mix(in srgb, var(--color-success-soft) 12%, transparent);
-	--color-input-success-contrast-soft: var(--color-success-soft);
-	--color-input-success-contrast: var(--color-success);
-	--color-input-success-contrast-strong: var(--color-success-strong);
-	/* Overlay / tooltip colors */
-	--color-overlay: hsl(36, 12%, 6%, 90%);
-	/* Selection colors */
-	--color-selection: var(--color-primary-soft);
-	--color-selection-contrast: ;
-	/* Card colors */
-	--color-card-soft: ;
-	--color-card: ;
-	--color-card-strong: ;
-	/* Popover / dialogs colors */
-	--color-popover-soft: var(--color-base-soft);
-	--color-popover: var(--color-base);
-	--color-popover-strong: var(--color-base-strong);
-	/* Oultine colors */
-	--outline-color: var(--color-primary-soft);
-	--outline-color-danger: var(--color-error-soft);
-	/* Border colors */
-	--border-color-soft: color-mix(in srgb, var(--color-contrast) 10%, transparent);
-	--border-color: color-mix(in srgb, var(--color-contrast) 20%, transparent);
-	--border-color-strong: color-mix(in srgb, var(--color-contrast) 35%, transparent);
+	--color-on-error-soft: hsl(30, 20%, 82%);
+	--color-on-error: hsl(25, 40%, 92%);
+	--color-on-error-strong: hsl(20, 60%, 98%);
+
+	--background-color-base: lch(92% 2 140);
+	--background-color-card: lch(99% 4 120);
+	--background-color-popover: var(--background-color-card);
+	--background-color-overlay: hsl(36, 12%, 6%, 90%);
+	--background-color-tooltip: var(--background-color-overlay);
+	--background-color-selection: var(--color-primary-soft);
+	--background-color-input-soft: color-mix(in srgb, var(--text-color-base) 6%, transparent);
+	--background-color-input: color-mix(in srgb, var(--text-color-base) 9%, transparent);
+	--background-color-input-strong: color-mix(in srgb, var(--text-color-base) 12%, transparent);
+	--background-color-input-error-soft: color-mix(in srgb, var(--color-error) 6%, transparent);
+	--background-color-input-error: color-mix(in srgb, var(--color-error) 9%, transparent);
+	--background-color-input-error-strong: color-mix(in srgb, var(--color-error) 12%, transparent);
+	--background-color-input-success-soft: color-mix(in srgb, var(--color-success) 6%, transparent);
+	--background-color-input-success: color-mix(in srgb, var(--color-success) 9%, transparent);
+	--background-color-input-success-strong: color-mix(in srgb, var(--color-success) 12%, transparent);
+
+	--text-color-base-soft: lch(50% 4 90);
+	--text-color-base: lch(25% 8 92);
+	--text-color-base-strong: lch(5% 12 94);
+	--text-color-tooltip-soft: hsl(44, 8%, 50%);
+	--text-color-tooltip: hsl(44, 20%, 78%);
+	--text-color-tooltip-strong: hsl(44, 32%, 96%);
+	--text-color-input-soft: lch(36% 4.5 230);
+	--text-color-input: lch(18% 5 240);
+	--text-color-input-strong: lch(3% 5.5 250);
+	--text-color-input-error-soft: var(--color-error-soft);
+	--text-color-input-error: var(--color-error);
+	--text-color-input-error-strong: var(--color-error-strong);
+	--text-color-input-success-soft: var(--color-success-soft);
+	--text-color-input-success: var(--color-success);
+	--text-color-input-success-strong: var(--color-success-strong);
+	--text-color-selection: var(--color-on-primary);
+
+	--outline-color: color-mix(in srgb, var(--color-primary-soft) 90%, transparent);
+	--outline-color-error: color-mix(in srgb, var(--color-error-soft) 90%, transparent);
+	--outline-color-success: color-mix(in srgb, var(--color-success-soft) 90%, transparent);
+
+	--border-color-soft: color-mix(in srgb, var(--text-color-base) 10%, transparent);
+	--border-color: color-mix(in srgb, var(--text-color-base) 20%, transparent);
+	--border-color-strong: color-mix(in srgb, var(--text-color-base) 35%, transparent);
+	--border-color-error-soft: color-mix(in srgb, var(--color-error) 10%, transparent);
+	--border-color-error: color-mix(in srgb, var(--color-error) 20%, transparent);
+	--border-color-error-strong: color-mix(in srgb, var(--color-error) 35%, transparent);
+	--border-color-success-soft: color-mix(in srgb, var(--color-success) 10%, transparent);
+	--border-color-success: color-mix(in srgb, var(--color-success) 20%, transparent);
+	--border-color-success-strong: color-mix(in srgb, var(--color-success) 35%, transparent);
 
 	/* Ripple options */
 
-	--ripple-blur: 2px;
+	--ripple-blur: 6px;
 	--ripple-color: color-mix(in srgb, currentColor 20%, transparent);
 	--ripple-easing-spread: var(--transition-timing-function-out);
 	--ripple-easing-outro: ease-out;
@@ -286,50 +305,35 @@
 }
 
 [data-mode='dark'] {
-	/* Base colors */
-	--color-base-soft: hsl(70, 2%, 11%);
-	--color-base: hsl(70, 5%, 7%);
-	--color-base-strong: hsl(70, 9%, 2%);
-	--color-contrast-soft: hsl(45, 6%, 36%);
-	--color-contrast: hsl(45, 10%, 80%);
-	--color-contrast-strong: hsl(45, 18%, 98%);
-	/* Primary colors */
-	--color-primary-soft: hsl(162, 99%, 22%);
-	--color-primary: hsl(158, 94%, 31%);
-	--color-primary-strong: hsl(154, 76%, 40%);
-	--color-primary-contrast-soft: hsl(52, 14%, 82%);
-	--color-primary-contrast: hsl(52, 15%, 89%);
-	--color-primary-contrast-strong: hsl(52, 16%, 96%);
-	/* Success colors */
+	--color-primary-soft: hsl(158, 90%, 19%);
+	--color-primary: hsl(154, 92%, 32%);
+	--color-primary-strong: hsl(153, 70%, 44%);
+
 	--color-success-soft: hsl(120, 98%, 14%);
 	--color-success: hsl(120, 90%, 25%);
 	--color-success-strong: hsl(120, 46%, 42%);
-	--color-success-contrast-soft: var(--color-primary-contrast-soft);
-	--color-success-contrast: var(--color-primary-contrast);
-	--color-success-contrast-strong: var(--color-primary-contrast-strong);
-	/* Error colors */
+
 	--color-error-soft: hsl(8, 90%, 36%);
 	--color-error: hsl(7, 76%, 45%);
 	--color-error-strong: hsl(6, 72%, 53%);
-	--color-error-contrast-soft: hsl(25, 20%, 82%);
-	--color-error-contrast: hsl(25, 40%, 92%);
-	--color-error-contrast-strong: hsl(25, 50%, 98%);
-	/* Input colors */
-	--color-input-contrast-soft: hsl(80, 4%, 60%);
-	--color-input-contrast: hsl(80, 8%, 76%);
-	--color-input-contrast-strong: hsl(80, 20%, 88%);
-	/* Overlay / tooltip colors */
-	--color-overlay: hsl(68, 16%, 4%, 80%);
-	/* Card colors */
-	--color-card-soft: ;
-	--color-card: ;
-	--color-card-strong: ;
-	/* Popover / dialogs colors */
-	--color-popover-soft: var(--color-base-strong);
-	--color-popover: var(--color-base);
-	--color-popover-strong: var(--color-base-soft);
-	/* Border colors */
-	--border-color-soft: color-mix(in srgb, var(--color-contrast) 6%, transparent);
-	--border-color: color-mix(in srgb, var(--color-contrast) 14%, transparent);
-	--border-color-strong: color-mix(in srgb, var(--color-contrast) 25%, transparent);
+
+	--background-color-base: hsl(62, 4%, 7%);
+	--background-color-input-soft: color-mix(in srgb, var(--text-color-base) 6%, transparent);
+	--background-color-input: color-mix(in srgb, var(--text-color-base) 8%, transparent);
+	--background-color-input-strong: color-mix(in srgb, var(--text-color-base) 10%, transparent);
+	--background-color-card: hsl(62, 3%, 10%);
+	--background-color-popover: var(--background-color-base);
+	--background-color-overlay: hsl(220, 16%, 3%, 86%);
+	--background-color-tooltip: hsl(220, 12%, 10%, 96%);
+
+	--text-color-base-soft: hsl(45, 6%, 36%);
+	--text-color-base: hsl(45, 10%, 74%);
+	--text-color-base-strong: hsl(45, 18%, 98%);
+	--text-color-input-soft: hsl(80, 4%, 60%);
+	--text-color-input: hsl(80, 8%, 78%);
+	--text-color-input-strong: hsl(80, 20%, 88%);
+
+	--border-color-soft: color-mix(in srgb, var(--text-color-base) 6%, transparent);
+	--border-color: color-mix(in srgb, var(--text-color-base) 14%, transparent);
+	--border-color-strong: color-mix(in srgb, var(--text-color-base) 25%, transparent);
 }

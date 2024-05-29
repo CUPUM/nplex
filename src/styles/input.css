@@ -42,14 +42,14 @@
 	/* Default */
 
 	&:not(.input-bordered, .input-dashed, .input-ghost) {
-		--input-color: var(--color-input-contrast-soft);
-		--input-background: var(--color-input-soft);
+		--input-color: var(--text-color-input-soft);
+		--input-background: var(--background-color-input-soft);
 		--input-icon-color: currentColor;
 		--input-border-style: none;
-		--input-hover-color: var(--color-input-contrast);
-		--input-hover-background: var(--color-input);
-		--input-focus-color: var(--color-input-contrast-strong);
-		--input-focus-background: var(--color-base);
+		--input-hover-color: var(--text-color-input);
+		--input-hover-background: var(--background-color-input);
+		--input-focus-color: var(--text-color-input-strong);
+		--input-focus-background: var(--background-color-popover);
 		--input-disabled-color: ;
 		--input-disabled-background: ;
 		--input-busy-color: ;
@@ -69,17 +69,17 @@
 	}
 
 	&:is(.input-bordered, .input-dashed) {
-		--input-color: var(--color-input-contrast);
+		--input-color: var(--text-color-input-soft);
 		--input-background: transparent;
 		--input-border-color: var(--border-color);
 		--input-icon-color: currentColor;
-		--input-hover-color: var(--color-input-contrast-strong);
-		--input-hover-background: var(--color-input);
+		--input-hover-color: var(--text-color-input);
+		--input-hover-background: var(--background-color-input);
 		--input-hover-border-color: transparent;
-		--input-focus-color: var(--color-input-contrast-strong);
-		--input-focus-background: var(--color-base);
+		--input-focus-color: var(--text-color-input-strong);
+		--input-focus-background: var(--background-color-popover);
 		--input-focus-border-color: transparent;
-		--input-disabled-color: var(--color-input-contrast-soft);
+		--input-disabled-color: var(--text-color-input-soft);
 		--input-disabled-background: ;
 		--input-disabled-border-color: var(--border-color-soft);
 		--input-busy-color: ;
@@ -94,14 +94,14 @@
 
 	&:is(.input-ghost) {
 		--input-border-style: none;
-		--input-color: var(--color-input-contrast);
+		--input-color: var(--text-color-input);
 		--input-background: transparent;
 		--input-icon-color: currentColor;
-		--input-hover-color: var(--color-input-contrast-strong);
-		--input-hover-background: var(--color-input);
-		--input-focus-color: var(--color-input-contrast-strong);
-		--input-focus-background: var(--color-base);
-		--input-disabled-color: var(--color-input-contrast-soft);
+		--input-hover-color: var(--text-color-input-strong);
+		--input-hover-background: var(--background-color-input);
+		--input-focus-color: var(--text-color-input-strong);
+		--input-focus-background: var(--background-color-popover);
+		--input-disabled-color: var(--text-color-input-soft);
 		--input-disabled-background: ;
 		--input-busy-color: ;
 		--input-busy-background: ;
@@ -126,7 +126,7 @@
 
 	/* Pseudo for border, when possible, fallback to element */
 
-	&:not(input, textarea) {
+	&:not(input):not(textarea) {
 		&::after {
 			content: '';
 			pointer-events: none;
@@ -139,7 +139,7 @@
 
 	/* Single-line input and input-groups */
 
-	&:not(textarea, :has(textarea)) {
+	&:not(textarea.input):not(:has(textarea.input)) {
 		padding-top: 0;
 		padding-bottom: 0;
 		height: var(--spacing-input);
@@ -171,7 +171,7 @@
 
 	/* Derived variables for other nested inputs */
 
-	> :not(.input, .input-affix, .input-icon) {
+	> :not(.input, .input-affix, .input-icon, .lucide-icon) {
 		--spacing-input: var(--nest-spacing-input);
 		--radius-input: var(--nest-radius);
 	}
@@ -205,13 +205,13 @@
 	color: var(--input-color);
 	background: var(--input-background);
 
-	&:is(input, textarea) {
+	&:is(input.input, textarea.input) {
 		border-width: var(--input-border-width);
 		border-style: var(--input-border-style);
 		border-color: var(--input-border-color);
 	}
 
-	&:not(input, textarea) {
+	&:not(input.input):not(textarea.input) {
 		&::after {
 			border-width: var(--input-border-width);
 			border-style: var(--input-border-style);
@@ -243,7 +243,7 @@
 			border-color: var(--input-hover-border-color, var(--input-border-color));
 		}
 
-		&:not(input, textarea) {
+		&:not(input.input):not(textarea.input) {
 			&::after {
 				border-width: var(--input-hover-border-width, var(--input-border-width));
 				border-style: var(--input-hover-border-style, var(--input-border-style));
@@ -277,7 +277,7 @@
 			border-color: var(--input-disabled-border-color, var(--input-border-color));
 		}
 
-		&:not(input, textarea) {
+		&:not(input.input):not(textarea.input) {
 			&::after {
 				border-width: var(--input-disabled-border-width, var(--input-border-width));
 				border-style: var(--input-disabled-border-style, var(--input-border-style));
@@ -311,7 +311,7 @@
 			border-color: var(--input-focus-border-color, var(--input-border-color));
 		}
 
-		&:not(input, textarea) {
+		&:not(input.input):not(textarea.input) {
 			&::after {
 				border-width: var(--input-focus-border-width, var(--input-border-width));
 				border-style: var(--input-focus-border-style, var(--input-border-style));
@@ -333,7 +333,7 @@
 
 	&:focus:is([aria-invalid='true'], [data-error='true']),
 	&:has(.input:focus:is([aria-invalid='true'], [data-error='true'])) {
-		outline-color: var(--outline-color-danger);
+		outline-color: var(--outline-color-error);
 	}
 
 	/* Open */
@@ -349,7 +349,7 @@
 			border-color: var(--input-open-border-color, var(--input-border-color));
 		}
 
-		&:not(input, textarea) {
+		&:not(input.input):not(textarea.input) {
 			&::after {
 				border-width: var(--input-open-border-width, var(--input-border-width));
 				border-style: var(--input-open-border-style, var(--input-border-style));
@@ -376,7 +376,7 @@
 			border-color: var(--input-busy-border-color, var(--input-border-color));
 		}
 
-		&:not(input, textarea) {
+		&:not(input.input):not(textarea.input) {
 			&::after {
 				border-width: var(--input-busy-border-width, var(--input-border-width));
 				border-style: var(--input-busy-border-style, var(--input-border-style));
@@ -413,7 +413,7 @@
 
 .input-group {
 	.input {
-		background-color: transparent;
+		background: transparent;
 		align-self: stretch;
 		border-radius: inherit;
 		outline: none;
@@ -424,24 +424,20 @@
 
 	/* Multiline group */
 
-	&:has(textarea) {
+	&:has(textarea.input) {
 		flex-direction: column;
 		align-items: stretch;
 
-		textarea ~ .input-peer {
+		textarea.input ~ .input-peer {
 			justify-content: flex-end;
 		}
 	}
 
-	&:not(:has(textarea)) {
-		.input-icon + .input-peer,
-		.input + .input-peer {
-			margin-left: 0;
-		}
+	&:not(:has(textarea.input)) :is(.input-icon, .lucide-icon, .input) + .input-peer {
+		margin-left: 0;
 	}
 
-	.input-peer + .input,
-	.input-icon + .input {
+	:is(.input-peer, .lucide-icon, .input-icon) + .input {
 		padding-left: calc(var(--spacing-input-gutter) - var(--input-nest));
 	}
 
@@ -453,15 +449,15 @@
 		padding-left: 0;
 	}
 
-	.input-icon:last-child:not(.input .input-icon) {
+	:is(.input-icon, .lucide-icon):last-child:not(.input :is(.input-icon, .lucide-icon)) {
 		margin-right: var(--spacing-input-gutter);
 	}
 
-	.input-peer + .input-icon {
+	.input-peer + :is(.input-icon, .lucide-icon) {
 		margin-left: calc(var(--spacing-input-gutter) - var(--input-nest));
 	}
 
-	.input-icon:first-child:not(.input .input-icon) {
+	:is(.input-icon, .lucide-icon):first-child:not(.input :is(.input-icon, .lucide-icon)) {
 		margin-left: var(--spacing-input-gutter);
 	}
 }
