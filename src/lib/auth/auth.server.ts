@@ -7,13 +7,13 @@ import {
 	GOOGLE_CLIENT_SECRET,
 } from '$env/static/private';
 import { db } from '$lib/db/db.server';
-import { users, usersSessions } from '$lib/db/schema/auth';
+import { sessions, users } from '$lib/db/schema/auth';
 import { DrizzlePostgreSQLAdapter } from '@lucia-auth/adapter-drizzle';
 import { GitHub, Google } from 'arctic';
 import type { InferSelectModel } from 'drizzle-orm';
 import { Lucia } from 'lucia';
 
-const adapter = new DrizzlePostgreSQLAdapter(db, usersSessions, users);
+const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
 export const auth = new Lucia(adapter, {
 	sessionCookie: {

@@ -1,10 +1,6 @@
 import * as m from '$i18n/messages';
 import { STATUS_CODES } from '$lib/common/constants';
-import VerifyEmail from '$lib/email/VerifyEmail.svelte';
-import { EMAIL_SENDERS } from '$lib/email/constants';
-import { transporter } from '$lib/email/email.server';
 import { error } from '@sveltejs/kit';
-import { render } from 'svelte-email';
 import { github } from './auth.server';
 import { OAUTH_PROVIDERS, type OAuthProvider } from './constants';
 
@@ -75,21 +71,6 @@ export async function getOAuthProviderUserEmail<
 		default:
 			error(STATUS_CODES.INTERNAL_SERVER_ERROR, { message: m.auth_unsupported_provider() });
 	}
-}
-
-export async function sendEmailVerificationCode(email: string, code: string) {
-	const html = render({
-		template: VerifyEmail,
-		props: {
-			code,
-		},
-	});
-	await transporter.sendMail({
-		from: EMAIL_SENDERS.NPLEX,
-		to: email,
-		subject: m.email_verify_email_subject(),
-		html,
-	});
 }
 
 // export async function sendPasswordResetLink(user: { email: string; id: string }) {
