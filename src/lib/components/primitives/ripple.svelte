@@ -1,5 +1,21 @@
 <script lang="ts" context="module">
+	import { mount, unmount, type ComponentProps } from 'svelte';
+	import Ripple from './ripple.svelte';
+
 	const HOST_ATTRIBUTE = 'data-ripple-host';
+
+	export function ripple(target: HTMLElement, options?: ComponentProps<Ripple>) {
+		let props = $state(options);
+		const comp = mount(Ripple, { target, props, anchor: target.firstChild || undefined });
+		return {
+			update(args) {
+				props = args;
+			},
+			destroy() {
+				unmount(comp);
+			},
+		} satisfies SvelteActionReturnType;
+	}
 </script>
 
 <script lang="ts">
@@ -7,16 +23,13 @@
 	import { onDestroy, onMount } from 'svelte';
 
 	let {
-		blur = 1,
+		blur,
 		speedSpread = 0.5,
 		durationSpread,
 		speedOutro,
 		durationOutro = 1_000,
-		easingSpread = 'var(--transition-timing-function-out)',
-		easingOutro = 'var(--transition-timing-function-out)',
-		opacity = 0.15,
-		opacityStart,
-		opacityEnd,
+		easingSpread,
+		easingOutro,
 		color,
 		colorStart,
 		colorEnd,
@@ -26,26 +39,14 @@
 		easingOutro?: string;
 	} & (
 		| {
-				opacity?: number | string;
-				opacityStart?: undefined;
-				opacityEnd?: undefined;
+				speedSpread?: number;
+				durationSpread?: undefined;
 		  }
 		| {
-				opacity?: undefined;
-				opacityStart?: string | number;
-				opacityEnd?: string | number;
+				speedSpread?: undefined;
+				durationSpread?: number;
 		  }
 	) &
-		(
-			| {
-					speedSpread?: number;
-					durationSpread?: undefined;
-			  }
-			| {
-					speedSpread?: undefined;
-					durationSpread?: number;
-			  }
-		) &
 		(
 			| {
 					speedOutro: number;
@@ -112,11 +113,13 @@
 				},
 			});
 			ripples.push(ripple);
-			function enter() {
+			function enter(e: PointerEvent) {
 				ripple.outside = false;
+				return e;
 			}
-			function leave() {
+			function leave(e: PointerEvent) {
 				ripple.outside = true;
+				return e;
 			}
 			function end(e: Event) {
 				document.removeEventListener('pointerup', end);
@@ -170,13 +173,10 @@
 <div
 	bind:this={containerRef}
 	class="rounded-inherit pointer-events-none absolute inset-0 overflow-hidden"
-	style:--ripple-blur={px(blur)}
 	style:--ripple-color={color}
+	style:--ripple-blur={blur != null ? px(blur) : undefined}
 	style:--ripple-color-start={colorStart}
 	style:--ripple-color-end={colorEnd}
-	style:--ripple-opacity={opacity}
-	style:--ripple-opacity-start={opacityStart}
-	style:--ripple-opacity-end={opacityEnd}
 	style:--ripple-easing-spread={easingSpread}
 	style:--ripple-easing-outro={easingOutro}
 >
@@ -205,7 +205,6 @@
 		left: var(--x);
 		top: var(--y);
 		width: 10px;
-		opacity: var(--ripple-opacity-start, var(--ripple-opacity));
 		background: var(--ripple-color-start, var(--ripple-color));
 		aspect-ratio: 1 / 1;
 		border-radius: 50%;
@@ -232,13 +231,13 @@
 
 	@keyframes -global-ripple-outro {
 		to {
-			opacity: var(--ripple-opacity-end, 0);
+			opacity: 0;
 		}
 	}
 
 	@keyframes -global-ripple-spread {
 		to {
-			width: var(--d);
+			width: calc(var(--d) + 2 * var(--ripple-blur));
 			background: var(--ripple-color-end, var(--ripple-color));
 		}
 	}

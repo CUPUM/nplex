@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ripple } from '$lib/actions/ripple.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import type { ComponentProps } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import Link, { linkAttributes } from '../primitives/link.svelte';
@@ -18,9 +18,11 @@
 				hreflang?: undefined;
 				currentOnSubpath?: undefined;
 		  })
-	) & { 'data-square'?: boolean } = $props();
+	) & {
+		'data-square'?: boolean;
+	} = $props();
 
-	let attributes = $derived(
+	let _linkAttributes = $derived(
 		href ? linkAttributes(href, { lang: hreflang, currentOnSubpath }) : undefined
 	);
 </script>
@@ -28,7 +30,7 @@
 <svelte:element
 	this={href ? 'a' : 'button'}
 	{...buttonProps}
-	{...attributes}
+	{..._linkAttributes}
 	class="navbar-button {className}"
 	use:ripple
 >
@@ -49,7 +51,6 @@
 		border-radius: var(--radius-input);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-fg);
-		font-size: var(--font-size-sm);
 		transition: all var(--transition-duration-medium) var(--transition-timing-function-out);
 
 		&[data-square] {

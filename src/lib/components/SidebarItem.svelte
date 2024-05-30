@@ -9,7 +9,7 @@
 </script>
 
 <script lang="ts">
-	import { ripple } from '$lib/actions/ripple.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { onDestroy } from 'svelte';
 	import { expoInOut, expoOut } from 'svelte/easing';
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';

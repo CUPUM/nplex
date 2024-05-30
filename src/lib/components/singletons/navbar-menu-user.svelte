@@ -2,125 +2,110 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import { Dialog } from '$lib/builders/dialog.svelte';
 	import { FilePlus2, LogOut, Pencil, Sliders, User2 } from 'lucide-svelte';
+	import type { Snippet } from 'svelte';
+	import { cubicIn, expoOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 	import { linkAttributes } from '../primitives/link.svelte';
+
+	let { trigger }: { trigger: Snippet<[Dialog['triggerAttributes']]> } = $props();
+
+	const menu = new Dialog();
 
 	let loggingOut = $state(false);
 </script>
 
-<div id="navbar-menu-user-grid">
-	<section class="navbar-menu-group">
-		<legend class="navbar-menu-group-label">
-			{m.projects()}
-		</legend>
-		<a class="navbar-menu-button" {...linkAttributes('/edit/projects')}>
-			{m.nav_edit_projects()}
-			<Pencil class="button-icon" />
-		</a>
-		<a class="navbar-menu-button" {...linkAttributes('/new/project')}>
-			{m.nav_new_project()}
-			<FilePlus2 class="button-icon" />
-		</a>
-		<a class="navbar-menu-button" {...linkAttributes('/edit/projects/descriptors')}>
-			{m.nav_edit_project_descriptors()}
-			<Sliders class="button-icon" />
-		</a>
-	</section>
-	<section class="navbar-menu-group">
-		<legend class="navbar-menu-group-label">
-			{m.organizations()}
-		</legend>
-		<a class="navbar-menu-button" {...linkAttributes('/edit/organizations')}>
-			{m.nav_edit_orgs()}
-			<Pencil class="button-icon" />
-		</a>
-		<a class="navbar-menu-button" {...linkAttributes('/new/organization')}>
-			{m.nav_new_org()}
-			<FilePlus2 class="button-icon" />
-		</a>
-		<a class="navbar-menu-button" {...linkAttributes('/edit/organizations/descriptors')}>
-			{m.nav_edit_orgs_descriptors()}
-			<Sliders class="button-icon" />
-		</a>
-	</section>
-	<section class="navbar-menu-group" id="account-group">
-		<div>
-			{m.user_role()}:
-			{#await $page.data.roleName}
-				'...'
-			{:then roleName}
-				{roleName}
-			{/await}
-		</div>
-		<a class="navbar-menu-button" {...linkAttributes('/i')}>
-			{m.account()}
-			<User2 class="button-icon" />
-		</a>
-		<form
-			method="POST"
-			id="logout-form"
-			hidden
-			use:enhance={({ formElement, formData, action, cancel }) => {
-				loggingOut = true;
-				return async ({ result }) => {
-					await applyAction(result);
-					loggingOut = false;
-				};
-			}}
-		/>
-		<button
-			class="navbar-menu-button"
-			type="submit"
-			form="logout-form"
-			disabled={loggingOut}
-			data-loading={loggingOut}
+{@render trigger(menu.triggerAttributes)}
+{#if menu.open}
+	<dialog class="navbar-menu" use:menu.dialogAction {...menu.dialogAttributes} data-meta-modal>
+		<menu
+			class="navbar-menu-group"
+			in:fly|global={{ x: 20, duration: 1000, easing: expoOut }}
+			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 75 }}
 		>
-			{m.logout()}
-			<LogOut />
-		</button>
-	</section>
-</div>
-
-<style>
-	#navbar-menu-user-grid {
-		padding: var(--inlay);
-		gap: var(--inlay);
-		display: grid;
-		/* grid-template-rows: ; */
-	}
-
-	.navbar-menu-group {
-		pointer-events: all;
-		display: flex;
-		flex-direction: column;
-		padding: 2rem;
-		border-radius: var(--radius-lg);
-		background: var(--floating-bg);
-
-		&:nth-last-child(2) {
-			flex-grow: 1;
-		}
-	}
-
-	#account-group {
-		position: sticky;
-		bottom: 0;
-		background: red;
-	}
-
-	.navbar-menu-group-label {
-		font-weight: var(--weight-bold);
-	}
-
-	.navbar-menu-button {
-		display: flex;
-		flex-direction: row;
-		padding-inline: var(--padding-inline);
-		padding-block: var(--padding-block);
-		border-radius: var(--radius-md);
-
-		:global(:--icon) {
-			width: 1em;
-		}
-	}
-</style>
+			<span class="navbar-menu-group-legend">
+				{m.projects()}
+			</span>
+			<ul class="navbar-menu-group-items">
+				<a class="button button-ghost" {...linkAttributes('/edit/projects')}>
+					{m.nav_edit_projects()}
+					<Pencil class="button-icon" />
+				</a>
+				<a class="button button-ghost" {...linkAttributes('/new/project')}>
+					{m.nav_new_project()}
+					<FilePlus2 class="button-icon" />
+				</a>
+				<a class="button button-ghost" {...linkAttributes('/edit/projects/descriptors')}>
+					{m.nav_edit_project_descriptors()}
+					<Sliders class="button-icon" />
+				</a>
+			</ul>
+		</menu>
+		<menu
+			class="navbar-menu-group"
+			in:fly|global={{ x: 20, duration: 1000, easing: expoOut }}
+			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 75 }}
+		>
+			<span class="navbar-menu-group-legend">
+				{m.organizations()}
+			</span>
+			<ul class="navbar-menu-group-items">
+				<a class="button button-ghost" {...linkAttributes('/edit/organizations')}>
+					{m.nav_edit_orgs()}
+					<Pencil class="button-icon" />
+				</a>
+				<a class="button button-ghost" {...linkAttributes('/new/organization')}>
+					{m.nav_new_org()}
+					<FilePlus2 class="button-icon" />
+				</a>
+				<a class="button button-ghost" {...linkAttributes('/edit/organizations/descriptors')}>
+					{m.nav_edit_orgs_descriptors()}
+					<Sliders class="button-icon" />
+				</a>
+			</ul>
+		</menu>
+		<menu
+			class="navbar-menu-group"
+			in:fly|global={{ x: 20, duration: 1000, easing: expoOut }}
+			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 75 }}
+		>
+			<ul class="navbar-menu-group-items">
+				<div>
+					{m.user_role()}:
+					{#await $page.data.roleName}
+						'...'
+					{:then roleName}
+						{roleName}
+					{/await}
+				</div>
+				<a class="navbar-menu-button" {...linkAttributes('/i')}>
+					{m.account()}
+					<User2 class="button-icon" />
+				</a>
+				<form
+					method="POST"
+					id="logout-form"
+					class="sr-only"
+					use:enhance={({ formElement, formData, action, cancel }) => {
+						loggingOut = true;
+						return async ({ result }) => {
+							await applyAction(result);
+							loggingOut = false;
+						};
+					}}
+				></form>
+				<button
+					class="navbar-menu-button"
+					type="submit"
+					form="logout-form"
+					disabled={loggingOut}
+					data-loading={loggingOut}
+				>
+					{m.logout()}
+					<LogOut />
+				</button>
+			</ul>
+		</menu>
+	</dialog>
+{/if}

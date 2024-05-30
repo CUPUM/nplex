@@ -22,8 +22,6 @@
 			currentOnSubpath?: boolean;
 		} = {}
 	) {
-		let href = $derived(withLang(hrefWithoutLang, options.lang));
-
 		let current = $derived.by(() => {
 			if (currentUrlWithoutLang) {
 				if (hrefWithoutLang.startsWith('#') && currentUrlWithoutLang.hash === hrefWithoutLang) {
@@ -44,16 +42,14 @@
 		});
 
 		return {
-			get 'href'() {
-				return href;
+			get href() {
+				return withLang(hrefWithoutLang, options.lang);
 			},
 			get 'aria-current'() {
 				return current;
 			},
 		};
 	}
-
-	export function appUrl(relativeUrl: string) {}
 </script>
 
 <script lang="ts">

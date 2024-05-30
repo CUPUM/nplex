@@ -6,7 +6,6 @@
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import { fly, scale } from 'svelte/transition';
 	import type { AnyZodObject } from 'zod';
-	import LangKey from './LangKey.svelte';
 
 	type $$Props = Omit<HTMLButtonAttributes, 'class'> & {
 		submitter: LoadableSubmitter['elements']['root'];
@@ -30,9 +29,8 @@
 	{...$submitter(submitRef, { disabled })}
 >
 	<slot>
-		<LangKey>
-			{m.del()}
-		</LangKey>
+		{m.del()}
+
 		<Trash />
 	</slot>
 </button>

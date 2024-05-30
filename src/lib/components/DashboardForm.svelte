@@ -9,7 +9,6 @@
 	import { fly, scale } from 'svelte/transition';
 	import type { TaintedFields, ZodValidation } from 'sveltekit-superforms';
 	import type { AnyZodObject } from 'zod';
-	import LangKey from './LangKey.svelte';
 
 	type $$Props = {
 		action?: string;
@@ -64,9 +63,8 @@
 				use:submitter.action
 				{...$submitter(submitRef)}
 			>
-				<LangKey>
-					{m.save()}
-				</LangKey>
+				{m.save()}
+
 				<SaveAll />
 			</button>
 		{/if}

@@ -4,7 +4,7 @@
 -->
 <script lang="ts">
 	import { availableLanguageTags } from '$i18n/runtime';
-	import { ripple } from '$lib/actions/ripple.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import { switchCrossfade } from '$lib/motion/presets';
 	import { melt, type TabsElements, type TabsStates } from '@melt-ui/svelte';

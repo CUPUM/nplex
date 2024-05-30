@@ -1,5 +1,10 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
+
+	let { children, content }: { children: Snippet; content: Snippet } = $props();
 </script>
 
-<style lang="postcss">
+{@render children()}
+
+<style>
 </style>

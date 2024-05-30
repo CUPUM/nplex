@@ -1,10 +1,10 @@
-<script lang="ts">
-	import { ICON_SIZE_DEFAULT } from '$lib/auth/socials';
-
-	export let size: number | string = ICON_SIZE_DEFAULT;
-</script>
-
-<svg width={size} height={size} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg
+	width="1.25em"
+	height="1.25em"
+	viewBox="0 0 48 48"
+	fill="none"
+	xmlns="http://www.w3.org/2000/svg"
+>
 	<path
 		fill-rule="evenodd"
 		clip-rule="evenodd"

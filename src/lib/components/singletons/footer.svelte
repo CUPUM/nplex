@@ -1,7 +1,11 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { PRESENTATIONS } from '$lib/presentation/constants';
 </script>
 
-<footer>Footer goes here</footer>
+{#if $page.data.setout !== PRESENTATIONS.FULL_SCREEN && !$page.data.footer?.hidden}
+	<footer>Footer goes here</footer>
+{/if}
 
 <!-- {#if $page.data.setout !== ARRANGEMENTS.FULL_SCREEN && !$page.data.footer?.hide}
 	<footer transition:slide>
