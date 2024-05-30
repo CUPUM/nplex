@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
@@ -38,12 +37,12 @@
 
 <fieldset class="dashboard-subsection">
 	<legend class="dashboard-subsection-header h5">
-		<LangKey>{m.project_ownership_type()}</LangKey>
+		{m.project_ownership_type()}
 	</legend>
 	<div class="dashboard-subsection-content">
 		<input type="text" name="siteOwnershipId" use:melt={$hiddenInput} />
 		<button type="button" class="input select" use:melt={$trigger}>
-			{$selectedLabel || $langKey(m.project_ownership_type_placeholder())}
+			{$selectedLabel || m.project_ownership_type_placeholder()}
 			<SelectIcon open={$open} />
 		</button>
 		<SelectMenu {menu} {open}>

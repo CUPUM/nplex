@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import { melt } from '@melt-ui/svelte';
@@ -15,7 +14,7 @@
 
 <fieldset class="types">
 	<legend>
-		<LangKey>{m.project_types()}</LangKey>
+		{m.project_types()}
 	</legend>
 	<ul>
 		{#each types as pt, i}
@@ -44,9 +43,7 @@
 		<input type="checkbox" class="visually-hidden" bind:checked={$form.maybePermit} />
 	</div>
 	<span>
-		<LangKey>
-			{m.potentially_requires_permit()}
-		</LangKey>
+		{m.potentially_requires_permit()}
 	</span>
 </label>
 

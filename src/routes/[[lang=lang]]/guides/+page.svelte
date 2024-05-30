@@ -1,10 +1,9 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 </script>
 
 <article>
-	<h1 class="h2"><LangKey>{m.coming_soon()}</LangKey></h1>
+	<h1 class="h2">{m.coming_soon()}</h1>
 </article>
 
 <style>

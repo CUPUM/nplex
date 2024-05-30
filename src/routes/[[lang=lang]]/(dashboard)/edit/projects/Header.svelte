@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import { link } from '$lib/i18n/location';
 	import { Search, X } from 'lucide-svelte';
 	import { cubicOut, expoOut } from 'svelte/easing';
@@ -14,7 +13,7 @@
 <header>
 	<hgroup>
 		<h1 class="h2">
-			<LangKey>{m.project_edit()}</LangKey>
+			{m.project_edit()}
 		</h1>
 	</hgroup>
 	<form
@@ -28,7 +27,7 @@
 		<input
 			type="search"
 			name="search"
-			placeholder={$langKey(m.project_find())}
+			placeholder={m.project_find()}
 			class="input"
 			value={data.search}
 		/>

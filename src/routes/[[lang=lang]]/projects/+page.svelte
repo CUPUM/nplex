@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import { link } from '$lib/i18n/location';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { fly, slide } from 'svelte/transition';
@@ -24,13 +23,9 @@
 
 <header class="header">
 	{#if data.search}
-		<LangKey>
-			{m.filtered_projects()}
-		</LangKey>
+		{m.filtered_projects()}
 	{:else}
-		<LangKey>
-			{m.all_projects()}
-		</LangKey>
+		{m.all_projects()}
 	{/if}
 	<button on:click={() => (filtersOpen = !filtersOpen)}>Toggle</button>
 </header>
@@ -63,7 +58,7 @@
 						{p.title}
 					{:else}
 						<span class="no-title">
-							<LangKey>{m.no_title()}</LangKey>
+							{m.no_title()}
 						</span>
 					{/if}
 				</a>

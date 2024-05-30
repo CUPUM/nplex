@@ -1,8 +1,8 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import { USER_ROLES_ARR } from '$lib/auth/constants';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
-	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import SelectIcon from '$lib/components/SelectArrow.svelte';
 	import SelectMenu from '$lib/components/SelectMenu.svelte';
 	import SelectOption from '$lib/components/SelectOption.svelte';
@@ -36,37 +36,37 @@
 
 <DashboardForm {enhance} action="?/update" {tainted} {submitter}>
 	<svelte:fragment slot="header">
-		<h2><LangKey>{m.user_role_and_permissions()}</LangKey></h2>
+		<h2>{m.user_role_and_permissions()}</h2>
 	</svelte:fragment>
-	<DashboardFormSection title={$langKey(m.user_current_role())}>
+	<DashboardFormSection title={m.user_current_role()}>
 		<fieldset class="input-group" disabled>
 			<button class="input select" type="button" use:melt={$trigger}>
 				<Crown class="input-icon" />
-				<LangKey>{m.user_change_role()}</LangKey>
+				{m.user_change_role()}
 				<SelectIcon open={$open} />
 			</button>
 			<div class="input-peer">
 				<button class="button" type="submit" formaction="?/requestRole" on:click|stopPropagation>
 					<Send class="button-icon" />
-					<LangKey>{m.user_request_role()}</LangKey>
+					{m.user_request_role()}
 				</button>
 			</div>
 		</fieldset>
 		<SelectMenu {menu} {open}>
-			{#each USER_ROLES as role}
-				<SelectOption {option} value={role.role} label={role.name} {isSelected}>
-					{role.name}
+			{#each USER_ROLES_ARR as role}
+				<SelectOption {option} value={role} label={role} {isSelected}>
+					{role}
 				</SelectOption>
 			{/each}
 		</SelectMenu>
 	</DashboardFormSection>
-	<DashboardFormSection title={$langKey(m.user_shared_permissions())}>
-		<coming_soon></coming_soon>
+	<DashboardFormSection title={m.user_shared_permissions()}>
+		{m.coming_soon()}
 		<!-- <section>
-			<h3><LangKey>{m.projects()}</LangKey></h3>
+			<h3>{m.projects()}</h3>
 		</section>
 		<section>
-			<h3><LangKey>{m.orgs()}</LangKey></h3>
+			<h3>{m.orgs()}</h3>
 		</section> -->
 	</DashboardFormSection>
 </DashboardForm>

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import { link } from '$lib/i18n/location';
 </script>
 
@@ -11,16 +10,14 @@
 			{$page.data.title}
 		{:else}
 			<span class="fallback">
-				<LangKey>
-					{m.project_untitled()}
-				</LangKey>
+				{m.project_untitled()}
 			</span>
 		{/if}
 	</h1>
 </hgroup>
 <menu>
 	<a {...$link('/edit/projects')} class="button ghost compact">
-		<LangKey>{m.projects()}</LangKey>
+		{m.projects()}
 	</a>
 </menu>
 

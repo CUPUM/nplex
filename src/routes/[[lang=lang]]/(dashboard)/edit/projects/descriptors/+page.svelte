@@ -1,11 +1,10 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 </script>
 
 <section class="dashboard-section prose">
 	<h1 class="h2">
-		<LangKey>{m.project_descriptors()}</LangKey>
+		{m.project_descriptors()}
 	</h1>
 	<p>
 		Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic libero laudantium veniam fuga

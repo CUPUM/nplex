@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import Category from './Category.svelte';
 	import NewCategory from './NewCategory.svelte';
@@ -21,11 +20,7 @@
 	<header class="dashboard-section-header">
 		<hgroup class="prose">
 			<h2>
-				<LangKey>
-					{m.project_intervention_categories()} & {m
-						.project_intervention_types()
-						.toLocaleLowerCase()}
-				</LangKey>
+				{m.project_intervention_categories()} & {m.project_intervention_types().toLocaleLowerCase()}
 			</h2>
 			<p class="dim">
 				Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi

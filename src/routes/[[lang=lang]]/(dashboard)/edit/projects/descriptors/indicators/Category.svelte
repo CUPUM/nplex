@@ -3,8 +3,8 @@
 	generics="C extends PageData['categoryForms'][number], I extends PageData['indicatorForms'], NI extends PageData['newIndicatorForm']"
 >
 	import { page } from '$app/stores';
-	import ButtonSave from '$lib/components/ButtonSave.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
+	import ButtonSave from '$lib/components/patterns/ButtonSave.svelte';
 	import { superFormDialog, type SuperForm } from '$lib/crud/validation/forms/super-form';
 	import DescriptorForm from '../../../DescriptorForm.svelte';
 	import DescriptorList from '../../../DescriptorList.svelte';

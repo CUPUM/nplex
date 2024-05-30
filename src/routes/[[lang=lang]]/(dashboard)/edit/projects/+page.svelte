@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { link } from '$lib/i18n/location';
 	import { FilePlus } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
@@ -25,7 +24,7 @@
 			>
 				<FilePlus class="button-icon" />
 				<div class="button dashed rounded">
-					<LangKey>{@html m.project_create()}</LangKey>
+					{@html m.project_create()}
 				</div>
 			</a>
 		</li>
@@ -38,7 +37,7 @@
 					{#if project.title}
 						<span class="title">{project.title}</span>
 					{:else}
-						<span class="no-title"><LangKey>{m.project_untitled()}</LangKey></span>
+						<span class="no-title">{m.project_untitled()}</span>
 					{/if}
 				</a>
 			</li>

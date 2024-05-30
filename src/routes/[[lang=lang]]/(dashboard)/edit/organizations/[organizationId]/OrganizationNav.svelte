@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/location';
@@ -12,37 +11,37 @@
 
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.organization_essentials()}</LangKey>
+		{m.organization_essentials()}
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}`)}>
-		<LangKey>{m.organization_general()}</LangKey>
+		{m.organization_general()}
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.organization_complements()}</LangKey>
+		{m.organization_complements()}
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/members`)}>
-		<LangKey>{m.organization_members()}</LangKey>
+		{m.organization_members()}
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/projects`)}>
-		<LangKey>{m.organization_projects()}</LangKey>
+		{m.organization_projects()}
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.organization_settings()}</LangKey>
+		{m.organization_settings()}
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/sharing`)}>
-		<LangKey>{m.organization_sharing()}</LangKey>
+		{m.organization_sharing()}
 		<Users2 class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/visibility`)}>
-		<LangKey>{m.organization_visibility()}</LangKey>
+		{m.organization_visibility()}
 		<Shield class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/organizations/${orgId}/security`)} danger>
-		<LangKey>{m.organization_danger()}</LangKey>
+		{m.organization_danger()}
 		<AlertTriangle class="button-icon" />
 	</SidebarItem>
 </SidebarGroup>

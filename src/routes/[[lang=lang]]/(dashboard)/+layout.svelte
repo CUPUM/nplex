@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { composeMeshgradient } from '$lib/common/mesh-gradient';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import { slide } from '$lib/motion/slide';
 	import { onMount } from 'svelte';
@@ -66,13 +65,13 @@
 <aside>
 	<section class="editables">
 		<h2 class="heading lg">
-			<LangKey>{m.my_projects()}</LangKey>
+			{m.my_projects()}
 		</h2>
 		<EditableProjects projects={data.editableProjects} />
 	</section>
 	<section class="editables">
 		<h2 class="heading lg">
-			<LangKey>{m.my_orgs()}</LangKey>
+			{m.my_orgs()}
 		</h2>
 	</section>
 </aside>

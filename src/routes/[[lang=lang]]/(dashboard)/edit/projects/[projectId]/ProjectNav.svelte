@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { USER_ROLES } from '$lib/auth/constants';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/location';
@@ -13,73 +12,73 @@
 
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.project_essentials()}</LangKey>
+		{m.project_essentials()}
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/projects/${projectId}`)}>
-		<LangKey>{m.project_general()}</LangKey>
+		{m.project_general()}
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/place#dashboard-main`)} aria-disabled>
-		<LangKey>{m.project_place()}</LangKey>
+		{m.project_place()}
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/exemplarity#dashboard-main`)}>
-		<LangKey>{m.project_examplarity()}</LangKey>
+		{m.project_examplarity()}
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/gallery#dashboard-main`)}>
-		<LangKey>{m.project_gallery()}</LangKey>
+		{m.project_gallery()}
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.project_complements()}</LangKey>
+		{m.project_complements()}
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/contributions#dashboard-main`)} aria-disabled>
-		<LangKey>{m.project_contributions()}</LangKey>
+		{m.project_contributions()}
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/materials#dashboard-main`)} aria-disabled>
-		<LangKey>{m.project_materials()}</LangKey>
+		{m.project_materials()}
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/timeline#dashboard-main`)} aria-disabled>
-		<LangKey>{m.project_timeline()}</LangKey>
+		{m.project_timeline()}
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.project_settings()}</LangKey>
+		{m.project_settings()}
 	</svelte:fragment>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/sharing#dashboard-main`)} aria-disabled>
-		<LangKey>{m.project_sharing()}</LangKey>
+		{m.project_sharing()}
 		<Users2 class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/publishing#dashboard-main`)} aria-disabled>
-		<LangKey>{m.project_visibility()}</LangKey>
+		{m.project_visibility()}
 		<Eye class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link(`/edit/projects/${projectId}/security#dashboard-main`)} danger>
-		<LangKey>{m.project_danger_zone()}</LangKey>
+		{m.project_danger_zone()}
 		<AlertTriangle class="button-icon" />
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.my_documents()}</LangKey>
+		{m.my_documents()}
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/projects')}>
-		<LangKey>{m.projects()}</LangKey>
+		{m.projects()}
 		<Files class="button-icon" />
 	</SidebarItem>
 	{#if $page.data.user?.role === USER_ROLES.ADMIN || $page.data.user?.role === USER_ROLES.EDITOR}
 		<SidebarItem {...$link('/edit/projects/descriptors')}>
-			<LangKey>{m.project_descriptors()}</LangKey>
+			{m.project_descriptors()}
 			<Tags class="button-icon" />
 		</SidebarItem>
 	{/if}
 	<SidebarItem {...$link('/edit/organizations')}>
-		<LangKey>{m.orgs()}</LangKey>
+		{m.orgs()}
 		<Files class="button-icon" />
 	</SidebarItem>
 	{#if $page.data.user?.role === USER_ROLES.ADMIN || $page.data.user?.role === USER_ROLES.EDITOR}
 		<SidebarItem {...$link('/edit/organizations/descriptors')}>
-			<LangKey>{m.organization_descriptors()}</LangKey>
+			{m.organization_descriptors()}
 			<Tags class="button-icon" />
 		</SidebarItem>
 	{/if}

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import ButtonSaveAll from '$lib/components/ButtonSaveAll.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import ButtonSaveAll from '$lib/components/patterns/ButtonSaveAll.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form.js';
 	import type { Snapshot } from './$types.js';
 	import ProjectCost from './ProjectCost.svelte';
@@ -45,7 +44,7 @@
 	<header class="dashboard-section-header">
 		<hgroup class="prose">
 			<h2>
-				<LangKey>{m.project_general()}</LangKey>
+				{m.project_general()}
 			</h2>
 			<p class="dim">
 				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis accusantium, eius vero

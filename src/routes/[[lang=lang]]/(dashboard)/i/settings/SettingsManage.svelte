@@ -2,7 +2,6 @@
 	import * as m from '$i18n/messages';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
-	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import { melt } from '@melt-ui/svelte';
 	import { AlertTriangle } from 'lucide-svelte';
@@ -23,7 +22,7 @@
 </script>
 
 <DashboardForm {enhance}>
-	<DashboardFormSection title={$langKey(m.account_manage())}>
+	<DashboardFormSection title={m.account_manage()}>
 		<div>
 			<button
 				class="button danger cta space-between"
@@ -39,7 +38,7 @@
 					return ok;
 				}}
 			>
-				<LangKey>{m.del()}</LangKey><AlertTriangle />
+				{m.del()}<AlertTriangle />
 			</button>
 		</div>
 	</DashboardFormSection>

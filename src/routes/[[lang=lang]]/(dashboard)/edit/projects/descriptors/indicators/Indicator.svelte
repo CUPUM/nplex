@@ -1,7 +1,7 @@
 <script lang="ts" generics="T extends PageData['indicatorForms'][number]">
 	import { page } from '$app/stores';
-	import ButtonSave from '$lib/components/ButtonSave.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
+	import ButtonSave from '$lib/components/patterns/ButtonSave.svelte';
 	import { superFormDialog, type SuperForm } from '$lib/crud/validation/forms/super-form';
 	import Descriptor from '../../../Descriptor.svelte';
 	import DescriptorForm from '../../../DescriptorForm.svelte';

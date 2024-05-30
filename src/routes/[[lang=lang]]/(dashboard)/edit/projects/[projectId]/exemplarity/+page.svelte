@@ -1,8 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple.svelte.js';
-	import ButtonSaveAll from '$lib/components/ButtonSaveAll.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import ButtonSaveAll from '$lib/components/patterns/ButtonSaveAll.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form.js';
 	import { switchCrossfade } from '$lib/motion/presets.js';
 
@@ -28,9 +27,7 @@
 	<header class="dashboard-section-header">
 		<hgroup class="prose">
 			<h2>
-				<LangKey>
-					{m.project_exemplarity_indicators()}
-				</LangKey>
+				{m.project_exemplarity_indicators()}
 			</h2>
 			<p class="dim">
 				Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt nam facilis ipsum
@@ -44,7 +41,7 @@
 	{#each data.categorizedIndicators as category, i (category.id)}
 		<section class="dashboard-subsection">
 			<legend class="dashboard-subsection-header">
-				<LangKey>{category.title}</LangKey>
+				{category.title}
 			</legend>
 			<div class="dashboard-subsection-content">
 				<ul id="interventions">

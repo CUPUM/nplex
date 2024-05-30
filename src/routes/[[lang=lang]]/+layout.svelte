@@ -1,29 +1,21 @@
 <script lang="ts">
-	import { setLanguageTag } from '$i18n/runtime';
 	import Footer from '$lib/components/singletons/footer.svelte';
+	import LanguageProvider from '$lib/components/singletons/language-provider.svelte';
+	import ModeProvider from '$lib/components/singletons/mode-provider.svelte';
 	import Navbar from '$lib/components/singletons/navbar.svelte';
-	import { onMount } from 'svelte';
+	import PresentationProvider from '$lib/components/singletons/presentation-provider.svelte';
+	import ScrollProvider from '$lib/components/singletons/scroll-provider.svelte';
 
 	let { data, children } = $props();
-
-	let mounted = $state(false);
-
-	onMount(() => {
-		mounted = true;
-	});
-
-	const lang = $derived(data.lang);
-	setLanguageTag(() => lang);
 </script>
 
-<!-- {#if !mounted}
-	<div class="fixed inset-0 z-[999] pointer-events-none">
-		<Spinner />
-	</div>
-{/if} -->
+<ScrollProvider />
+<PresentationProvider />
+<LanguageProvider lang={data.lang} />
+<ModeProvider />
 <!-- <Progress /> -->
 <Navbar />
-<main class="flex min-h-[calc(100svh-var(--height-navbar))] flex-1 flex-col flex-nowrap">
+<main class="min-h-main-full-height flex flex-1 flex-col flex-nowrap">
 	{@render children()}
 </main>
 <Footer />

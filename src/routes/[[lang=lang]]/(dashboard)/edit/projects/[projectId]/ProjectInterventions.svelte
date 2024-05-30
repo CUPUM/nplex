@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import type { PageData } from './$types';
 
@@ -12,12 +11,10 @@
 <fieldset class="dashboard-subsection" style:grid-column="full">
 	<legend class="dashboard-subsection-header">
 		<h5 class="h5">
-			<LangKey>
-				{m.project_interventions_title()}
-			</LangKey>
+			{m.project_interventions_title()}
 		</h5>
 		<p class="dashboard-subsection-description">
-			<LangKey>{m.project_interventions_description()}</LangKey>
+			{m.project_interventions_description()}
 		</p>
 	</legend>
 	<div class="dashboard-subsection-content-full">
@@ -46,12 +43,12 @@
 							{/each}
 						</ul>
 					{:else}
-						<small><LangKey>{m.project_interventions_none()}</LangKey></small>
+						<small>{m.project_interventions_none()}</small>
 					{/if}
 				</section>
 			{/each}
 		{:else}
-			<small><LangKey>{m.project_interventions_missing_type()}</LangKey></small>
+			<small>{m.project_interventions_missing_type()}</small>
 		{/if}
 	</div>
 </fieldset>

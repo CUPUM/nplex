@@ -1,9 +1,8 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple.svelte.js';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form.js';
 
 	export let data;
@@ -21,16 +20,12 @@
 <DashboardForm action="?/update" {enhance} {tainted} {submitter}>
 	<svelte:fragment slot="header">
 		<h2 class="heading lg">
-			<LangKey>
-				{m.project_contributors}
-			</LangKey>
+			{m.project_contributors}
 		</h2>
 	</svelte:fragment>
 	<DashboardFormSection>
 		<h3>
-			<LangKey>
-				{m.orgs}
-			</LangKey>
+			{m.orgs}
 		</h3>
 		<div id="orgs">
 			{#each data.allOrgs as org}

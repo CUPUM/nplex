@@ -2,19 +2,18 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { STATUS_CODES } from '$lib/common/constants';
-	import ButtonIconArrowLeft from '$lib/components/ButtonIconArrowLeft.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
-	import { link } from '$lib/i18n/location';
+	import ButtonIconArrowLeft from '$lib/components/patterns/ButtonIconArrowLeft.svelte';
+	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 </script>
 
 <article>
 	{#if $page.status === STATUS_CODES.NOT_FOUND}
 		<h1 class="h4">
-			<LangKey>{m.project_notFound()}</LangKey>
+			{m.project_not_found()}
 		</h1>
-		<a {...$link('/edit/projects')} class="button link">
+		<a {...linkAttributes('/edit/projects')} class="button link">
 			<ButtonIconArrowLeft />
-			<LangKey>{m.project_notFound_browse()}</LangKey>
+			{m.project_not_found_browse()}
 		</a>
 	{/if}
 </article>

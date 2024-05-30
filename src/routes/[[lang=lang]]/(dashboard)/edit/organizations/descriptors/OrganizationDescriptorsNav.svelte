@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/location';
@@ -9,10 +8,10 @@
 
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.organization_descriptors()}</LangKey>
+		{m.organization_descriptors()}
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/organizations/descriptors/types')}>
-		<LangKey>{m.organization_types()}</LangKey>
+		{m.organization_types()}
 	</SidebarItem>
 </SidebarGroup>
 <ProjectsSidebarGroup />

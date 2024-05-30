@@ -1,7 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import type { SuperForm } from '$lib/crud/validation/forms/super-form';
 	import { melt, type DialogElements } from '@melt-ui/svelte';
@@ -35,7 +34,7 @@
 	></button>
 	<span class="descriptor-label">
 		{#if variant === 'new'}
-			<LangKey>{m.create()}</LangKey>
+			{m.create()}
 			<Plus />
 		{:else}
 			{#if label}
@@ -49,7 +48,7 @@
 	{#if deleteButton}
 		<Tooltip let:trigger={tooltipTrigger}>
 			<svelte:fragment slot="content">
-				<LangKey>{m.del()}</LangKey>
+				{m.del()}
 			</svelte:fragment>
 			<button
 				{...deleteButton}

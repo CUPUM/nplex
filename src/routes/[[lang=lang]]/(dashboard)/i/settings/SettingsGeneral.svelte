@@ -2,7 +2,6 @@
 	import * as m from '$i18n/messages';
 	import DashboardForm from '$lib/components/DashboardForm.svelte';
 	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
-	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import { FileUp, Mail, Shield, ShieldX } from 'lucide-svelte';
 	import type { PageData } from './$types';
@@ -24,10 +23,10 @@
 <DashboardForm {enhance} action="?/update" {tainted} {submitter}>
 	<svelte:fragment slot="header">
 		<h2>
-			<LangKey>{m.user_settings()}</LangKey>
+			{m.user_settings()}
 		</h2>
 	</svelte:fragment>
-	<DashboardFormSection title={$langKey(m.user_name())}>
+	<DashboardFormSection title={m.user_name()}>
 		<fieldset id="user-name">
 			<input
 				type="text"
@@ -35,7 +34,7 @@
 				class="input"
 				bind:value={$form.firstName}
 				{...$states.firstName}
-				placeholder={$langKey(m.user_first_name())}
+				placeholder={m.user_first_name()}
 			/>
 			<input
 				type="text"
@@ -43,7 +42,7 @@
 				class="input"
 				bind:value={$form.middleName}
 				{...$states.middleName}
-				placeholder={$langKey(m.user_middle_name())}
+				placeholder={m.user_middle_name()}
 			/>
 		</fieldset>
 		<input
@@ -52,10 +51,10 @@
 			class="input"
 			bind:value={$form.lastName}
 			{...$states.lastName}
-			placeholder={$langKey(m.user_last_name())}
+			placeholder={m.user_last_name()}
 		/>
 	</DashboardFormSection>
-	<DashboardFormSection title={$langKey(m.user_avatar())}>
+	<DashboardFormSection title={m.user_avatar()}>
 		<button
 			class="button outlined"
 			id="avatar-button"
@@ -63,11 +62,11 @@
 			type="submit"
 			formaction="?/uploadAvatar"
 		>
-			<LangKey>{m.user_upload_avatar()}</LangKey>
+			{m.user_upload_avatar()}
 			<FileUp class="button-icon" />
 		</button>
 	</DashboardFormSection>
-	<DashboardFormSection title={$langKey(m.user_public_email())}>
+	<DashboardFormSection title={m.user_public_email()}>
 		<label class="input-group">
 			{#if publicEmailVerified}
 				<Shield class="input-icon" style="color: var(--color-success-500)" />
@@ -79,12 +78,12 @@
 				name="publicEmail"
 				class="input"
 				bind:value={$form.publicEmail}
-				placeholder={$langKey(m.user_public_email())}
+				placeholder={m.user_public_email()}
 			/>
 			<div class="input-peer">
 				<button class="button" formaction="?/verifyEmail" disabled>
 					<Mail class="button-icon" />
-					<LangKey>{m.user_verify()}</LangKey>
+					{m.user_verify()}
 				</button>
 			</div>
 		</label>

@@ -1,7 +1,6 @@
 <script lang="ts" generics="T extends PageData['newCategoryForm']">
 	import * as m from '$i18n/messages';
 	import Dialog from '$lib/components/Dialog.svelte';
-	import LangKey, { langKey } from '$lib/components/LangKey.svelte';
 	import ButtonCreate from '$lib/components/patterns/button-create.svelte';
 	import { superFormDialog } from '$lib/crud/validation/forms/super-form';
 	import DescriptorForm from '../../../DescriptorForm.svelte';
@@ -31,11 +30,11 @@
 
 <section class="dashboard-subsection">
 	<MetaDescriptor i={0} {trigger} {submitter} variant="new">
-		<LangKey>{m.create()}</LangKey>
+		{m.create()}
 	</MetaDescriptor>
 	<Dialog {open} {...restElements}>
 		<svelte:fragment slot="title">
-			<LangKey>{m.project_type_create()}</LangKey>
+			{m.project_type_create()}
 		</svelte:fragment>
 		<DescriptorForm {enhance} id={data.id} action="?/createCategory">
 			<svelte:fragment slot="translation" let:lang>
@@ -43,12 +42,12 @@
 					type="text"
 					class="input"
 					bind:value={$form.translations[lang].title}
-					placeholder={$langKey(m.project_type_title())}
+					placeholder={m.project_type_title()}
 				/>
 				<textarea
 					class="input"
 					bind:value={$form.translations[lang].description}
-					placeholder={$langKey(m.project_type_description())}
+					placeholder={m.project_type_description()}
 				/>
 			</svelte:fragment>
 		</DescriptorForm>

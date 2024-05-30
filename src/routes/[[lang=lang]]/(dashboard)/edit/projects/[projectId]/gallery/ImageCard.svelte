@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ripple } from '$lib/actions/ripple.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import { link } from '$lib/i18n/location';
 	import { MODES } from '$lib/modes/constants';

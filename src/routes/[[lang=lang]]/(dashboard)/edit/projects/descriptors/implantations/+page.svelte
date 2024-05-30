@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import DescriptorList from '../../../DescriptorList.svelte';
 	import { descriptorFlip, descriptorIn, descriptorOut } from '../../../motion';
@@ -20,7 +19,7 @@
 <form class="dashboard-section" use:enhance method="POST">
 	<header class="dashboard-section-header">
 		<hgroup class="prose">
-			<h2><LangKey>{m.project_implantation_modes()}</LangKey></h2>
+			<h2>{m.project_implantation_modes()}</h2>
 			<p class="dim">
 				Dolores voluptates earum suscipit cum voluptas dolorum aut consequatur qui beatae
 				consequuntur nulla quisquam ducimus molestiae laboriosam animi possimus, corrupti cupiditate

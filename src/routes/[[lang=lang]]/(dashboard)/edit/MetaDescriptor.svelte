@@ -1,14 +1,13 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import ButtonIconPencil from '$lib/components/ButtonIconPencil.svelte';
-	import ButtonIconPlus from '$lib/components/ButtonIconPlus.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
-	import type { SuperForm } from '$lib/crud/validation/forms/super-form';
+	import ButtonIconPencil from '$lib/components/patterns/ButtonIconPencil.svelte';
+	import ButtonIconPlus from '$lib/components/patterns/ButtonIconPlus.svelte';
 	import { melt, type DialogElements } from '@melt-ui/svelte';
 	import { Trash2 } from 'lucide-svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import { fly } from 'svelte/transition';
+	import type { SuperForm } from 'sveltekit-superforms';
 
 	type $$Props = HTMLButtonAttributes & {
 		i: number;
@@ -44,9 +43,7 @@
 				<menu class="compact">
 					<Tooltip let:trigger={tooltipTrigger}>
 						<svelte:fragment slot="content">
-							<LangKey>
-								{m.edit()}
-							</LangKey>
+							{m.edit()}
 						</svelte:fragment>
 						<button class="button outlined square" use:melt={$trigger} use:melt={tooltipTrigger}>
 							<ButtonIconPencil />
@@ -55,9 +52,7 @@
 					{#if deleteButton}
 						<Tooltip let:trigger={tooltipTrigger}>
 							<svelte:fragment slot="content">
-								<LangKey>
-									{m.del()}
-								</LangKey>
+								{m.del()}
 							</svelte:fragment>
 							<button
 								{...deleteButton}

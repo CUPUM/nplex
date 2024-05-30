@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import SidebarGroup from '$lib/components/SidebarGroup.svelte';
 	import SidebarItem from '$lib/components/SidebarItem.svelte';
 	import { link } from '$lib/i18n/location';
@@ -9,49 +8,49 @@
 
 <SidebarGroup {...$link('/edit/projects/descriptors')}>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.project_descriptors()}</LangKey>
+		{m.project_descriptors()}
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/projects/descriptors/types')}>
-		<LangKey>{m.project_types()}</LangKey>
+		{m.project_types()}
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/interventions')}>
-		<LangKey>{m.project_intervention_types()}</LangKey>
+		{m.project_intervention_types()}
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/indicators')}>
-		<LangKey>{m.project_indicators()}</LangKey>
+		{m.project_indicators()}
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/ownerships')}>
-		<LangKey>{m.project_ownership_types()}</LangKey>
+		{m.project_ownership_types()}
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/implantations')}>
-		<LangKey>{m.project_implantations()}</LangKey>
+		{m.project_implantations()}
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/levels')}>
-		<LangKey>{m.project_levels()}</LangKey>
+		{m.project_levels()}
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/projects/descriptors/images')}>
-		<LangKey>{m.project_images()}</LangKey>
+		{m.project_images()}
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.projects()}</LangKey>
+		{m.projects()}
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/projects')}>
-		<LangKey>{m.my_projects()}</LangKey>
+		{m.my_projects()}
 		<Files class="button-icon" />
 	</SidebarItem>
 </SidebarGroup>
 <SidebarGroup>
 	<svelte:fragment slot="heading">
-		<LangKey>{m.orgs()}</LangKey>
+		{m.orgs()}
 	</svelte:fragment>
 	<SidebarItem {...$link('/edit/organizations')}>
-		<LangKey>{m.my_orgs()}</LangKey>
+		{m.my_orgs()}
 		<Files class="button-icon" />
 	</SidebarItem>
 	<SidebarItem {...$link('/edit/organizations/descriptors')}>
-		<LangKey>{m.organization_descriptors()}</LangKey>
+		{m.organization_descriptors()}
 		<Tags class="button-icon" />
 	</SidebarItem>
 </SidebarGroup>

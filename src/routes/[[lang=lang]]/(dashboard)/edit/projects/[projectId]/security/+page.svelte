@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import * as m from '$i18n/messages';
-	import LangKey from '$lib/components/LangKey.svelte';
 
 	export let data;
 </script>
@@ -22,7 +21,7 @@
 	</fieldset>
 	<fieldset class="dashboard-subsection">
 		<legend class="dashboard-subsection-header h5">
-			<LangKey>{m.del()}</LangKey>
+			{m.del()}
 		</legend>
 		<div class="dashboard-subsection-content">
 			<div>
@@ -38,7 +37,7 @@
 						return ok;
 					}}
 				>
-					<LangKey>{m.project_delete()}</LangKey>
+					{m.project_delete()}
 				</button>
 			</div>
 		</div>

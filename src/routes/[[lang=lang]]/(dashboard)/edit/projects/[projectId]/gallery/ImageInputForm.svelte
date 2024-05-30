@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import { ripple } from '$lib/actions/ripple.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { superForm } from '$lib/crud/validation/forms/super-form';
 	import { MODES } from '$lib/modes/constants';
 	import { IMAGE_FILE_TYPES_ARR } from '$lib/storage/media/constants';
@@ -152,7 +151,7 @@
 			/>
 			<ImagePlus class="button-icon" />
 			<span>
-				<LangKey>{m.project_gallery_add_prompt()}</LangKey>
+				{m.project_gallery_add_prompt()}
 			</span>
 		</label>
 		{#each inmemory as image, i (image.url)}
@@ -193,7 +192,7 @@
 			use:melt={$loading}
 			in:fly={{ y: 8, easing: expoOut, duration: 750 }}
 		>
-			<LangKey>{m.project_gallery_upload()}</LangKey>
+			{m.project_gallery_upload()}
 			<Send class="button-icon" />
 		</button>
 	{/if}

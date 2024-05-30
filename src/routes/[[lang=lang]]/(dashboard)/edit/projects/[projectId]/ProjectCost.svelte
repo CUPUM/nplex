@@ -1,10 +1,9 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { decrement, increment } from '$lib/actions/increment';
-	import ButtonIconPencil from '$lib/components/ButtonIconPencil.svelte';
-	import LangKey from '$lib/components/LangKey.svelte';
 	import Slider from '$lib/components/Slider.svelte';
 	import SwitchThumb from '$lib/components/SwitchThumb.svelte';
+	import ButtonIconPencil from '$lib/components/patterns/ButtonIconPencil.svelte';
 	import type { SuperFormData } from '$lib/crud/validation/forms/types';
 	import { PROJECT_COST_MAX, PROJECT_COST_MIN } from '$lib/db/constants';
 	import { checked } from '$lib/utils/attributes';
@@ -44,7 +43,7 @@
 
 <fieldet class="dashboard-subsection">
 	<legend class="dashboard-subsection-header h5">
-		<LangKey>{m.project_cost_title()}</LangKey>
+		{m.project_cost_title()}
 	</legend>
 	<div class="dashboard-subsection-content">
 		{#if $form.costRange[0] == null}
@@ -66,7 +65,7 @@
 					class="button dashed bg-blur"
 					in:scale={{ easing: expoOut, start: 0.9, duration: 250, delay: 250 }}
 				>
-					<LangKey>{m.project_cost_init()}</LangKey>
+					{m.project_cost_init()}
 					<ButtonIconPencil />
 				</div>
 			</button>
@@ -103,7 +102,7 @@
 							</button>
 						</div>
 					</div>
-					<LangKey>{m.to()}</LangKey>
+					{m.to()}
 					<div class="input-group">
 						<div class="input-peer">
 							<button
@@ -143,16 +142,16 @@
 					}}
 					in:fly={{ y: -6, delay: 500, easing: expoOut, duration: 250 }}
 				>
-					<LangKey>{m.project_cost_reset()}</LangKey>
+					{m.project_cost_reset()}
 					<RotateCcw />
 				</button>
 				<section id="cost-scale">
 					<h3 class="h6">
-						<LangKey>{m.project_cost_scale_title()}</LangKey>
+						{m.project_cost_scale_title()}
 					</h3>
 					<div id="cost-scale-content">
 						<p>
-							<LangKey>{m.project_cost_scale_description()}</LangKey>
+							{m.project_cost_scale_description()}
 						</p>
 						<menu class="switch outlined rounded">
 							<button
@@ -163,7 +162,7 @@
 									smallScale = false;
 								}}
 							>
-								<LangKey>{m.project_cost_scale_normal()}</LangKey>
+								{m.project_cost_scale_normal()}
 								<SwitchThumb current={!smallScale} />
 							</button>
 							<button
@@ -174,7 +173,7 @@
 									smallScale = true;
 								}}
 							>
-								<LangKey>{m.project_cost_scale_small()}</LangKey>
+								{m.project_cost_scale_small()}
 								<SwitchThumb current={smallScale} />
 							</button>
 						</menu>
