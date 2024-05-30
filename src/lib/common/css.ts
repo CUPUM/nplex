@@ -1,5 +1,5 @@
 function isNumeric(input: string | number) {
-	return !Number.isFinite(+input);
+	return Number.isFinite(+input);
 }
 
 /**
