@@ -41,16 +41,23 @@
 	}
 }
 
-.field-errors {
+.field-messages {
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-field-gutter);
 	padding-block: var(--spacing-field-gutter);
 }
 
-.field-error {
-	color: var(--color-error);
+.field-message {
 	opacity: var(--opacity-soft);
 	font-size: clamp(var(--font-size-xs), 0.35em, var(--font-size-sm));
 	padding-inline: var(--spacing-field-gutter);
+
+	&[data-type='error'] {
+		color: var(--color-error);
+	}
+
+	&[data-type='success'] {
+		color: var(--color-success);
+	}
 }

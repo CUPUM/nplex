@@ -156,18 +156,19 @@
 	/* Nav */
 
 	&:is(.button-nav) {
-		--ripple-color: color-mix(in srgb, var(--background-color-card) 25%, transparent);
-		--button-color: var(--text-color-input);
+		justify-content: space-between;
+		--ripple-color: rgba(255, 255, 255, 0.15);
+		--button-color: var(--text-color-input-soft);
 		--button-background: transparent;
 		--button-background-inset: 0.4em;
 		--button-text-decoration: none;
 		--button-icon-color: currentColor;
 		--button-border-style: none;
-		--button-hover-color: var(--text-color-input-strong);
-		--button-hover-background: color-mix(in srgb, var(--background-color-card) 50%, transparent);
+		--button-hover-color: var(--color-primary);
+		--button-hover-background: color-mix(in srgb, var(--color-primary) 5%, transparent);
 		--button-hover-background-inset: 0;
 		--button-checked-color: var(--color-primary);
-		--button-checked-background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+		--button-checked-background: color-mix(in srgb, var(--color-primary) 10%, transparent);
 		--button-checked-background-inset: 0;
 		--button-current-color: var(--color-primary-strong);
 		--button-current-background: var(--background-color-card);

@@ -2,13 +2,14 @@
 
 @import 'tailwindcss/preflight' layer(base);
 @import 'styles/base' layer(base);
-@import 'styles/navbar.css' layer(components);
-@import 'styles/field.css' layer(components);
-@import 'styles/button.css' layer(components);
-@import 'styles/input.css' layer(components);
-@import 'styles/dialog.css' layer(components);
-@import 'styles/compact.css' layer(components);
 @import 'styles/big.css' layer(components);
+@import 'styles/button.css' layer(components);
+@import 'styles/compact.css' layer(components);
+@import 'styles/dialog.css' layer(components);
+@import 'styles/field.css' layer(components);
+@import 'styles/input.css' layer(components);
+@import 'styles/navbar.css' layer(components);
+@import 'styles/nest.css' layer(components);
 @import 'tailwindcss/utilities' layer(utilities);
 
 @theme {
@@ -105,7 +106,7 @@
 	--spacing-input-gutter: 1.25em;
 	--spacing-field-gutter: 0.5em;
 	--spacing-menu-gutter: calc(2 * var(--outline-width-focus));
-	--spacing-sidebar-width: 14rem;
+	--spacing-sidebar-width: 16rem;
 	--spacing-navbar-height: calc(2 * var(--spacing-gutter) + 3.5 * var(--font-size-sm)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
 	--spacing-main-full-height: calc(100svh - var(--spacing-navbar-height));
 
@@ -193,7 +194,6 @@
 		- Semantic color palettes are defined using a --color-[semantic] and --color-on-[semantic] pattern to provide versatility in their use as either background or foreground colors.
 		- Block-element color palettes are defined as --background-color-[element] and --text-color-[element] to enforce consistency in their use for backgrounds and foregrounds.
 	*/
-
 	--color-primary-soft: hsl(151, 80%, 21%);
 	--color-primary: hsl(152, 90%, 12%);
 	--color-primary-strong: hsl(155, 100%, 8%);
@@ -229,9 +229,11 @@
 	--color-on-error: hsl(25, 40%, 92%);
 	--color-on-error-strong: hsl(20, 60%, 98%);
 
+	--background-color-pure: white;
 	--background-color-base: lch(92% 2 140);
-	--background-color-card: lch(99% 4 120);
-	--background-color-popover: var(--background-color-card);
+	--background-color-card: lch(97% 4 130);
+	--background-color-section: lch(95% 3 135);
+	--background-color-popover: lch(99% 6 120);
 	--background-color-overlay: hsl(36, 12%, 6%, 90%);
 	--background-color-tooltip: var(--background-color-overlay);
 	--background-color-selection: var(--color-primary-soft);
@@ -245,6 +247,7 @@
 	--background-color-input-success: color-mix(in srgb, var(--color-success) 9%, transparent);
 	--background-color-input-success-strong: color-mix(in srgb, var(--color-success) 12%, transparent);
 
+	--text-color-pure: black;
 	--text-color-base-soft: lch(50% 4 90);
 	--text-color-base: lch(25% 8 92);
 	--text-color-base-strong: lch(5% 12 94);
@@ -317,15 +320,18 @@
 	--color-error: hsl(7, 76%, 45%);
 	--color-error-strong: hsl(6, 72%, 53%);
 
-	--background-color-base: hsl(62, 4%, 7%);
+	--background-color-pure: black;
+	--background-color-base: hsl(62, 5%, 7%);
+	--background-color-card: hsl(62, 3%, 11%);
+	--background-color-section: hsl(62, 4%, 9%);
 	--background-color-input-soft: color-mix(in srgb, var(--text-color-base) 6%, transparent);
 	--background-color-input: color-mix(in srgb, var(--text-color-base) 8%, transparent);
 	--background-color-input-strong: color-mix(in srgb, var(--text-color-base) 10%, transparent);
-	--background-color-card: hsl(62, 3%, 10%);
 	--background-color-popover: var(--background-color-base);
 	--background-color-overlay: hsl(220, 16%, 3%, 86%);
 	--background-color-tooltip: hsl(220, 12%, 10%, 96%);
 
+	--text-color-pure: white;
 	--text-color-base-soft: hsl(45, 6%, 36%);
 	--text-color-base: hsl(45, 10%, 74%);
 	--text-color-base-strong: hsl(45, 18%, 98%);

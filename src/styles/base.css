@@ -4,13 +4,13 @@ button {
 }
 
 ::selection {
-	color: var(--color-over-selection);
-	background: var(--color-selection);
+	color: var(--text-color-selection);
+	background: var(--background-color-selection);
 }
 
 ::-moz-selection {
-	color: var(--color-over-selection);
-	background: var(--color-selection);
+	color: var(--text-color-selection);
+	background: var(--background-color-selection);
 }
 
 hr {
@@ -22,6 +22,33 @@ hr {
 	outline-color: transparent;
 	outline-width: 0;
 	outline-offset: 0;
+}
+
+progress[value] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border: none;
+	width: auto;
+	color: var(--color-primary-soft);
+	border-radius: 999px;
+	background: var(--background-color-input);
+
+	&::-webkit-progress-bar {
+		border-radius: 999px;
+		background: inherit;
+	}
+
+	&::-webkit-progress-value {
+		border-radius: 999px;
+		background: currentColor;
+		transition: width var(--transition-duration-fast) ease-out;
+	}
+
+	&::-moz-progress-bar {
+		border-radius: 999px;
+		background: currentColor;
+	}
 }
 
 :focus-visible {

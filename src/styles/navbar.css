@@ -53,13 +53,22 @@
 }
 
 .navbar-menu-group-legend {
+	align-self: flex-start;
 	font-size: var(--font-size-xs);
-	color: var(--color-contrast-soft);
+	color: var(--text-color-base-soft);
 	font-weight: var(--font-weight-thin);
 	padding-inline: var(--spacing-input-gutter);
+	padding-block: var(--spacing-input-nest);
 	display: flex;
 	flex-direction: row;
 	gap: 1em;
+	background-color: var(--background-color-input-soft);
+	border-radius: 99px;
+
+	.lucide-icon {
+		width: 1em;
+		height: 1em;
+	}
 }
 
 .navbar-menu-group-items {
