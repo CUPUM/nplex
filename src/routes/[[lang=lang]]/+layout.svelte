@@ -5,6 +5,7 @@
 	import Navbar from '$lib/components/singletons/navbar.svelte';
 	import PresentationProvider from '$lib/components/singletons/presentation-provider.svelte';
 	import ScrollProvider from '$lib/components/singletons/scroll-provider.svelte';
+	import ToastsProvider from '$lib/components/singletons/toasts-provider.svelte';
 
 	let { data, children } = $props();
 </script>
@@ -13,10 +14,9 @@
 <PresentationProvider />
 <LanguageProvider lang={data.lang} />
 <ModeProvider />
-<!-- <Progress /> -->
+<ToastsProvider />
 <Navbar />
 <main class="min-h-main-full-height flex flex-1 flex-col flex-nowrap">
 	{@render children()}
 </main>
 <Footer />
-<!-- <Toasts /> -->
