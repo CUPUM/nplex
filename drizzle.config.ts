@@ -5,6 +5,7 @@ export default defineConfig({
 	schema: ['./src/lib/db/schema/*'],
 	out: DB_MIGRATIONS_FOLDER,
 	dialect: 'postgresql',
+	extensionsFilters: ['postgis'],
 	breakpoints: true,
 	dbCredentials: {
 		host: process.env.DB_HOST!,
