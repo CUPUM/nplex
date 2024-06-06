@@ -3,10 +3,11 @@
 	import * as m from '$i18n/messages';
 	import Logo from '$lib/components/primitives/logo.svelte';
 	import { removeLang } from '$lib/i18n/location';
-	import { Settings, User, User2 } from 'lucide-svelte';
+	import { Settings, UserRound } from 'lucide-svelte';
 	import { circInOut, expoOut } from 'svelte/easing';
 	import { crossfade, scale } from 'svelte/transition';
 	import NavbarButton from '../patterns/navbar-button.svelte';
+	import Avatar from '../primitives/avatar.svelte';
 	import NavbarMenuSettings from './navbar-menu-settings.svelte';
 	import NavbarMenuUser from './navbar-menu-user.svelte';
 
@@ -66,8 +67,8 @@
 		{#if $page.data.user}
 			<NavbarMenuUser>
 				{#snippet trigger(attributes)}
-					<NavbarButton data-square {...attributes}>
-						<User />
+					<NavbarButton data-square {...attributes} class="rounded-full">
+						<Avatar {...$page.data.user!} class="rounded-inherit absolute" />
 					</NavbarButton>
 				{/snippet}
 			</NavbarMenuUser>
@@ -81,7 +82,7 @@
 					? 'page'
 					: undefined}
 			>
-				<User2 />
+				<UserRound />
 			</NavbarButton>
 		{/if}
 	</nav>

@@ -87,6 +87,7 @@
 					method="POST"
 					id="logout-form"
 					class="sr-only"
+					action="/?/logout"
 					use:enhance={({ formElement, formData, action, cancel }) => {
 						loggingOut = true;
 						return async ({ result }) => {
