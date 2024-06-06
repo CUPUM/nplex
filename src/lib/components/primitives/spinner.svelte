@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { transform } from '$lib/motion/transform';
 	import { expoOut, quadIn } from 'svelte/easing';
+	import type { SVGAttributes } from 'svelte/elements';
 	import { scale } from 'svelte/transition';
 
 	let {
@@ -8,14 +9,18 @@
 		tail = true,
 		intro = true,
 		outro = true,
-		overlay = false,
+		class: className,
+		width = 24,
+		height = 24,
+		viewBox = '0 0 24 24',
+		preserveAspectRatio = 'xMidYMid',
+		...restProps
 	}: {
 		speed?: number;
 		tail?: boolean;
 		intro?: boolean;
 		outro?: boolean;
-		overlay?: boolean;
-	} = $props();
+	} & SVGAttributes<SVGElement> = $props();
 
 	const origin = '12,22';
 	const circle = 'A 10,10 90,1,1 12.01,22';
@@ -25,8 +30,7 @@
 	const d = `M ${origin} ${circle} ${square} ${arc} ${triangle} Z`;
 
 	// let svgRef: SVGElement | undefined;
-
-	// onMount(() => {
+	// $inspect(() => {
 	// 	if (svgRef) {
 	// 		const path = svgRef.querySelector('path:not(.tail)');
 	// 		if (path instanceof SVGPathElement) {
@@ -36,55 +40,44 @@
 	// });
 </script>
 
-{#snippet spinner()}
-	<svg
-		class="spinner"
-		width="24"
-		height="24"
-		viewBox="0 0 24 24"
-		fill="none"
-		overflow="visible"
-		stroke="currentColor"
-		stroke-width="2"
-		stroke-linecap="round"
-		stroke-linejoin="round"
-		style:--spinner-speed={speed}
-		preserveAspectRatio="xMidYMid"
-		in:transform|global={{
-			duration: intro ? 750 : 0,
-			scale: 0.5,
-			rotate: [0, 0, -180],
-			opacity: 1,
-			easing: expoOut,
-		}}
-		out:scale|global={{
-			duration: outro ? 150 : 0,
-			start: 0.9,
-			easing: quadIn,
-		}}
-	>
-		<path class="path" {d} />
-		{#if tail}
-			<path class="path tail" {d} />
-		{/if}
-	</svg>
-{/snippet}
-
-{#if overlay}
-	<div
-		class="rounded-inherit pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
-	>
-		{@render spinner()}
-	</div>
-{:else}
-	{@render spinner()}
-{/if}
+<svg
+	class="spinner {className}"
+	{width}
+	{height}
+	{viewBox}
+	{preserveAspectRatio}
+	{...restProps}
+	style:--spinner-speed={speed}
+	in:transform|global={{
+		duration: intro ? 750 : 0,
+		scale: 0.5,
+		rotate: [0, 0, -180],
+		opacity: 1,
+		easing: expoOut,
+	}}
+	out:scale|global={{
+		duration: outro ? 150 : 0,
+		start: 0.9,
+		easing: quadIn,
+	}}
+>
+	<path class="path" {d} />
+	{#if tail}
+		<path class="path tail" {d} />
+	{/if}
+</svg>
 
 <style>
 	.spinner {
 		--count: 4;
 		--duration: calc(1s / var(--spinner-speed));
 		--total-duration: calc(var(--count) * var(--duration));
+		overflow: visible;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 	.path {
 		--total-length: 279px;
