@@ -1,7 +1,8 @@
 export class Dialog {
-	open = $state(false);
 	modal = $state(true);
 	closeOnClickoutside = $state(true);
+	#beforeClose;
+	#open = $state(false);
 	#pointerInside = $state(false);
 	#node = $state<HTMLDialogElement>();
 
@@ -9,40 +10,55 @@ export class Dialog {
 		open,
 		modal,
 		closeOnClickoutside,
+		beforeClose,
 	}: {
 		open?: boolean;
 		modal?: boolean;
 		closeOnClickoutside?: boolean;
+		beforeClose?: (e?: Event) => boolean;
 	} = {}) {
 		if (open != null) this.open = open;
 		if (modal != null) this.modal = modal;
 		if (closeOnClickoutside != null) this.closeOnClickoutside = closeOnClickoutside;
+		this.#beforeClose = beforeClose;
+		this.close.bind(this);
+		this.#setPointerInside.bind(this);
 
 		// Force-setting a data attribute to handle closing state while inner transitions block early unmounting.
 		$effect.pre(() => {
 			if (this.#node) {
-				if (!this.open) {
+				if (!this.#open) {
 					this.#node.setAttribute('data-closing', 'true');
 				} else {
 					this.#node.removeAttribute('data-closing');
 				}
 			}
 		});
+	}
 
-		// Handling both controlled rendering and native open/close behavior.
-		$effect(() => {
-			if (!this.#node) {
-				return;
-			}
-			if (this.open) {
-				if (this.modal) {
-					this.#node.showModal();
-				}
-				this.#node.show();
+	get open() {
+		return this.#open;
+	}
+
+	set open(state: boolean) {
+		if (state) {
+			if (this.modal) {
+				this.#node?.showModal();
 			} else {
-				this.#node.close();
+				this.#node?.show();
 			}
-		});
+			this.#open = state;
+		} else {
+			this.close();
+		}
+	}
+
+	close(e?: Event) {
+		const proceed = this.#beforeClose ? this.#beforeClose(e) : true;
+		if (!proceed) {
+			return;
+		}
+		this.#open = false;
 	}
 
 	#unsetNode() {
@@ -55,63 +71,81 @@ export class Dialog {
 
 	dialogAction = (node: HTMLDialogElement) => {
 		this.#node = node;
-		const dialog = this;
+		const _this = this;
+		if (this.open) {
+			if (this.modal) {
+				this.#node?.showModal();
+			} else {
+				this.#node?.show();
+			}
+		}
 		return {
 			destroy() {
-				dialog.#unsetNode.call(dialog);
+				_this.#unsetNode();
 			},
 		};
 	};
 
+	get dialogAttributes() {
+		const _this = this;
+		return {
+			onpointerdown(e: PointerEvent) {
+				if (e.target !== e.currentTarget) {
+					_this.#setPointerInside(true);
+				}
+			},
+			onpointerup(e: PointerEvent) {
+				if (e.target !== e.currentTarget) {
+					_this.#setPointerInside(true);
+				}
+			},
+			onclick(e: MouseEvent) {
+				if (_this.closeOnClickoutside) {
+					if (!_this.#pointerInside) {
+						_this.close(e);
+					}
+					_this.#setPointerInside(false);
+				}
+			},
+			oncancel(e: Event) {
+				e.preventDefault();
+				_this.close(e);
+			},
+			onclose(e: Event) {
+				if (_this.open && !e.defaultPrevented) {
+					_this.close(e);
+				}
+			},
+		};
+	}
+
 	get triggerAttributes() {
-		const dialog = this;
+		const _this = this;
 		return {
 			'aria-haspopup': 'dialog' as const,
 			onclick(e: MouseEvent) {
-				dialog.open = !dialog.open;
+				const next = !_this.open;
+				if (!next) {
+					_this.close(e);
+				} else {
+					_this.open = next;
+				}
 			},
 			get 'data-state'() {
-				return dialog.open ? 'open' : 'closed';
+				return _this.open ? 'open' : 'closed';
 			},
 			get 'aria-expanded'() {
-				return dialog.open;
+				return _this.open;
 			},
 		};
 	}
 
 	get closeAttributes() {
-		const dialog = this;
+		const _this = this;
 		return {
 			onclick(e: MouseEvent) {
-				dialog.open = false;
-			},
-		};
-	}
-
-	get dialogAttributes() {
-		const dialog = this;
-		return {
-			onpointerdown(e: PointerEvent) {
-				if (e.target !== e.currentTarget) {
-					dialog.#setPointerInside.call(dialog, true);
-				}
-			},
-			onpointerup(e: PointerEvent) {
-				if (e.target !== e.currentTarget) {
-					dialog.#setPointerInside.call(dialog, true);
-				}
-			},
-			onclick(e: MouseEvent) {
-				if (dialog.closeOnClickoutside) {
-					if (!dialog.#pointerInside) {
-						dialog.open = false;
-					}
-					dialog.#setPointerInside.call(dialog, false);
-				}
-			},
-			onclose() {
-				if (dialog.open) {
-					dialog.open = false;
+				if (!e.defaultPrevented) {
+					_this.close(e);
 				}
 			},
 		};
