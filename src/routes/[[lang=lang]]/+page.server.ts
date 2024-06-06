@@ -2,7 +2,7 @@ import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
 import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
-import { organizations, projects } from '$lib/db/schema/public';
+import { organizations, projects } from '$lib/db/schema/public.server';
 import { EMAIL_SENDERS } from '$lib/email/constants';
 import { mail, renderEmail } from '$lib/email/email.server';
 import EmailTest from '$lib/email/templates/email-test.svelte';
@@ -36,10 +36,10 @@ export const actions = {
 		});
 	},
 	logout: async (event) => {
-		if (!event.locals.authed) {
+		if (!event.locals.session) {
 			return fail(STATUS_CODES.UNAUTHORIZED, { message: m.auth_no_session() });
 		}
-		await auth.invalidateSession(event.locals.authed.session.id);
+		await auth.invalidateSession(event.locals.session.id);
 		const sessionCookie = auth.createBlankSessionCookie();
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: '.',
