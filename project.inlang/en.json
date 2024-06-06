@@ -249,5 +249,7 @@
 	"role_visitor": "Visitor",
 	"password_confirmation": "Password confirmation",
 	"auth_email_missing": "Missing email address",
-	"auth_reset_token_missing": "Missing reset code."
+	"auth_reset_token_missing": "Missing reset code.",
+	"no_user_found": "User not found",
+	"user_profile_settings": "Profile settings"
 }

@@ -252,5 +252,7 @@
 	"role_visitor": "Visiteur",
 	"password_confirmation": "Confirmation du mot de passe",
 	"auth_email_missing": "Adresse courriel manquante",
-	"auth_reset_token_missing": "Code de réinitialisation manquant."
+	"auth_reset_token_missing": "Code de réinitialisation manquant.",
+	"no_user_found": "Utilisateur non trouvé",
+	"user_profile_settings": "Paramètres de profil"
 }
