@@ -6,10 +6,10 @@
 	import { page } from '$app/stores';
 	import { portal } from '$lib/actions/portal';
 	import { Toasts } from '$lib/builders/toasts.svelte';
+	import Toast from '$lib/components/patterns/toast.svelte';
 	import { flip } from '$lib/motion/flip';
 	import { cubicOut } from 'svelte/easing';
 	import { getFlash } from 'sveltekit-flash-message';
-	import Toast from '../patterns/toast.svelte';
 
 	const flash = getFlash(page);
 

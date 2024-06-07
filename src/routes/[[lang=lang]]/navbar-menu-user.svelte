@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { Dialog } from '$lib/builders/dialog.svelte';
-	import { FilePlus2, LogOut, Pencil, Sliders, UserRound } from 'lucide-svelte';
+	import { linkAttributes } from '$lib/components/primitives/link.svelte';
+	import { FilePlus, LogOut, Pencil, Sliders, UserRound } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import { cubicIn, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
-	import { linkAttributes } from '../primitives/link.svelte';
 
 	let { trigger }: { trigger: Snippet<[Dialog['triggerAttributes']]> } = $props();
 
@@ -20,39 +19,35 @@
 {#if menu.open}
 	<dialog class="navbar-menu" use:menu.dialogAction {...menu.dialogAttributes} data-meta-modal>
 		<menu
-			class="navbar-menu-group"
+			class="navbar-menu-group w-[34ch]"
 			in:fly|global={{ x: 20, duration: 1000, easing: expoOut }}
-			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 75 }}
+			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 150 }}
 		>
 			<span class="navbar-menu-group-legend">
 				{m.projects()}
 			</span>
 			<ul class="navbar-menu-group-items">
-				<a
-					class="button button-ghost"
-					{...linkAttributes('/edit/projects')}
-					{...menu.itemAttributes}
-				>
-					{m.nav_edit_projects()}
+				<a class="button button-nav" {...linkAttributes('/edit/projects')} {...menu.itemAttributes}>
 					<Pencil class="button-icon" />
+					{m.nav_edit_projects()}
 				</a>
-				<a class="button button-ghost" {...linkAttributes('/new/project')} {...menu.itemAttributes}>
+				<a class="button button-nav" {...linkAttributes('/new/project')} {...menu.itemAttributes}>
+					<FilePlus class="button-icon" />
 					{m.nav_new_project()}
-					<FilePlus2 class="button-icon" />
 				</a>
 				<a
-					class="button button-ghost"
+					class="button button-nav"
 					{...linkAttributes('/edit/projects/descriptors')}
 					{...menu.itemAttributes}
 				>
-					{m.nav_edit_project_descriptors()}
 					<Sliders class="button-icon" />
+					{m.nav_edit_project_descriptors()}
 				</a>
 			</ul>
 		</menu>
 		<menu
-			class="navbar-menu-group"
-			in:fly|global={{ x: 20, duration: 1000, easing: expoOut }}
+			class="navbar-menu-group w-[34ch]"
+			in:fly|global={{ x: 20, duration: 1000, easing: expoOut, delay: 75 }}
 			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 75 }}
 		>
 			<span class="navbar-menu-group-legend">
@@ -60,48 +55,40 @@
 			</span>
 			<ul class="navbar-menu-group-items">
 				<a
-					class="button button-ghost"
+					class="button button-nav"
 					{...linkAttributes('/edit/organizations')}
 					{...menu.itemAttributes}
 				>
-					{m.nav_edit_orgs()}
 					<Pencil class="button-icon" />
+					{m.nav_edit_orgs()}
 				</a>
 				<a
-					class="button button-ghost"
+					class="button button-nav"
 					{...linkAttributes('/new/organization')}
 					{...menu.itemAttributes}
 				>
+					<FilePlus class="button-icon" />
 					{m.nav_new_org()}
-					<FilePlus2 class="button-icon" />
 				</a>
 				<a
-					class="button button-ghost"
+					class="button button-nav"
 					{...linkAttributes('/edit/organizations/descriptors')}
 					{...menu.itemAttributes}
 				>
-					{m.nav_edit_orgs_descriptors()}
 					<Sliders class="button-icon" />
+					{m.nav_edit_orgs_descriptors()}
 				</a>
 			</ul>
 		</menu>
 		<menu
 			class="navbar-menu-group"
-			in:fly|global={{ x: 20, duration: 1000, easing: expoOut }}
-			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 75 }}
+			in:fly|global={{ x: 20, duration: 1000, easing: expoOut, delay: 150 }}
+			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 0 }}
 		>
 			<ul class="navbar-menu-group-items">
-				<div>
-					{m.user_role()}:
-					{#await $page.data.roleName}
-						'...'
-					{:then roleName}
-						{roleName}
-					{/await}
-				</div>
-				<a class="navbar-menu-button" {...linkAttributes('/i')} {...menu.itemAttributes}>
-					{m.account()}
+				<a class="button button-nav" {...linkAttributes('/i')} {...menu.itemAttributes}>
 					<UserRound class="button-icon" />
+					{m.account()}
 				</a>
 				<form
 					method="POST"
@@ -117,14 +104,14 @@
 					}}
 				></form>
 				<button
-					class="navbar-menu-button"
+					class="button button-nav"
 					type="submit"
 					form="logout-form"
 					disabled={loggingOut}
 					data-loading={loggingOut}
 				>
-					{m.logout()}
 					<LogOut />
+					{m.logout()}
 				</button>
 			</ul>
 		</menu>
