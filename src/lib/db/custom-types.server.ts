@@ -1,23 +1,22 @@
 import type { AvailableLanguageTag } from '$i18n/runtime';
 import { isAvailableLanguageTag } from '$i18n/runtime';
-import type { UserRole } from '$lib/auth/constants';
-import { USER_ROLE_DEFAULT } from '$lib/auth/constants';
-import { isUserRole } from '$lib/crud/validation/auth';
+import type { Role } from '$lib/auth/constants';
+import { ROLE_DEFAULT, isRole } from '$lib/auth/constants';
 import { customType } from 'drizzle-orm/pg-core';
 
 /**
  * Implementing our own db-level role type in sync with UserRole in lieu of using a pgEnum to avoid
  * futur complications regarding updatability.
  */
-export const userRole = customType<{ data: UserRole }>({
+export const role = customType<{ data: Role }>({
 	dataType() {
 		return 'text';
 	},
 	fromDriver(value) {
-		if (!isUserRole(value)) {
+		if (!isRole(value)) {
 			// Fallback to lowest role in case of mismatch.
 			console.error(`Invalid role ("${value}") retrieved from database.`);
-			return USER_ROLE_DEFAULT;
+			return ROLE_DEFAULT;
 		}
 		return value;
 	},

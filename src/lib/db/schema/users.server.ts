@@ -1,46 +1,40 @@
-import { USER_ROLE_DEFAULT } from '$lib/auth/constants';
+import { ROLE_DEFAULT } from '$lib/auth/constants';
 import { add } from 'drizzle-orm-helpers';
 import { nanoid, now, toInterval } from 'drizzle-orm-helpers/pg';
-import {
-	boolean,
-	pgSchema,
-	primaryKey,
-	text,
-	timestamp,
-	unique,
-	varchar,
-} from 'drizzle-orm/pg-core';
-import { CREATED_AT_COLUMN, LANG_COLUMN, UPDATED_AT_COLUMN } from '../columns';
-import { userRole } from '../custom-types.server';
-import { projects } from './public';
+import { boolean, pgSchema, primaryKey, text, timestamp, unique } from 'drizzle-orm/pg-core';
+import { USER_EMAIL_VERIFICATION_CODE_LENGTH } from '../constants';
+import { role } from '../custom-types.server';
+import { CREATED_AT_COLUMN, LANG_COLUMN, UPDATED_AT_COLUMN } from '../helpers.server';
+import { projects } from './public.server';
 
 /**
- * Managing everything auth oriented and related to lucia and users' metadata.
+ * Managing everything auth oriented and related to lucia, as well as additionnal users' accounts
+ * metadata.
  *
  * @see https://lucia-auth.com/guidebook/drizzle-orm
  * @see https://lucia-auth.com/database-adapters/postgres
  */
-export const authSchema = pgSchema('auth');
+export const usersSchema = pgSchema('users');
 
-export const userRoles = authSchema.table('user_roles', {
-	role: userRole('role').primaryKey().notNull(),
+export const roles = usersSchema.table('roles', {
+	role: role('role').primaryKey().notNull(),
 });
 
-export const users = authSchema.table('users', {
+export const users = usersSchema.table('users', {
 	...CREATED_AT_COLUMN,
 	...UPDATED_AT_COLUMN,
 	id: text('id')
 		.default(nanoid({ size: 15 }))
 		.notNull()
 		.primaryKey(),
-	role: userRole('role')
-		.references(() => userRoles.role, {
+	role: role('role')
+		.references(() => roles.role, {
 			onDelete: 'set default',
 			onUpdate: 'cascade',
 		})
-		.default(USER_ROLE_DEFAULT)
+		.default(ROLE_DEFAULT)
 		.notNull(),
-	hashedPassword: varchar('hashed_password', { length: 255 }),
+	hashedPassword: text('hashed_password'),
 	legacyPassword: boolean('legacy_password'),
 	email: text('email').unique(),
 	emailVerified: boolean('email_verified').default(false).notNull(),
@@ -51,7 +45,7 @@ export const users = authSchema.table('users', {
 	lastName: text('last_name'),
 });
 
-export const oauthUsers = authSchema.table(
+export const oauthUsers = usersSchema.table(
 	'oauth_users',
 	{
 		userId: text('user_id')
@@ -70,7 +64,7 @@ export const oauthUsers = authSchema.table(
 	}
 );
 
-export const emailVerificationCodes = authSchema.table('email_verification_codes', {
+export const emailVerificationCodes = usersSchema.table('email_verification_codes', {
 	userId: text('user_id')
 		.references(() => users.id, {
 			onDelete: 'cascade',
@@ -80,7 +74,7 @@ export const emailVerificationCodes = authSchema.table('email_verification_codes
 	code: text('code')
 		.default(
 			nanoid({
-				size: 8,
+				size: USER_EMAIL_VERIFICATION_CODE_LENGTH,
 				alphabet: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
 			})
 		)
@@ -91,7 +85,7 @@ export const emailVerificationCodes = authSchema.table('email_verification_codes
 		.default(add(now(), toInterval({ hours: 1 })).inlineParams()),
 });
 
-export const passwordResetTokens = authSchema.table('password_reset_tokens', {
+export const passwordResetTokens = usersSchema.table('password_reset_tokens', {
 	userId: text('user_id')
 		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
 		.primaryKey(),
@@ -109,7 +103,7 @@ export const passwordResetTokens = authSchema.table('password_reset_tokens', {
 		.default(add(now(), toInterval({ hours: 1 })).inlineParams()),
 });
 
-export const sessions = authSchema.table('sessions', {
+export const sessions = usersSchema.table('sessions', {
 	id: text('id').primaryKey(),
 	userId: text('user_id')
 		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' })
@@ -117,27 +111,27 @@ export const sessions = authSchema.table('sessions', {
 	expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
 });
 
-export const usersRolesRequests = authSchema.table('users_roles_requests', {
+export const usersRolesRequests = usersSchema.table('users_roles_requests', {
 	userId: text('user_id')
 		.references(() => users.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade',
 		})
 		.notNull(),
-	requestedRole: userRole('requested_role').references(() => userRoles.role, {
+	requestedRole: role('requested_role').references(() => roles.role, {
 		onDelete: 'cascade',
 		onUpdate: 'cascade',
 	}),
 	requestAt: timestamp('requested_at', { withTimezone: true }).defaultNow(),
 });
 
-export const userOccupations = authSchema.table('user_occupations', {
+export const userOccupations = usersSchema.table('user_occupations', {
 	id: text('id')
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
 });
 
-export const userOccupationsTranslations = authSchema.table(
+export const userOccupationsTranslations = usersSchema.table(
 	'user_occupations_t',
 	{
 		...LANG_COLUMN,
@@ -155,7 +149,7 @@ export const userOccupationsTranslations = authSchema.table(
 	}
 );
 
-export const usersOccupations = authSchema.table(
+export const usersOccupations = usersSchema.table(
 	'users_occupations',
 	{
 		userId: text('user_id')
@@ -178,7 +172,7 @@ export const usersOccupations = authSchema.table(
 	}
 );
 
-export const usersProjectsCollections = authSchema.table(
+export const usersProjectsCollections = usersSchema.table(
 	'users_projects_collections',
 	{
 		id: text('id').default(nanoid()).primaryKey().notNull(),
@@ -198,7 +192,7 @@ export const usersProjectsCollections = authSchema.table(
 	}
 );
 
-export const usersProjectsCollectionsItems = authSchema.table(
+export const usersProjectsCollectionsItems = usersSchema.table(
 	'users_collections_items',
 	{
 		collectionId: text('collection_id')
@@ -222,14 +216,14 @@ export const usersProjectsCollectionsItems = authSchema.table(
 	}
 );
 
-export const notificationTypes = authSchema.table('notification_types', {
+export const notificationTypes = usersSchema.table('notification_types', {
 	id: text('id')
 		.notNull()
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
 });
 
-export const notificationTypesTranslations = authSchema.table('notification_types_t', {
+export const notificationTypesTranslations = usersSchema.table('notification_types_t', {
 	...LANG_COLUMN,
 	id: text('id')
 		.references(() => notificationTypes.id, {
@@ -241,7 +235,7 @@ export const notificationTypesTranslations = authSchema.table('notification_type
 	body: text('body'),
 });
 
-export const usersNotifications = authSchema.table('users_notifications', {
+export const usersNotifications = usersSchema.table('users_notifications', {
 	id: text('id').default(nanoid()).notNull().primaryKey(),
 	typeId: text('type_id')
 		.references(() => notificationTypes.id, {

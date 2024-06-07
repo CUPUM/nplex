@@ -1,8 +1,9 @@
-import type { AnyColumn } from 'drizzle-orm';
+import { availableLanguageTags } from '$i18n/runtime';
+import { sql, type AnyColumn } from 'drizzle-orm';
 import { timestamp } from 'drizzle-orm/pg-core';
-import { LANG_COLUMN_NAME } from './constants';
+import { LANG_COLUMN_NAME, LANG_REGCONFIGS } from './constants';
 import { lang } from './custom-types.server';
-import { languages } from './schema/i18n';
+import { languages } from './schema/i18n.server';
 
 export const LANG_COLUMN = {
 	[LANG_COLUMN_NAME]: lang(LANG_COLUMN_NAME)
@@ -12,6 +13,7 @@ export const LANG_COLUMN = {
 		})
 		.notNull(),
 };
+
 export type LangColumn = {
 	[LANG_COLUMN_NAME]: AnyColumn<
 		Pick<(typeof LANG_COLUMN)[typeof LANG_COLUMN_NAME]['_'], 'data' | 'dataType'>
@@ -28,3 +30,10 @@ export const UPDATED_AT_COLUMN = {
 		.notNull()
 		.$onUpdate(() => new Date()),
 };
+
+export function langToRegconfig(column: LangColumn) {
+	const cases = availableLanguageTags.map((lang) =>
+		sql`when ${column} = '${lang}' then '${LANG_REGCONFIGS[lang]}'::regconfig`.mapWith(String)
+	);
+	return sql.join([sql`case`, ...cases, sql`end`], sql` `);
+}

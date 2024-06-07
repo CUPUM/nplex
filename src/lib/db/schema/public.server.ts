@@ -1,4 +1,4 @@
-import { USER_ROLES } from '$lib/auth/constants';
+import { ROLES } from '$lib/auth/constants';
 import { sql } from 'drizzle-orm';
 import { cube, intrange, nanoid } from 'drizzle-orm-helpers/pg';
 import type { AnyPgColumn } from 'drizzle-orm/pg-core';
@@ -12,10 +12,10 @@ import {
 	timestamp,
 	unique,
 } from 'drizzle-orm/pg-core';
-import { CREATED_AT_COLUMN, LANG_COLUMN, UPDATED_AT_COLUMN } from '../columns';
 import { PROJECT_IMAGE_PALETTE_LENGTH } from '../constants';
-import { userRole } from '../custom-types.server';
-import { userRoles, users } from './auth';
+import { role } from '../custom-types.server';
+import { CREATED_AT_COLUMN, LANG_COLUMN, UPDATED_AT_COLUMN } from '../helpers.server';
+import { roles, users } from './users.server';
 
 /**
  * Top-most categories of projects.
@@ -433,6 +433,10 @@ export const projectsTranslations = pgTable(
 	(table) => {
 		return {
 			pk: primaryKey({ columns: [table.id, table.lang] }),
+			// tsIndex: index('ts_index').using(
+			// 	'gin',
+			// 	sql`(set_weight(to_tsvector(${langToRegconfig(table.lang)}, coalesce(${table.title}, '')), 'A') || set_weight(to_tsvector(${langToRegconfig(table.lang)}, coalesce(${table.summary}, '')), 'B'))`
+			// ),
 		};
 	}
 );
@@ -646,12 +650,12 @@ export const projectsUsers = pgTable(
 				onUpdate: 'cascade',
 			})
 			.notNull(),
-		role: userRole('role')
-			.references(() => userRoles.role, {
+		role: role('role')
+			.references(() => roles.role, {
 				onDelete: 'set default',
 				onUpdate: 'cascade',
 			})
-			.default(USER_ROLES.VISITOR),
+			.default(ROLES.VISITOR),
 	},
 	(table) => {
 		return {
