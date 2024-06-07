@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { Dialog } from '$lib/builders/dialog.svelte';
-	import { FilePlus2, LogOut, Pencil, Sliders, User2 } from 'lucide-svelte';
+	import { FilePlus2, LogOut, Pencil, Sliders, UserRound } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import { cubicIn, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
@@ -28,15 +28,23 @@
 				{m.projects()}
 			</span>
 			<ul class="navbar-menu-group-items">
-				<a class="button button-ghost" {...linkAttributes('/edit/projects')}>
+				<a
+					class="button button-ghost"
+					{...linkAttributes('/edit/projects')}
+					{...menu.itemAttributes}
+				>
 					{m.nav_edit_projects()}
 					<Pencil class="button-icon" />
 				</a>
-				<a class="button button-ghost" {...linkAttributes('/new/project')}>
+				<a class="button button-ghost" {...linkAttributes('/new/project')} {...menu.itemAttributes}>
 					{m.nav_new_project()}
 					<FilePlus2 class="button-icon" />
 				</a>
-				<a class="button button-ghost" {...linkAttributes('/edit/projects/descriptors')}>
+				<a
+					class="button button-ghost"
+					{...linkAttributes('/edit/projects/descriptors')}
+					{...menu.itemAttributes}
+				>
 					{m.nav_edit_project_descriptors()}
 					<Sliders class="button-icon" />
 				</a>
@@ -51,15 +59,27 @@
 				{m.organizations()}
 			</span>
 			<ul class="navbar-menu-group-items">
-				<a class="button button-ghost" {...linkAttributes('/edit/organizations')}>
+				<a
+					class="button button-ghost"
+					{...linkAttributes('/edit/organizations')}
+					{...menu.itemAttributes}
+				>
 					{m.nav_edit_orgs()}
 					<Pencil class="button-icon" />
 				</a>
-				<a class="button button-ghost" {...linkAttributes('/new/organization')}>
+				<a
+					class="button button-ghost"
+					{...linkAttributes('/new/organization')}
+					{...menu.itemAttributes}
+				>
 					{m.nav_new_org()}
 					<FilePlus2 class="button-icon" />
 				</a>
-				<a class="button button-ghost" {...linkAttributes('/edit/organizations/descriptors')}>
+				<a
+					class="button button-ghost"
+					{...linkAttributes('/edit/organizations/descriptors')}
+					{...menu.itemAttributes}
+				>
 					{m.nav_edit_orgs_descriptors()}
 					<Sliders class="button-icon" />
 				</a>
@@ -79,9 +99,9 @@
 						{roleName}
 					{/await}
 				</div>
-				<a class="navbar-menu-button" {...linkAttributes('/i')}>
+				<a class="navbar-menu-button" {...linkAttributes('/i')} {...menu.itemAttributes}>
 					{m.account()}
-					<User2 class="button-icon" />
+					<UserRound class="button-icon" />
 				</a>
 				<form
 					method="POST"
