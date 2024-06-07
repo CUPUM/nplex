@@ -1,77 +1,98 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { extendSuperForm } from '$lib/crud/form/client';
-	import { FileUp, Mail, Shield, ShieldX } from 'lucide-svelte';
+	import { Check, FileUp, Mail, Shield, ShieldX } from 'lucide-svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
-	const { form, enhance, constraints, tainted, submitter, submitting } = extendSuperForm(
-		superForm(data.profileForm)
+	const { form, enhance, constraints, tainted, submitter, submitting, isTainted } = extendSuperForm(
+		superForm(data.profileForm, { dataType: 'json', invalidateAll: 'force' })
 	);
+
+	let submitRef: HTMLButtonElement;
 </script>
 
-<form use:enhance action="?/profile">
-	<h2>
+<form use:enhance method="POST" action="?/profile" class="dashboard-section">
+	<h2 class="dashboard-section-title">
 		{m.user_profile_settings()}
 	</h2>
-	<section>
-		<h3>{m.user_name()}</h3>
-		<fieldset>
-			<input
-				type="text"
-				class="input"
-				bind:value={$form.firstName}
-				{...$constraints.firstName}
-				placeholder={m.user_first_name()}
-			/>
-			<input
-				type="text"
-				class="input"
-				bind:value={$form.middleName}
-				{...$constraints.middleName}
-				placeholder={m.user_middle_name()}
-			/>
-		</fieldset>
-		<input
-			type="text"
-			class="input"
-			bind:value={$form.lastName}
-			{...$constraints.lastName}
-			placeholder={m.user_last_name()}
-		/>
-	</section>
-	<section>
-		<h3>{m.user_avatar()}</h3>
-		<label>
-			{m.user_upload_avatar()}
-			<FileUp class="button-icon" />
-			<input type="file" class="button" id="avatar-button" disabled formaction="?/avatar" />
-		</label>
-	</section>
-	<section>
-		<h3>{m.user_public_email()}</h3>
-		<label class="input-group">
-			{#if $page.data.user?.emailVerified}
-				<Shield class="input-icon" style="color: var(--color-success-500)" />
-			{:else}
-				<ShieldX class="input-icon" style="color: var(--color-error-500)" />
-			{/if}
-			<input
-				type="email"
-				name="publicEmail"
-				class="input"
-				bind:value={$form.publicEmail}
-				placeholder={m.user_public_email()}
-			/>
-			<div class="input-peer">
-				<button class="button" formaction="?/verifyEmail" disabled>
-					<Mail class="button-icon" />
-					{m.user_verify()}
-				</button>
+	<div class="dashboard-section-content">
+		<div class="gap-gutter flex flex-row">
+			<div class="field flex-1">
+				<label class="field-label">{m.user_first_name()}</label>
+				<input
+					type="text"
+					class="input input-bordered"
+					bind:value={$form.firstName}
+					{...$constraints.firstName}
+				/>
 			</div>
+			<div class="field flex-1">
+				<label class="field-label">{m.user_middle_name()}</label>
+				<input
+					type="text"
+					class="input input-bordered"
+					bind:value={$form.middleName}
+					{...$constraints.middleName}
+				/>
+			</div>
+		</div>
+		<div class="field">
+			<label class="field-label">{m.user_last_name()}</label>
+			<input
+				type="text"
+				class="input input-bordered"
+				bind:value={$form.lastName}
+				{...$constraints.lastName}
+			/>
+		</div>
+		<label class="field self-start">
+			<span class="field-label">{m.user_avatar()}</span>
+			<fieldset class="input-group">
+				<FileUp />
+				<input
+					placeholder={m.user_upload_avatar()}
+					type="file"
+					class="input"
+					id="avatar-button"
+					formaction="?/avatar"
+				/>
+			</fieldset>
 		</label>
-	</section>
+		<fieldset class="field" disabled>
+			<legend class="field-label">{m.user_public_email()}</legend>
+			<label class="input-group input-bordered">
+				{#if $page.data.user?.emailVerified}
+					<Shield class="input-icon" style="color: var(--color-success-500)" />
+				{:else}
+					<ShieldX class="input-icon" style="color: var(--color-error-500)" />
+				{/if}
+				<input
+					type="email"
+					name="publicEmail"
+					class="input"
+					bind:value={$form.publicEmail}
+					placeholder={m.user_public_email()}
+				/>
+				<div class="input-peer">
+					<button class="button" formaction="?/verify">
+						<Mail />
+						{m.user_verify()}
+					</button>
+				</div>
+			</label>
+		</fieldset>
+		<button
+			class="button button-cta"
+			type="submit"
+			bind:this={submitRef}
+			disabled={!isTainted($tainted)}
+		>
+			<IconSpinner icon={Check} busy={submitRef === $submitter} />{m.save()}
+		</button>
+	</div>
 </form>

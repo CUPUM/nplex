@@ -1,45 +1,29 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import * as m from '$i18n/messages';
-	import DashboardForm from '$lib/components/DashboardForm.svelte';
-	import DashboardFormSection from '$lib/components/DashboardFormSection.svelte';
-	import { superForm } from '$lib/crud/validation/forms/super-form';
-	import { melt } from '@melt-ui/svelte';
-	import { AlertTriangle } from 'lucide-svelte';
+	import { extendSuperForm } from '$lib/crud/form/client';
+	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 
-	export let data: PageData['manageForm'];
+	let { data }: { data: PageData } = $props();
 
-	let delRef: HTMLButtonElement;
-
-	const {
-		tainted,
-		form,
-		enhance,
-		elements: {
-			submitter: { root: submitter },
-		},
-	} = superForm(data);
+	const { form, enhance, tainted, submitting, submitter } = extendSuperForm(
+		superForm(data.accountForm)
+	);
 </script>
 
-<DashboardForm {enhance}>
-	<DashboardFormSection title={m.account_manage()}>
-		<div>
-			<button
-				class="button danger cta space-between"
-				type="submit"
-				formaction="?/delete"
-				bind:this={delRef}
-				use:melt={$submitter(delRef)}
-				on:click={(e) => {
-					const ok = confirm('Really really though?');
-					if (!ok) {
-						e.preventDefault();
-					}
-					return ok;
-				}}
-			>
-				{m.del()}<AlertTriangle />
-			</button>
-		</div>
-	</DashboardFormSection>
-</DashboardForm> -->
+<form method="POST" use:enhance action="?/delete" class="dashboard-section">
+	<div class="dashboard-section-content">
+		<button
+			class="button button-cta"
+			data-danger
+			onclick={(e) => {
+				if (!confirm(m.account_delete_confirm())) {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+				}
+			}}
+		>
+			{m.account_delete_permanently()}
+		</button>
+	</div>
+</form>
