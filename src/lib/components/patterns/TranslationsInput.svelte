@@ -1,37 +1,37 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
-	import { ripple } from '$lib/components/primitives/ripple.svelte';
-	import { LANG_DETAILS } from '$lib/i18n/constants';
-	import { switchCrossfade } from '$lib/motion/presets';
-	import { createTabs, melt } from '@melt-ui/svelte';
+	// import { page } from '$app/stores';
+	// import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
+	// import { ripple } from '$lib/components/primitives/ripple.svelte';
+	// import { LANG_DETAILS } from '$lib/i18n/constants';
+	// import { switchCrossfade } from '$lib/motion/presets';
+	// import { createTabs, melt } from '@melt-ui/svelte';
 
-	export let defaultLang: AvailableLanguageTag = $page.data.lang;
-	export let lang: AvailableLanguageTag | undefined = undefined;
+	// export let defaultLang: AvailableLanguageTag = $page.data.lang;
+	// export let lang: AvailableLanguageTag | undefined = undefined;
 
-	const {
-		elements: { root, trigger, list, content },
-		states: { value: _value },
-	} = createTabs({
-		defaultValue: lang ?? defaultLang,
-		loop: true,
-		activateOnFocus: true,
-		onValueChange: ({ curr, next }) => {
-			lang = next as AvailableLanguageTag;
-			return next;
-		},
-	});
+	// const {
+	// 	elements: { root, trigger, list, content },
+	// 	states: { value: _value },
+	// } = createTabs({
+	// 	defaultValue: lang ?? defaultLang,
+	// 	loop: true,
+	// 	activateOnFocus: true,
+	// 	onValueChange: ({ curr, next }) => {
+	// 		lang = next as AvailableLanguageTag;
+	// 		return next;
+	// 	},
+	// });
 
-	$: if (lang) {
-		_value.set(lang);
-	}
+	// $: if (lang) {
+	// 	_value.set(lang);
+	// }
 
-	const [send, receive] = switchCrossfade;
+	// const [send, receive] = switchCrossfade;
 
-	const key = {};
+	// const key = {};
 </script>
 
-<div class="input-group" use:melt={$root}>
+<!-- <div class="input-group" use:melt={$root}>
 	{#each availableLanguageTags as lang}
 		<div class="lang-content" {lang} use:melt={$content(lang)}>
 			<slot {lang} value={$_value} current={$_value === lang} />
@@ -49,9 +49,9 @@
 			{/each}
 		</menu>
 	</div>
-</div>
+</div> -->
 
-<style>
+<!-- <style>
 	.input-group {
 		align-self: stretch;
 	}
@@ -92,4 +92,4 @@
 	.switch {
 		font-size: var(--size-xs);
 	}
-</style>
+</style> -->

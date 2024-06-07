@@ -1,0 +1,21 @@
+<script lang="ts">
+	import type { Component, ComponentType } from 'svelte';
+	import type { SVGAttributes } from 'svelte/elements';
+	import Spinner from '../primitives/spinner.svelte';
+
+	let {
+		busy,
+		icon,
+		...iconProps
+	}: { busy: boolean; icon: ComponentType | Component } & Omit<SVGAttributes<SVGElement>, 'speed'> =
+		$props();
+</script>
+
+{#if busy}
+	<Spinner {...iconProps} outro={false} />
+{:else}
+	<svelte:component this={icon} {...iconProps} />
+{/if}
+
+<style>
+</style>
