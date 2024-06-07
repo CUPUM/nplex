@@ -6,7 +6,11 @@
 
 	export function ripple(target: HTMLElement, options?: ComponentProps<Ripple>) {
 		let props = $state(options);
-		const comp = mount(Ripple, { target, props, anchor: target.firstChild || undefined });
+		const comp = mount(Ripple, {
+			target,
+			props,
+			anchor: target.firstChild || undefined,
+		});
 		return {
 			update(args) {
 				props = args;
