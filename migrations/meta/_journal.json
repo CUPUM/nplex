@@ -232,6 +232,13 @@
       "when": 1717016792122,
       "tag": "0032_funny_puff_adder",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1717722665761,
+      "tag": "0033_goofy_namora",
+      "breakpoints": true
     }
   ]
 }

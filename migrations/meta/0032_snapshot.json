@@ -1,7 +1,5 @@
 {
-  "id": "82d918d8-04f3-4404-99fc-1d7ee83de355",
-  "prevId": "58cb07ae-5a79-4c2d-a2a5-d2782bb55a85",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "auth.email_verification_codes": {
@@ -40,16 +38,16 @@
         "email_verification_codes_user_id_users_id_fk": {
           "name": "email_verification_codes_user_id_users_id_fk",
           "tableFrom": "email_verification_codes",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -106,30 +104,30 @@
         "notification_types_t_lang_langs_lang_fk": {
           "name": "notification_types_t_lang_langs_lang_fk",
           "tableFrom": "notification_types_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "notification_types_t_id_notification_types_id_fk": {
           "name": "notification_types_t_id_notification_types_id_fk",
           "tableFrom": "notification_types_t",
-          "tableTo": "notification_types",
-          "schemaTo": "auth",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "notification_types",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -163,16 +161,16 @@
         "oauth_users_user_id_users_id_fk": {
           "name": "oauth_users_user_id_users_id_fk",
           "tableFrom": "oauth_users",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -216,16 +214,16 @@
         "password_reset_tokens_user_id_users_id_fk": {
           "name": "password_reset_tokens_user_id_users_id_fk",
           "tableFrom": "password_reset_tokens",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -259,16 +257,16 @@
         "sessions_user_id_users_id_fk": {
           "name": "sessions_user_id_users_id_fk",
           "tableFrom": "sessions",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -325,30 +323,30 @@
         "user_occupations_t_lang_langs_lang_fk": {
           "name": "user_occupations_t_lang_langs_lang_fk",
           "tableFrom": "user_occupations_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "user_occupations_t_id_user_occupations_id_fk": {
           "name": "user_occupations_t_id_user_occupations_id_fk",
           "tableFrom": "user_occupations_t",
-          "tableTo": "user_occupations",
-          "schemaTo": "auth",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "user_occupations",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -472,26 +470,26 @@
         "users_role_user_roles_role_fk": {
           "name": "users_role_user_roles_role_fk",
           "tableFrom": "users",
-          "tableTo": "user_roles",
-          "schemaTo": "auth",
           "columnsFrom": [
             "role"
           ],
+          "tableTo": "user_roles",
+          "schemaTo": "auth",
           "columnsTo": [
             "role"
           ],
-          "onDelete": "set default",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set default"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "users_email_unique": {
           "name": "users_email_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -543,44 +541,44 @@
         "users_notifications_type_id_notification_types_id_fk": {
           "name": "users_notifications_type_id_notification_types_id_fk",
           "tableFrom": "users_notifications",
-          "tableTo": "notification_types",
-          "schemaTo": "auth",
           "columnsFrom": [
             "type_id"
           ],
+          "tableTo": "notification_types",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "users_notifications_user_id_users_id_fk": {
           "name": "users_notifications_user_id_users_id_fk",
           "tableFrom": "users_notifications",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "users_notifications_sent_by_id_users_id_fk": {
           "name": "users_notifications_sent_by_id_users_id_fk",
           "tableFrom": "users_notifications",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "sent_by_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -608,30 +606,30 @@
         "users_occupations_user_id_users_id_fk": {
           "name": "users_occupations_user_id_users_id_fk",
           "tableFrom": "users_occupations",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "users_occupations_occupation_id_user_occupations_id_fk": {
           "name": "users_occupations_occupation_id_user_occupations_id_fk",
           "tableFrom": "users_occupations",
-          "tableTo": "user_occupations",
-          "schemaTo": "auth",
           "columnsFrom": [
             "occupation_id"
           ],
+          "tableTo": "user_occupations",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -680,27 +678,27 @@
         "users_projects_collections_user_id_users_id_fk": {
           "name": "users_projects_collections_user_id_users_id_fk",
           "tableFrom": "users_projects_collections",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "users_projects_collections_title_user_id_unique": {
           "name": "users_projects_collections_title_user_id_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "title",
             "user_id"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -732,29 +730,29 @@
         "users_collections_items_collection_id_users_projects_collections_id_fk": {
           "name": "users_collections_items_collection_id_users_projects_collections_id_fk",
           "tableFrom": "users_collections_items",
-          "tableTo": "users_projects_collections",
-          "schemaTo": "auth",
           "columnsFrom": [
             "collection_id"
           ],
+          "tableTo": "users_projects_collections",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "users_collections_items_project_id_projects_id_fk": {
           "name": "users_collections_items_project_id_projects_id_fk",
           "tableFrom": "users_collections_items",
-          "tableTo": "projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -797,30 +795,30 @@
         "users_roles_requests_user_id_users_id_fk": {
           "name": "users_roles_requests_user_id_users_id_fk",
           "tableFrom": "users_roles_requests",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "users_roles_requests_requested_role_user_roles_role_fk": {
           "name": "users_roles_requests_requested_role_user_roles_role_fk",
           "tableFrom": "users_roles_requests",
-          "tableTo": "user_roles",
-          "schemaTo": "auth",
           "columnsFrom": [
             "requested_role"
           ],
+          "tableTo": "user_roles",
+          "schemaTo": "auth",
           "columnsTo": [
             "role"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -855,10 +853,10 @@
       "uniqueConstraints": {
         "langs_name_unique": {
           "name": "langs_name_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -913,29 +911,29 @@
         "organization_duties_t_lang_langs_lang_fk": {
           "name": "organization_duties_t_lang_langs_lang_fk",
           "tableFrom": "organization_duties_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "organization_duties_t_id_organization_duties_id_fk": {
           "name": "organization_duties_t_id_organization_duties_id_fk",
           "tableFrom": "organization_duties_t",
-          "tableTo": "organization_duties",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "organization_duties",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1000,29 +998,29 @@
         "organization_expertises_t_lang_langs_lang_fk": {
           "name": "organization_expertises_t_lang_langs_lang_fk",
           "tableFrom": "organization_expertises_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "organization_expertises_t_id_organization_expertises_id_fk": {
           "name": "organization_expertises_t_id_organization_expertises_id_fk",
           "tableFrom": "organization_expertises_t",
-          "tableTo": "organization_expertises",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "organization_expertises",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1087,29 +1085,29 @@
         "organization_types_t_lang_langs_lang_fk": {
           "name": "organization_types_t_lang_langs_lang_fk",
           "tableFrom": "organization_types_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "organization_types_t_id_organization_types_id_fk": {
           "name": "organization_types_t_id_organization_types_id_fk",
           "tableFrom": "organization_types_t",
-          "tableTo": "organization_types",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "organization_types",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1172,43 +1170,43 @@
         "organizations_created_by_id_users_id_fk": {
           "name": "organizations_created_by_id_users_id_fk",
           "tableFrom": "organizations",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "created_by_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         },
         "organizations_updated_by_id_users_id_fk": {
           "name": "organizations_updated_by_id_users_id_fk",
           "tableFrom": "organizations",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "updated_by_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         },
         "organizations_type_id_organization_types_id_fk": {
           "name": "organizations_type_id_organization_types_id_fk",
           "tableFrom": "organizations",
-          "tableTo": "organization_types",
           "columnsFrom": [
             "type_id"
           ],
+          "tableTo": "organization_types",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
@@ -1236,28 +1234,28 @@
         "organizations_expertises_organization_id_organizations_id_fk": {
           "name": "organizations_expertises_organization_id_organizations_id_fk",
           "tableFrom": "organizations_expertises",
-          "tableTo": "organizations",
           "columnsFrom": [
             "organization_id"
           ],
+          "tableTo": "organizations",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "organizations_expertises_expertise_id_organization_expertises_id_fk": {
           "name": "organizations_expertises_expertise_id_organization_expertises_id_fk",
           "tableFrom": "organizations_expertises",
-          "tableTo": "organization_expertises",
           "columnsFrom": [
             "expertise_id"
           ],
+          "tableTo": "organization_expertises",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1311,29 +1309,29 @@
         "organizations_t_lang_langs_lang_fk": {
           "name": "organizations_t_lang_langs_lang_fk",
           "tableFrom": "organizations_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "organizations_t_id_organizations_id_fk": {
           "name": "organizations_t_id_organizations_id_fk",
           "tableFrom": "organizations_t",
-          "tableTo": "organizations",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "organizations",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1348,11 +1346,11 @@
       "uniqueConstraints": {
         "organizations_t_name_lang_unique": {
           "name": "organizations_t_name_lang_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "name",
             "lang"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -1378,29 +1376,29 @@
         "organizations_users_organization_id_organizations_id_fk": {
           "name": "organizations_users_organization_id_organizations_id_fk",
           "tableFrom": "organizations_users",
-          "tableTo": "organizations",
           "columnsFrom": [
             "organization_id"
           ],
+          "tableTo": "organizations",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "organizations_users_user_id_users_id_fk": {
           "name": "organizations_users_user_id_users_id_fk",
           "tableFrom": "organizations_users",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1444,10 +1442,10 @@
       "uniqueConstraints": {
         "project_building_level_type_is_ground_level_unique": {
           "name": "project_building_level_type_is_ground_level_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "is_ground_level"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -1485,29 +1483,29 @@
         "project_building_level_types_t_lang_langs_lang_fk": {
           "name": "project_building_level_types_t_lang_langs_lang_fk",
           "tableFrom": "project_building_level_types_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_building_level_types_t_id_project_building_level_type_id_fk": {
           "name": "project_building_level_types_t_id_project_building_level_type_id_fk",
           "tableFrom": "project_building_level_types_t",
-          "tableTo": "project_building_level_type",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "project_building_level_type",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1578,29 +1576,29 @@
         "project_exemplarity_categories_t_lang_langs_lang_fk": {
           "name": "project_exemplarity_categories_t_lang_langs_lang_fk",
           "tableFrom": "project_exemplarity_categories_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_exemplarity_categories_t_id_project_exemplarity_categories_id_fk": {
           "name": "project_exemplarity_categories_t_id_project_exemplarity_categories_id_fk",
           "tableFrom": "project_exemplarity_categories_t",
-          "tableTo": "project_exemplarity_categories",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "project_exemplarity_categories",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1637,15 +1635,15 @@
         "project_exemplarity_indicators_category_id_project_exemplarity_categories_id_fk": {
           "name": "project_exemplarity_indicators_category_id_project_exemplarity_categories_id_fk",
           "tableFrom": "project_exemplarity_indicators",
-          "tableTo": "project_exemplarity_categories",
           "columnsFrom": [
             "category_id"
           ],
+          "tableTo": "project_exemplarity_categories",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -1691,29 +1689,29 @@
         "project_exemplarity_indicators_t_lang_langs_lang_fk": {
           "name": "project_exemplarity_indicators_t_lang_langs_lang_fk",
           "tableFrom": "project_exemplarity_indicators_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_exemplarity_indicators_t_id_project_exemplarity_indicators_id_fk": {
           "name": "project_exemplarity_indicators_t_id_project_exemplarity_indicators_id_fk",
           "tableFrom": "project_exemplarity_indicators_t",
-          "tableTo": "project_exemplarity_indicators",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "project_exemplarity_indicators",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1785,29 +1783,29 @@
         "project_image_temporalities_t_lang_langs_lang_fk": {
           "name": "project_image_temporalities_t_lang_langs_lang_fk",
           "tableFrom": "project_image_temporalities_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_image_temporalities_t_id_project_image_temporalities_id_fk": {
           "name": "project_image_temporalities_t_id_project_image_temporalities_id_fk",
           "tableFrom": "project_image_temporalities_t",
-          "tableTo": "project_image_temporalities",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "project_image_temporalities",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1872,29 +1870,29 @@
         "project_image_types_t_lang_langs_lang_fk": {
           "name": "project_image_types_t_lang_langs_lang_fk",
           "tableFrom": "project_image_types_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_image_types_t_id_project_image_types_id_fk": {
           "name": "project_image_types_t_id_project_image_types_id_fk",
           "tableFrom": "project_image_types_t",
-          "tableTo": "project_image_types",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "project_image_types",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -1965,29 +1963,29 @@
         "project_implantation_types_t_lang_langs_lang_fk": {
           "name": "project_implantation_types_t_lang_langs_lang_fk",
           "tableFrom": "project_implantation_types_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_implantation_types_t_id_project_implantation_types_id_fk": {
           "name": "project_implantation_types_t_id_project_implantation_types_id_fk",
           "tableFrom": "project_implantation_types_t",
-          "tableTo": "project_implantation_types",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "project_implantation_types",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -2030,15 +2028,15 @@
         "project_interventions_category_id_project_intervention_categories_id_fk": {
           "name": "project_interventions_category_id_project_intervention_categories_id_fk",
           "tableFrom": "project_interventions",
-          "tableTo": "project_intervention_categories",
           "columnsFrom": [
             "category_id"
           ],
+          "tableTo": "project_intervention_categories",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -2101,29 +2099,29 @@
         "project_intervention_categories_t_lang_langs_lang_fk": {
           "name": "project_intervention_categories_t_lang_langs_lang_fk",
           "tableFrom": "project_intervention_categories_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_intervention_categories_t_id_project_intervention_categories_id_fk": {
           "name": "project_intervention_categories_t_id_project_intervention_categories_id_fk",
           "tableFrom": "project_intervention_categories_t",
-          "tableTo": "project_intervention_categories",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "project_intervention_categories",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -2171,29 +2169,29 @@
         "project_interventions_t_lang_langs_lang_fk": {
           "name": "project_interventions_t_lang_langs_lang_fk",
           "tableFrom": "project_interventions_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_interventions_t_id_project_interventions_id_fk": {
           "name": "project_interventions_t_id_project_interventions_id_fk",
           "tableFrom": "project_interventions_t",
-          "tableTo": "project_interventions",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "project_interventions",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -2264,29 +2262,29 @@
         "project_site_ownerships_t_lang_langs_lang_fk": {
           "name": "project_site_ownerships_t_lang_langs_lang_fk",
           "tableFrom": "project_site_ownerships_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_site_ownerships_t_id_project_site_ownerships_id_fk": {
           "name": "project_site_ownerships_t_id_project_site_ownerships_id_fk",
           "tableFrom": "project_site_ownerships_t",
-          "tableTo": "project_site_ownerships",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "project_site_ownerships",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -2345,28 +2343,28 @@
         "project_types_to_intervention_type_id_project_types_id_fk": {
           "name": "project_types_to_intervention_type_id_project_types_id_fk",
           "tableFrom": "project_types_to_intervention",
-          "tableTo": "project_types",
           "columnsFrom": [
             "type_id"
           ],
+          "tableTo": "project_types",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_types_to_intervention_intervention_id_project_interventions_id_fk": {
           "name": "project_types_to_intervention_intervention_id_project_interventions_id_fk",
           "tableFrom": "project_types_to_intervention",
-          "tableTo": "project_interventions",
           "columnsFrom": [
             "intervention_id"
           ],
+          "tableTo": "project_interventions",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -2414,29 +2412,29 @@
         "project_types_t_lang_langs_lang_fk": {
           "name": "project_types_t_lang_langs_lang_fk",
           "tableFrom": "project_types_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "project_types_t_id_project_types_id_fk": {
           "name": "project_types_t_id_project_types_id_fk",
           "tableFrom": "project_types_t",
-          "tableTo": "project_types",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "project_types",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -2573,82 +2571,82 @@
         "projects_created_by_id_users_id_fk": {
           "name": "projects_created_by_id_users_id_fk",
           "tableFrom": "projects",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "created_by_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         },
         "projects_updated_by_id_users_id_fk": {
           "name": "projects_updated_by_id_users_id_fk",
           "tableFrom": "projects",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "updated_by_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         },
         "projects_type_id_project_types_id_fk": {
           "name": "projects_type_id_project_types_id_fk",
           "tableFrom": "projects",
-          "tableTo": "project_types",
           "columnsFrom": [
             "type_id"
           ],
+          "tableTo": "project_types",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         },
         "projects_site_ownership_id_project_site_ownerships_id_fk": {
           "name": "projects_site_ownership_id_project_site_ownerships_id_fk",
           "tableFrom": "projects",
-          "tableTo": "project_site_ownerships",
           "columnsFrom": [
             "site_ownership_id"
           ],
+          "tableTo": "project_site_ownerships",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         },
         "projects_implantation_type_id_project_implantation_types_id_fk": {
           "name": "projects_implantation_type_id_project_implantation_types_id_fk",
           "tableFrom": "projects",
-          "tableTo": "project_implantation_types",
           "columnsFrom": [
             "implantation_type_id"
           ],
+          "tableTo": "project_implantation_types",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         },
         "projects_banner_id_projects_images_id_fk": {
           "name": "projects_banner_id_projects_images_id_fk",
           "tableFrom": "projects",
-          "tableTo": "projects_images",
           "columnsFrom": [
             "banner_id"
           ],
+          "tableTo": "projects_images",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
@@ -2695,39 +2693,39 @@
         "projects_building_levels_project_id_projects_id_fk": {
           "name": "projects_building_levels_project_id_projects_id_fk",
           "tableFrom": "projects_building_levels",
-          "tableTo": "projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_building_levels_level_type_id_project_building_level_type_id_fk": {
           "name": "projects_building_levels_level_type_id_project_building_level_type_id_fk",
           "tableFrom": "projects_building_levels",
-          "tableTo": "project_building_level_type",
           "columnsFrom": [
             "level_type_id"
           ],
+          "tableTo": "project_building_level_type",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "projects_building_levels_vertical_index_project_id_unique": {
           "name": "projects_building_levels_vertical_index_project_id_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "vertical_index",
             "project_id"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -2753,28 +2751,28 @@
         "projects_exemplarity_indicators_project_id_projects_id_fk": {
           "name": "projects_exemplarity_indicators_project_id_projects_id_fk",
           "tableFrom": "projects_exemplarity_indicators",
-          "tableTo": "projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_exemplarity_indicators_exemplarity_indicator_id_project_exemplarity_indicators_id_fk": {
           "name": "projects_exemplarity_indicators_exemplarity_indicator_id_project_exemplarity_indicators_id_fk",
           "tableFrom": "projects_exemplarity_indicators",
-          "tableTo": "project_exemplarity_indicators",
           "columnsFrom": [
             "exemplarity_indicator_id"
           ],
+          "tableTo": "project_exemplarity_indicators",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -2847,42 +2845,42 @@
         "projects_gallery_credits_project_id_projects_id_fk": {
           "name": "projects_gallery_credits_project_id_projects_id_fk",
           "tableFrom": "projects_gallery_credits",
-          "tableTo": "projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_gallery_credits_organization_id_organizations_id_fk": {
           "name": "projects_gallery_credits_organization_id_organizations_id_fk",
           "tableFrom": "projects_gallery_credits",
-          "tableTo": "organizations",
           "columnsFrom": [
             "organization_id"
           ],
+          "tableTo": "organizations",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         },
         "projects_gallery_credits_user_id_users_id_fk": {
           "name": "projects_gallery_credits_user_id_users_id_fk",
           "tableFrom": "projects_gallery_credits",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
@@ -2979,74 +2977,74 @@
         "projects_images_project_id_projects_id_fk": {
           "name": "projects_images_project_id_projects_id_fk",
           "tableFrom": "projects_images",
-          "tableTo": "projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_images_created_by_id_users_id_fk": {
           "name": "projects_images_created_by_id_users_id_fk",
           "tableFrom": "projects_images",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "created_by_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         },
         "projects_images_updated_by_id_users_id_fk": {
           "name": "projects_images_updated_by_id_users_id_fk",
           "tableFrom": "projects_images",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "updated_by_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "restrict"
         },
         "projects_images_type_id_project_image_types_id_fk": {
           "name": "projects_images_type_id_project_image_types_id_fk",
           "tableFrom": "projects_images",
-          "tableTo": "project_image_types",
           "columnsFrom": [
             "type_id"
           ],
+          "tableTo": "project_image_types",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "projects_images_storage_name_unique": {
           "name": "projects_images_storage_name_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "storage_name"
-          ]
+          ],
+          "nullsNotDistinct": false
         },
         "projects_images_project_id_index_unique": {
           "name": "projects_images_project_id_index_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "project_id",
             "index"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
@@ -3078,28 +3076,28 @@
         "projects_images_credits_image_id_projects_images_id_fk": {
           "name": "projects_images_credits_image_id_projects_images_id_fk",
           "tableFrom": "projects_images_credits",
-          "tableTo": "projects_images",
           "columnsFrom": [
             "image_id"
           ],
+          "tableTo": "projects_images",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_images_credits_credit_details_id_projects_gallery_credits_id_fk": {
           "name": "projects_images_credits_credit_details_id_projects_gallery_credits_id_fk",
           "tableFrom": "projects_images_credits",
-          "tableTo": "projects_gallery_credits",
           "columnsFrom": [
             "credit_details_id"
           ],
+          "tableTo": "projects_gallery_credits",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {
@@ -3141,29 +3139,29 @@
         "projects_images_t_lang_langs_lang_fk": {
           "name": "projects_images_t_lang_langs_lang_fk",
           "tableFrom": "projects_images_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_images_t_id_projects_images_id_fk": {
           "name": "projects_images_t_id_projects_images_id_fk",
           "tableFrom": "projects_images_t",
-          "tableTo": "projects_images",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "projects_images",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -3199,28 +3197,28 @@
         "projects_interventions_project_id_projects_id_fk": {
           "name": "projects_interventions_project_id_projects_id_fk",
           "tableFrom": "projects_interventions",
-          "tableTo": "projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_interventions_intervention_id_project_interventions_id_fk": {
           "name": "projects_interventions_intervention_id_project_interventions_id_fk",
           "tableFrom": "projects_interventions",
-          "tableTo": "project_interventions",
           "columnsFrom": [
             "intervention_id"
           ],
+          "tableTo": "project_interventions",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -3256,29 +3254,29 @@
         "projects_likes_user_id_users_id_fk": {
           "name": "projects_likes_user_id_users_id_fk",
           "tableFrom": "projects_likes",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_likes_project_id_projects_id_fk": {
           "name": "projects_likes_project_id_projects_id_fk",
           "tableFrom": "projects_likes",
-          "tableTo": "projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -3314,28 +3312,28 @@
         "projects_organizations_project_id_projects_id_fk": {
           "name": "projects_organizations_project_id_projects_id_fk",
           "tableFrom": "projects_organizations",
-          "tableTo": "projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_organizations_organization_id_organizations_id_fk": {
           "name": "projects_organizations_organization_id_organizations_id_fk",
           "tableFrom": "projects_organizations",
-          "tableTo": "organizations",
           "columnsFrom": [
             "organization_id"
           ],
+          "tableTo": "organizations",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -3378,29 +3376,29 @@
         "projects_publication_requests_project_id_projects_id_fk": {
           "name": "projects_publication_requests_project_id_projects_id_fk",
           "tableFrom": "projects_publication_requests",
-          "tableTo": "projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_publication_requests_requested_by_id_users_id_fk": {
           "name": "projects_publication_requests_requested_by_id_users_id_fk",
           "tableFrom": "projects_publication_requests",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "requested_by_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -3446,29 +3444,29 @@
         "projects_t_lang_langs_lang_fk": {
           "name": "projects_t_lang_langs_lang_fk",
           "tableFrom": "projects_t",
-          "tableTo": "langs",
-          "schemaTo": "i18n",
           "columnsFrom": [
             "lang"
           ],
+          "tableTo": "langs",
+          "schemaTo": "i18n",
           "columnsTo": [
             "lang"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_t_id_projects_id_fk": {
           "name": "projects_t_id_projects_id_fk",
           "tableFrom": "projects_t",
-          "tableTo": "projects",
           "columnsFrom": [
             "id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -3511,43 +3509,43 @@
         "projects_users_user_id_users_id_fk": {
           "name": "projects_users_user_id_users_id_fk",
           "tableFrom": "projects_users",
-          "tableTo": "users",
-          "schemaTo": "auth",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
+          "schemaTo": "auth",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_users_project_id_projects_id_fk": {
           "name": "projects_users_project_id_projects_id_fk",
           "tableFrom": "projects_users",
-          "tableTo": "projects",
           "columnsFrom": [
             "project_id"
           ],
+          "tableTo": "projects",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
         },
         "projects_users_role_user_roles_role_fk": {
           "name": "projects_users_role_user_roles_role_fk",
           "tableFrom": "projects_users",
-          "tableTo": "user_roles",
-          "schemaTo": "auth",
           "columnsFrom": [
             "role"
           ],
+          "tableTo": "user_roles",
+          "schemaTo": "auth",
           "columnsTo": [
             "role"
           ],
-          "onDelete": "set default",
-          "onUpdate": "cascade"
+          "onUpdate": "cascade",
+          "onDelete": "set default"
         }
       },
       "compositePrimaryKeys": {
@@ -3569,8 +3567,10 @@
     "i18n": "i18n"
   },
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "82d918d8-04f3-4404-99fc-1d7ee83de355",
+  "prevId": "58cb07ae-5a79-4c2d-a2a5-d2782bb55a85"
 }
