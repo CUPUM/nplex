@@ -5,7 +5,6 @@ import type { ToastParameters } from '$lib/builders/toasts.svelte';
 import type { ModeSetting } from '$lib/modes/constants';
 import type { Presentation } from '$lib/presentation/constants';
 import type { Session, User } from 'lucia';
-import type { ComponentType } from 'svelte';
 
 declare global {
 	namespace App {
@@ -31,11 +30,6 @@ declare global {
 			navbar?: {};
 			footer?: {
 				hidden?: boolean;
-			};
-			dashboard?: {
-				header?: ComponentType;
-				sidebar?: ComponentType;
-				footer?: ComponentType;
 			};
 		}
 	}
