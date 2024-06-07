@@ -17,6 +17,13 @@ hr {
 	border-top-width: var(--border-width-input);
 }
 
+[type='search'] {
+	&::-webkit-search-cancel-button,
+	&::-webkit-search-decoration {
+		appearance: none;
+	}
+}
+
 * {
 	outline-style: solid;
 	outline-color: transparent;
@@ -81,7 +88,10 @@ dialog {
 }
 
 :root {
-	--scroll-y: 0px;
+	--scroll-y: 0;
+	--scroll-x: 0;
+	--scroll-y-px: calc(var(--scroll-y) * 1px);
+	--scroll-x-px: calc(var(--scroll-x) * 1px);
 	position: relative;
 	font-size: 100%;
 	/* font-size: 93.75%; */
@@ -104,7 +114,7 @@ dialog {
 	flex-direction: column;
 	min-height: 100svh;
 	scale: 1;
-	transform-origin: 50% calc(var(--scroll-y) + 50vh);
+	transform-origin: 50% calc(var(--scroll-y-px) + 50vh);
 	transition:
 		background var(--transition-duration-fast) ease-out,
 		scale var(--transition-duration-slow) var(--transition-timing-function-out),
