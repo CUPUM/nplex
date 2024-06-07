@@ -1,3 +1,3 @@
-import { isOAuthProvider } from '$lib/crud/validation/auth';
+import { isIntegratedOAuthProvider } from '$lib/auth/constants';
 
-export const match = isOAuthProvider;
+export const match = isIntegratedOAuthProvider;
