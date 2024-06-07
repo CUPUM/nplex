@@ -1,5 +1,6 @@
-import { LANG_COLUMN_NAME, type LangColumn } from '$lib/db/constants';
-import { languages } from '$lib/db/schema/i18n';
+import type { LangColumn } from '$lib/db/columns';
+import { LANG_COLUMN_NAME } from '$lib/db/constants';
+import { languages } from '$lib/db/schema/i18n.server';
 import {
 	and,
 	eq,
@@ -30,3 +31,7 @@ export function joinTranslations<
 			and(eq(...equals), eq(translations[LANG_COLUMN_NAME], languages[LANG_COLUMN_NAME]))
 		);
 }
+
+// export function joinTranslation() {
+
+// }
