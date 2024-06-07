@@ -143,6 +143,19 @@ export class Dialog {
 	get closeAttributes() {
 		const _this = this;
 		return {
+			autofocus: true,
+			tabindex: '-1',
+			onclick(e: MouseEvent) {
+				if (!e.defaultPrevented) {
+					_this.close(e);
+				}
+			},
+		};
+	}
+
+	get itemAttributes() {
+		const _this = this;
+		return {
 			onclick(e: MouseEvent) {
 				if (!e.defaultPrevented) {
 					_this.close(e);
