@@ -14,7 +14,8 @@
 	"files.associations": {
 		"*.svx": "markdown",
 		"*.mdx": "markdown",
-		"*.json": "jsonc"
+		"*.json": "jsonc",
+		"*.css": "tailwindcss"
 	},
 	"[svelte]": {
 		"editor.defaultFormatter": "svelte.svelte-vscode"
@@ -24,9 +25,17 @@
 		"editor.formatOnPaste": false,
 		"editor.formatOnType": false
 	},
+	"editor.quickSuggestions": {
+		"strings": "on"
+	},
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"typescript.preferences.quoteStyle": "single",
 	"svelte.enable-ts-plugin": true,
 	"svelte.plugin.css.globals": "src/**/*.css",
-	"tailwindCSS.rootFontSize": 15
+	"tailwindCSS.rootFontSize": 15,
+	"tailwindCSS.emmetCompletions": true,
+	"tailwindCSS.experimental.configFile": "src/app.css",
+	"tailwindCSS.includeLanguages": {
+		"plaintext": "html"
+	}
 }
