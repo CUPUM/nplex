@@ -8,7 +8,7 @@
 </script>
 
 <aside
-	class="bg-popover relative max-w-sm min-w-xs overflow-hidden rounded-sm text-base text-sm shadow-lg"
+	class="bg-popover relative max-w-sm overflow-hidden rounded-sm text-base text-sm shadow-lg"
 	{...instance.toastAttributes}
 	in:fly|global={{ y: '100%', easing: expoOut, duration: 300, opacity: 0 }}
 	out:fly|global={{ x: '100%', easing: cubicOut, duration: 150, opacity: 0 }}

@@ -14,6 +14,7 @@
 		height = 24,
 		viewBox = '0 0 24 24',
 		preserveAspectRatio = 'xMidYMid',
+		'aria-busy': ariaBusy = true,
 		...restProps
 	}: {
 		speed?: number;
@@ -47,6 +48,7 @@
 	{viewBox}
 	{preserveAspectRatio}
 	{...restProps}
+	aria-busy={ariaBusy}
 	style:--spinner-speed={speed}
 	in:transform|global={{
 		duration: intro ? 750 : 0,

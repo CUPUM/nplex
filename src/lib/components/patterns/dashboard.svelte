@@ -34,13 +34,13 @@
 	{/if}
 	{#if ctx.sidebar}
 		<nav
-			class="grid-column-[sidebar] px-gutter gap-gutter top-navbar-height sticky flex flex-col self-start"
+			class="grid-column-[sidebar] pl-gutter gap-gutter w-sidebar-width top-navbar-height sticky flex flex-col self-start"
 			transition:slide={{ axis: 'x' }}
 		>
 			{@render ctx.sidebar()}
 		</nav>
 	{/if}
-	<article class="grid-column-[main]">
+	<article class="grid-column-[main] px-gutter gap-gutter flex flex-col">
 		{@render children()}
 	</article>
 	{#if ctx.footer}
@@ -49,3 +49,33 @@
 		</footer>
 	{/if}
 </section>
+
+<style>
+	* :global(.dashboard-section) {
+		display: flex;
+		flex-direction: column;
+		background: var(--background-color-section);
+		font-size: var(--font-size-sm);
+		border-radius: var(--radius-lg);
+	}
+
+	* :global(.dashboard-section-content) {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-gutter);
+		align-items: flex-start;
+		border-radius: inherit;
+		padding: var(--spacing-lg);
+	}
+
+	* :global(.dashboard-section-title) {
+		align-self: flex-start;
+		font-size: var(--font-size-lg);
+		font-weight: var(--font-weight-bold);
+		padding: var(--spacing-gutter);
+		padding-inline: calc(1.5 * var(--spacing-gutter));
+		margin: var(--spacing-gutter);
+		background: var(--background-color-popover);
+		border-radius: var(--radius-md);
+	}
+</style>

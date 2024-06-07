@@ -41,7 +41,7 @@
 </script>
 
 <menu
-	class="p-gutter gap-menu-gutter bg-section relative flex flex-col rounded-lg"
+	class="p-menu-padding gap-menu-gutter bg-section whitespa relative flex flex-col rounded-lg"
 	in:scale={{ start: 0.95, duration: 750, easing: expoOut }}
 >
 	{#if restProps['aria-current']}
@@ -55,12 +55,12 @@
 		<svelte:element
 			this={href ? 'a' : 'legend'}
 			{...restProps}
-			class="text-base-soft aria-[current]:text-primary px-input-gutter pb-menu-gutter relative text-xs font-normal transition-all aria-[current]:font-bold"
+			class="text-base-softer aria-[current]:text-primary px-input-padding pb-menu-gutter relative whitespace-nowrap text-xs font-normal transition-all aria-[current]:font-bold"
 		>
 			{@render legend()}
 		</svelte:element>
 	{/if}
-	<ul class="nest flex flex-col text-sm">
+	<ul class="nest flex flex-col text-sm" style:--spacing-input-nest="0.25em">
 		{@render children()}
 	</ul>
 </menu>

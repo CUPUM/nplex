@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Component, ComponentType } from 'svelte';
+	import { type Component, type ComponentType } from 'svelte';
 	import type { SVGAttributes } from 'svelte/elements';
 	import Spinner from '../primitives/spinner.svelte';
 
