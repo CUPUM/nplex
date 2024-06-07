@@ -156,7 +156,7 @@
 	/* Nav */
 
 	&:is(.button-nav) {
-		justify-content: space-between;
+		justify-content: flex-start;
 		--ripple-color: rgba(255, 255, 255, 0.15);
 		--button-color: var(--text-color-input-soft);
 		--button-background: transparent;
@@ -195,11 +195,11 @@
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	gap: calc(var(--spacing-input-gutter) / 2);
+	gap: var(--spacing-input-gutter);
 	padding-top: 0;
 	padding-bottom: 0;
-	padding-left: var(--spacing-input-gutter);
-	padding-right: var(--spacing-input-gutter);
+	padding-left: var(--spacing-input-padding);
+	padding-right: var(--spacing-input-padding);
 	height: var(--spacing-input);
 	min-height: var(--spacing-input);
 	min-width: fit-content;
@@ -214,11 +214,11 @@
 
 	/* Press animation */
 
-	&:active {
+	&:active:not(:disabled) {
 		animation: var(--animate-press);
 	}
 
-	&:active:hover {
+	&:active:hover:not(:disabled) {
 		scale: var(--scale-press);
 	}
 
@@ -267,8 +267,8 @@
 		--button-radius: var(--radius-full);
 
 		&:not(.aspect-square) {
-			padding-left: calc(var(--spacing-input-gutter) * 1.25);
-			padding-right: calc(var(--spacing-input-gutter) * 1.25);
+			padding-left: calc(var(--spacing-input-padding) * 1.25);
+			padding-right: calc(var(--spacing-input-padding) * 1.25);
 		}
 	}
 
@@ -348,7 +348,8 @@
 
 	/* Busy */
 
-	&[aria-busy='true'] {
+	&[aria-busy='true'],
+	&:has([aria-busy='true']) {
 		color: var(--button-busy-color, var(--button-color));
 		text-decoration: var(--button-busy-text-decoration, var(--button-text-decoration));
 		text-decoration-color: var(--button-busy-text-decoration-color, var(--button-text-decoration-color));

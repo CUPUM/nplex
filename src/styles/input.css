@@ -77,7 +77,7 @@
 		--input-hover-background: var(--background-color-input);
 		--input-hover-border-color: transparent;
 		--input-focus-color: var(--text-color-input-strong);
-		--input-focus-background: var(--background-color-popover);
+		--input-focus-background: transparent;
 		--input-focus-border-color: transparent;
 		--input-disabled-color: var(--text-color-input-soft);
 		--input-disabled-background: ;
@@ -196,7 +196,7 @@
 		opacity: var(--opacity-softer);
 		white-space: nowrap;
 		padding-block: 0;
-		padding-inline: calc(var(--spacing-input-gutter) / 2);
+		padding-inline: calc(var(--spacing-input-padding) / 2);
 		transition: all var(--transition-duration-medium) var(--transition-timing-function-out);
 	}
 
@@ -232,8 +232,8 @@
 
 	/* Hover */
 
-	&:is(.input):hover:not(:focus),
-	&:is(.input-group):has(.input:hover:not(:focus)) {
+	&:is(.input):hover:not(:focus):not(:disabled),
+	&:is(.input-group):not(:disabled):has(.input:hover:not(:focus, :disabled)) {
 		color: var(--input-hover-color, var(--input-color));
 		background: var(--input-hover-background, var(--input-background));
 
@@ -395,7 +395,7 @@
 /* Standalone input */
 
 .input {
-	padding-inline: var(--spacing-input-gutter);
+	padding-inline: var(--spacing-input-padding);
 	text-overflow: ellipsis;
 	min-width: var(--spacing-input);
 
@@ -406,6 +406,10 @@
 		padding-block: calc(var(--spacing-input) / 2 - var(--input-line-height) * 1em / 2);
 		line-height: var(--input-line-height);
 		min-height: var(--spacing-input);
+	}
+
+	&:is(label) {
+		cursor: pointer;
 	}
 }
 
@@ -438,7 +442,7 @@
 	}
 
 	:is(.input-peer, .lucide-icon, .input-icon) + .input {
-		padding-left: calc(var(--spacing-input-gutter) - var(--input-nest));
+		padding-left: calc(var(--spacing-input-padding) - var(--input-nest));
 	}
 
 	.input-affix + .input {
@@ -449,15 +453,15 @@
 		padding-left: 0;
 	}
 
-	:is(.input-icon, .lucide-icon):last-child:not(.input :is(.input-icon, .lucide-icon)) {
-		margin-right: var(--spacing-input-gutter);
+	:is(.input-icon, .lucide-icon):last-child:not(:is(.input, .input-peer) :is(.input-icon, .lucide-icon)) {
+		margin-right: var(--spacing-input-padding);
 	}
 
 	.input-peer + :is(.input-icon, .lucide-icon) {
-		margin-left: calc(var(--spacing-input-gutter) - var(--input-nest));
+		margin-left: calc(var(--spacing-input-padding) - var(--input-nest));
 	}
 
-	:is(.input-icon, .lucide-icon):first-child:not(.input :is(.input-icon, .lucide-icon)) {
-		margin-left: var(--spacing-input-gutter);
+	:is(.input-icon, .lucide-icon):first-child:not(:is(.input, .input-peer) :is(.input-icon, .lucide-icon)) {
+		margin-left: var(--spacing-input-padding);
 	}
 }

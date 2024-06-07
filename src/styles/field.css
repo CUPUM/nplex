@@ -17,9 +17,22 @@
 		}
 	}
 
+	&:focus-within {
+		.field-label {
+			color: var(--color-primary);
+		}
+	}
+
 	&:has([aria-invalid='true'], [data-error='true']) {
 		.field-label {
 			color: var(--color-error-soft);
+		}
+	}
+
+	&:disabled,
+	&:has(> :disabled, > [data-disabled='true'], [aria-disabled='true']) {
+		.field-label {
+			opacity: var(--opacity-soft);
 		}
 	}
 }

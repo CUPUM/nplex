@@ -1,7 +1,7 @@
 /* Small, compact variants */
 .compact {
 	--spacing-input: 2.5em;
-	--spacing-input-gutter: 1em;
+	--spacing-input-padding: 1em;
 	--spacing-input-icon: 1em;
 	--spacing-input-nest: 0.25rem;
 	--radius-input: var(--radius-xs);

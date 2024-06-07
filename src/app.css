@@ -10,6 +10,9 @@
 @import 'styles/input.css' layer(components);
 @import 'styles/navbar.css' layer(components);
 @import 'styles/nest.css' layer(components);
+@import 'styles/prose.css' layer(components);
+/* @import 'styles/switch.css' layer(components); */
+/* @import 'styles/toggle.css' layer(components); */
 @import 'tailwindcss/utilities' layer(utilities);
 
 @theme {
@@ -29,9 +32,9 @@
 
 	/* Text sizes */
 
-	--font-size-xs: 0.75rem;
+	--font-size-xs: 0.694rem;
 	--font-size-xs--line-height: 1rem;
-	--font-size-sm: 0.875rem;
+	--font-size-sm: 0.833rem;
 	--font-size-sm--line-height: 1.25rem;
 	--font-size-md: 1rem;
 	--font-size-md--line-height: 1.5rem;
@@ -98,14 +101,19 @@
 	--spacing-lg: 2.5rem;
 	--spacing-xl: 5rem;
 	--spacing-2xl: 10rem;
-	--spacing-gutter: var(--spacing-md);
+	--spacing-padding: var(--spacing-sm); /* app, container, layout padding */
+	--spacing-gutter: var(--spacing-md); /* app, container, layout gap */
 	--spacing-outline-focus: var(--outline-width-focus);
 	--spacing-input: 3.5em;
-	--spacing-input-nest: 0.35rem;
 	--spacing-input-icon: 1.25em;
-	--spacing-input-gutter: 1.25em;
+	--spacing-input-nest: 0.35rem;
+	--spacing-input-padding: 1.25em;
+	--spacing-input-gutter: calc(var(--spacing-input-padding) / 2);
 	--spacing-field-gutter: 0.5em;
+	--spacing-menu-padding: var(--spacing-md);
 	--spacing-menu-gutter: calc(2 * var(--outline-width-focus));
+	--spacing-card-padding: var(--spacing-lg);
+	--spacing-card-gutter: var(--spacing-sm);
 	--spacing-sidebar-width: 16rem;
 	--spacing-navbar-height: calc(2 * var(--spacing-gutter) + 3.5 * var(--font-size-sm)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
 	--spacing-main-full-height: calc(100svh - var(--spacing-navbar-height));
@@ -248,8 +256,9 @@
 	--background-color-input-success-strong: color-mix(in srgb, var(--color-success) 12%, transparent);
 
 	--text-color-pure: black;
-	--text-color-base-soft: lch(50% 4 90);
 	--text-color-base: lch(25% 8 92);
+	--text-color-base-soft: lch(55% 4 90);
+	--text-color-base-softer: lch(72% 4 90);
 	--text-color-base-strong: lch(5% 12 94);
 	--text-color-tooltip-soft: hsl(44, 8%, 50%);
 	--text-color-tooltip: hsl(44, 20%, 78%);
@@ -305,6 +314,17 @@
 			transform: scale(1);
 		}
 	}
+
+	@keyframes transform {
+		from {
+			opacity: var(--animation-opacity-start, 0);
+			translate: var(--animation-translate-start, 0 0);
+		}
+		to {
+			opacity: var(--animation-opacity-end, 1);
+			translate: var(--animation-translate-start, 0 0);
+		}
+	}
 }
 
 [data-mode='dark'] {
@@ -332,8 +352,9 @@
 	--background-color-tooltip: hsl(220, 12%, 10%, 96%);
 
 	--text-color-pure: white;
-	--text-color-base-soft: hsl(45, 6%, 36%);
 	--text-color-base: hsl(45, 10%, 74%);
+	--text-color-base-soft: hsl(45, 6%, 40%);
+	--text-color-base-softer: hsl(45, 6%, 25%);
 	--text-color-base-strong: hsl(45, 18%, 98%);
 	--text-color-input-soft: hsl(80, 4%, 60%);
 	--text-color-input: hsl(80, 8%, 78%);

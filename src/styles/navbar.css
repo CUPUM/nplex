@@ -1,9 +1,14 @@
-#navbar {
-	padding: var(--spacing-gutter);
+#navbar-wrapper {
+	padding-inline: var(--spacing-padding);
 	position: sticky;
 	top: 0;
 	z-index: var(--z-index-frontmost);
 	pointer-events: none;
+}
+
+#navbar {
+	padding-block: var(--spacing-gutter);
+	margin-inline: auto;
 	display: grid;
 	grid-template-columns: [site-start]1fr[site-end explore-start]auto[explore-end user-start]1fr[user-end];
 	width: 100%;
@@ -57,7 +62,7 @@
 	font-size: var(--font-size-xs);
 	color: var(--text-color-base-soft);
 	font-weight: var(--font-weight-thin);
-	padding-inline: var(--spacing-input-gutter);
+	padding-inline: var(--spacing-input-padding);
 	padding-block: var(--spacing-input-nest);
 	display: flex;
 	flex-direction: row;
