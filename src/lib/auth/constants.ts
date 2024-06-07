@@ -1,40 +1,33 @@
 import * as m from '$i18n/messages';
-import type { ValueOf } from 'type-fest';
+import type { ConditionalKeys, ValueOf } from 'type-fest';
 
-export const USER_ROLES = {
+export const ROLES = {
 	ADMIN: 'admin',
 	EDITOR: 'editor',
 	VISITOR: 'visitor',
 } as const;
 
-export type UserRole = ValueOf<typeof USER_ROLES>;
+export type Role = ValueOf<typeof ROLES>;
 
-export const USER_ROLES_ARR = Object.values(USER_ROLES);
+export const ROLES_ARR = Object.values(ROLES);
 
-export const USER_ROLE_DEFAULT = USER_ROLES.VISITOR;
+export function isRole(maybeRole: unknown): maybeRole is Role {
+	return ROLES_ARR.indexOf(maybeRole as Role) > -1;
+}
 
-export const USER_ROLES_DETAILS = {
-	[USER_ROLES.ADMIN]: {
+export const ROLE_DEFAULT = ROLES.VISITOR;
+
+export const ROLES_DETAILS = {
+	[ROLES.ADMIN]: {
 		name: m.role_admin(),
 	},
-	[USER_ROLES.EDITOR]: {
+	[ROLES.EDITOR]: {
 		name: m.role_editor(),
 	},
-	[USER_ROLES.VISITOR]: {
+	[ROLES.VISITOR]: {
 		name: m.role_visitor(),
 	},
-} satisfies Record<UserRole, { name: string }>;
-
-export const OAUTH_PROVIDERS = {
-	GITHUB: 'github',
-	FACEBOOK: 'facebook',
-	LINKEDIN: 'linkedin',
-	GOOGLE: 'google',
-} as const;
-
-export type OAuthProvider = ValueOf<typeof OAUTH_PROVIDERS>;
-
-export const OAUTH_PROVIDERS_ARR = Object.values(OAUTH_PROVIDERS);
+} satisfies Record<Role, { name: string }>;
 
 export const TOKEN_EXPIRY = 7_200_000; // 2 hours
 
@@ -47,25 +40,55 @@ export const AUTH_TOKEN_ERRORS = {
 
 export type AuthTokenError = ValueOf<typeof AUTH_TOKEN_ERRORS>;
 
+export const OAUTH_PROVIDERS = {
+	GITHUB: 'github',
+	FACEBOOK: 'facebook',
+	LINKEDIN: 'linkedin',
+	GOOGLE: 'google',
+} as const;
+
+export type OAuthProvider = ValueOf<typeof OAUTH_PROVIDERS>;
+
+export const OAUTH_PROVIDERS_ARR = Object.values(OAUTH_PROVIDERS);
+
+export function isOAuthProvider(maybeOAuthProvider: unknown): maybeOAuthProvider is OAuthProvider {
+	return OAUTH_PROVIDERS_ARR.indexOf(maybeOAuthProvider as OAuthProvider) > -1;
+}
+
 export const OAUTH_PROVIDERS_DETAILS = {
 	[OAUTH_PROVIDERS.GITHUB]: {
 		name: 'GitHub',
-		disabled: false,
 		cookie: 'github_oauth_state',
 	},
 	[OAUTH_PROVIDERS.FACEBOOK]: {
 		name: 'Facebook',
-		disabled: true,
-		cookie: '',
 	},
 	[OAUTH_PROVIDERS.LINKEDIN]: {
 		name: 'LinkedIn',
-		disabled: true,
-		cookie: '',
 	},
 	[OAUTH_PROVIDERS.GOOGLE]: {
 		name: 'Google',
-		disabled: true,
-		cookie: '',
 	},
-} satisfies Record<OAuthProvider, { name: string; disabled: boolean; cookie: string }>;
+} as const satisfies Record<
+	OAuthProvider,
+	{ name: string } & ({ cookie?: undefined } | { cookie: string })
+>;
+
+export type IntegratedOAuthProvider = ConditionalKeys<
+	typeof OAUTH_PROVIDERS_DETAILS,
+	{ cookie: string }
+>;
+
+export const INTEGRATED_OAUTH_PROVIDERS_ARR = OAUTH_PROVIDERS_ARR.filter(
+	(p) => 'cookie' in OAUTH_PROVIDERS_DETAILS[p]
+) as IntegratedOAuthProvider[];
+
+export function isIntegratedOAuthProvider(
+	maybeIntegratedOAuthProvider: unknown
+): maybeIntegratedOAuthProvider is IntegratedOAuthProvider {
+	return (
+		INTEGRATED_OAUTH_PROVIDERS_ARR.indexOf(
+			maybeIntegratedOAuthProvider as IntegratedOAuthProvider
+		) > -1
+	);
+}

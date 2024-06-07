@@ -7,7 +7,8 @@ import { auth } from './auth.server';
 const handle = (async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(auth.sessionCookieName);
 	if (!sessionId) {
-		event.locals.authed = null;
+		event.locals.user = null;
+		event.locals.session = null;
 		return await resolve(event);
 	}
 	const { session, user } = await auth.validateSession(sessionId);
@@ -17,7 +18,6 @@ const handle = (async ({ event, resolve }) => {
 			path: '.',
 			...sessionCookie.attributes,
 		});
-		event.locals.authed = { user, session };
 	}
 	if (!session) {
 		const sessionCookie = auth.createBlankSessionCookie();
@@ -25,8 +25,9 @@ const handle = (async ({ event, resolve }) => {
 			path: '.',
 			...sessionCookie.attributes,
 		});
-		event.locals.authed = null;
 	}
+	event.locals.user = user;
+	event.locals.session = session;
 	return await resolve(event);
 }) satisfies Handle;
 
