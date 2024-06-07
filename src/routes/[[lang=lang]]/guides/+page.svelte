@@ -1,16 +1,7 @@
 <script lang="ts">
-	import * as m from '$i18n/messages';
+	let { data } = $props();
 </script>
 
-<article>
-	<h1 class="h2">{m.coming_soon()}</h1>
+<article class="prose mx-auto max-w-md">
+	<svelte:component this={data.content} />
 </article>
-
-<style>
-	article {
-		display: flex;
-		flex: 1;
-		align-items: center;
-		justify-content: center;
-	}
-</style>
