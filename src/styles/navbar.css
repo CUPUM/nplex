@@ -1,13 +1,24 @@
 #navbar-wrapper {
 	padding-inline: var(--spacing-padding);
+	margin-bottom: var(--spacing-padding);
 	position: sticky;
 	top: 0;
 	z-index: var(--z-index-frontmost);
-	pointer-events: none;
+
+	&::after {
+		--offset: 50;
+		content: '';
+		z-index: -1;
+		position: absolute;
+		inset: 0;
+		translate: 0 min(0%, calc(-100% - var(--offset) * 1px + var(--scroll-y-px)));
+		background: var(--background-color-base);
+		transition: all 50ms ease-out;
+	}
 }
 
 #navbar {
-	padding-block: var(--spacing-gutter);
+	padding-block: var(--spacing-padding);
 	margin-inline: auto;
 	display: grid;
 	grid-template-columns: [site-start]1fr[site-end explore-start]auto[explore-end user-start]1fr[user-end];
