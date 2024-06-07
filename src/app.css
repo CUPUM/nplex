@@ -115,7 +115,7 @@
 	--spacing-card-padding: var(--spacing-lg);
 	--spacing-card-gutter: var(--spacing-sm);
 	--spacing-sidebar-width: 16rem;
-	--spacing-navbar-height: calc(2 * var(--spacing-gutter) + 3.5 * var(--font-size-sm)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
+	--spacing-navbar-height: calc(3 * var(--spacing-padding) + 3.5 * var(--font-size-sm)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
 	--spacing-main-full-height: calc(100svh - var(--spacing-navbar-height));
 
 	/* Radii */
