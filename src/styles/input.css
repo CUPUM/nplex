@@ -49,7 +49,7 @@
 		--input-hover-color: var(--text-color-input);
 		--input-hover-background: var(--background-color-input);
 		--input-focus-color: var(--text-color-input-strong);
-		--input-focus-background: var(--background-color-popover);
+		--input-focus-background: transparent;
 		--input-disabled-color: ;
 		--input-disabled-background: ;
 		--input-busy-color: ;
@@ -100,7 +100,7 @@
 		--input-hover-color: var(--text-color-input-strong);
 		--input-hover-background: var(--background-color-input);
 		--input-focus-color: var(--text-color-input-strong);
-		--input-focus-background: var(--background-color-popover);
+		--input-focus-background: transparent;
 		--input-disabled-color: var(--text-color-input-soft);
 		--input-disabled-background: ;
 		--input-busy-color: ;
