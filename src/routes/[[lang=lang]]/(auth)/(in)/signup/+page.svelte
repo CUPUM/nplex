@@ -54,7 +54,6 @@
 					type="button"
 					use:ripple
 					onclick={(e) => {
-						console.log(e);
 						showPassword = !showPassword;
 					}}
 				>

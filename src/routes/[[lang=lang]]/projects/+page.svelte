@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { link } from '$lib/i18n/location';
 	import { cubicOut, expoOut } from 'svelte/easing';
@@ -121,4 +121,13 @@
 	.no-title {
 		color: var(--muted-fg);
 	}
+</style> -->
+
+<script lang="ts">
+	let { data } = $props();
+</script>
+
+<h1>Projects</h1>
+
+<style>
 </style>

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import Tooltip from '$lib/components/Tooltip.svelte';
-	import ButtonIconPencil from '$lib/components/patterns/ButtonIconPencil.svelte';
-	import ButtonIconPlus from '$lib/components/patterns/ButtonIconPlus.svelte';
+	import ButtonIconPencil from '$lib/components/patterns/button-icon-pencil.svelte';
+	import ButtonIconPlus from '$lib/components/patterns/button-icon-plus.svelte';
 	import { melt, type DialogElements } from '@melt-ui/svelte';
 	import { Trash2 } from 'lucide-svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';

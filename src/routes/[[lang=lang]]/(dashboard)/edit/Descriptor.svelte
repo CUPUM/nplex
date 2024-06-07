@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
@@ -201,4 +201,4 @@
 			}
 		}
 	}
-</style>
+</style> -->

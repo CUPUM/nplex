@@ -11,6 +11,6 @@
 
 <Variants title="Slider" {data}>
 	{#snippet children(datum)}
-		<input type="range" name="" id="" />
+		<input type="range" name="" id="" dir="rlt" />
 	{/snippet}
 </Variants>

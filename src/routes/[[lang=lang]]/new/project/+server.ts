@@ -1,7 +1,7 @@
-import { authorize } from '$lib/auth/rbac.server';
 import { STATUS_CODES } from '$lib/common/constants';
+import { authorize } from '$lib/crud/authorization/rbac.server';
 import { db } from '$lib/db/db.server';
-import { projects } from '$lib/db/schema/public';
+import { projects } from '$lib/db/schema/public.server';
 import { error, redirect } from '@sveltejs/kit';
 
 export const GET = async (event) => {

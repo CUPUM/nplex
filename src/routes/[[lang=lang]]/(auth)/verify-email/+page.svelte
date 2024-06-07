@@ -1,31 +1,12 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { EMAIL_VERIFICATION_CODE_LENGTH } from '$lib/auth/constants';
-	import { superForm } from '$lib/crud/validation/forms/super-form.js';
-	import { createPinInput, melt } from '@melt-ui/svelte';
+	import { USER_EMAIL_VERIFICATION_CODE_LENGTH } from '$lib/db/constants';
 	import { MailWarning } from 'lucide-svelte';
+	import { superForm } from 'sveltekit-superforms';
 
-	export let data;
+	let { data } = $props();
 
-	const {
-		form,
-		enhance,
-		elements: {
-			submitter: { root: submitter },
-		},
-	} = superForm(data.form);
-
-	const {
-		elements: { root, input },
-		states: { value },
-	} = createPinInput({
-		onValueChange({ next }) {
-			form.update((v) => ({ ...v, code: next.join('') }));
-			return next;
-		},
-	});
-
-	$: value.set($form.code.split(''));
+	const { enhance, form, errors } = superForm(data.form);
 </script>
 
 <form use:enhance method="POST">
@@ -33,12 +14,12 @@
 		{m.verify_email_title()}
 	</h1>
 	<p>{m.verify_email_body()}</p>
-	<fieldset class="pin" use:melt={$root}>
-		{#each { length: EMAIL_VERIFICATION_CODE_LENGTH } as _}
-			<input class="input center" type="text" use:melt={$input()} />
+	<fieldset>
+		{#each { length: USER_EMAIL_VERIFICATION_CODE_LENGTH } as _, i}
+			<input class="input center" type="text" />
 		{/each}
 	</fieldset>
-	<button class="button cta" type="submit" formaction="">
+	<button class="button button-cta" type="submit">
 		{m.auth_verify_email()}
 	</button>
 	<hr />

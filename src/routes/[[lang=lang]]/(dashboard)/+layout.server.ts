@@ -1,4 +1,4 @@
-import { authorize } from '$lib/auth/rbac.server';
+import { authorize } from '$lib/crud/authorization/rbac.server';
 import { db } from '$lib/db/db.server';
 import {
 	organizations,
@@ -6,8 +6,9 @@ import {
 	projects,
 	projectsImages,
 	projectsTranslations,
-} from '$lib/db/schema/public';
+} from '$lib/db/schema/public.server';
 import { PRESENTATIONS } from '$lib/presentation/constants';
+import { setEventPresentation } from '$lib/presentation/event';
 import { and, eq, getTableColumns } from 'drizzle-orm';
 
 export const load = async (event) => {
@@ -44,7 +45,7 @@ export const load = async (event) => {
 		);
 
 	return {
-		setout: event.locals.setArrangement(PRESENTATIONS.FULL_WIDTH),
+		...setEventPresentation(event, PRESENTATIONS.FULL_WIDTH),
 		editableProjects,
 		editableOrganizations,
 	};

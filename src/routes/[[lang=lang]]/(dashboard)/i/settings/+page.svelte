@@ -1,14 +1,13 @@
 <script lang="ts">
-	import SettingsGeneral from './SettingsGeneral.svelte';
-	import SettingsDelete from './SettingsManage.svelte';
-	import SettingsPermissions from './SettingsPermissions.svelte';
+	import FormUserSettingsProfile from './form-user-settings-profile.svelte';
 
-	export let data;
+	let { data } = $props();
 </script>
 
-<SettingsGeneral data={data.generalForm} publicEmailVerified={data.publicEmailVerified} />
-<SettingsPermissions data={data.permissionsForm} USER_ROLES={data.USER_ROLES} />
-<SettingsDelete data={data.manageForm} />
+<FormUserSettingsProfile {data} />
+
+<!-- <SettingsPermissions data={data.permissionsForm} USER_ROLES={data.USER_ROLES} /> -->
+<!-- <SettingsDelete data={data.manageForm} /> -->
 
 <!-- 
 <DashboardForm {enhance} action="?/update">

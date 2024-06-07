@@ -1,9 +1,9 @@
 import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
 import { STATUS_CODES } from '$lib/common/constants';
-import { signupEmailPasswordSchema } from '$lib/crud/validation/auth';
+import { signupEmailPasswordSchema } from '$lib/crud/validation/users';
 import { db } from '$lib/db/db.server';
-import { emailVerificationCodes, users } from '$lib/db/schema/auth';
+import { emailVerificationCodes, users } from '$lib/db/schema/users.server';
 import { EMAIL_SENDERS } from '$lib/email/constants';
 import { mail, renderEmail } from '$lib/email/email.server';
 import EmailVerifyEmail from '$lib/email/templates/email-verify-email.svelte';
@@ -14,8 +14,8 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	if (event.locals.authed) {
-		if (event.locals.authed.user.email && !event.locals.authed.user.emailVerified) {
+	if (event.locals.user) {
+		if (event.locals.user.email && !event.locals.user.emailVerified) {
 			redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
 		}
 		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
@@ -41,7 +41,7 @@ export const actions = {
 			if (existingUser) {
 				return message(
 					form,
-					{ title: 'User already exists', description: 'The email is already used' },
+					{ content: { title: 'User already exists', body: 'The email is already used' } },
 					{ status: STATUS_CODES.BAD_REQUEST }
 				);
 			}

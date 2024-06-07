@@ -8,9 +8,16 @@
 
 	const data = [
 		{ name: 'Default', options: undefined },
-		{ name: 'Default', options: undefined, meta: true },
+		{ name: 'Meta', options: undefined, meta: true },
+		{
+			name: 'With confirm',
+			options: { beforeClose: () => confirm('You sure bout that?') },
+			meta: true,
+		},
 		{ name: 'Non-modal', options: { modal: false } },
 	];
+
+	let dialog: HTMLDialogElement;
 </script>
 
 <Variants title="Dialog" {data}>
@@ -18,46 +25,6 @@
 		{@const instance = new Dialog(datum.options)}
 		<button class="button" {...instance.triggerAttributes} use:ripple>
 			{datum.name}
-			{datum.meta ? ' (meta)' : ''}
-		</button>
-		<dialog
-			class="dialog"
-			{...instance.dialogAttributes}
-			use:instance.dialogAction
-			data-meta-modal={datum.meta || undefined}
-		>
-			<h1 class="dialog-title">Dialog title</h1>
-			<section class="dialog-section">
-				<p class="dialog-text">
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis voluptates accusantium
-					distinctio maiores doloremque dignissimos reprehenderit, culpa provident modi possimus.
-				</p>
-				<p class="dialog-text">
-					Maiores perferendis in harum, id corrupti obcaecati illum velit explicabo, fuga, ipsam
-					cumque sint vero recusandae totam?
-				</p>
-			</section>
-			<section class="dialog-section">
-				<p class="dialog-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-				<menu class="dialog-menu">
-					<button class="button" data-danger {...instance.closeAttributes}>
-						Close <X />
-					</button>
-				</menu>
-			</section>
-			<menu class="dialog-menu">
-				<button class="button" data-danger {...instance.closeAttributes}>
-					Close <X />
-				</button>
-			</menu>
-		</dialog>
-	{/snippet}
-</Variants>
-<Variants title="Conditionnally rendered dialog" {data}>
-	{#snippet children(datum)}
-		{@const instance = new Dialog(datum.options)}
-		<button class="button" {...instance.triggerAttributes} use:ripple>
-			{datum.name}{datum.meta ? ' (meta)' : ''}
 		</button>
 		{#if instance.open}
 			<dialog

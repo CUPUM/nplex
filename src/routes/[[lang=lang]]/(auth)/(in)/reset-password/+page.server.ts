@@ -1,8 +1,8 @@
 import * as m from '$i18n/messages';
 import { STATUS_CODES } from '$lib/common/constants';
-import { emailPasswordResetSchema } from '$lib/crud/validation/auth';
+import { emailPasswordResetSchema } from '$lib/crud/validation/users';
 import { db } from '$lib/db/db.server';
-import { passwordResetTokens, users } from '$lib/db/schema/auth';
+import { passwordResetTokens, users } from '$lib/db/schema/users.server';
 import { EMAIL_SENDERS } from '$lib/email/constants';
 import { mail, renderEmail } from '$lib/email/email.server';
 import EmailResetPassword from '$lib/email/templates/email-reset-password.svelte';
@@ -12,7 +12,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	if (event.locals.authed) {
+	if (event.locals.user) {
 		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
 	}
 	const form = await superValidate(zod(emailPasswordResetSchema));
@@ -50,6 +50,11 @@ export const actions = {
 			subject: m.email_reset_password_subject(),
 			html: renderEmail(EmailResetPassword, { props: inserted }),
 		});
-		return message(form, { title: m.success(), description: m.auth_verify_email_sent() });
+		return message(form, {
+			content: {
+				title: m.success(),
+				body: m.auth_verify_email_sent(),
+			},
+		});
 	},
 };

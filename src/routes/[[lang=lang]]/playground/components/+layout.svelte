@@ -12,6 +12,7 @@
 		{ subRoute: 'switch', name: 'Switch' },
 		{ subRoute: 'slider', name: 'Slider' },
 		{ subRoute: 'dialog', name: 'Dialog' },
+		{ subRoute: 'toast', name: 'Toast' },
 	];
 </script>
 
@@ -23,7 +24,7 @@
 			{#each components as c}
 				<a
 					{...linkAttributes(`/playground/components/${c.subRoute}`)}
-					class="button button-nav justify-start font-bold"
+					class="button button-nav font-bold"
 					use:ripple
 				>
 					{c.name}

@@ -1,6 +1,6 @@
 import { EMAIL_HOST, EMAIL_PASSWORD, EMAIL_PORT, EMAIL_USER } from '$env/static/private';
 import { createTransport } from 'nodemailer';
-import type { ComponentProps, ComponentType, SvelteComponent } from 'svelte';
+import type { Component } from 'svelte';
 import { render } from 'svelte/server';
 
 /**
@@ -16,9 +16,10 @@ export const mail = createTransport({
 	},
 });
 
-export function renderEmail<
-	T extends SvelteComponent<Record<string, any>, Record<string, any>, any>,
->(component: ComponentType<T>, { props }: { props: ComponentProps<T> }) {
+export function renderEmail<TProps extends Record<string, any>>(
+	component: Component<TProps>,
+	{ props }: { props: TProps }
+) {
 	// @ts-ignore
 	const rendered = render(component, { props });
 	return rendered.html.replace('%svelte-email.head%', rendered.head);

@@ -1,29 +1,23 @@
 import * as m from '$i18n/messages';
-import { auth } from '$lib/auth/auth.server';
-import { OAUTH_PROVIDERS_STATE_COOKIE_NAME } from '$lib/auth/constants';
-import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/socials';
-import {
-	getOAuthProviderIntegration,
-	getOAuthProviderUser,
-	getOAuthProviderUserEmail,
-} from '$lib/auth/utils.server';
+import { auth, integrations } from '$lib/auth/auth.server';
+import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/constants';
+import { getOAuthProviderUser, getOAuthProviderUserEmail } from '$lib/auth/utils.server';
 import { STATUS_CODES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
-import { oauthUsers, users } from '$lib/db/schema/auth';
+import { oauthUsers, users } from '$lib/db/schema/users.server';
 import { error } from '@sveltejs/kit';
 import { OAuth2RequestError } from 'arctic';
-import { and, eq, or, type InferInsertModel } from 'drizzle-orm';
-import { excluded, getColumns } from 'drizzle-orm-helpers';
+import { and, eq, or, sql, type InferInsertModel } from 'drizzle-orm';
+import { getColumns } from 'drizzle-orm-helpers';
 import { redirect } from 'sveltekit-flash-message/server';
 
 export const GET = async (event) => {
-	if (event.locals.session) {
+	if (event.locals.user) {
 		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
 	}
-
 	const code = event.url.searchParams.get('code');
 	const state = event.url.searchParams.get('state');
-	const storedState = event.cookies.get(OAUTH_PROVIDERS_STATE_COOKIE_NAME[event.params.provider]);
+	const storedState = event.cookies.get(OAUTH_PROVIDERS_DETAILS[event.params.provider].cookie);
 	if (!storedState || !state || storedState !== state || !code) {
 		error(STATUS_CODES.BAD_REQUEST, {
 			message: m.auth_incorrect_provider_state({
@@ -33,9 +27,8 @@ export const GET = async (event) => {
 	}
 
 	try {
-		const tokens = await getOAuthProviderIntegration(
-			event.params.provider
-		).validateAuthorizationCode(code);
+		const integration = integrations[event.params.provider];
+		const tokens = await integration.validateAuthorizationCode(code);
 		const providerUser = await getOAuthProviderUser(event.params.provider, tokens);
 		const validEmail = await getOAuthProviderUserEmail(event.params.provider, tokens);
 		await db.transaction(async (tx) => {
@@ -106,6 +99,9 @@ export const GET = async (event) => {
 							id: users.id,
 						})
 				)[0];
+			if (!user) {
+				error(STATUS_CODES.NOT_FOUND);
+			}
 			await tx
 				.insert(oauthUsers)
 				.values({
@@ -115,7 +111,7 @@ export const GET = async (event) => {
 				})
 				.onConflictDoUpdate({
 					target: [oauthUsers.provider, oauthUsers.providerUserId],
-					set: { userId: excluded(oauthUsers.userId) },
+					set: { userId: sql`exluded.${oauthUsers.userId}` },
 				});
 			const session = await auth.createSession(user.id, {});
 			const sessionCookie = auth.createSessionCookie(session.id);
@@ -125,7 +121,6 @@ export const GET = async (event) => {
 			});
 		});
 	} catch (e) {
-		console.error(e);
 		if (e instanceof OAuth2RequestError) {
 			error(STATUS_CODES.BAD_REQUEST, { message: e.message });
 		}
@@ -137,8 +132,10 @@ export const GET = async (event) => {
 		STATUS_CODES.MOVED_TEMPORARILY,
 		'/i',
 		{
-			title: m.auth_success(),
-			description: m.auth_success_description(),
+			content: {
+				title: m.auth_success(),
+				body: m.auth_success_description(),
+			},
 		},
 		event
 	);

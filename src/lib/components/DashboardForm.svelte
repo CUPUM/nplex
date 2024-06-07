@@ -1,4 +1,4 @@
-<script lang="ts" generics="T extends AnyZodObject">
+<!-- <script lang="ts" generics="T extends AnyZodObject">
 	import type { enhance as regularEnhance } from '$app/forms';
 	import * as m from '$i18n/messages';
 	import type { LoadableSubmitter } from '$lib/builders/loading';
@@ -73,4 +73,4 @@
 </form>
 
 <style>
-</style>
+</style> -->

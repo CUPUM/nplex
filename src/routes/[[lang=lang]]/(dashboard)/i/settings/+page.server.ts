@@ -1,45 +1,29 @@
 import * as m from '$i18n/messages';
-import { USER_ROLES } from '$lib/auth/constants';
-import { authorize } from '$lib/auth/rbac.server';
 import { STATUS_CODES } from '$lib/common/constants';
-import { usersRolesRequestSchema, usersSchema } from '$lib/db/crud.server';
-import { TRUE } from '$lib/db/custom-types.server';
+import { authorize } from '$lib/crud/authorization/rbac.server';
+import {
+	usersAccountSchema,
+	usersProfileSchema,
+	usersRolesRequestsSchema,
+} from '$lib/crud/validation/users';
 import { db } from '$lib/db/db.server';
-import { getUserRolesList } from '$lib/db/queries.server';
-import { users, usersRolesRequests } from '$lib/db/schema/auth';
+import { users, usersRolesRequests } from '$lib/db/schema/users.server';
 import { error } from '@sveltejs/kit';
-import { eq, getTableColumns, sql } from 'drizzle-orm';
-import { message, superValidate } from 'sveltekit-superforms/client';
-import { z } from 'zod';
-
-const generalSchema = usersSchema.pick({
-	firstName: true,
-	middleName: true,
-	lastName: true,
-	publicEmail: true,
-});
-
-const permissionSchema = z.object({
-	role: usersSchema.shape.role,
-	requestedAt: usersRolesRequestSchema.shape.requestAt.nullable(),
-	requestedRole: usersRolesRequestSchema.shape.requestedRole.nullable(),
-});
-
-const manageSchema = z.object({});
+import { eq } from 'drizzle-orm';
+import { zod } from 'sveltekit-superforms/adapters';
+import { superValidate } from 'sveltekit-superforms/client';
 
 export const load = async (event) => {
 	authorize(event);
-	const { firstName, middleName, lastName, role, publicEmail, publicEmailVerified } =
-		getTableColumns(users);
-	const [{ permissions, ...user }] = await db
+	const [user] = await db
 		.select({
-			firstName,
-			middleName,
-			lastName,
-			publicEmail,
-			publicEmailVerified,
-			permissions: {
-				role,
+			profile: {
+				firstName: users.firstName,
+				middleName: users.middleName,
+				lastName: users.lastName,
+				publicEmail: users.publicEmail,
+			},
+			roleRequest: {
 				requestedAt: usersRolesRequests.requestAt,
 				requestedRole: usersRolesRequests.requestedRole,
 			},
@@ -49,77 +33,75 @@ export const load = async (event) => {
 		.leftJoin(usersRolesRequests, eq(users.id, usersRolesRequests.userId))
 		.limit(1);
 	if (!user) {
-		error(STATUS_CODES.NOT_FOUND, m.auth_no_user_found());
+		error(STATUS_CODES.NOT_FOUND, m.no_user_found());
 	}
-	const [generalForm, permissionsForm, manageForm] = await Promise.all([
-		superValidate(user, generalSchema),
-		superValidate(permissions, permissionSchema),
-		superValidate(manageSchema),
+	const [profileForm, roleRequestForm, accountForm] = await Promise.all([
+		superValidate(user.profile, zod(usersProfileSchema)),
+		superValidate(user.roleRequest, zod(usersRolesRequestsSchema)),
+		superValidate(zod(usersAccountSchema)),
 	]);
 	return {
-		generalForm,
-		permissionsForm,
-		manageForm,
-		publicEmailVerified: user.publicEmailVerified,
-		USER_ROLES: getUserRolesList(event),
+		profileForm,
+		roleRequestForm,
+		accountForm,
 	};
 };
 
 export const actions = {
-	update: async (event) => {
+	profile: async (event) => {
 		authorize(event);
-		const generalForm = await superValidate(event, generalSchema);
-		if (!generalForm.valid) {
-			return message(generalForm, {
-				title: m.invalid_data(),
-				description: m.invalid_data_details(),
-			});
-		}
-		try {
-			await db
-				.update(users)
-				.set({
-					...generalForm.data,
-					publicEmailVerified:
-						event.locals.user.role === USER_ROLES.ADMIN && generalForm.data.publicEmail != null
-							? TRUE()
-							: sql`case when ${users.publicEmail} = ${generalForm.data.publicEmail} then true else false end`,
-				})
-				.where(eq(users.id, event.locals.user.id));
-			return message(generalForm, { title: m.success(), description: m.success_saved_data() });
-		} catch (e) {
-			return message(
-				generalForm,
-				{
-					title: m.error(),
-					description: m.error_details(),
-				},
-				{
-					status: STATUS_CODES.INTERNAL_SERVER_ERROR,
-				}
-			);
-		}
+		// const generalForm = await superValidate(event, generalSchema);
+		// if (!generalForm.valid) {
+		// 	return message(generalForm, {
+		// 		title: m.invalid_data(),
+		// 		description: m.invalid_data_details(),
+		// 	});
+		// }
+		// try {
+		// 	await db
+		// 		.update(users)
+		// 		.set({
+		// 			...generalForm.data,
+		// 			publicEmailVerified:
+		// 				event.locals.user.role === USER_ROLES.ADMIN && generalForm.data.publicEmail != null
+		// 					? TRUE()
+		// 					: sql`case when ${users.publicEmail} = ${generalForm.data.publicEmail} then true else false end`,
+		// 		})
+		// 		.where(eq(users.id, event.locals.user.id));
+		// 	return message(generalForm, { title: m.success(), description: m.success_saved_data() });
+		// } catch (e) {
+		// 	return message(
+		// 		generalForm,
+		// 		{
+		// 			title: m.error(),
+		// 			description: m.error_details(),
+		// 		},
+		// 		{
+		// 			status: STATUS_CODES.INTERNAL_SERVER_ERROR,
+		// 		}
+		// 	);
+		// }
 	},
 	delete: async (event) => {
 		authorize(event);
-		const manageForm = await superValidate(event, manageSchema);
-		try {
-			await db.delete(users).where(eq(users.id, event.locals.user.id));
-			return message(manageForm, {
-				title: m.success(),
-				description: m.success_saved_data(),
-			});
-		} catch (e) {
-			console.error(e);
-			return message(
-				manageForm,
-				{
-					title: m.error(),
-					description: m.error_details(),
-				},
-				{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
-			);
-		}
+		// const manageForm = await superValidate(event, manageSchema);
+		// try {
+		// 	await db.delete(users).where(eq(users.id, event.locals.user.id));
+		// 	return message(manageForm, {
+		// 		title: m.success(),
+		// 		description: m.success_saved_data(),
+		// 	});
+		// } catch (e) {
+		// 	console.error(e);
+		// 	return message(
+		// 		manageForm,
+		// 		{
+		// 			title: m.error(),
+		// 			description: m.error_details(),
+		// 		},
+		// 		{ status: STATUS_CODES.INTERNAL_SERVER_ERROR }
+		// 	);
+		// }
 	},
 	uploadAvatar: async () => {
 		// to do

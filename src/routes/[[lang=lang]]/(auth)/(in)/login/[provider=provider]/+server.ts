@@ -1,19 +1,20 @@
 import { dev } from '$app/environment';
-import { OAUTH_PROVIDERS_STATE_COOKIE_NAME } from '$lib/auth/constants';
-import { getOAuthProviderIntegration } from '$lib/auth/utils.server';
+import { integrations } from '$lib/auth/auth.server';
+import { OAUTH_PROVIDERS_DETAILS } from '$lib/auth/constants';
 import { STATUS_CODES } from '$lib/common/constants';
 import { redirect } from '@sveltejs/kit';
 import { generateState } from 'arctic';
 
 export const GET = async (event) => {
-	if (event.locals.session) {
+	if (event.locals.user) {
 		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/');
 	}
 
 	const state = generateState();
-	const url = getOAuthProviderIntegration(event.params.provider).createAuthorizationURL(state);
+	const integration = integrations[event.params.provider];
+	const url = integration.createAuthorizationURL(state);
 
-	event.cookies.set(OAUTH_PROVIDERS_STATE_COOKIE_NAME[event.params.provider], state, {
+	event.cookies.set(OAUTH_PROVIDERS_DETAILS[event.params.provider].cookie, state, {
 		httpOnly: true,
 		secure: !dev,
 		path: '.',

@@ -1,9 +1,9 @@
 import * as m from '$i18n/messages';
 import { auth } from '$lib/auth/auth.server';
 import { STATUS_CODES } from '$lib/common/constants';
-import { loginEmailPasswordSchema } from '$lib/crud/validation/auth';
+import { loginEmailPasswordSchema } from '$lib/crud/validation/users';
 import { db } from '$lib/db/db.server';
-import { users } from '$lib/db/schema/auth';
+import { users } from '$lib/db/schema/users.server';
 import { fail } from '@sveltejs/kit';
 import { and, eq, isNotNull } from 'drizzle-orm';
 import { LegacyScrypt } from 'lucia';
@@ -13,8 +13,8 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { message, superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
-	if (event.locals.authed) {
-		if (event.locals.authed.user.email && !event.locals.authed.user.emailVerified) {
+	if (event.locals.user) {
+		if (event.locals.user.email && !event.locals.user.emailVerified) {
 			redirect(STATUS_CODES.MOVED_TEMPORARILY, '/verify-email');
 		}
 		redirect(STATUS_CODES.MOVED_TEMPORARILY, '/i');
@@ -70,8 +70,10 @@ export const actions = {
 			STATUS_CODES.MOVED_TEMPORARILY,
 			'/i',
 			{
-				title: m.auth_success(),
-				description: m.auth_success_description(),
+				content: {
+					title: m.auth_success(),
+					body: m.auth_success_description(),
+				},
 			},
 			event
 		);

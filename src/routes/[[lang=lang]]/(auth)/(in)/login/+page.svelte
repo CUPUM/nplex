@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
-	import { Eye, EyeOff, HelpCircle, LogIn, UserPlus2 } from 'lucide-svelte';
+	import { extendSuperForm } from '$lib/crud/form/client.js';
+	import { Eye, EyeOff, HelpCircle, LogIn, UserRoundPlus } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
@@ -11,10 +13,15 @@
 	let { data } = $props();
 
 	let showPassword = $state(false);
+	let loginRef: HTMLButtonElement;
 
-	const { form, enhance, constraints, errors, tainted, message } = superForm(data.form, {
-		taintedMessage: null,
-	});
+	const { form, enhance, constraints, errors, tainted, message, submitter } = extendSuperForm(
+		superForm(data.form, {
+			taintedMessage: null,
+		})
+	);
+
+	$inspect($submitter);
 </script>
 
 <form method="POST" use:enhance autocomplete="off" class="gap-gutter flex flex-col">
@@ -79,17 +86,23 @@
 			</div>
 		</div>
 	</label>
-	<button in:fly|global={{ y: -6, delay: 150 }} class="button button-cta" type="submit" use:ripple>
-		<LogIn class="button-icon" />
+	<button
+		in:fly|global={{ y: -6, delay: 150 }}
+		class="button button-cta"
+		type="submit"
+		use:ripple
+		bind:this={loginRef}
+	>
+		<IconSpinner icon={LogIn} busy={$submitter === loginRef} />
 		{m.login()}
 	</button>
 	{#if typeof $message === 'string'}
-		<p class="text-base-soft text-sm" transition:fly={{ y: -8 }}>{$message}</p>
+		<p class="text-base-soft text-sm" in:fly={{ y: -8, duration: 350 }}>{$message}</p>
 	{/if}
 </form>
 <nav class="gap-menu-gutter flex flex-row flex-wrap justify-between text-sm">
 	<a class="button button-link" {...linkAttributes('/signup')}>
-		<UserPlus2 />
+		<UserRoundPlus />
 		{m.auth_signup_prompt()}
 	</a>
 	<a class="button button-link" {...linkAttributes('/reset-password')}>

@@ -1,5 +1,5 @@
 import { db } from '$lib/db/db.server';
-import { projects, projectsTranslations } from '$lib/db/schema/public';
+import { projects, projectsTranslations } from '$lib/db/schema/public.server';
 import { and, eq, getTableColumns } from 'drizzle-orm';
 
 export const load = async (event) => {

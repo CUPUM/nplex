@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import { availableLanguageTags } from '$i18n/runtime';
 	import type { SuperForm } from '$lib/crud/validation/forms/super-form';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
@@ -40,4 +40,4 @@
 	legend {
 		margin-block: 1em;
 	}
-</style>
+</style> -->

@@ -7,7 +7,7 @@
 	import EmailSeparator from '../components/email-separator.svelte';
 	import Email from '../components/email.svelte';
 
-	export let code: string;
+	let { code }: { code: string } = $props();
 </script>
 
 <Email>
