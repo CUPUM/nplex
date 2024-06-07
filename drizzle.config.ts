@@ -1,9 +1,8 @@
 import { defineConfig } from 'drizzle-kit';
-import { DB_MIGRATIONS_FOLDER } from './scripts/common';
 
 export default defineConfig({
 	schema: ['./src/lib/db/schema/*'],
-	out: DB_MIGRATIONS_FOLDER,
+	out: './migrations',
 	dialect: 'postgresql',
 	extensionsFilters: ['postgis'],
 	breakpoints: true,
