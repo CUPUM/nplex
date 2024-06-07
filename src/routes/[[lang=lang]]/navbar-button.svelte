@@ -38,11 +38,11 @@
 </svelte:element>
 
 <style>
-	:global(#navbar:hover) {
+	/* :global(#navbar:hover) {
 		.navbar-button {
 			background: var(--background-color-base);
 		}
-	}
+	} */
 
 	.navbar-button {
 		user-select: none;
@@ -58,7 +58,6 @@
 		border-radius: var(--radius-input);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-fg);
-		/* backdrop-filter: blur(var(--blur-md)); */
 		box-shadow: 0 0.25em 0.75em 0 transparent;
 		transition: all var(--transition-duration-medium) var(--transition-timing-function-out);
 
