@@ -1,22 +1,11 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { linkAttributes } from '$lib/components/primitives/link.svelte';
-	import { Send } from 'lucide-svelte';
+	import FrontpageOrganizations from './frontpage-organizations.svelte';
+	import FrontpageProjects from './frontpage-projects.svelte';
+	import FrontpageSplash from './frontpage-splash.svelte';
 
 	let { data } = $props();
 </script>
 
-<div class="p-lg flex flex-col items-start gap-[1em]">
-	<a {...linkAttributes('/playground/components')} class="button button-link">
-		Components playground
-	</a>
-</div>
-<form class="p-lg" use:enhance method="POST" action="?/email">
-	<button class="button" type="submit">
-		Send test email
-		<Send />
-	</button>
-</form>
-
-<style>
-</style>
+<FrontpageSplash {data} />
+<FrontpageProjects {data} />
+<FrontpageOrganizations {data} />

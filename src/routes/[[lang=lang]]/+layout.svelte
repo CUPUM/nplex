@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Footer from '$lib/components/singletons/footer.svelte';
-	import LanguageProvider from '$lib/components/singletons/language-provider.svelte';
-	import ModeProvider from '$lib/components/singletons/mode-provider.svelte';
-	import Navbar from '$lib/components/singletons/navbar.svelte';
-	import PresentationProvider from '$lib/components/singletons/presentation-provider.svelte';
-	import ScrollProvider from '$lib/components/singletons/scroll-provider.svelte';
-	import ToastsProvider from '$lib/components/singletons/toasts-provider.svelte';
+	import Footer from './footer.svelte';
+	import LanguageProvider from './language-provider.svelte';
+	import ModeProvider from './mode-provider.svelte';
+	import Navbar from './navbar.svelte';
+	import PresentationProvider from './presentation-provider.svelte';
+	import ScrollProvider from './scroll-provider.svelte';
+	import ToastsProvider from './toasts-provider.svelte';
 
 	let { data, children } = $props();
 </script>
