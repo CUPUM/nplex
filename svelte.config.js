@@ -1,11 +1,12 @@
 import adapter from '@sveltejs/adapter-vercel';
+import { mdsvex } from 'mdsvex';
 
 /**
  * @type {import('@sveltejs/kit').Config}
  */
 const config = {
-	extensions: ['.svelte', '.markdoc'],
-	preprocess: [csslayer()],
+	extensions: ['.svelte', '.mdx'],
+	preprocess: [csslayer(), mdsvex({ extension: 'mdx' })],
 	kit: {
 		adapter: adapter(),
 		alias: {
