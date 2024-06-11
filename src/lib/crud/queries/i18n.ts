@@ -1,7 +1,9 @@
-import { languageTag, type AvailableLanguageTag } from '$i18n/runtime';
+import { type AvailableLanguageTag } from '$i18n/runtime';
+import { LOAD_DEPENDENCIES } from '$lib/common/constants';
 import { LANG_COLUMN_NAME } from '$lib/db/constants';
 import type { LangColumn } from '$lib/db/helpers.server';
 import { languages } from '$lib/db/schema/i18n.server';
+import type { RequestEvent, ServerLoadEvent } from '@sveltejs/kit';
 import { SQL, and, eq, type AnyTable, type ColumnsSelection, type Subquery } from 'drizzle-orm';
 import { $true } from 'drizzle-orm-helpers';
 import { jsonBuildObject, jsonObjectAgg } from 'drizzle-orm-helpers/pg';
@@ -42,7 +44,11 @@ export function joinTranslation<
 	select: TSelect,
 	translations: TTranslations,
 	on: SQL,
-	lang: AvailableLanguageTag = languageTag()
+	langOrEvent: AvailableLanguageTag | RequestEvent | ServerLoadEvent
 ) {
-	// to do
+	const lang = typeof langOrEvent === 'string' ? langOrEvent : langOrEvent.locals.lang;
+	if (typeof langOrEvent !== 'string' && 'depends' in langOrEvent) {
+		langOrEvent.depends(LOAD_DEPENDENCIES.LANG);
+	}
+	return select.leftJoin(translations, and(on, eq(translations[LANG_COLUMN_NAME], lang)));
 }
