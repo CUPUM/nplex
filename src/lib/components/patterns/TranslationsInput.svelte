@@ -1,55 +1,39 @@
 <script lang="ts">
-	// import { page } from '$app/stores';
-	// import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
-	// import { ripple } from '$lib/components/primitives/ripple.svelte';
-	// import { LANG_DETAILS } from '$lib/i18n/constants';
-	// import { switchCrossfade } from '$lib/motion/presets';
-	// import { createTabs, melt } from '@melt-ui/svelte';
+	import { page } from '$app/stores';
+	import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
+	import { Tabs } from '$lib/builders/tabs.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
+	import { LANG_DETAILS } from '$lib/i18n/constants';
+	import { switchCrossfade } from '$lib/motion/presets';
+	import type { Snippet } from 'svelte';
 
-	// export let defaultLang: AvailableLanguageTag = $page.data.lang;
-	// export let lang: AvailableLanguageTag | undefined = undefined;
+	let { children }: { children: Snippet<[{ lang: AvailableLanguageTag; current: boolean }]> } =
+		$props();
 
-	// const {
-	// 	elements: { root, trigger, list, content },
-	// 	states: { value: _value },
-	// } = createTabs({
-	// 	defaultValue: lang ?? defaultLang,
-	// 	loop: true,
-	// 	activateOnFocus: true,
-	// 	onValueChange: ({ curr, next }) => {
-	// 		lang = next as AvailableLanguageTag;
-	// 		return next;
-	// 	},
-	// });
-
-	// $: if (lang) {
-	// 	_value.set(lang);
-	// }
-
-	// const [send, receive] = switchCrossfade;
-
-	// const key = {};
+	const tabs = new Tabs({ defaultValue: $page.data.lang });
+	const [send, receive] = switchCrossfade;
+	const key = {};
 </script>
 
-<!-- <div class="input-group" use:melt={$root}>
+<div class="input-group">
 	{#each availableLanguageTags as lang}
-		<div class="lang-content" {lang} use:melt={$content(lang)}>
-			<slot {lang} value={$_value} current={$_value === lang} />
+		<div class="lang-content" {...tabs.contentAttributes(lang)} {lang}>
+			{@render children({ lang, current: tabs.current === lang })}
 		</div>
 	{/each}
 	<div class="input-peer">
-		<menu use:melt={$list} class="switch compact rounded" use:ripple>
+		<menu class="switch compact rounded" use:ripple>
 			{#each availableLanguageTags as lang}
-				<button class="switch-item" use:melt={$trigger(lang)} {lang} type="button">
+				<button class="switch-item" {...tabs.triggerAttributes(lang)} {lang} type="button">
 					{LANG_DETAILS[lang].label}
-					{#if $_value === lang}
-						<div in:send={{ key }} out:receive={{ key }} class="switch-thumb" />
+					{#if tabs.current === lang}
+						<div in:send={{ key }} out:receive={{ key }} class="switch-thumb"></div>
 					{/if}
 				</button>
 			{/each}
 		</menu>
 	</div>
-</div> -->
+</div>
 
 <!-- <style>
 	.input-group {
