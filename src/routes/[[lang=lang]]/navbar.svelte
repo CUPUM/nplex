@@ -14,7 +14,7 @@
 	let withoutLang = $derived(removeLang($page.url.href.replace($page.url.origin, '')));
 
 	const [sendThumb, receiveThumb] = crossfade({
-		duration: 175,
+		duration: 250,
 		easing: circInOut,
 		fallback(node, params, intro) {
 			return scale(node, { start: 0.5, duration: 150, easing: expoOut, opacity: 0 });
@@ -25,7 +25,7 @@
 <div id="navbar-wrapper">
 	<header id="navbar">
 		<nav class="navbar-group justify-self-start">
-			<NavbarButton href="/" class="px-[0.75em]">
+			<NavbarButton href="/" class="px-[0.75em]" data-logo>
 				<Logo height="2em" />
 			</NavbarButton>
 			<NavbarButton href="/about">
@@ -39,7 +39,7 @@
 			<NavbarButton href="/projects">
 				{#if withoutLang.startsWith('/projects')}
 					<div
-						class="rounded-inherit bg-input absolute inset-0"
+						class="rounded-inherit bg-primary/15 absolute inset-0"
 						in:receiveThumb={{ key: 'explore' }}
 						out:sendThumb={{ key: 'explore' }}
 					></div>
@@ -49,7 +49,7 @@
 			<NavbarButton href="/organizations">
 				{#if withoutLang.startsWith('/organizations')}
 					<div
-						class="rounded-inherit bg-input absolute inset-0"
+						class="rounded-inherit bg-primary/15 absolute inset-0"
 						in:receiveThumb={{ key: 'explore' }}
 						out:sendThumb={{ key: 'explore' }}
 					></div>

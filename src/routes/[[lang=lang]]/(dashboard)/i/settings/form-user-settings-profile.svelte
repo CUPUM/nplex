@@ -13,7 +13,7 @@
 		superForm(data.profileForm, { dataType: 'json', invalidateAll: 'force' })
 	);
 
-	let submitRef: HTMLButtonElement;
+	let submitRef = $state<HTMLButtonElement>();
 </script>
 
 <form use:enhance method="POST" action="?/profile" class="dashboard-section">
@@ -22,34 +22,34 @@
 	</h2>
 	<div class="dashboard-section-content">
 		<div class="gap-gutter flex flex-row">
-			<div class="field flex-1">
-				<label class="field-label">{m.user_first_name()}</label>
+			<label class="field flex-1">
+				<span class="field-label">{m.user_first_name()}</span>
 				<input
 					type="text"
 					class="input input-bordered"
 					bind:value={$form.firstName}
 					{...$constraints.firstName}
 				/>
-			</div>
-			<div class="field flex-1">
-				<label class="field-label">{m.user_middle_name()}</label>
+			</label>
+			<label class="field flex-1">
+				<span class="field-label">{m.user_middle_name()}</span>
 				<input
 					type="text"
 					class="input input-bordered"
 					bind:value={$form.middleName}
 					{...$constraints.middleName}
 				/>
-			</div>
+			</label>
 		</div>
-		<div class="field">
-			<label class="field-label">{m.user_last_name()}</label>
+		<label class="field">
+			<span class="field-label">{m.user_last_name()}</span>
 			<input
 				type="text"
 				class="input input-bordered"
 				bind:value={$form.lastName}
 				{...$constraints.lastName}
 			/>
-		</div>
+		</label>
 		<label class="field self-start">
 			<span class="field-label">{m.user_avatar()}</span>
 			<fieldset class="input-group">

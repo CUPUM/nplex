@@ -58,6 +58,7 @@
 		border-radius: var(--radius-input);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-fg);
+		backdrop-filter: blur(var(--blur-md));
 		box-shadow: 0 0.25em 0.75em 0 transparent;
 		transition: all var(--transition-duration-medium) var(--transition-timing-function-out);
 
@@ -77,8 +78,11 @@
 			/* background: color-mix(in srgb, var(--color-primary-soft) 10%, transparent); */
 		}
 
-		&[aria-current],
-		&[aria-expanded='true'] {
+		&[data-logo='true'] {
+			color: var(--color-primary);
+		}
+
+		&:is([aria-current], [aria-expanded='true']):not([data-logo='true']) {
 			color: var(--color-primary);
 			box-shadow: 0 0 0 var(--border-width-input)
 				color-mix(in srgb, var(--color-primary) var(--opacity-softer), transparent);

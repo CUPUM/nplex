@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const prerender = true;
+export const prerender = true;
 
 const metadataSchema = z.object({
 	title: z.string(),

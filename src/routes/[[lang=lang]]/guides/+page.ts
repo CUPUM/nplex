@@ -1,9 +1,10 @@
+import { headingsMetadataSchema } from '$lib/markdown/validation';
 import { z } from 'zod';
 
-const prerender = true;
+export const prerender = true;
 
-const metadataSchema = z.object({
-	// title: z.string(),
+const metadataSchema = headingsMetadataSchema.extend({
+	title: z.string(),
 });
 
 export const load = async (event) => {

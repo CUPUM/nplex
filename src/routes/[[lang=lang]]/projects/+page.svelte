@@ -1,133 +1,61 @@
-<!-- <script lang="ts">
-	import * as m from '$i18n/messages';
-	import { link } from '$lib/i18n/location';
-	import { cubicOut, expoOut } from 'svelte/easing';
-	import { fly, slide } from 'svelte/transition';
-	import type { Snapshot } from './$types';
+<script lang="ts">
+	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
+	import { extendSuperForm } from '$lib/crud/form/client';
+	import { ArrowRight, Search } from 'lucide-svelte';
+	import { superForm } from 'sveltekit-superforms';
+	import type { Snapshot } from './$types.js';
 
-	export let data;
+	let { data } = $props();
 
-	let filtersOpen = true;
+	const { enhance, form, submitter, submitting, constraints } = extendSuperForm(
+		superForm(data.searchForm)
+	);
 
-	export const snapshot: Snapshot<{ filtersOpen: boolean }> = {
+	let searchButtonRef = $state<HTMLButtonElement>();
+	let showFilters = $state(true);
+
+	export const snapshot: Snapshot<{ showFilters: boolean }> = {
 		capture() {
 			return {
-				filtersOpen,
+				showFilters,
 			};
 		},
-		restore(snapshot) {
-			filtersOpen = snapshot.filtersOpen;
+		restore(v) {
+			showFilters = v.showFilters;
 		},
 	};
 </script>
 
-<header class="header">
-	{#if data.search}
-		{m.filtered_projects()}
-	{:else}
-		{m.all_projects()}
-	{/if}
-	<button on:click={() => (filtersOpen = !filtersOpen)}>Toggle</button>
-</header>
-<div class="panes">
-	{#if filtersOpen}
-		<form
-			method="GET"
-			class="filters"
-			data-sveltekit-keepfocus
-			data-sveltekit-noscroll
-			in:slide={{ axis: 'x', duration: 250 }}
-			out:slide={{ axis: 'x', duration: 350 }}
-		>
-			<ul
-				class="filters-inner"
-				in:fly={{ x: '-100%', opacity: 0, duration: 250, easing: expoOut }}
-				out:fly={{ x: '-100%', opacity: 0, duration: 350, easing: cubicOut }}
-			>
-				<section class="filter-block">
-					<input class="search" type="search" name="search" value={data.search} />
-				</section>
-			</ul>
-		</form>
-	{/if}
-	<ul class="results">
-		{#each data.filtered as p, i (p.id)}
+<article class="flex flex-row">
+	<form method="GET" class="w-sidebar-width">
+		<label class="field">
+			<span class="field-label">Search</span>
+			<div class="input-group big">
+				<Search />
+				<input
+					type="search"
+					name="search"
+					bind:value={$form.search}
+					{...$constraints.search}
+					class="input"
+				/>
+				<div class="input-peer">
+					<button
+						class="button button-ghost aspect-square"
+						bind:this={searchButtonRef}
+						type="submit"
+					>
+						<IconSpinner icon={ArrowRight} busy={searchButtonRef === $submitter} />
+					</button>
+				</div>
+			</div>
+		</label>
+	</form>
+	<ul>
+		{#each data.searchResults as p}
 			<li>
-				<a {...$link(`/projects/${p.id}`)}>
-					{#if p.title}
-						{p.title}
-					{:else}
-						<span class="no-title">
-							{m.no_title()}
-						</span>
-					{/if}
-				</a>
+				{p.id}
 			</li>
 		{/each}
 	</ul>
-</div>
-
-<style>
-	.header {
-		/* position: stickt; */
-	}
-
-	.panes {
-		display: flex;
-		flex-direction: row;
-		gap: 0;
-		align-items: stretch;
-	}
-
-	.filters {
-		position: sticky;
-		top: var(--sticky-top);
-		overflow: visible !important;
-		border-right: var(--border);
-		max-height: 100vh;
-		padding: var(--gutter);
-	}
-
-	.filters-inner {
-		left: 0;
-		width: 200px;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.filter-block {
-		padding: 1rem;
-		background: red;
-		border-radius: var(--radius-md);
-	}
-
-	.results {
-		flex: 1;
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		gap: var(--gutter);
-		padding: var(--gutter);
-
-		a {
-			position: relative;
-			display: flex;
-			aspect-ratio: 3 / 4;
-			width: 100%;
-			background: red;
-			border-radius: var(--radius-md);
-		}
-	}
-
-	.no-title {
-		color: var(--muted-fg);
-	}
-</style> -->
-
-<script lang="ts">
-	let { data } = $props();
-</script>
-
-<h1>Projects</h1>
-
-<style>
-</style>
+</article>
