@@ -1,6 +1,11 @@
 import type { ToastParameters, Toasts } from '$lib/builders/toasts.svelte';
 import { readonly, writable } from 'svelte/store';
-import type { SuperForm, SuperFormEvents } from 'sveltekit-superforms/client';
+import type {
+	Infer,
+	SuperForm,
+	SuperFormEvents,
+	SuperValidated,
+} from 'sveltekit-superforms/client';
 import { toasts as rootToasts } from '../../../routes/[[lang=lang]]/toasts-provider.svelte';
 
 function isToastParameters(
@@ -32,7 +37,7 @@ export function extendSuperForm<
 	T extends Record<string, unknown> = Record<string, unknown>,
 	M = App.Superforms.Message,
 >({ enhance, ...superForm }: SuperForm<T, M>, { toasts = rootToasts }: { toasts?: Toasts } = {}) {
-	let submitter = writable<HTMLElement | null>(null);
+	let submitter = writable<HTMLElement | undefined>(undefined);
 	let action = writable<URL | null>(null);
 
 	// Dispatch toast if message has shape.
@@ -46,14 +51,14 @@ export function extendSuperForm<
 		const enhanced = enhance(el, {
 			...events,
 			onSubmit(e) {
-				submitter.set(e.submitter);
+				submitter.set(e.submitter ?? undefined);
 				action.set(e.action);
 				if (events?.onSubmit) {
 					return events.onSubmit(e);
 				}
 			},
 			onResult(e) {
-				submitter.set(null);
+				submitter.set(undefined);
 				action.set(null);
 				if (events?.onResult) {
 					return events.onResult(e);
@@ -63,7 +68,7 @@ export function extendSuperForm<
 
 		return {
 			destroy() {
-				submitter.set(null);
+				submitter.set(undefined);
 				action.set(null);
 				return enhanced.destroy();
 			},
@@ -77,3 +82,14 @@ export function extendSuperForm<
 		action: readonly(action),
 	};
 }
+
+export type ExtendedSuperForm<
+	T extends Record<string, unknown>,
+	M = App.Superforms.Message,
+> = ReturnType<typeof extendSuperForm<T, M>>;
+
+export type SuperFormData<T extends SuperValidated<Infer<Record<string, unknown>>>> =
+	T extends SuperValidated<infer U, infer M> ? SuperForm<U, M> : never;
+
+export type ExtendedSuperFormData<T extends SuperValidated<Infer<Record<string, unknown>>>> =
+	T extends SuperValidated<infer U, infer M> ? ExtendedSuperForm<U, M> : never;

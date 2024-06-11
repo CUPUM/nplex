@@ -9,6 +9,7 @@ import {
 } from '$lib/db/schema/public.server';
 import { intrangeSchema } from 'drizzle-orm-helpers/pg';
 import { createInsertSchema } from 'drizzle-zod';
+import { z } from 'zod';
 import {
 	PROJECT_ADJACENT_ALLEYS_MAX,
 	PROJECT_ADJACENT_STREETS_MAX,
@@ -23,6 +24,10 @@ import {
 	PROJECT_TITLE_MAX,
 } from './constants';
 import { withTranslationsSchema } from './i18n';
+
+export const projectsSearchSchema = z.object({
+	search: z.string().optional(),
+});
 
 export const projectsSchema = createInsertSchema(projects, {
 	adjacentStreets: (s) => s.adjacentStreets.positive().max(PROJECT_ADJACENT_STREETS_MAX),

@@ -35,7 +35,7 @@ export const usersProfileSchema = usersSchema.pick({
 export const usersAccountSchema = z.object({});
 
 export const loginEmailPasswordSchema = z.object({
-	email: usersSchema.shape.email.unwrap(),
+	email: usersSchema.shape.email.unwrap().unwrap(),
 	password: z.string().min(1, m.password_required()),
 });
 
