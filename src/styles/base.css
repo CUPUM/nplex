@@ -94,8 +94,8 @@ dialog {
 	--scroll-x-px: calc(var(--scroll-x) * 1px);
 	position: relative;
 	font-size: 100%;
-	/* font-size: 93.75%; */
-	/* 15px for default root of 16px */
+	scroll-padding-top: calc(var(--spacing-navbar-height) + var(--spacing-gutter));
+	font-variant-ligatures: none;
 	font-weight: var(--font-weight-normal);
 	font-family: var(--font-family-main);
 	color: var(--text-color-base);

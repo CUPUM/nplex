@@ -114,7 +114,7 @@
 	--input-nest: var(--spacing-input-nest);
 	--input-radius: var(--radius-input);
 	--nest-spacing-input: calc(var(--spacing-input) - 2 * var(--input-nest));
-	--nest-radius: calc(var(--input-radius) - var(--input-nest));
+	--nest-radius: max(calc(var(--input-radius) - var(--input-nest)), var(--radius-2xs));
 	position: relative;
 	display: inline-flex;
 	flex-direction: row;

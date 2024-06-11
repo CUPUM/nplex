@@ -1,19 +1,20 @@
 #navbar-wrapper {
 	padding-inline: var(--spacing-padding);
-	margin-bottom: var(--spacing-padding);
+	margin-bottom: calc(var(--spacing-gutter) - var(--spacing-padding));
 	position: sticky;
 	top: 0;
 	z-index: var(--z-index-frontmost);
 
 	&::after {
-		--offset: 50;
+		--offset: var(--spacing-gutter);
 		content: '';
 		z-index: -1;
 		position: absolute;
 		inset: 0;
-		translate: 0 min(0%, calc(-100% - var(--offset) * 1px + var(--scroll-y-px)));
+		translate: 0 min(0%, calc(-100% - var(--offset) + var(--scroll-y-px) - var(--border-width-md)));
 		background: var(--background-color-base);
-		transition: all 50ms ease-out;
+		transition: all 100ms ease-out;
+		border-bottom: var(--border-width-md) solid var(--border-color-soft);
 	}
 }
 
