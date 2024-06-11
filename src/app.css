@@ -317,9 +317,9 @@
 }
 
 [data-mode='dark'] {
-	--color-primary-soft: hsl(158, 90%, 19%);
-	--color-primary: hsl(154, 92%, 32%);
-	--color-primary-strong: hsl(153, 70%, 44%);
+	--color-primary-soft: hsl(148, 80%, 18%);
+	--color-primary: hsl(144, 75%, 30%);
+	--color-primary-strong: hsl(143, 60%, 44%);
 
 	--color-success-soft: hsl(120, 98%, 14%);
 	--color-success: hsl(120, 90%, 25%);
