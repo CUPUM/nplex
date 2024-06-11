@@ -5,20 +5,14 @@ import type { ValueOf } from 'type-fest';
  * For consistency, values should be defined as colon-separated scoping tree. Using colons instead
  * of slashes mainly avoids confusion with route paths.
  *
- * @example ScopeSubScope: 'scope:sub-scope'
+ * @example SCOPE_SUB_SCOPE: 'scope:sub-scope'
  */
 export const LOAD_DEPENDENCIES = {
 	LANG: 'lang',
 	PROJECT_TYPES_LIST: 'project-descriptors:types',
-	PROJECT_EDITOR_GALLERY: 'project:editor:gallery',
-	PROJECT_EDITOR_LAYOUT: 'project:editor:layout',
+	PROJECT_TITLE: 'project:title',
+	PROJECT_GALLERY: 'project:gallery',
 } as const;
-
-/**
- * Dict of search params used across app. Please use rigorously across event the app's query parsing
- * to avoid unexpected param name collisions.
- */
-export const SEARCH_PARAMS = {} as const;
 
 /**
  * Css cursor names.
