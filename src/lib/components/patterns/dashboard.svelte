@@ -25,26 +25,27 @@
 </script>
 
 <section
-	class="relative grid flex-1 grid-cols-[[sidebar-start_header-start_footer-start]_auto_[sidebar-end_main-start]_1fr_[main-end_header-end_footer-end]]"
+	class="px-padding pb-gutter relative grid flex-1 grid-cols-[[sidebar-start_header-start_footer-start]_auto_[sidebar-end_main-start]_1fr_[main-end_header-end_footer-end]]"
 >
 	{#if ctx.header}
-		<header class="grid-column-[header] pb-gutter px-gutter">
+		<header class="pb-gutter" style:grid-column="header">
 			{@render ctx.header()}
 		</header>
 	{/if}
 	{#if ctx.sidebar}
 		<nav
-			class="grid-column-[sidebar] pl-gutter gap-gutter w-sidebar-width top-navbar-height sticky flex flex-col self-start"
+			style:grid-column="sidebar"
+			class="gap-gutter w-sidebar-width top-navbar-height pr-gutter sticky flex flex-col self-start"
 			transition:slide={{ axis: 'x' }}
 		>
 			{@render ctx.sidebar()}
 		</nav>
 	{/if}
-	<article class="grid-column-[main] px-gutter gap-gutter flex flex-col">
+	<article style:grid-column="main" class="gap-gutter flex flex-col">
 		{@render children()}
 	</article>
 	{#if ctx.footer}
-		<footer class="grid-column-[footer]">
+		<footer style:grid-column="footer">
 			{@render ctx.footer()}
 		</footer>
 	{/if}
@@ -57,6 +58,12 @@
 		background: var(--background-color-section);
 		font-size: var(--font-size-sm);
 		border-radius: var(--radius-lg);
+		gap: var(--spacing-card-padding);
+		padding-block: var(--spacing-card-padding);
+
+		&:global(:has(.dashboard-section-title:first-child)) {
+			padding-top: calc(0.75 * var(--spacing-card-padding));
+		}
 	}
 
 	* :global(.dashboard-section-content) {
@@ -65,17 +72,19 @@
 		gap: var(--spacing-gutter);
 		align-items: flex-start;
 		border-radius: inherit;
-		padding: var(--spacing-lg);
+		padding-inline: var(--spacing-lg);
 	}
 
 	* :global(.dashboard-section-title) {
 		align-self: flex-start;
 		font-size: var(--font-size-lg);
 		font-weight: var(--font-weight-bold);
-		padding: var(--spacing-gutter);
-		padding-inline: calc(1.5 * var(--spacing-gutter));
-		margin: var(--spacing-gutter);
-		background: var(--background-color-popover);
+		padding-inline: var(--spacing-card-padding);
 		border-radius: var(--radius-md);
+	}
+
+	* :global(.dashboard-section-menu) {
+		position: sticky;
+		bottom: var(--spacing-gutter);
 	}
 </style>

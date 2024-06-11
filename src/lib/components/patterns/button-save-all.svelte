@@ -1,37 +1,33 @@
-<script lang="ts" generics="T extends AnyZodObject">
+<script lang="ts">
 	import * as m from '$i18n/messages';
-	import type { LoadableSubmitter } from '$lib/builders/loading';
 	import { SaveAll } from 'lucide-svelte';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import { fly, scale } from 'svelte/transition';
-	import type { AnyZodObject } from 'zod';
+	import IconSpinner from './icon-spinner.svelte';
 
-	type $$Props = Omit<HTMLButtonAttributes, 'class'> & {
-		submitter: LoadableSubmitter['elements']['root'];
+	let {
+		submitter,
+		disabled,
+		...buttonProps
+	}: Omit<HTMLButtonAttributes, 'class'> & {
+		submitter?: HTMLElement | null;
 		disabled?: boolean;
-	};
+	} = $props();
 
-	export let submitter: LoadableSubmitter['elements']['root'];
-	export let disabled: boolean | undefined = undefined;
-
-	let submitRef: HTMLButtonElement;
+	let buttonRef = $state<HTMLButtonElement>();
+	let isCurrent = $derived(buttonRef === submitter);
 </script>
 
 <button
-	class="button cta"
+	class="button button-cta"
 	type="submit"
-	{...$$restProps}
+	{...buttonProps}
 	in:fly|global={{ y: 6, duration: 250, easing: expoOut }}
 	out:scale={{ start: 0.95, duration: 200, easing: cubicOut }}
-	bind:this={submitRef}
-	use:submitter.action
-	{...$submitter(submitRef, { disabled })}
+	bind:this={buttonRef}
+	disabled={isCurrent}
 >
 	{m.save()}
-
-	<SaveAll />
+	<IconSpinner icon={SaveAll} busy={isCurrent} />
 </button>
-
-<style>
-</style>

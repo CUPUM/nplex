@@ -41,7 +41,7 @@
 </script>
 
 <menu
-	class="p-menu-padding gap-menu-gutter bg-section whitespa relative flex flex-col rounded-lg"
+	class="p-menu-padding gap-menu-gutter bg-section relative flex flex-col rounded-lg"
 	in:scale={{ start: 0.95, duration: 750, easing: expoOut }}
 >
 	{#if restProps['aria-current']}
