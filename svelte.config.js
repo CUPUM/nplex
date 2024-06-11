@@ -1,12 +1,22 @@
 import adapter from '@sveltejs/adapter-vercel';
+import remarkHeadings from '@sveltinio/remark-headings';
 import { mdsvex } from 'mdsvex';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeSlug from 'rehype-slug';
 
 /**
  * @type {import('@sveltejs/kit').Config}
  */
 const config = {
 	extensions: ['.svelte', '.mdx'],
-	preprocess: [csslayer(), mdsvex({ extension: 'mdx' })],
+	preprocess: [
+		csslayer(),
+		mdsvex({
+			extension: 'mdx',
+			rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+			remarkPlugins: [remarkHeadings],
+		}),
+	],
 	kit: {
 		adapter: adapter(),
 		alias: {
