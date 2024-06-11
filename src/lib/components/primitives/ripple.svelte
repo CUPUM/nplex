@@ -4,17 +4,13 @@
 
 	const HOST_ATTRIBUTE = 'data-ripple-host';
 
-	export function ripple(target: HTMLElement, options?: ComponentProps<Ripple>) {
-		let props = $state(options);
+	export function ripple(target: HTMLElement, props?: ComponentProps<Ripple>) {
 		const comp = mount(Ripple, {
 			target,
 			props,
 			anchor: target.firstChild || undefined,
 		});
 		return {
-			update(args) {
-				props = args;
-			},
 			destroy() {
 				unmount(comp);
 			},

@@ -15,6 +15,7 @@
 </script>
 
 <svg
+	data-logo="true"
 	xmlns="http://www.w3.org/2000/svg"
 	fill="none"
 	{viewBox}
@@ -213,6 +214,16 @@
 					keySplines="0, 1, 0.2, 1"
 					values="0;1"
 				/>
+				<!-- <animate
+					id="x_top_radius"
+					attributeName="rx"
+					dur="1000ms"
+					begin="x_top_animation.begin"
+					fill="freeze"
+					calcMode="spline"
+					keySplines="0, 1, 0.2, 1;0, 1, 0.2, 1;0, 1, 0.2, 1"
+					values="0;0;25;0"
+				/> -->
 				<animateTransform
 					id="x_top_transform"
 					attributeName="transform"
