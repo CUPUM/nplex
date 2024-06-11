@@ -32,10 +32,7 @@
 	"typescript.preferences.quoteStyle": "single",
 	"svelte.enable-ts-plugin": true,
 	"svelte.plugin.css.globals": "src/**/*.css",
-	"tailwindCSS.rootFontSize": 15,
+	"tailwindCSS.rootFontSize": 16,
 	"tailwindCSS.emmetCompletions": true,
-	"tailwindCSS.experimental.configFile": "src/app.css",
-	"tailwindCSS.includeLanguages": {
-		"plaintext": "html"
-	}
+	"tailwindCSS.experimental.configFile": "src/app.css"
 }
