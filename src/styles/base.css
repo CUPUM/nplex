@@ -3,20 +3,6 @@ button {
 	cursor: pointer;
 }
 
-::selection {
-	color: var(--text-color-selection);
-	background: var(--background-color-selection);
-}
-
-::-moz-selection {
-	color: var(--text-color-selection);
-	background: var(--background-color-selection);
-}
-
-hr {
-	border-top-width: var(--border-width-input);
-}
-
 [type='search'] {
 	&::-webkit-search-cancel-button,
 	&::-webkit-search-decoration {
@@ -33,6 +19,20 @@ hr {
 
 legend {
 	float: left;
+}
+
+::selection {
+	color: var(--text-color-selection);
+	background: var(--background-color-selection);
+}
+
+::-moz-selection {
+	color: var(--text-color-selection);
+	background: var(--background-color-selection);
+}
+
+hr {
+	border-top-width: var(--border-width-input);
 }
 
 progress[value] {
@@ -94,7 +94,7 @@ dialog {
 	--scroll-x-px: calc(var(--scroll-x) * 1px);
 	position: relative;
 	font-size: 100%;
-	scroll-padding-top: calc(var(--spacing-navbar-height) + var(--spacing-gutter));
+	scroll-padding-top: var(--spacing-navbar-height);
 	font-variant-ligatures: none;
 	font-weight: var(--font-weight-normal);
 	font-family: var(--font-family-main);

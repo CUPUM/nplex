@@ -114,6 +114,7 @@
 	--input-nest: var(--spacing-input-nest);
 	--input-radius: var(--radius-input);
 	--nest-spacing-input: calc(var(--spacing-input) - 2 * var(--input-nest));
+	--nest-spacing-input-padding: max(calc(var(--spacing-input-padding) - 0.5 * var(--input-nest)), calc(0.75 * var(--spacing-input-padding)));
 	--nest-radius: max(calc(var(--input-radius) - var(--input-nest)), var(--radius-2xs));
 	position: relative;
 	display: inline-flex;
@@ -159,7 +160,7 @@
 	> .spinner {
 		stroke-width: var(--stroke-width-icon);
 		width: var(--spacing-input-icon);
-		height: var(--spacing-input);
+		height: var(--spacing-input-icon);
 		transform: var(--scale-press);
 		flex: none;
 		user-select: none;
@@ -174,6 +175,7 @@
 	> :not(.input, .input-affix, .input-icon, .lucide-icon) {
 		--spacing-input: var(--nest-spacing-input);
 		--radius-input: var(--nest-radius);
+		--spacing-input-padding: var(--nest-spacing-input-padding);
 	}
 
 	/* Input-related peer group */

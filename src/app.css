@@ -11,7 +11,7 @@
 @import 'styles/navbar.css' layer(components);
 @import 'styles/nest.css' layer(components);
 @import 'styles/prose.css' layer(components);
-/* @import 'styles/switch.css' layer(components); */
+@import 'styles/switch.css' layer(components);
 /* @import 'styles/toggle.css' layer(components); */
 @import 'tailwindcss/utilities' layer(utilities);
 
@@ -126,6 +126,7 @@
 	--radius-md: 1.25rem;
 	--radius-lg: 2rem;
 	--radius-xl: 3.25rem;
+	--radius-full: calc(infinity * 1px);
 	--radius-inherit: inherit;
 	--radius-input: var(--radius-sm);
 	--radius-dashboard-section: var(--radius-xl);
@@ -317,9 +318,9 @@
 }
 
 [data-mode='dark'] {
-	--color-primary-soft: hsl(148, 80%, 18%);
-	--color-primary: hsl(144, 75%, 30%);
-	--color-primary-strong: hsl(143, 60%, 44%);
+	--color-primary-soft: hsl(148, 90%, 20%);
+	--color-primary: hsl(144, 76%, 32%);
+	--color-primary-strong: hsl(143, 64%, 45%);
 
 	--color-success-soft: hsl(120, 98%, 14%);
 	--color-success: hsl(120, 90%, 25%);
@@ -331,8 +332,8 @@
 
 	--background-color-pure: black;
 	--background-color-base: hsl(62, 5%, 7%);
-	--background-color-card: hsl(62, 3%, 11%);
-	--background-color-section: hsl(62, 4%, 9%);
+	--background-color-card: hsl(60, 3%, 9%);
+	--background-color-section: hsl(58, 2%, 10%);
 	--background-color-input-soft: color-mix(in srgb, var(--text-color-base) 6%, transparent);
 	--background-color-input: color-mix(in srgb, var(--text-color-base) 8%, transparent);
 	--background-color-input-strong: color-mix(in srgb, var(--text-color-base) 10%, transparent);

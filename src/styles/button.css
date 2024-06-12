@@ -175,7 +175,7 @@
 		--button-current-background: var(--background-color-card);
 		--button-current-background-inset: 0;
 		&:is([data-danger]) {
-			--ripple-color: color-mix(in srgb, var(--background-error-soft) 50%, transparent);
+			--ripple-color: color-mix(in srgb, var(--color-error-soft) 25%, transparent);
 			--button-color: var(--text-color-input-error);
 			--button-hover-color: var(--text-color-input-error-strong);
 			--button-hover-background: var(--background-color-input-error-strong);
