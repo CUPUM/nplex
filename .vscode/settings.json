@@ -34,5 +34,6 @@
 	"svelte.plugin.css.globals": "src/**/*.css",
 	"tailwindCSS.rootFontSize": 16,
 	"tailwindCSS.emmetCompletions": true,
-	"tailwindCSS.experimental.configFile": "src/app.css"
+	"tailwindCSS.experimental.configFile": "src/app.css",
+	"tailwindCSS.lint.invalidConfigPath": "warning"
 }
