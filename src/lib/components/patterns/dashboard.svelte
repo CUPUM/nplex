@@ -52,39 +52,41 @@
 </section>
 
 <style>
-	* :global(.dashboard-section) {
-		display: flex;
-		flex-direction: column;
-		background: var(--background-color-section);
-		font-size: var(--font-size-sm);
-		border-radius: var(--radius-lg);
-		gap: var(--spacing-card-padding);
-		padding-block: var(--spacing-card-padding);
+	:global {
+		.dashboard-section {
+			display: flex;
+			flex-direction: column;
+			background: var(--background-color-section);
+			font-size: var(--font-size-sm);
+			border-radius: var(--radius-lg);
+			gap: var(--spacing-card-padding);
+			padding-block: var(--spacing-card-padding);
 
-		&:global(:has(.dashboard-section-title:first-child)) {
-			padding-top: calc(0.75 * var(--spacing-card-padding));
+			&:has(.dashboard-section-title:first-child) {
+				padding-top: calc(0.75 * var(--spacing-card-padding));
+			}
 		}
-	}
 
-	* :global(.dashboard-section-content) {
-		display: flex;
-		flex-direction: column;
-		gap: var(--spacing-gutter);
-		align-items: flex-start;
-		border-radius: inherit;
-		padding-inline: var(--spacing-lg);
-	}
+		.dashboard-section-content {
+			display: flex;
+			flex-direction: column;
+			gap: var(--spacing-gutter);
+			align-items: flex-start;
+			border-radius: inherit;
+			padding-inline: var(--spacing-lg);
+		}
 
-	* :global(.dashboard-section-title) {
-		align-self: flex-start;
-		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-bold);
-		padding-inline: var(--spacing-card-padding);
-		border-radius: var(--radius-md);
-	}
+		.dashboard-section-title {
+			align-self: flex-start;
+			font-size: var(--font-size-lg);
+			font-weight: var(--font-weight-bold);
+			padding-inline: var(--spacing-card-padding);
+			border-radius: var(--radius-md);
+		}
 
-	* :global(.dashboard-section-menu) {
-		position: sticky;
-		bottom: var(--spacing-gutter);
+		.dashboard-section-menu {
+			position: sticky;
+			bottom: var(--spacing-gutter);
+		}
 	}
 </style>

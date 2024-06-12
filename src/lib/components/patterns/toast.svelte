@@ -10,8 +10,8 @@
 <aside
 	class="bg-popover relative max-w-sm overflow-hidden rounded-sm text-base text-sm shadow-lg"
 	{...instance.toastAttributes}
-	in:fly|global={{ y: '100%', easing: expoOut, duration: 300, opacity: 0 }}
-	out:fly|global={{ x: '100%', easing: cubicOut, duration: 150, opacity: 0 }}
+	in:fly|global={{ y: '50%', easing: expoOut, duration: 350, opacity: 0 }}
+	out:fly|global={{ x: '100%', easing: cubicOut, duration: 250, opacity: 0 }}
 >
 	{#if instance.duration}
 		<progress
