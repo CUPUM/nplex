@@ -33,10 +33,12 @@
 		color,
 		colorStart,
 		colorEnd,
+		zIndex,
 	}: {
 		blur?: string | number;
 		easingSpread?: string;
 		easingOutro?: string;
+		zIndex?: number;
 	} & (
 		| {
 				speedSpread?: number;
@@ -173,6 +175,7 @@
 <div
 	bind:this={containerRef}
 	class="rounded-inherit pointer-events-none absolute inset-0 overflow-hidden"
+	style:z-index={zIndex}
 	style:--ripple-color={color}
 	style:--ripple-blur={blur != null ? px(blur) : undefined}
 	style:--ripple-color-start={colorStart}

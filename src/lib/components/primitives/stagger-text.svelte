@@ -12,7 +12,7 @@
 		translate = '0',
 		rotate = '0deg',
 		scale = 1,
-		maskPadding,
+		clipPath,
 	}: {
 		text: string;
 		separator?: string | RegExp;
@@ -25,7 +25,7 @@
 		translate?: string;
 		rotate?: string;
 		scale?: number | string;
-		maskPadding?: string | { start: string; end: string };
+		clipPath?: string | { start: string; end: string };
 	} = $props();
 
 	let split = $derived(text.split(separator));
@@ -33,11 +33,12 @@
 
 {#key split}
 	<span
-		data-masked={maskPadding ? true : undefined}
+		class="stagger-text"
+		data-clipped={clipPath ? true : undefined}
 		style:--duration={ms(duration)}
 		style:--easing={easing}
-		style:--mask-padding-start={typeof maskPadding === 'string' ? maskPadding : maskPadding?.start}
-		style:--mask-padding-end={typeof maskPadding === 'string' ? maskPadding : maskPadding?.end}
+		style:--clip-path-start={typeof clipPath === 'string' ? clipPath : clipPath?.start}
+		style:--clip-path-end={typeof clipPath === 'string' ? clipPath : clipPath?.end}
 		style:--opacity={opacity}
 		style:--transform={transform}
 		style:--translate={translate}
@@ -46,12 +47,12 @@
 	>
 		{#each split as unit, i}
 			<span
-				class="unit-mask inline-block whitespace-pre will-change-transform"
+				class="unit-wrapper inline-block whitespace-pre will-change-transform"
 				style:--i={i}
 				style:--delay={delay}
 			>
 				<span class="unit inline-block whitespace-pre">
-					{unit}
+					{@html unit}
 				</span>
 			</span>
 		{/each}
@@ -59,9 +60,14 @@
 {/key}
 
 <style>
-	[data-masked='true'] > .unit-mask {
-		overflow-y: hidden;
-		animation-name: mask;
+	.stagger-text {
+		text-decoration: inherit;
+	}
+	.unit-wrapper {
+		text-decoration: inherit;
+	}
+	[data-clipped='true'] > .unit-wrapper {
+		animation-name: clip;
 		animation-duration: var(--duration);
 		animation-timing-function: var(--easing);
 		animation-delay: var(--delay);
@@ -74,16 +80,15 @@
 		animation-timing-function: var(--easing);
 		animation-delay: var(--delay);
 		animation-fill-mode: both;
+		text-decoration: inherit;
 	}
 
-	@keyframes mask {
+	@keyframes clip {
 		from {
-			padding-block: var(--mask-padding-start, 0);
-			margin-block: calc(-1 * var(--mask-padding-start, 0));
+			clip-path: var(--clip-path-start);
 		}
 		to {
-			padding-block: var(--mask-padding-end, 0);
-			margin-block: calc(-1 * var(--mask-padding-end, 0));
+			clip-path: var(--clip-path-end);
 		}
 	}
 
