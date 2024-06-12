@@ -20,12 +20,18 @@ export class Tabs<T = any> {
 		};
 	}
 
-	contentAttributes(value: T) {
+	contentAttributes(value: T, hidden: boolean = true) {
 		const _this = this;
 		return {
 			role: 'tabpanel' as const,
 			get hidden() {
 				return value !== _this.current;
+			},
+			get 'aria-hidden'() {
+				return value !== _this.current;
+			},
+			get 'aria-expanded'() {
+				return value === _this.current;
 			},
 		};
 	}
