@@ -41,7 +41,7 @@ progress[value] {
 	appearance: none;
 	border: none;
 	width: auto;
-	color: var(--color-primary-soft);
+	color: var(--color-primary-dim);
 	border-radius: 999px;
 	background: var(--background-color-input);
 

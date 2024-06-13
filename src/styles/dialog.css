@@ -31,7 +31,7 @@
 
 		+ :is(.dialog-section, .dialog-menu) {
 			border-top-width: var(--border-width);
-			border-top-color: var(--border-color-soft);
+			border-top-color: var(--border-color-dim);
 			border-top-style: solid;
 		}
 
@@ -57,7 +57,7 @@
 	}
 
 	.dialog-text {
-		color: var(--text-color-base-soft);
+		color: var(--text-color-base-dim);
 	}
 
 	.dialog-menu {

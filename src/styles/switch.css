@@ -33,17 +33,28 @@
 	/* Default */
 
 	&:not(.switch-bordered, .switch-dashed, .switch-ghost) {
-		--switch-color: var(--text-color-input);
+		--switch-thumb-background: var(--background-color-popover);
+		--switch-color: var(--text-color-input-dim);
 		--switch-background: var(--background-color-input);
 		--switch-border-style: none;
-		--switch-icon-color: currentColor;
-		--switch-hover-color: var(--text-color-base-strong);
-		--switch-hover-background: var(--background-color-input-strong);
-		--switch-item-background-inset: 0;
-		--switch-item-background: ;
-		--switch-item-hover-background: ;
-		--switch-item-hover-color: ;
-		--switch-thumb-background: var(--background-color-input-strong);
+		--switch-hover-color: var(--text-color-input);
+		--switch-hover-background: var(--background-color-input);
+		/* --switch-focused-color: ; */
+		/* --switch-focused-background: ; */
+		/* --switch-disabled-color: ; */
+		/* --switch-disabled-background: ; */
+		--switch-item-icon-color: currentColor;
+		--switch-item-background-inset: 0.4em;
+		--switch-item-background: transparent;
+		--switch-item-hover-background-inset: 0em;
+		--switch-item-hover-background: var(--background-color-input-accent);
+		--switch-item-hover-color: var(--text-color-input-accent);
+		/* --switch-item-disabled-color: ; */
+		/* --switch-item-disabled-background: ; */
+		--switch-item-checked-color: var(--text-color-input-accent);
+		--switch-item-checked-background: transparent;
+		/* --switch-item-active-color: ; */
+		/* --switch-item-active-background: ; */
 	}
 
 	/* Bordered & dashed */
@@ -57,32 +68,43 @@
 	}
 
 	&:is(.switch-bordered, .switch-dashed) {
-		--switch-color: var(--background-color-input-input);
+		--switch-thumb-background: var(--background-color-input-accent);
+		--switch-color: var(--text-color-input-dim);
 		--switch-background: transparent;
-		--switch-border-color: var(--border-color);
-		--switch-icon-color: currentColor;
-		--switch-background-inset: 0.4em;
-		--switch-hover-background: var(--background-color-input-strong);
-		--switch-hover-border-color: transparent;
-		--switch-hover-background-inset: 0;
+		--switch-border-color: var(--border-color-dim);
+		--switch-hover-border-color: var(--border-color);
+		--switch-hover-color: var(--text-color-input);
+		--switch-focused-border-color: transparent;
+		--switch-item-icon-color: currentColor;
+		--switch-item-background-inset: 0.4em;
+		--switch-item-background: transparent;
+		--switch-item-hover-background-inset: 0;
+		--switch-item-hover-background: var(--background-color-input-accent);
+		--switch-item-hover-color: var(--text-color-input-accent);
+		--switch-item-checked-color: var(--text-color-input-accent);
+		--switch-item-checked-background: transparent;
+	}
+
+	&:where(label, button) {
+		cursor: pointer;
 	}
 
 	/* Ghost */
 
 	&:is(.switch-ghost) {
-		--switch-color: var(--text-color-input-soft);
+		--switch-thumb-background: var(--background-color-input-accent);
+		--switch-color: var(--text-color-input-dim);
 		--switch-background: transparent;
 		--switch-icon-color: currentColor;
 		--switch-border-style: none;
 		--switch-hover-color: var(--text-color-input);
-		--switch-thumb-background: var(--background-color-input-strong);
 		--switch-item-background-inset: 0.4em;
 		--switch-item-background: transparent;
 		--switch-item-hover-background-inset: 0;
 		--switch-item-hover-background: var(--background-color-input);
-		--switch-item-checked-color: var(--text-color-input-strong);
+		--switch-item-checked-color: var(--text-color-input-accent);
 		--switch-item-checked-background-inset: 0;
-		--switch-item-checked-background: var(--background-color-input-strong);
+		--switch-item-checked-background: transparent;
 	}
 
 	/* Base */
@@ -92,6 +114,7 @@
 	--nest-spacing-input: calc(var(--spacing-input) - 2 * var(--switch-nest));
 	--nest-spacing-input-padding: calc(var(--spacing-input-padding) - var(--switch-nest));
 	--nest-radius-input: calc(var(--switch-radius) - var(--switch-nest));
+	overflow-x: auto;
 	isolation: isolate;
 	position: relative;
 	display: inline-flex;
@@ -99,7 +122,7 @@
 	border-radius: var(--switch-radius);
 	user-select: none;
 	flex: none;
-	gap: 0;
+	gap: calc(var(--switch-nest) / 2);
 	align-items: stretch;
 	justify-content: stretch;
 	color: var(--switch-color);
@@ -153,19 +176,18 @@
 		}
 	}
 
-	/* Focus */
+	/* Focused */
 
 	&:focus-visible,
-	&:focus,
-	&:has(:focus) {
+	&:has(:focus-visible) {
 		outline: var(--outline-width-focus) solid var(--outline-color);
-		color: var(--switch-hover-color), var(--switch-color);
-		background: var(--switch-hover-background, var(--switch-background));
+		color: var(--switch-focused-color), var(--switch-color);
+		background: var(--switch-focused-background, var(--switch-background));
 
 		&::after {
-			border-width: var(--switch-hover-border-width, var(--switch-border-width));
-			border-style: var(--switch-hover-border-style, var(--switch-border-style));
-			border-color: var(--switch-hover-border-color, var(--switch-border-color));
+			border-width: var(--switch-focused-border-width, var(--switch-border-width));
+			border-style: var(--switch-focused-border-style, var(--switch-border-style));
+			border-color: var(--switch-focused-border-color, var(--switch-border-color));
 		}
 	}
 
@@ -175,8 +197,8 @@
 	&[aria-disabled='true'],
 	&[data-disabled='true'] {
 		pointer-events: none;
-		color: var(--switch-disabled-color);
-		background: var(--switch-disabled-background);
+		color: var(--switch-disabled-color, var(--switch-color));
+		background: var(--switch-disabled-background, var(--switch-background));
 
 		&::after {
 			border-width: var(--switch-disabled-border-width, var(--switch-border-width));
@@ -203,6 +225,8 @@
 		cursor: pointer;
 		display: flex;
 		flex-direction: row;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 		align-items: center;
 		justify-content: center;
 		height: var(--spacing-input);
@@ -218,18 +242,25 @@
 			.lucide-icon,
 			.spinner {
 				opacity: 1;
-				transform: scale(1);
 			}
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			z-index: -1;
+			transition: inherit;
+			border-radius: inherit;
+			pointer-events: none;
 		}
 
 		/* Icon children */
 
-		& .lucide-icon,
+		.lucide-icon,
 		.spinner {
 			width: var(--spacing-input-icon);
 			height: var(--spacing-input-icon);
-			opacity: var(--opacity-soft);
-			transform: scale(1);
+			opacity: var(--opacity-dim);
 			flex: none;
 			user-select: none;
 			pointer-events: none;
@@ -238,37 +269,89 @@
 				transform var(--transition-duration-fast) var(--transition-timing-function-out);
 		}
 
+		&:focus-visible {
+			outline: var(--outline-width-focus) solid var(--outline-color);
+		}
+
 		/* Base */
 
-		color: var(--switch-item-hover-color);
-		background: var(--switch-item-background);
+		color: var(--switch-item-color);
+
+		&::after {
+			inset: var(--switch-item-background-inset);
+			background: var(--switch-item-background);
+		}
+
+		.lucide-icon,
+		.spinner {
+			color: var(--switch-item-icon-color);
+		}
 
 		/* Disabled */
 
 		&:is(:disabled, [aria-disabled='true'], [data-disabled='true']) {
-			color: var(--switch-disabled-color, var(--switch-item-color));
-			background: var(--switch-disabled-background, var(--switch-item-background));
+			color: var(--switch-item-disabled-color, var(--switch-item-color));
+
+			&::after {
+				inset: var(--switch-item-disabled-background-inset, var(--switch-item-background-inset));
+				background: var(--switch-item-disabled-background, var(--switch-item-background));
+			}
+
+			.lucide-icon,
+			.spinner {
+				color: var(--switch-item-disabled-icon-color, var(--switch-item-icon-color));
+			}
+		}
+
+		/* Hover */
+
+		&:hover {
+			color: var(--switch-item-hover-color, var(--switch-item-color));
+
+			&::after {
+				inset: var(--switch-item-hover-background-inset, var(--switch-item-background-inset));
+				background: var(--switch-item-hover-background, var(--switch-item-background));
+			}
+
+			.lucide-icon,
+			.spinner {
+				color: var(--switch-item-hover-icon-color, var(--switch-item-icon-color));
+			}
 		}
 
 		/* Checked */
 
 		&:is(:checked, :has(:checked), [data-state='checked'], [data-state='active'], [aria-checked='true'], [aria-selected='true']) {
+			animation: var(--animate-press);
 			color: var(--switch-item-checked-color, var(--switch-item-color));
-			background: var(--switch-item-checked-background, var(--switch-item-background));
-			animation: var(--animation-press);
+
+			&::after {
+				inset: var(--switch-item-checked-background-inset, var(--switch-item-background-inset));
+				background: var(--switch-item-checked-background, var(--switch-item-background));
+			}
 
 			.lucide-icon,
 			.spinner {
 				opacity: 1;
-				transform: scale(1);
+				color: var(--switch-item-checked-icon-color, var(--switch-item-icon-color));
 			}
 		}
 
 		/* Active */
 
 		&:where(:active) {
+			animation: var(--animate-press);
 			color: var(--switch-item-active-color, var(--switch-item-color));
-			background: var(--switch-item-active-background, var(--switch-item-background));
+
+			&::after {
+				inset: var(--switch-item-active-background-inset, var(--switch-item-background-inset));
+				background: var(--switch-item-active-background, var(--switch-item-background));
+			}
+
+			.lucide-icon,
+			.spinner {
+				color: var(--switch-item-active-icon-color, var(--switch-item-icon-color));
+			}
 		}
 	}
 }

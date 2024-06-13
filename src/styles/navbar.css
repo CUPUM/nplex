@@ -10,11 +10,15 @@
 		content: '';
 		z-index: -1;
 		position: absolute;
-		inset: 0;
-		translate: 0 min(0%, calc(-100% - var(--offset) + var(--scroll-y-px) - var(--border-width-md)));
-		background: var(--background-color-base);
+		top: -100%;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		translate: 0 min(0%, calc(-100% - var(--offset) + var(--scroll-y-px)));
+		background: color-mix(in srgb, var(--background-color-base) 85%, transparent);
+		backdrop-filter: blur(var(--blur-md));
 		transition: all 100ms ease-out;
-		border-bottom: var(--border-width-md) solid var(--border-color-soft);
+		/* border-bottom: var(--border-width-md) solid color-mix(in srgb, var(--border-color-dim) min(calc(var(--scroll-y) * 1%), 100%), transparent); */
 	}
 }
 
@@ -72,14 +76,14 @@
 .navbar-menu-group-legend {
 	align-self: flex-start;
 	font-size: var(--font-size-xs);
-	color: var(--text-color-base-soft);
+	color: var(--text-color-base-dim);
 	font-weight: var(--font-weight-thin);
 	padding-inline: var(--spacing-input-padding);
 	padding-block: var(--spacing-input-nest);
 	display: flex;
 	flex-direction: row;
 	gap: 1em;
-	background-color: var(--background-color-input-soft);
+	background-color: var(--background-color-input-dim);
 	border-radius: 99px;
 
 	.lucide-icon {

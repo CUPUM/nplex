@@ -48,33 +48,33 @@
 		--button-text-decoration: none;
 		--button-icon-color: currentColor;
 		--button-border-style: none;
-		--button-hover-color: var(--text-color-input-strong);
-		--button-hover-background: var(--background-color-input-strong);
+		--button-hover-color: var(--text-color-input-accent);
+		--button-hover-background: var(--background-color-input-accent);
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-background: var(--background-color-input-error);
-			--button-hover-color: var(--text-color-input-error-strong);
-			--button-hover-background: var(--background-color-input-error-strong);
+			--button-hover-color: var(--text-color-input-error-accent);
+			--button-hover-background: var(--background-color-input-error-accent);
 		}
 	}
 
 	/* Call to action */
 
 	&:is(.button-cta) {
-		--ripple-color: color-mix(in srgb, var(--color-primary-soft) 50%, transparent);
+		--ripple-color: color-mix(in srgb, var(--color-primary-dim) 50%, transparent);
 		--button-background-inset: 0;
 		--button-color: var(--color-on-primary);
 		--button-icon-color: currentColor;
 		--button-background: var(--color-primary);
-		--button-hover-color: var(--color-on-primary-soft);
-		--button-hover-background: var(--color-primary-strong);
-		--button-disabled-background: var(--text-color-base-soft);
+		--button-hover-color: var(--color-on-primary-dim);
+		--button-hover-background: var(--color-primary-accent);
+		--button-disabled-background: var(--text-color-base-dim);
 		&:is([data-danger]) {
-			--ripple-color: color-mix(in srgb, var(--color-error-soft) 50%, transparent);
+			--ripple-color: color-mix(in srgb, var(--color-error-dim) 50%, transparent);
 			--button-color: var(--color-on-error);
 			--button-background: var(--color-error);
-			--button-hover-color: var(--color-on-error-strong);
-			--button-hover-background: var(--color-error-strong);
+			--button-hover-color: var(--color-on-error-accent);
+			--button-hover-background: var(--color-error-accent);
 		}
 	}
 
@@ -94,15 +94,15 @@
 		--button-border-color: var(--border-color);
 		--button-icon-color: currentColor;
 		--button-background-inset: 0.4em;
-		--button-hover-color: var(--text-color-input-strong);
-		--button-hover-background: var(--background-color-input-strong);
+		--button-hover-color: var(--text-color-input-accent);
+		--button-hover-background: var(--background-color-input-accent);
 		--button-hover-border-color: transparent;
 		--button-hover-background-inset: 0;
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-border-color: var(--border-color-error);
-			--button-hover-color: var(--text-color-input-error-strong);
-			--button-hover-background: var(--background-color-input-error-strong);
+			--button-hover-color: var(--text-color-input-error-accent);
+			--button-hover-background: var(--background-color-input-error-accent);
 		}
 	}
 
@@ -115,17 +115,17 @@
 		--button-text-decoration: none;
 		--button-icon-color: currentColor;
 		--button-border-style: none;
-		--button-hover-color: var(--text-color-input-strong);
-		--button-hover-background: var(--background-color-input-strong);
+		--button-hover-color: var(--text-color-input-accent);
+		--button-hover-background: var(--background-color-input-accent);
 		--button-hover-background-inset: 0;
 		--button-checked-color: var(--color-primary);
 		--button-checked-background: color-mix(in srgb, var(--color-primary) 15%, transparent);
 		--button-checked-background-inset: 0;
-		--button-current-color: var(--color-primary-soft);
+		--button-current-color: var(--color-primary-dim);
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
-			--button-hover-color: var(--text-color-input-error-strong);
-			--button-hover-background: var(--background-color-input-error-strong);
+			--button-hover-color: var(--text-color-input-error-accent);
+			--button-hover-background: var(--background-color-input-error-accent);
 		}
 	}
 
@@ -136,21 +136,21 @@
 		--button-background: transparent;
 		--button-background-inset: 0.4em;
 		--button-text-decoration: underline;
-		--button-text-decoration-color: color-mix(in srgb, var(--color-primary-soft) var(--opacity-softer), transparent);
+		--button-text-decoration-color: color-mix(in srgb, var(--color-primary-dim) var(--opacity-dimmer), transparent);
 		--button-text-decoration-thickness: var(--input-border-width);
 		--button-text-underline-offset: 0.3em;
 		--button-icon-color: currentColor;
 		--button-border-style: none;
-		--button-hover-color: var(--color-primary-strong);
-		--button-hover-background: color-mix(in srgb, var(--color-primary-soft) 15%, transparent);
+		--button-hover-color: var(--color-primary-accent);
+		--button-hover-background: color-mix(in srgb, var(--color-primary-dim) 15%, transparent);
 		--button-hover-background-inset: 0;
 		--button-hover-text-decoration-color: transparent;
 		--button-hover-text-underline-offset: 0.1em;
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
-			--button-text-decoration-color: color-mix(in srgb, var(--color-error-soft) var(--opacity-softer), transparent);
-			--button-hover-color: var(--text-color-input-error-strong);
-			--button-hover-background: var(--background-color-input-error-strong);
+			--button-text-decoration-color: color-mix(in srgb, var(--color-error-dim) var(--opacity-dimmer), transparent);
+			--button-hover-color: var(--text-color-input-error-accent);
+			--button-hover-background: var(--background-color-input-error-accent);
 		}
 	}
 
@@ -159,7 +159,7 @@
 	&:is(.button-nav) {
 		justify-content: flex-start;
 		--ripple-color: color-mix(in srgb, var(--color-primary) 15%, transparent);
-		--button-color: var(--text-color-input-soft);
+		--button-color: var(--text-color-input-dim);
 		--button-background: transparent;
 		--button-background-inset: 0.4em;
 		--button-text-decoration: none;
@@ -171,14 +171,14 @@
 		--button-checked-color: var(--color-primary);
 		--button-checked-background: color-mix(in srgb, var(--color-primary) 10%, transparent);
 		--button-checked-background-inset: 0;
-		--button-current-color: var(--color-primary-strong);
+		--button-current-color: var(--color-primary-accent);
 		--button-current-background: var(--background-color-card);
 		--button-current-background-inset: 0;
 		&:is([data-danger]) {
-			--ripple-color: color-mix(in srgb, var(--color-error-soft) 25%, transparent);
+			--ripple-color: color-mix(in srgb, var(--color-error-dim) 25%, transparent);
 			--button-color: var(--text-color-input-error);
-			--button-hover-color: var(--text-color-input-error-strong);
-			--button-hover-background: var(--background-color-input-error-strong);
+			--button-hover-color: var(--text-color-input-error-accent);
+			--button-hover-background: var(--background-color-input-error-accent);
 		}
 	}
 
@@ -233,7 +233,6 @@
 		transition: inherit;
 		border-radius: inherit;
 		pointer-events: none;
-		inset: 0;
 	}
 
 	&::before {
@@ -242,6 +241,7 @@
 	}
 
 	&::after {
+		inset: 0;
 		border-color: var(--button-border-color);
 		border-style: var(--button-border-style);
 		border-width: var(--button-border-width);
@@ -251,7 +251,7 @@
 
 	.lucide-icon,
 	.spinner {
-		opacity: var(--opacity-soft);
+		opacity: var(--opacity-dim);
 		stroke: var(--button-icon-color);
 		stroke-width: var(--stroke-width-icon);
 		width: var(--spacing-input-icon);
@@ -322,7 +322,7 @@
 	&[aria-disabled='true'],
 	&[data-disabled='true'] {
 		cursor: default;
-		opacity: var(--opacity-soft);
+		opacity: var(--opacity-dim);
 		color: var(--button-disabled-color, var(--button-color));
 		text-decoration: var(--button-disabled-text-decoration, var(--button-text-decoration));
 		text-decoration-color: var(--button-disabled-text-decoration-color, var(--button-text-decoration-color));
@@ -342,7 +342,7 @@
 
 		.lucide-icon,
 		.spinner {
-			opacity: var(--opacity-softer);
+			opacity: var(--opacity-dimmer);
 			stroke: var(--button-disabled-icon-color, var(--button-icon-color));
 		}
 	}
