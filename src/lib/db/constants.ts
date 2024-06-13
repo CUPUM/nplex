@@ -2,6 +2,9 @@ import type { AvailableLanguageTag } from '$i18n/runtime';
 import type { Regconfig } from 'drizzle-orm-helpers/pg';
 
 export const LANG_COLUMN_NAME = 'lang';
+
+export type LangColumnName = typeof LANG_COLUMN_NAME;
+
 export const LANG_REGCONFIGS = {
 	en: 'english',
 	fr: 'french',
