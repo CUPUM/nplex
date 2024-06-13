@@ -62,3 +62,18 @@ export async function transformImage(
 		};
 	});
 }
+
+export function isEventWithFileList<T extends Event>(
+	e: T
+): e is T & { target: { files: FileList } } {
+	if (!e.target) {
+		return false;
+	}
+	if (!('files' in e.target)) {
+		return false;
+	}
+	if (!(e.target.files instanceof FileList)) {
+		return false;
+	}
+	return true;
+}
