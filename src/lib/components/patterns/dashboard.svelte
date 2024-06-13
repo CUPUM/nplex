@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
 	import { defineContext } from '$lib/common/context';
 	import type { Snippet } from 'svelte';
+	import { expoOut } from 'svelte/easing';
 	import { slide } from 'svelte/transition';
 
 	const CTX_KEY = 'dashboard';
@@ -28,15 +29,19 @@
 	class="px-padding pb-gutter relative grid flex-1 grid-cols-[[sidebar-start_header-start_footer-start]_auto_[sidebar-end_main-start]_1fr_[main-end_header-end_footer-end]]"
 >
 	{#if ctx.header}
-		<header class="pb-gutter" style:grid-column="header">
+		<header
+			class="pb-gutter rounded-section relative flex flex-col"
+			style:grid-column="header"
+			transition:slide={{ axis: 'y', duration: 350, easing: expoOut }}
+		>
 			{@render ctx.header()}
 		</header>
 	{/if}
 	{#if ctx.sidebar}
 		<nav
 			style:grid-column="sidebar"
-			class="gap-gutter w-sidebar-width top-navbar-height pr-gutter sticky flex flex-col self-start"
-			transition:slide={{ axis: 'x' }}
+			class="gap-gutter w-sidebar-width top-sticky-top pr-gutter relative sticky flex flex-col self-start"
+			transition:slide={{ axis: 'x', duration: 350, easing: expoOut }}
 		>
 			{@render ctx.sidebar()}
 		</nav>
@@ -45,7 +50,7 @@
 		{@render children()}
 	</article>
 	{#if ctx.footer}
-		<footer style:grid-column="footer">
+		<footer class="pt-gutter relative" style:grid-column="footer">
 			{@render ctx.footer()}
 		</footer>
 	{/if}
@@ -58,7 +63,7 @@
 			flex-direction: column;
 			background: var(--background-color-section);
 			font-size: var(--font-size-sm);
-			border-radius: var(--radius-lg);
+			border-radius: var(--radius-section);
 			gap: var(--spacing-card-padding);
 			padding-block: var(--spacing-card-padding);
 
@@ -67,26 +72,38 @@
 			}
 		}
 
-		.dashboard-section-content {
-			display: flex;
-			flex-direction: column;
-			gap: var(--spacing-gutter);
-			align-items: flex-start;
-			border-radius: inherit;
-			padding-inline: var(--spacing-lg);
-		}
-
 		.dashboard-section-title {
 			align-self: flex-start;
 			font-size: var(--font-size-lg);
 			font-weight: var(--font-weight-bold);
 			padding-inline: var(--spacing-card-padding);
-			border-radius: var(--radius-md);
+		}
+
+		.dashboard-section-description {
+			align-self: flex-start;
+			max-width: var(--width-prose);
+			font-size: var(--font-size-sm);
+			line-height: var(--line-height-md);
+			padding-inline: var(--spacing-card-padding);
+		}
+
+		.dashboard-section-content {
+			display: flex;
+			flex-direction: column;
+			gap: var(--spacing-gutter);
+			border-radius: inherit;
+			padding-inline: var(--spacing-lg);
+			margin-inline: auto;
+			align-items: stretch;
+			width: 100%;
+			max-width: var(--width-md);
 		}
 
 		.dashboard-section-menu {
+			align-self: center;
 			position: sticky;
 			bottom: var(--spacing-gutter);
+			margin-inline: var(--spacing-card-padding);
 		}
 	}
 </style>

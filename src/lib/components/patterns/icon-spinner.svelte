@@ -12,7 +12,7 @@
 </script>
 
 {#if busy}
-	<Spinner {...iconProps} outro={false} />
+	<Spinner {...iconProps} />
 {:else}
 	<svelte:component this={icon} {...iconProps} />
 {/if}

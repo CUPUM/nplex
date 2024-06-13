@@ -61,10 +61,13 @@
 	}
 
 	.translation-content[aria-expanded='false'] {
+		visibility: collapse;
 		position: absolute;
-		pointer-events: none;
-		scale: 0.9;
-		translate: 0 0.25em;
+		width: 0;
+		height: 0;
 		opacity: 0;
+		pointer-events: none;
+		translate: 0 0.5em;
+		transition: none;
 	}
 </style>

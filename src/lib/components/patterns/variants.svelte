@@ -51,7 +51,7 @@
 		justify-content: center;
 		padding: 4rem;
 		aspect-ratio: 1.5;
-		border: var(--border-width-sm) solid var(--border-color-soft);
+		border: var(--border-width-sm) solid var(--border-color-dim);
 		border-radius: var(--radius-lg);
 	}
 </style>

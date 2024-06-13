@@ -8,7 +8,7 @@
 		speed = 1,
 		tail = true,
 		intro = true,
-		outro = true,
+		outro = false,
 		class: className,
 		width = 24,
 		height = 24,
@@ -93,7 +93,7 @@
 	}
 
 	.tail {
-		opacity: var(--opacity-softer);
+		opacity: var(--opacity-dimmer);
 		animation-delay: calc(var(--total-duration) * 0.04); /* manually tweaked factor */
 	}
 

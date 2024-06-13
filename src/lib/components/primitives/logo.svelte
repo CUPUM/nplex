@@ -3,19 +3,26 @@
 	import { cn } from '../utilities';
 
 	let {
-		mono,
+		id,
+		'data-mono': dataMono,
 		height = '1em',
 		class: className,
+		delay = 0,
 		...svgProps
 	}: {
-		mono?: boolean;
+		id: string;
+		delay?: number;
+		'data-mono'?: boolean;
 	} & Omit<SVGAttributes<SVGElement>, 'viewBox' | 'fill' | 'xmlns'> = $props();
 
-	let viewBox = $derived(mono ? '0 50 100 100' : '0 0 520 200');
+	const syncbaseId = id.replaceAll('-', '_');
+	let viewBox = $derived(dataMono ? '0 50 100 100' : '0 0 520 200');
 </script>
 
 <svg
+	{id}
 	data-logo="true"
+	data-mono={dataMono}
 	xmlns="http://www.w3.org/2000/svg"
 	fill="none"
 	{viewBox}
@@ -24,23 +31,24 @@
 	class={cn('relative', className)}
 >
 	<path
-		id="n"
+		id="{syncbaseId}_n"
 		d="M0 100C0 72.3858 22.3858 50 50 50C77.6142 50 100 72.3858 100 100V150H0V100Z"
 		fill="currentColor"
 		opacity="0"
+		data-mono="true"
 	>
 		<animate
-			id="n_animation"
+			id="{syncbaseId}_n_opacity"
 			attributeName="opacity"
 			dur="750ms"
 			fill="freeze"
 			calcMode="spline"
 			keySplines="0.16, 1, 0.3, 1"
 			values="0;1"
-			begin="500ms"
+			begin="{delay}ms"
 		/>
 		<animateTransform
-			id="n_translate"
+			id="{syncbaseId}_n_translate"
 			attributeName="transform"
 			attributeType="XML"
 			type="translate"
@@ -48,194 +56,195 @@
 			calcMode="spline"
 			keySplines="0, 1, 0.2, 1"
 			values="75;0"
-			begin="n_animation.begin"
+			begin="{syncbaseId}_n_opacity.begin"
 		/>
 	</path>
-	{#if !mono}
-		<g id="p">
-			<circle id="p_eye" cx="170" cy="100" r="50" fill="currentColor" opacity="0">
-				<animate
-					id="p_eye_animation"
-					attributeName="opacity"
-					dur="750ms"
-					begin="n_translate.begin+100ms"
-					fill="freeze"
-					calcMode="spline"
-					keySplines="0, 1, 0.2, 1"
-					values="0;1"
-				/>
-				<animateTransform
-					id="p_eye_transform"
-					attributeName="transform"
-					attributeType="XML"
-					type="translate"
-					dur="750ms"
-					calcMode="spline"
-					keySplines="0, 1, 0.2, 1"
-					values="-75;0"
-					begin="p_eye_animation.begin"
-				/>
-			</circle>
-			<rect
-				id="p_descendant"
-				x="120"
-				y="150"
-				width="50"
-				height="50"
-				fill="currentColor"
-				opacity="0"
-			>
-				<animate
-					id="p_descendant_animation"
-					attributeName="opacity"
-					dur="1000ms"
-					begin="p_eye_transform.end-350ms"
-					fill="freeze"
-					calcMode="spline"
-					keySplines="0, 1, 0.2, 1"
-					values="0;1"
-				/>
-				<animate
-					id="p_descendant_animation"
-					attributeName="rx"
-					dur="1000ms"
-					begin="p_eye_transform.end-350ms"
-					fill="freeze"
-					calcMode="spline"
-					keySplines="0, 1, 0.2, 1;0, 0.25, 0.25, 1"
-					values="25;25;0"
-				/>
-				<animateTransform
-					id="p_descendant_transform"
-					attributeName="transform"
-					attributeType="XML"
-					type="translate"
-					dur="1000ms"
-					calcMode="spline"
-					keySplines="0, 1, 0.2, 1; 0, 0.25, 0.25, 1"
-					values="50 -50;50 0;0 0"
-					begin="p_descendant_animation.begin"
-				/>
-			</rect>
-		</g>
-		<rect
-			id="l"
-			fill="currentColor"
-			x="240"
-			y="0"
-			width="50"
-			height="150"
-			opacity="0"
-			transform-origin="265 75"
-		>
+	<g id="{syncbaseId}_p">
+		<circle id="{syncbaseId}_p_eye" cx="170" cy="100" r="50" fill="currentColor" opacity="0">
 			<animate
-				id="l_animation"
+				id="{syncbaseId}_p_eye_opacity"
 				attributeName="opacity"
 				dur="750ms"
-				begin="p_eye_transform.end-500ms"
+				begin="{syncbaseId}_n_translate.begin+100ms"
 				fill="freeze"
 				calcMode="spline"
 				keySplines="0, 1, 0.2, 1"
 				values="0;1"
 			/>
 			<animateTransform
-				id="l_transform"
+				id="{syncbaseId}_p_eye_translate"
 				attributeName="transform"
 				attributeType="XML"
-				type="scale"
+				type="translate"
 				dur="750ms"
 				calcMode="spline"
 				keySplines="0, 1, 0.2, 1"
-				values="1 0;1 1"
-				begin="l_animation.begin"
+				values="-75;0"
+				begin="{syncbaseId}_p_eye_opacity.begin"
 			/>
-		</rect>
-		<path
-			id="e"
-			d="M405 100C405 72.3858 382.614 50 355 50C327.386 50 305 72.3858 305 100C305 127.614 327.386 150 355 150V100H405Z"
+		</circle>
+		<rect
+			id="{syncbaseId}_p_descendant"
+			x="120"
+			y="150"
 			fill="currentColor"
-			transform-origin="350 100"
+			width="50"
+			height="50"
 			opacity="0"
 		>
 			<animate
-				id="e_animation"
+				id="{syncbaseId}_p_descendant_opacity"
 				attributeName="opacity"
 				dur="1000ms"
-				begin="l_transform.end-500ms"
+				begin="{syncbaseId}_p_eye_translate.end-350ms"
 				fill="freeze"
 				calcMode="spline"
 				keySplines="0, 1, 0.2, 1"
 				values="0;1"
 			/>
 			<animateTransform
-				id="e_transform"
+				id="{syncbaseId}_p_descendant_translate"
+				attributeName="transform"
+				attributeType="XML"
+				type="translate"
+				dur="1000ms"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1; 0, 0.25, 0.25, 1"
+				values="50 -50;50 0;0 0"
+				begin="{syncbaseId}_p_descendant_opacity.begin"
+			/>
+		</rect>
+	</g>
+	<rect
+		id="{syncbaseId}_l"
+		fill="currentColor"
+		x="240"
+		y="0"
+		width="50"
+		height="150"
+		opacity="0"
+		transform-origin="265 75"
+	>
+		<animate
+			id="{syncbaseId}_l_opacity"
+			attributeName="opacity"
+			dur="750ms"
+			begin="{syncbaseId}_p_eye_translate.end-500ms"
+			fill="freeze"
+			calcMode="spline"
+			keySplines="0, 1, 0.2, 1"
+			values="0;1"
+		/>
+		<animateTransform
+			id="{syncbaseId}_l_translate"
+			attributeName="transform"
+			attributeType="XML"
+			type="scale"
+			dur="750ms"
+			calcMode="spline"
+			keySplines="0, 1, 0.2, 1"
+			values="1 0;1 1"
+			begin="{syncbaseId}_l_opacity.begin"
+		/>
+	</rect>
+	<path
+		id="{syncbaseId}_e"
+		d="M405 100C405 72.3858 382.614 50 355 50C327.386 50 305 72.3858 305 100C305 127.614 327.386 150 355 150V100H405Z"
+		fill="currentColor"
+		transform-origin="350 100"
+		opacity="0"
+	>
+		<animate
+			id="{syncbaseId}_e_opacity"
+			attributeName="opacity"
+			dur="1000ms"
+			begin="{syncbaseId}_l_translate.end-500ms"
+			fill="freeze"
+			calcMode="spline"
+			keySplines="0, 1, 0.2, 1"
+			values="0;1"
+		/>
+		<animateTransform
+			id="{syncbaseId}_e_translate"
+			attributeName="transform"
+			attributeType="XML"
+			type="rotate"
+			dur="1000ms"
+			calcMode="spline"
+			keySplines="0, 0.75, 0.15, 1"
+			values="-180;0"
+			begin="{syncbaseId}_e_opacity.begin"
+		/>
+	</path>
+	<g id="{syncbaseId}_x">
+		<rect
+			id="{syncbaseId}_x_bottom"
+			x="420"
+			y="100"
+			width="50"
+			height="50"
+			fill="currentColor"
+			opacity="0"
+		>
+			<animate
+				id="{syncbaseId}_x_bottom_opacity"
+				attributeName="opacity"
+				dur="1000ms"
+				begin="{syncbaseId}_e_translate.begin+150ms"
+				fill="freeze"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1"
+				values="0;1"
+			/>
+			<animateTransform
+				id="{syncbaseId}_x_bottom_translate"
+				attributeName="transform"
+				attributeType="XML"
+				type="translate"
+				dur="1000ms"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1"
+				values="0 -50;0 0"
+				begin="{syncbaseId}_x_bottom_opacity.begin"
+			/>
+		</rect>
+		<rect
+			id="{syncbaseId}_x_top"
+			x="470"
+			y="50"
+			width="50"
+			height="50"
+			fill="currentColor"
+			opacity="0"
+			transform-origin="470 100"
+		>
+			<animate
+				id="{syncbaseId}_x_top_opacity"
+				attributeName="opacity"
+				dur="1000ms"
+				begin="{syncbaseId}_x_bottom_translate.begin+350ms"
+				fill="freeze"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1"
+				values="0;1"
+			/>
+			<animateTransform
+				id="{syncbaseId}_x_top_translate"
 				attributeName="transform"
 				attributeType="XML"
 				type="rotate"
-				dur="1000ms"
+				dur="750ms"
 				calcMode="spline"
-				keySplines="0, 1, 0.2, 1"
+				keySplines="0, 0.75, 0.15, 1"
 				values="-180;0"
-				begin="e_animation.begin"
+				begin="{syncbaseId}_x_top_opacity.begin"
 			/>
-		</path>
-		<g id="x">
-			<rect id="x_bottom" x="420" y="100" width="50" height="50" fill="currentColor" opacity="0">
-				<animate
-					id="x_bottom_animation"
-					attributeName="opacity"
-					dur="1000ms"
-					begin="e_transform.begin+150ms"
-					fill="freeze"
-					calcMode="spline"
-					keySplines="0, 1, 0.2, 1"
-					values="0;1"
-				/>
-				<animateTransform
-					id="x_bottom_transform"
-					attributeName="transform"
-					attributeType="XML"
-					type="translate"
-					dur="1000ms"
-					calcMode="spline"
-					keySplines="0, 1, 0.2, 1"
-					values="0 -50;0 0"
-					begin="x_bottom_animation.begin"
-				/>
-			</rect>
-			<rect id="x_top" x="470" y="50" width="50" height="50" fill="currentColor" opacity="0">
-				<animate
-					id="x_top_animation"
-					attributeName="opacity"
-					dur="1000ms"
-					begin="x_bottom_transform.begin"
-					fill="freeze"
-					calcMode="spline"
-					keySplines="0, 1, 0.2, 1"
-					values="0;1"
-				/>
-				<!-- <animate
-					id="x_top_radius"
-					attributeName="rx"
-					dur="1000ms"
-					begin="x_top_animation.begin"
-					fill="freeze"
-					calcMode="spline"
-					keySplines="0, 1, 0.2, 1;0, 1, 0.2, 1;0, 1, 0.2, 1"
-					values="0;0;25;0"
-				/> -->
-				<animateTransform
-					id="x_top_transform"
-					attributeName="transform"
-					attributeType="XML"
-					type="translate"
-					dur="1000ms"
-					calcMode="spline"
-					keySplines="0, 1, 0.2, 1;0, 1, 0.2, 1;0, 1, 0.2, 1"
-					values="-50 0;-50 50;0 50;0 0"
-					begin="x_top_animation.begin"
-				/>
-			</rect>
-		</g>
-	{/if}
+		</rect>
+	</g>
 </svg>
+
+<style>
+	svg[data-mono='true'] > :not([data-mono='true']) {
+		visibility: hidden;
+	}
+</style>
