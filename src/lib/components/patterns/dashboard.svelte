@@ -26,7 +26,7 @@
 </script>
 
 <section
-	class="px-padding pb-gutter relative grid flex-1 grid-cols-[[sidebar-start_header-start_footer-start]_auto_[sidebar-end_main-start]_1fr_[main-end_header-end_footer-end]]"
+	class="px-padding pb-gutter flex-basis-0 relative grid grid-cols-[[sidebar-start_header-start_footer-start]_auto_[sidebar-end_main-start]_1fr_[main-end_header-end_footer-end]]"
 >
 	{#if ctx.header}
 		<header
