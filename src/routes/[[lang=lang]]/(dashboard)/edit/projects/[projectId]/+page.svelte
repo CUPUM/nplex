@@ -37,9 +37,9 @@
 	let submitRef = $state<HTMLButtonElement>();
 </script>
 
-<form use:enhance action="?/update" method="POST" class="gap-gutter flex flex-col">
+<form use:enhance action="?/update" method="POST" class="gap-inherit flex flex-col">
 	<header class="project-dashboard-section-header">
-		<h2>
+		<h2 class="dashboard-section-title">
 			{m.project_general()}
 		</h2>
 		<p>
@@ -56,7 +56,7 @@
 		interventionsByCategories={data.interventionsByCategories}
 	/>
 	<ProjectOwnership {...projectForm} siteOwnerships={data.siteOwnerships} />
-	<!-- <ProjectCost {form} bind:smallScale /> -->
+	<!-- <ProjectCost {...projectForm} bind:smallScale /> -->
 	<menu class="dashboard-section-menu" in:fly|global={{ y: 6, duration: 250, easing: expoOut }}>
 		<button class="button button-cta" bind:this={submitRef} disabled={!isTainted($tainted)}>
 			{m.save()}<IconSpinner icon={Check} busy={submitRef === $submitter} />

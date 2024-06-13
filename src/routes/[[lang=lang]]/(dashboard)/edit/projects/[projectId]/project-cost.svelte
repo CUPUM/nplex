@@ -1,47 +1,47 @@
 <script lang="ts">
-	// import * as m from '$i18n/messages';
-	// import { decrement, increment } from '$lib/actions/increment';
-	// import Slider from '$lib/components/Slider.svelte';
-	// import SwitchThumb from '$lib/components/SwitchThumb.svelte';
-	// import ButtonIconPencil from '$lib/components/patterns/button-icon-pencil.svelte';
-	// import type { SuperFormData } from '$lib/crud/validation/forms/types';
-	// import { PROJECT_COST_MAX, PROJECT_COST_MIN } from '$lib/db/constants';
-	// import { checked } from '$lib/utils/attributes';
-	// import { Minus, Plus, RotateCcw } from 'lucide-svelte';
-	// import { expoOut } from 'svelte/easing';
-	// import { fly, scale, slide } from 'svelte/transition';
-	// import type { PageData } from './$types';
+	import * as m from '$i18n/messages';
+	import { decrement, increment } from '$lib/actions/increment';
+	import Slider from '$lib/components/Slider.svelte';
+	import SwitchThumb from '$lib/components/SwitchThumb.svelte';
+	import ButtonIconPencil from '$lib/components/patterns/button-icon-pencil.svelte';
+	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
+	import { PROJECT_COST_MAX, PROJECT_COST_MIN } from '$lib/db/constants';
+	import { checked } from '$lib/utils/attributes';
+	import { Minus, Plus, RotateCcw } from 'lucide-svelte';
+	import { expoOut } from 'svelte/easing';
+	import { fly, scale, slide } from 'svelte/transition';
+	import type { PageData } from './$types';
 
-	// type Form = SuperFormData<PageData['form']>;
+	let {
+		form,
+		smallScale = $bindable(),
+	}: ExtendedSuperFormData<PageData['form']> & { smallScale: boolean } = $props();
 
-	// export let form: Form['form'];
-	// export let smallScale: boolean;
+	let shift = false;
 
-	// let shift = false;
+	function isShift(e: KeyboardEvent) {
+		return e.shiftKey || e.ctrlKey;
+	}
+	function handleKeydown(e: KeyboardEvent) {
+		shift = isShift(e);
+	}
+	function handleKeyup(e: KeyboardEvent) {
+		shift = false;
+	}
 
-	// function isShift(e: KeyboardEvent) {
-	// 	return e.shiftKey || e.ctrlKey;
-	// }
-	// function handleKeydown(e: KeyboardEvent) {
-	// 	shift = isShift(e);
-	// }
-	// function handleKeyup(e: KeyboardEvent) {
-	// 	shift = false;
-	// }
+	const smallCostThreshold = 100_000;
 
-	// const smallCostThreshold = 100_000;
-
-	// let minRef: HTMLInputElement;
-	// let maxRef: HTMLInputElement;
-	// $: mod = shift ? 10 : 1;
-	// $: step = smallScale ? 500 * mod : 5_000 * mod;
-	// $: min = smallScale ? PROJECT_COST_MIN : smallCostThreshold;
-	// $: max = smallScale ? smallCostThreshold : PROJECT_COST_MAX;
+	let minRef: HTMLInputElement;
+	let maxRef: HTMLInputElement;
+	$: mod = shift ? 10 : 1;
+	$: step = smallScale ? 500 * mod : 5_000 * mod;
+	$: min = smallScale ? PROJECT_COST_MIN : smallCostThreshold;
+	$: max = smallScale ? smallCostThreshold : PROJECT_COST_MAX;
 </script>
 
 <!-- <svelte:window on:keydown={handleKeydown} on:keyup={handleKeyup} /> -->
 
-<!-- <fieldet class="dashboard-subsection">
+<fieldet class="dashboard-subsection">
 	<legend class="dashboard-subsection-header h5">
 		{m.project_cost_title()}
 	</legend>
@@ -182,96 +182,4 @@
 			</div>
 		{/if}
 	</div>
-</fieldet> -->
-
-<!-- <style>
-	@import '$styles/scoped/dashboard';
-
-	#project-cost-placeholder {
-		cursor: pointer;
-		position: relative;
-		align-self: stretch;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: inherit;
-
-		skeleton {
-			opacity: 0.5;
-			pointer-events: none;
-			align-self: stretch;
-			gap: inherit;
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-
-			> :first-child {
-				grid-column: 1 / -1;
-			}
-		}
-
-		#project-cost-init {
-			position: absolute;
-			box-shadow: 0 0.5em 3em var(--base-bg);
-		}
-	}
-
-	#project-cost {
-		display: flex;
-		flex-direction: column;
-		gap: inherit;
-		align-items: center;
-	}
-
-	#cost-scale {
-		display: flex;
-		flex-direction: column;
-		align-self: stretch;
-		align-items: flex-start;
-		padding: 2rem;
-		background: color-mix(in srgb, var(--color-neutral-500) 5%, transparent);
-		border-radius: var(--radius-md);
-
-		#cost-scale-content {
-			display: flex;
-			align-self: stretch;
-			flex-direction: row;
-			gap: 1rem;
-			align-items: center;
-			justify-content: space-between;
-		}
-
-		p {
-			line-height: var(--line-sparse);
-			opacity: var(--opacity-dim);
-			font-size: var(--size-sm);
-			margin-top: var(--size-sm);
-			max-width: 45ch;
-		}
-
-		.switch {
-			font-size: var(--size-sm);
-		}
-	}
-
-	#project-cost-inputs {
-		font-size: var(--size-sm);
-		align-self: stretch;
-		display: flex;
-		align-items: center;
-		flex-direction: row;
-		gap: var(--base-gutter);
-
-		.input-group {
-			flex: 1;
-		}
-
-		.input {
-			min-width: 10ch;
-		}
-	}
-
-	#project-cost-reset {
-		font-size: var(--size-sm);
-	}
-</style> -->
+</fieldet>

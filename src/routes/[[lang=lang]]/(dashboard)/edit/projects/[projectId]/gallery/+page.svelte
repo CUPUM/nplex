@@ -1,42 +1,28 @@
-<!-- <script lang="ts">
-	import { superForm } from '$lib/crud/validation/forms/super-form';
+<script lang="ts">
+	import { extendSuperForm } from '$lib/crud/form/client';
 	import { flip } from 'svelte/animate';
 	import { expoInOut, expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-	import ImageCard from './ImageCard.svelte';
-	import ImageInputForm from './ImageInputForm.svelte';
+	import { superForm } from 'sveltekit-superforms';
+	import ProjectImage from './project-image.svelte';
+	import ProjectNewImage from './project-new-image.svelte';
 
-	export let data;
+	let { data } = $props();
 
-	const {
-		form,
-		enhance,
-		elements: {
-			submitter: { root: submitter },
-		},
-	} = superForm(data.galleryForm, {});
+	const projectForm = extendSuperForm(
+		superForm(data.form, { dataType: 'json', invalidateAll: 'force' })
+	);
 </script>
 
-<ImageInputForm data={data.newImageForm} />
-{#if data.images.length}
-	<form method="POST" use:enhance>
-		<ul>
-			{#each data.images as image, i (image.id)}
-				<li
-					animate:flip={{ duration: 250, easing: expoInOut }}
-					in:fly={{ y: 6, easing: expoOut }}
-					out:scale={{ duration: 50, start: 0.95 }}
-				>
-					<ImageCard
-						{image}
-						{form}
-						on:delete={() => {
-							data.images.splice(i, 1);
-							data.images = data.images;
-						}}
-					/>
-				</li>
-			{/each}
-		</ul>
-	</form>
-{/if} -->
+<ProjectNewImage {...data} />
+<ul>
+	{#each data.imagesForms as imageForm, i (imageForm.id)}
+		<li
+			animate:flip={{ duration: 250, easing: expoInOut }}
+			in:fly={{ y: 6, easing: expoOut }}
+			out:scale={{ duration: 50, start: 0.95 }}
+		>
+			<ProjectImage {imageForm} {...projectForm} />
+		</li>
+	{/each}
+</ul>

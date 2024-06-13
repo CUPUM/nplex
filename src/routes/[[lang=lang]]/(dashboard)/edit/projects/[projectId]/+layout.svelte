@@ -1,8 +1,11 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import DashboardSidebarMenu from '$lib/components/patterns/dashboard-sidebar-menu.svelte';
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
+	import { authorize } from '$lib/crud/authorization/rbac.svelte';
+	import { AlertTriangle, Eye, Files, Tags, UsersRound } from 'lucide-svelte';
 	import { onDestroy } from 'svelte';
 
 	let { children, data } = $props();
@@ -48,95 +51,101 @@
 		</a>
 		<a
 			class="button button-nav"
-			{...linkAttributes(`/edit/projects/${data.id}/place#dashboard-main`)}
+			{...linkAttributes(`/edit/projects/${data.id}/place`)}
 			aria-disabled="true"
 		>
 			{m.project_place()}
 		</a>
 		<a
 			class="button button-nav"
-			{...linkAttributes(`/edit/projects/${data.id}/exemplarity#dashboard-main`)}
+			{...linkAttributes(`/edit/projects/${data.id}/exemplarity#exemplarity-indicators`)}
 		>
 			{m.project_examplarity()}
 		</a>
-		<a
-			class="button button-nav"
-			{...linkAttributes(`/edit/projects/${data.id}/gallery#dashboard-main`)}
-		>
+		<a class="button button-nav" {...linkAttributes(`/edit/projects/${data.id}/gallery`)}>
 			{m.project_gallery()}
 		</a>
 	</DashboardSidebarMenu>
-	<!-- <DashboardSidebarMenu>
+	<DashboardSidebarMenu>
 		{#snippet legend()}
 			{m.project_complements()}
 		{/snippet}
-		<SidebarItem
-			{...linkAttributes(`/edit/projects/${data.id}/contributions#dashboard-main`)}
-			aria-disabled
+		<a
+			class="button button-nav"
+			{...linkAttributes(`/edit/projects/${data.id}/contributions`)}
+			aria-disabled="true"
 		>
 			{m.project_contributions()}
-		</SidebarItem>
-		<SidebarItem
-			{...linkAttributes(`/edit/projects/${data.id}/materials#dashboard-main`)}
-			aria-disabled
+		</a>
+		<a
+			class="button button-nav"
+			{...linkAttributes(`/edit/projects/${data.id}/materials`)}
+			aria-disabled="true"
 		>
 			{m.project_materials()}
-		</SidebarItem>
-		<SidebarItem
-			{...linkAttributes(`/edit/projects/${data.id}/timeline#dashboard-main`)}
-			aria-disabled
+		</a>
+		<a
+			class="button button-nav"
+			{...linkAttributes(`/edit/projects/${data.id}/timeline`)}
+			aria-disabled="true"
 		>
 			{m.project_timeline()}
-		</SidebarItem>
-	</DashboardSidebarMenu> -->
-	<!-- <DashboardSidebarMenu>
+		</a>
+	</DashboardSidebarMenu>
+	<DashboardSidebarMenu>
 		{#snippet legend()}
 			{m.project_settings()}
 		{/snippet}
-		<SidebarItem
-			{...linkAttributes(`/edit/projects/${data.id}/sharing#dashboard-main`)}
-			aria-disabled
+		<a
+			class="button button-nav"
+			{...linkAttributes(`/edit/projects/${data.id}/sharing`)}
+			aria-disabled="true"
 		>
 			{m.project_sharing()}
-			<Users2 class="button-icon" />
-		</SidebarItem>
-		<SidebarItem
-			{...linkAttributes(`/edit/projects/${data.id}/publishing#dashboard-main`)}
-			aria-disabled
+			<UsersRound class="button-icon" />
+		</a>
+		<a
+			class="button button-nav"
+			{...linkAttributes(`/edit/projects/${data.id}/publishing`)}
+			aria-disabled="true"
 		>
 			{m.project_visibility()}
 			<Eye class="button-icon" />
-		</SidebarItem>
-		<SidebarItem {...linkAttributes(`/edit/projects/${data.id}/security#dashboard-main`)} danger>
+		</a>
+		<a
+			class="button button-nav"
+			{...linkAttributes(`/edit/projects/${data.id}/security`)}
+			data-danger
+		>
 			{m.project_danger_zone()}
 			<AlertTriangle class="button-icon" />
-		</SidebarItem>
-	</DashboardSidebarMenu> -->
-	<!-- <DashboardSidebarMenu>
+		</a>
+	</DashboardSidebarMenu>
+	<DashboardSidebarMenu>
 		{#snippet legend()}
 			{m.my_documents()}
 		{/snippet}
-		<SidebarItem {...linkAttributes('/edit/projects')}>
+		<a class="button button-nav" {...linkAttributes('/edit/projects')}>
 			{m.projects()}
 			<Files class="button-icon" />
-		</SidebarItem>
-		{#if $page.data.user?.role === ROLES.ADMIN || $page.data.user?.role === ROLES.EDITOR}
-			<SidebarItem {...linkAttributes('/edit/projects/descriptors')}>
+		</a>
+		{#if authorize($page.data.user, 'projects.descriptors.update')}
+			<a class="button button-nav" {...linkAttributes('/edit/projects/descriptors')}>
 				{m.project_descriptors()}
 				<Tags class="button-icon" />
-			</SidebarItem>
+			</a>
 		{/if}
-		<SidebarItem {...linkAttributes('/edit/organizations')}>
-			{m.orgs()}
+		<a class="button button-nav" {...linkAttributes('/edit/organizations')}>
+			{m.organizations()}
 			<Files class="button-icon" />
-		</SidebarItem>
-		{#if $page.data.user?.role === ROLES.ADMIN || $page.data.user?.role === ROLES.EDITOR}
-			<SidebarItem {...linkAttributes('/edit/organizations/descriptors')}>
+		</a>
+		{#if authorize($page.data.user, 'organizations.descriptors.update')}
+			<a class="button button-nav" {...linkAttributes('/edit/organizations/descriptors')}>
 				{m.organization_descriptors()}
 				<Tags class="button-icon" />
-			</SidebarItem>
+			</a>
 		{/if}
-	</DashboardSidebarMenu> -->
+	</DashboardSidebarMenu>
 {/snippet}
 
 {@render children()}
@@ -144,12 +153,18 @@
 <style>
 	:global {
 		.project-dashboard-section-header {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			gap: var(--spacing-card-gutter);
 			font-size: var(--font-size-sm);
-			/* background: var(--background-color-base); */
+			/* background: var(--background-color-base-dim); */
 			border-radius: var(--radius-section);
 			padding: var(--spacing-card-padding);
-			border: var(--border-width-md) dashed
-				color-mix(in srgb, var(--color-primary) var(--opacity-dim), transparent);
+
+			.dashboard-section-title {
+				padding-inline: 0;
+			}
 		}
 	}
 </style>

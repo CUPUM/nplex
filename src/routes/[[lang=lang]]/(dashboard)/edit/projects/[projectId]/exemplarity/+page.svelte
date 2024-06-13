@@ -1,98 +1,80 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import * as m from '$i18n/messages';
-	import ButtonSaveAll from '$lib/components/patterns/ButtonSaveAll.svelte';
+	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
-	import { superForm } from '$lib/crud/validation/forms/super-form.js';
-	import { switchCrossfade } from '$lib/motion/presets.js';
+	import { extendSuperForm } from '$lib/crud/form/client';
+	import { Check } from 'lucide-svelte';
+	import { expoOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
+	import { superForm } from 'sveltekit-superforms';
 
-	export let data;
+	let { data } = $props();
 
-	const {
-		form,
-		enhance,
-		tainted,
-		elements: {
-			submitter: { root: submitter },
-		},
-	} = superForm(data.form, {
-		dataType: 'json',
-		taintedMessage: null,
-		resetForm: false,
-	});
+	const { form, submitter, enhance, isTainted, tainted } = extendSuperForm(
+		superForm(data.form, {
+			dataType: 'json',
+			invalidateAll: 'force',
+		})
+	);
 
-	const [send, receive] = switchCrossfade;
+	let submitRef = $state<HTMLButtonElement>();
 </script>
 
-<form use:enhance action="?/update" class="dashboard-section" method="POST">
-	<header class="dashboard-section-header">
-		<hgroup class="prose">
-			<h2>
-				{m.project_exemplarity_indicators()}
-			</h2>
-			<p class="dim">
-				Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt nam facilis ipsum
-				pariatur voluptas placeat veniam quod. Voluptates, pariatur nemo. Voluptas voluptates
-				molestias molestiae quia at voluptate, doloribus neque quasi obcaecati inventore. Cum, sunt
-				aliquam? Animi dicta debitis, atque laboriosam asperiores accusamus aut repellat ratione
-				officia eaque dignissimos omnis rem.
-			</p>
-		</hgroup>
+<form
+	use:enhance
+	action="?/update"
+	method="POST"
+	class="gap-inherit flex flex-col"
+	id="exemplarity-indicators"
+>
+	<header class="project-dashboard-section-header">
+		<h2 class="dashboard-section-title">
+			{m.project_exemplarity_indicators()}
+		</h2>
+		<p class="text-base-dim">
+			Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt nam facilis ipsum pariatur
+			voluptas placeat veniam quod. Voluptates, pariatur nemo. Voluptas voluptates molestias
+			molestiae quia at voluptate, doloribus neque quasi obcaecati inventore. Cum, sunt aliquam?
+			Animi dicta debitis, atque laboriosam asperiores accusamus aut repellat ratione officia eaque
+			dignissimos omnis rem.
+		</p>
 	</header>
-	{#each data.categorizedIndicators as category, i (category.id)}
-		<section class="dashboard-subsection">
-			<legend class="dashboard-subsection-header">
-				{category.title}
-			</legend>
-			<div class="dashboard-subsection-content">
-				<ul id="interventions">
-					{#if category.indicators}
-						{#each category.indicators as indicator}
-							<label class="chip" use:ripple>
-								<input
-									type="checkbox"
-									class="visually-hidden"
-									bind:group={$form.indicatorsIds}
-									value={indicator.id}
-								/>
-								<span class="chip-label">
-									{indicator.title}
-								</span>
-							</label>
-						{/each}
-					{/if}
-				</ul>
-			</div>
-		</section>
-	{/each}
-	<menu class="dashboard-section-menu">
-		{#if $tainted}
-			<ButtonSaveAll {submitter} />
-		{/if}
+	{#await data.indicatorsByCategories}
+		...
+	{:then awaitedIndicatorsByCategories}
+		{#each awaitedIndicatorsByCategories as category, i (category.id)}
+			<section class="dashboard-section">
+				<legend class="dashboard-section-title">
+					{category.title}
+				</legend>
+				<div class="dashboard-section-content">
+					<ul class="gap-input-gutter flex flex-row flex-wrap items-start justify-start">
+						{#if category.indicators}
+							{#each category.indicators as indicator}
+								<label
+									class="has-checked:bg-primary has-checked:text-on-primary user-select-none active:animate-press bg-input px-input-padding h-input gap-input-gutter text-overflow-ellipsis relative flex cursor-pointer flex-row items-center whitespace-nowrap rounded-full font-semibold"
+									use:ripple
+								>
+									<input
+										type="checkbox"
+										class="sr-only"
+										bind:group={$form.indicatorsIds}
+										value={indicator.id}
+									/>
+									<span class="chip-label">
+										{indicator.title}
+									</span>
+								</label>
+							{/each}
+						{/if}
+					</ul>
+				</div>
+			</section>
+		{/each}
+	{/await}
+	<menu class="dashboard-section-menu" in:fly|global={{ y: 6, duration: 250, easing: expoOut }}>
+		<button class="button button-cta" bind:this={submitRef} disabled={!isTainted($tainted)}>
+			{m.save()}<IconSpinner icon={Check} busy={submitRef === $submitter} />
+		</button>
 	</menu>
 </form>
-
-<style>
-	@import '$styles/scoped/dashboard';
-
-	.title {
-		font-size: var(--size-lg);
-	}
-
-	.subhead {
-		max-width: 65ch;
-	}
-
-	#interventions {
-		display: flex;
-		flex-direction: row;
-		gap: 0.5em;
-		font-size: var(--size-sm);
-		flex-wrap: wrap;
-	}
-
-	#cost {
-		display: flex;
-		flex-direction: row;
-		gap: 1rem;
-	}
-</style> -->

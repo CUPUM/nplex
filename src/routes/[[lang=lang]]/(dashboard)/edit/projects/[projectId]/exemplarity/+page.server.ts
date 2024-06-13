@@ -1,54 +1,48 @@
 import * as m from '$i18n/messages';
 import { STATUS_CODES } from '$lib/common/constants';
 import { authorize } from '$lib/crud/authorization/rbac.server';
+import { canEditProject, getProjectIndicatorsByCategoriesList } from '$lib/crud/queries/projects';
+import { projectExemplarityIndicatorsFormSchema } from '$lib/crud/validation/projects';
 import { db } from '$lib/db/db.server';
-import { getProjectCategorizedIndicatorsList, isEditableProject } from '$lib/db/queries.server';
 import { projects, projectsExemplarityIndicators } from '$lib/db/schema/public.server';
-import { projectsExemplarityIndicatorsSchema } from '$lib/db/validation.server';
 import { error, fail } from '@sveltejs/kit';
 import { and, eq, notInArray } from 'drizzle-orm';
-import { coalesce, emptyJsonArray, jsonAgg } from 'drizzle-orm-helpers';
+import { coalesce } from 'drizzle-orm-helpers';
+import { $emptyJsonArray, jsonAgg } from 'drizzle-orm-helpers/pg';
 import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms/server';
-import { z } from 'zod';
-
-const schema = z.object({
-	indicatorsIds: projectsExemplarityIndicatorsSchema.shape.exemplarityIndicatorId.array(),
-});
 
 export const load = async (event) => {
 	authorize(event);
-	const [[defaults], categorizedIndicators] = await Promise.all([
-		db
-			.select({
-				indicatorsIds: coalesce(
-					jsonAgg(projectsExemplarityIndicators.exemplarityIndicatorId),
-					emptyJsonArray
-				),
-			})
-			.from(projects)
-			.where(and(isEditableProject(event.locals.user), eq(projects.id, event.params.projectId)))
-			.limit(1)
-			.leftJoin(
-				projectsExemplarityIndicators,
-				eq(projects.id, projectsExemplarityIndicators.projectId)
+	const indicatorsByCategories = getProjectIndicatorsByCategoriesList(event);
+	const [project] = await db
+		.select({
+			indicatorsIds: coalesce(
+				jsonAgg(projectsExemplarityIndicators.exemplarityIndicatorId),
+				$emptyJsonArray
 			),
-		getProjectCategorizedIndicatorsList(event),
-	]);
-	if (!defaults) {
+		})
+		.from(projects)
+		.where(and(canEditProject(event.locals.user), eq(projects.id, event.params.projectId)))
+		.limit(1)
+		.leftJoin(
+			projectsExemplarityIndicators,
+			eq(projects.id, projectsExemplarityIndicators.projectId)
+		);
+	if (!project) {
 		error(STATUS_CODES.NOT_FOUND, m.project_not_found());
 	}
-	const form = await superValidate(zod(schema, { defaults }));
+	const form = await superValidate(project, zod(projectExemplarityIndicatorsFormSchema));
 	return {
 		form,
-		categorizedIndicators,
+		indicatorsByCategories,
 	};
 };
 
 export const actions = {
 	update: async (event) => {
 		authorize(event);
-		const form = await superValidate(event, zod(schema));
+		const form = await superValidate(event, zod(projectExemplarityIndicatorsFormSchema));
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
