@@ -25,7 +25,7 @@
 <div id="navbar-wrapper">
 	<header id="navbar">
 		<nav class="navbar-group justify-self-start">
-			<NavbarButton href="/" class="px-[0.75em]" data-logo>
+			<NavbarButton href="/" data-logo class="px-[0.75em]">
 				<Logo id="navbar-logo" height="2em" delay={500} />
 			</NavbarButton>
 			<NavbarButton href="/about">
@@ -89,3 +89,49 @@
 		</nav>
 	</header>
 </div>
+
+<style>
+	#navbar-wrapper {
+		padding-inline: var(--spacing-padding);
+		margin-bottom: var(--spacing-navbar-margin-bottom);
+		position: sticky;
+		top: 0;
+		z-index: var(--z-index-frontmost);
+
+		&::after {
+			--offset: var(--spacing-gutter);
+			content: '';
+			z-index: -1;
+			position: absolute;
+			top: -100%;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			translate: 0 min(0%, calc(-50% + var(--scroll-y-px)));
+			border-bottom-left-radius: calc(var(--radius-lg) - 0.25 * var(--scroll-y-px));
+			border-bottom-right-radius: calc(var(--radius-lg) - 0.25 * var(--scroll-y-px));
+			background: color-mix(in srgb, var(--background-color-base) 90%, transparent);
+			backdrop-filter: blur(var(--blur-md));
+			transition: all 100ms ease-out;
+		}
+	}
+
+	#navbar {
+		padding-block: var(--spacing-padding);
+		margin-inline: auto;
+		display: grid;
+		grid-template-columns: [site-start]1fr[site-end explore-start]auto[explore-end user-start]1fr[user-end];
+		width: 100%;
+		max-width: var(--width-xl);
+		grid-auto-flow: dense;
+		align-self: center;
+		font-size: var(--font-size-sm);
+		transition: all var(--transition-duration-slow) var(--transition-timing-function-in-out);
+	}
+
+	:global(:root:is([data-presentation='full-width'], [data-presentation='full-screen'])) {
+		#navbar {
+			max-width: 100%;
+		}
+	}
+</style>
