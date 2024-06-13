@@ -68,7 +68,11 @@ export const projectsImagesSchema = createInsertSchema(projectsImages, {
 
 export const projectsUsersSchema = createInsertSchema(projectsUsers);
 
-export const projectsGeneralSchema = projectsWithTranslationsSchema
+// ************
+// Form schemas
+// ************
+
+export const projectGeneralFormSchema = projectsWithTranslationsSchema
 	.pick({
 		id: true,
 		typeId: true,
@@ -79,3 +83,22 @@ export const projectsGeneralSchema = projectsWithTranslationsSchema
 	.extend({
 		interventionIds: projectsInterventionsSchema.shape.interventionId.array(),
 	});
+
+export const projectExemplarityIndicatorsFormSchema = z.object({
+	indicatorsIds: projectsExemplarityIndicatorsSchema.shape.exemplarityIndicatorId.array(),
+});
+
+export const projectGalleryFormSchema = projectsSchema.pick({ bannerId: true });
+
+export const projectImageFormSchema = projectsImagesSchema.pick({ id: true });
+
+export const projectNewImageFormSchema = z.object({
+	images: projectsImagesSchema
+		.pick({
+			storageName: true,
+			palette: true,
+			height: true,
+			width: true,
+		})
+		.array(),
+});

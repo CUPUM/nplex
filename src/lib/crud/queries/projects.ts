@@ -38,7 +38,7 @@ import type { z } from 'zod';
 import type { projectsSearchSchema } from '../validation/projects';
 import { joinTranslation } from './i18n';
 
-export function isCreatedProject(user: Pick<User, 'id'>) {
+export function isProjectCreator(user: Pick<User, 'id'>) {
 	return eq(projects.createdById, user.id);
 }
 
@@ -48,10 +48,10 @@ export function isCreatedProject(user: Pick<User, 'id'>) {
  *
  * @todo Replace with RLS.
  */
-export function isEditableProject(user: User) {
+export function canEditProject(user: User) {
 	return or(
 		$boolean(user.role === ROLES.ADMIN),
-		isCreatedProject(user),
+		isProjectCreator(user),
 		exists(
 			db
 				.select()
@@ -61,8 +61,8 @@ export function isEditableProject(user: User) {
 	);
 }
 
-export function getCreatedProjects(user: Parameters<typeof isCreatedProject>[0]) {
-	return db.select().from(projects).where(isCreatedProject(user));
+export function getCreatedProjects(user: Parameters<typeof isProjectCreator>[0]) {
+	return db.select().from(projects).where(isProjectCreator(user));
 }
 
 /**
