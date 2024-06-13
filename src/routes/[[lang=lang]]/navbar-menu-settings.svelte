@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { availableLanguageTags } from '$i18n/runtime';
 	import { Dialog } from '$lib/builders/dialog.svelte';
+	import { LOAD_DEPENDENCIES } from '$lib/common/constants';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import { removeLang, withLang } from '$lib/i18n/location';
@@ -41,6 +43,7 @@
 						aria-checked={$page.data.lang === lang || undefined}
 						role="radio"
 						class="button button-ghost justify-start"
+						onclick={() => invalidate(LOAD_DEPENDENCIES.LANG)}
 					>
 						{LANG_DETAILS[lang].name}
 					</a>
