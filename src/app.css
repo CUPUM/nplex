@@ -102,8 +102,9 @@
 	--spacing-lg: 2.5rem;
 	--spacing-xl: 5rem;
 	--spacing-2xl: 10rem;
-	--spacing-padding: var(--spacing-sm); /* app, container, layout padding */
-	--spacing-gutter: var(--spacing-md); /* app, container, layout gap */
+	--spacing-inherit: inherit;
+	--spacing-padding: var(--spacing-sm); /* App / container layouts padding */
+	--spacing-gutter: var(--spacing-2xs); /* App / container layouts gap */
 	--spacing-outline-focus: var(--outline-width-focus);
 	--spacing-input: 3.5em;
 	--spacing-input-icon: 1.25em;
@@ -114,12 +115,11 @@
 	--spacing-menu-padding: var(--spacing-md);
 	--spacing-menu-gutter: calc(2 * var(--outline-width-focus));
 	--spacing-card-padding: var(--spacing-lg);
-	--spacing-card-gutter: var(--spacing-sm);
+	--spacing-card-gutter: var(--spacing-md);
 	--spacing-sidebar-width: 16rem;
-	--spacing-navbar-height: calc(var(--spacing-padding) + var(--spacing-gutter) + 3.5 * var(--font-size-sm)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
-	--spacing-sticky-top: var(--spacing-navbar-height);
-	/* Dynamic sticky top to keep consistent gutter between navbar buttons and static / stickied elements below */
-	/* --spacing-sticky-top: calc(var(--spacing-navbar-height) + min(var(--spacing-padding), 0.15 * var(--scroll-y-px))); */
+	--spacing-navbar-height: calc(2 * var(--spacing-padding) + 3.5 * var(--font-size-sm)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
+	--spacing-navbar-margin-bottom: var(--spacing-gutter);
+	--spacing-sticky-top: calc(var(--spacing-navbar-height) + var(--spacing-navbar-margin-bottom));
 	--spacing-main-full-height: calc(100svh - var(--spacing-navbar-height));
 
 	/* Radii */

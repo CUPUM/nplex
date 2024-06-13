@@ -127,7 +127,7 @@
 	justify-content: stretch;
 	color: var(--switch-color);
 	background: var(--switch-background);
-	transition: all var(--duration-fast) ease-out;
+	transition: all var(--duration-medium) var(--transition-timing-function-out);
 
 	&::after {
 		content: '';
