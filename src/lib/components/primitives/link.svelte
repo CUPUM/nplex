@@ -17,9 +17,14 @@
 
 	export function linkAttributes(
 		hrefWithoutLang: string,
-		options: {
+		{
+			lang,
+			currentOnSubpath,
+			omitHash = true,
+		}: {
 			lang?: AvailableLanguageTag;
 			currentOnSubpath?: boolean;
+			omitHash?: boolean;
 		} = {}
 	) {
 		let current = $derived.by(() => {
@@ -27,13 +32,16 @@
 				if (hrefWithoutLang.startsWith('#') && currentUrlWithoutLang.hash === hrefWithoutLang) {
 					return 'step' as const;
 				}
-				if (currentUrlWithoutLang.pathname === hrefWithoutLang) {
+				if (
+					currentUrlWithoutLang.pathname ===
+					(omitHash ? hrefWithoutLang.split('#')[0] : hrefWithoutLang)
+				) {
 					return 'page' as const;
 				}
-				const pathWithHash = `${currentUrlWithoutLang.pathname}${currentUrlWithoutLang.hash}`;
+				const currentPathWithHash = `${currentUrlWithoutLang.pathname}${currentUrlWithoutLang.hash}`;
 				if (
-					(options.currentOnSubpath && pathWithHash.startsWith(hrefWithoutLang)) ||
-					pathWithHash === hrefWithoutLang
+					(currentOnSubpath && currentPathWithHash.startsWith(hrefWithoutLang)) ||
+					currentPathWithHash === hrefWithoutLang
 				) {
 					return 'page' as const;
 				}
@@ -43,7 +51,7 @@
 
 		return {
 			get href() {
-				return withLang(hrefWithoutLang, options.lang);
+				return withLang(hrefWithoutLang, lang);
 			},
 			get 'aria-current'() {
 				return current;
