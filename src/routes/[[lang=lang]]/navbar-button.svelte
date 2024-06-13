@@ -38,12 +38,6 @@
 </svelte:element>
 
 <style>
-	/* :global(#navbar:hover) {
-		.navbar-button {
-			background: var(--background-color-base);
-		}
-	} */
-
 	.navbar-button {
 		user-select: none;
 		position: relative;
@@ -58,7 +52,7 @@
 		border-radius: var(--radius-input);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-fg);
-		backdrop-filter: blur(var(--blur-md));
+		/* backdrop-filter: blur(var(--blur-md)); */
 		box-shadow: 0 0.25em 0.75em 0 transparent;
 		transition: all var(--transition-duration-medium) var(--transition-timing-function-out);
 
@@ -69,13 +63,12 @@
 
 		&:active {
 			animation: var(--animate-press);
-			box-shadow: 0 0.25em 0.75em 0
-				color-mix(in srgb, var(--color-primary) var(--opacity-softer), transparent);
+			box-shadow: 0 0.25em 0.75em 0 rgba(0, 0, 0, 0.15);
 		}
 
 		&:hover {
-			color: var(--color-primary-strong);
-			/* background: color-mix(in srgb, var(--color-primary-soft) 10%, transparent); */
+			color: var(--color-primary-accent);
+			/* background: color-mix(in srgb, var(--color-primary-dim) 10%, transparent); */
 		}
 
 		&[data-logo='true'] {
@@ -85,7 +78,7 @@
 		&:is([aria-current], [aria-expanded='true']):not([data-logo='true']) {
 			color: var(--color-primary);
 			box-shadow: 0 0 0 var(--border-width-input)
-				color-mix(in srgb, var(--color-primary) var(--opacity-softer), transparent);
+				color-mix(in srgb, var(--color-primary) var(--opacity-dimmer), transparent);
 		}
 
 		& :global(:is(.lucide-icon, .spinner)) {

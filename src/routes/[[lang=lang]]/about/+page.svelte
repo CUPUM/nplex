@@ -13,7 +13,7 @@
 				text={data.title}
 				translate="0 1em"
 				opacity="0"
-				maskPadding={{ start: '0.1em', end: '0.25em' }}
+				clipPath={{ start: 'inset(0 0 -0.15em 0)', end: 'inset(0 0 -0.25em 0)' }}
 			/>
 		</h1>
 	</hgroup>

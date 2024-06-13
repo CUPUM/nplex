@@ -26,14 +26,14 @@
 		<slot />
 		<section class="gap-gutter flex flex-col">
 			<div class="gap-gutter px-gutter flex flex-row items-center">
-				<hr class="border-soft flex-1" />
+				<hr class="border-dim flex-1" />
 				<span
-					class="text-base-soft text-center text-sm font-semibold font-thin first-letter:uppercase"
+					class="text-base-dim text-center text-sm font-semibold font-thin first-letter:uppercase"
 				>
 					{m.or()}
 					{m.auth_continue_with().toLowerCase()}
 				</span>
-				<hr class="border-soft flex-1" />
+				<hr class="border-dim flex-1" />
 			</div>
 			<fieldset class="gap-menu-gutter flex flex-row justify-center">
 				{#each OAUTH_PROVIDERS_ARR as provider, i}

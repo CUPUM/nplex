@@ -5,7 +5,7 @@
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendSuperForm } from '$lib/crud/form/client.js';
-	import { Eye, EyeOff, HelpCircle, LogIn, UserRoundPlus } from 'lucide-svelte';
+	import { Eye, EyeOff, Lock, LogIn, UserRoundPlus } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
@@ -13,19 +13,17 @@
 	let { data } = $props();
 
 	let showPassword = $state(false);
-	let loginRef: HTMLButtonElement;
+	let loginRef = $state<HTMLButtonElement>();
 
 	const { form, enhance, constraints, errors, tainted, message, submitter } = extendSuperForm(
 		superForm(data.form, {
 			taintedMessage: null,
 		})
 	);
-
-	$inspect($submitter);
 </script>
 
 <form method="POST" use:enhance autocomplete="off" class="gap-gutter flex flex-col">
-	<h1 class="pb-gutter text-xl font-bold">
+	<h1 class="pb-gutter text-2xl font-semibold">
 		{m.auth_login_title()}
 	</h1>
 	<label class="field">
@@ -97,7 +95,7 @@
 		{m.login()}
 	</button>
 	{#if typeof $message === 'string'}
-		<p class="text-base-soft text-sm" in:fly={{ y: -8, duration: 350 }}>{$message}</p>
+		<p class="text-base-dim text-sm" in:fly={{ y: -8, duration: 350 }}>{$message}</p>
 	{/if}
 </form>
 <nav class="gap-menu-gutter flex flex-row flex-wrap justify-between text-sm">
@@ -106,7 +104,7 @@
 		{m.auth_signup_prompt()}
 	</a>
 	<a class="button button-link" {...linkAttributes('/reset-password')}>
-		<HelpCircle />
 		{m.auth_forgot_password_prompt()}
+		<Lock />
 	</a>
 </nav>

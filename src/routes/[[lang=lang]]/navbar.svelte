@@ -26,7 +26,7 @@
 	<header id="navbar">
 		<nav class="navbar-group justify-self-start">
 			<NavbarButton href="/" class="px-[0.75em]" data-logo>
-				<Logo height="2em" />
+				<Logo id="navbar-logo" height="2em" delay={500} />
 			</NavbarButton>
 			<NavbarButton href="/about">
 				{m.about()}

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { linkAttributes } from '$lib/components/primitives/link.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import StaggerText from '$lib/components/primitives/stagger-text.svelte';
 
 	let { data } = $props();
@@ -7,31 +9,38 @@
 <header
 	class="p-xl min-h-main-full-height flex flex-col items-center justify-center pb-[calc(var(--spacing-xl)+var(--spacing-navbar-height))]"
 >
-	<section class="prose leading-sm gap-gutter flex w-full max-w-xl flex-row">
-		<h1 class="flex-1">
-			<StaggerText
-				text={data.title}
-				separator=""
-				translate="0 1em"
-				opacity="0"
-				maskPadding={{ start: '0.1em', end: '0.25em' }}
-			/>
-		</h1>
-		<nav class="gap-gutter flex flex-1 flex-col">
+	<div class="gap-gutter flex w-full max-w-xl flex-row items-center justify-center">
+		<hgroup class="prose flex flex-1 flex-row">
+			<h1 class="flex-1">
+				<StaggerText
+					text={data.title}
+					separator=""
+					translate="0 1em"
+					opacity="0"
+					clipPath={{ start: 'inset(0 0 -0.15em 0)', end: 'inset(0 0 -0.25em 0)' }}
+				/>
+			</h1>
+		</hgroup>
+		<nav class="flex flex-1 flex-col items-start">
 			{#each data.headings as heading, i}
-				<a href="#{heading.id}" style:--i-heading={i} class="text-lg">
+				<a
+					{...linkAttributes(`#${heading.id}`)}
+					style:--i-heading={i}
+					class="button button-link"
+					use:ripple
+				>
 					<StaggerText
 						text={heading.value}
 						translate="0 1em"
 						duration="1000ms"
-						maskPadding={{ start: '0.05em', end: '0.15em' }}
+						clipPath={{ start: 'inset(0 0 -0.15em 0)', end: 'inset(0 0 -0.25em 0)' }}
 						delay="calc(var(--i-heading) * 50ms + var(--i) * 25ms)"
 					/>
 				</a>
 			{/each}
 		</nav>
-	</section>
+	</div>
 </header>
-<article class="prose mx-auto max-w-md">
+<article class="prose mx-auto">
 	<svelte:component this={data.content} />
 </article>

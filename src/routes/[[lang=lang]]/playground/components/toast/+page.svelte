@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { TOAST_TYPES } from '$lib/builders/toasts.svelte';
 	import Variants from '$lib/components/patterns/variants.svelte';
-	import { toasts } from '$lib/components/singletons/toasts-provider.svelte';
+	import { toasts } from '../../../toasts-provider.svelte';
 
 	const data = Object.values(TOAST_TYPES);
 

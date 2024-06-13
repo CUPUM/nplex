@@ -11,7 +11,7 @@
 </script>
 
 <form method="POST" use:enhance autocomplete="off" class="gap-gutter flex flex-col">
-	<h1 class="pb-gutter text-xl font-bold">
+	<h1 class="pb-gutter text-2xl font-semibold">
 		{m.auth_reset_password_title()}
 	</h1>
 	<label class="field">

@@ -18,7 +18,7 @@
 
 <div class="flex grow-1 flex-row">
 	<section
-		class="gap-gutter p-gutter top-navbar-height w-sidebar-width sticky flex flex-col self-start text-sm"
+		class="gap-gutter p-gutter top-sticky-top w-sidebar-width sticky flex flex-col self-start text-sm"
 	>
 		<nav class="flex flex-col">
 			{#each components as c}

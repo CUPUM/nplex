@@ -30,12 +30,12 @@
 			</div>
 		</fieldset>
 		<fieldset class="input-group {data.class} {options.sizeMod}">
+			<textarea class="input" placeholder={data.name}></textarea>
 			<div class="input-peer">
 				<button class="button button-ghost aspect-square"><Italic /></button>
 				<button class="button button-ghost aspect-square"><Bold /></button>
 				<button class="button button-ghost aspect-square"><Code /></button>
 			</div>
-			<textarea class="input" placeholder={data.name}></textarea>
 			<div class="input-peer">
 				<button class="button">Save <ArrowRight /></button>
 			</div>
