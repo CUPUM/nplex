@@ -27,7 +27,12 @@ import {
 import type { ServerLoadEvent } from '@sveltejs/kit';
 import { and, eq, exists, or } from 'drizzle-orm';
 import { $boolean, $true, coalesce, getColumns } from 'drizzle-orm-helpers';
-import { $emptyJsonArray, jsonAgg, jsonAggBuildObject } from 'drizzle-orm-helpers/pg';
+import {
+	$emptyJsonArray,
+	jsonAgg,
+	jsonAggBuildObject,
+	jsonBuildObject,
+} from 'drizzle-orm-helpers/pg';
 import type { User } from 'lucia';
 import type { z } from 'zod';
 import type { projectsSearchSchema } from '../validation/projects';
@@ -67,13 +72,13 @@ export function matchesProjectSearch(filters: z.infer<typeof projectsSearchSchem
 	return $true;
 }
 
-export async function getProjectTypesList(event: ServerLoadEvent) {
+export function getProjectTypesList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(
 		db
 			.select({
-				...getColumns(projectTypes),
 				...getColumns(projectTypesTranslations),
+				...getColumns(projectTypes),
 			})
 			.from(projectTypes)
 			.$dynamic(),
@@ -83,7 +88,7 @@ export async function getProjectTypesList(event: ServerLoadEvent) {
 	);
 }
 
-export async function getProjectSiteOwnershipsList(event: ServerLoadEvent) {
+export function getProjectSiteOwnershipsList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(
 		db
@@ -104,10 +109,21 @@ export function getProjectInterventionsList(event: ServerLoadEvent) {
 	return joinTranslation(
 		db
 			.select({
-				...getColumns(projectInterventions),
 				...getColumns(projectInterventionsTranslations),
+				...getColumns(projectInterventions),
+				typeIds: jsonAgg(projectTypesToInterventions.typeId).as('types_ids'),
 			})
 			.from(projectInterventions)
+			.leftJoin(
+				projectTypesToInterventions,
+				eq(projectInterventions.id, projectTypesToInterventions.interventionId)
+			)
+			.groupBy(
+				...[
+					...Object.values(getColumns(projectInterventionsTranslations)),
+					...Object.values(getColumns(projectInterventions)),
+				]
+			)
 			.$dynamic(),
 		projectInterventionsTranslations,
 		eq(projectInterventions.id, projectInterventionsTranslations.id),
@@ -120,8 +136,8 @@ export function getProjectInterventionCategoriesList(event: ServerLoadEvent) {
 	return joinTranslation(
 		db
 			.select({
-				...getColumns(projectInterventionsCategories),
 				...getColumns(projectInterventionsCategoriesTranslations),
+				...getColumns(projectInterventionsCategories),
 			})
 			.from(projectInterventionsCategories)
 			.$dynamic(),
@@ -131,39 +147,32 @@ export function getProjectInterventionCategoriesList(event: ServerLoadEvent) {
 	);
 }
 
-export async function getProjectInterventionsByCategoriesList(event: ServerLoadEvent) {
+export function getProjectInterventionsByCategoriesList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	const interventions = getProjectInterventionsList(event).as('interventions');
-	const interventionsColumns = getColumns(interventions);
-	const interventionsWithTypes = db
+	// Aggregating as json so we can later coalesce to empty arrays instead of json_build_object's null-fielded object when no rows match.
+	const interventionsJson = db
 		.select({
-			...getColumns(interventions),
-			typeIds: coalesce(jsonAgg(projectTypesToInterventions.typeId), $emptyJsonArray).as(
-				'types_ids'
-			),
+			lang: interventions.lang,
+			categoryId: interventions.categoryId,
+			json: jsonBuildObject(getColumns(interventions)).as('json'),
 		})
 		.from(interventions)
-		.leftJoin(
-			projectTypesToInterventions,
-			eq(interventions.id, projectTypesToInterventions.interventionId)
-		)
-		.groupBy(...Object.values(interventionsColumns))
-		.as('interventions_with_types');
-	const interventionsWithTypesColumns = getColumns(interventionsWithTypes);
+		.as('interventions_json');
 	const categories = getProjectInterventionCategoriesList(event).as('intervention_categories');
 	const categoriesColumns = getColumns(categories);
 	return db
 		.select({
 			...categoriesColumns,
-			interventions: jsonAggBuildObject(interventionsWithTypesColumns),
+			interventions: coalesce(jsonAgg(interventionsJson.json), $emptyJsonArray),
 		})
 		.from(categories)
 		.groupBy(...Object.values(categoriesColumns))
 		.leftJoin(
-			interventionsWithTypes,
+			interventionsJson,
 			and(
-				eq(categories.id, interventionsWithTypes.categoryId),
-				eq(categories.lang, interventionsWithTypes.lang)
+				eq(categories.id, interventionsJson.categoryId),
+				eq(categories.lang, interventionsJson.lang)
 			)
 		);
 }

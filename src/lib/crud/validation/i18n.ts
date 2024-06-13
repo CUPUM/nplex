@@ -26,9 +26,7 @@ export function withTranslationsSchema<
 	const translations = z.object(
 		availableLanguageTags.reduce(
 			(acc, lang) => {
-				acc[lang] = translationSchema.merge(
-					z.object({ [LANG_COLUMN_NAME]: langSchema.default(lang) })
-				) as never;
+				acc[lang] = translationSchema;
 				return acc;
 			},
 			{} as Record<AvailableLanguageTag, ZodObject<TT>>

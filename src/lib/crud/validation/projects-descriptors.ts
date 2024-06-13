@@ -19,11 +19,12 @@ import {
 	projectTypesTranslations,
 } from '$lib/db/schema/public.server';
 import { createInsertSchema } from 'drizzle-zod';
-import { withTranslationsSchema } from './i18n';
+import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
 
 export const projectTypesSchema = createInsertSchema(projectTypes).required({ id: true });
 
 export const projectTypesTranslationsSchema = createInsertSchema(projectTypesTranslations, {
+	...LANG_COLUMN_SCHEMA,
 	title: (s) => s.title.trim(),
 	description: (s) => s.description.trim(),
 });
@@ -42,6 +43,7 @@ export const projectInterventionsSchema = createInsertSchema(projectIntervention
 export const projectInterventionsTranslationsSchema = createInsertSchema(
 	projectInterventionsTranslations,
 	{
+		...LANG_COLUMN_SCHEMA,
 		title: (s) => s.title.trim(),
 		description: (s) => s.description.trim(),
 	}
@@ -65,6 +67,7 @@ export const projectInterventionsCategoriesSchema = createInsertSchema(
 export const projectInterventionsCategoriesTranslationsSchema = createInsertSchema(
 	projectInterventionsCategoriesTranslations,
 	{
+		...LANG_COLUMN_SCHEMA,
 		title: (s) => s.title.trim(),
 		description: (s) => s.description.trim(),
 	}
@@ -87,6 +90,7 @@ export const projectExemplarityIndicatorsSchema = createInsertSchema(
 export const projectExemplarityIndicatorsTranslationsSchema = createInsertSchema(
 	projectExemplarityIndicatorsTranslations,
 	{
+		...LANG_COLUMN_SCHEMA,
 		title: (s) => s.title.trim(),
 		description: (s) => s.description.trim(),
 	}
@@ -107,6 +111,7 @@ export const projectExemplarityCategoriesSchema = createInsertSchema(
 export const projectExemplarityCategoriesTranslationsSchema = createInsertSchema(
 	projectExemplarityCategoriesTranslations,
 	{
+		...LANG_COLUMN_SCHEMA,
 		title: (s) => s.title.trim(),
 		description: (s) => s.description.trim(),
 	}
@@ -129,6 +134,7 @@ export const projectSiteOwnershipsSchema = createInsertSchema(projectSiteOwnersh
 export const projectSiteOwnershipsTranslationsSchema = createInsertSchema(
 	projectSiteOwnershipsTranslations,
 	{
+		...LANG_COLUMN_SCHEMA,
 		title: (s) => s.title.trim(),
 		description: (s) => s.description.trim(),
 	}
@@ -150,6 +156,7 @@ export const projectImplantationTypesSchema = createInsertSchema(projectImplanta
 export const projectImplantationTypesTranslationsSchema = createInsertSchema(
 	projectImplantationTypesTranslations,
 	{
+		...LANG_COLUMN_SCHEMA,
 		title: (s) => s.title.trim(),
 		description: (s) => s.description.trim(),
 	}
@@ -171,6 +178,7 @@ export const projectBuildingLevelTypesSchema = createInsertSchema(
 export const projectBuildingLevelTypesTranslationsSchema = createInsertSchema(
 	projectBuildingLevelTypesTranslations,
 	{
+		...LANG_COLUMN_SCHEMA,
 		title: (s) => s.title.trim(),
 		description: (s) => s.description.trim(),
 	}
@@ -189,6 +197,7 @@ export const projectImageTypesSchema = createInsertSchema(projectImageTypes).req
 export const projectImageTypesTranslationsSchema = createInsertSchema(
 	projectImageTypesTranslations,
 	{
+		...LANG_COLUMN_SCHEMA,
 		title: (s) => s.title.trim(),
 		description: (s) => s.description.trim(),
 	}

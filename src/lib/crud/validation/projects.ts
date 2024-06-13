@@ -23,7 +23,7 @@ import {
 	PROJECT_SUMMARY_MAX,
 	PROJECT_TITLE_MAX,
 } from './constants';
-import { withTranslationsSchema } from './i18n';
+import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
 
 export const projectsSearchSchema = z.object({
 	search: z.string().optional(),
@@ -36,6 +36,7 @@ export const projectsSchema = createInsertSchema(projects, {
 });
 
 export const projectsTranslationsSchema = createInsertSchema(projectsTranslations, {
+	...LANG_COLUMN_SCHEMA,
 	title: (s) => s.title.trim().max(PROJECT_TITLE_MAX),
 	summary: (s) => s.summary.trim().max(PROJECT_SUMMARY_MAX),
 	description: (s) => s.description.trim().max(PROJECT_DESCRIPTION_MAX),
@@ -68,5 +69,13 @@ export const projectsImagesSchema = createInsertSchema(projectsImages, {
 export const projectsUsersSchema = createInsertSchema(projectsUsers);
 
 export const projectsGeneralSchema = projectsWithTranslationsSchema
-	.pick({ id: true, typeId: true, costRange: true, siteOwnershipId: true, translations: true })
-	.extend({ interventionIds: projectsInterventionsSchema.shape.interventionId.array() });
+	.pick({
+		id: true,
+		typeId: true,
+		costRange: true,
+		siteOwnershipId: true,
+		translations: true,
+	})
+	.extend({
+		interventionIds: projectsInterventionsSchema.shape.interventionId.array(),
+	});

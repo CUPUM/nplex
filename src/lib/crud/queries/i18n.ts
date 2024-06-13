@@ -11,7 +11,10 @@ import type { PgSelect, TableConfig } from 'drizzle-orm/pg-core';
 
 export function aggTranslations<T extends ColumnsSelection>(fields: T) {
 	return {
-		translations: jsonObjectAgg(languages[LANG_COLUMN_NAME], jsonBuildObject(fields)),
+		translations: jsonObjectAgg(
+			languages[LANG_COLUMN_NAME],
+			jsonBuildObject({ ...fields, [LANG_COLUMN_NAME]: languages[LANG_COLUMN_NAME] })
+		),
 	};
 }
 
