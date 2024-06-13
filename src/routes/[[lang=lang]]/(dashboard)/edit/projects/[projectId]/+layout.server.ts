@@ -8,7 +8,9 @@ export const load = async (event) => {
 	event.depends(LOAD_DEPENDENCIES.PROJECT_TITLE);
 	const [project] = await joinTranslation(
 		db
-			.select({ title: projectsTranslations.title })
+			.select({
+				title: projectsTranslations.title,
+			})
 			.from(projects)
 			.where(
 				and(
@@ -23,6 +25,7 @@ export const load = async (event) => {
 		event
 	);
 	return {
+		id: event.params.projectId,
 		...project,
 	};
 };

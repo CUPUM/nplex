@@ -1,10 +1,16 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import ButtonSaveAll from '$lib/components/patterns/button-save-all.svelte';
+	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { extendSuperForm } from '$lib/crud/form/client';
+	import { Check } from 'lucide-svelte';
+	import { expoOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
 	import type { Snapshot } from './$types.js';
-	import ProjectTextDetailsForm from './project-text-details-form.svelte';
+	import ProjectInterventions from './project-interventions.svelte';
+	import ProjectOwnership from './project-ownership.svelte';
+	import ProjectTextDetails from './project-text-details.svelte';
+	import ProjectType from './project-type.svelte';
 
 	let { data } = $props();
 
@@ -26,27 +32,34 @@
 		})
 	);
 
-	const { submitter, enhance } = projectForm;
+	const { submitter, enhance, isTainted, tainted } = projectForm;
+
+	let submitRef = $state<HTMLButtonElement>();
 </script>
 
-<form use:enhance action="?/update" method="POST" class="dashboard-section">
-	<header class="dashboard-section-header">
-		<hgroup class="prose">
-			<h2>
-				{m.project_general()}
-			</h2>
-			<p class="dim">
-				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis accusantium, eius vero
-				tenetur voluptatibus ducimus harum itaque praesentium qui cupiditate!
-			</p>
-		</hgroup>
+<form use:enhance action="?/update" method="POST" class="gap-gutter flex flex-col">
+	<header class="project-dashboard-section-header">
+		<h2>
+			{m.project_general()}
+		</h2>
+		<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum incidunt rem temporibus,
+			eaque a atque iste fuga ea minima omnis rerum provident ullam laboriosam perferendis optio,
+			blanditiis, quo possimus doloribus sed laudantium repudiandae vitae? Illum aut vel ipsa vero
+			facilis possimus consequuntur error ea? Accusamus ab exercitationem obcaecati facere eius?
+		</p>
 	</header>
-	<ProjectTextDetailsForm {...projectForm} />
-	<!-- <ProjectType {form} types={data.types} /> -->
-	<!-- <ProjectInterventions {form} categorizedInterventions={data.categorizedInterventions} /> -->
-	<!-- <ProjectOwnership {form} siteOwnerships={data.siteOwnerships} /> -->
+	<ProjectTextDetails {...projectForm} />
+	<ProjectType {...projectForm} types={data.types} />
+	<ProjectInterventions
+		{...projectForm}
+		interventionsByCategories={data.interventionsByCategories}
+	/>
+	<ProjectOwnership {...projectForm} siteOwnerships={data.siteOwnerships} />
 	<!-- <ProjectCost {form} bind:smallScale /> -->
-	<menu class="dashboard-section-menu">
-		<ButtonSaveAll submitter={$submitter} />
+	<menu class="dashboard-section-menu" in:fly|global={{ y: 6, duration: 250, easing: expoOut }}>
+		<button class="button button-cta" bind:this={submitRef} disabled={!isTainted($tainted)}>
+			{m.save()}<IconSpinner icon={Check} busy={submitRef === $submitter} />
+		</button>
 	</menu>
 </form>

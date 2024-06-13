@@ -1,0 +1,67 @@
+<script lang="ts">
+	import * as m from '$i18n/messages';
+	import InputTranslations from '$lib/components/patterns/input-translations.svelte';
+	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
+	import type { PageData } from './$types';
+
+	let { form, errors, constraints }: ExtendedSuperFormData<PageData['form']> = $props();
+</script>
+
+<fieldset class="dashboard-section">
+	<legend class="dashboard-section-title">
+		{m.presentation()}
+	</legend>
+	<div class="dashboard-section-content">
+		<div class="field">
+			<h4 class="field-label">
+				{m.title()}
+			</h4>
+			<InputTranslations class="big">
+				{#snippet children({ lang })}
+					<input
+						type="text"
+						class="input"
+						bind:value={$form.translations[lang].title}
+						placeholder={m.no_title()}
+						{...$constraints.translations?.[lang]?.title}
+						aria-invalid={$errors.translations?.[lang]?.title ? true : undefined}
+					/>
+				{/snippet}
+			</InputTranslations>
+		</div>
+		<div class="field">
+			<h4 class="field-label">
+				{m.summary()}
+			</h4>
+			<InputTranslations>
+				{#snippet children({ lang })}
+					<textarea
+						rows="5"
+						class="input"
+						bind:value={$form.translations[lang].summary}
+						placeholder={m.no_summary()}
+						{...$constraints.translations?.[lang]?.summary}
+						aria-invalid={$errors.translations?.[lang]?.summary ? true : undefined}
+					></textarea>
+				{/snippet}
+			</InputTranslations>
+		</div>
+		<div class="field">
+			<h4 class="field-label">
+				{m.description()}
+			</h4>
+			<InputTranslations>
+				{#snippet children({ lang })}
+					<textarea
+						rows="10"
+						class="input"
+						bind:value={$form.translations[lang].description}
+						placeholder={m.no_description()}
+						{...$constraints.translations?.[lang]?.description}
+						aria-invalid={$errors.translations?.[lang]?.description ? true : undefined}
+					></textarea>
+				{/snippet}
+			</InputTranslations>
+		</div>
+	</div>
+</fieldset>
