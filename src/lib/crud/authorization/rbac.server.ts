@@ -3,6 +3,7 @@ import { STATUS_CODES } from '$lib/common/constants';
 import { error, redirect, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit';
 import type { Session, User } from 'lucia';
 import { type PermissionRule } from './constants';
+import { roleHasPermission } from './rbac';
 
 /**
  * Redirects to login if no authentication is found. Else throw error if sufficient role permissions
@@ -17,6 +18,8 @@ export function authorize<E extends ServerLoadEvent | RequestEvent>(
 		redirect(STATUS_CODES.TEMPORARY_REDIRECT, '/login');
 	}
 	if (rule) {
-		error(STATUS_CODES.UNAUTHORIZED, errorData || m.auth_insufficient_role());
+		if (!roleHasPermission(event.locals.user.role, rule)) {
+			error(STATUS_CODES.UNAUTHORIZED, errorData || m.auth_insufficient_role());
+		}
 	}
 }

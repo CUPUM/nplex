@@ -1,13 +1,28 @@
-import type { Role } from '$lib/auth/constants';
+import { browser } from '$app/environment';
+import { page } from '$app/stores';
 import type { User } from 'lucia';
-import { PERMISSIONS, type PermissionRule } from './constants';
+import { type PermissionRule } from './constants';
+import { roleHasPermission } from './rbac';
+
+let currentUser = $state<User | null>();
+
+if (browser) {
+	page.subscribe(({ data }) => {
+		if (data) {
+			currentUser = data.user;
+		}
+	});
+}
 
 /**
  * Verify that a client is authenticated and, optionally, that they have required role.
  */
-export function authorize(user: Pick<User, 'role'> | null, rule?: PermissionRule) {
-	if (!rule) {
-		return user != null;
+export function authorize(rule?: PermissionRule) {
+	if (!currentUser) {
+		return false;
 	}
-	return user ? (PERMISSIONS[rule] as Role[]).includes(user.role) : false;
+	if (rule) {
+		return roleHasPermission(currentUser.role, rule);
+	}
+	return true;
 }
