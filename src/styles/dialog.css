@@ -64,7 +64,7 @@
 		font-size: var(--font-size-sm);
 		align-self: stretch;
 		padding: 2.5rem;
-		padding-top: var(--spacing-gutter);
+		padding-top: 1rem;
 		display: flex;
 		gap: var(--spacing-menu-gutter);
 		position: sticky;

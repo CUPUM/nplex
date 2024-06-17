@@ -112,7 +112,7 @@
 	--spacing-input-padding: 1.25em;
 	--spacing-input-gutter: calc(var(--spacing-input-padding) / 2);
 	--spacing-field-gutter: 0.5em;
-	--spacing-menu-padding: var(--spacing-md);
+	--spacing-popover-padding: var(--spacing-md);
 	--spacing-menu-gutter: calc(2 * var(--outline-width-focus));
 	--spacing-card-padding: var(--spacing-lg);
 	--spacing-card-gutter: var(--spacing-md);

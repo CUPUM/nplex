@@ -25,7 +25,7 @@
 <div id="navbar-wrapper">
 	<header id="navbar">
 		<nav class="navbar-group justify-self-start">
-			<NavbarButton href="/" data-logo class="px-[0.75em]">
+			<NavbarButton href="/" data-logo>
 				<Logo id="navbar-logo" height="2em" delay={500} />
 			</NavbarButton>
 			<NavbarButton href="/about">
@@ -97,6 +97,20 @@
 		position: sticky;
 		top: 0;
 		z-index: var(--z-index-frontmost);
+
+		/* &::after {
+			content: '';
+			z-index: -1;
+			position: absolute;
+			top: -100%;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			translate: 0 min(0%, calc(-50% + 0.1 * var(--scroll-y-px)));
+			background: linear-gradient(var(--background-color-base) 50%, transparent);
+			backdrop-filter: blur(var(--blur-md));
+			transition: all var(--transition-duration-xfast) ease-out;
+		} */
 
 		&::after {
 			--offset: var(--spacing-gutter);

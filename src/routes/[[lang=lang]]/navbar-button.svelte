@@ -53,6 +53,11 @@
 		font-weight: var(--font-weight-bold);
 		color: var(--color-fg);
 		/* backdrop-filter: blur(var(--blur-md)); */
+		/* background: color-mix(
+			in srgb,
+			var(--background-color-base) min(var(--opacity-dim), calc(var(--scroll-y) * 1%)),
+			transparent
+		); */
 		box-shadow: 0 0.25em 0.75em 0 transparent;
 		transition: all var(--transition-duration-medium) var(--transition-timing-function-out);
 
@@ -68,17 +73,13 @@
 
 		&:hover {
 			color: var(--color-primary-accent);
-			/* background: color-mix(in srgb, var(--color-primary-dim) 10%, transparent); */
 		}
 
-		&[data-logo='true'] {
+		&:is([aria-current], [aria-expanded='true']) {
 			color: var(--color-primary);
-		}
-
-		&:is([aria-current], [aria-expanded='true']):not([data-logo='true']) {
-			color: var(--color-primary);
-			box-shadow: 0 0 0 var(--border-width-input)
-				color-mix(in srgb, var(--color-primary) var(--opacity-dimmer), transparent);
+			&:not([data-logo='true']) {
+				box-shadow: 0 0 var(--border-width-md) var(--color-primary-dim);
+			}
 		}
 
 		& :global(:is(.lucide-icon, .spinner)) {

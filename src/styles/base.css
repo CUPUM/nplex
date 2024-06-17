@@ -107,7 +107,7 @@ dialog {
 		background 0s var(--transition-duration-slow);
 }
 
-#container {
+body {
 	background: var(--background-color-base);
 	position: relative;
 	display: flex;
@@ -158,7 +158,7 @@ dialog {
 		all var(--transition-duration-fast) ease-out,
 		background 0s;
 
-	#container {
+	body {
 		scale: 0.96;
 		border-radius: var(--radius-lg);
 	}
