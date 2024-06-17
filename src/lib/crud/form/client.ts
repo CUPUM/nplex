@@ -47,20 +47,31 @@ export function extendSuperForm<
 		}
 	});
 
-	function enhanceWithSubmitter(el: HTMLFormElement, events?: SuperFormEvents<T, M> | undefined) {
-		const enhanced = enhance(el, {
+	function enhanceWithSubmitter(
+		node: HTMLFormElement,
+		events: SuperFormEvents<T, M> | undefined = {}
+	) {
+		// Tracking submitter before any superforms handling.
+		function handleSubmit(e: SubmitEvent) {
+			submitter.set(e.submitter ?? undefined);
+		}
+		node.addEventListener('submit', handleSubmit);
+
+		// Adding enhanced form events tracking.
+		const enhanced = enhance(node, {
 			...events,
-			onSubmit(e) {
+			async onSubmit(e) {
+				console.log(e);
 				submitter.set(e.submitter ?? undefined);
 				action.set(e.action);
-				if (events?.onSubmit) {
+				if (events.onSubmit) {
 					return events.onSubmit(e);
 				}
 			},
-			onResult(e) {
+			async onResult(e) {
 				submitter.set(undefined);
 				action.set(null);
-				if (events?.onResult) {
+				if (events.onResult) {
 					return events.onResult(e);
 				}
 			},
@@ -68,6 +79,7 @@ export function extendSuperForm<
 
 		return {
 			destroy() {
+				node.removeEventListener('submit', handleSubmit);
 				submitter.set(undefined);
 				action.set(null);
 				return enhanced.destroy();

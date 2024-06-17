@@ -5,7 +5,7 @@ import type { ResizeOptions, WebpOptions } from 'sharp';
  * Compose an image request url using the media's storage name. Enables on-the-fly image
  * transformations using AWS's serverless image handler cloud formation.
  *
- * @see https://github.com/aws-solutions/serverless-image-handler/issues
+ * @see https://github.com/aws-solutions/serverless-image-handler
  * @see https://aws.amazon.com/solutions/implementations/serverless-image-handler/
  */
 export function imageSrc(
@@ -18,14 +18,4 @@ export function imageSrc(
 	const string = JSON.stringify({ key: storageName, edits });
 	const encoded = btoa(string);
 	return `${PUBLIC_IMAGES_ENDPOINT}/${encoded}`;
-}
-
-/**
- * Preset for thumbnail image source url.
- */
-export function thumbnailSrc(name: string) {
-	return imageSrc(name, {
-		resize: { withoutEnlargement: true, fit: 'inside', width: 150 },
-		quality: 0.8,
-	});
 }

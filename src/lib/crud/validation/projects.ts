@@ -1,13 +1,18 @@
 import {
+	PROJECT_IMAGE_PALETTE_LENGTH,
+	PROJECT_IMAGE_PALETTE_VECTOR_DIMENSIONS,
+} from '$lib/db/constants';
+import {
 	projects,
 	projectsBuildingLevels,
 	projectsExemplarityIndicators,
-	projectsImages,
+	projectsImagesColumnsWithoutVectors,
 	projectsInterventions,
 	projectsTranslations,
 	projectsUsers,
 } from '$lib/db/schema/public.server';
 import { intrangeSchema } from 'drizzle-orm-helpers/pg';
+import { pgTable } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import {
@@ -62,8 +67,25 @@ export const projectsExemplarityIndicatorsSchema = createInsertSchema(
 	projectsExemplarityIndicators
 );
 
-export const projectsImagesSchema = createInsertSchema(projectsImages, {
+/**
+ * Placeholder table to temporarily fix peer error when using drizzle-zod with pg_vector columns.
+ *
+ * @see https://github.com/drizzle-team/drizzle-orm/issues/2424
+ */
+const projectsImagesWithoutVector = pgTable(
+	'projects_images_without_vectors',
+	projectsImagesColumnsWithoutVectors
+);
+
+export const projectsImagesSchema = createInsertSchema(projectsImagesWithoutVector, {
 	index: (s) => s.index.positive(),
+}).extend({
+	colorPaletteLAB: z
+		.number()
+		.array()
+		.length(PROJECT_IMAGE_PALETTE_VECTOR_DIMENSIONS)
+		.array()
+		.length(PROJECT_IMAGE_PALETTE_LENGTH),
 });
 
 export const projectsUsersSchema = createInsertSchema(projectsUsers);
@@ -90,13 +112,20 @@ export const projectExemplarityIndicatorsFormSchema = z.object({
 
 export const projectGalleryFormSchema = projectsSchema.pick({ bannerId: true });
 
-export const projectImageFormSchema = projectsImagesSchema.pick({ id: true });
+export const projectImageFormSchema = projectsImagesSchema
+	.pick({
+		id: true,
+		storageName: true,
+		colorPaletteLAB: true,
+	})
+	.required({ id: true })
+	.extend({ isBanner: z.boolean() });
 
-export const projectNewImageFormSchema = z.object({
+export const projectNewImagesFormSchema = z.object({
 	images: projectsImagesSchema
 		.pick({
 			storageName: true,
-			palette: true,
+			colorPaletteLAB: true,
 			height: true,
 			width: true,
 		})

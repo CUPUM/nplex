@@ -31,7 +31,7 @@
 	let split = $derived(text.split(separator));
 </script>
 
-{#key split}
+{#key text}
 	<span
 		class="stagger-text"
 		data-clipped={clipPath ? true : undefined}

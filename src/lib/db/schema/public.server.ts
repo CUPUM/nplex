@@ -1,6 +1,6 @@
 import { ROLES } from '$lib/auth/constants';
 import { sql } from 'drizzle-orm';
-import { cube, intrange, nanoid } from 'drizzle-orm-helpers/pg';
+import { intrange, nanoid } from 'drizzle-orm-helpers/pg';
 import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import {
 	boolean,
@@ -11,8 +11,12 @@ import {
 	text,
 	timestamp,
 	unique,
+	vector,
 } from 'drizzle-orm/pg-core';
-import { PROJECT_IMAGE_PALETTE_LENGTH } from '../constants';
+import {
+	PROJECT_IMAGE_PALETTE_LENGTH,
+	PROJECT_IMAGE_PALETTE_VECTOR_DIMENSIONS,
+} from '../constants';
 import { role } from '../custom-types.server';
 import { CREATED_AT_COLUMN, LANG_COLUMN, UPDATED_AT_COLUMN } from '../helpers.server';
 import { roles, users } from './users.server';
@@ -509,38 +513,45 @@ export const projectsExemplarityIndicators = pgTable(
 	}
 );
 
+export const projectsImagesColumnsWithoutVectors = {
+	...CREATED_AT_COLUMN,
+	...UPDATED_AT_COLUMN,
+	id: text('id').notNull().default(nanoid()).primaryKey(),
+	projectId: text('project_id')
+		.notNull()
+		.references(() => projects.id, {
+			onDelete: 'cascade',
+			onUpdate: 'cascade',
+		}),
+	date: timestamp('date', { withTimezone: true }),
+	createdById: text('created_by_id')
+		.references(() => users.id, {
+			onDelete: 'restrict',
+			onUpdate: 'cascade',
+		})
+		.notNull(),
+	updatedById: text('updated_by_id').references(() => users.id, {
+		onDelete: 'restrict',
+		onUpdate: 'cascade',
+	}),
+	index: integer('index'),
+	storageName: text('storage_name').notNull().unique(),
+	width: integer('width').notNull(),
+	height: integer('height').notNull(),
+	typeId: text('type_id').references(() => projectImageTypes.id, {
+		onDelete: 'set null',
+		onUpdate: 'cascade',
+	}),
+};
 export const projectsImages = pgTable(
 	'projects_images',
 	{
-		...CREATED_AT_COLUMN,
-		...UPDATED_AT_COLUMN,
-		id: text('id').notNull().default(nanoid()).primaryKey(),
-		projectId: text('project_id')
-			.notNull()
-			.references(() => projects.id, {
-				onDelete: 'cascade',
-				onUpdate: 'cascade',
-			}),
-		date: timestamp('date', { withTimezone: true }),
-		createdById: text('created_by_id')
-			.references(() => users.id, {
-				onDelete: 'restrict',
-				onUpdate: 'cascade',
-			})
+		...projectsImagesColumnsWithoutVectors,
+		colorPaletteLAB: vector('color_palette_lab', {
+			dimensions: PROJECT_IMAGE_PALETTE_VECTOR_DIMENSIONS,
+		})
+			.array(PROJECT_IMAGE_PALETTE_LENGTH)
 			.notNull(),
-		updatedById: text('updated_by_id').references(() => users.id, {
-			onDelete: 'restrict',
-			onUpdate: 'cascade',
-		}),
-		index: integer('index'),
-		storageName: text('storage_name').notNull().unique(),
-		width: integer('width').notNull(),
-		height: integer('height').notNull(),
-		typeId: text('type_id').references(() => projectImageTypes.id, {
-			onDelete: 'set null',
-			onUpdate: 'cascade',
-		}),
-		palette: cube('palette').array(PROJECT_IMAGE_PALETTE_LENGTH).notNull(),
 	},
 	(table) => {
 		return {
