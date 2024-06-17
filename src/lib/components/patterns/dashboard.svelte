@@ -26,7 +26,7 @@
 </script>
 
 <section
-	class="px-padding pb-gutter flex-basis-0 relative grid grid-cols-[[sidebar-start_header-start_footer-start]_auto_[sidebar-end_main-start]_1fr_[main-end_header-end_footer-end]]"
+	class="px-padding pb-gutter flex-basis-0 min-h-main-full-height relative grid grid-cols-[[sidebar-start_header-start_footer-start]_auto_[sidebar-end_main-start]_1fr_[main-end_header-end_footer-end]] content-start"
 >
 	{#if ctx.header}
 		<header
@@ -46,7 +46,7 @@
 			{@render ctx.sidebar()}
 		</nav>
 	{/if}
-	<article style:grid-column="main" class="gap-gutter flex flex-col">
+	<article style:grid-column="main" class="gap-gutter flex flex-col" id="dashboard-main">
 		{@render children()}
 	</article>
 	{#if ctx.footer}

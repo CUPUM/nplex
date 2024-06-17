@@ -2,7 +2,7 @@
 	import { ms } from '$lib/common/css';
 
 	let {
-		text,
+		text = '',
 		separator = /(\s)/,
 		easing = 'var(--transition-timing-function-out)',
 		duration = 'var(--transition-duration-xslow)',
@@ -31,7 +31,7 @@
 	let split = $derived(text.split(separator));
 </script>
 
-{#key text}
+{#key split}
 	<span
 		class="stagger-text"
 		data-clipped={clipPath ? true : undefined}

@@ -4,7 +4,7 @@
 	import { Tabs } from '$lib/builders/tabs.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
-	import { switchCrossfade } from '$lib/motion/presets';
+	import { switchThumbCrossfade } from '$lib/motion/presets';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
@@ -39,8 +39,8 @@
 					{LANG_DETAILS[lang].label}
 					{#if tabs.current === lang}
 						<div
-							in:switchCrossfade.send={{ key }}
-							out:switchCrossfade.receive={{ key }}
+							in:switchThumbCrossfade.send={{ key }}
+							out:switchThumbCrossfade.receive={{ key }}
 							class="switch-thumb"
 						></div>
 					{/if}
