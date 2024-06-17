@@ -16,10 +16,6 @@ export const GET = async (event) => {
 	const post = await createPresignedPost(storage, {
 		Bucket: S3_BUCKET_NAME,
 		Key: name,
-		// Conditions: [{ acl: 'public-read' }],
-		// Fields: {
-		// 	acl: 'public-read',
-		// },
 	});
 	return json({
 		post,

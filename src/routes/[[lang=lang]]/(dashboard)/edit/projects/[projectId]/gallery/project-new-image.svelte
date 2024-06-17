@@ -2,18 +2,25 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { InputImages } from '$lib/builders/input-images.svelte';
+	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendSuperForm } from '$lib/crud/form/client';
+	import { PROJECT_IMAGE_PALETTE_LENGTH } from '$lib/db/constants';
 	import { transformImage } from '$lib/storage/media/utils';
 	import convert from 'color-convert';
 	import { prominent } from 'color.js';
-	import { ImagePlus } from 'lucide-svelte';
+	import { ImagePlus, Upload, X } from 'lucide-svelte';
+	import { flip } from 'svelte/animate';
+	import { elasticOut, expoInOut, expoOut } from 'svelte/easing';
 	import { get } from 'svelte/store';
+	import { fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 	import type { PresignedResponse } from './presign/types';
 
-	let { newImageForm }: PageData = $props();
+	let { newImagesForm }: PageData = $props();
+
+	let submitRef = $state<HTMLButtonElement>();
 
 	const inputImages = new InputImages({
 		multiple: true,
@@ -33,11 +40,10 @@
 				}),
 				new Promise<{ hex: string[]; lab: [number, number, number][] }>(async (res) => {
 					const item = URL.createObjectURL(file);
-					const extracted = (await prominent(item, { amount: 5, group: 40 })) as [
-						number,
-						number,
-						number,
-					][];
+					const extracted = (await prominent(item, {
+						amount: PROJECT_IMAGE_PALETTE_LENGTH,
+						group: 40,
+					})) as [number, number, number][];
 					URL.revokeObjectURL(item);
 					res({
 						hex: extracted.map((col) => convert.rgb.hex(col)),
@@ -48,15 +54,19 @@
 			const url = URL.createObjectURL(preview.file);
 			return { ...parsed, url, ...palettes };
 		},
+		onDelete(data) {
+			URL.revokeObjectURL(data.url);
+		},
 	});
 
-	const { form, errors, enhance } = extendSuperForm(
-		superForm(newImageForm, {
+	const { form, errors, enhance, submitter } = extendSuperForm(
+		superForm(newImagesForm, {
 			dataType: 'json',
 			resetForm: true,
 			async onSubmit(input) {
+				const images: PageData['newImagesForm']['data']['images'] = [];
 				await Promise.allSettled(
-					inputImages.data.map(async (preview) => {
+					inputImages.parsed.map(async (preview) => {
 						// Get a presigned url
 						const presignedRes = await fetch(
 							`/edit/projects/${get(page).params.projectId}/gallery/presign`,
@@ -70,48 +80,35 @@
 								formData.append(k, v);
 							}
 						});
-						formData.append('file', preview.file);
+						formData.append('file', preview.data.file);
 						const uploadRes = await fetch(presignedJson.post.url, {
 							method: 'POST',
 							body: formData,
 						});
-						if (!uploadRes.ok) {
-							input.cancel();
-						} else {
-							$form.images.push({
+						if (uploadRes.ok) {
+							images.push({
 								storageName: presignedJson.name,
-								palette: preview.lab,
-								height: preview.height,
-								width: preview.width,
+								colorPaletteLAB: preview.data.lab,
+								height: preview.data.height,
+								width: preview.data.width,
 							});
 						}
 					})
 				);
+				form.set({ images });
 			},
 			onResult(event) {
 				if (event.result.type === 'success') {
-					inputImages.data.forEach(cleanupData);
-					inputImages.data = [];
+					inputImages.deleteAll();
 				}
 			},
 		})
 	);
-
-	function cleanupData(datum: (typeof inputImages)['data'][number]) {
-		URL.revokeObjectURL(datum.url);
-	}
-
-	function deleteImage(index: number) {
-		const datum = inputImages.data[index];
-		if (datum) {
-			cleanupData(datum);
-			inputImages.data.splice(index, 1);
-		}
-	}
 </script>
 
 <form
-	action="?/insert"
+	use:enhance
+	action="?/upload"
 	method="POST"
 	class="dashboard-section p-card-padding gap-card-gutter flex flex-row items-start justify-start"
 >
@@ -120,46 +117,45 @@
 		{m.project_gallery_add_prompt()}
 		<ImagePlus />
 	</label>
-	<!-- {#each memory as image, i (image.url)}
-			<div
-				class="preview-card"
-				animate:flip={{
-					duration(l) {
-						return 150 + l / 25;
-					},
-					easing: expoInOut,
-				}}
-				in:scale={{ start: 0.9, duration: 500, easing: elasticOut, delay: i * 50 }}
-			>
-				<img src={image.url} alt="Preview image for {image.url}" />
-				<div class="palette">
-					{#each image.hex as color}
-						<div class="swatch" style:background-color="#{color}"></div>
-					{/each}
-				</div>
-				<menu class="toolbar" data-mode={MODES.DARK}>
-					<button
-						class="button square danger ghost"
-						type="button"
-						on:click={() => deletePreview(i)}
-					>
-						<X />
-					</button>
-				</menu>
+	{#each inputImages.parsed as image, i (image.data.url)}
+		<div
+			animate:flip={{
+				duration(l) {
+					return 150 + l / 25;
+				},
+				easing: expoInOut,
+			}}
+			in:scale={{ start: 0.9, duration: 500, easing: elasticOut, delay: i * 50 }}
+		>
+			<img src={image.data.url} alt="Preview image for {image.data.url}" />
+			<div>
+				{#each image.data.hex as color}
+					<div data-hex="#{color}" class="bg-[data(hex)]"></div>
+				{/each}
 			</div>
-		{/each}
-	</ul>
-	{#if memory.length}
+			<menu>
+				<button
+					class="button button-ghost aspect-square"
+					data-danger
+					type="button"
+					onclick={() => image.delete()}
+					use:ripple
+				>
+					<X />
+				</button>
+			</menu>
+		</div>
+	{/each}
+	{#if inputImages.parsed.length}
 		<button
-			id="upload"
-			class="button cta"
+			class="button button-cta"
 			type="submit"
 			use:ripple
-			use:melt={$loading}
+			bind:this={submitRef}
 			in:fly={{ y: 8, easing: expoOut, duration: 750 }}
 		>
 			{m.project_gallery_upload()}
-			<Send class="button-icon" />
+			<IconSpinner busy={submitRef === $submitter} icon={Upload} />
 		</button>
-	{/if} -->
+	{/if}
 </form>

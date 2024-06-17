@@ -15,7 +15,7 @@
 </script>
 
 <ProjectNewImage {...data} />
-<ul>
+<ul class="gap-gutter flex flex-row flex-wrap">
 	{#each data.imagesForms as imageForm, i (imageForm.id)}
 		<li
 			animate:flip={{ duration: 250, easing: expoInOut }}

@@ -6,11 +6,11 @@ import { canEditProject } from '$lib/crud/queries/projects';
 import {
 	projectGalleryFormSchema,
 	projectImageFormSchema,
-	projectNewImageFormSchema,
+	projectNewImagesFormSchema,
 } from '$lib/crud/validation/projects';
 import { db } from '$lib/db/db.server';
 import { projects, projectsImages, projectsImagesTranslations } from '$lib/db/schema/public.server';
-import { error } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { getColumns } from 'drizzle-orm-helpers';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -41,26 +41,42 @@ export const load = async (event) => {
 	if (!project) {
 		error(STATUS_CODES.NOT_FOUND, m.project_not_found());
 	}
-	const [form, imagesForms, newImageForm] = await Promise.all([
+	const [form, imagesForms, newImagesForm] = await Promise.all([
 		superValidate(project, zod(projectGalleryFormSchema)),
-		Promise.all(images.map((image) => superValidate(image, zod(projectImageFormSchema)))),
-		superValidate(zod(projectNewImageFormSchema)),
+		Promise.all(
+			images.map((image) => superValidate(image, zod(projectImageFormSchema), { id: image.id }))
+		),
+		superValidate(zod(projectNewImagesFormSchema)),
 	]);
 	return {
 		form,
 		imagesForms,
-		newImageForm,
+		newImagesForm,
 	};
 };
 
 export const actions = {
 	upload: async (event) => {
 		authorize(event);
+		const newImagesForm = await superValidate(event, zod(projectNewImagesFormSchema));
+		if (!newImagesForm.valid) {
+			fail(STATUS_CODES.BAD_REQUEST, { newImagesForm });
+		}
+		await db.insert(projectsImages).values(
+			newImagesForm.data.images.map((d) => ({
+				...d,
+				projectId: event.params.projectId,
+				createdById: event.locals.user.id,
+			}))
+		);
 	},
 	promote: async (event) => {
 		authorize(event);
 	},
 	demote: async (event) => {
+		authorize(event);
+	},
+	update: async (event) => {
 		authorize(event);
 	},
 };
