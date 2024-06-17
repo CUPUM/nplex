@@ -259,5 +259,6 @@
 	"cannot_delete": "Impossible de supprimer les données",
 	"account_deleted": "Compte supprimé avec succès",
 	"account_delete_permanently": "Supprimer mon compte définitivement",
-	"account_delete_confirm": "Désirez-vous fermer votre compte? Toutes vos données seront supprimées"
+	"account_delete_confirm": "Désirez-vous fermer votre compte? Toutes vos données seront supprimées",
+	"project_image_set_banner": "Utiliser comme bannière"
 }

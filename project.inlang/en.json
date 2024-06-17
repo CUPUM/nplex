@@ -256,5 +256,6 @@
 	"cannot_delete": "Unable to delete data",
 	"account_deleted": "Account deleted successfully",
 	"account_delete_permanently": "Delete my account permanently",
-	"account_delete_confirm": "Do you want to delete your account? All your data will be lost"
+	"account_delete_confirm": "Do you want to delete your account? All your data will be lost",
+	"project_image_set_banner": "Use as banner"
 }
