@@ -108,6 +108,7 @@
 
 <form
 	use:enhance
+	id="new-images"
 	action="?/upload"
 	method="POST"
 	class="dashboard-section p-card-padding gap-card-gutter flex flex-row items-start justify-start"

@@ -3,7 +3,7 @@
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import Spinner from '$lib/components/primitives/spinner.svelte';
 	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
-	import { switchCrossfade } from '$lib/motion/presets';
+	import { switchThumbCrossfade } from '$lib/motion/presets';
 	import type { PageData } from './$types';
 
 	let { form, types }: ExtendedSuperFormData<PageData['form']> & Pick<PageData, 'types'> = $props();
@@ -32,8 +32,8 @@
 						{#if $form.typeId === pt.id}
 							<div
 								class="switch-thumb"
-								in:switchCrossfade.receive={{ key: 'project-type' }}
-								out:switchCrossfade.send={{ key: 'project-type' }}
+								in:switchThumbCrossfade.receive={{ key: 'project-type' }}
+								out:switchThumbCrossfade.send={{ key: 'project-type' }}
 							></div>
 						{/if}
 						{pt.title}

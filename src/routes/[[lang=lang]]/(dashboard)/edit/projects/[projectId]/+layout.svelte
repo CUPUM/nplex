@@ -1,22 +1,23 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import DashboardSidebarMenuItem from '$lib/components/patterns/dashboard-sidebar-menu-item.svelte';
 	import DashboardSidebarMenu from '$lib/components/patterns/dashboard-sidebar-menu.svelte';
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
-	import { authorize } from '$lib/crud/authorization/rbac.svelte';
+	import { authorize } from '$lib/crud/authorization/rbac.svelte.js';
 	import { AlertTriangle, Eye, Files, Tags, UsersRound } from 'lucide-svelte';
 	import { onDestroy } from 'svelte';
 
 	let { children, data } = $props();
 
 	const ctx = getDashboardContext(true);
-	ctx.sidebar = sidebar;
+
 	ctx.header = header;
+	ctx.sidebar = sidebar;
 
 	onDestroy(() => {
-		ctx.sidebar = undefined;
-		ctx.header = undefined;
+		if (ctx.header === header) ctx.header = undefined;
+		if (ctx.sidebar === sidebar) ctx.sidebar = undefined;
 	});
 </script>
 
@@ -46,104 +47,103 @@
 		{#snippet legend()}
 			{m.project_essentials()}
 		{/snippet}
-		<a class="button button-nav" {...linkAttributes(`/edit/projects/${data.id}`)}>
+		<DashboardSidebarMenuItem {...linkAttributes(`/edit/projects/${data.id}`)}>
 			{m.project_general()}
-		</a>
-		<a
-			class="button button-nav"
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/place`)}
 			aria-disabled="true"
 		>
 			{m.project_place()}
-		</a>
-		<a
-			class="button button-nav"
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/exemplarity#exemplarity-indicators`)}
 		>
 			{m.project_examplarity()}
-		</a>
-		<a class="button button-nav" {...linkAttributes(`/edit/projects/${data.id}/gallery`)}>
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem {...linkAttributes(`/edit/projects/${data.id}/gallery#new-images`)}>
 			{m.project_gallery()}
-		</a>
+		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
 	<DashboardSidebarMenu>
 		{#snippet legend()}
 			{m.project_complements()}
 		{/snippet}
-		<a
-			class="button button-nav"
+		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/contributions`)}
 			aria-disabled="true"
 		>
 			{m.project_contributions()}
-		</a>
-		<a
-			class="button button-nav"
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/materials`)}
 			aria-disabled="true"
 		>
 			{m.project_materials()}
-		</a>
-		<a
-			class="button button-nav"
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/timeline`)}
 			aria-disabled="true"
 		>
 			{m.project_timeline()}
-		</a>
+		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
 	<DashboardSidebarMenu>
 		{#snippet legend()}
 			{m.project_settings()}
 		{/snippet}
-		<a
-			class="button button-nav"
+		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/sharing`)}
 			aria-disabled="true"
 		>
 			{m.project_sharing()}
 			<UsersRound class="button-icon" />
-		</a>
-		<a
-			class="button button-nav"
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/publishing`)}
 			aria-disabled="true"
 		>
 			{m.project_visibility()}
 			<Eye class="button-icon" />
-		</a>
-		<a
-			class="button button-nav"
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/security`)}
 			data-danger
+			aria-disabled
 		>
 			{m.project_danger_zone()}
 			<AlertTriangle class="button-icon" />
-		</a>
+		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
 	<DashboardSidebarMenu>
 		{#snippet legend()}
 			{m.my_documents()}
 		{/snippet}
-		<a class="button button-nav" {...linkAttributes('/edit/projects')}>
+		<DashboardSidebarMenuItem class="button button-nav" {...linkAttributes('/edit/projects')}>
 			{m.projects()}
 			<Files class="button-icon" />
-		</a>
-		{#if authorize($page.data.user, 'projects.descriptors.update')}
-			<a class="button button-nav" {...linkAttributes('/edit/projects/descriptors')}>
+		</DashboardSidebarMenuItem>
+		{#if authorize('projects.descriptors.update')}
+			<DashboardSidebarMenuItem
+				class="button button-nav"
+				{...linkAttributes('/edit/projects/descriptors')}
+			>
 				{m.project_descriptors()}
 				<Tags class="button-icon" />
-			</a>
+			</DashboardSidebarMenuItem>
 		{/if}
-		<a class="button button-nav" {...linkAttributes('/edit/organizations')}>
+		<DashboardSidebarMenuItem class="button button-nav" {...linkAttributes('/edit/organizations')}>
 			{m.organizations()}
 			<Files class="button-icon" />
-		</a>
-		{#if authorize($page.data.user, 'organizations.descriptors.update')}
-			<a class="button button-nav" {...linkAttributes('/edit/organizations/descriptors')}>
+		</DashboardSidebarMenuItem>
+		{#if authorize('organizations.descriptors.update')}
+			<DashboardSidebarMenuItem
+				class="button button-nav"
+				{...linkAttributes('/edit/organizations/descriptors')}
+			>
 				{m.organization_descriptors()}
 				<Tags class="button-icon" />
-			</a>
+			</DashboardSidebarMenuItem>
 		{/if}
 	</DashboardSidebarMenu>
 {/snippet}

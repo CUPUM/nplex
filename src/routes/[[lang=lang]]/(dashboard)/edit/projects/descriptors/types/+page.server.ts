@@ -1,9 +1,25 @@
+import { authorize } from '$lib/crud/authorization/rbac.server';
+import { aggTranslations, joinTranslations } from '$lib/crud/queries/i18n';
+import { db } from '$lib/db/db.server';
+import { projectTypes, projectTypesTranslations } from '$lib/db/schema/public.server';
+import { eq } from 'drizzle-orm';
+import { getColumns } from 'drizzle-orm-helpers';
+
 export const load = async (event) => {
-	// authorize(event, 'projects.descriptors.types.update');
-	// const types = await withTranslations(projectTypes, projectTypesTranslations, {
-	// 	field: (t) => t.id,
-	// 	reference: (tt) => tt.id,
-	// });
+	authorize(event, 'projects.descriptors.types.update');
+	const types = joinTranslations(
+		db
+			.select({
+				...getColumns(projectTypes),
+				...aggTranslations(getColumns(projectTypesTranslations)),
+			})
+			.from(projectTypes)
+			.groupBy(projectTypes.id)
+			.$dynamic(),
+		projectTypesTranslations,
+		eq(projectTypes.id, projectTypesTranslations.id)
+	);
+
 	// const [newTypeForm, typesForm, ...typeForms] = await Promise.all([
 	// 	superValidate(zod(newProjectTypeSchema)),
 	// 	superValidate(zod(typesSchema)),
