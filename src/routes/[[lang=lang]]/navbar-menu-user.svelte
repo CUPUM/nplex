@@ -3,6 +3,7 @@
 	import * as m from '$i18n/messages';
 	import { Dialog } from '$lib/builders/dialog.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
+	import { authorize } from '$lib/crud/authorization/rbac.svelte';
 	import { FilePlus, LogOut, Pencil, Sliders, UserRound } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import { cubicIn, expoOut } from 'svelte/easing';
@@ -35,14 +36,16 @@
 					<FilePlus class="button-icon" />
 					{m.nav_new_project()}
 				</a>
-				<a
-					class="button button-nav"
-					{...linkAttributes('/edit/projects/descriptors')}
-					{...menu.itemAttributes}
-				>
-					<Sliders class="button-icon" />
-					{m.nav_edit_project_descriptors()}
-				</a>
+				{#if authorize('projects.descriptors.update')}
+					<a
+						class="button button-nav"
+						{...linkAttributes('/edit/projects/descriptors')}
+						{...menu.itemAttributes}
+					>
+						<Sliders class="button-icon" />
+						{m.nav_edit_project_descriptors()}
+					</a>
+				{/if}
 			</ul>
 		</menu>
 		<menu

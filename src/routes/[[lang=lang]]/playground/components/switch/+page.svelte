@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Variants from '$lib/components/patterns/variants.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
-	import { switchCrossfade } from '$lib/motion/presets';
+	import { switchThumbCrossfade } from '$lib/motion/presets';
 
 	const switches = [
 		{ name: 'Default', class: '' },
@@ -31,8 +31,8 @@
 						{#if o === current}
 							<div
 								class="switch-thumb"
-								in:switchCrossfade.receive={{ key: key1 }}
-								out:switchCrossfade.send={{ key: key1 }}
+								in:switchThumbCrossfade.receive={{ key: key1 }}
+								out:switchThumbCrossfade.send={{ key: key1 }}
 							></div>
 						{/if}
 						<input type="radio" class="sr-only" value={o} bind:group={current} />
@@ -46,8 +46,8 @@
 					{#if toggled}
 						<div
 							class="switch-thumb"
-							in:switchCrossfade.receive={{ key: key2 }}
-							out:switchCrossfade.send={{ key: key2 }}
+							in:switchThumbCrossfade.receive={{ key: key2 }}
+							out:switchThumbCrossfade.send={{ key: key2 }}
 						></div>
 					{/if}
 				</span>
@@ -56,8 +56,8 @@
 					{#if !toggled}
 						<div
 							class="switch-thumb"
-							in:switchCrossfade.receive={{ key: key2 }}
-							out:switchCrossfade.send={{ key: key2 }}
+							in:switchThumbCrossfade.receive={{ key: key2 }}
+							out:switchThumbCrossfade.send={{ key: key2 }}
 						></div>
 					{/if}
 				</span>

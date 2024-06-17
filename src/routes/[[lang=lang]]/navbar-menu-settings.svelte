@@ -42,7 +42,7 @@
 						data-sveltekit-replacestate
 						aria-checked={$page.data.lang === lang || undefined}
 						role="radio"
-						class="button button-ghost justify-start"
+						class="button button-nav justify-start"
 						onclick={() => invalidate(LOAD_DEPENDENCIES.LANG)}
 					>
 						{LANG_DETAILS[lang].name}
@@ -62,7 +62,7 @@
 				{#each MODE_SETTINGS_ARR as option}
 					<button
 						use:ripple
-						class="button button-ghost justify-start"
+						class="button button-nav justify-start"
 						aria-checked={mode.setting === option || undefined}
 						role="radio"
 						onclick={() => {

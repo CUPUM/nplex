@@ -124,7 +124,11 @@
 			translate: 0 min(0%, calc(-50% + var(--scroll-y-px)));
 			border-bottom-left-radius: calc(var(--radius-lg) - 0.25 * var(--scroll-y-px));
 			border-bottom-right-radius: calc(var(--radius-lg) - 0.25 * var(--scroll-y-px));
-			background: color-mix(in srgb, var(--background-color-base) 90%, transparent);
+			background: color-mix(
+				in srgb,
+				var(--background-color-base) min(90%, var(--scroll-y) * 0.5%),
+				transparent
+			);
 			backdrop-filter: blur(var(--blur-md));
 			transition: all 100ms ease-out;
 		}
