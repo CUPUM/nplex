@@ -1,11 +1,7 @@
-import { availableLanguageTags, sourceLanguageTag } from '$i18n/runtime';
+import { sourceLanguageTag } from '$i18n/runtime';
 import { z } from 'zod';
 
 export const prerender = true;
-
-export function entries() {
-	return availableLanguageTags.map((lang) => ({ lang }));
-}
 
 const metadataSchema = z.object({
 	title: z.string(),

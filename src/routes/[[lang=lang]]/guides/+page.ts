@@ -1,12 +1,8 @@
-import { availableLanguageTags, sourceLanguageTag } from '$i18n/runtime';
+import { sourceLanguageTag } from '$i18n/runtime';
 import { headingsMetadataSchema } from '$lib/markdown/validation';
 import { z } from 'zod';
 
-export const prerender = true;
-
-export function entries() {
-	return availableLanguageTags.map((lang) => ({ lang }));
-}
+export const prerender = 'auto';
 
 const metadataSchema = headingsMetadataSchema.extend({
 	title: z.string(),

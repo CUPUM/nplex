@@ -22,6 +22,9 @@ const config = {
 		alias: {
 			$i18n: 'src/lib/i18n/generated',
 		},
+		prerender: {
+			entries: ['/fr/*', '/en/*'],
+		},
 	},
 	compilerOptions: {
 		// Only applies to prod.
