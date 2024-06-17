@@ -165,14 +165,14 @@
 		--button-text-decoration: none;
 		--button-icon-color: currentColor;
 		--button-border-style: none;
-		--button-hover-color: var(--color-primary);
-		--button-hover-background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+		--button-hover-color: var(--color-primary-accent);
+		--button-hover-background: color-mix(in srgb, var(--color-primary) 10%, transparent);
 		--button-hover-background-inset: 0;
 		--button-checked-color: var(--color-primary);
-		--button-checked-background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+		--button-checked-background: var(--background-color-input-dim);
 		--button-checked-background-inset: 0;
-		--button-current-color: var(--color-primary-accent);
-		--button-current-background: var(--background-color-card);
+		--button-current-color: var(--color-primary);
+		--button-current-background: color-mix(in srgb, var(--color-primary) 10%, transparent);
 		--button-current-background-inset: 0;
 		&:is([data-danger]) {
 			--ripple-color: color-mix(in srgb, var(--color-error-dim) 25%, transparent);

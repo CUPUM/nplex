@@ -10,9 +10,10 @@
 	*/
 
 .dialog {
+	--dialog-margin: var(--spacing-padding);
 	margin: auto;
-	max-width: var(--width-md);
-	max-height: calc(100% - var(--spacing-gutter));
+	max-width: min(calc(100% - 2 * var(--dialog-margin)), var(--width-md));
+	max-height: calc(100% - 2 * var(--dialog-margin));
 	background: var(--background-color-popover);
 	border-radius: var(--radius-lg);
 	font-size: var(--font-size-md);
