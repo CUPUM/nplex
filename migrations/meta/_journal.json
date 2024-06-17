@@ -239,6 +239,20 @@
       "when": 1717722665761,
       "tag": "0033_goofy_namora",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1718636995828,
+      "tag": "0034_jazzy_nebula",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1718637686159,
+      "tag": "0035_famous_diamondback",
+      "breakpoints": true
     }
   ]
 }
