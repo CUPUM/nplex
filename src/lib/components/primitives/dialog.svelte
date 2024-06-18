@@ -13,7 +13,7 @@
 		...restProps
 	}: {
 		open?: boolean;
-		trigger: Snippet<[ReturnType<Dialog['triggerAttributes']>]>;
+		trigger: Snippet<[InstanceType<typeof Dialog>['triggerAttributes']]>;
 		content: Snippet;
 		modal?: boolean;
 		onClickoutside: (e: MouseEvent) => void;
@@ -23,23 +23,9 @@
 	const dialog = new Dialog();
 </script>
 
-{@render trigger(dialog.triggerAttributes())}
+{@render trigger(dialog.triggerAttributes)}
 {#if open}
-	<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-	<dialog use:dialog.dialogAction {...dialog.dialogAttributes()}>
-		<div class="content" {...dialog.contentAttributes()}>
-			{@render content()}
-		</div>
+	<dialog class="dialog" use:dialog.dialogAction {...dialog.dialogAttributes}>
+		{@render content()}
 	</dialog>
 {/if}
-
-<style>
-	dialog {
-		padding: 1rem;
-	}
-
-	.content {
-		padding: 2rem;
-		background: grey;
-	}
-</style>

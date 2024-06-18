@@ -1,5 +1,5 @@
 export class Tabs<T = any> {
-	current = $state();
+	current = $state<T>();
 
 	constructor({ defaultValue }: { defaultValue: T }) {
 		this.current = defaultValue;

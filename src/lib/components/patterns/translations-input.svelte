@@ -7,23 +7,26 @@
 	import { switchThumbCrossfade } from '$lib/motion/presets';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
+	import { get } from 'svelte/store';
 
 	let {
 		children,
 		class: className,
 		...divProps
 	}: {
-		children: Snippet<[{ lang: AvailableLanguageTag; current: boolean }]>;
+		children: Snippet<
+			[{ lang: AvailableLanguageTag; current?: AvailableLanguageTag; isCurrent: boolean }]
+		>;
 	} & Omit<HTMLAttributes<HTMLDivElement>, 'children'> = $props();
 
-	const tabs = new Tabs({ defaultValue: $page.data.lang });
+	const tabs = new Tabs({ defaultValue: get(page).data.lang });
 	const key = {};
 </script>
 
 <div class="input-group self-stretch {className}" {...divProps}>
 	{#each availableLanguageTags as lang}
 		<div class="translation-content" {...tabs.contentAttributes(lang)} hidden={false} {lang}>
-			{@render children({ lang, current: tabs.current === lang })}
+			{@render children({ lang, current: tabs.current, isCurrent: tabs.current === lang })}
 		</div>
 	{/each}
 	<div class="input-peer">

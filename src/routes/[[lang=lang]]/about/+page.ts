@@ -10,9 +10,8 @@ const metadataSchema = z.object({
 export const load = async (event) => {
 	const md = await import(`./${event.params.lang ?? sourceLanguageTag}.mdx`);
 	const metadata = metadataSchema.parse(md.metadata || {});
-	const content = md.default;
 	return {
 		...metadata,
-		content,
+		content: md.default,
 	};
 };

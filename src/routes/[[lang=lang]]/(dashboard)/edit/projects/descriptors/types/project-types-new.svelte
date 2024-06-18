@@ -1,4 +1,4 @@
-<!-- <script lang="ts" generics="T extends PageData['newTypeForm']">
+<script lang="ts" generics="T extends PageData['newTypeForm']">
 	import * as m from '$i18n/messages';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import ButtonCreate from '$lib/components/patterns/button-create.svelte';
@@ -52,6 +52,3 @@
 		<ButtonCreate form={data.id} type="submit" {submitter} disabled={!$tainted} />
 	</svelte:fragment>
 </Dialog>
-
-<style>
-</style> -->

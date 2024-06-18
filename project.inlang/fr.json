@@ -43,7 +43,7 @@
 	"auth_verify_email_sent": "Un courriel vous a été envoyé pour compléter la démarche. Veuillez consulter votre boîte de réception.",
 	"coming_soon": "À venir prochainement",
 	"confirm_password": "Confirmez le mot de passe",
-	"confirm_unsaved_data": "Le contenu ne sera pas sauvegardé. Voulez-vous continuer quand même?",
+	"confirm_unsaved_data": "Vos modifications ne seront pas sauvegardées. Voulez-vous continuer quand même?",
 	"create": "Créer",
 	"create_org": "Créer une organisation",
 	"create_project": "Créer un projet",
@@ -260,5 +260,6 @@
 	"account_deleted": "Compte supprimé avec succès",
 	"account_delete_permanently": "Supprimer mon compte définitivement",
 	"account_delete_confirm": "Désirez-vous fermer votre compte? Toutes vos données seront supprimées",
-	"project_image_set_banner": "Utiliser comme bannière"
+	"project_image_set_banner": "Utiliser comme bannière",
+	"close": "Fermer"
 }

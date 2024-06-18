@@ -207,6 +207,7 @@
 		- Semantic color palettes are defined using a --color-[semantic] and --color-on-[semantic] pattern to provide versatility in their use as either background or foreground colors.
 		- Block-element color palettes are defined as --background-color-[element] and --text-color-[element] to enforce consistency in their use for backgrounds and foregrounds.
 	*/
+
 	--color-primary-dim: hsl(151, 80%, 21%);
 	--color-primary: hsl(152, 90%, 12%);
 	--color-primary-accent: hsl(155, 100%, 8%);
@@ -335,13 +336,13 @@
 	--color-error-accent: hsl(6, 72%, 53%);
 
 	--background-color-pure: black;
-	--background-color-base: hsl(62, 5%, 7%);
+	--background-color-popover: hsl(62, 4%, 5%);
+	--background-color-base: hsl(61, 5%, 7%);
 	--background-color-card: hsl(60, 3%, 9%);
 	--background-color-section: hsl(58, 2%, 10%);
 	--background-color-input-dim: color-mix(in srgb, var(--text-color-base) 6%, transparent);
 	--background-color-input: color-mix(in srgb, var(--text-color-base) 8%, transparent);
 	--background-color-input-accent: color-mix(in srgb, var(--text-color-base) 10%, transparent);
-	--background-color-popover: var(--background-color-base);
 	--background-color-overlay: hsl(220, 16%, 3%, 86%);
 	--background-color-tooltip: hsl(220, 12%, 10%, 96%);
 
@@ -354,7 +355,7 @@
 	--text-color-input: hsl(80, 8%, 78%);
 	--text-color-input-accent: hsl(80, 20%, 88%);
 
-	--border-color-dim: color-mix(in srgb, var(--text-color-base) 6%, transparent);
-	--border-color: color-mix(in srgb, var(--text-color-base) 14%, transparent);
-	--border-color-accent: color-mix(in srgb, var(--text-color-base) 25%, transparent);
+	--border-color-dim: color-mix(in srgb, var(--text-color-base) 5%, transparent);
+	--border-color: color-mix(in srgb, var(--text-color-base) 12%, transparent);
+	--border-color-accent: color-mix(in srgb, var(--text-color-base) 20%, transparent);
 }

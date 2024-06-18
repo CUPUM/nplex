@@ -86,6 +86,11 @@
 			font-size: var(--font-size-sm);
 			line-height: var(--line-height-md);
 			padding-inline: var(--spacing-card-padding);
+
+			p {
+				margin-bottom: 1em;
+				margin-top: 0.5em;
+			}
 		}
 
 		.dashboard-section-content {
@@ -94,6 +99,7 @@
 			gap: var(--spacing-card-gutter);
 			border-radius: inherit;
 			padding-inline: var(--spacing-lg);
+			padding-block: var(--spacing-md);
 			margin-inline: auto;
 			align-items: stretch;
 			width: 100%;

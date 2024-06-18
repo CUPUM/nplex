@@ -66,7 +66,7 @@
 	>
 		<h3 class="dialog-title">Hello</h3>
 		<div class="dialog-section">Hello</div>
-		<menu class="dialog-menu">
+		<menu class="dialog-actions">
 			<button bind:this={submitRef} class="button button-cta">
 				<IconSpinner icon={Check} busy={submitRef === $submitter} />{m.save()}
 			</button>

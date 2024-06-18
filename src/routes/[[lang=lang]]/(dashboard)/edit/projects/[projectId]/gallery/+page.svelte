@@ -5,7 +5,7 @@
 	import { fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
 	import ProjectImage from './project-image.svelte';
-	import ProjectNewImage from './project-new-image.svelte';
+	import ProjectNewImages from './project-new-images.svelte';
 
 	let { data } = $props();
 
@@ -14,7 +14,7 @@
 	);
 </script>
 
-<ProjectNewImage {...data} />
+<ProjectNewImages {...data} />
 <ul class="gap-gutter flex flex-row flex-wrap">
 	{#each data.imagesForms as imageForm, i (imageForm.id)}
 		<li

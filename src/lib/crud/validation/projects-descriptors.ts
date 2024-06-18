@@ -19,7 +19,10 @@ import {
 	projectTypesTranslations,
 } from '$lib/db/schema/public.server';
 import { createInsertSchema } from 'drizzle-zod';
+import { z } from 'zod';
 import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
+
+// Project types
 
 export const projectTypesSchema = createInsertSchema(projectTypes).required({ id: true });
 
@@ -34,7 +37,13 @@ export const projectTypesWithTranslationsSchema = withTranslationsSchema(
 	projectTypesTranslationsSchema.omit({ id: true })
 );
 
-export const newProjectTypeSchema = projectTypesWithTranslationsSchema.omit({ id: true });
+export const newProjectTypeFormSchema = projectTypesWithTranslationsSchema.omit({ id: true });
+
+export const projectTypesFormSchema = z.object({
+	types: projectTypesSchema.pick({ id: true }).array(),
+});
+
+// Project interventions
 
 export const projectInterventionsSchema = createInsertSchema(projectInterventions).required({
 	id: true,

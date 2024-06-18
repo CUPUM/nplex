@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import InputTranslations from '$lib/components/patterns/input-translations.svelte';
+	import TranslationsInput from '$lib/components/patterns/translations-input.svelte';
 	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
 	import type { PageData } from './$types';
 
@@ -16,7 +16,7 @@
 			<h4 class="field-label">
 				{m.title()}
 			</h4>
-			<InputTranslations class="big">
+			<TranslationsInput class="big">
 				{#snippet children({ lang })}
 					<input
 						type="text"
@@ -27,13 +27,13 @@
 						aria-invalid={$errors.translations?.[lang]?.title ? true : undefined}
 					/>
 				{/snippet}
-			</InputTranslations>
+			</TranslationsInput>
 		</div>
 		<div class="field">
 			<h4 class="field-label">
 				{m.summary()}
 			</h4>
-			<InputTranslations>
+			<TranslationsInput>
 				{#snippet children({ lang })}
 					<textarea
 						rows="5"
@@ -44,13 +44,13 @@
 						aria-invalid={$errors.translations?.[lang]?.summary ? true : undefined}
 					></textarea>
 				{/snippet}
-			</InputTranslations>
+			</TranslationsInput>
 		</div>
 		<div class="field">
 			<h4 class="field-label">
 				{m.description()}
 			</h4>
-			<InputTranslations>
+			<TranslationsInput>
 				{#snippet children({ lang })}
 					<textarea
 						rows="10"
@@ -61,7 +61,7 @@
 						aria-invalid={$errors.translations?.[lang]?.description ? true : undefined}
 					></textarea>
 				{/snippet}
-			</InputTranslations>
+			</TranslationsInput>
 		</div>
 	</div>
 </fieldset>

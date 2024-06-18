@@ -6,7 +6,7 @@
 		- hr
 		- .dialog-title
 		- .dialog-text
-		- .dialog-menu
+		- .dialog-actions
 	*/
 
 .dialog {
@@ -14,11 +14,14 @@
 	margin: auto;
 	max-width: min(calc(100% - 2 * var(--dialog-margin)), var(--width-md));
 	max-height: calc(100% - 2 * var(--dialog-margin));
+	padding: 2em;
 	background: var(--background-color-popover);
 	border-radius: var(--radius-lg);
-	font-size: var(--font-size-md);
-	line-height: var(--line-height-md);
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-sm);
+	border: var(--border-width-md) solid var(--border-color-dim);
 	overflow: auto;
+	color: var(--text-color-base);
 
 	/* Backdrop is handled as pseudo element on :root to enable in-out transitions. */
 
@@ -26,47 +29,47 @@
 		opacity: 0;
 	}
 
-	.dialog-section {
-		align-self: stretch;
-		padding: 2.5rem;
-
-		+ :is(.dialog-section, .dialog-menu) {
-			border-top-width: var(--border-width);
-			border-top-color: var(--border-color-dim);
-			border-top-style: solid;
-		}
-
-		.dialog-menu {
-			position: relative;
-			background: transparent;
-			padding-left: 0;
-			padding-right: 0;
-			padding-top: var(--spacing-gutter);
-			padding-bottom: var(--spacing-gutter);
-
-			&:last-child {
-				padding-bottom: 0;
-			}
-		}
-	}
-
 	.dialog-title {
-		padding: 2.5rem 2.5rem 0;
+		position: relative;
 		color: var(--text-color-base);
 		font-weight: var(--font-weight-bold);
 		font-size: var(--font-size-lg);
+		margin-bottom: 1em;
+
+		&:has(.dialog-close) {
+			padding-right: 2em;
+		}
+
+		.dialog-close {
+			font-size: var(--font-size-md);
+			position: absolute;
+			right: 0;
+			top: -0.25em;
+		}
 	}
 
-	.dialog-text {
+	& > hr {
+		border-color: var(--border-color-dim);
+		margin-inline: -2em;
+		margin-block: 1em;
+	}
+
+	.dialog-description {
 		color: var(--text-color-base-dim);
 	}
 
-	.dialog-menu {
+	.dialog-body {
+		padding-block: 1em;
+	}
+
+	.dialog-actions {
+		margin-top: 1em;
+		padding-top: 1em;
 		font-size: var(--font-size-sm);
 		align-self: stretch;
-		padding: 2.5rem;
-		padding-top: 1rem;
 		display: flex;
+		flex-direction: row-reverse;
+		justify-content: flex-start;
 		gap: var(--spacing-menu-gutter);
 		position: sticky;
 		bottom: 0;

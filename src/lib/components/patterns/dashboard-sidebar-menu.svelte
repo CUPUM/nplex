@@ -53,7 +53,7 @@
 			{@render legend()}
 		</svelte:element>
 	{/if}
-	<ul class="nest flex flex-col text-sm" style:--spacing-input-nest="0.25em">
+	<ul class="nest gap-menu-gutter flex flex-col text-sm" style="--spacing-input-nest: 0.25em">
 		{@render children()}
 	</ul>
 </menu>

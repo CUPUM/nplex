@@ -48,7 +48,7 @@
 				<section class="dialog-section">
 					<p class="dialog-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
 				</section>
-				<menu class="dialog-menu">
+				<menu class="dialog-actions">
 					<button class="button" data-danger {...instance.closeAttributes}>
 						Close <X />
 					</button>
