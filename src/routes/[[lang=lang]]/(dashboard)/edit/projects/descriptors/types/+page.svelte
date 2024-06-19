@@ -1,14 +1,16 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { extendSuperForm } from '$lib/crud/form/client';
-	import { superForm } from 'sveltekit-superforms';
+	import { extendedSuperForm } from '$lib/crud/form/client';
+	import ProjectTypeCreate from './project-type-create.svelte';
 	import ProjectType from './project-type.svelte';
 
 	let { data } = $props();
 
-	const projectTypesForm = extendSuperForm(superForm(data.projectTypesForm));
+	const projectTypesForm = extendedSuperForm(data.projectTypesForm, {
+		invalidateAll: true,
+	});
 
-	const { formId } = projectTypesForm;
+	const { formId, enhance } = projectTypesForm;
 </script>
 
 <section class="dashboard-section">
@@ -19,11 +21,11 @@
 			consequatur amet blanditiis sed alias. Eum, numquam magnam!
 		</p>
 	</div>
-	<form id={$formId} class="sr-only"></form>
+	<form id={$formId} class="sr-only" use:enhance method="POST"></form>
 	<ul class="px-card-padding gap-gutter flex flex-row flex-wrap">
-		<!-- <li>
-				<ProjectTypesNew data={data.newTypeForm} />
-			</li> -->
+		<li>
+			<ProjectTypeCreate data={data.projectTypeCreateForm} />
+		</li>
 		{#each data.projectTypeForms as projectTypeFormData, i (projectTypeFormData.id)}
 			<li>
 				<ProjectType {projectTypeFormData} {projectTypesForm} />

@@ -26,16 +26,10 @@
 		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors/types')}>
 			{m.project_types()}
 		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem
-			{...linkAttributes('/edit/projects/descriptors/interventions')}
-			aria-disabled
-		>
+		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors/interventions')}>
 			{m.project_intervention_types()}
 		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem
-			{...linkAttributes('/edit/projects/descriptors/indicators')}
-			aria-disabled
-		>
+		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors/indicators')}>
 			{m.project_indicators()}
 		</DashboardSidebarMenuItem>
 		<DashboardSidebarMenuItem

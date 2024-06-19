@@ -1,16 +1,7 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 </script>
 
 <article>
-	<h1 class="h5">Oops! {m.error_details()}</h1>
-
-	<code>
-		{#if $page.error?.message}
-			{$page.error.message}
-		{:else}
-			{m.error_no_message()}
-		{/if}
-	</code>
+	<h1>Oops! {m.error_details()}</h1>
 </article>

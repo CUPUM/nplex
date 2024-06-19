@@ -2,9 +2,11 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import DescriptorFormDialog from '$lib/components/patterns/descriptor-form-dialog.svelte';
+	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import TranslationsTabs from '$lib/components/patterns/translations-tabs.svelte';
-	import { extendSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
-	import { superForm } from 'sveltekit-superforms';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
+	import { extendedSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
+	import { Wrench, X } from 'lucide-svelte';
 	import type { PageData } from './$types';
 
 	let {
@@ -15,39 +17,68 @@
 		projectTypeFormData: PageData['projectTypeForms'][number];
 	} = $props();
 
-	const projectTypeForm = extendSuperForm(superForm(projectTypeFormData, { dataType: 'json' }));
+	const { formId: parentFormId, submitter: parentSubmitter } = projectTypesForm;
 
-	const { form, enhance } = projectTypeForm;
+	const projectTypeForm = extendedSuperForm(projectTypeFormData, {
+		dataType: 'json',
+		resetForm: false,
+	});
+
+	const { form, constraints } = projectTypeForm;
+
+	let deleteRef = $state<HTMLButtonElement>();
 </script>
 
-<DescriptorFormDialog {...projectTypeForm}>
-	{#snippet token(triggerAttributes)}
-		<button class="button rounded-full" type="button" {...triggerAttributes}>
+<DescriptorFormDialog form={projectTypeForm} action="?/update">
+	{#snippet root(triggerAttributes)}
+		<div class="button nest pr-input-nest rounded-full" use:ripple>
+			<button class="fill" type="button" {...triggerAttributes}></button>
+			<Wrench />
 			{$form.translations[$page.data.lang].title}
-		</button>
+			<button
+				class="button aspect-square rounded-full"
+				data-danger
+				use:ripple
+				form={$parentFormId}
+				value={$form.id}
+				name="delete"
+				formaction="?/delete"
+				bind:this={deleteRef}
+				onclick={(e) => {
+					if (!confirm(m.type_delete_confirm())) {
+						e.preventDefault();
+					}
+				}}
+			>
+				<IconSpinner icon={X} busy={$parentSubmitter === deleteRef} />
+			</button>
+		</div>
 	{/snippet}
 	{#snippet title()}
 		{m.project_type()}
 	{/snippet}
-	{#snippet body()}
-		<form
-			class="dialog-section gap-card-gutter flex flex-col"
-			use:enhance
-			method="POST"
-			id={$form.id}
-		>
-			<TranslationsTabs>
-				{#snippet children({ lang })}
-					<label class="field">
-						<span class="field-label">{m.title()}</span>
-						<input type="text" class="input" bind:value={$form.translations[lang].title} />
-					</label>
-					<label class="field">
-						<span class="field-label">{m.description()}</span>
-						<textarea class="input" bind:value={$form.translations[lang].description}></textarea>
-					</label>
-				{/snippet}
-			</TranslationsTabs>
-		</form>
+	{#snippet formBody()}
+		<TranslationsTabs>
+			{#snippet tab({ lang })}
+				<label class="field">
+					<span class="field-label">{m.title()}</span>
+					<input
+						type="text"
+						class="input"
+						{...$constraints.translations?.[lang]?.description}
+						bind:value={$form.translations[lang].title}
+					/>
+				</label>
+				<label class="field">
+					<span class="field-label">{m.description()}</span>
+					<textarea
+						class="input"
+						rows="5"
+						{...$constraints.translations?.[lang]?.description}
+						bind:value={$form.translations[lang].description}
+					></textarea>
+				</label>
+			{/snippet}
+		</TranslationsTabs>
 	{/snippet}
 </DescriptorFormDialog>
