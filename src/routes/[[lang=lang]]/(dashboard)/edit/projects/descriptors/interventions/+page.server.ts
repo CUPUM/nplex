@@ -1,204 +1,205 @@
-import * as m from '$i18n/messages';
+import { STATUS_CODES } from '$lib/common/constants';
 import { authorize } from '$lib/crud/authorization/rbac.server';
+import { aggTranslations, joinTranslations } from '$lib/crud/queries/i18n';
+import { getProjectTypesList } from '$lib/crud/queries/projects';
 import {
-	messageError,
-	messageInvalid,
-	messageNoRowsDeleted,
-	messageSuccess,
-} from '$lib/crud/validation/messages';
-import {
-	coalesce,
-	emptyJsonArray,
-	getColumns,
-	jsonAgg,
-	toExcluded,
-} from '$lib/db/custom-types.server';
+	projectInterventionCategoriesFormSchema,
+	projectInterventionCategoryCreateFormSchema,
+	projectInterventionCreateFormSchema,
+	projectInterventionsCategoriesWithTranslationsSchema,
+	projectInterventionsFormSchema,
+	projectInterventionsWithTranslationsSchema,
+} from '$lib/crud/validation/projects-descriptors';
 import { db } from '$lib/db/db.server';
-import { withTranslations } from '$lib/db/queries.server';
 import {
 	projectInterventions,
 	projectInterventionsCategories,
 	projectInterventionsCategoriesTranslations,
 	projectInterventionsTranslations,
-	projectTypes,
 	projectTypesToInterventions,
-	projectTypesTranslations,
 } from '$lib/db/schema/public.server';
-import {
-	newProjectInterventionCategorySchema,
-	newProjectInterventionSchema,
-	projectInterventionsCategoriesWithTranslationsSchema,
-	projectInterventionsWithTranslationsSchema,
-} from '$lib/db/validation.server';
-import { eq, notInArray } from 'drizzle-orm';
+import { error } from '@sveltejs/kit';
+import { and, eq, notInArray } from 'drizzle-orm';
+import { coalesce, getColumns } from 'drizzle-orm-helpers';
+import { $emptyJsonArray, jsonAgg, toExcluded } from 'drizzle-orm-helpers/pg';
+import { fail, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { superValidate } from 'sveltekit-superforms/server';
-import { z } from 'zod';
-
-const rootSchema = z.object({ id: z.string() });
 
 export const load = async (event) => {
 	authorize(event, 'projects.descriptors.interventions.update');
-	const pit = db
-		.select({
-			interventionId: projectInterventions.id,
-			projectTypeIds: coalesce(jsonAgg(projectTypesToInterventions.typeId), emptyJsonArray).as(
-				'types'
-			),
-		})
-		.from(projectInterventions)
-		.leftJoin(
-			projectTypesToInterventions,
-			eq(projectTypesToInterventions.interventionId, projectInterventions.id)
-		)
-		.groupBy(projectInterventions.id)
-		.as('pit');
-	const pi = withTranslations(projectInterventions, projectInterventionsTranslations, {
-		field: (t) => t.id,
-		reference: (tt) => tt.id,
-	}).as('pi');
-	const interventionsWithTypes = db
-		.select({ ...getColumns(pi), projectTypeIds: pit.projectTypeIds })
-		.from(pi)
-		.leftJoin(pit, eq(pit.interventionId, pi.id));
-	const categories = withTranslations(
-		projectInterventionsCategories,
-		projectInterventionsCategoriesTranslations,
-		{ field: (t) => t.id, reference: (tt) => tt.id }
-	);
-	const [types, rootForm, newCategoryForm, categoryForms, newInterventionForm, interventionForms] =
-		await Promise.all([
-			withTranslations(projectTypes, projectTypesTranslations, {
-				field: (t) => t.id,
-				reference: (tt) => tt.id,
-			}),
-			superValidate(zod(rootSchema)),
-			superValidate(zod(newProjectInterventionCategorySchema)),
-			Promise.all(
-				await categories.then((data) =>
-					data.map((defaults) =>
-						superValidate(zod(projectInterventionsCategoriesWithTranslationsSchema, { defaults }), {
-							id: defaults.id,
-						})
-					)
+	const [
+		projectInterventionsForm,
+		projectInterventionForms,
+		projectInterventionCategoryCreateForm,
+		projectInterventionsCategoriesForm,
+		projectInterventionAndCategoryForms,
+	] = await Promise.all([
+		superValidate(zod(projectInterventionsFormSchema), { id: 'interventions' }),
+		joinTranslations(
+			db
+				.select({
+					...aggTranslations(getColumns(projectInterventionsTranslations)),
+					...getColumns(projectInterventions),
+					typesIds: coalesce(jsonAgg(projectTypesToInterventions.typeId), $emptyJsonArray).as(
+						'types_ids'
+					),
+				})
+				.from(projectInterventions)
+				.groupBy(projectInterventions.id)
+				.leftJoin(
+					projectTypesToInterventions,
+					eq(projectTypesToInterventions.interventionId, projectInterventions.id)
 				)
-			),
-			superValidate(zod(newProjectInterventionSchema)),
+				.$dynamic(),
+			projectInterventionsTranslations,
+			eq(projectInterventions.id, projectInterventionsTranslations.id)
+		).then((d) =>
 			Promise.all(
-				await interventionsWithTypes.then((data) =>
-					data.map((defaults) =>
-						superValidate(zod(projectInterventionsWithTranslationsSchema, { defaults }), {
-							id: defaults.id,
-						})
-					)
+				d.map((intervention) =>
+					superValidate(intervention, zod(projectInterventionsWithTranslationsSchema), {
+						id: intervention.id,
+					})
 				)
-			),
-		]);
+			)
+		),
+		superValidate(zod(projectInterventionCategoryCreateFormSchema)),
+		superValidate(zod(projectInterventionCategoriesFormSchema), { id: 'categories' }),
+		joinTranslations(
+			db
+				.select({
+					...aggTranslations(getColumns(projectInterventionsCategoriesTranslations)),
+					...getColumns(projectInterventionsCategories),
+				})
+				.from(projectInterventionsCategories)
+				.groupBy(projectInterventionsCategories.id)
+				.$dynamic(),
+			projectInterventionsCategoriesTranslations,
+			eq(projectInterventionsCategories.id, projectInterventionsCategoriesTranslations.id)
+		).then((d) =>
+			Promise.all(
+				d.map((category) =>
+					Promise.all([
+						superValidate(category, zod(projectInterventionsCategoriesWithTranslationsSchema), {
+							id: category.id,
+						}),
+						superValidate({ categoryId: category.id }, zod(projectInterventionCreateFormSchema), {
+							id: `${category.id}-intervention`,
+						}),
+					])
+				)
+			)
+		),
+	]);
 	return {
-		types,
-		rootForm,
-		newCategoryForm,
-		categoryForms,
-		newInterventionForm,
-		interventionForms,
+		projectTypes: getProjectTypesList(event),
+		projectInterventionsForm,
+		projectInterventionForms,
+		projectInterventionCategoryCreateForm,
+		projectInterventionsCategoriesForm,
+		projectInterventionAndCategoryForms,
 	};
 };
 
 export const actions = {
 	createIntervention: async (event) => {
 		authorize(event, 'projects.descriptors.interventions.create');
-		const form = await superValidate(event, zod(newProjectInterventionSchema));
+		const form = await superValidate(event, zod(projectInterventionCreateFormSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_intervention());
+			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		try {
-			const { translations, projectTypesIds, ...pt } = form.data;
-			await db.transaction(async (tx) => {
-				const [{ id }] = await tx
-					.insert(projectInterventions)
-					.values(pt)
-					.returning({ id: projectInterventions.id });
+		const { translations, typesIds, ...intervention } = form.data;
+		await db.transaction(async (tx) => {
+			const [inserted] = await tx
+				.insert(projectInterventions)
+				.values(intervention)
+				.returning({ id: projectInterventions.id });
+			if (!inserted) {
+				throw tx.rollback();
+			}
+			await tx
+				.insert(projectInterventionsTranslations)
+				.values(Object.values(translations).map((tt) => ({ ...tt, ...inserted })));
+			if (typesIds.length) {
 				await tx
-					.insert(projectInterventionsTranslations)
-					.values(Object.values(translations).map((tt) => ({ ...tt, id })));
-			});
-		} catch (e) {
-			return messageError(form);
-		}
-		return messageSuccess(form);
+					.insert(projectTypesToInterventions)
+					.values(typesIds.map((typeId) => ({ interventionId: inserted.id, typeId })));
+			}
+		});
+		return { form };
 	},
 	updateIntervention: async (event) => {
 		authorize(event, 'projects.descriptors.interventions.update');
 		const form = await superValidate(event, zod(projectInterventionsWithTranslationsSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_intervention());
+			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		try {
-			const { translations, id, projectTypesIds, ...pt } = form.data;
-			await db.transaction(async (tx) => {
-				await Promise.all([
-					tx.update(projectInterventions).set(pt).where(eq(projectInterventions.id, id)),
-					tx
-						.insert(projectInterventionsTranslations)
-						.values(Object.values(translations).map((d) => ({ ...d, id })))
-						.onConflictDoUpdate({
-							target: [projectInterventionsTranslations.id, projectInterventionsTranslations.lang],
-							set: toExcluded(projectInterventionsTranslations),
-						}),
-					tx
-						.delete(projectTypesToInterventions)
-						.where(notInArray(projectTypesToInterventions.typeId, projectTypesIds)),
-					tx
-						.insert(projectTypesToInterventions)
-						.values(projectTypesIds.map((d) => ({ interventionId: id, typeId: d })))
-						.onConflictDoNothing(),
-				]);
-			});
-		} catch (e) {
-			return messageError(form);
-		}
-		return messageSuccess(form);
+		const { translations, id, typesIds, ...intervention } = form.data;
+		await db.transaction(async (tx) => {
+			Promise.all([
+				tx.update(projectInterventions).set(intervention).where(eq(projectInterventions.id, id)),
+				tx
+					.insert(projectInterventionsTranslations)
+					.values(Object.values(translations).map((d) => ({ ...d, id })))
+					.onConflictDoUpdate({
+						target: [projectInterventionsTranslations.id, projectInterventionsTranslations.lang],
+						set: toExcluded(getColumns(projectInterventionsTranslations)),
+					}),
+				tx
+					.delete(projectTypesToInterventions)
+					.where(
+						and(
+							eq(projectTypesToInterventions.interventionId, id),
+							typesIds.length ? notInArray(projectTypesToInterventions.typeId, typesIds) : undefined
+						)
+					),
+				...(typesIds.length
+					? [
+							tx
+								.insert(projectTypesToInterventions)
+								.values(typesIds.map((typeId) => ({ interventionId: id, typeId })))
+								.onConflictDoNothing(),
+						]
+					: []),
+			]);
+		});
+		return { form };
 	},
 	deleteIntervention: async (event) => {
 		authorize(event, 'projects.descriptors.interventions.delete');
-		const form = await superValidate(event, zod(rootSchema));
+		const form = await superValidate(event, zod(projectInterventionsFormSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_intervention());
+			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		try {
-			const deleted = await db
-				.delete(projectInterventions)
-				.where(eq(projectInterventions.id, form.data.id))
-				.returning();
-			if (!deleted.length) {
-				return messageNoRowsDeleted(form);
-			}
-		} catch (e) {
-			return messageError(form);
+		const [deleted] = await db
+			.delete(projectInterventions)
+			.where(eq(projectInterventions.id, form.data.delete))
+			.returning();
+		if (!deleted) {
+			error(STATUS_CODES.NOT_FOUND);
 		}
-		return messageSuccess(form);
+		return { form };
 	},
 	createCategory: async (event) => {
 		authorize(event, 'projects.descriptors.interventionCategories.create');
-		const form = await superValidate(event, zod(newProjectInterventionCategorySchema));
+		const form = await superValidate(event, zod(projectInterventionCategoryCreateFormSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_intervention());
+			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		try {
-			const { translations, ...category } = form.data;
-			await db.transaction(async (tx) => {
-				const [{ id }] = await tx
-					.insert(projectInterventionsCategories)
-					.values(category)
-					.returning({ id: projectInterventionsCategories.id });
-				await tx
-					.insert(projectInterventionsCategoriesTranslations)
-					.values(Object.values(translations).map((d) => ({ ...d, id })));
-			});
-		} catch (e) {
-			return messageError(form);
-		}
-		return messageSuccess(form);
+		const { translations, ...category } = form.data;
+		await db.transaction(async (tx) => {
+			const [inserted] = await tx
+				.insert(projectInterventionsCategories)
+				.values(category)
+				.returning({ id: projectInterventionsCategories.id });
+			if (!inserted) {
+				tx.rollback();
+				error(STATUS_CODES.INTERNAL_SERVER_ERROR);
+			}
+			await tx
+				.insert(projectInterventionsCategoriesTranslations)
+				.values(Object.values(translations).map((d) => ({ ...d, ...inserted })));
+		});
+		return { form };
 	},
 	updateCategory: async (event) => {
 		authorize(event, 'projects.descriptors.interventionCategories.update');
@@ -207,50 +208,42 @@ export const actions = {
 			zod(projectInterventionsCategoriesWithTranslationsSchema)
 		);
 		if (!form.valid) {
-			return messageInvalid(form, m.project_intervention());
+			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		try {
-			const { translations, id, ...pt } = form.data;
-			await db.transaction(async (tx) => {
-				await Promise.all([
-					tx
-						.update(projectInterventionsCategories)
-						.set(pt)
-						.where(eq(projectInterventionsCategories.id, id)),
-					tx
-						.insert(projectInterventionsCategoriesTranslations)
-						.values(Object.values(translations).map((d) => ({ ...d, id })))
-						.onConflictDoUpdate({
-							target: [
-								projectInterventionsCategoriesTranslations.id,
-								projectInterventionsCategoriesTranslations.lang,
-							],
-							set: toExcluded(projectInterventionsCategoriesTranslations),
-						}),
-				]);
-			});
-		} catch (e) {
-			return messageError(form);
-		}
-		return messageSuccess(form);
+		const { translations, id, ...category } = form.data;
+		await db.transaction(async (tx) => {
+			await Promise.all([
+				tx
+					.update(projectInterventionsCategories)
+					.set(category)
+					.where(eq(projectInterventionsCategories.id, id)),
+				tx
+					.insert(projectInterventionsCategoriesTranslations)
+					.values(Object.values(translations).map((d) => ({ ...d, id })))
+					.onConflictDoUpdate({
+						target: [
+							projectInterventionsCategoriesTranslations.id,
+							projectInterventionsCategoriesTranslations.lang,
+						],
+						set: toExcluded(getColumns(projectInterventionsCategoriesTranslations)),
+					}),
+			]);
+		});
+		return { form };
 	},
 	deleteCategory: async (event) => {
 		authorize(event, 'projects.descriptors.interventionCategories.delete');
-		const form = await superValidate(event, zod(rootSchema));
+		const form = await superValidate(event, zod(projectInterventionCategoriesFormSchema));
 		if (!form.valid) {
-			return messageInvalid(form, m.project_intervention());
+			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		try {
-			const deleted = await db
-				.delete(projectInterventionsCategories)
-				.where(eq(projectInterventionsCategories.id, form.data.id))
-				.returning();
-			if (!deleted.length) {
-				return messageNoRowsDeleted(form);
-			}
-		} catch (e) {
-			return messageError(form);
+		const [deleted] = await db
+			.delete(projectInterventionsCategories)
+			.where(eq(projectInterventionsCategories.id, form.data.delete))
+			.returning();
+		if (!deleted) {
+			error(STATUS_CODES.NOT_FOUND);
 		}
-		return messageSuccess(form);
+		return { form };
 	},
 };
