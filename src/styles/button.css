@@ -204,6 +204,7 @@
 	height: var(--spacing-input);
 	min-height: var(--spacing-input);
 	min-width: fit-content;
+	/* min-width: 0; */
 	border-radius: var(--button-radius);
 	white-space: nowrap;
 	text-overflow: ellipsis;

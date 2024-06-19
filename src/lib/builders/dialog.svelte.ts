@@ -62,12 +62,13 @@ export class Dialog {
 	close(e?: Event) {
 		const proceed = this.#beforeClose ? this.#beforeClose(e) : true;
 		if (!proceed) {
-			return;
+			return false;
 		}
 		this.#open = false;
 		if (this.#onClose) {
 			this.#onClose(e);
 		}
+		return true;
 	}
 
 	#unsetNode() {

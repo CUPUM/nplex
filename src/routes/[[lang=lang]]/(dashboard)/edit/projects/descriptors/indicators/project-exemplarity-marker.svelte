@@ -10,14 +10,16 @@
 	import type { PageData } from './$types';
 
 	let {
-		projectInterventionsForm,
+		projectExemplarityIndicatorsListForm,
 		projectInterventionFormData,
 	}: {
-		projectInterventionsForm: ExtendedSuperFormData<PageData['projectInterventionsForm']>;
-		projectInterventionFormData: PageData['projectInterventionForms'][number];
+		projectExemplarityIndicatorsListForm: ExtendedSuperFormData<
+			PageData['projectExemplarityIndicatorsListForm']
+		>;
+		projectInterventionFormData: PageData['projectExemplarityIndicatorForms'][number];
 	} = $props();
 
-	const { formId: parentFormId, submitter: parentSubmitter } = projectInterventionsForm;
+	const { formId: parentFormId, submitter: parentSubmitter } = projectExemplarityIndicatorsListForm;
 
 	const projectInterventionForm = extendedSuperForm(projectInterventionFormData, {
 		dataType: 'json',
@@ -29,7 +31,7 @@
 	let deleteRef = $state<HTMLButtonElement>();
 </script>
 
-<DescriptorFormDialog form={projectInterventionForm} action="?/updateIntervention">
+<DescriptorFormDialog form={projectInterventionForm} action="?/updateIndicator">
 	{#snippet root(triggerAttributes)}
 		<div class="button nest pr-input-nest rounded-full" use:ripple>
 			<button class="fill" type="button" {...triggerAttributes}></button>

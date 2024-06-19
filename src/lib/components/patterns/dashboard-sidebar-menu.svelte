@@ -33,7 +33,7 @@
 </script>
 
 <menu
-	class="p-popover-padding gap-menu-gutter bg-section rounded-section relative flex flex-col"
+	class="p-popover-padding gap-menu-gutter bg-card-dim rounded-section relative flex flex-col"
 	in:scale={{ start: 0.95, duration: 750, easing: expoOut }}
 >
 	{#if restProps['aria-current']}

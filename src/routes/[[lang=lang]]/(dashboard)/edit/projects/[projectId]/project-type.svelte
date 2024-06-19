@@ -14,7 +14,7 @@
 		{m.project_type()}
 	</legend>
 	<div class="dashboard-section-content">
-		<menu class="switch big self-center" use:ripple>
+		<menu class="switch self-center" use:ripple>
 			{#await types}
 				<div class="switch-item">
 					<Spinner />

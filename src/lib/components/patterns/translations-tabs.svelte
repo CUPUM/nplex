@@ -24,7 +24,7 @@
 </script>
 
 <div class="flex flex-col gap-[1em] self-stretch {className}" {...divProps}>
-	<menu class="switch switch-bordered self-center rounded-full">
+	<menu class="switch switch-bordered compact self-center rounded-full">
 		{#each availableLanguageTags as lang}
 			<button
 				class="switch-item gap-input-gutter flex flex-row"

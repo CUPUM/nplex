@@ -7,24 +7,25 @@
 	import { extendedSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
 	import { TriangleAlert, Wrench } from 'lucide-svelte';
 	import type { PageData } from './$types';
-	import ProjectInterventionCreate from './project-intervention-create.svelte';
-	import ProjectIntervention from './project-intervention.svelte';
+	import ProjectExemplarityMarkerCreate from './project-exemplarity-marker-create.svelte';
+	import ProjectExemplarityMarker from './project-exemplarity-marker.svelte';
 
 	let {
-		projectTypes,
 		data,
-		projectInterventionCategoriesForm,
+		projectExemplarityCategoriesListForm,
 		projectInterventionCreateForm,
-		projectInterventionForms,
-		projectInterventionsForm,
+		projectExemplarityIndicatorForms,
+		projectExemplarityIndicatorsListForm,
 	}: {
-		data: PageData['projectInterventionAndCategoryForms'][number][0];
-		projectInterventionCategoriesForm: ExtendedSuperFormData<
-			PageData['projectInterventionsCategoriesForm']
+		data: PageData['projectExemplarityIndicatorAndCategoryForms'][number][0];
+		projectExemplarityCategoriesListForm: ExtendedSuperFormData<
+			PageData['projectExemplarityCategoriesListForm']
 		>;
-		projectInterventionsForm: ExtendedSuperFormData<PageData['projectInterventionsForm']>;
-		projectInterventionCreateForm: PageData['projectInterventionAndCategoryForms'][number][1];
-	} & Pick<PageData, 'projectTypes' | 'projectInterventionForms'> = $props();
+		projectExemplarityIndicatorsListForm: ExtendedSuperFormData<
+			PageData['projectExemplarityIndicatorsListForm']
+		>;
+		projectInterventionCreateForm: PageData['projectExemplarityIndicatorAndCategoryForms'][number][1];
+	} & Pick<PageData, 'projectExemplarityIndicatorForms'> = $props();
 
 	const projectInterventionCategoryForm = extendedSuperForm(data, { dataType: 'json' });
 	const { form, constraints } = projectInterventionCategoryForm;
@@ -32,7 +33,7 @@
 		formId: parentFormId,
 		submitter: parentFormSubmitter,
 		form: parentForm,
-	} = projectInterventionCategoriesForm;
+	} = projectExemplarityCategoriesListForm;
 
 	let deleteRef = $state<HTMLButtonElement>();
 </script>
@@ -100,11 +101,14 @@
 		{/snippet}
 	</DescriptorFormDialog>
 	<ul class="gap-gutter px-card-padding flex flex-row flex-wrap">
-		{#each projectInterventionForms as projectInterventionFormData, i (projectInterventionFormData.id)}
+		{#each projectExemplarityIndicatorForms as projectInterventionFormData, i (projectInterventionFormData.id)}
 			<li>
-				<ProjectIntervention {projectInterventionFormData} {projectInterventionsForm} />
+				<ProjectExemplarityMarker
+					{projectInterventionFormData}
+					{projectExemplarityIndicatorsListForm}
+				/>
 			</li>
 		{/each}
-		<li><ProjectInterventionCreate data={projectInterventionCreateForm} {projectTypes} /></li>
+		<li><ProjectExemplarityMarkerCreate data={projectInterventionCreateForm} /></li>
 	</ul>
 </section>

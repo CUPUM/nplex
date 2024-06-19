@@ -246,12 +246,12 @@
 
 	--background-color-pure: white;
 	--background-color-base: lch(92% 2 140);
-	--background-color-card: lch(97% 4 130);
-	--background-color-section: lch(95% 3 135);
 	--background-color-popover: lch(99% 6 120);
 	--background-color-overlay: hsl(36, 12%, 6%, 90%);
-	--background-color-tooltip: var(--background-color-overlay);
 	--background-color-selection: var(--color-primary-dim);
+	--background-color-card-dim: lch(94.5% 2 134);
+	--background-color-card: lch(96% 2 132);
+	--background-color-card-accent: lch(98% 2 130);
 	--background-color-input-dim: color-mix(in srgb, var(--text-color-base) 6%, transparent);
 	--background-color-input: color-mix(in srgb, var(--text-color-base) 9%, transparent);
 	--background-color-input-accent: color-mix(in srgb, var(--text-color-base) 12%, transparent);
@@ -263,13 +263,11 @@
 	--background-color-input-success-accent: color-mix(in srgb, var(--color-success) 12%, transparent);
 
 	--text-color-pure: black;
+	--text-color-selection: var(--color-on-primary);
 	--text-color-base: lch(25% 8 92);
 	--text-color-base-dim: lch(55% 4 90);
 	--text-color-base-dimmer: lch(72% 4 90);
 	--text-color-base-accent: lch(5% 12 94);
-	--text-color-tooltip-dim: hsl(44, 8%, 50%);
-	--text-color-tooltip: hsl(44, 20%, 78%);
-	--text-color-tooltip-accent: hsl(44, 32%, 96%);
 	--text-color-input-dim: lch(36% 4.5 230);
 	--text-color-input: lch(18% 5 240);
 	--text-color-input-accent: lch(3% 5.5 250);
@@ -279,7 +277,6 @@
 	--text-color-input-success-dim: var(--color-success-dim);
 	--text-color-input-success: var(--color-success);
 	--text-color-input-success-accent: var(--color-success-accent);
-	--text-color-selection: var(--color-on-primary);
 
 	--outline-color: color-mix(in srgb, var(--color-primary-dim) 90%, transparent);
 	--outline-color-error: color-mix(in srgb, var(--color-error-dim) 90%, transparent);
@@ -337,15 +334,15 @@
 	--color-error-accent: hsl(6, 72%, 53%);
 
 	--background-color-pure: black;
-	--background-color-popover: hsl(62, 4%, 5%);
 	--background-color-base: hsl(61, 5%, 7%);
+	--background-color-popover: hsl(62, 4%, 5%);
+	--background-color-overlay: hsl(220, 16%, 3%, 86%);
+	--background-color-card-dim: hsl(62, 4%, 8%);
 	--background-color-card: hsl(60, 3%, 9%);
-	--background-color-section: hsl(58, 2%, 10%);
+	--background-color-card-accent: hsl(58, 2%, 10%);
 	--background-color-input-dim: color-mix(in srgb, var(--text-color-base) 6%, transparent);
 	--background-color-input: color-mix(in srgb, var(--text-color-base) 8%, transparent);
 	--background-color-input-accent: color-mix(in srgb, var(--text-color-base) 10%, transparent);
-	--background-color-overlay: hsl(220, 16%, 3%, 86%);
-	--background-color-tooltip: hsl(220, 12%, 10%, 96%);
 
 	--text-color-pure: white;
 	--text-color-base: hsl(45, 10%, 74%);

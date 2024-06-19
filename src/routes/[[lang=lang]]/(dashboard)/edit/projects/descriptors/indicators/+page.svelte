@@ -1,45 +1,56 @@
-<!-- <script lang="ts">
+<script lang="ts">
 	import * as m from '$i18n/messages';
-	import { superForm } from '$lib/crud/validation/forms/super-form';
-	import Category from './Category.svelte';
-	import NewCategory from './NewCategory.svelte';
+	import { extendedSuperForm } from '$lib/crud/form/client';
+	import ProjectExemplarityCategoryCreate from './project-exemplarity-category-create.svelte';
+	import ProjectExemplarityCategory from './project-exemplarity-category.svelte';
 
-	export let data;
+	let { data } = $props();
 
-	const {
-		enhance,
-		elements: {
-			submitter: { root: listSubmitter },
-		},
-	} = superForm(data.rootForm, {
-		resetForm: true,
-	});
+	const projectExemplarityCategoriesListForm = extendedSuperForm(
+		data.projectExemplarityCategoriesListForm,
+		{ invalidateAll: true }
+	);
+
+	const { enhance: categoriesEnhance, formId: categoriesFormId } =
+		projectExemplarityCategoriesListForm;
+
+	const projectExemplarityIndicatorsListForm = extendedSuperForm(
+		data.projectExemplarityIndicatorsListForm,
+		{
+			invalidateAll: true,
+		}
+	);
+
+	const { enhance: indicatorsEnhance, formId: indicatorsFormId } =
+		projectExemplarityIndicatorsListForm;
 </script>
 
-<form class="dashboard-section" use:enhance method="POST">
-	<header class="dashboard-section-header">
-		<hgroup class="prose">
-			<h2>
-				{m.project_exemplarity_indicators()} & {m.project_exemplarity_categories().toLowerCase()}
-			</h2>
-			<p class="dim">
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
-				consequatur amet blanditiis sed alias. Eum, numquam magnam!
-			</p>
-		</hgroup>
-	</header>
-	{#each data.categoryForms as categoryForm, i (categoryForm.id)}
-		<Category
-			{i}
-			data={categoryForm}
-			{listSubmitter}
-			newIndicatorForm={data.newIndicatorForm}
-			indicatorForms={data.indicatorForms.filter((f) => f.data.categoryId === categoryForm.data.id)}
-		/>
-	{/each}
-	<NewCategory data={data.newCategoryForm} />
-</form>
-
-<style>
-	@import '$styles/scoped/dashboard';
-</style> -->
+<header class="dashboard-section">
+	<h2 class="dashboard-section-title">
+		{m.project_intervention_categories()} & {m.project_intervention_types().toLocaleLowerCase()}
+	</h2>
+	<div class="dashboard-section-description">
+		<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
+			consequatur amet blanditiis sed alias. Eum, numquam magnam!
+		</p>
+	</div>
+</header>
+<form class="sr-only" id={$categoriesFormId} use:categoriesEnhance method="POST"></form>
+<form class="sr-only" id={$indicatorsFormId} use:indicatorsEnhance method="POST"></form>
+{#each data.projectExemplarityIndicatorAndCategoryForms as [categoryForm, projectInterventionCreateForm], i (categoryForm.id)}
+	<ProjectExemplarityCategory
+		{projectExemplarityIndicatorsListForm}
+		{projectExemplarityCategoriesListForm}
+		data={categoryForm}
+		projectExemplarityIndicatorForms={data.projectExemplarityIndicatorForms.filter(
+			(intervention) => intervention.data.categoryId === categoryForm.data.id
+		)}
+		{projectInterventionCreateForm}
+	/>
+{/each}
+<section
+	class="dashboard-section border-dim p-card-padding items-start border border-dashed bg-transparent"
+>
+	<ProjectExemplarityCategoryCreate data={data.projectExemplarityCategoryCreateForm} />
+</section>

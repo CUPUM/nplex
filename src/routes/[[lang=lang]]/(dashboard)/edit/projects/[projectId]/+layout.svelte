@@ -22,7 +22,7 @@
 </script>
 
 {#snippet header()}
-	<div class="bg-card rounded-section p-card-padding flex-1">
+	<div class="bg-card-accent rounded-section p-card-padding flex-1">
 		<hgroup>
 			<h1 class="heading xl">
 				{#if data.title}
@@ -96,23 +96,23 @@
 			{...linkAttributes(`/edit/projects/${data.id}/sharing`)}
 			aria-disabled="true"
 		>
-			{m.project_sharing()}
 			<UsersRound class="button-icon" />
+			{m.project_sharing()}
 		</DashboardSidebarMenuItem>
 		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/publishing`)}
 			aria-disabled="true"
 		>
-			{m.project_visibility()}
 			<Eye class="button-icon" />
+			{m.project_visibility()}
 		</DashboardSidebarMenuItem>
 		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/security`)}
 			data-danger
 			aria-disabled
 		>
-			{m.project_danger_zone()}
 			<AlertTriangle class="button-icon" />
+			{m.project_danger_zone()}
 		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
 	<DashboardSidebarMenu>
@@ -120,29 +120,29 @@
 			{m.my_documents()}
 		{/snippet}
 		<DashboardSidebarMenuItem class="button button-nav" {...linkAttributes('/edit/projects')}>
-			{m.projects()}
 			<Files class="button-icon" />
+			{m.projects()}
 		</DashboardSidebarMenuItem>
 		{#if authorize('projects.descriptors.update')}
 			<DashboardSidebarMenuItem
 				class="button button-nav"
 				{...linkAttributes('/edit/projects/descriptors')}
 			>
-				{m.project_descriptors()}
 				<Tags class="button-icon" />
+				{m.project_descriptors()}
 			</DashboardSidebarMenuItem>
 		{/if}
 		<DashboardSidebarMenuItem class="button button-nav" {...linkAttributes('/edit/organizations')}>
-			{m.organizations()}
 			<Files class="button-icon" />
+			{m.organizations()}
 		</DashboardSidebarMenuItem>
 		{#if authorize('organizations.descriptors.update')}
 			<DashboardSidebarMenuItem
 				class="button button-nav"
 				{...linkAttributes('/edit/organizations/descriptors')}
 			>
-				{m.organization_descriptors()}
 				<Tags class="button-icon" />
+				{m.organization_descriptors()}
 			</DashboardSidebarMenuItem>
 		{/if}
 	</DashboardSidebarMenu>

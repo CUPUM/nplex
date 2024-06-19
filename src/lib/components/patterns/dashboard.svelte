@@ -62,7 +62,7 @@
 			position: relative;
 			display: flex;
 			flex-direction: column;
-			background: var(--background-color-section);
+			background: var(--background-color-card);
 			font-size: var(--font-size-sm);
 			border-radius: var(--radius-section);
 			gap: var(--spacing-card-gutter);

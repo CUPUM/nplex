@@ -100,10 +100,11 @@ export const projectInterventionCategoryCreateFormSchema =
 
 export const projectInterventionCategoriesFormSchema = z.object({
 	delete: projectInterventionsCategoriesSchema.shape.id,
+	// confirm: z.literal(PROJECT_DESCRIPTOR_DELETE_CONFIRM),
 });
 
 /*
-Exemplarity indicators
+Exemplarity markers
 */
 
 export const projectExemplarityIndicatorsSchema = createInsertSchema(
@@ -124,8 +125,16 @@ export const projectExemplarityIndicatorsWithTranslationsSchema = withTranslatio
 	projectExemplarityIndicatorsTranslationsSchema.omit({ id: true })
 );
 
-export const newProjectExemplarityIndicatorSchema =
+export const projectExemplarityIndicatorCreateSchema =
 	projectExemplarityIndicatorsWithTranslationsSchema.omit({ id: true });
+
+export const projectExemplarityIndicatorsListSchema = z.object({
+	delete: projectExemplarityIndicatorsSchema.shape.id,
+});
+
+/*
+	Exemplarity categories
+	*/
 
 export const projectExemplarityCategoriesSchema = createInsertSchema(
 	projectExemplarityCategories
@@ -145,10 +154,14 @@ export const projectExemplarityCategoriesWithTranslationsSchema = withTranslatio
 	projectExemplarityCategoriesTranslationsSchema.omit({ id: true })
 );
 
-export const newProjectExemplarityCategorySchema =
+export const projectExemplarityCategoryCreateSchema =
 	projectExemplarityCategoriesWithTranslationsSchema.omit({
 		id: true,
 	});
+
+export const projectExemplarityCategoriesListSchema = z.object({
+	delete: projectExemplarityCategoriesSchema.shape.id,
+});
 
 /*
 	Site ownerships

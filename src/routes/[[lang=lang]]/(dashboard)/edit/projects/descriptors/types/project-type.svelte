@@ -36,7 +36,7 @@
 			<Wrench />
 			{$form.translations[$page.data.lang].title}
 			<button
-				class="button aspect-square rounded-full"
+				class="button button-ghost aspect-square rounded-full"
 				data-danger
 				use:ripple
 				form={$parentFormId}

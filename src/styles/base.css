@@ -3,6 +3,10 @@ button {
 	cursor: pointer;
 }
 
+a:is([aria-disabled='true'], [data-disabled='true']) {
+	pointer-events: none;
+}
+
 [type='search'] {
 	&::-webkit-search-cancel-button,
 	&::-webkit-search-decoration {
