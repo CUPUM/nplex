@@ -1,10 +1,10 @@
 import type { ToastParameters, Toasts } from '$lib/builders/toasts.svelte';
 import { readonly, writable } from 'svelte/store';
-import type {
-	Infer,
-	SuperForm,
-	SuperFormEvents,
-	SuperValidated,
+import {
+	superForm,
+	type Infer,
+	type SuperForm,
+	type SuperValidated,
 } from 'sveltekit-superforms/client';
 import { toasts as rootToasts } from '../../../routes/[[lang=lang]]/toasts-provider.svelte';
 
@@ -33,63 +33,48 @@ function isToastParameters(
  *
  * @todo Update to runes ONLY once superform updates to runes.
  */
-export function extendSuperForm<
+export function extendedSuperForm<
 	T extends Record<string, unknown> = Record<string, unknown>,
 	M = App.Superforms.Message,
->({ enhance, ...superForm }: SuperForm<T, M>, { toasts = rootToasts }: { toasts?: Toasts } = {}) {
+>(
+	form: Parameters<typeof superForm<T, M>>[0],
+	{
+		toasts = rootToasts,
+		onSubmit,
+		onResult,
+		...formOptions
+	}: Parameters<typeof superForm<T, M>>[1] & { toasts?: Toasts } = {}
+) {
 	let submitter = writable<HTMLElement | undefined>(undefined);
 	let action = writable<URL | null>(null);
 
+	const baseForm = superForm(form, {
+		...formOptions,
+		onSubmit(e) {
+			submitter.set(e.submitter ?? undefined);
+			action.set(e.action);
+			if (onSubmit) {
+				return onSubmit(e);
+			}
+		},
+		onResult(e) {
+			submitter.set(undefined);
+			action.set(null);
+			if (onResult) {
+				return onResult(e);
+			}
+		},
+	});
+
 	// Dispatch toast if message has shape.
-	superForm.message.subscribe((m) => {
+	baseForm.message.subscribe((m) => {
 		if (isToastParameters(m)) {
 			toasts.add(m);
 		}
 	});
 
-	function enhanceWithSubmitter(
-		node: HTMLFormElement,
-		events: SuperFormEvents<T, M> | undefined = {}
-	) {
-		// Tracking submitter before any superforms handling.
-		function handleSubmit(e: SubmitEvent) {
-			submitter.set(e.submitter ?? undefined);
-		}
-		node.addEventListener('submit', handleSubmit);
-
-		// Adding enhanced form events tracking.
-		const enhanced = enhance(node, {
-			...events,
-			async onSubmit(e) {
-				console.log(e);
-				submitter.set(e.submitter ?? undefined);
-				action.set(e.action);
-				if (events.onSubmit) {
-					return events.onSubmit(e);
-				}
-			},
-			async onResult(e) {
-				submitter.set(undefined);
-				action.set(null);
-				if (events.onResult) {
-					return events.onResult(e);
-				}
-			},
-		});
-
-		return {
-			destroy() {
-				node.removeEventListener('submit', handleSubmit);
-				submitter.set(undefined);
-				action.set(null);
-				return enhanced.destroy();
-			},
-		};
-	}
-
 	return {
-		...superForm,
-		enhance: enhanceWithSubmitter,
+		...baseForm,
 		submitter: readonly(submitter),
 		action: readonly(action),
 	};
@@ -98,7 +83,7 @@ export function extendSuperForm<
 export type ExtendedSuperForm<
 	T extends Record<string, unknown>,
 	M = App.Superforms.Message,
-> = ReturnType<typeof extendSuperForm<T, M>>;
+> = ReturnType<typeof extendedSuperForm<T, M>>;
 
 export type SuperFormData<T extends SuperValidated<Infer<Record<string, unknown>>>> =
 	T extends SuperValidated<infer U, infer M> ? SuperForm<U, M> : never;
