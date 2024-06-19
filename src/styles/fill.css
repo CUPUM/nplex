@@ -1,0 +1,5 @@
+.fill {
+	inset: 0;
+	position: absolute;
+	border-radius: inherit;
+}

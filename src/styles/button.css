@@ -290,8 +290,8 @@
 
 	/* Hover */
 
-	&:hover,
-	&:active {
+	&:is(:hover, :active),
+	.group\/button:is(:hover, :active) & {
 		color: var(--button-hover-color, var(--button-color));
 		text-decoration: var(--button-hover-text-decoration, var(--button-text-decoration));
 		text-decoration-color: var(--button-hover-text-decoration-color, var(--button-text-decoration-color));
@@ -318,9 +318,8 @@
 
 	/* Disabled */
 
-	&:disabled,
-	&[aria-disabled='true'],
-	&[data-disabled='true'] {
+	&:is(:disabled, [aria-disabled='true'], [data-disabled='true']),
+	.group\/button:is(:disabled, [aria-disabled='true'], [data-disabled='true']) & {
 		cursor: default;
 		opacity: var(--opacity-dim);
 		color: var(--button-disabled-color, var(--button-color));
