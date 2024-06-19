@@ -11,10 +11,11 @@
 
 .dialog {
 	--dialog-margin: var(--spacing-padding);
+	--dialog-padding: 2.25em;
 	margin: auto;
 	max-width: min(calc(100% - 2 * var(--dialog-margin)), var(--width-md));
 	max-height: calc(100% - 2 * var(--dialog-margin));
-	padding: 2em;
+	padding: var(--dialog-padding);
 	background: var(--background-color-popover);
 	border-radius: var(--radius-lg);
 	font-size: var(--font-size-sm);
@@ -22,6 +23,7 @@
 	border: var(--border-width-md) solid var(--border-color-dim);
 	overflow: auto;
 	color: var(--text-color-base);
+	box-shadow: var(--shadow-lg);
 
 	/* Backdrop is handled as pseudo element on :root to enable in-out transitions. */
 
@@ -30,7 +32,7 @@
 	}
 
 	&:has(.dialog-title:first-child) {
-		padding-top: 1.5em;
+		padding-top: calc(var(--dialog-padding) - 0.5em);
 	}
 
 	.dialog-title {
@@ -38,7 +40,7 @@
 		color: var(--text-color-base);
 		font-weight: var(--font-weight-semibold);
 		font-size: var(--font-size-lg);
-		margin-bottom: 1em;
+		margin-bottom: 1.25em;
 
 		.button {
 			position: relative;
@@ -51,7 +53,7 @@
 
 	& > hr {
 		border-color: var(--border-color-dim);
-		margin-inline: -2em;
+		margin-inline: calc(-1 * var(--dialog-padding));
 		margin-block: 1em;
 	}
 
