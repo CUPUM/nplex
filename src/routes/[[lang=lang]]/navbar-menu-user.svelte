@@ -2,6 +2,7 @@
 	import { applyAction, enhance } from '$app/forms';
 	import * as m from '$i18n/messages';
 	import { Dialog } from '$lib/builders/dialog.svelte';
+	import NavbarMenuItem from '$lib/components/patterns/navbar-menu-item.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { authorize } from '$lib/crud/authorization/rbac.svelte';
 	import { FilePlus, LogOut, Pencil, Tags, UserRound } from 'lucide-svelte';
@@ -28,23 +29,22 @@
 				{m.projects()}
 			</span>
 			<ul class="navbar-menu-group-items">
-				<a class="button button-nav" {...linkAttributes('/edit/projects')} {...menu.itemAttributes}>
+				<NavbarMenuItem {...linkAttributes('/edit/projects')} {...menu.itemAttributes}>
 					<Pencil class="button-icon" />
 					{m.nav_edit_projects()}
-				</a>
-				<a class="button button-nav" {...linkAttributes('/new/project')} {...menu.itemAttributes}>
+				</NavbarMenuItem>
+				<NavbarMenuItem {...linkAttributes('/new/project')} {...menu.itemAttributes}>
 					<FilePlus class="button-icon" />
 					{m.nav_new_project()}
-				</a>
+				</NavbarMenuItem>
 				{#if authorize('projects.descriptors.update')}
-					<a
-						class="button button-nav"
+					<NavbarMenuItem
 						{...linkAttributes('/edit/projects/descriptors')}
 						{...menu.itemAttributes}
 					>
 						<Tags class="button-icon" />
 						{m.nav_edit_project_descriptors()}
-					</a>
+					</NavbarMenuItem>
 				{/if}
 			</ul>
 		</menu>
@@ -57,30 +57,21 @@
 				{m.organizations()}
 			</span>
 			<ul class="navbar-menu-group-items">
-				<a
-					class="button button-nav"
-					{...linkAttributes('/edit/organizations')}
-					{...menu.itemAttributes}
-				>
+				<NavbarMenuItem {...linkAttributes('/edit/organizations')} {...menu.itemAttributes}>
 					<Pencil class="button-icon" />
 					{m.nav_edit_orgs()}
-				</a>
-				<a
-					class="button button-nav"
-					{...linkAttributes('/new/organization')}
-					{...menu.itemAttributes}
-				>
+				</NavbarMenuItem>
+				<NavbarMenuItem {...linkAttributes('/new/organization')} {...menu.itemAttributes}>
 					<FilePlus class="button-icon" />
 					{m.nav_new_org()}
-				</a>
-				<a
-					class="button button-nav"
+				</NavbarMenuItem>
+				<NavbarMenuItem
 					{...linkAttributes('/edit/organizations/descriptors')}
 					{...menu.itemAttributes}
 				>
 					<Tags class="button-icon" />
 					{m.nav_edit_orgs_descriptors()}
-				</a>
+				</NavbarMenuItem>
 			</ul>
 		</menu>
 		<menu
@@ -89,10 +80,10 @@
 			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 0 }}
 		>
 			<ul class="navbar-menu-group-items">
-				<a class="button button-nav" {...linkAttributes('/i')} {...menu.itemAttributes}>
+				<NavbarMenuItem {...linkAttributes('/i')} {...menu.itemAttributes}>
 					<UserRound class="button-icon" />
 					{m.account()}
-				</a>
+				</NavbarMenuItem>
 				<form
 					method="POST"
 					id="logout-form"
@@ -106,8 +97,7 @@
 						};
 					}}
 				></form>
-				<button
-					class="button button-nav"
+				<NavbarMenuItem
 					type="submit"
 					form="logout-form"
 					disabled={loggingOut}
@@ -115,7 +105,7 @@
 				>
 					<LogOut />
 					{m.logout()}
-				</button>
+				</NavbarMenuItem>
 			</ul>
 		</menu>
 	</dialog>

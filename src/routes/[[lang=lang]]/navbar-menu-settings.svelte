@@ -5,7 +5,7 @@
 	import { availableLanguageTags } from '$i18n/runtime';
 	import { Dialog } from '$lib/builders/dialog.svelte';
 	import { LOAD_DEPENDENCIES } from '$lib/common/constants';
-	import { ripple } from '$lib/components/primitives/ripple.svelte';
+	import NavbarMenuItem from '$lib/components/patterns/navbar-menu-item.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import { removeLang, withLang } from '$lib/i18n/location';
 	import { MODE_SETTINGS_ARR, MODE_SETTINGS_DETAILS } from '$lib/modes/constants';
@@ -34,19 +34,17 @@
 			</span>
 			<ul class="navbar-menu-group-items">
 				{#each availableLanguageTags as lang}
-					<a
-						use:ripple
+					<NavbarMenuItem
 						href={withLang(withoutLang, lang)}
 						hreflang={lang}
 						data-sveltekit-noscroll
 						data-sveltekit-replacestate
 						aria-checked={$page.data.lang === lang || undefined}
 						role="radio"
-						class="button button-nav justify-start"
 						onclick={() => invalidate(LOAD_DEPENDENCIES.LANG)}
 					>
 						{LANG_DETAILS[lang].name}
-					</a>
+					</NavbarMenuItem>
 				{/each}
 			</ul>
 		</menu>
@@ -60,9 +58,7 @@
 			</span>
 			<ul class="navbar-menu-group-items">
 				{#each MODE_SETTINGS_ARR as option}
-					<button
-						use:ripple
-						class="button button-nav justify-start"
+					<NavbarMenuItem
 						aria-checked={mode.setting === option || undefined}
 						role="radio"
 						onclick={() => {
@@ -71,7 +67,7 @@
 					>
 						<svelte:component this={MODE_SETTINGS_DETAILS[option].icon} />
 						{MODE_SETTINGS_DETAILS[option].title()}
-					</button>
+					</NavbarMenuItem>
 				{/each}
 			</ul>
 		</menu>
