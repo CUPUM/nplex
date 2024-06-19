@@ -258,5 +258,8 @@
 	"account_delete_permanently": "Delete my account permanently",
 	"account_delete_confirm": "Do you want to delete your account? All your data will be lost",
 	"project_image_set_banner": "Use as banner",
-	"close": "Close"
+	"close": "Close",
+	"no_error_message": "No error message",
+	"type_delete_confirm": "Do you really want to delete this type? All references to this descriptor will be permanently lost.",
+	"project_intervention_create": "Create an intervention type"
 }

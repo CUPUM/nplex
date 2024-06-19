@@ -261,5 +261,8 @@
 	"account_delete_permanently": "Supprimer mon compte définitivement",
 	"account_delete_confirm": "Désirez-vous fermer votre compte? Toutes vos données seront supprimées",
 	"project_image_set_banner": "Utiliser comme bannière",
-	"close": "Fermer"
+	"close": "Fermer",
+	"no_error_message": "Aucun message d'erreur",
+	"type_delete_confirm": "Voulez-vous réellement supprimer ce type? Tous les références à ce descripteur seront effacées définitivement.",
+	"project_intervention_create": "Créer un type d’intervention"
 }
