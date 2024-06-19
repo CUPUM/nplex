@@ -172,7 +172,7 @@
 		--button-checked-background: var(--background-color-input-dim);
 		--button-checked-background-inset: 0;
 		--button-current-color: var(--color-primary);
-		--button-current-background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+		--button-current-background: color-mix(in srgb, var(--color-primary) 7%, transparent);
 		--button-current-background-inset: 0;
 		&:is([data-danger]) {
 			--ripple-color: color-mix(in srgb, var(--color-error-dim) 25%, transparent);

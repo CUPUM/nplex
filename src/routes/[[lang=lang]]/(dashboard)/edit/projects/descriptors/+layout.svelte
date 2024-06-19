@@ -4,8 +4,9 @@
 	import DashboardSidebarMenu from '$lib/components/patterns/dashboard-sidebar-menu.svelte';
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
-	import { Files, Tags } from 'lucide-svelte';
 	import { onDestroy } from 'svelte';
+	import DashboardSidebarMenuOrganizations from '../../../dashboard-sidebar-menu-organizations.svelte';
+	import DashboardSidebarMenuProjects from '../../../dashboard-sidebar-menu-projects.svelte';
 
 	let { children, data } = $props();
 
@@ -57,28 +58,8 @@
 			{m.project_images()}
 		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
-	<DashboardSidebarMenu>
-		{#snippet legend()}
-			{m.projects()}
-		{/snippet}
-		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects')}>
-			<Files class="button-icon" />
-			{m.my_projects()}
-		</DashboardSidebarMenuItem>
-	</DashboardSidebarMenu>
-	<DashboardSidebarMenu>
-		{#snippet legend()}
-			{m.organizations()}
-		{/snippet}
-		<DashboardSidebarMenuItem {...linkAttributes('/edit/organizations')}>
-			<Files class="button-icon" />
-			{m.my_orgs()}
-		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem {...linkAttributes('/edit/organizations/descriptors')}>
-			<Tags class="button-icon" />
-			{m.organization_descriptors()}
-		</DashboardSidebarMenuItem>
-	</DashboardSidebarMenu>
+	<DashboardSidebarMenuProjects />
+	<DashboardSidebarMenuOrganizations />
 {/snippet}
 
 {@render children()}

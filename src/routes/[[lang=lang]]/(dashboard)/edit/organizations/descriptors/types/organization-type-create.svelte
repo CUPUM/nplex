@@ -10,19 +10,19 @@
 	let {
 		data,
 	}: {
-		data: PageData['projectTypeCreateForm'];
+		data: PageData['organizationTypeCreateForm'];
 	} = $props();
 
-	const projectTypeCreateForm = extendedSuperForm(data, {
+	const organizationTypeCreateForm = extendedSuperForm(data, {
 		dataType: 'json',
 		invalidateAll: true,
 		resetForm: true,
 	});
 
-	const { form, constraints } = projectTypeCreateForm;
+	const { form, constraints } = organizationTypeCreateForm;
 </script>
 
-<DescriptorFormDialog form={projectTypeCreateForm} action="?/create">
+<DescriptorFormDialog form={organizationTypeCreateForm} action="?/create">
 	{#snippet root(triggerAttributes)}
 		<button
 			class="button button-dashed rounded-full"
@@ -35,7 +35,7 @@
 		</button>
 	{/snippet}
 	{#snippet title()}
-		{m.project_type_create()}
+		{m.organization_type_create()}
 	{/snippet}
 	{#snippet formBody()}
 		<TranslationsTabs>

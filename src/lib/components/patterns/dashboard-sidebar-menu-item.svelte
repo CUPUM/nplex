@@ -16,14 +16,14 @@
 
 <svelte:element
 	this={href ? 'a' : 'button'}
-	class="button button-nav origin-right"
+	class="button button-nav h-[unset] origin-right whitespace-normal py-[calc(var(--spacing-input-padding)*0.5)]"
 	{href}
 	{...restProps}
 	use:ripple
 >
 	{#if restProps['aria-current']}
 		<div
-			class="w-outline-focus bg-primary -right-popover-padding absolute top-0 bottom-0 rounded-full"
+			class="w-outline-focus bg-primary -right-popover-padding absolute top-[.5em] bottom-[.5em] rounded-full"
 			in:dashboardSidebarMenuThumbCrossfade.receive|global={{ key: menuCtx.thumbKey }}
 			out:dashboardSidebarMenuThumbCrossfade.send={{ key: menuCtx.thumbKey }}
 		></div>

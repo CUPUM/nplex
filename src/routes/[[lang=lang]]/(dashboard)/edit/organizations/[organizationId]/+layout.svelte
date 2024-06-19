@@ -23,7 +23,7 @@
 </script>
 
 {#snippet header()}
-	<div class="bg-card-accent rounded-section p-card-padding flex-1">
+	<div class="bg-card-accent rounded-dashboard p-card-padding flex-1">
 		<hgroup>
 			<h1 class="heading xl">
 				{#if data.name}

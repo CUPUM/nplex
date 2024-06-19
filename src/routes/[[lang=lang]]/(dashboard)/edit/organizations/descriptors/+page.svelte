@@ -3,5 +3,5 @@
 </script>
 
 <h1 class="dashboard-section-title">
-	{m.project_descriptors()}
+	{m.organization_descriptors()}
 </h1>

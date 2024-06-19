@@ -16,7 +16,7 @@
 	</section>
 	<section>
 		<h2>
-			{m.my_orgs()}
+			{m.my_organizations()}
 		</h2>
 	</section>
 </aside>

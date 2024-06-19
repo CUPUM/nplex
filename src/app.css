@@ -134,7 +134,7 @@
 	--radius-full: calc(infinity * 1px);
 	--radius-inherit: inherit;
 	--radius-input: var(--radius-sm);
-	--radius-section: var(--radius-lg);
+	--radius-dashboard: var(--radius-lg);
 	--radius-card: var(--radius-sm);
 
 	/* Blurs */

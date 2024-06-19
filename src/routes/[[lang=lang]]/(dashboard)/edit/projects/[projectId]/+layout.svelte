@@ -23,7 +23,7 @@
 </script>
 
 {#snippet header()}
-	<div class="bg-card-accent rounded-section p-card-padding flex-1">
+	<div class="bg-card-accent rounded-dashboard p-card-padding flex-1">
 		<hgroup>
 			<h1 class="heading xl">
 				{#if data.title}
@@ -131,7 +131,7 @@
 			gap: var(--spacing-card-gutter);
 			font-size: var(--font-size-sm);
 			/* background: var(--background-color-base-dim); */
-			border-radius: var(--radius-section);
+			border-radius: var(--radius-dashboard);
 			padding: var(--spacing-card-padding);
 
 			.dashboard-section-title {

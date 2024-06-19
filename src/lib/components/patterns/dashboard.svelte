@@ -30,7 +30,7 @@
 >
 	{#if ctx.header}
 		<header
-			class="pb-gutter rounded-section relative flex flex-col"
+			class="pb-gutter rounded-dashboard relative flex flex-col"
 			style:grid-column="header"
 			transition:slide={{ axis: 'y', duration: 350, easing: expoOut }}
 		>
@@ -64,12 +64,25 @@
 			flex-direction: column;
 			background: var(--background-color-card);
 			font-size: var(--font-size-sm);
-			border-radius: var(--radius-section);
+			border-radius: var(--radius-dashboard);
 			gap: var(--spacing-card-gutter);
 			padding-block: var(--spacing-card-padding);
 
 			&:has(.dashboard-section-title:first-child) {
 				padding-top: calc(0.75 * var(--spacing-card-padding));
+			}
+		}
+
+		.dashboard-header {
+			position: relative;
+			border-radius: var(--radius-dashboard);
+			background: var(--background-color-card-dim);
+			padding: var(--spacing-card-padding);
+			font-size: var(--font-size-sm);
+
+			.dashboard-section-title {
+				padding: 0;
+				font-size: var(--font-size-xl);
 			}
 		}
 

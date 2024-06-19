@@ -745,6 +745,7 @@ export const organizationTypes = pgTable('organization_types', {
 		.notNull()
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
+	index: integer('index'),
 });
 
 export const organizationTypesTranslations = pgTable(
@@ -775,6 +776,7 @@ export const organizationExpertises = pgTable('organization_expertises', {
 		.notNull()
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
+	index: integer('index'),
 });
 
 export const organizationExpertisesTranslations = pgTable(
@@ -797,14 +799,12 @@ export const organizationExpertisesTranslations = pgTable(
 	}
 );
 
-/**
- * USER_ROLES organizations can assume in the context of projects.
- */
 export const organizationDuties = pgTable('organization_duties', {
 	id: text('id')
 		.notNull()
 		.default(nanoid({ size: 6 }))
 		.primaryKey(),
+	index: integer('index'),
 });
 
 export const organizationDutiesTranslations = pgTable(

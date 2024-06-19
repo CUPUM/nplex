@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import DashboardSidebarMenuItem from '$lib/components/patterns/dashboard-sidebar-menu-item.svelte';
-	import DashboardSidebarMenu from '$lib/components/patterns/dashboard-sidebar-menu.svelte';
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
-	import { authorize } from '$lib/crud/authorization/rbac.svelte';
-	import { FilePlus, Files, Search, Tags, X } from 'lucide-svelte';
+	import { FilePlus, Search, X } from 'lucide-svelte';
 	import { onDestroy } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
+	import DashboardSidebarMenuOrganizations from '../../dashboard-sidebar-menu-organizations.svelte';
+	import DashboardSidebarMenuProjects from '../../dashboard-sidebar-menu-projects.svelte';
 
 	let { data } = $props();
 
@@ -34,31 +33,8 @@
 </script>
 
 {#snippet sidebar()}
-	<DashboardSidebarMenu>
-		{#snippet legend()}
-			{m.my_documents()}
-		{/snippet}
-		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects')}>
-			<Files class="button-icon" />
-			{m.projects()}
-		</DashboardSidebarMenuItem>
-		{#if authorize('projects.descriptors.update')}
-			<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors')}>
-				<Tags class="button-icon" />
-				{m.project_descriptors()}
-			</DashboardSidebarMenuItem>
-		{/if}
-		<DashboardSidebarMenuItem {...linkAttributes('/edit/organizations')}>
-			<Files class="button-icon" />
-			{m.organizations()}
-		</DashboardSidebarMenuItem>
-		{#if authorize('organizations.descriptors.update')}
-			<DashboardSidebarMenuItem {...linkAttributes('/edit/organizations/descriptors')}>
-				<Tags class="button-icon" />
-				{m.organization_descriptors()}
-			</DashboardSidebarMenuItem>
-		{/if}
-	</DashboardSidebarMenu>
+	<DashboardSidebarMenuProjects />
+	<DashboardSidebarMenuOrganizations />
 {/snippet}
 
 <article>

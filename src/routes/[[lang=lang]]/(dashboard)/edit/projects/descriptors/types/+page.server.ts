@@ -72,14 +72,13 @@ export const actions = {
 	update: async (event) => {
 		authorize(event, 'projects.descriptors.types.update');
 		const form = await superValidate(event, zod(projectTypesWithTranslationsSchema));
-		console.log(form.id);
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST);
 		}
 		await db.transaction(async (tx) => {
-			const { translations, id, ...pt } = form.data;
+			const { translations, id, ...type } = form.data;
 			Promise.all([
-				tx.update(projectTypes).set(pt).where(eq(projectTypes.id, id)),
+				tx.update(projectTypes).set(type).where(eq(projectTypes.id, id)),
 				tx
 					.insert(projectTypesTranslations)
 					.values(Object.values(translations).map((d) => ({ ...d, id })))

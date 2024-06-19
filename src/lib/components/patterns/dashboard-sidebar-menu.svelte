@@ -33,7 +33,7 @@
 </script>
 
 <menu
-	class="p-popover-padding gap-menu-gutter bg-card-dim rounded-section relative flex flex-col"
+	class="p-popover-padding gap-menu-gutter bg-card-dim rounded-dashboard relative flex flex-col"
 	in:scale={{ start: 0.95, duration: 750, easing: expoOut }}
 >
 	{#if restProps['aria-current']}
@@ -53,7 +53,7 @@
 			{@render legend()}
 		</svelte:element>
 	{/if}
-	<ul class="nest gap-menu-gutter flex flex-col text-sm" style="--spacing-input-nest: 0.25em">
+	<ul class="nest flex flex-col text-sm" style="--spacing-input-nest: 0.25em">
 		{@render children()}
 	</ul>
 </menu>
