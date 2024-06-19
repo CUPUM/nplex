@@ -6,24 +6,29 @@
 	import { Check, X } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import { expoOut } from 'svelte/easing';
+	import type { HTMLFormAttributes } from 'svelte/elements';
 	import { scale } from 'svelte/transition';
 	import IconSpinner from './icon-spinner.svelte';
 
 	let {
-		token,
+		root,
 		title,
 		description,
+		formBody,
 		body,
-		tainted,
-		isTainted,
 		form,
-		submitter,
-	}: ExtendedSuperForm<T> & {
-		token: Snippet<[InstanceType<typeof DialogForm>['triggerAttributes']]>;
+		method = 'POST',
+		...formAttributes
+	}: Pick<HTMLFormAttributes, 'action' | 'method'> & {
+		form: ExtendedSuperForm<T>;
+		root: Snippet<[InstanceType<typeof DialogForm>['triggerAttributes']]>;
 		title?: Snippet;
 		description?: Snippet;
-		body: Snippet;
+		formBody: Snippet;
+		body?: Snippet<[Dialog]>;
 	} = $props();
+
+	const { isTainted, enhance, tainted, reset, formId, submitter } = form;
 
 	let submitRef = $state<HTMLButtonElement>();
 
@@ -34,10 +39,15 @@
 			}
 			return true;
 		},
+		onClose(e) {
+			if (isTainted()) {
+				reset();
+			}
+		},
 	});
 </script>
 
-{@render token(dialog.triggerAttributes)}
+{@render root(dialog.triggerAttributes)}
 {#if dialog.open}
 	<dialog
 		class="dialog min-w-sm"
@@ -48,21 +58,50 @@
 		{#if title}
 			<header class="dialog-title">
 				{@render title()}
-				<button class="button button-ghost dialog-close compact aspect-square rounded-full">
+				<button
+					tabindex="0"
+					class="button button-ghost dialog-close compact aspect-square rounded-full"
+					{...dialog.closeAttributes}
+					data-danger={isTainted($tainted) || undefined}
+				>
 					<X />
 				</button>
 			</header>
 			<hr />
 		{/if}
-		<div class="dialog-body">
-			{@render body()}
-		</div>
+		<form
+			id={$formId}
+			{...formAttributes}
+			use:enhance
+			{method}
+			class="dialog-body gap-card-gutter flex flex-col"
+		>
+			{@render formBody()}
+		</form>
+		{#if body}
+			<hr />
+			<section class="dialog-body">
+				{@render body(dialog)}
+			</section>
+		{/if}
 		<hr />
 		<menu class="dialog-actions">
-			<button bind:this={submitRef} class="button button-cta" disabled={!isTainted($tainted)}>
+			<button
+				bind:this={submitRef}
+				class="button button-cta"
+				disabled={!isTainted($tainted)}
+				form={$formId}
+				type="submit"
+			>
 				<IconSpinner icon={Check} busy={submitRef === $submitter} />{m.save()}
 			</button>
-			<button class="button button-ghost" {...dialog.closeAttributes}><X />{m.close()}</button>
+			<button
+				class="button button-ghost"
+				{...dialog.closeAttributes}
+				data-danger={isTainted($tainted) || undefined}
+			>
+				<X />{m.close()}
+			</button>
 		</menu>
 	</dialog>
 {/if}

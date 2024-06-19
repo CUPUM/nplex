@@ -10,11 +10,11 @@
 	import { get } from 'svelte/store';
 
 	let {
-		children,
+		tab,
 		class: className,
 		...divProps
 	}: {
-		children: Snippet<
+		tab: Snippet<
 			[{ lang: AvailableLanguageTag; current?: AvailableLanguageTag; isCurrent: boolean }]
 		>;
 	} & Omit<HTMLAttributes<HTMLDivElement>, 'children'> = $props();
@@ -46,7 +46,7 @@
 	</menu>
 	{#each availableLanguageTags as lang}
 		<fieldset class="translation-tab" {...tabs.contentAttributes(lang)} hidden={false} {lang}>
-			{@render children({ lang, current: tabs.current, isCurrent: tabs.current === lang })}
+			{@render tab({ lang, current: tabs.current, isCurrent: tabs.current === lang })}
 		</fieldset>
 	{/each}
 </div>
@@ -57,7 +57,7 @@
 		gap: 1em;
 		display: flex;
 		flex-direction: column;
-		transition: all var(--transition-duration-medium) var(--transition-timing-function-out);
+		transition: all var(--transition-duration-slow) var(--transition-timing-function-out);
 	}
 
 	.translation-tab[aria-expanded='false'] {

@@ -1,7 +1,10 @@
+import { KEYS } from '$lib/common/constants';
+
 export class Dialog {
 	modal = $state(true);
 	closeOnClickoutside = $state(true);
 	#beforeClose;
+	#onClose;
 	#open = $state(false);
 	#pointerInside = $state(false);
 	#node = $state<HTMLDialogElement>();
@@ -11,16 +14,19 @@ export class Dialog {
 		modal,
 		closeOnClickoutside,
 		beforeClose,
+		onClose,
 	}: {
 		open?: boolean;
 		modal?: boolean;
 		closeOnClickoutside?: boolean;
 		beforeClose?: (e?: Event) => boolean;
+		onClose?: (e?: Event) => void;
 	} = {}) {
 		if (open != null) this.open = open;
 		if (modal != null) this.modal = modal;
 		if (closeOnClickoutside != null) this.closeOnClickoutside = closeOnClickoutside;
 		this.#beforeClose = beforeClose;
+		this.#onClose = onClose;
 		this.close.bind(this);
 		this.#setPointerInside.bind(this);
 
@@ -59,6 +65,9 @@ export class Dialog {
 			return;
 		}
 		this.#open = false;
+		if (this.#onClose) {
+			this.#onClose(e);
+		}
 	}
 
 	#unsetNode() {
@@ -116,6 +125,11 @@ export class Dialog {
 					_this.close(e);
 				}
 			},
+			onkeydown(e: KeyboardEvent) {
+				if (e.key === KEYS.ENTER) {
+					e.preventDefault();
+				}
+			},
 		};
 	}
 
@@ -143,8 +157,6 @@ export class Dialog {
 	get closeAttributes() {
 		const _this = this;
 		return {
-			autofocus: true,
-			tabindex: -1,
 			onclick(e: MouseEvent) {
 				if (!e.defaultPrevented) {
 					_this.close(e);

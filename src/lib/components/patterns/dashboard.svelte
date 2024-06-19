@@ -107,9 +107,10 @@
 		}
 
 		.dashboard-section-menu {
+			font-size: var(--font-size-sm);
 			align-self: center;
 			position: sticky;
-			bottom: var(--spacing-gutter);
+			bottom: var(--spacing-card-padding);
 			margin-inline: var(--spacing-card-padding);
 		}
 	}
