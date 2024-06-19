@@ -22,11 +22,11 @@
 	action="?/update"
 	method="POST"
 	class="gap-inherit flex flex-col"
-	id="exemplarity-indicators"
+	id="exemplarity-markers"
 >
 	<header class="project-dashboard-section-header">
 		<h2 class="dashboard-section-title">
-			{m.project_exemplarity_indicators()}
+			{m.project_exemplarity_markers()}
 		</h2>
 		<p class="text-base-dim">
 			Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt nam facilis ipsum pariatur
@@ -36,18 +36,18 @@
 			dignissimos omnis rem.
 		</p>
 	</header>
-	{#await data.indicatorsByCategories}
+	{#await data.markersByCategories}
 		...
-	{:then awaitedIndicatorsByCategories}
-		{#each awaitedIndicatorsByCategories as category, i (category.id)}
+	{:then awaitedMarkersByCategories}
+		{#each awaitedMarkersByCategories as category, i (category.id)}
 			<section class="dashboard-section">
 				<legend class="dashboard-section-title">
 					{category.title}
 				</legend>
 				<div class="dashboard-section-content">
 					<ul class="gap-input-gutter flex flex-row flex-wrap items-start justify-start">
-						{#if category.indicators}
-							{#each category.indicators as indicator}
+						{#if category.markers}
+							{#each category.markers as marker}
 								<label
 									class="has-checked:bg-primary has-checked:text-on-primary user-select-none active:animate-press bg-input px-input-padding h-input gap-input-gutter text-overflow-ellipsis relative flex cursor-pointer flex-row items-center whitespace-nowrap rounded-full font-semibold"
 									use:ripple
@@ -55,11 +55,11 @@
 									<input
 										type="checkbox"
 										class="sr-only"
-										bind:group={$form.indicatorsIds}
-										value={indicator.id}
+										bind:group={$form.markersIds}
+										value={marker.id}
 									/>
 									<span class="chip-label">
-										{indicator.title}
+										{marker.title}
 									</span>
 								</label>
 							{/each}

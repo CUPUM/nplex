@@ -3,8 +3,8 @@ import {
 	projectBuildingLevelTypesTranslations,
 	projectExemplarityCategories,
 	projectExemplarityCategoriesTranslations,
-	projectExemplarityIndicators,
-	projectExemplarityIndicatorsTranslations,
+	projectExemplarityMarkers,
+	projectExemplarityMarkersTranslations,
 	projectImageTypes,
 	projectImageTypesTranslations,
 	projectImplantationTypes,
@@ -107,12 +107,12 @@ export const projectInterventionCategoriesFormSchema = z.object({
 Exemplarity markers
 */
 
-export const projectExemplarityIndicatorsSchema = createInsertSchema(
-	projectExemplarityIndicators
+export const projectExemplarityMarkersSchema = createInsertSchema(
+	projectExemplarityMarkers
 ).required({ id: true });
 
-export const projectExemplarityIndicatorsTranslationsSchema = createInsertSchema(
-	projectExemplarityIndicatorsTranslations,
+export const projectExemplarityMarkersTranslationsSchema = createInsertSchema(
+	projectExemplarityMarkersTranslations,
 	{
 		...LANG_COLUMN_SCHEMA,
 		title: (s) => s.title.trim(),
@@ -120,16 +120,16 @@ export const projectExemplarityIndicatorsTranslationsSchema = createInsertSchema
 	}
 );
 
-export const projectExemplarityIndicatorsWithTranslationsSchema = withTranslationsSchema(
-	projectExemplarityIndicatorsSchema,
-	projectExemplarityIndicatorsTranslationsSchema.omit({ id: true })
+export const projectExemplarityMarkersWithTranslationsSchema = withTranslationsSchema(
+	projectExemplarityMarkersSchema,
+	projectExemplarityMarkersTranslationsSchema.omit({ id: true })
 );
 
-export const projectExemplarityIndicatorCreateSchema =
-	projectExemplarityIndicatorsWithTranslationsSchema.omit({ id: true });
+export const projectExemplarityMarkerCreateSchema =
+	projectExemplarityMarkersWithTranslationsSchema.omit({ id: true });
 
-export const projectExemplarityIndicatorsListSchema = z.object({
-	delete: projectExemplarityIndicatorsSchema.shape.id,
+export const projectExemplarityMarkersListSchema = z.object({
+	delete: projectExemplarityMarkersSchema.shape.id,
 });
 
 /*

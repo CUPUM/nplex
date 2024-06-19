@@ -14,18 +14,18 @@
 		data,
 		projectExemplarityCategoriesListForm,
 		projectInterventionCreateForm,
-		projectExemplarityIndicatorForms,
-		projectExemplarityIndicatorsListForm,
+		projectExemplarityMarkerForms,
+		projectExemplarityMarkersListForm,
 	}: {
-		data: PageData['projectExemplarityIndicatorAndCategoryForms'][number][0];
+		data: PageData['projectExemplarityMarkerAndCategoryForms'][number][0];
 		projectExemplarityCategoriesListForm: ExtendedSuperFormData<
 			PageData['projectExemplarityCategoriesListForm']
 		>;
-		projectExemplarityIndicatorsListForm: ExtendedSuperFormData<
-			PageData['projectExemplarityIndicatorsListForm']
+		projectExemplarityMarkersListForm: ExtendedSuperFormData<
+			PageData['projectExemplarityMarkersListForm']
 		>;
-		projectInterventionCreateForm: PageData['projectExemplarityIndicatorAndCategoryForms'][number][1];
-	} & Pick<PageData, 'projectExemplarityIndicatorForms'> = $props();
+		projectInterventionCreateForm: PageData['projectExemplarityMarkerAndCategoryForms'][number][1];
+	} & Pick<PageData, 'projectExemplarityMarkerForms'> = $props();
 
 	const projectInterventionCategoryForm = extendedSuperForm(data, { dataType: 'json' });
 	const { form, constraints } = projectInterventionCategoryForm;
@@ -101,11 +101,11 @@
 		{/snippet}
 	</DescriptorFormDialog>
 	<ul class="gap-gutter px-card-padding flex flex-row flex-wrap">
-		{#each projectExemplarityIndicatorForms as projectInterventionFormData, i (projectInterventionFormData.id)}
+		{#each projectExemplarityMarkerForms as projectInterventionFormData, i (projectInterventionFormData.id)}
 			<li>
 				<ProjectExemplarityMarker
 					{projectInterventionFormData}
-					{projectExemplarityIndicatorsListForm}
+					{projectExemplarityMarkersListForm}
 				/>
 			</li>
 		{/each}

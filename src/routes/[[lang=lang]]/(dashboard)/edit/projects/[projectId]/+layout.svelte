@@ -57,7 +57,7 @@
 			{m.project_place()}
 		</DashboardSidebarMenuItem>
 		<DashboardSidebarMenuItem
-			{...linkAttributes(`/edit/projects/${data.id}/exemplarity#exemplarity-indicators`)}
+			{...linkAttributes(`/edit/projects/${data.id}/exemplarity#exemplarity-markers`)}
 		>
 			{m.project_examplarity()}
 		</DashboardSidebarMenuItem>

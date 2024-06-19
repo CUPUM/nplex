@@ -14,15 +14,14 @@
 	const { enhance: categoriesEnhance, formId: categoriesFormId } =
 		projectExemplarityCategoriesListForm;
 
-	const projectExemplarityIndicatorsListForm = extendedSuperForm(
-		data.projectExemplarityIndicatorsListForm,
+	const projectExemplarityMarkersListForm = extendedSuperForm(
+		data.projectExemplarityMarkersListForm,
 		{
 			invalidateAll: true,
 		}
 	);
 
-	const { enhance: indicatorsEnhance, formId: indicatorsFormId } =
-		projectExemplarityIndicatorsListForm;
+	const { enhance: markersEnhance, formId: markersFormId } = projectExemplarityMarkersListForm;
 </script>
 
 <header class="dashboard-section">
@@ -37,13 +36,13 @@
 	</div>
 </header>
 <form class="sr-only" id={$categoriesFormId} use:categoriesEnhance method="POST"></form>
-<form class="sr-only" id={$indicatorsFormId} use:indicatorsEnhance method="POST"></form>
-{#each data.projectExemplarityIndicatorAndCategoryForms as [categoryForm, projectInterventionCreateForm], i (categoryForm.id)}
+<form class="sr-only" id={$markersFormId} use:markersEnhance method="POST"></form>
+{#each data.projectExemplarityMarkerAndCategoryForms as [categoryForm, projectInterventionCreateForm], i (categoryForm.id)}
 	<ProjectExemplarityCategory
-		{projectExemplarityIndicatorsListForm}
+		{projectExemplarityMarkersListForm}
 		{projectExemplarityCategoriesListForm}
 		data={categoryForm}
-		projectExemplarityIndicatorForms={data.projectExemplarityIndicatorForms.filter(
+		projectExemplarityMarkerForms={data.projectExemplarityMarkerForms.filter(
 			(intervention) => intervention.data.categoryId === categoryForm.data.id
 		)}
 		{projectInterventionCreateForm}

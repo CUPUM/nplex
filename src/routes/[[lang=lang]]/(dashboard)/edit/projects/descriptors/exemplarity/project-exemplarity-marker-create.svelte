@@ -10,7 +10,7 @@
 	let {
 		data,
 	}: {
-		data: PageData['projectExemplarityIndicatorAndCategoryForms'][number][1];
+		data: PageData['projectExemplarityMarkerAndCategoryForms'][number][1];
 	} = $props();
 
 	const projectInterventionCreateForm = extendedSuperForm(data, {

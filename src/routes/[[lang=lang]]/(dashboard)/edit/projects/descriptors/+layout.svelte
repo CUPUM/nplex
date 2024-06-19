@@ -29,8 +29,8 @@
 		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors/interventions')}>
 			{m.project_intervention_types()}
 		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors/indicators')}>
-			{m.project_indicators()}
+		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors/exemplarity')}>
+			{m.project_markers()}
 		</DashboardSidebarMenuItem>
 		<DashboardSidebarMenuItem
 			{...linkAttributes('/edit/projects/descriptors/ownerships')}

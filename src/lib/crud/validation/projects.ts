@@ -5,7 +5,7 @@ import {
 import {
 	projects,
 	projectsBuildingLevels,
-	projectsExemplarityIndicators,
+	projectsExemplarityMarkers,
 	projectsImagesColumnsWithoutVectors,
 	projectsInterventions,
 	projectsTranslations,
@@ -63,9 +63,7 @@ export const projectsBuildingLevelsSchema = createInsertSchema(projectsBuildingL
 		s.height.min(PROJECT_BUILDING_LEVELS_HEIGHT_MIN).max(PROJECT_BUILDING_LEVELS_HEIGHT_MAX),
 });
 
-export const projectsExemplarityIndicatorsSchema = createInsertSchema(
-	projectsExemplarityIndicators
-);
+export const projectsExemplarityMarkersSchema = createInsertSchema(projectsExemplarityMarkers);
 
 /**
  * Placeholder table to temporarily fix peer error when using drizzle-zod with pg_vector columns.
@@ -106,8 +104,8 @@ export const projectGeneralFormSchema = projectsWithTranslationsSchema
 		interventionIds: projectsInterventionsSchema.shape.interventionId.array(),
 	});
 
-export const projectExemplarityIndicatorsFormSchema = z.object({
-	indicatorsIds: projectsExemplarityIndicatorsSchema.shape.exemplarityIndicatorId.array(),
+export const projectExemplarityMarkersFormSchema = z.object({
+	markersIds: projectsExemplarityMarkersSchema.shape.exemplarityMarkerId.array(),
 });
 
 export const projectGalleryFormSchema = projectsSchema.pick({ bannerId: true });

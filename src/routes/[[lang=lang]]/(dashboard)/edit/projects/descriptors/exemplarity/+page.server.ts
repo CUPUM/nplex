@@ -5,16 +5,16 @@ import {
 	projectExemplarityCategoriesListSchema,
 	projectExemplarityCategoriesWithTranslationsSchema,
 	projectExemplarityCategoryCreateSchema,
-	projectExemplarityIndicatorCreateSchema,
-	projectExemplarityIndicatorsListSchema,
-	projectExemplarityIndicatorsWithTranslationsSchema,
+	projectExemplarityMarkerCreateSchema,
+	projectExemplarityMarkersListSchema,
+	projectExemplarityMarkersWithTranslationsSchema,
 } from '$lib/crud/validation/projects-descriptors';
 import { db } from '$lib/db/db.server';
 import {
 	projectExemplarityCategories,
 	projectExemplarityCategoriesTranslations,
-	projectExemplarityIndicators,
-	projectExemplarityIndicatorsTranslations,
+	projectExemplarityMarkers,
+	projectExemplarityMarkersTranslations,
 } from '$lib/db/schema/public.server';
 import { error } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -26,29 +26,29 @@ import { zod } from 'sveltekit-superforms/adapters';
 export const load = async (event) => {
 	authorize(event, 'projects.descriptors.interventions.update');
 	const [
-		projectExemplarityIndicatorsListForm,
-		projectExemplarityIndicatorForms,
+		projectExemplarityMarkersListForm,
+		projectExemplarityMarkerForms,
 		projectExemplarityCategoryCreateForm,
 		projectExemplarityCategoriesListForm,
-		projectExemplarityIndicatorAndCategoryForms,
+		projectExemplarityMarkerAndCategoryForms,
 	] = await Promise.all([
-		superValidate(zod(projectExemplarityIndicatorsListSchema), { id: 'indicators-list' }),
+		superValidate(zod(projectExemplarityMarkersListSchema), { id: 'markers-list' }),
 		joinTranslations(
 			db
 				.select({
-					...aggTranslations(getColumns(projectExemplarityIndicatorsTranslations)),
-					...getColumns(projectExemplarityIndicators),
+					...aggTranslations(getColumns(projectExemplarityMarkersTranslations)),
+					...getColumns(projectExemplarityMarkers),
 				})
-				.from(projectExemplarityIndicators)
-				.groupBy(projectExemplarityIndicators.id)
+				.from(projectExemplarityMarkers)
+				.groupBy(projectExemplarityMarkers.id)
 				.$dynamic(),
-			projectExemplarityIndicatorsTranslations,
-			eq(projectExemplarityIndicators.id, projectExemplarityIndicatorsTranslations.id)
+			projectExemplarityMarkersTranslations,
+			eq(projectExemplarityMarkers.id, projectExemplarityMarkersTranslations.id)
 		).then((d) =>
 			Promise.all(
-				d.map((indicator) =>
-					superValidate(indicator, zod(projectExemplarityIndicatorsWithTranslationsSchema), {
-						id: indicator.id,
+				d.map((marker) =>
+					superValidate(marker, zod(projectExemplarityMarkersWithTranslationsSchema), {
+						id: marker.id,
 					})
 				)
 			)
@@ -73,88 +73,81 @@ export const load = async (event) => {
 						superValidate(category, zod(projectExemplarityCategoriesWithTranslationsSchema), {
 							id: category.id,
 						}),
-						superValidate(
-							{ categoryId: category.id },
-							zod(projectExemplarityIndicatorCreateSchema),
-							{
-								id: `${category.id}-indicator`,
-							}
-						),
+						superValidate({ categoryId: category.id }, zod(projectExemplarityMarkerCreateSchema), {
+							id: `${category.id}-marker`,
+						}),
 					])
 				)
 			)
 		),
 	]);
 	return {
-		projectExemplarityIndicatorsListForm,
-		projectExemplarityIndicatorForms,
+		projectExemplarityMarkersListForm,
+		projectExemplarityMarkerForms,
 		projectExemplarityCategoryCreateForm,
 		projectExemplarityCategoriesListForm,
-		projectExemplarityIndicatorAndCategoryForms,
+		projectExemplarityMarkerAndCategoryForms,
 	};
 };
 
 export const actions = {
-	createIndicator: async (event) => {
-		authorize(event, 'projects.descriptors.exemplarityIndicators.create');
-		const form = await superValidate(event, zod(projectExemplarityIndicatorCreateSchema));
+	createMarker: async (event) => {
+		authorize(event, 'projects.descriptors.exemplarityMarkers.create');
+		const form = await superValidate(event, zod(projectExemplarityMarkerCreateSchema));
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		const { translations, ...indicator } = form.data;
+		const { translations, ...marker } = form.data;
 		await db.transaction(async (tx) => {
 			const [inserted] = await tx
-				.insert(projectExemplarityIndicators)
-				.values(indicator)
-				.returning({ id: projectExemplarityIndicators.id });
+				.insert(projectExemplarityMarkers)
+				.values(marker)
+				.returning({ id: projectExemplarityMarkers.id });
 			if (!inserted) {
 				throw tx.rollback();
 			}
 			await tx
-				.insert(projectExemplarityIndicatorsTranslations)
+				.insert(projectExemplarityMarkersTranslations)
 				.values(Object.values(translations).map((tt) => ({ ...tt, ...inserted })));
 		});
 		return { form };
 	},
-	updateIndicator: async (event) => {
-		authorize(event, 'projects.descriptors.exemplarityIndicators.update');
-		const form = await superValidate(
-			event,
-			zod(projectExemplarityIndicatorsWithTranslationsSchema)
-		);
+	updateMarker: async (event) => {
+		authorize(event, 'projects.descriptors.exemplarityMarkers.update');
+		const form = await superValidate(event, zod(projectExemplarityMarkersWithTranslationsSchema));
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		const { translations, id, ...indicator } = form.data;
+		const { translations, id, ...marker } = form.data;
 		await db.transaction(async (tx) => {
 			Promise.all([
 				tx
-					.update(projectExemplarityIndicators)
-					.set(indicator)
-					.where(eq(projectExemplarityIndicators.id, id)),
+					.update(projectExemplarityMarkers)
+					.set(marker)
+					.where(eq(projectExemplarityMarkers.id, id)),
 				tx
-					.insert(projectExemplarityIndicatorsTranslations)
+					.insert(projectExemplarityMarkersTranslations)
 					.values(Object.values(translations).map((d) => ({ ...d, id })))
 					.onConflictDoUpdate({
 						target: [
-							projectExemplarityIndicatorsTranslations.id,
-							projectExemplarityIndicatorsTranslations.lang,
+							projectExemplarityMarkersTranslations.id,
+							projectExemplarityMarkersTranslations.lang,
 						],
-						set: toExcluded(getColumns(projectExemplarityIndicatorsTranslations)),
+						set: toExcluded(getColumns(projectExemplarityMarkersTranslations)),
 					}),
 			]);
 		});
 		return { form };
 	},
-	deleteIndicator: async (event) => {
-		authorize(event, 'projects.descriptors.exemplarityIndicators.delete');
-		const form = await superValidate(event, zod(projectExemplarityIndicatorsListSchema));
+	deleteMarker: async (event) => {
+		authorize(event, 'projects.descriptors.exemplarityMarkers.delete');
+		const form = await superValidate(event, zod(projectExemplarityMarkersListSchema));
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
 		const [deleted] = await db
-			.delete(projectExemplarityIndicators)
-			.where(eq(projectExemplarityIndicators.id, form.data.delete))
+			.delete(projectExemplarityMarkers)
+			.where(eq(projectExemplarityMarkers.id, form.data.delete))
 			.returning();
 		if (!deleted) {
 			error(STATUS_CODES.NOT_FOUND);

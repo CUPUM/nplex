@@ -4,8 +4,8 @@ import { db } from '$lib/db/db.server';
 import {
 	projectExemplarityCategories,
 	projectExemplarityCategoriesTranslations,
-	projectExemplarityIndicators,
-	projectExemplarityIndicatorsTranslations,
+	projectExemplarityMarkers,
+	projectExemplarityMarkersTranslations,
 	projectImageTemporalities,
 	projectImageTemporalitiesTranslations,
 	projectImageTypes,
@@ -209,37 +209,37 @@ export function getProjectExemplarityCategoriesList(event: ServerLoadEvent) {
 	);
 }
 
-export function getProjectExemplarityIndicatorsList(event: ServerLoadEvent) {
+export function getProjectExemplarityMarkersList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(
 		db
 			.select({
-				...getColumns(projectExemplarityIndicators),
-				...getColumns(projectExemplarityIndicatorsTranslations),
+				...getColumns(projectExemplarityMarkers),
+				...getColumns(projectExemplarityMarkersTranslations),
 			})
-			.from(projectExemplarityIndicators)
+			.from(projectExemplarityMarkers)
 			.$dynamic(),
-		projectExemplarityIndicatorsTranslations,
-		eq(projectExemplarityIndicators.id, projectExemplarityIndicatorsTranslations.id),
+		projectExemplarityMarkersTranslations,
+		eq(projectExemplarityMarkers.id, projectExemplarityMarkersTranslations.id),
 		event
 	);
 }
 
-export function getProjectIndicatorsByCategoriesList(event: ServerLoadEvent) {
-	const indicators = getProjectExemplarityIndicatorsList(event).as('indicators');
-	const indicatorsColumns = getColumns(indicators);
+export function getProjectMarkersByCategoriesList(event: ServerLoadEvent) {
+	const markers = getProjectExemplarityMarkersList(event).as('markers');
+	const markersColumns = getColumns(markers);
 	const categories = getProjectExemplarityCategoriesList(event).as('categories');
 	const categoriesColumns = getColumns(categories);
 	return db
 		.select({
 			...categoriesColumns,
-			indicators: jsonAggBuildObject(indicatorsColumns),
+			markers: jsonAggBuildObject(markersColumns),
 		})
 		.from(categories)
 		.groupBy(...Object.values(categoriesColumns))
 		.leftJoin(
-			indicators,
-			and(eq(categories.id, indicators.categoryId), eq(categories.lang, indicators.lang))
+			markers,
+			and(eq(categories.id, markers.categoryId), eq(categories.lang, markers.lang))
 		);
 }
 

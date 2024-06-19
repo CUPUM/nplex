@@ -212,7 +212,7 @@ export const projectImplantationTypesTranslations = pgTable(
 );
 
 /**
- * Groupings of exemplarity indicators. Inspired by the City of Montreal's Design Agenda 2030.
+ * Groupings of exemplarity markers. Inspired by the City of Montreal's Design Agenda 2030.
  */
 export const projectExemplarityCategories = pgTable('project_exemplarity_categories', {
 	id: text('id')
@@ -242,7 +242,7 @@ export const projectExemplarityCategoriesTranslations = pgTable(
 	}
 );
 
-export const projectExemplarityIndicators = pgTable('project_exemplarity_indicators', {
+export const projectExemplarityMarkers = pgTable('project_exemplarity_indicators', {
 	id: text('id')
 		.notNull()
 		.default(nanoid({ size: 6 }))
@@ -256,12 +256,12 @@ export const projectExemplarityIndicators = pgTable('project_exemplarity_indicat
 		.notNull(),
 });
 
-export const projectExemplarityIndicatorsTranslations = pgTable(
+export const projectExemplarityMarkersTranslations = pgTable(
 	'project_exemplarity_indicators_t',
 	{
 		...LANG_COLUMN,
 		id: text('id')
-			.references(() => projectExemplarityIndicators.id, {
+			.references(() => projectExemplarityMarkers.id, {
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			})
@@ -485,12 +485,15 @@ export const projectsInterventions = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.projectId, table.interventionId] }),
+			pk: primaryKey({
+				columns: [table.projectId, table.interventionId],
+				// name: 'projects_interventions_pk',
+			}),
 		};
 	}
 );
 
-export const projectsExemplarityIndicators = pgTable(
+export const projectsExemplarityMarkers = pgTable(
 	'projects_exemplarity_indicators',
 	{
 		projectId: text('project_id')
@@ -499,16 +502,19 @@ export const projectsExemplarityIndicators = pgTable(
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			}),
-		exemplarityIndicatorId: text('exemplarity_indicator_id')
+		exemplarityMarkerId: text('exemplarity_indicator_id')
 			.notNull()
-			.references(() => projectExemplarityIndicators.id, {
+			.references(() => projectExemplarityMarkers.id, {
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			}),
 	},
 	(table) => {
 		return {
-			fk: primaryKey({ columns: [table.projectId, table.exemplarityIndicatorId] }),
+			pk: primaryKey({
+				columns: [table.projectId, table.exemplarityMarkerId],
+				// name: 'projects_exemplarity_markers_pk',
+			}),
 		};
 	}
 );
