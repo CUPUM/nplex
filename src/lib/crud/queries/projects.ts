@@ -68,7 +68,7 @@ export function getCreatedProjects(user: Parameters<typeof isProjectCreator>[0])
 /**
  * Filter clauses based on projectsSearchSchema data.
  */
-export function matchesProjectSearch(filters: z.infer<typeof projectsSearchSchema>) {
+export function matchesProjectsSearch(filters: z.infer<typeof projectsSearchSchema>) {
 	return $true;
 }
 

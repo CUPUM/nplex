@@ -1,6 +1,11 @@
 import { organizations, organizationsTranslations } from '$lib/db/schema/public.server';
 import { createInsertSchema } from 'drizzle-zod';
+import { z } from 'zod';
 import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
+
+export const organizationsSearchSchema = z.object({
+	search: z.string().optional(),
+});
 
 export const organizationsSchema = createInsertSchema(organizations).required({ id: true });
 

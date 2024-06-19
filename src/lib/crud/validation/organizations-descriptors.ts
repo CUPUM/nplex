@@ -1,5 +1,6 @@
 import { organizationTypes, organizationTypesTranslations } from '$lib/db/schema/public.server';
 import { createInsertSchema } from 'drizzle-zod';
+import { z } from 'zod';
 import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
 
 export const organizationTypesSchema = createInsertSchema(organizationTypes).required({ id: true });
@@ -18,4 +19,10 @@ export const organizationTypesWithTranslationsSchema = withTranslationsSchema(
 	organizationTypesTranslationsSchema.omit({ id: true })
 );
 
-export const newOrganizationTypeSchema = organizationTypesWithTranslationsSchema.omit({ id: true });
+export const organizationTypesListSchema = z.object({
+	delete: organizationTypesSchema.shape.id,
+});
+
+export const organizationTypeCreateSchema = organizationTypesWithTranslationsSchema.omit({
+	id: true,
+});
