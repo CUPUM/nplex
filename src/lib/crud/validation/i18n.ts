@@ -18,6 +18,8 @@ export type LangColumnSchema = typeof LANG_COLUMN_SCHEMA;
 
 /**
  * Extend the insert schema of a given ressource table with its corresponding translations.
+ *
+ * @todo Improve typings in reduce function.
  */
 export function withTranslationsSchema<
 	T extends Record<string, ZodTypeAny>,
@@ -26,7 +28,10 @@ export function withTranslationsSchema<
 	const translations = z.object(
 		availableLanguageTags.reduce(
 			(acc, lang) => {
-				acc[lang] = translationSchema;
+				// acc[lang] = translationSchema;
+				acc[lang] = translationSchema.extend({
+					[LANG_COLUMN_NAME]: langSchema.default(lang),
+				}) as any;
 				return acc;
 			},
 			{} as Record<AvailableLanguageTag, ZodObject<TT>>

@@ -22,7 +22,9 @@ import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
 
-// Project types
+/*
+Project types
+*/
 
 export const projectTypesSchema = createInsertSchema(projectTypes).required({ id: true });
 
@@ -37,13 +39,13 @@ export const projectTypesWithTranslationsSchema = withTranslationsSchema(
 	projectTypesTranslationsSchema.omit({ id: true })
 );
 
-export const newProjectTypeFormSchema = projectTypesWithTranslationsSchema.omit({ id: true });
+export const projectTypeCreateFormSchema = projectTypesWithTranslationsSchema.omit({ id: true });
 
-export const projectTypesFormSchema = z.object({
-	types: projectTypesSchema.pick({ id: true }).array(),
-});
+export const projectTypesFormSchema = z.object({ delete: projectTypesSchema.shape.id });
 
-// Project interventions
+/*
+Project interventions
+*/
 
 export const projectInterventionsSchema = createInsertSchema(projectInterventions).required({
 	id: true,
@@ -62,11 +64,15 @@ export const projectInterventionsWithTranslationsSchema = withTranslationsSchema
 	projectInterventionsSchema,
 	projectInterventionsTranslationsSchema.omit({ id: true })
 ).extend({
-	projectTypesIds: projectTypesSchema.shape.id.array(),
+	typesIds: projectTypesSchema.shape.id.array(),
 });
 
-export const newProjectInterventionSchema = projectInterventionsWithTranslationsSchema.omit({
+export const projectInterventionCreateFormSchema = projectInterventionsWithTranslationsSchema.omit({
 	id: true,
+});
+
+export const projectInterventionsFormSchema = z.object({
+	delete: projectInterventionsSchema.shape.id,
 });
 
 export const projectInterventionsCategoriesSchema = createInsertSchema(
@@ -87,10 +93,18 @@ export const projectInterventionsCategoriesWithTranslationsSchema = withTranslat
 	projectInterventionsCategoriesTranslationsSchema.omit({ id: true })
 );
 
-export const newProjectInterventionCategorySchema =
+export const projectInterventionCategoryCreateFormSchema =
 	projectInterventionsCategoriesWithTranslationsSchema.omit({
 		id: true,
 	});
+
+export const projectInterventionCategoriesFormSchema = z.object({
+	delete: projectInterventionsCategoriesSchema.shape.id,
+});
+
+/*
+Exemplarity indicators
+*/
 
 export const projectExemplarityIndicatorsSchema = createInsertSchema(
 	projectExemplarityIndicators
@@ -136,6 +150,10 @@ export const newProjectExemplarityCategorySchema =
 		id: true,
 	});
 
+/*
+	Site ownerships
+	*/
+
 export const projectSiteOwnershipsSchema = createInsertSchema(projectSiteOwnerships).required({
 	id: true,
 });
@@ -157,6 +175,10 @@ export const projectSiteOwnershipsWithTranslationsSchema = withTranslationsSchem
 export const newProjectSiteOwnershipSchema = projectSiteOwnershipsWithTranslationsSchema.omit({
 	id: true,
 });
+
+/*
+Implantation modes
+*/
 
 export const projectImplantationTypesSchema = createInsertSchema(projectImplantationTypes).required(
 	{ id: true }
