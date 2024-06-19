@@ -35,7 +35,7 @@
 		</button>
 	{/snippet}
 	{#snippet title()}
-		{m.project_intervention_create()}
+		{m.project_intervention_category_create()}
 	{/snippet}
 	{#snippet formBody()}
 		<TranslationsTabs>

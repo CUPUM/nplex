@@ -44,7 +44,7 @@
 				form={$parentFormId}
 				value={$form.id}
 				name="delete"
-				formaction="?/deleteIntervention"
+				formaction="?/deleteMarker"
 				bind:this={deleteRef}
 			>
 				<IconSpinner icon={X} busy={$parentSubmitter === deleteRef} />

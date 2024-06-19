@@ -52,7 +52,7 @@
 			</header>
 		{/snippet}
 		{#snippet title()}
-			{m.project_intervention_category()}
+			{m.project_exemplarity_category()}
 		{/snippet}
 		{#snippet formBody()}
 			<TranslationsTabs>

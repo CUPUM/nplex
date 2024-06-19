@@ -22,7 +22,7 @@
 	const { form, constraints } = projectInterventionCreateForm;
 </script>
 
-<DescriptorFormDialog form={projectInterventionCreateForm} action="?/createIntervention">
+<DescriptorFormDialog form={projectInterventionCreateForm} action="?/createMarker">
 	{#snippet root(triggerAttributes)}
 		<button
 			class="button button-dashed rounded-full"
@@ -35,7 +35,7 @@
 		</button>
 	{/snippet}
 	{#snippet title()}
-		{m.project_intervention_create()}
+		{m.project_exemplarity_marker_create()}
 	{/snippet}
 	{#snippet formBody()}
 		<TranslationsTabs>

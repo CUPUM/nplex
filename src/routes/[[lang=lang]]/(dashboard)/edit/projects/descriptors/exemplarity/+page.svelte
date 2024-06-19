@@ -26,7 +26,7 @@
 
 <header class="dashboard-section">
 	<h2 class="dashboard-section-title">
-		{m.project_intervention_categories()} & {m.project_intervention_types().toLocaleLowerCase()}
+		{m.project_exemplarity_categories()} & {m.project_exemplarity_markers().toLocaleLowerCase()}
 	</h2>
 	<div class="dashboard-section-description">
 		<p>
@@ -43,7 +43,7 @@
 		{projectExemplarityCategoriesListForm}
 		data={categoryForm}
 		projectExemplarityMarkerForms={data.projectExemplarityMarkerForms.filter(
-			(intervention) => intervention.data.categoryId === categoryForm.data.id
+			(marker) => marker.data.categoryId === categoryForm.data.id
 		)}
 		{projectInterventionCreateForm}
 	/>
