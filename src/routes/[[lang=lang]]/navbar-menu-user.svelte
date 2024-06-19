@@ -33,7 +33,11 @@
 					<Pencil class="button-icon" />
 					{m.nav_edit_projects()}
 				</NavbarMenuItem>
-				<NavbarMenuItem {...linkAttributes('/new/project')} {...menu.itemAttributes}>
+				<NavbarMenuItem
+					{...linkAttributes('/create/project')}
+					rel="external"
+					{...menu.itemAttributes}
+				>
 					<FilePlus class="button-icon" />
 					{m.nav_new_project()}
 				</NavbarMenuItem>
@@ -61,7 +65,11 @@
 					<Pencil class="button-icon" />
 					{m.nav_edit_orgs()}
 				</NavbarMenuItem>
-				<NavbarMenuItem {...linkAttributes('/new/organization')} {...menu.itemAttributes}>
+				<NavbarMenuItem
+					{...linkAttributes('/create/organization')}
+					rel="external"
+					{...menu.itemAttributes}
+				>
 					<FilePlus class="button-icon" />
 					{m.nav_new_org()}
 				</NavbarMenuItem>

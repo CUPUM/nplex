@@ -104,7 +104,8 @@
 	<ul>
 		<li>
 			<a
-				{...linkAttributes(`/new/project`)}
+				{...linkAttributes(`/create/project`)}
+				rel="external"
 				use:ripple
 				in:fly|global={{ y: -6, easing: cubicOut, duration: 350 }}
 				class="button button-dashed"

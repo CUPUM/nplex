@@ -61,10 +61,6 @@ export function canEditProject(user: User) {
 	);
 }
 
-export function getCreatedProjects(user: Parameters<typeof isProjectCreator>[0]) {
-	return db.select().from(projects).where(isProjectCreator(user));
-}
-
 /**
  * Filter clauses based on projectsSearchSchema data.
  */

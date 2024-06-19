@@ -4,9 +4,10 @@
 	import DashboardSidebarMenu from '$lib/components/patterns/dashboard-sidebar-menu.svelte';
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
-	import { authorize } from '$lib/crud/authorization/rbac.svelte.js';
-	import { AlertTriangle, Eye, Files, Tags, UsersRound } from 'lucide-svelte';
+	import { AlertTriangle, Eye, UsersRound } from 'lucide-svelte';
 	import { onDestroy } from 'svelte';
+	import DashboardSidebarMenuOrganizations from '../../../dashboard-sidebar-menu-organizations.svelte';
+	import DashboardSidebarMenuProjects from '../../../dashboard-sidebar-menu-projects.svelte';
 
 	let { children, data } = $props();
 
@@ -115,37 +116,8 @@
 			{m.project_danger_zone()}
 		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
-	<DashboardSidebarMenu>
-		{#snippet legend()}
-			{m.my_documents()}
-		{/snippet}
-		<DashboardSidebarMenuItem class="button button-nav" {...linkAttributes('/edit/projects')}>
-			<Files class="button-icon" />
-			{m.projects()}
-		</DashboardSidebarMenuItem>
-		{#if authorize('projects.descriptors.update')}
-			<DashboardSidebarMenuItem
-				class="button button-nav"
-				{...linkAttributes('/edit/projects/descriptors')}
-			>
-				<Tags class="button-icon" />
-				{m.project_descriptors()}
-			</DashboardSidebarMenuItem>
-		{/if}
-		<DashboardSidebarMenuItem class="button button-nav" {...linkAttributes('/edit/organizations')}>
-			<Files class="button-icon" />
-			{m.organizations()}
-		</DashboardSidebarMenuItem>
-		{#if authorize('organizations.descriptors.update')}
-			<DashboardSidebarMenuItem
-				class="button button-nav"
-				{...linkAttributes('/edit/organizations/descriptors')}
-			>
-				<Tags class="button-icon" />
-				{m.organization_descriptors()}
-			</DashboardSidebarMenuItem>
-		{/if}
-	</DashboardSidebarMenu>
+	<DashboardSidebarMenuProjects />
+	<DashboardSidebarMenuOrganizations />
 {/snippet}
 
 {@render children()}

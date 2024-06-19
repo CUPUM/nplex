@@ -12,6 +12,7 @@ export const LOAD_DEPENDENCIES = {
 	PROJECT_TYPES_LIST: 'project-descriptors:types',
 	PROJECT_TITLE: 'project:title',
 	PROJECT_GALLERY: 'project:gallery',
+	ORGANIZATION_NAME: 'organization:name',
 } as const;
 
 /**

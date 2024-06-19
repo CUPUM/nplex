@@ -20,3 +20,13 @@ export const organizationsWithTranslationsSchema = withTranslationsSchema(
 	organizationsSchema,
 	organizationsTranslationsSchema.omit({ id: true })
 );
+
+// ************
+// Form schemas
+// ************
+
+export const organizationGeneralSchema = organizationsWithTranslationsSchema.pick({
+	id: true,
+	typeId: true,
+	translations: true,
+});

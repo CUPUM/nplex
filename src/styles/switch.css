@@ -33,7 +33,7 @@
 	/* Default */
 
 	&:not(.switch-bordered, .switch-dashed, .switch-ghost) {
-		--ripple-color: color-mix(in srgb, var(--background-color-popover) var(--opacity-dim), transparent);
+		--ripple-color: var(--background-color-input);
 		--switch-thumb-background: var(--background-color-popover);
 		--switch-thumb-shadow: var(--shadow-sm);
 		--switch-color: var(--text-color-input-dim);
