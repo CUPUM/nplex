@@ -55,9 +55,16 @@ export function isOAuthProvider(maybeOAuthProvider: unknown): maybeOAuthProvider
 	return OAUTH_PROVIDERS_ARR.indexOf(maybeOAuthProvider as OAuthProvider) > -1;
 }
 
-export const OAUTH_PROVIDERS_DETAILS = {
+export const OAUTH_PROVIDERS_DETAILS: Record<
+	OAuthProvider,
+	{ name: string } & (
+		| { enabled?: false; cookie?: undefined }
+		| { enabled: boolean; cookie: string }
+	)
+> = {
 	[OAUTH_PROVIDERS.GITHUB]: {
 		name: 'GitHub',
+		enabled: true,
 		cookie: 'github_oauth_state',
 	},
 	[OAUTH_PROVIDERS.FACEBOOK]: {
@@ -69,10 +76,7 @@ export const OAUTH_PROVIDERS_DETAILS = {
 	[OAUTH_PROVIDERS.GOOGLE]: {
 		name: 'Google',
 	},
-} as const satisfies Record<
-	OAuthProvider,
-	{ name: string } & ({ cookie?: undefined } | { cookie: string })
->;
+};
 
 export type IntegratedOAuthProvider = ConditionalKeys<
 	typeof OAUTH_PROVIDERS_DETAILS,

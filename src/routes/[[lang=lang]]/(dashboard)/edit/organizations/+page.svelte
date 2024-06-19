@@ -65,7 +65,7 @@
 	<header>
 		<hgroup>
 			<h1 class="h2">
-				{m.projects_edit()}
+				{m.organizations_edit()}
 			</h1>
 		</hgroup>
 		<form
@@ -104,26 +104,26 @@
 	<ul>
 		<li>
 			<a
-				{...linkAttributes(`/new/project`)}
+				{...linkAttributes(`/new/organization`)}
 				use:ripple
 				in:fly|global={{ y: -6, easing: cubicOut, duration: 350 }}
 				class="button button-dashed"
 			>
 				<FilePlus />
-				{m.project_create_new()}
+				{m.organization_create_new()}
 			</a>
 		</li>
-		{#each data.searchResults as project, i (project.id)}
+		{#each data.searchResults as organization, i (organization.id)}
 			<li
 				animate:flip={{ duration: (l) => 150 + l / 100 }}
 				in:fly|global={{ y: -6, duration: 350, easing: expoOut, delay: i * 25, opacity: 0 }}
 			>
 				<a
-					{...linkAttributes(`/edit/projects/${project.id}`)}
+					{...linkAttributes(`/edit/organizations/${organization.id}`)}
 					use:ripple
 					class="p-card-padding bg-card rounded-card relative flex cursor-pointer"
 				>
-					{project.id}
+					{organization.id}
 					<!-- {#if project.title}
 						<span>{project.title}</span>
 					{:else}

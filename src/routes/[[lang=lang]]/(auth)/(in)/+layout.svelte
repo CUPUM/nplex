@@ -13,6 +13,8 @@
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 
+	let { children } = $props();
+
 	const logos = {
 		[OAUTH_PROVIDERS.GITHUB]: IconGithub,
 		[OAUTH_PROVIDERS.FACEBOOK]: IconFacebook,
@@ -23,7 +25,7 @@
 
 <article class="flex flex-1 items-center justify-center">
 	<div class="gap-gutter p-gutter flex w-full max-w-sm flex-col items-stretch">
-		<slot />
+		{@render children()}
 		<section class="gap-gutter flex flex-col">
 			<div class="gap-gutter px-gutter flex flex-row items-center">
 				<hr class="border-dim flex-1" />
@@ -40,7 +42,7 @@
 					<a
 						class="button button-bordered aspect-square"
 						{...linkAttributes(`/login/${provider}`)}
-						aria-disabled={OAUTH_PROVIDERS_DETAILS[provider].disabled}
+						aria-disabled={!OAUTH_PROVIDERS_DETAILS[provider].enabled}
 						use:ripple
 					>
 						<svelte:component this={logos[provider]} />
