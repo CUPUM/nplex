@@ -40,14 +40,11 @@
 		font-size: var(--font-size-lg);
 		margin-bottom: 1em;
 
-		&:has(.dialog-close) {
-			padding-right: 2em;
-		}
-
-		.dialog-close {
+		.button {
+			position: relative;
+			float: inline-end;
 			font-size: var(--font-size-md);
-			position: absolute;
-			right: 0;
+			/* right: 0; */
 			top: -0.25em;
 		}
 	}

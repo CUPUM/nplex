@@ -57,15 +57,15 @@
 	>
 		{#if title}
 			<header class="dialog-title">
-				{@render title()}
 				<button
 					tabindex="0"
-					class="button button-ghost dialog-close compact aspect-square rounded-full"
+					class="button button-ghost compact aspect-square rounded-full"
 					{...dialog.closeAttributes}
 					data-danger={isTainted($tainted) || undefined}
 				>
 					<X />
 				</button>
+				{@render title()}
 			</header>
 			<hr />
 		{/if}

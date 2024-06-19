@@ -4,7 +4,7 @@
 	import { Dialog } from '$lib/builders/dialog.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { authorize } from '$lib/crud/authorization/rbac.svelte';
-	import { FilePlus, LogOut, Pencil, Sliders, UserRound } from 'lucide-svelte';
+	import { FilePlus, LogOut, Pencil, Tags, UserRound } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
 	import { cubicIn, expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
@@ -42,7 +42,7 @@
 						{...linkAttributes('/edit/projects/descriptors')}
 						{...menu.itemAttributes}
 					>
-						<Sliders class="button-icon" />
+						<Tags class="button-icon" />
 						{m.nav_edit_project_descriptors()}
 					</a>
 				{/if}
@@ -78,7 +78,7 @@
 					{...linkAttributes('/edit/organizations/descriptors')}
 					{...menu.itemAttributes}
 				>
-					<Sliders class="button-icon" />
+					<Tags class="button-icon" />
 					{m.nav_edit_orgs_descriptors()}
 				</a>
 			</ul>
