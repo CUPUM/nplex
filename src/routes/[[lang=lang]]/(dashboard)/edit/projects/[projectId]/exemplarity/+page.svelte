@@ -2,20 +2,17 @@
 	import * as m from '$i18n/messages';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
-	import { extendSuperForm } from '$lib/crud/form/client';
+	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { Check } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms';
 
 	let { data } = $props();
 
-	const { form, submitter, enhance, isTainted, tainted } = extendSuperForm(
-		superForm(data.form, {
-			dataType: 'json',
-			invalidateAll: 'force',
-		})
-	);
+	const { form, submitter, enhance, isTainted, tainted } = extendedSuperForm(data.form, {
+		dataType: 'json',
+		invalidateAll: 'force',
+	});
 
 	let submitRef = $state<HTMLButtonElement>();
 </script>

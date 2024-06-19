@@ -1,13 +1,13 @@
 <script lang="ts">
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
-	import { extendSuperForm } from '$lib/crud/form/client';
+	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { ArrowRight, Search } from 'lucide-svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import type { Snapshot } from './$types.js';
 
 	let { data } = $props();
 
-	const { enhance, form, submitter, submitting, constraints } = extendSuperForm(
+	const { enhance, form, submitter, submitting, constraints } = extendedSuperForm(
 		superForm(data.searchForm)
 	);
 

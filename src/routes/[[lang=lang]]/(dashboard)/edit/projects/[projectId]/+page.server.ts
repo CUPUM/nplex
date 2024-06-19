@@ -60,43 +60,40 @@ export const actions = {
 		if (!form.valid) {
 			return fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
-		try {
-			const { translations, interventionIds, ...project } = form.data;
-			await db.transaction(async (tx) => {
-				await tx.update(projects).set(project).where(eq(projects.id, event.params.projectId));
+		const { translations, interventionIds, ...project } = form.data;
+		await db.transaction(async (tx) => {
+			await tx.update(projects).set(project).where(eq(projects.id, event.params.projectId));
+			await tx
+				.insert(projectsTranslations)
+				.values(Object.values(translations).map((tt) => ({ ...tt, id: event.params.projectId })))
+				.onConflictDoUpdate({
+					target: [projectsTranslations.id, projectsTranslations.lang],
+					set: toExcluded(getColumns(projectsTranslations)),
+				});
+			await tx
+				.delete(projectsInterventions)
+				.where(
+					and(
+						eq(projectsInterventions.projectId, event.params.projectId),
+						interventionIds.length
+							? notInArray(projectsInterventions.interventionId, interventionIds)
+							: undefined
+					)
+				);
+			if (interventionIds.length) {
 				await tx
-					.insert(projectsTranslations)
-					.values(Object.values(translations).map((tt) => ({ ...tt, id: event.params.projectId })))
-					.onConflictDoUpdate({
-						target: [projectsTranslations.id, projectsTranslations.lang],
-						set: toExcluded(getColumns(projectsTranslations)),
+					.insert(projectsInterventions)
+					.values(
+						interventionIds.map((interventionId) => ({
+							interventionId,
+							projectId: event.params.projectId,
+						}))
+					)
+					.onConflictDoNothing({
+						target: [projectsInterventions.projectId, projectsInterventions.interventionId],
 					});
-				await tx
-					.delete(projectsInterventions)
-					.where(
-						and(
-							eq(projectsInterventions.projectId, event.params.projectId),
-							interventionIds.length
-								? notInArray(projectsInterventions.interventionId, interventionIds)
-								: undefined
-						)
-					);
-				if (interventionIds.length) {
-					await tx
-						.insert(projectsInterventions)
-						.values(
-							interventionIds.map((interventionId) => ({
-								interventionId,
-								projectId: event.params.projectId,
-							}))
-						)
-						.onConflictDoNothing({
-							target: [projectsInterventions.projectId, projectsInterventions.interventionId],
-						});
-				}
-			});
-		} catch (err) {
-			error(STATUS_CODES.INTERNAL_SERVER_ERROR);
-		}
+			}
+		});
+		return { form };
 	},
 };

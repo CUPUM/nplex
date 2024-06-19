@@ -4,7 +4,7 @@
 	import { InputImages } from '$lib/builders/input-images.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
-	import { extendSuperForm } from '$lib/crud/form/client';
+	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { PROJECT_IMAGE_PALETTE_LENGTH } from '$lib/db/constants';
 	import { transformImage } from '$lib/storage/media/utils';
 	import convert from 'color-convert';
@@ -14,7 +14,6 @@
 	import { elasticOut, expoInOut, expoOut } from 'svelte/easing';
 	import { get } from 'svelte/store';
 	import { fly, scale } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 	import type { PresignedResponse } from './presign/types';
 
@@ -59,51 +58,49 @@
 		},
 	});
 
-	const { form, errors, enhance, submitter } = extendSuperForm(
-		superForm(newImagesForm, {
-			dataType: 'json',
-			resetForm: true,
-			async onSubmit(input) {
-				const images: PageData['newImagesForm']['data']['images'] = [];
-				await Promise.allSettled(
-					inputImages.parsed.map(async (preview) => {
-						// Get a presigned url
-						const presignedRes = await fetch(
-							`/edit/projects/${get(page).params.projectId}/gallery/presign`,
-							{ method: 'GET' }
-						);
-						const presignedJson = (await presignedRes.json()) as PresignedResponse;
-						// Upload to storage
-						const formData = new FormData();
-						Object.entries(presignedJson.post.fields).forEach(([k, v]) => {
-							if (v) {
-								formData.append(k, v);
-							}
-						});
-						formData.append('file', preview.data.file);
-						const uploadRes = await fetch(presignedJson.post.url, {
-							method: 'POST',
-							body: formData,
-						});
-						if (uploadRes.ok) {
-							images.push({
-								storageName: presignedJson.name,
-								colorPaletteLAB: preview.data.lab,
-								height: preview.data.height,
-								width: preview.data.width,
-							});
+	const { form, errors, enhance, submitter } = extendedSuperForm(newImagesForm, {
+		dataType: 'json',
+		resetForm: true,
+		async onSubmit(input) {
+			const images: PageData['newImagesForm']['data']['images'] = [];
+			await Promise.allSettled(
+				inputImages.parsed.map(async (preview) => {
+					// Get a presigned url
+					const presignedRes = await fetch(
+						`/edit/projects/${get(page).params.projectId}/gallery/presign`,
+						{ method: 'GET' }
+					);
+					const presignedJson = (await presignedRes.json()) as PresignedResponse;
+					// Upload to storage
+					const formData = new FormData();
+					Object.entries(presignedJson.post.fields).forEach(([k, v]) => {
+						if (v) {
+							formData.append(k, v);
 						}
-					})
-				);
-				form.set({ images });
-			},
-			onResult(event) {
-				if (event.result.type === 'success') {
-					inputImages.deleteAll();
-				}
-			},
-		})
-	);
+					});
+					formData.append('file', preview.data.file);
+					const uploadRes = await fetch(presignedJson.post.url, {
+						method: 'POST',
+						body: formData,
+					});
+					if (uploadRes.ok) {
+						images.push({
+							storageName: presignedJson.name,
+							colorPaletteLAB: preview.data.lab,
+							height: preview.data.height,
+							width: preview.data.width,
+						});
+					}
+				})
+			);
+			form.set({ images });
+		},
+		onResult(event) {
+			if (event.result.type === 'success') {
+				inputImages.deleteAll();
+			}
+		},
+	});
 </script>
 
 <form

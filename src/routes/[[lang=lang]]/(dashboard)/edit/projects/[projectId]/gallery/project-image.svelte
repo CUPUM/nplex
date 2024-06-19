@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import { DialogForm } from '$lib/builders/dialog-form.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
-	import { extendSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
+	import { extendedSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
 	import { MODES } from '$lib/modes/constants';
 	import { imageSrc } from '$lib/storage/media/url';
 	import { Check, Trash, Wallpaper, Wrench } from 'lucide-svelte';
@@ -17,7 +17,7 @@
 
 	let submitRef = $state<HTMLButtonElement>();
 
-	const { form, enhance, submitter } = extendSuperForm(superForm(imageForm));
+	const { form, enhance, submitter } = extendedSuperForm(superForm(imageForm));
 
 	const dialogForm = new DialogForm();
 </script>

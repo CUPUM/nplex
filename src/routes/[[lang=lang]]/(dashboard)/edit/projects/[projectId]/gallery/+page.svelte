@@ -1,17 +1,14 @@
 <script lang="ts">
-	import { extendSuperForm } from '$lib/crud/form/client';
+	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { flip } from 'svelte/animate';
 	import { expoInOut, expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms';
 	import ProjectImage from './project-image.svelte';
 	import ProjectNewImages from './project-new-images.svelte';
 
 	let { data } = $props();
 
-	const projectForm = extendSuperForm(
-		superForm(data.form, { dataType: 'json', invalidateAll: 'force' })
-	);
+	const projectForm = extendedSuperForm(data.form, { dataType: 'json', invalidateAll: 'force' });
 </script>
 
 <ProjectNewImages {...data} />

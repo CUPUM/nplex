@@ -4,21 +4,21 @@
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
-	import { extendSuperForm } from '$lib/crud/form/client.js';
+	import { extendedSuperForm } from '$lib/crud/form/client.js';
 	import { Eye, EyeOff, Lock, LogIn, UserRoundPlus } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms';
 
 	let { data } = $props();
 
 	let showPassword = $state(false);
 	let loginRef = $state<HTMLButtonElement>();
 
-	const { form, enhance, constraints, errors, tainted, message, submitter } = extendSuperForm(
-		superForm(data.form, {
+	const { form, enhance, constraints, errors, tainted, message, submitter } = extendedSuperForm(
+		data.form,
+		{
 			taintedMessage: null,
-		})
+		}
 	);
 </script>
 

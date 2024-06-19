@@ -2,16 +2,15 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
-	import { extendSuperForm } from '$lib/crud/form/client';
+	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { Check, FileUp, Mail, Shield, ShieldX } from 'lucide-svelte';
 	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
-	const { form, enhance, constraints, tainted, submitter, submitting, isTainted } = extendSuperForm(
-		superForm(data.profileForm, { dataType: 'json', invalidateAll: 'force' })
-	);
+	const { form, enhance, constraints, tainted, submitter, submitting, isTainted } =
+		extendedSuperForm(superForm(data.profileForm, { dataType: 'json', invalidateAll: 'force' }));
 
 	let submitRef = $state<HTMLButtonElement>();
 </script>

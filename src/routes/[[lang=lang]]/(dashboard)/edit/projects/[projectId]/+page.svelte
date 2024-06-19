@@ -1,11 +1,10 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
-	import { extendSuperForm } from '$lib/crud/form/client';
+	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { Check } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms';
 	import type { Snapshot } from './$types.js';
 	import ProjectInterventions from './project-interventions.svelte';
 	import ProjectOwnership from './project-ownership.svelte';
@@ -25,12 +24,10 @@
 		},
 	};
 
-	const projectForm = extendSuperForm(
-		superForm(data.form, {
-			dataType: 'json',
-			invalidateAll: 'force',
-		})
-	);
+	const projectForm = extendedSuperForm(data.form, {
+		dataType: 'json',
+		invalidateAll: 'force',
+	});
 
 	const { submitter, enhance, isTainted, tainted } = projectForm;
 

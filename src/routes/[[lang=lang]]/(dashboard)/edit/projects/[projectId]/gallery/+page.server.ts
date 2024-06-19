@@ -58,17 +58,18 @@ export const load = async (event) => {
 export const actions = {
 	upload: async (event) => {
 		authorize(event);
-		const newImagesForm = await superValidate(event, zod(projectNewImagesFormSchema));
-		if (!newImagesForm.valid) {
-			fail(STATUS_CODES.BAD_REQUEST, { newImagesForm });
+		const form = await superValidate(event, zod(projectNewImagesFormSchema));
+		if (!form.valid) {
+			fail(STATUS_CODES.BAD_REQUEST, { form });
 		}
 		await db.insert(projectsImages).values(
-			newImagesForm.data.images.map((d) => ({
+			form.data.images.map((d) => ({
 				...d,
 				projectId: event.params.projectId,
 				createdById: event.locals.user.id,
 			}))
 		);
+		return { form };
 	},
 	promote: async (event) => {
 		authorize(event);
