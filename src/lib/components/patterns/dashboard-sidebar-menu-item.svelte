@@ -1,4 +1,4 @@
-<script lang="ts" generics="T extends string">
+<script lang="ts">
 	import { dashboardSidebarMenuThumbCrossfade } from '$lib/motion/presets';
 	import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
 	import { ripple } from '../primitives/ripple.svelte';
@@ -8,7 +8,8 @@
 		children,
 		href,
 		...restProps
-	}: T extends string ? HTMLAnchorAttributes : HTMLButtonAttributes = $props();
+	}: ({ href: string } & HTMLAnchorAttributes) | ({ href?: undefined } & HTMLButtonAttributes) =
+		$props();
 
 	const menuCtx = getDashboardSidebarMenuContext(true);
 </script>
