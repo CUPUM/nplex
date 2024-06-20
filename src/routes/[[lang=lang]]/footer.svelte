@@ -10,47 +10,48 @@
 </script>
 
 {#if $page.data.setout !== PRESENTATIONS.FULL_SCREEN && !$page.data.footer?.hidden}
-	<footer transition:slide class="bg-card-dim p-lg pb-md flex flex-col items-center rounded-t-lg">
+	<footer
+		transition:slide
+		class="bg-input-dim/50 p-lg pb-sm gap-lg mx-auto flex w-full flex-col items-center rounded-t-lg group-data-[presentation=normal]/root:max-w-xl"
+	>
 		<nav class="gap-xl px-lg flex flex-row max-sm:flex-col">
 			<a
 				href="https://montreal.ca{$page.data.lang === 'en' ? '/en' : ''}/unites/bureau-du-design"
 				rel="external"
 				target="_blank"
-				class="opacity-dim transition-all hover:opacity-[100]"
+				class="opacity-[70] transition-all hover:opacity-[100]"
 			>
-				<LogoMontrealQuebec preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
+				<LogoMontrealQuebec preserveAspectRatio="xMidYMid" width="100%" height="3.5rem" />
 			</a>
-
 			<a
 				href="https://www.unesco.org/{$page.data.lang}/unitwin"
 				rel="external"
 				target="_blank"
-				class="opacity-dim transition-all hover:opacity-[100]"
+				class="opacity-[70] transition-all hover:opacity-[100]"
 			>
-				<LogoUnescoUnitwin preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
+				<LogoUnescoUnitwin preserveAspectRatio="xMidYMid" width="100%" height="3.5rem" />
 			</a>
-
 			<a
 				href="https://www.unesco-paysage.umontreal.ca/{$page.data.lang}/"
 				rel="external"
 				target="_blank"
-				class="opacity-dim transition-all hover:opacity-[100]"
+				class="opacity-[70] transition-all hover:opacity-[100]"
 			>
-				<LogoCupumUmontreal preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
+				<LogoCupumUmontreal preserveAspectRatio="xMidYMid" width="100%" height="3.5rem" />
 			</a>
 		</nav>
-		<Logo
-			id="opacity-dim hover:opacity-[100] transition-all"
-			height="1.5em"
-			class="mt-xl mb-sm opacity-dim"
-		/>
-		<a
-			href="https://www.unesco-paysage.umontreal.ca/{$page.data.lang}/"
-			rel="external"
-			target="_blank"
-			class="hover:text-base-accent opacity-dim compact cursor-pointer text-base text-xs transition-all"
-		>
-			© {m.unesco_chair_long()}
-		</a>
+		<nav class="gap-card-gutter flex flex-col items-center">
+			<a href="/" class="opacity-[70] transition-all hover:opacity-[100]">
+				<Logo id="footer-logo" height="2em" />
+			</a>
+			<a
+				href="https://www.unesco-paysage.umontreal.ca/{$page.data.lang}/"
+				rel="external"
+				target="_blank"
+				class="hover:text-base-accent opacity-dim compact cursor-pointer text-base text-xs transition-all"
+			>
+				© {m.unesco_chair_long()}
+			</a>
+		</nav>
 	</footer>
 {/if}
