@@ -1,26 +1,27 @@
+import { STATUS_CODES } from '$lib/common/constants';
+import { joinTranslation } from '$lib/crud/queries/i18n';
 import { db } from '$lib/db/db.server';
 import { projects, projectsTranslations } from '$lib/db/schema/public.server';
-import { and, eq, getTableColumns } from 'drizzle-orm';
+import { error } from '@sveltejs/kit';
+import { eq } from 'drizzle-orm';
+import { getColumns } from 'drizzle-orm-helpers';
 
 export const load = async (event) => {
-	const project = await db.transaction(async (tx) => {
-		const [base] = await tx
+	const [project] = await joinTranslation(
+		db
 			.select({
-				...getTableColumns(projectsTranslations),
-				...getTableColumns(projects),
+				...getColumns(projectsTranslations),
+				...getColumns(projects),
 			})
 			.from(projects)
-			.where(eq(projects.id, event.params.projectId))
-			.leftJoin(
-				projectsTranslations,
-				and(
-					eq(projectsTranslations.id, projects.id),
-					eq(projectsTranslations.lang, event.locals.lang)
-				)
-			)
-			.limit(1);
-		return base;
-	});
+			.$dynamic(),
+		projectsTranslations,
+		eq(projects.id, projectsTranslations.id),
+		event
+	);
+	if (!project) {
+		error(STATUS_CODES.NOT_FOUND);
+	}
 	return {
 		project,
 	};

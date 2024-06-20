@@ -33,7 +33,7 @@
 	});
 </script>
 
-<menu class="switch self-start shadow-md backdrop-blur-md" use:ripple>
+<menu class="switch self-start rounded-full backdrop-blur-md" use:ripple>
 	<a
 		class="switch-item aspect-square"
 		{...linkAttributes(`/projects?${setSearchParamsViewMode($page.url, 'masonry').toString()}`)}

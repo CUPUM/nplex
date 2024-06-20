@@ -4,10 +4,9 @@
 	import * as m from '$i18n/messages';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
+	import { projectCardCrossfade } from '$lib/motion/presets';
 	import { RefreshCw } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
-	import { cubicOut } from 'svelte/easing';
-	import { crossfade, scale } from 'svelte/transition';
 	import type { Snapshot } from './$types.js';
 	import ProjectCard from './project-card.svelte';
 	import ProjectsFilters from './projects-filters.svelte';
@@ -35,24 +34,12 @@
 			showFilters = value.showFilters;
 		},
 	};
-
-	const [sendCard, receiveCard] = crossfade({
-		fallback(node, params, intro) {
-			return scale(node, {
-				start: 0.95,
-				duration: 500,
-				easing: cubicOut,
-				opacity: 0,
-				delay: params.delay,
-			});
-		},
-	});
 </script>
 
-<div class="px-padding mb-lg flex flex-1 flex-row">
+<div class="px-padding mb-lg pt-padding flex flex-1 flex-row">
 	<form
 		method="GET"
-		class="w-sidebar-width mr-padding py-padding gap-card-gutter top-sticky-top sticky flex flex-col self-start text-sm"
+		class="w-sidebar-width mr-padding gap-card-gutter top-sticky-top sticky flex flex-col self-start text-sm"
 	>
 		<ProjectsFilters {...filtersForm} />
 	</form>
@@ -66,8 +53,11 @@
 					animate:flip
 					style:--rowspan={rowspan}
 					class="relative col-span-1 row-span-[var(--rowspan)] flex h-full w-full group-data-[view-mode=masonry]/explore:aspect-[2/var(--rowspan)]"
-					in:receiveCard|global={{ key: 'project-card', delay: i * 25 }}
-					out:sendCard={{ key: 'project-card' }}
+					in:projectCardCrossfade.receive|global={{
+						key: project.id,
+						delay: i * 25,
+					}}
+					out:projectCardCrossfade.send|global={{ key: project.id }}
 				>
 					<ProjectCard {project} />
 				</li>
