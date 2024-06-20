@@ -5,24 +5,15 @@
 	import Logo from '$lib/components/primitives/logo.svelte';
 	import { removeLang } from '$lib/i18n/location';
 	import { Settings, UserRound } from 'lucide-svelte';
-	import { circInOut, expoOut } from 'svelte/easing';
-	import { crossfade, scale } from 'svelte/transition';
 	import NavbarButton from './navbar-button.svelte';
 	import NavbarMenuSettings from './navbar-menu-settings.svelte';
 	import NavbarMenuUser from './navbar-menu-user.svelte';
+	import NavbarThumb from './navbar-thumb.svelte';
 
 	let withoutLang = $derived(removeLang($page.url.href.replace($page.url.origin, '')));
-
-	const [sendThumb, receiveThumb] = crossfade({
-		duration: 250,
-		easing: circInOut,
-		fallback(node, params, intro) {
-			return scale(node, { start: 0.5, duration: 250, easing: expoOut, opacity: 0 });
-		},
-	});
 </script>
 
-<div id="navbar-wrapper">
+<div class="px-padding mb-navbar-margin-bottom z-frontmost sticky top-0">
 	<header id="navbar">
 		<nav class="navbar-group justify-self-start">
 			<NavbarButton href="/" data-logo>
@@ -36,24 +27,12 @@
 			</NavbarButton>
 		</nav>
 		<nav class="navbar-group justify-self-center">
-			<NavbarButton href="/projects" currentOnSubpath class="shadow-none">
-				{#if withoutLang.startsWith('/projects')}
-					<div
-						class="border-primary/dimmer border-md rounded-inherit absolute inset-0 border"
-						in:receiveThumb={{ key: 'explore' }}
-						out:sendThumb={{ key: 'explore' }}
-					></div>
-				{/if}
+			<NavbarButton href="/projects" currentOnSubpath class="after:border-none">
+				<NavbarThumb current={withoutLang.startsWith('/projects')} key="explore" />
 				{m.projects()}
 			</NavbarButton>
-			<NavbarButton href="/organizations" currentOnSubpath class="shadow-none">
-				{#if withoutLang.startsWith('/organizations')}
-					<div
-						class="border-primary/dimmer border-md rounded-inherit absolute inset-0 border"
-						in:receiveThumb={{ key: 'explore' }}
-						out:sendThumb={{ key: 'explore' }}
-					></div>
-				{/if}
+			<NavbarButton href="/organizations" currentOnSubpath class="after:border-none">
+				<NavbarThumb current={withoutLang.startsWith('/organizations')} key="explore" />
 				{m.organizations()}
 			</NavbarButton>
 		</nav>
@@ -91,43 +70,6 @@
 </div>
 
 <style>
-	#navbar-wrapper {
-		padding-inline: var(--spacing-padding);
-		margin-bottom: var(--spacing-navbar-margin-bottom);
-		position: sticky;
-		top: 0;
-		z-index: var(--z-index-frontmost);
-
-		/* &::after {
-			content: '';
-			z-index: -1;
-			position: absolute;
-			top: -100%;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			translate: 0 min(0%, calc(-50% + 0.1 * var(--scroll-y-px)));
-			background: linear-gradient(var(--background-color-base) 50%, transparent);
-			backdrop-filter: blur(var(--blur-md));
-			transition: all var(--transition-duration-xfast) ease-out;
-		} */
-
-		/* &::after {
-			--offset: var(--spacing-gutter);
-			content: '';
-			z-index: -1;
-			position: absolute;
-			top: -100%;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			translate: 0 min(0%, calc(-50% + 0.5 * var(--scroll-y-px)));
-			border-bottom-left-radius: calc(var(--radius-lg) - 0.25 * var(--scroll-y-px));
-			border-bottom-right-radius: calc(var(--radius-lg) - 0.25 * var(--scroll-y-px));
-			background: var(--background-color-base);
-		} */
-	}
-
 	#navbar {
 		padding-block: var(--spacing-padding);
 		margin-inline: auto;
