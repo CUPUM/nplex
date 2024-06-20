@@ -1,6 +1,6 @@
 import { STATUS_CODES } from '$lib/common/constants';
 import { authorize } from '$lib/crud/authorization/rbac.server';
-import { matchesProjectsSearch } from '$lib/crud/queries/projects';
+import { matchesProjectsFilters } from '$lib/crud/queries/projects';
 import { projectsSearchSchema } from '$lib/crud/validation/projects';
 import { db } from '$lib/db/db.server';
 import { projects } from '$lib/db/schema/public.server';
@@ -17,7 +17,7 @@ export const load = async (event) => {
 	const searchResults = await db
 		.select()
 		.from(projects)
-		.where(matchesProjectsSearch(searchForm.data));
+		.where(matchesProjectsFilters(searchForm.data));
 	return {
 		searchForm,
 		searchResults,

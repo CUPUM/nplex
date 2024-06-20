@@ -35,7 +35,7 @@ import {
 } from 'drizzle-orm-helpers/pg';
 import type { User } from 'lucia';
 import type { z } from 'zod';
-import type { projectsSearchSchema } from '../validation/projects';
+import type { projectsFiltersSchema } from '../validation/projects';
 import { joinTranslation } from './i18n';
 
 export function isProjectCreator(user: Pick<User, 'id'>) {
@@ -64,7 +64,7 @@ export function canEditProject(user: User) {
 /**
  * Filter clauses based on projectsSearchSchema data.
  */
-export function matchesProjectsSearch(filters: z.infer<typeof projectsSearchSchema>) {
+export function matchesProjectsFilters(filters: z.infer<typeof projectsFiltersSchema>) {
 	return $true;
 }
 

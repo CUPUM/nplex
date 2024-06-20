@@ -86,6 +86,7 @@
 
 	/* Widths */
 
+	--width-2xs: 8rem;
 	--width-xs: 16rem;
 	--width-sm: 32rem;
 	--width-md: 48rem;
@@ -117,7 +118,7 @@
 	--spacing-menu-gutter: calc(2 * var(--outline-width-focus));
 	--spacing-card-padding: var(--spacing-lg);
 	--spacing-card-gutter: var(--spacing-md);
-	--spacing-sidebar-width: 16rem;
+	--spacing-sidebar-width: 18rem;
 	--spacing-navbar-height: calc(2 * var(--spacing-padding) + 3.5 * var(--font-size-sm)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
 	--spacing-navbar-margin-bottom: var(--spacing-gutter);
 	--spacing-sticky-top: calc(var(--spacing-navbar-height) + var(--spacing-navbar-margin-bottom));

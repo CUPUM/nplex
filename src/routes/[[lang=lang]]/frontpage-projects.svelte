@@ -7,7 +7,7 @@
 
 <article>
 	<header>
-		{m.projects()}
+		{m.recent_projects()}
 	</header>
 	<ul>...</ul>
 </article>

@@ -36,20 +36,20 @@
 			</NavbarButton>
 		</nav>
 		<nav class="navbar-group justify-self-center">
-			<NavbarButton href="/projects">
+			<NavbarButton href="/projects" currentOnSubpath class="shadow-none">
 				{#if withoutLang.startsWith('/projects')}
 					<div
-						class="rounded-inherit bg-primary/15 absolute inset-0"
+						class="border-primary/dimmer border-md rounded-inherit absolute inset-0 border"
 						in:receiveThumb={{ key: 'explore' }}
 						out:sendThumb={{ key: 'explore' }}
 					></div>
 				{/if}
 				{m.projects()}
 			</NavbarButton>
-			<NavbarButton href="/organizations">
+			<NavbarButton href="/organizations" currentOnSubpath class="shadow-none">
 				{#if withoutLang.startsWith('/organizations')}
 					<div
-						class="rounded-inherit bg-primary/15 absolute inset-0"
+						class="border-primary/dimmer border-md rounded-inherit absolute inset-0 border"
 						in:receiveThumb={{ key: 'explore' }}
 						out:sendThumb={{ key: 'explore' }}
 					></div>
@@ -121,16 +121,11 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
-			translate: 0 min(0%, calc(-50% + var(--scroll-y-px)));
+			translate: 0 min(0%, calc(-50% + 0.5 * var(--scroll-y-px)));
 			border-bottom-left-radius: calc(var(--radius-lg) - 0.25 * var(--scroll-y-px));
 			border-bottom-right-radius: calc(var(--radius-lg) - 0.25 * var(--scroll-y-px));
-			background: color-mix(
-				in srgb,
-				var(--background-color-base) min(90%, var(--scroll-y) * 0.5%),
-				transparent
-			);
-			backdrop-filter: blur(var(--blur-md));
-			transition: all 100ms ease-out;
+			background: var(--background-color-base);
+			/* transition: all 100ms ease-out; */
 		}
 	}
 

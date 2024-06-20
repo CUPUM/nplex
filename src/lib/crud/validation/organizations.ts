@@ -3,7 +3,7 @@ import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
 
-export const organizationsSearchSchema = z.object({
+export const organizationsFiltersSchema = z.object({
 	search: z.string().optional(),
 });
 

@@ -52,7 +52,7 @@
 		border-radius: var(--radius-input);
 		font-weight: var(--font-weight-bold);
 		color: var(--color-fg);
-		/* backdrop-filter: blur(var(--blur-md)); */
+		backdrop-filter: blur(var(--blur-md));
 		/* background: color-mix(
 			in srgb,
 			var(--background-color-base) min(var(--opacity-dim), calc(var(--scroll-y) * 1%)),

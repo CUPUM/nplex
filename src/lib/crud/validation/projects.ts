@@ -30,7 +30,7 @@ import {
 } from './constants';
 import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
 
-export const projectsSearchSchema = z.object({
+export const projectsFiltersSchema = z.object({
 	search: z.string().optional(),
 });
 

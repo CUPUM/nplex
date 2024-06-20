@@ -37,6 +37,7 @@ legend {
 
 hr {
 	border-top-width: var(--border-width-input);
+	border-color: var(--border-color);
 }
 
 progress[value] {

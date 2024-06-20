@@ -7,7 +7,7 @@
 
 <article>
 	<header>
-		{m.organizations()}
+		{m.recent_organizations()}
 	</header>
 	<ul>...</ul>
 </article>

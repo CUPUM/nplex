@@ -12,7 +12,7 @@ import { and, eq, exists, or } from 'drizzle-orm';
 import { $boolean, $true, getColumns } from 'drizzle-orm-helpers';
 import type { User } from 'lucia';
 import type { z } from 'zod';
-import type { organizationsSearchSchema } from '../validation/organizations';
+import type { organizationsFiltersSchema } from '../validation/organizations';
 import { joinTranslation } from './i18n';
 
 export function isOrganizationCreator(user: Pick<User, 'id'>) {
@@ -46,7 +46,7 @@ export function canEditOrganization(user: User) {
 /**
  * Filter clauses based on projectsSearchSchema data.
  */
-export function matchesOrganizationsSearch(filters: z.infer<typeof organizationsSearchSchema>) {
+export function matchesOrganizationsFilters(filters: z.infer<typeof organizationsFiltersSchema>) {
 	return $true;
 }
 
