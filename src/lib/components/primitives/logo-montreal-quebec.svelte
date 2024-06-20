@@ -1,16 +1,10 @@
 <script lang="ts">
 	import type { SVGAttributes } from 'svelte/elements';
 
-	type $$Props = SVGAttributes<SVGElement>;
+	let { ...props }: SVGAttributes<SVGElement> = $props();
 </script>
 
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	width="730"
-	height="169"
-	viewBox="0 0 730 169"
-	{...$$restProps}
->
+<svg xmlns="http://www.w3.org/2000/svg" width="730" height="169" viewBox="0 0 730 169" {...props}>
 	<path
 		fill-rule="evenodd"
 		clip-rule="evenodd"
@@ -214,6 +208,3 @@
 		fill="currentColor"
 	/>
 </svg>
-
-<style>
-</style>

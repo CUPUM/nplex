@@ -3,13 +3,9 @@
 	import type { AvailableLanguageTag } from '$i18n/runtime';
 	import type { SVGAttributes } from 'svelte/elements';
 
-	type $$Props = {
-		lang?: AvailableLanguageTag;
-	} & SVGAttributes<SVGElement>;
+	let { lang, ...props }: { lang?: AvailableLanguageTag } & SVGAttributes<SVGElement> = $props();
 
-	export let lang: $$Props['lang'] = undefined;
-
-	$: _lang = lang ?? $page.data.lang;
+	let _lang = $derived(lang || $page.data.lang);
 </script>
 
 <svg
@@ -18,7 +14,7 @@
 	width="240"
 	height="177"
 	viewBox="0 0 240 177"
-	{...$$restProps}
+	{...props}
 >
 	<!-- prettier-ignore -->
 	<path d="M82.7426 56.2786C82.7426 56.2786 82.8016 56.7439 82.2172 56.7439C81.6374 56.7439 81.6374 56.2786 81.6374 56.2786V35.4386C81.6374 35.4386 81.6374 34.9146 82.1598 34.9146C82.7426 34.9146 82.7426 35.4386 82.7426 35.4386V56.2786Z" fill="currentColor"/>

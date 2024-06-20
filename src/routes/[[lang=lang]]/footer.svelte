@@ -1,58 +1,56 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import * as m from '$i18n/messages';
+	import LogoCupumUmontreal from '$lib/components/primitives/logo-cupum-umontreal.svelte';
+	import LogoMontrealQuebec from '$lib/components/primitives/logo-montreal-quebec.svelte';
+	import LogoUnescoUnitwin from '$lib/components/primitives/logo-unesco-unitwin.svelte';
+	import Logo from '$lib/components/primitives/logo.svelte';
 	import { PRESENTATIONS } from '$lib/presentation/constants';
+	import { slide } from 'svelte/transition';
 </script>
 
 {#if $page.data.setout !== PRESENTATIONS.FULL_SCREEN && !$page.data.footer?.hidden}
-	<footer>Footer goes here</footer>
-{/if}
+	<footer transition:slide class="bg-card-dim p-lg pb-md flex flex-col items-center rounded-t-lg">
+		<nav class="gap-xl px-lg flex flex-row max-sm:flex-col">
+			<a
+				href="https://montreal.ca{$page.data.lang === 'en' ? '/en' : ''}/unites/bureau-du-design"
+				rel="external"
+				target="_blank"
+				class="opacity-dim transition-all hover:opacity-[100]"
+			>
+				<LogoMontrealQuebec preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
+			</a>
 
-<!-- {#if $page.data.setout !== ARRANGEMENTS.FULL_SCREEN && !$page.data.footer?.hide}
-	<footer transition:slide>
-		<div id="footer-inner">
-			<ul id="footer-logos">
-				<li>
-					<a
-						href="https://montreal.ca{$page.data.lang === 'en'
-							? '/en'
-							: ''}/unites/bureau-du-design"
-						rel="external"
-						target="_blank"
-						class="footer-logo"
-					>
-						<LogoMontrealQuebec preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
-					</a>
-				</li>
-				<li>
-					<a
-						href="https://www.unesco.org/{$page.data.lang}/unitwin"
-						rel="external"
-						target="_blank"
-						class="footer-logo"
-					>
-						<LogoUnescoUnitwin preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
-					</a>
-				</li>
-				<li>
-					<a href="https://www.unesco-paysage.umontreal.ca/{$page.data.lang}/" class="footer-logo">
-						<LogoCupumUmontreal preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
-					</a>
-				</li>
-			</ul>
-			<ul class="links"></ul>
-			<ul id="footer-links">
-				[sitemap]
-			</ul>
-		</div>
-		<section id="footer-cc">
-			<Logo size="2em" />
+			<a
+				href="https://www.unesco.org/{$page.data.lang}/unitwin"
+				rel="external"
+				target="_blank"
+				class="opacity-dim transition-all hover:opacity-[100]"
+			>
+				<LogoUnescoUnitwin preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
+			</a>
+
 			<a
 				href="https://www.unesco-paysage.umontreal.ca/{$page.data.lang}/"
 				rel="external"
 				target="_blank"
+				class="opacity-dim transition-all hover:opacity-[100]"
 			>
-				© {m.unesco_chair_long()}
+				<LogoCupumUmontreal preserveAspectRatio="xMidYMid" width="100%" height="4rem" />
 			</a>
-		</section>
+		</nav>
+		<Logo
+			id="opacity-dim hover:opacity-[100] transition-all"
+			height="1.5em"
+			class="mt-xl mb-sm opacity-dim"
+		/>
+		<a
+			href="https://www.unesco-paysage.umontreal.ca/{$page.data.lang}/"
+			rel="external"
+			target="_blank"
+			class="hover:text-base-accent opacity-dim compact cursor-pointer text-base text-xs transition-all"
+		>
+			© {m.unesco_chair_long()}
+		</a>
 	</footer>
-{/if} -->
+{/if}

@@ -72,11 +72,11 @@
 
 	/* Font weights */
 
-	--font-weight-thin: 350;
-	--font-weight-normal: 450;
-	--font-weight-semibold: 550;
-	--font-weight-bold: 650;
-	--font-weight-bolder: 750;
+	--font-weight-thin: 300;
+	--font-weight-normal: 400;
+	--font-weight-semibold: 500;
+	--font-weight-bold: 600;
+	--font-weight-bolder: 700;
 
 	/* Breakpoints */
 
@@ -151,7 +151,7 @@
 
 	/* Fades */
 
-	--opacity-dim: 50%;
+	--opacity-dim: 45%;
 	--opacity-dimmer: 25%;
 	--opacity-pulse: 50%;
 

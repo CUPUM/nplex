@@ -1,17 +1,20 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
+	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { LogIn, Send, UserPlus2 } from 'lucide-svelte';
 	import { fly } from 'svelte/transition';
-	import { superForm } from 'sveltekit-superforms/client';
 
 	let { data } = $props();
 
-	const { form, enhance, constraints, errors, message } = superForm(data.form);
+	const { form, enhance, constraints, errors, message, submitter } = extendedSuperForm(data.form);
+
+	let buttonRef = $state<HTMLButtonElement>();
 </script>
 
-<form method="POST" use:enhance autocomplete="off" class="gap-gutter flex flex-col">
-	<h1 class="pb-gutter text-2xl font-semibold">
+<form method="POST" use:enhance autocomplete="off" class="gap-card-gutter flex flex-col">
+	<h1 class="mb-card-gutter text-xl font-semibold">
 		{m.auth_reset_password_title()}
 	</h1>
 	<label class="field">
@@ -28,8 +31,13 @@
 			{...$constraints.email}
 		/>
 	</label>
-	<button in:fly={{ y: -6, delay: 75 }} class="button button-cta" type="submit">
-		<Send />
+	<button
+		in:fly={{ y: -6, delay: 75 }}
+		class="button button-cta"
+		type="submit"
+		bind:this={buttonRef}
+	>
+		<IconSpinner icon={Send} busy={$submitter === buttonRef} />
 		{m.reset()}
 	</button>
 </form>

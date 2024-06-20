@@ -28,30 +28,3 @@
 		<MailWarning class="button-icon" />{m.verify_email_resend()}
 	</button>
 </form>
-
-<style>
-	form {
-		align-self: center;
-		gap: 1rem;
-		max-width: var(--width-sm);
-		padding: 1rem;
-		text-align: center;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex: 1;
-		flex-direction: column;
-	}
-
-	.pin {
-		display: flex;
-		flex-direction: row;
-		gap: 0.5em;
-		align-self: center;
-
-		.input {
-			width: 1ch;
-			flex: none;
-		}
-	}
-</style>

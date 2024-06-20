@@ -72,6 +72,7 @@
 		--input-color: var(--text-color-input-dim);
 		--input-background: transparent;
 		--input-border-color: var(--border-color);
+		--input-border-width: var(--border-width-input);
 		--input-icon-color: currentColor;
 		--input-hover-color: var(--text-color-input);
 		--input-hover-background: var(--background-color-input);

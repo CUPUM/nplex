@@ -56,7 +56,7 @@ export const actions = {
 					})
 					.returning({ id: users.id });
 				if (!user) {
-					await tx.rollback();
+					tx.rollback();
 					return;
 				}
 				const [emailVerification] = await tx
@@ -67,7 +67,7 @@ export const actions = {
 					})
 					.returning({ code: emailVerificationCodes.code });
 				if (!emailVerification) {
-					await tx.rollback();
+					tx.rollback();
 					return;
 				}
 				return { ...user, ...emailVerification };

@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import { superForm } from 'sveltekit-superforms/client';
 
-	export let data;
+	let { data } = $props();
 
 	const { form, enhance, constraints, errors } = superForm(data.form);
 </script>

@@ -5,7 +5,7 @@
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client.js';
-	import { Eye, EyeOff, Lock, LogIn, UserRoundPlus } from 'lucide-svelte';
+	import { Eye, EyeOff, LogIn, ShieldQuestion, UserRoundPlus } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
@@ -22,8 +22,8 @@
 	);
 </script>
 
-<form method="POST" use:enhance autocomplete="off" class="gap-gutter flex flex-col">
-	<h1 class="pb-gutter text-2xl font-semibold">
+<form method="POST" use:enhance autocomplete="off" class="gap-card-gutter flex flex-col">
+	<h1 class="mb-card-gutter text-xl font-semibold">
 		{m.auth_login_title()}
 	</h1>
 	<label class="field">
@@ -105,6 +105,6 @@
 	</a>
 	<a class="button button-link" {...linkAttributes('/reset-password')}>
 		{m.auth_forgot_password_prompt()}
-		<Lock />
+		<ShieldQuestion />
 	</a>
 </nav>

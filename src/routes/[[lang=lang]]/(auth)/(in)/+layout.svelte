@@ -24,10 +24,10 @@
 </script>
 
 <article class="flex flex-1 items-center justify-center">
-	<div class="gap-gutter p-gutter flex w-full max-w-sm flex-col items-stretch">
+	<div class="gap-card-gutter p-padding flex w-full max-w-sm flex-col items-stretch">
 		{@render children()}
-		<section class="gap-gutter flex flex-col">
-			<div class="gap-gutter px-gutter flex flex-row items-center">
+		<section class="gap-inherit flex flex-col">
+			<div class="gap-inherit flex flex-row items-center">
 				<hr class="border-dim flex-1" />
 				<span
 					class="text-base-dim text-center text-sm font-semibold font-thin first-letter:uppercase"

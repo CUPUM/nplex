@@ -16,6 +16,6 @@ export function imageSrc(
 	edits: { resize?: ResizeOptions } & WebpOptions = {}
 ) {
 	const string = JSON.stringify({ key: storageName, edits });
-	const encoded = btoa(string);
+	const encoded = encodeURIComponent(string); // btoa(string);
 	return `${PUBLIC_IMAGES_ENDPOINT}/${encoded}`;
 }
