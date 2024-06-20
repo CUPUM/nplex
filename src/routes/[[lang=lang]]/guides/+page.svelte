@@ -41,6 +41,6 @@
 		</nav>
 	</div>
 </header>
-<article class="prose mx-auto">
+<article class="prose pb-xl mx-auto">
 	<svelte:component this={data.content} />
 </article>

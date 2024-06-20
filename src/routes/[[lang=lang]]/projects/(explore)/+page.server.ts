@@ -4,8 +4,6 @@ import { matchesProjectsFilters } from '$lib/crud/queries/projects';
 import { projectsFiltersSchema } from '$lib/crud/validation/projects';
 import { db } from '$lib/db/db.server';
 import { projects, projectsImages, projectsTranslations } from '$lib/db/schema/public.server';
-import { PRESENTATIONS } from '$lib/presentation/constants';
-import { setEventPresentation } from '$lib/presentation/event';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
@@ -33,7 +31,6 @@ export const load = async (event) => {
 		event
 	);
 	return {
-		...setEventPresentation(event, PRESENTATIONS.FULL_WIDTH),
 		filtersForm,
 		result,
 	};

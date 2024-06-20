@@ -17,7 +17,7 @@
 		duration: 250,
 		easing: circInOut,
 		fallback(node, params, intro) {
-			return scale(node, { start: 0.5, duration: 150, easing: expoOut, opacity: 0 });
+			return scale(node, { start: 0.5, duration: 250, easing: expoOut, opacity: 0 });
 		},
 	});
 </script>
@@ -112,7 +112,7 @@
 			transition: all var(--transition-duration-xfast) ease-out;
 		} */
 
-		&::after {
+		/* &::after {
 			--offset: var(--spacing-gutter);
 			content: '';
 			z-index: -1;
@@ -125,8 +125,7 @@
 			border-bottom-left-radius: calc(var(--radius-lg) - 0.25 * var(--scroll-y-px));
 			border-bottom-right-radius: calc(var(--radius-lg) - 0.25 * var(--scroll-y-px));
 			background: var(--background-color-base);
-			/* transition: all 100ms ease-out; */
-		}
+		} */
 	}
 
 	#navbar {
