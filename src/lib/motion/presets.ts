@@ -1,7 +1,7 @@
 // Shared crossfade presets
 
 import { cubicInOut, elasticOut, expoInOut, expoOut } from 'svelte/easing';
-import { crossfade, scale } from 'svelte/transition';
+import { crossfade, fly, scale } from 'svelte/transition';
 
 export function createCrossfadePreset<T extends Parameters<typeof crossfade>>(...params: T) {
 	const preset = crossfade(params);
@@ -41,5 +41,19 @@ export const dashboardSidebarMenuThumbCrossfade = createCrossfadePreset({
 	easing: expoInOut,
 	fallback(node, params, intro) {
 		return scale(node, { start: 0.9, duration: 250, easing: expoOut });
+	},
+});
+
+export const projectCardCrossfade = createCrossfadePreset({
+	duration: 350,
+	easing: expoOut,
+	fallback(node, params, intro) {
+		return fly(node, {
+			y: 12,
+			duration: 750,
+			easing: expoOut,
+			opacity: 0,
+			delay: params.delay,
+		});
 	},
 });
