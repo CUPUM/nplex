@@ -62,7 +62,7 @@ export function canEditProject(user: User) {
 }
 
 /**
- * Filter clauses based on projectsSearchSchema data.
+ * Filter clauses based on projectsFiltersSchema data.
  */
 export function matchesProjectsFilters(filters: z.infer<typeof projectsFiltersSchema>) {
 	return $true;
