@@ -168,8 +168,8 @@
 	/* Borders */
 
 	--border-width-sm: 0.5px;
-	--border-width-md: 1.25px;
-	--border-width-lg: 3px;
+	--border-width-md: 1.5px;
+	--border-width-lg: 2.5px;
 	--border-width-input: var(--border-width-md);
 
 	/* Outlines */
