@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import DashboardSidebarMenuItem from '$lib/components/patterns/dashboard-sidebar-menu-item.svelte';
 	import DashboardSidebarMenu from '$lib/components/patterns/dashboard-sidebar-menu.svelte';
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
-	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import {
 		ArrowRight,
 		FolderHeart,
@@ -13,16 +13,12 @@
 		Settings,
 		SquareUserRoundIcon,
 	} from 'lucide-svelte';
-	import { onDestroy } from 'svelte';
 
 	let { data, children } = $props();
 
-	const dashboard = getDashboardContext(true);
-	dashboard.sidebar = sidebar;
+	const { setSidebar } = getDashboardContext(true);
 
-	onDestroy(() => {
-		dashboard.sidebar = undefined;
-	});
+	setSidebar(sidebar);
 </script>
 
 {#snippet sidebar()}
@@ -30,48 +26,40 @@
 		{#snippet legend()}
 			{m.account_nav_title()}
 		{/snippet}
-		<a class="button button-nav" use:ripple {...linkAttributes(`/i`)}>
+		<DashboardSidebarMenuItem {...linkAttributes(`/i`)}>
 			<Home />
 			{m.account_nav_home()}
-		</a>
-		<a
-			class="button button-nav"
-			use:ripple
-			{...linkAttributes(`/users/${$page.data?.user?.id}`)}
-			aria-disabled
-		>
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem {...linkAttributes(`/users/${$page.data?.user?.id}`)} aria-disabled>
 			<SquareUserRoundIcon />
 			{m.account_nav_profile()}
-		</a>
-		<a class="button button-nav" use:ripple {...linkAttributes(`/i/collections`)} aria-disabled>
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem {...linkAttributes(`/i/collections`)} aria-disabled>
 			<Folders />
 			{m.account_nav_collections()}
-		</a>
-		<a class="button button-nav" use:ripple {...linkAttributes(`/i/likes`)} aria-disabled>
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem {...linkAttributes(`/i/likes`)} aria-disabled>
 			<FolderHeart />
 			{m.account_nav_likes()}
-		</a>
-		<a class="button button-nav" use:ripple {...linkAttributes(`/i/settings`)}>
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem {...linkAttributes(`/i/settings`)}>
 			<Settings />
 			{m.account_nav_settings()}
-		</a>
+		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
 	<DashboardSidebarMenu>
 		{#snippet legend()}
 			{m.account_nav_editor_title()}
 		{/snippet}
-		<a class="button button-nav" use:ripple {...linkAttributes(`/edit/projects`)}>
+		<DashboardSidebarMenuItem {...linkAttributes(`/edit/projects`)}>
 			{m.projects()}
 			<ArrowRight />
-		</a>
-		<a class="button button-nav" use:ripple {...linkAttributes(`/edit/organizations`)}>
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem {...linkAttributes(`/edit/organizations`)}>
 			{m.organizations()}
 			<ArrowRight />
-		</a>
+		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
 {/snippet}
 
 {@render children()}
-
-<style>
-</style>

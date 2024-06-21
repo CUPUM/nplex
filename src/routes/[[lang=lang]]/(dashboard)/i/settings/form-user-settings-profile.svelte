@@ -4,13 +4,12 @@
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { Check, FileUp, Mail, Shield, ShieldX } from 'lucide-svelte';
-	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	const { form, enhance, constraints, tainted, submitter, submitting, isTainted } =
-		extendedSuperForm(superForm(data.profileForm, { dataType: 'json', invalidateAll: 'force' }));
+		extendedSuperForm(data.profileForm, { dataType: 'json', invalidateAll: 'force' });
 
 	let submitRef = $state<HTMLButtonElement>();
 </script>

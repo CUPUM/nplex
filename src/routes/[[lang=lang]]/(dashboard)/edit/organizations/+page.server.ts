@@ -1,7 +1,7 @@
 import { STATUS_CODES } from '$lib/common/constants';
 import { authorize } from '$lib/crud/authorization/rbac.server';
 import { matchesProjectsFilters } from '$lib/crud/queries/projects';
-import { organizationsSearchSchema } from '$lib/crud/validation/organizations';
+import { organizationsFiltersSchema } from '$lib/crud/validation/organizations';
 import { db } from '$lib/db/db.server';
 import { organizations } from '$lib/db/schema/public.server';
 import { error } from '@sveltejs/kit';
@@ -10,16 +10,16 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 export const load = async (event) => {
 	authorize(event);
-	const searchForm = await superValidate(event.url.searchParams, zod(organizationsSearchSchema));
-	if (!searchForm.valid) {
+	const filtersForm = await superValidate(event.url.searchParams, zod(organizationsFiltersSchema));
+	if (!filtersForm.valid) {
 		error(STATUS_CODES.BAD_REQUEST, 'Invalid organizations filters.');
 	}
-	const searchResults = await db
+	const results = await db
 		.select()
 		.from(organizations)
-		.where(matchesProjectsFilters(searchForm.data));
+		.where(matchesProjectsFilters(filtersForm.data));
 	return {
-		searchForm,
-		searchResults,
+		filtersForm,
+		results,
 	};
 };

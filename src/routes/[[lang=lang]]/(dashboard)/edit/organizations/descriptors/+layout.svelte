@@ -4,19 +4,14 @@
 	import DashboardSidebarMenu from '$lib/components/patterns/dashboard-sidebar-menu.svelte';
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
-	import { onDestroy } from 'svelte';
 	import DashboardSidebarMenuOrganizations from '../../../dashboard-sidebar-menu-organizations.svelte';
 	import DashboardSidebarMenuProjects from '../../../dashboard-sidebar-menu-projects.svelte';
 
 	let { children, data } = $props();
 
-	const ctx = getDashboardContext(true);
+	const { setSidebar } = getDashboardContext(true);
 
-	ctx.sidebar = sidebar;
-
-	onDestroy(() => {
-		if (ctx.sidebar === sidebar) ctx.sidebar = undefined;
-	});
+	setSidebar(sidebar);
 </script>
 
 {#snippet sidebar()}

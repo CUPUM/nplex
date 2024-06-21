@@ -1,12 +1,11 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import { DialogForm } from '$lib/builders/dialog-form.svelte';
+	import { Dialog } from '$lib/builders/dialog.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { extendedSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
 	import { MODES } from '$lib/modes/constants';
 	import { imageSrc } from '$lib/storage/media/url';
 	import { Check, Trash, Wallpaper, Wrench } from 'lucide-svelte';
-	import { superForm } from 'sveltekit-superforms';
 	import type { PageData } from './$types';
 
 	let {
@@ -17,9 +16,9 @@
 
 	let submitRef = $state<HTMLButtonElement>();
 
-	const { form, enhance, submitter } = extendedSuperForm(superForm(imageForm));
+	const { form, enhance, submitter } = extendedSuperForm(imageForm);
 
-	const dialogForm = new DialogForm();
+	const dialog = new Dialog();
 </script>
 
 <figure
@@ -34,7 +33,7 @@
 	<menu
 		class="rounded-b-inherit after:rounded-inherit p-input-padding gap-menu-gutter after:content after:from-popover/90 after:duration-medium relative z-1 flex min-h-[50%] flex-row flex-wrap content-end text-sm transition-all after:pointer-events-none after:absolute after:inset-0 after:-z-1 after:bg-gradient-to-t after:to-transparent after:opacity-0 after:transition-all group-hover/card:after:opacity-100"
 	>
-		<button class="button pointer-events-auto backdrop-blur-md" {...dialogForm.triggerAttributes}>
+		<button class="button pointer-events-auto backdrop-blur-md" {...dialog.triggerAttributes}>
 			<Wrench />
 			{m.edit()}
 		</button>
@@ -57,13 +56,8 @@
 	</menu>
 </figure>
 
-{#if dialogForm.open}
-	<dialog
-		class="dialog"
-		use:dialogForm.dialogAction
-		{...dialogForm.dialogAttributes}
-		id={imageForm.id}
-	>
+{#if dialog.open}
+	<dialog class="dialog" use:dialog.dialogAction {...dialog.dialogAttributes} id={imageForm.id}>
 		<h3 class="dialog-title">Hello</h3>
 		<div class="dialog-section">Hello</div>
 		<menu class="dialog-actions">

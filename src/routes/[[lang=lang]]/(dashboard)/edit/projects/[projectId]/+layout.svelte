@@ -5,21 +5,15 @@
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { AlertTriangle, Eye, UsersRound } from 'lucide-svelte';
-	import { onDestroy } from 'svelte';
 	import DashboardSidebarMenuOrganizations from '../../../dashboard-sidebar-menu-organizations.svelte';
 	import DashboardSidebarMenuProjects from '../../../dashboard-sidebar-menu-projects.svelte';
 
 	let { children, data } = $props();
 
-	const ctx = getDashboardContext(true);
+	const { setHeader, setSidebar } = getDashboardContext(true);
 
-	ctx.header = header;
-	ctx.sidebar = sidebar;
-
-	onDestroy(() => {
-		if (ctx.header === header) ctx.header = undefined;
-		if (ctx.sidebar === sidebar) ctx.sidebar = undefined;
-	});
+	setHeader(header);
+	setSidebar(sidebar);
 </script>
 
 {#snippet header()}
@@ -107,11 +101,7 @@
 			<Eye class="button-icon" />
 			{m.project_visibility()}
 		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem
-			{...linkAttributes(`/edit/projects/${data.id}/security`)}
-			data-danger
-			aria-disabled
-		>
+		<DashboardSidebarMenuItem {...linkAttributes(`/edit/projects/${data.id}/security`)} data-danger>
 			<AlertTriangle class="button-icon" />
 			{m.project_danger_zone()}
 		</DashboardSidebarMenuItem>

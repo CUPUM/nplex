@@ -1,29 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { FilePlus, Search, X } from 'lucide-svelte';
-	import { onDestroy } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { cubicOut, expoOut } from 'svelte/easing';
 	import { fly, scale } from 'svelte/transition';
 	import { superForm } from 'sveltekit-superforms';
-	import DashboardSidebarMenuOrganizations from '../../dashboard-sidebar-menu-organizations.svelte';
-	import DashboardSidebarMenuProjects from '../../dashboard-sidebar-menu-projects.svelte';
 
 	let { data } = $props();
 
-	const ctx = getDashboardContext(true);
-
-	ctx.sidebar = sidebar;
-
-	onDestroy(() => {
-		if (ctx.sidebar === sidebar) ctx.sidebar = undefined;
-	});
-
-	const { form, constraints, errors, submitting } = superForm(data.searchForm);
+	const { form, constraints, errors, submitting } = superForm(data.filtersForm);
 
 	let clearSearchParam = $derived.by(() => {
 		const q = new URLSearchParams($page.url.searchParams);
@@ -31,11 +19,6 @@
 		return q.toString();
 	});
 </script>
-
-{#snippet sidebar()}
-	<DashboardSidebarMenuProjects />
-	<DashboardSidebarMenuOrganizations />
-{/snippet}
 
 <article>
 	<header>
@@ -90,7 +73,7 @@
 				{m.project_create_new()}
 			</a>
 		</li>
-		{#each data.searchResults as project, i (project.id)}
+		{#each data.results as project, i (project.id)}
 			<li
 				animate:flip={{ duration: (l) => 150 + l / 100 }}
 				in:fly|global={{ y: -6, duration: 350, easing: expoOut, delay: i * 25, opacity: 0 }}

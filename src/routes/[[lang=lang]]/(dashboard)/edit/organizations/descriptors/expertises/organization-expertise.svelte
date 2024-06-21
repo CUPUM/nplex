@@ -10,14 +10,16 @@
 	import type { PageData } from './$types';
 
 	let {
-		organizationExpertisesForm,
+		organizationExpertisesListForm,
 		organizationExpertiseFormData,
 	}: {
-		organizationExpertisesForm: ExtendedSuperFormData<PageData['organizationExpertisesForm']>;
+		organizationExpertisesListForm: ExtendedSuperFormData<
+			PageData['organizationExpertisesListForm']
+		>;
 		organizationExpertiseFormData: PageData['organizationExpertiseForms'][number];
 	} = $props();
 
-	const { formId: parentFormId, submitter: parentSubmitter } = organizationExpertisesForm;
+	const { formId: parentFormId, submitter: parentSubmitter } = organizationExpertisesListForm;
 
 	const organizationExpertiseForm = extendedSuperForm(organizationExpertiseFormData, {
 		dataType: 'json',

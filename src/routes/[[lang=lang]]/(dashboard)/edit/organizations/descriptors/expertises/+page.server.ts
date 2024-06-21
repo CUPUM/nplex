@@ -20,32 +20,35 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 export const load = async (event) => {
 	authorize(event, 'organizations.descriptors.types.update');
-	const [organizationExpertiseCreateForm, organizationExpertisesForm, organizationExpertiseForms] =
-		await Promise.all([
-			superValidate(zod(organizationExpertiseCreateSchema)),
-			superValidate(zod(organizationExpertisesListSchema)),
-			joinTranslations(
-				db
-					.select({
-						...getColumns(organizationExpertises),
-						...aggTranslations(getColumns(organizationExpertisesTranslations)),
-					})
-					.from(organizationExpertises)
-					.groupBy(organizationExpertises.id)
-					.$dynamic(),
-				organizationExpertisesTranslations,
-				eq(organizationExpertises.id, organizationExpertisesTranslations.id)
-			).then((d) =>
-				Promise.all(
-					d.map((type) =>
-						superValidate(type, zod(organizationExpertisesWithTranslationsSchema), { id: type.id })
-					)
+	const [
+		organizationExpertiseCreateForm,
+		organizationExpertisesListForm,
+		organizationExpertiseForms,
+	] = await Promise.all([
+		superValidate(zod(organizationExpertiseCreateSchema)),
+		superValidate(zod(organizationExpertisesListSchema)),
+		joinTranslations(
+			db
+				.select({
+					...getColumns(organizationExpertises),
+					...aggTranslations(getColumns(organizationExpertisesTranslations)),
+				})
+				.from(organizationExpertises)
+				.groupBy(organizationExpertises.id)
+				.$dynamic(),
+			organizationExpertisesTranslations,
+			eq(organizationExpertises.id, organizationExpertisesTranslations.id)
+		).then((d) =>
+			Promise.all(
+				d.map((type) =>
+					superValidate(type, zod(organizationExpertisesWithTranslationsSchema), { id: type.id })
 				)
-			),
-		]);
+			)
+		),
+	]);
 	return {
 		organizationExpertiseForms,
-		organizationExpertisesForm,
+		organizationExpertisesListForm,
 		organizationExpertiseCreateForm,
 	};
 };

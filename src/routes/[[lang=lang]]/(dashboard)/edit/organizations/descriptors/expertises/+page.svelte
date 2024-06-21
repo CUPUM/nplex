@@ -6,11 +6,11 @@
 
 	let { data } = $props();
 
-	const organizationExpertisesForm = extendedSuperForm(data.organizationExpertisesForm, {
+	const organizationExpertisesListForm = extendedSuperForm(data.organizationExpertisesListForm, {
 		invalidateAll: true,
 	});
 
-	const { formId, enhance } = organizationExpertisesForm;
+	const { formId, enhance } = organizationExpertisesListForm;
 </script>
 
 <section class="dashboard-section">
@@ -28,7 +28,7 @@
 		</li>
 		{#each data.organizationExpertiseForms as organizationExpertiseFormData, i (organizationExpertiseFormData.id)}
 			<li>
-				<OrganizationExpertise {organizationExpertiseFormData} {organizationExpertisesForm} />
+				<OrganizationExpertise {organizationExpertiseFormData} {organizationExpertisesListForm} />
 			</li>
 		{/each}
 	</ul>

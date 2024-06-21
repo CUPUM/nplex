@@ -7,7 +7,8 @@
 	let { data }: { data: PageData } = $props();
 
 	const { form, enhance, tainted, submitting, submitter } = extendedSuperForm(
-		superForm(data.accountForm)
+		superForm(data.accountForm),
+		{ dataType: 'json' }
 	);
 </script>
 

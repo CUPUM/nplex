@@ -10,16 +10,13 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 export const load = async (event) => {
 	authorize(event);
-	const searchForm = await superValidate(event.url.searchParams, zod(projectsFiltersSchema));
-	if (!searchForm.valid) {
+	const filtersForm = await superValidate(event.url.searchParams, zod(projectsFiltersSchema));
+	if (!filtersForm.valid) {
 		error(STATUS_CODES.BAD_REQUEST, 'Invalid projects filters.');
 	}
-	const searchResults = await db
-		.select()
-		.from(projects)
-		.where(matchesProjectsFilters(searchForm.data));
+	const results = await db.select().from(projects).where(matchesProjectsFilters(filtersForm.data));
 	return {
-		searchForm,
-		searchResults,
+		filtersForm,
+		results,
 	};
 };

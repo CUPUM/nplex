@@ -4,7 +4,7 @@
 	import { type Snippet } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
-	import { scale } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 
 	type DashboardSidebarMenuContext = {
 		thumbKey: {};
@@ -34,7 +34,7 @@
 
 <menu
 	class="p-popover-padding gap-menu-gutter bg-card-dim rounded-dashboard relative flex flex-col"
-	in:scale={{ start: 0.95, duration: 750, easing: expoOut }}
+	in:slide|global={{ axis: 'y', duration: 750, easing: expoOut }}
 >
 	{#if restProps['aria-current']}
 		<div

@@ -5,15 +5,11 @@
 	let { data } = $props();
 </script>
 
-<coming_soon>
-	{@html m.account_home_coming_soon()}
-	<a {...linkAttributes('/i/settings')} class="button button-link">
-		{m.account_home_coming_soon_button()}
-	</a>
-</coming_soon>
-
-<style>
-	section {
-		padding: 2rem;
-	}
-</style>
+<article class="h-main-full-height flex flex-col items-center justify-center">
+	<div class="leading-lg max-w-sm text-center">
+		{@html m.account_home_coming_soon()}
+		<a {...linkAttributes('/i/settings')} class="button compact mt-sm">
+			{m.account_home_coming_soon_button()}
+		</a>
+	</div>
+</article>
