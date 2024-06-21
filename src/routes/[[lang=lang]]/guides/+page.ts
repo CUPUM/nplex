@@ -2,7 +2,7 @@ import { sourceLanguageTag } from '$i18n/runtime';
 import { headingsMetadataSchema } from '$lib/markdown/validation';
 import { z } from 'zod';
 
-export const prerender = 'auto';
+export const prerender = true;
 
 const metadataSchema = headingsMetadataSchema.extend({
 	title: z.string(),

@@ -52,7 +52,7 @@
 				<li
 					animate:flip
 					style:--rowspan={rowspan}
-					class="relative col-span-1 row-span-[var(--rowspan)] flex h-full w-full group-data-[view-mode=masonry]/explore:aspect-[2/var(--rowspan)]"
+					class="relative col-span-1 row-span-[var(--rowspan)] flex h-full w-full flex-col group-data-[view-mode=masonry]/explore:aspect-[2/var(--rowspan)]"
 					in:projectCardCrossfade.receive|global={{
 						key: project.id,
 						delay: i * 25,

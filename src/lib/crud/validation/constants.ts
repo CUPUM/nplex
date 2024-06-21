@@ -21,3 +21,14 @@ export const PROJECT_DESCRIPTOR_DELETE_CONFIRM = 'Confirm';
 
 export const ORG_TITLE_MAX = 250;
 export const ORG_DESCRIPTION_MAX = 5_000;
+
+export const SORT_ORDERS = {
+	ASCENDING: 'asc',
+	DESCENDING: 'desc',
+} as const;
+
+export const PROJECTS_SORTS = {
+	TITLE: 'title',
+	CREATED_AT: 'created-at',
+	UPDATED_AT: 'updated-at',
+} as const;

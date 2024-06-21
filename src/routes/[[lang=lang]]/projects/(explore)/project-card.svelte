@@ -9,9 +9,11 @@
 	let { project }: { project: PageData['result'][number] } = $props();
 </script>
 
-<article class="group/card bg-card rounded-card absolute inset-0 transition-all hover:shadow-lg">
+<article
+	class="group/card hover:bg-card-accent bg-card rounded-card relative inset-0 transition-all group-data-[view-mode=masonry]/explore:absolute hover:shadow-lg"
+>
 	<div
-		class="absolute inset-[var(--border-width-lg)] flex flex-col items-stretch justify-end rounded-[calc(var(--radius-card)-var(--border-width-lg))]"
+		class="inset-[var(--border-width-lg)] flex flex-col items-stretch justify-end rounded-[calc(var(--radius-card)-var(--border-width-lg))] group-data-[view-mode=masonry]/explore:absolute"
 	>
 		<!-- <img class="fill object-cover" src="https://picsum.photos/seed/{project.id}/500/500" /> -->
 		{#if project.bannerStorageName}

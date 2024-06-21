@@ -47,6 +47,7 @@ export const dashboardSidebarMenuThumbCrossfade = createCrossfadePreset({
 export const projectCardCrossfade = createCrossfadePreset({
 	duration: 350,
 	easing: expoOut,
+	delay: 0,
 	fallback(node, params, intro) {
 		return fly(node, {
 			y: 12,

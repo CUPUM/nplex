@@ -14,7 +14,7 @@
 
 <script lang="ts">
 	import { type AvailableLanguageTag } from '$i18n/runtime';
-	import { appUrl } from '$lib/common/app-url';
+	import { appUrl } from '$lib/common/url';
 	import { withLang } from '$lib/i18n/location';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 
