@@ -1,6 +1,16 @@
+.prose-block {
+	& > :first-child {
+		margin-top: 0;
+	}
+	& > :last-child {
+		margin-bottom: 0;
+	}
+}
+
 .prose {
 	font-size: initial;
-	line-height: var(--line-height-lg);
+	--font-size-xs--line-height: var(--line-height-lg);
+	--font-size-sm--line-height: var(--line-height-lg);
 
 	h1 {
 		color: var(--text-color-base-accent);
@@ -8,7 +18,7 @@
 		line-height: var(--font-size-5xl--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.75em;
+		margin-bottom: 0.625em;
 		max-width: var(--width-prose);
 	}
 
@@ -18,47 +28,47 @@
 		line-height: var(--font-size-4xl--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.75em;
+		margin-bottom: 0.625em;
 		max-width: var(--width-prose);
 	}
 
 	h3 {
-		color: var(--text-color-base-accent);
+		/* color: var(--text-color-base-accent); */
 		font-size: var(--font-size-3xl);
 		line-height: var(--font-size-3xl--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.75em;
+		margin-bottom: 0.625em;
 		max-width: var(--width-prose);
 	}
 
 	h4 {
-		color: var(--text-color-base-accent);
+		/* color: var(--text-color-base-accent); */
 		font-size: var(--font-size-2xl);
 		line-height: var(--font-size-2xl--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.75em;
+		margin-bottom: 0.625em;
 		max-width: var(--width-prose);
 	}
 
 	h5 {
-		color: var(--text-color-base-accent);
+		/* color: var(--text-color-base-accent); */
 		font-size: var(--font-size-xl);
 		line-height: var(--font-size-xl--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.75em;
+		margin-bottom: 0.625em;
 		max-width: var(--width-prose);
 	}
 
 	h6 {
-		color: var(--text-color-base-accent);
+		/* color: var(--text-color-base-accent); */
 		font-size: var(--font-size-lg);
 		line-height: var(--font-size-lg--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.75em;
+		margin-bottom: 0.625em;
 		max-width: var(--width-prose);
 	}
 
