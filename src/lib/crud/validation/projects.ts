@@ -29,10 +29,7 @@ import {
 	PROJECT_TITLE_MAX,
 } from './constants';
 import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
-
-export const projectsFiltersSchema = z.object({
-	search: z.string().optional(),
-});
+import { projectTypesSchema } from './projects-descriptors';
 
 export const projectsSchema = createInsertSchema(projects, {
 	adjacentStreets: (s) => s.adjacentStreets.positive().max(PROJECT_ADJACENT_STREETS_MAX),
@@ -128,4 +125,9 @@ export const projectNewImagesFormSchema = z.object({
 			width: true,
 		})
 		.array(),
+});
+
+export const projectsFiltersSchema = z.object({
+	search: z.string().optional(),
+	projectTypes: projectTypesSchema.shape.id.array(),
 });

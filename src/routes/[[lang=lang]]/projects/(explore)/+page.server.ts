@@ -1,6 +1,6 @@
 import { STATUS_CODES } from '$lib/common/constants';
 import { joinTranslation } from '$lib/crud/queries/i18n';
-import { matchesProjectsFilters } from '$lib/crud/queries/projects';
+import { getProjectTypesList, matchesProjectsFilters } from '$lib/crud/queries/projects';
 import { projectsFiltersSchema } from '$lib/crud/validation/projects';
 import { db } from '$lib/db/db.server';
 import { projects, projectsImages, projectsTranslations } from '$lib/db/schema/public.server';
@@ -33,5 +33,6 @@ export const load = async (event) => {
 	return {
 		filtersForm,
 		result,
+		projectTypes: getProjectTypesList(event),
 	};
 };

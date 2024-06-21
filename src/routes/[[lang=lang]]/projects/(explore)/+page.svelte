@@ -7,41 +7,28 @@
 	import { projectCardCrossfade } from '$lib/motion/presets';
 	import { RefreshCw } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
-	import type { Snapshot } from './$types.js';
 	import ProjectCard from './project-card.svelte';
 	import ProjectsFilters from './projects-filters.svelte';
 
 	let { data } = $props();
 
+	const { projectTypes } = data;
+
 	const filtersForm = extendedSuperForm(data.filtersForm);
 
-	let showFilters = $state<boolean>(true);
 	let loadingMore = $state(false);
 
 	afterNavigate(() => {
 		loadingMore = false;
 	});
-
-	export const snapshot: Snapshot<{
-		showFilters: typeof showFilters;
-	}> = {
-		capture() {
-			return {
-				showFilters,
-			};
-		},
-		restore(value) {
-			showFilters = value.showFilters;
-		},
-	};
 </script>
 
 <div class="px-padding mb-lg pt-padding flex flex-1 flex-row">
 	<form
 		method="GET"
-		class="w-sidebar-width mr-padding gap-card-gutter top-sticky-top sticky flex flex-col self-start text-sm"
+		class="w-sidebar-width mr-padding gap-card-gutter top-sticky-top sticky flex flex-col items-start self-start text-sm"
 	>
-		<ProjectsFilters {...filtersForm} />
+		<ProjectsFilters {...filtersForm} {projectTypes} />
 	</form>
 	<section class="gap-lg flex flex-1 flex-col">
 		<ul

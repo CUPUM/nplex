@@ -8,17 +8,21 @@
 	let { data, children } = $props();
 
 	let viewMode = $state<ComponentProps<ProjectsViewMode>['viewMode']>('masonry');
+	let showFilters = $state<boolean>(true);
 
 	export const snapshot: Snapshot<{
 		viewMode: typeof viewMode;
+		showFilters: typeof showFilters;
 	}> = {
 		capture() {
 			return {
 				viewMode,
+				showFilters,
 			};
 		},
 		restore(value) {
 			viewMode = value.viewMode;
+			showFilters = value.showFilters;
 		},
 	};
 </script>

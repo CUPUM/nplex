@@ -1,10 +1,10 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import DashboardSectionMenu from '$lib/components/patterns/dashboard-section-menu.svelte';
+	import DashboardSubHeader from '$lib/components/patterns/dashboard-sub-header.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { Check } from 'lucide-svelte';
-	import { expoOut } from 'svelte/easing';
-	import { fly } from 'svelte/transition';
 	import type { Snapshot } from './$types.js';
 	import ProjectInterventions from './project-interventions.svelte';
 	import ProjectOwnership from './project-ownership.svelte';
@@ -35,8 +35,8 @@
 </script>
 
 <form use:enhance action="?/update" method="POST" class="gap-inherit flex flex-col">
-	<header class="project-dashboard-section-header">
-		<h2 class="dashboard-section-title">
+	<DashboardSubHeader>
+		<h2>
 			{m.project_general()}
 		</h2>
 		<p>
@@ -45,7 +45,7 @@
 			blanditiis, quo possimus doloribus sed laudantium repudiandae vitae? Illum aut vel ipsa vero
 			facilis possimus consequuntur error ea? Accusamus ab exercitationem obcaecati facere eius?
 		</p>
-	</header>
+	</DashboardSubHeader>
 	<ProjectTextDetails {...projectForm} />
 	<ProjectType {...projectForm} types={data.types} />
 	<ProjectInterventions
@@ -54,9 +54,9 @@
 	/>
 	<ProjectOwnership {...projectForm} siteOwnerships={data.siteOwnerships} />
 	<!-- <ProjectCost {...projectForm} bind:smallScale /> -->
-	<menu class="dashboard-section-menu" in:fly|global={{ y: 6, duration: 250, easing: expoOut }}>
+	<DashboardSectionMenu>
 		<button class="button button-cta" bind:this={submitRef} disabled={!isTainted($tainted)}>
 			{m.save()}<IconSpinner icon={Check} busy={submitRef === $submitter} />
 		</button>
-	</menu>
+	</DashboardSectionMenu>
 </form>
