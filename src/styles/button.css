@@ -99,6 +99,10 @@
 		--button-hover-background: var(--background-color-input-accent);
 		--button-hover-border-color: transparent;
 		--button-hover-background-inset: 0;
+		--button-checked-color: var(--color-on-primary);
+		--button-checked-background: var(--color-primary);
+		--button-checked-background-inset: 0;
+		--button-checked-border-color: transparent;
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-border-color: var(--border-color-error);
@@ -291,8 +295,8 @@
 
 	/* Hover */
 
-	&:is(:hover, :active),
-	.group\/button:is(:hover, :active) & {
+	&:is(:hover, :active):not(:checked, [aria-checked='true'], [data-state='active'], [data-state='checked'], :has(:checked)),
+	.group\/button:is(:hover, :active) &:not(:checked, [aria-checked='true'], [data-state='active'], [data-state='checked'], :has(:checked)) {
 		color: var(--button-hover-color, var(--button-color));
 		text-decoration: var(--button-hover-text-decoration, var(--button-text-decoration));
 		text-decoration-color: var(--button-hover-text-decoration-color, var(--button-text-decoration-color));
@@ -321,6 +325,7 @@
 
 	&:is(:disabled, [aria-disabled='true'], [data-disabled='true']),
 	.group\/button:is(:disabled, [aria-disabled='true'], [data-disabled='true']) & {
+		pointer-events: none;
 		cursor: default;
 		opacity: var(--opacity-dim);
 		color: var(--button-disabled-color, var(--button-color));
@@ -376,11 +381,7 @@
 
 	/* Checked */
 
-	&:checked,
-	&[aria-checked='true'],
-	&[data-state='active'],
-	&[data-state='checked'],
-	&:has(:checked) {
+	&:is(:checked, [aria-checked='true'], [data-state='active'], [data-state='checked'], :has(:checked)) {
 		color: var(--button-checked-color, var(--button-color));
 		text-decoration: var(--button-checked-text-decoration, var(--button-text-decoration));
 		text-decoration-color: var(--button-checked-text-decoration-color, var(--button-text-decoration-color));
