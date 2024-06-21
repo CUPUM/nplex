@@ -274,5 +274,8 @@
 	"verify_email_body": "Your account is now created! However, you will need to confirm your email adress in order to unlock certain features. You should be receiving an email containing a code that will allow you to authentify your email address.",
 	"verify_email_not_received": "You didn’t receive an email?",
 	"verify_email_resend": "Request a new verification code",
-	"verify_email_title": "Confirm your email address"
+	"verify_email_title": "Confirm your email address",
+	"project_settings_security": "Security",
+	"transfer": "Transfer",
+	"map": "Map"
 }

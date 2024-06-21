@@ -277,5 +277,8 @@
 	"verify_email_body": "Votre compte a été créé avec succès! Cependant, vous devrez confirmer votre adresse courriel pour débloquer certaines fonctionnalités. Vous devriez recevoir un courriel avec un code qui vous permettra de confirmez l’authenticité de votre adresse courriel.",
 	"verify_email_not_received": "Vous n’avez pas reçu le courriel?",
 	"verify_email_resend": "Demandez un nouveau code de vérification",
-	"verify_email_title": "Confirmez votre adresse courriel"
+	"verify_email_title": "Confirmez votre adresse courriel",
+	"project_settings_security": "Sécurité",
+	"transfer": "Transférer",
+	"map": "Carte"
 }
