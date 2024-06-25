@@ -194,7 +194,7 @@
 	"project_intervention_create": "Create an intervention type",
 	"project_intervention_types": "Intervention types",
 	"project_interventions_description": "Select one or more interventions completed in the scope of the project. Make sure to only list interventions accounted for across the rest of this sheet's metadata (ex.: cost range, project timeline, image gallery, etc.).",
-	"project_interventions_missing_type": "Start by selecting a project type",
+	"project_interventions_missing_type": "Start by selecting a project type.",
 	"project_interventions_none": "No corresponding intervention",
 	"project_interventions_title": "Project interventions",
 	"project_level_type": "Building level type",

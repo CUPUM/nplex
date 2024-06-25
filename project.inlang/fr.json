@@ -196,7 +196,7 @@
 	"project_intervention_types": "Types d’interventions",
 	"project_interventions": "Types d’intervention",
 	"project_interventions_description": "Sélectionnez une ou plusieurs intervention réalisées dans le cadre du projet. Assurez-vous de lister uniquement les interventions prises en compte par les autres méta-données de la fiche (e.g.: la fourchette de prix, le calendrier des travaux, la galerie des images, etc.).",
-	"project_interventions_missing_type": "Sélectionnez d’abord un type de projet",
+	"project_interventions_missing_type": "Sélectionnez d’abord un type de projet.",
 	"project_interventions_none": "Aucune intervention correspondante",
 	"project_interventions_title": "Interventions du projet",
 	"project_level_type": "Type d’étage de bâtiment",
