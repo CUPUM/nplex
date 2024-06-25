@@ -22,6 +22,14 @@ const config = {
 		alias: {
 			$i18n: 'src/lib/i18n/generated',
 		},
+		prerender: {
+			handleHttpError: (details) => {
+				if (details.path.endsWith('.mdx')) {
+					return 'warn';
+				}
+				return 'fail';
+			},
+		},
 	},
 	compilerOptions: {
 		// Only applies to prod.
