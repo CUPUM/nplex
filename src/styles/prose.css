@@ -2,13 +2,16 @@
 	& > :first-child {
 		margin-top: 0;
 	}
-	& > :last-child {
+
+	/* Last prosable element. Although more complex, this selector allows us to ignore dialogs, divs, and any element that shouldnt be considered a "prose" */
+	& > :not(dialog, div):not(:has(~ :not(dialog, div))) {
 		margin-bottom: 0;
 	}
 }
 
 .prose {
 	font-size: initial;
+	line-height: var(--line-height-lg);
 	--font-size-xs--line-height: var(--line-height-lg);
 	--font-size-sm--line-height: var(--line-height-lg);
 
@@ -18,7 +21,7 @@
 		line-height: var(--font-size-5xl--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.625em;
+		margin-bottom: 0.5em;
 		max-width: var(--width-prose);
 	}
 
@@ -28,7 +31,7 @@
 		line-height: var(--font-size-4xl--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.625em;
+		margin-bottom: 0.5em;
 		max-width: var(--width-prose);
 	}
 
@@ -48,7 +51,7 @@
 		line-height: var(--font-size-2xl--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.625em;
+		margin-bottom: 0.75em;
 		max-width: var(--width-prose);
 	}
 
@@ -58,7 +61,7 @@
 		line-height: var(--font-size-xl--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.625em;
+		margin-bottom: 0.825em;
 		max-width: var(--width-prose);
 	}
 
@@ -68,7 +71,7 @@
 		line-height: var(--font-size-lg--line-height);
 		font-weight: var(--font-weight-bold);
 		margin-top: 1em;
-		margin-bottom: 0.625em;
+		margin-bottom: 1em;
 		max-width: var(--width-prose);
 	}
 

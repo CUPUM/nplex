@@ -5,8 +5,6 @@
 @import 'styles/big.css' layer(components);
 @import 'styles/button.css' layer(components);
 @import 'styles/compact.css' layer(components);
-@import 'styles/dialog.css' layer(components);
-@import 'styles/field.css' layer(components);
 @import 'styles/fill.css' layer(components);
 @import 'styles/input.css' layer(components);
 @import 'styles/navbar.css' layer(components);
@@ -203,7 +201,7 @@
 
 	/* Scales */
 
-	--scale-press: 96%;
+	--scale-press: 98%;
 
 	/* Colors
 		- Semantic color palettes are defined using a --color-[semantic] and --color-on-[semantic] pattern to provide versatility in their use as either background or foreground colors.

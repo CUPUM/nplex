@@ -141,16 +141,16 @@
 		--button-background: transparent;
 		--button-background-inset: 0.4em;
 		--button-text-decoration: underline;
-		--button-text-decoration-color: transparent;
+		--button-text-decoration-color: color-mix(in srgb, currentColor var(--opacity-dimmer), transparent);
 		--button-text-decoration-thickness: var(--border-width-input);
-		--button-text-underline-offset: 0.25em;
+		--button-text-underline-offset: 0.4em;
 		--button-icon-color: currentColor;
 		--button-border-style: none;
 		--button-hover-color: var(--color-primary-accent);
 		--button-hover-background: color-mix(in srgb, var(--color-primary) 5%, transparent);
 		--button-hover-background-inset: 0em;
-		--button-hover-text-decoration-color: color-mix(in srgb, var(--color-primary) var(--opacity-dim), transparent);
-		--button-hover-text-underline-offset: 0.5em;
+		--button-hover-text-decoration-color: transparent;
+		--button-hover-text-underline-offset: 0.3em;
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-hover-color: var(--text-color-input-error-accent);
