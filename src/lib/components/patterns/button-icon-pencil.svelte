@@ -2,15 +2,9 @@
 	import { Pencil } from 'lucide-svelte';
 </script>
 
-<Pencil class="button-icon pencil" />
+<Pencil class="group-hover/button:animate-wiggle" />
 
 <style>
-	:global(.button-icon.pencil) {
-		:global(.button:hover) & {
-			animation: wiggle 1s ease-out;
-		}
-	}
-
 	@keyframes -global-wiggle {
 		0% {
 			rotate: 0deg;

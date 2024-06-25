@@ -2,6 +2,7 @@
 	import * as m from '$i18n/messages';
 	import DescriptorFormDialog from '$lib/components/patterns/descriptor-form-dialog.svelte';
 	import TranslationsTabs from '$lib/components/patterns/translations-tabs.svelte';
+	import Field from '$lib/components/primitives/field.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { Pen } from 'lucide-svelte';
@@ -42,28 +43,34 @@
 	{#snippet formBody()}
 		<TranslationsTabs>
 			{#snippet tab({ lang, isCurrent })}
-				<label class="field">
-					<span class="field-label">{m.title()}</span>
+				<Field>
+					{#snippet label()}
+						{m.title()}
+					{/snippet}
 					<input
 						type="text"
 						class="input"
 						{...$constraints.translations?.[lang]?.description}
 						bind:value={$form.translations[lang].title}
 					/>
-				</label>
-				<label class="field">
-					<span class="field-label">{m.description()}</span>
+				</Field>
+				<Field>
+					{#snippet label()}
+						{m.description()}
+					{/snippet}
 					<textarea
 						class="input"
 						rows="5"
 						{...$constraints.translations?.[lang]?.description}
 						bind:value={$form.translations[lang].description}
 					></textarea>
-				</label>
+				</Field>
 			{/snippet}
 		</TranslationsTabs>
-		<fieldset class="field">
-			<legend class="field-label">{m.project_types()}</legend>
+		<Field as="fieldset">
+			{#snippet label()}
+				{m.project_types()}
+			{/snippet}
 			<ul class="gap-gutter flex flex-row">
 				{#await projectTypes}
 					...
@@ -81,6 +88,6 @@
 					{/each}
 				{/await}
 			</ul>
-		</fieldset>
+		</Field>
 	{/snippet}
 </DescriptorFormDialog>

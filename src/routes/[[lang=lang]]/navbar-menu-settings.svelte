@@ -26,6 +26,7 @@
 	<dialog class="navbar-menu" use:menu.dialogAction {...menu.dialogAttributes} data-meta-modal>
 		<menu
 			class="navbar-menu-group"
+			{...menu.contentAttributes}
 			in:fly|global={{ x: 20, duration: 1000, easing: expoOut }}
 			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 75 }}
 		>
@@ -52,6 +53,7 @@
 			class="navbar-menu-group"
 			in:fly|global={{ x: 20, duration: 1000, easing: expoOut, delay: 200 }}
 			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 0 }}
+			{...menu.contentAttributes}
 		>
 			<span class="navbar-menu-group-legend">
 				{m.screen_mode()}

@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
+	import Field from '$lib/components/primitives/field.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client.js';
@@ -26,10 +27,10 @@
 	<h1 class="mb-card-gutter text-xl font-semibold">
 		{m.auth_login_title()}
 	</h1>
-	<label class="field">
-		<span class="field-label" in:fly|global={{ y: 6 }}>
+	<Field>
+		{#snippet label()}
 			{m.email()}
-		</span>
+		{/snippet}
 		<input
 			in:fly|global={{ y: -6 }}
 			class="input"
@@ -39,11 +40,11 @@
 			bind:value={$form.email}
 			{...$constraints.email}
 		/>
-	</label>
-	<label class="field">
-		<span class="field-label" in:fly|global={{ y: 6, delay: 75 }}>
+	</Field>
+	<Field>
+		{#snippet label()}
 			{m.password()}
-		</span>
+		{/snippet}
 		<div class="input-group">
 			<input
 				in:fly|global={{ y: -6, delay: 75 }}
@@ -83,7 +84,7 @@
 				</button>
 			</div>
 		</div>
-	</label>
+	</Field>
 	<button
 		in:fly|global={{ y: -6, delay: 150 }}
 		class="button button-cta"

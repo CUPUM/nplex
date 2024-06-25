@@ -1,11 +1,13 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import DashboardSectionMenu from '$lib/components/patterns/dashboard-section-menu.svelte';
+	import DashboardSubHeader from '$lib/components/patterns/dashboard-sub-header.svelte';
+	import DashboardSubSection from '$lib/components/patterns/dashboard-sub-section.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
+	import Spinner from '$lib/components/primitives/spinner.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { Check } from 'lucide-svelte';
-	import { expoOut } from 'svelte/easing';
-	import { fly } from 'svelte/transition';
 
 	let { data } = $props();
 
@@ -24,54 +26,51 @@
 	class="gap-inherit flex flex-col"
 	id="exemplarity-markers"
 >
-	<header class="project-dashboard-section-header">
-		<h2 class="dashboard-section-title">
+	<DashboardSubHeader>
+		<h3>
 			{m.project_exemplarity_markers()}
-		</h2>
-		<p class="text-base-dim">
+		</h3>
+		<p>
 			Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt nam facilis ipsum pariatur
 			voluptas placeat veniam quod. Voluptates, pariatur nemo. Voluptas voluptates molestias
 			molestiae quia at voluptate, doloribus neque quasi obcaecati inventore. Cum, sunt aliquam?
 			Animi dicta debitis, atque laboriosam asperiores accusamus aut repellat ratione officia eaque
 			dignissimos omnis rem.
 		</p>
-	</header>
+	</DashboardSubHeader>
 	{#await data.markersByCategories}
-		...
+		<DashboardSubSection>
+			<Spinner />
+		</DashboardSubSection>
 	{:then awaitedMarkersByCategories}
 		{#each awaitedMarkersByCategories as category, i (category.id)}
-			<section class="dashboard-section">
-				<legend class="dashboard-section-title">
-					{category.title}
-				</legend>
-				<div class="dashboard-section-content">
-					<ul class="gap-input-gutter flex flex-row flex-wrap items-start justify-start">
-						{#if category.markers}
-							{#each category.markers as marker}
-								<label
-									class="has-checked:bg-primary has-checked:text-on-primary user-select-none active:animate-press bg-input px-input-padding h-input gap-input-gutter text-overflow-ellipsis relative flex cursor-pointer flex-row items-center whitespace-nowrap rounded-full font-semibold"
-									use:ripple
-								>
-									<input
-										type="checkbox"
-										class="sr-only"
-										bind:group={$form.markersIds}
-										value={marker.id}
-									/>
-									<span class="chip-label">
-										{marker.title}
-									</span>
-								</label>
-							{/each}
-						{/if}
-					</ul>
-				</div>
-			</section>
+			<DashboardSubSection>
+				{#snippet header()}
+					<h4>
+						{category.title}
+					</h4>
+				{/snippet}
+				<ul class="gap-input-gutter flex flex-row flex-wrap items-start justify-start">
+					{#if category.markers}
+						{#each category.markers as marker}
+							<label class="button button-dashed rounded-full" use:ripple>
+								<input
+									type="checkbox"
+									class="sr-only"
+									bind:group={$form.markersIds}
+									value={marker.id}
+								/>
+								{marker.title}
+							</label>
+						{/each}
+					{/if}
+				</ul>
+			</DashboardSubSection>
 		{/each}
 	{/await}
-	<menu class="dashboard-section-menu" in:fly|global={{ y: 6, duration: 250, easing: expoOut }}>
+	<DashboardSectionMenu>
 		<button class="button button-cta" bind:this={submitRef} disabled={!isTainted($tainted)}>
 			{m.save()}<IconSpinner icon={Check} busy={submitRef === $submitter} />
 		</button>
-	</menu>
+	</DashboardSectionMenu>
 </form>

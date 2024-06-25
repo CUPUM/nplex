@@ -4,6 +4,7 @@
 	import DescriptorFormDialog from '$lib/components/patterns/descriptor-form-dialog.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import TranslationsTabs from '$lib/components/patterns/translations-tabs.svelte';
+	import Field from '$lib/components/primitives/field.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
 	import { Wrench, X } from 'lucide-svelte';
@@ -55,24 +56,28 @@
 	{#snippet formBody()}
 		<TranslationsTabs>
 			{#snippet tab({ lang })}
-				<label class="field">
-					<span class="field-label">{m.title()}</span>
+				<Field>
+					{#snippet label()}
+						{m.title()}
+					{/snippet}
 					<input
 						type="text"
 						class="input"
 						{...$constraints.translations?.[lang]?.description}
 						bind:value={$form.translations[lang].title}
 					/>
-				</label>
-				<label class="field">
-					<span class="field-label">{m.description()}</span>
+				</Field>
+				<Field>
+					{#snippet label()}
+						{m.description()}
+					{/snippet}
 					<textarea
 						class="input"
 						rows="5"
 						{...$constraints.translations?.[lang]?.description}
 						bind:value={$form.translations[lang].description}
 					></textarea>
-				</label>
+				</Field>
 			{/snippet}
 		</TranslationsTabs>
 	{/snippet}

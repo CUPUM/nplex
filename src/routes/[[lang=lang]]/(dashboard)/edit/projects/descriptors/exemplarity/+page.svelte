@@ -1,5 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import DashboardSubHeader from '$lib/components/patterns/dashboard-sub-header.svelte';
+	import DashboardSubSection from '$lib/components/patterns/dashboard-sub-section.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import ProjectExemplarityCategoryCreate from './project-exemplarity-category-create.svelte';
 	import ProjectExemplarityCategory from './project-exemplarity-category.svelte';
@@ -24,17 +26,15 @@
 	const { enhance: markersEnhance, formId: markersFormId } = projectExemplarityMarkersListForm;
 </script>
 
-<header class="dashboard-section">
-	<h2 class="dashboard-section-title">
+<DashboardSubHeader>
+	<h4>
 		{m.project_exemplarity_categories()} & {m.project_exemplarity_markers().toLocaleLowerCase()}
-	</h2>
-	<div class="dashboard-section-description">
-		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
-			consequatur amet blanditiis sed alias. Eum, numquam magnam!
-		</p>
-	</div>
-</header>
+	</h4>
+	<p>
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
+		consequatur amet blanditiis sed alias. Eum, numquam magnam!
+	</p>
+</DashboardSubHeader>
 <form class="sr-only" id={$categoriesFormId} use:categoriesEnhance method="POST"></form>
 <form class="sr-only" id={$markersFormId} use:markersEnhance method="POST"></form>
 {#each data.projectExemplarityMarkerAndCategoryForms as [categoryForm, projectInterventionCreateForm], i (categoryForm.id)}
@@ -48,8 +48,6 @@
 		{projectInterventionCreateForm}
 	/>
 {/each}
-<section
-	class="dashboard-section border-dim p-card-padding items-start border border-dashed bg-transparent"
->
+<DashboardSubSection class="border-dim border border-dashed bg-transparent">
 	<ProjectExemplarityCategoryCreate data={data.projectExemplarityCategoryCreateForm} />
-</section>
+</DashboardSubSection>

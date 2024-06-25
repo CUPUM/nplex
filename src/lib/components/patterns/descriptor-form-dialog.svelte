@@ -4,10 +4,9 @@
 	import { Dialog } from '$lib/builders/dialog.svelte';
 	import type { ExtendedSuperForm } from '$lib/crud/form/client';
 	import { Check, X } from 'lucide-svelte';
-	import type { Snippet } from 'svelte';
-	import { expoOut } from 'svelte/easing';
+	import type { ComponentProps, Snippet } from 'svelte';
 	import type { HTMLFormAttributes } from 'svelte/elements';
-	import { scale } from 'svelte/transition';
+	import DialogBox from '../primitives/dialog-box.svelte';
 	import IconSpinner from './icon-spinner.svelte';
 
 	let {
@@ -19,14 +18,13 @@
 		form,
 		method = 'POST',
 		...formAttributes
-	}: Pick<HTMLFormAttributes, 'action' | 'method'> & {
-		form: ExtendedSuperForm<T>;
-		root: Snippet<[InstanceType<typeof DialogForm>['triggerAttributes']]>;
-		title?: Snippet;
-		description?: Snippet;
-		formBody: Snippet;
-		body?: Snippet<[Dialog]>;
-	} = $props();
+	}: Pick<HTMLFormAttributes, 'action' | 'method'> &
+		Pick<ComponentProps<DialogBox>, 'title' | 'description'> & {
+			form: ExtendedSuperForm<T>;
+			root: Snippet<[InstanceType<typeof DialogForm>['triggerAttributes']]>;
+			formBody: Snippet;
+			body?: Snippet<[Dialog]>;
+		} = $props();
 
 	const { isTainted, enhance, tainted, reset, formId, submitter } = form;
 
@@ -48,60 +46,30 @@
 </script>
 
 {@render root(dialog.triggerAttributes)}
-{#if dialog.open}
-	<dialog
-		class="dialog min-w-sm"
-		transition:scale={{ start: 0.95, duration: 350, easing: expoOut }}
-		use:dialog.dialogAction
-		{...dialog.dialogAttributes}
-	>
-		{#if title}
-			<header class="dialog-title">
-				<button
-					tabindex="0"
-					class="button button-ghost compact aspect-square rounded-full"
-					{...dialog.closeAttributes}
-					data-danger={isTainted($tainted) || undefined}
-				>
-					<X />
-				</button>
-				{@render title()}
-			</header>
-			<hr />
-		{/if}
-		<form
-			id={$formId}
-			{...formAttributes}
-			use:enhance
-			{method}
-			class="dialog-body gap-card-gutter flex flex-col"
-		>
-			{@render formBody()}
-		</form>
-		{#if body}
-			<hr />
-			<section class="dialog-body">
-				{@render body(dialog)}
-			</section>
-		{/if}
+<DialogBox {dialog} class="min-w-sm" {title}>
+	<form id={$formId} {...formAttributes} use:enhance {method} class="gap-card-gutter flex flex-col">
+		{@render formBody()}
+	</form>
+	{#if body}
 		<hr />
-		<menu class="dialog-actions">
-			<button
-				bind:this={submitRef}
-				class="button button-cta"
-				disabled={!isTainted($tainted)}
-				form={$formId}
-				type="submit"
-			>
-				<IconSpinner icon={Check} busy={submitRef === $submitter} />{m.save()}
-			</button>
-			<button
-				class="button button-ghost"
-				{...dialog.closeAttributes}
-				data-danger={isTainted($tainted) || undefined}
-			>
-				<X />{m.close()}
-			</button>
-		</menu>
-	</dialog>
-{/if}
+		{@render body(dialog)}
+	{/if}
+	{#snippet actions()}
+		<button
+			bind:this={submitRef}
+			class="button button-cta"
+			disabled={!isTainted($tainted)}
+			form={$formId}
+			type="submit"
+		>
+			<IconSpinner icon={Check} busy={submitRef === $submitter} />{m.save()}
+		</button>
+		<button
+			class="button button-ghost"
+			{...dialog.closeAttributes}
+			data-danger={isTainted($tainted) || undefined}
+		>
+			<X />{m.close()}
+		</button>
+	{/snippet}
+</DialogBox>

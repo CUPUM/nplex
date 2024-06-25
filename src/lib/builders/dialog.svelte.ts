@@ -40,6 +40,14 @@ export class Dialog {
 				}
 			}
 		});
+
+		// if (window) {
+		// 	window.onbeforeunload(e => {
+		// 		if (this.open) {
+		// 			this
+		// 		}
+		// 	})
+		// }
 	}
 
 	get open() {
@@ -60,8 +68,7 @@ export class Dialog {
 	}
 
 	close(e?: Event) {
-		const proceed = this.#beforeClose ? this.#beforeClose(e) : true;
-		if (!proceed) {
+		if (this.#beforeClose && !this.#beforeClose(e)) {
 			return false;
 		}
 		this.#open = false;
@@ -91,6 +98,7 @@ export class Dialog {
 		}
 		return {
 			destroy() {
+				_this.#node?.close();
 				_this.#unsetNode();
 			},
 		};
@@ -99,16 +107,6 @@ export class Dialog {
 	get dialogAttributes() {
 		const _this = this;
 		return {
-			onpointerdown(e: PointerEvent) {
-				if (e.target !== e.currentTarget) {
-					_this.#setPointerInside(true);
-				}
-			},
-			onpointerup(e: PointerEvent) {
-				if (e.target !== e.currentTarget) {
-					_this.#setPointerInside(true);
-				}
-			},
 			onclick(e: MouseEvent) {
 				if (_this.closeOnClickoutside) {
 					if (!_this.#pointerInside) {
@@ -121,15 +119,22 @@ export class Dialog {
 				e.preventDefault();
 				_this.close(e);
 			},
-			onclose(e: Event) {
-				if (_this.open && !e.defaultPrevented) {
-					_this.close(e);
-				}
-			},
 			onkeydown(e: KeyboardEvent) {
 				if (e.key === KEYS.ENTER) {
 					e.preventDefault();
 				}
+			},
+		};
+	}
+
+	get contentAttributes() {
+		const _this = this;
+		return {
+			onpointerdown(e: PointerEvent) {
+				_this.#setPointerInside(true);
+			},
+			onpointerup(e: PointerEvent) {
+				_this.#setPointerInside(true);
 			},
 		};
 	}

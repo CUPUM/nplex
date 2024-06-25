@@ -6,7 +6,7 @@
 
 {#if current}
 	<div
-		class="opacity-dimmer border-primary border-lg rounded-inherit absolute inset-0 border"
+		class="opacity-dim border-primary border-lg rounded-inherit absolute inset-0 border"
 		in:switchThumbCrossfade.receive={{ key }}
 		out:switchThumbCrossfade.send={{ key }}
 	></div>

@@ -4,6 +4,7 @@
 	import DashboardSidebarMenu from '$lib/components/patterns/dashboard-sidebar-menu.svelte';
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
+	import OptionalText from '$lib/components/primitives/optional-text.svelte';
 	import { AlertTriangle, Eye, UsersRound } from 'lucide-svelte';
 	import DashboardSidebarMenuOrganizations from '../../../dashboard-sidebar-menu-organizations.svelte';
 	import DashboardSidebarMenuProjects from '../../../dashboard-sidebar-menu-projects.svelte';
@@ -20,13 +21,7 @@
 	<div class="bg-card-accent rounded-dashboard p-card-padding flex-1">
 		<hgroup>
 			<h1 class="heading xl">
-				{#if data.title}
-					{data.title}
-				{:else}
-					<span class="fallback">
-						{m.project_untitled()}
-					</span>
-				{/if}
+				<OptionalText text={data.title} fallback={m.project_untitled()} />
 			</h1>
 		</hgroup>
 		<menu>
@@ -111,22 +106,3 @@
 {/snippet}
 
 {@render children()}
-
-<style>
-	:global {
-		.project-dashboard-section-header {
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			gap: var(--spacing-card-gutter);
-			font-size: var(--font-size-sm);
-			/* background: var(--background-color-base-dim); */
-			border-radius: var(--radius-dashboard);
-			padding: var(--spacing-card-padding);
-
-			.dashboard-section-title {
-				padding-inline: 0;
-			}
-		}
-	}
-</style>

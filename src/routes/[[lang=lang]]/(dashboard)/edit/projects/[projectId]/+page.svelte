@@ -36,9 +36,9 @@
 
 <form use:enhance action="?/update" method="POST" class="gap-inherit flex flex-col">
 	<DashboardSubHeader>
-		<h2>
+		<h3>
 			{m.project_general()}
-		</h2>
+		</h3>
 		<p>
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum incidunt rem temporibus,
 			eaque a atque iste fuga ea minima omnis rerum provident ullam laboriosam perferendis optio,

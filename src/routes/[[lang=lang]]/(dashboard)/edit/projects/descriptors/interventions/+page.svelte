@@ -1,5 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import DashboardSubHeader from '$lib/components/patterns/dashboard-sub-header.svelte';
+	import DashboardSubSection from '$lib/components/patterns/dashboard-sub-section.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import ProjectInterventionCategoryCreate from './project-intervention-category-create.svelte';
 	import ProjectInterventionCategory from './project-intervention-category.svelte';
@@ -21,17 +23,15 @@
 	const { enhance: interventionsEnhance, formId: interventionsFormId } = projectInterventionsForm;
 </script>
 
-<header class="dashboard-section">
-	<h2 class="dashboard-section-title">
+<DashboardSubHeader>
+	<h2>
 		{m.project_intervention_categories()} & {m.project_intervention_types().toLocaleLowerCase()}
 	</h2>
-	<div class="dashboard-section-description">
-		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
-			consequatur amet blanditiis sed alias. Eum, numquam magnam!
-		</p>
-	</div>
-</header>
+	<p>
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
+		consequatur amet blanditiis sed alias. Eum, numquam magnam!
+	</p>
+</DashboardSubHeader>
 <form class="sr-only" id={$categoriesFormId} use:categoriesEnhance method="POST"></form>
 <form class="sr-only" id={$interventionsFormId} use:interventionsEnhance method="POST"></form>
 {#each data.projectInterventionAndCategoryForms as [categoryForm, projectInterventionCreateForm], i (categoryForm.id)}
@@ -46,8 +46,6 @@
 		projectTypes={data.projectTypes}
 	/>
 {/each}
-<section
-	class="dashboard-section border-dim p-card-padding items-start border border-dashed bg-transparent"
->
+<DashboardSubSection class="border-dim border border-dashed bg-transparent">
 	<ProjectInterventionCategoryCreate data={data.projectInterventionCategoryCreateForm} />
-</section>
+</DashboardSubSection>

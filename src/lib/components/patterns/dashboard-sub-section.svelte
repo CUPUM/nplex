@@ -28,19 +28,17 @@
 	this={as as string}
 	{...restProps}
 	class={cn(
-		'p-card-padding gap-card-gutter rounded-dashboard bg-card relative flex flex-col text-sm',
+		'p-card-padding gap-card-gutter rounded-dashboard bg-card relative flex flex-col items-start text-sm',
 		className
 	)}
 	use:action
 >
 	{#if header}
-		<header class="prose prose-block pb-card-padding">
+		<header class="prose prose-block pb-card-gutter self-stretch text-sm">
 			{@render header()}
 		</header>
 	{/if}
-	<div class="gap-card-gutter flex flex-col items-start">
-		{@render children?.()}
-	</div>
+	{@render children?.()}
 	{#if menu}
 		<menu>
 			{@render menu()}

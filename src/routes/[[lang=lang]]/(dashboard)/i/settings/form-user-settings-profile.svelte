@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
+	import Field from '$lib/components/primitives/field.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { Check, FileUp, Mail, Shield, ShieldX } from 'lucide-svelte';
 	import type { PageData } from './$types';
@@ -20,36 +21,44 @@
 	</h2>
 	<div class="dashboard-section-content">
 		<div class="gap-gutter flex flex-row">
-			<label class="field flex-1">
-				<span class="field-label">{m.user_first_name()}</span>
+			<Field class="flex-1">
+				{#snippet label()}
+					{m.user_first_name()}
+				{/snippet}
 				<input
 					type="text"
 					class="input input-bordered"
 					bind:value={$form.firstName}
 					{...$constraints.firstName}
 				/>
-			</label>
-			<label class="field flex-1">
-				<span class="field-label">{m.user_middle_name()}</span>
+			</Field>
+			<Field class="flex-1">
+				{#snippet label()}
+					{m.user_middle_name()}
+				{/snippet}
 				<input
 					type="text"
 					class="input input-bordered"
 					bind:value={$form.middleName}
 					{...$constraints.middleName}
 				/>
-			</label>
+			</Field>
 		</div>
-		<label class="field">
-			<span class="field-label">{m.user_last_name()}</span>
+		<Field>
+			{#snippet label()}
+				{m.user_last_name()}
+			{/snippet}
 			<input
 				type="text"
 				class="input input-bordered"
 				bind:value={$form.lastName}
 				{...$constraints.lastName}
 			/>
-		</label>
-		<label class="field self-start">
-			<span class="field-label">{m.user_avatar()}</span>
+		</Field>
+		<Field class="self-start">
+			{#snippet label()}
+				{m.user_avatar()}
+			{/snippet}
 			<fieldset class="input-group">
 				<FileUp />
 				<input
@@ -60,9 +69,11 @@
 					formaction="?/avatar"
 				/>
 			</fieldset>
-		</label>
-		<fieldset class="field" disabled>
-			<legend class="field-label">{m.user_public_email()}</legend>
+		</Field>
+		<Field as="fieldset" aria-disabled>
+			{#snippet label()}
+				{m.user_public_email()}
+			{/snippet}
 			<label class="input-group input-bordered">
 				{#if $page.data.user?.emailVerified}
 					<Shield class="input-icon" style="color: var(--color-success-500)" />
@@ -83,7 +94,7 @@
 					</button>
 				</div>
 			</label>
-		</fieldset>
+		</Field>
 		<button
 			class="button button-cta"
 			type="submit"

@@ -18,8 +18,6 @@
 	let searchRef = $state<HTMLButtonElement>();
 </script>
 
-<!-- <label class="field text-md"> -->
-<!-- <span class="field-label">Search</span> -->
 <div class="input-group text-md">
 	<Search />
 	<input
@@ -50,4 +48,3 @@
 		</button>
 	</div>
 </div>
-<!-- </label> -->

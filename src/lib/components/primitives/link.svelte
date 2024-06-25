@@ -81,6 +81,3 @@
 <a {...restProps} {...linkAttributes(href, { lang: hreflang, currentOnSubpath })}>
 	{@render children?.()}
 </a>
-
-<style lang="postcss">
-</style>

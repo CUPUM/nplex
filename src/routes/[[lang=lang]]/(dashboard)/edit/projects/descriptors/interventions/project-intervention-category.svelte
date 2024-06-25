@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
+	import DashboardSubSection from '$lib/components/patterns/dashboard-sub-section.svelte';
 	import DescriptorFormDialog from '$lib/components/patterns/descriptor-form-dialog.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import TranslationsTabs from '$lib/components/patterns/translations-tabs.svelte';
+	import Field from '$lib/components/primitives/field.svelte';
 	import { extendedSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
 	import { TriangleAlert, Wrench } from 'lucide-svelte';
 	import type { PageData } from './$types';
@@ -37,69 +39,68 @@
 	let deleteRef = $state<HTMLButtonElement>();
 </script>
 
-<section class="dashboard-section">
-	<DescriptorFormDialog form={projectInterventionCategoryForm} action="?/updateCategory">
-		{#snippet root(triggerAttributes)}
-			<header class="dashboard-section-title">
+<DashboardSubSection>
+	{#snippet header()}
+		<DescriptorFormDialog form={projectInterventionCategoryForm} action="?/updateCategory">
+			{#snippet root(triggerAttributes)}
+				<h4>
+					<button
+						{...triggerAttributes}
+						class="aria-[expanded=true]:text-primary gap-input-gutter group/button duration-fast hover:text-primary flex cursor-pointer flex-row items-center font-semibold transition-all"
+					>
+						{$form.translations[$page.data.lang].title}
+						<div class="button compact aspect-square rounded-full text-sm"><Wrench /></div>
+					</button>
+				</h4>
+			{/snippet}
+			{#snippet title()}
+				{m.project_intervention_category()}
+			{/snippet}
+			{#snippet formBody()}
+				<TranslationsTabs>
+					{#snippet tab({ lang })}
+						<Field>
+							{#snippet label()}
+								{m.title()}
+							{/snippet}
+							<input
+								type="text"
+								bind:value={$form.translations[lang].title}
+								{...$constraints.translations?.[lang]?.title}
+								class="input"
+							/>
+						</Field>
+						<Field>
+							{#snippet label()}
+								{m.description()}
+							{/snippet}
+							<textarea
+								rows="5"
+								bind:value={$form.translations[lang].description}
+								{...$constraints.translations?.[lang]?.description}
+								class="input"
+							></textarea>
+						</Field>
+					{/snippet}
+				</TranslationsTabs>
+			{/snippet}
+			{#snippet body(dialog)}
 				<button
-					{...triggerAttributes}
-					class="aria-[expanded=true]:text-primary gap-input-gutter text-md group/button duration-fast hover:text-primary flex cursor-pointer flex-row items-center font-semibold transition-all"
+					class="button button-dashed"
+					data-danger
+					form={$parentFormId}
+					value={$form.id}
+					formaction="?/deleteCategory"
+					name="delete"
+					bind:this={deleteRef}
 				>
-					{$form.translations[$page.data.lang].title}
-					<div class="button compact aspect-square rounded-full text-sm"><Wrench /></div>
+					<IconSpinner icon={TriangleAlert} busy={$parentFormSubmitter === deleteRef} />
+					{m.del()}
 				</button>
-			</header>
-		{/snippet}
-		{#snippet title()}
-			{m.project_intervention_category()}
-		{/snippet}
-		{#snippet formBody()}
-			<TranslationsTabs>
-				{#snippet tab({ lang })}
-					<label class="field">
-						<span class="field-label">{m.title()}</span>
-						<input
-							type="text"
-							bind:value={$form.translations[lang].title}
-							{...$constraints.translations?.[lang]?.title}
-							class="input"
-						/>
-					</label>
-					<label class="field">
-						<span class="field-label">{m.title()}</span>
-						<textarea
-							rows="5"
-							bind:value={$form.translations[lang].description}
-							{...$constraints.translations?.[lang]?.description}
-							class="input"
-						></textarea>
-					</label>
-				{/snippet}
-			</TranslationsTabs>
-		{/snippet}
-		{#snippet body(dialog)}
-			<!-- <input
-				type="text"
-				form={$parentFormId}
-				bind:value={$parentForm.confirm}
-				name="confirm"
-				class="input"
-			/> -->
-			<button
-				class="button button-dashed"
-				data-danger
-				form={$parentFormId}
-				value={$form.id}
-				formaction="?/deleteCategory"
-				name="delete"
-				bind:this={deleteRef}
-			>
-				<IconSpinner icon={TriangleAlert} busy={$parentFormSubmitter === deleteRef} />
-				{m.del()}
-			</button>
-		{/snippet}
-	</DescriptorFormDialog>
-	<ul class="gap-gutter px-card-padding flex flex-row flex-wrap">
+			{/snippet}
+		</DescriptorFormDialog>
+	{/snippet}
+	<ul class="gap-gutter flex flex-row flex-wrap">
 		{#each projectInterventionForms as projectInterventionFormData, i (projectInterventionFormData.id)}
 			<li>
 				<ProjectIntervention {projectInterventionFormData} {projectInterventionsForm} />
@@ -107,4 +108,4 @@
 		{/each}
 		<li><ProjectInterventionCreate data={projectInterventionCreateForm} {projectTypes} /></li>
 	</ul>
-</section>
+</DashboardSubSection>

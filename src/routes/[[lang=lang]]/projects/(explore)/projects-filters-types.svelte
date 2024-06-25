@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import Field from '$lib/components/primitives/field.svelte';
 	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
 	import type { PageData } from './$types';
 	let {
@@ -13,8 +14,10 @@
 		$props();
 </script>
 
-<label class="field">
-	<span class="field-label">{m.project_types()}</span>
+<Field>
+	{#snippet label()}
+		{m.project_types()}
+	{/snippet}
 	<fieldset class="gap-menu-gutter flex flex-col items-start">
 		{#await projectTypes}
 			...
@@ -27,4 +30,4 @@
 			{/each}
 		{/await}
 	</fieldset>
-</label>
+</Field>
