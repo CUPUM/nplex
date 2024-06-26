@@ -2,6 +2,7 @@
 	import * as m from '$i18n/messages';
 	import { Dialog } from '$lib/builders/dialog.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
+	import DialogBox from '$lib/components/primitives/dialog-box.svelte';
 	import { extendedSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
 	import { MODES } from '$lib/modes/constants';
 	import { imageSrc } from '$lib/storage/media/url';
@@ -56,14 +57,14 @@
 	</menu>
 </figure>
 
-{#if dialog.open}
-	<dialog class="dialog" use:dialog.dialogAction {...dialog.dialogAttributes} id={imageForm.id}>
-		<h3 class="dialog-title">Hello</h3>
-		<div class="dialog-section">Hello</div>
-		<menu class="dialog-actions">
-			<button bind:this={submitRef} class="button button-cta">
-				<IconSpinner icon={Check} busy={submitRef === $submitter} />{m.save()}
-			</button>
-		</menu>
-	</dialog>
-{/if}
+<DialogBox {dialog}>
+	{#snippet title()}
+		Image
+	{/snippet}
+	Hello
+	{#snippet actions()}
+		<button bind:this={submitRef} class="button button-cta">
+			<IconSpinner icon={Check} busy={submitRef === $submitter} />{m.save()}
+		</button>
+	{/snippet}
+</DialogBox>

@@ -2,6 +2,7 @@
 	import * as m from '$i18n/messages';
 	import DashboardSubSection from '$lib/components/patterns/dashboard-sub-section.svelte';
 	import TranslationsInput from '$lib/components/patterns/translations-input.svelte';
+	import Field from '$lib/components/primitives/field.svelte';
 	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
 	import type { PageData } from './$types';
 
@@ -12,10 +13,10 @@
 	{#snippet header()}
 		<h4>{m.presentation()}</h4>
 	{/snippet}
-	<div class="field">
-		<h4 class="field-label">
+	<Field>
+		{#snippet label()}
 			{m.title()}
-		</h4>
+		{/snippet}
 		<TranslationsInput class="big">
 			{#snippet children({ lang })}
 				<input
@@ -28,11 +29,11 @@
 				/>
 			{/snippet}
 		</TranslationsInput>
-	</div>
-	<div class="field">
-		<h4 class="field-label">
+	</Field>
+	<Field>
+		{#snippet label()}
 			{m.summary()}
-		</h4>
+		{/snippet}
 		<TranslationsInput>
 			{#snippet children({ lang })}
 				<textarea
@@ -45,11 +46,11 @@
 				></textarea>
 			{/snippet}
 		</TranslationsInput>
-	</div>
-	<div class="field">
-		<h4 class="field-label">
+	</Field>
+	<Field>
+		{#snippet label()}
 			{m.description()}
-		</h4>
+		{/snippet}
 		<TranslationsInput>
 			{#snippet children({ lang })}
 				<textarea
@@ -62,5 +63,5 @@
 				></textarea>
 			{/snippet}
 		</TranslationsInput>
-	</div>
+	</Field>
 </DashboardSubSection>

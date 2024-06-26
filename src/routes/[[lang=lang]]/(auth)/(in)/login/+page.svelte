@@ -85,13 +85,7 @@
 			</div>
 		</div>
 	</Field>
-	<button
-		in:fly|global={{ y: -6, delay: 150 }}
-		class="button button-cta"
-		type="submit"
-		use:ripple
-		bind:this={loginRef}
-	>
+	<button class="button button-cta" type="submit" use:ripple bind:this={loginRef}>
 		<IconSpinner icon={LogIn} busy={$submitter === loginRef} />
 		{m.login()}
 	</button>
@@ -100,11 +94,11 @@
 	{/if}
 </form>
 <nav class="gap-menu-gutter flex flex-row flex-wrap justify-between text-sm">
-	<a class="button button-link" {...linkAttributes('/signup')}>
+	<a class="button button-ghost" {...linkAttributes('/signup')}>
 		<UserRoundPlus />
 		{m.auth_signup_prompt()}
 	</a>
-	<a class="button button-link" {...linkAttributes('/reset-password')}>
+	<a class="button button-ghost" {...linkAttributes('/reset-password')}>
 		{m.auth_forgot_password_prompt()}
 		<ShieldQuestion />
 	</a>

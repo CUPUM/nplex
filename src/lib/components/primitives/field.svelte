@@ -27,6 +27,7 @@
 >
 	{#if label}
 		<span
+			in:fly|global={{ y: 6, opacity: 0 }}
 			class="px-field-gutter text-base text-[clamp(var(--font-size-xs),0.75em,var(--font-size-md))] font-semibold"
 		>
 			{@render label()}

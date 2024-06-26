@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
+	import Field from '$lib/components/primitives/field.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { LogIn, Send, UserPlus2 } from 'lucide-svelte';
@@ -17,10 +18,10 @@
 	<h1 class="mb-card-gutter text-xl font-semibold">
 		{m.auth_reset_password_title()}
 	</h1>
-	<label class="field">
-		<span class="field-label" in:fly={{ y: 6 }}>
+	<Field>
+		{#snippet label()}
 			{m.email()}
-		</span>
+		{/snippet}
 		<input
 			in:fly={{ y: -6 }}
 			class="input"
@@ -30,7 +31,7 @@
 			bind:value={$form.email}
 			{...$constraints.email}
 		/>
-	</label>
+	</Field>
 	<button
 		in:fly={{ y: -6, delay: 75 }}
 		class="button button-cta"
@@ -42,11 +43,11 @@
 	</button>
 </form>
 <nav class="gap-menu-gutter flex flex-row flex-wrap justify-between text-sm">
-	<a class="button button-link" {...linkAttributes('/login')}>
+	<a class="button button-ghost" {...linkAttributes('/login')}>
 		<LogIn />
 		{m.auth_login_prompt()}
 	</a>
-	<a class="button button-link" {...linkAttributes('/signup')}>
+	<a class="button button-ghost" {...linkAttributes('/signup')}>
 		<UserPlus2 />
 		{m.auth_signup_prompt()}
 	</a>

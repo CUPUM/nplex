@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
+	import Field from '$lib/components/primitives/field.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
@@ -22,10 +23,10 @@
 	<h1 class="mb-card-gutter text-xl font-semibold">
 		{m.signup_create_account()}
 	</h1>
-	<label class="field">
-		<span class="field-label" in:fly={{ y: 6 }}>
+	<Field>
+		{#snippet label()}
 			{m.email()}
-		</span>
+		{/snippet}
 		<input
 			in:fly={{ y: -6 }}
 			class="input"
@@ -35,11 +36,11 @@
 			bind:value={$form.email}
 			{...$constraints.email}
 		/>
-	</label>
-	<label class="field">
-		<span class="field-label" in:fly={{ y: 6, delay: 75 }}>
+	</Field>
+	<Field>
+		{#snippet label()}
 			{m.password()}
-		</span>
+		{/snippet}
 		<div class="input-group">
 			<input
 				in:fly={{ y: -6, delay: 75 }}
@@ -77,11 +78,11 @@
 				</button>
 			</div>
 		</div>
-	</label>
-	<label class="field">
-		<span class="field-label" in:fly={{ y: 6, delay: 150 }}>
+	</Field>
+	<Field>
+		{#snippet label()}
 			{m.password_confirmation()}
-		</span>
+		{/snippet}
 		<input
 			in:fly={{ y: -6, delay: 150 }}
 			class="input"
@@ -91,24 +92,18 @@
 			bind:value={$form.confirmPassword}
 			{...$constraints.confirmPassword}
 		/>
-	</label>
-	<button
-		in:fly={{ y: -6, delay: 225 }}
-		class="button button-cta"
-		type="submit"
-		use:ripple
-		bind:this={buttonRef}
-	>
+	</Field>
+	<button class="button button-cta" type="submit" use:ripple bind:this={buttonRef}>
 		<IconSpinner icon={UserRoundPlus} busy={$submitter === buttonRef} />
 		{m.signup()}
 	</button>
 </form>
 <nav class="gap-menu-gutter flex flex-row flex-wrap justify-between text-sm">
-	<a class="button button-link" {...linkAttributes('/login')}>
+	<a class="button button-ghost" {...linkAttributes('/login')}>
 		<LogIn />
 		{m.auth_login_prompt()}
 	</a>
-	<a class="button button-link" {...linkAttributes('/reset-password')}>
+	<a class="button button-ghost" {...linkAttributes('/reset-password')}>
 		{m.auth_forgot_password_prompt()}
 		<ShieldQuestion />
 	</a>
