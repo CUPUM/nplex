@@ -295,6 +295,7 @@
 		/* Disabled */
 
 		&:is(:disabled, [aria-disabled='true'], [data-disabled='true']) {
+			opacity: var(--opacity-dimmer);
 			color: var(--switch-item-disabled-color, var(--switch-item-color));
 
 			&::after {

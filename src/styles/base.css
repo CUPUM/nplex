@@ -3,6 +3,10 @@ button {
 	cursor: pointer;
 }
 
+select {
+	appearance: none;
+}
+
 a:is([aria-disabled='true'], [data-disabled='true']) {
 	pointer-events: none;
 }

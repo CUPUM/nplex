@@ -32,23 +32,27 @@
 	/* Text sizes */
 
 	--font-size-xs: 0.694rem;
-	--font-size-xs--line-height: 1rem;
+	--font-size-xs--line-height: 1.65;
 	--font-size-sm: 0.833rem;
-	--font-size-sm--line-height: 1.25rem;
+	--font-size-sm--line-height: 1.625;
 	--font-size-md: 1rem;
-	--font-size-md--line-height: 1.5rem;
-	--font-size-lg: 1.333rem; /* h6 */
-	--font-size-lg--line-height: 2rem;
-	--font-size-xl: 1.777rem; /* h5 */
-	--font-size-xl--line-height: 2.5rem;
-	--font-size-2xl: 2.369rem; /* h4 */
-	--font-size-2xl--line-height: 3.25rem;
-	--font-size-3xl: 3.157rem; /* h3 */
-	--font-size-3xl--line-height: 4.25rem;
-	--font-size-4xl: 4.209rem; /* h2 */
-	--font-size-4xl--line-height: 5.25rem;
-	--font-size-5xl: 5.61rem; /* h1 */
-	--font-size-5xl--line-height: 6.25rem;
+	--font-size-md--line-height: 1.6;
+	--font-size-lg: 1.2rem; /* h6 */
+	--font-size-lg--line-height: 1.525;
+	--font-size-xl: 1.44rem; /* h5 */
+	--font-size-xl--line-height: 1.45;
+	--font-size-2xl: 1.728rem; /* h4 */
+	--font-size-2xl--line-height: 1.375;
+	--font-size-3xl: 2.074rem; /* h3 */
+	--font-size-3xl--line-height: 1.3;
+	--font-size-4xl: 2.488rem; /* h2 */
+	--font-size-4xl--line-height: 1.225;
+	--font-size-5xl: 2.986rem; /* h1 */
+	--font-size-5xl--line-height: 1.15;
+	--font-size-big: 4.299rem;
+	--font-size-big--line-height: 1.15;
+	--font-size-biggest: 5.159rem;
+	--font-size-biggest--line-height: 1.15;
 
 	/* Trackings */
 
@@ -70,11 +74,11 @@
 
 	/* Font weights */
 
-	--font-weight-thin: 300;
-	--font-weight-normal: 400;
-	--font-weight-semibold: 500;
-	--font-weight-bold: 600;
-	--font-weight-bolder: 700;
+	--font-weight-thin: 350;
+	--font-weight-normal: 450;
+	--font-weight-semibold: 550;
+	--font-weight-bold: 650;
+	--font-weight-bolder: 750;
 
 	/* Breakpoints */
 
@@ -111,7 +115,7 @@
 	--spacing-input-nest: 0.35rem;
 	--spacing-input-padding: 1.25em;
 	--spacing-input-gutter: calc(var(--spacing-input-padding) / 2);
-	--spacing-field-gutter: 0.5em;
+	--spacing-field-gutter: 0.75em;
 	--spacing-popover-padding: var(--spacing-md);
 	--spacing-menu-gutter: calc(2 * var(--outline-width-focus));
 	--spacing-card-padding: var(--spacing-lg);
@@ -189,9 +193,9 @@
 	/* Durations */
 
 	--transition-duration-xfast: 75ms;
-	--transition-duration-fast: 125ms;
-	--transition-duration-medium: 250ms;
-	--transition-duration-slow: 500ms;
+	--transition-duration-fast: 150ms;
+	--transition-duration-medium: 300ms;
+	--transition-duration-slow: 600ms;
 	--transition-duration-xslow: 1200ms;
 
 	/* Animations */
@@ -328,26 +332,26 @@
 	--color-success: hsl(120, 90%, 25%);
 	--color-success-accent: hsl(120, 46%, 42%);
 
-	--color-error-dim: hsl(8, 90%, 36%);
-	--color-error: hsl(7, 76%, 45%);
-	--color-error-accent: hsl(6, 72%, 53%);
+	--color-error-dim: hsl(8, 70%, 46%);
+	--color-error: hsl(7, 80%, 55%);
+	--color-error-accent: hsl(6, 90%, 64%);
 
 	--background-color-pure: black;
 	--background-color-base: hsl(61, 5%, 7%);
 	--background-color-popover: hsl(62, 4%, 5%);
 	--background-color-overlay: hsl(220, 16%, 3%, 86%);
 	--background-color-card-dim: hsl(62, 4%, 8%);
-	--background-color-card: hsl(60, 3%, 9%);
-	--background-color-card-accent: hsl(58, 2%, 10%);
-	--background-color-input-dim: color-mix(in srgb, var(--text-color-base) 6%, transparent);
-	--background-color-input: color-mix(in srgb, var(--text-color-base) 8%, transparent);
-	--background-color-input-accent: color-mix(in srgb, var(--text-color-base) 10%, transparent);
+	--background-color-card: hsl(240, 2%, 10%);
+	--background-color-card-accent: hsl(238, 2%, 12%);
+	--background-color-input-dim: hsla(246, 10%, 35%, 10%);
+	--background-color-input: hsla(244, 8%, 38%, 12%);
+	--background-color-input-accent: hsla(242, 6%, 41%, 14%);
 
 	--text-color-pure: white;
 	--text-color-base: hsl(45, 10%, 74%);
 	--text-color-base-dim: hsl(45, 6%, 40%);
 	--text-color-base-dimmer: hsl(45, 6%, 25%);
-	--text-color-base-accent: hsl(45, 18%, 98%);
+	--text-color-base-accent: hsl(45, 16%, 92%);
 	--text-color-input-dim: hsl(80, 4%, 60%);
 	--text-color-input: hsl(80, 8%, 78%);
 	--text-color-input-accent: hsl(80, 20%, 88%);

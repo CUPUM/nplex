@@ -123,7 +123,7 @@
 	align-items: center;
 	border-radius: var(--input-radius);
 	transition:
-		all var(--transition-duration-medium) var(--transition-timing-function-out),
+		all var(--transition-duration-fast) var(--transition-timing-function-out),
 		outline var(--transition-duration-fast);
 
 	/* Pseudo for border, when possible, fallback to element */
@@ -236,7 +236,7 @@
 	/* Hover */
 
 	&:is(.input):hover:not(:focus):not(:disabled),
-	&:is(.input-group):not(:disabled):has(.input:hover:not(:focus, :disabled)) {
+	&:is(.input-group):not(:disabled):has(.input:hover:not(:focus):not(:disabled)) {
 		color: var(--input-hover-color, var(--input-color));
 		background: var(--input-hover-background, var(--input-background));
 
