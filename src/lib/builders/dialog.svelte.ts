@@ -40,14 +40,6 @@ export class Dialog {
 				}
 			}
 		});
-
-		// if (window) {
-		// 	window.onbeforeunload(e => {
-		// 		if (this.open) {
-		// 			this
-		// 		}
-		// 	})
-		// }
 	}
 
 	get open() {
