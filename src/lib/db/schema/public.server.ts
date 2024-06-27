@@ -1,10 +1,11 @@
 import { ROLES } from '$lib/auth/constants';
-import { sql } from 'drizzle-orm';
+import { Column, sql } from 'drizzle-orm';
 import { intrange, nanoid } from 'drizzle-orm-helpers/pg';
 import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import {
 	boolean,
 	date,
+	index,
 	integer,
 	pgTable,
 	primaryKey,
@@ -14,11 +15,17 @@ import {
 	vector,
 } from 'drizzle-orm/pg-core';
 import {
+	LANG_COLUMN_NAME,
 	PROJECT_IMAGE_PALETTE_LENGTH,
 	PROJECT_IMAGE_PALETTE_VECTOR_DIMENSIONS,
 } from '../constants';
 import { role } from '../custom-types.server';
-import { CREATED_AT_COLUMN, LANG_COLUMN, UPDATED_AT_COLUMN } from '../helpers.server';
+import {
+	CREATED_AT_COLUMN,
+	LANG_COLUMN,
+	langToRegconfig,
+	UPDATED_AT_COLUMN,
+} from '../helpers.server';
 import { roles, users } from './users.server';
 
 /**
@@ -47,7 +54,7 @@ export const projectTypesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -78,7 +85,7 @@ export const projectInterventionsCategoriesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -115,7 +122,7 @@ export const projectInterventionsTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -175,7 +182,7 @@ export const projectSiteOwnershipsTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -206,7 +213,7 @@ export const projectImplantationTypesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -237,7 +244,7 @@ export const projectExemplarityCategoriesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -272,7 +279,7 @@ export const projectExemplarityMarkersTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -302,7 +309,7 @@ export const projectImageTypesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -333,7 +340,7 @@ export const projectImageTemporalitiesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -365,7 +372,7 @@ export const projectBuildingLevelTypesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -420,6 +427,10 @@ export const projects = pgTable('projects', {
 	buildingConstructionDate: date('building_construction_date', { mode: 'date' }),
 });
 
+export function projectsTranslationsTs(lang: Column, title: Column, summary: Column) {
+	return sql`(setweight(to_tsvector(${langToRegconfig(lang)}, coalesce(${title}, '')), 'A') || setweight(to_tsvector(${langToRegconfig(lang)}, coalesce(${summary}, '')), 'B'))`;
+}
+
 export const projectsTranslations = pgTable(
 	'projects_t',
 	{
@@ -436,11 +447,11 @@ export const projectsTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
-			// tsIndex: index('ts_index').using(
-			// 	'gin',
-			// 	sql`(set_weight(to_tsvector(${langToRegconfig(table.lang)}, coalesce(${table.title}, '')), 'A') || set_weight(to_tsvector(${langToRegconfig(table.lang)}, coalesce(${table.summary}, '')), 'B'))`
-			// ),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
+			tsIndex: index('ts_index').using(
+				'gin',
+				projectsTranslationsTs(table[LANG_COLUMN_NAME], table.title, table.summary)
+			),
 		};
 	}
 );
@@ -580,7 +591,7 @@ export const projectsImagesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -763,7 +774,7 @@ export const organizationTypesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -794,7 +805,7 @@ export const organizationExpertisesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -822,7 +833,7 @@ export const organizationDutiesTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
 		};
 	}
 );
@@ -870,8 +881,8 @@ export const organizationsTranslations = pgTable(
 	},
 	(table) => {
 		return {
-			pk: primaryKey({ columns: [table.id, table.lang] }),
-			unq: unique().on(table.name, table.lang),
+			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
+			unq: unique().on(table.name, table[LANG_COLUMN_NAME]),
 		};
 	}
 );

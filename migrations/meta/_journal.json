@@ -260,6 +260,13 @@
       "when": 1718832265172,
       "tag": "0036_curved_raider",
       "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1719467962607,
+      "tag": "0037_spicy_silver_sable",
+      "breakpoints": true
     }
   ]
 }

@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS "ts_index" ON "projects_t" USING gin ((setweight(to_tsvector(case when "lang" = 'en' then 'english'::regconfig when "lang" = 'fr' then 'french'::regconfig end, coalesce("title", '')), 'A') || setweight(to_tsvector(case when "lang" = 'en' then 'english'::regconfig when "lang" = 'fr' then 'french'::regconfig end, coalesce("summary", '')), 'B')));
