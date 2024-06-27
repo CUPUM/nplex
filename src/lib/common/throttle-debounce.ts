@@ -1,14 +1,11 @@
 /**
  * Helper function to debounce passed function's execution.
  */
-export function debounce<Args extends unknown[], F extends (...args: Args) => ReturnType<F>>(
-	fn: F,
-	timeout = 250
-) {
+export function debounce<A extends unknown[], R>(fn: (...args: A) => R, timeout = 250) {
 	let timer: ReturnType<typeof setTimeout>;
-	let cache: ReturnType<F>;
+	let cache: R;
 
-	function d(...args: Parameters<F>) {
+	function d(...args: A) {
 		clearTimeout(timer);
 		timer = setTimeout(() => {
 			cache = fn(...args);
@@ -27,15 +24,12 @@ export function debounce<Args extends unknown[], F extends (...args: Args) => Re
 /**
  * Function wrapper to throttle the passed function's execution rate.
  */
-export function throttle<Args extends unknown[], F extends (...args: Args) => ReturnType<F>>(
-	fn: F,
-	timeout = 250
-) {
+export function throttle<A extends unknown[], R>(fn: (...args: A) => R, timeout = 250) {
 	let timer: ReturnType<typeof setTimeout>;
 	let last: number;
-	let cache: ReturnType<F>;
+	let cache: R;
 
-	function t(...args: Parameters<F>) {
+	function t(...args: A) {
 		clearTimeout(timer);
 		const now = Date.now();
 		if (last + timeout > now) {
