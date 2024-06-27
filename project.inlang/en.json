@@ -151,7 +151,7 @@
 	"project_create_invalid_description": "Could not create new {descriptor} because of invalid data. Please try again making sure you provide the required information.",
 	"project_create_invalid_title": "Invalid project descriptor",
 	"project_create_level_type": "Create a level type",
-	"project_create_new": "Create a brand new project!",
+	"project_create_new": "Create a brand new project",
 	"project_create_ownership_type": "Create a new ownership type",
 	"project_danger_zone": "Danger zone",
 	"project_danger_zone_security": "Security actions",
@@ -193,6 +193,7 @@
 	"project_intervention_category_title": "Intervention category title",
 	"project_intervention_create": "Create an intervention type",
 	"project_intervention_types": "Intervention types",
+	"project_interventions": "Types of intervention",
 	"project_interventions_description": "Select one or more interventions completed in the scope of the project. Make sure to only list interventions accounted for across the rest of this sheet's metadata (ex.: cost range, project timeline, image gallery, etc.).",
 	"project_interventions_missing_type": "Start by selecting a project type.",
 	"project_interventions_none": "No corresponding intervention",
@@ -277,5 +278,8 @@
 	"verify_email_title": "Confirm your email address",
 	"project_settings_security": "Security",
 	"transfer": "Transfer",
-	"map": "Map"
+	"map": "Map",
+	"new_images": "New images",
+	"project_sharing_and_management": "Sharing & management",
+	"organization_sharing_and_management": "Management & permissions"
 }

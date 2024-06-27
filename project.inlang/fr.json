@@ -152,7 +152,7 @@
 	"project_create_invalid_description": "Le {descriptor} n’a pas pu être créé à cause de données invalides. Veuillez essayer à nouveau en vous assurant de fournir les informations requises.",
 	"project_create_invalid_title": "Descripteur de projet invalide",
 	"project_create_level_type": "Créer un type d’étage",
-	"project_create_new": "Créez un nouveau projet&nbsp;!",
+	"project_create_new": "Créez un nouveau projet",
 	"project_create_ownership_type": "Créer un type de propriétaires",
 	"project_danger_zone": "Zone à risque",
 	"project_danger_zone_security": "Gestion de sécurité",
@@ -280,5 +280,8 @@
 	"verify_email_title": "Confirmez votre adresse courriel",
 	"project_settings_security": "Sécurité",
 	"transfer": "Transférer",
-	"map": "Carte"
+	"map": "Carte",
+	"new_images": "Nouvelles images",
+	"project_sharing_and_management": "Partage & gestion",
+	"organization_sharing_and_management": "Gestion & permissions"
 }
