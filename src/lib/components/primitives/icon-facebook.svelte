@@ -14,6 +14,3 @@
 		fill="white"
 	/>
 </svg>
-
-<style>
-</style>

@@ -12,6 +12,3 @@
 		fill="#EB3D01"
 	/>
 </svg>
-
-<style>
-</style>

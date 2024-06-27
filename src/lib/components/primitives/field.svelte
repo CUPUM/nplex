@@ -28,22 +28,20 @@
 	{#if label}
 		<span
 			in:fly|global={{ y: 6, opacity: 0 }}
-			class="px-field-gutter text-base text-[clamp(var(--font-size-xs),0.75em,var(--font-size-md))] font-semibold"
+			class="text-base text-[clamp(var(--font-size-xs),0.75em,var(--font-size-md))] font-semibold"
 		>
 			{@render label()}
 		</span>
 	{/if}
 	{#if description}
-		<div
-			class="px-field-gutter text-base-dim text-[clamp(var(--font-size-xs),0.75em,var(--font-size-sm))]"
-		>
+		<div class="text-base-dim text-[clamp(var(--font-size-xs),0.75em,var(--font-size-sm))]">
 			{@render description()}
 		</div>
 	{/if}
 	{@render children?.()}
 	{#if errors && errors.length}
 		<div
-			class="text-input-error-dim px-field-gutter flex flex-col text-[clamp(var(--font-size-xs),0.35em,var(--font-size-sm))]"
+			class="text-input-error-dim flex flex-col text-[clamp(var(--font-size-xs),0.35em,var(--font-size-sm))]"
 		>
 			{#each errors as err, i}
 				<span

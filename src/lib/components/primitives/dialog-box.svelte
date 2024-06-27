@@ -51,7 +51,7 @@
 	>
 		<div
 			class={cn(
-				'bg-popover border-dim leading-sm rounded-lg border p-[var(--dialog-padding)] text-sm shadow-lg [:has(>header:first-child)]:pt-[calc(var(--dialog-padding)-0.5em)]',
+				'bg-popover border-dim leading-sm [:where(&_hr)]:border-dim rounded-lg border p-[var(--dialog-padding)] text-sm shadow-lg [:has(>header:first-child)]:pt-[calc(var(--dialog-padding)-0.5em)] [:where(&_hr)]:-mx-[var(--dialog-padding)] [:where(&_hr)]:my-[1.5em]',
 				className
 			)}
 			{style}
@@ -77,11 +77,11 @@
 						</section>
 					{/if}
 				</header>
-				<hr class="border-dim -mx-[var(--dialog-padding)] mt-[1.5em] mb-[var(--dialog-padding)]" />
+				<hr class="mb-[var(--dialog-padding)]" />
 			{/if}
 			{@render children?.(dialog)}
 			{#if actions}
-				<hr class="border-dim -mx-[var(--dialog-padding)] mt-[var(--dialog-padding)] mb-[1.5em]" />
+				<hr class="mt-[var(--dialog-padding)]" />
 				<menu
 					class="justify-content-start gap-menu-gutter sticky bottom-0 flex flex-row-reverse bg-inherit"
 				>

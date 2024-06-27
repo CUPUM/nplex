@@ -32,8 +32,8 @@
 </script>
 
 {#key split}
-	<span
-		class="stagger-text"
+	<div
+		class="whitespace-pre-wrap [text-decoration:inherit]"
 		data-clipped={clipPath ? true : undefined}
 		style:--duration={ms(duration)}
 		style:--easing={easing}
@@ -46,24 +46,18 @@
 		style:--scale={scale}
 	>
 		{#each split as unit, i}
-			<span
-				class="unit-wrapper inline-block whitespace-pre will-change-transform"
-				style:--i={i}
-				style:--delay={delay}
-			>
-				<span class="unit inline-block whitespace-pre">
+			<span class="unit-wrapper" style:--i={i} style:--delay={delay}>
+				<span class="unit" class:space={unit.match(/^\s+$/)}>
 					{@html unit}
 				</span>
 			</span>
 		{/each}
-	</span>
+	</div>
 {/key}
 
 <style>
-	.stagger-text {
-		text-decoration: inherit;
-	}
 	.unit-wrapper {
+		will-change: transform;
 		text-decoration: inherit;
 	}
 	[data-clipped='true'] > .unit-wrapper {
@@ -75,12 +69,17 @@
 	}
 
 	.unit {
+		display: inline-block;
 		animation-name: transform;
 		animation-duration: var(--duration);
 		animation-timing-function: var(--easing);
 		animation-delay: var(--delay);
 		animation-fill-mode: both;
 		text-decoration: inherit;
+
+		&.space {
+			display: inline;
+		}
 	}
 
 	@keyframes clip {
