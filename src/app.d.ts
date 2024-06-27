@@ -32,6 +32,7 @@ declare global {
 				hidden?: boolean;
 			};
 		}
+		interface PageState {}
 	}
 }
 
