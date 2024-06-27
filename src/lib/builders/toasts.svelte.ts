@@ -21,6 +21,8 @@ type ToastBody = string | Snippet<[unknown]> | Component;
  * Single toast instance with its own states.
  */
 class Toast<T extends ToastBody> {
+	#parent;
+
 	close;
 	progress = $derived.by(() => (this.#duration ? Math.min(this.#elapsed / this.#duration, 1) : 0));
 	#type;
@@ -32,7 +34,7 @@ class Toast<T extends ToastBody> {
 	#prev: number | undefined;
 	#run(t: number) {
 		if (this.#prev) {
-			if (this.#playing) {
+			if (this.#playing && this.#parent.playing) {
 				this.#elapsed += t - this.#prev;
 				if (this.#elapsed >= this.#duration) {
 					return this.close();
@@ -69,8 +71,10 @@ class Toast<T extends ToastBody> {
 						? { snippet: T }
 						: never;
 		},
-		collection: Toast<T>[]
+		collection: Toast<T>[],
+		parent: Toasts
 	) {
+		this.#parent = parent;
 		this.#type = type;
 		this.#duration = duration;
 		this.#dismissable = dismissable;
@@ -139,17 +143,47 @@ export type ToastParameters<T extends ToastBody = ToastBody> = ConstructorParame
  * Toasts collection to manage messages.
  */
 export class Toasts {
+	options;
 	#all = $state<InstanceType<typeof Toast>[]>([]);
+	#playing = $state(true);
+	#pause() {
+		this.#playing = false;
+	}
+	#resume() {
+		this.#playing = true;
+	}
 
 	// To do: add configurable defaults for relevant fields (duration, dismissable, etc.)
-	constructor() {}
+	constructor({ pauseAll = false }: { pauseAll?: boolean } = {}) {
+		this.options = {
+			pauseAll,
+		};
+	}
 
 	get all() {
 		return this.#all;
 	}
 
+	get playing() {
+		return this.#playing;
+	}
+
+	get listAttributes() {
+		const _this = this;
+		return {
+			onpointerenter(e: PointerEvent) {
+				if (_this.options.pauseAll) {
+					_this.#pause();
+				}
+			},
+			onpointerleave(e: PointerEvent) {
+				_this.#resume();
+			},
+		};
+	}
+
 	add<T extends ToastBody>(options: ToastParameters<T>) {
-		const toast = new Toast(options, this.#all);
+		const toast = new Toast(options, this.#all, this);
 		return toast;
 	}
 }
