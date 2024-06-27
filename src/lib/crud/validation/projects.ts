@@ -29,7 +29,11 @@ import {
 	PROJECT_TITLE_MAX,
 } from './constants';
 import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
-import { projectTypesSchema } from './projects-descriptors';
+import {
+	projectExemplarityMarkersSchema,
+	projectInterventionsSchema,
+	projectTypesSchema,
+} from './projects-descriptors';
 
 export const projectsSchema = createInsertSchema(projects, {
 	adjacentStreets: (s) => s.adjacentStreets.positive().max(PROJECT_ADJACENT_STREETS_MAX),
@@ -105,7 +109,10 @@ export const projectExemplarityMarkersFormSchema = z.object({
 	markersIds: projectsExemplarityMarkersSchema.shape.exemplarityMarkerId.array(),
 });
 
-export const projectGalleryFormSchema = projectsSchema.pick({ bannerId: true });
+export const projectGalleryFormSchema = z.object({
+	deleteId: projectsImagesSchema.shape.id,
+	bannerId: projectsSchema.shape.bannerId.unwrap(),
+});
 
 export const projectImageFormSchema = projectsImagesSchema
 	.pick({
@@ -129,5 +136,7 @@ export const projectNewImagesFormSchema = z.object({
 
 export const projectsFiltersSchema = z.object({
 	search: z.string().optional(),
-	projectTypes: projectTypesSchema.shape.id.array(),
+	types: projectTypesSchema.shape.id.array(),
+	interventions: projectInterventionsSchema.shape.id.array(),
+	markers: projectExemplarityMarkersSchema.shape.id.array(),
 });

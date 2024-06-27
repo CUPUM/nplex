@@ -10,7 +10,7 @@
 </script>
 
 <article
-	class="group/card hover:bg-card-accent bg-card rounded-card relative inset-0 transition-all group-data-[view-mode=masonry]/explore:absolute hover:shadow-lg"
+	class="group/card hover:bg-card-accent bg-card rounded-card relative h-full w-full transition-all hover:shadow-lg"
 >
 	<div
 		class="inset-[var(--border-width-lg)] flex flex-col items-stretch justify-end rounded-[calc(var(--radius-card)-var(--border-width-lg))] group-data-[view-mode=masonry]/explore:absolute"

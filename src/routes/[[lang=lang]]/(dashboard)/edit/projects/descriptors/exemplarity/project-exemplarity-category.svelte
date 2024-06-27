@@ -57,48 +57,45 @@
 			{#snippet title()}
 				{m.project_exemplarity_category()}
 			{/snippet}
-			{#snippet formBody()}
-				<TranslationsTabs>
-					{#snippet tab({ lang })}
-						<Field>
-							{#snippet label()}
-								{m.title()}
-							{/snippet}
-							<input
-								type="text"
-								bind:value={$form.translations[lang].title}
-								{...$constraints.translations?.[lang]?.title}
-								class="input"
-							/>
-						</Field>
-						<Field>
-							{#snippet label()}
-								{m.description()}
-							{/snippet}
-							<textarea
-								rows="5"
-								bind:value={$form.translations[lang].description}
-								{...$constraints.translations?.[lang]?.description}
-								class="input"
-							></textarea>
-						</Field>
-					{/snippet}
-				</TranslationsTabs>
-			{/snippet}
-			{#snippet body(dialog)}
-				<button
-					class="button button-dashed"
-					data-danger
-					form={$parentFormId}
-					value={$form.id}
-					formaction="?/deleteCategory"
-					name="delete"
-					bind:this={deleteRef}
-				>
-					<IconSpinner icon={TriangleAlert} busy={$parentFormSubmitter === deleteRef} />
-					{m.del()}
-				</button>
-			{/snippet}
+			<TranslationsTabs>
+				{#snippet tab({ lang })}
+					<Field>
+						{#snippet label()}
+							{m.title()}
+						{/snippet}
+						<input
+							type="text"
+							bind:value={$form.translations[lang].title}
+							{...$constraints.translations?.[lang]?.title}
+							class="input"
+						/>
+					</Field>
+					<Field>
+						{#snippet label()}
+							{m.description()}
+						{/snippet}
+						<textarea
+							rows="5"
+							bind:value={$form.translations[lang].description}
+							{...$constraints.translations?.[lang]?.description}
+							class="input"
+						></textarea>
+					</Field>
+				{/snippet}
+			</TranslationsTabs>
+			<hr class="mb-0" />
+			<button
+				class="button button-dashed"
+				data-danger
+				form={$parentFormId}
+				value={$form.id}
+				formaction="?/deleteCategory"
+				name="delete"
+				bind:this={deleteRef}
+			>
+				<IconSpinner icon={TriangleAlert} busy={$parentFormSubmitter === deleteRef} />
+				{m.del()}
+			</button>
 		</DescriptorFormDialog>
 	{/snippet}
 	<ul class="gap-gutter flex flex-row flex-wrap">

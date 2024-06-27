@@ -2,6 +2,8 @@ import { ROLES } from '$lib/auth/constants';
 import { LOAD_DEPENDENCIES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import {
+	organizationExpertises,
+	organizationExpertisesTranslations,
 	organizationTypes,
 	organizationTypesTranslations,
 	organizations,
@@ -62,6 +64,22 @@ export function getOrganizationTypesList(event: ServerLoadEvent) {
 			.$dynamic(),
 		organizationTypesTranslations,
 		eq(organizationTypes.id, organizationTypesTranslations.id),
+		event
+	);
+}
+
+export function getOrganizationExpertisesList(event: ServerLoadEvent) {
+	event.depends(LOAD_DEPENDENCIES.LANG);
+	return joinTranslation(
+		db
+			.select({
+				...getColumns(organizationExpertisesTranslations),
+				...getColumns(organizationExpertises),
+			})
+			.from(organizationExpertises)
+			.$dynamic(),
+		organizationExpertisesTranslations,
+		eq(organizationExpertises.id, organizationExpertisesTranslations.id),
 		event
 	);
 }

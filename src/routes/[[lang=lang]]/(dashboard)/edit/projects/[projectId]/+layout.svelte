@@ -5,7 +5,16 @@
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import OptionalText from '$lib/components/primitives/optional-text.svelte';
-	import { AlertTriangle, Eye, UsersRound } from 'lucide-svelte';
+	import {
+		Calendar,
+		Cuboid,
+		FileText,
+		Images,
+		MapPin,
+		Tags,
+		TriangleAlert,
+		Users,
+	} from 'lucide-svelte';
 	import DashboardSidebarMenuOrganizations from '../../../dashboard-sidebar-menu-organizations.svelte';
 	import DashboardSidebarMenuProjects from '../../../dashboard-sidebar-menu-projects.svelte';
 
@@ -38,20 +47,24 @@
 			{m.project_essentials()}
 		{/snippet}
 		<DashboardSidebarMenuItem {...linkAttributes(`/edit/projects/${data.id}`)}>
+			<FileText />
 			{m.project_general()}
 		</DashboardSidebarMenuItem>
 		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/place`)}
 			aria-disabled="true"
 		>
+			<MapPin />
 			{m.project_place()}
 		</DashboardSidebarMenuItem>
 		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/exemplarity#exemplarity-markers`)}
 		>
+			<Tags />
 			{m.project_examplarity()}
 		</DashboardSidebarMenuItem>
 		<DashboardSidebarMenuItem {...linkAttributes(`/edit/projects/${data.id}/gallery#new-images`)}>
+			<Images />
 			{m.project_gallery()}
 		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
@@ -59,22 +72,22 @@
 		{#snippet legend()}
 			{m.project_complements()}
 		{/snippet}
-		<DashboardSidebarMenuItem
-			{...linkAttributes(`/edit/projects/${data.id}/contributions`)}
-			aria-disabled="true"
-		>
+		<DashboardSidebarMenuItem {...linkAttributes(`/edit/projects/${data.id}/contributions`)}>
+			<Users />
 			{m.project_contributions()}
 		</DashboardSidebarMenuItem>
 		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/materials`)}
 			aria-disabled="true"
 		>
+			<Cuboid />
 			{m.project_materials()}
 		</DashboardSidebarMenuItem>
 		<DashboardSidebarMenuItem
 			{...linkAttributes(`/edit/projects/${data.id}/timeline`)}
 			aria-disabled="true"
 		>
+			<Calendar />
 			{m.project_timeline()}
 		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
@@ -82,23 +95,9 @@
 		{#snippet legend()}
 			{m.project_settings()}
 		{/snippet}
-		<DashboardSidebarMenuItem
-			{...linkAttributes(`/edit/projects/${data.id}/sharing`)}
-			aria-disabled="true"
-		>
-			<UsersRound class="button-icon" />
-			{m.project_sharing()}
-		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem
-			{...linkAttributes(`/edit/projects/${data.id}/publishing`)}
-			aria-disabled="true"
-		>
-			<Eye class="button-icon" />
-			{m.project_visibility()}
-		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem {...linkAttributes(`/edit/projects/${data.id}/security`)} data-danger>
-			<AlertTriangle class="button-icon" />
-			{m.project_danger_zone()}
+		<DashboardSidebarMenuItem {...linkAttributes(`/edit/projects/${data.id}/manage`)}>
+			<TriangleAlert />
+			{m.project_sharing_and_management()}
 		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
 	<DashboardSidebarMenuProjects />

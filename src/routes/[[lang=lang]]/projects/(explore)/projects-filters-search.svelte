@@ -18,7 +18,7 @@
 	let searchRef = $state<HTMLButtonElement>();
 </script>
 
-<div class="input-group text-md">
+<div class="input-group text-md rounded-full">
 	<Search />
 	<input
 		type="search"
@@ -27,17 +27,7 @@
 		{...$constraints.search}
 		class="input"
 	/>
-	<div class="input-peer">
-		{#if $form.search}
-			<button
-				class="button button-ghost aspect-square"
-				transition:scale={{ start: 0.5, duration: 250, easing: expoOut, opacity: 0 }}
-				bind:this={clearRef}
-				type="submit"
-			>
-				<IconSpinner icon={X} busy={clearRef === $submitter} />
-			</button>
-		{/if}
+	<div class="input-peer flex-row-reverse">
 		<button
 			class="button aspect-square"
 			bind:this={searchRef}
@@ -46,5 +36,16 @@
 		>
 			<IconSpinner icon={ArrowRight} busy={searchRef === $submitter} />
 		</button>
+		{#if $form.search}
+			<button
+				class="button button-ghost aspect-square"
+				transition:scale={{ start: 0.5, duration: 250, easing: expoOut, opacity: 0 }}
+				bind:this={clearRef}
+				onclick={(e) => ($form.search = undefined)}
+				type="submit"
+			>
+				<IconSpinner icon={X} busy={clearRef === $submitter} />
+			</button>
+		{/if}
 	</div>
 </div>

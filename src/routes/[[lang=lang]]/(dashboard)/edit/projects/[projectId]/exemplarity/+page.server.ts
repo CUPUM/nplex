@@ -1,7 +1,10 @@
 import * as m from '$i18n/messages';
 import { STATUS_CODES } from '$lib/common/constants';
 import { authorize } from '$lib/crud/authorization/rbac.server';
-import { canEditProject, getProjectMarkersByCategoriesList } from '$lib/crud/queries/projects';
+import {
+	canEditProject,
+	getProjectExemplarityMarkersByCategoriesList,
+} from '$lib/crud/queries/projects';
 import { projectExemplarityMarkersFormSchema } from '$lib/crud/validation/projects';
 import { db } from '$lib/db/db.server';
 import { projects, projectsExemplarityMarkers } from '$lib/db/schema/public.server';
@@ -14,7 +17,7 @@ import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	authorize(event);
-	const markersByCategories = getProjectMarkersByCategoriesList(event);
+	const markersByCategories = getProjectExemplarityMarkersByCategoriesList(event);
 	const [project] = await db
 		.select({
 			markersIds: coalesce(

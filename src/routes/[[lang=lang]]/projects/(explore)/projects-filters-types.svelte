@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import Field from '$lib/components/primitives/field.svelte';
+	import SidebarFilterGroup from '$lib/components/patterns/sidebar-filter-group.svelte';
 	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
 	import type { PageData } from './$types';
 	let {
@@ -9,25 +9,30 @@
 		submitter,
 		tainted,
 		isTainted,
-		projectTypes,
-	}: ExtendedSuperFormData<PageData['filtersForm']> & { projectTypes: PageData['projectTypes'] } =
-		$props();
+		lists,
+	}: ExtendedSuperFormData<PageData['filtersForm']> & Pick<PageData, 'lists'> = $props();
 </script>
 
-<Field>
-	{#snippet label()}
+<SidebarFilterGroup>
+	{#snippet legend()}
 		{m.project_types()}
 	{/snippet}
-	<fieldset class="gap-menu-gutter flex flex-col items-start">
-		{#await projectTypes}
+	<ul class="gap-menu-gutter flex flex-col items-start">
+		{#await lists.types}
 			...
 		{:then awaitedProjectTypes}
 			{#each awaitedProjectTypes as type}
 				<label class="button button-dashed compact rounded-full">
 					{type.title}
-					<input type="checkbox" class="sr-only" value={type.id} bind:group={$form.projectTypes} />
+					<input
+						type="checkbox"
+						class="sr-only"
+						value={type.id}
+						bind:group={$form.types}
+						name="types"
+					/>
 				</label>
 			{/each}
 		{/await}
-	</fieldset>
-</Field>
+	</ul>
+</SidebarFilterGroup>

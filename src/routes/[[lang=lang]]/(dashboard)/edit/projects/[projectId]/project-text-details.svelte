@@ -13,7 +13,7 @@
 	{#snippet header()}
 		<h4>{m.presentation()}</h4>
 	{/snippet}
-	<Field>
+	<Field class="text-md mx-auto w-full max-w-md">
 		{#snippet label()}
 			{m.title()}
 		{/snippet}
@@ -30,7 +30,7 @@
 			{/snippet}
 		</TranslationsInput>
 	</Field>
-	<Field>
+	<Field class="mx-auto w-full max-w-md">
 		{#snippet label()}
 			{m.summary()}
 		{/snippet}
@@ -47,7 +47,7 @@
 			{/snippet}
 		</TranslationsInput>
 	</Field>
-	<Field>
+	<Field class="mx-auto w-full max-w-md">
 		{#snippet label()}
 			{m.description()}
 		{/snippet}

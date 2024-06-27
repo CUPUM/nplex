@@ -4,7 +4,7 @@
 	import DashboardSidebarMenu from '$lib/components/patterns/dashboard-sidebar-menu.svelte';
 	import { getDashboardContext } from '$lib/components/patterns/dashboard.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
-	import { ArrowLeft, Eye, UsersRound } from 'lucide-svelte';
+	import { ArrowLeft, Building, Triangle, Users } from 'lucide-svelte';
 	import DashboardSidebarMenuOrganizations from '../../../dashboard-sidebar-menu-organizations.svelte';
 	import DashboardSidebarMenuProjects from '../../../dashboard-sidebar-menu-projects.svelte';
 
@@ -44,20 +44,21 @@
 			{m.project_essentials()}
 		{/snippet}
 		<DashboardSidebarMenuItem {...linkAttributes(`/edit/organizations/${data.id}`)}>
+			<Building />
 			{m.organization_general()}
+		</DashboardSidebarMenuItem>
+		<DashboardSidebarMenuItem {...linkAttributes(`/edit/organizations/${data.id}/members`)}>
+			<Users />
+			{m.organization_members()}
 		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
 	<DashboardSidebarMenu>
 		{#snippet legend()}
 			{m.organization_settings()}
 		{/snippet}
-		<DashboardSidebarMenuItem {...linkAttributes(`/edit/organizations/${data.id}/sharing`)}>
-			<UsersRound class="button-icon" />
-			{m.organization_sharing()}
-		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem {...linkAttributes(`/edit/organizations/${data.id}/publishing`)}>
-			<Eye class="button-icon" />
-			{m.project_visibility()}
+		<DashboardSidebarMenuItem {...linkAttributes(`/edit/organizations/${data.id}/manage`)}>
+			<Triangle />
+			{m.organization_sharing_and_management()}
 		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
 	<DashboardSidebarMenuOrganizations />

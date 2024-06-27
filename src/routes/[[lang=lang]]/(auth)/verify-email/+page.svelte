@@ -25,6 +25,6 @@
 	<hr />
 	<p>{m.verify_email_not_received()}</p>
 	<button class="button" type="submit" formaction="">
-		<MailWarning class="button-icon" />{m.verify_email_resend()}
+		<MailWarning />{m.verify_email_resend()}
 	</button>
 </form>

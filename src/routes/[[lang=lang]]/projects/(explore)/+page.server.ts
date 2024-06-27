@@ -1,9 +1,15 @@
 import { STATUS_CODES } from '$lib/common/constants';
 import { joinTranslation } from '$lib/crud/queries/i18n';
-import { getProjectTypesList, matchesProjectsFilters } from '$lib/crud/queries/projects';
+import { matchesProjectsFilters } from '$lib/crud/queries/projects';
 import { projectsFiltersSchema } from '$lib/crud/validation/projects';
 import { db } from '$lib/db/db.server';
-import { projects, projectsImages, projectsTranslations } from '$lib/db/schema/public.server';
+import {
+	projects,
+	projectsExemplarityMarkers,
+	projectsImages,
+	projectsInterventions,
+	projectsTranslations,
+} from '$lib/db/schema/public.server';
 import { error } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
@@ -25,6 +31,8 @@ export const load = async (event) => {
 			.from(projects)
 			.where(and(matchesProjectsFilters(filtersForm.data)))
 			.leftJoin(projectsImages, eq(projectsImages.id, projects.bannerId))
+			.leftJoin(projectsInterventions, eq(projectsInterventions.projectId, projects.id))
+			.leftJoin(projectsExemplarityMarkers, eq(projectsExemplarityMarkers.projectId, projects.id))
 			.$dynamic(),
 		projectsTranslations,
 		eq(projects.id, projectsTranslations.id),
@@ -33,6 +41,5 @@ export const load = async (event) => {
 	return {
 		filtersForm,
 		result,
-		projectTypes: getProjectTypesList(event),
 	};
 };

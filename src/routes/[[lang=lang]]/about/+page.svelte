@@ -7,8 +7,8 @@
 <header
 	class="p-xl min-h-main-full-height flex flex-col items-center justify-center pb-[calc(var(--spacing-xl)+var(--spacing-navbar-height))]"
 >
-	<hgroup class="prose leading-sm w-full max-w-xl">
-		<h1>
+	<hgroup class="flex w-full max-w-xl flex-col items-start">
+		<h1 class="text-biggest text-base-accent max-w-md font-bold">
 			<StaggerText
 				text={data.title}
 				translate="0 1em"

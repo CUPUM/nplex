@@ -10,8 +10,8 @@
 	class="p-xl min-h-main-full-height flex flex-col items-center justify-center pb-[calc(var(--spacing-xl)+var(--spacing-navbar-height))]"
 >
 	<div class="gap-gutter flex w-full max-w-xl flex-row items-center justify-center">
-		<hgroup class="prose flex flex-1 flex-row">
-			<h1 class="flex-1">
+		<hgroup class="flex flex-1 flex-row">
+			<h1 class="text-biggest text-base-accent font-bold">
 				<StaggerText
 					text={data.title}
 					separator=""

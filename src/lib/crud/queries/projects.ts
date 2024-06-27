@@ -1,6 +1,8 @@
 import { ROLES } from '$lib/auth/constants';
 import { LOAD_DEPENDENCIES } from '$lib/common/constants';
+import { LANG_COLUMN_NAME } from '$lib/db/constants';
 import { db } from '$lib/db/db.server';
+import { langToRegconfig } from '$lib/db/helpers.server';
 import {
 	projectExemplarityCategories,
 	projectExemplarityCategoriesTranslations,
@@ -22,11 +24,15 @@ import {
 	projectTypesToInterventions,
 	projectTypesTranslations,
 	projects,
+	projectsExemplarityMarkers,
+	projectsInterventions,
+	projectsTranslations,
+	projectsTranslationsTs,
 	projectsUsers,
 } from '$lib/db/schema/public.server';
 import type { ServerLoadEvent } from '@sveltejs/kit';
-import { and, eq, exists, or } from 'drizzle-orm';
-import { $boolean, $true, coalesce, getColumns } from 'drizzle-orm-helpers';
+import { and, eq, exists, inArray, or, sql } from 'drizzle-orm';
+import { $boolean, coalesce, getColumns } from 'drizzle-orm-helpers';
 import {
 	$emptyJsonArray,
 	jsonAgg,
@@ -65,7 +71,28 @@ export function canEditProject(user: User) {
  * Filter clauses based on projectsFiltersSchema data.
  */
 export function matchesProjectsFilters(filters: z.infer<typeof projectsFiltersSchema>) {
-	return $true;
+	return and(
+		filters.search
+			? exists(
+					db
+						.select()
+						.from(projectsTranslations)
+						.where(
+							and(
+								eq(projects.id, projectsTranslations.id),
+								sql`${projectsTranslationsTs(projectsTranslations[LANG_COLUMN_NAME], projectsTranslations.title, projectsTranslations.summary)} @@ to_tsquery(${langToRegconfig(projectsTranslations[LANG_COLUMN_NAME])}, ${filters.search})`
+							)
+						)
+				)
+			: undefined,
+		filters.types.length ? inArray(projects.id, filters.types) : undefined,
+		filters.interventions.length
+			? inArray(projectsInterventions.interventionId, filters.interventions)
+			: undefined,
+		filters.markers.length
+			? inArray(projectsExemplarityMarkers.exemplarityMarkerId, filters.markers)
+			: undefined
+	);
 }
 
 export function getProjectTypesList(event: ServerLoadEvent) {
@@ -221,7 +248,7 @@ export function getProjectExemplarityMarkersList(event: ServerLoadEvent) {
 	);
 }
 
-export function getProjectMarkersByCategoriesList(event: ServerLoadEvent) {
+export function getProjectExemplarityMarkersByCategoriesList(event: ServerLoadEvent) {
 	const markers = getProjectExemplarityMarkersList(event).as('markers');
 	const markersColumns = getColumns(markers);
 	const categories = getProjectExemplarityCategoriesList(event).as('categories');

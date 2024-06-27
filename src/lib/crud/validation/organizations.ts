@@ -2,6 +2,7 @@ import { organizations, organizationsTranslations } from '$lib/db/schema/public.
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
+import { organizationExpertisesSchema } from './organizations-descriptors';
 
 export const organizationsFiltersSchema = z.object({
 	search: z.string().optional(),
@@ -25,8 +26,12 @@ export const organizationsWithTranslationsSchema = withTranslationsSchema(
 // Form schemas
 // ************
 
-export const organizationGeneralSchema = organizationsWithTranslationsSchema.pick({
-	id: true,
-	typeId: true,
-	translations: true,
-});
+export const organizationGeneralSchema = organizationsWithTranslationsSchema
+	.pick({
+		id: true,
+		typeId: true,
+		translations: true,
+	})
+	.extend({
+		expertisesIds: organizationExpertisesSchema.shape.id.array(),
+	});

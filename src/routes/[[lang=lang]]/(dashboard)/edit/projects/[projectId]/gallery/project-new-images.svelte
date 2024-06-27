@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { InputImages } from '$lib/builders/input-images.svelte';
+	import DashboardSubSection from '$lib/components/patterns/dashboard-sub-section.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
@@ -58,7 +59,7 @@
 		},
 	});
 
-	const { form, errors, enhance, submitter } = extendedSuperForm(newImagesForm, {
+	const { form, formId, errors, enhance, submitter } = extendedSuperForm(newImagesForm, {
 		dataType: 'json',
 		resetForm: true,
 		async onSubmit(input) {
@@ -103,57 +104,67 @@
 	});
 </script>
 
-<form
-	use:enhance
-	id="new-images"
-	action="?/upload"
-	method="POST"
-	class="dashboard-section p-card-padding gap-card-gutter flex flex-row items-start justify-start"
->
-	<label class="button button-dashed" use:ripple>
-		<input form="omit" class="sr-only" name="images" {...inputImages.inputAttributes} />
-		{m.project_gallery_add_prompt()}
-		<ImagePlus />
-	</label>
-	{#each inputImages.parsed as image, i (image.data.url)}
-		<div
-			animate:flip={{
-				duration(l) {
-					return 150 + l / 25;
-				},
-				easing: expoInOut,
-			}}
-			in:scale={{ start: 0.9, duration: 500, easing: elasticOut, delay: i * 50 }}
-		>
-			<img src={image.data.url} alt="Preview image for {image.data.url}" />
-			<div>
-				{#each image.data.hex as color}
-					<div data-hex="#{color}" class="bg-[data(hex)]"></div>
-				{/each}
-			</div>
-			<menu>
-				<button
-					class="button button-ghost aspect-square"
-					data-danger
-					type="button"
-					onclick={() => image.delete()}
-					use:ripple
-				>
-					<X />
-				</button>
-			</menu>
-		</div>
-	{/each}
-	{#if inputImages.parsed.length}
-		<button
-			class="button button-cta"
-			type="submit"
+<DashboardSubSection>
+	{#snippet header()}
+		<h3>{m.new_images()}</h3>
+	{/snippet}
+	<form
+		id={$formId}
+		action="?/upload"
+		use:enhance
+		method="POST"
+		class="gap-padding flex flex-row flex-wrap self-stretch"
+	>
+		<label
+			class="p-padding border-dim rounded-input group/button relative flex aspect-square cursor-pointer items-center justify-center border border-dashed"
 			use:ripple
-			bind:this={submitRef}
-			in:fly={{ y: 8, easing: expoOut, duration: 750 }}
 		>
-			{m.project_gallery_upload()}
-			<IconSpinner busy={submitRef === $submitter} icon={Upload} />
-		</button>
-	{/if}
-</form>
+			<span class="button button-dashed">
+				{m.project_gallery_add_prompt()}
+				<ImagePlus />
+			</span>
+			<input form="omit" class="sr-only" name="images" {...inputImages.inputAttributes} />
+		</label>
+		{#each inputImages.parsed as image, i (image.data.url)}
+			<div
+				animate:flip={{
+					duration(l) {
+						return 150 + l / 25;
+					},
+					easing: expoInOut,
+				}}
+				in:scale={{ start: 0.9, duration: 500, easing: elasticOut, delay: i * 50 }}
+			>
+				<img src={image.data.url} alt="Preview image for {image.data.url}" />
+				<div>
+					{#each image.data.hex as color}
+						<div data-hex="#{color}" class="bg-[data(hex)]"></div>
+					{/each}
+				</div>
+				<menu>
+					<button
+						class="button button-ghost aspect-square"
+						data-danger
+						type="button"
+						onclick={() => image.delete()}
+						use:ripple
+					>
+						<X />
+					</button>
+				</menu>
+			</div>
+		{/each}
+		{#if inputImages.parsed.length}
+			<button
+				class="button button-cta"
+				type="submit"
+				use:ripple
+				bind:this={submitRef}
+				in:fly={{ y: 8, easing: expoOut, duration: 750 }}
+			>
+				{m.project_gallery_upload()}
+				<IconSpinner busy={submitRef === $submitter} icon={Upload} />
+			</button>
+		{/if}
+	</form>
+</DashboardSubSection>

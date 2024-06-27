@@ -80,7 +80,7 @@
 								type="button"
 								use:decrement={{ target: minRef, step }}
 							>
-								<Minus class="button-icon" />
+								<Minus />
 							</button>
 						</div>
 						<input
@@ -98,7 +98,7 @@
 								type="button"
 								use:increment={{ target: minRef, step }}
 							>
-								<Plus class="button-icon" />
+								<Plus />
 							</button>
 						</div>
 					</div>
@@ -110,7 +110,7 @@
 								type="button"
 								use:decrement={{ target: maxRef, step }}
 							>
-								<Minus class="button-icon" />
+								<Minus />
 							</button>
 						</div>
 						<input
@@ -128,7 +128,7 @@
 								type="button"
 								use:increment={{ target: maxRef, step }}
 							>
-								<Plus class="button-icon" />
+								<Plus />
 							</button>
 						</div>
 					</div>

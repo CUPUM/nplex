@@ -38,32 +38,30 @@
 	{#snippet title()}
 		{m.organization_expertise_create()}
 	{/snippet}
-	{#snippet formBody()}
-		<TranslationsTabs>
-			{#snippet tab({ lang, isCurrent })}
-				<Field>
-					{#snippet label()}
-						{m.title()}
-					{/snippet}
-					<input
-						type="text"
-						class="input"
-						{...$constraints.translations?.[lang]?.description}
-						bind:value={$form.translations[lang].title}
-					/>
-				</Field>
-				<Field>
-					{#snippet label()}
-						{m.description()}
-					{/snippet}
-					<textarea
-						class="input"
-						rows="5"
-						{...$constraints.translations?.[lang]?.description}
-						bind:value={$form.translations[lang].description}
-					></textarea>
-				</Field>
-			{/snippet}
-		</TranslationsTabs>
-	{/snippet}
+	<TranslationsTabs>
+		{#snippet tab({ lang, isCurrent })}
+			<Field>
+				{#snippet label()}
+					{m.title()}
+				{/snippet}
+				<input
+					type="text"
+					class="input"
+					{...$constraints.translations?.[lang]?.description}
+					bind:value={$form.translations[lang].title}
+				/>
+			</Field>
+			<Field>
+				{#snippet label()}
+					{m.description()}
+				{/snippet}
+				<textarea
+					class="input"
+					rows="5"
+					{...$constraints.translations?.[lang]?.description}
+					bind:value={$form.translations[lang].description}
+				></textarea>
+			</Field>
+		{/snippet}
+	</TranslationsTabs>
 </DescriptorFormDialog>

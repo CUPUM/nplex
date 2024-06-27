@@ -1,38 +1,38 @@
 <script lang="ts">
-	import type { ComponentProps } from 'svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import type { Snapshot } from '../$types';
-	import ProjectsViewMode from './projects-view-mode.svelte';
+	import ProjectsViewModes, {
+		PROJECTS_VIEW_MODES,
+		type ProjectsViewMode,
+	} from './projects-view-modes.svelte';
 
 	let { data, children } = $props();
 
-	let viewMode = $state<ComponentProps<ProjectsViewMode>['viewMode']>('masonry');
-	let showFilters = $state<boolean>(true);
+	let projectsViewMode = $state<ProjectsViewMode>(PROJECTS_VIEW_MODES.MASONRY);
 
 	export const snapshot: Snapshot<{
-		viewMode: typeof viewMode;
-		showFilters: typeof showFilters;
+		projectsViewMode: ProjectsViewMode;
 	}> = {
 		capture() {
+			console.log('capture', projectsViewMode);
 			return {
-				viewMode,
-				showFilters,
+				projectsViewMode,
 			};
 		},
 		restore(value) {
-			viewMode = value.viewMode;
-			showFilters = value.showFilters;
+			console.log('restore', value);
+			projectsViewMode = value.projectsViewMode;
 		},
 	};
 </script>
 
-<article class="group/explore flex flex-col" data-view-mode={viewMode}>
+<article class="group/explore flex flex-col" data-view-mode={projectsViewMode}>
 	<aside
-		class="top-sticky-top z-front sticky flex flex-row justify-center text-sm"
+		class="top-sticky-top z-front pointer-events-none sticky flex flex-row justify-center text-sm *:pointer-events-auto"
 		in:fly|global={{ y: -6, easing: expoOut, duration: 500, opacity: 0 }}
 	>
-		<ProjectsViewMode bind:viewMode />
+		<ProjectsViewModes bind:mode={projectsViewMode} />
 	</aside>
 	{@render children()}
 </article>

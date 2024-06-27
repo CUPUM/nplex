@@ -2,7 +2,7 @@ import * as m from '$i18n/messages';
 import { STATUS_CODES } from '$lib/common/constants';
 import { authorize } from '$lib/crud/authorization/rbac.server';
 import { aggTranslations, joinTranslations } from '$lib/crud/queries/i18n';
-import { canEditProject } from '$lib/crud/queries/projects';
+import { canEditProject, getProjectImageTypesList } from '$lib/crud/queries/projects';
 import {
 	projectGalleryFormSchema,
 	projectImageFormSchema,
@@ -41,16 +41,17 @@ export const load = async (event) => {
 	if (!project) {
 		error(STATUS_CODES.NOT_FOUND, m.project_not_found());
 	}
-	const [form, imagesForms, newImagesForm] = await Promise.all([
-		superValidate(project, zod(projectGalleryFormSchema)),
+	const [imageForms, galleryForm, newImagesForm] = await Promise.all([
 		Promise.all(
 			images.map((image) => superValidate(image, zod(projectImageFormSchema), { id: image.id }))
 		),
+		superValidate(project, zod(projectGalleryFormSchema)),
 		superValidate(zod(projectNewImagesFormSchema)),
 	]);
 	return {
-		form,
-		imagesForms,
+		types: getProjectImageTypesList(event),
+		imageForms,
+		galleryForm,
 		newImagesForm,
 	};
 };
@@ -73,11 +74,47 @@ export const actions = {
 	},
 	promote: async (event) => {
 		authorize(event);
+		const form = await superValidate(event, zod(projectGalleryFormSchema));
+		if (!form.valid || !('bannerId' in form.data) || !form.data.bannerId) {
+			return fail(STATUS_CODES.BAD_REQUEST);
+		}
+		await db
+			.update(projects)
+			.set({ bannerId: form.data.bannerId })
+			.where(eq(projects.id, event.params.projectId));
+		return { form };
 	},
 	demote: async (event) => {
 		authorize(event);
+		const form = await superValidate(event, zod(projectGalleryFormSchema));
+		if (!form.valid || !('bannerId' in form.data) || !form.data.bannerId) {
+			return fail(STATUS_CODES.BAD_REQUEST);
+		}
+		await db
+			.update(projects)
+			.set({ bannerId: null })
+			.where(
+				and(eq(projects.id, event.params.projectId), eq(projects.bannerId, form.data.bannerId))
+			);
+		return { form };
 	},
 	update: async (event) => {
 		authorize(event);
+	},
+	delete: async (event) => {
+		authorize(event);
+		const form = await superValidate(event, zod(projectGalleryFormSchema));
+		if (!form.valid || !('deleteId' in form.data) || !form.data.deleteId) {
+			return fail(STATUS_CODES.BAD_REQUEST);
+		}
+		await db
+			.delete(projectsImages)
+			.where(
+				and(
+					eq(projectsImages.projectId, event.params.projectId),
+					eq(projectsImages.id, form.data.deleteId)
+				)
+			);
+		return { form };
 	},
 };
