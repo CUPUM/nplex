@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { cn } from '../utilities';
 
@@ -7,14 +8,27 @@
 		text,
 		fallback,
 		class: className,
+		render,
 		...spanProps
-	}: { text?: string | null; fallback?: string } & HTMLAttributes<HTMLSpanElement> = $props();
+	}: {
+		text?: string | null;
+		fallback?: string;
+		render?: Snippet<[text: string]>;
+	} & HTMLAttributes<HTMLSpanElement> = $props();
 </script>
 
+{#snippet renderer(text: string)}
+	{#if render}
+		{@render render(text)}
+	{:else}
+		{@html text}
+	{/if}
+{/snippet}
+
 {#if text}
-	{@html text}
+	{@render renderer(text)}
 {:else}
 	<span class={cn('opacity-dim font-thin italic', className)} {...spanProps}>
-		{@html fallback ?? m.not_defined()}
+		{@render renderer(fallback ?? m.not_defined())}
 	</span>
 {/if}
