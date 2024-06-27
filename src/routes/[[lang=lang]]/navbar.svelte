@@ -27,11 +27,11 @@
 			</NavbarButton>
 		</nav>
 		<nav class="navbar-group justify-self-center">
-			<NavbarButton href="/projects" currentOnSubpath class="after:border-none hover:z-1">
+			<NavbarButton href="/projects" currentOnSubpath>
 				<NavbarThumb current={withoutLang.startsWith('/projects')} key="explore" />
 				{m.projects()}
 			</NavbarButton>
-			<NavbarButton href="/organizations" currentOnSubpath class="after:border-none hover:z-1">
+			<NavbarButton href="/organizations" currentOnSubpath>
 				<NavbarThumb current={withoutLang.startsWith('/organizations')} key="explore" />
 				{m.organizations()}
 			</NavbarButton>

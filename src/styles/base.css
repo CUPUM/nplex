@@ -152,11 +152,11 @@ body {
 
 :root:has(:modal[open]:not([data-closing='true'])) {
 	overflow: hidden;
+}
 
-	&::after {
-		pointer-events: all;
-		opacity: 1;
-	}
+:root:has(:modal[open]:not([data-closing='true'], [data-overlay='false']))::after {
+	pointer-events: all;
+	opacity: 1;
 }
 
 /* Root effect on special modal */

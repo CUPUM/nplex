@@ -11,7 +11,6 @@
 @import 'styles/nest.css' layer(components);
 @import 'styles/prose.css' layer(components);
 @import 'styles/switch.css' layer(components);
-/* @import 'styles/toggle.css' layer(components); */
 @import 'tailwindcss/utilities' layer(utilities);
 
 @theme {
@@ -142,9 +141,10 @@
 
 	/* Blurs */
 
-	--blur-sm: 3px;
+	--blur-xs: 2px;
+	--blur-sm: 4px;
 	--blur-md: 8px;
-	--blur-lg: 18px;
+	--blur-lg: 20px;
 	--blur-xl: 48px;
 
 	/* Z indices */
@@ -192,8 +192,8 @@
 
 	/* Durations */
 
-	--transition-duration-xfast: 75ms;
-	--transition-duration-fast: 150ms;
+	--transition-duration-xfast: 60ms;
+	--transition-duration-fast: 125ms;
 	--transition-duration-medium: 300ms;
 	--transition-duration-slow: 600ms;
 	--transition-duration-xslow: 1200ms;
@@ -218,43 +218,45 @@
 	--color-on-primary-dim: hsl(52, 14%, 82%);
 	--color-on-primary: hsl(52, 15%, 89%);
 	--color-on-primary-accent: hsl(52, 16%, 96%);
-
-	--color-gold-dim: lch(96 76 70);
-	--color-gold: lch(82 82 85);
-	--color-gold-accent: lch(62 90 84);
-	--color-on-gold-dim: white;
-	--color-on-gold: white;
-	--color-on-gold-accent: white;
-
+	--color-award-dim: hsl(47.6, 100%, 69.6%);
+	--color-award: hsl(48.1, 93.7%, 49.4%);
+	--color-award-accent: hsl(45.3, 100%, 36.9%);
+	--color-on-award-dim: white;
+	--color-on-award: white;
+	--color-on-award-accent: white;
 	--color-like-dim: pink;
 	--color-like: hotpink;
 	--color-like-accent: deeppink;
 	--color-on-like-dim: white;
 	--color-on-like: white;
 	--color-on-like-accent: white;
-
 	--color-success-dim: hsl(120, 46%, 42%);
 	--color-success: hsl(120, 90%, 25%);
 	--color-success-accent: hsl(120, 98%, 14%);
 	--color-on-success-dim: var(--color-primary-contrast-dim);
 	--color-on-success: var(--color-primary-contrast);
 	--color-on-success-accent: var(--color-primary-contrast-accent);
-
 	--color-error-dim: hsl(8, 72%, 50%);
 	--color-error: hsl(7, 85%, 36%);
 	--color-error-accent: hsl(6, 96%, 20%);
 	--color-on-error-dim: hsl(30, 20%, 82%);
 	--color-on-error: hsl(25, 40%, 92%);
 	--color-on-error-accent: hsl(20, 60%, 98%);
+	--color-checked-dim:;
+	--color-checked:;
+	--color-checked-accent:;
+	--color-on-checked-dim:;
+	--color-on-checked:;
+	--color-on-checked-accent:;
 
 	--background-color-pure: white;
-	--background-color-base: lch(92% 2 140);
-	--background-color-popover: lch(99% 6 120);
+	--background-color-base: hsl(105, 8.3%, 90.6%);
+	--background-color-popover: hsl(85, 85.7%, 97.3%);
 	--background-color-overlay: hsl(36, 12%, 6%, 90%);
 	--background-color-selection: var(--color-primary-dim);
-	--background-color-card-dim: lch(94.5% 2 134);
-	--background-color-card: lch(96% 2 132);
-	--background-color-card-accent: lch(98% 2 130);
+	--background-color-card-dim: hsl(105, 11.8%, 93.3%);
+	--background-color-card: hsl(100, 12%, 95.1%);
+	--background-color-card-accent: hsl(90, 28.6%, 97.3%);
 	--background-color-input-dim: color-mix(in srgb, var(--text-color-base) 6%, transparent);
 	--background-color-input: color-mix(in srgb, var(--text-color-base) 9%, transparent);
 	--background-color-input-accent: color-mix(in srgb, var(--text-color-base) 12%, transparent);
@@ -267,13 +269,13 @@
 
 	--text-color-pure: black;
 	--text-color-selection: var(--color-on-primary);
-	--text-color-base: lch(25% 8 92);
-	--text-color-base-dim: lch(55% 4 90);
-	--text-color-base-dimmer: lch(72% 4 90);
-	--text-color-base-accent: lch(5% 12 94);
-	--text-color-input-dim: lch(36% 4.5 230);
-	--text-color-input: lch(18% 5 240);
-	--text-color-input-accent: lch(3% 5.5 250);
+	--text-color-base: hsl(48, 10%, 21%);
+	--text-color-base-dim: hsl(44, 4%, 50%);
+	--text-color-base-dimmer: hsl(40, 6%, 68%);
+	--text-color-base-accent: hsl(46.4, 100%, 6%);
+	--text-color-input-dim: hsl(200, 7.1%, 32.9%);
+	--text-color-input: hsl(203.1, 14.9%, 17.1%);
+	--text-color-input-accent: hsl(203.3, 81.8%, 4.3%);
 	--text-color-input-error-dim: var(--color-error-dim);
 	--text-color-input-error: var(--color-error);
 	--text-color-input-error-accent: var(--color-error-accent);
@@ -326,12 +328,10 @@
 [data-mode='dark'] {
 	--color-primary-dim: hsl(148, 90%, 20%);
 	--color-primary: hsl(144, 76%, 32%);
-	--color-primary-accent: hsl(143, 64%, 45%);
-
+	--color-primary-accent: hsl(140, 62%, 52%);
 	--color-success-dim: hsl(120, 98%, 14%);
 	--color-success: hsl(120, 90%, 25%);
 	--color-success-accent: hsl(120, 46%, 42%);
-
 	--color-error-dim: hsl(8, 70%, 46%);
 	--color-error: hsl(7, 80%, 55%);
 	--color-error-accent: hsl(6, 90%, 64%);

@@ -53,6 +53,7 @@
 		font-weight: var(--font-weight-bold);
 		color: var(--color-fg);
 		backdrop-filter: blur(var(--blur-md));
+		background: color-mix(in srgb, var(--background-color-base) 80%, transparent);
 		transition: all var(--transition-duration-medium) var(--transition-timing-function-out);
 
 		&::after {
@@ -61,9 +62,7 @@
 			inset: 0;
 			border-radius: inherit;
 			opacity: 0;
-			border-width: 0;
-			border-color: var(--color-primary);
-			border-style: solid;
+			background-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
 			transition: all var(--transition-duration-medium) var(--transition-timing-function-out);
 		}
 
@@ -83,11 +82,12 @@
 		}
 
 		&:is([aria-current], [aria-expanded='true']) {
+			z-index: 10;
 			color: var(--color-primary);
-			&:not([data-logo='true']) {
+
+			&:not([data-logo='true'], :has([data-thumb])) {
 				&::after {
-					border-width: var(--border-width-md);
-					opacity: var(--opacity-dimmer);
+					opacity: 1;
 				}
 			}
 		}

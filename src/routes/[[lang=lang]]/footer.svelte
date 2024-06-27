@@ -12,7 +12,7 @@
 {#if $page.data.setout !== PRESENTATIONS.FULL_SCREEN && !$page.data.footer?.hidden}
 	<footer
 		transition:slide
-		class="bg-input-dim/25 p-lg pb-sm gap-xl mx-auto flex w-full flex-col items-center rounded-t-lg group-data-[presentation=normal]/root:max-w-xl"
+		class="bg-input-dim/25 p-lg pb-sm gap-xl mt-2xl mx-auto flex w-full flex-col items-center rounded-t-lg group-data-[presentation=normal]/root:max-w-xl"
 	>
 		<nav class="gap-xl px-lg flex flex-row max-sm:flex-col">
 			<a
