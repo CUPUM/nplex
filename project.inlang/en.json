@@ -281,5 +281,7 @@
 	"map": "Map",
 	"new_images": "New images",
 	"project_sharing_and_management": "Sharing & management",
-	"organization_sharing_and_management": "Management & permissions"
+	"organization_sharing_and_management": "Management & permissions",
+	"explore": "Explore",
+	"no_image": "No pictures"
 }
