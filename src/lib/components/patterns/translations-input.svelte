@@ -30,15 +30,9 @@
 		</div>
 	{/each}
 	<div class="input-peer">
-		<menu class="switch switch-ghost compact rounded-full">
+		<menu class="switch switch-ghost compact rounded-full" use:ripple>
 			{#each availableLanguageTags as lang}
-				<button
-					class="switch-item"
-					use:ripple
-					{...tabs.triggerAttributes(lang)}
-					{lang}
-					type="button"
-				>
+				<button class="switch-item" {...tabs.triggerAttributes(lang)} {lang} type="button">
 					{LANG_DETAILS[lang].label}
 					{#if tabs.current === lang}
 						<div

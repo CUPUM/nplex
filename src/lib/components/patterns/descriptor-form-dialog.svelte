@@ -1,7 +1,6 @@
 <script lang="ts" generics="T extends Record<string, unknown>">
 	import * as m from '$i18n/messages';
 	import { DialogForm } from '$lib/builders/dialog-form.svelte';
-	import { Dialog } from '$lib/builders/dialog.svelte';
 	import type { ExtendedSuperForm } from '$lib/crud/form/client';
 	import { Check, X } from 'lucide-svelte';
 	import type { ComponentProps, Snippet } from 'svelte';
@@ -13,47 +12,42 @@
 		root,
 		title,
 		description,
-		formBody,
-		body,
+		children,
 		form,
 		method = 'POST',
 		...formAttributes
 	}: Pick<HTMLFormAttributes, 'action' | 'method'> &
-		Pick<ComponentProps<DialogBox>, 'title' | 'description'> & {
+		Pick<ComponentProps<DialogBox>, 'title' | 'description' | 'children'> & {
 			form: ExtendedSuperForm<T>;
 			root: Snippet<[InstanceType<typeof DialogForm>['triggerAttributes']]>;
-			formBody: Snippet;
-			body?: Snippet<[Dialog]>;
 		} = $props();
 
 	const { isTainted, enhance, tainted, reset, formId, submitter } = form;
 
 	let submitRef = $state<HTMLButtonElement>();
 
-	const dialog = new Dialog({
-		beforeClose(e) {
-			if (isTainted()) {
-				return confirm(m.confirm_unsaved_data());
-			}
-			return true;
-		},
-		onClose(e) {
-			if (isTainted()) {
-				reset();
-			}
-		},
-	});
+	// const dialog = new Dialog({
+	// 	beforeClose(e) {
+	// 		if (isTainted()) {
+	// 			return confirm(m.confirm_unsaved_data());
+	// 		}
+	// 		return true;
+	// 	},
+	// 	onClose(e) {
+	// 		if (isTainted()) {
+	// 			reset();
+	// 		}
+	// 	},
+	// });
+
+	const dialog = new DialogForm({ form });
 </script>
 
 {@render root(dialog.triggerAttributes)}
-<DialogBox {dialog} class="min-w-sm" {title}>
+<DialogBox {dialog} class="min-w-sm" {title} {description}>
 	<form id={$formId} {...formAttributes} use:enhance {method} class="gap-card-gutter flex flex-col">
-		{@render formBody()}
+		{@render children?.(dialog)}
 	</form>
-	{#if body}
-		<hr />
-		{@render body(dialog)}
-	{/if}
 	{#snippet actions()}
 		<button
 			bind:this={submitRef}
