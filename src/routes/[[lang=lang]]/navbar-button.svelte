@@ -86,7 +86,7 @@
 			color: var(--color-primary);
 			&:not([data-logo='true']) {
 				&::after {
-					border-width: var(--border-width-lg);
+					border-width: var(--border-width-md);
 					opacity: var(--opacity-dimmer);
 				}
 			}

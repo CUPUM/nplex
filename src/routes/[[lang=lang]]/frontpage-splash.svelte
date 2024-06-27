@@ -5,6 +5,8 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<header class="min-h-main-full-height p-padding pb-navbar-height flex items-center justify-center">
+<header
+	class="p-lg flex min-h-[calc(0.5*var(--spacing-main-full-height))] items-center justify-center"
+>
 	<Logo height="10em" id="splash-logo" class="text-base-accent" />
 </header>

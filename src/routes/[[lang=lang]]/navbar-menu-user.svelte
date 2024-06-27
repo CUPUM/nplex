@@ -31,7 +31,7 @@
 			</span>
 			<ul class="navbar-menu-group-items">
 				<NavbarMenuItem {...linkAttributes('/edit/projects')} {...menu.itemAttributes}>
-					<Pencil class="button-icon" />
+					<Pencil />
 					{m.nav_edit_projects()}
 				</NavbarMenuItem>
 				<NavbarMenuItem
@@ -39,7 +39,7 @@
 					rel="external"
 					{...menu.itemAttributes}
 				>
-					<FilePlus class="button-icon" />
+					<FilePlus />
 					{m.nav_new_project()}
 				</NavbarMenuItem>
 				{#if authorize('projects.descriptors.update')}
@@ -47,7 +47,7 @@
 						{...linkAttributes('/edit/projects/descriptors')}
 						{...menu.itemAttributes}
 					>
-						<Tags class="button-icon" />
+						<Tags />
 						{m.nav_edit_project_descriptors()}
 					</NavbarMenuItem>
 				{/if}
@@ -64,7 +64,7 @@
 			</span>
 			<ul class="navbar-menu-group-items">
 				<NavbarMenuItem {...linkAttributes('/edit/organizations')} {...menu.itemAttributes}>
-					<Pencil class="button-icon" />
+					<Pencil />
 					{m.nav_edit_orgs()}
 				</NavbarMenuItem>
 				<NavbarMenuItem
@@ -72,14 +72,14 @@
 					rel="external"
 					{...menu.itemAttributes}
 				>
-					<FilePlus class="button-icon" />
+					<FilePlus />
 					{m.nav_new_org()}
 				</NavbarMenuItem>
 				<NavbarMenuItem
 					{...linkAttributes('/edit/organizations/descriptors')}
 					{...menu.itemAttributes}
 				>
-					<Tags class="button-icon" />
+					<Tags />
 					{m.nav_edit_orgs_descriptors()}
 				</NavbarMenuItem>
 			</ul>
@@ -92,7 +92,7 @@
 		>
 			<ul class="navbar-menu-group-items">
 				<NavbarMenuItem {...linkAttributes('/i')} {...menu.itemAttributes}>
-					<UserRound class="button-icon" />
+					<UserRound />
 					{m.account()}
 				</NavbarMenuItem>
 				<form
