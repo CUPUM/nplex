@@ -90,7 +90,7 @@ export function matchesProjectsFilters(filters: z.infer<typeof projectsFiltersSc
 			? inArray(projectsInterventions.interventionId, filters.interventions)
 			: undefined,
 		filters.markers.length
-			? inArray(projectsExemplarityMarkers.exemplarityMarkerId, filters.markers)
+			? inArray(projectsExemplarityMarkers.markerId, filters.markers)
 			: undefined
 	);
 }

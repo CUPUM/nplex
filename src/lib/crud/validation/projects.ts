@@ -106,7 +106,7 @@ export const projectGeneralFormSchema = projectsWithTranslationsSchema
 	});
 
 export const projectExemplarityMarkersFormSchema = z.object({
-	markersIds: projectsExemplarityMarkersSchema.shape.exemplarityMarkerId.array(),
+	markersIds: projectsExemplarityMarkersSchema.shape.markerId.array(),
 });
 
 export const projectGalleryFormSchema = z.object({

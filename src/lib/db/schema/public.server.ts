@@ -513,7 +513,7 @@ export const projectsExemplarityMarkers = pgTable(
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			}),
-		exemplarityMarkerId: text('exemplarity_indicator_id')
+		markerId: text('exemplarity_indicator_id')
 			.notNull()
 			.references(() => projectExemplarityMarkers.id, {
 				onDelete: 'cascade',
@@ -523,7 +523,7 @@ export const projectsExemplarityMarkers = pgTable(
 	(table) => {
 		return {
 			pk: primaryKey({
-				columns: [table.projectId, table.exemplarityMarkerId],
+				columns: [table.projectId, table.markerId],
 				// name: 'projects_exemplarity_markers_pk',
 			}),
 		};

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
 	import SidebarFilterGroup from '../../../../lib/components/patterns/sidebar-filter-group.svelte';
 	import type { PageData } from './$types';
@@ -24,7 +25,7 @@
 		{:then awaitedMarkersByCategories}
 			{#each awaitedMarkersByCategories as category}
 				{#each category.markers as marker}
-					<label class="button button-dashed rounded-full">
+					<label class="button button-dashed rounded-full" use:ripple>
 						{marker.title}
 						<input
 							type="checkbox"

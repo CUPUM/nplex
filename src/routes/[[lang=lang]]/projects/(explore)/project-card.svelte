@@ -3,6 +3,7 @@
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import OptionalText from '$lib/components/primitives/optional-text.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
+	import { MODES } from '$lib/modes/constants';
 	import { Image } from 'lucide-svelte';
 	import type { PageData } from './$types';
 
@@ -10,10 +11,10 @@
 </script>
 
 <article
-	class="group/card hover:bg-card-accent bg-card rounded-card relative h-full w-full transition-all hover:shadow-lg"
+	class="group/card hover:bg-card-accent bg-card hover:z-front relative h-full w-full rounded-lg transition-all hover:shadow-lg"
 >
 	<div
-		class="inset-[var(--border-width-lg)] flex flex-col items-stretch justify-end rounded-[calc(var(--radius-card)-var(--border-width-lg))] group-data-[view-mode=masonry]/explore:absolute"
+		class="inset-padding flex flex-col items-stretch justify-end rounded-[calc(var(--radius-lg)-var(--spacing-padding))] group-data-[view-mode=masonry]/explore:absolute"
 	>
 		<!-- <img class="fill object-cover" src="https://picsum.photos/seed/{project.id}/500/500" /> -->
 		{#if project.bannerStorageName}
@@ -24,7 +25,8 @@
 			</div>
 		{/if}
 		<div
-			class="p-card-padding pt-2xl text-base-dim group-hover/card:text-base-accent rounded-inherit from-overlay after after:from-overlay after:rounded-inherit group-hover/card:after:opacity-dim relative flex flex-col transition-all after:absolute after:inset-0 after:bg-gradient-to-t after:bg-[0px_100px] after:bg-no-repeat after:opacity-[0] after:transition-all after:ease-out group-hover/card:after:bg-[0px_0px]"
+			data-mode={MODES.DARK}
+			class="p-card-padding pt-2xl text-base-dim group-hover/card:text-base-accent rounded-inherit after after:from-overlay after:rounded-inherit group-hover/card:after:opacity-dim relative flex flex-col transition-all after:absolute after:inset-0 after:bg-gradient-to-t after:bg-[0px_100px] after:bg-no-repeat after:opacity-[0] after:transition-all after:ease-out group-hover/card:after:bg-[0px_0px]"
 		>
 			<div class="pointer-events-none z-1">
 				<h1 class="text-md font-semibold">

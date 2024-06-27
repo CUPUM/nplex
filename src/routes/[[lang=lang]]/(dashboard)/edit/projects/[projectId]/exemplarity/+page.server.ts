@@ -20,10 +20,7 @@ export const load = async (event) => {
 	const markersByCategories = getProjectExemplarityMarkersByCategoriesList(event);
 	const [project] = await db
 		.select({
-			markersIds: coalesce(
-				jsonAgg(projectsExemplarityMarkers.exemplarityMarkerId),
-				$emptyJsonArray
-			),
+			markersIds: coalesce(jsonAgg(projectsExemplarityMarkers.markerId), $emptyJsonArray),
 		})
 		.from(projects)
 		.where(and(canEditProject(event.locals.user), eq(projects.id, event.params.projectId)))
@@ -53,7 +50,7 @@ export const actions = {
 					and(
 						eq(projectsExemplarityMarkers.projectId, event.params.projectId),
 						form.data.markersIds.length
-							? notInArray(projectsExemplarityMarkers.exemplarityMarkerId, form.data.markersIds)
+							? notInArray(projectsExemplarityMarkers.markerId, form.data.markersIds)
 							: undefined
 					)
 				);
@@ -61,16 +58,13 @@ export const actions = {
 				await tx
 					.insert(projectsExemplarityMarkers)
 					.values(
-						form.data.markersIds.map((exemplarityMarkerId) => ({
-							exemplarityMarkerId,
+						form.data.markersIds.map((markerId) => ({
+							markerId,
 							projectId: event.params.projectId,
 						}))
 					)
 					.onConflictDoNothing({
-						target: [
-							projectsExemplarityMarkers.projectId,
-							projectsExemplarityMarkers.exemplarityMarkerId,
-						],
+						target: [projectsExemplarityMarkers.projectId, projectsExemplarityMarkers.markerId],
 					});
 			}
 		});
