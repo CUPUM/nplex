@@ -267,6 +267,62 @@
       "when": 1719467962607,
       "tag": "0037_spicy_silver_sable",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1719946691173,
+      "tag": "0038_vengeful_natasha_romanoff",
+      "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "7",
+      "when": 1719956711500,
+      "tag": "0039_clammy_puma",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1719956815842,
+      "tag": "0040_elite_wallop",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1719956848288,
+      "tag": "0041_glamorous_rhino",
+      "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1719956884830,
+      "tag": "0042_conscious_preak",
+      "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1719956898282,
+      "tag": "0043_narrow_vivisector",
+      "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1719956922603,
+      "tag": "0044_unusual_magdalene",
+      "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1719956953362,
+      "tag": "0045_uneven_firestar",
+      "breakpoints": true
     }
   ]
 }

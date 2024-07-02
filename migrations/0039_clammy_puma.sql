@@ -1,0 +1,1 @@
+ALTER TABLE "projects_exemplarity_indicators" DROP CONSTRAINT "projects_exemplarity_indicators_project_id_exemplarity_indicator_id_pk";

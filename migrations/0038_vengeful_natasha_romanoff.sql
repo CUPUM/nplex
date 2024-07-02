@@ -1,0 +1,2 @@
+DROP INDEX IF EXISTS "ts_index";--> statement-breakpoint
+ALTER TABLE "projects_t" ADD COLUMN "ts" "tsvector" GENERATED ALWAYS AS ((setweight(to_tsvector(case when "projects_t"."lang" = 'en' then 'english'::regconfig when "projects_t"."lang" = 'fr' then 'french'::regconfig end, coalesce("projects_t"."title", '')), 'A') || setweight(to_tsvector(case when "projects_t"."lang" = 'en' then 'english'::regconfig when "projects_t"."lang" = 'fr' then 'french'::regconfig end, coalesce("projects_t"."summary", '')), 'B'))) STORED;
