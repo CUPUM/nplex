@@ -1,0 +1,2 @@
+ALTER TABLE "project_exemplarity_markers_t" ADD CONSTRAINT "project_exemplarity_markers_t_id_lang_pk" PRIMARY KEY("id","lang");--> statement-breakpoint
+ALTER TABLE "projects_exemplarity_markers" ADD CONSTRAINT "projects_exemplarity_markers_project_id_marker_id_pk" PRIMARY KEY("project_id","marker_id");
