@@ -18,7 +18,7 @@
 	{#snippet legend()}
 		{m.project_types()}
 	{/snippet}
-	<ul class="gap-menu-gutter flex flex-col items-start">
+	<ul class="gap-input-group-gutter flex flex-col items-start">
 		{#await lists.types}
 			...
 		{:then awaitedProjectTypes}

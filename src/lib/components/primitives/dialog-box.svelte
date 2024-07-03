@@ -42,7 +42,6 @@
 {#if dialog.open}
 	<dialog
 		style:--dialog-margin="var(--spacing-padding)"
-		style:--dialog-padding="2.25em"
 		class="m-auto max-h-[calc(100%-2*var(--dialog-margin))] max-w-[min(calc(100%-2*var(--dialog-margin)),var(--width-md))] bg-transparent p-0 text-base backdrop:opacity-0"
 		use:dialog.dialogAction
 		{...dialog.dialogAttributes}
@@ -51,7 +50,7 @@
 	>
 		<div
 			class={cn(
-				'bg-popover border-dim leading-sm [:where(&_hr)]:border-dim rounded-lg border p-[var(--dialog-padding)] text-sm shadow-lg [:has(>header:first-child)]:pt-[calc(var(--dialog-padding)-0.5em)] [:where(&_hr)]:-mx-[var(--dialog-padding)] [:where(&_hr)]:my-[1.5em]',
+				'bg-popover border-dim leading-sm [:where(&_hr)]:border-dim p-popover-padding [:where(&_hr)]:-mx-popover-padding rounded-lg border text-sm shadow-lg [:has(>header:first-child)]:pt-[calc(var(--spacing-popover-padding)-1em)] [:where(&_hr)]:my-[calc(var(--spacing-popover-padding)-1.5em)]',
 				className
 			)}
 			{style}
@@ -72,18 +71,18 @@
 						{@render title?.(dialog)}
 					</hgroup>
 					{#if description}
-						<section class="opacity-dim prose prose-block leading-sm mb-[.5em] text-sm">
+						<section class="opacity-dim prose prose-block leading-sm mb-[0.5em] text-sm">
 							{@render description?.(dialog)}
 						</section>
 					{/if}
 				</header>
-				<hr class="mb-[var(--dialog-padding)]" />
+				<hr class="mb-popover-padding" />
 			{/if}
 			{@render children?.(dialog)}
 			{#if actions}
-				<hr class="mt-[var(--dialog-padding)]" />
+				<hr class="mt-popover-padding" />
 				<menu
-					class="justify-content-start gap-menu-gutter sticky bottom-0 flex flex-row-reverse bg-inherit"
+					class="justify-content-start gap-input-group-gutter sticky bottom-0 flex flex-row-reverse bg-inherit"
 				>
 					{@render actions(dialog)}
 				</menu>

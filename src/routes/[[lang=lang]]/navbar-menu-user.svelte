@@ -2,122 +2,108 @@
 	import { applyAction, enhance } from '$app/forms';
 	import * as m from '$i18n/messages';
 	import { Dialog } from '$lib/builders/dialog.svelte';
+	import NavbarMenuGroup from '$lib/components/patterns/navbar-menu-group.svelte';
 	import NavbarMenuItem from '$lib/components/patterns/navbar-menu-item.svelte';
+	import NavbarMenu from '$lib/components/patterns/navbar-menu.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { authorize } from '$lib/crud/authorization/rbac.svelte';
-	import { FilePlus, LogOut, Pencil, Tags, UserRound } from 'lucide-svelte';
+	import {
+		Building2,
+		DraftingCompass,
+		FilePlus,
+		LogOut,
+		Pencil,
+		Tags,
+		User,
+		UserCog,
+	} from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
-	import { cubicIn, expoOut } from 'svelte/easing';
-	import { fly } from 'svelte/transition';
 
 	let { trigger }: { trigger: Snippet<[Dialog['triggerAttributes']]> } = $props();
 
-	const menu = new Dialog();
+	const dialog = new Dialog();
 
 	let loggingOut = $state(false);
 </script>
 
-{@render trigger(menu.triggerAttributes)}
-{#if menu.open}
-	<dialog class="navbar-menu" use:menu.dialogAction {...menu.dialogAttributes} data-meta-modal>
-		<menu
-			class="navbar-menu-group w-[34ch]"
-			{...menu.contentAttributes}
-			in:fly|global={{ x: 20, duration: 1000, easing: expoOut }}
-			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 150 }}
+{@render trigger(dialog.triggerAttributes)}
+<NavbarMenu {dialog}>
+	<NavbarMenuGroup class="w-[34ch]" {...dialog.contentAttributes}>
+		{#snippet legend()}
+			{m.projects()} <DraftingCompass />
+		{/snippet}
+		<NavbarMenuItem {...linkAttributes('/edit/projects')} {...dialog.itemAttributes}>
+			<Pencil />
+			{m.nav_edit_projects()}
+		</NavbarMenuItem>
+		<NavbarMenuItem
+			{...linkAttributes('/create/project')}
+			rel="external"
+			{...dialog.itemAttributes}
 		>
-			<span class="navbar-menu-group-legend">
-				{m.projects()}
-			</span>
-			<ul class="navbar-menu-group-items">
-				<NavbarMenuItem {...linkAttributes('/edit/projects')} {...menu.itemAttributes}>
-					<Pencil />
-					{m.nav_edit_projects()}
-				</NavbarMenuItem>
-				<NavbarMenuItem
-					{...linkAttributes('/create/project')}
-					rel="external"
-					{...menu.itemAttributes}
-				>
-					<FilePlus />
-					{m.nav_new_project()}
-				</NavbarMenuItem>
-				{#if authorize('projects.descriptors.update')}
-					<NavbarMenuItem
-						{...linkAttributes('/edit/projects/descriptors')}
-						{...menu.itemAttributes}
-					>
-						<Tags />
-						{m.nav_edit_project_descriptors()}
-					</NavbarMenuItem>
-				{/if}
-			</ul>
-		</menu>
-		<menu
-			class="navbar-menu-group w-[34ch]"
-			{...menu.contentAttributes}
-			in:fly|global={{ x: 20, duration: 1000, easing: expoOut, delay: 75 }}
-			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 75 }}
+			<FilePlus />
+			{m.nav_new_project()}
+		</NavbarMenuItem>
+		{#if authorize('projects.descriptors.update')}
+			<NavbarMenuItem {...linkAttributes('/edit/projects/descriptors')} {...dialog.itemAttributes}>
+				<Tags />
+				{m.nav_edit_project_descriptors()}
+			</NavbarMenuItem>
+		{/if}
+	</NavbarMenuGroup>
+	<NavbarMenuGroup class="w-[34ch]" {...dialog.contentAttributes}>
+		{#snippet legend()}
+			{m.organizations()} <Building2 />
+		{/snippet}
+		<NavbarMenuItem {...linkAttributes('/edit/organizations')} {...dialog.itemAttributes}>
+			<Pencil />
+			{m.nav_edit_orgs()}
+		</NavbarMenuItem>
+		<NavbarMenuItem
+			{...linkAttributes('/create/organization')}
+			rel="external"
+			{...dialog.itemAttributes}
 		>
-			<span class="navbar-menu-group-legend">
-				{m.organizations()}
-			</span>
-			<ul class="navbar-menu-group-items">
-				<NavbarMenuItem {...linkAttributes('/edit/organizations')} {...menu.itemAttributes}>
-					<Pencil />
-					{m.nav_edit_orgs()}
-				</NavbarMenuItem>
-				<NavbarMenuItem
-					{...linkAttributes('/create/organization')}
-					rel="external"
-					{...menu.itemAttributes}
-				>
-					<FilePlus />
-					{m.nav_new_org()}
-				</NavbarMenuItem>
-				<NavbarMenuItem
-					{...linkAttributes('/edit/organizations/descriptors')}
-					{...menu.itemAttributes}
-				>
-					<Tags />
-					{m.nav_edit_orgs_descriptors()}
-				</NavbarMenuItem>
-			</ul>
-		</menu>
-		<menu
-			class="navbar-menu-group"
-			{...menu.contentAttributes}
-			in:fly|global={{ x: 20, duration: 1000, easing: expoOut, delay: 150 }}
-			out:fly={{ x: 50, duration: 200, easing: cubicIn, delay: 0 }}
+			<FilePlus />
+			{m.nav_new_org()}
+		</NavbarMenuItem>
+		<NavbarMenuItem
+			{...linkAttributes('/edit/organizations/descriptors')}
+			{...dialog.itemAttributes}
 		>
-			<ul class="navbar-menu-group-items">
-				<NavbarMenuItem {...linkAttributes('/i')} {...menu.itemAttributes}>
-					<UserRound />
-					{m.account()}
-				</NavbarMenuItem>
-				<form
-					method="POST"
-					id="logout-form"
-					class="sr-only"
-					action="/?/logout"
-					use:enhance={({ formElement, formData, action, cancel }) => {
-						loggingOut = true;
-						return async ({ result }) => {
-							await applyAction(result);
-							loggingOut = false;
-						};
-					}}
-				></form>
-				<NavbarMenuItem
-					type="submit"
-					form="logout-form"
-					disabled={loggingOut}
-					data-loading={loggingOut}
-				>
-					<LogOut />
-					{m.logout()}
-				</NavbarMenuItem>
-			</ul>
-		</menu>
-	</dialog>
-{/if}
+			<Tags />
+			{m.nav_edit_orgs_descriptors()}
+		</NavbarMenuItem>
+	</NavbarMenuGroup>
+	<NavbarMenuGroup {...dialog.contentAttributes}>
+		{#snippet legend()}
+			{m.account()} <User />
+		{/snippet}
+		<NavbarMenuItem {...linkAttributes('/i')} {...dialog.itemAttributes}>
+			<UserCog />
+			{m.my_account()}
+		</NavbarMenuItem>
+		<form
+			method="POST"
+			id="logout-form"
+			class="sr-only"
+			action="/?/logout"
+			use:enhance={({ formElement, formData, action, cancel }) => {
+				loggingOut = true;
+				return async ({ result }) => {
+					await applyAction(result);
+					loggingOut = false;
+				};
+			}}
+		></form>
+		<NavbarMenuItem
+			type="submit"
+			form="logout-form"
+			disabled={loggingOut}
+			data-loading={loggingOut}
+		>
+			<LogOut />
+			{m.logout()}
+		</NavbarMenuItem>
+	</NavbarMenuGroup>
+</NavbarMenu>

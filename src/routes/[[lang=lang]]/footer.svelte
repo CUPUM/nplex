@@ -9,20 +9,12 @@
 	import { slide } from 'svelte/transition';
 </script>
 
-{#if $page.data.setout !== PRESENTATIONS.FULL_SCREEN && !$page.data.footer?.hidden}
+{#if $page.data.presentation !== PRESENTATIONS.FULL_SCREEN && !$page.data.footer?.hidden}
 	<footer
 		transition:slide
 		class="bg-input-dim/25 p-lg pb-sm gap-xl mt-2xl mx-auto flex w-full flex-col items-center rounded-t-lg group-data-[presentation=normal]/root:max-w-xl"
 	>
-		<nav class="gap-xl px-lg flex flex-row max-sm:flex-col">
-			<a
-				href="https://montreal.ca{$page.data.lang === 'en' ? '/en' : ''}/unites/bureau-du-design"
-				rel="external"
-				target="_blank"
-				class="opacity-[70] transition-all hover:opacity-[100]"
-			>
-				<LogoMontrealQuebec preserveAspectRatio="xMidYMid" width="100%" height="3.5rem" />
-			</a>
+		<nav class="gap-2xl px-lg flex flex-row max-sm:flex-col">
 			<a
 				href="https://www.unesco.org/{$page.data.lang}/unitwin"
 				rel="external"
@@ -30,6 +22,14 @@
 				class="opacity-[70] transition-all hover:opacity-[100]"
 			>
 				<LogoUnescoUnitwin preserveAspectRatio="xMidYMid" width="100%" height="3.5rem" />
+			</a>
+			<a
+				href="https://montreal.ca{$page.data.lang === 'en' ? '/en' : ''}/unites/bureau-du-design"
+				rel="external"
+				target="_blank"
+				class="opacity-[70] transition-all hover:opacity-[100]"
+			>
+				<LogoMontrealQuebec preserveAspectRatio="xMidYMid" width="100%" height="3.5rem" />
 			</a>
 			<a
 				href="https://www.unesco-paysage.umontreal.ca/{$page.data.lang}/"

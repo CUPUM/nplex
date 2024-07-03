@@ -28,7 +28,7 @@
 	this={as as string}
 	{...restProps}
 	class={cn(
-		'p-card-padding gap-card-gutter rounded-dashboard bg-card relative flex flex-col items-start text-sm',
+		'p-lg gap-card-gutter rounded-dashboard bg-card relative flex flex-col items-start text-sm',
 		className
 	)}
 	use:action

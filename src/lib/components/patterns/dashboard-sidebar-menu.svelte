@@ -33,7 +33,7 @@
 </script>
 
 <menu
-	class="p-popover-padding gap-menu-gutter bg-card-dim rounded-dashboard relative flex flex-col"
+	class="p-md gap-input-group-gutter bg-card-dim rounded-dashboard relative flex flex-col"
 	in:slide|global={{ axis: 'y', duration: 750, easing: expoOut }}
 >
 	{#if restProps['aria-current']}
@@ -48,12 +48,12 @@
 			this={href ? 'a' : 'legend'}
 			{href}
 			{...restProps}
-			class="text-base-dimmer aria-[current]:text-primary px-input-padding pb-menu-gutter relative whitespace-nowrap text-xs font-normal transition-all aria-[current]:font-bold"
+			class="text-base-dimmer aria-[current]:text-primary px-input-padding pb-input-group-gutter relative whitespace-nowrap text-xs font-normal transition-all aria-[current]:font-bold"
 		>
 			{@render legend()}
 		</svelte:element>
 	{/if}
-	<ul class="nest flex flex-col text-sm" style="--spacing-input-nest: 0.25em">
+	<ul class="nest gap-input-group-gutter flex flex-col text-sm [--spacing-input-nest:0.2em]">
 		{@render children()}
 	</ul>
 </menu>

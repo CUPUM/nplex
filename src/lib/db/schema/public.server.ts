@@ -1,11 +1,10 @@
 import { ROLES } from '$lib/auth/constants';
-import { Column, sql } from 'drizzle-orm';
-import { intrange, nanoid } from 'drizzle-orm-helpers/pg';
+import { Column, SQL, sql } from 'drizzle-orm';
+import { intrange, nanoid, tsvector } from 'drizzle-orm-helpers/pg';
 import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import {
 	boolean,
 	date,
-	index,
 	integer,
 	pgTable,
 	primaryKey,
@@ -249,7 +248,7 @@ export const projectExemplarityCategoriesTranslations = pgTable(
 	}
 );
 
-export const projectExemplarityMarkers = pgTable('project_exemplarity_indicators', {
+export const projectExemplarityMarkers = pgTable('project_exemplarity_markers', {
 	id: text('id')
 		.notNull()
 		.default(nanoid({ size: 6 }))
@@ -264,7 +263,7 @@ export const projectExemplarityMarkers = pgTable('project_exemplarity_indicators
 });
 
 export const projectExemplarityMarkersTranslations = pgTable(
-	'project_exemplarity_indicators_t',
+	'project_exemplarity_markers_t',
 	{
 		...LANG_COLUMN,
 		id: text('id')
@@ -444,14 +443,14 @@ export const projectsTranslations = pgTable(
 		title: text('title'),
 		summary: text('summary'),
 		description: text('description'),
+		ts: tsvector('ts').generatedAlwaysAs(
+			(): SQL =>
+				sql`(setweight(to_tsvector(${langToRegconfig(projectsTranslations.lang)}, coalesce(${projectsTranslations.title}, '')), 'A') || setweight(to_tsvector(${langToRegconfig(projectsTranslations.lang)}, coalesce(${projectsTranslations.summary}, '')), 'B'))`
+		),
 	},
 	(table) => {
 		return {
 			pk: primaryKey({ columns: [table.id, table[LANG_COLUMN_NAME]] }),
-			tsIndex: index('ts_index').using(
-				'gin',
-				projectsTranslationsTs(table[LANG_COLUMN_NAME], table.title, table.summary)
-			),
 		};
 	}
 );
@@ -498,14 +497,13 @@ export const projectsInterventions = pgTable(
 		return {
 			pk: primaryKey({
 				columns: [table.projectId, table.interventionId],
-				// name: 'projects_interventions_pk',
 			}),
 		};
 	}
 );
 
 export const projectsExemplarityMarkers = pgTable(
-	'projects_exemplarity_indicators',
+	'projects_exemplarity_markers',
 	{
 		projectId: text('project_id')
 			.notNull()
@@ -513,7 +511,7 @@ export const projectsExemplarityMarkers = pgTable(
 				onDelete: 'cascade',
 				onUpdate: 'cascade',
 			}),
-		markerId: text('exemplarity_indicator_id')
+		markerId: text('marker_id')
 			.notNull()
 			.references(() => projectExemplarityMarkers.id, {
 				onDelete: 'cascade',
@@ -524,7 +522,6 @@ export const projectsExemplarityMarkers = pgTable(
 		return {
 			pk: primaryKey({
 				columns: [table.projectId, table.markerId],
-				// name: 'projects_exemplarity_markers_pk',
 			}),
 		};
 	}

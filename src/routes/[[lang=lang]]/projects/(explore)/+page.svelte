@@ -16,7 +16,7 @@
 	let sizeRef = $state<HTMLButtonElement>();
 </script>
 
-<div class="px-padding mb-lg pt-padding flex flex-1 flex-row">
+<div class="px-padding mb-lg flex flex-1 flex-row">
 	<ProjectsFilters {...filtersForm} lists={data.lists} />
 	<section class="gap-lg flex flex-1 flex-col">
 		<ul
@@ -42,7 +42,7 @@
 				</li>
 			{/each}
 		</ul>
-		<menu class="gap-menu-gutter flex flex-row self-center">
+		<menu class="gap-input-group-gutter flex flex-row self-center">
 			<button
 				disabled
 				type="submit"

@@ -7,7 +7,7 @@
 {#if current}
 	<div
 		data-thumb
-		class="rounded-inherit bg-primary/10 absolute inset-0"
+		class="rounded-inherit bg-checked absolute inset-0 -z-1"
 		in:switchThumbCrossfade.receive={{ key }}
 		out:switchThumbCrossfade.send={{ key }}
 	></div>

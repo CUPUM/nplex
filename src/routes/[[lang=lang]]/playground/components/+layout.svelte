@@ -35,7 +35,7 @@
 			<fieldset class="p-sm bg-card flex flex-col rounded-md">
 				{#each Object.entries(SIZE_MODS) as [key, value]}
 					<label
-						class="gap-menu-gutter py-xs px-sm has-checked:bg-base flex cursor-pointer flex-row rounded-full has-checked:font-bold"
+						class="gap-input-group-gutter py-xs px-sm has-checked:bg-base flex cursor-pointer flex-row rounded-full has-checked:font-bold"
 					>
 						<input type="radio" {value} bind:group={options.sizeMod} />
 						{key}

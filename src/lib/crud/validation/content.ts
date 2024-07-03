@@ -16,4 +16,15 @@ const headingsSchema: z.ZodType<Heading[]> = headingBaseSchema
 	})
 	.array();
 
-export const headingsMetadataSchema = z.object({ headings: headingsSchema });
+const headingsMetadataSchema = z.object({ headings: headingsSchema });
+
+export const aboutMetadataSchema = z.object({
+	title: z.string(),
+});
+
+export const guideMetadataSchema = headingsMetadataSchema.extend({
+	title: z.string(),
+	suummary: z.string().optional(),
+	sticky: z.boolean().optional(),
+	published: z.string().pipe(z.coerce.date()).optional(),
+});

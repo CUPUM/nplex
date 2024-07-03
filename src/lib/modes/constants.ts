@@ -19,7 +19,7 @@ export function isMode(maybeMode?: unknown): maybeMode is Mode {
 	return MODES_ARR.indexOf(maybeMode as Mode) > -1;
 }
 
-export const MODE_FALLBACK = MODES.LIGHT;
+export const MODE_FALLBACK = MODES.DARK;
 
 export const MODE_SETTINGS = {
 	...MODES,

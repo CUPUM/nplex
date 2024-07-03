@@ -93,7 +93,7 @@
 		<p class="text-base-dim text-sm" in:fly={{ y: -8, duration: 350 }}>{$message}</p>
 	{/if}
 </form>
-<nav class="gap-menu-gutter flex flex-row flex-wrap justify-between text-sm">
+<nav class="gap-input-group-gutter flex flex-row flex-wrap justify-between text-sm">
 	<a class="button button-ghost" {...linkAttributes('/signup')}>
 		<UserRoundPlus />
 		{m.auth_signup_prompt()}

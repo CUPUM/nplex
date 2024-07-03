@@ -10,10 +10,7 @@
 </script>
 
 <header
-	class={cn(
-		'prose prose-block p-card-padding rounded-dashboard bg-card-dim relative text-sm',
-		className
-	)}
+	class={cn('prose prose-block p-lg rounded-dashboard bg-card-dim relative text-sm', className)}
 	{...restProps}
 >
 	{@render children?.()}

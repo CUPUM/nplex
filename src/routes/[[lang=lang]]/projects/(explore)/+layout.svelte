@@ -27,12 +27,15 @@
 	};
 </script>
 
-<article class="group/explore flex flex-col" data-view-mode={projectsViewMode}>
+<article
+	class="group/explore min-h-main-full-height flex flex-col"
+	data-view-mode={projectsViewMode}
+>
+	{@render children()}
 	<aside
-		class="top-sticky-top z-front pointer-events-none sticky flex flex-row justify-center text-sm *:pointer-events-auto"
+		class="bottom-padding z-front pointer-events-none sticky flex flex-row justify-center text-sm *:pointer-events-auto"
 		in:fly|global={{ y: -6, easing: expoOut, duration: 500, opacity: 0 }}
 	>
 		<ProjectsViewModes bind:mode={projectsViewMode} />
 	</aside>
-	{@render children()}
 </article>

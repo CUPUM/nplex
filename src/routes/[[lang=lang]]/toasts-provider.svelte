@@ -23,7 +23,7 @@
 
 <div
 	use:portal
-	class="p-gutter gap-menu-gutter fixed right-0 bottom-0 flex max-h-full max-w-full flex-col items-end overflow-y-scroll"
+	class="p-gutter gap-input-group-gutter fixed right-0 bottom-0 flex max-h-full max-w-full flex-col items-end overflow-y-scroll"
 >
 	{#each toasts.all as instance, i (instance)}
 		<div animate:flip={{ duration: 200, easing: cubicOut }}>

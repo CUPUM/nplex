@@ -37,7 +37,7 @@
 				</span>
 				<hr class="border-dim flex-1" />
 			</div>
-			<fieldset class="gap-menu-gutter flex flex-row justify-center">
+			<fieldset class="gap-input-group-gutter flex flex-row justify-center">
 				{#each OAUTH_PROVIDERS_ARR as provider, i}
 					<a
 						class="button button-bordered aspect-square"

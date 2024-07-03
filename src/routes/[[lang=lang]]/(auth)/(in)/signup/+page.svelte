@@ -98,7 +98,7 @@
 		{m.signup()}
 	</button>
 </form>
-<nav class="gap-menu-gutter flex flex-row flex-wrap justify-between text-sm">
+<nav class="gap-input-group-gutter flex flex-row flex-wrap justify-between text-sm">
 	<a class="button button-ghost" {...linkAttributes('/login')}>
 		<LogIn />
 		{m.auth_login_prompt()}

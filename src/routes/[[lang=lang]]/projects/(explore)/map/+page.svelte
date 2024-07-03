@@ -4,7 +4,7 @@
 	let { data } = $props();
 </script>
 
-<article class="h-main-full-height flex flex-col items-center justify-center">
+<article class="flex flex-1 flex-col items-center justify-center">
 	<div class="prose prose-block bg-card p-card-padding rounded-card max-w-sm text-center">
 		<h6>
 			{m.map()}

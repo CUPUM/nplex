@@ -7,18 +7,21 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<section class="relative z-[0] flex flex-col items-stretch">
+<section class="h-main-full-height relative z-[0] flex flex-col items-stretch">
 	<DottedBackground class="opacity-dimmer bg-center" />
-	<header class="prose px-padding w-full max-w-xl self-center">
-		<h2>{m.project_gallery()}</h2>
+	<header class="px-padding top-sticky-top z-front sticky flex w-full flex-col">
+		<hgroup class="prose prose-block w-full max-w-xl self-center">
+			<h2>{m.project_gallery()}</h2>
+		</hgroup>
 	</header>
 	{#await data.gallery then awaitedGallery}
 		{#if awaitedGallery.length}
-			<ul class="gap-padding p-lg relative flex flex-row overflow-x-auto">
+			<ul class="gap-padding p-padding relative flex flex-1 flex-row overflow-x-auto">
 				{#each awaitedGallery as image}
-					<li class="rounded-card flex-none">
+					<li class="rounded-card h-full flex-none">
 						<img
 							src={imageSrc(image.storageName, { resize: { height: 900 } })}
+							alt={image.description}
 							class="rounded-inherit"
 						/>
 					</li>

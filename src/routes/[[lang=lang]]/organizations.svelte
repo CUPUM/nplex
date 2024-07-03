@@ -7,17 +7,15 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<article class="gap-md px-padding py-lg flex flex-col items-stretch self-stretch">
+<article class="gap-lg px-padding py-lg flex flex-col items-stretch self-stretch">
 	<a
 		href={withLang('/organizations')}
-		class="group/button py-lg border-dim mx-auto flex w-full max-w-xl flex-row items-center justify-between self-center border-t"
+		class="group/button max-w-main mx-auto flex w-full flex-row items-center justify-between self-center"
 	>
-		<h2
-			class="text-base-accent group-hover/button:text-primary text-2xl font-semibold transition-all"
-		>
+		<h2 class="group-hover/button:text-base-accent text-2xl text-base font-bold transition-all">
 			{m.recent_organizations()}
 		</h2>
-		<div class="button button-ghost text-sm">
+		<div class="button button-ghost rounded-full text-sm">
 			{m.explore()}<ArrowRight />
 		</div>
 	</a>

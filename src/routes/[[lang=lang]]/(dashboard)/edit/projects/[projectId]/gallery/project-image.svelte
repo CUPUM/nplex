@@ -49,7 +49,7 @@
 			{$form.id}
 		</header>
 		<menu
-			class="gap-menu-gutter *:bg-overlay/75 flex flex-row flex-wrap items-start text-xs *:pointer-events-auto"
+			class="gap-input-group-gutter *:bg-overlay/75 flex flex-row flex-wrap items-start text-xs *:pointer-events-auto"
 		>
 			<button class="button button-ghost backdrop-blur-sm" {...dialog.triggerAttributes}>
 				<Wrench />

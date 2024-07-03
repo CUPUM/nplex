@@ -19,6 +19,7 @@
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import SwitchThumb from '$lib/components/primitives/switch-thumb.svelte';
+	import { withLang } from '$lib/i18n/location';
 	import { LayoutDashboard, Map, StretchHorizontal } from 'lucide-svelte';
 	import type { ValueOf } from 'type-fest';
 
@@ -33,36 +34,42 @@
 	);
 </script>
 
-<menu class="switch self-start rounded-full backdrop-blur-md" use:ripple>
-	<button
+<menu class="switch self-start rounded-full backdrop-blur-md">
+	<svelte:element
+		this={computedMode === COMPUTED_PROJECTS_VIEW_MODES.MAP ? 'a' : 'button'}
 		role="radio"
 		tabindex="0"
 		class="switch-item aspect-square"
+		use:ripple
 		aria-checked={computedMode === PROJECTS_VIEW_MODES.MASONRY ? true : undefined}
-		onclick={(e) => {
+		onclick={() => {
 			mode = PROJECTS_VIEW_MODES.MASONRY;
 		}}
+		href={computedMode === COMPUTED_PROJECTS_VIEW_MODES.MAP ? withLang('/projects') : undefined}
 	>
 		<LayoutDashboard />
 		<SwitchThumb {key} current={computedMode === PROJECTS_VIEW_MODES.MASONRY} />
-	</button>
-	<button
+	</svelte:element>
+	<svelte:element
+		this={computedMode === COMPUTED_PROJECTS_VIEW_MODES.MAP ? 'a' : 'button'}
 		role="radio"
 		tabindex="0"
 		class="switch-item aspect-square"
+		use:ripple
 		aria-checked={computedMode === PROJECTS_VIEW_MODES.LIST ? true : undefined}
-		onclick={(e) => {
+		onclick={() => {
 			mode = PROJECTS_VIEW_MODES.LIST;
 		}}
+		href={computedMode === COMPUTED_PROJECTS_VIEW_MODES.MAP ? withLang('/projects') : undefined}
 	>
 		<StretchHorizontal />
 		<SwitchThumb {key} current={computedMode === PROJECTS_VIEW_MODES.LIST} />
-	</button>
+	</svelte:element>
 	<a
 		role="radio"
 		tabindex="0"
-		aria-disabled={true}
 		class="switch-item aspect-square"
+		use:ripple
 		{...linkAttributes(`/projects/map${$page.url.search}`)}
 		aria-checked={computedMode === COMPUTED_PROJECTS_VIEW_MODES.MAP ? true : undefined}
 	>

@@ -23,12 +23,12 @@
 <svelte:element
 	this={as as string}
 	{...fieldProps}
-	class={cn('gap-field-gutter group/field flex flex-col', className)}
+	class={cn('group/field flex flex-col', className)}
 >
 	{#if label}
 		<span
 			in:fly|global={{ y: 6, opacity: 0 }}
-			class="text-base text-[clamp(var(--font-size-xs),0.75em,var(--font-size-md))] font-semibold"
+			class="mb-[0.75em] text-base text-[clamp(var(--font-size-xs),0.75em,var(--font-size-md))] font-semibold"
 		>
 			{@render label()}
 		</span>
@@ -41,7 +41,7 @@
 	{@render children?.()}
 	{#if errors && errors.length}
 		<div
-			class="text-input-error-dim flex flex-col text-[clamp(var(--font-size-xs),0.35em,var(--font-size-sm))]"
+			class="text-input-error-dim mt-[0.75em] flex flex-col text-[clamp(var(--font-size-xs),0.35em,var(--font-size-sm))]"
 		>
 			{#each errors as err, i}
 				<span
