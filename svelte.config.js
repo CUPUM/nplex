@@ -13,7 +13,7 @@ const config = {
 		csslayer(),
 		mdsvex({
 			extension: 'mdx',
-			rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
+			rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
 			remarkPlugins: [remarkHeadings],
 		}),
 	],
@@ -21,6 +21,7 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$i18n: 'src/lib/i18n/generated',
+			$content: 'src/content',
 		},
 		prerender: {
 			handleHttpError: (details) => {
