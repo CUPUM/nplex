@@ -7,7 +7,6 @@
 @import 'styles/compact.css' layer(components);
 @import 'styles/fill.css' layer(components);
 @import 'styles/input.css' layer(components);
-@import 'styles/navbar.css' layer(components);
 @import 'styles/nest.css' layer(components);
 @import 'styles/prose.css' layer(components);
 @import 'styles/switch.css' layer(components);
@@ -93,6 +92,7 @@
 	--width-md: 48rem;
 	--width-lg: 64rem;
 	--width-xl: 76rem;
+	--width-main: var(--width-lg);
 	--width-prose: 46rem;
 
 	/* Spaces */
@@ -114,28 +114,27 @@
 	--spacing-input-nest: 0.35rem;
 	--spacing-input-padding: 1.25em;
 	--spacing-input-gutter: calc(var(--spacing-input-padding) / 2);
-	--spacing-field-gutter: 0.75em;
-	--spacing-popover-padding: var(--spacing-md);
-	--spacing-menu-gutter: calc(2 * var(--outline-width-focus));
-	--spacing-card-padding: var(--spacing-lg);
+	--spacing-input-group-gutter: calc(2 * var(--outline-width-focus));
+	--spacing-popover-padding: var(--spacing-lg);
+	--spacing-card-padding: var(--spacing-md);
 	--spacing-card-gutter: var(--spacing-md);
 	--spacing-sidebar-width: 18rem;
-	--spacing-navbar-height: calc(2 * var(--spacing-padding) + 3.5 * var(--font-size-sm)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
-	--spacing-navbar-margin-bottom: var(--spacing-gutter);
-	--spacing-sticky-top: calc(var(--spacing-navbar-height) + var(--spacing-navbar-margin-bottom));
+	--spacing-navbar-height: calc(var(--spacing-padding) + 3.5 * var(--font-size-sm) + var(--spacing-padding)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
+	--spacing-sticky-top: var(--spacing-navbar-height);
 	--spacing-main-full-height: calc(100svh - var(--spacing-navbar-height));
 
 	/* Radii */
 
 	--radius-2xs: 0.35rem;
 	--radius-xs: 0.75rem;
-	--radius-sm: 0.925rem;
-	--radius-md: 1.25rem;
-	--radius-lg: 2rem;
-	--radius-xl: 3.25rem;
+	--radius-sm: 0.875rem;
+	--radius-md: 1rem;
+	--radius-lg: 1.75rem;
+	--radius-xl: 2.5rem;
 	--radius-full: calc(infinity * 1px);
 	--radius-inherit: inherit;
 	--radius-input: var(--radius-sm);
+	--radius-popover: var(--radius-md);
 	--radius-dashboard: var(--radius-lg);
 	--radius-card: var(--radius-sm);
 
@@ -174,6 +173,13 @@
 	--border-width-lg: 2.5px;
 	--border-width-input: var(--border-width-md);
 
+	/* Stroke widths */
+
+	--stroke-width-sm: var(--border-width-sm);
+	--stroke-width-md: var(--border-width-md);
+	--stroke-width-lg: var(--border-width-lg);
+	--stroke-width-input: var(--border-width-input);
+
 	/* Outlines */
 
 	--outline-width-focus: var(--border-width-lg);
@@ -205,7 +211,7 @@
 
 	/* Scales */
 
-	--scale-press: 98%;
+	--scale-press: 97%;
 
 	/* Colors
 		- Semantic color palettes are defined using a --color-[semantic] and --color-on-[semantic] pattern to provide versatility in their use as either background or foreground colors.
@@ -242,12 +248,12 @@
 	--color-on-error-dim: hsl(30, 20%, 82%);
 	--color-on-error: hsl(25, 40%, 92%);
 	--color-on-error-accent: hsl(20, 60%, 98%);
-	--color-checked-dim:;
-	--color-checked:;
-	--color-checked-accent:;
-	--color-on-checked-dim:;
-	--color-on-checked:;
-	--color-on-checked-accent:;
+	--color-checked-dim: var(--text-color-base);
+	--color-checked: var(--text-color-base-accent);
+	--color-checked-accent: var(--text-color-pure);
+	--color-on-checked-dim: var(--background-color-card-dim);
+	--color-on-checked: var(--background-color-card);
+	--color-on-checked-accent: var(--background-color-card-accent);
 
 	--background-color-pure: white;
 	--background-color-base: hsl(105, 8.3%, 90.6%);
@@ -313,11 +319,8 @@
 	}
 
 	@keyframes press {
-		30% {
+		40% {
 			transform: scale(var(--scale-press));
-		}
-		60% {
-			transform: scale(calc(1 + (1 - var(--scale-press)) / 2));
 		}
 		100% {
 			transform: scale(1);

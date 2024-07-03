@@ -81,15 +81,20 @@
 		max-width: var(--width-prose);
 	}
 
-	a:not(.button) {
+	:not(h1, h2, h3, h4, h5, h6) a:not([class]) {
+		&::before,
+		&::after {
+			content: '\00a0';
+		}
+
 		color: var(--color-primary);
-		font-weight: var(--font-weight-semibold);
-		border-radius: 3px;
+		font-weight: var(--font-weight-bold);
+		border-radius: 2.5px;
 		background: transparent;
 		text-decoration: underline;
 		text-decoration-thickness: var(--border-width);
-		text-underline-offset: 0.35em;
-		text-decoration-color: color-mix(in srgb, currentColor var(--opacity-dim), transparent);
+		text-underline-offset: 0.3em;
+		text-decoration-color: color-mix(in srgb, currentColor var(--opacity-dimmer), transparent);
 		-webkit-box-decoration-break: clone;
 		-o-box-decoration-break: clone;
 		box-decoration-break: clone;

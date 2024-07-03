@@ -1,10 +1,10 @@
 /* Button
 
-	Aliased states
+	States
 		- default
 		- hover (:hover, :active)
-		- disabled (:disabled, [aria-disabled='true'], [data-disabled='true'])
 		- busy ([aria-busy='true'])
+		- disabled (:disabled, [aria-disabled='true'], [data-disabled='true'])
 		- checked (:checked, [aria-checked='true'], [data-state='active'], [data-state='checked'], :has(:checked))
 		- open ([aria-expanded='true'], [data-state='open'])
 		- current ([aria-current='page'])
@@ -50,6 +50,8 @@
 		--button-border-style: none;
 		--button-hover-color: var(--text-color-input-accent);
 		--button-hover-background: var(--background-color-input-accent);
+		--button-checked-background: var(--color-checked);
+		--button-checked-color: var(--color-on-checked);
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-background: var(--background-color-input-error);
@@ -99,8 +101,8 @@
 		--button-hover-background: var(--background-color-input-accent);
 		--button-hover-border-color: transparent;
 		--button-hover-background-inset: 0;
-		--button-checked-color: var(--color-on-primary);
-		--button-checked-background: var(--color-primary);
+		--button-checked-color: var(--color-on-checked);
+		--button-checked-background: var(--color-checked);
 		--button-checked-background-inset: 0;
 		--button-checked-border-color: transparent;
 		&:is([data-danger]) {

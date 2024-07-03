@@ -183,7 +183,7 @@
 
 	.input-peer {
 		display: flex;
-		gap: var(--input-nest);
+		gap: var(--spacing-input-group-gutter);
 		flex-direction: row;
 		margin: var(--input-nest);
 	}
