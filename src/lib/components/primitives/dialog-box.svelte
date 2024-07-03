@@ -71,7 +71,7 @@
 						{@render title?.(dialog)}
 					</hgroup>
 					{#if description}
-						<section class="opacity-dim prose prose-block leading-sm mb-[0.5em] text-sm">
+						<section class="opacity-soft prose prose-block leading-sm mb-[0.5em] text-sm">
 							{@render description?.(dialog)}
 						</section>
 					{/if}
@@ -82,7 +82,7 @@
 			{#if actions}
 				<hr class="mt-popover-padding" />
 				<menu
-					class="justify-content-start gap-input-group-gutter sticky bottom-0 flex flex-row-reverse bg-inherit"
+					class="justify-content-start gap-input-group-gap sticky bottom-0 flex flex-row-reverse bg-inherit"
 				>
 					{@render actions(dialog)}
 				</menu>

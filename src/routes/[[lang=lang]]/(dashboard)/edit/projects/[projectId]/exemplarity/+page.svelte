@@ -50,7 +50,7 @@
 						{category.title}
 					</h4>
 				{/snippet}
-				<ul class="gap-input-gutter flex flex-row flex-wrap items-start justify-start">
+				<ul class="gap-input-gap flex flex-row flex-wrap items-start justify-start">
 					{#if category.markers}
 						{#each category.markers as marker}
 							<label class="button button-dashed rounded-full" use:ripple>

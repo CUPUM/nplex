@@ -2,7 +2,7 @@
 </script>
 
 <section>
-	<p class="text dimmer sm">To come</p>
+	<p class="text dimmest sm">To come</p>
 </section>
 
 <style>

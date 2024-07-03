@@ -13,7 +13,7 @@
 
 <fieldset
 	class={cn(
-		'bg-card-dim p-card-gutter gap-card-gutter flex flex-col items-stretch self-stretch rounded-lg',
+		'bg-card-soft p-gap gap-gap flex flex-col items-stretch self-stretch rounded-lg',
 		className
 	)}
 	in:fly|global={{ y: -6 }}

@@ -125,7 +125,7 @@
 	border-radius: var(--switch-radius);
 	user-select: none;
 	flex: none;
-	gap: calc(var(--spacing-input-group-gutter));
+	gap: calc(var(--spacing-input-group-gap));
 	align-items: stretch;
 	justify-content: stretch;
 	color: var(--switch-color);
@@ -265,7 +265,7 @@
 			z-index: 1;
 			width: var(--spacing-input-icon);
 			height: var(--spacing-input-icon);
-			opacity: var(--opacity-dim);
+			opacity: var(--opacity-soft);
 			flex: none;
 			user-select: none;
 			pointer-events: none;
@@ -295,7 +295,7 @@
 		/* Disabled */
 
 		&:is(:disabled, [aria-disabled='true'], [data-disabled='true']) {
-			opacity: var(--opacity-dimmer);
+			opacity: var(--opacity-dimmest);
 			color: var(--switch-item-disabled-color, var(--switch-item-color));
 
 			&::after {

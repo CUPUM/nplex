@@ -24,12 +24,12 @@
 >
 	{#if legend}
 		<span
-			class="text-base-dim px-input-padding py-input-nest bg-input-dim *:stroke-md *:[.lucide-icon]:opacity-dim flex flex-row items-center gap-[1em] self-start rounded-full text-xs font-thin"
+			class="px-input-padding py-input-nest bg-input/soft *:stroke-md *:[.lucide-icon]:opacity-soft flex flex-row items-center gap-[1em] self-start rounded-full text-xs text-base/soft font-thin"
 		>
 			{@render legend?.()}
 		</span>
 	{/if}
-	<ul class="gap-input-group-gutter flex flex-col">
+	<ul class="gap-input-group-gap flex flex-col">
 		{@render children?.()}
 	</ul>
 </menu>

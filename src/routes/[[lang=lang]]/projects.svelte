@@ -26,7 +26,7 @@
 		</div>
 	</a>
 	<ul
-		class="gap-gutter justify-content-center grid grid-flow-dense auto-rows-[15vw] grid-cols-[repeat(auto-fit,minmax(15vw,1fr))]"
+		class="gap-gap justify-content-center grid grid-flow-dense auto-rows-[15vw] grid-cols-[repeat(auto-fit,minmax(15vw,1fr))]"
 	>
 		{#each data.featuredProjects as project, i (project.id)}
 			<li

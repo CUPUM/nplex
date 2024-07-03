@@ -31,8 +31,8 @@
 	let units = $derived(text.split(separator));
 </script>
 
-<div
-	class="contents [text-decoration:inherit]"
+<span
+	class="whitespace-nowrap [text-decoration:inherit]"
 	data-clipped={clipPath ? true : undefined}
 	style:--duration={ms(duration)}
 	style:--easing={easing}
@@ -58,7 +58,7 @@
 			</span>
 		{/each}
 	{/key}
-</div>
+</span>
 
 <style>
 	[data-clipped='true'] .clip-anim {

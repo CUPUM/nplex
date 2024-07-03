@@ -24,7 +24,7 @@
 </script>
 
 <article class="flex flex-1 items-center justify-center">
-	<div class="gap-card-gutter p-padding flex w-full max-w-sm flex-col items-stretch">
+	<div class="gap-gap p-padding flex w-full max-w-sm flex-col items-stretch">
 		{@render children()}
 		<section class="gap-inherit flex flex-col">
 			<div class="gap-inherit flex flex-row items-center">
@@ -37,7 +37,7 @@
 				</span>
 				<hr class="border-dim flex-1" />
 			</div>
-			<fieldset class="gap-input-group-gutter flex flex-row justify-center">
+			<fieldset class="gap-input-group-gap flex flex-row justify-center">
 				{#each OAUTH_PROVIDERS_ARR as provider, i}
 					<a
 						class="button button-bordered aspect-square"

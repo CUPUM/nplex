@@ -28,13 +28,13 @@
 	this={as as string}
 	{...restProps}
 	class={cn(
-		'p-lg gap-card-gutter rounded-dashboard bg-card relative flex flex-col items-start text-sm',
+		'p-lg gap-gap rounded-section bg-card relative flex flex-col items-start text-sm',
 		className
 	)}
 	use:action
 >
 	{#if header}
-		<header class="prose prose-block pb-card-gutter self-stretch text-sm">
+		<header class="prose prose-block pb-gap self-stretch text-sm">
 			{@render header()}
 		</header>
 	{/if}

@@ -22,7 +22,7 @@
 		</p>
 	</div>
 	<form id={$formId} class="sr-only" use:enhance method="POST"></form>
-	<ul class="px-card-padding gap-gutter flex flex-row flex-wrap">
+	<ul class="px-card-padding gap-gap flex flex-row flex-wrap">
 		<li>
 			<OrganizationExpertiseCreate data={data.organizationExpertiseCreateForm} />
 		</li>

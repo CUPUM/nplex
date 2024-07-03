@@ -43,13 +43,13 @@
 	/>
 	<button class="fill" {...dialog.triggerAttributes}></button>
 	<div
-		class="rounded-inherit after:rounded-inherit p-input-padding gap-card-gutter after:content after:from-popover after:duration-medium pointer-events-none relative z-1 flex h-full flex-col transition-all after:pointer-events-none after:absolute after:inset-0 after:-z-1 after:bg-gradient-to-t after:to-transparent after:opacity-0 after:transition-all group-hover/card:after:opacity-100"
+		class="rounded-inherit after:rounded-inherit p-input-padding gap-gap after:content after:from-popover after:duration-medium pointer-events-none relative z-1 flex h-full flex-col transition-all after:pointer-events-none after:absolute after:inset-0 after:-z-1 after:bg-gradient-to-t after:to-transparent after:opacity-0 after:transition-all group-hover/card:after:opacity-100"
 	>
 		<header class="flex-1">
 			{$form.id}
 		</header>
 		<menu
-			class="gap-input-group-gutter *:bg-overlay/75 flex flex-row flex-wrap items-start text-xs *:pointer-events-auto"
+			class="gap-input-group-gap *:bg-overlay/75 flex flex-row flex-wrap items-start text-xs *:pointer-events-auto"
 		>
 			<button class="button button-ghost backdrop-blur-sm" {...dialog.triggerAttributes}>
 				<Wrench />

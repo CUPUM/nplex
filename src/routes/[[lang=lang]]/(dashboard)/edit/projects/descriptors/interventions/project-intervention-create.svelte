@@ -70,7 +70,7 @@
 		{#snippet label()}
 			{m.project_types()}
 		{/snippet}
-		<ul class="gap-gutter flex flex-row">
+		<ul class="gap-gap flex flex-row">
 			{#await projectTypes}
 				...
 			{:then awaitedProjectTypes}

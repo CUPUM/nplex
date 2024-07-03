@@ -183,7 +183,7 @@
 
 	.input-peer {
 		display: flex;
-		gap: var(--spacing-input-group-gutter);
+		gap: var(--spacing-input-group-gap);
 		flex-direction: row;
 		margin: var(--input-nest);
 	}
@@ -196,7 +196,7 @@
 		height: var(--spacing-input);
 		display: flex;
 		align-items: center;
-		opacity: var(--opacity-dimmer);
+		opacity: var(--opacity-dimmest);
 		white-space: nowrap;
 		padding-block: 0;
 		padding-inline: calc(var(--spacing-input-padding) / 2);
@@ -225,12 +225,12 @@
 	.input-icon,
 	& > .lucide-icon,
 	& > .spinner {
-		opacity: var(--opacity-dim);
+		opacity: var(--opacity-soft);
 		stroke: var(--input-icon-color);
 	}
 
 	.input-affix {
-		opacity: var(--opacity-dimmer);
+		opacity: var(--opacity-dimmest);
 	}
 
 	/* Hover */
@@ -262,7 +262,7 @@
 		}
 
 		.input-affix {
-			opacity: var(--opacity-dim);
+			opacity: var(--opacity-soft);
 		}
 	}
 
@@ -296,7 +296,7 @@
 		}
 
 		.input-affix {
-			opacity: var(--opacity-dim);
+			opacity: var(--opacity-soft);
 		}
 	}
 
@@ -330,7 +330,7 @@
 		}
 
 		.input-affix {
-			opacity: var(--opacity-dim);
+			opacity: var(--opacity-soft);
 		}
 	}
 

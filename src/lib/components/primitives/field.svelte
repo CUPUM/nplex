@@ -41,7 +41,7 @@
 	{@render children?.()}
 	{#if errors && errors.length}
 		<div
-			class="text-input-error-dim mt-[0.75em] flex flex-col text-[clamp(var(--font-size-xs),0.35em,var(--font-size-sm))]"
+			class="text-input-error-soft mt-[0.75em] flex flex-col text-[clamp(var(--font-size-xs),0.35em,var(--font-size-sm))]"
 		>
 			{#each errors as err, i}
 				<span

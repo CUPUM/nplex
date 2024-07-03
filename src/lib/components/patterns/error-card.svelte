@@ -9,7 +9,7 @@
 		{#if $page.error?.message}
 			{$page.error.message}
 		{:else}
-			<span class="opacity-dim font-normal">{m.no_error_message()}</span>
+			<span class="opacity-soft font-normal">{m.no_error_message()}</span>
 		{/if}
 	</p>
 </article>

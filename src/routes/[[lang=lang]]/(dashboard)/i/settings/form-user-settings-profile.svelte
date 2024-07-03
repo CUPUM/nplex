@@ -20,7 +20,7 @@
 		{m.user_profile_settings()}
 	</h2>
 	<div class="dashboard-section-content">
-		<div class="gap-gutter flex flex-row">
+		<div class="gap-gap flex flex-row">
 			<Field class="flex-1">
 				{#snippet label()}
 					{m.user_first_name()}

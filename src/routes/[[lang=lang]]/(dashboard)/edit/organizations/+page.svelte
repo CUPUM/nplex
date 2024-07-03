@@ -26,7 +26,7 @@
 		{m.organizations_edit()}
 	</h2>
 </DashboardSubHeader>
-<ul class="gap-gutter grid grid-cols-[repeat(auto-fit,minmax(var(--width-xs),1fr))]">
+<ul class="gap-gap grid grid-cols-[repeat(auto-fit,minmax(var(--width-xs),1fr))]">
 	<li class="aspect-[4/3]">
 		<OrganizationCreateCard />
 	</li>

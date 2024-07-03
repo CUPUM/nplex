@@ -10,7 +10,7 @@
 <menu
 	in:fly|global={{ opacity: 0, y: 6, duration: 250, easing: expoOut, delay: 500 }}
 	class={cn(
-		'gap-input-group-gutter p-input-nest bg-card/50 bottom-md big sticky flex flex-row self-center rounded-[calc(var(--radius-input)+var(--spacing-input-nest))] text-sm backdrop-blur-md',
+		'gap-input-group-gap p-input-nest bg-card/50 bottom-md big sticky flex flex-row self-center rounded-[calc(var(--radius-input)+var(--spacing-input-nest))] text-sm backdrop-blur-md',
 		className
 	)}
 	{...menuProps}

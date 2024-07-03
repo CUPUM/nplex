@@ -5,9 +5,9 @@
 </script>
 
 <header
-	class="p-xl min-h-main-full-height flex flex-col items-center justify-center pb-[calc(var(--spacing-xl)+var(--spacing-navbar-height))]"
+	class="px-padding min-h-main-full-height flex flex-col items-center justify-center pb-[calc(var(--spacing-xl)+var(--spacing-navbar-height))]"
 >
-	<hgroup class="flex w-full max-w-xl flex-col items-start">
+	<hgroup class="max-w-main flex w-full flex-col items-start">
 		<h1 class="text-biggest text-base-accent max-w-md font-bold">
 			<StaggerText
 				text={data.title}

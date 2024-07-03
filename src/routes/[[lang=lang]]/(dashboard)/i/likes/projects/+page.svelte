@@ -3,7 +3,7 @@
 </script>
 
 <section>
-	<p class="text dimmer sm">To come</p>
+	<p class="text dimmest sm">To come</p>
 	<!-- <ul>
 		{#each data.likedProjects as project}
 			{project.id}

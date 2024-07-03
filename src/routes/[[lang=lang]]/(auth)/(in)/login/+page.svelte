@@ -23,8 +23,8 @@
 	);
 </script>
 
-<form method="POST" use:enhance autocomplete="off" class="gap-card-gutter flex flex-col">
-	<h1 class="mb-card-gutter text-xl font-semibold">
+<form method="POST" use:enhance autocomplete="off" class="gap-gap flex flex-col">
+	<h1 class="mb-gap text-xl font-semibold">
 		{m.auth_login_title()}
 	</h1>
 	<Field>
@@ -93,7 +93,7 @@
 		<p class="text-base-dim text-sm" in:fly={{ y: -8, duration: 350 }}>{$message}</p>
 	{/if}
 </form>
-<nav class="gap-input-group-gutter flex flex-row flex-wrap justify-between text-sm">
+<nav class="gap-input-group-gap flex flex-row flex-wrap justify-between text-sm">
 	<a class="button button-ghost" {...linkAttributes('/signup')}>
 		<UserRoundPlus />
 		{m.auth_signup_prompt()}

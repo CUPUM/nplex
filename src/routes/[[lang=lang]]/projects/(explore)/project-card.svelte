@@ -24,17 +24,17 @@
 				alt="Banner image for {project.title}"
 			/>
 		{:else}
-			<div class="fill opacity-dimmer flex items-center justify-center">
+			<div class="fill opacity-dimmest flex items-center justify-center">
 				<Image class="size-[2em] stroke-width-[1]" />
 			</div>
 		{/if}
 		<div
 			data-mode={MODES.DARK}
-			class="p-card-padding pt-2xl text-base-dim group-hover/card:text-base-accent rounded-inherit after after:from-overlay after:rounded-inherit after:opacity-dim after:duraiton-medium relative flex flex-col transition-all after:absolute after:inset-0 after:bg-gradient-to-t after:bg-[0px_100px] after:bg-no-repeat after:transition-all after:ease-out group-hover/card:after:bg-[0px_0px] group-hover/card:after:opacity-100"
+			class="p-card-padding pt-2xl text-base-dim group-hover/card:text-base-accent rounded-inherit after after:from-overlay after:rounded-inherit after:opacity-soft after:duraiton-medium relative flex flex-col transition-all after:absolute after:inset-0 after:bg-gradient-to-t after:bg-[0px_100px] after:bg-no-repeat after:transition-all after:ease-out group-hover/card:after:bg-[0px_0px] group-hover/card:after:opacity-100"
 		>
 			<div class="pointer-events-none z-1">
 				<menu
-					class="gap-input-group-gutter pt-sm compact pb-sm flex flex-row flex-wrap items-start text-xs *:pointer-events-auto"
+					class="gap-input-group-gap pt-sm compact pb-sm flex flex-row flex-wrap items-start text-xs *:pointer-events-auto"
 				>
 					<button class="button rounded-full backdrop-blur-sm">
 						{0}
@@ -51,7 +51,7 @@
 				<p class="text-base-dim text-sm font-medium">
 					<OptionalText text={project.summary} fallback={m.no_summary()} />
 				</p>
-				<ul class="compact gap-input-group-gutter pt-sm flex flex-row overflow-x-auto text-xs">
+				<ul class="compact gap-input-group-gap pt-sm flex flex-row overflow-x-auto text-xs">
 					{#each project.exemplarityMarkers as marker}
 						<li class="button rounded-full backdrop-blur-sm">
 							<OptionalText text={marker.shortTitle} />

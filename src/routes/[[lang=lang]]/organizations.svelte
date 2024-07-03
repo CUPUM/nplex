@@ -19,11 +19,11 @@
 			{m.explore()}<ArrowRight />
 		</div>
 	</a>
-	<ul class="gap-padding flex flex-row flex-wrap place-content-start items-center justify-center">
+	<ul class="gap-gap max-w-main flex w-full flex-row items-start self-center overflow-x-auto">
 		{#each data.featuredOrganizations as organization}
 			<a
 				href={withLang(`/organizations/${organization.id}`)}
-				class="p-card-padding rounded-card bg-card flex aspect-[3/2] h-[200px] flex-[none]"
+				class="p-card-padding rounded-card bg-card flex aspect-square w-[33%] flex-[none]"
 			>
 				{organization.id}
 			</a>

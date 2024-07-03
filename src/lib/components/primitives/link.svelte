@@ -28,8 +28,11 @@
 		} = {}
 	) {
 		let current = $derived.by(() => {
-			if (currentUrlWithoutLang) {
-				if (hrefWithoutLang.startsWith('#') && currentUrlWithoutLang.hash === hrefWithoutLang) {
+			if (currentUrlWithoutLang && currentUrl) {
+				if (
+					hrefWithoutLang.startsWith('#') &&
+					decodeURIComponent(currentUrl.hash) === decodeURIComponent(hrefWithoutLang)
+				) {
 					return 'step' as const;
 				}
 				if (

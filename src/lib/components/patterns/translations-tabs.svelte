@@ -27,7 +27,7 @@
 	<menu class="switch switch-bordered compact self-center rounded-full" use:ripple>
 		{#each availableLanguageTags as lang}
 			<button
-				class="switch-item gap-input-gutter flex flex-row"
+				class="switch-item gap-input-gap flex flex-row"
 				{...tabs.triggerAttributes(lang)}
 				{lang}
 				type="button"

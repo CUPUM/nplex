@@ -7,16 +7,16 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<section class="h-main-full-height relative z-[0] flex flex-col items-stretch">
-	<DottedBackground class="opacity-dimmer bg-center" />
+<section class="h-main-full-height pt-lg relative z-[0] flex flex-col items-stretch">
+	<DottedBackground class="opacity-softer bg-center" />
 	<header class="px-padding top-sticky-top z-front sticky flex w-full flex-col">
-		<hgroup class="prose prose-block w-full max-w-xl self-center">
+		<hgroup class="prose prose-block max-w-main w-full self-center">
 			<h2>{m.project_gallery()}</h2>
 		</hgroup>
 	</header>
 	{#await data.gallery then awaitedGallery}
 		{#if awaitedGallery.length}
-			<ul class="gap-padding p-padding relative flex flex-1 flex-row overflow-x-auto">
+			<ul class="gap-padding p-padding pt-lg relative flex flex-1 flex-row overflow-x-auto">
 				{#each awaitedGallery as image}
 					<li class="rounded-card h-full flex-none">
 						<img
@@ -28,7 +28,7 @@
 				{/each}
 			</ul>
 		{:else}
-			<section class="p-padding w-full max-w-xl self-center">
+			<section class="p-padding max-w-main w-full self-center">
 				<span class="text-base-dim italic">
 					{m.no_image()}
 				</span>

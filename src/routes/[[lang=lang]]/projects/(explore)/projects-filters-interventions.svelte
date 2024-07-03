@@ -19,7 +19,7 @@
 	{#snippet legend()}
 		{m.project_interventions()}
 	{/snippet}
-	<ul class="gap-input-group-gutter compact flex flex-col items-start">
+	<ul class="gap-input-group-gap compact flex flex-col items-start">
 		{#await lists.interventionsByCategories}
 			...
 		{:then awaitedProjectInterventionsByCategories}

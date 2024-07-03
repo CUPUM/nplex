@@ -14,7 +14,7 @@
 {#if dialog.open}
 	<dialog
 		class={cn(
-			'p-padding justify-content-start gap-gutter fixed flex h-full w-full flex-col items-end bg-transparent',
+			'p-padding justify-content-start gap-gap fixed flex h-full w-full flex-col items-end bg-transparent',
 			className
 		)}
 		{...restProps}

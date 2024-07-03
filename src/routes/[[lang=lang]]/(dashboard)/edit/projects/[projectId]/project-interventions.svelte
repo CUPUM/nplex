@@ -55,6 +55,6 @@
 			{/each}
 		{/await}
 	{:else}
-		<p class="opacity-dim italic">{m.project_interventions_missing_type()}</p>
+		<p class="opacity-soft italic">{m.project_interventions_missing_type()}</p>
 	{/if}
 </DashboardSubSection>

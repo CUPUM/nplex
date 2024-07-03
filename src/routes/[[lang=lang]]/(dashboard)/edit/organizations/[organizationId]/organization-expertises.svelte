@@ -16,7 +16,7 @@
 			{m.organization_expertises()}
 		</h3>
 	{/snippet}
-	<ul class="gap-gutter flex flex-row flex-wrap">
+	<ul class="gap-gap flex flex-row flex-wrap">
 		{#await expertises}
 			...
 		{:then awaitedExpertises}

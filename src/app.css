@@ -107,17 +107,16 @@
 	--spacing-2xl: 10rem;
 	--spacing-inherit: inherit;
 	--spacing-padding: var(--spacing-sm); /* App / container layouts padding */
-	--spacing-gutter: var(--spacing-2xs); /* App / container layouts gap */
+	--spacing-gap: var(--spacing-2xs); /* App / container layouts gap */
 	--spacing-outline-focus: var(--outline-width-focus);
 	--spacing-input: 3.5em;
 	--spacing-input-icon: 1.25em;
 	--spacing-input-nest: 0.35rem;
 	--spacing-input-padding: 1.25em;
-	--spacing-input-gutter: calc(var(--spacing-input-padding) / 2);
-	--spacing-input-group-gutter: calc(2 * var(--outline-width-focus));
+	--spacing-input-gap: calc(var(--spacing-input-padding) / 2);
+	--spacing-input-group-gap: calc(2 * var(--outline-width-focus));
 	--spacing-popover-padding: var(--spacing-lg);
 	--spacing-card-padding: var(--spacing-md);
-	--spacing-card-gutter: var(--spacing-md);
 	--spacing-sidebar-width: 18rem;
 	--spacing-navbar-height: calc(var(--spacing-padding) + 3.5 * var(--font-size-sm) + var(--spacing-padding)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
 	--spacing-sticky-top: var(--spacing-navbar-height);
@@ -135,7 +134,7 @@
 	--radius-inherit: inherit;
 	--radius-input: var(--radius-sm);
 	--radius-popover: var(--radius-md);
-	--radius-dashboard: var(--radius-lg);
+	--radius-section: var(--radius-lg);
 	--radius-card: var(--radius-sm);
 
 	/* Blurs */
@@ -153,8 +152,9 @@
 
 	/* Fades */
 
-	--opacity-dim: 45%;
-	--opacity-dimmer: 25%;
+	--opacity-softish: 85%;
+	--opacity-soft: 45%;
+	--opacity-softer: 20%;
 	--opacity-pulse: 50%;
 
 	/* Shadows */
@@ -218,40 +218,40 @@
 		- Block-element color palettes are defined as --background-color-[element] and --text-color-[element] to enforce consistency in their use for backgrounds and foregrounds.
 	*/
 
-	--color-primary-dim: hsl(151, 80%, 21%);
+	--color-primary-soft: hsl(151, 80%, 21%);
 	--color-primary: hsl(152, 90%, 12%);
 	--color-primary-accent: hsl(155, 100%, 8%);
-	--color-on-primary-dim: hsl(52, 14%, 82%);
+	--color-on-primary-soft: hsl(52, 14%, 82%);
 	--color-on-primary: hsl(52, 15%, 89%);
 	--color-on-primary-accent: hsl(52, 16%, 96%);
-	--color-award-dim: hsl(47.6, 100%, 69.6%);
+	--color-award-soft: hsl(47.6, 100%, 69.6%);
 	--color-award: hsl(48.1, 93.7%, 49.4%);
 	--color-award-accent: hsl(45.3, 100%, 36.9%);
-	--color-on-award-dim: white;
+	--color-on-award-soft: white;
 	--color-on-award: white;
 	--color-on-award-accent: white;
-	--color-like-dim: pink;
+	--color-like-soft: pink;
 	--color-like: hotpink;
 	--color-like-accent: deeppink;
-	--color-on-like-dim: white;
+	--color-on-like-soft: white;
 	--color-on-like: white;
 	--color-on-like-accent: white;
-	--color-success-dim: hsl(120, 46%, 42%);
+	--color-success-soft: hsl(120, 46%, 42%);
 	--color-success: hsl(120, 90%, 25%);
 	--color-success-accent: hsl(120, 98%, 14%);
-	--color-on-success-dim: var(--color-primary-contrast-dim);
-	--color-on-success: var(--color-primary-contrast);
-	--color-on-success-accent: var(--color-primary-contrast-accent);
-	--color-error-dim: hsl(8, 72%, 50%);
+	--color-on-success-soft: var(--color-on-primary-soft);
+	--color-on-success: var(--color-on-primary);
+	--color-on-success-accent: var(--color-on-primary-accent);
+	--color-error-soft: hsl(8, 72%, 50%);
 	--color-error: hsl(7, 85%, 36%);
 	--color-error-accent: hsl(6, 96%, 20%);
-	--color-on-error-dim: hsl(30, 20%, 82%);
+	--color-on-error-soft: hsl(30, 20%, 82%);
 	--color-on-error: hsl(25, 40%, 92%);
 	--color-on-error-accent: hsl(20, 60%, 98%);
-	--color-checked-dim: var(--text-color-base);
+	--color-checked-soft: var(--text-color-base);
 	--color-checked: var(--text-color-base-accent);
 	--color-checked-accent: var(--text-color-pure);
-	--color-on-checked-dim: var(--background-color-card-dim);
+	--color-on-checked-soft: var(--background-color-base);
 	--color-on-checked: var(--background-color-card);
 	--color-on-checked-accent: var(--background-color-card-accent);
 
@@ -259,47 +259,35 @@
 	--background-color-base: hsl(105, 8.3%, 90.6%);
 	--background-color-popover: hsl(85, 85.7%, 97.3%);
 	--background-color-overlay: hsl(36, 12%, 6%, 90%);
-	--background-color-selection: var(--color-primary-dim);
-	--background-color-card-dim: hsl(105, 11.8%, 93.3%);
+	--background-color-selection: var(--color-primary-soft);
 	--background-color-card: hsl(100, 12%, 95.1%);
 	--background-color-card-accent: hsl(90, 28.6%, 97.3%);
-	--background-color-input-dim: color-mix(in srgb, var(--text-color-base) 6%, transparent);
 	--background-color-input: color-mix(in srgb, var(--text-color-base) 9%, transparent);
 	--background-color-input-accent: color-mix(in srgb, var(--text-color-base) 12%, transparent);
-	--background-color-input-error-dim: color-mix(in srgb, var(--color-error) 6%, transparent);
 	--background-color-input-error: color-mix(in srgb, var(--color-error) 9%, transparent);
 	--background-color-input-error-accent: color-mix(in srgb, var(--color-error) 12%, transparent);
-	--background-color-input-success-dim: color-mix(in srgb, var(--color-success) 6%, transparent);
 	--background-color-input-success: color-mix(in srgb, var(--color-success) 9%, transparent);
 	--background-color-input-success-accent: color-mix(in srgb, var(--color-success) 12%, transparent);
 
 	--text-color-pure: black;
 	--text-color-selection: var(--color-on-primary);
 	--text-color-base: hsl(48, 10%, 21%);
-	--text-color-base-dim: hsl(44, 4%, 50%);
-	--text-color-base-dimmer: hsl(40, 6%, 68%);
 	--text-color-base-accent: hsl(46.4, 100%, 6%);
-	--text-color-input-dim: hsl(200, 7.1%, 32.9%);
 	--text-color-input: hsl(203.1, 14.9%, 17.1%);
 	--text-color-input-accent: hsl(203.3, 81.8%, 4.3%);
-	--text-color-input-error-dim: var(--color-error-dim);
 	--text-color-input-error: var(--color-error);
 	--text-color-input-error-accent: var(--color-error-accent);
-	--text-color-input-success-dim: var(--color-success-dim);
 	--text-color-input-success: var(--color-success);
 	--text-color-input-success-accent: var(--color-success-accent);
 
-	--outline-color: color-mix(in srgb, var(--color-primary-dim) 90%, transparent);
-	--outline-color-error: color-mix(in srgb, var(--color-error-dim) 90%, transparent);
-	--outline-color-success: color-mix(in srgb, var(--color-success-dim) 90%, transparent);
+	--outline-color: color-mix(in srgb, var(--color-primary-soft) 90%, transparent);
+	--outline-color-error: color-mix(in srgb, var(--color-error-soft) 90%, transparent);
+	--outline-color-success: color-mix(in srgb, var(--color-success-soft) 90%, transparent);
 
-	--border-color-dim: color-mix(in srgb, var(--text-color-base) 10%, transparent);
 	--border-color: color-mix(in srgb, var(--text-color-base) 20%, transparent);
 	--border-color-accent: color-mix(in srgb, var(--text-color-base) 35%, transparent);
-	--border-color-error-dim: color-mix(in srgb, var(--color-error) 10%, transparent);
 	--border-color-error: color-mix(in srgb, var(--color-error) 20%, transparent);
 	--border-color-error-accent: color-mix(in srgb, var(--color-error) 35%, transparent);
-	--border-color-success-dim: color-mix(in srgb, var(--color-success) 10%, transparent);
 	--border-color-success: color-mix(in srgb, var(--color-success) 20%, transparent);
 	--border-color-success-accent: color-mix(in srgb, var(--color-success) 35%, transparent);
 
@@ -329,13 +317,13 @@
 }
 
 [data-mode='dark'] {
-	--color-primary-dim: hsl(148, 90%, 20%);
+	--color-primary-soft: hsl(148, 90%, 20%);
 	--color-primary: hsl(144, 76%, 32%);
 	--color-primary-accent: hsl(140, 62%, 52%);
-	--color-success-dim: hsl(120, 98%, 14%);
+	--color-success-soft: hsl(120, 98%, 14%);
 	--color-success: hsl(120, 90%, 25%);
 	--color-success-accent: hsl(120, 46%, 42%);
-	--color-error-dim: hsl(8, 70%, 46%);
+	--color-error-soft: hsl(8, 70%, 46%);
 	--color-error: hsl(7, 80%, 55%);
 	--color-error-accent: hsl(6, 90%, 64%);
 
@@ -343,7 +331,7 @@
 	--background-color-base: hsl(61, 5%, 7%);
 	--background-color-popover: hsl(62, 4%, 5%);
 	--background-color-overlay: hsl(220, 16%, 3%, 86%);
-	--background-color-card-dim: hsl(62, 4%, 8%);
+	--background-color-card-soft: hsl(62, 4%, 8%);
 	--background-color-card: hsl(240, 2%, 10%);
 	--background-color-card-accent: hsl(238, 2%, 12%);
 	--background-color-input-dim: hsla(246, 10%, 35%, 10%);
@@ -352,14 +340,10 @@
 
 	--text-color-pure: white;
 	--text-color-base: hsl(45, 10%, 74%);
-	--text-color-base-dim: hsl(45, 6%, 40%);
-	--text-color-base-dimmer: hsl(45, 6%, 25%);
 	--text-color-base-accent: hsl(45, 16%, 92%);
-	--text-color-input-dim: hsl(80, 4%, 60%);
 	--text-color-input: hsl(80, 8%, 78%);
 	--text-color-input-accent: hsl(80, 20%, 88%);
 
-	--border-color-dim: color-mix(in srgb, var(--text-color-base) 5%, transparent);
 	--border-color: color-mix(in srgb, var(--text-color-base) 12%, transparent);
 	--border-color-accent: color-mix(in srgb, var(--text-color-base) 20%, transparent);
 }

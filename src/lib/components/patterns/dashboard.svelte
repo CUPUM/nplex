@@ -59,11 +59,11 @@
 </script>
 
 <section
-	class="px-padding pb-gutter flex-basis-0 min-h-main-full-height relative grid grid-cols-[[sidebar-start_header-start_footer-start]_auto_[sidebar-end_main-start]_1fr_[main-end_header-end_footer-end]] content-start"
+	class="px-padding pb-gap flex-basis-0 min-h-main-full-height relative grid grid-cols-[[sidebar-start_header-start_footer-start]_auto_[sidebar-end_main-start]_1fr_[main-end_header-end_footer-end]] content-start"
 >
 	{#if currentHeader}
 		<header
-			class="pb-gutter rounded-dashboard relative flex flex-col"
+			class="pb-gap rounded-section relative flex flex-col"
 			style:grid-column="header"
 			transition:slide={{ axis: 'y', duration: 350, easing: expoOut }}
 		>
@@ -73,17 +73,17 @@
 	{#if currentSidebar}
 		<nav
 			style:grid-column="sidebar"
-			class="gap-gutter w-sidebar-width top-sticky-top pr-gutter relative sticky flex flex-col self-start"
+			class="gap-gap w-sidebar-width top-sticky-top pr-gap relative sticky flex flex-col self-start"
 			transition:slide={{ axis: 'x', duration: 350, easing: expoOut }}
 		>
 			{@render currentSidebar()}
 		</nav>
 	{/if}
-	<article style:grid-column="main" class="gap-gutter flex flex-col" id="dashboard-main">
+	<article style:grid-column="main" class="gap-gap flex flex-col" id="dashboard-main">
 		{@render children()}
 	</article>
 	{#if currentFooter}
-		<footer class="pt-gutter relative" style:grid-column="footer">
+		<footer class="pt-gap relative" style:grid-column="footer">
 			{@render currentFooter()}
 		</footer>
 	{/if}

@@ -45,7 +45,7 @@
 
 {@render root(dialog.triggerAttributes)}
 <DialogBox {dialog} class="min-w-sm" {title} {description}>
-	<form id={$formId} {...formAttributes} use:enhance {method} class="gap-card-gutter flex flex-col">
+	<form id={$formId} {...formAttributes} use:enhance {method} class="gap-gap flex flex-col">
 		{@render children?.(dialog)}
 	</form>
 	{#snippet actions()}

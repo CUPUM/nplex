@@ -21,7 +21,7 @@
 	{#snippet children(datum)}
 		{@const key1 = {}}
 		{@const key2 = {}}
-		<div class="gap-gutter flex flex-col">
+		<div class="gap-gap flex flex-col">
 			<h1 class="font-bold">{datum.name}</h1>
 			<h2>Multi-switch</h2>
 			<menu class="switch {datum.class}" use:ripple>

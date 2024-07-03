@@ -46,7 +46,7 @@
 				<h4>
 					<button
 						{...triggerAttributes}
-						class="aria-[expanded=true]:text-primary gap-input-gutter group/button duration-fast hover:text-primary flex cursor-pointer flex-row items-center font-semibold transition-all"
+						class="aria-[expanded=true]:text-primary gap-input-gap group/button duration-fast hover:text-primary flex cursor-pointer flex-row items-center font-semibold transition-all"
 					>
 						{$form.translations[$page.data.lang].title}
 						<div class="button compact aspect-square rounded-full text-sm"><Wrench /></div>
@@ -97,7 +97,7 @@
 			</button>
 		</DescriptorFormDialog>
 	{/snippet}
-	<ul class="gap-gutter flex flex-row flex-wrap">
+	<ul class="gap-gap flex flex-row flex-wrap">
 		{#each projectInterventionForms as projectInterventionFormData, i (projectInterventionFormData.id)}
 			<li>
 				<ProjectIntervention {projectInterventionFormData} {projectInterventionsForm} />

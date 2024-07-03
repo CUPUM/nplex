@@ -23,7 +23,7 @@
 		</p>
 	{/snippet}
 	<form id={$formId} class="sr-only" use:enhance method="POST"></form>
-	<ul class="gap-gutter flex flex-row flex-wrap">
+	<ul class="gap-gap flex flex-row flex-wrap">
 		<li>
 			<ProjectTypeCreate data={data.projectTypeCreateForm} />
 		</li>

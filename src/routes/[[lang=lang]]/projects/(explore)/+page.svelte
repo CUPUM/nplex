@@ -20,7 +20,7 @@
 	<ProjectsFilters {...filtersForm} lists={data.lists} />
 	<section class="gap-lg flex flex-1 flex-col">
 		<ul
-			class="gap-gutter flex flex-1 grid-flow-dense grid-cols-[repeat(auto-fill,minmax(var(--width-xs),1fr))] flex-col place-content-start group-data-[view-mode=masonry]/explore:grid"
+			class="gap-gap flex flex-1 grid-flow-dense grid-cols-[repeat(auto-fill,minmax(var(--width-xs),1fr))] flex-col place-content-start group-data-[view-mode=masonry]/explore:grid"
 		>
 			{#each data.result as project, i (project.id)}
 				{@const rowspan = 2 + Math.round(Math.random() * 2)}
@@ -42,7 +42,7 @@
 				</li>
 			{/each}
 		</ul>
-		<menu class="gap-input-group-gutter flex flex-row self-center">
+		<menu class="gap-input-group-gap flex flex-row self-center">
 			<button
 				disabled
 				type="submit"

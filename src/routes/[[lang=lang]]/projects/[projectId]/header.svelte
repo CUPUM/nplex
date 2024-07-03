@@ -13,7 +13,7 @@
 	in:projectCardCrossfade.receive|global={{ key: data.project.id }}
 >
 	<hgroup
-		class="px-padding min-h-main-full-height pb-sticky-top flex w-full max-w-xl flex-col justify-center self-center"
+		class="px-padding min-h-main-full-height pb-sticky-top max-w-main flex w-full flex-col justify-center self-center"
 	>
 		<h1 class="text-biggest font-bold">
 			<OptionalText text={data.project.title} fallback={m.project_untitled()}>
@@ -25,7 +25,7 @@
 						separator=""
 						delay="calc(var(--i) * 10ms)"
 						easing="var(--transition-timing-function-out)"
-						clipPath={{ start: 'inset(0 0 -0.15em 0)', end: 'inset(0 0 -0.25em 0)' }}
+						clipPath={{ start: 'inset(0 -0.15em)', end: 'inset(0 -0.25em)' }}
 					/>
 				{/snippet}
 			</OptionalText>

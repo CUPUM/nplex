@@ -19,8 +19,8 @@
 	});
 </script>
 
-<form method="POST" use:enhance autocomplete="off" class="gap-card-gutter flex flex-col">
-	<h1 class="mb-card-gutter text-xl font-semibold">
+<form method="POST" use:enhance autocomplete="off" class="gap-gap flex flex-col">
+	<h1 class="mb-gap text-xl font-semibold">
 		{m.signup_create_account()}
 	</h1>
 	<Field>
@@ -98,7 +98,7 @@
 		{m.signup()}
 	</button>
 </form>
-<nav class="gap-input-group-gutter flex flex-row flex-wrap justify-between text-sm">
+<nav class="gap-input-group-gap flex flex-row flex-wrap justify-between text-sm">
 	<a class="button button-ghost" {...linkAttributes('/login')}>
 		<LogIn />
 		{m.auth_login_prompt()}

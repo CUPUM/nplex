@@ -18,7 +18,7 @@
 
 <div class="flex grow-1 flex-row">
 	<section
-		class="gap-gutter p-gutter top-sticky-top w-sidebar-width sticky flex flex-col self-start text-sm"
+		class="gap-gap p-gap top-sticky-top w-sidebar-width sticky flex flex-col self-start text-sm"
 	>
 		<nav class="flex flex-col">
 			{#each components as c}
@@ -35,7 +35,7 @@
 			<fieldset class="p-sm bg-card flex flex-col rounded-md">
 				{#each Object.entries(SIZE_MODS) as [key, value]}
 					<label
-						class="gap-input-group-gutter py-xs px-sm has-checked:bg-base flex cursor-pointer flex-row rounded-full has-checked:font-bold"
+						class="gap-input-group-gap py-xs px-sm has-checked:bg-base flex cursor-pointer flex-row rounded-full has-checked:font-bold"
 					>
 						<input type="radio" {value} bind:group={options.sizeMod} />
 						{key}

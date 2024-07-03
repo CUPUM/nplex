@@ -35,7 +35,7 @@
 		font-size: var(--font-size-sm);
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-		gap: var(--spacing-gutter);
+		gap: var(--spacing-gap);
 		width: 100%;
 		padding: 0 2rem 3rem 2rem;
 	}
