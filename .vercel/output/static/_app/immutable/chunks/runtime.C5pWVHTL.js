@@ -1,0 +1,1 @@
+const u="fr",r=["en","fr"];let n=()=>u;const s=a=>{typeof a=="function"?n=g(a):n=g(()=>a)};function g(a){return()=>{const e=a();if(!t(e))throw new Error("languageTag() didn't return a valid language tag. Check your setLanguageTag call");return e}}function t(a){return r.includes(a)}export{r as a,s as b,t as i,n as l,u as s};

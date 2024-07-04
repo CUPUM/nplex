@@ -1,0 +1,1 @@
+import"../chunks/disclose-version.Bg9kRutz.js";import{a as e,t as p}from"../chunks/template.CYbmh4h0.js";var s=p('<section class="nplex-1pvotb7"><p class="text dimmest sm">To come</p></section>');function n(t){var o=s();e(t,o)}export{n as component};

@@ -1,0 +1,1 @@
+import{Q as r,f as e,e as c,R as f,c as i,T as l,g as u,V as _}from"./runtime.DjgYXsSk.js";function g(){const s=c,n=s.l.u;n&&(n.b.length&&r(()=>{a(s),f(n.b)}),e(()=>{const o=i(()=>n.m.map(l));return()=>{for(const t of o)typeof t=="function"&&t()}}),n.a.length&&e(()=>{a(s),f(n.a)}))}function a(s){if(s.l.s)for(const n of s.l.s)u(n);_(s.s)}export{g as i};

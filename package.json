@@ -104,11 +104,12 @@
 		"remark-extract-toc": "^1.1.0",
 		"sass": "^1.77.6",
 		"sharp": "^0.33.4",
-		"svelte": "5.0.0-next.172",
+		"svelte": "5.0.0-next.173",
 		"svelte-check": "^3.8.4",
 		"svelte-markdoc-preprocess": "^2.0.0",
 		"svelte-sequential-preprocessor": "^2.0.1",
 		"sveltekit-superforms": "2.14.0",
+		"tailwindcss": "4.0.0-alpha.16",
 		"tslib": "^2.6.3",
 		"tsx": "^4.16.2",
 		"type-fest": "^4.21.0",
@@ -140,8 +141,7 @@
 		"oslo": "^1.2.1",
 		"sveltekit-flash-message": "^2.4.4",
 		"tailwind-merge": "^2.3.0",
-		"tailwindcss": "4.0.0-alpha.16",
 		"vite-plugin-watch": "^0.3.1",
-		"ws": "^8.17.1"
+		"ws": "^8.18.0"
 	}
 }

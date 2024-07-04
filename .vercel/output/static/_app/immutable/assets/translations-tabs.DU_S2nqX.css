@@ -1,0 +1,1 @@
+@layer components{.translation-tab.nplex-ev3syf{opacity:1;gap:1em;display:flex;flex-direction:column;transition:all var(--transition-duration-slow) var(--transition-timing-function-out)}.translation-tab[aria-expanded=false].nplex-ev3syf{visibility:collapse;position:absolute;width:0;height:0;opacity:0;pointer-events:none;scale:.96;transition:none}}

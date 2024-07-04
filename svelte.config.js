@@ -24,6 +24,7 @@ const config = {
 			$content: 'src/content',
 		},
 		prerender: {
+			entries: ['/fr', '/en'],
 			handleHttpError: (details) => {
 				if (details.path.endsWith('.mdx')) {
 					return 'warn';

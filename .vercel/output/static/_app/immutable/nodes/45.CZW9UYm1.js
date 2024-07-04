@@ -1,0 +1,1 @@
+import"../chunks/disclose-version.Bg9kRutz.js";import{a as p,t as a}from"../chunks/template.CYbmh4h0.js";var r=a("<h1>Project collection</h1>");function m(o,e){var t=r();p(o,t)}export{m as component};
