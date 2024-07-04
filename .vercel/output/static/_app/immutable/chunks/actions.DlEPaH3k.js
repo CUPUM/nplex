@@ -1,1 +1,0 @@
-import{A as a,c as n,B as i,V as o}from"./runtime.DjgYXsSk.js";function m(c,e,f){a(()=>{var r=n(()=>e(c,f==null?void 0:f())||{});if(f&&(r!=null&&r.update)){var s=!1;i(()=>{var t=f();o(t),s&&r.update(t)}),s=!0}if(r!=null&&r.destroy)return()=>r.destroy()})}export{m as a};

@@ -1,1 +1,0 @@
-import{S as e}from"../chunks/constants.BnggNYse.js";import{r as o}from"../chunks/index.De_1-CT6.js";const t=async r=>{o(e.TEMPORARY_REDIRECT,"/playground/components/button")},l=Object.freeze(Object.defineProperty({__proto__:null,load:t},Symbol.toStringTag,{value:"Module"}));export{l as universal};
