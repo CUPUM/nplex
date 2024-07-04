@@ -9,7 +9,7 @@ import { render } from 'svelte/server';
 export const mail = createTransport({
 	host: EMAIL_HOST,
 	port: +EMAIL_PORT,
-	secure: true,
+	secure: +EMAIL_PORT === 465,
 	auth: {
 		user: EMAIL_USER,
 		pass: EMAIL_PASSWORD,
