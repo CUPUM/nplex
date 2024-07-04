@@ -50,7 +50,7 @@
 	>
 		<div
 			class={cn(
-				'bg-popover border-dim leading-sm [:where(&_hr)]:border-dim p-popover-padding [:where(&_hr)]:-mx-popover-padding rounded-lg border text-sm shadow-lg [:has(>header:first-child)]:pt-[calc(var(--spacing-popover-padding)-1em)] [:where(&_hr)]:my-[calc(var(--spacing-popover-padding)-1.5em)]',
+				'bg-popover border-dim leading-sm [:where(&_hr)]:border-dim p-section-padding [:where(&_hr)]:-mx-section-padding rounded-lg border text-sm shadow-lg [:has(>header:first-child)]:pt-[calc(var(--spacing-section-padding)-1em)] [:where(&_hr)]:my-[calc(var(--spacing-section-padding)-1.5em)]',
 				className
 			)}
 			{style}
@@ -76,11 +76,11 @@
 						</section>
 					{/if}
 				</header>
-				<hr class="mb-popover-padding" />
+				<hr class="mb-section-padding" />
 			{/if}
 			{@render children?.(dialog)}
 			{#if actions}
-				<hr class="mt-popover-padding" />
+				<hr class="mt-section-padding" />
 				<menu
 					class="justify-content-start gap-input-group-gap sticky bottom-0 flex flex-row-reverse bg-inherit"
 				>

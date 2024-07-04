@@ -94,7 +94,7 @@
 		--button-border-width: var(--border-width-input);
 		--button-color: var(--text-color-input);
 		--button-background: transparent;
-		--button-border-color: var(--border-color);
+		--button-border-color: var(--border-color-base);
 		--button-icon-color: currentColor;
 		--button-background-inset: 0.4em;
 		--button-hover-color: var(--text-color-input-accent);

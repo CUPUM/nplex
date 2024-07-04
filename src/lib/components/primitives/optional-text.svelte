@@ -17,18 +17,18 @@
 	} & HTMLAttributes<HTMLSpanElement> = $props();
 </script>
 
-{#snippet renderer(text: string)}
+{#snippet _render(text: string)}
 	{#if render}
 		{@render render(text)}
 	{:else}
-		{@html text}
+		{text}
 	{/if}
 {/snippet}
 
 {#if text}
-	{@render renderer(text)}
+	{@render _render(text)}
 {:else}
 	<span class={cn('opacity-soft font-thin italic', className)} {...spanProps}>
-		{@render renderer(fallback ?? m.not_defined())}
+		{@render _render(fallback ?? m.not_defined())}
 	</span>
 {/if}

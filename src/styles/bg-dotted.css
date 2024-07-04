@@ -1,0 +1,8 @@
+.bg-dotted {
+	--tw-gradient-from-position: var(--border-width-lg);
+	--tw-gradient-from: currentColor;
+	--tw-gradient-to: transparent;
+	background-image: radial-gradient(var(--tw-gradient-from) calc(0.5 * var(--tw-gradient-from-position)), var(--tw-gradient-to) 0);
+	background-repeat: repeat;
+	background-size: var(--spacing-md) var(--spacing-md);
+}

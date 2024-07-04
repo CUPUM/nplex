@@ -30,7 +30,7 @@
 		{/if}
 		<div
 			data-mode={MODES.DARK}
-			class="p-card-padding pt-2xl text-base-dim group-hover/card:text-base-accent rounded-inherit after after:from-overlay after:rounded-inherit after:opacity-soft after:duraiton-medium relative flex flex-col transition-all after:absolute after:inset-0 after:bg-gradient-to-t after:bg-[0px_100px] after:bg-no-repeat after:transition-all after:ease-out group-hover/card:after:bg-[0px_0px] group-hover/card:after:opacity-100"
+			class="p-card-padding pt-2xl text-base-dim group-hover/card:text-base-accent rounded-inherit after:from-overlay after:rounded-inherit after:opacity-soft after:duraiton-medium relative flex flex-col transition-all after:absolute after:inset-0 after:bg-gradient-to-t after:bg-[0px_100px] after:bg-no-repeat after:transition-all after:ease-out group-hover/card:after:bg-[0px_0px] group-hover/card:after:opacity-100"
 		>
 			<div class="pointer-events-none z-1">
 				<menu

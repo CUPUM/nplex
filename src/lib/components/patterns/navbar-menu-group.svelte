@@ -15,7 +15,7 @@
 
 <menu
 	class={cn(
-		'p-popover-padding bg-popover gap-padding relative flex flex-col rounded-lg text-base',
+		'p-section-padding bg-popover gap-padding relative flex flex-col rounded-lg text-base',
 		className
 	)}
 	in:fly|global={{ x: 10, y: 10, duration: 1250, easing: quadOut }}

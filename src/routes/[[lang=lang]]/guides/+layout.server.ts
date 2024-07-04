@@ -1,10 +1,11 @@
 import { guideMetadataSchema } from '$lib/crud/validation/content';
 import { z } from 'zod';
 
-export const prerender = true;
+export const prerender = 'auto';
 
 export const load = async (event) => {
 	const contents = import.meta.glob('$content/guides/**/*.mdx', { eager: true });
+
 	const guides = Object.keys(contents).reduce<
 		Array<z.infer<typeof guideMetadataSchema> & { slug: string }>
 	>((acc, path) => {
@@ -18,7 +19,10 @@ export const load = async (event) => {
 		}
 		return acc;
 	}, []);
+
+	const featured = guides.filter((guide) => guide.sticky);
 	return {
 		guides,
+		featured,
 	};
 };

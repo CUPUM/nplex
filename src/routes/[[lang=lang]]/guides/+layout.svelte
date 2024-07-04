@@ -1,32 +1,28 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import DottedBackground from '$lib/components/primitives/dotted-background.svelte';
-	import StaggerText from '$lib/components/primitives/stagger-text.svelte';
+	import OptionalText from '$lib/components/primitives/optional-text.svelte';
 	import { withLang } from '$lib/i18n/location';
 
 	let { data, children } = $props();
 </script>
 
 {@render children()}
-<header
-	class="p-padding flex min-h-[calc(var(--spacing-main-full-height)/2-var(--spacing-navbar-height))] flex-col items-center justify-center"
->
-	<h1 class="text-biggest text-base-accent max-w-main w-full font-bold">
-		<StaggerText
-			text={m.guides()}
-			translate="0 1em"
-			separator=""
-			clipPath={{ start: 'inset(0em)', end: 'inset(-0.25em)' }}
-		/>
-	</h1>
-</header>
 <nav
-	class="gap-padding py-xl relative flex flex-row overflow-x-auto px-[max(var(--spacing-padding),50%-var(--width-xl)/2)]"
+	class="gap-padding py-xl no-scrollbar mt-xl bg-dotted from-current/softer relative flex flex-row overflow-x-auto px-[max(var(--spacing-padding),50%-var(--width-main)/2)]"
 >
-	<DottedBackground class="opacity-dimmest bg-center" />
 	{#each data.guides as guide, i (guide.slug)}
-		<a class="bg-card p-lg aspect-[2/3] w-sm rounded-lg" href={withLang(`/guides/${guide.slug}`)}>
-			{@html guide.title}
+		<a
+			class="p-lg bg-base border-base/softer rounded-section group/card hover:bg-card duration-fast relative aspect-[3/2] w-sm max-w-full flex-none border transition-all ease-out"
+			href={withLang(`/guides/${guide.slug}`)}
+		>
+			<div class="flex size-full flex-col gap-[1em]">
+				<h1 class="text-2xl font-bold">
+					{guide.title}
+				</h1>
+				<p class="opacity-soft leading-md">
+					<OptionalText text={guide.summary} fallback={m.no_summary()} />
+				</p>
+			</div>
 		</a>
 	{/each}
 </nav>

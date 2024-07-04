@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import DottedBackground from '$lib/components/primitives/dotted-background.svelte';
 	import { imageSrc } from '$lib/storage/media/url';
 	import type { PageData } from './$types';
 
@@ -8,7 +7,6 @@
 </script>
 
 <section class="h-main-full-height pt-lg relative z-[0] flex flex-col items-stretch">
-	<DottedBackground class="opacity-softer bg-center" />
 	<header class="px-padding top-sticky-top z-front sticky flex w-full flex-col">
 		<hgroup class="prose prose-block max-w-main w-full self-center">
 			<h2>{m.project_gallery()}</h2>

@@ -3,11 +3,13 @@
 @import 'tailwindcss/preflight' layer(base);
 @import 'styles/base' layer(base);
 @import 'styles/big.css' layer(components);
+@import 'styles/bg-dotted.css' layer(components);
 @import 'styles/button.css' layer(components);
 @import 'styles/compact.css' layer(components);
 @import 'styles/fill.css' layer(components);
 @import 'styles/input.css' layer(components);
 @import 'styles/nest.css' layer(components);
+@import 'styles/no-scrollbar.css' layer(components);
 @import 'styles/prose.css' layer(components);
 @import 'styles/switch.css' layer(components);
 @import 'tailwindcss/utilities' layer(utilities);
@@ -115,7 +117,7 @@
 	--spacing-input-padding: 1.25em;
 	--spacing-input-gap: calc(var(--spacing-input-padding) / 2);
 	--spacing-input-group-gap: calc(2 * var(--outline-width-focus));
-	--spacing-popover-padding: var(--spacing-lg);
+	--spacing-section-padding: var(--spacing-lg);
 	--spacing-card-padding: var(--spacing-md);
 	--spacing-sidebar-width: 18rem;
 	--spacing-navbar-height: calc(var(--spacing-padding) + 3.5 * var(--font-size-sm) + var(--spacing-padding)); /* Define manually according to actual height. Avoids layout shifts inherent to probing size at runtime. */
@@ -133,7 +135,6 @@
 	--radius-full: calc(infinity * 1px);
 	--radius-inherit: inherit;
 	--radius-input: var(--radius-sm);
-	--radius-popover: var(--radius-md);
 	--radius-section: var(--radius-lg);
 	--radius-card: var(--radius-sm);
 
@@ -218,40 +219,28 @@
 		- Block-element color palettes are defined as --background-color-[element] and --text-color-[element] to enforce consistency in their use for backgrounds and foregrounds.
 	*/
 
-	--color-primary-soft: hsl(151, 80%, 21%);
 	--color-primary: hsl(152, 90%, 12%);
 	--color-primary-accent: hsl(155, 100%, 8%);
-	--color-on-primary-soft: hsl(52, 14%, 82%);
 	--color-on-primary: hsl(52, 15%, 89%);
 	--color-on-primary-accent: hsl(52, 16%, 96%);
-	--color-award-soft: hsl(47.6, 100%, 69.6%);
 	--color-award: hsl(48.1, 93.7%, 49.4%);
 	--color-award-accent: hsl(45.3, 100%, 36.9%);
-	--color-on-award-soft: white;
 	--color-on-award: white;
 	--color-on-award-accent: white;
-	--color-like-soft: pink;
 	--color-like: hotpink;
 	--color-like-accent: deeppink;
-	--color-on-like-soft: white;
 	--color-on-like: white;
 	--color-on-like-accent: white;
-	--color-success-soft: hsl(120, 46%, 42%);
 	--color-success: hsl(120, 90%, 25%);
 	--color-success-accent: hsl(120, 98%, 14%);
-	--color-on-success-soft: var(--color-on-primary-soft);
 	--color-on-success: var(--color-on-primary);
 	--color-on-success-accent: var(--color-on-primary-accent);
-	--color-error-soft: hsl(8, 72%, 50%);
 	--color-error: hsl(7, 85%, 36%);
 	--color-error-accent: hsl(6, 96%, 20%);
-	--color-on-error-soft: hsl(30, 20%, 82%);
 	--color-on-error: hsl(25, 40%, 92%);
 	--color-on-error-accent: hsl(20, 60%, 98%);
-	--color-checked-soft: var(--text-color-base);
 	--color-checked: var(--text-color-base-accent);
 	--color-checked-accent: var(--text-color-pure);
-	--color-on-checked-soft: var(--background-color-base);
 	--color-on-checked: var(--background-color-card);
 	--color-on-checked-accent: var(--background-color-card-accent);
 
@@ -284,8 +273,8 @@
 	--outline-color-error: color-mix(in srgb, var(--color-error-soft) 90%, transparent);
 	--outline-color-success: color-mix(in srgb, var(--color-success-soft) 90%, transparent);
 
-	--border-color: color-mix(in srgb, var(--text-color-base) 20%, transparent);
-	--border-color-accent: color-mix(in srgb, var(--text-color-base) 35%, transparent);
+	--border-color-base: color-mix(in srgb, var(--text-color-base) 20%, transparent);
+	--border-color-base-accent: color-mix(in srgb, var(--text-color-base) 35%, transparent);
 	--border-color-error: color-mix(in srgb, var(--color-error) 20%, transparent);
 	--border-color-error-accent: color-mix(in srgb, var(--color-error) 35%, transparent);
 	--border-color-success: color-mix(in srgb, var(--color-success) 20%, transparent);

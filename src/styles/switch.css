@@ -73,8 +73,8 @@
 		--switch-thumb-background: var(--background-color-input-accent);
 		--switch-color: var(--text-color-input-dim);
 		--switch-background: transparent;
-		--switch-border-color: var(--border-color-dim);
-		--switch-hover-border-color: var(--border-color);
+		--switch-border-color: color-mix(in srgb, var(--border-color-base) var(--opacity-soft), transparent);
+		--switch-hover-border-color: var(--border-color-base);
 		--switch-hover-color: var(--text-color-input);
 		--switch-focused-border-color: transparent;
 		--switch-item-icon-color: currentColor;

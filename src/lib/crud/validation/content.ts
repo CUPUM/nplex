@@ -24,7 +24,7 @@ export const aboutMetadataSchema = z.object({
 
 export const guideMetadataSchema = headingsMetadataSchema.extend({
 	title: z.string(),
-	suummary: z.string().optional(),
+	summary: z.string().optional(),
 	sticky: z.boolean().optional(),
 	published: z.string().pipe(z.coerce.date()).optional(),
 });

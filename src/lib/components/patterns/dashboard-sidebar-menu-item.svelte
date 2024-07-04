@@ -23,7 +23,7 @@
 >
 	{#if restProps['aria-current']}
 		<div
-			class="w-outline-focus bg-primary -right-popover-padding absolute top-[.5em] bottom-[.5em] rounded-full"
+			class="w-outline-focus bg-primary -right-section-padding absolute top-[.5em] bottom-[.5em] rounded-full"
 			in:dashboardSidebarMenuThumbCrossfade.receive|global={{ key: menuCtx.thumbKey }}
 			out:dashboardSidebarMenuThumbCrossfade.send={{ key: menuCtx.thumbKey }}
 		></div>

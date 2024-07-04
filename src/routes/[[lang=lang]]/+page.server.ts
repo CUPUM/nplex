@@ -6,6 +6,10 @@ import { organizations, projects } from '$lib/db/schema/public.server';
 import { redirect } from '@sveltejs/kit';
 import { desc } from 'drizzle-orm';
 
+// export function entries() {
+// 	return availableLanguageTags.map((lang) => ({ lang }));
+// }
+
 export const load = async () => {
 	const featuredProjects = await db
 		.select()

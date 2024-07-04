@@ -71,7 +71,7 @@
 	&:is(.input-bordered, .input-dashed) {
 		--input-color: var(--text-color-input-dim);
 		--input-background: transparent;
-		--input-border-color: var(--border-color);
+		--input-border-color: var(--border-color-base);
 		--input-border-width: var(--border-width-input);
 		--input-icon-color: currentColor;
 		--input-hover-color: var(--text-color-input);
@@ -82,7 +82,7 @@
 		--input-focused-border-color: transparent;
 		--input-disabled-color: var(--text-color-input-dim);
 		--input-disabled-background: ;
-		--input-disabled-border-color: var(--border-color-dim);
+		--input-disabled-border-color: color-mix(in srgb, var(--border-color-base) var(--opacity-soft), transparent);
 		--input-busy-color: ;
 		--input-busy-background: ;
 		--input-busy-border-color: transparent;
