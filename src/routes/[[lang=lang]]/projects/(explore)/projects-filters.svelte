@@ -22,7 +22,7 @@
 		formRef?.requestSubmit();
 	}}
 	method="GET"
-	class="w-sidebar-width pr-gap gap-gap top-sticky-top sticky flex max-h-full flex-col items-stretch self-start text-sm"
+	class="w-sidebar-width pr-gap pb-padding gap-gap top-sticky-top max-h-main-full-height sticky flex flex-col items-stretch self-start overflow-scroll text-sm"
 >
 	<ProjectsFiltersSearch {...form} />
 	<ProjectsFiltersTypes {...form} {lists} />

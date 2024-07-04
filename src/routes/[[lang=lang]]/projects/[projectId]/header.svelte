@@ -10,7 +10,7 @@
 
 <header
 	class="flex flex-col items-stretch"
-	in:projectCardCrossfade.receive|global={{ key: data.project.id }}
+	in:projectCardCrossfade.receive|global={{ key: data.project.id, delay: 0 }}
 >
 	<hgroup
 		class="px-padding min-h-main-full-height pb-sticky-top max-w-main flex w-full flex-col justify-center self-center"

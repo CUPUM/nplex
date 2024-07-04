@@ -1,11 +1,11 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
+	import ProjectCard from '$lib/components/patterns/project-card.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { projectCardCrossfade } from '$lib/motion/presets';
 	import { RefreshCw } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
-	import ProjectCard from './project-card.svelte';
 	import ProjectsFilters from './projects-filters.svelte';
 
 	let { data } = $props();
@@ -36,7 +36,7 @@
 						key: project.id,
 						delay: i * 25,
 					}}
-					out:projectCardCrossfade.send|global={{ key: project.id }}
+					out:projectCardCrossfade.send|global={{ key: project.id, delay: 0 }}
 				>
 					<ProjectCard {project} />
 				</li>

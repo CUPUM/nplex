@@ -27,7 +27,6 @@ import {
 	projectsExemplarityMarkers,
 	projectsInterventions,
 	projectsTranslations,
-	projectsTranslationsTs,
 	projectsUsers,
 } from '$lib/db/schema/public.server';
 import type { ServerLoadEvent } from '@sveltejs/kit';
@@ -80,7 +79,7 @@ export function matchesProjectsFilters(filters: z.infer<typeof projectsFiltersSc
 						.where(
 							and(
 								eq(projects.id, projectsTranslations.id),
-								sql`${projectsTranslationsTs(projectsTranslations[LANG_COLUMN_NAME], projectsTranslations.title, projectsTranslations.summary)} @@ to_tsquery(${langToRegconfig(projectsTranslations[LANG_COLUMN_NAME])}, ${filters.search})`
+								sql`${projectsTranslations.ts} @@ to_tsquery(${langToRegconfig(projectsTranslations[LANG_COLUMN_NAME])}, ${filters.search})`
 							)
 						)
 				)
@@ -237,8 +236,8 @@ export function getProjectExemplarityMarkersList(event: ServerLoadEvent) {
 	return joinTranslation(
 		db
 			.select({
-				...getColumns(projectExemplarityMarkers),
 				...getColumns(projectExemplarityMarkersTranslations),
+				...getColumns(projectExemplarityMarkers),
 			})
 			.from(projectExemplarityMarkers)
 			.$dynamic(),

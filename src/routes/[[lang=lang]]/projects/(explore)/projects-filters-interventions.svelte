@@ -19,13 +19,13 @@
 	{#snippet legend()}
 		{m.project_interventions()}
 	{/snippet}
-	<ul class="gap-input-group-gap compact flex flex-col items-start">
+	<ul class="gap-input-group-gap compact flex max-w-full flex-col items-start">
 		{#await lists.interventionsByCategories}
 			...
 		{:then awaitedProjectInterventionsByCategories}
 			{#each awaitedProjectInterventionsByCategories as category}
 				{#each category.interventions as intervention}
-					<label class="button button-dashed rounded-full" use:ripple>
+					<label class="button button-dashed overflow-hidden text-ellipsis rounded-full" use:ripple>
 						{intervention.title}
 						<input
 							type="checkbox"

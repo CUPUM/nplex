@@ -28,7 +28,7 @@
 	{href}
 	{...buttonProps}
 	class={cn(
-		'hover:text-primary-accent not-data-logo:aria-[current]:text-on-checked not-data-logo:aria-[current]:bg-checked not-data-logo:hover:bg-primary/10 px-input-padding h-input gap-input-gap user-select-none rounded-input duration-medium after:rounded-inherit *:[.lucide-icon]:stroke-lg relative flex flex-row items-center justify-center text-base font-bold transition-all ease-out after:inset-0 after:-z-1 after:backdrop-blur-md not-data-logo:after:absolute aria-[current]-has-data-[thumb]:bg-transparent data-logo:px-[var(--outline-width-focus)] data-logo:[--ripple-color:transparent] data-[square=true]:aspect-square data-[square=true]:px-0 *:[.lucide-icon]:w-[input-icon]',
+		'hover:text-primary-accent not-data-logo:aria-[current]:text-on-checked not-data-logo:aria-[current]:bg-checked not-data-logo:hover:bg-primary/10 px-input-padding h-input gap-input-gap user-select-none rounded-input duration-medium after:rounded-inherit *:[.lucide-icon]:stroke-lg relative flex flex-row items-center justify-center text-base font-bold transition-all ease-out after:inset-0 after:-z-1 after:backdrop-blur-md not-data-logo:after:absolute aria-[current]-has-data-[thumb]:bg-transparent data-logo:px-[calc(0.5*var(--spacing-input-padding))] data-logo:[--ripple-color:transparent] data-[square=true]:aspect-square data-[square=true]:px-0 *:[.lucide-icon]:w-[input-icon]',
 		className
 	)}
 	use:ripple

@@ -23,7 +23,10 @@
 			...
 		{:then awaitedProjectTypes}
 			{#each awaitedProjectTypes as type}
-				<label class="button button-dashed compact rounded-full" use:ripple>
+				<label
+					class="button button-dashed compact overflow-hidden text-ellipsis rounded-full"
+					use:ripple
+				>
 					{type.title}
 					<input
 						type="checkbox"
