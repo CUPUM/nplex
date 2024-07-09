@@ -7,6 +7,7 @@ import {
 	organizations,
 	organizationsTranslations,
 	projects,
+	projectsImages,
 	projectsTranslations,
 } from '$lib/db/schema/public.server';
 import { redirect } from '@sveltejs/kit';
@@ -22,9 +23,11 @@ export const load = async (event) => {
 		db
 			.select({
 				title: projectsTranslations.title,
+				bannerStorageName: projectsImages.storageName,
 				...getColumns(projects),
 			})
 			.from(projects)
+			.leftJoin(projectsImages, eq(projects.bannerId, projectsImages.id))
 			.limit(15)
 			.orderBy(desc(projects.createdAt))
 			.$dynamic(),
