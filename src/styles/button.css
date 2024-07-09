@@ -209,7 +209,7 @@
 	padding-right: var(--spacing-input-padding);
 	height: var(--spacing-input);
 	min-height: var(--spacing-input);
-	min-width: fit-content;
+	min-width: 0;
 	font-weight: var(--font-weight-semibold);
 	border-radius: var(--button-radius);
 	white-space: nowrap;

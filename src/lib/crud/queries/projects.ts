@@ -30,41 +30,19 @@ import {
 	projectsUsers,
 } from '$lib/db/schema/public.server';
 import type { ServerLoadEvent } from '@sveltejs/kit';
-import { and, eq, exists, inArray, or, sql } from 'drizzle-orm';
-import { $boolean, coalesce, getColumns } from 'drizzle-orm-helpers';
+import { and, asc, eq, exists, inArray, or, sql, type SQLWrapper } from 'drizzle-orm';
+import { $boolean, $true, coalesce, getColumns } from 'drizzle-orm-helpers';
 import {
 	$emptyJsonArray,
 	jsonAgg,
 	jsonAggBuildObject,
 	jsonBuildObject,
 } from 'drizzle-orm-helpers/pg';
+import type { PgSelect } from 'drizzle-orm/pg-core';
 import type { User } from 'lucia';
 import type { z } from 'zod';
 import type { projectsFiltersSchema } from '../validation/projects';
 import { joinTranslation } from './i18n';
-
-export function isProjectCreator(user: Pick<User, 'id'>) {
-	return eq(projects.createdById, user.id);
-}
-
-/**
- * Filter for projects editable by user based on role, authorship, and collaboration status. (add
- * more conditions if needed).
- *
- * @todo Replace with RLS.
- */
-export function canEditProject(user: User) {
-	return or(
-		$boolean(user.role === ROLES.ADMIN),
-		isProjectCreator(user),
-		exists(
-			db
-				.select()
-				.from(projectsUsers)
-				.where(and(eq(projectsUsers.projectId, projects.id), eq(projectsUsers.userId, user.id)))
-		)
-	);
-}
 
 /**
  * Filter clauses based on projectsFiltersSchema data.
@@ -94,6 +72,55 @@ export function matchesProjectsFilters(filters: z.infer<typeof projectsFiltersSc
 	);
 }
 
+/**
+ * Apply filters, pagination, and ordering to a project query.
+ */
+export function filterProjects<TSelect extends PgSelect>(
+	select: TSelect,
+	filters: z.infer<typeof projectsFiltersSchema>
+) {
+	return select.where(matchesProjectsFilters(filters)).orderBy();
+}
+
+/**
+ * Check if a user is the creator of project(s)
+ */
+export function isProjectCreator(user: Pick<User, 'id'>) {
+	return eq(projects.createdById, user.id);
+}
+
+/**
+ * Check if a user is listed as an editor for project(s)
+ */
+export function isProjectEditor(user: Pick<User, 'id'>) {
+	return exists(
+		db
+			.select()
+			.from(projectsUsers)
+			.where(and(eq(projectsUsers.projectId, projects.id), eq(projectsUsers.userId, user.id)))
+	);
+}
+
+/**
+ * Filter for projects editable by user based on role, authorship, and collaboration status. (add
+ * more conditions if needed).
+ *
+ * @todo Replace with RLS.
+ */
+export function canEditProject(user: Pick<User, 'id' | 'role'>) {
+	return or($boolean(user.role === ROLES.ADMIN), isProjectCreator(user), isProjectEditor(user));
+}
+
+/**
+ * Check if project(s) are published and publicly viewable.
+ */
+export function isPublicProject(project: SQLWrapper) {
+	return $true;
+}
+
+/**
+ * Get the complete list, localized, of project types.
+ */
 export function getProjectTypesList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(
@@ -110,6 +137,9 @@ export function getProjectTypesList(event: ServerLoadEvent) {
 	);
 }
 
+/**
+ * Get the complete list, localized, of project site ownerships.
+ */
 export function getProjectSiteOwnershipsList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(
@@ -126,6 +156,9 @@ export function getProjectSiteOwnershipsList(event: ServerLoadEvent) {
 	);
 }
 
+/**
+ * Get the complete list, localized, of project interventions.
+ */
 export function getProjectInterventionsList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(
@@ -146,6 +179,7 @@ export function getProjectInterventionsList(event: ServerLoadEvent) {
 					...Object.values(getColumns(projectInterventions)),
 				]
 			)
+			.orderBy(asc(projectInterventionsTranslations.title))
 			.$dynamic(),
 		projectInterventionsTranslations,
 		eq(projectInterventions.id, projectInterventionsTranslations.id),
@@ -153,6 +187,9 @@ export function getProjectInterventionsList(event: ServerLoadEvent) {
 	);
 }
 
+/**
+ * Get the complete list, localized, of project interventions categories.
+ */
 export function getProjectInterventionCategoriesList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(
@@ -169,6 +206,9 @@ export function getProjectInterventionCategoriesList(event: ServerLoadEvent) {
 	);
 }
 
+/**
+ * Get the complete list, localized, of project interventions organized by their categories.
+ */
 export function getProjectInterventionsByCategoriesList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	const interventions = getProjectInterventionsList(event).as('interventions');
@@ -199,6 +239,9 @@ export function getProjectInterventionsByCategoriesList(event: ServerLoadEvent) 
 		);
 }
 
+/**
+ * Get the complete list, localized, of project implantation types.
+ */
 export function getProjectImplantationTypesList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(
@@ -215,22 +258,9 @@ export function getProjectImplantationTypesList(event: ServerLoadEvent) {
 	);
 }
 
-export function getProjectExemplarityCategoriesList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
-	return joinTranslation(
-		db
-			.select({
-				...getColumns(projectExemplarityCategoriesTranslations),
-				...getColumns(projectExemplarityCategories),
-			})
-			.from(projectExemplarityCategories)
-			.$dynamic(),
-		projectExemplarityCategoriesTranslations,
-		eq(projectExemplarityCategories.id, projectExemplarityCategoriesTranslations.id),
-		event
-	);
-}
-
+/**
+ * Get the complete list, localized, of project exemplarity markers.
+ */
 export function getProjectExemplarityMarkersList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(
@@ -247,6 +277,28 @@ export function getProjectExemplarityMarkersList(event: ServerLoadEvent) {
 	);
 }
 
+/**
+ * Get the complete list, localized, of project exemplarity categories.
+ */
+export function getProjectExemplarityCategoriesList(event: ServerLoadEvent) {
+	event.depends(LOAD_DEPENDENCIES.LANG);
+	return joinTranslation(
+		db
+			.select({
+				...getColumns(projectExemplarityCategoriesTranslations),
+				...getColumns(projectExemplarityCategories),
+			})
+			.from(projectExemplarityCategories)
+			.$dynamic(),
+		projectExemplarityCategoriesTranslations,
+		eq(projectExemplarityCategories.id, projectExemplarityCategoriesTranslations.id),
+		event
+	);
+}
+
+/**
+ * Get the complete list, localized, of project exemplarity markers organized by their categories.
+ */
 export function getProjectExemplarityMarkersByCategoriesList(event: ServerLoadEvent) {
 	const markers = getProjectExemplarityMarkersList(event).as('markers');
 	const markersColumns = getColumns(markers);
@@ -265,6 +317,9 @@ export function getProjectExemplarityMarkersByCategoriesList(event: ServerLoadEv
 		);
 }
 
+/**
+ * Get the complete list, localized, of project image types.
+ */
 export function getProjectImageTypesList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(
@@ -281,6 +336,9 @@ export function getProjectImageTypesList(event: ServerLoadEvent) {
 	);
 }
 
+/**
+ * Get the complete list, localized, of project image temporalities.
+ */
 export function getProjectImageTemporalitiesList(event: ServerLoadEvent) {
 	event.depends(LOAD_DEPENDENCIES.LANG);
 	return joinTranslation(

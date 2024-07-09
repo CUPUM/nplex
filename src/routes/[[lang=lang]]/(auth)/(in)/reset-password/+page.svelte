@@ -3,6 +3,7 @@
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import Field from '$lib/components/primitives/field.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
+	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import { LogIn, Send, UserPlus2 } from 'lucide-svelte';
 	import { fly } from 'svelte/transition';
@@ -14,8 +15,8 @@
 	let buttonRef = $state<HTMLButtonElement>();
 </script>
 
-<form method="POST" use:enhance autocomplete="off" class="gap-gap flex flex-col">
-	<h1 class="mb-gap text-xl font-semibold">
+<form method="POST" use:enhance autocomplete="off" class="gap-sm flex flex-col">
+	<h1 class="mb-md text-xl font-bold">
 		{m.auth_reset_password_title()}
 	</h1>
 	<Field>
@@ -43,11 +44,11 @@
 	</button>
 </form>
 <nav class="gap-input-group-gap flex flex-row flex-wrap justify-between text-sm">
-	<a class="button button-ghost" {...linkAttributes('/login')}>
+	<a class="button button-ghost" {...linkAttributes('/login')} use:ripple>
 		<LogIn />
 		{m.auth_login_prompt()}
 	</a>
-	<a class="button button-ghost" {...linkAttributes('/signup')}>
+	<a class="button button-ghost" {...linkAttributes('/signup')} use:ripple>
 		<UserPlus2 />
 		{m.auth_signup_prompt()}
 	</a>

@@ -2,15 +2,24 @@
  * Helper function to debounce passed function's execution.
  */
 export function debounce<A extends unknown[], R>(fn: (...args: A) => R, timeout = 250) {
-	let timer: ReturnType<typeof setTimeout>;
+	let timer: ReturnType<typeof setTimeout> | undefined;
 	let cache: R;
 
 	function d(...args: A) {
-		clearTimeout(timer);
-		timer = setTimeout(() => {
+		if (!timer) {
 			cache = fn(...args);
-			return cache;
-		}, timeout);
+			timer = setTimeout(() => {
+				timer = undefined;
+				return cache;
+			}, timeout);
+		} else {
+			clearTimeout(timer);
+			timer = setTimeout(() => {
+				timer = undefined;
+				cache = fn(...args);
+				return cache;
+			}, timeout);
+		}
 		return cache;
 	}
 

@@ -1,16 +1,18 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { expoIn, quadOut } from 'svelte/easing';
+	import { expoIn, expoOut } from 'svelte/easing';
 	import type { HTMLMenuAttributes } from 'svelte/elements';
-	import { fly } from 'svelte/transition';
+	import { fly, type FlyParams } from 'svelte/transition';
 	import { cn } from '../utilities';
 
 	let {
 		children,
 		legend,
 		class: className,
+		intro,
+		outro,
 		...restProps
-	}: HTMLMenuAttributes & { legend?: Snippet } = $props();
+	}: HTMLMenuAttributes & { legend?: Snippet; intro?: FlyParams; outro?: FlyParams } = $props();
 </script>
 
 <menu
@@ -18,8 +20,8 @@
 		'p-section-padding bg-popover gap-padding relative flex flex-col rounded-lg text-base',
 		className
 	)}
-	in:fly|global={{ x: 10, y: 10, duration: 1250, easing: quadOut }}
-	out:fly|global={{ x: 10, y: -10, duration: 250, easing: expoIn }}
+	in:fly|global={{ x: 10, duration: 750, easing: expoOut, ...intro }}
+	out:fly|global={{ y: -10, duration: 250, easing: expoIn, ...outro }}
 	{...restProps}
 >
 	{#if legend}

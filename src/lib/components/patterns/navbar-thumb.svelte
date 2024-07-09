@@ -8,7 +8,7 @@
 	<div
 		data-thumb
 		class="rounded-inherit bg-checked absolute inset-0 -z-1"
-		in:switchThumbCrossfade.receive={{ key }}
-		out:switchThumbCrossfade.send={{ key }}
+		in:switchThumbCrossfade.receive|global={{ key }}
+		out:switchThumbCrossfade.send|global={{ key }}
 	></div>
 {/if}

@@ -2,7 +2,7 @@
 	import * as m from '$i18n/messages';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
-	import SidebarFilterGroup from '../../../../lib/components/patterns/sidebar-filter-group.svelte';
+	import SidebarGroup from '../../../../lib/components/patterns/sidebar-group.svelte';
 	import type { PageData } from './$types';
 
 	let {
@@ -15,28 +15,35 @@
 	}: ExtendedSuperFormData<PageData['filtersForm']> & Pick<PageData, 'lists'> = $props();
 </script>
 
-<SidebarFilterGroup>
-	{#snippet legend()}
-		{m.project_exemplarity_markers()}
-	{/snippet}
-	<ul class="gap-input-group-gap compact flex flex-col items-start">
-		{#await lists.exemplarityMarkersBycategories}
-			...
-		{:then awaitedMarkersByCategories}
+{#await lists.exemplarityMarkersBycategories then awaitedMarkersByCategories}
+	<SidebarGroup>
+		{#snippet legend()}
+			{m.project_exemplarity_markers()}
+		{/snippet}
+		<ul class="flex flex-col gap-[0.5em]">
 			{#each awaitedMarkersByCategories as category}
-				{#each category.markers as marker}
-					<label class="button button-dashed rounded-full" use:ripple>
-						{marker.title}
-						<input
-							type="checkbox"
-							class="sr-only"
-							name="markers"
-							value={marker.id}
-							bind:group={$form.markers}
-						/>
-					</label>
-				{/each}
+				<li>
+					<span class="px-[0.5em]">
+						{category.title}
+					</span>
+					<ul class="gap-input-group-gap compact flex flex-row flex-wrap">
+						{#each category.markers as marker}
+							<label class="button button-dashed min-w-0 justify-start rounded-full" use:ripple>
+								<span class="truncate">
+									{marker.title}
+								</span>
+								<input
+									type="checkbox"
+									class="sr-only"
+									name="markers"
+									value={marker.id}
+									bind:group={$form.markers}
+								/>
+							</label>
+						{/each}
+					</ul>
+				</li>
 			{/each}
-		{/await}
-	</ul>
-</SidebarFilterGroup>
+		</ul>
+	</SidebarGroup>
+{/await}

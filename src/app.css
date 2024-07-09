@@ -31,9 +31,9 @@
 
 	/* Text sizes */
 
-	--font-size-xs: 0.694rem;
+	--font-size-xs: 0.675rem;
 	--font-size-xs--line-height: 1.65;
-	--font-size-sm: 0.833rem;
+	--font-size-sm: 0.825rem;
 	--font-size-sm--line-height: 1.625;
 	--font-size-md: 1rem;
 	--font-size-md--line-height: 1.6;
@@ -136,7 +136,7 @@
 	--radius-inherit: inherit;
 	--radius-input: var(--radius-sm);
 	--radius-section: var(--radius-lg);
-	--radius-card: var(--radius-sm);
+	--radius-card: var(--radius-md);
 
 	/* Blurs */
 
@@ -303,6 +303,24 @@
 			transform: scale(1);
 		}
 	}
+
+	@keyframes wiggle {
+		0% {
+			rotate: 0deg;
+		}
+		10% {
+			rotate: 25deg;
+		}
+		25% {
+			rotate: -15deg;
+		}
+		50% {
+			rotate: 5deg;
+		}
+		100% {
+			rotate: 0deg;
+		}
+	}
 }
 
 [data-mode='dark'] {
@@ -323,14 +341,13 @@
 	--background-color-card-soft: hsl(62, 4%, 8%);
 	--background-color-card: hsl(240, 2%, 10%);
 	--background-color-card-accent: hsl(238, 2%, 12%);
-	--background-color-input-dim: hsla(246, 10%, 35%, 10%);
 	--background-color-input: hsla(244, 8%, 38%, 12%);
 	--background-color-input-accent: hsla(242, 6%, 41%, 14%);
 
 	--text-color-pure: white;
 	--text-color-base: hsl(45, 10%, 74%);
 	--text-color-base-accent: hsl(45, 16%, 92%);
-	--text-color-input: hsl(80, 8%, 78%);
+	--text-color-input: hsl(80, 8%, 72%);
 	--text-color-input-accent: hsl(80, 20%, 88%);
 
 	--border-color: color-mix(in srgb, var(--text-color-base) 12%, transparent);

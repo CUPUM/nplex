@@ -20,7 +20,9 @@
 	let searchRef = $state<HTMLButtonElement>();
 </script>
 
-<div class="input-group text-md rounded-full">
+<div
+	class="input-group text-md transition-width duration-medium w-full rounded-full backdrop-blur-md ease-out has-[.input:focus]:w-[calc(100vw-2*var(--spacing-padding))]"
+>
 	<Search />
 	<input
 		type="search"
@@ -28,6 +30,7 @@
 		bind:value={$form.search}
 		{...$constraints.search}
 		class="input"
+		data-sveltekit-keepfocus
 	/>
 	<div class="input-peer flex-row-reverse">
 		<button
@@ -36,6 +39,7 @@
 			bind:this={searchRef}
 			type="submit"
 			disabled={!isTainted($tainted?.search)}
+			data-sveltekit-keepfocus
 		>
 			<IconSpinner icon={ArrowRight} busy={searchRef === $submitter} />
 		</button>
@@ -47,6 +51,7 @@
 				bind:this={clearRef}
 				onclick={(e) => ($form.search = undefined)}
 				type="submit"
+				data-sveltekit-keepfocus
 			>
 				<IconSpinner icon={X} busy={clearRef === $submitter} />
 			</button>

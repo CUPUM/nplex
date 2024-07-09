@@ -13,7 +13,7 @@
 	{#snippet header()}
 		<h4>{m.presentation()}</h4>
 	{/snippet}
-	<Field class="text-md mx-auto w-full max-w-md">
+	<Field class="mx-auto w-full max-w-md">
 		{#snippet label()}
 			{m.title()}
 		{/snippet}

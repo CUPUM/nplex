@@ -219,8 +219,7 @@
 
 	.outroing {
 		animation:
-			var(--ripple-duration-outro) var(--ripple-easing-outro) var(--ripple-duration-spread) 1
-				forwards ripple-outro,
+			var(--ripple-duration-outro) var(--ripple-easing-outro) 0s 1 forwards ripple-outro,
 			var(--ripple-duration-spread) var(--ripple-easing-spread) 0s 1 forwards ripple-spread;
 	}
 

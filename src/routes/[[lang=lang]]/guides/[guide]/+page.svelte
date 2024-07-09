@@ -18,20 +18,23 @@
 		</h1>
 	</hgroup>
 </header>
-<article class="prose pb-xl mx-auto">
-	<svelte:component this={data.content} />
-</article>
-<nav
-	class="bg-base/softish gap-input-group-gap max-w-main no-scrollbar sticky bottom-0 flex w-full flex-row items-start self-center overflow-x-auto rounded-full text-sm backdrop-blur-md"
->
-	{#each data.headings as heading, i}
-		<a
-			{...linkAttributes(`#${heading.id}`)}
-			style:--i-heading={i}
-			class="button button-ghost rounded-full"
-			use:ripple
-		>
-			{heading.value}
-		</a>
-	{/each}
-</nav>
+<div class="gap-lg grid grid-cols-[1fr_min(100%,var(--width-md))_1fr] items-start">
+	<nav
+		class="p-lg top-sticky-top mt-lg bg-dotted sticky flex max-w-xs flex-col items-start from-current/10 from-[2px] bg-[size:1em_1em] bg-center text-sm font-bold"
+	>
+		{#each data.headings as heading, i}
+			{@const attributes = linkAttributes(`#${heading.id}`)}
+			<a
+				{...attributes}
+				style:--i-heading={i}
+				class="p-padding hover:text-primary-accent opacity-softish aria-[current]:text-base-accent hover:bg-input rounded-input relative block max-w-full flex-none hyphens-auto break-words"
+				use:ripple
+			>
+				{heading.value}
+			</a>
+		{/each}
+	</nav>
+	<article class="prose pb-xl">
+		<svelte:component this={data.content} />
+	</article>
+</div>

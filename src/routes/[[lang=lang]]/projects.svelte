@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
 	import ProjectCard from '$lib/components/patterns/project-card.svelte';
+	import StaggerText, { flyUpClip } from '$lib/components/primitives/stagger-text.svelte';
 	import { withLang } from '$lib/i18n/location';
 	import { ArrowRight, DraftingCompass } from 'lucide-svelte';
 	import { fly } from 'svelte/transition';
@@ -18,7 +19,7 @@
 			class="group-hover/button:text-base-accent text-2xl text-base font-bold transition-all"
 			in:fly|global={{ y: 6 }}
 		>
-			{m.recent_projects()}
+			<StaggerText text={m.recent_projects()} {...flyUpClip} />
 		</h2>
 		<div class="button button-ghost rounded-full text-sm" in:fly|global={{ x: -6 }}>
 			{m.see_more()}<ArrowRight />
@@ -37,7 +38,7 @@
 			</li>
 		{/each}
 	</ul>
-	<a href={withLang('/projects')} class="button button-cta self-center rounded-full text-sm">
+	<a href={withLang('/projects')} class="button button-cta big self-center rounded-full text-sm">
 		<DraftingCompass />
 		{m.explore()}
 		<ArrowRight />

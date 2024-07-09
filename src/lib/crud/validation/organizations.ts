@@ -6,6 +6,8 @@ import { organizationExpertisesSchema } from './organizations-descriptors';
 
 export const organizationsFiltersSchema = z.object({
 	search: z.string().optional(),
+	pageSize: z.number().optional(),
+	page: z.number().optional(),
 });
 
 export const organizationsSchema = createInsertSchema(organizations).required({ id: true });

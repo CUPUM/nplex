@@ -34,7 +34,7 @@
 	use:action
 >
 	{#if header}
-		<header class="prose prose-block pb-gap self-stretch text-sm">
+		<header class="prose prose-block pb-md self-stretch text-sm">
 			{@render header()}
 		</header>
 	{/if}

@@ -25,7 +25,7 @@ export const load = async (event) => {
 				...getColumns(projects),
 			})
 			.from(projects)
-			.limit(10)
+			.limit(15)
 			.orderBy(desc(projects.createdAt))
 			.$dynamic(),
 		projectsTranslations,
@@ -39,7 +39,7 @@ export const load = async (event) => {
 				...getColumns(organizations),
 			})
 			.from(organizations)
-			.limit(10)
+			.limit(15)
 			.orderBy(desc(organizations.createdAt))
 			.$dynamic(),
 		organizationsTranslations,

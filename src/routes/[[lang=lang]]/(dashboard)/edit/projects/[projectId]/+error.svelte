@@ -2,8 +2,8 @@
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
 	import { STATUS_CODES } from '$lib/common/constants';
-	import ButtonIconArrowLeft from '$lib/components/patterns/button-icon-arrow-left.svelte';
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
+	import { ArrowLeft } from 'lucide-svelte';
 </script>
 
 <article>
@@ -12,7 +12,7 @@
 			{m.project_not_found()}
 		</h1>
 		<a {...linkAttributes('/edit/projects')} class="button link">
-			<ButtonIconArrowLeft />
+			<ArrowLeft />
 			{m.project_not_found_browse()}
 		</a>
 	{/if}

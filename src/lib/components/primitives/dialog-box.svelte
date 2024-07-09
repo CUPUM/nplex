@@ -50,7 +50,7 @@
 	>
 		<div
 			class={cn(
-				'bg-popover border-dim leading-sm [:where(&_hr)]:border-dim p-section-padding [:where(&_hr)]:-mx-section-padding rounded-lg border text-sm shadow-lg [:has(>header:first-child)]:pt-[calc(var(--spacing-section-padding)-1em)] [:where(&_hr)]:my-[calc(var(--spacing-section-padding)-1.5em)]',
+				'bg-popover border-base/softer leading-sm [:where(&_hr)]:border-base/softer p-section-padding [:where(&_hr)]:-mx-section-padding rounded-lg border text-sm shadow-lg [:has(>header:first-child)]:pt-[calc(var(--spacing-section-padding)-1em)] [:where(&_hr)]:my-[calc(var(--spacing-section-padding)-1.5em)]',
 				className
 			)}
 			{style}

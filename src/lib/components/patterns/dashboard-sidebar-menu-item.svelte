@@ -11,19 +11,19 @@
 	}: ({ href: string } & HTMLAnchorAttributes) | ({ href?: undefined } & HTMLButtonAttributes) =
 		$props();
 
-	const menuCtx = getDashboardSidebarMenuContext(true);
+	const menuCtx = getDashboardSidebarMenuContext();
 </script>
 
 <svelte:element
 	this={href ? 'a' : 'button'}
-	class="button button-nav h-[unset] origin-right whitespace-normal py-[calc(var(--spacing-input-padding)*0.5)]"
+	class="button button-nav h-[unset] min-h-[unset] origin-right whitespace-normal py-[calc(var(--spacing-input-padding)*0.5)] *:[.lucide-icon]:mt-[0.2em] *:[.lucide-icon]:self-start"
 	{href}
 	{...restProps}
 	use:ripple
 >
-	{#if restProps['aria-current']}
+	{#if restProps['aria-current'] && menuCtx}
 		<div
-			class="w-outline-focus bg-primary -right-section-padding absolute top-[.5em] bottom-[.5em] rounded-full"
+			class="w-outline-focus bg-primary -right-card-padding absolute top-[.5em] bottom-[.5em] rounded-full"
 			in:dashboardSidebarMenuThumbCrossfade.receive|global={{ key: menuCtx.thumbKey }}
 			out:dashboardSidebarMenuThumbCrossfade.send={{ key: menuCtx.thumbKey }}
 		></div>

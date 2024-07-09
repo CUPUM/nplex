@@ -84,16 +84,17 @@
 	:not(h1, h2, h3, h4, h5, h6) a:not([class]) {
 		&::before,
 		&::after {
-			content: '\00a0';
+			content: '\202f';
 		}
 
+		position: relative;
 		color: var(--color-primary);
 		font-weight: var(--font-weight-bold);
-		border-radius: 2.5px;
+		border-radius: var(--border-width-lg);
 		background: transparent;
 		text-decoration: underline;
-		text-decoration-thickness: var(--border-width);
-		text-underline-offset: 0.3em;
+		text-decoration-thickness: var(--border-width-sm);
+		text-underline-offset: 0.25em;
 		text-decoration-color: color-mix(in srgb, currentColor var(--opacity-dimmest), transparent);
 		-webkit-box-decoration-break: clone;
 		-o-box-decoration-break: clone;

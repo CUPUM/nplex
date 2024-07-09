@@ -15,13 +15,11 @@
 		projectsViewMode: ProjectsViewMode;
 	}> = {
 		capture() {
-			console.log('capture', projectsViewMode);
 			return {
 				projectsViewMode,
 			};
 		},
 		restore(value) {
-			console.log('restore', value);
 			projectsViewMode = value.projectsViewMode;
 		},
 	};

@@ -12,11 +12,11 @@
 >
 	{#each data.guides as guide, i (guide.slug)}
 		<a
-			class="p-lg bg-base border-base/softer rounded-section group/card hover:bg-card duration-fast relative aspect-[3/2] w-sm max-w-full flex-none border transition-all ease-out"
+			class="group/card p-section-padding bg-base rounded-section group/card duration-fast hover:bg-card/soft relative aspect-[2/1] w-[50%] max-w-full min-w-sm flex-none backdrop-blur-md transition-all ease-out"
 			href={withLang(`/guides/${guide.slug}`)}
 		>
 			<div class="flex size-full flex-col gap-[1em]">
-				<h1 class="text-2xl font-bold">
+				<h1 class="group-hover/card:text-primary-accent text-2xl font-bold">
 					{guide.title}
 				</h1>
 				<p class="opacity-soft leading-md">

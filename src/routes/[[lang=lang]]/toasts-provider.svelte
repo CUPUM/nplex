@@ -3,6 +3,7 @@
 </script>
 
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { page } from '$app/stores';
 	import { portal } from '$lib/actions/portal';
 	import { Toasts } from '$lib/builders/toasts.svelte';
@@ -11,10 +12,10 @@
 	import { cubicOut } from 'svelte/easing';
 	import { getFlash } from 'sveltekit-flash-message';
 
-	const flash = getFlash(page);
+	const flash = browser ? getFlash(page) : undefined;
 
 	$effect(() => {
-		if ($flash) {
+		if (flash && $flash) {
 			toasts.add($flash);
 			flash.set(undefined);
 		}

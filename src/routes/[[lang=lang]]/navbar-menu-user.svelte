@@ -28,7 +28,7 @@
 
 {@render trigger(dialog.triggerAttributes)}
 <NavbarMenu {dialog}>
-	<NavbarMenuGroup class="w-[34ch]" {...dialog.contentAttributes}>
+	<NavbarMenuGroup {...dialog.contentAttributes} intro={{ delay: 0 }}>
 		{#snippet legend()}
 			{m.projects()} <DraftingCompass />
 		{/snippet}
@@ -51,7 +51,7 @@
 			</NavbarMenuItem>
 		{/if}
 	</NavbarMenuGroup>
-	<NavbarMenuGroup class="w-[34ch]" {...dialog.contentAttributes}>
+	<NavbarMenuGroup {...dialog.contentAttributes} intro={{ delay: 150 }}>
 		{#snippet legend()}
 			{m.organizations()} <Building2 />
 		{/snippet}
@@ -75,7 +75,7 @@
 			{m.nav_edit_orgs_descriptors()}
 		</NavbarMenuItem>
 	</NavbarMenuGroup>
-	<NavbarMenuGroup {...dialog.contentAttributes}>
+	<NavbarMenuGroup {...dialog.contentAttributes} intro={{ delay: 300 }}>
 		{#snippet legend()}
 			{m.account()} <User />
 		{/snippet}

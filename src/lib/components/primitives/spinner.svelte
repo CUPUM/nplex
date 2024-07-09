@@ -93,7 +93,7 @@
 	}
 
 	.tail {
-		opacity: var(--opacity-dimmest);
+		opacity: var(--opacity-softer);
 		animation-delay: calc(var(--total-duration) * 0.04); /* manually tweaked factor */
 	}
 

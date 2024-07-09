@@ -13,9 +13,13 @@
 	}>(CTX_KEY);
 
 	export { getDashboardContext };
+
+	export const DASHBOARD_MAIN_ID = 'dashboard-main';
 </script>
 
 <script lang="ts">
+	import ResizableSidebarHandle from './resizable-sidebar-handle.svelte';
+
 	let ctxHeaders = $state<Snippet[]>([]);
 	let ctxSidebars = $state<Snippet[]>([]);
 	let ctxFooters = $state<Snippet[]>([]);
@@ -58,32 +62,36 @@
 	let currentFooter = $derived(ctxFooters[ctxFooters.length - 1] ?? footer);
 </script>
 
-<section
-	class="px-padding pb-gap flex-basis-0 min-h-main-full-height relative grid grid-cols-[[sidebar-start_header-start_footer-start]_auto_[sidebar-end_main-start]_1fr_[main-end_header-end_footer-end]] content-start"
->
+<section class="px-padding pb-gap flex-basis-0 min-h-main-full-height relative flex flex-col">
 	{#if currentHeader}
 		<header
 			class="pb-gap rounded-section relative flex flex-col"
-			style:grid-column="header"
 			transition:slide={{ axis: 'y', duration: 350, easing: expoOut }}
 		>
 			{@render currentHeader()}
 		</header>
 	{/if}
-	{#if currentSidebar}
-		<nav
-			style:grid-column="sidebar"
-			class="gap-gap w-sidebar-width top-sticky-top pr-gap relative sticky flex flex-col self-start"
-			transition:slide={{ axis: 'x', duration: 350, easing: expoOut }}
-		>
-			{@render currentSidebar()}
-		</nav>
-	{/if}
-	<article style:grid-column="main" class="gap-gap flex flex-col" id="dashboard-main">
-		{@render children()}
-	</article>
+	<section class="relative flex flex-1 flex-row items-start">
+		{#if currentSidebar}
+			<ResizableSidebarHandle>
+				{#snippet sidebar(sidebar, css)}
+					<nav
+						use:sidebar
+						style:--spacing-sidebar-width={css}
+						class="gap-gap w-sidebar-width top-sticky-top relative sticky flex flex-col"
+						transition:slide={{ axis: 'x', duration: 350, easing: expoOut }}
+					>
+						{@render currentSidebar()}
+					</nav>
+				{/snippet}
+			</ResizableSidebarHandle>
+		{/if}
+		<article class="gap-gap flex flex-1 flex-col" id={DASHBOARD_MAIN_ID}>
+			{@render children()}
+		</article>
+	</section>
 	{#if currentFooter}
-		<footer class="pt-gap relative" style:grid-column="footer">
+		<footer class="pt-gap relative">
 			{@render currentFooter()}
 		</footer>
 	{/if}

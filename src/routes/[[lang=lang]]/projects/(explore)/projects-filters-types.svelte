@@ -1,9 +1,10 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import SidebarFilterGroup from '$lib/components/patterns/sidebar-filter-group.svelte';
+	import SidebarGroup from '$lib/components/patterns/sidebar-group.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
 	import type { PageData } from './$types';
+
 	let {
 		form,
 		constraints,
@@ -14,14 +15,12 @@
 	}: ExtendedSuperFormData<PageData['filtersForm']> & Pick<PageData, 'lists'> = $props();
 </script>
 
-<SidebarFilterGroup>
-	{#snippet legend()}
-		{m.project_types()}
-	{/snippet}
-	<ul class="gap-input-group-gap flex flex-col items-start">
-		{#await lists.types}
-			...
-		{:then awaitedProjectTypes}
+{#await lists.types then awaitedProjectTypes}
+	<SidebarGroup>
+		{#snippet legend()}
+			{m.project_types()}
+		{/snippet}
+		<ul class="gap-input-group-gap flex flex-col items-start">
 			{#each awaitedProjectTypes as type}
 				<label
 					class="button button-dashed compact overflow-hidden text-ellipsis rounded-full"
@@ -37,6 +36,6 @@
 					/>
 				</label>
 			{/each}
-		{/await}
-	</ul>
-</SidebarFilterGroup>
+		</ul>
+	</SidebarGroup>
+{/await}

@@ -23,7 +23,7 @@
 
 {@render trigger(dialog.triggerAttributes)}
 <NavbarMenu {dialog}>
-	<NavbarMenuGroup {...dialog.contentAttributes}>
+	<NavbarMenuGroup {...dialog.contentAttributes} intro={{ delay: 0 }}>
 		{#snippet legend()}
 			{m.language()}
 		{/snippet}
@@ -41,7 +41,7 @@
 			</NavbarMenuItem>
 		{/each}
 	</NavbarMenuGroup>
-	<NavbarMenuGroup {...dialog.contentAttributes}>
+	<NavbarMenuGroup {...dialog.contentAttributes} intro={{ delay: 150 }}>
 		{#snippet legend()}
 			{m.screen_mode()}
 		{/snippet}

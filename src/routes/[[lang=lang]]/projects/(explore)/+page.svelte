@@ -3,9 +3,10 @@
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import ProjectCard from '$lib/components/patterns/project-card.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
-	import { projectCardCrossfade } from '$lib/motion/presets';
 	import { RefreshCw } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
+	import { expoOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 	import ProjectsFilters from './projects-filters.svelte';
 
 	let { data } = $props();
@@ -16,7 +17,7 @@
 	let sizeRef = $state<HTMLButtonElement>();
 </script>
 
-<div class="px-padding mb-lg flex flex-1 flex-row">
+<div class="px-padding mb-lg min-h-main-full-height flex flex-1 flex-row items-start">
 	<ProjectsFilters {...filtersForm} lists={data.lists} />
 	<section class="gap-lg flex flex-1 flex-col">
 		<ul
@@ -32,13 +33,9 @@
 					}}
 					style:--rowspan={rowspan}
 					class="relative col-span-1 row-span-[var(--rowspan)] flex h-full w-full flex-col group-data-[view-mode=masonry]/explore:aspect-[2/var(--rowspan)]"
-					in:projectCardCrossfade.receive|global={{
-						key: project.id,
-						delay: i * 25,
-					}}
-					out:projectCardCrossfade.send|global={{ key: project.id, delay: 0 }}
+					in:fly|global={{ y: 6, easing: expoOut, duration: 750, delay: i * 25 }}
 				>
-					<ProjectCard {project} />
+					<ProjectCard {...project} />
 				</li>
 			{/each}
 		</ul>

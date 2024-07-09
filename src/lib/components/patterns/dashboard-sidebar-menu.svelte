@@ -33,7 +33,7 @@
 </script>
 
 <menu
-	class="p-md gap-input-group-gap bg-card-soft rounded-section relative flex flex-col"
+	class="p-md gap-input-group-gap bg-card/soft rounded-section relative flex flex-col"
 	in:slide|global={{ axis: 'y', duration: 750, easing: expoOut }}
 >
 	{#if restProps['aria-current']}
@@ -48,12 +48,12 @@
 			this={href ? 'a' : 'legend'}
 			{href}
 			{...restProps}
-			class="text-base-dimmest aria-[current]:text-primary px-input-padding pb-input-group-gap relative whitespace-nowrap text-xs font-normal transition-all aria-[current]:font-bold"
+			class="px-input-padding py-input-nest bg-input/soft *:stroke-md *:[.lucide-icon]:opacity-soft aria-[current]:text-primary-accent aria-[current]:bg-primary/10 flex flex-row items-center gap-[1em] self-start rounded-full text-xs text-xs text-base/soft backdrop-blur-md"
 		>
 			{@render legend()}
 		</svelte:element>
 	{/if}
-	<ul class="nest gap-input-group-gap flex flex-col text-sm [--spacing-input-nest:0.2em]">
+	<ul class="nest gap-input-group-gap flex flex-col text-sm [--spacing-input-nest:0.25em]">
 		{@render children()}
 	</ul>
 </menu>

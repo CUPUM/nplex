@@ -19,8 +19,8 @@
 	});
 </script>
 
-<form method="POST" use:enhance autocomplete="off" class="gap-gap flex flex-col">
-	<h1 class="mb-gap text-xl font-semibold">
+<form method="POST" use:enhance autocomplete="off" class="gap-sm flex flex-col">
+	<h1 class="mb-md text-xl font-bold">
 		{m.signup_create_account()}
 	</h1>
 	<Field>
@@ -99,11 +99,11 @@
 	</button>
 </form>
 <nav class="gap-input-group-gap flex flex-row flex-wrap justify-between text-sm">
-	<a class="button button-ghost" {...linkAttributes('/login')}>
+	<a class="button button-ghost" {...linkAttributes('/login')} use:ripple>
 		<LogIn />
 		{m.auth_login_prompt()}
 	</a>
-	<a class="button button-ghost" {...linkAttributes('/reset-password')}>
+	<a class="button button-ghost" {...linkAttributes('/reset-password')} use:ripple>
 		{m.auth_forgot_password_prompt()}
 		<ShieldQuestion />
 	</a>

@@ -2,12 +2,11 @@
 	import * as m from '$i18n/messages';
 	import { decrement, increment } from '$lib/actions/increment';
 	import Slider from '$lib/components/Slider.svelte';
-	import ButtonIconPencil from '$lib/components/patterns/button-icon-pencil.svelte';
 	import SwitchThumb from '$lib/components/primitives/switch-thumb.svelte';
 	import type { ExtendedSuperFormData } from '$lib/crud/form/client';
 	import { PROJECT_COST_MAX, PROJECT_COST_MIN } from '$lib/db/constants';
 	import { checked } from '$lib/utils/attributes';
-	import { Minus, Plus, RotateCcw } from 'lucide-svelte';
+	import { Minus, Pencil, Plus, RotateCcw } from 'lucide-svelte';
 	import { expoOut } from 'svelte/easing';
 	import { fly, scale, slide } from 'svelte/transition';
 	import type { PageData } from './$types';
@@ -66,7 +65,7 @@
 					in:scale={{ easing: expoOut, start: 0.9, duration: 250, delay: 250 }}
 				>
 					{m.project_cost_init()}
-					<ButtonIconPencil />
+					<Pencil />
 				</div>
 			</button>
 		{:else}

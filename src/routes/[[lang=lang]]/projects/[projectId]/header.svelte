@@ -2,16 +2,12 @@
 	import * as m from '$i18n/messages';
 	import OptionalText from '$lib/components/primitives/optional-text.svelte';
 	import StaggerText from '$lib/components/primitives/stagger-text.svelte';
-	import { projectCardCrossfade } from '$lib/motion/presets';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 </script>
 
-<header
-	class="flex flex-col items-stretch"
-	in:projectCardCrossfade.receive|global={{ key: data.project.id, delay: 0 }}
->
+<header class="flex flex-col items-stretch">
 	<hgroup
 		class="px-padding min-h-main-full-height pb-sticky-top max-w-main flex w-full flex-col justify-center self-center"
 	>

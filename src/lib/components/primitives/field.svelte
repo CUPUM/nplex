@@ -34,7 +34,9 @@
 		</span>
 	{/if}
 	{#if description}
-		<div class="text-base-dim text-[clamp(var(--font-size-xs),0.75em,var(--font-size-sm))]">
+		<div
+			class="opacity-soft text-base text-[clamp(var(--font-size-xs),0.75em,var(--font-size-sm))]"
+		>
 			{@render description()}
 		</div>
 	{/if}

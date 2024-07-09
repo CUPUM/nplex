@@ -23,8 +23,8 @@
 	);
 </script>
 
-<form method="POST" use:enhance autocomplete="off" class="gap-gap flex flex-col">
-	<h1 class="mb-gap text-xl font-semibold">
+<form method="POST" use:enhance autocomplete="off" class="gap-sm flex flex-col">
+	<h1 class="mb-md text-xl font-bold">
 		{m.auth_login_title()}
 	</h1>
 	<Field>
@@ -90,15 +90,15 @@
 		{m.login()}
 	</button>
 	{#if typeof $message === 'string'}
-		<p class="text-base-dim text-sm" in:fly={{ y: -8, duration: 350 }}>{$message}</p>
+		<p class="opacity-soft text-base text-sm" in:fly={{ y: -8, duration: 350 }}>{$message}</p>
 	{/if}
 </form>
 <nav class="gap-input-group-gap flex flex-row flex-wrap justify-between text-sm">
-	<a class="button button-ghost" {...linkAttributes('/signup')}>
+	<a class="button button-ghost" {...linkAttributes('/signup')} use:ripple>
 		<UserRoundPlus />
 		{m.auth_signup_prompt()}
 	</a>
-	<a class="button button-ghost" {...linkAttributes('/reset-password')}>
+	<a class="button button-ghost" {...linkAttributes('/reset-password')} use:ripple>
 		{m.auth_forgot_password_prompt()}
 		<ShieldQuestion />
 	</a>

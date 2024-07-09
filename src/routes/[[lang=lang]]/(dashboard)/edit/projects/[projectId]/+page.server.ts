@@ -62,6 +62,7 @@ export const actions = {
 		}
 		const { translations, interventionIds, ...project } = form.data;
 		await db.transaction(async (tx) => {
+			const { ts, ...translationsColumns } = getColumns(projectsTranslations);
 			await Promise.all([
 				tx.update(projects).set(project).where(eq(projects.id, event.params.projectId)),
 				tx
@@ -69,7 +70,7 @@ export const actions = {
 					.values(Object.values(translations).map((tt) => ({ ...tt, id: event.params.projectId })))
 					.onConflictDoUpdate({
 						target: [projectsTranslations.id, projectsTranslations.lang],
-						set: toExcluded(getColumns(projectsTranslations)),
+						set: toExcluded(translationsColumns),
 					}),
 				tx
 					.delete(projectsInterventions)

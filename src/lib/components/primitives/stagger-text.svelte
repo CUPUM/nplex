@@ -1,5 +1,19 @@
+<script lang="ts" context="module">
+	import type StaggerText from './stagger-text.svelte';
+
+	export const flyUpClip = {
+		translate: '0 1em',
+		opacity: '0',
+		clipPath: {
+			start: 'inset(0 0 -0.15em 0)',
+			end: 'inset(0 0 -0.25em 0)',
+		},
+	} satisfies Omit<ComponentProps<StaggerText>, 'text'>;
+</script>
+
 <script lang="ts">
 	import { ms } from '$lib/common/css';
+	import type { ComponentProps } from 'svelte';
 
 	let {
 		text = '',

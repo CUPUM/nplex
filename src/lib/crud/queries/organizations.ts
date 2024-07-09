@@ -10,7 +10,7 @@ import {
 	organizationsUsers,
 } from '$lib/db/schema/public.server';
 import type { ServerLoadEvent } from '@sveltejs/kit';
-import { and, eq, exists, or } from 'drizzle-orm';
+import { and, eq, exists, or, type SQLWrapper } from 'drizzle-orm';
 import { $boolean, $true, getColumns } from 'drizzle-orm-helpers';
 import type { User } from 'lucia';
 import type { z } from 'zod';
@@ -19,6 +19,10 @@ import { joinTranslation } from './i18n';
 
 export function isOrganizationCreator(user: Pick<User, 'id'>) {
 	return eq(organizations.createdById, user.id);
+}
+
+export function isPublicOrganization(organization: SQLWrapper) {
+	return $true;
 }
 
 /**

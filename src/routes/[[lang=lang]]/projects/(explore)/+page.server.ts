@@ -24,7 +24,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 export const load = async (event) => {
 	const filtersForm = await superValidate(event.url.searchParams, zod(projectsFiltersSchema));
 	if (!filtersForm.valid) {
-		error(STATUS_CODES.BAD_REQUEST, 'Invalid project filters.');
+		error(STATUS_CODES.BAD_REQUEST, 'Invalid projects filters.');
 	}
 	const exemplarityMarkers = db
 		.$with('exemplarity_markers')

@@ -3,28 +3,40 @@
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import OptionalText from '$lib/components/primitives/optional-text.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
-	import type { getProjectExemplarityMarkersList } from '$lib/crud/queries/projects';
+	import type {
+		projectExemplarityMarkers,
+		projectExemplarityMarkersTranslations,
+	} from '$lib/db/schema/public.server';
 	import { MODES } from '$lib/modes/constants';
 	import { imageSrc } from '$lib/storage/media/url';
+	import type { InferSelectModel } from 'drizzle-orm';
 	import { Award, Heart, Image } from 'lucide-svelte';
 
 	let {
+		edit,
 		id,
 		title,
 		summary,
 		bannerStorageName,
 		exemplarityMarkers,
 	}: {
+		edit?: boolean;
 		id: string;
 		title: string | null;
 		summary?: string | null;
 		bannerStorageName?: string | null;
-		exemplarityMarkers?: Awaited<ReturnType<typeof getProjectExemplarityMarkersList>>;
+		exemplarityMarkers?: Pick<
+			InferSelectModel<typeof projectExemplarityMarkers> &
+				InferSelectModel<typeof projectExemplarityMarkersTranslations>,
+			'id' | 'shortTitle' | 'title' | 'description'
+		>[];
 	} = $props();
+
+	const attributes = $derived(linkAttributes(`${edit ? '/edit' : ''}/projects/${id}`));
 </script>
 
 <article
-	class="group/card hover:bg-card-accent bg-card relative h-full w-full rounded-lg transition-all"
+	class="group/card hover:bg-card-accent bg-card rounded-card relative h-full w-full transition-all"
 >
 	<div
 		class="inset-padding absolute flex flex-col items-stretch justify-end rounded-[calc(var(--radius-lg)-var(--spacing-padding))]"
@@ -83,11 +95,7 @@
 			{/if}
 		</div>
 	</div>
-	<a
-		class="fill user-select-none text-transparent"
-		use:ripple={{ blur: 50 }}
-		{...linkAttributes(`/projects/${id}`)}
-	>
+	<a class="fill user-select-none text-transparent" use:ripple={{ blur: 50 }} {...attributes}>
 		{title}
 	</a>
 </article>

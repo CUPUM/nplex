@@ -47,14 +47,12 @@ export const dashboardSidebarMenuThumbCrossfade = createCrossfadePreset({
 export const projectCardCrossfade = createCrossfadePreset({
 	duration: 350,
 	easing: expoOut,
-	delay: 0,
 	fallback(node, params, intro) {
 		return fly(node, {
-			y: 12,
+			y: 6,
 			duration: 750,
 			easing: expoOut,
 			opacity: 0,
-			delay: params.delay,
 		});
 	},
 });
