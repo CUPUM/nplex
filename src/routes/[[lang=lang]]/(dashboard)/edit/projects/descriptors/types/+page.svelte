@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
+	import DashboardSubHeader from '$lib/components/patterns/dashboard-sub-header.svelte';
 	import DashboardSubSection from '$lib/components/patterns/dashboard-sub-section.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
 	import ProjectTypeCreate from './project-type-create.svelte';
@@ -14,14 +15,14 @@
 	const { formId, enhance } = projectTypesForm;
 </script>
 
+<DashboardSubHeader>
+	<h2>{m.project_types()}</h2>
+	<p>
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
+		consequatur amet blanditiis sed alias. Eum, numquam magnam!
+	</p>
+</DashboardSubHeader>
 <DashboardSubSection>
-	{#snippet header()}
-		<h2>{m.project_types()}</h2>
-		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
-			consequatur amet blanditiis sed alias. Eum, numquam magnam!
-		</p>
-	{/snippet}
 	<form id={$formId} class="sr-only" use:enhance method="POST"></form>
 	<ul class="gap-gap flex flex-row flex-wrap">
 		<li>
