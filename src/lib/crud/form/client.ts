@@ -66,6 +66,9 @@ export function extendedSuperForm<
 		},
 	});
 
+	// Patch for a potential bug: https://discord.com/channels/1088090866649939990/1260150199238524928/1260150199238524928
+	baseForm.options.taintedMessage = formOptions.taintedMessage;
+
 	// Dispatch toast if message has shape.
 	baseForm.message.subscribe((m) => {
 		if (isToastParameters(m)) {

@@ -1,11 +1,12 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import DescriptorFormDialog from '$lib/components/patterns/descriptor-form-dialog.svelte';
+	import { DialogForm } from '$lib/builders/dialog-form.svelte';
+	import DialogFormBox from '$lib/components/patterns/dialog-form-box.svelte';
 	import TranslationsTabs from '$lib/components/patterns/translations-tabs.svelte';
 	import Field from '$lib/components/primitives/field.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
-	import { Pen } from 'lucide-svelte';
+	import { Plus } from 'lucide-svelte';
 	import type { PageData } from './$types';
 
 	let {
@@ -14,27 +15,28 @@
 		data: PageData['projectInterventionCategoryCreateForm'];
 	} = $props();
 
-	const projectInterventionCategoryCreateForm = extendedSuperForm(data, {
+	const createForm = extendedSuperForm(data, {
 		dataType: 'json',
 		invalidateAll: true,
 		resetForm: true,
 	});
 
-	const { form, constraints } = projectInterventionCategoryCreateForm;
+	const { form, constraints } = createForm;
+
+	const dialog = new DialogForm(createForm);
 </script>
 
-<DescriptorFormDialog form={projectInterventionCategoryCreateForm} action="?/createCategory">
-	{#snippet root(triggerAttributes)}
-		<button
-			class="button button-dashed rounded-full"
-			type="button"
-			{...triggerAttributes}
-			use:ripple
-		>
-			{m.create()}
-			<Pen />
-		</button>
-	{/snippet}
+<button
+	class="button button-dashed rounded-full"
+	type="button"
+	{...dialog.triggerAttributes}
+	use:ripple
+>
+	<Plus />
+	{m.create()}
+</button>
+
+<DialogFormBox {dialog} action="?/createCategory">
 	{#snippet title()}
 		{m.project_intervention_category_create()}
 	{/snippet}
@@ -64,4 +66,4 @@
 			</Field>
 		{/snippet}
 	</TranslationsTabs>
-</DescriptorFormDialog>
+</DialogFormBox>

@@ -45,7 +45,7 @@
 		class="m-auto max-h-[calc(100%-2*var(--dialog-margin))] max-w-[min(calc(100%-2*var(--dialog-margin)),var(--width-md))] bg-transparent p-0 text-base backdrop:opacity-0"
 		use:dialog.dialogAction
 		{...dialog.dialogAttributes}
-		transition:scale={{ start: 0.96, duration: 250, easing: expoOut }}
+		transition:scale={{ start: 1.05, duration: 250, easing: expoOut }}
 		{...dialogProps}
 	>
 		<div
@@ -62,7 +62,7 @@
 						{#if closeButton}
 							<button
 								tabindex="0"
-								class="button button-ghost compact top-[-0.125em] [float:inline-end] aspect-square rounded-full text-sm"
+								class="button button-ghost compact ml-md top-[-0.125em] [float:inline-end] aspect-square rounded-full text-sm"
 								{...dialog.closeAttributes}
 							>
 								<X />

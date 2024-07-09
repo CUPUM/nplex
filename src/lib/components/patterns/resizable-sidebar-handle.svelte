@@ -60,7 +60,7 @@
 	class="z-front group/handle w-gap top-sticky-top h-main-full-height relative relative sticky flex flex-none cursor-ew-resize flex-row items-center justify-center"
 >
 	<hr
-		class="group-hover/handle:bg-input group-active/handle:bg-input-accent top-padding bottom-padding absolute h-[unset] w-[var(--border-width-lg)] self-stretch rounded-full border-none transition-all"
+		class="group-hover/handle:bg-input group-active/handle:bg-input-accent absolute h-full w-[var(--border-width-md)] self-stretch rounded-full border-none transition-all"
 	/>
 	<div
 		use:ripple

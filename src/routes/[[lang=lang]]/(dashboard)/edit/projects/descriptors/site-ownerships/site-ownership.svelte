@@ -13,26 +13,26 @@
 	import type { PageData } from './$types';
 
 	let {
-		projectInterventionsForm,
-		projectInterventionFormData,
+		ownership,
+		listForm,
 	}: {
-		projectInterventionsForm: ExtendedSuperFormData<PageData['projectInterventionsForm']>;
-		projectInterventionFormData: PageData['projectInterventionForms'][number];
+		ownership: PageData['forms'][number];
+		listForm: ExtendedSuperFormData<PageData['listForm']>;
 	} = $props();
 
-	const { formId: parentFormId, submitter: parentSubmitter } = projectInterventionsForm;
+	const { formId: parentFormId, submitter: parentSubmitter } = listForm;
 
-	const projectInterventionForm = extendedSuperForm(projectInterventionFormData, {
+	const ownershipForm = extendedSuperForm(ownership, {
 		dataType: 'json',
-		invalidateAll: true,
 		resetForm: false,
+		taintedMessage: true,
 	});
 
-	const { form, constraints } = projectInterventionForm;
+	const { form, constraints } = ownershipForm;
 
 	let deleteRef = $state<HTMLButtonElement>();
 
-	const dialog = new DialogForm(projectInterventionForm);
+	const dialog = new DialogForm(ownershipForm);
 </script>
 
 <DescriptorFormToken {dialog}>
@@ -44,16 +44,21 @@
 		form={$parentFormId}
 		value={$form.id}
 		name="delete"
-		formaction="?/deleteIntervention"
+		formaction="?/delete"
 		bind:this={deleteRef}
+		onclick={(e) => {
+			if (!confirm(m.type_delete_confirm())) {
+				e.preventDefault();
+			}
+		}}
 	>
 		<IconSpinner icon={X} busy={$parentSubmitter === deleteRef} />
 	</button>
 </DescriptorFormToken>
 
-<DialogFormBox {dialog} action="?/updateIntervention">
+<DialogFormBox {dialog} action="?/update">
 	{#snippet title()}
-		{m.project_intervention()}
+		{m.project_type()}
 	{/snippet}
 	<TranslationsTabs>
 		{#snippet tab({ lang })}

@@ -27,9 +27,9 @@
 </script>
 
 <DashboardSubHeader>
-	<h4>
+	<h2>
 		{m.project_exemplarity_categories()} & {m.project_exemplarity_markers().toLocaleLowerCase()}
-	</h4>
+	</h2>
 	<p>
 		Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quidem doloribus nisi
 		consequatur amet blanditiis sed alias. Eum, numquam magnam!
@@ -48,6 +48,6 @@
 		{projectInterventionCreateForm}
 	/>
 {/each}
-<DashboardSubSection class="border-dim border border-dashed bg-transparent">
+<DashboardSubSection class="border-base/softer border border-dashed bg-transparent">
 	<ProjectExemplarityCategoryCreate data={data.projectExemplarityCategoryCreateForm} />
 </DashboardSubSection>

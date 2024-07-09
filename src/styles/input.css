@@ -42,8 +42,8 @@
 	/* Default */
 
 	&:not(.input-bordered, .input-dashed, .input-ghost) {
-		--input-color: var(--text-color-input-dim);
-		--input-background: var(--background-color-input-dim);
+		--input-color: var(--text-color-input);
+		--input-background: color-mix(in srgb, var(--background-color-input) var(--opacity-soft), transparent);
 		--input-icon-color: currentColor;
 		--input-border-style: none;
 		--input-hover-color: var(--text-color-input);
@@ -69,7 +69,7 @@
 	}
 
 	&:is(.input-bordered, .input-dashed) {
-		--input-color: var(--text-color-input-dim);
+		--input-color: var(--text-color-input);
 		--input-background: transparent;
 		--input-border-color: var(--border-color-base);
 		--input-border-width: var(--border-width-input);
@@ -80,7 +80,7 @@
 		--input-focused-color: var(--text-color-input-accent);
 		--input-focused-background: transparent;
 		--input-focused-border-color: transparent;
-		--input-disabled-color: var(--text-color-input-dim);
+		--input-disabled-color: var(--text-color-input);
 		--input-disabled-background: ;
 		--input-disabled-border-color: color-mix(in srgb, var(--border-color-base) var(--opacity-soft), transparent);
 		--input-busy-color: ;
@@ -102,7 +102,7 @@
 		--input-hover-background: var(--background-color-input);
 		--input-focused-color: var(--text-color-input-accent);
 		--input-focused-background: transparent;
-		--input-disabled-color: var(--text-color-input-dim);
+		--input-disabled-color: var(--text-color-input);
 		--input-disabled-background: ;
 		--input-busy-color: ;
 		--input-busy-background: ;
@@ -196,7 +196,7 @@
 		height: var(--spacing-input);
 		display: flex;
 		align-items: center;
-		opacity: var(--opacity-dimmest);
+		opacity: var(--opacity-softer);
 		white-space: nowrap;
 		padding-block: 0;
 		padding-inline: calc(var(--spacing-input-padding) / 2);
@@ -230,7 +230,7 @@
 	}
 
 	.input-affix {
-		opacity: var(--opacity-dimmest);
+		opacity: var(--opacity-softer);
 	}
 
 	/* Hover */

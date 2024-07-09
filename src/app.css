@@ -209,6 +209,7 @@
 
 	--animate-pulse: pulse var(--transition-duration-xslow) var(--transition-timing-function-in-out) infinite both;
 	--animate-press: press var(--transition-duration-medium) var(--transition-timing-function-out) 1 both;
+	--animate-wiggle: wiggle var(--transition-duration-slow) ease-out 1 forwards;
 
 	/* Scales */
 

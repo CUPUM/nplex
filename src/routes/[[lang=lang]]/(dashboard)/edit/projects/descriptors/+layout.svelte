@@ -28,29 +28,14 @@
 		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors/exemplarity')}>
 			{m.project_markers()}
 		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem
-			{...linkAttributes('/edit/projects/descriptors/ownerships')}
-			aria-disabled
-		>
+		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors/site-ownerships')}>
 			{m.project_ownership_types()}
 		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem
-			{...linkAttributes('/edit/projects/descriptors/implantations')}
-			aria-disabled
-		>
-			{m.project_implantations()}
+		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors/buildings')}>
+			{m.building_metadata()}
 		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem
-			{...linkAttributes('/edit/projects/descriptors/levels')}
-			aria-disabled
-		>
-			{m.project_levels()}
-		</DashboardSidebarMenuItem>
-		<DashboardSidebarMenuItem
-			{...linkAttributes('/edit/projects/descriptors/images')}
-			aria-disabled
-		>
-			{m.project_images()}
+		<DashboardSidebarMenuItem {...linkAttributes('/edit/projects/descriptors/images')}>
+			{m.image_metadata()}
 		</DashboardSidebarMenuItem>
 	</DashboardSidebarMenu>
 	<DashboardSidebarMenuProjects />

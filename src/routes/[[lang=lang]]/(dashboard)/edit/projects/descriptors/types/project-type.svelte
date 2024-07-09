@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import DescriptorFormDialog from '$lib/components/patterns/descriptor-form-dialog.svelte';
+	import { DialogForm } from '$lib/builders/dialog-form.svelte';
+	import DescriptorFormToken from '$lib/components/patterns/descriptor-form-token.svelte';
+	import DialogFormBox from '$lib/components/patterns/dialog-form-box.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import TranslationsTabs from '$lib/components/patterns/translations-tabs.svelte';
 	import Field from '$lib/components/primitives/field.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
-	import { Wrench, X } from 'lucide-svelte';
+	import { X } from 'lucide-svelte';
 	import type { PageData } from './$types';
 
 	let {
@@ -20,41 +22,41 @@
 
 	const { formId: parentFormId, submitter: parentSubmitter } = projectTypesForm;
 
-	const projectTypeForm = extendedSuperForm(projectTypeFormData, {
+	const typeForm = extendedSuperForm(projectTypeFormData, {
 		dataType: 'json',
+		invalidateAll: true,
 		resetForm: false,
 	});
 
-	const { form, constraints } = projectTypeForm;
+	const { form, constraints } = typeForm;
 
 	let deleteRef = $state<HTMLButtonElement>();
+
+	const dialog = new DialogForm(typeForm);
 </script>
 
-<DescriptorFormDialog form={projectTypeForm} action="?/update">
-	{#snippet root(triggerAttributes)}
-		<div class="button nest pr-input-nest rounded-full" use:ripple>
-			<button class="fill" type="button" {...triggerAttributes}></button>
-			<Wrench />
-			{$form.translations[$page.data.lang].title}
-			<button
-				class="button button-ghost aspect-square rounded-full"
-				data-danger
-				use:ripple
-				form={$parentFormId}
-				value={$form.id}
-				name="delete"
-				formaction="?/delete"
-				bind:this={deleteRef}
-				onclick={(e) => {
-					if (!confirm(m.type_delete_confirm())) {
-						e.preventDefault();
-					}
-				}}
-			>
-				<IconSpinner icon={X} busy={$parentSubmitter === deleteRef} />
-			</button>
-		</div>
-	{/snippet}
+<DescriptorFormToken {dialog}>
+	{$form.translations[$page.data.lang].title}
+	<button
+		class="button button-ghost aspect-square rounded-full"
+		data-danger
+		use:ripple
+		form={$parentFormId}
+		value={$form.id}
+		name="delete"
+		formaction="?/delete"
+		bind:this={deleteRef}
+		onclick={(e) => {
+			if (!confirm(m.type_delete_confirm())) {
+				e.preventDefault();
+			}
+		}}
+	>
+		<IconSpinner icon={X} busy={$parentSubmitter === deleteRef} />
+	</button>
+</DescriptorFormToken>
+
+<DialogFormBox {dialog} action="?/update">
 	{#snippet title()}
 		{m.project_type()}
 	{/snippet}
@@ -84,4 +86,4 @@
 			</Field>
 		{/snippet}
 	</TranslationsTabs>
-</DescriptorFormDialog>
+</DialogFormBox>

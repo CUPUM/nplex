@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as m from '$i18n/messages';
-	import DescriptorFormDialog from '$lib/components/patterns/descriptor-form-dialog.svelte';
+	import { DialogForm } from '$lib/builders/dialog-form.svelte';
+	import DescriptorFormToken from '$lib/components/patterns/descriptor-form-token.svelte';
+	import DialogFormBox from '$lib/components/patterns/dialog-form-box.svelte';
 	import IconSpinner from '$lib/components/patterns/icon-spinner.svelte';
 	import TranslationsTabs from '$lib/components/patterns/translations-tabs.svelte';
 	import Field from '$lib/components/primitives/field.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
-	import { Wrench, X } from 'lucide-svelte';
+	import { X } from 'lucide-svelte';
 	import type { PageData } from './$types';
 
 	let {
@@ -24,34 +26,34 @@
 
 	const projectInterventionForm = extendedSuperForm(projectInterventionFormData, {
 		dataType: 'json',
+		invalidateAll: true,
 		resetForm: false,
 	});
 
 	const { form, constraints } = projectInterventionForm;
 
 	let deleteRef = $state<HTMLButtonElement>();
+
+	const dialog = new DialogForm(projectInterventionForm);
 </script>
 
-<DescriptorFormDialog form={projectInterventionForm} action="?/updateMarker">
-	{#snippet root(triggerAttributes)}
-		<div class="button nest pr-input-nest rounded-full" use:ripple>
-			<button class="fill" type="button" {...triggerAttributes}></button>
-			<Wrench />
-			{$form.translations[$page.data.lang].title}
-			<button
-				class="button button-ghost aspect-square rounded-full"
-				data-danger
-				use:ripple
-				form={$parentFormId}
-				value={$form.id}
-				name="delete"
-				formaction="?/deleteMarker"
-				bind:this={deleteRef}
-			>
-				<IconSpinner icon={X} busy={$parentSubmitter === deleteRef} />
-			</button>
-		</div>
-	{/snippet}
+<DescriptorFormToken {dialog}>
+	{$form.translations[$page.data.lang].title}
+	<button
+		class="button button-ghost aspect-square rounded-full"
+		data-danger
+		use:ripple
+		form={$parentFormId}
+		value={$form.id}
+		name="delete"
+		formaction="?/deleteMarker"
+		bind:this={deleteRef}
+	>
+		<IconSpinner icon={X} busy={$parentSubmitter === deleteRef} />
+	</button>
+</DescriptorFormToken>
+
+<DialogFormBox {dialog} action="?/updateMarker">
 	{#snippet title()}
 		{m.project_intervention()}
 	{/snippet}
@@ -81,4 +83,4 @@
 			</Field>
 		{/snippet}
 	</TranslationsTabs>
-</DescriptorFormDialog>
+</DialogFormBox>

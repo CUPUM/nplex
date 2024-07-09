@@ -185,7 +185,11 @@ export const projectSiteOwnershipsWithTranslationsSchema = withTranslationsSchem
 	projectSiteOwnershipsTranslationsSchema.omit({ id: true })
 );
 
-export const newProjectSiteOwnershipSchema = projectSiteOwnershipsWithTranslationsSchema.omit({
+export const projectSiteOwnershipsListSchema = z.object({
+	delete: projectSiteOwnershipsSchema.shape.id,
+});
+
+export const projectSiteOwnershipCreateSchema = projectSiteOwnershipsWithTranslationsSchema.omit({
 	id: true,
 });
 

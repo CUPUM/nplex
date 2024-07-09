@@ -46,6 +46,6 @@
 		projectTypes={data.projectTypes}
 	/>
 {/each}
-<DashboardSubSection class="border-dim border border-dashed bg-transparent">
+<DashboardSubSection class="border-base/softer border border-dashed bg-transparent">
 	<ProjectInterventionCategoryCreate data={data.projectInterventionCategoryCreateForm} />
 </DashboardSubSection>

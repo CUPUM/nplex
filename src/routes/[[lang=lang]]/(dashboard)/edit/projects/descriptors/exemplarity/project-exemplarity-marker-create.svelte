@@ -1,11 +1,11 @@
 <script lang="ts">
 	import * as m from '$i18n/messages';
-	import DescriptorFormDialog from '$lib/components/patterns/descriptor-form-dialog.svelte';
+	import { DialogForm } from '$lib/builders/dialog-form.svelte';
+	import DescriptorCreateFormToken from '$lib/components/patterns/descriptor-create-form-token.svelte';
+	import DialogFormBox from '$lib/components/patterns/dialog-form-box.svelte';
 	import TranslationsTabs from '$lib/components/patterns/translations-tabs.svelte';
 	import Field from '$lib/components/primitives/field.svelte';
-	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { extendedSuperForm } from '$lib/crud/form/client';
-	import { Pen } from 'lucide-svelte';
 	import type { PageData } from './$types';
 
 	let {
@@ -14,27 +14,22 @@
 		data: PageData['projectExemplarityMarkerAndCategoryForms'][number][1];
 	} = $props();
 
-	const projectInterventionCreateForm = extendedSuperForm(data, {
+	const createForm = extendedSuperForm(data, {
 		dataType: 'json',
 		invalidateAll: true,
 		resetForm: true,
 	});
 
-	const { form, constraints } = projectInterventionCreateForm;
+	const { form, constraints } = createForm;
+
+	const dialog = new DialogForm(createForm);
 </script>
 
-<DescriptorFormDialog form={projectInterventionCreateForm} action="?/createMarker">
-	{#snippet root(triggerAttributes)}
-		<button
-			class="button button-dashed rounded-full"
-			type="button"
-			{...triggerAttributes}
-			use:ripple
-		>
-			{m.create()}
-			<Pen />
-		</button>
-	{/snippet}
+<DescriptorCreateFormToken {dialog}>
+	{m.create()}
+</DescriptorCreateFormToken>
+
+<DialogFormBox action="?/createMarker" {dialog}>
 	{#snippet title()}
 		{m.project_exemplarity_marker_create()}
 	{/snippet}
@@ -64,4 +59,4 @@
 			</Field>
 		{/snippet}
 	</TranslationsTabs>
-</DescriptorFormDialog>
+</DialogFormBox>

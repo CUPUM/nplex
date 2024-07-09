@@ -284,5 +284,7 @@
 	"organization_sharing_and_management": "Management & permissions",
 	"explore": "Explore",
 	"no_image": "No pictures",
-	"see_more": "See more"
+	"see_more": "See more",
+	"building_metadata": "Building metadata",
+	"image_metadata": "Image metadata"
 }

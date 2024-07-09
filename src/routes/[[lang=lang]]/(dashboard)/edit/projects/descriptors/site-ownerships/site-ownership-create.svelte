@@ -5,23 +5,27 @@
 	import TranslationsTabs from '$lib/components/patterns/translations-tabs.svelte';
 	import Field from '$lib/components/primitives/field.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
-	import { extendedSuperForm } from '$lib/crud/form/client';
-	import { Pen } from 'lucide-svelte';
+	import { extendedSuperForm, type ExtendedSuperFormData } from '$lib/crud/form/client';
+	import { Plus } from 'lucide-svelte';
 	import type { PageData } from './$types';
 
 	let {
 		data,
+		listForm,
 	}: {
-		data: PageData['projectExemplarityCategoryCreateForm'];
+		data: PageData['createForm'];
+		listForm: ExtendedSuperFormData<PageData['listForm']>;
 	} = $props();
+
+	const { formId: parentFormId, submitter: parentSubmitter } = listForm;
 
 	const createForm = extendedSuperForm(data, {
 		dataType: 'json',
-		invalidateAll: true,
-		resetForm: true,
+		resetForm: false,
+		taintedMessage: true,
 	});
 
-	const { form, constraints } = createForm;
+	const { form, constraints, enhance, formId } = createForm;
 
 	const dialog = new DialogForm(createForm);
 </script>
@@ -32,16 +36,16 @@
 	{...dialog.triggerAttributes}
 	use:ripple
 >
-	<Pen />
+	<Plus />
 	{m.create()}
 </button>
 
-<DialogFormBox {dialog} action="?/createCategory">
+<DialogFormBox {dialog} action="?/create">
 	{#snippet title()}
-		{m.project_exemplarity_category_create()}
+		{m.project_create_ownership_type()}
 	{/snippet}
 	<TranslationsTabs>
-		{#snippet tab({ lang, isCurrent })}
+		{#snippet tab({ lang })}
 			<Field>
 				{#snippet label()}
 					{m.title()}
@@ -49,7 +53,7 @@
 				<input
 					type="text"
 					class="input"
-					{...$constraints.translations?.[lang]?.description}
+					{...$constraints.translations?.[lang]?.title}
 					bind:value={$form.translations[lang].title}
 				/>
 			</Field>
