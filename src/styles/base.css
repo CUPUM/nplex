@@ -110,10 +110,16 @@ dialog {
 	color: var(--text-color-base);
 	background: var(--background-color-base);
 	overflow-x: hidden;
-	accent-color: var(--outline-color);
+	accent-color: var(--color-primary-accent);
 	transition:
 		all var(--transition-duration-fast) ease-out,
 		background 0s var(--transition-duration-slow);
+
+	&[data-presentation='full-screen'] {
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+	}
 }
 
 body {

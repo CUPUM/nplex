@@ -31,7 +31,8 @@
 
 	/* Text sizes */
 
-	--font-size-xs: 0.675rem;
+	--font-size-xs--line-height: 1.675;
+	--font-size-xs: 0.75rem;
 	--font-size-xs--line-height: 1.65;
 	--font-size-sm: 0.825rem;
 	--font-size-sm--line-height: 1.625;
@@ -74,11 +75,11 @@
 
 	/* Font weights */
 
-	--font-weight-thin: 350;
-	--font-weight-normal: 450;
-	--font-weight-semibold: 550;
-	--font-weight-bold: 650;
-	--font-weight-bolder: 750;
+	--font-weight-thin: 300;
+	--font-weight-normal: 400;
+	--font-weight-semibold: 500;
+	--font-weight-bold: 600;
+	--font-weight-bolder: 700;
 
 	/* Breakpoints */
 
@@ -249,7 +250,7 @@
 	--background-color-base: hsl(105, 8.3%, 90.6%);
 	--background-color-popover: hsl(85, 85.7%, 97.3%);
 	--background-color-overlay: hsl(36, 12%, 6%, 90%);
-	--background-color-selection: var(--color-primary-soft);
+	--background-color-selection: var(--color-primary);
 	--background-color-card: hsl(100, 12%, 95.1%);
 	--background-color-card-accent: hsl(90, 28.6%, 97.3%);
 	--background-color-input: color-mix(in srgb, var(--text-color-base) 9%, transparent);
@@ -270,7 +271,7 @@
 	--text-color-input-success: var(--color-success);
 	--text-color-input-success-accent: var(--color-success-accent);
 
-	--outline-color: color-mix(in srgb, var(--color-primary-soft) 90%, transparent);
+	--outline-color: color-mix(in srgb, var(--color-primary) var(--opacity-softish), transparent);
 	--outline-color-error: color-mix(in srgb, var(--color-error-soft) 90%, transparent);
 	--outline-color-success: color-mix(in srgb, var(--color-success-soft) 90%, transparent);
 
