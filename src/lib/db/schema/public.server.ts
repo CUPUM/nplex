@@ -5,6 +5,7 @@ import type { AnyPgColumn } from 'drizzle-orm/pg-core';
 import {
 	boolean,
 	date,
+	foreignKey,
 	integer,
 	pgTable,
 	primaryKey,
@@ -455,6 +456,24 @@ export const projectsTranslations = pgTable(
 	}
 );
 
+export const projectsTypes = pgTable(
+	'projects_types',
+	{
+		...CREATED_AT_COLUMN,
+		projectId: text('project_id')
+			.references(() => projects.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+			.notNull(),
+		typeId: text('type_id')
+			.references(() => projectTypes.id, { onDelete: 'cascade', onUpdate: 'cascade' })
+			.notNull(),
+	},
+	(table) => {
+		return {
+			pk: primaryKey({ columns: [table.projectId, table.typeId] }),
+		};
+	}
+);
+
 export const projectsBuildingLevels = pgTable(
 	'projects_building_levels',
 	{
@@ -707,10 +726,33 @@ export const projectsOrganizations = pgTable(
 				onUpdate: 'cascade',
 			})
 			.notNull(),
+		role: role('role').references(() => roles.role, { onDelete: 'cascade', onUpdate: 'cascade' }),
 	},
 	(table) => {
 		return {
 			pk: primaryKey({ columns: [table.organizationId, table.projectId] }),
+			unq: unique().on(table.projectId, table.organizationId),
+		};
+	}
+);
+
+export const projectsOrganizationsTranslations = pgTable(
+	'projects_organizations_t',
+	{
+		...LANG_COLUMN,
+		projectId: text('project_id').notNull(),
+		organizationId: text('organization_id').notNull(),
+		description: text('description'),
+	},
+	(table) => {
+		return {
+			fk: foreignKey({
+				columns: [table.projectId, table.organizationId],
+				foreignColumns: [projectsOrganizations.projectId, projectsOrganizations.organizationId],
+			})
+				.onDelete('cascade')
+				.onUpdate('cascade'),
+			pk: primaryKey({ columns: [table.projectId, table.organizationId] }),
 		};
 	}
 );
@@ -721,6 +763,7 @@ export const projectsOrganizations = pgTable(
 export const projectsLikes = pgTable(
 	'projects_likes',
 	{
+		...CREATED_AT_COLUMN,
 		userId: text('user_id')
 			.references(() => users.id, {
 				onDelete: 'cascade',
