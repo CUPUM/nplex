@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="/static/logo-on-dark-animated.svg">
-    <source media="(prefers-color-scheme: light)" srcset="/static/logo-on-light-animated.svg">
-    <img alt="Nplex logo" src="/static/logo-on-dark-animated.svg" height="2em" width="auto">
+    <source media="(prefers-color-scheme: dark)" srcset="/static/logo-on-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="/static/logo-on-light.svg">
+    <img alt="Nplex logo" src="/static/logo-on-dark-animated.svg" height="2em" width="250px">
   </picture>
 </p>
 
