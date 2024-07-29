@@ -1,33 +1,16 @@
-<h1 align="center">
-  <img width="250" height="auto" src="/static/logo.svg" alt="Nplex">
-</h1>
-
 <p align="center">
-  See it live at <a href="www.nplex.design"><b>nplex.design</b></a>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="/static/logo-on-dark-animated.svg">
+    <source media="(prefers-color-scheme: light)" srcset="/static/logo-on-light-animated.svg">
+    <img alt="Nplex logo" src="/static/logo-on-dark-animated.svg" height="2em" width="auto">
+  </picture>
 </p>
 
-<!--
-## Stack & hosting
+<p align="center">
+  <a href="www.nplex.design">www.nplex.design</a>
+</p>
 
-The app is built using:
-
-| Main techs           | Use                                                        |
-| :------------------- | :--------------------------------------------------------- |
-| Svelte               | Frontend framework                                         |
-| SvelteKit            | Routing, SSR, and other full-stack related functionalities |
-| Drizzle-ORM          | Type-safe database ORM                                     |
-| Drizzle-Kit          | Database manager                                           |
-| Lucia                | Authentication                                             |
-| Melt-UI              | Headless UI components                                     |
-| SvelteKit Superforms | Form handling                                              |
-| Zod                  | Form data validation                                       |
-
-The production instance is deployed using:
-
-| Environement | Use                    |
-| :----------- | :--------------------- | --- |
-| Vercel       | Serverless app hosting |
-| Neon         | Postgres database      | -->
+# Nplex
 
 ## Getting started
 
@@ -75,37 +58,30 @@ This script is also used to provide further shorthands, such as:
 
 ```sh
 # Generate a new migration
-pnpm db:gen
+pnpm db:generate
 
 # Apply migrations to the remote database
-pnpm db:apply
-
-# Scaffold a full new db, using both gen and apply. Used notably during quick testing.
-pnpm db:scaffold
+pnpm db:migrate
 ```
 
-## Users and permissions
+## Maintenance
 
-Throughout the app, authorizations are controled based on two complementeray strategies:
+### Application
 
-- Role-based access control (_RBAC_)
-- Attribute-based access control (_ABAC_)
+#### Hosting
 
-### Role-based access control
+#### Email
 
-Role-based constraints simply check if a user can access data or complete operations on data by
-checking against their `role`. It differs from row-specific strategies in that it is only concerned
-with data-agnostic permissions (associated with tables, rows, etc.).
+#### Deployment
 
-### Attribute-based access control
+#### Architecture
 
-These constraints take the form of fine-grained \_meta_data queries. They are generally used after
-RBAC step(s) have been passed, and are layered within database CRUD queries to reduce
-back-and-forths as well as limit query scopes in an app-side RLS-esque fashion.
+### Database
 
----
+#### Hosting
+
+#### Migrating schema
 
 <p align="center">
   <sub>:copyright: UNESCO Chair in Landscape and Environement</sub>
 </p>
-</footer>

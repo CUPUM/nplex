@@ -1,0 +1,13 @@
+<svg width="520" height="200" viewBox="0 0 520 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<path id="logo-n" d="M0 100C0 72.3858 22.3858 50 50 50C77.6142 50 100 72.3858 100 100V150H0V100Z" fill="rgb(32,45,40)"/>
+	<g id="logo-p">
+		<path id="logo-p-descendant" d="M120 150H170V200H120V150Z" fill="rgb(32,45,40)"/>
+		<circle id="logo-p-eye" cx="170" cy="100" r="50" fill="rgb(32,45,40)"/>
+	</g>
+	<path id="logo-l" d="M240 0H290V150H240V0Z" fill="rgb(32,45,40)"/>
+	<path id="logo-e" fill-rule="evenodd" clip-rule="evenodd" d="M405 100C405 72.3858 382.614 50 355 50C327.386 50 305 72.3858 305 100C305 127.614 327.386 150 355 150V100H405Z" fill="rgb(32,45,40)"/>
+	<g id="logo-x">
+		<path id="logo-x-bottom" d="M420 100H470V150H420V100Z" fill="rgb(32,45,40)"/>
+		<path id="logo-x-top" d="M470 50H520V100H470V50Z" fill="rgb(32,45,40)"/>
+	</g>
+</svg>

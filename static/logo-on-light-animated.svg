@@ -1,0 +1,218 @@
+<!-- Warning! This svg is dependent on namespace for animations and using it more than once per page will result in broken contents. -->
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	fill="none"
+	viewBox="520 200"
+	height="1em"
+>
+	<path
+		id="nplex_n"
+		d="M0 100C0 72.3858 22.3858 50 50 50C77.6142 50 100 72.3858 100 100V150H0V100Z"
+		fill="rgb(32,45,40)"
+		opacity="0"
+	>
+		<animate
+			id="nplex_n_opacity"
+			attributeName="opacity"
+			dur="750ms"
+			fill="freeze"
+			calcMode="spline"
+			keySplines="0.16, 1, 0.3, 1"
+			values="0;1"
+			begin="1000ms"
+		/>
+		<animateTransform
+			id="nplex_n_translate"
+			attributeName="transform"
+			attributeType="XML"
+			type="translate"
+			dur="750ms"
+			calcMode="spline"
+			keySplines="0, 1, 0.2, 1"
+			values="75;0"
+			begin="nplex_n_opacity.begin"
+		/>
+	</path>
+	<g id="nplex_p">
+		<circle id="nplex_p_eye" cx="170" cy="100" r="50" fill="rgb(32,45,40)" opacity="0">
+			<animate
+				id="nplex_p_eye_opacity"
+				attributeName="opacity"
+				dur="750ms"
+				begin="nplex_n_translate.begin+100ms"
+				fill="freeze"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1"
+				values="0;1"
+			/>
+			<animateTransform
+				id="nplex_p_eye_translate"
+				attributeName="transform"
+				attributeType="XML"
+				type="translate"
+				dur="750ms"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1"
+				values="-75;0"
+				begin="nplex_p_eye_opacity.begin"
+			/>
+		</circle>
+		<rect
+			id="nplex_p_descendant"
+			x="120"
+			y="150"
+			fill="rgb(32,45,40)"
+			width="50"
+			height="50"
+			opacity="0"
+		>
+			<animate
+				id="nplex_p_descendant_opacity"
+				attributeName="opacity"
+				dur="1000ms"
+				begin="nplex_p_eye_translate.end-350ms"
+				fill="freeze"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1"
+				values="0;1"
+			/>
+			<animateTransform
+				id="nplex_p_descendant_translate"
+				attributeName="transform"
+				attributeType="XML"
+				type="translate"
+				dur="1000ms"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1; 0, 0.25, 0.25, 1"
+				values="50 -50;50 0;0 0"
+				begin="nplex_p_descendant_opacity.begin"
+			/>
+		</rect>
+	</g>
+	<rect
+		id="nplex_l"
+		fill="rgb(32,45,40)"
+		x="240"
+		y="0"
+		width="50"
+		height="150"
+		opacity="0"
+		transform-origin="265 75"
+	>
+		<animate
+			id="nplex_l_opacity"
+			attributeName="opacity"
+			dur="750ms"
+			begin="nplex_p_eye_translate.end-500ms"
+			fill="freeze"
+			calcMode="spline"
+			keySplines="0, 1, 0.2, 1"
+			values="0;1"
+		/>
+		<animateTransform
+			id="nplex_l_translate"
+			attributeName="transform"
+			attributeType="XML"
+			type="scale"
+			dur="750ms"
+			calcMode="spline"
+			keySplines="0, 1, 0.2, 1"
+			values="1 0;1 1"
+			begin="nplex_l_opacity.begin"
+		/>
+	</rect>
+	<path
+		id="nplex_e"
+		d="M405 100C405 72.3858 382.614 50 355 50C327.386 50 305 72.3858 305 100C305 127.614 327.386 150 355 150V100H405Z"
+		fill="rgb(32,45,40)"
+		transform-origin="350 100"
+		opacity="0"
+	>
+		<animate
+			id="nplex_e_opacity"
+			attributeName="opacity"
+			dur="1000ms"
+			begin="nplex_l_translate.end-500ms"
+			fill="freeze"
+			calcMode="spline"
+			keySplines="0, 1, 0.2, 1"
+			values="0;1"
+		/>
+		<animateTransform
+			id="nplex_e_translate"
+			attributeName="transform"
+			attributeType="XML"
+			type="rotate"
+			dur="1000ms"
+			calcMode="spline"
+			keySplines="0, 0.75, 0.15, 1"
+			values="-180;0"
+			begin="nplex_e_opacity.begin"
+		/>
+	</path>
+	<g id="nplex_x">
+		<rect
+			id="nplex_x_bottom"
+			x="420"
+			y="100"
+			width="50"
+			height="50"
+			fill="rgb(32,45,40)"
+			opacity="0"
+		>
+			<animate
+				id="nplex_x_bottom_opacity"
+				attributeName="opacity"
+				dur="1000ms"
+				begin="nplex_e_translate.begin+150ms"
+				fill="freeze"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1"
+				values="0;1"
+			/>
+			<animateTransform
+				id="nplex_x_bottom_translate"
+				attributeName="transform"
+				attributeType="XML"
+				type="translate"
+				dur="1000ms"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1"
+				values="0 -50;0 0"
+				begin="nplex_x_bottom_opacity.begin"
+			/>
+		</rect>
+		<rect
+			id="nplex_x_top"
+			x="470"
+			y="50"
+			width="50"
+			height="50"
+			fill="rgb(32,45,40)"
+			opacity="0"
+			transform-origin="470 100"
+		>
+			<animate
+				id="nplex_x_top_opacity"
+				attributeName="opacity"
+				dur="1000ms"
+				begin="nplex_x_bottom_translate.begin+350ms"
+				fill="freeze"
+				calcMode="spline"
+				keySplines="0, 1, 0.2, 1"
+				values="0;1"
+			/>
+			<animateTransform
+				id="nplex_x_top_translate"
+				attributeName="transform"
+				attributeType="XML"
+				type="rotate"
+				dur="750ms"
+				calcMode="spline"
+				keySplines="0, 0.75, 0.15, 1"
+				values="-180;0"
+				begin="nplex_x_top_opacity.begin"
+			/>
+		</rect>
+	</g>
+</svg>
