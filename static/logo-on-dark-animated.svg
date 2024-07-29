@@ -1,10 +1,10 @@
 <!-- Warning! This svg is dependent on namespace for animations and using it more than once per page will result in broken contents. -->
 <svg
 	xmlns="http://www.w3.org/2000/svg"
-	fill="none"
-	viewBox="0 0 520 200"
-	height="200"
 	width="520"
+	height="200"
+	viewBox="0 0 520 200"
+	fill="none"
 >
 	<path
 		id="nplex_n"
