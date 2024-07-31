@@ -1,10 +1,8 @@
 <picture><source media="(prefers-color-scheme: dark)" srcset="/static/logo-on-dark-animated.svg"><source media="(prefers-color-scheme: light)" srcset="/static/logo-on-light-animated.svg"><div align="center">[<img align="center" alt="Nplex logo" src="/static/logo-on-dark-animated.svg" width="250px" height="auto">](www.nplex.design)</div></picture>
 
-<p align="center">
-  <a href="www.nplex.design">www.nplex.design</a>
-</p>
-
 # Nplex
+
+## À propos
 
 Une application web qui met de l'avant la qualité du design et fait connaître les concepteurs et les
 artisans locaux de projets accessibles et responsables.
@@ -20,10 +18,15 @@ d’ici. De la cuisine à l’esplanade, en passant par le jardin et les balcons
 l’excellence locale et informe sur les meilleures pratiques pour les projets de rénovation et de
 construction modestes.
 
-<p align="center">
-  <sub><a href="www.nplex.design">www.nplex.design</a></sub>
-</p>
+## Documentation
+
+[La documentation](/docs) du projet &mdash; son déroulement et ses aspects techniques liés au
+développement &mdash; se trouve dans le répertoire [docs](/docs).
+
+---
 
 <p align="center">
-  <sub><a href="https://unesco-studio.umontreal.ca/">:copyright: UNESCO Chair in Landscape and Environementn</a></sub>
+  <a href="www.nplex.design">www.<b>nplex</b>.design</a>
+  <br/>
+  <sub><a href="https://unesco-studio.umontreal.ca/">&copy; UNESCO Chair in Landscape and Environment</a></sub>
 </p>
