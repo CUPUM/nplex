@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { expoIn, expoOut } from 'svelte/easing';
+	import { cubicOut, expoOut } from 'svelte/easing';
 	import type { HTMLMenuAttributes } from 'svelte/elements';
 	import { fly, type FlyParams } from 'svelte/transition';
 	import { cn } from '../utilities';
@@ -20,13 +20,13 @@
 		'p-section-padding bg-popover gap-padding relative flex flex-col rounded-lg text-base',
 		className
 	)}
-	in:fly|global={{ x: 10, duration: 750, easing: expoOut, ...intro }}
-	out:fly|global={{ y: -10, duration: 250, easing: expoIn, ...outro }}
+	in:fly|global={{ x: 12, duration: 750, easing: expoOut, ...intro }}
+	out:fly|global={{ y: 12, duration: 250, easing: cubicOut, ...outro }}
 	{...restProps}
 >
 	{#if legend}
 		<span
-			class="px-input-padding py-input-nest bg-input/soft *:stroke-md *:[.lucide-icon]:opacity-soft flex flex-row items-center gap-[1em] self-start rounded-full text-xs text-base/soft font-thin"
+			class="px-input-padding py-input-nest bg-input/soft *:icon:stroke-md opacity-soft flex flex-row items-center gap-[1em] self-start rounded-full text-base text-xs"
 		>
 			{@render legend?.()}
 		</span>

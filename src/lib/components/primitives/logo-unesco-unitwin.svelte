@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import type { AvailableLanguageTag } from '$i18n/runtime';
+	import { languageTag, type AvailableLanguageTag } from '$i18n/runtime';
 	import type { SVGAttributes } from 'svelte/elements';
 
 	let { lang, ...props }: { lang?: AvailableLanguageTag } & SVGAttributes<SVGElement> = $props();
 
-	let _lang = $derived(lang || $page.data.lang);
+	let _lang = $derived(lang || languageTag());
 </script>
 
 <svg

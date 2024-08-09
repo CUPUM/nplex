@@ -1,5 +1,4 @@
 import { ROLES } from '$lib/auth/constants';
-import { LOAD_DEPENDENCIES } from '$lib/common/constants';
 import { db } from '$lib/db/db.server';
 import {
 	organizationExpertises,
@@ -9,7 +8,6 @@ import {
 	organizations,
 	organizationsUsers,
 } from '$lib/db/schema/public.server';
-import type { ServerLoadEvent } from '@sveltejs/kit';
 import { and, eq, exists, or, type SQLWrapper } from 'drizzle-orm';
 import { $boolean, $true, getColumns } from 'drizzle-orm-helpers';
 import type { User } from 'lucia';
@@ -56,34 +54,26 @@ export function matchesOrganizationsFilters(filters: z.infer<typeof organization
 	return $true;
 }
 
-export function getOrganizationTypesList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
-	return joinTranslation(
-		db
-			.select({
-				...getColumns(organizationTypesTranslations),
-				...getColumns(organizationTypes),
-			})
-			.from(organizationTypes)
-			.$dynamic(),
-		organizationTypesTranslations,
-		eq(organizationTypes.id, organizationTypesTranslations.id),
-		event
-	);
-}
+export const organizationTypesList = joinTranslation(
+	db
+		.select({
+			...getColumns(organizationTypesTranslations),
+			...getColumns(organizationTypes),
+		})
+		.from(organizationTypes)
+		.$dynamic(),
+	organizationTypesTranslations,
+	eq(organizationTypes.id, organizationTypesTranslations.id)
+);
 
-export function getOrganizationExpertisesList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
-	return joinTranslation(
-		db
-			.select({
-				...getColumns(organizationExpertisesTranslations),
-				...getColumns(organizationExpertises),
-			})
-			.from(organizationExpertises)
-			.$dynamic(),
-		organizationExpertisesTranslations,
-		eq(organizationExpertises.id, organizationExpertisesTranslations.id),
-		event
-	);
-}
+export const organizationExpertisesList = joinTranslation(
+	db
+		.select({
+			...getColumns(organizationExpertisesTranslations),
+			...getColumns(organizationExpertises),
+		})
+		.from(organizationExpertises)
+		.$dynamic(),
+	organizationExpertisesTranslations,
+	eq(organizationExpertises.id, organizationExpertisesTranslations.id)
+);

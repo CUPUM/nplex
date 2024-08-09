@@ -20,7 +20,7 @@ export function renderEmail<TProps extends Record<string, any>>(
 	component: Component<TProps>,
 	{ props }: { props: TProps }
 ) {
-	// @ts-ignore
 	const rendered = render(component, { props });
-	return rendered.html.replace('%svelte-email.head%', rendered.head);
+	console.log(rendered);
+	return rendered.body.replace('%svelte-email.head%', rendered.head);
 }

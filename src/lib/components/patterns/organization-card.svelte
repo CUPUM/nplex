@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { withLang } from '$lib/i18n/location';
 	import { cn } from '../utilities';
 
 	let {
@@ -16,7 +15,7 @@
 </script>
 
 <article class={cn('bg-card rounded-card p-card-padding relative', className)}>
-	<a href={withLang(`/organizations/${id}`)} class="fill"></a>
+	<a href="/organizations/{id}" class="fill"></a>
 	<div>
 		{id}
 	</div>

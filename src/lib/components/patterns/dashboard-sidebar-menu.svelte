@@ -48,7 +48,7 @@
 			this={href ? 'a' : 'legend'}
 			{href}
 			{...restProps}
-			class="px-input-padding py-input-nest bg-input/soft *:stroke-md *:[.lucide-icon]:opacity-soft aria-[current]:text-primary-accent aria-[current]:bg-primary/10 flex flex-row items-center gap-[1em] self-start rounded-full text-xs text-xs text-base/soft backdrop-blur-md"
+			class="px-input-padding bg-input/soft *:stroke-md *:icon:opacity-soft aria-[current]:text-primary-accent aria-[current]:bg-primary/10 flex h-[2.5em] flex-row items-center gap-[1em] self-start rounded-full text-xs text-xs text-base/soft backdrop-blur-md"
 		>
 			{@render legend()}
 		</svelte:element>

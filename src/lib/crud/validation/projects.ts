@@ -8,6 +8,7 @@ import {
 	projectsExemplarityMarkers,
 	projectsImagesColumnsWithoutVectors,
 	projectsInterventions,
+	projectsOrganizations,
 	projectsTranslations,
 	projectsUsers,
 } from '$lib/db/schema/public.server';
@@ -29,6 +30,7 @@ import {
 	PROJECT_TITLE_MAX,
 } from './constants';
 import { LANG_COLUMN_SCHEMA, withTranslationsSchema } from './i18n';
+import { organizationsSchema } from './organizations';
 import {
 	projectExemplarityMarkersSchema,
 	projectInterventionsSchema,
@@ -63,6 +65,8 @@ export const projectsBuildingLevelsSchema = createInsertSchema(projectsBuildingL
 	height: (s) =>
 		s.height.min(PROJECT_BUILDING_LEVELS_HEIGHT_MIN).max(PROJECT_BUILDING_LEVELS_HEIGHT_MAX),
 });
+
+export const projectsOrganizationsSchema = createInsertSchema(projectsOrganizations);
 
 export const projectsExemplarityMarkersSchema = createInsertSchema(projectsExemplarityMarkers);
 
@@ -102,7 +106,8 @@ export const projectGeneralFormSchema = projectsWithTranslationsSchema
 		translations: true,
 	})
 	.extend({
-		interventionIds: projectsInterventionsSchema.shape.interventionId.array(),
+		// typesIds: projects
+		interventionsIds: projectsInterventionsSchema.shape.interventionId.array(),
 	});
 
 export const projectExemplarityMarkersFormSchema = z.object({
@@ -139,4 +144,10 @@ export const projectsFiltersSchema = z.object({
 	types: projectTypesSchema.shape.id.array(),
 	interventions: projectInterventionsSchema.shape.id.array(),
 	markers: projectExemplarityMarkersSchema.shape.id.array(),
+});
+
+// export const projectOrganizationAddSchema = project;
+
+export const projectOrganizationsListSchema = z.object({
+	organizationIds: organizationsSchema.shape.id.array(),
 });

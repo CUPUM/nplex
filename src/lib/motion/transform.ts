@@ -64,12 +64,12 @@ export function transform(
 		easing,
 		css: (t, u) => {
 			const ns = `scale(${tr(sd[0], u, 1)}${sd[1] == null ? '' : `,${tr(sd[1], u, 1)}`})`;
-			const nt = `translate3d(${tr(td[0], u)}px,${tr(td[1], u)}px,${tr(td[2], u)}px)`;
 			// prettier-ignore
 			const nr = `rotateX(${tr(rd[0], u)}deg) rotateY(${tr(rd[1], u)}deg) rotateZ(${tr(rd[2], u)}deg)`;
 			return `
 			opacity: ${target_opacity - od * u};
-			transform: ${transform} ${ns} ${nt} ${nr};
+			transform: ${transform} ${ns} ${nr};
+			translate: ${tr(td[0], u)}px,${tr(td[1], u)}px,${tr(td[2], u)}px;
 		`;
 		},
 	} satisfies SvelteTransitionReturnType;

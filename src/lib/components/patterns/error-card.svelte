@@ -7,22 +7,21 @@
 <article
 	class="p-card-padding relative flex h-full w-full flex-1 flex-col items-center justify-center"
 >
-	<div
-		class="p-section-padding rounded-section bg-card relative flex flex-col justify-center overflow-hidden"
-	>
-		<OctagonAlert class="size-2xl text-error absolute self-center opacity-5" />
-		<div class="gap-padding z-1 flex flex-col items-start">
-			<p class="text-error font-bold">
-				{m.error()}: {$page.status}
-			</p>
-			<p class="opacity-soft text-sm font-thin">
-				{#if $page.error?.message}
-					{$page.error.message}
-				{:else}
-					<span class="opacity-soft italic">{m.no_error_message()}</span>
-				{/if}
-			</p>
-			<a href={$page.url.toString()} class="button text-sm"><RefreshCw />{m.reset()}</a>
-		</div>
+	<div class="p-lg bg-card rounded-section gap-sm flex w-xs max-w-full flex-col">
+		<p class="text-error font-bold">
+			<OctagonAlert class="mr-[0.25em] inline-block animate-pulse align-text-bottom opacity-65" />
+			{m.error()}
+		</p>
+		<p class="opacity-soft">
+			{$page.status}:
+			{#if $page.error?.message}
+				{$page.error.message}
+			{:else}
+				<span class="opacity-soft italic">{m.no_error_message()}</span>
+			{/if}
+		</p>
+		<a href={$page.url.toString()} class="button mt-md self-center text-sm">
+			<RefreshCw />{m.reset()}
+		</a>
 	</div>
 </article>

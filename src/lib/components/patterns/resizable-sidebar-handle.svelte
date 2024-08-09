@@ -57,7 +57,7 @@
 <button
 	transition:slide={{ axis: 'x' }}
 	onpointerdown={start}
-	class="z-front group/handle w-gap top-sticky-top h-main-full-height relative relative sticky flex flex-none cursor-ew-resize flex-row items-center justify-center"
+	class="z-front group/handle w-gap top-sticky-top max-h-main-full-height relative relative sticky flex flex-none cursor-ew-resize flex-row items-center justify-center self-stretch"
 >
 	<hr
 		class="group-hover/handle:bg-input group-active/handle:bg-input-accent absolute h-full w-[var(--border-width-md)] self-stretch rounded-full border-none transition-all"

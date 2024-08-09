@@ -13,15 +13,15 @@
 </script>
 
 <script lang="ts">
-	import { type AvailableLanguageTag } from '$i18n/runtime';
+	import { languageTag, type AvailableLanguageTag } from '$i18n/runtime';
 	import { appUrl } from '$lib/common/url';
-	import { withLang } from '$lib/i18n/location';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 
 	let {
 		children,
 		variant = 'default',
 		href,
+		hreflang,
 		...buttonProps
 	}: {
 		hreflang?: AvailableLanguageTag;
@@ -29,10 +29,16 @@
 		href: string;
 	} & HTMLAnchorAttributes = $props();
 
-	const langHref = withLang(href, buttonProps.hreflang);
-	const appHref = href.startsWith('/') ? appUrl(langHref) : langHref;
+	const based = href.startsWith('/') ? appUrl(href, { lang: hreflang ?? languageTag() }) : href;
 </script>
 
-<a {...buttonProps} href={appHref} rel="external" style="{STYLES.BASE} {STYLES.VARIANTS[variant]}">
+<a
+	{...buttonProps}
+	href={based}
+	{hreflang}
+	data-no-translate
+	rel="external"
+	style="{STYLES.BASE} {STYLES.VARIANTS[variant]}"
+>
 	{@render children?.()}
 </a>

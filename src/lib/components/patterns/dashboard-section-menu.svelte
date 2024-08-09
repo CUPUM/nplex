@@ -8,9 +8,9 @@
 </script>
 
 <menu
-	in:fly|global={{ opacity: 0, y: 6, duration: 250, easing: expoOut, delay: 500 }}
+	in:fly|global={{ y: 6, duration: 750, easing: expoOut }}
 	class={cn(
-		'gap-input-group-gap p-input-nest bg-card/50 bottom-md big sticky flex flex-row self-center rounded-[calc(var(--radius-input)+var(--spacing-input-nest))] text-sm backdrop-blur-md',
+		'gap-input-group-gap p-sm bg-card/50 bottom-md sticky flex flex-row self-center rounded-[calc(var(--radius-input)+var(--spacing-sm))] text-sm backdrop-blur-md',
 		className
 	)}
 	{...menuProps}

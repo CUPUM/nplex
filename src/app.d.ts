@@ -2,8 +2,9 @@
 
 import type { AvailableLanguageTag } from '$i18n/runtime';
 import type { ToastParameters } from '$lib/builders/toasts.svelte';
-import type { ModeSetting } from '$lib/modes/constants';
 import type { Presentation } from '$lib/presentation/constants';
+import type { ThemeSetting } from '$lib/theme/constants';
+import type { ParaglideLocals } from '@inlang/paraglide-sveltekit';
 import type { Session, User } from 'lucia';
 
 declare global {
@@ -18,13 +19,12 @@ declare global {
 		interface Locals {
 			user: User | null;
 			session: Session | null;
-			mode: ModeSetting;
-			lang: AvailableLanguageTag;
+			theme: ThemeSetting;
+			paraglide: ParaglideLocals<AvailableLanguageTag>;
 			presentation: Presentation;
 		}
 		interface PageData {
 			flash?: ToastParameters<string>;
-			lang: AvailableLanguageTag;
 			user: User | null;
 			presentation: Presentation;
 			navbar?: {};

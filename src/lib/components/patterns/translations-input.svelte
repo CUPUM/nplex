@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
+	import { availableLanguageTags, languageTag, type AvailableLanguageTag } from '$i18n/runtime';
 	import { Tabs } from '$lib/builders/tabs.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import { switchThumbCrossfade } from '$lib/motion/presets';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { get } from 'svelte/store';
 
 	let {
 		children,
@@ -19,7 +17,7 @@
 		>;
 	} & Omit<HTMLAttributes<HTMLDivElement>, 'children'> = $props();
 
-	const tabs = new Tabs({ defaultValue: get(page).data.lang });
+	const tabs = new Tabs({ defaultValue: languageTag() });
 	const key = {};
 </script>
 

@@ -23,25 +23,17 @@ const config = {
 			$i18n: 'src/lib/i18n/generated',
 			$content: 'src/content',
 		},
-		prerender: {
-			entries: ['/fr', '/en'],
-			handleHttpError: (details) => {
-				if (details.path.endsWith('.mdx')) {
-					return 'warn';
-				}
-				return 'fail';
-			},
-		},
 	},
 	compilerOptions: {
-		// Only applies to prod.
-		cssHash: (styles) => `nplex-${styles.hash(styles.css)}`,
+		cssHash: (styles) => `nplex-${styles.hash(styles.css)}`, // Only applies to prod.
 	},
 };
 
 export default config;
 
 /**
+ * Scoping component styles to a predefined layer to control cascade ordering.
+ *
  * @see https://github.com/sveltejs/svelte/issues/11345
  */
 function csslayer() {

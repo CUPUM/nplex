@@ -6,7 +6,7 @@ import {
 	type SuperForm,
 	type SuperValidated,
 } from 'sveltekit-superforms/client';
-import { toasts as rootToasts } from '../../../routes/[[lang=lang]]/toasts-provider.svelte';
+import { toasts as rootToasts } from '../../../routes/toasts-provider.svelte';
 
 function isToastParameters(
 	maybeToastParameters: unknown

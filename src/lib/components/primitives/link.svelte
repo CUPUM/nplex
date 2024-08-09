@@ -10,41 +10,36 @@
 			currentUrl = url;
 			currentUrlWithoutLang = url;
 			if (currentUrlWithoutLang) {
-				currentUrlWithoutLang.pathname = removeLang(url.pathname);
+				currentUrlWithoutLang.pathname = i18n.route(url.pathname);
 			}
 		});
 	}
 
 	export function linkAttributes(
-		hrefWithoutLang: string,
+		href: string,
 		{
-			lang,
 			currentOnSubpath,
-			omitHash = true,
+			currentOmitHash = true,
 		}: {
-			lang?: AvailableLanguageTag;
 			currentOnSubpath?: boolean;
-			omitHash?: boolean;
+			currentOmitHash?: boolean;
 		} = {}
 	) {
 		let current = $derived.by(() => {
 			if (currentUrlWithoutLang && currentUrl) {
 				if (
-					hrefWithoutLang.startsWith('#') &&
-					decodeURIComponent(currentUrl.hash) === decodeURIComponent(hrefWithoutLang)
+					href.startsWith('#') &&
+					decodeURIComponent(currentUrl.hash) === decodeURIComponent(href)
 				) {
 					return 'step' as const;
 				}
-				if (
-					currentUrlWithoutLang.pathname ===
-					(omitHash ? hrefWithoutLang.split('#')[0] : hrefWithoutLang)
-				) {
+				if (currentUrlWithoutLang.pathname === (currentOmitHash ? href.split('#')[0] : href)) {
 					return 'page' as const;
 				}
 				const currentPathWithHash = `${currentUrlWithoutLang.pathname}${currentUrlWithoutLang.hash}`;
 				if (
-					(currentOnSubpath && currentPathWithHash.startsWith(hrefWithoutLang)) ||
-					currentPathWithHash === hrefWithoutLang
+					(currentOnSubpath && currentPathWithHash.startsWith(href)) ||
+					currentPathWithHash === href
 				) {
 					return 'page' as const;
 				}
@@ -53,9 +48,7 @@
 		});
 
 		return {
-			get href() {
-				return withLang(hrefWithoutLang, lang);
-			},
+			href,
 			get 'aria-current'() {
 				return current;
 			},
@@ -65,7 +58,7 @@
 
 <script lang="ts">
 	import type { AvailableLanguageTag } from '$i18n/runtime';
-	import { removeLang, withLang } from '$lib/i18n/location';
+	import { i18n } from '$lib/i18n/adapter';
 	import type { HTMLAnchorAttributes } from 'svelte/elements';
 
 	let {
@@ -73,14 +66,15 @@
 		hreflang,
 		children,
 		currentOnSubpath,
+		currentOmitHash,
 		...restProps
-	}: HTMLAnchorAttributes & {
-		href: string;
-		hreflang?: AvailableLanguageTag;
-		currentOnSubpath?: boolean;
-	} = $props();
+	}: HTMLAnchorAttributes &
+		Parameters<typeof linkAttributes>[1] & {
+			href: string;
+			hreflang?: AvailableLanguageTag;
+		} = $props();
 </script>
 
-<a {...restProps} {...linkAttributes(href, { lang: hreflang, currentOnSubpath })}>
+<a {...restProps} {...linkAttributes(href, { currentOnSubpath, currentOmitHash })} {hreflang}>
 	{@render children?.()}
 </a>

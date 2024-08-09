@@ -22,7 +22,7 @@
 
 <fieldset
 	class={cn(
-		'group/filter bg-card/soft rounded-section relative flex min-w-0 flex-none flex-col items-stretch self-stretch',
+		'group/filter bg-card/soft rounded-section after:bg-base after:rounded-inherit relative flex min-w-0 flex-none flex-col items-stretch self-stretch after:absolute after:inset-0 after:-z-1',
 		className
 	)}
 	data-state={open ? 'open' : undefined}

@@ -20,11 +20,11 @@ construction modestes.
 
 ## Documentation
 
-[La documentation](/docs) du projet &mdash; son déroulement et ses aspects techniques liés au
-développement &mdash; se trouve dans le répertoire [docs](/docs).
+[La documentation](/docs) du projet &mdash; incluant son déroulement et ses aspects techniques liés
+au développement &mdash; se trouve dans le répertoire [docs](/docs).
 
----
-
+<br/>
+<br/>
 <p align="center">
   <a href="www.nplex.design">www.<b>nplex</b>.design</a>
   <br/>

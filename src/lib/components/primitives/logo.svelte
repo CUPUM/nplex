@@ -28,7 +28,7 @@
 	{viewBox}
 	{height}
 	{...svgProps}
-	class={cn('relative', className)}
+	class={cn('logo relative', className)}
 >
 	<path
 		id="{syncbaseId}_n"

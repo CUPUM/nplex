@@ -1,5 +1,4 @@
 import { ROLES } from '$lib/auth/constants';
-import { LOAD_DEPENDENCIES } from '$lib/common/constants';
 import { LANG_COLUMN_NAME } from '$lib/db/constants';
 import { db } from '$lib/db/db.server';
 import { langToRegconfig } from '$lib/db/helpers.server';
@@ -29,14 +28,14 @@ import {
 	projectsTranslations,
 	projectsUsers,
 } from '$lib/db/schema/public.server';
-import type { ServerLoadEvent } from '@sveltejs/kit';
-import { and, asc, eq, exists, inArray, or, sql, type SQLWrapper } from 'drizzle-orm';
-import { $boolean, $true, coalesce, getColumns } from 'drizzle-orm-helpers';
+import { and, asc, eq, exists, inArray, lte, or, sql } from 'drizzle-orm';
+import { $boolean, coalesce, getColumns } from 'drizzle-orm-helpers';
 import {
 	$emptyJsonArray,
 	jsonAgg,
 	jsonAggBuildObject,
 	jsonBuildObject,
+	now,
 } from 'drizzle-orm-helpers/pg';
 import type { PgSelect } from 'drizzle-orm/pg-core';
 import type { User } from 'lucia';
@@ -114,15 +113,212 @@ export function canEditProject(user: Pick<User, 'id' | 'role'>) {
 /**
  * Check if project(s) are published and publicly viewable.
  */
-export function isPublicProject(project: SQLWrapper) {
-	return $true;
+export function isPublicProject() {
+	return lte(projects.publishedAt, now());
+}
+
+/**
+ * Check if client can view project, wether by being an allowed editor or by the project being
+ * public.
+ */
+export function canViewProject(user: Pick<User, 'id' | 'role'> | null) {
+	return or(user ? canEditProject(user) : undefined, isPublicProject());
 }
 
 /**
  * Get the complete list, localized, of project types.
  */
-export function getProjectTypesList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
+export const projectTypesList = joinTranslation(
+	db
+		.select({
+			...getColumns(projectTypesTranslations),
+			...getColumns(projectTypes),
+		})
+		.from(projectTypes)
+		.$dynamic(),
+	projectTypesTranslations,
+	eq(projectTypes.id, projectTypesTranslations.id)
+);
+
+/**
+ * Get the complete list, localized, of project site ownerships.
+ */
+export const projectSiteOwnershipsList = joinTranslation(
+	db
+		.select({
+			...getColumns(projectSiteOwnerships),
+			...getColumns(projectSiteOwnershipsTranslations),
+		})
+		.from(projectSiteOwnerships)
+		.$dynamic(),
+	projectSiteOwnershipsTranslations,
+	eq(projectSiteOwnerships.id, projectSiteOwnershipsTranslations.id)
+);
+
+/**
+ * Get the complete list, localized, of project interventions.
+ */
+export const projectInterventionsList = joinTranslation(
+	db
+		.select({
+			...getColumns(projectInterventionsTranslations),
+			...getColumns(projectInterventions),
+			typeIds: jsonAgg(projectTypesToInterventions.typeId).as('types_ids'),
+		})
+		.from(projectInterventions)
+		.leftJoin(
+			projectTypesToInterventions,
+			eq(projectInterventions.id, projectTypesToInterventions.interventionId)
+		)
+		.groupBy(
+			...[
+				...Object.values(getColumns(projectInterventionsTranslations)),
+				...Object.values(getColumns(projectInterventions)),
+			]
+		)
+		.orderBy(asc(projectInterventionsTranslations.title))
+		.$dynamic(),
+	projectInterventionsTranslations,
+	eq(projectInterventions.id, projectInterventionsTranslations.id)
+);
+
+/**
+ * Get the complete list, localized, of project interventions categories.
+ */
+export const projectInterventionCategoriesList = joinTranslation(
+	db
+		.select({
+			...getColumns(projectInterventionsCategoriesTranslations),
+			...getColumns(projectInterventionsCategories),
+		})
+		.from(projectInterventionsCategories)
+		.$dynamic(),
+	projectInterventionsCategoriesTranslations,
+	eq(projectInterventionsCategories.id, projectInterventionsCategoriesTranslations.id)
+);
+
+/**
+ * Get the complete list, localized, of project interventions organized by their categories.
+ */
+export const projectInterventionsByCategoriesList = (() => {
+	const interventions = projectInterventionsList.as('interventions');
+	// Aggregating as json so we can later coalesce to empty arrays instead of
+	// json_build_object's null-fielded object when no rows match.
+	const interventionsJson = db
+		.select({
+			lang: interventions.lang,
+			categoryId: interventions.categoryId,
+			json: jsonBuildObject(getColumns(interventions)).as('json'),
+		})
+		.from(interventions)
+		.as('interventions_json');
+	const categories = getProjectInterventionCategoriesList().as('intervention_categories');
+	const categoriesColumns = getColumns(categories);
+	return db
+		.select({
+			...categoriesColumns,
+			interventions: coalesce(jsonAgg(interventionsJson.json), $emptyJsonArray),
+		})
+		.from(categories)
+		.groupBy(...Object.values(categoriesColumns))
+		.leftJoin(
+			interventionsJson,
+			and(
+				eq(categories.id, interventionsJson.categoryId),
+				eq(categories.lang, interventionsJson.lang)
+			)
+		);
+})();
+
+/**
+ * Get the complete list, localized, of project implantation types.
+ */
+export const projectImplantationTypesList = joinTranslation(
+	db
+		.select({
+			...getColumns(projectImplantationTypes),
+			...getColumns(projectImplantationTypesTranslations),
+		})
+		.from(projectImplantationTypes)
+		.$dynamic(),
+	projectImplantationTypesTranslations,
+	eq(projectImplantationTypes.id, projectImplantationTypesTranslations.id)
+);
+
+/**
+ * Get the complete list, localized, of project exemplarity markers.
+ */
+export const projectExemplarityMarkersList = joinTranslation(
+	db
+		.select({
+			...getColumns(projectExemplarityMarkersTranslations),
+			...getColumns(projectExemplarityMarkers),
+		})
+		.from(projectExemplarityMarkers)
+		.$dynamic(),
+	projectExemplarityMarkersTranslations,
+	eq(projectExemplarityMarkers.id, projectExemplarityMarkersTranslations.id)
+);
+
+/**
+ * Get the complete list, localized, of project exemplarity categories.
+ */
+export const projectExemplarityCategoriesList = joinTranslation(
+	db
+		.select({
+			...getColumns(projectExemplarityCategoriesTranslations),
+			...getColumns(projectExemplarityCategories),
+		})
+		.from(projectExemplarityCategories)
+		.$dynamic(),
+	projectExemplarityCategoriesTranslations,
+	eq(projectExemplarityCategories.id, projectExemplarityCategoriesTranslations.id)
+);
+
+/**
+ * Get the complete list, localized, of project exemplarity markers organized by their categories.
+ */
+export const projectExemplarityMarkersByCategoriesList = (() => {
+	const markers = projectExemplarityMarkersList.as('markers');
+	const markersColumns = getColumns(markers);
+	const categories = projectExemplarityCategoriesList.as('categories');
+	const categoriesColumns = getColumns(categories);
+	return db
+		.select({
+			...categoriesColumns,
+			markers: jsonAggBuildObject(markersColumns),
+		})
+		.from(categories)
+		.groupBy(...Object.values(categoriesColumns))
+		.leftJoin(
+			markers,
+			and(eq(categories.id, markers.categoryId), eq(categories.lang, markers.lang))
+		);
+})();
+
+/**
+ * Get the complete list, localized, of project image temporalities.
+ */
+export const projectImageTemporalitiesList = joinTranslation(
+	db
+		.select({
+			...getColumns(projectImageTemporalities),
+			...getColumns(projectImageTemporalitiesTranslations),
+		})
+		.from(projectImageTemporalities)
+		.$dynamic(),
+	projectImageTemporalitiesTranslations,
+	eq(projectImageTemporalities.id, projectImageTemporalitiesTranslations.id)
+);
+
+// ---
+
+/**
+ * Get the complete list, localized, of project types.
+ *
+ * @deprecated Use constant instead.
+ */
+export function getProjectTypesList() {
 	return joinTranslation(
 		db
 			.select({
@@ -132,16 +328,16 @@ export function getProjectTypesList(event: ServerLoadEvent) {
 			.from(projectTypes)
 			.$dynamic(),
 		projectTypesTranslations,
-		eq(projectTypes.id, projectTypesTranslations.id),
-		event
+		eq(projectTypes.id, projectTypesTranslations.id)
 	);
 }
 
 /**
  * Get the complete list, localized, of project site ownerships.
+ *
+ * @deprecated Use constant instead.
  */
-export function getProjectSiteOwnershipsList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
+export function getProjectSiteOwnershipsList() {
 	return joinTranslation(
 		db
 			.select({
@@ -151,16 +347,16 @@ export function getProjectSiteOwnershipsList(event: ServerLoadEvent) {
 			.from(projectSiteOwnerships)
 			.$dynamic(),
 		projectSiteOwnershipsTranslations,
-		eq(projectSiteOwnerships.id, projectSiteOwnershipsTranslations.id),
-		event
+		eq(projectSiteOwnerships.id, projectSiteOwnershipsTranslations.id)
 	);
 }
 
 /**
  * Get the complete list, localized, of project interventions.
+ *
+ * @deprecated Use constant instead.
  */
-export function getProjectInterventionsList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
+export function getProjectInterventionsList() {
 	return joinTranslation(
 		db
 			.select({
@@ -182,16 +378,16 @@ export function getProjectInterventionsList(event: ServerLoadEvent) {
 			.orderBy(asc(projectInterventionsTranslations.title))
 			.$dynamic(),
 		projectInterventionsTranslations,
-		eq(projectInterventions.id, projectInterventionsTranslations.id),
-		event
+		eq(projectInterventions.id, projectInterventionsTranslations.id)
 	);
 }
 
 /**
  * Get the complete list, localized, of project interventions categories.
+ *
+ * @deprecated Use constant instead.
  */
-export function getProjectInterventionCategoriesList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
+export function getProjectInterventionCategoriesList() {
 	return joinTranslation(
 		db
 			.select({
@@ -201,17 +397,17 @@ export function getProjectInterventionCategoriesList(event: ServerLoadEvent) {
 			.from(projectInterventionsCategories)
 			.$dynamic(),
 		projectInterventionsCategoriesTranslations,
-		eq(projectInterventionsCategories.id, projectInterventionsCategoriesTranslations.id),
-		event
+		eq(projectInterventionsCategories.id, projectInterventionsCategoriesTranslations.id)
 	);
 }
 
 /**
  * Get the complete list, localized, of project interventions organized by their categories.
+ *
+ * @deprecated Use constant instead.
  */
-export function getProjectInterventionsByCategoriesList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
-	const interventions = getProjectInterventionsList(event).as('interventions');
+export function getProjectInterventionsByCategoriesList() {
+	const interventions = getProjectInterventionsList().as('interventions');
 	// Aggregating as json so we can later coalesce to empty arrays instead of json_build_object's null-fielded object when no rows match.
 	const interventionsJson = db
 		.select({
@@ -221,7 +417,7 @@ export function getProjectInterventionsByCategoriesList(event: ServerLoadEvent) 
 		})
 		.from(interventions)
 		.as('interventions_json');
-	const categories = getProjectInterventionCategoriesList(event).as('intervention_categories');
+	const categories = getProjectInterventionCategoriesList().as('intervention_categories');
 	const categoriesColumns = getColumns(categories);
 	return db
 		.select({
@@ -241,9 +437,10 @@ export function getProjectInterventionsByCategoriesList(event: ServerLoadEvent) 
 
 /**
  * Get the complete list, localized, of project implantation types.
+ *
+ * @deprecated Use constant instead.
  */
-export function getProjectImplantationTypesList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
+export function getProjectImplantationTypesList() {
 	return joinTranslation(
 		db
 			.select({
@@ -253,16 +450,16 @@ export function getProjectImplantationTypesList(event: ServerLoadEvent) {
 			.from(projectImplantationTypes)
 			.$dynamic(),
 		projectImplantationTypesTranslations,
-		eq(projectImplantationTypes.id, projectImplantationTypesTranslations.id),
-		event
+		eq(projectImplantationTypes.id, projectImplantationTypesTranslations.id)
 	);
 }
 
 /**
  * Get the complete list, localized, of project exemplarity markers.
+ *
+ * @deprecated Use constant instead.
  */
-export function getProjectExemplarityMarkersList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
+export function getProjectExemplarityMarkersList() {
 	return joinTranslation(
 		db
 			.select({
@@ -272,16 +469,16 @@ export function getProjectExemplarityMarkersList(event: ServerLoadEvent) {
 			.from(projectExemplarityMarkers)
 			.$dynamic(),
 		projectExemplarityMarkersTranslations,
-		eq(projectExemplarityMarkers.id, projectExemplarityMarkersTranslations.id),
-		event
+		eq(projectExemplarityMarkers.id, projectExemplarityMarkersTranslations.id)
 	);
 }
 
 /**
  * Get the complete list, localized, of project exemplarity categories.
+ *
+ * @deprecated Use constant instead.
  */
-export function getProjectExemplarityCategoriesList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
+export function getProjectExemplarityCategoriesList() {
 	return joinTranslation(
 		db
 			.select({
@@ -291,18 +488,19 @@ export function getProjectExemplarityCategoriesList(event: ServerLoadEvent) {
 			.from(projectExemplarityCategories)
 			.$dynamic(),
 		projectExemplarityCategoriesTranslations,
-		eq(projectExemplarityCategories.id, projectExemplarityCategoriesTranslations.id),
-		event
+		eq(projectExemplarityCategories.id, projectExemplarityCategoriesTranslations.id)
 	);
 }
 
 /**
  * Get the complete list, localized, of project exemplarity markers organized by their categories.
+ *
+ * @deprecated Use constant instead.
  */
-export function getProjectExemplarityMarkersByCategoriesList(event: ServerLoadEvent) {
-	const markers = getProjectExemplarityMarkersList(event).as('markers');
+export function getProjectExemplarityMarkersByCategoriesList() {
+	const markers = getProjectExemplarityMarkersList().as('markers');
 	const markersColumns = getColumns(markers);
-	const categories = getProjectExemplarityCategoriesList(event).as('categories');
+	const categories = getProjectExemplarityCategoriesList().as('categories');
 	const categoriesColumns = getColumns(categories);
 	return db
 		.select({
@@ -319,9 +517,10 @@ export function getProjectExemplarityMarkersByCategoriesList(event: ServerLoadEv
 
 /**
  * Get the complete list, localized, of project image types.
+ *
+ * @deprecated Use constant instead.
  */
-export function getProjectImageTypesList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
+export function getProjectImageTypesList() {
 	return joinTranslation(
 		db
 			.select({
@@ -331,16 +530,16 @@ export function getProjectImageTypesList(event: ServerLoadEvent) {
 			.from(projectImageTypes)
 			.$dynamic(),
 		projectImageTypesTranslations,
-		eq(projectImageTypes.id, projectImageTypesTranslations.id),
-		event
+		eq(projectImageTypes.id, projectImageTypesTranslations.id)
 	);
 }
 
 /**
  * Get the complete list, localized, of project image temporalities.
+ *
+ * @deprecated Use constant instead.
  */
-export function getProjectImageTemporalitiesList(event: ServerLoadEvent) {
-	event.depends(LOAD_DEPENDENCIES.LANG);
+export function getProjectImageTemporalitiesList() {
 	return joinTranslation(
 		db
 			.select({
@@ -350,7 +549,6 @@ export function getProjectImageTemporalitiesList(event: ServerLoadEvent) {
 			.from(projectImageTemporalities)
 			.$dynamic(),
 		projectImageTemporalitiesTranslations,
-		eq(projectImageTemporalities.id, projectImageTemporalitiesTranslations.id),
-		event
+		eq(projectImageTemporalities.id, projectImageTemporalitiesTranslations.id)
 	);
 }

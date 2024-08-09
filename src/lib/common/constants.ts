@@ -8,7 +8,7 @@ import type { ValueOf } from 'type-fest';
  * @example SCOPE_SUB_SCOPE: 'scope:sub-scope'
  */
 export const LOAD_DEPENDENCIES = {
-	LANG: 'lang',
+	LANG: 'paraglide:lang',
 	PROJECT_TYPES_LIST: 'project-descriptors:types',
 	PROJECT_TITLE: 'project:title',
 	PROJECT_GALLERY: 'project:gallery',

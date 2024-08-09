@@ -52,6 +52,8 @@
 		--button-hover-background: var(--background-color-input-accent);
 		--button-checked-background: var(--color-checked);
 		--button-checked-color: var(--color-on-checked);
+		--button-open-color: var(--color-primary-accent);
+		--button-open-background: color-mix(in srgb, var(--color-primary-accent) var(--opacity-softer), var(--background-color-base));
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-background: var(--background-color-input-error);

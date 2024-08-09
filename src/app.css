@@ -14,6 +14,30 @@
 @import 'styles/switch.css' layer(components);
 @import 'tailwindcss/utilities' layer(utilities);
 
+@variant icon (&.lucide-icon);
+
+@variant logo (&.logo);
+
+@variant dark ([data-theme='dark'] &);
+
+@variant light ([data-theme='light'] &);
+
+@variant hocus (&:focus, &:hover);
+
+@variant danger (&[data-danger]);
+
+@variant checked (&:checked, &[aria-checked='true'], &[data-state='active'], &[data-state='checked']);
+
+@variant open (&[aria-expanded='true'], &[data-state='open']);
+
+@variant current (&[aria-current]);
+
+@variant disabled (&:disabled, &[aria-disabled='true'], &[data-disabled='true']);
+
+@variant error (&[aria-invalid='true'], &[data-error='true']);
+
+@variant busy (&[aria-busy='true']);
+
 @theme {
 	/* Defaults */
 
@@ -208,7 +232,7 @@
 
 	/* Animations */
 
-	--animate-pulse: pulse var(--transition-duration-xslow) var(--transition-timing-function-in-out) infinite both;
+	--animate-pulse: pulse var(--transition-duration-xslow) ease-in-out infinite both;
 	--animate-press: press var(--transition-duration-medium) var(--transition-timing-function-out) 1 both;
 	--animate-wiggle: wiggle var(--transition-duration-slow) ease-out 1 forwards;
 
@@ -325,7 +349,7 @@
 	}
 }
 
-[data-mode='dark'] {
+[data-theme='dark'] {
 	--color-primary-soft: hsl(148, 90%, 20%);
 	--color-primary: hsl(144, 76%, 32%);
 	--color-primary-accent: hsl(140, 62%, 52%);

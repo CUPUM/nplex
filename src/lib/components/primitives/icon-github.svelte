@@ -18,7 +18,7 @@
 		transition: fill 0.1s;
 	}
 
-	:global([data-mode='dark']) {
+	:global([data-theme='dark']) {
 		path {
 			fill: white;
 		}

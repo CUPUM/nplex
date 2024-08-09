@@ -18,7 +18,7 @@
 
 <figure
 	class={cn(
-		'bg-card text-md pointer-events-none relative inset-0 flex aspect-square items-center justify-center font-bold uppercase',
+		'bg-primary text-md hover:text-on-primary-accent text-on-primary relative inset-0 flex aspect-square size-full flex-none items-center justify-center font-bold uppercase',
 		className
 	)}
 >

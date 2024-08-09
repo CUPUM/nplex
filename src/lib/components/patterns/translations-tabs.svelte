@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { availableLanguageTags, type AvailableLanguageTag } from '$i18n/runtime';
+	import { availableLanguageTags, languageTag, type AvailableLanguageTag } from '$i18n/runtime';
 	import { Tabs } from '$lib/builders/tabs.svelte';
 	import { ripple } from '$lib/components/primitives/ripple.svelte';
 	import { LANG_DETAILS } from '$lib/i18n/constants';
 	import { switchThumbCrossfade } from '$lib/motion/presets';
 	import type { Snippet } from 'svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
-	import { get } from 'svelte/store';
 
 	let {
 		tab,
@@ -19,18 +17,21 @@
 		>;
 	} & Omit<HTMLAttributes<HTMLDivElement>, 'children'> = $props();
 
-	const tabs = new Tabs({ defaultValue: get(page).data.lang });
+	const tabs = new Tabs({ defaultValue: languageTag() });
 	const key = {};
 </script>
 
 <div class="flex flex-col gap-[1em] self-stretch {className}" {...divProps}>
-	<menu class="switch switch-bordered compact self-center rounded-full" use:ripple>
+	<menu
+		class="switch switch-bordered top-sticky-top sticky z-1 self-start text-xs backdrop-blur-md"
+	>
 		{#each availableLanguageTags as lang}
 			<button
 				class="switch-item gap-input-gap flex flex-row"
 				{...tabs.triggerAttributes(lang)}
 				{lang}
 				type="button"
+				use:ripple
 			>
 				{LANG_DETAILS[lang].name}
 				{#if tabs.current === lang}
@@ -66,7 +67,7 @@
 		height: 0;
 		opacity: 0;
 		pointer-events: none;
-		scale: 0.96;
+		scale: 1.02;
 		transition: none;
 	}
 </style>
