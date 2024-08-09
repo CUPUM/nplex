@@ -32,7 +32,17 @@ Install the project with the usual command.
 pnpm install
 ```
 
-## Gestion de la base de données
+## Structure
+
+### Application
+
+SvelteKit (à documenter)
+
+#### Services
+
+- Vercel Free (à documenter)
+
+### Base de données
 
 Le projet est construit sur une base de données _Postgres_ gérée via des fichiers de migration qui
 permettent de faire un suivi des modification de schéma.
@@ -54,3 +64,16 @@ pnpm db:generate
 # Apply migrations to the remote database
 pnpm db:migrate
 ```
+
+#### Services
+
+- Neon.tech (à documenter)
+
+### Stockage (media)
+
+AWS (à documenter)
+
+#### Services
+
+- AWS (à documenter)
+- Serverless Image Handler (à documenter)
