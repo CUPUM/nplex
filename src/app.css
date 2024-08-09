@@ -178,10 +178,9 @@
 
 	/* Fades */
 
-	--opacity-softish: 85%;
-	--opacity-soft: 45%;
-	--opacity-softer: 20%;
-	--opacity-pulse: 50%;
+	--opacity-soft: 0.85;
+	--opacity-softer: 0.45;
+	--opacity-softest: 0.25;
 
 	/* Shadows */
 
@@ -295,9 +294,9 @@
 	--text-color-input-success: var(--color-success);
 	--text-color-input-success-accent: var(--color-success-accent);
 
-	--outline-color: color-mix(in srgb, var(--color-primary) var(--opacity-softish), transparent);
-	--outline-color-error: color-mix(in srgb, var(--color-error-soft) 90%, transparent);
-	--outline-color-success: color-mix(in srgb, var(--color-success-soft) 90%, transparent);
+	--outline-color: color-mix(in srgb, var(--color-primary) var(--opacity-soft), transparent);
+	--outline-color-error: color-mix(in srgb, var(--color-error-softer) 90%, transparent);
+	--outline-color-success: color-mix(in srgb, var(--color-success-softer) 90%, transparent);
 
 	--border-color-base: color-mix(in srgb, var(--text-color-base) 20%, transparent);
 	--border-color-base-accent: color-mix(in srgb, var(--text-color-base) 35%, transparent);
@@ -350,13 +349,13 @@
 }
 
 [data-theme='dark'] {
-	--color-primary-soft: hsl(148, 90%, 20%);
+	--color-primary-softer: hsl(148, 90%, 20%);
 	--color-primary: hsl(144, 76%, 32%);
 	--color-primary-accent: hsl(140, 62%, 52%);
-	--color-success-soft: hsl(120, 98%, 14%);
+	--color-success-softer: hsl(120, 98%, 14%);
 	--color-success: hsl(120, 90%, 25%);
 	--color-success-accent: hsl(120, 46%, 42%);
-	--color-error-soft: hsl(8, 70%, 46%);
+	--color-error-softer: hsl(8, 70%, 46%);
 	--color-error: hsl(7, 80%, 55%);
 	--color-error-accent: hsl(6, 90%, 64%);
 
@@ -364,7 +363,7 @@
 	--background-color-base: hsl(61, 5%, 7%);
 	--background-color-popover: hsl(62, 4%, 5%);
 	--background-color-overlay: hsl(220, 16%, 3%, 86%);
-	--background-color-card-soft: hsl(62, 4%, 8%);
+	--background-color-card-softer: hsl(62, 4%, 8%);
 	--background-color-card: hsl(240, 2%, 10%);
 	--background-color-card-accent: hsl(238, 2%, 12%);
 	--background-color-input: hsla(244, 8%, 38%, 12%);

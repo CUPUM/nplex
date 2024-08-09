@@ -7,8 +7,9 @@
 	import { linkAttributes } from '$lib/components/primitives/link.svelte';
 	import Logo from '$lib/components/primitives/logo.svelte';
 	import { i18n } from '$lib/i18n/adapter';
-	import { Settings, UserRound } from 'lucide-svelte';
+	import { Menu, Settings, UserRound } from 'lucide-svelte';
 	import NavbarMenuSettings from './navbar-menu-settings.svelte';
+	import NavbarMenuSite from './navbar-menu-site.svelte';
 	import NavbarMenuUser from './navbar-menu-user.svelte';
 
 	let withoutLang = $derived(i18n.route($page.url.pathname));
@@ -20,20 +21,32 @@
 	<header
 		class="py-padding duration-slow max-w-main mx-auto grid w-full grid-flow-dense grid-cols-[[site-start]1fr[site-end_explore-start]auto[explore-end_user-start]1fr[user-end]] text-sm transition-all ease-in-out group-data-[presentation='full-width']/root:max-w-full group-data-[presentation='full-screen']/root:max-w-full"
 	>
-		<nav
-			class="gap-input-group-gap pointer-events-auto flex flex-row justify-self-start *:pointer-events-auto"
-		>
-			<NavbarButton {...linkAttributes('/')}>
+		<nav class="gap-gap col-[site] flex flex-row justify-self-start *:pointer-events-auto">
+			<NavbarButton {...linkAttributes('/')} class="max-md:hidden">
 				<Logo id="navbar-logo" height="2em" delay={500} />
 			</NavbarButton>
-			<NavbarButton {...linkAttributes('/about')}>
+			<NavbarButton {...linkAttributes('/about')} class="max-md:hidden">
 				{m.about()}
 			</NavbarButton>
-			<NavbarButton {...linkAttributes('/guides', { currentOnSubpath: true })}>
+			<NavbarButton
+				{...linkAttributes('/guides', { currentOnSubpath: true })}
+				class="max-md:hidden"
+			>
 				{m.guides()}
 			</NavbarButton>
+			<!-- Small displays -->
+			<NavbarMenuSite>
+				{#snippet trigger(triggerAttributes)}
+					<NavbarButton {...triggerAttributes} class="aspect-square md:hidden">
+						<Menu />
+						<!-- <Logo id="navbar-logo" height="2em" delay={500} /> -->
+					</NavbarButton>
+				{/snippet}
+			</NavbarMenuSite>
 		</nav>
-		<nav class="gap-input-group-gap pointer-events-auto flex flex-row justify-self-center">
+		<nav
+			class="gap-gap col-[explore] hidden flex-row justify-self-center *:pointer-events-auto md:flex"
+		>
 			<NavbarButton {...linkAttributes('/projects', { currentOnSubpath: true })}>
 				<NavbarThumb current={withoutLang.startsWith('/projects')} key="explore" />
 				{m.projects()}
@@ -43,7 +56,7 @@
 				{m.organizations()}
 			</NavbarButton>
 		</nav>
-		<nav class="gap-input-group-gap pointer-events-auto flex flex-row justify-self-end">
+		<nav class="gap-gap col-[user] flex flex-row justify-self-end *:pointer-events-auto">
 			<NavbarMenuSettings>
 				{#snippet trigger(attributes)}
 					<NavbarButton class="aspect-square" {...attributes}>

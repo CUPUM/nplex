@@ -23,7 +23,7 @@
 		<ul class="gap-card-padding flex flex-col">
 			{#each awaitedProjectInterventionsByCategories as category}
 				<li class="flex flex-col gap-[0.5em]">
-					<div class="opacity-soft px-[0.5em] text-xs font-semibold">
+					<div class="opacity-softer px-[0.5em] text-xs font-semibold">
 						{category.title}
 					</div>
 					<ul class="gap-input-group-gap compact flex flex-row flex-wrap items-start">

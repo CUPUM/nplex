@@ -28,14 +28,14 @@
 		{@render children()}
 		<section class="gap-inherit mt-md flex flex-col">
 			<div class="gap-inherit flex flex-row items-center">
-				<hr class="border-base/soft mx-padding flex-1" />
+				<hr class="border-base/softer mx-padding flex-1" />
 				<span
-					class="text-center text-sm text-base/soft font-semibold font-thin first-letter:uppercase"
+					class="text-center text-sm text-base/softer font-semibold font-thin first-letter:uppercase"
 				>
 					{m.or()}
 					{m.auth_continue_with().toLowerCase()}
 				</span>
-				<hr class="border-base/soft mx-padding flex-1" />
+				<hr class="border-base/softer mx-padding flex-1" />
 			</div>
 			<fieldset class="gap-input-group-gap flex flex-row justify-center">
 				{#each OAUTH_PROVIDERS_ARR as provider, i}

@@ -17,16 +17,16 @@
 
 <menu
 	class={cn(
-		'p-section-padding bg-popover gap-padding relative flex flex-col rounded-lg text-base',
+		'p-section-padding bg-popover gap-padding relative flex flex-col rounded-xl text-base',
 		className
 	)}
-	in:fly|global={{ x: 12, duration: 750, easing: expoOut, ...intro }}
-	out:fly|global={{ y: 12, duration: 250, easing: cubicOut, ...outro }}
+	in:fly|global={{ y: 16, duration: 500, easing: expoOut, ...intro }}
+	out:fly|global={{ y: 16, duration: 250, easing: cubicOut, ...outro }}
 	{...restProps}
 >
 	{#if legend}
 		<span
-			class="px-input-padding py-input-nest bg-input/soft *:icon:stroke-md opacity-soft flex flex-row items-center gap-[1em] self-start rounded-full text-base text-xs"
+			class="px-input-padding py-input-nest bg-input/softer *:icon:stroke-md opacity-softer flex flex-row items-center gap-[1em] self-start rounded-full text-base text-xs"
 		>
 			{@render legend?.()}
 		</span>

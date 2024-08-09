@@ -125,7 +125,7 @@
 			<legend class="text-lg font-bold">
 				{m.project_interventions_title()}
 			</legend>
-			<p class="opacity-soft text-sm">
+			<p class="opacity-softer text-sm">
 				{m.project_interventions_description()}
 			</p>
 			{#if $form.typeId != null}
@@ -150,14 +150,14 @@
 										</label>
 									{/each}
 								{:else}
-									<span class="opacity-soft italic">{m.project_interventions_none()}</span>
+									<span class="opacity-softer italic">{m.project_interventions_none()}</span>
 								{/if}
 							</ul>
 						</fieldset>
 					{/each}
 				{/await}
 			{:else}
-				<p class="opacity-soft italic">{m.project_interventions_missing_type()}</p>
+				<p class="opacity-softer italic">{m.project_interventions_missing_type()}</p>
 			{/if}
 		</fieldset>
 

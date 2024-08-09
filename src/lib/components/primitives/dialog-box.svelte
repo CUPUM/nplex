@@ -50,7 +50,7 @@
 	>
 		<div
 			class={cn(
-				'bg-popover border-base/softer leading-sm [:where(&_hr)]:border-base/softer p-section-padding [:where(&_hr)]:-mx-section-padding rounded-lg border text-sm shadow-lg [:has(>header:first-child)]:pt-[calc(var(--spacing-section-padding)-1em)] [:where(&_hr)]:my-[calc(var(--spacing-section-padding)-1.5em)]',
+				'bg-popover border-base/softest leading-sm [:where(&_hr)]:border-base/softest p-section-padding [:where(&_hr)]:-mx-section-padding rounded-lg border text-sm shadow-lg [:has(>header:first-child)]:pt-[calc(var(--spacing-section-padding)-1em)] [:where(&_hr)]:my-[calc(var(--spacing-section-padding)-1.5em)]',
 				className
 			)}
 			{style}
@@ -71,7 +71,7 @@
 						{@render title?.(dialog)}
 					</hgroup>
 					{#if description}
-						<section class="opacity-soft prose prose-block leading-sm mb-[0.5em] text-sm">
+						<section class="opacity-softer prose prose-block leading-sm mb-[0.5em] text-sm">
 							{@render description?.(dialog)}
 						</section>
 					{/if}

@@ -45,7 +45,7 @@
 					<a
 						{...attributes}
 						style:--i-heading={i}
-						class="px-input-padding hover:text-input-accent opacity-softish aria-[current]:text-primary-accent hover:bg-input rounded-input relative truncate py-[calc(0.5*var(--spacing-input-padding))] font-bold"
+						class="px-input-padding hover:text-input-accent opacity-soft aria-[current]:text-primary-accent hover:bg-input rounded-input relative truncate py-[calc(0.5*var(--spacing-input-padding))] font-bold"
 						use:ripple
 					>
 						{heading.value}

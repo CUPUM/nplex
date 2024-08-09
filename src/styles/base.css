@@ -175,6 +175,6 @@ body {
 
 	body {
 		scale: 0.96;
-		border-radius: var(--radius-lg);
+		border-radius: var(--radius-xl);
 	}
 }

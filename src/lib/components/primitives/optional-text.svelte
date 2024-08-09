@@ -28,7 +28,7 @@
 {#if text}
 	{@render _render(text)}
 {:else}
-	<span class={cn('opacity-soft font-thin italic', className)} {...spanProps}>
+	<span class={cn('opacity-softer font-thin italic', className)} {...spanProps}>
 		{@render _render(fallback ?? m.not_defined())}
 	</span>
 {/if}

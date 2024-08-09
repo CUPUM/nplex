@@ -53,7 +53,7 @@
 		--button-checked-background: var(--color-checked);
 		--button-checked-color: var(--color-on-checked);
 		--button-open-color: var(--color-primary-accent);
-		--button-open-background: color-mix(in srgb, var(--color-primary-accent) var(--opacity-softer), var(--background-color-base));
+		--button-open-background: color-mix(in srgb, var(--color-primary-accent) var(--opacity-softest), var(--background-color-base));
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-background: var(--background-color-input-error);
@@ -65,16 +65,16 @@
 	/* Call to action */
 
 	&:is(.button-cta) {
-		--ripple-color: color-mix(in srgb, var(--color-primary-soft) 50%, transparent);
+		--ripple-color: color-mix(in srgb, var(--color-primary-softer) 50%, transparent);
 		--button-background-inset: 0;
 		--button-color: var(--color-on-primary);
 		--button-icon-color: currentColor;
 		--button-background: var(--color-primary);
-		--button-hover-color: var(--color-on-primary-soft);
+		--button-hover-color: var(--color-on-primary-softer);
 		--button-hover-background: var(--color-primary-accent);
 		--button-disabled-background: var(--text-color-base);
 		&:is([data-danger]) {
-			--ripple-color: color-mix(in srgb, var(--color-error-soft) 50%, transparent);
+			--ripple-color: color-mix(in srgb, var(--color-error-softer) 50%, transparent);
 			--button-color: var(--color-on-error);
 			--button-background: var(--color-error);
 			--button-hover-color: var(--color-on-error-accent);
@@ -130,7 +130,7 @@
 		--button-checked-color: var(--color-primary);
 		--button-checked-background: color-mix(in srgb, var(--color-primary) 15%, transparent);
 		--button-checked-background-inset: 0;
-		--button-current-color: var(--color-primary-soft);
+		--button-current-color: var(--color-primary-softer);
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-hover-color: var(--text-color-input-error-accent);
@@ -145,7 +145,7 @@
 		--button-background: transparent;
 		--button-background-inset: 0.4em;
 		--button-text-decoration: underline;
-		--button-text-decoration-color: color-mix(in srgb, currentColor var(--opacity-softer), transparent);
+		--button-text-decoration-color: color-mix(in srgb, currentColor var(--opacity-softest), transparent);
 		--button-text-decoration-thickness: var(--border-width-input);
 		--button-text-underline-offset: 0.4em;
 		--button-icon-color: currentColor;
@@ -158,7 +158,7 @@
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-hover-color: var(--text-color-input-error-accent);
-			--button-hover-text-decoration-color: color-mix(in srgb, var(--color-error-soft) var(--opacity-soft), transparent);
+			--button-hover-text-decoration-color: color-mix(in srgb, var(--color-error-softer) var(--opacity-softer), transparent);
 		}
 	}
 
@@ -167,7 +167,7 @@
 	&:is(.button-nav) {
 		justify-content: flex-start;
 		--ripple-color: color-mix(in srgb, var(--color-primary) 15%, transparent);
-		--button-color: color-mix(in srgb, var(--text-color-input) var(--opacity-softish), var(--background-color-base));
+		--button-color: color-mix(in srgb, var(--text-color-input) var(--opacity-soft), var(--background-color-base));
 		--button-background: transparent;
 		--button-background-inset: 0.4em;
 		--button-text-decoration: none;
@@ -183,7 +183,7 @@
 		--button-current-background: color-mix(in srgb, var(--color-primary) 7%, transparent);
 		--button-current-background-inset: 0;
 		&:is([data-danger]) {
-			--ripple-color: color-mix(in srgb, var(--color-error-soft) 25%, transparent);
+			--ripple-color: color-mix(in srgb, var(--color-error-softer) 25%, transparent);
 			--button-color: var(--text-color-input-error);
 			--button-hover-color: var(--text-color-input-error-accent);
 			--button-hover-background: var(--background-color-input-error-accent);
@@ -260,7 +260,7 @@
 
 	.lucide-icon,
 	.spinner {
-		opacity: var(--opacity-soft);
+		opacity: var(--opacity-softer);
 		stroke: var(--button-icon-color);
 		stroke-width: var(--stroke-width-icon);
 		width: var(--spacing-input-icon);
@@ -331,7 +331,7 @@
 	.group\/button:is(:disabled, [aria-disabled='true'], [data-disabled='true']) & {
 		pointer-events: none;
 		cursor: default;
-		opacity: var(--opacity-soft);
+		opacity: var(--opacity-softer);
 		color: var(--button-disabled-color, var(--button-color));
 		text-decoration: var(--button-disabled-text-decoration, var(--button-text-decoration));
 		text-decoration-color: var(--button-disabled-text-decoration-color, var(--button-text-decoration-color));
@@ -351,7 +351,7 @@
 
 		.lucide-icon,
 		.spinner {
-			opacity: var(--opacity-softer);
+			opacity: var(--opacity-softest);
 			stroke: var(--button-disabled-icon-color, var(--button-icon-color));
 		}
 	}

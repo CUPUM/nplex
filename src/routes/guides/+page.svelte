@@ -58,7 +58,7 @@
 				{featured.title}
 			</h1>
 			<p
-				class="duration-medium opacity-soft group-hover/card:opacity-softish text-on-primary duration-slow transition-all ease-out"
+				class="duration-medium opacity-softer group-hover/card:opacity-soft text-on-primary duration-slow transition-all ease-out"
 			>
 				{featured.summary}
 			</p>

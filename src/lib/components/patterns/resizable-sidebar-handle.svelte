@@ -64,7 +64,7 @@
 	/>
 	<div
 		use:ripple
-		class="text-input/soft group-active/handle:text-input-accent group-hover/handle:text-input-accent group-active/handle:bg-base group-hover/handle:bg-base opacity-softer p-padding absolute relative flex aspect-square items-center justify-center rounded-full text-sm transition-all group-hover/handle:opacity-100 group-active/handle:opacity-100"
+		class="text-input/softer group-active/handle:text-input-accent group-hover/handle:text-input-accent group-active/handle:bg-base group-hover/handle:bg-base opacity-softest p-padding absolute relative flex aspect-square items-center justify-center rounded-full text-sm transition-all group-hover/handle:opacity-100 group-active/handle:opacity-100"
 	>
 		<SeparatorVertical class="stroke-lg" />
 	</div>

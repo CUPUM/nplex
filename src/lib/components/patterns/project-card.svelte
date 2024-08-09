@@ -102,7 +102,7 @@
 		{/if}
 		<div
 			data-theme={THEMES.DARK}
-			class="p-card-padding text-base-accent rounded-inherit after:from-overlay after:rounded-inherit after:opacity-soft after:duraiton-medium relative relative z-1 flex max-h-full max-w-full flex-col transition-all after:absolute after:inset-0 after:-z-1 after:bg-gradient-to-t after:bg-[0px_50px] after:bg-no-repeat after:transition-all after:ease-out group-hover/card:after:bg-[0px_0px] group-hover/card:after:opacity-100"
+			class="p-card-padding text-base-accent rounded-inherit after:from-overlay after:rounded-inherit after:opacity-softer after:duraiton-medium relative relative z-1 flex max-h-full max-w-full flex-col transition-all after:absolute after:inset-0 after:-z-1 after:bg-gradient-to-t after:bg-[0px_50px] after:bg-no-repeat after:transition-all after:ease-out group-hover/card:after:bg-[0px_0px] group-hover/card:after:opacity-100"
 		>
 			<menu
 				class="gap-input-group-gap pt-sm compact pb-sm flex flex-row flex-wrap items-start text-xs *:pointer-events-auto"
@@ -116,7 +116,7 @@
 			</h1>
 			{#if summary}
 				<p
-					class="opacity-softer group-hover/card:opacity-soft line-clamp-3 min-h-0 flex-1 overflow-hidden text-ellipsis text-sm transition-all"
+					class="opacity-softest group-hover/card:opacity-softer line-clamp-3 min-h-0 flex-1 overflow-hidden text-ellipsis text-sm transition-all"
 				>
 					<OptionalText text={summary} fallback={m.no_summary()} />
 				</p>

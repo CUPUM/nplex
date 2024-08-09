@@ -116,7 +116,7 @@
 		class="gap-padding flex flex-row flex-wrap self-stretch"
 	>
 		<label
-			class="p-padding border-base/soft rounded-input group/button relative flex aspect-square cursor-pointer items-center justify-center border border-dashed"
+			class="p-padding border-base/softer rounded-input group/button relative flex aspect-square cursor-pointer items-center justify-center border border-dashed"
 			use:ripple
 		>
 			<span class="button button-dashed">

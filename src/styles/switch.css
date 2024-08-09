@@ -33,7 +33,7 @@
 	/* Default */
 
 	&:not(.switch-bordered, .switch-dashed, .switch-ghost) {
-		--ripple-color: color-mix(in srgb, var(--background-color-input) var(--opacity-soft), transparent);
+		--ripple-color: color-mix(in srgb, var(--background-color-input) var(--opacity-softer), transparent);
 		--switch-thumb-background: var(--color-checked);
 		--switch-thumb-shadow: none;
 		--switch-color: var(--text-color-input-dim);
@@ -70,11 +70,11 @@
 	}
 
 	&:is(.switch-bordered, .switch-dashed) {
-		--ripple-color: color-mix(in srgb, var(--background-color-input) var(--opacity-soft), transparent);
+		--ripple-color: color-mix(in srgb, var(--background-color-input) var(--opacity-softer), transparent);
 		--switch-thumb-background: var(--color-checked);
 		--switch-color: var(--text-color-input-dim);
 		--switch-background: transparent;
-		--switch-border-color: color-mix(in srgb, var(--border-color-base) var(--opacity-soft), transparent);
+		--switch-border-color: color-mix(in srgb, var(--border-color-base) var(--opacity-softer), transparent);
 		--switch-hover-border-color: var(--border-color-base);
 		--switch-hover-color: var(--text-color-input);
 		--switch-focused-border-color: transparent;
@@ -266,7 +266,7 @@
 			z-index: 1;
 			width: var(--spacing-input-icon);
 			height: var(--spacing-input-icon);
-			opacity: var(--opacity-soft);
+			opacity: var(--opacity-softer);
 			flex: none;
 			user-select: none;
 			pointer-events: none;

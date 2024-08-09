@@ -46,7 +46,7 @@
 						<legend class="text-lg font-bold">
 							{category.title}
 						</legend>
-						<p class="opacity-soft text-sm">
+						<p class="opacity-softer text-sm">
 							<OptionalText text={category.description} fallback={m.no_description()} />
 						</p>
 						<ul class="gap-input-group-gap pt-md flex flex-row flex-wrap items-start text-xs">

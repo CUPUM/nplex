@@ -12,7 +12,7 @@
 	rel="external"
 	use:ripple
 	in:fly|global={{ y: -6, easing: expoOut, duration: 350 }}
-	class="group/button hover:border-base rounded-card border-base/soft relative flex h-full w-full items-center justify-center border border-dashed text-sm transition-all"
+	class="group/button hover:border-base rounded-card border-base/softer relative flex h-full w-full items-center justify-center border border-dashed text-sm transition-all"
 >
 	<div class="button button-dashed rounded-full">
 		<FilePlus />

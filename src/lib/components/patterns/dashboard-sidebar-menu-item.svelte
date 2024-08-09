@@ -16,7 +16,7 @@
 
 <svelte:element
 	this={href ? 'a' : 'button'}
-	class="disabled:opacity-soft aria-[disabled]:opacity-soft gap-input-gap aria-[current]:text-primary-accent px-input-padding hover:not-aria-[current]:bg-input hover:not-aria-[current]:text-input-accent text-input *:icon:opacity-soft hover:not-aria-[current]:*:icon:opacity-softish rounded-input leading-sm *:icon:h-[calc(1em*var(--line-height-sm))] *:icon:w-[1em] *:icon:flex-none *:icon:self-start *:icon:transition-opacity aria-[current]:*:icon:opacity-100 relative flex flex-row whitespace-normal py-[calc(var(--spacing-input-padding)*0.5)] font-semibold transition-all aria-[current]:cursor-default"
+	class="disabled:opacity-softer aria-[disabled]:opacity-softer gap-input-gap aria-[current]:text-primary-accent px-input-padding hover:not-aria-[current]:bg-input hover:not-aria-[current]:text-input-accent text-input *:icon:opacity-softer hover:not-aria-[current]:*:icon:opacity-soft rounded-input leading-sm *:icon:h-[calc(1em*var(--line-height-sm))] *:icon:w-[1em] *:icon:flex-none *:icon:self-start *:icon:transition-opacity aria-[current]:*:icon:opacity-100 relative flex flex-row whitespace-normal py-[calc(var(--spacing-input-padding)*0.5)] font-semibold transition-all aria-[current]:cursor-default"
 	{href}
 	{...restProps}
 	use:ripple

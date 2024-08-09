@@ -22,7 +22,7 @@
 
 <fieldset
 	class={cn(
-		'group/filter bg-card/soft rounded-section after:bg-base after:rounded-inherit relative flex min-w-0 flex-none flex-col items-stretch self-stretch after:absolute after:inset-0 after:-z-1',
+		'group/filter bg-card/softer rounded-section after:bg-base after:rounded-inherit relative flex min-w-0 flex-none flex-col items-stretch self-stretch after:absolute after:inset-0 after:-z-1',
 		className
 	)}
 	data-state={open ? 'open' : undefined}
@@ -33,7 +33,7 @@
 		<button
 			type="button"
 			onclick={() => (open = !open)}
-			class="peer/legend gap-card-padding p-card-padding bg-card/softish hover:text-base-accent rounded-inherit hover:bg-card duration-medium active:bg-card-accent relative sticky top-0 z-1 flex flex-row items-center justify-between text-xs text-base/softish shadow-sm backdrop-blur-md transition-all ease-out group-data-[state='open']/filter:text-base"
+			class="peer/legend gap-card-padding p-card-padding bg-card/soft hover:text-base-accent rounded-inherit hover:bg-card duration-medium active:bg-card-accent relative sticky top-0 z-1 flex flex-row items-center justify-between text-xs text-base/soft shadow-sm backdrop-blur-md transition-all ease-out group-data-[state='open']/filter:text-base"
 			aria-expanded={open}
 		>
 			{#if legend}
@@ -45,7 +45,7 @@
 		</button>
 	{:else if legend}
 		<legend
-			class="peer/legend py-card-padding rounded-inherit relative sticky top-0 z-1 flex flex-row items-center justify-between px-[calc(var(--spacing-card-padding)+0.5em)] text-xs text-base/soft font-semibold backdrop-blur-md"
+			class="peer/legend py-card-padding rounded-inherit relative sticky top-0 z-1 flex flex-row items-center justify-between px-[calc(var(--spacing-card-padding)+0.5em)] text-xs text-base/softer font-semibold backdrop-blur-md"
 		>
 			{@render legend()}
 		</legend>

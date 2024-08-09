@@ -48,6 +48,6 @@
 		{projectInterventionCreateForm}
 	/>
 {/each}
-<DashboardSubSection class="border-base/softer border border-dashed bg-transparent">
+<DashboardSubSection class="border-base/softest border border-dashed bg-transparent">
 	<ProjectExemplarityCategoryCreate data={data.projectExemplarityCategoryCreateForm} />
 </DashboardSubSection>

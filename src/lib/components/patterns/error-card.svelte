@@ -12,12 +12,12 @@
 			<OctagonAlert class="mr-[0.25em] inline-block animate-pulse align-text-bottom opacity-65" />
 			{m.error()}
 		</p>
-		<p class="opacity-soft">
+		<p class="opacity-softer">
 			{$page.status}:
 			{#if $page.error?.message}
 				{$page.error.message}
 			{:else}
-				<span class="opacity-soft italic">{m.no_error_message()}</span>
+				<span class="opacity-softer italic">{m.no_error_message()}</span>
 			{/if}
 		</p>
 		<a href={$page.url.toString()} class="button mt-md self-center text-sm">

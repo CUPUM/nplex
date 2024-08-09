@@ -90,7 +90,7 @@
 		{m.login()}
 	</button>
 	{#if typeof $message === 'string'}
-		<p class="opacity-soft text-base text-sm" in:fly={{ y: -8, duration: 350 }}>{$message}</p>
+		<p class="opacity-softer text-base text-sm" in:fly={{ y: -8, duration: 350 }}>{$message}</p>
 	{/if}
 </form>
 <nav class="gap-input-group-gap flex flex-row flex-wrap justify-between text-sm">

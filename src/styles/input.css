@@ -43,7 +43,7 @@
 
 	&:not(.input-bordered, .input-dashed, .input-ghost) {
 		--input-color: var(--text-color-input);
-		--input-background: color-mix(in srgb, var(--background-color-input) var(--opacity-soft), transparent);
+		--input-background: color-mix(in srgb, var(--background-color-input) var(--opacity-softer), transparent);
 		--input-icon-color: currentColor;
 		--input-border-style: none;
 		--input-hover-color: var(--text-color-input);
@@ -82,7 +82,7 @@
 		--input-focused-border-color: transparent;
 		--input-disabled-color: var(--text-color-input);
 		--input-disabled-background: ;
-		--input-disabled-border-color: color-mix(in srgb, var(--border-color-base) var(--opacity-soft), transparent);
+		--input-disabled-border-color: color-mix(in srgb, var(--border-color-base) var(--opacity-softer), transparent);
 		--input-busy-color: ;
 		--input-busy-background: ;
 		--input-busy-border-color: transparent;
@@ -196,7 +196,7 @@
 		height: var(--spacing-input);
 		display: flex;
 		align-items: center;
-		opacity: var(--opacity-softer);
+		opacity: var(--opacity-softest);
 		white-space: nowrap;
 		padding-block: 0;
 		padding-inline: calc(var(--spacing-input-padding) / 2);
@@ -225,12 +225,12 @@
 	.input-icon,
 	& > .lucide-icon,
 	& > .spinner {
-		opacity: var(--opacity-soft);
+		opacity: var(--opacity-softer);
 		stroke: var(--input-icon-color);
 	}
 
 	.input-affix {
-		opacity: var(--opacity-softer);
+		opacity: var(--opacity-softest);
 	}
 
 	/* Hover */
@@ -262,7 +262,7 @@
 		}
 
 		.input-affix {
-			opacity: var(--opacity-soft);
+			opacity: var(--opacity-softer);
 		}
 	}
 
@@ -296,7 +296,7 @@
 		}
 
 		.input-affix {
-			opacity: var(--opacity-soft);
+			opacity: var(--opacity-softer);
 		}
 	}
 
@@ -330,7 +330,7 @@
 		}
 
 		.input-affix {
-			opacity: var(--opacity-soft);
+			opacity: var(--opacity-softer);
 		}
 	}
 

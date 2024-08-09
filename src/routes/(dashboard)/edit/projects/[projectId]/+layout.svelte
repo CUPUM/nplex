@@ -31,7 +31,7 @@
 
 {#snippet header()}
 	<div
-		class="rounded-section p-section-padding bg-dotted from-input to-card/soft flex flex-1 flex-col bg-center"
+		class="rounded-section p-section-padding bg-dotted from-input to-card/softer flex flex-1 flex-col bg-center"
 	>
 		<hgroup class="pb-xl flex-1">
 			<h1 class="heading text-5xl font-bold">

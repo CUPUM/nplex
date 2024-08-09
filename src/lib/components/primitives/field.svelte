@@ -35,7 +35,7 @@
 	{/if}
 	{#if description}
 		<div
-			class="opacity-soft text-base text-[clamp(var(--font-size-xs),0.75em,var(--font-size-sm))]"
+			class="opacity-softer text-base text-[clamp(var(--font-size-xs),0.75em,var(--font-size-sm))]"
 		>
 			{@render description()}
 		</div>
@@ -43,7 +43,7 @@
 	{@render children?.()}
 	{#if errors && errors.length}
 		<div
-			class="text-input-error-soft mt-[0.75em] flex flex-col text-[clamp(var(--font-size-xs),0.35em,var(--font-size-sm))]"
+			class="text-input-error-softer mt-[0.75em] flex flex-col text-[clamp(var(--font-size-xs),0.35em,var(--font-size-sm))]"
 		>
 			{#each errors as err, i}
 				<span

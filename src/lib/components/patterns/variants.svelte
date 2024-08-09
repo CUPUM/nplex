@@ -52,7 +52,7 @@
 		padding: 4rem;
 		aspect-ratio: 1.5;
 		border: var(--border-width-sm) solid
-			color-mix(in srgb, var(--border-color-base) var(--opacity-soft), transparent);
+			color-mix(in srgb, var(--border-color-base) var(--opacity-softer), transparent);
 		border-radius: var(--radius-lg);
 	}
 </style>

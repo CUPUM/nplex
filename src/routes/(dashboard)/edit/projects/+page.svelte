@@ -20,7 +20,7 @@
 		{m.projects_edit()}
 	</h2>
 </DashboardSubHeader>
-<DashboardSubSection class="bg-card/softer">
+<DashboardSubSection class="bg-card/softest">
 	<form
 		method="GET"
 		class="input-group top-sticky-top sticky z-10 max-w-md self-stretch backdrop-blur-md"
