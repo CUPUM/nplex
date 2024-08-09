@@ -13,8 +13,6 @@
 	import NavbarMenuUser from './navbar-menu-user.svelte';
 
 	let withoutLang = $derived(i18n.route($page.url.pathname));
-
-	let open = $state(false);
 </script>
 
 <div class="px-padding z-frontmost pointer-events-none sticky top-0">
