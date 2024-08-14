@@ -2,7 +2,7 @@ import * as m from '$i18n/messages';
 import { STATUS_CODES } from '$lib/common/constants';
 import { authorize } from '$lib/crud/authorization/rbac.server';
 import { aggTranslations, joinTranslations } from '$lib/crud/queries/i18n';
-import { canEditProject, getProjectImageTypesList } from '$lib/crud/queries/projects';
+import { canEditProject, projectImageTypesList } from '$lib/crud/queries/projects';
 import {
 	projectGalleryFormSchema,
 	projectImageFormSchema,
@@ -49,7 +49,7 @@ export const load = async (event) => {
 		superValidate(zod(projectNewImagesFormSchema)),
 	]);
 	return {
-		types: getProjectImageTypesList(event),
+		types: projectImageTypesList,
 		imageForms,
 		galleryForm,
 		newImagesForm,

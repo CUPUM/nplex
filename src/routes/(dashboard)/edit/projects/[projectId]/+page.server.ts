@@ -4,9 +4,9 @@ import { authorize } from '$lib/crud/authorization/rbac.server';
 import { aggTranslations, joinTranslations } from '$lib/crud/queries/i18n';
 import {
 	canEditProject,
-	getProjectInterventionsByCategoriesList,
-	getProjectSiteOwnershipsList,
-	getProjectTypesList,
+	projectInterventionsByCategoriesList,
+	projectSiteOwnershipsList,
+	projectTypesList,
 } from '$lib/crud/queries/projects';
 import { projectGeneralFormSchema } from '$lib/crud/validation/projects';
 import { db } from '$lib/db/db.server';
@@ -25,9 +25,6 @@ import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	authorize(event);
-	const types = getProjectTypesList(event);
-	const siteOwnerships = getProjectSiteOwnershipsList(event);
-	const interventionsByCategories = getProjectInterventionsByCategoriesList(event);
 	const [project] = await joinTranslations(
 		db
 			.select({
@@ -52,9 +49,9 @@ export const load = async (event) => {
 	const form = await superValidate(project, zod(projectGeneralFormSchema));
 	return {
 		form,
-		types,
-		siteOwnerships,
-		interventionsByCategories,
+		types: projectTypesList,
+		siteOwnerships: projectSiteOwnershipsList,
+		interventionsByCategories: projectInterventionsByCategoriesList,
 	};
 };
 

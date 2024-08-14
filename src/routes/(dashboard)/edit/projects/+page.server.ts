@@ -29,8 +29,7 @@ export const load = async (event) => {
 			.leftJoin(projectsImages, eq(projectsImages.id, projects.bannerId))
 			.$dynamic(),
 		projectsTranslations,
-		eq(projects.id, projectsTranslations.id),
-		event
+		eq(projects.id, projectsTranslations.id)
 	);
 	return {
 		filtersForm,

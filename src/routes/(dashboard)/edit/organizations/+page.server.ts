@@ -25,8 +25,7 @@ export const load = async (event) => {
 			.from(organizations)
 			.$dynamic(),
 		organizationsTranslations,
-		eq(organizations.id, organizationsTranslations.id),
-		event
+		eq(organizations.id, organizationsTranslations.id)
 	);
 	return {
 		filtersForm,

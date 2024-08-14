@@ -1,7 +1,7 @@
 import { STATUS_CODES } from '$lib/common/constants';
 import { authorize } from '$lib/crud/authorization/rbac.server';
 import { aggTranslations, joinTranslations } from '$lib/crud/queries/i18n';
-import { getProjectTypesList } from '$lib/crud/queries/projects';
+import { projectTypesList } from '$lib/crud/queries/projects';
 import {
 	projectInterventionCategoriesFormSchema,
 	projectInterventionCategoryCreateFormSchema,
@@ -91,7 +91,7 @@ export const load = async (event) => {
 		),
 	]);
 	return {
-		projectTypes: getProjectTypesList(event),
+		projectTypes: projectTypesList,
 		projectInterventionsForm,
 		projectInterventionForms,
 		projectInterventionCategoryCreateForm,

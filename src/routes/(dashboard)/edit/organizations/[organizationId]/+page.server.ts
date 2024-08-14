@@ -4,8 +4,8 @@ import { authorize } from '$lib/crud/authorization/rbac.server';
 import { aggTranslations, joinTranslations } from '$lib/crud/queries/i18n';
 import {
 	canEditOrganization,
-	getOrganizationExpertisesList,
-	getOrganizationTypesList,
+	organizationExpertisesList,
+	organizationTypesList,
 } from '$lib/crud/queries/organizations';
 import { organizationGeneralSchema } from '$lib/crud/validation/organizations';
 import { db } from '$lib/db/db.server';
@@ -55,8 +55,8 @@ export const load = async (event) => {
 	const form = await superValidate(organization, zod(organizationGeneralSchema));
 	return {
 		form,
-		types: getOrganizationTypesList(event),
-		expertises: getOrganizationExpertisesList(event),
+		types: organizationTypesList,
+		expertises: organizationExpertisesList,
 	};
 };
 

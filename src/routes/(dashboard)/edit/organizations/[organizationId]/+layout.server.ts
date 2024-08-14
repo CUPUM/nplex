@@ -16,8 +16,7 @@ export const load = async (event) => {
 			.limit(1)
 			.$dynamic(),
 		organizationsTranslations,
-		eq(organizations.id, organizationsTranslations.id),
-		event
+		eq(organizations.id, organizationsTranslations.id)
 	);
 	return {
 		id: event.params.organizationId,

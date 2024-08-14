@@ -21,8 +21,7 @@ export const load = async (event) => {
 			.where(eq(projectsOrganizations.projectId, event.params.projectId))
 			.$dynamic(),
 		organizationsTranslations,
-		eq(projectsOrganizations.organizationId, organizationsTranslations.id),
-		event
+		eq(projectsOrganizations.organizationId, organizationsTranslations.id)
 	);
 	// const form = await superValidate(projectOrganizations, zod(projectsOrganizationsListSchema));
 	return {
@@ -50,8 +49,7 @@ export const load = async (event) => {
 					.from(organizations)
 					.$dynamic(),
 				organizationsTranslations,
-				eq(organizations.id, organizationsTranslations.id),
-				event
+				eq(organizations.id, organizationsTranslations.id)
 			),
 		},
 	};

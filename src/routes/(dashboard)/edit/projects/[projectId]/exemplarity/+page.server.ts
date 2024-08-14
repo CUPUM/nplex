@@ -3,7 +3,7 @@ import { STATUS_CODES } from '$lib/common/constants';
 import { authorize } from '$lib/crud/authorization/rbac.server';
 import {
 	canEditProject,
-	getProjectExemplarityMarkersByCategoriesList,
+	projectExemplarityMarkersByCategoriesList,
 } from '$lib/crud/queries/projects';
 import { projectExemplarityMarkersFormSchema } from '$lib/crud/validation/projects';
 import { db } from '$lib/db/db.server';
@@ -17,7 +17,6 @@ import { superValidate } from 'sveltekit-superforms/server';
 
 export const load = async (event) => {
 	authorize(event);
-	const markersByCategories = getProjectExemplarityMarkersByCategoriesList(event);
 	const [project] = await db
 		.select({
 			markersIds: coalesce(jsonAgg(projectsExemplarityMarkers.markerId), $emptyJsonArray),
@@ -32,7 +31,7 @@ export const load = async (event) => {
 	const form = await superValidate(project, zod(projectExemplarityMarkersFormSchema));
 	return {
 		form,
-		markersByCategories,
+		markersByCategories: projectExemplarityMarkersByCategoriesList,
 	};
 };
 
