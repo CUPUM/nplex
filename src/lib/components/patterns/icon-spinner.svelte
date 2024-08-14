@@ -5,17 +5,16 @@
 
 	let {
 		busy,
-		icon,
+		icon: Icon,
 		...iconProps
-	}: { busy: boolean; icon: ComponentType | Component } & Omit<SVGAttributes<SVGElement>, 'speed'> =
-		$props();
+	}: {
+		busy: boolean;
+		icon: ComponentType | Component;
+	} & Omit<SVGAttributes<SVGElement>, 'speed'> = $props();
 </script>
 
 {#if busy}
 	<Spinner {...iconProps} />
 {:else}
-	<svelte:component this={icon} {...iconProps} />
+	<Icon {...iconProps} />
 {/if}
-
-<style>
-</style>

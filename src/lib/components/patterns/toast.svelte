@@ -45,6 +45,7 @@
 	{:else if 'snippet' in instance.content}
 		{@render instance.content.snippet(instance)}
 	{:else if 'component' in instance.content}
-		<svelte:component this={instance.content.component} {...instance.content.props} />
+		{@const Component = instance.content.component}
+		<Component {...instance.content.props} />
 	{/if}
 </aside>
