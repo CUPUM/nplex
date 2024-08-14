@@ -33,8 +33,7 @@ export const load = async (event) => {
 			.leftJoin(projectsImages, eq(projects.bannerId, projectsImages.id))
 			.$dynamic(),
 		projectsTranslations,
-		eq(projects.id, projectsTranslations.id),
-		event
+		eq(projects.id, projectsTranslations.id)
 	);
 	if (!project) {
 		error(STATUS_CODES.NOT_FOUND);
@@ -49,8 +48,7 @@ export const load = async (event) => {
 			.where(eq(projectsImages.projectId, event.params.projectId))
 			.$dynamic(),
 		projectsImagesTranslations,
-		eq(projectsImages.id, projectsImagesTranslations.id),
-		event
+		eq(projectsImages.id, projectsImagesTranslations.id)
 	);
 	const exemplarityCategories = db.$with('exemplarity_categories').as(
 		joinTranslation(
@@ -62,8 +60,7 @@ export const load = async (event) => {
 				.from(projectExemplarityCategories)
 				.$dynamic(),
 			projectExemplarityCategoriesTranslations,
-			eq(projectExemplarityCategories.id, projectExemplarityCategoriesTranslations.id),
-			event
+			eq(projectExemplarityCategories.id, projectExemplarityCategoriesTranslations.id)
 		)
 	);
 	const markersByCategories = joinTranslation(
@@ -100,8 +97,7 @@ export const load = async (event) => {
 			.groupBy(...Object.values(getColumns(exemplarityCategories)))
 			.$dynamic(),
 		projectExemplarityMarkersTranslations,
-		eq(projectExemplarityMarkers.id, projectExemplarityMarkersTranslations.id),
-		event
+		eq(projectExemplarityMarkers.id, projectExemplarityMarkersTranslations.id)
 	);
 	return {
 		project,
