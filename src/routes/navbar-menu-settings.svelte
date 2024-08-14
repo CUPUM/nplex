@@ -53,7 +53,7 @@
 					theme.setting = option;
 				}}
 			>
-				<svelte:component this={THEME_SETTINGS_DETAILS[option].icon} />
+				<THEME_SETTINGS_DETAILS[option].icon />
 				{THEME_SETTINGS_DETAILS[option].title()}
 			</NavbarMenuItem>
 		{/each}

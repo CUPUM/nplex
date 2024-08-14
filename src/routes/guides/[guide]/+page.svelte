@@ -69,7 +69,7 @@
 			{/if}
 		</button>
 		<article class="prose mx-md self-center">
-			<svelte:component this={data.content} />
+			<data.content />
 		</article>
 	</div>
 </div>

@@ -39,13 +39,14 @@
 			</div>
 			<fieldset class="gap-input-group-gap flex flex-row justify-center">
 				{#each OAUTH_PROVIDERS_ARR as provider, i}
+					{@const Logo = logos[provider]}
 					<a
 						class="button button-bordered aspect-square"
 						{...linkAttributes(`/login/${provider}`)}
 						aria-disabled={!OAUTH_PROVIDERS_DETAILS[provider].enabled}
 						use:ripple
 					>
-						<svelte:component this={logos[provider]} />
+						<Logo />
 					</a>
 				{/each}
 			</fieldset>

@@ -45,7 +45,6 @@
 	{:else if 'snippet' in instance.content}
 		{@render instance.content.snippet(instance)}
 	{:else if 'component' in instance.content}
-		{@const Component = instance.content.component}
-		<Component {...instance.content.props} />
+		<instance.content.component {...instance.content.props} />
 	{/if}
 </aside>

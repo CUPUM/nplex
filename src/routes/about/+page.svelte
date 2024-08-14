@@ -19,5 +19,5 @@
 	</hgroup>
 </header>
 <article class="prose mx-auto max-w-md">
-	<svelte:component this={data.content} />
+	<data.content />
 </article>

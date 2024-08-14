@@ -30,15 +30,15 @@
 			{
 				href: '/projects',
 				label: m.projects(),
-				Icon: DraftingCompass,
+				icon: DraftingCompass,
 			},
 			{
 				href: '/organizations',
 				label: m.organizations(),
-				Icon: Building2,
+				icon: Building2,
 			},
 		],
-	] satisfies { href: string; label: string; Icon?: ComponentType }[][];
+	] satisfies { href: string; label: string; icon?: ComponentType }[][];
 
 	const partners = [
 		{
@@ -59,7 +59,7 @@
 {#if $page.data.presentation !== PRESENTATIONS.FULL_SCREEN && !$page.data.footer?.hidden}
 	<footer
 		transition:slide
-		class="p-lg gap-lg mt-2xl group-data-[presentation=normal]/root:max-w-main rounded-b-inherit bg-card/softer mx-auto flex w-full max-w-full flex-col items-stretch rounded-t-xl text-xs transition-all"
+		class="p-lg gap-lg mt-2xl group-data-[presentation=normal]/root:max-w-main rounded-b-inherit bg-card mx-auto flex w-full max-w-full flex-col items-stretch rounded-t-xl text-xs transition-all"
 	>
 		<!-- Site map -->
 		<nav class="gap-sm flex flex-row flex-wrap items-center justify-center">
@@ -70,11 +70,10 @@
 							href={link.href}
 							class="py-xs px-sm hover:bg-input group/link rounded-xs flex flex-row items-center gap-[0.25em] transition-all"
 						>
-							{#if 'Icon' in link}
-								<svelte:component
-									this={link.Icon}
+							{#if 'icon' in link}
+								<link.icon
 									class="opacity-softer group-hover/link:opacity-soft h-[1em] transition-all"
-								></svelte:component>
+								/>
 							{/if}
 							{link.label}
 						</a>
