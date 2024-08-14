@@ -2,19 +2,20 @@
 
 ## Graphisme
 
-La charte graphique de Nplex se limite principalement au design UI de l'application web, l'image du
-projet peut être ajustée au besoin par l'équipe interne lors de la conception de publications.
+La charte graphique de Nplex encadre principalement le design UI de l'application web. Au besoin,
+l'image de marque du projet peut être ajustée _minimalement_ par l'équipe interne lors de la
+conception de contenu à publier.
 
 ### Logo
 
 Des variantes du logo sont disponibles dans le dossier [`static`](../static/). Le logo devrait
 toujours être utilisé dans son ensemble, sans tronquer de symbole. Il n'est pas conçu pour un usage
-en forme abbrégée (ex.: seulement le symbole "n").
+en forme abbrégée (ex.: seulement le symbole "n"). Il est possible de modifier la couleur du logo.
 
 ### Couleurs
 
-Pour une palette de couleur à jour, fiez-vous au valeurs et à la documentation disponibles dans
-[le fichier de styles de l'application web](../src/app.css).
+Pour une palette de couleur à jour, référez-vous aux valeurs et à la documentation disponibles dans
+[le fichier de styles de l'application](../src/app.css).
 
 ### Typographies
 
