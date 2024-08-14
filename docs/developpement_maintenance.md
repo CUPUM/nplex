@@ -4,10 +4,9 @@
 
 ### Utiliser le _package manager_ prescrit
 
-The project's monorepo expects you to use `pnpm` as the package manager to enable proper use of its
-workspace features. Using `npm` is not indicated. This allows dependency optimizations with shared
-and cached packages on developement or production devices. If you do not have `pnpm` installed,
-please refer to: <https://pnpm.io/installation> or simply proceed with either:
+Le projet requiert l'utilisation de `pnpm` comme gestionnaire de dépendences, l’emploi de `npm`
+n’est pas indiquée. Si vous n’avez pas installé pnpm, veuillez consulter :
+<https://pnpm.io/installation> ou simplement procéder avec l'une des options suivantes:
 
 ```sh
 # brew (preferred method)
@@ -19,14 +18,20 @@ npm install -g pnpm
 
 ### Définir les variables d'environnement requises
 
-Before building or starting any service, make sure to define the required environment variables in a
-`.env` file at the root of the repo. A reference [`.env.template`](.env.template) is provided to
-help identify required variables. Any populated `.env` files are not included in commits, and never
-should be, as they contain sensitive information for service authentications.
+Avant de construire ou de rouler l'application localement, vous devez vous assurer de définir les
+variables d'environnement requises dans un fichier .env à la racine du dépôt. Un fichier de
+référence [`.env.template`](../.env.template) est disponible pour vous aider à identifier les
+variables nécessaires.
+
+> [!WARNING]
+>
+> Les fichiers `.env` remplis ne sont pas inclus dans les commits, et ne devraient jamais l'être,
+> car ils contiennent des informations sensibles pour l'authentification et la connexion aux divers
+> services.
 
 ### Installation
 
-Install the project with the usual command.
+Installez le projet avec la commande habituelle:
 
 ```sh
 pnpm install
@@ -42,9 +47,12 @@ Nplex est construit avec SvelteKit.
 
 ##### Vercel
 
-L'application est hébergée sur un forfait gratuit (_freemium_) de [Vercel](https://vercel.com/). Si
-vous souhaitez changer de service d'hébergement, assurez-vous d'ajuster la
-[configuration de Svelte](../svelte.config.js) avec l'adaptateur adéquat.
+L'application est hébergée sur un forfait gratuit (_freemium_) de [Vercel](https://vercel.com/).
+
+> [!NOTE]
+>
+> Si vous souhaitez changer de service d'hébergement, assurez-vous d'ajuster la
+> [configuration de Svelte](../svelte.config.js) avec l'adaptateur adéquat.
 
 ### Base de données
 
