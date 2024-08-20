@@ -95,7 +95,7 @@
 		text-decoration: underline;
 		text-decoration-thickness: var(--border-width-sm);
 		text-underline-offset: 0.25em;
-		text-decoration-color: color-mix(in srgb, currentColor var(--opacity-dimmest), transparent);
+		text-decoration-color: color-mix(in srgb, currentColor calc(100% * var(--opacity-softest)), transparent);
 		-webkit-box-decoration-break: clone;
 		-o-box-decoration-break: clone;
 		box-decoration-break: clone;

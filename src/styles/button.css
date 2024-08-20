@@ -53,7 +53,7 @@
 		--button-checked-background: var(--color-checked);
 		--button-checked-color: var(--color-on-checked);
 		--button-open-color: var(--color-primary-accent);
-		--button-open-background: color-mix(in srgb, var(--color-primary-accent) var(--opacity-softest), var(--background-color-base));
+		--button-open-background: color-mix(in srgb, var(--color-primary-accent) calc(100% * var(--opacity-softest)), var(--background-color-base));
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-background: var(--background-color-input-error);
@@ -145,7 +145,7 @@
 		--button-background: transparent;
 		--button-background-inset: 0.4em;
 		--button-text-decoration: underline;
-		--button-text-decoration-color: color-mix(in srgb, currentColor var(--opacity-softest), transparent);
+		--button-text-decoration-color: color-mix(in srgb, currentColor calc(100% * var(--opacity-softest)), transparent);
 		--button-text-decoration-thickness: var(--border-width-input);
 		--button-text-underline-offset: 0.4em;
 		--button-icon-color: currentColor;
@@ -158,7 +158,7 @@
 		&:is([data-danger]) {
 			--button-color: var(--text-color-input-error);
 			--button-hover-color: var(--text-color-input-error-accent);
-			--button-hover-text-decoration-color: color-mix(in srgb, var(--color-error-softer) var(--opacity-softer), transparent);
+			--button-hover-text-decoration-color: color-mix(in srgb, var(--color-error-softer) calc(100% * var(--opacity-softer)), transparent);
 		}
 	}
 
@@ -167,7 +167,7 @@
 	&:is(.button-nav) {
 		justify-content: flex-start;
 		--ripple-color: color-mix(in srgb, var(--color-primary) 15%, transparent);
-		--button-color: color-mix(in srgb, var(--text-color-input) var(--opacity-soft), var(--background-color-base));
+		--button-color: color-mix(in srgb, var(--text-color-input) calc(100% * var(--opacity-soft)), var(--background-color-base));
 		--button-background: transparent;
 		--button-background-inset: 0.4em;
 		--button-text-decoration: none;

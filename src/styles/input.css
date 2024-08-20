@@ -43,7 +43,7 @@
 
 	&:not(.input-bordered, .input-dashed, .input-ghost) {
 		--input-color: var(--text-color-input);
-		--input-background: color-mix(in srgb, var(--background-color-input) var(--opacity-softer), transparent);
+		--input-background: color-mix(in srgb, var(--background-color-input) calc(100% * var(--opacity-softer)), transparent);
 		--input-icon-color: currentColor;
 		--input-border-style: none;
 		--input-hover-color: var(--text-color-input);
@@ -82,7 +82,7 @@
 		--input-focused-border-color: transparent;
 		--input-disabled-color: var(--text-color-input);
 		--input-disabled-background: ;
-		--input-disabled-border-color: color-mix(in srgb, var(--border-color-base) var(--opacity-softer), transparent);
+		--input-disabled-border-color: color-mix(in srgb, var(--border-color-base) calc(100% * var(--opacity-softer)), transparent);
 		--input-busy-color: ;
 		--input-busy-background: ;
 		--input-busy-border-color: transparent;

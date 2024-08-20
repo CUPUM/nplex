@@ -68,7 +68,7 @@
 					{#each links as link}
 						<a
 							href={link.href}
-							class="py-xs px-sm hover:bg-input group/link rounded-xs flex flex-row items-center gap-[0.25em] transition-all"
+							class="py-xs px-sm hover:bg-input group/link rounded-xs flex flex-row items-center gap-[0.5em] transition-all"
 						>
 							{#if 'icon' in link}
 								<link.icon

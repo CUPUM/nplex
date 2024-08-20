@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { i18n } from '$lib/i18n/adapter';
 	import { ParaglideJS as I18nProvider } from '@inlang/paraglide-sveltekit';
-	import '../app.css';
+	import '../../app.css';
 	import Footer from './footer.svelte';
 	import Navbar from './navbar.svelte';
 	import PresentationProvider from './presentation-provider.svelte';

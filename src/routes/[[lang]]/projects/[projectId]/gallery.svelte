@@ -27,7 +27,7 @@
 			</ul>
 		{:else}
 			<section class="p-padding max-w-main w-full self-center">
-				<span class="text-base-dim italic">
+				<span class="text-base/softer italic">
 					{m.no_image()}
 				</span>
 			</section>

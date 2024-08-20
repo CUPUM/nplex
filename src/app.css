@@ -294,7 +294,7 @@
 	--text-color-input-success: var(--color-success);
 	--text-color-input-success-accent: var(--color-success-accent);
 
-	--outline-color: color-mix(in srgb, var(--color-primary) var(--opacity-soft), transparent);
+	--outline-color: color-mix(in srgb, var(--color-primary) calc(100% * var(--opacity-soft)), transparent);
 	--outline-color-error: color-mix(in srgb, var(--color-error-softer) 90%, transparent);
 	--outline-color-success: color-mix(in srgb, var(--color-success-softer) 90%, transparent);
 

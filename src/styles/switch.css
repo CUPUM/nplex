@@ -33,10 +33,10 @@
 	/* Default */
 
 	&:not(.switch-bordered, .switch-dashed, .switch-ghost) {
-		--ripple-color: color-mix(in srgb, var(--background-color-input) var(--opacity-softer), transparent);
+		--ripple-color: color-mix(in srgb, var(--background-color-input) calc(100% * var(--opacity-softer)), transparent);
 		--switch-thumb-background: var(--color-checked);
 		--switch-thumb-shadow: none;
-		--switch-color: var(--text-color-input-dim);
+		--switch-color: color-mix(in srgb, var(--text-color-input) calc(100% * var(--opacity-soft)), transparent);
 		--switch-background: var(--background-color-input);
 		--switch-border-style: none;
 		--switch-hover-color: var(--text-color-input);
@@ -70,11 +70,11 @@
 	}
 
 	&:is(.switch-bordered, .switch-dashed) {
-		--ripple-color: color-mix(in srgb, var(--background-color-input) var(--opacity-softer), transparent);
+		--ripple-color: color-mix(in srgb, var(--background-color-input) calc(100% * var(--opacity-softer)), transparent);
 		--switch-thumb-background: var(--color-checked);
-		--switch-color: var(--text-color-input-dim);
+		--switch-color: color-mix(in srgb, var(--text-color-input) calc(100% * var(--opacity-soft)), transparent);
 		--switch-background: transparent;
-		--switch-border-color: color-mix(in srgb, var(--border-color-base) var(--opacity-softer), transparent);
+		--switch-border-color: color-mix(in srgb, var(--border-color-base) calc(100% * var(--opacity-softer)), transparent);
 		--switch-hover-border-color: var(--border-color-base);
 		--switch-hover-color: var(--text-color-input);
 		--switch-focused-border-color: transparent;
@@ -96,7 +96,7 @@
 
 	&:is(.switch-ghost) {
 		--switch-thumb-background: var(--background-color-input-accent);
-		--switch-color: var(--text-color-input-dim);
+		--switch-color: color-mix(in srgb var(--text-color-input) calc(100% * var(--opacity-soft)), transparent);
 		--switch-background: transparent;
 		--switch-icon-color: currentColor;
 		--switch-border-style: none;
@@ -296,7 +296,7 @@
 		/* Disabled */
 
 		&:is(:disabled, [aria-disabled='true'], [data-disabled='true']) {
-			opacity: var(--opacity-dimmest);
+			opacity: var(--opacity-softest);
 			color: var(--switch-item-disabled-color, var(--switch-item-color));
 
 			&::after {

@@ -31,6 +31,7 @@
 			<NavbarMenuItem
 				href={withoutLang}
 				hreflang={lang}
+				rel="alternate"
 				data-sveltekit-noscroll
 				data-sveltekit-replacestate
 				aria-checked={languageTag() === lang || undefined}
@@ -46,6 +47,7 @@
 			{m.screen_mode()}
 		{/snippet}
 		{#each THEME_SETTINGS_ARR as option}
+			{@const details = THEME_SETTINGS_DETAILS[option]}
 			<NavbarMenuItem
 				aria-checked={theme.setting === option || undefined}
 				role="radio"
@@ -53,8 +55,8 @@
 					theme.setting = option;
 				}}
 			>
-				<THEME_SETTINGS_DETAILS[option].icon />
-				{THEME_SETTINGS_DETAILS[option].title()}
+				<details.icon />
+				{details.title()}
 			</NavbarMenuItem>
 		{/each}
 	</NavbarMenuGroup>
