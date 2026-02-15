@@ -28,5 +28,5 @@ au développement &mdash; se trouve dans le répertoire [docs](/docs).
 <p align="center">
   <a href="www.nplex.design">www.<b>nplex</b>.design</a>
   <br/>
-  <sub><a href="https://unesco-studio.umontreal.ca/">&copy; UNESCO Chair in Landscape and Environment</a></sub>
+  <sub><a href="https://unesco-studio.umontreal.ca/">&copy; UNESCO Chair in Urban Landscape</a></sub>
 </p>
